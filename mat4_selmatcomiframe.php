@@ -35,8 +35,8 @@ $clpcmater = new cl_pcmater;
 $clpcmater->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 if (isset ($atualizar)&&$atualizar!="") {
 	db_inicio_transacao();
 	$result03 = $cltransmater->sql_record($cltransmater->sql_query_file(null, "*", null, "m63_codmatmater=$m60_codmater"));
@@ -48,13 +48,13 @@ if (isset ($atualizar)&&$atualizar!="") {
 		}
 	}
 	$sqlerro = false;
-	$vt = $HTTP_POST_VARS;
+	$vt = $_POST;
 	$ta = sizeof($vt);
 	reset($vt);
 	for ($i = 0; $i < $ta; $i ++) {
 		$chave = key($vt);
-		if (substr($chave, 0, 5) == "CHECK") {
-			$dados = split("_", $chave);
+		if (str_starts_with((string) $chave, "CHECK")) {
+			$dados = preg_split("#_#m", (string) $chave);
 			
 			$cltransmater->m63_codpcmater = $dados[1];
 			$cltransmater->m63_codmatmater = $m60_codmater;

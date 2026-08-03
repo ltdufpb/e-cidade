@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE cgmsaude
 class cl_cgmsaude { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $z01_numcgm = 0; 
-   var $z01_tiposangue = 0; 
-   var $z01_fatorrh = 0; 
-   var $z01_cartaosus = null; 
+   public $z01_numcgm = 0; 
+   public $z01_tiposangue = 0; 
+   public $z01_fatorrh = 0; 
+   public $z01_cartaosus = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  z01_numcgm = int4 = Numcgm 
                  z01_tiposangue = int4 = Tipo Sanguineo 
                  z01_fatorrh = int4 = Fator RH 
                  z01_cartaosus = varchar(15) = Cartão SUS 
                  ";
    //funcao construtor da classe 
-   function cl_cgmsaude() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgmsaude"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -133,7 +133,7 @@ class cl_cgmsaude {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cgmsaude ($this->z01_numcgm) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cgmsaude já Cadastrado";
@@ -157,13 +157,13 @@ class cl_cgmsaude {
      $resaco = $this->sql_record($this->sql_query_file($this->z01_numcgm));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,216,'$this->z01_numcgm','I')");
-       $resac = db_query("insert into db_acount values($acount,1639,216,'','".AddSlashes(pg_result($resaco,0,'z01_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1639,9560,'','".AddSlashes(pg_result($resaco,0,'z01_tiposangue'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1639,9559,'','".AddSlashes(pg_result($resaco,0,'z01_fatorrh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1639,9561,'','".AddSlashes(pg_result($resaco,0,'z01_cartaosus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1639,216,'','".AddSlashes(pg_fetch_result($resaco,0,'z01_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1639,9560,'','".AddSlashes(pg_fetch_result($resaco,0,'z01_tiposangue'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1639,9559,'','".AddSlashes(pg_fetch_result($resaco,0,'z01_fatorrh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1639,9561,'','".AddSlashes(pg_fetch_result($resaco,0,'z01_cartaosus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -172,10 +172,10 @@ class cl_cgmsaude {
       $this->atualizacampos();
      $sql = " update cgmsaude set ";
      $virgula = "";
-     if(trim($this->z01_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_numcgm"])){ 
+     if(trim((string) $this->z01_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_numcgm"])){ 
        $sql  .= $virgula." z01_numcgm = $this->z01_numcgm ";
        $virgula = ",";
-       if(trim($this->z01_numcgm) == null ){ 
+       if(trim((string) $this->z01_numcgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "z01_numcgm";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_cgmsaude {
          return false;
        }
      }
-     if(trim($this->z01_tiposangue)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_tiposangue"])){ 
+     if(trim((string) $this->z01_tiposangue)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_tiposangue"])){ 
        $sql  .= $virgula." z01_tiposangue = $this->z01_tiposangue ";
        $virgula = ",";
-       if(trim($this->z01_tiposangue) == null ){ 
+       if(trim((string) $this->z01_tiposangue) == null ){ 
          $this->erro_sql = " Campo Tipo Sanguineo nao Informado.";
          $this->erro_campo = "z01_tiposangue";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_cgmsaude {
          return false;
        }
      }
-     if(trim($this->z01_fatorrh)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_fatorrh"])){ 
+     if(trim((string) $this->z01_fatorrh)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_fatorrh"])){ 
        $sql  .= $virgula." z01_fatorrh = $this->z01_fatorrh ";
        $virgula = ",";
-       if(trim($this->z01_fatorrh) == null ){ 
+       if(trim((string) $this->z01_fatorrh) == null ){ 
          $this->erro_sql = " Campo Fator RH nao Informado.";
          $this->erro_campo = "z01_fatorrh";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_cgmsaude {
          return false;
        }
      }
-     if(trim($this->z01_cartaosus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_cartaosus"])){ 
+     if(trim((string) $this->z01_cartaosus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z01_cartaosus"])){ 
        $sql  .= $virgula." z01_cartaosus = '$this->z01_cartaosus' ";
        $virgula = ",";
-       if(trim($this->z01_cartaosus) == null ){ 
+       if(trim((string) $this->z01_cartaosus) == null ){ 
          $this->erro_sql = " Campo Cartão SUS nao Informado.";
          $this->erro_campo = "z01_cartaosus";
          $this->erro_banco = "";
@@ -232,17 +232,17 @@ class cl_cgmsaude {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,216,'$this->z01_numcgm','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["z01_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,1639,216,'".AddSlashes(pg_result($resaco,$conresaco,'z01_numcgm'))."','$this->z01_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1639,216,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z01_numcgm'))."','$this->z01_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["z01_tiposangue"]))
-           $resac = db_query("insert into db_acount values($acount,1639,9560,'".AddSlashes(pg_result($resaco,$conresaco,'z01_tiposangue'))."','$this->z01_tiposangue',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1639,9560,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z01_tiposangue'))."','$this->z01_tiposangue',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["z01_fatorrh"]))
-           $resac = db_query("insert into db_acount values($acount,1639,9559,'".AddSlashes(pg_result($resaco,$conresaco,'z01_fatorrh'))."','$this->z01_fatorrh',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1639,9559,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z01_fatorrh'))."','$this->z01_fatorrh',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["z01_cartaosus"]))
-           $resac = db_query("insert into db_acount values($acount,1639,9561,'".AddSlashes(pg_result($resaco,$conresaco,'z01_cartaosus'))."','$this->z01_cartaosus',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1639,9561,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z01_cartaosus'))."','$this->z01_cartaosus',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -287,13 +287,13 @@ class cl_cgmsaude {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,216,'$z01_numcgm','E')");
-         $resac = db_query("insert into db_acount values($acount,1639,216,'','".AddSlashes(pg_result($resaco,$iresaco,'z01_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1639,9560,'','".AddSlashes(pg_result($resaco,$iresaco,'z01_tiposangue'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1639,9559,'','".AddSlashes(pg_result($resaco,$iresaco,'z01_fatorrh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1639,9561,'','".AddSlashes(pg_result($resaco,$iresaco,'z01_cartaosus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1639,216,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z01_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1639,9560,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z01_tiposangue'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1639,9559,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z01_fatorrh'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1639,9561,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z01_cartaosus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cgmsaude
@@ -353,7 +353,7 @@ class cl_cgmsaude {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cgmsaude";

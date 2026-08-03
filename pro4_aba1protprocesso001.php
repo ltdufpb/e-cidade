@@ -120,7 +120,7 @@ if (isset($oPost->btnincluir) && $oPost->btnincluir == 1) {
 
         if (isset($oPost->docs) && $oPost->docs != "") {
             if ($lSqlErro == false) {
-                $chaves = split("#",$oPost->docs);
+                $chaves = preg_split("#\\##m",(string) $oPost->docs);
                 $chave  = count($chaves);
                 for($x = 0; $x < $chave-1; $x++){
                     $clprocprocessodoc->p81_codproc = $p58_codproc;
@@ -137,11 +137,11 @@ if (isset($oPost->btnincluir) && $oPost->btnincluir == 1) {
 
         if (isset($oPost->ndocs) && $oPost->ndocs != "") {
             if ($lSqlErro == false) {
-                $chaves = split("#",$oPost->ndocs);
+                $chaves = preg_split("#\\##m",(string) $oPost->ndocs);
                 $chave  = count($chaves);
 
                 for( $i = 0; $i < $chave-1; $i++){
-                    $HTTP_POST_VARS['p81_doc'] = 'f';
+                    $_POST['p81_doc'] = 'f';
                     $clprocprocessodoc->p81_codproc = $p58_codproc;
                     $clprocprocessodoc->p81_coddoc = $chaves[$i];
                     $clprocprocessodoc->p81_doc = 'f';
@@ -163,15 +163,15 @@ if (isset($oPost->btnincluir) && $oPost->btnincluir == 1) {
                 while ($ln = pg_fetch_array($rsSql)){
                     $sSqlCam = "select nomecam,rotulo from db_syscampo where codcam = ".$ln["p54_codcam"];
                     $rsSqlCam = db_query($sSqlCam);
-                    if (pg_numrows($rsSqlCam) > 0) {
-                        $nomecam = trim(pg_result($rsSqlCam,0,"nomecam"));
-                        $rotulo = trim(pg_result($rsSqlCam,0,"rotulo"));
+                    if (pg_num_rows($rsSqlCam) > 0) {
+                        $nomecam = trim(pg_fetch_result($rsSqlCam,0,"nomecam"));
+                        $rotulo = trim(pg_fetch_result($rsSqlCam,0,"rotulo"));
 
                         $p55_codproc = $clprotprocesso->p58_codproc;
                         $p55_codvar = $ln["p54_codigo"];
                         $p55_codcam = $ln["p54_codcam"];
 
-                        $clproctipovar->p55_conteudo = $$nomecam;
+                        $clproctipovar->p55_conteudo = ${$nomecam};
                         $clproctipovar->incluir($p55_codproc,$p55_codvar,$p55_codcam);
 
                         if ($clproctipovar->erro_status == '0') {

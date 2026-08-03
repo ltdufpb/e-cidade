@@ -33,9 +33,9 @@ class cda
    */
     protected $iCodigo     = null;
 
-    protected $aEnvolvidos = array();
+    protected $aEnvolvidos = [];
 
-    protected $aDebitos    = array();
+    protected $aDebitos    = [];
 
     protected $dataEmissao = null;
 
@@ -95,7 +95,7 @@ class cda
                 $this->dataLivro   = $oDadosCertid->datalivro;
                 $this->iTipo       = $oDadosCertid->tipocertidao;
                 $this->massafalida = $oDadosCertid->v13_certidmassa;
-                $this->iAno        = substr($oDadosCertid->v13_dtemis, 0, 4);
+                $this->iAno        = substr((string) $oDadosCertid->v13_dtemis, 0, 4);
             }
         }
     }
@@ -224,7 +224,7 @@ class cda
     public function getOrigensDebito()
     {
 
-        $aOrigem = array();
+        $aOrigem = [];
         if ($this->getTipo() == 2) {
             $aOrigem = $this->getOrigemDebitoDivida();
         } elseif ($this->getTipo() == 1) {
@@ -258,7 +258,7 @@ class cda
         $sqlOrigemMatric .= "   order by v01_numpre,v01_numpar                                             ";
 
         $rsOrigemDebitos  = db_query($sqlOrigemMatric);
-        $aOrigem          = array();
+        $aOrigem          = [];
         $aOrigem          = db_utils::getCollectionByRecord($rsOrigemDebitos);
         return  $aOrigem;
     }
@@ -282,7 +282,7 @@ class cda
         $sqlOrigemMatric .= "   where v14_certid = {$this->iCodigo} ";
         $sqlOrigemMatric .= "   order by v07_numpre  ";
         $rsOrigemDebitos  = db_query($sqlOrigemMatric);
-        $aOrigem          = array();
+        $aOrigem          = [];
         $aOrigem          = db_utils::getCollectionByRecord($rsOrigemDebitos);
         return  $aOrigem;
     }
@@ -302,7 +302,7 @@ class cda
 
         $rsProcParc      = db_query($sSqlProcParc);
         $aDadosProcParc  = db_utils::getCollectionByRecord($rsProcParc);
-        $aAgrupaProcParc = array();
+        $aAgrupaProcParc = [];
 
         foreach ($aDadosProcParc as $oDadosProcParc) {
             $aAgrupaProcParc[] = $oDadosProcParc->processo;
@@ -366,7 +366,7 @@ class cda
 
         $rsObsNumpre      = db_query($sSqlObsNumpre);
         $aDadosObsNumpre  = db_utils::getCollectionByRecord($rsObsNumpre);
-        $aAgrupaObsNumpre = array();
+        $aAgrupaObsNumpre = [];
 
         foreach ($aDadosObsNumpre as $oDadosObsNumpre) {
             $aAgrupaObsNumpre[] = $oDadosObsNumpre->hist;
@@ -385,7 +385,7 @@ class cda
     function getDevedoresEnvolvidos($sTipoEndereco = 'o')
     {
 
-        $aParams  = db_stdClass::getParametro("pardiv", array(db_getsession("DB_instit")));
+        $aParams  = db_stdClass::getParametro("pardiv", [db_getsession("DB_instit")]);
 
         if (count($aParams) == 0) {
             throw new Exception("Sem parametros para o módulo dívida configurados");
@@ -404,12 +404,12 @@ class cda
             $lRegra = "true";
         }
 
-        $aMatric              = array();
-        $aInscr               = array();
-        $aCgm                 = array();
-        $aImoveisEnvolvidos   = array();
-        $aEmpresasEnvolvidos  = array();
-        $aDevedoresEnvolvidos = array();
+        $aMatric              = [];
+        $aInscr               = [];
+        $aCgm                 = [];
+        $aImoveisEnvolvidos   = [];
+        $aEmpresasEnvolvidos  = [];
+        $aDevedoresEnvolvidos = [];
         $aOrigens = $this->getOrigensDebito();
 
         foreach ($aOrigens as $oOrigens) {
@@ -429,7 +429,7 @@ class cda
                     $possuidor = "POSSUIDOR";
                     if ($linhasPossuidor > 0) {
                         $oTextoPossuido = db_utils::fieldsmemory($resultPossuidor, 0);
-                        if (trim($oTextoPossuido->j18_textoprom) != "") {
+                        if (trim((string) $oTextoPossuido->j18_textoprom) != "") {
                             $possuidor = $oTextoPossuido->j18_textoprom;
                         }
                     }
@@ -474,7 +474,7 @@ class cda
                         $iLinhasDadosEnvol = pg_num_rows($rsDadosEnvol);
                         if ($iLinhasDadosEnvol > 0) {
                             $oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol, 0);
-                            if (trim($oDadosEnvol->z01_dtfalecimento) != '' && strlen($oDadosEnvol->z01_cgccpf) == 11
+                            if (trim((string) $oDadosEnvol->z01_dtfalecimento) != '' && strlen((string) $oDadosEnvol->z01_cgccpf) == 11
                             && $oDadosEnvol != '00000000000') {
                                   $oDevedor->nome = $sExpressaoFalecimento." ".$oDadosEnvol->z01_nome;
                             } else {
@@ -485,19 +485,19 @@ class cda
                             $oDevedor->celular  = $oDadosEnvol->z01_telcel;
                             $oDevedor->endereco = "";
                             $oDevedor->endereco = $oDadosEnvol->z01_ender != "" ? $oDadosEnvol->z01_ender : "";
-                            if (trim($oDadosEnvol->z01_numero) !="0" and trim($oDadosEnvol->z01_numero)!="") {
+                            if (trim((string) $oDadosEnvol->z01_numero) !="0" and trim((string) $oDadosEnvol->z01_numero)!="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->z01_numero} ";
                             }
-                            if (trim($oDadosEnvol->z01_compl)  !="0" and trim($oDadosEnvol->z01_compl) !="") {
+                            if (trim((string) $oDadosEnvol->z01_compl)  !="0" and trim((string) $oDadosEnvol->z01_compl) !="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->z01_compl} ";
                             }
-                            if (trim($oDadosEnvol->z01_bairro) !="0" and trim($oDadosEnvol->z01_bairro)!="") {
+                            if (trim((string) $oDadosEnvol->z01_bairro) !="0" and trim((string) $oDadosEnvol->z01_bairro)!="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->z01_bairro} ";
                             }
-                            if (trim($oDadosEnvol->z01_munic)  !="0" and trim($oDadosEnvol->z01_munic) !="") {
+                            if (trim((string) $oDadosEnvol->z01_munic)  !="0" and trim((string) $oDadosEnvol->z01_munic) !="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->z01_munic}/{$oDadosEnvol->z01_uf} ";
                             }
-                            if (trim($oDadosEnvol->z01_cep) !="0" and trim($oDadosEnvol->z01_cep) !="") {
+                            if (trim((string) $oDadosEnvol->z01_cep) !="0" and trim((string) $oDadosEnvol->z01_cep) !="") {
                                 $oDevedor->endereco .= "- CEP {$oDadosEnvol->z01_cep}";
                             }
 
@@ -510,7 +510,7 @@ class cda
                                 $oDevedor->tipo = $possuidor;
                             }
 
-                            if (strlen($oDadosEnvol->z01_cgccpf) == 14) {
+                            if (strlen((string) $oDadosEnvol->z01_cgccpf) == 14) {
                                 $oDevedor->cgcCpf = db_formatar($oDadosEnvol->z01_cgccpf, "cnpj");
                             } else {
                                 $oDevedor->cgcCpf = db_formatar($oDadosEnvol->z01_cgccpf, "cpf");
@@ -533,7 +533,7 @@ class cda
                     $sqlcidade = "select munic, uf, cep from db_config where codigo = ".db_getsession('DB_instit');
                     $resultcidade     = db_query($sqlcidade);
                     $oCidade          = db_utils::fieldsmemory($resultcidade, 0);
-                    $oImovel->cep    = $oProprietario->j29_cep ? $oProprietario->j29_cep : $oCidade->cep;
+                    $oImovel->cep    = $oProprietario->j29_cep ?: $oCidade->cep;
 
                     /**
                      * quando solicitado  o endereço de origem
@@ -611,7 +611,7 @@ class cda
                         if ($iLinhasDadosEnvol > 0) {
                             $oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol, 0);
 
-                            if (trim($oDadosEnvol->z01_dtfalecimento) != '' && strlen($oDadosEnvol->z01_cgccpf) == 11) {
+                            if (trim((string) $oDadosEnvol->z01_dtfalecimento) != '' && strlen((string) $oDadosEnvol->z01_cgccpf) == 11) {
                                 $oDevedor->nome = $sExpressaoFalecimento." ".$oDadosEnvol->z01_nome;
                             } else {
                                 $oDevedor->nome = $oDadosEnvol->z01_nome;
@@ -622,23 +622,23 @@ class cda
                             $oDevedor->celular  = $oDadosEnvol->z01_telcel;
                             $oDevedor->endereco = "";
                             $oDevedor->endereco = $oDadosEnvol->ender;
-                            if (trim($oDadosEnvol->numero) !="0" and trim($oDadosEnvol->numero)!="") {
+                            if (trim((string) $oDadosEnvol->numero) !="0" and trim((string) $oDadosEnvol->numero)!="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->numero} ";
                             }
-                            if (trim($oDadosEnvol->compl)  !="0" and trim($oDadosEnvol->compl) !="") {
+                            if (trim((string) $oDadosEnvol->compl)  !="0" and trim((string) $oDadosEnvol->compl) !="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->compl} ";
                             }
-                            if (trim($oDadosEnvol->bairro) !="0" and trim($oDadosEnvol->bairro)!="") {
+                            if (trim((string) $oDadosEnvol->bairro) !="0" and trim((string) $oDadosEnvol->bairro)!="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->bairro} ";
                             }
-                            if (trim($oDadosEnvol->munic)  !="0" and trim($oDadosEnvol->munic) !="") {
+                            if (trim((string) $oDadosEnvol->munic)  !="0" and trim((string) $oDadosEnvol->munic) !="") {
                                 $oDevedor->endereco .= ",{$oDadosEnvol->munic}/{$oDadosEnvol->uf}";
                             }
-                            if (trim($oDadosEnvol->cep)    !="0" and trim($oDadosEnvol->cep)   !="") {
+                            if (trim((string) $oDadosEnvol->cep)    !="0" and trim((string) $oDadosEnvol->cep)   !="") {
                                 $oDevedor->endereco .= "- CEP {$oDadosEnvol->cep} .";
                             }
 
-                            if (strlen($oDadosEnvol->z01_cgccpf) > 11) {
+                            if (strlen((string) $oDadosEnvol->z01_cgccpf) > 11) {
                                 if ($oEnvol->ritipoenvol == "4") {
                                     $oDevedor->tipo = "EMPRESA";
                                 } elseif ($oEnvol->ritipoenvol == "5") {
@@ -648,7 +648,7 @@ class cda
                                 $oDevedor->tipo = "CONTRIBUINTE";
                             }
 
-                            if (strlen($oDadosEnvol->z01_cgccpf) > 11) {
+                            if (strlen((string) $oDadosEnvol->z01_cgccpf) > 11) {
                                 $oDevedor->cgcCpf = db_formatar($oDadosEnvol->z01_cgccpf, "cnpj");
                             } else {
                                 $oDevedor->cgcCpf = db_formatar($oDadosEnvol->z01_cgccpf, "cpf");
@@ -717,20 +717,20 @@ class cda
                     $oDevedor = new stdClass();
                     $oDevedor->endereco = $oCgm->z01_ender;
 
-                    if (trim($oCgm->z01_numero)!="0" and trim($oCgm->z01_numero)!="") {
+                    if (trim((string) $oCgm->z01_numero)!="0" and trim((string) $oCgm->z01_numero)!="") {
                         $oDevedor->endereco .= ",{$oCgm->z01_numero} ";
                     }
-                    if (trim($oCgm->z01_compl)!="0" and trim($oCgm->z01_compl)!="") {
+                    if (trim((string) $oCgm->z01_compl)!="0" and trim((string) $oCgm->z01_compl)!="") {
                         $oDevedor->endereco .= ",{$oCgm->z01_compl} ";
                     }
-                    if (trim($oCgm->z01_bairro)!="0" and  trim($oCgm->z01_bairro)!="") {
+                    if (trim((string) $oCgm->z01_bairro)!="0" and  trim((string) $oCgm->z01_bairro)!="") {
                         $oDevedor->endereco .= ",{$oCgm->z01_bairro} ";
                     }
-                    if (trim($oCgm->z01_munic) !="0" and trim($oCgm->z01_munic)!="") {
+                    if (trim((string) $oCgm->z01_munic) !="0" and trim((string) $oCgm->z01_munic)!="") {
                         $oDevedor->endereco .= ",{$oCgm->z01_munic}/{$oCgm->z01_uf} ";
                     }
 
-                    if (trim($oCgm->z01_cep) !="0" and trim($oCgm->z01_cep)!="") {
+                    if (trim((string) $oCgm->z01_cep) !="0" and trim((string) $oCgm->z01_cep)!="") {
                         $oDevedor->endereco .= "- CEP {$oCgm->z01_cep} .";
                     }
 
@@ -738,7 +738,7 @@ class cda
                     $oDevedor->telefone = $oCgm->z01_telef;
                     $oDevedor->celular = $oCgm->z01_telcel;
                     $oDevedor->nome     = $oCgm->z01_nome;
-                    if (strlen($oCgm->z01_cgccpf) > 11) {
+                    if (strlen((string) $oCgm->z01_cgccpf) > 11) {
                         $oDevedor->cgcCpf = db_formatar($oCgm->z01_cgccpf, 'cnpj');
                     } else {
                         $oDevedor->cgcCpf = db_formatar($oCgm->z01_cgccpf, 'cpf');
@@ -750,7 +750,7 @@ class cda
             }
         }
         $oRetorno = new stdClass();
-        $oRetorno->aDevedores = array_map("unserialize", array_unique(array_map("serialize", $aDevedoresEnvolvidos)));
+        $oRetorno->aDevedores = array_map(unserialize(...), array_unique(array_map(serialize(...), $aDevedoresEnvolvidos)));
         $oRetorno->aImoveis   = $aImoveisEnvolvidos;
         $oRetorno->aEmpresas  = $aEmpresasEnvolvidos;
         return $oRetorno;
@@ -759,7 +759,7 @@ class cda
     function getDebitos($lRemissao = false)
     {
 
-        $aDebitos = array();
+        $aDebitos = [];
 
         if ($this->getTipo() == 2) {
             $aDebitos = $this->getDebitosDivida($lRemissao);
@@ -779,17 +779,17 @@ class cda
       /**
        * Array com todos os debitos agrupados
        */
-        $aDebitosAgrupado    = array();
+        $aDebitosAgrupado    = [];
 
       /**
        * Debitos que sao agrupadores debitos sem procedenciaagrupa
        */
-        $aDebitosAgrupadores = array();
+        $aDebitosAgrupadores = [];
 
       /**
        * Debitos com procedenciaagrupa
        */
-        $aDebitosParaAgrupar = array();
+        $aDebitosParaAgrupar = [];
 
       /**
        * Verificamos quais debitos estao configurados para agrupar
@@ -903,11 +903,11 @@ class cda
         $sqlDadosDivida .= " order by v03_tributaria,v01_exerc, v01_proced,v01_numpre,v01_numpar,v24_procedagrupa ";
 
         $rsDadosDivida   = $this->oDaoCertid->sql_record($sqlDadosDivida);
-        $aDebitos        = array();
+        $aDebitos        = [];
 
         if ($this->oDaoCertid->numrows > 0) {
             $oInstituicao      = new Instituicao(db_getsession('DB_instit'));
-            $oParametrosDivida = db_stdClass::getParametro("pardiv", array($oInstituicao->getSequencial()));
+            $oParametrosDivida = db_stdClass::getParametro("pardiv", [$oInstituicao->getSequencial()]);
 
             for ($i = 0; $i < $this->oDaoCertid->numrows; $i++) {
                 $oDivida = db_utils::fieldsmemory($rsDadosDivida, $i);
@@ -922,28 +922,28 @@ class cda
                          0,
                          0,
                          0,
-                         substr($sData, 5, 2),
-                         substr($sData, 8, 2),
-                         substr($sData, 0, 4)
+                         substr((string) $sData, 5, 2),
+                         substr((string) $sData, 8, 2),
+                         substr((string) $sData, 0, 4)
                      );
-                        $anoemis  = substr($sData, 0, 4);
-                        $xmes     = substr($sData, 5, 2);
-                        $xdia     = substr($sData, 8, 2);
-                        $xano     = substr($sData, 0, 4);
+                        $anoemis  = substr((string) $sData, 0, 4);
+                        $xmes     = substr((string) $sData, 5, 2);
+                        $xdia     = substr((string) $sData, 8, 2);
+                        $xano     = substr((string) $sData, 0, 4);
                 } else {
                     if ($lRemissao) {
                         $dataemis = mktime(
                             0,
                             0,
                             0,
-                            substr($oDivida->v13_dtemis, 5, 2),
-                            substr($oDivida->v13_dtemis, 8, 2),
-                            substr($oDivida->v13_dtemis, 0, 4)
+                            substr((string) $oDivida->v13_dtemis, 5, 2),
+                            substr((string) $oDivida->v13_dtemis, 8, 2),
+                            substr((string) $oDivida->v13_dtemis, 0, 4)
                         );
-                        $anoemis  = substr($oDivida->v13_dtemis, 0, 4);
-                        $xmes     = substr($oDivida->v13_dtemis, 5, 2);
-                        $xdia     = substr($oDivida->v13_dtemis, 8, 2);
-                        $xano     = substr($oDivida->v13_dtemis, 0, 4);
+                        $anoemis  = substr((string) $oDivida->v13_dtemis, 0, 4);
+                        $xmes     = substr((string) $oDivida->v13_dtemis, 5, 2);
+                        $xdia     = substr((string) $oDivida->v13_dtemis, 8, 2);
+                        $xano     = substr((string) $oDivida->v13_dtemis, 0, 4);
                     } else {
                         $dataemis = db_getsession("DB_datausu");
                         $anoemis  = db_getsession("DB_anousu");
@@ -1130,11 +1130,11 @@ class cda
                     } elseif ($oDivida->inscr != 0) {
                         $oDividaCda->origem       = "inscr";
                         $oDividaCda->codigoorigem = $oDivida->inscr;
-                        $oDividaCda->origemdebito = ucfirst($oDividaCda->origem)." - ".$oDivida->inscr;
+                        $oDividaCda->origemdebito = ucfirst((string) $oDividaCda->origem)." - ".$oDivida->inscr;
                     } else {
                         $oDividaCda->origem       = "cgm";
                         $oDividaCda->codigoorigem = $oDivida->v01_numcgm;
-                        $oDividaCda->origemdebito = ucfirst($oDividaCda->origem)." - ".$oDivida->v01_numcgm;
+                        $oDividaCda->origemdebito = ucfirst((string) $oDividaCda->origem)." - ".$oDivida->v01_numcgm;
                     }
 
                     $oDividaCda->procedencia       = $oDivida->v03_descr;
@@ -1208,12 +1208,12 @@ class cda
                     else 'C - '||arrenumcgm.k00_numcgm
                   end as origem ";
 
-        $aDebitos        = array();
-        $aRetornoDebitos = array();
-        $aDebitosFinal   = array();
+        $aDebitos        = [];
+        $aRetornoDebitos = [];
+        $aDebitosFinal   = [];
 
         $oInstituicao      = new Instituicao(db_getsession('DB_instit'));
-        $oParametrosDivida = db_stdClass::getParametro("pardiv", array($oInstituicao->getSequencial()));
+        $oParametrosDivida = db_stdClass::getParametro("pardiv", [$oInstituicao->getSequencial()]);
 
         foreach ($aOrigens as $oOrigem) {
             $sqlProc   = $oDaoTermo->sql_query_origem_divida($oOrigem->numpre, $sCampos, true);
@@ -1221,9 +1221,9 @@ class cda
             $rsDebitos = $oDaoTermo->sql_record($sqlProc);
             $aDebitos  = db_utils::getCollectionByRecord($rsDebitos);
 
-            $aRetornoDebitos = array();
+            $aRetornoDebitos = [];
             for ($i = 0; $i < count($aDebitos); $i++) {
-                if ($aDebitos[$i]->origem{0} == 'M') {
+                if ($aDebitos[$i]->origem[0] == 'M') {
                     if (isset($aDebitos[$i]->j34_setor) && $aDebitos[$i]->j34_setor != ""
                         && isset($aDebitos[$i]->j34_quadra) && $aDebitos[$i]->j34_quadra != ""
                         && isset($aDebitos[$i]->j34_lote) && $aDebitos[$i]->j34_lote != "") {
@@ -1232,10 +1232,10 @@ class cda
                     } else {
                         $aDebitos[$i]->origemdebito = $aDebitos[$i]->j34_lote;
                     }
-                } elseif ($aDebitos[$i]->origem{0} == 'I') {
-                    $aDebitos[$i]->origemdebito = ucfirst($aDebitos[$i]->origem);
+                } elseif ($aDebitos[$i]->origem[0] == 'I') {
+                    $aDebitos[$i]->origemdebito = ucfirst((string) $aDebitos[$i]->origem);
                 } else {
-                    $aDebitos[$i]->origemdebito = ucfirst($aDebitos[$i]->origem);
+                    $aDebitos[$i]->origemdebito = ucfirst((string) $aDebitos[$i]->origem);
                 }
 
                 if ($aDebitos[$i]->procedenciatributaria == 't' || $aDebitos[$i]->procedenciatributaria == 1) {
@@ -1383,7 +1383,7 @@ class cda
             $aDebitosFinal[] = $aRetornoDebitos;
         }
 
-        $aRetorno = array();
+        $aRetorno = [];
 
         foreach ($aDebitosFinal as $oDebito) {
             foreach ($oDebito as $oOrigem) {
@@ -1405,7 +1405,7 @@ class cda
             $campos       = " distinct v01_proced";
             $sProcedencia = "";
             $sVirgula     = "";
-            $aProcedenciasAgrupadas = array();
+            $aProcedenciasAgrupadas = [];
             foreach ($aOrigens as $oOrigem) {
                 $sqlProc        = $oDaoTermo->sql_query_origem_divida($oOrigem->numpre, $campos, true);
                 $rsProcedencias = $oDaoTermo->sql_record($sqlProc);
@@ -1445,7 +1445,7 @@ class cda
 
 
 
-    public function geraLoteCertidao($iTipoDebito = '', $aDebitos = array(), $iMatric = '')
+    public function geraLoteCertidao($iTipoDebito = '', $aDebitos = [], $iMatric = '')
     {
 
         if (!db_utils::inTransaction()) {
@@ -1456,7 +1456,7 @@ class cda
             throw new Exception('Dados do débito não informado!');
         }
 
-        if (trim($iTipoDebito) == '') {
+        if (trim((string) $iTipoDebito) == '') {
             throw new Exception('Tipo de débito não informado!');
         }
 
@@ -1489,7 +1489,7 @@ class cda
             throw new Exception($oDaoCertid->erro_msg);
         }
 
-        if (trim($iMatric) != "") {
+        if (trim((string) $iMatric) != "") {
             $sSqlMassaMat = $oDaoMassamat->sql_query_file(null, null, "*", null, "j59_matric = {$iMatric}");
             $rsMassaMat   = $oDaoMassamat->sql_record($sSqlMassaMat);
 
@@ -1503,7 +1503,7 @@ class cda
             }
         }
 
-        $aListaCertidao = array();
+        $aListaCertidao = [];
 
         foreach ($aDebitos as $oDebito) {
             $iCodCertidao = $this->geraCertidao(
@@ -1545,11 +1545,11 @@ class cda
             throw new Exception("Nenhuma transação encontrada!");
         }
 
-        if (trim($iNumpre) == '' || trim($iNumpar) == '') {
+        if (trim((string) $iNumpre) == '' || trim((string) $iNumpar) == '') {
             throw new Exception('Dados do débito não informado!');
         }
 
-        if (trim($iTipoDebito) == '') {
+        if (trim((string) $iTipoDebito) == '') {
             throw new Exception('Tipo de débito não informado!');
         }
 
@@ -1565,7 +1565,7 @@ class cda
         $oDaoArreforo         = db_utils::getDao('arreforo');
         $oDaoArrecad          = db_utils::getDao('arrecad');
 
-        if (trim($iCodCertidao) == '') {
+        if (trim((string) $iCodCertidao) == '') {
             $iCodCertidao = $this->getNovoCodCertidao();
 
             /**
@@ -1589,7 +1589,7 @@ class cda
                 throw new Exception($oDaoCertid->erro_msg);
             }
 
-            if (trim($iMatric) != "") {
+            if (trim((string) $iMatric) != "") {
                 $sSqlMassaMat = $oDaoMassamat->sql_query_file(null, null, "*", null, "j59_matric = {$iMatric}");
                 $rsMassaMat   = $oDaoMassamat->sql_record($sSqlMassaMat);
 
@@ -1815,7 +1815,7 @@ class cda
     public function getOrigensDebitoNumpre()
     {
 
-        $aOrigem = array();
+        $aOrigem = [];
         if ($this->getTipo() == 2) {
             $aOrigem = $this->getOrigemDebitoDivida();
         } elseif ($this->getTipo() == 1) {
@@ -1842,7 +1842,7 @@ class cda
         $sqlOrigem .= "   where v14_certid = {$this->iCodigo} ";
         $sqlOrigem .= "   order by v07_numpre  ";
         $rsOrigemDebitos  = db_query($sqlOrigem);
-        $aOrigem          = array();
+        $aOrigem          = [];
         $aOrigem          = db_utils::getCollectionByRecord($rsOrigemDebitos);
         return  $aOrigem;
     }

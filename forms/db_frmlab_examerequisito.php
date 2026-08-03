@@ -88,7 +88,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
                            <?=@$Lla20_d_inicio?>
                          <?php 
                           if (! isset ( $la20_d_inicio )) {
-                           $vet = explode ( "-", @$la20_d_inicio );
+                           $vet = explode ( "-", (string) @$la20_d_inicio );
                            @$la20_d_inicio = $vet [2] . "/" . $vet [1] . "/" . $vet [0];
                            @$la20_d_inicio_dia = $vet [2];
                            @$la20_d_inicio_mes = $vet [1];
@@ -103,7 +103,7 @@ if (isset ( $opcao ) && $opcao == "alterar") {
                        <?=@$Lla20_d_fim?>
                        <?php 
                          if (! isset ( $la20_d_fim )) {
-                          $vet = explode ( "-", @$la20_d_fim );
+                          $vet = explode ( "-", (string) @$la20_d_fim );
                           @$la20_d_fim = $vet [2] . "/" . $vet [1] . "/" . $vet [0];
                           @$la20_d_fim_dia = $vet [2];
                           @$la20_d_fim_mes = $vet [1];
@@ -168,7 +168,7 @@ db_textarea ( 'la20_t_descr', 6, 59, $Ila20_t_descr, true, 'text', $db_opcao, ""
 	<tr>
 		<td valign="top"><br>
   <?php 
-		$chavepri = array ("la20_i_codigo" => @$la20_i_codigo, "la20_i_requisito" => @$la20_i_requisito, "la20_i_exame" => @$la20_i_exame, "la12_c_descr" => @$la12_c_descr, "la08_c_descr" => @$la08_c_descr, "la20_t_descr" => @$la20_t_descr, "la20_d_inicio" => @$la20_d_inicio, "la20_d_fim" => @$la20_d_fim );
+		$chavepri =  ["la20_i_codigo" => @$la20_i_codigo, "la20_i_requisito" => @$la20_i_requisito, "la20_i_exame" => @$la20_i_exame, "la12_c_descr" => @$la12_c_descr, "la08_c_descr" => @$la08_c_descr, "la20_t_descr" => @$la20_t_descr, "la20_d_inicio" => @$la20_d_inicio, "la20_d_fim" => @$la20_d_fim ];
 		$cliframe_alterar_excluir->chavepri = $chavepri;
 		@$cliframe_alterar_excluir->sql = $cllab_examerequisito->sql_query ("", "*", "la12_c_descr","la20_i_exame= $la20_i_exame" );
 		$cliframe_alterar_excluir->campos = "la20_i_codigo,la20_i_requisito,la12_c_descr,la20_t_descr,la20_d_inicio,la20_d_fim";
@@ -256,7 +256,7 @@ function js_preenchepesquisa(chave){
   db_iframe_lab_examerequisito.hide();
   <?php 
 		if ($db_opcao != 1) {
-			echo " location.href = '" . basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave";
+			echo " location.href = '" . basename ( (string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?chavepesquisa='+chave";
 		}
 		?>
 }

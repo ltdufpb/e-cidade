@@ -33,13 +33,13 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-$aTiposReprocessamento = array(1 => 'Passivo sem suporte orçamentário',
+$aTiposReprocessamento = [1 => 'Passivo sem suporte orçamentário',
                                2 => 'Acordos',
                                3 => 'Suprimento de fundos',
                                4 => 'Movimentação patrimonial',
                                5 => 'Reconhecimento contábil',
                                6 => 'Despesas e receitas',
-                               7 => 'Operações extra-orçamentárias');
+                               7 => 'Operações extra-orçamentárias'];
 ?>
 <html>
 <head>

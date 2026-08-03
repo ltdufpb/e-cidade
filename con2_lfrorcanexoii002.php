@@ -32,16 +32,16 @@ include(modification("libs/db_sql.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("fpdf151/assinatura.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
-$xinstit = split("-",$db_selinstit);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
          $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     } else {
@@ -57,18 +57,18 @@ for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
 
 $classinatura = new cl_assinatura;
 
-  $nivela = substr($nivel,0,1);
+  $nivela = substr((string) $nivel,0,1);
   $sele_work = ' o58_instit in ('.str_replace('-',', ',$db_selinstit).')';
   
   db_query("begin");
   db_query("create temp table t(o58_orgao int8,o58_unidade int8,o58_funcao int8,o58_subfuncao int8,o58_programa int8,o58_projativ int8,o58_elemento int8,o58_codigo int8)");
     
-  $xcampos = split("-",$orgaos);
+  $xcampos = preg_split("#\\-#m",$orgaos);
   
   for($i=0;$i < sizeof($xcampos);$i++){
      $where = '';
      $virgula = ''; 
-     $xxcampos = split("_",$xcampos[$i]);
+     $xxcampos = preg_split("#_#m",(string) $xcampos[$i]);
      for($ii=0;$ii<sizeof($xxcampos);$ii++){
         if($ii > 0){
           $where .= $virgula.$xxcampos[$ii];
@@ -113,7 +113,7 @@ if($origem == "O"){
   if($opcao == 3)
     $head7 = "PERÍODO : ".db_formatar($perini,'d')." A ".db_formatar($perfin,'d') ;
   else
-    $head7 = "PERÍODO : ".strtoupper(db_mes(substr($perini,5,2)))." A ".strtoupper(db_mes(substr($perfin,5,2)));
+    $head7 = "PERÍODO : ".strtoupper(db_mes(substr((string) $perini,5,2)))." A ".strtoupper(db_mes(substr((string) $perfin,5,2)));
 }
 
 
@@ -191,7 +191,7 @@ $y =0;
 db_fieldsmemory($result,0);
 $func_muda = $o58_funcao;
 $total_e = 0;
-for($y=0;$y<pg_numrows($result_grup);$y++){
+for($y=0;$y<pg_num_rows($result_grup);$y++){
    db_fieldsmemory($result_grup,$y);
    $soma_dot[$y]     = $dot_ini_s;
    $soma_dot_at[$y]  = $dot_ini_s + $suplementado_s - $reduzir;//
@@ -278,7 +278,7 @@ $anulado_acumulados   = 0;
 $liquidados           = 0;
 $liquidado_acumulados = 0;
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   $ae = 0;
   $atotal =0;
   db_fieldsmemory($result,$i);
@@ -343,7 +343,7 @@ for($i=0;$i<pg_numrows($result);$i++){
     $y++;
   }
     $pdf->setfont('arial','',5);
-    $pdf->cell(40,$alt,"   ".substr($o53_descr,0,32),"R",0,"L",0);
+    $pdf->cell(40,$alt,"   ".substr((string) $o53_descr,0,32),"R",0,"L",0);
     $pdf->cell(20,$alt,db_formatar($dot_ini_p,'f'),"LR",0,"R",0);
     $pdf->cell(20,$alt,db_formatar($dot_ini_p + $suplementado_p - $reduzir_p,'f'),"LR",0,"R",0);
     $pdf->cell(20,$alt,db_formatar($empenhado_p - $anulado_p,'f'),"LR",0,"R",0);
@@ -387,7 +387,7 @@ $pdf->cell(190,$alt,'Fonte: Contabilidade',"",1,"L",0);
 $pdf->ln(20);
 
 // assinaturas
-assinaturas(&$pdf,&$classinatura,'LRF');
+assinaturas($pdf,$classinatura,'LRF');
 
 
 

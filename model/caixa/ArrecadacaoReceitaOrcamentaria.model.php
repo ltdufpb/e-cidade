@@ -34,22 +34,10 @@
 class ArrecadacaoReceitaOrcamentaria {
 
   /**
-   * Id da autenticação do dia
-   * @var integer
-   */
-  protected $iId;
-
-  /**
    * Data da autenticação
    * @var date
    */
   protected $dtAutenticacao;
-
-  /**
-   * sequencial da máquina autenticadora
-   * @var integer
-   */
-  protected $iAutenticadora;
 
   /**
    * Receita Orcamentaria
@@ -75,13 +63,6 @@ class ArrecadacaoReceitaOrcamentaria {
    */
   protected $nValorArrecadado;
 
-
-  /**
-   * Conta da qual é debitado o valor da arrecadado
-   * @var integer
-   */
-  protected $iContaDebito;
-
   /**
    * Observação do lançamento contabil
    * @var string
@@ -97,14 +78,23 @@ class ArrecadacaoReceitaOrcamentaria {
   /**
    * Seta a Receita Orçamentária que está sendo arrecadada
    * @param ReceitaOrcamentaria $oReceitaOrcamentaria
+   * @param int $iId
+   * @param int $iAutenticadora
+   * @param int $iContaDebito
    */
-  public function __construct(ReceitaOrcamentaria $oReceitaOrcamentaria, $dtAutenticacao, $iId, $iAutenticadora, $iContaDebito) {
+  public function __construct(ReceitaOrcamentaria $oReceitaOrcamentaria, $dtAutenticacao, /**
+   * Id da autenticação do dia
+   */
+  protected $iId, /**
+   * sequencial da máquina autenticadora
+   */
+  protected $iAutenticadora, /**
+   * Conta da qual é debitado o valor da arrecadado
+   */
+  protected $iContaDebito) {
 
     $this->dtAutenticacao       = $dtAutenticacao;
-    $this->iId                  = $iId;
-    $this->iAutenticadora       = $iAutenticadora;
     $this->oReceitaOrcamentaria = $oReceitaOrcamentaria;
-    $this->iContaDebito         = $iContaDebito;
   }
 
   /**
@@ -181,7 +171,7 @@ class ArrecadacaoReceitaOrcamentaria {
     /**
      * Verificamos se a receita instanciada possui Recurso 1 - LIVRE e possui desdobramentos
      */
-    $aReceita = array();
+    $aReceita = [];
     if ($this->oReceitaOrcamentaria->getTipoRecurso() == 1) {
       $aReceita = $this->oReceitaOrcamentaria->getDesdobramentos();
     }
@@ -284,7 +274,7 @@ class ArrecadacaoReceitaOrcamentaria {
         $iCodigoGrupoCorrente = db_utils::fieldsMemory($rsCorrenteGrupo,0)->k105_sequencial;
       }
 
-      list($iAnoAutenticacao, $iMesAutenticacao, $iDiaAutenticacao) = explode("-", $this->dtAutenticacao);
+      [$iAnoAutenticacao, $iMesAutenticacao, $iDiaAutenticacao] = explode("-", $this->dtAutenticacao);
       $oLancamentoAuxiliar  = new LancamentoAuxiliarArrecadacaoReceita();
       $oLancamentoAuxiliar->setCodigoCgm($this->iCodigoCgm);
       $oLancamentoAuxiliar->setCodigoContaCorrente($this->iContaDebito);

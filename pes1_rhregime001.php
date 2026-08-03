@@ -33,7 +33,7 @@ include(modification("classes/db_rhregime_classe.php"));
 include(modification("classes/db_rhcadregime_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrhregime = new cl_rhregime;
 $clrhcadregime = new cl_rhcadregime;

@@ -16,6 +16,7 @@ class AnexoX extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\Layo
      * Monta o cabeçalho do relatório de acordo com a linha informada.
      * @param int $linha
      */
+    #[\Override]
     protected function montaCabecalho($linha)
     {
         $desricaoLinha = "FUNDO EM CAPITALIZAÇÃO (PLANO PREVIDENCIÁRIO)";

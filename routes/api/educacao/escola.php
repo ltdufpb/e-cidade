@@ -18,9 +18,7 @@ Route::get('regencias-turmas/{turmaOrigem}/{turmaDestino}/{etapa}', "{$path}Turm
 Route::post('procedimento/troca-de-turma', "{$path}TurmasController@trocarAlunosTurma");
 Route::post('turmasEspeciais/', "{$path}TurmasController@buscarTurmasEspeciaisPorCalendarioEscola");
 Route::get('calendario/{escola}', "{$path}CalendarioController@buscarCalendariosAtivosEscola");
-Route::post('debug', function () {
-    return response()->json(true);
-})->name("debug");
+Route::post('debug', fn() => response()->json(true))->name("debug");
 
 Route::get('/vacinas', $path  . "VacinasController@index");
 Route::get('/vacinas/{vacina}', $path  . "VacinasController@show");

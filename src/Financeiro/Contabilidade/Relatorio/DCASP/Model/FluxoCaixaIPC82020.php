@@ -45,9 +45,10 @@ class FluxoCaixaIPC82020 extends FluxoCaixaMCASP2020
      * Mas também todos as despesas pagar no(s) exercício(s) anterior(es).
      * @return int[]
      */
+    #[\Override]
     protected function linhasQuePrecisamCalcularDespesasExercicioAnterior()
     {
-        $linhasCalculo = array(26, 27, 28, 36, 37, 52, 53, 54, 55, 56, 87, 88, 89);
+        $linhasCalculo = [26, 27, 28, 36, 37, 52, 53, 54, 55, 56, 87, 88, 89];
         for ($linha = 58; $linha <= 85; $linha++) {
             $linhasCalculo[] = $linha;
         }
@@ -55,6 +56,7 @@ class FluxoCaixaIPC82020 extends FluxoCaixaMCASP2020
         return $linhasCalculo;
     }
 
+    #[\Override]
     public function getDados()
     {
         parent::getDados(); // TODO: Realiza o processamento das linhas

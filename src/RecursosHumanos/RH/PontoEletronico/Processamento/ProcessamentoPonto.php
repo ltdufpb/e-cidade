@@ -61,8 +61,8 @@ class ProcessamentoPonto extends Base
         $parametros = $this->parametros;
 
         $_SESSION   = (array)$parametros->sessao;
-        $HTTP_SERVER_VARS['HTTP_HOST'] = 'localhost';
-        $HTTP_SERVER_VARS['PHP_SELF']  = 'src/RecursosHumanos/RH/PontoEletronico/Processamento/ProcessamentoPonto.php';
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['PHP_SELF']  = 'src/RecursosHumanos/RH/PontoEletronico/Processamento/ProcessamentoPonto.php';
         $_SERVER["REQUEST_URI"]        = '';
 
         $fakeRequest = new Request();
@@ -106,7 +106,7 @@ class ProcessamentoPonto extends Base
             );
 
             ProcessamentoPontoEletronico::criarMarcacoesNasDatas($iMatricula, $aDatasProcessarCriacaoMarcacoes);
-            ProcessamentoPontoEletronico::processarMatriculas(array($iMatricula), $oPeriodo, $aDatasProcessar, $flag);
+            ProcessamentoPontoEletronico::processarMatriculas([$iMatricula], $oPeriodo, $aDatasProcessar, $flag);
 
             $status             = "Sucesso";
             $erroProcessamento  = "";
@@ -144,12 +144,12 @@ class ProcessamentoPonto extends Base
         unset($this->parametros->aDatasProcessar);
         unset($this->parametros->flag);
 
-        return (object)array(
+        return (object)[
             "matricula" => $iMatricula,
             "tempo"     => microtime(true) - $microtime,
             "nome"      => $this->parametros->sNome,
             "status"    => $status,
             "erro"      => $erroProcessamento
-        );
+        ];
     }
 }

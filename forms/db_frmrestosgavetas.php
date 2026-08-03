@@ -42,7 +42,7 @@ $clrotulo->label("cm22_i_cemiterio");
 $clrotulo->label("cm25_c_numero");
 $clrotulo->label("z01_nome");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sTipo           = $local == 3 ? 'O' : 'J';
 $sWhere          = "cm26_i_sepultamento = {$sepultamento} and cm25_c_tipo = '{$sTipo}'";
@@ -208,7 +208,7 @@ if($rsRestoGaveta && pg_num_rows($rsRestoGaveta) >= 0) {
         </td>
         <td>
           <?php
-            $x = array('N' => 'Não', 'S' => 'Sim');
+            $x = ['N' => 'Não', 'S' => 'Sim'];
             db_select('cm27_c_ossoario', $x, true, $db_opcao, "");
           ?>
         </td>
@@ -359,7 +359,7 @@ function js_preenchepesquisa(chave) {
   <?php
 
     if($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

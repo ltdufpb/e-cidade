@@ -26,25 +26,16 @@ class EventoFactory
      */
     public static function getInstance($tipo)
     {
-        switch ($tipo) {
-            case Tipo::CONTRIBUINTE:
-                return new R1000();
-            case Tipo::EFD_PROCESSOS:
-                return new R1070();
-            case Tipo::TOTALIZACAO_PAGAMENTOS_CONTINGENCIA:
-                return new S1295();
-            case Tipo::FECHAMENTO_EVENTOS_PERIODICOS:
-                return new S1299();
-            case Tipo::EFD_RETENCOES_SERVICOS_TOMADOS:
-                return new R2010();
-            case Tipo::EFD_SERVICOS_PRESTADOS:
-                return new R2020();
-            case Tipo::EFD_FECHAMENTO_PERIODICOS:
-                return new R2099();
-            case Tipo::EFD_EXCLUSAO_EVENTOS:
-                return new R9000();
-            default:
-                throw new Exception("Evento não encontrado.");
-        }
+        return match ($tipo) {
+            Tipo::CONTRIBUINTE => new R1000(),
+            Tipo::EFD_PROCESSOS => new R1070(),
+            Tipo::TOTALIZACAO_PAGAMENTOS_CONTINGENCIA => new S1295(),
+            Tipo::FECHAMENTO_EVENTOS_PERIODICOS => new S1299(),
+            Tipo::EFD_RETENCOES_SERVICOS_TOMADOS => new R2010(),
+            Tipo::EFD_SERVICOS_PRESTADOS => new R2020(),
+            Tipo::EFD_FECHAMENTO_PERIODICOS => new R2099(),
+            Tipo::EFD_EXCLUSAO_EVENTOS => new R9000(),
+            default => throw new Exception("Evento não encontrado."),
+        };
     }
 }

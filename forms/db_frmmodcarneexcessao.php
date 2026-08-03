@@ -86,7 +86,7 @@ if(isset($db_opcaoal)){
     <tr>
       <td valign="top"  align="center">  
 	    <?php 
-		  $chavepri= array("k36_sequencial"=>@$k36_sequencial,"k36_modcarnepadrao"=>@$k36_modcarnepadra,"k36_ip"=>@$k36_ip);
+		  $chavepri= ["k36_sequencial"=>@$k36_sequencial,"k36_modcarnepadrao"=>@$k36_modcarnepadra,"k36_ip"=>@$k36_ip];
 		  $cliframe_alterar_excluir->chavepri	   = $chavepri;
 		  $cliframe_alterar_excluir->sql     	   = $clmodcarneexcessao->sql_query_file(@$k36_sequencial,"*"," k36_sequencial "," k36_modcarnepadrao = ".@$k36_modcarnepadrao);
 		  $cliframe_alterar_excluir->campos  	   = "k36_sequencial,k36_modcarnepadrao,k36_ip";

@@ -64,9 +64,9 @@ try {
             } else {
                 // busca preenchimento pela matricula e empregador
                 $dao = new cl_avaliacaogruporespostarhpesrescisao();
-                $aCampos = array("distinct  eso15_avaliacaogruporesposta as preenchimento");
-                $aWhere  = array("eso15_regist = {$oParam->matricula} ", "eso15_cgmempregador = {$oParam->cgm}");
-                $aOrder  = array(" eso15_avaliacaogruporesposta desc limit 1");
+                $aCampos = ["distinct  eso15_avaliacaogruporesposta as preenchimento"];
+                $aWhere  = ["eso15_regist = {$oParam->matricula} ", "eso15_cgmempregador = {$oParam->cgm}"];
+                $aOrder  = [" eso15_avaliacaogruporesposta desc limit 1"];
                 $sql     = $dao->buscaPreenchimento($aCampos, $aWhere, $aOrder, $instituicaoSessao->getCodigo());
                 $rs      = db_query($sql);
 
@@ -145,7 +145,7 @@ try {
                 $iCodigoGrupoPerguntas = $oParam->iCodigoGrupoPerguntas;
             }
 
-            $aParametros = array('matricula' => $oParam->matricula);
+            $aParametros = ['matricula' => $oParam->matricula];
 
             if (!empty($oParam->iCodigoPreenchimento)) {
                 $aParametros["iCodigoPreenchimento"] = $oParam->iCodigoPreenchimento;

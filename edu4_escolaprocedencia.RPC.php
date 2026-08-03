@@ -52,13 +52,13 @@ try {
     
 	  case "getPais":
 	    
-	    $aPais      = array();
+	    $aPais      = [];
 	    $oDaoPais   = new cl_pais();
 	    $sSqlPais   = $oDaoPais->sql_query_file(null, "ed228_i_codigo, ed228_c_descr", "ed228_c_descr");
 	    $rsPais     = $oDaoPais->sql_record($sSqlPais);
 	    $iTotalPais = $oDaoPais->numrows;
 	    
-	    $oRetorno->aPaises = array();
+	    $oRetorno->aPaises = [];
 	    if ( $iTotalPais > 0 ) {
 	    
 	      for ($iContador = 0; $iContador < $iTotalPais; $iContador++) {
@@ -66,7 +66,7 @@ try {
 	        $oDadosPais     = db_utils::fieldsMemory($rsPais, $iContador);
 	        $oPais          = new stdClass();
 	        $oPais->iCodigo = $oDadosPais->ed228_i_codigo;
-	        $oPais->sPais   = urlencode($oDadosPais->ed228_c_descr);
+	        $oPais->sPais   = urlencode((string) $oDadosPais->ed228_c_descr);
 	        
 	        $oRetorno->aPaises[] = $oPais;
 	      }
@@ -80,13 +80,13 @@ try {
 	    $rsEstados  = $oDaoEstado->sql_record($sSqlEstado);
 	    $iLinhas    = $oDaoEstado->numrows;
 	    
-	    $oRetorno->aEstados = array();
+	    $oRetorno->aEstados = [];
 	    for ($i = 0; $i < $iLinhas; $i++) {
 	    	
 	      $oDadosEstado     = db_utils::fieldsMemory($rsEstados, $i);
 	      $oEstado          = new stdClass();
 	      $oEstado->iCodigo = $oDadosEstado->ed260_i_codigo;
-	      $oEstado->sEstado = urlencode($oDadosEstado->ed260_c_nome);
+	      $oEstado->sEstado = urlencode((string) $oDadosEstado->ed260_c_nome);
 	      
 	      $oRetorno->aEstados[] = $oEstado;
 	    }
@@ -100,14 +100,14 @@ try {
 	    $rsMunicipios   = $oDaoMunicipios->sql_record($sSqlMunicipios);
 	    $iLinhas        = $oDaoMunicipios->numrows;
 	    
-	    $oRetorno->aMunicipios = array();
+	    $oRetorno->aMunicipios = [];
 	    
 	    for ($i = 0; $i < $iLinhas; $i++ ) {
 	      
 	      $oDadosMunicipio        = db_utils::fieldsMemory($rsMunicipios, $i);
 	      $oMunicipio             = new stdClass();
 	      $oMunicipio->iCodigo    = $oDadosMunicipio->ed261_i_codigo;
-	      $oMunicipio->sMunicipio = urlencode($oDadosMunicipio->ed261_c_nome);
+	      $oMunicipio->sMunicipio = urlencode((string) $oDadosMunicipio->ed261_c_nome);
 
 	      $oRetorno->aMunicipios[] = $oMunicipio;
 	    }
@@ -123,14 +123,14 @@ try {
 	    $rsDistrito   = $oDaoDistrito->sql_record($sSqlDistrito);
 	    $iLinhas      = $oDaoDistrito->numrows;
 	    
-	    $oRetorno->aDistritos = array();
+	    $oRetorno->aDistritos = [];
 	    
 	    for ($i = 0; $i < $iLinhas; $i++) {
 	    	
 	      $oDadosDistrito       = db_utils::fieldsMemory($rsDistrito, $i);
 	      $oDistrito            = new stdClass();
 	      $oDistrito->iCodigo   = $oDadosDistrito->ed262_i_codigo;
-	      $oDistrito->sDistrito = urlencode($oDadosDistrito->ed262_c_nome);
+	      $oDistrito->sDistrito = urlencode((string) $oDadosDistrito->ed262_c_nome);
 	      
 	      $oRetorno->aDistritos[] = $oDistrito;
 	    }
@@ -150,12 +150,12 @@ try {
       $oDadoEscolaProc = db_utils::fieldsMemory($rsEscolaProcedencia, 0);
       $oEscolaProc     = new stdClass();
       $oEscolaProc->iCodigo      = $oDadoEscolaProc->ed82_i_codigo;
-      $oEscolaProc->sNome        = urlencode($oDadoEscolaProc->ed82_c_nome);
-      $oEscolaProc->sAbreviatura = urlencode($oDadoEscolaProc->ed82_c_abrev);
-      $oEscolaProc->sEmail       = urlencode($oDadoEscolaProc->ed82_c_email);
-      $oEscolaProc->sRua         = urlencode($oDadoEscolaProc->ed82_c_rua);
-      $oEscolaProc->sComplemento = urlencode($oDadoEscolaProc->ed82_c_complemento);
-      $oEscolaProc->sBairro      = urlencode($oDadoEscolaProc->ed82_c_bairro);
+      $oEscolaProc->sNome        = urlencode((string) $oDadoEscolaProc->ed82_c_nome);
+      $oEscolaProc->sAbreviatura = urlencode((string) $oDadoEscolaProc->ed82_c_abrev);
+      $oEscolaProc->sEmail       = urlencode((string) $oDadoEscolaProc->ed82_c_email);
+      $oEscolaProc->sRua         = urlencode((string) $oDadoEscolaProc->ed82_c_rua);
+      $oEscolaProc->sComplemento = urlencode((string) $oDadoEscolaProc->ed82_c_complemento);
+      $oEscolaProc->sBairro      = urlencode((string) $oDadoEscolaProc->ed82_c_bairro);
       $oEscolaProc->sMantenedora = $oDadoEscolaProc->ed82_c_mantenedora;
       $oEscolaProc->iNumero      = $oDadoEscolaProc->ed82_i_numero;
       $oEscolaProc->iCep         = $oDadoEscolaProc->ed82_i_cep;

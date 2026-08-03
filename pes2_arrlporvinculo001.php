@@ -37,7 +37,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -84,7 +84,7 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $array_ordem = array("n"=>"Numérica","a"=>"Alfabética");
+      $array_ordem = ["n"=>"Numérica","a"=>"Alfabética"];
       db_select('ordem',$array_ordem,true,1);
       ?>
     </td>
@@ -95,7 +95,7 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $xx = array("a"=>"Analitico","s"=>"Sintetico");
+      $xx = ["a"=>"Analitico","s"=>"Sintetico"];
       db_select('sinana',$xx,true,1);
       ?>
     </td>
@@ -103,7 +103,7 @@ db_postmemory($HTTP_POST_VARS);
       <td align="center" colspan="2">
         <?php 
         $result_regime = $clrhregime->sql_record($clrhregime->sql_query_file(null, "rh30_codreg, rh30_descr", "rh30_descr"," rh30_utilizacao in (1,2) AND rh30_instit=".db_getsession("DB_instit")));
-        db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, array(), 5, 250);
+        db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, [], 5, 250);
         ?>
       </td>
     </tr>

@@ -27,13 +27,8 @@
  */
 class AtributoValorReferenciaSelecionavel {
 
-  protected $iCodigo;
-
-  protected $sDescricao;
-  public function __construct($iCodigo, $sDescricao) {
-
-    $this->iCodigo    = $iCodigo;
-    $this->sDescricao = $sDescricao;
+  public function __construct(protected $iCodigo, protected $sDescricao)
+  {
   }
 
   /**

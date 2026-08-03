@@ -3,31 +3,31 @@
 //CLASSE DA ENTIDADE tipoassedb_cadattdinamico
 class cl_tipoassedb_cadattdinamico { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h79_db_cadattdinamico = 0; 
-   var $h79_tipoasse = 0; 
+   public $h79_db_cadattdinamico = 0; 
+   public $h79_tipoasse = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h79_db_cadattdinamico = int4 = Cadastro de Atributo dinamico 
                  h79_tipoasse = int4 = Sequencial do Tipo assentamento 
                  ";
    //funcao construtor da classe 
-   function cl_tipoassedb_cadattdinamico() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoassedb_cadattdinamico"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -80,7 +80,7 @@ class cl_tipoassedb_cadattdinamico {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tipoassedb_cadattdinamico ($this->h79_db_cadattdinamico."-".$this->h79_tipoasse) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tipoassedb_cadattdinamico já Cadastrado";
@@ -109,12 +109,12 @@ class cl_tipoassedb_cadattdinamico {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21204,'$this->h79_db_cadattdinamico','I')");
          $resac = db_query("insert into db_acountkey values($acount,21205,'$this->h79_tipoasse','I')");
-         $resac = db_query("insert into db_acount values($acount,3818,21204,'','".AddSlashes(pg_result($resaco,0,'h79_db_cadattdinamico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3818,21205,'','".AddSlashes(pg_result($resaco,0,'h79_tipoasse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3818,21204,'','".AddSlashes(pg_fetch_result($resaco,0,'h79_db_cadattdinamico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3818,21205,'','".AddSlashes(pg_fetch_result($resaco,0,'h79_tipoasse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -124,10 +124,10 @@ class cl_tipoassedb_cadattdinamico {
       $this->atualizacampos();
      $sql = " update tipoassedb_cadattdinamico set ";
      $virgula = "";
-     if(trim($this->h79_db_cadattdinamico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h79_db_cadattdinamico"])){ 
+     if(trim((string) $this->h79_db_cadattdinamico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h79_db_cadattdinamico"])){ 
        $sql  .= $virgula." h79_db_cadattdinamico = $this->h79_db_cadattdinamico ";
        $virgula = ",";
-       if(trim($this->h79_db_cadattdinamico) == null ){ 
+       if(trim((string) $this->h79_db_cadattdinamico) == null ){ 
          $this->erro_sql = " Campo Cadastro de Atributo dinamico não informado.";
          $this->erro_campo = "h79_db_cadattdinamico";
          $this->erro_banco = "";
@@ -137,10 +137,10 @@ class cl_tipoassedb_cadattdinamico {
          return false;
        }
      }
-     if(trim($this->h79_tipoasse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h79_tipoasse"])){ 
+     if(trim((string) $this->h79_tipoasse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h79_tipoasse"])){ 
        $sql  .= $virgula." h79_tipoasse = $this->h79_tipoasse ";
        $virgula = ",";
-       if(trim($this->h79_tipoasse) == null ){ 
+       if(trim((string) $this->h79_tipoasse) == null ){ 
          $this->erro_sql = " Campo Sequencial do Tipo assentamento não informado.";
          $this->erro_campo = "h79_tipoasse";
          $this->erro_banco = "";
@@ -167,14 +167,14 @@ class cl_tipoassedb_cadattdinamico {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21204,'$this->h79_db_cadattdinamico','A')");
            $resac = db_query("insert into db_acountkey values($acount,21205,'$this->h79_tipoasse','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h79_db_cadattdinamico"]) || $this->h79_db_cadattdinamico != "")
-             $resac = db_query("insert into db_acount values($acount,3818,21204,'".AddSlashes(pg_result($resaco,$conresaco,'h79_db_cadattdinamico'))."','$this->h79_db_cadattdinamico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3818,21204,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h79_db_cadattdinamico'))."','$this->h79_db_cadattdinamico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h79_tipoasse"]) || $this->h79_tipoasse != "")
-             $resac = db_query("insert into db_acount values($acount,3818,21205,'".AddSlashes(pg_result($resaco,$conresaco,'h79_tipoasse'))."','$this->h79_tipoasse',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3818,21205,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h79_tipoasse'))."','$this->h79_tipoasse',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -228,12 +228,12 @@ class cl_tipoassedb_cadattdinamico {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21204,'$h79_db_cadattdinamico','E')");
            $resac  = db_query("insert into db_acountkey values($acount,21205,'$h79_tipoasse','E')");
-           $resac  = db_query("insert into db_acount values($acount,3818,21204,'','".AddSlashes(pg_result($resaco,$iresaco,'h79_db_cadattdinamico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3818,21205,'','".AddSlashes(pg_result($resaco,$iresaco,'h79_tipoasse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3818,21204,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h79_db_cadattdinamico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3818,21205,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h79_tipoasse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

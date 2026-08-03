@@ -49,7 +49,7 @@ require_once(modification("classes/db_conlancampag_classe.php"));
 require_once(modification("classes/db_conlancamcompl_classe.php"));
 require_once(modification("classes/db_conlancamconcarpeculiar_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clsaltes                  = new cl_saltes();
 $clorcreceita              = new cl_orcreceita();
@@ -89,15 +89,15 @@ if (isset($lancar) || isset($estornar)) {
   db_inicio_transacao();
 
   $erro = false;
-  $dbrec = array();
-  reset($HTTP_POST_VARS);
-  $tam = count($HTTP_POST_VARS);
+  $dbrec = [];
+  reset($_POST);
+  $tam = count($_POST);
   for($i=0;$i<$tam;$i++){
-    $compara = substr(key($HTTP_POST_VARS),0,6);
+    $compara = substr((string) key($_POST),0,6);
     if($compara=="db_rec"){
-      $dbrec[substr(key($HTTP_POST_VARS),7)] = $HTTP_POST_VARS[key($HTTP_POST_VARS)];
+      $dbrec[substr((string) key($_POST),7)] = $_POST[key($_POST)];
     }
-    next($HTTP_POST_VARS);
+    next($_POST);
   }
 
   if(count($dbrec)==0){
@@ -283,7 +283,7 @@ if (isset($lancar) || isset($estornar)) {
                  fc_conplano_grupo(".db_getsession("DB_anousu").",substr(c60_estrut,1,2)||'%',9000) is true";
 
       $resultded = db_query(analiseQueryPlanoOrcamento($sql));
-      if(pg_numrows($resultded)>0){
+      if(pg_num_rows($resultded)>0){
         $receita_deducao = true;
         $cltranslan->db_trans_estorno_receita($k13_conta,$iCodigoReduzido,db_getsession("DB_anousu"));
       }else{
@@ -299,7 +299,7 @@ if (isset($lancar) || isset($estornar)) {
                  fc_conplano_grupo(".db_getsession("DB_anousu").",substr(c60_estrut,1,2)||'%',9000) is true";
 
       $resultded = db_query(analiseQueryPlanoOrcamento($sql));
-      if(pg_numrows($resultded)>0){
+      if(pg_num_rows($resultded)>0){
         $receita_deducao = true;
         $cltranslan->db_trans_arrecada_receita($k13_conta,$iCodigoReduzido,db_getsession("DB_anousu"));
       }else{

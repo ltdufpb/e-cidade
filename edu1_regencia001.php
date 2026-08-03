@@ -173,7 +173,7 @@ if (isset($excluir)) {
                                                                    )
                                        );
 
-    if (pg_result($result11,0,0) == "S") {
+    if (pg_fetch_result($result11,0,0) == "S") {
 
       $clregencia->erro_status = "0";
       $sMensagemErro = "Exclusão não permitida! Disciplina já foi encerrada para todos alunos nesta turma.";
@@ -341,7 +341,7 @@ if (isset($excluir)) {
       $iTotalLinhasDiario = $oDaoDiarioClasseRegenciaHorario->numrows;
       if ($iTotalLinhasDiario > 0) {
 
-        $aDiarioClasseExcluidos = array();
+        $aDiarioClasseExcluidos = [];
         for ($iDiario = 0; $iDiario < $iTotalLinhasDiario; $iDiario++) {
 
           $oDadosDiarioClasse       = db_utils::fieldsMemory($rsDiarioClasse, $iDiario);
@@ -570,7 +570,7 @@ if (isset($atualizar)) {
 
     	db_msgbox($sMsgErro);
     	db_redireciona("edu1_regencia001.php?ed59_i_turma=$oGet->ed59_i_turma"
-    			                              ."&ed57_c_descr=".addslashes($oGet->ed57_c_descr)
+    			                              ."&ed57_c_descr=".addslashes((string) $oGet->ed57_c_descr)
     			                              ."&ed59_i_serie=$oGet->ed59_i_serie"
     			                              ."&ed11_c_descr=$oGet->ed11_c_descr"
     			                              ."&tipoturma=$oGet->tipoturma");
@@ -657,7 +657,7 @@ if (isset($atualizar)) {
 
       db_msgbox("Disciplinas atualizadas com sucesso!");
       db_redireciona("edu1_regencia001.php?ed59_i_turma=$oGet->ed59_i_turma"
-                                        ."&ed57_c_descr=".addslashes($oGet->ed57_c_descr)
+                                        ."&ed57_c_descr=".addslashes((string) $oGet->ed57_c_descr)
                                         ."&ed59_i_serie=$oGet->ed59_i_serie"
                                         ."&ed11_c_descr=$oGet->ed11_c_descr"
       		                              ."&tipoturma=$oGet->tipoturma");
@@ -666,7 +666,7 @@ if (isset($atualizar)) {
 
     db_msgbox("Nenhuma disciplina cadastrada na base curricular!");
     db_redireciona("edu1_regencia001.php?ed59_i_turma=$oGet->ed59_i_turma"
-    		                              ."&ed57_c_descr=".addslashes($oGet->ed57_c_descr)
+    		                              ."&ed57_c_descr=".addslashes((string) $oGet->ed57_c_descr)
     		                              ."&ed59_i_serie=$oGet->ed59_i_serie"
     		                              ."&ed11_c_descr=$oGet->ed11_c_descr"
     		                              ."&tipoturma=$oGet->tipoturma");

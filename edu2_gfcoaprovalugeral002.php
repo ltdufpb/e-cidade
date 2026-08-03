@@ -72,7 +72,7 @@ if ( $clturma->numrows > 0 ) {
 
   $linhas1 = pg_num_rows( $result1 );
 
-  $aCadDisciplina = array();
+  $aCadDisciplina = [];
   for ( $iContador = 0; $iContador < $linhas1; $iContador++ ) {
 
     $oDadosAluno = db_utils::fieldsMemory( $result1, $iContador );
@@ -169,7 +169,7 @@ if ( $clturma->numrows > 0 ) {
 
       db_fieldsmemory($result1,$x);
 
-      if ( !strstr( $periodo_turma, $periodos ) ) {
+      if ( !strstr( $periodo_turma, (string) $periodos ) ) {
         $periodo_turma  .= $sep.$periodos;
       }
 
@@ -229,7 +229,7 @@ if ( $clturma->numrows > 0 ) {
     $rosa          = ImageColorAllocate($imagem, 255, 0, 255);
     $amarelo       = ImageColorAllocate($imagem, 232, 232, 0);
     $marrom        = ImageColorAllocate($imagem, 128, 64, 64);
-    $cores_colunas = array( $azul, $verde, $amarelo, $vermelho, $rosa, $laranja, $cinza, $marrom );
+    $cores_colunas = [ $azul, $verde, $amarelo, $vermelho, $rosa, $laranja, $cinza, $marrom ];
 
     $texto_linha = explode( ",", $periodo_turma );
 
@@ -248,7 +248,7 @@ if ( $clturma->numrows > 0 ) {
 
     // ------ calcula o intervalo de variação entre os pontos de y ----------
 
-    $fator = pow( 10, strlen( intval( $y_maximo ) ) - 1 );
+    $fator = 10 ** (strlen( intval( $y_maximo ) ) - 1);
 
     if( $y_maximo < 1 ){
       $variacao = 0.1;
@@ -291,9 +291,9 @@ if ( $clturma->numrows > 0 ) {
 
     for( $i = 0; $i <= $num_pontos_eixo_y; $i++ ) {
 
-      $posx = $inicio_grafico_x - ( strlen( $valor ) + 2 ) * 6; // 6 da largura da fonte + 2 espaços
+      $posx = $inicio_grafico_x - ( strlen( (string) $valor ) + 2 ) * 6; // 6 da largura da fonte + 2 espaços
 
-      ImageString($imagem, 2, $posx, $posy - 7, $valor, $preto);
+      ImageString($imagem, 2, $posx, $posy - 7, (string) $valor, $preto);
       ImageLine($imagem, $inicio_grafico_x - 6, $posy, $inicio_grafico_x + $largura_eixo_x, $posy, $cinza);
 
       $valor += $variacao;

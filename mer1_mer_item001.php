@@ -33,7 +33,7 @@ include(modification("classes/db_mer_item_classe.php"));
 include(modification("classes/db_mer_itemunisaida_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_libdicionario.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_item         = new cl_mer_item;
 $clmer_itemunisaida = new cl_mer_itemunisaida;
 $db_opcao           = 1;
@@ -95,7 +95,7 @@ if (isset($incluir)) {
   	
     $clmer_item->erro(true,false);
     $result = @db_query("select last_value from mer_item_me10_codigo_seq");
-    $ultimo = pg_result($result,0,0);
+    $ultimo = pg_fetch_result($result,0,0);
     ?>
     <script>
      parent.iframe_a1.location.href = "mer1_mer_item002.php?chavepesquisa=<?=$ultimo?>";

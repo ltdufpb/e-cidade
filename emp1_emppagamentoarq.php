@@ -45,7 +45,7 @@ $pago = ($e60_vlrpag + $vlrpag);
 $xverifica = (($e60_vlremp - $e60_vlranu) - ($e60_vlrpag));
 $xverifica = number_format($xverifica, "2", ".", "");
 
-if (trim($vlrpag) > trim($xverifica)) {
+if (trim((string) $vlrpag) > trim($xverifica)) {
 	$erro_msg = "No empenho $e60_codemp, o valor digitado não está disponivel para ser pago (1)!";
 	$sqlerro = true;
 }
@@ -72,7 +72,7 @@ if ($sqlerro == false) {
 	if ($debug == true) {
 		db_criatabela($result_erro);
 	}
-	$erro_msg = pg_result($result_erro, 0, 0);
+	$erro_msg = pg_fetch_result($result_erro, 0, 0);
 	if (substr($erro_msg, 0, 2) > 0) {
 		$erro_msg = substr($erro_msg, 3);
 		$sqlerro = true;
@@ -92,11 +92,11 @@ if ($sqlerro == false) {
 	}
 }
 //array que irá armazenar os valores de cada elemento para fazer os lancamentos contabeis
-$arr_codeleval = array ();
-$arr_dados = split("#", $dados);
+$arr_codeleval =  [];
+$arr_dados = preg_split("#\\##m", $dados);
 $tam = count($arr_dados);
 for ($i = 0; $i < $tam; $i ++) {
-	$arr_ele = split("-", $arr_dados[$i]);
+	$arr_ele = preg_split("#\\-#m", (string) $arr_dados[$i]);
 	//$arr_ele[0] é o codigo do elemento   $arr_ele[1] é o valor que será pago  $arr_ele[2] é o valor que já foi pago
 	$arr_codeleval[$arr_ele[0]] = $arr_ele[1];
 
@@ -115,7 +115,7 @@ for ($i = 0; $i < $tam; $i ++) {
 
 	$xverifica = (($e60_vlremp - $e60_vlranu) - ($e60_vlrpag));
 	$xverifica = db_formatar($xverifica, 'p');
-	if (trim($arr_ele[1]) > trim($xverifica)) {
+	if (trim((string) $arr_ele[1]) > trim($xverifica)) {
 		$erro_msg = "No empenho $e60_codemp, o  valor digitado não está disponivel para ser pago (2)!";
 		$sqlerro = true;
 	}
@@ -146,7 +146,7 @@ for ($i = 0; $i < $tam; $i ++) {
 		$pagar = $arr_ele[1] + $e53_vlrpag;
 		$xverifica = (($e60_vlremp - $e60_vlranu) - ($e60_vlrpag));
 		$xverifica = db_formatar($xverifica, 'p');
-		if (trim($arr_ele[1]) > trim($xverifica)) {
+		if (trim((string) $arr_ele[1]) > trim($xverifica)) {
 			$erro_msg = "No empenho $e60_codemp, o valor digitado não está disponivel para ser pago (3)!";
 			$sqlerro = true;
 		}
@@ -233,9 +233,9 @@ if ($sqlerro == false) {
 			if ($sqlerro == false) {
 				$result85 = db_query("select fc_lancam_dotacao($e60_coddot,'$datausu',$c71_coddoc,'$valor_pagar') as dotacao");
 				db_fieldsmemory($result85, 0);
-				if (substr($dotacao, 0, 1) == 0) { //quando o primeiro caractere for igual a zero eh porque deu erro
+				if (substr((string) $dotacao, 0, 1) == 0) { //quando o primeiro caractere for igual a zero eh porque deu erro
 					$sqlerro = true;
-					$erro_msg = "Erro na atualização do orçamento \\n ".substr($dotacao, 1);
+					$erro_msg = "Erro na atualização do orçamento \\n ".substr((string) $dotacao, 1);
 				}
 			}
 			/*fim-orcdotacaoval*/
@@ -392,7 +392,7 @@ if ($sqlerro == false) {
 				if ($debug == true) {
 					echo $clconplanoreduz->sql_query_file(null, null, 'c61_codcon', '', "c61_anousu = ".db_getsession("DB_anousu")." and c61_reduz=".$arr_credito[$t]);
 					echo "<br> rows ".$clconplanoreduz->numrows;
-					echo "<br> rrr  ".pg_numrows($rrr);
+					echo "<br> rrr  ".pg_num_rows($rrr);
 
 				}
 				if ($clconplanoreduz->numrows == 0) {
@@ -504,7 +504,7 @@ if ($sqlerro == false) {
 			$erro_msg = "Erro na autenticação do empenho.(função FC_AUTENTEMP). Contate suporte";
 		} else {
 			db_fieldsmemory($result, 0);
-			if (substr($retorno,0,1) != '1'){
+			if (!str_starts_with((string) $retorno, '1')){
 
          $erro_msg = $retorno;
 				 $sqlerro  = true;

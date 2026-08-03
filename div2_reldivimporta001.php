@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgm_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcgm = new cl_cgm;
 $clcgm->rotulo->label();

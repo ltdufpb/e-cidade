@@ -18,8 +18,8 @@ class PontoEletronicoExtraAutomaticaFeriado extends PostgresMigration
 
     function upDDL()
     {
-        $this->table('gradeshorarios', array('schema'=>'recursoshumanos'))
-            ->addColumn('rh190_extra_autorizada_feriado',   'boolean', array('default'=>false))
+        $this->table('gradeshorarios', ['schema'=>'recursoshumanos'])
+            ->addColumn('rh190_extra_autorizada_feriado',   'boolean', ['default'=>false])
             ->save();
 
         $escalasExtraAutomaticaFeriado = $this->fetchAll("SELECT * FROM gradeshorarios WHERE rh190_sequencial IN (108,196, 220, 273, 277, 279, 280, 281, 347, 370, 371,
@@ -43,16 +43,16 @@ class PontoEletronicoExtraAutomaticaFeriado extends PostgresMigration
 
     function upDicionarioDados()
     {
-        $tabela_db_syscampo   = $this->table('db_syscampo',      array('schema'=>'configuracoes'));
-        $tabela_db_sysarqcamp = $this->table('db_sysarqcamp',    array('schema'=>'configuracoes'));
+        $tabela_db_syscampo   = $this->table('db_syscampo',      ['schema'=>'configuracoes']);
+        $tabela_db_sysarqcamp = $this->table('db_sysarqcamp',    ['schema'=>'configuracoes']);
 
-        $tabela_db_syscampo->insert(array('codcam','nomecam','conteudo','descricao','valorinicial','rotulo','tamanho','nulo','maiusculo','autocompl','aceitatipo','tipoobj','rotulorel'),array(
-            array(1009858,'rh190_extra_autorizada_feriado','bool','Define se a escala terá as horas extras calculadas de forma automática em feriado.','f','Extras automáticas em feriado',1,'f','f','f',5,'text','Extras automáticas em feriado'),
-        ));
+        $tabela_db_syscampo->insert(['codcam','nomecam','conteudo','descricao','valorinicial','rotulo','tamanho','nulo','maiusculo','autocompl','aceitatipo','tipoobj','rotulorel'],[
+            [1009858,'rh190_extra_autorizada_feriado','bool','Define se a escala terá as horas extras calculadas de forma automática em feriado.','f','Extras automáticas em feriado',1,'f','f','f',5,'text','Extras automáticas em feriado'],
+        ]);
 
-        $tabela_db_sysarqcamp->insert(array('codarq','codcam','seqarq','codsequencia'), array(
-            array(4007, 1009858, 5, 0)
-        ));
+        $tabela_db_sysarqcamp->insert(['codarq','codcam','seqarq','codsequencia'], [
+            [4007, 1009858, 5, 0]
+        ]);
     }
     
     function downDicionarioDados()
@@ -63,7 +63,7 @@ class PontoEletronicoExtraAutomaticaFeriado extends PostgresMigration
 
     function downDDL()
     {
-        $this->table('gradeshorarios', array('schema'=>'recursoshumanos'))
+        $this->table('gradeshorarios', ['schema'=>'recursoshumanos'])
             ->removeColumn('rh190_extra_autorizada_feriado')
             ->save();
     }

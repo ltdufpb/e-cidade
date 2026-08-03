@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE vacinasaplicadas
 class cl_vacinasaplicadas { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd08_c_vacina = null; 
-   var $sd08_i_unidade = 0; 
-   var $sd08_i_cgm = 0; 
-   var $sd08_d_data_dia = null; 
-   var $sd08_d_data_mes = null; 
-   var $sd08_d_data_ano = null; 
-   var $sd08_d_data = null; 
+   public $sd08_c_vacina = null; 
+   public $sd08_i_unidade = 0; 
+   public $sd08_i_cgm = 0; 
+   public $sd08_d_data_dia = null; 
+   public $sd08_d_data_mes = null; 
+   public $sd08_d_data_ano = null; 
+   public $sd08_d_data = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd08_c_vacina = char(10) = Vacina 
                  sd08_i_unidade = int4 = Unidade 
                  sd08_i_cgm = int4 = Cgm 
                  sd08_d_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_vacinasaplicadas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vacinasaplicadas"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -146,7 +146,7 @@ class cl_vacinasaplicadas {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Vacinas Aplicadas ($this->sd08_c_vacina."-".$this->sd08_i_unidade."-".$this->sd08_i_cgm."-".$this->sd08_d_data) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Vacinas Aplicadas já Cadastrado";
@@ -170,16 +170,16 @@ class cl_vacinasaplicadas {
      $resaco = $this->sql_record($this->sql_query_file($this->sd08_c_vacina,$this->sd08_i_unidade,$this->sd08_i_cgm,$this->sd08_d_data));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,100115,'$this->sd08_c_vacina','I')");
        $resac = db_query("insert into db_acountkey values($acount,100114,'$this->sd08_i_unidade','I')");
        $resac = db_query("insert into db_acountkey values($acount,100113,'$this->sd08_i_cgm','I')");
        $resac = db_query("insert into db_acountkey values($acount,100112,'$this->sd08_d_data','I')");
-       $resac = db_query("insert into db_acount values($acount,100020,100115,'','".AddSlashes(pg_result($resaco,0,'sd08_c_vacina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,100020,100114,'','".AddSlashes(pg_result($resaco,0,'sd08_i_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,100020,100113,'','".AddSlashes(pg_result($resaco,0,'sd08_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,100020,100112,'','".AddSlashes(pg_result($resaco,0,'sd08_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100020,100115,'','".AddSlashes(pg_fetch_result($resaco,0,'sd08_c_vacina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100020,100114,'','".AddSlashes(pg_fetch_result($resaco,0,'sd08_i_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100020,100113,'','".AddSlashes(pg_fetch_result($resaco,0,'sd08_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100020,100112,'','".AddSlashes(pg_fetch_result($resaco,0,'sd08_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -188,10 +188,10 @@ class cl_vacinasaplicadas {
       $this->atualizacampos();
      $sql = " update vacinasaplicadas set ";
      $virgula = "";
-     if(trim($this->sd08_c_vacina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_c_vacina"])){ 
+     if(trim((string) $this->sd08_c_vacina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_c_vacina"])){ 
        $sql  .= $virgula." sd08_c_vacina = '$this->sd08_c_vacina' ";
        $virgula = ",";
-       if(trim($this->sd08_c_vacina) == null ){ 
+       if(trim((string) $this->sd08_c_vacina) == null ){ 
          $this->erro_sql = " Campo Vacina nao Informado.";
          $this->erro_campo = "sd08_c_vacina";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_vacinasaplicadas {
          return false;
        }
      }
-     if(trim($this->sd08_i_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_i_unidade"])){ 
+     if(trim((string) $this->sd08_i_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_i_unidade"])){ 
        $sql  .= $virgula." sd08_i_unidade = $this->sd08_i_unidade ";
        $virgula = ",";
-       if(trim($this->sd08_i_unidade) == null ){ 
+       if(trim((string) $this->sd08_i_unidade) == null ){ 
          $this->erro_sql = " Campo Unidade nao Informado.";
          $this->erro_campo = "sd08_i_unidade";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_vacinasaplicadas {
          return false;
        }
      }
-     if(trim($this->sd08_i_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_i_cgm"])){ 
+     if(trim((string) $this->sd08_i_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_i_cgm"])){ 
        $sql  .= $virgula." sd08_i_cgm = $this->sd08_i_cgm ";
        $virgula = ",";
-       if(trim($this->sd08_i_cgm) == null ){ 
+       if(trim((string) $this->sd08_i_cgm) == null ){ 
          $this->erro_sql = " Campo Cgm nao Informado.";
          $this->erro_campo = "sd08_i_cgm";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_vacinasaplicadas {
          return false;
        }
      }
-     if(trim($this->sd08_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd08_d_data_dia"] !="") ){ 
+     if(trim((string) $this->sd08_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd08_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd08_d_data_dia"] !="") ){ 
        $sql  .= $virgula." sd08_d_data = '$this->sd08_d_data' ";
        $virgula = ",";
-       if(trim($this->sd08_d_data) == null ){ 
+       if(trim((string) $this->sd08_d_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "sd08_d_data_dia";
          $this->erro_banco = "";
@@ -243,7 +243,7 @@ class cl_vacinasaplicadas {
        if(isset($GLOBALS["HTTP_POST_VARS"]["sd08_d_data_dia"])){ 
          $sql  .= $virgula." sd08_d_data = null ";
          $virgula = ",";
-         if(trim($this->sd08_d_data) == null ){ 
+         if(trim((string) $this->sd08_d_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "sd08_d_data_dia";
            $this->erro_banco = "";
@@ -271,20 +271,20 @@ class cl_vacinasaplicadas {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,100115,'$this->sd08_c_vacina','A')");
          $resac = db_query("insert into db_acountkey values($acount,100114,'$this->sd08_i_unidade','A')");
          $resac = db_query("insert into db_acountkey values($acount,100113,'$this->sd08_i_cgm','A')");
          $resac = db_query("insert into db_acountkey values($acount,100112,'$this->sd08_d_data','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd08_c_vacina"]))
-           $resac = db_query("insert into db_acount values($acount,100020,100115,'".AddSlashes(pg_result($resaco,$conresaco,'sd08_c_vacina'))."','$this->sd08_c_vacina',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100020,100115,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd08_c_vacina'))."','$this->sd08_c_vacina',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd08_i_unidade"]))
-           $resac = db_query("insert into db_acount values($acount,100020,100114,'".AddSlashes(pg_result($resaco,$conresaco,'sd08_i_unidade'))."','$this->sd08_i_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100020,100114,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd08_i_unidade'))."','$this->sd08_i_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd08_i_cgm"]))
-           $resac = db_query("insert into db_acount values($acount,100020,100113,'".AddSlashes(pg_result($resaco,$conresaco,'sd08_i_cgm'))."','$this->sd08_i_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100020,100113,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd08_i_cgm'))."','$this->sd08_i_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd08_d_data"]))
-           $resac = db_query("insert into db_acount values($acount,100020,100112,'".AddSlashes(pg_result($resaco,$conresaco,'sd08_d_data'))."','$this->sd08_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100020,100112,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd08_d_data'))."','$this->sd08_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -324,21 +324,21 @@ class cl_vacinasaplicadas {
      if($dbwhere==null || $dbwhere==""){
        $resaco = $this->sql_record($this->sql_query_file($sd08_c_vacina,$sd08_i_unidade,$sd08_i_cgm,$sd08_d_data));
      }else{ 
-       $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,"*",null,$dbwhere));
+       $resaco = $this->sql_record($this->sql_query_file(null,null,null,null,"*",null));
      }
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,100115,'$sd08_c_vacina','E')");
          $resac = db_query("insert into db_acountkey values($acount,100114,'$sd08_i_unidade','E')");
          $resac = db_query("insert into db_acountkey values($acount,100113,'$sd08_i_cgm','E')");
          $resac = db_query("insert into db_acountkey values($acount,100112,'$sd08_d_data','E')");
-         $resac = db_query("insert into db_acount values($acount,100020,100115,'','".AddSlashes(pg_result($resaco,$iresaco,'sd08_c_vacina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,100020,100114,'','".AddSlashes(pg_result($resaco,$iresaco,'sd08_i_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,100020,100113,'','".AddSlashes(pg_result($resaco,$iresaco,'sd08_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,100020,100112,'','".AddSlashes(pg_result($resaco,$iresaco,'sd08_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100020,100115,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd08_c_vacina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100020,100114,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd08_i_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100020,100113,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd08_i_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100020,100112,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd08_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from vacinasaplicadas
@@ -416,7 +416,7 @@ class cl_vacinasaplicadas {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:vacinasaplicadas";
@@ -430,7 +430,7 @@ class cl_vacinasaplicadas {
    function sql_query ( $sd08_c_vacina=null,$sd08_i_unidade=null,$sd08_i_cgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -470,7 +470,7 @@ class cl_vacinasaplicadas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,7 +482,7 @@ class cl_vacinasaplicadas {
    function sql_query_file ( $sd08_c_vacina=null,$sd08_i_unidade=null,$sd08_i_cgm=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -519,7 +519,7 @@ class cl_vacinasaplicadas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

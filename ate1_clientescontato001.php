@@ -227,7 +227,7 @@ if (isset($db_opcaoal)){
 				    <td valign="top"  align="center">  
 					    <?php 
 					    
-					      $aChavePri     = array("at92_sequencial"=>@$at92_sequencial);
+					      $aChavePri     = ["at92_sequencial"=>@$at92_sequencial];
 					      $sWhereContato = "at92_cliente = {$oGet->at92_cliente} "; 
 					      $sSqlContato   = $clClienteContato->sql_query_file(null,"*",null,$sWhereContato);
 					      

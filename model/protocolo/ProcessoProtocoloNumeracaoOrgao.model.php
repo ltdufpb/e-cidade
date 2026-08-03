@@ -167,7 +167,7 @@ class  ProcessoProtocoloNumeracaoOrgao {
     foreach ($aNumeracoes as $oNumeracao) {
 
       $oDaoProtocoloNumeracao->p07_sequencial    = $oNumeracao->p07_sequencial;
-      $oDaoProtocoloNumeracao->p07_proximonumero = $this->getInstance()->proximoNumero+1;
+      $oDaoProtocoloNumeracao->p07_proximonumero = self::getInstance()->proximoNumero+1;
       $oDaoProtocoloNumeracao->alterar($oNumeracao->p07_sequencial);
       if ($oDaoProtocoloNumeracao->erro_status == 0) {
         throw new Exception('Erro ao atualziar numeração do Protocolo!');
@@ -191,7 +191,7 @@ class  ProcessoProtocoloNumeracaoOrgao {
     $aNumeracoes = db_utils::getColectionByRecord($rsNumeracao);
     foreach ($aNumeracoes as $oNumeracao) {
       $oDaoProtocoloNumeracao->p07_sequencial    = $oNumeracao->p07_sequencial;
-      $oDaoProtocoloNumeracao->p07_proximonumero = $this->getInstance()->proximoNumero+1;
+      $oDaoProtocoloNumeracao->p07_proximonumero = self::getInstance()->proximoNumero+1;
       $oDaoProtocoloNumeracao->alterar($oNumeracao->p07_sequencial);
       if ($oDaoProtocoloNumeracao->erro_status == 0) {
         throw new Exception('Erro ao atualziar numeração do Protocolo!');
@@ -231,7 +231,7 @@ class  ProcessoProtocoloNumeracaoOrgao {
     $ano = db_getsession("DB_anousu");
     $sBuscaOrgao = "select db01_orgao from db_departorg where db01_coddepto = $depto and db01_anousu = $ano;";
     $rsBuscaOrgao = db_query($sBuscaOrgao);
-    $orgao = pg_result($rsBuscaOrgao,0,"db01_orgao");
+    $orgao = pg_fetch_result($rsBuscaOrgao,0,"db01_orgao");
 
     $sWhere = " p07_ano = ".db_getsession("DB_anousu");
     $oInstancia = self::getInstance();
@@ -252,7 +252,7 @@ class  ProcessoProtocoloNumeracaoOrgao {
     $ano = db_getsession("DB_anousu");
     $sBuscaOrgao = "select db01_orgao from db_departorg where db01_coddepto = $depto and db01_anousu = $ano;";
     $rsBuscaOrgao = db_query($sBuscaOrgao);
-    $orgao = pg_result($rsBuscaOrgao,0,"db01_orgao");
+    $orgao = pg_fetch_result($rsBuscaOrgao,0,"db01_orgao");
 
     $sWhere = " p07_ano = ".db_getsession("DB_anousu");
     $oInstancia = self::getInstance();

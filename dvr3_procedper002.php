@@ -27,7 +27,7 @@
 
 
 include(modification("fpdf151/pdf.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $sql = "
 select * 
@@ -75,7 +75,7 @@ $pdf->Cell($CoL3,5,"COD.RECEITA",1,0,"C",0);
 $pdf->Cell($CoL4,5,"ARRECADACAO",1,0,"C",0);
 $pdf->Cell($CoL5,5,"ESTORNO",1,1,"C",0);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 /*
 $result = db_query("
@@ -132,7 +132,7 @@ where arrec <> 0 or estorno <> 0 order by k02_estorc
 
 ");
 
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 $QuebraPagina = 10;
 $Total1 = 0;
 $Total2 = 0;
@@ -238,7 +238,7 @@ from plano
 ) as x
   on k02_estpla = c01_estrut and c01_anousu = ".$GLOBALS["DB_anousu"]."
 group by k02_estpla,c01_descr,k12_conta,k12_receit;");
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 if($numrows>0){
 

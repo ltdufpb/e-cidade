@@ -46,8 +46,8 @@ $clempempenho = new cl_empempenho;
 $excluindo =true;
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 if(isset($excluir)){

@@ -138,7 +138,7 @@ db_input('sd30_i_reservas',5,$Isd30_i_reservas,true,'text',$db_opcao,"")
             <?php  if ( $db_opcao == 1 ){ ?>
               <?=$Lsd30_i_turno?>
               <?php 
-                 $x = array("1"=>"Manhã","2"=>"Tarde","3"=>"Noite");
+                 $x = ["1"=>"Manhã","2"=>"Tarde","3"=>"Noite"];
                  db_select('sd30_i_turno',$x,true,$db_opcao, "","",2);
               ?>
             <?php }?>
@@ -152,7 +152,7 @@ db_input('sd30_i_reservas',5,$Isd30_i_reservas,true,'text',$db_opcao,"")
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("sd30_i_codigo"=>@$sd30_i_codigo,"sd30_i_undmed"=>@$sd30_i_undmed,"sd30_i_diasemana"=>@$sd30_i_diasemana,"sd30_c_horaini"=>@$sd30_c_horaini,"sd30_c_horafim"=>@$sd30_c_horafim,"sd30_i_fichas"=>@$sd30_i_fichas,"sd30_i_reservas"=>@$sd30_i_reservas,"ed32_c_descr"=>@$ed32_c_descr,"sd30_i_turno"=>@$sd30_i_turno);
+   $chavepri= ["sd30_i_codigo"=>@$sd30_i_codigo,"sd30_i_undmed"=>@$sd30_i_undmed,"sd30_i_diasemana"=>@$sd30_i_diasemana,"sd30_c_horaini"=>@$sd30_c_horaini,"sd30_c_horafim"=>@$sd30_c_horafim,"sd30_i_fichas"=>@$sd30_i_fichas,"sd30_i_reservas"=>@$sd30_i_reservas,"ed32_c_descr"=>@$ed32_c_descr,"sd30_i_turno"=>@$sd30_i_turno];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clundmedhorario->sql_query($sd30_i_codigo,"sd30_i_codigo,sd30_i_undmed,sd30_i_diasemana,sd30_i_turno,sd30_c_horaini,sd30_c_horafim,sd30_i_fichas,sd30_i_reservas,sd04_i_unidade,sd04_i_medico,ed32_c_descr","","sd30_i_undmed = $sd30_i_undmed");
    $cliframe_alterar_excluir->campos  ="sd30_i_codigo,ed32_c_descr,sd30_i_turno,sd30_c_horaini,sd30_c_horafim,sd30_i_fichas,sd30_i_reservas";
@@ -227,7 +227,7 @@ function js_preenchepesquisa(chave){
   db_iframe_undmedhorario.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

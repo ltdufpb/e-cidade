@@ -44,7 +44,7 @@ db_inicio_transacao();
 $clorcparamseq = new cl_orcparamseq();
 
 try {
-    db_postmemory($HTTP_POST_VARS);
+    db_postmemory($_POST);
     $db_opcao = 33;
     $db_botao = false;
 

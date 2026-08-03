@@ -33,7 +33,7 @@ include(modification("fpdf151/pdf.php"));
 $head1 = "RELATÓRIO PLANO DE CONTAS ";
 
 //db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clconplano = new cl_conplano;
 $clconplano->rotulo->label("c60_codcon");
@@ -46,7 +46,7 @@ $sql = $clconplano->sql_query("","","*","c60_estrut"," c60_estrut like '$c60_est
 
 $result = db_query($sql);
 //db_criatabela($result);
-$num = pg_numrows($result);
+$num = pg_num_rows($result);
 $linha = 60;
 $pre = 0;
 $total = 0;

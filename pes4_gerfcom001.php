@@ -39,7 +39,7 @@ if ( DBPessoal::verificarUtilizacaoEstruturaSuplementar() ) {
   exit;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clgerfcom  = new cl_gerfcom;
 $db_opcao   = 1;
 $db_botao   = true;

@@ -34,8 +34,8 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_libpostgres.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $clpostgresqlutils = new PostgreSQLUtils;
 $clrotulo          = new rotulocampo;
@@ -91,11 +91,11 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         </td>
         <td>
           <?php 
-            $xx = array("a"=>"Alfabética",
+            $xx = ["a"=>"Alfabética",
       	   	 	      "n"=>"Numérica",
       	  		      "t"=>'Notificação',
 	      			  "e"=>"Endereço de Entrega",
-       	   	    	  "c"=>"Cidade/CEP" );
+       	   	    	  "c"=>"Cidade/CEP" ];
 		    db_select('ordem',$xx,true,$db_opcao,"");
       	  ?>
         </td>
@@ -106,7 +106,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         </td>
         <td>
           <?php 
-	        $xxx = array();
+	        $xxx = [];
 	        
 	        if ( isset($k60_codigo) && trim($k60_codigo) != "" ) {
 	        	
@@ -124,7 +124,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 	          if ( $oLista->k60_tipo == "M") {
 	            $sqlordendent    = "select defcampo, defdescr from db_syscampodef where codcam = 9856";
 	            $resultordendent = db_query($sqlordendent) or die($sqlordendent);
-	            for ($xord=0; $xord < pg_numrows($resultordendent); $xord++) {
+	            for ($xord=0; $xord < pg_num_rows($resultordendent); $xord++) {
 	              db_fieldsmemory($resultordendent, $xord);
 	              $defcampo+=10;
 	              $xxx["$defcampo"] = "$defdescr";
@@ -162,7 +162,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                 </td>
                 <td>
                   <?php 
-             	    $aFontes = array("16602"=>"16602 - Arial", "4099"=>"4099 - Currier", "16901"=>"16901 - Times New Roman");
+             	    $aFontes = ["16602"=>"16602 - Arial", "4099"=>"4099 - Currier", "16901"=>"16901 - Times New Roman"];
              	    db_select("fonte", $aFontes, true, 1, "");
            		  ?>
                 </td>
@@ -173,7 +173,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                 </td>
                 <td>
                   <?php 
-             	    $aEspacamento = array("1.0"=>"1.0", "1.5"=>"1.5", "2.0"=>"2.0");
+             	    $aEspacamento = ["1.0"=>"1.0", "1.5"=>"1.5", "2.0"=>"2.0"];
              	    db_select("espacamento", $aEspacamento, true, 1, "");
            		  ?>
                 </td>
@@ -184,7 +184,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                 </td>
                 <td>
                 <?php 
-             	  $aEstiloFonte = array(""=>"Normal", "I"=>"Itálico", "N"=>"Negrito", "IN"=>"Negrito e Itálico");
+             	  $aEstiloFonte = [""=>"Normal", "I"=>"Itálico", "N"=>"Negrito", "IN"=>"Negrito e Itálico"];
              	  db_select("estilofonte", $aEstiloFonte, true, 1, "");
            		?>
                 </td>
@@ -214,7 +214,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                 Gera boleto:
               </td>
               <td>
-                <?php  db_select('lBoleto', array('1' => 'Sim', '0' => 'Não'), true, 1, "onChange='js_boleto();'"); ?>
+                <?php  db_select('lBoleto', ['1' => 'Sim', '0' => 'Não'], true, 1, "onChange='js_boleto();'"); ?>
               </td>
             </tr>
             <tr id="datavenc" style="display: none;">

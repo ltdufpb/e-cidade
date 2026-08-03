@@ -32,8 +32,8 @@ require_once(modification("classes/db_rhgeracaofolha_classe.php"));
 require_once(modification("classes/db_rharqbanco_classe.php"));
 require_once(modification("classes/db_rhgeracaofolhaarquivo_classe.php"));
 require_once(modification("classes/db_rhgeracaofolhaarquivoreg_classe.php"));
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-$oGet = db_utils::postMemory($HTTP_GET_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+$oGet = db_utils::postMemory($_GET);
 
 $clRhGeracaoFolha           = new cl_rhgeracaofolha();
 $clRhArqBanco               = new cl_rharqbanco;
@@ -67,14 +67,14 @@ try {
   $oDadosArquivoBancario = db_utils::fieldsMemory($rsArquivoBancario,0);
 
   if(isset($oGet->datageracao) && $oGet->datageracao!=""){
-    $datag = split('-',$oGet->datageracao);
+    $datag = preg_split('#\-#m',(string) $oGet->datageracao);
     $datag_dia=$datag[2];
     $datag_mes=$datag[1];
     $datag_ano=$datag[0];
   }
 
   if(isset($oGet->datadeposito) && $oGet->datadeposito!=""){
-    $datad = split('-',$oGet->datadeposito);
+    $datad = preg_split('#\-#m',(string) $oGet->datadeposito);
     $datad_dia = $datad[2];
     $datad_mes = $datad[1];
     $datad_ano = $datad[0];
@@ -98,7 +98,7 @@ try {
     $sWhere  .= str_ireplace("r38_banco","rh44_codban", $oDadosArquivoBancario->rh34_where);
   }
 
-  if ( trim($oGet->vinculo) != "") {
+  if ( trim((string) $oGet->vinculo) != "") {
 
     if($oGet->vinculo == 'A'){
       $sWhere .= " and rh30_vinculo = '$oGet->vinculo' ";
@@ -112,7 +112,7 @@ try {
       foi convertido o campo rh44_conta para fazer a verificacao - Jeferson Santos
   */
 
-  if ( trim($oGet->tipoconta) == "O") {
+  if ( trim((string) $oGet->tipoconta) == "O") {
   	$sWhere                              .= " and (trim(rh44_conta)::bigint = 0 or rh44_conta is null or rh44_conta = '' ) ";
     $lSomenteServidoresOpcaoContaCorrente = false;
   } else {
@@ -285,7 +285,7 @@ try {
       $oHeaderLote->tipo_servico                  = "30";
 
       // Verifica o tipo de conta
-      if ( trim($oGet->tipoconta) == "O") {
+      if ( trim((string) $oGet->tipoconta) == "O") {
   		   $oHeaderLote->forma_lancamento              = "10";
       } else {
   		   $oHeaderLote->forma_lancamento              = "01";
@@ -326,7 +326,7 @@ try {
   	$oRegistrosSegmentoA->data_credito               = $sDataDeposito;
   	$oRegistrosSegmentoA->zeros3                     = str_repeat("0",15);
   	$oRegistrosSegmentoA->valor_credito              = db_formatar(str_replace(',','',str_replace('.','',trim(db_formatar($oDados->rh104_vlrliquido,"f")))),'s','0',15,'e',0);
-  	$oRegistrosSegmentoA->tipo_inscricao             = (strlen(trim($oDados->z01_cgccpf)) == 14)?"2":"1";
+  	$oRegistrosSegmentoA->tipo_inscricao             = (strlen(trim((string) $oDados->z01_cgccpf)) == 14)?"2":"1";
   	$oRegistrosSegmentoA->cpf_cnpj                   = db_formatar(str_replace('.','',str_replace('-','',$oDados->z01_cgccpf)),'s','0',14,'e',0);
   	$oLayoutTXT->setByLineOfDBUtils($oRegistrosSegmentoA, 3, "A");
 

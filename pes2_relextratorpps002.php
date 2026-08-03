@@ -31,7 +31,7 @@ require_once(modification("libs/db_conecta.php"));
 include_once(modification("libs/db_sessoes.php"));
 require_once(modification('fpdf151/pdf.php'));
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 $oGet = db_utils::postMemory($_GET);
 
 try {
@@ -119,8 +119,8 @@ try {
 	}
 
 	$oFiltro = new stdClass;
-	$oFiltro->sCompetenciaInicio = $anoini.' / '.str_pad($mesini, 2, "0" ,STR_PAD_LEFT);
-	$oFiltro->sCompetenciaFim    = $anofin.' / '.str_pad($mesfin, 2, "0" ,STR_PAD_LEFT);
+	$oFiltro->sCompetenciaInicio = $anoini.' / '.str_pad((string) $mesini, 2, "0" ,STR_PAD_LEFT);
+	$oFiltro->sCompetenciaFim    = $anofin.' / '.str_pad((string) $mesfin, 2, "0" ,STR_PAD_LEFT);
 
 	$rsServidores = db_query(montaSqlServidores($sTipoEmissao, $anofolha, $mesfolha, $prev, $instituicoes, $sWhereFiltroTipoResumo, $orderby));
 
@@ -133,7 +133,7 @@ try {
 		throw new BusinessException("Não há servidores para o filtro selecionado.");
 	}
 
-	$aServidores = array();
+	$aServidores = [];
 	$aServidores = db_utils::makeCollectionFromRecord($rsServidores, function($oServidor) use ($oFiltro) {
 
 		$sLocalidade = $oServidor->municipio;
@@ -163,10 +163,10 @@ try {
 		$oServidor->sSetor          = $oServidor->setor;
 		$oServidor->sLocalTrabalho  = $oServidor->local_trabalho;
 		$oServidor->sInstituicao    = $oServidor->nome_instituicao;
-		$oServidor->aDependentes    = array();
-		$oServidor->aValores        = array();
+		$oServidor->aDependentes    = [];
+		$oServidor->aValores        = [];
 
-		if(preg_match("/.*inss.*/i", $oServidor->previdencia) === 0) { // Mostra dependentes apenas para RPPS
+		if(preg_match("/.*inss.*/i", (string) $oServidor->previdencia) === 0) { // Mostra dependentes apenas para RPPS
 
 			$rsDependentes = db_query(montaSqlDependentes($oServidor->matricula, $oFiltro->sCompetenciaInicio));
 
@@ -176,13 +176,11 @@ try {
 
 			if(pg_num_rows($rsDependentes) > 0) {
 
-				$oServidor->aDependentes = db_utils::makeCollectionFromRecord($rsDependentes, function($oDependente){
-					return (object)array(
+				$oServidor->aDependentes = db_utils::makeCollectionFromRecord($rsDependentes, fn($oDependente) => (object)[
 						'sNome'          =>$oDependente->nome,
 			      'sTipo'          =>$oDependente->parentesco,
 			      'sDataNascimento'=>$oDependente->data_nascimento
-					);
-				});
+					]);
 			}
 		}
 
@@ -194,15 +192,13 @@ try {
 
 		if(pg_num_rows($rsValores) > 0) {
 
-			$oServidor->aValores = db_utils::makeCollectionFromRecord($rsValores, function($oValor) {
-				return (object)array(
-					'sCompetencia'         =>$oValor->ano .' / '.str_pad($oValor->mes, 2, "0" ,STR_PAD_LEFT),
+			$oServidor->aValores = db_utils::makeCollectionFromRecord($rsValores, fn($oValor) => (object)[
+					'sCompetencia'         =>$oValor->ano .' / '.str_pad((string) $oValor->mes, 2, "0" ,STR_PAD_LEFT),
 					'nSalarioContribuicao' =>$oValor->base,
 					'nValorServidor'       =>$oValor->desconto,
 					'nPercentualPatronal'  =>$oValor->percentual_patronal,
 					'nValorPatronal'       =>$oValor->patronal
-				);
-			});
+				]);
 		}
 
 		return $oServidor;
@@ -309,7 +305,7 @@ function montaSqlServidores($sTipoEmissao, $iAno, $iMes, $iCodigoPrevidencia, $a
 
 function montaSqlDependentes($iMatricula, $sCompetenciaInicio) {
 
-	$sCompetenciaInicio  = preg_replace("/^(\d{4})[\/ ]*(\d{1,2})/", "$1-$2-", $sCompetenciaInicio);
+	$sCompetenciaInicio  = preg_replace("/^(\d{4})[\/ ]*(\d{1,2})/", "$1-$2-", (string) $sCompetenciaInicio);
 	$sCompetenciaInicio .= '01';
 
 	$sSqlDependentes  = "  SELECT ";
@@ -351,7 +347,7 @@ function montaSqlValores($iMatricula, $sCompetenciaInicio, $sCompetenciaFim, $iT
 	$sAnoInicio = $aCompetenciaInicio[1];
 	$sMesInicio = $aCompetenciaInicio[2];
 
-	$aTabelas = array();
+	$aTabelas = [];
 
 	$oTabela = new stdClass();
 	$oTabela->sTabela = 'gerfsal'; 

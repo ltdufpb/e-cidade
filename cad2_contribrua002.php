@@ -39,7 +39,7 @@ $clrotulo->label('z01_nome');
 $clrotulo->label('j01_matric');
 $clrotulo->label('z01_numcgm');
 $clrotulo->label('j14_codigo');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $where = "";
 if ($lista != "") {
 	if (isset ($ver) and $ver == "com") {
@@ -52,7 +52,7 @@ if ($lista != "") {
 $head3 = "RELATÓRIO DE CONTRIBUINTE POR RUA";
 
 $result = db_query("select distinct j14_codigo, j14_nome from proprietario_ender where j14_codigo > 0 $where");
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
 
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
    exit;
@@ -67,7 +67,7 @@ $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 4;
 $total = 0;
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 for($x = 0; $x < $numrows; $x++){
    db_fieldsmemory($result,$x);
 
@@ -78,7 +78,7 @@ for($x = 0; $x < $numrows; $x++){
    $pdf->setfont('arial','b',10);
    $pdf->cell(180,$alt,$RLj14_codigo.": ".$j14_codigo." - ".$j14_nome,"B",1,"L",0);
    $result_contrib = db_query("select distinct z01_numcgm,z01_nome,j39_numero,j39_compl from proprietario_nome inner join proprietario_ender on proprietario_ender.j01_matric=proprietario_nome.j01_matric where j14_codigo=$j14_codigo");
-   $numrows_contrib = pg_numrows($result_contrib);
+   $numrows_contrib = pg_num_rows($result_contrib);
    if ($numrows_contrib==0){
    		$pdf->cell(160,$alt,"Não existem contribuintes vinculadas.",0,1,"C",0);
    		$pdf->setfont('arial','b',8);

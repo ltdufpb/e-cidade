@@ -134,7 +134,7 @@ if(isset($db_opcaoal)){
   <tr>
 	  <td valign="top"  align="center">  
 	    <?php 
-			  $chavepri= array("l39_sequencial"=>@$l39_sequencial);
+			  $chavepri= ["l39_sequencial"=>@$l39_sequencial];
 			  $cliframe_alterar_excluir->chavepri=$chavepri;
 			  $cliframe_alterar_excluir->sql     = $clliclicitaata->sql_query(null,"*",null,"l39_liclicita=".@$l20_codigo);
 			  $cliframe_alterar_excluir->campos  ="l39_arqnome";
@@ -162,7 +162,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_liclicita.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   ?>
 }
 </script>

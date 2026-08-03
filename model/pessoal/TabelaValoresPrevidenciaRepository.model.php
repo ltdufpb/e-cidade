@@ -5,6 +5,7 @@
 */
 class TabelaValoresPrevidenciaRepository extends TabelaValoresRepository {
  
+  #[\Override]
   public static function getInstancia() {
 
     if (!DBRegistry::get("TabelaValoresPrevidenciaRepository")){
@@ -13,6 +14,7 @@ class TabelaValoresPrevidenciaRepository extends TabelaValoresRepository {
     return DBRegistry::get("TabelaValoresPrevidenciaRepository");
   }
 
+  #[\Override]
   public function getMaker($oTabela) {
 
     return function($oDadosTabela) use ($oTabela) {
@@ -26,6 +28,7 @@ class TabelaValoresPrevidenciaRepository extends TabelaValoresRepository {
     };
   }
   
+  #[\Override]
   protected function getQuery($iCodigo) {
 
     $oDaoPrevidencia    = new cl_inssirf();
@@ -38,6 +41,7 @@ class TabelaValoresPrevidenciaRepository extends TabelaValoresRepository {
     return $sSqlPrevidencia;
   }
 
+  #[\Override]
   protected function getTabela($iCodigo) {
     return new TabelaValoresPrevidencia($iCodigo);
   }

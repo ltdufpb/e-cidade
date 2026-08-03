@@ -106,7 +106,7 @@ abstract class ContaPlano {
 
 
     $oDaoConPlano = db_utils::getDao($this->getNomeDao());
-    $aWhere       = array();
+    $aWhere       = [];
     if (!empty($iCodigoConta)) {
       $aWhere[] = "c60_codcon = {$iCodigoConta}";
     }
@@ -785,7 +785,7 @@ abstract class ContaPlano {
 
   public static function getCodigoEstruturalPai($sStrutural) {
 
-    $aNiveis          = explode(".", $sStrutural);
+    $aNiveis          = explode(".", (string) $sStrutural);
     $iNivel           = ContaPlano::getNivelEstrutura($sStrutural) - 1;
 
     $iTamanho         = strlen($aNiveis[$iNivel]);
@@ -807,7 +807,7 @@ abstract class ContaPlano {
     $sEstrutural       = ContaPlano::montaEstrutural($sEstruturalVincular);
     $iNivelEstrutural  = ContaPlano::getNivelEstrutura($sEstrutural);
     $sMascara          = "0.0.0.0.0.00.00.00.00.00";
-    $aArvoreVincular   = array($sEstrutural);
+    $aArvoreVincular   = [$sEstrutural];
     $iNivelFinal       = $iNivelEstrutural;
 
     while ($iNivelEstrutural > 1 ) {
@@ -887,15 +887,15 @@ abstract class ContaPlano {
 
     if ($iNivelEstrutura == 10) {
 
-      $oParametros = (object)array("estrutural" => $sEstrutural);
+      $oParametros = (object)["estrutural" => $sEstrutural];
       throw new BusinessException(_M(ContaPlano::CAMINHO_MENSAGEM.'.sem_niveis_abaixo', $oParametros));
     }
-    $iTamanhoNivel     = strlen($iTamanhoMaximoNivel);
+    $iTamanhoNivel     = strlen((string) $iTamanhoMaximoNivel);
     $iUltimaContaNivel = ContaPlano::getUltimaContaDaEstrutura($sEstrutural);
     $iProximoNivel     = $iUltimaContaNivel + 1;
     if ($iProximoNivel > $iTamanhoMaximoNivel) {
 
-      $oParametros = (object)array("estrutural" => $sEstrutural, "nivel_conta" => $iNivelEstrutura);
+      $oParametros = (object)["estrutural" => $sEstrutural, "nivel_conta" => $iNivelEstrutura];
       throw new BusinessException(_M(ContaPlano::CAMINHO_MENSAGEM.'.quantidade_contas_excedida_nivel', $oParametros));
     }
     $iProximoNivel = str_pad($iProximoNivel, $iTamanhoNivel, "0", STR_PAD_LEFT);
@@ -917,7 +917,7 @@ abstract class ContaPlano {
     $iNivel               = ContaPlano::getNivelEstrutura($sEstrutural);
     $aNivelContaVerificar = explode(".", $sEstrutural);
     $sContaPlano          = implode("", array_splice($aNivelContaVerificar, 0, $iNivel));
-    $aContasDoNivel       = array();
+    $aContasDoNivel       = [];
 
     $oDaoConPlano = new cl_conplano();
     $sWhere       = "c60_estrut like '{$sContaPlano}%'";
@@ -960,19 +960,19 @@ abstract class ContaPlano {
    * @param $iNivel
    *
    * @return string
-   * @deprecated
    * @see self::getEstruturalAteNivel
    */
+  #[\Deprecated]
   public function getEstruturaAteNivel($sEstrutura, $iNivel) {
 
-    $aPartesEstrutural = explode(".", $sEstrutura);
+    $aPartesEstrutural = explode(".", (string) $sEstrutura);
     return implode(".", array_slice($aPartesEstrutural, 0, $iNivel));
   }
 
 
   public static function getEstruturalAteNivel($sEstrutura, $iNivel) {
 
-    $aPartesEstrutural = explode(".", $sEstrutura);
+    $aPartesEstrutural = explode(".", (string) $sEstrutura);
     return implode(".", array_slice($aPartesEstrutural, 0, $iNivel));
   }
   /**

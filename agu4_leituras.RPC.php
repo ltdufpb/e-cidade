@@ -48,7 +48,7 @@ try {
     
     case 'consultaSituacoesHidrometro':
 
-      $aListaSituacao = array();
+      $aListaSituacao = [];
       
       $oDaoSituacaoLeitura = new cl_aguasitleitura();
       
@@ -61,18 +61,18 @@ try {
         $aSituacoes = db_utils::getCollectionByRecord($rsSituacoes);
       }
       
-      $aRetornoSituacao = array();
+      $aRetornoSituacao = [];
       
       foreach ($aSituacoes as $iIndice => $oSituacao) {
         
         $aRetornoSituacao[$iIndice] = new StdClass();
         
         $aRetornoSituacao[$iIndice]->codigo    = $oSituacao->x17_codigo;
-        $aRetornoSituacao[$iIndice]->descricao = utf8_encode($oSituacao->x17_descr);
+        $aRetornoSituacao[$iIndice]->descricao = mb_convert_encoding($oSituacao->x17_descr, 'UTF-8', 'ISO-8859-1');
       }
       
-      $aRetorno = array("lErro"      => false,
-                        "aSituacoes" => $aRetornoSituacao); 
+      $aRetorno = ["lErro"      => false,
+                        "aSituacoes" => $aRetornoSituacao]; 
     break;
   } 
   
@@ -80,8 +80,8 @@ try {
   
   db_fim_transacao(true);
   
-  $aRetorno = array("lErro" => true,
-                    "sMsg"  => urlencode($eErro->getMessage()));
+  $aRetorno = ["lErro" => true,
+                    "sMsg"  => urlencode($eErro->getMessage())];
 } 
 
 echo $oJson->encode($aRetorno);

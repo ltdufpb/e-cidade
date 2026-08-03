@@ -60,7 +60,7 @@ class SigfisArquivoPrevisaoReceita extends SigfisArquivoBase implements iPadArqu
 
 
         $aReceitas = db_utils::getColectionByRecord($rsReceitaSaldo);
-        $aReceitaSoma = array();
+        $aReceitaSoma = [];
 
         if (empty($this->sCodigoTribunal)) {
             throw new Exception("O código do tribunal deve ser informado para geração do arquivo");
@@ -103,10 +103,10 @@ class SigfisArquivoPrevisaoReceita extends SigfisArquivoBase implements iPadArqu
                 }
 
                 //$sEstrut = $oVinculo->receitatce;
-                if (substr($sEstrut, 0,  1) == '9' ) {
-                    $sEstrut = '9' . substr($sEstrut, 2, 12);
+                if (str_starts_with((string) $sEstrut, '9') ) {
+                    $sEstrut = '9' . substr((string) $sEstrut, 2, 12);
                 } else {
-                    $sEstrut = substr($sEstrut, 0, 13);
+                    $sEstrut = substr((string) $sEstrut, 0, 13);
                 }
 
                 if (!isset($aReceitaSoma[$sEstrut])) {
@@ -128,7 +128,7 @@ class SigfisArquivoPrevisaoReceita extends SigfisArquivoBase implements iPadArqu
                 $oDados      = new stdClass();
 
                 $oDados->dt_Ano             = $this->iAnoUso;
-                $oDados->Cd_Unidade         = str_pad($this->sCodigoTribunal, 4, ' ', STR_PAD_LEFT);
+                $oDados->Cd_Unidade         = str_pad((string) $this->sCodigoTribunal, 4, ' ', STR_PAD_LEFT);
                 $oDados->Cd_ItemReceita     = str_pad(substr($sFonte, 0, 13), 13, ' ', STR_PAD_RIGHT);
                 $oDados->vl_Receita         = str_pad(number_format(abs($nValor), 2, '',''), 16, ' ', STR_PAD_LEFT);
                 $oDados->codigolinha        = 406;

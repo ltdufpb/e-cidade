@@ -130,7 +130,7 @@ $clrotulo->label("k17_slip");
                     </td>
                     <td nowrap>
                         <?php
-                        $aformaConsulta = array("0" => "Empenho" , "1" => "Slip");
+                        $aformaConsulta = ["0" => "Empenho" , "1" => "Slip"];
                         db_select('iFomaconsulta', $aformaConsulta, true, 1, "onChange = 'js_formaConsulta();'");
                         ?>
                     </td>

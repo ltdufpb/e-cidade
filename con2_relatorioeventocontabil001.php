@@ -44,7 +44,7 @@ $oRotuloContranslan->label();
 $oDaoContrans          = db_utils::getDao('contrans');
 $sSqlBuscaAnoTransacao = $oDaoContrans->sql_query_file(null, "distinct c45_anousu", "c45_anousu desc");
 $rsBuscaAnoTransacao   = $oDaoContrans->sql_record($sSqlBuscaAnoTransacao);
-$aAnosConfigurados     = array();
+$aAnosConfigurados     = [];
 for ($iRowAno = 0; $iRowAno < $oDaoContrans->numrows; $iRowAno++) {
 
   $iAnoLocalizado                     = db_utils::fieldsMemory($rsBuscaAnoTransacao, $iRowAno)->c45_anousu;

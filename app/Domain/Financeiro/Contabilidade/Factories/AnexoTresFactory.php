@@ -33,16 +33,14 @@ class AnexoTresFactory extends AnexosFactory implements AnexosFactoryInterface
      */
     public static function getCodigoRelatorio($exercicio)
     {
-        switch (self::getModelo($exercicio)) {
-            case 'in13':
-                return static::getCodigoRelatorioInRS($exercicio);
-            case 'mdf':
-                return static::getCodigoRelatorioMDF($exercicio);
-            default:
-                throw new Exception("Não foi implementado o modelo para configuração atual.");
-        }
+        return match (self::getModelo($exercicio)) {
+            'in13' => static::getCodigoRelatorioInRS($exercicio),
+            'mdf' => static::getCodigoRelatorioMDF($exercicio),
+            default => throw new Exception("Não foi implementado o modelo para configuração atual."),
+        };
     }
 
+    #[\Override]
     public static function getProgramaRelatorio($exercicio)
     {
         return 'pla2_anexos_rreo_consolida001.php';
@@ -54,14 +52,11 @@ class AnexoTresFactory extends AnexosFactory implements AnexosFactoryInterface
      */
     private static function getCodigoRelatorioMDF($exercicio)
     {
-        switch ($exercicio) {
-            case 2021:
-                return 259;
-            case 2022:
-                return 262;
-            default:
-                return 262;
-        }
+        return match ($exercicio) {
+            2021 => 259,
+            2022 => 262,
+            default => 262,
+        };
     }
 
     /**
@@ -70,24 +65,19 @@ class AnexoTresFactory extends AnexosFactory implements AnexosFactoryInterface
      */
     private static function getCodigoRelatorioInRS($exercicio)
     {
-        switch ($exercicio) {
-            case 2021:
-                return 258;
-            default:
-                return 258;
-        }
+        return match ($exercicio) {
+            2021 => 258,
+            default => 258,
+        };
     }
 
     private static function getRota($exercicio)
     {
-        switch (self::getModelo($exercicio)) {
-            case 'in13':
-                return 'financeiro/contabilidade/relatorio/rreo/anexo-3-in-rs';
-            case 'mdf':
-                return 'financeiro/contabilidade/relatorio/rreo/anexo-3-mdf';
-            default:
-                throw new Exception("Não foi implementado o modelo para configuração atual.");
-        }
+        return match (self::getModelo($exercicio)) {
+            'in13' => 'financeiro/contabilidade/relatorio/rreo/anexo-3-in-rs',
+            'mdf' => 'financeiro/contabilidade/relatorio/rreo/anexo-3-mdf',
+            default => throw new Exception("Não foi implementado o modelo para configuração atual."),
+        };
     }
 
     /**
@@ -114,13 +104,10 @@ class AnexoTresFactory extends AnexosFactory implements AnexosFactoryInterface
      */
     public static function getServiceMdf($exercicio, $filtros)
     {
-        switch ($exercicio) {
-            case 2021:
-                return new AnexoTresMdfService($filtros);
-            case 2022:
-            default:
-                return new AnexoTresMdf2022Service($filtros);
-        }
+        return match ($exercicio) {
+            2021 => new AnexoTresMdfService($filtros),
+            default => new AnexoTresMdf2022Service($filtros),
+        };
     }
 
     /**
@@ -149,18 +136,16 @@ class AnexoTresFactory extends AnexosFactory implements AnexosFactoryInterface
         if (in_array($codigo, [6, 7, 8, 9, 10, 11, 17,  18,  19,  20,  21,  22,  23,  24,  25,  26, 27, 28])) {
             return $codigo;
         }
-        switch ($codigo) {
-            case 12: //1º SEMESTRE
-                return 22;
-            case 13: //2º SEMESTRE
-            case 16: //3º QUADRIMESTRE
-                return 28;
-            case 14: //1º QUADRIMESTRE
-                return 20;
-            case 15: //2º QUADRIMESTRE
-                return 24;
-            default:
-                throw new \Exception("Período não mapeado");
-        }
+        return match ($codigo) {
+            //1º SEMESTRE
+            12 => 22,
+            //3º QUADRIMESTRE
+            13, 16 => 28,
+            //1º QUADRIMESTRE
+            14 => 20,
+            //2º QUADRIMESTRE
+            15 => 24,
+            default => throw new \Exception("Período não mapeado"),
+        };
     }
 }

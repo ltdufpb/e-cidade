@@ -53,9 +53,9 @@ try {
       if (FeriasConfiguracao::isUltimoPeriodoAquisitivo()) {
         $aPeriodos = PeriodoAquisitivoFeriasRepository::getPeriodosDisponiveisDoServidor($oServidor, true);
       } else {
-        $aPeriodos = array(PeriodoAquisitivoFerias::getDisponivel( $oServidor, true));
+        $aPeriodos = [PeriodoAquisitivoFerias::getDisponivel( $oServidor, true)];
       }
-      $periodosRetorno = array();
+      $periodosRetorno = [];
 
       foreach ($aPeriodos as $oPeriodo) {
 

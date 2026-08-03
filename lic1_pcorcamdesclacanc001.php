@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcorcamdescla_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clpcorcamdescla = new cl_pcorcamdescla;
 $db_botao        = false;
@@ -134,7 +134,7 @@ if (isset($coditens) && trim($coditens) != ""){
        </table>
       </form>
 <?php 
-   if (trim(@$erro_msg) != ""){
+   if (trim((string) @$erro_msg) != ""){
         db_msgbox($erro_msg);
    }
 ?>

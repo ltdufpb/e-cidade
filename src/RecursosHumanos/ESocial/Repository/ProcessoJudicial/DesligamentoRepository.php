@@ -96,7 +96,7 @@ class DesligamentoRepository
      * @param Desligamento|null $contrato
      * @throws Exception
      */
-    public function delete(Desligamento $desligamento = null)
+    public function delete(?Desligamento $desligamento = null)
     {
         $id = $desligamento instanceof Desligamento ? $desligamento->getSequencial() : null;
 
@@ -114,7 +114,7 @@ class DesligamentoRepository
      * @return bool|ProcessoJudicial
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhpessoalprocessodesligamento;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

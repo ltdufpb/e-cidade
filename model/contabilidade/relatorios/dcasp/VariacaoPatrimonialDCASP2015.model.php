@@ -80,12 +80,12 @@ class VariacaoPatrimonialDCASP2015 extends RelatoriosLegaisBase {
   /**
    * @var array Linhas que devem ter bordas.
    */
-  private $aBordas = array(43, 97, 98);
+  private $aBordas = [43, 97, 98];
 
   /**
    * @var array Linhas que devem ter quebra de linha após.
    */
-  private $aQuebraLinha = array(43);
+  private $aQuebraLinha = [43];
 
 
   /**
@@ -115,7 +115,8 @@ class VariacaoPatrimonialDCASP2015 extends RelatoriosLegaisBase {
     $this->sTipo = $sTipoImpressao;
   }
 
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $this->aLinhasConsistencia = $this->getLinhasRelatorio();
     $this->processarTiposDeCalculo();
@@ -158,7 +159,7 @@ class VariacaoPatrimonialDCASP2015 extends RelatoriosLegaisBase {
 
         $oLinha = $this->aLinhasConsistencia[$iLinha];
 
-        $aColunas = $this->getColunasPorLinha($oLinha, array(0));
+        $aColunas = $this->getColunasPorLinha($oLinha, [0]);
         RelatoriosLegaisBase::calcularValorDaLinha( $rsBalanceteVerificacao,
                                                     $oLinha,
                                                     $aColunas,
@@ -166,7 +167,7 @@ class VariacaoPatrimonialDCASP2015 extends RelatoriosLegaisBase {
 
         if ($this->lImprimirExercicioAnterior) {
 
-          $aColunas = $this->getColunasPorLinha($oLinha, array(1));
+          $aColunas = $this->getColunasPorLinha($oLinha, [1]);
           RelatoriosLegaisBase::calcularValorDaLinha( $rsBalanceteVerificacaoAnterior,
                                                       $oLinha,
                                                       $aColunas,

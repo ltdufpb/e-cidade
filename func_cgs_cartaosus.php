@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgs_cartaosus_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcgs_cartaosus = new cl_cgs_cartaosus;
 $clcgs_cartaosus->rotulo->label("s115_i_codigo");
 $clcgs_cartaosus->rotulo->label("z01_v_nome");
@@ -98,9 +98,9 @@ $clcgs_cartaosus->rotulo->label("z01_v_nome");
         }else{ 
            $sql = $clcgs_cartaosus->sql_query("",$campos,"s115_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s115_i_codigo)){
-          $repassa = array("chave_s115_i_codigo"=>$chave_s115_i_codigo,"chave_z01_v_nome"=>$chave_s115_i_codigo);
+          $repassa = ["chave_s115_i_codigo"=>$chave_s115_i_codigo,"chave_z01_v_nome"=>$chave_s115_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

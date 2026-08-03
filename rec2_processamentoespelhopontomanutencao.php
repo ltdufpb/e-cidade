@@ -35,7 +35,7 @@ use \ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\ProcessamentoPonto
 use \ECidade\RecursosHumanos\RH\PontoEletronico\Manutencao\EspelhoPonto;
 
 $oParametros = \db_utils::postMemory(array_merge($_GET, $_POST));
-$aMatriculas = explode(',', $oParametros->aMatriculas);
+$aMatriculas = explode(',', (string) $oParametros->aMatriculas);
 $lMostraObservacoes = $oParametros->lMostraObservacoes == 'S';
 $lEmiteTodosAfastamentos = !empty($oParametros->iEmiteTodosAfastamentos) && $oParametros->iEmiteTodosAfastamentos == 1;
 $timeZone = date_default_timezone_get();
@@ -46,8 +46,8 @@ try {
     $dadosRelatorio = new stdClass();
     $dadosRelatorio->mostraObservacoes = $lMostraObservacoes;
     $dadosRelatorio->emiteTodosAfastamentos = $lEmiteTodosAfastamentos;
-    $dadosRelatorio->dataInicio = implode('/', array_reverse(explode('-', $oParametros->periodoInicio)));
-    $dadosRelatorio->dataFim = implode('/', array_reverse(explode('-', $oParametros->periodoFim)));
+    $dadosRelatorio->dataInicio = implode('/', array_reverse(explode('-', (string) $oParametros->periodoInicio)));
+    $dadosRelatorio->dataFim = implode('/', array_reverse(explode('-', (string) $oParametros->periodoFim)));
 
     $id          = uniqid();
     $fileName    = "tmp/dados_espelho_ponto_{$id}.txt";
@@ -74,12 +74,12 @@ try {
         }
 
         $dataServidor  = (object)current($datasServidor);
-        $dadosServidor = array(
+        $dadosServidor = [
             'dados'                                   => $dataServidor->dados,
-            'datas'                                   => array(),
-            'aHorasJornada'                           => array(),
-            'observacoes'                             => array(),
-        );
+            'datas'                                   => [],
+            'aHorasJornada'                           => [],
+            'observacoes'                             => [],
+        ];
 
         foreach ($datasServidor as $dataServidor) {
 
@@ -116,14 +116,14 @@ try {
         file_put_contents($fileName, serialize($dadosServidor) . PHP_EOL, FILE_APPEND);
     }
 
-    $matriculasComErro = array(
-      'matriculasComErro' => array()
-    );
+    $matriculasComErro = [
+      'matriculasComErro' => []
+    ];
 
     if(!empty($retornoAjuste)) {
-        $matriculasComErro = array(
+        $matriculasComErro = [
           'matriculasComErro' => $retornoAjuste->matriculasComErro
-        );
+        ];
     }
 
     file_put_contents($fileName, serialize($matriculasComErro) . PHP_EOL, FILE_APPEND);

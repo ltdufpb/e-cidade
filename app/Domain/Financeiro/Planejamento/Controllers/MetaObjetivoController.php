@@ -39,14 +39,8 @@ use App\Http\Controllers\Controller;
  */
 class MetaObjetivoController extends Controller
 {
-    /**
-     * @var MetaObjetivoService
-     */
-    private $service;
-
-    public function __construct(MetaObjetivoService $service)
+    public function __construct(private readonly MetaObjetivoService $service)
     {
-        $this->service = $service;
     }
 
     /**

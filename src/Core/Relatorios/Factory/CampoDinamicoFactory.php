@@ -17,7 +17,7 @@ class CampoDinamicoFactory
      */
     public function getCamposDinamicos(CampoDinamicoMapper $mapper, array $arrayNomesCampos)
     {
-        $camposDinamicos = array();
+        $camposDinamicos = [];
 
         foreach ($arrayNomesCampos as $nomeCampo) {
             $camposDinamicos[] = $mapper->getCampo($nomeCampo);

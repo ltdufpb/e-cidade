@@ -36,7 +36,7 @@ require_once(modification("classes/db_issbase_classe.php"));
 require_once(modification("classes/db_propri_classe.php"));
 require_once(modification("classes/db_promitente_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $xtipo = "'x'";
 
@@ -294,7 +294,7 @@ if ($opcao != 'previden' && $opcao != 'irf'){
 <?php 
 
 $cor="#F0F0F0";
-    for($x=0;$x<pg_numrows($result);$x++){
+    for($x=0;$x<pg_num_rows($result);$x++){
 	  db_fieldsmemory($result,$x,true);
         if($cor=="#F0F0F0")
            $cor="#FFF";
@@ -356,7 +356,7 @@ $cor="#EFE029";
     $tot_desc_13  = 0;
     $tot_base_fer = 0;
     $tot_desc_fer = 0;
-    for($x=0;$x<pg_numrows($result);$x++){
+    for($x=0;$x<pg_num_rows($result);$x++){
 	  db_fieldsmemory($result,$x,true);
         if($cor=="#EFE029")
            $cor="#E4F471";
@@ -426,7 +426,7 @@ $cor="#EFE029";
     $tot_desc_13  = 0;
     $tot_base_fer = 0;
     $tot_desc_fer = 0;
-    for($x=0;$x<pg_numrows($result);$x++){
+    for($x=0;$x<pg_num_rows($result);$x++){
 	  db_fieldsmemory($result,$x,true);
         if($cor=="#EFE029")
            $cor="#E4F471";

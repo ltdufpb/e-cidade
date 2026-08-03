@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbiformapagamento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clitbiformapagamento = new cl_itbiformapagamento;
 $clitbiformapagamento->rotulo->label("it27_sequencial");
 $clitbiformapagamento->rotulo->label("it27_itbitipoformapag");
@@ -98,9 +98,9 @@ $clitbiformapagamento->rotulo->label("it27_itbitipoformapag");
         }else{
            $sql = $clitbiformapagamento->sql_query("",$campos,"it27_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_it27_itbitipoformapag)){
-          $repassa = array("chave_it27_sequencial"=>$chave_it27_sequencial,"chave_it27_itbitipoformapag"=>$chave_it27_itbitipoformapag);
+          $repassa = ["chave_it27_sequencial"=>$chave_it27_sequencial,"chave_it27_itbitipoformapag"=>$chave_it27_itbitipoformapag];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

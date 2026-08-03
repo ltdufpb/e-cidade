@@ -46,7 +46,7 @@ if ($db_opcao == 1) {
   $db_action="aco1_acordo006.php";
 }
 
-$aClassificacao          = array();
+$aClassificacao          = [];
 $oDaoAcordoClassificacao = new cl_acordoclassificacao();
 $sSqlClassificacao       = $oDaoAcordoClassificacao->sql_query_file();
 $rsClassificacao         = $oDaoAcordoClassificacao->sql_record($sSqlClassificacao);
@@ -62,46 +62,46 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
 
 db_app::load("dbtextFieldData.widget.js");
 
-$sTipoFiltro       = isset($sTipoFiltro) ? $sTipoFiltro : '1';
+$sTipoFiltro ??= '1';
 $db_opcao_editavel = !empty($db_opcao_editavel) ? $db_opcao_editavel : $db_opcao;
 
-$Tac16_sequencial          = isset($Tac16_sequencial) ? $Tac16_sequencial : null;
-$Lac16_sequencial          = isset($Lac16_sequencial) ? $Lac16_sequencial : null;
-$Tac16_origem              = isset($Tac16_origem) ? $Tac16_origem : null;
-$Lac16_origem              = isset($Lac16_origem) ? $Lac16_origem : null;
-$Tac16_acordoclassificacao = isset($Tac16_acordoclassificacao) ? $Tac16_acordoclassificacao : null;
-$Tac16_acordogrupo         = isset($Tac16_acordogrupo) ? $Tac16_acordogrupo : null;
-$Lac16_acordogrupo         = isset($Lac16_acordogrupo) ? $Lac16_acordogrupo : null;
-$Tac16_numero              = isset($Tac16_numero) ? $Tac16_numero : null;
-$Lac16_numero              = isset($Lac16_numero) ? $Lac16_numero : null;
-$Tac16_contratado          = isset($Tac16_contratado) ? $Tac16_contratado : null;
-$Lac16_contratado          = isset($Lac16_contratado) ? $Lac16_contratado : null;
-$Tac16_deptoresponsavel    = isset($Tac16_deptoresponsavel) ? $Tac16_deptoresponsavel : null;
-$Tac16_acordocomissao      = isset($Tac16_acordocomissao) ? $Tac16_acordocomissao : null;
-$Tac16_lei                 = isset($Tac16_lei) ? $Tac16_lei : null;
-$Lac16_lei                 = isset($Lac16_lei) ? $Lac16_lei : null;
-$Tac16_numeroprocesso      = isset($Tac16_numeroprocesso) ? $Tac16_numeroprocesso : null;
-$Lac16_numeroprocesso      = isset($Lac16_numeroprocesso) ? $Lac16_numeroprocesso : null;
-$Tac16_qtdrenovacao        = isset($Tac16_qtdrenovacao) ? $Tac16_qtdrenovacao : null;
-$Iac16_qtdrenovacao        = isset($Iac16_qtdrenovacao) ? $Iac16_qtdrenovacao : null;
-$Tac16_dataassinatura      = isset($Tac16_dataassinatura) ? $Tac16_dataassinatura : null;
-$Lac16_dataassinatura      = isset($Lac16_dataassinatura) ? $Lac16_dataassinatura : null;
-$ac16_dataassinatura_dia   = isset($ac16_dataassinatura_dia) ? $ac16_dataassinatura_dia : null;
-$ac16_dataassinatura_ano   = isset($ac16_dataassinatura_ano) ? $ac16_dataassinatura_ano : null;
-$ac16_dataassinatura_mes   = isset($ac16_dataassinatura_mes) ? $ac16_dataassinatura_mes : null;
-$Tac50_descricao           = isset($Tac50_descricao) ? $Tac50_descricao : null;
-$Tac50_descricao           = isset($Tac50_descricao) ? $Tac50_descricao : null;
-$ac16_datainicio_dia       = isset($ac16_datainicio_dia) ? $ac16_datainicio_dia : null;
-$ac16_datainicio_ano       = isset($ac16_datainicio_ano) ? $ac16_datainicio_ano : null;
-$ac16_datainicio_mes       = isset($ac16_datainicio_mes) ? $ac16_datainicio_mes : null;
-$ac16_datafim_dia          = isset($ac16_datafim_dia) ? $ac16_datafim_dia : null;
-$ac16_datafim_mes          = isset($ac16_datafim_mes) ? $ac16_datafim_mes : null;
-$ac16_datafim_ano          = isset($ac16_datafim_ano) ? $ac16_datafim_ano : null;
-$Iac16_qtdperiodo          = isset($Iac16_qtdperiodo) ? $Iac16_qtdperiodo : null;
-$Tac16_objeto              = isset($Tac16_objeto) ? $Tac16_objeto : null;
-$Lac16_objeto              = isset($Lac16_objeto) ? $Lac16_objeto : null;
-$Tac16_resumoobjeto        = isset($Tac16_resumoobjeto) ? $Tac16_resumoobjeto : null;
-$Lac16_resumoobjeto        = isset($Lac16_resumoobjeto) ? $Lac16_resumoobjeto : null;
+$Tac16_sequencial ??= null;
+$Lac16_sequencial ??= null;
+$Tac16_origem ??= null;
+$Lac16_origem ??= null;
+$Tac16_acordoclassificacao ??= null;
+$Tac16_acordogrupo ??= null;
+$Lac16_acordogrupo ??= null;
+$Tac16_numero ??= null;
+$Lac16_numero ??= null;
+$Tac16_contratado ??= null;
+$Lac16_contratado ??= null;
+$Tac16_deptoresponsavel ??= null;
+$Tac16_acordocomissao ??= null;
+$Tac16_lei ??= null;
+$Lac16_lei ??= null;
+$Tac16_numeroprocesso ??= null;
+$Lac16_numeroprocesso ??= null;
+$Tac16_qtdrenovacao ??= null;
+$Iac16_qtdrenovacao ??= null;
+$Tac16_dataassinatura ??= null;
+$Lac16_dataassinatura ??= null;
+$ac16_dataassinatura_dia ??= null;
+$ac16_dataassinatura_ano ??= null;
+$ac16_dataassinatura_mes ??= null;
+$Tac50_descricao ??= null;
+$Tac50_descricao ??= null;
+$ac16_datainicio_dia ??= null;
+$ac16_datainicio_ano ??= null;
+$ac16_datainicio_mes ??= null;
+$ac16_datafim_dia ??= null;
+$ac16_datafim_mes ??= null;
+$ac16_datafim_ano ??= null;
+$Iac16_qtdperiodo ??= null;
+$Tac16_objeto ??= null;
+$Lac16_objeto ??= null;
+$Tac16_resumoobjeto ??= null;
+$Lac16_resumoobjeto ??= null;
 ?>
 <style>
 .fieldsetinterno {
@@ -157,12 +157,12 @@ td {
                     </td>
 	                  <td>
 				              <?php
-				                $aValores = array(
+				                $aValores = [
 				                  0 => 'Selecione',
 				                  1 => 'Processo de Compras',
 				                  2 => 'Licitação',
 				                  3 => 'Manual' ,
-				                );
+				                ];
                         db_select('ac16_origem', $aValores, true, $db_opcao,
                         " onchange='js_desabilitaselecionar();js_exibeBotaoJulgamento();js_validaCampoValor();' style='width:100%;'");
 
@@ -291,7 +291,7 @@ td {
 		                </td>
 		                <td>
 		                  <?php
-		                    $aEmergencial = array("f" => "Não", "t" => "Sim");
+		                    $aEmergencial = ["f" => "Não", "t" => "Sim"];
 		                    db_select("ac26_emergencial", $aEmergencial, true, $db_opcao, "style='width:100%'");
 		                  ?>
 		                </td>
@@ -322,7 +322,7 @@ td {
 			                  $iCampo = 3;
 		                 	}
 
-		              		$aDivisaoPeriodos = array( "true" => "SIM", "false" => "NÃO");
+		              		$aDivisaoPeriodos = [ "true" => "SIM", "false" => "NÃO"];
 		              		db_select("ac16_periodocomercial", $aDivisaoPeriodos, true, $db_opcao, "style='width:100%' {$sDisabled}");
 		              		?>
 		              	</td>
@@ -363,10 +363,10 @@ td {
 
                     <td>
                       <?php
-                      $aValores = array(
+                      $aValores = [
                         'f' => 'Não',
                         't' => 'Sim',
-                      );
+                      ];
                       db_select('ac16_dependeordeminicio', $aValores, true, $db_opcao_editavel);
                       ?>
                     </td>
@@ -1012,7 +1012,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_acordo.hide();
   <?php
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 

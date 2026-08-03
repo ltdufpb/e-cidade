@@ -64,7 +64,7 @@ $oProcessoOuvidoria = new processoOuvidoria();
 
 if ( $oPost->sMethod == 'consultaProcessos') {
 
-	$aListaProcesso  = array();
+	$aListaProcesso  = [];
 
 	$sCampoProcesso  = " distinct p58_codproc,                               ";
 	$sCampoProcesso .= " ov01_numero || '/' || ov01_anousu as ov01_anousu,   ";
@@ -133,13 +133,13 @@ if ( $oPost->sMethod == 'consultaProcessos') {
   $sWhereProcesso .= " )                             ";
 
 
-	if ( trim($oPost->iProcIni) != '' ) {
+	if ( trim((string) $oPost->iProcIni) != '' ) {
 	  $sWhereProcesso .= " and p58_codproc >= {$oPost->iProcIni}  ";
 	}
-  if ( trim($oPost->iProcFin) != '' ) {
+  if ( trim((string) $oPost->iProcFin) != '' ) {
     $sWhereProcesso .= " and p58_codproc <= {$oPost->iProcFin}  ";
   }
-  if (trim($oPost->sAtendimento) != '') {
+  if (trim((string) $oPost->sAtendimento) != '') {
 
     $sAtendimento = db_stdClass::normalizeStringJson($oPost->sAtendimento);
     /*
@@ -150,17 +150,17 @@ if ( $oPost->sMethod == 'consultaProcessos') {
     $iAnoUsu      = db_getsession("DB_anousu");
     $iAtendimento = $sAtendimento;
     if (strpos($sAtendimento, "/")) {
-	  	list ($iAtendimento, $iAnoUsu) = explode('/', $sAtendimento);
+	  	[$iAtendimento, $iAnoUsu] = explode('/', $sAtendimento);
     }
  		$sWhereProcesso .= " and ov01_numero = {$iAtendimento} and ov01_anousu = {$iAnoUsu} ";
   }
-  if ( trim($oPost->dtDataIni) != '' ) {
-    $sWhereProcesso .= " and p58_dtproc >= '".implode('-',array_reverse(explode('/',$oPost->dtDataIni)))."'";
+  if ( trim((string) $oPost->dtDataIni) != '' ) {
+    $sWhereProcesso .= " and p58_dtproc >= '".implode('-',array_reverse(explode('/',(string) $oPost->dtDataIni)))."'";
   }
-  if ( trim($oPost->dtDataFin) != '' ) {
-    $sWhereProcesso .= " and p58_dtproc <= '".implode('-',array_reverse(explode('/',$oPost->dtDataFin)))."'";
+  if ( trim((string) $oPost->dtDataFin) != '' ) {
+    $sWhereProcesso .= " and p58_dtproc <= '".implode('-',array_reverse(explode('/',(string) $oPost->dtDataFin)))."'";
   }
-  if ( trim($oPost->iProcTipo) != '' ) {
+  if ( trim((string) $oPost->iProcTipo) != '' ) {
     $sWhereProcesso .= " and p58_codigo = {$oPost->iProcTipo}  ";
   }
 
@@ -174,9 +174,9 @@ if ( $oPost->sMethod == 'consultaProcessos') {
 		$lErro    = true;
 	}
 
-  $aRetorno = array("lErro"          =>$lErro,
+  $aRetorno = ["lErro"          =>$lErro,
 	                  "sMsg"           =>$sMsgErro,
-                    "aListaProcessos"=>$aListaProcesso);
+                    "aListaProcessos"=>$aListaProcesso];
 
   echo $oJson->encode($aRetorno);
 
@@ -184,7 +184,7 @@ if ( $oPost->sMethod == 'consultaProcessos') {
 
 } else if ( $oPost->sMethod == 'consultaDespachos') {
 
-	$aListaDespachos  = array();
+	$aListaDespachos  = [];
   $sSqlDespachos    = $clProcTransferProc->sql_query_andam(null,$oPost->iCodProcesso,"*","p62_codtran,p61_dtandam,p61_hora");
 
   $rsDespachos      = $clProcTransferProc->sql_record($sSqlDespachos);
@@ -199,8 +199,8 @@ if ( $oPost->sMethod == 'consultaProcessos') {
      	$oRetornoDespacho = new stdClass();
     	$oRetornoDespacho->data       = $oDespacho->p61_dtandam;
     	$oRetornoDespacho->hora       = $oDespacho->p61_hora;
-    	$oRetornoDespacho->descrdepto = urlencode($oDespacho->descrdepto);
-    	$oRetornoDespacho->nome       = urlencode($oDespacho->login);
+    	$oRetornoDespacho->descrdepto = urlencode((string) $oDespacho->descrdepto);
+    	$oRetornoDespacho->nome       = urlencode((string) $oDespacho->login);
       $oRetornoDespacho->despacho   = urlencode(str_replace("\n", '<br/>', $oDespacho->p61_despacho));
     	$aListaDespachos[]            = $oRetornoDespacho;
 
@@ -211,9 +211,9 @@ if ( $oPost->sMethod == 'consultaProcessos') {
     $lErro    = true;
   }
 
-  $aRetorno = array("lErro"          =>$lErro,
+  $aRetorno = ["lErro"          =>$lErro,
                     "sMsg"           =>$sMsgErro,
-                    "aListaDespachos"=>$aListaDespachos);
+                    "aListaDespachos"=>$aListaDespachos];
 
   echo $oJson->encode($aRetorno);
 
@@ -230,7 +230,7 @@ if ( $oPost->sMethod == 'consultaProcessos') {
 
   try {
     $oProcessoOuvidoria->incluirDespachoInterno($oProcesso->iCodProc,
-	                                              utf8_decode($oPost->sDespacho),
+	                                              mb_convert_encoding($oPost->sDespacho, 'ISO-8859-1'),
 	                                              db_getsession('DB_id_usuario'),
 	                                              db_getsession('DB_coddepto'),
                                                   $oPost->sPublico);
@@ -263,7 +263,7 @@ if ( $oPost->sMethod == 'consultaProcessos') {
 
 	    	$oProcessoOuvidoria->incluiNovoDeptoProrrogacao($oProcesso->iCodProc,
 				                                                $oPost->iCodDeptoRec,
-				                                                utf8_decode($oProcesso->sMotivo),
+				                                                mb_convert_encoding($oProcesso->sMotivo, 'ISO-8859-1'),
 				                                                '',
 				                                                $oProcesso->iDias,
 				                                                ($oProcesso->lSegue=='true'?true:false));
@@ -286,12 +286,12 @@ if ( $oPost->sMethod == 'consultaProcessos') {
 
 
   if ( !$lErro ) {
-    $aRetorno = array("lErro"   =>false,
+    $aRetorno = ["lErro"   =>false,
                       "sMsg"    =>urlencode($sMsgErro),
-                      "iCodTran"=>$iCodTran);
+                      "iCodTran"=>$iCodTran];
   } else {
-    $aRetorno = array("lErro"   =>true,
-                      "sMsg"    =>urlencode($sMsgErro));
+    $aRetorno = ["lErro"   =>true,
+                      "sMsg"    =>urlencode($sMsgErro)];
   }
 
 
@@ -330,8 +330,8 @@ if ( $oPost->sMethod == 'consultaProcessos') {
     }
   }
 
-  $aRetorno = array("lTemDepto" =>$lTemDepto,
-                    "lDiferenca"=>$lDiferente);
+  $aRetorno = ["lTemDepto" =>$lTemDepto,
+                    "lDiferenca"=>$lDiferente];
 
   echo $oJson->encode($aRetorno);
 

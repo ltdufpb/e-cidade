@@ -36,7 +36,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 
@@ -225,7 +225,7 @@ function js_emite(){
 									<b>Despesa :</b> 
 									
 									<?php 
-										$aTipoDespesa = array("1"=>"Empenhada","2"=>"Liquidada","3"=>"Paga");									
+										$aTipoDespesa = ["1"=>"Empenhada","2"=>"Liquidada","3"=>"Paga"];									
 										db_select('iTipoDespesa',$aTipoDespesa,true,1,"");				
 									?>	
 								</td>

@@ -38,7 +38,7 @@ $clrotulo->label('j01_numcgm');
 $clrotulo->label('z01_nome');
 $clrotulo->label('j01_baixa');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
@@ -85,7 +85,7 @@ $prenc = 0;
 $alt = 4;
 $total = 0;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x,true);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage("L");

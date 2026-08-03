@@ -69,9 +69,9 @@ $clrotulo->label("it28_avista");
     	  <td> 
 		    <?php 
 		    
-			  $aTipo = array('1'=>'ITBI Urbano',
+			  $aTipo = ['1'=>'ITBI Urbano',
 			   		  		 '2'=>'ITBI Rural',
-			   				 '3'=>'Todos');
+			   				 '3'=>'Todos'];
 			  
 			  db_select('it27_tipo',$aTipo,true,$db_opcao,"");
 		    ?>
@@ -124,7 +124,7 @@ function js_preenchepesquisa(chave){
   db_iframe_itbiformapagamento.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

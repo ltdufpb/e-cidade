@@ -34,7 +34,7 @@ class ArquivoConsignadoRepository {
    *
    * @var ArquivoConsignado[]
    */
-  private static $aArquivos = array();
+  private static $aArquivos = [];
 
   /**
    * Adiciona uma instancia do objeto na memória
@@ -164,9 +164,9 @@ class ArquivoConsignadoRepository {
    * @return \ArquivoConsignado
    * @throws \DBException
    */
-  public static function getUltimoArquivoNaCompetenciaDoBanco(Instituicao $oInstituicao, DBCompetencia $oCompetencia = null, Banco $oBanco, $lProcessados = false) {
+  public static function getUltimoArquivoNaCompetenciaDoBanco(Instituicao $oInstituicao, ?DBCompetencia $oCompetencia = null, ?Banco $oBanco = null, $lProcessados = false) {
 
-    $aWhere = array();
+    $aWhere = [];
 
     /**
      * Caso não seja informado a competência, será retornado o último arquivo inportado.

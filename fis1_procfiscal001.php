@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("procfiscal"=>"Processo Fiscal","procfiscalfiscais"=>"Fiscais"); 
-	 $clcriaabas->src = array("procfiscal"=>"fis1_procfiscal004.php");
-	 $clcriaabas->disabled   =  array("procfiscalfiscais"=>"true"); 
+	 $clcriaabas->identifica = ["procfiscal"=>"Processo Fiscal","procfiscalfiscais"=>"Fiscais"]; 
+	 $clcriaabas->src = ["procfiscal"=>"fis1_procfiscal004.php"];
+	 $clcriaabas->disabled   =  ["procfiscalfiscais"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

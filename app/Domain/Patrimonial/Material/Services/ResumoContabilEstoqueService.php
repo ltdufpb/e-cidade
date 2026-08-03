@@ -263,7 +263,7 @@ sql
     {
         $depositos = [];
         if (!empty($this->depositos)) {
-            $codigosDepositos = explode(',', $this->depositos);
+            $codigosDepositos = explode(',', (string) $this->depositos);
             foreach ($codigosDepositos as $codigoDeposito) {
                 $depositos[] = DepositoRepository::find($codigoDeposito);
             }

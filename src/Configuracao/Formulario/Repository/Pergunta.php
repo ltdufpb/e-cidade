@@ -47,7 +47,7 @@ class Pergunta
     /**
      * @var \ECidade\Configuracao\Formulario\Model\Pergunta[]
      */
-    public $perguntas = array();
+    public $perguntas = [];
 
     protected function __construct()
     {
@@ -104,7 +104,7 @@ class Pergunta
         }
         $iTotalLinhas = pg_num_rows($rsPerguntas);
         if ($iTotalLinhas == 0) {
-            return array();
+            return [];
         }
         $instancia = self::getInstance();
         $perguntas = \db_utils::makeCollectionFromRecord($rsPerguntas, function ($dados) use ($instancia) {

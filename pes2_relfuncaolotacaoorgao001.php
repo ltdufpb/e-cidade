@@ -37,7 +37,7 @@ $clrhregime  = new cl_rhregime;
 $rotulocampo = new rotulocampo;
 $rotulocampo->label("DBtxt23");
 $rotulocampo->label("DBtxt25");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -132,22 +132,22 @@ db_postmemory($HTTP_POST_VARS);
 	  		               $arr_colunas[$rh30_codreg]= $rh30_descr;
 	  		          }
 	  		        }
-	  		        $arr_colunas_final   = Array();
-	  		        $arr_colunas_inicial = Array();
+	  		        $arr_colunas_final   = [];
+	  		        $arr_colunas_inicial = [];
 	  		        if(isset($colunas_sselecionados) && $colunas_sselecionados != ""){
-	  		           $colunas_sselecionados = split(",",$colunas_sselecionados);
+	  		           $colunas_sselecionados = preg_split("#,#m",$colunas_sselecionados);
 	  		           for($Ic=0;$Ic < count($colunas_sselecionados);$Ic++){
 	  		              $arr_colunas_final[$colunas_sselecionados[$Ic]] = $arr_colunas[$colunas_sselecionados[$Ic]]; 
 	  		           }
 	  		        }
 	  		        if(isset($colunas_nselecionados) && $colunas_nselecionados != ""){
-	  		           $colunas_nselecionados = split(",",$colunas_nselecionados);
+	  		           $colunas_nselecionados = preg_split("#,#m",$colunas_nselecionados);
 	  		           for($Ic=0;$Ic < count($colunas_nselecionados);$Ic++){
 	  		              $arr_colunas_inicial[$colunas_nselecionados[$Ic]] = $arr_colunas[$colunas_nselecionados[$Ic]]; 
 	  		           }
 	  		        }
 	  		        if(!isset($colunas_sselecionados) || !isset($colunas_sselecionados) || $colunas_sselecionados == ""){
-	  		           $arr_colunas_final  = Array();
+	  		           $arr_colunas_final  = [];
 	  		           $arr_colunas_inicial = $arr_colunas;
 	  		        }
 	  		       db_multiploselect("rh30_codreg","rh30_descr", "nselecionados", "sselecionados", $arr_colunas_inicial, $arr_colunas_final, 6, 250, "", "", true, "js_complementar('c');");
@@ -168,7 +168,7 @@ db_postmemory($HTTP_POST_VARS);
        </td>
        <td>
          <?php 
-           $x = array("f"=>"NÃO","t"=>"SIM");
+           $x = ["f"=>"NÃO","t"=>"SIM"];
            db_select('func',$x,true,4,"");
          ?>
   	   </td>
@@ -178,7 +178,7 @@ db_postmemory($HTTP_POST_VARS);
        </td>
        <td>
          <?php 
-           $x = array("f"=>"NÃO","t"=>"SIM");
+           $x = ["f"=>"NÃO","t"=>"SIM"];
            db_select('endereco',$x,true,4,"");
          ?>
   	   </td>
@@ -188,7 +188,7 @@ db_postmemory($HTTP_POST_VARS);
        </td>
        <td>
          <?php 
-           $x = array("f"=>"NÃO","t"=>"SIM");
+           $x = ["f"=>"NÃO","t"=>"SIM"];
            db_select('padrao',$x,true,4,"");
          ?>
   	   </td>
@@ -211,10 +211,10 @@ db_postmemory($HTTP_POST_VARS);
         </td>
         <td>
           <?php 
-			      $xxy = array(
+			      $xxy = [
 					            "n"=>"NÃO", 
 				              "s"=>"SIM"
-					              );
+					              ];
 			  	  db_select('quebrar',$xxy,true,4,"");
 				  ?>
 				</td>

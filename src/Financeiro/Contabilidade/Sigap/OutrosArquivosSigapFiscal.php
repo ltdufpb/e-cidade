@@ -36,10 +36,6 @@ use Periodo;
 abstract class OutrosArquivosSigapFiscal implements ArquivosSigapFiscalInterface
 {
     /**
-     * @var integer
-     */
-    protected $ano;
-    /**
      * @var Periodo
      */
     protected $periodo;
@@ -47,17 +43,15 @@ abstract class OutrosArquivosSigapFiscal implements ArquivosSigapFiscalInterface
      * @var array
      */
     protected $codigoInstituicoes = [];
-    /**
-     * @var integer
-     */
-    protected $codigoTCE;
 
-    public function __construct(Periodo $periodo, array $codigoInstituicoes, $ano, $codigoTCE)
+    /**
+     * @param int $ano
+     * @param int $codigoTCE
+     */
+    public function __construct(Periodo $periodo, array $codigoInstituicoes, protected $ano, protected $codigoTCE)
     {
         $this->periodo = $periodo;
         $this->codigoInstituicoes = $codigoInstituicoes;
-        $this->codigoTCE = $codigoTCE;
-        $this->ano = $ano;
     }
 
     abstract protected function processar();

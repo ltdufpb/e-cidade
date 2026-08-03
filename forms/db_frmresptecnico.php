@@ -34,8 +34,8 @@ $clresptecnico->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("y80_numcgm");
 $clrotulo->label("z01_nome");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_resptecnico.location.href='fis1_resptecnico002.php?chavepesquisa=$y22_codsani&chavepesquisa1=$y22_numcgm'</script>";
@@ -99,7 +99,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   <tr>
     <td align="top" colspan="2">
    <?php 
-    $chavepri= array("y22_codsani"=>$y22_codsani,"y22_numcgm"=>@$y22_numcgm);
+    $chavepri= ["y22_codsani"=>$y22_codsani,"y22_numcgm"=>@$y22_numcgm];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y22_codsani,y22_numcgm,z01_nome";
     $cliframe_alterar_excluir->sql=$clresptecnico->sql_query("","","*",""," y22_codsani = $y22_codsani");

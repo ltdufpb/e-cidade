@@ -38,7 +38,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
 $clruas = new cl_ruas;
 $clcaracter = new cl_caracter;
 $clcargrup = new cl_cargrup;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;

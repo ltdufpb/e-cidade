@@ -47,7 +47,7 @@ $clrotulo->label("v01_livro");
 $clrotulo->label("v01_dtoper");
 $clrotulo->label("v14_certid");
 $db_opcao = 1;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $v13_dtemis_dia = "";
 $v13_dtemis_mes = "";
 $v13_dtemis_ano = "";
@@ -59,7 +59,7 @@ $pagina         = "";
  */
 $sSqlLivros = "SELECT distinct v25_numero from certidlivro where v25_instit = ".db_getsession("DB_instit");
 $rsLIvros   = $oDaoCertidLivro->sql_record($sSqlLivros);
-$aLivros    = array();
+$aLivros    = [];
 $aLivros[0] = "Selecione";
 for ($i = 0; $i < $oDaoCertidLivro->numrows; $i++) {
   
@@ -76,7 +76,7 @@ if (isset($oGet->chave_pesquisa)) {
 
     $oDadosCertidao = db_utils::fieldsMemory($rsCertidao, 0);
     $v13_certid     = $oDadosCertidao->v13_certid;
-    $aDataEmissao   = explode("-", $oDadosCertidao->v13_dtemis);
+    $aDataEmissao   = explode("-", (string) $oDadosCertidao->v13_dtemis);
     $v13_dtemis_dia = $aDataEmissao[2];
     $v13_dtemis_mes = $aDataEmissao[1];
     $v13_dtemis_ano = $aDataEmissao[0];

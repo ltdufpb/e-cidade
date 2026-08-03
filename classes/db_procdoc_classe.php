@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE procdoc
 class cl_procdoc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p56_coddoc = 0; 
-   var $p56_descr = null; 
-   var $p56_ouvidoriatipodado = null;
+   public $p56_coddoc = 0; 
+   public $p56_descr = null; 
+   public $p56_ouvidoriatipodado = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  p56_coddoc = int4 = Código 
                  p56_descr = varchar(100) = Descrição 
                  p56_ouvidoriatipodado = int4 = Tipo de Dado 
                  ";
    //funcao construtor da classe
-   function cl_procdoc() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procdoc");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -98,10 +98,10 @@ class cl_procdoc {
          $this->erro_status = "0";
          return false;
        }
-       $this->p56_coddoc = pg_result($result,0,0);
+       $this->p56_coddoc = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from procdoc_p56_coddoc_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p56_coddoc)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p56_coddoc)){
          $this->erro_sql = " Campo p56_coddoc maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -138,7 +138,7 @@ class cl_procdoc {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Documentos ($this->p56_coddoc) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Documentos já Cadastrado";
@@ -162,12 +162,12 @@ class cl_procdoc {
      $resaco = $this->sql_record($this->sql_query_file($this->p56_coddoc));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,2450,'$this->p56_coddoc','I')");
-       $resac = db_query("insert into db_acount values($acount,400,2450,'','".AddSlashes(pg_result($resaco,0,'p56_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,400,2451,'','".AddSlashes(pg_result($resaco,0,'p56_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,400,1010636,'','".AddSlashes(pg_result($resaco,0,'p56_ouvidoriatipodado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,400,2450,'','".AddSlashes(pg_fetch_result($resaco,0,'p56_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,400,2451,'','".AddSlashes(pg_fetch_result($resaco,0,'p56_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,400,1010636,'','".AddSlashes(pg_fetch_result($resaco,0,'p56_ouvidoriatipodado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -176,10 +176,10 @@ class cl_procdoc {
       $this->atualizacampos();
      $sql = " update procdoc set ";
      $virgula = "";
-     if(trim($this->p56_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p56_coddoc"])){
+     if(trim((string) $this->p56_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p56_coddoc"])){
        $sql  .= $virgula." p56_coddoc = $this->p56_coddoc ";
        $virgula = ",";
-       if(trim($this->p56_coddoc) == null ){
+       if(trim((string) $this->p56_coddoc) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "p56_coddoc";
          $this->erro_banco = "";
@@ -189,10 +189,10 @@ class cl_procdoc {
          return false;
        }
      }
-     if(trim($this->p56_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p56_descr"])){
+     if(trim((string) $this->p56_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p56_descr"])){
        $sql  .= $virgula." p56_descr = '$this->p56_descr' ";
        $virgula = ",";
-       if(trim($this->p56_descr) == null ){
+       if(trim((string) $this->p56_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "p56_descr";
          $this->erro_banco = "";
@@ -215,15 +215,15 @@ class cl_procdoc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2450,'$this->p56_coddoc','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p56_coddoc"]))
-           $resac = db_query("insert into db_acount values($acount,400,2450,'".AddSlashes(pg_result($resaco,$conresaco,'p56_coddoc'))."','$this->p56_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,400,2450,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p56_coddoc'))."','$this->p56_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p56_descr"]))
-           $resac = db_query("insert into db_acount values($acount,400,2451,'".AddSlashes(pg_result($resaco,$conresaco,'p56_descr'))."','$this->p56_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,400,2451,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p56_descr'))."','$this->p56_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p56_ouvidoriatipodado"]))
-             $resac = db_query("insert into db_acount values($acount,400,1010636,'".AddSlashes(pg_result($resaco,$conresaco,'p56_ouvidoriatipodado'))."','$this->p56_ouvidoriatipodado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,400,1010636,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p56_ouvidoriatipodado'))."','$this->p56_ouvidoriatipodado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -268,12 +268,12 @@ class cl_procdoc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2450,'$p56_coddoc','E')");
-         $resac = db_query("insert into db_acount values($acount,400,2450,'','".AddSlashes(pg_result($resaco,$iresaco,'p56_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,400,2451,'','".AddSlashes(pg_result($resaco,$iresaco,'p56_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,400,1010636,'','".AddSlashes(pg_result($resaco,0,'p56_ouvidoriatipodado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,400,2450,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p56_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,400,2451,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p56_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,400,1010636,'','".AddSlashes(pg_fetch_result($resaco,0,'p56_ouvidoriatipodado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from procdoc
@@ -333,7 +333,7 @@ class cl_procdoc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procdoc";
@@ -347,7 +347,7 @@ class cl_procdoc {
    function sql_query ( $p56_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -368,7 +368,7 @@ class cl_procdoc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,7 +380,7 @@ class cl_procdoc {
    function sql_query_file ( $p56_coddoc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -401,7 +401,7 @@ class cl_procdoc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -36,7 +36,7 @@ require_once modification("libs/JSON.php");
 $post = db_utils::postMemory($_REQUEST);
 $post->json = str_replace("\\", "", $post->json);
 $parametro = JSON::create()->parse($post->json);
-$retorno = (object)array('erro' => false, 'mensagem' => '');
+$retorno = (object)['erro' => false, 'mensagem' => ''];
 
 try {
     db_inicio_transacao();
@@ -48,7 +48,7 @@ try {
             }
 
             $historicosRegistraPonto = ServidorRepository::getRegistraPontoNoPeriodoPorMatricula($parametro->matricula);
-            $retorno->historicos = array();
+            $retorno->historicos = [];
 
             if(!is_null($historicosRegistraPonto)) {
 

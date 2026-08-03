@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ?>
 <html>
@@ -69,8 +69,8 @@ if (isset($qual_modulo)) {
       where m.codmod = $qual_modulo";
     $result = db_query($sql);
     db_fieldsmemory($result,0);
-    for ($i=0; $i<pg_numrows($result); $i++) {
-      $arqs[$i] = pg_result($result,$i,'nomearq');
+    for ($i=0; $i<pg_num_rows($result); $i++) {
+      $arqs[$i] = pg_fetch_result($result,$i,'nomearq');
     }
   }
   
@@ -85,8 +85,8 @@ if (isset($qual_modulo)) {
   
   $result = db_query($sql);
   db_fieldsmemory($result,0);
-  for ($i=0; $i<pg_numrows($result); $i++) {
-    $arqs[$i] = pg_result($result,$i,'nomearq');
+  for ($i=0; $i<pg_num_rows($result); $i++) {
+    $arqs[$i] = pg_fetch_result($result,$i,'nomearq');
   }
   
 }
@@ -105,9 +105,9 @@ if ($tipo == 1) {
   $sqlmodulo = "select codmod, nomemod from db_sysmodulo where ativo is true";
   $resultmodulo = db_query($sqlmodulo);
   
-  for ($modulo = 0; $modulo < pg_numrows($resultmodulo); $modulo++) {
-    $qual_modulo = pg_result($resultmodulo,$modulo,"codmod");
-    $nomemod = pg_result($resultmodulo,$modulo,"nomemod");
+  for ($modulo = 0; $modulo < pg_num_rows($resultmodulo); $modulo++) {
+    $qual_modulo = pg_fetch_result($resultmodulo,$modulo,"codmod");
+    $nomemod = pg_fetch_result($resultmodulo,$modulo,"nomemod");
     
     ?>
     <td>Módulo:<?=$nomemod?></td>
@@ -121,8 +121,8 @@ if ($tipo == 1) {
       where m.codmod = $qual_modulo";
     $result = db_query($sql);
     db_fieldsmemory($result,0);
-    for ($i=0; $i<pg_numrows($result); $i++) {
-      $arqs[$i] = pg_result($result,$i,'nomearq');
+    for ($i=0; $i<pg_num_rows($result); $i++) {
+      $arqs[$i] = pg_fetch_result($result,$i,'nomearq');
     }
     
   }
@@ -149,12 +149,12 @@ for ($i=0; $i<sizeof($arqs); $i++) {
   $sql = "
     select relname
     from pg_class
-    where relname = '".trim($arqs[$i])."'";
+    where relname = '".trim((string) $arqs[$i])."'";
   $result = db_query($sql);
-  if (pg_numrows($result)==0) {
+  if (pg_num_rows($result)==0) {
     ?>
     <tr>
-    <td>Arquivo <?=trim($arqs[$i])?> não encontrado na base de dados...
+    <td>Arquivo <?=trim((string) $arqs[$i])?> não encontrado na base de dados...
     </td>
     </tr>
     <?php 
@@ -204,11 +204,11 @@ for ($i=0; $i<sizeof($arqs); $i++) {
     $sql .= "         OR has_table_privilege(c.oid, 'INSERT'::text) ";
     $sql .= "         OR has_table_privilege(c.oid, 'UPDATE'::text) ";
     $sql .= "         OR has_table_privilege(c.oid, 'REFERENCES'::text))";
-    $sql .= "    AND c.relname = '".trim($arqs[$i])."'";
+    $sql .= "    AND c.relname = '".trim((string) $arqs[$i])."'";
     $sql .= "ORDER BY attnum";
-    
+
     $campo = db_query($sql);
-    
+
     /*$sql = "select *
 from db_arquivo a
 inner join db_sysarqcamp ac on a.codarq = ac.codarq
@@ -218,17 +218,17 @@ order by ac.seqarq.;
 $campoc = db_query($sql);
 */
     $listaa = 0;
-    for ($x=0; $x<pg_numrows($campo); $x++) {
-      
-      $nomecam = trim(pg_result($campo,$x,'attname'));
+    for ($x=0; $x<pg_num_rows($campo); $x++) {
+
+      $nomecam = trim(pg_fetch_result($campo,$x,'attname'));
       $sql = "select * from db_syscampo where trim(nomecam) = '$nomecam'";
       $result = db_query($sql);
-      if (pg_numrows($result)==0) {
+      if (pg_num_rows($result)==0) {
         if ($listaa==0) {
           $listaa = 1;
           ?>
           <tr>
-          <td><hr>Arquivo <?=trim($arqs[$i])?>
+          <td><hr>Arquivo <?=trim((string) $arqs[$i])?>
           <hr>
           </td>
           </tr>
@@ -241,16 +241,16 @@ $campoc = db_query($sql);
         </tr>
         <?php 
       } else {
-        $type = str_replace(" ","",pg_result($result,0,'conteudo'));
-        $tam = pg_result($campo,$x,'atttypmod');
-        $typen = str_replace(" ","",conteudo(pg_result($campo,$x,'typname'),$tam));
+        $type = str_replace(" ","",pg_fetch_result($result,0,'conteudo'));
+        $tam = pg_fetch_result($campo,$x,'atttypmod');
+        $typen = str_replace(" ","",conteudo(pg_fetch_result($campo,$x,'typname'),$tam));
         if ($tipodif == "true") {
           if ($type != $typen) {
             if ($listaa==0) {
               $listaa = 1;
               ?>
               <tr>
-              <td><hr>Arquivo <?=trim($arqs[$i])?> <hr>
+              <td><hr>Arquivo <?=trim((string) $arqs[$i])?> <hr>
               </td>
               </tr>
               <?php 
@@ -262,11 +262,11 @@ $campoc = db_query($sql);
               ?>
               <td>Tipo diferente: <?=$nomecam?> banco: <?=$typen?> documentação:<?=$type?>.</td>
               <?php 
-              
-              fwrite($handle, "-- TABELA: ".trim($arqs[$i])." CAMPO: $nomecam  ERRO: Tipo diferente banco: $typen  documentacao: $type\n");
-              fwrite($handle, "ALTER TABLE ".trim($arqs[$i])." ALTER $nomecam TYPE $type;\n\n");
+
+              fwrite($handle, "-- TABELA: ".trim((string) $arqs[$i])." CAMPO: $nomecam  ERRO: Tipo diferente banco: $typen  documentacao: $type\n");
+              fwrite($handle, "ALTER TABLE ".trim((string) $arqs[$i])." ALTER $nomecam TYPE $type;\n\n");
               $apaga=false;
-              
+
             }
             ?>
             </tr>
@@ -275,66 +275,66 @@ $campoc = db_query($sql);
         }
       }
     }
-    
+
     $sql = "select nomearq, nomecam, conteudo, tamanho
 from db_sysarquivo a
 inner join db_sysarqcamp ac on a.codarq = ac.codarq
 inner join db_syscampo c on c.codcam = ac.codcam
-where trim(nomearq) = '".trim($arqs[$i])."'
+where trim(nomearq) = '".trim((string) $arqs[$i])."'
 order by ac.seqarq";
     $campo1 = db_query($sql);
-    
-    for ($x=0; $x<pg_numrows($campo1); $x++) {
+
+    for ($x=0; $x<pg_num_rows($campo1); $x++) {
       $tem = 0;
-      for ($y=0; $y<pg_numrows($campo); $y++) {
-        if (trim(pg_result($campo1,$x,'nomecam'))==trim(pg_result($campo,$y,'attname'))) {
+      for ($y=0; $y<pg_num_rows($campo); $y++) {
+        if (trim(pg_fetch_result($campo1,$x,'nomecam'))==trim(pg_fetch_result($campo,$y,'attname'))) {
           $tem = 1;
         }
       }
-      
+
       if ($tem!=1) {
         if ($listaa==0) {
           $listaa = 1;
           ?>
           <tr>
-          <td><hr>Arquivo <?=trim($arqs[$i])?> <hr>
+          <td><hr>Arquivo <?=trim((string) $arqs[$i])?> <hr>
           </td>
           </tr>
           <?php 
         }
-        
-        $nomecam  = trim(pg_result($campo1, $x, 'nomecam'));
-        $conteudo = trim(pg_result($campo1, $x, 'conteudo'));
-        $tamanho  = trim(pg_result($campo1, $x, 'tamanho'));
-        
+
+        $nomecam  = trim(pg_fetch_result($campo1, $x, 'nomecam'));
+        $conteudo = trim(pg_fetch_result($campo1, $x, 'conteudo'));
+        $tamanho  = trim(pg_fetch_result($campo1, $x, 'tamanho'));
+
         ?>
         <tr>
         <td> Campo <?=$nomecam . " - " . $conteudo . " - " . $tamanho?> não existe na base de dados.
         </td>
         </tr>
         <?php 
-        fwrite($handle, "-- TABELA: ".trim($arqs[$i])." CAMPO: $nomecam $conteudo  ERRO: Nao existe na base de dados\n");
-        fwrite($handle, "ALTER TABLE ".trim($arqs[$i])." ADD $nomecam $conteudo;\n\n");
+        fwrite($handle, "-- TABELA: ".trim((string) $arqs[$i])." CAMPO: $nomecam $conteudo  ERRO: Nao existe na base de dados\n");
+        fwrite($handle, "ALTER TABLE ".trim((string) $arqs[$i])." ADD $nomecam $conteudo;\n\n");
         $apaga=false;
       }
-      
+
     }
-    
+
     //$imp=false;
-    
+
     $sql = "select distinct nomesequencia
 from db_sysarquivo a
 inner join db_sysarqcamp c on a.codarq = c.codarq
 inner join db_syssequencia s on s.codsequencia = c.codsequencia
-where trim(a.nomearq) = '".trim($arqs[$i])."' and c.codsequencia > 0";
+where trim(a.nomearq) = '".trim((string) $arqs[$i])."' and c.codsequencia > 0";
     $res = db_query($sql);
-    if (pg_numrows($res)>0) {
+    if (pg_num_rows($res)>0) {
       $sql = "select relname
 from pg_class
-where relname = '".pg_result($res,0,0)."'";
+where relname = '".pg_fetch_result($res,0,0)."'";
       $res1 = db_query($sql);
-      if (pg_numrows($res1)==0) {
-        
+      if (pg_num_rows($res1)==0) {
+
         if ($imp == false) {
           $imp=true;
           ?>
@@ -345,29 +345,29 @@ where relname = '".pg_result($res,0,0)."'";
           </tr>
           <?php 
         }
-        
-        $nomeseq = trim(pg_result($res,0,0));
+
+        $nomeseq = trim(pg_fetch_result($res,0,0));
         ?>
         <tr>
         <td>Sequencia:<?=$nomeseq?> NAO cadastrada no banco!
         </td>
         </tr>
         <?php 
-        
+
         fwrite($handle, "-- SEQUENCIA: $nomeseq  ERRO: Nao existe na base de dados\n");
         fwrite($handle, "CREATE SEQUENCE $nomeseq;\n\n");
         $apaga=false;
-        
-        
+
+
         //exit;
       } else if (1 == 2) {
         echo "<tr>";
-        echo "<td>Sequencia: ".pg_result($res,0,0)." Cadastrada. ";
+        echo "<td>Sequencia: ".pg_fetch_result($res,0,0)." Cadastrada. ";
         echo "</td>";
         echo "</tr>";
       }
     }
-    
+
     //       select relname from pg_class inner join pg_index on indexrelid = relfilenode where indisprimary is false
     
   }

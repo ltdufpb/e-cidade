@@ -34,23 +34,23 @@
   require_once(modification("dbforms/db_funcoes.php"));
 
   // Valores padrão do filtro
-  $aRecursos      = array ( 'T' => 'Todos');
+  $aRecursos      =  [ 'T' => 'Todos'];
 
   // Filtro tipo de impressao
-  $aTipoImpressao = array( ''  => 'SELECIONE',
+  $aTipoImpressao = [ ''  => 'SELECIONE',
                            'A' => 'Analítico',
                            'S' => 'Sintético'                           
-                         );
+                         ];
 
   // Filtro tipo de impressao
-  $aFormatoImpressao = array( ''  => 'SELECIONE',
+  $aFormatoImpressao = [ ''  => 'SELECIONE',
                               'pdf' => 'PDF',
                               'csv' => 'CSV'                           
-                            );
+                            ];
 
-  $aQuebraBanco = array( '' => 'SELECIONE',
+  $aQuebraBanco = [ '' => 'SELECIONE',
                          1  => 'Sim',
-                         2  => 'Não');
+                         2  => 'Não'];
 ?>
 <html>
   <head>

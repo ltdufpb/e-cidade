@@ -39,14 +39,8 @@ use Illuminate\Http\Request;
  */
 class ConfiguracaoController extends Controller
 {
-    /**
-     * @var ConfiguracaoService
-     */
-    private $service;
-
-    public function __construct(ConfiguracaoService $service)
+    public function __construct(private readonly ConfiguracaoService $service)
     {
-        $this->service = $service;
     }
 
     public function index()

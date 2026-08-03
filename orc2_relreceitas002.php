@@ -31,14 +31,14 @@ include(modification("libs/db_sql.php"));
 include(modification("libs/db_liborcamento.php"));
 
 //db_postmemory($HTTP_POST_VARS,2);exit;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   $descr_inst .= $xvirg.$nomeinst ; 
   $xvirg = ', ';
@@ -63,7 +63,7 @@ $pagina = 1;
 $alt = 5;
 $estrut = 0;
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
 
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
@@ -85,28 +85,28 @@ for($i=0;$i<pg_numrows($result);$i++){
     $pdf->setfont('arial','',6);
   }
   $troca = 0;
-  if (substr($estrutural,1,10) == '0000000000'){
+  if (substr((string) $estrutural,1,10) == '0000000000'){
      $pdf->cell(23,$alt,db_formatar($estrutural,'receita'),0,0,"L",0);
      $pdf->cell(73,$alt,$o57_descr ,0,$troca,"L",0);
-  }elseif (substr($estrutural,2,9) == '000000000'){
+  }elseif (substr((string) $estrutural,2,9) == '000000000'){
      $pdf->cell(23,$alt,db_formatar($estrutural,'receita'),0,0,"L",0);
      $pdf->cell(73,$alt,' '.$o57_descr,0,$troca,"L",0);
-  }elseif (substr($estrutural,3,8) == '00000000'){
+  }elseif (substr((string) $estrutural,3,8) == '00000000'){
      $pdf->cell(23,$alt,db_formatar($estrutural,'receita'),0,0,"L",0);
      $pdf->cell(73,$alt,'  '.$o57_descr,0,$troca,"L",0);
-  }elseif (substr($estrutural,4,7) == '0000000'){
+  }elseif (substr((string) $estrutural,4,7) == '0000000'){
      $pdf->cell(23,$alt,db_formatar($estrutural,'receita'),0,0,"L",0);
      $pdf->cell(73,$alt,'   '.$o57_descr,0,$troca,"L",0);
-  }elseif (substr($estrutural,5,8) == '00000000'){
+  }elseif (substr((string) $estrutural,5,8) == '00000000'){
      $pdf->cell(23,$alt,db_formatar($estrutural,'receita'),0,0,"L",0);
      $pdf->cell(73,$alt,'    '.$o57_descr,0,$troca,"L",0);
-  }elseif (substr($estrutural,7,6) == '000000'){
+  }elseif (substr((string) $estrutural,7,6) == '000000'){
      $pdf->cell(23,$alt,db_formatar($estrutural,'receita'),0,0,"L",0);
      $pdf->cell(73,$alt,'      '.$o57_descr,0,$troca,"L",0);
-  }elseif(substr($estrutural,9,4) == '0000'){
+  }elseif(substr((string) $estrutural,9,4) == '0000'){
      $pdf->cell(23,$alt,db_formatar($estrutural,'receita'),0,0,"L",0);
      $pdf->cell(73,$alt,'        '.$o57_descr,0,$troca,"L",0);
-  }elseif(substr($estrutural,11,2) == '00'){
+  }elseif(substr((string) $estrutural,11,2) == '00'){
      $pdf->cell(23,$alt,db_formatar($estrutural,'receita'),0,0,"L",0);
      $pdf->cell(73,$alt,'          '.$o57_descr,0,$troca,"L",0);
   }else{
@@ -116,7 +116,7 @@ for($i=0;$i<pg_numrows($result);$i++){
  if($estrut != $estrutural) {
     if($o70_codrec != 0 ){
       $pdf->cell(7,$alt,db_formatar($o70_codigo,'s','0',4,'e'),0,0,"L",0);
-      $pdf->cell(35,$alt,substr($o15_descr,0,27),0,0,"L",0);
+      $pdf->cell(35,$alt,substr((string) $o15_descr,0,27),0,0,"L",0);
       $pdf->cell(10,$alt,$o70_codrec."-".db_CalculaDV($o70_codrec),0,0,"R",0);
       $pdf->cell(20,$alt,db_formatar($saldo_inicial,'f'),0,0,"R",0);
       $pdf->cell(20,$alt,db_formatar($saldo_prevadic_acum,'f'),0,0,"R",0);

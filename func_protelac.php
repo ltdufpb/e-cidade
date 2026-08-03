@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_protelac_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprotelac = new cl_protelac;
 $clprotelac->rotulo->label("h19_codigo");
 $clprotelac->rotulo->label("h19_assent");
@@ -98,9 +98,9 @@ $clprotelac->rotulo->label("h19_assent");
         }else{
            $sql = $clprotelac->sql_query("",$campos,"h19_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h19_assent)){
-          $repassa = array("chave_h19_codigo"=>$chave_h19_codigo,"chave_h19_assent"=>$chave_h19_assent);
+          $repassa = ["chave_h19_codigo"=>$chave_h19_codigo,"chave_h19_assent"=>$chave_h19_assent];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

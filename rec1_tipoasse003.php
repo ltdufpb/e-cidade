@@ -38,8 +38,8 @@ include(modification("classes/db_portariaproced_classe.php"));
 include(modification("classes/db_portariatipodocindividual_classe.php"));
 include(modification("classes/db_portariatipodoccoletiva_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cltipoasse        = new cl_tipoasse;
 $clportariatipo    = new cl_portariatipo;

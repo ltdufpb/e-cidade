@@ -16,10 +16,10 @@ class ZonaResidenciaEnum extends Enum
      */
     public function name()
     {
-        $data = array(
+        $data = [
             self::URBANA => "Urbana",
             self::RURAL => "Rural",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Zona de residência não encontrada.');

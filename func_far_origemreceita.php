@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_far_origemreceita_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaofar_origemreceita = new cl_far_origemreceita;
 $oDaofar_origemreceita->rotulo->label("fa40_i_codigo");
@@ -118,9 +118,9 @@ $oDaofar_origemreceita->rotulo->label("fa40_c_descr");
            $sql = $oDaofar_origemreceita->sql_query("",$campos,"fa40_i_codigo", $sValidade);
 
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa40_i_codigo)){
-          $repassa = array("chave_fa40_i_codigo"=>$chave_fa40_i_codigo,"chave_fa40_i_codigo"=>$chave_fa40_i_codigo);
+          $repassa = ["chave_fa40_i_codigo"=>$chave_fa40_i_codigo,"chave_fa40_i_codigo"=>$chave_fa40_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
 

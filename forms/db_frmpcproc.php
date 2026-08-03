@@ -51,8 +51,8 @@ $val = false;
           <td align="left">
             <?php 
             $desabilita = false;
-            $arr_numero = array();
-            $arr_index  = array();
+            $arr_numero = [];
+            $arr_index  = [];
 
             $where_liberado = "";
             $selecionalibera = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"),"pc30_liberado"));
@@ -69,7 +69,7 @@ $val = false;
               db_fieldsmemory($sql_solicita,$i,true);
               $arr_numero[$pc10_numero] = $pc10_numero;
               $arr_index[$pc10_numero]  = $i;
-              $arr_data = split("/",$pc10_data);
+              $arr_data = preg_split("#\\/#m",(string) $pc10_data);
 
               if ($i == 0) {
                 $pc10_data_dia = $arr_data[0];
@@ -98,7 +98,7 @@ $val = false;
                   }
                 </script>";
               db_fieldsmemory($sql_solicita,$arr_index[$cod]);
-              $arr_data = split("-",$pc10_data);
+              $arr_data = preg_split("#\\-#m",(string) $pc10_data);
 
               $pc10_data_dia = $arr_data[2];
               $pc10_data_mes = $arr_data[1];
@@ -146,10 +146,10 @@ $val = false;
           <td>
             <?php
 
-            $aOpcoesSituacao = array(
+            $aOpcoesSituacao = [
               2 => 'Autorizado',
               1 => 'Análise'
-            );
+            ];
             db_select('pc80_situacao',$aOpcoesSituacao,true,'', 'style="width:100%"');
             ?>
           </td>
@@ -162,8 +162,8 @@ $val = false;
           <td>
             <?php
 
-            $aTipos = array( 1 => 'Item',
-                             2 => 'Lote' );
+            $aTipos = [ 1 => 'Item',
+                             2 => 'Lote' ];
 
             db_select('pc80_tipoprocesso', $aTipos, true, '', 'style="width:100%"');
             ?>

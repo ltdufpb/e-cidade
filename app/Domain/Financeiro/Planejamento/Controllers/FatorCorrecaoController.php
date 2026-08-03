@@ -12,14 +12,8 @@ use Exception;
 
 class FatorCorrecaoController extends Controller
 {
-    /**
-     * @var FatorCorrecaoService
-     */
-    private $service;
-
-    public function __construct(FatorCorrecaoService $service)
+    public function __construct(private readonly FatorCorrecaoService $service)
     {
-        $this->service = $service;
     }
 
     /**

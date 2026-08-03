@@ -36,7 +36,7 @@ include(modification("classes/db_movrel_classe.php"));
 include(modification("classes/db_pontofs_classe.php"));
 include(modification("classes/db_rhpessoal_classe.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clconvenio = new cl_convenio;
 $clrelac = new cl_relac;
 $clmovrel = new cl_movrel;
@@ -92,7 +92,7 @@ if(isset($excluir)){
         break;
       }
     
-      if(trim($rub01) != ""){
+      if(trim((string) $rub01) != ""){
         $where_exc = " r10_anousu = $ano 
                    and r10_mesusu = $mes 
                    and r10_regist = $regist 
@@ -106,7 +106,7 @@ if(isset($excluir)){
         }
       }
 
-      if(trim($rub02) != ""){
+      if(trim((string) $rub02) != ""){
         $where_exc = " r10_anousu = $ano and r10_mesusu = $mes and r10_regist = $regist and r10_instit = ".db_getsession("DB_instit")." and r10_rubric = '$rub02'"; 
         $clpontofs->excluir($ano,$mes,$regist,$rub02,$where_exc);
         if($clpontofs->erro_status==0){
@@ -116,7 +116,7 @@ if(isset($excluir)){
         }
       }
 
-      if(trim($rub03) != ""){
+      if(trim((string) $rub03) != ""){
         $where_exc = " r10_anousu = $ano and r10_mesusu = $mes and r10_regist = $regist and r10_instit = ".db_getsession("DB_instit")." and r10_rubric = '$rub03'"; 
         $clpontofs->excluir($ano,$mes,$regist,$rub03,$where_exc);
         if($clpontofs->erro_status==0){

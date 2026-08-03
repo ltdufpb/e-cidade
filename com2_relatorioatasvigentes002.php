@@ -52,15 +52,15 @@ if (!empty($oParametros->fornecedor)) {
   $sWhere .= " and pc21_numcgm = {$oParametros->fornecedor} and pc24_pontuacao = 1 ";
 }
 
-$aCompilacoes    = array();
+$aCompilacoes    = [];
 $sSqlCompilacoes = $oDaoCompilacoes->sql_query_registro_licitacao(null, $sCampos, "pc10_numero", $sWhere);
 
 $rsCompilacoes   = $oDaoCompilacoes->sql_record($sSqlCompilacoes);
 if (!$rsCompilacoes || $oDaoCompilacoes->numrows == 0) {
 
-  $oParametros = (Object) array('inicio' => $oDataInicial->getDate(DBDate::DATA_PTBR),
+  $oParametros = (Object) ['inicio' => $oDataInicial->getDate(DBDate::DATA_PTBR),
                                 'fim' => $oDataFinal->getDate(DBDate::DATA_PTBR)
-                               );
+                               ];
   $sMensagem  = _M("{$sCaminhoMensagem}sem_atas_no_periodo", $oParametros);
 
   db_redireciona("db_erros.php?db_erro={$sMensagem}");

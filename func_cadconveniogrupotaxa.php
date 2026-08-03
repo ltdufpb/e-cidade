@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadconveniogrupotaxa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcadconveniogrupotaxa = new cl_cadconveniogrupotaxa;
 $clcadconveniogrupotaxa->rotulo->label("ar39_sequencial");
 $clcadconveniogrupotaxa->rotulo->label("ar39_sequencial");
@@ -98,9 +98,9 @@ $clcadconveniogrupotaxa->rotulo->label("ar39_sequencial");
         }else{
            $sql = $clcadconveniogrupotaxa->sql_query("",$campos,"ar39_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ar39_sequencial)){
-          $repassa = array("chave_ar39_sequencial"=>$chave_ar39_sequencial,"chave_ar39_sequencial"=>$chave_ar39_sequencial);
+          $repassa = ["chave_ar39_sequencial"=>$chave_ar39_sequencial,"chave_ar39_sequencial"=>$chave_ar39_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

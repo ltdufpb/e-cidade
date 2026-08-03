@@ -33,8 +33,8 @@ require_once(modification("classes/db_inventario_classe.php"));
 require_once(modification("classes/db_inventarioanulado_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
  
 $clinventario        = new cl_inventario;
 $clinventarioanulado = new cl_inventarioanulado;

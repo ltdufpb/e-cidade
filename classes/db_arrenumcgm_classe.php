@@ -50,10 +50,10 @@ class cl_arrenumcgm {
                  k00_numpre = int4 = Numpre 
                  ";
    //funcao construtor da classe 
-   public function cl_arrenumcgm() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrenumcgm"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    public function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_arrenumcgm {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Grava os numpres dos cgm´s. ($this->k00_numcgm."-".$this->k00_numpre) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Grava os numpres dos cgm´s. já Cadastrado";
@@ -130,12 +130,12 @@ class cl_arrenumcgm {
      $resaco = $this->sql_record($this->sql_query_file($this->k00_numcgm,$this->k00_numpre));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,372,'$this->k00_numcgm','I')");
        $resac = db_query("insert into db_acountkey values($acount,361,'$this->k00_numpre','I')");
-       $resac = db_query("insert into db_acount values($acount,511,372,'','".AddSlashes(pg_result($resaco,0,'k00_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,511,361,'','".AddSlashes(pg_result($resaco,0,'k00_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,511,372,'','".AddSlashes(pg_fetch_result($resaco,0,'k00_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,511,361,'','".AddSlashes(pg_fetch_result($resaco,0,'k00_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_arrenumcgm {
       $this->atualizacampos();
      $sql = " update arrenumcgm set ";
      $virgula = "";
-     if(trim($this->k00_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numcgm"])){ 
+     if(trim((string) $this->k00_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numcgm"])){ 
        $sql  .= $virgula." k00_numcgm = $this->k00_numcgm ";
        $virgula = ",";
-       if(trim($this->k00_numcgm) == null ){ 
+       if(trim((string) $this->k00_numcgm) == null ){ 
          $this->erro_sql = " Campo cgm nao Informado.";
          $this->erro_campo = "k00_numcgm";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_arrenumcgm {
          return false;
        }
      }
-     if(trim($this->k00_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpre"])){ 
+     if(trim((string) $this->k00_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpre"])){ 
        $sql  .= $virgula." k00_numpre = $this->k00_numpre ";
        $virgula = ",";
-       if(trim($this->k00_numpre) == null ){ 
+       if(trim((string) $this->k00_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "k00_numpre";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_arrenumcgm {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,372,'$this->k00_numcgm','A')");
          $resac = db_query("insert into db_acountkey values($acount,361,'$this->k00_numpre','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k00_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,511,372,'".AddSlashes(pg_result($resaco,$conresaco,'k00_numcgm'))."','$this->k00_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,511,372,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k00_numcgm'))."','$this->k00_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k00_numpre"]))
-           $resac = db_query("insert into db_acount values($acount,511,361,'".AddSlashes(pg_result($resaco,$conresaco,'k00_numpre'))."','$this->k00_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,511,361,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k00_numpre'))."','$this->k00_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_arrenumcgm {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,372,'$k00_numcgm','E')");
          $resac = db_query("insert into db_acountkey values($acount,361,'$k00_numpre','E')");
-         $resac = db_query("insert into db_acount values($acount,511,372,'','".AddSlashes(pg_result($resaco,$iresaco,'k00_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,511,361,'','".AddSlashes(pg_result($resaco,$iresaco,'k00_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,511,372,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k00_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,511,361,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k00_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from arrenumcgm
@@ -304,7 +304,7 @@ class cl_arrenumcgm {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:arrenumcgm";
@@ -348,7 +348,7 @@ class cl_arrenumcgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,7 +391,7 @@ class cl_arrenumcgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -432,7 +432,7 @@ class cl_arrenumcgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

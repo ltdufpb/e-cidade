@@ -69,6 +69,7 @@ class PreferenciaCliente extends Preferencia {
    * Salva as preferencias no arquivo de configuração
    * @return void
    */
+  #[\Override]
   public function salvarPreferencias() {
 
     $this->oPreferencia->iTentativasLogin = $this->iTentativasLogin;

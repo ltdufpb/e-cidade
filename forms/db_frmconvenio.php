@@ -150,7 +150,7 @@ db_input('r56_poseve2',4,$Ir56_poseve,true,'text',$db_opcao,"onChange='js_preenc
             </td>
             <td> 
         <?php 
-        $arr_quantval = array("f"=>"Valor","t"=>"Quantidade");
+        $arr_quantval = ["f"=>"Valor","t"=>"Quantidade"];
         db_select('r56_vq01',$arr_quantval,true,$db_opcao,"");
         ?>
             </td>
@@ -283,7 +283,7 @@ function js_preenchepesquisa(chave){
   db_iframe_convenio.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

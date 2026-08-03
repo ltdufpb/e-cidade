@@ -61,9 +61,9 @@ if (isset ( $opcao )) {
 
 if (isset ( $incluir )) {
 
-  $aDataIni = explode('/', $sd97_d_dataini);
+  $aDataIni = explode('/', (string) $sd97_d_dataini);
   $dIni     = $aDataIni[2]."-".$aDataIni[1]."-".$aDataIni[0];
-  $aDataFim = explode('/', $sd97_d_datafim);
+  $aDataFim = explode('/', (string) $sd97_d_datafim);
   $dFim     = $aDataFim[2]."-".$aDataFim[1]."-".$aDataFim[0];
   $sWhere   = " sd29_d_data between '$dIni' and  '$dFim' ";
   $sWhere  .= " and sd24_c_digitada = 'S' ";
@@ -121,9 +121,9 @@ if (isset ( $incluir )) {
 
 } else if (isset ( $alterar )) {
 
-  $aDataIni = explode('/',$sd97_d_dataini);
+  $aDataIni = explode('/',(string) $sd97_d_dataini);
   $dIni     = $aDataIni[2]."-".$aDataIni[1]."-".$aDataIni[0];
-  $aDataFim = explode('/',$sd97_d_datafim);
+  $aDataFim = explode('/',(string) $sd97_d_datafim);
   $dFim     = $aDataFim[2]."-".$aDataFim[1]."-".$aDataFim[0];
   $sWhere   = " sd29_d_data between '$dIni' and  '$dFim' ";
   $sWhere  .= " and sd24_c_digitada = 'S' ";
@@ -196,7 +196,7 @@ if (isset ( $incluir )) {
       $sd97_i_compano = $oFechamento->sd97_i_compano;
 
     }
-    $aDataIni           = explode('-',$oFechamento->sd97_d_datafim);
+    $aDataIni           = explode('-',(string) $oFechamento->sd97_d_datafim);
     $sd97_d_dataini     = somaDataDiaMesAno($aDataIni[2], $aDataIni[1], $aDataIni[0], 1, 0, 0);
     $aData              = explode('/', $sd97_d_dataini);
     $sd97_d_dataini_dia = $aData[0];

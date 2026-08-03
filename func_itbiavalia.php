@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbiavalia_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clitbiavalia = new cl_itbiavalia;
 $clitbiavalia->rotulo->label("it14_guia");
 $clitbiavalia->rotulo->label("it14_dtvenc");
@@ -98,9 +98,9 @@ $clitbiavalia->rotulo->label("it14_dtvenc");
         }else{
            $sql = $clitbiavalia->sql_query("",$campos,"it14_guia","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_it14_dtvenc)){
-          $repassa = array("chave_it14_guia"=>$chave_it14_guia,"chave_it14_dtvenc"=>$chave_it14_dtvenc);
+          $repassa = ["chave_it14_guia"=>$chave_it14_guia,"chave_it14_dtvenc"=>$chave_it14_dtvenc];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

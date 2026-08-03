@@ -104,7 +104,7 @@ function js_executaIframe(val) {
         ?>  
     <?=$Lpc01_ativo?> 
     <?php 
-    $arr_truefalse = array('f'=>'Não','t'=>'Sim');
+    $arr_truefalse = ['f'=>'Não','t'=>'Sim'];
     db_select("pc01_ativo",$arr_truefalse,true,$db_opcao);
     ?>
     </td>
@@ -215,7 +215,7 @@ function js_preenchepesquisa(chave){
   db_iframe_pcmater.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

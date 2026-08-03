@@ -106,7 +106,7 @@ class AbonoRepository
      * @param Abono|null $abono
      * @throws BusinessException
      */
-    public function delete(Abono $abono = null)
+    public function delete(?Abono $abono = null)
     {
         $id = $abono instanceof Abono ? $abono->getSequencial() : null;
 
@@ -124,7 +124,7 @@ class AbonoRepository
      * @return bool|Abono
      * @throws BusinessException
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhpessoalprocessoabono;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

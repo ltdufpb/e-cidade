@@ -34,7 +34,7 @@ require_once(modification("model/pessoal/ServidorRepository.model.php"));
 require_once(modification("libs/JSON.php"));
 
 $oJson = new services_json();
-$oGet = db_utils::postMemory($HTTP_GET_VARS);
+$oGet = db_utils::postMemory($_GET);
 $iInstituicao = db_getsession("DB_instit");
 $oParametros = $oJson->decode(str_replace("\\", "", $oGet->json));
 
@@ -66,7 +66,7 @@ try {
     define("ORDENACAO_RELATORIO_NUMERICA", "n");
     define("ORDENACAO_RELATORIO_ALFABETICA", "a");
 
-    $aWhere = array();
+    $aWhere = [];
     $sDescricaoSelecao = '';
 
     /**
@@ -74,12 +74,12 @@ try {
      */
     if (!empty($oParametros->iSelecao)) {
 
-        $sSelecao = trim(db_utils::getDao("selecao")->getCondicaoSelecao($oParametros->iSelecao));
+        $sSelecao = trim((string) db_utils::getDao("selecao")->getCondicaoSelecao($oParametros->iSelecao));
 
         if (!empty($sSelecao)) {
             $aWhere['selecao'] = $sSelecao;
 
-            $sDescricaoSelecao = trim(db_utils::getDao("selecao")->getDescricaoSelecao($oParametros->iSelecao, $iInstituicao));
+            $sDescricaoSelecao = trim((string) db_utils::getDao("selecao")->getDescricaoSelecao($oParametros->iSelecao, $iInstituicao));
             $sDescricaoSelecao = "\nSELEÇÃO : " . $sDescricaoSelecao;
         }
     }
@@ -281,11 +281,11 @@ try {
         throw new BusinessException("Nenhum Servidor encontrado nos Filtros Selecionados");
     }
 
-    $aDadosRelatorios = array();
-    $aGrupos = array();
-    $aRubricas = array();
-    $aTotalServidores = array();
-    $aRubricasOrdenacao = array();
+    $aDadosRelatorios = [];
+    $aGrupos = [];
+    $aRubricas = [];
+    $aTotalServidores = [];
+    $aRubricasOrdenacao = [];
     $lExisteCalculo = false;
     /**
      * Agrupa servidores pelo tipo de relatório
@@ -456,7 +456,7 @@ try {
         $oPdf->addpage();
 
         $oPdf->setfont('arial', 'b', 8);
-        $oPdf->cell($oTamanhoColunas->total, $iAlt, "{$sEstruturalFiltro} - " . strtoupper($aGrupos[$sEstruturalFiltro]), 1, 1, "L", 1);
+        $oPdf->cell($oTamanhoColunas->total, $iAlt, "{$sEstruturalFiltro} - " . strtoupper((string) $aGrupos[$sEstruturalFiltro]), 1, 1, "L", 1);
         $oPdf->cell($oTamanhoColunas->rubrica, $iAlt, 'RUBRICA', 1, 0, "C", 1);
         $oPdf->cell($oTamanhoColunas->funcionarios, $iAlt, 'N.FUNC.', 1, 0, "C", 1);
         $oPdf->cell($oTamanhoColunas->quantidade, $iAlt, 'QUANT.', 1, 0, "C", 1);
@@ -483,7 +483,7 @@ try {
                 switch ($oEventoFinanceiro->getNatureza()) {
 
                     default:
-                        continue;
+                        break;
                         break;
 
                     case EventoFinanceiroFolha::BASE:
@@ -534,14 +534,14 @@ try {
 
                                 break;//FIM Case R992
                         }
-                        continue;
+                        break;
 
                         break;  //FIM Case TIPO EventoFinanceiro == BASE
 
                     case EventoFinanceiroFolha::PROVENTO:
 
                         if ($oRubrica->getCodigo() >= 'R950') {
-                            continue;
+                            break;
                         }
 
                         $oTotalEventosRubricas->nValorProventos += $oEventoFinanceiro->getValor();
@@ -583,7 +583,7 @@ try {
                     case EventoFinanceiroFolha::DESCONTO:
 
                         if ($oRubrica->getCodigo() >= 'R950') {
-                            continue;
+                            break;
                         }
 
                         $oTotalEventosRubricas->nValorDescontos += $oEventoFinanceiro->getValor();
@@ -725,10 +725,10 @@ function mostraTotalizador($oPdf, $aRubricas, $oDadosFolha, $oDadosPatronais)
 
     $oPdf->setfont('arial', '', 7);
 
-    $nValorBasePrevidencia1 = $oDadosPatronais->aBasePrevidencia1->nValor ? $oDadosPatronais->aBasePrevidencia1->nValor : 1;
-    $nValorBasePrevidencia2 = $oDadosPatronais->aBasePrevidencia2->nValor ? $oDadosPatronais->aBasePrevidencia2->nValor : 1;
-    $nValorBasePrevidencia3 = $oDadosPatronais->aBasePrevidencia3->nValor ? $oDadosPatronais->aBasePrevidencia3->nValor : 1;
-    $nValorBasePrevidencia4 = $oDadosPatronais->aBasePrevidencia4->nValor ? $oDadosPatronais->aBasePrevidencia4->nValor : 1;
+    $nValorBasePrevidencia1 = $oDadosPatronais->aBasePrevidencia1->nValor ?: 1;
+    $nValorBasePrevidencia2 = $oDadosPatronais->aBasePrevidencia2->nValor ?: 1;
+    $nValorBasePrevidencia3 = $oDadosPatronais->aBasePrevidencia3->nValor ?: 1;
+    $nValorBasePrevidencia4 = $oDadosPatronais->aBasePrevidencia4->nValor ?: 1;
 
     $nValorPrevidencia1 = round(($oDadosFolha->nValorBasePrevidencia1 * 100) / $nValorBasePrevidencia1, 2);
     $nValorPrevidencia2 = round(($oDadosFolha->nValorBasePrevidencia2 * 100) / $nValorBasePrevidencia2, 2);
@@ -792,40 +792,25 @@ function mostraTotalizador($oPdf, $aRubricas, $oDadosFolha, $oDadosPatronais)
 function nomeFolhaAtual($sNomeTabela)
 {
 
-    switch ($sNomeTabela) {
-
-        case CalculoFolha::CALCULO_SALARIO : // GERFSAL
-            $sNomeFolhaAtual = "FOLHA SALÁRIO";
-            break;
-
-        case CalculoFolha::CALCULO_RESCISAO :  // GERFRES
-            $sNomeFolhaAtual = "FOLHA RECISÃO";
-            break;
-
-        case CalculoFolha::CALCULO_ADIANTAMENTO : // GERFADI
-            $sNomeFolhaAtual = "FOLHA ADIANTAMENTO";
-            break;
-
-        case CalculoFolha::CALCULO_13o : // GERFS13
-            $sNomeFolhaAtual = "FOLHA 13º SALÁRIO";
-            break;
-
-        case CalculoFolha::CALCULO_COMPLEMENTAR : // GERFCOM
-            $sNomeFolhaAtual = "FOLHA COMPLEMENTAR";
-            break;
-
-        case CalculoFolha::CALCULO_SUPLEMENTAR : // SUPLEMENTAR
-            $sNomeFolhaAtual = "FOLHA SUPLEMENTAR";
-            break;
-
-        case CalculoFolha::CALCULO_PROVISAO_FERIAS : // GERFPROVFER
-            $sNomeFolhaAtual = "FOLHA PROVISÃO DE FÉRIAS";
-            break;
-
-        case CalculoFolha::CALCULO_PROVISAO_13o : // GERFPROVS13
-            $sNomeFolhaAtual = "FOLHA PROVISÃO 13º SALÁRIO";
-            break;
-    }
+    $sNomeFolhaAtual = match ($sNomeTabela) {
+        // GERFSAL
+        CalculoFolha::CALCULO_SALARIO => "FOLHA SALÁRIO",
+        // GERFRES
+        CalculoFolha::CALCULO_RESCISAO => "FOLHA RECISÃO",
+        // GERFADI
+        CalculoFolha::CALCULO_ADIANTAMENTO => "FOLHA ADIANTAMENTO",
+        // GERFS13
+        CalculoFolha::CALCULO_13o => "FOLHA 13º SALÁRIO",
+        // GERFCOM
+        CalculoFolha::CALCULO_COMPLEMENTAR => "FOLHA COMPLEMENTAR",
+        // SUPLEMENTAR
+        CalculoFolha::CALCULO_SUPLEMENTAR => "FOLHA SUPLEMENTAR",
+        // GERFPROVFER
+        CalculoFolha::CALCULO_PROVISAO_FERIAS => "FOLHA PROVISÃO DE FÉRIAS",
+        // GERFPROVS13
+        CalculoFolha::CALCULO_PROVISAO_13o => "FOLHA PROVISÃO 13º SALÁRIO",
+        default => $sNomeFolhaAtual,
+    };
 
     return $sNomeFolhaAtual;
 }

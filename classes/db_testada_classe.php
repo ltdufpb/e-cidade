@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE testada
 class cl_testada {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $j36_idbql = 0;
-   var $j36_face = 0;
-   var $j36_codigo = 0;
-   var $j36_testad = 0;
-   var $j36_testle = 0;
-   var $j36_orientacao = 0;
+   public $j36_idbql = 0;
+   public $j36_face = 0;
+   public $j36_codigo = 0;
+   public $j36_testad = 0;
+   public $j36_testle = 0;
+   public $j36_orientacao = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  j36_idbql = int4 = Id lote
                  j36_face = int4 = Face
                  j36_codigo = int4 = Rua
@@ -58,10 +58,10 @@ class cl_testada {
                  j36_orientacao = int4 = Orientação
                  ";
    //funcao construtor da classe
-   function cl_testada() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("testada");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -144,7 +144,7 @@ class cl_testada {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Testadas do Lote ($this->j36_idbql."-".$this->j36_face) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Testadas do Lote já Cadastrado";
@@ -168,16 +168,16 @@ class cl_testada {
      $resaco = $this->sql_record($this->sql_query_file($this->j36_idbql,$this->j36_face));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,98,'$this->j36_idbql','I')");
        $resac = db_query("insert into db_acountkey values($acount,100,'$this->j36_face','I')");
-       $resac = db_query("insert into db_acount values($acount,24,98,'','".AddSlashes(pg_result($resaco,0,'j36_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,24,100,'','".AddSlashes(pg_result($resaco,0,'j36_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,24,99,'','".AddSlashes(pg_result($resaco,0,'j36_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,24,101,'','".AddSlashes(pg_result($resaco,0,'j36_testad'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,24,102,'','".AddSlashes(pg_result($resaco,0,'j36_testle'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,24,1011928,'','".AddSlashes(pg_result($resaco,0,'j36_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,24,98,'','".AddSlashes(pg_fetch_result($resaco,0,'j36_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,24,100,'','".AddSlashes(pg_fetch_result($resaco,0,'j36_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,24,99,'','".AddSlashes(pg_fetch_result($resaco,0,'j36_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,24,101,'','".AddSlashes(pg_fetch_result($resaco,0,'j36_testad'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,24,102,'','".AddSlashes(pg_fetch_result($resaco,0,'j36_testle'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,24,1011928,'','".AddSlashes(pg_fetch_result($resaco,0,'j36_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -186,10 +186,10 @@ class cl_testada {
       $this->atualizacampos();
      $sql = " update testada set ";
      $virgula = "";
-     if(trim($this->j36_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_idbql"])){
+     if(trim((string) $this->j36_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_idbql"])){
        $sql  .= $virgula." j36_idbql = $this->j36_idbql ";
        $virgula = ",";
-       if(trim($this->j36_idbql) == null ){
+       if(trim((string) $this->j36_idbql) == null ){
          $this->erro_sql = " Campo Id lote nao Informado.";
          $this->erro_campo = "j36_idbql";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_testada {
          return false;
        }
      }
-     if(trim($this->j36_face)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_face"])){
+     if(trim((string) $this->j36_face)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_face"])){
        $sql  .= $virgula." j36_face = $this->j36_face ";
        $virgula = ",";
-       if(trim($this->j36_face) == null ){
+       if(trim((string) $this->j36_face) == null ){
          $this->erro_sql = " Campo Face nao Informado.";
          $this->erro_campo = "j36_face";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_testada {
          return false;
        }
      }
-     if(trim($this->j36_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_codigo"])){
+     if(trim((string) $this->j36_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_codigo"])){
        $sql  .= $virgula." j36_codigo = $this->j36_codigo ";
        $virgula = ",";
-       if(trim($this->j36_codigo) == null ){
+       if(trim((string) $this->j36_codigo) == null ){
          $this->erro_sql = " Campo Rua nao Informado.";
          $this->erro_campo = "j36_codigo";
          $this->erro_banco = "";
@@ -225,10 +225,10 @@ class cl_testada {
          return false;
        }
      }
-     if(trim($this->j36_testad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_testad"])){
+     if(trim((string) $this->j36_testad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_testad"])){
        $sql  .= $virgula." j36_testad = $this->j36_testad ";
        $virgula = ",";
-       if(trim($this->j36_testad) == null ){
+       if(trim((string) $this->j36_testad) == null ){
          $this->erro_sql = " Campo Testada Ml nao Informado.";
          $this->erro_campo = "j36_testad";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_testada {
          return false;
        }
      }
-     if(trim($this->j36_testle)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_testle"])){
+     if(trim((string) $this->j36_testle)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_testle"])){
        $sql  .= $virgula." j36_testle = $this->j36_testle ";
        $virgula = ",";
-       if(trim($this->j36_testle) == null ){
+       if(trim((string) $this->j36_testle) == null ){
          $this->erro_sql = " Campo Testada Medida nao Informado.";
          $this->erro_campo = "j36_testle";
          $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_testada {
        }
      }
 
-     if(trim($this->j36_orientacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_orientacao"])){
+     if(trim((string) $this->j36_orientacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j36_orientacao"])){
       $sql  .= $virgula." j36_orientacao = $this->j36_orientacao ";
       $virgula = ",";
-      if(trim($this->j36_orientacao) == null ){
+      if(trim((string) $this->j36_orientacao) == null ){
         $this->erro_sql = " Campo Orientação nao Informado.";
         $this->erro_campo = "j36_orientacao";
         $this->erro_banco = "";
@@ -276,22 +276,22 @@ class cl_testada {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,98,'$this->j36_idbql','A')");
          $resac = db_query("insert into db_acountkey values($acount,100,'$this->j36_face','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j36_idbql"]))
-           $resac = db_query("insert into db_acount values($acount,24,98,'".AddSlashes(pg_result($resaco,$conresaco,'j36_idbql'))."','$this->j36_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,24,98,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j36_idbql'))."','$this->j36_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j36_face"]))
-           $resac = db_query("insert into db_acount values($acount,24,100,'".AddSlashes(pg_result($resaco,$conresaco,'j36_face'))."','$this->j36_face',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,24,100,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j36_face'))."','$this->j36_face',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j36_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,24,99,'".AddSlashes(pg_result($resaco,$conresaco,'j36_codigo'))."','$this->j36_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,24,99,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j36_codigo'))."','$this->j36_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j36_testad"]))
-           $resac = db_query("insert into db_acount values($acount,24,101,'".AddSlashes(pg_result($resaco,$conresaco,'j36_testad'))."','$this->j36_testad',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,24,101,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j36_testad'))."','$this->j36_testad',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j36_testle"]))
-           $resac = db_query("insert into db_acount values($acount,24,102,'".AddSlashes(pg_result($resaco,$conresaco,'j36_testle'))."','$this->j36_testle',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,24,102,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j36_testle'))."','$this->j36_testle',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j36_orientacao"]))
-           $resac = db_query("insert into db_acount values($acount,24,1011928,'".AddSlashes(pg_result($resaco,$conresaco,'j36_orientacao'))."','$this->j36_orientacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");  
+           $resac = db_query("insert into db_acount values($acount,24,1011928,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j36_orientacao'))."','$this->j36_orientacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");  
        }
      }
      $result = db_query($sql);
@@ -336,16 +336,16 @@ class cl_testada {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,98,'$j36_idbql','E')");
          $resac = db_query("insert into db_acountkey values($acount,100,'$j36_face','E')");
-         $resac = db_query("insert into db_acount values($acount,24,98,'','".AddSlashes(pg_result($resaco,$iresaco,'j36_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,24,100,'','".AddSlashes(pg_result($resaco,$iresaco,'j36_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,24,99,'','".AddSlashes(pg_result($resaco,$iresaco,'j36_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,24,101,'','".AddSlashes(pg_result($resaco,$iresaco,'j36_testad'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,24,102,'','".AddSlashes(pg_result($resaco,$iresaco,'j36_testle'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,24,1011928,'','".AddSlashes(pg_result($resaco,$iresaco,'j36_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,24,98,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j36_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,24,100,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j36_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,24,99,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j36_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,24,101,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j36_testad'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,24,102,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j36_testle'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,24,1011928,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j36_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from testada
@@ -411,7 +411,7 @@ class cl_testada {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:testada";
@@ -459,7 +459,7 @@ class cl_testada {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -500,7 +500,7 @@ class cl_testada {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

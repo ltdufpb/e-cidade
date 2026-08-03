@@ -31,7 +31,7 @@
   include(modification("libs/db_usuariosonline.php"));
   include(modification("classes/db_issvar_classe.php"));
   include(modification("classes/db_issvarnotas_classe.php"));
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
   $clissvar = new cl_issvar;
   $clissvarnotas = new cl_issvarnotas;
   $clissvar->rotulo->label();
@@ -55,14 +55,14 @@
 						where arrenumcgm.k00_numcgm=$z01_numcgm
             order by q05_ano desc, q05_mes desc
             ";
-    
-    
+
+
     //$sql04 = $clissvar->sql_query_arrenumcgm("","issvar.*,k00_dtpaga,arrecad.k00_valor as valdev,arrepaga.k00_valor as valpag","","arrenumcgm.k00_numcgm=".$z01_numcgm."  ".$where_data);
    
   }else if($tipo=="inscr"){
     $q02_inscr=$valor;
     // $sql04 = $clissvar->sql_query_arreinscr("","issvar.*,k00_dtpaga,arrecad.k00_valor as valdev,arrepaga.k00_valor as valpag","q05_ano desc","k00_inscr=".$q02_inscr."  ".$where_data);
-			
+
 			$sql04 ="
 			        select issvar.*,k00_dtpaga,arrecad.k00_valor as valdev,arrepaga.k00_valor as valpag 
 							from issvar 

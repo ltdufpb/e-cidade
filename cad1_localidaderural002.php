@@ -33,10 +33,10 @@
 	require_once(modification("classes/db_localidaderural_classe.php"));
 	require_once(modification("dbforms/db_funcoes.php"));
 	
-	parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+	parse_str((string) $_SERVER["QUERY_STRING"], $result);
 	
 	foreach ($_POST as $sChave=>$sValor) {
-		$_POST[$sChave] = stripslashes($sValor);
+		$_POST[$sChave] = stripslashes((string) $sValor);
 	}
 	
 	db_postmemory($_POST);

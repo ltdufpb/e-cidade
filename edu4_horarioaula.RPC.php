@@ -54,12 +54,12 @@ try {
        * Retorna os turnos cadastrados na Secretaria da Educacao
        */
 
-      $oRetorno->aTurnos = array();
+      $oRetorno->aTurnos = [];
       foreach( TurnoRepository::getTurnosCadastrados() as $oTurno) {
 
         $oDado               = new stdClass();
         $oDado->iCodigo      = $oTurno->getCodigoTurno();
-        $oDado->sDescricao   = urlencode($oTurno->getDescricao());
+        $oDado->sDescricao   = urlencode((string) $oTurno->getDescricao());
         $oDado->aTurnosReferente = $oTurno->getTurnoReferente();
         $oRetorno->aTurnos[] = $oDado;
       }
@@ -73,7 +73,7 @@ try {
       $oDaoPeriodoAula = new cl_periodoaula();
       $sSqlPeriodo     = $oDaoPeriodoAula->sql_query_file(null, "*", "ed08_i_sequencia");
       $rsPeriodo       = $oDaoPeriodoAula->sql_record( $sSqlPeriodo );
-      $oRetorno->aPeriodos = array();
+      $oRetorno->aPeriodos = [];
       if ($rsPeriodo && $oDaoPeriodoAula->numrows > 0)  {
 
         $iLinhas = $oDaoPeriodoAula->numrows;
@@ -82,7 +82,7 @@ try {
           $oDados               = db_utils::fieldsMemory($rsPeriodo, $i);
           $oPeriodo             = new stdClass();
           $oPeriodo->iCodigo    = $oDados->ed08_i_codigo;
-          $oPeriodo->sDescricao = urlencode($oDados->ed08_c_descr);
+          $oPeriodo->sDescricao = urlencode((string) $oDados->ed08_c_descr);
           $oPeriodo->iOrdem     = $oDados->ed08_i_sequencia;
 
           $oRetorno->aPeriodos[] = $oPeriodo;
@@ -181,7 +181,7 @@ try {
       /**
        * Retorna os períodos de aula da escola organizado pelo turno
        */
-      $aPeriodosEscola = array();
+      $aPeriodosEscola = [];
       $oEscola         = EscolaRepository::getEscolaByCodigo($iEscola);
 
       /**
@@ -191,7 +191,7 @@ try {
 
         $iTurno = $oPeriodoEscola->getTurno()->getCodigoTurno();
         $iOrdem = $oPeriodoEscola->getTurno()->getOrdem();
-        $sTurno = urlencode( $oPeriodoEscola->getTurno()->getDescricao() );
+        $sTurno = urlencode( (string) $oPeriodoEscola->getTurno()->getDescricao() );
 
         $sHash = "{$iOrdem}#{$iTurno}";
 
@@ -202,7 +202,7 @@ try {
           $oDadosTurno->sTurno      = $sTurno;
           $oDadosTurno->sHoraInicio = "";
           $oDadosTurno->sHoraFim    = "";
-          $oDadosTurno->aPeriodos   = array();
+          $oDadosTurno->aPeriodos   = [];
           $aPeriodosEscola[$sHash] = $oDadosTurno;
         }
 
@@ -211,7 +211,7 @@ try {
         $oPeriodo->sTurno                   = $sTurno;
         $oPeriodo->iCodigoVinculo           = $oPeriodoEscola->getCodigo();
         $oPeriodo->iCodigoPeriodo           = $oPeriodoEscola->getPeriodoAula();
-        $oPeriodo->sDescricaoPeriodo        = urlencode( $oPeriodoEscola->getDescricao() );
+        $oPeriodo->sDescricaoPeriodo        = urlencode( (string) $oPeriodoEscola->getDescricao() );
         $oPeriodo->iOrdem                   = $oPeriodoEscola->getOrdem();
         $oPeriodo->sHoraInicio              = $oPeriodoEscola->getHoraInicio();
         $oPeriodo->sHoraFim                 = $oPeriodoEscola->getHoraFim();

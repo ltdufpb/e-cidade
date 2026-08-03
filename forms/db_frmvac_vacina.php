@@ -88,7 +88,7 @@ $oRotulo->label("vc04_c_descr");
           </td>
           <td> 
             <?php 
-              $x = array('1'=>'SIM', '2'=>'NÃO');
+              $x = ['1'=>'SIM', '2'=>'NÃO'];
               db_select('vc06_i_basico', $x, true, $db_opcao, "");
             ?>
           </td>
@@ -99,7 +99,7 @@ $oRotulo->label("vc04_c_descr");
           </td>
           <td> 
             <?php 
-            $x = array('1'=>'ATIVA', '2'=>'INATIVA');
+            $x = ['1'=>'ATIVA', '2'=>'INATIVA'];
             db_select('vc06_i_situacao',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -441,7 +441,7 @@ function js_preenchepesquisa(iChave) {
   db_iframe_vac_vacina.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+iChave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+iChave";
   }
   ?>
   

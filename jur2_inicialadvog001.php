@@ -31,8 +31,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 $cliframe_seleciona = new cl_iframe_seleciona;
@@ -58,7 +58,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
         </td>
 				<td>
            <?php  
-						$aVer= array("com"=>"Com os Advogados Selecionados","sem"=>"Sem os Advogados Selecionados");
+						$aVer= ["com"=>"Com os Advogados Selecionados","sem"=>"Sem os Advogados Selecionados"];
 						db_select("ver",$aVer,true,1,"");
 					 ?>	
         </td>
@@ -69,7 +69,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
         </td>
 				<td>
            <?php  
-						$aQuebra = array("a"=>"Advogado","s"=>"Situação");
+						$aQuebra = ["a"=>"Advogado","s"=>"Situação"];
 						db_select("selQuebra",$aQuebra,true,1,"");
 					 ?>	
         </td>
@@ -80,7 +80,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
         </td>
 				<td>
            <?php  
-						$aTipo = array("todos"=>"Todos","foro"=>"Processos do Foro","semforo"=>"Processos sem Foro");
+						$aTipo = ["todos"=>"Todos","foro"=>"Processos do Foro","semforo"=>"Processos sem Foro"];
 						db_select("tipo",$aTipo,true,1,"");
 					 ?>	
         </td>
@@ -91,7 +91,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
         </td>
 				<td>
 					<?php 
-						$aSituacao = array("0"=>"Todas","1"=>"Ativa","2"=>"Anulada");
+						$aSituacao = ["0"=>"Todas","1"=>"Ativa","2"=>"Anulada"];
 						db_select("selSituacao",$aSituacao,true,1,"");
 					?>
 				</td>
@@ -102,7 +102,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
         </td>
 				<td>
 					<?php 
-						$aOrdem = array("i"=>"Inicial","d"=>"Data","l"=>"Local","f"=>"Foro","s"=>"Situação");
+						$aOrdem = ["i"=>"Inicial","d"=>"Data","l"=>"Local","f"=>"Foro","s"=>"Situação"];
 						db_select("selOrdem",$aOrdem,true,1,"");
 					?>
 				</td>

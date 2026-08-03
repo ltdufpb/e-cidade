@@ -294,7 +294,7 @@ $sSqlArrecadacoes .= "    and c70_data <= '{$datausu}'";
 $sSqlArrecadacoes .= "    and c53_tipo in(100, 101)";
 $sSqlArrecadacoes .= "  group by 1,2,3,4 order by 4,3,1 ";
 $rsArrecadoes        = db_query($sSqlArrecadacoes);
-$aArrecadacoes       = array();
+$aArrecadacoes       = [];
 for ($iRec = 0; $iRec < pg_num_rows($rsArrecadoes); $iRec++) {
 
   $oLinha = db_utils::fieldsMemory($rsArrecadoes, $iRec);

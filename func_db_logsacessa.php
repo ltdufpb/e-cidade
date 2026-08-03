@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_logsacessa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_logsacessa = new cl_db_logsacessa;
 $cldb_logsacessa->rotulo->label("codsequen");
 $cldb_logsacessa->rotulo->label("data");
@@ -98,9 +98,9 @@ $cldb_logsacessa->rotulo->label("data");
         }else{
            $sql = $cldb_logsacessa->sql_query("",$campos,"codsequen","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_data)){
-          $repassa = array("chave_codsequen"=>$chave_codsequen,"chave_data"=>$chave_data);
+          $repassa = ["chave_codsequen"=>$chave_codsequen,"chave_data"=>$chave_data];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

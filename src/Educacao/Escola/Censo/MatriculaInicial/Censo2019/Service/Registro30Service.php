@@ -52,7 +52,7 @@ class Registro30Service
     /**
      * @var Registro30[]
      */
-    private $registros = array();
+    private $registros = [];
     /**
      * @var Censo
      */
@@ -147,7 +147,7 @@ class Registro30Service
             $this->censo->getDataCenso()
         );
 
-        $profissionaisEscolaMatriculaUnificada = array();
+        $profissionaisEscolaMatriculaUnificada = [];
         foreach ($profissionaisEscola as $profissionalEscola) {
             $profissionaisEscolaMatriculaUnificada[$profissionalEscola->getCgm()->getCpf()] = $profissionalEscola;
         }
@@ -191,7 +191,7 @@ class Registro30Service
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
         return pg_fetch_all($rs);
@@ -209,7 +209,7 @@ class Registro30Service
 
         $alunosMatriculados = $alunoRepository->getAlunosCenso($this->escola, $this->censo->getDataCenso());
 
-        $necessidadesExcluidasCenso = array(110, 111, 112);
+        $necessidadesExcluidasCenso = [110, 111, 112];
         foreach ($alunosMatriculados as $aluno) {
             $necessidades = $alunoNecessidade
                 ->scopeEscola($this->escola)
@@ -222,13 +222,13 @@ class Registro30Service
             $aluno->setRecursoNecessarioAvaliacaoInep($recursos);
 
             // remove as necessidades que podem existir duplicadas
-            $necessidadesAuxiliar = array();
+            $necessidadesAuxiliar = [];
             foreach ($necessidades as $necessidade) {
                 $necessidadesAuxiliar[$necessidade->getNecessidade()] = $necessidade->getNecessidade();
             }
 
             // cria um array na estrutua espera no builder
-            $necessidadesAluno = array();
+            $necessidadesAluno = [];
             foreach ($necessidadesAuxiliar as $necessidade) {
                 $necessidadesAluno[]['codigo'] = $necessidade;
             }
@@ -257,7 +257,7 @@ class Registro30Service
             if ($registro60 == null) {
                 $registros20 = $this->getRegistros20($registros50);
             } else {
-                $registros20 = $this->getRegistros20(array($registro60));
+                $registros20 = $this->getRegistros20([$registro60]);
             }
 
 
@@ -282,7 +282,7 @@ class Registro30Service
 
     private function getRegistros20(array $registros)
     {
-        $res = array();
+        $res = [];
 
         foreach ($registros as $registro) {
             foreach ($this->registro20Service->getRegistros() as $registro20) {
@@ -308,7 +308,7 @@ class Registro30Service
 
     private function getRegistros50(Registro30 $pessoa)
     {
-        $res = array();
+        $res = [];
 
         foreach ($this->registro50Service->getRegistros() as $registro50) {
             if ($pessoa->getCodigoPessoa() == $registro50->getCodigoPessoa()) {

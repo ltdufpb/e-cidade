@@ -36,7 +36,7 @@ class cl_confvencissqnavulso
     public function __construct()
     {
         $this->rotulo = new rotulo("confvencissqnavulso");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -127,7 +127,7 @@ class cl_confvencissqnavulso
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela de configuração de Vencimento issqn avulso () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela de configuração de Vencimento issqn avulso já Cadastrado";
@@ -160,10 +160,10 @@ class cl_confvencissqnavulso
       $this->atualizacampos();
      $sql = " update confvencissqnavulso set ";
      $virgula = "";
-     if(trim($this->j178_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j178_receita"])){
+     if(trim((string) $this->j178_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j178_receita"])){
        $sql  .= $virgula." j178_receita = $this->j178_receita ";
        $virgula = ",";
-       if(trim($this->j178_receita) == null ){
+       if(trim((string) $this->j178_receita) == null ){
          $this->erro_sql = " Campo Receita não informado.";
          $this->erro_campo = "j178_receita";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_confvencissqnavulso
          return false;
        }
      }
-     if(trim($this->j178_histdebito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j178_histdebito"])){
+     if(trim((string) $this->j178_histdebito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j178_histdebito"])){
        $sql  .= $virgula." j178_histdebito = $this->j178_histdebito ";
        $virgula = ",";
-       if(trim($this->j178_histdebito) == null ){
+       if(trim((string) $this->j178_histdebito) == null ){
          $this->erro_sql = " Campo Histórico Débito não informado.";
          $this->erro_campo = "j178_histdebito";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_confvencissqnavulso
          return false;
        }
      }
-     if(trim($this->j178_tipodebito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j178_tipodebito"])){
+     if(trim((string) $this->j178_tipodebito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j178_tipodebito"])){
        $sql  .= $virgula." j178_tipodebito = $this->j178_tipodebito ";
        $virgula = ",";
-       if(trim($this->j178_tipodebito) == null ){
+       if(trim((string) $this->j178_tipodebito) == null ){
          $this->erro_sql = " Campo Tipo Débito não informado.";
          $this->erro_campo = "j178_tipodebito";
          $this->erro_banco = "";
@@ -199,8 +199,8 @@ class cl_confvencissqnavulso
          return false;
        }
      }
-     if(trim($this->j178_diavenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j178_diavenc"])){
-        if(trim($this->j178_diavenc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j178_diavenc"])){
+     if(trim((string) $this->j178_diavenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j178_diavenc"])){
+        if(trim((string) $this->j178_diavenc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j178_diavenc"])){
            $this->j178_diavenc = "0" ;
         }
        $sql  .= $virgula." j178_diavenc = $this->j178_diavenc ";
@@ -209,10 +209,10 @@ class cl_confvencissqnavulso
          $sql  .= $virgula." j178_diavenc = null ";
          $virgula = ",";
      }
-     if(trim($this->j178_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j178_anousu_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j178_anousu_dia"] !="") ){
+     if(trim((string) $this->j178_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j178_anousu_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j178_anousu_dia"] !="") ){
        $sql  .= $virgula." j178_anousu = '$this->j178_anousu' ";
        $virgula = ",";
-       if(trim($this->j178_anousu) == null ){
+       if(trim((string) $this->j178_anousu) == null ){
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "j178_anousu_dia";
          $this->erro_banco = "";
@@ -225,7 +225,7 @@ class cl_confvencissqnavulso
        if(isset($GLOBALS["HTTP_POST_VARS"]["j178_anousu_dia"])){
          $sql  .= $virgula." j178_anousu = null ";
          $virgula = ",";
-         if(trim($this->j178_anousu) == null ){
+         if(trim((string) $this->j178_anousu) == null ){
            $this->erro_sql = " Campo Ano não informado.";
            $this->erro_campo = "j178_anousu_dia";
            $this->erro_banco = "";

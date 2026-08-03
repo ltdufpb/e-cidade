@@ -75,7 +75,7 @@ try {
                 if (!array_key_exists($index, $retorno->retiradas)) {
                     $retorno->retiradas[$index] = (object) [
                         'data' => db_formatar($retirada->fa04_d_data, 'd'),
-                        'departamento' => utf8_encode("{$retirada->fa04_i_unidades} - {$retirada->descrdepto}"),
+                        'departamento' => mb_convert_encoding("{$retirada->fa04_i_unidades} - {$retirada->descrdepto}", 'UTF-8', 'ISO-8859-1'),
                         'idsRetirada' => [],
                         'medicamentos' => []
                     ];
@@ -107,7 +107,7 @@ try {
                  * Caso a quantidade final seja menor ou igual a zero retira o item do array
                  */
                 foreach ($itensRetirada as $key => $itemRetirada) {
-                    $itemRetirada->m60_descr = utf8_encode($itemRetirada->m60_descr);
+                    $itemRetirada->m60_descr = mb_convert_encoding($itemRetirada->m60_descr, 'UTF-8', 'ISO-8859-1');
                     $campos = 'sum(fa23_i_quantidade) as quantidade';
                     $where = "fa23_i_retiradaitens = {$itemRetirada->fa06_i_codigo}";
                     $groupBy = "group by fa23_i_retiradaitens";

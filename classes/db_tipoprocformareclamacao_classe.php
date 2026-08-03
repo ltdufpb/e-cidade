@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE tipoprocformareclamacao
 class cl_tipoprocformareclamacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p43_sequencial = 0; 
-   var $p43_formareclamacao = 0; 
-   var $p43_tipoproc = 0; 
+   public $p43_sequencial = 0; 
+   public $p43_formareclamacao = 0; 
+   public $p43_tipoproc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p43_sequencial = int4 = Sequencial 
                  p43_formareclamacao = int4 = Formas de Reclamação 
                  p43_tipoproc = int4 = Tipo de Processo 
                  ";
    //funcao construtor da classe 
-   function cl_tipoprocformareclamacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoprocformareclamacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_tipoprocformareclamacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->p43_sequencial = pg_result($result,0,0); 
+       $this->p43_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tipoprocformareclamacao_p43_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p43_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p43_sequencial)){
          $this->erro_sql = " Campo p43_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_tipoprocformareclamacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Formas de Reclamação ($this->p43_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Formas de Reclamação já Cadastrado";
@@ -166,12 +166,12 @@ class cl_tipoprocformareclamacao {
      $resaco = $this->sql_record($this->sql_query_file($this->p43_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14729,'$this->p43_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2593,14729,'','".AddSlashes(pg_result($resaco,0,'p43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2593,14730,'','".AddSlashes(pg_result($resaco,0,'p43_formareclamacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2593,14731,'','".AddSlashes(pg_result($resaco,0,'p43_tipoproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2593,14729,'','".AddSlashes(pg_fetch_result($resaco,0,'p43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2593,14730,'','".AddSlashes(pg_fetch_result($resaco,0,'p43_formareclamacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2593,14731,'','".AddSlashes(pg_fetch_result($resaco,0,'p43_tipoproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_tipoprocformareclamacao {
       $this->atualizacampos();
      $sql = " update tipoprocformareclamacao set ";
      $virgula = "";
-     if(trim($this->p43_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p43_sequencial"])){ 
+     if(trim((string) $this->p43_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p43_sequencial"])){ 
        $sql  .= $virgula." p43_sequencial = $this->p43_sequencial ";
        $virgula = ",";
-       if(trim($this->p43_sequencial) == null ){ 
+       if(trim((string) $this->p43_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "p43_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_tipoprocformareclamacao {
          return false;
        }
      }
-     if(trim($this->p43_formareclamacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p43_formareclamacao"])){ 
+     if(trim((string) $this->p43_formareclamacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p43_formareclamacao"])){ 
        $sql  .= $virgula." p43_formareclamacao = $this->p43_formareclamacao ";
        $virgula = ",";
-       if(trim($this->p43_formareclamacao) == null ){ 
+       if(trim((string) $this->p43_formareclamacao) == null ){ 
          $this->erro_sql = " Campo Formas de Reclamação nao Informado.";
          $this->erro_campo = "p43_formareclamacao";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_tipoprocformareclamacao {
          return false;
        }
      }
-     if(trim($this->p43_tipoproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p43_tipoproc"])){ 
+     if(trim((string) $this->p43_tipoproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p43_tipoproc"])){ 
        $sql  .= $virgula." p43_tipoproc = $this->p43_tipoproc ";
        $virgula = ",";
-       if(trim($this->p43_tipoproc) == null ){ 
+       if(trim((string) $this->p43_tipoproc) == null ){ 
          $this->erro_sql = " Campo Tipo de Processo nao Informado.";
          $this->erro_campo = "p43_tipoproc";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_tipoprocformareclamacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14729,'$this->p43_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p43_sequencial"]) || $this->p43_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2593,14729,'".AddSlashes(pg_result($resaco,$conresaco,'p43_sequencial'))."','$this->p43_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2593,14729,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p43_sequencial'))."','$this->p43_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p43_formareclamacao"]) || $this->p43_formareclamacao != "")
-           $resac = db_query("insert into db_acount values($acount,2593,14730,'".AddSlashes(pg_result($resaco,$conresaco,'p43_formareclamacao'))."','$this->p43_formareclamacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2593,14730,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p43_formareclamacao'))."','$this->p43_formareclamacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p43_tipoproc"]) || $this->p43_tipoproc != "")
-           $resac = db_query("insert into db_acount values($acount,2593,14731,'".AddSlashes(pg_result($resaco,$conresaco,'p43_tipoproc'))."','$this->p43_tipoproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2593,14731,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p43_tipoproc'))."','$this->p43_tipoproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_tipoprocformareclamacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14729,'$p43_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2593,14729,'','".AddSlashes(pg_result($resaco,$iresaco,'p43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2593,14730,'','".AddSlashes(pg_result($resaco,$iresaco,'p43_formareclamacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2593,14731,'','".AddSlashes(pg_result($resaco,$iresaco,'p43_tipoproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2593,14729,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2593,14730,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p43_formareclamacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2593,14731,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p43_tipoproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tipoprocformareclamacao
@@ -345,7 +345,7 @@ class cl_tipoprocformareclamacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tipoprocformareclamacao";
@@ -360,7 +360,7 @@ class cl_tipoprocformareclamacao {
    function sql_query ( $p43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_tipoprocformareclamacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_tipoprocformareclamacao {
    function sql_query_file ( $p43_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_tipoprocformareclamacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

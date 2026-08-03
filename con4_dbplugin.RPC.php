@@ -159,7 +159,7 @@ try {
 
             $oRetorno->lPossuiModificacoes = !empty($aArquivosModificacoes);
             $oRetorno->lSituacao = $oPluginService->isAtivo($oPlugin);
-            $oRetorno->aLogModificacoes = array();
+            $oRetorno->aLogModificacoes = [];
 
             try {
                 $oManager = new ModificationManager();
@@ -218,15 +218,15 @@ function read_log($path)
     foreach (file($path) as $line) {
         $type = 'info';
 
-        if (strpos($line, 'DEBUG: ') !== false) {
+        if (str_contains($line, 'DEBUG: ')) {
             $type = 'debug';
         }
 
-        if (strpos($line, 'WARNING: ') !== false) {
+        if (str_contains($line, 'WARNING: ')) {
             $type = 'warning';
         }
 
-        if (strpos($line, 'ERROR: ') !== false) {
+        if (str_contains($line, 'ERROR: ')) {
             $type = 'error';
         }
 

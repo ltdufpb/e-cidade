@@ -38,11 +38,6 @@ use DOMDocument;
 class Pedido
 {
     /**
-     * @var TagsXML
-     */
-    private $tagsXmlCollection;
-
-    /**
      * @var DOMDocument
      */
     private $xml;
@@ -51,9 +46,8 @@ class Pedido
      * Requisicao constructor.
      * @param TagsXML $tagsXmlCollection
      */
-    public function __construct(TagsXML $tagsXmlCollection)
+    public function __construct(private readonly TagsXML $tagsXmlCollection)
     {
-        $this->tagsXmlCollection = $tagsXmlCollection;
     }
 
     /**

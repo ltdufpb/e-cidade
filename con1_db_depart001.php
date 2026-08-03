@@ -51,7 +51,7 @@ db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 
-if ((isset ( $HTTP_POST_VARS ["db_opcao"] ) && $HTTP_POST_VARS ["db_opcao"]) == "Incluir") {
+if ((isset ( $_POST ["db_opcao"] ) && $_POST ["db_opcao"]) == "Incluir") {
 
 	$anousu = db_getsession ( "DB_anousu" );
 
@@ -135,7 +135,7 @@ if ((isset ( $HTTP_POST_VARS ["db_opcao"] ) && $HTTP_POST_VARS ["db_opcao"]) == 
 </body>
 </html>
 <?php
-if ((isset ( $HTTP_POST_VARS ["db_opcao"] ) && $HTTP_POST_VARS ["db_opcao"]) == "Incluir") {
+if ((isset ( $_POST ["db_opcao"] ) && $_POST ["db_opcao"]) == "Incluir") {
 
 	if ($cldb_depart->erro_status == "0") {
 

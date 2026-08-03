@@ -104,13 +104,13 @@ if( isset( $incluir ) && $lSituacao ) {
 	$result           = @$clespecmedico->sql_record( $sSqlEspecMedico );
 	db_inicio_transacao();
 
-	if( @pg_numrows( $result ) == 0 ) {
+	if( @pg_num_rows( $result ) == 0 ) {
 
 		$clunidademedicos->sd04_c_situacao = $sd27_c_situacao;
     $clunidademedicos->incluir($sd04_i_codigo);
 		$sd27_i_undmed = $clunidademedicos->sd04_i_codigo;
 	} else {
-		$sd27_i_undmed = pg_result( $result, 0, 0 );
+		$sd27_i_undmed = pg_fetch_result( $result, 0, 0 );
 	}
 
   if( $clunidademedicos->erro_status != '0' ) {

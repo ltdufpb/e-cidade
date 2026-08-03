@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_grupotaxa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clgrupotaxa = new cl_grupotaxa;
 $clgrupotaxa->rotulo->label("ar37_sequencial");
 $clgrupotaxa->rotulo->label("ar37_descricao");
@@ -83,7 +83,7 @@ $clgrupotaxa->rotulo->label("ar37_descricao");
     if (!isset($pesquisa_chave)) {
 
       $campos = " ar37_sequencial, ar38_descricao,  ar37_descricao " ;
-      $aWhere = array();
+      $aWhere = [];
 
       if(isset($chave_ar37_sequencial) && (trim($chave_ar37_sequencial)!="") ) {
         $aWhere[] = " ar37_sequencial = $chave_ar37_sequencial ";
@@ -95,9 +95,9 @@ $clgrupotaxa->rotulo->label("ar37_descricao");
       $sWhere = implode(" and ", $aWhere);
       $sSql   = $clgrupotaxa->sql_query("",$campos,"ar37_sequencial", $sWhere);
 
-      $repassa = array();
+      $repassa = [];
       if(isset($chave_ar37_descricao)){
-        $repassa = array("chave_ar37_sequencial"=>$chave_ar37_sequencial,"chave_ar37_descricao"=>$chave_ar37_descricao);
+        $repassa = ["chave_ar37_sequencial"=>$chave_ar37_sequencial,"chave_ar37_descricao"=>$chave_ar37_descricao];
       }
       db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
     } else {

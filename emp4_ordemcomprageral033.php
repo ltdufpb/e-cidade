@@ -65,7 +65,7 @@ if($result != false && $clempparametro->numrows > 0){
 if (isset($oPost->incluir)) {
 
   db_inicio_transacao();
-  $aFornecedores = array();
+  $aFornecedores = [];
   $nValorTotal   = 0;
   $lSqlErro      = false;
 
@@ -198,7 +198,7 @@ if (isset($oPost->incluir)) {
           $headers  = "Content-Type:text/html;";  	  	
           $objteste = new libdocumento(1750);
           $corpo    = $objteste->emiteDocHTML();
-          $mail     = mail($z01_email,"Ordem de Compra Nº $codigo",$corpo,$headers);
+          $mail     = mail((string) $z01_email,"Ordem de Compra Nº $codigo",$corpo,$headers);
         }
       }
     }

@@ -25,113 +25,113 @@
  *                                licenca/licenca_pt.txt
  */
 
-return array(
-    'ideProcesso' => array(
-        'properties' => array(
-            'tpProc' => array(
+return [
+    'ideProcesso' => [
+        'properties' => [
+            'tpProc' => [
                 'type' => 'int'
-            ),
+            ],
             'nrProc',
             'iniValid',
-            'fimValid' => array(
+            'fimValid' => [
                 'nome_api' => 'fimvalid'
-            ),
-            'indAutoria'=> array(
+            ],
+            'indAutoria'=> [
                 'type' => 'int',
                 'nome_api' => 'indautoria'
-            )
-        ),
-        'groups' => array(
-            'infoSusp_1' => array(
+            ]
+        ],
+        'groups' => [
+            'infoSusp_1' => [
                 'nome_api' => 'infosusp',
                 'type' => 'array',
-                'items' => array(
-                    'properties' => array(
-                        'infoSusp_1_codSusp'=> array(
+                'items' => [
+                    'properties' => [
+                        'infoSusp_1_codSusp'=> [
                             'nome_api' => 'codsusp',
                             'type' => 'string'
-                        ),
+                        ],
                         'infoSusp_1_indSusp' => 'indsusp',
                         'infoSusp_1_dtDecisao' => 'dtdecisao',
                         'infoSusp_1_indDeposito' =>'inddeposito'
-                    )
-                )
-            ),
-            'infoSusp_2' => array(
+                    ]
+                ]
+            ],
+            'infoSusp_2' => [
                 'nome_api' => 'infosusp',
                 'type' => 'array',
-                'items' => array(
-                    'properties' => array(
-                        'infoSusp_2_codSusp' => array(
+                'items' => [
+                    'properties' => [
+                        'infoSusp_2_codSusp' => [
                             'nome_api' => 'codsusp',
                             'type' => 'string'
-                        ),
+                        ],
                         'infoSusp_2_indSusp' => 'indsusp',
                         'infoSusp_2_dtDecisao' => 'dtdecisao',
                         'infoSusp_2_indDeposito' =>'inddeposito'
-                    )
-                )
-            ),
-            'infoSusp_3' => array(
+                    ]
+                ]
+            ],
+            'infoSusp_3' => [
                 'nome_api' => 'infosusp',
                 'type' => 'array',
-                'items' => array(
-                    'properties' => array(
-                        'infoSusp_3_codSusp' => array(
+                'items' => [
+                    'properties' => [
+                        'infoSusp_3_codSusp' => [
                             'nome_api' => 'codsusp',
                             'type' => 'string'
-                        ),
+                        ],
                         'infoSusp_3_indSusp' => 'indsusp',
                         'infoSusp_3_dtDecisao' => 'dtdecisao',
                         'infoSusp_3_indDeposito' =>'inddeposito'
-                    )
-                )
-            ),
-            'infoSusp_4' => array(
+                    ]
+                ]
+            ],
+            'infoSusp_4' => [
                 'nome_api' => 'infosusp',
                 'type' => 'array',
-                'items' => array(
-                    'properties' => array(
-                        'infoSusp_4_codSusp' => array(
+                'items' => [
+                    'properties' => [
+                        'infoSusp_4_codSusp' => [
                             'nome_api' => 'codsusp',
                             'type' => 'string'
-                        ),
+                        ],
                         'infoSusp_4_indSusp' => 'indsusp',
                         'infoSusp_4_dtDecisao' => 'dtdecisao',
                         'infoSusp_4_indDeposito' =>'inddeposito'
-                    )
-                )
-            ),
-            'infoSusp_5' => array(
+                    ]
+                ]
+            ],
+            'infoSusp_5' => [
                 'nome_api' => 'infosusp',
                 'type' => 'array',
-                'items' => array(
-                    'properties' => array(
-                        'infoSusp_5_codSusp' => array(
+                'items' => [
+                    'properties' => [
+                        'infoSusp_5_codSusp' => [
                             'nome_api' => 'codsusp',
                             'type' => 'string'
-                        ),
+                        ],
                         'infoSusp_5_indSusp' => 'indsusp',
                         'infoSusp_5_dtDecisao' => 'dtdecisao',
                         'infoSusp_5_indDeposito' =>'inddeposito'
-                    )
-                )
-            ),
-            'dadosProcJud' => array(
+                    ]
+                ]
+            ],
+            'dadosProcJud' => [
                 'nome_api' => 'dadosprocjud',
-                'properties' => array(
-                    'ufVara' => array(
+                'properties' => [
+                    'ufVara' => [
                         'nome_api' => 'ufvara'
-                    ),
-                    'codMunic' => array(
+                    ],
+                    'codMunic' => [
                         'nome_api' => 'codmunic',
                         'type' => 'string'
-                    ),
-                    'idVara' => array(
+                    ],
+                    'idVara' => [
                         'nome_api' => 'idvara'
-                    )
-                )
-            )
-        )
-    ),
-);
+                    ]
+                ]
+            ]
+        ]
+    ],
+];

@@ -49,7 +49,7 @@ class CreditoManual extends Credito {
    * Array com regras de compensacao para o crédito
    * @var array
    */
-  public $aRegraCompensacao = array();
+  public $aRegraCompensacao = [];
 
   /**
    * Observações do lançamento de crédito

@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE inicialcodforo
 class cl_inicialcodforo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v55_inicial = 0; 
-   var $v55_codforo = null; 
-   var $v55_data_dia = null; 
-   var $v55_data_mes = null; 
-   var $v55_data_ano = null; 
-   var $v55_data = null; 
-   var $v55_id_login = 0; 
-   var $v55_codvara = 0; 
+   public $v55_inicial = 0; 
+   public $v55_codforo = null; 
+   public $v55_data_dia = null; 
+   public $v55_data_mes = null; 
+   public $v55_data_ano = null; 
+   public $v55_data = null; 
+   public $v55_id_login = 0; 
+   public $v55_codvara = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v55_inicial = int4 = Inicial Numero 
                  v55_codforo = varchar(30) = Codigo do Processo 
                  v55_data = date = Data 
@@ -59,10 +59,10 @@ class cl_inicialcodforo {
                  v55_codvara = int4 = Vara 
                  ";
    //funcao construtor da classe 
-   function cl_inicialcodforo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("inicialcodforo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -157,7 +157,7 @@ class cl_inicialcodforo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Inicial Codigo Foro ($this->v55_inicial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Inicial Codigo Foro já Cadastrado";
@@ -181,14 +181,14 @@ class cl_inicialcodforo {
      $resaco = $this->sql_record($this->sql_query_file($this->v55_inicial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,2568,'$this->v55_inicial','I')");
-       $resac = db_query("insert into db_acount values($acount,112,2568,'','".AddSlashes(pg_result($resaco,0,'v55_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,112,576,'','".AddSlashes(pg_result($resaco,0,'v55_codforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,112,2569,'','".AddSlashes(pg_result($resaco,0,'v55_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,112,2570,'','".AddSlashes(pg_result($resaco,0,'v55_id_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,112,2564,'','".AddSlashes(pg_result($resaco,0,'v55_codvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,112,2568,'','".AddSlashes(pg_fetch_result($resaco,0,'v55_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,112,576,'','".AddSlashes(pg_fetch_result($resaco,0,'v55_codforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,112,2569,'','".AddSlashes(pg_fetch_result($resaco,0,'v55_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,112,2570,'','".AddSlashes(pg_fetch_result($resaco,0,'v55_id_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,112,2564,'','".AddSlashes(pg_fetch_result($resaco,0,'v55_codvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -197,10 +197,10 @@ class cl_inicialcodforo {
       $this->atualizacampos();
      $sql = " update inicialcodforo set ";
      $virgula = "";
-     if(trim($this->v55_inicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v55_inicial"])){ 
+     if(trim((string) $this->v55_inicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v55_inicial"])){ 
        $sql  .= $virgula." v55_inicial = $this->v55_inicial ";
        $virgula = ",";
-       if(trim($this->v55_inicial) == null ){ 
+       if(trim((string) $this->v55_inicial) == null ){ 
          $this->erro_sql = " Campo Inicial Numero nao Informado.";
          $this->erro_campo = "v55_inicial";
          $this->erro_banco = "";
@@ -210,10 +210,10 @@ class cl_inicialcodforo {
          return false;
        }
      }
-     if(trim($this->v55_codforo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v55_codforo"])){ 
+     if(trim((string) $this->v55_codforo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v55_codforo"])){ 
        $sql  .= $virgula." v55_codforo = '$this->v55_codforo' ";
        $virgula = ",";
-       if(trim($this->v55_codforo) == null ){ 
+       if(trim((string) $this->v55_codforo) == null ){ 
          $this->erro_sql = " Campo Codigo do Processo nao Informado.";
          $this->erro_campo = "v55_codforo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_inicialcodforo {
          return false;
        }
      }
-     if(trim($this->v55_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v55_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v55_data_dia"] !="") ){ 
+     if(trim((string) $this->v55_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v55_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v55_data_dia"] !="") ){ 
        $sql  .= $virgula." v55_data = '$this->v55_data' ";
        $virgula = ",";
-       if(trim($this->v55_data) == null ){ 
+       if(trim((string) $this->v55_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "v55_data_dia";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_inicialcodforo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v55_data_dia"])){ 
          $sql  .= $virgula." v55_data = null ";
          $virgula = ",";
-         if(trim($this->v55_data) == null ){ 
+         if(trim((string) $this->v55_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "v55_data_dia";
            $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_inicialcodforo {
          }
        }
      }
-     if(trim($this->v55_id_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v55_id_login"])){ 
+     if(trim((string) $this->v55_id_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v55_id_login"])){ 
        $sql  .= $virgula." v55_id_login = $this->v55_id_login ";
        $virgula = ",";
-       if(trim($this->v55_id_login) == null ){ 
+       if(trim((string) $this->v55_id_login) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "v55_id_login";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_inicialcodforo {
          return false;
        }
      }
-     if(trim($this->v55_codvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v55_codvara"])){ 
+     if(trim((string) $this->v55_codvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v55_codvara"])){ 
        $sql  .= $virgula." v55_codvara = $this->v55_codvara ";
        $virgula = ",";
-       if(trim($this->v55_codvara) == null ){ 
+       if(trim((string) $this->v55_codvara) == null ){ 
          $this->erro_sql = " Campo Vara nao Informado.";
          $this->erro_campo = "v55_codvara";
          $this->erro_banco = "";
@@ -284,19 +284,19 @@ class cl_inicialcodforo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2568,'$this->v55_inicial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v55_inicial"]))
-           $resac = db_query("insert into db_acount values($acount,112,2568,'".AddSlashes(pg_result($resaco,$conresaco,'v55_inicial'))."','$this->v55_inicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,112,2568,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v55_inicial'))."','$this->v55_inicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v55_codforo"]))
-           $resac = db_query("insert into db_acount values($acount,112,576,'".AddSlashes(pg_result($resaco,$conresaco,'v55_codforo'))."','$this->v55_codforo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,112,576,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v55_codforo'))."','$this->v55_codforo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v55_data"]))
-           $resac = db_query("insert into db_acount values($acount,112,2569,'".AddSlashes(pg_result($resaco,$conresaco,'v55_data'))."','$this->v55_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,112,2569,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v55_data'))."','$this->v55_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v55_id_login"]))
-           $resac = db_query("insert into db_acount values($acount,112,2570,'".AddSlashes(pg_result($resaco,$conresaco,'v55_id_login'))."','$this->v55_id_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,112,2570,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v55_id_login'))."','$this->v55_id_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v55_codvara"]))
-           $resac = db_query("insert into db_acount values($acount,112,2564,'".AddSlashes(pg_result($resaco,$conresaco,'v55_codvara'))."','$this->v55_codvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,112,2564,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v55_codvara'))."','$this->v55_codvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -341,14 +341,14 @@ class cl_inicialcodforo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2568,'$v55_inicial','E')");
-         $resac = db_query("insert into db_acount values($acount,112,2568,'','".AddSlashes(pg_result($resaco,$iresaco,'v55_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,112,576,'','".AddSlashes(pg_result($resaco,$iresaco,'v55_codforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,112,2569,'','".AddSlashes(pg_result($resaco,$iresaco,'v55_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,112,2570,'','".AddSlashes(pg_result($resaco,$iresaco,'v55_id_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,112,2564,'','".AddSlashes(pg_result($resaco,$iresaco,'v55_codvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,112,2568,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v55_inicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,112,576,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v55_codforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,112,2569,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v55_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,112,2570,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v55_id_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,112,2564,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v55_codvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from inicialcodforo
@@ -408,7 +408,7 @@ class cl_inicialcodforo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:inicialcodforo";
@@ -422,7 +422,7 @@ class cl_inicialcodforo {
    function sql_query ( $v55_inicial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,7 +449,7 @@ class cl_inicialcodforo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,7 +461,7 @@ class cl_inicialcodforo {
    function sql_query_file ( $v55_inicial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,7 +482,7 @@ class cl_inicialcodforo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

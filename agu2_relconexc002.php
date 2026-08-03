@@ -29,7 +29,7 @@
   include(modification("libs/db_sql.php"));
   $clrotulo = new rotulocampo;
   $clrotulo->label('');
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
   
   $where = "";
   $and   = "";
@@ -99,7 +99,7 @@
   $sSql .= " {$where} {$order_by}";
   
   $rsDados = db_query($sSql);
-  $numrows = pg_numrows($rsDados);
+  $numrows = pg_num_rows($rsDados);
   
   if ($numrows == 0) {             
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');

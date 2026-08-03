@@ -144,22 +144,17 @@ abstract class Autenticacao
         $template = $this->carregaTemplate();
 
         $template->setValue("numeroGuia", $this->numeroGuia);
-        $iMatricula = isset($this->dadosItbi->oItbiMatric->it06_matric)
-                        ?
-                      $this->dadosItbi->oItbiMatric->it06_matric : "";
+        $iMatricula = $this->dadosItbi->oItbiMatric->it06_matric ?? "";
 
         $template->setValue("matricula", $iMatricula);
 
-        $it22_compl = isset($this->dadosItbi->oDadosImovel->it22_compl)
-            ? $this->dadosItbi->oDadosImovel->it22_compl : "";
+        $it22_compl = $this->dadosItbi->oDadosImovel->it22_compl ?? "";
         $template->setValue("complemento", trim($it22_compl));
 
-        $it22_descrlograd = isset($this->dadosItbi->oDadosImovel->it22_descrlograd)
-            ? $this->dadosItbi->oDadosImovel->it22_descrlograd : "";
+        $it22_descrlograd = $this->dadosItbi->oDadosImovel->it22_descrlograd ?? "";
         $template->setValue("logradouro", trim($it22_descrlograd));
 
-        $it22_numero = isset($this->dadosItbi->oDadosImovel->it22_numero)
-            ? $this->dadosItbi->oDadosImovel->it22_numero : "";
+        $it22_numero = $this->dadosItbi->oDadosImovel->it22_numero ?? "";
         $template->setValue("numero", $it22_numero);
 
         $bairro = isset($this->dadosItbi->oIptuender->j43_bairro)
@@ -169,15 +164,13 @@ abstract class Autenticacao
 
         $template->setValue("dataPagamento", $this->dataPagamento->getDate(\DBDate::DATA_PTBR));
 
-        $it22_setor = isset($this->dadosItbi->oDadosImovel->it22_setor)
-            ? $this->dadosItbi->oDadosImovel->it22_setor : "";
+        $it22_setor = $this->dadosItbi->oDadosImovel->it22_setor ?? "";
         $template->setValue("setor", $it22_setor);
 
-        $it22_quadra = isset($this->dadosItbi->oDadosImovel->it22_quadra)
-            ? $this->dadosItbi->oDadosImovel->it22_quadra : "";
+        $it22_quadra = $this->dadosItbi->oDadosImovel->it22_quadra ?? "";
         $template->setValue("quadra", $it22_quadra);
 
-        $it22_lote = isset($this->dadosItbi->oDadosImovel->it22_lote) ? $this->dadosItbi->oDadosImovel->it22_lote : "";
+        $it22_lote = $this->dadosItbi->oDadosImovel->it22_lote ?? "";
         $template->setValue("lote", $it22_lote);
 
         $template->setValue("numpre", $this->numeroDam);
@@ -255,7 +248,7 @@ abstract class Autenticacao
             }
 
             $valorFormatado = $this->fmatMoeda($oPagamento->k00_valor);
-            $descricao = trim($oPagamento->k02_drecei);
+            $descricao = trim((string) $oPagamento->k02_drecei);
 
             $valorTotal += $oPagamento->k00_valor;
             $textoFormasPagamento[] = "{$descricao}: {$valorFormatado}";

@@ -71,7 +71,7 @@
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <?php 
-  db_postmemory($HTTP_GET_VARS);
+  db_postmemory($_GET);
 ///////////////////////contribuição//////////////////////////////////////////////////////////////////////////////
 if ($solicitacao == "contri") {
     $result01=$cleditalrua->sql_record($cleditalrua->sql_query($contri,"d02_autori,j14_nome,d02_profun"));
@@ -185,14 +185,14 @@ if ($solicitacao == "contri") {
       if($clcontricalc->numrows>0 ){
         db_fieldsmemory($result07,0);
         $result09=debitos_numpre($d09_numpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"),0,"1");
-        if($result09!=false && pg_numrows($result09)>0){
+        if($result09!=false && pg_num_rows($result09)>0){
             db_fieldsmemory($result09,0);
         }else{
             $total="0,00";
         }
         db_fieldsmemory($result09,0);
         $result08= db_query("select sum(k00_valor) from arrepaga where k00_numpre = $d09_numpre");
-        if(pg_numrows($result08)>0){
+        if(pg_num_rows($result08)>0){
           db_fieldsmemory($result08,0);
         }else{
           $sum="0,00"; 	

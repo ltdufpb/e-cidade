@@ -47,17 +47,17 @@ class resumoFolha extends RelatorioFolhaPagamento {
   /**
    * Array com o total de Servidores por filtro selecionado
    */
-  protected $aServidoresFiltro = array();
+  protected $aServidoresFiltro = [];
 
   /**
    * Array de dados referentes aos filtros de quebra
    */
-  protected $aDadosFiltro      = array();
+  protected $aDadosFiltro      = [];
 
   /**
    * Array de objetos com os dados do totalizador conforme filtro
    */
-  protected $aDadosTotalizador = array();
+  protected $aDadosTotalizador = [];
   
   /**
    * Codigo da previdencia
@@ -90,8 +90,8 @@ class resumoFolha extends RelatorioFolhaPagamento {
     /**
      * array de retorno de Dados
      */
-    $aRetorno             = array();
-    $aFuncionariosRubrica = array();
+    $aRetorno             = [];
+    $aFuncionariosRubrica = [];
 
     $sCamposRubricas = " case when rh23_rubric is not null                                                      \n";
     $sCamposRubricas.= "      then 'e-'                                                                         \n";
@@ -380,7 +380,7 @@ class resumoFolha extends RelatorioFolhaPagamento {
     /**
      * array de retorno da Funcao
      */
-    $aRetorno = array();
+    $aRetorno = [];
 
     foreach ($this->aServidoresFiltro[$sEstruturalFiltro] as $iMatricula) {
       $aRetorno[$iMatricula] = $iMatricula;
@@ -398,7 +398,7 @@ class resumoFolha extends RelatorioFolhaPagamento {
     /**
      * Array de Retorno da Funcao
      */
-    $aRetorno = array();
+    $aRetorno = [];
 
     foreach ($this->aServidoresFiltro as $aMatriculas) {
 
@@ -452,10 +452,10 @@ class resumoFolha extends RelatorioFolhaPagamento {
        * Valores padrão para base dos valores patronais
        */
       $oValoresPatronais = new stdClass();
-      $oValoresPatronais->aBasePrevidencia1 = array("sNome" => "BASE PREV.1", "nValor" => 0);
-      $oValoresPatronais->aBasePrevidencia2 = array("sNome" => "BASE PREV.2", "nValor" => 0);
-      $oValoresPatronais->aBasePrevidencia3 = array("sNome" => "BASE PREV.3", "nValor" => 0);
-      $oValoresPatronais->aBasePrevidencia4 = array("sNome" => "BASE PREV.4", "nValor" => 0);
+      $oValoresPatronais->aBasePrevidencia1 = ["sNome" => "BASE PREV.1", "nValor" => 0];
+      $oValoresPatronais->aBasePrevidencia2 = ["sNome" => "BASE PREV.2", "nValor" => 0];
+      $oValoresPatronais->aBasePrevidencia3 = ["sNome" => "BASE PREV.3", "nValor" => 0];
+      $oValoresPatronais->aBasePrevidencia4 = ["sNome" => "BASE PREV.4", "nValor" => 0];
 
       $aValoresPatronais = db_utils::getCollectionByRecord($rsValoresPatronais);
 
@@ -464,22 +464,22 @@ class resumoFolha extends RelatorioFolhaPagamento {
         switch ($oRowValPatronais->r33_codtab) {
           case 3:
 
-            $oValoresPatronais->aBasePrevidencia1["sNome"]  = substr($oRowValPatronais->r33_nome,0,15);
+            $oValoresPatronais->aBasePrevidencia1["sNome"]  = substr((string) $oRowValPatronais->r33_nome,0,15);
             $oValoresPatronais->aBasePrevidencia1["nValor"] = $oRowValPatronais->r33_ppatro;
             break;
           case 4:
 
-            $oValoresPatronais->aBasePrevidencia2["sNome"]  = substr($oRowValPatronais->r33_nome,0,15);
+            $oValoresPatronais->aBasePrevidencia2["sNome"]  = substr((string) $oRowValPatronais->r33_nome,0,15);
             $oValoresPatronais->aBasePrevidencia2["nValor"] = $oRowValPatronais->r33_ppatro;
             break;
           case 5:
 
-            $oValoresPatronais->aBasePrevidencia3["sNome"]  = substr($oRowValPatronais->r33_nome,0,15);
+            $oValoresPatronais->aBasePrevidencia3["sNome"]  = substr((string) $oRowValPatronais->r33_nome,0,15);
             $oValoresPatronais->aBasePrevidencia3["nValor"] = $oRowValPatronais->r33_ppatro;
             break;
           case 6:
 
-            $oValoresPatronais->aBasePrevidencia4["sNome"]  = substr($oRowValPatronais->r33_nome,0,15);
+            $oValoresPatronais->aBasePrevidencia4["sNome"]  = substr((string) $oRowValPatronais->r33_nome,0,15);
             $oValoresPatronais->aBasePrevidencia4["nValor"] = $oRowValPatronais->r33_ppatro;
             break;
         }
@@ -507,26 +507,13 @@ class resumoFolha extends RelatorioFolhaPagamento {
    */
   public  function setVinculo($sVinculo){
 
-    switch ($sVinculo) {
-//       case "g" :
-//         $this->sVinculoServidor = " rh30_vinculo = 'G' ";
-//         break;
-      case "a" :
-        $this->sVinculoServidor = " rh30_vinculo = 'A' ";
-        break;
-      case "i" :
-        $this->sVinculoServidor = " rh30_vinculo = 'I' ";
-        break;
-      case "p" :
-        $this->sVinculoServidor = " rh30_vinculo = 'P' ";
-        break;
-      case "ip":
-        $this->sVinculoServidor = " rh30_vinculo in ('I','P') ";
-        break;
-      default:
-        $this->sVinculoServidor = null;
-      break;
-    }
+    $this->sVinculoServidor = match ($sVinculo) {
+        "a" => " rh30_vinculo = 'A' ",
+        "i" => " rh30_vinculo = 'I' ",
+        "p" => " rh30_vinculo = 'P' ",
+        "ip" => " rh30_vinculo in ('I','P') ",
+        default => null,
+    };
   }
 
   /**

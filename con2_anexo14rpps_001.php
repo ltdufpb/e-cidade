@@ -39,11 +39,11 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-db_postmemory($HTTP_POST_VARS);
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+db_postmemory($_POST);
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $anousu      = db_getsession("DB_anousu");
 $codrel      = 56;
@@ -87,13 +87,13 @@ if ($anousu >= 2014) {
     }
     $clcriaabas->identifica["notas"] = "Fonte/Notas Explicativas";
 
-    $clcriaabas->title      = array("relatorio" => "Relatorio",
+    $clcriaabas->title      = ["relatorio" => "Relatorio",
                                     "notas"     => "Fonte/Notas Explicativas",
                                     "parametro" => "Parâmetros"
-                                   );
+                                   ];
     
-    $clcriaabas->src = array("relatorio" => $sNomeFonte, "parametro" => $sParametros, "notas" => $sNotas);
-    $clcriaabas->sizecampo= array("relatorio"=>"30","notas"=>"30","parametro" => '30');
+    $clcriaabas->src = ["relatorio" => $sNomeFonte, "parametro" => $sParametros, "notas" => $sNotas];
+    $clcriaabas->sizecampo= ["relatorio"=>"30","notas"=>"30","parametro" => '30'];
     $clcriaabas->cria_abas();    
     ?>
     </center>

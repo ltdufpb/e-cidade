@@ -100,7 +100,7 @@ db_input('nomecam',40,$Inomecam,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('t'=>'Sim','f'=>'Não');
+$x = ['t'=>'Sim','f'=>'Não'];
 db_select('db97_totaliza',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -116,7 +116,7 @@ db_select('db97_totaliza',$x,true,$db_opcao,"");
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("db97_codigo"=>@$db97_codigo);
+	 $chavepri= ["db97_codigo"=>@$db97_codigo];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_relatquebra->sql_query_file($db97_codigo);
 	 $cliframe_alterar_excluir->campos  ="db97_codigo,db97_codrel,db97_codcam,db97_totaliza";

@@ -119,7 +119,7 @@ class BoletoGrm
    */
     protected $valorTotal = 0;
 
-    protected $atributos = array();
+    protected $atributos = [];
 
   /**
    * @var boolean
@@ -195,7 +195,7 @@ class BoletoGrm
    */
     public function setCpfcnpj($cpfcnpj)
     {
-        $this->cpfcnpj = str_replace(array(',', ".", "/"), '', $cpfcnpj);
+        $this->cpfcnpj = str_replace([',', ".", "/"], '', $cpfcnpj);
         if (strlen($this->cpfcnpj) == 14) {
             $this->tipoPessoa = 2;
         }
@@ -697,7 +697,7 @@ class BoletoGrm
            * Do contrário, inclui novo cidadão.
            *
            */
-            $nomeDecoded = utf8_decode($this->getNome());
+            $nomeDecoded = mb_convert_encoding($this->getNome(), 'ISO-8859-1');
             $oCidadao = \Cidadao::getPorDocumentoENome($nomeDecoded, $this->getCpfcnpj());
             if (!$oCidadao) {
                 $oCidadao = new \Cidadao(null, null);
@@ -748,7 +748,7 @@ class BoletoGrm
     public function validarDadosPorTipoDeRecolhimento(TipoRecolhimento $tipoRecolhimento)
     {
 
-        $aErros = array();
+        $aErros = [];
         if ($tipoRecolhimento->obrigaNumeroReferencia() && empty($this->numeroReferencia)) {
             $aErros['numero_referencia'] = 'Número de Referência deve ser informado.';
         }
@@ -917,8 +917,8 @@ class BoletoGrm
         $sHistorico .= "\nTaxa: {$oDados->ar44_sequencial} - {$oDados->ar44_descricao}";
 
         foreach ($this->getAtributos() as $oAtributo) {
-            $sLabel = utf8_decode($oAtributo->descricao);
-            $sValor = utf8_decode($oAtributo->valor);
+            $sLabel = mb_convert_encoding($oAtributo->descricao, 'ISO-8859-1');
+            $sValor = mb_convert_encoding($oAtributo->valor, 'ISO-8859-1');
 
             $sHistorico .= "\n{$sLabel}: {$sValor}";
         }

@@ -37,12 +37,6 @@ class ResultadoExame
     const FONTE_MSG = 'saude.laboratorio.ResultadoExame.';
 
     /**
-     * Requisicao do Exame
-     * @var RequisicaoExame
-     */
-    private $oRequisicao;
-
-    /**
      * Codigo do Resultado
      * @var integer
      */
@@ -57,7 +51,7 @@ class ResultadoExame
     /**
      * @var ResultadoExameAtributo[]
      */
-    private $aResultadoAtributos = array();
+    private $aResultadoAtributos = [];
 
     /**
      * Data do resultado
@@ -69,7 +63,7 @@ class ResultadoExame
      * Resultados do exame anterior
      * @var ResultadoExameAtributo[]
      */
-    private $aResultadoDoExameAnterior = array();
+    private $aResultadoDoExameAnterior = [];
 
     /**
      * Requisição do exame anterior
@@ -81,9 +75,11 @@ class ResultadoExame
      * Instancia um novo Resultado
      * @param RequisicaoExame $oRequisicao
      */
-    public function __construct(RequisicaoExame $oRequisicao)
+    public function __construct(/**
+     * Requisicao do Exame
+     */
+    private readonly RequisicaoExame $oRequisicao)
     {
-        $this->oRequisicao = $oRequisicao;
         $oDaoResultadoExame = new cl_lab_resultado();
         $sWhere = "la52_i_requiitem = {$this->oRequisicao->getCodigo()}";
         $sSqlResultado = $oDaoResultadoExame->sql_query_file(null, "*", null, $sWhere);
@@ -127,7 +123,7 @@ class ResultadoExame
     public function getValorDoAtributo(AtributoExame $oAtributo)
     {
         $aAtributos = $this->getResultadoDosAtributos();
-        $resultadoExameAtributo = isset($aAtributos[$oAtributo->getCodigo()]) ? $aAtributos[$oAtributo->getCodigo()] : null;
+        $resultadoExameAtributo = $aAtributos[$oAtributo->getCodigo()] ?? null;
 
         if($oAtributo->getFormula() !== '') {
             $resultadoExameAtributo = $this->executarCalculoFormula($oAtributo);
@@ -160,7 +156,7 @@ class ResultadoExame
      */
     private function buscarResultadosAtributo($iCodigoResultado)
     {
-        $aResultados = array();
+        $aResultados = [];
 
         $sCampos = "la39_i_atributo,";
         $sCampos .= "la39_i_codigo,";
@@ -255,11 +251,8 @@ class ResultadoExame
     public function getValorDoAtributoResultadoAnterior(AtributoExame $oAtributo)
     {
         $aAtributos = $this->getResultadoAnterior();
-        if (isset($aAtributos[$oAtributo->getCodigo()])) {
-            return $aAtributos[$oAtributo->getCodigo()];
-        }
 
-        return null;
+        return $aAtributos[$oAtributo->getCodigo()] ?? null;
     }
 
     /**
@@ -295,7 +288,7 @@ class ResultadoExame
         }
 
         if (pg_num_rows($rs) == 0) {
-            return array();
+            return [];
         }
 
         $oDados = db_utils::fieldsMemory($rs, 0);

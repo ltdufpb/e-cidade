@@ -39,7 +39,7 @@ $clescola = new cl_escola;
 $clturmaac = new cl_turmaac;
 $clturmaachorario = new cl_turmaachorario;
 $escola = db_getsession("DB_coddepto");
-$result1 = $clturmaachorario->sql_record($clturmaachorario->sql_query("","ed268_c_descr,ed17_i_turno,ed52_c_descr,case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as z01_nome",""," ed270_i_turmaac = $turma")) or die (pg_errormessage());
+$result1 = $clturmaachorario->sql_record($clturmaachorario->sql_query("","ed268_c_descr,ed17_i_turno,ed52_c_descr,case when ed20_i_tiposervidor = 1 then cgmrh.z01_nome else cgmcgm.z01_nome end as z01_nome",""," ed270_i_turmaac = $turma")) or die (pg_last_error());
 db_fieldsmemory($result1,0);
 if($clturmaachorario->numrows==0){?>
  <table width='100%'>
@@ -78,7 +78,7 @@ if($clturmaachorario->numrows>0){
 }
 $turno = "";
 $sql = $clperiodoescola->sql_query("","*","ed15_i_sequencia,ed08_i_sequencia"," ed17_i_escola = $escola AND ed17_i_turno in ($cod_turnos)");
-$result1 = $clperiodoescola->sql_record($sql) or die (pg_errormessage());
+$result1 = $clperiodoescola->sql_record($sql) or die (pg_last_error());
 $contp = 0;
 $contd = 0;
 for($z=0;$z<$clperiodoescola->numrows;$z++){
@@ -89,7 +89,7 @@ for($z=0;$z<$clperiodoescola->numrows;$z++){
  if($turno!=$ed15_c_nome){
   $pdf->setfont('arial','B',9);
   $pdf->cell(195,5,$ed15_i_codigo==$ed17_i_turno?"TURNO PRINCIPAL":"TURNO ADICIONAL",1,1,"C",1);
-  $pdf->cell(35,5,trim(pg_result($result1,$z,"ed15_c_nome")),1,0,"C",1);
+  $pdf->cell(35,5,trim(pg_fetch_result($result1,$z,"ed15_c_nome")),1,0,"C",1);
   if($cldiasemana->numrows==0){
    $pdf->cell(195,5,"Informe os dias lelivos desta escola",1,1,"C",1);
   }
@@ -150,13 +150,13 @@ for($z=0;$z<$clperiodoescola->numrows;$z++){
   }
   $posy = $pdf->getY();
   $posx = $pdf->getX();
-  $ed20_i_codigo=pg_result($result2,0);
+  $ed20_i_codigo=pg_fetch_result($result2,0);
   //die($ed20_i_codigo);
   if($professor=="" || $professor==$ed20_i_codigo || $linhas2==0){
    $pdf->setfont('arial','B',8);
-   $pdf->cell(32,5,substr($disci,0,15),"LRT",2,"C",1);
+   $pdf->cell(32,5,substr((string) $disci,0,15),"LRT",2,"C",1);
    $pdf->setfont('arial','',8);
-   $pdf->cell(32,10,substr($regente,0,15),"LRB",$qb,"C",1);
+   $pdf->cell(32,10,substr((string) $regente,0,15),"LRB",$qb,"C",1);
   }else{
    $pdf->cell(32,15,"",1,$qb,"C",1);
   }

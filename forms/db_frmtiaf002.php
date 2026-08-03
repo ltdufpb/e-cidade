@@ -36,8 +36,8 @@
 		    $result = $cltiafdoc->sql_record($cltiafdoc->sql_query("","*","","y99_codtiaf = $y90_codtiaf".$where));
 		    if ($cltiafdoc->numrows > 0){
 		    	db_fieldsmemory($result,0);
-		    	list($y99_dataini_ano,$y99_dataini_mes,$y99_dataini_dia) = split ("-", $y99_dtini);
-		   		list($y99_datafim_ano,$y99_datafim_mes,$y99_datafim_dia) = split ("-", $y99_dtfim);
+		    	[$y99_dataini_ano, $y99_dataini_mes, $y99_dataini_dia] = preg_split ("#\\-#m", (string) $y99_dtini);
+		   		[$y99_datafim_ano, $y99_datafim_mes, $y99_datafim_dia] = preg_split ("#\\-#m", (string) $y99_dtfim);
 		    }else{
 		    	echo "<script>document.form1.novo.click;</script>";
 		    }
@@ -138,7 +138,7 @@
     <center>
     <?php  
        //echo($cltiafdoc->sql_query($y99_coddoc,"y99_coddoc, y98_descr, y99_obs,y90_codtiaf",$y99_coddoc,"y99_codtiaf = $y90_codtiaf"));
-       $chavepri= array("y90_codtiaf"=>$y90_codtiaf,"y99_coddoc"=>$y99_coddoc);
+       $chavepri= ["y90_codtiaf"=>$y90_codtiaf,"y99_coddoc"=>$y99_coddoc];
        $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->sql     = $cltiafdoc->sql_query($y99_coddoc,"y98_tiafdoc, y99_coddoc, y98_descr, y90_codtiaf, y99_obs, y99_dtini, y99_dtfim","y99_coddoc","y99_codtiaf = $y90_codtiaf");
        $cliframe_alterar_excluir->campos  = "y99_coddoc, y98_descr, y99_obs ";

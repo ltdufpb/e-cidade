@@ -33,8 +33,8 @@ include(modification("classes/db_db_config_classe.php"));
 $cldb_config     = new cl_db_config;
 $clnotificacao   = new cl_notificacao;
 
-db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_SERVER);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if ( $contribuicao == '' ) {
      db_redireciona('db_erros.php?fechar=true&db_erro=Contribuição não encontrada!');
         exit;
@@ -72,7 +72,7 @@ if ($clnotificacao->numrows == 0){
 //height	= altura da etiqueta
 //font-size	= tamanho da fonte
 
-$pdf = new PDF_Label (array('name'=>'5161','paper-size'=>'A4','metric'=>'mm','marginLeft'=>9,'marginTop'=>1,'NX'=>1,'NY'=>8,'SpaceX'=>1,'SpaceY'=>3,'width'=>100,'height'=>36,'font-size'=>9),1,1);
+$pdf = new PDF_Label (['name'=>'5161','paper-size'=>'A4','metric'=>'mm','marginLeft'=>9,'marginTop'=>1,'NX'=>1,'NY'=>8,'SpaceX'=>1,'SpaceY'=>3,'width'=>100,'height'=>36,'font-size'=>9],1,1);
 $pdf->Open();
 for($x=0;$x < $clnotificacao->numrows;$x++){
    db_fieldsmemory($result,$x);

@@ -31,7 +31,7 @@ include(modification("fpdf151/pdf.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('');
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $head2 = 'RELATÓRIO DA DÍVIDA POR EXERCÍCIO';
 $head5 = '';
@@ -72,7 +72,7 @@ $sql="select    v01_exerc,
 die($sql);
 $result=db_query($sql);
 
-if (pg_numrows($result)==0){
+if (pg_num_rows($result)==0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 }	  
 
@@ -91,7 +91,7 @@ $totalmul = 0;
 $totaldesc = 0;
 $totalval = 0;
 
-for ($x = 0 ; $x < pg_numrows($result);$x++){
+for ($x = 0 ; $x < pg_num_rows($result);$x++){
   db_fieldsmemory($result,$x);
 
 

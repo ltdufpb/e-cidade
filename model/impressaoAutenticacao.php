@@ -57,13 +57,13 @@ class impressaoAutenticacao {
     if (pg_num_rows($rsAutenticadora) == 0 || $rsAutenticadora == false) {
     	throw new Exception("Autenticadora nao encontrada.");
     }
-    
+
    // echo("|".str_replace(' ','x',$sStringAutenticacao)."|");
-    $this->sStringAutenticacao = trim($sStringAutenticacao);
+    $this->sStringAutenticacao = trim((string) $sStringAutenticacao);
     $this->iId     = $oAutenticadora->k11_id;
-    $this->sData   = trim(substr($sStringAutenticacao,8,10));
-    $this->sAutent = trim(substr($sStringAutenticacao,2,6));
-    
+    $this->sData   = trim(substr((string) $sStringAutenticacao,8,10));
+    $this->sAutent = trim(substr((string) $sStringAutenticacao,2,6));
+
   //  echo ("<br><br> 1111 Term:{$this->iId} Data:{$this->sData} Autent:{$this->sAutent} |{$sStringAutenticacao}|");
     
   }
@@ -114,7 +114,7 @@ class impressaoAutenticacao {
     }
     
     if ($oAutenticacao->k11_tipoimp == '7') {
-	    switch ( strtoupper($oAutenticacao->tipo_autenticacao) ) {
+	    switch ( strtoupper((string) $oAutenticacao->tipo_autenticacao) ) {
 	      case 'ARRECADACAO':             
 	        if ( !class_exists('modeloAutentTermicaArrecadacao') ) {
 	          require_once(modification("model/modeloAutentTermicaArrecadacao.model.php"));

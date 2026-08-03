@@ -32,13 +32,13 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_autotestem_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clautotestem = new cl_autotestem;
 $db_opcao     = 1;
 $db_botao     = true;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   db_inicio_transacao();
   $clautotestem->incluir($y24_codauto,$y24_numcgm);
@@ -62,7 +62,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   if($clautotestem->erro_status=="0"){
 

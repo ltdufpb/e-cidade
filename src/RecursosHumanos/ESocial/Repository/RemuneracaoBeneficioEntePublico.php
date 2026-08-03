@@ -52,7 +52,7 @@ class RemuneracaoBeneficioEntePublico extends \BaseClassRepository
      */
     public static function buscarBeneficiarios(DBCompetencia $dbCompetencia, $servidores = null, $selecao = null)
     {
-        $retorno = array();
+        $retorno = [];
         $codigoInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
 
         if (empty($servidores)) {

@@ -135,7 +135,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
   
   public function registraLog() {
     
-    $this->sMensagemLog = pg_escape_string(Conexao::getInstancia()->getConexao(), $this->sMensagemLog);
+    $this->sMensagemLog = pg_escape_string(Conexao::getInstancia()->getConexao(), (string) $this->sMensagemLog);
     
     $sUpdateRecadastroImobiliarioImoveis  = "update recadastroimobiliarioimoveis                 ";
     $sUpdateRecadastroImobiliarioImoveis .= "   set ie28_processado  = 't',                      ";
@@ -160,7 +160,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
    
   public function incluirCaracteristicasConstrucao ($iMatricula, $iCodigoConstrucao) {
     
-    $aCodigoCaracteristicaArquivo                      = array();
+    $aCodigoCaracteristicaArquivo                      = [];
     $aCodigoCaracteristicaArquivo['utilizacao']        = (int) $this->oRegistroArquivo->iCaracteristicaUtilizacaoNovo         ; //Utilização novo
     $aCodigoCaracteristicaArquivo['localizacao']       = (int) $this->oRegistroArquivo->iCaracteristicaLocalizacaoUnidadeNovo ; //Localização da unidade novo
     $aCodigoCaracteristicaArquivo['tipo']              = (int) $this->oRegistroArquivo->iCaracteristicaTipoNovo               ; //Tipo novo
@@ -209,7 +209,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
        * $aCaracteristica[$aCodigoCaracteristica[$sGrupo]] = Código do sistema e-cidade
        */
   //    if ( !isset($aCodigoCaracteristicaArquivo[$sGrupo]) || $aCodigoCaracteristicaArquivo[$sGrupo]  == '') {
-      if ( $aCodigoCaracteristicaArquivo[$sGrupo]  == '' ) {
+      if ( $aCodigoCaracteristicaArquivo[$sGrupo]  == 0 ) {
 
         $this->log("Construção da matrícula {$iMatricula}, setor/quadra/lote: {$this->sSQL} sem caracteristica {$sGrupo}. Ignorando...", DBLog::LOG_INFO);
 
@@ -263,7 +263,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
 
   public function incluirCaracteristicasLote ($iCodigoLote) {
 
-    $aCodigoCaracteristicaArquivo                   = array();
+    $aCodigoCaracteristicaArquivo                   = [];
     $aCodigoCaracteristicaArquivo['propriedade']    = (int) $this->oRegistroArquivo->iCaracteristicaPropriedadeNova  ;
     $aCodigoCaracteristicaArquivo['situacao']       = (int) $this->oRegistroArquivo->iCaracteristicaSituacaoNovo     ;
     $aCodigoCaracteristicaArquivo['caracteristica'] = (int) $this->oRegistroArquivo->iCaracteristicaNovo             ;
@@ -280,7 +280,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
        * $aCodigoCaracteristica[$sGrupo] = Código do caracteristica informada no arquivo
        * $aCaracteristica[$aCodigoCaracteristica[$sGrupo]] = Código do sistema e-cidade
        */
-      if ($aCodigoCaracteristicaArquivo[$sGrupo] == '') {
+      if ($aCodigoCaracteristicaArquivo[$sGrupo] == 0) {
         $this->log("Sem caracteristica {$sGrupo} para o setor/quadra/lote: " . $this->sSQL . ". Ignorando...", DBLog::LOG_INFO);
         continue;
       }
@@ -357,7 +357,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
      
     $rsMatricula       = db_query(Conexao::getInstancia()->getConexao(), "select nextval('iptubase_j01_matric_seq') as matricula");
 
-    $iMatricula        = db_utils::fieldsMemory($rsMatricula, 0)->matricula; 
+    $iMatricula        = (new db_utils())->fieldsMemory($rsMatricula, 0)->matricula; 
 
     $sInsertMatricula  = "insert into iptubase           ";
     $sInsertMatricula .= "       (j01_matric,            ";
@@ -398,7 +398,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
 
     $iCodigoConstrucao        = 1;
     
-    $iAnoConstrucao           = date('Y', time($this->dDataInclusao));
+    $iAnoConstrucao           = date('Y', time());
     
     $nAreaConstruida          = (float)  $this->oRegistroArquivo->nAreaConstruidaNova;
     $dDataLancamento          =          $this->dDataInclusao;
@@ -459,21 +459,21 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
        *  A matrícula será vinculada ao cgm apenas se o lote for vinculado a 1(um) proprietário
        */ 
       if (pg_num_rows($rsCgm) == 1) {
-        return db_utils::fieldsMemory($rsCgm, 0)->j01_numcgm;
+        return (new db_utils())->fieldsMemory($rsCgm, 0)->j01_numcgm;
       }
 
     }
 
-    if (trim($this->oRegistroArquivo->sCPFProprietarioNovo) != '') {
+    if (trim((string) $this->oRegistroArquivo->sCPFProprietarioNovo) != '') {
 
       $sSqlCgm  = "select z01_numcgm                                                                 ";
       $sSqlCgm .= "  from cgm                                                                        ";
-      $sSqlCgm .= " where cgm.z01_cgccpf = '".trim($this->oRegistroArquivo->sCPFProprietarioNovo)."' ";
+      $sSqlCgm .= " where cgm.z01_cgccpf = '".trim((string) $this->oRegistroArquivo->sCPFProprietarioNovo)."' ";
 
       $rsCgm    = db_query(Conexao::getInstancia()->getConexao(), $sSqlCgm);
 
       if ( pg_num_rows($rsCgm) > 0) {
-        return db_utils::fieldsMemory($rsCgm, 0)->z01_numcgm;
+        return (new db_utils())->fieldsMemory($rsCgm, 0)->z01_numcgm;
       }
 
     }
@@ -486,7 +486,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
 
     $sMensagem = "Erro na configuração de cgm para recadastramento da prefeitura. Favor informar um cgm válido no arquivo de configurações, campo 'cgm_recadastramento'.";
 
-    if (trim($aConfiguracoes->geral['cgm_recadastramento']) == '') {
+    if (trim((string) $aConfiguracoes->geral['cgm_recadastramento']) == '') {
 
       $this->log("#-- Erro --# - ". $sMensagem, DBLog::LOG_ERROR );
       throw new Exception($sMensagem);   
@@ -522,7 +522,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
     $rsLote    = db_query(Conexao::getInstancia()->getConexao(), $sSqlLote);
 
     if ( pg_num_rows($rsLote) > 0) {
-      return db_utils::fieldsMemory($rsLote, 0)->j34_idbql;
+      return (new db_utils())->fieldsMemory($rsLote, 0)->j34_idbql;
     } 
 
     return $this->incluirLote();
@@ -531,7 +531,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
   public function incluirLote() {
 
     $rsLote       = db_query(Conexao::getInstancia()->getConexao(), "select nextval('lote_j34_idbql_seq') as codigo_lote");
-    $iCodigoLote  = db_utils::fieldsMemory($rsLote, 0)->codigo_lote;
+    $iCodigoLote  = (new db_utils())->fieldsMemory($rsLote, 0)->codigo_lote;
     
     $sSetor          = (string) $this->oRegistroArquivo->sSetorCartograficoNovo ;
     $sQuadra         = (string) $this->oRegistroArquivo->sQuadraCartograficaNovo;
@@ -596,7 +596,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
       
       $rsCodigoLoteamento = db_query(Conexao::getInstancia()->getConexao(), "select nextval('loteam_j34_loteam_seq') as codigo_loteamento");
 
-      $iCodigoLoteamento  = db_utils::fieldsMemory($rsCodigoLoteamento, 0)->codigo_loteamento;
+      $iCodigoLoteamento  = (new db_utils())->fieldsMemory($rsCodigoLoteamento, 0)->codigo_loteamento;
       
       $sInsertLoteamento  = "insert into loteam                                                           ";
       $sInsertLoteamento .= "       (j34_loteam,                                                           ";
@@ -622,7 +622,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
 
     } else {
 
-      $iCodigoLoteamento      = db_utils::fieldsMemory($rsLoteamento, 0)->j34_loteam; 
+      $iCodigoLoteamento      = (new db_utils())->fieldsMemory($rsLoteamento, 0)->j34_loteam; 
 
     }
    
@@ -730,7 +730,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
     if (pg_num_rows($rsSetorLoc) == 0) {
 
       $rsSetorLoc       = db_query(Conexao::getInstancia()->getConexao(), "select max(j05_codigo) + 1 as codigo_setorloc from setorloc");
-      $iCodigoSetorLoc  = db_utils::fieldsMemory($rsSetorLoc, 0)->codigo_setorloc;
+      $iCodigoSetorLoc  = (new db_utils())->fieldsMemory($rsSetorLoc, 0)->codigo_setorloc;
 
       $sInsertSetorloc  = "insert into setorloc                                                         ";
       $sInsertSetorloc .= "       (j05_codigo,                                                          ";
@@ -754,7 +754,7 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
      
     } else {
 
-      $iCodigoSetorLoc  = db_utils::fieldsMemory($rsSetorLoc, 0)->codigo_setorloc; 
+      $iCodigoSetorLoc  = (new db_utils())->fieldsMemory($rsSetorLoc, 0)->codigo_setorloc; 
 
     }
 
@@ -854,12 +854,12 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
     $rsFace  = db_query(Conexao::getInstancia()->getConexao(), $sSqlFace);
 
     if (!$rsFace  || pg_num_rows($rsFace) == 0) {
-    
+
       $sMensagem = "Face de quadra para o setor/quadra/lote: " . $this->sSQL . " não encontrada";
       $this->log($sMensagem, DBLog::LOG_ERROR );
       return false; //throw new Exception ($sMensagem);  
     }
-    return db_utils::fieldsMemory($rsFace, 0)->j37_face;
+    return (new db_utils())->fieldsMemory($rsFace, 0)->j37_face;
   }
 
 
@@ -958,28 +958,28 @@ class RecadastroImobiliarioImoveisInclusao implements RecadastroImobiliarioImove
 
     if ( !$lComparacao ) {
 
-      $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sDistritoNovo)          , 1,"0", STR_PAD_LEFT );
+      $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sDistritoNovo)          , 1,"0", STR_PAD_LEFT );
       $sCodigoReferenciaAnterior .= "2";
     }
 
-    $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sSetorCartograficoNovo ), 4,"0", STR_PAD_LEFT );
-    $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sQuadraCartograficaNovo), 4,"0", STR_PAD_LEFT );
-    $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sLoteCartograficoNovo  ), 4,"0", STR_PAD_LEFT );
-    $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sUnidadeImobiliariaNova), 3,"0", STR_PAD_LEFT );
+    $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sSetorCartograficoNovo ), 4,"0", STR_PAD_LEFT );
+    $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sQuadraCartograficaNovo), 4,"0", STR_PAD_LEFT );
+    $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sLoteCartograficoNovo  ), 4,"0", STR_PAD_LEFT );
+    $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sUnidadeImobiliariaNova), 3,"0", STR_PAD_LEFT );
 
     if ( $lDadosAntigos ) {
 
       $sCodigoReferenciaAnterior = "";
       if ( !$lComparacao ) {
 
-        $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sDistritoNovo)          , 1,"0", STR_PAD_LEFT );
+        $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sDistritoNovo)          , 1,"0", STR_PAD_LEFT );
         $sCodigoReferenciaAnterior .= "2";
       }
 
-      $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sSetorCartograficoAnterior ) , 4,"0", STR_PAD_LEFT );
-      $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sQuadraCartograficaAnterior ), 4,"0", STR_PAD_LEFT );
-      $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sLoteCartograficoAnterior )  , 4,"0", STR_PAD_LEFT );
-      $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sUnidadeImobiliariaAnterior) , 3,"0", STR_PAD_LEFT );
+      $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sSetorCartograficoAnterior ) , 4,"0", STR_PAD_LEFT );
+      $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sQuadraCartograficaAnterior ), 4,"0", STR_PAD_LEFT );
+      $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sLoteCartograficoAnterior )  , 4,"0", STR_PAD_LEFT );
+      $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sUnidadeImobiliariaAnterior) , 3,"0", STR_PAD_LEFT );
     }
     return $sCodigoReferenciaAnterior;
   }

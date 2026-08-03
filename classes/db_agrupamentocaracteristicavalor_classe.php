@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE agrupamentocaracteristicavalor
 class cl_agrupamentocaracteristicavalor {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $j140_sequencial = 0;
-   var $j140_valor = 0;
+   public $j140_sequencial = 0;
+   public $j140_valor = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  j140_sequencial = int4 = Agrupamento Valor
                  j140_valor = float8 = Valor
                  ";
    //funcao construtor da classe
-   function cl_agrupamentocaracteristicavalor() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agrupamentocaracteristicavalor");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -95,10 +95,10 @@ class cl_agrupamentocaracteristicavalor {
          $this->erro_status = "0";
          return false;
        }
-       $this->j140_sequencial = pg_result($result,0,0);
+       $this->j140_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from agrupamentocaracteristicavalor_j140_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j140_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j140_sequencial)){
          $this->erro_sql = " Campo j140_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_agrupamentocaracteristicavalor {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Agrupamento Características ($this->j140_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Agrupamento Características já Cadastrado";
@@ -157,11 +157,11 @@ class cl_agrupamentocaracteristicavalor {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20937,'$this->j140_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3771,20937,'','".AddSlashes(pg_result($resaco,0,'j140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3771,20938,'','".AddSlashes(pg_result($resaco,0,'j140_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3771,20937,'','".AddSlashes(pg_fetch_result($resaco,0,'j140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3771,20938,'','".AddSlashes(pg_fetch_result($resaco,0,'j140_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -171,10 +171,10 @@ class cl_agrupamentocaracteristicavalor {
       $this->atualizacampos();
      $sql = " update agrupamentocaracteristicavalor set ";
      $virgula = "";
-     if(trim($this->j140_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j140_sequencial"])){
+     if(trim((string) $this->j140_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j140_sequencial"])){
        $sql  .= $virgula." j140_sequencial = $this->j140_sequencial ";
        $virgula = ",";
-       if(trim($this->j140_sequencial) == null ){
+       if(trim((string) $this->j140_sequencial) == null ){
          $this->erro_sql = " Campo Agrupamento Valor não informado.";
          $this->erro_campo = "j140_sequencial";
          $this->erro_banco = "";
@@ -184,10 +184,10 @@ class cl_agrupamentocaracteristicavalor {
          return false;
        }
      }
-     if(trim($this->j140_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j140_valor"])){
+     if(trim((string) $this->j140_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j140_valor"])){
        $sql  .= $virgula." j140_valor = $this->j140_valor ";
        $virgula = ",";
-       if(trim($this->j140_valor) == null ){
+       if(trim((string) $this->j140_valor) == null ){
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "j140_valor";
          $this->erro_banco = "";
@@ -211,13 +211,13 @@ class cl_agrupamentocaracteristicavalor {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20937,'$this->j140_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j140_sequencial"]) || $this->j140_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3771,20937,'".AddSlashes(pg_result($resaco,$conresaco,'j140_sequencial'))."','$this->j140_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3771,20937,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j140_sequencial'))."','$this->j140_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j140_valor"]) || $this->j140_valor != "")
-             $resac = db_query("insert into db_acount values($acount,3771,20938,'".AddSlashes(pg_result($resaco,$conresaco,'j140_valor'))."','$this->j140_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3771,20938,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j140_valor'))."','$this->j140_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -271,11 +271,11 @@ class cl_agrupamentocaracteristicavalor {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20937,'$j140_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3771,20937,'','".AddSlashes(pg_result($resaco,$iresaco,'j140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3771,20938,'','".AddSlashes(pg_result($resaco,$iresaco,'j140_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3771,20937,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3771,20938,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j140_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

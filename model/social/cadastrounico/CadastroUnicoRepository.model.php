@@ -36,7 +36,7 @@
      * Collection de CadastroUnico 
      * @var array
      */    
-    private $aCadastroUnico = array();
+    private $aCadastroUnico = [];
     
     /**
      * Instancia da classe 

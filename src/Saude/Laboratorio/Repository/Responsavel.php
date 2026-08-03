@@ -63,10 +63,10 @@ class Responsavel extends \BaseClassRepository
         }
 
         $dao = new cl_lab_labresp();
-        $where = array(
+        $where = [
           "la06_i_laboratorio = {$laboratorio->getCodigo()}",
           "la06_i_cgm = {$cgm->getCodigo()}"
-        );
+        ];
 
         $sql = $dao->sql_query_file(null, 'lab_labresp.*', null, implode(' AND ', $where));
         $rs = db_query($sql);

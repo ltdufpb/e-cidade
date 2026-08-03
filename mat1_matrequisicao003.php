@@ -55,11 +55,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	   $clcriaabas->identifica = array("matrequi"=>"Requisição","matrequiitem"=>"Itens");
-	   $clcriaabas->sizecampo  = array("matrequi"=>"20","matrequiitem"=>"20");
-	   $clcriaabas->title      = array("matrequi"=>"Requisição","matrequiitem"=>"Itens Requisitados");
-	   $clcriaabas->src        = array("matrequi"=>"mat1_matrequi003.php","matrequiitem"=>"");
-	   $clcriaabas->disabled   =  array("matrequiitem"=>"true"); 
+	   $clcriaabas->identifica = ["matrequi"=>"Requisição","matrequiitem"=>"Itens"];
+	   $clcriaabas->sizecampo  = ["matrequi"=>"20","matrequiitem"=>"20"];
+	   $clcriaabas->title      = ["matrequi"=>"Requisição","matrequiitem"=>"Itens Requisitados"];
+	   $clcriaabas->src        = ["matrequi"=>"mat1_matrequi003.php","matrequiitem"=>""];
+	   $clcriaabas->disabled   =  ["matrequiitem"=>"true"]; 
 	   $clcriaabas->cria_abas(); 
 	 ?> 
 	 </td>

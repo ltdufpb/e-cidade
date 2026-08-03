@@ -373,7 +373,7 @@ $sSqlDados    .= " from   categoriapacto";
 $sSqlDados    .= " where o31_tipopacto = {$oConvenio->o16_tipopacto} order by o31_sequencial";
 $rsDados       = db_query($sSqlDados);
 $iTotalRows    = pg_num_rows($rsDados);
-$aLinhaRelatorio = array();
+$aLinhaRelatorio = [];
 
 $aTotalizador["CP"]["realizado_trim_atual"]   = 0;
 $aTotalizador["CP"]["realizado_ano_atual"]    = 0;

@@ -39,8 +39,8 @@ $oGet = db_utils::postMemory($_GET);
 $iAnousu = db_getsession("DB_anousu");
 $iInstituicao = db_getsession("DB_instit");
 
-$aAlmoxarifados = explode(",", $oGet->sAlmoxarifados);
-$aListaAlmoxarifados = array();
+$aAlmoxarifados = explode(",", (string) $oGet->sAlmoxarifados);
+$aListaAlmoxarifados = [];
 foreach($aAlmoxarifados as $iIndice => $iAlmoxarifado){
 
     $sCampos = "m91_codigo,descrdepto"    ;
@@ -55,8 +55,8 @@ foreach($aAlmoxarifados as $iIndice => $iAlmoxarifado){
 }
 
 
-$dtInicial = trim($oGet->dtInicial);
-$dtFinal   = trim($oGet->dtFinal);
+$dtInicial = trim((string) $oGet->dtInicial);
+$dtFinal   = trim((string) $oGet->dtFinal);
 
 if (empty($dtInicial) || empty($dtFinal)) {
     db_redireciona("db_erros.php?fechar=true&db_erro=Os campos Data são de preenchimento obrigatório.");
@@ -185,7 +185,7 @@ $aItens = contabilizaMateriais($rsMateriais);
 if (isset($sFuncaoImpressao)) {
     $oAgrupamento = $sFuncaoTipoAgrupamento($aItens, $lContaPatrimonial, $iAno, $sWhere);
     $sFuncaoImpressao($oPdf, $iAlturaLinha, $oAgrupamento, $lAnalitica, $oConfigItem);
-    imprimirTotal($oPdf, $iAlturaLinha, $oAgrupamento, $oConfigItem);
+    imprimirTotal($oPdf, $iAlturaLinha, $oAgrupamento);
 } else {
     imprimirItens($oPdf, $iAlturaLinha, $aItens, $oConfigItem);
 }
@@ -390,7 +390,7 @@ function buscaMateriais($dtInicial, $dtFinal, $iInstituicao, $sOrder, $sAlmoxari
  */
 function contabilizaMateriais($rsMateriais)
 {
-    $aItens = array();
+    $aItens = [];
     $iNumeroMateriais = pg_num_rows($rsMateriais);
 
     for ($iMaterial = 0; $iMaterial < $iNumeroMateriais; $iMaterial++) {
@@ -427,10 +427,10 @@ function contabilizaMateriais($rsMateriais)
  * @param string $sWhere - filtro de contas
  * @return stdClass
  */
-function agruparPorConta(&$aItem, $lPatrimonial = false, $iAno, $sWhere)
+function agruparPorConta(&$aItem, $lPatrimonial = false, $iAno = null, $sWhere = null)
 {
-    $aContas = array();
-    $aVinculoContasMaterial = array();
+    $aContas = [];
+    $aVinculoContasMaterial = [];
 
     if ($lPatrimonial) {
         $sFuncaoBuscaConta = "buscaContaPatrimonial";
@@ -494,7 +494,7 @@ function agruparPorConta(&$aItem, $lPatrimonial = false, $iAno, $sWhere)
             $oConta->iReduzido = $iContaReduz;
             $oConta->sEstrutural = $sEstrutural;
 
-            $oConta->aItens = array();
+            $oConta->aItens = [];
             $aContas[$sEstrutural] = $oConta;
         }
 
@@ -538,9 +538,9 @@ function agruparPorConta(&$aItem, $lPatrimonial = false, $iAno, $sWhere)
  */
 function agruparPorGrupoSubGrupo(&$aMateriais)
 {
-    $aGruposFilhos = array();
+    $aGruposFilhos = [];
     $oGrupos = new stdClass();
-    $oGrupos->aAgrupamentos = array();
+    $oGrupos->aAgrupamentos = [];
     $oGrupos->nTotalSaidas = 0;
     $oGrupos->nTotalEntradas = 0;
     $oGrupos->nSaldoAnterior = 0;
@@ -582,7 +582,7 @@ function agruparPorGrupoSubGrupo(&$aMateriais)
             $oNovoGrupo->iQuantidadeEmEstoque = 0;
             $oNovoGrupo->iQuantidadeInicial = 0;
             $oGrupos->aAgrupamentos[$iCodigoGrupo] = $oNovoGrupo;
-            $oGrupos->aAgrupamentos[$iCodigoGrupo]->aMateriais = array();
+            $oGrupos->aAgrupamentos[$iCodigoGrupo]->aMateriais = [];
             $iNivel = $oDadosGrupo->nivel;
             $aGruposFilhos[] = $iCodigoGrupo;
             unset($oDadosGrupo);
@@ -620,7 +620,7 @@ function agruparPorGrupoSubGrupo(&$aMateriais)
 function montarArvoreGrupos($oArvore, $aGruposNivel, $iNivel)
 {
     $oArvore->iNivelMaior = $iNivel;
-    $aPais = array();
+    $aPais = [];
 
     while ($iNivel != 0) {
         foreach ($aGruposNivel as $iGrupoFilho) {
@@ -857,7 +857,7 @@ function imprimirGrupo(
     $iAlturaLinha,
     $lAnalitica,
     $lImprimeCabecalho = false,
-    $oConfigItem
+    $oConfigItem = null
 ) {
     if ($oPdf->GetY() > $oPdf->h - 35) {
         imprimirContinuacaoPagina($oPdf, $iAlturaLinha);
@@ -885,7 +885,7 @@ function imprimirGrupo(
     $oPdf->SetFont('arial', '', 6);
     $oPdf->Cell(10, $iAlturaLinha, "Nível: {$oGrupo->iNivel}", "TBR", 0, "L", 1);
     $oPdf->Cell(20, $iAlturaLinha, "{$oGrupo->sEstruturalGrupo}", "LTBR", 0, "L", 1);
-    $oPdf->Cell(30, $iAlturaLinha, substr($oGrupo->sDescricaoGrupo, 0, 28), "LTBR", 0, "L", 1);
+    $oPdf->Cell(30, $iAlturaLinha, substr((string) $oGrupo->sDescricaoGrupo, 0, 28), "LTBR", 0, "L", 1);
     $oPdf->Cell(30, $iAlturaLinha, db_formatar(($oGrupo->nSaldoAnterior), "f"), "LTBR", 0, "R", 1);
     $oPdf->Cell(25, $iAlturaLinha, ($oGrupo->iQuantidadeInicial), "LTBR", 0, "R", 1);
     $oPdf->Cell(30, $iAlturaLinha, db_formatar(($oGrupo->nTotalEntradas), "f"), "LTBR", 0, "R", 1);
@@ -1061,7 +1061,7 @@ function imprimirItens($oPdf, $iAlturaLinha, $aItens, $oConfigItem)
         $oTotal->iQuantidadeInicial += (($oItem->iQuantidadeEmEstoque + $oItem->iQuantidadeSaida) - $oItem->iQuantidadeEntrada);
     }
 
-    imprimirTotal($oPdf, $iAlturaLinha, $oTotal, $oConfigItem);
+    imprimirTotal($oPdf, $iAlturaLinha, $oTotal);
 }
 
 /**
@@ -1071,7 +1071,7 @@ function imprimirItens($oPdf, $iAlturaLinha, $aItens, $oConfigItem)
  * @param bool $lInicio
  * @param stdClass $oConfigItem
  */
-function imprimirCabecalhoItem($oPdf, $iAlturaLinha, $lInicio = false, $oConfigItem)
+function imprimirCabecalhoItem($oPdf, $iAlturaLinha, $lInicio = false, $oConfigItem = null)
 {
     if ($oPdf->GetY() > $oPdf->h - 35 || $lInicio) {
         if (!$lInicio) {
@@ -1130,7 +1130,7 @@ function imprimirItem($oPdf, $iAlturaLinha, $oItem, $oConfigItem)
     $iQuantidadeEmEstoque = (string)Material::arredondarQuantidade($oItem->iQuantidadeEmEstoque);
 
     $oPdf->Cell($oConfigItem->iTamanhoCodigoMaterial, $iAlturaLinha, $oItem->iCodigo, "TBR", 0, "C", 0);
-    $oPdf->Cell($oConfigItem->iTamanhoNomeMaterial, $iAlturaLinha, substr($oItem->sDescricao, 0, 44), "TBR", 0, "L", 0);
+    $oPdf->Cell($oConfigItem->iTamanhoNomeMaterial, $iAlturaLinha, substr((string) $oItem->sDescricao, 0, 44), "TBR", 0, "L", 0);
     $oPdf->Cell($oConfigItem->iTamanhoSaldoInicial, $iAlturaLinha, "R$ " . trim(db_formatar(($oItem->nSaldoAnterior), "f")), "TBR",
         0, "R", 0);
     $oPdf->Cell($oConfigItem->iTamanhoQuantidadeInicial, $iAlturaLinha, $iQuantidadeInicial, "TBR", 0, "R", 0);

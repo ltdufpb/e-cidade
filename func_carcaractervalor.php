@@ -32,8 +32,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_carcaractervalor_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcarcaractervalor = new cl_carcaractervalor;
 $clcarcaractervalor->rotulo->label("j119_sequencial");
 $clcarcaractervalor->rotulo->label("j119_caracteristica1");
@@ -79,9 +79,9 @@ $clcarcaractervalor->rotulo->label("j119_caracteristica1");
         }else{
            $sql = $clcarcaractervalor->sql_query_file("",$campos,"j119_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j119_caracteristica1)){
-          $repassa = array("chave_j119_sequencial"=>$chave_j119_sequencial,"chave_j119_caracteristica1"=>$chave_j119_caracteristica1);
+          $repassa = ["chave_j119_sequencial"=>$chave_j119_sequencial,"chave_j119_caracteristica1"=>$chave_j119_caracteristica1];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

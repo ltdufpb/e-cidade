@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_gerfsal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clgerfsal = new cl_gerfsal;
 $clgerfsal->rotulo->label("r14_anousu");
 $clgerfsal->rotulo->label("r14_mesusu");
@@ -121,9 +121,9 @@ $clgerfsal->rotulo->label("r14_regist");
         }else{
            $sql = $clgerfsal->sql_query(db_getsession('DB_anousu'),"","","",$campos,"r14_anousu#r14_mesusu#r14_regist#r14_rubric","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_r14_regist)){
-          $repassa = array("chave_r14_anousu"=>$chave_r14_anousu,"chave_r14_regist"=>$chave_r14_regist);
+          $repassa = ["chave_r14_anousu"=>$chave_r14_anousu,"chave_r14_regist"=>$chave_r14_regist];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

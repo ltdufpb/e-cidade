@@ -102,7 +102,7 @@ class EnderecoMunicipioService
 
     private function buildCampoBairro()
     {
-        $bairro = Bairro::nome($this->oDados->dadosRedesim["endereco"]["bairro"])->first();
+        $bairro = (new Bairro())->nome($this->oDados->dadosRedesim["endereco"]["bairro"])->first();
 
         if (!$bairro) {
             throw new \BusinessException("Bairro não encontrado.");
@@ -119,7 +119,7 @@ class EnderecoMunicipioService
 
     private function buildCampoLogradouro()
     {
-        $logradouro = Ruas::nome($this->oDados->dadosRedesim["endereco"]["logradouro"])->first();
+        $logradouro = (new Ruas())->nome($this->oDados->dadosRedesim["endereco"]["logradouro"])->first();
 
         if (!$logradouro) {
             throw new \BusinessException("Logradouro não encontrado.");

@@ -43,7 +43,7 @@ class Cgm extends Base
   /**
    * @var array $aIdentificadores
   */
-  private $aIdentificadores = array();
+  private $aIdentificadores = [];
 
   private $tipoEmpresa;
 
@@ -63,7 +63,7 @@ class Cgm extends Base
    */
   public function getCgm()
   {
-    $retorno = array();
+    $retorno = [];
     foreach ($this->registro as $dadosCgm){
       $municipio = null;
 
@@ -73,7 +73,7 @@ class Cgm extends Base
         $municipio = $repository->getMunicipio($dadosCgm->codigo_municipio);
       }
 
-      $cgm = \CgmFactory::getInstanceByCnpjCpf(trim($dadosCgm->cpfcnpj));
+      $cgm = \CgmFactory::getInstanceByCnpjCpf(trim((string) $dadosCgm->cpfcnpj));
 
       if ( $cgm == false ) {
         $cgm = \CgmFactory::getInstanceByType($dadosCgm->tipo_pessoa);
@@ -81,18 +81,18 @@ class Cgm extends Base
 
       if ( $cgm instanceof \CgmJuridico) {
 
-        $cgm->setCnpj(trim($dadosCgm->cpfcnpj));
+        $cgm->setCnpj(trim((string) $dadosCgm->cpfcnpj));
         $cgm->setNire($dadosCgm->nire);
         $cgm->setNomeFantasia($dadosCgm->nome_fantasia);
       }
 
       if ($cgm instanceof \CgmFisico) {
-        $cgm->setCpf(trim($dadosCgm->cpfcnpj));
+        $cgm->setCpf(trim((string) $dadosCgm->cpfcnpj));
       }
 
       $cgm->setInscricaoEstadual($dadosCgm->inscricao_estadual);
       $cgm->setTipoEmpresa($dadosCgm->tipo_empresa);
-      $cgm->setNome(substr($dadosCgm->razao_social, 0, 40));
+      $cgm->setNome(substr((string) $dadosCgm->razao_social, 0, 40));
       $cgm->setNomeCompleto($dadosCgm->razao_social);
 
       $cgm->setEmail($dadosCgm->email);
@@ -113,7 +113,7 @@ class Cgm extends Base
       $cgm->setCep($dadosCgm->cep);
       $cgm->setMunicipio($municipio);
 
-      $retorno[trim($dadosCgm->cpfcnpj)] = $cgm;
+      $retorno[trim((string) $dadosCgm->cpfcnpj)] = $cgm;
     }
     return $retorno;
   }
@@ -221,7 +221,7 @@ class Cgm extends Base
         $this->registro[$indice]->nome_fantasia = $this->getValor($indice, "nome_fantasia");
 
         $this->registro[$indice]->fone1 = $this->getValor($indice, "fone1");
-        $this->registro[$indice]->email = strtolower($this->getValor($indice, "email"));
+        $this->registro[$indice]->email = strtolower((string) $this->getValor($indice, "email"));
       }
     }
   }

@@ -32,8 +32,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conlancam_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconlancam = new cl_conlancam;
 $clconlancam->rotulo->label("c70_codlan");
 $clconlancam->rotulo->label("c70_anousu");
@@ -41,7 +41,7 @@ $clconlancam->rotulo->label("c70_anousu");
 function carrega_destinatario(){
  $texto = "";
  $res = db_query("select id_usuario,nome from db_usuarios order by nome ");    
- for ($x=0;$x < pg_numrows($res);$x++){
+ for ($x=0;$x < pg_num_rows($res);$x++){
      db_fieldsmemory($res,$x);
 	global $id_usuario,$nome,$cod_destinatario;
 	//if ($cod_destinatario==$id_usuario){

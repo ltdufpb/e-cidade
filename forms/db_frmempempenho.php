@@ -67,7 +67,7 @@ if ($clpcparam->numrows>0){
 		       solandam.pc43_depto <> ".db_getsession("DB_coddepto");
 
          $result_andam = db_query($sql);
-         if (pg_numrows($result_andam)>0){
+         if (pg_num_rows($result_andam)>0){
       	      $sqltran = "select distinct x.p62_codtran,                   
       				x.pc11_numero,
 				x.pc11_codigo,
@@ -87,7 +87,7 @@ if ($clpcparam->numrows>0){
                           e55_autori,
 			  e54_anulad 
 		        from proctransferproc
-                         
+
                         inner join solicitemprot on pc49_protprocesso = proctransferproc.p63_codproc
                         inner join solicitem on pc49_solicitem = pc11_codigo
                         inner join proctransfer on p63_codtran = p62_codtran
@@ -105,7 +105,7 @@ if ($clpcparam->numrows>0){
 			      x.e55_autori = $chavepesquisa";
 
 			$result_tran=db_query($sqltran);
-			if(pg_numrows($result_tran)==0){
+			if(pg_num_rows($result_tran)==0){
       			    $db_disab=false;
 			}
       } //else {
@@ -235,7 +235,7 @@ db_input('e54_numerl',8,$Ie54_numerl,true,'text',$dop);
 <?php 
   $result=$clempprestatip->sql_record($clempprestatip->sql_query_file(null,"e44_tipo as tipo,e44_descr,e44_obriga","e44_obriga "));
   $numrows =  $clempprestatip->numrows;
-  $arr = array();
+  $arr = [];
   for($i=0; $i<$numrows; $i++){
      db_fieldsmemory($result,$i);  
      if($e44_obriga == 0 && empty($e44_tipo)){
@@ -421,7 +421,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
     db_iframe_orcreservaaut.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
 </script>

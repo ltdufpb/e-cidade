@@ -56,7 +56,7 @@ function novaLinha($oPdf, $oDados) {
 
 }
 
- $aCampos    = array();
+ $aCampos    = [];
  $aCampos[ ] = "z01_i_cgsund";
  $aCampos[ ] = "z01_v_nome";
  $aCampos[ ] = "z01_v_ender";
@@ -76,7 +76,7 @@ function novaLinha($oPdf, $oDados) {
  $aCampos[ ] = "z01_v_mae";
  $aCampos[ ] = "z01_i_estciv";
  
- $aCampos2    = array();
+ $aCampos2    = [];
  $aCampos2[ ] = "CGS";
  $aCampos2[ ] = "Nome";
  $aCampos2[ ] = "Endereço";
@@ -133,7 +133,7 @@ $head1 = "RELATÓRIO DE CRITICA DADOS PARA EXPOTAÇÂO";
 for ($iInd = 0; $iInd < $oDaoFarAcompPacHiperdia->numrows; $iInd++) {
 
   $oDados = db_utils::fieldsmemory($rs, $iInd, true);
-  $aDados = array();
+  $aDados = [];
 
   for ($iInd2=0; $iInd2 < count($aCampos); $iInd2++) {
     if ($oDados->$aCampos[$iInd2] == '' || $oDados->$aCampos[$iInd2] == null) {

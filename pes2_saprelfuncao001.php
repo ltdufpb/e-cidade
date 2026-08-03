@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $rotulocampo = new rotulocampo;
 $rotulocampo->label("DBtxt23");
 $rotulocampo->label("DBtxt25");
@@ -88,7 +88,7 @@ function js_emite(){
       <tr>
 	<td colspan="2" align="left"><strong>Listar Funcionários :</strong>&nbsp;&nbsp;
          <?php 
-           $x = array("f"=>"NÃO","t"=>"SIM");
+           $x = ["f"=>"NÃO","t"=>"SIM"];
            db_select('func',$x,true,4,"");
          ?>
 	</td>
@@ -96,7 +96,7 @@ function js_emite(){
       <tr>
 	<td colspan="2" align="left"><strong>Classificações :</strong>&nbsp;&nbsp;
          <?php 
-           $xx = array("0"=>"Todos","1"=>"Clas. 2 e 8","2"=>"Clas. 1 e 9","3"=>"Clas.3,4,6,e 12","4"=>"Clas. 5,10 e 11","5"=>"Clas. 7");
+           $xx = ["0"=>"Todos","1"=>"Clas. 2 e 8","2"=>"Clas. 1 e 9","3"=>"Clas.3,4,6,e 12","4"=>"Clas. 5,10 e 11","5"=>"Clas. 7"];
            db_select('clas',$xx,true,4,"");
          ?>
 	</td>

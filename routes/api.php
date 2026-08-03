@@ -13,9 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware(['auth:api'])->namespace('App\Http\Controllers')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware(['auth:api'])->namespace('App\Http\Controllers')->get('/user', fn(Request $request) => $request->user());
 
 Route::prefix('client')->group(base_path('routes/api/client/client.php'));
 

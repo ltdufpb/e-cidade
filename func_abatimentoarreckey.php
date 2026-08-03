@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_abatimentoarreckey_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clabatimentoarreckey = new cl_abatimentoarreckey;
 $clabatimentoarreckey->rotulo->label("k128_sequencial");
 $clabatimentoarreckey->rotulo->label("k128_arreckey");
@@ -98,9 +98,9 @@ $clabatimentoarreckey->rotulo->label("k128_arreckey");
         }else{
            $sql = $clabatimentoarreckey->sql_query("",$campos,"k128_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k128_arreckey)){
-          $repassa = array("chave_k128_sequencial"=>$chave_k128_sequencial,"chave_k128_arreckey"=>$chave_k128_arreckey);
+          $repassa = ["chave_k128_sequencial"=>$chave_k128_sequencial,"chave_k128_arreckey"=>$chave_k128_arreckey];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

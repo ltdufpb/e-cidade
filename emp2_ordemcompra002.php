@@ -79,7 +79,7 @@ if ($clpcparam->numrows > 0) {
     db_redireciona("db_erros.php?fechar=true&db_erro=Não há parametros configurados para essa instituição.");
 }
 
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 $txt_where = '1=1';
 
 if (isset($m51_codordem_ini) && $m51_codordem_ini != "" && isset($m51_codordem_fim) && $m51_codordem_fim != "") {
@@ -167,7 +167,7 @@ for ($i = 0; $i < $num; $i++) {
     }
 
     $pdf1->prefeitura = $nomeinst;
-    $pdf1->enderpref = trim($ender) . "," . $numero;
+    $pdf1->enderpref = trim((string) $ender) . "," . $numero;
     $pdf1->municpref = $munic;
     $pdf1->uf = $uf;
     $pdf1->telefpref = $telef;
@@ -252,7 +252,7 @@ if ($flag_imprime == true) {
             $oStdDadosGED->tipo = "NUMERO";
             $oStdDadosGED->valor = $m51_codordem_ini;
             $pdf1->objpdf->Output("tmp/{$sTipoDocumento}_{$m51_codordem_ini}.pdf");
-            $oGerenciador->moverArquivo(array($oStdDadosGED));
+            $oGerenciador->moverArquivo([$oStdDadosGED]);
         } catch (Exception $eErro) {
             db_redireciona("db_erros.php?fechar=true&db_erro=" . $eErro->getMessage());
         }

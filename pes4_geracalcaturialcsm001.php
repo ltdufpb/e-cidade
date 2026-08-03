@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_inssirf_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -105,13 +105,13 @@ $clinssirf = new cl_inssirf;
         <td align="right"><b>Vinculo:<b></td>
 	<td align="left">
 	<?php 
-	  $arr = array(
+	  $arr = [
 		             ""  => "Selecione",
 		             'A' => 'Ativo',
 					 'I' => 'Inativos',
 			   	     'P' => 'Pensionistas',
 			   	     'E' => 'Exonerados'
-					);
+					];
 
 	  db_select("vinculo",$arr,true,1);
 	?>

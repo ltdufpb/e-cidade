@@ -40,9 +40,9 @@ class RelatoriosPlanejamentoRclController extends Controller
      */
     public function previsaoRclOutrosAnexos(AnexosRequest $request)
     {
-        $planejamento = (new Planejamento())
+        $planejamento = new Planejamento()
             ->where('pl2_codigo', $request->get('planejamento_id'))->first();
-        $request->merge(['tipo_planejamento' => $planejamento->pl2_tipo ? $planejamento->pl2_tipo : '']);
+        $request->merge(['tipo_planejamento' => $planejamento->pl2_tipo ?: '']);
         $service = new RelatorioPlanejamentoRclService($request->all());
         $files = $service->emitir();
         return new DBJsonResponse($files, 'PREVISÃO DA RECEITA CORRENTE LÍQUIDA - '.$planejamento->pl2_titulo);

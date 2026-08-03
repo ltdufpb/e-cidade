@@ -17,6 +17,7 @@ class BalanceteReceitaAnteriorBuilder2020 extends PadBuilder
         $this->layout = new BalanceteReceitaAnterior();
     }
 
+    #[\Override]
     public function build()
     {
         $this->create();
@@ -35,7 +36,7 @@ class BalanceteReceitaAnteriorBuilder2020 extends PadBuilder
             $descricao = 'Descrição nao localizada - Migração';
         }
 
-        if (!empty($elemento) && substr($elemento, 0, 1) != 9) {
+        if (!empty($elemento) && substr((string) $elemento, 0, 1) != 9) {
             --$nivel;
         }
 

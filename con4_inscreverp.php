@@ -58,7 +58,7 @@ $lErro                   = false;
 /*
  * Verificamos se o usuário já inscriveu todos os empennhos com saldo a liquidar.
  */
-$dtLanc = implode('-', array_reverse(explode("/", $get->dtlanc)));
+$dtLanc = implode('-', array_reverse(explode("/", (string) $get->dtlanc)));
 $sSqlTotalEmpenhos = $oDaoEncerramento->sqlQueryEmpenhosNaoliquidados(
                                                                       db_getsession("DB_instit"),
                                                                       db_getsession("DB_anousu"),

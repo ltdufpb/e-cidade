@@ -287,13 +287,13 @@ class TipoAssentamento
      */
     public function toArray()
     {
-        return array(
+        return [
             'codigo' => $this->getSequencial(),
             'descricao' => $this->getDescricao(),
             'natureza' => $this->getNatureza(),
             'tag' => $this->getCodigo(),
             'tipo' => $this->getTipo()
-        );
+        ];
     }
 
     /**
@@ -422,7 +422,7 @@ class TipoAssentamento
                 $iQtdeAssentamentos = pg_num_rows($rsAssentamentos);
 
                 if ($iQtdeAssentamentos == 0) {
-                    return array();
+                    return [];
                 }
 
                 for ($iIndAssentamentos = 0; $iIndAssentamentos < $iQtdeAssentamentos; $iIndAssentamentos++) {
@@ -442,7 +442,7 @@ class TipoAssentamento
     public function getAtributosDinamicos()
     {
 
-        $aAtributosDinamicos = array();
+        $aAtributosDinamicos = [];
 
         $sSqlBuscaAtributos = 'SELECT db109_sequencial,
   	        	                     db109_descricao,

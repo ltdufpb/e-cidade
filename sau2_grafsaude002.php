@@ -29,12 +29,12 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_prontuarios_classe.php"));
 include(modification("classes/db_vacinasaplicadas_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clprontuarios = new cl_prontuarios;
  $data1 = str_replace("X","-",$data1);
  $data2 = str_replace("X","-",$data2);
- $bairro = strtoupper($bairro);
- $extra = strtoupper($extra);
+ $bairro = strtoupper((string) $bairro);
+ $extra = strtoupper((string) $extra);
 //tipo
 //exit;
 $sql1 = "SELECT count(*) from prontuarios
@@ -115,10 +115,10 @@ for($x=0; $x < $Linhas; $x++){
  
   if($extra == ""){
    $pdf->setfont('arial','',7);
-   $pdf->cell(70,4,trim($Array[0])."- ".trim($Array[1]),0,0,"L",0);
+   $pdf->cell(70,4,trim((string) $Array[0])."- ".trim((string) $Array[1]),0,0,"L",0);
   }
 
-  $pdf->setfillcolor(rand(0,255),rand(0,255),rand(0,255));
+  $pdf->setfillcolor(random_int(0,255),random_int(0,255),random_int(0,255));
   $pdf->cell(10,4,$Array[3],0,0,"L",0);
   $pdf->cell($percent+1,3,"",1,0,"L",1);
   $pdf->cell(15,4,$percent."%",0,1,"L",0);

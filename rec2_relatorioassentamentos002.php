@@ -48,25 +48,25 @@ $oGet = db_utils::postmemory($_GET);
  * Faltas
  * Cogido dos assentamentos de faltas
  */
-$aCodigosFaltas = array('FNJ');
+$aCodigosFaltas = ['FNJ'];
 
 /**
  * Ausencias
  * Cogido dos assentamentos de ausencias
  */
-$aCodigosAusencias = array('AM', 'AMF', 'FJ');
+$aCodigosAusencias = ['AM', 'AMF', 'FJ'];
 
 /**
  * Penalidades
  * Cogido dos assentamentos de penalidades
  */
-$aCodigosPenalidades = array('ADVER', 'SUSP');
+$aCodigosPenalidades = ['ADVER', 'SUSP'];
 
 /**
  * Suspensoes
  * Cogido dos assentamentos de suspensoes
  */
-$aCodigosSuspensoes = array('SEP');
+$aCodigosSuspensoes = ['SEP'];
 
 /**
  * Array com os codigos dos assentamentos
@@ -79,30 +79,30 @@ $oDaoDBConfig  = db_utils::getDao('db_config');
 $oDaoAssenta   = db_utils::getDao('assenta');
 $oDaoCurric    = db_utils::getDao('curric');
 
-$aDadosAssentamentos = array();
+$aDadosAssentamentos = [];
 
 /**
  * Array com os assentamentos 
  */
-$aFaltas      = array();
-$aAusencias   = array();
-$aPenalidades = array();
-$aSuspensoes  = array();
+$aFaltas      = [];
+$aAusencias   = [];
+$aPenalidades = [];
+$aSuspensoes  = [];
 
 /**
  * Array dos treinamentos 
  */
-$aTreinamentos = array();
+$aTreinamentos = [];
 
 /**
  * Array com cgms dos servidores, usado para buscar treinamentos  
  */
-$aCgmTreinamentos = array();
+$aCgmTreinamentos = [];
 
 /**
  * Páginas dos servidores, um página por matricula 
  */
-$aPaginas = array();
+$aPaginas = [];
 $iPagina  = 0;
 
 /**
@@ -132,7 +132,7 @@ if ( !empty($oGet->dDataFinal) ) {
  * Filtros de pesquisa para assentamento 
  */
 $sOrderAssenta = 'h16_regist, h16_dtconc, h16_dtterm';
-$aWhereAssenta = array();
+$aWhereAssenta = [];
 
 if ( !empty($iMatricula) ) {
   $aWhereAssenta[] = "h16_regist = {$iMatricula} ";
@@ -176,8 +176,8 @@ for ( $iIndice = 0; $iIndice < $oDaoAssenta->numrows; $iIndice++ ) {
 
   $oAssentamento = db_utils::fieldsMemory($rsAssenta, $iIndice);
 
-  $iMesAssentamento = date('m', strtotime($oAssentamento->h16_dtterm));
-  $iAnoAssentamento = date('Y', strtotime($oAssentamento->h16_dtterm));
+  $iMesAssentamento = date('m', strtotime((string) $oAssentamento->h16_dtterm));
+  $iAnoAssentamento = date('Y', strtotime((string) $oAssentamento->h16_dtterm));
 
   $oStdAssentamento = new StdClass;
   $oStdAssentamento->sCodigo      = $oAssentamento->h12_assent;
@@ -246,7 +246,7 @@ for ( $iIndice = 0; $iIndice < $oDaoAssenta->numrows; $iIndice++ ) {
  */   
 foreach ( $aCgmTreinamentos as $iMatricula => $iNumCgm ) {
 
-  $aWhereTreinamentos = array();
+  $aWhereTreinamentos = [];
   $aWhereTreinamentos[] = "h03_numcgm = " . $iNumCgm;
 
   if ( !empty($dInicial) ) {
@@ -280,10 +280,10 @@ foreach ( $aDadosAssentamentos as $iMatricula => $aDadosMatricula ) {
   $iLinhaPenalidades = 0;
   $iLinhaSuspensoes  = 0;
 
-  $aLinhasFaltas      = array();
-  $aLinhasAusencias   = array();
-  $aLinhasPenalidades = array();
-  $aLinhasSuspensoes  = array();
+  $aLinhasFaltas      = [];
+  $aLinhasAusencias   = [];
+  $aLinhasPenalidades = [];
+  $aLinhasSuspensoes  = [];
 
   /**
    * Matricula
@@ -358,7 +358,7 @@ foreach ( $aDadosAssentamentos as $iMatricula => $aDadosMatricula ) {
    * Total de linhas
    * - Pega a maior das linhas 
    */
-  $oDadosPagina->iTotalLinhas = max(array($iLinhaFaltas, $iLinhaAusencias, $iLinhaPenalidades, $iLinhaSuspensoes));
+  $oDadosPagina->iTotalLinhas = max([$iLinhaFaltas, $iLinhaAusencias, $iLinhaPenalidades, $iLinhaSuspensoes]);
 
   /**
    * Treinamentos  
@@ -405,7 +405,7 @@ define('PDF_CINZA',  200);
  */
 class PDFHelper extends fpdf {
 
-  public static $aPaginasInternas     = array();
+  public static $aPaginasInternas     = [];
   public $iAlturaMaxima = 0;
   public $oHelper; 
   public $lHeaderAssentamentos = true;

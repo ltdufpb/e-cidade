@@ -88,7 +88,7 @@ switch ($oParam->sExec) {
        * prepara o retorno caso numpre já exista algum desconto.
        */
       
-      $oResulDebitos = array();
+      $oResulDebitos = [];
       
       foreach ($aRegistros as $iIndice => $oDebitos) {
         

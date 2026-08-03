@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $head3 = "POSIÇÃO DA DÍVIDA";
 $head5 = "$info : $val";
 if ($info=='CGM'){
@@ -91,7 +91,7 @@ $sql_parc="select v07_parcel,
 
 $result_norm=db_query($sql_norm);
 $result_parc=db_query($sql_parc);
-if (pg_numrows($result_norm)==0&&pg_numrows($result_parc)==0){
+if (pg_num_rows($result_norm)==0&&pg_num_rows($result_parc)==0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dividas.');
 }
 $pdf = new PDF(); 
@@ -109,7 +109,7 @@ $totaljur = 0;
 $totalmul = 0;
 $totaldesc = 0;
 $totalval = 0;
-for($x = 0; $x < pg_numrows($result_norm);$x++){
+for($x = 0; $x < pg_num_rows($result_norm);$x++){
    db_fieldsmemory($result_norm,$x);
    if (($pdf->gety() > $pdf->h - 30) || $pag == 1){
    	 $pdf->setfont('arial','b',10);
@@ -164,7 +164,7 @@ $totaljur = 0;
 $totalmul = 0;
 $totaldesc = 0;
 $totalval = 0;
-for($x = 0; $x < pg_numrows($result_parc);$x++){
+for($x = 0; $x < pg_num_rows($result_parc);$x++){
    db_fieldsmemory($result_parc,$x);
    if (($pdf->gety() > $pdf->h - 30) || $pag == 1){
    	 $pdf->setfont('arial','b',10);

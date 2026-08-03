@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $claluno                     = new cl_aluno;
 $clalunobairro               = new cl_alunobairro;
 $clalunocurso                = new cl_alunocurso;
@@ -299,7 +299,7 @@ if ( isset( $excluir ) ) {
 	  $result_aluno = db_query($sql_aluno);
 	  $linhas_aluno = pg_num_rows($result_aluno);
 	  if($linhas_aluno==0){
-	  $x = array(''=>'Nenhum registro');
+	  $x = [''=>'Nenhum registro'];
 	  db_select('aluno',$x,true,1,"style='width:400px;'");
 	  }else{
 	  ?>

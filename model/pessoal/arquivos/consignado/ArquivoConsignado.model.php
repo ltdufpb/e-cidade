@@ -41,7 +41,7 @@ class ArquivoConsignado {
    * Array com os Registros do ponto
    * @var RegistroConsignado[]
    */
-  private $aRegistros = array();
+  private $aRegistros = [];
 
   /**
    * Nome do arquivo
@@ -264,7 +264,7 @@ class ArquivoConsignado {
    */
   public function getRegistrosValidos($sOrdenacao = '') {
 
-    $aRegistrosValidos = array();
+    $aRegistrosValidos = [];
     $aRegistros        = RegistroConsignadoRepository::getRegistrosDoArquivo($this, $sOrdenacao);
 
     foreach ($aRegistros as $oRegistro) {

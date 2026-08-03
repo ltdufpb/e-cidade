@@ -92,7 +92,8 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
    *
    * @return Object $oRetorno
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
   	/**
   	 * Configurações do período informado.
@@ -179,7 +180,7 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
     $oDespesaBruta->quadrodescricao    = 'DESPESA BRUTA COM PESSOAL (I)';
     $oDespesaBruta->exercicio          = 0;
     $oDespesaBruta->inscritas          = 0;
-    $oDespesaBruta->linhas             = array();
+    $oDespesaBruta->linhas             = [];
     $oDespesaBruta->colunameses        = $this->getDadosColuna();
     $oDespesaBruta->valorapurado       = 0;
     $oDespesaBruta->percentuallimite   = 0;
@@ -192,7 +193,7 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
     $oDespesaNaoComputada->quadrodescricao    = 'DESPESAS NÃO COMPUTADAS (§ 1o do art. 19 da LRF) (II)';
     $oDespesaNaoComputada->exercicio          = 0;
     $oDespesaNaoComputada->inscritas          = 0;
-    $oDespesaNaoComputada->linhas             = array();
+    $oDespesaNaoComputada->linhas             = [];
     $oDespesaNaoComputada->colunameses        = $this->getDadosColuna();
     $oDespesaNaoComputada->valorapurado       = 0;
     $oDespesaNaoComputada->percentuallimite   = 0;
@@ -205,7 +206,7 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
     $oDespesaLiquida->quadrodescricao   = 'DESPESA LÍQUIDA COM PESSOAL (III) = (I - II)';
     $oDespesaLiquida->exercicio         = 0;
     $oDespesaLiquida->inscritas         = 0;
-    $oDespesaLiquida->linhas            = array();
+    $oDespesaLiquida->linhas            = [];
     $oDespesaLiquida->colunameses       = $this->getDadosColuna();
     $oDespesaLiquida->valorapurado      = 0;
     $oDespesaLiquida->percentuallimite  = 0;
@@ -218,8 +219,8 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
     $oDespesaTotalComPessoal->quadrodescricao    = 'DESPESA TOTAL COM PESSOAL - DTP(V) = (IIIa + IIIb)';
     $oDespesaTotalComPessoal->exercicio          = 0;
     $oDespesaTotalComPessoal->inscritas          = 0;
-    $oDespesaTotalComPessoal->linhas             = array();
-    $oDespesaTotalComPessoal->colunameses        = array();
+    $oDespesaTotalComPessoal->linhas             = [];
+    $oDespesaTotalComPessoal->colunameses        = [];
     $oDespesaTotalComPessoal->valorapurado       = 0;
     $oDespesaTotalComPessoal->percentuallimite   = 0;
     $oDespesaTotalComPessoal->linhatotalizadora  = true;
@@ -232,8 +233,8 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
     $oReceitaTotalCorrenteLiquida->quadrodescricao   = 'RECEITA CORRENTE LÍQUIDA - RCL (IV)';
     $oReceitaTotalCorrenteLiquida->exercicio         = 0;
     $oReceitaTotalCorrenteLiquida->inscritas         = 0;
-    $oReceitaTotalCorrenteLiquida->linhas            = array();
-    $oReceitaTotalCorrenteLiquida->colunameses       = array();
+    $oReceitaTotalCorrenteLiquida->linhas            = [];
+    $oReceitaTotalCorrenteLiquida->colunameses       = [];
     $oReceitaTotalCorrenteLiquida->valorapurado      = 0;
     $oReceitaTotalCorrenteLiquida->percentuallimite  = 0;
     $oReceitaTotalCorrenteLiquida->linhatotalizadora = false;
@@ -245,8 +246,8 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
     $oDespesaTotalComPessoalSemRCL->quadrodescricao   = 'DESPESA TOTAL COM PESSOAL - DTP (V) = (III a + III b)';
     $oDespesaTotalComPessoalSemRCL->exercicio         = 0;
     $oDespesaTotalComPessoalSemRCL->inscritas         = 0;
-    $oDespesaTotalComPessoalSemRCL->linhas            = array();
-    $oDespesaTotalComPessoalSemRCL->colunameses       = array();
+    $oDespesaTotalComPessoalSemRCL->linhas            = [];
+    $oDespesaTotalComPessoalSemRCL->colunameses       = [];
     $oDespesaTotalComPessoalSemRCL->valorapurado      = 0;
     $oDespesaTotalComPessoalSemRCL->percentuallimite  = 0;
     $oDespesaTotalComPessoalSemRCL->linhatotalizadora = false;
@@ -258,8 +259,8 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
     $oLimiteMaximo->quadrodescricao   = 'LIMITE MÁXIMO (VI) (incisos I, II e III, art. 20 da LRF)';
     $oLimiteMaximo->exercicio         = 0;
     $oLimiteMaximo->inscritas         = 0;
-    $oLimiteMaximo->linhas            = array();
-    $oLimiteMaximo->colunameses       = array();
+    $oLimiteMaximo->linhas            = [];
+    $oLimiteMaximo->colunameses       = [];
     $oLimiteMaximo->valorapurado      = 0;
     $oLimiteMaximo->percentuallimite  = 0;
     $oLimiteMaximo->linhatotalizadora = false;
@@ -271,8 +272,8 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
     $oLimitePrudencial->quadrodescricao   = 'LIMITE PRUDENCIAL (VII) = (0,95 x VI) (parágrafo único do art. 22 da LRF)';
     $oLimitePrudencial->exercicio         = 0;
     $oLimitePrudencial->inscritas         = 0;
-    $oLimitePrudencial->linhas            = array();
-    $oLimitePrudencial->colunameses       = array();
+    $oLimitePrudencial->linhas            = [];
+    $oLimitePrudencial->colunameses       = [];
     $oLimitePrudencial->valorapurado      = 0;
     $oLimitePrudencial->percentuallimite  = 0;
     $oLimitePrudencial->linhatotalizadora = false;
@@ -281,8 +282,8 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
     $oLimiteAlerta->quadrodescricao   = 'LIMITE DE ALERTA (VIII) = (0,90 x VI) (inciso II do §1º do art. 59 da LRF)';
     $oLimiteAlerta->exercicio         = 0;
     $oLimiteAlerta->inscritas         = 0;
-    $oLimiteAlerta->linhas            = array();
-    $oLimiteAlerta->colunameses       = array();
+    $oLimiteAlerta->linhas            = [];
+    $oLimiteAlerta->colunameses       = [];
     $oLimiteAlerta->valorapurado      = 0;
     $oLimiteAlerta->percentuallimite  = 0;
     $oLimiteAlerta->linhatotalizadora = false;
@@ -375,7 +376,7 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
         /**
          * Verifica o saldo das contas por linha e mês do relatório
          */
-        for ($iDespesa = 0; $iDespesa < pg_numrows($rsDespesa); $iDespesa++) {
+        for ($iDespesa = 0; $iDespesa < pg_num_rows($rsDespesa); $iDespesa++) {
 
           $oDespesa = db_utils::fieldsmemory($rsDespesa, $iDespesa);
 
@@ -413,7 +414,7 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
                   || $oDadosPeriodo->o114_sigla == "DEZ") {
 
                 $aChaveMesColunaMeses = array_keys($oLinha->colunameses);
-                if (trim($aChaveMesColunaMeses[11]) == trim($sChaveMes)) {
+                if (trim((string) $aChaveMesColunaMeses[11]) == trim((string) $sChaveMes)) {
 
                   $oLinha->inscritas += round(
                     $oDespesaValores->empenhado_acumulado -
@@ -506,7 +507,7 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
        */
       $rsInstituicoes = db_query("SELECT codigo FROM db_config;");
       $oInstituicoes  = db_utils::getCollectionByRecord($rsInstituicoes);
-      $aInstituicoes  = array();
+      $aInstituicoes  = [];
       foreach ($oInstituicoes as $oInstituicao){
           $aInstituicoes[]= $oInstituicao->codigo;
       }
@@ -647,8 +648,8 @@ final class AnexoIRGF extends RelatoriosLegaisBase {
    */
   public function getDadosColuna() {
 
-  	$aRetorno                     = array();
-	  $aUltimaData                  = explode("-", $this->getDataFinal()->getDate());
+  	$aRetorno                     = [];
+	  $aUltimaData                  = explode("-", (string) $this->getDataFinal()->getDate());
 		$iMesFinalExecicioAtual       = $aUltimaData[1];
 		$iMesInicialExercicioAnterior = ($aUltimaData[1]+1);
 		$iAnoExercicioAtual           = $this->iAnoUsu;

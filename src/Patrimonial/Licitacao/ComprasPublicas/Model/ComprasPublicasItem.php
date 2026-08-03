@@ -107,16 +107,16 @@ class ComprasPublicasItem
             throw new Exception("Sistema não conseguiu buscar os itens");
         }
 
-        $iRegistros = pg_numrows($rsItensLicitacao);
+        $iRegistros = pg_num_rows($rsItensLicitacao);
         for ($iRegistro = 0; $iRegistro < $iRegistros; $iRegistro++) {
             $item                     =  new stdClass();
             $oDadosItem = db_utils::fieldsMemory($rsItensLicitacao, $iRegistro);
             $item->numeroCatalogo     = (int) $oDadosItem->pc01_codmater;
             $item->numero             = (int) $oDadosItem->l21_ordem;
             $item->numeroInterno      = (int) $oDadosItem->l21_codigo;
-            $item->descricao          = pg_escape_string(utf8_encode($oDadosItem->pc01_descrmater));
+            $item->descricao          = pg_escape_string(mb_convert_encoding($oDadosItem->pc01_descrmater, 'UTF-8', 'ISO-8859-1'));
             $item->natureza           = $oDadosItem->pc03_natureza;
-            $item->siglaUnidade       = pg_escape_string(utf8_encode($oDadosItem->unid));
+            $item->siglaUnidade       = pg_escape_string(mb_convert_encoding($oDadosItem->unid, 'UTF-8', 'ISO-8859-1'));
             $item->valorReferencia    = number_format($this->valorReferencia(
                 $oDadosItem->pc81_codprocitem,
                 $oDadosItem->l20_usaregistropreco
@@ -138,7 +138,7 @@ class ComprasPublicasItem
     */
     public function getItensRegraPRP($descricaoLote = null)
     {
-        if ($descricaoLote == null || trim($descricaoLote) == "") {
+        if ($descricaoLote == null || trim((string) $descricaoLote) == "") {
             throw new Exception("Lote para licitação {$this->codigoLicitacao} não encontrada.");
         }
 
@@ -204,7 +204,7 @@ class ComprasPublicasItem
             throw new Exception("Sistema não conseguiu buscar os itens");
         }
 
-        $iRegistros = pg_numrows($rsItensLicitacao);
+        $iRegistros = pg_num_rows($rsItensLicitacao);
         $numero     = 1;
         for ($iRegistro = 0; $iRegistro < $iRegistros; $iRegistro++) {
             $item                      =  new stdClass();
@@ -212,7 +212,7 @@ class ComprasPublicasItem
             $item->numero              = (int) $numero;
             $numero ++;
             $item->numeroInterno       = (int) $oDadosItem->numero_interno;
-            $item->descricao           = pg_escape_string(utf8_encode($oDadosItem->descricao));
+            $item->descricao           = pg_escape_string(mb_convert_encoding($oDadosItem->descricao, 'UTF-8', 'ISO-8859-1'));
             $item->natureza            = 1;
             $item->siglaUnidade        = "UN";
             $item->valorReferencia     = number_format($oDadosItem->valor_referencia, $this->casasdecimais, '.', '');
@@ -257,7 +257,7 @@ class ComprasPublicasItem
                                      where pc31_pcprocitem = {$itemProcessoCompra}";
 
             $rsValorReferencia  = db_query($sqlValoreReferencia);
-            if (!$rsValorReferencia || pg_numrows($rsValorReferencia) == 0) {
+            if (!$rsValorReferencia || pg_num_rows($rsValorReferencia) == 0) {
                 throw new Exception("Não foi possível buscar o valor de referência.
                                      Verifique se existe orçamento para o processo de compra!");
             }
@@ -288,7 +288,7 @@ class ComprasPublicasItem
                                  where pc31_pcprocitem = {$itemProcessoCompra}";
 
         $rsValorReferencia  = db_query($sqlValoreReferencia);
-        if (!$rsValorReferencia || pg_numrows($rsValorReferencia) == 0) {
+        if (!$rsValorReferencia || pg_num_rows($rsValorReferencia) == 0) {
             throw new Exception("A licitação requer um orçamento.
                                  Verifique se existe orçamento para o processo de compra!");
         }

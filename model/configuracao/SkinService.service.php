@@ -53,15 +53,15 @@ Class SkinService {
 
     $aSkins = scandir(self::SKINS_BASE);
 
-    $aRetornoSkins = array();
+    $aRetornoSkins = [];
     foreach ($aSkins as $sSkin) {
 
       $sPathPlugin = self::SKINS_BASE . $sSkin;
 
-      if (!in_array($sSkin, array('.', '..')) && is_dir($sPathPlugin) && file_exists("{$sPathPlugin}/config.json")) {
+      if (!in_array($sSkin, ['.', '..']) && is_dir($sPathPlugin) && file_exists("{$sPathPlugin}/config.json")) {
         $oJson = json_decode( file_get_contents("{$sPathPlugin}/config.json") );
 
-        $aRetornoSkins[$sSkin] = utf8_decode($oJson->nome);
+        $aRetornoSkins[$sSkin] = mb_convert_encoding($oJson->nome, 'ISO-8859-1');
       }
     }
 
@@ -79,7 +79,7 @@ Class SkinService {
       return $this->sSkinDefault;
     }
 
-    $oPreferencias = unserialize(base64_decode($_SESSION['DB_preferencias_usuario']));
+    $oPreferencias = unserialize(base64_decode((string) $_SESSION['DB_preferencias_usuario']));
 
     return $oPreferencias->getSkin();
   }
@@ -126,7 +126,7 @@ Class SkinService {
    * Seta na sessão a skin ativa
    */
   public function setCookie() {
-    setcookie( self::COOKIE_NOME, $this->getActiveSkin(), 0, '/' );
+    setcookie( self::COOKIE_NOME, $this->getActiveSkin(), ['expires' => 0, 'path' => '/'] );
   }
 
 }

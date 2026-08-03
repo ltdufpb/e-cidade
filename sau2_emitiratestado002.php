@@ -119,7 +119,7 @@ try {
       break;
   }
 
-  imprimeAssinatura($oPdf, $oDados);
+  imprimeAssinatura($oPdf);
 
   $oPdf->Output();
 } catch (Exception $oErro) {

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tfd_centralagendamento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrotulo = new rotulocampo;
 $cltfd_centralagendamento = new cl_tfd_centralagendamento;
 $cltfd_centralagendamento->rotulo->label("tf09_i_codigo");
@@ -113,9 +113,9 @@ $clrotulo->label("z01_nome");
         }else{
            $sql = $cltfd_centralagendamento->sql_query("",$campos,"tf09_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_tf09_i_codigo)){
-          $repassa = array("chave_tf09_i_codigo"=>$chave_tf09_i_codigo,"chave_z01_nome"=>$chave_z01_nome,"chave_tf09_i_numcgm"=>$chave_tf09_i_numcgm);
+          $repassa = ["chave_tf09_i_codigo"=>$chave_tf09_i_codigo,"chave_z01_nome"=>$chave_z01_nome,"chave_tf09_i_numcgm"=>$chave_tf09_i_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

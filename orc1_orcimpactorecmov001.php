@@ -36,8 +36,8 @@ include(modification("classes/db_orcimpactoperiodo_classe.php"));
 include(modification("classes/db_orcfontes_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clorcimpactorecmov = new cl_orcimpactorecmov;
 $clorcimpactomov    = new cl_orcimpactomov;
@@ -61,7 +61,7 @@ if(isset($incluir)){
   $sqlerro = false;
   db_inicio_transacao();
 
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   
@@ -69,8 +69,8 @@ if(isset($incluir)){
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
 //    echo "if(".substr($chave,0,9)."==o69_valor && ".current($vt)." != ''){<br>";
-    if(substr($chave,0,9)=="o69_valor" && current($vt) != ''){
-      $ano   =  substr($chave,10);
+    if(str_starts_with((string) $chave, "o69_valor") && current($vt) != ''){
+      $ano   =  substr((string) $chave,10);
       $valor = current($vt);
       $fonte = $vt["o57_fonte_$ano"];
       $obs   = $vt["o69_obs_$ano"];
@@ -78,7 +78,7 @@ if(isset($incluir)){
       $sequen= $vt["o69_sequen_$ano"];
       $perc   = $vt["o69_perc_$ano"];
 
-       
+
      //------PEGA O CÓDIGO DA FONTE PELO ESTRUTURAL-------------------------------------------------
       $result = $clorcfontes->sql_record($clorcfontes->sql_query_file(null,null,"o57_codfon",'',"o57_fonte = '$fonte' and o57_anousu = ".db_getsession("DB_anousu")));
       if($clorcfontes->numrows==0){
@@ -89,7 +89,7 @@ if(isset($incluir)){
 	db_fieldsmemory($result,0);
       }
      //---------------------------------------------------------------------------------------------
-       
+
       //-------PROCESSO DE INLCUÃO-----------------------------------------------------------------------
 	if(empty($proces)){
 	  $proces = '0';
@@ -114,10 +114,10 @@ if(isset($incluir)){
 	   $seq  = $clorcimpactorecmov->o69_sequen;
 	}  	
      //------------------------------------------------------------------------------------------   
-   
+
      //alterar-----------------------------------------------------
 
-     
+
      ///parei aki.... 09/05/2005
 	if($sqlerro == false && $priproces == true){
 	    $priproces = false;
@@ -148,15 +148,15 @@ if(isset($incluir)){
   $sqlerro = false;
   db_inicio_transacao();
 
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   
   $priproces = true;
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,9)=="o69_valor"){
-      $ano    =  substr($chave,10);
+    if(str_starts_with((string) $chave, "o69_valor")){
+      $ano    =  substr((string) $chave,10);
       $valor  = current($vt);
       $fonte  = $vt["o57_fonte_$ano"];
       $obs    = $vt["o69_obs_$ano"];
@@ -177,8 +177,8 @@ if(isset($incluir)){
 	  db_fieldsmemory($result,0);
 	}
        //---------------------------------------------------------------------------------------------
-	 
-	
+
+
 	//-------PROCESSO DE ALTERAÇÃO---------------------------------------------------------------------
 	  if($sqlerro == false){ 
 	    $clorcimpactorecmov->o69_proces    = $o69_proces;

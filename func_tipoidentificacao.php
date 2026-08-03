@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoidentificacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltipoidentificacao = new cl_tipoidentificacao;
 $cltipoidentificacao->rotulo->label("ov05_sequencial");
 $cltipoidentificacao->rotulo->label("ov05_sequencial");
@@ -98,9 +98,9 @@ $cltipoidentificacao->rotulo->label("ov05_sequencial");
         }else{
            $sql = $cltipoidentificacao->sql_query("",$campos,"ov05_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov05_sequencial)){
-          $repassa = array("chave_ov05_sequencial"=>$chave_ov05_sequencial,"chave_ov05_sequencial"=>$chave_ov05_sequencial);
+          $repassa = ["chave_ov05_sequencial"=>$chave_ov05_sequencial,"chave_ov05_sequencial"=>$chave_ov05_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

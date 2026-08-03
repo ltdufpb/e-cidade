@@ -25,13 +25,13 @@ require_once('pdw_base.php');
 class pdw_style extends pdw_base
 {
 
-var $textno;	// Text style number
-var $parano;	// Paragraph style number
-var $frameno;	// Frame style number. 
-var $grno;		// Graphic style number of frame
-var $pmasterno;	//
-var $style;
-var $styleprop;
+public $textno;	// Text style number
+public $parano;	// Paragraph style number
+public $frameno;	// Frame style number. 
+public $grno;		// Graphic style number of frame
+public $pmasterno;	//
+public $style;
+public $styleprop;
 
 function _style(&$params,&$styleprop)
 {
@@ -40,21 +40,21 @@ function _style(&$params,&$styleprop)
 		switch ($key)
 		{
 			case 'borders':
-				$border = explode(',', $value);
+				$border = explode(',', (string) $value);
 				$styleprop->setTagAttribute("fo:border-left", $border[0]);
 				$styleprop->setTagAttribute("fo:border-right", $border[1]);
 				$styleprop->setTagAttribute("fo:border-top", $border[2]);
 				$styleprop->setTagAttribute("fo:border-bottom", $border[3]);
 			break;
 			case 'padding':
-				$pad = explode(',', $value);
+				$pad = explode(',', (string) $value);
 				$styleprop->setTagAttribute('fo:padding-left', $pad[0].'cm');
 				$styleprop->setTagAttribute('fo:padding-right', $pad[1].'cm');
 				$styleprop->setTagAttribute('fo:padding-top', $pad[2].'cm');
 				$styleprop->setTagAttribute('fo:padding-bottom', $pad[3].'cm');
 			break;
 			case 'margins':
-				$margin = explode(',', $value);
+				$margin = explode(',', (string) $value);
 				$styleprop->setTagAttribute('fo:margin-left', $margin[0].'cm');
 				$styleprop->setTagAttribute('fo:margin-right', $margin[1].'cm');
 				$styleprop->setTagAttribute('fo:margin-top', $margin[2].'cm');

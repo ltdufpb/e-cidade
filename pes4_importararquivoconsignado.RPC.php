@@ -48,7 +48,7 @@ try {
 
     case 'getBancosConfigurados':
 
-      $oRetorno->bancos = array();
+      $oRetorno->bancos = [];
       $aConfiguracoes   = ConfiguracaoConsignadoRepository::getConfiguracaoInstituicao($oInstituicao);
       $aBancos          = array_map(function(ConfiguracaoConsignado $oConfiguracao) use ($oRetorno) {
 
@@ -61,7 +61,7 @@ try {
 
         $oBanco            = new \stdClass();
         $oBanco->banco     = (string)$oConfiguracao->getBanco()->getCodigo();
-        $oBanco->descricao = urlencode($oConfiguracao->getBanco()->getNome());
+        $oBanco->descricao = urlencode((string) $oConfiguracao->getBanco()->getNome());
         $oRetorno->bancos[] = $oBanco;
         return true;
       }, $aConfiguracoes);

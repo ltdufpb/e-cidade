@@ -46,7 +46,7 @@ $oFiltros = $oJson->decode(str_replace("\\", "", $oGet->filtros));
 $aUnidades = $oFiltros->unidade->aUnidades;
 
 $daoOrctiporec = new cl_orctiporec;
-$recursos = array();
+$recursos = [];
 $sqlRecursos = $daoOrctiporec->sql_query_file();
 $rsRecursos = db_query($sqlRecursos);
 $totalRecursos = pg_num_rows($rsRecursos);
@@ -68,7 +68,7 @@ class PDFBalanco extends PDF
         $iOrgao = null;
         $iUnidade = null;
         if (count($aUnidades) > 0) {
-            $aDados = explode("-", $aUnidades[0]);
+            $aDados = explode("-", (string) $aUnidades[0]);
             $iOrgao = $aDados[0];
             $iUnidade = $aDados[1];
         }
@@ -99,15 +99,15 @@ class PDFBalanco extends PDF
         $sSqlInstit .= "  from db_config ";
         $sSqlInstit .= " where codigo = " . db_getsession("DB_instit");
         $dados = db_query($conn, $sSqlInstit);
-        $url = @pg_result($dados, 0, "url");
+        $url = @pg_fetch_result($dados, 0, "url");
         $this->SetXY(1, 1);
-        $this->Image('imagens/files/' . pg_result($dados, 0, "logo"), 7, 3, 20);
+        $this->Image('imagens/files/' . pg_fetch_result($dados, 0, "logo"), 7, 3, 20);
 
         //$this->Cell(100,32,"",1);
-        $nome = pg_result($dados, 0, "nomeinst");
+        $nome = pg_fetch_result($dados, 0, "nomeinst");
         global $nomeinst;
 
-        $nomeinst = pg_result($dados, 0, "nomeinst");
+        $nomeinst = pg_fetch_result($dados, 0, "nomeinst");
 
         if (strlen($nome) > 42) {
             $TamFonteNome = 8;
@@ -116,7 +116,7 @@ class PDFBalanco extends PDF
         }
 
         $this->SetFont('Arial', 'BI', $TamFonteNome);
-        $sCnpj = pg_result($dados, 0, "cgc");
+        $sCnpj = pg_fetch_result($dados, 0, "cgc");
         if (isset($oDadosUnidade) && $oDadosUnidade->o41_descr != "") {
             $nome = $oDadosUnidade->o41_descr;
             $sCnpj = $oDadosUnidade->o41_cnpj;
@@ -124,11 +124,11 @@ class PDFBalanco extends PDF
 
         $this->Text(33, 9, $nomeinst);
         $this->SetFont('Arial', 'I', 8);
-        $this->Text(33, 12, trim(pg_result($dados, 0, "ender")));
+        $this->Text(33, 12, trim(pg_fetch_result($dados, 0, "ender")));
         $this->Text(33, 16, "CNPJ: " . trim(db_formatar($sCnpj, "cnpj")));
-        $this->Text(33, 20, trim(pg_result($dados, 0, "munic")) . " - " . pg_result($dados, 0, "uf"));
-        $this->Text(33, 24, trim(pg_result($dados, 0, "telef")));
-        $this->Text(33, 28, trim(pg_result($dados, 0, "email")));
+        $this->Text(33, 20, trim(pg_fetch_result($dados, 0, "munic")) . " - " . pg_fetch_result($dados, 0, "uf"));
+        $this->Text(33, 24, trim(pg_fetch_result($dados, 0, "telef")));
+        $this->Text(33, 28, trim(pg_fetch_result($dados, 0, "email")));
         $comprim = ($this->w - $this->rMargin - $this->lMargin);
         $this->Text(33, 32, $url);
         $Espaco = $this->w - 80;
@@ -164,18 +164,18 @@ $tipo_impressao = 1;
 // 2 = balanco
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (" . str_replace('-', ', ',
         $db_selinstit) . ") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
-    if (strlen(trim($nomeinstabrev)) > 0) {
+    if (strlen(trim((string) $nomeinstabrev)) > 0) {
         $descr_inst .= $xvirg . $nomeinstabrev;
         $flag_abrev = true;
     } else {
@@ -192,7 +192,7 @@ if ($origem == "O") {
     if ($opcao == 3) {
         $head6 = "PERÍODO : " . db_formatar($perini, 'd') . " A " . db_formatar($perfin, 'd');
     } else {
-        $head6 = "PERÍODO : " . strtoupper(db_mes(substr($perini, 5, 2))) . " A " . strtoupper(db_mes(substr($perfin, 5,
+        $head6 = "PERÍODO : " . strtoupper(db_mes(substr((string) $perini, 5, 2))) . " A " . strtoupper(db_mes(substr((string) $perfin, 5,
                 2)));
     }
 }
@@ -288,7 +288,7 @@ if ($estrut_inicial != '') {
 
     $estrut_inicial = str_replace('.', '', $estrut_inicial);
     $aEstrutural      = explode(",", $estrut_inicial);
-    $aWhereEstrutural = array();
+    $aWhereEstrutural = [];
     foreach ($aEstrutural as $sEstrutural) {
         $sEstrutural = trim($sEstrutural);
         if (empty($sEstrutural)) {
@@ -328,7 +328,7 @@ if ($nivel_agrupar == 0) {
     $total_saldo_arrecadado_acumulado = 0;
     $total_saldo_a_arrecadar = 0;
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         db_fieldsmemory($result, $i);
         //  if($o57_fonte == '400000000000000' || $o57_fonte == '900000000000000'){
         if (db_conplano_grupo($anousu, $o57_fonte, 9004) == true) {
@@ -463,22 +463,22 @@ if ($nivel_agrupar == 0) {
         exit;
     }
 
-    $niveis = array(
-        1 => array("inicio" => 0 , "tamanho" => 1),
-        2 => array("inicio" => 1 , "tamanho" => 1),
-        3 => array("inicio" => 2 , "tamanho" => 1),
-        4 => array("inicio" => 3 , "tamanho" => 1),
-        5 => array("inicio" => 4 , "tamanho" => 1),
-        6 => array("inicio" => 5 , "tamanho" => 2),
-        7 => array("inicio" => 7 , "tamanho" => 1),
-        8 => array("inicio" => 8 , "tamanho" => 1),
-        9 => array("inicio" => 9 , "tamanho" => 2),
-        10 => array("inicio" => 11 , "tamanho" => 2),
-        11 => array("inicio" => 13 , "tamanho" => 2),
-    );
+    $niveis = [
+        1 => ["inicio" => 0 , "tamanho" => 1],
+        2 => ["inicio" => 1 , "tamanho" => 1],
+        3 => ["inicio" => 2 , "tamanho" => 1],
+        4 => ["inicio" => 3 , "tamanho" => 1],
+        5 => ["inicio" => 4 , "tamanho" => 1],
+        6 => ["inicio" => 5 , "tamanho" => 2],
+        7 => ["inicio" => 7 , "tamanho" => 1],
+        8 => ["inicio" => 8 , "tamanho" => 1],
+        9 => ["inicio" => 9 , "tamanho" => 2],
+        10 => ["inicio" => 11 , "tamanho" => 2],
+        11 => ["inicio" => 13 , "tamanho" => 2],
+    ];
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
-        $fonte = pg_result($result, $i, 'o57_fonte');
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
+        $fonte = pg_fetch_result($result, $i, 'o57_fonte');
 
         if ($anousu >= 2018) {
             $estrutural = new EstruturalReceita($fonte);
@@ -486,9 +486,9 @@ if ($nivel_agrupar == 0) {
             $tamanho = $niveis[$nivel]["tamanho"];
             $inicio = $niveis[$nivel]["inicio"];
         } else {
-            $nivel = pg_result($result, $i, 'o57_nivel') - 1;
-            $tamanho = pg_result($res, $nivel, 'db78_tamanho');
-            $inicio = pg_result($res, $nivel, 'db78_inicio');
+            $nivel = pg_fetch_result($result, $i, 'o57_nivel') - 1;
+            $tamanho = pg_fetch_result($res, $nivel, 'db78_tamanho');
+            $inicio = pg_fetch_result($res, $nivel, 'db78_inicio');
 
             //Quando o nível for 6, altera o tamanho do nível. Para atender as alterações do ementário.
             if ($nivel == 6) {
@@ -508,17 +508,17 @@ if ($nivel_agrupar == 0) {
         $total_saldo_prev_anterior = 0;
 
         $tem_valores_sintetico = false;
-        for ($x = $i + 1; $x < pg_numrows($result); $x++) {
-            if ($parte_estrutural == substr(pg_result($result, $x, 'o57_fonte'), $inicio, $tamanho)) {
-                if (pg_result($result, $x, 'tipo_conta') == 'A') {
-                    $total_saldo_inicial += pg_result($result, $x, 'saldo_inicial');
-                    $total_saldo_prevadic_acum += pg_result($result, $x, 'saldo_prevadic_acum');
-                    $total_saldo_inicial_prevadic += pg_result($result, $x, 'saldo_inicial_prevadic');
-                    $total_saldo_anterior += pg_result($result, $x, 'saldo_anterior');
-                    $total_saldo_arrecadado += pg_result($result, $x, 'saldo_arrecadado');
-                    $total_saldo_a_arrecadar += pg_result($result, $x, 'saldo_a_arrecadar');
-                    $total_saldo_arrecadado_acumulado += pg_result($result, $x, 'saldo_arrecadado_acumulado');
-                    $total_saldo_prev_anterior += pg_result($result, $x, 'saldo_prev_anterior');
+        for ($x = $i + 1; $x < pg_num_rows($result); $x++) {
+            if ($parte_estrutural == substr(pg_fetch_result($result, $x, 'o57_fonte'), $inicio, $tamanho)) {
+                if (pg_fetch_result($result, $x, 'tipo_conta') == 'A') {
+                    $total_saldo_inicial += pg_fetch_result($result, $x, 'saldo_inicial');
+                    $total_saldo_prevadic_acum += pg_fetch_result($result, $x, 'saldo_prevadic_acum');
+                    $total_saldo_inicial_prevadic += pg_fetch_result($result, $x, 'saldo_inicial_prevadic');
+                    $total_saldo_anterior += pg_fetch_result($result, $x, 'saldo_anterior');
+                    $total_saldo_arrecadado += pg_fetch_result($result, $x, 'saldo_arrecadado');
+                    $total_saldo_a_arrecadar += pg_fetch_result($result, $x, 'saldo_a_arrecadar');
+                    $total_saldo_arrecadado_acumulado += pg_fetch_result($result, $x, 'saldo_arrecadado_acumulado');
+                    $total_saldo_prev_anterior += pg_fetch_result($result, $x, 'saldo_prev_anterior');
                     $tem_valores_sintetico = true;
                 }
             } else {
@@ -546,7 +546,7 @@ if ($nivel_agrupar == 0) {
     $total_saldo_arrecadado_acumulado = 0;
     $total_saldo_a_arrecadar = 0;
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         db_fieldsmemory($result, $i);
         $total_saldo_inicial += $saldo_inicial;
         $total_saldo_prevadic_acum += $saldo_prevadic_acum;
@@ -561,7 +561,7 @@ $pagina = 1;
 $tottotal = 0;
 $analitica = false;
 
-for ($i = 0; $i < pg_numrows($result); $i++) {
+for ($i = 0; $i < pg_num_rows($result); $i++) {
     db_fieldsmemory($result, $i);
     $elemento = $o57_fonte;
     $descr = $o57_descr;
@@ -607,8 +607,8 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $fundo = 0;
     }
     $pdf->setfont('arial', '', $tm_fonte);
-    if (isset($o70_concarpeculiar) && $o70_concarpeculiar != 0 && substr($elemento, 0, 1) == '4') {
-        $pdf->cell($tm_estrut, $alt, db_formatar('9' . substr($elemento, 1, 14), $formatacaoReceita), 0, 0, "L", $fundo);
+    if (isset($o70_concarpeculiar) && $o70_concarpeculiar != 0 && str_starts_with((string) $elemento, '4')) {
+        $pdf->cell($tm_estrut, $alt, db_formatar('9' . substr((string) $elemento, 1, 14), $formatacaoReceita), 0, 0, "L", $fundo);
     } else {
         $pdf->cell($tm_estrut, $alt, db_formatar($elemento, $formatacaoReceita), 0, 0, "L", $fundo);
     }
@@ -616,7 +616,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     if ($descr == "") {
         $pdf->cell($tm_descr, $alt, "***ESTRUTURAL NÃO EXISTE NA CONTABILIDADE", 0, 0, "L", $fundo);
     } else {
-        $pdf->cell($tm_descr, $alt, substr($descr, 0, 45), 0, 0, "L", $fundo);
+        $pdf->cell($tm_descr, $alt, substr((string) $descr, 0, 45), 0, 0, "L", $fundo);
     }
 
     if (isset($o70_concarpeculiar)) {
@@ -771,7 +771,7 @@ db_query("commit");
 function formatarRecurso($recurso)
 {
 
-    $recursoFormatado  = substr($recurso, 0, 1).".".substr($recurso, 1, 1).".";
-    $recursoFormatado .= substr($recurso, 2, 1).".".substr($recurso, 3, 2);
+    $recursoFormatado  = substr((string) $recurso, 0, 1).".".substr((string) $recurso, 1, 1).".";
+    $recursoFormatado .= substr((string) $recurso, 2, 1).".".substr((string) $recurso, 3, 2);
     return $recursoFormatado;
 }

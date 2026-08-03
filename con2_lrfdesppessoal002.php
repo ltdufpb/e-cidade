@@ -40,8 +40,8 @@ if (!isset($arqinclude)){
   $orcparamrel = new cl_orcparamrel;
   $clconrelinfo = new cl_conrelinfo;
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -57,7 +57,7 @@ $texto = $dt['texto'];
 // calcula periodo do exercicio anterior para fechar os 12 meses
 $anousu_ant  = db_getsession("DB_anousu")-1;
 // se o ano atual é bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-$dt = split('-',$dt_fin);  // mktime -- (mes,dia,ano)
+$dt = preg_split('#\-#m',(string) $dt_fin);  // mktime -- (mes,dia,ano)
 $dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1],$dt[2]-365,$dt[0]));
 $dt_fin_ant = $anousu_ant.'-12-31';  
 
@@ -75,23 +75,23 @@ if ($dtfin!=''){
 
   $dt_fin = $dtfin;
 
-  $dt = split('-',$dt_ini);
+  $dt = preg_split('#\-#m',$dt_ini);
   $dt_ini_ant = (db_getsession("DB_anousu")-1).'-'.$dt[1].'-'.$dt[2];
-  $dt = split('-',$dt_fin);
+  $dt = preg_split('#\-#m',(string) $dt_fin);
   $dt_fin_ant = (db_getsession("DB_anousu")-1).'-'.$dt[1].'-'.$dt[2];
 
 }  
 
 ////////////////////////////////////////////////////////////////////
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
          $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     } else {
@@ -112,8 +112,8 @@ $head3 = "RELATÓRIO DE GESTÃO FISCAL";
 $head4 = "DEMONSTRATIVO DA DESPESA COM PESSOAL";
 $head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
-$dt1 = split('-',$dt_ini);
-$dt2 = split('-',$dt_fin); 
+$dt1 = preg_split('#\-#m',$dt_ini);
+$dt2 = preg_split('#\-#m',(string) $dt_fin); 
 if ($tipo_emissao=='periodo'){
   $texto = strtoupper(db_mes($dt1[1]))." A ".strtoupper(db_mes($dt2[1]))." DE ";
   $head6 = $texto.db_getsession("DB_anousu");
@@ -188,7 +188,7 @@ $m_despesa[7]["exercicio"]     = 0;
 $sele_work = 'o58_instit in ('.$instituicao.')   ';
 $result_despesa = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
 
-for ($x = 0; $x < pg_numrows($result_despesa); $x++){
+for ($x = 0; $x < pg_num_rows($result_despesa); $x++){
   db_fieldsmemory($result_despesa,$x);
 
   $nivel        = $m_despesa[7]["nivel"];
@@ -248,7 +248,7 @@ m_p[linha][1:estruturais]
 --------- [3:saldo ant]
 */
 // db_criatabela($result_bal);
-for($x=0;$x< pg_numrows($result_bal);$x++){
+for($x=0;$x< pg_num_rows($result_bal);$x++){
    db_fieldsmemory($result_bal,$x);
    for ($aa=1;$aa<=8;$aa++){
      if (in_array($estrutural,$m_p[$aa][1])){
@@ -271,8 +271,8 @@ for($x=0;$x< pg_numrows($result_bal);$x++){
 	    $m_p[$aa][2] = ($saldo_anterior_credito-$saldo_anterior_debito)*-1;
 	 }  
      }// end if  
-     
-     
+
+
    }// endfor
 }
 
@@ -281,7 +281,7 @@ for($x=0;$x< pg_numrows($result_bal);$x++){
 
 
 
-for($x=0;$x< pg_numrows($result_bal_ant);$x++){
+for($x=0;$x< pg_num_rows($result_bal_ant);$x++){
    db_fieldsmemory($result_bal_ant,$x);
    for ($aa=1;$aa<=8;$aa++){
      if (in_array($estrutural,$m_p[$aa][1])){
@@ -300,7 +300,7 @@ for($x=0;$x< pg_numrows($result_bal_ant);$x++){
 	 }  
      }// end if  
 
-     
+
    }// endfor
 }
 
@@ -360,7 +360,7 @@ if ($dt_ini_ant != $dt_fin_ant){
 
 for ($p=1;$p<=18;$p++){  
     // 18 é a quantidade de parametros ou linhas existentes nos parametros
-   for ($i=0;$i<pg_numrows($result_rec_ant);$i++){
+   for ($i=0;$i<pg_num_rows($result_rec_ant);$i++){
 	    db_fieldsmemory($result_rec_ant,$i);
 	    $estrutural = $o57_fonte;
 	    if (in_array($estrutural,$param[$p])){       
@@ -377,7 +377,7 @@ for ($p=1;$p<=18;$p++){
 ///// TESTE O CODIGO ABAIXO E RETORNA SALDO DE 2006 CORRETO
 for ($p=1;$p<=18;$p++){  
  // 18 é a quantidade de parametros ou linhas existentes nos parametros
- for ($i=0;$i<pg_numrows($result_rec);$i++){
+ for ($i=0;$i<pg_num_rows($result_rec);$i++){
     db_fieldsmemory($result_rec,$i);
     $estrutural = $o57_fonte;
     if (in_array($estrutural,$param[$p])){       
@@ -471,8 +471,8 @@ $pdf->cell(145,$alt,"",'RB',0,"R",0);
 if ($tipo_emissao=='periodo'){
   $pdf->cell(40,$alt,"(Últimos 12 Meses)",'B',1,"C",0);
 } else {  
-  $dt1 = split('-',$dt_ini);
-  $dt2 = split('-',$dt_fin); 
+  $dt1 = preg_split('#\-#m',$dt_ini);
+  $dt2 = preg_split('#\-#m',(string) $dt_fin); 
   $pdf->cell(40,$alt,$dt1[2].'/'.$dt[1].'/'.$dt1[0].' À '.$dt2[2].'/'.$dt2[1].'/'.$dt2[0],'B',1,"C",0);
 }
 $pdf->setfont('arial','',7);
@@ -521,7 +521,7 @@ $pdf->Ln(5);
 $pdf->setfont('arial','',5);
 $pdf->ln(20);
 
-assinaturas(&$pdf,&$classinatura,'GF');
+assinaturas($pdf,$classinatura,'GF');
 
 
 $pdf->Output();

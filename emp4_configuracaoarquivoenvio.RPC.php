@@ -41,7 +41,7 @@ $oParam = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 $oRetorno = new stdClass();
 $oRetorno->iStatus = 1;
 $oRetorno->sMessage = '';
-$aDadosRetorno = array();
+$aDadosRetorno = [];
 
 try {
 
@@ -50,7 +50,7 @@ try {
         case 'getDetalhes' :
 
             $iMovimento = $oParam->iMovimento;
-            $aDetalhes = array();
+            $aDetalhes = [];
             $oDaoEmpAgeMovDetalheTransmissao = db_utils::getDao("empagemovdetalhetransmissao");
             $sSqlDetalhes = $oDaoEmpAgeMovDetalheTransmissao->sql_query_file(null, "*", null, "e74_empagemov = {$iMovimento}");
             $rsDetalhes = $oDaoEmpAgeMovDetalheTransmissao->sql_record($sSqlDetalhes);
@@ -86,7 +86,7 @@ try {
 
         case "getTipoTransmissao" :
 
-            $aTiposTransmissao = array();
+            $aTiposTransmissao = [];
             $iCodigoMovimento = $oParam->iMovimento;
             $oDaoEmpAgeTipoTransmissao = db_utils::getDao("empagetipotransmissao");
             $oDaoEmpAgeMovTipoTransmissao = db_utils::getDao("empagemovtipotransmissao");
@@ -107,7 +107,7 @@ try {
                 throw new Exception("Ocorreu um erro ao buscar os tipos de transmissão.");
             }
 
-            $aTiposDisponiveis = array();
+            $aTiposDisponiveis = [];
             for ($iRowTipo = 0; $iRowTipo < $oDaoEmpAgeTipoTransmissao->numrows; $iRowTipo++) {
 
                 $oStdDadosTipo = db_utils::fieldsMemory($rsTiposTransmissao, $iRowTipo);
@@ -160,7 +160,7 @@ try {
                 throw new DBException($sMensagemErro);
             }
 
-            $finalidadesAdicionadas = array();
+            $finalidadesAdicionadas = [];
             foreach ($aDetalhes as $oDetalhes) {
 
                 $iTipoFatura = 2;
@@ -235,7 +235,7 @@ try {
                     throw new DBException("Ocorreu um erro para buscar os demais movimentos para configuração.");
                 }
 
-                $finalidadesSelecionadas = array();
+                $finalidadesSelecionadas = [];
                 for ($i = 0; $i < pg_num_rows($resBuscaConfiguracaoMovimentos); $i++) {
 
                     $stdMovimento = db_utils::fieldsMemory($resBuscaConfiguracaoMovimentos, $i);
@@ -244,7 +244,7 @@ try {
 
                 if (count($finalidadesSelecionadas) > 1) {
 
-                    $mensagem = array();
+                    $mensagem = [];
                     foreach ($finalidadesSelecionadas as $codigoFinalidade => $movimentos) {
                         $mensagem[] = "Finalidade: {$codigoFinalidade} - Movimentos: " . implode(', ', $movimentos);
                     }

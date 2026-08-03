@@ -118,16 +118,16 @@ class SigfisArquivoProjetoAtividade extends SigfisArquivoBase implements iPadArq
         
             
         $oDados->dt_Ano                      = $oDadosQuery->o55_anousu;
-        $oDados->cd_Unidade                  = str_pad($this->sCodigoTribunal, 4, ' ', STR_PAD_LEFT);
+        $oDados->cd_Unidade                  = str_pad((string) $this->sCodigoTribunal, 4, ' ', STR_PAD_LEFT);
         $oDados->tp_ProjetoAtividade         = $oDadosQuery->o55_tipo;
-        $oDados->nu_ProjetoAtividade         = str_pad(substr($oDadosQuery->o55_projativ,  0, 4), 4, ' ', STR_PAD_LEFT);
-        $oDados->de_ProjetoAtividade         = str_pad(substr($oDadosQuery->o55_descr, 0, 255), 255, ' ', STR_PAD_RIGHT);
-        $oDados->de_ObjetivoProjetoAtividade = str_pad(substr($oDadosQuery->o22_descrprod, 0, 120), 120, ' ', STR_PAD_RIGHT);
-        $oDados->cd_Funcao                   = str_pad($oDadoFuncao->o58_funcao,       2, ' ', STR_PAD_LEFT);
-        $oDados->cd_Programa                 = str_pad($oDadoSubFuncao->o58_subfuncao, 4, ' ', STR_PAD_LEFT);
-        $oDados->cd_SubPrograma              = str_pad($oDadoPrograma->o58_programa,   4, ' ', STR_PAD_LEFT);
-        $oDados->de_UniMed                   = str_pad(substr($oDadosQuery->o22_descrprod, 0, 120), 120, ' ', STR_PAD_RIGHT); 
-        $oDados->de_Meta                     = str_pad(substr($oDadosQuery->o55_especproduto, 0, 120), 120, ' ', STR_PAD_RIGHT);
+        $oDados->nu_ProjetoAtividade         = str_pad(substr((string) $oDadosQuery->o55_projativ,  0, 4), 4, ' ', STR_PAD_LEFT);
+        $oDados->de_ProjetoAtividade         = str_pad(substr((string) $oDadosQuery->o55_descr, 0, 255), 255, ' ', STR_PAD_RIGHT);
+        $oDados->de_ObjetivoProjetoAtividade = str_pad(substr((string) $oDadosQuery->o22_descrprod, 0, 120), 120, ' ', STR_PAD_RIGHT);
+        $oDados->cd_Funcao                   = str_pad((string) $oDadoFuncao->o58_funcao,       2, ' ', STR_PAD_LEFT);
+        $oDados->cd_Programa                 = str_pad((string) $oDadoSubFuncao->o58_subfuncao, 4, ' ', STR_PAD_LEFT);
+        $oDados->cd_SubPrograma              = str_pad((string) $oDadoPrograma->o58_programa,   4, ' ', STR_PAD_LEFT);
+        $oDados->de_UniMed                   = str_pad(substr((string) $oDadosQuery->o22_descrprod, 0, 120), 120, ' ', STR_PAD_RIGHT); 
+        $oDados->de_Meta                     = str_pad(substr((string) $oDadosQuery->o55_especproduto, 0, 120), 120, ' ', STR_PAD_RIGHT);
         $oDados->Reservado_TCE               = str_pad("", 6, '0', STR_PAD_BOTH); 
         
         $oDados->codigolinha     = 402;

@@ -16,7 +16,7 @@ abstract class Layout
      *
      * Campos
      */
-    protected $fields = array();
+    protected $fields = [];
 
     /**
      * @var integer
@@ -223,11 +223,11 @@ abstract class Layout
     public function get($counter)
     {
         if(empty($counter)) {
-            throw new BusinessException('Informe contador de inicio.'. get_class());
+            throw new BusinessException('Informe contador de inicio.'. self::class);
         }
         
         if($this->getStart() === null) {
-            throw new BusinessException('Informe o início dos blocos.'. get_class());
+            throw new BusinessException('Informe o início dos blocos.'. self::class);
         }
 
         $start = $this->getStart();
@@ -248,30 +248,30 @@ abstract class Layout
         $fieldsIterate = 0;
         foreach($this->fields as $field => $properties) {
 
-            $f   = array();
-            $f[] = str_pad(substr($counter, 0, self::SEQUENTIAL_LENGTH),  self::SEQUENTIAL_LENGTH);
+            $f   = [];
+            $f[] = str_pad(substr((string) $counter, 0, self::SEQUENTIAL_LENGTH),  self::SEQUENTIAL_LENGTH);
             
             $name = $properties['name'];
-            if($closureSearchVariable !== null && preg_match_all($regex, $name, $found)) {
+            if($closureSearchVariable !== null && preg_match_all($regex, (string) $name, $found)) {
                 $found = array_shift($found);
                 $replaced = array_map($closureSearchVariable, $found);
                 $name = str_replace($found, $replaced, $name);
             }
-            $name = substr($name,   0, self::NAME_LENGTH);
+            $name = substr((string) $name,   0, self::NAME_LENGTH);
             $name = str_pad($name, self::NAME_LENGTH);
             $f[]  = $name;
             
             $description = $properties['description'];
-            if($closureSearchVariable !== null && preg_match_all($regex, $description, $found)) {
+            if($closureSearchVariable !== null && preg_match_all($regex, (string) $description, $found)) {
                 $found = array_shift($found);
                 $replaced = array_map($closureSearchVariable, $found);
                 $description = str_replace($found, $replaced, $description);
             }
-            $description = substr($description,   0, self::DESCRIPTION_LENGTH);
+            $description = substr((string) $description,   0, self::DESCRIPTION_LENGTH);
             $description = str_pad($description, self::DESCRIPTION_LENGTH);
             $f[]         = $description;
             
-            $size = substr($properties['size'],  0, self::SIZE_LENGTH);
+            $size = substr((string) $properties['size'],  0, self::SIZE_LENGTH);
             $size = str_pad($size, self::SIZE_LENGTH, '0', STR_PAD_LEFT);
             $size = str_pad($size, (self::SIZE_LENGTH + 1));//, ' ', STR_PAD_BOTH);
             $f[]  = $size;
@@ -280,7 +280,7 @@ abstract class Layout
                 $start = $end;
                 $start++;
             }
-            $start = str_pad($start,  self::SIZE_LENGTH, '0', STR_PAD_LEFT);
+            $start = str_pad((string) $start,  self::SIZE_LENGTH, '0', STR_PAD_LEFT);
             $start = str_pad($start, (self::SIZE_LENGTH + 1));//, ' ', STR_PAD_BOTH);
             $f[]   = $start;
             
@@ -295,10 +295,10 @@ abstract class Layout
             $fieldsIterate++;
         }
 
-        return (object)array(
+        return (object)[
             'layout'   => $l
             ,'counter' => $counter
             ,'end'     => $end
-        );
+        ];
     }
 }

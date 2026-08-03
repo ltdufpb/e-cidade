@@ -51,7 +51,7 @@ class PagamentoFornecedorCaixaEconomica extends PagamentoFornecedorTXTBase imple
 
     $oDadosRetorno            = new stdClass();
     $oDadosRetorno->header    = new stdClass();
-    $oDadosRetorno->registros = array();
+    $oDadosRetorno->registros = [];
     /**
      * processa cada linha do arquivo, conforme o tipo de linha.
      */

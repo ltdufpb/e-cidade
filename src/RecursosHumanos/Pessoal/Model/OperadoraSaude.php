@@ -144,11 +144,11 @@ class OperadoraSaude
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'cgm' => $this->getCgm()->toArray(),
             'ans' => $this->getAns(),
             'ativo' => $this->isAtivo()
-        );
+        ];
     }
 }

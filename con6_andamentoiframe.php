@@ -27,7 +27,7 @@
 
   require(modification("libs/db_stdlib.php"));
   require(modification("libs/db_conecta.php"));
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
 ?>
 
 <html>
@@ -74,7 +74,7 @@
   					 o.codordem not in(select codordem from db_ordemfim) order by dataprev ".(@$ordem==""?"desc":@$ordem)."");
 							   
 							   
-  $num = pg_numrows($result);
+  $num = pg_num_rows($result);
   if ($num==0) {
     echo "
           <table width=\"100%\" border=\"1\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">
@@ -101,16 +101,16 @@
         ";
 	for ($i=0;$i<$num;$i++) {
        //Loaliza o destinatario do ultimo andamento, caso a ordem tenha mais de um andamento.
-	   $ordemAtual = pg_result($result,$i,"codordem");
+	   $ordemAtual = pg_fetch_result($result,$i,"codordem");
 	   $selecionaDestinatarioUltimoAndamento = db_query("select o.codordem, o.dtini, o.id_usuario, u.nome 
 	                                                    from db_ordemandam o
 														inner join db_usuarios u on u.id_usuario = o.id_usuario
 													    where o.codordem = $ordemAtual
 														order by o.dtini, o.codandam
 													   ");
-	   $numReg = pg_numrows($selecionaDestinatarioUltimoAndamento);
+	   $numReg = pg_num_rows($selecionaDestinatarioUltimoAndamento);
 	   if ($numReg > 1) {
-	     $nomeUltimoDestinatario = pg_result($selecionaDestinatarioUltimoAndamento,$numReg-2,"nome");
+	     $nomeUltimoDestinatario = pg_fetch_result($selecionaDestinatarioUltimoAndamento,$numReg-2,"nome");
 		 $tag = "<td onclick=\"abreJanelaAndamentos($ordemAtual)\">+</td>";
 	   } else {
 	     $nomeUltimoDestinatario = "";
@@ -125,34 +125,34 @@
 	   if ($i%2==0) {$cor="#97B5E6";} else {$cor="#E796A4";}
 	   // mostra imagem com link sinalizando que esta ordem tem arquivo anexo.
 	   $pesquisaImagem = db_query("select codordem from db_ordemimagens where codordem = $ordemAtual limit 1");
-	   $numPesquisaImagem = pg_numrows($pesquisaImagem);
+	   $numPesquisaImagem = pg_num_rows($pesquisaImagem);
 	   if ($numPesquisaImagem == 0) {
 	     $tagAnexo = "<td>&nbsp;</td>";
 	   } else {
-	     $tagAnexo = "<td onclick=\"abreJanelaAnexos(".pg_result($pesquisaImagem,0,"codordem").")\">a&nbsp;</td>";
+	     $tagAnexo = "<td onclick=\"abreJanelaAnexos(".pg_fetch_result($pesquisaImagem,0,"codordem").")\">a&nbsp;</td>";
 	   }
-	   $tag2     = "onClick=\"parent.location.href='con6_ordemandamento.php?cod_ord_and=".pg_result($result,$i,"codordem")."'\"";
-              if(pg_result($result,$i,"nomeusureceb")==''){
+	   $tag2     = "onClick=\"parent.location.href='con6_ordemandamento.php?cod_ord_and=".pg_fetch_result($result,$i,"codordem")."'\"";
+              if(pg_fetch_result($result,$i,"nomeusureceb")==''){
                   $cor="#999999";
               }
        echo "
            <tr align=\"center\" onMouseOut=\"document.getElementById('descr_$i').style.visibility='hidden'\" onMouseOver=\"document.getElementById('descr_$i').style.visibility='visible'\"  style=\"font-size:12px\" bgcolor=\"". $cor ."\" style=\"cursor:hand\" >
             ".$tag."
             ".$tagAnexo."
-             <td ".$tag2.">".pg_result($result,$i,"codordem")."&nbsp;</td>
-             <td ".$tag2.">".pg_result($result,$i,"dtrecebe")."&nbsp;</td>
-             <td ".$tag2.">".pg_result($result,$i,"dataordem")."&nbsp;</td>
-             <td ".$tag2." colspan='2'>".db_formatar(pg_result($result,$i,"dataprev"),'d')."&nbsp;</td>
-             <td ".$tag2.">".pg_result($result,$i,"nome")."&nbsp;</td>
-             <td ".$tag2.">".pg_result($result,$i,"nomeusureceb")."&nbsp;</td>
-             <td ".$tag2.">".pg_result($result,$i,"descrdepto")."&nbsp;</td>
+             <td ".$tag2.">".pg_fetch_result($result,$i,"codordem")."&nbsp;</td>
+             <td ".$tag2.">".pg_fetch_result($result,$i,"dtrecebe")."&nbsp;</td>
+             <td ".$tag2.">".pg_fetch_result($result,$i,"dataordem")."&nbsp;</td>
+             <td ".$tag2." colspan='2'>".db_formatar(pg_fetch_result($result,$i,"dataprev"),'d')."&nbsp;</td>
+             <td ".$tag2.">".pg_fetch_result($result,$i,"nome")."&nbsp;</td>
+             <td ".$tag2.">".pg_fetch_result($result,$i,"nomeusureceb")."&nbsp;</td>
+             <td ".$tag2.">".pg_fetch_result($result,$i,"descrdepto")."&nbsp;</td>
              <td ".$tag2.">".$nomeUltimoDestinatario."&nbsp;</td>
            </tr>
 	  <tr>
 	  <td>
 	  <table id='descr_$i' bgcolor='#cccccc' style='position:absolute;visibility:hidden;border: 2px outset #cccccc'>
 	    <tr style=\"font-size:13px\">
-		<td colspan=\"4\"> Descrição ordem ".pg_result($result,$i,"codordem").": ".str_replace("\n","<br>",pg_result($result,$i,"descricao"))."&nbsp;</td>
+		<td colspan=\"4\"> Descrição ordem ".pg_fetch_result($result,$i,"codordem").": ".str_replace("\n","<br>",pg_fetch_result($result,$i,"descricao"))."&nbsp;</td>
 	    </tr>
 	  </table>  
 	  </td>

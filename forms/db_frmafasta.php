@@ -96,7 +96,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\AfastamentoSituacaoRepository; ?>
       <?php 
       $dao = new cl_situacaoafastamento();
       $repository = new AfastamentoSituacaoRepository($dao);
-      $situacoes = array();
+      $situacoes = [];
 
       foreach ($repository->all() as $situacao) {
           $situacoes[$situacao->getSequencial()] = "{$situacao->getSequencial()} - {$situacao->getDescricao()}";
@@ -126,7 +126,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\AfastamentoSituacaoRepository; ?>
     </td>
     <td colspan="3" nowrap>
       <?php 
-      $arr_codre = Array();
+      $arr_codre = [];
       $result_codre = $clmovcasadassefip->sql_record($clmovcasadassefip->sql_query(db_anofolha(),db_mesfolha(),$r45_codafa,null,"r67_reto"));
       if($clmovcasadassefip->numrows == 0){
         $result_codre = $clmovcasadassefip->sql_record($clmovcasadassefip->sql_query(db_anofolha(),db_mesfolha(),null,null,"r67_reto"));
@@ -463,7 +463,7 @@ function js_preenchepesquisa(chave){
   db_iframe_afasta.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

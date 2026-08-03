@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_tipodc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_tipodc = new cl_far_tipodc;
 $clfar_tipodc->rotulo->label("fa27_i_codigo");
 $clfar_tipodc->rotulo->label("fa27_c_denominacao");
@@ -98,9 +98,9 @@ $clfar_tipodc->rotulo->label("fa27_c_denominacao");
         }else{
            $sql = $clfar_tipodc->sql_query("",$campos,"fa27_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa27_i_codigo)){
-          $repassa = array("chave_fa27_i_codigo"=>$chave_fa27_i_codigo,"chave_fa27_i_codigo"=>$chave_fa27_i_codigo);
+          $repassa = ["chave_fa27_i_codigo"=>$chave_fa27_i_codigo,"chave_fa27_i_codigo"=>$chave_fa27_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

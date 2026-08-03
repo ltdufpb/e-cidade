@@ -32,8 +32,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_veicmanut_classe.php"));
 require_once(modification("classes/db_veiccadcentraldepart_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveicmanut            = new cl_veicmanut;
 $clveiccadcentraldepart = new cl_veiccadcentraldepart;
@@ -78,11 +78,11 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
             </td>
             <td align="left" nowrap>
               <?php
-                $aSituacoes = array(
+                $aSituacoes = [
                     0 => "Todas",
                     VeiculoManutencao::SITUACAO_PENDENTE => "Pendente",
                     VeiculoManutencao::SITUACAO_REALIZADO => "Realizado"
-                  );
+                  ];
 
                 db_select("chave_situacao", $aSituacoes, true, 1);
               ?>
@@ -101,7 +101,7 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
         <?php
 
         $iAnoUsu = db_getsession("DB_anousu");
-        $aWhere  = array();
+        $aWhere  = [];
 
         //Busca pelos filtros da tela.
         if (!isset($pesquisa_chave) && !isset($pesquisa_chave_numero)) {
@@ -128,7 +128,7 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
            */
           if (!empty($chave_numero)) {
 
-            $aNumero = explode('/', $chave_numero);
+            $aNumero = explode('/', (string) $chave_numero);
 
             if (count($aNumero) <= 2) {
 
@@ -155,9 +155,9 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
             $sql = $clveicmanut->sql_query("", $campos, "ve62_codigo desc", " {$dbwhere} ");
           }
 
-          $repassa = array();
+          $repassa = [];
           if (isset($chave_ve62_codigo)) {
-            $repassa = array("chave_ve62_codigo" => $chave_ve62_codigo, "chave_ve62_codigo" => $chave_ve62_codigo);
+            $repassa = ["chave_ve62_codigo" => $chave_ve62_codigo, "chave_ve62_codigo" => $chave_ve62_codigo];
           }
 
           db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa, false);
@@ -177,7 +177,7 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
           //Busca pela "chave" numero/anousu.
           } else if ($pesquisa_chave_numero != null && $pesquisa_chave_numero != "") {
 
-            $aChaveNumeroAno  = explode("/", $pesquisa_chave_numero);
+            $aChaveNumeroAno  = explode("/", (string) $pesquisa_chave_numero);
             $sChaveNumero     = $aChaveNumeroAno[0];
             if (count($aChaveNumeroAno) > 1) {
               $iAnoUsu = $aChaveNumeroAno[1];

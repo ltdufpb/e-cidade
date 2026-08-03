@@ -54,10 +54,10 @@ class Inscricao
         }
         $configuracoes = parse_ini_file(self::ARQUIVO_CONFIGURACAO);
 
-        $opcoes = array(
+        $opcoes = [
           'location'      => $configuracoes["webservice_url"],
           'uri'           => $configuracoes["webservice_url"]
-        );
+        ];
 
         $this->soapClient = new \SoapClient(
           "{$configuracoes["webservice_url"]}?wsdl",
@@ -72,7 +72,7 @@ class Inscricao
      */
     public function enviar($parametrosTarefa)
     {
-        $parametrosSoap = array(
+        $parametrosSoap = [
           "servico" => $parametrosTarefa['servico'],
           "funcao" => self::FUNCAO,
           "protocolo" => $parametrosTarefa['protocolo'],
@@ -80,7 +80,7 @@ class Inscricao
           "par8" => date("Ymd"),
           "par9" => $parametrosTarefa['cnpjInstituicao'],
           "par10" => $parametrosTarefa['cnpjInstituicao']
-        );
+        ];
 
         $retorno = $this->soapClient->__soapCall("recebeRUC", $parametrosSoap);
 

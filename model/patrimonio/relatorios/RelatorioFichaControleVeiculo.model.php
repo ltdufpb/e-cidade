@@ -51,13 +51,6 @@ class RelatorioFichaControleVeiculo {
   private $iAltura;
 
   /**
-   * Código do veículo
-   *
-   * @var integer
-   */
-  private $iVeiculo;
-
-  /**
    * Situação da manutenção (Realizada ou Pendente)
    *
    * @var integer
@@ -96,12 +89,14 @@ class RelatorioFichaControleVeiculo {
    * @param DBDate  $oDataInicial
    * @param DBDate  $oDataFinal
    */
-  public function __construct($iVeiculo, DBDate $oDataInicial, DBDate $oDataFinal) {
+  public function __construct(/**
+   * Código do veículo
+   */
+  private $iVeiculo, DBDate $oDataInicial, DBDate $oDataFinal) {
 
     $this->oPdf         = new PDFDocument('L');
     $this->iLargura     = $this->oPdf->getAvailWidth() - 10;
     $this->iAltura      = 4;
-    $this->iVeiculo     = $iVeiculo;
     $this->oDataInicial = $oDataInicial;
     $this->oDataFinal   = $oDataFinal;
     $this->oInstituicao = new Instituicao(db_getsession('DB_instit'));
@@ -123,14 +118,14 @@ class RelatorioFichaControleVeiculo {
    */
   private function getDados() {
 
-    $aWhere   = array();
+    $aWhere   = [];
     $aWhere[] = "ve62_veiculos = {$this->iVeiculo}";
     $aWhere[] = "ve62_dtmanut between '{$this->oDataInicial->getDate()}' and '{$this->oDataFinal->getDate()}'";
     if (!empty($this->iSituacao)) {
       $aWhere[] = "ve62_situacao = {$this->iSituacao}";
     }
 
-    $aManutencoes       = array();
+    $aManutencoes       = [];
     $oDaoItemManutencao = new cl_veicmanut;
     $sCampos            = "to_char(ve63_datanota, 'DD/MM/YYYY') as ve63_datanota, veicmanut.*, veicmanutitem.*";
     $sOrder             = "ve62_anousu, ve62_numero, ve63_codigo";

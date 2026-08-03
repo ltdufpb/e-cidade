@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadtiposervico_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveiccadtiposervico = new cl_veiccadtiposervico;
 $clveiccadtiposervico->rotulo->label("ve28_codigo");
 $clveiccadtiposervico->rotulo->label("ve28_descr");
@@ -98,9 +98,9 @@ $clveiccadtiposervico->rotulo->label("ve28_descr");
         }else{
            $sql = $clveiccadtiposervico->sql_query("",$campos,"ve28_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve28_codigo)){
-          $repassa = array("chave_ve28_codigo"=>$chave_ve28_codigo,"chave_ve28_codigo"=>$chave_ve28_codigo);
+          $repassa = ["chave_ve28_codigo"=>$chave_ve28_codigo,"chave_ve28_codigo"=>$chave_ve28_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -112,7 +112,7 @@ switch ($oParam->exec) {
       $oDomXml->load('config/sigfis/vinculorecursos.xml');
       $oNoRecursos         = $oDomXml->getElementsByTagName("recursos");
       $aRecursos           = $oDomXml->getElementsByTagName("recurso");
-      $aRecursosVinculados = array();
+      $aRecursosVinculados = [];
       $oDaoOrctipoRec      = db_utils::getDao("orctiporec");
       foreach ($aRecursos as $oRecurso) {
         
@@ -122,7 +122,7 @@ switch ($oParam->exec) {
         $rsDescricaoRecurso   = $oDaoOrctipoRec->sql_record($sSqlDescricaoRecurso);
         if ($oDaoOrctipoRec->numrows == 1) {
 
-          $sDescricaoRecurso = urlencode(db_utils::fieldsMemory($rsDescricaoRecurso, 0)->o15_descr);
+          $sDescricaoRecurso = urlencode((string) db_utils::fieldsMemory($rsDescricaoRecurso, 0)->o15_descr);
           
           $oRecursoVinculado                = new stdClass();
           $oRecursoVinculado->descricao     = $sDescricaoRecurso;
@@ -152,7 +152,7 @@ switch ($oParam->exec) {
     $oDomXml->load('config/sigfis/vinculorecursos.xml');
     $oNoRecursos         = $oDomXml->getElementsByTagName("recursos");
     $aRecursos           = $oDomXml->getElementsByTagName("recurso");
-    $aRecursosVinculados = array();
+    $aRecursosVinculados = [];
     $oDaoOrctipoRec      = db_utils::getDao("orctiporec");
     foreach ($aRecursos as $oRecurso) {
       

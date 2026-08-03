@@ -54,7 +54,7 @@ $sNomeBaseAtual  = db_getsession('DB_base');
 $sBaseDestino    = $iIPOrigemHidden ." :: ". $sNomeBaseAtual;
 $iAnoOrigem      = date('Y');
 $iMesOrigem      = date('m');
-$oPost           = db_utils::postMemory($HTTP_POST_VARS);
+$oPost           = db_utils::postMemory($_POST);
 $sMsgErro        = "Procedimento concluído com sucesso!";
 
 if (!isset($DB_PORTA_ALT)){
@@ -152,8 +152,8 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
     $sMsgErro = "Não foi possível conectar na base de dados: $oPost->iIPOrigemHidden ($oPost->sBancoOrigemHidden)";
   } else {
 
-    $aDadosInserir = array();
-    $aDadosUpdate  = array();
+    $aDadosInserir = [];
+    $aDadosUpdate  = [];
 
     /**
      * Configurações de Busca na Base de Origem
@@ -452,7 +452,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
         </td>
         <td>
           <?php 
-            $aTipoFolha = array( "0" => "Selecione", "1" => "Salário", "2" => "Complementar" );
+            $aTipoFolha = [ "0" => "Selecione", "1" => "Salário", "2" => "Complementar" ];
             db_select('iTipoFolhaOrigem', $aTipoFolha, true, 1, "style='width: 150px;'");
           ?>
         </td>
@@ -467,7 +467,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
           <?php 
             db_input("aConfRubrica", 30, '', true, 'hidden');
 
-            $aProcessaDiferencas = array( "0" => "Total de Proventos", "1" => "Rubricas" );
+            $aProcessaDiferencas = [ "0" => "Total de Proventos", "1" => "Rubricas" ];
             db_select('iProcessarDiferenca', $aProcessaDiferencas, true, 1, "style='width: 150px;'");
 
             echo "&nbsp;&nbsp;";
@@ -490,7 +490,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
             db_input("sSelecaoIframe", 30, '', 1, 'hidden');         // Guarda o VALUE da SELECAO
             db_input("sGuardaSelecionados", 30, '', 1, 'hidden');    // Guarda os dados para listar no componetne cl_arquivoauxiliar();
 
-            $aSelecao = array( 0 => "Geral", 1 => "Matrículas", 2 => "Lotação", 3 => "Cargo" );
+            $aSelecao = [ 0 => "Geral", 1 => "Matrículas", 2 => "Lotação", 3 => "Cargo" ];
             db_select('iSelecao', $aSelecao, true, '', "style='width: 150px;'");
 
             echo "&nbsp;&nbsp;";
@@ -534,7 +534,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
         </td>
         <td>
           <?php 
-            $aTipoFolhaDestino = array( 0 => "Selecione", 1 => "Salário", 2 => "Complementar" );
+            $aTipoFolhaDestino = [ 0 => "Selecione", 1 => "Salário", 2 => "Complementar" ];
             db_select('iTipoFolhaDestino', $aTipoFolhaDestino, true, 1, "style='width: 150px;'");
           ?>
         </td>
@@ -561,7 +561,7 @@ if ( isset($oPost->btnProcessaDiferSalario) ) {
         </td>
         <td>
           <?php 
-            $aOpcaoLancamentoExistente = array(0 => "Selecione", 1 => "Somar", 2 =>"Substituir");
+            $aOpcaoLancamentoExistente = [0 => "Selecione", 1 => "Somar", 2 =>"Substituir"];
             db_select('iOperacao',$aOpcaoLancamentoExistente, true, 1, "style='width: 150px;'");
           ?>
         </td>

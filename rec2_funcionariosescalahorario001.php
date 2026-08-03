@@ -73,7 +73,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                     </td>
                     <td>
                         <?php
-                        $opcoes = array("PDF", "CSV");
+                        $opcoes = ["PDF", "CSV"];
                         db_select("formato", $opcoes, true, 1, "style='width:144px'");
                         ?>
                     </td>
@@ -84,7 +84,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                     </td>
                     <td>
                         <?php
-                        $opcoes = array("Não", "Por Local de Trabalho");
+                        $opcoes = ["Não", "Por Local de Trabalho"];
                         db_select("quebrarPagina", $opcoes, true, 1, "style='width:144px'");
                         ?>
                     </td>

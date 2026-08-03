@@ -59,10 +59,10 @@ try {
       $oRetorno->nValorInicial    = (float) $oListaClassificacaoCredor->getValorInicial();
       $oRetorno->nValorFinal      = (float) $oListaClassificacaoCredor->getValorFinal();
       $oRetorno->lDispensa        = (boolean) $oListaClassificacaoCredor->dispensa();
-      $oRetorno->aContas          = array();
-      $oRetorno->aTiposCompra     = array();
-      $oRetorno->aRecursos        = array();
-      $oRetorno->aEventos         = array();
+      $oRetorno->aContas          = [];
+      $oRetorno->aTiposCompra     = [];
+      $oRetorno->aRecursos        = [];
+      $oRetorno->aEventos         = [];
 
       if (empty($oRetorno->nValorInicial)) {
         $oRetorno->nValorInicial = '';
@@ -74,11 +74,11 @@ try {
 
       foreach ($oListaClassificacaoCredor->getContas() as $oConta) {
 
-        $oRetorno->aContas[] = (object) array(
+        $oRetorno->aContas[] = (object) [
           'iCodigo'    => (int) $oConta->getContaOrcamento()->getCodigo(),
           'sDescricao' => $oConta->getContaOrcamento()->getEstrutural() . ' - ' . $oConta->getContaOrcamento()->getDescricao(),
           'lExclusao'  => $oConta->contaExclusao(),
-        );
+        ];
       }
 
       foreach ($oListaClassificacaoCredor->getRecurso() as $oRecurso) {
@@ -92,18 +92,18 @@ try {
 
       foreach ($oListaClassificacaoCredor->getTipoCompra() as $oTipoCompra) {
 
-        $oRetorno->aTiposCompra[] = (object) array(
+        $oRetorno->aTiposCompra[] = (object) [
           'iCodigo'    => (int) $oTipoCompra->getCodigo(),
           'sDescricao' => $oTipoCompra->getDescricao(),
-        );
+        ];
       }
 
       foreach ($oListaClassificacaoCredor->getEvento() as $oEvento) {
 
-        $oRetorno->aEventos[] = (object) array(
+        $oRetorno->aEventos[] = (object) [
           'iCodigo'    => (int) $oEvento->getCodigo(),
           'sDescricao' => $oEvento->getDescricao(),
-        );
+        ];
       }
 
       break;

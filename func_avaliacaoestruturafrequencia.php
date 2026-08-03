@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_avaliacaoestruturafrequencia_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clavaliacaoestruturafrequencia = new cl_avaliacaoestruturafrequencia;
 $clavaliacaoestruturafrequencia->rotulo->label("ed328_sequencial");
 $clavaliacaoestruturafrequencia->rotulo->label("ed328_db_estrutura");
@@ -105,9 +105,9 @@ $iCodEscola = db_getsession("DB_coddepto");
         } else {
           $sql = $clavaliacaoestruturafrequencia->sql_query("", $campos, "ed328_sequencial", $sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_ed328_db_estrutura)) {
-          $repassa = array("chave_ed328_sequencial"=>$chave_ed328_sequencial, "chave_ed328_db_estrutura"=>$chave_ed328_db_estrutura);
+          $repassa = ["chave_ed328_sequencial"=>$chave_ed328_sequencial, "chave_ed328_db_estrutura"=>$chave_ed328_db_estrutura];
         }
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
       } else {

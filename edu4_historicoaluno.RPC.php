@@ -56,11 +56,11 @@ function criaObjetoDisciplinas($disciplinaHistorico, $areaHistorico = null)
     $obj = (object)[
         "codigo" => $disciplinaHistorico->getCodigo(),
         "codigo_disciplina" => $disciplinaHistorico->getDisciplina()->getCodigoDisciplina(),
-        "descricao_disciplina" => urlencode($disciplinaHistorico->getDisciplina()->getNomeDisciplina()),
+        "descricao_disciplina" => urlencode((string) $disciplinaHistorico->getDisciplina()->getNomeDisciplina()),
         "abreviatura_disciplina" => $disciplinaHistorico->getDisciplina()->getAbreviatura(),
         "resultado_final" => $disciplinaHistorico->getResultadoFinal(),
-        "situacao" => urlencode($disciplinaHistorico->getSituacaoDisciplina()),
-        "resultado_obtido" => urlencode($disciplinaHistorico->getResultadoObtido()),
+        "situacao" => urlencode((string) $disciplinaHistorico->getSituacaoDisciplina()),
+        "resultado_obtido" => urlencode((string) $disciplinaHistorico->getResultadoObtido()),
         "carga_horaria" => $disciplinaHistorico->getCargaHoraria(),
         "justificativa" => $disciplinaHistorico->getJustificativa(),
         "descricao_justificativa" => "Não Implementado",
@@ -68,11 +68,11 @@ function criaObjetoDisciplinas($disciplinaHistorico, $areaHistorico = null)
         "codigo_area" => "",
         "descricao_area" => "",
         "nota_area" => "",
-        "tipoBase" => isset($tipoBase) ? urlencode($tipoBase['ed182_descricao']) : urlencode('Não se aplica')
+        "tipoBase" => isset($tipoBase) ? urlencode((string) $tipoBase['ed182_descricao']) : urlencode('Não se aplica')
     ];
     if (!is_null($areaHistorico)) {
         $obj->codigo_area = $areaHistorico->getCodigo();
-        $obj->descricao_area = urlencode($areaHistorico->getAreaConhecimento()->getDescricao());
+        $obj->descricao_area = urlencode((string) $areaHistorico->getAreaConhecimento()->getDescricao());
         $obj->nota_area = $areaHistorico->getResultadoObtido();
     }
     return $obj;
@@ -160,7 +160,7 @@ switch ($oParam->exec) {
             $oDisciplina->setDisciplina(new Disciplina($oParam->iCodigoDisciplina));
             $oDisciplina->setJustificativa($oParam->iJustificativa);
 
-            if (!empty($oParam->iCargaHoraria) && strpos($oParam->iCargaHoraria, ",")) {
+            if (!empty($oParam->iCargaHoraria) && strpos((string) $oParam->iCargaHoraria, ",")) {
                 $oParam->iCargaHoraria = str_replace(",", ".", $oParam->iCargaHoraria);
             }
 
@@ -170,7 +170,7 @@ switch ($oParam->exec) {
 
             $oDisciplina->setCargaHoraria($oParam->iCargaHoraria);
             $oDisciplina->setResultadoFinal($oParam->iResultado);
-            $oDisciplina->setResultadoObtido(base64_decode($oParam->iAproveitamento));
+            $oDisciplina->setResultadoObtido(base64_decode((string) $oParam->iAproveitamento));
             $oDisciplina->setSituacaoDisciplina(db_stdClass::normalizeStringJson($oParam->iSituacao));
             $oDisciplina->setTipoResultado($oParam->sTipoResultado);
             $oDisciplina->setOrdem($oParam->iOrdenacao);
@@ -237,11 +237,11 @@ switch ($oParam->exec) {
             $oDisciplina = $oEtapa->getDisciplinaByCodigoDeLancamento($oParam->iCodigo);
             $oDisciplinaRetorno = new stdClass();
             $oDisciplinaRetorno->iCodigoDisciplina = $oDisciplina->getDisciplina()->getCodigoDisciplina();
-            $oDisciplinaRetorno->sDescricaoDisciplina = urlencode($oDisciplina->getDisciplina()->getNomeDisciplina());
-            $oDisciplinaRetorno->sSituacao = urlencode($oDisciplina->getSituacaoDisciplina());
+            $oDisciplinaRetorno->sDescricaoDisciplina = urlencode((string) $oDisciplina->getDisciplina()->getNomeDisciplina());
+            $oDisciplinaRetorno->sSituacao = urlencode((string) $oDisciplina->getSituacaoDisciplina());
             $oDisciplinaRetorno->iCargaHoraria = $oDisciplina->getCargaHoraria();
-            $oDisciplinaRetorno->sResultado = urlencode($oDisciplina->getResultadoFinal());
-            $oDisciplinaRetorno->nAproveitamento = urlencode($oDisciplina->getResultadoObtido());
+            $oDisciplinaRetorno->sResultado = urlencode((string) $oDisciplina->getResultadoFinal());
+            $oDisciplinaRetorno->nAproveitamento = urlencode((string) $oDisciplina->getResultadoObtido());
             $oDisciplinaRetorno->iCodigoLancamento = $oDisciplina->getCodigo();
             $oDisciplinaRetorno->iJustificativa = $oDisciplina->getJustificativa();
             $oDisciplinaRetorno->sTermoFinal = $oDisciplina->getTermoFinal();
@@ -261,7 +261,7 @@ switch ($oParam->exec) {
         $sSqlHistorico = $oDaoHistorico->sql_query(null, "ed62_i_anoref", null, $sWhereHistorico);
         $rsHistorico = $oDaoHistorico->sql_record($sSqlHistorico);
 
-        $oRetorno->aTermos = array();
+        $oRetorno->aTermos = [];
         $iContadorTermos = 0;
         if ($oDaoHistorico->numrows > 0) {
             $sAno = db_utils::fieldsMemory($rsHistorico, 0)->ed62_i_anoref;
@@ -271,8 +271,8 @@ switch ($oParam->exec) {
         $aTermos = DBEducacaoTermo::getTermoEncerramentoDoEnsino($oParam->iEnsino, $sAno);
         foreach ($aTermos as $oTermo) {
             $oRetorno->aTermos[$iContadorTermos] = new stdClass();
-            $oRetorno->aTermos[$iContadorTermos]->sReferencia = urlencode($oTermo->sReferencia);
-            $oRetorno->aTermos[$iContadorTermos]->sDescricao = urlencode($oTermo->sDescricao);
+            $oRetorno->aTermos[$iContadorTermos]->sReferencia = urlencode((string) $oTermo->sReferencia);
+            $oRetorno->aTermos[$iContadorTermos]->sDescricao = urlencode((string) $oTermo->sDescricao);
             $iContadorTermos++;
         }
         break;
@@ -321,7 +321,7 @@ switch ($oParam->exec) {
         $sTipoEtapa = $oParam->sTipoEtapa;
         $oEtapa = HistoricoEtapa::getInstanciaPeloTipo($sTipoEtapa, $iCodigoEtapa);
         $oRetorno->oEtapa = new stdClass();
-        $oRetorno->oEtapa->sSituacao = urlencode($oEtapa->getSituacaoEtapa());
+        $oRetorno->oEtapa->sSituacao = urlencode((string) $oEtapa->getSituacaoEtapa());
         $oRetorno->oEtapa->sResultado = $oEtapa->getResultadoAno();
 
         break;
@@ -347,7 +347,7 @@ switch ($oParam->exec) {
 
             $oRetorno->iStatusAlteracaoHistorico = HistoricoEscolar::permiteManutencaoHistorico($oAluno, $oEscola);
 
-            $aSequenciaEtapas = array();
+            $aSequenciaEtapas = [];
             $oUltimaMatricula = MatriculaRepository::getUltimaMatriculaAluno($oAluno);
             if ($oUltimaMatricula != null) {
                 $oUltimaEtapa = $oUltimaMatricula->getEtapaDeOrigem();
@@ -394,7 +394,7 @@ switch ($oParam->exec) {
                 $oRetorno->areas_conhecimento[] = (object) [
                     "codigo" => $areaHistorico->getCodigo(),
                     "codigo_areaconhecimento" => $areaHistorico->getAreaConhecimento()->getCodigo(),
-                    "descricao_areaconhecimento" => urlencode($areaHistorico->getAreaConhecimento()->getDescricao()),
+                    "descricao_areaconhecimento" => urlencode((string) $areaHistorico->getAreaConhecimento()->getDescricao()),
                     "resultado_obtido" => $areaHistorico->getResultadoObtido(),
                     "resultado_final" => $areaHistorico->getResultadoFinal()
                 ];
@@ -446,7 +446,7 @@ switch ($oParam->exec) {
             $oRetorno->areahistorico = (object) [
                 "codigo" => $historicoEtapaArea->getCodigo(),
                 "codigo_areaconhecimento" => $historicoEtapaArea->getAreaConhecimento()->getCodigo(),
-                "descricao_areaconhecimento" => urlencode($historicoEtapaArea->getAreaConhecimento()->getDescricao()),
+                "descricao_areaconhecimento" => urlencode((string) $historicoEtapaArea->getAreaConhecimento()->getDescricao()),
                 "resultado_obtido" => $historicoEtapaArea->getResultadoObtido(),
                 "resultado_final" => $historicoEtapaArea->getResultadoFinal()
             ];

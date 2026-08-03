@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -82,7 +82,7 @@ db_postmemory($HTTP_POST_VARS);
                 </td>
                 <td nowrap>
                   <?php 
-                  $aX = array('1' => 'ATIVO', '2' => 'INATIVO');
+                  $aX = ['1' => 'ATIVO', '2' => 'INATIVO'];
                   db_select('situacao', $aX, true, 1, '');
                   ?>
                 </td>

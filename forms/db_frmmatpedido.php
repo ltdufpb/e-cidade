@@ -195,7 +195,7 @@ function js_preenchepesquisa(chave){
   db_iframe_matpedido.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;\n";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;\n";
     if($db_opcao==3||$db_opcao==33){
       echo " parent.iframe_matpedidoitem.location.href='mat1_matpedidoitem001.php?m97_sequencial='+chave+'&db_opcao=3'; \n";
     }else{

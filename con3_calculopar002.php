@@ -46,9 +46,9 @@ $clrotulo->label("z01_nome");
 $clrotulo->label("j14_nome");
 $db_opcao = 1;
 $db_botao = true;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(isset($confirmar)){
   $sqlerro=false;

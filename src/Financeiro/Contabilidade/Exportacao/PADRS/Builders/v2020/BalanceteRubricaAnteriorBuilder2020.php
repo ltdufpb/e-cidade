@@ -20,7 +20,7 @@ class BalanceteRubricaAnteriorBuilder2020 extends PadBuilder
 
     protected function processar()
     {
-        $elemento = substr($this->dados['o56_elemento'], 1);
+        $elemento = substr((string) $this->dados['o56_elemento'], 1);
 
         $this->layout->setOrgao($this->formataNumerico($this->dados['o58_orgao'], 2));
         $this->layout->setUnidade($this->formataNumerico($this->dados['o58_unidade'], 2));

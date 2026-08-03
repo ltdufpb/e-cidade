@@ -161,7 +161,7 @@ $rotulo = new rotulocampo();
 
   $resultCondominio = $Consulta->RecordSetAguaCondominio();
 
-  if(pg_numrows($resultCondominio)>0) {
+  if(pg_num_rows($resultCondominio)>0) {
     db_fieldsmemory($resultCondominio, 0);
     $infoCondominio=$x31_codcondominio." ( Matrícula: ".$x31_matric." - ".$dl_proprietario." ) ";
     $pdf->setX(5);
@@ -182,7 +182,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaBaseCar();
 
 	if($result) {
-		$linhas = pg_numrows($result);
+		$linhas = pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -195,7 +195,7 @@ $rotulo = new rotulocampo();
 			db_fieldsmemory($result, $indy);
 
 			$pdf->Cell(15,4,$j31_codigo,"",0,"R",1);
-			$descr = substr($j31_descr,0,20).' ('.substr($j32_descr,0,20).')';
+			$descr = substr((string) $j31_descr,0,20).' ('.substr((string) $j32_descr,0,20).')';
 			$pdf->Cell(80,4,$descr,"",$lado,"L",0);
 			if($lado==0) {
 				$pdf->setX(100);
@@ -215,7 +215,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaIsencaoRec();
 
 	if($result) {
-		$linhas = pg_numrows($result);
+		$linhas = pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -242,7 +242,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaConstrCar();
 
 	if($result) {
-		$linhas = pg_numrows($result);
+		$linhas = pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -310,7 +310,7 @@ $rotulo = new rotulocampo();
 
 			$pdf->SetFont('Arial','',9);
 			$pdf->Cell(15,4,$j31_codigo,"",0,"R",1);
-			$descr = substr($j31_descr,0,20).' ('.substr($j32_descr,0,20).')';
+			$descr = substr((string) $j31_descr,0,20).' ('.substr((string) $j32_descr,0,20).')';
 			$pdf->Cell(80,4,$descr,"",$lado,"L",0);
 			if($lado==0) {
 				$pdf->setX(100);
@@ -333,7 +333,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaBaseCorresp();
 
 	if($result) {
-		$linhas = pg_numrows($result);
+		$linhas = pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -400,7 +400,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaHidroMatric();
 
 	if($result) {
-		$linhas = pg_numrows($result);
+		$linhas = pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -493,7 +493,7 @@ $rotulo = new rotulocampo();
 	$result = $Consulta->RecordSetAguaLeitura(12);
 
 	if($result) {
-		$linhas = pg_numrows($result);
+		$linhas = pg_num_rows($result);
 	} else {
 		$linhas = 0;
 	}
@@ -540,7 +540,7 @@ $rotulo = new rotulocampo();
 			$pdf->Cell(15,4,db_formatar($x21_leitura,'f'),"",0,"R",$indy%2);
 			$pdf->Cell(15,4,db_formatar($x21_consumo,'f'),"",0,"R",$indy%2);
 			$pdf->Cell(15,4,db_formatar($x21_excesso,'f'),"",0,"R",$indy%2);
-			$pdf->Cell(40,4,substr($x21_numcgm,0,20),"",0,"L",$indy%2);
+			$pdf->Cell(40,4,substr((string) $x21_numcgm,0,20),"",0,"L",$indy%2);
 			$pdf->Cell(10,4,$login,"",1,"L",$indy%2);
 
 		}
@@ -555,7 +555,7 @@ $rotulo = new rotulocampo();
 		$result = $Consulta->RecordSetAguaCalc();
 
 		if($result) {
-			$linhas = pg_numrows($result);
+			$linhas = pg_num_rows($result);
 		} else {
 			$linhas = 0;
 		}
@@ -630,7 +630,7 @@ $rotulo = new rotulocampo();
 				$nSoma = 0;
 
 				$pdf->SetFont('Arial','',9);
-				for($indz=0; $indz<pg_numrows($rCalcVal);$indz++) {
+				for($indz=0; $indz<pg_num_rows($rCalcVal);$indz++) {
 					db_fieldsmemory($rCalcVal, $indz);
 					$nSoma += $x23_valor;
 

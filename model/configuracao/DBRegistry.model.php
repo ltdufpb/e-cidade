@@ -37,7 +37,7 @@ final class DBRegistry
      * itens guardados no cache
      * @var array
      */
-    private $aitens = array();
+    private $aitens = [];
 
     /**
      * Instancia unica do Registry
@@ -100,10 +100,7 @@ final class DBRegistry
     public static function get($sIdentifier)
     {
 
-        if (isset(self::getInstance()->aitens[$sIdentifier])) {
-            return self::getInstance()->aitens[$sIdentifier];
-        }
-        return null;
+        return self::getInstance()->aitens[$sIdentifier] ?? null;
     }
 
     /**
@@ -150,7 +147,7 @@ final class DBRegistry
             return $instance->aitens[$identificador][] = $valor;
         }
 
-        $instance->aitens[$identificador] = array();
+        $instance->aitens[$identificador] = [];
 
         if (!empty($toIndex)) {
             return $instance->aitens[$identificador][$toIndex] = $valor;
@@ -161,6 +158,6 @@ final class DBRegistry
 
     public static function clean()
     {
-        self::getInstance()->aitens = array();
+        self::getInstance()->aitens = [];
     }
 }

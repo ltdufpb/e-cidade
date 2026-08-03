@@ -81,7 +81,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ed126_i_codigo"=>@$ed126_i_codigo,"ed126_i_escola"=>@$ed126_i_escola,"ed18_c_nome"=>@$ed18_c_nome,"ed126_i_tipoacesso"=>@$ed126_i_tipoacesso,"ed125_c_descr"=>@$ed125_c_descr);
+   $chavepri= ["ed126_i_codigo"=>@$ed126_i_codigo,"ed126_i_escola"=>@$ed126_i_escola,"ed18_c_nome"=>@$ed18_c_nome,"ed126_i_tipoacesso"=>@$ed126_i_tipoacesso,"ed125_c_descr"=>@$ed125_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clescoladifacesso->sql_query($ed126_i_codigo,"*","ed18_c_nome");
    $cliframe_alterar_excluir->campos  ="ed126_i_escola,ed18_c_nome,ed125_c_descr";

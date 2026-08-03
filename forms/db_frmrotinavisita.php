@@ -54,7 +54,7 @@ $oRotuloCampos->label("as10_profissionalcontato");
 $oRotuloCampos->label("as05_profissional");
 $oRotuloCampos->label("as02_nis");
 $oRotuloCampos->label("as13_sequencial");
-$aOpcoes = array("0" => "Não", "1" => "Sim");
+$aOpcoes = ["0" => "Não", "1" => "Sim"];
 
 ?>
   <table >

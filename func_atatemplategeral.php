@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atatemplategeral_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatatemplategeral = new cl_atatemplategeral;
 $clatatemplategeral->rotulo->label("l38_sequencial");
 $clatatemplategeral->rotulo->label("l38_db_documentotemplate");
@@ -98,9 +98,9 @@ $clatatemplategeral->rotulo->label("l38_db_documentotemplate");
         }else{
            $sql = $clatatemplategeral->sql_query("",$campos,"l38_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_l38_db_documentotemplate)){
-          $repassa = array("chave_l38_sequencial"=>$chave_l38_sequencial,"chave_l38_db_documentotemplate"=>$chave_l38_db_documentotemplate);
+          $repassa = ["chave_l38_sequencial"=>$chave_l38_sequencial,"chave_l38_db_documentotemplate"=>$chave_l38_db_documentotemplate];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

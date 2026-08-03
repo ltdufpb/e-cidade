@@ -47,22 +47,22 @@ $clcontlot = new cl_contlot;
 $clcontlotv = new cl_contlotv;
 $clprojmelhoriasmatric->rotulo->label();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 if(isset($confirma) && $confirma=="ok"){
   db_inicio_transacao();
   $sqlerro=false;
-  $vt=$HTTP_POST_VARS;
-  $vt2=$HTTP_POST_VARS;
+  $vt=$_POST;
+  $vt2=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,5)=="CHECK"){
-      $dados   = split("_",$chave); 
+    if(str_starts_with((string) $chave, "CHECK")){
+      $dados   = preg_split("#_#m",(string) $chave); 
       $idbql   = $dados[1];
       $testada = $dados[2];
-      $length  = strlen($idbql);
+      $length  = strlen((string) $idbql);
       reset($vt2);
 
       $clcontlot->numrows = 0;
@@ -82,11 +82,11 @@ if(isset($confirma) && $confirma=="ok"){
       }
       for($x=0; $x<$ta; $x++){
         $chave2=key($vt2);
-        if(substr($chave2,0,(10+$length))=="j36testad_".$idbql){ 
-          $dados2=split("_",$chave2); 
+        if(substr((string) $chave2,0,(10+$length))=="j36testad_".$idbql){ 
+          $dados2=preg_split("#_#m",(string) $chave2); 
           $tipo=$dados2[2];
           $testad=$vt2[$chave2]."\n";
-          $valcal=split("XX",$vt2["quant_$tipo"]);
+          $valcal=preg_split("#XX#m",(string) $vt2["quant_$tipo"]);
           $quant=$valcal[0];
           $vlr=$valcal[1];
           $result06=$cleditalrua->sql_record($cleditalrua->sql_query_file($contri,"d02_profun"));
@@ -120,7 +120,7 @@ class cl_fate extends cl_testada {
     if($numrows>0){
       static $pri=true;
       $re=db_query("select d03_tipos,d03_descr,d04_quant,d04_vlrcal,d04_vlrval from editalserv inner join editaltipo on d03_tipos=d04_tipos where d04_contri=$numcontri");  
-      $numlinhas= pg_numrows($re);
+      $numlinhas= pg_num_rows($re);
       if($pri){
         echo "
           <tr>
@@ -152,7 +152,7 @@ class cl_fate extends cl_testada {
         $j36_testad=$GLOBALS["j36_testad"];
         $Ij36_testad=$GLOBALS["Ij36_testad"];
         $rest=db_query("select d41_eixo,d41_testada from projmelhoriasmatric where d41_matric=$j01_matric");
-        if(pg_numrows($rest)>0){
+        if(pg_num_rows($rest)>0){
           db_fieldsmemory($rest,0);
           $d41_testada=$GLOBALS["d41_testada"];
           $d41_eixo=$GLOBALS["d41_eixo"];
@@ -175,8 +175,8 @@ class cl_fate extends cl_testada {
             $d04_vlrval=$GLOBALS["d04_vlrval"];
             $d03_descr=$GLOBALS["d03_descr"];
             $x= "j36_testad_".$f;
-            GLOBAL $$x;
-            $$x=$j36_testad;
+            GLOBAL ${$x};
+            ${$x}=$j36_testad;
             echo "<td style='cursor:help' onMouseOut='parent.js_label(false);' onMouseOver='parent.js_label(true,event,\"$d03_descr\",$d04_quant,$d04_vlrcal,$d04_vlrval);'>";
             echo "<input type=\"text\" size=\"4\" id=\"j36testad_".$j34_idbql."\" value=\"$j36_testad\" name=\"j36testad_".$j34_idbql."_".$d03_tipos."\" title=\"Testadas\"onKeyUp=\"js_ValidaCampos(this,4,'Constribuicao','f','f',event);\"  onKeyDown=\"return js_controla_tecla_enter(this,event);\">";
             echo "<input type='hidden' name='quant_$d03_tipos' value='".$d04_quant."XX".$d04_vlrcal."'>";
@@ -269,7 +269,7 @@ function js_marca(obj){
 <td height="100%" align="center" valign="top" bgcolor="#CCCCCC"> 
 <form name="form1" method="post" action="con1_contlot005.php?numcontri=<?=@$contri?>">
 <input name="face" type="hidden">
-<input name="contri" type="hidden" value="<?=(isset($contri)?$contri:$numcontri)?>">
+<input name="contri" type="hidden" value="<?=($contri ?? $numcontri)?>">
 <input name="confirma" type="hidden">
 <table border="0">
 <table id='id_tabela' cellpadding="0" cellspacing="0" border="1" >
@@ -280,7 +280,7 @@ if(isset($face)){
   parent.document.form1.lotecontri.style.visibility='visible';
   </script> ";
   $clfate = new cl_fate;
-  $faces=split("XX",$face); 
+  $faces=preg_split("#XX#m",$face); 
   for($i=0; $i<sizeof($faces); $i++){
     if($faces[$i]!=""){
       $sql = "select j01_matric,j34_setor,j34_quadra,j34_lote,j34_zona,j36_testad,j34_idbql 
@@ -316,7 +316,7 @@ if(isset($face)){
     inner join editalrua on d02_codedi=d01_codedi
     where d02_contri=$contri";
   $result=db_query($sql);  
-  $num=pg_numrows($result);
+  $num=pg_num_rows($result);
   if($num>0){
     for($d=0; $d<$num; $d++){
       db_fieldsmemory($result,$d);

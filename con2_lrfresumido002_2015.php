@@ -48,7 +48,7 @@ $sInstituicao  = str_replace("-", ",", $oGET->db_selinstit);
 
 $oAnexoXVIII = new AnexoXVIIIResumido(db_getsession('DB_anousu'), AnexoXVIIIResumido::CODIGO_RELATORIO, $oGET->bimestre);
 $oAnexoXVIII->setInstituicoes($sInstituicao);
-$oAnexoXVIII->setExibirRelatorios(array(
+$oAnexoXVIII->setExibirRelatorios([
     AnexoXVIIIResumido::EMITIR_BALANCO_ORCAMENTARIO       => $oGET->emite_balorc,
     AnexoXVIIIResumido::EMITIR_DESPESA_FUNCAO_SUBFUNCAO   => $oGET->emite_desp_funcsub,
     AnexoXVIIIResumido::EMITIR_RECEITA_CORRENTE_LIQUIDA   => $oGET->emite_rcl,
@@ -61,7 +61,7 @@ $oAnexoXVIII->setExibirRelatorios(array(
     AnexoXVIIIResumido::EMITIR_PROJECAO_ATUARIAL_RPPS     => $oGET->emite_proj,
     AnexoXVIIIResumido::EMITIR_ALIENACAO_ATIVOS           => $oGET->emite_alienacao,
     AnexoXVIIIResumido::EMITIR_PPP                        => $oGET->emite_ppp,
-));
+]);
 $oAnexoXVIII->emitir();
 
 

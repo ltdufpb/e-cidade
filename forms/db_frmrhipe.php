@@ -136,7 +136,7 @@ if(!isset($incluir) && !isset($alterar) && !isset($excluir)){
         </td>
         <td colspan="3">
     <?php 
-    $arr_estado = Array (
+    $arr_estado =  [
                          "10" => "10 - Ativo",
                          "11" => "11 - Inativo",
                          "21" => "21 - Licenciado",
@@ -144,7 +144,7 @@ if(!isset($incluir) && !isset($alterar) && !isset($excluir)){
                          "30" => "30 - Exonerado",
                          "31" => "31 - Falecido",
                          "39" => "39 - Pensionista"
-                        );
+                        ];
     db_select('rh14_estado',$arr_estado,true,$db_opcao);
     ?>
         </td>
@@ -261,7 +261,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rhipe.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

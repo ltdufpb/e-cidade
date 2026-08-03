@@ -52,8 +52,8 @@ require_once(modification("classes/db_proctransferproc_classe.php"));
 require_once(modification("classes/db_protprocesso_classe.php"));
 require_once(modification("classes/db_solordemtransf_classe.php"));
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clpcorcamitem       = new cl_pcorcamitem;
 $clpcorcamjulg       = new cl_pcorcamjulg;
@@ -86,21 +86,21 @@ $db_botao = true;
 $sqlerro   = false;
 if (isset($incluir)) {
 
-  $valor = split(",",$valores);
+  $valor = preg_split("#,#m",$valores);
   // arrays para dados do empautoriza
-  $arr_vals = Array();
-  $arr_cgms = Array();
-  $arr_help = Array();
+  $arr_vals = [];
+  $arr_cgms = [];
+  $arr_help = [];
   $indexaut = 0;
   
   // arrays para dados do empautitem
-  $arr_proc = Array();
-  $arr_hell = Array();
+  $arr_proc = [];
+  $arr_hell = [];
   $indexitm = 0;
   $vir = "";
   
   // Rotina para pegar saldo das dotacoes
-  $vetor_dotacao = array();
+  $vetor_dotacao = [];
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
   db_inicio_transacao();
@@ -113,7 +113,7 @@ if (isset($incluir)) {
   }
   for ($i = 0; $i < sizeof($valor); $i++) {
 
-    $dados = split("_",$valor[$i]);
+    $dados = preg_split("#_#m",(string) $valor[$i]);
 
     $rsParam = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"), "pc30_contrandsol"));
     $oParam  = db_utils::fieldsMemory($rsParam,0);
@@ -296,7 +296,7 @@ if (isset($e54_autori) && trim($e54_autori) != "") {
           if (isset ($pc30_contrandsol) && $pc30_contrandsol == 't') {
 
             $result_testitem=db_query($sql_itens);
-            $numrows_testitem=pg_numrows($result_testitem);
+            $numrows_testitem=pg_num_rows($result_testitem);
             for ($w = 0;$w < $numrows_testitem; $w++) {
 
               db_fieldsmemory($result_testitem,$w);
@@ -334,7 +334,7 @@ if (isset($e54_autori) && trim($e54_autori) != "") {
         echo "  <td nowrap class='$bordas' align='center'>&nbsp;</td>\n";
         echo "  <td nowrap class='$bordas' align='center'>$pc81_codprocitem</td>\n";
         echo "  <td nowrap class='$bordas' align='center'>$pc01_codmater</td>\n";
-        echo "  <td class='$bordas' align='left' >".ucfirst(strtolower($pc01_descrmater))."</td>\n";
+        echo "  <td class='$bordas' align='left' >".ucfirst(strtolower((string) $pc01_descrmater))."</td>\n";
         echo "  <td class='$bordas' align='left' >$z01_nome</td>\n";
         echo "  <td nowrap class='$bordas' align='center'>$e56_coddot</td>\n";
         echo "  <td nowrap class='$bordas' align='right' >$e55_quant</td>\n";

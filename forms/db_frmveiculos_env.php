@@ -157,7 +157,7 @@ db_input('tr09_tipo',3,$Itr09_tipo,true,'text',3,'')
     </td>
     <td>
 <?php 
-$x = array('Feminino'=>'Feminino','Masculino'=>'Masculino','NI'=>'NI');
+$x = ['Feminino'=>'Feminino','Masculino'=>'Masculino','NI'=>'NI'];
 db_select('tr08_sexo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -173,7 +173,7 @@ db_select('tr08_sexo',$x,true,$db_opcao,"");
   <tr>
     <td valign="top"  align="center">
        <?php  
-         $chavepri= array("tr08_id"=>@$tr08_id);
+         $chavepri= ["tr08_id"=>@$tr08_id];
          $cliframe_alterar_excluir->chavepri=$chavepri;
          $cliframe_alterar_excluir->sql     = $clveiculos_env->sql_query(null,"*","tr08_id","tr08_idacidente = $tr08_idacidente");
          $cliframe_alterar_excluir->campos  ="tr05_descr,tr08_id,db10_munic,tr08_placa,tr08_condnome,tr09_tipo,tr08_sexo,tr08_idade";
@@ -283,7 +283,7 @@ function js_preenchepesquisa(chave){
   db_iframe_veiculos_env.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

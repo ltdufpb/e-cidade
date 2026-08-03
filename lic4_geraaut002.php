@@ -33,7 +33,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-$oGet = db_utils::postMemory($HTTP_GET_VARS);
+$oGet = db_utils::postMemory($_GET);
 
 $uf = getEstadoInstituicao();
 $isPB = $uf === "PB" ;

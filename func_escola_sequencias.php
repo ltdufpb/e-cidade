@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_escola_sequencias_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clescola_sequencias = new cl_escola_sequencias;
 $clescola_sequencias->rotulo->label("ed129_i_codigo");
 ?>
@@ -93,9 +93,9 @@ $clescola_sequencias->rotulo->label("ed129_i_codigo");
     }else{
      $sql = $clescola_sequencias->sql_query("",$campos,"ed129_i_numinicio","");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed129_i_codigo)){
-     $repassa = array("chave_ed129_i_codigo"=>$chave_ed129_i_codigo,"chave_ed18_c_nome"=>$chave_ed18_c_nome);
+     $repassa = ["chave_ed129_i_codigo"=>$chave_ed129_i_codigo,"chave_ed18_c_nome"=>$chave_ed18_c_nome];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

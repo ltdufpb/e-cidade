@@ -80,7 +80,7 @@ for ($i = 0; $i < $this->iTotquesitos; $i++){
        $iYquesito = $this->objpdf->getY(); //altura inicial das questoes do quesito
        if ($this->objEstagio->iTotRespostas > 0){
           for ($k = 0; $k < $this->objEstagio->iTotRespostas; $k++){
-          
+
            $oResposta = db_utils::fieldsmemory($this->objEstagio->rEstagioResposta,$k);
            $this->objpdf->Setx(20);
            $iYold = $this->objpdf->getY();

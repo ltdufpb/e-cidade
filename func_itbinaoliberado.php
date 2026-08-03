@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbi_classe.php"));
 include_once(modification("libs/db_app.utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(!isset($setorCodigo)) {
 	$setorCodigo = '';
@@ -45,7 +45,7 @@ if(!isset($lote)) {
 	$lote = '';
 }
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clitbi = new cl_itbi;
 $clitbi->rotulo->label("it01_guia");
 $clitbi->rotulo->label("it01_guia");
@@ -83,9 +83,9 @@ $clrotulo->label("j01_matric");
             </td>
             <td> 
               <?php 
-                $aSolicitacao = array( "t"=>"Todos",
+                $aSolicitacao = [ "t"=>"Todos",
                 					   "i"=>"Interna",
-                					   "e"=>"Externa" );
+                					   "e"=>"Externa" ];
                 
                 db_select("solicitacao",$aSolicitacao,true,1,"onChange='js_mostraUsuario(this.value);'");
 		      ?>
@@ -117,9 +117,9 @@ $clrotulo->label("j01_matric");
             </td>
             <td> 
               <?php 
-                $aTipo = array( "t"=>"Todos",
+                $aTipo = [ "t"=>"Todos",
                 		 	    "u"=>"Urbana",
-                				"r"=>"Rural" );
+                				"r"=>"Rural" ];
                 
                 db_select("tipo",$aTipo,true,1,"");
 		      ?>

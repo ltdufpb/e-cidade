@@ -45,7 +45,7 @@ $db_botao           = true;
 
 if( isset( $incluir ) ) {
   
-  if( strlen( $ed52_i_ano ) < 4 ) {
+  if( strlen( (string) $ed52_i_ano ) < 4 ) {
     
     db_msgbox("Ano deve ser preenchido com 4 dígitos!");
     $erro_ano = true;
@@ -178,7 +178,7 @@ if( isset( $incluir ) ) {
         $array_dados = explode("|",$array_datas[$x]);
         //inclui feriado
         $result1       = @db_query("select nextval('feriado_ed54_i_codigo_seq')");
-        $ed54_i_codigo = pg_result($result1,0,0);
+        $ed54_i_codigo = pg_fetch_result($result1,0,0);
 
         $dd = substr( $array_dados[1], 8, 2 );
         $mm = substr( $array_dados[1], 5, 2 );

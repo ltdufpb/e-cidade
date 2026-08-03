@@ -40,7 +40,7 @@ class TipoAgrupamentoRubricaRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param $id
@@ -48,7 +48,7 @@ class TipoAgrupamentoRubricaRepository
      * @return bool|TipoAgrupamentoRubrica
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_tipoagrupamentorubrica;
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -97,7 +97,7 @@ class TipoAgrupamentoRubricaRepository
      * @param TipoAgrupamentoRubrica|null $TipoAgrupamentoRubrica
      * @throws Exception
      */
-    public function delete(TipoAgrupamentoRubrica $tipoagrupamento = null)
+    public function delete(?TipoAgrupamentoRubrica $tipoagrupamento = null)
     {
         $sequencial = $tipoagrupamento instanceof TipoAgrupamentoRubrica ? $tipoagrupamento->getSequencial() : null;
 
@@ -114,13 +114,13 @@ class TipoAgrupamentoRubricaRepository
      * @return TipoAgrupamentoRubrica[]
      * @throws Exception
      */
-    public static function findAll($columns = array('*'))
+    public static function findAll($columns = ['*'])
     {
         $dao = new cl_tipoagrupamentorubrica();
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $tiposAgrupamentos = array();
+        $tiposAgrupamentos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $tiposAgrupamentos;

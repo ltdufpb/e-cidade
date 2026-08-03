@@ -35,7 +35,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('v01_numcgm');
 $clrotulo->label('z01_nome');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $chaves = str_replace("X",",",$chaves);
 $where  =" where ";
@@ -94,7 +94,7 @@ if (!$result) {
 $sql    = "select *                            ";
 $sql   .= "  from w_dados_relatorio_divida_nome";
 $result = db_query($sql);
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dívidas cadastrados.');
 }
 
@@ -123,7 +123,7 @@ $totalvalor = 0;
 $tvalorn = 0;
 $tvalorp = 0;
 $passa = true;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
 
   db_fieldsmemory($result,$x);
 
@@ -208,7 +208,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
 
 //---------------------------------------------------------------------------------------------------------------//
 
-if ( $xcgm != $v01_numcgm || $x == pg_numrows($result) ) {
+if ( $xcgm != $v01_numcgm || $x == pg_num_rows($result) ) {
   $pdf->setfont('arial','',7);
   $pdf->cell(30,$alt,$xcgm,0,0,"C",$prenc);
   $pdf->cell(50,$alt,$xnome,0,0,"L",$prenc);

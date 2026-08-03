@@ -34,18 +34,6 @@
 class Orgao{
 
 	/**
-	 * Ano do órgão
-	 * @var integer
-	 */
-	private $iAnousu;
-
-	/**
-	 * Código do órgão
-   * @var integer
-	 */
-	private $iCodigoOrgao;
-
-	/**
 	 * Código do tribunal
 	 * @var string
 	 */
@@ -76,26 +64,29 @@ class Orgao{
 	private $sFinalidade;
 
 	/**
-	 * Busca o Órgão a partir do código e do ano informado por parâmetro e seta os atributos do objeto
-	 * conforme o que resultou da busca na base
-	 *
-	 * @param int $iCodigoOrgao
-	 * @param int $iAno
-	 * @throws BusinessException
-	 */
-	public function __construct($iCodigoOrgao = null, $iAno = null) {
+     * Busca o Órgão a partir do código e do ano informado por parâmetro e seta os atributos do objeto
+     * conforme o que resultou da busca na base
+     *
+     * @param int $iCodigoOrgao
+     * @param int $iAnousu
+     * @throws BusinessException
+     */
+    public function __construct(/**
+     * Código do órgão
+     */
+    private $iCodigoOrgao = null, /**
+     * Ano do órgão
+     */
+    private $iAnousu = null) {
 
-		$this->iCodigoOrgao = $iCodigoOrgao;
-		$this->iAnousu      = $iAno;
-
-		if (!empty($iCodigoOrgao) && !empty($iAno)) {
+		if (!empty($this->iCodigoOrgao) && !empty($this->iAnousu)) {
 
 			$oDaoOrcOrgao   = db_utils::getDao("orcorgao");
-			$sSqlBuscaOrgao = $oDaoOrcOrgao->sql_query_file($iAno, $iCodigoOrgao);
+			$sSqlBuscaOrgao = $oDaoOrcOrgao->sql_query_file($this->iAnousu, $this->iCodigoOrgao);
 			$rsBuscaOrgao   = $oDaoOrcOrgao->sql_record($sSqlBuscaOrgao);
 
 			if ($oDaoOrcOrgao->numrows == 0) {
-				throw new BusinessException("Órgão {$iCodigoOrgao} não encontrado para o ano {$iAno}.");
+				throw new BusinessException("Órgão {$this->iCodigoOrgao} não encontrado para o ano {$this->iAnousu}.");
 			}
 
 			$oStdOrgao = db_utils::fieldsMemory($rsBuscaOrgao, 0);

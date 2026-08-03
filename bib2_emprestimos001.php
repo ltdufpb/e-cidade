@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_tipoitem_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltipo   = new cl_tipoitem;
 $clrotulo = new rotulocampo;
 $clrotulo->label("bi18_carteira");

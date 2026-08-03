@@ -102,7 +102,7 @@ fieldset table td:first-child {
 	  <tr>
 	    <td valign="top"  align="center">  
 		    <?php 
-					 $chavepri= array("l37_sequencial"=>@$l37_sequencial);
+					 $chavepri= ["l37_sequencial"=>@$l37_sequencial];
 					 
 					 $cliframe_alterar_excluir->chavepri      = $chavepri;
 					 $cliframe_alterar_excluir->sql           = $clcflicitatemplateata->sql_query(null,"*",null," l37_cflicita = {$l37_cflicita}");

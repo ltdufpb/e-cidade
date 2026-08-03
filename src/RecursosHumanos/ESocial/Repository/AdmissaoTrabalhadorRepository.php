@@ -53,7 +53,7 @@ class AdmissaoTrabalhadorRepository
      * @param array $campos Campos a serem selecionados eso02_rhpessoal
      * @return AdmissaoTrabalhador[]
      */
-    public function get($campos = array('*'))
+    public function get($campos = ['*'])
     {
         $dao = new cl_avaliacaogruporespostarhpessoal();
         $sql = $dao->sql_avaliacao_preenchida($campos, $this->scopes);
@@ -64,7 +64,7 @@ class AdmissaoTrabalhadorRepository
             throw new Exception('Não foi possível buscar as informações do servidor!');
         }
 
-        $alteracoes = array();
+        $alteracoes = [];
         while ($alteracao = pg_fetch_assoc($rs)) {
             $alteracoes[] = AdmissaoTrabalhador::fromState($alteracao);
         }
@@ -76,6 +76,6 @@ class AdmissaoTrabalhadorRepository
 
     private function clearScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
     }
 }

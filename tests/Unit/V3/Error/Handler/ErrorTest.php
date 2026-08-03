@@ -16,7 +16,7 @@ class ErrorTest extends PHPUnit_Framework_TestCase
         $file = 'testfile';
         $line = 9;
 
-        $entity = Error::handle($type, $message, $file, $line, array());
+        $entity = Error::handle($type, $message, $file, $line, []);
         $this->assertEquals($type, $entity->getType());
         $this->assertEquals($message, $entity->getMessage());
         $this->assertEquals($file, $entity->getFile());
@@ -33,6 +33,6 @@ class ErrorTest extends PHPUnit_Framework_TestCase
 
         error_reporting(null);
 
-        $this->assertFalse(Error::handle($type, $message, $file, $line, array()));
+        $this->assertFalse(Error::handle($type, $message, $file, $line, []));
     }
 }

@@ -15,7 +15,7 @@
   global $logo;
   $resinst = $cldb_config->sql_record($cldb_config->sql_query_file(db_getsession("DB_instit"), 'logo'));
   db_fieldsmemory($resinst,0);
-  $logofundo = substr($logo,0,strpos($logo,"."));
+  $logofundo = substr((string) $logo,0,strpos((string) $logo,"."));
   /*   F U N D O   D O   D O C U M E N T O  */
   if (file_exists('imagens/files/' . $logofundo.'_fundoalvara_sanitario.jpg')){
     $this->objpdf->Image('imagens/files/'.$logofundo.'_fundoalvara_sanitario.jpg',60,30,100);
@@ -163,7 +163,7 @@
   }
   
   $iPosInicioDescrAtividadePrimaria  = $this->objpdf->getY();
-  $iLinhasDescricaoAtividadePrimaria = (round((strlen($this->descrativ)/73),2)*4);
+  $iLinhasDescricaoAtividadePrimaria = (round((strlen((string) $this->descrativ)/73),2)*4);
   $this->objpdf->MultiCell(75,3,$this->descrativ);
   
   $this->objpdf->sety($iPosInicioDescrAtividadePrimaria);
@@ -196,7 +196,7 @@
       $this->objpdf->setx(45);
       $obs = $this->obsativ;
       $this->objpdf->Cell(10,3,"",0,0,"C",0);
-      $this->objpdf->Cell(113,3,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,1,"L",0);
+      $this->objpdf->Cell(113,3,"OBS: ".substr((string) $obs,0,65).(strlen((string) $obs) > 65 ? "...":""),0,1,"L",0);
       
     } else {
     	
@@ -229,28 +229,28 @@
   $iLinhasDescricaoAtividadeSecundaria = 0;
   if (isset($this->outrasativs)&&$this->outrasativs!=""){
      reset($this->outrasativs); 
-     
+
      $this->objpdf->setx(45);
      $this->objpdf->Cell(82,3,"ATIVIDADE" . ($num_outras > 1?"S":"") . " SECUNDÁRIA" . ($num_outras > 1?"S":"") . ":",0,0,"L",0);
      if ($this->impdatas == 't'){
        $this->objpdf->Cell(20,3,"INÍCIO",0,0,"C",0);
-        
+
        if($this->permanente == 'f'){
          $this->objpdf->Cell(20,3,"FINAL",0,1,"C",0);
        }else{
          $this->objpdf->Cell(20,3,"",0,1,"C",0);
        }
-        
+
      } else {
        $this->objpdf->Cell(20,3,"",0,0,"C",0);
        $this->objpdf->Cell(20,3,"",0,1,"C",0);
      }
-     
+
      $this->objpdf->Cell(183,1,"",0,1,"L",0);
      $this->objpdf->SetFont('Arial','',8);
-       
+
      for ($i=0; $i<sizeof($this->outrasativs); $i++) {
-     	
+
        $yyy = $this->objpdf->gety();
        $chave=key($this->outrasativs);
        $indice="";
@@ -258,21 +258,21 @@
        $indice = key($this->q03_atmemo);
        $this->objpdf->SetFont('Arial','',7);
        $this->objpdf->setx(45);
-       
+
        if ($this->impcodativ == 't') {
          $codativ = $this->outrasativs[$i]["codativ"];
          $this->objpdf->Cell(10,3,"$codativ",0,0,"C",0);
        } else {
          $this->objpdf->Cell(10,3,"",0,0,"L",0);
        }
-       
+
        $descr   = $this->outrasativs[$i]["descr"];
-       $iLinhasDescricaoAtividadeSecundaria += (round((strlen($descr)/73),2)*4);
+       $iLinhasDescricaoAtividadeSecundaria += (round((strlen((string) $descr)/73),2)*4);
        $this->objpdf->MultiCell(75,3,$descr);
        $this->objpdf->setxy(128,$yyy);
-       
+
        if ($this->impdatas == 't') {
-       	 
+
        	 $datain  = $this->outrasativs[$i]["datain"];
          $this->objpdf->Cell(20,3,db_formatar($datain,'d'),0,0,"C",0);
          if ($this->permanente == 'f') {
@@ -281,52 +281,52 @@
          } else {
            $this->objpdf->Cell(20,3,"",0,1,"L",0);
          }
-         
+
        } else {
-       	 
+
          $this->objpdf->Cell(20,3,"",0,0,"L",0);
          $this->objpdf->Cell(20,3,"",0,1,"L",0);
-         
+
        }
-       
+
        if ($this->impobsativ == 't') {
-       	
+
          $linha += 5;
          $this->objpdf->sety($this->objpdf->getY()+$iLinhasDescricaoAtividadeSecundaria);
          $iLinhasDescricaoAtividadeSecundaria += 3;
-         
+
          if (isset($this->obsativ) && $this->obsativ != "") {
-         	
+
            $obs = $this->obsativ;
            $this->objpdf->setx(45);
            $this->objpdf->Cell(10,3,"",0,0,"C",0);
-           $this->objpdf->Cell(113,3,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,1,"L",0);
-           
+           $this->objpdf->Cell(113,3,"OBS: ".substr((string) $obs,0,65).(strlen((string) $obs) > 65 ? "...":""),0,1,"L",0);
+
          } else {
-         	 
+
          	 $this->objpdf->setx(45);
            $this->objpdf->Cell(10,3,"",0,0,"C",0);
            $this->objpdf->Cell(113,3,"",0,1,"L",0);
-           
+
          }
-         
+
        } else {
          $linha++;
        }
-       
+
        if ($i == 0) {
-       	
+
          if (sizeof($this->outrasativs)==1) {
            $linha += 3;
          }
          $linha += 11;
-         
+
        } else {
-       	
+
          $linha += 5;
-         
+
        }
-       
+
        $ativ="";
        $x=$x+2;
        next($this->outrasativs);
@@ -335,9 +335,9 @@
        if ($yyyatual >= 200) {
          break;
        }
-       
+
      }
-     
+
      $this->objpdf->Ln(1);
      $this->objpdf->roundedrect(42,$y-3,127,$linha-$y-7+$iLinhasDescricaoAtividadeSecundaria,2,'1234'); // descricao da atividade secundaria
      

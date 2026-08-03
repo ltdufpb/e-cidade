@@ -38,8 +38,8 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('j14_nome');
 $clrotulo->label('d01_numero');
 $clrotulo->label('nome');
-($HTTP_SERVER_VARS['QUERY_STRING']);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $dbwhere="1=1";
 $and="";
 
@@ -151,7 +151,7 @@ $sql =  "
     WHERE $dbwhere ";
 
 $result = db_query($sql);
-$numrows = pg_numrows($result); 
+$numrows = pg_num_rows($result); 
 $alt="5";
 $pdf = new PDF(); 
 $pdf->Open(); 

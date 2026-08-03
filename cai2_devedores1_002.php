@@ -28,9 +28,9 @@
 set_time_limit(0);
 include(modification("libs/db_sql.php"));
 require(modification("fpdf151/pdf.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 //exit;
 if(isset($data)){
   if(!checkdate(substr($data,5,2),substr($data,8,2),substr($data,0,4))){
@@ -81,9 +81,9 @@ $ttvlrdesconto=0;
 $tttotal=0;
 $preenc = 0;
 $xborda = 0;
-$resultnrows= pg_numrows($result1);
+$resultnrows= pg_num_rows($result1);
 $pdf->SetFillColor(220);
-$col  = array();
+$col  = [];
 $cor = 240;
 //$data = array();
 $pdf->AddPage();
@@ -136,7 +136,7 @@ for($yy=0;$yy<$resultnrows;$yy++){
           ";
 //echo $sql2;exit;
   $result2 = db_query($sql2);
-  for($ii = 0;$ii < pg_numrows($result2);$ii++){
+  for($ii = 0;$ii < pg_num_rows($result2);$ii++){
      db_fieldsmemory($result2,$ii);
      if ($pdf->h - 30 < $pdf->gety()){
         $linha = 0;

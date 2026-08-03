@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_libcontabilidade.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 ?>
 <html>
 <head>
@@ -171,10 +171,10 @@ if ($tipo == "conta") {
 			order by o15_recurso ";
 
             $rsDomicilio = db_query($sql);
-            if (pg_numrows($rsDomicilio) > 0) {
+            if (pg_num_rows($rsDomicilio) > 0) {
 
-                $aContas = array();
-                for ($i = 0; $i < pg_numrows($rsDomicilio); $i++) {
+                $aContas = [];
+                for ($i = 0; $i < pg_num_rows($rsDomicilio); $i++) {
 
                     $oDados = db_utils::fieldsMemory($rsDomicilio, $i);
                     $oDadosContas = new stdClass();
@@ -194,7 +194,7 @@ if ($tipo == "conta") {
                     $aContas[$oDados->bancoagencia][] = $oDadosContas;
                 }
 
-                $aRegistros = array();
+                $aRegistros = [];
                 $oConta = null;
                 foreach ($aContas as $conta => $aConta) {
 
@@ -251,12 +251,12 @@ if (empty ($datai_dia)) {
 	$datai_mes = date('m', db_getsession("DB_datausu"));
 	$datai_ano = date('Y', db_getsession("DB_datausu"));
 }
-for ($i = 0; $i < pg_numrows($result); $i ++) {
+for ($i = 0; $i < pg_num_rows($result); $i ++) {
 	db_fieldsmemory($result, $i);
 
 	if ($tipo == "conta") {
 		$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-		$valor = pg_result($result1, 0, 0);
+		$valor = pg_fetch_result($result1, 0, 0);
 		$valor = preg_split("/\s+/", $valor);
 
 		echo "<tr bgcolor=\"". ($cor = ($cor == "#E4F471" ? "#EFE029" : "#E4F471"))."\">\n";
@@ -301,11 +301,11 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 						     	 and c60_codsis in (5,6)
 						 order by k13_conta";
 			$result_contas = db_query($sql);
-			$nrows = pg_numrows($result_contas);
+			$nrows = pg_num_rows($result_contas);
 			for ($h = 0; $h < $nrows; $h ++) {
 				db_fieldsmemory($result_contas, $h);
 				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-				$valor = pg_result($result1, 0, 0);
+				$valor = pg_fetch_result($result1, 0, 0);
 				$valor = preg_split("/\s+/", $valor);
 				if ($valor[0] != "2" || $valor[0] != "3") {
 					$tval1 += (float) str_replace(",", "", $valor[1]);
@@ -351,12 +351,12 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 
 					order by k13_descr";
 			$result_contas = db_query($sql);
-			$nrows = pg_numrows($result_contas);
+			$nrows = pg_num_rows($result_contas);
 			for ($h = 0; $h < $nrows; $h ++) {
 
 				db_fieldsmemory($result_contas, $h);
 				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-				$valor = pg_result($result1, 0, 0);
+				$valor = pg_fetch_result($result1, 0, 0);
 				$valor = preg_split("/\s+/", $valor);
 				if ($valor[0] != "2" || $valor[0] != "3") {
 					$tval1 += (float) str_replace(",", "", $valor[1]);
@@ -383,7 +383,7 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 
 				db_fieldsmemory($result_contas, $h);
 				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-				$valor = pg_result($result1, 0, 0);
+				$valor = pg_fetch_result($result1, 0, 0);
 				$valor = preg_split("/\s+/", $valor);
 
 				echo "<tr bgcolor=\"". ($cor = ($cor == "#E4F471" ? "#EFE029" : "#E4F471"))."\">\n";
@@ -462,11 +462,11 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 							 and c60_codsis in (5,6)
 							 order by k13_descr";
 			$result_contas = db_query($sql);
-			$nrows = pg_numrows($result_contas);
+			$nrows = pg_num_rows($result_contas);
 			for ($h = 0; $h < $nrows; $h ++) {
 				db_fieldsmemory($result_contas, $h);
 				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-				$valor = pg_result($result1, 0, 0);
+				$valor = pg_fetch_result($result1, 0, 0);
 				$valor = preg_split("/\s+/", $valor);
 				if ($valor[0] != "2" || $valor[0] != "3") {
 					$tval1 += (float) str_replace(",", "", $valor[1]);
@@ -492,7 +492,7 @@ for ($i = 0; $i < pg_numrows($result); $i ++) {
 			for ($h = 0; $h < $nrows; $h ++) {
 				db_fieldsmemory($result_contas, $h);
 				$result1 = db_query("select fc_saltessaldo($k13_conta,'$datai_ano-$datai_mes-$datai_dia','$datai_ano-$datai_mes-$datai_dia',null,".db_getsession("DB_instit").")");
-				$valor = pg_result($result1, 0, 0);
+				$valor = pg_fetch_result($result1, 0, 0);
 				$valor = preg_split("/\s+/", $valor);
 
 				echo "<tr bgcolor=\"". ($cor = ($cor == "#E4F471" ? "#EFE029" : "#E4F471"))."\">\n";

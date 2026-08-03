@@ -29,19 +29,17 @@ require_once modification("model/impressao.model.php");
 
 class modeloAutentGenerica extends impressao  {
 
-  private $sStringAutenticacao = '';
-
   /**
    *
    */
-  function __construct($sStringAutenticacao,$sIp, $sPorta) {
+  function __construct(private $sStringAutenticacao,$sIp, $sPorta) {
 
   	$this->setIp($sIp);
   	$this->setPorta($sPorta);
-  	$this->sStringAutenticacao = $sStringAutenticacao;
 
   }
 
+  #[\Override]
   function imprimir($sImprimir = '') {
     parent::imprimir(chr(15)."{$this->sStringAutenticacao}".chr(18).chr(10).chr(13));
   }

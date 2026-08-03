@@ -48,13 +48,11 @@ final class ItbiService
 
         $aTipos = $taxasitbiRepository->getAllTipos($sWhere);
 
-        return array_map(function ($oTipo) use ($aTipos) {
-            return (object) [
-                "codigo" => $oTipo->it36_sequencial,
-                "descricao" => $oTipo->it36_descricao,
-                "selecionado" => (count($aTipos) == 1)
-            ];
-        }, $aTipos);
+        return array_map(fn($oTipo) => (object) [
+            "codigo" => $oTipo->it36_sequencial,
+            "descricao" => $oTipo->it36_descricao,
+            "selecionado" => (count($aTipos) == 1)
+        ], $aTipos);
     }
 
     public function getSituacao()
@@ -62,12 +60,10 @@ final class ItbiService
         $itbisituacaoRepository = new ItbisituacaoRepository();
         $aSituacao = $itbisituacaoRepository->get()->toArray();
 
-        return array_map(function ($aSituacao) {
-            return (object) [
-                "codigo" => $aSituacao["it07_codigo"],
-                "descricao" => $aSituacao["it07_descr"]
-            ];
-        }, $aSituacao);
+        return array_map(fn($aSituacao) => (object) [
+            "codigo" => $aSituacao["it07_codigo"],
+            "descricao" => $aSituacao["it07_descr"]
+        ], $aSituacao);
     }
 
     public function getTipoTransacao()
@@ -75,12 +71,10 @@ final class ItbiService
         $itbitransacaoRepository = new ItbitransacaoRepository();
         $aTipoTransacao = $itbitransacaoRepository->get()->toArray();
 
-        return array_map(function ($aTipoTransacao) {
-            return (object) [
-                "codigo" => $aTipoTransacao["it04_codigo"],
-                "descricao" => $aTipoTransacao["it04_descr"]
-            ];
-        }, $aTipoTransacao);
+        return array_map(fn($aTipoTransacao) => (object) [
+            "codigo" => $aTipoTransacao["it04_codigo"],
+            "descricao" => $aTipoTransacao["it04_descr"]
+        ], $aTipoTransacao);
     }
 
     public function getFormaPagamentoTipoTransacao($tipoTransacao)
@@ -93,15 +87,13 @@ final class ItbiService
             "it28_avista"
         ], true)->toArray();
 
-        return array_map(function ($aFormaPgamento) {
-            return (object) [
-                "codigo" => $aFormaPgamento["it25_sequencial"],
-                "descricao" => $aFormaPgamento["it27_descricao"],
-                "aliquota" => $aFormaPgamento["it27_aliquota"],
-                "valor" => 0,
-                "bloquear" => ($aFormaPgamento["it28_avista"] == "t")
-            ];
-        }, $aFormasPgamento);
+        return array_map(fn($aFormaPgamento) => (object) [
+            "codigo" => $aFormaPgamento["it25_sequencial"],
+            "descricao" => $aFormaPgamento["it27_descricao"],
+            "aliquota" => $aFormaPgamento["it27_aliquota"],
+            "valor" => 0,
+            "bloquear" => ($aFormaPgamento["it28_avista"] == "t")
+        ], $aFormasPgamento);
     }
 
     public function getTaxasItbi($tipoTaxa, $matricula = null)
@@ -122,9 +114,7 @@ final class ItbiService
             $aIptucale = $iptucaleRepository->getByAnoMatricula($anousu, $matricula);
 
             if (count($aIptucale)) {
-                $aValorConstrucao = array_map(function ($oIptucale) {
-                    return floatval($oIptucale["j22_valor"]);
-                }, $aIptucale->toArray());
+                $aValorConstrucao = array_map(fn($oIptucale) => floatval($oIptucale["j22_valor"]), $aIptucale->toArray());
 
                 $valorVenalConstrucao = array_sum($aValorConstrucao);
             }
@@ -220,12 +210,10 @@ final class ItbiService
         $caracterRepository = new CaracterRepository();
         $aTipos = $caracterRepository->getByGrupo($iGrupoTipo)->toArray();
 
-        return array_map(function ($aTipo) {
-            return [
-                "codigo" => $aTipo["j31_codigo"],
-                "descricao" => $aTipo["j31_descr"]
-            ];
-        }, $aTipos);
+        return array_map(fn($aTipo) => [
+            "codigo" => $aTipo["j31_codigo"],
+            "descricao" => $aTipo["j31_descr"]
+        ], $aTipos);
     }
 
     public function getEspecieBenfeitoria($tipoItbi)
@@ -241,12 +229,10 @@ final class ItbiService
         $caracterRepository = new CaracterRepository();
         $aTipos = $caracterRepository->getByGrupo($iGrupoEspecie)->toArray();
 
-        return array_map(function ($aTipo) {
-            return [
-                "codigo" => $aTipo["j31_codigo"],
-                "descricao" => $aTipo["j31_descr"]
-            ];
-        }, $aTipos);
+        return array_map(fn($aTipo) => [
+            "codigo" => $aTipo["j31_codigo"],
+            "descricao" => $aTipo["j31_descr"]
+        ], $aTipos);
     }
 
     public function getPadraoConstrutivoBenfeitoria()
@@ -256,12 +242,10 @@ final class ItbiService
         $caracterRepository = new CaracterRepository();
         $aTipos = $caracterRepository->getByGrupo($oParitbi->it24_grupopadraoconstrutivobenurbana)->toArray();
 
-        return array_map(function ($aTipo) {
-            return [
-                "codigo" => $aTipo["j31_codigo"],
-                "descricao" => $aTipo["j31_descr"]
-            ];
-        }, $aTipos);
+        return array_map(fn($aTipo) => [
+            "codigo" => $aTipo["j31_codigo"],
+            "descricao" => $aTipo["j31_descr"]
+        ], $aTipos);
     }
 
     public function getCaractImovelOrUtilImovel($tipo)
@@ -277,13 +261,11 @@ final class ItbiService
         $caracterRepository = new CaracterRepository();
         $aCaracter = $caracterRepository->getByGrupo($iGrupo)->toArray();
 
-        return array_map(function ($aCaracter) use ($tipo) {
-            return [
-                "codigo" => $aCaracter["j31_codigo"],
-                "descricao" => $aCaracter["j31_descr"],
-                "tipo" => $tipo
-            ];
-        }, $aCaracter);
+        return array_map(fn($aCaracter) => [
+            "codigo" => $aCaracter["j31_codigo"],
+            "descricao" => $aCaracter["j31_descr"],
+            "tipo" => $tipo
+        ], $aCaracter);
     }
 
     public function getTransmitentesMatricula($matricula)
@@ -308,12 +290,10 @@ final class ItbiService
                                                   ->setCampos("cartorioextra.*")
                                                   ->get();
 
-        return array_map(function ($oCartorio) {
-            return [
-                "codigo" => $oCartorio->j167_sequencial,
-                "descricao" => $oCartorio->j167_descricao
-            ];
-        }, $aCartorios);
+        return array_map(fn($oCartorio) => [
+            "codigo" => $oCartorio->j167_sequencial,
+            "descricao" => $oCartorio->j167_descricao
+        ], $aCartorios);
     }
 
     public function getBenfeitoriasByMatric($matricula)

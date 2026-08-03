@@ -5,8 +5,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_db_bancos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_bancos = new cl_db_bancos;
 $cldb_bancos->rotulo->label("db90_codban");
 $cldb_bancos->rotulo->label("db90_descr");
@@ -52,9 +52,9 @@ $cldb_bancos->rotulo->label("db90_descr");
         }else{
            $sql = $cldb_bancos->sql_query("",$campos,"db90_codban","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db90_descr)){
-          $repassa = array("chave_db90_codban"=>$chave_db90_codban,"chave_db90_descr"=>$chave_db90_descr);
+          $repassa = ["chave_db90_codban"=>$chave_db90_codban,"chave_db90_descr"=>$chave_db90_descr];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

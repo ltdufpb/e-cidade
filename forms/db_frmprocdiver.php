@@ -51,7 +51,7 @@ $sSqlArretipo .= "   and k00_instit = ".db_getsession('DB_instit');
 
 $rsTipos       = db_query($sSqlArretipo);
 $iNumrowsTipo  = pg_num_rows($rsTipos);
-$aTipos        = array();
+$aTipos        = [];
 
 $aTiposDebitos = db_utils::getCollectionByRecord($rsTipos);
 
@@ -179,7 +179,7 @@ if ( count($aTipos) == 0 ) {
         </td>
         <td>
             <?php 
-            $x = array("f"=>"NAO","t"=>"SIM");
+            $x = ["f"=>"NAO","t"=>"SIM"];
             db_select('dv09_cobranca',$x,true,$db_opcao,"");
             ?>
         </td>
@@ -329,7 +329,7 @@ function js_preenchepesquisa( chave ) {
   db_iframe_procdiver.hide();
   <?php 
   if( $db_opcao != 1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chave_mostratodas=true&chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chave_mostratodas=true&chavepesquisa='+chave";
   }
   ?>
 }

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_agendaexternaespec_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_agendaexternaespec = new cl_sau_agendaexternaespec;
 $clsau_agendaexternaespec->rotulo->label("s119_i_codigo");
 $clsau_agendaexternaespec->rotulo->label("s119_i_codigo");
@@ -98,9 +98,9 @@ $clsau_agendaexternaespec->rotulo->label("s119_i_codigo");
         }else{
            $sql = $clsau_agendaexternaespec->sql_query("",$campos,"s119_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s119_i_codigo)){
-          $repassa = array("chave_s119_i_codigo"=>$chave_s119_i_codigo,"chave_s119_i_codigo"=>$chave_s119_i_codigo);
+          $repassa = ["chave_s119_i_codigo"=>$chave_s119_i_codigo,"chave_s119_i_codigo"=>$chave_s119_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

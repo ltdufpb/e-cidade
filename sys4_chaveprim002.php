@@ -29,7 +29,7 @@ require_once modification('libs/db_stdlib.php');
 require_once modification('libs/db_conecta.php');
 require_once modification('libs/db_sessoes.php');
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']), $queryString);
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -58,10 +58,10 @@ foreach ($queryString as $key => $value) {
                         where a.codarq = $tabela
                         order by a.seqarq
                     ");
-                    $num_linhas = pg_numrows($result);
+                    $num_linhas = pg_num_rows($result);
                     for ($i = 0; $i < $num_linhas; $i++) {
-                        $nome_campo = pg_fieldname($result, 0);
-                        $nome_campo = "#" . trim(pg_result($result, $i, $nome_campo)) . "#";
+                        $nome_campo = pg_field_name($result, 0);
+                        $nome_campo = "#" . trim(pg_fetch_result($result, $i, $nome_campo)) . "#";
                         echo "<option value=\"{$nome_campo}\">{$nome_campo}</option>\n";
                     }
                     ?>

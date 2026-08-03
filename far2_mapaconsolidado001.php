@@ -35,8 +35,8 @@ include(modification("classes/db_far_modelolivro_classe.php"));
 include(modification("classes/db_far_fechalivro_classe.php"));
 include(modification("classes/db_far_farmacia_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_modelolivro = new cl_far_modelolivro;
 $clfar_fechalivro  = new cl_far_fechalivro;
 $clfar_farmacia    = new cl_far_farmacia;
@@ -68,12 +68,12 @@ $clrotulo->label('fa01_i_codmater');
               </td>
               <td nowrap>
 	            <?php 
-                  $aPeriodos = array("0"=>"Escolha um Trimestre",
+                  $aPeriodos = ["0"=>"Escolha um Trimestre",
                                      "1T"=>"Primeiro Trimestre",
                                      "2T"=>"Segundo Trimestre",
                                      "3T"=>"Terceiro Trimestre",
                                      "4T"=>"Quarto Trimestre"
-                                    );
+                                    ];
                   db_select("data", $aPeriodos, "", "", "", "", "");
 	            ?>
 	          </td>

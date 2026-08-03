@@ -43,7 +43,7 @@ $clprojmelhoriasmatric->rotulo->label();
 $cltestada = new cl_testada;
 $clface = new cl_face;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if (isset($codproj)) {
     $sql = "
         select j01_matric,j40_refant,z01_nome,j34_setor,j34_quadra,j34_lote,j34_zona,projmelhoriasmatric.*
@@ -335,9 +335,9 @@ if (isset($codproj)) {
                                         }
                                         $color="";
                                         if (isset($codproj)) {
-                                            $x = array("false" => "NAO", "true" => "SIM");
+                                            $x = ["false" => "NAO", "true" => "SIM"];
                                             $nomem = "d41_pgtopref_" . $j01_matric;
-                                            global $$nomem;
+                                            global ${$nomem};
                                             if (isset($d41_pgtopref)) {
                                                 if ($d41_pgtopref == "t") {
                                                     $chec = "checked";
@@ -351,7 +351,7 @@ if (isset($codproj)) {
                                             <tr style='$color' id='lin_$j01_matric'>
                                                 <td>$j01_matric</td>
                                                 <td>&nbsp;$j40_refant</td>
-                                                <td><small>".substr($z01_nome,0,20)."<small></td>
+                                                <td><small>".substr((string) $z01_nome,0,20)."<small></td>
                                                 <td>$j34_setor</td>
                                                 <td>$j34_quadra</td>
                                                 <td>$j34_lote</td>
@@ -366,26 +366,26 @@ if (isset($codproj)) {
                                         echo "<td>";
                                         if (isset($d41_testada) && !empty($d41_testada)) {
                                             $variat = "d41_testada_" . $j01_matric;
-                                            $$variat = $d41_testada;
+                                            ${$variat} = $d41_testada;
                                         } else {
                                             $variat = "d41_testada_" . $j01_matric;
-                                            $$variat = $j36_testad;
+                                            ${$variat} = $j36_testad;
                                         }
                                         db_input("d41_testada", 10, $Id41_testada, true, 'text', (isset($disab)?"3":""), 'onchange="js_trocatot(this);"', "d41_testada_" . $j01_matric);
 	                                    echo "</td>";
                                         echo "<td>";
                                         $varia = "d41_eixo_" . $j01_matric;
-                                        $$varia = @$d41_eixo;
+                                        ${$varia} = @$d41_eixo;
                                         db_input("d41_eixo_", 10, $Id41_eixo, true, 'text', (isset($disab)?"3":""), 'onchange="js_trocatot(this);"', "d41_eixo_".$j01_matric);
                                         echo "</td>";
                                         echo "<td>";
                                         $varia = "total_".$j01_matric;
-                                        $$varia = @$d41_eixo+$$variat;
+                                        ${$varia} = @$d41_eixo+${$variat};
                                         db_input("total_".$j01_matric,10,'',true,'text',3);
                                         echo "</td>";
                                         echo "<td>";
                                         $varia = "d41_obs_".$j01_matric;
-                                        $$varia = @$d41_obs;
+                                        ${$varia} = @$d41_obs;
                                         db_input("d41_obs_",20,$Id41_obs,true,'text',(isset($disab)?"3":""),'','d41_obs_'.$j01_matric);
                                         echo "</td>";
                                         echo "</tr>";

@@ -40,12 +40,12 @@ $oRetorno->sMessage = '';
 
 $sMensagens = "patrimonial.compras.com4_manifestarinteresseregistroprecoporvalor.";
 
-$aTiposEncerramento = array(
+$aTiposEncerramento = [
     'rp' => EncerramentoExercicio::ENCERRAR_RESTOS_A_PAGAR,
     'vp' => EncerramentoExercicio::ENCERRAR_VARIACOES_PATRIMONIAIS,
     'no' => EncerramentoExercicio::ENCERRAR_SISTEMA_ORCAMENTARIO_CONTROLE,
     'is' => EncerramentoExercicio::ENCERRAR_IMPLANTACAO_SALDOS
-  );
+  ];
 
 try {
 
@@ -61,12 +61,12 @@ try {
       $aEncerramentos = $oEncerramentoExercicio->getEncerramentosRealizados();
 
       $aTiposEncerramentoValor  = array_flip($aTiposEncerramento);
-      $oRetorno->aEncerramentos = array(
+      $oRetorno->aEncerramentos = [
           $aTiposEncerramentoValor[EncerramentoExercicio::ENCERRAR_RESTOS_A_PAGAR] => in_array(EncerramentoExercicio::ENCERRAR_RESTOS_A_PAGAR, $aEncerramentos),
           $aTiposEncerramentoValor[EncerramentoExercicio::ENCERRAR_VARIACOES_PATRIMONIAIS] => in_array(EncerramentoExercicio::ENCERRAR_VARIACOES_PATRIMONIAIS, $aEncerramentos),
           $aTiposEncerramentoValor[EncerramentoExercicio::ENCERRAR_SISTEMA_ORCAMENTARIO_CONTROLE] => in_array(EncerramentoExercicio::ENCERRAR_SISTEMA_ORCAMENTARIO_CONTROLE, $aEncerramentos),
           $aTiposEncerramentoValor[EncerramentoExercicio::ENCERRAR_IMPLANTACAO_SALDOS] => in_array(EncerramentoExercicio::ENCERRAR_IMPLANTACAO_SALDOS, $aEncerramentos)
-        );
+        ];
 
       break;
 

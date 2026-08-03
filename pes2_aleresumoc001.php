@@ -38,7 +38,7 @@ $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 $clrotulo->label('r48_semest');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -188,7 +188,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-          $v = array("g"=>"Geral", "a"=>"Ativo", "i"=>"Inativo", "p"=>"Pensionista");
+          $v = ["g"=>"Geral", "a"=>"Ativo", "i"=>"Inativo", "p"=>"Pensionista"];
           db_select('vinculo',$v,true,4,"");
           ?>
         </td>
@@ -199,7 +199,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-          $o = array("n"=>"Numerica","a"=>"Alfabetica");
+          $o = ["n"=>"Numerica","a"=>"Alfabetica"];
           db_select('ordem',$o,true,4,"");
           ?>
         </td>

@@ -35,8 +35,8 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("model/recibo.model.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $tipo_debito = 3;
 
@@ -67,23 +67,23 @@ $sqliss = "
  where q01_cadcal = 3 and q01_anousu = " . db_getsession("DB_anousu") . " order by q01_inscr";
 
 $resultiss = db_query($sqliss);
-@$totalregistros  =  pg_numrows($resultiss);
-for($ii = 800;$ii < pg_numrows($resultiss);$ii++){ 
+@$totalregistros  =  pg_num_rows($resultiss);
+for($ii = 800;$ii < pg_num_rows($resultiss);$ii++){ 
 db_fieldsmemory($resultiss,$ii);
 $sqliss1 = " select *
              from arrecad 
              where k00_numpre = $q01_numpre 
            ";
 $resultiss1 = db_query($sqliss1);
-@$totalcarnes = pg_numrows($resultiss1);
-for($volta = 0;$volta < pg_numrows($resultiss1);$volta++) {
+@$totalcarnes = pg_num_rows($resultiss1);
+for($volta = 0;$volta < pg_num_rows($resultiss1);$volta++) {
 //for($volta = 0;$volta < 5;$volta++) {
   db_fieldsmemory($resultiss1,$volta);
 
-  $HTTP_POST_VARS["ver_inscr"] = $q01_inscr;
+  $_POST["ver_inscr"] = $q01_inscr;
 
   $k00_numpre = $q01_numpre;  
-  
+
   $resulttipo = db_query("select k00_descr,k00_codbco,k00_codage,k00_txban,k00_rectx,
                             k00_hist1,k00_hist2,k00_hist3,k00_hist4,k00_hist5,
                             k00_hist6,k00_hist7,k00_hist8 
@@ -97,7 +97,7 @@ for($volta = 0;$volta < pg_numrows($resultiss1);$volta++) {
                     left outer join procdiver b on a.procdiver=b.procdiver 
                where k00_numpre = $k00_numpre limit 1";
      $result28 = db_query($sql28);
-     if (pg_numrows($result28) > 0){
+     if (pg_num_rows($result28) > 0){
         db_fieldsmemory($result28,0);
         $pdf1->tipodebito = 'PARCELAMENTO DE '.$dcopdiver;
      }
@@ -125,24 +125,24 @@ for($volta = 0;$volta < pg_numrows($resultiss1);$volta++) {
      }
   }
 
-  if(!empty($HTTP_POST_VARS["ver_matric"])) {
-     $numero = $HTTP_POST_VARS["ver_matric"];
+  if(!empty($_POST["ver_matric"])) {
+     $numero = $_POST["ver_matric"];
      $descr = 'Matricula';
      $Identificacao = db_query("select *
    	                       from proprietario
-		  	       where j01_matric = ".$HTTP_POST_VARS["ver_matric"]." limit 1");
+		  	       where j01_matric = ".$_POST["ver_matric"]." limit 1");
 
-  } else if(!empty($HTTP_POST_VARS["ver_inscr"])) {
-     $numero = $HTTP_POST_VARS["ver_inscr"];
+  } else if(!empty($_POST["ver_inscr"])) {
+     $numero = $_POST["ver_inscr"];
      $descr = 'Inscrição';
      $Identificacao = db_query("select * from empresa where q02_inscr = $numero ");
 
   } else {
-     $numero = $HTTP_POST_VARS["ver_numcgm"];
+     $numero = $_POST["ver_numcgm"];
      $descr = 'CGM';
      $Identificacao = db_query("select z01_nome,z01_ender,z01_munic,z01_uf,z01_cep,''::bpchar as nomepri,''::bpchar as j39_compl,''::bpchar as j39_numero,z01_bairro as j13_descr 
                                from cgm
-	  		       where z01_numcgm = ".$HTTP_POST_VARS["ver_numcgm"]);
+	  		       where z01_numcgm = ".$_POST["ver_numcgm"]);
   } 
   db_fieldsmemory($Identificacao,0); 
   if ( ( $tipo_debito==6 ) || ( $tipo_debito== 21 ) || ( $tipo_debito== 26 ) || ( $tipo_debito== 28 ) ) {
@@ -168,15 +168,15 @@ for($volta = 0;$volta < pg_numrows($resultiss1);$volta++) {
      $resultdivida = db_query($sqldivida);
      $traco = '';
      $exercicio = ' - Exerc : ';
-     for ($k = 0;$k < pg_numrows($resultdivida);$k++){  
-       $exercicio .= $traco.substr(pg_result($resultdivida,$k,"v01_exerc"),2,2);
+     for ($k = 0;$k < pg_num_rows($resultdivida);$k++){  
+       $exercicio .= $traco.substr(pg_fetch_result($resultdivida,$k,"v01_exerc"),2,2);
        $traco = '-';
      }
   }
-  if(!empty($HTTP_POST_VARS["ver_matric"])) {
+  if(!empty($_POST["ver_matric"])) {
     $sqlcgm = "select * from cgm where z01_numcgm = $z01_numcgm";
     $resultcgm = db_query($sqlcgm);
-    
+
     db_fieldsmemory($resultcgm,0);
   }
 //echo db_getsession($DB_datausu);
@@ -221,7 +221,7 @@ for($volta = 0;$volta < pg_numrows($resultiss1);$volta++) {
   $numpre = db_numpre($k00_numpre).db_formatar($k00_numpar,'s',"0",3,"e");
   $dtvenc = substr($k00_dtvenc,6,4).substr($k00_dtvenc,3,2).substr($k00_dtvenc,0,2);   
   $datavencimento = $k00_dtvenc;
-  
+
   if ($formvencfebraban == 1) {
     $db_dtvenc = str_replace("-","",$datavencimento);
     $vencbar = $db_dtvenc . '000000';
@@ -240,19 +240,19 @@ for($volta = 0;$volta < pg_numrows($resultiss1);$volta++) {
     exit;
   }
 
-  $codigo_barras   = substr($fc_febraban,0,strpos($fc_febraban,','));
-  $linha_digitavel = substr($fc_febraban,strpos($fc_febraban,',')+1);
+  $codigo_barras   = substr((string) $fc_febraban,0,strpos((string) $fc_febraban,','));
+  $linha_digitavel = substr((string) $fc_febraban,strpos((string) $fc_febraban,',')+1);
 
   $result = db_query("select k15_local,k15_aceite,k15_carte,k15_espec,k15_ageced
  		     from cadban
                      where k15_codbco = $k00_codbco 
                        and k15_codage = '$k00_codage'");
-  if(pg_numrows($result) > 0) {	
-    $k15_local=pg_result($result,0,0);
-    $k15_aceite=pg_result($result,0,1);
-    $k15_carte=pg_result($result,0,2);
-    $k15_espec=pg_result($result,0,3);
-    $k15_ageced=pg_result($result,0,4);
+  if(pg_num_rows($result) > 0) {	
+    $k15_local=pg_fetch_result($result,0,0);
+    $k15_aceite=pg_fetch_result($result,0,1);
+    $k15_carte=pg_fetch_result($result,0,2);
+    $k15_espec=pg_fetch_result($result,0,3);
+    $k15_ageced=pg_fetch_result($result,0,4);
     $fc_numbco=$fc_numbco;
     $dt_hoje=date('d/m/Y',$H_DATAUSU);
   }
@@ -265,15 +265,15 @@ for($volta = 0;$volta < pg_numrows($resultiss1);$volta++) {
   $pdf1->descr1    = $numero; 
   $pdf1->descr2    = db_numpre($k00_numpre,0).db_formatar($k00_numpar,'s',"0",3,"e"); 
   $pdf1->descr3_1  = $z01_nome;   
-  $pdf1->descr3_2  = strtoupper($z01_ender).', '.$z01_numero.'  '.$z01_compl;
- 
+  $pdf1->descr3_2  = strtoupper((string) $z01_ender).', '.$z01_numero.'  '.$z01_compl;
+
   if ( $k00_hist1 == '' || $k00_hist2 == '' ){
      $pdf1->descr12_1 = $k00_numpar.'a PARCELA'; 
   }else{
      $pdf1->descr12_1 = $k00_hist1; 
      $pdf1->descr12_2 = $k00_hist2; 
   }
-  
+
   if ( $tipo_debito==2 ){
      $pdf1->titulo4   = 'Atividade'; 
      $pdf1->descr4    = $q07_ativ.'-'.$q03_descr; 
@@ -295,7 +295,7 @@ for($volta = 0;$volta < pg_numrows($resultiss1);$volta++) {
   $pdf1->descr9    = db_numpre($k00_numpre,0).db_formatar($k00_numpar,'s',"0",3,"e");
   $pdf1->descr10   = $k00_numpar.' / '.$k00_numtot;;
   $pdf1->descr11_1 = $z01_nome;
-  $pdf1->descr11_2 = strtoupper($z01_ender).', '.$z01_numero.'  '.$z01_compl;
+  $pdf1->descr11_2 = strtoupper((string) $z01_ender).', '.$z01_numero.'  '.$z01_compl;
   $pdf1->descr12_1 = $k00_numpar.'a PARCELA           EXERCÍCIO : '.$H_ANOUSU; 
   $pdf1->descr12_2 = 'Alíquota '.$q01_valor.'%';
   $pdf1->titulo15  = 'Valor pago'; 

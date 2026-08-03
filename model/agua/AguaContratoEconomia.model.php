@@ -379,7 +379,7 @@ class AguaContratoEconomia {
   /**
    * @param DBDate $oDataValidadeCadastro
    */
-  public function setDataValidadeCadastro(DBDate $oDataValidadeCadastro = null) {
+  public function setDataValidadeCadastro(?DBDate $oDataValidadeCadastro = null) {
     $this->oDataValidadeCadastro = $oDataValidadeCadastro;
   }
 

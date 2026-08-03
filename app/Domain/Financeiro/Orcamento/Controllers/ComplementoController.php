@@ -16,14 +16,8 @@ use Exception;
  */
 class ComplementoController extends Controller
 {
-    /**
-     * @var ComplementoService
-     */
-    private $service;
-
-    public function __construct(ComplementoService $service)
+    public function __construct(private readonly ComplementoService $service)
     {
-        $this->service = $service;
     }
 
     public function get()

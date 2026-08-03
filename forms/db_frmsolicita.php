@@ -36,7 +36,7 @@ $clrotulo->label("o74_descricao");
 $clrotulo->label("pc54_solicita");
 $clrotulo->label("pc90_numeroprocesso");
 //MODULO: compras
-$sArquivoRedireciona = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+$sArquivoRedireciona = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
 $result_tipo = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"), "pc30_seltipo,pc30_tipoemiss"));
 if ($clpcparam->numrows > 0) {
     db_fieldsmemory($result_tipo, 0);
@@ -183,7 +183,7 @@ $iOpcaoTipoSolicitacao = $db_opcao;
                     }
 
                     $clpcproc->rotulo->label();
-                    if (strlen(trim(@$campo)) > 0) {
+                    if (strlen(trim((string) @$campo)) > 0) {
                         $result_liclicitem = $clliclicitem->sql_record(
                             $clliclicitem->sql_query_inf(
                                 null,
@@ -232,7 +232,7 @@ $iOpcaoTipoSolicitacao = $db_opcao;
                         $flag_achou = false;
                     }
 
-                    if (strlen(trim(@$campo)) > 0) {
+                    if (strlen(trim((string) @$campo)) > 0) {
                         $result_liclicitem = $clliclicitem->sql_record($clliclicitem->sql_query_inf(null,
                             "distinct l21_codliclicita as codliclicita3$campo",
                             null,
@@ -264,11 +264,11 @@ $iOpcaoTipoSolicitacao = $db_opcao;
                     </td>
                     <td colspan="3">
                         <?php
-                        $aTiposDisponiveis = array(
+                        $aTiposDisponiveis = [
                             1 => "Normal",
                             2 => "Pacto",
                             5 => "Registro de Preço"
-                        );
+                        ];
 
                         db_select("pc10_solicitacaotipo", $aTiposDisponiveis, true, $iOpcaoTipoSolicitacao,
                             "onchange='js_showCamposRegistro()'");
@@ -325,7 +325,7 @@ $iOpcaoTipoSolicitacao = $db_opcao;
                         <fieldset>
                             <legend><?= @$Lpc10_resumo ?></legend>
                             <?php
-                            @$pc10_resumo = htmlspecialchars_decode(stripslashes($pc10_resumo));
+                            @$pc10_resumo = htmlspecialchars_decode(stripslashes((string) $pc10_resumo));
                             db_textarea("pc10_resumo", 11, 80, "", true, "text", $db_opcao, "", "", "", 735);
                             ?>
                         </fieldset>
@@ -503,7 +503,7 @@ $iOpcaoTipoSolicitacao = $db_opcao;
 
             <?php
             if ($db_opcao == 1) {
-                echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?importar='+chave";
+                echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?importar='+chave";
             }
             ?>
 
@@ -514,7 +514,7 @@ $iOpcaoTipoSolicitacao = $db_opcao;
     function js_pesquisa() {
         <?php
         if (isset($param) && $param != "") {
-            if (isset($codliclicita) && strlen(trim(@$codproc)) > 0 || strlen(trim(@$codliclicita)) > 0) {
+            if (isset($codliclicita) && strlen(trim((string) @$codproc)) > 0 || strlen(trim((string) @$codliclicita)) > 0) {
                 $parametro = "&param=" . $param . "&codproc=" . $codproc . "&codliclicita=" . $codliclicita;
             } else {
                 $parametro = "&param=" . $param;
@@ -549,7 +549,7 @@ $iOpcaoTipoSolicitacao = $db_opcao;
         db_iframe_solicita.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave+'&liberaaba=false$parametro'";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave+'&liberaaba=false$parametro'";
         }
         ?>
     }

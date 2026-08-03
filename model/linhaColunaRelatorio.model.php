@@ -28,16 +28,13 @@
 
 class linhaColunaRelatorio {
 
-  private $codigo    = null;
   private $relatorio = null;
-  private $colunas   = array();
+  private $colunas   = [];
   /**
    * 
    */
-  function __construct($iColunaRelatorio) {
-
-    $this->codigo    = $iColunaRelatorio;
-    
+  function __construct(private $codigo)
+  {
   }
   
   function save($iLinha, $nValor, $iPeriodo, $iSeqValor = null, $iAnoUsu = null) {

@@ -40,12 +40,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $codrel = 5; // relatorio de gastos com MDE	
 ?>
@@ -71,11 +71,11 @@ $codrel = 5; // relatorio de gastos com MDE
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("relatorio"=>"Relatorio","p"=>"Res.Anterior");
-    $clcriaabas->title      = array("relatorio"=>"Relatorio","p"=>"Res.Anterior");
-    $clcriaabas->src  = array("relatorio"=>"con2_confresfin0011.php",
-			      "p"=>"con2_confresfin0012.php");
-    $clcriaabas->sizecampo= array("relatorio"=>"23","p"=>"23");
+    $clcriaabas->identifica = ["relatorio"=>"Relatorio","p"=>"Res.Anterior"];
+    $clcriaabas->title      = ["relatorio"=>"Relatorio","p"=>"Res.Anterior"];
+    $clcriaabas->src  = ["relatorio"=>"con2_confresfin0011.php",
+			      "p"=>"con2_confresfin0012.php"];
+    $clcriaabas->sizecampo= ["relatorio"=>"23","p"=>"23"];
     $clcriaabas->cria_abas();    
     ?>
     </center>

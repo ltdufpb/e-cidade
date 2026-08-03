@@ -60,8 +60,8 @@ $clorcproduto = new cl_orcproduto;
 $clorcimpactoperiodo = new cl_orcimpactoperiodo;
 
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if(isset($incluir) || isset($alterar)){
   $result=$clorcimpactoperiodo->sql_record($clorcimpactoperiodo->sql_query_file($o90_codperiodo,"o96_anoini"));

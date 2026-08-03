@@ -14,10 +14,6 @@ class MandatoCitacao
 
 
     /**
-     * @var Inicial
-     */
-    private $inicial;
-    /**
      * @var \Pdf3
      */
     private $pdf;
@@ -28,23 +24,17 @@ class MandatoCitacao
      */
     private $instituicao;
 
-    private $listaCertidoes = array();
-    /**
-     * @var \DateTime
-     */
-    private $dataCorrecao;
+    private $listaCertidoes = [];
 
     /**
      * MandatoCitacao constructor.
      * @param Inicial $inicial
      * @param \Pdf3|null $pdf
      */
-    public function __construct(Inicial $inicial, \Pdf3 $pdf = null, \DateTime $dataCorrecao)
+    public function __construct(private readonly Inicial $inicial, ?\Pdf3 $pdf = null, private readonly ?\DateTime $dataCorrecao = null)
     {
 
-        $this->inicial = $inicial;
         $this->pdf = $pdf;
-        $this->dataCorrecao = $dataCorrecao;
     }
 
     /**
@@ -64,7 +54,7 @@ class MandatoCitacao
             $this->listaCertidoes[] = $certidao->getCodigo();
         }
 
-        $nomesRepository = \ECidade\Tributario\Juridico\Inicial\Repository\InicialNome::getInstance();
+        $nomesRepository = (new \ECidade\Tributario\Juridico\Inicial\Repository\InicialNome())->getInstance();
         $nomes = $nomesRepository->getByInitial($this->inicial->getCodigo());
         $procedencias = implode(", ", $this->getProcedenciasDaInicial());
         $valorAtualizado = $this->inicial->getValorAtualizadoAte($this->dataCorrecao);
@@ -132,9 +122,7 @@ class MandatoCitacao
         if (!$rsProcedenciaInicial) {
             throw new \DBException("Não possível pesquisar procedências da inicial {$this->inicial}");
         }
-        return \db_utils::makeCollectionFromRecord($rsProcedenciaInicial, function ($dados) {
-            return $dados->v28_descricao;
-        });
+        return \db_utils::makeCollectionFromRecord($rsProcedenciaInicial, fn($dados) => $dados->v28_descricao);
     }
 
     /**
@@ -161,7 +149,7 @@ class MandatoCitacao
     private function getEnderecoCgm(\CgmBase $cgm)
     {
 
-        $endereco = array($cgm->getLogradouro() . ", Nº" . $cgm->getNumero());
+        $endereco = [$cgm->getLogradouro() . ", Nº" . $cgm->getNumero()];
         if ($cgm->getBairro() != '') {
             $endereco[] = ", Bairro " . $cgm->getBairro();
         }
@@ -183,35 +171,35 @@ class MandatoCitacao
     public function getParagrafos()
     {
         $listaCda = implode(", ", $this->listaCertidoes);
-        $paragrafo = array();
-        $paragrafo[] = array(
+        $paragrafo = [];
+        $paragrafo[] = [
 
             "texto" => "MM Juiz de Direito Dr(ª) da Central de Dívida Ativa de Niteroi, MANDA ao Oficial de Justiça deste Juizo, em cumprimento e a requerimento do EXEQUENTE, CITE o devedor acima indicado, ou a quem de direito, para que em obediência ao presente mandato, pague em 05 (cinco) dias, a dívida com juros e correção monetária até seu efetivo pagamento ou garanta a execução, tudo de conformidade com o requerido no processo de execução fiscal acima referido, com assento na(s) certidão(ões) de dívida ativa nº {$listaCda} sob pena de penhora de bens suficientes para satisfazer a execução. Não ocorrendo o pagamento, nem a garantia da execução, proceda a penhora ou arresto, e os respectivos registros, independentemente do pagamento de custas e outras despesas, e a avaliação dos bens penhorados ou arrestados (Art 7º, III, IV e V da Lei 6.830 de 22/09/1980).",
             "alinhamento" => "J",
             "recuo" => 25
-        );
-        $paragrafo[] = array(
+        ];
+        $paragrafo[] = [
             "texto" => "Cientifique, ainda, ao devedor, que tem o prazo de 30 (trinta) dias para opor Embargos. O que se cumpre na forma e sob as penas da Lei. Em caso de penhora, sendo o bem imóvel, determina este Juizo, que o Oficial do Cartório de Registro de Imóveis faça a anotação da penhora, em obediência ao Art 14 da Lei 6.830. Dado e passado nesta cidade de Niterói. ",
             "alinhamento" => "J",
             "recuo" => 25
-        );
-        $paragrafo[] = array(
+        ];
+        $paragrafo[] = [
             "texto" => "Eu________________ Cristiane Leal Quadros Lima - Responsável pelo expediente - Mat. 01/22056, digitei e conferi. E eu ________________________ o subscrevo e assino por ordem do MM Juiz de Direito.\nAVISO:  PAGAMENTO - 1º) Dirija-se eu endereço do exequente para fazer o pagamento ou parcelamento. (Rua Visconde de Sepetiba, 519 - 7º Andar - Niteroi/RJ)",
             "alinhamento" => "J",
             "recuo" => 0
-        );
-        $paragrafo[] = array(
+        ];
+        $paragrafo[] = [
             "texto" => "Cristiane Leal Quadros Lima - Responsável pelo expediente - Mat. 01/22056\nAssino por ordem do MM Juiz de Direito",
             "alinhamento" => "C",
             "recuo" => 0,
             "quebra" => 10
-        );
-        $paragrafo[] = array(
+        ];
+        $paragrafo[] = [
             "texto" => "Código de Autenticação",
             "alinhamento" => "C",
             "recuo" => 0,
             "quebra" => 10
-        );
+        ];
         return $paragrafo;
     }
 

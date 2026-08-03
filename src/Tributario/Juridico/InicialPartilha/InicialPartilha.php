@@ -73,7 +73,7 @@ class InicialPartilha implements Partilha
      * Custas da partilha
      * @var InicialPartilhaCustas[]
      */
-    private $aCustas = array();
+    private $aCustas = [];
 
     /**
      * Sequencial da Inicial
@@ -242,7 +242,7 @@ class InicialPartilha implements Partilha
     public function getCustas()
     {
         if (empty($this->aCustas)) {
-            return array();
+            return [];
         }
         return $this->aCustas;
     }
@@ -260,7 +260,7 @@ class InicialPartilha implements Partilha
      */
     public function resetCustas()
     {
-        $this->aCustas = array();
+        $this->aCustas = [];
     }
 
     /**

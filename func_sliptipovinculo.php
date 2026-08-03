@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_slip_classe.php"));
 /** [Extensão] - [AutorizacaoRepasse] - Parte 1 */
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oGet = db_utils::postMemory($_GET);
 
@@ -48,7 +48,7 @@ $clrotulo->label("k17_valor");
 
 
 $iCodigoMenuAcessado = db_getsession('DB_itemmenu_acessado', false);
-$aMenusBloquearSlipNaoAutenticado = array();
+$aMenusBloquearSlipNaoAutenticado = [];
 $aMenusBloquearSlipNaoAutenticado[] = 9380; // Transf. Financeira - Concessão - Estorno
 $aMenusBloquearSlipNaoAutenticado[] = 9393; // Transf. Financeira - Recebimento - Estorno
 $aMenusBloquearSlipNaoAutenticado[] = 9431; // Transf. Bancaria - Estorno

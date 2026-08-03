@@ -36,7 +36,7 @@ function createTable($connection, $schema, $table, $ddl) {
     return false;
   }
 
-  if (pg_result($rExistsTable, 0, 0) == 'f') {
+  if (pg_fetch_result($rExistsTable, 0, 0) == 'f') {
     $rExecute = db_query($connection, $ddl);
     if (!$rExecute) {
       db_log("ERRO: Ao executar SQL $ddl " . pg_last_error() . "\n", $GLOBALS['sArquivoLog'], $GLOBALS['iParamLog']);
@@ -111,7 +111,7 @@ function loadScripts($connection, $root) {
 
   $iLastVersion = 0;
   if (pg_num_rows($rLastVersion) > 0) {
-    $iLastVersion = pg_result($rLastVersion, 0, 0);
+    $iLastVersion = pg_fetch_result($rLastVersion, 0, 0);
   }
 
   $sDirectoryCheck = $sDirectoryScripts . '/'.$iLastVersion;
@@ -139,7 +139,7 @@ function loadScripts($connection, $root) {
       $sLastOrder = "SELECT coalesce(max(ord),0) FROM database_version_sql WHERE version = {$iLastVersion}";
       $rLastOrder = db_query($connection, $sLastOrder);
     
-      $iOrd = pg_result($rLastOrder, 0, 0);
+      $iOrd = pg_fetch_result($rLastOrder, 0, 0);
     }
 
     foreach($aFiles as $sFile) {
@@ -198,7 +198,7 @@ function upgradeDatabase($connection, $root) {
   
   for($x = 0; $x < $iCount; $x++) {
     
-    $oScript = db_utils::fieldsMemory($rScriptsNotApplied, $x);
+    $oScript = (new db_utils())->fieldsMemory($rScriptsNotApplied, $x);
 
     db_log("AVISO: Aplicando script {$oScript->sql_name} da versão {$oScript->version} na ordem de execução {$oScript->ord}", $GLOBALS['sArquivoLog'], $GLOBALS['iParamLog']);
     $rExecute = db_query($connection, $oScript->script); 

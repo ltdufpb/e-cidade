@@ -72,7 +72,7 @@ if (isset($arqname) && $arqname != "") {
     $contaatual = 0;
     $sqlerro = false;
     $lPrimeiro = true;
-    $aExtratoSaldoArray = array();
+    $aExtratoSaldoArray = [];
 
     $clextratocnab240 = new cl_extratoCnab240($arqname);
 
@@ -82,7 +82,7 @@ if (isset($arqname) && $arqname != "") {
     }
 
     $iTotalLinhasConta = $clextratocnab240->getTotalLinhas();
-    $aContasEncontradas = array();
+    $aContasEncontradas = [];
 
     for ($iInd = 0; $iInd < $iTotalLinhasConta; $iInd++) {
         if ($clextratocnab240->isHeaderLote($iInd) && $clextratocnab240->isValido($iInd)) {
@@ -164,7 +164,7 @@ if (isset($arqname) && $arqname != "") {
     }
 
     $iTotalLinhasExcecoes = $clextratocnab240->getTotalLinhas();
-    $aHistoricosNaoEcontrados = array();
+    $aHistoricosNaoEcontrados = [];
     $clbancoshistmovexcecao = db_utils::getDao("bancoshistmovexcecao");
     $rsHistoricosNaoEncontrados = db_query(
         $clbancoshistmovexcecao->sql_query(null, " distinct k66_historico, k66_codbco")
@@ -209,8 +209,8 @@ if (isset($arqname) && $arqname != "") {
     $retorno = "";
     $intcontador = 0;
     $incluiuLinha = false;
-    $aContasNaoEncontradas = array();
-    $aContasNaoProcessadas = array();
+    $aContasNaoEncontradas = [];
+    $aContasNaoProcessadas = [];
 
     db_criatermometro('termometro');
 
@@ -283,13 +283,13 @@ if (isset($arqname) && $arqname != "") {
                     } else {
                         $intcontador++;
 
-                        $aPesquisaConta = array(
+                        $aPesquisaConta = [
                           "linha"     => $i,
                           "agencia"   => $clextratocnab240->getAgencia($i),
                           "dvagencia" => $clextratocnab240->getDvAgencia($i),
                           "conta"     => $clextratocnab240->getCc($i),
                           "dvconta"   => $clextratocnab240->getDvCc($i)
-                        );
+                        ];
 
                         if (!in_array($aPesquisaConta, $aContasNaoEncontradas)) {
                             $aContasNaoEncontradas[] = $aPesquisaConta;
@@ -338,13 +338,13 @@ if (isset($arqname) && $arqname != "") {
                             $contaatual = $clextratocnab240->getConta($i);
                         } else {
                             $intcontador++;
-                            $aPesquisaConta = array(
+                            $aPesquisaConta = [
                               "linha"     => $i,
                               "agencia"   => $clextratocnab240->getAgencia($i),
                               "dvagencia" => $clextratocnab240->getDvAgencia($i),
                               "conta"     => $clextratocnab240->getCc($i),
                               "dvconta"   => $clextratocnab240->getDvCc($i)
-                            );
+                            ];
 
                             $sHash = $i . $clextratocnab240->getAgencia($i) . $clextratocnab240->getDvAgencia($i) . $clextratocnab240->getCc($i) . $clextratocnab240->getDvCc($i);
 
@@ -477,7 +477,7 @@ if (isset($arqname) && $arqname != "") {
     fechaJanela();
 }
 
-function fechaJanela()
+function fechaJanela(): never
 {
 
     echo "<script> parent.db_iframe_carga.hide(); </script>";

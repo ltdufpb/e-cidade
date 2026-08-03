@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE iptutabelas
 class cl_iptutabelas { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j121_sequencial = 0; 
-   var $j121_codarq = 0; 
+   public $j121_sequencial = 0; 
+   public $j121_codarq = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j121_sequencial = int4 = Código Sequencial 
                  j121_codarq = int4 = Código do Arquivo 
                  ";
    //funcao construtor da classe 
-   function cl_iptutabelas() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutabelas"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_iptutabelas {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j121_sequencial = pg_result($result,0,0); 
+       $this->j121_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptutabelas_j121_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j121_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j121_sequencial)){
          $this->erro_sql = " Campo j121_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_iptutabelas {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "iptutabelas ($this->j121_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "iptutabelas já Cadastrado";
@@ -152,11 +152,11 @@ class cl_iptutabelas {
      $resaco = $this->sql_record($this->sql_query_file($this->j121_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17394,'$this->j121_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3077,17394,'','".AddSlashes(pg_result($resaco,0,'j121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3077,17395,'','".AddSlashes(pg_result($resaco,0,'j121_codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3077,17394,'','".AddSlashes(pg_fetch_result($resaco,0,'j121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3077,17395,'','".AddSlashes(pg_fetch_result($resaco,0,'j121_codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_iptutabelas {
       $this->atualizacampos();
      $sql = " update iptutabelas set ";
      $virgula = "";
-     if(trim($this->j121_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j121_sequencial"])){ 
+     if(trim((string) $this->j121_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j121_sequencial"])){ 
        $sql  .= $virgula." j121_sequencial = $this->j121_sequencial ";
        $virgula = ",";
-       if(trim($this->j121_sequencial) == null ){ 
+       if(trim((string) $this->j121_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "j121_sequencial";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_iptutabelas {
          return false;
        }
      }
-     if(trim($this->j121_codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j121_codarq"])){ 
+     if(trim((string) $this->j121_codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j121_codarq"])){ 
        $sql  .= $virgula." j121_codarq = $this->j121_codarq ";
        $virgula = ",";
-       if(trim($this->j121_codarq) == null ){ 
+       if(trim((string) $this->j121_codarq) == null ){ 
          $this->erro_sql = " Campo Código do Arquivo nao Informado.";
          $this->erro_campo = "j121_codarq";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_iptutabelas {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17394,'$this->j121_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j121_sequencial"]) || $this->j121_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3077,17394,'".AddSlashes(pg_result($resaco,$conresaco,'j121_sequencial'))."','$this->j121_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3077,17394,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j121_sequencial'))."','$this->j121_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j121_codarq"]) || $this->j121_codarq != "")
-           $resac = db_query("insert into db_acount values($acount,3077,17395,'".AddSlashes(pg_result($resaco,$conresaco,'j121_codarq'))."','$this->j121_codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3077,17395,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j121_codarq'))."','$this->j121_codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_iptutabelas {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17394,'$j121_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3077,17394,'','".AddSlashes(pg_result($resaco,$iresaco,'j121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3077,17395,'','".AddSlashes(pg_result($resaco,$iresaco,'j121_codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3077,17394,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3077,17395,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j121_codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptutabelas
@@ -314,7 +314,7 @@ class cl_iptutabelas {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptutabelas";
@@ -329,7 +329,7 @@ class cl_iptutabelas {
    function sql_query ( $j121_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -351,7 +351,7 @@ class cl_iptutabelas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -364,7 +364,7 @@ class cl_iptutabelas {
    function sql_query_file ( $j121_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_iptutabelas {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

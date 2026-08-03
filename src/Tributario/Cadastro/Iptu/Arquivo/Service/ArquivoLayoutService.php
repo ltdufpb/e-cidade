@@ -6,80 +6,33 @@ use ECidade\Tributario\Library\Service;
 
 final class ArquivoLayoutService extends ArquivoTxtService
 {
-    private $arquivo;
-    private $layoutBanco;
-    private $layoutContribuinte;
-    private $layoutExercicio;
-    private $layoutFace;
-    private $layoutImovelAnterior;
-    private $layoutImovel;
-    private $layoutLocalizacao;
-    private $layoutNossoNumero;
-    private $layoutsNossoNumeroUnica;
-    private $layoutNossoNumeroVersao2;
-    private $layoutNossoNumeroUnicaVersao2;
-    private $layoutParcelaInicio;
-    private $layoutParcelaPaga;
-    private $layoutParcela;
-    private $layoutParcelaRecibo;
-    private $layoutsUnica;
-    private $layoutsTaxa;
-    private $layoutBranco86;
-    private $layoutContador;
-    private $layoutFimUnicas;
-    private $layoutTotalPago;
-    private $layoutsTaxaSegundoBloco;
-
     public function __construct(
-        $arquivo,
-        $layoutBanco,
-        $layoutContribuinte,
-        $layoutExercicio,
-        $layoutFace,
-        $layoutImovelAnterior,
-        $layoutImovel,
-        $layoutLocalizacao,
-        $layoutNossoNumero,
-        $layoutsNossoNumeroUnica,
-        $layoutNossoNumeroVersao2,
-        $layoutNossoNumeroUnicaVersao2,
-        $layoutParcelaInicio,
-        $layoutParcelaPaga,
-        $layoutParcela,
-        $layoutParcelaRecibo,
+        private $arquivo,
+        private $layoutBanco,
+        private $layoutContribuinte,
+        private $layoutExercicio,
+        private $layoutFace,
+        private $layoutImovelAnterior,
+        private $layoutImovel,
+        private $layoutLocalizacao,
+        private $layoutNossoNumero,
+        private $layoutsNossoNumeroUnica,
+        private $layoutNossoNumeroVersao2,
+        private $layoutNossoNumeroUnicaVersao2,
+        private $layoutParcelaInicio,
+        private $layoutParcelaPaga,
+        private $layoutParcela,
+        private $layoutParcelaRecibo,
         $layoutTotalUnica,
-        $layoutsUnica,
-        $layoutsTaxa,
-        $layoutBranco86,
-        $layoutContador,
-        $layoutFimUnicas,
-        $layoutTotalPago,
-        $layoutsTaxaSegundoBloco
+        private $layoutsUnica,
+        private $layoutsTaxa,
+        private $layoutBranco86,
+        private $layoutContador,
+        private $layoutFimUnicas,
+        private $layoutTotalPago,
+        private $layoutsTaxaSegundoBloco
     ) {
-        $this->arquivo                       = $arquivo;
-        $this->layoutBanco                   = $layoutBanco;
-        $this->layoutContribuinte            = $layoutContribuinte;
-        $this->layoutExercicio               = $layoutExercicio;
-        $this->layoutFace                    = $layoutFace;
-        $this->layoutImovelAnterior          = $layoutImovelAnterior;
-        $this->layoutImovel                  = $layoutImovel;
-        $this->layoutLocalizacao             = $layoutLocalizacao;
-        $this->layoutNossoNumero             = $layoutNossoNumero;
-        $this->layoutsNossoNumeroUnica       = $layoutsNossoNumeroUnica;
-        $this->layoutNossoNumeroVersao2      = $layoutNossoNumeroVersao2;
-        $this->layoutNossoNumeroUnicaVersao2 = $layoutNossoNumeroUnicaVersao2;
-        $this->layoutParcelaInicio           = $layoutParcelaInicio;
-        $this->layoutParcelaPaga             = $layoutParcelaPaga;
-        $this->layoutParcela                 = $layoutParcela;
-        $this->layoutParcelaRecibo           = $layoutParcelaRecibo;
         $this->layoutTotalUnica              = $layoutTotalUnica;
-        $this->layoutsUnica                  = $layoutsUnica;
-        $this->layoutsTaxa                   = $layoutsTaxa;
-        $this->layoutBranco86                = $layoutBranco86;
-        $this->layoutContador                = $layoutContador;
-        $this->layoutFimUnicas               = $layoutFimUnicas;
-        $this->layoutTotalPago               = $layoutTotalPago;
-        $this->layoutsTaxaSegundoBloco       = $layoutsTaxaSegundoBloco;
     }
 
     public function getArquivo()

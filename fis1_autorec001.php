@@ -33,7 +33,7 @@ require_once(modification("classes/db_autorec_classe.php"));
 require_once(modification("classes/db_fiscalprocrec_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clautorec       = new cl_autorec;
 $clfiscalprocrec = new cl_fiscalprocrec;
@@ -41,7 +41,7 @@ $db_opcao = 1;
 $db_botao = true;
 global $y59_codauto;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   db_inicio_transacao();
   $clautorec->incluir($y57_codauto,$y57_receit);
@@ -82,7 +82,7 @@ if(isset($y59_codauto) && $y59_codauto != ""){
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clautorec->erro_status=="0"){
     $clautorec->erro(true,false);
     $db_botao=true;

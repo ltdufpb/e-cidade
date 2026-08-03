@@ -44,7 +44,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		    </td>
 		    <td> 
 					<?php 
-					$x = array('f'=>'Não','t'=>'Sim');
+					$x = ['f'=>'Não','t'=>'Sim'];
 					db_select('p90_emiterecib',$x,true,$db_opcao,"");
 					?>
 		    </td>
@@ -55,7 +55,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		    </td>
 		    <td> 
 					<?php 
-					$x = array('f'=>'Não','t'=>'Sim');
+					$x = ['f'=>'Não','t'=>'Sim'];
 					db_select('p90_alteracgmprot',$x,true,$db_opcao,"");
 					?>
 		    </td>
@@ -66,7 +66,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		    </td>
 		    <td> 
 					<?php 
-					$x = array('f'=>'Não','t'=>'Sim');
+					$x = ['f'=>'Não','t'=>'Sim'];
 					db_select('p90_valcpfcnpj',$x,true,$db_opcao,"");
 					?>
 		    </td>
@@ -77,7 +77,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		    </td>
 		    <td> 
 					<?php 
-					$x = array('f'=>'Não','t'=>'Sim');
+					$x = ['f'=>'Não','t'=>'Sim'];
 					db_select('p90_impusuproc',$x,true,$db_opcao,"");
 					?>
 		    </td>
@@ -88,7 +88,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		    </td>
 		    <td> 
 					<?php 
-					$x = array('f'=>'Não','t'=>'Sim');
+					$x = ['f'=>'Não','t'=>'Sim'];
 					db_select('p90_debiaber',$x,true,$db_opcao,"");
 					?>
 		    </td>
@@ -124,7 +124,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		    </td>
 		    <td> 
 				<?php 
-				$x = array('t'=>'Sim','f'=>'Não');
+				$x = ['t'=>'Sim','f'=>'Não'];
 				db_select('p90_despachoob',$x,true,$db_opcao);
 				?>
 		    </td>
@@ -145,7 +145,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		    </td>
 		    <td> 
 				<?php 
-				$x = array('f'=>'Não','t'=>'Sim');
+				$x = ['f'=>'Não','t'=>'Sim'];
 				db_select('p90_andatual',$x,true,$db_opcao,"");
 				?>
 		    </td>
@@ -156,9 +156,9 @@ $clrotulo->label("p90_db_documentotemplate");
 		    </td>
 		    <td> 
 		     <?php 
-		     $tra = array('1'=>'Permitir escolher departamentos diferentes',
+		     $tra = ['1'=>'Permitir escolher departamentos diferentes',
 		                  '2'=>'Não permitir escolher departamentos diferentes',
-		                  '3'=>'Permitir escolher departamentos diferentes, mas avisar o usuário');
+		                  '3'=>'Permitir escolher departamentos diferentes, mas avisar o usuário'];
 		     db_select('p90_traminic',$tra,true,$db_opcao,"");
 		     ?>
 		    </td>
@@ -169,13 +169,13 @@ $clrotulo->label("p90_db_documentotemplate");
 		    </td>
 		    <td> 
 				<?php 
-				$x = array(
+				$x = [
 					'0' =>'Modelo Padrão',
 					'1'=>'Modelo 1',
 					'2'=>'Modelo 2',
 					'3'=>'Documento Template',
 					'4'=>'Modelo 3'
-				);
+				];
 				db_select('p90_modelcapaproc',$x,true,$db_opcao,"onchange='js_liberaDocumentoTemplate(this.value)'");
 				?>
 		    </td>
@@ -200,7 +200,7 @@ $clrotulo->label("p90_db_documentotemplate");
 		    </td>
 		    <td> 
 				<?php 
-				$x = array('f'=>'Não','t'=>'Sim');
+				$x = ['f'=>'Não','t'=>'Sim'];
 				db_select('p90_imprimevar',$x,true,$db_opcao,"");
 				?>
     </td>
@@ -211,7 +211,7 @@ $clrotulo->label("p90_db_documentotemplate");
     </td>
     <td> 
     <?php 
-    $x = array("f"=>"Não","t"=>"Sim");
+    $x = ["f"=>"Não","t"=>"Sim"];
     db_select('p90_impdepto',$x,true,$db_opcao,"");
     ?>
     </td>
@@ -299,7 +299,7 @@ function js_preenchepesquisa(chave){
   db_iframe_protparam.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

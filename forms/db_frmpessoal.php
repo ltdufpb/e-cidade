@@ -860,7 +860,7 @@ db_input('r01_d13fo',10,$Ir01_d13fo,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('r01_equip',$x,true,$db_opcao,"");
 ?>
     <td>
@@ -1013,7 +1013,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 <?php 

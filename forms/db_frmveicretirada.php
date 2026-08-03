@@ -226,7 +226,7 @@ db_app::load("prototype.js");
                   if (isset($ve60_datasaida) && strpos($ve60_datasaida, "-") > 0) {
                     $dData = $ve60_datasaida;
                   } else {
-                    $dData = substr(@$ve60_datasaida,6,4).'-'.substr(@$ve60_datasaida,3,2).'-'.substr(@$ve60_datasaida,0,2);
+                    $dData = substr((string) @$ve60_datasaida,6,4).'-'.substr((string) @$ve60_datasaida,3,2).'-'.substr((string) @$ve60_datasaida,0,2);
                   }
                   $Queryproximamedida = $clveiculos->sql_record($clveiculos->sql_query_proximamedida(@$ve60_veiculo,@$dData,@$ve60_horasaida));
                   if($clveiculos->numrows > 0){
@@ -379,7 +379,7 @@ db_app::load("prototype.js");
     db_iframe_veicretirada.hide();
     <?php 
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
     ?>
   }
@@ -390,7 +390,7 @@ db_app::load("prototype.js");
   function js_preencheveiculo(chave){
     db_iframe_veiculos.hide();
     <?php 
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?veiculo='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?veiculo='+chave";
     ?>
   }
 

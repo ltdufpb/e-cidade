@@ -76,7 +76,7 @@ if (pg_num_rows($postgresObjectDepartamento) > 0) {
     <td> 
      <?php 
        $sql = "select nome from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario");
-       echo pg_result(db_query($sql),0,"nome");  
+       echo pg_fetch_result(db_query($sql),0,"nome");  
      ?>
     </td>
   </tr>
@@ -139,7 +139,7 @@ if (pg_num_rows($postgresObjectDepartamento) > 0) {
     </td>
     <td nowrap>
        <?php  
-         $aUsuarios = array("0" => "Selecione o Usuário");
+         $aUsuarios = ["0" => "Selecione o Usuário"];
          db_select("p62_id_usorec",$aUsuarios,true,$db_opcao);
        ?>
     </td>
@@ -685,7 +685,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_tran.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 

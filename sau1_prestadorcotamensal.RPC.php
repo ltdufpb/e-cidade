@@ -72,7 +72,7 @@ try {
     case 'buscarCotas':
 
         $aCotasMensais    = $oRepository->getGrupoByPrestador($oParametros->iPrestador);
-        $oRetorno->aCotas = array();
+        $oRetorno->aCotas = [];
 
         foreach ($aCotasMensais as $oMensal) {
 

@@ -61,7 +61,7 @@ class InflaIPTU implements iViradaIPTU {
    * Campos correcao configurados na tabela iptutabelasconfigcampocorrecao
    * @var array
    */
-  private $aCampoCorrecao = array();
+  private $aCampoCorrecao = [];
   
   /**
    * @return $this->iAnoAtual
@@ -275,11 +275,11 @@ class InflaIPTU implements iViradaIPTU {
 		        $oDaoInfla->$sNomeCampoInfla = "{$nSomaPercentual}";
 		      } else {
 		            
-		        if (trim($sNomeCampoInfla) == 'i02_codigo') {
+		        if (trim((string) $sNomeCampoInfla) == 'i02_codigo') {
 		          $iCodigo = $oDadosInfla->$sNomeCampoInfla;
 		        }
 		      
-		        if (trim($sNomeCampoInfla) == 'i02_data') {
+		        if (trim((string) $sNomeCampoInfla) == 'i02_data') {
 		          $sData = $oDadosInfla->$sNomeCampoInfla;
 		        }
 		        

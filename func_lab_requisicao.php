@@ -40,7 +40,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $cllab_requisicao = new cl_lab_requisicao;
 $cllab_requisicao->rotulo->label("la22_i_codigo");
@@ -155,13 +155,13 @@ $clrotulo->label("z01_i_cgsund");
                   $campos = "la22_i_codigo, z01_i_cgsund, z01_v_nome, la22_d_data, la22_c_hora, la22_i_departamento";
               }
 
-              $aWhere = array();
+              $aWhere = [];
               $where = "";
               $sep = "";
               $lCarrega = true;
 
               if (isset($la22_d_data_ini) && ($la22_d_data_ini != "")) {
-                  $aDat = explode("/", $la22_d_data_ini);
+                  $aDat = explode("/", (string) $la22_d_data_ini);
                   $aWhere[] = " la22_d_data >= '" . $aDat[2] . "-" . $aDat[1] . "-" . $aDat[0] . "' ";
               }
 
@@ -170,7 +170,7 @@ $clrotulo->label("z01_i_cgsund");
               }
 
               if (isset($la22_d_data_fim) && ($la22_d_data_fim != "")) {
-                  $aDat = explode("/", $la22_d_data_fim);
+                  $aDat = explode("/", (string) $la22_d_data_fim);
                   $aWhere[] = " la22_d_data <= '" . $aDat[2] . "-" . $aDat[1] . "-" . $aDat[0] . "' ";
               }
 
@@ -249,9 +249,9 @@ $clrotulo->label("z01_i_cgsund");
                       $sql = "";
                   }
 
-                  $repassa = array();
+                  $repassa = [];
                   if (isset($la22_i_codigo)) {
-                      $repassa = array(
+                      $repassa = [
                         "la22_i_codigo" => $la22_i_codigo,
                         "chave_z01_v_nome" => $chave_z01_v_nome,
                         "la22_i_departamento" => $la22_i_departamento,
@@ -264,7 +264,7 @@ $clrotulo->label("z01_i_cgsund");
                         "la22_d_data_fim_mes" => $la22_d_data_fim_mes,
                         "la22_d_data_fim_ano" => $la22_d_data_fim_ano,
                         "chave_z01_i_cgsund" => $chave_z01_i_cgsund
-                      );
+                      ];
                   }
 
                       db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa, false);

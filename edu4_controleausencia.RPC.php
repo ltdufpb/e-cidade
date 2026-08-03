@@ -41,7 +41,7 @@ $oJson = new services_json();
 $oParam = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 
 $oRetorno = new stdClass();
-$oRetorno->dados = array();
+$oRetorno->dados = [];
 $oRetorno->status = 1;
 $oRetorno->message = '';
 
@@ -74,7 +74,7 @@ try {
                 $oDados = db_utils::fieldsMemory($rsAusencia, $i);
                 $oAusencia = new stdClass();
                 $oAusencia->codigo = $oDados->ed320_sequencial;
-                $oAusencia->descricao = urlencode($oDados->ed320_descricao);
+                $oAusencia->descricao = urlencode((string) $oDados->ed320_descricao);
                 $oRetorno->dados[] = $oAusencia;
             }
 
@@ -154,17 +154,17 @@ try {
             $oDadosAusencia = new stdClass();
             $oDadosAusencia->iCodigo = $oAusencia->getCodigo();
             $oDadosAusencia->iRecHumano = $oProfissional->getCodigoProfissional();
-            $oDadosAusencia->sNome = urlencode($oCgm->getNome());
+            $oDadosAusencia->sNome = urlencode((string) $oCgm->getNome());
             $oDadosAusencia->iCgm = $oParam->iCgm;
             $oDadosAusencia->iAusencia = $oAusencia->getTipoAusencia()->getCodigo();
-            $oDadosAusencia->dtInicio = urlencode($oAusencia->getDataInicio()->getDate(DBDate::DATA_PTBR));
+            $oDadosAusencia->dtInicio = urlencode((string) $oAusencia->getDataInicio()->getDate(DBDate::DATA_PTBR));
             $oDadosAusencia->dtFinal = null;
             $oDadosAusencia->lDocente = $oAusencia->isDocente();
             $oDadosAusencia->sObservacao = urlencode($oAusencia->getObservacao());
 
             $dtFinal = $oAusencia->getDataFim();
             if (!empty($dtFinal)) {
-                $oDadosAusencia->dtFinal = urlencode($dtFinal->getDate(DBDate::DATA_PTBR));
+                $oDadosAusencia->dtFinal = urlencode((string) $dtFinal->getDate(DBDate::DATA_PTBR));
             }
 
             $oRetorno->oAusencia = $oDadosAusencia;
@@ -218,7 +218,7 @@ try {
                 $oDadosTurma = db_utils::fieldsMemory($rsTurma, $i);
                 $oTurma = new stdClass();
                 $oTurma->codigo = $oDadosTurma->ed57_i_codigo;
-                $oTurma->descricao = urlencode($oDadosTurma->ed57_c_descr);
+                $oTurma->descricao = urlencode((string) $oDadosTurma->ed57_c_descr);
 
                 $oRetorno->dados[] = $oTurma;
             }
@@ -251,7 +251,7 @@ try {
                     }
 
                     $oDisciplina->regencia = $oRegencia->getCodigo();
-                    $oDisciplina->descricao = urlencode($oRegencia->getDisciplina()->getNomeDisciplina());
+                    $oDisciplina->descricao = urlencode((string) $oRegencia->getDisciplina()->getNomeDisciplina());
 
                     $oRetorno->dados[] = $oDisciplina;
                 }
@@ -268,7 +268,7 @@ try {
                 $oDados = db_utils::fieldsMemory($rsVinculo, $i);
                 $oVinculo = new stdClass();
                 $oVinculo->codigo = $oDados->ed324_sequencial;
-                $oVinculo->descricao = urlencode($oDados->ed324_descricao);
+                $oVinculo->descricao = urlencode((string) $oDados->ed324_descricao);
 
                 $oRetorno->dados[] = $oVinculo;
             }
@@ -287,19 +287,19 @@ try {
                     $oDadosSubstituto = new stdClass();
                     $oDadosSubstituto->iSubstituto = $oSubstituto->getCodigo();
                     $oDadosSubstituto->iRecHUmano = $oSubstituto->getProfessorSubstituto()->getMatricula();
-                    $oDadosSubstituto->sNome = urlencode($oSubstituto->getProfessorSubstituto()->getProfessor()->getNome());
+                    $oDadosSubstituto->sNome = urlencode((string) $oSubstituto->getProfessorSubstituto()->getProfessor()->getNome());
                     $oDadosSubstituto->iTurma = $oSubstituto->getRegencia()->getTurma()->getCodigo();
-                    $oDadosSubstituto->sTurma = urlencode($oSubstituto->getRegencia()->getTurma()->getDescricao());
+                    $oDadosSubstituto->sTurma = urlencode((string) $oSubstituto->getRegencia()->getTurma()->getDescricao());
                     $oDadosSubstituto->iRegencia = $oSubstituto->getRegencia()->getCodigo();
-                    $oDadosSubstituto->sRegencia = urlencode($oSubstituto->getRegencia()->getDisciplina()->getNomeDisciplina());
+                    $oDadosSubstituto->sRegencia = urlencode((string) $oSubstituto->getRegencia()->getDisciplina()->getNomeDisciplina());
                     $oDadosSubstituto->iTipo = $oSubstituto->getTipoVinculo();
                     $oDadosSubstituto->sTipo = urlencode($oSubstituto->getTipoVinculo() == 1 ? "TEMPORÁRIO" : "PERMANENTE");
-                    $oDadosSubstituto->dtInicio = urlencode($oSubstituto->getPeriodoInicial()->getDate(DBDate::DATA_PTBR));
+                    $oDadosSubstituto->dtInicio = urlencode((string) $oSubstituto->getPeriodoInicial()->getDate(DBDate::DATA_PTBR));
                     $oDadosSubstituto->dtFinal = '';
 
                     $oDtFinal = $oSubstituto->getPeriodoFinal();
                     if (!empty($oDtFinal)) {
-                        $oDadosSubstituto->dtFinal = urlencode($oDtFinal->getDate(DBDate::DATA_PTBR));
+                        $oDadosSubstituto->dtFinal = urlencode((string) $oDtFinal->getDate(DBDate::DATA_PTBR));
                     }
 
                     $oRetorno->dados[] = $oDadosSubstituto;
@@ -350,18 +350,18 @@ try {
             $oRetorno->iSubstituto = $oDocenteSubstituto->getCodigo();
             $oRetorno->iRecHumanoSubstituto = $oDocenteSubstituto->getProfessorSubstituto()->getMatricula();
             $oRetorno->iCgmSubstituto = $oDocenteSubstituto->getProfessorSubstituto()->getProfessor()->getCodigo();
-            $oRetorno->sNome = urlencode($oDocenteSubstituto->getProfessorSubstituto()->getProfessor()->getNome());
+            $oRetorno->sNome = urlencode((string) $oDocenteSubstituto->getProfessorSubstituto()->getProfessor()->getNome());
             $oRetorno->iTurma = $oDocenteSubstituto->getRegencia()->getTurma()->getCodigo();
             $oRetorno->iRegencia = $oDocenteSubstituto->getRegencia()->getCodigo();
             $oRetorno->sRegencia = $oDocenteSubstituto->getRegencia()->getDisciplina()->getNomeDisciplina();
             $oRetorno->iTipoVinculo = $oDocenteSubstituto->getTipoVinculo();
-            $oRetorno->dtInicial = urlencode($oDocenteSubstituto->getPeriodoInicial()->getDate(DBDate::DATA_PTBR));
+            $oRetorno->dtInicial = urlencode((string) $oDocenteSubstituto->getPeriodoInicial()->getDate(DBDate::DATA_PTBR));
 
 
             $oRetorno->dtFinal = '';
             $oDtFinal = $oDocenteSubstituto->getPeriodoFinal();
             if (!empty($oDtFinal)) {
-                $oRetorno->dtFinal = urlencode($oDocenteSubstituto->getPeriodoFinal()->getDate(DBDate::DATA_PTBR));
+                $oRetorno->dtFinal = urlencode((string) $oDocenteSubstituto->getPeriodoFinal()->getDate(DBDate::DATA_PTBR));
             }
 
             break;

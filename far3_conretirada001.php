@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_far_retirada_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clfar_retirada = new cl_far_retirada;

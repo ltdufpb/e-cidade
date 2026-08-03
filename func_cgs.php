@@ -31,9 +31,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 if(!isset($pesquisar))
-   parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+   parse_str((string) $_SERVER["QUERY_STRING"]);
 $clcgm = new cl_cgm;
 $clrotulo = new rotulocampo;
 $clcgm->rotulo->label("z01_numcgm");
@@ -48,7 +48,7 @@ if(isset($script) && $script != ""){
 <?php 
   $vals = "";
   $vir = "";
-  $camp = split(",",$valores);
+  $camp = preg_split("#,#m",$valores);
   for($f=0;$f<count($camp);$f++){
     $vals .= $vir."'".$camp[$f]."'";
     $vir = ",";
@@ -60,7 +60,7 @@ if(isset($script) && $script != ""){
 exit;
 }
 if(isset($testanome) && !isset($pesquisa_chave)){
-  $funmat = split("\|",$funcao_js);
+  $funmat = preg_split("#\\|#m",$funcao_js);
   $func_antes = $funmat[0];
   $valores = "";
   $camp = "";
@@ -210,7 +210,7 @@ if(!isset($pesquisa_chave)){
   }
   $clnome = new cl_cgm;
   if (isset($nomeDigitadoParaPesquisa) && ($nomeDigitadoParaPesquisa!="") ){
-        $nomeDigitadoParaPesquisa = strtoupper($nomeDigitadoParaPesquisa);
+        $nomeDigitadoParaPesquisa = strtoupper((string) $nomeDigitadoParaPesquisa);
         //$sql = $clnome->sqlnome($nomeDigitadoParaPesquisa,$campos);
         $sql = "select cgs.z01_i_numcgs as z01_numcgm,
                   cgm.z01_nome,
@@ -462,14 +462,14 @@ if(!isset($pesquisa_chave)){
     $result = $clcgm->sql_record($sql);
 
     if(!isset($testanome)){ 
-      if(($result!=false) && (pg_numrows($result) != 0)){
+      if(($result!=false) && (pg_num_rows($result) != 0)){
          db_fieldsmemory($result,0);
          echo "<script>".$funcao_js."(false,\"$z01_nome\");</script>";
       }else{
          echo "<script>".$funcao_js."(true,'Código (".$z01_numcgm.") não Encontrado');</script>";
       }
     }else{
-      if(($result!=false) && (pg_numrows($result) != 0)){
+      if(($result!=false) && (pg_num_rows($result) != 0)){
         db_fieldsmemory($result,0);
         echo "<script>\n";
           if($z01_ender == '' || $z01_cgccpf == ''){

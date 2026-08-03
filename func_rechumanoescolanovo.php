@@ -47,7 +47,7 @@ $oRotulo->label("z01_nome");
 $oRotulo->label("z01_nome");
 
 $iEscola = db_getsession("DB_coddepto");
-$aWhere  = array();
+$aWhere  = [];
 
 if (isset($oGet->lProfessor) && $oGet->lProfessor == 'true') {
   $aWhere[] = " ed01_c_docencia = 'S' ";
@@ -172,7 +172,7 @@ $aWhere[] = " ed75_i_escola = {$iEscola} ";
       $sWhereAusencia .= "                               and ed321_final is null)       ";
 
       $sSqlNovo = "select {$sCamposAusencia} from ({$sql}) as x where {$sWhereAusencia}";
-      $repassa  = array();
+      $repassa  = [];
 
       db_lovrot( $sSqlNovo, 15, "()", "", $funcao_js, "", "NoMe", $repassa );
     } else {

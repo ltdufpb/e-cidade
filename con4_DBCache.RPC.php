@@ -35,7 +35,7 @@ require_once(modification("libs/JSON.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("model/configuracao/DBFormCache.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oJson             = new services_json();
 $oParam            = $oJson->decode(str_replace("\\","",$_POST["json"]));

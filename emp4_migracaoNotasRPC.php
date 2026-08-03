@@ -71,7 +71,7 @@ if ($oParam->exec == "getDadosMigra") {
      $sMensagem = $e->getMessage();
      $iStatus   = 2;
    }
-  echo  $oJson->encode(array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)));
+  echo  $oJson->encode(["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)]);
 
 } else if ($oParam->exec == "gerarItensNota") {
  
@@ -90,6 +90,6 @@ if ($oParam->exec == "getDadosMigra") {
      $sMensagem = $e->getMessage();
      $iStatus   = 2;
    }
-  echo  $oJson->encode(array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)));
+  echo  $oJson->encode(["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)]);
 }
 ?>

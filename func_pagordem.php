@@ -33,8 +33,8 @@ require_once modification("dbforms/db_funcoes.php");
 require_once modification("classes/db_pagordem_classe.php");
 require_once modification("classes/db_empempenho_classe.php");
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clpagordem = new cl_pagordem;
 $clempempenho = new cl_empempenho;
@@ -102,7 +102,7 @@ $rotulo->label("e60_numemp");
                         <td class="bold">Data Final:</td>
                         <td>
                             <?php
-                            list($diaFinal, $mesFinal, $anoFinal) = explode('-', date('d-m-Y', db_getsession('DB_datausu')));
+                            [$diaFinal, $mesFinal, $anoFinal] = explode('-', date('d-m-Y', db_getsession('DB_datausu')));
                             db_inputdata('data_final', $diaFinal, $mesFinal, $anoFinal, true, 'text', 1);
                             ?>
                         </td>
@@ -185,7 +185,7 @@ $rotulo->label("e60_numemp");
                             } else {
                                 if (isset($chave_e60_codemp) && (trim($chave_e60_codemp) != "")) {
 
-                                    $arr = split("/", $chave_e60_codemp);
+                                    $arr = preg_split("#\\/#m", $chave_e60_codemp);
                                     if (count($arr) == 2 && isset($arr[1]) && $arr[1] != '') {
                                         $dbwhere_ano = " and e60_anousu = " . $arr[1];
                                     } else {

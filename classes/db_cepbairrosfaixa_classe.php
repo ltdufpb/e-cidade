@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE cepbairrosfaixa
 class cl_cepbairrosfaixa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cp02_codbairro = 0; 
-   var $cp02_faixa = 0; 
-   var $cp02_cepinicial = null; 
-   var $cp02_cepfinal = null; 
+   public $cp02_codbairro = 0; 
+   public $cp02_faixa = 0; 
+   public $cp02_cepinicial = null; 
+   public $cp02_cepfinal = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cp02_codbairro = int8 = Codigo do Bairro 
                  cp02_faixa = int4 = Faixa de Ceps por Bairros 
                  cp02_cepinicial = varchar(8) = Cep inicial 
                  cp02_cepfinal = varchar(8) = Cep final 
                  ";
    //funcao construtor da classe 
-   function cl_cepbairrosfaixa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cepbairrosfaixa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,7 +134,7 @@ class cl_cepbairrosfaixa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Bairros Faixa ($this->cp02_codbairro."-".$this->cp02_faixa) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Bairros Faixa já Cadastrado";
@@ -158,14 +158,14 @@ class cl_cepbairrosfaixa {
      $resaco = $this->sql_record($this->sql_query_file($this->cp02_codbairro,$this->cp02_faixa));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7177,'$this->cp02_codbairro','I')");
        $resac = db_query("insert into db_acountkey values($acount,7178,'$this->cp02_faixa','I')");
-       $resac = db_query("insert into db_acount values($acount,1193,7177,'','".AddSlashes(pg_result($resaco,0,'cp02_codbairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1193,7178,'','".AddSlashes(pg_result($resaco,0,'cp02_faixa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1193,7179,'','".AddSlashes(pg_result($resaco,0,'cp02_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1193,7180,'','".AddSlashes(pg_result($resaco,0,'cp02_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1193,7177,'','".AddSlashes(pg_fetch_result($resaco,0,'cp02_codbairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1193,7178,'','".AddSlashes(pg_fetch_result($resaco,0,'cp02_faixa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1193,7179,'','".AddSlashes(pg_fetch_result($resaco,0,'cp02_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1193,7180,'','".AddSlashes(pg_fetch_result($resaco,0,'cp02_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -174,10 +174,10 @@ class cl_cepbairrosfaixa {
       $this->atualizacampos();
      $sql = " update cepbairrosfaixa set ";
      $virgula = "";
-     if(trim($this->cp02_codbairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp02_codbairro"])){ 
+     if(trim((string) $this->cp02_codbairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp02_codbairro"])){ 
        $sql  .= $virgula." cp02_codbairro = $this->cp02_codbairro ";
        $virgula = ",";
-       if(trim($this->cp02_codbairro) == null ){ 
+       if(trim((string) $this->cp02_codbairro) == null ){ 
          $this->erro_sql = " Campo Codigo do Bairro nao Informado.";
          $this->erro_campo = "cp02_codbairro";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_cepbairrosfaixa {
          return false;
        }
      }
-     if(trim($this->cp02_faixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp02_faixa"])){ 
+     if(trim((string) $this->cp02_faixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp02_faixa"])){ 
        $sql  .= $virgula." cp02_faixa = $this->cp02_faixa ";
        $virgula = ",";
-       if(trim($this->cp02_faixa) == null ){ 
+       if(trim((string) $this->cp02_faixa) == null ){ 
          $this->erro_sql = " Campo Faixa de Ceps por Bairros nao Informado.";
          $this->erro_campo = "cp02_faixa";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_cepbairrosfaixa {
          return false;
        }
      }
-     if(trim($this->cp02_cepinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp02_cepinicial"])){ 
+     if(trim((string) $this->cp02_cepinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp02_cepinicial"])){ 
        $sql  .= $virgula." cp02_cepinicial = '$this->cp02_cepinicial' ";
        $virgula = ",";
-       if(trim($this->cp02_cepinicial) == null ){ 
+       if(trim((string) $this->cp02_cepinicial) == null ){ 
          $this->erro_sql = " Campo Cep inicial nao Informado.";
          $this->erro_campo = "cp02_cepinicial";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_cepbairrosfaixa {
          return false;
        }
      }
-     if(trim($this->cp02_cepfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp02_cepfinal"])){ 
+     if(trim((string) $this->cp02_cepfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp02_cepfinal"])){ 
        $sql  .= $virgula." cp02_cepfinal = '$this->cp02_cepfinal' ";
        $virgula = ",";
-       if(trim($this->cp02_cepfinal) == null ){ 
+       if(trim((string) $this->cp02_cepfinal) == null ){ 
          $this->erro_sql = " Campo Cep final nao Informado.";
          $this->erro_campo = "cp02_cepfinal";
          $this->erro_banco = "";
@@ -237,18 +237,18 @@ class cl_cepbairrosfaixa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7177,'$this->cp02_codbairro','A')");
          $resac = db_query("insert into db_acountkey values($acount,7178,'$this->cp02_faixa','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp02_codbairro"]))
-           $resac = db_query("insert into db_acount values($acount,1193,7177,'".AddSlashes(pg_result($resaco,$conresaco,'cp02_codbairro'))."','$this->cp02_codbairro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1193,7177,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp02_codbairro'))."','$this->cp02_codbairro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp02_faixa"]))
-           $resac = db_query("insert into db_acount values($acount,1193,7178,'".AddSlashes(pg_result($resaco,$conresaco,'cp02_faixa'))."','$this->cp02_faixa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1193,7178,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp02_faixa'))."','$this->cp02_faixa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp02_cepinicial"]))
-           $resac = db_query("insert into db_acount values($acount,1193,7179,'".AddSlashes(pg_result($resaco,$conresaco,'cp02_cepinicial'))."','$this->cp02_cepinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1193,7179,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp02_cepinicial'))."','$this->cp02_cepinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp02_cepfinal"]))
-           $resac = db_query("insert into db_acount values($acount,1193,7180,'".AddSlashes(pg_result($resaco,$conresaco,'cp02_cepfinal'))."','$this->cp02_cepfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1193,7180,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp02_cepfinal'))."','$this->cp02_cepfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -293,14 +293,14 @@ class cl_cepbairrosfaixa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7177,'$cp02_codbairro','E')");
          $resac = db_query("insert into db_acountkey values($acount,7178,'$cp02_faixa','E')");
-         $resac = db_query("insert into db_acount values($acount,1193,7177,'','".AddSlashes(pg_result($resaco,$iresaco,'cp02_codbairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1193,7178,'','".AddSlashes(pg_result($resaco,$iresaco,'cp02_faixa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1193,7179,'','".AddSlashes(pg_result($resaco,$iresaco,'cp02_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1193,7180,'','".AddSlashes(pg_result($resaco,$iresaco,'cp02_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1193,7177,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp02_codbairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1193,7178,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp02_faixa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1193,7179,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp02_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1193,7180,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp02_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cepbairrosfaixa
@@ -366,7 +366,7 @@ class cl_cepbairrosfaixa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cepbairrosfaixa";

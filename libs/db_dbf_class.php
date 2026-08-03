@@ -34,97 +34,94 @@
 class db_dbf_class {
 
   /**
-  * Nome do arquivo;
-  * @var string
-  */
-	var $sFileName;
-  
-  /**
   * Tipo de dados;
   * @var string
   */
-  var $sTipo;
+  public $sTipo;
   
   /**
   * Data atual;
   * @var date
   */
-  var $sData;
+  public $sData;
   
   /**
   * Componente do cabeçalho do arquivo: reserved filled with zeros.;
   * @var string
   */
-  var $sRerse;
+  public $sRerse;
   
   /**
   * Componente do cabeçalho do arquivo: reserved filled with zeros;
   * @var string
   */
-  var $sNume;
+  public $sNume;
   
   /**
   * Componente do cabeçalho do arquivo: numero de registros em binario;
   * @var string
   */
-  var $sNumb;
+  public $sNumb;
   
   /**
   * Componente do cabeçalho do arquivo: largura do cabeçalho em binario;
   * @var string
   */
-  var $sNumr;
+  public $sNumr;
   
   /**
   * Componente do registro do arquivo: Field name in ASCII;
   * @var string
   */
-  var $sFdna;
+  public $sFdna;
   
   /**
   * Componente do registro do arquivo: Field type in ASCII (B, C, D, N, L, M, @, I, +, F, 0 or G);
   * @var string
   */
-  var $sFdti;
+  public $sFdti;
   
   /**
   * Componente do registro do arquivo: Data adress;
   * @var string
   */
-  var $sAdre;
+  public $sAdre;
   
   /**
   * Componente do registro do arquivo: Field length in binary;
   * @var string
   */
-  var $sFdle;
+  public $sFdle;
   
   /**
   * Componente do registro do arquivo: largura do cabeçalho em binario;
   * @var string
   */
-  var $sResf;
+  public $sResf;
   
   /**
   * Componente do registro do arquivo: reserved;
   * @var array
   */
-  var $aCampos;
+  public $aCampos;
   
   /**
   * Componente do cabeçalho do arquivo: largura do cabeçalho em binario;
   * @var array
   */
-  var $aDados;
+  public $aDados;
    
 
   /**
    * Construtor da classe DBF
    * @param $ssFileName caminho e nome do arquivo DBF
+   * @param string $ssFileName
    */
-  function db_dbf_class($ssFileName) {
+  function __construct(/**
+   * Nome do arquivo;
+   */
+  public $sFileName) {
   
-    $this->sFileName = $ssFileName;
     $this->sTipo     = "";
     $this->sData     = "";
     $this->sRerse    = "";
@@ -136,8 +133,8 @@ class db_dbf_class {
     $this->sAdre     = '';
     $this->sFdle     = '';
     $this->sResf     = '';
-    $this->aCampos  = array();
-    $this->aDados   = array();
+    $this->aCampos  = [];
+    $this->aDados   = [];
     
   }
   /**
@@ -183,7 +180,7 @@ class db_dbf_class {
     for ($iX = 0; $iX < $iTam; $iX++) {
     
       //11 bytes  Field name in ASCII
-      $this->sFdna  = str_pad($this->aCampos[$iX]["nome"],11,$this->bin2bstr("0"),STR_PAD_RIGHT); 
+      $this->sFdna  = str_pad((string) $this->aCampos[$iX]["nome"],11,$this->bin2bstr("0"),STR_PAD_RIGHT); 
       //1  byte 	  Field type in ASCII (B, C, D, N, L, M, @, I, +, F, 0 or G).
       $this->sFdti  = $this->aCampos[$iX]["tipo"];
       //2  bytes   Data adress.
@@ -212,12 +209,12 @@ class db_dbf_class {
       for ($iY = 0; $iY < $iTam2; $iY++) {
       	
         if ($this->aCampos[$iY]['tipo'] == 'C' || $this->aCampos[$iY]['tipo'] == 'c') {
-          $sTrDados .= str_pad($this->aDados[$iX][$iY],$this->aCampos[$iY]['largura'],' ',STR_PAD_RIGHT);
+          $sTrDados .= str_pad((string) $this->aDados[$iX][$iY],$this->aCampos[$iY]['largura'],' ',STR_PAD_RIGHT);
         } elseif ($this->aCampos[$iY]['tipo'] == 'N' || $this->aCampos[$iY]['tipo'] == 'n')  {
-          $sTrDados .= str_pad($this->aDados[$iX][$iY],$this->aCampos[$iY]['largura'],' ',STR_PAD_LEFT);
+          $sTrDados .= str_pad((string) $this->aDados[$iX][$iY],$this->aCampos[$iY]['largura'],' ',STR_PAD_LEFT);
         } if ($this->aCampos[$iY]['tipo'] == 'D' || $this->aCampos[$iY]['tipo'] == 'd') {
         	
-          $aDado    = explode("-",$this->aDados[$iX][$iY]);
+          $aDado    = explode("-",(string) $this->aDados[$iX][$iY]);
           $sTrDados .= $aDado[0].str_pad($aDado[1],2,0,STR_PAD_LEFT).str_pad($aDado[2],2,0,STR_PAD_LEFT);
           
         }

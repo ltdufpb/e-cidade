@@ -3,68 +3,68 @@
  * Template Aviso Previo
  * Layout Registros do evento S-2250 - Aviso Previo
  */
-return array(
-    'ideVinculo' => array(
+return [
+    'ideVinculo' => [
         'required' => true,
-        'properties' => array(
-            'cpfTrab' => array(
+        'properties' => [
+            'cpfTrab' => [
                 'required' => true,
                 'type' => 'string',
-            ),
-            'nisTrab' => array(
+            ],
+            'nisTrab' => [
                 'required' => true,
                 'type' => 'string',
-            ),
-            'matricula' => array(
+            ],
+            'matricula' => [
                 'required' => true,
                 'type' =>'string',
-            ),
-        )
-    ),
-    'infoAvPrevio' => array(
-        'groups' => array(
-            'detAvPrevio' => array(
+            ],
+        ]
+    ],
+    'infoAvPrevio' => [
+        'groups' => [
+            'detAvPrevio' => [
                 'label' => 'Detalha as informações do evento trabalhista',
-                'properties' => array(
-                    'dtAvPrv' => array(
+                'properties' => [
+                    'dtAvPrv' => [
                         'required' => true,
                         'type' => 'string',
                         'label' => 'Data em que o trabalhador ou o empregador recebeu o aviso de desligamento',
-                    ),
-                    'dtPrevDeslig' => array(
+                    ],
+                    'dtPrevDeslig' => [
                         'required' => true,
                         'label' => 'Data prevista para o desligamento do trabalhador',
                         'type' => 'string'
-                    ),
-                    'tpAvPrevio' => array(
+                    ],
+                    'tpAvPrevio' => [
                         'required' => true,
                         'label' => 'Tipo de Aviso Prévio',
                         'type' => 'int'
-                    ),
-                    'detAvPrevio_observacao' => array(
+                    ],
+                    'detAvPrevio_observacao' => [
                         'nome_api' => 'observacao',
                         'required' => false,
                         'type' => 'string',
-                    )
-                )
-            ),
-            'cancAvPrevio' => array(
-                'properties' => array(
-                    'dtCancAvPrv' => array(
+                    ]
+                ]
+            ],
+            'cancAvPrevio' => [
+                'properties' => [
+                    'dtCancAvPrv' => [
                         'required' => true,
                         'type' => 'string',
-                    ),
-                    'cancAvPrevio_observacao' => array(
+                    ],
+                    'cancAvPrevio_observacao' => [
                         'nome_api' => 'observacao',
                         'required' => false,
                         'type' => 'string',
-                    ),
-                    'mtvCancAvPrevio' => array(
+                    ],
+                    'mtvCancAvPrevio' => [
                         'required' => true,
                         'type' => 'int',
-                    )
-                )
-            )
-        )
-    )
-);
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

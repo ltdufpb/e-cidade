@@ -37,9 +37,9 @@ include(modification("classes/db_orcppa_classe.php"));
 include(modification("classes/db_orcelemento_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clorcppaval     = new cl_orcppaval;
 $clorcppavalele  = new cl_orcppavalele;
@@ -56,19 +56,19 @@ if(isset($incluir)){
   if($sqlerro==false){
     db_inicio_transacao();
 
-    $vt=$HTTP_POST_VARS;
+    $vt=$_POST;
     $ta=sizeof($vt);
     reset($vt);
     $primproces = true;
     for($i=0; $i<$ta; $i++){
       $chave=key($vt);
-      if(substr($chave,0,9)=="o24_valor" && current($vt) != ''){
+      if(str_starts_with((string) $chave, "o24_valor") && current($vt) != ''){
 
 	if(empty($proces)){
 	  $proces = '0';
 	}
 	
-        $ano   =  substr($chave,10);
+        $ano   =  substr((string) $chave,10);
 	$valor = current($vt);
 	$quant = $vt["o24_quantmed_$ano"];
 	$ele   = $vt["o56_elemento_$ano"];
@@ -116,7 +116,7 @@ if(isset($incluir)){
 
         //rotina de inclusao no orcppvalele
         if($sqlerro == false && $ele != '' && $ele != 0){
-	  $codele = substr($ele,0,7)."000000";
+	  $codele = substr((string) $ele,0,7)."000000";
   	  $result = $clorcelemento->sql_record($clorcelemento->sql_query_file(null,null,'o56_codele','o56_elemento',"o56_anousu = ".db_getsession("DB_anousu")." and  o56_elemento = '$codele' "));
           if($clorcelemento->numrows > 0 ){
 	    db_fieldsmemory($result,0);
@@ -143,15 +143,15 @@ if(isset($incluir)){
   if($sqlerro==false){
     db_inicio_transacao();
 
-    $vt=$HTTP_POST_VARS;
+    $vt=$_POST;
     $ta=sizeof($vt);
     reset($vt);
     $primproces = true;
     for($i=0; $i<$ta; $i++){
       $chave=key($vt);
-      if(substr($chave,0,9)=="o24_valor"){
+      if(str_starts_with((string) $chave, "o24_valor")){
         
-	$ano   =  substr($chave,10);
+	$ano   =  substr((string) $chave,10);
 	$valor = current($vt);
 	$quant = $vt["o24_quantmed_$ano"];
 	$ele   = $vt["o56_elemento_$ano"];
@@ -190,7 +190,7 @@ if(isset($incluir)){
 	  }  
 	  //final
 	  //-------------------------------------------------
-	  
+
 
 	  //rotina exclusão orcppatiporec------------------------------------------------
 	  if($sqlerro == false && isset($codseqppa) && $codseqppa != ''){
@@ -207,7 +207,7 @@ if(isset($incluir)){
 	  }
           //final
 	  //-----------------------------------------------------------------------------------
-	  
+
 	  //rotina de inclusão no orcppatiporec------------------------------------------------
 	  if($sqlerro == false ){
 	    $clorcppatiporec->o26_codseqppa = $codseqppa;
@@ -241,7 +241,7 @@ if(isset($incluir)){
 
 	  //rotina de inclusao no orcppvalele------------------------------------------------------------------------
 	  if($sqlerro == false && $ele != '' && $ele != 0){
-	    $codele = substr($ele,0,7)."000000";
+	    $codele = substr((string) $ele,0,7)."000000";
 	    $result = $clorcelemento->sql_record($clorcelemento->sql_query_file(null,null,'o56_codele','o56_elemento'," o56_anousu = ".db_getsession("DB_anousu")." and  o56_elemento = '$codele' "));
 	    if($clorcelemento->numrows > 0 ){
 	      db_fieldsmemory($result,0);
@@ -321,15 +321,15 @@ if(isset($incluir)){
   if($sqlerro==false){
     db_inicio_transacao();
 
-    $vt=$HTTP_POST_VARS;
+    $vt=$_POST;
     $ta=sizeof($vt);
     reset($vt);
     $primproces = true;
     for($i=0; $i<$ta; $i++){
       $chave=key($vt);
-      if(substr($chave,0,9)=="o24_valor"){
+      if(str_starts_with((string) $chave, "o24_valor")){
         
-	$ano   =  substr($chave,10);
+	$ano   =  substr((string) $chave,10);
 	$valor = current($vt);
 	$quant = $vt["o24_quantmed_$ano"];
 	$ele   = $vt["o56_elemento_$ano"];

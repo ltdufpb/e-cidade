@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadenderruaruas_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcadenderruaruas = new cl_cadenderruaruas;
 $clcadenderruaruas->rotulo->label("db88_sequencial");
 $clcadenderruaruas->rotulo->label("db88_cadenderrua");
@@ -98,9 +98,9 @@ $clcadenderruaruas->rotulo->label("db88_cadenderrua");
         }else{
            $sql = $clcadenderruaruas->sql_query("",$campos,"db88_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db88_cadenderrua)){
-          $repassa = array("chave_db88_sequencial"=>$chave_db88_sequencial,"chave_db88_cadenderrua"=>$chave_db88_cadenderrua);
+          $repassa = ["chave_db88_sequencial"=>$chave_db88_sequencial,"chave_db88_cadenderrua"=>$chave_db88_cadenderrua];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

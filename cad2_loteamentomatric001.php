@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('j34_loteam');
 $clrotulo->label('j34_descr');
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $db_botao = true;
 ?>
@@ -97,7 +97,7 @@ function js_emite(){
 								</td>
 								<td align="left">&nbsp;&nbsp;&nbsp;
 									<?php 
-										$xx = array("s"=>"Sim","n"=>"Não");
+										$xx = ["s"=>"Sim","n"=>"Não"];
 										db_select('selEmiteValor',$xx,true,4,"style ='width:92px;'");
 									?>
 								</td>
@@ -108,7 +108,7 @@ function js_emite(){
 								</td>
 								<td align="left">&nbsp;&nbsp;&nbsp;
 									<?php 
-										$xx = array("a"=>"Alfabética","n"=>"Numérica");
+										$xx = ["a"=>"Alfabética","n"=>"Numérica"];
 										db_select('ordem',$xx,true,4,"");
 									?>
 								</td>

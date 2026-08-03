@@ -30,15 +30,15 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   $result = db_query("select max(codigo) + 1 from favoritos");
-  $codigo = pg_result($result,0,0);
+  $codigo = pg_fetch_result($result,0,0);
   $codigo = $codigo==""?"1":$codigo;
   db_query("insert into favoritos values($codigo,".db_getsession("DB_id_usuario").",'$descr')") or die("Erro(12) inserindo em favoritos");
 }
-if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("delete from favoritos where codigo = ".$HTTP_POST_VARS["favoritos"]) or die("Erro(15) deletando tabela favoritos");
+if(isset($_POST["excluir"])) {
+  db_query("delete from favoritos where codigo = ".$_POST["favoritos"]) or die("Erro(15) deletando tabela favoritos");
 }
 ?>
 <html>
@@ -99,10 +99,10 @@ function js_excluir() {
       <td align="left" valign="top"><strong>Favoritos:</strong><br> <select onDblClick="js_inserir(this.options[this.selectedIndex].text)" style="width:136px;font-size:9px;" name="favoritos" size="10" id="select">
           <?php 			 
 			  $result = db_query("select codigo,descr from favoritos where codmed = ".db_getsession("DB_id_usuario")." order by upper(descr)");
-			  $numrows = pg_numrows($result);
+			  $numrows = pg_num_rows($result);
 			  for($i = 0;$i < $numrows;$i++) {
 			    db_fieldsmemory($result,$i);
-			    echo "<option value=\"".$codigo."\">".trim($descr)."</option>\n";
+			    echo "<option value=\"".$codigo."\">".trim((string) $descr)."</option>\n";
 			  }
 		  ?>
         </select></td>

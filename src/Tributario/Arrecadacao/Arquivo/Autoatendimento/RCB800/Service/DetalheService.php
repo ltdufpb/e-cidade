@@ -28,41 +28,13 @@ use \cl_arquivoautoatendimentoregistrosmatricula;
 
 final class DetalheService extends Service
 {
-    const TIPO_ATUALIZACAO_INCLUSAO  = 1;
-    const TIPO_ATUALIZACAO_ALTERACAO = 2;
-    const TIPO_ATUALIZACAO_EXCLUSAO  = 3;
-
-    private $dataBase;
+    const int TIPO_ATUALIZACAO_INCLUSAO  = 1;
+    const int TIPO_ATUALIZACAO_ALTERACAO = 2;
+    const int TIPO_ATUALIZACAO_EXCLUSAO  = 3;
     private $codigoArquivoautoatendimento;
-    private $session;
-    private $reciboCotaUnicaService;
-    private $reciboCarneService;
-    private $reciboService;
-    private $instituicaoRepository;
-    private $contribuinteRepository;
-    private $tipoDebitoRepository;
-    private $detalheRepository;
 
-    public function __construct(
-        DataBase $dataBase,
-        Session $session,
-        ReciboCotaUnicaService $reciboCotaUnicaService,
-        ReciboCarneService $reciboCarneService,
-        ReciboService $reciboService,
-        InstituicaoRepository $instituicaoRepository,
-        ContribuinteRepository $contribuinteRepository,
-        TipoDebitoRepository $tipoDebitoRepository,
-        DetalheRepository $detalheRepository
-    ) {
-        $this->dataBase = $dataBase;
-        $this->session = $session;
-        $this->reciboCotaUnicaService = $reciboCotaUnicaService;
-        $this->reciboCarneService = $reciboCarneService;
-        $this->reciboService = $reciboService;
-        $this->instituicaoRepository = $instituicaoRepository;
-        $this->contribuinteRepository = $contribuinteRepository;
-        $this->tipoDebitoRepository   = $tipoDebitoRepository;
-        $this->detalheRepository      = $detalheRepository;
+    public function __construct(private readonly DataBase $dataBase, private readonly Session $session, private readonly ReciboCotaUnicaService $reciboCotaUnicaService, private readonly ReciboCarneService $reciboCarneService, private readonly ReciboService $reciboService, private readonly InstituicaoRepository $instituicaoRepository, private readonly ContribuinteRepository $contribuinteRepository, private readonly TipoDebitoRepository $tipoDebitoRepository, private readonly DetalheRepository $detalheRepository)
+    {
     }
 
     public function execute(Debito $debito, $sequencial, $tipoDebito, $datalista, $datavigfinal)
@@ -77,7 +49,7 @@ final class DetalheService extends Service
         $contribuinte     = $this->contribuinteRepository->findByDebito($debito);
         $tipoDebito       = $this->tipoDebitoRepository->findByDebito($debito);
 
-        $retorno = array();
+        $retorno = [];
         $recibos = array_merge($recibos, $recibosParcelas->getAll());
 
         foreach ($recibos as $reciboParcela) {
@@ -103,13 +75,13 @@ final class DetalheService extends Service
 
     public function incluirDetalhe($detalhe)
     {
-        $daoArquivoautoatendimentoregistros = $this->detalheRepository->persist((object)array(
+        $daoArquivoautoatendimentoregistros = $this->detalheRepository->persist((object)[
             'k183_codigo'          => null,
             'k183_autoatendimento' => $this->codigoArquivoautoatendimento,
             'k183_tipodebito'      => $detalhe->getTipoDebito(),
             'k183_situacao'        => null,
             'k183_numnov'          => $detalhe->getRecibo()->getNumpre()
-        ));
+        ]);
 
         $this->persistContribuinte($daoArquivoautoatendimentoregistros, $detalhe);
 

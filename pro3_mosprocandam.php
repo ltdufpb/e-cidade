@@ -34,8 +34,8 @@ include(modification("classes/db_proctransfer_classe.php"));
 include(modification("classes/db_protprocesso_classe.php"));
 include(modification("classes/db_proctransand_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -117,7 +117,7 @@ function js_imprime(){
 				inner join db_usuarios on p58_id_usuario = id_usuario
 				where p58_codproc = $p61_codproc";
 		  $resrequer = db_query($sqlrequer);
-                  if(pg_numrows($resrequer) > 0){
+                  if(pg_num_rows($resrequer) > 0){
 		    db_fieldsmemory($resrequer,0);
 		    echo "<tr>
 			    <td nowrap><b>PROCESSO: </b></td>
@@ -169,7 +169,7 @@ function js_imprime(){
 				 where p63_codproc = $codproc and p63_codtran not in(select p64_codtran
 				                                       from   proctransand order by p64_codtran)";
 		  $res = db_query($sql);
-		  if(pg_numrows($res) > 0){
+		  if(pg_num_rows($res) > 0){
 		    db_fieldsmemory($res,0);
 		    //$situacao = "<b>EM TRANSFERÊNCIA PARA $deptovai - CODTRANS: $p63_codtran</b>";
 		    $situacao = "<b>EM TRANSFERÊNCIA </b>";
@@ -182,7 +182,7 @@ function js_imprime(){
 			  inner join db_depart on p67_coddepto = coddepto 
 			  where p67_codproc = $p61_codproc";
 		  $res = db_query($sql);
-		  if(pg_numrows($res) > 0){
+		  if(pg_num_rows($res) > 0){
 		    db_fieldsmemory($res,0);
 		    $situacao = "<b>ARQUIVADO</b>";
 		    $arquiv = true;
@@ -220,7 +220,7 @@ function js_imprime(){
 	  
                 echo "<tr>
 		        <td cgcolor='#CCCCCC' colspan='6'><b>DESPACHO: </b>
-                          ".nl2br($p58_despacho)."
+                          ".nl2br((string) $p58_despacho)."
                         </td>
 		      </tr>";
 	  $sql = "select r.k00_numpre as recibo,
@@ -232,7 +232,7 @@ function js_imprime(){
 			 left join arrepaga rp on rp.k00_numpre = k80_numpre 
 		  where k80_codproc = $codproc group by r.k00_numpre, rp.k00_numpre,rp.k00_dtpaga,r.k00_dtvenc,r.k00_dtoper";
 	  $res = db_query($sql);
-	  if(pg_numrows($res) > 0){
+	  if(pg_num_rows($res) > 0){
 	    echo "
 	     <tr>
 	       <td colspan='7' align='center'><br><b>RECIBO(S)</b></td>

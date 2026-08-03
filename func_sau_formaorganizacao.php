@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_formaorganizacao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoSauFormaOrganizacao = new cl_sau_formaorganizacao;
 $oDaoSauFormaOrganizacao->rotulo->label("sd62_i_codigo");
@@ -169,9 +169,9 @@ $oDaoSauFormaOrganizacao->rotulo->label("sd62_c_formaorganizacao");
 
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_sd62_c_nome)) {
-          $repassa = array("chave_sd62_i_codigo"=>$chave_sd62_i_codigo,"chave_sd62_c_nome"=>$chave_sd62_c_nome);
+          $repassa = ["chave_sd62_i_codigo"=>$chave_sd62_i_codigo,"chave_sd62_c_nome"=>$chave_sd62_c_nome];
         }
         db_lovrot($sSql,15,"()","",$funcao_js,"","NoMe",$repassa);
 

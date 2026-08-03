@@ -3,31 +3,31 @@
 //CLASSE DA ENTIDADE idioma
 class cl_idioma { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $bi22_sequencial = 0; 
-   var $bi22_idioma = null; 
+   public $bi22_sequencial = 0; 
+   public $bi22_idioma = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  bi22_sequencial = int4 = Código 
                  bi22_idioma = varchar(50) = Idioma 
                  ";
    //funcao construtor da classe 
-   function cl_idioma() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("idioma"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -69,10 +69,10 @@ class cl_idioma {
          $this->erro_status = "0";
          return false; 
        }
-       $this->bi22_sequencial = pg_result($result,0,0); 
+       $this->bi22_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from idioma_bi22_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $bi22_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $bi22_sequencial)){
          $this->erro_sql = " Campo bi22_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -102,7 +102,7 @@ class cl_idioma {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Idioma ($this->bi22_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Idioma já Cadastrado";
@@ -131,11 +131,11 @@ class cl_idioma {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21925,'$this->bi22_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3948,21925,'','".AddSlashes(pg_result($resaco,0,'bi22_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3948,21926,'','".AddSlashes(pg_result($resaco,0,'bi22_idioma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3948,21925,'','".AddSlashes(pg_fetch_result($resaco,0,'bi22_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3948,21926,'','".AddSlashes(pg_fetch_result($resaco,0,'bi22_idioma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -145,10 +145,10 @@ class cl_idioma {
       $this->atualizacampos();
      $sql = " update idioma set ";
      $virgula = "";
-     if(trim($this->bi22_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi22_sequencial"])){ 
+     if(trim((string) $this->bi22_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi22_sequencial"])){ 
        $sql  .= $virgula." bi22_sequencial = $this->bi22_sequencial ";
        $virgula = ",";
-       if(trim($this->bi22_sequencial) == null ){ 
+       if(trim((string) $this->bi22_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "bi22_sequencial";
          $this->erro_banco = "";
@@ -158,10 +158,10 @@ class cl_idioma {
          return false;
        }
      }
-     if(trim($this->bi22_idioma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi22_idioma"])){ 
+     if(trim((string) $this->bi22_idioma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi22_idioma"])){ 
        $sql  .= $virgula." bi22_idioma = '$this->bi22_idioma' ";
        $virgula = ",";
-       if(trim($this->bi22_idioma) == null ){ 
+       if(trim((string) $this->bi22_idioma) == null ){ 
          $this->erro_sql = " Campo Idioma não informado.";
          $this->erro_campo = "bi22_idioma";
          $this->erro_banco = "";
@@ -185,13 +185,13 @@ class cl_idioma {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21925,'$this->bi22_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi22_sequencial"]) || $this->bi22_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3948,21925,'".AddSlashes(pg_result($resaco,$conresaco,'bi22_sequencial'))."','$this->bi22_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3948,21925,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi22_sequencial'))."','$this->bi22_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi22_idioma"]) || $this->bi22_idioma != "")
-             $resac = db_query("insert into db_acount values($acount,3948,21926,'".AddSlashes(pg_result($resaco,$conresaco,'bi22_idioma'))."','$this->bi22_idioma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3948,21926,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi22_idioma'))."','$this->bi22_idioma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -245,11 +245,11 @@ class cl_idioma {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21925,'$bi22_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3948,21925,'','".AddSlashes(pg_result($resaco,$iresaco,'bi22_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3948,21926,'','".AddSlashes(pg_result($resaco,$iresaco,'bi22_idioma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3948,21925,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi22_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3948,21926,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi22_idioma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

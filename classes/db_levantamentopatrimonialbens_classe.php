@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE levantamentopatrimonialbens
 class cl_levantamentopatrimonialbens { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p14_sequencial = 0; 
-   var $p14_levantamentopatrimonial = 0; 
-   var $p14_placa = null; 
+   public $p14_sequencial = 0; 
+   public $p14_levantamentopatrimonial = 0; 
+   public $p14_placa = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p14_sequencial = int4 = Código 
                  p14_levantamentopatrimonial = int4 = Levantamento Patrimonial 
                  p14_placa = varchar(50) = Placa 
                  ";
    //funcao construtor da classe 
-   function cl_levantamentopatrimonialbens() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levantamentopatrimonialbens"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_levantamentopatrimonialbens {
          $this->erro_status = "0";
          return false; 
        }
-       $this->p14_sequencial = pg_result($result,0,0); 
+       $this->p14_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from levantamentopatrimonialbens_p14_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p14_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p14_sequencial)){
          $this->erro_sql = " Campo p14_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_levantamentopatrimonialbens {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Levantamento Patrimonial Bens ($this->p14_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Levantamento Patrimonial Bens já Cadastrado";
@@ -145,12 +145,12 @@ class cl_levantamentopatrimonialbens {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21511,'$this->p14_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3864,21511,'','".AddSlashes(pg_result($resaco,0,'p14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3864,21512,'','".AddSlashes(pg_result($resaco,0,'p14_levantamentopatrimonial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3864,21513,'','".AddSlashes(pg_result($resaco,0,'p14_placa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3864,21511,'','".AddSlashes(pg_fetch_result($resaco,0,'p14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3864,21512,'','".AddSlashes(pg_fetch_result($resaco,0,'p14_levantamentopatrimonial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3864,21513,'','".AddSlashes(pg_fetch_result($resaco,0,'p14_placa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_levantamentopatrimonialbens {
       $this->atualizacampos();
      $sql = " update levantamentopatrimonialbens set ";
      $virgula = "";
-     if(trim($this->p14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p14_sequencial"])){ 
+     if(trim((string) $this->p14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p14_sequencial"])){ 
        $sql  .= $virgula." p14_sequencial = $this->p14_sequencial ";
        $virgula = ",";
-       if(trim($this->p14_sequencial) == null ){ 
+       if(trim((string) $this->p14_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "p14_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_levantamentopatrimonialbens {
          return false;
        }
      }
-     if(trim($this->p14_levantamentopatrimonial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p14_levantamentopatrimonial"])){ 
+     if(trim((string) $this->p14_levantamentopatrimonial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p14_levantamentopatrimonial"])){ 
        $sql  .= $virgula." p14_levantamentopatrimonial = $this->p14_levantamentopatrimonial ";
        $virgula = ",";
-       if(trim($this->p14_levantamentopatrimonial) == null ){ 
+       if(trim((string) $this->p14_levantamentopatrimonial) == null ){ 
          $this->erro_sql = " Campo Levantamento Patrimonial não informado.";
          $this->erro_campo = "p14_levantamentopatrimonial";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_levantamentopatrimonialbens {
          return false;
        }
      }
-     if(trim($this->p14_placa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p14_placa"])){ 
+     if(trim((string) $this->p14_placa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p14_placa"])){ 
        $sql  .= $virgula." p14_placa = '$this->p14_placa' ";
        $virgula = ",";
-       if(trim($this->p14_placa) == null ){ 
+       if(trim((string) $this->p14_placa) == null ){ 
          $this->erro_sql = " Campo Placa não informado.";
          $this->erro_campo = "p14_placa";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_levantamentopatrimonialbens {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21511,'$this->p14_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p14_sequencial"]) || $this->p14_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3864,21511,'".AddSlashes(pg_result($resaco,$conresaco,'p14_sequencial'))."','$this->p14_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3864,21511,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p14_sequencial'))."','$this->p14_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p14_levantamentopatrimonial"]) || $this->p14_levantamentopatrimonial != "")
-             $resac = db_query("insert into db_acount values($acount,3864,21512,'".AddSlashes(pg_result($resaco,$conresaco,'p14_levantamentopatrimonial'))."','$this->p14_levantamentopatrimonial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3864,21512,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p14_levantamentopatrimonial'))."','$this->p14_levantamentopatrimonial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p14_placa"]) || $this->p14_placa != "")
-             $resac = db_query("insert into db_acount values($acount,3864,21513,'".AddSlashes(pg_result($resaco,$conresaco,'p14_placa'))."','$this->p14_placa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3864,21513,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p14_placa'))."','$this->p14_placa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_levantamentopatrimonialbens {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21511,'$p14_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3864,21511,'','".AddSlashes(pg_result($resaco,$iresaco,'p14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3864,21512,'','".AddSlashes(pg_result($resaco,$iresaco,'p14_levantamentopatrimonial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3864,21513,'','".AddSlashes(pg_result($resaco,$iresaco,'p14_placa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3864,21511,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3864,21512,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p14_levantamentopatrimonial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3864,21513,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p14_placa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

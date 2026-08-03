@@ -1,135 +1,135 @@
 <?php
-return array(
-    'ideVinculo' => array(
+return [
+    'ideVinculo' => [
         'required' => true,
-        'properties' => array(
-            'cpfTrab' => array(
+        'properties' => [
+            'cpfTrab' => [
                 'required' => true,
                 'label' => 'Código pessoa física do trabalhador',
                 'type' => 'string',
-            ),
-            'matricula' => array(
+            ],
+            'matricula' => [
                 'required' => false,
                 'label' => 'Matrícula atribuída ao trabalhador',
                 'type' => 'string',
-            ),
-            'codCateg' => array(
+            ],
+            'codCateg' => [
                 'required' => false,
                 'label' => 'Categoria do trabalhador',
                 'type' => 'int'
-            ),
-        )
-    ),
-    'exMedOcup' => array(
+            ],
+        ]
+    ],
+    'exMedOcup' => [
         'required' => true,
         'label' => 'Informações do exame médico ocupacional.',
-        'properties' => array(
-            'tpExameOcup' => array(
+        'properties' => [
+            'tpExameOcup' => [
                 'required' => true,
                 'label' => 'Tipo do exame médico ocupacional.',
                 'type' => 'int',
-            )
-        ),
-        'groups' => array(
-            'aso' => array(
+            ]
+        ],
+        'groups' => [
+            'aso' => [
                 'required' => true,
                 'label' => 'Detalhamento das informações do Atestado de Saúde Ocupacional - ASO.',
-                'properties' => array(
-                    'dtAso' => array(
+                'properties' => [
+                    'dtAso' => [
                         'required' => true,
                         'label' => 'Data de emissão do ASO.',
                         'type' => 'string'
-                    ),
-                    'resAso' => array(
+                    ],
+                    'resAso' => [
                         'required' => false,
                         'label' => 'Resultado do ASO.',
                         'type' => 'int'
-                    )
-                ),
-                'groups' => array(
-                    'exame' => array(
+                    ]
+                ],
+                'groups' => [
+                    'exame' => [
                         'required' => true,
                         'label' => 'Grupo que detalha as avaliações clínicas e os exames complementares porventura 
                             realizados pelo trabalhador. ',
-                        'properties' => array(
-                            'dtExm' => array(
+                        'properties' => [
+                            'dtExm' => [
                                 'required' => true,
                                 'label' => 'Data do exame realizado.',
                                 'type' => 'string'
-                            ),
-                            'procRealizado' => array(
+                            ],
+                            'procRealizado' => [
                                 'required' => true,
                                 'label' => 'Código do procedimento diagnóstico.',
                                 'type' => 'int'
-                            ),
-                            'obsProc' => array(
+                            ],
+                            'obsProc' => [
                                 'required' => false,
                                 'label' => 'Observação sobre o procedimento diagnóstico realizado.',
                                 'type' => 'string'
-                            ),
-                            'ordExame' => array(
+                            ],
+                            'ordExame' => [
                                 'required' => false,
                                 'label' => 'Ordem do exame.',
                                 'type' => 'int'
-                            ),
-                            'indResult' => array(
+                            ],
+                            'indResult' => [
                                 'required' => false,
                                 'label' => 'Indicação dos resultados.',
                                 'type' => 'int'
-                            )
-                        )
-                    ),
-                    'medico' => array(
+                            ]
+                        ]
+                    ],
+                    'medico' => [
                         'required' => true,
                         'label' => 'Informações sobre o médico emitente do ASO.',
-                        'properties' => array(
-                            'nmMed' => array(
+                        'properties' => [
+                            'nmMed' => [
                                 'required' => true,
                                 'label' => 'Preencher com o nome do médico emitente do ASO.',
                                 'type' => 'string'
-                            ),
-                            'nrCRM' => array(
+                            ],
+                            'nrCRM' => [
                                 'required' => true,
                                 'label' => 'Número de inscrição do médico emitente do ASO no Conselho Regional de 
                                     Medicina - CRM.',
                                 'type' => 'string'
-                            ),
-                            'ufCRM' => array(
+                            ],
+                            'ufCRM' => [
                                 'required' => true,
                                 'label' => 'Preencher com a sigla da Unidade da Federação - UF de expedição do CRM.',
                                 'type' => 'string'
-                            )
-                        )
-                    )
-                )
-            ),
-            'respMonit' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'respMonit' => [
                 'required' => false,
                 'label' => 'Informações sobre o médico responsável/coordenador do PCMSO.',
-                'properties' => array(
-                    'cpfResp' => array(
+                'properties' => [
+                    'cpfResp' => [
                         'required' => false,
                         'label' => 'Preencher com o CPF do médico responsável/coordenador do PCMSO.',
                         'type' => 'string'
-                    ),
-                    'nmResp' => array(
+                    ],
+                    'nmResp' => [
                         'required' => true,
                         'label' => 'Preencher com o nome do médico responsável/coordenador do PCMSO.',
                         'type' => 'string'
-                    ),
-                    'nrCRM' => array(
+                    ],
+                    'nrCRM' => [
                         'required' => true,
                         'label' => 'Número de inscrição do médico responsável/coordenador do PCMSO no CRM.',
                         'type' => 'string'
-                    ),
-                    'ufCRM' => array(
+                    ],
+                    'ufCRM' => [
                         'required' => true,
                         'label' => 'Preencher com a sigla da UF de expedição do CRM..',
                         'type' => 'string'
-                    )
+                    ]
 
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];

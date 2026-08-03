@@ -107,7 +107,7 @@ aproveitei para colocar a barra de progresso no teu prog
     $resultvenc = db_query($sqlvenc) or die($sqlvenc);
     db_fieldsmemory($resultvenc, 0);
     
-    $DB_DATACALC = mktime(0,0,0,substr($db_datausu,5,2),substr($db_datausu,8,2),substr($db_datausu,0,4));
+    $DB_DATACALC = mktime(0,0,0,substr((string) $db_datausu,5,2),substr((string) $db_datausu,8,2),substr((string) $db_datausu,0,4));
     
     $sqltipo = "select q92_tipo, k00_descr 
     from cfiptu 
@@ -247,8 +247,8 @@ aproveitei para colocar a barra de progresso no teu prog
 		
 		$denominacaoexercicio = $anos;
 		$exercicio		  	  = $anos;
-		$totalopcoespagamento = pg_numrows($resultparc);
-		$parcelamentoreceb	  = pg_numrows($resultparc);
+		$totalopcoespagamento = pg_num_rows($resultparc);
+		$parcelamentoreceb	  = pg_num_rows($resultparc);
 		$valorminimo		  = 0;
 		$juros				  = 0;
 		$quantidadedatas	  = 0;
@@ -347,7 +347,7 @@ aproveitei para colocar a barra de progresso no teu prog
 
     
     $processados = 1;
-    $numrowslistadeb = pg_numrows($resultlistadeb);
+    $numrowslistadeb = pg_num_rows($resultlistadeb);
     for ($x=0; $x < $numrowslistadeb; $x++) {
     	
       db_fieldsmemory($resultlistadeb, $x);
@@ -356,7 +356,7 @@ aproveitei para colocar a barra de progresso no teu prog
       $sqlfin    = "select * from iptunump where j20_anousu = $anousu and j20_matric = $j23_matric";
       $resultfin = db_query($sqlfin) or die($sqlfin);
 
-  	  if (pg_numrows($resultfin) == 0) {
+  	  if (pg_num_rows($resultfin) == 0) {
 		continue;
 	  }
       db_fieldsmemory($resultfin, 0);
@@ -364,7 +364,7 @@ aproveitei para colocar a barra de progresso no teu prog
 	  $sql			  = "select * from arrecad where k00_numpre = $j20_numpre";
 	  $resulttipoparc = db_query($sql) or die($sql);
 	  
-	  if (pg_numrows($resulttipoparc) == 0){
+	  if (pg_num_rows($resulttipoparc) == 0){
 		continue;
 	  }
       
@@ -381,8 +381,8 @@ aproveitei para colocar a barra de progresso no teu prog
       $identificacaoguia    = $processados;
       $emissaoguia		    = date("Y-m-d",db_getsession("DB_datausu"));
       $validadeguia		   	= $maxvenc;
-      $totalopcoespag		= pg_numrows($resulttipoparc);
-      $parcelasrecebimento	=	pg_numrows($resulttipoparc);
+      $totalopcoespag		= pg_num_rows($resulttipoparc);
+      $parcelasrecebimento	=	pg_num_rows($resulttipoparc);
       $valortotalreceb		= $k22_vlrcor + $k22_encargos;
       $indicadorendcorresp	= "C";
       $codatividadecontrib	= "";
@@ -391,9 +391,9 @@ aproveitei para colocar a barra de progresso no teu prog
       $resultarrematric=$clarrematric->sql_record($clarrematric->sql_query(null, $j20_matric, "iptubase.*, cgm.*"));
       db_fieldsmemory($resultarrematric, 0);
       $cnpjcpf = $z01_cgccpf;
-      if (strlen($z01_cgccpf) == 11) {
+      if (strlen((string) $z01_cgccpf) == 11) {
         $tipopessoatransmit = 1;
-      } elseif (strlen($z01_cgccpf) == 14) {
+      } elseif (strlen((string) $z01_cgccpf) == 14) {
         $tipopessoatransmit = 2;
       } else {
         $tipopessoatransmit = 0;
@@ -413,10 +413,10 @@ aproveitei para colocar a barra de progresso no teu prog
       
       $tipopessoa							= $tipopessoatransmit;
       $identcontribreceita		= $cnpjcpf;
-      $enderecocontrib				= trim($z01_ender) . (trim($z01_numero) != ""?", " . $z01_numero:"") . (trim($z01_compl) != ""?"/".$z01_compl:"");
+      $enderecocontrib				= trim((string) $z01_ender) . (trim((string) $z01_numero) != ""?", " . $z01_numero:"") . (trim((string) $z01_compl) != ""?"/".$z01_compl:"");
       $cepcontrib							= $z01_cep;
       $cidadecontrib					= $z01_munic;
-      $bairrocontrib					= trim($z01_munic) . (strlen(trim($z01_bairro)) == 0?"":"/B: " . trim($z01_bairro));
+      $bairrocontrib					= trim((string) $z01_munic) . (strlen(trim((string) $z01_bairro)) == 0?"":"/B: " . trim((string) $z01_bairro));
       $ufcontrib							= $z01_uf;
       $codativcontrib					= 0;
       $cod2ativcontrib				= 0;
@@ -473,7 +473,7 @@ aproveitei para colocar a barra de progresso no teu prog
         
       }
 
-      for ($contador2=0; $contador2 < pg_numrows($resulttipoparc); $contador2++) {
+      for ($contador2=0; $contador2 < pg_num_rows($resulttipoparc); $contador2++) {
         db_fieldsmemory($resulttipoparc, $contador2);
 
       	try {
@@ -536,7 +536,7 @@ aproveitei para colocar a barra de progresso no teu prog
   		  exit;
 	    }
         
-        $matrizbarras		= split(" ", $linhadigitavel);
+        $matrizbarras		= preg_split("# #m", $linhadigitavel);
         $barras			    = $matrizbarras[0] . $matrizbarras[1] . $matrizbarras[2] . $matrizbarras[3];
         
         $parte1codbarraspag = substr($barras, 00, 11);
@@ -574,7 +574,7 @@ aproveitei para colocar a barra de progresso no teu prog
 
     
     $gravarconteudo = file($nomearq);
-    $gravarconteudo = implode($gravarconteudo);
+    $gravarconteudo = implode('', $gravarconteudo);
     
     $cldb_layouttxtgeracao->db55_layouttxt = $db55_layouttxt;
     $cldb_layouttxtgeracao->db55_seqlayout = $db55_seqlayout;

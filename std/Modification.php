@@ -20,13 +20,13 @@ class Modification {
    * Arquivos xml com as modificacoes
    * @var array
    */
-  private $xmlFiles = array();
+  private $xmlFiles = [];
 
   /**
    * Arquivos modificados
    * @var array
    */
-  private $files = array();
+  private $files = [];
 
   /**
    * Limpa arquivos de caches gerados
@@ -216,7 +216,7 @@ class Modification {
     $search = $this->parseOperationSearch($search);
     $add = $this->parseOperationAdd($add);
 
-    return (object) array('search' => $search, 'add' => $add);
+    return (object) ['search' => $search, 'add' => $add];
   }
 
   /**
@@ -303,12 +303,12 @@ class Modification {
    */
   public static function buildStructure() {
 
-    $directories = array(
+    $directories = [
       ECIDADE_MODIFICATION_PATH,
       ECIDADE_MODIFICATION_LOG_PATH,
       ECIDADE_MODIFICATION_XML_PATH,
       ECIDADE_MODIFICATION_CACHE_PATH,
-    );
+    ];
 
     foreach ($directories as $path) {
       if (!is_dir($path) && !mkdir($path)) {

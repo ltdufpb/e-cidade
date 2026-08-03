@@ -10,11 +10,8 @@ use App\Http\Controllers\Controller;
 
 class CadastroController extends Controller
 {
-    private $cadastroService;
-
-    public function __construct(CadastroService $cadastroService)
+    public function __construct(private readonly CadastroService $cadastroService)
     {
-        $this->cadastroService = $cadastroService;
     }
 
     public function dadosImovel(ImovelRequest $request)

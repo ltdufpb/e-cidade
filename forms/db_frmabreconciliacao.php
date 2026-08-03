@@ -74,7 +74,7 @@ $borda = 0;
                 
                 $rsContas    = $clsaltes->sql_record($sqlConta);
                 $numrows     = $clsaltes->numrows;
-                $arrayContas = array( 0 => " Selecione a conta para conciliacao ");
+                $arrayContas = [ 0 => " Selecione a conta para conciliacao "];
                 for($i=0;$i<$numrows;$i++){
                    db_fieldsmemory($rsContas,$i);
                    $arrayContas[$db83_sequencial] = $db83_sequencial." - ".$db83_descricao;
@@ -89,7 +89,7 @@ $borda = 0;
 						</td>
 						<td colspan=2 nowrap title="">
               <?php 
-                $arrayDatas = array(0 => " Selecione a data para conciliacao ");
+                $arrayDatas = [0 => " Selecione a data para conciliacao "];
                 db_select('data',$arrayDatas,'',1,"style='width:400px' onchange='js_enabled()'; ","","");
               ?>
 						</td>

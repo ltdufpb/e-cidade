@@ -34,7 +34,7 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("classes/db_regraponto_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clregraponto = new cl_regraponto;
 $db_opcao = 1;

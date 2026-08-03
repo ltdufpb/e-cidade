@@ -121,7 +121,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed90_i_codigo"=>@$ed90_i_codigo,"ed90_c_arquivo"=>@$ed90_c_arquivo,"ed90_c_tabela"=>@$ed90_c_tabela,"ed90_c_descrlink"=>@$ed90_c_descrlink,"ed90_c_arqdestino"=>@$ed90_c_arqdestino,"ed90_c_titulolink"=>@$ed90_c_titulolink,"ed90_t_msg"=>@$ed90_t_msg,"ed90_c_modulo"=>@$ed90_c_modulo);
+   $chavepri= ["ed90_i_codigo"=>@$ed90_i_codigo,"ed90_c_arquivo"=>@$ed90_c_arquivo,"ed90_c_tabela"=>@$ed90_c_tabela,"ed90_c_descrlink"=>@$ed90_c_descrlink,"ed90_c_arqdestino"=>@$ed90_c_arqdestino,"ed90_c_titulolink"=>@$ed90_c_titulolink,"ed90_t_msg"=>@$ed90_t_msg,"ed90_c_modulo"=>@$ed90_c_modulo];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clmsgaviso->sql_query("","*","ed90_c_tabela"," ed90_c_modulo = 'educacao'");
    $cliframe_alterar_excluir->campos  ="ed90_i_codigo,ed90_c_tabela,ed90_c_arquivo,ed90_c_modulo";

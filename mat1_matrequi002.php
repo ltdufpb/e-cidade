@@ -33,8 +33,8 @@ include(modification("classes/db_matrequi_classe.php"));
 include(modification("classes/db_db_depusu_classe.php"));
 include(modification("classes/db_matrequiitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 //if (substr($DB_BASE,0,5) != "ontem") {
 //	  die("rotina indisponivel");
 //}

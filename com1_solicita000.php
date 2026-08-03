@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_sanitario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -56,9 +56,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("solicita"=>"Guia1","solicitem"=>"Guia2","aha"=>"Guia3");//nome do iframe e o label    
-       $clcriaabas->title      = array("solicita"=>"Solicitação de Compras","solicitem"=>"guia2","aha"=>"guia3");//nome do iframe e o label    
-       $clcriaabas->src = array("solicita"=>"com1_solicita001.php","solicitem"=>"com1_solicitem001.php");    
+       $clcriaabas->identifica = ["solicita"=>"Guia1","solicitem"=>"Guia2","aha"=>"Guia3"];//nome do iframe e o label    
+       $clcriaabas->title      = ["solicita"=>"Solicitação de Compras","solicitem"=>"guia2","aha"=>"guia3"];//nome do iframe e o label    
+       $clcriaabas->src = ["solicita"=>"com1_solicita001.php","solicitem"=>"com1_solicitem001.php"];    
        //$clcriaabas->disabled = array("solicitem"=>"true","aha"=>"true");
        $clcriaabas->cria_abas();    
      ?> 

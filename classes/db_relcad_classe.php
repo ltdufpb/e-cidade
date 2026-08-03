@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE relcad
 class cl_relcad { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $r50_codrel = 0; 
-   var $r50_descr1 = null; 
-   var $r50_descr2 = null; 
+   public $r50_codrel = 0; 
+   public $r50_descr1 = null; 
+   public $r50_descr2 = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  r50_codrel = int4 = codigo relatorio 
                  r50_descr1 = char(    40) = Descricao do Item 
                  r50_descr2 = char(    40) = Descricao do Item 
                  ";
    //funcao construtor da classe 
-   function cl_relcad() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("relcad"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,7 +119,7 @@ class cl_relcad {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Arquivos de Relatorios ($this->r50_codrel) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Arquivos de Relatorios já Cadastrado";
@@ -143,12 +143,12 @@ class cl_relcad {
      $resaco = $this->sql_record($this->sql_query_file($this->r50_codrel));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4409,'$this->r50_codrel','I')");
-       $resac = db_query("insert into db_acount values($acount,587,4409,'','".AddSlashes(pg_result($resaco,0,'r50_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,587,4410,'','".AddSlashes(pg_result($resaco,0,'r50_descr1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,587,4411,'','".AddSlashes(pg_result($resaco,0,'r50_descr2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,587,4409,'','".AddSlashes(pg_fetch_result($resaco,0,'r50_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,587,4410,'','".AddSlashes(pg_fetch_result($resaco,0,'r50_descr1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,587,4411,'','".AddSlashes(pg_fetch_result($resaco,0,'r50_descr2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -157,10 +157,10 @@ class cl_relcad {
       $this->atualizacampos();
      $sql = " update relcad set ";
      $virgula = "";
-     if(trim($this->r50_codrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r50_codrel"])){ 
+     if(trim((string) $this->r50_codrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r50_codrel"])){ 
        $sql  .= $virgula." r50_codrel = $this->r50_codrel ";
        $virgula = ",";
-       if(trim($this->r50_codrel) == null ){ 
+       if(trim((string) $this->r50_codrel) == null ){ 
          $this->erro_sql = " Campo codigo relatorio nao Informado.";
          $this->erro_campo = "r50_codrel";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_relcad {
          return false;
        }
      }
-     if(trim($this->r50_descr1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r50_descr1"])){ 
+     if(trim((string) $this->r50_descr1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r50_descr1"])){ 
        $sql  .= $virgula." r50_descr1 = '$this->r50_descr1' ";
        $virgula = ",";
-       if(trim($this->r50_descr1) == null ){ 
+       if(trim((string) $this->r50_descr1) == null ){ 
          $this->erro_sql = " Campo Descricao do Item nao Informado.";
          $this->erro_campo = "r50_descr1";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_relcad {
          return false;
        }
      }
-     if(trim($this->r50_descr2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r50_descr2"])){ 
+     if(trim((string) $this->r50_descr2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r50_descr2"])){ 
        $sql  .= $virgula." r50_descr2 = '$this->r50_descr2' ";
        $virgula = ",";
-       if(trim($this->r50_descr2) == null ){ 
+       if(trim((string) $this->r50_descr2) == null ){ 
          $this->erro_sql = " Campo Descricao do Item nao Informado.";
          $this->erro_campo = "r50_descr2";
          $this->erro_banco = "";
@@ -204,15 +204,15 @@ class cl_relcad {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4409,'$this->r50_codrel','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r50_codrel"]))
-           $resac = db_query("insert into db_acount values($acount,587,4409,'".AddSlashes(pg_result($resaco,$conresaco,'r50_codrel'))."','$this->r50_codrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,587,4409,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r50_codrel'))."','$this->r50_codrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r50_descr1"]))
-           $resac = db_query("insert into db_acount values($acount,587,4410,'".AddSlashes(pg_result($resaco,$conresaco,'r50_descr1'))."','$this->r50_descr1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,587,4410,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r50_descr1'))."','$this->r50_descr1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r50_descr2"]))
-           $resac = db_query("insert into db_acount values($acount,587,4411,'".AddSlashes(pg_result($resaco,$conresaco,'r50_descr2'))."','$this->r50_descr2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,587,4411,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r50_descr2'))."','$this->r50_descr2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -257,12 +257,12 @@ class cl_relcad {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4409,'$r50_codrel','E')");
-         $resac = db_query("insert into db_acount values($acount,587,4409,'','".AddSlashes(pg_result($resaco,$iresaco,'r50_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,587,4410,'','".AddSlashes(pg_result($resaco,$iresaco,'r50_descr1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,587,4411,'','".AddSlashes(pg_result($resaco,$iresaco,'r50_descr2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,587,4409,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r50_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,587,4410,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r50_descr1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,587,4411,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r50_descr2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from relcad
@@ -322,7 +322,7 @@ class cl_relcad {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:relcad";

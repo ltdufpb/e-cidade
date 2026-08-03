@@ -51,7 +51,7 @@ class EstruturaBasica
     /**
      * @var \Servidor[]
      */
-    protected $servidores = array();
+    protected $servidores = [];
 
     /**
      * @var integer

@@ -143,7 +143,7 @@ class SessaoService
                         // Verifica se a competencia é maior que a configuracao do servidor
                         if ($competencia->getMes() > $servidor->rh245_mesfim) {
                             $mensagem = "Servidor com periodo de vigência na comissão inferior a competência atual";
-                            $aErros[$matricula][] = utf8_encode($mensagem);
+                            $aErros[$matricula][] = mb_convert_encoding($mensagem, 'UTF-8', 'ISO-8859-1');
                             continue;
                         }
                     }
@@ -173,7 +173,7 @@ class SessaoService
                     }
                     if (($quantidadeServidor+1) > $comissaoFuncaoModel->getQuantidade()) {
                         $mensagem = "A matricula {$matricula}, ultrapassou a quantidade da função na competencia";
-                        $aErros[$matricula][] = utf8_encode($mensagem);
+                        $aErros[$matricula][] = mb_convert_encoding($mensagem, 'UTF-8', 'ISO-8859-1');
                         continue;
                     }
                     $sessaoServidor = new SessaoServidor();

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_situacao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clsituacao = new cl_situacao;
 $db_opcao = 1;
 $db_botao = true;

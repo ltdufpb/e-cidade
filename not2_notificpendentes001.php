@@ -37,7 +37,7 @@ $clnoticonf = new cl_noticonf;
 $clnotisitu = new cl_notisitu;
 $clrotulo->label('k60_codigo');
 $clrotulo->label('k60_descr');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_botao = true;
 $db_opcao = 1;
 ?>

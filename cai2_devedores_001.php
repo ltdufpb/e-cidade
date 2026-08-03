@@ -43,7 +43,7 @@ $clrotulo->label('k00_descr');
 $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $instit = db_getsession("DB_instit");
 
 if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
@@ -257,11 +257,11 @@ function js_emite1(){
 				              where k115_instit = $instit
 				              order by k115_data desc limit 1";
 					  $result = db_query($sql);
-					  if (pg_numrows($result) > 0 ) {
+					  if (pg_num_rows($result) > 0 ) {
 					     db_fieldsmemory($result,0);
-					     $data_ano = substr($data,0,4);
-					     $data_mes = substr($data,5,2);
-					     $data_dia = substr($data,8,2);
+					     $data_ano = substr((string) $data,0,4);
+					     $data_mes = substr((string) $data,5,2);
+					     $data_dia = substr((string) $data,8,2);
 					  } else {
 					     $data_ano = '';
 					     $data_mes = '';
@@ -356,8 +356,8 @@ function js_emite1(){
       <tr>
         <td title="Sim - agrupa por tipo de débito dentro da opção escolhida (matrícula,inscrição ou numcgm) <?="\n"?>Não - totaliza pela opção escolhida (matrícula,inscrição ou numcgm)">Quebrar por Tipo:&nbsp;&nbsp;
           <?php 
-		        $aQuebrar = array("f" => "Não",
-		                          "t" => "Sim");
+		        $aQuebrar = ["f" => "Não",
+		                          "t" => "Sim"];
 		        db_select("quebrar", $aQuebrar, true, $db_opcao, " onchange='js_valor();'");
 		      ?>
         </td>
@@ -436,7 +436,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 <?php 

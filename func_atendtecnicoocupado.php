@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atendtecnicoocupado_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatendtecnicoocupado = new cl_atendtecnicoocupado;
 $clatendtecnicoocupado->rotulo->label("at72_id");
 $clatendtecnicoocupado->rotulo->label("at72_id_usuario");
@@ -98,9 +98,9 @@ $clatendtecnicoocupado->rotulo->label("at72_id_usuario");
         }else{
            $sql = $clatendtecnicoocupado->sql_query("",$campos,"at72_id","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at72_id_usuario)){
-          $repassa = array("chave_at72_id"=>$chave_at72_id,"chave_at72_id_usuario"=>$chave_at72_id_usuario);
+          $repassa = ["chave_at72_id"=>$chave_at72_id,"chave_at72_id_usuario"=>$chave_at72_id_usuario];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

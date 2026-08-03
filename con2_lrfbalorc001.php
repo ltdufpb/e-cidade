@@ -85,24 +85,24 @@ if (isset($oGet->dfiscal) && $oGet->dfiscal == true) {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <?php
-        $clCriaAbas->identifica = array("relatorio"=>"Relatório",
+        $clCriaAbas->identifica = ["relatorio"=>"Relatório",
                                         "parametro"=>"Parâmetros",
                                         "notas"    =>"Fonte/Notas Explicativas"
-                                        );
+                                        ];
 
-        $clCriaAbas->title      = array("relatorio"=>"Relatório",
+        $clCriaAbas->title      = ["relatorio"=>"Relatório",
                                         "parametro"=>"Parâmetros",
                                         "notas"    =>"Fonte/Notas Explicativas"
-                                        );
+                                        ];
 
-        $clCriaAbas->src        = array("relatorio"=>"con2_lrfbalorc011.php?c83_codrel={$iCodRel}",
+        $clCriaAbas->src        = ["relatorio"=>"con2_lrfbalorc011.php?c83_codrel={$iCodRel}",
                                         "parametro"=>"con4_parametrosrelatorioslegais001.php?c83_codrel={$iCodRel}",
                                         "notas"    =>"con2_conrelnotas.php?c83_codrel={$iCodRel}"
-                                        );
+                                        ];
 
-        $clCriaAbas->sizecampo  = array("relatorio"=>"23",
+        $clCriaAbas->sizecampo  = ["relatorio"=>"23",
                                         "parametro"=>"23",
-                                        "notas"    =>"23");
+                                        "notas"    =>"23"];
         $clCriaAbas->cria_abas();
 
     ?>

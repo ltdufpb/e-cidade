@@ -153,20 +153,12 @@ class ImpressoraTermica extends impressao {
       }
     }
 
-    switch ($sAlinhamento) {
-      case "L":
-        $sTexto = str_pad($sTexto,$iNroCaracteres," ",STR_PAD_RIGHT);
-        break;
-      case "R":
-        $sTexto = str_pad($sTexto,$iNroCaracteres," ",STR_PAD_LEFT);
-        break;
-      case "C":
-        $sTexto = str_pad($sTexto,$iNroCaracteres," ",STR_PAD_BOTH);
-        break;
-      default:
-        throw new Exception("Erro ao definir alinhamento de linha!");
-        break;
-    }
+    $sTexto = match ($sAlinhamento) {
+        "L" => str_pad($sTexto,$iNroCaracteres," ",STR_PAD_RIGHT),
+        "R" => str_pad($sTexto,$iNroCaracteres," ",STR_PAD_LEFT),
+        "C" => str_pad($sTexto,$iNroCaracteres," ",STR_PAD_BOTH),
+        default => throw new Exception("Erro ao definir alinhamento de linha!"),
+    };
 
     return $sTexto;
   }
@@ -367,20 +359,12 @@ class ImpressoraTermica extends impressao {
    */
   public function setAvancoLinha($iAvanco=1) {
 
-    switch ($iAvanco) {
-      case 1:
-        $sComando = chr(27) . chr(21) . chr(26);
-        break;
-      case 2:
-        $sComando = chr(27) . chr(21) . chr(30);
-        break;
-      case 3:
-        $sComando = chr(27) . chr(21) . chr(34);
-        break;
-      default:
-        throw new Exception("Avanço de linha : {$iAvanco} não configurado!");
-        break;
-    }
+    $sComando = match ($iAvanco) {
+        1 => chr(27) . chr(21) . chr(26),
+        2 => chr(27) . chr(21) . chr(30),
+        3 => chr(27) . chr(21) . chr(34),
+        default => throw new Exception("Avanço de linha : {$iAvanco} não configurado!"),
+    };
     parent::addComando($sComando);
   }
 
@@ -490,10 +474,11 @@ class ImpressoraTermica extends impressao {
     parent::addComando($sComando);
   }
 
+  #[\Override]
   function strToAsc($sStr) {
 
     $sStrRetorno = "";
-    $aCaracters = array('é' => 'e',
+    $aCaracters = ['é' => 'e',
       'É' => 'E',
       'á' => 'a',
       'Á' => 'A',
@@ -511,7 +496,7 @@ class ImpressoraTermica extends impressao {
       'Õ' => 'O',
       'à' => 'a',
       'À' => 'A'
-    );
+    ];
 
     for ($i = 0; $i < strlen($sStr); $i ++) {
 

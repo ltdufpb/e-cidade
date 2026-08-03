@@ -33,12 +33,6 @@
 class File {
 
   /**
-   * Caminho
-   * @var string
-   */
-  private $sFilePath;
-
-  /**
    * Tamanho
    * @var float
    */
@@ -77,10 +71,13 @@ class File {
    * new File('tmp/arquivo.txt');
    * @param $sFilePath
    * @throws Exception
+   * @param string $sFilePath
    */
-  public function __construct($sFilePath) {
+  public function __construct(/**
+   * Caminho
+   */
+  private $sFilePath) {
 
-    $this->sFilePath = $sFilePath;
     if (!is_readable($this->sFilePath)) {
       throw new Exception("Arquivo {$this->sFilePath} não encontrado ou sem permissão de leitura.");
     }
@@ -124,7 +121,7 @@ class File {
    * @return File
    */
   public function compress() {
-    return File::compressFiles(array($this), $this->getFileName());
+    return File::compressFiles([$this], $this->getFileName());
   }
 
   /**
@@ -167,7 +164,7 @@ class File {
         throw new ParameterException("Conteúdo do array não é um objeto do tipo File.");
       }
     }
-    $sName = trim($sName);
+    $sName = trim((string) $sName);
     if (empty($sName)) {
       $sName = "CompressArchive".date('Y-m-d_h:i');
     }
@@ -210,12 +207,12 @@ class File {
    */
   private static function compressByShell(array $aFiles, $sName) {
 
-    $aArquivos = array();
+    $aArquivos = [];
     foreach ($aFiles as $oFile) {
       $aArquivos[] = "'".$oFile->getBaseName()."'";
     }
 
-    $sName = basename($sName);
+    $sName = basename((string) $sName);
     exec("zip -q '{$sName}' ".implode(" ", $aArquivos) , $aOutput, $iStatus);
     if ($iStatus > 0) {
       throw new Exception("Impossível compactar o arquivo.");

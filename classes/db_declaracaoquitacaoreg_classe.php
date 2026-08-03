@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE declaracaoquitacaoreg
 class cl_declaracaoquitacaoreg { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ar31_sequencial = 0; 
-   var $ar31_declaracaoquitacao = 0; 
-   var $ar31_numpre = 0; 
-   var $ar31_numpar = 0; 
-   var $ar31_receita = 0; 
+   public $ar31_sequencial = 0; 
+   public $ar31_declaracaoquitacao = 0; 
+   public $ar31_numpre = 0; 
+   public $ar31_numpar = 0; 
+   public $ar31_receita = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ar31_sequencial = int8 = Código do Registro 
                  ar31_declaracaoquitacao = int8 = Código Declaração 
                  ar31_numpre = int8 = Numpre 
@@ -56,10 +56,10 @@ class cl_declaracaoquitacaoreg {
                  ar31_receita = int8 = Receita 
                  ";
    //funcao construtor da classe 
-   function cl_declaracaoquitacaoreg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("declaracaoquitacaoreg"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_declaracaoquitacaoreg {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ar31_sequencial = pg_result($result,0,0); 
+       $this->ar31_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from declaracaoquitacaoreg_ar31_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ar31_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ar31_sequencial)){
          $this->erro_sql = " Campo ar31_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_declaracaoquitacaoreg {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Registro de Declaração de Quitação ($this->ar31_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Registro de Declaração de Quitação já Cadastrado";
@@ -194,14 +194,14 @@ class cl_declaracaoquitacaoreg {
      $resaco = $this->sql_record($this->sql_query_file($this->ar31_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17159,'$this->ar31_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3032,17159,'','".AddSlashes(pg_result($resaco,0,'ar31_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3032,17160,'','".AddSlashes(pg_result($resaco,0,'ar31_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3032,17161,'','".AddSlashes(pg_result($resaco,0,'ar31_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3032,17162,'','".AddSlashes(pg_result($resaco,0,'ar31_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3032,17163,'','".AddSlashes(pg_result($resaco,0,'ar31_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3032,17159,'','".AddSlashes(pg_fetch_result($resaco,0,'ar31_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3032,17160,'','".AddSlashes(pg_fetch_result($resaco,0,'ar31_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3032,17161,'','".AddSlashes(pg_fetch_result($resaco,0,'ar31_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3032,17162,'','".AddSlashes(pg_fetch_result($resaco,0,'ar31_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3032,17163,'','".AddSlashes(pg_fetch_result($resaco,0,'ar31_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_declaracaoquitacaoreg {
       $this->atualizacampos();
      $sql = " update declaracaoquitacaoreg set ";
      $virgula = "";
-     if(trim($this->ar31_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar31_sequencial"])){ 
+     if(trim((string) $this->ar31_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar31_sequencial"])){ 
        $sql  .= $virgula." ar31_sequencial = $this->ar31_sequencial ";
        $virgula = ",";
-       if(trim($this->ar31_sequencial) == null ){ 
+       if(trim((string) $this->ar31_sequencial) == null ){ 
          $this->erro_sql = " Campo Código do Registro nao Informado.";
          $this->erro_campo = "ar31_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_declaracaoquitacaoreg {
          return false;
        }
      }
-     if(trim($this->ar31_declaracaoquitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar31_declaracaoquitacao"])){ 
+     if(trim((string) $this->ar31_declaracaoquitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar31_declaracaoquitacao"])){ 
        $sql  .= $virgula." ar31_declaracaoquitacao = $this->ar31_declaracaoquitacao ";
        $virgula = ",";
-       if(trim($this->ar31_declaracaoquitacao) == null ){ 
+       if(trim((string) $this->ar31_declaracaoquitacao) == null ){ 
          $this->erro_sql = " Campo Código Declaração nao Informado.";
          $this->erro_campo = "ar31_declaracaoquitacao";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_declaracaoquitacaoreg {
          return false;
        }
      }
-     if(trim($this->ar31_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar31_numpre"])){ 
+     if(trim((string) $this->ar31_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar31_numpre"])){ 
        $sql  .= $virgula." ar31_numpre = $this->ar31_numpre ";
        $virgula = ",";
-       if(trim($this->ar31_numpre) == null ){ 
+       if(trim((string) $this->ar31_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "ar31_numpre";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_declaracaoquitacaoreg {
          return false;
        }
      }
-     if(trim($this->ar31_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar31_numpar"])){ 
+     if(trim((string) $this->ar31_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar31_numpar"])){ 
        $sql  .= $virgula." ar31_numpar = $this->ar31_numpar ";
        $virgula = ",";
-       if(trim($this->ar31_numpar) == null ){ 
+       if(trim((string) $this->ar31_numpar) == null ){ 
          $this->erro_sql = " Campo Numpar nao Informado.";
          $this->erro_campo = "ar31_numpar";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_declaracaoquitacaoreg {
          return false;
        }
      }
-     if(trim($this->ar31_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar31_receita"])){ 
+     if(trim((string) $this->ar31_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar31_receita"])){ 
        $sql  .= $virgula." ar31_receita = $this->ar31_receita ";
        $virgula = ",";
-       if(trim($this->ar31_receita) == null ){ 
+       if(trim((string) $this->ar31_receita) == null ){ 
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "ar31_receita";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_declaracaoquitacaoreg {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17159,'$this->ar31_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar31_sequencial"]) || $this->ar31_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3032,17159,'".AddSlashes(pg_result($resaco,$conresaco,'ar31_sequencial'))."','$this->ar31_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3032,17159,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar31_sequencial'))."','$this->ar31_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar31_declaracaoquitacao"]) || $this->ar31_declaracaoquitacao != "")
-           $resac = db_query("insert into db_acount values($acount,3032,17160,'".AddSlashes(pg_result($resaco,$conresaco,'ar31_declaracaoquitacao'))."','$this->ar31_declaracaoquitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3032,17160,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar31_declaracaoquitacao'))."','$this->ar31_declaracaoquitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar31_numpre"]) || $this->ar31_numpre != "")
-           $resac = db_query("insert into db_acount values($acount,3032,17161,'".AddSlashes(pg_result($resaco,$conresaco,'ar31_numpre'))."','$this->ar31_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3032,17161,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar31_numpre'))."','$this->ar31_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar31_numpar"]) || $this->ar31_numpar != "")
-           $resac = db_query("insert into db_acount values($acount,3032,17162,'".AddSlashes(pg_result($resaco,$conresaco,'ar31_numpar'))."','$this->ar31_numpar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3032,17162,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar31_numpar'))."','$this->ar31_numpar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar31_receita"]) || $this->ar31_receita != "")
-           $resac = db_query("insert into db_acount values($acount,3032,17163,'".AddSlashes(pg_result($resaco,$conresaco,'ar31_receita'))."','$this->ar31_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3032,17163,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar31_receita'))."','$this->ar31_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_declaracaoquitacaoreg {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17159,'$ar31_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3032,17159,'','".AddSlashes(pg_result($resaco,$iresaco,'ar31_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3032,17160,'','".AddSlashes(pg_result($resaco,$iresaco,'ar31_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3032,17161,'','".AddSlashes(pg_result($resaco,$iresaco,'ar31_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3032,17162,'','".AddSlashes(pg_result($resaco,$iresaco,'ar31_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3032,17163,'','".AddSlashes(pg_result($resaco,$iresaco,'ar31_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3032,17159,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar31_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3032,17160,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar31_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3032,17161,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar31_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3032,17162,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar31_numpar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3032,17163,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar31_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from declaracaoquitacaoreg
@@ -407,7 +407,7 @@ class cl_declaracaoquitacaoreg {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:declaracaoquitacaoreg";
@@ -422,7 +422,7 @@ class cl_declaracaoquitacaoreg {
    function sql_query ( $ar31_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_declaracaoquitacaoreg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_declaracaoquitacaoreg {
    function sql_query_file ( $ar31_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -480,7 +480,7 @@ class cl_declaracaoquitacaoreg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

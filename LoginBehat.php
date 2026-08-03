@@ -75,7 +75,7 @@ alert = function(sMensagem, tipo) {
 }';
 $stdClass = new db_stdClass();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if (isset($sAuth)) {
   parse_str( base64_decode($sAuth) );
@@ -147,7 +147,7 @@ db_putsession("DB_preferencias_usuario", base64_encode($sPreferencias));
 if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ){
   db_putsession("DB_ip",$_SERVER["HTTP_X_FORWARDED_FOR"]);
 }else{
-  db_putsession("DB_ip",$HTTP_SERVER_VARS["REMOTE_ADDR"]);
+  db_putsession("DB_ip",$_SERVER["REMOTE_ADDR"]);
 }
 
 db_putsession("DB_base",     $DB_BASE);
@@ -158,7 +158,7 @@ db_putsession("DB_senha",    $DB_SENHA);
 db_putsession("DB_user",     $DB_USUARIO);
 
 include(modification("classes/db_db_versao_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $versao = $_GET["version"];
 if (defined("ECIDADE_EXTENSION_VERSION")) {
   $versao =  \ECidade\V3\Extension\Manager::isEnabled('Desktop', $DB_login) ? 3 : 2;
@@ -209,7 +209,7 @@ pg_close($conn);
  if ($versao == 2) {
 
    $sScriptsConteudo = file_get_contents("scripts/scripts.js");
-   if (strpos($sScriptsConteudo, 'alert = function') === false) {
+   if (!str_contains($sScriptsConteudo, 'alert = function')) {
 
      $sScriptsConteudo .= "\n\n{$sStringFunction}";
      file_put_contents("scripts/scripts.js", $sScriptsConteudo);

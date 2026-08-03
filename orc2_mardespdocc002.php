@@ -39,7 +39,7 @@ if (!isset($arqinclude)){
   $oRelatorio    = new relatorioContabil(71);
   $classinatura  = new cl_assinatura;
   $cldbconfig    = new cl_db_config;
-  db_postmemory($HTTP_SERVER_VARS);
+  db_postmemory($_SERVER);
   
 }
 $oGet  = db_utils::postMemory($_GET);
@@ -74,7 +74,7 @@ exit;
   $aRelatorio = $oRelatorio->getLinhas();
 	
 	// soma todas as variáveis das contas do somatório
-	$aSomatorioLinhas = array();
+	$aSomatorioLinhas = [];
 
 	for ($i=1;$i<7;$i++) {
 		

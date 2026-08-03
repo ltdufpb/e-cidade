@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_fluxocliente_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_fluxocliente = new cl_sau_fluxocliente;
 $clsau_fluxocliente->rotulo->label("sd41_i_cod_cliente");
 $clsau_fluxocliente->rotulo->label("sd41_v_descricao");
@@ -98,9 +98,9 @@ $clsau_fluxocliente->rotulo->label("sd41_v_descricao");
         }else{
            $sql = $clsau_fluxocliente->sql_query("",$campos,"sd41_v_descricao","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd41_i_cod_cliente)){
-          $repassa = array("chave_sd41_i_cod_cliente"=>$chave_sd41_i_cod_cliente,"chave_sd41_v_descricao"=>$chave_sd41_v_descricao);
+          $repassa = ["chave_sd41_i_cod_cliente"=>$chave_sd41_i_cod_cliente,"chave_sd41_v_descricao"=>$chave_sd41_v_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

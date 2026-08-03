@@ -129,11 +129,11 @@ db_utils::postMemory($_POST);
             </td>
             <td>
               <?php 
-                $aOpcaoOperacao = array(""=>"Selecione",
+                $aOpcaoOperacao = [""=>"Selecione",
                                         "i"=>"Inclusão",
                                         "a"=>"Alteração",
                                         "e"=>"Exclusão"
-                                       );
+                                       ];
                 db_select("iae",$aOpcaoOperacao,true,1,'class="field-size5"');
               ?>
             </td>

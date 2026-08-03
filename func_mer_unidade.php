@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_cardapio_classe.php"));
 include(modification("classes/db_matunid_classe.php"));
 include(modification("classes/db_mer_unidade_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_cardapio = new cl_mer_cardapio;
 $clmatunid = new cl_matunid;
 $clmer_unidade = new cl_mer_unidade;
@@ -98,16 +98,16 @@ $clmer_unidade->rotulo->label("m61_descr");
              $campos = "mer_unidade.*";
            }           
         }
-        if (isset($chave_me15_i_codigo) && (trim($chave_me07_i_unidade)!="")) {
+        if (isset($chave_me15_i_codigo) && (trim((string) $chave_me07_i_unidade)!="")) {
 	      $sql = $clmer_unidade->sql_query($chave_me15_i_codigo,$campos,"me15_i_codigo");
         } else if (isset($chave_me15_c_descr) && (trim($chave_me15_c_descr)!="")) {
 	      $sql = $clmer_unidade->sql_query("",$campos,"me15_c_descr"," me15_c_descr like '$chave_me15_c_descr%' ");
         } else {
           $sql = $clmer_unidade->sql_query("",$campos,"me15_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_me15_i_codigo)) {
-          $repassa = array("chave_me15_i_codigo"=>$chave_me15_i_codigo,"chave_me15_i_codigo"=>$chave_me15_i_codigo);
+          $repassa = ["chave_me15_i_codigo"=>$chave_me15_i_codigo,"chave_me15_i_codigo"=>$chave_me15_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
         

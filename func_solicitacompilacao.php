@@ -35,7 +35,7 @@ require_once(modification("classes/db_solicita_classe.php"));
 
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory($_POST, 0);
 $oGet = db_utils::postMemory($_GET, 0);
@@ -194,7 +194,7 @@ $clsolicita->rotulo->label("pc10_data");
                     $where[] = "pc10_data = '{$data->getDate()}'";
                 }
                 $sql = $clsolicita->sql_query_estregistro("", implode(' , ', $campos), "pc10_numero desc ", implode(' and ', $where));
-                db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", array(), false);
+                db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", [], false);
             } else {
                 if ($pesquisa_chave != null && $pesquisa_chave != "") {
                     $result = $clsolicita->sql_record($clsolicita->sql_query_estregistro(null, "distinct *", "", " pc10_numero = {$pesquisa_chave} " . implode(' and ', $where) ));

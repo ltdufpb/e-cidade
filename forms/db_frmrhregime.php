@@ -61,7 +61,7 @@ $clrhregime->rotulo->label();
                                 </td>
                                 <td>
                                     <?php
-                                    $arr_util = Array('1' => 'Ambos', '2' => 'Folha de Pagamento', '3' => 'Educação');
+                                    $arr_util = ['1' => 'Ambos', '2' => 'Folha de Pagamento', '3' => 'Educação'];
                                     db_select("rh30_utilizacao", $arr_util, true, $db_opcao, "onChange=\"js_mudautilizacao(this.value)\" style='width : 300px;'");
                                     ?>
                                 </td>
@@ -90,7 +90,7 @@ $clrhregime->rotulo->label();
                                 </td>
                                 <td>
                                     <?php
-                                    $arr_vinculo = Array('A' => 'Ativo', 'I' => 'Inativo', 'P' => 'Pensionista');
+                                    $arr_vinculo = ['A' => 'Ativo', 'I' => 'Inativo', 'P' => 'Pensionista'];
                                     db_select("rh30_vinculo", $arr_vinculo, true, $db_opcao, "style='width : 300px;'");
                                     ?>
                                 </td>
@@ -104,7 +104,7 @@ $clrhregime->rotulo->label();
                                     $sSqlNatureza = "select rh71_sequencial,rh71_descricao from rhnaturezaregime";
                                     $rsNatureza = db_query($sSqlNatureza);
                                     $iNatureza = pg_num_rows($rsNatureza);
-                                    $aNatureza = Array();
+                                    $aNatureza = [];
                                     for ($i = 0; $i < $iNatureza; $i++) {
 
                                         db_fieldsmemory($rsNatureza, $i);
@@ -136,7 +136,7 @@ $clrhregime->rotulo->label();
                                 <td> <?= $Lrh30_periodoaquisitivo ?></td>
                                 <td>
                                     <?php
-                                    $aPeriodoArquisitivo = array("1" => "12 meses", "2" => "6 meses");
+                                    $aPeriodoArquisitivo = ["1" => "12 meses", "2" => "6 meses"];
                                     db_select("rh30_periodoaquisitivo", $aPeriodoArquisitivo, true, $db_opcao, "style='width : 300px;'");
                                     ?>
                                 </td>
@@ -148,7 +148,7 @@ $clrhregime->rotulo->label();
                                 </td>
                                 <td>
                                     <?php
-                                    db_select('rh30_vinculoemprego', array("f" => "Não", "t" => "Sim"), true, $db_opcao, "");
+                                    db_select('rh30_vinculoemprego', ["f" => "Não", "t" => "Sim"], true, $db_opcao, "");
                                     ?>
                                 </td>
                             </tr>
@@ -282,7 +282,7 @@ $clrhregime->rotulo->label();
         db_iframe_rhregime.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

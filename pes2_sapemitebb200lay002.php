@@ -32,8 +32,8 @@ include(modification("dbforms/db_layouttxt.php"));
 include(modification("classes/db_folha_classe.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
 include(modification("classes/db_orctiporec_classe.php"));
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 
 $rh34_where    = ''; 
 $clfolha       = new cl_folha;
@@ -58,14 +58,14 @@ if($clrharqbanco->numrows>0){
   db_fieldsmemory($result_arqbanco,0);
 
   if(isset($datagera) && $datagera!=""){
-    $datag = split('-',$datagera);
+    $datag = preg_split('#\-#m',(string) $datagera);
     $datag_dia=$datag[2];
     $datag_mes=$datag[1];
     $datag_ano=$datag[0];
   }
 
   if(isset($datadeposit) && $datadeposit!=""){
-    $datad = split('-',$datadeposit);
+    $datad = preg_split('#\-#m',(string) $datadeposit);
     $datad_dia = $datad[2];
     $datad_mes = $datad[1];
     $datad_ano = $datad[0];
@@ -224,10 +224,10 @@ if($sqlerro == false){
         $quant_recurso++;
 
         $sequencialbb120 ++;
-        $dvcontafunc   = substr($r38_conta,-1);
-        $contafunc     = substr($r38_conta,0,(strlen($r38_conta) - 1));
-        $dvagenciafunc = substr($r38_agenc,-1);
-        $agenciafunc   = substr($r38_agenc,0,(strlen($r38_agenc) - 1));
+        $dvcontafunc   = substr((string) $r38_conta,-1);
+        $contafunc     = substr((string) $r38_conta,0,(strlen((string) $r38_conta) - 1));
+        $dvagenciafunc = substr((string) $r38_agenc,-1);
+        $agenciafunc   = substr((string) $r38_agenc,0,(strlen((string) $r38_agenc) - 1));
 	$rh01_regist   = $r38_regist;
 
         db_setaPropriedadesLayoutTxt($db_layouttxt,3);

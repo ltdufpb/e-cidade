@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issbaseparalisacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissbaseparalisacao = new cl_issbaseparalisacao;
 $clissbaseparalisacao->rotulo->label("q140_sequencial");
 $clissbaseparalisacao->rotulo->label("q140_sequencial");
@@ -93,9 +93,9 @@ $clissbaseparalisacao->rotulo->label("q140_sequencial");
         }else{
            $sql = $clissbaseparalisacao->sql_query("",$campos,"q140_sequencial",$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q140_sequencial)){
-          $repassa = array("chave_q140_sequencial"=>$chave_q140_sequencial,"chave_q140_sequencial"=>$chave_q140_sequencial);
+          $repassa = ["chave_q140_sequencial"=>$chave_q140_sequencial,"chave_q140_sequencial"=>$chave_q140_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

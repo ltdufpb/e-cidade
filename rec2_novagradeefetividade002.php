@@ -37,7 +37,7 @@ ini_set("memory_limit", "-1");
 
 $oGet            = db_utils::postmemory($_GET, 0);
 $iAnoCompetencia = $oGet->ano;
-$iMesCompetencia = str_pad($oGet->mes, 2, '0', STR_PAD_LEFT);
+$iMesCompetencia = str_pad((string) $oGet->mes, 2, '0', STR_PAD_LEFT);
 $sFiltro         = $oGet->filtro;
 $sParametros     = $oGet->parametros;
 /**
@@ -75,11 +75,11 @@ for ($iData = 0; $iData < pg_num_rows($rsConfiguracoesDatasEfetividade); $iData+
 
 }
 
-$aMatriculas                = array();
-$aGradeEfetividade          = array();
-$aEscalasUtilizadas         = array();
-$aGradesHorariosUtilizadas  = array();
-$aLegendas = array();
+$aMatriculas                = [];
+$aGradeEfetividade          = [];
+$aEscalasUtilizadas         = [];
+$aGradesHorariosUtilizadas  = [];
+$aLegendas = [];
 
 
 /**
@@ -302,13 +302,13 @@ foreach( $aEscalasUtilizadas as $iCodigoEscala => $sEscala ) {
 
 }
 
-$aCabecalho   = array('Matrícula', 'Nome');
-$aAlinhamento = array('C', 'L');
-$aTamanho     = array('4', '12');
+$aCabecalho   = ['Matrícula', 'Nome'];
+$aAlinhamento = ['C', 'L'];
+$aTamanho     = ['4', '12'];
 
 foreach ($aDatasEfetividade as $sData => $iData) {
 
-  $aCabecalho[]   = substr($sData, 8, 2);
+  $aCabecalho[]   = substr((string) $sData, 8, 2);
   $aAlinhamento[] = 'C';
   $aTamanho[]     = '2.4';
 
@@ -332,7 +332,7 @@ $oPDFTable->setColumnsWidth($aTamanho);
 $oPDFTable->addHeaderDescription("Grade de Efetividade");
 $oPDFTable->addHeaderDescription("");
 $oPDFTable->addHeaderDescription("Competência: $iMesCompetencia/$iAnoCompetencia");
-$oPDFTable->addHeaderDescription("Período: " . implode("/", array_reverse(explode("-", $dDataInicioEfetividade))) . " até " . implode("/", array_reverse(explode("-", $dDataFechamentoEfetividade))));
+$oPDFTable->addHeaderDescription("Período: " . implode("/", array_reverse(explode("-", (string) $dDataInicioEfetividade))) . " até " . implode("/", array_reverse(explode("-", (string) $dDataFechamentoEfetividade))));
 $oPDFTable->addHeaderDescription("");
 $oPDFTable->addHeaderDescription("(DE)Dias Escala / (EXT)Dias Extras / (AF)Afastamentos / (T)Total");
 
@@ -343,8 +343,8 @@ foreach ($aGradeEfetividade as $iMatricula => $aDatas) {
   $iDiasAfastados   = 0;
   $iDiasExtras      = 0;
 
-  $aRegistros       = array();
-  $aAssentamentos   = array();
+  $aRegistros       = [];
+  $aAssentamentos   = [];
   $aRegistros[]     = $iMatricula;
 
   $oDaoRhpessoal    = new cl_rhpessoal();
@@ -375,13 +375,13 @@ foreach ($aGradeEfetividade as $iMatricula => $aDatas) {
 
         if ($oEfetividade->oEscala->sTipo == 'escala') {
 
-          $sCelula .= trim($oEfetividade->oEscala->iCodigo);
+          $sCelula .= trim((string) $oEfetividade->oEscala->iCodigo);
 
           $iDiasEscala++;
 
         } else {
 
-          $sCelula .= trim($oEfetividade->oEscala->sDescricao);
+          $sCelula .= trim((string) $oEfetividade->oEscala->sDescricao);
 
         }
 
@@ -391,17 +391,17 @@ foreach ($aGradeEfetividade as $iMatricula => $aDatas) {
 
     if ($oEfetividade->oAfastamento != null) {
 
-      if (isset($oEfetividade->oEscala->oJornada) and !in_array($oEfetividade->oEscala->oJornada->iCodigo, array(1, 2)) and $oEfetividade->oFeriado == null) {
+      if (isset($oEfetividade->oEscala->oJornada) and !in_array($oEfetividade->oEscala->oJornada->iCodigo, [1, 2]) and $oEfetividade->oFeriado == null) {
 
         $iDiasAfastados++;
 
-        if (!isset($aAssentamentos[trim($oEfetividade->oAfastamento->sDescricao)])) {
+        if (!isset($aAssentamentos[trim((string) $oEfetividade->oAfastamento->sDescricao)])) {
 
-          $aAssentamentos[trim($oEfetividade->oAfastamento->sDescricao)] = 1;
+          $aAssentamentos[trim((string) $oEfetividade->oAfastamento->sDescricao)] = 1;
 
         } else {
 
-          $aAssentamentos[trim($oEfetividade->oAfastamento->sDescricao)]++;
+          $aAssentamentos[trim((string) $oEfetividade->oAfastamento->sDescricao)]++;
 
         }
 
@@ -411,7 +411,7 @@ foreach ($aGradeEfetividade as $iMatricula => $aDatas) {
         $sCelula .= "\n\r";
       }
 
-      $sCelula .= trim($oEfetividade->oAfastamento->sDescricao);
+      $sCelula .= trim((string) $oEfetividade->oAfastamento->sDescricao);
 
     }
 
@@ -459,7 +459,7 @@ foreach ($aGradeEfetividade as $iMatricula => $aDatas) {
 $iTotalColunas       = count($aRegistros);
 $iColunaAfastamentos = $iTotalColunas - 2;
 
-$aColunasMultiCell = array();
+$aColunasMultiCell = [];
 for ($iColuna = 0; $iColuna < $iTotalColunas; $iColuna++) {
   $aColunasMultiCell[] = $iColuna;
 }
@@ -472,14 +472,14 @@ if (count($aLegendas) > 0) {
 
   $oPDFTableLegendas = new PDFTable('L');
   $oPDFTableLegendas->setPercentWidth(true);
-  $oPDFTableLegendas->setMulticellColumns(array(1));
-  $oPDFTableLegendas->setHeaders( array('Legendas', '') );
-  $oPDFTableLegendas->setColumnsAlign( array( 'L', 'L'));
-  $oPDFTableLegendas->setColumnsWidth( array( '20', '80' ));
+  $oPDFTableLegendas->setMulticellColumns([1]);
+  $oPDFTableLegendas->setHeaders( ['Legendas', ''] );
+  $oPDFTableLegendas->setColumnsAlign( [ 'L', 'L']);
+  $oPDFTableLegendas->setColumnsWidth( [ '20', '80' ]);
   $oPDFTableLegendas->addHeaderDescription("Legenda das Siglas");
 
   foreach($aLegendas as $oLegenda) {
-    $oPDFTableLegendas->addLineInformation( array ($oLegenda->sDescricao, $oLegenda->sDescricaoDetalhada));
+    $oPDFTableLegendas->addLineInformation(  [$oLegenda->sDescricao, $oLegenda->sDescricaoDetalhada]);
   }
 
   $oPDFTableLegendas->printOut($oPDFDocument, false);

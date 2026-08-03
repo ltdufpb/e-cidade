@@ -34,7 +34,7 @@ require_once(modification("classes/db_iptubase_classe.php"));
 $cliptubase = new cl_iptubase;
 $cliptubase->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -76,9 +76,9 @@ db_postmemory($HTTP_POST_VARS);
            <td >
            <?php
 
-            $aFormaInclusao = array( "0" => "Nenhum",
+            $aFormaInclusao = [ "0" => "Nenhum",
                                      "1" => "Digitação manual ",
-                                     "2" => "Importar calculos anteriores");
+                                     "2" => "Importar calculos anteriores"];
             db_select("forma", $aFormaInclusao, 1, 1, "onchange='js_mostraexerc()'");
            ?>
            </td>
@@ -87,7 +87,7 @@ db_postmemory($HTTP_POST_VARS);
            <td ><strong>Exercício origem:<strong></td>
            <td >
            <?php 
-            $arrayexec = array("0" => "Nenhum ");
+            $arrayexec = ["0" => "Nenhum "];
             db_select("exec",$arrayexec,1,1,"onchange='js_mostraexerc(document.form1.exec.value)'");
            ?>
            </td>

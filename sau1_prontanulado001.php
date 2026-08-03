@@ -33,7 +33,7 @@ include(modification("classes/db_prontanulado_classe.php"));
 include(modification("classes/db_prontproced_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clprontanulado = new cl_prontanulado;
 $clprontproced  = new cl_prontproced;

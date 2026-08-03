@@ -41,8 +41,8 @@ $lExcluiu = false;
 if(isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Excluir") {
 
   $sSqlVinculosSetor = $clsetor->vinculosSetor(
-    array('j37_setor', 'j34_setor', 'j141_setor'),
-    array("j30_codi = '{$j30_codi}'")
+    ['j37_setor', 'j34_setor', 'j141_setor'],
+    ["j30_codi = '{$j30_codi}'"]
   );
 
   $rsVinculosSetor = db_query($sSqlVinculosSetor);

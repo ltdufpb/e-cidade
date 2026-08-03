@@ -99,7 +99,7 @@ $sSqlEstimativa .= " order by o08_orgao";
 //die($sSqlEstimativa);
 $rsEstimativa 	   = db_query($sSqlEstimativa); 
 $iLinhasEstimativa = pg_num_rows($rsEstimativa);
-$aEstimativa	     = array();	 
+$aEstimativa	     = [];	 
 
 for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
   $oDadosEstimativa = db_utils::fieldsMemory($rsEstimativa,$iInd);	
@@ -134,7 +134,7 @@ for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
   $sSqlindicadores .= " where o18_orcprograma = {$oDados->iPrograma} and o18_anousu = ".db_getsession('DB_anousu');
   $rsIndicadores    = db_query($sSqlindicadores);
   $aIndicadores     = db_utils::getCollectionByRecord($rsIndicadores);
-  $aIndicadorAnos					 = array();
+  $aIndicadorAnos					 = [];
   
   if (count($aIndicadores) > 0)  {
     
@@ -251,7 +251,7 @@ for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
 
   $rsConsultaAcoes 	= db_query($sSqlAcoes);  
   $iLinhasAcoes    	= pg_num_rows($rsConsultaAcoes);
-  $aAcoes 		    	= array();
+  $aAcoes 		    	= [];
   $nValorTotalGrupo = 0;
   if ( $iLinhasAcoes > 0 ) {
 
@@ -382,7 +382,7 @@ for ( $iInd=0; $iInd < $iLinhasEstimativa; $iInd++ ) {
 }
 
 if ($iModelo == 1) {
-  
+
   $head2  = "ANEXO DE OBJETIVOS , DIRETRIZES E METAS";
   $head3  = "PPA - {$oGet->anoini} - {$oGet->anofin}";
 
@@ -412,7 +412,7 @@ $iUnidadeAnt = 0;
 $iPagina     = 0;
 $alt         = "4";
 $mostra      = "";
-$Ativs       = array();
+$Ativs       = [];
 
  /*********
  *Faz a verificação das atividades que poderao ser mostradas
@@ -493,7 +493,7 @@ foreach ( $aEstimativa as $iInd => $oEstimativa ) {
       $pdf->Cell(0 ,$alt,":  {$oEstimativa->iSubFuncao} - {$oEstimativa->sSubFuncao}" ,"TB",1,"L",0);
     }
 	  $pdf->Cell(32,$alt,"Programa do Governo"								 		                    ,"TB",0,"L",0);
-	  $pdf->Cell(0 ,$alt,":  ".str_pad($oEstimativa->iPrograma,4,"0",STR_PAD_LEFT)." - {$oEstimativa->sPrograma}"   ,"TB",1,"L",0);
+	  $pdf->Cell(0 ,$alt,":  ".str_pad((string) $oEstimativa->iPrograma,4,"0",STR_PAD_LEFT)." - {$oEstimativa->sPrograma}"   ,"TB",1,"L",0);
 	
 	  $pdf->Cell(32,$alt,"Objetivos "                           ,"T",0,"L",0);
 	  $pdf->setfont('arial','' , 8);
@@ -503,7 +503,7 @@ foreach ( $aEstimativa as $iInd => $oEstimativa ) {
        while ( ! empty($texto) ) {
 
            $pdf->SetX(42);
-           $texto = $pdf->Row_multicell(array('', '', '', $texto, '', ''),
+           $texto = $pdf->Row_multicell(['', '', '', $texto, '', ''],
           $alt-1, false, 5, 0, true, true, 3, ($pdf->h - 20));
            validaNovaPagina($pdf);
        }
@@ -637,19 +637,19 @@ foreach ( $aEstimativa as $iInd => $oEstimativa ) {
   			$iAltDescr = ($alt);
   			
   			//$pdf->multicell(26,$iAltDescr,str_pad(substr($iProjAtiv,0,100),100," ",STR_PAD_BOTH),"TR","J",1);
-  			$pdf->multicell(26,$iAltDescr,str_pad($iProjAtiv, 4, "0", STR_PAD_LEFT),"TR","J",1);
+  			$pdf->multicell(26,$iAltDescr,str_pad((string) $iProjAtiv, 4, "0", STR_PAD_LEFT),"TR","J",1);
   			$pdf->SetXY(36,$iPosYAntes);
   			$pdf->setfont('arial','', 6);
-  			$pdf->multicell(26,$iAltDescr,str_pad(substr($aDadosAcoes['sDescricao'],0,40),70," ",STR_PAD_RIGHT),"TRL","L",1);
+  			$pdf->multicell(26,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sDescricao'],0,40),70," ",STR_PAD_RIGHT),"TRL","L",1);
   			$pdf->setfont('arial','', 8);
   			$pdf->SetXY(62,$iPosYAntes);
-  			$pdf->multicell(26,$iAltDescr,str_pad(substr($aDadosAcoes['sLocalizador'],0,45),90," ",STR_PAD_RIGHT),"TLR","J",1);
+  			$pdf->multicell(26,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sLocalizador'],0,45),90," ",STR_PAD_RIGHT),"TLR","J",1);
   			$pdf->SetXY(88,$iPosYAntes);
-  			$pdf->multicell(20,$iAltDescr,substr($aDadosAcoes['sProduto'],0,45),"TLR","J",1);
+  			$pdf->multicell(20,$iAltDescr,substr((string) $aDadosAcoes['sProduto'],0,45),"TLR","J",1);
   			$pdf->SetXY(108,$iPosYAntes);
-  			$pdf->multicell(20,$iAltDescr,str_pad(substr($aDadosAcoes['sUnidade'],0,45),70," ",STR_PAD_RIGHT),"TLR","J",1);
+  			$pdf->multicell(20,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sUnidade'],0,45),70," ",STR_PAD_RIGHT),"TLR","J",1);
   			$pdf->SetXY(128,$iPosYAntes);
-  			$pdf->multicell(20,$iAltDescr,str_pad(substr($aDadosAcoes['nUnidade'],0,45),70," ",STR_PAD_RIGHT),"TLR","J",1);
+  			$pdf->multicell(20,$iAltDescr,str_pad(substr((string) $aDadosAcoes['nUnidade'],0,45),70," ",STR_PAD_RIGHT),"TLR","J",1);
   			
   			$pdf->SetY($iPosYAntes);
   			
@@ -745,17 +745,17 @@ foreach ( $aEstimativa as $iInd => $oEstimativa ) {
   			$iAltDescr = ($alt);
   			
   			//$pdf->multicell(26,$iAltDescr,str_pad(substr($iProjAtiv,0,100),100," ",STR_PAD_BOTH),"TR","J",1);
-  			$pdf->multicell(10,$iAltDescr,str_pad($iProjAtiv, 4, "0", STR_PAD_LEFT),"TR","J",1);
+  			$pdf->multicell(10,$iAltDescr,str_pad((string) $iProjAtiv, 4, "0", STR_PAD_LEFT),"TR","J",1);
   			$pdf->SetXY(20,$iPosYAntes);
   			$pdf->setfont('arial','', 8);
-			  $pdf->multicell(84,$iAltDescr,str_pad(substr($aDadosAcoes['sDescricao'],0,300),70," ",STR_PAD_RIGHT),"TRL","L",1);
+			  $pdf->multicell(84,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sDescricao'],0,300),70," ",STR_PAD_RIGHT),"TRL","L",1);
   			$pdf->setfont('arial','', 8);
   			$pdf->SetXY(62+42,$iPosYAntes);
-  			$pdf->multicell(26,$iAltDescr,str_pad(substr($aDadosAcoes['sLocalizador'],0,45),90," ",STR_PAD_RIGHT),"TLR","J",1);
+  			$pdf->multicell(26,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sLocalizador'],0,45),90," ",STR_PAD_RIGHT),"TLR","J",1);
   			$pdf->SetXY(88+42,$iPosYAntes);
-        $pdf->multicell(30,$iAltDescr,substr($aDadosAcoes['sProduto'],0,45),"TLR","J",1);
+        $pdf->multicell(30,$iAltDescr,substr((string) $aDadosAcoes['sProduto'],0,45),"TLR","J",1);
         $pdf->SetXY(118+42,$iPosYAntes);
-        $pdf->multicell(22,$iAltDescr,str_pad(substr($aDadosAcoes['sUnidade'],0,45),70," ",STR_PAD_RIGHT),"TLR","J",1);
+        $pdf->multicell(22,$iAltDescr,str_pad(substr((string) $aDadosAcoes['sUnidade'],0,45),70," ",STR_PAD_RIGHT),"TLR","J",1);
         $pdf->SetXY(118+42,$iPosYAntes);
   			
   			$pdf->SetY($iPosYAntes);
@@ -833,18 +833,18 @@ foreach ( $aEstimativa as $iInd => $oEstimativa ) {
   	    $pdf->cell(40,$alt, 'Unidade de Medida',1,0,"C");
   	    $pdf->cell(40,$alt, 'Preço Unitário',1,1,"C");
         $pdf->setfont('arial','', 7);
-        $pdf->cell(10, $alt, str_pad($iProjAtiv, 4, "0", STR_PAD_LEFT),1,0,"R");
+        $pdf->cell(10, $alt, str_pad((string) $iProjAtiv, 4, "0", STR_PAD_LEFT),1,0,"R");
         $pdf->cell(108,$alt, $aDadosAcoes['sDescricao'],1,0,"L");
-        $pdf->cell(40, $alt, substr($aDadosAcoes['sLocalizador'],0,25),1,0,"L");
-        $pdf->cell(40, $alt, substr($aDadosAcoes['sProduto'],0,25),1,0,"L");
-        $pdf->cell(40, $alt, substr($aDadosAcoes['sUnidade'],0,25),1,0,"C");
-        $pdf->cell(40, $alt, substr($aDadosAcoes['nUnidade'],0,25),1,1,"C");
+        $pdf->cell(40, $alt, substr((string) $aDadosAcoes['sLocalizador'],0,25),1,0,"L");
+        $pdf->cell(40, $alt, substr((string) $aDadosAcoes['sProduto'],0,25),1,0,"L");
+        $pdf->cell(40, $alt, substr((string) $aDadosAcoes['sUnidade'],0,25),1,0,"C");
+        $pdf->cell(40, $alt, substr((string) $aDadosAcoes['nUnidade'],0,25),1,1,"C");
         if ($aDadosAcoes['sFinalidade'] != "") {
 
           $pdf->setfont('arial','b', 8);
           $pdf->cell(20,$alt,"Finalidade:",0,0);
           $pdf->setfont('arial','', 7);
-    	    $texto = $pdf->Row_multicell(array('','','',stripslashes($aDadosAcoes['sFinalidade']),'',''),
+    	    $texto = $pdf->Row_multicell(['','','',stripslashes((string) $aDadosAcoes['sFinalidade']),'',''],
                                                 $alt,false,5,0,true,true,3,($pdf->h - 25));
          if ($texto != "") {
   
@@ -859,7 +859,7 @@ foreach ( $aEstimativa as $iInd => $oEstimativa ) {
   	   /**
          * Montamos a lista de recursos existentes nos exercicios
          */
-        $aRecursos = array();
+        $aRecursos = [];
         foreach ( $aDadosAcoes['aExercicio'] as $iExercicio => $aDadosExerc ) {
          
           foreach ($aDadosExerc as $sIndice => $nValor) {
@@ -1025,7 +1025,7 @@ function mostrarTotalGeral($pdf,$alt,$aTotalOrgao){
   
   validaNovaPagina($pdf);
   
-  $aTotalGeral = array(); 
+  $aTotalGeral = []; 
   
   $pdf->Cell(138,$alt,""          ,"TBR",0,"C",0);
   $pdf->Cell(40 ,$alt,"Ano"       ,"TBR",0,"C",0);

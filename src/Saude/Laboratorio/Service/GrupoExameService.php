@@ -40,18 +40,12 @@ use Symfony\Component\Validator\Constraints\Length;
  */
 class GrupoExameService
 {
-    private $repositorio;
-
-    private $setorExameRepository;
-    
     /**
      * GrupoExameService constructor.
      * @param GrupoExameRepository $repositorio
      */
-    public function __construct(GrupoExameRepository $repositorio, SetorExameRepository $setorExameRepository)
+    public function __construct(private readonly GrupoExameRepository $repositorio, private readonly SetorExameRepository $setorExameRepository)
     {
-        $this->repositorio = $repositorio;
-        $this->setorExameRepository = $setorExameRepository;
     }
 
     /**
@@ -82,8 +76,8 @@ class GrupoExameService
             $setorExame = $this->setorExameRepository->buscar("la09_i_codigo", "la02_i_codigo = "
             . $parametros->laboratorio . " and la08_i_codigo = " . $examesGrupo[$i]['codigoexame']);
             $examesGrupo[$i]['codigosetorexame'] = $setorExame[0]['la09_i_codigo'];
-            $examesGrupo[$i]['descricao'] = urlencode($examesGrupo[$i]['descricao']);
-            $examesGrupo[$i]['descricaolaboratorio'] = urlencode($examesGrupo[$i]['descricaolaboratorio']);
+            $examesGrupo[$i]['descricao'] = urlencode((string) $examesGrupo[$i]['descricao']);
+            $examesGrupo[$i]['descricaolaboratorio'] = urlencode((string) $examesGrupo[$i]['descricaolaboratorio']);
         }
         return $examesGrupo;
     }
@@ -104,9 +98,9 @@ class GrupoExameService
     public function salvar($parametros)
     {
         $grupoExame = new GrupoExame();
-        $grupoExame->setCodigo(isset($parametros->codigo) ? $parametros->codigo : '');
-        $grupoExame->setGrupoLaboratorio(isset($parametros->grupoLaboratorio) ? $parametros->grupoLaboratorio : '');
-        $grupoExame->setExame(isset($parametros->exame) ? $parametros->exame : '');
+        $grupoExame->setCodigo($parametros->codigo ?? '');
+        $grupoExame->setGrupoLaboratorio($parametros->grupoLaboratorio ?? '');
+        $grupoExame->setExame($parametros->exame ?? '');
 
         $campos = "lab_setor.la23_i_codigo, lab_exame.la08_i_codigo";
 

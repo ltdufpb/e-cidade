@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $clrotulo = new rotulocampo;
 $clrharqbanco->rotulo->label();

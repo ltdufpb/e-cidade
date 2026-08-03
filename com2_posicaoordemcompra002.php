@@ -61,7 +61,7 @@ $sDeptoOrigem  = "";
 $sDeptoDestino = "";
 $sForncedor    = "";
 $sDataEmissao  = date("d/m/Y", db_getsession("DB_datausu"));
-$aItens        = array();
+$aItens        = [];
 
 $sWereEmpenho = "e60_instit = (select codigo from db_config where prefeitura is true limit 1) ";
 
@@ -153,8 +153,8 @@ $oPdf->SetAutoPageBreak(false);
 $oPdf->setfillcolor(235);
 $oPdf->setfont('arial', 'b', 6);
 
-$sDataInicial = implode("/", array_reverse(explode("-",$sDataInicial)));
-$sDataFinal   = implode("/", array_reverse(explode("-",$sDataFinal)));
+$sDataInicial = implode("/", array_reverse(explode("-",(string) $sDataInicial)));
+$sDataFinal   = implode("/", array_reverse(explode("-",(string) $sDataFinal)));
 
 
 //================================ HEADER DO RELATORIO ======================================
@@ -190,7 +190,7 @@ $oPdf->setfont('arial', 'b', $iFonte);
 
 foreach ($aItens as $iItens => $oValores ) {
 
-  $sDataEmissao = implode("/", array_reverse(explode("-", $oValores->quebra->sDataEmissao)));
+  $sDataEmissao = implode("/", array_reverse(explode("-", (string) $oValores->quebra->sDataEmissao)));
   $oPdf->cell(30 ,  $iAlturalinha, "ORDEM DE COMPRA Nº:"           , "" ,  0, "L", 1);
   $oPdf->cell(20 ,  $iAlturalinha, $oValores->quebra->iOrdem       , "" ,  0, "L", 1);
   $oPdf->cell(25 ,  $iAlturalinha, "DATA DE EMISSÃO:"              , "" ,  0, "L", 1);
@@ -276,9 +276,9 @@ foreach ($aItens as $iItens => $oValores ) {
     }
 
     $oPdf->cell(15 ,  $iAlturalinha, $oDados->codigo_item              , "TRB"  ,  0, "C", 0);
-    $oPdf->cell(45 ,  $iAlturalinha, substr($oDados->descricao_item, 0, 30)           , "LTRB" ,  0, "L", 0);
+    $oPdf->cell(45 ,  $iAlturalinha, substr((string) $oDados->descricao_item, 0, 30)           , "LTRB" ,  0, "L", 0);
     $oPdf->cell(15 ,  $iAlturalinha, $oDados->unidade                  , "LTRB" ,  0, "L", 0);
-    $oPdf->cell(45 ,  $iAlturalinha, substr($oDados->fornecedor, 0, 30), "LTRB" ,  0, "L", 0);
+    $oPdf->cell(45 ,  $iAlturalinha, substr((string) $oDados->fornecedor, 0, 30), "LTRB" ,  0, "L", 0);
 
     $oPdf->cell(15 ,  $iAlturalinha, $iQuantItemOrdem, "LTRB" ,  0, "C", 0);  //OC. quantidade
     $oPdf->cell(15 ,  $iAlturalinha, $iQuantItemOrdemAnulado , "LTRB" ,  0, "C", 0);  //OC. qtd Anulada
@@ -408,8 +408,8 @@ function sqlDadosOrdem ($iCodigoOrdem) {
 
 function diasAtraso ($sDataInicial , $sDataFinal, $iPrazo) {
 
-  $aDataInicial = explode('/', $sDataInicial);
-  $aDataFinal   = explode('/', $sDataFinal);
+  $aDataInicial = explode('/', (string) $sDataInicial);
+  $aDataFinal   = explode('/', (string) $sDataFinal);
 
   $iDiaInicial = $aDataInicial[0];
   $iMesInicial = $aDataInicial[1];

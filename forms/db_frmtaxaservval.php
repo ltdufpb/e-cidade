@@ -97,11 +97,11 @@ $cltaxaservval->rotulo->label();
           <td valign="top"  align="center">
             <?php 
 
-              $aChavePri = array( "cm35_sequencial" => @$cm35_sequencial,
+              $aChavePri = [ "cm35_sequencial" => @$cm35_sequencial,
                                   "cm35_taxaserv"   => @$cm35_taxaserv,
                                   "cm35_dataini"    => @$cm35_dataini,
                                   "cm35_datafin"    => @$cm35_datafin,
-                                  "cm35_valor"      => @$cm35_valor );
+                                  "cm35_valor"      => @$cm35_valor ];
 
               $sCampo    = "cm35_sequencial,cm35_taxaserv,cm35_dataini,cm35_datafin,cm35_valor";
 

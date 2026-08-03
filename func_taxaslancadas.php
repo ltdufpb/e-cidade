@@ -34,8 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 use ECidade\Tributario\Arrecadacao\Model\TaxasLancadasDepart;
 use ECidade\Tributario\Arrecadacao\Repository\TaxasLancadasDepartRepository;
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("ar44_sequencial");
@@ -101,9 +101,7 @@ $clrotulo->label("ar44_descricao");
         
                         $oDepartamentos = $taxasLancadasDepartRepository->getDepartamentos($taxasLancadasDepart);
 
-                        $sTaxas = implode(",", array_map(function ($oDepartamento) {
-                            return $oDepartamento->ar45_taxaslancadas;
-                        }, $oDepartamentos));
+                        $sTaxas = implode(",", array_map(fn($oDepartamento) => $oDepartamento->ar45_taxaslancadas, $oDepartamentos));
         
                         $sWhere = " ar44_sequencial IN ({$sTaxas})";    
 
@@ -115,13 +113,13 @@ $clrotulo->label("ar44_descricao");
                     if (!isset($pesquisa_chave)) {
                         $sql = $cl_taxaslancadas->sql_query_file("", "", "ar44_sequencial", $sWhere);
 
-                        $repassa = array();
+                        $repassa = [];
 
                         if (isset($chave_ar44_descricao)) {
-                            $repassa = array(
+                            $repassa = [
                                 "chave_ar44_sequencial" => $chave_ar44_sequencial,
                                 "chave_ar44_descricao" => $chave_ar44_descricao
-                            );
+                            ];
                         }
 
                         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

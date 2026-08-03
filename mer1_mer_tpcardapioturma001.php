@@ -37,8 +37,8 @@ include(modification("classes/db_mer_cardapiodata_classe.php"));
 include(modification("classes/db_mer_cardapiodia_classe.php"));
 include(modification("classes/db_matricula_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
 $clmer_cardapioescola = new cl_mer_cardapioescola;
 $clmer_cardapio = new cl_mer_cardapio;
@@ -56,7 +56,7 @@ if (isset($alterar) || isset($incluir)) {
   	  	
     for ($t=0;$t<count($checkserie);$t++) {
     	    	
-      $aSerie = explode("|",$checkserie[$t]);
+      $aSerie = explode("|",(string) $checkserie[$t]);
       $clmer_tpcardapioturma->me28_i_serie = $aSerie[0];
       $clmer_tpcardapioturma->me28_i_cardapioescola = $aSerie[1];
       $clmer_tpcardapioturma->incluir(null);

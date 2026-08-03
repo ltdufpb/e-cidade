@@ -39,7 +39,7 @@ $clrotulo->label('rh01_regist');
 $clrotulo->label('z01_nome');
 $clrotulo->label('r13_codigo');
 $clrotulo->label('r13_descr');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>

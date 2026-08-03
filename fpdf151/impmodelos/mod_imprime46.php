@@ -63,7 +63,7 @@ $this->objpdf->cell(100,$alt,'CPF','LRT',0,'L',0);
 $this->objpdf->cell(100,$alt,'NOME COMPLETO','LRT',1,'L',0);
 $this->objpdf->Setfont('Arial', '', 7);
 $sFormatar = "cpf";
-if (strlen($this->cpf) == 14) {
+if (strlen((string) $this->cpf) == 14) {
   $sFormatar = "cnpj";
 }
 $this->objpdf->cell(100,$alt,db_formatar($this->cpf, $sFormatar),'BLR',0,'L',0);
@@ -162,8 +162,8 @@ for($i=0;$i < count($this->aRubricas);$i++){
   $this->objpdf->cell(40 ,$alt,db_formatar($this->aRubricas[$i]['valor'],'f'),'RTB',1,'R',0);
 }
 
-if(trim($this->pensionistas) != ''){
-  $this->objpdf->multicell(200,$alt,'PENSIONISTAS : '.trim($this->pensionistas),1,'L',0);
+if(trim((string) $this->pensionistas) != ''){
+  $this->objpdf->multicell(200,$alt,'PENSIONISTAS : '.trim((string) $this->pensionistas),1,'L',0);
 }
 $this->objpdf->multicell(200,$alt,'',1,'L',0);
 

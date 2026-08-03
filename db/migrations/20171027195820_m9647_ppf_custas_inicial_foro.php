@@ -8,22 +8,22 @@ class M9647PpfCustasInicialForo extends PostgresMigration
     public function up()
     {
 
-        $this->table('taxa',  array('schema' => 'arrecadacao'))
-            ->addColumn('ar36_debitoscomprocesso', 'boolean', array('default' => false, 'null' => true))
-            ->addColumn('ar36_debitossemprocesso', 'boolean', array('default' => false, 'null' => true))
+        $this->table('taxa',  ['schema' => 'arrecadacao'])
+            ->addColumn('ar36_debitoscomprocesso', 'boolean', ['default' => false, 'null' => true])
+            ->addColumn('ar36_debitossemprocesso', 'boolean', ['default' => false, 'null' => true])
             ->save();
 
         $this->criaDicionario();
 
         $this->execute("UPDATE arrecadacao.taxa SET ar36_debitoscomprocesso = 't', ar36_debitossemprocesso = 'f'");
 
-        $this->table('taxa',  array('schema' => 'arrecadacao')) 
-            ->changeColumn('ar36_debitoscomprocesso', 'boolean', array('default' => false, 'null' => false))
-            ->changeColumn('ar36_debitossemprocesso', 'boolean', array('default' => false, 'null' => false))
+        $this->table('taxa',  ['schema' => 'arrecadacao']) 
+            ->changeColumn('ar36_debitoscomprocesso', 'boolean', ['default' => false, 'null' => false])
+            ->changeColumn('ar36_debitossemprocesso', 'boolean', ['default' => false, 'null' => false])
             ->save();
 
-        $this->table('processoforopartilhacusta', array('schema' => 'juridico'))
-            ->addColumn('v77_dispensalancamentorecibo', 'boolean', array('default' => false, 'null' => false))
+        $this->table('processoforopartilhacusta', ['schema' => 'juridico'])
+            ->addColumn('v77_dispensalancamentorecibo', 'boolean', ['default' => false, 'null' => false])
             ->save();
         
         $this->execute("select setval ('grupotaxatipo_ar38_sequencial_seq', coalesce((select max(ar38_sequencial) from grupotaxatipo), 1))");
@@ -35,12 +35,12 @@ class M9647PpfCustasInicialForo extends PostgresMigration
 
     public function down()
     {
-        $this->table('taxa',  array('schema' => 'arrecadacao'))
+        $this->table('taxa',  ['schema' => 'arrecadacao'])
             ->removeColumn('ar36_debitoscomprocesso')
             ->removeColumn('ar36_debitossemprocesso')
             ->save();
 
-        $this->table('processoforopartilhacusta', array('schema' => 'juridico'))
+        $this->table('processoforopartilhacusta', ['schema' => 'juridico'])
              ->removeColumn('v77_dispensalancamentorecibo')
              ->save();
         
@@ -57,9 +57,9 @@ class M9647PpfCustasInicialForo extends PostgresMigration
 
     private function criaDicionario()
     {
-        $this->table('db_syscampo', array('schema' => 'configuracoes'))
+        $this->table('db_syscampo', ['schema' => 'configuracoes'])
             ->insert(
-                array(
+                [
                     'codcam',
                     'nomecam',
                     'conteudo',
@@ -72,9 +72,9 @@ class M9647PpfCustasInicialForo extends PostgresMigration
                     'autocompl',
                     'aceitatipo',
                     'tipoobj',
-                    'rotulorel'),
-                array(
-                    array(
+                    'rotulorel'],
+                [
+                    [
                         1009487,
                         'ar36_debitoscomprocesso',
                         'bool',
@@ -88,8 +88,8 @@ class M9647PpfCustasInicialForo extends PostgresMigration
                         5,
                         'text',
                         'Cobrança Judicial'
-                    ),
-                    array(
+                    ],
+                    [
                         1009488,
                         'ar36_debitossemprocesso',
                         'bool',
@@ -102,9 +102,9 @@ class M9647PpfCustasInicialForo extends PostgresMigration
                         'f',
                         5,
                         'text',
-                        'Cobrança Administrativa'),
+                        'Cobrança Administrativa'],
                     /* @note: Campo já adicionado a tabela processoforopartilhacusta */
-                    array(
+                    [
                         20752,
                         'v77_dispensalancamentorecibo',
                         'bool',
@@ -117,21 +117,21 @@ class M9647PpfCustasInicialForo extends PostgresMigration
                         'f',
                         5,
                         'text',
-                        'Dispensa cobrança')
-                )
+                        'Dispensa cobrança']
+                ]
             )
             ->saveData();
 
-        $this->table('db_sysarqcamp', array('schema' => 'configuracoes'))
+        $this->table('db_sysarqcamp', ['schema' => 'configuracoes'])
             ->insert(
-                array(
-                    'codarq', 'codcam', 'seqarq', 'codsequencia'),
-                array(
-                    array(3221,1009487,9,0),
-                    array(3221,1009488,10,0),
+                [
+                    'codarq', 'codcam', 'seqarq', 'codsequencia'],
+                [
+                    [3221,1009487,9,0],
+                    [3221,1009488,10,0],
                     /* @note: Campo v77_dispensalancamentorecibo da tabela processoforopartilhacusta */
-                    array(3230,20752,10,0),
-                ))
+                    [3230,20752,10,0],
+                ])
             ->saveData();
     }
 }

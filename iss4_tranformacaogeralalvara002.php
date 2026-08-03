@@ -61,9 +61,9 @@ require_once(modification("libs/JSON.php"));
   /**
    * Retorna os tipos de Alvaras disponiveis
    */
-	$aTiposAlvara         = array();
-	$aTiposAlvaraVariavel = array();
-  $aTiposAlvaraFixo     = array();
+	$aTiposAlvara         = [];
+	$aTiposAlvaraVariavel = [];
+  $aTiposAlvaraFixo     = [];
 	$oIssTipoAlvara       = db_utils::getDao('isstipoalvara');
 	$sWhereTipoAlvara     = "q98_instit = " . db_getsession('DB_instit') . " and q98_sequencial <>" . $oGet->iTipoAlvara;
   $sCamposAlvara        = 'q98_sequencial, q98_descricao, q98_tipovalidade, q98_quantvalidade';

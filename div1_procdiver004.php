@@ -36,11 +36,11 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_procdiver_classe.php"));
 require_once(modification("classes/db_recparprocdiver_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clprocdiver = new cl_procdiver;
 
-$oPost       = db_utils::postMemory($HTTP_POST_VARS);
+$oPost       = db_utils::postMemory($_POST);
 
 $db_opcao    = 1;
 $db_botao    = true;

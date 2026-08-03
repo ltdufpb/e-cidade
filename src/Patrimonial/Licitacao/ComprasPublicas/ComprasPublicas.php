@@ -14,7 +14,7 @@ class ComprasPublicas
     private $urlEnviaDados;
     private $urlBuscaProcessos;
     private $urlBuscaUnidades;
-    
+
     public function __construct()
     {
         /**
@@ -26,7 +26,7 @@ class ComprasPublicas
         $this->urlApi   = $configuracao->getUrl();
         //$this->acesskey = "5db216a443cf282889df9883dda04138";
         $this->acesskey = $configuracao->getToken();
-        
+
         /**
          * Rotas da Api utilizadas no e-cidade
          */
@@ -51,11 +51,11 @@ class ComprasPublicas
 
         $url     = $this->urlListaProcessos . "/{$parametroPesquisa}?pagina={$pagina}";
         $curl    = new Curl();
-        $options = array(
+        $options = [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 20
-        );
+        ];
         $curl->setOptions($options);
         $curl->execute();
         if ($curl->getErro() || $curl->getCodeReturn() == "404") {
@@ -68,15 +68,15 @@ class ComprasPublicas
         $curl->close();
         return $response;
     }
-    
+
     public function getDocumentos()
     {
         $curl    = new Curl();
-        $options = array(
+        $options = [
             CURLOPT_URL => $this->urlListaDocumentos,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 20
-        );
+        ];
         $curl->setOptions($options);
         $curl->execute();
         if ($curl->getErro() || $curl->getCodeReturn() == "404") {
@@ -99,12 +99,12 @@ class ComprasPublicas
 
         $url     = $this->urlBuscaProcesso . "/{$parametroPesquisa}";
         $curl    = new Curl();
-       
-        $options = array(
+
+        $options = [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 20
-        );
+        ];
         $curl->setOptions($options);
         $curl->execute();
         if ($curl->getErro() || $curl->getCodeReturn() == "404") {
@@ -129,11 +129,11 @@ class ComprasPublicas
         $parametroPesquisa = "{$processo}/ranking";
         $url     = $this->urlBuscaProcesso . "/{$parametroPesquisa}";
         $curl    = new Curl();
-        $options = array(
+        $options = [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => 20
-        );
+        ];
         $curl->setOptions($options);
         $curl->execute();
         if ($curl->getErro() || $curl->getCodeReturn() == "404") {
@@ -162,13 +162,13 @@ class ComprasPublicas
         }
 
         $curl           = new Curl();
-        $options        = array(
+        $options        = [
             CURLOPT_URL => $url,
             CURLOPT_POSTFIELDS => $data,
             CURLOPT_TIMEOUT => 20,
-            CURLOPT_HTTPHEADER => array('Content-Type:application/json'),
+            CURLOPT_HTTPHEADER => ['Content-Type:application/json'],
             CURLOPT_RETURNTRANSFER => true
-        );
+        ];
         $curl->setOptions($options);
         $curl->execute();
 
@@ -180,7 +180,7 @@ class ComprasPublicas
 
         $response = $curl->getResponse();
         $curl->close();
-        
+
         return $response;
     }
 

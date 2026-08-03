@@ -301,7 +301,7 @@ class AnexoIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
                 "ano" => $anoCorrente,
                 "nome_coluna" => "mes_{$mesColuna}",
                 "label" => \DBDate::getMesAbreviado($mesCorrente) . "/{$anoCorrente}",
-                "codigo_mes" => str_pad($mesCorrente, 2, '0', STR_PAD_LEFT)
+                "codigo_mes" => str_pad((string) $mesCorrente, 2, '0', STR_PAD_LEFT)
             ];
             $mesCorrente++;
             $mesColuna++;
@@ -353,7 +353,7 @@ class AnexoIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     /**
      * @param array $linhasProcessar
      */
-    public function processaTotalizadores($linhasProcessar = array())
+    public function processaTotalizadores($linhasProcessar = [])
     {
 
         /**
@@ -423,21 +423,13 @@ class AnexoIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     {
 
         $periodo = $codigoPeriodo;
-        switch ($codigoPeriodo) {
-            case \Periodo::PRIMEIRO_SEMESTRE:
-                $periodo = \Periodo::TERCEIRO_BIMESTRE;
-                break;
-            case \Periodo::SEGUNDO_SEMESTRE:
-            case \Periodo::TERCEIRO_QUADRIMESTRE:
-                $periodo = \Periodo::SEXTO_BIMESTRE;
-                break;
-            case \Periodo::PRIMEIRO_QUADRIMESTRE:
-                $periodo = \Periodo::SEGUNDO_BIMESTRE;
-                break;
-            case \Periodo::SEGUNDO_QUADRIMESTRE:
-                $periodo = \Periodo::QUARTO_BIMESTRE;
-                break;
-        }
+        $periodo = match ($codigoPeriodo) {
+            \Periodo::PRIMEIRO_SEMESTRE => \Periodo::TERCEIRO_BIMESTRE,
+            \Periodo::SEGUNDO_SEMESTRE, \Periodo::TERCEIRO_QUADRIMESTRE => \Periodo::SEXTO_BIMESTRE,
+            \Periodo::PRIMEIRO_QUADRIMESTRE => \Periodo::SEGUNDO_BIMESTRE,
+            \Periodo::SEGUNDO_QUADRIMESTRE => \Periodo::QUARTO_BIMESTRE,
+            default => $periodo,
+        };
         return $periodo;
     }
 

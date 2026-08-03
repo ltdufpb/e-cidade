@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_certidcartorio_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcertidcartorio = new cl_certidcartorio;
 $clcertidcartorio->rotulo->label("v31_sequencial");
@@ -80,9 +80,9 @@ $clcertidcartorio->rotulo->label("v31_certid");
         }else{
            $sql = $clcertidcartorio->sql_query("",$campos,"v31_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v31_certid)){
-          $repassa = array("chave_v31_sequencial"=>$chave_v31_sequencial,"chave_v31_certid"=>$chave_v31_certid);
+          $repassa = ["chave_v31_sequencial"=>$chave_v31_sequencial,"chave_v31_certid"=>$chave_v31_certid];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

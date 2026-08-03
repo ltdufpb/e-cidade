@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_bairrofator_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clbairrofator = new cl_bairrofator;
 $clbairrofator->rotulo->label("j112_sequencial");
@@ -93,9 +93,9 @@ $clbairrofator->rotulo->label("j112_sequencial");
           $sql = $clbairrofator->sql_query(null,$campos,"j112_sequencial","");
         }
         
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_j112_sequencial)) {
-          $repassa = array("chave_j112_sequencial"=>$chave_j112_sequencial);
+          $repassa = ["chave_j112_sequencial"=>$chave_j112_sequencial];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

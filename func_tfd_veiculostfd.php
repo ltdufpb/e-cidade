@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiculos_classe.php"));
 include(modification("classes/db_veiccadcentraldepart_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveiculos             = new cl_veiculos;
 $clveiccadcentraldepart = new cl_veiccadcentraldepart;
@@ -110,9 +110,9 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
            $sql = $clveiculos->sql_query_central("",$campos,"ve01_codigo",$where);
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve01_codigo)){
-          $repassa = array("chave_ve01_codigo"=>$chave_ve01_codigo,"chave_ve01_codigo"=>$chave_ve01_codigo);
+          $repassa = ["chave_ve01_codigo"=>$chave_ve01_codigo,"chave_ve01_codigo"=>$chave_ve01_codigo];
         }
 				//die($sql);
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa,false);

@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_cardapionutri_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_cardapionutri = new cl_mer_cardapionutri;
 $cl_cgm = new cl_cgm;
 $clmer_cardapionutri->rotulo->label("me04_i_codigo");
@@ -103,9 +103,9 @@ $cl_cgm->rotulo->label("z01_nome");
         } else {
           $sql = $clmer_cardapionutri->sql_query("",$campos,"me04_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_me04_i_codigo)) {
-          $repassa = array("chave_me04_i_codigo"=>$chave_me04_i_codigo,"chave_me04_i_codigo"=>$chave_me04_i_codigo);
+          $repassa = ["chave_me04_i_codigo"=>$chave_me04_i_codigo,"chave_me04_i_codigo"=>$chave_me04_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
         

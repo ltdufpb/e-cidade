@@ -19,6 +19,7 @@ class PrevisaoRclLdo extends Xls
     /**
      * @param $ano
      */
+    #[\Override]
     public function setAnoReferencia($ano)
     {
         $this->setVariavel('ano_referencia', $ano);

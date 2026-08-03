@@ -36,7 +36,7 @@ class HistoricoOcorrenciaRepository
     public function persist(HistoricoOcorrencia $oHistoricoOcorrencia)
     {
 
-        $params = array(
+        $params = [
             'ar23_sequencial' => $oHistoricoOcorrencia->getSequencial(),
             'ar23_id_usuario' => $oHistoricoOcorrencia->getIdUsuario(),
             'ar23_instit' => $oHistoricoOcorrencia->getInstit(),
@@ -47,7 +47,7 @@ class HistoricoOcorrenciaRepository
             'ar23_tipo' => $oHistoricoOcorrencia->getTipo(),
             'ar23_descricao' => $oHistoricoOcorrencia->getDescricao(),
             'ar23_ocorrencia' => $oHistoricoOcorrencia->getOcorrencia(),
-        );
+        ];
 
         if (empty($params['ar23_sequencial'])) {
             $sSql = $this->insert($params);
@@ -77,11 +77,7 @@ class HistoricoOcorrenciaRepository
     {
         $params = array_filter($params);
 
-        $params = array_map(function($value) {
-
-            return "'".$value."'";
-
-        }, $params);
+        $params = array_map(fn($value) => "'".$value."'", $params);
 
         $params['ar23_sequencial'] = "nextval('" . self::SEQUENCE_NAME . "')";
         $filds  = implode(",", array_keys($params));

@@ -8,13 +8,9 @@ final class Container extends ContainerAbstract
 {
     public function charge()
     {
-        $this->content = array(
-            'CertidaoRepository' => function ($container) {
-                return \ECidade\Tributario\Divida\Certidao\Repository\Certidao::getInstance();
-            },
-            'CertidaoDividaRepository' => function ($container) {
-                return \ECidade\Tributario\Divida\Certidao\Repository\CertidaoDivida::getInstance();
-            },
+        $this->content = [
+            'CertidaoRepository' => fn($container) => (new \ECidade\Tributario\Divida\Certidao\Repository\Certidao())->getInstance(),
+            'CertidaoDividaRepository' => fn($container) => (new \ECidade\Tributario\Divida\Certidao\Repository\CertidaoDivida())->getInstance(),
             'CertidaoTermoRepository' => function ($container) {
                 $dataBase = $container->get('DataBase');
                 $dao = new \cl_certter();
@@ -45,12 +41,8 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Divida\Certidao\Repository\ListaCDA($dataBase, $dao);
             },
-            'TermoRepository' => function ($container) {
-                return \ECidade\Tributario\Divida\Termo\Repository\Termo::getInstance();
-            },
-            'TermoInicialRepository' => function ($container) {
-                return \ECidade\Tributario\Divida\Termo\Repository\TermoInicial::getInstance();
-            },
+            'TermoRepository' => fn($container) => (new \ECidade\Tributario\Divida\Termo\Repository\Termo())->getInstance(),
+            'TermoInicialRepository' => fn($container) => (new \ECidade\Tributario\Divida\Termo\Repository\TermoInicial())->getInstance(),
             'TermoDividaRepository' => function ($container) {
                 $dataBase = $container->get('DataBase');
                 $dao = new \cl_termodiv();
@@ -63,9 +55,7 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Divida\Termo\Repository\TermoReparcelamento($dataBase, $dao);
             },
-            'DividaRepository' => function ($container) {
-                return  \ECidade\Tributario\Divida\Repository\Divida::getInstance();
-            },
+            'DividaRepository' => fn($container) => (new \ECidade\Tributario\Divida\Repository\Divida())->getInstance(),
             'ParcelamentoForoParaDividaService' => function ($container) {
 
                 $arreforoRepository = $container->get('ArreforoRepository');
@@ -110,6 +100,6 @@ final class Container extends ContainerAbstract
                     $dividaRepository
                 );
             },
-        );
+        ];
     }
 }

@@ -146,9 +146,7 @@ class ServidorOperadoraSaudeService
     public function calcularTotalDesconto(ServidorOperadoraSaude $servidorOperadoraSaude)
     {
         $dependentes = $this->dependentes($servidorOperadoraSaude);
-        $valorDependentes = array_reduce($dependentes, function ($a, ServidorOperadoraSaudeDependente $b) {
-            return $a + $b->getValor();
-        }, 0);
+        $valorDependentes = array_reduce($dependentes, fn($a, ServidorOperadoraSaudeDependente $b) => $a + $b->getValor(), 0);
         $valorDependentes += $servidorOperadoraSaude->getValor();
 
         return $valorDependentes;

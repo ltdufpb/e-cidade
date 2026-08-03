@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atendocupadolog_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatendocupadolog = new cl_atendocupadolog;
 $clatendocupadolog->rotulo->label("at73_id");
 $clatendocupadolog->rotulo->label("at73_id_usuario");
@@ -98,9 +98,9 @@ $clatendocupadolog->rotulo->label("at73_id_usuario");
         }else{
            $sql = $clatendocupadolog->sql_query("",$campos,"at73_id","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at73_id_usuario)){
-          $repassa = array("chave_at73_id"=>$chave_at73_id,"chave_at73_id_usuario"=>$chave_at73_id_usuario);
+          $repassa = ["chave_at73_id"=>$chave_at73_id,"chave_at73_id_usuario"=>$chave_at73_id_usuario];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

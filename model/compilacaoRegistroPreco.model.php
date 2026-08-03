@@ -38,7 +38,7 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
   /**
    * @var itemCompilacao[]
    */
-  protected $aItens = array();
+  protected $aItens = [];
 
   protected $iCodigoRegistro;
 
@@ -289,7 +289,7 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
        * Verificamos os parametros do registro de Preço
        */
       $iPercentualMaximo   = 0;
-      $aParametrosRegistro = db_stdClass::getParametro("registroprecoparam",array(db_getsession("DB_instit")));
+      $aParametrosRegistro = db_stdClass::getParametro("registroprecoparam",[db_getsession("DB_instit")]);
       if (count($aParametrosRegistro) > 0) {
         if ($aParametrosRegistro[0]->pc08_percentuquantmax > 0) {
           $iPercentualMaximo = $aParametrosRegistro[0]->pc08_percentuquantmax;
@@ -378,7 +378,7 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
           $oItemNovo->setQuantidadeMinima(1);
           $oItemNovo->setQuantidade(1);
         }
-        $oItemNovo->setItensEstimativas(explode(",", $oItem->estimativas));
+        $oItemNovo->setItensEstimativas(explode(",", (string) $oItem->estimativas));
         $oItemNovo->setPrazos($oItem->pc11_prazo);
         $oItemNovo->setPagamento($oItem->pc11_pgto);
         $this->addItem($oItemNovo);
@@ -1303,7 +1303,7 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
    */
   public function getRegistrosdePreco() {
 
-    $aRegistroPreco     = array();
+    $aRegistroPreco     = [];
     $sSqlRegistroPreco  = "select pc53_solicitafilho ";
     $sSqlRegistroPreco .= "  from solicitavinculo ";
     $sSqlRegistroPreco .= " where pc53_solicitapai = {$this->iCodigoSolicitacao} ";
@@ -1371,7 +1371,7 @@ class compilacaoRegistroPreco extends solicitacaoCompra {
    */
   public function getReequilibrios() {
 
-    $aReequilibrios      = array();
+    $aReequilibrios      = [];
     $oDaoRPMovimentacao  = db_utils::getDao('registroprecomovimentacao');
     $sWhereMovimentacao  = "pc58_solicita = {$this->getCodigoSolicitacao()} and pc58_tipo = 1 and pc58_situacao = 1";
     $sSqlRPMovimentacao  = $oDaoRPMovimentacao->sql_query(null, "login, pc58_data", null, $sWhereMovimentacao);

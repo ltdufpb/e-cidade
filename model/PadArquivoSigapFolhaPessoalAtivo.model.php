@@ -78,7 +78,7 @@ final class PadArquivoSigapFolhaPessoalAtivo extends PadArquivoSigap
         /**
          * Separamos a data do em ano, mes, dia
          */
-        list($this->iAno, $this->iMes, $this->iDia) = explode("-", $this->sDataFinal);
+        [$this->iAno, $this->iMes, $this->iDia] = explode("-", $this->sDataFinal);
 
         
         $this->sListaInstit = db_getsession("DB_instit");
@@ -305,13 +305,13 @@ final class PadArquivoSigapFolhaPessoalAtivo extends PadArquivoSigap
             $oPessoalRetorno->pesNome = $oPessoal->z01_nome;
             
             /////////////////// NOVOS
-            $iTamanhoPad = strlen($oPessoal->z01_cgccpf);
+            $iTamanhoPad = strlen((string) $oPessoal->z01_cgccpf);
             $oPessoalRetorno->cnpj  = $oUnidadeOrcamentaria->cnpj;
-            $oPessoalRetorno->cpf  = str_pad($oPessoal->z01_cgccpf, $iTamanhoPad, 0, STR_PAD_LEFT);
+            $oPessoalRetorno->cpf  = str_pad((string) $oPessoal->z01_cgccpf, $iTamanhoPad, 0, STR_PAD_LEFT);
             $oPessoalRetorno->nis = $oPessoal->z01_pis;
             $oPessoalRetorno->matricula = $oPessoal->rh02_regist;
 
-            $codRegime = strlen($oPessoal->rh30_regime) > 1 ? $oPessoal->rh30_regime : "0{$oPessoal->rh30_regime}";
+            $codRegime = strlen((string) $oPessoal->rh30_regime) > 1 ? $oPessoal->rh30_regime : "0{$oPessoal->rh30_regime}";
             $oPessoalRetorno->regime = $codRegime;
 
             $oPessoalRetorno->quadro = '01';
@@ -344,7 +344,7 @@ final class PadArquivoSigapFolhaPessoalAtivo extends PadArquivoSigap
 
             // dd($this->aTagsRemovidas);
             
-            $oPessoalRetorno->qtdefilhos = str_pad($oPessoal->quantidade_dependentes, 2, '0', STR_PAD_LEFT);
+            $oPessoalRetorno->qtdefilhos = str_pad((string) $oPessoal->quantidade_dependentes, 2, '0', STR_PAD_LEFT);
 
             // valores monetarios
             $oPessoalRetorno->descontos = $this->formataValorMonetario($oPessoal->descontos);
@@ -887,10 +887,10 @@ final class PadArquivoSigapFolhaPessoalAtivo extends PadArquivoSigap
     public function pg_array_parse($s, $start = 0, &$end = null)
     {
         if (empty($s) || $s[0] != '{') return null;
-        $return = array();
+        $return = [];
         $string = false;
         $quote='';
-        $len = strlen($s);
+        $len = strlen((string) $s);
         $v = '';
         for ($i = $start + 1; $i < $len; $i++) {
             $ch = $s[$i];
@@ -918,11 +918,7 @@ final class PadArquivoSigapFolhaPessoalAtivo extends PadArquivoSigap
             }
         }
 
-        $map = array_map(function($data){
-
-            return str_replace(['(', ')'], '', $data);
-            
-        }, $return);
+        $map = array_map(fn($data) => str_replace(['(', ')'], '', $data), $return);
         
         return $map;
         // dd($map);

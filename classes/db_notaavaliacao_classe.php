@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE notaavaliacao
 class cl_notaavaliacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed241_i_codigo = 0; 
-   var $ed241_f_nota = 0; 
-   var $ed241_i_avaliacao = 0; 
-   var $ed241_i_diarioavaliacao = 0; 
+   public $ed241_i_codigo = 0; 
+   public $ed241_f_nota = 0; 
+   public $ed241_i_avaliacao = 0; 
+   public $ed241_i_diarioavaliacao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed241_i_codigo = int4 = Código 
                  ed241_f_nota = float4 = Nota 
                  ed241_i_avaliacao = int4 = Avaliação 
                  ed241_i_diarioavaliacao = int4 = Diário Avaliação 
                  ";
    //funcao construtor da classe 
-   function cl_notaavaliacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notaavaliacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -127,10 +127,10 @@ class cl_notaavaliacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed241_i_codigo = pg_result($result,0,0); 
+       $this->ed241_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from notaavaliacao_ed241_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed241_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed241_i_codigo)){
          $this->erro_sql = " Campo ed241_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_notaavaliacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Nota Avaliacao () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Nota Avaliacao já Cadastrado";
@@ -183,10 +183,10 @@ class cl_notaavaliacao {
       $this->atualizacampos();
      $sql = " update notaavaliacao set ";
      $virgula = "";
-     if(trim($this->ed241_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed241_i_codigo"])){ 
+     if(trim((string) $this->ed241_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed241_i_codigo"])){ 
        $sql  .= $virgula." ed241_i_codigo = $this->ed241_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed241_i_codigo) == null ){ 
+       if(trim((string) $this->ed241_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed241_i_codigo";
          $this->erro_banco = "";
@@ -196,10 +196,10 @@ class cl_notaavaliacao {
          return false;
        }
      }
-     if(trim($this->ed241_f_nota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed241_f_nota"])){ 
+     if(trim((string) $this->ed241_f_nota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed241_f_nota"])){ 
        $sql  .= $virgula." ed241_f_nota = $this->ed241_f_nota ";
        $virgula = ",";
-       if(trim($this->ed241_f_nota) == null ){ 
+       if(trim((string) $this->ed241_f_nota) == null ){ 
          $this->erro_sql = " Campo Nota nao Informado.";
          $this->erro_campo = "ed241_f_nota";
          $this->erro_banco = "";
@@ -209,10 +209,10 @@ class cl_notaavaliacao {
          return false;
        }
      }
-     if(trim($this->ed241_i_avaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed241_i_avaliacao"])){ 
+     if(trim((string) $this->ed241_i_avaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed241_i_avaliacao"])){ 
        $sql  .= $virgula." ed241_i_avaliacao = $this->ed241_i_avaliacao ";
        $virgula = ",";
-       if(trim($this->ed241_i_avaliacao) == null ){ 
+       if(trim((string) $this->ed241_i_avaliacao) == null ){ 
          $this->erro_sql = " Campo Avaliação nao Informado.";
          $this->erro_campo = "ed241_i_avaliacao";
          $this->erro_banco = "";
@@ -222,10 +222,10 @@ class cl_notaavaliacao {
          return false;
        }
      }
-     if(trim($this->ed241_i_diarioavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed241_i_diarioavaliacao"])){ 
+     if(trim((string) $this->ed241_i_diarioavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed241_i_diarioavaliacao"])){ 
        $sql  .= $virgula." ed241_i_diarioavaliacao = $this->ed241_i_diarioavaliacao ";
        $virgula = ",";
-       if(trim($this->ed241_i_diarioavaliacao) == null ){ 
+       if(trim((string) $this->ed241_i_diarioavaliacao) == null ){ 
          $this->erro_sql = " Campo Diário Avaliação nao Informado.";
          $this->erro_campo = "ed241_i_diarioavaliacao";
          $this->erro_banco = "";
@@ -316,7 +316,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:notaavaliacao";

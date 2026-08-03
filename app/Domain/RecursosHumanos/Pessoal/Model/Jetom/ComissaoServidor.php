@@ -190,7 +190,7 @@ class ComissaoServidor extends Model
     public function comissaoFuncao()
     {
         return $this->hasOne(
-            'App\Domain\RecursosHumanos\Pessoal\Model\Jetom\Funcao',
+            \App\Domain\RecursosHumanos\Pessoal\Model\Jetom\Funcao::class,
             'rh241_sequencial',
             'rh245_funcao'
         );
@@ -235,9 +235,7 @@ class ComissaoServidor extends Model
         $servidorMatricula = self::where('rh245_matricula', $matricula)
             ->where('rh245_comissao', $comissao)
             ->where('rh245_ativo', true)
-            ->when($sequencial, function ($query) use ($sequencial) {
-                return $query->where('rh245_sequencial', '!=', $sequencial);
-            })->get()->count();
+            ->when($sequencial, fn($query) => $query->where('rh245_sequencial', '!=', $sequencial))->get()->count();
         return $servidorMatricula;
     }
 }

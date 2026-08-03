@@ -286,15 +286,15 @@ for ($iRow = 0; $iRow < pg_num_rows($rsItens); $iRow++) {
                         $sMotivo   = $oJustificativa->pc25_motivo;
 
                         while ($oPdf->GetStringWidth($sAtual) > 63) {
-                            $sAtual = substr($sAtual, 0, strlen($sAtual)-1);
+                            $sAtual = substr((string) $sAtual, 0, strlen((string) $sAtual)-1);
                         }
 
                         while ($oPdf->GetStringWidth($sAnterior) > 63) {
-                            $sAnterior = substr($sAnterior, 0, strlen($sAnterior)-1);
+                            $sAnterior = substr((string) $sAnterior, 0, strlen((string) $sAnterior)-1);
                         }
 
                         while ($oPdf->GetStringWidth($sMotivo) > 63) {
-                            $sMotivo = substr($sMotivo, 0, strlen($sMotivo)-1);
+                            $sMotivo = substr((string) $sMotivo, 0, strlen((string) $sMotivo)-1);
                         }
 
                         $oPdf->cell(64, $iLine, $sAtual, 1, 0, 'L');

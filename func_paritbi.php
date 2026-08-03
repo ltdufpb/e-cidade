@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_paritbi_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clparitbi = new cl_paritbi;
 $clparitbi->rotulo->label("it24_anousu");
 $clparitbi->rotulo->label("it24_grupoespbenfurbana");
@@ -88,9 +88,9 @@ $clparitbi->rotulo->label("it24_grupoespbenfurbana");
         }else{
            $sql = $clparitbi->sql_query(db_getsession('DB_anousu'),$campos,"it24_anousu","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_it24_grupoespbenfurbana)){
-          $repassa = array("chave_it24_anousu"=>$chave_it24_anousu,"chave_it24_grupoespbenfurbana"=>$chave_it24_grupoespbenfurbana);
+          $repassa = ["chave_it24_anousu"=>$chave_it24_anousu,"chave_it24_grupoespbenfurbana"=>$chave_it24_grupoespbenfurbana];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

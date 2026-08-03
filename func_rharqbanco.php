@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rharqbanco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oGet         = db_utils::postMemory($_GET);
 $clrharqbanco = new cl_rharqbanco;
@@ -162,7 +162,7 @@ if(!isset($pesquisa_chave)){
 ?>
 <script>
   (function(){
-   var identificadorArquivo = '<?php echo (isset($chave_rh34_codarq)) ? $chave_rh34_codarq : ''; ?>';
+   var identificadorArquivo = '<?php echo $chave_rh34_codarq ?? ''; ?>';
 
    if( identificadorArquivo != ''){
     if( document.getElementById(identificadorArquivo).value != '') {

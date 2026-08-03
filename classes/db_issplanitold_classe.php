@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE issplanitold
 class cl_issplanitold { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q73_sequencial = 0; 
-   var $q73_issplanitorigem = 0; 
-   var $q73_issplanitdestino = 0; 
-   var $q73_data_dia = null; 
-   var $q73_data_mes = null; 
-   var $q73_data_ano = null; 
-   var $q73_data = null; 
-   var $q73_hora = null; 
-   var $q73_ip = null; 
+   public $q73_sequencial = 0; 
+   public $q73_issplanitorigem = 0; 
+   public $q73_issplanitdestino = 0; 
+   public $q73_data_dia = null; 
+   public $q73_data_mes = null; 
+   public $q73_data_ano = null; 
+   public $q73_data = null; 
+   public $q73_hora = null; 
+   public $q73_ip = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q73_sequencial = int4 = Código 
                  q73_issplanitorigem = int4 = Nota Origem 
                  q73_issplanitdestino = int4 = Nota Destino 
@@ -61,10 +61,10 @@ class cl_issplanitold {
                  q73_ip = varchar(20) = IP 
                  ";
    //funcao construtor da classe 
-   function cl_issplanitold() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issplanitold"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_issplanitold {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q73_sequencial = pg_result($result,0,0); 
+       $this->q73_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from issplanitold_q73_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q73_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q73_sequencial)){
          $this->erro_sql = " Campo q73_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_issplanitold {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "issplanitold ($this->q73_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "issplanitold já Cadastrado";
@@ -218,15 +218,15 @@ class cl_issplanitold {
      $resaco = $this->sql_record($this->sql_query_file($this->q73_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11994,'$this->q73_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2075,11994,'','".AddSlashes(pg_result($resaco,0,'q73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2075,11995,'','".AddSlashes(pg_result($resaco,0,'q73_issplanitorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2075,11996,'','".AddSlashes(pg_result($resaco,0,'q73_issplanitdestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2075,11997,'','".AddSlashes(pg_result($resaco,0,'q73_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2075,11998,'','".AddSlashes(pg_result($resaco,0,'q73_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2075,11999,'','".AddSlashes(pg_result($resaco,0,'q73_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2075,11994,'','".AddSlashes(pg_fetch_result($resaco,0,'q73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2075,11995,'','".AddSlashes(pg_fetch_result($resaco,0,'q73_issplanitorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2075,11996,'','".AddSlashes(pg_fetch_result($resaco,0,'q73_issplanitdestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2075,11997,'','".AddSlashes(pg_fetch_result($resaco,0,'q73_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2075,11998,'','".AddSlashes(pg_fetch_result($resaco,0,'q73_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2075,11999,'','".AddSlashes(pg_fetch_result($resaco,0,'q73_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_issplanitold {
       $this->atualizacampos();
      $sql = " update issplanitold set ";
      $virgula = "";
-     if(trim($this->q73_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_sequencial"])){ 
+     if(trim((string) $this->q73_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_sequencial"])){ 
        $sql  .= $virgula." q73_sequencial = $this->q73_sequencial ";
        $virgula = ",";
-       if(trim($this->q73_sequencial) == null ){ 
+       if(trim((string) $this->q73_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "q73_sequencial";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_issplanitold {
          return false;
        }
      }
-     if(trim($this->q73_issplanitorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_issplanitorigem"])){ 
+     if(trim((string) $this->q73_issplanitorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_issplanitorigem"])){ 
        $sql  .= $virgula." q73_issplanitorigem = $this->q73_issplanitorigem ";
        $virgula = ",";
-       if(trim($this->q73_issplanitorigem) == null ){ 
+       if(trim((string) $this->q73_issplanitorigem) == null ){ 
          $this->erro_sql = " Campo Nota Origem nao Informado.";
          $this->erro_campo = "q73_issplanitorigem";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_issplanitold {
          return false;
        }
      }
-     if(trim($this->q73_issplanitdestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_issplanitdestino"])){ 
+     if(trim((string) $this->q73_issplanitdestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_issplanitdestino"])){ 
        $sql  .= $virgula." q73_issplanitdestino = $this->q73_issplanitdestino ";
        $virgula = ",";
-       if(trim($this->q73_issplanitdestino) == null ){ 
+       if(trim((string) $this->q73_issplanitdestino) == null ){ 
          $this->erro_sql = " Campo Nota Destino nao Informado.";
          $this->erro_campo = "q73_issplanitdestino";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_issplanitold {
          return false;
        }
      }
-     if(trim($this->q73_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q73_data_dia"] !="") ){ 
+     if(trim((string) $this->q73_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q73_data_dia"] !="") ){ 
        $sql  .= $virgula." q73_data = '$this->q73_data' ";
        $virgula = ",";
-       if(trim($this->q73_data) == null ){ 
+       if(trim((string) $this->q73_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "q73_data_dia";
          $this->erro_banco = "";
@@ -290,7 +290,7 @@ class cl_issplanitold {
        if(isset($GLOBALS["HTTP_POST_VARS"]["q73_data_dia"])){ 
          $sql  .= $virgula." q73_data = null ";
          $virgula = ",";
-         if(trim($this->q73_data) == null ){ 
+         if(trim((string) $this->q73_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "q73_data_dia";
            $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_issplanitold {
          }
        }
      }
-     if(trim($this->q73_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_hora"])){ 
+     if(trim((string) $this->q73_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_hora"])){ 
        $sql  .= $virgula." q73_hora = '$this->q73_hora' ";
        $virgula = ",";
-       if(trim($this->q73_hora) == null ){ 
+       if(trim((string) $this->q73_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "q73_hora";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_issplanitold {
          return false;
        }
      }
-     if(trim($this->q73_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_ip"])){ 
+     if(trim((string) $this->q73_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q73_ip"])){ 
        $sql  .= $virgula." q73_ip = '$this->q73_ip' ";
        $virgula = ",";
-       if(trim($this->q73_ip) == null ){ 
+       if(trim((string) $this->q73_ip) == null ){ 
          $this->erro_sql = " Campo IP nao Informado.";
          $this->erro_campo = "q73_ip";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_issplanitold {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11994,'$this->q73_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q73_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2075,11994,'".AddSlashes(pg_result($resaco,$conresaco,'q73_sequencial'))."','$this->q73_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2075,11994,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q73_sequencial'))."','$this->q73_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q73_issplanitorigem"]))
-           $resac = db_query("insert into db_acount values($acount,2075,11995,'".AddSlashes(pg_result($resaco,$conresaco,'q73_issplanitorigem'))."','$this->q73_issplanitorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2075,11995,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q73_issplanitorigem'))."','$this->q73_issplanitorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q73_issplanitdestino"]))
-           $resac = db_query("insert into db_acount values($acount,2075,11996,'".AddSlashes(pg_result($resaco,$conresaco,'q73_issplanitdestino'))."','$this->q73_issplanitdestino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2075,11996,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q73_issplanitdestino'))."','$this->q73_issplanitdestino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q73_data"]))
-           $resac = db_query("insert into db_acount values($acount,2075,11997,'".AddSlashes(pg_result($resaco,$conresaco,'q73_data'))."','$this->q73_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2075,11997,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q73_data'))."','$this->q73_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q73_hora"]))
-           $resac = db_query("insert into db_acount values($acount,2075,11998,'".AddSlashes(pg_result($resaco,$conresaco,'q73_hora'))."','$this->q73_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2075,11998,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q73_hora'))."','$this->q73_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q73_ip"]))
-           $resac = db_query("insert into db_acount values($acount,2075,11999,'".AddSlashes(pg_result($resaco,$conresaco,'q73_ip'))."','$this->q73_ip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2075,11999,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q73_ip'))."','$this->q73_ip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_issplanitold {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11994,'$q73_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2075,11994,'','".AddSlashes(pg_result($resaco,$iresaco,'q73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2075,11995,'','".AddSlashes(pg_result($resaco,$iresaco,'q73_issplanitorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2075,11996,'','".AddSlashes(pg_result($resaco,$iresaco,'q73_issplanitdestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2075,11997,'','".AddSlashes(pg_result($resaco,$iresaco,'q73_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2075,11998,'','".AddSlashes(pg_result($resaco,$iresaco,'q73_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2075,11999,'','".AddSlashes(pg_result($resaco,$iresaco,'q73_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2075,11994,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2075,11995,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q73_issplanitorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2075,11996,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q73_issplanitdestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2075,11997,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q73_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2075,11998,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q73_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2075,11999,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q73_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from issplanitold
@@ -462,7 +462,7 @@ class cl_issplanitold {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:issplanitold";
@@ -476,7 +476,7 @@ class cl_issplanitold {
    function sql_query ( $q73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -499,7 +499,7 @@ class cl_issplanitold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_issplanitold {
    function sql_query_file ( $q73_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_issplanitold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -47,21 +47,21 @@ $anoSessao = db_getsession('DB_anousu');
 try {
     switch ($parametros->exec) {
         case 'consulta':
-            $filtros = array(
+            $filtros = [
                 "c60_anousu = {$anoSessao}",
-            );
+            ];
             if (!empty($parametros->estrutural)) {
                 $filtros[] = "c60_estrut like '{$parametros->estrutural}%'";
             }
 
             $campos = implode(
                 ', ',
-                array(
+                [
                     'c60_codcon as conta',
                     'c60_estrut as estrutural',
                     'c60_descr as descricao',
                     'c60_identificadoresultadoprimario as indicador_superavit',
-                )
+                ]
             );
 
             $where = implode(' and ', $filtros);

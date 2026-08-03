@@ -49,27 +49,13 @@ class DevedorFactory
     {
         $oDevedorRepository = new DevedorRepository();
 
-        switch ($type) {
-            case TipoListaEnum::MATRICULA:
-                return $oDevedorRepository->getDevedorMatricula($origem);
-                break;
-
-            case TipoListaEnum::CGM:
-                return $oDevedorRepository->getDevedor($origem);
-                break;
-
-            case TipoListaEnum::INSCRICAO:
-                return $oDevedorRepository->getDevedorInscricao($origem);
-                break;
-
-            case TipoListaEnum::AUTO_INFRACAO:
-                return $oDevedorRepository->getDevedorAuto($origem);
-                break;
-
-            default:
-                return $oDevedorRepository->getDevedor($origem);
-                break;
-        }
+        return match ($type) {
+            TipoListaEnum::MATRICULA => $oDevedorRepository->getDevedorMatricula($origem),
+            TipoListaEnum::CGM => $oDevedorRepository->getDevedor($origem),
+            TipoListaEnum::INSCRICAO => $oDevedorRepository->getDevedorInscricao($origem),
+            TipoListaEnum::AUTO_INFRACAO => $oDevedorRepository->getDevedorAuto($origem),
+            default => $oDevedorRepository->getDevedor($origem),
+        };
     }
 
 }

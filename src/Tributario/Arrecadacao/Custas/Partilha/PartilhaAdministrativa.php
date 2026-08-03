@@ -43,7 +43,7 @@ abstract class PartilhaAdministrativa extends Partilha
         parent::__construct($calculo);
 
         $this->inicial = $inicial;
-        $this->inicialPartilhaRepository = Repository\InicialPartilha::getInstance();
+        $this->inicialPartilhaRepository = (new Repository\InicialPartilha())->getInstance();
     }
 
     protected function getPartilhasIsentas()
@@ -77,7 +77,7 @@ abstract class PartilhaAdministrativa extends Partilha
 
     public function processaRemocaoTaxa(array $taxas, array $partilhas)
     {
-        $taxasRemover = array();
+        $taxasRemover = [];
 
         foreach ($partilhas as $inicialPartilha) {
             foreach ($inicialPartilha->getCustas() as $inicialPartilhaCusta) {

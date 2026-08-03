@@ -91,10 +91,10 @@ include(modification("dbforms/db_funcoes.php"));
                     </td>
                     <td>
                         <?php 
-                          $aOpcoes = array(
+                          $aOpcoes = [
                                           "comdivisao" => "Com as Divisões  selecionadas",
                                           "semdivisao" => "sem as Divisões selecionadas",
-                                          ); 
+                                          ]; 
                          db_select("opcoesdivisao", $aOpcoes, true,1);                 
                         ?>
                     </td>

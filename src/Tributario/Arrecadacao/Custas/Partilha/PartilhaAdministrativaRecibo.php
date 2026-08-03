@@ -52,6 +52,7 @@ final class PartilhaAdministrativaRecibo extends PartilhaAdministrativa implemen
     /**
      * @param ReciboModel $recibo
      */
+    #[\Override]
     public function processar()
     {
         $taxasEmissao = parent::processar();

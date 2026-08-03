@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_db_versaocpdarq_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 //db_postmemory($HTTP_SERVER_VARS,2);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $cldb_versaocpdarq = new cl_db_versaocpdarq;
 //$db_opcao = 1;
 $db_botao = true;
@@ -157,7 +157,7 @@ if($db_opcao =='Incluir'){
 </body>
 </html>
 <?php 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Incluir"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Incluir"){
   if($cldb_versaocpdarq->erro_status=="0"){
     $cldb_versaocpdarq->erro(true,false);
     $db_botao=true;

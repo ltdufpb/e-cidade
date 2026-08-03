@@ -48,6 +48,7 @@ class AprovacaoTodosPeriodos extends FormulaAvaliacao
      * @return AvaliacaoPorAreaConhecimento
      * @throws Exception
      */
+    #[\Override]
     public function calcularAvaliacoes(AreaProcedimentoAvaliacao $areaProcedimentoAvaliacao)
     {
         return new AvaliacaoPorAreaConhecimento();
@@ -58,6 +59,7 @@ class AprovacaoTodosPeriodos extends FormulaAvaliacao
      * @return ResultadoPorAreaConhecimento
      * @throws Exception
      */
+    #[\Override]
     public function calcularResultado(AreaProcedimentoResultado $areaProcedimentoResultado)
     {
         $diarioAvaliacaoDisciplina = $this->diarioAvaliacaoDisciplina[0]; // pega a primeira disciplina

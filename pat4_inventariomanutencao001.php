@@ -304,7 +304,7 @@ db_app::load('datagrid.widget.js, strings.js, arrays.js, DBHint.widget.js, ');
             </td>
             <td>
               <?php 
-                $aTipo = array("1"=>"Todos","2"=>"Imoveis","3"=>"Materiais","4"=>"Semoventes");
+                $aTipo = ["1"=>"Todos","2"=>"Imoveis","3"=>"Materiais","4"=>"Semoventes"];
                 db_select("iTipoBem", $aTipo, true, 2);
               ?>
             </td>

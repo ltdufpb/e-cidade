@@ -24,7 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 use ECidade\Tributario\Arrecadacao\CGF\Repository\Certidao as RepositoryCertidao;
 
@@ -43,22 +43,22 @@ if (!empty($Parcelamento)) {
 if(isset($db_datausu)){
   if(!checkdate(substr($db_datausu,5,2),substr($db_datausu,8,2),substr($db_datausu,0,4))){
     echo "Data para cálculo inválida. <br><br>";
-    echo "Data deverá se superior a : ".date('Y-m-d',$HTTP_SESSION_VARS["DB_datausu"]);
+    echo "Data deverá se superior a : ".date('Y-m-d',$_SESSION["DB_datausu"]);
     //   exit;
   }
   if(mktime(0,0,0,substr($db_datausu,5,2),substr($db_datausu,8,2),substr($db_datausu,0,4)) <
-  mktime(0,0,0,date('m',$HTTP_SESSION_VARS["DB_datausu"]),date('d',$HTTP_SESSION_VARS["DB_datausu"]),date('Y',$HTTP_SESSION_VARS["DB_datausu"])) ){
+  mktime(0,0,0,date('m',$_SESSION["DB_datausu"]),date('d',$_SESSION["DB_datausu"]),date('Y',$_SESSION["DB_datausu"])) ){
     echo "Data não permitida para cálculo. <br><br>";
-    echo "Data deverá se superior a : ".date('Y-m-d',$HTTP_SESSION_VARS["DB_datausu"]);
+    echo "Data deverá se superior a : ".date('Y-m-d',$_SESSION["DB_datausu"]);
     //   exit;
   }
   $DB_DATACALC = mktime(0,0,0,substr($db_datausu,5,2),substr($db_datausu,8,2),substr($db_datausu,0,4));
 }else{
-  $DB_DATACALC = $HTTP_SESSION_VARS["DB_datausu"];
+  $DB_DATACALC = $_SESSION["DB_datausu"];
 }
 
-if(isset($HTTP_POST_VARS["inicial"])) {
-  global $HTTP_SESSION_VARS;
+if(isset($_POST["inicial"])) {
+  global $_SESSION;
   include(modification("cai3_gerfinanc003.php"));
   exit;
 }
@@ -147,7 +147,7 @@ function adicionarCabecalhoTabelaDebitos($mostraDadosCda = false)
 }
 
 
-function adicionarCorpoTabelaDebitos($mostraDadosCda = false, $tabela, $campo, $valor, $DB_DATACALC, $tipo)
+function adicionarCorpoTabelaDebitos($mostraDadosCda = false, $tabela = null, $campo = null, $valor = null, $DB_DATACALC = null, $tipo = null)
 {
     global $Tv50_inicial, $Tv70_codforo, $Tv50_advog, $Tnome, $Tv54_descr, $Tv52_descr, $Tv53_descr, $Tv50_codmov, $numrows;
     $sLinhaRegistros = "";
@@ -209,9 +209,7 @@ function adicionarCorpoTabelaDebitos($mostraDadosCda = false, $tabela, $campo, $
         $valor_corr = 0;
         $valor_juros = 0;
         $valor_multa = 0;
-        $aNumpres = \db_utils::makeCollectionFromRecord($rsInicial, function ($oRetorno) {
-            return $oRetorno->numpres;
-        });
+        $aNumpres = \db_utils::makeCollectionFromRecord($rsInicial, fn($oRetorno) => $oRetorno->numpres);
         foreach ($aNumpres as $numpre) {
             $result_valinicial = debitos_numpre($numpre, 0, 0, $DB_DATACALC, date("Y", $DB_DATACALC), 0, true, "", " and y.k00_hist <> 918");
             $valorInicial = \db_utils::fieldsMemory($result_valinicial, 0);
@@ -285,12 +283,12 @@ function adicionarCorpoTabelaDebitos($mostraDadosCda = false, $tabela, $campo, $
                 $sLinhaRegistros .= " <tr style=\"font-size:11px; text-align: center; \"> ";
                 $sLinhaRegistros .= " <td class=\"borda\" style='width: 80px; max-width: 80px;' nowrap><a href='#' onclick='js_consultarCDA({$cda->certidao})'>{$cda->certidao}</a></td>";
 
-                $cda->exercicio = explode(",", $cda->exercicio);
+                $cda->exercicio = explode(",", (string) $cda->exercicio);
                 $cda->exercicio = implode(", ", array_unique($cda->exercicio));
                 $exercicio = strlen($cda->exercicio) > 14 ? substr($cda->exercicio,0, 12) . '...' : $cda->exercicio;
                 $sLinhaRegistros .= " <td class=\"borda\" style='width: 100px; max-width: 100px;' title='$cda->exercicio' nowrap>{$exercicio}</td>";
 
-                $cda->procedencia = explode(",", $cda->procedencia);
+                $cda->procedencia = explode(",", (string) $cda->procedencia);
                 $cda->procedencia = implode(", ", array_unique($cda->procedencia));
                 $procedencia = strlen($cda->procedencia) > 60 ? substr($cda->procedencia,0, 57) . '...' : $cda->procedencia;
                 $sLinhaRegistros .= " <td class=\"borda\" style='width: 400px; max-width: 400px; text-align: left' title='{$cda->procedencia}' nowrap>{$procedencia}</td>";

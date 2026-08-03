@@ -68,7 +68,7 @@ db_input('c03_descr',30,$Ic03_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('c03_compl',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -87,7 +87,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave,chave1){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&chavepesquisa1="+chave1;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&chavepesquisa1="+chave1;
 }
 </script>
 <?php 

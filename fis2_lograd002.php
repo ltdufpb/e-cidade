@@ -30,8 +30,8 @@ require_once(modification("libs/db_utils.php"));
 
 $oGet = db_utils::postMemory($_GET);
 
-$aWhere = array();
-$aInfo  = array();
+$aWhere = [];
+$aInfo  = [];
 
 if ($oGet->baix == "b") {
 
@@ -44,7 +44,7 @@ if ($oGet->baix == "b") {
 	$aInfo[]  = "Somente Inscrições não Baixadas";
 }
 
-if ( trim($oGet->sListaRuas) != "" ){
+if ( trim((string) $oGet->sListaRuas) != "" ){
 
   if ( $oGet->ver == "com" ){
     $aWhere[] = "issruas.j14_codigo in  ({$oGet->sListaRuas})";
@@ -112,7 +112,7 @@ $sSqlInscrLograd .= " 	       z01_nome                                          
 
 $result = db_query($sSqlInscrLograd);
 
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 }
 
@@ -129,7 +129,7 @@ $rua   = "X";
 $inscr = "X";
 $total = 0;
 
-   for($x = 0; $x <pg_numrows($result);$x++){
+   for($x = 0; $x <pg_num_rows($result);$x++){
 
    	 db_fieldsmemory($result,$x);
 
@@ -183,18 +183,18 @@ $total = 0;
 	     $oPdf->setfont('arial','',8);
 	     $oPdf->cell(15,$alt,$q02_inscr,0,0,"C",$p);
 	     $oPdf->cell(13,$alt,$q02_numcgm,0,0,"C",$p);
-	     $oPdf->cell(72,$alt,trim($z01_nome),0,0,"L",$p);
-       $oPdf->cell(80,$alt,substr(trim($q03_descr), 0, 43),0,0,"L",$p);
+	     $oPdf->cell(72,$alt,trim((string) $z01_nome),0,0,"L",$p);
+       $oPdf->cell(80,$alt,substr(trim((string) $q03_descr), 0, 43),0,0,"L",$p);
 	     $oPdf->cell(10,$alt,$tp,0,0,"L",$p);
 	     $oPdf->cell(20,$alt,db_formatar($q07_datain,'d'),0,0,"C",$p);
 	     $oPdf->cell(20,$alt,db_formatar($q07_databx,'d'),0,0,"C",$p);
 	     $oPdf->cell(10,$alt,$q02_numero,0,0,"L",$p);
 
        if ( $oGet->baix == "c" ) {
-         $oPdf->cell(40,$alt,trim($q02_compl),0,1,"L",$p);
+         $oPdf->cell(40,$alt,trim((string) $q02_compl),0,1,"L",$p);
        } else {
 
-         $oPdf->cell(20,$alt,trim($q02_compl),0,0,"L",$p);
+         $oPdf->cell(20,$alt,trim((string) $q02_compl),0,0,"L",$p);
          $oPdf->cell(20,$alt,db_formatar($q02_dtbaix,'d'),0,1,"L",$p);
        }
 
@@ -206,16 +206,16 @@ $total = 0;
 		   $oPdf->cell(15,$alt,"",0,0,"C",$p);
 		   $oPdf->cell(13,$alt,"",0,0,"C",$p);
 		   $oPdf->cell(72,$alt,"",0,0,"L",$p);
-		   $oPdf->cell(80,$alt,substr(trim($q03_descr), 0, 43),0,0,"L",$p);
+		   $oPdf->cell(80,$alt,substr(trim((string) $q03_descr), 0, 43),0,0,"L",$p);
 		   $oPdf->cell(10,$alt,$tp,0,0,"L",$p);
        $oPdf->cell(20,$alt,db_formatar($q07_datain,'d'),0,0,"C",$p);
        $oPdf->cell(20,$alt,db_formatar($q07_databx,'d'),0,0,"C",$p);
 		   $oPdf->cell(10,$alt,"",0,0,"L",$p);
 
        if ( $oGet->baix == "c" ) {
-         $oPdf->cell(40,$alt,trim($q02_compl),0,1,"L",$p);
+         $oPdf->cell(40,$alt,trim((string) $q02_compl),0,1,"L",$p);
        } else {
-         $oPdf->cell(20,$alt,trim($q02_compl),0,0,"L",$p);
+         $oPdf->cell(20,$alt,trim((string) $q02_compl),0,0,"L",$p);
          $oPdf->cell(20,$alt,db_formatar($q02_dtbaix,'d'),0,1,"L",$p);
        }
 

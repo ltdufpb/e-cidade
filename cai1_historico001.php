@@ -30,10 +30,10 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["enviar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["enviar"])) {
+  db_postmemory($_POST);
   $result = db_query("select max(k01_codigo) + 1 from histcalc");
-  $k01_codigo = pg_result($result,0,0);
+  $k01_codigo = pg_fetch_result($result,0,0);
   $k01_codigo = $k01_codigo==""?"1":$k01_codigo;
   db_query("insert into histcalc(k01_codigo,k01_descr,k01_tipo)
                        values($k01_codigo,'$k01_descr','$k01_tipo')") or die("Erro(8) inserindo em histcalc");

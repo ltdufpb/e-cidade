@@ -149,7 +149,7 @@ try {
         throw new ParameterException("Não foi possível buscar os lançamentos deste assentamento.\nTente novamente.");
       }
 
-      $oRetorno->aLancamentos = array();
+      $oRetorno->aLancamentos = [];
       $oRRA = RRARepository::getInstanciaByAssentamento(AssentamentoFactory::getByCodigo($oParam->iCodigoAssentamento));
 
       $oServidor               = $oRRA->getAssentamento()->getServidor();
@@ -167,7 +167,7 @@ try {
           $oLancamentoRRA->nBaseprevidencia = $oLancamento->getValorBaseprevidencia();
           $oLancamentoRRA->nBaseirrf        = $oLancamento->getValorBaseirrf();
           $oLancamentoRRA->lAtual           = false;
-          $oLancamentoRRA->aPensionistas    = array();
+          $oLancamentoRRA->aPensionistas    = [];
           foreach ($oLancamento->getPensionistas() as $oPensionistas) {
 
             $oPensionistaRRA                 = new \stdClass();
@@ -199,11 +199,9 @@ try {
 
       $oTipoAssentamento        = TipoAssentamentoRepository::getInstanciaPorCodigo($oParam->iTipoAssentamento);
       $aAssentamentos           = $oTipoAssentamento->getAssentamentos();
-      $oRetorno->aAssentamentos = array();
+      $oRetorno->aAssentamentos = [];
 
-      uasort($aAssentamentos, function(Assentamento $oAssentamentoInicial, Assentamento $oAssentamentoFinal) {
-         return $oAssentamentoInicial->getMatricula() > $oAssentamentoFinal->getMatricula();
-      });
+      uasort($aAssentamentos, fn(Assentamento $oAssentamentoInicial, Assentamento $oAssentamentoFinal) => $oAssentamentoInicial->getMatricula() > $oAssentamentoFinal->getMatricula());
       if(count($aAssentamentos) > 0) {
 
         foreach ($aAssentamentos as $oAssentamento) {
@@ -257,7 +255,7 @@ function lancarNoPonto(DBCompetencia $oCompetencia, Instituicao $oInstituicao, F
   $oLoteRegistrosPonto->setCompetencia($oCompetencia);
   $oLoteRegistrosPonto->setInstituicao($oInstituicao);
   $oLoteRegistrosPonto->setDescricao('Lote Registros de RRA');
-  $oLoteRegistrosPonto->setRegistroPonto(array());
+  $oLoteRegistrosPonto->setRegistroPonto([]);
   $oLoteRegistrosPonto->setSituacao(LoteRegistrosPonto::ABERTO);
   $oLoteRegistrosPonto->setUsuario(UsuarioSistemaRepository::getPorCodigo(db_getsession("DB_id_usuario")));
   $oLoteRegistrosPonto->setTipoLancamentoPonto(LoteRegistrosPonto::SUBSTITUIR_RUBRICA);
@@ -268,7 +266,7 @@ function lancarNoPonto(DBCompetencia $oCompetencia, Instituicao $oInstituicao, F
    * Percorre os valores montando registros para
    * adicionar ao lote e persistir os dados no ponto
    */
-  $aRegistrosLoteRegistrosPonto = array();
+  $aRegistrosLoteRegistrosPonto = [];
   foreach ($aValoresLancar as $sTipo => $nValor) {
 
     if(empty($nValor)) {

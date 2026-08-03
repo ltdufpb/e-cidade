@@ -118,7 +118,7 @@ function js_preenchepesquisa(chave) {
 
   db_iframe_habittipogrupoprograma.hide();
   <?php 
-    echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo "location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
 </script>

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgs_und_ext_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 if(!isset($pesquisar))
@@ -40,7 +40,7 @@ if(!isset($pesquisar))
 	// quando vinha um valor por get não mudava quando alterava o valor do nome
 	
 if(isset($alterar_cgs)){
-	parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+	parse_str((string) $_SERVER["QUERY_STRING"], $result);
 	?>
 	<script>
 		location.href ="sau1_cgs_und002.php?chavepesquisa=<?=$chave_z01_i_cgsund?>";
@@ -255,8 +255,8 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
 			$sql = $clcgs_und->sql_query("",$campos,"z01_v_nome"," to_ascii(z01_v_nome) like to_ascii('$chave_z01_v_nome%') ");
 		}else if(isset($chave_z01_v_ident) && (trim($chave_z01_v_ident)!="") ){
 			$sql = $clcgs_und->sql_query("",$campos,"z01_v_nome"," z01_v_ident = '$chave_z01_v_ident' ");
-		}else if(isset($chave_z01_v_ident) && (trim($chave_z01_d_nasc)!="") ){
-			$chave_z01_d_nasc = substr($chave_z01_d_nasc,6,4)."-".substr($chave_z01_d_nasc,3,2)."-".substr($chave_z01_d_nasc,0,2);
+		}else if(isset($chave_z01_v_ident) && (trim((string) $chave_z01_d_nasc)!="") ){
+			$chave_z01_d_nasc = substr((string) $chave_z01_d_nasc,6,4)."-".substr((string) $chave_z01_d_nasc,3,2)."-".substr((string) $chave_z01_d_nasc,0,2);
 			$sql = $clcgs_und->sql_query("",$campos,"z01_v_nome"," z01_d_nasc = '$chave_z01_d_nasc' ");
 		}else if(isset($chave_s115_c_cartaosus) && (trim($chave_s115_c_cartaosus)!="") ){
 			$sql = $clcgs_und->sql_query_ext("",$campos,"z01_v_nome"," s115_c_cartaosus = '$chave_s115_c_cartaosus' ");
@@ -268,13 +268,13 @@ function fillSelectFromArray(selectCtrl, itemArray, goodPrompt, badPrompt, defau
 		     //$sql = $clcgs_und->sql_query("",$campos,"z01_i_cgsund","");
 		}
 		
-		$repassa = array();
+		$repassa = [];
 		if(isset($chave_z01_i_cgsund)){
-			$repassa = array("chave_z01_i_cgsund"=>@$chave_z01_i_cgsund, 
+			$repassa = ["chave_z01_i_cgsund"=>@$chave_z01_i_cgsund, 
 							"chave_z01_v_nome"=>@$chave_z01_v_nome,
 							"chave_z01_v_ident"=>@$chave_z01_v_ident,
 							"chave_z01_c_cartaosus"=>@$chave_s115_c_cartaosus,
-							"chave_z01_i_familiamicroarea"=>@$chave_z01_i_familiamicroarea);
+							"chave_z01_i_familiamicroarea"=>@$chave_z01_i_familiamicroarea];
 		}
 		if( isset($sql) ){
 			db_lovrot( $sql,15,"()","",$funcao_js,"","NoMe",$repassa);

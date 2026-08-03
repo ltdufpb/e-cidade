@@ -42,12 +42,6 @@ class RemessaBuilder
 {
     private static $iQuantRegArq = 300000;
 
-    private $oRemessaService;
-
-    private $oRemessaTemporaryService;
-
-    private $oRemessaArchive;
-
     private $iBanco;
 
     private $oModeloArquivo;
@@ -55,14 +49,10 @@ class RemessaBuilder
     private $oModeloHeader;
 
     public function __construct(
-      RemessaService $oRemessaService,
-      RemessaTemporaryService $oRemessaTemporaryService,
-      RemessaArchive $oRemessaArchive
+      private readonly RemessaService $oRemessaService,
+      private readonly RemessaTemporaryService $oRemessaTemporaryService,
+      private readonly RemessaArchive $oRemessaArchive
     ) {
-        $this->oRemessaService = $oRemessaService;
-        $this->oRemessaTemporaryService = $oRemessaTemporaryService;
-        $this->oRemessaArchive = $oRemessaArchive;
-
         $this->iBanco = $this->oRemessaTemporaryService->getCodigoBanco();
 
         $this->oModeloArquivo = Factory::getModelo($this->iBanco);
@@ -71,7 +61,7 @@ class RemessaBuilder
 
     public function processaArquivoRemessa($lCallBack, $lQuebraLinha = false)
     {
-        $aRecibosGerados = array();
+        $aRecibosGerados = [];
         $iQuantidadeAtual = 0;
         $iQuantidadeArquivo = self::$iQuantRegArq;
         $iQuantidadeRegistros = $this->oRemessaTemporaryService->getQuantidadeRegistros();
@@ -96,7 +86,7 @@ class RemessaBuilder
                 $iRegistroAtual = ($iQuantidade + $iQuantidadeAtual);
 
                 $iCalculoPercentual = intval($iRegistroAtual * 100 / $iQuantidadeRegistros);
-                call_user_func_array($lCallBack, array($iRegistroAtual, $iCalculoPercentual));
+                call_user_func_array($lCallBack, [$iRegistroAtual, $iCalculoPercentual]);
             });
 
             $this->oModeloArquivo->setRegistros($oCollection);
@@ -109,13 +99,13 @@ class RemessaBuilder
 
             $this->oRemessaArchive->addFile($sFilePath, $sBaseName);
 
-            $aRecibosGerados[$iRemessa] = array(
-              "arquivo" => array(
+            $aRecibosGerados[$iRemessa] = [
+              "arquivo" => [
                 "path" => $sFilePath,
                 "name" => $sBaseName
-              ),
+              ],
               "recibos" => $this->oModeloArquivo->getRecibosGerados()
-            );
+            ];
 
             $this->oModeloHeader->setSequencial(++$iRemessa);
 
@@ -124,10 +114,10 @@ class RemessaBuilder
 
         $this->oRemessaArchive->close();
 
-        return (object)array(
+        return (object)[
           "sArquivoNome" => $this->oRemessaArchive->getNameArchive(),
           "aReciboGerados" => $aRecibosGerados
-        );
+        ];
     }
 
     public function salvaArquivoRemessa($conn, $aRecibosGerados, $lCallBack)
@@ -173,12 +163,12 @@ class RemessaBuilder
 
                 $iCalculoPercentual = intval((++$iQuantidadeAtual) * 100 / $iQuantidadeRegistros);
 
-                call_user_func_array($lCallBack, array($iQuantidadeAtual, $iCalculoPercentual));
+                call_user_func_array($lCallBack, [$iQuantidadeAtual, $iCalculoPercentual]);
 
-                $oRegistro = (object)array(
+                $oRegistro = (object)[
                   "k148_remessacobrancaregistrada" => $iCodigoRemessa,
                   "k148_numpre" => $sRecibo
-                );
+                ];
 
                 $oRemessaRecibo->setByLineOfDBUtils($oRegistro);
                 $oRemessaRecibo->insertValue();

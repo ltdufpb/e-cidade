@@ -39,7 +39,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
 $clrotulo = new rotulocampo;
 $cldb_depart->rotulo->label();
 $clsolicita->rotulo->label();
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 ?>
 <html>
@@ -207,7 +207,7 @@ db_postmemory($_POST);
                                         <td align="right"> <strong>Opção de Seleção :<strong></td>
                                         <td align="left">&nbsp;&nbsp;&nbsp;
                                             <?php
-                                            $xxx = array("S" => "Somente Selecionados&nbsp;&nbsp;", "N" => "Menos os Selecionados&nbsp;&nbsp;");
+                                            $xxx = ["S" => "Somente Selecionados&nbsp;&nbsp;", "N" => "Menos os Selecionados&nbsp;&nbsp;"];
                                             db_select('param_depart', $xxx, true, 2);
                                             ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <input type="submit" name="relatorio1" value="Relatório" onClick="return imprime();">
@@ -217,7 +217,7 @@ db_postmemory($_POST);
                                         <td align="right"><strong>Ordem de seleção: </strong></td>
                                         <td align="left">&nbsp;&nbsp;&nbsp;
                                             <?php
-                                            $yyy = array("pc10_numero" => "Solicitações", "pc10_data" => "Data emissão", "descrdepto" => "Departamento", "pc50_descr" => "Tipo de compra");
+                                            $yyy = ["pc10_numero" => "Solicitações", "pc10_data" => "Data emissão", "descrdepto" => "Departamento", "pc50_descr" => "Tipo de compra"];
                                             db_select('ordem', $yyy, true, 2);
                                             ?>
                                         </td>
@@ -235,7 +235,7 @@ db_postmemory($_POST);
                                         <td align="right"><b>Situação da Solicitação:</b></td>
                                         <td align="left">&nbsp;&nbsp;
                                             <?php
-                                            $matriz = array("T" => "Todas", "A" => "Aut. empenho", "N" => "Não Aut. empenho");
+                                            $matriz = ["T" => "Todas", "A" => "Aut. empenho", "N" => "Não Aut. empenho"];
                                             db_select("situacao", $matriz, true, 2);
                                             ?>
                                         </td>
@@ -244,7 +244,7 @@ db_postmemory($_POST);
                                         <td align="right"><b>Mostrar Itens:</b></td>
                                         <td align="left">&nbsp;&nbsp;
                                             <?php
-                                            $matriz = array("S" => "Sim", "N" => "Não");
+                                            $matriz = ["S" => "Sim", "N" => "Não"];
                                             db_select("mostrar_itens", $matriz, true, 2);
                                             ?>
                                         </td>

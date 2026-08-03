@@ -55,17 +55,17 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica = array("liberafornecedor"=>"Dados Gerais",
+       $clcriaabas->identifica = ["liberafornecedor"=>"Dados Gerais",
                                        "liberafornecedorsol"=>"Solicitações",
-                                       "liberafornecedorpcproc"=>"Processo de Compras"); 
+                                       "liberafornecedorpcproc"=>"Processo de Compras"]; 
 	     
-       $clcriaabas->src = array("liberafornecedor"=>"com1_liberafornecedor005.php");
+       $clcriaabas->src = ["liberafornecedor"=>"com1_liberafornecedor005.php"];
 	     
-	     $clcriaabas->disabled   =  array("liberafornecedorsol"=>"true","liberafornecedorpcproc"=>"true");
+	     $clcriaabas->disabled   =  ["liberafornecedorsol"=>"true","liberafornecedorpcproc"=>"true"];
 	     
-	     $clcriaabas->sizecampo  = array("liberafornecedor"=>25,
+	     $clcriaabas->sizecampo  = ["liberafornecedor"=>25,
                                        "liberafornecedorsol"=>25,
-                                       "liberafornecedorpcproc"=>25);  
+                                       "liberafornecedorpcproc"=>25];  
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>

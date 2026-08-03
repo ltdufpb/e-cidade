@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_orcprojeto_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clorcprojeto = new cl_orcprojeto;
 
 $db_opcao = 1;
@@ -52,11 +52,11 @@ if(isset($incluir)){
     $lErro  = true;
 
   } else {
-    if (preg_match('/\D/', trim($o39_numero)) || !(preg_replace('/\D/', '', trim($o39_numero)) > 0)) {
+    if (preg_match('/\D/', trim((string) $o39_numero)) || !(preg_replace('/\D/', '', trim((string) $o39_numero)) > 0)) {
         $clorcprojeto->erro_msg = "Número do Decreto é de preenchimento obrigatório.";
         $clorcprojeto->erro_status = 0;
         $clorcprojeto->erro_campo  = 'o39_numero';
-    } else if (!preg_match('/\d{1,2}\/\d{1,2}\/\d{2,4}/', trim($o39_data))) {
+    } else if (!preg_match('/\d{1,2}\/\d{1,2}\/\d{2,4}/', trim((string) $o39_data))) {
         $clorcprojeto->erro_msg = "Data do Decreto é de preenchimento obrigatório.";
         $clorcprojeto->erro_status = 0;
         $clorcprojeto->erro_campo  = 'o39_numero';

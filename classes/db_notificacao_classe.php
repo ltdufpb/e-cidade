@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE notificacao
 class cl_notificacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k50_notifica = 0; 
-   var $k50_procede = 0; 
-   var $k50_dtemite_dia = null; 
-   var $k50_dtemite_mes = null; 
-   var $k50_dtemite_ano = null; 
-   var $k50_dtemite = null; 
-   var $k50_obs = null; 
-   var $k50_instit = 0; 
+   public $k50_notifica = 0; 
+   public $k50_procede = 0; 
+   public $k50_dtemite_dia = null; 
+   public $k50_dtemite_mes = null; 
+   public $k50_dtemite_ano = null; 
+   public $k50_dtemite = null; 
+   public $k50_obs = null; 
+   public $k50_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k50_notifica = int4 = Notificação 
                  k50_procede = int4 = Procedência 
                  k50_dtemite = date = Data Emissão 
@@ -59,10 +59,10 @@ class cl_notificacao {
                  k50_instit = int4 = Cód. Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_notificacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notificacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -132,10 +132,10 @@ class cl_notificacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k50_notifica = pg_result($result,0,0); 
+       $this->k50_notifica = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from notificacao_k50_notifica_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k50_notifica)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k50_notifica)){
          $this->erro_sql = " Campo k50_notifica maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -171,7 +171,7 @@ class cl_notificacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Notificação de Débitos ($this->k50_notifica) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Notificação de Débitos já Cadastrado";
@@ -195,14 +195,14 @@ class cl_notificacao {
      $resaco = $this->sql_record($this->sql_query_file($this->k50_notifica));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4703,'$this->k50_notifica','I')");
-       $resac = db_query("insert into db_acount values($acount,621,4703,'','".AddSlashes(pg_result($resaco,0,'k50_notifica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,621,4704,'','".AddSlashes(pg_result($resaco,0,'k50_procede'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,621,4705,'','".AddSlashes(pg_result($resaco,0,'k50_dtemite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,621,4706,'','".AddSlashes(pg_result($resaco,0,'k50_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,621,10718,'','".AddSlashes(pg_result($resaco,0,'k50_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,621,4703,'','".AddSlashes(pg_fetch_result($resaco,0,'k50_notifica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,621,4704,'','".AddSlashes(pg_fetch_result($resaco,0,'k50_procede'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,621,4705,'','".AddSlashes(pg_fetch_result($resaco,0,'k50_dtemite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,621,4706,'','".AddSlashes(pg_fetch_result($resaco,0,'k50_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,621,10718,'','".AddSlashes(pg_fetch_result($resaco,0,'k50_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -211,10 +211,10 @@ class cl_notificacao {
       $this->atualizacampos();
      $sql = " update notificacao set ";
      $virgula = "";
-     if(trim($this->k50_notifica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k50_notifica"])){ 
+     if(trim((string) $this->k50_notifica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k50_notifica"])){ 
        $sql  .= $virgula." k50_notifica = $this->k50_notifica ";
        $virgula = ",";
-       if(trim($this->k50_notifica) == null ){ 
+       if(trim((string) $this->k50_notifica) == null ){ 
          $this->erro_sql = " Campo Notificação nao Informado.";
          $this->erro_campo = "k50_notifica";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_notificacao {
          return false;
        }
      }
-     if(trim($this->k50_procede)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k50_procede"])){ 
+     if(trim((string) $this->k50_procede)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k50_procede"])){ 
        $sql  .= $virgula." k50_procede = $this->k50_procede ";
        $virgula = ",";
-       if(trim($this->k50_procede) == null ){ 
+       if(trim((string) $this->k50_procede) == null ){ 
          $this->erro_sql = " Campo Procedência nao Informado.";
          $this->erro_campo = "k50_procede";
          $this->erro_banco = "";
@@ -237,10 +237,10 @@ class cl_notificacao {
          return false;
        }
      }
-     if(trim($this->k50_dtemite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k50_dtemite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k50_dtemite_dia"] !="") ){ 
+     if(trim((string) $this->k50_dtemite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k50_dtemite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k50_dtemite_dia"] !="") ){ 
        $sql  .= $virgula." k50_dtemite = '$this->k50_dtemite' ";
        $virgula = ",";
-       if(trim($this->k50_dtemite) == null ){ 
+       if(trim((string) $this->k50_dtemite) == null ){ 
          $this->erro_sql = " Campo Data Emissão nao Informado.";
          $this->erro_campo = "k50_dtemite_dia";
          $this->erro_banco = "";
@@ -253,7 +253,7 @@ class cl_notificacao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k50_dtemite_dia"])){ 
          $sql  .= $virgula." k50_dtemite = null ";
          $virgula = ",";
-         if(trim($this->k50_dtemite) == null ){ 
+         if(trim((string) $this->k50_dtemite) == null ){ 
            $this->erro_sql = " Campo Data Emissão nao Informado.";
            $this->erro_campo = "k50_dtemite_dia";
            $this->erro_banco = "";
@@ -264,14 +264,14 @@ class cl_notificacao {
          }
        }
      }
-     if(trim($this->k50_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k50_obs"])){ 
+     if(trim((string) $this->k50_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k50_obs"])){ 
        $sql  .= $virgula." k50_obs = '$this->k50_obs' ";
        $virgula = ",";
      }
-     if(trim($this->k50_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k50_instit"])){ 
+     if(trim((string) $this->k50_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k50_instit"])){ 
        $sql  .= $virgula." k50_instit = $this->k50_instit ";
        $virgula = ",";
-       if(trim($this->k50_instit) == null ){ 
+       if(trim((string) $this->k50_instit) == null ){ 
          $this->erro_sql = " Campo Cód. Instituição nao Informado.";
          $this->erro_campo = "k50_instit";
          $this->erro_banco = "";
@@ -289,19 +289,19 @@ class cl_notificacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4703,'$this->k50_notifica','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k50_notifica"]))
-           $resac = db_query("insert into db_acount values($acount,621,4703,'".AddSlashes(pg_result($resaco,$conresaco,'k50_notifica'))."','$this->k50_notifica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,621,4703,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k50_notifica'))."','$this->k50_notifica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k50_procede"]))
-           $resac = db_query("insert into db_acount values($acount,621,4704,'".AddSlashes(pg_result($resaco,$conresaco,'k50_procede'))."','$this->k50_procede',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,621,4704,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k50_procede'))."','$this->k50_procede',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k50_dtemite"]))
-           $resac = db_query("insert into db_acount values($acount,621,4705,'".AddSlashes(pg_result($resaco,$conresaco,'k50_dtemite'))."','$this->k50_dtemite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,621,4705,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k50_dtemite'))."','$this->k50_dtemite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k50_obs"]))
-           $resac = db_query("insert into db_acount values($acount,621,4706,'".AddSlashes(pg_result($resaco,$conresaco,'k50_obs'))."','$this->k50_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,621,4706,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k50_obs'))."','$this->k50_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k50_instit"]))
-           $resac = db_query("insert into db_acount values($acount,621,10718,'".AddSlashes(pg_result($resaco,$conresaco,'k50_instit'))."','$this->k50_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,621,10718,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k50_instit'))."','$this->k50_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -346,14 +346,14 @@ class cl_notificacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4703,'$k50_notifica','E')");
-         $resac = db_query("insert into db_acount values($acount,621,4703,'','".AddSlashes(pg_result($resaco,$iresaco,'k50_notifica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,621,4704,'','".AddSlashes(pg_result($resaco,$iresaco,'k50_procede'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,621,4705,'','".AddSlashes(pg_result($resaco,$iresaco,'k50_dtemite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,621,4706,'','".AddSlashes(pg_result($resaco,$iresaco,'k50_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,621,10718,'','".AddSlashes(pg_result($resaco,$iresaco,'k50_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,621,4703,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k50_notifica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,621,4704,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k50_procede'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,621,4705,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k50_dtemite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,621,4706,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k50_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,621,10718,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k50_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from notificacao
@@ -413,7 +413,7 @@ class cl_notificacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:notificacao";
@@ -475,7 +475,7 @@ class cl_notificacao {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -540,7 +540,7 @@ class cl_notificacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -586,7 +586,7 @@ class cl_notificacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -619,7 +619,7 @@ class cl_notificacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -673,7 +673,7 @@ $sql2 = "";
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -720,7 +720,7 @@ $sql2 = "";
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

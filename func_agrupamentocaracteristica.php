@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_agrupamentocaracteristica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clagrupamentocaracteristica = new cl_agrupamentocaracteristica;
 $clagrupamentocaracteristica->rotulo->label("j139_sequencial");
 $clagrupamentocaracteristica->rotulo->label("j139_caracter");
@@ -78,9 +78,9 @@ $clagrupamentocaracteristica->rotulo->label("j139_caracter");
         }else{
            $sql = $clagrupamentocaracteristica->sql_query("",$campos,"j139_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j139_caracter)){
-          $repassa = array("chave_j139_sequencial"=>$chave_j139_sequencial,"chave_j139_caracter"=>$chave_j139_caracter);
+          $repassa = ["chave_j139_sequencial"=>$chave_j139_sequencial,"chave_j139_caracter"=>$chave_j139_caracter];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

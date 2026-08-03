@@ -29,10 +29,10 @@ function afastamentos_abertos($tipos,$regime,$datai){
 
    global $work,$ordem;
 
-   $nom = array();
-   $tip = array();
-   $tam = array();
-   $dec = array();
+   $nom = [];
+   $tip = [];
+   $tam = [];
+   $dec = [];
    
    $nom[1] = "w_REGIST";
    $nom[2] = "w_NOME";
@@ -72,8 +72,8 @@ function afastamentos_abertos($tipos,$regime,$datai){
       $sWhereVerificaLotacao .= "                      where rh157_usuario = ".db_getsession("DB_instit").")";
       if( db_selectmax("assenta","select * from assenta inner join assentamentofuncional on rh193_assentamento_funcional = h16_codigo where h16_regist in (".$sWhereVerificaLotacao.") and h16_assent = ".db_sqlformat($tipoasse[$Itipoasse]["h12_codigo"]))){
 
-         $mat_campos  = array();
-	 $mat_valores = array();
+         $mat_campos  = [];
+	 $mat_valores = [];
          $mat_campos[1] = "w_regist";
          $mat_campos[2] = "w_nome";
          $mat_campos[3] = "w_lotac";
@@ -128,7 +128,7 @@ function afastamentos_abertos($tipos,$regime,$datai){
              $pdf->addpage();
              $pdf->setfont('arial','b',8);
 	     if( !db_empty($tipoasse[0]["h12_assent"])){
-		if( strtolower($tipoasse[0]["h12_descr"]) == "s"){
+		if( strtolower((string) $tipoasse[0]["h12_descr"]) == "s"){
                    $pdf->cell(0,$alt,"Assentamento: ".$tipoasse[0]["h12_assent"]." - ".$tipoasse[0]["h12_descr"],0,0,"L",1);
 		}else{
                    $pdf->cell(0,$alt,"Afastamento : ".$tipoasse[0]["h12_assent"]." - ".$tipoasse[0]["h12_descr"],0,0,"L",1);
@@ -174,7 +174,7 @@ include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_sql.php"));
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 db_inicio_transacao();
 

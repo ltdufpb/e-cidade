@@ -31,7 +31,7 @@ class ArquivoSiprevHistoricosFinanceiros extends ArquivoSiprevBase {
   protected $sRegistro    = "historicosFinanceiros";
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["09"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["09"] = [];
   }
   /**
    * Retona a parcela de servidores que será manipulada
@@ -150,26 +150,24 @@ class ArquivoSiprevHistoricosFinanceiros extends ArquivoSiprevBase {
     }
 
     $classe  = $this;
-    return array_map(function($servidor) use ($classe) {
-      return (object)array("historicosFinanceiros" => $classe->valoresHistoricosFinanceiros($servidor));
-    }, $servidores);
+    return array_map(fn($servidor) => (object)["historicosFinanceiros" => $classe->valoresHistoricosFinanceiros($servidor)], $servidores);
   }
 
   /**
    * Retorna o "esqueleto" do arquivo xml
    */
   public function getElementos() {
-    return array($this->tagHistoricosFinanceiros());
+    return [$this->tagHistoricosFinanceiros()];
   }
 
 
   private function tagHistoricosFinanceiros() {
 
-    return self::makeTag("historicosFinanceiros", array(
+    return self::makeTag("historicosFinanceiros", [
       "operacao",
       $this->tagVinculoFuncional(),
       $this->tagDadosHistoricoFinanceiro(),
-    ));
+    ]);
   }
 
   private function processamentoValoresCalculo(CalculoFolha $folha) {
@@ -201,23 +199,23 @@ class ArquivoSiprevHistoricosFinanceiros extends ArquivoSiprevBase {
     }
 
 
-    return (object)array(
+    return (object)[
       'nTotalProventos' => $nTotalProventos,
       'nValorContribuicao' => $nValorContribuicao,
-    );
+    ];
 
   }
 
   public function valoresHistoricosFinanceiros($servidor) {
 
-    $folhas = array(
+    $folhas = [
       $servidor->getCalculoFinanceiro(CalculoFolha::CALCULO_SALARIO),
       $servidor->getCalculoFinanceiro(CalculoFolha::CALCULO_COMPLEMENTAR),
       $servidor->getCalculoFinanceiro(CalculoFolha::CALCULO_13o),
       $servidor->getCalculoFinanceiro(CalculoFolha::CALCULO_FERIAS),
-    );
+    ];
 
-    $aDadosFinanceiros = array();
+    $aDadosFinanceiros = [];
 
     foreach ($folhas as $indiceFolha => $folha) {
 
@@ -238,16 +236,16 @@ class ArquivoSiprevHistoricosFinanceiros extends ArquivoSiprevBase {
 
     }
 // dump($aDadosFinanceiros);
-    return (object)array(
+    return (object)[
       "operacao"  => "I",
       "vinculoFuncional"  => $this->valoresvinculoFuncional($servidor),
       "dadosHistoricoFinanceiro"  => $aDadosFinanceiros
-    );
+    ];
   }
 
   private function tagVinculoFuncional() {
 
-    return self::makeTag("vinculoFuncional", array(
+    return self::makeTag("vinculoFuncional", [
       "dataExercicioCargo",
       "dataIngressoCarreira",
       "dataIngressoOrgao",
@@ -259,12 +257,12 @@ class ArquivoSiprevHistoricosFinanceiros extends ArquivoSiprevBase {
       $this->tagOrgao(),
       $this->tagServidor(),
       $this->tagCargo(),
-    ));
+    ]);
   }
 
   private function valoresVinculoFuncional(Servidor $servidor) {
 
-    return (object)array(
+    return (object)[
       "dataExercicioCargo"   => $servidor->getDataAdmissao()->getDate(),
       "dataIngressoCarreira" => $servidor->getDataAdmissao()->getDate(),
       "dataIngressoOrgao"    => $servidor->getDataAdmissao()->getDate(),
@@ -276,76 +274,76 @@ class ArquivoSiprevHistoricosFinanceiros extends ArquivoSiprevBase {
       "orgao"                => $this->valoresOrgao($servidor),
       "servidor"             => $this->valoresServidor($servidor),
       "cargo"                => $this->valoresCargo($servidor),
-    );
+    ];
   }
 
   private function tagOrgao() {
-    return self::makeTag("orgao",array("nome", "poder"));
+    return self::makeTag("orgao",["nome", "poder"]);
   }
 
   private function valoresOrgao(Servidor $servidor) {
 
-    return (object)array(
+    return (object)[
       "nome"  => $servidor->getInstituicao()->getDescricao(),
       "poder" => $servidor->getInstituicao()->getTipo() > 6 ? 6 : $servidor->getInstituicao()->getTipo(),
-    );
+    ];
   }
 
   private function tagServidor() {
 
-    return self::makeTag("servidor", array(
+    return self::makeTag("servidor", [
       "nome",
       "numeroCPF",
       "numeroNIT",
       "numeroRG",
       "dataNascimento",
       "nomeMae",
-    ));
+    ]);
   }
 
   private function valoresServidor(Servidor $servidor) {
-    return (object)array(
+    return (object)[
       "nome"           => $servidor->getCgm()->getNome(),
       "numeroCPF"      => $servidor->getCgm()->getCpf(),
       //"numeroNIT"      => "NÂO-OBRIGATÓRIO",
       //"numeroRG"       => "NÂO-OBRIGATÓRIO",
       //"dataNascimento" => "NÂO-OBRIGATÓRIO",
       //"nomeMae"        => "NÂO-OBRIGATÓRIO",
-    );
+    ];
   }
 
   private function tagCargo() {
-    return self::makeTag("cargo", array(
+    return self::makeTag("cargo", [
       "nome",
       $this->tagCarreira()
-    ));
+    ]);
   }
 
   private function valoresCargo(Servidor $servidor) {
-    return (object)array(
+    return (object)[
       "nome"     => $servidor->descricaoCargo,
       "carreira" => $this->valoresCarreira($servidor),
-    );
+    ];
   }
 
   private function tagCarreira() {
 
-    return self::makeTag("carreira", array(
+    return self::makeTag("carreira", [
       "nome",
       $this->tagOrgao(),
-    ));
+    ]);
   }
 
   private function valoresCarreira(Servidor $servidor) {
 
-    return (object)array(
+    return (object)[
       "nome" => "Servidor Público",
       "orgao" => $this->valoresOrgao($servidor),
-    );
+    ];
   }
 
   private function tagDadosHistoricoFinanceiro(){
-    return self::makeTag("dadosHistoricoFinanceiro", array(
+    return self::makeTag("dadosHistoricoFinanceiro", [
       "anoContribuicao",
       "mesContribuicao",
       "baseCalculoPatronal",
@@ -360,7 +358,7 @@ class ArquivoSiprevHistoricosFinanceiros extends ArquivoSiprevBase {
       "remuneracaoBruta",
       "remuneracaoCargo",
       "remuneracaoContrib",
-    ));
+    ]);
   }
 
   private function valoresDadosHistoricoFinanceiro($servidor, $lDecimoTerceiro, $iFolhaPagamento, $valorContribuicao, $valorBruto) {
@@ -373,7 +371,7 @@ class ArquivoSiprevHistoricosFinanceiros extends ArquivoSiprevBase {
       Servidor::VARIAVEL_SALARIO_BASE_PROGRESSAO
     );
 
-    return (object)array(
+    return (object)[
       "anoContribuicao"       => $servidor->getAnoCompetencia(),
       "mesContribuicao"       => $servidor->getMesCompetencia(),
       "compoeMediaBeneficio"  => 0,//"0.00",
@@ -390,7 +388,7 @@ class ArquivoSiprevHistoricosFinanceiros extends ArquivoSiprevBase {
       //"contribSegurado"       => "0.00", //Não-Obrigatório
       //"devolucaoContrib"      => "0.00", //Não-Obrigatório
       //"diferencaContrib"      => "0.00", //Não-Obrigatório
-    );
+    ];
   }
 
 }

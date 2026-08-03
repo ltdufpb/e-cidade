@@ -60,7 +60,7 @@ try {
     $oDepartamento = DBDepartamentoRepository::getDBDepartamentoByCodigo(db_getsession("DB_coddepto"));
     $oUnidadeGestora = $oUnidadeGestoraRepository->getById($oParam->unidade_gestora);
     $aGuias = $oGuiaRepository->getGuiasParaMovimentacaoNoDepartamento($oUnidadeGestora, $oDepartamento, true, $sWhere);
-    $oRetorno->guias = array();
+    $oRetorno->guias = [];
 
     foreach ($aGuias as $oGuia) {
 
@@ -146,7 +146,7 @@ try {
       $sWhere          = getFiltro($oParam);      
       $oUnidadeGestora = $oUnidadeGestoraRepository->getById($oParam->unidade_gestora);
       $aGuias          = $oGuiaRepository->getRecibosPagosDaUnidadeGestora($oUnidadeGestora, $sWhere);
-      $oRetorno->guias = array();
+      $oRetorno->guias = [];
   
       foreach ($aGuias as $oGuia) {
   
@@ -184,7 +184,7 @@ try {
 
 function getFiltro($oParam) {
   
-  $aWhere = array("k172_workflow is not null");
+  $aWhere = ["k172_workflow is not null"];
   if (!empty($oParam->tipo_recolhimento)) {
     $aWhere[] = 'k174_tiporecolhimento = '.(int)$oParam->tipo_recolhimento;
   }

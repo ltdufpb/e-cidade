@@ -59,23 +59,23 @@ $db_opcao   = 2;
       <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
         <div>
           <?php
-          $clcriaabas->identifica = array(
+          $clcriaabas->identifica = [
             "veicmotoristas" => "Dados do Motorista",
             "veicmotoristascentral" => "Central de Veículos"
-          );
-          $clcriaabas->title      = array(
+          ];
+          $clcriaabas->title      = [
             "veicmotoristas" => "Dados do Motorista",
             "veicmotoristascentral" => "Central de Veículos"
-          );
-          $clcriaabas->src        = array("veicmotoristas" => "vei1_veicmotoristas005.php");
-          $clcriaabas->disabled   = array(
+          ];
+          $clcriaabas->src        = ["veicmotoristas" => "vei1_veicmotoristas005.php"];
+          $clcriaabas->disabled   = [
             "veicmotoristas" => "false",
             "veicmotoristascentral" => "false"
-          );
-          $clcriaabas->sizecampo  = array(
+          ];
+          $clcriaabas->sizecampo  = [
             "veicmotoristas" => "23",
             "veicmotoristascentral" => "23"
-          );
+          ];
 
           $clcriaabas->cria_abas();
           ?>

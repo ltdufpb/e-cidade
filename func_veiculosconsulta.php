@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $clveiculos = new cl_veiculos;
 $clveiccadcentraldepart = new cl_veiccadcentraldepart;
@@ -131,9 +131,9 @@ $iInstituicao = db_getsession("DB_instit");
                 }
             }
 
-            $repassa = array();
+            $repassa = [];
             if (isset($chave_ve01_codigo)) {
-                $repassa = array("chave_ve01_codigo" => $chave_ve01_codigo, "chave_ve01_codigo" => $chave_ve01_codigo);
+                $repassa = ["chave_ve01_codigo" => $chave_ve01_codigo, "chave_ve01_codigo" => $chave_ve01_codigo];
             }
 
             db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa, false);

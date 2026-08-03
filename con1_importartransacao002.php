@@ -45,7 +45,7 @@ require_once(modification("model/contabilidade/RegraLancamentoContabil.model.php
  */
 $post = db_utils::postMemory($_POST);
 $instituicaoOriginal = db_getsession('DB_instit');
-$instituicoesSelecionadas = explode(',', $post->instituicoes);
+$instituicoesSelecionadas = explode(',', (string) $post->instituicoes);
 
 if ($_FILES['arquivoTransacoes']['type'] == 'text/xml') {
     $tipo = "xml";
@@ -193,8 +193,8 @@ try {
 
     db_inicio_transacao();
 
-    $aLogErrosTransacoes = array();
-    $aLogErros = array();
+    $aLogErrosTransacoes = [];
+    $aLogErros = [];
 
     $arquivoTransacoes = '/tmp/importacaotransacao' . $_FILES["arquivoTransacoes"]['name'];
 
@@ -205,7 +205,7 @@ try {
 
         $oDomXML = new DomDocument();
         $oDomXML->load($arquivoTransacoes);
-        $aTransacoes = array();
+        $aTransacoes = [];
         $oTransacoes = $oDomXML->getElementsByTagName('transacao');
         foreach ($oTransacoes as $oTransacao) {
 
@@ -213,41 +213,41 @@ try {
             $oTransacaoAtual->c45_seqtrans = $oTransacao->getAttribute('c45_seqtrans');
             $oTransacaoAtual->c45_anousu = $oTransacao->getAttribute('c45_anousu');
             $oTransacaoAtual->c45_coddoc = $oTransacao->getAttribute('c45_coddoc');
-            $oTransacaoAtual->c53_descr = trim(utf8_decode($oTransacao->getAttribute('c53_descr')));
+            $oTransacaoAtual->c53_descr = trim(mb_convert_encoding($oTransacao->getAttribute('c53_descr'), 'ISO-8859-1'));
             $oTransacaoAtual->c45_instit = $oTransacao->getAttribute('c45_instit');
 
-            $oTransacaoAtual->aLancamentos = array();
+            $oTransacaoAtual->aLancamentos = [];
             foreach ($oTransacao->getElementsByTagName('lancamento') as $oLancamento) {
 
                 $oLancamentoAtual = new stdClass();
                 $oLancamentoAtual->c46_seqtranslan = $oLancamento->getAttribute('c46_seqtranslan');
                 $oLancamentoAtual->c46_seqtrans = $oLancamento->getAttribute('c46_seqtrans');
                 $oLancamentoAtual->c46_codhist = $oLancamento->getAttribute('c46_codhist');
-                $oLancamentoAtual->c46_obs = trim(utf8_decode($oLancamento->getAttribute('c46_obs')));
-                $oLancamentoAtual->c46_valor = trim(utf8_decode($oLancamento->getAttribute('c46_valor')));
+                $oLancamentoAtual->c46_obs = trim(mb_convert_encoding($oLancamento->getAttribute('c46_obs'), 'ISO-8859-1'));
+                $oLancamentoAtual->c46_valor = trim(mb_convert_encoding($oLancamento->getAttribute('c46_valor'), 'ISO-8859-1'));
                 $oLancamentoAtual->c46_obrigatorio = $oLancamento->getAttribute('c46_obrigatorio');
                 $oLancamentoAtual->c46_evento = $oLancamento->getAttribute('c46_evento');
-                $oLancamentoAtual->c46_descricao = trim(utf8_decode($oLancamento->getAttribute('c46_descricao')));
+                $oLancamentoAtual->c46_descricao = trim(mb_convert_encoding($oLancamento->getAttribute('c46_descricao'), 'ISO-8859-1'));
                 $oLancamentoAtual->c46_ordem = $oLancamento->getAttribute('c46_ordem');
 
-                $oLancamentoAtual->aContas = array();
+                $oLancamentoAtual->aContas = [];
                 foreach ($oLancamento->getElementsByTagName('conta') as $oConta) {
 
                     $oContaAtual = new stdClass();
                     $oContaAtual->c47_seqtranslr = $oConta->getAttribute('c47_seqtranslr');
                     $oContaAtual->c47_seqtranslan = $oConta->getAttribute('c47_seqtranslan');
-                    $oContaAtual->c47_debito = trim(utf8_decode($oConta->getAttribute('c47_debito')));
+                    $oContaAtual->c47_debito = trim(mb_convert_encoding($oConta->getAttribute('c47_debito'), 'ISO-8859-1'));
                     $oContaAtual->c47_debito_descricao
-                        = trim(utf8_decode($oConta->getAttribute('c47_debito_descricao')));
-                    $oContaAtual->c47_credito = trim(utf8_decode($oConta->getAttribute('c47_credito')));
+                        = trim(mb_convert_encoding($oConta->getAttribute('c47_debito_descricao'), 'ISO-8859-1'));
+                    $oContaAtual->c47_credito = trim(mb_convert_encoding($oConta->getAttribute('c47_credito'), 'ISO-8859-1'));
                     $oContaAtual->c47_credito_descricao
-                        = trim(utf8_decode($oConta->getAttribute('c47_credito_descricao')));
-                    $oContaAtual->c47_obs = trim(utf8_decode($oConta->getAttribute('c47_obs')));
-                    $oContaAtual->c47_ref = trim(utf8_decode($oConta->getAttribute('c47_ref')));
+                        = trim(mb_convert_encoding($oConta->getAttribute('c47_credito_descricao'), 'ISO-8859-1'));
+                    $oContaAtual->c47_obs = trim(mb_convert_encoding($oConta->getAttribute('c47_obs'), 'ISO-8859-1'));
+                    $oContaAtual->c47_ref = trim(mb_convert_encoding($oConta->getAttribute('c47_ref'), 'ISO-8859-1'));
                     $oContaAtual->c47_anousu = $oConta->getAttribute('c47_anousu');
                     $oContaAtual->c47_instit = $oConta->getAttribute('c47_instit');
-                    $oContaAtual->c47_compara = trim(utf8_decode($oConta->getAttribute('c47_compara')));
-                    $oContaAtual->c47_tiporesto = trim(utf8_decode($oConta->getAttribute('c47_tiporesto')));
+                    $oContaAtual->c47_compara = trim(mb_convert_encoding($oConta->getAttribute('c47_compara'), 'ISO-8859-1'));
+                    $oContaAtual->c47_tiporesto = trim(mb_convert_encoding($oConta->getAttribute('c47_tiporesto'), 'ISO-8859-1'));
                     $oContaAtual->c114_elemento = $oConta->getAttribute('c114_elemento');
                     $oLancamentoAtual->aContas[] = $oContaAtual;
                 }
@@ -269,10 +269,10 @@ try {
         $oArquivo = new SplFileObject($arquivoTransacoes);
         $oArquivo->setFlags(\SplFileObject::READ_CSV);
 
-        $transacoesIncluidas = array();
+        $transacoesIncluidas = [];
         $oDaoDocumento = new cl_conhistdoc();
         $temDoc = false;
-        $aDocumentosIncluidos = array();
+        $aDocumentosIncluidos = [];
 
         foreach ($instituicoesSelecionadas as $codigoInstituicao) {
 
@@ -281,29 +281,18 @@ try {
             db_query(" select fc_putsession('db_instit', '{$codigoInstituicao}') ");
             while (!$oArquivo->eof()) {
 
-                $variaveisDecodificar = $oArquivo->fgetcsv();
+                $variaveisDecodificar = $oArquivo->fgetcsv(escape: '\\');
 
                 if (empty($variaveisDecodificar[0]) || trim($variaveisDecodificar[0]) == "tipo") {
                     continue;
                 }
                 foreach ($variaveisDecodificar as &$value) {
                     if (db_utils::isUTF8($value)) {
-                        $value = utf8_decode($value);
+                        $value = mb_convert_encoding($value, 'ISO-8859-1');
                     }
                 }
 
-                list($tipo,
-                    $documento,
-                    $documento_estorno,
-                    $descricao_documento,
-                    $historico,
-                    $ordem,
-                    $descricao_lancamento,
-                    $conta_debito,
-                    $conta_credito,
-                    $tipo_comparacao,
-                    $valor_comparacao,
-                    $sql)
+                [$tipo, $documento, $documento_estorno, $descricao_documento, $historico, $ordem, $descricao_lancamento, $conta_debito, $conta_credito, $tipo_comparacao, $valor_comparacao, $sql]
                     = $variaveisDecodificar;
 
                 $temDoc = existeDocumentoTransacao($documento);
@@ -376,7 +365,7 @@ try {
                     $oTransacaoAtual->c45_coddoc = $documento;
                     $oTransacaoAtual->c53_descr = $descricao_lancamento;
                     $oTransacaoAtual->c45_instit = $instituicao->getCodigo();
-                    $oTransacaoAtual->aLancamentos = array();
+                    $oTransacaoAtual->aLancamentos = [];
                     $aTransacoes[] = $oTransacaoAtual;
                     $aDocumentosIncluidos[] = $documento;
                 }
@@ -390,7 +379,7 @@ try {
                 $oLancamentoAtual->c46_descricao = $descricao_lancamento;
                 $oLancamentoAtual->c46_ordem = $ordem;
                 if (empty($oTransacaoAtual->aLancamentos[$ordem])) {
-                    $oLancamentoAtual->aContas = array();
+                    $oLancamentoAtual->aContas = [];
                     $oTransacaoAtual->aLancamentos[$ordem] = $oLancamentoAtual;
                 }
 
@@ -400,11 +389,11 @@ try {
                 $oContaAtual->c47_credito = empty($conta_credito) ? "0" : $contaCredito->getEstrutural();
                 $oContaAtual->c47_credito_descricao = empty($conta_credito) ? null : $contaCredito->getDescricao();
                 $oContaAtual->c47_obs = "";
-                $valor_comparacao = trim($valor_comparacao);
+                $valor_comparacao = trim((string) $valor_comparacao);
                 $oContaAtual->c47_ref = (empty($valor_comparacao) ? "0" : $valor_comparacao);
                 $oContaAtual->c47_anousu = $ano;
                 $oContaAtual->c47_instit = $instituicao->getCodigo();
-                $tipo_comparacao = trim($tipo_comparacao);
+                $tipo_comparacao = trim((string) $tipo_comparacao);
                 $oContaAtual->c47_compara = (empty($tipo_comparacao) ? "0" : $tipo_comparacao);
                 $oContaAtual->c47_tiporesto = "0";
                 $oContaAtual->c92_regra = (empty($sql) ? "" : $sql);
@@ -447,7 +436,7 @@ try {
          * Se não houverem problemas no pré-processamento das transações passamos ao pré-processamento
          * dos lançamentos e das contas.
          */
-        $aContasContasInconsistentes = array();
+        $aContasContasInconsistentes = [];
         foreach ($aTransacoes as $oTransacao) {
 
             foreach ($oTransacao->aLancamentos as $oLancamento) {

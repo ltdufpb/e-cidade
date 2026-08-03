@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE loteamcgm
 class cl_loteamcgm { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j120_sequencial = 0; 
-   var $j120_loteam = 0; 
-   var $j120_cgm = 0; 
+   public $j120_sequencial = 0; 
+   public $j120_loteam = 0; 
+   public $j120_cgm = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j120_sequencial = int4 = Sequencial 
                  j120_loteam = int4 = Loteamento 
                  j120_cgm = int4 = CGM 
                  ";
    //funcao construtor da classe 
-   function cl_loteamcgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("loteamcgm"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_loteamcgm {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j120_sequencial = pg_result($result,0,0); 
+       $this->j120_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from loteamcgm_j120_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j120_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j120_sequencial)){
          $this->erro_sql = " Campo j120_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_loteamcgm {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Loteamento CGM ($this->j120_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Loteamento CGM já Cadastrado";
@@ -166,12 +166,12 @@ class cl_loteamcgm {
      $resaco = $this->sql_record($this->sql_query_file($this->j120_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15595,'$this->j120_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2734,15595,'','".AddSlashes(pg_result($resaco,0,'j120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2734,15596,'','".AddSlashes(pg_result($resaco,0,'j120_loteam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2734,15597,'','".AddSlashes(pg_result($resaco,0,'j120_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2734,15595,'','".AddSlashes(pg_fetch_result($resaco,0,'j120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2734,15596,'','".AddSlashes(pg_fetch_result($resaco,0,'j120_loteam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2734,15597,'','".AddSlashes(pg_fetch_result($resaco,0,'j120_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_loteamcgm {
       $this->atualizacampos();
      $sql = " update loteamcgm set ";
      $virgula = "";
-     if(trim($this->j120_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j120_sequencial"])){ 
+     if(trim((string) $this->j120_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j120_sequencial"])){ 
        $sql  .= $virgula." j120_sequencial = $this->j120_sequencial ";
        $virgula = ",";
-       if(trim($this->j120_sequencial) == null ){ 
+       if(trim((string) $this->j120_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j120_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_loteamcgm {
          return false;
        }
      }
-     if(trim($this->j120_loteam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j120_loteam"])){ 
+     if(trim((string) $this->j120_loteam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j120_loteam"])){ 
        $sql  .= $virgula." j120_loteam = $this->j120_loteam ";
        $virgula = ",";
-       if(trim($this->j120_loteam) == null ){ 
+       if(trim((string) $this->j120_loteam) == null ){ 
          $this->erro_sql = " Campo Loteamento nao Informado.";
          $this->erro_campo = "j120_loteam";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_loteamcgm {
          return false;
        }
      }
-     if(trim($this->j120_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j120_cgm"])){ 
+     if(trim((string) $this->j120_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j120_cgm"])){ 
        $sql  .= $virgula." j120_cgm = $this->j120_cgm ";
        $virgula = ",";
-       if(trim($this->j120_cgm) == null ){ 
+       if(trim((string) $this->j120_cgm) == null ){ 
          $this->erro_sql = " Campo CGM nao Informado.";
          $this->erro_campo = "j120_cgm";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_loteamcgm {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15595,'$this->j120_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j120_sequencial"]) || $this->j120_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2734,15595,'".AddSlashes(pg_result($resaco,$conresaco,'j120_sequencial'))."','$this->j120_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2734,15595,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j120_sequencial'))."','$this->j120_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j120_loteam"]) || $this->j120_loteam != "")
-           $resac = db_query("insert into db_acount values($acount,2734,15596,'".AddSlashes(pg_result($resaco,$conresaco,'j120_loteam'))."','$this->j120_loteam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2734,15596,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j120_loteam'))."','$this->j120_loteam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j120_cgm"]) || $this->j120_cgm != "")
-           $resac = db_query("insert into db_acount values($acount,2734,15597,'".AddSlashes(pg_result($resaco,$conresaco,'j120_cgm'))."','$this->j120_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2734,15597,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j120_cgm'))."','$this->j120_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_loteamcgm {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15595,'$j120_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2734,15595,'','".AddSlashes(pg_result($resaco,$iresaco,'j120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2734,15596,'','".AddSlashes(pg_result($resaco,$iresaco,'j120_loteam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2734,15597,'','".AddSlashes(pg_result($resaco,$iresaco,'j120_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2734,15595,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2734,15596,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j120_loteam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2734,15597,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j120_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from loteamcgm
@@ -345,7 +345,7 @@ class cl_loteamcgm {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:loteamcgm";
@@ -360,7 +360,7 @@ class cl_loteamcgm {
    function sql_query ( $j120_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_loteamcgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,7 +396,7 @@ class cl_loteamcgm {
    function sql_query_file ( $j120_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_loteamcgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

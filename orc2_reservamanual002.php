@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
@@ -64,7 +64,7 @@ where o80_codres = $res
 //echo $sql ; exit;
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existe Cadastrada ('.$o80_codres.'). Contate suporte.');
 
@@ -82,7 +82,7 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 6;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    
    $pdf->ln(10);
@@ -109,7 +109,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $pdf->setfont('arial','b',8);
    $pdf->cell(40,$alt,'Motivo da Reserva',0,0,"L",0);
    $pdf->setfont('arial','',8);
-   $pdf->multicell(0,$alt,':  '.strtoupper($o80_descr));
+   $pdf->multicell(0,$alt,':  '.strtoupper((string) $o80_descr));
    $pdf->setfont('arial','b',8);
    $pdf->cell(40,$alt,'Valor',0,0,"L",0);
    $pdf->setfont('arial','',8);

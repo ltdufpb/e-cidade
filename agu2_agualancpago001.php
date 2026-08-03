@@ -36,7 +36,7 @@ $claguacalc->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("x22_exerc");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -118,7 +118,7 @@ for($i=1;$i<=12;$i++){
   </td>
   <td>
      <?php 
-       $tipolista = array("a"=>"Analitico","s"=>"Sintetico");
+       $tipolista = ["a"=>"Analitico","s"=>"Sintetico"];
        db_select("tipo",$tipolista,true,2);
      ?>
   </td>
@@ -129,7 +129,7 @@ for($i=1;$i<=12;$i++){
   </td>
   <td>
      <?php 
-       $inadimbaseada = array("c"=>"Calculado","a"=>"Arrecadado");
+       $inadimbaseada = ["c"=>"Calculado","a"=>"Arrecadado"];
        db_select("inadimbaseada",$inadimbaseada,true,2);
      ?>
   </td>

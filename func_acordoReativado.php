@@ -33,8 +33,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_acordo_classe.php"));
 $lAtivo      = '';
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clacordo = new cl_acordo;
 $clacordo->rotulo->label("ac16_sequencial");
@@ -128,9 +128,9 @@ db_app::load("estilos.css, grid.style.css");
 	
 	      if (isset($lAtivo)) {
 	
-	        if ($lAtivo == 1) {
+	        if (0 == 1) {
 	          $sWhere .= " and ac17_ativo is true";
-	        } else if ($lAtivo == 2) {
+	        } else if (0 == 2) {
 	          $sWhere .= " and ac17_ativo is false";
 	        }
 	      }
@@ -176,10 +176,10 @@ db_app::load("estilos.css, grid.style.css");
            $sql = $clacordo->sql_query_acordoReativado("",$campos,"ac16_sequencial", $sWhere);
         }
 
-        $repassa = array();
+        $repassa = [];
         
         if (isset($chave_ac16_sequencial)) {
-          $repassa = array("chave_ac16_sequencial"=>$chave_ac16_sequencial,"chave_ac16_sequencial"=>$chave_ac16_sequencial);
+          $repassa = ["chave_ac16_sequencial"=>$chave_ac16_sequencial,"chave_ac16_sequencial"=>$chave_ac16_sequencial];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

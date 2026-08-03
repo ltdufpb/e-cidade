@@ -33,20 +33,20 @@ require_once(modification("classes/db_fiscalproc_classe.php"));
 require_once(modification("classes/db_fiscalprocpa_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='fis1_fiscalproc005.php?db_opcao=2'</script>";
   exit;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clfiscalproc   = new cl_fiscalproc;
 $clfiscalprocpa = new cl_fiscalprocpa;
 $db_opcao = 22;
 $db_botao = false;
 $sqlerro  = false;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 
   db_inicio_transacao();
   $db_opcao = 2;
@@ -96,7 +96,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </html>
 <?php
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 
   if($clfiscalproc->erro_status=="0"){
 

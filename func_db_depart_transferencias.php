@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_depart_classe.php"));
 include(modification("classes/db_db_config_classe.php"));
 include(modification("classes/db_orcorgao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_depart   = new cl_db_depart;
 $cldb_config   = new cl_db_config;
 $clorcorgao = new cl_orcorgao;
@@ -171,7 +171,7 @@ if(!isset($pesquisa_chave)){
   }
   
   // die($sql);
-  db_lovrot($sql,15,"()","",$funcao_js, "", "NoMe", array(), false);
+  db_lovrot($sql,15,"()","",$funcao_js, "", "NoMe", [], false);
   
 }else{
   if($pesquisa_chave!=null && $pesquisa_chave!=""){

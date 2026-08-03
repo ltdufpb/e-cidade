@@ -7,14 +7,8 @@ use ECidade\Tributario\Library\Entity;
 
 final class FiltroUnica extends Entity
 {
-    private $data;
-
-    private $porcentagem;
-
-    public function __construct(DateTime $data, $porcentagem)
+    public function __construct(private DateTime $data, private $porcentagem)
     {
-        $this->data = $data;
-        $this->porcentagem = $porcentagem;
     }
 
     public function setData($data)

@@ -31,20 +31,20 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
 //////////INCLUIR/////////////
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   $naolibclass = (!isset($naolibclass)?'f':'t');
   $naolibfunc  = (!isset($naolibfunc)?'f':'t');
   $naolibprog  = (!isset($naolibprog)?'f':'t');
   $naolibform  = (!isset($naolibform)?'f':'t');
-	
+
   if(!checkdate($dataincl_mes,$dataincl_dia,$dataincl_ano))
     db_erro("Data inválida(insert)");
   else
     $data = $dataincl_ano."-".$dataincl_mes."-".$dataincl_dia;
   db_query("BEGIN");
   $result = db_query("select nextval('db_sysarquivo_codarq_seq')");
-  $codarq = pg_result($result,0,0);
+  $codarq = pg_fetch_result($result,0,0);
   db_query("insert into db_sysarquivo values ($codarq,
 			                     '$nomearq',
 				             '$descricao',
@@ -64,13 +64,13 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   db_query("END");
   db_redireciona();
 ////////////////ALTERAR////////////////  
-} else if(isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
+} else if(isset($_POST["alterar"])) {
+  db_postmemory($_POST);
   $naolibclass = (isset($naolibclass)?'t':'f');
   $naolibfunc  = isset($naolibfunc)?'t':'f';
   $naolibprog  = isset($naolibprog)?'t':'f';
   $naolibform  = isset($naolibform)?'t':'f';
-	
+
   if(!checkdate($dataincl_mes,$dataincl_dia,$dataincl_ano))
     db_erro("Data inválida(update)");
   else
@@ -95,15 +95,15 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   db_query($conn,"END");
   db_redireciona();
 ////////////////EXCLUIR//////////////
-} else if(isset($HTTP_POST_VARS["excluir"])) {
+} else if(isset($_POST["excluir"])) {
   db_query("BEGIN");
-  db_query("delete from db_sysarqarq  where codarq = ".$HTTP_POST_VARS["codarq"]) or die("Erro(57) escluindo db_sysarqarq");
-  db_query("delete from db_sysarqmod  where codarq = ".$HTTP_POST_VARS["codarq"]) or die("Erro(57) escluindo db_sysarqmod");
-  db_query("delete from db_sysarquivo where codarq = ".$HTTP_POST_VARS["codarq"]) or die("Erro(58) excluindo em db_sysarquivo");
+  db_query("delete from db_sysarqarq  where codarq = ".$_POST["codarq"]) or die("Erro(57) escluindo db_sysarqarq");
+  db_query("delete from db_sysarqmod  where codarq = ".$_POST["codarq"]) or die("Erro(57) escluindo db_sysarqmod");
+  db_query("delete from db_sysarquivo where codarq = ".$_POST["codarq"]) or die("Erro(58) excluindo em db_sysarquivo");
   db_query("END");
   db_redireciona();
 }
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 if(isset($retorno)) {
   $sql = "select m.codmod,a.codarq,a.nomearq,a.descricao,a.sigla,a.rotulo,aq.codarqpai,a.naolibclass,a.naolibfunc,a.naolibprog,a.naolibform,
           to_char(a.dataincl,'DD') as dataincl_dia,to_char(a.dataincl,'MM') as dataincl_mes,to_char(a.dataincl,'YYYY') as dataincl_ano, a.tipotabela
@@ -189,10 +189,10 @@ input {
   <tr> 
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
 	<?php 
-      if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {	  
+      if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {	  
 	     $sql = "SELECT codarq as db_codarq,codarq ,nomearq , descricao ,sigla
               FROM db_sysarquivo
-			  WHERE nomearq like '".$HTTP_POST_VARS["nomearq"]."%'
+			  WHERE nomearq like '".$_POST["nomearq"]."%'
               ORDER BY nomearq";
 		db_lov($sql,15,"sys1_tabelas001.php"); 
 	  } else {
@@ -234,11 +234,11 @@ input {
             <td nowrap><select name="modulo" size="1">
                 <?php 
 		  function db_retSelected($valor) {
-		    global $HTTP_POST_VARS;
+		    global $_POST;
 			global $retorno;
 			global $codmod;
-		    if(isset($HTTP_POST_VARS["modulo"])) {
-			  if($valor == $HTTP_POST_VARS["modulo"])
+		    if(isset($_POST["modulo"])) {
+			  if($valor == $_POST["modulo"])
 			    return "selected";
 			} else if(isset($retorno)) {
 			  if($valor == $codmod)
@@ -247,9 +247,9 @@ input {
              return "";
 		  }
 		  $result = db_query("select codmod,nomemod from db_sysmodulo where ativo is true order by nomemod");
-		  $numrows = pg_numrows($result);
+		  $numrows = pg_num_rows($result);
 		  for($i = 0;$i < $numrows;$i++)
-		    echo "<option value=\"".pg_result($result,$i,"codmod")."\" ".db_retSelected(pg_result($result,$i,"codmod")).">".pg_result($result,$i,"nomemod")."</option>\n";
+		    echo "<option value=\"".pg_fetch_result($result,$i,"codmod")."\" ".db_retSelected(pg_fetch_result($result,$i,"codmod")).">".pg_fetch_result($result,$i,"nomemod")."</option>\n";
 		  ?>
               </select></td>
           </tr>
@@ -270,11 +270,11 @@ input {
 		    <option value="0">Nenhuma...</option>
                 <?php 
 		  function db_retSelecteda($valor) {
-		    global $HTTP_POST_VARS;
+		    global $_POST;
 			global $retorno;
 			global $codarqpai;
-		    if(isset($HTTP_POST_VARS["tabelapai"])) {
-			  if($valor == $HTTP_POST_VARS["tabelapai"])
+		    if(isset($_POST["tabelapai"])) {
+			  if($valor == $_POST["tabelapai"])
 			    return "selected";
 			} else if(isset($retorno)) {
 			  if($valor == $codarqpai)
@@ -285,9 +285,9 @@ input {
 		  $result = db_query("select codarq,nomearq 
 		                     from db_sysarquivo  
 							 order by nomearq");
-		  $numrows = pg_numrows($result);
+		  $numrows = pg_num_rows($result);
 		  for($i = 0;$i < $numrows;$i++)
-		    echo "<option value=\"".pg_result($result,$i,"codarq")."\" ".db_retSelecteda(pg_result($result,$i,"codarq")).">".pg_result($result,$i,"nomearq")."</option>\n";
+		    echo "<option value=\"".pg_fetch_result($result,$i,"codarq")."\" ".db_retSelecteda(pg_fetch_result($result,$i,"codarq")).">".pg_fetch_result($result,$i,"nomearq")."</option>\n";
 		  ?>
               </select></td>
           </tr>

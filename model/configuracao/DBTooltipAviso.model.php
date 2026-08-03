@@ -5,22 +5,6 @@ use \ECidade\V3\Extension\Registry;
 class DBTooltipAviso {
 
   /**
-   * String com o label a ser mostrado
-   *
-   * @var String
-   */
-  private $sLabel;
-
-  /**
-   * String com a ação a executar,
-   * redirecionar a página
-   * abrir uma modal
-   *
-   * @var String
-   */
-  private $sAction;
-
-  /**
    * Representa a instância da classe.
    *
    * @var DBTooltipAviso
@@ -29,11 +13,22 @@ class DBTooltipAviso {
 
   /**
    * Construtor do aviso
+   * @param string $sLabel
+   * @param string $sAction
    */
-  public function __construct($sLabel, $sAction) {
-
-    $this->sLabel  = $sLabel;
-    $this->sAction = $sAction;
+  public function __construct(
+      /**
+       * String com o label a ser mostrado
+       */
+      private $sLabel,
+      /**
+       * String com a ação a executar,
+       * redirecionar a página
+       * abrir uma modal
+       */
+      private $sAction
+  )
+  {
   }
 
   /**

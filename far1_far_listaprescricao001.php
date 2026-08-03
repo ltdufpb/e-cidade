@@ -34,7 +34,7 @@ include(modification("classes/db_far_listacontrolado_classe.php"));
 include(modification("classes/db_far_prescricaomedica_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clfar_listaprescricao = new cl_far_listaprescricao;
 $clfar_listacontrolado = new cl_far_listacontrolado;
 $clfar_prescricaomedica = new cl_far_prescricaomedica;

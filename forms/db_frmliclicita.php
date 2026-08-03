@@ -48,7 +48,7 @@ if ($db_opcao == 1) {
 	/*
 	 * verifica na tabela licitaparam se deve utilizar processo do sistema
 	 */
-  $oParamLicicita = db_stdClass::getParametro('licitaparam', array(db_getsession("DB_instit")));
+  $oParamLicicita = db_stdClass::getParametro('licitaparam', [db_getsession("DB_instit")]);
 
   if(isset($oParamLicicita[0]->l12_escolheprotocolo) && $oParamLicicita[0]->l12_escolheprotocolo == 't') {
   	$lprocsis = 's';
@@ -332,7 +332,7 @@ $lBloqueadoRegistroPreco = (empty($itens_lancados) ? $db_opcao : 3);
             </td>
             <td>
               <?php
-                $arr_tipo = array("1"=>"Por item","2"=>"Global","3"=>"Por lote");
+                $arr_tipo = ["1"=>"Por item","2"=>"Global","3"=>"Por lote"];
                 db_select("l20_tipojulg",$arr_tipo,true, $lBloqueadoRegistroPreco);
                 db_input("tipojulg",1,"",true,"hidden",3,"");
                 db_input("confirmado",1,"",true,"hidden",3,"");
@@ -373,10 +373,10 @@ $lBloqueadoRegistroPreco = (empty($itens_lancados) ? $db_opcao : 3);
 
 
 
-                 $aProcSistema = array(
+                 $aProcSistema = [
                     "s" => "Sim",
                     "n" => "Não"
-                  );
+                  ];
 
                  db_select('lprocsis', $aProcSistema, true, $db_opcao_editavel);
               ?>
@@ -417,7 +417,7 @@ $lBloqueadoRegistroPreco = (empty($itens_lancados) ? $db_opcao : 3);
                 $l20_usaregistropreco = "f";
               }
 
-              db_select("l20_usaregistropreco",array("t"=>"Sim", "f"=>"Não"),true,$lBloqueadoRegistroPreco, "onchange='mostrarFormaControleRegistroPreco()'");
+              db_select("l20_usaregistropreco",["t"=>"Sim", "f"=>"Não"],true,$lBloqueadoRegistroPreco, "onchange='mostrarFormaControleRegistroPreco()'");
               ?>
             </td>
           </tr>
@@ -430,7 +430,7 @@ $lBloqueadoRegistroPreco = (empty($itens_lancados) ? $db_opcao : 3);
                 if (!isset($ll20_formacontroleregistropreco)) {
                   $ll20_formacontroleregistropreco = "1";
                 }
-                db_select("l20_formacontroleregistropreco", array("1"=>"Por Quantidade", "2" => "Por Valor"), true, $lBloqueadoRegistroPreco, "onchange='verificaTipoJulgamento()'");
+                db_select("l20_formacontroleregistropreco", ["1"=>"Por Quantidade", "2" => "Por Valor"], true, $lBloqueadoRegistroPreco, "onchange='verificaTipoJulgamento()'");
               ?>
             </td>
           </tr>
@@ -441,7 +441,7 @@ $lBloqueadoRegistroPreco = (empty($itens_lancados) ? $db_opcao : 3);
             </td>
             <td>
               <?php
-                $a = array("1"=>"Gera despesa","2"=>"Não gera despesa");
+                $a = ["1"=>"Gera despesa","2"=>"Não gera despesa"];
                 db_select("l20_tipo", $a, true, $lBloqueadoRegistroPreco); // Se ja tem itens não pode alterar
               ?>
             </td>
@@ -605,7 +605,7 @@ function js_preenchepesquisa(chave){
   db_iframe_liclicita.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
     ?>
    parent.iframe_liclicitem.location.href='lic1_liclicitemalt001.php?licitacao='+chave;
    <?php 

@@ -19,8 +19,8 @@ class LivroDiarioGeralBuilder extends PadBuilder
     protected function processar()
     {
         $historico = $this->dados['historico'];
-        if (strlen($historico) > 150) {
-            $historico = substr($historico, 0, 150);
+        if (strlen((string) $historico) > 150) {
+            $historico = substr((string) $historico, 0, 150);
         }
 
         $this->layout->setCodigoContabalanceteVerificao($this->formataNumerico($this->dados['estrutural'], 20));
@@ -44,19 +44,12 @@ class LivroDiarioGeralBuilder extends PadBuilder
         if (empty($this->dados['c53_tipo'])) {
             return 0;
         }
-        switch ($this->dados['c53_tipo']) {
-            case 10:
-            case 11:
-                return 1;
-            case 20:
-            case 21:
-                return 3;
-            case 30:
-            case 31:
-                return 2;
-            default:
-                return 9;
-        }
+        return match ($this->dados['c53_tipo']) {
+            10, 11 => 1,
+            20, 21 => 3,
+            30, 31 => 2,
+            default => 9,
+        };
     }
 
     /**
@@ -66,7 +59,7 @@ class LivroDiarioGeralBuilder extends PadBuilder
     private function getNumeroLote()
     {
         $numeroLote = $this->dados['numerolote'];
-        if (!preg_match('/^\d+$/', $numeroLote)) {
+        if (!preg_match('/^\d+$/', (string) $numeroLote)) {
             if (!array_key_exists($numeroLote, $this->numerosLotesGerados)) {
                 $this->numerosLotesGerados[$numeroLote] = $this->gerarNumeroLote();
             }

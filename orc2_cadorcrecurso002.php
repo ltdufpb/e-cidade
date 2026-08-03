@@ -30,7 +30,7 @@ include(modification("libs/db_sql.php"));
 include(modification("libs/db_utils.php"));
 include(modification("classes/db_orctiporec_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oGet     = db_utils::postMemory($_GET);
 $sRecurso = "";
@@ -61,7 +61,7 @@ $head3 = "RELATÓRIO DE RECURSOS VINCULADOS";
 $head5 = "EXERCÍCIO: ".db_getsession("DB_anousu");
 $head7 = $sRecurso;
 
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem recursos cadastradas.');
     exit;
@@ -75,7 +75,7 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial', 'b', 8);
 $troca = 1;
 $alt = 4;
-for ($x = 0; $x < pg_numrows($result); $x++) {
+for ($x = 0; $x < pg_num_rows($result); $x++) {
     db_fieldsmemory($result, $x);
 
     if ($pdf->gety() > $pdf->h - 30 || $troca != 0) {
@@ -89,8 +89,8 @@ for ($x = 0; $x < pg_numrows($result); $x++) {
         $troca = 0;
     }
     $pdf->setfont('arial', '', 7);
-    $pdf->cell(84, $alt, $o15_recurso . " - " . substr($o15_descr, 0, 42), 0, 0, "L", 0);
-    $pdf->cell(84, $alt, $o15_complemento . " - " . substr($o200_descricao, 0, 42), 0, 0, "L", 0);
+    $pdf->cell(84, $alt, $o15_recurso . " - " . substr((string) $o15_descr, 0, 42), 0, 0, "L", 0);
+    $pdf->cell(84, $alt, $o15_complemento . " - " . substr((string) $o200_descricao, 0, 42), 0, 0, "L", 0);
     $pdf->cell(20, $alt, db_formatar($o15_datalimite, 'd'), 0, 0, "C", 0);
     $pdf->multicell(90, $alt, $o15_finali);
 }

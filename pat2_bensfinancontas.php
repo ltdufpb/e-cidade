@@ -76,8 +76,8 @@ $clArquivoAuxiliar = new cl_arquivo_auxiliar();
 	     <td align="center">
 	        <strong>Op&ccedil;&otilde;es</strong>
 	        <?php 
-	          $opcoes = array('s' => 'Considerar selecionadas',
-	                          'n' => 'N&atilde;o considerar selecionadas');
+	          $opcoes = ['s' => 'Considerar selecionadas',
+	                          'n' => 'N&atilde;o considerar selecionadas'];
 	          db_select('opcoescontas', $opcoes, true, 1);
 	        ?>     
 	     </td>

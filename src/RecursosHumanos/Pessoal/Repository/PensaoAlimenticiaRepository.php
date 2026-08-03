@@ -42,7 +42,7 @@ class PensaoAlimenticiaRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param array|int $ids
@@ -68,7 +68,7 @@ class PensaoAlimenticiaRepository
      * @param PensaoAlimenticia|null $pensaoAlimenticia
      * @throws Exception
      */
-    public function delete(PensaoAlimenticia $pensaoAlimenticia = null)
+    public function delete(?PensaoAlimenticia $pensaoAlimenticia = null)
     {
         $id = $pensaoAlimenticia instanceof PensaoAlimenticia ? $pensaoAlimenticia->getSequencial() : null;
 
@@ -86,7 +86,7 @@ class PensaoAlimenticiaRepository
      * @return bool|PensaoAlimenticia
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_pensao();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -110,13 +110,13 @@ class PensaoAlimenticiaRepository
      * @return PensaoAlimenticia[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $dao = new cl_pensao();
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $pensoesAlimenticias = array();
+        $pensoesAlimenticias = [];
 
         if (pg_num_rows($rs) === 0) {
             return $pensoesAlimenticias;
@@ -143,7 +143,7 @@ class PensaoAlimenticiaRepository
             throw new Exception("Não foi possível buscar a(s) pensão(ões) alimentícia(s) do servidor.\nContate o suporte.");
         }
 
-        $pensoesAlimenticias = array();
+        $pensoesAlimenticias = [];
 
         if (pg_num_rows($rs) === 0) {
             return $pensoesAlimenticias;
@@ -238,7 +238,7 @@ class PensaoAlimenticiaRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
         return $this;
     }
 

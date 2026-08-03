@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_matestoque_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clmatestoque = new cl_matestoque;
 
@@ -133,7 +133,7 @@ for ($i = 0; $i < $numrows; $i++) {
       $x = $pdf->getX();
       $x += 15;
       $pdf->setX($x);
-      $pdf->cell($col+15, $alt, $pc04_codsubgrupo." ".trim($pc04_descrsubgrupo), $borda, 0, "L", $p);
+      $pdf->cell($col+15, $alt, $pc04_codsubgrupo." ".trim((string) $pc04_descrsubgrupo), $borda, 0, "L", $p);
       $x = $pdf->getX();
       $x -= 15;
       $pdf->setX($x);

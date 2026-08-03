@@ -65,7 +65,7 @@ switch ($oParam->exec) {
       $sCampos .= "c53_descr,";
       $sCampos .= "c66_codnota";
 
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = "acordo.ac16_sequencial  = {$oParam->iCodigoAcordo}";
       $aWhere[] = "acordo.ac16_origem      = 6";
       $aWhere[] = "conlancamdoc.c71_coddoc not in(200, 31) ";
@@ -76,7 +76,7 @@ switch ($oParam->exec) {
       $sSqlBuscaEmpenho = $oDaoBuscaEmpenho->sql_query_empenho_contrato(null , "distinct e60_numemp", null, implode(" and ",$aWhere));
       $rsBuscaEmpenho   = $oDaoBuscaEmpenho->sql_record($sSqlBuscaEmpenho);
 
-      $aEmpenhosEncontrados = array();
+      $aEmpenhosEncontrados = [];
       if ($oDaoBuscaEmpenho->erro_status == "0") {
         throw new BusinessException("Não foi possível localizar os empenhos vinculados ao contrato.");
       }
@@ -95,7 +95,7 @@ switch ($oParam->exec) {
         /**
          * Documentos executados
          */
-        $aDocumentosExecutados     = array();
+        $aDocumentosExecutados     = [];
 
         /**
          * Percorremos o Result Set dos dados armazenando nos arrays os dados referente
@@ -189,7 +189,7 @@ switch ($oParam->exec) {
 
       $oParam->sEmpenhos = implode(', ', $oParam->sEmpenhos);
 
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = "acordo.ac16_sequencial  = {$oParam->iCodigoAcordo}";
       $aWhere[] = "acordo.ac16_origem      = 6";
       $aWhere[] = "conhistdoc.c53_tipo in (900, 901, 11)";
@@ -207,8 +207,8 @@ switch ($oParam->exec) {
       $iTotalAcordosEmpenho = $oDaoConLancamEmp->numrows;
 
       $iTotalRegistrosAlterados  = 0;
-      $aTipoDocumentosExecutados = array();
-      $aDocumentosExecutados     = array();
+      $aTipoDocumentosExecutados = [];
+      $aDocumentosExecutados     = [];
       for ($iRowAcordo = 0; $iRowAcordo < $iTotalAcordosEmpenho; $iRowAcordo++) {
 
         $oStdDados = db_utils::fieldsMemory($rsAcordosEmpenho, $iRowAcordo);

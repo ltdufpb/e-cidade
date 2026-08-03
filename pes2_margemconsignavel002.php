@@ -35,7 +35,7 @@ $clrotulo->label('r01_regist');
 $clrotulo->label('r14_quant');
 $clrotulo->label('r14_valor');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 // db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $ponto = 's';
@@ -66,7 +66,7 @@ $wherepes = '';
 
 if(isset($select) && $select != ''){
   $result_sel = db_query("select r44_where , r44_descr from selecao where r44_selec = {$select} and r44_instit = ". db_getsession("DB_instit"));
-  if(pg_numrows($result_sel) > 0){
+  if(pg_num_rows($result_sel) > 0){
     db_fieldsmemory($result_sel, 0, 1);
     $wherepes .= " and ".$r44_where;
     $head8 = $r44_descr;
@@ -143,7 +143,7 @@ $sql = "
 
 $result = db_query($sql);
 //db_criatabela($result);exit;
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    //db_msgbox('Não existem Cálculo no período de '.$mes.' / '.$ano);
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Cálculo no período de '.$mes.' / '.$ano);
@@ -167,7 +167,7 @@ $quebra  = '';
 $t_quant = 0;
 $t_valor = 0;
 $t_func  = 0;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    /*  usar se um dia fizermos quebras
    

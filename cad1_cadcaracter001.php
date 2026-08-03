@@ -36,7 +36,7 @@ $clcaracter = new cl_caracter;
 $clcarpadrao = new cl_carpadrao;
 $db_opcao = 1;
 $db_botao = true;
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Incluir"){
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Incluir"){
    db_inicio_transacao();
    $clcaracter->incluir($j31_codigo);
 
@@ -91,7 +91,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clcaracter->erro_status=="0"){
     $clcaracter->erro(true,false);
     if($clcaracter->erro_campo!=""){

@@ -114,12 +114,10 @@ try {
         return $oStdMatricula;
       }, $aMatriculas);
 
-      usort($oRetorno->matriculas, function($oMatricula, $oProximaMatricula) {
-        return ($oMatricula->matricula > $oProximaMatricula->matricula);
-      });
+      usort($oRetorno->matriculas, fn($oMatricula, $oProximaMatricula) => $oMatricula->matricula > $oProximaMatricula->matricula);
       
       $aTmp                   = $oRetorno->matriculas[sizeof($oRetorno->matriculas)-1];
-      $oRetorno->matriculas   = array();
+      $oRetorno->matriculas   = [];
       $oRetorno->matriculas[] = $aTmp;
       break;
   }

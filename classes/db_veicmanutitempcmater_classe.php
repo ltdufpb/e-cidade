@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE veicmanutitempcmater
 class cl_veicmanutitempcmater { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ve64_codigo = 0; 
-   var $ve64_veicmanutitem = 0; 
-   var $ve64_pcmater = 0; 
+   public $ve64_codigo = 0; 
+   public $ve64_veicmanutitem = 0; 
+   public $ve64_pcmater = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ve64_codigo = int4 = Código Seq. 
                  ve64_veicmanutitem = int4 = Código item da manutenção 
                  ve64_pcmater = int4 = Material 
                  ";
    //funcao construtor da classe 
-   function cl_veicmanutitempcmater() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veicmanutitempcmater"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_veicmanutitempcmater {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ve64_codigo = pg_result($result,0,0); 
+       $this->ve64_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from veicmanutitempcmater_ve64_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ve64_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ve64_codigo)){
          $this->erro_sql = " Campo ve64_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_veicmanutitempcmater {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ligação com cadastro dos itens do compras ($this->ve64_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ligação com cadastro dos itens do compras já Cadastrado";
@@ -166,12 +166,12 @@ class cl_veicmanutitempcmater {
      $resaco = $this->sql_record($this->sql_query_file($this->ve64_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9343,'$this->ve64_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1605,9343,'','".AddSlashes(pg_result($resaco,0,'ve64_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1605,9344,'','".AddSlashes(pg_result($resaco,0,'ve64_veicmanutitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1605,9345,'','".AddSlashes(pg_result($resaco,0,'ve64_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1605,9343,'','".AddSlashes(pg_fetch_result($resaco,0,'ve64_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1605,9344,'','".AddSlashes(pg_fetch_result($resaco,0,'ve64_veicmanutitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1605,9345,'','".AddSlashes(pg_fetch_result($resaco,0,'ve64_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_veicmanutitempcmater {
       $this->atualizacampos();
      $sql = " update veicmanutitempcmater set ";
      $virgula = "";
-     if(trim($this->ve64_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve64_codigo"])){ 
+     if(trim((string) $this->ve64_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve64_codigo"])){ 
        $sql  .= $virgula." ve64_codigo = $this->ve64_codigo ";
        $virgula = ",";
-       if(trim($this->ve64_codigo) == null ){ 
+       if(trim((string) $this->ve64_codigo) == null ){ 
          $this->erro_sql = " Campo Código Seq. nao Informado.";
          $this->erro_campo = "ve64_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_veicmanutitempcmater {
          return false;
        }
      }
-     if(trim($this->ve64_veicmanutitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve64_veicmanutitem"])){ 
+     if(trim((string) $this->ve64_veicmanutitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve64_veicmanutitem"])){ 
        $sql  .= $virgula." ve64_veicmanutitem = $this->ve64_veicmanutitem ";
        $virgula = ",";
-       if(trim($this->ve64_veicmanutitem) == null ){ 
+       if(trim((string) $this->ve64_veicmanutitem) == null ){ 
          $this->erro_sql = " Campo Código item da manutenção nao Informado.";
          $this->erro_campo = "ve64_veicmanutitem";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_veicmanutitempcmater {
          return false;
        }
      }
-     if(trim($this->ve64_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve64_pcmater"])){ 
+     if(trim((string) $this->ve64_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve64_pcmater"])){ 
        $sql  .= $virgula." ve64_pcmater = $this->ve64_pcmater ";
        $virgula = ",";
-       if(trim($this->ve64_pcmater) == null ){ 
+       if(trim((string) $this->ve64_pcmater) == null ){ 
          $this->erro_sql = " Campo Material nao Informado.";
          $this->erro_campo = "ve64_pcmater";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_veicmanutitempcmater {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9343,'$this->ve64_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ve64_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1605,9343,'".AddSlashes(pg_result($resaco,$conresaco,'ve64_codigo'))."','$this->ve64_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1605,9343,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ve64_codigo'))."','$this->ve64_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ve64_veicmanutitem"]))
-           $resac = db_query("insert into db_acount values($acount,1605,9344,'".AddSlashes(pg_result($resaco,$conresaco,'ve64_veicmanutitem'))."','$this->ve64_veicmanutitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1605,9344,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ve64_veicmanutitem'))."','$this->ve64_veicmanutitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ve64_pcmater"]))
-           $resac = db_query("insert into db_acount values($acount,1605,9345,'".AddSlashes(pg_result($resaco,$conresaco,'ve64_pcmater'))."','$this->ve64_pcmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1605,9345,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ve64_pcmater'))."','$this->ve64_pcmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_veicmanutitempcmater {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9343,'$ve64_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1605,9343,'','".AddSlashes(pg_result($resaco,$iresaco,'ve64_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1605,9344,'','".AddSlashes(pg_result($resaco,$iresaco,'ve64_veicmanutitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1605,9345,'','".AddSlashes(pg_result($resaco,$iresaco,'ve64_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1605,9343,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ve64_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1605,9344,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ve64_veicmanutitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1605,9345,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ve64_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from veicmanutitempcmater
@@ -345,7 +345,7 @@ class cl_veicmanutitempcmater {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:veicmanutitempcmater";
@@ -359,7 +359,7 @@ class cl_veicmanutitempcmater {
    function sql_query ( $ve64_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_veicmanutitempcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,7 +397,7 @@ class cl_veicmanutitempcmater {
    function sql_query_file ( $ve64_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_veicmanutitempcmater {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

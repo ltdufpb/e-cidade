@@ -100,9 +100,9 @@ db_app::load("estilos.css");
               </td>
               <td>
                  <?php 
-                  $aOrderBy = array(1 => "Código do Item",
+                  $aOrderBy = [1 => "Código do Item",
                                     2 => "Descrição do Item"
-                                   );
+                                   ];
                                    
                   db_select("orderby", $aOrderBy, true, 1);                 
                  ?>
@@ -116,9 +116,9 @@ db_app::load("estilos.css");
               </td>
               <td>
                  <?php 
-                  $aSaldoNegativo = array("N" => "Não",
+                  $aSaldoNegativo = ["N" => "Não",
                                           "S" => "Sim"
-                                   );
+                                   ];
                                    
                   db_select("saldonegativo", $aSaldoNegativo, true, 1);                 
                  ?>
@@ -132,8 +132,8 @@ db_app::load("estilos.css");
               </td>
               <td>
                  <?php 
-                  $aItensSemMovimento = array("N" => "Não",
-                                              "S" => "Sim");
+                  $aItensSemMovimento = ["N" => "Não",
+                                              "S" => "Sim"];
                                    
                   db_select("itenssemmovimento", $aItensSemMovimento, true, 1);                 
                  ?>
@@ -147,9 +147,9 @@ db_app::load("estilos.css");
               </td>
               <td>
                  <?php 
-                  $aOpcao = array(1 => "Almoxarifado",
+                  $aOpcao = [1 => "Almoxarifado",
                                   2 => "Conta"
-                                 );
+                                 ];
                                    
                   db_select("opcaoImpressao", $aOpcao, true, 1);                 
                  ?>
@@ -163,9 +163,9 @@ db_app::load("estilos.css");
               </td>
               <td>
                  <?php 
-                  $aTipo = array(1 => "Sintética",
+                  $aTipo = [1 => "Sintética",
                                  2 => "Analitica"
-                                );
+                                ];
                                    
                   db_select("tipoImpressao", $aTipo, true, 1);
                  ?>
@@ -179,9 +179,9 @@ db_app::load("estilos.css");
               </td>
               <td>
                  <?php 
-                  $aAgruparPorElemento = array(1 => "Nao",
+                  $aAgruparPorElemento = [1 => "Nao",
                                                2 => "Sim"
-                                              );
+                                              ];
                                    
                   db_select("agruparporelemento", $aAgruparPorElemento, true, 1);
                  ?>

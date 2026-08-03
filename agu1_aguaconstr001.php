@@ -35,7 +35,7 @@
   include(modification("classes/db_aguabase_classe.php"));
   include(modification("dbforms/db_funcoes.php"));
   
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
   
   $oPost = db_utils::postMemory($_POST);
 
@@ -94,7 +94,7 @@
         $sqlerro = true;
       }
 
-      $matriz = split("X", $oPost->caracteristica);
+      $matriz = preg_split("#X#m", $oPost->caracteristica);
       for($i=0; $i<sizeof($matriz); $i++){
         $x12_codigo = $matriz[$i];
         if($x12_codigo != ""){
@@ -178,7 +178,7 @@
         $sqlerro=true;
       }
 
-      $matriz = split("X", $oPost->caracteristica);
+      $matriz = preg_split("#X#m", $oPost->caracteristica);
       for($i=0; $i<sizeof($matriz); $i++){
         $x12_codigo = $matriz[$i];
         if($x12_codigo != ""){

@@ -26,9 +26,7 @@ class ManutencaoPlanoOrcamentarioReceitaService extends ManutencaoPlanoOrcamenta
 
         // filtrei as receitas sem execução orçamentaria
         $receitasExcluir = $receitas->reject(function (ConplanoOrcamento $plano) use ($balancete) {
-            $dadoBalancete = collect($balancete)->filter(function ($conta) use ($plano) {
-                return $plano->c60_estrut === $conta->natureza;
-            })->shift();
+            $dadoBalancete = collect($balancete)->filter(fn($conta) => $plano->c60_estrut === $conta->natureza)->shift();
 
             if (!is_null($dadoBalancete)) {
                 $temSaldo = ($dadoBalancete->previsao_atualizada != 0 ||
@@ -41,30 +39,22 @@ class ManutencaoPlanoOrcamentarioReceitaService extends ManutencaoPlanoOrcamenta
 
         // filtra as receitas que possuíram lançamentos contábeis no exercício
         $fontesComLancamento = $this->getReceitasComLancamentos($estrutural, $exercicio)->toArray();
-        $receitasExcluir = $receitasExcluir->reject(function (ConplanoOrcamento $plano) use ($fontesComLancamento) {
-            return in_array($plano->c60_estrut, $fontesComLancamento);
-        });
+        $receitasExcluir = $receitasExcluir->reject(fn(ConplanoOrcamento $plano) => in_array($plano->c60_estrut, $fontesComLancamento));
 
         $fontesComEstimativa = EstimativaReceita::query()
             ->where('anoorcamento', $exercicio)
             ->get()
             ->filter(function (EstimativaReceita $estimativaReceita) {
                 //
-                $valores = $estimativaReceita->getValores()->filter(function (Valor $valor) {
-                    return $valor->pl10_valor > 0;
-                });
+                $valores = $estimativaReceita->getValores()->filter(fn(Valor $valor) => $valor->pl10_valor > 0);
 
                 return !$valores->isEmpty();
             })
-            ->map(function (EstimativaReceita $estimativaReceita) {
-                return $estimativaReceita->getNaturezaOrcamento()->o57_fonte;
-            })
+            ->map(fn(EstimativaReceita $estimativaReceita) => $estimativaReceita->getNaturezaOrcamento()->o57_fonte)
             ->toArray();
 
         // filtra se a receita foi usada no planejamento
-        $receitasExcluir = $receitasExcluir->reject(function (ConplanoOrcamento $plano) use ($fontesComEstimativa) {
-            return in_array($plano->c60_estrut, $fontesComEstimativa);
-        });
+        $receitasExcluir = $receitasExcluir->reject(fn(ConplanoOrcamento $plano) => in_array($plano->c60_estrut, $fontesComEstimativa));
 
         return $receitasExcluir;
     }
@@ -72,6 +62,7 @@ class ManutencaoPlanoOrcamentarioReceitaService extends ManutencaoPlanoOrcamenta
     /**
      * @param array $contas
      */
+    #[\Override]
     protected function removerVinculos(array $contas)
     {
         $this->removeVinculosPlanejamento($contas);
@@ -97,6 +88,7 @@ class ManutencaoPlanoOrcamentarioReceitaService extends ManutencaoPlanoOrcamenta
         return $service->getArvore();
     }
 
+    #[\Override]
     protected function removeVinculosOrcamento(array $codigosContas)
     {
         parent::removeVinculosOrcamento($codigosContas);
@@ -119,9 +111,7 @@ class ManutencaoPlanoOrcamentarioReceitaService extends ManutencaoPlanoOrcamenta
             ->where('o70_anousu', '>=', $this->exercicio)
             ->whereIn('o70_codfon', $codigosContas)
             ->get()
-            ->map(function ($receita) {
-                return $receita->o70_codrec;
-            })
+            ->map(fn($receita) => $receita->o70_codrec)
             ->toArray();
 
         if (!empty($codigosReceitas)) {
@@ -166,8 +156,6 @@ class ManutencaoPlanoOrcamentarioReceitaService extends ManutencaoPlanoOrcamenta
                     ->on('conlancamrec.c74_codrec', '=', 'orcreceita.o70_codrec');
             })
             ->get()
-            ->map(function ($fonte) {
-                return $fonte->o57_fonte;
-            });
+            ->map(fn($fonte) => $fonte->o57_fonte);
     }
 }

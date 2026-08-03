@@ -41,7 +41,7 @@ $clrotulo->label("DBtxtmesacumulado");
 $clrotulo->label("DBtxtperiodoini");
 $clrotulo->label("DBtxtperiodofim");
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $anousu = db_getsession("DB_anousu");
@@ -92,7 +92,7 @@ if (pg_num_rows($result) == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Dotação não cadastrada.");
 }
 
-$x = array("01" => "Janeiro",
+$x = ["01" => "Janeiro",
            "02" => "Fevereiro",
            "03" => "Março",
            "04" => "Abril",
@@ -103,7 +103,7 @@ $x = array("01" => "Janeiro",
            "09" => "Setembro",
            "10" => "Outubro",
            "11" => "Novembro",
-           "12" => "Dezembro");
+           "12" => "Dezembro"];
 
 $head4 = "RAZÃO DESPESA";
 $head7 = "PERÍODO: " .db_formatar($data1,'d')." à ".db_formatar($data2,'d');
@@ -396,7 +396,7 @@ for( $dotacao = 0; $dotacao < $numrows ; $dotacao ++ ){
 	  $dt = $c73_data;
 	  $pdf->cell( 10,$alt,$c71_coddoc,0,0,"R",0);
 	  //$pdf->cell( 10,$alt,$c53_coddoc,0,0,"R",0);
-	  $pdf->cell( 60,$alt,substr($c53_descr,0,30),0,0,"L",0);
+	  $pdf->cell( 60,$alt,substr((string) $c53_descr,0,30),0,0,"L",0);
 	  $pdf->cell( 20,$alt,$c75_numemp,0,0,"L",0);
 	  $pdf->cell( 123,$alt,($credito==''?$z01_nome:$credito."-".$credito_descr),0,0,"L",0);
 	  $pdf->cell( 30,$alt,db_formatar($c70_valor,'f'),0,1,"R",0);

@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE autonumpre
 class cl_autonumpre {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $y17_numpre = 0;
-   var $y17_codauto = 0;
+   public $y17_numpre = 0;
+   public $y17_codauto = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  y17_numpre = int4 = Numpre
                  y17_codauto = int4 = Código do Auto de Infração
                  ";
    //funcao construtor da classe
-   function cl_autonumpre() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autonumpre");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -104,7 +104,7 @@ class cl_autonumpre {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Numpre do auto () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Numpre do auto já Cadastrado";
@@ -131,10 +131,10 @@ class cl_autonumpre {
       $this->atualizacampos();
      $sql = " update autonumpre set ";
      $virgula = "";
-     if(trim($this->y17_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y17_numpre"])){
+     if(trim((string) $this->y17_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y17_numpre"])){
        $sql  .= $virgula." y17_numpre = $this->y17_numpre ";
        $virgula = ",";
-       if(trim($this->y17_numpre) == null ){
+       if(trim((string) $this->y17_numpre) == null ){
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "y17_numpre";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_autonumpre {
          return false;
        }
      }
-     if(trim($this->y17_codauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y17_codauto"])){
+     if(trim((string) $this->y17_codauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y17_codauto"])){
        $sql  .= $virgula." y17_codauto = $this->y17_codauto ";
        $virgula = ",";
-       if(trim($this->y17_codauto) == null ){
+       if(trim((string) $this->y17_codauto) == null ){
          $this->erro_sql = " Campo Código do Auto de Infração nao Informado.";
          $this->erro_campo = "y17_codauto";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:autonumpre";
@@ -252,7 +252,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="autonumpre.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -276,7 +276,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -288,7 +288,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -306,7 +306,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -318,7 +318,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_val ( $oid = null,$campos="autonumpre.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -343,7 +343,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

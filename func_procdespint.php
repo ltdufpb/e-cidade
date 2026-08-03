@@ -117,7 +117,7 @@ if ($reimprime == 1) {
     <td align="center" valign="top">
         <?php
 
-        $where = array();
+        $where = [];
         if (!empty($sWhereDepartamento)) {
             $where[] = " {$sWhereDepartamento} ";
         }
@@ -186,7 +186,7 @@ if ($reimprime == 1) {
         } else {
             if ($pesquisa_chave != null && $pesquisa_chave != "") {
                 $iAnoUsu = db_getsession("DB_anousu");
-                $aChavePesquisa = explode('/', $pesquisa_chave);
+                $aChavePesquisa = explode('/', (string) $pesquisa_chave);
                 $iNumeroProcesso = $aChavePesquisa[0];
 
                 if (count($aChavePesquisa) > 1) {
@@ -219,15 +219,15 @@ if ($reimprime == 1) {
 		   	  	   where   x.p68_codproc is null order by x.p58_codproc desc";
                  
                 $result = db_query($sql);
-                if (pg_numrows($result) != 0) {
+                if (pg_num_rows($result) != 0) {
                     db_fieldsmemory($result, 0);
-                    $z01_nome = addslashes($z01_nome);
+                    $z01_nome = addslashes((string) $z01_nome);
 
                     $sCampoRetorno = $p58_numero . '/' . $p58_ano;
 
                     if (!empty($oGet->sCampoRetorno)) {
                         $sCampoRetorno = $oGet->sCampoRetorno;
-                        $sCampoRetorno = $$sCampoRetorno;
+                        $sCampoRetorno = ${$sCampoRetorno};
                     }
 
                     echo "<script>" . $funcao_js . "('$sCampoRetorno' , '$p58_numcgm' , '$z01_nome',false);</script>";

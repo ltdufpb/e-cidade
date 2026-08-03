@@ -32,11 +32,11 @@ class manad {
 	
 	function __construct() { }
   
-	public $aCredores = array(); 
-  function getSqlK050($iInstit, $sDataini, $sDatafim, $tabelas = array() ) {
+	public $aCredores = []; 
+  function getSqlK050($iInstit, $sDataini, $sDatafim, $tabelas = [] ) {
 
-  	list ( $iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDatafim);
-    list ( $iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni ) = explode("-", $sDataini);
+  	[$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDatafim);
+    [$iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni] = explode("-", (string) $sDataini);
 
 	/**
 	 * K050
@@ -122,7 +122,7 @@ class manad {
   	
   }
   
-  function getSqlK250($iInstit, $sDataini, $sDatafim, $tabelas = array() ) {
+  function getSqlK250($iInstit, $sDataini, $sDatafim, $tabelas = [] ) {
 
       $tabelaPrevidencia = implode(', ', $tabelas);
       $filtraTabelaPrevidenciaria = '';
@@ -130,8 +130,8 @@ class manad {
           $filtraTabelaPrevidenciaria = " and rhpessoalmov.rh02_tbprev in ({$tabelaPrevidencia}) ";
       }
 
-  	list ( $iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDatafim);
-    list ( $iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni ) = explode("-", $sDataini);
+  	[$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDatafim);
+    [$iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni] = explode("-", (string) $sDataini);
   	
   	/*
   	 * K250
@@ -360,7 +360,7 @@ class manad {
 	  return $sSqlK250;
   }
   
-  function getSqlK300($iInstit,$sDataini,$sDatafim, $tabelas = array() ) {
+  function getSqlK300($iInstit,$sDataini,$sDatafim, $tabelas = [] ) {
 
       $tabelaPrevidencia = implode(', ', $tabelas);
       $filtraTabelaPrevidenciaria = '';
@@ -374,8 +374,8 @@ class manad {
     $oInstituicao   = new Instituicao($iInstit);
     $iCodigoCliente = $oInstituicao->getCodigoCliente();
 
-  	list ( $iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDatafim);
-    list ( $iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni ) = explode("-", $sDataini);
+  	[$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDatafim);
+    [$iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni] = explode("-", (string) $sDataini);
     
   	/**
   	 * K300
@@ -777,7 +777,7 @@ class manad {
   
   public function getLancamentosEmpenho($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataInicial);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataInicial);
     $iAno         = $iAnoUsuFim;
     $sListaInstit = db_getsession("DB_instit");
     /**
@@ -922,7 +922,7 @@ class manad {
    */
   public function getLancamentosLiquidacao($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataInicial);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", $sDataInicial);
     $iAno         = $iAnoUsuFim;
     
     $sListaInstit = db_getsession("DB_instit");
@@ -981,7 +981,7 @@ class manad {
   
   public function getLancamentosPagamento($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataInicial);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataInicial);
     $iAno         = $iAnoUsuFim;
     
     $sListaInstit = db_getsession("DB_instit");
@@ -1057,7 +1057,7 @@ class manad {
     $sSqlPagamentos .= " order by ano,2 ";
     $rsPagamentos    = db_query($sSqlPagamentos);
     $iTotalLinhas    = pg_num_rows($rsPagamentos);
-    $aPagamentos     = array();
+    $aPagamentos     = [];
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oPagamento = db_utils::fieldsMemory($rsPagamentos, $i);
@@ -1068,7 +1068,7 @@ class manad {
       $sSqlContaPagadora .= "  where c61_reduz = ".$oPagamento->cta_cred;
       $rsContaPagadora    = db_query($sSqlContaPagadora);
       if (pg_num_rows($rsContaPagadora) > 0) { 
-        $iContaPagadora  = str_pad(pg_result($rsContaPagadora,0,"c60_estrut"), 15,'0', STR_PAD_RIGHT);
+        $iContaPagadora  = str_pad(pg_fetch_result($rsContaPagadora,0,"c60_estrut"), 15,'0', STR_PAD_RIGHT);
       }
       
       $iContraPartida     = $oPagamento->cta_deb;
@@ -1078,7 +1078,7 @@ class manad {
       $sSqlContraPartida .= "  where c61_reduz = ".$oPagamento->cta_deb;
       $rsContraPartida    = db_query($sSqlContraPartida);
       if (pg_num_rows($rsContraPartida) > 0) { 
-        $iContraPartida  = str_pad(pg_result($rsContraPartida,0,"c60_estrut"), 15,'0', STR_PAD_RIGHT);
+        $iContraPartida  = str_pad(pg_fetch_result($rsContraPartida,0,"c60_estrut"), 15,'0', STR_PAD_RIGHT);
       }
       
       $iContaDebito  = $iContraPartida;
@@ -1099,7 +1099,7 @@ class manad {
    */
   public function getDadosBalanceteReceita($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataInicial);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", $sDataInicial);
     $iAno           = $iAnoUsuFim;
     $oInstituicao   = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit   = db_getsession("DB_instit");
@@ -1136,7 +1136,7 @@ class manad {
       db_query("drop table if exists work_receita");
     }
 
-    $aContas = array();
+    $aContas = [];
     for ($i = 0; $i < $iTotalLinhas; $i++) {
 
       $oConta = new stdClass();
@@ -1168,10 +1168,10 @@ class manad {
    */
   public function getDadosBalanceteDespesa($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataInicial);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataInicial);
     $iAno            = $iAnoUsuFim;
     $lUsaSubElemento = false;
-    $oParamOrcamento = db_stdClass::getParametro("orcparametro", array($iAno));
+    $oParamOrcamento = db_stdClass::getParametro("orcparametro", [$iAno]);
     if ($oParamOrcamento[0]->o50_subelem == 't') {
       $lUsaSubElemento = true; 
     }
@@ -1194,7 +1194,7 @@ class manad {
     }
     db_query("rollback");
     
-    $aDotacoes    = array();
+    $aDotacoes    = [];
     $iTotalLinhas = pg_num_rows($rsDotacaoSaldo);
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
@@ -1241,7 +1241,7 @@ class manad {
       $sSqlDesdobramento .= "        inner join orcelemento on o56_codele = o58_codele and o56_anousu = o58_anousu ";
       $sSqlDesdobramento .= "  where c71_coddoc in (7,52,53,54,55,56,58,59,60,61,62,63,64) ";
       $sSqlDesdobramento .= "    and c71_data between '{$sDataInicial}' and '{$sDataFinal}' ";
-      $sSqlDesdobramento .= "    and substr(o56_elemento,1,7)='".substr($oDespesa->o58_elemento,0,7)."' ";
+      $sSqlDesdobramento .= "    and substr(o56_elemento,1,7)='".substr((string) $oDespesa->o58_elemento,0,7)."' ";
       $sSqlDesdobramento .= "    and c73_anousu = ".db_getsession("DB_anousu");
       
       if ($lUsaSubElemento) {
@@ -1265,29 +1265,29 @@ class manad {
       $oDotacaoRetorno = new stdClass();
       $oDotacaoRetorno->reg                = "L250";
       $oDotacaoRetorno->exerc              = $iAno;
-      $oDotacaoRetorno->cod_org            = str_pad($oDespesa->o58_orgao, 2, 0, STR_PAD_LEFT);
-      $oDotacaoRetorno->cod_un_orc         = str_pad($oDespesa->o58_unidade, 2, 0, STR_PAD_LEFT);
-      $oDotacaoRetorno->cod_fun            = str_pad($oDespesa->o58_funcao, 2, 0, STR_PAD_LEFT);
-      $oDotacaoRetorno->cod_subfun         = str_pad($oDespesa->o58_subfuncao, 3, 0, STR_PAD_LEFT);
-      $oDotacaoRetorno->cod_prog           = str_pad($oDespesa->o58_programa, 4 , 0, STR_PAD_LEFT);
+      $oDotacaoRetorno->cod_org            = str_pad((string) $oDespesa->o58_orgao, 2, 0, STR_PAD_LEFT);
+      $oDotacaoRetorno->cod_un_orc         = str_pad((string) $oDespesa->o58_unidade, 2, 0, STR_PAD_LEFT);
+      $oDotacaoRetorno->cod_fun            = str_pad((string) $oDespesa->o58_funcao, 2, 0, STR_PAD_LEFT);
+      $oDotacaoRetorno->cod_subfun         = str_pad((string) $oDespesa->o58_subfuncao, 3, 0, STR_PAD_LEFT);
+      $oDotacaoRetorno->cod_prog           = str_pad((string) $oDespesa->o58_programa, 4 , 0, STR_PAD_LEFT);
       $oDotacaoRetorno->cod_subprog        = '0000';
-      $oDotacaoRetorno->cod_proj_ativ_oe   = str_pad($oDespesa->o58_projativ, 4, "0", STR_PAD_LEFT);
-      $oDotacaoRetorno->cod_subelemento    = str_pad($oDespesa->o58_elemento, 15, "0", STR_PAD_RIGHT);
-      $oDotacaoRetorno->cod_cta_desp       = str_pad($oDespesa->o58_elemento, 15, "0", STR_PAD_RIGHT);
-      $oDotacaoRetorno->cod_rec_vinc       = str_pad($oDespesa->o58_codigo, 4, 0, STR_PAD_LEFT);
-      $oDotacaoRetorno->vl_dotacao_inicial = $this->corrigeValor($oDespesa->dot_ini, 13);
-      $oDotacaoRetorno->vl_at_monetaria    = $this->corrigeValor(0, 13);
-      $oDotacaoRetorno->vl_cred_sup        = $this->corrigeValor($nSuplementacoes, 13);
-      $oDotacaoRetorno->vl_cred_esp        = $this->corrigeValor($nCreditoEspecias, 13);
-      $oDotacaoRetorno->vl_cred_ext        = $this->corrigeValor($nCreditoExtraordinario, 13);
-      $oDotacaoRetorno->vl_red_dotacao     = $this->corrigeValor(abs($oDespesa->reduzido_acumulado), 13);
-      $oDotacaoRetorno->vl_sup_rec_vinc    = $this->corrigeValor(0, 13);
-      $oDotacaoRetorno->vl_red_rec_vinc    = $this->corrigeValor(0, 13);
+      $oDotacaoRetorno->cod_proj_ativ_oe   = str_pad((string) $oDespesa->o58_projativ, 4, "0", STR_PAD_LEFT);
+      $oDotacaoRetorno->cod_subelemento    = str_pad((string) $oDespesa->o58_elemento, 15, "0", STR_PAD_RIGHT);
+      $oDotacaoRetorno->cod_cta_desp       = str_pad((string) $oDespesa->o58_elemento, 15, "0", STR_PAD_RIGHT);
+      $oDotacaoRetorno->cod_rec_vinc       = str_pad((string) $oDespesa->o58_codigo, 4, 0, STR_PAD_LEFT);
+      $oDotacaoRetorno->vl_dotacao_inicial = $this->corrigeValor($oDespesa->dot_ini);
+      $oDotacaoRetorno->vl_at_monetaria    = $this->corrigeValor(0);
+      $oDotacaoRetorno->vl_cred_sup        = $this->corrigeValor($nSuplementacoes);
+      $oDotacaoRetorno->vl_cred_esp        = $this->corrigeValor($nCreditoEspecias);
+      $oDotacaoRetorno->vl_cred_ext        = $this->corrigeValor($nCreditoExtraordinario);
+      $oDotacaoRetorno->vl_red_dotacao     = $this->corrigeValor(abs($oDespesa->reduzido_acumulado));
+      $oDotacaoRetorno->vl_sup_rec_vinc    = $this->corrigeValor(0);
+      $oDotacaoRetorno->vl_red_rec_vinc    = $this->corrigeValor(0);
       $oDotacaoRetorno->vl_empenhado       = $this->corrigeValor(abs(
-                                                                 round($oDespesa->empenhado-$oDespesa->anulado,2)), 13);
-      $oDotacaoRetorno->vl_liquidado       = $this->corrigeValor(abs($oDespesa->liquidado), 13);                                                                  
-      $oDotacaoRetorno->vl_pago            = $this->corrigeValor(abs($oDespesa->pago), 13);                                                                  
-      $oDotacaoRetorno->vl_lmtdo_lrf       = $this->corrigeValor(0, 13);
+                                                                 round($oDespesa->empenhado-$oDespesa->anulado,2)));
+      $oDotacaoRetorno->vl_liquidado       = $this->corrigeValor(abs($oDespesa->liquidado));                                                                  
+      $oDotacaoRetorno->vl_pago            = $this->corrigeValor(abs($oDespesa->pago));                                                                  
+      $oDotacaoRetorno->vl_lmtdo_lrf       = $this->corrigeValor(0);
       $aDotacoes[]                         = $oDotacaoRetorno;                                                                  
     }
     return $aDotacoes;
@@ -1295,12 +1295,12 @@ class manad {
 
   public function getDadosDecretos ($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataInicial);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataInicial);
     $iAno         = $iAnoUsuFim;
     /**
      * Separamos a data do em ano, mes, dia
      */
-    $aDecretos    = array();
+    $aDecretos    = [];
     $oInstituicao = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit = db_getsession("DB_instit");
     $sSqlDecreto  = " select *, ";
@@ -1433,8 +1433,8 @@ class manad {
       $oDecretoRetorno->reg                = 'L300';
       $oDecretoRetorno->nm_lei_decreto     = $oDecreto->num_decreto;
       $oDecretoRetorno->dt_lei_decreto     = $oDecreto->data_decreto;
-      $oDecretoRetorno->vl_cred_adicional  = $this->corrigeValor($oDecreto->valor_credito, 13);
-      $oDecretoRetorno->vl_red_dotacoes    = $this->corrigeValor($oDecreto->valor_reducao, 13);
+      $oDecretoRetorno->vl_cred_adicional  = $this->corrigeValor($oDecreto->valor_credito);
+      $oDecretoRetorno->vl_red_dotacoes    = $this->corrigeValor($oDecreto->valor_reducao);
       $oDecretoRetorno->tip_cred_adicional = $iTipo;
       $oDecretoRetorno->tip_orig_recurso   = $iOrigem;
       $aDecretos[] =  $oDecretoRetorno; 
@@ -1449,9 +1449,9 @@ class manad {
   
   public function getDadosOrgao($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataInicial);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataInicial);
     $iAno         = $iAnoUsuFim;
-    $aOrgaos      = array();
+    $aOrgaos      = [];
     $sWhereInstit = " and o58_instit = ".db_getsession("DB_instit");
     $sSqlOrgaos   = "select distinct    "; 
     $sSqlOrgaos  .= "       o40_anousu, ";
@@ -1480,7 +1480,7 @@ class manad {
   
   public function getDadosUnidades($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataFinal);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataFinal);
     $iAno         = $iAnoUsuFim;
     
     $iCodigoInstit = db_getsession("DB_instit");
@@ -1504,7 +1504,7 @@ class manad {
     $rsUnidades    = db_query($sSqlUnidades);
     $iTotalLinhas = pg_num_rows($rsUnidades);
 
-    $aUnidades  = array();
+    $aUnidades  = [];
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oUnidade = db_utils::fieldsMemory($rsUnidades, $i);
@@ -1512,11 +1512,11 @@ class manad {
       $oUnidadeRetorno             = new stdClass();
       $oUnidadeRetorno->reg        = "L400";
       $oUnidadeRetorno->exercicio  = $oUnidade->anousu;
-      $oUnidadeRetorno->cod_org    = str_pad($oUnidade->orgao, 2, "0", STR_PAD_LEFT);
-      $oUnidadeRetorno->cod_un_orc = str_pad($oUnidade->unidade, 2, "0", STR_PAD_LEFT);
+      $oUnidadeRetorno->cod_org    = str_pad((string) $oUnidade->orgao, 2, "0", STR_PAD_LEFT);
+      $oUnidadeRetorno->cod_un_orc = str_pad((string) $oUnidade->unidade, 2, "0", STR_PAD_LEFT);
       $oUnidadeRetorno->nom_un_orc = $oUnidade->nome;
-      $oUnidadeRetorno->tip_un_orc = str_pad($oUnidade->identificador, 2, "0", STR_PAD_LEFT);
-      $oUnidadeRetorno->cnpj       = str_pad($oUnidade->cnpj, 14, 0, STR_PAD_LEFT);
+      $oUnidadeRetorno->tip_un_orc = str_pad((string) $oUnidade->identificador, 2, "0", STR_PAD_LEFT);
+      $oUnidadeRetorno->cnpj       = str_pad((string) $oUnidade->cnpj, 14, 0, STR_PAD_LEFT);
       array_push($aUnidades, $oUnidadeRetorno);
       
     }
@@ -1529,7 +1529,7 @@ class manad {
    */
   public function getDadosFuncao($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataFinal);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataFinal);
     $iAno         = $iAnoUsuFim;
     $sSqlFuncao  = "select distinct ";
     $sSqlFuncao .= "       o58_anousu as anousu,";
@@ -1551,7 +1551,7 @@ class manad {
     $rsFuncao    = db_query($sSqlFuncao);
     $iTotalLinhas = pg_num_rows($rsFuncao);
 
-    $aFuncoes = array();
+    $aFuncoes = [];
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oFuncao      = db_utils::fieldsMemory($rsFuncao, $i);
@@ -1559,7 +1559,7 @@ class manad {
       $oFuncaoRetorno            = new stdClass();
       $oFuncaoRetorno->reg       = "L450";
       $oFuncaoRetorno->exercicio = $oFuncao->anousu;
-      $oFuncaoRetorno->cod_fun   = str_pad($oFuncao->funcao, 2, "0", STR_PAD_LEFT);
+      $oFuncaoRetorno->cod_fun   = str_pad((string) $oFuncao->funcao, 2, "0", STR_PAD_LEFT);
       $oFuncaoRetorno->nom_fun   = $oFuncao->nome;
       array_push($aFuncoes, $oFuncaoRetorno);
       
@@ -1569,7 +1569,7 @@ class manad {
   
   public function getDadosSubFuncao($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataFinal);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataFinal);
     $iAno           = $iAnoUsuFim;    
     $iCodigoInstit  = db_getsession("DB_instit");
     $sSqlSubFuncao  = "select distinct ";
@@ -1591,7 +1591,7 @@ class manad {
     $sSqlSubFuncao .= "    and o73_anousu between {$iAnoInicio} and {$iAno}";
     $rsSubFuncao    = db_query($sSqlSubFuncao);
     $iTotalLinhas = pg_num_rows($rsSubFuncao);
-    $aSubFuncoes  = array();      
+    $aSubFuncoes  = [];      
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oSubFuncao = db_utils::fieldsMemory($rsSubFuncao, $i);
@@ -1599,7 +1599,7 @@ class manad {
       $oSubFuncaoRetorno             = new stdClass();
       $oSubFuncaoRetorno->reg        = "L500";
       $oSubFuncaoRetorno->exercicio  = $oSubFuncao->anousu;
-      $oSubFuncaoRetorno->cod_subfun = str_pad($oSubFuncao->subfuncao, 3, "0", STR_PAD_LEFT);
+      $oSubFuncaoRetorno->cod_subfun = str_pad((string) $oSubFuncao->subfuncao, 3, "0", STR_PAD_LEFT);
       $oSubFuncaoRetorno->nom_subfun = $oSubFuncao->nome;
       array_push($aSubFuncoes, $oSubFuncaoRetorno);
       
@@ -1609,7 +1609,7 @@ class manad {
   
   public function getDadosPrograma($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataFinal);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataFinal);
     $iAno         = $iAnoUsuFim;
     
     $iCodigoInstit  = db_getsession("DB_instit");
@@ -1624,7 +1624,7 @@ class manad {
     $sSqlProgramas .= "    and o54_anousu between {$iAnoInicio} and {$iAno}"; 
     $rsPrograma     = db_query($sSqlProgramas);
     $iTotalLinhas = pg_num_rows($rsPrograma);
-    $aProgramas   = array();     
+    $aProgramas   = [];     
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oPrograma = db_utils::fieldsMemory($rsPrograma, $i);
@@ -1632,7 +1632,7 @@ class manad {
       $oProgramaRetorno                     = new stdClass();
       $oProgramaRetorno->reg       = "L550";
       $oProgramaRetorno->exercicio = $oPrograma->anousu;
-      $oProgramaRetorno->cod_progr = str_pad($oPrograma->codigo, 3, "0", STR_PAD_LEFT);
+      $oProgramaRetorno->cod_progr = str_pad((string) $oPrograma->codigo, 3, "0", STR_PAD_LEFT);
       $oProgramaRetorno->nom_prg   = $oPrograma->nome;
       array_push($aProgramas, $oProgramaRetorno);
     }
@@ -1641,7 +1641,7 @@ class manad {
   
   public function getDadosProjAtiv ($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataFinal);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataFinal);
     $iAno   = $iAnoUsuFim;
     
     /**
@@ -1660,7 +1660,7 @@ class manad {
     $sSqlProAtiv .= "    and o55_anousu between {$iAnoInicio} and {$iAno}";
     $rsProjAtiv   = db_query($sSqlProAtiv);
     $iTotalLinhas = pg_num_rows($rsProjAtiv);
-    $aProjAtiv    = array(); 
+    $aProjAtiv    = []; 
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oProjAtiv = db_utils::fieldsMemory($rsProjAtiv, $i);
@@ -1668,9 +1668,9 @@ class manad {
       $oProjAtivRetorno                             = new stdClass();
       $oProjAtivRetorno->reg              = "L650";
       $oProjAtivRetorno->exercicio        = $oProjAtiv->anousu;
-      $oProjAtivRetorno->cod_proj_ativ_oe = str_pad($oProjAtiv->codigo, 3, "0", STR_PAD_LEFT);
+      $oProjAtivRetorno->cod_proj_ativ_oe = str_pad((string) $oProjAtiv->codigo, 3, "0", STR_PAD_LEFT);
       $oProjAtivRetorno->nom_proj_ativ_oe = $oProjAtiv->nome;
-      $oProjAtivRetorno->tip_proj_ativ_oe = str_pad($oProjAtiv->identificador, 2, '0', STR_PAD_LEFT);
+      $oProjAtivRetorno->tip_proj_ativ_oe = str_pad((string) $oProjAtiv->identificador, 2, '0', STR_PAD_LEFT);
       array_push($aProjAtiv, $oProjAtivRetorno);
       
     }
@@ -1679,7 +1679,7 @@ class manad {
   
   public function getDadosRubricas($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataFinal);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataFinal);
     $iAno         = $iAnoUsuFim;  
     $sWhereInstit = " and o58_instit = ".db_getsession("DB_instit");
     $sSqlRubrica  = "select distinct on (o56_anousu,elemento) elemento,";
@@ -1719,7 +1719,7 @@ class manad {
     $sSqlRubrica .= "      ) as x "; 
     $rsRubrica    = db_query(analiseQueryPlanoOrcamento($sSqlRubrica));
     $iTotalLinhas = pg_num_rows($rsRubrica);
-    $aRubricas    = array(); 
+    $aRubricas    = []; 
     for ($i = 0; $i < $iTotalLinhas; $i++) {
           
       $oRubrica        = db_utils::fieldsMemory($rsRubrica, $i);
@@ -1729,10 +1729,10 @@ class manad {
       $oRubricaRetorno                 = new stdClass();
       $oRubricaRetorno->reg            = "L700";
       $oRubricaRetorno->exercicio      = $oRubrica->ano;
-      $oRubricaRetorno->cod_cta_desp   = str_pad($oRubrica->elemento, 15, "0", STR_PAD_RIGHT);
-      $oRubricaRetorno->nom_desp       = substr($oRubrica->o56_descr, 0, 110);
+      $oRubricaRetorno->cod_cta_desp   = str_pad((string) $oRubrica->elemento, 15, "0", STR_PAD_RIGHT);
+      $oRubricaRetorno->nom_desp       = substr((string) $oRubrica->o56_descr, 0, 110);
       $oRubricaRetorno->ind_tipo_conta = $oRubrica->tipo;
-      $oRubricaRetorno->nm_nivel_conta = str_pad($oRubrica->nivel, 2, "0", STR_PAD_LEFT);
+      $oRubricaRetorno->nm_nivel_conta = str_pad((string) $oRubrica->nivel, 2, "0", STR_PAD_LEFT);
       array_push($aRubricas, $oRubricaRetorno);
     }
     return $aRubricas;
@@ -1740,7 +1740,7 @@ class manad {
   
   public function getDadosFornecedores($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataFinal);
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataFinal);
     
     $sWhereInstit = " and o58_instit = ".db_getsession("DB_instit");
     $iAno         = $iAnoUsuFim;
@@ -1762,7 +1762,7 @@ class manad {
     $rsCredor    = db_query($sSqlCredor);
     $iTotalLinhas = pg_num_rows($rsCredor);
 
-    $aCredores = array();
+    $aCredores = [];
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $oCredor   = db_utils::fieldsMemory($rsCredor, $i);
@@ -1770,7 +1770,7 @@ class manad {
         
         foreach ($this->aCredores[$oCredor->codigo] as $iAno) {
           
-          if (trim($oCredor->cidade) == "" || strlen($oCredor->cidade) < 2) {
+          if (trim((string) $oCredor->cidade) == "" || strlen((string) $oCredor->cidade) < 2) {
             $oCredor->cidade = $oInstituicao->munic;
           }
           $oCredorRetorno                  = new stdClass();
@@ -1778,29 +1778,29 @@ class manad {
           $oCredorRetorno->exercicio       = $iAno;
           $oCredorRetorno->cod_fornecedor  = $oCredor->codigo;
           $oCredorRetorno->nom_fornecedor  = $oCredor->nome;
-          $iTipoFornecedor                 = strlen($oCredor->cnpj);
+          $iTipoFornecedor                 = strlen((string) $oCredor->cnpj);
           $oCredorRetorno->tip_fornec      = $iTipoFornecedor == 14 ? 2 : 1;
           $oCredorRetorno->cnpj_fornecedor = "";
           $oCredorRetorno->cpf_fornecedor  = "";
           if ($iTipoFornecedor == 14) {
-            $oCredorRetorno->cnpj_fornecedor = str_pad($oCredor->cnpj, 14, "0", STR_PAD_LEFT);;  
+            $oCredorRetorno->cnpj_fornecedor = str_pad((string) $oCredor->cnpj, 14, "0", STR_PAD_LEFT);;  
           } else if ($iTipoFornecedor == 11) {
-            $oCredorRetorno->cpf_fornecedor = str_pad($oCredor->cnpj, 11, "0", STR_PAD_LEFT);
+            $oCredorRetorno->cpf_fornecedor = str_pad((string) $oCredor->cnpj, 11, "0", STR_PAD_LEFT);
           }
           $oCredorRetorno->nit_fornecedor = '';
-          $oCredorRetorno->end_fornecedor = substr($oCredor->endereco, 0, 50);
-          $oCredorRetorno->cid_fornecedor = substr($oCredor->cidade, 0, 30);
+          $oCredorRetorno->end_fornecedor = substr((string) $oCredor->endereco, 0, 50);
+          $oCredorRetorno->cid_fornecedor = substr((string) $oCredor->cidade, 0, 30);
           if ($oCredor->uf == "") {
             $oCredor->uf = $oInstituicao->uf;
           }
-          $oCredorRetorno->uf_fornecedor  = str_pad($oCredor->uf, 2, "0");
+          $oCredorRetorno->uf_fornecedor  = str_pad((string) $oCredor->uf, 2, "0");
           $sCep                                          = str_replace(".","",str_replace("-","",$oCredor->cep));
           $oCredorRetorno->cep_fornecedor                = str_pad($sCep, 8, "0", STR_PAD_LEFT);
-          $sFone                                         = str_replace(array("(",")","-"),
-                                                                       array("","",""),                                        
+          $sFone                                         = str_replace(["(",")","-"],
+                                                                       ["","",""],                                        
                                                                        $oCredor->fone);
-          $sFax                                          = str_replace(array("(",")","-"),
-                                                                       array("","",""),                                        
+          $sFax                                          = str_replace(["(",")","-"],
+                                                                       ["","",""],                                        
                                                                        $oCredor->fax);                                                                   
           $oCredorRetorno->desc_tip_fornec = '';
           $aCredores[] = $oCredorRetorno;
@@ -1812,8 +1812,8 @@ class manad {
   
   public function getDadosSubPrograma($sDataInicial, $sDataFinal, $iAnoInicio) {
     
-    list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim ) = explode("-", $sDataFinal);
-    $aRetorno = array();
+    [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDataFinal);
+    $aRetorno = [];
     while ($iAnoInicio <= $iAnoUsuFim) {
       
       $oSubPrograma              = new stdClass();

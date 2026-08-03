@@ -61,7 +61,7 @@ switch ($oParam->exec) {
                 $oRetorno->aMovimentosNaoProcessados = $oArquivosGerados->aMovimentosNaoProcessados;
                 $oRetorno->aMovimentosCancelados = $oArquivosGerados->aMovimentosCancelados;
 
-                $aRetornosDescartados = array();
+                $aRetornosDescartados = [];
                 if (count($aMovimentosDescartados) > 0) {
                     foreach ($aMovimentosDescartados as $oDadoMovimento) {
                         $aRetornosDescartados[] = sprintf(

@@ -92,7 +92,7 @@ if ($iAnoUsu < 2007){
                   <?php
                     $oRelatorio = new relatorioContabil($oGet->codrel);
                     $aPeriodos = $oRelatorio->getPeriodos();
-                    $aListaPeriodos = array();
+                    $aListaPeriodos = [];
                     foreach ($aPeriodos as $oPeriodo) {
                       $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;
                     }

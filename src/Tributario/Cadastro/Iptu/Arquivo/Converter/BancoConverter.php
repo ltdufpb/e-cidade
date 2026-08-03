@@ -42,7 +42,7 @@ final class BancoConverter extends Converter
         $l   .= str_pad(substr($banco->getConvenio(), 0, $size), $size);
 
         $size = $this->layout->getSize(Banco::DATA_PROCESSAMENTO);
-        $l   .= str_pad(substr($this->format->date($banco->getDataProcessamento()->format('Y-m-d')), 0, $size), $size);
+        $l   .= str_pad(substr((string) $this->format->date($banco->getDataProcessamento()->format('Y-m-d')), 0, $size), $size);
 
         $size = $this->layout->getSize(Banco::DESCRICAO_CONVENIO);
         $l   .= str_pad(substr($banco->getDescricaoConvenio(), 0, $size), $size);

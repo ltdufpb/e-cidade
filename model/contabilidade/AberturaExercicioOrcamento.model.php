@@ -159,11 +159,11 @@ class AberturaExercicioOrcamento {
       throw new ParameterException("Parâmetros informados não são válidos.");
     }
 
-    $aWhere = array(
+    $aWhere = [
       "c104_ano = {$iAno}",
       "c104_instit = {$iCodigoInstituicao}",
       "c104_processado is true"
-    );
+    ];
     $oDaoAbertura = new cl_aberturaexercicioorcamento();
     $oDaoAbertura->sql_record($oDaoAbertura->sql_query_file(null, "*", null, implode(' and ', $aWhere)));
     return $oDaoAbertura->numrows > 0;

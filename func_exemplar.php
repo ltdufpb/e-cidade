@@ -34,8 +34,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_exemplar_classe.php"));
 include(modification("classes/db_biblioteca_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clexemplar   = new cl_exemplar;
 $clbiblioteca = new cl_biblioteca;
 $clrotulo     = new rotulocampo;
@@ -125,9 +125,9 @@ if ($clbiblioteca->numrows != 0) {
      $sql .= " AND bi29_nome ilike '$chave_bi29_nome%' ORDER BY bi29_nome";
    }
    
-   $repassa = array();
+   $repassa = [];
    if (isset($chave_bi23_codigo)) {
-     $repassa = array("chave_bi23_codigo"=>$chave_bi23_codigo,"chave_bi06_titulo"=>$chave_bi06_titulo);
+     $repassa = ["chave_bi23_codigo"=>$chave_bi23_codigo,"chave_bi06_titulo"=>$chave_bi06_titulo];
    }
    if (!isset($pesquisa_chave)) {
      @db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

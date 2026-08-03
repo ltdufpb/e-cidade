@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
 
@@ -58,15 +58,15 @@ $clcriaabas = new cl_criaabas;
      <td>
      <?php 
      
-       $clcriaabas->identifica = array("g1"=>"Dados Indicador",
-								       "g2"=>"Índice Esperado");
+       $clcriaabas->identifica = ["g1"=>"Dados Indicador",
+								       "g2"=>"Índice Esperado"];
        
-       $clcriaabas->title      = array("g1"=>"Dados Indicador",
-								       "g2"=>"Índice Esperado");       
+       $clcriaabas->title      = ["g1"=>"Dados Indicador",
+								       "g2"=>"Índice Esperado"];       
        								   
        
-       $clcriaabas->src        = array("g1"=>"orc1_orcindica013.php",
-       								   "g2"=>"orc1_orcindiceesperado001.php");
+       $clcriaabas->src        = ["g1"=>"orc1_orcindica013.php",
+       								   "g2"=>"orc1_orcindiceesperado001.php"];
        $clcriaabas->cria_abas();         
      ?> 
      </td>

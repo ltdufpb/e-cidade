@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadtipoorigem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcadtipoorigem = new cl_cadtipoorigem;
 $clcadtipoorigem->rotulo->label("k14_sequencial");
 $clcadtipoorigem->rotulo->label("k14_cadorigem");
@@ -98,9 +98,9 @@ $clcadtipoorigem->rotulo->label("k14_cadorigem");
         }else{
            $sql = $clcadtipoorigem->sql_query("",$campos,"k14_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k14_cadorigem)){
-          $repassa = array("chave_k14_sequencial"=>$chave_k14_sequencial,"chave_k14_cadorigem"=>$chave_k14_cadorigem);
+          $repassa = ["chave_k14_sequencial"=>$chave_k14_sequencial,"chave_k14_cadorigem"=>$chave_k14_cadorigem];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

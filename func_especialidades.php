@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_especialidades_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clespecialidades = new cl_especialidades;
 $clespecialidades->rotulo->label("sd05_i_codigo");
 $clespecialidades->rotulo->label("sd05_c_descr");
@@ -98,9 +98,9 @@ $clespecialidades->rotulo->label("sd05_c_descr");
         }else{
            $sql = $clespecialidades->sql_query("",$campos,"sd05_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd05_c_descr)){
-          $repassa = array("chave_sd05_i_codigo"=>$chave_sd05_i_codigo,"chave_sd05_c_descr"=>$chave_sd05_c_descr);
+          $repassa = ["chave_sd05_i_codigo"=>$chave_sd05_i_codigo,"chave_sd05_c_descr"=>$chave_sd05_c_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

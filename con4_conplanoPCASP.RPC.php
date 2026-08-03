@@ -276,7 +276,7 @@ switch ($oParam->exec) {
     $oRetorno->dados->sFuncao                       = urlencode($oPlanoPCASP->getFuncao());
     $oRetorno->dados->cbxSistema                    = $oPlanoPCASP->getSubSistema()->getCodigo();
     $oRetorno->dados->iDetalhamentoSistema          = $oPlanoPCASP->getSistemaConta()->getCodigoSistemaConta();
-    $oRetorno->dados->sDescricaoDetalhamentoSistema = urlencode($oPlanoPCASP->getSistemaConta()->getDescricao());
+    $oRetorno->dados->sDescricaoDetalhamentoSistema = urlencode((string) $oPlanoPCASP->getSistemaConta()->getDescricao());
     $oRetorno->dados->iClassificacao                = $oPlanoPCASP->getClassificacaoConta()->getCodigoClasse();
     $oRetorno->dados->sIndicadorSuperavit           = $oPlanoPCASP->getIdentificadorFinanceiro();
     $oRetorno->dados->bSaldoContinuo                = $oPlanoPCASP->isSaldoContinuo() ? 't' : 'f';
@@ -284,14 +284,14 @@ switch ($oParam->exec) {
     if (isset($oContaCorrente)) {
 
 	    $oRetorno->dados->iCodigoContaCorrente			= $oContaCorrente->codigo;
-	    $oRetorno->dados->sDescricaoContaCorrente       = urlencode($oContaCorrente->descricao);
+	    $oRetorno->dados->sDescricaoContaCorrente       = urlencode((string) $oContaCorrente->descricao);
     }
 
     $oRetorno->dados->iContaBancaria                = "";
     if ($oPlanoPCASP->getContaBancaria() != null) {
 
       $oRetorno->dados->iContaBancaria          = $oPlanoPCASP->getContaBancaria()->getSequencialContaBancaria();
-      $oRetorno->dados->sDescricaoContaBancaria = urlencode($oPlanoPCASP->getContaBancaria()->getDadosConta());
+      $oRetorno->dados->sDescricaoContaBancaria = urlencode((string) $oPlanoPCASP->getContaBancaria()->getDadosConta());
     }
     $oRetorno->dados->iTipoConta = 0;
     if ($oPlanoPCASP->getContasReduzidas()) {
@@ -340,7 +340,7 @@ switch ($oParam->exec) {
 
         try {
             $daoConplano = new cl_conplanoreduz;
-            $where = array('c60_anousu = ' . db_getsession("DB_anousu"), "c61_instit = " . db_getsession("DB_instit"));
+            $where = ['c60_anousu = ' . db_getsession("DB_anousu"), "c61_instit = " . db_getsession("DB_instit")];
             if (empty($oParam->estrutural)) {
                 throw new \Exception("Estrutural nao informado.");
             }
@@ -404,8 +404,8 @@ switch ($oParam->exec) {
         $daoBancoVinculoConta = new cl_bancovinculoconta();
         $vinculos = $daoBancoVinculoConta->getVinculosDoBanco($oParam->banco);
         foreach ($vinculos as $vinculo) {
-            $vinculo->descricao_tipo = urlencode($vinculo->descricao_tipo);
-            $vinculo->descricao_conta = urlencode($vinculo->descricao_conta);
+            $vinculo->descricao_tipo = urlencode((string) $vinculo->descricao_tipo);
+            $vinculo->descricao_conta = urlencode((string) $vinculo->descricao_conta);
         }
         $oRetorno->vinculos = $vinculos;
         break;
@@ -444,14 +444,14 @@ switch ($oParam->exec) {
       $oRetorno->sistemas = db_utils::makeCollectionFromRecord($rs, function($dadosSistema) {
         $sistema = new stdClass();
         $sistema->sequencial = $dadosSistema->c65_sequencial;
-        $sistema->descricao = urlencode($dadosSistema->c65_descricao);
+        $sistema->descricao = urlencode((string) $dadosSistema->c65_descricao);
         $sistema->sigla =  $dadosSistema->c65_sigla;
         return $sistema;
       });
-    } catch (Exception $erro) {
+    } catch (Exception) {
       $oRetorno->status = 2;
       $oRetorno->erro = true;
-      $oRetorno->message = urlencode($eErro->getMessage());
+      $oRetorno->message = urlencode((string) $eErro->getMessage());
     }
     break;
 
@@ -461,11 +461,11 @@ switch ($oParam->exec) {
         try {
             $iAno = db_getsession("DB_anousu");
             $campos = "distinct c122_sequencial as codigo, c122_descricao as descricao";
-            $where = implode(' and ', array(
+            $where = implode(' and ', [
                 "c122_tipo = 2",
                 "c60_codcon = {$oParam->iCodigoConta}",
                 "c60_anousu = {$iAno}"
-            ));
+            ]);
             $daoContaCorrente = new cl_conplanosistema();
             $buscaVinculo = $daoContaCorrente->sql_query_vinculo_contas($campos, $where, "order by 1");
             $buscaVinculo = db_query($buscaVinculo);
@@ -474,7 +474,7 @@ switch ($oParam->exec) {
             }
 
             $oRetorno->erro = false;
-            $oRetorno->contasCorrentes = array();
+            $oRetorno->contasCorrentes = [];
             $oRetorno->contasCorrentes = db_utils::getCollectionByRecord($buscaVinculo, false, false, true);
 
 

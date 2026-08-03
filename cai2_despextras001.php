@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label('k13_conta');
@@ -103,7 +103,7 @@ function js_emite(){
         <td align="right"><b>Imprimir histórico:</b></td>
         <td>
         <?php 
-           $matriz = array("S"=>"SIM","N"=>"NÃO");
+           $matriz = ["S"=>"SIM","N"=>"NÃO"];
            db_select("imp_hist",$matriz,true,4);
         ?>
         </td>

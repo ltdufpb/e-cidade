@@ -33,7 +33,7 @@ class EtiquetaModelo01Builder implements \App\Domain\Patrimonial\Patrimonio\Cont
         $tag = new Tag();
         $tag->setPadding(2);
         $tag->p($this->instituicao)->br();
-        $tag->barcode($this->placa, 'TYPE_CODE_128')->setWidth(1.8)->setHeight(15)->setMargin(array(0, 5, 0, 5))->br();
+        $tag->barcode($this->placa, 'TYPE_CODE_128')->setWidth(1.8)->setHeight(15)->setMargin([0, 5, 0, 5])->br();
         $tag->p('')->br();
         $descricao = substr($this->descricao, 0, 30);
         $tag->p($descricao)->br();

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,23 +55,23 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Débitos",
+       $clcriaabas->identifica = ["g1"=>"Débitos",
 	                                   "g2"=>"Loteamentos",
 									   "g3"=>"Setor",
 									   "g4"=>"Quadra",
-									   "g5"=>"Ruas"); 
+									   "g5"=>"Ruas"]; 
 									   
-       $clcriaabas->title      = array("g1"=>"Débitos",
+       $clcriaabas->title      = ["g1"=>"Débitos",
 	                                   "g2"=>"Loteamentos",
 									   "g3"=>"Setor",
 									   "g4"=>"Quadra",
-									   "g5"=>"Ruas");    
+									   "g5"=>"Ruas"];    
 									   
-       $clcriaabas->src        = array("g1"=>"cad2_loteam003.php",
+       $clcriaabas->src        = ["g1"=>"cad2_loteam003.php",
 	                                   "g2"=>"cad2_loteam004.php",
 									   "g3"=>"cad2_loteam005.php",
 									   "g4"=>"cad2_loteam006.php",
-									   "g5"=>"cad2_loteam007.php");  
+									   "g5"=>"cad2_loteam007.php"];  
        $clcriaabas->cria_abas();    
      ?> 
      </td>

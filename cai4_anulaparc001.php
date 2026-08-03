@@ -37,7 +37,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("v09_sequencial");
 $clrotulo->label("p58_codproc");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $db_opcao = 1;

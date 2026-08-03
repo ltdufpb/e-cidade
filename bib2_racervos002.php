@@ -156,14 +156,14 @@ for ($x = 0; $x < $linhas; $x++) {
         $pdf->cell(10, 4, "Local", 1, 1, "C", 1);
     }
     $pdf->setfont('arial', '', 6);
-    $pdf->cell(20, 4, str_pad(@$bi06_seq, 6, 0, STR_PAD_LEFT), 1, 0, "C", 0);
+    $pdf->cell(20, 4, str_pad((string) @$bi06_seq, 6, 0, STR_PAD_LEFT), 1, 0, "C", 0);
 
-    $sTitulo = substr($bi06_titulo, 0, 60);
+    $sTitulo = substr((string) $bi06_titulo, 0, 60);
     if (!empty($bi29_abreviatura)) {
         $sTitulo .= " - {$bi29_abreviatura}";
     }
     $pdf->cell(102, 4, $sTitulo, "RTB", 0, "L", 0);
-    $pdf->cell(87, 4, substr($bi06_subtitulo, 0, 63), "RTB", 0, "L", 0);
+    $pdf->cell(87, 4, substr((string) $bi06_subtitulo, 0, 63), "RTB", 0, "L", 0);
     $pdf->cell(20, 4, db_formatar(@$bi06_dataregistro, 'd'), 1, 0, "C", 0);
     $pdf->cell(40, 4, $bi09_nome, 1, 0, "C", 0);
     $pdf->cell(10, 4, $bi20_sequencia, 1, 1, "C", 0);
@@ -189,7 +189,7 @@ for ($x = 0; $x < $linhas; $x++) {
         $pdf->cell(20, 4, "", 0, 0, "C", 0);
         $pdf->cell(259, 4, "Autores :", "LRB", 1, "L", 0);
         $result_autor = $clautoracervo->sql_record($clautoracervo->sql_query("", "bi01_nome", "bi01_nome", " bi21_acervo = $bi06_seq"));
-        $aAutores = array();
+        $aAutores = [];
 
         for ($y = 0; $y < $clautoracervo->numrows; $y++) {
             db_fieldsmemory($result_autor, $y);
@@ -232,8 +232,8 @@ for ($x = 0; $x < $linhas; $x++) {
             $exemplar = "{$bi23_codigo} - {$codigoBarras} - Adquirido em " . db_formatar($bi23_dataaquisicao, 'd');
             $exemplar .= " - Situação: " . str_pad($situacao, 8, ' ');
             $exemplar .= " - Tipo de Aquisiçao: " . $bi04_forma . ($sequencia != "" ? $sequencia : "");
-            $exemplar .= " - Ano Edição: " . str_pad($bi23_anoedicao, 5, ' ');
-            $exemplar .= " - Edição: " . str_pad($bi23_edicao, 10, ' ');
+            $exemplar .= " - Ano Edição: " . str_pad((string) $bi23_anoedicao, 5, ' ');
+            $exemplar .= " - Edição: " . str_pad((string) $bi23_edicao, 10, ' ');
             $pdf->SetFont('Courier','', 6);
             $pdf->multicell(259, 3, $exemplar, "LR", 1, "L", 0);
             $pdf->SetFont('arial','', 6);

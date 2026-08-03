@@ -108,7 +108,7 @@ db_textarea('db79_descr',2,55,$Idb79_descr,true,'text',$db_opcao,"")
      <?php 
         if(isset($db79_id_usuario)){
          $sql_item = $cldb_tarefas->sql_query($db79_id_usuario,"*","db79_data,db79_hora asc","db79_id_usuario = $db79_id_usuario"); 
-	 $chavepri= array("db79_id_usuario"=>$db79_id_usuario,"db79_codigo"=>@$db79_codigo);
+	 $chavepri= ["db79_id_usuario"=>$db79_id_usuario,"db79_codigo"=>@$db79_codigo];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
  	 $cliframe_alterar_excluir->sql     = $sql_item;
          $cliframe_alterar_excluir->campos  ="db79_codigo, db79_descr, db80_descr, db79_data, db79_hora";
@@ -126,7 +126,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_db_tarefas.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
 function js_cancelar(){

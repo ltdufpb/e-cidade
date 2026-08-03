@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("classes/db_empempenho_classe.php"));
 
 //---  parser POST/GET
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 //---- instancia classes

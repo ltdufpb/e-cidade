@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benshistoricocalculo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbenshistoricocalculo = new cl_benshistoricocalculo;
 $clbenshistoricocalculo->rotulo->label("t57_sequencial");
 $clbenshistoricocalculo->rotulo->label("t57_ano");
@@ -98,9 +98,9 @@ $clbenshistoricocalculo->rotulo->label("t57_ano");
         }else{
            $sql = $clbenshistoricocalculo->sql_query("",$campos,"t57_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t57_ano)){
-          $repassa = array("chave_t57_sequencial"=>$chave_t57_sequencial,"chave_t57_ano"=>$chave_t57_ano);
+          $repassa = ["chave_t57_sequencial"=>$chave_t57_sequencial,"chave_t57_ano"=>$chave_t57_ano];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

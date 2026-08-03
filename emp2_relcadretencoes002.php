@@ -67,7 +67,7 @@ $iAlt      = 4;
   $iNumrows = $oClretencaotiporec->numrows;
 	
   
-  $aGrupo = array();
+  $aGrupo = [];
   
   for ($iInd = 0; $iInd < $iNumrows; $iInd++) {
     

@@ -15,16 +15,16 @@
 // each datapoint
 //===================================================
 class ErrorPlot extends Plot {
-    var $errwidth=2;
+    public $errwidth=2;
 //---------------
 // CONSTRUCTOR
-    function ErrorPlot(&$datay,$datax=false) {
-	$this->Plot($datay,$datax);
+    function __construct(&$datay,$datax=false) {
+	\Plot::__construct($datay, $datax);
 	$this->numpoints /= 2;
     }
 //---------------
 // PUBLIC METHODS
-	
+
     // Gets called before any axis are stroked
     function PreStrokeAdjust(&$graph) {
 	if( $this->center ) {
@@ -37,7 +37,7 @@ class ErrorPlot extends Plot {
 	$graph->SetTextScaleOff($b);						
 	//$graph->xaxis->scale->ticks->SupressMinorTickMarks();
     }
-	
+
     // Method description
     function Stroke(&$img,&$xscale,&$yscale) {
 	$numpoints=count($this->coords[0])/2;
@@ -46,14 +46,14 @@ class ErrorPlot extends Plot {
 
 	if( isset($this->coords[1]) ) {
 	    if( count($this->coords[1])!=$numpoints )
-		JpGraphError::RaiseL(2003,count($this->coords[1]),$numpoints);
+		(new JpGraphError())->RaiseL(2003, count($this->coords[1]), $numpoints);
 //("Number of X and Y points are not equal. Number of X-points:".count($this->coords[1])." Number of Y-points:$numpoints");
 	    else
 		$exist_x = true;
 	}
 	else 
 	    $exist_x = false;
-		
+
 	for( $i=0; $i<$numpoints; ++$i) {
 	    if( $exist_x ) 
 		$x=$this->coords[1][$i];
@@ -64,7 +64,7 @@ class ErrorPlot extends Plot {
 		!is_numeric($this->coords[0][$i*2]) || !is_numeric($this->coords[0][$i*2+1]) ) {
 		continue;
 	    }
-	    
+
 	    $xt = $xscale->Translate($x);
 	    $yt1 = $yscale->Translate($this->coords[0][$i*2]);
 	    $yt2 = $yscale->Translate($this->coords[0][$i*2+1]);
@@ -84,11 +84,11 @@ class ErrorPlot extends Plot {
 // BACKWARD COMPATIBILITY
 //===================================================
 class ErrorLinePlot extends ErrorPlot {
-    var $line=null;
+    public $line=null;
 //---------------
 // CONSTRUCTOR
-    function ErrorLinePlot(&$datay,$datax=false) {
-	$this->ErrorPlot($datay,$datax);
+    function __construct(&$datay,$datax=false) {
+	\ErrorPlot::__construct($datay, $datax);
 	// Calculate line coordinates as the average of the error limits
 	$n = count($datay);
 	for($i=0; $i < $n; $i+=2 ) {
@@ -104,7 +104,8 @@ class ErrorLinePlot extends ErrorPlot {
 	    $graph->legend->Add($this->legend,$this->color);
 	$this->line->Legend($graph);
     }
-			
+
+    #[\Override]
     function Stroke(&$img,&$xscale,&$yscale) {
 	parent::Stroke($img,$xscale,$yscale);
 	$this->line->Stroke($img,$xscale,$yscale);
@@ -117,15 +118,15 @@ class ErrorLinePlot extends ErrorPlot {
 // Description: Combine a line and error plot
 //===================================================
 class LineErrorPlot extends ErrorPlot {
-    var $line=null;
+    public $line=null;
 //---------------
 // CONSTRUCTOR
     // Data is (val, errdeltamin, errdeltamax)
-    function LineErrorPlot(&$datay,$datax=false) {
-	$ly=array(); $ey=array();
+    function __construct(&$datay,$datax=false) {
+	$ly=[]; $ey=[];
 	$n = count($datay);
 	if( $n % 3 != 0 ) {
-	    JpGraphError::RaiseL(4002);
+	    (new JpGraphError())->RaiseL(4002);
 //('Error in input data to LineErrorPlot. Number of data points must be a multiple of 3');
 	}
 	for($i=0; $i < $n; $i+=3 ) {
@@ -133,7 +134,7 @@ class LineErrorPlot extends ErrorPlot {
 	    $ey[]=$datay[$i]+$datay[$i+1];
 	    $ey[]=$datay[$i]+$datay[$i+2];
 	}		
-	$this->ErrorPlot($ey,$datax);
+	\ErrorPlot::__construct($ey, $datax);
 	$this->line=new LinePlot($ly,$datax);
     }
 
@@ -144,7 +145,8 @@ class LineErrorPlot extends ErrorPlot {
 	    $graph->legend->Add($this->legend,$this->color);
 	$this->line->Legend($graph);
     }
-			
+
+    #[\Override]
     function Stroke(&$img,&$xscale,&$yscale) {
 	parent::Stroke($img,$xscale,$yscale);
 	$this->line->Stroke($img,$xscale,$yscale);

@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_folha_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clfolha = new cl_folha;
 $clrotulo = new rotulocampo;
 $clfolha->rotulo->label();
@@ -119,8 +119,8 @@ if(isset($emite)){
       $pdf->cell(25,$alt,$r38_conta,1,1,"R",0);
 
       $agenciaregistro = $r38_agenc;
-      $contaregistro = substr($r38_conta,0,(strlen($r38_conta) - 1));
-      $dvcontaregistro = substr($r38_conta, (strlen($r38_conta) - 1), 1);
+      $contaregistro = substr((string) $r38_conta,0,(strlen((string) $r38_conta) - 1));
+      $dvcontaregistro = substr((string) $r38_conta, (strlen((string) $r38_conta) - 1), 1);
       $nomeregistro  = $r38_nome;
       $valorregistro  = $r38_liq; 
       $matricularegistro = $r38_regist;
@@ -183,7 +183,7 @@ if(isset($emite)){
         <td ><b>Recurso</b</td>
         <td >
          <?php 
-           $x = array("f"=>"Fundef","m"=>"MDE","a"=>"ASPS","s"=>"FES","l"=>"Livre","t"=>"Todos");
+           $x = ["f"=>"Fundef","m"=>"MDE","a"=>"ASPS","s"=>"FES","l"=>"Livre","t"=>"Todos"];
            db_select('recurso',$x,true,4,"");
          ?>
 	

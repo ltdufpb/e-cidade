@@ -46,14 +46,14 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
     </td>
     <td align="left" nowrap>
     <?php 
-      $arr_numero = array();
-      $arr_index  = array();
+      $arr_numero = [];
+      $arr_index  = [];
       $sql_solicita = $clsolicita->sql_record($clsolicita->sql_query_solicita(null,"distinct pc10_numero,pc10_data,pc10_resumo,descrdepto","pc10_numero"));
       for($i=0;$i<$clsolicita->numrows;$i++){
 	db_fieldsmemory($sql_solicita,$i,true);
 	$arr_numero[$pc10_numero] = $pc10_numero;
 	$arr_index[$pc10_numero]  = $i;
-	$arr_data = split("/",$pc10_data);
+	$arr_data = preg_split("#\\/#m",(string) $pc10_data);
 	$pc10_data_dia = $arr_data[0];
 	$pc10_data_mes = $arr_data[1];
 	$pc10_data_ano = $arr_data[2];
@@ -72,7 +72,7 @@ if(isset($pc10_numero) && trim($pc10_numero)!=""){
 		}
 	      </script>";
 	db_fieldsmemory($sql_solicita,$arr_index[$cod]);
-	$arr_data = split("-",$pc10_data);
+	$arr_data = preg_split("#\\-#m",(string) $pc10_data);
 	$pc10_data_dia = $arr_data[2];
 	$pc10_data_mes = $arr_data[1];
 	$pc10_data_ano = $arr_data[0];

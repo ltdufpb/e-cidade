@@ -36,7 +36,7 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 //$head3 = "CADASTRO DE CÓDIGOS";
@@ -105,7 +105,7 @@ where h31_sequencial = $port;
 
 $result = db_query($sql);
 //db_criatabela($result);exit;
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mes.' / '.$ano);
 
@@ -122,11 +122,11 @@ $alt = 4;
 db_sel_instit();
 $xlin = 10;
 $pdf->SetLineWidth(0.4);
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    $dados = db_query($conn,"select nomeinst,ender,munic,uf,telef,email,url,logo from db_config where codigo = ".db_getsession("DB_instit"));
    $pdf->addpage();
-   $pdf->Image('imagens/files/'.pg_result($dados,0,"logo"),20,$xlin -7, 25);
+   $pdf->Image('imagens/files/'.pg_fetch_result($dados,0,"logo"),20,$xlin -7, 25);
    //$pdf->Image('imagens/files/logo_boleto.png', 20, $xlin -7, 25); //.$this->logo
    $pdf->Setfont('Arial', 'B', 9);
    $pdf->text(43, $xlin, $nomeinst);
@@ -134,7 +134,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $pdf->text(43, $xlin +4, 'SECRETARIA DE GOVERNO');
    $pdf->text(43, $xlin +8, 'DIVISÃO DE RECURSOS HUMANOS' );
    $pdf->Setfont('Arial', 'B', 15);
-   if($h31_portariatipo == 412 && strtoupper($munic) == 'ALEGRETE' ){
+   if($h31_portariatipo == 412 && strtoupper((string) $munic) == 'ALEGRETE' ){
      $pdf->text(160, $xlin, '  AVISO');
    }else{
      $pdf->text(160, $xlin, 'PORTARIA');
@@ -142,7 +142,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $pdf->Setfont('Arial', 'B', 15);
    $pdf->text(162, $xlin +6, $h31_numero.'/'.$h31_anousu);
    $pdf->Setfont('Arial', 'BI',11);
-   $pdf->text(110 , $xlin +30, 'O Prefeito Municipal de '.ucfirst(strtolower($munic)));
+   $pdf->text(110 , $xlin +30, 'O Prefeito Municipal de '.ucfirst(strtolower((string) $munic)));
    $pdf->text(110 , $xlin +34, 'no uso de suas atribuições legais,');
    $pdf->text(110 , $xlin +38, 'resolve:');
    
@@ -241,14 +241,14 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $pdf->rect(10,$xlin +130,190,20);
    $pdf->setxy(12,$xlin+132);
    $pdf->Setfont('Arial', '', 8);
-   $pdf->multicell(0,5,strtoupper($h31_amparolegal),0,1,"J",0);
+   $pdf->multicell(0,5,strtoupper((string) $h31_amparolegal),0,1,"J",0);
    
    $pdf->Setfont('Arial', 'B', 7);
    $pdf->text(10 , $xlin +154, 'INFORMAÇÕES');
    $pdf->rect(10,$xlin +155,190,40);
    $pdf->setxy(12,$xlin+157);
    $pdf->Setfont('Arial', '', 8);
-   $pdf->multicell(0,5,trim($h16_histor).trim($h16_hist2),0,1,"J",0);
+   $pdf->multicell(0,5,trim((string) $h16_histor).trim((string) $h16_hist2),0,1,"J",0);
 
    $ass_pref = "_________________________________________________"."\n\n"."Prefeito Municipal";
    $ass_sec  = "_________________________________________________"."\n\n"."Sec. de Administração";
@@ -267,7 +267,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $largura = ($pdf->w) / 3;
 
    $pdf->Setfont('Arial', '', 10);
-   if(strtoupper($munic) == 'ALEGRETE' ){
+   if(strtoupper((string) $munic) == 'ALEGRETE' ){
      $pdf->text(10 , $xlin +205, 'PALÁCIO RUI RAMOS, em '.$munic.', '.db_formatar($h31_dtportaria,'d') );
      $pdf->text(10 , $xlin +215, 'Registre-se e publique-se:' );
      if($h31_portariatipo == 412 ){

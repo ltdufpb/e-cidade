@@ -36,7 +36,7 @@ class IntegracaoHorus {
   private $sLoginWebService;
   private $sSenhaWebService;
 
-  private $aArquivos = array();
+  private $aArquivos = [];
 
   public function __construct() {
 
@@ -85,7 +85,7 @@ class IntegracaoHorus {
    */
   public function enviar() {
 
-    $aArquivosEnviados = array();
+    $aArquivosEnviados = [];
 
     try {
 
@@ -98,7 +98,7 @@ class IntegracaoHorus {
         }
         $sConteudoArquivo = file_get_contents($sArquivo);
 
-        $oRetorno = $oCliente->__call("recebeDados", array(array("source" => $sConteudoArquivo )));
+        $oRetorno = $oCliente->__call("recebeDados", [["source" => $sConteudoArquivo ]]);
         $aRetorno = (array) $oRetorno->return;
         if ( isset($aRetorno['horus-ws-numero-protocolo'] ) ) {
 
@@ -124,7 +124,7 @@ class IntegracaoHorus {
    */
   private function getClienteHorus() {
 
-    $oCliente = new SoapClient($this->sUrlWebService, array('trace' => 1));
+    $oCliente = new SoapClient($this->sUrlWebService, ['trace' => 1]);
 
     $sNSSecuritySecext    = DBSoapClient::NS_WSECURITY_SECEXT;
     $sNSSecurityUtulility = DBSoapClient::NS_WSECURITY_UTILITY;
@@ -172,7 +172,7 @@ class IntegracaoHorus {
       }
 
       $oCliente         = $this->getClienteHorus();
-      $oRetornoConsulta = $oCliente->__call("consultarAllDadosPorMunicipio", array(array("numeroProtocolo"=> $iProtocolo)));
+      $oRetornoConsulta = $oCliente->__call("consultarAllDadosPorMunicipio", [["numeroProtocolo"=> $iProtocolo]]);
 
       $sNomePropriedadeInconsistencia = "horus-ws-quantidade-insucessos";
       if ( $oRetornoConsulta->return->$sNomePropriedadeInconsistencia === 0 ) {

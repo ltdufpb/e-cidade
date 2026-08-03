@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veicabastanu_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveicabastanu = new cl_veicabastanu;
 
@@ -89,9 +89,9 @@ $clveicabastanu->rotulo->label("ve74_codigo");
         }else{
            $sql = $clveicabastanu->sql_query("",$campos,"ve74_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve74_codigo)){
-          $repassa = array("chave_ve74_codigo"=>$chave_ve74_codigo);
+          $repassa = ["chave_ve74_codigo"=>$chave_ve74_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

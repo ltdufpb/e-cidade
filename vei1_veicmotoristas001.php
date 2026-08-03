@@ -60,26 +60,26 @@ db_postmemory($_POST);
       <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
         <div>
           <?php
-          $clcriaabas->identifica = array(
+          $clcriaabas->identifica = [
             "veicmotoristas" => "Dados do Motorista",
             "veicmotoristascentral" => "Central de Veículos"
-          );
-          $clcriaabas->title      = array(
+          ];
+          $clcriaabas->title      = [
             "veicmotoristas" => "Dados do Motorista",
             "veicmotoristascentral" => "Central de Veículos"
-          );
-          $clcriaabas->src        = array(
+          ];
+          $clcriaabas->src        = [
             "veicmotoristas" => "vei1_veicmotoristas004.php",
             "veicmotoristascentral" => "vei1_veiccentralmotoristas001.php"
-          );
-          $clcriaabas->disabled   = array(
+          ];
+          $clcriaabas->disabled   = [
             "veicmotoristas" => "false",
             "veicmotoristascentral" => "true"
-          );
-          $clcriaabas->sizecampo  = array(
+          ];
+          $clcriaabas->sizecampo  = [
             "veicmotoristas" => "23",
             "veicmotoristascentral" => "23"
-          );
+          ];
 
           $clcriaabas->cria_abas();
           ?>

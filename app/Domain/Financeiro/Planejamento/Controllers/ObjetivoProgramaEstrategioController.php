@@ -42,14 +42,8 @@ use Illuminate\Http\Request;
  */
 class ObjetivoProgramaEstrategioController extends Controller
 {
-    /**
-     * @var ObjetivoProgramaEstrategicoService
-     */
-    private $service;
-
-    public function __construct(ObjetivoProgramaEstrategicoService $service)
+    public function __construct(private readonly ObjetivoProgramaEstrategicoService $service)
     {
-        $this->service = $service;
     }
 
     public function buscar(Request $request)

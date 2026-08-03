@@ -74,15 +74,15 @@ class SigfisArquivoDotacaoOrcamentaria extends SigfisArquivoBase implements iPad
       }
       
       for ($i = 0; $i < $clOrcDotacao->numrows; $i++) {
-        
+
         $oDadosQuery  = new stdClass();
         $oDadosQuery  = db_utils::fieldsMemory($rsOrcDotacao, $i);
         $oElementoTCE = SigfisVinculoDespesa::getVinculoDespesa($oDadosQuery->o56_codele);
-        
+
         $oDados       = new stdClass();
-        
+
        // if ($oDadosQuery->o58_valor != 0) {
-          
+
           /*
           * Verifica Dados de Recurso
           */
@@ -90,31 +90,31 @@ class SigfisArquivoDotacaoOrcamentaria extends SigfisArquivoBase implements iPad
           if ($oRecursoTCE = SigfisVinculoRecurso::getVinculoRecurso($oDadosQuery->o58_codigo)) {
             $iCodigoRecursoTCE = $oRecursoTCE->recursotce;
           } else {
-          
+
             $sErroLog  = "Recurso {$oDadosQuery->o58_codigo} - {$oDadosQuery->o15_descr} ";
             $sErroLog .= "Sem Vinculo com Dotação {$oDadosQuery->o58_coddot} do SIGFIS.\n";
             $this->addLog($sErroLog);
           }
-          
+
 //          $sUnidadeOrcamentaria  = str_pad($oDadosQuery->o58_orgao,   2, ' ', STR_PAD_LEFT);
-          $sUnidadeOrcamentaria = str_pad($oDadosQuery->o58_unidade, 4, ' ', STR_PAD_LEFT);
-          
-          $oDados->Cd_Unidade             = str_pad($this->sCodigoTribunal,      4, ' ', STR_PAD_LEFT);
-          $oDados->Cd_Elemento            = str_pad(substr($oDadosQuery->o56_elemento,1,8), 8, ' ', STR_PAD_LEFT);
+          $sUnidadeOrcamentaria = str_pad((string) $oDadosQuery->o58_unidade, 4, ' ', STR_PAD_LEFT);
+
+          $oDados->Cd_Unidade             = str_pad((string) $this->sCodigoTribunal,      4, ' ', STR_PAD_LEFT);
+          $oDados->Cd_Elemento            = str_pad(substr((string) $oDadosQuery->o56_elemento,1,8), 8, ' ', STR_PAD_LEFT);
           $oDados->Cd_UnidadeOrcamentaria = str_pad($sUnidadeOrcamentaria,       4, ' ', STR_PAD_LEFT);    
           $oDados->Dt_Ano                 = $oDadosQuery->o58_anousu;   
           $oDados->Tp_ProjetoAtividade    = $oDadosQuery->o55_tipo;     
-          $oDados->Nu_ProjetoAtividade    = str_pad($oDadosQuery->o58_projativ,  4, ' ', STR_PAD_LEFT);
-          $oDados->Cd_FonteRecurso        = str_pad($oDadosQuery->o58_codigo,    4, " ", STR_PAD_LEFT);
-          $oDados->Cd_Funcao              = str_pad($oDadosQuery->o58_funcao,    2, ' ', STR_PAD_LEFT);   
-          $oDados->Cd_Programa            = str_pad($oDadosQuery->o58_subfuncao, 4, ' ', STR_PAD_LEFT);   
-          $oDados->Cd_SubPrograma         = str_pad($oDadosQuery->o58_programa,  4, ' ', STR_PAD_LEFT);   
+          $oDados->Nu_ProjetoAtividade    = str_pad((string) $oDadosQuery->o58_projativ,  4, ' ', STR_PAD_LEFT);
+          $oDados->Cd_FonteRecurso        = str_pad((string) $oDadosQuery->o58_codigo,    4, " ", STR_PAD_LEFT);
+          $oDados->Cd_Funcao              = str_pad((string) $oDadosQuery->o58_funcao,    2, ' ', STR_PAD_LEFT);   
+          $oDados->Cd_Programa            = str_pad((string) $oDadosQuery->o58_subfuncao, 4, ' ', STR_PAD_LEFT);   
+          $oDados->Cd_SubPrograma         = str_pad((string) $oDadosQuery->o58_programa,  4, ' ', STR_PAD_LEFT);   
           $oDados->Vl_Dotacao             = str_pad(number_format($oDadosQuery->o58_valor, 2 , "", ""), 16, ' ', STR_PAD_LEFT);
           $oDados->Cd_Supervisionada      = 1;
           $oDados->Reservado_tce1         = str_pad('0', 6, '0', STR_PAD_LEFT);
           $oDados->Reservado_tce2         = str_pad('0', 6, '0', STR_PAD_LEFT); 
-          $oDados->Cd_Orgao               = str_pad($oDadosQuery->o58_orgao,  4, ' ', STR_PAD_LEFT);
-          
+          $oDados->Cd_Orgao               = str_pad((string) $oDadosQuery->o58_orgao,  4, ' ', STR_PAD_LEFT);
+
           $oDados->codigolinha            = 407;
           $this->aDados[]                 = $oDados;        
         //}

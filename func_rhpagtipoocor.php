@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpagtipoocor_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhpagtipoocor = new cl_rhpagtipoocor;
 $clrhpagtipoocor->rotulo->label("rh59_codigo");
 $clrhpagtipoocor->rotulo->label("rh59_descr");
@@ -98,9 +98,9 @@ $clrhpagtipoocor->rotulo->label("rh59_descr");
         }else{
            $sql = $clrhpagtipoocor->sql_query("",$campos,"rh59_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh59_descr)){
-          $repassa = array("chave_rh59_codigo"=>$chave_rh59_codigo,"chave_rh59_descr"=>$chave_rh59_descr);
+          $repassa = ["chave_rh59_codigo"=>$chave_rh59_codigo,"chave_rh59_descr"=>$chave_rh59_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{
@@ -108,7 +108,7 @@ $clrhpagtipoocor->rotulo->label("rh59_descr");
           $result = $clrhpagtipoocor->sql_record($clrhpagtipoocor->sql_query($pesquisa_chave));
           if($clrhpagtipoocor->numrows!=0){
             db_fieldsmemory($result,0);
-            echo "<script>".$funcao_js."('$rh59_descr','".trim($rh59_tipo)."',false);</script>";
+            echo "<script>".$funcao_js."('$rh59_descr','".trim((string) $rh59_tipo)."',false);</script>";
           }else{
 	         echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado','',true);</script>";
           }

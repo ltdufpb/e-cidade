@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbitransacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clitbitransacao = new cl_itbitransacao;
 $clitbitransacao->rotulo->label("it04_codigo");
 $clitbitransacao->rotulo->label("it04_descr");
@@ -108,9 +108,9 @@ $clitbitransacao->rotulo->label("it04_descr");
         }else{
            $sql = $clitbitransacao->sql_query(null,$campos,"it04_codigo",$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_it04_descr)){
-          $repassa = array("chave_it04_codigo"=>$chave_it04_codigo,"chave_it04_descr"=>$chave_it04_descr);
+          $repassa = ["chave_it04_codigo"=>$chave_it04_codigo,"chave_it04_descr"=>$chave_it04_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

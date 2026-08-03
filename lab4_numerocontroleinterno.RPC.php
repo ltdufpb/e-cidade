@@ -39,7 +39,7 @@ use ECidade\Saude\Laboratorio\Service\NumeroControleInternoRequisicao as NumeroC
 $post = db_utils::postMemory($_REQUEST);
 $post->json = str_replace("\\", "", $post->json);
 $parametros = JSON::create()->parse($post->json);
-$retorno = (object)array('erro' => false, 'mensagem' => '');
+$retorno = (object)['erro' => false, 'mensagem' => ''];
 
 try {
     db_inicio_transacao();

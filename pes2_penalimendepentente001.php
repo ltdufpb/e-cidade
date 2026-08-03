@@ -97,8 +97,8 @@ $oDaoRhPessoal = new cl_rhpessoal();
             <td>
               <?php
                 
-                $xv = array("nome"      => "Nome",
-                            "matricula" => "Matrícula");
+                $xv = ["nome"      => "Nome",
+                            "matricula" => "Matrícula"];
                 db_select('ordem', $xv, true, 4, "");
               ?>
             </td>
@@ -110,9 +110,9 @@ $oDaoRhPessoal = new cl_rhpessoal();
             <td>
               <?php
                 
-                $xv = array("semquebra"  => "Sem Quebra",
+                $xv = ["semquebra"  => "Sem Quebra",
                             "servidor"   => "Servidor",
-                            "dependente" => "Dependente");
+                            "dependente" => "Dependente"];
                 db_select('quebra', $xv, true, 4, "");
               ?>
             </td>
@@ -124,8 +124,8 @@ $oDaoRhPessoal = new cl_rhpessoal();
             <td>
               <?php
                 
-                $xv = array("f" => "NÃO",
-                            "t" => "SIM");
+                $xv = ["f" => "NÃO",
+                            "t" => "SIM"];
                 db_select('mostraobservacao', $xv, true, 4, "");
               ?>
             </td>

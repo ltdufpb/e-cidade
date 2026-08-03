@@ -31,41 +31,6 @@ namespace ECidade\Tributario\Integracao\JuntaComercial\Model;
 class Licenca
 {
   /**
-   * Código de identifcação da área ou secretaria no REGIN.
-   * Não obrigatório quando for o alvará, cadastro imobiliário ou cadastro mobiliario.
-   * @field CODIGO_AREA
-   * @max 99999
-   * @var integer $iCodigoArea
-   */
-  private $iCodigoArea;
-
-  /**
-   * Identifica o tipo de licença
-   * @field CODIGO_LICENCA
-   * @max 99
-   * @values [1 - Alvará, 2 - Vigilância Sanitária, 3 - Corpo de bombeiros, 4 - Cadastro mobiliário, 5 - Cadastro imobiliário]
-   * @var integer $iCodigoLicenca
-   */
-  private $iCodigoLicenca;
-
-  /**
-   * Indica permanência da licença
-   * @field LICENCA_DEFINITIVA
-   * @size 1
-   * @values [0 - Provisória, 1 - Definitiva]
-   * @var integer $iLicencaDefinitiva
-   */
-  private $iLicencaDefinitiva;
-
-  /**
-   * Número da licença concedida.
-   * @field NUMERO_LICENCA
-   * @size 24
-   * @var string $sNumeroLicenca
-   */
-  private $sNumeroLicenca;
-
-  /**
    * @return int
    */
   public function getCodigoArea()
@@ -145,12 +110,36 @@ class Licenca
    * @param int $iLicencaDefinitiva
    * @param string $sNumeroLicenca
    */
-  public function __construct($iCodigoArea, $iCodigoLicenca, $iLicencaDefinitiva, $sNumeroLicenca)
+  public function __construct(
+      /**
+       * Código de identifcação da área ou secretaria no REGIN.
+       * Não obrigatório quando for o alvará, cadastro imobiliário ou cadastro mobiliario.
+       * @field CODIGO_AREA
+       * @max 99999
+       */
+      private $iCodigoArea,
+      /**
+       * Identifica o tipo de licença
+       * @field CODIGO_LICENCA
+       * @max 99
+       * @values [1 - Alvará, 2 - Vigilância Sanitária, 3 - Corpo de bombeiros, 4 - Cadastro mobiliário, 5 - Cadastro imobiliário]
+       */
+      private $iCodigoLicenca,
+      /**
+       * Indica permanência da licença
+       * @field LICENCA_DEFINITIVA
+       * @size 1
+       * @values [0 - Provisória, 1 - Definitiva]
+       */
+      private $iLicencaDefinitiva,
+      /**
+       * Número da licença concedida.
+       * @field NUMERO_LICENCA
+       * @size 24
+       */
+      private $sNumeroLicenca
+  )
   {
-    $this->iCodigoArea = $iCodigoArea;
-    $this->iCodigoLicenca = $iCodigoLicenca;
-    $this->iLicencaDefinitiva = $iLicencaDefinitiva;
-    $this->sNumeroLicenca = $sNumeroLicenca;
   }
 
 }

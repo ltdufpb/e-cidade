@@ -42,7 +42,7 @@ $oDaoSauParametrosAge->rotulo->label();
             <td> 
               <?php 
                 db_input('s165_sequencial',10,$Is165_sequencial,true,'hidden',3,"");
-                $aOpcoes = array("1"=>"PDF","2"=>"TXT");
+                $aOpcoes = ["1"=>"PDF","2"=>"TXT"];
                 db_select('s165_formatocomprovanteagend',$aOpcoes,true,$db_opcao,"");
               ?>
             </td>

@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 $cllote = new cl_lote;
 $db_opcao = 1;
 $db_botao = true;
-if ($HTTP_POST_VARS["db_opcao"]=="Incluir"){
+if ($_POST["db_opcao"]=="Incluir"){
    db_inicio_transacao();
    $cllote->incluir($j34_idbql);
    db_fim_transacao();

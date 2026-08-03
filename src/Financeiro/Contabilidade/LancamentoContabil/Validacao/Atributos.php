@@ -38,7 +38,7 @@ class Atributos implements InterfacePosProcessamento
             $mes,
             $ano,
             $instituicao->getCodigo(),
-            array($codigoLancamento)
+            [$codigoLancamento]
         );
         $rsAtributos = db_query($sqlLancamentoAtributos);
         if (!$rsAtributos) {
@@ -49,8 +49,8 @@ class Atributos implements InterfacePosProcessamento
         $sMensagem = "";
         for ($iLinhas = 0; $iLinhas < $numeroLinhas; $iLinhas++) {
             $oLancamento = \db_utils::fieldsMemory($rsAtributos, $iLinhas);
-            $aAtributosValidar = explode(',', $oLancamento->nome_infos_complementares);
-            $siglasAtributos   = explode(',', $oLancamento->siglas_atributos);
+            $aAtributosValidar = explode(',', (string) $oLancamento->nome_infos_complementares);
+            $siglasAtributos   = explode(',', (string) $oLancamento->siglas_atributos);
             foreach ($aAtributosValidar as $indiceAtributo => $campo) {
                 if ($oLancamento->{$campo} == "") {
                     $sigla = $siglasAtributos[$indiceAtributo];

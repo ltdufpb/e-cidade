@@ -35,25 +35,25 @@ class Tag
 {
 
 	// protected variables
-	var $tagStartOpen;
-	var $tagStartClose;
-	var $tagClose;
-	var $tagEndOpen;
-	var $tagEndClose;
-	var $tagName;
-	var $tagContent;
-	var $tagAttributes;
-	var $tagAttributeSeparator;
-	var $tagAttributeSeparators;
-	var $tagAttributeAssignment;
-	var $tagAttributeValueQuote;
-	var $FORMAT_NONE;
-	var $FORMAT_INDENT;
-	var $tagFormat;
-	var $tagFormatIndentLevel;
-	var $tagFormatEndTag;
-	var $tagFormatNewLine = "\n";
-	var $tagFormatIndent = "\t";
+	public $tagStartOpen;
+	public $tagStartClose;
+	public $tagClose;
+	public $tagEndOpen;
+	public $tagEndClose;
+	public $tagName;
+	public $tagContent;
+	public $tagAttributes;
+	public $tagAttributeSeparator;
+	public $tagAttributeSeparators;
+	public $tagAttributeAssignment;
+	public $tagAttributeValueQuote;
+	public $FORMAT_NONE;
+	public $FORMAT_INDENT;
+	public $tagFormat;
+	public $tagFormatIndentLevel;
+	public $tagFormatEndTag;
+	public $tagFormatNewLine = "\n";
+	public $tagFormatIndent = "\t";
 
 	/**
 	  *	Constructor creates a tag object with the specified name and tag content
@@ -72,9 +72,9 @@ class Tag
 		$this->tagEndClose = ">";
 		$this->setTagName($name);
 		$this->setTagContent($content);
-		$this->tagAttributes = array();
+		$this->tagAttributes = [];
 		$this->tagAttributeSeparator = " ";
-		$this->tagAttributeSeparators = array(" ", "\n", "\r", "\t");
+		$this->tagAttributeSeparators = [" ", "\n", "\r", "\t"];
 		$this->tagAttributeAssignment = "=";
 		$this->tagAttributeValueQuote = '"';
 		$this->FORMAT_NONE = 0;
@@ -138,9 +138,9 @@ class Tag
 		$formatContent = "";
 		if($this->tagFormat == $this->FORMAT_INDENT) {
 			if($this->tagFormatIndentLevel > 0)
-				$formatTagBegin = $this->tagFormatNewLine . str_repeat($this->tagFormatIndent, $this->tagFormatIndentLevel);
+				$formatTagBegin = $this->tagFormatNewLine . str_repeat((string) $this->tagFormatIndent, $this->tagFormatIndentLevel);
 			if($this->tagFormatEndTag)
-				$formatTagEnd = $this->tagFormatNewLine . str_repeat($this->tagFormatIndent, $this->tagFormatIndentLevel);
+				$formatTagEnd = $this->tagFormatNewLine . str_repeat((string) $this->tagFormatIndent, $this->tagFormatIndentLevel);
 		}
 		$tagString = $formatTagBegin . $this->getTagStringBegin() . $formatContent . $this->tagContent . $formatTagEnd . $this->getTagStringEnd();
 		return $tagString;
@@ -187,7 +187,7 @@ class Tag
 	  */
 	function removeAllAttributes()
        	{
-		$this->tagAttributes = array();
+		$this->tagAttributes = [];
 	}
 
 	/**
@@ -272,16 +272,16 @@ class Tag
 		$tagStartOpen = $tagStartClose = $tagNameStart = $tagNameEnd = $tagContentStart = $tagContentEnd = $tagEndOpen = $tagEndClose = 0;
 		$tagName = $tagContent = "";
 		$tagShort = false;
-		$tagAttributes = array();
+		$tagAttributes = [];
 		$success = true;
 		$tagFound = false;
-		while(!$tagFound && $i < strlen($tagString)) {
+		while(!$tagFound && $i < strlen((string) $tagString)) {
 			// look for start tag character
-			$i = strpos($tagString, $this->tagStartOpen, $i);
+			$i = strpos((string) $tagString, (string) $this->tagStartOpen, $i);
 			if($i === false)
 				break;
 			// if tag name starts from alpha character we found the tag
-			if(ctype_alpha(substr($tagString, $i + 1, 1)))
+			if(ctype_alpha(substr((string) $tagString, $i + 1, 1)))
 				$tagFound = true;
 			// else continue searching
 			else
@@ -296,9 +296,9 @@ class Tag
 			$tagNameStart = $i + 1;
 			// search where tag name would end
 			// search for a space separator to account for attributes
-			$separatorPos = array();
+			$separatorPos = [];
 			for($counter = 0; $counter < count($this->tagAttributeSeparators); $counter ++) {
-				$separatorPosTemp = strpos($tagString, $this->tagAttributeSeparators[$counter], $tagStartOpen);
+				$separatorPosTemp = strpos((string) $tagString, (string) $this->tagAttributeSeparators[$counter], $tagStartOpen);
 				if($separatorPosTemp !== false)
 					$separatorPos[] = $separatorPosTemp;
 			}
@@ -308,9 +308,9 @@ class Tag
 			else
 				$i = false;
 			// search for tag close character
-			$j = strpos($tagString, $this->tagStartClose, $tagStartOpen);
+			$j = strpos((string) $tagString, (string) $this->tagStartClose, $tagStartOpen);
 			// search for short tag (no content)
-			$k = strpos($tagString, $this->tagClose, $tagStartOpen);
+			$k = strpos((string) $tagString, (string) $this->tagClose, $tagStartOpen);
 			// if tag close character is not found then no tag exists, set success to false
 			if($j === false)
 				$success = false;
@@ -333,8 +333,8 @@ class Tag
 				$tagNameEnd = $i;
 				$tagStartClose = $j;
 				// parse attributes
-				$tagAttributesStart = $i + strlen($this->tagAttributeSeparator);
-				$attrString = substr($tagString, $tagAttributesStart, $j - $tagAttributesStart);
+				$tagAttributesStart = $i + strlen((string) $this->tagAttributeSeparator);
+				$attrString = substr((string) $tagString, $tagAttributesStart, $j - $tagAttributesStart);
 				$attrArray = explode($this->tagAttributeValueQuote, $attrString);
 				$attrCounter = 0;
 				while($attrCounter < count($attrArray) - 1) {
@@ -344,7 +344,7 @@ class Tag
 					$attrCounter += 2;
 				}
 			}
-			$tagName = substr($tagString, $tagNameStart, $tagNameEnd - $tagNameStart);
+			$tagName = substr((string) $tagString, $tagNameStart, $tagNameEnd - $tagNameStart);
 			if(!$tagShort) {
 				$tagContentStart = $tagStartClose + 1;
 				// look for ending of the tag after tag content
@@ -358,7 +358,7 @@ class Tag
 					$n = $j - 1;
 					for($skip = 0; $skip < $k; $skip ++) {
 						$n ++;
-						$tempPos = strpos($tagString, $this->tagEndOpen . $tagName . $this->tagEndClose, $n);
+						$tempPos = strpos((string) $tagString, $this->tagEndOpen . $tagName . $this->tagEndClose, $n);
 						if($tempPos !== false)
 							$n = $tempPos;
 						else {
@@ -369,7 +369,7 @@ class Tag
 					// if success, find number of tag opens before the tag close
 					$k = 0;
 					if($success) {
-						$tempString = substr($tagString, $j, $n - $j);
+						$tempString = substr((string) $tagString, $j, $n - $j);
 						$tempNewPos = 0;
 						do {
 							$tempPos = strpos($tempString, $this->tagStartOpen . $tagName, $tempNewPos);
@@ -379,8 +379,8 @@ class Tag
 								$tagEndArray[] = $this->tagEndClose;
 								$tempPosTagEnded = array_search($tempPosChar, $tagEndArray);
 								if($tempPosTagEnded !== false && $tempPosTagEnded !== NULL) {
-									$tempStartClose = strpos($tempString, $this->tagStartClose, $tempPos);
-									$tempStartShortClose = strpos($tempString, $this->tagClose, $tempPos);
+									$tempStartClose = strpos($tempString, (string) $this->tagStartClose, $tempPos);
+									$tempStartShortClose = strpos($tempString, (string) $this->tagClose, $tempPos);
 									// if open tag found increase counter
 									if($tempStartClose !== false && ($tempStartShortClose === false || $tempStartClose < $tempStartShortClose))
 										$k ++;
@@ -409,18 +409,18 @@ class Tag
 		if($success) {
 			if(!$tagShort) {
 				$tagContentEnd = $i;
-				$tagContent = substr($tagString, $tagContentStart, $tagContentEnd - $tagContentStart);
+				$tagContent = substr((string) $tagString, $tagContentStart, $tagContentEnd - $tagContentStart);
 				$tagEndOpen = $i;
 				$tagEndClose = $tagEndOpen + strlen($this->tagEndOpen . $tagName . $this->tagEndClose);
 			}
 			else
-				$tagEndClose = $tagStartClose + strlen($this->tagStartClose);
+				$tagEndClose = $tagStartClose + strlen((string) $this->tagStartClose);
 			$this->setTagName($tagName);
 			$this->setTagContent($tagContent);
 			$this->tagAttributes = $tagAttributes;
 		}
 		if($success)
-			return array($tagStartOpen, $tagEndClose);
+			return [$tagStartOpen, $tagEndClose];
 		else
 			return false;
 	}

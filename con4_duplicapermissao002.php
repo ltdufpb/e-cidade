@@ -57,12 +57,12 @@ try {
       $vir           = "";
       $lTemPermissao = false;
 
-      $iItem = split("_",$oParametros->lista);
+      $iItem = preg_split("#_#m",(string) $oParametros->lista);
       for ($i = 0; $i < sizeof($iItem); $i++) {
 
       	$sNomeUsuario            = '';
-      	$aDadosPermissoesOrigem  = array();
-      	$aDadosPermissoesDestino = array();
+      	$aDadosPermissoesOrigem  = [];
+      	$aDadosPermissoesDestino = [];
 
         if ($iItem[$i] != "") {
 
@@ -220,7 +220,7 @@ try {
           		 */
           		case 2:
 
-          			$aPermissoesInclusao = array();
+          			$aPermissoesInclusao = [];
           			foreach ( $aDadosPermissoesOrigem as $oDadosPermissaoOrigem ) {
 
     	      			$lPermissaoExistente = false;

@@ -29,7 +29,7 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 ?>
 <html>
 <head>
@@ -78,7 +78,7 @@ if($tipo=="recorc" || $tipo=="recextra"){
     $clrotulo->label("k02_drecei");
     
 
-    if(pg_numrows($result)!=0){
+    if(pg_num_rows($result)!=0){
       $processou = true;
       db_lovrot($sql,15,"()","","");
 /* 
@@ -169,7 +169,7 @@ if($tipo=="recorc" || $tipo=="recextra"){
     $result = db_query($sql);
     $clrotulo = new rotulocampo;
 
-    if(pg_numrows($result)!=0){
+    if(pg_num_rows($result)!=0){
 
       $processou = true;
       db_lovrot($sql,15,"()","","");
@@ -230,7 +230,7 @@ if($tipo=="recorc" || $tipo=="recextra"){
     $result = db_query($sql);
     $clrotulo = new rotulocampo;
 
-    if(pg_numrows($result)!=0){
+    if(pg_num_rows($result)!=0){
 
       $processou = true;
       db_lovrot($sql,15,"()","","");

@@ -96,13 +96,13 @@ class NaturezaCGM {
   /**
    * @var array
    */
-  private $naturezas = array(
+  private $naturezas = [
 
-    self::TIPO_PESSOA_FISICA_JURIDICA_DIREITO_PRIVADO => array('sigla' => self::SIGLA_PESSOA_FISICA_JURIDICA_DIREITO_PRIVADO, 'descricao' => self::DESCRICAO_PESSOA_FISICA_JURIDICA_DIREITO_PRIVADO),
-    self::TIPO_PODER_EXECUTIVO_ESTADUAL => array('sigla' => self::SIGLA_PODER_EXECUTIVO_ESTADUAL, 'descricao' => self::DESCRICAO_PODER_EXECUTIVO_ESTADUAL),
-    self::TIPO_PODER_EXECUTIVO_MUNICIPAL => array('sigla' => self::SIGLA_PODER_EXECUTIVO_MUNICIPAL, 'descricao' => self::DESCRICAO_PODER_EXECUTIVO_MUNICIPAL),
-    self::TIPO_FUNDO_PUBLICO => array('sigla' => self::SIGLA_FUNDO_PUBLICO, 'descricao' => self::DESCRICAO_FUNDO_PUBLICO)
-  );
+    self::TIPO_PESSOA_FISICA_JURIDICA_DIREITO_PRIVADO => ['sigla' => self::SIGLA_PESSOA_FISICA_JURIDICA_DIREITO_PRIVADO, 'descricao' => self::DESCRICAO_PESSOA_FISICA_JURIDICA_DIREITO_PRIVADO],
+    self::TIPO_PODER_EXECUTIVO_ESTADUAL => ['sigla' => self::SIGLA_PODER_EXECUTIVO_ESTADUAL, 'descricao' => self::DESCRICAO_PODER_EXECUTIVO_ESTADUAL],
+    self::TIPO_PODER_EXECUTIVO_MUNICIPAL => ['sigla' => self::SIGLA_PODER_EXECUTIVO_MUNICIPAL, 'descricao' => self::DESCRICAO_PODER_EXECUTIVO_MUNICIPAL],
+    self::TIPO_FUNDO_PUBLICO => ['sigla' => self::SIGLA_FUNDO_PUBLICO, 'descricao' => self::DESCRICAO_FUNDO_PUBLICO]
+  ];
 
   public function __construct() {
 

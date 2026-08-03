@@ -36,11 +36,9 @@
 class Suplementacao
 {
 
-    protected $iCodigo;
+    protected $aSuplementacoes = [];
 
-    protected $aSuplementacoes = array();
-
-    protected $aReducoes = array();
+    protected $aReducoes = [];
 
     protected $iTipo;
 
@@ -51,9 +49,8 @@ class Suplementacao
     /**
      *
      */
-    function __construct($iSuplementacao)
+    function __construct(protected $iCodigo)
     {
-        $this->iCodigo = $iSuplementacao;
         if (!empty($this->iCodigo)) {
 
             $oDaoSuplementacao = db_utils::getDao("orcsuplem");
@@ -353,7 +350,7 @@ class Suplementacao
 
                     $sErroMsg = "Erro ao Incluir nova Dotação ({$oDaoOrcDotacao->o58_coddot}).\n";
                     $iNumeroErro = 13;
-                    if (strpos(strtolower(pg_last_error()), "orcdotacao_oufspae_in") != 0) {
+                    if (!str_starts_with(strtolower(pg_last_error()), "orcdotacao_oufspae_in")) {
                         $iNumeroErro = 199;
                     }
                     $sErroMsg .= $oDaoOrcDotacao->erro_msg . "\n";
@@ -545,7 +542,7 @@ class Suplementacao
         if (pg_num_rows($rsValidaSuplementacao) > 0) {
 
             $sRetorno = db_utils::fieldsMemory($rsValidaSuplementacao, 0)->retorno;
-            if (substr($sRetorno, 0, 1) != '1') {
+            if (!str_starts_with((string) $sRetorno, '1')) {
                 throw new Exception($sRetorno);
             }
         }

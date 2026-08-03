@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE sau_servclassificacao
 class cl_sau_servclassificacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd87_i_codigo = 0; 
-   var $sd87_c_classificacao = null; 
-   var $sd87_c_nome = null; 
-   var $sd87_i_servico = 0; 
-   var $sd87_i_anocomp = 0; 
-   var $sd87_i_mescomp = 0; 
+   public $sd87_i_codigo = 0; 
+   public $sd87_c_classificacao = null; 
+   public $sd87_c_nome = null; 
+   public $sd87_i_servico = 0; 
+   public $sd87_i_anocomp = 0; 
+   public $sd87_i_mescomp = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd87_i_codigo = int8 = Código 
                  sd87_c_classificacao = varchar(3) = Classificação 
                  sd87_c_nome = varchar(150) = Nome 
@@ -58,10 +58,10 @@ class cl_sau_servclassificacao {
                  sd87_i_mescomp = int4 = Mes 
                  ";
    //funcao construtor da classe 
-   function cl_sau_servclassificacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_servclassificacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,10 +143,10 @@ class cl_sau_servclassificacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->sd87_i_codigo = pg_result($result,0,0); 
+       $this->sd87_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from sau_servclassificacao_sd87_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $sd87_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $sd87_i_codigo)){
          $this->erro_sql = " Campo sd87_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_sau_servclassificacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Classificação dos Serviços ($this->sd87_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Classificação dos Serviços já Cadastrado";
@@ -208,15 +208,15 @@ class cl_sau_servclassificacao {
      $resaco = $this->sql_record($this->sql_query_file($this->sd87_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11625,'$this->sd87_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1993,11625,'','".AddSlashes(pg_result($resaco,0,'sd87_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1993,11627,'','".AddSlashes(pg_result($resaco,0,'sd87_c_classificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1993,11628,'','".AddSlashes(pg_result($resaco,0,'sd87_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1993,11626,'','".AddSlashes(pg_result($resaco,0,'sd87_i_servico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1993,11629,'','".AddSlashes(pg_result($resaco,0,'sd87_i_anocomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1993,11630,'','".AddSlashes(pg_result($resaco,0,'sd87_i_mescomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1993,11625,'','".AddSlashes(pg_fetch_result($resaco,0,'sd87_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1993,11627,'','".AddSlashes(pg_fetch_result($resaco,0,'sd87_c_classificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1993,11628,'','".AddSlashes(pg_fetch_result($resaco,0,'sd87_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1993,11626,'','".AddSlashes(pg_fetch_result($resaco,0,'sd87_i_servico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1993,11629,'','".AddSlashes(pg_fetch_result($resaco,0,'sd87_i_anocomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1993,11630,'','".AddSlashes(pg_fetch_result($resaco,0,'sd87_i_mescomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -225,10 +225,10 @@ class cl_sau_servclassificacao {
       $this->atualizacampos();
      $sql = " update sau_servclassificacao set ";
      $virgula = "";
-     if(trim($this->sd87_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_codigo"])){ 
+     if(trim((string) $this->sd87_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_codigo"])){ 
        $sql  .= $virgula." sd87_i_codigo = $this->sd87_i_codigo ";
        $virgula = ",";
-       if(trim($this->sd87_i_codigo) == null ){ 
+       if(trim((string) $this->sd87_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sd87_i_codigo";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_sau_servclassificacao {
          return false;
        }
      }
-     if(trim($this->sd87_c_classificacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_c_classificacao"])){ 
+     if(trim((string) $this->sd87_c_classificacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_c_classificacao"])){ 
        $sql  .= $virgula." sd87_c_classificacao = '$this->sd87_c_classificacao' ";
        $virgula = ",";
-       if(trim($this->sd87_c_classificacao) == null ){ 
+       if(trim((string) $this->sd87_c_classificacao) == null ){ 
          $this->erro_sql = " Campo Classificação nao Informado.";
          $this->erro_campo = "sd87_c_classificacao";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_sau_servclassificacao {
          return false;
        }
      }
-     if(trim($this->sd87_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_c_nome"])){ 
+     if(trim((string) $this->sd87_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_c_nome"])){ 
        $sql  .= $virgula." sd87_c_nome = '$this->sd87_c_nome' ";
        $virgula = ",";
-       if(trim($this->sd87_c_nome) == null ){ 
+       if(trim((string) $this->sd87_c_nome) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "sd87_c_nome";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_sau_servclassificacao {
          return false;
        }
      }
-     if(trim($this->sd87_i_servico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_servico"])){ 
+     if(trim((string) $this->sd87_i_servico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_servico"])){ 
        $sql  .= $virgula." sd87_i_servico = $this->sd87_i_servico ";
        $virgula = ",";
-       if(trim($this->sd87_i_servico) == null ){ 
+       if(trim((string) $this->sd87_i_servico) == null ){ 
          $this->erro_sql = " Campo Serviço nao Informado.";
          $this->erro_campo = "sd87_i_servico";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_sau_servclassificacao {
          return false;
        }
      }
-     if(trim($this->sd87_i_anocomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_anocomp"])){ 
+     if(trim((string) $this->sd87_i_anocomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_anocomp"])){ 
        $sql  .= $virgula." sd87_i_anocomp = $this->sd87_i_anocomp ";
        $virgula = ",";
-       if(trim($this->sd87_i_anocomp) == null ){ 
+       if(trim((string) $this->sd87_i_anocomp) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "sd87_i_anocomp";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_sau_servclassificacao {
          return false;
        }
      }
-     if(trim($this->sd87_i_mescomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_mescomp"])){ 
+     if(trim((string) $this->sd87_i_mescomp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_mescomp"])){ 
        $sql  .= $virgula." sd87_i_mescomp = $this->sd87_i_mescomp ";
        $virgula = ",";
-       if(trim($this->sd87_i_mescomp) == null ){ 
+       if(trim((string) $this->sd87_i_mescomp) == null ){ 
          $this->erro_sql = " Campo Mes nao Informado.";
          $this->erro_campo = "sd87_i_mescomp";
          $this->erro_banco = "";
@@ -311,21 +311,21 @@ class cl_sau_servclassificacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11625,'$this->sd87_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1993,11625,'".AddSlashes(pg_result($resaco,$conresaco,'sd87_i_codigo'))."','$this->sd87_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1993,11625,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd87_i_codigo'))."','$this->sd87_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd87_c_classificacao"]))
-           $resac = db_query("insert into db_acount values($acount,1993,11627,'".AddSlashes(pg_result($resaco,$conresaco,'sd87_c_classificacao'))."','$this->sd87_c_classificacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1993,11627,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd87_c_classificacao'))."','$this->sd87_c_classificacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd87_c_nome"]))
-           $resac = db_query("insert into db_acount values($acount,1993,11628,'".AddSlashes(pg_result($resaco,$conresaco,'sd87_c_nome'))."','$this->sd87_c_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1993,11628,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd87_c_nome'))."','$this->sd87_c_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_servico"]))
-           $resac = db_query("insert into db_acount values($acount,1993,11626,'".AddSlashes(pg_result($resaco,$conresaco,'sd87_i_servico'))."','$this->sd87_i_servico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1993,11626,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd87_i_servico'))."','$this->sd87_i_servico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_anocomp"]))
-           $resac = db_query("insert into db_acount values($acount,1993,11629,'".AddSlashes(pg_result($resaco,$conresaco,'sd87_i_anocomp'))."','$this->sd87_i_anocomp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1993,11629,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd87_i_anocomp'))."','$this->sd87_i_anocomp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd87_i_mescomp"]))
-           $resac = db_query("insert into db_acount values($acount,1993,11630,'".AddSlashes(pg_result($resaco,$conresaco,'sd87_i_mescomp'))."','$this->sd87_i_mescomp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1993,11630,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd87_i_mescomp'))."','$this->sd87_i_mescomp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -370,15 +370,15 @@ class cl_sau_servclassificacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11625,'$sd87_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1993,11625,'','".AddSlashes(pg_result($resaco,$iresaco,'sd87_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1993,11627,'','".AddSlashes(pg_result($resaco,$iresaco,'sd87_c_classificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1993,11628,'','".AddSlashes(pg_result($resaco,$iresaco,'sd87_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1993,11626,'','".AddSlashes(pg_result($resaco,$iresaco,'sd87_i_servico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1993,11629,'','".AddSlashes(pg_result($resaco,$iresaco,'sd87_i_anocomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1993,11630,'','".AddSlashes(pg_result($resaco,$iresaco,'sd87_i_mescomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1993,11625,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd87_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1993,11627,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd87_c_classificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1993,11628,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd87_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1993,11626,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd87_i_servico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1993,11629,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd87_i_anocomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1993,11630,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd87_i_mescomp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sau_servclassificacao
@@ -438,7 +438,7 @@ class cl_sau_servclassificacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sau_servclassificacao";
@@ -452,7 +452,7 @@ class cl_sau_servclassificacao {
    function sql_query ( $sd87_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_sau_servclassificacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,7 +486,7 @@ class cl_sau_servclassificacao {
    function sql_query_file ( $sd87_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -507,7 +507,7 @@ class cl_sau_servclassificacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

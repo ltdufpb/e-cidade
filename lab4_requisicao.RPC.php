@@ -64,7 +64,7 @@ try {
         throw new Exception("Requisição sem exames para digitação.");
       }
 
-      $aSetorExame = array();
+      $aSetorExame = [];
       $oRetorno->laboratorios = "";
       for($i = 0; $i < $iLinhas; $i++) {
 
@@ -97,16 +97,16 @@ try {
         if ( !array_key_exists($oDados->la23_i_codigo, $aSetorExame) ) {
           
           $oSetor          = new stdClass();
-          $oSetor->sNome   = urlencode($oDados->la23_c_descr);
+          $oSetor->sNome   = urlencode((string) $oDados->la23_c_descr);
           $oSetor->iCodigo = $oDados->la23_i_codigo;
-          $oSetor->aExames = array();
+          $oSetor->aExames = [];
           
           $aSetorExame[ $oDados->la23_i_codigo ] = $oSetor;
         }
         
         $oExame            = new stdClass();
         $oExame->iCodigo   = $oDados->la21_i_codigo;
-        $oExame->sNome     = urlencode($oDados->la08_c_descr);
+        $oExame->sNome     = urlencode((string) $oDados->la08_c_descr);
         $oExame->lDigitado = $oDados->la21_c_situacao == '50 - Lancado';
         $oExame->permitidoconferencia = pg_fetch_all($rsPermissaoLaboratorio)[0]['la06_permitidoconferencia'];
 

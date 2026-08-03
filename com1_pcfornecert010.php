@@ -33,8 +33,8 @@ include(modification("classes/db_pcfornecert_classe.php"));
 include(modification("classes/db_pcforne_classe.php"));
 include(modification("classes/db_pccertif_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clpcfornecert = new cl_pcfornecert;
 $clpcforne = new cl_pcforne;
 $clpccertif = new cl_pccertif;
@@ -45,15 +45,15 @@ if(isset($atualiza)){
   $erro = false;
   $result = $clpcfornecert->excluir($pc61_numcgm);
   //
-  reset($HTTP_POST_VARS);
+  reset($_POST);
   $db_msg="Certificados atualizados.";
-  for($i=0;$i<sizeof($HTTP_POST_VARS);$i++){
-    $campo = substr(key($HTTP_POST_VARS),0,12);
+  for($i=0;$i<sizeof($_POST);$i++){
+    $campo = substr((string) key($_POST),0,12);
     if($campo == "pc61_certif_"){
-      $campo = trim(substr(key($HTTP_POST_VARS),12));
-      $campoo = $HTTP_POST_VARS["pc61_obs_".$campo];
-      $campod = $HTTP_POST_VARS["pc61_vencim_".$campo."_ano"]."-".$HTTP_POST_VARS["pc61_vencim_".$campo."_mes"]."-".$HTTP_POST_VARS["pc61_vencim_".$campo."_dia"];
-      $testad = $HTTP_POST_VARS["pc61_vencim_".$campo."_ano"].$HTTP_POST_VARS["pc61_vencim_".$campo."_mes"].$HTTP_POST_VARS["pc61_vencim_".$campo."_dia"];
+      $campo = trim(substr((string) key($_POST),12));
+      $campoo = $_POST["pc61_obs_".$campo];
+      $campod = $_POST["pc61_vencim_".$campo."_ano"]."-".$_POST["pc61_vencim_".$campo."_mes"]."-".$_POST["pc61_vencim_".$campo."_dia"];
+      $testad = $_POST["pc61_vencim_".$campo."_ano"].$_POST["pc61_vencim_".$campo."_mes"].$_POST["pc61_vencim_".$campo."_dia"];
       if($testad==""){
 	$db_msg = "Data inválida!";
 	$erro = true;
@@ -70,7 +70,7 @@ if(isset($atualiza)){
       }
       $db_msg = "";
     }
-    next($HTTP_POST_VARS);
+    next($_POST);
   }
   if($db_msg==""){
     $db_msg = $clpcfornecert->erro_msg;
@@ -129,19 +129,19 @@ if(isset($atualiza)){
         if($result1!=false && $clpcfornecert->numrows>0){
            if(!isset($atualiza) || $erro == false){
              db_fieldsmemory($result1,0);
-	     $$campo = 't';
-	     $$data_dia  = substr($pc61_vencim,8,2);
-	     $$data_mes  = substr($pc61_vencim,5,2);
-	     $$data_ano  = substr($pc61_vencim,0,4);
-	     $$obs   = $pc61_obs;
+	     ${$campo} = 't';
+	     ${$data_dia}  = substr((string) $pc61_vencim,8,2);
+	     ${$data_mes}  = substr((string) $pc61_vencim,5,2);
+	     ${$data_ano}  = substr((string) $pc61_vencim,0,4);
+	     ${$obs}   = $pc61_obs;
 	   }
         }else{
            if(!isset($atualiza) || $erro == false){
-	     $$campo = 'f';
-	     $$data_dia = null;
-	     $$data_mes = null;
-	     $$data_ano = null;
-	     $$obs   = null;
+	     ${$campo} = 'f';
+	     ${$data_dia} = null;
+	     ${$data_mes} = null;
+	     ${$data_ano} = null;
+	     ${$obs}   = null;
 	   }
         }
 	echo "<tr>";
@@ -152,7 +152,7 @@ if(isset($atualiza)){
         echo $pc59_descr;
         echo "</td>\n";
         echo "<td>";
-        echo db_inputdata("pc61_vencim",$$data_dia,$$data_mes,$$data_ano,true,'text',2,"","pc61_vencim_".$pc59_certif);
+        echo db_inputdata("pc61_vencim",${$data_dia},${$data_mes},${$data_ano},true,'text',2,"","pc61_vencim_".$pc59_certif);
         echo "</td>\n";
 	echo "<td>";
         echo db_textarea("pc61_obs",1,40,$Ipc61_obs,true,'text',2,"","pc61_obs_".$pc59_certif);

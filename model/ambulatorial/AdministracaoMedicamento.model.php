@@ -106,7 +106,7 @@ class AdministracaoMedicamento {
     }
 
     $oDaoAdministracao   = new cl_administracaomedicamento();
-    $oDadosAdministracao = db_utils::getRowFromDao($oDaoAdministracao, array($iCodigo) );
+    $oDadosAdministracao = db_utils::getRowFromDao($oDaoAdministracao, [$iCodigo] );
 
     if (empty ($oDadosAdministracao) ) {
        throw new BusinessException(_M(self::ARQUIVO_MENSAGEM."administracao_nao_encontrada"));

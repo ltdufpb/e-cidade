@@ -33,7 +33,7 @@ use Exception;
 
 class PontoFixoRepository
 {
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param $matricula
@@ -90,7 +90,7 @@ class PontoFixoRepository
             throw new Exception("Não foi possível encontrar o ponto fixo.\nContate o suporte.");
         }
 
-        $pontoFixo = array();
+        $pontoFixo = [];
 
         if (pg_num_rows($rs) === 0) {
             return $pontoFixo;

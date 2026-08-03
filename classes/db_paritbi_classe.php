@@ -88,7 +88,7 @@ class cl_paritbi {
     public function __construct()
     {
         $this->rotulo = new rotulo("paritbi"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
     
     public function erro($mostra, $retorna)
@@ -230,7 +230,7 @@ class cl_paritbi {
        $this->erro_status = "0";
        return false;
      }
-     if( !DBNumber::isFloat( trim($this->it24_taxabancaria) ) ){
+     if( !DBNumber::isFloat( trim((string) $this->it24_taxabancaria) ) ){
      	$this->k03_diasreemissaocertidao = '';
      	$this->erro_sql = " Campo Tarifa Bancária deve ser preenchido somente com números!";
      	$this->erro_campo = "k03_diasvalidadecertidao";
@@ -375,7 +375,7 @@ class cl_paritbi {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parametros de ITBI ($this->it24_anousu) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parametros de ITBI já Cadastrado";
@@ -404,29 +404,29 @@ class cl_paritbi {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13501,'$this->it24_anousu','I')");
-         $resac = db_query("insert into db_acount values($acount,2362,13501,'','".AddSlashes(pg_result($resaco,0,'it24_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,13502,'','".AddSlashes(pg_result($resaco,0,'it24_grupoespbenfurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,13503,'','".AddSlashes(pg_result($resaco,0,'it24_grupotipobenfurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,13504,'','".AddSlashes(pg_result($resaco,0,'it24_grupoespbenfrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,13505,'','".AddSlashes(pg_result($resaco,0,'it24_grupotipobenfrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,13506,'','".AddSlashes(pg_result($resaco,0,'it24_grupoutilterrarural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,13507,'','".AddSlashes(pg_result($resaco,0,'it24_grupodistrterrarural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,20280,'','".AddSlashes(pg_result($resaco,0,'it24_grupopadraoconstrutivobenurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,13508,'','".AddSlashes(pg_result($resaco,0,'it24_diasvctoitbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,15476,'','".AddSlashes(pg_result($resaco,0,'it24_alteraguialib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,15477,'','".AddSlashes(pg_result($resaco,0,'it24_impsituacaodeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,20242,'','".AddSlashes(pg_result($resaco,0,'it24_taxabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,20656,'','".AddSlashes(pg_result($resaco,0,'it24_cgmobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,1011724,'','".AddSlashes(pg_result($resaco,0,'it24_solicitanotificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,1011739,'','".AddSlashes(pg_result($resaco,0,'it24_carregavalorvenal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,1011737,'','".AddSlashes(pg_result($resaco,0,'it24_matricrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,1011827,'','".AddSlashes(pg_result($resaco,0,'it24_comparavaloresavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,1011922,'','".AddSlashes(pg_result($resaco,0,'it24_padraoconstrutivobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,1011923,'','".AddSlashes(pg_result($resaco,0,'it24_carregaconstrucoesbenfeitoriasitbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2362,1014485,'','".AddSlashes(pg_result($resaco,0,'it24_emiteguiaquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,13501,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,13502,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_grupoespbenfurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,13503,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_grupotipobenfurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,13504,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_grupoespbenfrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,13505,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_grupotipobenfrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,13506,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_grupoutilterrarural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,13507,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_grupodistrterrarural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,20280,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_grupopadraoconstrutivobenurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,13508,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_diasvctoitbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,15476,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_alteraguialib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,15477,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_impsituacaodeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,20242,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_taxabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,20656,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_cgmobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,1011724,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_solicitanotificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,1011739,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_carregavalorvenal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,1011737,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_matricrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,1011827,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_comparavaloresavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,1011922,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_padraoconstrutivobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,1011923,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_carregaconstrucoesbenfeitoriasitbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2362,1014485,'','".AddSlashes(pg_fetch_result($resaco,0,'it24_emiteguiaquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -436,10 +436,10 @@ class cl_paritbi {
       $this->atualizacampos();
      $sql = " update paritbi set ";
      $virgula = "";
-     if(trim($this->it24_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_anousu"])){
+     if(trim((string) $this->it24_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_anousu"])){
        $sql  .= $virgula." it24_anousu = $this->it24_anousu ";
        $virgula = ",";
-       if(trim($this->it24_anousu) == null ){
+       if(trim((string) $this->it24_anousu) == null ){
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "it24_anousu";
          $this->erro_banco = "";
@@ -449,10 +449,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_grupoespbenfurbana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupoespbenfurbana"])){
+     if(trim((string) $this->it24_grupoespbenfurbana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupoespbenfurbana"])){
        $sql  .= $virgula." it24_grupoespbenfurbana = $this->it24_grupoespbenfurbana ";
        $virgula = ",";
-       if(trim($this->it24_grupoespbenfurbana) == null ){
+       if(trim((string) $this->it24_grupoespbenfurbana) == null ){
          $this->erro_sql = " Campo Espécie de Benfeitoria não informado.";
          $this->erro_campo = "it24_grupoespbenfurbana";
          $this->erro_banco = "";
@@ -462,10 +462,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_grupotipobenfurbana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupotipobenfurbana"])){
+     if(trim((string) $this->it24_grupotipobenfurbana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupotipobenfurbana"])){
        $sql  .= $virgula." it24_grupotipobenfurbana = $this->it24_grupotipobenfurbana ";
        $virgula = ",";
-       if(trim($this->it24_grupotipobenfurbana) == null ){
+       if(trim((string) $this->it24_grupotipobenfurbana) == null ){
          $this->erro_sql = " Campo Tipo de Benfeitoria não informado.";
          $this->erro_campo = "it24_grupotipobenfurbana";
          $this->erro_banco = "";
@@ -475,10 +475,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_grupoespbenfrural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupoespbenfrural"])){
+     if(trim((string) $this->it24_grupoespbenfrural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupoespbenfrural"])){
        $sql  .= $virgula." it24_grupoespbenfrural = $this->it24_grupoespbenfrural ";
        $virgula = ",";
-       if(trim($this->it24_grupoespbenfrural) == null ){
+       if(trim((string) $this->it24_grupoespbenfrural) == null ){
          $this->erro_sql = " Campo Espécie de Benfeitoria não informado.";
          $this->erro_campo = "it24_grupoespbenfrural";
          $this->erro_banco = "";
@@ -488,10 +488,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_grupotipobenfrural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupotipobenfrural"])){
+     if(trim((string) $this->it24_grupotipobenfrural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupotipobenfrural"])){
        $sql  .= $virgula." it24_grupotipobenfrural = $this->it24_grupotipobenfrural ";
        $virgula = ",";
-       if(trim($this->it24_grupotipobenfrural) == null ){
+       if(trim((string) $this->it24_grupotipobenfrural) == null ){
          $this->erro_sql = " Campo Tipo de Benfeitoria não informado.";
          $this->erro_campo = "it24_grupotipobenfrural";
          $this->erro_banco = "";
@@ -501,10 +501,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_grupoutilterrarural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupoutilterrarural"])){
+     if(trim((string) $this->it24_grupoutilterrarural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupoutilterrarural"])){
        $sql  .= $virgula." it24_grupoutilterrarural = $this->it24_grupoutilterrarural ";
        $virgula = ",";
-       if(trim($this->it24_grupoutilterrarural) == null ){
+       if(trim((string) $this->it24_grupoutilterrarural) == null ){
          $this->erro_sql = " Campo Utilização das Terra não informado.";
          $this->erro_campo = "it24_grupoutilterrarural";
          $this->erro_banco = "";
@@ -514,10 +514,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_grupodistrterrarural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupodistrterrarural"])){
+     if(trim((string) $this->it24_grupodistrterrarural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupodistrterrarural"])){
        $sql  .= $virgula." it24_grupodistrterrarural = $this->it24_grupodistrterrarural ";
        $virgula = ",";
-       if(trim($this->it24_grupodistrterrarural) == null ){
+       if(trim((string) $this->it24_grupodistrterrarural) == null ){
          $this->erro_sql = " Campo Distribuição das Terras não informado.";
          $this->erro_campo = "it24_grupodistrterrarural";
          $this->erro_banco = "";
@@ -527,10 +527,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_grupopadraoconstrutivobenurbana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupopadraoconstrutivobenurbana"])){
+     if(trim((string) $this->it24_grupopadraoconstrutivobenurbana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_grupopadraoconstrutivobenurbana"])){
        $sql  .= $virgula." it24_grupopadraoconstrutivobenurbana = $this->it24_grupopadraoconstrutivobenurbana ";
        $virgula = ",";
-       if(trim($this->it24_grupopadraoconstrutivobenurbana) == null ){
+       if(trim((string) $this->it24_grupopadraoconstrutivobenurbana) == null ){
          $this->erro_sql = " Campo Padrão Construtivo não informado.";
          $this->erro_campo = "it24_grupopadraoconstrutivobenurbana";
          $this->erro_banco = "";
@@ -540,10 +540,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_diasvctoitbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_diasvctoitbi"])){
+     if(trim((string) $this->it24_diasvctoitbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_diasvctoitbi"])){
        $sql  .= $virgula." it24_diasvctoitbi = $this->it24_diasvctoitbi ";
        $virgula = ",";
-       if(trim($this->it24_diasvctoitbi) == null ){
+       if(trim((string) $this->it24_diasvctoitbi) == null ){
          $this->erro_sql = " Campo Vencimento não informado.";
          $this->erro_campo = "it24_diasvctoitbi";
          $this->erro_banco = "";
@@ -553,10 +553,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_alteraguialib)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_alteraguialib"])){
+     if(trim((string) $this->it24_alteraguialib)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_alteraguialib"])){
        $sql  .= $virgula." it24_alteraguialib = $this->it24_alteraguialib ";
        $virgula = ",";
-       if(trim($this->it24_alteraguialib) == null ){
+       if(trim((string) $this->it24_alteraguialib) == null ){
          $this->erro_sql = " Campo Alterar na Guia Liberada não informado.";
          $this->erro_campo = "it24_alteraguialib";
          $this->erro_banco = "";
@@ -566,10 +566,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_impsituacaodeb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_impsituacaodeb"])){
+     if(trim((string) $this->it24_impsituacaodeb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_impsituacaodeb"])){
        $sql  .= $virgula." it24_impsituacaodeb = '$this->it24_impsituacaodeb' ";
        $virgula = ",";
-       if(trim($this->it24_impsituacaodeb) == null ){
+       if(trim((string) $this->it24_impsituacaodeb) == null ){
          $this->erro_sql = " Campo Imprime Situação de Débito na Guia não informado.";
          $this->erro_campo = "it24_impsituacaodeb";
          $this->erro_banco = "";
@@ -579,10 +579,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_taxabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_taxabancaria"])){
+     if(trim((string) $this->it24_taxabancaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_taxabancaria"])){
        $sql  .= $virgula." it24_taxabancaria = $this->it24_taxabancaria ";
        $virgula = ",";
-       if(trim($this->it24_taxabancaria) == null ){
+       if(trim((string) $this->it24_taxabancaria) == null ){
          $this->erro_sql = " Campo Tarifa Bancária não informado.";
          $this->erro_campo = "it24_taxabancaria";
          $this->erro_banco = "";
@@ -591,7 +591,7 @@ class cl_paritbi {
          $this->erro_status = "0";
          return false;
        }
-       if( !DBNumber::isFloat( trim($this->it24_taxabancaria) ) ){
+       if( !DBNumber::isFloat( trim((string) $this->it24_taxabancaria) ) ){
        	$this->k03_diasreemissaocertidao = '';
        	$this->erro_sql = " Campo Tarifa Bancária deve ser preenchido somente com números!";
        	$this->erro_campo = "k03_diasvalidadecertidao";
@@ -602,10 +602,10 @@ class cl_paritbi {
        	return false;
        }
      }
-     if(trim($this->it24_cgmobrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_cgmobrigatorio"])){
+     if(trim((string) $this->it24_cgmobrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_cgmobrigatorio"])){
        $sql  .= $virgula." it24_cgmobrigatorio = '$this->it24_cgmobrigatorio' ";
        $virgula = ",";
-       if(trim($this->it24_cgmobrigatorio) == null ){
+       if(trim((string) $this->it24_cgmobrigatorio) == null ){
          $this->erro_sql = " Campo CGM Obrigatório Transmitente/Adquirente não informado.";
          $this->erro_campo = "it24_cgmobrigatorio";
          $this->erro_banco = "";
@@ -615,10 +615,10 @@ class cl_paritbi {
          return false;
        }
      }
-     if(trim($this->it24_matricrural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_matricrural"])){
+     if(trim((string) $this->it24_matricrural)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_matricrural"])){
       $sql  .= $virgula." it24_matricrural = '$this->it24_matricrural' ";
       $virgula = ",";
-      if(trim($this->it24_matricrural) == null ){
+      if(trim((string) $this->it24_matricrural) == null ){
         $this->erro_sql = " Campo Matrícula Imóvel Rural não informado.";
         $this->erro_campo = "it24_matricrural";
         $this->erro_banco = "";
@@ -628,10 +628,10 @@ class cl_paritbi {
         return false;
       }
      }
-     if(trim($this->it24_solicitanotificacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_solicitanotificacao"])){
+     if(trim((string) $this->it24_solicitanotificacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_solicitanotificacao"])){
         $sql  .= $virgula." it24_solicitanotificacao = '$this->it24_solicitanotificacao' ";
         $virgula = ",";
-        if(trim($this->it24_solicitanotificacao) == null ){
+        if(trim((string) $this->it24_solicitanotificacao) == null ){
           $this->erro_sql = " Campo Solicita Notificação.";
           $this->erro_campo = "it24_solicitanotificacao";
           $this->erro_banco = "";
@@ -641,10 +641,10 @@ class cl_paritbi {
           return false;
         }
      }
-     if(trim($this->it24_carregavalorvenal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_carregavalorvenal"])){
+     if(trim((string) $this->it24_carregavalorvenal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_carregavalorvenal"])){
         $sql  .= $virgula." it24_carregavalorvenal = '$this->it24_carregavalorvenal' ";
         $virgula = ",";
-        if(trim($this->it24_carregavalorvenal) == null ){
+        if(trim((string) $this->it24_carregavalorvenal) == null ){
           $this->erro_sql = " Campo Carrega Valor Venal.";
           $this->erro_campo = "it24_carregavalorvenal";
           $this->erro_banco = "";
@@ -655,10 +655,10 @@ class cl_paritbi {
         }
      }
 
-    if(trim($this->it24_comparavaloresavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_comparavaloresavaliacao"])){
+    if(trim((string) $this->it24_comparavaloresavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_comparavaloresavaliacao"])){
        $sql  .= $virgula." it24_comparavaloresavaliacao = '$this->it24_comparavaloresavaliacao' ";
        $virgula = ",";
-       if(trim($this->it24_comparavaloresavaliacao) == null ){
+       if(trim((string) $this->it24_comparavaloresavaliacao) == null ){
          $this->erro_sql = " Compara Valores Avaliação.";
          $this->erro_campo = "it24_comparavaloresavaliacao";
          $this->erro_banco = "";
@@ -669,10 +669,10 @@ class cl_paritbi {
        }
     }
 
-       if(trim($this->it24_padraoconstrutivobrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_padraoconstrutivobrigatorio"])){
+       if(trim((string) $this->it24_padraoconstrutivobrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_padraoconstrutivobrigatorio"])){
            $sql  .= $virgula." it24_padraoconstrutivobrigatorio = '$this->it24_padraoconstrutivobrigatorio' ";
            $virgula = ",";
-           if(trim($this->it24_padraoconstrutivobrigatorio) == null ){
+           if(trim((string) $this->it24_padraoconstrutivobrigatorio) == null ){
                $this->erro_sql = " Padrão Construtivo Obrigatório.";
                $this->erro_campo = "it24_padraoconstrutivobrigatorio";
                $this->erro_banco = "";
@@ -683,10 +683,10 @@ class cl_paritbi {
            }
        }
 
-       if(trim($this->it24_carregaconstrucoesbenfeitoriasitbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_carregaconstrucoesbenfeitoriasitbi"])){
+       if(trim((string) $this->it24_carregaconstrucoesbenfeitoriasitbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_carregaconstrucoesbenfeitoriasitbi"])){
            $sql  .= $virgula." it24_carregaconstrucoesbenfeitoriasitbi = '$this->it24_carregaconstrucoesbenfeitoriasitbi' ";
            $virgula = ",";
-           if(trim($this->it24_carregaconstrucoesbenfeitoriasitbi) == null ){
+           if(trim((string) $this->it24_carregaconstrucoesbenfeitoriasitbi) == null ){
                $this->erro_sql = " Carrega Contruções Benfeitoria ITBI.";
                $this->erro_campo = "it24_carregaconstrucoesbenfeitoriasitbi";
                $this->erro_banco = "";
@@ -696,10 +696,10 @@ class cl_paritbi {
                return false;
            }
        }
-       if(trim($this->it24_emiteguiaquitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_emiteguiaquitacao"])){ 
+       if(trim((string) $this->it24_emiteguiaquitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it24_emiteguiaquitacao"])){ 
         $sql  .= $virgula." it24_emiteguiaquitacao = '$this->it24_emiteguiaquitacao' ";
         $virgula = ",";
-        if(trim($this->it24_emiteguiaquitacao) == null ){ 
+        if(trim((string) $this->it24_emiteguiaquitacao) == null ){ 
           $this->erro_sql = " Campo Emite Guia de Quitação não informado.";
           $this->erro_campo = "it24_emiteguiaquitacao";
           $this->erro_banco = "";
@@ -724,49 +724,49 @@ class cl_paritbi {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,13501,'$this->it24_anousu','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_anousu"]) || $this->it24_anousu != "")
-             $resac = db_query("insert into db_acount values($acount,2362,13501,'".AddSlashes(pg_result($resaco,$conresaco,'it24_anousu'))."','$this->it24_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,13501,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_anousu'))."','$this->it24_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_grupoespbenfurbana"]) || $this->it24_grupoespbenfurbana != "")
-             $resac = db_query("insert into db_acount values($acount,2362,13502,'".AddSlashes(pg_result($resaco,$conresaco,'it24_grupoespbenfurbana'))."','$this->it24_grupoespbenfurbana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,13502,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_grupoespbenfurbana'))."','$this->it24_grupoespbenfurbana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_grupotipobenfurbana"]) || $this->it24_grupotipobenfurbana != "")
-             $resac = db_query("insert into db_acount values($acount,2362,13503,'".AddSlashes(pg_result($resaco,$conresaco,'it24_grupotipobenfurbana'))."','$this->it24_grupotipobenfurbana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,13503,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_grupotipobenfurbana'))."','$this->it24_grupotipobenfurbana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_grupoespbenfrural"]) || $this->it24_grupoespbenfrural != "")
-             $resac = db_query("insert into db_acount values($acount,2362,13504,'".AddSlashes(pg_result($resaco,$conresaco,'it24_grupoespbenfrural'))."','$this->it24_grupoespbenfrural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,13504,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_grupoespbenfrural'))."','$this->it24_grupoespbenfrural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_grupotipobenfrural"]) || $this->it24_grupotipobenfrural != "")
-             $resac = db_query("insert into db_acount values($acount,2362,13505,'".AddSlashes(pg_result($resaco,$conresaco,'it24_grupotipobenfrural'))."','$this->it24_grupotipobenfrural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,13505,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_grupotipobenfrural'))."','$this->it24_grupotipobenfrural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_grupoutilterrarural"]) || $this->it24_grupoutilterrarural != "")
-             $resac = db_query("insert into db_acount values($acount,2362,13506,'".AddSlashes(pg_result($resaco,$conresaco,'it24_grupoutilterrarural'))."','$this->it24_grupoutilterrarural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,13506,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_grupoutilterrarural'))."','$this->it24_grupoutilterrarural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_grupodistrterrarural"]) || $this->it24_grupodistrterrarural != "")
-             $resac = db_query("insert into db_acount values($acount,2362,13507,'".AddSlashes(pg_result($resaco,$conresaco,'it24_grupodistrterrarural'))."','$this->it24_grupodistrterrarural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,13507,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_grupodistrterrarural'))."','$this->it24_grupodistrterrarural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_grupopadraoconstrutivobenurbana"]) || $this->it24_grupopadraoconstrutivobenurbana != "")
-             $resac = db_query("insert into db_acount values($acount,2362,20280,'".AddSlashes(pg_result($resaco,$conresaco,'it24_grupopadraoconstrutivobenurbana'))."','$this->it24_grupopadraoconstrutivobenurbana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,20280,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_grupopadraoconstrutivobenurbana'))."','$this->it24_grupopadraoconstrutivobenurbana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_diasvctoitbi"]) || $this->it24_diasvctoitbi != "")
-             $resac = db_query("insert into db_acount values($acount,2362,13508,'".AddSlashes(pg_result($resaco,$conresaco,'it24_diasvctoitbi'))."','$this->it24_diasvctoitbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,13508,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_diasvctoitbi'))."','$this->it24_diasvctoitbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_alteraguialib"]) || $this->it24_alteraguialib != "")
-             $resac = db_query("insert into db_acount values($acount,2362,15476,'".AddSlashes(pg_result($resaco,$conresaco,'it24_alteraguialib'))."','$this->it24_alteraguialib',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,15476,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_alteraguialib'))."','$this->it24_alteraguialib',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_impsituacaodeb"]) || $this->it24_impsituacaodeb != "")
-             $resac = db_query("insert into db_acount values($acount,2362,15477,'".AddSlashes(pg_result($resaco,$conresaco,'it24_impsituacaodeb'))."','$this->it24_impsituacaodeb',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,15477,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_impsituacaodeb'))."','$this->it24_impsituacaodeb',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_taxabancaria"]) || $this->it24_taxabancaria != "")
-             $resac = db_query("insert into db_acount values($acount,2362,20242,'".AddSlashes(pg_result($resaco,$conresaco,'it24_taxabancaria'))."','$this->it24_taxabancaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,20242,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_taxabancaria'))."','$this->it24_taxabancaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_cgmobrigatorio"]) || $this->it24_cgmobrigatorio != "")
-             $resac = db_query("insert into db_acount values($acount,2362,20656,'".AddSlashes(pg_result($resaco,$conresaco,'it24_cgmobrigatorio'))."','$this->it24_cgmobrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,20656,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_cgmobrigatorio'))."','$this->it24_cgmobrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_matricrural"]) || $this->it24_matricrural != "")
-             $resac = db_query("insert into db_acount values($acount,2362,1011737,'".AddSlashes(pg_result($resaco,$conresaco,'it24_matricrural'))."','$this->it24_matricrural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,1011737,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_matricrural'))."','$this->it24_matricrural',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_solicitanotificacao"]) || $this->it24_solicitanotificacao != "")
-             $resac = db_query("insert into db_acount values($acount,2362,1011724,'".AddSlashes(pg_result($resaco,$conresaco,'it24_solicitanotificacao'))."','$this->it24_solicitanotificacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,1011724,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_solicitanotificacao'))."','$this->it24_solicitanotificacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it24_carregavalorvenal"]) || $this->it24_carregavalorvenal != "")
-             $resac = db_query("insert into db_acount values($acount,2362,1011739,'".AddSlashes(pg_result($resaco,$conresaco,'it24_carregavalorvenal'))."','$this->it24_carregavalorvenal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,1011739,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_carregavalorvenal'))."','$this->it24_carregavalorvenal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
             if(isset($GLOBALS["HTTP_POST_VARS"]["it24_comparavaloresavaliacao"]) || $this->it24_comparavaloresavaliacao != "")
-             $resac = db_query("insert into db_acount values($acount,2362,1011827,'".AddSlashes(pg_result($resaco,$conresaco,'it24_comparavaloresavaliacao'))."','$this->it24_comparavaloresavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2362,1011827,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_comparavaloresavaliacao'))."','$this->it24_comparavaloresavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
              if(isset($GLOBALS["HTTP_POST_VARS"]["it24_padraoconstrutivobrigatorio"]) || $this->it24_padraoconstrutivobrigatorio != "")
-                 $resac = db_query("insert into db_acount values($acount,2362,1011922,'".AddSlashes(pg_result($resaco,$conresaco,'it24_padraoconstrutivobrigatorio'))."','$this->it24_padraoconstrutivobrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                 $resac = db_query("insert into db_acount values($acount,2362,1011922,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_padraoconstrutivobrigatorio'))."','$this->it24_padraoconstrutivobrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
              if(isset($GLOBALS["HTTP_POST_VARS"]["it24_carregaconstrucoesbenfeitoriasitbi"]) || $this->it24_carregaconstrucoesbenfeitoriasitbi != "")
-                 $resac = db_query("insert into db_acount values($acount,2362,1011923,'".AddSlashes(pg_result($resaco,$conresaco,'it24_carregaconstrucoesbenfeitoriasitbi'))."','$this->it24_carregaconstrucoesbenfeitoriasitbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                 $resac = db_query("insert into db_acount values($acount,2362,1011923,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_carregaconstrucoesbenfeitoriasitbi'))."','$this->it24_carregaconstrucoesbenfeitoriasitbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
             if (isset($GLOBALS["HTTP_POST_VARS"]["it24_emiteguiaquitacao"]) || $this->it24_emiteguiaquitacao != "")
-              $resac = db_query("insert into db_acount values($acount,2362,1014485,'".AddSlashes(pg_result($resaco,$conresaco,'it24_emiteguiaquitacao'))."','$this->it24_emiteguiaquitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");     
+              $resac = db_query("insert into db_acount values($acount,2362,1014485,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it24_emiteguiaquitacao'))."','$this->it24_emiteguiaquitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");     
          }
        }
      }
@@ -820,28 +820,28 @@ class cl_paritbi {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,13501,'$it24_anousu','E')");
-           $resac  = db_query("insert into db_acount values($acount,2362,13501,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,13502,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_grupoespbenfurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,13503,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_grupotipobenfurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,13504,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_grupoespbenfrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,13505,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_grupotipobenfrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,13506,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_grupoutilterrarural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,13507,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_grupodistrterrarural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,20280,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_grupopadraoconstrutivobenurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,13508,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_diasvctoitbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,15476,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_alteraguialib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,15477,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_impsituacaodeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,20242,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_taxabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,20656,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_cgmobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,1011724,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_solicitanotificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,1011739,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_carregavalorvenal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,1011737,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_matricrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2362,1011922,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_padraoconstrutivobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2362,1011923,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_carregaconstrucoesbenfeitoriasitbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2362,1014485,'','".AddSlashes(pg_result($resaco,$iresaco,'it24_emiteguiaquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,13501,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,13502,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_grupoespbenfurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,13503,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_grupotipobenfurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,13504,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_grupoespbenfrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,13505,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_grupotipobenfrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,13506,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_grupoutilterrarural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,13507,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_grupodistrterrarural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,20280,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_grupopadraoconstrutivobenurbana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,13508,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_diasvctoitbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,15476,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_alteraguialib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,15477,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_impsituacaodeb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,20242,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_taxabancaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,20656,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_cgmobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,1011724,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_solicitanotificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,1011739,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_carregavalorvenal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,1011737,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_matricrural'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2362,1011922,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_padraoconstrutivobrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2362,1011923,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_carregaconstrucoesbenfeitoriasitbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2362,1014485,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it24_emiteguiaquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -902,7 +902,7 @@ class cl_paritbi {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:paritbi";
@@ -945,7 +945,7 @@ class cl_paritbi {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -979,7 +979,7 @@ class cl_paritbi {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1025,7 +1025,7 @@ class cl_paritbi {
   	if($ordem != null ){
 
   		$sql .= " order by ";
-	  	$campos_sql = explode("#",$ordem);
+	  	$campos_sql = explode("#",(string) $ordem);
 	  	$virgula = "";
 
 		  for($i=0;$i<sizeof($campos_sql);$i++){

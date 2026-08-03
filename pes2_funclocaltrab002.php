@@ -28,7 +28,7 @@
 require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $head3 = "FUNCIONÁRIOS POR LOCAL DE TRABALHO - " . $mesfolha . " / " . $anofolha;
 $where = "";
@@ -74,14 +74,14 @@ if (isset($atinpen)) {
     }
 }
 
-if (trim($anofolha) == "" || trim($mesfolha) == "") {
+if (trim((string) $anofolha) == "" || trim((string) $mesfolha) == "") {
     $anofolha = db_anofolha();
     $mesfolha = db_mesfolha();
 }
 
 if (isset($selecao) && $selecao != "") {
     $result_sel = db_query("select r44_where from selecao where r44_selec = {$selecao} and r44_instit = " . db_getsession("DB_instit"));
-    if (pg_numrows($result_sel) > 0) {
+    if (pg_num_rows($result_sel) > 0) {
         db_fieldsmemory($result_sel, 0, 1);
         $whereregime .= " and " . $r44_where;
     }
@@ -111,7 +111,7 @@ $subQuery .= " {$whereregime} ";
 $ordenacao = !$tipoGeral ? "rh55_estrut, z01_nome" : "z01_nome";
 $sql = "select * from ({$subQuery}) as x {$where} order by {$ordenacao}";
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 
 if ($xxnum == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários cadastrados no intervalo para o período de ' . $mesfolha . ' / ' . $anofolha);
@@ -129,7 +129,7 @@ $troca = 1;
 $alt = 9;
 $orgao = 0;
 $troca_loc = 's';
-$totalLinhas = pg_numrows($result);
+$totalLinhas = pg_num_rows($result);
 
 for ($x = 0; $x < $totalLinhas; $x++) {
     db_fieldsmemory($result, $x);

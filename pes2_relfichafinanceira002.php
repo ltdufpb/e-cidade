@@ -36,13 +36,13 @@ include(modification("classes/db_rhrubricas_classe.php"));
 //@todo solução provisória para ser possível utilizar a rotina.
 ini_set('memory_limit', -1);
 
-$aFolhasUtilizadas = array(
+$aFolhasUtilizadas = [
   "r14" => "gerfsal",
   "r22" => "gerfadi",
   "r48" => "gerfcom",
   "r20" => "gerfres",
   "r35" => "gerfs13"
-);
+];
 
 $clrhpessoal = new cl_rhpessoal;
 $clrhfuncao = new cl_rhfuncao;
@@ -50,14 +50,14 @@ $clrhpescargo = new cl_rhpescargo;
 $clrhrubricas = new cl_rhrubricas;
 $clrotulo = new rotulocampo;
 
-parse_str($_SERVER['QUERY_STRING']);
-db_postmemory($HTTP_GET_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_GET);
 $oGet = db_utils::postMemory($_GET);
 
-$mesi = str_pad($mesi, 2, "0", STR_PAD_LEFT);
-$arr_verifica_ano_mes_regist = array();
-$arr_mostrar = array();
-$aTotaisRub = array();
+$mesi = str_pad((string) $mesi, 2, "0", STR_PAD_LEFT);
+$arr_verifica_ano_mes_regist = [];
+$arr_mostrar = [];
+$aTotaisRub = [];
 
 if ($orde == "a") {
     $orderby = " z01_nome ";
@@ -70,9 +70,9 @@ if ($orde == "a") {
 $db_where_rubricas = "";
 $virg_das_rubricas = "";
 $impressao_rubricas = false;
-if (trim($rubricas_selecionadas_text) != "") {
+if (trim((string) $rubricas_selecionadas_text) != "") {
     $impressao_rubricas = true;
-    $arr_das_rubricas = split(",", $rubricas_selecionadas_text);
+    $arr_das_rubricas = preg_split("#,#m", (string) $rubricas_selecionadas_text);
     for ($i = 0; $i < count($arr_das_rubricas); $i++) {
         $db_where_rubricas .= $virg_das_rubricas . "'" . $arr_das_rubricas[$i] . "'";
         $virg_das_rubricas = ",";
@@ -107,8 +107,8 @@ $db_where_matriculas = "";
 
 $sp_where_matriculas = "";
 $virg_das_matriculas = "";
-if (trim($matriculas_selecionadas_text) != "") {
-    $arr_das_matriculas = split(",", $matriculas_selecionadas_text);
+if (trim((string) $matriculas_selecionadas_text) != "") {
+    $arr_das_matriculas = preg_split("#,#m", (string) $matriculas_selecionadas_text);
     for ($i = 0; $i < count($arr_das_matriculas); $i++) {
         $sp_where_matriculas .= $virg_das_matriculas . $arr_das_matriculas[$i];
         $virg_das_matriculas = ",";
@@ -178,7 +178,7 @@ if (!empty($iSelecao)) {
 }
 
 $testa = false;
-$aSubQueryTabelasCalculo = array();
+$aSubQueryTabelasCalculo = [];
 
 foreach ($aFolhasUtilizadas as $sSigla => $sTabela) {
     $sQuery = "sql_query_baseRelatorios";
@@ -295,15 +295,15 @@ $sql_dados_gerfs .= "          mesusu,     \n";
 $sql_dados_gerfs .= "          pd_grupo,   \n";
 $sql_dados_gerfs .= "          rubric      \n";
 
-$aMatriculasProcessadas = array();
+$aMatriculasProcessadas = [];
 $result_dados_gerfs = db_query($sql_dados_gerfs);
 
-$numrows_dados_gerfs = pg_numrows($result_dados_gerfs);
+$numrows_dados_gerfs = pg_num_rows($result_dados_gerfs);
 $mes_anterior = "";
 $ano_anterior = "";
 $contaIarray = 1;
 $contamesano = 0;
-$aServidores = array();
+$aServidores = [];
 
 for ($ii = 0; $ii < $numrows_dados_gerfs; $ii++) {
     db_fieldsmemory($result_dados_gerfs, $ii);
@@ -327,9 +327,9 @@ for ($ii = 0; $ii < $numrows_dados_gerfs; $ii++) {
     }
 
     $sIdRegistro = $regist . "_" . $anousu . "_" . $mesusu;
-    $sWhereMesAno = " where anousu||lpad(mesusu,2,0) = '" . $anousu . str_pad($mesusu, 2, "0", STR_PAD_LEFT) . "' ";
-    $sWhereMostrar = $anousu . str_pad($mesusu, 2, "0", STR_PAD_LEFT);
-    $iCompetencia = $anousu . str_pad($mesusu, 2, "0", STR_PAD_LEFT);
+    $sWhereMesAno = " where anousu||lpad(mesusu,2,0) = '" . $anousu . str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT) . "' ";
+    $sWhereMostrar = $anousu . str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT);
+    $iCompetencia = $anousu . str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT);
 
     if (!in_array($sIdRegistro, $arr_verifica_ano_mes_regist) && !$impressao_rubricas) {
         $arr_verifica_ano_mes_regist[$sIdRegistro] = $sIdRegistro;
@@ -337,19 +337,19 @@ for ($ii = 0; $ii < $numrows_dados_gerfs; $ii++) {
         $contamesano++;
 
         if ($contamesano == 1) {
-            $arr_mostrar[$regist][$contaIarray]  = $anousu . str_pad($mesusu, 2, "0", STR_PAD_LEFT);
+            $arr_mostrar[$regist][$contaIarray]  = $anousu . str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT);
             $arr_mes_ano[$regist][$contaIarray]  = "  where anousu||lpad(mesusu,2,0) = '" . $anousu;
-            $arr_mes_ano[$regist][$contaIarray] .= str_pad($mesusu, 2, "0", STR_PAD_LEFT) . "' ";
+            $arr_mes_ano[$regist][$contaIarray] .= str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT) . "' ";
         } else {
             if ($contamesano == 2) {
-                $arr_mostrar[$regist][$contaIarray] .= "_" . $anousu . str_pad($mesusu, 2, "0", STR_PAD_LEFT);
+                $arr_mostrar[$regist][$contaIarray] .= "_" . $anousu . str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT);
                 $arr_mes_ano[$regist][$contaIarray] .= "_ where anousu||lpad(mesusu,2,0) = '" . $anousu;
-                $arr_mes_ano[$regist][$contaIarray] .= str_pad($mesusu, 2, "0", STR_PAD_LEFT) . "' ";
+                $arr_mes_ano[$regist][$contaIarray] .= str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT) . "' ";
             } else {
                 if ($contamesano == 3) {
-                    $arr_mostrar[$regist][$contaIarray] .= "_" . $anousu . str_pad($mesusu, 2, "0", STR_PAD_LEFT);
+                    $arr_mostrar[$regist][$contaIarray] .= "_" . $anousu . str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT);
                     $arr_mes_ano[$regist][$contaIarray] .= "_ where anousu||lpad(mesusu,2,0) = '" . $anousu;
-                    $arr_mes_ano[$regist][$contaIarray] .= str_pad($mesusu, 2, "0", STR_PAD_LEFT) . "' ";
+                    $arr_mes_ano[$regist][$contaIarray] .= str_pad((string) $mesusu, 2, "0", STR_PAD_LEFT) . "' ";
                     $contamesano = 0;
                     $contaIarray++;
                 }
@@ -447,7 +447,7 @@ if ($impressao_rubricas == false) {
             }
 
             $anos_meses = $arr_mostrar[$oServidor->regist][$ii];
-            $arr_wheres = split("_", $arr_mes_ano[$oServidor->regist][$ii]);
+            $arr_wheres = preg_split("#_#m", $arr_mes_ano[$oServidor->regist][$ii]);
             $sql_dados_work_ficha_financ = "";
 
             // For para montar os SQL's
@@ -591,7 +591,7 @@ if ($impressao_rubricas == false) {
 
             $result_dados_work_ficha_financ = db_query($sql_dados_work_ficha_financ);
 
-            $numrows_dados_work_ficha_financ = pg_numrows($result_dados_work_ficha_financ);
+            $numrows_dados_work_ficha_financ = pg_num_rows($result_dados_work_ficha_financ);
             $imprimir_cabecalho_rubricas = true;
             $conta_mes_ano = 0;
             $base_impressa = false;
@@ -741,7 +741,7 @@ if ($impressao_rubricas == false) {
          * chama metodo que imprime o bloco de totais por mes das rubricas
          */
         imprimetotaisrubricasperiodo($cor, $aTotaisRub);
-        $aTotaisRub = array();
+        $aTotaisRub = [];
     }
 } else {
     if ($orde == "a") {
@@ -761,12 +761,12 @@ if ($impressao_rubricas == false) {
     $result_dados_impressao_rub = db_query($sql_dados_impressao_rub);
 
 //  db_criatabela($result_dados_impressao_rub);exit;
-    $numrows_dados_impressao_rub = pg_numrows($result_dados_impressao_rub);
+    $numrows_dados_impressao_rub = pg_num_rows($result_dados_impressao_rub);
 
-    $arr_provn_rubricas = array();
-    $arr_descn_rubricas = array();
-    $arr_quant_rubricas = array();
-    $arr_descr_rubricas = array();
+    $arr_provn_rubricas = [];
+    $arr_descn_rubricas = [];
+    $arr_quant_rubricas = [];
+    $arr_descr_rubricas = [];
 
     $valor_quant = 0;
     $valor_provn = 0;
@@ -832,7 +832,7 @@ if ($impressao_rubricas == false) {
 
         $borda = 0;
         if ($i + 1 < $numrows_dados_impressao_rub) {
-            if (pg_result($result_dados_impressao_rub, $i + 1, "regist") != $regist) {
+            if (pg_fetch_result($result_dados_impressao_rub, $i + 1, "regist") != $regist) {
                 $borda = "B";
             }
         } else {
@@ -906,7 +906,7 @@ function imprimedadosbase_1($anos_e_meses, $crub, $drub, $q1, $q2, $q3, $v1, $v2
     global $alt;
     global $pdf;
 
-    $arr_anos_e_meses = split("_", $anos_e_meses);
+    $arr_anos_e_meses = preg_split("#_#m", $anos_e_meses);
 
     $muda_linha1 = 0;
     $muda_linha2 = 0;
@@ -1029,7 +1029,7 @@ function imprimetotaisrubrica_1($anos_e_meses, $q1, $q2, $q3, $p1, $p2, $p3, $d1
     global $alt;
     global $pdf;
 
-    $arr_anos_e_meses = split("_", $anos_e_meses);
+    $arr_anos_e_meses = preg_split("#_#m", $anos_e_meses);
 
     $muda_linha1 = 0;
     $muda_linha2 = 0;
@@ -1082,7 +1082,7 @@ function imprimedadosrubrica_1($anos_e_meses, $crub, $drub, $q1, $q2, $q3, $p1, 
     global $alt;
     global $pdf;
 
-    $arr_anos_e_meses = split("_", $anos_e_meses);
+    $arr_anos_e_meses = preg_split("#_#m", $anos_e_meses);
 
     $muda_linha1 = 0;
     $muda_linha2 = 0;
@@ -1119,7 +1119,7 @@ function imprimecabecalho_1($anos_e_meses)
     global $alt;
     global $pdf;
 
-    $arr_anos_e_meses = split("_", $anos_e_meses);
+    $arr_anos_e_meses = preg_split("#_#m", $anos_e_meses);
 
     $muda_linha1 = 0;
     $muda_linha2 = 0;
@@ -1206,7 +1206,7 @@ function imprimefuncionario_1($newpagina, $registro, $nomeregi, $lotaccod, $lota
     $pdf->cell(17, $alt, "Funcionário:", 0, 0, "R", 0);
     $pdf->cell(17, $alt, $registro . " - " . db_CalculaDV($registro), 0, 0, "C", 0);
     $result_info = db_query("select z01_cgccpf as cpf, rh44_conta as conta, rh16_pis as pis,rh44_agencia as agencia ,rh44_dvagencia as dvagencia , rh44_dvconta as dvconta from rhpessoal inner join cgm on rh01_numcgm = z01_numcgm left join rhpesdoc on rh16_regist = rh01_regist inner join rhpessoalmov on rh02_regist = rh01_regist and rh02_mesusu = " . db_mesfolha() . " and rh02_anousu =  " . db_anofolha() . "  left join rhpesbanco on rh44_seqpes = rh02_seqpes  where rh01_regist = $registro ");
-    if (pg_numrows($result_info) > 0) {
+    if (pg_num_rows($result_info) > 0) {
         $pdf->cell(61, $alt, $nomeregi, 0, 0, "L", 0);
         db_fieldsmemory($result_info, 0);
         $pdf->cell(17, $alt, "Cpf...........:", 0, 0, "R", 0);
@@ -1263,7 +1263,7 @@ function somarubricasmes(
 
     // inclui no final do array -
     if (!$achou) {
-        $aTotais[] = array($rub, $qtd, $prov, $desc);
+        $aTotais[] = [$rub, $qtd, $prov, $desc];
     }
 
     return $aTotais;

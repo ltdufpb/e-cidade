@@ -31,8 +31,8 @@ $clautotestem->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
 $clrotulo->label("y50_nome");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_testem.location.href='fis1_autotestem002.php?chavepesquisa=$y24_codauto&chavepesquisa1=$y24_numcgm'</script>";
 }
@@ -93,7 +93,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   <tr>
     <td align="top" colspan="2">
    <?php 
-    $chavepri= array("y24_codauto"=>$y24_codauto,"y24_numcgm"=>@$y24_numcgm);
+    $chavepri= ["y24_codauto"=>$y24_codauto,"y24_numcgm"=>@$y24_numcgm];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y24_codauto,y24_numcgm,z01_nome";
     $cliframe_alterar_excluir->sql=$clautotestem->sql_query("","","*",""," y24_codauto = $y24_codauto");
@@ -160,7 +160,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_autotestem.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

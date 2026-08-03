@@ -35,7 +35,7 @@ require_once(modification("model/itemSolicitacao.model.php"));
 class aberturaRegistroPreco extends solicitacaoCompra {
 
 
-  protected $aItens = array();
+  protected $aItens = [];
 
   protected $iCodigoAbertura;
 
@@ -61,7 +61,7 @@ class aberturaRegistroPreco extends solicitacaoCompra {
 
   protected $oParametroRegistroPreco;
 
-  protected $aEstimativas = array();
+  protected $aEstimativas = [];
 
   protected $lItensAlterados = false;
 
@@ -107,7 +107,7 @@ class aberturaRegistroPreco extends solicitacaoCompra {
 
     if (DBRegistry::get("parametroRegistroPreco") == '') {
 
-      $aParametro = db_stdClass::getParametro("registroprecoparam",  array(db_getsession("DB_instit")));
+      $aParametro = db_stdClass::getParametro("registroprecoparam",  [db_getsession("DB_instit")]);
       if (count($aParametro) > 0) {
       DBRegistry::add("parametroRegistroPreco",
                       $aParametro[0]
@@ -343,10 +343,10 @@ class aberturaRegistroPreco extends solicitacaoCompra {
          * Atualiza os dados Complementares do item nas solicitacoes que o item é filho;
          */
 
-        $sUpdate  = "update solicitem set pc11_just   = '".pg_escape_string(urldecode($oItem->getJustificativa()))."',";
-        $sUpdate .= "                     pc11_prazo  = '".pg_escape_string(urldecode($oItem->getPrazos()))."',";
-        $sUpdate .= "                     pc11_pgto   = '".pg_escape_string(urldecode($oItem->getPagamento()))."',";
-        $sUpdate .= "                     pc11_resum  = '".pg_escape_string(urldecode($oItem->getResumo()))."'";
+        $sUpdate  = "update solicitem set pc11_just   = '".pg_escape_string(urldecode((string) $oItem->getJustificativa()))."',";
+        $sUpdate .= "                     pc11_prazo  = '".pg_escape_string(urldecode((string) $oItem->getPrazos()))."',";
+        $sUpdate .= "                     pc11_pgto   = '".pg_escape_string(urldecode((string) $oItem->getPagamento()))."',";
+        $sUpdate .= "                     pc11_resum  = '".pg_escape_string(urldecode((string) $oItem->getResumo()))."'";
         $sUpdate .= "  from solicitemvinculo";
         $sUpdate .= " where pc55_solicitemfilho = pc11_codigo";
         $sUpdate .= "   and pc55_solicitempai   = {$oItem->getCodigoItemSolicitacao()} ";
@@ -359,7 +359,7 @@ class aberturaRegistroPreco extends solicitacaoCompra {
         $oDaosolicitemUnid = new cl_solicitemunid;
         $oDaosolicitemUnid->excluir($oItem->getCodigoItemSolicitacao());
         $oDaosolicitemUnid->pc17_codigo  = $oItem->getCodigoItemSolicitacao();
-        $oDaosolicitemUnid->pc17_quant   = $oItem->getQuantidadeUnidade() ? $oItem->getQuantidadeUnidade() : '1';
+        $oDaosolicitemUnid->pc17_quant   = $oItem->getQuantidadeUnidade() ?: '1';
         $oDaosolicitemUnid->pc17_unid    = "{$oItem->getUnidade()}";
         $oDaosolicitemUnid->incluir($oItem->getCodigoItemSolicitacao());
 
@@ -648,11 +648,11 @@ class aberturaRegistroPreco extends solicitacaoCompra {
    */
   public function possuiEstimativaValida() {
 
-    $aWhere = array(
+    $aWhere = [
       "pc53_solicitapai = {$this->iCodigoSolicitacao}",
       "pc10_solicitacaotipo = 4",
       "pc67_solicita is null",
-    );
+    ];
 
     $oDaoSolicita = new cl_solicitavinculo();
     $sSqlVinculos = $oDaoSolicita->sql_query_filhas(null,"pc53_solicitafilho",null, implode(' and ', $aWhere));

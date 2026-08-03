@@ -73,9 +73,9 @@ class TipoDocumento
     /**
      * Estorno
      * @var integer
-     * @deprecated
      * @see ESTORNO_PAGAMENTO
      */
+    #[\Deprecated]
     const ESTORNO = 31;
 
     /**

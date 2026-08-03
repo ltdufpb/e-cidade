@@ -58,7 +58,7 @@
           $clformulario_rel_pes->tipofol = true;
           $clformulario_rel_pes->tipores = true;
           $clformulario_rel_pes->strngtipores = "glm";
-          $clformulario_rel_pes->arr_tipofol = Array("1"=>"Salário","2"=>"Adiantamento");
+          $clformulario_rel_pes->arr_tipofol = ["1"=>"Salário","2"=>"Adiantamento"];
           $clformulario_rel_pes->desabam = true;
           $clformulario_rel_pes->testarescisaoregi = "r";
           $clformulario_rel_pes->gera_form(db_anofolha(),db_mesfolha());

@@ -33,16 +33,13 @@ class ArquivoEconsig {
 
   private $lErro = false;
 
-  private $iInstit;
-
   private $sArquivoLog;
 
   const MENSAGENS = 'recursoshumanos.pessoal.ArquivoEconsig.';
 
-  public function __construct($iInstit) {
+  public function __construct(private $iInstit) {
     
-    $this->iInstit = $iInstit;
-    $this->sArquivoLog = "tmp/inconsistencias_econsig_" . db_anofolha() . "_" . db_mesfolha() . $iInstit . ".json";
+    $this->sArquivoLog = "tmp/inconsistencias_econsig_" . db_anofolha() . "_" . db_mesfolha() . $this->iInstit . ".json";
 
     require_once(modification("libs/JSON.php"));
     require_once(modification("model/configuracao/DBLogJSON.model.php"));
@@ -62,7 +59,7 @@ class ArquivoEconsig {
     $oDaoEconsigMovimentoServidorRubrica = db_utils::getDao("econsigmovimentoservidorrubrica");
 
 
-    $aServidoresCadastrados = array();
+    $aServidoresCadastrados = [];
 
     $sExtension = pathinfo($sCaminhoArquivo, PATHINFO_EXTENSION); 
 
@@ -127,7 +124,7 @@ class ArquivoEconsig {
        */
       $oMensagem = new stdClass();
       $oMensagem->iMatricula = $oServidor->iMatricula;
-      $oMensagem->sNome      = utf8_encode($oServidor->sNome);
+      $oMensagem->sNome      = mb_convert_encoding($oServidor->sNome, 'UTF-8', 'ISO-8859-1');
       $oMensagem->sMotivo    = null;
       $oMensagem->iLinha     = $iLinha;
 
@@ -135,7 +132,7 @@ class ArquivoEconsig {
         $this->validaServidor($oServidor);
       } catch(Exception $e) {
  
-        $oMensagem->sMotivo = utf8_encode($e->getMessage());
+        $oMensagem->sMotivo = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
         $this->log($oMensagem);
         $this->lErro = true;
         continue;
@@ -172,7 +169,7 @@ class ArquivoEconsig {
         $this->validaRubrica($oRubrica, $oCabecalho->iInstit);
       } catch (Exception $e) {
 
-        $oMensagem->sMotivo = utf8_encode($e->getMessage());
+        $oMensagem->sMotivo = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
         $this->log($oMensagem);
         $this->lErro = true;
         continue;
@@ -180,7 +177,7 @@ class ArquivoEconsig {
 
       if (!is_numeric($oRubrica->fValor)) {
 
-        $oMensagem->sMotivo = utf8_encode( _M(self::MENSAGENS . 'valor_invalido'));
+        $oMensagem->sMotivo = mb_convert_encoding( _M(self::MENSAGENS . 'valor_invalido'), 'UTF-8', 'ISO-8859-1');
         $this->log($oMensagem);
         $this->lErro = true;
         continue;
@@ -270,7 +267,7 @@ class ArquivoEconsig {
     
     $oServidor = new Servidor((int) $oDadosServidor->iMatricula);
 
-    if ($oServidor->getCgm()->getNome() != trim($oDadosServidor->sNome)) {
+    if ($oServidor->getCgm()->getNome() != trim((string) $oDadosServidor->sNome)) {
       throw new BusinessException(_M(self::MENSAGENS . 'nome_invalido'));
     }
 
@@ -327,7 +324,7 @@ class ArquivoEconsig {
    * 
    * @param DBCompetencia $oCompetencia
    */
-  private function apagaTabelaImportacao(DBCompetencia $oCompetencia = null) {
+  private function apagaTabelaImportacao(?DBCompetencia $oCompetencia = null) {
 
     if (is_null($oCompetencia)) {
       $oCompetencia = new DBCompetencia(DBPessoal::getAnoFolha(), DBPessoal::getMesFolha());
@@ -425,8 +422,8 @@ class ArquivoEconsig {
       $lBackground = ($iContador % 2 == 0);
       
       $oPdf->Cell(20, 4, $oMatricula->iMatricula          , true, 0, 'C', $lBackground);
-      $oPdf->Cell(75, 4, utf8_decode($oMatricula->sNome)  , true, 0, 'C', $lBackground);
-      $oPdf->Cell(75, 4, utf8_decode($oMatricula->sMotivo), true, 0, 'C', $lBackground);
+      $oPdf->Cell(75, 4, mb_convert_encoding($oMatricula->sNome, 'ISO-8859-1')  , true, 0, 'C', $lBackground);
+      $oPdf->Cell(75, 4, mb_convert_encoding($oMatricula->sMotivo, 'ISO-8859-1'), true, 0, 'C', $lBackground);
       $oPdf->Cell(22, 4, $oMatricula->iLinha              , true, 1, 'C', $lBackground);
       $iContador++;
     }

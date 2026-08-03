@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procedparag_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocedparag = new cl_procedparag;
 $clprocedparag->rotulo->label("v80_proced");
 $clprocedparag->rotulo->label("v80_docum");
@@ -102,9 +102,9 @@ $clprocedparag->rotulo->label("v80_docum");
         }else{
             $sql = $clprocedparag->sql_query("", $campos, "v80_proced", "db03_instit = {$iInstituicao}");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v80_docum)){
-          $repassa = array("chave_v80_proced"=>$chave_v80_proced,"chave_v80_docum"=>$chave_v80_docum);
+          $repassa = ["chave_v80_proced"=>$chave_v80_proced,"chave_v80_docum"=>$chave_v80_docum];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

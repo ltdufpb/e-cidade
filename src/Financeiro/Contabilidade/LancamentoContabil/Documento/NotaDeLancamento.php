@@ -18,12 +18,12 @@ class NotaDeLancamento
     /**
      * @var integer[]
      */
-    protected $codigosLancamentos = array();
+    protected $codigosLancamentos = [];
 
     /**
      * @var \stdClass[]
      */
-    protected $lancamentos = array();
+    protected $lancamentos = [];
 
     /**
      * NotaDeLancamento constructor.
@@ -157,18 +157,18 @@ class NotaDeLancamento
             }
 
 
-            $where = implode(' or ', array(
+            $where = implode(' or ', [
                 "c135_codlaninclusao = {$stdLancamento->codigo_lancamento}",
                 "c135_codlanestorno = {$stdLancamento->codigo_lancamento}",
                 "c135_codlannovo = {$stdLancamento->codigo_lancamento}"
-            ));
+            ]);
             $buscaRetificacao = db_query("select * from conlancamretificacao where ({$where})");
             $mensagemAdicional = null;
             if (pg_num_rows($buscaRetificacao) > 0) {
                 $stdRetificacao = \db_utils::fieldsMemory($buscaRetificacao, 0);
 
                 if ($stdRetificacao->c135_codlaninclusao == $stdLancamento->codigo_lancamento) {
-                    $configuracaoComplemento = explode('#', $stdLancamento->complemento);
+                    $configuracaoComplemento = explode('#', (string) $stdLancamento->complemento);
                     $complementoAdicional = str_replace('NOTA DO SISTEMA: ', '', $configuracaoComplemento[1]);
                     $mensagemAdicional = "Nota: {$complementoAdicional}";
                 }
@@ -191,7 +191,7 @@ class NotaDeLancamento
             $this->pdf->setBold(false);
             if (!empty($mensagemAdicional)) {
                 $this->pdf->cell($this->pdf->getAvailWidth(), 4, $mensagemAdicional, 0, 1);
-                $configuracaoComplemento = explode('#', $stdLancamento->complemento);
+                $configuracaoComplemento = explode('#', (string) $stdLancamento->complemento);
                 $stdLancamento->complemento = $configuracaoComplemento[0];
             }
 
@@ -220,7 +220,7 @@ class NotaDeLancamento
         $buscaLancamentos = $this->consultarLancamentos();
         $totalRegistros = pg_num_rows($buscaLancamentos);
 
-        $this->lancamentos = array();
+        $this->lancamentos = [];
         for ($rowLancamento = 0; $rowLancamento < $totalRegistros; $rowLancamento++) {
             $stdLancamento = \db_utils::fieldsMemory($buscaLancamentos, $rowLancamento);
 
@@ -234,19 +234,19 @@ class NotaDeLancamento
                 $stdDadosLancamentos->codigo_documento = $stdLancamento->codigo_documento;
                 $stdDadosLancamentos->descricao_documento = $stdLancamento->descricao_documento;
                 $stdDadosLancamentos->complemento = $stdLancamento->complemento;
-                $stdDadosLancamentos->contas_debito = array();
-                $stdDadosLancamentos->contas_credito = array();
+                $stdDadosLancamentos->contas_debito = [];
+                $stdDadosLancamentos->contas_credito = [];
                 $this->lancamentos[$stdLancamento->codigo_lancamento] = $stdDadosLancamentos;
             }
 
-            $dadosContaDebito = (object)array(
+            $dadosContaDebito = (object)[
                 'reduzido'       => $stdLancamento->reduzido_debito,
                 'estrutural'     => $stdLancamento->estrutural_debito,
                 'descricao'      => $stdLancamento->descricao_debito,
-                'atributos'      => array(),
-                'conta_corrente' => array(),
-                'sistemas'       => array(),
-            );
+                'atributos'      => [],
+                'conta_corrente' => [],
+                'sistemas'       => [],
+            ];
 
             $buscaAtributosDebito = db_query("
                 select c122_sequencial,
@@ -263,25 +263,25 @@ class NotaDeLancamento
                 for ($row = 0; $row < pg_num_rows($buscaAtributosDebito); $row++) {
                     $stdAtributos = \db_utils::fieldsMemory($buscaAtributosDebito, $row);
                     $descricao = $stdAtributos->c122_sequencial == 1 ? 'MSC' : $stdAtributos->c122_descricao;
-                    $dadosContaDebito->sistemas[] = (object)array(
+                    $dadosContaDebito->sistemas[] = (object)[
                         'codigo_sistema' => $stdAtributos->c122_sequencial,
                         'descricao_sistema' => $descricao,
                         'atributos' => $stdAtributos->atributos,
-                    );
+                    ];
                 }
             }
 
 
             $this->lancamentos[$stdLancamento->codigo_lancamento]->contas_debito[] = $dadosContaDebito;
 
-            $dadosContaCredito = (object)array(
+            $dadosContaCredito = (object)[
                 'reduzido'       => $stdLancamento->reduzido_credito,
                 'estrutural'     => $stdLancamento->estrutural_credito,
                 'descricao'      => $stdLancamento->descricao_credito,
-                'atributos'      => array(),
-                'conta_corrente' => array(),
-                'sistemas'       => array()
-            );
+                'atributos'      => [],
+                'conta_corrente' => [],
+                'sistemas'       => []
+            ];
             $buscaAtributosCredito = db_query("
                 select c122_sequencial,
                        c122_descricao,
@@ -297,11 +297,11 @@ class NotaDeLancamento
                 for ($row = 0; $row < pg_num_rows($buscaAtributosCredito); $row++) {
                     $stdAtributos = \db_utils::fieldsMemory($buscaAtributosCredito, $row);
                     $descricao = $stdAtributos->c122_sequencial == 1 ? 'MSC' : $stdAtributos->c122_descricao;
-                    $dadosContaCredito->sistemas[] = (object)array(
+                    $dadosContaCredito->sistemas[] = (object)[
                         'codigo_sistema' => $stdAtributos->c122_sequencial,
                         'descricao_sistema' => $descricao,
                         'atributos' => $stdAtributos->atributos,
-                    );
+                    ];
                 }
             }
             $this->lancamentos[$stdLancamento->codigo_lancamento]->contas_credito[] = $dadosContaCredito;
@@ -320,7 +320,7 @@ class NotaDeLancamento
     {
         $lancamentos = implode(',', $this->codigosLancamentos);
 
-        $campos = implode(',', array(
+        $campos = implode(',', [
             'conlancam.c70_codlan as codigo_lancamento',
             'conlancam.c70_data as data_lancamento',
             'conlancam.c70_valor as valor_lancamento',
@@ -338,10 +338,10 @@ class NotaDeLancamento
             'planocredito.c60_codcon as conta_credito',
             'planocredito.c60_estrut as estrutural_credito',
             'planocredito.c60_descr as descricao_credito',
-        ));
-        $where = implode(' and ', array(
+        ]);
+        $where = implode(' and ', [
             "conlancam.c70_codlan in ({$lancamentos})"
-        ));
+        ]);
         $daoLancamento = new \cl_conlancam();
         $buscaLancamentos = $daoLancamento->sql_query_nota_lancamento($campos, $where, "order by conlancam.c70_codlan");
         $buscaLancamentos = db_query($buscaLancamentos);

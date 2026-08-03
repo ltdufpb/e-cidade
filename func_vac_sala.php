@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vac_sala_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clvac_sala = new cl_vac_sala;
 $clvac_sala->rotulo->label("vc01_i_codigo");
 $clvac_sala->rotulo->label("vc01_c_nome");
@@ -98,9 +98,9 @@ $clvac_sala->rotulo->label("vc01_c_nome");
         } else {
           $sql = $clvac_sala->sql_query("",$campos,"vc01_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_vc01_i_codigo)) {
-          $repassa = array("chave_vc01_i_codigo"=>$chave_vc01_i_codigo,"chave_vc01_c_nome"=>$chave_vc01_c_nome);
+          $repassa = ["chave_vc01_i_codigo"=>$chave_vc01_i_codigo,"chave_vc01_c_nome"=>$chave_vc01_c_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
 

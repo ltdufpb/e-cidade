@@ -58,10 +58,10 @@ switch ($oParam->exec) {
       $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
       $oItemRetorno->quantidade        = $oItem->getQuantidade();
       $oItemRetorno->automatico        = $oItem->isAutomatico();
-      $oItemRetorno->resumo            = urlencode(str_replace("\\n", "\n",urldecode($oItem->getResumo())));
-      $oItemRetorno->justificativa     = urlencode(str_replace("\\n", "\n",urldecode($oItem->getJustificativa())));
-      $oItemRetorno->prazo             = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPrazos())));
-      $oItemRetorno->pagamento         = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPagamento())));
+      $oItemRetorno->resumo            = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getResumo())));
+      $oItemRetorno->justificativa     = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getJustificativa())));
+      $oItemRetorno->prazo             = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPrazos())));
+      $oItemRetorno->pagamento         = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPagamento())));
       $oItemRetorno->unidade           = $oItem->getUnidade();
       $oItemRetorno->unidade_descricao = urlencode(itemSolicitacao::getDescricaoUnidade($oItemRetorno->unidade));
       $oItemRetorno->indice            = $iIndice;
@@ -112,10 +112,10 @@ switch ($oParam->exec) {
           $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
           $oItemRetorno->quantidade        = $oItem->getQuantidade();
           $oItemRetorno->automatico        = $oItem->isAutomatico();
-          $oItemRetorno->resumo            = urlencode(str_replace("\\n", "\n",urldecode($oItem->getResumo())));
-          $oItemRetorno->justificativa     = urlencode(str_replace("\\n", "\n",urldecode($oItem->getJustificativa())));
-          $oItemRetorno->prazo             = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPrazos())));
-          $oItemRetorno->pagamento         = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPagamento())));
+          $oItemRetorno->resumo            = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getResumo())));
+          $oItemRetorno->justificativa     = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getJustificativa())));
+          $oItemRetorno->prazo             = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPrazos())));
+          $oItemRetorno->pagamento         = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPagamento())));
           $oItemRetorno->unidade           = $oItem->getUnidade();
           $oItemRetorno->unidade_descricao = urlencode(itemSolicitacao::getDescricaoUnidade($oItemRetorno->unidade));
           $oItemRetorno->indice            = $iIndice;
@@ -185,10 +185,10 @@ switch ($oParam->exec) {
         $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
         $oItemRetorno->quantidade    = $oItem->getQuantidade();
         $oItemRetorno->automatico    = $oItem->isAutomatico();
-        $oItemRetorno->resumo        = urlencode(str_replace("\\n", "\n",urldecode($oItem->getResumo())));
-        $oItemRetorno->justificativa = urlencode(str_replace("\\n", "\n",urldecode($oItem->getJustificativa())));
-        $oItemRetorno->prazo         = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPrazos())));
-        $oItemRetorno->pagamento     = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPagamento())));
+        $oItemRetorno->resumo        = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getResumo())));
+        $oItemRetorno->justificativa = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getJustificativa())));
+        $oItemRetorno->prazo         = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPrazos())));
+        $oItemRetorno->pagamento     = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPagamento())));
         $oItemRetorno->unidade       = $oItem->getUnidade();
         $oItemRetorno->unidade_descricao = urlencode(itemSolicitacao::getDescricaoUnidade($oItemRetorno->unidade));
         $oItemRetorno->indice        = $iIndice;
@@ -250,10 +250,10 @@ switch ($oParam->exec) {
         $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
         $oItemRetorno->quantidade        = $oItem->getQuantidade();
         $oItemRetorno->automatico        = $oItem->isAutomatico();
-        $oItemRetorno->resumo            = urlencode(str_replace("\\n", "\n",urldecode($oItem->getResumo())));
-        $oItemRetorno->justificativa     = urlencode(str_replace("\\n", "\n",urldecode($oItem->getJustificativa())));
-        $oItemRetorno->prazo             = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPrazos())));
-        $oItemRetorno->pagamento         = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPagamento())));
+        $oItemRetorno->resumo            = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getResumo())));
+        $oItemRetorno->justificativa     = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getJustificativa())));
+        $oItemRetorno->prazo             = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPrazos())));
+        $oItemRetorno->pagamento         = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPagamento())));
         $oItemRetorno->unidade           = $oItem->getUnidade();
         $oItemRetorno->unidade_descricao = urlencode(itemSolicitacao::getDescricaoUnidade($oItemRetorno->unidade));
         $oItemRetorno->indice            = $iIndice;
@@ -302,7 +302,7 @@ switch ($oParam->exec) {
       } else if ($oSolicita instanceof aberturaRegistroPreco) {
 
         // Rotina para atualizar itens vinculados a uma estimativa quando forem alterados na abertura
-        $aParametrosRegistro = db_stdClass::getParametro("registroprecoparam",array(db_getsession("DB_instit")));
+        $aParametrosRegistro = db_stdClass::getParametro("registroprecoparam",[db_getsession("DB_instit")]);
         $lPermiteAlterarAbertura  = false;
 
         if (count($aParametrosRegistro) > 0) {
@@ -313,8 +313,8 @@ switch ($oParam->exec) {
           if ($oParam->codigosItensSolicitacaoAlterados) {
             $itensSessao = $oSolicita->getItens();
 
-            $codigosItensSolicitacaoAlterados = explode(',', $oParam->codigosItensSolicitacaoAlterados);
-            $itensSolicitacaoAlterados = array();
+            $codigosItensSolicitacaoAlterados = explode(',', (string) $oParam->codigosItensSolicitacaoAlterados);
+            $itensSolicitacaoAlterados = [];
             $strCodigosItensSolicitacao = '';
 
             //  Monta estrutura para controlar quais itens foram atualizados
@@ -333,8 +333,8 @@ switch ($oParam->exec) {
             );
 
             $postgresObject = db_query($sql);
-            if (pg_numrows($postgresObject)) {
-              $itensSolicitacaoParaAtualizar = array();
+            if (pg_num_rows($postgresObject)) {
+              $itensSolicitacaoParaAtualizar = [];
               while ($row = pg_fetch_assoc($postgresObject)) {
                 // Item alterado
                 if (isset($itensSolicitacaoAlterados[$row['pc55_solicitempai']])) {
@@ -350,7 +350,7 @@ switch ($oParam->exec) {
                   foreach ($itensSolicitacaoParaAtualizar[$item->getCodigoItemSolicitacao()] as $itemAtualizar) {
                     $daoSolicitemUnid->pc17_codigo = $itemAtualizar['pc55_solicitemfilho'];
                     $daoSolicitemUnid->pc17_unid = $item->getUnidade();
-                    $daoSolicitemUnid->pc17_quant = $item->getQuantidadeUnidade() ? $item->getQuantidadeUnidade() : 1;
+                    $daoSolicitemUnid->pc17_quant = $item->getQuantidadeUnidade() ?: 1;
 
                     $daoSolicitemUnid->alterar($itemAtualizar['pc55_solicitemfilho']);
                   }
@@ -411,10 +411,10 @@ switch ($oParam->exec) {
         $oItemRetorno->quantidade            = $oItem->getQuantidade();
         $oItemRetorno->quantidadeUnidade     = $oItem->getQuantidadeUnidade();
         $oItemRetorno->automatico            = $oItem->isAutomatico();
-        $oItemRetorno->resumo                = urlencode(str_replace("\\n", "\n",urldecode($oItem->getResumo())));
-        $oItemRetorno->justificativa         = urlencode(str_replace("\\n", "\n",urldecode($oItem->getJustificativa())));
-        $oItemRetorno->prazo                 = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPrazos())));
-        $oItemRetorno->pagamento             = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPagamento())));
+        $oItemRetorno->resumo                = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getResumo())));
+        $oItemRetorno->justificativa         = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getJustificativa())));
+        $oItemRetorno->prazo                 = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPrazos())));
+        $oItemRetorno->pagamento             = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPagamento())));
         $oItemRetorno->unidade               = $oItem->getUnidade();
         $oItemRetorno->unidade_descricao     = urlencode(itemSolicitacao::getDescricaoUnidade($oItemRetorno->unidade));
         $oItemRetorno->indice                = $iIndice;
@@ -439,7 +439,7 @@ switch ($oParam->exec) {
           break;
       }
 
-      $oRetorno->resumo      = urlencode(str_replace("\\n", "\n",urldecode($oSolicita->getResumo())));
+      $oRetorno->resumo      = urlencode(str_replace("\\n", "\n",urldecode((string) $oSolicita->getResumo())));
       $oRetorno->solicitacao = $oSolicita->getCodigoSolicitacao();
       $oRetorno->tipoSolicitacao = $oSolicita->getTipoSolicitacao();
 
@@ -476,10 +476,10 @@ switch ($oParam->exec) {
         $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
         $oItemRetorno->quantidade        = $oItem->getQuantidade();
         $oItemRetorno->automatico        = $oItem->isAutomatico();
-        $oItemRetorno->resumo            = urlencode(str_replace("\\n", "\n",urldecode($oItem->getResumo())));
-        $oItemRetorno->justificativa     = urlencode(str_replace("\\n", "\n",urldecode($oItem->getJustificativa())));
-        $oItemRetorno->prazo             = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPrazos())));
-        $oItemRetorno->pagamento         = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPagamento())));
+        $oItemRetorno->resumo            = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getResumo())));
+        $oItemRetorno->justificativa     = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getJustificativa())));
+        $oItemRetorno->prazo             = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPrazos())));
+        $oItemRetorno->pagamento         = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPagamento())));
         $oItemRetorno->unidade           = $oItem->getUnidade();
         $oItemRetorno->unidade_descricao = urlencode(itemSolicitacao::getDescricaoUnidade($oItemRetorno->unidade));
         $oItemRetorno->indice            = $iIndice;
@@ -552,10 +552,10 @@ switch ($oParam->exec) {
         $oItemRetorno->quantidadeUnidade = $oItem->getQuantidadeUnidade();
         $oItemRetorno->quantidade        = $oItem->getQuantidade();
         $oItemRetorno->automatico        = $oItem->isAutomatico();
-        $oItemRetorno->resumo            = urlencode(str_replace("\\n", "\n",urldecode($oItem->getResumo())));
-        $oItemRetorno->justificativa     = urlencode(str_replace("\\n", "\n",urldecode($oItem->getJustificativa())));
-        $oItemRetorno->prazo             = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPrazos())));
-        $oItemRetorno->pagamento         = urlencode(str_replace("\\n", "\n",urldecode($oItem->getPagamento())));
+        $oItemRetorno->resumo            = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getResumo())));
+        $oItemRetorno->justificativa     = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getJustificativa())));
+        $oItemRetorno->prazo             = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPrazos())));
+        $oItemRetorno->pagamento         = urlencode(str_replace("\\n", "\n",urldecode((string) $oItem->getPagamento())));
         $oItemRetorno->unidade           = $oItem->getUnidade();
         $oItemRetorno->unidade_descricao = urlencode(itemSolicitacao::getDescricaoUnidade($oItemRetorno->unidade));
         $oItemRetorno->indice            = $iIndice;

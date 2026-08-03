@@ -202,7 +202,7 @@ class Database {
   public static function getCollectionByRecord( $rsRecordset ) {
 
     $iINumRows = pg_num_rows($rsRecordset);
-    $aDButils  = array();
+    $aDButils  = [];
 
     if ( $iINumRows > 0 ) {
 
@@ -227,7 +227,7 @@ class Database {
 
     // Tratamento feito para não dar erro nos campos texto vazios que são not null
     foreach ($oObject as $sKey => &$mValue) {
-      $mValue = trim($mValue);
+      $mValue = trim((string) $mValue);
     }
 
     return $oObject;

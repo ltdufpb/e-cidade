@@ -61,7 +61,7 @@ class RelatorioNotaLiquidacaoSuspensaoPagamento {
   /**
    * @var ListaClassificacaoCredor[]
    */
-  private $aListaClassificacao = array();
+  private $aListaClassificacao = [];
 
   /**
    * @var DBDate
@@ -81,7 +81,7 @@ class RelatorioNotaLiquidacaoSuspensaoPagamento {
   /**
    * @var stdClass[]
    */
-  private $aNotasImpressao = array();
+  private $aNotasImpressao = [];
 
   /**
    * RelatorioNotaLiquidacaoSuspensaoPagamento constructor.
@@ -200,7 +200,7 @@ class RelatorioNotaLiquidacaoSuspensaoPagamento {
   private function prepararInformacoes() {
 
     $sCampos = implode(',',
-                       array(
+                       [
                          'e69_codnota                 as sequencial_nota',
                          'e69_numero                  as numero_nota',
                          'e70_valor                   as valor_nota',
@@ -214,9 +214,9 @@ class RelatorioNotaLiquidacaoSuspensaoPagamento {
                          'cc36_justificativaretorno   as justificativa_retorno',
                          'cc36_dataretorno            as data_retorno',
                          'cc30_codigo                 as codigo_lista_classificacao'
-                       ));
+                       ]);
 
-    $aWhere = array();
+    $aWhere = [];
     if (!empty($this->oEmpenho)) {
       $aWhere[] = "e60_numemp = {$this->oEmpenho->getNumero()}";
     }
@@ -235,7 +235,7 @@ class RelatorioNotaLiquidacaoSuspensaoPagamento {
 
     if (!empty($this->aListaClassificacao)) {
 
-      $aListasSelecionadas = array();
+      $aListasSelecionadas = [];
       foreach ($this->aListaClassificacao as $oListaClassificacao) {
         $aListasSelecionadas[] = $oListaClassificacao->getCodigo();
       }

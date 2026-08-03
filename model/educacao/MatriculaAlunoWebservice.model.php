@@ -63,18 +63,18 @@ class MatriculaAlunoWebservice {
                                                                         ->getEnsino()->getCodigo();
     $oDadosMatricula->codigo_matricula   = $this->oMatricula->getMatricula();
     $oDadosMatricula->data_matricula     = $this->oMatricula->getDataMatricula()->convertTo(DBDate::DATA_EN);
-    $oDadosMatricula->situacao_matricula = utf8_encode($this->oMatricula->getSituacao());
+    $oDadosMatricula->situacao_matricula = mb_convert_encoding($this->oMatricula->getSituacao(), 'UTF-8', 'ISO-8859-1');
     if ($this->oMatricula->getTipo() == 'R' && $this->oMatricula->getSituacao() == 'MATRICULADO') {
-      $oDadosMatricula->situacao_matricula = utf8_encode("REMATRICULADO");
+      $oDadosMatricula->situacao_matricula = mb_convert_encoding("REMATRICULADO", 'UTF-8', 'ISO-8859-1');
     }
     if ($this->oMatricula->isConcluida()) {
-      $oDadosMatricula->situacao_matricula .= " (".utf8_encode("CONCLUÍDA").")";
+      $oDadosMatricula->situacao_matricula .= " (".mb_convert_encoding("CONCLUÍDA", 'UTF-8', 'ISO-8859-1').")";
     }
-    $oDadosMatricula->etapa_matricula    = utf8_encode($this->oMatricula->getEtapaDeOrigem()->getNome());
-    $oDadosMatricula->turma_matricula    = utf8_encode($this->oMatricula->getTurma()->getDescricao());
-    $oDadosMatricula->turma_turno        = utf8_encode($this->oMatricula->getTurma()->getTurno()->getDescricao());
-    $oDadosMatricula->turma_calendario   = utf8_encode($this->oMatricula->getTurma()->getCalendario()->getDescricao());
-    $oDadosMatricula->turma_escola       = utf8_encode($this->oMatricula->getTurma()->getEscola()->getNome());
+    $oDadosMatricula->etapa_matricula    = mb_convert_encoding($this->oMatricula->getEtapaDeOrigem()->getNome(), 'UTF-8', 'ISO-8859-1');
+    $oDadosMatricula->turma_matricula    = mb_convert_encoding($this->oMatricula->getTurma()->getDescricao(), 'UTF-8', 'ISO-8859-1');
+    $oDadosMatricula->turma_turno        = mb_convert_encoding($this->oMatricula->getTurma()->getTurno()->getDescricao(), 'UTF-8', 'ISO-8859-1');
+    $oDadosMatricula->turma_calendario   = mb_convert_encoding($this->oMatricula->getTurma()->getCalendario()->getDescricao(), 'UTF-8', 'ISO-8859-1');
+    $oDadosMatricula->turma_escola       = mb_convert_encoding($this->oMatricula->getTurma()->getEscola()->getNome(), 'UTF-8', 'ISO-8859-1');
     $oDadosMatricula->data_saida         = '';
     if ($this->oMatricula->getDataEncerramento() != "") {
       $oDadosMatricula->data_saida = $this->oMatricula->getDataEncerramento()->convertTo(DBDate::DATA_EN);
@@ -83,20 +83,20 @@ class MatriculaAlunoWebservice {
 
     $oDadosMatricula->periodos_etapa            = $this->getPeridosEtapa();
     $oDadosMatricula->grade_aproveitamento      = $this->getGradeAproveitamento();
-    $oDadosMatricula->resultado_final_etapa     = utf8_encode(ResultadoFinal($iCodigoMatricula,
+    $oDadosMatricula->resultado_final_etapa     = mb_convert_encoding(ResultadoFinal($iCodigoMatricula,
                                                                  $iCodigoAluno,
                                                                  $iCodigoTurma,
                                                                  $this->oMatricula->getSituacao(),
                                                                  $this->oMatricula->isConcluida()?'S':'N',
                                                                  $iCodigoEnsino
-                                                                ));
+                                                                ), 'UTF-8', 'ISO-8859-1');
     $oDadosMatricula->atividades_complementares = $this->getAtividadesComplementares();
     return $oDadosMatricula;
   }
 
   protected function getPeridosEtapa() {
 
-    $aPeriodos    = array();
+    $aPeriodos    = [];
     $oEtapaOrigem = $this->oMatricula->getEtapaDeOrigem();
 
     $oProcedimentoAvaliacao = $this->oMatricula->getTurma()->getProcedimentoDeAvaliacaoDaEtapa($oEtapaOrigem);
@@ -109,12 +109,12 @@ class MatriculaAlunoWebservice {
       $oPeriodo->sFormaAvaliacao = $oElemento->getFormaDeAvaliacao()->getTipo();
       if ($oElemento instanceof ResultadoAvaliacao) {
 
-        $oPeriodo->sDescricao      = utf8_encode($oElemento->getTipoResultado()->getDescricao());
-        $oPeriodo->sAbreviatura    = utf8_encode($oElemento->getTipoResultado()->getDescricaoAbreviada());
+        $oPeriodo->sDescricao      = mb_convert_encoding($oElemento->getTipoResultado()->getDescricao(), 'UTF-8', 'ISO-8859-1');
+        $oPeriodo->sAbreviatura    = mb_convert_encoding($oElemento->getTipoResultado()->getDescricaoAbreviada(), 'UTF-8', 'ISO-8859-1');
       } else {
 
-        $oPeriodo->sDescricao      = utf8_encode($oElemento->getPeriodoAvaliacao()->getDescricao());
-        $oPeriodo->sAbreviatura    = utf8_encode($oElemento->getPeriodoAvaliacao()->getDescricaoAbreviada());
+        $oPeriodo->sDescricao      = mb_convert_encoding($oElemento->getPeriodoAvaliacao()->getDescricao(), 'UTF-8', 'ISO-8859-1');
+        $oPeriodo->sAbreviatura    = mb_convert_encoding($oElemento->getPeriodoAvaliacao()->getDescricaoAbreviada(), 'UTF-8', 'ISO-8859-1');
       }
 
       $aPeriodos[] = $oPeriodo;
@@ -151,7 +151,7 @@ class MatriculaAlunoWebservice {
     $sWhere              = "ed269_aluno = {$iCodigoAluno}";
     $sWhere             .= " and ed52_i_ano = {$iAnoCalendario}";
 
-    $aAtividadesComplementares = array();
+    $aAtividadesComplementares = [];
 
     $sSqlMatriculaAluno = $oDaoMatriculaAc->sql_query_turma(null, "*", null, $sWhere);
     $rsMatriculaAluno   = $oDaoMatriculaAc->sql_record($sSqlMatriculaAluno);
@@ -168,10 +168,10 @@ class MatriculaAlunoWebservice {
         $iTipoTurma                         = $oDadosTurmaComplementar->ed268_i_tipoatend;
         $oDadosAtendimento                  = $oDadosTurmaComplementar->ed268_c_aee;
         $oTurmaComplementar                 = new stdclass();
-        $oTurmaComplementar->nome_turma     = utf8_encode($oDadosTurmaComplementar->ed268_c_descr);
-        $oTurmaComplementar->codigo_turma   = utf8_encode($oDadosTurmaComplementar->ed268_i_codigo);
-        $oTurmaComplementar->turno_turma    = utf8_encode($oDadosTurmaComplementar->ed15_c_nome);
-        $oTurmaComplementar->escola         = utf8_encode($oEscola->getNome());
+        $oTurmaComplementar->nome_turma     = mb_convert_encoding($oDadosTurmaComplementar->ed268_c_descr, 'UTF-8', 'ISO-8859-1');
+        $oTurmaComplementar->codigo_turma   = mb_convert_encoding($oDadosTurmaComplementar->ed268_i_codigo, 'UTF-8', 'ISO-8859-1');
+        $oTurmaComplementar->turno_turma    = mb_convert_encoding($oDadosTurmaComplementar->ed15_c_nome, 'UTF-8', 'ISO-8859-1');
+        $oTurmaComplementar->escola         = mb_convert_encoding($oEscola->getNome(), 'UTF-8', 'ISO-8859-1');
         $oTurmaComplementar->tipo_turma     = $iTipoTurma;
         $oTurmaComplementar->atividades     = $this->getAtividades($iCodigoTurma, $iTipoTurma, $oDadosAtendimento);
         $oTurmaComplementar->aProfissionais = $this->getProfessoresVinculadosTurmaAtividadeComplementar($oDadosTurmaComplementar->ed268_i_codigo);
@@ -207,7 +207,7 @@ class MatriculaAlunoWebservice {
     $sSqlVinculos = $oDaoTurmaHorarioProfissional->sql_query_vinculo_profissional(null, $sCampos, "ed32_i_codigo", $sWhere);
     $rsVinculos   = $oDaoTurmaHorarioProfissional->sql_record($sSqlVinculos);
 
-    $aProfissionais = array();
+    $aProfissionais = [];
     if ($rsVinculos && $oDaoTurmaHorarioProfissional->numrows > 0) {
 
       $iLinhasProfissionais = $oDaoTurmaHorarioProfissional->numrows;
@@ -217,7 +217,7 @@ class MatriculaAlunoWebservice {
 
         $oHorario              = new stdClass();
         $oHorario->iDia        = $oDadosProfissional->ed32_i_codigo;
-        $oHorario->sDia        = utf8_encode($oDadosProfissional->ed32_c_descr);
+        $oHorario->sDia        = mb_convert_encoding($oDadosProfissional->ed32_c_descr, 'UTF-8', 'ISO-8859-1');
         $oHorario->sHoraInicio = $oDadosProfissional->ed346_horainicial;
         $oHorario->sHoraFinal  = $oDadosProfissional->ed346_horafinal;
 
@@ -225,8 +225,8 @@ class MatriculaAlunoWebservice {
 
           $oProfissional              = new stdClass();
           $oProfissional->iCodigo     = $oDadosProfissional->ed20_i_codigo;
-          $oProfissional->sNome       = utf8_encode($oDadosProfissional->profissional);
-          $oProfissional->aHorarios   = array();
+          $oProfissional->sNome       = mb_convert_encoding($oDadosProfissional->profissional, 'UTF-8', 'ISO-8859-1');
+          $oProfissional->aHorarios   = [];
           $aProfissionais[$oDadosProfissional->ed20_i_codigo] = $oProfissional;
         }
 
@@ -244,7 +244,7 @@ class MatriculaAlunoWebservice {
    */
   protected function getDiasDaSemana($iCodigoTurma) {
 
-    $aDiasDeAula      = array();
+    $aDiasDeAula      = [];
     $oDaoTurmaHorario = new cl_turmaachorario();
     $sWhereDiasDeAula = "ed270_i_turmaac = {$iCodigoTurma}";
     $sSqlDiasDeAula   = $oDaoTurmaHorario->sql_query_horario(null,
@@ -254,7 +254,7 @@ class MatriculaAlunoWebservice {
     $rsDiasDeAula     = $oDaoTurmaHorario->sql_record($sSqlDiasDeAula);
     if ($rsDiasDeAula && $oDaoTurmaHorario->numrows > 0) {
       for ($iDia = 0; $iDia < $oDaoTurmaHorario->numrows; $iDia++) {
-        $aDiasDeAula[] = utf8_encode(db_utils::fieldsMemory($rsDiasDeAula, $iDia)->ed32_c_descr);
+        $aDiasDeAula[] = mb_convert_encoding(db_utils::fieldsMemory($rsDiasDeAula, $iDia)->ed32_c_descr, 'UTF-8', 'ISO-8859-1');
       }
     }
     return $aDiasDeAula;
@@ -269,18 +269,12 @@ class MatriculaAlunoWebservice {
    */
   protected function getAtividades($iTurma, $iTipoTurma, $sDadosAtendimento) {
 
-    $aListaAtividades = array();
-    switch ($iTipoTurma) {
-      case 4:
-
-        $aListaAtividades = $this->getAtividadesComplementaresNaTurma($iTurma);
-        break;
-
-      case 5:
-
-        $aListaAtividades = $this->getAtendimentosEspeciaisNaTurma($sDadosAtendimento);
-        break;
-    }
+    $aListaAtividades = [];
+    $aListaAtividades = match ($iTipoTurma) {
+        4 => $this->getAtividadesComplementaresNaTurma($iTurma),
+        5 => $this->getAtendimentosEspeciaisNaTurma($sDadosAtendimento),
+        default => $aListaAtividades,
+    };
     return $aListaAtividades;
   }
 
@@ -291,7 +285,7 @@ class MatriculaAlunoWebservice {
    */
   protected function getAtividadesComplementaresNaTurma($iTurma) {
 
-    $aAtividades               = array();
+    $aAtividades               = [];
     $oDaoAtividadeComplementar = new cl_turmaacativ();
     $sSqlAtividadeComplementar = $oDaoAtividadeComplementar->sql_query(null,
                                                                        "ed133_c_descr",
@@ -301,7 +295,7 @@ class MatriculaAlunoWebservice {
     $rsAtividadeComplementar   = $oDaoAtividadeComplementar->sql_record($sSqlAtividadeComplementar);
     if ($rsAtividadeComplementar && $oDaoAtividadeComplementar->numrows > 0) {
       for ($i = 0; $i < $oDaoAtividadeComplementar->numrows; $i++) {
-        $aAtividades[] = utf8_encode(db_utils::fieldsMemory($rsAtividadeComplementar, $i)->ed133_c_descr);
+        $aAtividades[] = mb_convert_encoding(db_utils::fieldsMemory($rsAtividadeComplementar, $i)->ed133_c_descr, 'UTF-8', 'ISO-8859-1');
       }
     }
     return $aAtividades;
@@ -314,8 +308,8 @@ class MatriculaAlunoWebservice {
    */
   protected function getAtendimentosEspeciaisNaTurma($sListaAtividades) {
 
-    $aAtividades      = array();
-    $aListaAtividades = array(
+    $aAtividades      = [];
+    $aListaAtividades = [
                               'Ensino do Sistema Braile',
                               '',//está criando a string com um zero mais....
                               'Ensino do uso de recursos ópticos e não ópticos',
@@ -328,13 +322,13 @@ class MatriculaAlunoWebservice {
                               'Ensino da usabilidade e das funcionalidades da informática acessível',
                               'Ensino da Língua Portuguesa na modalidade escrita',
                               'Estratégias para autonomia no ambiente escolar'
-                             );
+                             ];
 
     $iTamanho = strlen($sListaAtividades);
     for ($iAtividade = 0; $iAtividade < $iTamanho; $iAtividade++) {
 
       if (substr($sListaAtividades, $iAtividade, 1) == '1') {
-        $aAtividades[] = utf8_encode($aListaAtividades[$iAtividade]);
+        $aAtividades[] = mb_convert_encoding($aListaAtividades[$iAtividade], 'UTF-8', 'ISO-8859-1');
       }
     }
     return $aAtividades;

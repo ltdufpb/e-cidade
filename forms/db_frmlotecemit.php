@@ -103,7 +103,7 @@ db_input('cm23_i_lotecemit',10,$Icm23_i_lotecemit,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('D'=>'Disponível','O'=>'Ocupado');
+$x = ['D'=>'Disponível','O'=>'Ocupado'];
 db_select('cm23_c_situacao',$x,true,$db_opcao,"disabled");
 ?>
     </td>
@@ -116,7 +116,7 @@ db_select('cm23_c_situacao',$x,true,$db_opcao,"disabled");
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("cm23_i_quadracemit"=>@$cm23_i_quadracemit,"cm23_i_lotecemit"=>@$cm23_i_lotecemit,"cm23_i_codigo"=>@$cm23_i_codigo);
+   $chavepri= ["cm23_i_quadracemit"=>@$cm23_i_quadracemit,"cm23_i_lotecemit"=>@$cm23_i_lotecemit,"cm23_i_codigo"=>@$cm23_i_codigo];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $sSql = $cllotecemit->sql_query(null,
                                    "cm23_i_codigo, 
@@ -180,7 +180,7 @@ function js_preenchepesquisa(chave){
   db_iframe_lotecemit.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

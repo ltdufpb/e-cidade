@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -75,7 +75,7 @@ function js_emite(){
 	  </td>
 	  <td>
 	    <?php  
-          $arrSitu = array("0"=>"Todos", "1"=>"Ativos","2"=>"Anulado","3"=>"Reparcelado");
+          $arrSitu = ["0"=>"Todos", "1"=>"Ativos","2"=>"Anulado","3"=>"Reparcelado"];
           db_select("situacao",$arrSitu,true,2); 
  	    ?>
 	  </td>
@@ -86,7 +86,7 @@ function js_emite(){
 	  </td>
 	  <td>
 	    <?php  
-          $opcao = array("s"=>"Sim","a"=>"Não");
+          $opcao = ["s"=>"Sim","a"=>"Não"];
           db_select("opcao",$opcao,true,2); 
  	    ?>
 	  </td>

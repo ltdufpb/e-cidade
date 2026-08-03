@@ -36,8 +36,8 @@ include(modification("classes/db_atividaderh_classe.php"));
 include(modification("classes/db_ensino_classe.php"));
 include(modification("classes/db_disciplina_classe.php"));
 include(modification("classes/db_rechumanoturmaac_ext_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatividaderh = new cl_atividaderh;
 $clensino = new cl_ensino;
 $cldisciplina = new cl_disciplina;
@@ -328,9 +328,9 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
      $where .= " AND ed23_i_disciplina = $subgrupo";
     }    
     $sql = $clrechumano->sql_query_ext(""," distinct ".$campos,"z01_nome"," ed75_i_escola = $escola AND ed01_c_regencia = 'S' AND ed17_i_escola = $escola".$where);
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed20_i_codigo)){
-     $repassa = array("chave_ed20_i_codigo"=>$chave_ed20_i_codigo,"chave_z01_nome"=>$chave_z01_nome,"subgrupo"=>@$subgrupo,"grupo"=>@$grupo,"atividaderh"=>@$atividaderh);
+     $repassa = ["chave_ed20_i_codigo"=>$chave_ed20_i_codigo,"chave_z01_nome"=>$chave_z01_nome,"subgrupo"=>@$subgrupo,"grupo"=>@$grupo,"atividaderh"=>@$atividaderh];
      db_lovrot(@$sql,15,"()","",$funcao_js,"","NoMe",$repassa);
     }
 

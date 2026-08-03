@@ -37,8 +37,8 @@ $clrotulo->label("q86_numcgm");
 $clrotulo->label("z01_nome");
 
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 
 $result = $cl_cadescrito->sql_record($cl_cadescrito->sql_query("","q86_numcgm,z01_nome","z01_nome"));
@@ -109,7 +109,7 @@ function js_relatorio(){
        
        <label id="label_iSituacao" for="iSituacao"><strong>Inscrições:</stong></label>
        <?php 
-         $selSituacao = array("T"=>"Todos", "A"=>"Ativas","B"=>"Baixadas");
+         $selSituacao = ["T"=>"Todos", "A"=>"Ativas","B"=>"Baixadas"];
          db_select('sSituacao', $selSituacao, true, 1, "style='width: 150'");
        ?>  
        &nbsp;

@@ -27,7 +27,7 @@ try {
         case 'buscar':
             $tiposDocumentoProcesso = $service->getAll();
 
-            $oRetorno->tiposDocumentoProcesso = array();
+            $oRetorno->tiposDocumentoProcesso = [];
             $length = count($tiposDocumentoProcesso);
             for ($i = 0; $i < $length; $i++) {
                 $oRetorno->tiposDocumentoProcesso[$i] = $tiposDocumentoProcesso[$i]->toArray();

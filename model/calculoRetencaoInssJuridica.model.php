@@ -31,12 +31,6 @@ require_once(modification('interfaces/calculoRetencao.interface.php'));
 class calculoRetencaoInssJuridica implements iCalculoRetencao {
   
   /**
-   * tipo do calculo
-   * @var integer
-   */
-  private $iTipo = 3;
-  
-  /**
    * Valor da base de calculo
    *
    * @var float
@@ -82,14 +76,16 @@ class calculoRetencaoInssJuridica implements iCalculoRetencao {
    *
    * @var array
    */
-  private $aCodigoMovimentos = array();
+  private $aCodigoMovimentos = [];
   
   /** metodo construtor da classe
    * @param integer $iTipo tipo do calculo 1 - pessoa fisica
    */
-  function __construct($iCgcCpf, $iTipo = 3) {
+  function __construct($iCgcCpf, /**
+   * tipo do calculo
+   */
+  private $iTipo = 3) {
 
-    $this->iTipo   = $iTipo;
     $this->iCgcCpf = (string)$iCgcCpf;
     
   }

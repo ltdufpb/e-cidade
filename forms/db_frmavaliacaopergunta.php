@@ -75,7 +75,7 @@ if (isset($oPost->db_opcaoal)) {
   }
 }
 
-$aTipo = array(
+$aTipo = [
   1 => 'Texto',
   2 => 'CEP',
   3 => 'CNPJ',
@@ -86,7 +86,7 @@ $aTipo = array(
   8 => 'Valor',
   9 => 'Hora',
   10 => 'JSON'
-); 
+]; 
 ?>
 <form name="form1" method="post" action="">
 <fieldset><legend><b>Pergunta</b></legend>
@@ -141,7 +141,7 @@ $aTipo = array(
         $sSqlAvaliacaoTipoResposta  = $clavaliacaotiporesposta->sql_query(null, "*", "db105_sequencial", "");
         $rsSqlAvaliacaoTipoResposta = $clavaliacaotiporesposta->sql_record($sSqlAvaliacaoTipoResposta);
       
-        $aAvaliacaoTipoResposta     = array();
+        $aAvaliacaoTipoResposta     = [];
         $aAvaliacaoTipoResposta[0]  = "Selecione ...";
         for ($iInd = 0; $iInd < $clavaliacaotiporesposta->numrows; $iInd++) {
           
@@ -171,7 +171,7 @@ $aTipo = array(
     </td>
 		<td width="30%"> 
 			<?php 
-			  $x = array("f"=>"NÃO","t"=>"SIM");
+			  $x = ["f"=>"NÃO","t"=>"SIM"];
 			  db_select('db103_obrigatoria',$x,true,$db_opcao,"");
 			?>
     </td>
@@ -182,7 +182,7 @@ $aTipo = array(
     </td>
 		<td> 
       <?php 
-        $x = array("t"=>"SIM","f"=>"NÃO");
+        $x = ["t"=>"SIM","f"=>"NÃO"];
         db_select('db103_ativo',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -321,7 +321,7 @@ $aTipo = array(
 	      $sWhere    = "db103_avaliacaogrupopergunta = {$db103_avaliacaogrupopergunta}";
 	      $sCampos   = "db103_sequencial, db103_avaliacaotiporesposta, db103_avaliacaogrupopergunta, db103_descricao";
 	      $sCampos  .= ", db103_identificador, db103_obrigatoria, db103_ativo, db103_ordem";
-			  $chavepri  = array("db103_sequencial"=>@$db103_sequencial);
+			  $chavepri  = ["db103_sequencial"=>@$db103_sequencial];
 			  $cliframe_alterar_excluir->chavepri      = $chavepri;
 			  $cliframe_alterar_excluir->sql           = $clavaliacaopergunta->sql_query_file(null,'avaliacaopergunta.*','db103_ordem',$sWhere);
 			  $cliframe_alterar_excluir->campos        = $sCampos;

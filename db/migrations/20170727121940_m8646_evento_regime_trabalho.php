@@ -32,22 +32,22 @@ class M8646EventoRegimeTrabalho extends PostgresMigration
   private function upCriacaoTabelas()
   {
 
-    $tabelaEvento = $this->table('pontoeletronicoevento', array('schema' => 'recursoshumanos', 'id' => 'rh207_sequencial', 'primary_key' => array('rh207_sequencial')));
+    $tabelaEvento = $this->table('pontoeletronicoevento', ['schema' => 'recursoshumanos', 'id' => 'rh207_sequencial', 'primary_key' => ['rh207_sequencial']]);
     $tabelaEvento
-      ->addColumn('rh207_titulo'       , 'string', array('limit' => 100))
+      ->addColumn('rh207_titulo'       , 'string', ['limit' => 100])
       ->addColumn('rh207_datainicial'  , 'date')
       ->addColumn('rh207_datafinal'    , 'date')
-      ->addColumn('rh207_entrada_1'    , 'string', array('limit' => 5))
-      ->addColumn('rh207_saida_1'      , 'string', array('limit' => 5))
+      ->addColumn('rh207_entrada_1'    , 'string', ['limit' => 5])
+      ->addColumn('rh207_saida_1'      , 'string', ['limit' => 5])
       ->addColumn('rh207_horasextras_1', 'integer')
-      ->addColumn('rh207_entrada_2'    , 'string', array('limit' => 5, 'null' => true))
-      ->addColumn('rh207_saida_2'      , 'string', array('limit' => 5, 'null' => true))
-      ->addColumn('rh207_horasextras_2', 'integer', array('null' => true))
-      ->addColumn('rh207_instit',        'integer', array('null' => false))
+      ->addColumn('rh207_entrada_2'    , 'string', ['limit' => 5, 'null' => true])
+      ->addColumn('rh207_saida_2'      , 'string', ['limit' => 5, 'null' => true])
+      ->addColumn('rh207_horasextras_2', 'integer', ['null' => true])
+      ->addColumn('rh207_instit',        'integer', ['null' => false])
       ->addForeignKey('rh207_instit', 'db_config', 'codigo')
       ->create();
 
-    $tabelaEventoMatricula = $this->table('pontoeletronicoeventomatricula', array('schema' => 'recursoshumanos', 'id' => 'rh208_sequencial', 'primary_key' => array('rh208_sequencial')));
+    $tabelaEventoMatricula = $this->table('pontoeletronicoeventomatricula', ['schema' => 'recursoshumanos', 'id' => 'rh208_sequencial', 'primary_key' => ['rh208_sequencial']]);
     $tabelaEventoMatricula
       ->addColumn('rh208_pontoeletronicoevento', 'integer')
       ->addColumn('rh208_rhpessoal', 'integer')
@@ -55,10 +55,10 @@ class M8646EventoRegimeTrabalho extends PostgresMigration
       ->addForeignKey('rh208_rhpessoal', 'rhpessoal', 'rh01_regist')
       ->create();
 
-    $tabelaAssentamentoHora = $this->table('assentamentohoraextra', array('schema' => 'recursoshumanos', 'id' => 'h17_sequencial', 'primary_key' => array('h17_sequencial')));
+    $tabelaAssentamentoHora = $this->table('assentamentohoraextra', ['schema' => 'recursoshumanos', 'id' => 'h17_sequencial', 'primary_key' => ['h17_sequencial']]);
     $tabelaAssentamentoHora
       ->addColumn('h17_assenta', 'integer')
-      ->addColumn('h17_hora', 'string', array('limit' => 5))
+      ->addColumn('h17_hora', 'string', ['limit' => 5])
       ->addColumn('h17_tipo', 'integer')
       ->addForeignKey('h17_assenta', 'assenta', 'h16_codigo')
       ->create();
@@ -67,13 +67,13 @@ class M8646EventoRegimeTrabalho extends PostgresMigration
 
   private function downCriacaoTabelas()
   {
-    $tabelaEventoMatricula = $this->table('pontoeletronicoeventomatricula', array('schema' => 'recursoshumanos'));
+    $tabelaEventoMatricula = $this->table('pontoeletronicoeventomatricula', ['schema' => 'recursoshumanos']);
     $tabelaEventoMatricula->drop();
 
-    $tabelaEvento = $this->table('pontoeletronicoevento', array('schema' => 'recursoshumanos'));
+    $tabelaEvento = $this->table('pontoeletronicoevento', ['schema' => 'recursoshumanos']);
     $tabelaEvento->drop();
 
-    $tabelaAssentamentoHora = $this->table('assentamentohoraextra', array('schema' => 'recursoshumanos'));
+    $tabelaAssentamentoHora = $this->table('assentamentohoraextra', ['schema' => 'recursoshumanos']);
     $tabelaAssentamentoHora->drop();
   }
 

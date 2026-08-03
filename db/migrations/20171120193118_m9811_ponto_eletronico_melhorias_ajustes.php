@@ -12,18 +12,18 @@ class M9811PontoEletronicoMelhoriasAjustes extends PostgresMigration
 
     function upDDL()
     {
-        $this->table('tipoasse',     array('schema'=>'recursoshumanos'))
-             ->addColumn('h12_gerafaltas', 'boolean',  array('null'=>false, 'default' => 'f'))
+        $this->table('tipoasse',     ['schema'=>'recursoshumanos'])
+             ->addColumn('h12_gerafaltas', 'boolean',  ['null'=>false, 'default' => 'f'])
              ->save();
 
         $this->execute("CREATE SEQUENCE recursoshumanos.jornadaservidor_rh212_sequencial_seq");
-        $this->table('jornadaservidor', array('schema'=>'recursoshumanos', 'id'=>false, 'primary_key'=>array('rh212_sequencial'), 'constraint'=>'jornadaservidor_sequencial_pk'))
-             ->addColumn('rh212_sequencial',    'integer', array('null'=>false))
-             ->addColumn('rh212_data',          'date',    array('null'=>false))
-             ->addColumn('rh212_matricula',     'integer', array('null'=>false))
-             ->addColumn('rh212_jornada',       'integer', array('null'=>false))
-             ->addForeignKey('rh212_matricula',  'pessoal.rhpessoal',         'rh01_regist',      array('constraint'=>'jornadaservidor_matricula_fk'))
-             ->addForeignKey('rh212_jornada',    'recursoshumanos.jornada',   'rh188_sequencial', array('constraint'=>'jornadaservidor_jornada_fk'))
+        $this->table('jornadaservidor', ['schema'=>'recursoshumanos', 'id'=>false, 'primary_key'=>['rh212_sequencial'], 'constraint'=>'jornadaservidor_sequencial_pk'])
+             ->addColumn('rh212_sequencial',    'integer', ['null'=>false])
+             ->addColumn('rh212_data',          'date',    ['null'=>false])
+             ->addColumn('rh212_matricula',     'integer', ['null'=>false])
+             ->addColumn('rh212_jornada',       'integer', ['null'=>false])
+             ->addForeignKey('rh212_matricula',  'pessoal.rhpessoal',         'rh01_regist',      ['constraint'=>'jornadaservidor_matricula_fk'])
+             ->addForeignKey('rh212_jornada',    'recursoshumanos.jornada',   'rh188_sequencial', ['constraint'=>'jornadaservidor_jornada_fk'])
              ->save();
     }
 
@@ -62,10 +62,10 @@ class M9811PontoEletronicoMelhoriasAjustes extends PostgresMigration
 
     function downDDL()
     {
-        $tabelaTipoasse = $this->table('tipoasse',     array('schema'=>'recursoshumanos'));
+        $tabelaTipoasse = $this->table('tipoasse',     ['schema'=>'recursoshumanos']);
         $tabelaTipoasse->removeColumn('h12_gerafaltas');
         
-        $this->table('jornadaservidor', array('schema'=>'recursoshumanos'))->drop();
+        $this->table('jornadaservidor', ['schema'=>'recursoshumanos'])->drop();
         $this->execute("DROP SEQUENCE recursoshumanos.jornadaservidor_rh212_sequencial_seq");
     }
 

@@ -37,7 +37,7 @@ $clliclicitem = new cl_liclicitem;
 $clrotulo     = new rotulocampo;
 $clrotulo->label("pc10_numero");
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 $oGet         = db_utils::postMemory($_GET);
 $iSolicitacao = $oGet->pc10_numero;
@@ -65,15 +65,15 @@ if ($clabre_arquivo->arquivo != false) {
   $vir = $separador;
   $del = $delimitador;
 
-  fputs($clabre_arquivo->arquivo, formatarCampo("CÓDIGO DO MATERIAL NA SOLICITAÇÃO" , $vir, $del));
-  fputs($clabre_arquivo->arquivo, formatarCampo("POSIÇÃO DO MATERIAL NA SOLICITAÇÃO", $vir, $del));
-  fputs($clabre_arquivo->arquivo, formatarCampo("CÓDIGO DO MATERIAL"                , $vir, $del));
-  fputs($clabre_arquivo->arquivo, formatarCampo("DESCRIÇÃO"                         , $vir, $del));
-  fputs($clabre_arquivo->arquivo, formatarCampo("RESUMO DO ITEM"                    , $vir, $del));
-  fputs($clabre_arquivo->arquivo, formatarCampo("QUANTIDADE."                       , $vir, $del));
-  fputs($clabre_arquivo->arquivo, formatarCampo("UNIDADE"                           , $vir, $del));
-  fputs($clabre_arquivo->arquivo, formatarCampo("VALOR UNITÁRIO (R$)"               , $vir, $del));
-  fputs($clabre_arquivo->arquivo, formatarCampo("VALOR TOTAL (R$)"                  , $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) formatarCampo("CÓDIGO DO MATERIAL NA SOLICITAÇÃO" , $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) formatarCampo("POSIÇÃO DO MATERIAL NA SOLICITAÇÃO", $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) formatarCampo("CÓDIGO DO MATERIAL"                , $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) formatarCampo("DESCRIÇÃO"                         , $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) formatarCampo("RESUMO DO ITEM"                    , $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) formatarCampo("QUANTIDADE."                       , $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) formatarCampo("UNIDADE"                           , $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) formatarCampo("VALOR UNITÁRIO (R$)"               , $vir, $del));
+  fputs($clabre_arquivo->arquivo, (string) formatarCampo("VALOR TOTAL (R$)"                  , $vir, $del));
 
   fputs($clabre_arquivo->arquivo, "\n");
 
@@ -93,15 +93,15 @@ if ($clabre_arquivo->arquivo != false) {
   		$sUnidade        = "SERVIÇO";
   	}
 
-  	fputs($clabre_arquivo->arquivo, formatarCampo($iSeqSolicitem    , $vir, $del));
-  	fputs($clabre_arquivo->arquivo, formatarCampo($iPosicaoSolicitem, $vir, $del));
-  	fputs($clabre_arquivo->arquivo, formatarCampo($iCodigoMaterial  , $vir, $del));
-  	fputs($clabre_arquivo->arquivo, formatarCampo($sDescricao       , $vir, $del));
-    fputs($clabre_arquivo->arquivo, formatarCampo($sResumoItem      , $vir, $del));
-  	fputs($clabre_arquivo->arquivo, formatarCampo($iQuantidade      , $vir, $del));
-  	fputs($clabre_arquivo->arquivo, formatarCampo($sUnidade         , $vir, $del));
-  	fputs($clabre_arquivo->arquivo, formatarCampo($nValor           , $vir, $del));
-  	fputs($clabre_arquivo->arquivo, formatarCampo($nValorTotal      , $vir, $del));
+  	fputs($clabre_arquivo->arquivo, (string) formatarCampo($iSeqSolicitem    , $vir, $del));
+  	fputs($clabre_arquivo->arquivo, (string) formatarCampo($iPosicaoSolicitem, $vir, $del));
+  	fputs($clabre_arquivo->arquivo, (string) formatarCampo($iCodigoMaterial  , $vir, $del));
+  	fputs($clabre_arquivo->arquivo, (string) formatarCampo($sDescricao       , $vir, $del));
+    fputs($clabre_arquivo->arquivo, (string) formatarCampo($sResumoItem      , $vir, $del));
+  	fputs($clabre_arquivo->arquivo, (string) formatarCampo($iQuantidade      , $vir, $del));
+  	fputs($clabre_arquivo->arquivo, (string) formatarCampo($sUnidade         , $vir, $del));
+  	fputs($clabre_arquivo->arquivo, (string) formatarCampo($nValor           , $vir, $del));
+  	fputs($clabre_arquivo->arquivo, (string) formatarCampo($nValorTotal      , $vir, $del));
   	fputs($clabre_arquivo->arquivo, "\n");
 
   }

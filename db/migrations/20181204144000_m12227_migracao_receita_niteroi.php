@@ -239,8 +239,8 @@ SQL;
                 }
             }
 
-            $orgao = substr($receita->unidade_orcamentaria, 0, 2 );
-            $unidade = substr($receita->unidade_orcamentaria, 2, 2 );
+            $orgao = substr((string) $receita->unidade_orcamentaria, 0, 2 );
+            $unidade = substr((string) $receita->unidade_orcamentaria, 2, 2 );
             $insertOrcreceita = "insert into orcamento.orcreceita 
               (
                o70_anousu,             

@@ -38,11 +38,11 @@ $clrotulo   = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-db_postmemory($HTTP_POST_VARS);
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+db_postmemory($_POST);
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 /*
  * Definimos alguns paramentros para o relatório, conforme o ano.
@@ -73,29 +73,29 @@ $sTituloParametro = "Parâmetros";
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array(
+    $clcriaabas->identifica = [
                                     "relatorio" => "Relatório",
                                     "parametro" => $sTituloParametro,
                                     "notas"     => "Notas Explicativas"
-                                   );
+                                   ];
 																	 
-    $clcriaabas->title      = array(
+    $clcriaabas->title      = [
                                     "relatorio" => "Relatório",
                                     "parametro" => $sTituloParametro,
                                     "notas"     => "Notas Explicativas"
-                                   );
+                                   ];
 																	 
-    $clcriaabas->src        = array(
+    $clcriaabas->src        = [
                                     "relatorio" => "orc2_mardespdocc011.php",
                          			      "parametro" => "{$sFonteParametros}?c83_codrel=$iCodRel",
                                     "notas"     => "con2_conrelnotas.php?c83_codrel=$iCodRel",
-                                   );
+                                   ];
 																	 
-    $clcriaabas->sizecampo  = array(
+    $clcriaabas->sizecampo  = [
                                     "relatorio" => "23",
                                     "parametro" => "23",
                                     "notas"     => 23
-                                   );
+                                   ];
     $clcriaabas->cria_abas();    
     ?>
     </center>

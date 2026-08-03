@@ -35,8 +35,8 @@ require_once modification("dbforms/db_funcoes.php");
 require_once modification("model/CgmFactory.model.php");
 require_once modification("model/fornecedor.model.php");
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clpcorcamforne = new cl_pcorcamforne;
 $clpcorcam      = new cl_pcorcam;

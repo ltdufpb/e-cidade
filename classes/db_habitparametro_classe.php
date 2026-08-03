@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE habitparametro
 class cl_habitparametro { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ht16_anousu = 0; 
-   var $ht16_avaliacao = 0; 
-   var $ht16_receitapadrao = 0; 
-   var $ht16_qtdparcelaspagamento = 0; 
-   var $ht16_diaspadraopagamento = 0; 
-   var $ht16_mesescarencia = 0; 
+   public $ht16_anousu = 0; 
+   public $ht16_avaliacao = 0; 
+   public $ht16_receitapadrao = 0; 
+   public $ht16_qtdparcelaspagamento = 0; 
+   public $ht16_diaspadraopagamento = 0; 
+   public $ht16_mesescarencia = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ht16_anousu = int4 = Exercício 
                  ht16_avaliacao = int4 = Avaliação 
                  ht16_receitapadrao = int4 = Receita Padrão 
@@ -58,10 +58,10 @@ class cl_habitparametro {
                  ht16_mesescarencia = int4 = Meses Carência 
                  ";
    //funcao construtor da classe 
-   function cl_habitparametro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("habitparametro"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -160,7 +160,7 @@ class cl_habitparametro {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parâmetros da Habitação ($this->ht16_anousu) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parâmetros da Habitação já Cadastrado";
@@ -184,15 +184,15 @@ class cl_habitparametro {
      $resaco = $this->sql_record($this->sql_query_file($this->ht16_anousu));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17014,'$this->ht16_anousu','I')");
-       $resac = db_query("insert into db_acount values($acount,3013,17014,'','".AddSlashes(pg_result($resaco,0,'ht16_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3013,17015,'','".AddSlashes(pg_result($resaco,0,'ht16_avaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3013,17016,'','".AddSlashes(pg_result($resaco,0,'ht16_receitapadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3013,17017,'','".AddSlashes(pg_result($resaco,0,'ht16_qtdparcelaspagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3013,17018,'','".AddSlashes(pg_result($resaco,0,'ht16_diaspadraopagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3013,17019,'','".AddSlashes(pg_result($resaco,0,'ht16_mesescarencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3013,17014,'','".AddSlashes(pg_fetch_result($resaco,0,'ht16_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3013,17015,'','".AddSlashes(pg_fetch_result($resaco,0,'ht16_avaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3013,17016,'','".AddSlashes(pg_fetch_result($resaco,0,'ht16_receitapadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3013,17017,'','".AddSlashes(pg_fetch_result($resaco,0,'ht16_qtdparcelaspagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3013,17018,'','".AddSlashes(pg_fetch_result($resaco,0,'ht16_diaspadraopagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3013,17019,'','".AddSlashes(pg_fetch_result($resaco,0,'ht16_mesescarencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -201,10 +201,10 @@ class cl_habitparametro {
       $this->atualizacampos();
      $sql = " update habitparametro set ";
      $virgula = "";
-     if(trim($this->ht16_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_anousu"])){ 
+     if(trim((string) $this->ht16_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_anousu"])){ 
        $sql  .= $virgula." ht16_anousu = $this->ht16_anousu ";
        $virgula = ",";
-       if(trim($this->ht16_anousu) == null ){ 
+       if(trim((string) $this->ht16_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "ht16_anousu";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_habitparametro {
          return false;
        }
      }
-     if(trim($this->ht16_avaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_avaliacao"])){ 
+     if(trim((string) $this->ht16_avaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_avaliacao"])){ 
        $sql  .= $virgula." ht16_avaliacao = $this->ht16_avaliacao ";
        $virgula = ",";
-       if(trim($this->ht16_avaliacao) == null ){ 
+       if(trim((string) $this->ht16_avaliacao) == null ){ 
          $this->erro_sql = " Campo Avaliação nao Informado.";
          $this->erro_campo = "ht16_avaliacao";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_habitparametro {
          return false;
        }
      }
-     if(trim($this->ht16_receitapadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_receitapadrao"])){ 
+     if(trim((string) $this->ht16_receitapadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_receitapadrao"])){ 
        $sql  .= $virgula." ht16_receitapadrao = $this->ht16_receitapadrao ";
        $virgula = ",";
-       if(trim($this->ht16_receitapadrao) == null ){ 
+       if(trim((string) $this->ht16_receitapadrao) == null ){ 
          $this->erro_sql = " Campo Receita Padrão nao Informado.";
          $this->erro_campo = "ht16_receitapadrao";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_habitparametro {
          return false;
        }
      }
-     if(trim($this->ht16_qtdparcelaspagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_qtdparcelaspagamento"])){ 
+     if(trim((string) $this->ht16_qtdparcelaspagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_qtdparcelaspagamento"])){ 
        $sql  .= $virgula." ht16_qtdparcelaspagamento = $this->ht16_qtdparcelaspagamento ";
        $virgula = ",";
-       if(trim($this->ht16_qtdparcelaspagamento) == null ){ 
+       if(trim((string) $this->ht16_qtdparcelaspagamento) == null ){ 
          $this->erro_sql = " Campo Parcelas Pagamento nao Informado.";
          $this->erro_campo = "ht16_qtdparcelaspagamento";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_habitparametro {
          return false;
        }
      }
-     if(trim($this->ht16_diaspadraopagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_diaspadraopagamento"])){ 
+     if(trim((string) $this->ht16_diaspadraopagamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_diaspadraopagamento"])){ 
        $sql  .= $virgula." ht16_diaspadraopagamento = $this->ht16_diaspadraopagamento ";
        $virgula = ",";
-       if(trim($this->ht16_diaspadraopagamento) == null ){ 
+       if(trim((string) $this->ht16_diaspadraopagamento) == null ){ 
          $this->erro_sql = " Campo Dias Pagamento nao Informado.";
          $this->erro_campo = "ht16_diaspadraopagamento";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_habitparametro {
          return false;
        }
      }
-     if(trim($this->ht16_mesescarencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_mesescarencia"])){ 
+     if(trim((string) $this->ht16_mesescarencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht16_mesescarencia"])){ 
        $sql  .= $virgula." ht16_mesescarencia = $this->ht16_mesescarencia ";
        $virgula = ",";
-       if(trim($this->ht16_mesescarencia) == null ){ 
+       if(trim((string) $this->ht16_mesescarencia) == null ){ 
          $this->erro_sql = " Campo Meses Carência nao Informado.";
          $this->erro_campo = "ht16_mesescarencia";
          $this->erro_banco = "";
@@ -287,21 +287,21 @@ class cl_habitparametro {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17014,'$this->ht16_anousu','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht16_anousu"]) || $this->ht16_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,3013,17014,'".AddSlashes(pg_result($resaco,$conresaco,'ht16_anousu'))."','$this->ht16_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3013,17014,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht16_anousu'))."','$this->ht16_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht16_avaliacao"]) || $this->ht16_avaliacao != "")
-           $resac = db_query("insert into db_acount values($acount,3013,17015,'".AddSlashes(pg_result($resaco,$conresaco,'ht16_avaliacao'))."','$this->ht16_avaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3013,17015,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht16_avaliacao'))."','$this->ht16_avaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht16_receitapadrao"]) || $this->ht16_receitapadrao != "")
-           $resac = db_query("insert into db_acount values($acount,3013,17016,'".AddSlashes(pg_result($resaco,$conresaco,'ht16_receitapadrao'))."','$this->ht16_receitapadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3013,17016,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht16_receitapadrao'))."','$this->ht16_receitapadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht16_qtdparcelaspagamento"]) || $this->ht16_qtdparcelaspagamento != "")
-           $resac = db_query("insert into db_acount values($acount,3013,17017,'".AddSlashes(pg_result($resaco,$conresaco,'ht16_qtdparcelaspagamento'))."','$this->ht16_qtdparcelaspagamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3013,17017,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht16_qtdparcelaspagamento'))."','$this->ht16_qtdparcelaspagamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht16_diaspadraopagamento"]) || $this->ht16_diaspadraopagamento != "")
-           $resac = db_query("insert into db_acount values($acount,3013,17018,'".AddSlashes(pg_result($resaco,$conresaco,'ht16_diaspadraopagamento'))."','$this->ht16_diaspadraopagamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3013,17018,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht16_diaspadraopagamento'))."','$this->ht16_diaspadraopagamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht16_mesescarencia"]) || $this->ht16_mesescarencia != "")
-           $resac = db_query("insert into db_acount values($acount,3013,17019,'".AddSlashes(pg_result($resaco,$conresaco,'ht16_mesescarencia'))."','$this->ht16_mesescarencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3013,17019,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht16_mesescarencia'))."','$this->ht16_mesescarencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -346,15 +346,15 @@ class cl_habitparametro {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17014,'$ht16_anousu','E')");
-         $resac = db_query("insert into db_acount values($acount,3013,17014,'','".AddSlashes(pg_result($resaco,$iresaco,'ht16_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3013,17015,'','".AddSlashes(pg_result($resaco,$iresaco,'ht16_avaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3013,17016,'','".AddSlashes(pg_result($resaco,$iresaco,'ht16_receitapadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3013,17017,'','".AddSlashes(pg_result($resaco,$iresaco,'ht16_qtdparcelaspagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3013,17018,'','".AddSlashes(pg_result($resaco,$iresaco,'ht16_diaspadraopagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3013,17019,'','".AddSlashes(pg_result($resaco,$iresaco,'ht16_mesescarencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3013,17014,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht16_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3013,17015,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht16_avaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3013,17016,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht16_receitapadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3013,17017,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht16_qtdparcelaspagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3013,17018,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht16_diaspadraopagamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3013,17019,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht16_mesescarencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from habitparametro
@@ -414,7 +414,7 @@ class cl_habitparametro {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:habitparametro";
@@ -429,7 +429,7 @@ class cl_habitparametro {
    function sql_query ( $ht16_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -452,7 +452,7 @@ class cl_habitparametro {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,7 +465,7 @@ class cl_habitparametro {
    function sql_query_file ( $ht16_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,7 +486,7 @@ class cl_habitparametro {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

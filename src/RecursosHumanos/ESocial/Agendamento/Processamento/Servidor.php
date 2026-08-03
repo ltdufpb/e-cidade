@@ -105,7 +105,7 @@ class Servidor extends ProcessamentoAbstract implements ProcessamentoInterface
                         $this->selecao,
                         $this->instituicao
                     );
-                } catch (Exception $e) {
+                } catch (Exception) {
                     throw new \DBException("Ocorrêu um erro ao buscar as informações da seleção informada.");
                 }
             } else {

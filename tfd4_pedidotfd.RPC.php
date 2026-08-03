@@ -43,12 +43,12 @@ function formataData($dData, $iTipo = 1)
     }
 
     if ($iTipo == 1) {
-        $dData = explode('/', $dData);
+        $dData = explode('/', (string) $dData);
         $dData = $dData[2] . '-' . $dData[1] . '-' . $dData[0];
         return $dData;
     }
 
-    $dData = explode('-', $dData);
+    $dData = explode('-', (string) $dData);
     $dData = @$dData[2] . '/' . @$dData[1] . '/' . @$dData[0];
 
     return $dData;
@@ -73,7 +73,7 @@ if ($oParam->exec == 'getCgsCns') {
     if ($oDaoCgsCartaoSus->numrows > 0) { // se encontrou o cgs
         $oDadosCgsCartaoSus = db_utils::fieldsmemory($rsCgsCartaoSus, 0);
         $oRetorno->z01_i_cgsund = $oDadosCgsCartaoSus->z01_i_cgsund;
-        $oRetorno->z01_v_nome = urlencode($oDadosCgsCartaoSus->z01_v_nome);
+        $oRetorno->z01_v_nome = urlencode((string) $oDadosCgsCartaoSus->z01_v_nome);
     } else {
         $oRetorno->z01_i_cgsund = '';
         $oRetorno->z01_v_nome = '';
@@ -88,23 +88,23 @@ if ($oParam->exec == 'getCgsCns') {
     $oRetorno->z01_i_cgsund = $oParam->iCgs;
     if ($oDaoCgsUnd->numrows > 0) { // se encontrou o cgs
         $oDadosCgsUnd = db_utils::fieldsmemory($rsCgsUnd, 0);
-        $oRetorno->z01_v_ender = urlencode($oDadosCgsUnd->z01_v_ender);
-        $oRetorno->z01_v_bairro = urlencode($oDadosCgsUnd->z01_v_bairro);
-        $oRetorno->z01_v_munic = urlencode($oDadosCgsUnd->z01_v_munic);
-        $oRetorno->z01_v_cep = urlencode($oDadosCgsUnd->z01_v_cep);
-        $oRetorno->z01_v_uf = urlencode($oDadosCgsUnd->z01_v_uf);
+        $oRetorno->z01_v_ender = urlencode((string) $oDadosCgsUnd->z01_v_ender);
+        $oRetorno->z01_v_bairro = urlencode((string) $oDadosCgsUnd->z01_v_bairro);
+        $oRetorno->z01_v_munic = urlencode((string) $oDadosCgsUnd->z01_v_munic);
+        $oRetorno->z01_v_cep = urlencode((string) $oDadosCgsUnd->z01_v_cep);
+        $oRetorno->z01_v_uf = urlencode((string) $oDadosCgsUnd->z01_v_uf);
         $oRetorno->z01_i_numero = $oDadosCgsUnd->z01_i_numero;
-        $oRetorno->z01_v_sexo = urlencode($oDadosCgsUnd->z01_v_sexo);
-        $oRetorno->z01_v_compl = urlencode($oDadosCgsUnd->z01_v_compl);
-        $oRetorno->z01_v_email = urlencode($oDadosCgsUnd->z01_v_email);
-        $oRetorno->z01_v_telef = urlencode($oDadosCgsUnd->z01_v_telef);
-        $oRetorno->z01_v_telcel = urlencode($oDadosCgsUnd->z01_v_telcel);
+        $oRetorno->z01_v_sexo = urlencode((string) $oDadosCgsUnd->z01_v_sexo);
+        $oRetorno->z01_v_compl = urlencode((string) $oDadosCgsUnd->z01_v_compl);
+        $oRetorno->z01_v_email = urlencode((string) $oDadosCgsUnd->z01_v_email);
+        $oRetorno->z01_v_telef = urlencode((string) $oDadosCgsUnd->z01_v_telef);
+        $oRetorno->z01_v_telcel = urlencode((string) $oDadosCgsUnd->z01_v_telcel);
         $oRetorno->z01_d_nasc = $oDadosCgsUnd->z01_d_nasc;
-        $oRetorno->z01_v_cgccpf = urlencode($oDadosCgsUnd->z01_v_cgccpf);
-        $oRetorno->z01_v_ident = urlencode($oDadosCgsUnd->z01_v_ident);
-        $oRetorno->z01_v_mae = urlencode($oDadosCgsUnd->z01_v_mae);
-        $oRetorno->z01_v_pai = urlencode($oDadosCgsUnd->z01_v_pai);
-        $oRetorno->z01_v_nome = urlencode($oDadosCgsUnd->z01_v_nome);
+        $oRetorno->z01_v_cgccpf = urlencode((string) $oDadosCgsUnd->z01_v_cgccpf);
+        $oRetorno->z01_v_ident = urlencode((string) $oDadosCgsUnd->z01_v_ident);
+        $oRetorno->z01_v_mae = urlencode((string) $oDadosCgsUnd->z01_v_mae);
+        $oRetorno->z01_v_pai = urlencode((string) $oDadosCgsUnd->z01_v_pai);
+        $oRetorno->z01_v_nome = urlencode((string) $oDadosCgsUnd->z01_v_nome);
         $codigoIbge = $oDadosCgsUnd->z01_codigoibge;
         if ($codigoIbge === '') {
             $dao = new \cl_cadendermunicipiosistema();
@@ -146,9 +146,9 @@ if ($oParam->exec == 'getCgsCns') {
 
     if ($oDaoCgsCartaoSus->numrows != 0) { // se o paciente tem um cartao sus
         $oDadosCgsCartaoSus = db_utils::fieldsmemory($rsCgsCartaoSus, 0);
-        $oRetorno->s115_c_cartaosus = urlencode($oDadosCgsCartaoSus->s115_c_cartaosus);
-        $oRetorno->s115_c_tipo = urlencode($oDadosCgsCartaoSus->s115_c_tipo);
-        $oRetorno->s115_i_codigo = urlencode($oDadosCgsCartaoSus->s115_i_codigo);
+        $oRetorno->s115_c_cartaosus = urlencode((string) $oDadosCgsCartaoSus->s115_c_cartaosus);
+        $oRetorno->s115_c_tipo = urlencode((string) $oDadosCgsCartaoSus->s115_c_tipo);
+        $oRetorno->s115_i_codigo = urlencode((string) $oDadosCgsCartaoSus->s115_i_codigo);
     } else {
         $oRetorno->s115_c_cartaosus = '';
         $oRetorno->s115_c_tipo = '';
@@ -193,7 +193,7 @@ if ($oParam->exec == 'getCgsCns') {
             throw new ParameterException(_M(MENSAGEM_PEDIDOTFD_RPC . "informe_nome_mae"));
         }
 
-        $oParam->z01_d_nasc = explode('/', $oParam->z01_d_nasc);
+        $oParam->z01_d_nasc = explode('/', (string) $oParam->z01_d_nasc);
         $oParam->z01_d_nasc = $oParam->z01_d_nasc[2] . '-' . $oParam->z01_d_nasc[1] . '-' . $oParam->z01_d_nasc[0];
 
         $iNumero = !empty($oParam->z01_i_numero) ? $oParam->z01_i_numero : 'null';
@@ -252,7 +252,7 @@ if ($oParam->exec == 'getCgsCns') {
         $cgsPadrao = db_utils::fieldsMemory($rs, 0);
         $dados = (object)[
             'dados_pessoais' => (object)[
-                'cns' => isset($oParam->s115_c_cartaosus) ? $oParam->s115_c_cartaosus : '',
+                'cns' => $oParam->s115_c_cartaosus ?? '',
                 'tipoSangue' => $cgsPadrao->z01_i_tiposangue,
                 'fatorRH' => $cgsPadrao->z01_i_fatorrh
             ]
@@ -313,15 +313,15 @@ if ($oParam->exec == 'getCgsCns') {
         $oRetorno->oPedidos[$iCont]->tf01_i_codigo = $oDados->tf01_i_codigo;
         $oRetorno->oPedidos[$iCont]->tf16_d_dataagendamento = $oDados->tf16_d_dataagendamento;
         $oRetorno->oPedidos[$iCont]->tf17_d_datasaida = $oDados->tf17_d_datasaida;
-        $oRetorno->oPedidos[$iCont]->z01_nomeprestadora = urlencode($oDados->z01_nome);
+        $oRetorno->oPedidos[$iCont]->z01_nomeprestadora = urlencode((string) $oDados->z01_nome);
         $oRetorno->oPedidos[$iCont]->tf03_i_codigo = $oDados->tf03_i_codigo;
-        $oRetorno->oPedidos[$iCont]->tf03_c_descr = urlencode($oDados->tf03_c_descr);
+        $oRetorno->oPedidos[$iCont]->tf03_c_descr = urlencode((string) $oDados->tf03_c_descr);
         $oRetorno->oPedidos[$iCont]->iSituacaoPedido = $oDados->tf26_i_codigo;
-        $oRetorno->oPedidos[$iCont]->tf26_c_descr = urlencode($oDados->tf26_c_descr);
-        $oRetorno->oPedidos[$iCont]->tf01_d_datapedido = urlencode($oDados->tf01_d_datapedido);
+        $oRetorno->oPedidos[$iCont]->tf26_c_descr = urlencode((string) $oDados->tf26_c_descr);
+        $oRetorno->oPedidos[$iCont]->tf01_d_datapedido = urlencode((string) $oDados->tf01_d_datapedido);
         $oRetorno->oPedidos[$iCont]->rh70_sequencial = $oDados->rh70_sequencial;
         $oRetorno->oPedidos[$iCont]->rh70_estrutural = $oDados->rh70_estrutural;
-        $oRetorno->oPedidos[$iCont]->rh70_descr = urlencode($oDados->rh70_descr);
+        $oRetorno->oPedidos[$iCont]->rh70_descr = urlencode((string) $oDados->rh70_descr);
     }
 
     if ($oDaoTfdPedidoTfd->numrows == 0) {
@@ -344,7 +344,7 @@ if ($oParam->exec == 'getCgsCns') {
         $oRetorno->oProcedimentos[$iCont] = new stdClass();
         $oRetorno->oProcedimentos[$iCont]->tf23_i_procedimento = $oDados->tf23_i_procedimento;
         $oRetorno->oProcedimentos[$iCont]->sd63_c_procedimento = $oDados->sd63_c_procedimento;
-        $oRetorno->oProcedimentos[$iCont]->sd63_c_nome = urlencode($oDados->sd63_c_nome);
+        $oRetorno->oProcedimentos[$iCont]->sd63_c_nome = urlencode((string) $oDados->sd63_c_nome);
     }
 
     if ($oDaoTfdProcPedidoTfd->numrows == 0) {
@@ -368,12 +368,12 @@ if ($oParam->exec == 'getCgsCns') {
         $oRetorno->oAcompanhantes[$iCont]->tf13_i_codigo = $oDados->tf13_i_codigo;
         $oRetorno->oAcompanhantes[$iCont]->tf13_i_anulado = $oDados->tf13_i_anulado;
         $oRetorno->oAcompanhantes[$iCont]->z01_i_cgsund = $oDados->z01_i_cgsund;
-        $oRetorno->oAcompanhantes[$iCont]->z01_v_nome = urlencode($oDados->z01_v_nome);
-        $oRetorno->oAcompanhantes[$iCont]->z01_v_ident = urlencode($oDados->z01_v_ident);
-        $oRetorno->oAcompanhantes[$iCont]->z01_v_cgccpf = urlencode($oDados->z01_v_cgccpf);
-        $oRetorno->oAcompanhantes[$iCont]->sTelefone = urlencode($oDados->z01_v_telef);
-        $oRetorno->oAcompanhantes[$iCont]->sCelular = urlencode($oDados->z01_v_telcel);
-        $oRetorno->oAcompanhantes[$iCont]->sMotivo = urlencode($oDados->tf08_c_descr);
+        $oRetorno->oAcompanhantes[$iCont]->z01_v_nome = urlencode((string) $oDados->z01_v_nome);
+        $oRetorno->oAcompanhantes[$iCont]->z01_v_ident = urlencode((string) $oDados->z01_v_ident);
+        $oRetorno->oAcompanhantes[$iCont]->z01_v_cgccpf = urlencode((string) $oDados->z01_v_cgccpf);
+        $oRetorno->oAcompanhantes[$iCont]->sTelefone = urlencode((string) $oDados->z01_v_telef);
+        $oRetorno->oAcompanhantes[$iCont]->sCelular = urlencode((string) $oDados->z01_v_telcel);
+        $oRetorno->oAcompanhantes[$iCont]->sMotivo = urlencode((string) $oDados->tf08_c_descr);
     }
 
     if ($oDaoTfdAcompanhantes->numrows == 0) {
@@ -414,12 +414,12 @@ if ($oParam->exec == 'getCgsCns') {
     $oRetorno->z01_numcgm = $oParam->iCgm;
     if ($oDaoCgm->numrows > 0) { // se encontrou o cgm
         $oDadosCgm = db_utils::fieldsmemory($rsCgm, 0);
-        $oRetorno->z01_ender = urlencode($oDadosCgm->z01_ender);
-        $oRetorno->z01_bairro = urlencode($oDadosCgm->z01_bairro);
-        $oRetorno->z01_munic = urlencode($oDadosCgm->z01_munic);
-        $oRetorno->z01_uf = urlencode($oDadosCgm->z01_uf);
-        $oRetorno->z01_compl = urlencode($oDadosCgm->z01_compl);
-        $oRetorno->z01_numero = urlencode($oDadosCgm->z01_numero);
+        $oRetorno->z01_ender = urlencode((string) $oDadosCgm->z01_ender);
+        $oRetorno->z01_bairro = urlencode((string) $oDadosCgm->z01_bairro);
+        $oRetorno->z01_munic = urlencode((string) $oDadosCgm->z01_munic);
+        $oRetorno->z01_uf = urlencode((string) $oDadosCgm->z01_uf);
+        $oRetorno->z01_compl = urlencode((string) $oDadosCgm->z01_compl);
+        $oRetorno->z01_numero = urlencode((string) $oDadosCgm->z01_numero);
     } else {
         $oRetorno->z01_ender = '';
         $oRetorno->z01_bairro = '';
@@ -430,7 +430,7 @@ if ($oParam->exec == 'getCgsCns') {
         $oRetorno->z01_numcgm = '';
     }
 } elseif ($oParam->exec == 'getHorariosData') {
-    $aData = explode('/', $oParam->dData);
+    $aData = explode('/', (string) $oParam->dData);
     $dData = @$aData[2] . '-' . @$aData[1] . '-' . @$aData[0];
     // somo 1 pq na tab diasemana dom é 1
     $iDiasemana = date('w', mktime(0, 0, 0, $aData[1], $aData[0], $aData[2])) + 1;
@@ -457,8 +457,8 @@ if ($oParam->exec == 'getCgsCns') {
          */
         for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
             $oDados = db_utils::fieldsmemory($rs, $iCont);
-            $oRetorno->oHorarios[$iCont]->sHora = urlencode($oDados->tf02_c_horario);
-            $oRetorno->oHorarios[$iCont]->sLocalSaida = urlencode($oDados->tf02_c_localsaida);
+            $oRetorno->oHorarios[$iCont]->sHora = urlencode((string) $oDados->tf02_c_horario);
+            $oRetorno->oHorarios[$iCont]->sLocalSaida = urlencode((string) $oDados->tf02_c_localsaida);
             $oRetorno->oHorarios[$iCont]->iLotacao = $oDados->tf02_i_lotacao;
         }
     } else {
@@ -603,12 +603,12 @@ if ($oParam->exec == 'getCgsCns') {
     $sCampos .= ' tf16_d_dataagendamento, tf16_c_horaagendamento, ';
     $sCampos .= ' cgm.z01_numcgm as codprest, cgm.z01_nome as nomeprest ';
 
-    @$dDataIni = substr($oParam->dDataIni, 6, 4)
-        . '-' . substr($oParam->dDataIni, 3, 2)
-        . '-' . substr($oParam->dDataIni, 0, 2);
-    @$dDataFim = substr($oParam->dDataFim, 6, 4)
-        . '-' . substr($oParam->dDataFim, 3, 2)
-        . '-' . substr($oParam->dDataFim, 0, 2);
+    @$dDataIni = substr((string) $oParam->dDataIni, 6, 4)
+        . '-' . substr((string) $oParam->dDataIni, 3, 2)
+        . '-' . substr((string) $oParam->dDataIni, 0, 2);
+    @$dDataFim = substr((string) $oParam->dDataFim, 6, 4)
+        . '-' . substr((string) $oParam->dDataFim, 3, 2)
+        . '-' . substr((string) $oParam->dDataFim, 0, 2);
     $sWhere = " tf01_d_datapedido between '$dDataIni' and '$dDataFim'";
 
     if (isset($oParam->iTipo) && $oParam->iTipo == 0) {
@@ -638,20 +638,20 @@ if ($oParam->exec == 'getCgsCns') {
     for ($iCont = 0; $iCont < $oDaoTfdPedidoTfd->numrows; $iCont++) {
         $oDados = db_utils::fieldsmemory($rs, $iCont);
         $oRetorno->oPedidos[$iCont]->tf01_i_codigo = $oDados->tf01_i_codigo;
-        $oRetorno->oPedidos[$iCont]->tf04_c_abreviatura = urlencode($oDados->tf04_c_abreviatura);
-        $oRetorno->oPedidos[$iCont]->tf01_d_datapedido = urlencode($oDados->tf01_d_datapedido);
-        $oRetorno->oPedidos[$iCont]->emergencia = urlencode($oDados->emergencia);
-        $oRetorno->oPedidos[$iCont]->tf01_d_datapreferencia = urlencode($oDados->tf01_d_datapreferencia);
-        $oRetorno->oPedidos[$iCont]->paciente = urlencode($oDados->paciente);
-        $oRetorno->oPedidos[$iCont]->z01_v_ident = urlencode($oDados->z01_v_ident);
-        $oRetorno->oPedidos[$iCont]->z01_v_cgccpf = urlencode($oDados->z01_v_cgccpf);
-        $oRetorno->oPedidos[$iCont]->z01_nome = urlencode($oDados->z01_nome);
-        $oRetorno->oPedidos[$iCont]->tf16_d_dataagendamento = urlencode($oDados->tf16_d_dataagendamento);
-        $oRetorno->oPedidos[$iCont]->tf16_c_horaagendamento = urlencode($oDados->tf16_c_horaagendamento);
+        $oRetorno->oPedidos[$iCont]->tf04_c_abreviatura = urlencode((string) $oDados->tf04_c_abreviatura);
+        $oRetorno->oPedidos[$iCont]->tf01_d_datapedido = urlencode((string) $oDados->tf01_d_datapedido);
+        $oRetorno->oPedidos[$iCont]->emergencia = urlencode((string) $oDados->emergencia);
+        $oRetorno->oPedidos[$iCont]->tf01_d_datapreferencia = urlencode((string) $oDados->tf01_d_datapreferencia);
+        $oRetorno->oPedidos[$iCont]->paciente = urlencode((string) $oDados->paciente);
+        $oRetorno->oPedidos[$iCont]->z01_v_ident = urlencode((string) $oDados->z01_v_ident);
+        $oRetorno->oPedidos[$iCont]->z01_v_cgccpf = urlencode((string) $oDados->z01_v_cgccpf);
+        $oRetorno->oPedidos[$iCont]->z01_nome = urlencode((string) $oDados->z01_nome);
+        $oRetorno->oPedidos[$iCont]->tf16_d_dataagendamento = urlencode((string) $oDados->tf16_d_dataagendamento);
+        $oRetorno->oPedidos[$iCont]->tf16_c_horaagendamento = urlencode((string) $oDados->tf16_c_horaagendamento);
         $oRetorno->oPedidos[$iCont]->z01_i_cgsund = $oDados->z01_i_cgsund;
-        $oRetorno->oPedidos[$iCont]->z01_v_nome = urlencode($oDados->z01_v_nome);
+        $oRetorno->oPedidos[$iCont]->z01_v_nome = urlencode((string) $oDados->z01_v_nome);
         $oRetorno->oPedidos[$iCont]->codPrestadora = $oDados->codprest;
-        $oRetorno->oPedidos[$iCont]->nomePrestadora = urlencode($oDados->nomeprest);
+        $oRetorno->oPedidos[$iCont]->nomePrestadora = urlencode((string) $oDados->nomeprest);
     }
 
     if ($oDaoTfdPedidoTfd->numrows == 0) {
@@ -724,7 +724,7 @@ if ($oParam->exec == 'getCgsCns') {
     $oDados = db_utils::fieldsmemory($rs, 0);
 
     /* Bloco que obtém a lotação à partir das informações da tfd_veiculodestino */
-    $aData = explode('-', $oDados->tf18_d_datasaida);
+    $aData = explode('-', (string) $oDados->tf18_d_datasaida);
     $dData = $oDados->tf18_d_datasaida;
     $iDiasemana = date('w', mktime(0, 0, 0, $aData[1], $aData[2], $aData[0])) + 1; // somo 1 pq na tab diasemana dom é 1
     $sSql = $oDaoTfdGradeHorarios->sql_query(
@@ -781,7 +781,7 @@ if ($oParam->exec == 'getCgsCns') {
         $oRetorno->iRetorno = 0;
     }
 } elseif ($oParam->exec == 'getHorariosDataSaida') {
-    $aData = explode('/', $oParam->dData);
+    $aData = explode('/', (string) $oParam->dData);
     $dData = @$aData[2] . '-' . @$aData[1] . '-' . @$aData[0];
 
     $oDaoTfdVeiculoDestino = new cl_tfd_veiculodestino();
@@ -804,7 +804,7 @@ if ($oParam->exec == 'getCgsCns') {
          */
         for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
             $oDados = db_utils::fieldsmemory($rs, $iCont);
-            $oRetorno->aHorarios[$iCont] = urlencode($oDados->tf18_c_horasaida);
+            $oRetorno->aHorarios[$iCont] = urlencode((string) $oDados->tf18_c_horasaida);
         }
     } else {
         $oRetorno->iStatus = 2;
@@ -819,12 +819,12 @@ if ($oParam->exec == 'getCgsCns') {
     $sCampos .= ' z01_i_cgsund, z01_v_nome, z01_v_ident, z01_v_cgccpf, z01_nome, ';
     $sCampos .= ' tf34_i_codigo, tf34_i_especmedico, tf34_i_login, tf17_i_codigo ';
 
-    @$dDataIni = substr($oParam->dDataIni, 6, 4)
-        . '-' . substr($oParam->dDataIni, 3, 2)
-        . '-' . substr($oParam->dDataIni, 0, 2);
-    @$dDataFim = substr($oParam->dDataFim, 6, 4)
-        . '-' . substr($oParam->dDataFim, 3, 2)
-        . '-' . substr($oParam->dDataFim, 0, 2);
+    @$dDataIni = substr((string) $oParam->dDataIni, 6, 4)
+        . '-' . substr((string) $oParam->dDataIni, 3, 2)
+        . '-' . substr((string) $oParam->dDataIni, 0, 2);
+    @$dDataFim = substr((string) $oParam->dDataFim, 6, 4)
+        . '-' . substr((string) $oParam->dDataFim, 3, 2)
+        . '-' . substr((string) $oParam->dDataFim, 0, 2);
     $sWhere = " tf01_d_datapedido between '$dDataIni' and '$dDataFim'";
     $sWhere .= ' and tf34_i_login is null ';
 
@@ -839,16 +839,16 @@ if ($oParam->exec == 'getCgsCns') {
     for ($iCont = 0; $iCont < $oDaoTfdPedidoTfd->numrows; $iCont++) {
         $oDados = db_utils::fieldsmemory($rs, $iCont);
         $oRetorno->oPedidos[$iCont]->tf01_i_codigo = $oDados->tf01_i_codigo;
-        $oRetorno->oPedidos[$iCont]->tf04_c_abreviatura = urlencode($oDados->tf04_c_abreviatura);
-        $oRetorno->oPedidos[$iCont]->tf01_d_datapedido = urlencode($oDados->tf01_d_datapedido);
-        $oRetorno->oPedidos[$iCont]->emergencia = urlencode($oDados->emergencia);
-        $oRetorno->oPedidos[$iCont]->tf01_d_datapreferencia = urlencode($oDados->tf01_d_datapreferencia);
-        $oRetorno->oPedidos[$iCont]->paciente = urlencode($oDados->paciente);
-        $oRetorno->oPedidos[$iCont]->z01_v_ident = urlencode($oDados->z01_v_ident);
-        $oRetorno->oPedidos[$iCont]->z01_v_cgccpf = urlencode($oDados->z01_v_cgccpf);
-        $oRetorno->oPedidos[$iCont]->z01_nome = urlencode($oDados->z01_nome);
+        $oRetorno->oPedidos[$iCont]->tf04_c_abreviatura = urlencode((string) $oDados->tf04_c_abreviatura);
+        $oRetorno->oPedidos[$iCont]->tf01_d_datapedido = urlencode((string) $oDados->tf01_d_datapedido);
+        $oRetorno->oPedidos[$iCont]->emergencia = urlencode((string) $oDados->emergencia);
+        $oRetorno->oPedidos[$iCont]->tf01_d_datapreferencia = urlencode((string) $oDados->tf01_d_datapreferencia);
+        $oRetorno->oPedidos[$iCont]->paciente = urlencode((string) $oDados->paciente);
+        $oRetorno->oPedidos[$iCont]->z01_v_ident = urlencode((string) $oDados->z01_v_ident);
+        $oRetorno->oPedidos[$iCont]->z01_v_cgccpf = urlencode((string) $oDados->z01_v_cgccpf);
+        $oRetorno->oPedidos[$iCont]->z01_nome = urlencode((string) $oDados->z01_nome);
         $oRetorno->oPedidos[$iCont]->z01_i_cgsund = $oDados->z01_i_cgsund;
-        $oRetorno->oPedidos[$iCont]->z01_v_nome = urlencode($oDados->z01_v_nome);
+        $oRetorno->oPedidos[$iCont]->z01_v_nome = urlencode((string) $oDados->z01_v_nome);
         $oRetorno->oPedidos[$iCont]->tf34_i_codigo = $oDados->tf34_i_codigo;
         $oRetorno->oPedidos[$iCont]->tf34_i_especmedico = $oDados->tf34_i_especmedico;
         $oRetorno->oPedidos[$iCont]->tf34_i_login = $oDados->tf34_i_login;
@@ -873,7 +873,7 @@ if ($oParam->exec == 'getCgsCns') {
 
     for ($iCont = 0; $iCont < $oDaoEspecMedico->numrows; $iCont++) {
         $oDados = db_utils::fieldsmemory($rs, $iCont);
-        $oRetorno->aEspecialidades[$iCont]->sEspecialidade = urlencode($oDados->rh70_descr);
+        $oRetorno->aEspecialidades[$iCont]->sEspecialidade = urlencode((string) $oDados->rh70_descr);
         $oRetorno->aEspecialidades[$iCont]->iEspecMedico = $oDados->sd27_i_codigo;
     }
 
@@ -930,14 +930,14 @@ if ($oParam->exec == 'getCgsCns') {
     for ($iCont = 0; $iCont < $oDaoTfdPedidoTfd->numrows; $iCont++) {
         $oDados = db_utils::fieldsmemory($rs, $iCont);
         $oRetorno->oPedidos[$iCont]->tf01_i_codigo = $oDados->tf01_i_codigo;
-        $oRetorno->oPedidos[$iCont]->tf16_d_dataagendamento = urlencode($oDados->tf16_d_dataagendamento);
-        $oRetorno->oPedidos[$iCont]->tf16_c_horaagendamento = urlencode($oDados->tf16_c_horaagendamento);
-        $oRetorno->oPedidos[$iCont]->paciente = urlencode($oDados->paciente);
-        $oRetorno->oPedidos[$iCont]->tf16_c_medico = urlencode($oDados->tf16_c_medico);
-        $oRetorno->oPedidos[$iCont]->tf16_c_protocolo = urlencode($oDados->tf16_c_protocolo);
-        $oRetorno->oPedidos[$iCont]->tf16_sequencia = urlencode($oDados->tf16_sequencia);
-        $oRetorno->oPedidos[$iCont]->tf16_sala = urlencode($oDados->tf16_sala);
-        $oRetorno->oPedidos[$iCont]->tf16_c_local = urlencode($oDados->tf16_c_local);
+        $oRetorno->oPedidos[$iCont]->tf16_d_dataagendamento = urlencode((string) $oDados->tf16_d_dataagendamento);
+        $oRetorno->oPedidos[$iCont]->tf16_c_horaagendamento = urlencode((string) $oDados->tf16_c_horaagendamento);
+        $oRetorno->oPedidos[$iCont]->paciente = urlencode((string) $oDados->paciente);
+        $oRetorno->oPedidos[$iCont]->tf16_c_medico = urlencode((string) $oDados->tf16_c_medico);
+        $oRetorno->oPedidos[$iCont]->tf16_c_protocolo = urlencode((string) $oDados->tf16_c_protocolo);
+        $oRetorno->oPedidos[$iCont]->tf16_sequencia = urlencode((string) $oDados->tf16_sequencia);
+        $oRetorno->oPedidos[$iCont]->tf16_sala = urlencode((string) $oDados->tf16_sala);
+        $oRetorno->oPedidos[$iCont]->tf16_c_local = urlencode((string) $oDados->tf16_c_local);
     }
 
     if ($oDaoTfdPedidoTfd->numrows == 0) {
@@ -948,7 +948,7 @@ if ($oParam->exec == 'getCgsCns') {
     $oDaotfd_agendamentoprestadora = new cl_tfd_agendamentoprestadora();
     $oDaotfd_agendasaida = new cl_tfd_agendasaida();
     $aPedidos = $oParam->aPedidos;
-    $aSaidaCadastrada = array();
+    $aSaidaCadastrada = [];
     $iCont = 0;
     $oRetorno->iStatus = 1;
     $oRetorno->aSaidaCadastrada = '';
@@ -1018,7 +1018,7 @@ if ($oParam->exec == 'getCgsCns') {
 } elseif ($oParam->exec == "getPacientesSaidaData") {
     $oDaoTfdPedidoTfd = new cl_tfd_pedidotfd();
 
-    $aIntevalo = array();
+    $aIntevalo = [];
     if (!empty($oParam->dataInicial)) {
         $aIntevalo[] = " tf16_d_dataagendamento >= '" . formataData($oParam->dataInicial) . "'";
     }
@@ -1061,14 +1061,14 @@ if ($oParam->exec == 'getCgsCns') {
             $oPedido[$iI] = new stdClass();
             $oPedido[$iI]->pedido = $oDados->tf01_i_codigo;
             $oPedido[$iI]->cgs = $oDados->cgs;
-            $oPedido[$iI]->paciente = urlencode($oDados->paciente);
-            $oPedido[$iI]->localsaida = urlencode($oDados->tf17_c_localsaida);
-            $oPedido[$iI]->datasaida = urlencode($oDados->tf17_d_datasaida);
-            $oPedido[$iI]->horasaida = urlencode($oDados->tf17_c_horasaida);
-            $oPedido[$iI]->dataagendamento = urlencode($oDados->tf16_d_dataagendamento);
-            $oPedido[$iI]->horaagendamento = urlencode($oDados->tf16_c_horaagendamento);
-            $oPedido[$iI]->prestadora = urlencode($oDados->prestadora);
-            $oPedido[$iI]->destino = urlencode($oDados->tf03_c_descr);
+            $oPedido[$iI]->paciente = urlencode((string) $oDados->paciente);
+            $oPedido[$iI]->localsaida = urlencode((string) $oDados->tf17_c_localsaida);
+            $oPedido[$iI]->datasaida = urlencode((string) $oDados->tf17_d_datasaida);
+            $oPedido[$iI]->horasaida = urlencode((string) $oDados->tf17_c_horasaida);
+            $oPedido[$iI]->dataagendamento = urlencode((string) $oDados->tf16_d_dataagendamento);
+            $oPedido[$iI]->horaagendamento = urlencode((string) $oDados->tf16_c_horaagendamento);
+            $oPedido[$iI]->prestadora = urlencode((string) $oDados->prestadora);
+            $oPedido[$iI]->destino = urlencode((string) $oDados->tf03_c_descr);
         }
 
         $oRetorno->oPedido = $oPedido;
@@ -1140,13 +1140,13 @@ if ($oParam->exec == 'getCgsCns') {
         }
 
         $oRetorno->oDadosPedido->iPedido = $oPedidoTfd->getCodigo();
-        $oRetorno->oDadosPedido->sDataPedido = urlencode($sDataPedido);
-        $oRetorno->oDadosPedido->sCgs = urlencode($oPedidoTfd->getPaciente()->getNome());
-        $oRetorno->oDadosPedido->sCpf = urlencode($oPedidoTfd->getPaciente()->getCpf());
-        $oRetorno->oDadosPedido->sIdentidade = urlencode($oPedidoTfd->getPaciente()->getIdentidade());
-        $oRetorno->oDadosPedido->sProfissional = urlencode($oPedidoTfd->getMedico()->getNome());
-        $oRetorno->oDadosPedido->sCbo = urlencode($oPedidoTfd->getCBOSolicitante()->getDescricao());
-        $oRetorno->oDadosPedido->sDataPreferencia = urlencode($sDataPreferencia);
+        $oRetorno->oDadosPedido->sDataPedido = urlencode((string) $sDataPedido);
+        $oRetorno->oDadosPedido->sCgs = urlencode((string) $oPedidoTfd->getPaciente()->getNome());
+        $oRetorno->oDadosPedido->sCpf = urlencode((string) $oPedidoTfd->getPaciente()->getCpf());
+        $oRetorno->oDadosPedido->sIdentidade = urlencode((string) $oPedidoTfd->getPaciente()->getIdentidade());
+        $oRetorno->oDadosPedido->sProfissional = urlencode((string) $oPedidoTfd->getMedico()->getNome());
+        $oRetorno->oDadosPedido->sCbo = urlencode((string) $oPedidoTfd->getCBOSolicitante()->getDescricao());
+        $oRetorno->oDadosPedido->sDataPreferencia = urlencode((string) $sDataPreferencia);
         $oRetorno->oDadosPedido->sEmergencia = urlencode($oPedidoTfd->isEmergencia() == true ? "SIM" : "NÃO");
     } catch (Exception $oErro) {
         db_fim_transacao(true);

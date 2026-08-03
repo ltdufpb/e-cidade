@@ -35,7 +35,7 @@ include(modification("classes/db_rhestagioquesitoresposta_classe.php"));
 $clrhestagioquesitopergunta = new cl_rhestagioquesitopergunta;
 $clrhestagioquesitoresposta = new cl_rhestagioquesitoresposta;
  
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

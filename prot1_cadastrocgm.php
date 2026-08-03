@@ -33,7 +33,7 @@
 //$func_iframe->titulo='Pesquisa';
 //$func_iframe->iniciarVisivel = false;
 //$func_iframe->mostrar();
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if (!isset($pesa)) {
 	$pesa = '';
 }
@@ -131,7 +131,7 @@ return false;
 }
 function js_preenche(chave){
   func_nome.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 function js_func_nome(){
 
@@ -145,7 +145,7 @@ function js_func_nome(){
 
 </script>
 <?php 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   $clcgm = new cl_cgm;
   $cldb_cgmruas = new cl_db_cgmruas;
   $cldb_cgmbairro = new cl_db_cgmbairro;
@@ -173,7 +173,7 @@ function js_func_nome(){
     if($cldb_cgmruas->numrows > 0 && !isset($municipio)){
       $municipio = "t";
     }elseif(!isset($municipio)){
-      if(strtoupper($munic) == strtoupper($z01_munic) && strtoupper($uf) == strtoupper($z01_uf)){
+      if(strtoupper((string) $munic) == strtoupper((string) $z01_munic) && strtoupper((string) $uf) == strtoupper((string) $z01_uf)){
         $municipio = "t";
       }else{
         $municipio = "f";
@@ -292,9 +292,9 @@ if(isset($pessoa)){
 				if ($clcidadao->numrows > 0){
 					db_fieldsmemory($rsCidadao,0);
 			
-					if (strlen($ov02_cnpjcpf) == 11){
+					if (strlen((string) $ov02_cnpjcpf) == 11){
 						$z01_cpf = 	$ov02_cnpjcpf;
-					}else if(strlen($ov02_cnpjcpf) == 14){
+					}else if(strlen((string) $ov02_cnpjcpf) == 14){
 						$cnpj = $ov02_cnpjcpf;
 					}
 					
@@ -377,7 +377,7 @@ if(isset($pessoa)){
 	  </table>
 	</table>
 	<?php 
-	if(strcmp(strrev(substr(strrev($z01_nome),0,2)),"ME") == 0 || strcmp(strrev(substr(strrev($z01_nome),0,4)),"LTDA") == 0 || strcmp(strrev(substr(strrev($z01_nome),0,2)),"SA") == 0){
+	if(strcmp(strrev(substr(strrev((string) $z01_nome),0,2)),"ME") == 0 || strcmp(strrev(substr(strrev((string) $z01_nome),0,4)),"LTDA") == 0 || strcmp(strrev(substr(strrev((string) $z01_nome),0,2)),"SA") == 0){
           echo "<script>document.form1.pessoa.options[1].selected = true</script>";
 	}
 	if(!isset($testanome))
@@ -385,13 +385,13 @@ if(isset($pessoa)){
 	exit;
 	}elseif(isset($pessoa)){
 	  if($pessoa == "fisica"){
-	    if(strtoupper($z01_munic) == strtoupper($munic) && !isset($municipio))
+	    if(strtoupper((string) $z01_munic) == strtoupper((string) $munic) && !isset($municipio))
 	      $municipio = "t";
 	    elseif(!isset($municipio))
 	      $municipio = "f";
 	    include(modification("prot1_pfisica.php"));
 	  }elseif($pessoa == "juridica"){
-	    if(strtoupper($z01_munic) == strtoupper($munic) && !isset($municipio))
+	    if(strtoupper((string) $z01_munic) == strtoupper((string) $munic) && !isset($municipio))
 	      $municipio = "t";
 	    elseif(!isset($municipio))
 	      $municipio = "f";
@@ -401,7 +401,7 @@ if(isset($pessoa)){
 	  if(strlen($z01_cgccpf) == 14){
 	    $result = $clcgm->sql_record($clcgm->sql_query($z01_numcgm,"*"));
 	    db_fieldsmemory($result,0);
-	    if(strtoupper($z01_munic) == strtoupper($munic) && !isset($municipio))
+	    if(strtoupper((string) $z01_munic) == strtoupper((string) $munic) && !isset($municipio))
 	      $municipio = "t";
 	    elseif(!isset($municipio))
 	      $municipio = "f";
@@ -409,7 +409,7 @@ if(isset($pessoa)){
 	  }elseif(strlen($z01_cgccpf) == 11){
 	    $result = $clcgm->sql_record($clcgm->sql_query($z01_numcgm,"*"));
 	    db_fieldsmemory($result,0);
-	    if(strtoupper($z01_munic) == strtoupper($munic) && !isset($municipio))
+	    if(strtoupper((string) $z01_munic) == strtoupper((string) $munic) && !isset($municipio))
 	      $municipio = "t";
 	    elseif(!isset($municipio))
 	      $municipio = "f";
@@ -563,8 +563,8 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
               $result_dbconfig = db_query($query_dbconfig);
               db_fieldsmemory($result_dbconfig,0);
               
-	      $muni = strtoupper($munic);
-	      $sigla     = strtoupper($uf);
+	      $muni = strtoupper((string) $munic);
+	      $sigla     = strtoupper((string) $uf);
               
 	      $query_ceploca = "select cp05_codlocalidades,
 	                               cp05_localidades 
@@ -661,9 +661,9 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
             <td nowrap colspan=4> 
               <?php 
 			  if ($municipio == 't') {
-			     $z01_munic = strtoupper($munic);
+			     $z01_munic = strtoupper((string) $munic);
 			  }else{
-			     $z01_munic = @strtoupper($z01_munic);
+			     $z01_munic = @strtoupper((string) $z01_munic);
 			  }
 		  db_input('z01_munic',20,$Iz01_munic,true,'text',3);
 
@@ -673,7 +673,7 @@ function js_preenchecep(chave,chave1,chave2,chave3,chave4){
 		  if ($municipio == 't') {
 			$z01_uf = $uf;
                   }else{
-			$z01_uf = @strtoupper($z01_uf);
+			$z01_uf = @strtoupper((string) $z01_uf);
 		  }
 		  db_input('z01_uf',2,$Iz01_uf,true,'text',3);
 
@@ -1088,7 +1088,7 @@ function js_vinculaCidadaoCGM(ov02_sequencial,ov02_seq){
 
 	
 	db_iframe_cidadao.hide();
-	location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+document.form1.z01_numcgm.value+'&ov02_sequencial='+ov02_sequencial+'&ov02_seq='+ov02_seq;
+	location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+document.form1.z01_numcgm.value+'&ov02_sequencial='+ov02_sequencial+'&ov02_seq='+ov02_seq;
 /*
 	var oVincular = new Object();
 	
@@ -1129,7 +1129,7 @@ function js_retornoVincularDados(oAjax){
   }else if ( aRetorno.status == 1) {
   	var z01_numcgm = aRetorno.ov03_numcgm;
   	//$('db_opcao').value = 'vincular';
-  	location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+z01_numcgm;
+  	location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+z01_numcgm;
     //location.href = 'prot1_cadcgm002.php?numcgm_cgccpf='+z01_numcgm;
   }  
 	

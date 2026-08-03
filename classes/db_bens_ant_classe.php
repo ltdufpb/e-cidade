@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE bens_ant
 class cl_bens_ant { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t03_ntfisc = null; 
-   var $t03_empen = null; 
+   public $t03_ntfisc = null; 
+   public $t03_empen = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t03_ntfisc = char(    10) = Numero da Nota Fiscal 
                  t03_empen = char(     8) = Numero do Empenho 
                  ";
    //funcao construtor da classe 
-   function cl_bens_ant() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bens_ant"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -104,7 +104,7 @@ class cl_bens_ant {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Bens () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Bens já Cadastrado";
@@ -131,10 +131,10 @@ class cl_bens_ant {
       $this->atualizacampos();
      $sql = " update bens_ant set ";
      $virgula = "";
-     if(trim($this->t03_ntfisc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t03_ntfisc"])){ 
+     if(trim((string) $this->t03_ntfisc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t03_ntfisc"])){ 
        $sql  .= $virgula." t03_ntfisc = '$this->t03_ntfisc' ";
        $virgula = ",";
-       if(trim($this->t03_ntfisc) == null ){ 
+       if(trim((string) $this->t03_ntfisc) == null ){ 
          $this->erro_sql = " Campo Numero da Nota Fiscal nao Informado.";
          $this->erro_campo = "t03_ntfisc";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_bens_ant {
          return false;
        }
      }
-     if(trim($this->t03_empen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t03_empen"])){ 
+     if(trim((string) $this->t03_empen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t03_empen"])){ 
        $sql  .= $virgula." t03_empen = '$this->t03_empen' ";
        $virgula = ",";
-       if(trim($this->t03_empen) == null ){ 
+       if(trim((string) $this->t03_empen) == null ){ 
          $this->erro_sql = " Campo Numero do Empenho nao Informado.";
          $this->erro_campo = "t03_empen";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:bens_ant";

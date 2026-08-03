@@ -89,8 +89,8 @@
         <td></td>
         <td>
           <?php
-            $matriz = array("0"=>"Lançamento",
-                            "1"=>"Inscrição");
+            $matriz = ["0"=>"Lançamento",
+                            "1"=>"Inscrição"];
             db_select("tipoper", $matriz,true,"");
           ?>
         </td>
@@ -101,8 +101,8 @@
         </td>
         <td width="26%">
          <?php 
-             $matriz = array("0"=>"Sintético",
-                             "1"=>"Analítico");
+             $matriz = ["0"=>"Sintético",
+                             "1"=>"Analítico"];
              db_select("tiporel", $matriz,true,""," onchange='js_validarGenerico(false);'");
          ?>
         </td>
@@ -115,10 +115,10 @@
         </td>
         <td id="ordenar2">
          <?php 
-             $matriz = array("0"=>"Código de Importação",
+             $matriz = ["0"=>"Código de Importação",
                              "1"=>"Usuário",
                              "2"=>"Tipo",
-                             "3"=>"Data Inicial");
+                             "3"=>"Data Inicial"];
              db_select("ordenar", $matriz,true,"");
          ?>
         </td>
@@ -128,11 +128,11 @@
         </td>
         <th id="agrupar2" style="display: none;">
          <?php 
-             $matriz = array("0"=>"Nome",
+             $matriz = ["0"=>"Nome",
                              "1"=>"Origem",
                              "2"=>"Origem/Exercício",
                              "3"=>"Código de Importação",
-                             "4"=>"Somente no Final");
+                             "4"=>"Somente no Final"];
              db_select("agrupar", $matriz,true,"");
          ?>
         </th>
@@ -145,10 +145,10 @@
 	      </td>
 	      <td width="26%">
 	       <?php 
-	           $matriz = array("0"=>"Todos",
+	           $matriz = ["0"=>"Todos",
 	                           "1"=>"Parcial",
 	                           "2"=>"Geral",
-	                           "3"=>"Inclusão Manual");
+	                           "3"=>"Inclusão Manual"];
 	           db_select("tipoimp", $matriz,true,"");
 	       ?>
 	      </td>

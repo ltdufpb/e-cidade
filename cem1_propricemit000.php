@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas     = new cl_criaabas;
 ?>
 <html>
@@ -44,10 +44,10 @@ $clcriaabas     = new cl_criaabas;
 </head>
   <body class="abas">
     <?php
-      $clcriaabas->identifica = array("a1"=>"Proprietário","a2"=>"Jazigo", "a3"=>"Taxas");
-      $clcriaabas->sizecampo =  array("a1"=>24);
-      $clcriaabas->src =        array("a1"=>"cem1_propricemit00".$db_opcao.".php" );
-      $clcriaabas->disabled   = array("a2"=>"true", "a3"=>"true");
+      $clcriaabas->identifica = ["a1"=>"Proprietário","a2"=>"Jazigo", "a3"=>"Taxas"];
+      $clcriaabas->sizecampo =  ["a1"=>24];
+      $clcriaabas->src =        ["a1"=>"cem1_propricemit00".$db_opcao.".php" ];
+      $clcriaabas->disabled   = ["a2"=>"true", "a3"=>"true"];
       $clcriaabas->scrolling  = "yes";
       $clcriaabas->cria_abas();
 

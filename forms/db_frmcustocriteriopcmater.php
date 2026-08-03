@@ -114,7 +114,7 @@ db_input('cc08_instit',10,$Icc08_instit,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("cc10_custocriteriorateio"=>@$cc10_custocriteriorateio);
+	 $chavepri= ["cc10_custocriteriorateio"=>@$cc10_custocriteriorateio];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcustocriteriopcmater->sql_query_file(null,
 	                                                                              "*",

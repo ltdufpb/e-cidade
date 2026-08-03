@@ -129,7 +129,7 @@ function js_emite(anousu) {
               </td>
               <td>
 	              <?php 
-	                $aMes = array("0"  => "Selecione",
+	                $aMes = ["0"  => "Selecione",
  	                              "1"  => "Janeiro",
 	                              "2"  => "Fevereiro",
 	                              "3"  => "Março",
@@ -141,7 +141,7 @@ function js_emite(anousu) {
 	                              "9"  => "Setembro",
 	                              "10" => "Outubro",
 	                              "11" => "Novembro",
-	                              "12" => "Dezembro");
+	                              "12" => "Dezembro"];
 	                db_select("mes", $aMes, true, 2);
 	             ?>
               </td> 
@@ -152,8 +152,8 @@ function js_emite(anousu) {
 	            </td>
 	            <td>
 	              <?php 
-	                $aTipoPrevisao = array("1" => "Inicial",
-	                                       "2" => "Atualizada");
+	                $aTipoPrevisao = ["1" => "Inicial",
+	                                       "2" => "Atualizada"];
 	                db_select("tipoprevisao", $aTipoPrevisao, true, 2);
 	              ?>
 	            </td>
@@ -164,8 +164,8 @@ function js_emite(anousu) {
 	            </td>
 	            <td>
 	              <?php 
-	                $aTipoFixacao = array("1" => "Inicial",
-	                                      "2" => "Atualizada");
+	                $aTipoFixacao = ["1" => "Inicial",
+	                                      "2" => "Atualizada"];
 	                db_select("tipofixacao", $aTipoFixacao, true, 2);
 	              ?>
 	            </td>

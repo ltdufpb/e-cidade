@@ -41,7 +41,7 @@ class cl_rhlocaltrabagentesnocivos
     public function __construct()
     {
         $this->rotulo = new rotulo("rhlocaltrabagentesnocivos"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -105,10 +105,10 @@ class cl_rhlocaltrabagentesnocivos
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh256_sequencial = pg_result($result,0,0); 
+       $this->rh256_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhlocaltrabagentesnocivos_rh256_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh256_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh256_sequencial)){
          $this->erro_sql = " Campo rh256_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -152,7 +152,7 @@ class cl_rhlocaltrabagentesnocivos
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Agentes nocivos do local de trabalho ($this->rh256_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Agentes nocivos do local de trabalho já Cadastrado";
@@ -181,18 +181,18 @@ class cl_rhlocaltrabagentesnocivos
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1013663,'$this->rh256_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010858,1013663,'','".AddSlashes(pg_result($resaco,0,'rh256_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010858,1013664,'','".AddSlashes(pg_result($resaco,0,'rh256_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010858,1013665,'','".AddSlashes(pg_result($resaco,0,'rh256_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010858,1013666,'','".AddSlashes(pg_result($resaco,0,'rh256_agentenocivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010858,1013672,'','".AddSlashes(pg_result($resaco,0,'rh256_tipoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010858,1013673,'','".AddSlashes(pg_result($resaco,0,'rh256_intensidadeconcentracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010858,1013674,'','".AddSlashes(pg_result($resaco,0,'rh256_tolerancialimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010858,1013675,'','".AddSlashes(pg_result($resaco,0,'rh256_medida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010858,1013676,'','".AddSlashes(pg_result($resaco,0,'rh256_tecnicamedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010858,1013663,'','".AddSlashes(pg_fetch_result($resaco,0,'rh256_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010858,1013664,'','".AddSlashes(pg_fetch_result($resaco,0,'rh256_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010858,1013665,'','".AddSlashes(pg_fetch_result($resaco,0,'rh256_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010858,1013666,'','".AddSlashes(pg_fetch_result($resaco,0,'rh256_agentenocivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010858,1013672,'','".AddSlashes(pg_fetch_result($resaco,0,'rh256_tipoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010858,1013673,'','".AddSlashes(pg_fetch_result($resaco,0,'rh256_intensidadeconcentracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010858,1013674,'','".AddSlashes(pg_fetch_result($resaco,0,'rh256_tolerancialimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010858,1013675,'','".AddSlashes(pg_fetch_result($resaco,0,'rh256_medida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010858,1013676,'','".AddSlashes(pg_fetch_result($resaco,0,'rh256_tecnicamedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -203,10 +203,10 @@ class cl_rhlocaltrabagentesnocivos
       $this->atualizacampos();
      $sql = " update rhlocaltrabagentesnocivos set ";
      $virgula = "";
-     if(trim($this->rh256_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_sequencial"])){ 
+     if(trim((string) $this->rh256_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_sequencial"])){ 
        $sql  .= $virgula." rh256_sequencial = $this->rh256_sequencial ";
        $virgula = ",";
-       if(trim($this->rh256_sequencial) == null ){ 
+       if(trim((string) $this->rh256_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "rh256_sequencial";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_rhlocaltrabagentesnocivos
          return false;
        }
      }
-     if(trim($this->rh256_rhlocaltrab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_rhlocaltrab"])){ 
+     if(trim((string) $this->rh256_rhlocaltrab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_rhlocaltrab"])){ 
        $sql  .= $virgula." rh256_rhlocaltrab = $this->rh256_rhlocaltrab ";
        $virgula = ",";
-       if(trim($this->rh256_rhlocaltrab) == null ){ 
+       if(trim((string) $this->rh256_rhlocaltrab) == null ){ 
          $this->erro_sql = " Campo Local de trabalho não informado.";
          $this->erro_campo = "rh256_rhlocaltrab";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_rhlocaltrabagentesnocivos
          return false;
        }
      }
-     if(trim($this->rh256_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_instituicao"])){ 
+     if(trim((string) $this->rh256_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_instituicao"])){ 
        $sql  .= $virgula." rh256_instituicao = $this->rh256_instituicao ";
        $virgula = ",";
-       if(trim($this->rh256_instituicao) == null ){ 
+       if(trim((string) $this->rh256_instituicao) == null ){ 
          $this->erro_sql = " Campo Instituiçao não informado.";
          $this->erro_campo = "rh256_instituicao";
          $this->erro_banco = "";
@@ -242,30 +242,30 @@ class cl_rhlocaltrabagentesnocivos
          return false;
        }
      }
-     if(trim($this->rh256_agentenocivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_agentenocivo"])){ 
+     if(trim((string) $this->rh256_agentenocivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_agentenocivo"])){ 
        $sql  .= $virgula." rh256_agentenocivo = '$this->rh256_agentenocivo' ";
        $virgula = ",";
      }
-     if(trim($this->rh256_tipoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_tipoavaliacao"])){ 
-        if(trim($this->rh256_tipoavaliacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh256_tipoavaliacao"])){ 
+     if(trim((string) $this->rh256_tipoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_tipoavaliacao"])){ 
+        if(trim((string) $this->rh256_tipoavaliacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh256_tipoavaliacao"])){ 
            $this->rh256_tipoavaliacao = "0" ; 
         } 
        $sql  .= $virgula." rh256_tipoavaliacao = $this->rh256_tipoavaliacao ";
        $virgula = ",";
      }
-     if(trim($this->rh256_intensidadeconcentracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_intensidadeconcentracao"])){ 
+     if(trim((string) $this->rh256_intensidadeconcentracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_intensidadeconcentracao"])){ 
        $sql  .= $virgula." rh256_intensidadeconcentracao = '$this->rh256_intensidadeconcentracao' ";
        $virgula = ",";
      }
-     if(trim($this->rh256_tolerancialimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_tolerancialimite"])){ 
+     if(trim((string) $this->rh256_tolerancialimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_tolerancialimite"])){ 
        $sql  .= $virgula." rh256_tolerancialimite = '$this->rh256_tolerancialimite' ";
        $virgula = ",";
      }
-     if(trim($this->rh256_medida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_medida"])){ 
+     if(trim((string) $this->rh256_medida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_medida"])){ 
        $sql  .= $virgula." rh256_medida = '$this->rh256_medida' ";
        $virgula = ",";
      }
-     if(trim($this->rh256_tecnicamedicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_tecnicamedicao"])){ 
+     if(trim((string) $this->rh256_tecnicamedicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh256_tecnicamedicao"])){ 
        $sql  .= $virgula." rh256_tecnicamedicao = '$this->rh256_tecnicamedicao' ";
        $virgula = ",";
      }
@@ -283,27 +283,27 @@ class cl_rhlocaltrabagentesnocivos
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1013663,'$this->rh256_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh256_sequencial"]) || $this->rh256_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010858,1013663,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_sequencial'))."','$this->rh256_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010858,1013663,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh256_sequencial'))."','$this->rh256_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh256_rhlocaltrab"]) || $this->rh256_rhlocaltrab != "")
-             $resac = db_query("insert into db_acount values($acount,1010858,1013664,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_rhlocaltrab'))."','$this->rh256_rhlocaltrab',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010858,1013664,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh256_rhlocaltrab'))."','$this->rh256_rhlocaltrab',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh256_instituicao"]) || $this->rh256_instituicao != "")
-             $resac = db_query("insert into db_acount values($acount,1010858,1013665,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_instituicao'))."','$this->rh256_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010858,1013665,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh256_instituicao'))."','$this->rh256_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh256_agentenocivo"]) || $this->rh256_agentenocivo != "")
-             $resac = db_query("insert into db_acount values($acount,1010858,1013666,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_agentenocivo'))."','$this->rh256_agentenocivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010858,1013666,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh256_agentenocivo'))."','$this->rh256_agentenocivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh256_tipoavaliacao"]) || $this->rh256_tipoavaliacao != "")
-             $resac = db_query("insert into db_acount values($acount,1010858,1013672,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_tipoavaliacao'))."','$this->rh256_tipoavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010858,1013672,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh256_tipoavaliacao'))."','$this->rh256_tipoavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh256_intensidadeconcentracao"]) || $this->rh256_intensidadeconcentracao != "")
-             $resac = db_query("insert into db_acount values($acount,1010858,1013673,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_intensidadeconcentracao'))."','$this->rh256_intensidadeconcentracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010858,1013673,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh256_intensidadeconcentracao'))."','$this->rh256_intensidadeconcentracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh256_tolerancialimite"]) || $this->rh256_tolerancialimite != "")
-             $resac = db_query("insert into db_acount values($acount,1010858,1013674,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_tolerancialimite'))."','$this->rh256_tolerancialimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010858,1013674,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh256_tolerancialimite'))."','$this->rh256_tolerancialimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh256_medida"]) || $this->rh256_medida != "")
-             $resac = db_query("insert into db_acount values($acount,1010858,1013675,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_medida'))."','$this->rh256_medida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010858,1013675,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh256_medida'))."','$this->rh256_medida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh256_tecnicamedicao"]) || $this->rh256_tecnicamedicao != "")
-             $resac = db_query("insert into db_acount values($acount,1010858,1013676,'".AddSlashes(pg_result($resaco,$conresaco,'rh256_tecnicamedicao'))."','$this->rh256_tecnicamedicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010858,1013676,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh256_tecnicamedicao'))."','$this->rh256_tecnicamedicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -357,18 +357,18 @@ class cl_rhlocaltrabagentesnocivos
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1013663,'$rh256_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010858,1013663,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010858,1013664,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010858,1013665,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010858,1013666,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_agentenocivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010858,1013672,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_tipoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010858,1013673,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_intensidadeconcentracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010858,1013674,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_tolerancialimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010858,1013675,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_medida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010858,1013676,'','".AddSlashes(pg_result($resaco,$iresaco,'rh256_tecnicamedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010858,1013663,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh256_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010858,1013664,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh256_rhlocaltrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010858,1013665,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh256_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010858,1013666,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh256_agentenocivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010858,1013672,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh256_tipoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010858,1013673,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh256_intensidadeconcentracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010858,1013674,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh256_tolerancialimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010858,1013675,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh256_medida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010858,1013676,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh256_tecnicamedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

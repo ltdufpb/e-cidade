@@ -41,7 +41,7 @@ final class PadArquivoSigapRRreceitaDespesaSAUDE extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "RRReceitaDespesaSAUDE";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -61,7 +61,7 @@ final class PadArquivoSigapRRreceitaDespesaSAUDE extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao  = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit  = db_getsession("DB_instit");
 
@@ -78,7 +78,7 @@ final class PadArquivoSigapRRreceitaDespesaSAUDE extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                          "rdsCodigoEntidade",
                          "rdsMesAnoMovimento",
                          "rdsSinal",
@@ -91,7 +91,7 @@ final class PadArquivoSigapRRreceitaDespesaSAUDE extends PadArquivoSigap {
                          "rdsContaLRF",
                          "rdsCodigoFuncao",
                          "rdsDescricaoContaLRF"
-                       );
+                       ];
     return $aElementos;  
   }
   

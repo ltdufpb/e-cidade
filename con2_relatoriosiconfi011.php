@@ -69,10 +69,10 @@ $oRelatorio = AnexoSICONFIFactory::getAnexoSICONFI($iAnoUsu, $oGet->relatorio);
 
       <label for="formatoArquivo" class="bold">Formato:</label>
       <?php
-        $aOpcoes = array(
+        $aOpcoes = [
             AnexoSICONFI::TIPO_PDF => "PDF",
             AnexoSICONFI::TIPO_CSV => "CSV"
-          );
+          ];
         db_select("formatoArquivo", $aOpcoes, true, 1);
       ?>
 

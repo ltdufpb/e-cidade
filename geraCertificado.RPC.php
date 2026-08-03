@@ -64,7 +64,7 @@ switch ($oParam->exec) {
       if ($oForneCertif->numrows > 0) {
     	
         $oFC              = db_utils::fieldsMemory($rsForneCertif, 0);
-        $oFC->aDocs       = array();
+        $oFC->aDocs       = [];
         
         $oPcTipoDocCertif    = new cl_pctipodoccertif();
         $sSqlPcTipoDocCertif = $oPcTipoDocCertif->sql_query(null, "*", "", "pc72_pctipocertif={$oFC->pc74_pctipocertif}");

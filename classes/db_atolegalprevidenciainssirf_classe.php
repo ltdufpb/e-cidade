@@ -28,35 +28,35 @@
 //CLASSE DA ENTIDADE atolegalprevidenciainssirf
 class cl_atolegalprevidenciainssirf { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh180_sequencial = 0; 
-   var $rh180_instituicao = 0; 
-   var $rh180_inssirf = 0; 
-   var $rh180_atolegal = 0; 
-   var $rh180_numero = 0; 
-   var $rh180_ano = 0; 
-   var $rh180_datapublicacao_dia = null; 
-   var $rh180_datapublicacao_mes = null; 
-   var $rh180_datapublicacao_ano = null; 
-   var $rh180_datapublicacao = null; 
-   var $rh180_datainiciovigencia_dia = null; 
-   var $rh180_datainiciovigencia_mes = null; 
-   var $rh180_datainiciovigencia_ano = null; 
-   var $rh180_datainiciovigencia = null; 
+   public $rh180_sequencial = 0; 
+   public $rh180_instituicao = 0; 
+   public $rh180_inssirf = 0; 
+   public $rh180_atolegal = 0; 
+   public $rh180_numero = 0; 
+   public $rh180_ano = 0; 
+   public $rh180_datapublicacao_dia = null; 
+   public $rh180_datapublicacao_mes = null; 
+   public $rh180_datapublicacao_ano = null; 
+   public $rh180_datapublicacao = null; 
+   public $rh180_datainiciovigencia_dia = null; 
+   public $rh180_datainiciovigencia_mes = null; 
+   public $rh180_datainiciovigencia_ano = null; 
+   public $rh180_datainiciovigencia = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh180_sequencial = int4 = Código 
                  rh180_instituicao = int4 = Código da Instituição 
                  rh180_inssirf = int4 = INSSIRF 
@@ -67,10 +67,10 @@ class cl_atolegalprevidenciainssirf {
                  rh180_datainiciovigencia = date = Data de Início de Vigência 
                  ";
    //funcao construtor da classe 
-   function cl_atolegalprevidenciainssirf() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atolegalprevidenciainssirf"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -186,10 +186,10 @@ class cl_atolegalprevidenciainssirf {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh180_sequencial = pg_result($result,0,0); 
+       $this->rh180_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from atolegalprevidenciainssirf_rh180_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh180_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh180_sequencial)){
          $this->erro_sql = " Campo rh180_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -231,7 +231,7 @@ class cl_atolegalprevidenciainssirf {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Previdência do Ato Legal ($this->rh180_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Previdência do Ato Legal já Cadastrado";
@@ -260,17 +260,17 @@ class cl_atolegalprevidenciainssirf {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21943,'$this->rh180_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3951,21943,'','".AddSlashes(pg_result($resaco,0,'rh180_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3951,21950,'','".AddSlashes(pg_result($resaco,0,'rh180_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3951,21944,'','".AddSlashes(pg_result($resaco,0,'rh180_inssirf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3951,21945,'','".AddSlashes(pg_result($resaco,0,'rh180_atolegal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3951,21946,'','".AddSlashes(pg_result($resaco,0,'rh180_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3951,21947,'','".AddSlashes(pg_result($resaco,0,'rh180_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3951,21948,'','".AddSlashes(pg_result($resaco,0,'rh180_datapublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3951,21949,'','".AddSlashes(pg_result($resaco,0,'rh180_datainiciovigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3951,21943,'','".AddSlashes(pg_fetch_result($resaco,0,'rh180_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3951,21950,'','".AddSlashes(pg_fetch_result($resaco,0,'rh180_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3951,21944,'','".AddSlashes(pg_fetch_result($resaco,0,'rh180_inssirf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3951,21945,'','".AddSlashes(pg_fetch_result($resaco,0,'rh180_atolegal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3951,21946,'','".AddSlashes(pg_fetch_result($resaco,0,'rh180_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3951,21947,'','".AddSlashes(pg_fetch_result($resaco,0,'rh180_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3951,21948,'','".AddSlashes(pg_fetch_result($resaco,0,'rh180_datapublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3951,21949,'','".AddSlashes(pg_fetch_result($resaco,0,'rh180_datainiciovigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -280,10 +280,10 @@ class cl_atolegalprevidenciainssirf {
       $this->atualizacampos();
      $sql = " update atolegalprevidenciainssirf set ";
      $virgula = "";
-     if(trim($this->rh180_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_sequencial"])){ 
+     if(trim((string) $this->rh180_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_sequencial"])){ 
        $sql  .= $virgula." rh180_sequencial = $this->rh180_sequencial ";
        $virgula = ",";
-       if(trim($this->rh180_sequencial) == null ){ 
+       if(trim((string) $this->rh180_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "rh180_sequencial";
          $this->erro_banco = "";
@@ -293,10 +293,10 @@ class cl_atolegalprevidenciainssirf {
          return false;
        }
      }
-     if(trim($this->rh180_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_instituicao"])){ 
+     if(trim((string) $this->rh180_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_instituicao"])){ 
        $sql  .= $virgula." rh180_instituicao = $this->rh180_instituicao ";
        $virgula = ",";
-       if(trim($this->rh180_instituicao) == null ){ 
+       if(trim((string) $this->rh180_instituicao) == null ){ 
          $this->erro_sql = " Campo Código da Instituição não informado.";
          $this->erro_campo = "rh180_instituicao";
          $this->erro_banco = "";
@@ -306,10 +306,10 @@ class cl_atolegalprevidenciainssirf {
          return false;
        }
      }
-     if(trim($this->rh180_inssirf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_inssirf"])){ 
+     if(trim((string) $this->rh180_inssirf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_inssirf"])){ 
        $sql  .= $virgula." rh180_inssirf = $this->rh180_inssirf ";
        $virgula = ",";
-       if(trim($this->rh180_inssirf) == null ){ 
+       if(trim((string) $this->rh180_inssirf) == null ){ 
          $this->erro_sql = " Campo INSSIRF não informado.";
          $this->erro_campo = "rh180_inssirf";
          $this->erro_banco = "";
@@ -319,10 +319,10 @@ class cl_atolegalprevidenciainssirf {
          return false;
        }
      }
-     if(trim($this->rh180_atolegal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_atolegal"])){ 
+     if(trim((string) $this->rh180_atolegal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_atolegal"])){ 
        $sql  .= $virgula." rh180_atolegal = $this->rh180_atolegal ";
        $virgula = ",";
-       if(trim($this->rh180_atolegal) == null ){ 
+       if(trim((string) $this->rh180_atolegal) == null ){ 
          $this->erro_sql = " Campo Ato Legal não informado.";
          $this->erro_campo = "rh180_atolegal";
          $this->erro_banco = "";
@@ -332,10 +332,10 @@ class cl_atolegalprevidenciainssirf {
          return false;
        }
      }
-     if(trim($this->rh180_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_numero"])){ 
+     if(trim((string) $this->rh180_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_numero"])){ 
        $sql  .= $virgula." rh180_numero = $this->rh180_numero ";
        $virgula = ",";
-       if(trim($this->rh180_numero) == null ){ 
+       if(trim((string) $this->rh180_numero) == null ){ 
          $this->erro_sql = " Campo Número do Ato não informado.";
          $this->erro_campo = "rh180_numero";
          $this->erro_banco = "";
@@ -345,10 +345,10 @@ class cl_atolegalprevidenciainssirf {
          return false;
        }
      }
-     if(trim($this->rh180_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_ano"])){ 
+     if(trim((string) $this->rh180_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_ano"])){ 
        $sql  .= $virgula." rh180_ano = $this->rh180_ano ";
        $virgula = ",";
-       if(trim($this->rh180_ano) == null ){ 
+       if(trim((string) $this->rh180_ano) == null ){ 
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "rh180_ano";
          $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_atolegalprevidenciainssirf {
          return false;
        }
      }
-     if(trim($this->rh180_datapublicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_datapublicacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh180_datapublicacao_dia"] !="") ){ 
+     if(trim((string) $this->rh180_datapublicacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_datapublicacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh180_datapublicacao_dia"] !="") ){ 
        $sql  .= $virgula." rh180_datapublicacao = '$this->rh180_datapublicacao' ";
        $virgula = ",";
-       if(trim($this->rh180_datapublicacao) == null ){ 
+       if(trim((string) $this->rh180_datapublicacao) == null ){ 
          $this->erro_sql = " Campo Data de Publicação não informado.";
          $this->erro_campo = "rh180_datapublicacao_dia";
          $this->erro_banco = "";
@@ -374,7 +374,7 @@ class cl_atolegalprevidenciainssirf {
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh180_datapublicacao_dia"])){ 
          $sql  .= $virgula." rh180_datapublicacao = null ";
          $virgula = ",";
-         if(trim($this->rh180_datapublicacao) == null ){ 
+         if(trim((string) $this->rh180_datapublicacao) == null ){ 
            $this->erro_sql = " Campo Data de Publicação não informado.";
            $this->erro_campo = "rh180_datapublicacao_dia";
            $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_atolegalprevidenciainssirf {
          }
        }
      }
-     if(trim($this->rh180_datainiciovigencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_datainiciovigencia_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh180_datainiciovigencia_dia"] !="") ){ 
+     if(trim((string) $this->rh180_datainiciovigencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh180_datainiciovigencia_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh180_datainiciovigencia_dia"] !="") ){ 
        $sql  .= $virgula." rh180_datainiciovigencia = '$this->rh180_datainiciovigencia' ";
        $virgula = ",";
-       if(trim($this->rh180_datainiciovigencia) == null ){ 
+       if(trim((string) $this->rh180_datainiciovigencia) == null ){ 
          $this->erro_sql = " Campo Data de Início de Vigência não informado.";
          $this->erro_campo = "rh180_datainiciovigencia_dia";
          $this->erro_banco = "";
@@ -401,7 +401,7 @@ class cl_atolegalprevidenciainssirf {
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh180_datainiciovigencia_dia"])){ 
          $sql  .= $virgula." rh180_datainiciovigencia = null ";
          $virgula = ",";
-         if(trim($this->rh180_datainiciovigencia) == null ){ 
+         if(trim((string) $this->rh180_datainiciovigencia) == null ){ 
            $this->erro_sql = " Campo Data de Início de Vigência não informado.";
            $this->erro_campo = "rh180_datainiciovigencia_dia";
            $this->erro_banco = "";
@@ -426,25 +426,25 @@ class cl_atolegalprevidenciainssirf {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21943,'$this->rh180_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh180_sequencial"]) || $this->rh180_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3951,21943,'".AddSlashes(pg_result($resaco,$conresaco,'rh180_sequencial'))."','$this->rh180_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3951,21943,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh180_sequencial'))."','$this->rh180_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh180_instituicao"]) || $this->rh180_instituicao != "")
-             $resac = db_query("insert into db_acount values($acount,3951,21950,'".AddSlashes(pg_result($resaco,$conresaco,'rh180_instituicao'))."','$this->rh180_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3951,21950,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh180_instituicao'))."','$this->rh180_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh180_inssirf"]) || $this->rh180_inssirf != "")
-             $resac = db_query("insert into db_acount values($acount,3951,21944,'".AddSlashes(pg_result($resaco,$conresaco,'rh180_inssirf'))."','$this->rh180_inssirf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3951,21944,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh180_inssirf'))."','$this->rh180_inssirf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh180_atolegal"]) || $this->rh180_atolegal != "")
-             $resac = db_query("insert into db_acount values($acount,3951,21945,'".AddSlashes(pg_result($resaco,$conresaco,'rh180_atolegal'))."','$this->rh180_atolegal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3951,21945,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh180_atolegal'))."','$this->rh180_atolegal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh180_numero"]) || $this->rh180_numero != "")
-             $resac = db_query("insert into db_acount values($acount,3951,21946,'".AddSlashes(pg_result($resaco,$conresaco,'rh180_numero'))."','$this->rh180_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3951,21946,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh180_numero'))."','$this->rh180_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh180_ano"]) || $this->rh180_ano != "")
-             $resac = db_query("insert into db_acount values($acount,3951,21947,'".AddSlashes(pg_result($resaco,$conresaco,'rh180_ano'))."','$this->rh180_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3951,21947,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh180_ano'))."','$this->rh180_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh180_datapublicacao"]) || $this->rh180_datapublicacao != "")
-             $resac = db_query("insert into db_acount values($acount,3951,21948,'".AddSlashes(pg_result($resaco,$conresaco,'rh180_datapublicacao'))."','$this->rh180_datapublicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3951,21948,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh180_datapublicacao'))."','$this->rh180_datapublicacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh180_datainiciovigencia"]) || $this->rh180_datainiciovigencia != "")
-             $resac = db_query("insert into db_acount values($acount,3951,21949,'".AddSlashes(pg_result($resaco,$conresaco,'rh180_datainiciovigencia'))."','$this->rh180_datainiciovigencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3951,21949,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh180_datainiciovigencia'))."','$this->rh180_datainiciovigencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -498,17 +498,17 @@ class cl_atolegalprevidenciainssirf {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21943,'$rh180_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3951,21943,'','".AddSlashes(pg_result($resaco,$iresaco,'rh180_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3951,21950,'','".AddSlashes(pg_result($resaco,$iresaco,'rh180_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3951,21944,'','".AddSlashes(pg_result($resaco,$iresaco,'rh180_inssirf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3951,21945,'','".AddSlashes(pg_result($resaco,$iresaco,'rh180_atolegal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3951,21946,'','".AddSlashes(pg_result($resaco,$iresaco,'rh180_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3951,21947,'','".AddSlashes(pg_result($resaco,$iresaco,'rh180_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3951,21948,'','".AddSlashes(pg_result($resaco,$iresaco,'rh180_datapublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3951,21949,'','".AddSlashes(pg_result($resaco,$iresaco,'rh180_datainiciovigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3951,21943,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh180_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3951,21950,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh180_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3951,21944,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh180_inssirf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3951,21945,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh180_atolegal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3951,21946,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh180_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3951,21947,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh180_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3951,21948,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh180_datapublicacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3951,21949,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh180_datainiciovigencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

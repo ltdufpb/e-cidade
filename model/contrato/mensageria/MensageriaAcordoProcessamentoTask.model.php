@@ -13,14 +13,14 @@ class MensageriaAcordoProcessamentoTask extends Task implements iTarefa {
    *
    * @var Acordo[]
    */
-  private $aAcordos = array();
+  private $aAcordos = [];
 
   /**
    * Datas de vencimento para buscar acordos com data de terminio menor ou igual
    *
    * @var Array
    */
-  private $aDataVencimento = array();
+  private $aDataVencimento = [];
 
   /**
    * Codigo dos usuarios que serao notificados
@@ -29,7 +29,7 @@ class MensageriaAcordoProcessamentoTask extends Task implements iTarefa {
    *
    * @var Array
    */
-  private $aCodigoMensageriaAcordoUsuario = array();
+  private $aCodigoMensageriaAcordoUsuario = [];
 
   /**
    * Codigo do departamento com os codigo dos usuarios que tem permissao nele
@@ -37,13 +37,14 @@ class MensageriaAcordoProcessamentoTask extends Task implements iTarefa {
    *
    * @var Array
    */
-  private $aCodigoDepartamentoUsuario = array();
+  private $aCodigoDepartamentoUsuario = [];
 
   /**
    * Inicia Execucao da Tarefa
    *
    * @return void
    */
+  #[\Override]
   public function iniciar() {
 
     parent::iniciar();
@@ -53,10 +54,10 @@ class MensageriaAcordoProcessamentoTask extends Task implements iTarefa {
       /**
        * Variaveis necessarias para usar as bibliotecas padroes
        */
-      global $HTTP_SERVER_VARS, $HTTP_POST_VARS, $HTTP_GET_VARS, $_SESSION, $conn;
-      $HTTP_SERVER_VARS = $_SESSION;
-      $HTTP_POST_VARS = $_POST;
-      $HTTP_GET_VARS = $_GET;
+      global $_SERVER, $_POST, $_GET, $_SESSION, $conn;
+      $_SERVER = $_SESSION;
+      $_POST = $_POST;
+      $_GET = $_GET;
 
       require_once modification("libs/db_conn.php");
       require_once modification("libs/db_stdlib.php");
@@ -122,7 +123,7 @@ class MensageriaAcordoProcessamentoTask extends Task implements iTarefa {
     /**
      * Codigo do departamento com seus usuarios
      */
-    $aCodigoDepartamentoUsuario = array();
+    $aCodigoDepartamentoUsuario = [];
 
     /**
      * Percorre os usuarios e define propriedades necessarias para buscar acordos
@@ -173,7 +174,7 @@ class MensageriaAcordoProcessamentoTask extends Task implements iTarefa {
       foreach ($aDepartamentos as $oDepartamento) {
 
         if (!isset($aCodigoDepartamentoUsuario[$oDepartamento->getCodigo()])) {
-          $aCodigoDepartamentoUsuario[$oDepartamento->getCodigo()] = array();
+          $aCodigoDepartamentoUsuario[$oDepartamento->getCodigo()] = [];
         }
 
         if (!in_array($iCodigoUsuario, $aCodigoDepartamentoUsuario[$oDepartamento->getCodigo()])) {
@@ -250,19 +251,19 @@ class MensageriaAcordoProcessamentoTask extends Task implements iTarefa {
 
     foreach ($this->aAcordos as $oAcordo) {
 
-      $aVariaveisAcordo = array(
+      $aVariaveisAcordo = [
         '[numero]' => $oAcordo->getNumeroAcordo(),
         '[ano]' => $oAcordo->getAno(),
         '[data_inicial]' => $oAcordo->getDataInicial(),
         '[data_final]' => $oAcordo->getDataFinal(),
-      );
+      ];
 
       $sAssuntoAcordo = strtr($oMensageriaAcordo->getAssunto(), $aVariaveisAcordo);
       $sMensagemAcordo = strtr($oMensageriaAcordo->getMensagem(), $aVariaveisAcordo);
       $oDBDateAtual = new DBDate(date('Y-m-d'));
       $iDiasVencimento = DBDate::calculaIntervaloEntreDatas(new DBDate($oAcordo->getDataFinal()), $oDBDateAtual, 'd');
-      $aDestinatarios = array();
-      $aUsuarioNotificado = array();
+      $aDestinatarios = [];
+      $aUsuarioNotificado = [];
 
       foreach ($this->aCodigoMensageriaAcordoUsuario as $iCodigoMensageriaAcordoUsuario) {
 
@@ -300,7 +301,7 @@ class MensageriaAcordoProcessamentoTask extends Task implements iTarefa {
           continue;
         }
 
-        $aDestinatarios[] = array('sLogin' => $oUsuarioSistema->getLogin(), 'sSistema' => $sSistema);
+        $aDestinatarios[] = ['sLogin' => $oUsuarioSistema->getLogin(), 'sSistema' => $sSistema];
         $aUsuarioNotificado[] = $oUsuarioSistema->getCodigo();
       }
 
@@ -350,12 +351,12 @@ class MensageriaAcordoProcessamentoTask extends Task implements iTarefa {
    */
   private function enviarNotificacao($sAssunto, $sMensagem, $sSistema, Array $aDestinatarios) {
 
-    $aMensagem = array(
+    $aMensagem = [
       'iTipo' => MensageriaCliente::TIPO_NOTIFICACAO,
       'sAssunto' => $sAssunto,
       'sConteudo' => $sMensagem,
       'aDestinatarios' => $aDestinatarios
-    );
+    ];
 
     $lEnviado = MensageriaCliente::enviar($sSistema, $sSistema, $aMensagem);
 

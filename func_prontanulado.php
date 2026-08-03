@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_prontanulado_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprontanulado = new cl_prontanulado;
 $clprontanulado->rotulo->label("sd57_i_codigo");
 $clprontanulado->rotulo->label("sd57_i_codigo");
@@ -98,9 +98,9 @@ $clprontanulado->rotulo->label("sd57_i_codigo");
         }else{
            $sql = $clprontanulado->sql_query("",$campos,"sd57_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd57_i_codigo)){
-          $repassa = array("chave_sd57_i_codigo"=>$chave_sd57_i_codigo,"chave_sd57_i_codigo"=>$chave_sd57_i_codigo);
+          $repassa = ["chave_sd57_i_codigo"=>$chave_sd57_i_codigo,"chave_sd57_i_codigo"=>$chave_sd57_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -21,18 +21,16 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->container->register($name, $value));
         $this->assertTrue($this->container->has($name));
         $this->assertFalse($this->container->isActive($name));
-        $this->assertEquals($expected ? $expected : $value, $this->container->get($name));
+        $this->assertEquals($expected ?: $value, $this->container->get($name));
     }
 
     public function provideDefaultData()
     {
-        return array(
-        array('name1', 'string'),
-        array('name2', new \stdClass),
-        array('name3', function () {
-            return 'foo';
-        }, 'foo')
-        );
+        return [
+        ['name1', 'string'],
+        ['name2', new \stdClass],
+        ['name3', fn() => 'foo', 'foo']
+        ];
     }
 
   /**

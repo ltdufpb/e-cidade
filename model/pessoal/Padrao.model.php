@@ -34,31 +34,12 @@ class Padrao {
 
   const TIPO_CALCULO_HORA = "H";
   const TIPO_CALCULO_MES = "M";
-
-  /**
-   * Regime Vinculado
-   *
-   * @var Regime
-   */
-  private $oRegime;
   /**
    * oCompetencia
    *
    * @var DBCompetencia
    */
   private $oCompetencia;
-  /**
-   * Instiituição
-   *
-   * @var Instituicao
-   */
-  private $oInstituicao;
-  /**
-   * Codigo Identificador do padrão
-   *
-   * @var String
-   */
-  private $sCodigo;
   /**
    * Valor do Padrão
    *
@@ -96,12 +77,18 @@ class Padrao {
    * @param DBCompetencia $oCompetencia
    * @param Instituicao $oInstituicao
    */
-  public function __construct( $sCodigo,  Regime $oRegime,  DBCompetencia $oCompetencia, Instituicao $oInstituicao) {
+  public function __construct( /**
+   * Codigo Identificador do padrão
+   */
+  private $sCodigo,  /**
+   * Regime Vinculado
+   */
+  private readonly Regime $oRegime,  DBCompetencia $oCompetencia, /**
+   * Instiituição
+   */
+  private readonly Instituicao $oInstituicao) {
 
-    $this->sCodigo      = $sCodigo;
     $this->oCompetencia = $oCompetencia;
-    $this->oInstituicao = $oInstituicao;
-    $this->oRegime      = $oRegime;
   }
 
   /**

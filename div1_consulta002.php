@@ -38,9 +38,9 @@
 	require(modification("classes/db_certdiv_classe.php"));
 	require(modification("classes/db_certter_classe.php"));
 	include(modification("dbforms/db_funcoes.php"));
-	db_postmemory($HTTP_SERVER_VARS);
-	parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-	db_postmemory($HTTP_POST_VARS);
+	db_postmemory($_SERVER);
+	parse_str((string) $_SERVER['QUERY_STRING'], $result);
+	db_postmemory($_POST);
 	$cldivida = new cl_divida;
 	$clcertdiv = new cl_certdiv;
 	$cltermoini = new cl_termoini;

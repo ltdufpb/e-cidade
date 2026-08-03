@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE rhestagioquesito
 class cl_rhestagioquesito { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h51_sequencial = 0; 
-   var $h51_rhestagio = 0; 
-   var $h51_descr = null; 
+   public $h51_sequencial = 0; 
+   public $h51_rhestagio = 0; 
+   public $h51_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h51_sequencial = int4 = Cód. Sequencial 
                  h51_rhestagio = int4 = Cód. estágio 
                  h51_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_rhestagioquesito() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhestagioquesito"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_rhestagioquesito {
          $this->erro_status = "0";
          return false; 
        }
-       $this->h51_sequencial = pg_result($result,0,0); 
+       $this->h51_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhestagioquesito_h51_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $h51_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $h51_sequencial)){
          $this->erro_sql = " Campo h51_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_rhestagioquesito {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Requisitos para estágio ($this->h51_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Requisitos para estágio já Cadastrado";
@@ -166,12 +166,12 @@ class cl_rhestagioquesito {
      $resaco = $this->sql_record($this->sql_query_file($this->h51_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10860,'$this->h51_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1870,10860,'','".AddSlashes(pg_result($resaco,0,'h51_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1870,10861,'','".AddSlashes(pg_result($resaco,0,'h51_rhestagio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1870,10862,'','".AddSlashes(pg_result($resaco,0,'h51_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1870,10860,'','".AddSlashes(pg_fetch_result($resaco,0,'h51_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1870,10861,'','".AddSlashes(pg_fetch_result($resaco,0,'h51_rhestagio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1870,10862,'','".AddSlashes(pg_fetch_result($resaco,0,'h51_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_rhestagioquesito {
       $this->atualizacampos();
      $sql = " update rhestagioquesito set ";
      $virgula = "";
-     if(trim($this->h51_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h51_sequencial"])){ 
+     if(trim((string) $this->h51_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h51_sequencial"])){ 
        $sql  .= $virgula." h51_sequencial = $this->h51_sequencial ";
        $virgula = ",";
-       if(trim($this->h51_sequencial) == null ){ 
+       if(trim((string) $this->h51_sequencial) == null ){ 
          $this->erro_sql = " Campo Cód. Sequencial nao Informado.";
          $this->erro_campo = "h51_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_rhestagioquesito {
          return false;
        }
      }
-     if(trim($this->h51_rhestagio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h51_rhestagio"])){ 
+     if(trim((string) $this->h51_rhestagio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h51_rhestagio"])){ 
        $sql  .= $virgula." h51_rhestagio = $this->h51_rhestagio ";
        $virgula = ",";
-       if(trim($this->h51_rhestagio) == null ){ 
+       if(trim((string) $this->h51_rhestagio) == null ){ 
          $this->erro_sql = " Campo Cód. estágio nao Informado.";
          $this->erro_campo = "h51_rhestagio";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_rhestagioquesito {
          return false;
        }
      }
-     if(trim($this->h51_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h51_descr"])){ 
+     if(trim((string) $this->h51_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h51_descr"])){ 
        $sql  .= $virgula." h51_descr = '$this->h51_descr' ";
        $virgula = ",";
-       if(trim($this->h51_descr) == null ){ 
+       if(trim((string) $this->h51_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "h51_descr";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_rhestagioquesito {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10860,'$this->h51_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h51_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1870,10860,'".AddSlashes(pg_result($resaco,$conresaco,'h51_sequencial'))."','$this->h51_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1870,10860,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h51_sequencial'))."','$this->h51_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h51_rhestagio"]))
-           $resac = db_query("insert into db_acount values($acount,1870,10861,'".AddSlashes(pg_result($resaco,$conresaco,'h51_rhestagio'))."','$this->h51_rhestagio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1870,10861,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h51_rhestagio'))."','$this->h51_rhestagio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h51_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1870,10862,'".AddSlashes(pg_result($resaco,$conresaco,'h51_descr'))."','$this->h51_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1870,10862,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h51_descr'))."','$this->h51_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_rhestagioquesito {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10860,'$h51_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1870,10860,'','".AddSlashes(pg_result($resaco,$iresaco,'h51_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1870,10861,'','".AddSlashes(pg_result($resaco,$iresaco,'h51_rhestagio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1870,10862,'','".AddSlashes(pg_result($resaco,$iresaco,'h51_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1870,10860,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h51_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1870,10861,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h51_rhestagio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1870,10862,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h51_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhestagioquesito
@@ -345,7 +345,7 @@ class cl_rhestagioquesito {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhestagioquesito";
@@ -359,7 +359,7 @@ class cl_rhestagioquesito {
    function sql_query ( $h51_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,7 +381,7 @@ class cl_rhestagioquesito {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,7 +393,7 @@ class cl_rhestagioquesito {
    function sql_query_file ( $h51_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_rhestagioquesito {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -41,8 +41,8 @@ include(modification("classes/db_diasemana_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clmedicos                = new cl_medicos;
@@ -108,7 +108,7 @@ if(isset($excluir)){
             and sd23_i_unidmed = $sd30_i_undmed
             and extract(dow from sd23_d_consulta ) = $sd30_i_diasemana ";
 	$result = db_query( $sql );
-	if( pg_numrows( $result ) > 0 ){
+	if( pg_num_rows( $result ) > 0 ){
 		echo "<script>alert('Profissional tem agendamentos efetuadas posteriormente. Não permitindo a exclusão do horário')</script>";
 	}else{
 		db_inicio_transacao();

@@ -38,8 +38,8 @@ include(modification("classes/db_turno_classe.php"));
 include(modification("classes/db_cursoedu_classe.php"));
 include(modification("classes/db_procedimento_classe.php"));
 include(modification("classes/db_sala_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clturma = new cl_turma;
 $clcalendario = new cl_calendario;
 $clturno = new cl_turno;
@@ -90,7 +90,7 @@ $escola = db_getsession("DB_coddepto");
       <?php 
       $result_sala = $clsala->sql_record($clsala->sql_query_file("","ed16_i_codigo,ed16_c_descr","ed16_c_descr"," ed16_i_escola = $escola"));
       if($clsala->numrows==0){
-       $x = array(''=>'NENHUM REGISTRO');
+       $x = [''=>'NENHUM REGISTRO'];
        db_select('ed57_i_sala',$x,true,1,"");
       }else{
        db_selectrecord("ed57_i_sala",$result_sala,"","","","chave_ed57_i_sala","","  ","",1);
@@ -111,7 +111,7 @@ $escola = db_getsession("DB_coddepto");
       $result_tur = db_query($sql_tur);
       $linhas_tur = pg_num_rows($result_tur);
       if($linhas_tur==0){
-       $x = array(''=>'NENHUM REGISTRO');
+       $x = [''=>'NENHUM REGISTRO'];
        db_select('ed57_i_turno',$x,true,1,"");
       }else{
        db_selectrecord("ed57_i_turno",$result_tur,"","","","chave_ed57_i_turno","","  ","",1);
@@ -123,7 +123,7 @@ $escola = db_getsession("DB_coddepto");
       <?php 
       $result_cal = $clcalendario->sql_record($clcalendario->sql_query_calescola("","ed52_i_codigo,ed52_c_descr","ed52_i_ano desc"," ed38_i_escola = $escola"));
       if($clcalendario->numrows==0){
-       $x = array(''=>'NENHUM REGISTRO');
+       $x = [''=>'NENHUM REGISTRO'];
        db_select('ed57_i_calendario',$x,true,1,"");
       }else{
        db_selectrecord("ed57_i_calendario",$result_cal,"","","","chave_ed57_i_calendario","","  ","",1);
@@ -135,7 +135,7 @@ $escola = db_getsession("DB_coddepto");
       <?php 
       $result_proc = $clprocedimento->sql_record($clprocedimento->sql_query_procturma("","ed40_i_codigo,ed40_c_descr","ed40_c_descr"," ed86_i_escola = $escola GROUP BY ed40_i_codigo,ed40_c_descr"));
       if($clprocedimento->numrows==0){
-       $x = array(''=>'NENHUM REGISTRO');
+       $x = [''=>'NENHUM REGISTRO'];
        db_select('ed220_i_procedimento',$x,true,1,"");
       }else{
        db_selectrecord("ed220_i_procedimento",$result_proc,"","","","chave_ed220_i_procedimento","","  ","",1);

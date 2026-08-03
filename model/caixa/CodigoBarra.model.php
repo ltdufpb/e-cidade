@@ -148,8 +148,8 @@ class CodigoBarra {
   private function linhaDigitavel($sLinhaDigitavel) {
 
     return in_array(strlen($sLinhaDigitavel),
-                    array(self::QUANTIDADE_DIGITOS_LINHA_DIGITAVEL_CONVENIO,
-                          self::QUANTIDADE_DIGITOS_LINHA_DIGITAVEL_FATURA));
+                    [self::QUANTIDADE_DIGITOS_LINHA_DIGITAVEL_CONVENIO,
+                          self::QUANTIDADE_DIGITOS_LINHA_DIGITAVEL_FATURA]);
   }
 
   /**
@@ -312,7 +312,7 @@ class CodigoBarra {
 
     if ($this->convenio()) {
 
-      if (in_array($this->iIdentificadorValor, array("6", "8"))) {
+      if (in_array($this->iIdentificadorValor, ["6", "8"])) {
         return ((int) substr($this->getCodigoBarras(), 4, 11)) / 100;
       }
     }
@@ -354,7 +354,7 @@ class CodigoBarra {
     if (empty($sCodigo)) {
       $sCodigo = $this->getCodigoBarras();
     }
-    return substr($sCodigo, 0, 1) == '8' ? self::TIPO_BARRA_CONVENIO : self::TIPO_BARRA_FATURA;
+    return str_starts_with($sCodigo, '8') ? self::TIPO_BARRA_CONVENIO : self::TIPO_BARRA_FATURA;
   }
 
   /**
@@ -366,17 +366,11 @@ class CodigoBarra {
   private function gerarCodigoBarra($sLinhaDigitavel) {
 
     $sCodigoBarra = null;
-    switch ($this->getTipoBarra($sLinhaDigitavel)) {
-      
-      case self::TIPO_BARRA_FATURA:
-        $sCodigoBarra = $this->gerarCodigoBarraFatura($sLinhaDigitavel);
-        break;
-
-      case self::TIPO_BARRA_CONVENIO:
-        $sCodigoBarra = $this->gerarCodigoBarraConvenio($sLinhaDigitavel);
-        break;
-    
-    }
+    $sCodigoBarra = match ($this->getTipoBarra($sLinhaDigitavel)) {
+        self::TIPO_BARRA_FATURA => $this->gerarCodigoBarraFatura($sLinhaDigitavel),
+        self::TIPO_BARRA_CONVENIO => $this->gerarCodigoBarraConvenio($sLinhaDigitavel),
+        default => $sCodigoBarra,
+    };
     return $sCodigoBarra;
   }
 
@@ -388,16 +382,11 @@ class CodigoBarra {
   private function geraLinhaDigitavel() {
 
     $sLinhaDigitavel = null;
-    switch ($this->getTipoBarra()) {
-
-      case self::TIPO_BARRA_FATURA:
-        $sLinhaDigitavel = $this->geraLinhaDigitavelFatura();
-        break;
-
-      case self::TIPO_BARRA_CONVENIO:
-        $sLinhaDigitavel = $this->geraLinhaDigitavelConvenio();
-        break;
-    }
+    $sLinhaDigitavel = match ($this->getTipoBarra()) {
+        self::TIPO_BARRA_FATURA => $this->geraLinhaDigitavelFatura(),
+        self::TIPO_BARRA_CONVENIO => $this->geraLinhaDigitavelConvenio(),
+        default => $sLinhaDigitavel,
+    };
 
     return $sLinhaDigitavel;
   }
@@ -410,7 +399,7 @@ class CodigoBarra {
    */
   private function gerarCodigoBarraConvenio($sLinhaDigitavel) {
 
-    $aCodigoBarra = array();
+    $aCodigoBarra = [];
     $aCodigoBarra[0] = substr($sLinhaDigitavel, 0, 11);
     $aCodigoBarra[1] = substr($sLinhaDigitavel, 12, 11);
     $aCodigoBarra[2] = substr($sLinhaDigitavel, 24, 11);
@@ -427,7 +416,7 @@ class CodigoBarra {
    */
   private function gerarCodigoBarraFatura($sLinhaDigitavel) {
 
-    $aCodigoBarra = array();
+    $aCodigoBarra = [];
     $aCodigoBarra[0] = substr($sLinhaDigitavel, 0, 4);
     $aCodigoBarra[1] = substr($sLinhaDigitavel, 32, 15);
     $aCodigoBarra[2] = substr($sLinhaDigitavel, 4, 5);
@@ -473,12 +462,12 @@ class CodigoBarra {
   private function geraLinhaDigitavelConvenio() {
 
     $sCodigoBarra = $this->getCodigoBarras();
-    $aBlocos      = array(
+    $aBlocos      = [
       substr($sCodigoBarra, 0,  11),
       substr($sCodigoBarra, 11, 11),
       substr($sCodigoBarra, 22, 11),
       substr($sCodigoBarra, 33, 11)
-    );
+    ];
 
     for ($i = 0; $i < count($aBlocos); $i++) {
 
@@ -489,7 +478,7 @@ class CodigoBarra {
       $aBlocos[$i]  = $sBloco;
      }
 
-     return implode($aBlocos, " ");
+     return implode(" ", $aBlocos);
   }
 
 
@@ -508,22 +497,11 @@ class CodigoBarra {
       return self::modulo10($sDigitos);
     }
 
-    switch ($sIdentificadorValor) {
-
-      case '6':
-      case '7':
-        return self::modulo10($sDigitos);
-        break;
-
-      case '8':
-      case '9':
-        return self::modulo11($sDigitos);
-        break;
-
-      default:
-        throw new Exception("O código informado é inválido.");
-        break;
-    }
+    return match ($sIdentificadorValor) {
+        '6', '7' => self::modulo10($sDigitos),
+        '8', '9' => self::modulo11($sDigitos),
+        default => throw new Exception("O código informado é inválido."),
+    };
   }
 
   /**

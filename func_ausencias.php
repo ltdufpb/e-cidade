@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ausencias_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clausencias = new cl_ausencias;
 $clausencias->rotulo->label("sd06_i_codigo");
 $clausencias->rotulo->label("sd06_i_medico");
@@ -98,9 +98,9 @@ $clausencias->rotulo->label("sd06_i_medico");
         }else{
            $sql = $clausencias->sql_query("",$campos,"sd06_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd06_i_medico)){
-          $repassa = array("chave_sd06_i_codigo"=>$chave_sd06_i_codigo,"chave_sd06_i_medico"=>$chave_sd06_i_medico);
+          $repassa = ["chave_sd06_i_codigo"=>$chave_sd06_i_codigo,"chave_sd06_i_medico"=>$chave_sd06_i_medico];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

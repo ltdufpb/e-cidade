@@ -16,8 +16,8 @@ $retorno->mensagem = '';
 try {
     $oGet = db_utils::postMemory($_GET);
 
-    $data1 = explode('/', $oGet->dataInicial);
-    $data2 = explode('/', $oGet->dataFinal);
+    $data1 = explode('/', (string) $oGet->dataInicial);
+    $data2 = explode('/', (string) $oGet->dataFinal);
 
     $dataInicial = date("Y-m-d", mktime(0, 0, 0, $data1[1], $data1[0], $data1[2]));
     $dataFinal = date("Y-m-d", mktime(0, 0, 0, $data2[1], $data2[0], $data2[2]));
@@ -132,7 +132,7 @@ try {
         $conteudo->cabecalho->nomeSetor = $setor;
     }
 
-    $conteudo->coletas = array();
+    $conteudo->coletas = [];
 
     $codigoRequisicaoAnterior = $rs[0]['la22_i_codigo'];
     $coleta = new stdClass();
@@ -147,12 +147,12 @@ try {
             $coleta->requisicao = $row['la22_i_codigo'];
             $coleta->dataRequisicao = $row['la22_d_data'];
 
-            $arrayData =  explode('-', $coleta->dataRequisicao);
+            $arrayData =  explode('-', (string) $coleta->dataRequisicao);
             $coleta->dataRequisicao = date("d/m/Y", mktime(0, 0, 0, $arrayData[1], $arrayData[2], $arrayData[0]));
-            $coleta->exames = array();
+            $coleta->exames = [];
         }
 
-        $coleta->exames[] = trim($row['la08_c_sigla']);
+        $coleta->exames[] = trim((string) $row['la08_c_sigla']);
         $codigoRequisicaoAnterior = $row['la22_i_codigo'];
     }
 
@@ -179,9 +179,9 @@ try {
     $conteudo->cabecalho->laboratorio = $rsLaboratorio['la02_c_descr'];
     $conteudo->cabecalho->municipioDepartamento = $rsDadosCabecalho['munic'];
     $conteudo->cabecalho->ufDepartamento = $rsDadosCabecalho['uf'];
-    $conteudo->cabecalho->enderecoLaboratorio = trim($rsLaboratorio['la02_c_endereco']) . ', ' . trim($rsLaboratorio['la02_c_numero']);
-    $conteudo->cabecalho->telefoneLaboratorio = trim($rsLaboratorio['la02_i_telefone']);
-    $conteudo->cabecalho->emailDepartamento = trim($rsDadosCabecalho['email']);
+    $conteudo->cabecalho->enderecoLaboratorio = trim((string) $rsLaboratorio['la02_c_endereco']) . ', ' . trim((string) $rsLaboratorio['la02_c_numero']);
+    $conteudo->cabecalho->telefoneLaboratorio = trim((string) $rsLaboratorio['la02_i_telefone']);
+    $conteudo->cabecalho->emailDepartamento = trim((string) $rsDadosCabecalho['email']);
     $conteudo->cabecalho->cnpjDepartamento = $rsDadosCabecalho['cgc'];
     $conteudo->cabecalho->siteDepartamento = $rsDadosCabecalho['url'];
 

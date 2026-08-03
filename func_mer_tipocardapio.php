@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_tipocardapio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_tipocardapio = new cl_mer_tipocardapio;
 $clmer_tipocardapio->rotulo->label("me27_i_codigo");
 $clmer_tipocardapio->rotulo->label("me27_c_nome");
@@ -106,9 +106,9 @@ $codescola = db_getsession("DB_coddepto");
     } else {
       $sql = $clmer_tipocardapio->sql_query("",$campos,"me27_i_id,me27_f_versao desc","");
     }
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_me27_i_codigo)) {
-      $repassa = array("chave_me27_i_codigo"=>$chave_me27_i_codigo,"chave_me27_c_nome"=>$chave_me27_c_nome);
+      $repassa = ["chave_me27_i_codigo"=>$chave_me27_i_codigo,"chave_me27_c_nome"=>$chave_me27_c_nome];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
     

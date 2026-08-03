@@ -164,6 +164,6 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe_cancdebitos.hide();
-  <?php  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;"; ?>
+  <?php  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;"; ?>
 }
 </script>

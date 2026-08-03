@@ -55,11 +55,11 @@ $db_opcao = 1;
     <tr>
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
             <?php 
-            $clcriaabas->identifica = array("depart" => "Departamento destino", "itens" => "Itens");
-            $clcriaabas->sizecampo = array("depart" => "20", "itens" => "20");
-            $clcriaabas->title = array("depart" => "Departamento destino", "itens" => "Incluir itens na transferência");
-            $clcriaabas->src = array("depart" => "mat1_mattransfdepto005.php");
-            $clcriaabas->disabled = array("itens" => "true");
+            $clcriaabas->identifica = ["depart" => "Departamento destino", "itens" => "Itens"];
+            $clcriaabas->sizecampo = ["depart" => "20", "itens" => "20"];
+            $clcriaabas->title = ["depart" => "Departamento destino", "itens" => "Incluir itens na transferência"];
+            $clcriaabas->src = ["depart" => "mat1_mattransfdepto005.php"];
+            $clcriaabas->disabled = ["itens" => "true"];
             $clcriaabas->cria_abas();
             ?>
         </td>

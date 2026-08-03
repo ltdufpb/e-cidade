@@ -33,7 +33,7 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo           = new rotulocampo ();
 $oDaoSauFechamento  = db_utils::getdao('sau_fechamento');
 $oDaoSauFecharquivo = db_utils::getdao('sau_fecharquivo');
@@ -93,7 +93,7 @@ if ($oSauConfig != false) {
                   <td colspan="2">
                     <b>Tipo de BPA:</b>
                     <?php 
-                      $arr_tipo = array ("02" => "Individual", "01" => "Consolidado" );
+                      $arr_tipo =  ["02" => "Individual", "01" => "Consolidado" ];
                       db_select('sTipo', $arr_tipo, true, 4 );
                     ?>
                   </td>
@@ -190,7 +190,7 @@ if ($oSauConfig != false) {
                         $sSql       = $oDaoUnidades->sql_query("", "sd02_i_codigo,descrdepto");
                         $rsUnidades = $oDaoUnidades->sql_record($sSql);
                         db_multiploselect("sd02_i_codigo", "descrdepto", "nselecionados", "sselecionados", $rsUnidades,
-                                          array(), 5, 250);
+                                          [], 5, 250);
                         db_input ('sd24_i_unidade', 100, "", true, 'hidden', 1, "" );
                       ?>
                     </fieldset>
@@ -475,7 +475,7 @@ if (isset($gerararquivo)) {
   $oDados->sTipo          = $sTipo;
   $oDados->sSigla         = $sSigla;
   $oDados->sDestino       = $sDestino;
-  $oDados->sVersao        = pg_result($rsCodRelease, 0, "ultimarelease");
+  $oDados->sVersao        = pg_fetch_result($rsCodRelease, 0, "ultimarelease");
   $oDados->orgao          = $iOrgao;
   $oDados->sOrgResp       = $snomedepart;
 
@@ -498,14 +498,14 @@ if (isset($gerararquivo)) {
 
     /* Monta nome do arquivo */
     $sAbrevMes       = data_farmacia($sd97_i_compano,$sd97_i_compmes."M");
-    $sAbrevMes       = strtoupper(substr($sAbrevMes['periodo'], 0, 3));
+    $sAbrevMes       = strtoupper(substr((string) $sAbrevMes['periodo'], 0, 3));
     $sArquivo        = "/tmp/PA".$sNomeArquivo.".".$sAbrevMes;
 
     /* Pega o numero de controle gerado*/
     $oCabecalho      = db_utils::fieldsmemory($rsCabecalho, 0);
     $cbc_smt_vrf     = $oCabecalho->cbc_smt_vrf;
 
-    $iBpa            = geraArquivoBPA($oDados, $rsCabecalho, $rsProducao, true, $sArquivo);
+    $iBpa            = geraArquivoBPA($oDados, $rsCabecalho, $rsProducao);
 
   }
   /* se não ouve erro armazena arquivo no banco */

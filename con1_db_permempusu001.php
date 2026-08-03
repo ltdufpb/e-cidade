@@ -49,7 +49,7 @@ $clorcdotacao = new cl_orcdotacao;
 $cldb_permemp = new cl_db_permemp;
 $cldb_usupermemp = new cl_db_usupermemp;
 $cldb_depusuemp = new cl_db_depusuemp;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $anousu=db_getsession('DB_anousu');
 
 if(isset($incluir_todos)){

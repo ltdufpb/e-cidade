@@ -51,19 +51,19 @@ $clcriaabas = new cl_criaabas;
      <td>
      <?php 
      
-       $clcriaabas->identifica = array("valpacto" =>"Valor Pacto", 
-                   					           "itememp"  =>"Vincular Empenho");
+       $clcriaabas->identifica = ["valpacto" =>"Valor Pacto", 
+                   					           "itememp"  =>"Vincular Empenho"];
        
-       $clcriaabas->title      = array("valpacto" =>"Valor Pacto", 
-                                       "itememp"  =>"Vincular Empenho");       
+       $clcriaabas->title      = ["valpacto" =>"Valor Pacto", 
+                                       "itememp"  =>"Vincular Empenho"];       
            
-       $clcriaabas->src        = array("valpacto"	=>"orc1_pactovalor011.php",
-                     								   "itememp"  =>"orc1_empempitempacto001.php");    
+       $clcriaabas->src        = ["valpacto"	=>"orc1_pactovalor011.php",
+                     								   "itememp"  =>"orc1_empempitempacto001.php"];    
 
-       $clcriaabas->sizecampo  = array("valpacto"=>"30",
-                                       "itememp" =>"30");
+       $clcriaabas->sizecampo  = ["valpacto"=>"30",
+                                       "itememp" =>"30"];
         
-       $clcriaabas->disabled   = array("itememp"=>true);  
+       $clcriaabas->disabled   = ["itememp"=>true];  
       
        $clcriaabas->cria_abas();
 

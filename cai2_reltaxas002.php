@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 $pdf = new PDF(); 
 $pdf->Open(); 
@@ -43,7 +43,7 @@ if ( $codsubrec == ''){
    $sql = "select upper(k07_descr) as k07_descr from tabdesc where codsubrec = $codsubrec and k07_instit = $instit";
    $result = db_query($sql);
 
-   $head4 = $codsubrec.' - '.pg_result($result,0,'k07_descr');
+   $head4 = $codsubrec.' - '.pg_fetch_result($result,0,'k07_descr');
    $ordem = ' order by g.codsubrec, a.k00_dtpaga, e.z01_nome ';
    $where = ' f.k00_codsubrec = '.$codsubrec.' and ';
 }
@@ -102,7 +102,7 @@ $sql = "select * from ($sql) as x where codsubrec is not null";
 //echo $sql ; exit;
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos para a taxa '.$codsubrec.' no período de '.db_formatar($datai,'d').' a '.db_formatar($dataf,'d'));
 }
@@ -135,7 +135,7 @@ if ($agrupar == 't'){
      }
      $pdf->setfont('arial','',7);
      $pdf->cell(20,4,$codsubrec,1,0,"C",$pre);
-     $pdf->cell(80,4,strtoupper($k07_descr),1,0,"D",$pre);
+     $pdf->cell(80,4,strtoupper((string) $k07_descr),1,0,"D",$pre);
      $pdf->cell(25,4,db_formatar($count,'s'),1,0,"R",$pre);
      $pdf->cell(25,4,db_formatar($valor,'f'),1,1,"R",$pre);
      $total_geral +=$valor;
@@ -152,7 +152,7 @@ if ($agrupar == 't'){
    $pdf->SetFillColor(220);
    $pdf->SetFont('Arial','B',11);
    $pdf->SetFont('Arial','B',7);
-   $receita = pg_result($result,0,'codsubrec').' - '.strtoupper(pg_result($result,0,'k07_descr'));
+   $receita = pg_fetch_result($result,0,'codsubrec').' - '.strtoupper(pg_fetch_result($result,0,'k07_descr'));
    $pdf->multicell(0,6,$receita,0,"L",0);
    $pdf->Cell(12,6,"NUMPRE",1,0,"C",1);
    $pdf->Cell(60,6,"NOME",1,0,"C",1);
@@ -169,7 +169,7 @@ if ($agrupar == 't'){
       if ($pdf->gety() > $pdf->h - 30 ){
 	 $pdf->addpage('L');
          $pdf->SetFont('Arial','B',7);
-         $pdf->multicell(0,6,$codsubrec.' - '.strtoupper($k07_descr),0,"L",0);
+         $pdf->multicell(0,6,$codsubrec.' - '.strtoupper((string) $k07_descr),0,"L",0);
          $pdf->Cell(12,6,"NUMPRE",1,0,"C",1);
          $pdf->Cell(60,6,"NOME",1,0,"C",1);
          $pdf->Cell(15,6,"PAGTO",1,0,"C",1);
@@ -177,7 +177,7 @@ if ($agrupar == 't'){
          $pdf->Cell(150,6,"HISTORICO",1,0,"C",1);
          $pdf->Cell(20,6,"VALOR",1,1,"C",1);
       }
-      if ( $receita != $codsubrec.' - '.strtoupper($k07_descr) ){;
+      if ( $receita != $codsubrec.' - '.strtoupper((string) $k07_descr) ){;
    //      $pdf->AddPage('L');
          $pdf->SetFont('Arial','B',7);
          $pdf->Cell(249,6,"TOTAL DA TAXA : ",1,0,"L",0);
@@ -185,7 +185,7 @@ if ($agrupar == 't'){
          $total_taxa = 0;
          $pdf->SetFont('Arial','B',7);
          $pdf->ln(3);
-         $pdf->multicell(0,6,$codsubrec.' - '.strtoupper($k07_descr),0,"L",0);
+         $pdf->multicell(0,6,$codsubrec.' - '.strtoupper((string) $k07_descr),0,"L",0);
          $pdf->Cell(12,6,"NUMPRE",1,0,"C",1);
          $pdf->Cell(60,6,"NOME",1,0,"C",1);
          $pdf->Cell(15,6,"PAGTO",1,0,"C",1);
@@ -203,14 +203,14 @@ if ($agrupar == 't'){
       }
       $pdf->SetFont('Arial','',7);
       $pdf->cell(12,4,$k00_numpre,1,0,"R",$pre);
-      $pdf->cell(60,4,substr($z01_nome,0,35),1,0,"L",$pre);
+      $pdf->cell(60,4,substr((string) $z01_nome,0,35),1,0,"L",$pre);
       $pdf->Cell(15,4,db_formatar($k00_dtpaga,'d'),1,0,"C",$pre);
       $pdf->cell(12,4,$matins,1,0,"L",$pre);
-      $pdf->cell(150,4,substr(strtoupper($k00_histtxt),0,100),1,0,"L",$pre);
+      $pdf->cell(150,4,substr(strtoupper((string) $k00_histtxt),0,100),1,0,"L",$pre);
       $pdf->cell(20,4,db_formatar($valor,'f'),1,1,"R",$pre);
       $total_geral += $valor;
       $total_taxa += $valor;
-      $receita = $codsubrec.' - '.strtoupper($k07_descr);
+      $receita = $codsubrec.' - '.strtoupper((string) $k07_descr);
    }
    //$pdf->Ln(5);
    $pdf->SetFont('Arial','B',7);

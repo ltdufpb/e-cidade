@@ -63,7 +63,7 @@
 
 	          	$iAnoUsu = db_getsession("DB_anousu");
 
-	          	$aExercicios = array();
+	          	$aExercicios = [];
 	          	for ($i = 0; $i < 5; $i++) {
 	          		$aExercicios[$iAnoUsu-$i] = $iAnoUsu-$i;
 	          	}

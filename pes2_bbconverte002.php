@@ -29,7 +29,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_POST_VARS,2);
 db_inicio_transacao();
 
@@ -123,16 +123,16 @@ function ConverteArquivo($AArquivo){
 				$nMatricula = $pessoal[0]["r01_regist"];
 			}
 
-			
+
 			// leitura do valor a ser lancado na folha
 			$nValor    = db_val(db_substr($cLinha, 144, 9));
 
 			$nParcela  = db_val(db_substr($cLinha, 106, 2));
 			$nParcelas = db_val(db_substr($cLinha, 108, 2));
-			
+
 			$cLinhaGrava  =  db_str($nMatricula,5,0,"0");
       $cLinhaGrava .=  valor_10($nValor).valor_8($nParcela*100).valor_6($nParcelas)."\n";
-							
+
 //echo "<br>  cLinhaGrava --> $cLinhaGrava";
 			fputs($handle_saida,$cLinhaGrava);
 

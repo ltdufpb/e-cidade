@@ -64,7 +64,7 @@ if ($db_opcao == 1) {
               </td>
               <td>
                 <?php
-                  $x = array('1' => 'Decreto',
+                  $x = ['1' => 'Decreto',
                              '2' => 'Decreto Lei',
                              '3' => 'Emenda Constitucional',
                              '4' => 'Instrução Normativa',
@@ -73,7 +73,7 @@ if ($db_opcao == 1) {
                              '7' => 'Nota',
                              '8' => 'Ordem de Serviço',
                              '9' => 'Portaria',
-                             '10' => 'Resolução');
+                             '10' => 'Resolução'];
                   db_select('rh137_tipodocumentacao', $x, true, $db_opcao, "");
                 ?>
               </td>
@@ -191,7 +191,7 @@ if ($db_opcao == 1) {
       db_iframe_rhfundamentacaolegal.hide();
       <?php
         if ($db_opcao != 1) {
-          echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
+          echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
         }
       ?>
     }
@@ -241,6 +241,6 @@ if ($db_opcao == 1) {
       return false;
     }
 
-    <?php echo (isset($sPosScripts) ? $sPosScripts : ""); ?>
+    <?php echo ($sPosScripts ?? ""); ?>
   </script>
 </html>

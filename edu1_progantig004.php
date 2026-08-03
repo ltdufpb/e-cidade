@@ -40,7 +40,7 @@ include(modification("dbforms/db_funcoes.php"));
 $ed113_d_data_dia = date("d",db_getsession("DB_datausu"));
 $ed113_d_data_mes = date("m",db_getsession("DB_datausu"));
 $ed113_d_data_ano = date("Y",db_getsession("DB_datausu"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clprogconfig = new cl_progconfig;
 $clprogmatricula = new cl_progmatricula;
 $clproginterrompe = new cl_proginterrompe;

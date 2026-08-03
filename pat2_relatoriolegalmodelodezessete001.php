@@ -51,7 +51,7 @@ require_once modification("dbforms/db_funcoes.php");
               <td width="1%"><label class="bold" for="mes" id="lbl_mes">Mês:</label></td>
               <td><?php
 
-                  $aMeses = array();
+                  $aMeses = [];
                   for ($iMes = 1; $iMes <= 12; $iMes++) {
                     $aMeses[$iMes] = DBDate::getMesExtenso($iMes);
                   }

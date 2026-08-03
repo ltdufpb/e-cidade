@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cfpatri_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcfpatri = new cl_cfpatri;
 $clcfpatri->rotulo->label("t06_codcla");
 $clcfpatri->rotulo->label("t06_codcla");
@@ -98,9 +98,9 @@ $clcfpatri->rotulo->label("t06_codcla");
         }else{
            $sql = $clcfpatri->sql_query("",$campos,"t06_codcla","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t06_codcla)){
-          $repassa = array("chave_t06_codcla"=>$chave_t06_codcla,"chave_t06_codcla"=>$chave_t06_codcla);
+          $repassa = ["chave_t06_codcla"=>$chave_t06_codcla,"chave_t06_codcla"=>$chave_t06_codcla];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

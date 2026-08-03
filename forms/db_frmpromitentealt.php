@@ -86,7 +86,7 @@ db_input('z01_nome',78,$Iz01_nome,true,'text',3,"");
         <td>
 <?php 
 
-$x = array("C"=>"Com contrato","S"=>"Sem contrato");
+$x = ["C"=>"Com contrato","S"=>"Sem contrato"];
 db_select('j41_promitipo',$x,true,$db_opcao,"");
 ?>
        </td>
@@ -98,9 +98,9 @@ db_select('j41_promitipo',$x,true,$db_opcao,"");
        <td>
         <?php 
         if ($outros == true) {
-          $xs = array("f"=>"Secundário","t"=>"Principal");
+          $xs = ["f"=>"Secundário","t"=>"Principal"];
         }else{
-          $xs = array("t"=>"Principal","f"=>"Secundário");
+          $xs = ["t"=>"Principal","f"=>"Secundário"];
         }
         db_select('j41_tipopro',$xs,true,$db_op,"");
         ?>

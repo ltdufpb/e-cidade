@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 ?>
   <html>
   <head>
@@ -110,7 +110,7 @@ db_postmemory($HTTP_POST_VARS);
   }
   }
   $resultado = @db_query($sql);
-  $numrows   = @pg_numrows($resultado);
+  $numrows   = @pg_num_rows($resultado);
 
   if ($numrows == 0){
        $sql= "select distinct m91_depto,
@@ -125,7 +125,7 @@ db_postmemory($HTTP_POST_VARS);
               where m64_matmater = $codmater";
   }
 
-  $repassa = array('dblov'=>'0');
+  $repassa = ['dblov'=>'0'];
   db_lovrot(@$sql,15,"()","","","","NoMe",$repassa);
 ?>
 </table>

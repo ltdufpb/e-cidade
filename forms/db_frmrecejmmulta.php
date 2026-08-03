@@ -66,7 +66,7 @@ if (isset($opcao) && $opcao == "alterar") {
           <td colspan="2" width="165"><strong>Tipo de Multa:</strong> </td>
           <td>
           <?php  
-            $aTipoMulta = array('0' => 'Selecione', '1' => 'Multa Diária', '2' => 'Multa Mensal');
+            $aTipoMulta = ['0' => 'Selecione', '1' => 'Multa Diária', '2' => 'Multa Mensal'];
             db_select('tipoMulta', $aTipoMulta, true, 1, 'onchange="js_tipoMulta(this.value)"');
           ?>
           </td>
@@ -169,7 +169,7 @@ if (isset($opcao) && $opcao == "alterar") {
           <tr>
             <td valign="top" align="center">  
             <?php
-              $cliframe_alterar_excluir->chavepri      = array("k140_sequencial" => @$k140_sequencial);
+              $cliframe_alterar_excluir->chavepri      = ["k140_sequencial" => @$k140_sequencial];
               $cliframe_alterar_excluir->sql           = $oDaoTabrecjmmulta->sql_query(null, "*", "k140_multa", "k140_tabrecjm = $k140_tabrecjm");
               $cliframe_alterar_excluir->campos        = "k140_sequencial, k140_tabrecjm, k140_multa, k140_faixa";
               $cliframe_alterar_excluir->legenda       = "Faixas de multas";

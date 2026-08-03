@@ -36,8 +36,8 @@ include(modification("classes/db_itbiavalia_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -49,7 +49,7 @@ $db_opcao     = 22;
 $db_botao     = false;
 $sqlerro      = false;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
 
   $sSqlItbiAntiga  = "select it14_dtliber, ";
@@ -153,7 +153,7 @@ if (isset($oGet->alteraguialib)) {
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 
   if ($clitbi->erro_status == "0" || $sqlerro == true) {
     db_msgbox($erro_msg);

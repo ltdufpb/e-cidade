@@ -72,10 +72,10 @@ $iAnoSessao = db_getsession("DB_anousu");
 			  </td>
 			  <td>
 			  <?php 
-          $aTiposProcessamento = array(0 => "Selecione",
+          $aTiposProcessamento = [0 => "Selecione",
                                        1 => "Automático",
                                        2 => "Manual"
-                                       );
+                                       ];
           db_select("tipoprocessamento", $aTiposProcessamento, true, 1, "onchange='js_getProximoMesPorTipo()'");
 			  ?>
 			  </td>

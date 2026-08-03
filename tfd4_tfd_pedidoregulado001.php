@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoDbUsuaCgm         = db_utils::getdao('db_usuacgm');
 $oDaoMedicos           = db_utils::getdao('medicos');
@@ -48,12 +48,12 @@ if (isset($confirmar)) {
   if (!empty($sPedidosSelecionados)) {
     $aPedidosSelecionados = explode(',', $sPedidosSelecionados);
   } else {
-    $aPedidosSelecionados = array();
+    $aPedidosSelecionados = [];
   }
   if (!empty($sPedidosExcluidos)) {
     $aPedidosExcluidos = explode(',', $sPedidosExcluidos);
   } else {
-    $aPedidosExcluidos = array();
+    $aPedidosExcluidos = [];
   }
   
   /* busco todos os pedidos que já estavam vinculados ao médico, para poder verificar 
@@ -63,7 +63,7 @@ if (isset($confirmar)) {
                                                        " sd03_i_codigo = $sd03_i_codigo "
                                                       );
   $rsPedidos     = $oDaoTfdPedidoRegulado->sql_record($sSql);
-  $aListaPedidos = Array();
+  $aListaPedidos = [];
   for ($iCont = 0; $iCont < $oDaoTfdPedidoRegulado->numrows; $iCont++) {
        
     $oDadosPedido    = db_utils::fieldsmemory($rsPedidos, $iCont);
@@ -106,12 +106,12 @@ if (isset($confirmar)) {
   if ($oDaoTfdPedidoRegulado->erro_status != '0') {
 
     for ($iCont = 0;$iCont < count($aPedidosExcluidos); $iCont++) {
-      
+
       $oDaoTfdPedidoRegulado->excluir($aListaCodigo[array_search($aPedidosExcluidos[$iCont], $aListaPedidos)]);
       if ($oDaoTfdPedidoRegulado->erro_status == '0') {
         break;
       }
- 
+
     } // fim for
   
   } // fim if

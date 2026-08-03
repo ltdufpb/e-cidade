@@ -37,8 +37,8 @@ require_once(modification("classes/db_liclicita_classe.php"));
 require_once(modification("classes/db_liclicitaitemlog_classe.php"));
 require_once(modification("model/licitacao.model.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clliclicitem = new cl_liclicitem;
 $clrotulo = new rotulocampo;
@@ -123,18 +123,18 @@ $clrotulo->label("pc23_obs");
 	      db_fieldsmemory($result,$i);
       } else {
         
-        $l21_ordem       = utf8_decode($oInfoLog->item[$i]->l21_ordem);
-        $l21_codigo      = utf8_decode($oInfoLog->item[$i]->l21_codigo);
-  	  	$pc01_codmater   = utf8_decode($oInfoLog->item[$i]->pc01_codmater);
-  	  	$pc01_descrmater = utf8_decode($oInfoLog->item[$i]->pc01_descrmater);
-  	  	$pc11_quant      = utf8_decode($oInfoLog->item[$i]->pc11_quant);
-  	  	$pc11_vlrun      = utf8_decode($oInfoLog->item[$i]->pc11_vlrun);
-  	  	$pc01_servico    = utf8_decode($oInfoLog->item[$i]->pc01_servico);
-  	  	$m61_descr       = utf8_decode($oInfoLog->item[$i]->m61_descr);
-  	  	$m61_usaquant    = utf8_decode($oInfoLog->item[$i]->m61_usaquant);
-  	  	$pc17_quant      = utf8_decode($oInfoLog->item[$i]->pc17_quant);
-  	  	$pc11_resum      = utf8_decode($oInfoLog->item[$i]->pc11_resum);
-  	  	$pc23_obs        = utf8_decode($oInfoLog->item[$i]->pc23_obs);
+        $l21_ordem       = mb_convert_encoding($oInfoLog->item[$i]->l21_ordem, 'ISO-8859-1');
+        $l21_codigo      = mb_convert_encoding($oInfoLog->item[$i]->l21_codigo, 'ISO-8859-1');
+  	  	$pc01_codmater   = mb_convert_encoding($oInfoLog->item[$i]->pc01_codmater, 'ISO-8859-1');
+  	  	$pc01_descrmater = mb_convert_encoding($oInfoLog->item[$i]->pc01_descrmater, 'ISO-8859-1');
+  	  	$pc11_quant      = mb_convert_encoding($oInfoLog->item[$i]->pc11_quant, 'ISO-8859-1');
+  	  	$pc11_vlrun      = mb_convert_encoding($oInfoLog->item[$i]->pc11_vlrun, 'ISO-8859-1');
+  	  	$pc01_servico    = mb_convert_encoding($oInfoLog->item[$i]->pc01_servico, 'ISO-8859-1');
+  	  	$m61_descr       = mb_convert_encoding($oInfoLog->item[$i]->m61_descr, 'ISO-8859-1');
+  	  	$m61_usaquant    = mb_convert_encoding($oInfoLog->item[$i]->m61_usaquant, 'ISO-8859-1');
+  	  	$pc17_quant      = mb_convert_encoding($oInfoLog->item[$i]->pc17_quant, 'ISO-8859-1');
+  	  	$pc11_resum      = mb_convert_encoding($oInfoLog->item[$i]->pc11_resum, 'ISO-8859-1');
+  	  	$pc23_obs        = mb_convert_encoding($oInfoLog->item[$i]->pc23_obs, 'ISO-8859-1');
       }
 	    echo "
 	     			<tr >  	            
@@ -144,8 +144,8 @@ $clrotulo->label("pc23_obs");
       				<td	class='linhagrid' align='right'> ".db_formatar($pc11_vlrun,'f')."</td>
       				<td	class='linhagrid' align='center'>$m61_descr</td>
               <td	class='linhagrid' align='center'>$pc01_codmater</td>          
-              <td	class='linhagrid' nowrap align='left' title='$pc01_descrmater'>".substr($pc01_descrmater,0,40)."&nbsp;</td>
-              <td	class='linhagrid' nowrap align='left' title='$pc11_resum'>     ".substr($pc11_resum,0,40)."&nbsp;     </td>
+              <td	class='linhagrid' nowrap align='left' title='$pc01_descrmater'>".substr((string) $pc01_descrmater,0,40)."&nbsp;</td>
+              <td	class='linhagrid' nowrap align='left' title='$pc11_resum'>     ".substr((string) $pc11_resum,0,40)."&nbsp;     </td>
 	            <td class='linhagrid' nowrap align='left' title='$pc23_obs'>       ".substr($pc23_obs,0,25)."...&nbsp;    </td>
             </tr> 
 	    		";

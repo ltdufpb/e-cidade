@@ -152,7 +152,7 @@ if (isset($this->sCedenteBoleto) && trim($this->sCedenteBoleto) != '') {
 } else {
 
     $cnpjBeneficiario = '';
-    if (!empty($this->cnpjBeneficiario) && trim($this->cnpjBeneficiario) !== '') {
+    if (!empty($this->cnpjBeneficiario) && trim((string) $this->cnpjBeneficiario) !== '') {
         $cnpjBeneficiario = "CNPJ: {$this->cnpjBeneficiario} ";
     }
 
@@ -194,10 +194,10 @@ if (is_null($this->sMensagemCaixa) || $this->sMensagemCaixa == '') {
 $instrucao = "Tipo/Exercício: " . @$this->tipo_exerc . "\n" . @$this->sMensagemCaixa . " \n";
 
 if(@$this->valororigem!="" AND empty($this->aTaxas2)){
-  $instrucao .= " Valor origem= ".trim($this->valororigem);
+  $instrucao .= " Valor origem= ".trim((string) $this->valororigem);
 }
 if(@$this->valtotal!="" AND empty($this->aTaxas2)){
-  $instrucao .= " Valor corrigido = ".trim($this->valtotal);
+  $instrucao .= " Valor corrigido = ".trim((string) $this->valtotal);
 }
 
 foreach ($this->aTaxas2 as $oTaxas) {
@@ -206,15 +206,15 @@ foreach ($this->aTaxas2 as $oTaxas) {
 }
 
 if(@$this->desconto_abatimento!=""){
-  $instrucao .= " Desconto/Abatimento = ".trim($this->desconto_abatimento);
+  $instrucao .= " Desconto/Abatimento = ".trim((string) $this->desconto_abatimento);
 }
 
 if (!empty($this->mora_multa)) {
-    $instrucao .= " Mora/Multa = " . trim($this->mora_multa);
+    $instrucao .= " Mora/Multa = " . trim((string) $this->mora_multa);
 }
 
 if (!empty($this->valor_cobrado)) {
-    $instrucao .= " Valor do documento = " . trim($this->valor_cobrado);
+    $instrucao .= " Valor do documento = " . trim((string) $this->valor_cobrado);
 }
 
 if (!empty($this->taxaExpediente)) {
@@ -227,7 +227,7 @@ $this->objpdf->SetFont('Arial','',10);
 
 $this->objpdf->setXY($x+136.5,$y+40);
 $this->objpdf->SetFont('Arial','',8);
-$this->objpdf->cell(30,6,@trim($this->desconto_abatimento),0,0,"L");                                  // desconto abatimento;
+$this->objpdf->cell(30,6,@trim((string) $this->desconto_abatimento),0,0,"L");                                  // desconto abatimento;
 $this->objpdf->SetFont('Arial','',10);
 $this->objpdf->setXY($x+136,$y+46);
 $this->objpdf->cell(30,6,'',0,0,"R");                                  // outras deduções
@@ -237,9 +237,9 @@ $this->objpdf->setXY($x+136,$y+60);
 $this->objpdf->cell(30,6,@$this->outros_acrecimos,0,0,"R");            // outros acrescimos
 $this->objpdf->setXY($x+136.5,$y+68);
 $this->objpdf->SetFont('Arial','',8);
-$this->objpdf->cell(30,6,trim($this->valor_cobrado),0,0,"L");                                  // valor cobrado
-$this->objpdf->Text($x+19,  $y+77,substr($this->descr11_1,0,42));      // sacado 1
-$this->objpdf->Text($x+93,  $y+77,"CPF/CNPJ: ".db_formatar(@$this->cgccpfcomprador,(strlen(@$this->cgccpfcomprador)<12?'cpf':'cnpj'))); // CPF/CNPJ
+$this->objpdf->cell(30,6,trim((string) $this->valor_cobrado),0,0,"L");                                  // valor cobrado
+$this->objpdf->Text($x+19,  $y+77,substr((string) $this->descr11_1,0,42));      // sacado 1
+$this->objpdf->Text($x+93,  $y+77,"CPF/CNPJ: ".db_formatar(@$this->cgccpfcomprador,(strlen((string) @$this->cgccpfcomprador)<12?'cpf':'cnpj'))); // CPF/CNPJ
 
 $this->objpdf->SetLineWidth(0.2);
 

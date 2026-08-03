@@ -35,8 +35,8 @@ db_postmemory($_POST);
 db_postmemory($_GET);
 
 //////////INCLUIR/////////////
-if(isset($HTTP_POST_VARS["atualizar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["atualizar"])) {
+  db_postmemory($_POST);
   if(!isset($campos)) {
     db_query("BEGIN");
     db_query("update db_sysarqcamp set codsequencia = 0 where codsequencia = $codsequencia") or die("Erro(15) atualizando db_sysarqcamp");
@@ -44,7 +44,7 @@ if(isset($HTTP_POST_VARS["atualizar"])) {
     db_query("END");
     db_redireciona();	
   } else {
-    $aux = split("#",$campos);
+    $aux = preg_split("#\\##m",$campos);
     $codcampo = $aux[0];
     $nomecampo = $aux[2];
     if($nomesequencia=="")
@@ -57,7 +57,7 @@ if(isset($HTTP_POST_VARS["atualizar"])) {
       if($codsequencia == "0") {//sequencia não existe, criar uma
         //$result = db_query("select max(codsequencia) + 1 from db_syssequencia");
         $result = db_query("select nextval('db_syssequencia_codsequencia_se')");
-        $codsequencia = pg_result($result,0,0);
+        $codsequencia = pg_fetch_result($result,0,0);
         db_query("insert into db_syssequencia values($codsequencia,
                                                   '$nomesequencia',
                                                   $incrseq,
@@ -184,11 +184,11 @@ input {
 			  db_label("db_sysarquivo","tabela");
 			  ?>
               <?php  
-			    if(isset($HTTP_POST_VARS["dbh_tabela"])) {
+			    if(isset($_POST["dbh_tabela"])) {
 				  $result = db_query("select codarq,nomearq from db_sysarquivo where codarq = $dbh_tabela");
 				  db_fieldsmemory($result,0);			    
 			    }
-			    echo db_text("tabela",40,40,@trim($nomearq),@$codarq,3)
+			    echo db_text("tabela",40,40,@trim((string) $nomearq),@$codarq,3)
 			  ?>
             </td>
 	  <td width="90%"></td>
@@ -196,20 +196,20 @@ input {
           <tr> 
             <td> <strong>Campos:</strong><br> <select name="campos" id="campos" onChange="document.form1.atualizar.value = 'Atualizar'" size="17" style="width:250px">
                 <?php 
-                if(isset($HTTP_POST_VARS["dbh_tabela"])) {
+                if(isset($_POST["dbh_tabela"])) {
                   $result = db_query("select c.codcam,c.nomecam,ac.codsequencia from db_syscampo c inner join db_sysarqcamp ac on ac.codcam = c.codcam  where ac.codarq = $dbh_tabela");
-                  $numrows = pg_numrows($result);
+                  $numrows = pg_num_rows($result);
                   if($numrows > 0) {
                     for($i = 0;$i < $numrows;$i++) {
-                      echo "<option value=\"".pg_result($result,$i,"codcam")."#".pg_result($result,$i,"codsequencia")."#".trim(pg_result($result,$i,"nomecam"))."\" ".(pg_result($result,$i,"codsequencia")!=0?"selected":"").">".pg_result($result,$i,"nomecam")."</option>\n";
+                      echo "<option value=\"".pg_fetch_result($result,$i,"codcam")."#".pg_fetch_result($result,$i,"codsequencia")."#".trim(pg_fetch_result($result,$i,"nomecam"))."\" ".(pg_fetch_result($result,$i,"codsequencia")!=0?"selected":"").">".pg_fetch_result($result,$i,"nomecam")."</option>\n";
                     }
                   }
                 }
                 if(!empty($numrows) && $numrows > 0) {
                   $codsequencia = 0;
                   for($i = 0;$i < $numrows;$i++) {
-                    if(pg_result($result,$i,"codsequencia") != "0") {
-                      $codsequencia = pg_result($result,$i,"codsequencia");
+                    if(pg_fetch_result($result,$i,"codsequencia") != "0") {
+                      $codsequencia = pg_fetch_result($result,$i,"codsequencia");
                       break;
                     }
                   }

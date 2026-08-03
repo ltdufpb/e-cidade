@@ -114,7 +114,7 @@ if ($this->dadosAvaliacao->h65_sequencial != null){
    $sTexto   = "Foi {$sResultado}, com o total de {$nTotal} pontos, sendo assim, confirmado no cargo acima disposto.\n";
    $sTexto  .= "{$this->dadosAvaliacao->h65_observacao}"; 
    $this->objpdf->multicell(180,4,$sTexto,0,"J"); 
-   $dataaux  = explode("-",$this->dadosAvaliacao->h65_data);
+   $dataaux  = explode("-",(string) $this->dadosAvaliacao->h65_data);
    $sMes     = ucfirst(db_mes($dataaux[1]));
    $sData    = "{$this->munic}, {$dataaux[2]} de {$sMes}, de {$dataaux[0]}";
 }else{

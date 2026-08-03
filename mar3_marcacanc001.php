@@ -55,7 +55,7 @@ include(modification("classes/db_cancmarca_classe.php"));
       <strong>&nbsp;&nbsp;&nbsp;
       Escolha a opção:
 	  <?php 
-       $tipo_ordem = array(""=>"-- Selecione --","todas"=>"Todas","prop"=>"Por Proprietário");
+       $tipo_ordem = [""=>"-- Selecione --","todas"=>"Todas","prop"=>"Por Proprietário"];
        db_select("escolha",$tipo_ordem,true,2,"onchange=\"js_opcao(this.value)\"");
 	  ?><br>
       <span name="proprietario" id="proprietario" style="visibility:hidden">

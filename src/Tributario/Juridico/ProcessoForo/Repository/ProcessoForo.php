@@ -113,7 +113,7 @@ class ProcessoForo extends \BaseClassRepository
         $oProcessoForo->setCodigoCartorio($oDados->v70_cartorio);
 
         if ($this->isReturnFullItem()) {
-            $inicialRepository = InicialRepository::getInstance();
+            $inicialRepository = (new InicialRepository())->getInstance();
             $inicialRepository->setReturnFullItem(true);
 
             $iniciais = $inicialRepository->getByProcessoForo($oDados->v70_sequencial);
@@ -137,11 +137,11 @@ class ProcessoForo extends \BaseClassRepository
      */
     private function makeCollection($rsResult)
     {
-        $aCollection = array();
+        $aCollection = [];
         $aResult = pg_fetch_all($rsResult);
 
         if (empty($aResult)) {
-            return array();
+            return [];
         }
 
         foreach ($aResult as $oResult) {
@@ -262,9 +262,7 @@ class ProcessoForo extends \BaseClassRepository
          * Se Processo de migração
          **/
         if (pg_num_rows($rs) > 0) {
-            $arrProcessos = array_map(function ($var) {
-                return $var["v70_sequencial"];
-            }, pg_fetch_all($rs));
+            $arrProcessos = array_map(fn($var) => $var["v70_sequencial"], pg_fetch_all($rs));
 
             $strProcessos = implode(',', $arrProcessos);
 

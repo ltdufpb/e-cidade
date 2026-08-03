@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_acordocomissao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clacordocomissao = new cl_acordocomissao;
 $clacordocomissao->rotulo->label("ac08_sequencial");
 $clacordocomissao->rotulo->label("ac08_descricao");
@@ -40,17 +40,11 @@ $clacordocomissao->rotulo->label("ac08_descricao");
 /**
  * Validamos o modulo que está sendo acessado
  */
-switch (db_getsession("DB_modulo")) {
-
-	case 439:
-		$iCodigoComissaoTipo = 2;
-		break;
-	case 8251:
-		$iCodigoComissaoTipo = 1;
-		break;
-	default:
-		$iCodigoComissaoTipo = 1;
-}
+$iCodigoComissaoTipo = match (db_getsession("DB_modulo")) {
+    439 => 2,
+    8251 => 1,
+    default => 1,
+};
 
 
 ?>
@@ -130,9 +124,9 @@ switch (db_getsession("DB_modulo")) {
         }else{
            $sql = $clacordocomissao->sql_query(null,$campos,"ac08_sequencial", str_replace(" and ", "", $sWhereTipoComissao));
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ac08_descricao)){
-          $repassa = array("chave_ac08_sequencial"=>$chave_ac08_sequencial,"chave_ac08_descricao"=>$chave_ac08_descricao);
+          $repassa = ["chave_ac08_sequencial"=>$chave_ac08_sequencial,"chave_ac08_descricao"=>$chave_ac08_descricao];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

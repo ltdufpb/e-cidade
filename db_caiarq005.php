@@ -76,9 +76,9 @@ $clrotulo = new rotulocampo;
             $mesarq = $mes;
             $anoarq = $ano;
           } else {
-            $diaarq = substr($dtarq,-2);
-            $mesarq = substr($dtarq,5,2);
-            $anoarq = substr($dtarq,0,4);
+            $diaarq = substr((string) $dtarq,-2);
+            $mesarq = substr((string) $dtarq,5,2);
+            $anoarq = substr((string) $dtarq,0,4);
           }
           db_data("dtarq",$diaarq,$mesarq,$anoarq);
 		    ?>
@@ -94,9 +94,9 @@ $clrotulo = new rotulocampo;
           $mespago = $mes;
           $anopago = $ano;
         } else {
-          $diapago = substr($dtpago,-2);
-          $mespago = substr($dtpago,5,2);
-          $anopago = substr($dtpago,0,4);
+          $diapago = substr((string) $dtpago,-2);
+          $mespago = substr((string) $dtpago,5,2);
+          $anopago = substr((string) $dtpago,0,4);
         }
         db_data("dtpago",$diapago,$mespago,$anopago);
         ?>
@@ -172,12 +172,12 @@ $clrotulo = new rotulocampo;
         <?php 
         if ($opcao!=5) {
           if ($classi == 'f') {
-            $classi = array("f"=>"Não","t"=>"Sim");
+            $classi = ["f"=>"Não","t"=>"Sim"];
           } else {
-            $classi = array("t"=>"Sim","f"=>"Não");
+            $classi = ["t"=>"Sim","f"=>"Não"];
           }
         } else {
-          $classi = array("f"=>"Não","t"=>"Sim");
+          $classi = ["f"=>"Não","t"=>"Sim"];
         }
         db_select("classi",$classi,true,2);
         ?>

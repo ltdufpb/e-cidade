@@ -325,7 +325,7 @@ function js_pesquisa02(){
 function js_preenchepesquisa(chave){
   db_iframe_triagem.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisaprontuario='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisaprontuario='+chave";
   ?>
 }
 function js_lanc(){

@@ -39,13 +39,13 @@ class RefactorProvisaoFerias {
    * @throws Exception
    * @return stdClass
    */
-  static function getCompentenciaDisponivelEscrituracao($lProcessado = true, $sTipoProvisao, $iAno, $iInstituicao) {
+  static function getCompentenciaDisponivelEscrituracao($lProcessado = true, $sTipoProvisao = null, $iAno = null, $iInstituicao = null) {
   	
   	/**
   	 *  Array usada para exibição de erro na tela, em caso de erro
   	 *  número mês => mês extenso
   	 */
-  	$aMeses = array(1  => "Janeiro",
+  	$aMeses = [1  => "Janeiro",
   			            2  => "Fevereiro",
   			            3  => "Março",
   			            4  => "Abril",
@@ -56,13 +56,13 @@ class RefactorProvisaoFerias {
   			            9  => "Setembro",
   			            10 => "Outubro",
   			            11 => "Novembro",
-  			            12 => "Dezembro");  	
+  			            12 => "Dezembro"];  	
   	
-    $aClasse = array("provisaoferias"         => "gerfprovfer",
-                     "provisaodecimoterceiro" => "gerfprovs13");
+    $aClasse = ["provisaoferias"         => "gerfprovfer",
+                     "provisaodecimoterceiro" => "gerfprovs13"];
     
-    $aSiglas = array("provisaoferias"         => "r93",
-                     "provisaodecimoterceiro" => "r94");
+    $aSiglas = ["provisaoferias"         => "r93",
+                     "provisaodecimoterceiro" => "r94"];
 
     $sClasse = $aClasse[$sTipoProvisao];
     $sSigla  = $aSiglas[$sTipoProvisao];

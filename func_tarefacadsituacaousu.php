@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefacadsituacaousu_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltarefacadsituacaousu = new cl_tarefacadsituacaousu;
 $cltarefacadsituacaousu->rotulo->label("at17_sequencial");
 $cltarefacadsituacaousu->rotulo->label("at17_usuario");
@@ -98,9 +98,9 @@ $cltarefacadsituacaousu->rotulo->label("at17_usuario");
         }else{
            $sql = $cltarefacadsituacaousu->sql_query("",$campos,"at17_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at17_usuario)){
-          $repassa = array("chave_at17_sequencial"=>$chave_at17_sequencial,"chave_at17_usuario"=>$chave_at17_usuario);
+          $repassa = ["chave_at17_sequencial"=>$chave_at17_sequencial,"chave_at17_usuario"=>$chave_at17_usuario];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

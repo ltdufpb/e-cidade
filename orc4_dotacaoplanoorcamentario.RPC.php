@@ -106,14 +106,14 @@ try {
             $dotacao = DotacaoRepository::getDotacaoPorCodigoAno($parametros->po_dotacao, $anoSessao);
             $planos = PlanoOrcamentarioRepository::getPorDotacao($dotacao);
 
-            $retorno->planos = array();
+            $retorno->planos = [];
             foreach ($planos as $plano) {
 
-                $retorno->planos[] = (object)array(
+                $retorno->planos[] = (object)[
                     'codigo' => $plano->getCodigo(),
                     'titulo' => $plano->getTitulo(),
                     'valor'  => $plano->getValor()
-                );
+                ];
             }
 
             break;
@@ -123,15 +123,15 @@ try {
             $plano = new PlanoOrcamentarioModel();
             $plano->setCodigo($parametros->po_codigo);
             $linhas = LinhaDePactoRepository::getPorPlano($plano);
-            $retorno->linhas = array();
+            $retorno->linhas = [];
             foreach ($linhas as $linha) {
 
-                $retorno->linhas[] = (object)array(
+                $retorno->linhas[] = (object)[
                     'codigo' => $linha->getCodigo(),
                     'codigoLinha' => $linha->getCodigoLinha(),
                     'descricao' => $linha->getDescricao(),
                     'valor' => $linha->getValor(),
-                );
+                ];
             }
 
             break;

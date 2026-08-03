@@ -6,7 +6,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_termotaxaparc_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoTermotaxaparc = new cl_termotaxaparc;
 $db_opcao    = 1;
@@ -47,7 +47,7 @@ if (isset($incluir)) {
             $sPosScripts .= "document.form1.{$oDaoTermotaxaparc->erro_campo}.focus();";
         }
     } else {
-        $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
+        $sPosScripts .= "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
     }
 
 } elseif (isset($alterar)) {
@@ -68,7 +68,7 @@ if (isset($incluir)) {
             $sPosScripts .= "document.form1.{$oDaoTermotaxaparc->erro_campo}.focus();";
         }
     } else {
-        $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
+        $sPosScripts .= "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
     }
 } elseif (isset($excluir)) {
 
@@ -80,7 +80,7 @@ if (isset($incluir)) {
     $sPosScripts .= 'alert("' . $oDaoTermotaxaparc->erro_msg . '");' . "\n";
 
     if ($oDaoTermotaxaparc->erro_status != "0") {
-        $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
+        $sPosScripts .= "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
     }
 
 }
@@ -99,7 +99,7 @@ if (isset($opcao)) {
 
         db_fieldsmemory($rsTermoTaxa, 0);
 
-    } catch (Exception $exception) {
+    } catch (Exception) {
         db_fim_transacao(true);
     }
 }

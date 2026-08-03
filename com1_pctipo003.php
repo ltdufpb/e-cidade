@@ -36,12 +36,12 @@ include(modification("classes/db_pcgrupo_classe.php"));
 $clpcgrupo = new cl_pcgrupo;
 $clpctipoelemento  = new cl_pctipoelemento;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clpctipo = new cl_pctipo;
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $db_opcao = 3;
   $clpctipoelemento->excluir($pc05_codtipo); // explui itens
@@ -83,7 +83,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clpctipo->erro_status=="0"){
     $clpctipo->erro(true,false);
   }else if($clpcgrupo->erro_status=="0"){

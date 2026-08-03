@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoato_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltipoato = new cl_tipoato;
 $cltipoato->rotulo->label("ed83_i_codigo");
 $cltipoato->rotulo->label("ed83_c_descr");
@@ -96,9 +96,9 @@ $cltipoato->rotulo->label("ed83_c_descr");
     }else{
      $sql = $cltipoato->sql_query("",$campos,"ed83_c_descr","");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed83_i_codigo)){
-     $repassa = array("chave_ed83_i_codigo"=>$chave_ed83_i_codigo,"chave_ed83_c_descr"=>$chave_ed83_c_descr);
+     $repassa = ["chave_ed83_i_codigo"=>$chave_ed83_i_codigo,"chave_ed83_c_descr"=>$chave_ed83_c_descr];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

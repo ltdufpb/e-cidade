@@ -28,7 +28,7 @@
 require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
   
 if($iPeriodo == 1){
   $varPer = " dtcredito ";
@@ -81,7 +81,7 @@ ORDER BY $varPer";
 
 //echo $sql; exit;
 $result = db_query($sql) or die("Erro realizando consulta : ".$sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos o período de '.db_formatar($iDatai, 'd').' a '.db_formatar($iDataf, 'd'));
 }

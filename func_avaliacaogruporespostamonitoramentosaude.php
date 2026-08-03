@@ -10,7 +10,7 @@ use ECidade\RecursosHumanos\ESocial\Model\Configuracao;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $rotulo = new rotulocampo;
 $rotulo->label("z01_nome");
@@ -28,7 +28,7 @@ if (!empty($_GET["instituicao"])) {
     $instituicao = $_GET["instituicao"];
 }
 
-$where = array();
+$where = [];
 $where[] = " db102_avaliacao = {$formularioId} ";
 
 ?>
@@ -58,19 +58,19 @@ $where[] = " db102_avaliacao = {$formularioId} ";
             <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_avaliacaogruporespostaocat.hide();">
         </form>
         <?php
-        $campos = array(
+        $campos = [
             "distinct eso37_avaliacaogruporesposta as db_preenchimento",
             "eso37_empregador",
             "eso37_matricula",
             "z01_nome as nome",
             "eso37_cpf"
-        );
+        ];
         if (!isset($pesquisa_chave)) {
             if (isset($chave_eso37_cpf) && (trim($chave_eso37_cpf) != "")) {
                 $where[] = " eso37_cpf = '{$chave_eso37_cpf}' ";
             }
 
-            $order = array('eso37_avaliacaogruporesposta', 'eso37_cpf');
+            $order = ['eso37_avaliacaogruporesposta', 'eso37_cpf'];
         }
         $sql = $dao->buscaPreenchimento($campos, $where, $order, $instituicao);
         $repassa = [

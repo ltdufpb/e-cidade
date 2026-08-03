@@ -53,7 +53,7 @@ echo '<div class="container">';
 echo '  <fieldset>';
 echo '    <legend>Resultado da Pesquisa</legend>';
 
-$repassa = array();
+$repassa = [];
 
 if (!isset($pesquisa_chave)) {
     if (!empty($_POST['chave_codigo'])) {

@@ -31,13 +31,13 @@ class RelatorioConsolidadoReceitas extends PDF {
   /**
    * Modelos Dos Relatório Selecionados
    */
-  private $aModelosInternos = array();
+  private $aModelosInternos = [];
   
   /**
    * 
    * @var array
    */
-  private $oDadosRelatorios = array();
+  private $oDadosRelatorios = [];
   
   private $lQuebraPagina;
   
@@ -76,7 +76,7 @@ class RelatorioConsolidadoReceitas extends PDF {
 
     $oCabecalho              = db_utils::fieldsMemory($rsConsolidacaoDebitos, 0);
     
-    $aFiltros                = explode('|', $oCabecalho->k161_filtrosselecionados);
+    $aFiltros                = explode('|', (string) $oCabecalho->k161_filtrosselecionados);
     
     $head2 = 'RELATÓRIO CONSOLIDADO DE MOVIMENTAÇÕES';
     
@@ -114,7 +114,7 @@ class RelatorioConsolidadoReceitas extends PDF {
     
     $oDaoConsolidacaoDebitosRegistros = db_utils::getDao('consolidacaodebitosregistros');
     
-    $this->aDadosRelatorios           = array();
+    $this->aDadosRelatorios           = [];
     
     foreach ($this->aModelosInternos as $iCodigoModelo) {
     
@@ -290,7 +290,7 @@ class RelatorioConsolidadoReceitas extends PDF {
 
     $lDiferente          = false;
     
-    $aDescricaoRelatorio = array(
+    $aDescricaoRelatorio = [
                                   1 => 'Descontos Concedidos por Regras',
                                   2 => 'Débitos Cancelados',
                                   3 => 'Prescrição de Dívida',
@@ -300,7 +300,7 @@ class RelatorioConsolidadoReceitas extends PDF {
                                   7 => 'Descontos Concedidos (Cota Única)',
                                   8 => 'Resumo Geral de Dívida - Curto Prazo',
                                   9 => 'Resumo Geral de Dívida - Longo Prazo'
-                                );
+                                ];
     
     
     if ($lBuscouDados) {
@@ -313,7 +313,7 @@ class RelatorioConsolidadoReceitas extends PDF {
         
         $lDiferente = false;
         
-        if (in_array($iTipoRelatorio, array(1, 6, 7))) {
+        if (in_array($iTipoRelatorio, [1, 6, 7])) {
           $lDiferente = true;
         } 
         

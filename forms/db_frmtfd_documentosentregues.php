@@ -49,7 +49,7 @@ $clrotulo->label("tf07_i_codigo");
                                                     'tf06_i_tipotratamento = '.$tf01_i_tipotratamento);
       $rs = $oDaotfd_tipotratamentodoc->sql_record($sSql);
 
-      $aX = array();
+      $aX = [];
       for($iCont = 0; $iCont < $oDaotfd_tipotratamentodoc->numrows; $iCont++) {
         
         $oDados = db_utils::fieldsmemory($rs, $iCont);

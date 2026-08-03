@@ -86,7 +86,7 @@ use ECidade\V3\Extension\Logger;
     db_inicio_transacao();
 
     $qtdeLinhasArquivos = 0;
-    $pisIgnorados       = array();
+    $pisIgnorados       = [];
     $aArquivos          = (object)$_FILES['rh196_arquivos'];
     $iCodigoInstituicao = db_getsession('DB_instit');
     
@@ -129,7 +129,7 @@ use ECidade\V3\Extension\Logger;
       $debug = '-----------------------------------------------------------------------------------------------------------------';
       $logger->info($debug);
 
-      $debug = '-- Arquivo: '. $sNomeArquivo .' '. str_pad('', (strlen($sNomeArquivo)-1), '-');
+      $debug = '-- Arquivo: '. $sNomeArquivo .' '. str_pad('', (strlen((string) $sNomeArquivo)-1), '-');
       $logger->info($debug);
 
       $debug = '-----------------------------------------------------------------------------------------------------------------';

@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE loteloc
 class cl_loteloc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j06_idbql = 0; 
-   var $j06_setorloc = 0; 
-   var $j06_quadraloc = null; 
-   var $j06_lote = null; 
+   public $j06_idbql = 0; 
+   public $j06_setorloc = 0; 
+   public $j06_quadraloc = null; 
+   public $j06_lote = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j06_idbql = int4 = Codigo Lote 
                  j06_setorloc = int4 = Setor de Localização 
                  j06_quadraloc = varchar(5) = Quadra 
                  j06_lote = varchar(5) = Lote de Localização 
                  ";
    //funcao construtor da classe 
-   function cl_loteloc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("loteloc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -133,7 +133,7 @@ class cl_loteloc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "loteloc ($this->j06_idbql) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "loteloc já Cadastrado";
@@ -157,13 +157,13 @@ class cl_loteloc {
      $resaco = $this->sql_record($this->sql_query_file($this->j06_idbql));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8757,'$this->j06_idbql','I')");
-       $resac = db_query("insert into db_acount values($acount,1494,8757,'','".AddSlashes(pg_result($resaco,0,'j06_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1494,8760,'','".AddSlashes(pg_result($resaco,0,'j06_setorloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1494,8761,'','".AddSlashes(pg_result($resaco,0,'j06_quadraloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1494,8762,'','".AddSlashes(pg_result($resaco,0,'j06_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1494,8757,'','".AddSlashes(pg_fetch_result($resaco,0,'j06_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1494,8760,'','".AddSlashes(pg_fetch_result($resaco,0,'j06_setorloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1494,8761,'','".AddSlashes(pg_fetch_result($resaco,0,'j06_quadraloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1494,8762,'','".AddSlashes(pg_fetch_result($resaco,0,'j06_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -172,10 +172,10 @@ class cl_loteloc {
       $this->atualizacampos();
      $sql = " update loteloc set ";
      $virgula = "";
-     if(trim($this->j06_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j06_idbql"])){ 
+     if(trim((string) $this->j06_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j06_idbql"])){ 
        $sql  .= $virgula." j06_idbql = $this->j06_idbql ";
        $virgula = ",";
-       if(trim($this->j06_idbql) == null ){ 
+       if(trim((string) $this->j06_idbql) == null ){ 
          $this->erro_sql = " Campo Codigo Lote nao Informado.";
          $this->erro_campo = "j06_idbql";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_loteloc {
          return false;
        }
      }
-     if(trim($this->j06_setorloc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j06_setorloc"])){ 
+     if(trim((string) $this->j06_setorloc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j06_setorloc"])){ 
        $sql  .= $virgula." j06_setorloc = $this->j06_setorloc ";
        $virgula = ",";
-       if(trim($this->j06_setorloc) == null ){ 
+       if(trim((string) $this->j06_setorloc) == null ){ 
          $this->erro_sql = " Campo Setor de Localização nao Informado.";
          $this->erro_campo = "j06_setorloc";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_loteloc {
          return false;
        }
      }
-     if(trim($this->j06_quadraloc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j06_quadraloc"])){ 
+     if(trim((string) $this->j06_quadraloc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j06_quadraloc"])){ 
        $sql  .= $virgula." j06_quadraloc = '$this->j06_quadraloc' ";
        $virgula = ",";
-       if(trim($this->j06_quadraloc) == null ){ 
+       if(trim((string) $this->j06_quadraloc) == null ){ 
          $this->erro_sql = " Campo Quadra nao Informado.";
          $this->erro_campo = "j06_quadraloc";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_loteloc {
          return false;
        }
      }
-     if(trim($this->j06_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j06_lote"])){ 
+     if(trim((string) $this->j06_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j06_lote"])){ 
        $sql  .= $virgula." j06_lote = '$this->j06_lote' ";
        $virgula = ",";
-       if(trim($this->j06_lote) == null ){ 
+       if(trim((string) $this->j06_lote) == null ){ 
          $this->erro_sql = " Campo Lote de Localização nao Informado.";
          $this->erro_campo = "j06_lote";
          $this->erro_banco = "";
@@ -232,17 +232,17 @@ class cl_loteloc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8757,'$this->j06_idbql','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j06_idbql"]))
-           $resac = db_query("insert into db_acount values($acount,1494,8757,'".AddSlashes(pg_result($resaco,$conresaco,'j06_idbql'))."','$this->j06_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1494,8757,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j06_idbql'))."','$this->j06_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j06_setorloc"]))
-           $resac = db_query("insert into db_acount values($acount,1494,8760,'".AddSlashes(pg_result($resaco,$conresaco,'j06_setorloc'))."','$this->j06_setorloc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1494,8760,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j06_setorloc'))."','$this->j06_setorloc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j06_quadraloc"]))
-           $resac = db_query("insert into db_acount values($acount,1494,8761,'".AddSlashes(pg_result($resaco,$conresaco,'j06_quadraloc'))."','$this->j06_quadraloc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1494,8761,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j06_quadraloc'))."','$this->j06_quadraloc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j06_lote"]))
-           $resac = db_query("insert into db_acount values($acount,1494,8762,'".AddSlashes(pg_result($resaco,$conresaco,'j06_lote'))."','$this->j06_lote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1494,8762,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j06_lote'))."','$this->j06_lote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -287,13 +287,13 @@ class cl_loteloc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8757,'$j06_idbql','E')");
-         $resac = db_query("insert into db_acount values($acount,1494,8757,'','".AddSlashes(pg_result($resaco,$iresaco,'j06_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1494,8760,'','".AddSlashes(pg_result($resaco,$iresaco,'j06_setorloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1494,8761,'','".AddSlashes(pg_result($resaco,$iresaco,'j06_quadraloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1494,8762,'','".AddSlashes(pg_result($resaco,$iresaco,'j06_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1494,8757,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j06_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1494,8760,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j06_setorloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1494,8761,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j06_quadraloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1494,8762,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j06_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from loteloc
@@ -353,7 +353,7 @@ class cl_loteloc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:loteloc";
@@ -367,7 +367,7 @@ class cl_loteloc {
    function sql_query ( $j06_idbql=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_loteloc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,7 +404,7 @@ class cl_loteloc {
    function sql_query_file ( $j06_idbql=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_loteloc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

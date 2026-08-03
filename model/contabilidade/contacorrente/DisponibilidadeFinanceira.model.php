@@ -197,7 +197,7 @@ class DisponibilidadeFinanceira extends ContaCorrenteBase implements IContaCorre
       }
     }
 
-    if (in_array($this->getDocumentoEventoContabil()->getCodigo(), array(100,107,416,418,101,108,417,419))) {
+    if (in_array($this->getDocumentoEventoContabil()->getCodigo(), [100,107,416,418,101,108,417,419])) {
 
       $oReceitaContabil = ReceitaContabilRepository::getReceitaByCodigo($this->oLancamentoAuxiliar->getCodigoReceita(), $this->getContaPlano()->getAno());
       $iCodigoRecurso = $oReceitaContabil->getRecurso()->getCodigo();
@@ -208,9 +208,9 @@ class DisponibilidadeFinanceira extends ContaCorrenteBase implements IContaCorre
 		 * Conta 82111 estiver lançando a credito, pegar o recurso da conta débito do primeiro lançamento do slip
 		 * quando a conta 82111 estiver lançando a debito, pegar o recurso da conta credito do primeiro lançamento do slip
 		 */
-    if (in_array($this->getDocumentoEventoContabil()->getCodigo(), array(140, 141))) {
+    if (in_array($this->getDocumentoEventoContabil()->getCodigo(), [140, 141])) {
 
-    	if (substr($this->oContaPlano->getEstrutural(), 0, 5) == "82111") {
+    	if (str_starts_with((string) $this->oContaPlano->getEstrutural(), "82111")) {
 
     		$oTransferencia = new TransferenciaBancaria($this->oLancamentoAuxiliar->getCodigoSlip());
 				if ($this->sTipoLancamento == 'C') {

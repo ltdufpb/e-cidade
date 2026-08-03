@@ -123,7 +123,7 @@ if (isset($oPost->db_opcaoal)) {
     <tr>
       <td valign="top"  align="center">  
         <?php 
-          $chavepri= array("ht08_sequencial"=>@$ht08_sequencial);
+          $chavepri= ["ht08_sequencial"=>@$ht08_sequencial];
           
           $sWhere                    = "ht08_habitformaavaliacao = ".@$ht08_habitformaavaliacao;
           $sSqlFormaAvaliacaoUsuario = $clhabitformaavaliacaousuario->sql_query(null, "*", 

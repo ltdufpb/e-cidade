@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE iptutabelasconfigcampochave
 class cl_iptutabelasconfigcampochave { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j124_sequencial = 0; 
-   var $j124_codcam = 0; 
-   var $j124_iptutabelasconfig = 0; 
+   public $j124_sequencial = 0; 
+   public $j124_codcam = 0; 
+   public $j124_iptutabelasconfig = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j124_sequencial = int4 = Código Sequencial 
                  j124_codcam = int4 = Código do Campo 
                  j124_iptutabelasconfig = int4 = Código da Tabela de Configuração 
                  ";
    //funcao construtor da classe 
-   function cl_iptutabelasconfigcampochave() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutabelasconfigcampochave"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_iptutabelasconfigcampochave {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j124_sequencial = pg_result($result,0,0); 
+       $this->j124_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptutabelasconfigcampochave_j124_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j124_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j124_sequencial)){
          $this->erro_sql = " Campo j124_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_iptutabelasconfigcampochave {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "iptutabelasconfigcampochave ($this->j124_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "iptutabelasconfigcampochave já Cadastrado";
@@ -166,12 +166,12 @@ class cl_iptutabelasconfigcampochave {
      $resaco = $this->sql_record($this->sql_query_file($this->j124_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17401,'$this->j124_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3080,17401,'','".AddSlashes(pg_result($resaco,0,'j124_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3080,17402,'','".AddSlashes(pg_result($resaco,0,'j124_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3080,17403,'','".AddSlashes(pg_result($resaco,0,'j124_iptutabelasconfig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3080,17401,'','".AddSlashes(pg_fetch_result($resaco,0,'j124_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3080,17402,'','".AddSlashes(pg_fetch_result($resaco,0,'j124_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3080,17403,'','".AddSlashes(pg_fetch_result($resaco,0,'j124_iptutabelasconfig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_iptutabelasconfigcampochave {
       $this->atualizacampos();
      $sql = " update iptutabelasconfigcampochave set ";
      $virgula = "";
-     if(trim($this->j124_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j124_sequencial"])){ 
+     if(trim((string) $this->j124_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j124_sequencial"])){ 
        $sql  .= $virgula." j124_sequencial = $this->j124_sequencial ";
        $virgula = ",";
-       if(trim($this->j124_sequencial) == null ){ 
+       if(trim((string) $this->j124_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "j124_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_iptutabelasconfigcampochave {
          return false;
        }
      }
-     if(trim($this->j124_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j124_codcam"])){ 
+     if(trim((string) $this->j124_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j124_codcam"])){ 
        $sql  .= $virgula." j124_codcam = $this->j124_codcam ";
        $virgula = ",";
-       if(trim($this->j124_codcam) == null ){ 
+       if(trim((string) $this->j124_codcam) == null ){ 
          $this->erro_sql = " Campo Código do Campo nao Informado.";
          $this->erro_campo = "j124_codcam";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_iptutabelasconfigcampochave {
          return false;
        }
      }
-     if(trim($this->j124_iptutabelasconfig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j124_iptutabelasconfig"])){ 
+     if(trim((string) $this->j124_iptutabelasconfig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j124_iptutabelasconfig"])){ 
        $sql  .= $virgula." j124_iptutabelasconfig = $this->j124_iptutabelasconfig ";
        $virgula = ",";
-       if(trim($this->j124_iptutabelasconfig) == null ){ 
+       if(trim((string) $this->j124_iptutabelasconfig) == null ){ 
          $this->erro_sql = " Campo Código da Tabela de Configuração nao Informado.";
          $this->erro_campo = "j124_iptutabelasconfig";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_iptutabelasconfigcampochave {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17401,'$this->j124_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j124_sequencial"]) || $this->j124_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3080,17401,'".AddSlashes(pg_result($resaco,$conresaco,'j124_sequencial'))."','$this->j124_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3080,17401,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j124_sequencial'))."','$this->j124_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j124_codcam"]) || $this->j124_codcam != "")
-           $resac = db_query("insert into db_acount values($acount,3080,17402,'".AddSlashes(pg_result($resaco,$conresaco,'j124_codcam'))."','$this->j124_codcam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3080,17402,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j124_codcam'))."','$this->j124_codcam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j124_iptutabelasconfig"]) || $this->j124_iptutabelasconfig != "")
-           $resac = db_query("insert into db_acount values($acount,3080,17403,'".AddSlashes(pg_result($resaco,$conresaco,'j124_iptutabelasconfig'))."','$this->j124_iptutabelasconfig',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3080,17403,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j124_iptutabelasconfig'))."','$this->j124_iptutabelasconfig',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_iptutabelasconfigcampochave {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17401,'$j124_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3080,17401,'','".AddSlashes(pg_result($resaco,$iresaco,'j124_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3080,17402,'','".AddSlashes(pg_result($resaco,$iresaco,'j124_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3080,17403,'','".AddSlashes(pg_result($resaco,$iresaco,'j124_iptutabelasconfig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3080,17401,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j124_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3080,17402,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j124_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3080,17403,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j124_iptutabelasconfig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptutabelasconfigcampochave
@@ -345,7 +345,7 @@ class cl_iptutabelasconfigcampochave {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptutabelasconfigcampochave";
@@ -360,7 +360,7 @@ class cl_iptutabelasconfigcampochave {
    function sql_query ( $j124_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_iptutabelasconfigcampochave {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_iptutabelasconfigcampochave {
    function sql_query_file ( $j124_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_iptutabelasconfigcampochave {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

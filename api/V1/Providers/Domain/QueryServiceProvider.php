@@ -22,7 +22,7 @@ class QueryServiceProvider implements ServiceProviderInterface, BootableProvider
         $app->before(function (Request $request) {
             if ($request->isMethod('GET')) {
                 $data = $request->query->all();
-                $request->request->replace(is_array($data) ? $data : array());
+                $request->request->replace(is_array($data) ? $data : []);
             }
         });
     }

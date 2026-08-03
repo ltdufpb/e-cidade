@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_prontuariosmotivoalta_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprontuariosmotivoalta = new cl_prontuariosmotivoalta;
 $clprontuariosmotivoalta->rotulo->label("sd25_codigo");
 $clprontuariosmotivoalta->rotulo->label("sd25_codigo");
@@ -52,9 +52,9 @@ $clprontuariosmotivoalta->rotulo->label("sd25_codigo");
         }else{
            $sql = $clprontuariosmotivoalta->sql_query("",$campos,"sd25_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd25_codigo)){
-          $repassa = array("chave_sd25_codigo"=>$chave_sd25_codigo,"chave_sd25_codigo"=>$chave_sd25_codigo);
+          $repassa = ["chave_sd25_codigo"=>$chave_sd25_codigo,"chave_sd25_codigo"=>$chave_sd25_codigo];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

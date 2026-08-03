@@ -46,7 +46,7 @@ $clempagepag  = new cl_empagepag;
 $clempageconf  = new cl_empageconf;
 
 //echo ($HTTP_SERVER_VARS["QUERY_STRING"]);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //db_postmemory($HTTP_POST_VARS);
 $db_opcao = 1;
 $db_botao = false;
@@ -161,7 +161,7 @@ function js_calcula(campo){
 	    db_fieldsmemory($result,$i,true);
 
 	    $x= "valor_$e81_codmov";
-  	    $$x = $e81_valor;
+  	    ${$x} = $e81_valor;
             db_input("valor_$e81_codmov",10,'',true,'hidden',1);
              
 
@@ -179,7 +179,7 @@ function js_calcula(campo){
           <td class='bordas' <?=($desab1==true?$cor:"")?> align='right'><small > <?=$k17_codigo?></small></td>
           <td class='bordas' <?=($desab1==true?$cor:"")?> align='right'><small > <?=$k17_credito?></small></td>
           <td class='bordas' <?=($desab1==true?$cor:"")?> align='right'><small > <?=$k17_debito?></small></td>
-          <td class='bordas' <?=($desab1==true?$cor:"")?> align='left' nowrap ><small > <?=(substr($c60_descr,0,20))?></small></td>
+          <td class='bordas' <?=($desab1==true?$cor:"")?> align='left' nowrap ><small > <?=(substr((string) $c60_descr,0,20))?></small></td>
           <td class='bordas' <?=($desab1==true?$cor:"")?> align='right' nowrap><small > <?=$e40_descr?></small></td>
           <td class='bordas' <?=($desab1==true?$cor:"")?> align='right'><small > <?=$k17_data?></small></td>
           <td class='bordas' <?=($desab1==true?$cor:"")?> align='right'><small > <?=$e86_cheque?></small></td>

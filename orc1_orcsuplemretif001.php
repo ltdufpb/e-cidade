@@ -35,7 +35,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcsuplem_classe.php"));
 include(modification("classes/db_orcprojlan_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcsuplemretif = new cl_orcsuplemretif;
 $clorcsuplem  = new cl_orcsuplem;
@@ -60,7 +60,7 @@ if (isset ($processar) && ($processar == "Processar")) {
 	$usuario = db_getsession("DB_id_usuario");
 	
 	// -- processamento do projeto retificador
-    $matriz = array();    
+    $matriz = [];    
 	$sql = " select o46_codsup as chave
 			      from orcsuplem
 					         inner join orcprojeto on o46_codlei=o39_codproj
@@ -70,7 +70,7 @@ if (isset ($processar) && ($processar == "Processar")) {
 				           ";				           
 	$res = $clorcsuplem->sql_record($sql);	
 	if (($clorcsuplem->numrows) > 0) {
-		for ($i = 0; $i < pg_numrows($res); $i ++) {
+		for ($i = 0; $i < pg_num_rows($res); $i ++) {
 			db_fieldsmemory($res, $i);
 			$matriz[$i] = $chave;
 		}
@@ -104,7 +104,7 @@ if (isset ($processar) && ($processar == "Processar")) {
 	 *  10 = estorno de credito especial
 	 *  12 = estorno de redução
 	 */	 	 
-    $matriz = array();    
+    $matriz = [];    
 	$sql = " select o46_codsup as chave
 			      from orcsuplem
 					         inner join orcprojeto on o46_codlei=o39_codproj
@@ -114,7 +114,7 @@ if (isset ($processar) && ($processar == "Processar")) {
 				           ";				           
 	$res = $clorcsuplem->sql_record($sql);	
 	if (($clorcsuplem->numrows) > 0) {
-		for ($i = 0; $i < pg_numrows($res); $i ++) {
+		for ($i = 0; $i < pg_num_rows($res); $i ++) {
 			db_fieldsmemory($res, $i);
 			$matriz[$i] = $chave;
 		}

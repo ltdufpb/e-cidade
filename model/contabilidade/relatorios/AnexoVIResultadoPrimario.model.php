@@ -73,7 +73,8 @@ class AnexoVIResultadoPrimario extends RelatoriosLegaisBase
     /**
      * Executa o balancete da receita do ano atual e do ano anterior.
      */
-    protected function executarBalanceteDaReceita(array $linhas = null, array $colunas = null, $dataInicial = null, $dataFinal = null)
+    #[\Override]
+    protected function executarBalanceteDaReceita(?array $linhas = null, ?array $colunas = null, $dataInicial = null, $dataFinal = null)
     {
 
         parent::executarBalanceteDaReceita();
@@ -111,6 +112,7 @@ class AnexoVIResultadoPrimario extends RelatoriosLegaisBase
     /**
      * Executa o balancete da despesa do ano atual e do ano anterior.
      */
+    #[\Override]
     protected function executarBalanceteDespesa()
     {
 
@@ -218,7 +220,7 @@ class AnexoVIResultadoPrimario extends RelatoriosLegaisBase
         $this->oPdf->Cell(40, 4, 'Em Reais', 0, 1, "R");
         $this->oPdf->SetFillColor(255);
 
-        $this->escreverCabecalhoReceita($this->oPdf);
+        $this->escreverCabecalhoReceita();
         $this->escreverReceitas();
 
         $this->escreverCabecalhoDespesas();
@@ -434,10 +436,10 @@ class AnexoVIResultadoPrimario extends RelatoriosLegaisBase
     protected function getInstituicoesRPPS()
     {
 
-        $aListaInstituicoesRPPS = array();
+        $aListaInstituicoesRPPS = [];
         $aInstituicoes = $this->getInstituicoes(true);
         foreach ($aInstituicoes as $oInstituicao) {
-            if (in_array($oInstituicao->getTipo(), array(5, 6))) {
+            if (in_array($oInstituicao->getTipo(), [5, 6])) {
                 $aListaInstituicoesRPPS[] = $oInstituicao->getCodigo();
             }
         }

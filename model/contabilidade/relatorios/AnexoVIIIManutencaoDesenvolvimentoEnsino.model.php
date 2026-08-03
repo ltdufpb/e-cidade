@@ -91,7 +91,8 @@ class AnexoVIIIManutencaoDesenvolvimentoEnsino extends RelatoriosLegaisBase {
     $this->oDataFinalAnterior->modificarIntervalo('-1 year');
   }
 
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     parent::getDados();
 

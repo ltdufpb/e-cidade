@@ -46,8 +46,8 @@ $clrotulo   = new rotulocampo;
 $clrotulo->label('c83_codrel');
 $clrotulo->label('o42_descrrel');
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oPost = db_utils::postMemory($_POST);
 $o42_tamanhofontenota  = 6;
@@ -91,7 +91,7 @@ if (isset($opcao) && $opcao == "excluir"){
 if (isset($gravar)) {
   db_inicio_transacao();
 
-  if (trim($o42_nota) == "" && trim($o42_fonte) == ""){
+  if (trim((string) $o42_nota) == "" && trim((string) $o42_fonte) == ""){
     $sqlerro  = true;
     $erro_msg = "Informe Fonte/Nota Explicativa. Verifique.";
   }
@@ -209,7 +209,7 @@ function js_verifica(opcao){
  <tr>
     <td colspan=2 align=center title="<?=$To42_periodo?>"><?=$Lo42_periodo?>
 		<?php 
-      $result1=array("01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho","07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+      $result1=["01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho","07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
       db_select("o42_periodo",$result1,true,$db_opcao,"");
       if ($db_opcao == 3){
         $readonly = " readonly ";
@@ -264,7 +264,7 @@ function js_verifica(opcao){
        <tr>
          <td>
 					 <?php 
-						 $chavepri= array("o42_codparrel"=>$c83_codrel,"o42_anousu"=>$anousu,"o42_instit"=>$instit,"o42_periodo"=>@$o42_periodo);
+						 $chavepri= ["o42_codparrel"=>$c83_codrel,"o42_anousu"=>$anousu,"o42_instit"=>$instit,"o42_periodo"=>@$o42_periodo];
 						 $cliframe_alterar_excluir->chavepri= $chavepri;
 						 $cliframe_alterar_excluir->sql     = $clorcparamrelnota->sql_query_file($c83_codrel,$anousu,$instit); 
 						 $cliframe_alterar_excluir->campos  = "o42_periodo,o42_nota,o42_fonte";

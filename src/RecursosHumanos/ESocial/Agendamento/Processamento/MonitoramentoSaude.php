@@ -46,11 +46,6 @@ class MonitoramentoSaude extends ProcessamentoAbstract implements ProcessamentoI
     /**
      * @var
      */
-    private $iCgm;
-
-    /**
-     * @var
-     */
     private $ano;
 
     /**
@@ -63,9 +58,13 @@ class MonitoramentoSaude extends ProcessamentoAbstract implements ProcessamentoI
      *
      * @param $iCgm
      */
-    public function __construct($iCgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $iCgm
+    )
     {
-        $this->iCgm = $iCgm;
     }
 
     /**

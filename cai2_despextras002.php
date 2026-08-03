@@ -46,7 +46,7 @@ $clrotulo->label('k12_autent');
 $clrotulo->label('k13_conta');
 $clrotulo->label('k13_descr');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
@@ -205,7 +205,7 @@ $sql="select      coremp.k12_empen,
 //exit;
 $result = db_query($sql);
 //db_criatabela($result); exit;
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Pagamentos de Despesa Extra-Orçamentária.');
 
 }
@@ -226,7 +226,7 @@ $p           = 0;
 $imp_tran    = true;
 $imp_desp    = true;
 
-for($x = 0; $x < pg_numrows($result); $x++){
+for($x = 0; $x < pg_num_rows($result); $x++){
    db_fieldsmemory($result,$x,true);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage("L");
@@ -313,9 +313,9 @@ for($x = 0; $x < pg_numrows($result); $x++){
    $pdf->setfont('arial','b',8);
 
    if ($flag_hist == true){
-        if (strlen($k12_histcor) > 0){
+        if (strlen((string) $k12_histcor) > 0){
              $pdf->multicell(230,$alt,$k12_histcor,     0,1,"L",$p);
-        } else if (strlen($k17_texto) > 0){
+        } else if (strlen((string) $k17_texto) > 0){
              $pdf->multicell(230,$alt,$k17_texto,       0,1,"L",$p);
         }
    }

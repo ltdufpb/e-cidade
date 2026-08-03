@@ -28,33 +28,33 @@
 //CLASSE DA ENTIDADE licitacaoreservacotas
 class cl_licitacaoreservacotas {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $l19_sequencial = 0;
-   var $l19_liclicitemorigem = 0;
-   var $l19_liclicitemreserva = 0;
+   public $l19_sequencial = 0;
+   public $l19_liclicitemorigem = 0;
+   public $l19_liclicitemreserva = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  l19_sequencial = int4 = Sequencial
                  l19_liclicitemorigem = int4 = Item de Origem
                  l19_liclicitemreserva = int4 = Item Reservado
                  ";
    //funcao construtor da classe
-   function cl_licitacaoreservacotas() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("licitacaoreservacotas");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -106,10 +106,10 @@ class cl_licitacaoreservacotas {
          $this->erro_status = "0";
          return false;
        }
-       $this->l19_sequencial = pg_result($result,0,0);
+       $this->l19_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from licitacaoreservacotas_l19_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l19_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l19_sequencial)){
          $this->erro_sql = " Campo l19_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -141,7 +141,7 @@ class cl_licitacaoreservacotas {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Reserva de Cotas ($this->l19_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Reserva de Cotas já Cadastrado";
@@ -170,12 +170,12 @@ class cl_licitacaoreservacotas {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21786,'$this->l19_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3922,21786,'','".AddSlashes(pg_result($resaco,0,'l19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3922,21787,'','".AddSlashes(pg_result($resaco,0,'l19_liclicitemorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3922,21788,'','".AddSlashes(pg_result($resaco,0,'l19_liclicitemreserva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3922,21786,'','".AddSlashes(pg_fetch_result($resaco,0,'l19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3922,21787,'','".AddSlashes(pg_fetch_result($resaco,0,'l19_liclicitemorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3922,21788,'','".AddSlashes(pg_fetch_result($resaco,0,'l19_liclicitemreserva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -185,10 +185,10 @@ class cl_licitacaoreservacotas {
       $this->atualizacampos();
      $sql = " update licitacaoreservacotas set ";
      $virgula = "";
-     if(trim($this->l19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l19_sequencial"])){
+     if(trim((string) $this->l19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l19_sequencial"])){
        $sql  .= $virgula." l19_sequencial = $this->l19_sequencial ";
        $virgula = ",";
-       if(trim($this->l19_sequencial) == null ){
+       if(trim((string) $this->l19_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "l19_sequencial";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_licitacaoreservacotas {
          return false;
        }
      }
-     if(trim($this->l19_liclicitemorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l19_liclicitemorigem"])){
+     if(trim((string) $this->l19_liclicitemorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l19_liclicitemorigem"])){
        $sql  .= $virgula." l19_liclicitemorigem = $this->l19_liclicitemorigem ";
        $virgula = ",";
-       if(trim($this->l19_liclicitemorigem) == null ){
+       if(trim((string) $this->l19_liclicitemorigem) == null ){
          $this->erro_sql = " Campo Item de Origem não informado.";
          $this->erro_campo = "l19_liclicitemorigem";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_licitacaoreservacotas {
          return false;
        }
      }
-     if(trim($this->l19_liclicitemreserva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l19_liclicitemreserva"])){
+     if(trim((string) $this->l19_liclicitemreserva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l19_liclicitemreserva"])){
        $sql  .= $virgula." l19_liclicitemreserva = $this->l19_liclicitemreserva ";
        $virgula = ",";
-       if(trim($this->l19_liclicitemreserva) == null ){
+       if(trim((string) $this->l19_liclicitemreserva) == null ){
          $this->erro_sql = " Campo Item Reservado não informado.";
          $this->erro_campo = "l19_liclicitemreserva";
          $this->erro_banco = "";
@@ -238,15 +238,15 @@ class cl_licitacaoreservacotas {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21786,'$this->l19_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l19_sequencial"]) || $this->l19_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3922,21786,'".AddSlashes(pg_result($resaco,$conresaco,'l19_sequencial'))."','$this->l19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3922,21786,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l19_sequencial'))."','$this->l19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l19_liclicitemorigem"]) || $this->l19_liclicitemorigem != "")
-             $resac = db_query("insert into db_acount values($acount,3922,21787,'".AddSlashes(pg_result($resaco,$conresaco,'l19_liclicitemorigem'))."','$this->l19_liclicitemorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3922,21787,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l19_liclicitemorigem'))."','$this->l19_liclicitemorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l19_liclicitemreserva"]) || $this->l19_liclicitemreserva != "")
-             $resac = db_query("insert into db_acount values($acount,3922,21788,'".AddSlashes(pg_result($resaco,$conresaco,'l19_liclicitemreserva'))."','$this->l19_liclicitemreserva',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3922,21788,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l19_liclicitemreserva'))."','$this->l19_liclicitemreserva',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -300,12 +300,12 @@ class cl_licitacaoreservacotas {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21786,'$l19_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3922,21786,'','".AddSlashes(pg_result($resaco,$iresaco,'l19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3922,21787,'','".AddSlashes(pg_result($resaco,$iresaco,'l19_liclicitemorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3922,21788,'','".AddSlashes(pg_result($resaco,$iresaco,'l19_liclicitemreserva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3922,21786,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3922,21787,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l19_liclicitemorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3922,21788,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l19_liclicitemreserva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

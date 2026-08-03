@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE tesinterlote
 class cl_tesinterlote { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j69_tesinter = 0; 
-   var $j69_idbql = 0; 
+   public $j69_tesinter = 0; 
+   public $j69_idbql = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j69_tesinter = int4 = Codigo 
                  j69_idbql = int4 = Codigo Lote 
                  ";
    //funcao construtor da classe 
-   function cl_tesinterlote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tesinterlote"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_tesinterlote {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ligacao da tabela lote com tesinter ($this->j69_tesinter) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ligacao da tabela lote com tesinter já Cadastrado";
@@ -129,11 +129,11 @@ class cl_tesinterlote {
      $resaco = $this->sql_record($this->sql_query_file($this->j69_tesinter));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9974,'$this->j69_tesinter','I')");
-       $resac = db_query("insert into db_acount values($acount,1711,9974,'','".AddSlashes(pg_result($resaco,0,'j69_tesinter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1711,9975,'','".AddSlashes(pg_result($resaco,0,'j69_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1711,9974,'','".AddSlashes(pg_fetch_result($resaco,0,'j69_tesinter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1711,9975,'','".AddSlashes(pg_fetch_result($resaco,0,'j69_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_tesinterlote {
       $this->atualizacampos();
      $sql = " update tesinterlote set ";
      $virgula = "";
-     if(trim($this->j69_tesinter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j69_tesinter"])){ 
+     if(trim((string) $this->j69_tesinter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j69_tesinter"])){ 
        $sql  .= $virgula." j69_tesinter = $this->j69_tesinter ";
        $virgula = ",";
-       if(trim($this->j69_tesinter) == null ){ 
+       if(trim((string) $this->j69_tesinter) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "j69_tesinter";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_tesinterlote {
          return false;
        }
      }
-     if(trim($this->j69_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j69_idbql"])){ 
+     if(trim((string) $this->j69_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j69_idbql"])){ 
        $sql  .= $virgula." j69_idbql = $this->j69_idbql ";
        $virgula = ",";
-       if(trim($this->j69_idbql) == null ){ 
+       if(trim((string) $this->j69_idbql) == null ){ 
          $this->erro_sql = " Campo Codigo Lote nao Informado.";
          $this->erro_campo = "j69_idbql";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_tesinterlote {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9974,'$this->j69_tesinter','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j69_tesinter"]))
-           $resac = db_query("insert into db_acount values($acount,1711,9974,'".AddSlashes(pg_result($resaco,$conresaco,'j69_tesinter'))."','$this->j69_tesinter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1711,9974,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j69_tesinter'))."','$this->j69_tesinter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j69_idbql"]))
-           $resac = db_query("insert into db_acount values($acount,1711,9975,'".AddSlashes(pg_result($resaco,$conresaco,'j69_idbql'))."','$this->j69_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1711,9975,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j69_idbql'))."','$this->j69_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_tesinterlote {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9974,'$j69_tesinter','E')");
-         $resac = db_query("insert into db_acount values($acount,1711,9974,'','".AddSlashes(pg_result($resaco,$iresaco,'j69_tesinter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1711,9975,'','".AddSlashes(pg_result($resaco,$iresaco,'j69_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1711,9974,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j69_tesinter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1711,9975,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j69_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tesinterlote
@@ -291,7 +291,7 @@ class cl_tesinterlote {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tesinterlote";
@@ -305,7 +305,7 @@ class cl_tesinterlote {
    function sql_query ( $j69_tesinter=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -331,7 +331,7 @@ class cl_tesinterlote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -343,7 +343,7 @@ class cl_tesinterlote {
    function sql_query_file ( $j69_tesinter=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -364,7 +364,7 @@ class cl_tesinterlote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_regimeprevidencia_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clregimeprevidencia = new cl_regimeprevidencia;
 $clregimeprevidencia->rotulo->label("rh127_sequencial");
 $clregimeprevidencia->rotulo->label("rh127_descricao");
@@ -108,9 +108,9 @@ if (isset($chave_rh127_descricao)) {
         }else{
            $sql = $clregimeprevidencia->sql_query("",$campos,"rh127_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh127_sequencial)){
-          $repassa = array("chave_rh127_sequencial"=>$chave_rh127_sequencial,"chave_rh127_sequencial"=>$chave_rh127_sequencial);
+          $repassa = ["chave_rh127_sequencial"=>$chave_rh127_sequencial,"chave_rh127_sequencial"=>$chave_rh127_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

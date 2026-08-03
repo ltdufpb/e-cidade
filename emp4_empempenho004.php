@@ -217,7 +217,7 @@ $clempautret = new cl_empautret;
 $clempempret = new cl_empempret;
 $clempretencao = new cl_empretencao;
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 //Checa parametro e mostra alerta de confirmacao de data
@@ -238,7 +238,7 @@ $anousu           = db_getsession("DB_anousu");
 $iInstituicao     = db_getsession("DB_instit");
 $alertar_retencao = false;
 $lControlePacto   = false;
-$aParametrosOrcamento = db_stdClass::getParametro("orcparametro",array(db_getsession("DB_anousu")));
+$aParametrosOrcamento = db_stdClass::getParametro("orcparametro",[db_getsession("DB_anousu")]);
 if (count($aParametrosOrcamento) > 0) {
   if ( isset($aParametrosOrcamento[0]->o50_utilizapacto) ) {
     $lControlePacto = $aParametrosOrcamento[0]->o50_utilizapacto=="t"?true:false;
@@ -264,7 +264,7 @@ if (!empty($iElemento)) {
 
     if ($oGrupoContaOrcamento instanceof GrupoContaOrcamento) {
 
-      if (in_array($oGrupoContaOrcamento->getCodigo(), array(7,8,9))) {
+      if (in_array($oGrupoContaOrcamento->getCodigo(), [7,8,9])) {
 
         $sGrupoDesdobramento = $oGrupoContaOrcamento->getDescricao();
         if ( $oGrupoContaOrcamento->getCodigo() == 9 && !UTILIZA_INCORPORACAO_BEM ) {
@@ -329,8 +329,8 @@ if (isset($incluir)) {
 				 left join arqproc 	on p68_codproc = x.p63_codproc
 			where p64_codtran is null and p68_codproc is null and x.e54_autori = {$e54_autori}";
       $result_tran = db_query($sqltran);
-      if (pg_numrows($result_tran) != 0) {
-        for ($w = 0; $w < pg_numrows($result_tran); $w++) {
+      if (pg_num_rows($result_tran) != 0) {
+        for ($w = 0; $w < pg_num_rows($result_tran); $w++) {
           db_fieldsmemory($result_tran, $w);
           $recebetransf = recprocandsol($p62_codtran);
           if ($recebetransf == true) {
@@ -388,7 +388,7 @@ if (isset($incluir)) {
       $sql = "select fc_verifica_lancamento(" . $e54_autori . ",'" . date("Y-m-d", db_getsession("DB_datausu"))
              . "',1,00.00)";
       $result_erro = db_query($sql) or die($sql);
-      $erro_msg = pg_result($result_erro, 0, 0);
+      $erro_msg = pg_fetch_result($result_erro, 0, 0);
       if (substr($erro_msg, 0, 2) > 0) {
         $erro_msg = substr($erro_msg, 3);
         $sqlerro  = true;
@@ -660,7 +660,7 @@ if (isset($incluir)) {
         //final
 
         //rotina que compara os elementos da dotação do empenho com a dotação dos itens
-        if (substr($elemento_emp, 0, 6) != substr($elemento_item, 0, 6)) {
+        if (substr((string) $elemento_emp, 0, 6) != substr((string) $elemento_item, 0, 6)) {
           $erro_msg = "Subelemento do item diferente da dotação. Verifique!";
           $sqlerro  = true;
         }
@@ -673,7 +673,7 @@ if (isset($incluir)) {
           $clempempitem->e62_vltot             = $e55_vltot;
           $clempempitem->e62_vlrun             = $e55_vlrun;
           $clempempitem->e62_servicoquantidade = $e55_servicoquantidade == "f" ? "false" : "true";
-          $e55_descr                           = AddSlashes($e55_descr);
+          $e55_descr                           = AddSlashes((string) $e55_descr);
           $clempempitem->e62_descr             = $e55_descr;
           $clempempitem->e62_codele            = $e56_codele;
           $clempempitem->incluir($e60_numemp, $e55_sequen);
@@ -699,7 +699,7 @@ if (isset($incluir)) {
           and e54_autori = $e54_autori ";
           $rsEmpAutorizaSol   = db_query($sSqlEmpAutorizaSol);
 
-          if (!$sqlerro && $lControlePacto && pg_numrows($rsEmpAutorizaSol) > 0) {
+          if (!$sqlerro && $lControlePacto && pg_num_rows($rsEmpAutorizaSol) > 0) {
 
             $sSqlItemPacto = $clempautitem->sql_query_item_pacto($e54_autori, $e55_sequen);
             $rsItemPacto   = $clempautitem->sql_record($sSqlItemPacto);
@@ -1251,7 +1251,7 @@ if (isset($incluir)) {
     $rs = db_query($dao->sql_query_file($o58_codele, db_getsession('DB_anousu')));
     $elemento = db_utils::fieldsMemory($rs, 0)->o56_elemento;
 
-    $desdobramento = substr($elemento, 0, 7);
+    $desdobramento = substr((string) $elemento, 0, 7);
   if(mktime(0,0,0,substr($e54_emiss,5,2),substr($e54_emiss,8,2),substr($e54_emiss,0,4)) > db_getsession("DB_datausu")){
     db_msgbox("Data da autorização (".db_formatar($e54_emiss,"d").") maior que data do empenho.");
   }

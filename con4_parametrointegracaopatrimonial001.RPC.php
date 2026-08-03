@@ -42,7 +42,7 @@ $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno           = new stdClass();
 $oRetorno->iStatus  = 1;
 $oRetorno->sMessage = '';
-$aDadosRetorno      = array();
+$aDadosRetorno      = [];
 
 try {
 
@@ -51,7 +51,7 @@ try {
     case "salvar" :
 
       db_inicio_transacao();
-      $aDatasImplantacao = array();
+      $aDatasImplantacao = [];
       
       if ( ! empty($oParam->dtContrato) ) {
         $aDatasImplantacao[ParametroIntegracaoPatrimonial::CONTRATO] = $oParam->dtContrato;

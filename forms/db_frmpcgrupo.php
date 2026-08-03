@@ -57,7 +57,7 @@ db_input('pc03_descrgrupo',40,$Ipc03_descrgrupo,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$xx = array("t"=>"SIM","f"=>"NAO");
+$xx = ["t"=>"SIM","f"=>"NAO"];
 db_select('pc03_ativo',$xx,true,$db_opcao,"");
 ?>
     </td>
@@ -75,7 +75,7 @@ function js_preenchepesquisa(chave){
   db_iframe_pcgrupo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

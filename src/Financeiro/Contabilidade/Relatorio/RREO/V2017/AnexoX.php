@@ -57,7 +57,7 @@ class AnexoX extends \RelatoriosLegaisBase
    */
   public function getDados() {
 
-    $aRetorno        = array();
+    $aRetorno        = [];
     $oLinhaRelatorio = new linhaRelatorioContabil($this->iCodigoRelatorio, 1);
     $oLinhaRelatorio->setPeriodo($this->iCodigoPeriodo);
 

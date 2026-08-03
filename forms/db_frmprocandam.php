@@ -41,7 +41,7 @@ $clrotulo->label("descrdepto");
     <td> 
      <?php 
        $sql = "select nome from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario");
-       echo pg_result(pg_exec($sql),0,"nome");  
+       echo pg_fetch_result(pg_exec($sql),0,"nome");  
      ?>
     </td>
   </tr>
@@ -52,7 +52,7 @@ $clrotulo->label("descrdepto");
     <td> 
      <?php 
        $sql = "select descrdepto from db_depart where coddepto = ".db_getsession("DB_coddepto");
-       echo pg_result(pg_exec($sql),0,"descrdepto");  
+       echo pg_fetch_result(pg_exec($sql),0,"descrdepto");  
      ?>
     </td>
   </tr>
@@ -159,7 +159,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 <?php 

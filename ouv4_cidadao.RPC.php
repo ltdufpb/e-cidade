@@ -140,25 +140,25 @@ try {
   	  if (!empty($oParam->iCidadao)) {
   	    
   	    $oCidadao = CidadaoRepository::getCidadaoByCodigo($oParam->iCidadao);
-  	    $oRetorno->sNome        = urlencode($oCidadao->getNome());
-  	    $oRetorno->sIdentidade  = urlencode($oCidadao->getIdentidade());
-  	    $oRetorno->sCpf         = urlencode($oCidadao->getCpfCnpj());
-  	    $oRetorno->dtNascimento = urlencode($oCidadao->getDataNascimento());
-  	    $oRetorno->sSexo        = urlencode($oCidadao->getSexo());
-  	    $oRetorno->sEndereco    = urlencode($oCidadao->getEndereco());
+  	    $oRetorno->sNome        = urlencode((string) $oCidadao->getNome());
+  	    $oRetorno->sIdentidade  = urlencode((string) $oCidadao->getIdentidade());
+  	    $oRetorno->sCpf         = urlencode((string) $oCidadao->getCpfCnpj());
+  	    $oRetorno->dtNascimento = urlencode((string) $oCidadao->getDataNascimento());
+  	    $oRetorno->sSexo        = urlencode((string) $oCidadao->getSexo());
+  	    $oRetorno->sEndereco    = urlencode((string) $oCidadao->getEndereco());
   	    $oRetorno->iNumero      = $oCidadao->getNumero();
-  	    $oRetorno->sBairro      = urlencode($oCidadao->getBairro());
-  	    $oRetorno->sComplemento = urlencode($oCidadao->getComplemento());
-  	    $oRetorno->sUf          = urlencode($oCidadao->getUF());
-  	    $oRetorno->sMunicipio   = urlencode($oCidadao->getMunicipio());
-  	    $oRetorno->sCep         = urlencode($oCidadao->getCEP());
-  	    $oRetorno->aEmail       = array();
-  	    $oRetorno->aTelefones   = array();
+  	    $oRetorno->sBairro      = urlencode((string) $oCidadao->getBairro());
+  	    $oRetorno->sComplemento = urlencode((string) $oCidadao->getComplemento());
+  	    $oRetorno->sUf          = urlencode((string) $oCidadao->getUF());
+  	    $oRetorno->sMunicipio   = urlencode((string) $oCidadao->getMunicipio());
+  	    $oRetorno->sCep         = urlencode((string) $oCidadao->getCEP());
+  	    $oRetorno->aEmail       = [];
+  	    $oRetorno->aTelefones   = [];
   	    
   	    foreach ($oCidadao->getEmails() as $oEmail) {
   	      
   	      $oDadosEmail             = new stdClass();
-  	      $oDadosEmail->sEmail     = urlencode($oEmail->getEmail());
+  	      $oDadosEmail->sEmail     = urlencode((string) $oEmail->getEmail());
   	      $oDadosEmail->sPrincipal = urlencode($oEmail->isPrincipal() ? 'Sim' : 'Não');
   	      $oDadosEmail->lPrincipal = $oEmail->isPrincipal();
   	      $oRetorno->aEmail[]      = $oDadosEmail;
@@ -169,28 +169,18 @@ try {
   	      $oDadosTelefone               = new stdClass();
   	      $oDadosTelefone->iCodigo      = $oTelefone->getCodigoTelefone();
   	      $oDadosTelefone->iTipo        = $oTelefone->getCodigoTipoTelefone();
-  	      $oDadosTelefone->sDDD         = urlencode($oTelefone->getDDD());
+  	      $oDadosTelefone->sDDD         = urlencode((string) $oTelefone->getDDD());
   	      $oDadosTelefone->iNumero      = $oTelefone->getNumeroTelefone();
-  	      $oDadosTelefone->sRamal       = urlencode($oTelefone->getRamal());
+  	      $oDadosTelefone->sRamal       = urlencode((string) $oTelefone->getRamal());
   	      $oDadosTelefone->sPrincipal   = urlencode($oTelefone->isTelefonePrincipal() ? 'Sim' : 'Não');
   	      $oDadosTelefone->lPrincipal   = $oTelefone->isTelefonePrincipal();
-  	      $oDadosTelefone->sObservacoes = urlencode($oTelefone->getObservacao());
+  	      $oDadosTelefone->sObservacoes = urlencode((string) $oTelefone->getObservacao());
   	      $oRetorno->aTelefones[]       = $oDadosTelefone;
   	    }
   	  }
   	  break;
   }
-} catch (ParameterException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->iStatus   = 2;
-  $oRetorno->sMensagem = urlencode($oErro->getMessage());
-} catch (BusinessException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->iStatus   = 2;
-  $oRetorno->sMensagem = urlencode($oErro->getMessage());
-} catch (DBException $oErro) {
+} catch (ParameterException|BusinessException|DBException $oErro) {
 
   db_fim_transacao(true);
   $oRetorno->iStatus   = 2;

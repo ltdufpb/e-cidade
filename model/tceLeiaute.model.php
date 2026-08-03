@@ -32,27 +32,17 @@ class tceLeiaute extends tceEstruturaBasica {
   
   const  NOME_ARQUIVO   = 'LEIAUTE.TXT';
   const  CODIGO_ARQUIVO = 40;
-  
-  public $iInstit       = "";
-  public $sDataIni      = "";
-  public $sDataFim      = "";
-  public $sCodRemessa   = "";
-  public $aLinhas       = array();
-  public $aLinha        = array();
+  public $aLinhas       = [];
+  public $aLinha        = [];
   public $oOutrosDados  = null;
     
-  function __construct($iInstit,$sCodRemessa,$sDataIni,$sDataFim,$oData) {
+  function __construct(public $iInstit,public $sCodRemessa,public $sDataIni,public $sDataFim,$oData) {
     
     try {
       parent::__construct(self::CODIGO_ARQUIVO,self::NOME_ARQUIVO);
     } catch (Exception $e) {
       throw $e->getMessage();     
     }
-    
-    $this->iInstit     = $iInstit;
-    $this->sDataIni    = $sDataIni;
-    $this->sDataFim    = $sDataFim;
-    $this->sCodRemessa = $sCodRemessa;
     
   }
   

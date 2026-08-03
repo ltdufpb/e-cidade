@@ -51,7 +51,7 @@ if ( !isset($oPost->pesquisar) && empty($oPost->sd24_d_cadastro_fim) ) {
   $sd24_d_cadastro_fim_ano    = $oData->getAno();
 }
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $oDaoProntuarios = new cl_prontuarios;
 $oDaoProntuarios->rotulo->label();
 
@@ -67,7 +67,7 @@ if ( !empty($oPost->iUnidade) ) {
   $iUnidade = $oPost->iUnidade;
 }
 
-$aWhere     = array();
+$aWhere     = [];
 $aWhere[]   = " sd24_c_digitada = 'N'"; // somente FAA abertas
 $aWhere[]   = " sd24_i_unidade = {$iUnidade} ";
 
@@ -178,7 +178,7 @@ $sCampos .= " cast('<div style=\'background-color: ' || classificacaorisco.sd78_
 
       if ( !isset($pesquisa_chave) ) {
 
-        $aRepassa                               = array();
+        $aRepassa                               = [];
         $aRepassa["chave_z01_v_nome"]           = !empty($chave_z01_v_nome) ? $chave_z01_v_nome : '';
         $aRepassa["sd24_d_cadastro_inicio"]     = $sd24_d_cadastro_inicio;
         $aRepassa["sd24_d_cadastro_inicio_dia"] = $sd24_d_cadastro_inicio_dia;

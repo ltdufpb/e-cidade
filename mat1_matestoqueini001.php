@@ -66,7 +66,7 @@ db_app::import("Dotacao");
 
 db_app::import("contabilidade.contacorrente.*");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clempparametro     = new cl_empparametro;
 $clmatestoque       = new cl_matestoque;
@@ -81,7 +81,7 @@ $oDaoMatEstoqueItemNotaFiscal = db_utils::getDao("matestoqueitemnotafiscalmanual
 $res_empparametro = $clempparametro->sql_record($clempparametro->sql_query(db_getsession("DB_anousu"),"e30_numdec"));
 if ($clempparametro->numrows > 0){
   db_fieldsmemory($res_empparametro,0);
-  if (trim($e30_numdec) == "" || $e30_numdec == 0){
+  if (trim((string) $e30_numdec) == "" || $e30_numdec == 0){
     $numdec = 2;
   } else {
     $numdec = $e30_numdec;
@@ -197,11 +197,11 @@ if (isset($incluir)) {
 
 				if ($sqlerro == false) {
 
-				  if (trim($m77_lote) != "") {
+				  if (trim((string) $m77_lote) != "") {
 
 				    $clmatestoqueitemlote = db_utils::getDao("matestoqueitemlote");
 				    $clmatestoqueitemlote->m77_lote = $m77_lote;
-				    $clmatestoqueitemlote->m77_dtvalidade = implode("-",array_reverse(explode("/", $m77_dtvalidade)));
+				    $clmatestoqueitemlote->m77_dtvalidade = implode("-",array_reverse(explode("/", (string) $m77_dtvalidade)));
 				    $clmatestoqueitemlote->m77_matestoqueitem = $m80_matestoqueitem;
 				    $clmatestoqueitemlote->incluir(null);
 				    if ($clmatestoqueitemlote->erro_status == 0){
@@ -213,7 +213,7 @@ if (isset($incluir)) {
 				}
 				if (!$sqlerro) {
 
-				  if (trim($m78_matfabricante) != "") {
+				  if (trim((string) $m78_matfabricante) != "") {
 
 				    $clmatestoqueitemfabric = db_utils::getDao("matestoqueitemfabric");
 				    $clmatestoqueitemfabric->m78_matestoqueitem = $m80_matestoqueitem;

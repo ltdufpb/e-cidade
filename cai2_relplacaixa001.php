@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clrotulo = new rotulocampo;
 $clrotulo->label('c60_codcon');
@@ -135,7 +135,7 @@ function js_emite(){
         <td align="right"> <strong>Opção de Seleção :<strong></td>
         <td align="left">&nbsp;&nbsp;&nbsp;
           <?php 
-          $xxx = array("S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;");
+          $xxx = ["S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;"];
           db_select('parametro',$xxx,true,2);
           ?>
         </td>

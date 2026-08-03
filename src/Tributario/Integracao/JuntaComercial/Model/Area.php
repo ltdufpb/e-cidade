@@ -31,48 +31,6 @@ namespace ECidade\Tributario\Integracao\JuntaComercial\Model;
 class Area
 {
   /**
-   * Código de identifcação da área ou secretaria no REGIN.
-   * Não obrigatório quando for o alvará, cadastro imobiliário ou cadastro mobiliario.
-   * @field CODIGO_AREA
-   * @max 99999
-   * @var integer $iCodigoArea
-   */
-  private $iCodigoArea;
-
-  /**
-   * Data da analise realizada pela área ou secretaria da instituição.
-   * @field DATA_ANALISE
-   * @size 8
-   * @var integer $iDataAnalise
-   */
-  private $iDataAnalise;
-
-  /**
-   * Status da análise
-   * @field STATUS_ANALISE
-   * @size 1
-   * @var integer $iStatusAnalise
-   */
-  private $iStatusAnalise;
-
-  /**
-   * Justifcativa para o status da análise.
-   * @field JUSTIFICATIVA_ANALISE
-   * @size 10000
-   * @var string $sJustificaAnalise
-   */
-  private $sJustificaAnalise;
-
-  /**
-   * CPF do usuário responsável pela análise.
-   * Não é obrigatório. Quando informado, o CPF do usuário deve estar cadastrado na Junta Comercial.
-   * @field CPF_USUARIO_ANALISE
-   * @size 15
-   * @var string $sCPFUsuarioAnalise
-   */
-  private $sCPFUsuarioAnalise;
-
-  /**
    * @return int
    */
   public function getCodigoArea()
@@ -160,13 +118,41 @@ class Area
    * @param string $sJustificaAnalise
    * @param string $sCPFUsuarioAnalise
    */
-  public function __construct($iCodigoArea, $iDataAnalise, $iStatusAnalise, $sJustificaAnalise, $sCPFUsuarioAnalise)
+  public function __construct(
+      /**
+       * Código de identifcação da área ou secretaria no REGIN.
+       * Não obrigatório quando for o alvará, cadastro imobiliário ou cadastro mobiliario.
+       * @field CODIGO_AREA
+       * @max 99999
+       */
+      private $iCodigoArea,
+      /**
+       * Data da analise realizada pela área ou secretaria da instituição.
+       * @field DATA_ANALISE
+       * @size 8
+       */
+      private $iDataAnalise,
+      /**
+       * Status da análise
+       * @field STATUS_ANALISE
+       * @size 1
+       */
+      private $iStatusAnalise,
+      /**
+       * Justifcativa para o status da análise.
+       * @field JUSTIFICATIVA_ANALISE
+       * @size 10000
+       */
+      private $sJustificaAnalise,
+      /**
+       * CPF do usuário responsável pela análise.
+       * Não é obrigatório. Quando informado, o CPF do usuário deve estar cadastrado na Junta Comercial.
+       * @field CPF_USUARIO_ANALISE
+       * @size 15
+       */
+      private $sCPFUsuarioAnalise
+  )
   {
-    $this->iCodigoArea = $iCodigoArea;
-    $this->iDataAnalise = $iDataAnalise;
-    $this->iStatusAnalise = $iStatusAnalise;
-    $this->sJustificaAnalise = $sJustificaAnalise;
-    $this->sCPFUsuarioAnalise = $sCPFUsuarioAnalise;
   }
 
 }

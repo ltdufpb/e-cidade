@@ -48,7 +48,7 @@ $sDisciplina = "Todas";
 /**
  * Valida os filtros passados pela interface
  */
-$aFiltros = array();
+$aFiltros = [];
 if (!empty($oGet->periodoInicial)) {
 
     $oData = new DBDate($oGet->periodoInicial);
@@ -167,7 +167,7 @@ if ($iLinhas == 0) {
     db_redireciona("db_erros.php?fechar=false&db_erro=Nenhum registro encontrado para os filtros selecionados.");
 }
 
-$aProfessorRede = array();
+$aProfessorRede = [];
 
 
 /**
@@ -186,9 +186,9 @@ $aProfessorRede = array();
  *          aProfessores->sNome
  *          aProfessores->sEtapas
  */
-$aTotalProfessorRede = array();
-$aTotalProfessorEnsino = array();
-$aTotalProfessorEscola = array();
+$aTotalProfessorRede = [];
+$aTotalProfessorEnsino = [];
+$aTotalProfessorEscola = [];
 for ($i = 0; $i < $iLinhas; $i++) {
 
     $oDadosProfessor = db_utils::fieldsMemory($rsProfessorRede, $i);
@@ -206,7 +206,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
         $oEscola->iCodigo = $oDadosProfessor->codigo_escola;
         $oEscola->sEscola = $oDadosProfessor->escola;
         $oEscola->totalProfessores = [];
-        $oEscola->aEnsino = array();
+        $oEscola->aEnsino = [];
 
         $aProfessorRede[$iEscola] = $oEscola;
     }
@@ -218,7 +218,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
         $oEnsino->iCodigo = $oDadosProfessor->codigo_ensino;
         $oEnsino->sEnsino = $oDadosProfessor->ensino;
         $oEnsino->totalProfessores = [];
-        $oEnsino->aAreaTrabalho = array();
+        $oEnsino->aAreaTrabalho = [];
         $aProfessorRede[$iEscola]->aEnsino[$iChaveEnsino] = $oEnsino;
     }
 
@@ -228,7 +228,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
         $oAreaTrabalho->iCodigo = $oDadosProfessor->codigo_area;
         $oAreaTrabalho->sAreaTrabalho = $oDadosProfessor->areatrabalho;
         $oAreaTrabalho->totalProfessores = [];
-        $oAreaTrabalho->aDisciplinas = array();
+        $oAreaTrabalho->aDisciplinas = [];
 
         $aProfessorRede[$iEscola]->aEnsino[$iChaveEnsino]->aAreaTrabalho[$iChaveAreaTrabalho] = $oAreaTrabalho;
     }
@@ -239,7 +239,7 @@ for ($i = 0; $i < $iLinhas; $i++) {
         $oDisciplina->iCodigo = $oDadosProfessor->codigo_disciplina;
         $oDisciplina->sDisciplina = $oDadosProfessor->disciplina;
         $oDisciplina->totalProfessores = [];
-        $oDisciplina->aProfessores = array();
+        $oDisciplina->aProfessores = [];
 
         $aProfessorRede[$iEscola]->aEnsino[$iChaveEnsino]->aAreaTrabalho[$iChaveAreaTrabalho]->aDisciplinas[$iChaveDisciplina] = $oDisciplina;
     }
@@ -300,7 +300,7 @@ foreach ($aProfessorRede as $oEscola) {
     foreach ($oEscola->aEnsino as $oEnsino) {
         foreach ($oEnsino->aAreaTrabalho as $oAreaTrabalho) {
             foreach ($oAreaTrabalho->aDisciplinas as $oDisciplina) {
-                uasort($oDisciplina->aProfessores, "ordernarProfessores");
+                uasort($oDisciplina->aProfessores, ordernarProfessores(...));
             }
         }
     }
@@ -309,7 +309,7 @@ foreach ($aProfessorRede as $oEscola) {
 
 function ordernarProfessores($aArrayAtual, $aProximoArray)
 {
-    return strcasecmp($aArrayAtual->sNome, $aProximoArray->sNome);
+    return strcasecmp((string) $aArrayAtual->sNome, (string) $aProximoArray->sNome);
 }
 
 $head1 = "Professores da Rede";

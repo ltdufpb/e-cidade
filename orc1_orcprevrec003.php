@@ -33,8 +33,8 @@ include(modification("libs/db_liborcamento.php"));
 include(modification("classes/db_orcprevrec_classe.php"));
 include(modification("classes/db_orcreceita_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clorcprevrec = new cl_orcprevrec;
 $clorcreceita = new cl_orcreceita;
 $clrotulo = new rotulocampo;
@@ -72,7 +72,7 @@ if(isset($receita) && trim($receita) != ""){
     $datafim = db_getsession("DB_anousu")."-".($bimestre-1)."-".$dia;
 
     $result_saldo_rec = db_receitasaldo(11, 2, 3, true, "o70_codrec = ".$receita, db_getsession("DB_anousu"), $dataini, $datafim);
-    if(pg_numrows($result_saldo_rec) > 0){
+    if(pg_num_rows($result_saldo_rec) > 0){
     	db_fieldsmemory($result_saldo_rec, 0);
 	$saldo_a_arrecadar = $saldo_inicial_prevadic - $saldo_arrecadado_acumulado;
     	$saldo_a_arrecadar = round($saldo_a_arrecadar,2);
@@ -80,9 +80,9 @@ if(isset($receita) && trim($receita) != ""){
     	$saldo_ultimo = $saldo_a_arrecadar - (round($saldo_frente,2) * (13 - $bimestre));
     }
 
-    $arr_valin = Array();
+    $arr_valin = [];
 
-		$arr_meses = Array(
+		$arr_meses = [
                         1=>"Jan",
                         2=>"Fev",
                         3=>"Mar",
@@ -95,7 +95,7 @@ if(isset($receita) && trim($receita) != ""){
                        10=>"Out",
                        11=>"Nov",
                        12=>"Dez"
-                      );
+                      ];
 
     ?>
     <tr>
@@ -122,10 +122,10 @@ if(isset($receita) && trim($receita) != ""){
 		for($i=0; $i<6; $i++){
       $bloquear = 3;
       $campo    = 'o34_valor_'.$arr_meses[($i+1)];
-      $$campo   = "0.00";
+      ${$campo}   = "0.00";
       if(($i+1) > ($bimestre) - 2){
       	$bloquear = 1;
-      	$$campo   = trim(db_formatar($saldo_frente,"p"));
+      	${$campo}   = trim(db_formatar($saldo_frente,"p"));
       	if(!isset($campofok)){
       		$campofok = $campo;
       	}
@@ -134,9 +134,9 @@ if(isset($receita) && trim($receita) != ""){
 		  $numrows_novos = $clorcprevrec->numrows;
 		  if($numrows_novos > 0){
 		  	db_fieldsmemory($result_valor, 0);
-		  	$$campo = $o34_valor;
+		  	${$campo} = $o34_valor;
 		  }
-		  $arr_valin[$i] = $$campo;
+		  $arr_valin[$i] = ${$campo};
 			?>
 			<td align="center">
 			  <?php 
@@ -176,11 +176,11 @@ if(isset($receita) && trim($receita) != ""){
 		for($i=6; $i<12; $i++){
       $bloquear = 3;
       $campo    = 'o34_valor_'.$arr_meses[($i+1)];
-      $$campo   = "0.00";
+      ${$campo}   = "0.00";
 			$campoblr = "onchange='js_alteravalor(\"".$campo."\");'";
       if((($i+1) > ($bimestre) - 2) && ($i+1) < 12){
       	$bloquear = 1;
-      	$$campo   = trim(db_formatar($saldo_frente,"p"));
+      	${$campo}   = trim(db_formatar($saldo_frente,"p"));
       	if(!isset($campofok)){
       		$campofok = $campo;
       	}
@@ -188,7 +188,7 @@ if(isset($receita) && trim($receita) != ""){
       	  $campoblr.= " onblur='parent.js_setarfoco(2);' ";
       	}
       }else if(($i+1) == 12){
-      	$$campo   = trim(db_formatar($saldo_ultimo,"p"));
+      	${$campo}   = trim(db_formatar($saldo_ultimo,"p"));
       	if(!isset($campofok)){
       		$campofok = $campo;
       	}
@@ -197,9 +197,9 @@ if(isset($receita) && trim($receita) != ""){
 		  $numrows_novos = $clorcprevrec->numrows;
 		  if($numrows_novos > 0){
 		  	db_fieldsmemory($result_valor, 0);
-		  	$$campo = $o34_valor;
+		  	${$campo} = $o34_valor;
 		  }
-		  $arr_valin[$i] = $$campo;
+		  $arr_valin[$i] = ${$campo};
 			?>
 			<td align="center">
 			  <?php 

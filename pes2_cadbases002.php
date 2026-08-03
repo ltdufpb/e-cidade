@@ -35,7 +35,7 @@ $clrotulo->label('r08_calqua');
 $clrotulo->label('r08_mesant');
 $clrotulo->label('r08_pfixo');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $head3 = "CADASTRO DE BASES";
@@ -60,7 +60,7 @@ $sql = "select  rh32_base   as r08_codigo,
 
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mes.' / '.$ano);
 
@@ -74,7 +74,7 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 4;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage();

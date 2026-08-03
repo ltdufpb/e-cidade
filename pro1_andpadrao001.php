@@ -106,7 +106,7 @@ if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   </html>
 <?php 
 
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
 
     if ($clandpadrao->erro_status=="0") {
 

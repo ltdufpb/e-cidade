@@ -90,7 +90,7 @@ if(isset($db_opcaoal)){
   <tr>
     <td valign="top" style="padding-top:10px" align="center">  
     <?php 
-	  $chavepri= array("m92_codalmox"=>@$m92_codalmox,"m92_depto"=>@$m92_depto);
+	  $chavepri= ["m92_codalmox"=>@$m92_codalmox,"m92_depto"=>@$m92_depto];
 	  $cliframe_alterar_excluir->chavepri      = $chavepri;
 	  $cliframe_alterar_excluir->sql           = $cldb_almoxdepto->sql_query($m92_codalmox,null,"db_almoxdepto.m92_codalmox,db_almoxdepto.m92_depto, db_depart.descrdepto");
 	  $cliframe_alterar_excluir->campos        = "m92_codalmox,m92_depto,descrdepto";

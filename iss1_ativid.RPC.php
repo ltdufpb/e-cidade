@@ -67,7 +67,7 @@ switch ($oParam->exec) {
 
   case 'buscaDocs' :
 
-    $oRetorno->aDocs = array();
+    $oRetorno->aDocs = [];
     $sWhere          = 'db44_cadtipodocumento = 2';
     $sCampos         = 'db44_sequencial, db44_descricao ';
     $sSql            = $clCadDocumento->sql_query('', $sCampos, '', $sWhere);
@@ -92,7 +92,7 @@ switch ($oParam->exec) {
           $oDadosRetorno = new stdClass();
           $oDadosRetorno->checked = 0;
           $oDadosRetorno->db44_sequencial = $oDocs->db44_sequencial;
-          $oDadosRetorno->db44_descricao  = urlencode($oDocs->db44_descricao);
+          $oDadosRetorno->db44_descricao  = urlencode((string) $oDocs->db44_descricao);
           if ($clIssAtividConfDoc->numrows > 0) {
 
             for ($i = 0; $i < $clIssAtividConfDoc->numrows; $i++) {
@@ -116,7 +116,7 @@ switch ($oParam->exec) {
           $oDadosRetorno     = new stdClass();
           $oDadosRetorno->checked = 0;
           $oDadosRetorno->db44_sequencial = $oDocs->db44_sequencial;
-          $oDadosRetorno->db44_descricao = urlencode($oDocs->db44_descricao);
+          $oDadosRetorno->db44_descricao = urlencode((string) $oDocs->db44_descricao);
           $oRetorno->aDocs[] = $oDadosRetorno;
           $oRetorno->message = 'Busca de Documentos Completa';
         }
@@ -133,8 +133,8 @@ switch ($oParam->exec) {
       /**
        * Inclui ou altera dependendo da opção do formulário
        */
-      $oParam->sDescricao  = utf8_decode(db_stdClass::db_stripTagsJson($oParam->sDescricao));
-      $oParam->sObservacao = utf8_decode(db_stdClass::db_stripTagsJson($oParam->sObservacao));
+      $oParam->sDescricao  = mb_convert_encoding(db_stdClass::db_stripTagsJson($oParam->sDescricao), 'ISO-8859-1');
+      $oParam->sObservacao = mb_convert_encoding(db_stdClass::db_stripTagsJson($oParam->sObservacao), 'ISO-8859-1');
 
       $clAtivid->q03_descr   = strtoupper(addslashes($oParam->sDescricao));
       $clAtivid->q03_atmemo  = ($oParam->sObservacao != '' ? $oParam->sObservacao : NULL);
@@ -243,7 +243,7 @@ switch ($oParam->exec) {
 
         if ($oParam->sServico != 0) {
           
-          $sServicos = explode(',', $oParam->sServico);
+          $sServicos = explode(',', (string) $oParam->sServico);
           foreach($sServicos as $value){
             
             $clIssGrupoServicoAtivid->q127_issgruposerviso = $value;
@@ -393,9 +393,9 @@ switch ($oParam->exec) {
                         INNER JOIN db_estruturavalor ON q126_db_estruturavalor = db121_sequencial WHERE q127_ativid = $oParam->codAtivid ORDER BY db121_estrutural";
         $execute = pg_exec($sSql);
         $oDados = [];
-        for ($i = 0; $i < pg_numrows($execute); $i++) {
+        for ($i = 0; $i < pg_num_rows($execute); $i++) {
           $result = db_utils::fieldsMemory($execute,$i); 
-          $result->db121_descricao = utf8_encode($result->db121_descricao);
+          $result->db121_descricao = mb_convert_encoding($result->db121_descricao, 'UTF-8', 'ISO-8859-1');
           array_push($oDados, $result);
         }
         $oRetorno->dados = $oDados;
@@ -414,9 +414,9 @@ switch ($oParam->exec) {
                         INNER JOIN db_estruturavalor ON q126_db_estruturavalor = db121_sequencial WHERE q127_issgruposerviso = $oParam->sequencial ORDER BY db121_estrutural";
         $execute = pg_exec($sSql);
         $oDados = [];
-        for ($i = 0; $i < pg_numrows($execute); $i++) {
+        for ($i = 0; $i < pg_num_rows($execute); $i++) {
           $result = db_utils::fieldsMemory($execute,$i); 
-          $result->db121_descricao = utf8_encode($result->db121_descricao);
+          $result->db121_descricao = mb_convert_encoding($result->db121_descricao, 'UTF-8', 'ISO-8859-1');
           array_push($oDados, $result);
         }
         $oRetorno->dados = $oDados;

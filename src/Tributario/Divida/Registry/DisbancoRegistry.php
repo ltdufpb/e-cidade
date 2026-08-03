@@ -27,7 +27,7 @@ class DisbancoRegistry
 
     private function __construct()
     {
-        $this->registry = array();
+        $this->registry = [];
     }
 
     private function key(Arrepaga $arrepaga)

@@ -49,7 +49,7 @@ class CandidatoHabitacao {
    *
    * @var InteresseHabitacao
    */
-  protected $aInteresse = array();
+  protected $aInteresse = [];
 
   /**
    * Ficha Sócio-Econômica
@@ -247,7 +247,7 @@ class CandidatoHabitacao {
   
   public function getInteresse($iInd='') {
     
-    if (trim($iInd)!= '') {
+    if (trim((string) $iInd)!= '') {
       return $this->aInteresse[$iInd];
     } else {
       return $this->aInteresse;

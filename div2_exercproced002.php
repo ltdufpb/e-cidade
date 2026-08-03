@@ -42,8 +42,8 @@ $clrotulo->label('v01_proced');
 $clrotulo->label('v03_descr');
 
 //parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_GET);
+db_postmemory($_SERVER);
 
 $instit = db_getsession('DB_instit');
 
@@ -519,7 +519,7 @@ if ($DB_DEBUG) {
 
 $result = db_query($sql) or die("FALHA: <br>$sql");
 
-if (0 == pg_numrows($result)) {
+if (0 == pg_num_rows($result)) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dividas em aberto. ('.$exerc.').');
 }
 
@@ -544,7 +544,7 @@ if (1 == $tipo) {
     $int_ano2 = 0;
     $str_tipo = '';
 
-    for ($x = 0; $x < pg_numrows($result); ++$x) {
+    for ($x = 0; $x < pg_num_rows($result); ++$x) {
         db_fieldsmemory($result, $x);
         if (($pdf->gety() > $pdf->h - 30) || 1 == $pag) {
             $pdf->addpage(('c' == $tiporel ? 'L' : ''));
@@ -605,11 +605,11 @@ if (1 == $tipo) {
 
         $pdf->Cell(15, 5, $v03_tributaria, 0, 0, 'L', 0);
         $pdf->Cell(15, 5, $v01_proced, 0, 0, 'R', 0);
-        $pdf->Cell(60, 5, substr($v03_descr, 0, 40), 0, 0, 'L', 0);
+        $pdf->Cell(60, 5, substr((string) $v03_descr, 0, 40), 0, 0, 'L', 0);
         if ('c' == $tiporel) {
             $sqlnome = "select z01_nome from cgm where z01_numcgm = $k00_numcgm";
             $resultnome = db_query($sqlnome) or die($sqlnome);
-            if (pg_numrows($resultnome) > 0) {
+            if (pg_num_rows($resultnome) > 0) {
                 db_fieldsmemory($resultnome, 0);
             } else {
                 $z01_nome = '';
@@ -663,7 +663,7 @@ if (1 == $tipo) {
         $arr_proced[$int_arr][7] += 0;
         $arr_proced[$int_arr][8] += 0;
 
-        if ('T' == substr($v03_tributaria, 0, 1)) {
+        if (str_starts_with((string) $v03_tributaria, 'T')) {
             $tot_trib += $valor_total;
             $arr_proced[$int_arr][7] += $valor_total;
         } else {
@@ -719,14 +719,14 @@ if (1 == $tipo) {
 
     for ($int_arr = 0; $int_arr < count($arr_proced); ++$int_arr) {
         $pdf->Cell(25, 5, $arr_proced[$int_arr][1], 0, 0, 'L', 0);
-        $pdf->Cell(60, 5, substr($arr_proced[$int_arr][0], 0, 40), 0, 0, 'L', 0);
+        $pdf->Cell(60, 5, substr((string) $arr_proced[$int_arr][0], 0, 40), 0, 0, 'L', 0);
         $pdf->cell(20, 5, db_formatar($arr_proced[$int_arr][2], 'f'), 0, 0, 'R', 0);
         $pdf->cell(20, 5, db_formatar($arr_proced[$int_arr][3], 'f'), 0, 0, 'R', 0);
         $pdf->cell(20, 5, db_formatar($arr_proced[$int_arr][4], 'f'), 0, 0, 'R', 0);
         $pdf->cell(20, 5, db_formatar($arr_proced[$int_arr][5], 'f'), 0, 0, 'R', 0);
         $pdf->cell(20, 5, db_formatar($arr_proced[$int_arr][6], 'f'), 0, 1, 'R', 0);
 
-        if ('T' == substr($arr_proced[$int_arr][1], 0, 1)) {
+        if (str_starts_with((string) $arr_proced[$int_arr][1], 'T')) {
             $totalhis1 += $arr_proced[$int_arr][2];
             $totalcor1 += $arr_proced[$int_arr][3];
             $totaljur1 += $arr_proced[$int_arr][4];
@@ -791,26 +791,26 @@ if (1 == $tipo) {
         fputs($clabre_arquivo->arquivo, "\n");
     }
 
-    for ($x = 0; $x < pg_numrows($result); ++$x) {
+    for ($x = 0; $x < pg_num_rows($result); ++$x) {
         db_fieldsmemory($result, $x);
 
-        fputs($clabre_arquivo->arquivo, trim($v01_exerc).';');
-        fputs($clabre_arquivo->arquivo, trim($k00_descr).';');
-        fputs($clabre_arquivo->arquivo, trim($v01_proced).';');
-        fputs($clabre_arquivo->arquivo, trim($v03_descr).';');
-        fputs($clabre_arquivo->arquivo, trim($v03_tributaria).';');
+        fputs($clabre_arquivo->arquivo, trim((string) $v01_exerc).';');
+        fputs($clabre_arquivo->arquivo, trim((string) $k00_descr).';');
+        fputs($clabre_arquivo->arquivo, trim((string) $v01_proced).';');
+        fputs($clabre_arquivo->arquivo, trim((string) $v03_descr).';');
+        fputs($clabre_arquivo->arquivo, trim((string) $v03_tributaria).';');
 
         if ('c' == $tiporel) {
             $sqlnome = "select z01_nome from cgm where z01_numcgm = $k00_numcgm";
             $resultnome = db_query($sqlnome) or die($sqlnome);
-            if (pg_numrows($resultnome) > 0) {
+            if (pg_num_rows($resultnome) > 0) {
                 db_fieldsmemory($resultnome, 0);
             } else {
                 $z01_nome = '';
             }
 
-            fputs($clabre_arquivo->arquivo, trim($k00_numcgm).';');
-            fputs($clabre_arquivo->arquivo, trim($z01_nome).';');
+            fputs($clabre_arquivo->arquivo, trim((string) $k00_numcgm).';');
+            fputs($clabre_arquivo->arquivo, trim((string) $z01_nome).';');
         }
 
         fputs($clabre_arquivo->arquivo, trim(db_formatar($k22_vlrhis, 'f')).';');

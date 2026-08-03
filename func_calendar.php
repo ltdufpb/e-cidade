@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cor_livre   = "#0EB01F";
 $cor_ocupado = "#FF0000";
 
@@ -46,7 +46,7 @@ $cltarefa    = new cl_tarefa;
 	db_input("id_usuario",10,"",true,"hidden",3,"");
 	db_input("data_inicial",10,"",true,"hidden",3,"");
 
-	$vet_data  = explode("-",$data_inicial);
+	$vet_data  = explode("-",(string) $data_inicial);
 	$mes       = $vet_data[1];
 
 	if(!isset($ano)) {
@@ -67,8 +67,8 @@ $cltarefa    = new cl_tarefa;
 
 	for($i = 0; $i < $cltarefa->numrows; $i++) {
 	    db_fieldsmemory($result,$i);
-	    $vet_dataini = explode("-", $at40_diaini);
-	    $vet_datafim = explode("-", $at40_diafim);
+	    $vet_dataini = explode("-", (string) $at40_diaini);
+	    $vet_datafim = explode("-", (string) $at40_diafim);
 		if(empty($at40_diafim)) {
 			continue;
 		}
@@ -113,7 +113,7 @@ $cltarefa    = new cl_tarefa;
 mostra_calendario($cltarefa,$cols,$id_usuario,$mes,$ano,$cor_livre,$cor_ocupado,@$vet_periodo_ini,@$vet_periodo_fim);
 
 function mostra_calendario($cltarefa,$cols,$id_usuario,$mes,$ano,$cor_livre,$cor_ocupado,$vet_periodo_ini=null,$vet_periodo_fim=null) {
-	$vet_dia_semana = array();
+	$vet_dia_semana = [];
 
 	$rs_tarefa      = $cltarefa->sql_record($cltarefa->sql_query_envol(null,"at40_diaini","at40_diaini","at45_usuario=$id_usuario and to_char(at40_diaini,'mm') = '$mes' and to_char(at40_diaini,'yyyy') = '$ano'"));
 	
@@ -121,8 +121,8 @@ function mostra_calendario($cltarefa,$cols,$id_usuario,$mes,$ano,$cor_livre,$cor
 //	echo "<tr><td>Seg</td><td>Ter</td><td>Qua</td><td>Qui</td><td>Sex</td></tr>\n"; 
 	
 	if($cltarefa->numrows > 0) {
-		$NumRegs   = pg_numrows($rs_tarefa);
-		$NumCampos = pg_numfields($rs_tarefa);
+		$NumRegs   = pg_num_rows($rs_tarefa);
+		$NumCampos = pg_num_fields($rs_tarefa);
 	}
 	else {
 		$NumRegs   = 0;
@@ -133,9 +133,9 @@ function mostra_calendario($cltarefa,$cols,$id_usuario,$mes,$ano,$cor_livre,$cor
 	for($i = 0; $i < $NumRegs; $i++) {
 		$dif = false;
 		for($j = 0; $j < $NumCampos; $j++) {
-			if(pg_fieldtype($rs_tarefa, $j) == "date") {
-				if(pg_result($rs_tarefa, $i, $j) != "") {
-					$matriz_data = split("-", pg_result($rs_tarefa, $i, $j));
+			if(pg_field_type($rs_tarefa, $j) == "date") {
+				if(pg_fetch_result($rs_tarefa, $i, $j) != "") {
+					$matriz_data = preg_split("#\\-#m", pg_fetch_result($rs_tarefa, $i, $j));
 					$var_data = $matriz_data[2];
 				} else {
 					$var_data = "//";
@@ -190,7 +190,7 @@ function mostra_calendario($cltarefa,$cols,$id_usuario,$mes,$ano,$cor_livre,$cor
 				             where at13_dia = '$data_dia' 
 	    	    	         order by at13_dia";
 		$rs_tarefa_agenda =  db_query($sql);
-		$tem_agenda       =  pg_numrows($rs_tarefa_agenda);
+		$tem_agenda       =  pg_num_rows($rs_tarefa_agenda);
 
 		if($tem_agenda > 0) {
 			$cor = $cor_ocupado;
@@ -208,7 +208,7 @@ function gera_calendario($mes,$ano, &$vet_dia_semana) {
    $data      = getdate(mktime(0,0,0,$mes+1,0,$ano));
    $ult_dia   = $data["mday"];
    $dia       = 1;
-   $vet_datas = array();
+   $vet_datas = [];
    $contador  = 0;
 
    $sql       = "select k13_data 
@@ -220,7 +220,7 @@ function gera_calendario($mes,$ano, &$vet_dia_semana) {
    for($i = 0; $i < $ult_dia; $i++) {
 	   $data_dia  = sprintf("%04d-%02d-%02d",$ano,$mes,$dia);
    	   $achou     = false;	
-	   for($j = 0; $j < pg_numrows($rs_calend); $j++) {
+	   for($j = 0; $j < pg_num_rows($rs_calend); $j++) {
 			db_fieldsmemory($rs_calend, $j);
 			
 			if($data_dia == $k13_data) {
@@ -299,18 +299,14 @@ function retorna_meses($mes, &$mes_ant, &$mes_prox) {
 	}
 }
 function retorna_dia_semana($dia_semana) {
-	switch($dia_semana) {
-		case 1: $nome_semana = "(Seg)";
-				break;
-		case 2: $nome_semana = "(Ter)";
-				break;
-		case 3: $nome_semana = "(Qua)";
-				break;
-		case 4: $nome_semana = "(Qui)";
-				break;
-		case 5: $nome_semana = "(Sex)";
-				break;
-	}
+	$nome_semana = match ($dia_semana) {
+        1 => "(Seg)",
+        2 => "(Ter)",
+        3 => "(Qua)",
+        4 => "(Qui)",
+        5 => "(Sex)",
+        default => $nome_semana,
+    };
 	
 	return($nome_semana);
 }

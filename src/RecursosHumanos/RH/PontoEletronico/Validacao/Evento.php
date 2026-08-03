@@ -42,7 +42,7 @@ class Evento extends PontoEletronico implements InterfacePontoEletronico {
   /**
    * @var array
    */
-  protected $erros = array();
+  protected $erros = [];
 
   /**
    * @return bool

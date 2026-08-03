@@ -52,9 +52,9 @@
     var sTabelaInformacoes            = '<table cellspacing="0" cellpadding="0" id="tabelaInformacoesUsuario">                                                                                                                                                ';
         sTabelaInformacoes           += ' <tr>                                                                                                                                                                                  ';
         sTabelaInformacoes           += '      <td><strong>Nome:</strong></td>                                                                                                 ';
-        sTabelaInformacoes           += '      <td><?=@pg_result($result,0,0)?>&nbsp;</td>                                                                                      ';
+        sTabelaInformacoes           += '      <td><?=@pg_fetch_result($result,0,0)?>&nbsp;</td>                                                                                      ';
         sTabelaInformacoes           += '      <td><strong>Login:</strong></td>                                                                                                 ';
-        sTabelaInformacoes           += '      <td><?=@pg_result($result,0,1)?>&nbsp;</td>                                                                                      ';
+        sTabelaInformacoes           += '      <td><?=@pg_fetch_result($result,0,1)?>&nbsp;</td>                                                                                      ';
         sTabelaInformacoes           += ' </tr>                                                                                                                                                                                 ';
         sTabelaInformacoes           += ' <tr>                                                                                                                                                                                  ';
         sTabelaInformacoes           += '      <td><strong>Base de Dados:&nbsp;</strong></td>                                                                                   ';
@@ -64,9 +64,9 @@
         sTabelaInformacoes           += ' </tr>                                                                                                                                                                                 ';
         sTabelaInformacoes           += ' <tr>                                                                                                                                                                                  ';
         sTabelaInformacoes           += '      <td><strong>IP:</strong></td>                                                                                                    ';
-        sTabelaInformacoes           += '      <td><?=(isset($_SERVER["HTTP_X_FORWARDED_FOR"])?$_SERVER["HTTP_X_FORWARDED_FOR"]:$HTTP_SERVER_VARS['REMOTE_ADDR'])?>&nbsp;</td>  ';
+        sTabelaInformacoes           += '      <td><?=($_SERVER["HTTP_X_FORWARDED_FOR"] ?? $_SERVER['REMOTE_ADDR'])?>&nbsp;</td>  ';
         sTabelaInformacoes           += '      <td><strong>Local:</strong></td>                                                                                                 ';
-        sTabelaInformacoes           += '      <td><?=$HTTP_SERVER_VARS['PHP_SELF'];?></td>                                                                                     ';
+        sTabelaInformacoes           += '      <td><?=$_SERVER['PHP_SELF'];?></td>                                                                                     ';
         sTabelaInformacoes           += ' </tr>                                                                                                                                                                                 ';
         sTabelaInformacoes           += '</table>                                                                                                                                                                               ';
 

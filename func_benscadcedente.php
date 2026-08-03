@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benscadcedente_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbenscadcedente = new cl_benscadcedente;
 $clbenscadcedente->rotulo->label("t04_sequencial");
 $clbenscadcedente->rotulo->label("t04_numcgm");
@@ -98,9 +98,9 @@ $clbenscadcedente->rotulo->label("t04_numcgm");
         }else{
            $sql = $clbenscadcedente->sql_query("",$campos,"t04_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t04_numcgm)){
-          $repassa = array("chave_t04_sequencial"=>$chave_t04_sequencial,"chave_t04_numcgm"=>$chave_t04_numcgm);
+          $repassa = ["chave_t04_sequencial"=>$chave_t04_sequencial,"chave_t04_numcgm"=>$chave_t04_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

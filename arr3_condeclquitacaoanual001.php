@@ -99,7 +99,7 @@ if (isset($db21_usasisagua) && $db21_usasisagua != '') {
 		  
 		  <td>
 		  <?php 
-		    $aOrigem = array(''=>'Selecione','matric'=>'Matr&iacute;cula', 'inscr'=>'Inscri&ccedil;&atilde;o', 'cgm'=>'CGM Geral', 'somentecgm'=>'Somente CGM');
+		    $aOrigem = [''=>'Selecione','matric'=>'Matr&iacute;cula', 'inscr'=>'Inscri&ccedil;&atilde;o', 'cgm'=>'CGM Geral', 'somentecgm'=>'Somente CGM'];
 		    db_select('origem', $aOrigem, true, 1, ' onchange="return js_ancora_origem()" style="width: 130px" '); 
 		  ?>
 		  </td>

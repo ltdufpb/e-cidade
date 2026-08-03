@@ -211,7 +211,7 @@ class CadastroIndividual extends Model
         } else {
             $condicoes = SituacaoCondicaoPacienteEnum::toArray();
             foreach ($condicoes as $condicao) {
-                $coluna = (new SituacaoCondicaoPacienteEnum($condicao))->column();
+                $coluna = new SituacaoCondicaoPacienteEnum($condicao)->column();
                 $query->whereRaw($coluna . ' is not true');
             }
         }

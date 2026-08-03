@@ -62,7 +62,7 @@ $this->objpdf->ln();
 //variaveis para o documento 1504:
 $objDoc->db_hora  = date("h"); //hora
 $objDoc->db_min   = date("i"); //mes
-$h65_data = explode("-",$this->dadosAvaliacao->h65_data);//data do resultado final;
+$h65_data = explode("-",(string) $this->dadosAvaliacao->h65_data);//data do resultado final;
 $objDoc->dia_res  = $h65_data[2];//
 $objDoc->mes_res  = $h65_data[1];
 $objDoc->ano_res  = $h65_data[0];
@@ -85,7 +85,7 @@ foreach ($paragrafos as $objParag){
    $this->objpdf->multicell(190,4,"        ".$texto,0,"J","15");
 }
 $this->objpdf->ln();
-$this->munic = ucfirst(strtolower($this->munic));
+$this->munic = ucfirst(strtolower((string) $this->munic));
 $this->objpdf->Setfont('Arial', '', 10);
 $this->objpdf->cell(0,5,"{$this->munic}, {$objDoc->dia_res} de ".ucfirst(db_mes($objDoc->mes_res))." de {$objDoc->ano_res}",0,1,"C");
 //assinaturas

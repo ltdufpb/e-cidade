@@ -80,7 +80,7 @@ if(isset($opcao) && $opcao=="alterar"){
   <td valign="top">
   <?php 
    $escola = db_getsession("DB_coddepto");
-   $chavepri= array("ed91_i_codigo"=>@$ed91_i_codigo,"ed91_c_descr"=>@$ed91_c_descr, "ed91_sigla"=>@$ed91_sigla);
+   $chavepri= ["ed91_i_codigo"=>@$ed91_i_codigo,"ed91_c_descr"=>@$ed91_c_descr, "ed91_sigla"=>@$ed91_sigla];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clparecerlegenda->sql_query("","*","ed91_c_descr"," ed91_i_escola = $escola");
    $cliframe_alterar_excluir->campos  ="ed91_i_codigo, ed91_c_descr, ed91_sigla";

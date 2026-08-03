@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_modeloimpressao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_modeloimpressao = new cl_db_modeloimpressao;
 $cldb_modeloimpressao->rotulo->label("db66_sequencial");
 $cldb_modeloimpressao->rotulo->label("db66_descricao");
@@ -100,9 +100,9 @@ $cldb_modeloimpressao->rotulo->label("db66_descricao");
         }else{
            $sql = $cldb_modeloimpressao->sql_query("",$campos,"db66_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db66_descricao)){
-          $repassa = array("chave_db66_sequencial"=>$chave_db66_sequencial,"chave_db66_descricao"=>$chave_db66_descricao);
+          $repassa = ["chave_db66_sequencial"=>$chave_db66_sequencial,"chave_db66_descricao"=>$chave_db66_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

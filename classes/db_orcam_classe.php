@@ -29,24 +29,24 @@
 //CLASSE DA ENTIDADE orcam
 class cl_orcam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o02_anousu = 0; 
-   var $o02_codigo = null; 
-   var $o02_descr = null; 
-   var $o02_valor = 0; 
-   var $o02_codtce = null; 
-   var $o02_percen = 0; 
+   public $o02_anousu = 0; 
+   public $o02_codigo = null; 
+   public $o02_descr = null; 
+   public $o02_valor = 0; 
+   public $o02_codtce = null; 
+   public $o02_percen = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o02_anousu = int4 = Exercício 
                  o02_codigo = char(12) = Codigo da Receita/Despesa 
                  o02_descr = varchar(40) = Descricao da Receita/Despesa 
@@ -55,10 +55,10 @@ class cl_orcam {
                  o02_percen = float8 = Percentual 
                  ";
    //funcao construtor da classe 
-   function cl_orcam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -137,7 +137,7 @@ class cl_orcam {
                       )");
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Contas da receita/despesa ($this->o02_anousu."-".$this->o02_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Contas da receita/despesa já Cadastrado";
@@ -158,15 +158,15 @@ class cl_orcam {
      $this->erro_status = "1";
      $resaco = $this->sql_record($this->sql_query_file($this->o02_anousu,$this->o02_codigo));
      $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-     $acount = pg_result($resac,0,0);
+     $acount = pg_fetch_result($resac,0,0);
      $resac = db_query("insert into db_acountkey values($acount,888,'$this->o02_anousu','I')");
      $resac = db_query("insert into db_acountkey values($acount,889,'$this->o02_codigo','I')");
-     $resac = db_query("insert into db_acount values($acount,163,888,'','".pg_result($resaco,0,'o02_anousu')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     $resac = db_query("insert into db_acount values($acount,163,889,'','".pg_result($resaco,0,'o02_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     $resac = db_query("insert into db_acount values($acount,163,890,'','".pg_result($resaco,0,'o02_descr')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     $resac = db_query("insert into db_acount values($acount,163,891,'','".pg_result($resaco,0,'o02_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     $resac = db_query("insert into db_acount values($acount,163,892,'','".pg_result($resaco,0,'o02_codtce')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     $resac = db_query("insert into db_acount values($acount,163,893,'','".pg_result($resaco,0,'o02_percen')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $resac = db_query("insert into db_acount values($acount,163,888,'','".pg_fetch_result($resaco,0,'o02_anousu')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $resac = db_query("insert into db_acount values($acount,163,889,'','".pg_fetch_result($resaco,0,'o02_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $resac = db_query("insert into db_acount values($acount,163,890,'','".pg_fetch_result($resaco,0,'o02_descr')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $resac = db_query("insert into db_acount values($acount,163,891,'','".pg_fetch_result($resaco,0,'o02_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $resac = db_query("insert into db_acount values($acount,163,892,'','".pg_fetch_result($resaco,0,'o02_codtce')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $resac = db_query("insert into db_acount values($acount,163,893,'','".pg_fetch_result($resaco,0,'o02_percen')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      pg_free_result($resaco);
      return true;
    } 
@@ -231,21 +231,21 @@ class cl_orcam {
 ";
      $resaco = $this->sql_record($this->sql_query_file($this->o02_anousu,$this->o02_codigo));
      if($this->numrows>0){       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,888,'$this->o02_anousu','A')");
        $resac = db_query("insert into db_acountkey values($acount,889,'$this->o02_codigo','A')");
        if(isset($GLOBALS["HTTP_POST_VARS"]["o02_anousu"]))
-         $resac = db_query("insert into db_acount values($acount,163,888,'$this->o02_anousu','".pg_result($resaco,0,'o02_anousu')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,163,888,'$this->o02_anousu','".pg_fetch_result($resaco,0,'o02_anousu')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["o02_codigo"]))
-         $resac = db_query("insert into db_acount values($acount,163,889,'$this->o02_codigo','".pg_result($resaco,0,'o02_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,163,889,'$this->o02_codigo','".pg_fetch_result($resaco,0,'o02_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["o02_descr"]))
-         $resac = db_query("insert into db_acount values($acount,163,890,'$this->o02_descr','".pg_result($resaco,0,'o02_descr')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,163,890,'$this->o02_descr','".pg_fetch_result($resaco,0,'o02_descr')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["o02_valor"]))
-         $resac = db_query("insert into db_acount values($acount,163,891,'$this->o02_valor','".pg_result($resaco,0,'o02_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,163,891,'$this->o02_valor','".pg_fetch_result($resaco,0,'o02_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["o02_codtce"]))
-         $resac = db_query("insert into db_acount values($acount,163,892,'$this->o02_codtce','".pg_result($resaco,0,'o02_codtce')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,163,892,'$this->o02_codtce','".pg_fetch_result($resaco,0,'o02_codtce')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["o02_percen"]))
-         $resac = db_query("insert into db_acount values($acount,163,893,'$this->o02_percen','".pg_result($resaco,0,'o02_percen')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,163,893,'$this->o02_percen','".pg_fetch_result($resaco,0,'o02_percen')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        pg_free_result($resaco);
      }
      $result = @db_query($sql);
@@ -282,15 +282,15 @@ class cl_orcam {
      $this->atualizacampos(true);
      $resaco = $this->sql_record($this->sql_query_file($this->o02_anousu,$this->o02_codigo));
      $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-     $acount = pg_result($resac,0,0);
-     $resac = db_query("insert into db_acountkey values($acount,888,'".pg_result($resaco,$iresaco,'o02_anousu')."','E')");
-     $resac = db_query("insert into db_acountkey values($acount,889,'".pg_result($resaco,$iresaco,'o02_codigo')."','E')");
-     $resac = db_query("insert into db_acount values($acount,163,888,'','".pg_result($resaco,0,'o02_anousu')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     $resac = db_query("insert into db_acount values($acount,163,889,'','".pg_result($resaco,0,'o02_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     $resac = db_query("insert into db_acount values($acount,163,890,'','".pg_result($resaco,0,'o02_descr')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     $resac = db_query("insert into db_acount values($acount,163,891,'','".pg_result($resaco,0,'o02_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     $resac = db_query("insert into db_acount values($acount,163,892,'','".pg_result($resaco,0,'o02_codtce')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-     $resac = db_query("insert into db_acount values($acount,163,893,'','".pg_result($resaco,0,'o02_percen')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $acount = pg_fetch_result($resac,0,0);
+     $resac = db_query("insert into db_acountkey values($acount,888,'".pg_fetch_result($resaco,$iresaco,'o02_anousu')."','E')");
+     $resac = db_query("insert into db_acountkey values($acount,889,'".pg_fetch_result($resaco,$iresaco,'o02_codigo')."','E')");
+     $resac = db_query("insert into db_acount values($acount,163,888,'','".pg_fetch_result($resaco,0,'o02_anousu')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $resac = db_query("insert into db_acount values($acount,163,889,'','".pg_fetch_result($resaco,0,'o02_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $resac = db_query("insert into db_acount values($acount,163,890,'','".pg_fetch_result($resaco,0,'o02_descr')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $resac = db_query("insert into db_acount values($acount,163,891,'','".pg_fetch_result($resaco,0,'o02_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $resac = db_query("insert into db_acount values($acount,163,892,'','".pg_fetch_result($resaco,0,'o02_codtce')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+     $resac = db_query("insert into db_acount values($acount,163,893,'','".pg_fetch_result($resaco,0,'o02_percen')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      pg_free_result($resaco);
      $sql = " delete from orcam
                     where ";
@@ -348,7 +348,7 @@ class cl_orcam {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Dados do Grupo nao Encontrado";
@@ -363,7 +363,7 @@ class cl_orcam {
    function sql_query ( $o02_anousu=null,$o02_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_orcam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,7 +405,7 @@ class cl_orcam {
    function sql_query_file ( $o02_anousu=null,$o02_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,7 +434,7 @@ class cl_orcam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -91,7 +91,7 @@ $clrotulo->label("z01_nome");
          $dbwhere = "ve41_veiccadcentral = $ve41_veiccadcentral";
        }
 
-	     $chavepri = array ("ve41_sequencial"=>@$ve41_sequencial);
+	     $chavepri =  ["ve41_sequencial"=>@$ve41_sequencial];
        $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->sql = $clveicmotoristascentral->sql_query(null,"ve41_sequencial,ve41_veicmotoristas,ve41_dtini,ve41_dtfim,z01_nome",null,"$dbwhere");
        $cliframe_alterar_excluir->campos = "ve41_sequencial,ve41_veicmotoristas,z01_nome,ve41_dtini,ve41_dtfim";

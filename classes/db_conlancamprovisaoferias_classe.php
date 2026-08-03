@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE conlancamprovisaoferias
 class cl_conlancamprovisaoferias { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c101_sequencial = 0; 
-   var $c101_codlan = 0; 
-   var $c101_instit = 0; 
-   var $c101_mes = 0; 
-   var $c101_ano = 0; 
-   var $c101_escrituraprovisao = 0; 
+   public $c101_sequencial = 0; 
+   public $c101_codlan = 0; 
+   public $c101_instit = 0; 
+   public $c101_mes = 0; 
+   public $c101_ano = 0; 
+   public $c101_escrituraprovisao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c101_sequencial = int4 = Sequencial 
                  c101_codlan = int4 = Código Lançamento 
                  c101_instit = int4 = Cod. Instituição 
@@ -58,10 +58,10 @@ class cl_conlancamprovisaoferias {
                  c101_escrituraprovisao = int4 = Escritura Provisao 
                  ";
    //funcao construtor da classe 
-   function cl_conlancamprovisaoferias() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancamprovisaoferias"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,10 +143,10 @@ class cl_conlancamprovisaoferias {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c101_sequencial = pg_result($result,0,0); 
+       $this->c101_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from conlancamprovisaoferias_c101_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c101_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c101_sequencial)){
          $this->erro_sql = " Campo c101_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_conlancamprovisaoferias {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Lançamento contábil de provisão de férias ($this->c101_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Lançamento contábil de provisão de férias já Cadastrado";
@@ -208,15 +208,15 @@ class cl_conlancamprovisaoferias {
      $resaco = $this->sql_record($this->sql_query_file($this->c101_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19458,'$this->c101_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3454,19458,'','".AddSlashes(pg_result($resaco,0,'c101_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3454,19462,'','".AddSlashes(pg_result($resaco,0,'c101_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3454,19461,'','".AddSlashes(pg_result($resaco,0,'c101_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3454,19459,'','".AddSlashes(pg_result($resaco,0,'c101_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3454,19460,'','".AddSlashes(pg_result($resaco,0,'c101_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3454,19515,'','".AddSlashes(pg_result($resaco,0,'c101_escrituraprovisao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3454,19458,'','".AddSlashes(pg_fetch_result($resaco,0,'c101_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3454,19462,'','".AddSlashes(pg_fetch_result($resaco,0,'c101_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3454,19461,'','".AddSlashes(pg_fetch_result($resaco,0,'c101_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3454,19459,'','".AddSlashes(pg_fetch_result($resaco,0,'c101_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3454,19460,'','".AddSlashes(pg_fetch_result($resaco,0,'c101_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3454,19515,'','".AddSlashes(pg_fetch_result($resaco,0,'c101_escrituraprovisao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -225,10 +225,10 @@ class cl_conlancamprovisaoferias {
       $this->atualizacampos();
      $sql = " update conlancamprovisaoferias set ";
      $virgula = "";
-     if(trim($this->c101_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_sequencial"])){ 
+     if(trim((string) $this->c101_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_sequencial"])){ 
        $sql  .= $virgula." c101_sequencial = $this->c101_sequencial ";
        $virgula = ",";
-       if(trim($this->c101_sequencial) == null ){ 
+       if(trim((string) $this->c101_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "c101_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_conlancamprovisaoferias {
          return false;
        }
      }
-     if(trim($this->c101_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_codlan"])){ 
+     if(trim((string) $this->c101_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_codlan"])){ 
        $sql  .= $virgula." c101_codlan = $this->c101_codlan ";
        $virgula = ",";
-       if(trim($this->c101_codlan) == null ){ 
+       if(trim((string) $this->c101_codlan) == null ){ 
          $this->erro_sql = " Campo Código Lançamento nao Informado.";
          $this->erro_campo = "c101_codlan";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_conlancamprovisaoferias {
          return false;
        }
      }
-     if(trim($this->c101_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_instit"])){ 
+     if(trim((string) $this->c101_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_instit"])){ 
        $sql  .= $virgula." c101_instit = $this->c101_instit ";
        $virgula = ",";
-       if(trim($this->c101_instit) == null ){ 
+       if(trim((string) $this->c101_instit) == null ){ 
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "c101_instit";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_conlancamprovisaoferias {
          return false;
        }
      }
-     if(trim($this->c101_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_mes"])){ 
+     if(trim((string) $this->c101_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_mes"])){ 
        $sql  .= $virgula." c101_mes = $this->c101_mes ";
        $virgula = ",";
-       if(trim($this->c101_mes) == null ){ 
+       if(trim((string) $this->c101_mes) == null ){ 
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "c101_mes";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_conlancamprovisaoferias {
          return false;
        }
      }
-     if(trim($this->c101_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_ano"])){ 
+     if(trim((string) $this->c101_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_ano"])){ 
        $sql  .= $virgula." c101_ano = $this->c101_ano ";
        $virgula = ",";
-       if(trim($this->c101_ano) == null ){ 
+       if(trim((string) $this->c101_ano) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "c101_ano";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_conlancamprovisaoferias {
          return false;
        }
      }
-     if(trim($this->c101_escrituraprovisao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_escrituraprovisao"])){ 
+     if(trim((string) $this->c101_escrituraprovisao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c101_escrituraprovisao"])){ 
        $sql  .= $virgula." c101_escrituraprovisao = $this->c101_escrituraprovisao ";
        $virgula = ",";
-       if(trim($this->c101_escrituraprovisao) == null ){ 
+       if(trim((string) $this->c101_escrituraprovisao) == null ){ 
          $this->erro_sql = " Campo Escritura Provisao nao Informado.";
          $this->erro_campo = "c101_escrituraprovisao";
          $this->erro_banco = "";
@@ -311,21 +311,21 @@ class cl_conlancamprovisaoferias {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19458,'$this->c101_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c101_sequencial"]) || $this->c101_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3454,19458,'".AddSlashes(pg_result($resaco,$conresaco,'c101_sequencial'))."','$this->c101_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3454,19458,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c101_sequencial'))."','$this->c101_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c101_codlan"]) || $this->c101_codlan != "")
-           $resac = db_query("insert into db_acount values($acount,3454,19462,'".AddSlashes(pg_result($resaco,$conresaco,'c101_codlan'))."','$this->c101_codlan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3454,19462,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c101_codlan'))."','$this->c101_codlan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c101_instit"]) || $this->c101_instit != "")
-           $resac = db_query("insert into db_acount values($acount,3454,19461,'".AddSlashes(pg_result($resaco,$conresaco,'c101_instit'))."','$this->c101_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3454,19461,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c101_instit'))."','$this->c101_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c101_mes"]) || $this->c101_mes != "")
-           $resac = db_query("insert into db_acount values($acount,3454,19459,'".AddSlashes(pg_result($resaco,$conresaco,'c101_mes'))."','$this->c101_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3454,19459,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c101_mes'))."','$this->c101_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c101_ano"]) || $this->c101_ano != "")
-           $resac = db_query("insert into db_acount values($acount,3454,19460,'".AddSlashes(pg_result($resaco,$conresaco,'c101_ano'))."','$this->c101_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3454,19460,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c101_ano'))."','$this->c101_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c101_escrituraprovisao"]) || $this->c101_escrituraprovisao != "")
-           $resac = db_query("insert into db_acount values($acount,3454,19515,'".AddSlashes(pg_result($resaco,$conresaco,'c101_escrituraprovisao'))."','$this->c101_escrituraprovisao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3454,19515,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c101_escrituraprovisao'))."','$this->c101_escrituraprovisao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -370,15 +370,15 @@ class cl_conlancamprovisaoferias {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19458,'$c101_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3454,19458,'','".AddSlashes(pg_result($resaco,$iresaco,'c101_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3454,19462,'','".AddSlashes(pg_result($resaco,$iresaco,'c101_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3454,19461,'','".AddSlashes(pg_result($resaco,$iresaco,'c101_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3454,19459,'','".AddSlashes(pg_result($resaco,$iresaco,'c101_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3454,19460,'','".AddSlashes(pg_result($resaco,$iresaco,'c101_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3454,19515,'','".AddSlashes(pg_result($resaco,$iresaco,'c101_escrituraprovisao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3454,19458,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c101_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3454,19462,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c101_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3454,19461,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c101_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3454,19459,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c101_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3454,19460,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c101_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3454,19515,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c101_escrituraprovisao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from conlancamprovisaoferias
@@ -438,7 +438,7 @@ class cl_conlancamprovisaoferias {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conlancamprovisaoferias";
@@ -453,7 +453,7 @@ class cl_conlancamprovisaoferias {
    function sql_query ( $c101_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -480,7 +480,7 @@ class cl_conlancamprovisaoferias {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -493,7 +493,7 @@ class cl_conlancamprovisaoferias {
    function sql_query_file ( $c101_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -514,7 +514,7 @@ class cl_conlancamprovisaoferias {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

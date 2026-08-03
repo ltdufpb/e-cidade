@@ -82,7 +82,7 @@ $clrotulo->label("vc05_i_codigo");
     </td>
     <td> 
      <?php 
-       $x = array('1'=>'MASCULINO','2'=>'FEMININO','3'=>'AMBOS');
+       $x = ['1'=>'MASCULINO','2'=>'FEMININO','3'=>'AMBOS'];
        if (!isset($vc07_i_sexo) || empty($vc07_i_sexo)) {
          $vc07_i_sexo = 3;
        }
@@ -104,7 +104,7 @@ $clrotulo->label("vc05_i_codigo");
     </td>
     <td> 
      <?php 
-       $x = array('1'=>'DATA DE NASCIMENTO','2'=>'ULTIMA APLICA플O','3'=>'APLICA플O PERIODICA');
+       $x = ['1'=>'DATA DE NASCIMENTO','2'=>'ULTIMA APLICA플O','3'=>'APLICA플O PERIODICA'];
        db_select('vc07_i_tipocalculo',$x,true,$db_opcao," onchange=\"js_dosePeriodo(this.value);\" ");
        db_input('vc14_i_codigo',2,$Ivc14_i_codigo,true,'hidden',$db_opcao,"");
      ?>
@@ -309,7 +309,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_vac_vacinadose.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

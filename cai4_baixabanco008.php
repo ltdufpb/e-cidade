@@ -52,7 +52,7 @@ if ($opcao == 'erros') {
 $sSql .= " order by idret ";
 
 $result = db_query($sSql) or die($sSql);
-$num    = pg_numrows($result);
+$num    = pg_num_rows($result);
 
 $sSqlInstituicao = " select disarq.*, nome
           		         from disarq
@@ -152,7 +152,7 @@ for($i=0;$i<$num;$i++) {
                       where ar22_numpre = $numpre
                         and ar22_numpar = $k00_numpar";
    $resultbloqueado = db_query($sqlbloqueado) or die($sqlbloqueado);
-   if (pg_numrows($resultbloqueado) > 0) {
+   if (pg_num_rows($resultbloqueado) > 0) {
      $sSituacao = "Numpre Bloqueado";
    }
 
@@ -163,7 +163,7 @@ for($i=0;$i<$num;$i++) {
                     where k21_numpre = $numpre and k21_numpar = $k00_numpar
                     limit 1";
       $resultcanc = db_query($sqlcanc) or die($sqlcanc);
-      if (pg_numrows($resultcanc) == 0) {
+      if (pg_num_rows($resultcanc) == 0) {
 
          $sqlcanc = " select k21_codigo
                         from cancdebitosreg
@@ -171,7 +171,7 @@ for($i=0;$i<$num;$i++) {
                        where k99_numpre_n = $numpre
                        limit 1";
          $resultcanc = db_query($sqlcanc) or die($sqlcanc);
-         if (pg_numrows($resultcanc) > 0) {
+         if (pg_num_rows($resultcanc) > 0) {
 
             db_fieldsmemory($resultcanc,0);
             $sSituacao = "CANC $k21_codigo";
@@ -200,7 +200,7 @@ for($i=0;$i<$num;$i++) {
                      and arrepaga.k00_numpar = $k00_numpar
                   limit 1";
      $resultpaga = db_query($sqlpaga) or die($sqlpaga);
-     if (pg_numrows($resultpaga) == 0) {
+     if (pg_num_rows($resultpaga) == 0) {
 
        $sqlpaga = " select case when disbanco.dtpago is not null
 	                              then disbanco.dtpago
@@ -215,7 +215,7 @@ for($i=0;$i<$num;$i++) {
                     where k99_numpre_n = $numpre
                     limit 1";
        $resultpaga = db_query($sqlpaga) or die($sqlpaga);
-       if (pg_numrows($resultpaga) > 0) {
+       if (pg_num_rows($resultpaga) > 0) {
 
          db_fieldsmemory($resultpaga,0);
          $sSituacao = "PAGA EM " . db_formatar($k00_dtpaga,"d");
@@ -248,7 +248,7 @@ for($i=0;$i<$num;$i++) {
      if ( pg_num_rows($rsDuplicados) > 0 ) {
 
        $oResultado        = db_utils::fieldsMemory($rsDuplicados, 0);
-       $sNumbcoDuplicado  = trim($oResultado->k00_numbco);
+       $sNumbcoDuplicado  = trim((string) $oResultado->k00_numbco);
        $iQuantidadeNumbco = $oResultado->quantidade_arrebanco;
 
        if ($iQuantidadeNumbco > 1 ) {

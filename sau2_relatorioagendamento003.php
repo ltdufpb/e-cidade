@@ -44,12 +44,12 @@ function verifica_ausencia($hora_ini, $hora_fim, $ausencia, &$iIndice){
   //Ausências
   global $iIndicePeriodoAusencia;
   $cfm=false;
-  $vet_hora_ini=explode(":",$hora_ini);
-  $vet_hora_fim=explode(":",$hora_fim);
+  $vet_hora_ini=explode(":",(string) $hora_ini);
+  $vet_hora_fim=explode(":",(string) $hora_fim);
   for ($x=0; $x<count($ausencia); $x++) {
 
-    $vet_aus_ini=explode(":",$ausencia[$x]["sd06_c_horainicio"]);
-    $vet_aus_fim=explode(":",$ausencia[$x]["sd06_c_horafim"]);
+    $vet_aus_ini=explode(":",(string) $ausencia[$x]["sd06_c_horainicio"]);
+    $vet_aus_fim=explode(":",(string) $ausencia[$x]["sd06_c_horafim"]);
     $minutos_ini=($vet_hora_ini[0]*60)+$vet_hora_ini[1];
     $minutos_fim=($vet_hora_fim[0]*60)+$vet_hora_fim[1];
     $minutos_aus_ini=($vet_aus_ini[0]*60)+$vet_aus_ini[1];
@@ -138,11 +138,11 @@ a:active {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1;<?=$sLoad?>" >
 <?php 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$ano                         = substr( $sd23_d_consulta, 6, 4 );
-$mes                         = substr( $sd23_d_consulta, 3, 2 );
-$dia                         = substr( $sd23_d_consulta, 0, 2 );
+$ano                         = substr( (string) $sd23_d_consulta, 6, 4 );
+$mes                         = substr( (string) $sd23_d_consulta, 3, 2 );
+$dia                         = substr( (string) $sd23_d_consulta, 0, 2 );
 $clagendamentos              = new cl_agendamentos_ext;
 $clundmedhorario             = new cl_undmedhorario_ext;
 $clausencias                 = new cl_ausencias_ext;
@@ -319,7 +319,7 @@ if ($in == true) {
     //Se a grede estiver ausente mostrar o motivo
     if($obj_undmedhorario->ausencia_grade != ""){
       ?>
-      <tr class='cabec' id="<?=trim($obj_undmedhorario->sd30_i_codigo)?>">
+      <tr class='cabec' id="<?=trim((string) $obj_undmedhorario->sd30_i_codigo)?>">
         <td colspan="8" align="center">
           </b>
           <font size="4"  color="red">
@@ -423,14 +423,14 @@ if ($in == true) {
     }
 
     ?>
-    <tr class='cabec' id="<?=trim($obj_undmedhorario->sd30_i_codigo)?>" style="display: <?=$sDisplayCabecalho?>;">
+    <tr class='cabec' id="<?=trim((string) $obj_undmedhorario->sd30_i_codigo)?>" style="display: <?=$sDisplayCabecalho?>;">
       <td colspan="8" align="left">
                 <?php  if (isset($sTransf) && $sTransf == "true" && $sLado == "para") { //verifica se vem da transferencia ?>
                     <input type    = "checkbox"
                            name    = "ckboxPara"
-                           value   = "<?=trim($obj_undmedhorario->sd30_i_codigo)?>"
+                           value   = "<?=trim((string) $obj_undmedhorario->sd30_i_codigo)?>"
                            id      = "ckboxPara_<?=$obj_undmedhorario->sd30_i_codigo?>"
-                           onclick = "js_marcarUm( <?=trim($obj_undmedhorario->sd30_i_codigo)?>, 'ckboxPara' )"
+                           onclick = "js_marcarUm( <?=trim((string) $obj_undmedhorario->sd30_i_codigo)?>, 'ckboxPara' )"
                     >
                 <?php  } elseif (!isset($sTransf)) { ?>
                     <img src="skins/img.php?file=Controles/seta_down.png" onclick="js_ocultar(this,<?=$obj_undmedhorario->sd30_i_codigo ?>)">
@@ -443,9 +443,9 @@ if ($in == true) {
       <td class="cabec" align="center" style="display: <?=$sDisplayCkBox?>;">
         <input type="button"
                value="M"
-               id="<?="marcarTodos_".trim($obj_undmedhorario->sd30_i_codigo)?>"
+               id="<?="marcarTodos_".trim((string) $obj_undmedhorario->sd30_i_codigo)?>"
                name="marcarTodos"
-               onclick="js_marcarTodos(this, '<?=(isset($lUnificado) ? '' : trim($obj_undmedhorario->sd30_i_codigo))?>');">
+               onclick="js_marcarTodos(this, '<?=(isset($lUnificado) ? '' : trim((string) $obj_undmedhorario->sd30_i_codigo))?>');">
       </td>
       <?php 
       } elseif (isset($sTransf) && $sTransf == "true" && $sLado == "para") { //verifica se vem da transferencia lado para
@@ -453,9 +453,9 @@ if ($in == true) {
         <td class="cabec" align="center" style="display: <?=$sDisplayCkBox?>">
           <input type="button"
                value="M"
-               id="<?="marcarTodos_".trim($obj_undmedhorario->sd30_i_codigo)?>"
+               id="<?="marcarTodos_".trim((string) $obj_undmedhorario->sd30_i_codigo)?>"
                name="marcarTodos"
-               onclick="js_marcarTodos(this, '<?=trim($obj_undmedhorario->sd30_i_codigo)?>');">
+               onclick="js_marcarTodos(this, '<?=trim((string) $obj_undmedhorario->sd30_i_codigo)?>');">
       </td>
       <?php 
       }
@@ -473,8 +473,8 @@ if ($in == true) {
       <td class='cabec' align="center" >Opções</td>
 
     </tr>
-      <?php $arrAgenda = array(
-                            array("codigo"=>"",
+      <?php $arrAgenda = [
+                            ["codigo"=>"",
                                   "h"=>"",
                                   "hora_ini"=>"",
                                   "hora_fim"=>"",
@@ -487,8 +487,8 @@ if ($in == true) {
                                   "dia"=>"",
                                   "solicitante"=>"",
                                   "ausente"=>false
-                                 )
-                          );
+                                 ]
+                          ];
       for ($h=0; $h < $nro_fichas; $h++) {
         $arrAgenda[$h]["codigo"]            = "";
         $arrAgenda[$h]["h"]                 = "";
@@ -658,7 +658,7 @@ if ($in == true) {
     } // fim for h
     $iFilaProx = 0;
     $iFilaDequeue = 0;
-    $aAgendaTmp = array();
+    $aAgendaTmp = [];
 
     for($intCountagenda=0; $intCountagenda < sizeof($arrAgenda); $intCountagenda++, $intCountagenda2++){
 
@@ -754,13 +754,13 @@ if ($in == true) {
             <!-- Campo hidden que possui o horário de inicio previsto para o horário de agendamento (mesmo para
                  grades do tipo período)
             -->
-            <input type="hidden" value="<?=substr($arrAgenda[$intCountagenda]['hora_ini2'], 0, 5)?>"
+            <input type="hidden" value="<?=substr((string) $arrAgenda[$intCountagenda]['hora_ini2'], 0, 5)?>"
               name="horaini" id="horaini_<?=$intCountagenda2?>">
 
             <!-- Campo hidden que possui o horário de fim previsto para o horário de agendamento (mesmo para
                  grades do tipo período)
             -->
-            <input type="hidden" value="<?=substr($arrAgenda[$intCountagenda]['hora_fim2'], 0, 5)?>"
+            <input type="hidden" value="<?=substr((string) $arrAgenda[$intCountagenda]['hora_fim2'], 0, 5)?>"
               name="horafim" id="horafim_<?=$intCountagenda2?>">
 
             <!-- Campo hidden que possui o tipo de grade (I ou P) -->
@@ -782,9 +782,9 @@ if ($in == true) {
           class='corpo2' align="center"><?=($intCountagenda+1)?></td>
         <td id="td<?='_'.$intCountagenda2?>9" style="border:1px solid #AACCCC; display: <?=$sDisplayTipoFicha?>;"
           class='corpo2' align="center"><?=$obj_undmedhorario->sd101_c_descr?></td>
-        <td id="td<?='_'.$intCountagenda2?>2" style="border:1px solid #AACCCC;"   class='corpo2' align="center"><?=substr($hora_ini,0,5) ?></td>
+        <td id="td<?='_'.$intCountagenda2?>2" style="border:1px solid #AACCCC;"   class='corpo2' align="center"><?=substr((string) $hora_ini,0,5) ?></td>
         <td id="td<?='_'.$intCountagenda2?>3" style="border:1px solid #AACCCC; display: <?=$sDisplayHoraFim?>;"
-          class='corpo2' align="center"><?=substr($hora_fim,0,5) ?></td>
+          class='corpo2' align="center"><?=substr((string) $hora_fim,0,5) ?></td>
         <td id="td<?='_'.$intCountagenda2?>4" style="border:1px solid #AACCCC; display: <?=$sDisplayReserva?>;"
           class='corpo2' align="center"><?=$reservada ?></td>
         <td id="td<?='_'.$intCountagenda2?>5" style="border:1px solid #AACCCC; display: <?=$sDisplayTipoGrade?>;"
@@ -826,13 +826,13 @@ if ($in == true) {
                 <!-- Campo hidden que possui o horário de inicio previsto para o horário de agendamento (mesmo para
                      grades do tipo período)
                 -->
-                <input type="hidden" value="<?=substr($arrAgenda[$intCountagenda]['hora_ini2'], 0, 5)?>"
+                <input type="hidden" value="<?=substr((string) $arrAgenda[$intCountagenda]['hora_ini2'], 0, 5)?>"
                   name="horaini" id="horaini_<?=$intCountagenda2?>">
 
                 <!-- Campo hidden que possui o horário de fim previsto para o horário de agendamento (mesmo para
                      grades do tipo período)
                 -->
-                <input type="hidden" value="<?=substr($arrAgenda[$intCountagenda]['hora_fim2'], 0, 5)?>"
+                <input type="hidden" value="<?=substr((string) $arrAgenda[$intCountagenda]['hora_fim2'], 0, 5)?>"
                   name="horafim" id="horafim_<?=$intCountagenda2?>">
 
                 <!-- Campo hidden que possui o tipo de grade (I ou P) -->
@@ -868,14 +868,14 @@ if ($in == true) {
                 <!-- Campo hidden que possui o horário de inicio previsto para o horário de agendamento (mesmo para
                      grades do tipo período)
                 -->
-                <input type="hidden" value="<?=substr($arrAgenda[$intCountagenda]['hora_ini2'], 0, 5)?>"
+                <input type="hidden" value="<?=substr((string) $arrAgenda[$intCountagenda]['hora_ini2'], 0, 5)?>"
                   name="horaini" id="horaini_<?=$intCountagenda2?>">
 
 
                 <!-- Campo hidden que possui o horário de fim previsto para o horário de agendamento (mesmo para
                      grades do tipo período)
                 -->
-                <input type="hidden" value="<?=substr($arrAgenda[$intCountagenda]['hora_fim2'], 0, 5)?>"
+                <input type="hidden" value="<?=substr((string) $arrAgenda[$intCountagenda]['hora_fim2'], 0, 5)?>"
                   name="horafim" id="horafim_<?=$intCountagenda2?>">
 
                 <!-- Campo hidden que possui o tipo de grade (I ou P) -->
@@ -897,9 +897,9 @@ if ($in == true) {
           class="<?=$sClasse?>" align="center"><?=($intCountagenda+1)?></td>
         <td id="td<?='_'.$intCountagenda2?>9" style="border:1px solid #AACCCC; display: <?=$sDisplayTipoFicha?>;"
           class="<?=$sClasse?>" align="center"><?=$obj_undmedhorario->sd101_c_descr?></td>
-        <td id="td<?='_'.$intCountagenda2?>2" style="border:1px solid #AACCCC;"   class="<?=$sClasse?>" align="center"><?=substr($hora_ini,0,5) ?></td>
+        <td id="td<?='_'.$intCountagenda2?>2" style="border:1px solid #AACCCC;"   class="<?=$sClasse?>" align="center"><?=substr((string) $hora_ini,0,5) ?></td>
         <td id="td<?='_'.$intCountagenda2?>3" style="border:1px solid #AACCCC; display: <?=$sDisplayHoraFim?>;"
-          class="<?=$sClasse?>" align="center"><?=substr($hora_fim,0,5) ?></td>
+          class="<?=$sClasse?>" align="center"><?=substr((string) $hora_fim,0,5) ?></td>
         <td id="td<?='_'.$intCountagenda2?>4" style="border:1px solid #AACCCC; display: <?=$sDisplayReserva?>;"
           class="<?=$sClasse?>" align="center"><?=$reservada ?></td>
         <td id="td<?='_'.$intCountagenda2?>5" style="border:1px solid #AACCCC; display: <?=$sDisplayTipoGrade?>;"

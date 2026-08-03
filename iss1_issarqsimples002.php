@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("issarqsimples"=>"issarqsimples","issarqsimplesreg"=>"issarqsimplesreg"); 
-	 $clcriaabas->src = array("issarqsimples"=>"iss1_issarqsimples005.php");
-	 $clcriaabas->disabled   =  array("issarqsimplesreg"=>"true"); 
+	 $clcriaabas->identifica = ["issarqsimples"=>"issarqsimples","issarqsimplesreg"=>"issarqsimplesreg"]; 
+	 $clcriaabas->src = ["issarqsimples"=>"iss1_issarqsimples005.php"];
+	 $clcriaabas->disabled   =  ["issarqsimplesreg"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

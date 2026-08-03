@@ -253,7 +253,7 @@ if(isset($db_opcaoal)){
 <table border="0" width="60%" style="margin-top: 10px;">
 	<tr>
 		<td valign="top" align="center"><?php 
-	 $chavepri= array("k81_seqpla"=>@$k81_seqpla);
+	 $chavepri= ["k81_seqpla"=>@$k81_seqpla];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clplacaixarec->sql_query(null,"*",null," k81_codpla = $k81_codpla");
 	// echo $clplacaixarec->sql_query(null,"*",null," k81_codpla = $k81_codpla");die();

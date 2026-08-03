@@ -35,7 +35,7 @@ $clrotulo->label('r16_descr');
 $clrotulo->label('r17_codigo');
 $clrotulo->label('r17_quant');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
@@ -58,7 +58,7 @@ if($r11_vtprop == "t"){
 $xwhere = '';
 $vales_selecionados = "";
 if(trim($selecionados) != ''){
-  $arr_vales = split(",",$selecionados);
+  $arr_vales = preg_split("#,#m",$selecionados);
   $sVirgula = ''; 
   for($i=0; $i<count($arr_vales); $i++){
     $vales_selecionados .= $sVirgula."'".$arr_vales[$i]."' ";
@@ -131,7 +131,7 @@ $sql = " select rh02_regist,
 
 $result = db_query($sql);
 // echo $sql."<br>" ; db_criatabela($result); exit;
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mesfolha.' / '.$anofolha);
 }
@@ -162,9 +162,9 @@ $t_out     = 0;
 $t_nov     = 0;
 $t_dez     = 0;
 $t_geral   = 0;
-$arr_t     = array();
+$arr_t     = [];
 $pre       = 1;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    $total_ = $jan+$fev+$mar+$abr+$mai+$jun+$jul+$ago+$set+$out+$nov+$dez;
    $t_jan  += $jan;     

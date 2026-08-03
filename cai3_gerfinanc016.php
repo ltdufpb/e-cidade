@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_sql.php"));
 require_once(modification("classes/db_numpref_classe.php"));
-parse_str(base64_decode($_SERVER["QUERY_STRING"]));
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
 
 //arreprescr k30_anulado is false
 $clnumpref = new cl_numpref();
@@ -226,30 +226,30 @@ function js_validar() {
 	  }
 	$sqlc = $sqlc . " and a.k00_numpre is null and arreprescr.k30_numpre is null ";
 	
-	if (!empty($HTTP_POST_VARS["datainicial_dia"]) && !empty($HTTP_POST_VARS["datainicial_mes"]) && !empty($HTTP_POST_VARS["datainicial_ano"])&&!empty($HTTP_POST_VARS["datafinal_dia"]) && !empty($HTTP_POST_VARS["datafinal_mes"]) && !empty($HTTP_POST_VARS["datafinal_ano"])){
+	if (!empty($_POST["datainicial_dia"]) && !empty($_POST["datainicial_mes"]) && !empty($_POST["datainicial_ano"])&&!empty($_POST["datafinal_dia"]) && !empty($_POST["datafinal_mes"]) && !empty($_POST["datafinal_ano"])){
 		
-	    $datainicial = $HTTP_POST_VARS["datainicial_ano"]."-".$HTTP_POST_VARS["datainicial_mes"]."-".$HTTP_POST_VARS["datainicial_dia"];
+	    $datainicial = $_POST["datainicial_ano"]."-".$_POST["datainicial_mes"]."-".$_POST["datainicial_dia"];
    	  $querystring .= "&dataini=$datainicial";
-  	  $datafinal = $HTTP_POST_VARS["datafinal_ano"]."-".$HTTP_POST_VARS["datafinal_mes"]."-".$HTTP_POST_VARS["datafinal_dia"];
+  	  $datafinal = $_POST["datafinal_ano"]."-".$_POST["datafinal_mes"]."-".$_POST["datafinal_dia"];
    	  $querystring .= "&datafim=$datafinal";
    	  $sqlc .= " and cancdebitosproc.k23_data between '$datainicial' and '$datafinal' ";
    	  
 	} else {
 		
-    	if (!empty($HTTP_POST_VARS["datafinal_dia"]) && !empty($HTTP_POST_VARS["datafinal_mes"]) && !empty($HTTP_POST_VARS["datafinal_ano"])) {
-  	        $datafinal = $HTTP_POST_VARS["datafinal_ano"]."-".$HTTP_POST_VARS["datafinal_mes"]."-".$HTTP_POST_VARS["datafinal_dia"];
+    	if (!empty($_POST["datafinal_dia"]) && !empty($_POST["datafinal_mes"]) && !empty($_POST["datafinal_ano"])) {
+  	        $datafinal = $_POST["datafinal_ano"]."-".$_POST["datafinal_mes"]."-".$_POST["datafinal_dia"];
 		        $querystring .= "&datafim=$datafinal";
             $sqlc .= " and cancdebitosproc.k23_data <= '$datafinal' ";
-	    } else if(!empty($HTTP_POST_VARS["datainicial_dia"]) && !empty($HTTP_POST_VARS["datainicial_mes"]) && !empty($HTTP_POST_VARS["datainicial_ano"])) {
-            $datainicial = $HTTP_POST_VARS["datainicial_ano"]."-".$HTTP_POST_VARS["datainicial_mes"]."-".$HTTP_POST_VARS["datainicial_dia"];
+	    } else if(!empty($_POST["datainicial_dia"]) && !empty($_POST["datainicial_mes"]) && !empty($_POST["datainicial_ano"])) {
+            $datainicial = $_POST["datainicial_ano"]."-".$_POST["datainicial_mes"]."-".$_POST["datainicial_dia"];
            	$querystring .= "&dataini=$datainicial";
             $sqlc .= " and cancdebitosproc.k23_data > '$datainicial' ";	
 		  }
 		  
 	}
-	if(!empty($HTTP_POST_VARS["receita"])){
- 	  $querystring .= "&receita=".$HTTP_POST_VARS["receita"];
-	  $sqlc .= " and p.k00_receit = ".$HTTP_POST_VARS["receita"];	  
+	if(!empty($_POST["receita"])){
+ 	  $querystring .= "&receita=".$_POST["receita"];
+	  $sqlc .= " and p.k00_receit = ".$_POST["receita"];	  
 	}	
 
     $sqlc .= " order by p.k00_numpre,p.k00_numpar";
@@ -262,7 +262,7 @@ function js_validar() {
 	  $qcor= $ConfCor1;
 	
 	
-    if(pg_numrows($dados) > 0) {
+    if(pg_num_rows($dados) > 0) {
 	?>
 	<table width="100%" border="0" cellspacing="0" cellpadding="3">
     <tr bgcolor="#ffcc66"> 
@@ -278,7 +278,7 @@ function js_validar() {
     </tr>
 	<?php 
     $totalpago = 0;
-    for ($x=0;$x<pg_numrows($dados);$x++) {
+    for ($x=0;$x<pg_num_rows($dados);$x++) {
 	    db_fieldsmemory($dados,$x);
       if ($numpre_cor=="") {
 		    $numpre_cor = $k00_numpre;

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cancdebitos_classe.php"));
 $clcancdebitos        = new cl_cancdebitos;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 if($chave!=""){
  $result = $clcancdebitos->sql_record($clcancdebitos->sql_pendentes("k21_sequencia,k21_numpre,k21_numpar,sum(k00_valor) as k00_valor","k21_numpre,k21_numpar"," k20_codigo = $chave and k20_instit = ".db_getsession("DB_instit")." GROUP BY k21_sequencia,k21_numpre,k21_numpar"));
  if($clcancdebitos->numrows > 0){

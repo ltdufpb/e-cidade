@@ -35,7 +35,7 @@ include(modification("classes/db_db_config_classe.php"));
 $clempparametro	 = new  cl_empparametro;
 $cltipoinstit    = new  cl_db_config;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
 $result_instit = $cltipoinstit->sql_record($cltipoinstit->sql_query_tipoinstit(db_getsession("DB_instit"),"db21_tipoinstit",null,""));
@@ -135,7 +135,7 @@ $sqlemp = "
 $result = db_query($sqlemp);	
 //db_criatabela($result);exit;
 
-if (pg_numrows($result)==0){
+if (pg_num_rows($result)==0){
    db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado !  ");
 }
 
@@ -165,11 +165,11 @@ $pdf1->nvias= $e30_nroviaemp;
 $pdf1->db21_instit = $db21_tipoinstit;
 
 
-for($i = 0;$i < pg_numrows($result);$i++){
+for($i = 0;$i < pg_num_rows($result);$i++){
    db_fieldsmemory($result,$i);
    
    if ($c72_complem != "") {
-     $matrizdados= split("Motivo:",$c72_complem);
+     $matrizdados= preg_split("#Motivo:#m",(string) $c72_complem);
    }
    
    $pdf1->prefeitura       = $nomeinst;
@@ -230,10 +230,10 @@ for($i = 0;$i < pg_numrows($result);$i++){
    $sQueryConta .= "   and c61_anousu = ".db_getsession("DB_anousu");
    $sQueryConta .= "   and c61_codigo = $o58_codigo and c52_descrred = 'F'";
    $result_conta = db_query(analiseQueryPlanoOrcamento($sQueryConta));
-   if ($result_conta != false && (pg_numrows($result_conta) > 0 && pg_numrows($result_conta) <= 2)) {
+   if ($result_conta != false && (pg_num_rows($result_conta) > 0 && pg_num_rows($result_conta) <= 2)) {
      db_fieldsmemory($result_conta,0);
      $result_conta = db_query("select * from conplanoconta where c63_reduz = {$c61_reduz} and c63_codcon = $c61_codcon and c63_anousu = ".db_getsession("DB_anousu"));
-     if (pg_result($result_conta,0) > 0) {
+     if (pg_fetch_result($result_conta,0) > 0) {
        db_fieldsmemory($result_conta,0);
        $pdf1->banco            = $c63_banco;
        $pdf1->agencia          = $c63_agencia;

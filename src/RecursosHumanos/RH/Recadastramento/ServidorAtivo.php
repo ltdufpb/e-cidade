@@ -81,9 +81,7 @@ class ServidorAtivo extends Servidor
 
         $dependentes = $this->servidor->getDependentes();
 
-        $dependente = array_filter($dependentes, function ($dependente) {
-            return $dependente->isConjuge();
-        });
+        $dependente = array_filter($dependentes, fn($dependente) => $dependente->isConjuge());
 
         if (empty($dependente)) {
             $conjuge = new Dependente();
@@ -92,7 +90,7 @@ class ServidorAtivo extends Servidor
             $conjuge->setGrauParentesco("C");
             $conjuge->setSalarioFamilia("N");
             $conjuge->setTipo(0);
-            $conjuge->setSexo(strtolower($this->servidor->getSexo()) == 'm' ? "F" : "M"); //ver com a lorena
+            $conjuge->setSexo(strtolower((string) $this->servidor->getSexo()) == 'm' ? "F" : "M"); //ver com a lorena
             $conjuge->setFinsPrevidenciarios(false);
             $conjuge->setCondicaoEspecial("N");
             $conjuge->setTipoParentesco(1);
@@ -133,7 +131,7 @@ class ServidorAtivo extends Servidor
             $campo->getResposta()->codigo
         );
 
-        if (in_array((int)$campo->getResposta()->codigo, array(8, 10, 11, 12))) {
+        if (in_array((int)$campo->getResposta()->codigo, [8, 10, 11, 12])) {
             require_once(modification('model/processoOuvidoria.model.php'));
             $campo = $secao->getCampo("descricao_do_curso");
             $assentamento = new AssentamentoFuncional();
@@ -400,7 +398,7 @@ class ServidorAtivo extends Servidor
 
         try {
             $isImigrante = $this->servidor->isImigrante();
-        } catch (Exception $ex) {
+        } catch (Exception) {
             $isImigrante = false;
         }
 
@@ -504,7 +502,7 @@ class ServidorAtivo extends Servidor
 
             $dependenteModel->setTipoParentesco(
                 str_pad(
-                    $dependente->tipo_de_dependentes->codigo,
+                    (string) $dependente->tipo_de_dependentes->codigo,
                     2,
                     "0",
                     STR_PAD_LEFT
@@ -557,7 +555,7 @@ class ServidorAtivo extends Servidor
 
         $campo = $secao->getCampo("email");
         $this->cgm->setEmail(
-            trim(strtolower($campo->getResposta()))
+            trim(strtolower((string) $campo->getResposta()))
         );
 
         $campo = $secao->getCampo("telefone");

@@ -30,12 +30,12 @@
 
 class rubrica {
 
-  var $arq=null;
+  public $arq=null;
 
-  function rubrica($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/RUBRICA.TXT",'w+');
-     fputs($this->arq,$header);
+     fputs($this->arq,(string) $header);
      fputs($this->arq,"\r\n");  
 
   }  
@@ -53,15 +53,15 @@ class rubrica {
             $clarqpad->sql_query(null,"*",null," c54_nomearq = 'RUBRICA.TXT' and c54_anousu=".db_getsession("DB_anousu")."  and c54_codtrib = $tribinst "));
     
       if($clarqpad->numrows > 0){
-        $rubant = split("\r\n",pg_result($res,0,"c54_arquivo"));
+        $rubant = preg_split("#\r\n#m",pg_fetch_result($res,0,"c54_arquivo"));
         for($yy=0;$yy<sizeof($rubant);$yy++){
            $contador++;
            $line = $rubant[$yy];
  
-           $exercicios .= $virg.substr($rubant[$yy],0,4);
+           $exercicios .= $virg.substr((string) $rubant[$yy],0,4);
            $virg = ",";
  
-           fputs($this->arq,$line);
+           fputs($this->arq,(string) $line);
            fputs($this->arq,"\r\n");
         }
       }
@@ -108,7 +108,7 @@ class rubrica {
          // echo $sql;exit;
        $result = db_query(analiseQueryPlanoOrcamento($sql));
          
-       for($i=0;$i<pg_numrows($result);$i++){
+       for($i=0;$i<pg_num_rows($result);$i++){
             db_fieldsmemory($result,$i);
 
 	    
@@ -121,16 +121,16 @@ class rubrica {
       
             $contador ++;
       
-            $line  = formatar($ano,4,'n');
+            $line  = formatar($ano,4);
             if ($line ==2005){
                $elemento = $elemento."0"; 
             }
-            $line .= formatar($elemento,15,'c');
-            $line .= formatar($o56_descr,110,'c');
+            $line .= formatar($elemento,15);
+            $line .= formatar($o56_descr,110);
          
-  	    if($ano<2005 && substr($elemento,1,14)=='00000000000000'){
+  	    if($ano<2005 && substr((string) $elemento,1,14)=='00000000000000'){
                 $line .= 'S';
-                $line .= formatar(1,2,'n');
+                $line .= formatar(1,2);
   	    }else{
                 // ajusta tipo S01 - sintetico nivel 01 
                 //if (substr($elemento,1,14)=='00000000000000'){
@@ -139,7 +139,7 @@ class rubrica {
                 //   $line .= '01';                 
                 //} else {              
                    $line .= $tipo;
-                   $line .= formatar($nivel,2,'n');
+                   $line .= formatar($nivel,2);
                 //}   
             }
             fputs($this->arq,$line);
@@ -147,7 +147,7 @@ class rubrica {
             
       } // end loop
      
-      $contador = espaco(10-(strlen($contador)),'0').$contador;
+      $contador = espaco(10-(strlen($contador))).$contador;
       $line = "FINALIZADOR".$contador;
       fputs($this->arq,$line);
       fputs($this->arq,"\r\n");

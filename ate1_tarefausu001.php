@@ -35,8 +35,8 @@ include(modification("classes/db_tarefausu_classe.php"));
 include(modification("classes/db_tarefaenvol_classe.php"));
 include(modification("classes/db_tarefa_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $cltarefausu   = new cl_tarefausu;
 $cltarefaenvol = new cl_tarefaenvol;
 $cltarefa      = new cl_tarefa;
@@ -84,7 +84,7 @@ if(isset($incluir)){
                                                                         "at40_sequencial,at45_usuario","at45_tarefa=$cltarefausu->at42_tarefa"));
 		  if($cltarefa->numrows > 0) {
 			  $cldb_usuarios = new cl_db_usuarios;
-			  	
+
 		  	  for($i=0; $i < $cltarefa->numrows; $i++) {
 				  db_fieldsmemory($rs_tarefa,$i);
 			  	  $rs_usuario = $cldb_usuarios->sql_record($cldb_usuarios->sql_query($at45_usuario,"email,nome","id_usuario"));
@@ -102,7 +102,7 @@ if(isset($incluir)){
 				  	  $rs_resp  = $cldb_usuarios->sql_record($cldb_usuarios->sql_query($at40_responsavel,"nome as nome_resp","id_usuario"));
 					  if($cldb_usuarios->numrows > 0) {	
 						  db_fieldsmemory($rs_resp,0);
-												  
+
 						  $mensagem = $nome . "<br>Você tem tarefas para fazer abaixo a descricao da sua tarefa (nao autorizada):<br>" .
 						              "Responsavel:         " . $at40_responsavel . " - " . $nome_resp . "<br>".
 						              "Descricao  :         " . $at40_descr       . "<br>".
@@ -111,7 +111,7 @@ if(isset($incluir)){
 						              "Previsto em        : " . $at40_previsao    . "\\" . $at40_tipoprevisao . "<br>" .
 						              "Prioridade         : " . $prioridade       . "<br>" .
 						              "Obs.:                " . $at40_obs         . "<br>";  
-	
+
 //						  $envio = $cltarefa->enviar_email($email,"Tarefa ".$cltarefausu->at42_tarefa,$mensagem);
 //						  if($envio == false) {
 //						  	  db_msgbox("Erro ao enviar e-mail para " . $email);

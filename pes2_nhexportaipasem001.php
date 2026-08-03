@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -161,7 +161,7 @@ order by z01_nome";
        fputs($arquivo,$sql1."\r\n");
   }
 
-  for($x = 0;$x < pg_numrows($result);$x++){
+  for($x = 0;$x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
     fputs($arquivo,$tipo."\r\n");
   }
@@ -218,11 +218,11 @@ order by z01_nome";
         <td align="right"><b>Tipo de Arquivo :&nbsp;&nbsp;<b></td>
 	<td align="left">
 	<?php 
-	  $arr_f = array('r14'=>'Salário',
+	  $arr_f = ['r14'=>'Salário',
                  'r20'=>'Rescisão',
                  'r35'=>'13o. Salário',
                  'r48'=>'Complementar'
-                 );
+                 ];
 	  db_select("folha",$arr_f,true,1);
 	?>
         </td>
@@ -231,9 +231,9 @@ order by z01_nome";
         <td align="right"><b>Tipo :&nbsp;&nbsp;<b></td>
 	<td align="left">
 	<?php 
-	  $arr = array('I'=>'IPASEM',
+	  $arr = ['I'=>'IPASEM',
                  
-                 );
+                 ];
 	  db_select("exporta",$arr,true,1);
 	?>
         </td>

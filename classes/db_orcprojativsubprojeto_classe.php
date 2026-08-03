@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE orcprojativsubprojeto
 class cl_orcprojativsubprojeto { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o99_sequencial = 0; 
-   var $o99_projativ = 0; 
-   var $o99_anousu = 0; 
-   var $o99_orcsubprojeto = 0; 
+   public $o99_sequencial = 0; 
+   public $o99_projativ = 0; 
+   public $o99_anousu = 0; 
+   public $o99_orcsubprojeto = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o99_sequencial = int4 = Código 
                  o99_projativ = int4 = Projeto/Atividade 
                  o99_anousu = int4 = Ano 
                  o99_orcsubprojeto = int4 = Subprojeto 
                  ";
    //funcao construtor da classe 
-   function cl_orcprojativsubprojeto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcprojativsubprojeto"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_orcprojativsubprojeto {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o99_sequencial = pg_result($result,0,0); 
+       $this->o99_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from orcprojativsubprojeto_o99_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o99_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o99_sequencial)){
          $this->erro_sql = " Campo o99_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_orcprojativsubprojeto {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ligacao projeto/subprojeto ($this->o99_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ligacao projeto/subprojeto já Cadastrado";
@@ -180,13 +180,13 @@ class cl_orcprojativsubprojeto {
      $resaco = $this->sql_record($this->sql_query_file($this->o99_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13886,'$this->o99_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2428,13886,'','".AddSlashes(pg_result($resaco,0,'o99_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2428,13889,'','".AddSlashes(pg_result($resaco,0,'o99_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2428,13890,'','".AddSlashes(pg_result($resaco,0,'o99_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2428,13893,'','".AddSlashes(pg_result($resaco,0,'o99_orcsubprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2428,13886,'','".AddSlashes(pg_fetch_result($resaco,0,'o99_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2428,13889,'','".AddSlashes(pg_fetch_result($resaco,0,'o99_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2428,13890,'','".AddSlashes(pg_fetch_result($resaco,0,'o99_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2428,13893,'','".AddSlashes(pg_fetch_result($resaco,0,'o99_orcsubprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_orcprojativsubprojeto {
       $this->atualizacampos();
      $sql = " update orcprojativsubprojeto set ";
      $virgula = "";
-     if(trim($this->o99_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o99_sequencial"])){ 
+     if(trim((string) $this->o99_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o99_sequencial"])){ 
        $sql  .= $virgula." o99_sequencial = $this->o99_sequencial ";
        $virgula = ",";
-       if(trim($this->o99_sequencial) == null ){ 
+       if(trim((string) $this->o99_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "o99_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_orcprojativsubprojeto {
          return false;
        }
      }
-     if(trim($this->o99_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o99_projativ"])){ 
+     if(trim((string) $this->o99_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o99_projativ"])){ 
        $sql  .= $virgula." o99_projativ = $this->o99_projativ ";
        $virgula = ",";
-       if(trim($this->o99_projativ) == null ){ 
+       if(trim((string) $this->o99_projativ) == null ){ 
          $this->erro_sql = " Campo Projeto/Atividade nao Informado.";
          $this->erro_campo = "o99_projativ";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_orcprojativsubprojeto {
          return false;
        }
      }
-     if(trim($this->o99_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o99_anousu"])){ 
+     if(trim((string) $this->o99_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o99_anousu"])){ 
        $sql  .= $virgula." o99_anousu = $this->o99_anousu ";
        $virgula = ",";
-       if(trim($this->o99_anousu) == null ){ 
+       if(trim((string) $this->o99_anousu) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "o99_anousu";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_orcprojativsubprojeto {
          return false;
        }
      }
-     if(trim($this->o99_orcsubprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o99_orcsubprojeto"])){ 
+     if(trim((string) $this->o99_orcsubprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o99_orcsubprojeto"])){ 
        $sql  .= $virgula." o99_orcsubprojeto = $this->o99_orcsubprojeto ";
        $virgula = ",";
-       if(trim($this->o99_orcsubprojeto) == null ){ 
+       if(trim((string) $this->o99_orcsubprojeto) == null ){ 
          $this->erro_sql = " Campo Subprojeto nao Informado.";
          $this->erro_campo = "o99_orcsubprojeto";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_orcprojativsubprojeto {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13886,'$this->o99_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o99_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2428,13886,'".AddSlashes(pg_result($resaco,$conresaco,'o99_sequencial'))."','$this->o99_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2428,13886,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o99_sequencial'))."','$this->o99_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o99_projativ"]))
-           $resac = db_query("insert into db_acount values($acount,2428,13889,'".AddSlashes(pg_result($resaco,$conresaco,'o99_projativ'))."','$this->o99_projativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2428,13889,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o99_projativ'))."','$this->o99_projativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o99_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,2428,13890,'".AddSlashes(pg_result($resaco,$conresaco,'o99_anousu'))."','$this->o99_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2428,13890,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o99_anousu'))."','$this->o99_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o99_orcsubprojeto"]))
-           $resac = db_query("insert into db_acount values($acount,2428,13893,'".AddSlashes(pg_result($resaco,$conresaco,'o99_orcsubprojeto'))."','$this->o99_orcsubprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2428,13893,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o99_orcsubprojeto'))."','$this->o99_orcsubprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_orcprojativsubprojeto {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13886,'$o99_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2428,13886,'','".AddSlashes(pg_result($resaco,$iresaco,'o99_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2428,13889,'','".AddSlashes(pg_result($resaco,$iresaco,'o99_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2428,13890,'','".AddSlashes(pg_result($resaco,$iresaco,'o99_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2428,13893,'','".AddSlashes(pg_result($resaco,$iresaco,'o99_orcsubprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2428,13886,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o99_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2428,13889,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o99_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2428,13890,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o99_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2428,13893,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o99_orcsubprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcprojativsubprojeto
@@ -376,7 +376,7 @@ class cl_orcprojativsubprojeto {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcprojativsubprojeto";
@@ -391,7 +391,7 @@ class cl_orcprojativsubprojeto {
    function sql_query ( $o99_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_orcprojativsubprojeto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,7 +429,7 @@ class cl_orcprojativsubprojeto {
    function sql_query_file ( $o99_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_orcprojativsubprojeto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

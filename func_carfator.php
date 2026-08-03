@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_carfator_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcarfator = new cl_carfator;
 $clcarfator->rotulo->label("j74_anousu");
 $clcarfator->rotulo->label("j74_caract");
@@ -99,9 +99,9 @@ $clcarfator->rotulo->label("j74_fator");
         }else{
            $sql = $clcarfator->sql_query(db_getsession('DB_anousu'),"",$campos,"j74_anousu#j74_caract","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j74_fator)){
-          $repassa = array("chave_j74_anousu"=>$chave_j74_anousu,"chave_j74_fator"=>$chave_j74_fator);
+          $repassa = ["chave_j74_anousu"=>$chave_j74_anousu,"chave_j74_fator"=>$chave_j74_fator];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

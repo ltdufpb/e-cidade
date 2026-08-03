@@ -59,7 +59,7 @@ $clempparametro = new cl_empparametro;
 $clpcprocitem = new cl_pcprocitem;
 $clempautitem = new cl_empautitem;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -190,14 +190,14 @@ $sqlmater = "
 
 $result = db_query($sqlmater);
 
-if (pg_numrows($result) == 0) {
+if (pg_num_rows($result) == 0) {
     db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum Registro Encontrado ! ");
     exit;
 } else {
     db_fieldsmemory($result, 0);
 
     $sResumo = db_utils::fieldsMemory($result, 0)->e54_resumo;
-    $sResumo = htmlspecialchars_decode($sResumo);
+    $sResumo = htmlspecialchars_decode((string) $sResumo);
     //echo " [3] " . db_criatabela($result). "<br>------------------<br>";
     //echo $e54_resumo. "<br>";
     if ($e54_anulad != "") {
@@ -233,7 +233,7 @@ $pdf1->nvias = @$e30_nroviaaut;
 $pdf1->objpdf->SetTextColor(0, 0, 0);
 
 
-for ($i = 0; $i < pg_numrows($result); $i++) {
+for ($i = 0; $i < pg_num_rows($result); $i++) {
 
     db_fieldsmemory($result, $i);
     $origem = \ECidade\Financeiro\Orcamento\Recurso\Origem::getAutorizacao($e54_autori);
@@ -323,7 +323,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     $pdf1->casadec = @$e30_numdec;
     $pdf1->usa_sub = $usa_sub;
     $pdf1->prefeitura = $nomeinst;
-    $pdf1->enderpref = trim($ender) . "," . $numero;
+    $pdf1->enderpref = trim((string) $ender) . "," . $numero;
     $pdf1->municpref = $munic;
     $pdf1->telefpref = $telef;
     $pdf1->cgcpref = $cgc;
@@ -337,7 +337,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     $pdf1->ufFornecedor = $z01_uf;
     $pdf1->dotacao = $estrutural;
     $pdf1->recurso = $recurso->getRecurso();
-    $pdf1->descr_recurso = substr($recurso->getDescricao(), 0, 27);
+    $pdf1->descr_recurso = substr((string) $recurso->getDescricao(), 0, 27);
     $pdf1->projativ = $o55_projativ;
     $pdf1->descr_projativ = $o55_descr;
     $pdf1->descrdotacao = $o56_descr;
@@ -357,7 +357,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
 
     $pdf1->valtotal = $tot_item;
     $pdf1->recorddositens = $resultitem;
-    $pdf1->linhasdositens = pg_numrows($resultitem);
+    $pdf1->linhasdositens = pg_num_rows($resultitem);
     $pdf1->item = 'e55_item';
     $pdf1->quantitem = 'e55_quant';
     $pdf1->valoritem = 'e55_vltot';
@@ -397,7 +397,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         $pdf1->edital_licitacao = $l20_edital;
         $pdf1->numero_licitacao = $l20_numero;
         $pdf1->ano_licitacao = $l20_anousu;
-        $resumo_lic = htmlspecialchars_decode($l20_objeto);
+        $resumo_lic = htmlspecialchars_decode((string) $l20_objeto);
         
         $pdf1->observacaoitem = "pc23_obs";
     }
@@ -408,7 +408,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
         if (isset($e54_resumo) && trim($e54_resumo) != "") {
             $pdf1->resumo = trim($e54_resumo);//trim($sResumo);
         } else {
-            $pdf1->resumo = trim($resumo_lic);
+            $pdf1->resumo = trim((string) $resumo_lic);
         }
 
     } else {
@@ -425,16 +425,16 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     $pdf1->resumo = substr(str_replace("\n", " ", $pdf1->resumo), 0, 730);
 
     if (isset($l03_descr) && ($l03_descr != "")) {
-        $pdf1->descr_licitacao = substr($l03_descr, 0, 32);
+        $pdf1->descr_licitacao = substr((string) $l03_descr, 0, 32);
     } else {
         // autorização manual
         // seleciona o tipo de licitação
         $rpc = db_query("select l03_descr from cflicita where l03_codcom=$e54_codcom and l03_tipo='$e54_tipol'");
-        if (pg_numrows($rpc) > 0) {
-            $pdf1->descr_licitacao = substr(pg_result($rpc, 0, 0), 0, 32);
+        if (pg_num_rows($rpc) > 0) {
+            $pdf1->descr_licitacao = substr(pg_fetch_result($rpc, 0, 0), 0, 32);
 
         } else {
-            $pdf1->descr_licitacao = substr($pc50_descr, 0, 32);
+            $pdf1->descr_licitacao = substr((string) $pc50_descr, 0, 32);
         }
     }
     $pdf1->cnpj = $z01_cgccpf;
@@ -443,7 +443,7 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     $pdf1->Snumeroproc = "pc81_codproc";
     $pdf1->Snumero = "pc11_numero";
     if (!empty($e60_numemp))
-        $pdf1->Scodemp = trim($e60_codemp) . "/$e60_anousu";
+        $pdf1->Scodemp = trim((string) $e60_codemp) . "/$e60_anousu";
     else
         $pdf1->Scodemp = "";
 
@@ -477,7 +477,7 @@ if (isset($argv[1])) {
             $oStdDadosGED->tipo = "NUMERO";
             $oStdDadosGED->valor = $e54_autori_ini;
             $pdf1->objpdf->Output("tmp/{$sTipoDocumento}_{$e54_autori_ini}.pdf");
-            $oGerenciador->moverArquivo(array($oStdDadosGED));
+            $oGerenciador->moverArquivo([$oStdDadosGED]);
 
         } catch (Exception $eErro) {
             db_redireciona("db_erros.php?fechar=true&db_erro=" . $eErro->getMessage());

@@ -54,7 +54,7 @@
         </td>
         <td>
           <?php
-            $aOpcoes = array( 0 => 'NÃO', 1 => 'SIM');
+            $aOpcoes = [ 0 => 'NÃO', 1 => 'SIM'];
             db_select('lQuebraLinha', $aOpcoes, true, 1, ""); 
           ?>
         </td>
@@ -65,7 +65,7 @@
         </td>
         <td>
           <?php
-            $aOpcoes = array( 0 => 'NÃO', 1 => 'SIM');
+            $aOpcoes = [ 0 => 'NÃO', 1 => 'SIM'];
             db_select('lFiltrarDebitos', $aOpcoes, true, 1, ""); 
           ?>
         </td>        

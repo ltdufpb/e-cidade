@@ -41,11 +41,11 @@ class EsferaOrcamentariaEnum extends Enum
      */
     public function name()
     {
-        $data = array(
+        $data = [
             self::ORCAMETNO_FISCAL => "F - Orçamento Fiscal",
             self::ORCAMETNO_SEGURIDADE_SOCIAL => "S - Orçamento da Seguridade Social",
             self::ORCAMETNO_INVESTIMENTO => "I - Orçamento de Investimento",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Esfera Orçamentária inválida.');
@@ -60,11 +60,11 @@ class EsferaOrcamentariaEnum extends Enum
      */
     public function sigla()
     {
-        $data = array(
+        $data = [
             self::ORCAMETNO_FISCAL => "F",
             self::ORCAMETNO_SEGURIDADE_SOCIAL => "S",
             self::ORCAMETNO_INVESTIMENTO => "I",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Esfera Orçamentária inválida.');

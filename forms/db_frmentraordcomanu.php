@@ -135,9 +135,9 @@ if (isset($continue)){
 </td>
 <td> 
 <?php 
-$ano=substr($e69_dtrecebe,0,4);
-$mes=substr($e69_dtrecebe,5,2);
-$dia=substr($e69_dtrecebe,8,2);
+$ano=substr((string) $e69_dtrecebe,0,4);
+$mes=substr((string) $e69_dtrecebe,5,2);
+$dia=substr((string) $e69_dtrecebe,8,2);
 db_inputdata('e69_dtrecebe',"$dia","$mes","$ano",true,'text',3);
 ?>
 </td>

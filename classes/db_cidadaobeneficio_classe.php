@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE cidadaobeneficio
 class cl_cidadaobeneficio { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $as08_sequencial = 0; 
-   var $as08_programasocial = 0; 
-   var $as08_mes = 0; 
-   var $as08_ano = 0; 
-   var $as08_situacao = null; 
-   var $as08_nis = null; 
-   var $as08_tipobeneficio = null; 
-   var $as08_datasituacao_dia = null; 
-   var $as08_datasituacao_mes = null; 
-   var $as08_datasituacao_ano = null; 
-   var $as08_datasituacao = null; 
-   var $as08_dataconcessao_dia = null; 
-   var $as08_dataconcessao_mes = null; 
-   var $as08_dataconcessao_ano = null; 
-   var $as08_dataconcessao = null; 
-   var $as08_motivo = null; 
-   var $as08_justificativa = null; 
+   public $as08_sequencial = 0; 
+   public $as08_programasocial = 0; 
+   public $as08_mes = 0; 
+   public $as08_ano = 0; 
+   public $as08_situacao = null; 
+   public $as08_nis = null; 
+   public $as08_tipobeneficio = null; 
+   public $as08_datasituacao_dia = null; 
+   public $as08_datasituacao_mes = null; 
+   public $as08_datasituacao_ano = null; 
+   public $as08_datasituacao = null; 
+   public $as08_dataconcessao_dia = null; 
+   public $as08_dataconcessao_mes = null; 
+   public $as08_dataconcessao_ano = null; 
+   public $as08_dataconcessao = null; 
+   public $as08_motivo = null; 
+   public $as08_justificativa = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  as08_sequencial = int4 = Código Cidadão Benefício 
                  as08_programasocial = int4 = Código do Programa Social 
                  as08_mes = int4 = Mês da Competência 
@@ -74,10 +74,10 @@ class cl_cidadaobeneficio {
                  as08_justificativa = text = Justificativa 
                  ";
    //funcao construtor da classe 
-   function cl_cidadaobeneficio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cidadaobeneficio"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -202,10 +202,10 @@ class cl_cidadaobeneficio {
          $this->erro_status = "0";
          return false; 
        }
-       $this->as08_sequencial = pg_result($result,0,0); 
+       $this->as08_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cidadaobeneficio_as08_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $as08_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $as08_sequencial)){
          $this->erro_sql = " Campo as08_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -253,7 +253,7 @@ class cl_cidadaobeneficio {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cidadaobeneficio ($this->as08_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cidadaobeneficio já Cadastrado";
@@ -279,20 +279,20 @@ class cl_cidadaobeneficio {
        $resaco = $this->sql_record($this->sql_query_file($this->as08_sequencial));
        if(($resaco!=false)||($this->numrows!=0)){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19134,'$this->as08_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3401,19134,'','".AddSlashes(pg_result($resaco,0,'as08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3401,19135,'','".AddSlashes(pg_result($resaco,0,'as08_programasocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3401,19136,'','".AddSlashes(pg_result($resaco,0,'as08_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3401,19137,'','".AddSlashes(pg_result($resaco,0,'as08_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3401,19138,'','".AddSlashes(pg_result($resaco,0,'as08_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3401,19139,'','".AddSlashes(pg_result($resaco,0,'as08_nis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3401,19140,'','".AddSlashes(pg_result($resaco,0,'as08_tipobeneficio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3401,19141,'','".AddSlashes(pg_result($resaco,0,'as08_datasituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3401,19142,'','".AddSlashes(pg_result($resaco,0,'as08_dataconcessao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3401,19143,'','".AddSlashes(pg_result($resaco,0,'as08_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3401,19144,'','".AddSlashes(pg_result($resaco,0,'as08_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3401,19134,'','".AddSlashes(pg_fetch_result($resaco,0,'as08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3401,19135,'','".AddSlashes(pg_fetch_result($resaco,0,'as08_programasocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3401,19136,'','".AddSlashes(pg_fetch_result($resaco,0,'as08_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3401,19137,'','".AddSlashes(pg_fetch_result($resaco,0,'as08_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3401,19138,'','".AddSlashes(pg_fetch_result($resaco,0,'as08_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3401,19139,'','".AddSlashes(pg_fetch_result($resaco,0,'as08_nis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3401,19140,'','".AddSlashes(pg_fetch_result($resaco,0,'as08_tipobeneficio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3401,19141,'','".AddSlashes(pg_fetch_result($resaco,0,'as08_datasituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3401,19142,'','".AddSlashes(pg_fetch_result($resaco,0,'as08_dataconcessao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3401,19143,'','".AddSlashes(pg_fetch_result($resaco,0,'as08_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3401,19144,'','".AddSlashes(pg_fetch_result($resaco,0,'as08_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -302,10 +302,10 @@ class cl_cidadaobeneficio {
       $this->atualizacampos();
      $sql = " update cidadaobeneficio set ";
      $virgula = "";
-     if(trim($this->as08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_sequencial"])){ 
+     if(trim((string) $this->as08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_sequencial"])){ 
        $sql  .= $virgula." as08_sequencial = $this->as08_sequencial ";
        $virgula = ",";
-       if(trim($this->as08_sequencial) == null ){ 
+       if(trim((string) $this->as08_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Cidadão Benefício nao Informado.";
          $this->erro_campo = "as08_sequencial";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_cidadaobeneficio {
          return false;
        }
      }
-     if(trim($this->as08_programasocial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_programasocial"])){ 
+     if(trim((string) $this->as08_programasocial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_programasocial"])){ 
        $sql  .= $virgula." as08_programasocial = $this->as08_programasocial ";
        $virgula = ",";
-       if(trim($this->as08_programasocial) == null ){ 
+       if(trim((string) $this->as08_programasocial) == null ){ 
          $this->erro_sql = " Campo Código do Programa Social nao Informado.";
          $this->erro_campo = "as08_programasocial";
          $this->erro_banco = "";
@@ -328,10 +328,10 @@ class cl_cidadaobeneficio {
          return false;
        }
      }
-     if(trim($this->as08_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_mes"])){ 
+     if(trim((string) $this->as08_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_mes"])){ 
        $sql  .= $virgula." as08_mes = $this->as08_mes ";
        $virgula = ",";
-       if(trim($this->as08_mes) == null ){ 
+       if(trim((string) $this->as08_mes) == null ){ 
          $this->erro_sql = " Campo Mês da Competência nao Informado.";
          $this->erro_campo = "as08_mes";
          $this->erro_banco = "";
@@ -341,10 +341,10 @@ class cl_cidadaobeneficio {
          return false;
        }
      }
-     if(trim($this->as08_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_ano"])){ 
+     if(trim((string) $this->as08_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_ano"])){ 
        $sql  .= $virgula." as08_ano = $this->as08_ano ";
        $virgula = ",";
-       if(trim($this->as08_ano) == null ){ 
+       if(trim((string) $this->as08_ano) == null ){ 
          $this->erro_sql = " Campo Ano da Competência nao Informado.";
          $this->erro_campo = "as08_ano";
          $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_cidadaobeneficio {
          return false;
        }
      }
-     if(trim($this->as08_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_situacao"])){ 
+     if(trim((string) $this->as08_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_situacao"])){ 
        $sql  .= $virgula." as08_situacao = '$this->as08_situacao' ";
        $virgula = ",";
-       if(trim($this->as08_situacao) == null ){ 
+       if(trim((string) $this->as08_situacao) == null ){ 
          $this->erro_sql = " Campo Situação do Benefício nao Informado.";
          $this->erro_campo = "as08_situacao";
          $this->erro_banco = "";
@@ -367,10 +367,10 @@ class cl_cidadaobeneficio {
          return false;
        }
      }
-     if(trim($this->as08_nis)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_nis"])){ 
+     if(trim((string) $this->as08_nis)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_nis"])){ 
        $sql  .= $virgula." as08_nis = '$this->as08_nis' ";
        $virgula = ",";
-       if(trim($this->as08_nis) == null ){ 
+       if(trim((string) $this->as08_nis) == null ){ 
          $this->erro_sql = " Campo NIS do Beneficiário nao Informado.";
          $this->erro_campo = "as08_nis";
          $this->erro_banco = "";
@@ -380,10 +380,10 @@ class cl_cidadaobeneficio {
          return false;
        }
      }
-     if(trim($this->as08_tipobeneficio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_tipobeneficio"])){ 
+     if(trim((string) $this->as08_tipobeneficio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_tipobeneficio"])){ 
        $sql  .= $virgula." as08_tipobeneficio = '$this->as08_tipobeneficio' ";
        $virgula = ",";
-       if(trim($this->as08_tipobeneficio) == null ){ 
+       if(trim((string) $this->as08_tipobeneficio) == null ){ 
          $this->erro_sql = " Campo Tipo do Benefício nao Informado.";
          $this->erro_campo = "as08_tipobeneficio";
          $this->erro_banco = "";
@@ -393,7 +393,7 @@ class cl_cidadaobeneficio {
          return false;
        }
      }
-     if(trim($this->as08_datasituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_datasituacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as08_datasituacao_dia"] !="") ){ 
+     if(trim((string) $this->as08_datasituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_datasituacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as08_datasituacao_dia"] !="") ){ 
        $sql  .= $virgula." as08_datasituacao = '$this->as08_datasituacao' ";
        $virgula = ",";
      }     else{ 
@@ -402,7 +402,7 @@ class cl_cidadaobeneficio {
          $virgula = ",";
        }
      }
-     if(trim($this->as08_dataconcessao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_dataconcessao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as08_dataconcessao_dia"] !="") ){ 
+     if(trim((string) $this->as08_dataconcessao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_dataconcessao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as08_dataconcessao_dia"] !="") ){ 
        $sql  .= $virgula." as08_dataconcessao = '$this->as08_dataconcessao' ";
        $virgula = ",";
      }     else{ 
@@ -411,10 +411,10 @@ class cl_cidadaobeneficio {
          $virgula = ",";
        }
      }
-     if(trim($this->as08_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_motivo"])){ 
+     if(trim((string) $this->as08_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_motivo"])){ 
        $sql  .= $virgula." as08_motivo = '$this->as08_motivo' ";
        $virgula = ",";
-       if(trim($this->as08_motivo) == null ){ 
+       if(trim((string) $this->as08_motivo) == null ){ 
          $this->erro_sql = " Campo Motivo nao Informado.";
          $this->erro_campo = "as08_motivo";
          $this->erro_banco = "";
@@ -424,7 +424,7 @@ class cl_cidadaobeneficio {
          return false;
        }
      }
-     if(trim($this->as08_justificativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_justificativa"])){ 
+     if(trim((string) $this->as08_justificativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as08_justificativa"])){ 
        $sql  .= $virgula." as08_justificativa = '$this->as08_justificativa' ";
        $virgula = ",";
      }
@@ -438,31 +438,31 @@ class cl_cidadaobeneficio {
        if($this->numrows>0){
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19134,'$this->as08_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as08_sequencial"]) || $this->as08_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3401,19134,'".AddSlashes(pg_result($resaco,$conresaco,'as08_sequencial'))."','$this->as08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3401,19134,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as08_sequencial'))."','$this->as08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as08_programasocial"]) || $this->as08_programasocial != "")
-             $resac = db_query("insert into db_acount values($acount,3401,19135,'".AddSlashes(pg_result($resaco,$conresaco,'as08_programasocial'))."','$this->as08_programasocial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3401,19135,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as08_programasocial'))."','$this->as08_programasocial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as08_mes"]) || $this->as08_mes != "")
-             $resac = db_query("insert into db_acount values($acount,3401,19136,'".AddSlashes(pg_result($resaco,$conresaco,'as08_mes'))."','$this->as08_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3401,19136,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as08_mes'))."','$this->as08_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as08_ano"]) || $this->as08_ano != "")
-             $resac = db_query("insert into db_acount values($acount,3401,19137,'".AddSlashes(pg_result($resaco,$conresaco,'as08_ano'))."','$this->as08_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3401,19137,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as08_ano'))."','$this->as08_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as08_situacao"]) || $this->as08_situacao != "")
-             $resac = db_query("insert into db_acount values($acount,3401,19138,'".AddSlashes(pg_result($resaco,$conresaco,'as08_situacao'))."','$this->as08_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3401,19138,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as08_situacao'))."','$this->as08_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as08_nis"]) || $this->as08_nis != "")
-             $resac = db_query("insert into db_acount values($acount,3401,19139,'".AddSlashes(pg_result($resaco,$conresaco,'as08_nis'))."','$this->as08_nis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3401,19139,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as08_nis'))."','$this->as08_nis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as08_tipobeneficio"]) || $this->as08_tipobeneficio != "")
-             $resac = db_query("insert into db_acount values($acount,3401,19140,'".AddSlashes(pg_result($resaco,$conresaco,'as08_tipobeneficio'))."','$this->as08_tipobeneficio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3401,19140,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as08_tipobeneficio'))."','$this->as08_tipobeneficio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as08_datasituacao"]) || $this->as08_datasituacao != "")
-             $resac = db_query("insert into db_acount values($acount,3401,19141,'".AddSlashes(pg_result($resaco,$conresaco,'as08_datasituacao'))."','$this->as08_datasituacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3401,19141,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as08_datasituacao'))."','$this->as08_datasituacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as08_dataconcessao"]) || $this->as08_dataconcessao != "")
-             $resac = db_query("insert into db_acount values($acount,3401,19142,'".AddSlashes(pg_result($resaco,$conresaco,'as08_dataconcessao'))."','$this->as08_dataconcessao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3401,19142,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as08_dataconcessao'))."','$this->as08_dataconcessao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as08_motivo"]) || $this->as08_motivo != "")
-             $resac = db_query("insert into db_acount values($acount,3401,19143,'".AddSlashes(pg_result($resaco,$conresaco,'as08_motivo'))."','$this->as08_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3401,19143,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as08_motivo'))."','$this->as08_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as08_justificativa"]) || $this->as08_justificativa != "")
-             $resac = db_query("insert into db_acount values($acount,3401,19144,'".AddSlashes(pg_result($resaco,$conresaco,'as08_justificativa'))."','$this->as08_justificativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3401,19144,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as08_justificativa'))."','$this->as08_justificativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -511,20 +511,20 @@ class cl_cidadaobeneficio {
        if(($resaco!=false)||($this->numrows!=0)){
          for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19134,'$as08_sequencial','E')");
-           $resac = db_query("insert into db_acount values($acount,3401,19134,'','".AddSlashes(pg_result($resaco,$iresaco,'as08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3401,19135,'','".AddSlashes(pg_result($resaco,$iresaco,'as08_programasocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3401,19136,'','".AddSlashes(pg_result($resaco,$iresaco,'as08_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3401,19137,'','".AddSlashes(pg_result($resaco,$iresaco,'as08_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3401,19138,'','".AddSlashes(pg_result($resaco,$iresaco,'as08_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3401,19139,'','".AddSlashes(pg_result($resaco,$iresaco,'as08_nis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3401,19140,'','".AddSlashes(pg_result($resaco,$iresaco,'as08_tipobeneficio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3401,19141,'','".AddSlashes(pg_result($resaco,$iresaco,'as08_datasituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3401,19142,'','".AddSlashes(pg_result($resaco,$iresaco,'as08_dataconcessao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3401,19143,'','".AddSlashes(pg_result($resaco,$iresaco,'as08_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3401,19144,'','".AddSlashes(pg_result($resaco,$iresaco,'as08_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3401,19134,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3401,19135,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as08_programasocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3401,19136,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as08_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3401,19137,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as08_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3401,19138,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as08_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3401,19139,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as08_nis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3401,19140,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as08_tipobeneficio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3401,19141,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as08_datasituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3401,19142,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as08_dataconcessao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3401,19143,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as08_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3401,19144,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as08_justificativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -585,7 +585,7 @@ class cl_cidadaobeneficio {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cidadaobeneficio";
@@ -600,7 +600,7 @@ class cl_cidadaobeneficio {
    function sql_query ( $as08_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -621,7 +621,7 @@ class cl_cidadaobeneficio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -634,7 +634,7 @@ class cl_cidadaobeneficio {
    function sql_query_file ( $as08_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -655,7 +655,7 @@ class cl_cidadaobeneficio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -670,7 +670,7 @@ class cl_cidadaobeneficio {
   	
   	$sql = "select ";
   	if ($campos != "*" ) {
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = preg_split("#\\##m",$campos);
   		$virgula = "";
   		for ($i = 0; $i < sizeof($campos_sql); $i++) {
   			
@@ -699,7 +699,7 @@ class cl_cidadaobeneficio {
   	if ($ordem != null) {
   		
   		$sql       .= " order by ";
-  		$campos_sql = split("#",$ordem);
+  		$campos_sql = preg_split("#\\##m",(string) $ordem);
   		$virgula    = "";
   		for ($i = 0; $i < sizeof($campos_sql); $i++) {
   			

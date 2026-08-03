@@ -27,7 +27,7 @@
 
 if ($iTipo == "pad") {
 
-    $periodo = array(
+    $periodo = [
       "1"=> " 1 - Janeiro",
       "2"=> " 2 - Fevereiro",
       "3"=> " 3 - Março",
@@ -39,11 +39,11 @@ if ($iTipo == "pad") {
       "9"=> " 9 - Setembro",
       "10"=>"10 - Outubro",
       "11"=>"11 - Novembro",
-      "12"=>"12 - Dezembro" );
+      "12"=>"12 - Dezembro" ];
 
 } else if ($iTipo == "mgs") {
 
-    $periodo = array(
+    $periodo = [
       "1"=> " 1 - Janeiro          ",
       "2"=> " 2 - Fevereiro        ",
       "3"=> " 3 - Março     (1 trim)",
@@ -55,7 +55,7 @@ if ($iTipo == "pad") {
       "9"=> " 9 - Setembro  (3 trim)       ",
       "10"=>"10 - Outubro   ",
       "11"=>"11 - Novembro         ",
-      "12"=>"12 - Dezembro  (4 trim)");
+      "12"=>"12 - Dezembro  (4 trim)"];
 }
 ?>
 <center>

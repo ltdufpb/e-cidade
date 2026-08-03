@@ -34,10 +34,10 @@ require(modification("libs/JSON.php"));
 $oPost    = db_utils::postMemory($_POST);
 $oJson    = new services_json();
 $oParam   = $oJson->decode(str_replace("\\", "", $oPost->json));
-$oRetorno = (object) array(
+$oRetorno = (object) [
 	"status"  => 1,
 	"message" => ""
-);
+];
 
 try {
 

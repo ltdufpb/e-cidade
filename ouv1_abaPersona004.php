@@ -125,7 +125,7 @@ if ($oPost->acao == "Excluir") {
         <select style="width: 100%" name="persona">
             <?php
 
-            $personasIds = array();
+            $personasIds = [];
 
             if ($tipoproc->personas) {
                 $personasIds = $tipoproc->personas->pluck("p120_sequencial");

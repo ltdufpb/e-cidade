@@ -24,12 +24,12 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt 
  *                                licenca/licenca_pt.txt 
  */
- 
+
 
 require(modification('fpdf151/pdf.php'));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
 $sql = "select  atendimento.*,
@@ -84,11 +84,11 @@ $result = db_query($sql);
 
 //db_criatabela($result);exit;
 
-if($result==false || pg_numrows($result)==0){
+if($result==false || pg_num_rows($result)==0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem atendimentos cadastrados!');
    exit;
 }
- 
+
 
 $pdf = new PDF(); // estancia a classe
 $head1 = "RELATÓRIO ESTATISTICO DE ATENDIMENTOS";
@@ -118,17 +118,17 @@ if(isset($tecnico)&& $tecnico != ""){
     }else{
     $head4 = "ATENDIMENTOS DE TODOS OS TÉCNICOS";	
 }
- 
+
  $pdf->open(); // inicia a geração do documento
  $total_geral = 0; // criação de uma variável para somar o total de registros
  $pdf->settextcolor(0,0,0); // seta a cor do texto como preta
  $pdf->setfillcolor(220); // define a cor de preenchimento
  $pdf->setfont('Arial','B',9); // seta a fonte como arial, bold e tamanho 9
- 
+
 
 $ultatend = 0;
 $tamanho = 4;
-$numlinha = pg_numrows($result);
+$numlinha = pg_num_rows($result);
 $ultatend = 0;
 
 
@@ -193,9 +193,9 @@ if ($dataini != "--"){
 if ($datafim != "--"){
 	$tec .= " and at02_datafim <= '$datafim'";
 } 
-	
+
 $result3 = db_query($tec);
-$tec = pg_numrows($result3);
+$tec = pg_num_rows($result3);
 
 
     $pdf->cell(80,$tamanho,$at01_nomecli,1,0,"C",0);
@@ -206,24 +206,24 @@ $tec = pg_numrows($result3);
     $pdf->Ln();
     $pdf->Ln();
     $pdf->cell(40,$tamanho,"Tecnicos Envolvidos:",1,0,"C",0); 
-    
+
 $nomestec = "";
 $virgula = "";
-        
+
 for($y=0; $y< $tec; $y++){
   db_fieldsmemory($result3,$y);
-  
+
   $nomestec .= $virgula.$login;
   $virgula = ",  ";
-  
+
 }
      $pdf->cell(145,$tamanho,$nomestec,1,1,"C",0);
      $pdf->Ln();
-    
-               
+
+
 } 
 
-    
+
 $pdf->Output(); // saída do relatório direto para o browser
 
 /*
@@ -242,15 +242,15 @@ $pdf->Output(); // saída do relatório direto para o browser
 	$resultado = $resultado - ($min_ponto * 60);
 	$secs_ponto = $resultado;
 	return $hora_ponto.":".$min_ponto.":".$secs_ponto;
-	
+
 	}
-	
+
 	$dif = difer_horas("14:30:00","01:00:00");
-	
+
 
 	echo $dif;
 ?>
 
 */
-	
+
 ?>

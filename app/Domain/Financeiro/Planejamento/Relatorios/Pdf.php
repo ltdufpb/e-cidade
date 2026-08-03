@@ -190,14 +190,10 @@ abstract class Pdf extends \ECidade\Pdf\Pdf
         if (!isset($this->planejamento['pl2_tipo'])) {
             throw new Exception("Erro ao Buscar o Nome do Plano Selecionado.");
         }
-        switch ($this->planejamento['pl2_tipo']) {
-            case 'LDO':
-                return 'LEI DE DIRETRIZES ORÇAMENTÁRIAS';
-            case 'LOA':
-                return 'LEI ORÇAMENTÁRIA ANUAL';
-            case 'PPA':
-            default:
-                return 'PLANO PLURIANUAL';
-        }
+        return match ($this->planejamento['pl2_tipo']) {
+            'LDO' => 'LEI DE DIRETRIZES ORÇAMENTÁRIAS',
+            'LOA' => 'LEI ORÇAMENTÁRIA ANUAL',
+            default => 'PLANO PLURIANUAL',
+        };
     }
 }

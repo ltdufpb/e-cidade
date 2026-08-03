@@ -283,20 +283,11 @@ class GuiaMovimentacao {
     
     $observacoes = \db_utils::makeCollectionFromRecord($rsAtributos, function($dados) {      
       
-      switch ($dados->db109_tipo) {
-        
-        case '4':
-          $valor = db_formatar($dados->db110_valor, 'f');
-          break;
-        case '5':
-          $valor = $dados->db110_valor == 't' ? 'Sim':'Não';
-        break;
-         
-        default:
-         $valor = $dados->db110_valor;
-         break;
-          
-      }
+      $valor = match ($dados->db109_tipo) {
+          '4' => db_formatar($dados->db110_valor, 'f'),
+          '5' => $dados->db110_valor == 't' ? 'Sim':'Não',
+          default => $dados->db110_valor,
+      };
       $observacao = "{$dados->db109_descricao}: $valor"; 
         
       return $observacao;

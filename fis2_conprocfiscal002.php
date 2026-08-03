@@ -55,7 +55,7 @@ $clrotulo->label("q02_inscr");
 $clrotulo->label("y80_codsani");
 $clrotulo->label("p58_codproc");
 $clrotulo->label("y100_sequencial");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 

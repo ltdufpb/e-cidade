@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,9 +55,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Grupo de Taxas","g2"=>"Taxas do Grupo");
-       $clcriaabas->title      = array("g1"=>"Selecionar Grupo de Taxas","g2"=>"Selecionar Taxas para o Grupo");
-       $clcriaabas->src         = array("g1"=>"cai1_taxagrupo_aba001.php","g2"=>"cai1_taxagruporeg_aba001.php");
+       $clcriaabas->identifica = ["g1"=>"Grupo de Taxas","g2"=>"Taxas do Grupo"];
+       $clcriaabas->title      = ["g1"=>"Selecionar Grupo de Taxas","g2"=>"Selecionar Taxas para o Grupo"];
+       $clcriaabas->src         = ["g1"=>"cai1_taxagrupo_aba001.php","g2"=>"cai1_taxagruporeg_aba001.php"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

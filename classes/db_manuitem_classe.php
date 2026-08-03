@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE manuitem
 class cl_manuitem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $u07_manut = 0; 
-   var $u07_descr = null; 
-   var $u07_quant = 0; 
-   var $u07_requi = 0; 
+   public $u07_manut = 0; 
+   public $u07_descr = null; 
+   public $u07_quant = 0; 
+   public $u07_requi = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  u07_manut = int4 = Numero da manutencao 
                  u07_descr = char(    40) = Descricao da Peca 
                  u07_quant = int4 = Quantidade da peca 
                  u07_requi = int4 = Numero da Requisicao de Mater 
                  ";
    //funcao construtor da classe 
-   function cl_manuitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("manuitem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -132,7 +132,7 @@ class cl_manuitem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Pecas trocadas em oficinas, que nao estao sob cont () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Pecas trocadas em oficinas, que nao estao sob cont já Cadastrado";
@@ -159,10 +159,10 @@ class cl_manuitem {
       $this->atualizacampos();
      $sql = " update manuitem set ";
      $virgula = "";
-     if(trim($this->u07_manut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u07_manut"])){ 
+     if(trim((string) $this->u07_manut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u07_manut"])){ 
        $sql  .= $virgula." u07_manut = $this->u07_manut ";
        $virgula = ",";
-       if(trim($this->u07_manut) == null ){ 
+       if(trim((string) $this->u07_manut) == null ){ 
          $this->erro_sql = " Campo Numero da manutencao nao Informado.";
          $this->erro_campo = "u07_manut";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_manuitem {
          return false;
        }
      }
-     if(trim($this->u07_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u07_descr"])){ 
+     if(trim((string) $this->u07_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u07_descr"])){ 
        $sql  .= $virgula." u07_descr = '$this->u07_descr' ";
        $virgula = ",";
-       if(trim($this->u07_descr) == null ){ 
+       if(trim((string) $this->u07_descr) == null ){ 
          $this->erro_sql = " Campo Descricao da Peca nao Informado.";
          $this->erro_campo = "u07_descr";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_manuitem {
          return false;
        }
      }
-     if(trim($this->u07_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u07_quant"])){ 
+     if(trim((string) $this->u07_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u07_quant"])){ 
        $sql  .= $virgula." u07_quant = $this->u07_quant ";
        $virgula = ",";
-       if(trim($this->u07_quant) == null ){ 
+       if(trim((string) $this->u07_quant) == null ){ 
          $this->erro_sql = " Campo Quantidade da peca nao Informado.";
          $this->erro_campo = "u07_quant";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_manuitem {
          return false;
        }
      }
-     if(trim($this->u07_requi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u07_requi"])){ 
+     if(trim((string) $this->u07_requi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u07_requi"])){ 
        $sql  .= $virgula." u07_requi = $this->u07_requi ";
        $virgula = ",";
-       if(trim($this->u07_requi) == null ){ 
+       if(trim((string) $this->u07_requi) == null ){ 
          $this->erro_sql = " Campo Numero da Requisicao de Mater nao Informado.";
          $this->erro_campo = "u07_requi";
          $this->erro_banco = "";
@@ -292,7 +292,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:manuitem";

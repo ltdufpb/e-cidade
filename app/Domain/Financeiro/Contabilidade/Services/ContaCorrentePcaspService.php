@@ -48,7 +48,7 @@ class ContaCorrentePcaspService
             ];
         }
 
-        (new ConplanoAtributos())->insert($salvar);
+        new ConplanoAtributos()->insert($salvar);
     }
 
     /**

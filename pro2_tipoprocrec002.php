@@ -30,8 +30,8 @@
  include(modification("classes/db_protprocesso_classe.php"));
  $aux    = new cl_protprocesso;
 
- db_postmemory($HTTP_POST_VARS); 
- parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+ db_postmemory($_POST); 
+ parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 
  $sql =" select p51_codigo,p51_descr,k02_codigo,k02_drecei,p52_valor 
@@ -60,7 +60,7 @@
          $tipo = ""; //codigo do tipo do processo 
          for ($x=0;$x < $aux->numrows ; $x++){      
            db_fieldsmemory($res,$x,true);	 
-      
+
            if ($pdf->gety() > $pdf->h - 40 || $x==0){  //quebra página
                $pdf->addpage("P");
                $pdf->aliasNbPages();
@@ -86,7 +86,7 @@
             $pdf->cell(20,4,"$p52_valor",  0,1,'R');
 
 
-	    
+
          } // end for   
 
 

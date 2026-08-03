@@ -31,9 +31,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_departdiv_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_GET);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldepartdiv = new cl_departdiv;
 $cldepartdiv->rotulo->label("t30_codigo");
 $cldepartdiv->rotulo->label("t30_codigo");
@@ -120,9 +120,9 @@ $cldepartdiv->rotulo->label("t30_codigo");
         }else{
            $sql = $cldepartdiv->sql_query("",$campos,"t30_codigo","$sWhere");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t30_codigo)){
-          $repassa = array("chave_t30_codigo"=>$chave_t30_codigo);
+          $repassa = ["chave_t30_codigo"=>$chave_t30_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa,false);
       }else{

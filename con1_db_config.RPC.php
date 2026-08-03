@@ -44,7 +44,7 @@ $oRetorno->message = "";
 
 if ($oParam->acao == "pesquisar") {
 
-	if(trim($oParam->cp05_sigla) != ""){
+	if(trim((string) $oParam->cp05_sigla) != ""){
 		$sWhere = " cp05_sigla = '$oParam->cp05_sigla'";
 		$rsLocalidades = $clCepLocalicades->sql_record($clCepLocalicades->sql_query_file(null,"cp05_localidades",null,$sWhere));
 		

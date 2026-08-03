@@ -6,8 +6,8 @@ class M8904VinculoLeiturasContrato extends PostgresMigration
 {
   public function up() {
 
-    $oSysCampoTable = $this->table('db_syscampo', array('schema' => 'configuracoes'));
-    $aSysCampoData = array(
+    $oSysCampoTable = $this->table('db_syscampo', ['schema' => 'configuracoes']);
+    $aSysCampoData = [
       'codcam'       => 1009335,
       'nomecam'      => 'x21_aguacontrato',
       'conteudo'     => 'int4',
@@ -21,38 +21,38 @@ class M8904VinculoLeiturasContrato extends PostgresMigration
       'aceitatipo'   => 1,
       'tipoobj'      => 'text',
       'rotulorel'     => 'Contrato',
-    );
-    $oSysCampoTable->insert(array_keys($aSysCampoData), array(array_values($aSysCampoData)));
+    ];
+    $oSysCampoTable->insert(array_keys($aSysCampoData), [array_values($aSysCampoData)]);
     $oSysCampoTable->save();
 
-    $oSysArqCampTable = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
-    $aSysArqCampData = array(
+    $oSysArqCampTable = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
+    $aSysArqCampData = [
       'codarq'       => 1439,
       'codcam'       => 1009335,
       'seqarq'       => 17,
       'codsequencia' => 0,
-    );
-    $oSysArqCampTable->insert(array_keys($aSysArqCampData), array(array_values($aSysArqCampData)));
+    ];
+    $oSysArqCampTable->insert(array_keys($aSysArqCampData), [array_values($aSysArqCampData)]);
     $oSysArqCampTable->save();
 
-    $oSysForKeyTable = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
-    $oSysForKeyData = array(
+    $oSysForKeyTable = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
+    $oSysForKeyData = [
       'codarq'     => 1439,
       'codcam'     => 1009335,
       'sequen'     => 1,
       'referen'    => 3966,
       'tipoobjrel' => 0
-    );
-    $oSysForKeyTable->insert(array_keys($oSysForKeyData), array(array_values($oSysForKeyData)));
+    ];
+    $oSysForKeyTable->insert(array_keys($oSysForKeyData), [array_values($oSysForKeyData)]);
 
-    $oAguaLeitura = $this->table('agualeitura', array('schema' => 'agua'));
-    $oAguaLeitura->addColumn('x21_aguacontrato', 'integer', array(
+    $oAguaLeitura = $this->table('agualeitura', ['schema' => 'agua']);
+    $oAguaLeitura->addColumn('x21_aguacontrato', 'integer', [
       'null' => true,
       'default' => null
-    ));
-    $oAguaLeitura->addForeignKey('x21_aguacontrato', 'agua.aguacontrato', 'x54_sequencial', array(
+    ]);
+    $oAguaLeitura->addForeignKey('x21_aguacontrato', 'agua.aguacontrato', 'x54_sequencial', [
       'constraint' => 'agualeitura_aguacontrato_fk'
-    ));
+    ]);
     $oAguaLeitura->save();
 
     $this->execute('alter table agua.agualeitura disable trigger user');
@@ -64,7 +64,7 @@ class M8904VinculoLeiturasContrato extends PostgresMigration
     $this->execute('delete from configuracoes.db_sysarqcamp where codarq = 1439 and codcam = 1009335');
     $this->execute('delete from configuracoes.db_syscampo   where codcam = 1009335');
 
-    $oAguaCorteSituacao = $this->table('agualeitura', array('schema' => 'agua'));
+    $oAguaCorteSituacao = $this->table('agualeitura', ['schema' => 'agua']);
     $oAguaCorteSituacao->removeColumn('x21_aguacontrato');
     $oAguaCorteSituacao->save();
 

@@ -33,15 +33,15 @@ include(modification("classes/db_arrevenc_classe.php"));
 include(modification("classes/db_arrevenclog_classe.php"));
 include(modification("classes/db_arreinstit_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clarrevenc     = new cl_arrevenc;
 $clarrevenclog  = new cl_arrevenclog;
 $clarreinstit   = new cl_arreinstit;
 $db_opcao = 1;
 $db_botao = true;
 echo " <br>incluir<br>";
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   $sqlerro = false;
   db_inicio_transacao();   
   $clarreinstit->sql_record($clarreinstit->sql_query_file(null,"*",null,"k00_numpre = {$k00_numpre} and k00_instit = ".db_getsession('DB_instit') ) ); 
@@ -50,8 +50,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
     $sqlerro = true;
   }else{
   	// varifica se ja tem prorrogação para este periodo
-		 $dataini =   implode("-",array_reverse(explode("/",$k00_dtini)));
-		 $datafim =   implode("-",array_reverse(explode("/",$k00_dtfim)));
+		 $dataini =   implode("-",array_reverse(explode("/",(string) $k00_dtini)));
+		 $datafim =   implode("-",array_reverse(explode("/",(string) $k00_dtfim)));
 		
 		
 		$sqlPeriodo = "select * from arrevenc 
@@ -147,7 +147,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
  if($sqlerro == true){
    db_msgbox($msgerro);
  }else{

@@ -94,7 +94,7 @@ abstract class AlvaraMovimentacao {
    * Array dos documentos da movimentação
    * @var array
    */
-  private $aDocumentos          = array();
+  private $aDocumentos          = [];
   
   /**
    * Construtor da funcao
@@ -151,7 +151,7 @@ abstract class AlvaraMovimentacao {
       /**
        * Grava os Documentos 
        */
-      $this->gravaDocumentos($this->aDocumentos);
+      $this->gravaDocumentos();
       /**
        * Grava os Processos
        */
@@ -351,7 +351,7 @@ abstract class AlvaraMovimentacao {
     $rsSqlMovAlvara   = $oDaoIssMovAlvara->sql_record($sSqlMovAlvara);
   
     if($oDaoIssMovAlvara->numrows == 0){
-      return array();
+      return [];
     } else {
       return db_utils::getCollectionByRecord($rsSqlMovAlvara);
     }

@@ -50,7 +50,7 @@ $sSqlCertidaoForo .= "     and v07_instit = {$iInstituicao}                   ";
 
 $rsCertidaoForo = db_query($sSqlCertidaoForo);
 
-if (pg_numrows($rsCertidaoForo) == 0) {
+if (pg_num_rows($rsCertidaoForo) == 0) {
   
   echo "Código de Arrecadação não cadastrado.";
   exit;

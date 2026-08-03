@@ -31,10 +31,10 @@ require_once modification("libs/db_sessoes.php");
 require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpcproc     = new cl_pcproc;
 $clpcprocitem = new cl_pcprocitem;
 $clsolicita   = new cl_solicita;
@@ -151,7 +151,7 @@ if (!isset($pesquisar)) {
 
         $where_pcprocitem = "";
 
-        if (!isset($chave_pc10_numero) && !isset($chave_pc80_codproc) || (trim($chave_pc10_numero)=="" && trim($chave_pc80_codproc)=="")) {
+        if (!isset($chave_pc10_numero) && !isset($chave_pc80_codproc) || (trim((string) $chave_pc10_numero)=="" && trim((string) $chave_pc80_codproc)=="")) {
           if (isset($pc80_datai) && isset($pc80_dataf)) {
             $where_pcprocitem  .= " and pc80_data between '{$pc80_datai}' and '{$pc80_dataf}'									   ";
           }
@@ -207,7 +207,7 @@ if (!isset($pesquisar)) {
             $sql = $clpcproc->sql_query_autitem("",$campos,"pc80_codproc desc"," 1=1 ".$where_pcprocitem);
           }
           //db_msgbox("aqui");
-          db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",array(),false,array());
+          db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",[],false,[]);
 
 
         } else {

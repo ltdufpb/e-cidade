@@ -72,16 +72,16 @@ try {
                 $oDataFim = new DBDate($oParam->sDataFinal);
             }
 
-            $aCondicoes = array('situacaoAgendado' => true);
+            $aCondicoes = ['situacaoAgendado' => true];
 
             if (isset($oParam->periodosAutorizados)) {
-                $aCondicoes = array();
+                $aCondicoes = [];
             }
 
             $oPeriodoGozoFerias = new PeriodoGozoFerias();
             $aPeriodosGozo = $oPeriodoGozoFerias
             ->getPeriodosGozo($oServidor, $oDataInicio, $oDataFim, $aCondicoes, $AnoFolha, $MesFolha);
-            $aPeriodos = array();
+            $aPeriodos = [];
             $oRetorno->erro = true;
 
             foreach ($aPeriodosGozo as $oPeriodoGozo) {
@@ -100,7 +100,7 @@ try {
                 $oPeriodo = new stdClass();
                 $oPeriodo->iCodigo = $oPeriodoGozo->getCodigoPeriodo();
                 $oPeriodo->iMatricula = $oPeriodoGozo->getPeriodoAquisitivo()->getServidor()->getMatricula();
-                $oPeriodo->sNome = urlencode($oPeriodoGozo->getPeriodoAquisitivo()->getServidor()->getCgm()->getNome());
+                $oPeriodo->sNome = urlencode((string) $oPeriodoGozo->getPeriodoAquisitivo()->getServidor()->getCgm()->getNome());
                 $oPeriodo->sDataInicio = $oPeriodoGozo->getPeriodoInicial()->getDate(DBDate::DATA_PTBR);
                 $oPeriodo->sDataFinal = $oPeriodoGozo->getPeriodoFinal()->getDate(DBDate::DATA_PTBR);
                 $oPeriodo->nDiasGozo = $oPeriodoGozo->getDiasGozo();
@@ -114,7 +114,7 @@ try {
                 $oPeriodoGozo->getPeriodoAquisitivo()->getDataFinal()->getDate(DBDate::DATA_PTBR);
                 $oPeriodo->ponto = $oPeriodoGozo->getTipoPonto() == '1' ? 'Salário' : 'Complementar';
                 $oPeriodo->ponto = urlencode($oPeriodo->ponto);
-                $oPeriodo->observacoes = urlencode($oPeriodoGozo->getObservacao());
+                $oPeriodo->observacoes = urlencode((string) $oPeriodoGozo->getObservacao());
                 $oPeriodo->diasPagos = $oPeriodoGozo->getDiasAPagar();
                 $oPeriodo->codigoRhFerias = $oPeriodoGozo->getCodigoFerias();
 

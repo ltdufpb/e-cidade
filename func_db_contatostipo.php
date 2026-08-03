@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_contatostipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_contatostipo = new cl_db_contatostipo;
 $cldb_contatostipo->rotulo->label("g02_tipocon");
 $cldb_contatostipo->rotulo->label("g02_descr");
@@ -98,9 +98,9 @@ $cldb_contatostipo->rotulo->label("g02_descr");
         }else{
            $sql = $cldb_contatostipo->sql_query("",$campos,"g02_tipocon","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_g02_descr)){
-          $repassa = array("chave_g02_tipocon"=>$chave_g02_tipocon,"chave_g02_descr"=>$chave_g02_descr);
+          $repassa = ["chave_g02_tipocon"=>$chave_g02_tipocon,"chave_g02_descr"=>$chave_g02_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -119,7 +119,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("me07_i_codigo"=>@$me07_i_codigo);
+   $chavepri= ["me07_i_codigo"=>@$me07_i_codigo];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clmer_cardapioitem->sql_query("","*",""," me07_i_cardapio = $me07_i_cardapio");
    $cliframe_alterar_excluir->campos  ="me07_i_codigo,me35_c_nomealimento,m61_descr,me07_f_quantidade";
@@ -297,7 +297,7 @@ function js_preenchepesquisa(chave) {
   <?php 
   if ($db_opcao != 1) {
 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

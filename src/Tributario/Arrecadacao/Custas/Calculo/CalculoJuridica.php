@@ -32,22 +32,13 @@ use ECidade\Tributario\Juridico\ProcessoForo\ProcessoForo;
 
 final class CalculoJuridica extends Calculo implements Interfaces\Calculo
 {
-    private $processoForo;
-
-    private $numnov;
-
-    private $dataVencimento;
-
-    public function __construct(ProcessoForo $processoForo, $numnov, $dataVencimento)
+    public function __construct(private readonly ProcessoForo $processoForo, private $numnov, private $dataVencimento)
     {
-        $this->processoForo = $processoForo;
-        $this->numnov = $numnov;
-        $this->dataVencimento = $dataVencimento;
     }
 
     public function calcular()
     {
-        $anoVencimento = substr($this->dataVencimento, 0, 4);
+        $anoVencimento = substr((string) $this->dataVencimento, 0, 4);
 
         $sql = " select sum(substr(fc_calcula, 15, 13)::numeric(10, 2)) as valor_corrigido, 
                         sum(substr(fc_calcula, 28, 13)::numeric(10, 2)) as valor_juros,     

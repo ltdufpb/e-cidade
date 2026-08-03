@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_formulas_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_formulas = new cl_db_formulas;
 $cldb_formulas->rotulo->label("db148_sequencial");
 $cldb_formulas->rotulo->label("db148_nome");
@@ -57,9 +57,9 @@ $cldb_formulas->rotulo->label("db148_nome");
            $sWhere  = " db148_ambiente = 'f' ";
            $sql = $cldb_formulas->sql_query("",$campos,"db148_sequencial", $sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db148_nome)){
-          $repassa = array("chave_db148_sequencial"=>$chave_db148_sequencial,"chave_db148_nome"=>$chave_db148_nome);
+          $repassa = ["chave_db148_sequencial"=>$chave_db148_sequencial,"chave_db148_nome"=>$chave_db148_nome];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

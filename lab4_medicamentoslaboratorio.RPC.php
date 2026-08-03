@@ -63,7 +63,7 @@ try {
     case 'buscar':
 
       $oDaoMedicamentosLaboratorio        = new cl_medicamentoslaboratorio();
-      $aMedicamentos                      = array();
+      $aMedicamentos                      = [];
 
       $sCampos  = " la43_sequencial, la43_nome, la43_abreviatura, ";
       $sCampos .= " exists ((select distinct 1 from medicamentoslaboratoriorequiitem where la44_medicamentoslaboratorio = la43_sequencial)) as vinculado_exames ";
@@ -81,8 +81,8 @@ try {
 
         $oDadosMedicamento               = new stdClass();
         $oDadosMedicamento->iCodigo      = $oMedicamento->la43_sequencial;
-        $oDadosMedicamento->sMedicamento = urlencode($oMedicamento->la43_nome);
-        $oDadosMedicamento->sAbreviatura = urlencode($oMedicamento->la43_abreviatura);
+        $oDadosMedicamento->sMedicamento = urlencode((string) $oMedicamento->la43_nome);
+        $oDadosMedicamento->sAbreviatura = urlencode((string) $oMedicamento->la43_abreviatura);
         $oDadosMedicamento->lEditavel    = $oMedicamento->vinculado_exames == 'f' ? true : false;
 
         $aMedicamentos[] = $oDadosMedicamento;

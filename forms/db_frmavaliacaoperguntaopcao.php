@@ -120,7 +120,7 @@ if (isset($oPost->db_opcaoal)) {
     </td>
     <td>
       <?php 
-        $aAceitaTexto = array("f"=>"NAO","t"=>"SIM");
+        $aAceitaTexto = ["f"=>"NAO","t"=>"SIM"];
         db_select('db104_aceitatexto',$aAceitaTexto,true,$db_opcao,"");
       ?>
     </td>
@@ -153,7 +153,7 @@ if (isset($oPost->db_opcaoal)) {
         $sWhere    = "db104_avaliacaopergunta = {$db103_sequencial}";
         $sCampos   = "db104_sequencial, db104_avaliacaopergunta, db104_descricao, db104_identificador";
         $sCampos  .= ", db104_aceitatexto, db104_peso";
-        $chavepri  = array("db104_sequencial"=>@$db104_sequencial);
+        $chavepri  = ["db104_sequencial"=>@$db104_sequencial];
         $cliframe_alterar_excluir->chavepri      = $chavepri;
         $cliframe_alterar_excluir->sql           = $clavaliacaoperguntaopcao ->sql_query_file(null,'avaliacaoperguntaopcao.*','db104_sequencial',$sWhere);
         $cliframe_alterar_excluir->campos        = $sCampos;

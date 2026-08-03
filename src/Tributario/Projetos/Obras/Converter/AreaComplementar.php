@@ -43,7 +43,7 @@ class AreaComplementar
      */
     public static function collectionToArrayStdClass(AreaComplementarCollection $areaComplementarCollection)
     {
-        $areasComplementares = array();
+        $areasComplementares = [];
 
         foreach ($areaComplementarCollection->getAll() as $areaComplementarModel) {
             $areasComplementares[] = static::objectToStdClass($areaComplementarModel);

@@ -251,8 +251,8 @@ if (isset($p->incluir)) {
                     $clconplano->c60_codcon = $oConp->c60_codcon;
                     $clconplano->c60_anousu = $clconaberturaexe->c91_anousudestino;
                     $clconplano->c60_estrut = $oConp->c60_estrut;
-                    $clconplano->c60_descr = addslashes($oConp->c60_descr);
-                    $clconplano->c60_finali = addslashes($oConp->c60_finali);
+                    $clconplano->c60_descr = addslashes((string) $oConp->c60_descr);
+                    $clconplano->c60_finali = addslashes((string) $oConp->c60_finali);
                     $clconplano->c60_codsis = $oConp->c60_codsis;
                     $clconplano->c60_codcla = $oConp->c60_codcla;
                     $clconplano->c60_consistemaconta = $oConp->c60_consistemaconta;
@@ -326,8 +326,8 @@ if (isset($p->incluir)) {
                         $oDaoPlanoOrcamentario->c60_codcon = $oPlanoOrcarmento->c60_codcon;
                         $oDaoPlanoOrcamentario->c60_anousu = $clconaberturaexe->c91_anousudestino;
                         $oDaoPlanoOrcamentario->c60_estrut = $oPlanoOrcarmento->c60_estrut;
-                        $oDaoPlanoOrcamentario->c60_descr = addslashes($oPlanoOrcarmento->c60_descr);
-                        $oDaoPlanoOrcamentario->c60_finali = addslashes($oPlanoOrcarmento->c60_finali);
+                        $oDaoPlanoOrcamentario->c60_descr = addslashes((string) $oPlanoOrcarmento->c60_descr);
+                        $oDaoPlanoOrcamentario->c60_finali = addslashes((string) $oPlanoOrcarmento->c60_finali);
                         $oDaoPlanoOrcamentario->c60_codsis = $oPlanoOrcarmento->c60_codsis;
                         $oDaoPlanoOrcamentario->c60_codcla = $oPlanoOrcarmento->c60_codcla;
                         $oDaoPlanoOrcamentario->c60_consistemaconta = $oPlanoOrcarmento->c60_consistemaconta;
@@ -567,8 +567,8 @@ if (isset($p->incluir)) {
                     $clorcelemento->o56_codele = $oConc->o56_codele;
                     $clorcelemento->o56_anousu = $clconaberturaexe->c91_anousudestino;
                     $clorcelemento->o56_elemento = $oConc->o56_elemento;
-                    $clorcelemento->o56_descr = addslashes($oConc->o56_descr);
-                    $clorcelemento->o56_finali = addslashes($oConc->o56_finali);
+                    $clorcelemento->o56_descr = addslashes((string) $oConc->o56_descr);
+                    $clorcelemento->o56_finali = addslashes((string) $oConc->o56_finali);
                     $clorcelemento->o56_orcado = $oConc->o56_orcado;
                     $clorcelemento->incluir($oConc->o56_codele, $clorcelemento->o56_anousu);
                     if ($clorcelemento->erro_status == "0") {
@@ -602,8 +602,8 @@ if (isset($p->incluir)) {
                     $clorcorgao->o40_orgao = $oConc->o40_orgao;
                     $clorcorgao->o40_anousu = $clconaberturaexe->c91_anousudestino;
                     $clorcorgao->o40_codtri = $oConc->o40_codtri == '' ? 0 : $oConc->o40_codtri;
-                    $clorcorgao->o40_descr = addslashes($oConc->o40_descr);
-                    $clorcorgao->o40_finali = addslashes($oConc->o40_finali);
+                    $clorcorgao->o40_descr = addslashes((string) $oConc->o40_descr);
+                    $clorcorgao->o40_finali = addslashes((string) $oConc->o40_finali);
                     $clorcorgao->o40_instit = $oConc->o40_instit;
                     $clorcorgao->incluir($clorcorgao->o40_anousu, $clorcorgao->o40_orgao);
                     if ($clorcorgao->erro_status == "0") {
@@ -639,7 +639,7 @@ if (isset($p->incluir)) {
                     $clorcunidade->o41_orgao = $oConc->o41_orgao;
                     $clorcunidade->o41_anousu = $clconaberturaexe->c91_anousudestino;
                     $clorcunidade->o41_codtri = $oConc->o41_codtri;
-                    $clorcunidade->o41_descr = addslashes($oConc->o41_descr);
+                    $clorcunidade->o41_descr = addslashes((string) $oConc->o41_descr);
                     $clorcunidade->o41_instit = $oConc->o41_instit;
                     $clorcunidade->o41_unidade = $oConc->o41_unidade;
                     $clorcunidade->o41_cnpj = $oConc->o41_cnpj;
@@ -678,8 +678,8 @@ if (isset($p->incluir)) {
                     $clorcprograma->o54_anousu = $clconaberturaexe->c91_anousudestino;
                     $clorcprograma->o54_programa = $oConc->o54_programa;
                     $clorcprograma->o54_codtri = $oConc->o54_codtri;
-                    $clorcprograma->o54_descr = addslashes($oConc->o54_descr);
-                    $clorcprograma->o54_finali = addslashes($oConc->o54_finali);
+                    $clorcprograma->o54_descr = addslashes((string) $oConc->o54_descr);
+                    $clorcprograma->o54_finali = addslashes((string) $oConc->o54_finali);
                     $clorcprograma->o54_tipoprograma = $oConc->o54_tipoprograma == "" ? "0" : $oConc->o54_tipoprograma;
                     $clorcprograma->incluir($clorcprograma->o54_anousu, $oConc->o54_programa);
                     if ($clorcprograma->erro_status == "0") {
@@ -712,8 +712,8 @@ if (isset($p->incluir)) {
                     $clorcprojativ->o55_anousu = $clconaberturaexe->c91_anousudestino;
                     $clorcprojativ->o55_tipo = $oConc->o55_tipo;
                     $clorcprojativ->o55_projativ = $oConc->o55_projativ;
-                    $clorcprojativ->o55_descr = addslashes($oConc->o55_descr);
-                    $clorcprojativ->o55_finali = addslashes($oConc->o55_finali);
+                    $clorcprojativ->o55_descr = addslashes((string) $oConc->o55_descr);
+                    $clorcprojativ->o55_finali = addslashes((string) $oConc->o55_finali);
                     $clorcprojativ->o55_instit = $oConc->o55_instit;
                     $clorcprojativ->o55_tipoacao = $oConc->o55_tipoacao == "" ? "0" : $oConc->o55_tipoacao;
                     $clorcprojativ->o55_orcproduto = $oConc->o55_orcproduto == "" ? "0" : $oConc->o55_orcproduto;
@@ -749,8 +749,8 @@ if (isset($p->incluir)) {
                     $clorcfontes->o57_codfon = $oConc->o57_codfon;
                     $clorcfontes->o57_anousu = $clconaberturaexe->c91_anousudestino;
                     $clorcfontes->o57_fonte = $oConc->o57_fonte;
-                    $clorcfontes->o57_descr = addslashes($oConc->o57_descr);
-                    $clorcfontes->o57_finali = addslashes($oConc->o57_finali);
+                    $clorcfontes->o57_descr = addslashes((string) $oConc->o57_descr);
+                    $clorcfontes->o57_finali = addslashes((string) $oConc->o57_finali);
                     $clorcfontes->incluir($oConc->o57_codfon, $clorcfontes->o57_anousu);
                     if ($clorcfontes->erro_status == "0") {
                         $sErro = " [14] Erro ao incluir dados em orcfontes. <br>";

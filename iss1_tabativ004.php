@@ -33,8 +33,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("model/logAtividade.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -60,8 +60,8 @@ $lAlvaraPerm      = "";
 
 // func para retornar os dias entre datas
 function quantDias($data1, $data2) {
-  $aVet1=explode("/",$data1);
-  $aVet2=explode("/",$data2);
+  $aVet1=explode("/",(string) $data1);
+  $aVet2=explode("/",(string) $data2);
   return round((mktime(0,0,0,$aVet2[1],$aVet2[0],$aVet2[2])-
                 mktime(0,0,0,$aVet1[1],$aVet1[0],$aVet1[2])) / (24 * 60 * 60), 0);
 }
@@ -86,11 +86,11 @@ try {
       throw new Exception("Atividade não informada.");
     }
 
-    $aWhereValidacaoData = array(
+    $aWhereValidacaoData = [
         "q07_inscr = {$q07_inscr}",
         "q07_databx is null",
         "q07_ativ = {$q07_ativ}"
-      );
+      ];
 
     if ($q07_perman == 'f') {
       $oDataInicial = new DBDate("{$q07_datain_ano}-{$q07_datain_mes}-{$q07_datain_dia}");
@@ -389,7 +389,7 @@ if($sqlerro==false){
     }
     if (isset($q02_dtbaix) && $q02_dtbaix!="") {
       $clissbase->q02_inscr = $q07_inscr;
-      $HTTP_POST_VARS["q02_dtbaix_dia"]="";
+      $_POST["q02_dtbaix_dia"]="";
       $clissbase->alterar($q07_inscr);
       $clissbase->erro(true,false);
       if ($clissbase->erro_status==0) {
@@ -726,7 +726,7 @@ $sSqlAlvaraAuto .= "    where q07_inscr = {$q07_inscr}                          
 
 $rsAlvaraAuto      = db_query($sSqlAlvaraAuto);
 $iLinhasAlvaraAuto = pg_num_rows($rsAlvaraAuto);
-$aAlvaraAuto       = array();
+$aAlvaraAuto       = [];
 $lGeraAutomatico   = 'true';
 $lPermanente       = 'false';
 $iTipoalvara       = "";
@@ -797,13 +797,13 @@ if (@$lAlvaraPerm == 't') {
  * tipo de Movimentação :
  *   1 - LIBERACAO
  */
-$sDtInclusao     = implode("-", array_reverse(explode("/",@$q07_datain)));
+$sDtInclusao     = implode("-", array_reverse(explode("/",(string) @$q07_datain)));
 $sValidadeAlvara = '0';
 $iValidadeAlvara = "";
 
 if (@$q07_datafi != null || @$q07_datafi != '') {
 
-	$sValidadeAlvara = implode("-", array_reverse(explode("/",$q07_datafi)));
+	$sValidadeAlvara = implode("-", array_reverse(explode("/",(string) $q07_datafi)));
 	$iValidadeAlvara = quantDias($q07_datain, $q07_datafi);
 
 }

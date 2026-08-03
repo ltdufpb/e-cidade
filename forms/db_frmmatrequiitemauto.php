@@ -63,7 +63,7 @@ if (!empty($m41_codmatmater)) {
       $sTextoPontoPedido   .= $nPontoPedido."</b>.";
       $sDisplayPontoPedido = '';
     }
-  } catch (Exception $oErro) {
+  } catch (Exception) {
   }
 }
 
@@ -249,7 +249,7 @@ from (
 
     <div style="margin-top:10px;">
       <?php
-       $chavepri= array("m40_codigo"=>@$m40_codigo,"m41_codigo"=>@$m41_codigo,"m41_obs"=>@$m41_obs,"m41_quant"=>@$m41_quant,"m41_codmatmater"=>@$m41_codmatmater,"m60_descr"=>@$m60_descr);
+       $chavepri= ["m40_codigo"=>@$m40_codigo,"m41_codigo"=>@$m41_codigo,"m41_obs"=>@$m41_obs,"m41_quant"=>@$m41_quant,"m41_codmatmater"=>@$m41_codmatmater,"m60_descr"=>@$m60_descr];
        $cliframe_alterar_excluir->chavepri=$chavepri;
        if (isset($m40_codigo)&&@$m40_codigo!=""){
           $cliframe_alterar_excluir->sql = $clmatrequiitem->sql_query(null,'*',null,"m41_codmatrequi=".$m40_codigo);
@@ -393,7 +393,7 @@ function js_adicionaCentroCusto() {
                        );
   }
   <?php else : ?>
-  alert('Não foi possível encontrar o departamento ' + '<?php echo isset($m40_codigo) ? $m40_codigo : null ?>');
+  alert('Não foi possível encontrar o departamento ' + '<?php echo $m40_codigo ?? null ?>');
   <?php endif ?>
 }
 

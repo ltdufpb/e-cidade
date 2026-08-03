@@ -66,7 +66,7 @@ class RecuperacaoDiasLetivos
     /**
      * @var \PeriodoEscola[]
      */
-    private $periodos = array();
+    private $periodos = [];
 
     /**
      * @return int

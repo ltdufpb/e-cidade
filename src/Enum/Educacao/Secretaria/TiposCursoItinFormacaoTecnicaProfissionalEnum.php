@@ -9,10 +9,10 @@ class TiposCursoItinFormacaoTecnicaProfissionalEnum extends Enum
 {
     const CURSO_TECNICO = 1;
     const QUALIFICACAO_PROFISSIONAL_TECNICA = 2;
-    private static $descricoes = array(
+    private static $descricoes = [
             self::CURSO_TECNICO => "Curso técnico",
             self::QUALIFICACAO_PROFISSIONAL_TECNICA => "Qualificação profissional técnica"
-    );
+    ];
 
     /**
      * @return string

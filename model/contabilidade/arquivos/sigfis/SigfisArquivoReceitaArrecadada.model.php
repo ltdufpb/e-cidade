@@ -137,9 +137,9 @@ class SigfisArquivoReceitaArrecadada extends SigfisArquivoBase implements iPadAr
                 }
 
                 $oDados->tp_AtualizacaoReceitaLancada = $oDadosQuery->codigo_documento;
-                $oDados->cd_unidade                   = str_pad($this->sCodigoTribunal,              4, ' ', STR_PAD_LEFT);
-                $oDados->cd_ItemReceita               = str_pad(substr($oDadosQuery->o57_fonte, 0, 13), 13, ' ', STR_PAD_RIGHT);
-                $oDados->dt_AnoMes                    = $this->iAnoUso . str_pad($oDadosQuery->mes,    2, '0', STR_PAD_LEFT);
+                $oDados->cd_unidade                   = str_pad((string) $this->sCodigoTribunal,              4, ' ', STR_PAD_LEFT);
+                $oDados->cd_ItemReceita               = str_pad(substr((string) $oDadosQuery->o57_fonte, 0, 13), 13, ' ', STR_PAD_RIGHT);
+                $oDados->dt_AnoMes                    = $this->iAnoUso . str_pad((string) $oDadosQuery->mes,    2, '0', STR_PAD_LEFT);
                 $oDados->vl_Lancamento                = str_pad(number_format($oDadosQuery->c70_valor, 2, '',''),   16, ' ', STR_PAD_LEFT);
                 $oDados->codigolinha     = 409;
 

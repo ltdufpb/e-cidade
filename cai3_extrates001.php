@@ -139,9 +139,9 @@ function js_mt() {
                                        "     inner join conplanoreduz on c62_reduz  = c61_reduz and 
 				                                         c62_anousu = c61_anousu and 
 								         c61_instit = " . db_getsession("DB_instit"));
-                     $numrows = pg_numrows($result);
+                     $numrows = pg_num_rows($result);
 		     for($i = 0;$i < $numrows;$i++)
-		          echo "<option value=\"".pg_result($result,$i,0)."\">".pg_result($result,$i,0)."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".pg_result($result,$i,1)."</option>\n";
+		          echo "<option value=\"".pg_fetch_result($result,$i,0)."\">".pg_fetch_result($result,$i,0)."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".pg_fetch_result($result,$i,1)."</option>\n";
 	          ?>
                 </select> </td>
               <td height="25" valign="top" nowrap> &nbsp; 
@@ -149,9 +149,9 @@ function js_mt() {
 			  <option value="T">Todos</option>
                   <?php 
 				 $result = db_query("select k11_id,k11_ipterm from cfautent where k11_instit = " . db_getsession("DB_instit") . " order by k11_ipterm");
-				 $numrows = pg_numrows($result);
+				 $numrows = pg_num_rows($result);
 				 for($i = 0;$i < $numrows;$i++)
-				   echo "<option value=\"".pg_result($result,$i,0)."\">".pg_result($result,$i,1)."</option>\n";
+				   echo "<option value=\"".pg_fetch_result($result,$i,0)."\">".pg_fetch_result($result,$i,1)."</option>\n";
 				  ?>
                 </select> </td>
             </tr>

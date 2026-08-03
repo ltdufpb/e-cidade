@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpagocor_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhpagocor = new cl_rhpagocor;
 $clrotulo = new rotulocampo;
 $clrhpagocor->rotulo->label("rh58_codigo");
@@ -121,9 +121,9 @@ $clrotulo->label("z01_nome");
         }else{
            $sql = $clrhpagocor->sql_query_atraso(null,$campos,"rh58_codigo"," 1=1 ".$dbwhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh58_seq)){
-          $repassa = array("chave_rh58_codigo"=>$chave_rh58_codigo,"chave_rh58_seq"=>$chave_rh58_seq);
+          $repassa = ["chave_rh58_codigo"=>$chave_rh58_codigo,"chave_rh58_seq"=>$chave_rh58_seq];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

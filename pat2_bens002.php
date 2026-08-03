@@ -63,7 +63,7 @@ $clrotulo->label("j13_descr"); //descrição do bairro
 $clrotulo->label("t80_segura");//observação
 $clrotulo->label("z01_nome");//nome no cadastro cgm
 $clrotulo->label("t80_contato");//contato na seguradora
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
@@ -82,7 +82,7 @@ $total = 0;
 $troca = 1;
 $alt = 4;	
 	
-$aWhere = array();
+$aWhere = [];
 if (!empty($t52_bem))  {
     $aWhere[] = " t52_bem in $t52_bem ";
 }
@@ -201,7 +201,7 @@ for($iInd = 0; $iInd < $iNumRows; $iInd++) {
   $pdf->setfont('arial','',7);
   $pdf->cell(0,$alt,db_formatar($t52_dtaqu,"d"),0,1,"L",0);
 
-  if (strlen(trim($t52_ident)) > 0){
+  if (strlen(trim((string) $t52_ident)) > 0){
        if ($t07_confplaca == 4){
             $t52_ident = db_formatar($t52_ident,"s","0",$t07_digseqplaca,"e",0);
        }

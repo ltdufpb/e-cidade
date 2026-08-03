@@ -46,7 +46,7 @@ require_once(modification("classes/db_selecao_classe.php"));
 <tr height=25><td>&nbsp;</td></tr>
 </table>
 <?php 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 db_sel_instit();
 db_criatermometro('termometro','Concluido...','blue',1);
 flush();
@@ -82,7 +82,7 @@ if ($_POST["vinculo"] == "A"){
                      ||'#'
                      ||trim(substr(z01_cgccpf,1,11))
                      ||'#'
-                     ||'".str_pad($nomeinstabrev,20,' ',STR_PAD_RIGHT)."'
+                     ||'".str_pad((string) $nomeinstabrev,20,' ',STR_PAD_RIGHT)."'
                      ||'#'
                      ||trim(to_char(rh01_regist,'999999'))
                      ||'#'
@@ -292,13 +292,13 @@ if ($_POST["vinculo"] == "A"){
   }
 
   $rsAtivos      = db_query($sSqlAtivos);
-  $iLinhasAtivos = pg_numrows($rsAtivos);
+  $iLinhasAtivos = pg_num_rows($rsAtivos);
 
   for($x = 0; $x < $iLinhasAtivos; $x++){
 
     db_atutermometro($x,$iLinhasAtivos,'termometro');
     flush();
-    $iMatricula = pg_result($rsAtivos,$x,'matricula');
+    $iMatricula = pg_fetch_result($rsAtivos,$x,'matricula');
 
     //Verifica se tem conjuge
     $sSqlConjuge = "select rh31_regist,
@@ -312,9 +312,9 @@ if ($_POST["vinculo"] == "A"){
 
     $dtconj = '';
     $temconj = 'N';
-    if(pg_numrows($rsConjuge) > 0){
+    if(pg_num_rows($rsConjuge) > 0){
 
-      $dtconj  = pg_result($rsConjuge,0,'nasc');
+      $dtconj  = pg_fetch_result($rsConjuge,0,'nasc');
       $temconj = 'S';
     }
 
@@ -331,8 +331,8 @@ if ($_POST["vinculo"] == "A"){
     $rsFilhoEspecial = db_query($sSqlFilhoEspecial);
 
     $dtespec = '';
-    if(pg_numrows($rsFilhoEspecial) > 0){
-      $dtespec = pg_result($rsFilhoEspecial,0,'nasc');
+    if(pg_num_rows($rsFilhoEspecial) > 0){
+      $dtespec = pg_fetch_result($rsFilhoEspecial,0,'nasc');
     }
 
     //Verifica se tem filhos nao especiais
@@ -348,11 +348,11 @@ if ($_POST["vinculo"] == "A"){
     $rsFilhoNaoEspecial = db_query($sSqlFilhoNaoEspecial);
 
     $dtnespec = '';
-    if(pg_numrows($rsFilhoNaoEspecial) > 0){
-      $dtnespec = pg_result($rsFilhoNaoEspecial,0,'nasc');
+    if(pg_num_rows($rsFilhoNaoEspecial) > 0){
+      $dtnespec = pg_fetch_result($rsFilhoNaoEspecial,0,'nasc');
     }
 
-    fputs($arquivo,pg_result($rsAtivos,$x,'todo')."#".$temconj."#".$dtconj."#".$dtespec."#".$dtnespec."#\r\n");
+    fputs($arquivo,pg_fetch_result($rsAtivos,$x,'todo')."#".$temconj."#".$dtconj."#".$dtespec."#".$dtnespec."#\r\n");
 
   }
   fclose($arquivo);
@@ -524,13 +524,13 @@ if ($_POST["vinculo"] == "A"){
   }
 
   $rsVersaoInativos = db_query($sSqlVersaoInativos);
-  $iLinhasInativos  = pg_numrows($rsVersaoInativos);
+  $iLinhasInativos  = pg_num_rows($rsVersaoInativos);
 
   for($x = 0; $x < $iLinhasInativos; $x++){
 
     db_atutermometro($x,$iLinhasInativos,'termometro');
     flush();
-    $iMatricula = pg_result($rsVersaoInativos,$x,'matricula');
+    $iMatricula = pg_fetch_result($rsVersaoInativos,$x,'matricula');
 
     //Verifica se tem conjuge
     $sSqlConjuge = "select rh31_regist,
@@ -544,9 +544,9 @@ if ($_POST["vinculo"] == "A"){
 
     $dtconj = '';
     $temconj = 'N';
-    if(pg_numrows($rsConjuge) > 0) {
+    if(pg_num_rows($rsConjuge) > 0) {
 
-      $dtconj  = pg_result($rsConjuge, 0, 'nasc');
+      $dtconj  = pg_fetch_result($rsConjuge, 0, 'nasc');
       $temconj = 'S';
     }
 
@@ -563,8 +563,8 @@ if ($_POST["vinculo"] == "A"){
     $rsFilhoEspecial = db_query($sSqlFilhosEspecial);
 
     $dtespec = '';
-    if(pg_numrows($rsFilhoEspecial) > 0){
-      $dtespec = pg_result($rsFilhoEspecial,0,'nasc');
+    if(pg_num_rows($rsFilhoEspecial) > 0){
+      $dtespec = pg_fetch_result($rsFilhoEspecial,0,'nasc');
     }
 
     //Verifica se tem filhos nao especiais
@@ -580,14 +580,14 @@ if ($_POST["vinculo"] == "A"){
     $rsFilhoNaoEspecial = db_query($sSqlFilhoNaoEspecial);
 
     $dtnespec = '';
-    if(pg_numrows($rsFilhoNaoEspecial) > 0){
-      $dtnespec = pg_result($rsFilhoNaoEspecial,'nasc');
+    if(pg_num_rows($rsFilhoNaoEspecial) > 0){
+      $dtnespec = pg_fetch_result($rsFilhoNaoEspecial,'nasc');
     }
 
     //Verifica se grupo capitalizado ou financeiro
     $sSegragacaoMassa = 'F';
     //Localiza a data de admissão (último campo)
-    preg_match("/[m|f]#[\d\/]+#([\d\/]+)/i", pg_result($rsVersaoInativos,$x,'todo'), $sPadraoDataAdmissaoEncontrado);
+    preg_match("/[m|f]#[\d\/]+#([\d\/]+)/i", pg_fetch_result($rsVersaoInativos,$x,'todo'), $sPadraoDataAdmissaoEncontrado);
     $sDataAdmissaoAposentao = $sPadraoDataAdmissaoEncontrado[1];
 
     if(!empty($sDataAdmissaoAposentao)) {
@@ -602,7 +602,7 @@ if ($_POST["vinculo"] == "A"){
     }
 
 
-    fputs($arquivo,pg_result($rsVersaoInativos,$x,'todo')."#".$temconj."#".$dtconj."#".$dtespec."#".$dtnespec."#".$sSegragacaoMassa."#\r\n");
+    fputs($arquivo,pg_fetch_result($rsVersaoInativos,$x,'todo')."#".$temconj."#".$dtconj."#".$dtespec."#".$dtnespec."#".$sSegragacaoMassa."#\r\n");
   }
 
   fclose($arquivo);
@@ -760,13 +760,13 @@ if ($_POST["vinculo"] == "A"){
   }
 
   $rsQueryPensionistas = db_query($sSqlVersaoPensionistas);
-  $iLinhasPensionistas = pg_numrows($rsQueryPensionistas);
+  $iLinhasPensionistas = pg_num_rows($rsQueryPensionistas);
 
   for($x = 0; $x < $iLinhasPensionistas; $x++){
 
     db_atutermometro($x,$iLinhasPensionistas,'termometro');
     flush();
-    $sMatricula = pg_result($rsQueryPensionistas,$x,'matricula');
+    $sMatricula = pg_fetch_result($rsQueryPensionistas,$x,'matricula');
 
     //Verifica se tem conjuge
     $sSqlConjuge = "select rh31_regist,
@@ -780,9 +780,9 @@ if ($_POST["vinculo"] == "A"){
 
     $dtconj = '';
     $temconj = 'N';
-    if(pg_numrows($rsSqlConjuge) > 0){
+    if(pg_num_rows($rsSqlConjuge) > 0){
 
-      $dtconj  = pg_result($rsSqlConjuge,0,'nasc');
+      $dtconj  = pg_fetch_result($rsSqlConjuge,0,'nasc');
       $temconj = 'S';
     }
 
@@ -799,8 +799,8 @@ if ($_POST["vinculo"] == "A"){
     $rsSqlFilhoEspecial = db_query($sSqlFilhoEspecial);
 
     $dtespec = '';
-    if(pg_numrows($rsSqlFilhoEspecial) > 0) {
-      $dtespec = pg_result($rsSqlFilhoEspecial, 0, 'nasc');
+    if(pg_num_rows($rsSqlFilhoEspecial) > 0) {
+      $dtespec = pg_fetch_result($rsSqlFilhoEspecial, 0, 'nasc');
     }
 
     //Verifica se tem filhos nao especiais
@@ -816,11 +816,11 @@ if ($_POST["vinculo"] == "A"){
     $rsSqlFilhoNaoEspecial = db_query($sSqlFilhoNaoEspecial);
 
     $dtnespec = '';
-    if(pg_numrows($rsSqlFilhoNaoEspecial) > 0){
-      $dtnespec = pg_result($rsSqlFilhoNaoEspecial,0,'nasc');
+    if(pg_num_rows($rsSqlFilhoNaoEspecial) > 0){
+      $dtnespec = pg_fetch_result($rsSqlFilhoNaoEspecial,0,'nasc');
     }
 
-    $sDadosPensionista = pg_result($rsQueryPensionistas,$x,'todo');
+    $sDadosPensionista = pg_fetch_result($rsQueryPensionistas,$x,'todo');
     //Verifica se grupo capitalizado ou financeiro
     $sSegragacaoMassa = 'F';
     //Localiza a data de admissão (último campo)

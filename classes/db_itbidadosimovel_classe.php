@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE itbidadosimovel
 class cl_itbidadosimovel { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $it22_sequencial = 0; 
-   var $it22_itbi = 0; 
-   var $it22_setor = null; 
-   var $it22_quadra = null; 
-   var $it22_lote = null; 
-   var $it22_descrlograd = null; 
-   var $it22_numero = 0; 
-   var $it22_compl = null; 
-   var $it22_matricri = null; 
-   var $it22_quadrari = null; 
-   var $it22_loteri = null; 
+   public $it22_sequencial = 0; 
+   public $it22_itbi = 0; 
+   public $it22_setor = null; 
+   public $it22_quadra = null; 
+   public $it22_lote = null; 
+   public $it22_descrlograd = null; 
+   public $it22_numero = 0; 
+   public $it22_compl = null; 
+   public $it22_matricri = null; 
+   public $it22_quadrari = null; 
+   public $it22_loteri = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  it22_sequencial = int4 = Sequencia 
                  it22_itbi = int8 = Número da guia de ITBI 
                  it22_setor = char(4) = Setor 
@@ -68,10 +68,10 @@ class cl_itbidadosimovel {
                  it22_loteri = varchar(4) = Lote no RI 
                  ";
    //funcao construtor da classe 
-   function cl_itbidadosimovel() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbidadosimovel"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -139,10 +139,10 @@ class cl_itbidadosimovel {
          $this->erro_status = "0";
          return false; 
        }
-       $this->it22_sequencial = pg_result($result,0,0); 
+       $this->it22_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from itbidadosimovel_it22_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $it22_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $it22_sequencial)){
          $this->erro_sql = " Campo it22_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -190,7 +190,7 @@ class cl_itbidadosimovel {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dados do imovel ($this->it22_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dados do imovel já Cadastrado";
@@ -214,20 +214,20 @@ class cl_itbidadosimovel {
      $resaco = $this->sql_record($this->sql_query_file($this->it22_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9001,'$this->it22_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1540,9001,'','".AddSlashes(pg_result($resaco,0,'it22_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1540,9002,'','".AddSlashes(pg_result($resaco,0,'it22_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1540,9003,'','".AddSlashes(pg_result($resaco,0,'it22_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1540,9004,'','".AddSlashes(pg_result($resaco,0,'it22_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1540,9005,'','".AddSlashes(pg_result($resaco,0,'it22_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1540,9006,'','".AddSlashes(pg_result($resaco,0,'it22_descrlograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1540,9007,'','".AddSlashes(pg_result($resaco,0,'it22_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1540,9008,'','".AddSlashes(pg_result($resaco,0,'it22_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1540,13531,'','".AddSlashes(pg_result($resaco,0,'it22_matricri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1540,13533,'','".AddSlashes(pg_result($resaco,0,'it22_quadrari'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1540,13534,'','".AddSlashes(pg_result($resaco,0,'it22_loteri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1540,9001,'','".AddSlashes(pg_fetch_result($resaco,0,'it22_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1540,9002,'','".AddSlashes(pg_fetch_result($resaco,0,'it22_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1540,9003,'','".AddSlashes(pg_fetch_result($resaco,0,'it22_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1540,9004,'','".AddSlashes(pg_fetch_result($resaco,0,'it22_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1540,9005,'','".AddSlashes(pg_fetch_result($resaco,0,'it22_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1540,9006,'','".AddSlashes(pg_fetch_result($resaco,0,'it22_descrlograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1540,9007,'','".AddSlashes(pg_fetch_result($resaco,0,'it22_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1540,9008,'','".AddSlashes(pg_fetch_result($resaco,0,'it22_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1540,13531,'','".AddSlashes(pg_fetch_result($resaco,0,'it22_matricri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1540,13533,'','".AddSlashes(pg_fetch_result($resaco,0,'it22_quadrari'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1540,13534,'','".AddSlashes(pg_fetch_result($resaco,0,'it22_loteri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -236,10 +236,10 @@ class cl_itbidadosimovel {
       $this->atualizacampos();
      $sql = " update itbidadosimovel set ";
      $virgula = "";
-     if(trim($this->it22_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_sequencial"])){ 
+     if(trim((string) $this->it22_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_sequencial"])){ 
        $sql  .= $virgula." it22_sequencial = $this->it22_sequencial ";
        $virgula = ",";
-       if(trim($this->it22_sequencial) == null ){ 
+       if(trim((string) $this->it22_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencia nao Informado.";
          $this->erro_campo = "it22_sequencial";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_itbidadosimovel {
          return false;
        }
      }
-     if(trim($this->it22_itbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_itbi"])){ 
+     if(trim((string) $this->it22_itbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_itbi"])){ 
        $sql  .= $virgula." it22_itbi = $this->it22_itbi ";
        $virgula = ",";
-       if(trim($this->it22_itbi) == null ){ 
+       if(trim((string) $this->it22_itbi) == null ){ 
          $this->erro_sql = " Campo Número da guia de ITBI nao Informado.";
          $this->erro_campo = "it22_itbi";
          $this->erro_banco = "";
@@ -262,45 +262,45 @@ class cl_itbidadosimovel {
          return false;
        }
      }
-     if(trim($this->it22_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_setor"])){ 
+     if(trim((string) $this->it22_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_setor"])){ 
        $sql  .= $virgula." it22_setor = '$this->it22_setor' ";
        $virgula = ",";
      }
-     if(trim($this->it22_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_quadra"])){ 
+     if(trim((string) $this->it22_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_quadra"])){ 
        $sql  .= $virgula." it22_quadra = '$this->it22_quadra' ";
        $virgula = ",";
      }
-     if(trim($this->it22_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_lote"])){ 
+     if(trim((string) $this->it22_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_lote"])){ 
        $sql  .= $virgula." it22_lote = '$this->it22_lote' ";
        $virgula = ",";
      }
-     if(trim($this->it22_descrlograd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_descrlograd"])){ 
+     if(trim((string) $this->it22_descrlograd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_descrlograd"])){ 
        $sql  .= $virgula." it22_descrlograd = '$this->it22_descrlograd' ";
        $virgula = ",";
      }
-     if(trim($this->it22_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_numero"])){ 
-        if(trim($this->it22_numero)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it22_numero"])){ 
+     if(trim((string) $this->it22_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_numero"])){ 
+        if(trim((string) $this->it22_numero)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it22_numero"])){ 
            $this->it22_numero = "0" ; 
         } 
        $sql  .= $virgula." it22_numero = $this->it22_numero ";
        $virgula = ",";
      }
-     if(trim($this->it22_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_compl"])){ 
+     if(trim((string) $this->it22_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_compl"])){ 
        $sql  .= $virgula." it22_compl = '$this->it22_compl' ";
        $virgula = ",";
      }
-     if(trim($this->it22_matricri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_matricri"])){ 
-       if(trim($this->it22_matricri) == null ){ 
+     if(trim((string) $this->it22_matricri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_matricri"])){ 
+       if(trim((string) $this->it22_matricri) == null ){ 
 		  $this->it22_matricri = "null";
        }
        $sql  .= $virgula." it22_matricri = '$this->it22_matricri' ";
        $virgula = ",";
      }
-     if(trim($this->it22_quadrari)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_quadrari"])){ 
+     if(trim((string) $this->it22_quadrari)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_quadrari"])){ 
        $sql  .= $virgula." it22_quadrari = '$this->it22_quadrari' ";
        $virgula = ",";
      }
-     if(trim($this->it22_loteri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_loteri"])){ 
+     if(trim((string) $this->it22_loteri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it22_loteri"])){ 
        $sql  .= $virgula." it22_loteri = '$this->it22_loteri' ";
        $virgula = ",";
      }
@@ -313,31 +313,31 @@ class cl_itbidadosimovel {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9001,'$this->it22_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it22_sequencial"]) || $this->it22_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,1540,9001,'".AddSlashes(pg_result($resaco,$conresaco,'it22_sequencial'))."','$this->it22_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1540,9001,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it22_sequencial'))."','$this->it22_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it22_itbi"]) || $this->it22_itbi != "")
-           $resac = db_query("insert into db_acount values($acount,1540,9002,'".AddSlashes(pg_result($resaco,$conresaco,'it22_itbi'))."','$this->it22_itbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1540,9002,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it22_itbi'))."','$this->it22_itbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it22_setor"]) || $this->it22_setor != "")
-           $resac = db_query("insert into db_acount values($acount,1540,9003,'".AddSlashes(pg_result($resaco,$conresaco,'it22_setor'))."','$this->it22_setor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1540,9003,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it22_setor'))."','$this->it22_setor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it22_quadra"]) || $this->it22_quadra != "")
-           $resac = db_query("insert into db_acount values($acount,1540,9004,'".AddSlashes(pg_result($resaco,$conresaco,'it22_quadra'))."','$this->it22_quadra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1540,9004,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it22_quadra'))."','$this->it22_quadra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it22_lote"]) || $this->it22_lote != "")
-           $resac = db_query("insert into db_acount values($acount,1540,9005,'".AddSlashes(pg_result($resaco,$conresaco,'it22_lote'))."','$this->it22_lote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1540,9005,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it22_lote'))."','$this->it22_lote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it22_descrlograd"]) || $this->it22_descrlograd != "")
-           $resac = db_query("insert into db_acount values($acount,1540,9006,'".AddSlashes(pg_result($resaco,$conresaco,'it22_descrlograd'))."','$this->it22_descrlograd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1540,9006,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it22_descrlograd'))."','$this->it22_descrlograd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it22_numero"]) || $this->it22_numero != "")
-           $resac = db_query("insert into db_acount values($acount,1540,9007,'".AddSlashes(pg_result($resaco,$conresaco,'it22_numero'))."','$this->it22_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1540,9007,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it22_numero'))."','$this->it22_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it22_compl"]) || $this->it22_compl != "")
-           $resac = db_query("insert into db_acount values($acount,1540,9008,'".AddSlashes(pg_result($resaco,$conresaco,'it22_compl'))."','$this->it22_compl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1540,9008,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it22_compl'))."','$this->it22_compl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it22_matricri"]) || $this->it22_matricri != "")
-           $resac = db_query("insert into db_acount values($acount,1540,13531,'".AddSlashes(pg_result($resaco,$conresaco,'it22_matricri'))."','$this->it22_matricri',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1540,13531,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it22_matricri'))."','$this->it22_matricri',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it22_quadrari"]) || $this->it22_quadrari != "")
-           $resac = db_query("insert into db_acount values($acount,1540,13533,'".AddSlashes(pg_result($resaco,$conresaco,'it22_quadrari'))."','$this->it22_quadrari',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1540,13533,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it22_quadrari'))."','$this->it22_quadrari',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it22_loteri"]) || $this->it22_loteri != "")
-           $resac = db_query("insert into db_acount values($acount,1540,13534,'".AddSlashes(pg_result($resaco,$conresaco,'it22_loteri'))."','$this->it22_loteri',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1540,13534,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it22_loteri'))."','$this->it22_loteri',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -382,20 +382,20 @@ class cl_itbidadosimovel {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9001,'$it22_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1540,9001,'','".AddSlashes(pg_result($resaco,$iresaco,'it22_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1540,9002,'','".AddSlashes(pg_result($resaco,$iresaco,'it22_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1540,9003,'','".AddSlashes(pg_result($resaco,$iresaco,'it22_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1540,9004,'','".AddSlashes(pg_result($resaco,$iresaco,'it22_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1540,9005,'','".AddSlashes(pg_result($resaco,$iresaco,'it22_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1540,9006,'','".AddSlashes(pg_result($resaco,$iresaco,'it22_descrlograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1540,9007,'','".AddSlashes(pg_result($resaco,$iresaco,'it22_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1540,9008,'','".AddSlashes(pg_result($resaco,$iresaco,'it22_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1540,13531,'','".AddSlashes(pg_result($resaco,$iresaco,'it22_matricri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1540,13533,'','".AddSlashes(pg_result($resaco,$iresaco,'it22_quadrari'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1540,13534,'','".AddSlashes(pg_result($resaco,$iresaco,'it22_loteri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1540,9001,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it22_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1540,9002,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it22_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1540,9003,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it22_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1540,9004,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it22_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1540,9005,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it22_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1540,9006,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it22_descrlograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1540,9007,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it22_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1540,9008,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it22_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1540,13531,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it22_matricri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1540,13533,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it22_quadrari'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1540,13534,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it22_loteri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from itbidadosimovel
@@ -455,7 +455,7 @@ class cl_itbidadosimovel {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:itbidadosimovel";
@@ -470,7 +470,7 @@ class cl_itbidadosimovel {
    function sql_query ( $it22_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -495,7 +495,7 @@ class cl_itbidadosimovel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -508,7 +508,7 @@ class cl_itbidadosimovel {
    function sql_query_file ( $it22_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -529,7 +529,7 @@ class cl_itbidadosimovel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -542,7 +542,7 @@ class cl_itbidadosimovel {
    function sql_query_dados( $it22_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -571,7 +571,7 @@ class cl_itbidadosimovel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

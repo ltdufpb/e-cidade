@@ -58,8 +58,8 @@ if (isset($oGet->coddpto) && !empty($oGet->coddpto)) {
 }
 
 
-$dtInicial = implode("-", array_reverse(explode("/", $oGet->dtInicial)));
-$dtFinal   = implode("-", array_reverse(explode("/", $oGet->dtFinal)));
+$dtInicial = implode("-", array_reverse(explode("/", (string) $oGet->dtInicial)));
+$dtFinal   = implode("-", array_reverse(explode("/", (string) $oGet->dtFinal)));
 
 $sSql  = "    select m45_codigo,                                                             ";
 $sSql .= "           m40_data,                                                                                        ";
@@ -109,7 +109,7 @@ $pdf->SetTextColor(0,0,0);
 $pdf->SetFillColor(235);
 $pdf->SetFont('arial','b',8);
 
-$aDadosMatEstoqueDevItem    = array();
+$aDadosMatEstoqueDevItem    = [];
 $lImprime                   = true;
 $nTotalItens                = 0;
 $nTotalGeralQuant           = 0;

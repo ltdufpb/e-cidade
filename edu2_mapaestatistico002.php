@@ -42,12 +42,12 @@ require_once(modification('classes/db_cursoedu_classe.php'));
 
 $oGet                   = db_utils::postMemory($_GET);
 
-$aCursosErEJA           = array();
-$aCursosSegundoQuadro   = array();
-$aEscolasPrimeiroQuadro = array(); // Qtd de alunos matrículados em: ENSINO REGULAR e EJA
-$aEscolasSegundoQuadro  = array(); // Qtd de alunos matrículados em turmas de correção de fluxo e especial
-$aEscolasTerceiroQuadro = array(); // Qtd de alunos ensinos regular matrículados separado por turno e sexo e qtd por situação
-$aEscolasQuartoQuadro   = array(); // Qtd de alunos ensinos AEE/AtivComplementar matrículados separado por turno e sexo
+$aCursosErEJA           = [];
+$aCursosSegundoQuadro   = [];
+$aEscolasPrimeiroQuadro = []; // Qtd de alunos matrículados em: ENSINO REGULAR e EJA
+$aEscolasSegundoQuadro  = []; // Qtd de alunos matrículados em turmas de correção de fluxo e especial
+$aEscolasTerceiroQuadro = []; // Qtd de alunos ensinos regular matrículados separado por turno e sexo e qtd por situação
+$aEscolasQuartoQuadro   = []; // Qtd de alunos ensinos AEE/AtivComplementar matrículados separado por turno e sexo
 
 $iNumeroColunasPrimeiroQuadro = 0;
 $iNumeroColunasSegundoQuadro  = 0;
@@ -78,7 +78,7 @@ try {
   /**
    * Busca das modalidades de ensino: ENSINO REGULAR e EDUCAÇÃO DE JOVENS E ADULTOS
    */
-  $aWhere   = array($sFiltraAno);
+  $aWhere   = [$sFiltraAno];
   $aWhere[] = " ed57_i_tipoturma not in (6,7) ";
   $aWhere[] = " ed10_i_tipoensino in (1,3) ";
   $aWhere[] = " exists (select 1 from basecurricular where ed141_cursoedu = ed29_i_codigo) ";
@@ -100,7 +100,7 @@ try {
   /**
    * Busca as turmas de Correção de FLUXO
    */
-  $aWhere   = array($sFiltraAno);
+  $aWhere   = [$sFiltraAno];
   $aWhere[] = " ed57_i_tipoturma = 7 ";
   $aWhere[] = " ed10_i_tipoensino in (1) ";
   $aWhere[] = " exists (select 1 from basecurricular where ed141_cursoedu = ed29_i_codigo) ";
@@ -135,7 +135,7 @@ try {
    */
   foreach ($aEscolasSegundoQuadro as $oEscola) {
 
-    $oEscola->iTotalMatriculasAee = buscaAlunosMatriculadosAEE($oEscola->codigo, $oDtInicio, $oDtFim);
+    $oEscola->iTotalMatriculasAee = buscaAlunosMatriculadosAEE($oEscola->codigo, $oDtInicio);
     $oEscola->iTotalEscola       += $oEscola->iTotalMatriculasAee;
   }
 
@@ -176,7 +176,7 @@ try {
     $oEscola->iTotalTurnoSexo = 0; // totalizador do quadro Quantidade de Alunos, totalizando todos turnos
     $oEscola->iTotalSituacoes = 0; // totalizador do quadro Quantidade de Alunos, totalizando todas situacoes
 
-    $oEscola->aTurnos    = array();
+    $oEscola->aTurnos    = [];
     $oEscola->aTurnos[1] = clone($oStdSexo);
     $oEscola->aTurnos[2] = clone($oStdSexo);
     $oEscola->aTurnos[3] = clone($oStdSexo);
@@ -340,7 +340,7 @@ try {
  */
 function montaEstruturaCursoEtapas($aCursosMinistradosNoAno, $lCorrecaoFluxo) {
 
-  $aCursos      = array();
+  $aCursos      = [];
   $iCodigoCurso = null;
   foreach ($aCursosMinistradosNoAno as $oDadosCurso) {
 
@@ -354,7 +354,7 @@ function montaEstruturaCursoEtapas($aCursosMinistradosNoAno, $lCorrecaoFluxo) {
       $oCurso->sCurso      = $oDadosCurso->curso;
       $oCurso->sCursoAbrev = abreviaNomeCurso($oDadosCurso->curso);
       $oCurso->iTotalCurso = 0;
-      $oCurso->aEtapas     = array();
+      $oCurso->aEtapas     = [];
 
       $oCurso->lCorrecaoFluxo       = $lCorrecaoFluxo;
       $oCurso->iNumeroColunasEtapas = 0;
@@ -413,7 +413,7 @@ function calculaAlunosMatriculadosEscola($aEscolas, $aCursos, $oDtInicio, $oDtFi
 
   foreach ($aEscolas as $oEscola) {
 
-    $oEscola->aAlunosEtapa = array();
+    $oEscola->aAlunosEtapa = [];
     $oEscola->iTotalEscola = 0;
     foreach ($aCursos as $oCurso) {
 
@@ -467,7 +467,7 @@ function buscaAlunosMatriculados($iEscola, $iEtapa, DBDate $oDtInicio, DBDate $o
     return 0;
   }
 
-  $aWhere = array(
+  $aWhere = [
     " ed60_d_datamatricula <= '" . $oDtFim->getDate() . "' ",
     " extract(year FROM ed60_d_datamatricula) = " . $oDtFim->getAno(),
     " ( ed60_d_datasaida is null or ed60_d_datasaida not between '" . $oDtInicio->getDate() . "' and '" . $oDtFim->getDate() . "') ",
@@ -475,7 +475,7 @@ function buscaAlunosMatriculados($iEscola, $iEtapa, DBDate $oDtInicio, DBDate $o
     " ed221_c_origem  = 'S' ",
     " ed57_i_escola   = $iEscola ",
     " ed221_i_serie   = $iEtapa  ",
-  );
+  ];
 
   $sTipoTurma = " ed57_i_tipoturma not in (6, 7) ";
   if ( $lCorrecaoFluxo ) {
@@ -624,9 +624,9 @@ function buscaAlunosMatriculadosMaisEducacao($iEscola, $oDtInicio, $oDtFim) {
 function abreviaNomeCurso($sString) {
 
   // Adicionar ao array abaixo artigos e preposições a serem removidas do nome abreviado
-  $aRemover = array(' DE ', ' A ');
+  $aRemover = [' DE ', ' A '];
   $aString  = explode(' ', str_replace ($aRemover, ' ', mb_strtoupper($sString) ) );
-  $aAbrev   = array();
+  $aAbrev   = [];
   foreach ($aString as $value) {
     $aAbrev[] = mb_strcut($value, 0, 1);
   }
@@ -688,7 +688,7 @@ function buscaEscolas() {
     throw new Exception("Não há escolas com alunos matriculados no período informado.");
   }
 
-  $aEscolas = array();
+  $aEscolas = [];
   $iEscolas = pg_num_rows($rsEscolas);
 
   for ($i = 0; $i < $iEscolas; $i++) {
@@ -914,7 +914,7 @@ if (count($aCursosErEJA) > 0) {
       foreach ($oEscola->aAlunosEtapa as $sIndex => $iAlunosMatriculados) {
 
         $iFill = 1;
-        if (strpos($sIndex, "T") === false) {
+        if (!str_contains((string) $sIndex, "T")) {
           $iFill = 0;
         }
         $iAlunosMatriculados = $iAlunosMatriculados == 0 ? "" : $iAlunosMatriculados;
@@ -985,7 +985,7 @@ foreach ($aEscolasSegundoQuadro as $oEscola) {
     foreach ($oEscola->aAlunosEtapa as $sIndex => $iAlunosMatriculados) {
 
       $iFill = 1;
-      if (strpos($sIndex, "T") === false) {
+      if (!str_contains((string) $sIndex, "T")) {
         $iFill = 0;
       }
       $iAlunosMatriculados = $iAlunosMatriculados == 0 ? "" : $iAlunosMatriculados;
@@ -1104,7 +1104,7 @@ $oStdSexo->iTotalMasculino = 0;
 $oStdSexo->iTotalFeminino  = 0;
 $oStdSexo->iTotal          = 0;
 
-$aTotaisTurnos    = array();
+$aTotaisTurnos    = [];
 $aTotaisTurnos[1] = clone($oStdSexo);
 $aTotaisTurnos[2] = clone($oStdSexo);
 $aTotaisTurnos[3] = clone($oStdSexo);

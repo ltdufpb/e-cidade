@@ -127,12 +127,12 @@ final class Exportacao
 
         $oDaoLote = new cl_lote;
 
-        $where = array("histocorrencia.ar23_data = '{$dataInicio->getDate()}'");
+        $where = ["histocorrencia.ar23_data = '{$dataInicio->getDate()}'"];
         if (!is_null($dataFinal)) {
-            $where = array(
+            $where = [
                 "histocorrencia.ar23_data >= '{$dataInicio->getDate()}'",
                 "histocorrencia.ar23_data <= '{$dataFinal->getDate()}'"
-            );
+            ];
         }
 
         $sql = "
@@ -154,11 +154,11 @@ final class Exportacao
 
         $rsSql = $oDaoLote->sql_record($sql);
         if (empty($rsSql)) {
-            return array();
+            return [];
         }
 
         $aGeodados = db_utils::getCollectionByRecord($rsSql);
-        $aDados = array();
+        $aDados = [];
 
         /**
          * Conversado com Thiago e visto que os dados devem vir com o ano da sessão
@@ -168,7 +168,7 @@ final class Exportacao
 
             $dataAlteracao = new DBDate($oGeodados->data_alteracao);
             $sData = $oGeodados->data_alteracao;
-            $aLinha = array();
+            $aLinha = [];
             $oLote = new Lote($oGeodados->j01_idbql);
             $infosTestada = self::getTestadas($oGeodados->j01_idbql);
 
@@ -189,8 +189,8 @@ final class Exportacao
             $aLinha["rua_tipo_sigla_testada"]    = $oLote->getSiglaTipoLogradouro();
             $aLinha["testadas_lote"]             = $infosTestada;
 
-            $aCaracteristicasFaceLote = array();
-            $aCaracteristicasLote     = array();
+            $aCaracteristicasFaceLote = [];
+            $aCaracteristicasLote     = [];
 
             foreach ($oLote->getCaracteristicasFace() as $oCaracteristicaFace) {
                 $aCaracteristicasFaceLote[$oCaracteristicaFace->iCodigoGrupo] = $oCaracteristicaFace;
@@ -547,8 +547,8 @@ final class Exportacao
 
                         $oHabite = $oConstrucao->getHabite();
 
-                        $aLinha["num_habite"]  = isset($oHabite->ob09_habite) ? $oHabite->ob09_habite : '';
-                        $aLinha["data_habite"] = isset($oHabite->ob09_data) ? $oHabite->ob09_data : '';
+                        $aLinha["num_habite"]  = $oHabite->ob09_habite ?? '';
+                        $aLinha["data_habite"] = $oHabite->ob09_data ?? '';
 
                         if ($oCalculoConstrucao = $oCalculo->getCalculoConstrucao($oConstrucao->getCodigoConstrucao())) {
                             $aLinha["valor_venal_construcao"] = $oCalculoConstrucao->nValor;
@@ -556,7 +556,7 @@ final class Exportacao
 
                         }
 
-                        $aCaracteristicasConstrucao = array();
+                        $aCaracteristicasConstrucao = [];
 
                         foreach ($oConstrucao->getCaracteristicasConstrucao() as $oCaracteristicaConstrucao) {
                             $aCaracteristicasConstrucao[$oCaracteristicaConstrucao->iCodigoGrupo] = $oCaracteristicaConstrucao;
@@ -642,7 +642,7 @@ final class Exportacao
 
         $matriculas = \db_utils::makeCollectionFromRecord($rsMatriculasReitadas, function($dados) use ($headers) {
             
-            $retorno = array();
+            $retorno = [];
             foreach ($headers as $key => $item) {
                 $retorno[$key] = "";
             }

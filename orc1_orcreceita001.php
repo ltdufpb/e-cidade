@@ -95,8 +95,8 @@ try {
                 ));
             }
 
-            $unidade = substr($unidadeOrcamentaria, 2, strlen($unidadeOrcamentaria) - 1);
-            $orgao = substr($unidadeOrcamentaria, 0, 2);
+            $unidade = substr((string) $unidadeOrcamentaria, 2, strlen((string) $unidadeOrcamentaria) - 1);
+            $orgao = substr((string) $unidadeOrcamentaria, 0, 2);
             $clorcreceita->o70_codfon = $o70_codfon;
             $clorcreceita->o70_instit = db_getsession("DB_instit");
             $clorcreceita->o70_concarpeculiar = $o70_concarpeculiar;

@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhrubricas_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhrubricas = new cl_rhrubricas;
 $clrhrubricas->rotulo->label("rh27_rubric");
 $clrhrubricas->rotulo->label("rh27_descr");
@@ -45,20 +45,20 @@ $usuario = UsuarioSistemaRepository::getPorCodigo(db_getsession('DB_id_usuario')
 $instituicao = InstituicaoRepository::getInstituicaoSessao();
 
 $dao = new cl_rhrubricas();
-$where = array();
+$where = [];
 // agora por default devemos validar as rubricas configuradas por usuário se houver.
 // Se não devemos buscar todas as rubricas
 if ($service->possuiConfiguracao($usuario, $instituicao)) {
     $dao = new cl_rubricasusuario();
-    $where = array(
+    $where = [
         "rh219_usuario = {$usuario->getCodigo()}",
         "rh219_instituicao = {$instituicao->getCodigo()}"
-    );
+    ];
 }
 
 if (isset($_GET['naoFiltraUsuario']) && $_GET['naoFiltraUsuario '] == 'true') {
     $dao = new cl_rhrubricas();
-    $where = array();
+    $where = [];
 }
 
 $where[] = "rh27_instit = {$instituicao->getCodigo()}";
@@ -106,11 +106,11 @@ $where[] = "rh27_instit = {$instituicao->getCodigo()}";
                         $opcao_bloq = 1;
                     }
 
-                    $arr_opcao = array(
+                    $arr_opcao = [
                         "i" => "Todos",
                         "t" => "Ativos",
                         "f" => "Inativos"
-                    );
+                    ];
 
                     db_select('opcao', $arr_opcao, true, $opcao_bloq);
                     ?>
@@ -154,7 +154,7 @@ if (!isset($pesquisa_chave)) {
     } elseif (isset($chave_rh27_descr) && !empty($chave_rh27_descr)) {
         $where[] = " rh27_descr like '{$chave_rh27_descr}%' ";
     }
-    $sql = $dao->sqlRubricas($campos, $where, array('rh27_rubric'));
+    $sql = $dao->sqlRubricas($campos, $where, ['rh27_rubric']);
 
     echo "<div class='container'>";
     echo "  <fieldset>";
@@ -173,7 +173,7 @@ if (!isset($pesquisa_chave)) {
 
         if ($clrhrubricas->numrows) {
             db_fieldsmemory($result, 0);
-            $rh27_obs = str_replace(array("\n", "\r"), ' ', $rh27_obs);
+            $rh27_obs = str_replace(["\n", "\r"], ' ', $rh27_obs);
 
             if (!isset($ret)) {
                 echo "<script>" . $funcao_js . "('$rh27_descr','$rh27_limdat','$formula','$rh27_obs','$rh27_presta',false, '$rh27_periodolancamento');</script>";

@@ -32,14 +32,9 @@ class ProcessamentoPontoConsignadosFactory {
 
   public static function getByBanco($sCodigoBanco) {
 
-    switch ($sCodigoBanco) {
-      case ProcessamentoPontoConsignados::CONSIGNADOS_CAIXA:
-        return new ProcessamentoPontoConsignadosCaixa();
-        break;
-        
-      default:
-        return null;
-        break;
-    }
+    return match ($sCodigoBanco) {
+        ProcessamentoPontoConsignados::CONSIGNADOS_CAIXA => new ProcessamentoPontoConsignadosCaixa(),
+        default => null,
+    };
   }
 }

@@ -71,13 +71,13 @@ class SigfisArquivoFonteRecurso extends SigfisArquivoBase implements iPadArquivo
         $sErroLog .= "sem Vinculo com os recursos do SIGFIS\n";
         $this->addLog($sErroLog);
       }
-      if (trim($oDadosRecurso->o15_codtri) == "") {
+      if (trim((string) $oDadosRecurso->o15_codtri) == "") {
         
         $sErroLog  = "Recurso {$oDadosRecurso->o15_codtri} - {$oDadosRecurso->o15_descr} ";
         $sErroLog .= "sem informação no campo 'Código Tribunal'.\n";
         $this->addLog($sErroLog);
       }
-      if (trim($oDadosRecurso->o15_descr) == "") {
+      if (trim((string) $oDadosRecurso->o15_descr) == "") {
         
         $sErroLog  = "Recurso {$oDadosRecurso->o15_codtri} - {$oDadosRecurso->o15_descr} ";
         $sErroLog .= "sem descrição informada.\n";
@@ -85,10 +85,10 @@ class SigfisArquivoFonteRecurso extends SigfisArquivoBase implements iPadArquivo
       }
       $oRecurso                 = new stdClass();
       $oRecurso->codigolinha    = 405;
-      $oRecurso->cd_Unidade     = str_pad($this->sCodigoTribunal,     4, " ", STR_PAD_LEFT);
-      $oRecurso->cd_Fonte       = str_pad($iCodigoRecursoTCE,         4, " ", STR_PAD_LEFT);
-      $oRecurso->cd_FonteGestor = str_pad($oDadosRecurso->o15_codtri, 4, " ", STR_PAD_LEFT);
-      $oRecurso->de_Fonte       = str_pad(substr($oDadosRecurso->o15_descr, 0, 80), 80, " ", STR_PAD_RIGHT);
+      $oRecurso->cd_Unidade     = str_pad((string) $this->sCodigoTribunal,     4, " ", STR_PAD_LEFT);
+      $oRecurso->cd_Fonte       = str_pad((string) $iCodigoRecursoTCE,         4, " ", STR_PAD_LEFT);
+      $oRecurso->cd_FonteGestor = str_pad((string) $oDadosRecurso->o15_codtri, 4, " ", STR_PAD_LEFT);
+      $oRecurso->de_Fonte       = str_pad(substr((string) $oDadosRecurso->o15_descr, 0, 80), 80, " ", STR_PAD_RIGHT);
       $oRecurso->dt_Ano         = $iAnoUsu;
       $this->aDados[]           = $oRecurso;
       unset($oDadosRecurso);

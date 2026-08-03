@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcppa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcppa = new cl_orcppa;
 $clorcppa->rotulo->label("o23_codppa");
 $clorcppa->rotulo->label("o23_anoexe");
@@ -91,7 +91,7 @@ if(isset($o23_acao) && $o23_acao != ''){
         }else {
            $sql = $clorcppa->sql_query_compl("",$campos,"o23_codppa","");
         }
-        db_lovrot($sql,15,"()","",$funcao_js,$campos_layer="",$NomeForm="NoMe",$variaveis_repassa=array(),$automatico=false);
+        db_lovrot($sql,15,"()","",$funcao_js,$campos_layer="",$NomeForm="NoMe",$variaveis_repassa=[],$automatico=false);
      }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
           $result = $clorcppa->sql_record($clorcppa->sql_query_compl($pesquisa_chave));

@@ -25,12 +25,12 @@
  *                                licenca/licenca_pt.txt
  */
 
-return array(
-    'infoExclusao' => array(
-        'properties' => array(
+return [
+    'infoExclusao' => [
+        'properties' => [
             'tpEvento',
             'nrRecEvt',
             'perApur'
-        )
-    ),
-);
+        ]
+    ],
+];

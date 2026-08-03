@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE sau_agendatransporte
 class cl_sau_agendatransporte { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s124_i_codigo = 0; 
-   var $s124_i_numcgs = 0; 
-   var $s124_d_saida_dia = null; 
-   var $s124_d_saida_mes = null; 
-   var $s124_d_saida_ano = null; 
-   var $s124_d_saida = null; 
-   var $s124_c_hora = null; 
-   var $s124_c_passagem = null; 
-   var $s124_c_veiculo = null; 
-   var $s124_d_data_dia = null; 
-   var $s124_d_data_mes = null; 
-   var $s124_d_data_ano = null; 
-   var $s124_d_data = null; 
-   var $s124_i_login = 0; 
+   public $s124_i_codigo = 0; 
+   public $s124_i_numcgs = 0; 
+   public $s124_d_saida_dia = null; 
+   public $s124_d_saida_mes = null; 
+   public $s124_d_saida_ano = null; 
+   public $s124_d_saida = null; 
+   public $s124_c_hora = null; 
+   public $s124_c_passagem = null; 
+   public $s124_c_veiculo = null; 
+   public $s124_d_data_dia = null; 
+   public $s124_d_data_mes = null; 
+   public $s124_d_data_ano = null; 
+   public $s124_d_data = null; 
+   public $s124_i_login = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s124_i_codigo = int4 = Código 
                  s124_i_numcgs = int4 = CGS 
                  s124_d_saida = date = Saída 
@@ -68,10 +68,10 @@ class cl_sau_agendatransporte {
                  s124_i_login = int4 = Login 
                  ";
    //funcao construtor da classe 
-   function cl_sau_agendatransporte() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_agendatransporte"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -178,10 +178,10 @@ class cl_sau_agendatransporte {
          $this->erro_status = "0";
          return false; 
        }
-       $this->s124_i_codigo = pg_result($result,0,0); 
+       $this->s124_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from sau_agendatransporte_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $s124_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $s124_i_codigo)){
          $this->erro_sql = " Campo s124_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -223,7 +223,7 @@ class cl_sau_agendatransporte {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "sau_agendatransporte ($this->s124_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "sau_agendatransporte já Cadastrado";
@@ -247,17 +247,17 @@ class cl_sau_agendatransporte {
      $resaco = $this->sql_record($this->sql_query_file($this->s124_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14339,'$this->s124_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2523,14339,'','".AddSlashes(pg_result($resaco,0,'s124_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2523,14340,'','".AddSlashes(pg_result($resaco,0,'s124_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2523,14341,'','".AddSlashes(pg_result($resaco,0,'s124_d_saida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2523,14342,'','".AddSlashes(pg_result($resaco,0,'s124_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2523,14343,'','".AddSlashes(pg_result($resaco,0,'s124_c_passagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2523,14345,'','".AddSlashes(pg_result($resaco,0,'s124_c_veiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2523,14346,'','".AddSlashes(pg_result($resaco,0,'s124_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2523,14347,'','".AddSlashes(pg_result($resaco,0,'s124_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2523,14339,'','".AddSlashes(pg_fetch_result($resaco,0,'s124_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2523,14340,'','".AddSlashes(pg_fetch_result($resaco,0,'s124_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2523,14341,'','".AddSlashes(pg_fetch_result($resaco,0,'s124_d_saida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2523,14342,'','".AddSlashes(pg_fetch_result($resaco,0,'s124_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2523,14343,'','".AddSlashes(pg_fetch_result($resaco,0,'s124_c_passagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2523,14345,'','".AddSlashes(pg_fetch_result($resaco,0,'s124_c_veiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2523,14346,'','".AddSlashes(pg_fetch_result($resaco,0,'s124_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2523,14347,'','".AddSlashes(pg_fetch_result($resaco,0,'s124_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -266,10 +266,10 @@ class cl_sau_agendatransporte {
       $this->atualizacampos();
      $sql = " update sau_agendatransporte set ";
      $virgula = "";
-     if(trim($this->s124_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_codigo"])){ 
+     if(trim((string) $this->s124_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_codigo"])){ 
        $sql  .= $virgula." s124_i_codigo = $this->s124_i_codigo ";
        $virgula = ",";
-       if(trim($this->s124_i_codigo) == null ){ 
+       if(trim((string) $this->s124_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "s124_i_codigo";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_sau_agendatransporte {
          return false;
        }
      }
-     if(trim($this->s124_i_numcgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_numcgs"])){ 
+     if(trim((string) $this->s124_i_numcgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_numcgs"])){ 
        $sql  .= $virgula." s124_i_numcgs = $this->s124_i_numcgs ";
        $virgula = ",";
-       if(trim($this->s124_i_numcgs) == null ){ 
+       if(trim((string) $this->s124_i_numcgs) == null ){ 
          $this->erro_sql = " Campo CGS nao Informado.";
          $this->erro_campo = "s124_i_numcgs";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_sau_agendatransporte {
          return false;
        }
      }
-     if(trim($this->s124_d_saida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_d_saida_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s124_d_saida_dia"] !="") ){ 
+     if(trim((string) $this->s124_d_saida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_d_saida_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s124_d_saida_dia"] !="") ){ 
        $sql  .= $virgula." s124_d_saida = '$this->s124_d_saida' ";
        $virgula = ",";
-       if(trim($this->s124_d_saida) == null ){ 
+       if(trim((string) $this->s124_d_saida) == null ){ 
          $this->erro_sql = " Campo Saída nao Informado.";
          $this->erro_campo = "s124_d_saida_dia";
          $this->erro_banco = "";
@@ -308,7 +308,7 @@ class cl_sau_agendatransporte {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s124_d_saida_dia"])){ 
          $sql  .= $virgula." s124_d_saida = null ";
          $virgula = ",";
-         if(trim($this->s124_d_saida) == null ){ 
+         if(trim((string) $this->s124_d_saida) == null ){ 
            $this->erro_sql = " Campo Saída nao Informado.";
            $this->erro_campo = "s124_d_saida_dia";
            $this->erro_banco = "";
@@ -319,10 +319,10 @@ class cl_sau_agendatransporte {
          }
        }
      }
-     if(trim($this->s124_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_hora"])){ 
+     if(trim((string) $this->s124_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_hora"])){ 
        $sql  .= $virgula." s124_c_hora = '$this->s124_c_hora' ";
        $virgula = ",";
-       if(trim($this->s124_c_hora) == null ){ 
+       if(trim((string) $this->s124_c_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "s124_c_hora";
          $this->erro_banco = "";
@@ -332,14 +332,14 @@ class cl_sau_agendatransporte {
          return false;
        }
      }
-     if(trim($this->s124_c_passagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_passagem"])){ 
+     if(trim((string) $this->s124_c_passagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_passagem"])){ 
        $sql  .= $virgula." s124_c_passagem = '$this->s124_c_passagem' ";
        $virgula = ",";
      }
-     if(trim($this->s124_c_veiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_veiculo"])){ 
+     if(trim((string) $this->s124_c_veiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_c_veiculo"])){ 
        $sql  .= $virgula." s124_c_veiculo = '$this->s124_c_veiculo' ";
        $virgula = ",";
-       if(trim($this->s124_c_veiculo) == null ){ 
+       if(trim((string) $this->s124_c_veiculo) == null ){ 
          $this->erro_sql = " Campo Tipo Veículo nao Informado.";
          $this->erro_campo = "s124_c_veiculo";
          $this->erro_banco = "";
@@ -349,10 +349,10 @@ class cl_sau_agendatransporte {
          return false;
        }
      }
-     if(trim($this->s124_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s124_d_data_dia"] !="") ){ 
+     if(trim((string) $this->s124_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s124_d_data_dia"] !="") ){ 
        $sql  .= $virgula." s124_d_data = '$this->s124_d_data' ";
        $virgula = ",";
-       if(trim($this->s124_d_data) == null ){ 
+       if(trim((string) $this->s124_d_data) == null ){ 
          $this->erro_sql = " Campo Data Cadastro nao Informado.";
          $this->erro_campo = "s124_d_data_dia";
          $this->erro_banco = "";
@@ -365,7 +365,7 @@ class cl_sau_agendatransporte {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s124_d_data_dia"])){ 
          $sql  .= $virgula." s124_d_data = null ";
          $virgula = ",";
-         if(trim($this->s124_d_data) == null ){ 
+         if(trim((string) $this->s124_d_data) == null ){ 
            $this->erro_sql = " Campo Data Cadastro nao Informado.";
            $this->erro_campo = "s124_d_data_dia";
            $this->erro_banco = "";
@@ -376,10 +376,10 @@ class cl_sau_agendatransporte {
          }
        }
      }
-     if(trim($this->s124_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_login"])){ 
+     if(trim((string) $this->s124_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s124_i_login"])){ 
        $sql  .= $virgula." s124_i_login = $this->s124_i_login ";
        $virgula = ",";
-       if(trim($this->s124_i_login) == null ){ 
+       if(trim((string) $this->s124_i_login) == null ){ 
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "s124_i_login";
          $this->erro_banco = "";
@@ -397,25 +397,25 @@ class cl_sau_agendatransporte {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14339,'$this->s124_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s124_i_codigo"]) || $this->s124_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2523,14339,'".AddSlashes(pg_result($resaco,$conresaco,'s124_i_codigo'))."','$this->s124_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2523,14339,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s124_i_codigo'))."','$this->s124_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s124_i_numcgs"]) || $this->s124_i_numcgs != "")
-           $resac = db_query("insert into db_acount values($acount,2523,14340,'".AddSlashes(pg_result($resaco,$conresaco,'s124_i_numcgs'))."','$this->s124_i_numcgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2523,14340,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s124_i_numcgs'))."','$this->s124_i_numcgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s124_d_saida"]) || $this->s124_d_saida != "")
-           $resac = db_query("insert into db_acount values($acount,2523,14341,'".AddSlashes(pg_result($resaco,$conresaco,'s124_d_saida'))."','$this->s124_d_saida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2523,14341,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s124_d_saida'))."','$this->s124_d_saida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s124_c_hora"]) || $this->s124_c_hora != "")
-           $resac = db_query("insert into db_acount values($acount,2523,14342,'".AddSlashes(pg_result($resaco,$conresaco,'s124_c_hora'))."','$this->s124_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2523,14342,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s124_c_hora'))."','$this->s124_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s124_c_passagem"]) || $this->s124_c_passagem != "")
-           $resac = db_query("insert into db_acount values($acount,2523,14343,'".AddSlashes(pg_result($resaco,$conresaco,'s124_c_passagem'))."','$this->s124_c_passagem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2523,14343,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s124_c_passagem'))."','$this->s124_c_passagem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s124_c_veiculo"]) || $this->s124_c_veiculo != "")
-           $resac = db_query("insert into db_acount values($acount,2523,14345,'".AddSlashes(pg_result($resaco,$conresaco,'s124_c_veiculo'))."','$this->s124_c_veiculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2523,14345,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s124_c_veiculo'))."','$this->s124_c_veiculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s124_d_data"]) || $this->s124_d_data != "")
-           $resac = db_query("insert into db_acount values($acount,2523,14346,'".AddSlashes(pg_result($resaco,$conresaco,'s124_d_data'))."','$this->s124_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2523,14346,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s124_d_data'))."','$this->s124_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s124_i_login"]) || $this->s124_i_login != "")
-           $resac = db_query("insert into db_acount values($acount,2523,14347,'".AddSlashes(pg_result($resaco,$conresaco,'s124_i_login'))."','$this->s124_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2523,14347,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s124_i_login'))."','$this->s124_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -460,17 +460,17 @@ class cl_sau_agendatransporte {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14339,'$s124_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2523,14339,'','".AddSlashes(pg_result($resaco,$iresaco,'s124_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2523,14340,'','".AddSlashes(pg_result($resaco,$iresaco,'s124_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2523,14341,'','".AddSlashes(pg_result($resaco,$iresaco,'s124_d_saida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2523,14342,'','".AddSlashes(pg_result($resaco,$iresaco,'s124_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2523,14343,'','".AddSlashes(pg_result($resaco,$iresaco,'s124_c_passagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2523,14345,'','".AddSlashes(pg_result($resaco,$iresaco,'s124_c_veiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2523,14346,'','".AddSlashes(pg_result($resaco,$iresaco,'s124_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2523,14347,'','".AddSlashes(pg_result($resaco,$iresaco,'s124_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2523,14339,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s124_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2523,14340,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s124_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2523,14341,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s124_d_saida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2523,14342,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s124_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2523,14343,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s124_c_passagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2523,14345,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s124_c_veiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2523,14346,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s124_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2523,14347,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s124_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sau_agendatransporte
@@ -530,7 +530,7 @@ class cl_sau_agendatransporte {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sau_agendatransporte";
@@ -545,7 +545,7 @@ class cl_sau_agendatransporte {
    function sql_query ( $s124_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -568,7 +568,7 @@ class cl_sau_agendatransporte {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -581,7 +581,7 @@ class cl_sau_agendatransporte {
    function sql_query_file ( $s124_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -602,7 +602,7 @@ class cl_sau_agendatransporte {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -41,8 +41,7 @@ class cl_undmedhorario_ext extends cl_undmedhorario{
 	 * @return unknown - variável str_query com select montado
 	 */
 	function sql_calendario2($ano,$mes,$dia, $str_where, $chave_diasemana,$centralagenda){
-		$str_query =  cl_undmedhorario_ext::sql_query_ext( null,
-								" sd02_i_codigo, 
+		$str_query =  $this->sql_query_ext(null, " sd02_i_codigo, 
 								descrdepto,
 								sd27_i_codigo,
 								sd03_i_codigo,
@@ -63,9 +62,7 @@ class cl_undmedhorario_ext extends cl_undmedhorario{
 		            								)
 				                    and sd23_i_undmedhor= sd30_i_codigo				                    
 				                  group by sd23_d_consulta
-				               )::integer as total_agendado",
-				               "sd02_i_codigo, z01_nome, sd30_c_horaini",
-				               " $str_where
+				               )::integer as total_agendado", "sd02_i_codigo, z01_nome, sd30_c_horaini", " $str_where
 				               $centralagenda
 				               and sd30_i_diasemana = $chave_diasemana
 				               and ( sd30_d_valfinal is null or 
@@ -80,8 +77,7 @@ class cl_undmedhorario_ext extends cl_undmedhorario{
 							   					where sd06_i_especmed = sd27_i_codigo
 							   					 and '$ano/$mes/$dia' between sd06_d_inicio and sd06_d_fim
 							   					) 
-							   "    				
-							);
+							   ");
 		
 		return $str_query;
 	}
@@ -89,7 +85,7 @@ class cl_undmedhorario_ext extends cl_undmedhorario{
    function sql_query_ext ( $sd30_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -122,7 +118,7 @@ class cl_undmedhorario_ext extends cl_undmedhorario{
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

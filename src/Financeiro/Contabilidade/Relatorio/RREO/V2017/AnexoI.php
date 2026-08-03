@@ -35,14 +35,14 @@ class AnexoI extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     /**
      * @var \Instituicao[]
      */
-    private $aInstituicoesReservaContigente = array();
+    private $aInstituicoesReservaContigente = [];
 
     /**
      * @var \Instituicao[]
      */
-    private $aInstituicoesReservaRPPS = array();
+    private $aInstituicoesReservaRPPS = [];
 
-    protected $aLinhasProcessar = array();
+    protected $aLinhasProcessar = [];
 
     /**
      * AnexoV constructor.
@@ -54,7 +54,7 @@ class AnexoI extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     public function __construct($iAnoUsu, $iCodigoRelatorio, $iCodigoPeriodo)
     {
         parent::__construct($iAnoUsu, $iCodigoRelatorio, $iCodigoPeriodo);
-        $this->aLinhasProcessar = array(
+        $this->aLinhasProcessar = [
             static::LINHA_RECEITAS_EXCETO_INTRA_ORCAMENTARIAS_I,
             static::LINHA_RECEITAS_CORRENTES,
             static::LINHA_RECEITAS_INTRA_ORCAMENTARIAS_II,
@@ -67,7 +67,7 @@ class AnexoI extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
             static::LINHA_SUBTOTAL_DESPESAS_X,
             static::LINHA_SUBTOTAL_REFINANCIAMENTO_XII,
             static::LINHA_TOTAL_XIV
-        );
+        ];
     }
 
     /**
@@ -95,7 +95,7 @@ class AnexoI extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         foreach ($aInstituicao as $oInstituicao) {
             if (in_array(
                 $oInstituicao->getTipo(),
-                array(\Instituicao::TIPO_RPPS_EXCETO_AUTARQUIA, \Instituicao::TIPO_AUTARQUIA_RPPS)
+                [\Instituicao::TIPO_RPPS_EXCETO_AUTARQUIA, \Instituicao::TIPO_AUTARQUIA_RPPS]
             )) {
                 $this->aInstituicoesReservaRPPS[$oInstituicao->getCodigo()] = $oInstituicao->getCodigo();
             } else {
@@ -208,11 +208,11 @@ class AnexoI extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     protected function calcularSuplementacao()
     {
 
-        $aWhereSuperavit = array(
+        $aWhereSuperavit = [
             "o46_tiposup in (1008, 1003)",
             "o49_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'",
             "o46_instit in ({$this->getInstituicoes()})"
-        );
+        ];
         $oDaoOrcSuplem = new \cl_orcsuplem();
         $sSqlBuscaSuperavit = $oDaoOrcSuplem->sql_query_suplementacoes(
             null,
@@ -226,11 +226,11 @@ class AnexoI extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         }
 
 
-        $aWhereCreditos = array(
+        $aWhereCreditos = [
             "o46_tiposup in (1012, 1013)",
             "o49_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'",
             "o46_instit in ({$this->getInstituicoes()})"
-        );
+        ];
         $sSqlBuscaCreditos = $oDaoOrcSuplem->sql_query_suplementacoes(
             null,
             "coalesce(sum(o47_valor), 0) as total",

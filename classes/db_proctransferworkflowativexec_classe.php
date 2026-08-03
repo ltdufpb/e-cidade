@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE proctransferworkflowativexec
 class cl_proctransferworkflowativexec { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p46_sequencial = 0; 
-   var $p46_proctransfer = 0; 
-   var $p46_workflowativexec = 0; 
+   public $p46_sequencial = 0; 
+   public $p46_proctransfer = 0; 
+   public $p46_workflowativexec = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p46_sequencial = int4 = Código Sequencial 
                  p46_proctransfer = int4 = Código Processo Transferência 
                  p46_workflowativexec = int4 = Código Work Flow Atividade Execução 
                  ";
    //funcao construtor da classe 
-   function cl_proctransferworkflowativexec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("proctransferworkflowativexec"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_proctransferworkflowativexec {
          $this->erro_status = "0";
          return false; 
        }
-       $this->p46_sequencial = pg_result($result,0,0); 
+       $this->p46_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from proctransferworkflowativexec_p46_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p46_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p46_sequencial)){
          $this->erro_sql = " Campo p46_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_proctransferworkflowativexec {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "proctransferworkflowativexec ($this->p46_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "proctransferworkflowativexec já Cadastrado";
@@ -166,12 +166,12 @@ class cl_proctransferworkflowativexec {
      $resaco = $this->sql_record($this->sql_query_file($this->p46_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17864,'$this->p46_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3154,17864,'','".AddSlashes(pg_result($resaco,0,'p46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3154,17865,'','".AddSlashes(pg_result($resaco,0,'p46_proctransfer'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3154,17866,'','".AddSlashes(pg_result($resaco,0,'p46_workflowativexec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3154,17864,'','".AddSlashes(pg_fetch_result($resaco,0,'p46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3154,17865,'','".AddSlashes(pg_fetch_result($resaco,0,'p46_proctransfer'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3154,17866,'','".AddSlashes(pg_fetch_result($resaco,0,'p46_workflowativexec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_proctransferworkflowativexec {
       $this->atualizacampos();
      $sql = " update proctransferworkflowativexec set ";
      $virgula = "";
-     if(trim($this->p46_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p46_sequencial"])){ 
+     if(trim((string) $this->p46_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p46_sequencial"])){ 
        $sql  .= $virgula." p46_sequencial = $this->p46_sequencial ";
        $virgula = ",";
-       if(trim($this->p46_sequencial) == null ){ 
+       if(trim((string) $this->p46_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "p46_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_proctransferworkflowativexec {
          return false;
        }
      }
-     if(trim($this->p46_proctransfer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p46_proctransfer"])){ 
+     if(trim((string) $this->p46_proctransfer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p46_proctransfer"])){ 
        $sql  .= $virgula." p46_proctransfer = $this->p46_proctransfer ";
        $virgula = ",";
-       if(trim($this->p46_proctransfer) == null ){ 
+       if(trim((string) $this->p46_proctransfer) == null ){ 
          $this->erro_sql = " Campo Código Processo Transferência nao Informado.";
          $this->erro_campo = "p46_proctransfer";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_proctransferworkflowativexec {
          return false;
        }
      }
-     if(trim($this->p46_workflowativexec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p46_workflowativexec"])){ 
+     if(trim((string) $this->p46_workflowativexec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p46_workflowativexec"])){ 
        $sql  .= $virgula." p46_workflowativexec = $this->p46_workflowativexec ";
        $virgula = ",";
-       if(trim($this->p46_workflowativexec) == null ){ 
+       if(trim((string) $this->p46_workflowativexec) == null ){ 
          $this->erro_sql = " Campo Código Work Flow Atividade Execução nao Informado.";
          $this->erro_campo = "p46_workflowativexec";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_proctransferworkflowativexec {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17864,'$this->p46_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p46_sequencial"]) || $this->p46_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3154,17864,'".AddSlashes(pg_result($resaco,$conresaco,'p46_sequencial'))."','$this->p46_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3154,17864,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p46_sequencial'))."','$this->p46_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p46_proctransfer"]) || $this->p46_proctransfer != "")
-           $resac = db_query("insert into db_acount values($acount,3154,17865,'".AddSlashes(pg_result($resaco,$conresaco,'p46_proctransfer'))."','$this->p46_proctransfer',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3154,17865,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p46_proctransfer'))."','$this->p46_proctransfer',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p46_workflowativexec"]) || $this->p46_workflowativexec != "")
-           $resac = db_query("insert into db_acount values($acount,3154,17866,'".AddSlashes(pg_result($resaco,$conresaco,'p46_workflowativexec'))."','$this->p46_workflowativexec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3154,17866,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p46_workflowativexec'))."','$this->p46_workflowativexec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_proctransferworkflowativexec {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17864,'$p46_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3154,17864,'','".AddSlashes(pg_result($resaco,$iresaco,'p46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3154,17865,'','".AddSlashes(pg_result($resaco,$iresaco,'p46_proctransfer'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3154,17866,'','".AddSlashes(pg_result($resaco,$iresaco,'p46_workflowativexec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3154,17864,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p46_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3154,17865,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p46_proctransfer'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3154,17866,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p46_workflowativexec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from proctransferworkflowativexec
@@ -345,7 +345,7 @@ class cl_proctransferworkflowativexec {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:proctransferworkflowativexec";
@@ -360,7 +360,7 @@ class cl_proctransferworkflowativexec {
    function sql_query ( $p46_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_proctransferworkflowativexec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,7 +397,7 @@ class cl_proctransferworkflowativexec {
    function sql_query_file ( $p46_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_proctransferworkflowativexec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

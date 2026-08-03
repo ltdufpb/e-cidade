@@ -9,11 +9,11 @@
      require_once(modification("libs/db_conecta.php"));
      require_once(modification("libs/db_sessoes.php"));
      //require_once(modification("libs/db_usuariosonline.php"));
-     if (!empty($HTTP_POST_VARS)) {
-      db_postmemory($HTTP_POST_VARS);
+     if (!empty($_POST)) {
+      db_postmemory($_POST);
      }
-     if (!empty($HTTP_SERVER_VARS)) {
-      db_postmemory($HTTP_SERVER_VARS);
+     if (!empty($_SERVER)) {
+      db_postmemory($_SERVER);
      }
      require_once(modification('fpdf151/fpdf.php'));
   }
@@ -41,32 +41,32 @@
 
    // ################################# Initialization
 
-      var $wLine; // Maximum width of the line
-      var $hLine; // Height of the line
-      var $Text; // Text to display
-      var $border;
-      var $align; // Justification of the text
-      var $fill;
-      var $Padding;
-      var $lPadding;
-      var $tPadding;
-      var $bPadding;
-      var $rPadding;
-      var $TagStyle; // Style for each tag
-      var $Indent;
-      var $Space; // Minimum space between words
-      var $PileStyle; 
-      var $Line2Print; // Line to display
-      var $NextLineBegin; // Buffer between lines 
-      var $TagName;
-      var $Delta; // Maximum width minus width
-      var $StringLength; 
-      var $LineLength;
-      var $wTextLine; // Width minus paddings
-      var $nbSpace; // Number of spaces in the line
-      var $Xini; // Initial position
-      var $href; // Current URL
-      var $TagHref; // URL for a cell
+      public $wLine; // Maximum width of the line
+      public $hLine; // Height of the line
+      public $Text; // Text to display
+      public $border;
+      public $align; // Justification of the text
+      public $fill;
+      public $Padding;
+      public $lPadding;
+      public $tPadding;
+      public $bPadding;
+      public $rPadding;
+      public $TagStyle; // Style for each tag
+      public $Indent;
+      public $Space; // Minimum space between words
+      public $PileStyle; 
+      public $Line2Print; // Line to display
+      public $NextLineBegin; // Buffer between lines 
+      public $TagName;
+      public $Delta; // Maximum width minus width
+      public $StringLength; 
+      public $LineLength;
+      public $wTextLine; // Width minus paddings
+      public $nbSpace; // Number of spaces in the line
+      public $Xini; // Initial position
+      public $href; // Current URL
+      public $TagHref; // URL for a cell
 
       // ################################# Public Functions
 
@@ -106,7 +106,7 @@
   global $logo;
 	//echo $sql;
   db_fieldsmemory($result,0);
-  $db12_extenso = pg_result($result,0,"db12_extenso");
+  $db12_extenso = pg_fetch_result($result,0,"db12_extenso");
   /// seta a margem esquerda que veio do relatorio
   $S = $this->lMargin;
   $this->SetLeftMargin(10);
@@ -135,32 +135,32 @@ function Footer() {
   global $result;
   global $url;
     //Position at 1.5 cm from bottom
-    
+
     $this->SetFont('Arial','',5);
     $this->text(10,289,'Base: '.@$GLOBALS["DB_NBASE"]);
     $this->SetFont('Arial','I',5);
     $this->SetY(-10);
     $nome = @$GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"];
-	$nome = substr($nome,strrpos($nome,"/")+1);
+	$nome = substr((string) $nome,strrpos((string) $nome,"/")+1);
 	$result_nomeusu = db_query("select nome as nomeusu from db_usuarios where id_usuario =".db_getsession("DB_id_usuario"));
-	if (pg_numrows($result_nomeusu)>0){
-	  	$nomeusu = pg_result($result_nomeusu,0,0);
+	if (pg_num_rows($result_nomeusu)>0){
+	  	$nomeusu = pg_fetch_result($result_nomeusu,0,0);
 	}
 	if (isset($nomeusu)&&$nomeusu!=""){
 	   	$emissor = $nomeusu;
 	}else{
 	   	$emissor = @$GLOBALS["DB_login"];
 	}	
-	
+
     /*
     * Modificação para exibir o caminho do menu 
     * na base do relatório
     */         
       $sSqlMenuAcess = "SELECT fc_montamenu(funcao) as menu from db_itensmenu where id_item =".db_getsession("DB_itemmenu_acessado");
       $rsMenuAcess   = db_query($sSqlMenuAcess);
-      $sMenuAcess    = substr(pg_result($rsMenuAcess,0,"menu"),0,50);
-	
-    $this->Cell(0,10,$url. '  '.$sMenuAcess.'  '.$nome.'  Emissor: '.substr(ucwords(strtolower($emissor)),0,30).'  Exercício: '.db_getsession("DB_anousu").
+      $sMenuAcess    = substr(pg_fetch_result($rsMenuAcess,0,"menu"),0,50);
+
+    $this->Cell(0,10,$url. '  '.$sMenuAcess.'  '.$nome.'  Emissor: '.substr(ucwords(strtolower((string) $emissor)),0,30).'  Exercício: '.db_getsession("DB_anousu").
                          '   Data: '.date("d-m-Y",db_getsession("DB_datausu"))." - ".date("H:i:s"),"T",0,'L');    
 
     $this->Cell(0,10,'Página '.$this->PageNo().' de {nb}',0,1,'R');
@@ -173,8 +173,8 @@ function Footer() {
     {
         $this->wLine=$w;
         $this->hLine=$h;
-        $this->Text=trim($txt);
-        $this->Text=ereg_replace("\n|\r|\t","",$this->Text);
+        $this->Text=trim((string) $txt);
+        $this->Text=preg_replace("#\n|\r|\t#m","",$this->Text);
         $this->border=$border;
         $this->align=$align;
         $this->fill=$fill;
@@ -182,8 +182,8 @@ function Footer() {
 
         $this->Xini=$this->GetX();
         $this->href="";
-        $this->PileStyle=array();        
-        $this->TagHref=array();
+        $this->PileStyle=[];        
+        $this->TagHref=[];
         $this->LastLine=false;
 
         $this->SetSpace();
@@ -203,11 +203,11 @@ function Footer() {
 
     function SetStyle($tag,$family,$style,$size,$color,$indent=-1)
     {
-         $tag=trim($tag);
-         $this->TagStyle[$tag]['family']=trim($family);
-         $this->TagStyle[$tag]['style']=trim($style);
-         $this->TagStyle[$tag]['size']=trim($size);
-         $this->TagStyle[$tag]['color']=trim($color);
+         $tag=trim((string) $tag);
+         $this->TagStyle[$tag]['family']=trim((string) $family);
+         $this->TagStyle[$tag]['style']=trim((string) $style);
+         $this->TagStyle[$tag]['size']=trim((string) $size);
+         $this->TagStyle[$tag]['color']=trim((string) $color);
          $this->TagStyle[$tag]['indent']=$indent;
     }
 
@@ -225,8 +225,8 @@ function Footer() {
 
     function Padding()
     {
-        if(ereg("^.+,",$this->Padding)) {
-            $tab=explode(",",$this->Padding);
+        if(preg_match("#^.+,#m",(string) $this->Padding)) {
+            $tab=explode(",",(string) $this->Padding);
             $this->lPadding=$tab[0];
             $this->tPadding=$tab[1];
             if(isset($tab[2]))
@@ -281,12 +281,12 @@ function Footer() {
 
     function DoStyle($tag) // Applies a style
     {
-        $tag=trim($tag);
+        $tag=trim((string) $tag);
         $this->SetFont($this->TagStyle[$tag]['family'],
             $this->TagStyle[$tag]['style'],
             $this->TagStyle[$tag]['size']);
 
-        $tab=explode(",",$this->TagStyle[$tag]['color']);
+        $tab=explode(",",(string) $this->TagStyle[$tag]['color']);
         if(count($tab)==1)
             $this->SetTextColor($tab[0]);
         else
@@ -296,7 +296,7 @@ function Footer() {
 
     function FindStyle($tag,$ind) // Inheritance from parent elements
     {
-        $tag=trim($tag);
+        $tag=trim((string) $tag);
 
         // Family
         if($this->TagStyle[$tag]['family']!="")
@@ -304,9 +304,8 @@ function Footer() {
         else
         {
             reset($this->PileStyle);
-            while(list($k,$val)=each($this->PileStyle))
-            {
-                $val=trim($val);
+            foreach ($this->PileStyle as $k => $val) {
+                $val=trim((string) $val);
                 if($this->TagStyle[$val]['family']!="") {
                     $family=$this->TagStyle[$val]['family'];
                     break;
@@ -314,27 +313,26 @@ function Footer() {
             }
         }
 
-        $style1=strtoupper($this->TagStyle[$tag]['style']);
+        $style1=strtoupper((string) $this->TagStyle[$tag]['style']);
         if($style1=="N")
             $style="";
         else
         {
             reset($this->PileStyle);
-            while(list($k,$val)=each($this->PileStyle))
-            {
-                $val=trim($val);
-                $style1=strtoupper($this->TagStyle[$val]['style']);
+            foreach ($this->PileStyle as $k => $val) {
+                $val=trim((string) $val);
+                $style1=strtoupper((string) $this->TagStyle[$val]['style']);
                 if($style1=="N")
                     break;
                 else
                 {
-                    if(ereg("B",$style1))
+                    if(preg_match("#B#m",$style1))
                         $style['b']="B";
-                    if(ereg("I",$style1))
+                    if(preg_match("#I#m",$style1))
                         $style['i']="I";
-                    if(ereg("U",$style1))
+                    if(preg_match("#U#m",$style1))
                         $style['u']="U";
-                } 
+                }
             }
             $style=$style['b'].$style['i'].$style['u'];
         }
@@ -345,9 +343,8 @@ function Footer() {
         else
         {
             reset($this->PileStyle);
-            while(list($k,$val)=each($this->PileStyle))
-            {
-                $val=trim($val);
+            foreach ($this->PileStyle as $k => $val) {
+                $val=trim((string) $val);
                 if($this->TagStyle[$val]['size']!=0) {
                     $size=$this->TagStyle[$val]['size'];
                     break;
@@ -361,16 +358,15 @@ function Footer() {
         else
         {
             reset($this->PileStyle);
-            while(list($k,$val)=each($this->PileStyle))
-            {
-                $val=trim($val);
+            foreach ($this->PileStyle as $k => $val) {
+                $val=trim((string) $val);
                 if($this->TagStyle[$val]['color']!="") {
                     $color=$this->TagStyle[$val]['color'];
                     break;
                 }
             }
         }
-         
+
         // Result
         $this->TagStyle[$ind]['family']=$family;
         $this->TagStyle[$ind]['style']=$style;
@@ -382,24 +378,23 @@ function Footer() {
 
     function Parser($text)
     {
-        $tab=array();
+        $tab=[];
         // Closing tag
-        if(ereg("^(</([^>]+)>).*",$text,$regs)) {
+        if(preg_match("#^(<\\/([^>]+)>).*#m",(string) $text,$regs)) {
             $tab[1]="c";
-            $tab[2]=trim($regs[2]);
+            $tab[2]=trim((string) $regs[2]);
         }
         // Opening tag
-        else if(ereg("^(<([^>]+)>).*",$text,$regs)) {
-            $regs[2]=ereg_replace("^a","a ",$regs[2]);
+        else if(preg_match("#^(<([^>]+)>).*#m",(string) $text,$regs)) {
+            $regs[2]=preg_replace("#^a#m","a ",(string) $regs[2]);
             $tab[1]="o";
             $tab[2]=trim($regs[2]);
 
             // Presence of attributes
-            if(ereg("(.+) (.+)='(.+)' *",$regs[2])) {
-                $tab1=split(" +",$regs[2]);
-                $tab[2]=trim($tab1[0]);
-                while(list($i,$couple)=each($tab1))
-                {
+            if(preg_match("#(.+) (.+)='(.+)' *#m",$regs[2])) {
+                $tab1=preg_split("# +#m",$regs[2]);
+                $tab[2]=trim((string) $tab1[0]);
+                foreach ($tab1 as $i => $couple) {
                     if($i>0) {
                         $tab2=explode("=",$couple);
                         $tab2[0]=trim($tab2[0]);
@@ -411,19 +406,19 @@ function Footer() {
             }
         }
          // Space
-         else if(ereg("^( ).*",$text,$regs)) {
+         else if(preg_match("#^( ).*#m",(string) $text,$regs)) {
             $tab[1]="s";
             $tab[2]=$regs[1];
         }
         // Text
-        else if(ereg("^([^< ]+).*",$text,$regs)) {
+        else if(preg_match("#^([^< ]+).*#m",(string) $text,$regs)) {
             $tab[1]="t";
-            $tab[2]=trim($regs[1]);
+            $tab[2]=trim((string) $regs[1]);
         }
         // Pruning
         $begin=strlen($regs[1]);
-        $end=strlen($text);
-        $text=substr($text, $begin, $end);
+        $end=strlen((string) $text);
+        $text=substr((string) $text, $begin, $end);
         $tab[0]=$text;
 
         return $tab;
@@ -433,13 +428,13 @@ function Footer() {
     function MakeLine() // Makes a line
     {
         $this->Text.=" ";
-        $this->LineLength=array();
-        $this->TagHref=array();
+        $this->LineLength=[];
+        $this->TagHref=[];
         $Length=0;
         $this->nbSpace=0;
 
         $i=$this->BeginLine();
-        $this->TagName=array();
+        $this->TagName=[];
 
         if($i==0) {
             $Length=$this->StringLength[0];
@@ -477,7 +472,7 @@ function Footer() {
                 $this->TagName[$i+1]=1;
                 if($this->TagStyle[$tab[2]]['indent']!=-1) {
                     $this->LastLine=true;
-                    $this->Text=trim($this->Text);
+                    $this->Text=trim((string) $this->Text);
                     break;
                 }
                 if($tab[2]=="a")
@@ -504,7 +499,7 @@ function Footer() {
 
         }
 
-        trim($this->Text);
+        trim((string) $this->Text);
         if($Length>$this->wTextLine || $this->LastLine==true)
             $this->EndLine();
     }
@@ -512,20 +507,20 @@ function Footer() {
 
     function BeginLine()
     {
-        $this->Line2Print=array();
-        $this->StringLength=array();
+        $this->Line2Print=[];
+        $this->StringLength=[];
         $this->FindStyle($this->PileStyle[0],0);
         $this->DoStyle(0);
 
         if(count($this->NextLineBegin)>0) {
             $this->Line2Print[0]=$this->NextLineBegin['text'];
             $this->StringLength[0]=$this->NextLineBegin['length'];
-            $this->NextLineBegin=array();
+            $this->NextLineBegin=[];
             $i=0;
         }
         else {
-            ereg("^(( *(<([^>]+)>)* *)*)(.*)",$this->Text,$regs);
-            $regs[1]=ereg_replace(" ", "", $regs[1]);
+            preg_match("#^(( *(<([^>]+)>)* *)*)(.*)#m",(string) $this->Text,$regs);
+            $regs[1]=preg_replace("# #m", "", (string) $regs[1]);
             $this->Text=$regs[1].$regs[5];
             $i=-1;
         }
@@ -631,20 +626,20 @@ function Footer() {
 
 
 function db_extenso($valor=0, $maiusculas=false) {
- 
-    $rt = '';
-    $singular = array("centavo", "real", "mil", "milhão", "bilhão", "trilhão", "quatrilhão"); 
-    $plural = array("centavos", "reais", "mil", "milhões", "bilhões", "trilhões", 
-"quatrilhões"); 
 
-    $c = array("", "cem", "duzentos", "trezentos", "quatrocentos", 
-"quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"); 
-    $d = array("", "dez", "vinte", "trinta", "quarenta", "cinquenta", 
-"sessenta", "setenta", "oitenta", "noventa"); 
-    $d10 = array("dez", "onze", "doze", "treze", "quatorze", "quinze", 
-"dezesseis", "dezesete", "dezoito", "dezenove"); 
-    $u = array("", "um", "dois", "três", "quatro", "cinco", "seis", 
-"sete", "oito", "nove"); 
+    $rt = '';
+    $singular = ["centavo", "real", "mil", "milhão", "bilhão", "trilhão", "quatrilhão"]; 
+    $plural = ["centavos", "reais", "mil", "milhões", "bilhões", "trilhões", 
+"quatrilhões"]; 
+
+    $c = ["", "cem", "duzentos", "trezentos", "quatrocentos", 
+"quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"]; 
+    $d = ["", "dez", "vinte", "trinta", "quarenta", "cinquenta", 
+"sessenta", "setenta", "oitenta", "noventa"]; 
+    $d10 = ["dez", "onze", "doze", "treze", "quatorze", "quinze", 
+"dezesseis", "dezesete", "dezoito", "dezenove"]; 
+    $u = ["", "um", "dois", "três", "quatro", "cinco", "seis", 
+"sete", "oito", "nove"]; 
 
     $z=0; 
 
@@ -673,13 +668,13 @@ $ru) ? " e " : "").$ru;
     } 
 
          if(!$maiusculas){ 
-                          return($rt ? $rt : "zero"); 
+                          return($rt ?: "zero"); 
          } else { /*
 	                 Trocando o " E " por " e ", fica muito + apresentável! 
                      Rodrigo Cerqueira, rodrigobc@fte.com.br
                     */
-			  if ($rt) $rt=ereg_replace(" E "," e ",ucwords($rt));
-                          return (($rt) ? ($rt) : "Zero"); 
+			  if ($rt) $rt=preg_replace("# E #m"," e ",ucwords($rt));
+                          return ($rt ?: "Zero"); 
          } 
 
 } 

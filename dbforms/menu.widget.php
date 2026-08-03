@@ -27,27 +27,21 @@
 
 class menuItem {
     
-  private $descricao;
-  private $acao;
   private $imagem;
-  private $id;
-  private $aItens = array();
+  private $aItens = [];
   /**
    * Função construtora dos iten
    *
-   * @param string $sDescricao label do menu
-   * @param string $sAction  acao a ser executada
-   * @param string $sId id do menu
-   * @param string $sImage path da imagem 
+   * @param string $descricao label do menu
+   * @param string $acao acao a ser executada
+   * @param string $id id do menu
+   * @param string $sImage path da imagem
    */
-  function __construct($sDescricao, $sAction='', $sId='', $sImage = null) {
+  function __construct(private $descricao, private $acao='', private $id='', $sImage = null) {
         
     if ($sImage != '') {
        $sImage = "<img src=\"$sImage\" border=\"0\">"; 
     }
-    $this->descricao = $sDescricao;
-    $this->acao      = $sAction;
-    $this->id        = $sId;
     $this->imagem    = $sImage;
   }
 
@@ -81,10 +75,9 @@ class menuItem {
 class menuBar {
     
   private $menu;
-  private $sId;
-  private $aItens = array();
-  function __construct($sName) {
-    $this->sId  = $sName;
+  private $aItens = [];
+  function __construct(private $sId)
+  {
   }
     
   function addButton (menuButton $menuButton) {
@@ -121,14 +114,9 @@ class menuBar {
 
 class menuButton {
     
-  private $menu;
-  private $action = "";
-  private $aItens = array();
-  function __construct($sCaption, $sAction = "") {
-
-    $this->menu   = $sCaption;
-    $this->action = $sAction;
-    
+  private $aItens = [];
+  function __construct(private $menu, private $action = "")
+  {
   }
     
   function addItem(menuItem $oMenuItem) {

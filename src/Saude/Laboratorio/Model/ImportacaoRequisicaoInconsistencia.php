@@ -113,10 +113,10 @@ class ImportacaoRequisicaoInconsistencia
      */
     public function toArray()
     {
-        return array(
+        return [
             'la64_sequencial' => $this->getId(),
             'la64_requisicao' => $this->getIdRequisicao(),
             'la64_inconsistencias' => $this->getInconsistencias()
-        );
+        ];
     }
 }

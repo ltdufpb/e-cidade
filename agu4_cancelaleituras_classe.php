@@ -297,7 +297,7 @@ class cl_cancelaleituras {
     $this->iUsuario = db_getsession ( "DB_id_usuario" );
     $this->dData = date ( "d/m/Y" );
     $this->dHora = date ( "H:i" );
-    $this->pagina_retorno = basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] );
+    $this->pagina_retorno = basename ( (string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] );
   
   }
   

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_financiamento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_financiamento = new cl_sau_financiamento;
 $clsau_financiamento->rotulo->label("sd65_i_codigo");
 $clsau_financiamento->rotulo->label("sd65_c_nome");
@@ -98,9 +98,9 @@ $clsau_financiamento->rotulo->label("sd65_c_nome");
         }else{
            $sql = $clsau_financiamento->sql_query("",$campos,"sd65_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd65_c_nome)){
-          $repassa = array("chave_sd65_i_codigo"=>$chave_sd65_i_codigo,"chave_sd65_c_nome"=>$chave_sd65_c_nome);
+          $repassa = ["chave_sd65_i_codigo"=>$chave_sd65_i_codigo,"chave_sd65_c_nome"=>$chave_sd65_c_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

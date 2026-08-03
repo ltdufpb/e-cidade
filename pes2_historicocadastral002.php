@@ -33,7 +33,7 @@ $oGet = db_utils::postMemory($_GET);
 
 
 $sOrdem = "";
-$aWhere = array();
+$aWhere = [];
 
 $aWhere[] = " rh02_instit = ".db_getsession("DB_instit");
 
@@ -152,7 +152,7 @@ if ($iNumRows == 0){
 /**
  *  Pegar dados do SQL e forma a estrutura de dados
  */
-$aPessoa = array();
+$aPessoa = [];
 
 /**
  * Passa os resultados da query para o Array $aPessoa já fazendo o teste de salario e tipo
@@ -272,8 +272,8 @@ foreach ( $aPessoa as $oPessoa ) {
 	    $oPdf->SetFont('arial','',7);
 	    $oPdf->cell(25,$iAlt,db_formatar( $oItens->rh01_admiss , "d")                    ,0,0,"C",0);
 	    $oPdf->cell(35,$iAlt,db_mes($oItens->rh02_mesusu)."/".$oItens->rh02_anousu       ,0,0,"L",0); 
-	    $oPdf->cell(75,$iAlt,$oItens->r70_estrut." - ".substr($oItens->r70_descr,0,35)   ,0,0,"L",0); 
-	    $oPdf->cell(55,$iAlt,$oItens->rh02_funcao." - ".substr($oItens->rh37_descr,0,25) ,0,0,"L",0); 
+	    $oPdf->cell(75,$iAlt,$oItens->r70_estrut." - ".substr((string) $oItens->r70_descr,0,35)   ,0,0,"L",0); 
+	    $oPdf->cell(55,$iAlt,$oItens->rh02_funcao." - ".substr((string) $oItens->rh37_descr,0,25) ,0,0,"L",0); 
 	    $oPdf->cell(30,$iAlt,$oItens->salario                                            ,0,0,"R",0); 
 	    $oPdf->cell(45,$iAlt,$oItens->tipo                                               ,0,1,"C",0);  
 	    

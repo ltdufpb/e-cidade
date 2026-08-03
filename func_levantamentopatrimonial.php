@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_levantamentopatrimonial_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllevantamentopatrimonial = new cl_levantamentopatrimonial;
 $cllevantamentopatrimonial->rotulo->label("p13_sequencial");
 $cllevantamentopatrimonial->rotulo->label("p13_departamento");
@@ -54,9 +54,9 @@ $cllevantamentopatrimonial->rotulo->label("p13_departamento");
         } else {
           $sql = $cllevantamentopatrimonial->sql_query("", $campos, "p13_sequencial", "");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_p13_sequencial)) {
-          $repassa = array("chave_p13_sequencial" => $chave_p13_sequencial, "chave_p13_sequencial" => $chave_p13_sequencial);
+          $repassa = ["chave_p13_sequencial" => $chave_p13_sequencial, "chave_p13_sequencial" => $chave_p13_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

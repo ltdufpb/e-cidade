@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE aguacoletorexportadadosfoto
 class cl_aguacoletorexportadadosfoto { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x53_sequencial = 0; 
-   var $x53_usuario = 0; 
-   var $x53_aguacoletorexportadados = 0; 
-   var $x53_oidfoto = 0; 
-   var $x53_data_dia = null; 
-   var $x53_data_mes = null; 
-   var $x53_data_ano = null; 
-   var $x53_data = null; 
-   var $x53_hora = null; 
+   public $x53_sequencial = 0; 
+   public $x53_usuario = 0; 
+   public $x53_aguacoletorexportadados = 0; 
+   public $x53_oidfoto = 0; 
+   public $x53_data_dia = null; 
+   public $x53_data_mes = null; 
+   public $x53_data_ano = null; 
+   public $x53_data = null; 
+   public $x53_hora = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x53_sequencial = int4 = Código Imagem 
                  x53_usuario = int4 = Cod. Usuário 
                  x53_aguacoletorexportadados = int8 = Código Exportação Dados 
@@ -61,10 +61,10 @@ class cl_aguacoletorexportadadosfoto {
                  x53_hora = varchar(5) = Hora 
                  ";
    //funcao construtor da classe 
-   function cl_aguacoletorexportadadosfoto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacoletorexportadadosfoto"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_aguacoletorexportadadosfoto {
          $this->erro_status = "0";
          return false; 
        }
-       $this->x53_sequencial = pg_result($result,0,0); 
+       $this->x53_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from aguacoletorexportadadosfoto_x53_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $x53_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $x53_sequencial)){
          $this->erro_sql = " Campo x53_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_aguacoletorexportadadosfoto {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "aguacoletorexportadadosfoto ($this->x53_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "aguacoletorexportadadosfoto já Cadastrado";
@@ -218,15 +218,15 @@ class cl_aguacoletorexportadadosfoto {
      $resaco = $this->sql_record($this->sql_query_file($this->x53_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16706,'$this->x53_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2937,16706,'','".AddSlashes(pg_result($resaco,0,'x53_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2937,16707,'','".AddSlashes(pg_result($resaco,0,'x53_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2937,16708,'','".AddSlashes(pg_result($resaco,0,'x53_aguacoletorexportadados'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2937,16709,'','".AddSlashes(pg_result($resaco,0,'x53_oidfoto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2937,16710,'','".AddSlashes(pg_result($resaco,0,'x53_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2937,16711,'','".AddSlashes(pg_result($resaco,0,'x53_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2937,16706,'','".AddSlashes(pg_fetch_result($resaco,0,'x53_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2937,16707,'','".AddSlashes(pg_fetch_result($resaco,0,'x53_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2937,16708,'','".AddSlashes(pg_fetch_result($resaco,0,'x53_aguacoletorexportadados'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2937,16709,'','".AddSlashes(pg_fetch_result($resaco,0,'x53_oidfoto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2937,16710,'','".AddSlashes(pg_fetch_result($resaco,0,'x53_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2937,16711,'','".AddSlashes(pg_fetch_result($resaco,0,'x53_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_aguacoletorexportadadosfoto {
       $this->atualizacampos();
      $sql = " update aguacoletorexportadadosfoto set ";
      $virgula = "";
-     if(trim($this->x53_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_sequencial"])){ 
+     if(trim((string) $this->x53_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_sequencial"])){ 
        $sql  .= $virgula." x53_sequencial = $this->x53_sequencial ";
        $virgula = ",";
-       if(trim($this->x53_sequencial) == null ){ 
+       if(trim((string) $this->x53_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Imagem nao Informado.";
          $this->erro_campo = "x53_sequencial";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_aguacoletorexportadadosfoto {
          return false;
        }
      }
-     if(trim($this->x53_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_usuario"])){ 
+     if(trim((string) $this->x53_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_usuario"])){ 
        $sql  .= $virgula." x53_usuario = $this->x53_usuario ";
        $virgula = ",";
-       if(trim($this->x53_usuario) == null ){ 
+       if(trim((string) $this->x53_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "x53_usuario";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_aguacoletorexportadadosfoto {
          return false;
        }
      }
-     if(trim($this->x53_aguacoletorexportadados)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_aguacoletorexportadados"])){ 
+     if(trim((string) $this->x53_aguacoletorexportadados)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_aguacoletorexportadados"])){ 
        $sql  .= $virgula." x53_aguacoletorexportadados = $this->x53_aguacoletorexportadados ";
        $virgula = ",";
-       if(trim($this->x53_aguacoletorexportadados) == null ){ 
+       if(trim((string) $this->x53_aguacoletorexportadados) == null ){ 
          $this->erro_sql = " Campo Código Exportação Dados nao Informado.";
          $this->erro_campo = "x53_aguacoletorexportadados";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_aguacoletorexportadadosfoto {
          return false;
        }
      }
-     if(trim($this->x53_oidfoto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_oidfoto"])){ 
+     if(trim((string) $this->x53_oidfoto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_oidfoto"])){ 
        $sql  .= $virgula." x53_oidfoto = $this->x53_oidfoto ";
        $virgula = ",";
-       if(trim($this->x53_oidfoto) == null ){ 
+       if(trim((string) $this->x53_oidfoto) == null ){ 
          $this->erro_sql = " Campo Imagem nao Informado.";
          $this->erro_campo = "x53_oidfoto";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_aguacoletorexportadadosfoto {
          return false;
        }
      }
-     if(trim($this->x53_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x53_data_dia"] !="") ){ 
+     if(trim((string) $this->x53_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x53_data_dia"] !="") ){ 
        $sql  .= $virgula." x53_data = '$this->x53_data' ";
        $virgula = ",";
-       if(trim($this->x53_data) == null ){ 
+       if(trim((string) $this->x53_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "x53_data_dia";
          $this->erro_banco = "";
@@ -303,7 +303,7 @@ class cl_aguacoletorexportadadosfoto {
        if(isset($GLOBALS["HTTP_POST_VARS"]["x53_data_dia"])){ 
          $sql  .= $virgula." x53_data = null ";
          $virgula = ",";
-         if(trim($this->x53_data) == null ){ 
+         if(trim((string) $this->x53_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "x53_data_dia";
            $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_aguacoletorexportadadosfoto {
          }
        }
      }
-     if(trim($this->x53_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_hora"])){ 
+     if(trim((string) $this->x53_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x53_hora"])){ 
        $sql  .= $virgula." x53_hora = '$this->x53_hora' ";
        $virgula = ",";
-       if(trim($this->x53_hora) == null ){ 
+       if(trim((string) $this->x53_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "x53_hora";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_aguacoletorexportadadosfoto {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16706,'$this->x53_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x53_sequencial"]) || $this->x53_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2937,16706,'".AddSlashes(pg_result($resaco,$conresaco,'x53_sequencial'))."','$this->x53_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2937,16706,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x53_sequencial'))."','$this->x53_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x53_usuario"]) || $this->x53_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,2937,16707,'".AddSlashes(pg_result($resaco,$conresaco,'x53_usuario'))."','$this->x53_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2937,16707,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x53_usuario'))."','$this->x53_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x53_aguacoletorexportadados"]) || $this->x53_aguacoletorexportadados != "")
-           $resac = db_query("insert into db_acount values($acount,2937,16708,'".AddSlashes(pg_result($resaco,$conresaco,'x53_aguacoletorexportadados'))."','$this->x53_aguacoletorexportadados',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2937,16708,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x53_aguacoletorexportadados'))."','$this->x53_aguacoletorexportadados',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x53_oidfoto"]) || $this->x53_oidfoto != "")
-           $resac = db_query("insert into db_acount values($acount,2937,16709,'".AddSlashes(pg_result($resaco,$conresaco,'x53_oidfoto'))."','$this->x53_oidfoto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2937,16709,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x53_oidfoto'))."','$this->x53_oidfoto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x53_data"]) || $this->x53_data != "")
-           $resac = db_query("insert into db_acount values($acount,2937,16710,'".AddSlashes(pg_result($resaco,$conresaco,'x53_data'))."','$this->x53_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2937,16710,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x53_data'))."','$this->x53_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x53_hora"]) || $this->x53_hora != "")
-           $resac = db_query("insert into db_acount values($acount,2937,16711,'".AddSlashes(pg_result($resaco,$conresaco,'x53_hora'))."','$this->x53_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2937,16711,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x53_hora'))."','$this->x53_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_aguacoletorexportadadosfoto {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16706,'$x53_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2937,16706,'','".AddSlashes(pg_result($resaco,$iresaco,'x53_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2937,16707,'','".AddSlashes(pg_result($resaco,$iresaco,'x53_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2937,16708,'','".AddSlashes(pg_result($resaco,$iresaco,'x53_aguacoletorexportadados'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2937,16709,'','".AddSlashes(pg_result($resaco,$iresaco,'x53_oidfoto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2937,16710,'','".AddSlashes(pg_result($resaco,$iresaco,'x53_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2937,16711,'','".AddSlashes(pg_result($resaco,$iresaco,'x53_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2937,16706,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x53_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2937,16707,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x53_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2937,16708,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x53_aguacoletorexportadados'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2937,16709,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x53_oidfoto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2937,16710,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x53_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2937,16711,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x53_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from aguacoletorexportadadosfoto
@@ -462,7 +462,7 @@ class cl_aguacoletorexportadadosfoto {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aguacoletorexportadadosfoto";
@@ -477,7 +477,7 @@ class cl_aguacoletorexportadadosfoto {
    function sql_query ( $x53_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_aguacoletorexportadadosfoto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -522,7 +522,7 @@ class cl_aguacoletorexportadadosfoto {
    function sql_query_file ( $x53_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -543,7 +543,7 @@ class cl_aguacoletorexportadadosfoto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

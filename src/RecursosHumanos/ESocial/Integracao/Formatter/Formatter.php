@@ -16,7 +16,7 @@ use ECidade\V3\Extension\Registry;
  */
 class Formatter
 {
-    protected $dePara = array();
+    protected $dePara = [];
     private $ignoraValidacao = false;
     /**
      * @var \CgmJuridico | null
@@ -46,7 +46,7 @@ class Formatter
      */
     public function formatar($dados)
     {
-        $aDadosIntegracao = array();
+        $aDadosIntegracao = [];
 
         foreach ($dados as $dadosPreenchimento) {
             $aDadosIntegracao[] = $this->formataPreenchimento($dadosPreenchimento);
@@ -102,7 +102,7 @@ class Formatter
             // Quando o grupo é uma coleção de dados
             if (isset($dadosDePara['type']) && $dadosDePara['type'] == 'array') {
                 if (!is_array($preenchimento->{$sNomeGrupo})) {
-                    $preenchimento->{$sNomeGrupo} = array();
+                    $preenchimento->{$sNomeGrupo} = [];
                 }
             }
 
@@ -189,7 +189,7 @@ class Formatter
                     settype($valorCampo, $valor['type']);
                 }
 
-                if (isset($valor['type']) && in_array($valor['type'], array('int', 'integer', 'float', 'numeric'))
+                if (isset($valor['type']) && in_array($valor['type'], ['int', 'integer', 'float', 'numeric'])
                     && $valorCampo === ''
                 ) {
                     $valorCampo = null;
@@ -317,7 +317,7 @@ SQL;
             $msg = "Houve um erro ao validar informações de envio do arquivo S-2300 para a matricula {$matricula}.";
             throw new DBException($msg);
         }
-        if (pg_numrows($rs) == 0) {
+        if (pg_num_rows($rs) == 0) {
             return true;
         }
 
@@ -345,7 +345,7 @@ SQL;
                         if ($recibo->excluido) {
                             $processado = true;
                         } else {
-                            $dataRecibo = new DBDate(substr($recibo->created_at, 0, 10));
+                            $dataRecibo = new DBDate(substr((string) $recibo->created_at, 0, 10));
                             if ($dataRecibo->getTimeStamp() <= $dataInicioS10->getTimeStamp()) {
                                 $enviaMatricula = false;
                                 $processado = true;
@@ -353,7 +353,7 @@ SQL;
                         }
                     }
                 }
-                if (empty(json_decode($dado->evento)->infoTSVInicio->matricula)) {
+                if (empty(json_decode((string) $dado->evento)->infoTSVInicio->matricula)) {
                     $enviaMatricula = false;
                 }
             }

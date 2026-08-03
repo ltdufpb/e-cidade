@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_desperdicio_classe.php"));
 include(modification("classes/db_mer_cardapioitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $escola = db_getsession("DB_coddepto");
 ?>
 <head>
@@ -95,7 +95,7 @@ $linhas2 = pg_num_rows($result2);
    db_fieldsmemory($result2,$y);?>
    <tr bgcolor="<?=$cor?>">
     <td>
-     <b><?=substr($me35_c_nomealimento,0,30)?></b>
+     <b><?=substr((string) $me35_c_nomealimento,0,30)?></b>
     </td>
     <?php for ($x=0;$x<$linhas;$x++) {
     	

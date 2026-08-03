@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE vistoriaslote
 class cl_vistoriaslote { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y06_vistoriaslote = 0; 
-   var $y06_data_dia = null; 
-   var $y06_data_mes = null; 
-   var $y06_data_ano = null; 
-   var $y06_data = null; 
-   var $y06_hora = null; 
-   var $y06_usuario = 0; 
-   var $y06_codtipo = 0; 
-   var $y06_instit = 0; 
+   public $y06_vistoriaslote = 0; 
+   public $y06_data_dia = null; 
+   public $y06_data_mes = null; 
+   public $y06_data_ano = null; 
+   public $y06_data = null; 
+   public $y06_hora = null; 
+   public $y06_usuario = 0; 
+   public $y06_codtipo = 0; 
+   public $y06_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y06_vistoriaslote = int8 = Codigo do lote das vistorias 
                  y06_data = date = Data do lancamento geral 
                  y06_hora = varchar(10) = Hora do lancamento 
@@ -61,10 +61,10 @@ class cl_vistoriaslote {
                  y06_instit = int4 = Cod. Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_vistoriaslote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vistoriaslote"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_vistoriaslote {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y06_vistoriaslote = pg_result($result,0,0); 
+       $this->y06_vistoriaslote = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from vistoriaslote_y06_vistoriaslote_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y06_vistoriaslote)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y06_vistoriaslote)){
          $this->erro_sql = " Campo y06_vistoriaslote maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_vistoriaslote {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Lote das vistorias ($this->y06_vistoriaslote) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Lote das vistorias já Cadastrado";
@@ -218,15 +218,15 @@ class cl_vistoriaslote {
      $resaco = $this->sql_record($this->sql_query_file($this->y06_vistoriaslote));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8337,'$this->y06_vistoriaslote','I')");
-       $resac = db_query("insert into db_acount values($acount,1408,8337,'','".AddSlashes(pg_result($resaco,0,'y06_vistoriaslote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1408,8338,'','".AddSlashes(pg_result($resaco,0,'y06_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1408,8339,'','".AddSlashes(pg_result($resaco,0,'y06_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1408,8340,'','".AddSlashes(pg_result($resaco,0,'y06_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1408,8341,'','".AddSlashes(pg_result($resaco,0,'y06_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1408,10663,'','".AddSlashes(pg_result($resaco,0,'y06_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1408,8337,'','".AddSlashes(pg_fetch_result($resaco,0,'y06_vistoriaslote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1408,8338,'','".AddSlashes(pg_fetch_result($resaco,0,'y06_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1408,8339,'','".AddSlashes(pg_fetch_result($resaco,0,'y06_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1408,8340,'','".AddSlashes(pg_fetch_result($resaco,0,'y06_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1408,8341,'','".AddSlashes(pg_fetch_result($resaco,0,'y06_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1408,10663,'','".AddSlashes(pg_fetch_result($resaco,0,'y06_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_vistoriaslote {
       $this->atualizacampos();
      $sql = " update vistoriaslote set ";
      $virgula = "";
-     if(trim($this->y06_vistoriaslote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_vistoriaslote"])){ 
+     if(trim((string) $this->y06_vistoriaslote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_vistoriaslote"])){ 
        $sql  .= $virgula." y06_vistoriaslote = $this->y06_vistoriaslote ";
        $virgula = ",";
-       if(trim($this->y06_vistoriaslote) == null ){ 
+       if(trim((string) $this->y06_vistoriaslote) == null ){ 
          $this->erro_sql = " Campo Codigo do lote das vistorias nao Informado.";
          $this->erro_campo = "y06_vistoriaslote";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_vistoriaslote {
          return false;
        }
      }
-     if(trim($this->y06_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y06_data_dia"] !="") ){ 
+     if(trim((string) $this->y06_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y06_data_dia"] !="") ){ 
        $sql  .= $virgula." y06_data = '$this->y06_data' ";
        $virgula = ",";
-       if(trim($this->y06_data) == null ){ 
+       if(trim((string) $this->y06_data) == null ){ 
          $this->erro_sql = " Campo Data do lancamento geral nao Informado.";
          $this->erro_campo = "y06_data_dia";
          $this->erro_banco = "";
@@ -264,7 +264,7 @@ class cl_vistoriaslote {
        if(isset($GLOBALS["HTTP_POST_VARS"]["y06_data_dia"])){ 
          $sql  .= $virgula." y06_data = null ";
          $virgula = ",";
-         if(trim($this->y06_data) == null ){ 
+         if(trim((string) $this->y06_data) == null ){ 
            $this->erro_sql = " Campo Data do lancamento geral nao Informado.";
            $this->erro_campo = "y06_data_dia";
            $this->erro_banco = "";
@@ -275,10 +275,10 @@ class cl_vistoriaslote {
          }
        }
      }
-     if(trim($this->y06_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_hora"])){ 
+     if(trim((string) $this->y06_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_hora"])){ 
        $sql  .= $virgula." y06_hora = '$this->y06_hora' ";
        $virgula = ",";
-       if(trim($this->y06_hora) == null ){ 
+       if(trim((string) $this->y06_hora) == null ){ 
          $this->erro_sql = " Campo Hora do lancamento nao Informado.";
          $this->erro_campo = "y06_hora";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_vistoriaslote {
          return false;
        }
      }
-     if(trim($this->y06_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_usuario"])){ 
+     if(trim((string) $this->y06_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_usuario"])){ 
        $sql  .= $virgula." y06_usuario = $this->y06_usuario ";
        $virgula = ",";
-       if(trim($this->y06_usuario) == null ){ 
+       if(trim((string) $this->y06_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "y06_usuario";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_vistoriaslote {
          return false;
        }
      }
-     if(trim($this->y06_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_codtipo"])){ 
+     if(trim((string) $this->y06_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_codtipo"])){ 
        $sql  .= $virgula." y06_codtipo = $this->y06_codtipo ";
        $virgula = ",";
-       if(trim($this->y06_codtipo) == null ){ 
+       if(trim((string) $this->y06_codtipo) == null ){ 
          $this->erro_sql = " Campo Código do Tipo nao Informado.";
          $this->erro_campo = "y06_codtipo";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_vistoriaslote {
          return false;
        }
      }
-     if(trim($this->y06_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_instit"])){ 
+     if(trim((string) $this->y06_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y06_instit"])){ 
        $sql  .= $virgula." y06_instit = $this->y06_instit ";
        $virgula = ",";
-       if(trim($this->y06_instit) == null ){ 
+       if(trim((string) $this->y06_instit) == null ){ 
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "y06_instit";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_vistoriaslote {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8337,'$this->y06_vistoriaslote','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y06_vistoriaslote"]))
-           $resac = db_query("insert into db_acount values($acount,1408,8337,'".AddSlashes(pg_result($resaco,$conresaco,'y06_vistoriaslote'))."','$this->y06_vistoriaslote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1408,8337,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y06_vistoriaslote'))."','$this->y06_vistoriaslote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y06_data"]))
-           $resac = db_query("insert into db_acount values($acount,1408,8338,'".AddSlashes(pg_result($resaco,$conresaco,'y06_data'))."','$this->y06_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1408,8338,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y06_data'))."','$this->y06_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y06_hora"]))
-           $resac = db_query("insert into db_acount values($acount,1408,8339,'".AddSlashes(pg_result($resaco,$conresaco,'y06_hora'))."','$this->y06_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1408,8339,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y06_hora'))."','$this->y06_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y06_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1408,8340,'".AddSlashes(pg_result($resaco,$conresaco,'y06_usuario'))."','$this->y06_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1408,8340,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y06_usuario'))."','$this->y06_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y06_codtipo"]))
-           $resac = db_query("insert into db_acount values($acount,1408,8341,'".AddSlashes(pg_result($resaco,$conresaco,'y06_codtipo'))."','$this->y06_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1408,8341,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y06_codtipo'))."','$this->y06_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y06_instit"]))
-           $resac = db_query("insert into db_acount values($acount,1408,10663,'".AddSlashes(pg_result($resaco,$conresaco,'y06_instit'))."','$this->y06_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1408,10663,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y06_instit'))."','$this->y06_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_vistoriaslote {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8337,'$y06_vistoriaslote','E')");
-         $resac = db_query("insert into db_acount values($acount,1408,8337,'','".AddSlashes(pg_result($resaco,$iresaco,'y06_vistoriaslote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1408,8338,'','".AddSlashes(pg_result($resaco,$iresaco,'y06_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1408,8339,'','".AddSlashes(pg_result($resaco,$iresaco,'y06_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1408,8340,'','".AddSlashes(pg_result($resaco,$iresaco,'y06_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1408,8341,'','".AddSlashes(pg_result($resaco,$iresaco,'y06_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1408,10663,'','".AddSlashes(pg_result($resaco,$iresaco,'y06_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1408,8337,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y06_vistoriaslote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1408,8338,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y06_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1408,8339,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y06_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1408,8340,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y06_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1408,8341,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y06_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1408,10663,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y06_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from vistoriaslote
@@ -462,7 +462,7 @@ class cl_vistoriaslote {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:vistoriaslote";
@@ -476,7 +476,7 @@ class cl_vistoriaslote {
    function sql_query ( $y06_vistoriaslote=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -504,7 +504,7 @@ class cl_vistoriaslote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -516,7 +516,7 @@ class cl_vistoriaslote {
    function sql_query_file ( $y06_vistoriaslote=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -537,7 +537,7 @@ class cl_vistoriaslote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

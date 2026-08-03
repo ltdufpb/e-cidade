@@ -39,7 +39,7 @@ $clrotulo->label("d01_codedi");
 $clrotulo->label("d01_descr");
 $clrotulo->label("d04_forma");
 $db_opcao = 1;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 ?>
 <html>
 <head>
@@ -103,7 +103,7 @@ function js_relatorio1() {
 						<td nowrap> 
 							<?php 
 
-							$x = array('1'=>'utilizando valor para calculo','2'=>'utilizando valor para valorizacao', '3'=>'testada proporcional');
+							$x = ['1'=>'utilizando valor para calculo','2'=>'utilizando valor para valorizacao', '3'=>'testada proporcional'];
 							db_select('d04_forma',$x,true,$db_opcao,"");
 							?>
 						</td>
@@ -116,7 +116,7 @@ function js_relatorio1() {
 						<td nowrap> 
 							<?php 
 
-							$y = array('1'=>'C.Melhoria','2'=>'Custo Obra', '3'=>'Ambos');
+							$y = ['1'=>'C.Melhoria','2'=>'Custo Obra', '3'=>'Ambos'];
 							db_select('tipocusto',$y,true,$db_opcao,"");
 							?>
 						</td>

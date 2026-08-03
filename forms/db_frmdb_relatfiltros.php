@@ -126,7 +126,7 @@ db_input('db94_valfim',40,$Idb94_valfim,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("db94_codigo"=>@$db94_codigo);
+	 $chavepri= ["db94_codigo"=>@$db94_codigo];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_relatfiltros->sql_query_file($db94_codigo);
 	 $cliframe_alterar_excluir->campos  ="db94_codigo,db94_codrel,db94_codcam,db94_valini,db94_valfim";

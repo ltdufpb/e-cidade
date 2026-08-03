@@ -33,8 +33,8 @@ include(modification("classes/db_atendrequiitem_classe.php"));
 include(modification("classes/db_matestoquedevitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clatendrequiitem = new cl_atendrequiitem;
 $clmatestoquedevitem = new cl_matestoquedevitem;
 $clrotulo = new rotulocampo;

@@ -32,13 +32,13 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_autorec_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clautorec = new cl_autorec;
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 
   db_inicio_transacao();
   $db_opcao = 3;
@@ -72,7 +72,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 js_tabulacaoforms("form1","db_opcao",true,1,"db_opcao",true);
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clautorec->erro_status=="0"){
     $clautorec->erro(true,false);
   }else{

@@ -151,7 +151,7 @@ if ($db_opcao == 1) {
           $rsUf = $cluf->sql_record($cluf->sql_query_file(null, '*', 'db12_uf'));
           $iNumRowsUf = $cluf->numrows;
 
-          $aUf = array();
+          $aUf = [];
           $aUf["0"] = "Selecione";
           for($iUf = 0; $iUf < $iNumRowsUf ; $iUf++){
             $oRow = db_utils::fieldsMemory($rsUf,$iUf);
@@ -159,7 +159,7 @@ if ($db_opcao == 1) {
           }
 
           if($db_opcao == 3) {
-          	$aUf = array($uf=>$uf);
+          	$aUf = [$uf=>$uf];
           }
 
           db_select("uf",$aUf,true,$db_opcao,"onChange='js_buscaLocalidade();'");
@@ -173,13 +173,13 @@ if ($db_opcao == 1) {
 		    </td>
 		    <td id="idMunic">
 					<?php 
-					$x = array(0=>"Selecione");
+					$x = [0=>"Selecione"];
 					if($db_opcao == 2 || $db_opcao == 22 || $db_opcao == 3 || $db_opcao == 33){
 			      $sWhere = "cp05_sigla = '$uf'";
 						$rsLocalidades = $clCepLocalidades->sql_record($clCepLocalidades->sql_query_file(null,"cp05_localidades",null,$sWhere));
 	          $iNumRowsLocalidades = $clCepLocalidades->numrows;
 
-	          $x = array();
+	          $x = [];
 	          $x[0] = "Selecione";
 	          for($iLocalidades = 0; $iLocalidades < $iNumRowsLocalidades ; $iLocalidades++){
 	            $oRow = db_utils::fieldsMemory($rsLocalidades,$iLocalidades);
@@ -189,7 +189,7 @@ if ($db_opcao == 1) {
 					}
 
 					if($db_opcao == 3) {
-            $x = array($munic=>$munic);
+            $x = [$munic=>$munic];
           }
 
 					db_select('munic',$x,true,$db_opcao,"onChange='js_buscaLocalidades();'");
@@ -310,7 +310,7 @@ if ($db_opcao == 1) {
 		    </td>
 		    <td>
 		      <?php
-		      $x = array("f"=>"NAO","t"=>"SIM");
+		      $x = ["f"=>"NAO","t"=>"SIM"];
 		      db_select('prefeitura',$x,true,$db_opcao,"");
 		      ?>
 		    </td>
@@ -322,7 +322,7 @@ if ($db_opcao == 1) {
 		    </td>
 		    <td>
 		      <?php
-		      $x = array('1'=>'Ativo','2'=>'Inativo','3'=>'Offline');
+		      $x = ['1'=>'Ativo','2'=>'Inativo','3'=>'Offline'];
 		      db_select('db21_ativo',$x,true,$db_opcao,"");
 		      ?>
 		    </td>
@@ -391,7 +391,7 @@ if ($db_opcao == 1) {
         </td>
         <td>
           <?php
-            $x = array(
+            $x = [
                 '1' => 'Executivo',
                 '2' => 'Legistativo',
                 '3' => 'Judiciário',
@@ -399,7 +399,7 @@ if ($db_opcao == 1) {
                 '5' => 'Tribunal de Contas',
                 '7' => 'Defensoria Pública',
                 '6' => 'Outros',
-            );
+            ];
             db_select('db21_tipopoder', $x, true, $db_opcao);
           ?>
         </td>
@@ -422,7 +422,7 @@ if ($db_opcao == 1) {
           </td>
           <td>
               <?php 
-		      $x = array("f"=>"NAO","t"=>"SIM");
+		      $x = ["f"=>"NAO","t"=>"SIM"];
 		      db_select('db21_unidade_gestora_rpps',$x,true,$db_opcao,"");
               ?>
           </td>
@@ -434,7 +434,7 @@ if ($db_opcao == 1) {
         </td>
         <td>
           <?php 
-          $x = array("null"=>"Não informado","1"=>"Federal", "2"=>"Estadual ou distrital", "3"=>"Municipal");
+          $x = ["null"=>"Não informado","1"=>"Federal", "2"=>"Estadual ou distrital", "3"=>"Municipal"];
           db_select('db21_esfera_op',$x,true,$db_opcao,"");
           ?>
         </td>
@@ -457,7 +457,7 @@ if ($db_opcao == 1) {
           </td>
           <td>
               <?php 
-		      $x = array("f"=>"NAO","t"=>"SIM");
+		      $x = ["f"=>"NAO","t"=>"SIM"];
 		      db_select('db21_ente_federativo_resp',$x,true,$db_opcao,"");
               ?>
           </td>
@@ -480,7 +480,7 @@ if ($db_opcao == 1) {
           </td>
           <td>
               <?php 
-		      $x = array("f"=>"NAO","t"=>"SIM");
+		      $x = ["f"=>"NAO","t"=>"SIM"];
 		      db_select('db21_efr_previdencia_compl',$x,true,$db_opcao,"");
               ?>
           </td>
@@ -492,7 +492,7 @@ if ($db_opcao == 1) {
           </td>
           <td>
               <?php 
-		      $x = array("f"=>"NAO","t"=>"SIM");
+		      $x = ["f"=>"NAO","t"=>"SIM"];
 		      db_select('db21_possui_rpps',$x,true,$db_opcao,"");
               ?>
           </td>
@@ -555,7 +555,7 @@ if ($db_opcao == 1) {
 	    </td>
 	    <td>
           <?php 
-          $x = array();
+          $x = [];
 	        $rsTipoInstit = $cltipoinstit->sql_record($cltipoinstit->sql_query_file());
           if($cltipoinstit->numrows > 0){
             $iNumRows = $cltipoinstit->numrows;
@@ -614,7 +614,7 @@ if ($db_opcao == 1) {
 			    </td>
 			    <td>
 			      <?php 
-			      $x = array("f"=>"NAO","t"=>"SIM");
+			      $x = ["f"=>"NAO","t"=>"SIM"];
 			      db_select('tpropri',$x,true,$db_opcao,"");
 			      ?>
 			    </td>
@@ -626,7 +626,7 @@ if ($db_opcao == 1) {
 			    </td>
 			    <td>
 			      <?php 
-			      $x = array("f"=>"NAO","t"=>"SIM");
+			      $x = ["f"=>"NAO","t"=>"SIM"];
 			      db_select('tsocios',$x,true,$db_opcao,"");
 			      ?>
 			    </td>
@@ -649,7 +649,7 @@ if ($db_opcao == 1) {
 			    </td>
 			    <td>
 			      <?php 
-			      $x = array('0'=>'Não vincular socios','1'=>'Vincular socios');
+			      $x = ['0'=>'Não vincular socios','1'=>'Vincular socios'];
 			      db_select('db21_regracgmiss',$x,true,$db_opcao,"");
 			      ?>
 			    </td>
@@ -661,7 +661,7 @@ if ($db_opcao == 1) {
 			    </td>
 			    <td>
 			      <?php 
-			      $x = array('0'=>'Considerar Proprietario e Promitente','1'=>'Considerar Somente Proprietario','2'=>'Considerar Somente Promitente');
+			      $x = ['0'=>'Considerar Proprietario e Promitente','1'=>'Considerar Somente Proprietario','2'=>'Considerar Somente Promitente'];
 			      db_select('db21_regracgmiptu',$x,true,$db_opcao,"");
 			      ?>
 			    </td>
@@ -675,7 +675,7 @@ if ($db_opcao == 1) {
 			    <!--  db21_reghra -->
 			    <td>
 			      <?php 
-			      $x = array("f"=>"NAO","t"=>"SIM");
+			      $x = ["f"=>"NAO","t"=>"SIM"];
 			      db_select('db21_usasisagua',$x,true,$db_opcao,"");
 			      ?>
 			    </td>
@@ -709,7 +709,7 @@ if ($db_opcao == 1) {
 		    </td>
 		    <td>
 					<?php 
-					$x = array('1'=>'Prefeituras','2'=>'Saneamento','3'=>'Energia Elétrica e Gás','4'=>'Telecomunicações','5'=>'Órgãos Governamentais','6'=>'Carnes e Assemelhados ou demais Empresas / Órgãos que serão identificadas através do CNPJ','7'=>'Multas de trânsito','9'=>'Uso exclusivo do banco');
+					$x = ['1'=>'Prefeituras','2'=>'Saneamento','3'=>'Energia Elétrica e Gás','4'=>'Telecomunicações','5'=>'Órgãos Governamentais','6'=>'Carnes e Assemelhados ou demais Empresas / Órgãos que serão identificadas através do CNPJ','7'=>'Multas de trânsito','9'=>'Uso exclusivo do banco'];
 					db_select('segmento',$x,true,$db_opcao,"");
 					?>
 		    </td>
@@ -721,7 +721,7 @@ if ($db_opcao == 1) {
 			    </td>
 			    <td>
 						<?php 
-						$x = array('1'=>'aaaammdd','2'=>'ddmmaa');
+						$x = ['1'=>'aaaammdd','2'=>'ddmmaa'];
 						db_select('formvencfebraban',$x,true,$db_opcao,"");
 						?>
         </td>
@@ -1013,7 +1013,7 @@ function js_preenchepesquisa(chave){
   db_iframe_db_config.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

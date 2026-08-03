@@ -8,10 +8,10 @@ use ECidade\Task\TaskInterface;
 
 class Background
 {
-    private $waiting = array();
-    private $running = array();
+    private $waiting = [];
+    private $running = [];
     private $afterRunning;
-    private $complete = array();
+    private $complete = [];
     private $workerPath = 'bin/background-worker';
     private $limit = 20;
     private $delay = 1000;

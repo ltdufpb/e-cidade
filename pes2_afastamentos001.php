@@ -102,7 +102,7 @@ include(modification("classes/db_cfautent_classe.php"));
         </td>
         <td>
         <?php
-            $aAfastamentos = array(0 => '0 - Todos',
+            $aAfastamentos = [0 => '0 - Todos',
                                    2 => '2 - Sem Remuneração',
                                    3 => '3 - Acidente de Trabalho',
                                    4 => '4 - Serviço Militar',
@@ -113,7 +113,7 @@ include(modification("classes/db_cfautent_classe.php"));
                                    9 => '9 - Prorrogação Licença Maternidade',
                                    10 => '10 - Cuidar de Familiar',
                                    11 => '11 - Licença Prêmio',
-                                  );
+                                  ];
              db_select('iAfastamentos',$aAfastamentos,true,1);
             ?>
         </td>
@@ -124,7 +124,7 @@ include(modification("classes/db_cfautent_classe.php"));
         </td>
         <td>
           <?php
-            $aEmiteRetornados = array(0 => 'Não', 1 => 'Sim');
+            $aEmiteRetornados = [0 => 'Não', 1 => 'Sim'];
             db_select('iEmiteRetornados', $aEmiteRetornados, true, 1);
           ?>
         </td>
@@ -135,11 +135,11 @@ include(modification("classes/db_cfautent_classe.php"));
         </td>
         <td>
           <?php
-            $aOrdem = array('a'=>'Alfabética',
+            $aOrdem = ['a'=>'Alfabética',
                             'n'=>'Numérica',
                             'f'=>'Afastamento',
                             'r'=>'Retorno','l'=>'Lançamento'
-                           );
+                           ];
             db_select('sOrdem', $aOrdem, true, 1);
           ?>
         </td>
@@ -150,7 +150,7 @@ include(modification("classes/db_cfautent_classe.php"));
         </td>
         <td>
           <?php
-            $aQuebra = array(0 => 'Não', 1 => 'Sim');
+            $aQuebra = [0 => 'Não', 1 => 'Sim'];
             db_select('iQuebra', $aQuebra, true, 1);
           ?>
         </td>

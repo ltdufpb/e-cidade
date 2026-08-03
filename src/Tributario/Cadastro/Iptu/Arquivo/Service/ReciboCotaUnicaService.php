@@ -17,14 +17,8 @@ use ECidade\Tributario\Cadastro\Iptu\Arquivo\Entity\Unica;
 
 final class ReciboCotaUnicaService extends Service
 {
-    private $recibounicaRepository;
-
-    private $reciboService;
-
-    public function __construct(RecibounicaRepository $recibounicaRepository, ReciboService $reciboService)
+    public function __construct(private readonly RecibounicaRepository $recibounicaRepository, private readonly ReciboService $reciboService)
     {
-        $this->recibounicaRepository = $recibounicaRepository;
-        $this->reciboService = $reciboService;
     }
 
     public function execute(Filtro $filtro, DebitoCollection $debitoCollection)
@@ -32,13 +26,13 @@ final class ReciboCotaUnicaService extends Service
         /**
          * @todo - Sera refatorado. Codigo estruturado e procedural. Sera quebrado em unicades. A regra de unica é de pluralidade.
          */
-        $grupo = array();
-        $grupoDate = array();
-        $grupoPorcentagem = array();
-        $grupoOper = array();
-        $numpreTipo = array();
-        $recibos = array();
-        $unicas = array();
+        $grupo = [];
+        $grupoDate = [];
+        $grupoPorcentagem = [];
+        $grupoOper = [];
+        $numpreTipo = [];
+        $recibos = [];
+        $unicas = [];
 
         foreach ($filtro->getCotaUnicas() as $filtroUnica) {
             foreach ($debitoCollection as $debito) {

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conhistdocregra_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconhistdocregra = new cl_conhistdocregra;
 $clconhistdocregra->rotulo->label("c92_sequencial");
 $clconhistdocregra->rotulo->label("c92_descricao");
@@ -98,9 +98,9 @@ $clconhistdocregra->rotulo->label("c92_descricao");
         }else{
            $sql = $clconhistdocregra->sql_query("",$campos,"c92_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c92_descricao)){
-          $repassa = array("chave_c92_sequencial"=>$chave_c92_sequencial,"chave_c92_descricao"=>$chave_c92_descricao);
+          $repassa = ["chave_c92_sequencial"=>$chave_c92_sequencial,"chave_c92_descricao"=>$chave_c92_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

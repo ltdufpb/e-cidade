@@ -56,11 +56,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica = array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos"); 
+       $clcriaabas->identifica = ["empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos"]; 
         // $clcriaabas->sizecampo =  array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos"); 
-       $clcriaabas->title      =  array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos"); 
-       $clcriaabas->src = array("empautoriza"=>"emp1_empautoriza004.php");
-       $clcriaabas->disabled   =  array("empautitem"=>true,"empautidot"=>"true","prazos"=>"true"); 
+       $clcriaabas->title      =  ["empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos"]; 
+       $clcriaabas->src = ["empautoriza"=>"emp1_empautoriza004.php"];
+       $clcriaabas->disabled   =  ["empautitem"=>true,"empautidot"=>"true","prazos"=>"true"]; 
        $clcriaabas->cria_abas();    
      ?> 
      </td>

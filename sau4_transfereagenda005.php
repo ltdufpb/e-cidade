@@ -72,7 +72,7 @@ a:active {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 
 <?php 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 if( isset( $limpar )){
@@ -83,9 +83,9 @@ if( isset( $limpar )){
 }
 
 $sd02_i_codigo = db_getsession("DB_coddepto");
-$ano           = substr( $sd23_d_consulta2, 6, 4 );
-$mes           = substr( $sd23_d_consulta2, 3, 2 );
-$dia           = substr( $sd23_d_consulta2, 0, 2 );
+$ano           = substr( (string) $sd23_d_consulta2, 6, 4 );
+$mes           = substr( (string) $sd23_d_consulta2, 3, 2 );
+$dia           = substr( (string) $sd23_d_consulta2, 0, 2 );
 
 $clagendamentos  = new cl_agendamentos_ext;
 
@@ -115,7 +115,7 @@ $clagendamentos  = new cl_agendamentos_ext;
 
 $res_totalficha = $clagendamentos->sql_record("select fc_totalagendado('$ano/$mes/$dia',$sd30_i_codigo2);");
 $obj_totalficha = db_utils::fieldsMemory($res_totalficha, 0 );
-$arr_totalficha = explode(",", $obj_totalficha->fc_totalagendado );
+$arr_totalficha = explode(",", (string) $obj_totalficha->fc_totalagendado );
 
 if( $arr_totalficha[6] > 0 ){
 	db_inicio_transacao();
@@ -133,7 +133,7 @@ if( $arr_totalficha[6] > 0 ){
 	}else{
 		if( !session_is_registered("arr_transferidos") ){
 			session_register("arr_transferidos");
-			db_putsession("arr_transferidos", array(array( 6 )) );
+			db_putsession("arr_transferidos", [[ 6 ]] );
 		}
 			$x = db_getsession("arr_transferidos");
 			$x[sizeof($x)-1][0] = $sd23_i_ficha2; 
@@ -143,7 +143,7 @@ if( $arr_totalficha[6] > 0 ){
 			$x[sizeof($x)-1][4] = $z01_nome2;
 			$x[sizeof($x)-1][5] = $sd23_i_numcgs2; 
 			$x[sizeof($x)-1][6] = $z01_v_nome2;
-			$x[] = array( 6 );
+			$x[] = [ 6 ];
 			db_putsession("arr_transferidos", $x);
 			for( $xx = 0; $xx < sizeof($x)-1; $xx++){
 				?>

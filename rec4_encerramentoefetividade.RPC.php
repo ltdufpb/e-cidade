@@ -63,7 +63,7 @@ try {
                 throw new DBException("Ocorreu um erro ao consultar as configurações de efetividade.\nContate o suporte.");
             }
 
-            $aConfiguracoes = array();
+            $aConfiguracoes = [];
             for ($iRegistro = 0; $iRegistro < pg_num_rows($rsConfiguracoesDatasEfetividade); $iRegistro++) {
                 $oRegistro = db_utils::fieldsmemory($rsConfiguracoesDatasEfetividade, $iRegistro);
 
@@ -71,15 +71,15 @@ try {
                 $oConfiguracoes->sCompetencia = $oRegistro->rh186_competencia;
                 $oConfiguracoes->dDataInicioEfetividade = implode(
                     '/',
-                    array_reverse(explode('-', $oRegistro->rh186_datainicioefetividade))
+                    array_reverse(explode('-', (string) $oRegistro->rh186_datainicioefetividade))
                 );
                 $oConfiguracoes->dDataFechamentoEfetividade = implode(
                     '/',
-                    array_reverse(explode('-', $oRegistro->rh186_datafechamentoefetividade))
+                    array_reverse(explode('-', (string) $oRegistro->rh186_datafechamentoefetividade))
                 );
                 $oConfiguracoes->dDataEntregaEfetividade = implode(
                     '/',
-                    array_reverse(explode('-', $oRegistro->rh186_dataentregaefetividade))
+                    array_reverse(explode('-', (string) $oRegistro->rh186_dataentregaefetividade))
                 );
                 $oConfiguracoes->lProcessado = $oRegistro->rh186_processado == 't';
                 $aConfiguracoes[] = $oConfiguracoes;
@@ -102,13 +102,13 @@ try {
 
             db_inicio_transacao();
 
-            $inconsistencias = array();
+            $inconsistencias = [];
             $oRetorno->possuiInconsistencia = false;
 
             if (DBPessoal::getAnoFolha() == $oParametros->iExercicio 
               && in_array(DBPessoal::getMesFolha(), $oParametros->aCompetencias)) {
               
-              $codigosMatricula = array();
+              $codigosMatricula = [];
               foreach ($oParametros->matriculas as $matricula) {
                 $codigosMatricula[] = $matricula->sCodigo;
               }
@@ -146,7 +146,7 @@ try {
                   $servidor = ServidorRepository::getInstanciaByCodigo($dados->matricula);
 
                   if (!array_key_exists($dados->tipo_assentamento, $inconsistencias)) {
-                    $inconsistencias[$dados->tipo_assentamento] = array();
+                    $inconsistencias[$dados->tipo_assentamento] = [];
                   }
 
                   $inconsistencias[$dados->tipo_assentamento][$servidor->getMatricula()] = $servidor;

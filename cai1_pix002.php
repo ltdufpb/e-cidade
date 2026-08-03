@@ -121,7 +121,7 @@ if (isset($_GET["k36_modcarnepadrao"]))
         <script>
             const 
                 url               = "<?= ECIDADE_REQUEST_PATH ?>",
-                k48_sequencial    = <?= (isset($k36_modcarnepadrao) ? $k36_modcarnepadrao : "null") ?>,
+                k48_sequencial    = <?= ($k36_modcarnepadrao ?? "null") ?>,
                 listaBancos       = [],
                 listaBancosSelect = {},
                 elementos         = {

@@ -11,6 +11,7 @@ class SessaoRequest extends BaseFormRequest
      *
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -44,17 +45,18 @@ class SessaoRequest extends BaseFormRequest
         ], 406);
     }
 
+    #[\Override]
     public function messages()
     {
         return [
-            'rh247_sequencial.integer' => utf8_encode('Código da sessão inválido.'),
-            'rh247_comissao.required' => utf8_encode('Comissão não informada.'),
-            'rh247_comissao.integer' => utf8_encode('Código da comissão inválido.'),
-            'rh247_processada.boolean' => utf8_encode('Verificação de sessão processada está em formato inválido.'),
-            'rh247_tiposessao.required' => utf8_encode('Tipo da sessão não informado.'),
-            'rh247_tiposessao.integer' => utf8_encode('Tipo da sessão em formato inválido.'),
-            'rh247_mes.integer' => utf8_encode('Mês da competência em formato inválido.'),
-            'rh247_ano.integer' => utf8_encode('Ano da competência em formato inválido.')
+            'rh247_sequencial.integer' => mb_convert_encoding('Código da sessão inválido.', 'UTF-8', 'ISO-8859-1'),
+            'rh247_comissao.required' => mb_convert_encoding('Comissão não informada.', 'UTF-8', 'ISO-8859-1'),
+            'rh247_comissao.integer' => mb_convert_encoding('Código da comissão inválido.', 'UTF-8', 'ISO-8859-1'),
+            'rh247_processada.boolean' => mb_convert_encoding('Verificação de sessão processada está em formato inválido.', 'UTF-8', 'ISO-8859-1'),
+            'rh247_tiposessao.required' => mb_convert_encoding('Tipo da sessão não informado.', 'UTF-8', 'ISO-8859-1'),
+            'rh247_tiposessao.integer' => mb_convert_encoding('Tipo da sessão em formato inválido.', 'UTF-8', 'ISO-8859-1'),
+            'rh247_mes.integer' => mb_convert_encoding('Mês da competência em formato inválido.', 'UTF-8', 'ISO-8859-1'),
+            'rh247_ano.integer' => mb_convert_encoding('Ano da competência em formato inválido.', 'UTF-8', 'ISO-8859-1')
         ];
     }
 }

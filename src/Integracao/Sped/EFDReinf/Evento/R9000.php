@@ -26,10 +26,10 @@ class R9000 extends EventoAbstract
             throw new Exception('Número do protocolo é de preenchimento obrigatório.');
         }
 
-        $where = array(
+        $where = [
             "eso29_cgm = {$this->cgm->getCodigo()}",
             "eso29_protocolo = '{$parametros->protocolo}'",
-        );
+        ];
 
         $sql = $dao->sql_query_file(null, "*", null, implode(' AND ', $where));
         $rs = db_query($sql);
@@ -51,7 +51,7 @@ class R9000 extends EventoAbstract
      * @return int
      * @throws Exception
      */
-    public function persistir(Avaliacao $avaliacao, array $parametros = array())
+    public function persistir(Avaliacao $avaliacao, array $parametros = [])
     {
         if (empty($parametros['nrRecEvt'])) {
             throw new Exception('Número do protocolo é de preenchimento obrigatório.');
@@ -62,10 +62,10 @@ class R9000 extends EventoAbstract
         }
 
         $dao = new cl_avaliacaogruporespostaexclusaoeventosefd();
-        $whereVinculo = array(
+        $whereVinculo = [
             "eso29_cgm = {$this->cgm->getCodigo()}",
             "eso29_protocolo = '{$parametros['nrRecEvt']}'"
-        );
+        ];
         $sqlVerificacao = $dao->sql_query_file(null, '1', null, implode(' AND ', $whereVinculo));
         $rsVerificacao = db_query($sqlVerificacao);
 

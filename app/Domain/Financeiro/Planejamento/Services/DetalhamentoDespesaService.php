@@ -46,14 +46,8 @@ use stdClass;
  */
 class DetalhamentoDespesaService
 {
-    /**
-     * @var ValoresService
-     */
-    private $serviceValores;
-
-    public function __construct(ValoresService $service)
+    public function __construct(private readonly ValoresService $serviceValores)
     {
-        $this->serviceValores = $service;
     }
 
     /**

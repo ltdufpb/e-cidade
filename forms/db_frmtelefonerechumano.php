@@ -102,7 +102,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed30_i_codigo"=>@$ed30_i_codigo,"ed30_i_rechumano"=>@$ed30_i_rechumano,"z01_nome"=>@$z01_nome,"ed30_i_tipotelefone"=>@$ed30_i_tipotelefone,"ed13_c_descr"=>@$ed13_c_descr,"ed30_i_numero"=>@$ed30_i_numero,"ed30_i_ramal"=>@$ed30_i_ramal,"ed30_t_obs"=>@$ed30_t_obs);
+   $chavepri= ["ed30_i_codigo"=>@$ed30_i_codigo,"ed30_i_rechumano"=>@$ed30_i_rechumano,"z01_nome"=>@$z01_nome,"ed30_i_tipotelefone"=>@$ed30_i_tipotelefone,"ed13_c_descr"=>@$ed13_c_descr,"ed30_i_numero"=>@$ed30_i_numero,"ed30_i_ramal"=>@$ed30_i_ramal,"ed30_t_obs"=>@$ed30_t_obs];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltelefonerechumano->sql_query("","*",""," ed30_i_rechumano = $ed30_i_rechumano");
    $cliframe_alterar_excluir->campos  ="ed30_i_codigo,ed13_c_descr,ed30_i_ramal,ed30_i_numero";

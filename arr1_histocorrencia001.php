@@ -60,7 +60,7 @@ if(isset($incluir)){
   $clhistocorrencia->ar23_id_itensmenu = db_getsession("DB_itemmenu_acessado");
 
   db_inicio_transacao();
-  $clhistocorrencia->incluir(isset($ar23_sequencial) ? $ar23_sequencial : null);
+  $clhistocorrencia->incluir($ar23_sequencial ?? null);
   db_fim_transacao();
 
   db_putsession("z01_nome", $z01_nome);
@@ -69,7 +69,7 @@ if(isset($incluir)){
     $clhistocorrenciacgm->ar24_numcgm         = $z01_numcgm;
     $clhistocorrenciacgm->ar24_histocorrencia = $clhistocorrencia->ar23_sequencial;
     db_inicio_transacao();
-    $clhistocorrenciacgm->incluir(isset($ar24_sequencial) ? $ar24_sequencial : null);
+    $clhistocorrenciacgm->incluir($ar24_sequencial ?? null);
     db_fim_transacao();
     db_putsession("z01_numcgm", $z01_numcgm);
 
@@ -78,7 +78,7 @@ if(isset($incluir)){
     $clhistocorrenciamatric->ar25_matric         = $j01_matric;
     $clhistocorrenciamatric->ar25_histocorrencia = $clhistocorrencia->ar23_sequencial;
     db_inicio_transacao();
-    $clhistocorrenciamatric->incluir(isset($ar25_sequencial) ? $ar25_sequencial : null);
+    $clhistocorrenciamatric->incluir($ar25_sequencial ?? null);
     db_fim_transacao();
     db_putsession("j01_matric", $j01_matric);
 
@@ -87,7 +87,7 @@ if(isset($incluir)){
     $clhistocorrenciainscr->ar26_inscr          = $q02_inscr;
     $clhistocorrenciainscr->ar26_histocorrencia = $clhistocorrencia->ar23_sequencial;
     db_inicio_transacao();
-    $clhistocorrenciainscr->incluir(isset($ar26_sequencial) ? $ar26_sequencial : null);
+    $clhistocorrenciainscr->incluir($ar26_sequencial ?? null);
     db_fim_transacao();
     db_putsession("q02_inscr", $q02_inscr);
 

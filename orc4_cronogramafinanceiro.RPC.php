@@ -44,7 +44,7 @@ $oRetorno->status  = 1;
 $oRetorno->message = '';
 $oRetorno->itens   = '';
 
-switch (trim($oParam->exec)) {
+switch (trim((string) $oParam->exec)) {
 
   case "processarBase" :
 
@@ -81,7 +81,7 @@ switch (trim($oParam->exec)) {
         if ($oParam->iTipo == 1 || $oParam->iTipo == 2) {
 
           $oCronograma     = new cronogramaFinanceiro($oParam->iPerspectiva);
-          $oCronograma->setInstituicoes(array(db_getsession("DB_instit")));
+          $oCronograma->setInstituicoes([db_getsession("DB_instit")]);
           if ($oParam->iTipo == 1) {
             $aDados       = $oCronograma->getBaseReceitas($oParam->sEstrutural, $oParam->iRecurso);
           } else if ($oParam->iTipo == 2) {
@@ -92,7 +92,7 @@ switch (trim($oParam->exec)) {
         } else if ($oParam->iTipo == 3) {
 
           $oCronograma = new cronogramaFinanceiro($oParam->iPerspectiva);
-          $oCronograma->setInstituicoes(array(db_getsession("DB_instit")));
+          $oCronograma->setInstituicoes([db_getsession("DB_instit")]);
           $aDados      = $oCronograma->getMetasDespesa($oParam->iAgrupa, $oParam->sEstrutural, $oParam->iRecurso);
 
         }
@@ -128,7 +128,7 @@ switch (trim($oParam->exec)) {
       } else {
        $oRetorno->pagina = $oParam->iPagina;
       }
-      $aDadosFetch = array();
+      $aDadosFetch = [];
       for ($i = $iFetch; $i < $iLimit; $i++) {
 
         if ($oParam->iTipo != 3 && (isset($aDados[$i]) && $aDados[$i]->o70_codrec == "" && count($aDados[$i]->aDesdobramentos) == 0)) {
@@ -185,7 +185,7 @@ switch (trim($oParam->exec)) {
       /**
        * Ajustamos os valores dos meses, da receita
        */
-      $aMeses = array();
+      $aMeses = [];
       foreach ($oBaseCalculo->dados as $oMes) {
 
         $nNovoValor = ($oBaseCalculo->getValorMedia()*$oMes->percentual)/100;

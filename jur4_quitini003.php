@@ -33,11 +33,11 @@ include(modification("libs/db_sql.php"));
 
 $sql="select v50_inicial from inicial";
 $result=db_query($sql);
-for ($i=0;$i<pg_numrows($result);$i++){
+for ($i=0;$i<pg_num_rows($result);$i++){
 	db_fieldsmemory($result,$i);
 	$sql_mov="select max(v56_codmov)as codmov from inicialmov where v56_inicial = $v50_inicial";
 	$result_mov=db_query($sql_mov);
-	if (pg_numrows($result_mov)>0){
+	if (pg_num_rows($result_mov)>0){
 	   db_fieldsmemory($result_mov,0);
 	   if ($codmov!=""){
 	   $sql_altini="update inicial set v50_codmov = $codmov where v50_inicial = $v50_inicial ";

@@ -139,20 +139,20 @@ try {
   db_fim_transacao();
   $oBarraProgresso->setMessageLog('Emissão Geral Concluída.');
 
-  $aArquivos = array(
-    array(
+  $aArquivos = [
+    [
       'path' => $aArquivos['arquivo'],
       'name' => 'Dados_Emissão_Geral'
-    ),
-    array(
+    ],
+    [
       'path' => $aArquivos['layout'],
       'name' => 'Layout_Emissão_Geral'
-    ),
-    array(
+    ],
+    [
       'path' => $sNomeArquivoLog . '.txt',
       'name' => 'Log_Emissão_Geral'
-    )
-  );
+    ]
+  ];
 
   showDownloader($aArquivos);
   showAlert("Emissão Concluída.");

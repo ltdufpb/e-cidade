@@ -91,7 +91,7 @@ if ($method == "getDados") {
     }
 
 
-    echo $json->encode(array("mensagem" => urlencode($mensagem), "status" => $status, "load" => $load));
+    echo $json->encode(["mensagem" => urlencode($mensagem), "status" => $status, "load" => $load]);
 } else if ($method == "getOrdem") {
 
     $oOrdemCompra->setEncodeOn();
@@ -109,7 +109,7 @@ if ($method == "getDados") {
         $mensagem = urlencode($oOrdemCompra->sErroMsg);
         $status = 2;
     }
-    echo $json->encode(array("mensagem" => $mensagem, "status" => $status));
+    echo $json->encode(["mensagem" => $mensagem, "status" => $status]);
 } else if ($method == "getInfoEntrada") {
 
     try {
@@ -143,7 +143,7 @@ if ($method == "getDados") {
                             WHERE  m52_codordem = {$objJson->m51_codordem}";
 
             $rsGrupoConta = db_query($sGrupoConta);
-            $mapItemGrupo = array();
+            $mapItemGrupo = [];
 
             while ($row = pg_fetch_assoc($rsGrupoConta)) {
                 $mapItemGrupo[$row['e62_sequencial']] = true;
@@ -181,8 +181,8 @@ if ($method == "getDados") {
         $elemento = '';
         $subelemento = '';
         if ($desdobramento) {
-            $elemento = substr($desdobramento->o56_elemento, 5, 2);
-            $subelemento = substr($desdobramento->o56_elemento, 7, 2);
+            $elemento = substr((string) $desdobramento->o56_elemento, 5, 2);
+            $subelemento = substr((string) $desdobramento->o56_elemento, 7, 2);
         }
 
         $outrosDados = null;
@@ -192,14 +192,14 @@ if ($method == "getDados") {
             $tipo = new TiposNotasParaiba();
             $tiposNotas = $tipo->getTiposNotasSegundoRegras($cgnFisico, $elemento, $subelemento);
             foreach ($tiposNotas as $key => $tipo) {
-                $tiposNotas[$key]['label'] = urlencode($tipo['label']);
+                $tiposNotas[$key]['label'] = urlencode((string) $tipo['label']);
             }
 
             /**
              * Implementação provisória para Paraiba apenas até implementar o empenho automático da folha
              */
             // se o terceiro
-            $isEmpenhoFolha = substr($desdobramento->o56_elemento, 2, 1) == 1;
+            $isEmpenhoFolha = substr((string) $desdobramento->o56_elemento, 2, 1) == 1;
         }
 
         $oOrdemCompra->dadosOrdem->dadosEmpenho = new stdClass();
@@ -232,7 +232,7 @@ if ($method == "getDados") {
         if ($oListaClassificacaoCredor) {
 
             $oOrdemCompra->dadosOrdem->iClassificacao = $oListaClassificacaoCredor->getCodigo();
-            $oOrdemCompra->dadosOrdem->sClassificacao = urlencode($oListaClassificacaoCredor->getDescricao());
+            $oOrdemCompra->dadosOrdem->sClassificacao = urlencode((string) $oListaClassificacaoCredor->getDescricao());
         }
         if (!empty($oListaClassificacaoCredor)) {
 
@@ -240,7 +240,7 @@ if ($method == "getDados") {
             $oDataVencimento = $oListaClassificacaoCredor->getDataVencimentoPorData(new DBDate($sData));
             $sDataVencimento = $oDataVencimento->getDate(DBDate::DATA_PTBR);
         }
-        $oOrdemCompra->dadosOrdem->sDataVencimento = urlencode($sDataVencimento);
+        $oOrdemCompra->dadosOrdem->sDataVencimento = urlencode((string) $sDataVencimento);
         if (isset($mapItemGrupo)) {
             $oOrdemCompra->dadosOrdem->mapItemGrupo = $mapItemGrupo;
         }
@@ -251,7 +251,7 @@ if ($method == "getDados") {
         echo $json->encode($oOrdemCompra->dadosOrdem);
     } catch (Exception $eErro) {
 
-        echo $json->encode(array("mensagem" => urlencode($eErro->getMessage()), "status" => 2));
+        echo $json->encode(["mensagem" => urlencode($eErro->getMessage()), "status" => 2]);
     }
 } else if ($method == "getInfoItem") {
 
@@ -260,10 +260,10 @@ if ($method == "getDados") {
     } catch (Exception $oErro) {
 
         echo $json->encode(
-            array(
+            [
                 "mensagem" => urlencode($oErro->getMessage()),
                 "status" => 2
-            )
+            ]
         );
     }
 } else if ($method == "saveMaterial") {
@@ -271,25 +271,25 @@ if ($method == "getDados") {
     try {
 
         $oOrdemCompra->saveMaterial($objJson->iCodLanc, $objJson->oMaterial);
-        echo $json->encode(array(
+        echo $json->encode([
             "mensagem" => "ok",
             "status" => 1,
             "lFraciona" => $objJson->oMaterial->fraciona,
             "iCodLanc" => $objJson->iCodLanc
-        ));
+        ]);
     } catch (Exception $eErro) {
 
         echo $json->encode(
-            array(
+            [
                 "mensagem" => urlEncode($eErro->getMessage()),
                 "status" => 2,
                 "lfraciona" => false,
-            )
+            ]
         );
     }
 } else if ($method == "getDadosEntrada") {
 
-    $aRetorno = array("aItens" => $oOrdemCompra->getDadosEntrada(), "marcar" => $objJson->marcar);
+    $aRetorno = ["aItens" => $oOrdemCompra->getDadosEntrada(), "marcar" => $objJson->marcar];
     echo $json->encode($aRetorno);
 } else if ($method == "cancelarFracionamento") {
 
@@ -451,11 +451,11 @@ if ($method == "getDados") {
         /** [PAD/RS] Vinculo Numero de Serie */
 
         db_fim_transacao(false);
-        echo $json->encode(array("mensagem" => "Entrada da ordem de compra efetuada com sucesso.", "status" => 1, "erro" => false));
+        echo $json->encode(["mensagem" => "Entrada da ordem de compra efetuada com sucesso.", "status" => 1, "erro" => false]);
     } catch (Exception $eError) {
 
         db_fim_transacao(true);
-        echo $json->encode(array("mensagem" => urlencode($eError->getMessage()), "status" => 2, "erro" => true));
+        echo $json->encode(["mensagem" => urlencode($eError->getMessage()), "status" => 2, "erro" => true]);
     }
 } else if ($method == "marcarItensSession") {
 
@@ -473,16 +473,16 @@ if ($method == "getDados") {
     }
 } else if ($method == "verificaBensBaixado") {
 
-    $aDocumentos = array(
+    $aDocumentos = [
         200 => 7,
         201 => 7,
         208 => 9,
         209 => 9,
         210 => 8,
         211 => 8
-    );
+    ];
     $status = 1;
-    $aGrupos = array();
+    $aGrupos = [];
     $iCodigoNota = $objJson->iCodigoNota;
     $iInstituicao = db_getsession('DB_instit');
     $iGrupoEmpenho = 0;
@@ -529,7 +529,7 @@ if ($method == "getDados") {
             $sMensagemErro .= " no grupo de contas {$oConGrupo->c20_sequencial} - {$oConGrupo->c20_descr} ";
 
             $status = '3';
-            echo $json->encode(array("status" => $status, "sMensagem" => urlencode($sMensagemErro)));
+            echo $json->encode(["status" => $status, "sMensagem" => urlencode($sMensagemErro)]);
             return false;
         }
     }
@@ -547,7 +547,7 @@ if ($method == "getDados") {
         $status = 5;
     }
 
-    echo $json->encode(array("status" => $status, "iCodigoNota" => $iCodigoNota));
+    echo $json->encode(["status" => $status, "iCodigoNota" => $iCodigoNota]);
 } else if ($method == "verificaNota") {
 
     $status = 0;
@@ -569,13 +569,13 @@ if ($method == "getDados") {
     if ($oDaoEmpNota->numrows > 0) {
 
         $status = 1;
-        $aEmpenhos = array();
+        $aEmpenhos = [];
         foreach (db_utils::getCollectionByRecord($rsEmpNota) as $oEmpNota) {
             $aEmpenhos[] = "\n" . $oEmpNota->e60_codemp . '/' . $oEmpNota->e69_anousu;
         }
         $sEmpenho = implode(", ", $aEmpenhos);
     }
-    echo $json->encode(array("status" => $status, "sEmpenho" => $sEmpenho));
+    echo $json->encode(["status" => $status, "sEmpenho" => $sEmpenho]);
 } else if ($method == 'anularEntradaOrdemEmpenhoMaterialPermanente') {
 
     try {
@@ -583,10 +583,10 @@ if ($method == "getDados") {
         db_inicio_transacao();
 
         $oDaoOrdemItemOC = new cl_matestoqueitemoc();
-        $aWhere = array(
+        $aWhere = [
             "m74_codempnota = {$objJson->e69_codnota}",
             "m52_codordem = {$objJson->m51_codordem}"
-        );
+        ];
         $sSqlBuscaItens = $oDaoOrdemItemOC->sql_query_nota_ordem('matestoqueitemoc.*', implode(" and ", $aWhere));
         $rsBuscaItens = $oDaoOrdemItemOC->sql_record($sSqlBuscaItens);
         if ($oDaoOrdemItemOC->erro_status == "0") {
@@ -692,7 +692,7 @@ if ($method == "getDados") {
         $mensagem = $e->getMessage();
     }
 
-    echo $json->encode(array("mensagem" => urlencode($mensagem), "status" => $status, "load" => $load));
+    echo $json->encode(["mensagem" => urlencode($mensagem), "status" => $status, "load" => $load]);
 } else if ($method == 'getInfoMaterialEntrada') {
 
     $unidade = "";
@@ -717,5 +717,5 @@ if ($method == "getDados") {
         $mensagem = $erro->getMessage();
     }
 
-    echo $json->encode(array("mensagem" => urlencode($mensagem), "status" => $status, "unidade" => $unidade, "quantunid" => $quantunid));
+    echo $json->encode(["mensagem" => urlencode($mensagem), "status" => $status, "unidade" => $unidade, "quantunid" => $quantunid]);
 }

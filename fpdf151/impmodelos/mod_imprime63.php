@@ -22,7 +22,7 @@
   global $logo;
   $resinst = $cldb_config->sql_record($cldb_config->sql_query_file(db_getsession("DB_instit"), 'logo'));
 	db_fieldsmemory($resinst,0);
-  $logofundo = substr($logo,0,strpos($logo,"."));
+  $logofundo = substr((string) $logo,0,strpos((string) $logo,"."));
 	/*   F U N D O   D O   D O C U M E N T O  */
 /*
 if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
@@ -63,8 +63,8 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 */
 	$this->objpdf->SetFont('Arial','B',$fonte);
   
-  $DigAtivM1=substr($this->ativ,0,-3);
-  $DigAtivM2=substr($this->ativ,-3);
+  $DigAtivM1=substr((string) $this->ativ,0,-3);
+  $DigAtivM2=substr((string) $this->ativ,-3);
   $DigAtiv=$DigAtivM1.".".$DigAtivM2;
 
 	$this->objpdf->Text($coluna + 34,$linha + 9,$DigAtiv.".".$this->nrinscr); // inscricao
@@ -86,7 +86,7 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 	$this->objpdf->Text($coluna,$linha+15,"NOME/RAZÃO SOCIAL: "); // nome
 	$this->objpdf->SetFont('Arial','B',$fonte);
   if ($this->nomecompl!=""){
-      $this->objpdf->Text($coluna + 34,$linha + 15,substr($this->nomecompl,0,75)); // nome completo
+      $this->objpdf->Text($coluna + 34,$linha + 15,substr((string) $this->nomecompl,0,75)); // nome completo
   }else{
 	    $this->objpdf->Text($coluna + 34,$linha + 15,$this->nome); // nome
   }
@@ -97,7 +97,7 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 
 
 	$this->objpdf->SetFont('Arial','B',$fonte);
-  $tamanhho=strlen($this->cnpjcpf);
+  $tamanhho=strlen((string) $this->cnpjcpf);
   if ($tamanhho==11){
       $this->objpdf->SetFont('Arial','B',$fonte);
       $this->objpdf->Text($coluna,$linha+27,"CPF: ");
@@ -146,7 +146,7 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 	$this->objpdf->SetFont('Arial','B',$fonte);
 	$this->objpdf->Text($coluna+115,$linha+39,"BAIRRO: "); // endereco
 	$this->objpdf->SetFont('Arial','B',$fonte);
-	$this->objpdf->Text($coluna + 147,$linha+39,substr($this->bairropri,0,18));
+	$this->objpdf->Text($coluna + 147,$linha+39,substr((string) $this->bairropri,0,18));
 
 	$this->objpdf->SetFont('Arial','B',$fonte);
 	$this->objpdf->Text($coluna,$linha+45,"DATA INICIAL: ");
@@ -228,7 +228,7 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 	       	$this->objpdf->setx(15);
 	        $obs = $this->obsativ;
 	        $this->objpdf->Cell(15,4,"",0,0,"C",0);
-	        $this->objpdf->Cell(164,4,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,1,"L",0);
+	        $this->objpdf->Cell(164,4,"OBS: ".substr((string) $obs,0,65).(strlen((string) $obs) > 65 ? "...":""),0,1,"L",0);
 	        }else{
 		    	$this->objpdf->setx(15);
 		     	$this->objpdf->Cell(15,4,"",0,0,"C",0);
@@ -268,7 +268,7 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 	       $this->objpdf->Ln(1);
 	       $this->objpdf->setx(15);
 	       $yyy = $this->objpdf->gety() ;
-	   
+
          $this->objpdf->SetFont('Arial','B',$fonteSec);
 	       if ($this->impdatas == 't'){
 	         $this->objpdf->Cell(24,5,"INICIO",0,0,"C",0);
@@ -279,7 +279,7 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 	              $atv_perman = "f";
 	            }
 	          }
-	         
+
 	       	 if($atv_perman == 'f'){
 	       	    $this->objpdf->Cell(24,5,"FINAL",0,1,"C",0);
 	       	 }else{
@@ -327,14 +327,14 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 				                   $this->objpdf->Cell(40,4,"e outras ...",0,1,"L",0);
 		                      $imprime_linha = 'f';
 		               }
-		         
-		       
+
+
 		       if($imprime_linha=='t'){
 	           $yyy = $this->objpdf->gety();
 				     $chave=key($this->outrasativs);
 				     $this->objpdf->SetFont('Arial','B',$fonteSec);
 				     $this->objpdf->setx(15);
-				     
+
 				     if ($this->impcodativ == 't'){
 					     $codativ=$this->outrasativs[$i]["codativ"];
 					   $this->objpdf->Cell(15,4,$codativ,0,0,"C",0);
@@ -343,7 +343,7 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 				     }
 				     $descr=$this->outrasativs[$i]["descr"];
 				     $this->objpdf->Cell(120,4,$descr,0,$quebradescr,"L",0);//imprime secundaria
-				     
+
 				     if ($this->impdatas == 't'){
 					     $datain=$this->outrasativs[$i]["datain"];
 					     $this->objpdf->Cell(24,4,db_formatar($datain,'d'),0,0,"C",0);
@@ -359,9 +359,9 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 			       		$this->objpdf->Cell(24,3,"",0,1,"C",0);
 				     }
 		     }
-	       
+
 //         echo "<pre>" . var_dump($this->q03_atmemo) . "</pre> - <br>descr: $descr<br>";
-		     
+
 		     if ($this->impobsativ == 't'){
 		       $linhasec = $linhasec +1;
 		       if($linhasec<15){
@@ -370,12 +370,12 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 				        $obs = $this->q03_atmemo[$codativ];
 				        $this->objpdf->Cell(15,4,"",0,0,"C",0);
 				        $this->objpdf->Cell(164,4,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,$quebraobs,"L",0);
-				        
+
 				     }else{ 
 				        $this->objpdf->setx(15);
 				     	  $this->objpdf->Cell(15,4,"",0,0,"C",0);
 				        $this->objpdf->Cell(164,4,"OBS: Sem observação ...",0,$quebraobs,"L",0);
-				     	  
+
 				     }
 		       }
 		     }
@@ -386,9 +386,9 @@ if (file_exists('imagens/files/' . $logofundo.'_fundoalvara.jpg')){
 			     if  ($yyyatual >= 200){ 
 			         break;
 			     }  
-		   
+
 		   }
-		   
+
 //=====================================================================================================================================================	   
     $this->objpdf->roundedrect($coluna-2,$y,187,49,2,'1234'); // descricao da atividade secundaria
     $this->objpdf->setxy(20,151);
@@ -440,7 +440,7 @@ $resultass = db_query($sqlass);
 $linhasass = pg_num_rows($resultass);
 if ($linhasass>0){
 	//db_fieldsmemory($resultass,0);
-	$ass= pg_result($resultass,0,'db02_texto');
+	$ass= pg_fetch_result($resultass,0,'db02_texto');
 	eval($ass);
 }else{
 // QUANDO NÃO TIVER "ASSINATURAS_CODIGOPHP" CADASTRADAS NA DB_DOCUMENTOS pegar o modo antigo.
@@ -458,11 +458,11 @@ if ($linhasass>0){
 //		db_criatabela($resparag);exit;
 //		die($sqlparag);
 
-		if (pg_numrows($resparag) == 0) {
+		if (pg_num_rows($resparag) == 0) {
 			db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do alvara!');
 			exit;
 		}
-		$numrows = pg_numrows($resparag);
+		$numrows = pg_num_rows($resparag);
 		
 		$linha  = $this->objpdf->getY()+10;
 		$colpri = $coluna;
@@ -508,7 +508,7 @@ $linha = 0;
 $this->objpdf->sety(10);
 $this->objpdf->Ln(2);
 $this->objpdf->setfont('arial','',10);
-$this->objpdf->Multicell(190,5,substr($this->q02_memo,0,5900),0,"J");
+$this->objpdf->Multicell(190,5,substr((string) $this->q02_memo,0,5900),0,"J");
 if( $this->objpdf->gety()>242) {
   $this->objpdf->Cell(18,3,"e outras ...",0,0,"C",0);
 }

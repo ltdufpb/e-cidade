@@ -28,28 +28,28 @@
 //CLASSE DA ENTIDADE abatimentoutilizacaodestino
 class cl_abatimentoutilizacaodestino { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k170_utilizacao = 0; 
-   var $k170_numpre = 0; 
-   var $k170_numpar = 0; 
-   var $k170_receit = 0; 
-   var $k170_hist = 0; 
-   var $k170_tipo = 0; 
-   var $k170_valor = 0; 
+   public $k170_utilizacao = 0; 
+   public $k170_numpre = 0; 
+   public $k170_numpar = 0; 
+   public $k170_receit = 0; 
+   public $k170_hist = 0; 
+   public $k170_tipo = 0; 
+   public $k170_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k170_utilizacao = int4 = Abatimento Utilizacao 
                  k170_numpre = int4 = Numpre Destino 
                  k170_numpar = int4 = Parcela destino 
@@ -59,10 +59,10 @@ class cl_abatimentoutilizacaodestino {
                  k170_valor = float4 = k170_valor 
                  ";
    //funcao construtor da classe 
-   function cl_abatimentoutilizacaodestino() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentoutilizacaodestino"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -173,7 +173,7 @@ class cl_abatimentoutilizacaodestino {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "abatimento utilizacao destino () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "abatimento utilizacao destino já Cadastrado";
@@ -205,10 +205,10 @@ class cl_abatimentoutilizacaodestino {
       $this->atualizacampos();
      $sql = " update abatimentoutilizacaodestino set ";
      $virgula = "";
-     if(trim($this->k170_utilizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_utilizacao"])){ 
+     if(trim((string) $this->k170_utilizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_utilizacao"])){ 
        $sql  .= $virgula." k170_utilizacao = $this->k170_utilizacao ";
        $virgula = ",";
-       if(trim($this->k170_utilizacao) == null ){ 
+       if(trim((string) $this->k170_utilizacao) == null ){ 
          $this->erro_sql = " Campo Abatimento Utilizacao não informado.";
          $this->erro_campo = "k170_utilizacao";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_abatimentoutilizacaodestino {
          return false;
        }
      }
-     if(trim($this->k170_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_numpre"])){ 
+     if(trim((string) $this->k170_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_numpre"])){ 
        $sql  .= $virgula." k170_numpre = $this->k170_numpre ";
        $virgula = ",";
-       if(trim($this->k170_numpre) == null ){ 
+       if(trim((string) $this->k170_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre Destino não informado.";
          $this->erro_campo = "k170_numpre";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_abatimentoutilizacaodestino {
          return false;
        }
      }
-     if(trim($this->k170_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_numpar"])){ 
+     if(trim((string) $this->k170_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_numpar"])){ 
        $sql  .= $virgula." k170_numpar = $this->k170_numpar ";
        $virgula = ",";
-       if(trim($this->k170_numpar) == null ){ 
+       if(trim((string) $this->k170_numpar) == null ){ 
          $this->erro_sql = " Campo Parcela destino não informado.";
          $this->erro_campo = "k170_numpar";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_abatimentoutilizacaodestino {
          return false;
        }
      }
-     if(trim($this->k170_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_receit"])){ 
+     if(trim((string) $this->k170_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_receit"])){ 
        $sql  .= $virgula." k170_receit = $this->k170_receit ";
        $virgula = ",";
-       if(trim($this->k170_receit) == null ){ 
+       if(trim((string) $this->k170_receit) == null ){ 
          $this->erro_sql = " Campo Receita destino não informado.";
          $this->erro_campo = "k170_receit";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_abatimentoutilizacaodestino {
          return false;
        }
      }
-     if(trim($this->k170_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_hist"])){ 
+     if(trim((string) $this->k170_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_hist"])){ 
        $sql  .= $virgula." k170_hist = $this->k170_hist ";
        $virgula = ",";
-       if(trim($this->k170_hist) == null ){ 
+       if(trim((string) $this->k170_hist) == null ){ 
          $this->erro_sql = " Campo Historico Destino não informado.";
          $this->erro_campo = "k170_hist";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_abatimentoutilizacaodestino {
          return false;
        }
      }
-     if(trim($this->k170_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_tipo"])){ 
+     if(trim((string) $this->k170_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_tipo"])){ 
        $sql  .= $virgula." k170_tipo = $this->k170_tipo ";
        $virgula = ",";
-       if(trim($this->k170_tipo) == null ){ 
+       if(trim((string) $this->k170_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo Destino não informado.";
          $this->erro_campo = "k170_tipo";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_abatimentoutilizacaodestino {
          return false;
        }
      }
-     if(trim($this->k170_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_valor"])){ 
+     if(trim((string) $this->k170_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k170_valor"])){ 
        $sql  .= $virgula." k170_valor = $this->k170_valor ";
        $virgula = ",";
-       if(trim($this->k170_valor) == null ){ 
+       if(trim((string) $this->k170_valor) == null ){ 
          $this->erro_sql = " Campo k170_valor não informado.";
          $this->erro_campo = "k170_valor";
          $this->erro_banco = "";

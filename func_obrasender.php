@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_obrasender_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -62,9 +62,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clobrasender->sql_query("",$campos,"ob07_codconstr","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ob07_codobra)){
-          $repassa = array("chave_ob07_codconstr"=>$chave_ob07_codconstr,"chave_ob07_codobra"=>$chave_ob07_codobra);
+          $repassa = ["chave_ob07_codconstr"=>$chave_ob07_codconstr,"chave_ob07_codobra"=>$chave_ob07_codobra];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

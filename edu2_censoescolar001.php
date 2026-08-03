@@ -73,7 +73,7 @@ $clcalendario = new cl_calendario;
    <?php 
    $result= $clcalendario->sql_record($clcalendario->sql_query_calturma("","ed52_i_ano,ed52_i_ano","ed52_i_ano DESC"," ed38_i_escola = $censo_escola"));
    if($clcalendario->numrows==0){
-    $x = array(' '=>'NENHUM REGISTRO');
+    $x = [' '=>'NENHUM REGISTRO'];
     db_select('censo_ano',$x,true,1,"");
    }else{
     db_selectrecord("censo_ano",$result,"","","","censo_ano","","","",1);

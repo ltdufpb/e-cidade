@@ -197,7 +197,7 @@ if ( !isset($oPost->opcao) ){
 
         $oRetencao = db_utils::fieldsMemory( $rsRetencao, 0 );
 
-        if ( trim( $rh77_retencaotiporec ) != '' ) {
+        if ( trim( (string) $rh77_retencaotiporec ) != '' ) {
 
           if ( $oRetencao->rh77_retencaotiporec != $rh77_retencaotiporec ) {
 
@@ -222,7 +222,7 @@ if ( !isset($oPost->opcao) ){
         }
       } else {
 
-        if ( trim( $rh77_retencaotiporec ) != '' ) {
+        if ( trim( (string) $rh77_retencaotiporec ) != '' ) {
 
           $clpensaoretencao->rh77_retencaotiporec = $rh77_retencaotiporec;
           $clpensaoretencao->incluir( null );
@@ -283,7 +283,7 @@ if ( !isset($oPost->opcao) ){
     $sWhereRetencao .= "and rh77_mesusu = {$r52_mesusu} ";
     $sWhereRetencao .= "and rh77_regist = {$r52_regist} ";
 
-    if ( trim( $numcgm ) != '' ) {
+    if ( trim( (string) $numcgm ) != '' ) {
       $sWhereRetencao .= "and rh77_numcgm = {$numcgm}   ";
     }
 

@@ -36,11 +36,11 @@ require_once(modification("classes/db_cfautent_classe.php"));
 $clcfautent = new cl_cfautent;
 
   //rotina que verifica se o ip do usuario irá imprimir autenticar ou naum ira fazer nada
-      $result99 = $clcfautent->sql_record($clcfautent->sql_query_file(null,"k11_tipautent as tipautent",'',"k11_ipterm = '".$HTTP_SERVER_VARS['REMOTE_ADDR']."'"));
+      $result99 = $clcfautent->sql_record($clcfautent->sql_query_file(null,"k11_tipautent as tipautent",'',"k11_ipterm = '".$_SERVER['REMOTE_ADDR']."'"));
       if($clcfautent->numrows > 0){
       	db_fieldsmemory($result99,0);
       }else{
-	      db_msgbox("Cadastre o ip ".$HTTP_SERVER_VARS['REMOTE_ADDR']." como um caixa.");
+	      db_msgbox("Cadastre o ip ".$_SERVER['REMOTE_ADDR']." como um caixa.");
 	      die();
       }
 

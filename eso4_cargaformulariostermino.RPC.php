@@ -60,9 +60,7 @@ try {
 
 
             $rsRescisoes = db_query($sqlDadosRescisao);
-            $retorno->rescisoes = \db_utils::makeCollectionFromRecord($rsRescisoes, function ($rescisao) {
-                return $rescisao;
-            });
+            $retorno->rescisoes = \db_utils::makeCollectionFromRecord($rsRescisoes, fn($rescisao) => $rescisao);
 
             break;
 

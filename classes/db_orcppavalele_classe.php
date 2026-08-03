@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE orcppavalele
 class cl_orcppavalele { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o25_codseqppa = 0; 
-   var $o25_codele = 0; 
+   public $o25_codseqppa = 0; 
+   public $o25_codele = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o25_codseqppa = int8 = Sequencia PPA 
                  o25_codele = int4 = Elemento 
                  ";
    //funcao construtor da classe 
-   function cl_orcppavalele() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcppavalele"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_orcppavalele {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Elementos PPA ($this->o25_codseqppa."-".$this->o25_codele) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Elementos PPA já Cadastrado";
@@ -130,12 +130,12 @@ class cl_orcppavalele {
      $resaco = $this->sql_record($this->sql_query_file($this->o25_codseqppa,$this->o25_codele));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6489,'$this->o25_codseqppa','I')");
        $resac = db_query("insert into db_acountkey values($acount,6490,'$this->o25_codele','I')");
-       $resac = db_query("insert into db_acount values($acount,1067,6489,'','".AddSlashes(pg_result($resaco,0,'o25_codseqppa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1067,6490,'','".AddSlashes(pg_result($resaco,0,'o25_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1067,6489,'','".AddSlashes(pg_fetch_result($resaco,0,'o25_codseqppa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1067,6490,'','".AddSlashes(pg_fetch_result($resaco,0,'o25_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_orcppavalele {
       $this->atualizacampos();
      $sql = " update orcppavalele set ";
      $virgula = "";
-     if(trim($this->o25_codseqppa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o25_codseqppa"])){ 
+     if(trim((string) $this->o25_codseqppa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o25_codseqppa"])){ 
        $sql  .= $virgula." o25_codseqppa = $this->o25_codseqppa ";
        $virgula = ",";
-       if(trim($this->o25_codseqppa) == null ){ 
+       if(trim((string) $this->o25_codseqppa) == null ){ 
          $this->erro_sql = " Campo Sequencia PPA nao Informado.";
          $this->erro_campo = "o25_codseqppa";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_orcppavalele {
          return false;
        }
      }
-     if(trim($this->o25_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o25_codele"])){ 
+     if(trim((string) $this->o25_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o25_codele"])){ 
        $sql  .= $virgula." o25_codele = $this->o25_codele ";
        $virgula = ",";
-       if(trim($this->o25_codele) == null ){ 
+       if(trim((string) $this->o25_codele) == null ){ 
          $this->erro_sql = " Campo Elemento nao Informado.";
          $this->erro_campo = "o25_codele";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_orcppavalele {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6489,'$this->o25_codseqppa','A')");
          $resac = db_query("insert into db_acountkey values($acount,6490,'$this->o25_codele','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o25_codseqppa"]))
-           $resac = db_query("insert into db_acount values($acount,1067,6489,'".AddSlashes(pg_result($resaco,$conresaco,'o25_codseqppa'))."','$this->o25_codseqppa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1067,6489,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o25_codseqppa'))."','$this->o25_codseqppa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o25_codele"]))
-           $resac = db_query("insert into db_acount values($acount,1067,6490,'".AddSlashes(pg_result($resaco,$conresaco,'o25_codele'))."','$this->o25_codele',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1067,6490,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o25_codele'))."','$this->o25_codele',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_orcppavalele {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6489,'$o25_codseqppa','E')");
          $resac = db_query("insert into db_acountkey values($acount,6490,'$o25_codele','E')");
-         $resac = db_query("insert into db_acount values($acount,1067,6489,'','".AddSlashes(pg_result($resaco,$iresaco,'o25_codseqppa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1067,6490,'','".AddSlashes(pg_result($resaco,$iresaco,'o25_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1067,6489,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o25_codseqppa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1067,6490,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o25_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcppavalele
@@ -304,7 +304,7 @@ class cl_orcppavalele {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcppavalele";
@@ -318,7 +318,7 @@ class cl_orcppavalele {
    function sql_query ( $o25_codseqppa=null,$o25_codele=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -350,7 +350,7 @@ class cl_orcppavalele {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -362,7 +362,7 @@ class cl_orcppavalele {
    function sql_query_file ( $o25_codseqppa=null,$o25_codele=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,7 +391,7 @@ class cl_orcppavalele {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -37,21 +37,15 @@ final class CalculoJuridicaParcelamentoRecibo extends CalculoColecao implements 
 {
     private $recibo;
 
-    private $processoForo;
-
-    private $termo;
-
-    public function __construct(Recibo $recibo, ProcessoForo $processoForo, Termo $termo)
+    public function __construct(Recibo $recibo, private readonly ProcessoForo $processoForo, private readonly Termo $termo)
     {
         $this->recibo = $recibo;
-        $this->processoForo = $processoForo;
-        $this->termo = $termo;
     }
 
     public function calcular()
     {
         $dataVencimento = $this->recibo->getDataVencimento();
-        $anoVencimento = substr($this->recibo->getDataVencimento(), 0, 4);
+        $anoVencimento = substr((string) $this->recibo->getDataVencimento(), 0, 4);
         $processoForo = $this->processoForo->getCodigo();
         $numpre = $this->termo->getNumpre();
 
@@ -141,7 +135,7 @@ final class CalculoJuridicaParcelamentoRecibo extends CalculoColecao implements 
           where v91_processoforo = $processoForo;                    
         ";
         $rsProcessoForoDebitos = db_query($sSqlProcessoForoDebitos);
-        if (pg_numrows($rsProcessoForoDebitos) > 0) {
+        if (pg_num_rows($rsProcessoForoDebitos) > 0) {
             $nValor = \db_utils::fieldsMemory($rsProcessoForoDebitos, 0)->valor;
             if ($nValor > 0) {
                 $sql =  $sSqlProcessoForoDebitos;
@@ -221,7 +215,7 @@ final class CalculoJuridicaParcelamentoRecibo extends CalculoColecao implements 
     {
         $linhaComValorCalculado = pg_fetch_object($rs, 0);
         $valor = $linhaComValorCalculado->valor;
-        $valores = array();
+        $valores = [];
 
         foreach (range(1, $this->termo->getTotalParcelas()) as $parcela) {
             $valores[$parcela] = $this->factory($valor, 0, 0, 0);

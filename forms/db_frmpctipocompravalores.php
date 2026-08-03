@@ -137,7 +137,7 @@ fieldset table td:first-child {
 	  <tr>
 	    <td valign="top"  align="center">  
 		    <?php 
-           $chavepri  = array("pc85_sequencial" => @$pc85_sequencial);
+           $chavepri  = ["pc85_sequencial" => @$pc85_sequencial];
            $sCampos   = "pc85_sequencial,pc85_codtipocompra,pc85_valorminimo,pc85_valormaximo,pc85_datainicial,pc85_datafinal";
            $sWhere    = "pc85_codtipocompra = {$pc50_codcom}";
            $sSql      = $clpctipocompravalores->sql_query(null,$sCampos,"pc85_sequencial",$sWhere);

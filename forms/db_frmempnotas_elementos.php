@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_empelemento_classe.php"));
 include(modification("classes/db_empnotaele_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clempelemento = new cl_empelemento;
 $clempnotaele = new cl_empnotaele;
@@ -205,17 +205,17 @@ $clrotulo->label("e64_vlrpag");
 		          db_fieldsmemory($result03,0,true);	
 			 }
 			  $e="e70_vlrliq_$o56_codele";
-			  $$e = $e70_vlrliq;		       
+			  ${$e} = $e70_vlrliq;		       
 			  $e="e70_vlranu_$o56_codele";
-			  $$e = $e70_vlranu;		       
+			  ${$e} = $e70_vlranu;		       
 			  $e="e70_valor_$o56_codele";
-			  $$e = $e70_valor;		       
+			  ${$e} = $e70_valor;		       
 	              } 		  
 
 		      $total_notas  =  number_format($tot_valor-$tot_vlranu,"2",".","");		       
 		      
 		      $e="total_notas_$o56_codele";
-		      $$e =  $total_notas;		       
+		      ${$e} =  $total_notas;		       
 		    
                 //fim
 
@@ -224,29 +224,29 @@ $clrotulo->label("e64_vlrpag");
 		     } 	
 
 		     $e="e64_vlrliq_$o56_codele";
-		     $$e = number_format($e64_vlrliq,"2",".","");		       
+		     ${$e} = number_format($e64_vlrliq,"2",".","");		       
 		     
 		     
 		     $e="e64_vlrpag_$o56_codele";
-		     $$e = number_format($e64_vlrpag,"2",".","");		    
+		     ${$e} = number_format($e64_vlrpag,"2",".","");		    
 		     
 		     $e="e64_vlranu_$o56_codele";
-		     $$e = $e64_vlranu;		       
+		     ${$e} = $e64_vlranu;		       
 		      
 		     $r="e64_vlremp_$o56_codele";
-		     $$r = $e64_vlremp;		       
+		     ${$r} = $e64_vlremp;		       
 
                    if($db_opcao==1){
 		     $a="generico_$o56_codele";
-		     $$a = $vlrdis;		       
+		     ${$a} = $vlrdis;		       
 		      
 		     $a="disponivel_$o56_codele";
-		     $$a = number_format($vlrdis,"2",".","");		    
+		     ${$a} = number_format($vlrdis,"2",".","");		    
 		   }  
 
 	    echo "<tr>	    
    	            <td	 class='bordas_corp' align='center'><small>$o56_elemento </small></td>
-	            <td	 class='bordas_corp' align='center' title='$o56_descr'><small>".substr($o56_descr,0,11)."... </small></td>
+	            <td	 class='bordas_corp' align='center' title='$o56_descr'><small>".substr((string) $o56_descr,0,11)."... </small></td>
 		    
        	            <td	 class='bordas_corp' align='center'><small>";db_input("e64_vlremp_$o56_codele",8,0,true,'text',3);echo "\n</small></td>
 	            <td	 class='bordas_corp' align='center'><small>";db_input("e64_vlrliq_$o56_codele",8,0,true,'text',3);echo "</small></td>

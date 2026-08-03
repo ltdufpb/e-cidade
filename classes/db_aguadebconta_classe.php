@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE aguadebconta
 class cl_aguadebconta { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x05_matric = 0; 
-   var $x05_conta = 0; 
+   public $x05_matric = 0; 
+   public $x05_conta = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x05_matric = int4 = Matrícula 
                  x05_conta = int4 = Conta 
                  ";
    //funcao construtor da classe 
-   function cl_aguadebconta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguadebconta"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_aguadebconta {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "aguadebconta ($this->x05_matric) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "aguadebconta já Cadastrado";
@@ -129,11 +129,11 @@ class cl_aguadebconta {
      $resaco = $this->sql_record($this->sql_query_file($this->x05_matric));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8416,'$this->x05_matric','I')");
-       $resac = db_query("insert into db_acount values($acount,1425,8416,'','".AddSlashes(pg_result($resaco,0,'x05_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1425,8417,'','".AddSlashes(pg_result($resaco,0,'x05_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1425,8416,'','".AddSlashes(pg_fetch_result($resaco,0,'x05_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1425,8417,'','".AddSlashes(pg_fetch_result($resaco,0,'x05_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_aguadebconta {
       $this->atualizacampos();
      $sql = " update aguadebconta set ";
      $virgula = "";
-     if(trim($this->x05_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x05_matric"])){ 
+     if(trim((string) $this->x05_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x05_matric"])){ 
        $sql  .= $virgula." x05_matric = $this->x05_matric ";
        $virgula = ",";
-       if(trim($this->x05_matric) == null ){ 
+       if(trim((string) $this->x05_matric) == null ){ 
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "x05_matric";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_aguadebconta {
          return false;
        }
      }
-     if(trim($this->x05_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x05_conta"])){ 
+     if(trim((string) $this->x05_conta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x05_conta"])){ 
        $sql  .= $virgula." x05_conta = $this->x05_conta ";
        $virgula = ",";
-       if(trim($this->x05_conta) == null ){ 
+       if(trim((string) $this->x05_conta) == null ){ 
          $this->erro_sql = " Campo Conta nao Informado.";
          $this->erro_campo = "x05_conta";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_aguadebconta {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8416,'$this->x05_matric','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x05_matric"]))
-           $resac = db_query("insert into db_acount values($acount,1425,8416,'".AddSlashes(pg_result($resaco,$conresaco,'x05_matric'))."','$this->x05_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1425,8416,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x05_matric'))."','$this->x05_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x05_conta"]))
-           $resac = db_query("insert into db_acount values($acount,1425,8417,'".AddSlashes(pg_result($resaco,$conresaco,'x05_conta'))."','$this->x05_conta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1425,8417,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x05_conta'))."','$this->x05_conta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_aguadebconta {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8416,'$x05_matric','E')");
-         $resac = db_query("insert into db_acount values($acount,1425,8416,'','".AddSlashes(pg_result($resaco,$iresaco,'x05_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1425,8417,'','".AddSlashes(pg_result($resaco,$iresaco,'x05_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1425,8416,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x05_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1425,8417,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x05_conta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from aguadebconta
@@ -291,7 +291,7 @@ class cl_aguadebconta {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aguadebconta";

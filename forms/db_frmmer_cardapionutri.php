@@ -77,10 +77,10 @@ $clrotulo->label("me01_i_codigo");
        <?=($db_botao==false?"disabled":"")?> >
 <br><br>
 <?php 
-  $chavepri= array( "me02_i_codigo"=>@$me02_i_codigo,
+  $chavepri= [ "me02_i_codigo"=>@$me02_i_codigo,
                     "me02_i_cgm"=>@$me02_i_cgm,
                     "me02_c_crn"=>@$me02_c_crn
-                  );
+                  ];
   $cliframe_alterar_excluir->chavepri=$chavepri;
   if (isset($me04_i_cardapio)&&@$me04_i_cardapio!="") {
     $cliframe_alterar_excluir->sql = $clmer_cardapionutri->sql_query(null,'*',null,"me04_i_cardapio=$me04_i_cardapio");

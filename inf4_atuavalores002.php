@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_infcab_classe.php"));
 include(modification("classes/db_infcor_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS,2);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST,2);
 
 $clinfcab = new cl_infcab;
 $clinfcor = new cl_infcor;
@@ -64,7 +64,7 @@ if ( isset($i03_descr) && $i03_descr != "" ) {
 
      $i04_dados = "i04_dados$i";
 
-     $matriz = split("#",$$i04_dados);
+     $matriz = preg_split("#\\##m",(string) ${$i04_dados});
 
      $clinfcor->i04_codigo   = $clinfcab->i03_codigo;
      $clinfcor->i04_seq	     = $i;
@@ -176,7 +176,7 @@ function js_alteralinha(linha) {
        
        $result=db_query($sql);
 
-       for($s=0;$s<pg_numrows($result);$s++){
+       for($s=0;$s<pg_num_rows($result);$s++){
 
          db_fieldsmemory($result,$s);
 

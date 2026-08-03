@@ -11,7 +11,7 @@ class Error implements HandlerInterface {
   private $entity;
 
   public static function register() {
-    return set_error_handler(array(__CLASS__, '_handle'), Registry::get('app.config')->get('php.error_reporting'));
+    return set_error_handler(self::_handle(...), Registry::get('app.config')->get('php.error_reporting'));
   }
 
   /**
@@ -33,12 +33,12 @@ class Error implements HandlerInterface {
     $trace = new Trace();
     $trace->filter(function($trace) {
       if (!isset($trace['class'])) return true;
-      return $trace['class'] !== __CLASS__;
+      return $trace['class'] !== self::class;
     });
 
     $entity = EntityFactory::create($type, $suppress, $message, $file, $line, time(), $trace);
 
-    Registry::get('app.eventManager')->trigger('app.error', null, array($entity));
+    Registry::get('app.eventManager')->trigger('app.error', null, [$entity]);
 
     return $entity;
   }

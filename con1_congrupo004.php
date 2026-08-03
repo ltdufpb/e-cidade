@@ -35,7 +35,7 @@ include(modification("classes/db_congrupo_classe.php"));
 include(modification("classes/db_conplanogrupo_classe.php"));
 include(modification("classes/db_conplano_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcongrupo      = new cl_congrupo;
 $clconplanogrupo = new cl_conplanogrupo;
@@ -210,7 +210,7 @@ if(isset($incluir)||isset($alterar)||isset($excluir)){
     }
   }
 
-  if (trim($erro_msg) != ""){
+  if (trim((string) $erro_msg) != ""){
     db_msgbox($erro_msg);
   }
 }

@@ -143,7 +143,7 @@ if ($clveicparam->numrows > 0) {
            $ultimamedida = 0;
            if (isset($ve62_veiculos) && $ve62_veiculos != "" && !empty($ve62_dtmanut)) {
 
-             $dData        = substr($ve62_dtmanut, 6, 4) . '-' . substr($ve62_dtmanut, 3, 2) . '-' . substr($ve62_dtmanut, 0, 2);
+             $dData        = substr((string) $ve62_dtmanut, 6, 4) . '-' . substr((string) $ve62_dtmanut, 3, 2) . '-' . substr((string) $ve62_dtmanut, 0, 2);
              $oVeiculo     = new Veiculo($ve62_veiculos);
              $ultimamedida = $oVeiculo->getUltimaMedidaUso($dData);
            }
@@ -249,10 +249,10 @@ if ($clveicparam->numrows > 0) {
                 $ve62_situacao = VeiculoManutencao::SITUACAO_REALIZADO;
               }
 
-              $aSituacoes = array(
+              $aSituacoes = [
                   VeiculoManutencao::SITUACAO_PENDENTE => "Pendente",
                   VeiculoManutencao::SITUACAO_REALIZADO => "Realizado"
-                );
+                ];
 
               db_select("ve62_situacao", $aSituacoes, true, $db_opcao);
             ?>
@@ -612,7 +612,7 @@ function js_preenchepesquisa(chave){
   db_iframe_veicmanut.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

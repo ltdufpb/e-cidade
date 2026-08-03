@@ -56,7 +56,7 @@ class LinhaTransporte {
    * Array com instâncias de itinerários
    * @var array
    */
-  protected $aItinerarios = array();
+  protected $aItinerarios = [];
 
   /**
    * Método construtor da classe.
@@ -282,8 +282,8 @@ class LinhaTransporte {
     $aLogradourosVolta = $oItineraioVolta->getLogradouros();
 
     // arrays auxiliares
-    $aCodigoLogradouroIda   = array();
-    $aCodigoLogradouroVolta = array();
+    $aCodigoLogradouroIda   = [];
+    $aCodigoLogradouroVolta = [];
     foreach ($aLogradourosIda as $oLogradouroItinerario) {
       $aCodigoLogradouroIda[] = $oLogradouroItinerario->getLogradouroBairro()->getCodigo();
     }

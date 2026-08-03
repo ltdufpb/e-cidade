@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tesinter_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltesinter = new cl_tesinter;
 $cltesinter->rotulo->label("j39_sequencial");
 $cltesinter->rotulo->label("j39_idbql");
@@ -98,9 +98,9 @@ $cltesinter->rotulo->label("j39_idbql");
         }else{
            $sql = $cltesinter->sql_query("",$campos,"j39_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j39_idbql)){
-          $repassa = array("chave_j39_sequencial"=>$chave_j39_sequencial,"chave_j39_idbql"=>$chave_j39_idbql);
+          $repassa = ["chave_j39_sequencial"=>$chave_j39_sequencial,"chave_j39_idbql"=>$chave_j39_idbql];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

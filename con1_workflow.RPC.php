@@ -97,7 +97,7 @@ try{
 
           } else {
             $rs = db_query($clworkflow->sql_query_modulo($parametros->db112_sequencial, "db112_sequencial, db112_descricao, p51_tipoprocgrupo, p51_codigo, p51_descr, db173_modulo"));
-            $workflow = array();
+            $workflow = [];
             $aux = pg_fetch_array($rs); 
                     
             $cltipoproc->p51_codigo = $aux['p51_codigo'];
@@ -131,7 +131,7 @@ try{
             }
           }
 
-          $retorno->workflow = array();
+          $retorno->workflow = [];
           $retorno->workflow['db112_sequencial'] = $clworkflow->db112_sequencial;
           $retorno->workflow['db112_descricao'] = $clworkflow->db112_descricao;
           $retorno->workflow['p51_tipoprocgrupo'] = $cltipoproc->p51_tipoprocgrupo;
@@ -156,7 +156,7 @@ try{
           }
 
           $rs = db_query($clworkflow->sql_query_modulo($parametros->db112_sequencial, "db112_sequencial, p51_tipoprocgrupo, db173_modulo, p51_codigo, db116_sequencial"));
-          $workflow = array();
+          $workflow = [];
           $aux = pg_fetch_array($rs);
                     
           $clworkflowtipoproc->db116_sequencial = $aux["db116_sequencial"];
@@ -199,7 +199,7 @@ try{
           }
 
           $rs = db_query($clworkflow->sql_query_modulo($parametros->db112_sequencial, "db112_sequencial, db112_descricao, p51_tipoprocgrupo, p51_descr, db173_modulo"));
-          $workflow = array();
+          $workflow = [];
           $aux = pg_fetch_array($rs);
 
           $workflow['db112_sequencial'] = $aux['db112_sequencial'];
@@ -216,12 +216,12 @@ try{
 
           $sql = $cldb_sysmodulo->sql_query(null, 'codmod, nomemod');
           $rs = db_query($sql);
-          $modulos = array();
+          $modulos = [];
 
           while ($modulo = pg_fetch_array($rs)) {
-              $aux = array();
+              $aux = [];
               $aux['codmod'] = $modulo['codmod'];
-              $aux['nomemod'] = strtoupper(trim($modulo['nomemod']));
+              $aux['nomemod'] = strtoupper(trim((string) $modulo['nomemod']));
               $modulos[] = $aux;
           }
 
@@ -232,12 +232,12 @@ try{
         case 'getTipoProcGrupos':
           $sql = $cltipoprocgrupo->sql_query(null, 'p40_sequencial, p40_descricao');
           $rs = db_query($sql);
-          $arrTipoGrupoProc = array();
+          $arrTipoGrupoProc = [];
 
           while ($tipoGrupoProc = pg_fetch_array($rs)) {
-              $aux = array();
+              $aux = [];
               $aux['p40_sequencial'] = $tipoGrupoProc['p40_sequencial'];
-              $aux['p40_descricao'] = strtoupper(trim($tipoGrupoProc['p40_descricao']));
+              $aux['p40_descricao'] = strtoupper(trim((string) $tipoGrupoProc['p40_descricao']));
               $arrTipoGrupoProc[] = $aux;
           }
 

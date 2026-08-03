@@ -262,7 +262,7 @@ class DiversosRelatorio {
 		
 		$rsDadosRelatorio = $oDaoDiverImporta->sql_record($sSqlRelatorio);
 		
-		$aDadosRetorno = Array();
+		$aDadosRetorno = [];
 		
 		if ($oDaoDiverImporta->numrows > 0) {
 
@@ -280,7 +280,7 @@ class DiversosRelatorio {
 				$oDadosRetorno->matricula       = $oDadosRelatorio->matricula;     
 				$oDadosRetorno->inscricao       = $oDadosRelatorio->inscricao;
 				$oDadosRetorno->observacao      = $oDadosRelatorio->observacao;    
-				$oDadosRetorno->aRegistros      = array();
+				$oDadosRetorno->aRegistros      = [];
 				$aDadosRetorno[$oDadosRelatorio->codimportacao] = $oDadosRetorno;
 
 			}
@@ -316,7 +316,7 @@ class DiversosRelatorio {
 	 */
 	protected function gerarCSV(){
 
-		$aLinhas = array();
+		$aLinhas = [];
 		$oCabecalho = new stdClass();
 		$sArquivo   = 'tmp/relatorio_debitos_importados_'. date('Y-m-d_H:i') . '_' . db_getsession('DB_login').'.csv';
 		$fArquivo = fopen($sArquivo, "w");
@@ -374,7 +374,7 @@ class DiversosRelatorio {
 		}
 		foreach ($aLinhas as $oLinha) {
 		  
-			fputcsv($fArquivo, (array)$oLinha, ";");
+			fputcsv($fArquivo, (array)$oLinha, ";", escape: '\\');
 		}
 		
 		fclose($fArquivo);

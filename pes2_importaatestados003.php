@@ -49,7 +49,7 @@ $api->setParameter('$head6', "");
 
 $api->setParameter('$anousu', $oGet->anousu);
 $api->setParameter('$mesusu', $oGet->mesusu);
-$api->setParameter('$regist', implode("','",explode(",",$oGet->regist)));
+$api->setParameter('$regist', implode("','",explode(",",(string) $oGet->regist)));
 
 $ok = $api->generateReport();
 

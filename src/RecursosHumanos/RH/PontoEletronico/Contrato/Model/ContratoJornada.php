@@ -136,7 +136,7 @@ class ContratoJornada
             if (!$rs) {
                 throw new DBException("Erro ao buscar informações.");
             }
-            if (pg_numrows($rs)>0) {
+            if (pg_num_rows($rs)>0) {
                 $dao = \db_utils::fieldsMemory($rs, 0);
                 $this->setCodigo((int)$dao->rh254_sequencial);
                 $this->setCodigoInstituicao((int)$dao->rh254_instit);

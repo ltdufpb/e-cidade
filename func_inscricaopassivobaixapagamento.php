@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_inscricaopassivo_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clinscricaopassivo = new cl_inscricaopassivo;
 $clinscricaopassivo->rotulo->label("c36_sequencial");
@@ -95,9 +95,9 @@ $sWhere .= " and c109_sequencial       is null";
         } else {
            $sql = $clinscricaopassivo->sql_query_inscricao_baixapagamento("",$campos,"c36_sequencial", "1=1 and {$sWhere}" );
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c36_sequencial)) {
-          $repassa = array("chave_c36_sequencial"=>$chave_c36_sequencial,"chave_c36_sequencial"=>$chave_c36_sequencial);
+          $repassa = ["chave_c36_sequencial"=>$chave_c36_sequencial,"chave_c36_sequencial"=>$chave_c36_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

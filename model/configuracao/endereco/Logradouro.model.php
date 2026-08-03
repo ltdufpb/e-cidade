@@ -85,7 +85,7 @@ class Logradouro {
    * Bairros que o logradouro esta vinculado
    * @var array
    */
-  private $aBairros = array();
+  private $aBairros = [];
 
   /**
    * Construtor da classe. Recebe como parametro o sequencial da tabela cadenderrua

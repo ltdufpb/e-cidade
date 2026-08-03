@@ -34,8 +34,8 @@
   include(modification("classes/db_agualeitura_classe.php"));
   include(modification("dbforms/db_funcoes.php"));
   
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-  db_postmemory($HTTP_POST_VARS);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
+  db_postmemory($_POST);
   
   $claguahidromatric = new cl_aguahidromatric;
   $claguahidromatricleitura = new cl_aguahidromatricleitura;
@@ -66,7 +66,7 @@
 
       // Desabilita triggers de calculo de Consumo e Excesso
       /*db_query("update pg_class set reltriggers = 0 where relname = 'agualeitura'");
-      
+
       $clagualeitura->x21_codhidrometro = $x04_codhidrometro;
       $clagualeitura->x21_numcgm        = "0"; // Leiturista ADM do Sistema
 
@@ -89,7 +89,7 @@
       $clagualeitura->x21_situacao      = $x21_situacao;
 
       $clagualeitura->incluir(null);
-    
+
       if ($clagualeitura->erro_status == "0") {
         $sql_erro = true;
         $erro_msg .= '\nERRO: Arquivo agualeitura - ' . $clagualeitura->erro_msg;
@@ -101,12 +101,12 @@
       $claguahidromatricleitura->incluir(null);
 
       if ($claguahidromatricleitura->erro_status == "0") {
-        
+
         $sql_erro = true;
         $erro_msg.= "ERRO: Arquivo aguahidromatricleitura - " . $claguahidromatricleitura->erro_msg;
-      
+
       }
-      
+
       // Re-habilita triggers
       db_query("UPDATE pg_class 
                   SET reltriggers = (SELECT count(*) FROM pg_trigger WHERE pg_class.oid = tgrelid) 

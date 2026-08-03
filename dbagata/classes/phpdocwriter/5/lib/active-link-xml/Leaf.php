@@ -35,7 +35,7 @@ class Leaf
 {
 
 	// protected variables
-	var $value;
+	public $value;
 
 	/**
 	  *	Constructor for the object

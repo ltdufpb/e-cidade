@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_distritosanitario_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoSauDistritoSanitario = new cl_sau_distritosanitario;
 $oDaoSauDistritoSanitario->rotulo->label("s153_c_codigo");
@@ -136,9 +136,9 @@ $oDaoSauDistritoSanitario->rotulo->label("s153_c_descr");
           }
         }
 
-        $aRepassa = array();
+        $aRepassa = [];
         if (isset($chave_s153_c_codigo)) {
-          $aRepassa = array("chave_s153_c_codigo"=>$chave_s153_c_codigo,"chave_s153_c_codigo"=>$chave_s153_c_codigo);
+          $aRepassa = ["chave_s153_c_codigo"=>$chave_s153_c_codigo,"chave_s153_c_codigo"=>$chave_s153_c_codigo];
         }
 
         db_lovrot($sSql,15,"()",'',$funcao_js,'',"NoMe",$aRepassa);

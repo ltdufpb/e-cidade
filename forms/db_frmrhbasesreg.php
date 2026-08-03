@@ -71,8 +71,8 @@ $clrotulo->label("rh27_descr");
     $dbwhere = " rh54_regist = ".$rh54_regist;
     if(isset($rh54_base) && trim($rh54_base) != ""){
       $dbwhere .= " and rh54_base <> '".$rh54_base."'";
-      $arr_sselecionados = Array();
-      $arr_nselecionados = Array();
+      $arr_sselecionados = [];
+      $arr_nselecionados = [];
       $basesdefault = true;
       $result_rubrs = $clrhrubricas->sql_record($clrhrubricas->sql_query_basesreg(null,db_getsession('DB_instit'), " r09_rubric, rh54_regist, rh27_rubric, rh27_descr "," rh27_rubric ", "", @$rh54_base, $rh54_regist));
       for($i=0; $i<$clrhrubricas->numrows; $i++){
@@ -106,7 +106,7 @@ $clrotulo->label("rh27_descr");
   <tr>
     <td colspan="2" align="center">
       <?php 
-      $chavepri = Array("rh54_base"=>@$rh54_base,"rh54_regist"=>$rh54_regist);
+      $chavepri = ["rh54_base"=>@$rh54_base,"rh54_regist"=>$rh54_regist];
       $cliframe_alterar_excluir->chavepri = $chavepri;
       $cliframe_alterar_excluir->sql      = $sql_bases;
       $cliframe_alterar_excluir->campos   = "rh54_regist, rh54_base, r08_descr";
@@ -190,7 +190,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rhbasesreg.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

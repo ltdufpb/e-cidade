@@ -47,7 +47,7 @@ class Matricula extends Model
 
     public function getEd60CSituacaoAttribute()
     {
-        return trim($this->attributes['ed60_c_situacao']);
+        return trim((string) $this->attributes['ed60_c_situacao']);
     }
 
     public function aluno()

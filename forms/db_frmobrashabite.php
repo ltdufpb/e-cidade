@@ -127,7 +127,7 @@ $clrotulo->label("p51_descr");
         </td>
         <td>
             <?php
-            $aValSis = array("1" => "Sim", "2" => "Não");
+            $aValSis = ["1" => "Sim", "2" => "Não"];
             db_select('iValSis', $aValSis, true, 1, "style='width:84px;' onChange='js_mostraProc(this.value)'");
             ?>
         </td>
@@ -639,7 +639,7 @@ $clrotulo->label("p51_descr");
     db_iframe_obrashabite.hide();
       <?php
       if ($db_opcao != 1) {
-          echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+          echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
       }
       ?>
   }

@@ -6,15 +6,9 @@ use FpdfMultiCellBorder;
 
 class AcompanhamentoAcsPDF extends FpdfMultiCellBorder
 {
-    /**
-     * @var array
-     */
-    private $dados;
-
-    public function __construct(array $dados)
+    public function __construct(private readonly array $dados)
     {
         parent::__construct();
-        $this->dados = $dados;
 
         global $head2;
 
@@ -54,7 +48,7 @@ class AcompanhamentoAcsPDF extends FpdfMultiCellBorder
                 $linhaImpressa++;
                 $color = !($linhaImpressa % 2);
                 
-                $timestamp = strtotime($acompanhamento->s168_data_hora);
+                $timestamp = strtotime((string) $acompanhamento->s168_data_hora);
                 $alturaNecessaria = $this->NbLines(80, $acompanhamento->s168_evolucao) * 4;
                 if ($this->getAvailHeight() < $alturaNecessaria + 4) {
                     $this->AddPage();

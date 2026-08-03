@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE pcfornemov
 class cl_pcfornemov { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc62_codmov = 0; 
-   var $pc62_numcgm = 0; 
-   var $pc62_dtlanc_dia = null; 
-   var $pc62_dtlanc_mes = null; 
-   var $pc62_dtlanc_ano = null; 
-   var $pc62_dtlanc = null; 
-   var $pc62_hist = null; 
-   var $pc62_id_usuario = 0; 
+   public $pc62_codmov = 0; 
+   public $pc62_numcgm = 0; 
+   public $pc62_dtlanc_dia = null; 
+   public $pc62_dtlanc_mes = null; 
+   public $pc62_dtlanc_ano = null; 
+   public $pc62_dtlanc = null; 
+   public $pc62_hist = null; 
+   public $pc62_id_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc62_codmov = int4 = Movimento 
                  pc62_numcgm = int4 = Fornecedor 
                  pc62_dtlanc = date = Lançamento 
@@ -59,10 +59,10 @@ class cl_pcfornemov {
                  pc62_id_usuario = int4 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_pcfornemov() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcfornemov"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_pcfornemov {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc62_codmov = pg_result($result,0,0); 
+       $this->pc62_codmov = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pcfornemov_pc62_codmov_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc62_codmov)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc62_codmov)){
          $this->erro_sql = " Campo pc62_codmov maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_pcfornemov {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Movimentação do Fornmecedor ($this->pc62_codmov) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Movimentação do Fornmecedor já Cadastrado";
@@ -204,14 +204,14 @@ class cl_pcfornemov {
      $resaco = $this->sql_record($this->sql_query_file($this->pc62_codmov));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5997,'$this->pc62_codmov','I')");
-       $resac = db_query("insert into db_acount values($acount,962,5997,'','".AddSlashes(pg_result($resaco,0,'pc62_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,962,5998,'','".AddSlashes(pg_result($resaco,0,'pc62_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,962,5999,'','".AddSlashes(pg_result($resaco,0,'pc62_dtlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,962,6000,'','".AddSlashes(pg_result($resaco,0,'pc62_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,962,6002,'','".AddSlashes(pg_result($resaco,0,'pc62_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,962,5997,'','".AddSlashes(pg_fetch_result($resaco,0,'pc62_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,962,5998,'','".AddSlashes(pg_fetch_result($resaco,0,'pc62_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,962,5999,'','".AddSlashes(pg_fetch_result($resaco,0,'pc62_dtlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,962,6000,'','".AddSlashes(pg_fetch_result($resaco,0,'pc62_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,962,6002,'','".AddSlashes(pg_fetch_result($resaco,0,'pc62_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_pcfornemov {
       $this->atualizacampos();
      $sql = " update pcfornemov set ";
      $virgula = "";
-     if(trim($this->pc62_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc62_codmov"])){ 
+     if(trim((string) $this->pc62_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc62_codmov"])){ 
        $sql  .= $virgula." pc62_codmov = $this->pc62_codmov ";
        $virgula = ",";
-       if(trim($this->pc62_codmov) == null ){ 
+       if(trim((string) $this->pc62_codmov) == null ){ 
          $this->erro_sql = " Campo Movimento nao Informado.";
          $this->erro_campo = "pc62_codmov";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_pcfornemov {
          return false;
        }
      }
-     if(trim($this->pc62_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc62_numcgm"])){ 
+     if(trim((string) $this->pc62_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc62_numcgm"])){ 
        $sql  .= $virgula." pc62_numcgm = $this->pc62_numcgm ";
        $virgula = ",";
-       if(trim($this->pc62_numcgm) == null ){ 
+       if(trim((string) $this->pc62_numcgm) == null ){ 
          $this->erro_sql = " Campo Fornecedor nao Informado.";
          $this->erro_campo = "pc62_numcgm";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_pcfornemov {
          return false;
        }
      }
-     if(trim($this->pc62_dtlanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc62_dtlanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc62_dtlanc_dia"] !="") ){ 
+     if(trim((string) $this->pc62_dtlanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc62_dtlanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc62_dtlanc_dia"] !="") ){ 
        $sql  .= $virgula." pc62_dtlanc = '$this->pc62_dtlanc' ";
        $virgula = ",";
-       if(trim($this->pc62_dtlanc) == null ){ 
+       if(trim((string) $this->pc62_dtlanc) == null ){ 
          $this->erro_sql = " Campo Lançamento nao Informado.";
          $this->erro_campo = "pc62_dtlanc_dia";
          $this->erro_banco = "";
@@ -262,7 +262,7 @@ class cl_pcfornemov {
        if(isset($GLOBALS["HTTP_POST_VARS"]["pc62_dtlanc_dia"])){ 
          $sql  .= $virgula." pc62_dtlanc = null ";
          $virgula = ",";
-         if(trim($this->pc62_dtlanc) == null ){ 
+         if(trim((string) $this->pc62_dtlanc) == null ){ 
            $this->erro_sql = " Campo Lançamento nao Informado.";
            $this->erro_campo = "pc62_dtlanc_dia";
            $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_pcfornemov {
          }
        }
      }
-     if(trim($this->pc62_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc62_hist"])){ 
+     if(trim((string) $this->pc62_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc62_hist"])){ 
        $sql  .= $virgula." pc62_hist = '$this->pc62_hist' ";
        $virgula = ",";
-       if(trim($this->pc62_hist) == null ){ 
+       if(trim((string) $this->pc62_hist) == null ){ 
          $this->erro_sql = " Campo Histório nao Informado.";
          $this->erro_campo = "pc62_hist";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_pcfornemov {
          return false;
        }
      }
-     if(trim($this->pc62_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc62_id_usuario"])){ 
+     if(trim((string) $this->pc62_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc62_id_usuario"])){ 
        $sql  .= $virgula." pc62_id_usuario = $this->pc62_id_usuario ";
        $virgula = ",";
-       if(trim($this->pc62_id_usuario) == null ){ 
+       if(trim((string) $this->pc62_id_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "pc62_id_usuario";
          $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_pcfornemov {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5997,'$this->pc62_codmov','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc62_codmov"]))
-           $resac = db_query("insert into db_acount values($acount,962,5997,'".AddSlashes(pg_result($resaco,$conresaco,'pc62_codmov'))."','$this->pc62_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,962,5997,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc62_codmov'))."','$this->pc62_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc62_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,962,5998,'".AddSlashes(pg_result($resaco,$conresaco,'pc62_numcgm'))."','$this->pc62_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,962,5998,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc62_numcgm'))."','$this->pc62_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc62_dtlanc"]))
-           $resac = db_query("insert into db_acount values($acount,962,5999,'".AddSlashes(pg_result($resaco,$conresaco,'pc62_dtlanc'))."','$this->pc62_dtlanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,962,5999,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc62_dtlanc'))."','$this->pc62_dtlanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc62_hist"]))
-           $resac = db_query("insert into db_acount values($acount,962,6000,'".AddSlashes(pg_result($resaco,$conresaco,'pc62_hist'))."','$this->pc62_hist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,962,6000,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc62_hist'))."','$this->pc62_hist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc62_id_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,962,6002,'".AddSlashes(pg_result($resaco,$conresaco,'pc62_id_usuario'))."','$this->pc62_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,962,6002,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc62_id_usuario'))."','$this->pc62_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_pcfornemov {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5997,'$pc62_codmov','E')");
-         $resac = db_query("insert into db_acount values($acount,962,5997,'','".AddSlashes(pg_result($resaco,$iresaco,'pc62_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,962,5998,'','".AddSlashes(pg_result($resaco,$iresaco,'pc62_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,962,5999,'','".AddSlashes(pg_result($resaco,$iresaco,'pc62_dtlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,962,6000,'','".AddSlashes(pg_result($resaco,$iresaco,'pc62_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,962,6002,'','".AddSlashes(pg_result($resaco,$iresaco,'pc62_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,962,5997,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc62_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,962,5998,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc62_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,962,5999,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc62_dtlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,962,6000,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc62_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,962,6002,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc62_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pcfornemov
@@ -431,7 +431,7 @@ class cl_pcfornemov {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pcfornemov";
@@ -445,7 +445,7 @@ class cl_pcfornemov {
    function sql_query ( $pc62_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,7 +469,7 @@ class cl_pcfornemov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,7 +481,7 @@ class cl_pcfornemov {
    function sql_query_file ( $pc62_codmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_pcfornemov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

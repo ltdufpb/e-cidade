@@ -36,7 +36,7 @@ $clorcsuplementacaoparametro = new cl_orcsuplementacaoparametro;
   /*
 $clorcsuplementacaoparametrocriterio = new cl_orcsuplementacaoparametrocriterio;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){

@@ -33,10 +33,10 @@ require_once(modification("classes/db_itbinome_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_itbinomecgm_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $clitbinomecgm = new cl_itbinomecgm;
 $clitbinome    = new cl_itbinome;
@@ -44,7 +44,7 @@ $clitbinome    = new cl_itbinome;
 // SELECT PRA BUSCAR OS DADOS
 $sqlerro = false;
 
-if((isset($HTTP_POST_VARS["bt_opcao"]) && $HTTP_POST_VARS["bt_opcao"])=="Alterar"){
+if((isset($_POST["bt_opcao"]) && $_POST["bt_opcao"])=="Alterar"){
 
 	if (!isset($chavepesquisa) or trim($chavepesquisa)=='') {
 		$chavepesquisa = 'NULL';
@@ -86,10 +86,10 @@ if((isset($HTTP_POST_VARS["bt_opcao"]) && $HTTP_POST_VARS["bt_opcao"])=="Alterar
    $db_opcao = 2;
    $result   = $clitbinome->sql_record($clitbinome->sql_query_file(null,"*",null," it03_guia = $chavepesquisa and it03_seq =  $chavepesquisa1"));
    db_fieldsmemory($result,0);
-   if( strtoupper($it03_sexo) == 'M' ){
-    $aOptionsSexo = array('m'=>'Masculino');
+   if( strtoupper((string) $it03_sexo) == 'M' ){
+    $aOptionsSexo = ['m'=>'Masculino'];
    }else{
-    $aOptionsSexo = array('f'=>'Feminino');
+    $aOptionsSexo = ['f'=>'Feminino'];
    }
    $db_botao = true;
 }
@@ -113,7 +113,7 @@ if((isset($HTTP_POST_VARS["bt_opcao"]) && $HTTP_POST_VARS["bt_opcao"])=="Alterar
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 
   if($clitbinome->erro_status=="0"){
 

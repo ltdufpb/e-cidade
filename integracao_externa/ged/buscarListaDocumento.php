@@ -42,7 +42,7 @@ try {
   $sTipoComparacao           = $argv[4];
   $sAcervo                   = null;// ou Nome do Acervo  
 
-  $aParametrosMetodo         = array();
+  $aParametrosMetodo         = [];
   $oResposta                 = $oSoapClient->buscarListaDocumento( $sNomeParametro, $sTipoParametro, $sValorParametro, $sTipoComparacao, $sAcervo);
 
   echo BR . "--------------------- INICIO RESPOSTA ---------------------";

@@ -33,7 +33,7 @@ $clrotulo->label('r13_codigo');
 $clrotulo->label('r13_descr');
 $clrotulo->label('r13_descro');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $head3 = "RELAÇÃO DE RPAs";
 $head5 = "PERÍODO : ".db_formatar($dataini,'d')." A ".db_formatar($datafin,'d');
@@ -68,7 +68,7 @@ where c60_estrut like '3339036%'
 
 $result = db_query($sql);
 
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem RPA no período de '.$mes.' / '.$ano);
 }
@@ -98,7 +98,7 @@ $pdf->cell(30,$alt,'VALOR',1,1,"C",1);
 $total = 0;
 $troca = 0;
 $pdf->ln(2);
-for($x=0;$x<pg_numrows($result);$x++){
+for($x=0;$x<pg_num_rows($result);$x++){
 
   db_fieldsmemory($result,$x);
   $pdf->setfont('arial','',8);

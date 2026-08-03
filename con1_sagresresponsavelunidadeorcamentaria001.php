@@ -32,7 +32,7 @@ require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_utils.php');
 require_once modification('dbforms/db_funcoes.php');
 db_app::load("prototype.js");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $c140_datainicio_dia = ""; $c140_datafim_dia = "";
 $c140_datainicio_mes = ""; $c140_datafim_mes = "";
@@ -149,7 +149,7 @@ $clSagresResponsavelOrdenador->rotulo->label();
                                         </td>
                                         <td>
                                             <?php
-                                            $aPrincipal = array("f" => "NÃO", "t" => "SIM");
+                                            $aPrincipal = ["f" => "NÃO", "t" => "SIM"];
                                             db_select("c140_principal", $aPrincipal, true, 1);
                                             ?>
                                         </td>
@@ -194,7 +194,7 @@ $clSagresResponsavelOrdenador->rotulo->label();
                                         </td>
                                         <td>
                                             <?php
-                                            $aSub = array("f" => "NÃO", "t" => "SIM");
+                                            $aSub = ["f" => "NÃO", "t" => "SIM"];
                                             db_select("c140_substituto", $aSub, true, 1, 'onChange="toogleSub()"');
                                             ?>
                                         </td>
@@ -257,7 +257,7 @@ $clSagresResponsavelOrdenador->rotulo->label();
                                         </td>
                                         <td>
                                             <?php
-                                            $aTipoAto = array("1" => "Lei","2" => "Decreto","3" => "Portaria","4" => "Outros");
+                                            $aTipoAto = ["1" => "Lei","2" => "Decreto","3" => "Portaria","4" => "Outros"];
                                             db_select("c140_tipoatojuridico", $aTipoAto, true, 1);
                                             ?>
                                         </td>

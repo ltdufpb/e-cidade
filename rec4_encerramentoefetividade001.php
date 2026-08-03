@@ -39,9 +39,9 @@ $instituicao = InstituicaoRepository::getInstituicaoSessao();
 $configuracaoDataEfetividadeRepository = new ConfiguracaoDataEfetividadeRepository();
 $configuracoesDataEfetividade = $configuracaoDataEfetividadeRepository
     ->scopeInstituicao($instituicao)
-    ->get(array('rh186_exercicio'), array('rh186_exercicio DESC'));
+    ->get(['rh186_exercicio'], ['rh186_exercicio DESC']);
 
-$exercicios = array();
+$exercicios = [];
 
 foreach ($configuracoesDataEfetividade as $configuracaoDataEfetividade) {
     $exercicios[$configuracaoDataEfetividade->getAno()] = $configuracaoDataEfetividade;

@@ -42,7 +42,7 @@ class ServidorProcessosJudiciaisFolhaRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param array|int $ids
@@ -68,7 +68,7 @@ class ServidorProcessosJudiciaisFolhaRepository
      * @param ServidorProcessosJudiciaisFolha|null $servidorProcessosJudiciaisFolha
      * @throws Exception
      */
-    public function delete(ServidorProcessosJudiciaisFolha $servidorProcessosJudiciaisFolha = null)
+    public function delete(?ServidorProcessosJudiciaisFolha $servidorProcessosJudiciaisFolha = null)
     {
         $id = $servidorProcessosJudiciaisFolha instanceof ServidorProcessosJudiciaisFolha ? $servidorProcessosJudiciaisFolha->getSequencial() : null;
 
@@ -86,7 +86,7 @@ class ServidorProcessosJudiciaisFolhaRepository
      * @return bool|ServidorProcessosJudiciaisFolha
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_rhpessoalprocessosjudiciais();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -110,13 +110,13 @@ class ServidorProcessosJudiciaisFolhaRepository
      * @return ServidorProcessosJudiciaisFolha[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $dao = new cl_rhpessoalprocessosjudiciais();
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $servidorProcessosJudiciaisFolha = array();
+        $servidorProcessosJudiciaisFolha = [];
 
         if (pg_num_rows($rs) === 0) {
             return $servidorProcessosJudiciaisFolha;
@@ -143,7 +143,7 @@ class ServidorProcessosJudiciaisFolhaRepository
             throw new Exception("Não foi possível buscar o(s) processo(s) judicial(ais) do servidor.\nContate o suporte.");
         }
 
-        $servidorProcessosJudiciaisFolha = array();
+        $servidorProcessosJudiciaisFolha = [];
 
         if (pg_num_rows($rs) === 0) {
             return $servidorProcessosJudiciaisFolha;
@@ -285,7 +285,7 @@ class ServidorProcessosJudiciaisFolhaRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
         return $this;
     }
 

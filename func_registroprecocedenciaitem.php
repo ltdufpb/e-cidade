@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_registroprecocedenciaitem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clregistroprecocedenciaitem = new cl_registroprecocedenciaitem;
 $clregistroprecocedenciaitem->rotulo->label("pc36_sequencial");
 $clregistroprecocedenciaitem->rotulo->label("pc36_registroprecocedencia");
@@ -98,9 +98,9 @@ $clregistroprecocedenciaitem->rotulo->label("pc36_registroprecocedencia");
         }else{
            $sql = $clregistroprecocedenciaitem->sql_query("",$campos,"pc36_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_pc36_registroprecocedencia)){
-          $repassa = array("chave_pc36_sequencial"=>$chave_pc36_sequencial,"chave_pc36_registroprecocedencia"=>$chave_pc36_registroprecocedencia);
+          $repassa = ["chave_pc36_sequencial"=>$chave_pc36_sequencial,"chave_pc36_registroprecocedencia"=>$chave_pc36_registroprecocedencia];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

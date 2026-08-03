@@ -13,20 +13,20 @@ class M7962AddColunaInativarCurso extends PostgresMigration
     private function dicionario()
     {
         // campos
-        $aColumns = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-        $aValues  = array(
-            array(22347,'ed29_ativo','bool','Ativa/Inativa o curso','t', 'Situação',1,'f','f','f',5,'text','Situação')
-        );
-        $table    = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+        $aColumns = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+        $aValues  = [
+            [22347,'ed29_ativo','bool','Ativa/Inativa o curso','t', 'Situação',1,'f','f','f',5,'text','Situação']
+        ];
+        $table    = $this->table('db_syscampo', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // vincula os campos as tabelas
-        $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-        $aValues  = array(
-            array(1010048,22347,6,0)
-        );
-        $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+        $aValues  = [
+            [1010048,22347,6,0]
+        ];
+        $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
     }
@@ -34,8 +34,8 @@ class M7962AddColunaInativarCurso extends PostgresMigration
     public function ddl()
     {
         // altera tabela
-        $this->table('cursoedu', array('schema'=>'escola'))
-                ->addColumn('ed29_ativo', 'boolean', array('default' => true))
+        $this->table('cursoedu', ['schema'=>'escola'])
+                ->addColumn('ed29_ativo', 'boolean', ['default' => true])
                 ->save();
     }
 
@@ -44,7 +44,7 @@ class M7962AddColunaInativarCurso extends PostgresMigration
         $this->execute('delete from configuracoes.db_sysarqcamp where codcam in (22347)');
         $this->execute('delete from configuracoes.db_syscampo   where codcam in (22347)');
 
-        $this->table('cursoedu', array('schema'=>'escola'))
+        $this->table('cursoedu', ['schema'=>'escola'])
              ->removeColumn('ed29_ativo')
              ->save();
     }

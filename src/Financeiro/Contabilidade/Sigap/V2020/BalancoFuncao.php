@@ -232,7 +232,7 @@ class BalancoFuncao extends ArquivoSigapFiscal
                 $valorRestosApagar = abs($totalEmpenhadoAteBi - $totalLiquidadoAteBi);
             }
 
-            $despesas[$funcao]['nome'] = trim($dados['o52_descr']); // só para facilitar o debug
+            $despesas[$funcao]['nome'] = trim((string) $dados['o52_descr']); // só para facilitar o debug
             $despesas[$funcao]['bfuDotacaoInicial'] = $dados['dot_ini_p'];
             $despesas[$funcao]['bfuDotacaoAtualizada'] = (float)$dotacaoAtualizada;
             $despesas[$funcao]['bfuDespEmpnoBim'] = (float)$empenhadoNoBi;
@@ -333,8 +333,8 @@ class BalancoFuncao extends ArquivoSigapFiscal
             if (in_array($tag, $ignorar)) {
                 continue;
             }
-            $valorDespesa = isset($linhaDespesa[$tag]) ? $linhaDespesa[$tag] : 0;
-            $valorDespesaIntra = isset($linhaDespesaIntra[$tag]) ? $linhaDespesaIntra[$tag] : 0;
+            $valorDespesa = $linhaDespesa[$tag] ?? 0;
+            $valorDespesaIntra = $linhaDespesaIntra[$tag] ?? 0;
             $dados[$tag] = $valorDespesa + $valorDespesaIntra;
         }
 
@@ -412,6 +412,7 @@ class BalancoFuncao extends ArquivoSigapFiscal
      * @return string
      * @throws Exception
      */
+    #[\Override]
     public function emitirXML()
     {
         $this->processar();

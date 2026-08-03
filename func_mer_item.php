@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_item_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_item = new cl_mer_item;
 $clmer_item->rotulo->label("me10_i_codigo");
 $clmer_item->rotulo->label("me10_c_descr");
@@ -100,9 +100,9 @@ $clmer_item->rotulo->label("me10_c_descr");
         } else {
           $sql = $clmer_item->sql_query("",$campos,"me10_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_me10_i_codigo)) {
-          $repassa = array("chave_me10_i_codigo"=>$chave_me10_i_codigo,"chave_me10_i_codigo"=>$chave_me10_i_codigo);
+          $repassa = ["chave_me10_i_codigo"=>$chave_me10_i_codigo,"chave_me10_i_codigo"=>$chave_me10_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

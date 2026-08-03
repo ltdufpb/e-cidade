@@ -14,12 +14,10 @@ use DBDate;
  */
 class BalancetesMensaisController extends Controller
 {
-    private $service;
     private $filtros;
 
-    public function __construct(BalancetesMensaisService $service)
+    public function __construct(private readonly BalancetesMensaisService $service)
     {
-        $this->service = $service;
     }
 
 

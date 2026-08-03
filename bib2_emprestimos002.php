@@ -34,7 +34,7 @@ require_once(modification("classes/db_biblioteca_classe.php"));
 require_once(modification("classes/db_carteira_classe.php"));
 require_once(modification("classes/db_acervo_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clemprestimo       = new cl_emprestimo;
 $clemprestimoacervo = new cl_emprestimoacervo;
@@ -109,7 +109,7 @@ if ($leitor != "") {
   $sql          .= " AND bi16_codigo = $leitor";
   $sSqlCarteira  = $clcarteira->sql_query_leitorcidadao("", "ov02_nome", "", " bi16_codigo = $leitor");
   $rsCarteira    = $clcarteira->sql_record($sSqlCarteira);
-  $head4        .= "Leitor: ".pg_result($rsCarteira, 0, 'ov02_nome')."\n";
+  $head4        .= "Leitor: ".pg_fetch_result($rsCarteira, 0, 'ov02_nome')."\n";
 }
 
 if ($acervo != "") {
@@ -117,7 +117,7 @@ if ($acervo != "") {
   $sql        .= " AND bi06_seq = $acervo";
   $sSqlAcervo  = $clacervo->sql_query("", "bi06_titulo", "", " bi06_seq = $acervo");
   $rsAcervo    = $clacervo->sql_record($sSqlAcervo);
-  $head4      .= "Acervo: ".pg_result($rsAcervo, 0, 'bi06_titulo')."\n";
+  $head4      .= "Acervo: ".pg_fetch_result($rsAcervo, 0, 'bi06_titulo')."\n";
 }
 
 $sql .= " ORDER BY bi18_retirada desc";

@@ -32,15 +32,15 @@ try {
    }
 
    // Pega Numpre/Numpar
-   $numpre = substr($arq_array[$i], substr($k15_numpre, 0, 3) - 1, substr($k15_numpre, 3, 3));
-   $numpar = substr($arq_array[$i], substr($k15_numpar, 0, 3) - 1, substr($k15_numpar, 3, 3));
+   $numpre = substr((string) $arq_array[$i], substr((string) $k15_numpre, 0, 3) - 1, substr((string) $k15_numpre, 3, 3));
+   $numpar = substr((string) $arq_array[$i], substr((string) $k15_numpar, 0, 3) - 1, substr((string) $k15_numpar, 3, 3));
 
    echo "<script>js_termometro(".$i.");</script>";
    flush();
 
-   $dia_venc = (int) substr($arq_array[$i], 56, 2);
-   $mes_venc = (int) substr($arq_array[$i], 58, 2);
-   $ano_venc = 2000 + (int) substr($arq_array[$i], 60, 2);
+   $dia_venc = (int) substr((string) $arq_array[$i], 56, 2);
+   $mes_venc = (int) substr((string) $arq_array[$i], 58, 2);
+   $ano_venc = 2000 + (int) substr((string) $arq_array[$i], 60, 2);
 
    $dtvenc = "$ano_venc-$mes_venc-$dia_venc";
 
@@ -311,7 +311,7 @@ try {
 
      $rsWork = db_query($sqlwork);
 
-     if(pg_numrows($rsWork)>0) {
+     if(pg_num_rows($rsWork)>0) {
        db_fieldsmemory($rsWork, 0);
 
        $k00_numpre = $k00_numpre_dst;

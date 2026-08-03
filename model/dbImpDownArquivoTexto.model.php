@@ -37,7 +37,7 @@ require_once(modification('./model/impressao.model.php'));
      * Array de string com o conteúdo de cada arquivo TXT.
      * @var array(string) $sArquivoModelo
      */
-    private $aArquivos = array();
+    private $aArquivos = [];
     
    /**
     * Método construtor da classe.
@@ -92,39 +92,39 @@ require_once(modification('./model/impressao.model.php'));
       $oImpressao = new impressao();
       $oImpressao->setIp($sIp);
       $oImpressao->setPorta(4444);
-      
+
       if ($iNumArquivo > -1) { // Solicitada impressão de um arquivo específico
-        
+
         if (!isset($this->aArquivos[$iNumArquivo])) {
           throw new Exception("Arquivo solicitado para impressão não foi carregado.");
         }
 
         $oImpressao->addComando(rtrim($this->aArquivos[$iNumArquivo], "\n"));
         try {
-        	
+
           $oImpressao->rodarComandos(chr(12));
-          
+
         } catch (Exception $oException) {
         	throw $oException;
         }
-        
+
         return;
 
       }
-      
+
       /* Imprime todos os arquivos carregados */
    //   foreach ($this->aArquivos as $sArquivo) {
-        
+
       	$oImpressao->resetComandos();
         $oImpressao->addComando(implode(chr(12), $this->aArquivos));
         try {
-        	
+
           $oImpressao->rodarComandos();
-          
+
         } catch (Exception $oException) {
         	throw $oException;
         }
-    
+
      // }
 
     }

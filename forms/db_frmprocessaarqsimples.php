@@ -81,7 +81,7 @@ $clrotulo->label("k15_codage");
 <!--              <tr>
                 <td><b>Autentica:</b></td>
                 <td>
-            <?php $autentica = array( 't' => "Sim",'f'=>"Não");
+            <?php $autentica = [ 't' => "Sim",'f'=>"Não"];
              db_select('autenticar',$autentica,true,$db_opcao);
              ?>
              </td>
@@ -131,7 +131,7 @@ function js_preenchepesquisa(chave){
   db_iframe_issarqsimples.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

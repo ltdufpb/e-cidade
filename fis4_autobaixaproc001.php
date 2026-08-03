@@ -49,7 +49,7 @@ $clarrecad               = new cl_arrecad;
 $clparfiscal             = new cl_parfiscal;
 $clauto                  = new cl_auto;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -129,7 +129,7 @@ if (isset($baixar)) {
   
   if ($sqlerro == false) {
   	
-    $cods = split('#',$chaves);
+    $cods = preg_split('#\##m',$chaves);
     for($x = 0; $x < count($cods); $x++) {
     	
       if ($sqlerro == false) {

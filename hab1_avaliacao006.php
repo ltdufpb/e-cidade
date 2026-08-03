@@ -36,7 +36,7 @@ require_once(modification("classes/db_avaliacaotipo_classe.php"));
 require_once(modification("classes/db_avaliacaopergunta_classe.php"));
 require_once(modification("classes/db_avaliacaogrupopergunta_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clavaliacao                      = new cl_avaliacao;
 $clavaliacaotipo                  = new cl_avaliacaotipo;

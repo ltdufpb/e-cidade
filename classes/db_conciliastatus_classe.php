@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE conciliastatus
 class cl_conciliastatus { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k95_sequencial = 0; 
-   var $k95_descr = null; 
-   var $k95_fechada = 'f'; 
+   public $k95_sequencial = 0; 
+   public $k95_descr = null; 
+   public $k95_fechada = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k95_sequencial = int4 = Codigo 
                  k95_descr = varchar(40) = Descrição 
                  k95_fechada = bool = Fechada 
                  ";
    //funcao construtor da classe 
-   function cl_conciliastatus() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conciliastatus"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,7 +119,7 @@ class cl_conciliastatus {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "status da conciliacao ($this->k95_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "status da conciliacao já Cadastrado";
@@ -143,12 +143,12 @@ class cl_conciliastatus {
      $resaco = $this->sql_record($this->sql_query_file($this->k95_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10146,'$this->k95_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1747,10146,'','".AddSlashes(pg_result($resaco,0,'k95_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1747,10147,'','".AddSlashes(pg_result($resaco,0,'k95_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1747,10148,'','".AddSlashes(pg_result($resaco,0,'k95_fechada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1747,10146,'','".AddSlashes(pg_fetch_result($resaco,0,'k95_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1747,10147,'','".AddSlashes(pg_fetch_result($resaco,0,'k95_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1747,10148,'','".AddSlashes(pg_fetch_result($resaco,0,'k95_fechada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -157,10 +157,10 @@ class cl_conciliastatus {
       $this->atualizacampos();
      $sql = " update conciliastatus set ";
      $virgula = "";
-     if(trim($this->k95_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k95_sequencial"])){ 
+     if(trim((string) $this->k95_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k95_sequencial"])){ 
        $sql  .= $virgula." k95_sequencial = $this->k95_sequencial ";
        $virgula = ",";
-       if(trim($this->k95_sequencial) == null ){ 
+       if(trim((string) $this->k95_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "k95_sequencial";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_conciliastatus {
          return false;
        }
      }
-     if(trim($this->k95_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k95_descr"])){ 
+     if(trim((string) $this->k95_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k95_descr"])){ 
        $sql  .= $virgula." k95_descr = '$this->k95_descr' ";
        $virgula = ",";
-       if(trim($this->k95_descr) == null ){ 
+       if(trim((string) $this->k95_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "k95_descr";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_conciliastatus {
          return false;
        }
      }
-     if(trim($this->k95_fechada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k95_fechada"])){ 
+     if(trim((string) $this->k95_fechada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k95_fechada"])){ 
        $sql  .= $virgula." k95_fechada = '$this->k95_fechada' ";
        $virgula = ",";
-       if(trim($this->k95_fechada) == null ){ 
+       if(trim((string) $this->k95_fechada) == null ){ 
          $this->erro_sql = " Campo Fechada nao Informado.";
          $this->erro_campo = "k95_fechada";
          $this->erro_banco = "";
@@ -204,15 +204,15 @@ class cl_conciliastatus {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10146,'$this->k95_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k95_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1747,10146,'".AddSlashes(pg_result($resaco,$conresaco,'k95_sequencial'))."','$this->k95_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1747,10146,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k95_sequencial'))."','$this->k95_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k95_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1747,10147,'".AddSlashes(pg_result($resaco,$conresaco,'k95_descr'))."','$this->k95_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1747,10147,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k95_descr'))."','$this->k95_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k95_fechada"]))
-           $resac = db_query("insert into db_acount values($acount,1747,10148,'".AddSlashes(pg_result($resaco,$conresaco,'k95_fechada'))."','$this->k95_fechada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1747,10148,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k95_fechada'))."','$this->k95_fechada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -257,12 +257,12 @@ class cl_conciliastatus {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10146,'$k95_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1747,10146,'','".AddSlashes(pg_result($resaco,$iresaco,'k95_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1747,10147,'','".AddSlashes(pg_result($resaco,$iresaco,'k95_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1747,10148,'','".AddSlashes(pg_result($resaco,$iresaco,'k95_fechada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1747,10146,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k95_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1747,10147,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k95_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1747,10148,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k95_fechada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from conciliastatus
@@ -322,7 +322,7 @@ class cl_conciliastatus {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conciliastatus";
@@ -336,7 +336,7 @@ class cl_conciliastatus {
    function sql_query ( $k95_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -357,7 +357,7 @@ class cl_conciliastatus {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -369,7 +369,7 @@ class cl_conciliastatus {
    function sql_query_file ( $k95_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ class cl_conciliastatus {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

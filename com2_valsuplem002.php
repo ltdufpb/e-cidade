@@ -43,12 +43,12 @@ $clrotulo->label('o56_codele');
 $clrotulo->label('o56_elemento');
 $clrotulo->label('o56_descr');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
 $dbwhere = "";
-if(trim($pc10_numero) != ""){
+if(trim((string) $pc10_numero) != ""){
   $dbwhere .= " pc10_numero=".$pc10_numero." and ";
   $head5 = "Solicitação: ".$pc10_numero;
 }
@@ -159,7 +159,7 @@ $sup = 0;
 
 $contagem = 0;
 
-$arr_dotacoes_saldo = Array();
+$arr_dotacoes_saldo = [];
 
 for($i = 0; $i < $clsolicitem->numrows; $i++){
    db_fieldsmemory($result_solicitem,$i);

@@ -283,7 +283,7 @@ db_input('e70_valor', 20, $Ie70_valor, true, 'hidden', 3, "");
     <td nowrap title="<?=@$Tm90_liqentoc?>"><b>Gerar nota de liquidação:</b></td>
     <td> 
 <?php 
-$x = array('true'=>'Sim','false'=>'Não');
+$x = ['true'=>'Sim','false'=>'Não'];
 db_select('gravanota',$x,true,$db_opcao,"");
 ?>
     </td>

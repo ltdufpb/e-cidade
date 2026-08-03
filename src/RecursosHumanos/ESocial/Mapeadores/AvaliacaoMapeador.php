@@ -34,7 +34,7 @@ class AvaliacaoMapeador
     /**
      * @var array
      */
-    protected $dePara = array();
+    protected $dePara = [];
 
     /**
      * @var Avaliacao
@@ -48,37 +48,37 @@ class AvaliacaoMapeador
 
     public function addDePara($identificadorPergunta, $identificadorOpcao, $valor)
     {
-        $opcao = array(
+        $opcao = [
             "identificador_campo" => $identificadorOpcao,
             "valor" => $valor
-        );
+        ];
         if (!empty($this->dePara[$identificadorPergunta])) {
             $this->dePara[$identificadorPergunta]["opcoes"][] = $opcao;
         } else {
-            $this->dePara[$identificadorPergunta] = array(
-                "opcoes" => array($opcao)
-            );
+            $this->dePara[$identificadorPergunta] = [
+                "opcoes" => [$opcao]
+            ];
         }
     }
 
     public function parseAvaliacao()
     {
-        $dadosAvaliacao = (object)array(
+        $dadosAvaliacao = (object)[
             'codigo' => $this->avaliacao->getCodigo(),
-            'grupos' => array()
-        );
+            'grupos' => []
+        ];
 
         foreach ($this->avaliacao->getGrupos() as $grupo) {
-            $dadoGrupo = (object)array(
+            $dadoGrupo = (object)[
                 'codigo' => $grupo->getCodigo(),
-                'perguntas' => array()
-            );
+                'perguntas' => []
+            ];
 
             foreach ($grupo->getPerguntas() as $pergunta) {
-                $dadoPergunta = (object)array(
+                $dadoPergunta = (object)[
                     'codigo' => $pergunta->getCodigo(),
-                    'respostas' => array()
-                );
+                    'respostas' => []
+                ];
                 $identificadorCampo = $pergunta->getIdentificadorCampo();
 
                 if (array_key_exists($identificadorCampo, $this->dePara)) {
@@ -86,12 +86,12 @@ class AvaliacaoMapeador
                     foreach ($registro['opcoes'] as $opcao) {
                         foreach ($pergunta->getRespostas() as $respostaAvaliacao) {
                             if ($respostaAvaliacao->identificadorcampo == $opcao['identificador_campo']) {
-                                $resposta = (object)array(
+                                $resposta = (object)[
                                     "codigo" => $respostaAvaliacao->codigoresposta,
                                     "identificadorCampo" => $pergunta->getIdentificadorCampo(),
                                     "valor" => $opcao['valor'],
                                     "valorAuxiliar" => null,
-                                );
+                                ];
                                 $dadoPergunta->respostas[] = $resposta;
                             }
                         }

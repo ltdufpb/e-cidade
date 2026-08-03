@@ -46,7 +46,7 @@ $clrotulo->label('nome');
 $clrotulo->label('coddepto');
 $clrotulo->label('descrdepto');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);//db_postmemory($HTTP_SERVER_VARS,2);exit;
+parse_str((string) $_SERVER['QUERY_STRING'], $result);//db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 //echo $HTTP_SERVER_VARS['QUERY_STRING'];
 
@@ -214,9 +214,9 @@ function larguraColuna($nPorcentagem = 0) {
 
 function limitarTexto($sTexto, $iLimite = 50) {
 
-  $iTamanho = mb_strlen($sTexto);
+  $iTamanho = mb_strlen((string) $sTexto);
   if ($iTamanho > $iLimite) {
-    $sTexto = substr($sTexto, 0, $iLimite) . '...';
+    $sTexto = substr((string) $sTexto, 0, $iLimite) . '...';
   }
   return $sTexto;
 }

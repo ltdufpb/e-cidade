@@ -39,15 +39,15 @@
 define('NEWLINE', "\n");
 
 class DHTML_Calendar {
-    var $calendar_lib_path;
+    public $calendar_lib_path;
 
-    var $calendar_file;
-    var $calendar_lang_file;
-    var $calendar_setup_file;
-    var $calendar_theme_file;
-    var $calendar_options;
+    public $calendar_file;
+    public $calendar_lang_file;
+    public $calendar_setup_file;
+    public $calendar_theme_file;
+    public $calendar_options;
 
-    function DHTML_Calendar($calendar_lib_path = '/calendar/',
+    function __construct($calendar_lib_path = '/calendar/',
                             $lang              = 'en',
                             $theme             = 'calendar-win2k-1',
                             $stripped          = true) {
@@ -60,9 +60,9 @@ class DHTML_Calendar {
         }
         $this->calendar_lang_file = 'lang/calendar-' . $lang . '.js';
         $this->calendar_theme_file = $theme.'.css';
-        $this->calendar_lib_path = preg_replace('/\/+$/', '/', $calendar_lib_path);
-        $this->calendar_options = array('ifFormat' => '%Y/%m/%d',
-                                        'daFormat' => '%Y/%m/%d');
+        $this->calendar_lib_path = preg_replace('/\/+$/', '/', (string) $calendar_lib_path);
+        $this->calendar_options = ['ifFormat' => '%Y/%m/%d',
+                                        'daFormat' => '%Y/%m/%d'];
     }
 
     function set_option($name, $value) {
@@ -89,7 +89,7 @@ class DHTML_Calendar {
         return $code;
     }
 
-    function _make_calendar($other_options = array()) {
+    function _make_calendar($other_options = []) {
         $js_options = $this->_make_js_hash(array_merge($this->calendar_options, $other_options));
         $code  = ( '<script type="text/javascript">Calendar.setup({' .
                    $js_options .
@@ -97,19 +97,19 @@ class DHTML_Calendar {
         return $code;
     }
 
-    function make_input_field($cal_options = array(), $field_attributes = array(), $output = true) {
+    function make_input_field($cal_options = [], $field_attributes = [], $output = true) {
         $result = "";
         $id = $this->_gen_id();
         $attrstr = $this->_make_html_attr(array_merge($field_attributes,
-                                                      array('id'   => $this->_field_id($id),
-                                                            'type' => 'text')));
+                                                      ['id'   => $this->_field_id($id),
+                                                            'type' => 'text']));
         $result.= '<input ' . $attrstr .'/>';
         $result.= '<a href="#" id="'. $this->_trigger_id($id) . '">' .
             '<img align="middle" border="0" src="' . $this->calendar_lib_path . 'img.gif" alt="" /></a>';
 
         $options = array_merge($cal_options,
-                               array('inputField' => $this->_field_id($id),
-                                     'button'     => $this->_trigger_id($id)));
+                               ['inputField' => $this->_field_id($id),
+                                     'button'     => $this->_trigger_id($id)]);
         $result.= $this->_make_calendar($options);
 
         if ($output)
@@ -126,7 +126,7 @@ class DHTML_Calendar {
     function _make_js_hash($array) {
         $jstr = '';
         reset($array);
-        while (list($key, $val) = each($array)) {
+        foreach ($array as $key => $val) {
             if (is_bool($val))
                 $val = $val ? 'true' : 'false';
             else if (!is_numeric($val))
@@ -140,7 +140,7 @@ class DHTML_Calendar {
     function _make_html_attr($array) {
         $attrstr = '';
         reset($array);
-        while (list($key, $val) = each($array)) {
+        foreach ($array as $key => $val) {
             $attrstr .= $key . '="' . $val . '" ';
         }
         return $attrstr;

@@ -30,7 +30,7 @@ use ECidade\Financeiro\Tesouraria\Receita as ReceitaModel;
 
 class Receita extends \BaseClassRepository {
 
-  protected static $itens = array();
+  protected static $itens = [];
   
   /**
    * Sobrescreve o atributo da classe pai para
@@ -61,7 +61,7 @@ class Receita extends \BaseClassRepository {
     }
 
     $oDaoTabRec = new \cl_tabrec();
-    $oDados = \db_utils::getRowFromDao($oDaoTabRec, array($codigo));
+    $oDados = \db_utils::getRowFromDao($oDaoTabRec, [$codigo]);
     if (empty($oDados)) {
       throw new \BusinessException('Não existe receita cadastrada com o código '.$codigo);
     }

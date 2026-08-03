@@ -41,7 +41,7 @@ final class PadArquivoSigapRGFdisponibilidadeCaixa extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "RGFDisponibilidadeCaixa";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -61,7 +61,7 @@ final class PadArquivoSigapRGFdisponibilidadeCaixa extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao  = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit  = db_getsession("DB_instit");
 
@@ -78,7 +78,7 @@ final class PadArquivoSigapRGFdisponibilidadeCaixa extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                          "dcxCodigoEntidade",
                          "dcxMesAnoMovimento",
                          "dcxSinal",
@@ -88,7 +88,7 @@ final class PadArquivoSigapRGFdisponibilidadeCaixa extends PadArquivoSigap {
                          "dcxDescricaoContaLRF",
                          "dcxConta",
                          "dcxRecursoVinculado"
-                       );
+                       ];
     return $aElementos;  
   }
   

@@ -41,7 +41,7 @@ final class PadArquivoSigapReceitaDespesaExtra extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "ReceitaDesepsaExtraOrcamentaria";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -61,7 +61,7 @@ final class PadArquivoSigapReceitaDespesaExtra extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao  = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit  = db_getsession("DB_instit");
     $sWhere        = " c61_instit in ({$sListaInstit}) and c60_codsis=7 ";
@@ -85,9 +85,9 @@ final class PadArquivoSigapReceitaDespesaExtra extends PadArquivoSigap {
       $oReceitaRetorno = new stdClass();
       $oReceitaRetorno->rdeCodigoEntidade                 = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oReceitaRetorno->rdeMesAnoMovimento                = $sDiaMesAno;
-      $oReceitaRetorno->rdeCodigoConta                    = str_pad($oReceita->estrutural, 20, 0, STR_PAD_RIGHT);
+      $oReceitaRetorno->rdeCodigoConta                    = str_pad((string) $oReceita->estrutural, 20, 0, STR_PAD_RIGHT);
 
-      $iTamanhoCampo = strlen($oInstituicao->codtrib);
+      $iTamanhoCampo = strlen((string) $oInstituicao->codtrib);
       if ($iTamanhoCampo != 4) {
         
         $sMsg  = "Identificação do Orgão/Unidade da instituição ({$oInstituicao->codtrib}) está incorreto. \\n ";
@@ -97,14 +97,14 @@ final class PadArquivoSigapReceitaDespesaExtra extends PadArquivoSigap {
         throw new Exception($sMsg);
       }
       
-      $sOrgao                                             = substr($oInstituicao->codtrib, 0, 2);
-      $sUnidade                                           = substr($oInstituicao->codtrib, 2, 2);
+      $sOrgao                                             = substr((string) $oInstituicao->codtrib, 0, 2);
+      $sUnidade                                           = substr((string) $oInstituicao->codtrib, 2, 2);
       $oReceitaRetorno->rdeCodigoOrgao                    = str_pad($sOrgao, 2, "0", STR_PAD_LEFT);
       $oReceitaRetorno->rdeCodigoUnidadeOrcamentaria      = str_pad($sUnidade, 2, "0", STR_PAD_LEFT);
       
       $oReceitaRetorno->rdeValorMovimentacao              = $this->corrigeValor($oReceita->saldo_final, 13);
       $sIdentificador  = "D";
-      if (substr($oReceita->estrutural, 0 ,1) == 1) {
+      if (substr((string) $oReceita->estrutural, 0 ,1) == 1) {
        $sIdentificador  = "R";   
       }
       
@@ -124,7 +124,7 @@ final class PadArquivoSigapReceitaDespesaExtra extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "rdeCodigoEntidade",
                         "rdeMesAnoMovimento",
                         "rdeCodigoConta",
@@ -133,7 +133,7 @@ final class PadArquivoSigapReceitaDespesaExtra extends PadArquivoSigap {
                         "rdeValorMovimentacao",
                         "rdeIdentificadorDespesaReceita",
                         "rdeClassificacao"
-                       );
+                       ];
     return $aElementos;  
   }
   

@@ -103,11 +103,11 @@ $clrotulo->label("e62_descr");
      <td nowrap valign="top"><b>Solicitar a Anulação<br>do Empenho:</b></td>
      <td colspan='3'>
       <?php 
-       $valoresanul = array (
+       $valoresanul =  [
                              "0" => "Não", 
                              "1" => "Valor",
                              "2" => "Item",
-                            );
+                            ];
        db_select("anularemp",$valoresanul,true,1,"onchange='js_helpanula(this.value)'");
       ?>
        <span id='helpanula'>

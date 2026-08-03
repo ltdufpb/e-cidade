@@ -34,7 +34,7 @@ require_once modification("libs/db_utils.php");
 
 $oJson         = new services_json();
 
-$sName    = utf8_decode($_POST["string"]);
+$sName    = mb_convert_encoding($_POST["string"], 'ISO-8859-1');
 
 $sql      = "SELECT db83_conta as cod,
                     db83_conta as label 

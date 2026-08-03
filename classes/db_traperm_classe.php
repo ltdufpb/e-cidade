@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE traperm
 class cl_traperm { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tr20_id = 0; 
-   var $tr20_dtalvara_dia = null; 
-   var $tr20_dtalvara_mes = null; 
-   var $tr20_dtalvara_ano = null; 
-   var $tr20_dtalvara = null; 
-   var $tr20_numcgm = 0; 
-   var $tr20_ruaid = 0; 
-   var $tr20_nro = null; 
-   var $tr20_bairroid = 0; 
-   var $tr20_complem = null; 
-   var $tr20_fone = null; 
-   var $tr20_prefixo = null; 
+   public $tr20_id = 0; 
+   public $tr20_dtalvara_dia = null; 
+   public $tr20_dtalvara_mes = null; 
+   public $tr20_dtalvara_ano = null; 
+   public $tr20_dtalvara = null; 
+   public $tr20_numcgm = 0; 
+   public $tr20_ruaid = 0; 
+   public $tr20_nro = null; 
+   public $tr20_bairroid = 0; 
+   public $tr20_complem = null; 
+   public $tr20_fone = null; 
+   public $tr20_prefixo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tr20_id = int4 = Código 
                  tr20_dtalvara = date = Data do Alvara 
                  tr20_numcgm = int4 = CGM 
@@ -67,10 +67,10 @@ class cl_traperm {
                  tr20_prefixo = varchar(20) = Prefixo 
                  ";
    //funcao construtor da classe 
-   function cl_traperm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("traperm"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -186,7 +186,7 @@ class cl_traperm {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Permissionários ($this->tr20_id) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Permissionários já Cadastrado";
@@ -210,18 +210,18 @@ class cl_traperm {
      $resaco = $this->sql_record($this->sql_query_file($this->tr20_id));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11834,'$this->tr20_id','I')");
-       $resac = db_query("insert into db_acount values($acount,2046,11834,'','".AddSlashes(pg_result($resaco,0,'tr20_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2046,11835,'','".AddSlashes(pg_result($resaco,0,'tr20_dtalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2046,11836,'','".AddSlashes(pg_result($resaco,0,'tr20_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2046,11837,'','".AddSlashes(pg_result($resaco,0,'tr20_ruaid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2046,11838,'','".AddSlashes(pg_result($resaco,0,'tr20_nro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2046,11839,'','".AddSlashes(pg_result($resaco,0,'tr20_bairroid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2046,11840,'','".AddSlashes(pg_result($resaco,0,'tr20_complem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2046,11841,'','".AddSlashes(pg_result($resaco,0,'tr20_fone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2046,11842,'','".AddSlashes(pg_result($resaco,0,'tr20_prefixo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2046,11834,'','".AddSlashes(pg_fetch_result($resaco,0,'tr20_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2046,11835,'','".AddSlashes(pg_fetch_result($resaco,0,'tr20_dtalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2046,11836,'','".AddSlashes(pg_fetch_result($resaco,0,'tr20_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2046,11837,'','".AddSlashes(pg_fetch_result($resaco,0,'tr20_ruaid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2046,11838,'','".AddSlashes(pg_fetch_result($resaco,0,'tr20_nro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2046,11839,'','".AddSlashes(pg_fetch_result($resaco,0,'tr20_bairroid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2046,11840,'','".AddSlashes(pg_fetch_result($resaco,0,'tr20_complem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2046,11841,'','".AddSlashes(pg_fetch_result($resaco,0,'tr20_fone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2046,11842,'','".AddSlashes(pg_fetch_result($resaco,0,'tr20_prefixo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -230,10 +230,10 @@ class cl_traperm {
       $this->atualizacampos();
      $sql = " update traperm set ";
      $virgula = "";
-     if(trim($this->tr20_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_id"])){ 
+     if(trim((string) $this->tr20_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_id"])){ 
        $sql  .= $virgula." tr20_id = $this->tr20_id ";
        $virgula = ",";
-       if(trim($this->tr20_id) == null ){ 
+       if(trim((string) $this->tr20_id) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "tr20_id";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_traperm {
          return false;
        }
      }
-     if(trim($this->tr20_dtalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_dtalvara_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tr20_dtalvara_dia"] !="") ){ 
+     if(trim((string) $this->tr20_dtalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_dtalvara_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["tr20_dtalvara_dia"] !="") ){ 
        $sql  .= $virgula." tr20_dtalvara = '$this->tr20_dtalvara' ";
        $virgula = ",";
-       if(trim($this->tr20_dtalvara) == null ){ 
+       if(trim((string) $this->tr20_dtalvara) == null ){ 
          $this->erro_sql = " Campo Data do Alvara nao Informado.";
          $this->erro_campo = "tr20_dtalvara_dia";
          $this->erro_banco = "";
@@ -259,7 +259,7 @@ class cl_traperm {
        if(isset($GLOBALS["HTTP_POST_VARS"]["tr20_dtalvara_dia"])){ 
          $sql  .= $virgula." tr20_dtalvara = null ";
          $virgula = ",";
-         if(trim($this->tr20_dtalvara) == null ){ 
+         if(trim((string) $this->tr20_dtalvara) == null ){ 
            $this->erro_sql = " Campo Data do Alvara nao Informado.";
            $this->erro_campo = "tr20_dtalvara_dia";
            $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_traperm {
          }
        }
      }
-     if(trim($this->tr20_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_numcgm"])){ 
+     if(trim((string) $this->tr20_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_numcgm"])){ 
        $sql  .= $virgula." tr20_numcgm = $this->tr20_numcgm ";
        $virgula = ",";
-       if(trim($this->tr20_numcgm) == null ){ 
+       if(trim((string) $this->tr20_numcgm) == null ){ 
          $this->erro_sql = " Campo CGM nao Informado.";
          $this->erro_campo = "tr20_numcgm";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_traperm {
          return false;
        }
      }
-     if(trim($this->tr20_ruaid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_ruaid"])){ 
+     if(trim((string) $this->tr20_ruaid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_ruaid"])){ 
        $sql  .= $virgula." tr20_ruaid = $this->tr20_ruaid ";
        $virgula = ",";
-       if(trim($this->tr20_ruaid) == null ){ 
+       if(trim((string) $this->tr20_ruaid) == null ){ 
          $this->erro_sql = " Campo Logradouro nao Informado.";
          $this->erro_campo = "tr20_ruaid";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_traperm {
          return false;
        }
      }
-     if(trim($this->tr20_nro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_nro"])){ 
+     if(trim((string) $this->tr20_nro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_nro"])){ 
        $sql  .= $virgula." tr20_nro = '$this->tr20_nro' ";
        $virgula = ",";
-       if(trim($this->tr20_nro) == null ){ 
+       if(trim((string) $this->tr20_nro) == null ){ 
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "tr20_nro";
          $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_traperm {
          return false;
        }
      }
-     if(trim($this->tr20_bairroid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_bairroid"])){ 
+     if(trim((string) $this->tr20_bairroid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_bairroid"])){ 
        $sql  .= $virgula." tr20_bairroid = $this->tr20_bairroid ";
        $virgula = ",";
-       if(trim($this->tr20_bairroid) == null ){ 
+       if(trim((string) $this->tr20_bairroid) == null ){ 
          $this->erro_sql = " Campo Bairro nao Informado.";
          $this->erro_campo = "tr20_bairroid";
          $this->erro_banco = "";
@@ -322,15 +322,15 @@ class cl_traperm {
          return false;
        }
      }
-     if(trim($this->tr20_complem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_complem"])){ 
+     if(trim((string) $this->tr20_complem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_complem"])){ 
        $sql  .= $virgula." tr20_complem = '$this->tr20_complem' ";
        $virgula = ",";
      }
-     if(trim($this->tr20_fone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_fone"])){ 
+     if(trim((string) $this->tr20_fone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_fone"])){ 
        $sql  .= $virgula." tr20_fone = '$this->tr20_fone' ";
        $virgula = ",";
      }
-     if(trim($this->tr20_prefixo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_prefixo"])){ 
+     if(trim((string) $this->tr20_prefixo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr20_prefixo"])){ 
        $sql  .= $virgula." tr20_prefixo = '$this->tr20_prefixo' ";
        $virgula = ",";
      }
@@ -342,27 +342,27 @@ class cl_traperm {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11834,'$this->tr20_id','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr20_id"]))
-           $resac = db_query("insert into db_acount values($acount,2046,11834,'".AddSlashes(pg_result($resaco,$conresaco,'tr20_id'))."','$this->tr20_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2046,11834,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr20_id'))."','$this->tr20_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr20_dtalvara"]))
-           $resac = db_query("insert into db_acount values($acount,2046,11835,'".AddSlashes(pg_result($resaco,$conresaco,'tr20_dtalvara'))."','$this->tr20_dtalvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2046,11835,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr20_dtalvara'))."','$this->tr20_dtalvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr20_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,2046,11836,'".AddSlashes(pg_result($resaco,$conresaco,'tr20_numcgm'))."','$this->tr20_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2046,11836,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr20_numcgm'))."','$this->tr20_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr20_ruaid"]))
-           $resac = db_query("insert into db_acount values($acount,2046,11837,'".AddSlashes(pg_result($resaco,$conresaco,'tr20_ruaid'))."','$this->tr20_ruaid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2046,11837,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr20_ruaid'))."','$this->tr20_ruaid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr20_nro"]))
-           $resac = db_query("insert into db_acount values($acount,2046,11838,'".AddSlashes(pg_result($resaco,$conresaco,'tr20_nro'))."','$this->tr20_nro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2046,11838,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr20_nro'))."','$this->tr20_nro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr20_bairroid"]))
-           $resac = db_query("insert into db_acount values($acount,2046,11839,'".AddSlashes(pg_result($resaco,$conresaco,'tr20_bairroid'))."','$this->tr20_bairroid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2046,11839,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr20_bairroid'))."','$this->tr20_bairroid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr20_complem"]))
-           $resac = db_query("insert into db_acount values($acount,2046,11840,'".AddSlashes(pg_result($resaco,$conresaco,'tr20_complem'))."','$this->tr20_complem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2046,11840,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr20_complem'))."','$this->tr20_complem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr20_fone"]))
-           $resac = db_query("insert into db_acount values($acount,2046,11841,'".AddSlashes(pg_result($resaco,$conresaco,'tr20_fone'))."','$this->tr20_fone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2046,11841,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr20_fone'))."','$this->tr20_fone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr20_prefixo"]))
-           $resac = db_query("insert into db_acount values($acount,2046,11842,'".AddSlashes(pg_result($resaco,$conresaco,'tr20_prefixo'))."','$this->tr20_prefixo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2046,11842,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr20_prefixo'))."','$this->tr20_prefixo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -407,18 +407,18 @@ class cl_traperm {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11834,'$tr20_id','E')");
-         $resac = db_query("insert into db_acount values($acount,2046,11834,'','".AddSlashes(pg_result($resaco,$iresaco,'tr20_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2046,11835,'','".AddSlashes(pg_result($resaco,$iresaco,'tr20_dtalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2046,11836,'','".AddSlashes(pg_result($resaco,$iresaco,'tr20_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2046,11837,'','".AddSlashes(pg_result($resaco,$iresaco,'tr20_ruaid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2046,11838,'','".AddSlashes(pg_result($resaco,$iresaco,'tr20_nro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2046,11839,'','".AddSlashes(pg_result($resaco,$iresaco,'tr20_bairroid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2046,11840,'','".AddSlashes(pg_result($resaco,$iresaco,'tr20_complem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2046,11841,'','".AddSlashes(pg_result($resaco,$iresaco,'tr20_fone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2046,11842,'','".AddSlashes(pg_result($resaco,$iresaco,'tr20_prefixo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2046,11834,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr20_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2046,11835,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr20_dtalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2046,11836,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr20_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2046,11837,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr20_ruaid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2046,11838,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr20_nro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2046,11839,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr20_bairroid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2046,11840,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr20_complem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2046,11841,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr20_fone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2046,11842,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr20_prefixo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from traperm
@@ -478,7 +478,7 @@ class cl_traperm {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:traperm";

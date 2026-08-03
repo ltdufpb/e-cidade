@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 $pdf = new PDF(); 
 $pdf->Open(); 
@@ -44,7 +44,7 @@ if ( $codrec == '') {
   
    $sql    = "select upper(k02_drecei) as k07_descr from tabrec where k02_codigo = $codrec";
    $result = db_query($sql);
-   $head4  = $codrec.' - '.pg_result($result,0,'k07_descr'); 
+   $head4  = $codrec.' - '.pg_fetch_result($result,0,'k07_descr'); 
    $ordem  = ' order by g.k02_codigo, f.k00_dtpaga, e.z01_nome ';
    $where  = ' f.k00_receit = '.$codrec.' and '; 
 }
@@ -154,7 +154,7 @@ if ($agrupar == 't') {
 // echo $sql;exit;
 
 $result = db_query($sql);
-$xxnum  = pg_numrows($result);
+$xxnum  = pg_num_rows($result);
 if ($xxnum == 0) {
   
   $sMsgErro  = "db_erros.php?fechar=true&db_erro=Não existem lançamentos para a receita ";
@@ -190,7 +190,7 @@ if ($agrupar == 't') {
     }
     $pdf->setfont('arial','',7);
     $pdf->cell(20,4,$k02_codigo,1,0,"C",$pre);
-    $pdf->cell(100,4,strtoupper($k02_drecei),1,0,"L",$pre);
+    $pdf->cell(100,4,strtoupper((string) $k02_drecei),1,0,"L",$pre);
     $pdf->cell(25,4,db_formatar($valor,'f'),1,1,"R",$pre);
     $total_geral +=$valor;
   }
@@ -204,7 +204,7 @@ if ($agrupar == 't') {
   $pdf->SetTextColor(0,0,0);
   $pdf->SetFillColor(220);
   $pdf->SetFont('Arial','B',7);
-  $receita = trim(pg_result($result,0,'k02_codigo')).' - '.trim(strtoupper(pg_result($result,0,'k02_drecei')));
+  $receita = trim(pg_fetch_result($result,0,'k02_codigo')).' - '.trim(strtoupper(pg_fetch_result($result,0,'k02_drecei')));
   $pdf->multicell(0,6,$receita,0,"L",0);
   $pdf->Cell(12,6,"NUMPRE",1,0,"C",1);
   $pdf->Cell(60,6,"NOME",1,0,"C",1);
@@ -221,7 +221,7 @@ if ($agrupar == 't') {
       
       $pdf->AddPage('L');
       $pdf->SetFont('Arial','B',7);
-      $pdf->multicell(0,6,$k02_codigo.' - '.strtoupper($k02_drecei),0,"L",0);
+      $pdf->multicell(0,6,$k02_codigo.' - '.strtoupper((string) $k02_drecei),0,"L",0);
       $pdf->Cell(12,6,"NUMPRE",1,0,"C",1);
       $pdf->Cell(60,6,"NOME",1,0,"C",1);
       $pdf->Cell(15,6,"PAGTO",1,0,"C",1);
@@ -229,7 +229,7 @@ if ($agrupar == 't') {
       $pdf->Cell(130,6,"HISTORICO",1,0,"C",1);
       $pdf->Cell(20,6,"VALOR",1,1,"C",1);
     }
-    if ( $receita != $k02_codigo.' - '.strtoupper($k02_drecei) ) {
+    if ( $receita != $k02_codigo.' - '.strtoupper((string) $k02_drecei) ) {
   //      $pdf->AddPage('L');
         $pdf->SetFont('Arial','B',7);
         $pdf->Cell(249,6,"TOTAL DA RECEITA : ",1,0,"L",0);
@@ -237,7 +237,7 @@ if ($agrupar == 't') {
         $total_taxa = 0;
         $pdf->SetFont('Arial','B',7);
         $pdf->ln(3);
-        $pdf->multicell(0,6,$k02_codigo.' - '.strtoupper($k02_drecei),0,"L",0);
+        $pdf->multicell(0,6,$k02_codigo.' - '.strtoupper((string) $k02_drecei),0,"L",0);
         $pdf->Cell(12,6,"NUMPRE",1,0,"C",1);
         $pdf->Cell(60,6,"NOME",1,0,"C",1);
         $pdf->Cell(15,6,"PAGTO",1,0,"C",1);
@@ -247,14 +247,14 @@ if ($agrupar == 't') {
     }
     $pdf->SetFont('Arial','',7);
     $pdf->cell(12,4,$k00_numpre,1,0,"R",$pre);
-    $pdf->cell(60,4,substr($z01_nome,0,35),1,0,"L",$pre);
+    $pdf->cell(60,4,substr((string) $z01_nome,0,35),1,0,"L",$pre);
     $pdf->Cell(15,4,db_formatar($k00_dtpaga,'d'),1,0,"C",$pre);
     $pdf->cell(32,4,$matinscr,1,0,"L",$pre);
-    $pdf->cell(130,4,substr(strtoupper($k00_histtxt),0,80),1,0,"L",$pre);
+    $pdf->cell(130,4,substr(strtoupper((string) $k00_histtxt),0,80),1,0,"L",$pre);
     $pdf->cell(20,4,db_formatar($valor,'f'),1,1,"R",$pre);
     $total_geral += $valor;
     $total_taxa += $valor;
-    $receita = $k02_codigo.' - '.strtoupper($k02_drecei);
+    $receita = $k02_codigo.' - '.strtoupper((string) $k02_drecei);
   }
   $pdf->SetFont('Arial','B',7);
   $pdf->Cell(249,6,"TOTAL DA RECEITA : ",1,0,"L",0);

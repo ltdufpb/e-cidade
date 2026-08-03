@@ -41,7 +41,7 @@ include(modification("libs/db_usuariosonline.php"));
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1" >
 <?php 
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
   // Tabelas
 
   $sql = "select nomearq as nometab, tipotabela
@@ -67,22 +67,22 @@ include(modification("libs/db_usuariosonline.php"));
 			$qr
 			order by codmod";
      $result = db_query($sql);
-     $numrows = pg_numrows($result);
+     $numrows = pg_num_rows($result);
      $RecordsetTabMod = $result;
      if($numrows == 0) {
        echo "Não foi encontrada nenhuma tabela com o nome de $nometab";
      } else {
 
-       $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
-       $siglamod = pg_result($result,0,'nomemod');
+       $root = substr((string) $_SERVER['SCRIPT_FILENAME'],0,strrpos((string) $_SERVER['SCRIPT_FILENAME'],"/"));
+       $siglamod = pg_fetch_result($result,0,'nomemod');
      
        if($tipotabela=='0'){
     
-	  $arq001 = $root."/".strtolower(substr($siglamod,0,3)."1_".trim($nometab))."001.php";
+	  $arq001 = $root."/".strtolower(substr($siglamod,0,3)."1_".trim((string) $nometab))."001.php";
 	  
     if(file_exists($arq001) && !is_writable($arq001)){
       ?>
-      <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim($nometab)?>001"</h6></td></tr></table>
+      <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim((string) $nometab)?>001"</h6></td></tr></table>
       </body>
       </html>
       <?php 
@@ -99,19 +99,19 @@ include(modification("libs/db_usuariosonline.php"));
 			     from db_sysprikey p
 				  inner join db_sysarquivo a on a.codarq = p.codarq
 				  inner join db_syscampo c   on c.codcam = p.codcam
-			     where a.codarq = ".pg_result($result,$i,"codarq")."
+			     where a.codarq = ".pg_fetch_result($result,$i,"codarq")."
 			     order by p.sequen");
 	    $campo = db_query("select c.*
 				from db_syscampo c
 				     inner join db_sysarqcamp a   on a.codcam = c.codcam
-				where codarq = ".pg_result($result,$i,"codarq").
+				where codarq = ".pg_fetch_result($result,$i,"codarq").
 					    " order by a.seqarq");
-	    $Ncampos = pg_numrows($campo);
+	    $Ncampos = pg_num_rows($campo);
 
 	    if($Ncampos > 0) {
 
 	    	// Nome do arquivo a ser gerado
-	    	$sNomeArquivo = trim(pg_result($result, $i, "nomearq"));
+	    	$sNomeArquivo = trim(pg_fetch_result($result, $i, "nomearq"));
 
 	      fputs($fd1, "require_once(modification(\"libs/db_stdlib.php\"));\n");
 	      fputs($fd1, "require_once(modification(\"libs/db_conecta.php\"));\n");
@@ -130,12 +130,12 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd1, '  db_inicio_transacao();' . "\n");
 	      fputs($fd1, '  $oDao' . ucfirst($sNomeArquivo) . '->incluir(');
 
-	      if (pg_numrows($pk) > 0) {
-		    	$Npk     = pg_numrows($pk);
+	      if (pg_num_rows($pk) > 0) {
+		    	$Npk     = pg_num_rows($pk);
 			  	$virgula = "";
 
 		    	for ($p = 0;$p < $Npk;$p++) {
-		    	  fputs($fd1, $virgula . '$' . trim(pg_result($pk, $p, "nomecam")) );
+		    	  fputs($fd1, $virgula . '$' . trim(pg_fetch_result($pk, $p, "nomecam")) );
 			  	  $virgula = ", ";
       	  } 
 	      }
@@ -159,7 +159,7 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd1, "}\n\n");
 
         fputs($fd1,'$sPosScripts .= ');
-	      fputs($fd1,' \'js_tabulacaoforms("form1", "'.trim(pg_result($campo,1,1)).'", true, 1, "'.trim(pg_result($campo,1,1)).'", true);\''.";\n\n");
+	      fputs($fd1,' \'js_tabulacaoforms("form1", "'.trim(pg_fetch_result($campo,1,1)).'", true, 1, "'.trim(pg_fetch_result($campo,1,1)).'", true);\''.";\n\n");
 
 	      fputs($fd1, "include(modification(\"forms/db_frm{$sNomeArquivo}.php\"));\n");
 	      fputs($fd1, "?>\n");
@@ -172,11 +172,11 @@ include(modification("libs/db_usuariosonline.php"));
   }
 
   if ($tipotabela == '0') {
-	  $arq002 = $root."/".strtolower(substr($siglamod,0,3)."1_".trim($nometab))."002.php";
+	  $arq002 = $root."/".strtolower(substr($siglamod,0,3)."1_".trim((string) $nometab))."002.php";
 	  //$arq002 = "/tmp/".substr($siglamod,0,3)."1_".trim($nometab)."002.php";
 	  if(file_exists($arq002) && !is_writable($arq002)){
             ?>
-            <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim($nometab)?>002"</h6></td></tr></table>
+            <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim((string) $nometab)?>002"</h6></td></tr></table>
             </body>
             </html>
             <?php 
@@ -192,17 +192,17 @@ include(modification("libs/db_usuariosonline.php"));
 			     from db_sysprikey p
 				  inner join db_sysarquivo a on a.codarq = p.codarq
 				  inner join db_syscampo c   on c.codcam = p.codcam
-			     where a.codarq = ".pg_result($result,$i,"codarq")."
+			     where a.codarq = ".pg_fetch_result($result,$i,"codarq")."
 			     order by p.sequen");
 	    $campo = db_query("select c.*
 				from db_syscampo c
 				     inner join db_sysarqcamp a   on a.codcam = c.codcam
-				where codarq = ".pg_result($result,$i,"codarq").
+				where codarq = ".pg_fetch_result($result,$i,"codarq").
 					    " order by a.seqarq");
-	    $Ncampos = pg_numrows($campo);
+	    $Ncampos = pg_num_rows($campo);
 	    if($Ncampos > 0) {
 
-	    	$sNomeArquivo = trim(pg_result($result, $i, "nomearq"));
+	    	$sNomeArquivo = trim(pg_fetch_result($result, $i, "nomearq"));
 
 	      fputs($fd2, "require_once(modification(\"libs/db_stdlib.php\"));\n");
 	      fputs($fd2, "require_once(modification(\"libs/db_conecta.php\"));\n");
@@ -222,12 +222,12 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd2, '  $db_opcao = 2;'."\n");
 	      fputs($fd2, '  $oDao' . ucfirst($sNomeArquivo) . '->alterar(');
 
-	      if (pg_numrows($pk) > 0) {
-					$Npk = pg_numrows($pk);
+	      if (pg_num_rows($pk) > 0) {
+					$Npk = pg_num_rows($pk);
 				  $virgula = "";
 
 					for($p = 0; $p < $Npk; $p++) {
-					  fputs($fd2, $virgula . '$' . trim(pg_result($pk,$p,"nomecam")));
+					  fputs($fd2, $virgula . '$' . trim(pg_fetch_result($pk,$p,"nomecam")));
 						$virgula = ", ";
 					} 
 
@@ -257,8 +257,8 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd2, '  $db_botao = true;'."\n");
 	      fputs($fd2, '  $result   = $oDao' . ucfirst($sNomeArquivo) . '->sql_record( $oDao'. ucfirst($sNomeArquivo) . '->sql_query($chavepesquisa');
 		      
-	      if (pg_numrows($pk) > 1) {
-					$Npk = pg_numrows($pk);
+	      if (pg_num_rows($pk) > 1) {
+					$Npk = pg_num_rows($pk);
 
 					for($p = 1; $p < $Npk; $p++) {
 					  fputs($fd2, ', $chavepesquisa' . $p);
@@ -274,7 +274,7 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd2, "}\n\n");
 
 	      fputs($fd2,'$sPosScripts .= ');
-	      fputs($fd2,' \'js_tabulacaoforms("form1", "'.trim(pg_result($campo,1,1)).'", true, 1, "'.trim(pg_result($campo,1,1)).'", true);\''.";\n\n");
+	      fputs($fd2,' \'js_tabulacaoforms("form1", "'.trim(pg_fetch_result($campo,1,1)).'", true, 1, "'.trim(pg_fetch_result($campo,1,1)).'", true);\''.";\n\n");
 
 	      fputs($fd2, "include(modification(\"forms/db_frm{$sNomeArquivo}.php\"));\n");
 	      fputs($fd2, "?>\n");	      
@@ -285,11 +285,11 @@ include(modification("libs/db_usuariosonline.php"));
  	}
 
 	if ($tipotabela == '0') {
-	  $arq003 = $root."/".strtolower(substr($siglamod,0,3)."1_".trim($nometab)."003.php");
+	  $arq003 = $root."/".strtolower(substr($siglamod,0,3)."1_".trim((string) $nometab)."003.php");
 	  //$arq003 = "/tmp/".substr($siglamod,0,3)."1_".trim($nometab)."003.php";
 	  if(file_exists($arq003) && !is_writable($arq003)){
             ?>
-            <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim($nometab)?>003"</h6></td></tr></table>
+            <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim((string) $nometab)?>003"</h6></td></tr></table>
             </body>
             </html>
             <?php 
@@ -307,18 +307,18 @@ include(modification("libs/db_usuariosonline.php"));
 			     from db_sysprikey p
 				  inner join db_sysarquivo a on a.codarq = p.codarq
 				  inner join db_syscampo c   on c.codcam = p.codcam
-			     where a.codarq = ".pg_result($result,$i,"codarq")."
+			     where a.codarq = ".pg_fetch_result($result,$i,"codarq")."
 			     order by p.sequen");
 	    $campo = db_query("select c.*
 				from db_syscampo c
 				     inner join db_sysarqcamp a   on a.codcam = c.codcam
-				where codarq = ".pg_result($result,$i,"codarq").
+				where codarq = ".pg_fetch_result($result,$i,"codarq").
 					    " order by a.seqarq");
-	    $Ncampos = pg_numrows($campo);
+	    $Ncampos = pg_num_rows($campo);
 
       if ($Ncampos > 0) {
 
-      	$sNomeArquivo = trim(pg_result($result, $i, "nomearq"));
+      	$sNomeArquivo = trim(pg_fetch_result($result, $i, "nomearq"));
 
 	      fputs($fd3, "require_once(modification(\"libs/db_stdlib.php\"));\n");
 	      fputs($fd3, "require_once(modification(\"libs/db_conecta.php\"));\n");
@@ -341,13 +341,13 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd3, '  $db_opcao = 3;'."\n");
 	      fputs($fd3, '  $oDao' . ucfirst($sNomeArquivo) . '->excluir(');
 
-	      if (pg_numrows($pk) > 0) {
+	      if (pg_num_rows($pk) > 0) {
 
-					$Npk = pg_numrows($pk);
+					$Npk = pg_num_rows($pk);
 					$virgula = "";
 
 					for($p = 0;$p < $Npk;$p++) {
-					  fputs($fd3, $virgula . '$' . trim(pg_result($pk,$p,"nomecam")));
+					  fputs($fd3, $virgula . '$' . trim(pg_fetch_result($pk,$p,"nomecam")));
 						$virgula = ", ";
 					} 
 	      } else {
@@ -367,10 +367,10 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd3, '  $db_opcao = 3;' . "\n");
 	      fputs($fd3, '  $db_botao = true;' . "\n");
 	      fputs($fd3, '  $result   = $oDao' . ucfirst($sNomeArquivo) . '->sql_record( $oDao' . ucfirst($sNomeArquivo) . '->sql_query($chavepesquisa');
-		      
-	      if (pg_numrows($pk) > 1) {
 
-					$Npk = pg_numrows($pk);
+	      if (pg_num_rows($pk) > 1) {
+
+					$Npk = pg_num_rows($pk);
 
 					for($p = 1; $p < $Npk; $p++) {
 					  fputs($fd3,', $chavepesquisa' . $p);
@@ -387,11 +387,11 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd3, "}\n\n");
 
 	      fputs($fd3,'$sPosScripts .= ');
-	      fputs($fd3,' \'js_tabulacaoforms("form1", "'.trim(pg_result($campo,1,1)).'", true, 1, "'.trim(pg_result($campo,1,1)).'", true);\''.";\n\n");
+	      fputs($fd3,' \'js_tabulacaoforms("form1", "'.trim(pg_fetch_result($campo,1,1)).'", true, 1, "'.trim(pg_fetch_result($campo,1,1)).'", true);\''.";\n\n");
 
 	      fputs($fd3, "include(modification(\"forms/db_frm{$sNomeArquivo}.php\"));\n");
 	      fputs($fd3, "?>\n");
-	      
+
 		      // fim dos java scripts
 		  }
 	  }
@@ -401,11 +401,11 @@ include(modification("libs/db_usuariosonline.php"));
  
   if ($tipotabela == '1') {
 
-	  $arq002 = $root."/".strtolower(substr($siglamod,0,3)."1_".trim($nometab)."002.php");
+	  $arq002 = $root."/".strtolower(substr($siglamod,0,3)."1_".trim((string) $nometab)."002.php");
 
 	  if(file_exists($arq002) && !is_writable($arq002)){
             ?>
-            <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim($nometab)?>002"</h6></td></tr></table>
+            <table width="100%"><tr><td align="center"><h6>Sem permissão para gravar "<?=substr($siglamod,0,3)."1_".trim((string) $nometab)?>002"</h6></td></tr></table>
             </body>
             </html>
             <?php 
@@ -423,18 +423,18 @@ include(modification("libs/db_usuariosonline.php"));
 			     from db_sysprikey p
 				  inner join db_sysarquivo a on a.codarq = p.codarq
 				  inner join db_syscampo c   on c.codcam = p.codcam
-			     where a.codarq = ".pg_result($result,$i,"codarq")."
+			     where a.codarq = ".pg_fetch_result($result,$i,"codarq")."
 			     order by p.sequen");
 	    $campo = db_query("select c.*
 				from db_syscampo c
 				     inner join db_sysarqcamp a   on a.codcam = c.codcam
-				where codarq = ".pg_result($result,$i,"codarq").
+				where codarq = ".pg_fetch_result($result,$i,"codarq").
 					    " order by a.seqarq");
-	    $Ncampos = pg_numrows($campo);
+	    $Ncampos = pg_num_rows($campo);
 
 	    if ($Ncampos > 0) {
 
-	    	$sNomeArquivo = trim(pg_result($result, $i, "nomearq"));
+	    	$sNomeArquivo = trim(pg_fetch_result($result, $i, "nomearq"));
 
 	      fputs($fd2, "require_once(modification(\"libs/db_stdlib.php\"));\n");
 	      fputs($fd2, "require_once(modification(\"libs/db_conecta.php\"));\n");
@@ -456,13 +456,13 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd2, '  if ($result == false || $oDao'. ucfirst($sNomeArquivo) . '->numrows == 0) {' . "\n");
 	      fputs($fd2, '    $oDao' . ucfirst($sNomeArquivo) . '->incluir(');
 
-	      if (pg_numrows($pk) > 0) {
+	      if (pg_num_rows($pk) > 0) {
 
-					$Npk = pg_numrows($pk);
+					$Npk = pg_num_rows($pk);
 					$virgula = "";
 
 					for ($p = 0; $p < $Npk; $p++) {
-					  fputs($fd2, $virgula . '$' . trim(pg_result($pk, $p, "nomecam")));
+					  fputs($fd2, $virgula . '$' . trim(pg_fetch_result($pk, $p, "nomecam")));
 						$virgula = ", ";
 					} 
 	      }
@@ -472,13 +472,13 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd2, "  } else {\n");
         fputs($fd2, '    $oDao' . ucfirst($sNomeArquivo) . '->alterar(');
 
-	      if (pg_numrows($pk) > 0) {
+	      if (pg_num_rows($pk) > 0) {
 
-					$Npk = pg_numrows($pk);
+					$Npk = pg_num_rows($pk);
 					$virgula = "";
 
 					for ($p = 0; $p < $Npk; $p++) {
-					  fputs($fd2, $virgula . '$' . trim(pg_result($pk,$p,"nomecam")));
+					  fputs($fd2, $virgula . '$' . trim(pg_fetch_result($pk,$p,"nomecam")));
 					  $virgula = ",";
 					} 
 	      } else {
@@ -516,7 +516,7 @@ include(modification("libs/db_usuariosonline.php"));
 	      fputs($fd2, "}\n\n");
 
 	      fputs($fd2, '$sPosScripts .= ');
-	      fputs($fd2, ' \'js_tabulacaoforms("form1", "'.trim(pg_result($campo,1,1)).'", true, 1, "'.trim(pg_result($campo,1,1)).'", true);\''.";\n\n");
+	      fputs($fd2, ' \'js_tabulacaoforms("form1", "'.trim(pg_fetch_result($campo,1,1)).'", true, 1, "'.trim(pg_fetch_result($campo,1,1)).'", true);\''.";\n\n");
 
 	      fputs($fd2, "include(modification(\"forms/db_frm{$sNomeArquivo}.php\"));\n");
 	      fputs($fd2, '?>' . "\n");

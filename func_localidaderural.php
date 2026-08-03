@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_localidaderural_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllocalidaderural = new cl_localidaderural;
 $cllocalidaderural->rotulo->label("j137_sequencial");
 $cllocalidaderural->rotulo->label("j137_descricao");
@@ -98,9 +98,9 @@ $cllocalidaderural->rotulo->label("j137_descricao");
         }else{
            $sql = $cllocalidaderural->sql_query("",$campos,"j137_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j137_descricao)){
-          $repassa = array("chave_j137_sequencial"=>$chave_j137_sequencial,"chave_j137_descricao"=>$chave_j137_descricao);
+          $repassa = ["chave_j137_sequencial"=>$chave_j137_sequencial,"chave_j137_descricao"=>$chave_j137_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

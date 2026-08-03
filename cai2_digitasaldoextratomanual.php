@@ -48,7 +48,7 @@ $clconciliaextrato = new cl_conciliaextrato;
 $clconciliapendextrato = new cl_conciliapendextrato;
 $clextratolinha = new cl_extratolinha;
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
@@ -612,9 +612,9 @@ if (isset($incluir) && $sqlerro == false ) {
           </td>
           <td>
             <?php
-            $k86_data_dia = substr($data,8,2);
-            $k86_data_mes = substr($data,5,2);
-            $k86_data_ano=  substr($data,0,4);
+            $k86_data_dia = substr((string) $data,8,2);
+            $k86_data_mes = substr((string) $data,5,2);
+            $k86_data_ano=  substr((string) $data,0,4);
             db_inputdata('sDtSaldoFinal',@$k86_data_dia,@$k86_data_mes,@$k86_data_ano,true,'text',1,"");
             db_inputdata('sDtSaldoFinal_valida',@$k86_data_dia,@$k86_data_mes,@$k86_data_ano,true,'hidden',1,"");
             ?>
@@ -628,7 +628,7 @@ if (isset($incluir) && $sqlerro == false ) {
             <?php 
 	    db_input('iSaldo',10,4,true,'text',1);
 
-            $x = array("C"=>"C","D"=>"D");
+            $x = ["C"=>"C","D"=>"D"];
             db_select('tiposaldo',$x,true,2,"");
 
            ?>

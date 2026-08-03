@@ -42,7 +42,7 @@ $clorcparametro = new cl_orcparametro;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $clorcsuplem->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao=1;
 if (isset($chavepesquisa) && $chavepesquisa!=""){
 	$o46_codlei = $chavepesquisa;
@@ -124,10 +124,10 @@ function emite(){
 	      if ($clorcparametro->numrows > 0 ){
 	         db_fieldsmemory($rr, 0);
 	      }
-          $m = array("1" => "1 - Com Timbre",
+          $m = ["1" => "1 - Com Timbre",
                      "2" => "2 - Dotacao Sintetica",
                      "3" => "3 - Com CodDot",
-                     "4" => "4 - Sem Timbre");
+                     "4" => "4 - Sem Timbre"];
           if(isParaiba()){
               $m["5"] = "5 - Modelo CG";
           }

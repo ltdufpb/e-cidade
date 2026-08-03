@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_ensino_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 $oDaoEnsino = new cl_ensino();
 $db_opcao = 22;

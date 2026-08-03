@@ -37,7 +37,7 @@ $clcadtipoparc = new cl_cadtipoparc;
 $clcadtipoparcdeb = new cl_cadtipoparcdeb;
 $cltipoparc = new cl_tipoparc;
 $clcadtipoparc -> k40_instit = db_getsession("DB_instit");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

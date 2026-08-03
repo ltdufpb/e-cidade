@@ -8,7 +8,8 @@ final class Loteamento extends Layout
     
     private $posicao;
 
-    public function get($sequencial, $posicao)
+    #[\Override]
+    public function get($sequencial, $posicao = null)
     {
         $sequencial++;
         $posicao++;
@@ -44,12 +45,12 @@ final class Loteamento extends Layout
 
     private function padNome($nome)
     {
-        return $this->pad(strtoupper($nome), 31);
+        return $this->pad(strtoupper((string) $nome), 31);
     }
 
     private function padDescricao($descricao)
     {
-        return $this->pad(strtoupper($descricao), 81);
+        return $this->pad(strtoupper((string) $descricao), 81);
     }
 
     private function padTamanho($tamanho)
@@ -74,6 +75,6 @@ final class Loteamento extends Layout
 
     private function pad($text, $size, $value = " ", $type = STR_PAD_BOTH)
     {
-        return str_pad($text, $size, $value, $type);
+        return str_pad((string) $text, $size, $value, $type);
     }
 }

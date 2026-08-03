@@ -93,6 +93,7 @@ class ExposicaoRiscoFormatter extends Formatter
      * @return array|\Servidor[]
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dataInicioDefault = new \DBDate("2022-01-10");

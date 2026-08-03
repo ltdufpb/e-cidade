@@ -35,8 +35,8 @@ include(modification("classes/db_cgs_und_classe.php"));
 include(modification("classes/db_prontuarios_classe.php"));
 include(modification("classes/db_prontproced_ext_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 set_time_limit(0);
 $clprontuarios      = new cl_prontuarios;
@@ -83,15 +83,15 @@ $head7 = "Micro Área:  ".$sd34_v_descricao;
 //$head3 = "Periodo:".substr($data1,8,2)."/".substr($data1,5,2)."/".substr($data1,0,4)." A ".substr($data2,8,2)."/".substr($data2,5,2)."/".substr($data2,0,4);
 $pri = true;
 
-$ec_cgs = array("1"=>"Solteiro",
+$ec_cgs = ["1"=>"Solteiro",
            "2"=>"Casado",
            "3"=>"Viúvo",
            "4"=>"Separado Judicialmente",
            "5"=>"União Consensual",
-           "9"=>"Ignorado");
+           "9"=>"Ignorado"];
            
-$sexo_cgs = array("F"=>"Feminino",
-          "M"=>"Masculino");
+$sexo_cgs = ["F"=>"Feminino",
+          "M"=>"Masculino"];
           
           
 $altura       = 3;
@@ -103,10 +103,10 @@ $usar_quebra  = true;
 $campo_testar = 2;
 $lagurafixa   = 0;
 
-cabecalho($pdf,$result,$pri);
+cabecalho($pdf);
 
-$pdf->SetWidths(array(20,45,127));
-$pdf->SetAligns(array("C","L","L"));
+$pdf->SetWidths([20,45,127]);
+$pdf->SetAligns(["C","L","L"]);
 
 $retorna_obs = 0;
 for($p=0; $p<$linhas1; $p++){
@@ -143,10 +143,10 @@ for($p=0; $p<$linhas1; $p++){
         db_fieldsmemory($query3,$p1);
         $sd70_c_nome_ .= "\n"."                                          ".trim($sd70_c_cid." - ".$sd70_c_nome); 
       }
-      $sd24_d_cadastro = substr($sd24_d_cadastro,8,2)."/".substr($sd24_d_cadastro,5,2)."/".substr($sd24_d_cadastro,0,4);
+      $sd24_d_cadastro = substr((string) $sd24_d_cadastro,8,2)."/".substr((string) $sd24_d_cadastro,5,2)."/".substr((string) $sd24_d_cadastro,0,4);
       $sd29_t_tratamento_ = trim(stripslashes($sd29_t_tratamento_));
-    
-      $data = array("$sd24_d_cadastro  $sd24_c_cadastro",
+
+      $data = ["$sd24_d_cadastro  $sd24_c_cadastro",
                     "$profissional \n\n\n", 
                     "FAA                  ".$sd29_i_prontuario."          Atendente: $login".
                     "\nMotivo              ".$sd24_v_motivo.
@@ -154,19 +154,19 @@ for($p=0; $p<$linhas1; $p++){
                     "      Peso ".$sd24_f_peso.
                     "     Temperatura ".$sd24_f_temperatura.
                     "\nCID                   ".$sd70_c_nome_.
-                    "\nProcedimento   ".trim($sd63_c_procedimento)." - ".str_pad($sd63_c_nome,60)
-                    );
-    
+                    "\nProcedimento   ".trim((string) $sd63_c_procedimento)." - ".str_pad((string) $sd63_c_nome,60)
+                    ];
+
        //Draw the border
 //     if($borda == true)
 //     $this->Rect($x,$y,$w,$h);
    }else{
       $sd29_t_tratamento_ = $descricaoitemimprime;
       $retorna_obs = 0;
-      $data = array("$sd24_d_cadastro  $sd24_c_cadastro",
+      $data = ["$sd24_d_cadastro  $sd24_c_cadastro",
                     "$profissional \n\n\n", 
                     "\n$sd29_t_tratamento_"
-                    );
+                    ];
    }
    $pdf->Setfont('Arial', '', 7);
 
@@ -188,7 +188,7 @@ for($p=0; $p<$linhas1; $p++){
       $xlin=$pdf->Gety();
       $pdf->text(120,$xlin+15,"Continua na próxima página ");
     }
-    cabecalho($pdf,$result,$pri);
+    cabecalho($pdf);
 
 }  
  
@@ -203,16 +203,16 @@ for($x=0; $x< $linhas; $x++){
    if ($retorna_obs == 0) {
      db_fieldsmemory($query,$x);
      $pri=false;
-     $z01_d_nasc = substr($z01_d_nasc,8,2)."/".substr($z01_d_nasc,5,2)."/".substr($z01_d_nasc,0,4);
-     $sd32_d_atendimento = substr($sd32_d_atendimento,8,2)."/".substr($sd32_d_atendimento,5,2)."/".substr($sd32_d_atendimento,0,4);
+     $z01_d_nasc = substr((string) $z01_d_nasc,8,2)."/".substr((string) $z01_d_nasc,5,2)."/".substr((string) $z01_d_nasc,0,4);
+     $sd32_d_atendimento = substr((string) $sd32_d_atendimento,8,2)."/".substr((string) $sd32_d_atendimento,5,2)."/".substr((string) $sd32_d_atendimento,0,4);
      
    }else{
       $sd32_t_descricao = $descricaoitemimprime;
       $retorna_obs = 0;
    }
-   $data = array("$sd32_d_atendimento $sd32_c_horaatend",
+   $data = ["$sd32_d_atendimento $sd32_c_horaatend",
                     "$profissional \n\n\n", 
-                    "\nExecutado        ".$sd32_t_descricao);
+                    "\nExecutado        ".$sd32_t_descricao];
    $pdf->Setfont('Arial', '', 7);
 
    $set_altura_row = $pdf->h - 30;
@@ -233,7 +233,7 @@ for($x=0; $x< $linhas; $x++){
       $xlin=$pdf->Gety();
       $pdf->text(120,$xlin+15,"Continua na próxima página ");
     }
-    cabecalho($pdf,$result,$pri);
+    cabecalho($pdf);
 }
 
 
@@ -253,7 +253,7 @@ for($x=0; $x< $linhas; $x++){
           $pdf->cell(192,8,"ATENDIMENTOS",0,1,"C",0);
           $pdf->setfont('arial','b',7);
           $pdf->cell(30,4,"Nome : ",0,0,"R",0);
-          $pdf->cell(66,4,$z01_i_numcgs."-".trim($z01_v_nome),0,0,"L",0);
+          $pdf->cell(66,4,$z01_i_numcgs."-".trim((string) $z01_v_nome),0,0,"L",0);
           $pdf->cell(30,4,"Sexo :",0,0,"R",0);
           $pdf->cell(66,4,$sexo_cgs[$z01_v_sexo],0,1,"L",0);
           $pdf->cell(30,4,"Data de Nasc : ",0,0,"R",0);

@@ -42,9 +42,9 @@ include(modification("classes/db_custocriteriorateio_classe.php"));
 include(modification("classes/db_custoplanilhaorigem_classe.php"));
 require_once(modification("model/custoPlanilha.model.php"));
 include(modification("dbforms/db_funcoes.php"));
-$aParamKeys = array(
+$aParamKeys = [
                     db_getsession("DB_anousu")
-                   );
+                   ];
 $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
 $iTipoControleCustos = 0; 
 $db_opcao            = 1;

@@ -31,8 +31,8 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("t52_bem");
 $clbens->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if(isset($pesquisa) && ($pesquisa == "true")){
   $clrotulo->label("t52_codcla");

@@ -36,16 +36,16 @@ class ArquivoConfiguracaoTCEAC {
    */
   private static $oInstancia;
 
-  private $aConfiguracoes = array(
-    'documento'      => array( 'file' => ImportacaoArquivoTCEAC::ARQUIVO_DOCUMENTOS, 'label' => "Vinculação de Documentos" ),
-    'recurso'        => array( 'file' => ImportacaoArquivoTCEAC::ARQUIVO_RECURSO, 'label' => "Vinculação de Recursos" ),
-    'planoconta'     => array( 'file' => ImportacaoArquivoTCEAC::ARQUIVO_PLANOCONTA, 'label' => "Vinculação do Plano de Contas" ),
-    'contacorrente'  => array( 'file' => 'config/tce/AC/ContaCorrente.xml', 'label' => "Conta Corrente"),
-    'tipoconta'      => array( 'file' => 'config/tce/AC/TipoConta.xml', 'label' => "Tipo de Conta"),
-    'tipoempenho'    => array( 'file' => 'config/tce/AC/TipoEmpenho.xml', 'label' => "Tipo de Empenho")
-  );
+  private $aConfiguracoes = [
+    'documento'      => [ 'file' => ImportacaoArquivoTCEAC::ARQUIVO_DOCUMENTOS, 'label' => "Vinculação de Documentos" ],
+    'recurso'        => [ 'file' => ImportacaoArquivoTCEAC::ARQUIVO_RECURSO, 'label' => "Vinculação de Recursos" ],
+    'planoconta'     => [ 'file' => ImportacaoArquivoTCEAC::ARQUIVO_PLANOCONTA, 'label' => "Vinculação do Plano de Contas" ],
+    'contacorrente'  => [ 'file' => 'config/tce/AC/ContaCorrente.xml', 'label' => "Conta Corrente"],
+    'tipoconta'      => [ 'file' => 'config/tce/AC/TipoConta.xml', 'label' => "Tipo de Conta"],
+    'tipoempenho'    => [ 'file' => 'config/tce/AC/TipoEmpenho.xml', 'label' => "Tipo de Empenho"]
+  ];
 
-  private $aDados = array();
+  private $aDados = [];
 
   private function __construct() {
 
@@ -86,7 +86,7 @@ class ArquivoConfiguracaoTCEAC {
    * @return integer
    */
   public function getTipoContaPorCodigo($iCodigo) {
-    return isset($this->aDados['tipoconta'][$iCodigo]) ? $this->aDados['tipoconta'][$iCodigo] : null;
+    return $this->aDados['tipoconta'][$iCodigo] ?? null;
   }
 
   /**
@@ -94,7 +94,7 @@ class ArquivoConfiguracaoTCEAC {
    * @return string
    */
   public function getPlanoContaPorCodigo($sCodigo) {
-    return isset($this->aDados['planoconta'][$sCodigo]) ? $this->aDados['planoconta'][$sCodigo] : null;
+    return $this->aDados['planoconta'][$sCodigo] ?? null;
   }
 
   /**
@@ -102,7 +102,7 @@ class ArquivoConfiguracaoTCEAC {
    * @return integer
    */
   public function getTipoEmpenhoPorCodigo($iCodigo) {
-    return isset($this->aDados['tipoempenho'][$iCodigo]) ? $this->aDados['tipoempenho'][$iCodigo] : null;
+    return $this->aDados['tipoempenho'][$iCodigo] ?? null;
   }
 
   /**
@@ -110,7 +110,7 @@ class ArquivoConfiguracaoTCEAC {
    * @return integer
    */
   public function getEventoPorCodigo($iCodigo) {
-    return isset($this->aDados['documento'][$iCodigo]) ? $this->aDados['documento'][$iCodigo] : null;
+    return $this->aDados['documento'][$iCodigo] ?? null;
   }
 
   /**
@@ -118,7 +118,7 @@ class ArquivoConfiguracaoTCEAC {
    * @return mixed
    */
   public function getRecursoPorCodigo($iCodigo) {
-    return isset($this->aDados['recurso'][$iCodigo]) ? $this->aDados['recurso'][$iCodigo] : null;
+    return $this->aDados['recurso'][$iCodigo] ?? null;
   }
 
   /**
@@ -126,7 +126,7 @@ class ArquivoConfiguracaoTCEAC {
    * @return integer
    */
   public function getContaCorrentePorCodigo($iCodigo) {
-    return isset($this->aDados['contacorrente'][$iCodigo]) ? $this->aDados['contacorrente'][$iCodigo] : null;
+    return $this->aDados['contacorrente'][$iCodigo] ?? null;
   }
 
   /**

@@ -115,13 +115,13 @@ class OrcamentoCompra {
    * Fornecedores participantes do orcamento
    * @var CgmJuridico[]|CgmFisico[]
    */
-  private $aFornecedores = array();
+  private $aFornecedores = [];
 
   /**
    * Coleção de item no orçamento
    * @var ItemOrcamento[]
    */
-  private $aItens = array();
+  private $aItens = [];
 
 
   /**

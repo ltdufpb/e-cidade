@@ -34,7 +34,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_liborcamento.php"));
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 $clorcdotacao = new cl_orcdotacao;
 $clorcdotacaocontr = new cl_orcdotacaocontr;
@@ -56,7 +56,7 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
         $result = $clorcparametro->sql_record($clorcparametro->sql_query_file(db_getsession('DB_anousu'), 'o50_subelem'));
         db_fieldsmemory($result, 0);
         if ($o50_subelem == 'f') {
-            $o56_elemento = substr($o56_elemento, 0, 7) . "000000";
+            $o56_elemento = substr((string) $o56_elemento, 0, 7) . "000000";
             $result = $clorcelemento->sql_record($clorcelemento->sql_query_file(null, null, 'o56_codele', 'o56_elemento', " o56_anousu = " . db_getsession("DB_anousu") . " and o56_elemento = '$o56_elemento' "));
         } else {
             $result = $clorcelemento->sql_record($clorcelemento->sql_query_file(null, null, 'o56_codele', '', " o56_anousu = " . db_getsession("DB_anousu") . " and o56_elemento = '$o56_elemento' "));
@@ -149,7 +149,7 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
 </div>
 </html>
 <?php
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     if ($clorcdotacao->erro_status == "0") {
         $clorcdotacao->erro(true, false);
         $db_botao = true;

@@ -40,7 +40,7 @@ class ColunaEstruturalRegistry
     /**
      * @var ColunaEstrutural[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param $key

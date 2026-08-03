@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_diario_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldiario = new cl_diario;
 $cldiario->rotulo->label("ed95_i_codigo");
 $cldiario->rotulo->label("ed95_i_codigo");
@@ -100,9 +100,9 @@ $cldiario->rotulo->label("ed95_i_codigo");
         }else{
            $sql = $cldiario->sql_query("",$campos,"ed95_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed95_i_codigo)){
-          $repassa = array("chave_ed95_i_codigo"=>$chave_ed95_i_codigo,"chave_ed95_i_codigo"=>$chave_ed95_i_codigo);
+          $repassa = ["chave_ed95_i_codigo"=>$chave_ed95_i_codigo,"chave_ed95_i_codigo"=>$chave_ed95_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

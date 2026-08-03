@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE db_versaocpdtarefa
 class cl_db_versaocpdtarefa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db26_sequen = 0; 
-   var $db26_codcpd = 0; 
-   var $db26_tarefa = 0; 
+   public $db26_sequen = 0; 
+   public $db26_codcpd = 0; 
+   public $db26_tarefa = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db26_sequen = int4 = Sequencial 
                  db26_codcpd = int4 = Código da Observação 
                  db26_tarefa = int4 = Codigo da Tarefa 
                  ";
    //funcao construtor da classe 
-   function cl_db_versaocpdtarefa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_versaocpdtarefa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_db_versaocpdtarefa {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db26_sequen = pg_result($result,0,0); 
+       $this->db26_sequen = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_versaocpdtarefa_db26_sequen_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db26_sequen)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db26_sequen)){
          $this->erro_sql = " Campo db26_sequen maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_db_versaocpdtarefa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tarefas das Mensagens ao CPD ($this->db26_sequen) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tarefas das Mensagens ao CPD já Cadastrado";
@@ -166,12 +166,12 @@ class cl_db_versaocpdtarefa {
      $resaco = $this->sql_record($this->sql_query_file($this->db26_sequen));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10643,'$this->db26_sequen','I')");
-       $resac = db_query("insert into db_acount values($acount,1836,10643,'','".AddSlashes(pg_result($resaco,0,'db26_sequen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1836,10641,'','".AddSlashes(pg_result($resaco,0,'db26_codcpd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1836,10642,'','".AddSlashes(pg_result($resaco,0,'db26_tarefa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1836,10643,'','".AddSlashes(pg_fetch_result($resaco,0,'db26_sequen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1836,10641,'','".AddSlashes(pg_fetch_result($resaco,0,'db26_codcpd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1836,10642,'','".AddSlashes(pg_fetch_result($resaco,0,'db26_tarefa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_db_versaocpdtarefa {
       $this->atualizacampos();
      $sql = " update db_versaocpdtarefa set ";
      $virgula = "";
-     if(trim($this->db26_sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db26_sequen"])){ 
+     if(trim((string) $this->db26_sequen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db26_sequen"])){ 
        $sql  .= $virgula." db26_sequen = $this->db26_sequen ";
        $virgula = ",";
-       if(trim($this->db26_sequen) == null ){ 
+       if(trim((string) $this->db26_sequen) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db26_sequen";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_db_versaocpdtarefa {
          return false;
        }
      }
-     if(trim($this->db26_codcpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db26_codcpd"])){ 
+     if(trim((string) $this->db26_codcpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db26_codcpd"])){ 
        $sql  .= $virgula." db26_codcpd = $this->db26_codcpd ";
        $virgula = ",";
-       if(trim($this->db26_codcpd) == null ){ 
+       if(trim((string) $this->db26_codcpd) == null ){ 
          $this->erro_sql = " Campo Código da Observação nao Informado.";
          $this->erro_campo = "db26_codcpd";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_db_versaocpdtarefa {
          return false;
        }
      }
-     if(trim($this->db26_tarefa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db26_tarefa"])){ 
+     if(trim((string) $this->db26_tarefa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db26_tarefa"])){ 
        $sql  .= $virgula." db26_tarefa = $this->db26_tarefa ";
        $virgula = ",";
-       if(trim($this->db26_tarefa) == null ){ 
+       if(trim((string) $this->db26_tarefa) == null ){ 
          $this->erro_sql = " Campo Codigo da Tarefa nao Informado.";
          $this->erro_campo = "db26_tarefa";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_db_versaocpdtarefa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10643,'$this->db26_sequen','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db26_sequen"]))
-           $resac = db_query("insert into db_acount values($acount,1836,10643,'".AddSlashes(pg_result($resaco,$conresaco,'db26_sequen'))."','$this->db26_sequen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1836,10643,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db26_sequen'))."','$this->db26_sequen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db26_codcpd"]))
-           $resac = db_query("insert into db_acount values($acount,1836,10641,'".AddSlashes(pg_result($resaco,$conresaco,'db26_codcpd'))."','$this->db26_codcpd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1836,10641,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db26_codcpd'))."','$this->db26_codcpd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db26_tarefa"]))
-           $resac = db_query("insert into db_acount values($acount,1836,10642,'".AddSlashes(pg_result($resaco,$conresaco,'db26_tarefa'))."','$this->db26_tarefa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1836,10642,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db26_tarefa'))."','$this->db26_tarefa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_db_versaocpdtarefa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10643,'$db26_sequen','E')");
-         $resac = db_query("insert into db_acount values($acount,1836,10643,'','".AddSlashes(pg_result($resaco,$iresaco,'db26_sequen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1836,10641,'','".AddSlashes(pg_result($resaco,$iresaco,'db26_codcpd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1836,10642,'','".AddSlashes(pg_result($resaco,$iresaco,'db26_tarefa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1836,10643,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db26_sequen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1836,10641,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db26_codcpd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1836,10642,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db26_tarefa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_versaocpdtarefa
@@ -345,7 +345,7 @@ class cl_db_versaocpdtarefa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_versaocpdtarefa";

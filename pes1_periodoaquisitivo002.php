@@ -51,9 +51,9 @@ $rh109_periodoaquisitivofinal_mes   = "";
 $rh109_periodoaquisitivofinal_ano   = "";
 
 $oRequest         = db_utils::postMemory($_REQUEST);
-$rh109_regist     = isset($oRequest->rh109_regist)     ? $oRequest->rh109_regist     : null;
-$rh109_sequencial = isset($oRequest->rh109_sequencial) ? $oRequest->rh109_sequencial : null;
-$sOpcao           = isset($oRequest->opcao)            ? $oRequest->opcao            : null;
+$rh109_regist     = $oRequest->rh109_regist ?? null;
+$rh109_sequencial = $oRequest->rh109_sequencial ?? null;
+$sOpcao           = $oRequest->opcao ?? null;
 
 
 if (isset($processar) || isset($incluir)) {
@@ -228,7 +228,7 @@ if (isset($processar) || isset($incluir)) {
                       <td>
                         <?php 
                          
-                          $aDiasDeDireito = array('f' => 'Não', 't' => 'Sim');
+                          $aDiasDeDireito = ['f' => 'Não', 't' => 'Sim'];
                           
                           db_select('rh109_perdeudireitoferias', $aDiasDeDireito, true, $db_opcao, "");
                         ?>
@@ -250,7 +250,7 @@ if (isset($processar) || isset($incluir)) {
 							      	
 							           if (!empty($oRequest->rh109_regist)){
 							         
-							             $chavepri= array("rh109_sequencial" => "");
+							             $chavepri= ["rh109_sequencial" => ""];
 							             
 							             $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 							             
@@ -264,7 +264,7 @@ if (isset($processar) || isset($incluir)) {
                            $sWhere  .= " and not exists ( select 1 from rhferiasperiodo where rh109_sequencial = rh110_rhferias ) ";
 
 													 if (!empty($rh109_sequencial)) {
-                             $chavepri= array("rh109_sequencial"=> $rh109_sequencial);
+                             $chavepri= ["rh109_sequencial"=> $rh109_sequencial];
 													 }
 
                            if (!empty($oRequest->rh109_sequencial)) {                            
@@ -338,7 +338,7 @@ if (isset($processar) || isset($incluir)) {
        js_divCarregando(msgDiv,'msgBox');
        
        <?php
-         echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?rh109_sequencial='+chave";
+         echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?rh109_sequencial='+chave";
        ?>
      }
      

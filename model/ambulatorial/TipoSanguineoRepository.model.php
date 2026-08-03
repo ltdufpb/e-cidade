@@ -34,7 +34,7 @@ class TipoSanguineoRepository {
    * Array com os tipos sanguineos
    * @var array
    */
-  private $aTipoSanguineo = array();
+  private $aTipoSanguineo = [];
 
   /**
    * Instancia da classe

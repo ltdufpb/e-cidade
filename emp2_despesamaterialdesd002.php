@@ -37,7 +37,7 @@ $clrotulo = new rotulocampo;
 $clempautoriza->rotulo->label();
 $clrotulo->label("descrdepto");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 // WHEREFOR é para se vier setada a opção para IMPRIMIR MATERIAIS / SERVIÇOS
 $dbwherefor = "";
@@ -53,7 +53,7 @@ $and     = " and ";
 // o fornecedor escolhido
 if(trim($fornecedores)!=""){
   $notin = "";
-  if(trim($mostrafornec)=="sem"){
+  if(trim((string) $mostrafornec)=="sem"){
   	$notin = " not ";
   }
   $dbwherefor .= $and." e54_numcgm ".$notin." in ($fornecedores) ";
@@ -63,9 +63,9 @@ if(trim($fornecedores)!=""){
 
 // Caso tenha escolhido algum tipo de compra ele testa se o usuário quer totalização sem o tipo de compra escolhido
 // ou com o fornecedor escolhido
-if(trim($tipodecompra)!=""){
+if(trim((string) $tipodecompra)!=""){
   $notin = "";
-  if(trim($mostracompra)=="sem"){
+  if(trim((string) $mostracompra)=="sem"){
   	$notin = " not ";
   }
   $dbwherefor .= $and." e54_codcom ".$notin." in ($tipodecompra) ";
@@ -74,7 +74,7 @@ if(trim($tipodecompra)!=""){
 }
 
 // Instituições escolhidas na aba FILTRO
-if(trim($instit)!=""){
+if(trim((string) $instit)!=""){
   $dbwherefor .= $and." e54_instit in ($instit) ";
   $dbwhere .= $and." e54_instit in ($instit) ";
   $and = " and ";
@@ -83,13 +83,13 @@ if(trim($instit)!=""){
 // Unidades escolhidas na aba FILTRO
 // ** Como o campo com as unidades vem separadas por um '_' informando:
 //   ÓRGAO_UNIDADE, o filtro separa o órgao da unidade, colocando os órgãos no select. OBSERVAR MAIS ABAIXO
-if(trim($unidade)!=""){
-  $arr_unidades = split(",",$unidade);
+if(trim((string) $unidade)!=""){
+  $arr_unidades = preg_split("#,#m",(string) $unidade);
   $unidade      = "";
   $nsorgao      = "";
   $vir          = "";
   for($i=0;$i<count($arr_unidades);$i++){
-  	$orgunid  = split("_",$arr_unidades[$i]);
+  	$orgunid  = preg_split("#_#m",(string) $arr_unidades[$i]);
   	$nsorgao .= $vir.$orgunid[0];
   	$unidade .= $vir.$orgunid[1];
   	$vir      = ",";
@@ -101,9 +101,9 @@ if(trim($unidade)!=""){
 
 // $orgao é a variável contendo os órgãos escolhidos pelo usuário na aba FILTRO e $nsorgao, é a variável que
 // contém os órgãos das unidades selecionadas pelos usuários (CASO ALGUMA TENHA SIDO SELECIONADA)
-if(trim($orgao)!="" || isset($nsorgao)){
+if(trim((string) $orgao)!="" || isset($nsorgao)){
   if(isset($nsorgao)){
-  	if(trim($orgao)!=""){
+  	if(trim((string) $orgao)!=""){
   	  $orgao .= ",";
   	}
     $orgao .= $nsorgao;
@@ -114,56 +114,56 @@ if(trim($orgao)!="" || isset($nsorgao)){
 }
 
 // Funções escolhidas pelo usuário na aba FILTRO
-if(trim($funcao)!=""){
+if(trim((string) $funcao)!=""){
   $dbwherefor .= $and." o58_funcao in ($funcao) ";
   $dbwhere .= $and." o58_funcao in ($funcao) ";
   $and = " and ";
 }
 
 // Sub-funções escolhidas pelo usuário na aba FILTRO
-if(trim($subfuncao)!=""){
+if(trim((string) $subfuncao)!=""){
   $dbwherefor .= $and." o58_subfuncao in ($subfuncao) ";
   $dbwhere .= $and." o58_subfuncao in ($subfuncao) ";
   $and = " and ";
 }
 
 // Programas escolhidos pelo usuário na aba FILTRO
-if(trim($programa)!=""){
+if(trim((string) $programa)!=""){
   $dbwherefor .= $and." o58_programa in ($programa) ";
   $dbwhere .= $and." o58_programa in ($programa) ";
   $and = " and ";
 }
 
 // Proj/Ativ escolhidos pelo usuário na aba FILTRO
-if(trim($projativ)!=""){
+if(trim((string) $projativ)!=""){
   $dbwherefor .= $and." o58_projativ in ($projativ) ";
   $dbwhere .= $and." o58_projativ in ($projativ) ";
   $and = " and ";
 }
 
 // Elementos escolhidos pelo usuário na aba FILTRO
-if(trim($ele)!=""){
+if(trim((string) $ele)!=""){
   $dbwherefor .= $and." o58_codele in ($ele) ";
   $dbwhere .= $and." o58_codele in ($ele) ";
   $and = " and ";
 }
 
 // Recursos escolhidos pelo usuário na aba FILTRO
-if(trim($recurso)!=""){
+if(trim((string) $recurso)!=""){
   $dbwherefor .= $and." o58_codigo in ($recurso) ";
   $dbwhere .= $and." o58_codigo in ($recurso) ";
   $and = " and ";
 }
 
 // Departamentos escolhidos pelo usuário na aba FILTRO
-if(trim($depart)!=""){
+if(trim((string) $depart)!=""){
   $dbwherefor .= $and." e54_depto in ($depart) ";
   $dbwhere .= $and." e54_depto in ($depart) ";
   $and = " and ";
 }
 
 // Usuários escolhidos pelo usuário na aba FILTRO
-if(trim($usuario)!=""){
+if(trim((string) $usuario)!=""){
   $dbwherefor .= $and." e54_login in ($usuario) ";
   $dbwhere .= $and." e54_login in ($usuario) ";
   $and = " and ";
@@ -175,14 +175,14 @@ $dbwheredata2 = "";
 $periodp = "";
 
 // Período de emissão das autorizações de empenho
-if(trim($data1_dia)!="" && trim($data1_mes)!="" && trim($data1_ano)!=""){
+if(trim((string) $data1_dia)!="" && trim($data1_mes)!="" && trim((string) $data1_ano)!=""){
   $periodp = "Período posterior a ". $data1_dia.'/'.$data1_mes.'/'.$data1_ano;
   $data1 = $data1_ano.'-'.$data1_mes.'-'.$data1_dia;
   $dbwheredata1 = " e54_emiss >= '".$data1."'";
   $dbwheredata2 = $dbwheredata1;
 }
 
-if(trim($data11_dia)!="" && trim($data11_mes)!="" && trim($data11_ano)!=""){
+if(trim((string) $data11_dia)!="" && trim($data11_mes)!="" && trim((string) $data11_ano)!=""){
   $data11 = $data11_ano.'-'.$data11_mes.'-'.$data11_dia;
   if($dbwheredata1!=""){
     $periodp = "Período entre ".$data1_dia.'/'.$data1_mes.'/'.$data1_ano." e ".$data11_dia.'/'.$data11_mes.'/'.$data11_ano;
@@ -365,20 +365,20 @@ if(1==2){
 }
 
 // Arrays auxiliares
-$arr_index  = Array();
-$arr_teste  = Array();
+$arr_index  = [];
+$arr_teste  = [];
 $index = 0;            // Variável que testa a quantidade de elementos
 
 //$arr_autori = Array();
-$arr_empenh = Array();
-$arr_desdob = Array();
+$arr_empenh = [];
+$arr_desdob = [];
 
-$arr_index2 = Array();
-$arr_teste2 = Array();
+$arr_index2 = [];
+$arr_teste2 = [];
 $index2 = 0;
 
-$arr_index3 = Array();
-$arr_teste3 = Array();
+$arr_index3 = [];
+$arr_teste3 = [];
 $index3 = 0;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -714,7 +714,7 @@ for($i=0;$i<$index;$i++){
       }
 
       // Busca o ELEMENTO E DESDOBRAMENTO corrente
-      $testaelemento = split("_",$arr_index2["$i2"]);
+      $testaelemento = preg_split("#_#m",$arr_index2["$i2"]);
 
       // Posição 0 - Elemento e posição 1 - Desdobramento
       $mostraelemento = $testaelemento["0"];

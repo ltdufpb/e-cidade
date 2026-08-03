@@ -15,11 +15,9 @@ class RastreabilidadeMaterialFactory
      */
     public static function getService($tipo)
     {
-        switch ($tipo) {
-            case self::MEDICAMENTO:
-                return new RastreabilidadeMedicamentoService;
-            default:
-                return new RastreabilidadeMaterialService;
-        }
+        return match ($tipo) {
+            self::MEDICAMENTO => new RastreabilidadeMedicamentoService,
+            default => new RastreabilidadeMaterialService,
+        };
     }
 }

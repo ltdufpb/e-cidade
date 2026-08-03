@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_liclicitatipoevento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clliclicitatipoevento = new cl_liclicitatipoevento;
 $clliclicitatipoevento->rotulo->label("l45_sequencial");
 $clliclicitatipoevento->rotulo->label("l45_descricao");
@@ -52,9 +52,9 @@ $clliclicitatipoevento->rotulo->label("l45_descricao");
         }else{
            $sql = $clliclicitatipoevento->sql_query("",$campos,"l45_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_l45_descricao)){
-          $repassa = array("chave_l45_sequencial"=>$chave_l45_sequencial,"chave_l45_descricao"=>$chave_l45_descricao);
+          $repassa = ["chave_l45_sequencial"=>$chave_l45_sequencial,"chave_l45_descricao"=>$chave_l45_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

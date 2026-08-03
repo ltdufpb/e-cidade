@@ -77,16 +77,16 @@ $where = " 1 = 1 ";
     <td colspan=2>
 	  <?php
 
-     if(!(substr($i02_data,4,1) =='-') && !(substr($i02_data,7,1)=='-')) {
+     if(!(substr((string) $i02_data,4,1) =='-') && !(substr((string) $i02_data,7,1)=='-')) {
 
-		  	 $data = split("/",$i02_data);
+		  	 $data = preg_split("#\\/#m",(string) $i02_data);
      	   $i02_data_dia = @$data[0];
   		   $i02_data_mes = @$data[1];
 	  	   $i02_data_ano = @$data[2];
 			   $i02_data     = $i02_data_ano."-".$i02_data_mes."-".$i02_data_dia;
-		 }else if(substr($i02_data,4,1)=='-' && substr($i02_data,7,1)=='-') {
+		 }else if(substr((string) $i02_data,4,1)=='-' && substr((string) $i02_data,7,1)=='-') {
 
-		  	 $data = split("-",$i02_data);
+		  	 $data = preg_split("#\\-#m",(string) $i02_data);
 				 $i02_data_dia = @$data[1];
   		   $i02_data_mes = @$data[2];
 	  	   $i02_data_ano = @$data[0];
@@ -101,16 +101,15 @@ $where = " 1 = 1 ";
 	   echo "<b> Ano : </b>";
 	   if (isset($i02_codigo)){
 
-           $i01_codigo = trim($i01_codigo);
+           $i01_codigo = trim((string) $i01_codigo);
            $result1    = $clinfla->sql_record($clinfla->sql_query("","","distinct substr(i02_data,1,4) as exerc ","exerc"," i02_codigo = '$i02_codigo'"));
-           $xexerc     = array();
+           $xexerc     = [];
            for($i=0;$i < $clinfla->numrows;$i++){
                db_fieldsmemory($result1,$i);
                $xexerc[$exerc] = $exerc;
            }
            if(!isset($exercicio)){
-             reset($xexerc);
-             $exercicio = key($xexerc) ;
+             $exercicio = array_key_first($xexerc) ;
            }
            db_select('exercicio',$xexerc,true,2," onchange='js_location();'");
        }
@@ -187,7 +186,7 @@ $where = " 1 = 1 ";
      $where .= " and extract(year from i02_data) = $exercicio ";
    }
 
-   $chavepri = array("i02_codigo"=>@$i02_codigo,"i02_data"=>@$i02_data,"i02_valor"=>@$i02_valor);
+   $chavepri = ["i02_codigo"=>@$i02_codigo,"i02_data"=>@$i02_data,"i02_valor"=>@$i02_valor];
 	 $cliframe_alterar_excluir->chavepri 	    = $chavepri;
 	 $cliframe_alterar_excluir->sql      	    = $clinfla->sql_query_file($i02_codigo,"","i02_codigo,to_char(i02_data,'dd/mm/YYYY') as i02_data,i02_valor::float","i02_data",$where);
 	 $cliframe_alterar_excluir->campos   	    = "i02_codigo,i02_data,i02_valor";

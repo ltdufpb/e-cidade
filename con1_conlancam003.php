@@ -31,12 +31,12 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_conlancam_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clconlancam = new cl_conlancam;
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $db_opcao = 3;
   $clconlancam->excluir($c70_codlan);
@@ -82,7 +82,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clconlancam->erro_status=="0"){
     $clconlancam->erro(true,false);
   }else{

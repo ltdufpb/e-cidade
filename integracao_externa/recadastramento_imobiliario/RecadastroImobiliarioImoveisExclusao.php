@@ -170,7 +170,7 @@ class RecadastroImobiliarioImoveisExclusao implements RecadastroImobiliarioImove
     }
 
 
-    $oIptuConstr          = db_utils::fieldsMemory($rsPosicaoFiscal13, 0);
+    $oIptuConstr          = (new db_utils())->fieldsMemory($rsPosicaoFiscal13, 0);
     $iMatriculaConstrucao = $oIptuConstr->j39_matric;
     $iCodigoConstrucao    = $oIptuConstr->j39_idcons;
 
@@ -195,7 +195,7 @@ class RecadastroImobiliarioImoveisExclusao implements RecadastroImobiliarioImove
    */
   public function registraLog() {
 
-    $this->sMensagemLog = pg_escape_string(Conexao::getInstancia()->getConexao(), $this->sMensagemLog);
+    $this->sMensagemLog = pg_escape_string(Conexao::getInstancia()->getConexao(), (string) $this->sMensagemLog);
 
     $sUpdateRecadastroImobiliarioImoveis  = "update recadastroimobiliarioimoveis                 ";
     $sUpdateRecadastroImobiliarioImoveis .= "   set ie28_processado  = 't',                      ";
@@ -306,10 +306,10 @@ class RecadastroImobiliarioImoveisExclusao implements RecadastroImobiliarioImove
      *       |+------------------> Fixo "2"
      *       +-------------------> Distrito Novo do Imóvel
      */
-    $sCodigoReferenciaAnterior  = str_pad( trim($this->oRegistroArquivo->sSetorCartograficoAnterior ), 4,"0", STR_PAD_LEFT );  
-    $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sQuadraCartograficaAnterior), 4,"0", STR_PAD_LEFT );
-    $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sLoteCartograficoAnterior  ), 4,"0", STR_PAD_LEFT );
-    $sCodigoReferenciaAnterior .= str_pad( trim($this->oRegistroArquivo->sUnidadeImobiliariaAnterior), 3,"0", STR_PAD_LEFT );
+    $sCodigoReferenciaAnterior  = str_pad( trim((string) $this->oRegistroArquivo->sSetorCartograficoAnterior ), 4,"0", STR_PAD_LEFT );  
+    $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sQuadraCartograficaAnterior), 4,"0", STR_PAD_LEFT );
+    $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sLoteCartograficoAnterior  ), 4,"0", STR_PAD_LEFT );
+    $sCodigoReferenciaAnterior .= str_pad( trim((string) $this->oRegistroArquivo->sUnidadeImobiliariaAnterior), 3,"0", STR_PAD_LEFT );
     return $sCodigoReferenciaAnterior;
   }
 

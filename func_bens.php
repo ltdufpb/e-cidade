@@ -54,7 +54,7 @@ $oPost = db_utils::postMemory($_POST);
 $lConsultaBens = !empty($oGet->lConsultaBens) ? true : false;
 $sStyleDisplay = $lConsultaBens ? "" : "display:none;";
 
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $result_t06_codcla = $clcfpatri->sql_record($clcfpatri->sql_query_file(null, "t06_codcla"));
 if ($clcfpatri->numrows > 0) {
@@ -136,7 +136,7 @@ define("SITUACAO_BAIXADO", "3");
           </td>
           <td>
               <?php
-              $aSituacao = array(SITUACAO_TODOS => 'Todos', SITUACAO_ATIVO => 'Ativos', SITUACAO_BAIXADO => 'Baixados');
+              $aSituacao = [SITUACAO_TODOS => 'Todos', SITUACAO_ATIVO => 'Ativos', SITUACAO_BAIXADO => 'Baixados'];
               db_select('situacao', $aSituacao, 1, 1);
               ?>
           </td>
@@ -303,7 +303,7 @@ define("SITUACAO_BAIXADO", "3");
     } else {
         if ($pesquisa_chave != null && $pesquisa_chave != "") {
 
-            if (isset($chave_coddepto) && (trim($chave_descrdepto) != "")) {
+            if (isset($chave_coddepto) && (trim((string) $chave_descrdepto) != "")) {
 
                 $sql = $clbens->{$sMetodoQuery}("", $campos, "",
                   "t52_depart = $pesquisa_chave $where_instit $where_baixado");

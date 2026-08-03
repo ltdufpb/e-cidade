@@ -78,7 +78,7 @@ if ( isset($oPost->alterar) ) {
 			for ($iInd = 0 ; $iInd < $clrecreparcarretipo->numrows; $iInd++) {
 				
 				$iK72_sequencial = db_utils::fieldsMemory($rsRecReparcArretipo,$iInd)->k72_sequencial;
-				if (trim($iK72_sequencial) == "" && $iK72_sequencial == null) {
+				if (trim((string) $iK72_sequencial) == "" && $iK72_sequencial == null) {
 					
 					$lSqlErro = true;
 				}

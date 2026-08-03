@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_atendrequi_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatendrequi = new cl_atendrequi;
 $clrotulo     = new rotulocampo;
 
@@ -98,16 +98,16 @@ $clrotulo->label("m40_codigo");
         }
 
         $campos = "distinct ".$campos;
-        $aWhere = array();
+        $aWhere = [];
         if (!empty($oGet->devolucao) && $oGet->devolucao) {
 
           $iDepartamentoSessao = db_getsession('DB_coddepto');
-          $aWhere = array(
+          $aWhere = [
             'db_depart.instit = '.db_getsession('DB_instit'),
             "( atendrequi.m42_depto = {$iDepartamentoSessao} or matrequi.m40_almox = (select m91_codigo from db_almox where m91_depto = {$iDepartamentoSessao}) )",
             "extract(year from m40_data) = ".db_getsession('DB_anousu')
 
-          );
+          ];
         }
 
         $sql = $clatendrequi->sql_query_requi(null, $campos, "m42_codigo desc",implode(' and ', $aWhere));

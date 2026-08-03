@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_exames_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsau_exames = new cl_sau_exames;
 $clsau_exames->rotulo->label("s108_i_codigo");
@@ -100,9 +100,9 @@ $clsau_exames->rotulo->label("s108_c_exame");
         }else{
            $sql = $clsau_exames->sql_query("",$campos,"s108_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s108_i_codigo)){
-          $repassa = array("chave_s108_i_codigo"=>$chave_s108_i_codigo,"chave_s108_i_codigo"=>$chave_s108_i_codigo);
+          $repassa = ["chave_s108_i_codigo"=>$chave_s108_i_codigo,"chave_s108_i_codigo"=>$chave_s108_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

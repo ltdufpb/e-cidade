@@ -57,7 +57,7 @@ if ($iTipoInstituicao == 6 || $iTipoInstituicao == 5) {
 }
 
 $where = " ";
-if(trim($oGet->selecao) != ""){
+if(trim((string) $oGet->selecao) != ""){
   $result_selecao = $clselecao->sql_record($clselecao->sql_query_file($oGet->selecao,db_getsession("DB_instit")));
   if($clselecao->numrows > 0){
     db_fieldsmemory($result_selecao, 0);
@@ -176,15 +176,15 @@ if($codreg != ''){
  * opcoes colocadas no array $aFolhas
  */
 
-$aDadosPrev = Array();
+$aDadosPrev = [];
 if ($tfol == 'todas') {
-  $aFolhas = array ('r14',
+  $aFolhas =  ['r14',
                     'r48',
                     'r35',
                     'r20'  
-  );
+  ];
 } else {
-  $aFolhas = array ($tfol);
+  $aFolhas =  [$tfol];
 }
 
 /**
@@ -245,7 +245,7 @@ if ( $filtro == 0 || $filtro == 1 ) {
 
 
 
-    $xxnum = pg_numrows($rsDadosPrev);
+    $xxnum = pg_num_rows($rsDadosPrev);
     
     /* 
      * T.42515
@@ -387,7 +387,7 @@ if($tfol == 'r14'){
 $head6 .= "    CÁLCULO: ";
 $head6 .= ($calc==1)?"Com Cálculo":($calc==2?"Sem Cálculo":"Todos");
 
-$head3 = "RELATÓRIO ".strtoupper($r33_nome);
+$head3 = "RELATÓRIO ".strtoupper((string) $r33_nome);
 $head5 = "PATRONAL: ".$r33_ppatro."%";
 $head7 = "PERÍODO: ".$mes." / ".$ano;
 $head8 = $headinfo;

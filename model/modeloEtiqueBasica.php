@@ -30,9 +30,6 @@ abstract class modeloEtiquetaBasica {
 
 
 	protected  $oImpressora;
-	private    $sPorta;
-	private    $sIp;
-	private    $sModelo;
 
   /**
    * Classe que implementa a estrutura basica do modelo de etiqueta
@@ -40,11 +37,8 @@ abstract class modeloEtiquetaBasica {
    * @param string com a porta a ser usada $sPorta
    * @param string com o modelo da impressora $sModelo
    */
-  function __construct($sIp,$sPorta,$sModelo) {
+  function __construct(private $sIp,private $sPorta,private $sModelo) {
 
-    $this->sIp         = $sIp;
-    $this->sPorta      = $sPorta;
-    $this->sModelo     = $sModelo;
     $this->oImpressora = null;
 
     switch ($this->sModelo){

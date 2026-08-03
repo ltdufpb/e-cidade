@@ -34,7 +34,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clturma = new cl_turma;
 $clserie = new cl_serie;
@@ -73,7 +73,7 @@ db_fieldsmemory($result2, 0);
             </select>
         </td>
         <td>
-            <input id="iMatricula" name="iMatricula" type="hidden" value="<?= isset($matricula) ? $matricula : ''; ?>"/>
+            <input id="iMatricula" name="iMatricula" type="hidden" value="<?= $matricula ?? ''; ?>"/>
         </td>
     </tr>
     <tr>
@@ -85,7 +85,7 @@ db_fieldsmemory($result2, 0);
                 $oMatricula = MatriculaRepository::getMatriculaByCodigo($matricula);
                 $aProgressoes = $oMatricula->getAluno()->getProgressaoParcial();
 
-                $aEtapasProgressao = array();
+                $aEtapasProgressao = [];
 
                 foreach ($aProgressoes as $oProgressao) {
                     $aEtapasProgressao[] = $oProgressao->getEtapa()->getCodigo();
@@ -124,16 +124,16 @@ db_fieldsmemory($result2, 0);
               fc_codetapaturma(ed57_i_codigo) as db_codetapa
             ";
 
-            $repassa = array();
+            $repassa = [];
             if (isset($chave_ed217_i_codigo)) {
-                $repassa = array("ensinos" => $ensinos);
+                $repassa = ["ensinos" => $ensinos];
             }
 
-            $where = array(
+            $where = [
                 "ed57_i_escola = {$escola}",
                 "ed59_c_encerrada = 'N'",
                 "ed223_i_serie in ({$seriesequivalentes})"
-            );
+            ];
 
             if (isset($turmasprogressao) && $turmasprogressao == 'f') {
                 $where[] = "ed57_i_tipoturma <> 6";

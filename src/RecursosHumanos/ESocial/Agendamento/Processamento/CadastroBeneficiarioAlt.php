@@ -47,11 +47,6 @@ class CadastroBeneficiarioAlt extends ProcessamentoAbstract implements Processam
     /**
      * @var
      */
-    private $cgm;
-
-    /**
-     * @var
-     */
     private $ano;
 
     /**
@@ -64,9 +59,13 @@ class CadastroBeneficiarioAlt extends ProcessamentoAbstract implements Processam
      *
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $cgm
+    )
     {
-        $this->cgm = $cgm;
     }
 
         /**

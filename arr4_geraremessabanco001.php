@@ -35,8 +35,8 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $instit = db_getsession("DB_instit");
 ?>

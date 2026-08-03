@@ -54,8 +54,8 @@ $sWhereValor = '';
 
 //
 
-$sDataInicial = $oGet->dtInicial ? implode("-", array_reverse(explode("/", $oGet->dtInicial))) : '';
-$sDataFinal = $oGet->dtFinal ? implode("-", array_reverse(explode("/", $oGet->dtFinal))) : '';
+$sDataInicial = $oGet->dtInicial ? implode("-", array_reverse(explode("/", (string) $oGet->dtInicial))) : '';
+$sDataFinal = $oGet->dtFinal ? implode("-", array_reverse(explode("/", (string) $oGet->dtFinal))) : '';
 
 
 if ($sDataInicial && $sDataFinal) {
@@ -166,12 +166,12 @@ if ($oGet->lImprimeValorAquisicao == "t" && $oGet->filtroColunas == "1") {
 /**
  * Filtra o SQL por departamentos divisões
  */
-if (trim($oGet->sDepartamentos) != "") {
+if (trim((string) $oGet->sDepartamentos) != "") {
     $sWhereDivisao .= "and db_depart.instit = {$iInstituicaoSessao}";
 
    // $aWhereParametros[] = "t30_depto in({$oGet->sDepartamentos})";
 
-    if (trim($oGet->sDivisoes) != "") {
+    if (trim((string) $oGet->sDivisoes) != "") {
         $aWhereParametros[] = "t33_divisao in ({$oGet->sDivisoes})";
 
         if ($oGet->lUsarDivisao) {
@@ -197,7 +197,7 @@ if ($oDaoDbDepart->numrows == 0) {
 /**
  * Classificação
  */
-if (trim($oGet->sClabens) != "") {
+if (trim((string) $oGet->sClabens) != "") {
     $aClabens = explode(',', $sClabens);
     $sClassificacao = '';
 
@@ -208,7 +208,7 @@ if (trim($oGet->sClabens) != "") {
     $aWhereParametros[] = "t64_class IN ({$sClassificacao})";
 }
 
-if (trim($oGet->sOrgaos) != '') {
+if (trim((string) $oGet->sOrgaos) != '') {
     $sJoinOrgao = "INNER JOIN db_departorg ON db01_coddepto = db_depart.coddepto AND db01_anousu = {$iAnoUsoSessao}";
     $aWhereParametros[] = "db01_orgao IN ({$oGet->sOrgaos}) AND db01_anousu = {$iAnoUsoSessao}";
 }
@@ -216,13 +216,13 @@ if (trim($oGet->sOrgaos) != '') {
 /**
  * Bens
  */
-if (trim($oGet->sBens) != "") {
+if (trim((string) $oGet->sBens) != "") {
     $aWhereParametros[] = "t52_bem in ({$oGet->sBens})";
 }
 /**
  * Situação dos Bens
  */
-if (trim($oGet->sSituacaoBens) != "") {
+if (trim((string) $oGet->sSituacaoBens) != "") {
     $sSqlSituaBens = "(select t56_situac ";
     $sSqlSituaBens .= "   from histbem ";
     $sSqlSituaBens .= "  where t56_codbem = t52_bem";
@@ -235,7 +235,7 @@ if (trim($oGet->sSituacaoBens) != "") {
 /**
  * Contas Estruturais
  */
-if (trim($oGet->sContasEstruturais) != "") {
+if (trim((string) $oGet->sContasEstruturais) != "") {
     $aWhereParametros[] = "c60_codcon in ({$oGet->sContasEstruturais})";
 
     $oDaoConplano = new cl_conplano();
@@ -255,25 +255,25 @@ if (trim($oGet->sContasEstruturais) != "") {
  * Configurações da data de aquisição
  */
 
-if (trim($oGet->dtInicial) != "" && trim($oGet->dtFinal) == "") {
-    $dtInicial = implode("-", array_reverse(explode("/", $oGet->dtInicial)));
+if (trim((string) $oGet->dtInicial) != "" && trim((string) $oGet->dtFinal) == "") {
+    $dtInicial = implode("-", array_reverse(explode("/", (string) $oGet->dtInicial)));
     if($tipoData == "1"){
         $aWhereParametros[] = "t52_dtaqu >= cast('{$dtInicial}' as date)";
     } else {
         $aWhereParametros[] = "t52_dtinclusao >= cast('{$dtInicial}' as date)";
     }
 } else {
-    if (trim($oGet->dtInicial) == "" && trim($oGet->dtFinal) != "") {
-        $dtFinal = implode("-", array_reverse(explode("/", $oGet->dtFinal)));
+    if (trim((string) $oGet->dtInicial) == "" && trim((string) $oGet->dtFinal) != "") {
+        $dtFinal = implode("-", array_reverse(explode("/", (string) $oGet->dtFinal)));
         if($tipoData == "1"){
             $aWhereParametros[] = "t52_dtaqu <= cast('{$dtFinal}' as date)";
         } else {
             $aWhereParametros[] = "t52_dtinclusao <= cast('{$dtFinal}' as date)";
         }
     } else {
-        if (trim($oGet->dtInicial) != "" && trim($oGet->dtFinal) != "") {
-            $dtInicial = implode("-", array_reverse(explode("/", $oGet->dtInicial)));
-            $dtFinal = implode("-", array_reverse(explode("/", $oGet->dtFinal)));
+        if (trim((string) $oGet->dtInicial) != "" && trim((string) $oGet->dtFinal) != "") {
+            $dtInicial = implode("-", array_reverse(explode("/", (string) $oGet->dtInicial)));
+            $dtFinal = implode("-", array_reverse(explode("/", (string) $oGet->dtFinal)));
             if($tipoData == "1"){
                 $aWhereParametros[] = "t52_dtaqu between cast('{$dtInicial}' as date) and cast('{$dtFinal}' as date)";
             } else {
@@ -285,7 +285,7 @@ if (trim($oGet->dtInicial) != "" && trim($oGet->dtFinal) == "") {
 /**
  * Descrição do Bem
  */
-if (trim($oGet->sDescricaoBem) != "") {
+if (trim((string) $oGet->sDescricaoBem) != "") {
     $aWhereParametros[] = "t52_descr ilike '%{$oGet->sDescricaoBem}%'";
 }
 
@@ -293,27 +293,11 @@ if (trim($oGet->sDescricaoBem) != "") {
  * Configura variável que deverá ordenar os bens
  */
 $sOrdemBuscaBens = null;
-switch ($oGet->iOrdem) {
-    /*
-     * Placa
-     */
-    case "1":
-        $sOrdemBuscaBens = "t64_class, t52_ident";
-        break;
-
-    /*
-     * Descrição
-     */
-    case "3":
-        $sOrdemBuscaBens = "t52_descr";
-        break;
-
-    /*
-     * Ordem Default
-     */
-    default:
-        $sOrdemBuscaBens = "t52_bem";
-}
+$sOrdemBuscaBens = match ($oGet->iOrdem) {
+    "1" => "t64_class, t52_ident",
+    "3" => "t52_descr",
+    default => "t52_bem",
+};
 
 /**
  * Tratamento da propriedade iConvenio
@@ -344,17 +328,17 @@ switch ($oGet->iConvenio) {
 $dtBaixaInicial = "";
 $dtBaixaFinal = "";
 $baixaini = "";
-if (trim($oGet->dtBaixaInicial) != "" && trim($oGet->dtBaixaFinal) != "") {
-    $dtBaixaInicial = implode("-", array_reverse(explode("/", $oGet->dtBaixaInicial)));
-    $dtBaixaFinal = implode("-", array_reverse(explode("/", $oGet->dtBaixaFinal)));
+if (trim((string) $oGet->dtBaixaInicial) != "" && trim((string) $oGet->dtBaixaFinal) != "") {
+    $dtBaixaInicial = implode("-", array_reverse(explode("/", (string) $oGet->dtBaixaInicial)));
+    $dtBaixaFinal = implode("-", array_reverse(explode("/", (string) $oGet->dtBaixaFinal)));
 } else {
-    if (trim($oGet->dtBaixaInicial) != "" && trim($oGet->dtBaixaFinal) == "") {
-        $dtBaixaInicial = implode("-", array_reverse(explode("/", $oGet->dtBaixaInicial)));
+    if (trim((string) $oGet->dtBaixaInicial) != "" && trim((string) $oGet->dtBaixaFinal) == "") {
+        $dtBaixaInicial = implode("-", array_reverse(explode("/", (string) $oGet->dtBaixaInicial)));
         $dtBaixaFinal = date("Y-m-d", $iAnoUsoSessao);
     } else {
-        if (trim($oGet->dtBaixaInicial) == "" && trim($oGet->dtBaixaFinal) != "") {
+        if (trim((string) $oGet->dtBaixaInicial) == "" && trim((string) $oGet->dtBaixaFinal) != "") {
             $dtBaixaInicial = date("Y-m-d", $iAnoUsoSessao);
-            $dtBaixaFinal = implode("-", array_reverse(explode("/", $oGet->dtBaixaFinal)));
+            $dtBaixaFinal = implode("-", array_reverse(explode("/", (string) $oGet->dtBaixaFinal)));
         }
     }
 }
@@ -536,7 +520,7 @@ while ($row = pg_fetch_assoc($rsBuscaBens)) {
     $sIdsBem .= $sIdsBem ? ", {$row['t52_bem']}" : $row['t52_bem'];
 }
 
-$arrayValores = array();
+$arrayValores = [];
 foreach (getValores($sIdsBem, $sWhereValor, $sDataFinal) as $bem) {
     $arrayValores[$bem['t52_bem']]['valor'] = $bem['valor'];
     $arrayValores[$bem['t52_bem']]['valor_atual'] = $bem['valor_atual'];
@@ -546,7 +530,7 @@ foreach (getValores($sIdsBem, $sWhereValor, $sDataFinal) as $bem) {
  * Array que armazena os dados de órgão e unidade de um departamento
  * @var array
  */
-$aOrgaosUnidade = array();
+$aOrgaosUnidade = [];
 
 /**
  * Array que irá armazenar todos os dados já organizados obedecendo a seguinte estrutura
@@ -556,7 +540,7 @@ $aOrgaosUnidade = array();
  * ---- Bem
  * @var array
  */
-$aDepartamentos = array();
+$aDepartamentos = [];
 
 /**
  * Este for percorre o resultset retornado do banco de dados e cria um
@@ -612,7 +596,7 @@ for ($iRow = 0; $iRow < $iLinhasBuscaBens; $iRow++) {
     $oStdBem->t52_dtinclusao = $oBem->t52_dtinclusao;
     $oStdBem->t52_bem = $oBem->t52_bem;
     $oStdBem->t52_obs = $oBem->t52_obs;
-    $oStdBem->t52_descr = substr($oBem->t52_descr, 0, 35);
+    $oStdBem->t52_descr = substr((string) $oBem->t52_descr, 0, 35);
     $oStdBem->t52_valaqu = $oBem->t52_valaqu;
     $oStdBem->t44_valorresidual = $oBem->t44_valorresidual;
 
@@ -650,16 +634,16 @@ for ($iRow = 0; $iRow < $iLinhasBuscaBens; $iRow++) {
         $oDepartamento = new stdClass();
         $oDepartamento->iCodigoDepartamento = $iDepartamento;
         $oDepartamento->sDescricaoDepartamento = $sDepartamento;
-        $oDepartamento->aDivisao = array();
+        $oDepartamento->aDivisao = [];
         $oDepartamento->aDivisao[$iCodigoDivisao] = new stdClass();
         $oDepartamento->aDivisao[$iCodigoDivisao]->iCodigoDivisao = $iCodigoDivisao;
         $oDepartamento->aDivisao[$iCodigoDivisao]->sDescricaoDivisao = $sDescricaoDivisao;
-        $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao = array();
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao = [];
         $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao] = new stdClass();
         $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->iCodigoClassificacao = $iClassificacao;
         $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->sClassificacao = $sClassificacao;
         $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->sDescricaoClassificacao = $sClassificacaoDescricao;
-        $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->aBens = array();
+        $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->aBens = [];
         $oDepartamento->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->aBens[] = $oStdBem;
 
         /*
@@ -677,12 +661,12 @@ for ($iRow = 0; $iRow < $iLinhasBuscaBens; $iRow++) {
             $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao] = new stdClass();
             $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->iCodigoDivisao = $iCodigoDivisao;
             $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->sDescricaoDivisao = $sDescricaoDivisao;
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao = array();
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao = [];
             $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao] = new stdClass();
             $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->iCodigoClassificacao = $iClassificacao;
             $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->sClassificacao = $sClassificacao;
             $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->sDescricaoClassificacao = $sClassificacaoDescricao;
-            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->aBens = array();
+            $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->aBens = [];
             $aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao]->aBens[] = $oStdBem;
         } else {
             if (!isset($aDepartamentos[$iDepartamento]->aDivisao[$iCodigoDivisao]->aClassificacao[$iClassificacao])) {
@@ -707,7 +691,7 @@ unset($rsBuscaBens);
 $daoCalculo = new \cl_benshistoricocalculobem();
 $rsBensReavaliados = pg_fetch_all(db_query($daoCalculo->sql_query_busca_bens_reavaliados($sIdsBem)));
 
-$bensReavaliados = array();
+$bensReavaliados = [];
 if ($rsBensReavaliados !== false) {
     foreach ($rsBensReavaliados as $bem) {
         $bensReavaliados[$bem['t58_bens']] = true;
@@ -771,12 +755,7 @@ foreach ($aDepartamentos as $iIndiceDepartamento => $oDepartamento) {
     if ($oGet->iQuebraPagina == 2 || $oPdf->gety() > $oPdf->h - 30 || $lPrimeiroLaco) {
         setHeader(
           $oPdf,
-          $iHeigth,
-          $oGet->lImprimeValorAquisicao,
-          $oGet->lCaracteristicaAdicional,
-          $oDepartamento->iCodigoDepartamento,
-          $aOrgaosUnidade,
-          $flagColunasVisiveis
+          $iHeigth
         );
         $lPrimeiroLaco = false;
     }
@@ -812,10 +791,10 @@ foreach ($aDepartamentos as $iIndiceDepartamento => $oDepartamento) {
                 /**
                  * Configuramos variáveis
                  */
-                $dtAquisicaoBem = implode("/", array_reverse(explode("-", $oBem->t52_dtaqu)));
-                $dtInclusaoBem = implode('/', array_reverse(explode("-", $oBem->t52_dtinclusao)));
+                $dtAquisicaoBem = implode("/", array_reverse(explode("-", (string) $oBem->t52_dtaqu)));
+                $dtInclusaoBem = implode('/', array_reverse(explode("-", (string) $oBem->t52_dtinclusao)));
 
-                $sPlacaConfigurada = str_pad($oBem->t52_ident, 7, "0", STR_PAD_LEFT);
+                $sPlacaConfigurada = str_pad((string) $oBem->t52_ident, 7, "0", STR_PAD_LEFT);
 
                 $oPdf->SetFont("arial", "", 6);
                 $oPdf->cell($iWCodigoSemValor, $iHeigth, $oBem->t52_bem, 0, 0, "C");
@@ -923,12 +902,7 @@ foreach ($aDepartamentos as $iIndiceDepartamento => $oDepartamento) {
                 if ($oPdf->gety() > $oPdf->h - 30) {
                     setHeader(
                       $oPdf,
-                      $iHeigth,
-                      $oGet->lImprimeValorAquisicao,
-                      $oGet->lCaracteristicaAdicional,
-                      $oBem->t52_depart,
-                      $aOrgaosUnidade,
-                      $flagColunasVisiveis
+                      $iHeigth
                     );
                 }
 
@@ -994,8 +968,8 @@ function setHeader(
 ) {
     global $head3, $head4, $head5, $head6, $tipoData, $sDataInicial, $sDataFinal;
     $nomeData = $tipoData == "1" ? "Aquisição" : "Inclusão";
-    $dataInicial = implode('/', array_reverse(explode('-', $sDataInicial)));
-    $dataFinal = implode('/', array_reverse(explode('-', $sDataFinal)));
+    $dataInicial = implode('/', array_reverse(explode('-', (string) $sDataInicial)));
+    $dataFinal = implode('/', array_reverse(explode('-', (string) $sDataFinal)));
 
 
 

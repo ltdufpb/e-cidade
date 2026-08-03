@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_atributoexames_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_atributoexames = new cl_sau_atributoexames;
 $clsau_atributoexames->rotulo->label("s131_i_codigo");
 $clsau_atributoexames->rotulo->label("s131_c_descricao");
@@ -98,9 +98,9 @@ $clsau_atributoexames->rotulo->label("s131_c_descricao");
         }else{
            $sql = $clsau_atributoexames->sql_query("",$campos,"s131_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s131_c_descricao)){
-          $repassa = array("chave_s131_i_codigo"=>$chave_s131_i_codigo,"chave_s131_c_descricao"=>$chave_s131_c_descricao);
+          $repassa = ["chave_s131_i_codigo"=>$chave_s131_i_codigo,"chave_s131_c_descricao"=>$chave_s131_c_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

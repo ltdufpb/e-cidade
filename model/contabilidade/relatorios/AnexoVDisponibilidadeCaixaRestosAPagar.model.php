@@ -41,12 +41,12 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
   /**
    * @type stdClass[int]
    */
-  private $aRecursos = array();
+  private $aRecursos = [];
 
   /**
    * @type stdClass[]
    */
-  private $aRecursosRPPS = array();
+  private $aRecursosRPPS = [];
 
   /**
    * @type stdClass[]
@@ -66,7 +66,8 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
 
   private $iColumnWidth = 27;
 
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $this->aLinhasRelatorio = parent::getLinhasRelatorio();
     $this->carregarBalanceteVerificacaoCaixaBruta();
@@ -126,7 +127,7 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
         continue;
       }
 
-      $iGrupoConta = substr($oStdBalancete->estrutural, 0, 1);
+      $iGrupoConta = substr((string) $oStdBalancete->estrutural, 0, 1);
       if (($iGrupoConta == self::ATIVO && $oStdBalancete->sinal_final == 'C') || ($iGrupoConta == self::PASSIVO && $oStdBalancete->sinal_final == 'D')) {
         $oStdBalancete->saldo_final *= -1;
       }
@@ -148,10 +149,10 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
       return false;
     }
 
-    $aEstruturais= array();
+    $aEstruturais= [];
     foreach ($this->aLinhasRelatorio[$iIndice]->parametros->contas as $oStdParametroConta) {
 
-      $sEstrutural = substr($oStdParametroConta->estrutural, 0, $oStdParametroConta->nivel);
+      $sEstrutural = substr((string) $oStdParametroConta->estrutural, 0, $oStdParametroConta->nivel);
       $aEstruturais[] = "p.c60_estrut ilike '{$sEstrutural}%' ";
     }
 
@@ -259,11 +260,11 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
    */
   private function carregarEmpenhosIndisponibilidadeFinanceira() {
 
-    $aWhere = array(
+    $aWhere = [
       'empanulado.e94_empanuladotipo = 1',
       "empempenho.e60_instit in ({$this->getInstituicoes()})",
       "empanulado.e94_data >= '{$this->iAnoUsu}-01-01'",
-    );
+    ];
 
     $sWhere  = implode(' and ', $aWhere);
     $sWhere .= " group by o58_codigo ";
@@ -414,11 +415,11 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
     $this->escreverCabecalho(true);
 
     if (!isset($this->aRecursos[Recurso::LIVRE])) {
-      $this->aRecursos[Recurso::LIVRE] = array();
+      $this->aRecursos[Recurso::LIVRE] = [];
     }
 
     if (!isset($this->aRecursos[Recurso::VINCULADO])) {
-      $this->aRecursos[Recurso::VINCULADO] = array();
+      $this->aRecursos[Recurso::VINCULADO] = [];
     }
 
 
@@ -431,7 +432,7 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
       }
 
       return $oAnterior;
-    }, (object) array(
+    }, (object) [
       'caixa_bruta' => 0,
       'rp_nao_pago_exercicio_anterior' => 0,
       'rp_nao_pago_exercicio_atual' => 0,
@@ -439,13 +440,13 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
       'demais_obrigacoes' => 0,
       'rp_empenhado_nao_liquidado' => 0,
       'rp_insuficiencia_financeira' => 0
-    ));
+    ]);
 
-    $oTotalizadorVinculado = (object) array(
+    $oTotalizadorVinculado = (object) [
         'codigo' => '',
         'descricao' => "TOTAL DOS RECURSOS VINCULADOS (I)",
         'valores' => $oTotalizadorVinculado
-      );
+      ];
 
     $oTotalizadorLivre = array_reduce($this->aRecursos[Recurso::LIVRE], function($oAnterior, $oAtual) {
 
@@ -454,7 +455,7 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
       }
 
       return $oAnterior;
-    }, (object) array(
+    }, (object) [
       'caixa_bruta' => 0,
       'rp_nao_pago_exercicio_anterior' => 0,
       'rp_nao_pago_exercicio_atual' => 0,
@@ -462,18 +463,18 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
       'demais_obrigacoes' => 0,
       'rp_empenhado_nao_liquidado' => 0,
       'rp_insuficiencia_financeira' => 0
-    ));
+    ]);
 
-    $oTotalizadorLivre = (object) array(
+    $oTotalizadorLivre = (object) [
         'codigo' => '',
         'descricao' => "TOTAL DOS RECURSOS NÃO VINCULADOS (II)",
         'valores' => $oTotalizadorLivre
-      );
+      ];
 
-    $oTotal = (object) array(
+    $oTotal = (object) [
         'codigo' => '',
         'descricao' => "TOTAL (III) = (I + II)",
-        'valores' => (object) array(
+        'valores' => (object) [
             'caixa_bruta' => $oTotalizadorVinculado->valores->caixa_bruta + $oTotalizadorLivre->valores->caixa_bruta,
             'rp_nao_pago_exercicio_anterior' => $oTotalizadorVinculado->valores->rp_nao_pago_exercicio_anterior + $oTotalizadorLivre->valores->rp_nao_pago_exercicio_anterior,
             'rp_nao_pago_exercicio_atual' => $oTotalizadorVinculado->valores->rp_nao_pago_exercicio_atual + $oTotalizadorLivre->valores->rp_nao_pago_exercicio_atual,
@@ -481,8 +482,8 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
             'demais_obrigacoes' => $oTotalizadorVinculado->valores->demais_obrigacoes + $oTotalizadorLivre->valores->demais_obrigacoes,
             'rp_empenhado_nao_liquidado' => $oTotalizadorVinculado->valores->rp_empenhado_nao_liquidado + $oTotalizadorLivre->valores->rp_empenhado_nao_liquidado,
             'rp_insuficiencia_financeira' => $oTotalizadorVinculado->valores->rp_insuficiencia_financeira + $oTotalizadorLivre->valores->rp_insuficiencia_financeira
-          )
-      );
+          ]
+      ];
 
     $this->escreverLinha($oTotalizadorVinculado, true, true);
 
@@ -510,7 +511,7 @@ class AnexoVDisponibilidadeCaixaRestosAPagar extends RelatoriosLegaisBase {
     $iAlturaAssinatura = 26;
     $this->oPdf->setAutoNewLineMulticell(true);
     $this->oPdf->SetAutoPageBreak(true, 10);
-    $this->notaExplicativa($this->oPdf, array($this, 'novaPagina'), $iAlturaAssinatura);
+    $this->notaExplicativa($this->oPdf, $this->novaPagina(...), $iAlturaAssinatura);
     $this->oPdf->SetAutoPageBreak(false, 10);
     $this->oPdf->setAutoNewLineMulticell(false);
 

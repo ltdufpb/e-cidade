@@ -108,11 +108,11 @@ $oPost = db_utils::postMemory($_POST);
               <td><b>Ponto :&nbsp;&nbsp;</b></td>
               <td>
                <?php
-                 $aTipos = array("s"=>"Salário",
+                 $aTipos = ["s"=>"Salário",
                                  "c"=>"Complementar",
                                  "d"=>"13o. Salário",
                                  "r"=>"Rescisão",
-                                 "a"=>"Adiantamento");
+                                 "a"=>"Adiantamento"];
                  
                  if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
                    $aTipos["u"] = "Suplementar"; 
@@ -127,7 +127,7 @@ $oPost = db_utils::postMemory($_POST);
               <td><b>Ordem :&nbsp;&nbsp;</b></td>
               <td>
                <?php
-                 $x = array("a"=>"Alfabética","n"=>"Numérica","r"=>"Recurso","l"=>"Lotação","v"=>"Valor","q"=>"Quantidade");
+                 $x = ["a"=>"Alfabética","n"=>"Numérica","r"=>"Recurso","l"=>"Lotação","v"=>"Valor","q"=>"Quantidade"];
                  db_select('ordem',$x,true,4,"");
                ?>
               </td>
@@ -137,7 +137,7 @@ $oPost = db_utils::postMemory($_POST);
               <td><b>Tipo de Ordem :&nbsp;&nbsp;</b></td>
               <td>
                <?php
-                 $x = array("asc"=>"Ascendente","desc"=>"Descendente");
+                 $x = ["asc"=>"Ascendente","desc"=>"Descendente"];
                  db_select('tipoordem',$x,true,4,"");
                ?>
               </td>
@@ -147,7 +147,7 @@ $oPost = db_utils::postMemory($_POST);
               <td><b>Totalização :&nbsp;&nbsp;</b></td>
               <td>
                <?php
-                 $x = array("a"=>"Analítico","s"=>"Sintético");
+                 $x = ["a"=>"Analítico","s"=>"Sintético"];
                  db_select('total',$x,true,4,"");
                ?>
               </td>
@@ -157,7 +157,7 @@ $oPost = db_utils::postMemory($_POST);
               <td><b>Tipo :&nbsp;&nbsp;</b></td>
               <td>
                <?php
-                 $x = array("r"=>"Relatório","a"=>"Arquivo","p"=>"Planilha");
+                 $x = ["r"=>"Relatório","a"=>"Arquivo","p"=>"Planilha"];
                  db_select('tipo',$x,true,4,"");
                ?>
               </td>
@@ -167,7 +167,7 @@ $oPost = db_utils::postMemory($_POST);
               <td><b>Página :&nbsp;&nbsp;</b></td>
               <td>
                <?php
-                 $xy = array("p"=>"Paisagem","r"=>"Retrato");
+                 $xy = ["p"=>"Paisagem","r"=>"Retrato"];
                  db_select('pagina',$xy,true,4,"");
                ?>
               </td>
@@ -177,7 +177,7 @@ $oPost = db_utils::postMemory($_POST);
               <td><b>Dados Cadastrais :&nbsp;&nbsp;</b></td>
               <td >
                <?php
-                 $xcad = array("a"=>"Atual","p"=>"Período");
+                 $xcad = ["a"=>"Atual","p"=>"Período"];
                  db_select('mes_dados',$xcad,true,4,"");
                ?>
               </td>
@@ -186,7 +186,7 @@ $oPost = db_utils::postMemory($_POST);
               <td><b>Local de Trabalho :&nbsp;&nbsp;</b></td>
               <td >
                <?php
-                 $opcoes = array("N"=>"Não","S"=>"Sim");
+                 $opcoes = ["N"=>"Não","S"=>"Sim"];
                  db_select('localtrab',$opcoes,true,4,"");
                ?>
               </td>

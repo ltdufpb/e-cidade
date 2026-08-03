@@ -136,18 +136,18 @@ if ( isset($oParametros->listadepartDestino) && !empty($oParametros->listadepart
 
 }
 
-$sDataIni = implode('-',array_reverse(explode('/',$oParametros->dataini)));
-$sDataFin = implode('-',array_reverse(explode('/',$oParametros->datafin)));
+$sDataIni = implode('-',array_reverse(explode('/',(string) $oParametros->dataini)));
+$sDataFin = implode('-',array_reverse(explode('/',(string) $oParametros->datafin)));
 
-if ((trim($oParametros->dataini) != "--") && ( trim($oParametros->datafin) != "--")) {
+if ((trim((string) $oParametros->dataini) != "--") && ( trim((string) $oParametros->datafin) != "--")) {
 
   $sWhere .= " and m80_data between '{$sDataIni}' and '{$sDataFin}' ";
   $info    = "De ".$oParametros->dataini." até ".$oParametros->datafin;
-} else if (trim($oParametros->dataini) != "--") {
+} else if (trim((string) $oParametros->dataini) != "--") {
 
  	$sWhere .= " and m80_data >= '{$sDataIni}' ";
     $info  = "Apartir de ".$oParametros->dataini;
-} else if (trim($oParametros->datafin) != "--") {
+} else if (trim((string) $oParametros->datafin) != "--") {
 
  	$sWhere .= " and m80_data <= '{$sDataFin}' ";
     $info   = "Até ".$oParametros->datafin;
@@ -297,7 +297,7 @@ if ($iNumRows <= 0 || !$rsSaidas) {
   exit;
 }
 
-$aLinhas  = array();
+$aLinhas  = [];
 for ($i = 0; $i < $iNumRows; $i++) {
 
   $oItem = db_utils::fieldsMemory($rsSaidas, $i);
@@ -336,8 +336,8 @@ foreach ($aLinhas as $oLinha) {
     $lEscreveHeader = false;
     $pdf->setfont('arial', '', 6);
   }
-  $pdf->Cell(15, $iAlt, substr($oLinha->m70_codmatmater, 0, 40), "RTB", 0, "R");
-  $pdf->Cell(70, $iAlt, substr($oLinha->m60_descr, 0, 50), 1, 0, "L");
+  $pdf->Cell(15, $iAlt, substr((string) $oLinha->m70_codmatmater, 0, 40), "RTB", 0, "R");
+  $pdf->Cell(70, $iAlt, substr((string) $oLinha->m60_descr, 0, 50), 1, 0, "L");
   $pdf->Cell(14, $iAlt, $sUnidade, 1, 0, "l", 0);
   $pdf->Cell(34, $iAlt, substr($oLinha->idepto_origem."-".$oLinha->sdepto_origem, 0, 25), 1, 0, "L");
   $pdf->Cell(34, $iAlt, substr($oLinha->idepto_destino . "-" .$oLinha->sdepto_destino, 0, 24), 1, 0, "L");
@@ -347,11 +347,11 @@ foreach ($aLinhas as $oLinha) {
   }
 
   $nValorPrecoMedio = $oLinha->precomedio;
-  if (in_array($oLinha->m80_codtipo, array(4, 19))) {
+  if (in_array($oLinha->m80_codtipo, [4, 19])) {
     $nValorPrecoMedio = $oLinha->m89_valorunitario;
   }
 
-  $pdf->Cell(45, $iAlt, substr($oLinha->m81_descr,0,30 )."(".$iCodigoLancamento.")", 1, 0, "L");
+  $pdf->Cell(45, $iAlt, substr((string) $oLinha->m81_descr,0,30 )."(".$iCodigoLancamento.")", 1, 0, "L");
   $pdf->Cell(15, $iAlt, db_formatar($oLinha->m80_data, "d"), 1, 0, "C");
   $pdf->Cell(18, $iAlt, number_format($nValorPrecoMedio, $iParametroNumeroDecimal), 1, 0, "R");
   $pdf->Cell(15, $iAlt, $oLinha->qtde, 1, 0, "R");

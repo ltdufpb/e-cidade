@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadtipocapacidade_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveiccadtipocapacidade = new cl_veiccadtipocapacidade;
 $clveiccadtipocapacidade->rotulo->label("ve24_codigo");
 $clveiccadtipocapacidade->rotulo->label("ve24_descr");
@@ -98,9 +98,9 @@ $clveiccadtipocapacidade->rotulo->label("ve24_descr");
         }else{
            $sql = $clveiccadtipocapacidade->sql_query("",$campos,"ve24_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve24_codigo)){
-          $repassa = array("chave_ve24_codigo"=>$chave_ve24_codigo,"chave_ve24_codigo"=>$chave_ve24_codigo);
+          $repassa = ["chave_ve24_codigo"=>$chave_ve24_codigo,"chave_ve24_codigo"=>$chave_ve24_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

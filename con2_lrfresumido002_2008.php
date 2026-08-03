@@ -41,7 +41,7 @@ include(modification("classes/db_empresto_classe.php"));
 include(modification("classes/db_conrelvalor_classe.php"));
 require(modification("libs/db_libpostgres.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 //echo($HTTP_SERVER_VARS['QUERY_STRING']); exit;
 
@@ -66,7 +66,7 @@ if ($emite_rec_desp==1||$emite_proj==1){
   $sql         = "select codigo  from db_config where db21_tipoinstit in (5,6) ";
   $resultinst  = db_query($sql);
   $xvirg       = '';
-  for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+  for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
     $instit_rpps .= $xvirg.$codigo; // salva insituio
     $xvirg        = ', ';		  
@@ -139,7 +139,7 @@ if ($emite_balorc_rec==1||$emite_balorc_desp==1){
   $db_filtro  = ' o70_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
       $result_rec = db_receitasaldo(11,1,3,true,$db_filtro,$anousu,$dt_ini,$dt_fin);
       @db_query("drop table work_receita");
-      for($i = 0;$i < pg_numrows($result_rec); $i++) {
+      for($i = 0;$i < pg_num_rows($result_rec); $i++) {
       db_fieldsmemory($result_rec,$i);
       $estrutural = $o57_fonte;
       if (in_array($estrutural,$m_impostos)){
@@ -400,37 +400,37 @@ if ($emite_balorc_rec==1||$emite_balorc_desp==1){
       // OPER. DE CREDITO INTERNAS MOBILIARIA
       $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo in (301,305,309,313) and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
       if ($clconrelvalor->numrows > 0){
-        $total_inicial    += pg_result($res_valor,0,"c83_informacao");
-        $total_atualizada += pg_result($res_valor,1,"c83_informacao");
-        $total_nobim      += pg_result($res_valor,2,"c83_informacao");
-        $total_atebim     += pg_result($res_valor,3,"c83_informacao");
+        $total_inicial    += pg_fetch_result($res_valor,0,"c83_informacao");
+        $total_atualizada += pg_fetch_result($res_valor,1,"c83_informacao");
+        $total_nobim      += pg_fetch_result($res_valor,2,"c83_informacao");
+        $total_atebim     += pg_fetch_result($res_valor,3,"c83_informacao");
       }
 
       // OPER. DE CREDITO INTERNAS CONTRATUAL
       $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo in (302,306,310,314) and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
       if ($clconrelvalor->numrows > 0){
-        $total_inicial    += pg_result($res_valor,0,"c83_informacao");
-        $total_atualizada += pg_result($res_valor,1,"c83_informacao");
-        $total_nobim      += pg_result($res_valor,2,"c83_informacao");
-        $total_atebim     += pg_result($res_valor,3,"c83_informacao");
+        $total_inicial    += pg_fetch_result($res_valor,0,"c83_informacao");
+        $total_atualizada += pg_fetch_result($res_valor,1,"c83_informacao");
+        $total_nobim      += pg_fetch_result($res_valor,2,"c83_informacao");
+        $total_atebim     += pg_fetch_result($res_valor,3,"c83_informacao");
       }
 
       // OPER. DE CREDITO EXTERNAS MOBILIARIA
       $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo in (303,307,311,315) and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
       if ($clconrelvalor->numrows > 0){
-        $total_inicial    += pg_result($res_valor,0,"c83_informacao");
-        $total_atualizada += pg_result($res_valor,1,"c83_informacao");
-        $total_nobim      += pg_result($res_valor,2,"c83_informacao");
-        $total_atebim     += pg_result($res_valor,3,"c83_informacao");
+        $total_inicial    += pg_fetch_result($res_valor,0,"c83_informacao");
+        $total_atualizada += pg_fetch_result($res_valor,1,"c83_informacao");
+        $total_nobim      += pg_fetch_result($res_valor,2,"c83_informacao");
+        $total_atebim     += pg_fetch_result($res_valor,3,"c83_informacao");
       }
 
       // OPER. DE CREDITO EXTERNAS CONTRATUAL
       $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo in (304,308,312,316) and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
       if ($clconrelvalor->numrows > 0){
-        $total_inicial    += pg_result($res_valor,0,"c83_informacao");
-        $total_atualizada += pg_result($res_valor,1,"c83_informacao");
-        $total_nobim      += pg_result($res_valor,2,"c83_informacao");
-        $total_atebim     += pg_result($res_valor,3,"c83_informacao");
+        $total_inicial    += pg_fetch_result($res_valor,0,"c83_informacao");
+        $total_atualizada += pg_fetch_result($res_valor,1,"c83_informacao");
+        $total_nobim      += pg_fetch_result($res_valor,2,"c83_informacao");
+        $total_atebim     += pg_fetch_result($res_valor,3,"c83_informacao");
       }
 }
 
@@ -449,13 +449,13 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
   $sele_work   = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
   $result_desp = db_dotacaosaldo(7,1,4,true,$sele_work,$anousu,$dt_ini,$dt_fin);
   
-  for($i = 0; $i < pg_numrows($result_desp); $i++){
+  for($i = 0; $i < pg_num_rows($result_desp); $i++){
     db_fieldsmemory($result_desp,$i);
     $estrutural = $o58_elemento;
-    if (strlen($o58_elemento) < 15) {
+    if (strlen((string) $o58_elemento) < 15) {
       $estrutural .= "00";
     }
-    if (substr($estrutural,0,3)=='331') {
+    if (str_starts_with((string) $estrutural, '331')) {
       
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -469,7 +469,7 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       
     }
 
-    if (substr($estrutural,0,3)=='332') {
+    if (str_starts_with((string) $estrutural, '332')) {
       
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -482,7 +482,7 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       
     }
 
-    if (substr($estrutural,0,3)=='333') {
+    if (str_starts_with((string) $estrutural, '333')) {
       
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -495,7 +495,7 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       
     }
 
-    if (substr($estrutural,0,3)=='344') {
+    if (str_starts_with((string) $estrutural, '344')) {
       
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -508,7 +508,7 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       
     }
 
-    if (substr($estrutural,0,3)=='345') {
+    if (str_starts_with((string) $estrutural, '345')) {
       
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -521,7 +521,7 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       
     }
 
-    if (substr($estrutural,0,3)=='346') {
+    if (str_starts_with((string) $estrutural, '346')) {
       
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -534,7 +534,7 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
       
     }
 
-    if ((substr($estrutural,0,3)=='399') || (substr($estrutural,0,3)=='377'))  {
+    if ((str_starts_with((string) $estrutural, '399')) || (str_starts_with((string) $estrutural, '377')))  {
       
       $total_inicial_desp += $dot_ini;
       $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -551,46 +551,46 @@ if ($emite_balorc_desp==1||$emite_balorc_rec==1 || $emite_desp_funcsub==1) {
   // DIVIDA MOBILIARIA 
   $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 322 and 328 and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
   if ($clconrelvalor->numrows > 0){
-    $total_inicial_desp += pg_result($res_valor,0,"c83_informacao");
-    $total_adicional    += pg_result($res_valor,1,"c83_informacao"); 
-    $total_emp_nobim    += pg_result($res_valor,3,"c83_informacao");
-    $total_emp_atebim   += pg_result($res_valor,4,"c83_informacao");
-    $total_liq_nobim    += pg_result($res_valor,5,"c83_informacao");
-    $total_liq_atebim   += pg_result($res_valor,6,"c83_informacao");
+    $total_inicial_desp += pg_fetch_result($res_valor,0,"c83_informacao");
+    $total_adicional    += pg_fetch_result($res_valor,1,"c83_informacao"); 
+    $total_emp_nobim    += pg_fetch_result($res_valor,3,"c83_informacao");
+    $total_emp_atebim   += pg_fetch_result($res_valor,4,"c83_informacao");
+    $total_liq_nobim    += pg_fetch_result($res_valor,5,"c83_informacao");
+    $total_liq_atebim   += pg_fetch_result($res_valor,6,"c83_informacao");
   }
 
   // OUTRAS DIVIDAS
   $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 329 and 335 and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
   if ($clconrelvalor->numrows > 0){
-    $total_inicial_desp += pg_result($res_valor,0,"c83_informacao");
-    $total_adicional    += pg_result($res_valor,1,"c83_informacao"); 
-    $total_emp_nobim    += pg_result($res_valor,3,"c83_informacao");
-    $total_emp_atebim   += pg_result($res_valor,4,"c83_informacao");
-    $total_liq_nobim    += pg_result($res_valor,5,"c83_informacao");
-    $total_liq_atebim   += pg_result($res_valor,6,"c83_informacao");
+    $total_inicial_desp += pg_fetch_result($res_valor,0,"c83_informacao");
+    $total_adicional    += pg_fetch_result($res_valor,1,"c83_informacao"); 
+    $total_emp_nobim    += pg_fetch_result($res_valor,3,"c83_informacao");
+    $total_emp_atebim   += pg_fetch_result($res_valor,4,"c83_informacao");
+    $total_liq_nobim    += pg_fetch_result($res_valor,5,"c83_informacao");
+    $total_liq_atebim   += pg_fetch_result($res_valor,6,"c83_informacao");
   }
 
   // AMORTIZACAO DA DIVIDA EXTERNA
   // DIVIDA MOBILIARIA 
   $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 336 and 342 and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
   if ($clconrelvalor->numrows > 0){
-    $total_inicial_desp += pg_result($res_valor,0,"c83_informacao");
-    $total_adicional    += pg_result($res_valor,1,"c83_informacao"); 
-    $total_emp_nobim    += pg_result($res_valor,3,"c83_informacao");
-    $total_emp_atebim   += pg_result($res_valor,4,"c83_informacao");
-    $total_liq_nobim    += pg_result($res_valor,5,"c83_informacao");
-    $total_liq_atebim   += pg_result($res_valor,6,"c83_informacao");
+    $total_inicial_desp += pg_fetch_result($res_valor,0,"c83_informacao");
+    $total_adicional    += pg_fetch_result($res_valor,1,"c83_informacao"); 
+    $total_emp_nobim    += pg_fetch_result($res_valor,3,"c83_informacao");
+    $total_emp_atebim   += pg_fetch_result($res_valor,4,"c83_informacao");
+    $total_liq_nobim    += pg_fetch_result($res_valor,5,"c83_informacao");
+    $total_liq_atebim   += pg_fetch_result($res_valor,6,"c83_informacao");
   }
 
   // OUTRAS DIVIDAS
   $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 343 and 349 and c83_periodo = '".$bimestre."' and c83_instit in (".$instituicao.")"));
   if ($clconrelvalor->numrows > 0){
-    $total_inicial_desp += pg_result($res_valor,0,"c83_informacao");
-    $total_adicional    += pg_result($res_valor,1,"c83_informacao"); 
-    $total_emp_nobim    += pg_result($res_valor,3,"c83_informacao");
-    $total_emp_atebim   += pg_result($res_valor,4,"c83_informacao");
-    $total_liq_nobim    += pg_result($res_valor,5,"c83_informacao");
-    $total_liq_atebim   += pg_result($res_valor,6,"c83_informacao");
+    $total_inicial_desp += pg_fetch_result($res_valor,0,"c83_informacao");
+    $total_adicional    += pg_fetch_result($res_valor,1,"c83_informacao"); 
+    $total_emp_nobim    += pg_fetch_result($res_valor,3,"c83_informacao");
+    $total_emp_atebim   += pg_fetch_result($res_valor,4,"c83_informacao");
+    $total_liq_nobim    += pg_fetch_result($res_valor,5,"c83_informacao");
+    $total_liq_atebim   += pg_fetch_result($res_valor,6,"c83_informacao");
   }
 
   $total_atualizada_desp = $total_inicial_desp + $total_adicional;
@@ -631,7 +631,7 @@ if ($emite_rcl==1||$emite_ppp==1){
    */
 
   // se o ano atual  bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-  $dt = split('-',$dt_fin);  // mktime -- (mes,dia,ano)
+  $dt = preg_split('#\-#m',(string) $dt_fin);  // mktime -- (mes,dia,ano)
   $dt_ini_ant = "{$anousu_ant}-01-01";
   $dt_fin_ant = "{$anousu_ant}-12-31";  
 
@@ -653,7 +653,7 @@ if ($emite_rcl==1||$emite_ppp==1){
   $TrecB[0][13] = 0; 
   $TrecB[1][13] = 0;
 
-  $indrec  = (int)substr($bimestre,0,1);
+  $indrec  = (int)substr((string) $bimestre,0,1);
   $indrec += 2;
   $total_receita      = 0;
   $total_receitas_ant = 0;
@@ -951,7 +951,7 @@ if ($emite_oper==1){
       $sele_work      = 'o58_instit in ('.str_replace('-', ', ', $db_selinstit).')   ';
       $result_desp    = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
       
-      for($i = 0; $i < pg_numrows($result_oper); $i++){
+      for($i = 0; $i < pg_num_rows($result_oper); $i++){
       db_fieldsmemory($result_oper, $i);
       $estrutural = $o57_fonte;
       if (in_array($estrutural, $m_operacoes)){
@@ -960,10 +960,10 @@ if ($emite_oper==1){
       }
       }
 
-      for($i = 0; $i < pg_numrows($result_desp); $i++){
+      for($i = 0; $i < pg_num_rows($result_desp); $i++){
       db_fieldsmemory($result_desp,$i);
       $estrutural = $o58_elemento;
-      if (substr($estrutural,0,3)=='334'){
+      if (str_starts_with((string) $estrutural, '334')){
         $total_despesa += $liquidado_acumulado;
         $saldo_despesa += $liquidado_acumulado - $dot_ini;
       }
@@ -1092,7 +1092,7 @@ if ($emite_proj==1){
       // Exercicio Atual
       $result_despesa = db_dotacaosaldo(8,2,3,true,$db_filtro,$anousu,$dt_ini,$dt_fin);
       
-      for ($i=0; $i < pg_numrows($result_rec); $i++){
+      for ($i=0; $i < pg_num_rows($result_rec); $i++){
       db_fieldsmemory($result_rec,$i);
       $estrutural = $o57_fonte;
 
@@ -1100,28 +1100,28 @@ if ($emite_proj==1){
       if (in_array($estrutural,$m_receita[$linha]['estrut'])){
       $total_rec += $saldo_arrecadado;
       }
-      if (substr($estrutural,0,7)=="6121701"){
+      if (str_starts_with((string) $estrutural, "6121701")){
         $total_rec_patronal += $saldo_arrecadado;
       }
       }
       }             
 
-      for ($i=0; $i < pg_numrows($result_res_rep); $i++) {
+      for ($i=0; $i < pg_num_rows($result_res_rep); $i++) {
         db_fieldsmemory($result_res_rep,$i);
 
         for ($linha=15;$linha<=28;$linha++){
-          if (substr($estrutural,0,1)=="6"){ // RESULTADOS(6) 
+          if (str_starts_with((string) $estrutural, "6")){ // RESULTADOS(6) 
             if (in_array($estrutural,$m_receita[$linha]['estrut'])){
               $total_rec += $saldo_final;
             }
-            if (substr($estrutural,0,6)=="612117"){
+            if (str_starts_with((string) $estrutural, "612117")){
               $total_rep_rpps += $saldo_final;
             }
           }
         }
       }
 
-      for ($i = 0; $i < pg_numrows($result_despesa); $i ++) {
+      for ($i = 0; $i < pg_num_rows($result_despesa); $i ++) {
         db_fieldsmemory($result_despesa, $i);
 
         for ($linha=29;$linha<=39;$linha++){
@@ -1163,14 +1163,14 @@ if ($emite_alienacao==1){
       $result_rec    = db_receitasaldo(11,1,3,true,$sele_work,$anousu,$dt_ini,$dt_fin,false);
       @db_query("drop table work_receita");
 
-      for($i = 0; $i < pg_numrows($result_rec); $i++){
+      for($i = 0; $i < pg_num_rows($result_rec); $i++){
       db_fieldsmemory($result_rec, $i);
       $estrutural = $o57_fonte;
-      if (substr($estrutural,0,3)=="422"){
+      if (str_starts_with((string) $estrutural, "422")){
       $total_alien += $saldo_arrecadado_acumulado;
       $saldo_alien += $saldo_arrecadado_acumulado - $saldo_prevadic_acum;
       }
-      if (substr($estrutural,0,3)=="413"){
+      if (str_starts_with((string) $estrutural, "413")){
       $total_recurso += $saldo_arrecadado_acumulado;
       $saldo_recurso += $saldo_arrecadado_acumulado - $saldo_prevadic_acum;
       }
@@ -1229,15 +1229,15 @@ if ($emite_ppp==1){
   $sele_work      = 'o58_instit in ('.str_replace('-', ', ', $db_selinstit).')   ';
   $result_despesa = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
   
-  for ($i = 0; $i < pg_numrows($result_despesa); $i++) {
+  for ($i = 0; $i < pg_num_rows($result_despesa); $i++) {
     db_fieldsmemory($result_despesa, $i);
     $estrutural = $o58_elemento;
 
-    if (strlen($estrutural) < 15){
+    if (strlen((string) $estrutural) < 15){
       $estrutural .= "00";
     }
 
-    if (substr($estrutural,0,2) == "33"){
+    if (str_starts_with((string) $estrutural, "33")){
       $total_despesa += $liquidado_acumulado;
     }
   }
@@ -1268,7 +1268,7 @@ if ($emite_oper == 1) {
 
 }
 //////////////////////////////// Impresso do PDF /////////////////////////////////
-$xinstit    = split("-",$db_selinstit);
+$xinstit    = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 db_fieldsmemory($resultinst,0);
 
@@ -1289,15 +1289,15 @@ if (!isset($arqinclude)){
   $head3  = "DEMONSTRATIVO SIMPLIFICADO DO RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
   $head4  = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
-  $mes    = split("-",$dt_ini); 
+  $mes    = preg_split("#\\-#m",(string) $dt_ini); 
   $mesini = strtoupper(db_mes($mes[1]));
   $txt    = "JANEIRO";
-  $mes    = split("-",$dt_fin); 
+  $mes    = preg_split("#\\-#m",(string) $dt_fin); 
   $mesfin = strtoupper(db_mes($mes[1]));
   $txt   .= " A $mesfin/$anousu";
 
   if ($bimestre != "1S" && $bimestre != "2S"){
-    $txt .= " - ".strtoupper($periodo_selecao)." $mesini - $mesfin";
+    $txt .= " - ".strtoupper((string) $periodo_selecao)." $mesini - $mesfin";
   }
 
   $head5 = "$txt";
@@ -1866,11 +1866,11 @@ if ($emite_ppp==1){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 $pdf->cell(190,$alt,"","T",1,"L",0);
 
-notasExplicativas(&$pdf,18,"{$sPeriodo}",190);
+notasExplicativas($pdf,18,"{$sPeriodo}",190);
 
 $pdf->ln(20);
 
-assinaturas(&$pdf,&$classinatura,'LRF');
+assinaturas($pdf,$classinatura,'LRF');
 
 $pdf->Output();
 ?>

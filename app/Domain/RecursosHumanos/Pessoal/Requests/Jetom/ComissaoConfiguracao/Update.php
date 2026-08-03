@@ -11,6 +11,7 @@ class Update extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -58,31 +59,32 @@ class Update extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "id.required" => utf8_encode("Código não informado da configuração da rubrica da comissão."),
-            "id.integer" => utf8_encode("Código inválido da configuração da rubrica da comissão."),
-            "id.exists" => utf8_encode("Configuração da rubrica da comissão não encontrada."),
-            "comissao.required" => utf8_encode("Código da comissão não informado."),
-            "comissao.integer" => utf8_encode("Código inválido da comissão."),
-            "comissao.exists" => utf8_encode("Não foi encontrada a comissão com o código informado."),
-            "funcao.required" => utf8_encode("Código da função não informado."),
-            "funcao.integer" => utf8_encode("Código inválido da função."),
-            "funcao.exists" => utf8_encode("Função não encontrada."),
-            "tiposessao.required" => utf8_encode("Tipo de sessão não informado."),
-            "tiposessao.integer" => utf8_encode("Código inválido para o tipo de sessão informado."),
-            "tiposessao.exists" => utf8_encode("Tipo de sessão não encontrado."),
-            "valor.required" => utf8_encode("Valor não informado."),
-            "valor.numeric" => utf8_encode("Valor inválido."),
-            "valor.regex" => utf8_encode("O formato do valor esta inválido."),
+            "id.required" => mb_convert_encoding("Código não informado da configuração da rubrica da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "id.integer" => mb_convert_encoding("Código inválido da configuração da rubrica da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "id.exists" => mb_convert_encoding("Configuração da rubrica da comissão não encontrada.", 'UTF-8', 'ISO-8859-1'),
+            "comissao.required" => mb_convert_encoding("Código da comissão não informado.", 'UTF-8', 'ISO-8859-1'),
+            "comissao.integer" => mb_convert_encoding("Código inválido da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "comissao.exists" => mb_convert_encoding("Não foi encontrada a comissão com o código informado.", 'UTF-8', 'ISO-8859-1'),
+            "funcao.required" => mb_convert_encoding("Código da função não informado.", 'UTF-8', 'ISO-8859-1'),
+            "funcao.integer" => mb_convert_encoding("Código inválido da função.", 'UTF-8', 'ISO-8859-1'),
+            "funcao.exists" => mb_convert_encoding("Função não encontrada.", 'UTF-8', 'ISO-8859-1'),
+            "tiposessao.required" => mb_convert_encoding("Tipo de sessão não informado.", 'UTF-8', 'ISO-8859-1'),
+            "tiposessao.integer" => mb_convert_encoding("Código inválido para o tipo de sessão informado.", 'UTF-8', 'ISO-8859-1'),
+            "tiposessao.exists" => mb_convert_encoding("Tipo de sessão não encontrado.", 'UTF-8', 'ISO-8859-1'),
+            "valor.required" => mb_convert_encoding("Valor não informado.", 'UTF-8', 'ISO-8859-1'),
+            "valor.numeric" => mb_convert_encoding("Valor inválido.", 'UTF-8', 'ISO-8859-1'),
+            "valor.regex" => mb_convert_encoding("O formato do valor esta inválido.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

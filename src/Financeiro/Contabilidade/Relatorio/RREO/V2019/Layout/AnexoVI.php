@@ -35,6 +35,7 @@ use ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\Layout\AnexoVI as Layo
  */
 class AnexoVI extends Layout2018
 {
+    #[\Override]
     protected function imprimirAjusteMetodologico()
     {
         $this->pdf->setBold(true);
@@ -64,6 +65,7 @@ class AnexoVI extends Layout2018
         $this->pdf->ln(4);
     }
 
+    #[\Override]
     protected function imprimirInformacoesAdicionais()
     {
         $this->pdf->cell($this->pdf->getAvailWidth(), 4, "Continua " . $this->pdf->getCurrentPage() . "/{nb}", 0, 1, \PDFDocument::ALIGN_RIGHT);

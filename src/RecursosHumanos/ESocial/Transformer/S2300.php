@@ -42,7 +42,7 @@ class S2300 extends Sugestao
     /**
      * @var array
      */
-    protected $deParaESocial = array(
+    protected $deParaESocial = [
         'paisnac',
         'paisnascto',
         'racacor',
@@ -54,12 +54,12 @@ class S2300 extends Sugestao
         'tplograd',
         'infonus',
         'sexo'
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $deParaCamposSimples = array(
+    protected $deParaCamposSimples = [
         'cpftrab' => 'cpfTrab',
         'nistrab' => 'nisTrab',
         'nmtrab' => 'nmTrab',
@@ -96,33 +96,33 @@ class S2300 extends Sugestao
         'cnpjcednt' =>' cnpjCednt',
         'rh02_cedencia' => 'tipo_cedencia',
         'cnpjcednt' => 'cnpjCednt'
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $deParaCamposComplexos = array (
-        'racacor' => array(
-            'racaCor' =>array(
+    protected $deParaCamposComplexos =  [
+        'racacor' => [
+            'racaCor' =>[
                 1 => 'racaCor_1',
                 2 => 'racaCor_2',
                 3 => 'racaCor_3',
                 4 => 'racaCor_4',
                 5 => 'racaCor_5',
                 6 => 'racaCor_6'
-            )
-        ),
-        'estciv' => array(
-            'estCiv' => array(
+            ]
+        ],
+        'estciv' => [
+            'estCiv' => [
                 1 => 'estCiv_1',
                 2 => 'estCiv_2',
                 3 => 'estCiv_3',
                 4 => 'estCiv_4',
                 5 => 'estCiv_5'
-            )
-        ),
-        'categoriacnh' => array (
-            'categoriaCnh' => array (
+            ]
+        ],
+        'categoriacnh' =>  [
+            'categoriaCnh' =>  [
                 'A' => 'categoriaCnh_A',
                 'B' => 'categoriaCnh_B',
                 'C' => 'categoriaCnh_C',
@@ -132,10 +132,10 @@ class S2300 extends Sugestao
                 'AC' => 'categoriaCnh_AC',
                 'AD' => 'categoriaCnh_AD',
                 'AE' => 'categoriaCnh_AE',
-            )
-        ),
-        'grauinstr' => array(
-            'grauInstr'=> array (
+            ]
+        ],
+        'grauinstr' => [
+            'grauInstr'=>  [
                 '01' => 'grauInstr_01',
                 '02' => 'grauInstr_02',
                 '03' => 'grauInstr_03',
@@ -148,10 +148,10 @@ class S2300 extends Sugestao
                 '10' => 'grauInstr_10',
                 '11' => 'grauInstr_11',
                 '12' => 'grauInstr_12',
-            )
-        ),
-        'undsalfixo' => array(
-            'undSalFixo'=> array(
+            ]
+        ],
+        'undsalfixo' => [
+            'undSalFixo'=> [
                 1 => 'undSalFixo_1',
                 2 => 'undSalFixo_2',
                 3 => 'undSalFixo_3',
@@ -159,45 +159,45 @@ class S2300 extends Sugestao
                 5 => 'undSalFixo_5',
                 6 => 'undSalFixo_6',
                 7 => 'undSalFixo_7',
-            )
-        ),
-        'opcfgts' => array(
-            'opcFGTS' => array(
+            ]
+        ],
+        'opcfgts' => [
+            'opcFGTS' => [
                 1 => 'opcFGTS_1',
                 2 => 'opcFGTS_2',
-            )
-        ),
-        'tpregtrab' => array(
-            'tpRegTrab' => array(
+            ]
+        ],
+        'tpregtrab' => [
+            'tpRegTrab' => [
                 1 => 'tpRegTrab_1',
                 2 => 'tpRegTrab_2'
-            )
-        ),
-        'tpregprev' => array(
-            'tpRegPrev' => array(
+            ]
+        ],
+        'tpregprev' => [
+            'tpRegPrev' => [
                 1 => 'tpRegPrev_1',
                 2 => 'tpRegPrev_2',
                 3 => 'tpRegPrev_3',
-            )
-        ),
-        'infonus' => array(
-            'infOnus' => array(
+            ]
+        ],
+        'infonus' => [
+            'infOnus' => [
                 1 => 'infOnus_1',
                 2 => 'infOnus_2',
                 3 => 'infOnus_3',
-            )
-        ),
-        'sexo' => array(
-            'sexo' => array(
+            ]
+        ],
+        'sexo' => [
+            'sexo' => [
                 'M' => 'sexo_M',
                 'F' => 'sexo_F',
-            )
-        )
-    );
+            ]
+        ]
+    ];
 
-    private $dependentes = array(
-        'tpdep' => array(
-            'tpDep' => array(
+    private $dependentes = [
+        'tpdep' => [
+            'tpDep' => [
                 '01' => 'tpDep_01',
                 '02' => 'tpDep_02',
                 '03' => 'tpDep_03',
@@ -208,26 +208,24 @@ class S2300 extends Sugestao
                 '11' => 'tpDep_11',
                 '12' => 'tpDep_12',
                 '99' => 'tpDep_99',
-            )
-        ),
+            ]
+        ],
         'nmdep' => 'nmDep',
         'dtnascto' => 'dtNascto',
         'cpfdep' => 'cpfDep',
-        'sexo' => array(
-            'sexo' => array(
+        'sexo' => [
+            'sexo' => [
                 'M' => 'sexo_M',
                 'F' => 'sexo_F',
-            )
-        )
-    );
+            ]
+        ]
+    ];
 
-    private $matricula;
-
-    public function __construct($matricula)
+    public function __construct(private $matricula)
     {
-        $this->matricula = $matricula;
     }
 
+    #[\Override]
     public function parse()
     {
         if ($this->possuiPreenchimento()) {
@@ -292,7 +290,7 @@ class S2300 extends Sugestao
         $dao = new cl_rhpessoal();
         $rs = db_query($dao->sqlDependentesServidorESocial($this->matricula));
 
-        $dependentes = array();
+        $dependentes = [];
         if ($rs && pg_num_rows($rs) > 0) {
             $dependentes = pg_fetch_all($rs);
         }

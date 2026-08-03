@@ -24,7 +24,7 @@ class ParametrosController extends Controller
             $message = "Registro encontrado";
             $retorno = [
             "separador"    => $parametrosNumeroCadastral->pluck('j180_separadormascara')->pull(0),
-            "configuracao" => json_decode(utf8_encode($parametrosNumeroCadastral->pluck('j180_configuracao')->pull(0)))
+            "configuracao" => json_decode(mb_convert_encoding($parametrosNumeroCadastral->pluck('j180_configuracao')->pull(0), 'UTF-8', 'ISO-8859-1'))
             ];
         }
        
@@ -45,7 +45,7 @@ class ParametrosController extends Controller
                 $parametros->save();
                 $mensagem = 'Configuração salva';
             }
-        } catch (\Exception $erro) {
+        } catch (\Exception) {
             $mensagem = "Não foi possível salvar";
             $status   = 404;
             return new DBJsonResponse(null, $mensagem, $status);

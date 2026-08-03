@@ -55,7 +55,7 @@ try {
                 throw new BusinessException(_M(MENSAGEM . "erro_buscar_selecoes"));
             }
 
-            $aSelecao = array();
+            $aSelecao = [];
 
             $oTipoAssentamento = TipoAssentamentoRepository::getInstanciaPorCodigo($oParam->iTipoAssentamento);
             $oAgendaAssentamento = AgendaAssentamentoRepository::getInstanciaPorTipoAssentamento($oTipoAssentamento);
@@ -77,12 +77,10 @@ try {
         case "buscarServidoresAssentamento":
 
             if (empty($oParam->aMatriculas)) {
-                $oParam->aMatriculas = array();
+                $oParam->aMatriculas = [];
             }
 
-            $aMatriculas = array_map(function ($value) {
-                return $value->sCodigo;
-            }, $oParam->aMatriculas);
+            $aMatriculas = array_map(fn($value) => $value->sCodigo, $oParam->aMatriculas);
 
             $oParam->periodo->dataInicio = trim(str_replace('/', '', $oParam->periodo->dataInicio));
             $oParam->periodo->dataFim = trim(str_replace('/', '', $oParam->periodo->dataFim));
@@ -122,7 +120,7 @@ try {
             }
 
             $aServidores = $aMatriculasServidoresSelecao;
-            $aServidoresComDireito = array();
+            $aServidoresComDireito = [];
 
             foreach ($aServidores as $oServidor) {
 
@@ -273,7 +271,7 @@ try {
                     $stdInformacoesAssentamentos = db_utils::fieldsMemory($rsInformacoesAssentamentos, 0);
 
 
-                    $oDataConcessao = new DBDate(date('Y-m-d', strtotime($stdInformacoesAssentamentos->inicio)));
+                    $oDataConcessao = new DBDate(date('Y-m-d', strtotime((string) $stdInformacoesAssentamentos->inicio)));
                     $oDataTermino = null;
                     $iQuantidadeDias = 0;
 
@@ -283,7 +281,7 @@ try {
                         if (isset($stdInformacoesAssentamentos->faltas)) {
                             $iFaltas = (int)$stdInformacoesAssentamentos->faltas;
                         }
-                        $oDataTermino = new DBDate(date('Y-m-d', strtotime($stdInformacoesAssentamentos->final)));
+                        $oDataTermino = new DBDate(date('Y-m-d', strtotime((string) $stdInformacoesAssentamentos->final)));
                         $oDataTermino = $oDataTermino->adiantarPeriodo($iFaltas, 'd');
                         $iQuantidadeDias = DBDate::getIntervaloEntreDatas($oDataConcessao, $oDataTermino);
                         $iQuantidadeDias = $iQuantidadeDias->format('%a') + 1;

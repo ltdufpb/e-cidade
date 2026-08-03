@@ -40,12 +40,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $codrel = 4; // relatorio de gastos com MDE
 

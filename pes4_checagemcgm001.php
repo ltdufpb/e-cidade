@@ -37,14 +37,14 @@ $oPost        = db_utils::postMemory($_POST);
 $oGet         = db_utils::postMemory($_GET);
 
 $sMensagem    = "Nenhum registro foi encontrado.";
-$aDadosDuplos = array(); 
+$aDadosDuplos = []; 
 
 if (isset($oPost->processar)) {
 		
   try {
   	
     $sNomeArquivoTmp = $_FILES["arquivo"]["tmp_name"];
-    if (substr($_FILES["arquivo"]["type"], -3) != "csv") {
+    if (!str_ends_with((string) $_FILES["arquivo"]["type"], "csv")) {
     
       $sNomeArquivo = $_FILES["arquivo"]["name"];
       throw new Exception("Erro arquivo [{$sNomeArquivo}] inválido para o formato CSV!");

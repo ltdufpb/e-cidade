@@ -56,7 +56,7 @@ class cl_db_sysarqarq
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("db_sysarqarq");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -123,7 +123,7 @@ class cl_db_sysarqarq
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Tabela Pai ($this->codarqpai." - ".$this->codarq) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Tabela Pai já Cadastrado";
@@ -159,16 +159,16 @@ class cl_db_sysarqarq
         $resaco = $this->sql_record($this->sql_query_file($this->codarqpai, $this->codarq));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,2365,'$this->codarqpai','I')");
             $resac = db_query("insert into db_acountkey values($acount,759,'$this->codarq','I')");
-            $resac = db_query("insert into db_acount values($acount,387,2365,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,387,2365,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'codarqpai'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,387,759,'','" . AddSlashes(pg_result(
+            $resac = db_query("insert into db_acount values($acount,387,759,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'codarq'
@@ -183,10 +183,10 @@ class cl_db_sysarqarq
         $this->atualizacampos();
         $sql = " UPDATE db_sysarqarq SET ";
         $virgula = "";
-        if (trim($this->codarqpai) != "" || isset($GLOBALS["HTTP_POST_VARS"]["codarqpai"])) {
+        if (trim((string) $this->codarqpai) != "" || isset($GLOBALS["HTTP_POST_VARS"]["codarqpai"])) {
             $sql .= $virgula . " codarqpai = $this->codarqpai ";
             $virgula = ",";
-            if (trim($this->codarqpai) == null) {
+            if (trim((string) $this->codarqpai) == null) {
                 $this->erro_sql = " Campo Código da Tabela Pai nao Informado.";
                 $this->erro_campo = "codarqpai";
                 $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_db_sysarqarq
                 return false;
             }
         }
-        if (trim($this->codarq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])) {
+        if (trim((string) $this->codarq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])) {
             $sql .= $virgula . " codarq = $this->codarq ";
             $virgula = ",";
-            if (trim($this->codarq) == null) {
+            if (trim((string) $this->codarq) == null) {
                 $this->erro_sql = " Campo Codigo Arquivo nao Informado.";
                 $this->erro_campo = "codarq";
                 $this->erro_banco = "";
@@ -228,19 +228,19 @@ class cl_db_sysarqarq
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,2365,'$this->codarqpai','A')");
                 $resac = db_query("insert into db_acountkey values($acount,759,'$this->codarq','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["codarqpai"])) {
-                    $resac = db_query("insert into db_acount values($acount,387,2365,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,387,2365,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'codarqpai'
                         )) . "','$this->codarqpai'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["codarq"])) {
-                    $resac = db_query("insert into db_acount values($acount,387,759,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,387,759,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'codarq'
@@ -304,16 +304,16 @@ class cl_db_sysarqarq
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,2365,'$codarqpai','E')");
                 $resac = db_query("insert into db_acountkey values($acount,759,'$codarq','E')");
-                $resac = db_query("insert into db_acount values($acount,387,2365,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,387,2365,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'codarqpai'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,387,759,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,387,759,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'codarq'
@@ -401,7 +401,7 @@ class cl_db_sysarqarq
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:db_sysarqarq";
@@ -421,7 +421,7 @@ class cl_db_sysarqarq
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -453,7 +453,7 @@ class cl_db_sysarqarq
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -467,7 +467,7 @@ class cl_db_sysarqarq
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -498,7 +498,7 @@ class cl_db_sysarqarq
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -512,7 +512,7 @@ class cl_db_sysarqarq
     {
         $sql = "select ";
         if ($campos != "*") {
-            $campos_sql = split("#", $campos);
+            $campos_sql = preg_split("#\\##m", $campos);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -544,7 +544,7 @@ class cl_db_sysarqarq
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = split("#", $ordem);
+            $campos_sql = preg_split("#\\##m", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

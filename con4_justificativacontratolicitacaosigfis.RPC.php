@@ -50,7 +50,7 @@ try {
 
             $e60_vlrempInicial = $oParam->e60_vlrempInicial;
             $e60_vlrempFinal   = $oParam->e60_vlrempFinal;
-            $aWhere = array();
+            $aWhere = [];
             $sWhereSub = "";
 
             if ( $oParam->dtInicial != "" && $oParam->dtFinal != "" ) {
@@ -122,7 +122,7 @@ try {
                 throw new Exception("Muitos Registros para o Intervalo de Data Selecionado. \n Diminua para manter um Bom Desempenho do Procedimento.");
             }
 
-            $aEmpenhosRetorno = array();
+            $aEmpenhosRetorno = [];
             if ( $oDaoEmpempenho->numrows > 0 ) {
 
                for ( $iEmpenho = 0; $iEmpenho <  $oDaoEmpempenho->numrows; $iEmpenho++) {

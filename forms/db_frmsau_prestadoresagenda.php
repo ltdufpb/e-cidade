@@ -53,7 +53,7 @@ $clrotulo->label ( "s118_i_codigo" );
 						</td>
 						<td>
 								<?php 
-								$x = array ('C' => 'Consulta', 'E' => 'Exame' );
+								$x =  ['C' => 'Consulta', 'E' => 'Exame' ];
 								db_select ( 's118_c_tipoagenda', $x, true, $db_opcao, "onChange='js_tipo( this.value )';" );
 								?>
 						</td>

@@ -61,7 +61,7 @@ class RegraMovimentacaoEstoqueSaida implements IRegraLancamentoContabil {
     
     $iContaCredito  = $oPlanoContaVPD->getReduzido();
     $iContaDebito   = $oLancamentoAuxiliar->getMaterial()->getGrupo()->getContaAtivo()->getReduzido();
-    $iEstruturalVPD = substr($oPlanoContaVPD->getEstrutural(), 0, 1);
+    $iEstruturalVPD = substr((string) $oPlanoContaVPD->getEstrutural(), 0, 1);
 
     if (empty($iContaCredito) ||
         $iContaCredito == $iContaDebito ||

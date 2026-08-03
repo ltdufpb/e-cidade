@@ -8,55 +8,6 @@ namespace ECidade\Patrimonial\Protocolo\Modelo;
  */
 class Processo
 {
-    /**
-     * @var int
-     */
-    private $codigo;
-    /**
-     * @var string
-     */
-    private $dataCriacao;
-    /**
-     * @var string
-     */
-    private $data;
-    /**
-     * @var string
-     */
-    private $hora;
-    /**
-     * @var string
-     */
-    private $departamento;
-    /**
-     * @var string
-     */
-    private $usuario;
-    /**
-     * @var string
-     */
-    private $login;
-    /**
-     * @var string
-     */
-    private $assunto;
-    /**
-     * @var int
-     */
-    private $codigoDepartamento;
-    /**
-     * @var int
-     */
-    private $codigoUsuario;
-    /**
-     * @var int
-     */
-    private $iNumero;
-    /**
-     * @var int
-     */
-    private $iAno;
-
     private $iPrazoDiasEnvio;
 
 
@@ -75,34 +26,34 @@ class Processo
      * @param $iNumero
      * @param $iAno
      * @param null $iPrazoDiasEnvio
+     * @param int $codigo
+     * @param string $dataCriacao
+     * @param string $data
+     * @param string $hora
+     * @param string $departamento
+     * @param string $usuario
+     * @param string $login
+     * @param string $assunto
+     * @param int $codigoDepartamento
+     * @param int $codigoUsuario
+     * @param int $iNumero
+     * @param int $iAno
      */
     public function __construct(
-        $codigo,
-        $dataCriacao,
-        $data,
-        $hora,
-        $departamento,
-        $usuario,
-        $login,
-        $assunto,
-        $codigoDepartamento,
-        $codigoUsuario,
-        $iNumero,
-        $iAno,
+        private $codigo,
+        private $dataCriacao,
+        private $data,
+        private $hora,
+        private $departamento,
+        private $usuario,
+        private $login,
+        private $assunto,
+        private $codigoDepartamento,
+        private $codigoUsuario,
+        private $iNumero,
+        private $iAno,
         $iPrazoDiasEnvio = null
     ) {
-        $this->codigo = $codigo;
-        $this->dataCriacao = $dataCriacao;
-        $this->data = $data;
-        $this->hora = $hora;
-        $this->departamento = $departamento;
-        $this->usuario = $usuario;
-        $this->login = $login;
-        $this->assunto = $assunto;
-        $this->codigoDepartamento = $codigoDepartamento;
-        $this->codigoUsuario = $codigoUsuario;
-        $this->iNumero = $iNumero;
-        $this->iAno = $iAno;
         $this->iPrazoDiasEnvio = $iPrazoDiasEnvio;
     }
 

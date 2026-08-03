@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_procdetalhe_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_procdetalhe = new cl_sau_procdetalhe;
 $clsau_procdetalhe->rotulo->label("sd74_i_codigo");
 $clsau_procdetalhe->rotulo->label("sd74_i_procedimento");
@@ -98,9 +98,9 @@ $clsau_procdetalhe->rotulo->label("sd74_i_procedimento");
         }else{
            $sql = $clsau_procdetalhe->sql_query("",$campos,"sd74_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd74_i_procedimento)){
-          $repassa = array("chave_sd74_i_codigo"=>$chave_sd74_i_codigo,"chave_sd74_i_procedimento"=>$chave_sd74_i_procedimento);
+          $repassa = ["chave_sd74_i_codigo"=>$chave_sd74_i_codigo,"chave_sd74_i_procedimento"=>$chave_sd74_i_procedimento];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

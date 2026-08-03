@@ -2,7 +2,7 @@
 // quando não for guaiba  
 
     $data= date("Y-m-d",db_getsession("DB_datausu")); 	
-    $data=split('-',$data);
+    $data=preg_split('#\-#m',$data);
     $dia=$data[2];
     $mes=$data[1];
     $ano=$data[0];
@@ -37,12 +37,12 @@
     $this->objpdf->roundedrect($xcol, $xlin +2, $xcol +198, 20, 2, 'DF', '1234');
 		$this->objpdf->Setfont('Arial', 'B', 8);
 		$this->objpdf->text($xcol +2, $xlin +7, 'Numcgm'   );
-		$this->objpdf->text($xcol +45, $xlin +7, (strlen($this->cnpj) == 11 ? 'CPF' : 'CNPJ'));
+		$this->objpdf->text($xcol +45, $xlin +7, (strlen((string) $this->cnpj) == 11 ? 'CPF' : 'CNPJ'));
 		$this->objpdf->text($xcol +2, $xlin +11, 'Credor');
 		$this->objpdf->text($xcol +2, $xlin +15, 'Valor');
 		
 		$this->objpdf->text($xcol +20, $xlin +7, ': '.$this->numcgm);
-		$this->objpdf->text($xcol +55, $xlin +7, ': '. (strlen($this->cnpj) == 11 ? db_formatar($this->cnpj, 'cpf') : db_formatar($this->cnpj, 'cnpj')));
+		$this->objpdf->text($xcol +55, $xlin +7, ': '. (strlen((string) $this->cnpj) == 11 ? db_formatar($this->cnpj, 'cpf') : db_formatar($this->cnpj, 'cnpj')));
 		$this->objpdf->text($xcol +20, $xlin +11, ': '.$this->nome);
 		$this->objpdf->text($xcol +20, $xlin +15, ': '.db_formatar($this->valor, 'f'));
 
@@ -56,7 +56,7 @@
     $this->objpdf->multicell(190,4,$this->historico,0,"J",0,0);
     
 		$this->objpdf->Setfont('Arial', '', 8);
-		$this->objpdf->text($xcol +2, $xlin +70, ucfirst($this->municpref).', '.$data);
+		$this->objpdf->text($xcol +2, $xlin +70, ucfirst((string) $this->municpref).', '.$data);
 
     $this->objpdf->setleftmargin(10);
     $this->objpdf->sety($xlin+85);

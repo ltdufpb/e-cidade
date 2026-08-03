@@ -44,14 +44,12 @@ use Cgs;
  */
 class ItemRequisicaoService
 {
-    private $repositorio;
     /**
      * ItemRequisicaoService constructor.
      * @param ItemRequisicaoRepository $repositorio
      */
-    public function __construct(ItemRequisicaoRepository $repositorio)
+    public function __construct(private readonly ItemRequisicaoRepository $repositorio)
     {
-        $this->repositorio = $repositorio;
     }
 
     /**
@@ -61,18 +59,18 @@ class ItemRequisicaoService
     {
 
         $itemRequisicao = new ItemRequisicao();
-        $itemRequisicao->setCodigo(isset($parametros->la21_i_codigo) ? $parametros->la21_i_codigo : '');
-        $itemRequisicao->setRequisicao(isset($parametros->la21_i_requisicao) ? $parametros->la21_i_requisicao : '');
-        $itemRequisicao->setDataEntrega(isset($parametros->la21_d_entrega) ? $parametros->la21_d_entrega : '');
-        $itemRequisicao->setDataCadastro(isset($parametros->la21_d_data) ? $parametros->la21_d_data : '');
-        $itemRequisicao->setHoraCadastro(isset($parametros->la21_c_hora) ? $parametros->la21_c_hora : '');
-        $itemRequisicao->setCodigoSetor(isset($parametros->la21_i_setorexame) ? $parametros->la21_i_setorexame : '');
-        $itemRequisicao->setHoraCadastro(isset($parametros->sd24_c_cadastro) ? $parametros->sd24_c_cadastro : '');
-        $itemRequisicao->setEmergencia(isset($parametros->la21_i_emergencia) ? $parametros->la21_i_emergencia : '');
-        $itemRequisicao->setSituacao(isset($parametros->la21_c_situacao) ? $parametros->la21_c_situacao : '');
-        $itemRequisicao->setQuantidade(isset($parametros->la21_i_quantidade) ? $parametros->la21_i_quantidade : '');
-        $itemRequisicao->setObservacao(isset($parametros->la21_observacao) ? $parametros->la21_observacao : '');
-        $itemRequisicao->setMotivo(isset($parametros->la21_motivonovacoleta) ? $parametros->la21_motivonovacoleta : '');
+        $itemRequisicao->setCodigo($parametros->la21_i_codigo ?? '');
+        $itemRequisicao->setRequisicao($parametros->la21_i_requisicao ?? '');
+        $itemRequisicao->setDataEntrega($parametros->la21_d_entrega ?? '');
+        $itemRequisicao->setDataCadastro($parametros->la21_d_data ?? '');
+        $itemRequisicao->setHoraCadastro($parametros->la21_c_hora ?? '');
+        $itemRequisicao->setCodigoSetor($parametros->la21_i_setorexame ?? '');
+        $itemRequisicao->setHoraCadastro($parametros->sd24_c_cadastro ?? '');
+        $itemRequisicao->setEmergencia($parametros->la21_i_emergencia ?? '');
+        $itemRequisicao->setSituacao($parametros->la21_c_situacao ?? '');
+        $itemRequisicao->setQuantidade($parametros->la21_i_quantidade ?? '');
+        $itemRequisicao->setObservacao($parametros->la21_observacao ?? '');
+        $itemRequisicao->setMotivo($parametros->la21_motivonovacoleta ?? '');
 
         $itemRequisicao = $this->repositorio->salvar($itemRequisicao);
 
@@ -85,18 +83,18 @@ class ItemRequisicaoService
     public function regredirSituacao($parametros, $situacaoNova, $situacaoAntiga, $codigoRequisicao)
     {
         $itemRequisicao = new ItemRequisicao();
-        $itemRequisicao->setCodigo(isset($parametros->la21_i_codigo) ? $parametros->la21_i_codigo : '');
-        $itemRequisicao->setRequisicao(isset($parametros->la21_i_requisicao) ? $parametros->la21_i_requisicao : '');
-        $itemRequisicao->setDataEntrega(isset($parametros->la21_d_entrega) ? $parametros->la21_d_entrega : '');
-        $itemRequisicao->setDataCadastro(isset($parametros->la21_d_data) ? $parametros->la21_d_data : '');
-        $itemRequisicao->setHoraCadastro(isset($parametros->la21_c_hora) ? $parametros->la21_c_hora : '');
-        $itemRequisicao->setCodigoSetor(isset($parametros->la21_i_setorexame) ? $parametros->la21_i_setorexame : '');
-        $itemRequisicao->setHoraCadastro(isset($parametros->sd24_c_cadastro) ? $parametros->sd24_c_cadastro : '');
-        $itemRequisicao->setEmergencia(isset($parametros->la21_i_emergencia) ? $parametros->la21_i_emergencia : '');
-        $itemRequisicao->setSituacao(isset($parametros->la21_c_situacao) ? $parametros->la21_c_situacao : '');
-        $itemRequisicao->setQuantidade(isset($parametros->la21_i_quantidade) ? $parametros->la21_i_quantidade : '');
-        $itemRequisicao->setObservacao(isset($parametros->la21_observacao) ? $parametros->la21_observacao : '');
-        $itemRequisicao->setMotivo(isset($parametros->la21_motivonovacoleta) ? $parametros->la21_motivonovacoleta : '');
+        $itemRequisicao->setCodigo($parametros->la21_i_codigo ?? '');
+        $itemRequisicao->setRequisicao($parametros->la21_i_requisicao ?? '');
+        $itemRequisicao->setDataEntrega($parametros->la21_d_entrega ?? '');
+        $itemRequisicao->setDataCadastro($parametros->la21_d_data ?? '');
+        $itemRequisicao->setHoraCadastro($parametros->la21_c_hora ?? '');
+        $itemRequisicao->setCodigoSetor($parametros->la21_i_setorexame ?? '');
+        $itemRequisicao->setHoraCadastro($parametros->sd24_c_cadastro ?? '');
+        $itemRequisicao->setEmergencia($parametros->la21_i_emergencia ?? '');
+        $itemRequisicao->setSituacao($parametros->la21_c_situacao ?? '');
+        $itemRequisicao->setQuantidade($parametros->la21_i_quantidade ?? '');
+        $itemRequisicao->setObservacao($parametros->la21_observacao ?? '');
+        $itemRequisicao->setMotivo($parametros->la21_motivonovacoleta ?? '');
         
         if ($parametros->la21_i_codigo) {
             if ($situacaoNova < "70 - Entregue" && $situacaoAntiga == "70 - Entregue") {

@@ -44,8 +44,8 @@ $iCodigoPeriodo    = $periodo;
 $sListaInstituicao = str_replace('-', ', ', $db_selinstit);
 db_app::import("contabilidade.relatorios.AnexoXIIIBalancoGeral");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 
 $resultinst = db_query("select codigo, nomeinst, nomeinstabrev 
@@ -54,10 +54,10 @@ $resultinst = db_query("select codigo, nomeinst, nomeinstabrev
 $descr_inst = '';
 $xvirg      = '';
 $flag_abrev = false;
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
 	
   db_fieldsmemory($resultinst, $xins);
-  if (strlen(trim($nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $nomeinstabrev)) > 0) {
     
     $descr_inst .= $xvirg.$nomeinstabrev;
     $flag_abrev  = true;
@@ -245,7 +245,7 @@ if ( isset($aLinhas[20]) || isset($aLinhas[41]) ) {
       $sBold = "";
     }
   
-    if ( in_array($iIndice,array(20,21) )) {
+    if ( in_array($iIndice,[20,21] )) {
       
       if ($iIndice == 20) {
   
@@ -267,7 +267,7 @@ if ( isset($aLinhas[20]) || isset($aLinhas[41]) ) {
           
             $oPdf->setfont('arial','', $iFonte);
             $iNivelLinhasAtivas = $oDadosRelatorio->nivellinha + 2;       
-            $oPdf->cell($iColunaDescr, $iAlt, setIdentacao($iNivelLinhasAtivas).ucwords(strtolower($oDadosContaAtivas->descricao)), 0, 0, "L", 0, '', '.');
+            $oPdf->cell($iColunaDescr, $iAlt, setIdentacao($iNivelLinhasAtivas).ucwords(strtolower((string) $oDadosContaAtivas->descricao)), 0, 0, "L", 0, '', '.');
             $oPdf->cell($iColunaValor, $iAlt, db_formatar($oDadosContaAtivas->valor,'f')                        , 0, 1, "R", 0);          
           }
         }
@@ -278,7 +278,7 @@ if ( isset($aLinhas[20]) || isset($aLinhas[41]) ) {
   
   
     // Imprime a coluna Interferencias PASSIVAS
-    if ( in_array($iIndice,array(41,42) )) {
+    if ( in_array($iIndice,[41,42] )) {
            
        if ($iIndice == 41) {
          
@@ -301,7 +301,7 @@ if ( isset($aLinhas[20]) || isset($aLinhas[41]) ) {
              $oPdf->setfont('arial','', $iFonte);
              $oPdf->SetX(100);
              $iIdentacaoPassiva = $oDadosRelatorio->nivellinha + 2;
-             $oPdf->cell($iColunaDescr, $iAlt, setIdentacao($iIdentacaoPassiva).ucwords(strtolower($oDadosContaPassiva->descricao)), 0, 0, "L", 0, '', '.');
+             $oPdf->cell($iColunaDescr, $iAlt, setIdentacao($iIdentacaoPassiva).ucwords(strtolower((string) $oDadosContaPassiva->descricao)), 0, 0, "L", 0, '', '.');
              $oPdf->cell($iColunaValor, $iAlt, db_formatar($oDadosContaPassiva->valor,'f')                                         , 0, 1, "R", 0);
            }
          }
@@ -348,7 +348,7 @@ foreach ($aLinhas as $iIndice => $oDadosRelatorio) {
   }  
   
   // Coluna Acrescimos Patrimoniais
-  if (in_array($iIndice,array(23,24))) {
+  if (in_array($iIndice,[23,24])) {
     
     if ($iIndice == 23) {
       
@@ -369,7 +369,7 @@ foreach ($aLinhas as $iIndice => $oDadosRelatorio) {
         
           $oPdf->setfont('arial','', $iFonte);
           $iIdentacaoAcrescimo = $oDadosRelatorio->nivellinha + 2;
-          $oPdf->cell($iColunaDescr, $iAlt, setIdentacao($iIdentacaoAcrescimo).ucwords(strtolower($oDadosAcrescimo->descricao)), 0, 0, "L", 0, '', '.');
+          $oPdf->cell($iColunaDescr, $iAlt, setIdentacao($iIdentacaoAcrescimo).ucwords(strtolower((string) $oDadosAcrescimo->descricao)), 0, 0, "L", 0, '', '.');
           $oPdf->cell($iColunaValor, $iAlt, db_formatar($oDadosAcrescimo->valor,'f')                        , 0, 1, "R", 0);          
         }
       }
@@ -378,7 +378,7 @@ foreach ($aLinhas as $iIndice => $oDadosRelatorio) {
   }
   
   // Coluna Descrescimos Patrimoniais
-  if ( in_array($iIndice,array(44,45) )) {
+  if ( in_array($iIndice,[44,45] )) {
 
     if ($iIndice == 44) {
        // Imprime Titulo
@@ -400,7 +400,7 @@ foreach ($aLinhas as $iIndice => $oDadosRelatorio) {
            $oPdf->SetX(100);
            $iIdentacaoDecrescimo = $oDadosRelatorio->nivellinha + 2;
            $oPdf->cell($iColunaDescr, $iAlt, setIdentacao($iIdentacaoDecrescimo).
-                                             ucwords(strtolower($oDadosDecrescimo->descricao)), 0, 0, "L", 0, '', '.');
+                                             ucwords(strtolower((string) $oDadosDecrescimo->descricao)), 0, 0, "L", 0, '', '.');
            $oPdf->cell($iColunaValor, $iAlt, db_formatar($oDadosDecrescimo->valor,'f')        , 0, 1, "R", 0);
          }
        }
@@ -443,7 +443,7 @@ foreach ($aLinhas as $iIndice => $oDadosRelatorio) {
   }
   
   // Imprime Coluna Receita Extra-Orçamentária
-  if (in_array($iIndice,array(26,27,28,29,30))) {
+  if (in_array($iIndice,[26,27,28,29,30])) {
     
     if ($iIndice == 26) {
       
@@ -462,7 +462,7 @@ foreach ($aLinhas as $iIndice => $oDadosRelatorio) {
   }
   
   // Imprime Coluna Despesa Extra-Orçamentária
-  if (in_array($iIndice,array(47,48,49,50,51))) {
+  if (in_array($iIndice,[47,48,49,50,51])) {
     if ($iIndice == 47) {
        // Imprime Titulo
        $oPdf->SetY($iYInicial);
@@ -510,7 +510,7 @@ foreach ($aLinhas as $iIndice => $oDadosRelatorio) {
   }
   
   // Imprime Coluna Saldo Exercicio Anterior
-  if (in_array($iIndice,array(32,33,34,35,36))) {
+  if (in_array($iIndice,[32,33,34,35,36])) {
     
     if ($iIndice == 32) {
       
@@ -529,7 +529,7 @@ foreach ($aLinhas as $iIndice => $oDadosRelatorio) {
   }
   
   // Imprime Coluna Despesa Extra-Orçamentária
-  if (in_array($iIndice,array(53,54,55,56,57))) {
+  if (in_array($iIndice,[53,54,55,56,57])) {
     if ($iIndice == 53) {
        // Imprime Titulo
        $oPdf->SetY($iYInicial);

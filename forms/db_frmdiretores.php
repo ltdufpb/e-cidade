@@ -70,7 +70,7 @@ db_input('z01_nome2',50,$z01_nome,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('VICE-DIRETOR'=>'VICE-DIRETOR','DIRETOR'=>'DIRETOR');
+$x = ['VICE-DIRETOR'=>'VICE-DIRETOR','DIRETOR'=>'DIRETOR'];
 db_select('ed15_c_categoria',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -154,7 +154,7 @@ function js_preenchepesquisa(chave){
   db_iframe_diretores.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

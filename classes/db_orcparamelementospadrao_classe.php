@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE orcparamelementospadrao
 class cl_orcparamelementospadrao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o132_sequencial = 0; 
-   var $o132_orcparamrel = 0; 
-   var $o132_orcparamseq = 0; 
-   var $o132_orcelemento = 0; 
-   var $o132_anousu = 0; 
-   var $o132_instit = 0; 
-   var $o132_exclusao = 'f'; 
+   public $o132_sequencial = 0; 
+   public $o132_orcparamrel = 0; 
+   public $o132_orcparamseq = 0; 
+   public $o132_orcelemento = 0; 
+   public $o132_anousu = 0; 
+   public $o132_instit = 0; 
+   public $o132_exclusao = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o132_sequencial = int4 = Código Sequencial 
                  o132_orcparamrel = int4 = Código do Relatório 
                  o132_orcparamseq = int4 = Sequencia da Linha 
@@ -60,10 +60,10 @@ class cl_orcparamelementospadrao {
                  o132_exclusao = bool = Elemento de Exclusão 
                  ";
    //funcao construtor da classe 
-   function cl_orcparamelementospadrao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcparamelementospadrao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -155,10 +155,10 @@ class cl_orcparamelementospadrao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o132_sequencial = pg_result($result,0,0); 
+       $this->o132_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from orcparamelementospadrao_o132_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o132_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o132_sequencial)){
          $this->erro_sql = " Campo o132_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -198,7 +198,7 @@ class cl_orcparamelementospadrao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Configuração Padrao dos Elementos ($this->o132_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Configuração Padrao dos Elementos já Cadastrado";
@@ -222,16 +222,16 @@ class cl_orcparamelementospadrao {
      $resaco = $this->sql_record($this->sql_query_file($this->o132_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15417,'$this->o132_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2706,15417,'','".AddSlashes(pg_result($resaco,0,'o132_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2706,15418,'','".AddSlashes(pg_result($resaco,0,'o132_orcparamrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2706,15419,'','".AddSlashes(pg_result($resaco,0,'o132_orcparamseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2706,15420,'','".AddSlashes(pg_result($resaco,0,'o132_orcelemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2706,15421,'','".AddSlashes(pg_result($resaco,0,'o132_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2706,15422,'','".AddSlashes(pg_result($resaco,0,'o132_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2706,15423,'','".AddSlashes(pg_result($resaco,0,'o132_exclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2706,15417,'','".AddSlashes(pg_fetch_result($resaco,0,'o132_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2706,15418,'','".AddSlashes(pg_fetch_result($resaco,0,'o132_orcparamrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2706,15419,'','".AddSlashes(pg_fetch_result($resaco,0,'o132_orcparamseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2706,15420,'','".AddSlashes(pg_fetch_result($resaco,0,'o132_orcelemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2706,15421,'','".AddSlashes(pg_fetch_result($resaco,0,'o132_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2706,15422,'','".AddSlashes(pg_fetch_result($resaco,0,'o132_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2706,15423,'','".AddSlashes(pg_fetch_result($resaco,0,'o132_exclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -240,10 +240,10 @@ class cl_orcparamelementospadrao {
       $this->atualizacampos();
      $sql = " update orcparamelementospadrao set ";
      $virgula = "";
-     if(trim($this->o132_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_sequencial"])){ 
+     if(trim((string) $this->o132_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_sequencial"])){ 
        $sql  .= $virgula." o132_sequencial = $this->o132_sequencial ";
        $virgula = ",";
-       if(trim($this->o132_sequencial) == null ){ 
+       if(trim((string) $this->o132_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o132_sequencial";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_orcparamrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamrel"])){ 
+     if(trim((string) $this->o132_orcparamrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamrel"])){ 
        $sql  .= $virgula." o132_orcparamrel = $this->o132_orcparamrel ";
        $virgula = ",";
-       if(trim($this->o132_orcparamrel) == null ){ 
+       if(trim((string) $this->o132_orcparamrel) == null ){ 
          $this->erro_sql = " Campo Código do Relatório nao Informado.";
          $this->erro_campo = "o132_orcparamrel";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_orcparamseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamseq"])){ 
+     if(trim((string) $this->o132_orcparamseq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamseq"])){ 
        $sql  .= $virgula." o132_orcparamseq = $this->o132_orcparamseq ";
        $virgula = ",";
-       if(trim($this->o132_orcparamseq) == null ){ 
+       if(trim((string) $this->o132_orcparamseq) == null ){ 
          $this->erro_sql = " Campo Sequencia da Linha nao Informado.";
          $this->erro_campo = "o132_orcparamseq";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_orcelemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcelemento"])){ 
+     if(trim((string) $this->o132_orcelemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_orcelemento"])){ 
        $sql  .= $virgula." o132_orcelemento = $this->o132_orcelemento ";
        $virgula = ",";
-       if(trim($this->o132_orcelemento) == null ){ 
+       if(trim((string) $this->o132_orcelemento) == null ){ 
          $this->erro_sql = " Campo Código do Elemento nao Informado.";
          $this->erro_campo = "o132_orcelemento";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_anousu"])){ 
+     if(trim((string) $this->o132_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_anousu"])){ 
        $sql  .= $virgula." o132_anousu = $this->o132_anousu ";
        $virgula = ",";
-       if(trim($this->o132_anousu) == null ){ 
+       if(trim((string) $this->o132_anousu) == null ){ 
          $this->erro_sql = " Campo Ano da Configuração nao Informado.";
          $this->erro_campo = "o132_anousu";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_instit"])){ 
+     if(trim((string) $this->o132_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_instit"])){ 
        $sql  .= $virgula." o132_instit = $this->o132_instit ";
        $virgula = ",";
-       if(trim($this->o132_instit) == null ){ 
+       if(trim((string) $this->o132_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "o132_instit";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_orcparamelementospadrao {
          return false;
        }
      }
-     if(trim($this->o132_exclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_exclusao"])){ 
+     if(trim((string) $this->o132_exclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o132_exclusao"])){ 
        $sql  .= $virgula." o132_exclusao = '$this->o132_exclusao' ";
        $virgula = ",";
-       if(trim($this->o132_exclusao) == null ){ 
+       if(trim((string) $this->o132_exclusao) == null ){ 
          $this->erro_sql = " Campo Elemento de Exclusão nao Informado.";
          $this->erro_campo = "o132_exclusao";
          $this->erro_banco = "";
@@ -339,23 +339,23 @@ class cl_orcparamelementospadrao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15417,'$this->o132_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o132_sequencial"]) || $this->o132_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2706,15417,'".AddSlashes(pg_result($resaco,$conresaco,'o132_sequencial'))."','$this->o132_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2706,15417,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o132_sequencial'))."','$this->o132_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamrel"]) || $this->o132_orcparamrel != "")
-           $resac = db_query("insert into db_acount values($acount,2706,15418,'".AddSlashes(pg_result($resaco,$conresaco,'o132_orcparamrel'))."','$this->o132_orcparamrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2706,15418,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o132_orcparamrel'))."','$this->o132_orcparamrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o132_orcparamseq"]) || $this->o132_orcparamseq != "")
-           $resac = db_query("insert into db_acount values($acount,2706,15419,'".AddSlashes(pg_result($resaco,$conresaco,'o132_orcparamseq'))."','$this->o132_orcparamseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2706,15419,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o132_orcparamseq'))."','$this->o132_orcparamseq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o132_orcelemento"]) || $this->o132_orcelemento != "")
-           $resac = db_query("insert into db_acount values($acount,2706,15420,'".AddSlashes(pg_result($resaco,$conresaco,'o132_orcelemento'))."','$this->o132_orcelemento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2706,15420,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o132_orcelemento'))."','$this->o132_orcelemento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o132_anousu"]) || $this->o132_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,2706,15421,'".AddSlashes(pg_result($resaco,$conresaco,'o132_anousu'))."','$this->o132_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2706,15421,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o132_anousu'))."','$this->o132_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o132_instit"]) || $this->o132_instit != "")
-           $resac = db_query("insert into db_acount values($acount,2706,15422,'".AddSlashes(pg_result($resaco,$conresaco,'o132_instit'))."','$this->o132_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2706,15422,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o132_instit'))."','$this->o132_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o132_exclusao"]) || $this->o132_exclusao != "")
-           $resac = db_query("insert into db_acount values($acount,2706,15423,'".AddSlashes(pg_result($resaco,$conresaco,'o132_exclusao'))."','$this->o132_exclusao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2706,15423,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o132_exclusao'))."','$this->o132_exclusao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -400,16 +400,16 @@ class cl_orcparamelementospadrao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15417,'$o132_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2706,15417,'','".AddSlashes(pg_result($resaco,$iresaco,'o132_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2706,15418,'','".AddSlashes(pg_result($resaco,$iresaco,'o132_orcparamrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2706,15419,'','".AddSlashes(pg_result($resaco,$iresaco,'o132_orcparamseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2706,15420,'','".AddSlashes(pg_result($resaco,$iresaco,'o132_orcelemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2706,15421,'','".AddSlashes(pg_result($resaco,$iresaco,'o132_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2706,15422,'','".AddSlashes(pg_result($resaco,$iresaco,'o132_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2706,15423,'','".AddSlashes(pg_result($resaco,$iresaco,'o132_exclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2706,15417,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o132_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2706,15418,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o132_orcparamrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2706,15419,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o132_orcparamseq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2706,15420,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o132_orcelemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2706,15421,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o132_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2706,15422,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o132_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2706,15423,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o132_exclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcparamelementospadrao
@@ -469,7 +469,7 @@ class cl_orcparamelementospadrao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcparamelementospadrao";
@@ -484,7 +484,7 @@ class cl_orcparamelementospadrao {
    function sql_query ( $o132_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_orcparamelementospadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -522,7 +522,7 @@ class cl_orcparamelementospadrao {
    function sql_query_file ( $o132_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -543,7 +543,7 @@ class cl_orcparamelementospadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

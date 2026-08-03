@@ -55,7 +55,7 @@ class BeneficioTermino extends \BaseClassRepository
      */
     public static function buscarBeneficiarios(DBCompetencia $competencia, $servidores = null, $selecao = null)
     {
-        $retorno = array();
+        $retorno = [];
         $codigoInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
 
         $dataInicio = $competencia->getDataDeInicio()->getDate();

@@ -52,7 +52,7 @@ try {
 
       $oLicitacao      = new licitacao($oParam->iCodigoLicitacao);
       $aItensLicitacao = $oLicitacao->getItens();
-      $aItensAgrupados = array();
+      $aItensAgrupados = [];
 
       foreach ($aItensLicitacao as $oItemLicitacao) {
 
@@ -75,7 +75,7 @@ try {
           $aItensAgrupados[$iCodigo]->descricao = $oItemSolicitacao->getDescricaoMaterial();
           $aItensAgrupados[$iCodigo]->quantidade = 0;
           $aItensAgrupados[$iCodigo]->reservado = 0;
-          $aItensAgrupados[$iCodigo]->aQuantidades = array();
+          $aItensAgrupados[$iCodigo]->aQuantidades = [];
         }
 
         array_push($aItensAgrupados[$iCodigo]->aQuantidades, $oItemSolicitacao->getQuantidade());

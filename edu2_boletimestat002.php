@@ -56,7 +56,7 @@ $rs      = $oDaoEduParametros->sql_record($sSql);
 if ($oDaoEduParametros->numrows > 0) {
 
   $oDadosParametros = db_utils::fieldsmemory($rs, 0);
-  if (!strstr($oDadosParametros->ed233_c_limitemov,"/")) {
+  if (!strstr((string) $oDadosParametros->ed233_c_limitemov,"/")) {
 
     ?>
     <table width='100%'>
@@ -66,7 +66,7 @@ if ($oDaoEduParametros->numrows > 0) {
         <b>Parâmetro Dia/Mês Limite da Movimentação (Procedimentos->Parâmetros)<br>
            deve estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2)<br><br>
            Valor atual do parâmetro Dia/Mês Limite da Movimentação:
-           <?= trim($oDadosParametros->ed233_c_limitemov) == "" ? "Não informado"
+           <?= trim((string) $oDadosParametros->ed233_c_limitemov) == "" ? "Não informado"
              :$oDadosParametros->ed233_c_limitemov
            ?><br>
         <input type='button' value='Fechar' onclick='window.close()'>
@@ -78,7 +78,7 @@ if ($oDaoEduParametros->numrows > 0) {
     exit;
   }
 
-  $aLimiteMov     = explode("/", $oDadosParametros->ed233_c_limitemov);
+  $aLimiteMov     = explode("/", (string) $oDadosParametros->ed233_c_limitemov);
   $iDiaLimiteMov  = $aLimiteMov[0];
   $iMesLimiteMov  = $aLimiteMov[1];
 
@@ -91,7 +91,7 @@ if ($oDaoEduParametros->numrows > 0) {
         <b>Parâmetro Dia/Mês Limite da Movimentação (Procedimentos->Parâmetros)<br>
            deve estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2) e deve ser uma data válida.<br><br>
            Valor atual do parâmetro Dia/Mês Limite da Movimentação:
-           <?= trim($oDadosParametros->ed233_c_limitemov) == "" ? "Não informado"
+           <?= trim((string) $oDadosParametros->ed233_c_limitemov) == "" ? "Não informado"
              :$oDadosParametros->ed233_c_limitemov
            ?><br>
            Data Limite da Movimentação: <?= $iDiaLimiteMov."/".$iMesLimiteMov."/".$oDadosCalendario->ano_calendario
@@ -576,7 +576,7 @@ if ($sImprimeLista == "yes") {
       $oPdf->cell(10, 4, $oDadosMatricula->ed47_i_codigo, 0, 0, "C", 0);
       $oPdf->cell(60, 4, $oDadosMatricula->ed47_v_nome, 0, 0, "L", 0);
       $oPdf->cell(10, 4, $oDadosMatricula->ed47_v_sexo, 0, 0, "C", 0);
-      $oPdf->cell(30, 4, substr($oDadosMatricula->ed57_c_descr, 0, 15), 0, 0, "C", 0);
+      $oPdf->cell(30, 4, substr((string) $oDadosMatricula->ed57_c_descr, 0, 15), 0, 0, "C", 0);
       $oPdf->cell(30, 4, $oDadosMatricula->ed11_c_descr, 0, 0, "C", 0);
       $oPdf->cell(20, 4, $oDadosMatricula->ed15_c_nome, 0, 0, "C", 0);
       $oPdf->cell(20, 4, db_formatar($oDadosMatricula->ed60_d_datamatricula, 'd'), 0, 1, "C", 0);

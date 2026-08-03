@@ -185,7 +185,7 @@ if(!isset($anof)){
           </td>
         </tr>
 
-      <tr id="quebrapg" style='display:<?php isset($display) ? $display : '';?>'>
+      <tr id="quebrapg" style='display:<?php $display ?? '';?>'>
         <td>
           <strong>Quebrar por Servidor:</strong>
         </td>
@@ -203,7 +203,7 @@ if(!isset($anof)){
         </td>
         <td>
           <?php 
-            $xcad = array("a"=>"Atual","p"=>"Período Inicial");
+            $xcad = ["a"=>"Atual","p"=>"Período Inicial"];
             db_select('mes_dados',$xcad,true,4,"");
           ?>
         </td>

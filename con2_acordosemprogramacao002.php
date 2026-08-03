@@ -33,13 +33,13 @@ const VIGENTE = 1;
 const PERIODO = 3;
 
 
-$acordosDepartamento = array();
+$acordosDepartamento = [];
 
 try {
-    $where = array(
+    $where = [
         'not exists (select 1 from acordoprogramacaofinanceira where ac34_acordo = ac16_sequencial)',
         "db_config.codigo = " . db_getsession("DB_instit")
-    );
+    ];
 
     if ($_GET['tipoVigencia'] == VIGENTE) {
         $where[] = "'". date('Y-m-d') ."' between ac16_datainicio and ac16_datafim ";
@@ -63,7 +63,7 @@ try {
         }
     }
 
-    $campos = array(
+    $campos = [
         'ac16_anousu',
         'ac16_numero',
         'ac16_resumoobjeto as resumo',
@@ -73,7 +73,7 @@ try {
         'ac16_datafim as fim',
         'coddepto',
         'descrdepto',
-    );
+    ];
 
     $ordem = 'inicio, fim, ac16_anousu, ac16_numero';
     $daoAcordo = new cl_acordo;
@@ -98,7 +98,7 @@ try {
         if (!array_key_exists($acordoDepartamento->coddepto, $acordosDepartamento)) {
             $departamento = new stdClass();
             $departamento->departamento = $acordoDepartamento->descrdepto;
-            $departamento->acordos = array();
+            $departamento->acordos = [];
             $acordosDepartamento[$acordoDepartamento->coddepto] = $departamento;
         }
 
@@ -114,18 +114,11 @@ try {
 }
 
 $head1 = 'CONTRATOS SEM PROGRAMAÇÃO DE COMPETÊNCIA';
-switch ($_GET['tipoVigencia']) {
-    case 1:
-        $head2 = "Contratos: Vigentes";
-        break;
-    case 3:
-        $head2 = "Contratos: Período";
-        // $head3 = "Vigência: ";
-        break;
-    default:
-        $head2 = "Contratos: Todos";
-        break;
-}
+$head2 = match ($_GET['tipoVigencia']) {
+    1 => "Contratos: Vigentes",
+    3 => "Contratos: Período",
+    default => "Contratos: Todos",
+};
 
 $pdf = new FpdfMultiCellBorder();
 

@@ -60,10 +60,10 @@
         <td>
           <?php
 
-            $a = array(1 => 'NENHUM',
+            $a = [1 => 'NENHUM',
                        2 => 'LICENÇA',
                        3 => 'FALTA ABONADA',
-                       4 => 'FALTA NÃO JUSTIFICADA');
+                       4 => 'FALTA NÃO JUSTIFICADA'];
             db_select('ed320_tipo', $a, true, $db_opcao);
           ?>
         </td>
@@ -82,7 +82,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tipoausencia.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

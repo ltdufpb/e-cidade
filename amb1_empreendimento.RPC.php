@@ -68,7 +68,7 @@ try {
         $oDadosEmpreendedor = new StdClass();
         $oDadosEmpreendedor->isFisico      = true;
         $oDadosEmpreendedor->z01_numcgm    = $oCgmEmpreendedor->getCodigo();
-        $oDadosEmpreendedor->z01_nome      = utf8_encode($oCgmEmpreendedor->getNome());
+        $oDadosEmpreendedor->z01_nome      = mb_convert_encoding($oCgmEmpreendedor->getNome(), 'UTF-8', 'ISO-8859-1');
 
         /**
          * Valida se CGM é pessoa física
@@ -76,15 +76,15 @@ try {
         if ( !$oCgmEmpreendedor->isFisico() ) {
 
           $oDadosEmpreendedor->isFisico      = false;
-          $oDadosEmpreendedor->z01_nomefanta = utf8_encode($oCgmEmpreendedor->getNomeFantasia());
+          $oDadosEmpreendedor->z01_nomefanta = mb_convert_encoding($oCgmEmpreendedor->getNomeFantasia(), 'UTF-8', 'ISO-8859-1');
           $oDadosEmpreendedor->z01_cgccpf    = $oCgmEmpreendedor->getCnpj();
         }else{
           $oDadosEmpreendedor->z01_cgccpf    = $oCgmEmpreendedor->getCpf();
         }
 
-        $oDadosEmpreendedor->z01_ender  = utf8_encode($oCgmEmpreendedor->getLogradouro());
+        $oDadosEmpreendedor->z01_ender  = mb_convert_encoding($oCgmEmpreendedor->getLogradouro(), 'UTF-8', 'ISO-8859-1');
         $oDadosEmpreendedor->z01_cep    = $oCgmEmpreendedor->getCep();
-        $oDadosEmpreendedor->z01_munic  = utf8_encode($oCgmEmpreendedor->getMunicipio());
+        $oDadosEmpreendedor->z01_munic  = mb_convert_encoding($oCgmEmpreendedor->getMunicipio(), 'UTF-8', 'ISO-8859-1');
 
       } catch (Exception $eException){
         throw new Exception($eException->getMessage());

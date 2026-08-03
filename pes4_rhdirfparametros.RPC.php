@@ -70,7 +70,7 @@ try {
       $oDaoDirfParametros->rh132_sequencial    = null;
       $oDaoDirfParametros->rh132_anobase       = $oParam->iAnoBase;
       $oDaoDirfParametros->rh132_valorminimo   = $oParam->iValorMinimo;
-      $oDaoDirfParametros->rh132_codigoarquivo = addslashes( $oParam->sCodigoArquivo );
+      $oDaoDirfParametros->rh132_codigoarquivo = addslashes( (string) $oParam->sCodigoArquivo );
 
       if (empty($oParam->iSequencial)) {
         
@@ -140,7 +140,7 @@ try {
       }
 
       $oAnos = db_utils::getCollectionByRecord($rsDirfParametros);
-      $aAnos = array();
+      $aAnos = [];
 
       foreach ($oAnos as $oAno) {
         $aAnos[] = $oAno->rh132_anobase;
@@ -169,6 +169,6 @@ try {
   $oRetorno->sMessage = urlencode( $eErro->getMessage() );
 }
 
-$oRetorno->sMessage = utf8_encode($oRetorno->sMessage);
+$oRetorno->sMessage = mb_convert_encoding($oRetorno->sMessage, 'UTF-8', 'ISO-8859-1');
 echo $oJson->encode($oRetorno);
 ?>

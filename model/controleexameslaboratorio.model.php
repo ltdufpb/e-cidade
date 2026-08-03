@@ -51,7 +51,7 @@ class controleExamesLaboratorio
     {
         $this->setSetorExame($iSetorExame);
         $this->setLaboratorio($this->getLaboratorioSetorExame($iSetorExame));
-        $this->setDepartamento($iDepartamento !== null ? $iDepartamento : db_getsession('DB_coddepto'));
+        $this->setDepartamento($iDepartamento ?? db_getsession('DB_coddepto'));
         $this->setExame($this->getExameSetorExame($iSetorExame));
         $this->setTipoControle($this->getTipoControleSetorExame($iSetorExame));
         $this->setProcedimento($this->getProcedimentoSetorExame($iSetorExame));
@@ -577,8 +577,8 @@ class controleExamesLaboratorio
 
         // Se o controle for mensal, determino as datas de início e fim do período atual
         if ($oInfoControle->la56_i_periodo == 2) { // Mensal
-            $tAtual = strtotime($dData);
-            $sDiaIni = substr($oInfoControle->la56_d_ini, 8, 2);
+            $tAtual = strtotime((string) $dData);
+            $sDiaIni = substr((string) $oInfoControle->la56_d_ini, 8, 2);
             $sDiaAtual = date('d', $tAtual);
             $sMesAtual = date('m', $tAtual);
             $sAnoAtual = date('Y', $tAtual);

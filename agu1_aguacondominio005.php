@@ -39,7 +39,7 @@
     $claguacondominiomat = new cl_aguacondominiomat;
   */
   
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   
   $db_opcao = 22;
   $db_botao = false;

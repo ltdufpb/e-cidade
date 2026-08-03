@@ -21,20 +21,20 @@ class M8656DocumentosTransparencia extends PostgresMigration
     private function criarMenu()
     {
         // Cria o item de MENU
-        $aColumns   =  array('id_item' ,'descricao' ,'help' ,'funcao' ,'itemativo' ,'manutencao' ,'desctec' ,'libcliente');
-        $aValues    =  array(
-            array(10462 ,'Documentos do Portal Transparência' ,'Documentos do Portal Transparência' ,'lic4_documentostransparencia001.php' ,'1' ,'1' ,'Configuração de documentos do LicitaCon que irão para o Portal Transparência.' ,'true' ),
-        );
-        $table      = $this->table('db_itensmenu', array('schema' => 'configuracoes'));
+        $aColumns   =  ['id_item' ,'descricao' ,'help' ,'funcao' ,'itemativo' ,'manutencao' ,'desctec' ,'libcliente'];
+        $aValues    =  [
+            [10462 ,'Documentos do Portal Transparência' ,'Documentos do Portal Transparência' ,'lic4_documentostransparencia001.php' ,'1' ,'1' ,'Configuração de documentos do LicitaCon que irão para o Portal Transparência.' ,'true' ],
+        ];
+        $table      = $this->table('db_itensmenu', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Víncula item de menu
-        $aColumns   =    array('id_item', 'id_item_filho', 'menusequencia', 'modulo');
-        $aValues    =    array(
-            array( 10212 ,10462 ,5 ,381 ),
-        );
-        $table      =  $this->table('db_menu', array('schema' => 'configuracoes'));
+        $aColumns   =    ['id_item', 'id_item_filho', 'menusequencia', 'modulo'];
+        $aValues    =    [
+            [ 10212 ,10462 ,5 ,381 ],
+        ];
+        $table      =  $this->table('db_menu', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
@@ -43,76 +43,76 @@ class M8656DocumentosTransparencia extends PostgresMigration
     private function addDicionarioDados()
     {
         // Cadastro de Tabelas
-        $aColumns  = array('codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform');
-        $aValues   = array(
-            array(1010230, 'documentolicitacaotransparencia', 'Documento de Licitação para o Portal Transparência', 'l48', '2017-10-10', 'Documento de Licitação para o Portal Transparência', 0, 'f', 'f', 'f', 'f' ),
-        );
-        $table     = $this->table('db_sysarquivo', array('schema' => 'configuracoes'));
+        $aColumns  = ['codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform'];
+        $aValues   = [
+            [1010230, 'documentolicitacaotransparencia', 'Documento de Licitação para o Portal Transparência', 'l48', '2017-10-10', 'Documento de Licitação para o Portal Transparência', 0, 'f', 'f', 'f', 'f' ],
+        ];
+        $table     = $this->table('db_sysarquivo', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
          // Vínculo da tabela com o módulo
-        $aColumns  =  array('codmod', 'codarq');
-        $aValues   =  array(
-            array(19,1010230),
-        );
-        $table     =  $this->table('db_sysarqmod', array('schema' => 'configuracoes'));
+        $aColumns  =  ['codmod', 'codarq'];
+        $aValues   =  [
+            [19,1010230],
+        ];
+        $table     =  $this->table('db_sysarqmod', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Cadastro de campos
-        $aColumns  = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-        $aValues   = array(
-            array(1009467,'l48_sequencial','int4','Código Sequencial da tabela','0', 'Sequencial',10,'f','f','f',1,'text','Sequencial'),
-            array(1009468,'l48_documento','int4','Código do tipo de Documento do LicitaCon','0', 'Documento',10,'f','f','f',1,'text','Documento'),
-        );
-        $table     = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+        $aColumns  = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+        $aValues   = [
+            [1009467,'l48_sequencial','int4','Código Sequencial da tabela','0', 'Sequencial',10,'f','f','f',1,'text','Sequencial'],
+            [1009468,'l48_documento','int4','Código do tipo de Documento do LicitaCon','0', 'Documento',10,'f','f','f',1,'text','Documento'],
+        ];
+        $table     = $this->table('db_syscampo', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Vínculo dos campos com a tabela
-        $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-        $aValues  = array(
-            array(1010230,1009467,1,0),
-            array(1010230,1009468,2,0),
-        );
-        $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+        $aValues  = [
+            [1010230,1009467,1,0],
+            [1010230,1009468,2,0],
+        ];
+        $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Cadastro da PK
-        $aColumns = array('codarq', 'codcam','sequen', 'camiden');
-        $aValues  = array(
-            array(1010230,1009467,1,1009467),
-        );
-        $table    = $this->table('db_sysprikey', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'codcam','sequen', 'camiden'];
+        $aValues  = [
+            [1010230,1009467,1,1009467],
+        ];
+        $table    = $this->table('db_sysprikey', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // inclui os indices
-        $aColumns = array('codind', 'nomeind', 'codarq', 'campounico');
-        $aValues  = array(
-            array(1008227,'documentolicitacaotransparencia_documento_in',1010230,'1')
-        );
-        $table    = $this->table('db_sysindices', array('schema' => 'configuracoes'));
+        $aColumns = ['codind', 'nomeind', 'codarq', 'campounico'];
+        $aValues  = [
+            [1008227,'documentolicitacaotransparencia_documento_in',1010230,'1']
+        ];
+        $table    = $this->table('db_sysindices', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // vincula os indices
-        $aColumns = array('codind', 'codcam', 'sequen');
-        $aValues  = array(
-            array(1008227,1009468,1),
-        );
-        $table    = $this->table('db_syscadind', array('schema' => 'configuracoes'));
+        $aColumns = ['codind', 'codcam', 'sequen'];
+        $aValues  = [
+            [1008227,1009468,1],
+        ];
+        $table    = $this->table('db_syscadind', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Cadastro de sequências
-        $aColumns   = array('codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq');
-        $aValues    = array(
-          array(1000693, 'documentolicitacaotransparencia_l48_sequencial_seq', 1, 1, 9223372036854775807, 1, 1),
-        );
-        $table      =  $this->table('db_syssequencia', array('schema' => 'configuracoes'));
+        $aColumns   = ['codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq'];
+        $aValues    = [
+          [1000693, 'documentolicitacaotransparencia_l48_sequencial_seq', 1, 1, 9223372036854775807, 1, 1],
+        ];
+        $table      =  $this->table('db_syssequencia', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
@@ -123,7 +123,7 @@ class M8656DocumentosTransparencia extends PostgresMigration
     private function criarTabela()
     {
         $this->execute("CREATE SEQUENCE licitacao.documentolicitacaotransparencia_l48_sequencial_seq");
-        $documentolicitacaotransparencia = $this->table('documentolicitacaotransparencia', array('schema' => 'licitacao', 'id' => false, 'primary_key' => 'l48_sequencial', 'constraint' => 'licitacao.l48_sequencial_pk'));
+        $documentolicitacaotransparencia = $this->table('documentolicitacaotransparencia', ['schema' => 'licitacao', 'id' => false, 'primary_key' => 'l48_sequencial', 'constraint' => 'licitacao.l48_sequencial_pk']);
         $documentolicitacaotransparencia->addColumn('l48_sequencial',     'integer' )
                         ->addColumn('l48_documento',         'integer' )
                         ->create();

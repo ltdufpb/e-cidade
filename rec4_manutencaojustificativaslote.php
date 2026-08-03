@@ -37,7 +37,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 $aTiposAssentamento       = TipoAssentamentoRepository::getInstanciasPorNaturezaComJustificativaConfigurada();
 $justificativaRepository  = new JustificativaRepository();
-$aJustificativas           = array();
+$aJustificativas           = [];
 $codigoDepartamento = db_getsession('DB_coddepto');
 
 foreach ($aTiposAssentamento as $tipoAssentamento) {

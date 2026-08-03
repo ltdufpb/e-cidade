@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhcadregime_classe.php"));
 include(modification("classes/db_tipoasse_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltipoasse   = new cl_tipoasse;
 $clrhcadregime = new cl_rhcadregime;
 $rotulocampo = new rotulocampo;
@@ -121,7 +121,7 @@ function js_emite() {
         </td>
         <td align="left">
           <?php 
-            $xx = array("a"=>"Alfabética","l"=>"Lotação");
+            $xx = ["a"=>"Alfabética","l"=>"Lotação"];
             db_select('ordem',$xx,true,4,"");
 	  ?>
 	</td>
@@ -129,8 +129,8 @@ function js_emite() {
   <tr>
     <td nowrap colspan="2">
     <?php 
-    $arr_tipoassent_inicial = Array();
-    $arr_tipoassent_final   = Array();
+    $arr_tipoassent_inicial = [];
+    $arr_tipoassent_final   = [];
     if(isset($cltipoasse->numrows)){
       for($i=0; $i<$cltipoasse->numrows; $i++){
         db_fieldsmemory($result_tipoassent, $i);

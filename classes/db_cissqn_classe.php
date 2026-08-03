@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE cissqn
 class cl_cissqn { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q04_anousu = 0; 
-   var $q04_inflat = null; 
-   var $q04_vbase = 0; 
-   var $q04_dtbase_dia = null; 
-   var $q04_dtbase_mes = null; 
-   var $q04_dtbase_ano = null; 
-   var $q04_dtbase = null; 
-   var $q04_proced = 0; 
-   var $q04_calfixvar = 0; 
-   var $q04_diasvcto = 0; 
-   var $q04_perccorrepadrao = 0; 
+   public $q04_anousu = 0; 
+   public $q04_inflat = null; 
+   public $q04_vbase = 0; 
+   public $q04_dtbase_dia = null; 
+   public $q04_dtbase_mes = null; 
+   public $q04_dtbase_ano = null; 
+   public $q04_dtbase = null; 
+   public $q04_proced = 0; 
+   public $q04_calfixvar = 0; 
+   public $q04_diasvcto = 0; 
+   public $q04_perccorrepadrao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q04_anousu = int4 = ano 
                  q04_inflat = varchar(5) = inflator 
                  q04_vbase = float8 = valor base 
@@ -65,10 +65,10 @@ class cl_cissqn {
                  q04_perccorrepadrao = float4 = Percentual Correção Padrão 
                  ";
    //funcao construtor da classe 
-   function cl_cissqn() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cissqn"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -199,7 +199,7 @@ class cl_cissqn {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->q04_anousu) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -223,17 +223,17 @@ class cl_cissqn {
      $resaco = $this->sql_record($this->sql_query_file($this->q04_anousu));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,270,'$this->q04_anousu','I')");
-       $resac = db_query("insert into db_acount values($acount,55,270,'','".AddSlashes(pg_result($resaco,0,'q04_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,55,272,'','".AddSlashes(pg_result($resaco,0,'q04_inflat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,55,273,'','".AddSlashes(pg_result($resaco,0,'q04_vbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,55,274,'','".AddSlashes(pg_result($resaco,0,'q04_dtbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,55,6538,'','".AddSlashes(pg_result($resaco,0,'q04_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,55,8210,'','".AddSlashes(pg_result($resaco,0,'q04_calfixvar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,55,8211,'','".AddSlashes(pg_result($resaco,0,'q04_diasvcto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,55,17404,'','".AddSlashes(pg_result($resaco,0,'q04_perccorrepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,55,270,'','".AddSlashes(pg_fetch_result($resaco,0,'q04_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,55,272,'','".AddSlashes(pg_fetch_result($resaco,0,'q04_inflat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,55,273,'','".AddSlashes(pg_fetch_result($resaco,0,'q04_vbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,55,274,'','".AddSlashes(pg_fetch_result($resaco,0,'q04_dtbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,55,6538,'','".AddSlashes(pg_fetch_result($resaco,0,'q04_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,55,8210,'','".AddSlashes(pg_fetch_result($resaco,0,'q04_calfixvar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,55,8211,'','".AddSlashes(pg_fetch_result($resaco,0,'q04_diasvcto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,55,17404,'','".AddSlashes(pg_fetch_result($resaco,0,'q04_perccorrepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -242,10 +242,10 @@ class cl_cissqn {
       $this->atualizacampos();
      $sql = " update cissqn set ";
      $virgula = "";
-     if(trim($this->q04_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_anousu"])){ 
+     if(trim((string) $this->q04_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_anousu"])){ 
        $sql  .= $virgula." q04_anousu = $this->q04_anousu ";
        $virgula = ",";
-       if(trim($this->q04_anousu) == null ){ 
+       if(trim((string) $this->q04_anousu) == null ){ 
          $this->erro_sql = " Campo ano nao Informado.";
          $this->erro_campo = "q04_anousu";
          $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_cissqn {
          return false;
        }
      }
-     if(trim($this->q04_inflat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_inflat"])){ 
+     if(trim((string) $this->q04_inflat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_inflat"])){ 
        $sql  .= $virgula." q04_inflat = '$this->q04_inflat' ";
        $virgula = ",";
-       if(trim($this->q04_inflat) == null ){ 
+       if(trim((string) $this->q04_inflat) == null ){ 
          $this->erro_sql = " Campo inflator nao Informado.";
          $this->erro_campo = "q04_inflat";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_cissqn {
          return false;
        }
      }
-     if(trim($this->q04_vbase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_vbase"])){ 
+     if(trim((string) $this->q04_vbase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_vbase"])){ 
        $sql  .= $virgula." q04_vbase = $this->q04_vbase ";
        $virgula = ",";
-       if(trim($this->q04_vbase) == null ){ 
+       if(trim((string) $this->q04_vbase) == null ){ 
          $this->erro_sql = " Campo valor base nao Informado.";
          $this->erro_campo = "q04_vbase";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_cissqn {
          return false;
        }
      }
-     if(trim($this->q04_dtbase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_dtbase_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q04_dtbase_dia"] !="") ){ 
+     if(trim((string) $this->q04_dtbase)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_dtbase_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q04_dtbase_dia"] !="") ){ 
        $sql  .= $virgula." q04_dtbase = '$this->q04_dtbase' ";
        $virgula = ",";
-       if(trim($this->q04_dtbase) == null ){ 
+       if(trim((string) $this->q04_dtbase) == null ){ 
          $this->erro_sql = " Campo data base nao Informado.";
          $this->erro_campo = "q04_dtbase_dia";
          $this->erro_banco = "";
@@ -297,7 +297,7 @@ class cl_cissqn {
        if(isset($GLOBALS["HTTP_POST_VARS"]["q04_dtbase_dia"])){ 
          $sql  .= $virgula." q04_dtbase = null ";
          $virgula = ",";
-         if(trim($this->q04_dtbase) == null ){ 
+         if(trim((string) $this->q04_dtbase) == null ){ 
            $this->erro_sql = " Campo data base nao Informado.";
            $this->erro_campo = "q04_dtbase_dia";
            $this->erro_banco = "";
@@ -308,10 +308,10 @@ class cl_cissqn {
          }
        }
      }
-     if(trim($this->q04_proced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_proced"])){ 
+     if(trim((string) $this->q04_proced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_proced"])){ 
        $sql  .= $virgula." q04_proced = $this->q04_proced ";
        $virgula = ",";
-       if(trim($this->q04_proced) == null ){ 
+       if(trim((string) $this->q04_proced) == null ){ 
          $this->erro_sql = " Campo codigo da procedencia nao Informado.";
          $this->erro_campo = "q04_proced";
          $this->erro_banco = "";
@@ -321,10 +321,10 @@ class cl_cissqn {
          return false;
        }
      }
-     if(trim($this->q04_calfixvar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_calfixvar"])){ 
+     if(trim((string) $this->q04_calfixvar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_calfixvar"])){ 
        $sql  .= $virgula." q04_calfixvar = $this->q04_calfixvar ";
        $virgula = ",";
-       if(trim($this->q04_calfixvar) == null ){ 
+       if(trim((string) $this->q04_calfixvar) == null ){ 
          $this->erro_sql = " Campo Como proceder qdo inscricao for fixo e variavel nao Informado.";
          $this->erro_campo = "q04_calfixvar";
          $this->erro_banco = "";
@@ -334,10 +334,10 @@ class cl_cissqn {
          return false;
        }
      }
-     if(trim($this->q04_diasvcto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_diasvcto"])){ 
+     if(trim((string) $this->q04_diasvcto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_diasvcto"])){ 
        $sql  .= $virgula." q04_diasvcto = $this->q04_diasvcto ";
        $virgula = ",";
-       if(trim($this->q04_diasvcto) == null ){ 
+       if(trim((string) $this->q04_diasvcto) == null ){ 
          $this->erro_sql = " Campo Dias padrao para vencimento nao Informado.";
          $this->erro_campo = "q04_diasvcto";
          $this->erro_banco = "";
@@ -347,10 +347,10 @@ class cl_cissqn {
          return false;
        }
      }
-     if(trim($this->q04_perccorrepadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_perccorrepadrao"])){ 
+     if(trim((string) $this->q04_perccorrepadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q04_perccorrepadrao"])){ 
        $sql  .= $virgula." q04_perccorrepadrao = $this->q04_perccorrepadrao ";
        $virgula = ",";
-       if(trim($this->q04_perccorrepadrao) == null ){ 
+       if(trim((string) $this->q04_perccorrepadrao) == null ){ 
          $this->erro_sql = " Campo Percentual Correção Padrão nao Informado.";
          $this->erro_campo = "q04_perccorrepadrao";
          $this->erro_banco = "";
@@ -368,25 +368,25 @@ class cl_cissqn {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,270,'$this->q04_anousu','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q04_anousu"]) || $this->q04_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,55,270,'".AddSlashes(pg_result($resaco,$conresaco,'q04_anousu'))."','$this->q04_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,55,270,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q04_anousu'))."','$this->q04_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q04_inflat"]) || $this->q04_inflat != "")
-           $resac = db_query("insert into db_acount values($acount,55,272,'".AddSlashes(pg_result($resaco,$conresaco,'q04_inflat'))."','$this->q04_inflat',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,55,272,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q04_inflat'))."','$this->q04_inflat',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q04_vbase"]) || $this->q04_vbase != "")
-           $resac = db_query("insert into db_acount values($acount,55,273,'".AddSlashes(pg_result($resaco,$conresaco,'q04_vbase'))."','$this->q04_vbase',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,55,273,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q04_vbase'))."','$this->q04_vbase',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q04_dtbase"]) || $this->q04_dtbase != "")
-           $resac = db_query("insert into db_acount values($acount,55,274,'".AddSlashes(pg_result($resaco,$conresaco,'q04_dtbase'))."','$this->q04_dtbase',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,55,274,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q04_dtbase'))."','$this->q04_dtbase',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q04_proced"]) || $this->q04_proced != "")
-           $resac = db_query("insert into db_acount values($acount,55,6538,'".AddSlashes(pg_result($resaco,$conresaco,'q04_proced'))."','$this->q04_proced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,55,6538,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q04_proced'))."','$this->q04_proced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q04_calfixvar"]) || $this->q04_calfixvar != "")
-           $resac = db_query("insert into db_acount values($acount,55,8210,'".AddSlashes(pg_result($resaco,$conresaco,'q04_calfixvar'))."','$this->q04_calfixvar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,55,8210,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q04_calfixvar'))."','$this->q04_calfixvar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q04_diasvcto"]) || $this->q04_diasvcto != "")
-           $resac = db_query("insert into db_acount values($acount,55,8211,'".AddSlashes(pg_result($resaco,$conresaco,'q04_diasvcto'))."','$this->q04_diasvcto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,55,8211,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q04_diasvcto'))."','$this->q04_diasvcto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q04_perccorrepadrao"]) || $this->q04_perccorrepadrao != "")
-           $resac = db_query("insert into db_acount values($acount,55,17404,'".AddSlashes(pg_result($resaco,$conresaco,'q04_perccorrepadrao'))."','$this->q04_perccorrepadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,55,17404,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q04_perccorrepadrao'))."','$this->q04_perccorrepadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -431,17 +431,17 @@ class cl_cissqn {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,270,'$q04_anousu','E')");
-         $resac = db_query("insert into db_acount values($acount,55,270,'','".AddSlashes(pg_result($resaco,$iresaco,'q04_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,55,272,'','".AddSlashes(pg_result($resaco,$iresaco,'q04_inflat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,55,273,'','".AddSlashes(pg_result($resaco,$iresaco,'q04_vbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,55,274,'','".AddSlashes(pg_result($resaco,$iresaco,'q04_dtbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,55,6538,'','".AddSlashes(pg_result($resaco,$iresaco,'q04_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,55,8210,'','".AddSlashes(pg_result($resaco,$iresaco,'q04_calfixvar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,55,8211,'','".AddSlashes(pg_result($resaco,$iresaco,'q04_diasvcto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,55,17404,'','".AddSlashes(pg_result($resaco,$iresaco,'q04_perccorrepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,55,270,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q04_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,55,272,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q04_inflat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,55,273,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q04_vbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,55,274,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q04_dtbase'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,55,6538,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q04_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,55,8210,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q04_calfixvar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,55,8211,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q04_diasvcto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,55,17404,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q04_perccorrepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cissqn
@@ -501,7 +501,7 @@ class cl_cissqn {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cissqn";
@@ -541,7 +541,7 @@ class cl_cissqn {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -576,7 +576,7 @@ class cl_cissqn {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -32,7 +32,7 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_lab_labresp_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_labresp = new cl_lab_labresp;
 $cllab_labresp->rotulo->label("la06_i_codigo");
 $cllab_labresp->rotulo->label("z01_nome");
@@ -108,9 +108,9 @@ $oRotulo->label("z01_nome");
         }else{
            $sql = $cllab_labresp->sql_query("",$campos,"la06_i_codigo","$where");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la06_i_codigo)){
-          $repassa = array("chave_la06_i_codigo"=>$chave_la06_i_codigo,"chave_z01_nome"=>$chave_z01_nome);
+          $repassa = ["chave_la06_i_codigo"=>$chave_la06_i_codigo,"chave_z01_nome"=>$chave_z01_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

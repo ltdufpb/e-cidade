@@ -119,7 +119,7 @@ function js_imprimir(){
 			  <td align="center" colspan="4" title="Origem da Decla&ccedil;&atilde;o">
           <strong>Origem:</strong>
 				  <?php 
-				    $aOrigens = array(''=>'Selecione', 'somentecgm'=>'Somente CGM', 'cgm'=>'CGM Geral', 'matric'=>'Matr&iacute;cula', 'inscr'=>'Inscri&ccedil;&atilde;o');
+				    $aOrigens = [''=>'Selecione', 'somentecgm'=>'Somente CGM', 'cgm'=>'CGM Geral', 'matric'=>'Matr&iacute;cula', 'inscr'=>'Inscri&ccedil;&atilde;o'];
 				    db_select('origem', $aOrigens, true, 1, 'style="width: 150px"');
 				  ?>
 			  </td>
@@ -131,7 +131,7 @@ function js_imprimir(){
 			  <td align="center" colspan="4" title="Ordenar por...">
           <strong>Ordenar</strong>
           <?php 
-            $aOrdenar = array(''=>'Selecione', 'datacancelamento'=>'Data Cancelamento', 'declaracao'=>'Declara&ccedil;&atilde;o');
+            $aOrdenar = [''=>'Selecione', 'datacancelamento'=>'Data Cancelamento', 'declaracao'=>'Declara&ccedil;&atilde;o'];
             db_select('ordenar', $aOrdenar, true, 1, 'style="width: 150px"');
           ?>  
 			  </td>

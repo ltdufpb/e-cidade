@@ -70,7 +70,7 @@ db_input('nomecam',40,$Inomecam,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('f'=>'Não','t'=>'Sim');
+$x = ['f'=>'Não','t'=>'Sim'];
 db_select('p54_obrigatorio',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -134,7 +134,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_procvar.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

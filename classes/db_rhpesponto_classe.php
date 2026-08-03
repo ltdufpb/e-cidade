@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE rhpesponto
 class cl_rhpesponto { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh06_seqpes = 0; 
-   var $rh06_ponto = 0; 
+   public $rh06_seqpes = 0; 
+   public $rh06_ponto = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh06_seqpes = int4 = Sequência 
                  rh06_ponto = int8 = Ponto 
                  ";
    //funcao construtor da classe 
-   function cl_rhpesponto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhpesponto"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_rhpesponto {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ponto do funcionário ($this->rh06_seqpes) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ponto do funcionário já Cadastrado";
@@ -129,11 +129,11 @@ class cl_rhpesponto {
      $resaco = $this->sql_record($this->sql_query_file($this->rh06_seqpes));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8920,'$this->rh06_seqpes','I')");
-       $resac = db_query("insert into db_acount values($acount,1162,8920,'','".AddSlashes(pg_result($resaco,0,'rh06_seqpes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1162,8921,'','".AddSlashes(pg_result($resaco,0,'rh06_ponto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1162,8920,'','".AddSlashes(pg_fetch_result($resaco,0,'rh06_seqpes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1162,8921,'','".AddSlashes(pg_fetch_result($resaco,0,'rh06_ponto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_rhpesponto {
       $this->atualizacampos();
      $sql = " update rhpesponto set ";
      $virgula = "";
-     if(trim($this->rh06_seqpes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh06_seqpes"])){ 
+     if(trim((string) $this->rh06_seqpes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh06_seqpes"])){ 
        $sql  .= $virgula." rh06_seqpes = $this->rh06_seqpes ";
        $virgula = ",";
-       if(trim($this->rh06_seqpes) == null ){ 
+       if(trim((string) $this->rh06_seqpes) == null ){ 
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "rh06_seqpes";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_rhpesponto {
          return false;
        }
      }
-     if(trim($this->rh06_ponto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh06_ponto"])){ 
+     if(trim((string) $this->rh06_ponto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh06_ponto"])){ 
        $sql  .= $virgula." rh06_ponto = $this->rh06_ponto ";
        $virgula = ",";
-       if(trim($this->rh06_ponto) == null ){ 
+       if(trim((string) $this->rh06_ponto) == null ){ 
          $this->erro_sql = " Campo Ponto nao Informado.";
          $this->erro_campo = "rh06_ponto";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_rhpesponto {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8920,'$this->rh06_seqpes','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh06_seqpes"]))
-           $resac = db_query("insert into db_acount values($acount,1162,8920,'".AddSlashes(pg_result($resaco,$conresaco,'rh06_seqpes'))."','$this->rh06_seqpes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1162,8920,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh06_seqpes'))."','$this->rh06_seqpes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh06_ponto"]))
-           $resac = db_query("insert into db_acount values($acount,1162,8921,'".AddSlashes(pg_result($resaco,$conresaco,'rh06_ponto'))."','$this->rh06_ponto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1162,8921,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh06_ponto'))."','$this->rh06_ponto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_rhpesponto {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8920,'$rh06_seqpes','E')");
-         $resac = db_query("insert into db_acount values($acount,1162,8920,'','".AddSlashes(pg_result($resaco,$iresaco,'rh06_seqpes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1162,8921,'','".AddSlashes(pg_result($resaco,$iresaco,'rh06_ponto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1162,8920,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh06_seqpes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1162,8921,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh06_ponto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhpesponto
@@ -291,7 +291,7 @@ class cl_rhpesponto {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhpesponto";
@@ -305,7 +305,7 @@ class cl_rhpesponto {
    function sql_query ( $rh06_seqpes=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -326,7 +326,7 @@ class cl_rhpesponto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -338,7 +338,7 @@ class cl_rhpesponto {
    function sql_query_file ( $rh06_seqpes=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -359,7 +359,7 @@ class cl_rhpesponto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -368,10 +368,10 @@ class cl_rhpesponto {
      }
      return $sql;
   }
-   function sql_query_retorno ( $rh06_seqpes=null,$campos="*",$ordem=null,$dbwhere="",$anonovo,$mesnovo){ 
+   function sql_query_retorno ( $rh06_seqpes=null,$campos="*",$ordem=null,$dbwhere="",$anonovo = null,$mesnovo = null){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_rhpesponto {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

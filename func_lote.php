@@ -34,9 +34,9 @@ include(modification("classes/db_lote_classe.php"));
 include(modification("classes/db_setorloc_classe.php"));
 include(modification("classes/db_loteloc_classe.php"));
 include(modification("libs/db_app.utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllote = new cl_lote;
 $cllote->rotulo->label("j34_idbql");
 $cllote->rotulo->label("j34_setor");

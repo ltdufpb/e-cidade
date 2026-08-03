@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE db_sysfuncoes
 class cl_db_sysfuncoes { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $codfuncao = 0; 
-   var $nomefuncao = null; 
-   var $nomearquivo = null; 
-   var $obsfuncao = null; 
-   var $corpofuncao = null; 
-   var $triggerfuncao = null; 
+   public $codfuncao = 0; 
+   public $nomefuncao = null; 
+   public $nomearquivo = null; 
+   public $obsfuncao = null; 
+   public $corpofuncao = null; 
+   public $triggerfuncao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  codfuncao = int4 = Código Função 
                  nomefuncao = varchar(100) = Nome 
                  nomearquivo = varchar(100) = Nome do arquivo 
@@ -58,10 +58,10 @@ class cl_db_sysfuncoes {
                  triggerfuncao = char(1) = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysfuncoes() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysfuncoes"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,10 +143,10 @@ class cl_db_sysfuncoes {
          $this->erro_status = "0";
          return false; 
        }
-       $this->codfuncao = pg_result($result,0,0); 
+       $this->codfuncao = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_sysfuncoes_codfuncao_seq");
-       if(($result != false) && (pg_result($result,0,0) < $codfuncao)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $codfuncao)){
          $this->erro_sql = " Campo codfuncao maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_db_sysfuncoes {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Funcoes do sistema postgresql ($this->codfuncao) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Funcoes do sistema postgresql já Cadastrado";
@@ -208,15 +208,15 @@ class cl_db_sysfuncoes {
      $resaco = $this->sql_record($this->sql_query_file($this->codfuncao));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,774,'$this->codfuncao','I')");
-       $resac = db_query("insert into db_acount values($acount,146,774,'','".AddSlashes(pg_result($resaco,0,'codfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,146,775,'','".AddSlashes(pg_result($resaco,0,'nomefuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,146,9466,'','".AddSlashes(pg_result($resaco,0,'nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,146,776,'','".AddSlashes(pg_result($resaco,0,'obsfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,146,777,'','".AddSlashes(pg_result($resaco,0,'corpofuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,146,778,'','".AddSlashes(pg_result($resaco,0,'triggerfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,146,774,'','".AddSlashes(pg_fetch_result($resaco,0,'codfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,146,775,'','".AddSlashes(pg_fetch_result($resaco,0,'nomefuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,146,9466,'','".AddSlashes(pg_fetch_result($resaco,0,'nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,146,776,'','".AddSlashes(pg_fetch_result($resaco,0,'obsfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,146,777,'','".AddSlashes(pg_fetch_result($resaco,0,'corpofuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,146,778,'','".AddSlashes(pg_fetch_result($resaco,0,'triggerfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -225,10 +225,10 @@ class cl_db_sysfuncoes {
       $this->atualizacampos();
      $sql = " update db_sysfuncoes set ";
      $virgula = "";
-     if(trim($this->codfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codfuncao"])){ 
+     if(trim((string) $this->codfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codfuncao"])){ 
        $sql  .= $virgula." codfuncao = $this->codfuncao ";
        $virgula = ",";
-       if(trim($this->codfuncao) == null ){ 
+       if(trim((string) $this->codfuncao) == null ){ 
          $this->erro_sql = " Campo Código Função nao Informado.";
          $this->erro_campo = "codfuncao";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_db_sysfuncoes {
          return false;
        }
      }
-     if(trim($this->nomefuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomefuncao"])){ 
+     if(trim((string) $this->nomefuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomefuncao"])){ 
        $sql  .= $virgula." nomefuncao = '$this->nomefuncao' ";
        $virgula = ",";
-       if(trim($this->nomefuncao) == null ){ 
+       if(trim((string) $this->nomefuncao) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "nomefuncao";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_db_sysfuncoes {
          return false;
        }
      }
-     if(trim($this->nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomearquivo"])){ 
+     if(trim((string) $this->nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomearquivo"])){ 
        $sql  .= $virgula." nomearquivo = '$this->nomearquivo' ";
        $virgula = ",";
-       if(trim($this->nomearquivo) == null ){ 
+       if(trim((string) $this->nomearquivo) == null ){ 
          $this->erro_sql = " Campo Nome do arquivo nao Informado.";
          $this->erro_campo = "nomearquivo";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_db_sysfuncoes {
          return false;
        }
      }
-     if(trim($this->obsfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["obsfuncao"])){ 
+     if(trim((string) $this->obsfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["obsfuncao"])){ 
        $sql  .= $virgula." obsfuncao = '$this->obsfuncao' ";
        $virgula = ",";
-       if(trim($this->obsfuncao) == null ){ 
+       if(trim((string) $this->obsfuncao) == null ){ 
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "obsfuncao";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_db_sysfuncoes {
          return false;
        }
      }
-     if(trim($this->corpofuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["corpofuncao"])){ 
+     if(trim((string) $this->corpofuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["corpofuncao"])){ 
        $sql  .= $virgula." corpofuncao = '$this->corpofuncao' ";
        $virgula = ",";
-       if(trim($this->corpofuncao) == null ){ 
+       if(trim((string) $this->corpofuncao) == null ){ 
          $this->erro_sql = " Campo Corpo da Função nao Informado.";
          $this->erro_campo = "corpofuncao";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_db_sysfuncoes {
          return false;
        }
      }
-     if(trim($this->triggerfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["triggerfuncao"])){ 
+     if(trim((string) $this->triggerfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["triggerfuncao"])){ 
        $sql  .= $virgula." triggerfuncao = '$this->triggerfuncao' ";
        $virgula = ",";
-       if(trim($this->triggerfuncao) == null ){ 
+       if(trim((string) $this->triggerfuncao) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "triggerfuncao";
          $this->erro_banco = "";
@@ -311,21 +311,21 @@ class cl_db_sysfuncoes {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,774,'$this->codfuncao','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codfuncao"]))
-           $resac = db_query("insert into db_acount values($acount,146,774,'".AddSlashes(pg_result($resaco,$conresaco,'codfuncao'))."','$this->codfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,146,774,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codfuncao'))."','$this->codfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["nomefuncao"]))
-           $resac = db_query("insert into db_acount values($acount,146,775,'".AddSlashes(pg_result($resaco,$conresaco,'nomefuncao'))."','$this->nomefuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,146,775,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'nomefuncao'))."','$this->nomefuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["nomearquivo"]))
-           $resac = db_query("insert into db_acount values($acount,146,9466,'".AddSlashes(pg_result($resaco,$conresaco,'nomearquivo'))."','$this->nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,146,9466,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'nomearquivo'))."','$this->nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["obsfuncao"]))
-           $resac = db_query("insert into db_acount values($acount,146,776,'".AddSlashes(pg_result($resaco,$conresaco,'obsfuncao'))."','$this->obsfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,146,776,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'obsfuncao'))."','$this->obsfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["corpofuncao"]))
-           $resac = db_query("insert into db_acount values($acount,146,777,'".AddSlashes(pg_result($resaco,$conresaco,'corpofuncao'))."','$this->corpofuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,146,777,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'corpofuncao'))."','$this->corpofuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["triggerfuncao"]))
-           $resac = db_query("insert into db_acount values($acount,146,778,'".AddSlashes(pg_result($resaco,$conresaco,'triggerfuncao'))."','$this->triggerfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,146,778,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'triggerfuncao'))."','$this->triggerfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -370,15 +370,15 @@ class cl_db_sysfuncoes {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,774,'$codfuncao','E')");
-         $resac = db_query("insert into db_acount values($acount,146,774,'','".AddSlashes(pg_result($resaco,$iresaco,'codfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,146,775,'','".AddSlashes(pg_result($resaco,$iresaco,'nomefuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,146,9466,'','".AddSlashes(pg_result($resaco,$iresaco,'nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,146,776,'','".AddSlashes(pg_result($resaco,$iresaco,'obsfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,146,777,'','".AddSlashes(pg_result($resaco,$iresaco,'corpofuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,146,778,'','".AddSlashes(pg_result($resaco,$iresaco,'triggerfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,146,774,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,146,775,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'nomefuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,146,9466,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,146,776,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'obsfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,146,777,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'corpofuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,146,778,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'triggerfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_sysfuncoes
@@ -438,7 +438,7 @@ class cl_db_sysfuncoes {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_sysfuncoes";
@@ -452,7 +452,7 @@ class cl_db_sysfuncoes {
    function sql_query ( $codfuncao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_db_sysfuncoes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,7 +486,7 @@ class cl_db_sysfuncoes {
    function sql_query_file ( $codfuncao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -507,7 +507,7 @@ class cl_db_sysfuncoes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

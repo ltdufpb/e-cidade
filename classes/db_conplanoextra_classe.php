@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE conplanoextra
 class cl_conplanoextra {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $c33_anousu = 0;
-   var $c33_instit = 0;
-   var $c33_reduz = 0;
-   var $c33_tipo = null;
-   var $c33_codcla = 0;
+   public $c33_anousu = 0;
+   public $c33_instit = 0;
+   public $c33_reduz = 0;
+   public $c33_tipo = null;
+   public $c33_codcla = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  c33_anousu = int4 = Exercício
                  c33_instit = int4 = Instituição
                  c33_reduz = int4 = Reduzido
@@ -56,10 +56,10 @@ class cl_conplanoextra {
                  c33_codcla = int4 = Classificação
                  ";
    //funcao construtor da classe
-   function cl_conplanoextra() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoextra");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -149,7 +149,7 @@ class cl_conplanoextra {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "c33 ($this->c33_anousu."-".$this->c33_instit."-".$this->c33_reduz) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "c33 já Cadastrado";
@@ -178,10 +178,10 @@ class cl_conplanoextra {
       $this->atualizacampos();
      $sql = " update conplanoextra set ";
      $virgula = "";
-     if(trim($this->c33_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c33_anousu"])){
+     if(trim((string) $this->c33_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c33_anousu"])){
        $sql  .= $virgula." c33_anousu = $this->c33_anousu ";
        $virgula = ",";
-       if(trim($this->c33_anousu) == null ){
+       if(trim((string) $this->c33_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "c33_anousu";
          $this->erro_banco = "";
@@ -191,10 +191,10 @@ class cl_conplanoextra {
          return false;
        }
      }
-     if(trim($this->c33_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c33_instit"])){
+     if(trim((string) $this->c33_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c33_instit"])){
        $sql  .= $virgula." c33_instit = $this->c33_instit ";
        $virgula = ",";
-       if(trim($this->c33_instit) == null ){
+       if(trim((string) $this->c33_instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "c33_instit";
          $this->erro_banco = "";
@@ -204,10 +204,10 @@ class cl_conplanoextra {
          return false;
        }
      }
-     if(trim($this->c33_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c33_reduz"])){
+     if(trim((string) $this->c33_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c33_reduz"])){
        $sql  .= $virgula." c33_reduz = $this->c33_reduz ";
        $virgula = ",";
-       if(trim($this->c33_reduz) == null ){
+       if(trim((string) $this->c33_reduz) == null ){
          $this->erro_sql = " Campo Reduzido nao Informado.";
          $this->erro_campo = "c33_reduz";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_conplanoextra {
          return false;
        }
      }
-     if(trim($this->c33_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c33_tipo"])){
+     if(trim((string) $this->c33_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c33_tipo"])){
        $sql  .= $virgula." c33_tipo = '$this->c33_tipo' ";
        $virgula = ",";
-       if(trim($this->c33_tipo) == null ){
+       if(trim((string) $this->c33_tipo) == null ){
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "c33_tipo";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_conplanoextra {
          return false;
        }
      }
-     if(trim($this->c33_codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c33_codcla"])){
+     if(trim((string) $this->c33_codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c33_codcla"])){
        $sql  .= $virgula." c33_codcla = $this->c33_codcla ";
        $virgula = ",";
-       if(trim($this->c33_codcla) == null ){
+       if(trim((string) $this->c33_codcla) == null ){
          $this->erro_sql = " Campo Classificação nao Informado.";
          $this->erro_campo = "c33_codcla";
          $this->erro_banco = "";
@@ -364,7 +364,7 @@ class cl_conplanoextra {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conplanoextra";

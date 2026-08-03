@@ -37,21 +37,21 @@ const FONT = 'Arial';
 const HEIGHT = 4;
 
 $relatorio = new stdClass;
-$relatorio->acoes = array();
+$relatorio->acoes = [];
 $relatorio->filtros = filter_input_array(INPUT_GET);
-$relatorio->totalizadores = array(
+$relatorio->totalizadores = [
   1 => 0,
   2 => 0
-);
-$relatorio->tipos = array(
+];
+$relatorio->tipos = [
   1 => 'Constituição',
   2 => 'Alteração',
   4 => 'Constituição'
-);
+];
 
 try {
 
-  $where = array();
+  $where = [];
 
   if ( $relatorio->filtros['data_inicial'] ) {
     $where[] = "q147_data >= TO_DATE('". $relatorio->filtros['data_inicial'] . "', 'DD/MM/YYYY')";
@@ -108,10 +108,10 @@ try {
     $dado->protocolo = $dadosEmpresa->protocolo;
     $dado->acao = $relatorio->tipos[$dadosProtocolo->tipo_acao];
 
-    $where   = array(
+    $where   = [
       "q02_obs ilike '%{$dadosEmpresa->protocolo}%'",
       "z01_cgccpf = '" . $dadosEmpresa->cpfcnpj . "'"
-    );
+    ];
 
     $issBaseDAO = new cl_issbase;
     $queryIssBase = $issBaseDAO->sql_query(null, 'q02_inscr', null, implode(' and ', $where));
@@ -125,19 +125,16 @@ try {
       $dado->inscricao = db_utils::fieldsMemory($resultadoIssBase, 0)->q02_inscr;
     }
 
-    switch ( $dadosProtocolo->tipo_acao ) {
-      case 4:
-        $relatorio->totalizadores[1]++;
-        break;
-      default:
-        $relatorio->totalizadores[$dadosProtocolo->tipo_acao]++;
-    }
+    match ($dadosProtocolo->tipo_acao) {
+        4 => $relatorio->totalizadores[1]++,
+        default => $relatorio->totalizadores[$dadosProtocolo->tipo_acao]++,
+    };
 
-    $eventos = array();
-    if ( strpos($dado->eventos, '|') )  {
-      $eventos = explode('|', $dado->eventos);
+    $eventos = [];
+    if ( strpos((string) $dado->eventos, '|') )  {
+      $eventos = explode('|', (string) $dado->eventos);
     } elseif ( !empty($dado->eventos) ) {
-      $eventos = array($dado->eventos);
+      $eventos = [$dado->eventos];
     }
 
     $dado->eventos = $eventos;
@@ -154,8 +151,8 @@ try {
   db_fim_transacao();
 
   $head1 = 'RELATÓRIO DE INTEGRAÇÃO DO REGIN';
-  $head2 = 'Data Inicial: ' . ($relatorio->filtros['data_inicial'] ? $relatorio->filtros['data_inicial'] : ' - ');
-  $head3 = 'Data Final: ' . ($relatorio->filtros['data_final'] ? $relatorio->filtros['data_final'] : ' - ');
+  $head2 = 'Data Inicial: ' . ($relatorio->filtros['data_inicial'] ?: ' - ');
+  $head3 = 'Data Final: ' . ($relatorio->filtros['data_final'] ?: ' - ');
   $head4 = "Ação: " . ($relatorio->filtros['acao'] ? $relatorio->tipos[$relatorio->filtros['acao']] : 'TODOS');
 
   $pdf = new PDF;
@@ -167,11 +164,7 @@ try {
 
   foreach ($relatorio->acoes as $acao) {
 
-    $values = array_map(function($evento) use ($pdf) {
-
-      return $pdf->NbLines(192, $evento);
-
-    }, $acao->eventos);
+    $values = array_map(fn($evento) => $pdf->NbLines(192, $evento), $acao->eventos);
 
     $linhas = array_sum($values);
     $height = ($linhas * HEIGHT) + (HEIGHT * 6);

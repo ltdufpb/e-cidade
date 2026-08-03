@@ -140,9 +140,8 @@ class Falta extends BaseHora implements Horas
         if($this->getDiaTrabalho()->getJornada()->isDSR() || $this->getDiaTrabalho()->getJornada()->isFolga()) {
 
             $this->logger->debug("-- SEM falta, data nao eh dia de trabalho. ");
-            $msgDia = $this->getDiaTrabalho()->getJornada()->isDSR() ? 'Data eh um DSR.'
-                : $this->getDiaTrabalho()->getJornada()->isFolga() ? 'Data eh uma FOLGA'
-                    : $this->getDiaTrabalho()->getFeriado() ? 'Data eh um FERIADO' : '';
+            $msgDia = ($this->getDiaTrabalho()->getJornada()->isDSR() ? 'Data eh um DSR.'
+                : $this->getDiaTrabalho()->getJornada()->isFolga() ? 'Data eh uma FOLGA' : $this->getDiaTrabalho()->getFeriado()) ? 'Data eh um FERIADO' : '';
             $this->logger->debug("-- {$msgDia}");
 
             return $this->getHoraZerada();
@@ -191,8 +190,8 @@ class Falta extends BaseHora implements Horas
     {
 
         if (!$this->assentamentoAbonoFaltaGeraFalta) {
-            if (!empty($this->horaAssentamentoAbonoFalta) && preg_match('/\d+\:\d+/', $this->horaAssentamentoAbonoFalta)) {
-                list($hora, $minuto) = explode(':', $this->horaAssentamentoAbonoFalta);
+            if (!empty($this->horaAssentamentoAbonoFalta) && preg_match('/\d+\:\d+/', (string) $this->horaAssentamentoAbonoFalta)) {
+                [$hora, $minuto] = explode(':', (string) $this->horaAssentamentoAbonoFalta);
                 $intervaloSubtrair = new \DateInterval("PT{$hora}H{$minuto}M");
                 $horasSubtrair = \DateTime::createFromFormat('H:i', "{$hora}:{$minuto}");
                 $horasSubtrair->setDate(

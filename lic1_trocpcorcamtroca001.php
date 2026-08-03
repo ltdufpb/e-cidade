@@ -37,8 +37,8 @@ include(modification("classes/db_pcorcamval_classe.php"));
 include(modification("classes/db_pcorcamforne_classe.php"));
 include(modification("classes/db_pcorcamjulg_classe.php"));
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clpcorcamtroca = new cl_pcorcamtroca;
 $clpcorcamforne = new cl_pcorcamforne;
@@ -74,7 +74,7 @@ if(isset($trocar)){
             for($i = 0; $i < $numrows_itens_trocados; $i++){
                  db_fieldsmemory($res_itens_trocados,$i);
 
-                 $vetor_itens[$i] = trim($pc23_orcamitem);
+                 $vetor_itens[$i] = trim((string) $pc23_orcamitem);
 
                  $dbwhere .= $virgula.$pc23_orcamitem;
                  $virgula  = ", ";
@@ -116,7 +116,7 @@ if(isset($trocar)){
   }       
 
   if($sqlerro==false){
-    $arr_troca = array();
+    $arr_troca = [];
     $result_troca = $clpcorcamjulg->sql_record($clpcorcamjulg->sql_query_file(null,null,"pc24_orcamforne as pc24_orcamforne_sql,pc24_pontuacao","pc24_orcamforne","$dbwhere and (pc24_orcamforne=$pc21_orcamforne_ant or pc24_orcamforne=$pc21_orcamforne)"));    
     for($i=0;$i<$clpcorcamjulg->numrows;$i++){
       db_fieldsmemory($result_troca,$i);

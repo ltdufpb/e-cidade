@@ -56,14 +56,14 @@ $db_opcao = 1;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
      
-       $clcriaabas->identifica = array("autent"=>"Autenticadora","modimprime"=>"Modelo de Impressão");
+       $clcriaabas->identifica = ["autent"=>"Autenticadora","modimprime"=>"Modelo de Impressão"];
        
-       $clcriaabas->sizecampo  = array("autent"=>"20","modimprime"=>"25");
+       $clcriaabas->sizecampo  = ["autent"=>"20","modimprime"=>"25"];
        	  
-	     $clcriaabas->src        = array("autent"=>"cai1_cfautent011.php",
-	                                     "modimprime"=>"");
+	     $clcriaabas->src        = ["autent"=>"cai1_cfautent011.php",
+	                                     "modimprime"=>""];
 	     
-	     $clcriaabas->disabled   = array("modimprime"=>"true");
+	     $clcriaabas->disabled   = ["modimprime"=>"true"];
 	      
 	     $clcriaabas->cria_abas(); 
        

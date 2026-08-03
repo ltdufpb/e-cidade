@@ -13,10 +13,6 @@ class EmissaoPadraoPcaspService
      * @var bool
      */
     private $uniao;
-    /**
-     * @var integer
-     */
-    private $exercicio;
 
     /**
      * @var array
@@ -27,10 +23,9 @@ class EmissaoPadraoPcaspService
      * @param string $tipo
      * @param integer $exercicio
      */
-    public function __construct($tipo, $exercicio)
+    public function __construct($tipo, private $exercicio)
     {
         $this->uniao = $tipo === 'uniao';
-        $this->exercicio = $exercicio;
     }
 
 

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE sam_base
 class cl_sam_base { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sm01_sequencial = 0; 
-   var $sm01_departamento = 0; 
-   var $sm01_descr = null; 
+   public $sm01_sequencial = 0; 
+   public $sm01_departamento = 0; 
+   public $sm01_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sm01_sequencial = int4 = Código 
                  sm01_departamento = int4 = Departamento: 
                  sm01_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_sam_base() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sam_base"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_sam_base {
          $this->erro_status = "0";
          return false; 
        }
-       $this->sm01_sequencial = pg_result($result,0,0); 
+       $this->sm01_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from sam_base_sm01_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $sm01_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $sm01_sequencial)){
          $this->erro_sql = " Campo sm01_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_sam_base {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Unidade Movel ($this->sm01_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Unidade Movel já Cadastrado";
@@ -166,12 +166,12 @@ class cl_sam_base {
      $resaco = $this->sql_record($this->sql_query_file($this->sm01_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18582,'$this->sm01_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3287,18582,'','".AddSlashes(pg_result($resaco,0,'sm01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3287,18585,'','".AddSlashes(pg_result($resaco,0,'sm01_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3287,18587,'','".AddSlashes(pg_result($resaco,0,'sm01_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3287,18582,'','".AddSlashes(pg_fetch_result($resaco,0,'sm01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3287,18585,'','".AddSlashes(pg_fetch_result($resaco,0,'sm01_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3287,18587,'','".AddSlashes(pg_fetch_result($resaco,0,'sm01_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_sam_base {
       $this->atualizacampos();
      $sql = " update sam_base set ";
      $virgula = "";
-     if(trim($this->sm01_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm01_sequencial"])){ 
+     if(trim((string) $this->sm01_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm01_sequencial"])){ 
        $sql  .= $virgula." sm01_sequencial = $this->sm01_sequencial ";
        $virgula = ",";
-       if(trim($this->sm01_sequencial) == null ){ 
+       if(trim((string) $this->sm01_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sm01_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_sam_base {
          return false;
        }
      }
-     if(trim($this->sm01_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm01_departamento"])){ 
+     if(trim((string) $this->sm01_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm01_departamento"])){ 
        $sql  .= $virgula." sm01_departamento = $this->sm01_departamento ";
        $virgula = ",";
-       if(trim($this->sm01_departamento) == null ){ 
+       if(trim((string) $this->sm01_departamento) == null ){ 
          $this->erro_sql = " Campo Departamento: nao Informado.";
          $this->erro_campo = "sm01_departamento";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_sam_base {
          return false;
        }
      }
-     if(trim($this->sm01_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm01_descr"])){ 
+     if(trim((string) $this->sm01_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sm01_descr"])){ 
        $sql  .= $virgula." sm01_descr = '$this->sm01_descr' ";
        $virgula = ",";
-       if(trim($this->sm01_descr) == null ){ 
+       if(trim((string) $this->sm01_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "sm01_descr";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_sam_base {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18582,'$this->sm01_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sm01_sequencial"]) || $this->sm01_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3287,18582,'".AddSlashes(pg_result($resaco,$conresaco,'sm01_sequencial'))."','$this->sm01_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3287,18582,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sm01_sequencial'))."','$this->sm01_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sm01_departamento"]) || $this->sm01_departamento != "")
-           $resac = db_query("insert into db_acount values($acount,3287,18585,'".AddSlashes(pg_result($resaco,$conresaco,'sm01_departamento'))."','$this->sm01_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3287,18585,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sm01_departamento'))."','$this->sm01_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sm01_descr"]) || $this->sm01_descr != "")
-           $resac = db_query("insert into db_acount values($acount,3287,18587,'".AddSlashes(pg_result($resaco,$conresaco,'sm01_descr'))."','$this->sm01_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3287,18587,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sm01_descr'))."','$this->sm01_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_sam_base {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18582,'$sm01_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3287,18582,'','".AddSlashes(pg_result($resaco,$iresaco,'sm01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3287,18585,'','".AddSlashes(pg_result($resaco,$iresaco,'sm01_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3287,18587,'','".AddSlashes(pg_result($resaco,$iresaco,'sm01_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3287,18582,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sm01_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3287,18585,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sm01_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3287,18587,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sm01_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sam_base
@@ -345,7 +345,7 @@ class cl_sam_base {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sam_base";
@@ -360,7 +360,7 @@ class cl_sam_base {
    function sql_query ( $sm01_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_sam_base {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,7 +397,7 @@ class cl_sam_base {
    function sql_query_file ( $sm01_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_sam_base {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,7 +431,7 @@ class cl_sam_base {
    function sql_query_geral ( $sm01_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,7 +453,7 @@ class cl_sam_base {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

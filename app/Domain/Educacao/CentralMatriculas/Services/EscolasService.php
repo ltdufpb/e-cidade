@@ -76,8 +76,7 @@ class EscolasService
             $turnos = [];
             foreach ($configuracaoEscolas as $configuracaoEscola) {
                 if ($configuracaoEscola->getEscola()->getCodigo() == $escola->getCodigo()) {
-                    $ultrapassouLimite = isset($configuracaoEscola->ultrapassouLimite) ?
-                        $configuracaoEscola->ultrapassouLimite : false;
+                    $ultrapassouLimite = $configuracaoEscola->ultrapassouLimite ?? false;
                     $turnos[] = [
                         "codigo" => $configuracaoEscola->getTurno()->getCodigoTurno(),
                         "descricao" => $configuracaoEscola->getTurno()->getDescricao(),
@@ -86,9 +85,7 @@ class EscolasService
                 }
             }
 
-            usort($turnos, function ($a, $b) {
-                return $a['codigo'] > $b['codigo'];
-            });
+            usort($turnos, fn($a, $b) => $a['codigo'] > $b['codigo']);
 
             return [
                 "codigo" => $escola->getCodigo(),

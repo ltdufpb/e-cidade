@@ -112,7 +112,7 @@ class RelatorioDevolucoes {
 
     $oDaoAbatimentoUtilizacao = new cl_abatimento();
 
-      $sCampos = implode(', ', array(
+      $sCampos = implode(', ', [
       "z01_numcgm         as numero_cgm",
       "recibo.k00_receit  as receita_credito",
       "recibo.k00_numpre  as origem",
@@ -124,11 +124,11 @@ class RelatorioDevolucoes {
       "coalesce((select sum(k167_valorcorrigido - k167_valorantigo) from abatimentocorrecao where k167_abatimento = abatimento.k125_sequencial), 0) as valor_corrigido",
       "coalesce((select sum(k167_valorcorrigido - k167_valorantigo) from abatimentocorrecao where k167_abatimento = abatimento.k125_sequencial), 0) as valor_corrigido2",
       "coalesce((select sum(k157_valor) from abatimentoutilizacao where k157_abatimento = abatimento.k125_sequencial), 0) as valor_utilizado"
-    ));
+    ]);
 
-    $aWhere = array(
+    $aWhere = [
       "k157_tipoutilizacao = '" . CreditoCompensacao::TIPO_UTILIZACAO_DEVOLUCAO . "'"
-    );
+    ];
 
     if ($this->getCgm()) {
       $aWhere[] = "arrenumcgm.k00_numcgm = {$this->getCgm()}";
@@ -202,7 +202,7 @@ class RelatorioDevolucoes {
     $this->configurar();
 
     $rsRegistros = $this->getDados();
-    $iTotalRegistros = pg_numrows($rsRegistros);
+    $iTotalRegistros = pg_num_rows($rsRegistros);
     $iUltimoNumpre = null;
     $lTotal = false;
     $aTotal= ['total'=>0, 'total_original' => 0, 'total_corrigido' =>0];

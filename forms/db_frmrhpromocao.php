@@ -84,7 +84,7 @@ db_inputdata('h72_dtfinal',@$h72_dtfinal_dia,@$h72_dtfinal_mes,@$h72_dtfinal_ano
     </td>
     <td> 
 <?php 
-$x = array('0'=>'Ativo','1'=>'Inativo');
+$x = ['0'=>'Ativo','1'=>'Inativo'];
 db_select('h72_ativo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -135,7 +135,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rhpromocao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

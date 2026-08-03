@@ -46,12 +46,12 @@ if(isset($opcao) && $opcao=="alterar"){
 } 
     $sql = $clsocios->sql_query_socios($q95_cgmpri,"","sum(q95_perc) as somaval ");
     $result_testaval=db_query($sql);
-    if (pg_numrows($result_testaval)!=0){
+    if (pg_num_rows($result_testaval)!=0){
       db_fieldsmemory($result_testaval,0);
       
     }else $somaval=0;
 
-    $tipoSocio = isset($q95_tipo) ? $q95_tipo : '';
+    $tipoSocio = $q95_tipo ?? '';
 
 ?>
 <form name="form1" method="post" action="iss1_socios004.php" >
@@ -73,7 +73,7 @@ if(isset($opcao) && $opcao=="alterar"){
 				  db_input('q95_cgmpri',6,$Iq95_cgmpri,true,'text',3);
 				?>
        <?php 
-       $z01_nome = stripslashes($z01_nome);
+       $z01_nome = stripslashes((string) $z01_nome);
        db_input('z01_nome',40,$Iz01_nome,true,'text',3,'');
        ?>
     </td>
@@ -105,7 +105,7 @@ if(isset($opcao) && $opcao=="alterar"){
     </td>
     <td> 
       <?php 
-        $aTipo = array('0' => "Selecione...", '1' => "Sócio", '2' => "Responsável MEI", '3' => "Responsável");
+        $aTipo = ['0' => "Selecione...", '1' => "Sócio", '2' => "Responsável MEI", '3' => "Responsável"];
        // ksort($aTipo);
         db_select('q95_tipo', $aTipo, true, $db_opcao,"onchange='js_mostraValr_capital();'");
       ?>
@@ -156,7 +156,7 @@ if(isset($opcao) && $opcao=="alterar"){
   <tr>
    <td valign="top">
    <?php 
-    $chavepri= array("q95_cgmpri"=>$q95_cgmpri,"q95_numcgm"=>@$q95_numcgm);
+    $chavepri= ["q95_cgmpri"=>$q95_cgmpri,"q95_numcgm"=>@$q95_numcgm];
     $cliframe_alterar_excluir->chavepri=$chavepri;
 //    $cliframe_alterar_excluir->sql     =$clsocios->sql_query_socios($q95_cgmpri,"","q95_numcgm,soc.z01_nome as DBtxtnomesocio,q95_perc,q95_cgmpri");
 //    $cliframe_alterar_excluir->campos  ="q95_numcgm,DBtxtnomesocio,q95_perc";
@@ -331,7 +331,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_socios.hide();
   <?php 
 	  if($db_opcao!=1){
-	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+	    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
 	  }
   ?>
 }  

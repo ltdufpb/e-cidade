@@ -49,7 +49,7 @@ $clrotulo->label('q12_classe');
 $clrotulo->label('q12_descr');
 $clrotulo->label('q41_codtipcalc');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if ((isset($q41_codporte) && $q41_codporte!="") && (isset($q41_codclasse) && $q41_codclasse!="") && (isset($atualizar))){
   db_inicio_transacao();
@@ -68,13 +68,13 @@ if ((isset($q41_codporte) && $q41_codporte!="") && (isset($q41_codclasse) && $q4
   }
   
   
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+    if(str_starts_with((string) $chave, "CHECK")){
+      $dados=preg_split("#_#m",(string) $chave); 
       $clissportetipo->q41_codporte = $q41_codporte; 
       $clissportetipo->q41_codclasse= $q41_codclasse; 
       $clissportetipo->q41_codtipcalc = $dados[1]; 

@@ -34,7 +34,7 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -89,7 +89,7 @@ $aux = new cl_arquivo_auxiliar;
                     </td>
                     <td nowrap="nowrap">
                         <?php
-                        $tipo_que = array("N" => "Não", "S" => "Sim");
+                        $tipo_que = ["N" => "Não", "S" => "Sim"];
                         db_select("quebra", $tipo_que, true, 2, "onchange='js_testord(this.value);'");
                         ?>
                     </td>
@@ -100,7 +100,7 @@ $aux = new cl_arquivo_auxiliar;
                     </td>
                     <td nowrap="nowrap">
                         <?php
-                        $tipo_ordem = array("a" => "Alfabética", "c" => "Codigo", "d" => "Departamento");
+                        $tipo_ordem = ["a" => "Alfabética", "c" => "Codigo", "d" => "Departamento"];
                         db_select("ordem", $tipo_ordem, true, 2);
                         ?>
                     </td>
@@ -111,7 +111,7 @@ $aux = new cl_arquivo_auxiliar;
                     </td>
                     <td nowrap="nowrap">
                         <?php
-                        $tipo_est = array("N" => "Não", "S" => "Sim");
+                        $tipo_est = ["N" => "Não", "S" => "Sim"];
                         db_select("list_zera", $tipo_est, true, 2);
                         ?>
                     </td>
@@ -122,7 +122,7 @@ $aux = new cl_arquivo_auxiliar;
                     </td>
                     <td nowrap="nowrap">
                         <?php
-                        $tipo_rel = array("S" => "Sintético","A"=>"Analítico", "C" => "Conferência");
+                        $tipo_rel = ["S" => "Sintético","A"=>"Analítico", "C" => "Conferência"];
                         db_select("tipo", $tipo_rel, true, 2);
                         ?>
                     </td>

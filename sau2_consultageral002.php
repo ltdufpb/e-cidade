@@ -37,7 +37,7 @@ function getInfoCgs($iCgs) {
   $oDaoCgsUnd = new cl_cgs_und;
   $sSql       = $oDaoCgsUnd->sql_query_file($iCgs);
   $rs         = $oDaoCgsUnd->sql_record($sSql);
-  $aDados     = array();
+  $aDados     = [];
   if ($oDaoCgsUnd->numrows > 0) {
     $aDados[0] = db_utils::fieldsmemory($rs, 0);
   }
@@ -63,7 +63,7 @@ function getCartaoSusCgs($iCgs, $iTipo, $dIni, $dFim) {
                                                 );
   $rsCgsCartaoSus = $oDaoCgsCartaoSus->sql_record($sSql);
 
-  $aCartoes       = array();
+  $aCartoes       = [];
   if ($oDaoCgsCartaoSus->numrows > 0) { // se o paciente tem um cartao sus
 
     for ($iCont = 0; $iCont < $oDaoCgsCartaoSus->numrows; $iCont++) {
@@ -119,7 +119,7 @@ function getAgendamentosCgs($iCgs, $iTipo, $dIni, $dFim) {
   $sSql          = $oDaoAgendamentos->sql_query_consulta_geral(null, $sCampos, $sOrderBy, $sWhere);
   $rs            = $oDaoAgendamentos->sql_record($sSql);
 
-  $aAgendamentos = array();
+  $aAgendamentos = [];
   if ($oDaoAgendamentos->numrows > 0) { // se o paciente possui agendamentos
 
     for ($iCont = 0; $iCont < $oDaoAgendamentos->numrows; $iCont++) {
@@ -201,7 +201,7 @@ function getProntuariosCgs($iCgs, $iTipo, $dIni, $dFim) {
 
   $rs           = $oDaoProntProced->sql_record($sSql);
 
-  $aProntuarios = array();
+  $aProntuarios = [];
   if ($oDaoProntProced->numrows > 0) { // Se o paciente possui prontuários
 
     for ($iCont = 0; $iCont < $oDaoProntProced->numrows; $iCont++) {
@@ -276,7 +276,7 @@ function getRetiradasCgs($iCgs, $iTipo, $dIni, $dFim) {
                                                                            );
   $rs       = $oDaoFarRetiradaItens->sql_record($sSql);
 
-  $aRetiradas = array();
+  $aRetiradas = [];
   for ($iCont = 0; $iCont < $oDaoFarRetiradaItens->numrows; $iCont++) {
 
     $oDados = db_utils::fieldsmemory($rs, $iCont);
@@ -342,7 +342,7 @@ function getExamesCgs($iCgs, $iTipo, $dIni, $dFim) {
                                                         );
   $rs      = $oDaoLabRequiItem->sql_record($sSql);
 
-  $aExames = array();
+  $aExames = [];
   if ($oDaoLabRequiItem->numrows > 0) { // se o paciente possui agendamentos
 
     for ($iCont = 0; $iCont < $oDaoLabRequiItem->numrows; $iCont++) {
@@ -391,7 +391,7 @@ function getPedidosTfdCgs($iCgs, $iTipo, $dIni, $dFim) {
                                                );
   $rs       = $oDaoTfdPedidoTfd->sql_record($sSql);
 
-  $aPedidos = array();
+  $aPedidos = [];
   for ($iCont = 0; $iCont < $oDaoTfdPedidoTfd->numrows; $iCont++) {
 
     $oDados                                   = db_utils::fieldsmemory($rs, $iCont);
@@ -462,7 +462,7 @@ function getVacinasCgs($iCgs, $iTipo, $dIni, $dFim) {
   $sSql     = $oDaoVacVacinadose->sql_query(null, $sCampos, $sOrderBy);
   $rs       = $oDaoVacVacinadose->sql_record($sSql);
 
-  $aDadosVacinas = array();
+  $aDadosVacinas = [];
   for ($iCont = 0; $iCont < $oDaoVacVacinadose->numrows; $iCont++) {
 
     $oDados = db_utils::fieldsmemory($rs, $iCont);
@@ -478,7 +478,7 @@ function getVacinasCgs($iCgs, $iTipo, $dIni, $dFim) {
        que são buscadas no select acima. Caso a vacina (dose) ainda não tenha sido aplicada, a variável estará vazia */
     if (!empty($oDados->aplicacao)) {
 
-      $aAplicacao     = explode(' || ', $oDados->aplicacao);
+      $aAplicacao     = explode(' || ', (string) $oDados->aplicacao);
       $dDataAplicacao = $aAplicacao[0]; // data da aplicacao
       $sObsAplicacao  = $aAplicacao[1]; // obs da aplicacao
       $iLogin         = $aAplicacao[2]; // codigo do usuario que lancou a aplicacao
@@ -488,7 +488,7 @@ function getVacinasCgs($iCgs, $iTipo, $dIni, $dFim) {
 
     }
 
-    $aNasc = explode('-', $dNasc);
+    $aNasc = explode('-', (string) $dNasc);
 
     /* Cálculo da data de vencimento (último dia em que é permitido tomar a vacina)*/
     $dVencimento = somaDataDiaMesAno($aNasc[2], $aNasc[1], $aNasc[0],
@@ -560,7 +560,7 @@ function getHiperdiaCgs($iCgs, $iTipo, $dIni, $dFim) {
   $sSql     = $oDaoHiperdia->sql_query2(null, $sCampos, ' s152_d_dataconsulta desc ', $sWhere);
   $rs       = $oDaoHiperdia->sql_record($sSql);
 
-  $aHiperdia = array();
+  $aHiperdia = [];
   for ($iCont = 0; $iCont < $oDaoHiperdia->numrows; $iCont++) {
 
     $oDados                                             = db_utils::fieldsmemory($rs, $iCont);
@@ -595,7 +595,7 @@ function getCidsCgs($iCgs, $iTipo, $dIni, $dFim) {
   $sSql = $oDaoProntprocedcid->sql_query("", $sCampos, "sd29_d_data desc", $sWhere);
   $rs   = $oDaoProntprocedcid->sql_record($sSql);
 
-  $aCids = array();
+  $aCids = [];
   for ($iCont = 0; $iCont < $oDaoProntprocedcid->numrows; $iCont++) {
 
     $oDados                     = db_utils::fieldsmemory($rs, $iCont);
@@ -1191,7 +1191,7 @@ function novaLinhaProntuarios(Pdf $oPdf, $oDados, $iTipo) {
     $oPdf->cell(10, $iTam, $oDados->quantidade, 1, 0, 'R', $lCor);
     $oPdf->cell(20, $iTam, number_format((double)$oDados->valor_total, 2, ',','.'), 1, 1, 'R', $lCor);
 
-    return array($oDados->quantidade, $oDados->valor_total);
+    return [$oDados->quantidade, $oDados->valor_total];
 
   }
 
@@ -1254,7 +1254,7 @@ function novaLinhaExames(Pdf $oPdf, $oDados, $iTipo) {
     $oPdf->cell(10, $iTam, $oDados->quantidade, 1, 0, 'R', $lCor);
     $oPdf->cell(20, $iTam, number_format((double)$oDados->valor_total,2,',','.'), 1, 1, 'R', $lCor);
 
-    return array($oDados->quantidade, $oDados->valor_total);
+    return [$oDados->quantidade, $oDados->valor_total];
 
   }
 
@@ -1286,7 +1286,7 @@ function novaLinhaVacinas($oPdf, $oDados, $iTipo) {
   $oPdf->setfont('arial', '', 7);
 
   $oPdf->cell(30, $iTam, $oDados->vc05_c_descr, 1, 0, 'C', $lCor);
-  $oPdf->cell(30, $iTam, substr($oDados->vc07_c_nome,0,20), 1, 0, 'C', $lCor);
+  $oPdf->cell(30, $iTam, substr((string) $oDados->vc07_c_nome,0,20), 1, 0, 'C', $lCor);
   $oPdf->cell(30, $iTam, $oDados->vc03_c_descr, 1, 0, 'C', $lCor);
   $oPdf->cell(35, $iTam, $oDados->periodo, 1, 0, 'C', $lCor);
   $oPdf->cell(20, $iTam, formataData($oDados->dataAplicacao, 2), 1, 0, 'C', $lCor);
@@ -1384,13 +1384,13 @@ function formataData($dData, $iTipo = 1) {
 
   if ($iTipo == 1) {
 
-    $dData = explode('/', $dData);
+    $dData = explode('/', (string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
 
   }
 
-  $dData = explode('-', $dData);
+  $dData = explode('-', (string) $dData);
   $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
   return $dData;
 
@@ -1398,33 +1398,16 @@ function formataData($dData, $iTipo = 1) {
 
 function estadoCivil($iCodigo) {
 
-  switch ($iCodigo) {
-
-    case 0:
-      return 'Não informado';
-
-    case 1:
-      return 'Solteiro.';
-
-    case 2:
-      return 'Casado';
-
-    case 3:
-      return 'Viúvo';
-
-    case 4:
-      return 'Separado';
-
-    case 5:
-      return 'União C.';
-
-    case 9:
-      return 'Ignorado';
-
-    default:
-      return '';
-
-  }
+  return match ($iCodigo) {
+      0 => 'Não informado',
+      1 => 'Solteiro.',
+      2 => 'Casado',
+      3 => 'Viúvo',
+      4 => 'Separado',
+      5 => 'União C.',
+      9 => 'Ignorado',
+      default => '',
+  };
 
 }
 
@@ -1499,7 +1482,7 @@ function imprimirOpcao($iOpcao, $iCgs, $oPdf, $iTipo, $dIni, $dFim) {
     call_user_func('novoTitulo'.$sFinalFunc, $oPdf);
   }
   call_user_func('novoCabecalho'.$sFinalFunc, $oPdf, $iTipo);
-  $aSubtotal = array();
+  $aSubtotal = [];
   for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
 
     if ($oPdf->getY() >$oPdf->getH() - 30) {
@@ -1524,7 +1507,7 @@ function imprimirOpcao($iOpcao, $iCgs, $oPdf, $iTipo, $dIni, $dFim) {
 
 
 empty($iCgs) ? die('<center><big><b>CGS não informado!</b></big></center>') : '';
-$aOpcoes   = explode(',', $sOpcoesImp);
+$aOpcoes   = explode(',', (string) $sOpcoesImp);
 
 $aDadosCgs = getInfoCgs($iCgs);
 $iLinhas   = count($aDadosCgs);

@@ -39,7 +39,7 @@ class cl_fonterecurso
     public function __construct()
     {
         $this->rotulo = new rotulo("fonterecurso");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -132,10 +132,10 @@ class cl_fonterecurso
                 $this->erro_status = "0";
                 return false;
             }
-            $this->id = pg_result($result, 0, 0);
+            $this->id = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from fonterecurso_id_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $id)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $id)) {
                 $this->erro_sql = " Campo id maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -177,7 +177,7 @@ class cl_fonterecurso
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Fonte de Recurso ($this->id) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Fonte de Recurso já Cadastrado";
@@ -207,10 +207,10 @@ class cl_fonterecurso
         $this->atualizacampos();
         $sql = " update fonterecurso set ";
         $virgula = "";
-        if (trim($this->id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["id"])) {
+        if (trim((string) $this->id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["id"])) {
             $sql .= $virgula . " id = $this->id ";
             $virgula = ",";
-            if (trim($this->id) == null) {
+            if (trim((string) $this->id) == null) {
                 $this->erro_sql = " Campo id não informado.";
                 $this->erro_campo = "id";
                 $this->erro_banco = "";
@@ -220,10 +220,10 @@ class cl_fonterecurso
                 return false;
             }
         }
-        if (trim($this->orctiporec_id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["orctiporec_id"])) {
+        if (trim((string) $this->orctiporec_id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["orctiporec_id"])) {
             $sql .= $virgula . " orctiporec_id = $this->orctiporec_id ";
             $virgula = ",";
-            if (trim($this->orctiporec_id) == null) {
+            if (trim((string) $this->orctiporec_id) == null) {
                 $this->erro_sql = " Campo Código Recurso não informado.";
                 $this->erro_campo = "orctiporec_id";
                 $this->erro_banco = "";
@@ -233,17 +233,17 @@ class cl_fonterecurso
                 return false;
             }
         }
-        if (trim($this->exercicio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
-            if (trim($this->exercicio) == "" && isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
+        if (trim((string) $this->exercicio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
+            if (trim((string) $this->exercicio) == "" && isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
                 $this->exercicio = "0";
             }
             $sql .= $virgula . " exercicio = $this->exercicio ";
             $virgula = ",";
         }
-        if (trim($this->codigo_siconfi) != "" || isset($GLOBALS["HTTP_POST_VARS"]["codigo_siconfi"])) {
+        if (trim((string) $this->codigo_siconfi) != "" || isset($GLOBALS["HTTP_POST_VARS"]["codigo_siconfi"])) {
             $sql .= $virgula . " codigo_siconfi = '$this->codigo_siconfi' ";
             $virgula = ",";
-            if (trim($this->codigo_siconfi) == null) {
+            if (trim((string) $this->codigo_siconfi) == null) {
                 $this->erro_sql = " Campo Código Siconf não informado.";
                 $this->erro_campo = "codigo_siconfi";
                 $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_fonterecurso
                 return false;
             }
         }
-        if (trim($this->gestao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["gestao"])) {
+        if (trim((string) $this->gestao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["gestao"])) {
             $sql .= $virgula . " gestao = '$this->gestao' ";
             $virgula = ",";
-            if (trim($this->gestao) == null) {
+            if (trim((string) $this->gestao) == null) {
                 $this->erro_sql = " Campo Fonte Recurso não informado.";
                 $this->erro_campo = "gestao";
                 $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_fonterecurso
                 return false;
             }
         }
-        if (trim($this->classificacaofr_id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["classificacaofr_id"])) {
+        if (trim((string) $this->classificacaofr_id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["classificacaofr_id"])) {
             $sql .= $virgula . " classificacaofr_id = $this->classificacaofr_id ";
             $virgula = ",";
-            if (trim($this->classificacaofr_id) == null) {
+            if (trim((string) $this->classificacaofr_id) == null) {
                 $this->erro_sql = " Campo Classificação não informado.";
                 $this->erro_campo = "classificacaofr_id";
                 $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_fonterecurso
                 return false;
             }
         }
-        if (trim($this->tipo_detalhamento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["tipo_detalhamento"])) {
+        if (trim((string) $this->tipo_detalhamento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["tipo_detalhamento"])) {
             $sql .= $virgula . " tipo_detalhamento = '$this->tipo_detalhamento' ";
             $virgula = ",";
-            if (trim($this->tipo_detalhamento) == null) {
+            if (trim((string) $this->tipo_detalhamento) == null) {
                 $this->erro_sql = " Campo Detalhamento não informado.";
                 $this->erro_campo = "tipo_detalhamento";
                 $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_fonterecurso
                 return false;
             }
         }
-        if (trim($this->descricao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["descricao"])) {
+        if (trim((string) $this->descricao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["descricao"])) {
             $sql .= $virgula . " descricao = '$this->descricao' ";
             $virgula = ",";
-            if (trim($this->descricao) == null) {
+            if (trim((string) $this->descricao) == null) {
                 $this->erro_sql = " Campo Descrição não informado.";
                 $this->erro_campo = "descricao";
                 $this->erro_banco = "";

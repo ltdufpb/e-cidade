@@ -41,7 +41,7 @@ require_once(modification("classes/db_arqandam_classe.php"));
 require_once(modification("classes/db_ouvidoriaatendimento_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 db_postmemory($_POST);
 db_postmemory($_GET);
 
@@ -66,7 +66,7 @@ function arquivamento($p58_codproc, $p67_dtarq, $p67_historico, $grupo)
 	db_inicio_transacao();
 
 	$p67_codproc = $p58_codproc;
-	$p67_dtarq             = implode("-", array_reverse(explode("/", $p67_dtarq)));
+	$p67_dtarq             = implode("-", array_reverse(explode("/", (string) $p67_dtarq)));
 
 	$oDaoProcAndam         = new cl_protprocesso;
 	$campos = "p58_codandam, p61_dtandam, p61_hora, p58_numero";
@@ -257,7 +257,7 @@ function arquivamento($p58_codproc, $p67_dtarq, $p67_historico, $grupo)
 
 
 $hoje = date('d/m/y');
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 	try {
 		arquivamento($p58_codproc, $p67_dtarq, $p67_historico, $grupo);
 		if (isset($volume)) {

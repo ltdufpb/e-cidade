@@ -208,7 +208,7 @@ if(isset($alterar)){
 
     $oRetornoAnalitica = db_utils::fieldsMemory($rsCustoanalitica,0);
 
-    if ( trim($oRetornoAnalitica->cc03_sequencial) != "") {
+    if ( trim((string) $oRetornoAnalitica->cc03_sequencial) != "") {
       //atualiza tabela custoplanotipoconta
       $clcustoplanotipoconta->cc03_sequencial     = $oRetornoAnalitica->cc03_sequencial;
       $clcustoplanotipoconta->cc03_custotipoconta = $cc02_sequencial;
@@ -220,7 +220,7 @@ if(isset($alterar)){
       }
     }
 
-    if ( trim($oRetornoAnalitica->cc04_sequencial) != "") {
+    if ( trim((string) $oRetornoAnalitica->cc04_sequencial) != "") {
       //atualiza tabela custoplanoanalitica
       $clcustoplanoanalitica->cc04_sequencial = $oRetornoAnalitica->cc04_sequencial;
       $clcustoplanoanalitica->cc04_coddepto   = $coddepto;

@@ -95,7 +95,7 @@ try {
       $oRetorno->pc80_resumo = urlencode($oProcessoCompra->getResumo());
       $oRetorno->pc80_tipoprocesso = $oProcessoCompra->getTipoProcesso();
 
-      $aLotes = array();
+      $aLotes = [];
       foreach ($oProcessoCompra->getLotes() as $oLotesProcessoCompra) {
         $aLotes[$oLotesProcessoCompra->getCodigo()] = $oLotesProcessoCompra->getNome();
       }
@@ -113,13 +113,13 @@ try {
 
       $oProcessoCompra = new ProcessoCompras($iSequencialProcessoCompra);
 
-      $aItens          = array();
+      $aItens          = [];
       foreach ($oProcessoCompra->getItens() as $oItemProcessoCompra) {
 
         $iUnidadeMedida      = $oItemProcessoCompra->getItemSolicitacao()->getUnidade();
         $oLoteProcessoCompra = $oItemProcessoCompra->getLote();
 
-        $aItem = array(
+        $aItem = [
           'codigo_item'        => $oItemProcessoCompra->getCodigo(),
           'solicitacao'        => $oItemProcessoCompra->getItemSolicitacao()->getCodigoSolicitacao(),
           'sequencial'         => $oItemProcessoCompra->getItemSolicitacao()->getOrdem(),
@@ -130,7 +130,7 @@ try {
           'vlr_unitario'       => $oItemProcessoCompra->getItemSolicitacao()->getValorUnitario(),
           'vlr_total'          => $oItemProcessoCompra->getItemSolicitacao()->getValorTotal(),
           'lote'               => (!empty($oLoteProcessoCompra) ? $oLoteProcessoCompra->getCodigo() : '')
-        );
+        ];
         $aItens[] = $aItem;
       }
 

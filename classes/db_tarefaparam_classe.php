@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE tarefaparam
 class cl_tarefaparam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at53_horasdia = 0; 
-   var $at53_horaini_manha = null; 
-   var $at53_horafim_manha = null; 
-   var $at53_horaini_tarde = null; 
-   var $at53_horafim_tarde = null; 
+   public $at53_horasdia = 0; 
+   public $at53_horaini_manha = null; 
+   public $at53_horafim_manha = null; 
+   public $at53_horaini_tarde = null; 
+   public $at53_horafim_tarde = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at53_horasdia = int4 = Total de horas trabalhadas 
                  at53_horaini_manha = char(5) = Hora inicial manhã 
                  at53_horafim_manha = char(5) = Hora final manhã 
@@ -56,10 +56,10 @@ class cl_tarefaparam {
                  at53_horafim_tarde = char(5) = Hora final tarde 
                  ";
    //funcao construtor da classe 
-   function cl_tarefaparam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefaparam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -146,7 +146,7 @@ class cl_tarefaparam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parâmetros para Tarefa () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parâmetros para Tarefa já Cadastrado";
@@ -173,10 +173,10 @@ class cl_tarefaparam {
       $this->atualizacampos();
      $sql = " update tarefaparam set ";
      $virgula = "";
-     if(trim($this->at53_horasdia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at53_horasdia"])){ 
+     if(trim((string) $this->at53_horasdia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at53_horasdia"])){ 
        $sql  .= $virgula." at53_horasdia = $this->at53_horasdia ";
        $virgula = ",";
-       if(trim($this->at53_horasdia) == null ){ 
+       if(trim((string) $this->at53_horasdia) == null ){ 
          $this->erro_sql = " Campo Total de horas trabalhadas nao Informado.";
          $this->erro_campo = "at53_horasdia";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_tarefaparam {
          return false;
        }
      }
-     if(trim($this->at53_horaini_manha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at53_horaini_manha"])){ 
+     if(trim((string) $this->at53_horaini_manha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at53_horaini_manha"])){ 
        $sql  .= $virgula." at53_horaini_manha = '$this->at53_horaini_manha' ";
        $virgula = ",";
-       if(trim($this->at53_horaini_manha) == null ){ 
+       if(trim((string) $this->at53_horaini_manha) == null ){ 
          $this->erro_sql = " Campo Hora inicial manhã nao Informado.";
          $this->erro_campo = "at53_horaini_manha";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_tarefaparam {
          return false;
        }
      }
-     if(trim($this->at53_horafim_manha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at53_horafim_manha"])){ 
+     if(trim((string) $this->at53_horafim_manha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at53_horafim_manha"])){ 
        $sql  .= $virgula." at53_horafim_manha = '$this->at53_horafim_manha' ";
        $virgula = ",";
-       if(trim($this->at53_horafim_manha) == null ){ 
+       if(trim((string) $this->at53_horafim_manha) == null ){ 
          $this->erro_sql = " Campo Hora final manhã nao Informado.";
          $this->erro_campo = "at53_horafim_manha";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_tarefaparam {
          return false;
        }
      }
-     if(trim($this->at53_horaini_tarde)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at53_horaini_tarde"])){ 
+     if(trim((string) $this->at53_horaini_tarde)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at53_horaini_tarde"])){ 
        $sql  .= $virgula." at53_horaini_tarde = '$this->at53_horaini_tarde' ";
        $virgula = ",";
-       if(trim($this->at53_horaini_tarde) == null ){ 
+       if(trim((string) $this->at53_horaini_tarde) == null ){ 
          $this->erro_sql = " Campo Hora inicial tarde nao Informado.";
          $this->erro_campo = "at53_horaini_tarde";
          $this->erro_banco = "";
@@ -225,10 +225,10 @@ class cl_tarefaparam {
          return false;
        }
      }
-     if(trim($this->at53_horafim_tarde)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at53_horafim_tarde"])){ 
+     if(trim((string) $this->at53_horafim_tarde)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at53_horafim_tarde"])){ 
        $sql  .= $virgula." at53_horafim_tarde = '$this->at53_horafim_tarde' ";
        $virgula = ",";
-       if(trim($this->at53_horafim_tarde) == null ){ 
+       if(trim((string) $this->at53_horafim_tarde) == null ){ 
          $this->erro_sql = " Campo Hora final tarde nao Informado.";
          $this->erro_campo = "at53_horafim_tarde";
          $this->erro_banco = "";
@@ -319,7 +319,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tarefaparam";
@@ -333,7 +333,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="tarefaparam.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -354,7 +354,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -366,7 +366,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

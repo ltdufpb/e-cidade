@@ -72,7 +72,7 @@ $clcfautent = new cl_cfautent;
 
 $ip = db_getsession("DB_ip");
 $porta = 5001;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
   //rotina que verifica se o ip do usuario irá imprimir autenticar ou naum ira fazer nada
   $result99 = $clcfautent->sql_record($clcfautent->sql_query_file(null,"k11_tipautent as tipautent",'',"k11_ipterm = '".db_getsession("DB_ip")."' and k11_instit = ".db_getsession("DB_instit")));
@@ -85,30 +85,19 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 
    //---------------------------------------
 
-  if(!isset($HTTP_POST_VARS["reautentica"])){
+  if(!isset($_POST["reautentica"])){
 
     db_inicio_transacao();
-    if (isset($HTTP_POST_VARS["codcla"])){
+    if (isset($_POST["codcla"])){
 
       try {
 
-        $oAutenticacaoBaixaBanco = new AutenticacaoBaixaBanco($HTTP_POST_VARS["codcla"]);
+        $oAutenticacaoBaixaBanco = new AutenticacaoBaixaBanco($_POST["codcla"]);
         $fc_autentica            = $oAutenticacaoBaixaBanco->autenticar();
 
         db_fim_transacao(false);
 
-      } catch (BusinessException $oBusinessException) {
-
-        db_fim_transacao(true);
-        ?>
-    	  <script>
-        parent.js_removeObj('msgBox');
-    	  parent.alert('Erro ao gerar autenticacao. Verifique :<?=str_replace("\n", '\\n', $oBusinessException->getMessage())?>');
-    	  document.location.href = 'cai4_arrecada005.php';
-    	  </script>
-    	  <?php 
-  	    exit;
-      } catch (Exception $oBusinessException) {
+      } catch (BusinessException|Exception $oBusinessException) {
 
         db_fim_transacao(true);
         ?>
@@ -124,7 +113,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 
     }
   }else{
-    $HTTP_POST_VARS["codcla"] = $HTTP_POST_VARS["codautent"];
+    $_POST["codcla"] = $_POST["codautent"];
   }
 ?>
 <html>
@@ -135,20 +124,20 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 <body bgcolor=#CCCCCC bgcolor="#AAB7D5">
 <table width="100%">
   <tr>
-    <td align="center"><font id="numeros" size="2">Processando Autentica&ccedil;&atilde;o da Classificação&nbsp;&nbsp;<?=@$HTTP_POST_VARS['codcla']?></font></td>
+    <td align="center"><font id="numeros" size="2">Processando Autentica&ccedil;&atilde;o da Classificação&nbsp;&nbsp;<?=@$_POST['codcla']?></font></td>
   </tr>
 </table>
 <form name="form1" method="POST">
   <input name="codautent" type="hidden" >
   <input name="tipo" type="hidden" >
-  <input name="reduz" type="hidden" value="<?=@$HTTP_POST_VARS["codcla"]?>">
+  <input name="reduz" type="hidden" value="<?=@$_POST["codcla"]?>">
 </form>
 </body>
 </html>
 <?php 
 
-   if(isset($HTTP_POST_VARS["reautentica"])){
-     $fc_autentica = $HTTP_POST_VARS["reautentica"];
+   if(isset($_POST["reautentica"])){
+     $fc_autentica = $_POST["reautentica"];
    }
 
    if($tipautent == 1) {
@@ -171,7 +160,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 
      echo "<script>";
      echo "if (parent.document.getElementById('msgBox')) {parent.js_removeObj('msgBox');}";
-     echo "if(parent.confirm('Autenticar Classificação " . $HTTP_POST_VARS["codcla"] . " Novamente?')==false){";
+     echo "if(parent.confirm('Autenticar Classificação " . $_POST["codcla"] . " Novamente?')==false){";
      echo "  document.location.href = 'cai4_arrecada005.php';";
      echo "}else{";
      echo "  var obj = document.createElement('input');";
@@ -179,7 +168,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
      echo "  obj.setAttribute('type','hidden');";
      echo "  obj.setAttribute('value','" . $fc_autentica . "');";
      echo "  document.form1.appendChild(obj);";
-     echo "  document.form1.codautent.value = '" . $HTTP_POST_VARS["codcla"] . "';";
+     echo "  document.form1.codautent.value = '" . $_POST["codcla"] . "';";
      echo "  document.form1.submit();";
      echo "}";
      echo "</script>";

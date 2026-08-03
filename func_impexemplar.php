@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_impexemplar_classe.php"));
 include(modification("classes/db_impexemplaritem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $climpexemplar = new cl_impexemplar;
 $climpexemplaritem = new cl_impexemplaritem;
 $clrotulo = new rotulocampo;
@@ -84,7 +84,7 @@ if($linhas!=0){
      </td>
      <td width="96%" align="left" nowrap>
       <?php 
-      $x = array(''=>'','M1'=>'MODELO 1','M2'=>'MODELO 2','M3'=>'MODELO 3', 'M4'=>'MODELO 4');
+      $x = [''=>'','M1'=>'MODELO 1','M2'=>'MODELO 2','M3'=>'MODELO 3', 'M4'=>'MODELO 4'];
       db_select('bi24_modelo',$x,true,1,"");
       ?>
      </td>
@@ -131,9 +131,9 @@ if($linhas!=0){
     }else{
      $sql = $climpexemplar->sql_query("","DISTINCT ".$campos,"bi24_data desc,bi24_hora desc"," bi24_biblioteca = $bi17_codigo");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_bi23_codigo)){
-     $repassa = array("chave_bi23_codigo"=>$chave_bi23_codigo,"chave_bi06_titulo"=>$chave_bi06_titulo,"bi24_modelo"=>$bi24_modelo,"bi24_data"=>$bi24_data);
+     $repassa = ["chave_bi23_codigo"=>$chave_bi23_codigo,"chave_bi06_titulo"=>$chave_bi06_titulo,"bi24_modelo"=>$bi24_modelo,"bi24_data"=>$bi24_data];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

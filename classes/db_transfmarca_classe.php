@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE transfmarca
 class cl_transfmarca { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ma02_i_codigo = 0; 
-   var $ma02_i_marca = 0; 
-   var $ma02_i_propant = 0; 
-   var $ma02_i_propnovo = 0; 
-   var $ma02_i_codproc = 0; 
-   var $ma02_d_data_dia = null; 
-   var $ma02_d_data_mes = null; 
-   var $ma02_d_data_ano = null; 
-   var $ma02_d_data = null; 
-   var $ma02_t_obs = null; 
+   public $ma02_i_codigo = 0; 
+   public $ma02_i_marca = 0; 
+   public $ma02_i_propant = 0; 
+   public $ma02_i_propnovo = 0; 
+   public $ma02_i_codproc = 0; 
+   public $ma02_d_data_dia = null; 
+   public $ma02_d_data_mes = null; 
+   public $ma02_d_data_ano = null; 
+   public $ma02_d_data = null; 
+   public $ma02_t_obs = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ma02_i_codigo = int4 = Código 
                  ma02_i_marca = int4 = Código da Marca 
                  ma02_i_propant = int4 = Cgm Propriet Anterior 
@@ -63,10 +63,10 @@ class cl_transfmarca {
                  ma02_t_obs = text = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_transfmarca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("transfmarca"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_transfmarca {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ma02_i_codigo = pg_result($result,0,0); 
+       $this->ma02_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from transfmarca_ma02_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ma02_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ma02_i_codigo)){
          $this->erro_sql = " Campo ma02_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_transfmarca {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "resgistro de transferencia de marcas ($this->ma02_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "resgistro de transferencia de marcas já Cadastrado";
@@ -232,16 +232,16 @@ class cl_transfmarca {
      $resaco = $this->sql_record($this->sql_query_file($this->ma02_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10519,'$this->ma02_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1816,10519,'','".AddSlashes(pg_result($resaco,0,'ma02_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1816,10520,'','".AddSlashes(pg_result($resaco,0,'ma02_i_marca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1816,10521,'','".AddSlashes(pg_result($resaco,0,'ma02_i_propant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1816,10522,'','".AddSlashes(pg_result($resaco,0,'ma02_i_propnovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1816,10523,'','".AddSlashes(pg_result($resaco,0,'ma02_i_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1816,10524,'','".AddSlashes(pg_result($resaco,0,'ma02_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1816,10525,'','".AddSlashes(pg_result($resaco,0,'ma02_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1816,10519,'','".AddSlashes(pg_fetch_result($resaco,0,'ma02_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1816,10520,'','".AddSlashes(pg_fetch_result($resaco,0,'ma02_i_marca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1816,10521,'','".AddSlashes(pg_fetch_result($resaco,0,'ma02_i_propant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1816,10522,'','".AddSlashes(pg_fetch_result($resaco,0,'ma02_i_propnovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1816,10523,'','".AddSlashes(pg_fetch_result($resaco,0,'ma02_i_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1816,10524,'','".AddSlashes(pg_fetch_result($resaco,0,'ma02_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1816,10525,'','".AddSlashes(pg_fetch_result($resaco,0,'ma02_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,10 +250,10 @@ class cl_transfmarca {
       $this->atualizacampos();
      $sql = " update transfmarca set ";
      $virgula = "";
-     if(trim($this->ma02_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_codigo"])){ 
+     if(trim((string) $this->ma02_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_codigo"])){ 
        $sql  .= $virgula." ma02_i_codigo = $this->ma02_i_codigo ";
        $virgula = ",";
-       if(trim($this->ma02_i_codigo) == null ){ 
+       if(trim((string) $this->ma02_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ma02_i_codigo";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_transfmarca {
          return false;
        }
      }
-     if(trim($this->ma02_i_marca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_marca"])){ 
+     if(trim((string) $this->ma02_i_marca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_marca"])){ 
        $sql  .= $virgula." ma02_i_marca = $this->ma02_i_marca ";
        $virgula = ",";
-       if(trim($this->ma02_i_marca) == null ){ 
+       if(trim((string) $this->ma02_i_marca) == null ){ 
          $this->erro_sql = " Campo Código da Marca nao Informado.";
          $this->erro_campo = "ma02_i_marca";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_transfmarca {
          return false;
        }
      }
-     if(trim($this->ma02_i_propant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_propant"])){ 
+     if(trim((string) $this->ma02_i_propant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_propant"])){ 
        $sql  .= $virgula." ma02_i_propant = $this->ma02_i_propant ";
        $virgula = ",";
-       if(trim($this->ma02_i_propant) == null ){ 
+       if(trim((string) $this->ma02_i_propant) == null ){ 
          $this->erro_sql = " Campo Cgm Propriet Anterior nao Informado.";
          $this->erro_campo = "ma02_i_propant";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_transfmarca {
          return false;
        }
      }
-     if(trim($this->ma02_i_propnovo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_propnovo"])){ 
+     if(trim((string) $this->ma02_i_propnovo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_propnovo"])){ 
        $sql  .= $virgula." ma02_i_propnovo = $this->ma02_i_propnovo ";
        $virgula = ",";
-       if(trim($this->ma02_i_propnovo) == null ){ 
+       if(trim((string) $this->ma02_i_propnovo) == null ){ 
          $this->erro_sql = " Campo Cgm Propriet Novo nao Informado.";
          $this->erro_campo = "ma02_i_propnovo";
          $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_transfmarca {
          return false;
        }
      }
-     if(trim($this->ma02_i_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_codproc"])){ 
+     if(trim((string) $this->ma02_i_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_codproc"])){ 
        $sql  .= $virgula." ma02_i_codproc = $this->ma02_i_codproc ";
        $virgula = ",";
-       if(trim($this->ma02_i_codproc) == null ){ 
+       if(trim((string) $this->ma02_i_codproc) == null ){ 
          $this->erro_sql = " Campo Código do processo nao Informado.";
          $this->erro_campo = "ma02_i_codproc";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_transfmarca {
          return false;
        }
      }
-     if(trim($this->ma02_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ma02_d_data_dia"] !="") ){ 
+     if(trim((string) $this->ma02_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ma02_d_data_dia"] !="") ){ 
        $sql  .= $virgula." ma02_d_data = '$this->ma02_d_data' ";
        $virgula = ",";
-       if(trim($this->ma02_d_data) == null ){ 
+       if(trim((string) $this->ma02_d_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "ma02_d_data_dia";
          $this->erro_banco = "";
@@ -331,7 +331,7 @@ class cl_transfmarca {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ma02_d_data_dia"])){ 
          $sql  .= $virgula." ma02_d_data = null ";
          $virgula = ",";
-         if(trim($this->ma02_d_data) == null ){ 
+         if(trim((string) $this->ma02_d_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "ma02_d_data_dia";
            $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_transfmarca {
          }
        }
      }
-     if(trim($this->ma02_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_t_obs"])){ 
+     if(trim((string) $this->ma02_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ma02_t_obs"])){ 
        $sql  .= $virgula." ma02_t_obs = '$this->ma02_t_obs' ";
        $virgula = ",";
-       if(trim($this->ma02_t_obs) == null ){ 
+       if(trim((string) $this->ma02_t_obs) == null ){ 
          $this->erro_sql = " Campo Observações nao Informado.";
          $this->erro_campo = "ma02_t_obs";
          $this->erro_banco = "";
@@ -363,23 +363,23 @@ class cl_transfmarca {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10519,'$this->ma02_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1816,10519,'".AddSlashes(pg_result($resaco,$conresaco,'ma02_i_codigo'))."','$this->ma02_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1816,10519,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma02_i_codigo'))."','$this->ma02_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_marca"]))
-           $resac = db_query("insert into db_acount values($acount,1816,10520,'".AddSlashes(pg_result($resaco,$conresaco,'ma02_i_marca'))."','$this->ma02_i_marca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1816,10520,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma02_i_marca'))."','$this->ma02_i_marca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_propant"]))
-           $resac = db_query("insert into db_acount values($acount,1816,10521,'".AddSlashes(pg_result($resaco,$conresaco,'ma02_i_propant'))."','$this->ma02_i_propant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1816,10521,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma02_i_propant'))."','$this->ma02_i_propant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_propnovo"]))
-           $resac = db_query("insert into db_acount values($acount,1816,10522,'".AddSlashes(pg_result($resaco,$conresaco,'ma02_i_propnovo'))."','$this->ma02_i_propnovo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1816,10522,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma02_i_propnovo'))."','$this->ma02_i_propnovo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma02_i_codproc"]))
-           $resac = db_query("insert into db_acount values($acount,1816,10523,'".AddSlashes(pg_result($resaco,$conresaco,'ma02_i_codproc'))."','$this->ma02_i_codproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1816,10523,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma02_i_codproc'))."','$this->ma02_i_codproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma02_d_data"]))
-           $resac = db_query("insert into db_acount values($acount,1816,10524,'".AddSlashes(pg_result($resaco,$conresaco,'ma02_d_data'))."','$this->ma02_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1816,10524,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma02_d_data'))."','$this->ma02_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ma02_t_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1816,10525,'".AddSlashes(pg_result($resaco,$conresaco,'ma02_t_obs'))."','$this->ma02_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1816,10525,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ma02_t_obs'))."','$this->ma02_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,16 +424,16 @@ class cl_transfmarca {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10519,'$ma02_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1816,10519,'','".AddSlashes(pg_result($resaco,$iresaco,'ma02_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1816,10520,'','".AddSlashes(pg_result($resaco,$iresaco,'ma02_i_marca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1816,10521,'','".AddSlashes(pg_result($resaco,$iresaco,'ma02_i_propant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1816,10522,'','".AddSlashes(pg_result($resaco,$iresaco,'ma02_i_propnovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1816,10523,'','".AddSlashes(pg_result($resaco,$iresaco,'ma02_i_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1816,10524,'','".AddSlashes(pg_result($resaco,$iresaco,'ma02_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1816,10525,'','".AddSlashes(pg_result($resaco,$iresaco,'ma02_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1816,10519,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma02_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1816,10520,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma02_i_marca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1816,10521,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma02_i_propant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1816,10522,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma02_i_propnovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1816,10523,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma02_i_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1816,10524,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma02_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1816,10525,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ma02_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from transfmarca
@@ -493,7 +493,7 @@ class cl_transfmarca {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:transfmarca";
@@ -507,7 +507,7 @@ class cl_transfmarca {
    function sql_query ( $ma02_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -538,7 +538,7 @@ class cl_transfmarca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -550,7 +550,7 @@ class cl_transfmarca {
    function sql_query_file ( $ma02_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -571,7 +571,7 @@ class cl_transfmarca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

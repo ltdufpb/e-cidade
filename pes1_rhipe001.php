@@ -35,7 +35,7 @@ include(modification("classes/db_rhpessoal_classe.php"));
 include(modification("classes/db_rhiperegist_classe.php"));
 include(modification("classes/db_rhipenumcgm_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhipe = new cl_rhipe;
 $clcgm = new cl_cgm;
 $clrhpessoal = new cl_rhpessoal;
@@ -53,7 +53,7 @@ if(isset($incluir)){
   if($clrhipe->erro_status==0){
     $sqlerro=true;
   }
-  if($sqlerro == false && trim($rh62_regist) != ""){
+  if($sqlerro == false && trim((string) $rh62_regist) != ""){
     $clrhiperegist->incluir($rh14_sequencia);
     if($clrhiperegist->erro_status==0){
       $erro_msg = $clrhiperegist->erro_msg;
@@ -68,7 +68,7 @@ if(isset($incluir)){
       $sqlerro = true;
       $erro_msg = "Campo matrícula do servidor é de preenchimento obrigatório.";
   }
-  if($sqlerro == false && trim($rh63_numcgm) != ""){
+  if($sqlerro == false && trim((string) $rh63_numcgm) != ""){
     $clrhipenumcgm->rh63_numcgm = $rh63_numcgm;
     $clrhipenumcgm->incluir($rh14_sequencia);
     if($clrhipenumcgm->erro_status==0){

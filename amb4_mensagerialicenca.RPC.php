@@ -58,13 +58,13 @@ try {
 
       try {
         $aDestinatarioMensagem = MensageriaLicencaUsuarioRepository::getColecaoMensageriaLicencaUsuario();
-      } catch(Exception $oErro) {
-        $aDestinatarioMensagem = array();
+      } catch(Exception) {
+        $aDestinatarioMensagem = [];
       }
 
-      $aDiasRetorno             = array();
-      $aDestinatarioRetorno     = array();
-      $aDestinatariosJaInclusos = array();
+      $aDiasRetorno             = [];
+      $aDestinatarioRetorno     = [];
+      $aDestinatariosJaInclusos = [];
       foreach ($aDestinatarioMensagem as $oMensageriaLicencaUsuario) {
 
         if ( !in_array($oMensageriaLicencaUsuario->getDias(), $aDiasRetorno) ) {
@@ -76,7 +76,7 @@ try {
           $aDestinatariosJaInclusos[]  = $oMensageriaLicencaUsuario->getUsuario()->getIdUsuario();
           $oStdUsuario                 = new stdClass();
           $oStdUsuario->iCodigoUsuario = $oMensageriaLicencaUsuario->getUsuario()->getIdUsuario();
-          $oStdUsuario->sNomeUsuario   = urlencode($oMensageriaLicencaUsuario->getUsuario()->getNome());
+          $oStdUsuario->sNomeUsuario   = urlencode((string) $oMensageriaLicencaUsuario->getUsuario()->getNome());
           $aDestinatarioRetorno[]      = $oStdUsuario;
         }
       }

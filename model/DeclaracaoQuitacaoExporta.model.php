@@ -33,7 +33,7 @@ class DeclaracaoQuitacaoExporta extends DeclaracaoQuitacao {
   
   protected $sMunicipio;
   
-  protected $aDeclaracoes = array();
+  protected $aDeclaracoes = [];
   
   public function geraPDF() {
     
@@ -95,7 +95,7 @@ class DeclaracaoQuitacaoExporta extends DeclaracaoQuitacao {
   public function setDeclaracoes($aDeclaracoes) {
     
     if(!is_array($aDeclaracoes)) {
-      $aDeclaracoes = array($aDeclaracoes);
+      $aDeclaracoes = [$aDeclaracoes];
     }
     
     $this->aDeclaracoes = $aDeclaracoes;
@@ -214,7 +214,7 @@ class DeclaracaoQuitacaoExporta extends DeclaracaoQuitacao {
 
         if(pg_num_rows($rTxtDebitos) > 0) {
           
-          for($d = 0; $d < (pg_numrows($rTxtDebitos) > 30 ? 30 : pg_num_rows($rTxtDebitos)); $d++) {
+          for($d = 0; $d < (pg_num_rows($rTxtDebitos) > 30 ? 30 : pg_num_rows($rTxtDebitos)); $d++) {
             
             $oTxtDebitos = db_utils::fieldsMemory($rTxtDebitos, $d);
             

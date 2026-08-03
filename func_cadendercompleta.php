@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadenderruacep_classe.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $oDaoCadEnderRuaCep = new cl_cadenderruacep();
 
@@ -126,7 +126,7 @@ $oRotulo->label( "db71_sigla" );
           $sOrdenacao = "db74_descricao";
           $sQuery     = "sql_query_cep";
           $lPesquisou = false;
-          $aWhere     = array();
+          $aWhere     = [];
 
           if( isset( $lSistemaExterno ) ) {
 
@@ -170,7 +170,7 @@ $oRotulo->label( "db71_sigla" );
             $sWhere = implode( " AND ", $aWhere );
             $sSql   = $oDaoCadEnderRuaCep->{$sQuery}( "", $sCampos, $sOrdenacao, $sWhere );
 
-            $repassa = array();
+            $repassa = [];
 
             if( $lPesquisou ) {
               db_lovrot( $sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa );

@@ -35,7 +35,7 @@ require_once modification('classes/db_assenta_classe.php');
 db_postmemory($_POST);
 db_postmemory($_GET);
 
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -76,7 +76,7 @@ if ( isset($pesquisa_chave) ) {
           <td>
             <?php 
               $db_opcao_opc_assentamento = (isset($vinculo_portaria)||isset($iTipoFuncionamento)) ? 3 : 1;
-              $aOpcaoAssentamento = array(1 => 'Efetividade', 2=>'Histórico Funcional');
+              $aOpcaoAssentamento = [1 => 'Efetividade', 2=>'Histórico Funcional'];
               $sOpcaoAssentamento = (!isset($iTipoFuncionamento)) ? 2 : $iTipoFuncionamento;
               db_select("sOpcaoAssentamento",$aOpcaoAssentamento,true,$db_opcao_opc_assentamento, "style=max-width:130px");
             ?>
@@ -182,15 +182,15 @@ if ( isset($pesquisa_chave) ) {
         $sql = $classenta->sql_query_funcional("",$campos,"h16_regist"," z01_nome like '%$chave_z01_nome%' {$sWhere}");
       }
 
-      $repassa = array();
+      $repassa = [];
       if(isset($chave_h16_regist) && (trim($chave_h16_regist)!="")  ){
-        $repassa = array("chave_h16_regist"=>$chave_h16_regist,"chave_h16_regist"=>$chave_h16_regist);
+        $repassa = ["chave_h16_regist"=>$chave_h16_regist,"chave_h16_regist"=>$chave_h16_regist];
       }else if(isset($chave_z01_nome) && (trim($chave_z01_nome)!="") ){
-        $repassa = array("chave_z01_nome"=>$chave_z01_nome,"chave_z01_nome"=>$chave_z01_nome);
+        $repassa = ["chave_z01_nome"=>$chave_z01_nome,"chave_z01_nome"=>$chave_z01_nome];
       }else if(isset($chave_h12_assent) && (trim($chave_h12_assent)!="") ){
-        $repassa = array("chave_h12_assent"=>$chave_h12_assent,"chave_h12_assent"=>$chave_h12_assent);
+        $repassa = ["chave_h12_assent"=>$chave_h12_assent,"chave_h12_assent"=>$chave_h12_assent];
       }else if(isset($sOpcaoAssentamento) && (trim($sOpcaoAssentamento)!="") ){
-        $repassa = array("sOpcaoAssentamento"=>$sOpcaoAssentamento,"sOpcaoAssentamento"=>$sOpcaoAssentamento);
+        $repassa = ["sOpcaoAssentamento"=>$sOpcaoAssentamento,"sOpcaoAssentamento"=>$sOpcaoAssentamento];
       }
 
       if(isset($sql) && trim($sql) != ""){

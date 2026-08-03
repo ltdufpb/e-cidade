@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE procimag
 class cl_procimag { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p64_codproc = 0; 
-   var $p64_imagem = 0; 
+   public $p64_codproc = 0; 
+   public $p64_imagem = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p64_codproc = int4 = Código do processo 
                  p64_imagem = oid = Imagem 
                  ";
    //funcao construtor da classe 
-   function cl_procimag() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procimag"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -104,7 +104,7 @@ class cl_procimag {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -131,10 +131,10 @@ class cl_procimag {
       $this->atualizacampos();
      $sql = " update procimag set ";
      $virgula = "";
-     if(trim($this->p64_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p64_codproc"])){ 
+     if(trim((string) $this->p64_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p64_codproc"])){ 
        $sql  .= $virgula." p64_codproc = $this->p64_codproc ";
        $virgula = ",";
-       if(trim($this->p64_codproc) == null ){ 
+       if(trim((string) $this->p64_codproc) == null ){ 
          $this->erro_sql = " Campo Código do processo nao Informado.";
          $this->erro_campo = "p64_codproc";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_procimag {
          return false;
        }
      }
-     if(trim($this->p64_imagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p64_imagem"])){ 
+     if(trim((string) $this->p64_imagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p64_imagem"])){ 
        $sql  .= $virgula." p64_imagem = $this->p64_imagem ";
        $virgula = ",";
-       if(trim($this->p64_imagem) == null ){ 
+       if(trim((string) $this->p64_imagem) == null ){ 
          $this->erro_sql = " Campo Imagem nao Informado.";
          $this->erro_campo = "p64_imagem";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procimag";

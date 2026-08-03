@@ -178,7 +178,7 @@ try {
 
   $rsRecibos = db_query($connWebiss, $sSql);
   $iRecibos  = pg_num_rows($rsRecibos);
-  $aRecibos  = array();
+  $aRecibos  = [];
 
   /**
    * Nao encontrou recibos 
@@ -195,7 +195,7 @@ try {
     $oDadosRecibo = db_utils::fieldsMemory($rsRecibos, $iRecibo);
 
     $oRecibo = new StdClass();
-    $oRecibo->sDataEmissao     = date('d/m/Y', strtotime($oDadosRecibo->data_emissao));
+    $oRecibo->sDataEmissao     = date('d/m/Y', strtotime((string) $oDadosRecibo->data_emissao));
     $oRecibo->iCpfCnpjCadastro = $oDadosRecibo->cpf_cnpj_cadastro;
     $oRecibo->iCpfCnpjEmpresa  = $oDadosRecibo->cpf_cnpj_empresa;
     $oRecibo->iInscricao       = $oDadosRecibo->inscricao;

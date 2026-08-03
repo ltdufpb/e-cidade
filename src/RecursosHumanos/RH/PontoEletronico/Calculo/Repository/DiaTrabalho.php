@@ -272,7 +272,7 @@ class DiaTrabalho
 
         $oDaoArquidoData = new \cl_pontoeletronicoarquivodata();
 
-        $aCamposHorasConsolidadas = array();
+        $aCamposHorasConsolidadas = [];
         $aCamposHorasConsolidadas[] = 'rh197_horas_trabalhadas';
         $aCamposHorasConsolidadas[] = 'rh197_horas_falta';
         $aCamposHorasConsolidadas[] = 'rh197_horas_extras_50_d';
@@ -612,7 +612,7 @@ class DiaTrabalho
 
     public function getMarcacoesReaisPorServidorNaData(\Servidor $servidor, \DBDate $data, JornadaModel $jornada)
     {
-        $aMarcacoesReais = array();
+        $aMarcacoesReais = [];
         $dataPosterior = '';
 
         $horaInicioJornadaComTolerancia = clone $jornada->getInicioJornada();
@@ -643,7 +643,7 @@ class DiaTrabalho
         $sql .= " GROUP BY rh01_regist, z01_nome, data, hora, rh16_pis ";
         $sql .= " ORDER BY data, hora";
 
-        $camposRelatorio = array(
+        $camposRelatorio = [
           "data",
           "case when ( select
                     distinct to_char((x.data || ' ' || x.hora)::timestamp + '1 minute'::interval, 'hh24:mi')
@@ -670,7 +670,7 @@ class DiaTrabalho
                     and (x.data || ' ' || x.hora)::timestamp + '1 minute'::interval
                         = (aa.rh229_data || ' ' || aa.rh229_hora)::timestamp
                 ) end as hora "
-        );
+        ];
 
         $sql = " SELECT DISTINCT " . implode(', ', $camposRelatorio) . "
                    FROM ( {$sql} ) AS x
@@ -697,13 +697,13 @@ class DiaTrabalho
 
                         if ($horaEncontrada->getTimeStamp() >= $horaInicioJornadaComTolerancia->getTimeStamp()) {
                             if ($horaEncontrada->getTimeStamp() <= $horaFimJornadaComTolerancia->getTimeStamp()) {
-                                $hora = preg_replace('/^(\d+\:\d+)\:\d+$/', "$1", $retornoConsulta->hora);
+                                $hora = preg_replace('/^(\d+\:\d+)\:\d+$/', "$1", (string) $retornoConsulta->hora);
                                 $data = $retornoConsulta->data;
 
-                                return (object)array(
+                                return (object)[
                                 'hora' => $hora,
                                 'data' => $data
-                                );
+                                ];
                             }
                         }
                     }
@@ -718,10 +718,10 @@ class DiaTrabalho
                     $sData = $horariosConsultados[$i]->data;
                 }
 
-                $aMarcacoesReais[$i + 1] = (object)array(
+                $aMarcacoesReais[$i + 1] = (object)[
                   'sHora' => $sHora,
                   'sData' => $sData
-                );
+                ];
             }
         }
 

@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_liclicitemlote_classe.php"));
 require_once(modification("classes/db_liclicita_classe.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clliclicitemlote = new cl_liclicitemlote;
@@ -64,21 +64,21 @@ if (isset($alterar)&&trim($alterar)!=""){
 
      db_inicio_transacao();
 
-     $vetor = split(",", $descricao);
+     $vetor = preg_split("#,#m", (string) $descricao);
 
      $l04_liclicitem = "";
      $l04_descricao  = "";
      for($i = 0; $i < sizeof($vetor); $i++){
-          $vetor_codigos  = split("_",$vetor[$i]);
+          $vetor_codigos  = preg_split("#_#m",(string) $vetor[$i]);
 
           $l04_liclicitem = $vetor_codigos[0]*1;
           $l04_descricao  = $vetor_codigos[1];
 
-          if (trim($l04_descricao) == "AUTO"){
+          if (trim((string) $l04_descricao) == "AUTO"){
             $l04_descricao .= "_".$vetor_codigos[2]."_".$vetor_codigos[3];
           }
 
-          if (trim($l04_descricao)=="0"){
+          if (trim((string) $l04_descricao)=="0"){
                $l04_descricao = "";
           }
 
@@ -92,7 +92,7 @@ if (isset($alterar)&&trim($alterar)!=""){
                }
           }
 
-          if (strlen($l04_descricao) > 0){
+          if (strlen((string) $l04_descricao) > 0){
                $clliclicitemlote->l04_liclicitem = $l04_liclicitem;
                $clliclicitemlote->l04_descricao  = $l04_descricao;
 
@@ -110,7 +110,7 @@ if (isset($alterar)&&trim($alterar)!=""){
      db_fim_transacao($sqlerro);
 }
 
-if (!isset($selecionado)&&trim(@$selecionado)==""){
+if (!isset($selecionado)&&trim((string) @$selecionado)==""){
      $selecionado = 0;
 }
 

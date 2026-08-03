@@ -36,8 +36,8 @@ require_once(modification("dbforms/verticalTab.widget.php"));
 
 use ECidade\Tributario\Juridico\Inicial\Repository\HistoricoDesmembramentoRepository;
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $veinclu          = false;
 $sClassHide       = 'hide';
@@ -253,7 +253,7 @@ if ( $oDaoCertidao->numrows == 1 || isset($lConsulta) ) {
 } else {
 
    $funcao_js='js_selecionaCertidao|0';
-   db_lovrot($sSqlCertidao,15,"()","",$funcao_js,"","NoMe",array());
+   db_lovrot($sSqlCertidao,15,"()","",$funcao_js,"","NoMe",[]);
 }
 ?>
 <script type="text/javascript">

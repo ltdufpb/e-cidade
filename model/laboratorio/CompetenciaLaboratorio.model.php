@@ -100,13 +100,13 @@ class CompetenciaLaboratorio implements ICompetenciaSaude {
    * Procedimentos encerrados para Competência
    * @var array
    */
-  private $aProcedimentos = array();
+  private $aProcedimentos = [];
 
   /**
    * Lista de filtros usados para buscar os procedimentos
    * @var array
    */
-  private $aFiltrosProcedimentos = array();
+  private $aFiltrosProcedimentos = [];
 
   public function __construct ( $iCodigo = null ) {
 
@@ -407,7 +407,7 @@ class CompetenciaLaboratorio implements ICompetenciaSaude {
 
     $sDataInicial      = $this->oPeriodoInicial->convertTo(DBDate::DATA_EN);
     $sDataFinal        = $this->oPeriodoFinal->convertTo(DBDate::DATA_EN);
-    $aExamesConferidos = array();
+    $aExamesConferidos = [];
 
     $oDaoConferencia      = new cl_lab_conferencia();
     $sWhereConferencia = "la47_d_data between '{$sDataInicial}' and '{$sDataFinal}' ";

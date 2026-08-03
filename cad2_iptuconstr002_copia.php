@@ -31,8 +31,8 @@ include("classes/db_iptubase_classe.php");
 $cliptuconstr = new cl_iptuconstr;
 $cliptuconstr1 = new cl_iptuconstr;
 $cliptubase = new cl_iptubase;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
   ///////////////////////////////////////////////////////////////////////
 $head4 = "CARACTERÍSTICAS DE CONTRUÇÕES";
@@ -48,13 +48,13 @@ $where  = "";
 if(isset($relatorio1)){
 	// $chaves = são as caracteristicas da aba com as caracteristicas
 	if(isset($chaves) && $chaves != ""){
-    $chaves = split("#",$chaves);
+    $chaves = preg_split("#\\##m",$chaves);
     for($i=0;$i<sizeof($chaves);$i++){
       // concatena na $codigo o código das caracteristicas selecionadas
       if($codigo == ""){
-	$codigo .= substr($chaves[$i],0,(strpos($chaves[$i],"-")));
+	$codigo .= substr((string) $chaves[$i],0,(strpos((string) $chaves[$i],"-")));
       }else{
-	$codigo .= ",".substr($chaves[$i],0,(strpos($chaves[$i],"-")));
+	$codigo .= ",".substr((string) $chaves[$i],0,(strpos((string) $chaves[$i],"-")));
       }
     }
   $where = " j48_caract in ($codigo)";
@@ -164,8 +164,8 @@ if(isset($setor) && $setor != ""){
     $quadra1 = $quadra;
     $sql_ruas = " inner join iptubase on iptubase.j01_matric = j39_matric inner join testada on iptubase.j01_idbql = j36_idbql inner join face on j36_face = j37_face ";
     if(isset($setor) && $setor != ""){
-      $chaves = split(",",$setor);
-      $chaves1 = split(",",$quadra);
+      $chaves = preg_split("#,#m",(string) $setor);
+      $chaves1 = preg_split("#,#m",(string) $quadra);
       $and = "";
       $setor = "";
       for($i=0;$i<sizeof($chaves);$i++){
@@ -325,7 +325,7 @@ $sql = "select * from ($sql) as tudo
 //echo $sql;exit;
 
 $result  = pg_exec($sql) or die($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 if($numrows == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros para o filtro selecionado.');
    exit;
@@ -449,7 +449,7 @@ if(isset($j14_comruas) && $j14_comruas != "" && empty($j14_semruas)){
   $vir = "";
   $rua = "";
   $result1 = pg_exec("select j14_nome from ruas where j14_codigo in ($j14_comruas)");
-  for($x=0;$x<pg_numrows($result1);$x++){
+  for($x=0;$x<pg_num_rows($result1);$x++){
   	db_fieldsmemory($result1,$x);
 	  $cod .= $vir.$j14_nome;
 	  $vir=", ";
@@ -460,7 +460,7 @@ if(isset($j14_semruas) && $j14_semruas != "" && empty($j14_comruas)){
   $vir = "";
   $rua = "";
   $result1 = pg_exec("select j14_nome from ruas where j14_codigo in ($j14_semruas)");
-      for($x=0;$x<pg_numrows($result1);$x++){
+      for($x=0;$x<pg_num_rows($result1);$x++){
 	db_fieldsmemory($result1,$x);
 	$cod .= $vir.$j14_nome;
 	$vir=", ";
@@ -473,7 +473,7 @@ if(isset($j14_comruas) && $j14_comruas == "" && isset($j14_semruas) && $j14_semr
 $vir = "";
 $cod = "";
 $result1 = pg_exec("select distinct j31_descr,j31_codigo from carconstr inner join caracter on j48_caract=j31_codigo where j31_codigo in ($listadas)");
-    for($x=0;$x<pg_numrows($result1);$x++){
+    for($x=0;$x<pg_num_rows($result1);$x++){
       db_fieldsmemory($result1,$x);
       $cod .= $vir.$j31_codigo." - ".$j31_descr;
       $vir=", ";
@@ -483,7 +483,7 @@ $vir = "";
 $cod = "";
 if(isset($chaves_caract) && $chaves_caract != ""){
   $result1 = pg_exec("select distinct j31_descr,j31_codigo from carconstr inner join caracter on j48_caract=j31_codigo  where j31_codigo in ($chaves_caract)");
-      for($x=0;$x<pg_numrows($result1);$x++){
+      for($x=0;$x<pg_num_rows($result1);$x++){
 	db_fieldsmemory($result1,$x);
 	$cod .= $vir.$j31_codigo." - ".$j31_descr;
 	$vir=",";
@@ -532,8 +532,8 @@ $pdf->MultiCell(280,05,"CONSTRUÇÕES APARTIR DO ANO ".$anoini." À ".$anofim."",0,
 }
 if(isset($setores) && $setores != ""){
   if(isset($setor) && $setor != ""){
-    $chaves = split(",",$setores);
-    $chaves1 = split(",",$quadra);
+    $chaves = preg_split("#,#m",$setores);
+    $chaves1 = preg_split("#,#m",(string) $quadra);
     $and = "";
     $setores = "";
     for($i=0;$i<sizeof($chaves);$i++){
@@ -560,7 +560,7 @@ if(isset($grupo) && $grupo != ""){
   $pdf->Cell(80,05,(isset($grupo) && $grupo != ""?"DESCRIÇÃO DA CARACTERÍSTICA":"TOTAL"),1,0,"C",1);
   $pdf->Cell(40,05,"QUANTIDADE",1,0,"C",1);
   $pdf->Cell(40,05,"ÀREA ",1,1,"C",1);
-  for($i=0;$i<pg_numrows($res);$i++){
+  for($i=0;$i<pg_num_rows($res);$i++){
     db_fieldsmemory($res,$i);
     $pdf->Cell(80,05,"".$j31_descr,1,0,"C");
     $pdf->Cell(40,05,"".$quant,1,0,"C");

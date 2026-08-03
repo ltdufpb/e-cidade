@@ -59,22 +59,22 @@ $db_opcao   = 1;
   <tr> 
     <td height="430" align="left" valign="top"> 
      <?php 
-       $clcriaabas->identifica = array("gerasefip"    => "Gera Sefip",
-                                       "selecionados" => "Selecionados");
+       $clcriaabas->identifica = ["gerasefip"    => "Gera Sefip",
+                                       "selecionados" => "Selecionados"];
 
-       $clcriaabas->title      = array("gerasefip"    => "Gera Sefip",
-                                       "selecionados" => "Servidores");
+       $clcriaabas->title      = ["gerasefip"    => "Gera Sefip",
+                                       "selecionados" => "Servidores"];
        
        $sUrlGeraSefip          = "pes1_gerasefip004.php?iAnoUsu={$oGet->iAnoUsu}";
        $sUrlGeraSefip         .= "&iMesUsu={$oGet->iMesUsu}&iTipoProcessamento={$oGet->iTipoProcessamento}";
-       $clcriaabas->src        = array("gerasefip"    => $sUrlGeraSefip,
-                                       "selecionados" => "");
+       $clcriaabas->src        = ["gerasefip"    => $sUrlGeraSefip,
+                                       "selecionados" => ""];
        
-       $clcriaabas->disabled   = array("gerasefip"    => "true",
-                                       "selecionados" => "true"); 
+       $clcriaabas->disabled   = ["gerasefip"    => "true",
+                                       "selecionados" => "true"]; 
        
-       $clcriaabas->sizecampo  = array("gerasefip"    => "23",
-                                       "selecionados" => "23");
+       $clcriaabas->sizecampo  = ["gerasefip"    => "23",
+                                       "selecionados" => "23"];
        $clcriaabas->cria_abas(); 
      ?> 
     </td>

@@ -318,9 +318,9 @@ class Dotacao
      * Retorna o ano da Dotacao
      * Retorna o ano em que a dotacao foi definida
      * @return integer
-     * @deprecated
      * @see getAno
      */
+    #[\Deprecated]
     public function getAnoUsu()
     {
         return $this->iAnoUsu;
@@ -723,7 +723,7 @@ class Dotacao
     public static function getDotacoesNoAno($iAno, $iInstituicao)
     {
 
-        $dotacoes = array();
+        $dotacoes = [];
         $oDaoOrcDotacao = db_utils::getDao("orcdotacao");
         $sWhere = "o58_anousu = {$iAno} and o58_instit = {$iInstituicao}";
         $sSqlDotacao = $oDaoOrcDotacao->sql_query_file(
@@ -734,9 +734,7 @@ class Dotacao
             $sWhere
         );
         $rsDotacao = $oDaoOrcDotacao->sql_record($sSqlDotacao);
-        $dotacoes = db_utils::makeCollectionFromRecord($rsDotacao, function ($dados) {
-            return $dados;
-        });
+        $dotacoes = db_utils::makeCollectionFromRecord($rsDotacao, fn($dados) => $dados);
 
 
         return $dotacoes;
@@ -753,7 +751,7 @@ class Dotacao
          * @todo testar
          */
 
-        $aEstrutural = array();
+        $aEstrutural = [];
         $aEstrutural[] = str_pad($this->iOrgao, 2, '0', STR_PAD_LEFT);
         $aEstrutural[] = str_pad($this->iUnidade, 2, '0', STR_PAD_LEFT);
         $aEstrutural[] = str_pad($this->iFuncao, 2, '0', STR_PAD_LEFT);
@@ -761,7 +759,7 @@ class Dotacao
         $aEstrutural[] = str_pad($this->iPrograma, 4, '0', STR_PAD_LEFT);
         $aEstrutural[] = str_pad($this->iProjAtiv, 4, '0', STR_PAD_LEFT);
         $aEstrutural[] = substr($this->iElemento, 0, 13);
-        $aEstrutural[] = str_pad($this->getDadosRecurso()->getRecurso(), 4, '0', STR_PAD_LEFT);
+        $aEstrutural[] = str_pad((string) $this->getDadosRecurso()->getRecurso(), 4, '0', STR_PAD_LEFT);
         return implode('.', $aEstrutural);
     }
 
@@ -978,7 +976,7 @@ class Dotacao
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'o58_anousu' => $this->getAnoUsu(),
             'o58_coddot' => $this->getCodigo(),
             'o58_orgao' => $this->getOrgao(),
@@ -995,7 +993,7 @@ class Dotacao
             'o58_datacriacao' => $this->getDataCriacao(),
             'o58_concarpeculiar' => $this->getCaracteristicaPeculiar(),
             'o58_esferaorcamentaria' => $this->getEsferaOrcamentaria()
-        );
+        ];
 
         return $retorno;
     }

@@ -350,7 +350,7 @@ class RequisicaoAidof {
   public function consultar($iInscricaoMunicipal, $iTipoDocumento = null) {
 
     if (empty($iInscricaoMunicipal)) {
-      return array();
+      return [];
     }
 
     $this->setEmpresa($iInscricaoMunicipal);
@@ -365,7 +365,7 @@ class RequisicaoAidof {
     $sSql                = $oDaoRequisicaoAidof->sql_query(null, '*', 'y116_id DESC', $sSqlWhere);
     $rsRequisicaoAidof   = $oDaoRequisicaoAidof->sql_record($sSql);
     $iNumLinhas          = $oDaoRequisicaoAidof->numrows;
-    $aRetorno            = array();
+    $aRetorno            = [];
 
     for ($iLinha = 0; $iLinha < $iNumLinhas; $iLinha++) {
 
@@ -406,9 +406,9 @@ class RequisicaoAidof {
         throw new ParameterException('Informe o codigo da requisicao');
       }
 
-      $sStatus = strtoupper($this->getStatus());
+      $sStatus = strtoupper((string) $this->getStatus());
 
-      if (empty($sStatus) || !in_array($sStatus, array('C', 'L', 'P', 'R'))) {
+      if (empty($sStatus) || !in_array($sStatus, ['C', 'L', 'P', 'R'])) {
 
         throw new ParameterException('Informe um status valido');
       }
@@ -485,8 +485,7 @@ class RequisicaoAidof {
        * Nova Aidof
        */
       $oAidof                  = new Aidof();
-      $iNotaFinalAidofAnterior = Aidof::getNotaFinalAidof($this->oEmpresa,
-                                                          $this->oNota);
+      $iNotaFinalAidofAnterior = (new Aidof())->getNotaFinalAidof($this->oEmpresa, $this->oNota);
 
       $oAidof->setNota($this->oNota);
       $oAidof->setEmpresa($this->oEmpresa);
@@ -529,7 +528,7 @@ class RequisicaoAidof {
 
       if ($this->oEmpresa->getCgmEmpresa()->getEmailComercial() && 1==2) {
 
-        $aMensagens = array();
+        $aMensagens = [];
 
         // envia mensagem para a empresa
         $oMensagemEmpresa   = new NotificacaoMensagem();

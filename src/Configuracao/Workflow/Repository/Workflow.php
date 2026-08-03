@@ -8,7 +8,7 @@ use ECidade\Configuracao\Workflow\Workflow as WorkflowModel;
 class Workflow
 {
   
-    protected static $itens = array();
+    protected static $itens = [];
 
   /**
    * @param $codigo

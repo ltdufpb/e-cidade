@@ -98,13 +98,13 @@ function formataData($dData, $iTipo = 1) {
 
   if ($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
  
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
  return $dData;
 
@@ -112,7 +112,7 @@ function formataData($dData, $iTipo = 1) {
 
 
 $aDatas  = explode(',', $sDatas);
-$aDatas2 = array(formataData($aDatas[0]), formataData($aDatas[1]));
+$aDatas2 = [formataData($aDatas[0]), formataData($aDatas[1])];
 
 if ($iSituacao == 1) {
 
@@ -230,9 +230,7 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
   }
 
   novaLinha($oPdf, $oDados->sd30_i_codigo, $oDados->sd30_c_tipograde, $oDados->ed32_c_descr, 
-            $oDados->sd30_c_horaini, $oDados->sd30_c_horafim, $oDados->sd30_i_fichas, 
-            $oDados->sd101_c_descr, $oDados->sd30_i_reservas, formataData($oDados->sd30_d_valinicial, 2), 
-            formataData($oDados->sd30_d_valfinal, 2)
+            $oDados->sd30_c_horaini, $oDados->sd30_c_horafim, $oDados->sd30_i_fichas
            );
   
 }

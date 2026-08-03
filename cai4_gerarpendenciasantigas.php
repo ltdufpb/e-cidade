@@ -38,7 +38,7 @@ include(modification("classes/db_conciliapendcorrente_classe.php"));
 include(modification("classes/db_conciliaextrato_classe.php"));
 include(modification("classes/db_conciliapendextrato_classe.php"));
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 $clconcilia             = new cl_concilia;
 $clconciliaitem         = new cl_conciliaitem;
@@ -53,12 +53,12 @@ $sqlerro = false;
 
 /* for excluindo da conciliacor */
 
-  $arrayCorrente = split(',',$dados);
+  $arrayCorrente = preg_split('#,#m',$dados);
   db_inicio_transacao();
   foreach ($arrayCorrente as $i => $dadoscorrente){
 
-    list ($id, $data, $autent) = split ('_', $dadoscorrente);
-		$data = substr($data,6,4)."-".substr($data,3,2)."-".substr($data,0,2);
+    [$id, $data, $autent] = preg_split ('#_#m', $dadoscorrente);
+		$data = substr((string) $data,6,4)."-".substr((string) $data,3,2)."-".substr((string) $data,0,2);
 
     $clconciliacor->excluir(null," k84_id = $id and k84_autent = $autent and k84_data = '".$data."'");
 		if ($clconciliacor->erro_status == 0) {

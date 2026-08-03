@@ -33,7 +33,7 @@ include(modification("classes/db_proctipoa_classe.php"));
 include(modification("classes/db_atendtipo_classe.php"));
 include(modification("classes/db_procedimentos_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clproctipoa = new cl_proctipoa;
 $clatendtipos = new cl_atendtipo;
 $clprocedimentos = new cl_procedimentos;

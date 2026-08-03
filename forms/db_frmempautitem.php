@@ -223,7 +223,7 @@ if (!empty($e55_autori) &&
       <table border="0" cellpadding='0' cellspacing='0'>
 
         <tr style="height: 20px;">
-          <td nowrap title="<?php echo (isset($Te55_autori) ? $Te55_autori : null)?>" style="width: 90px;">
+          <td nowrap title="<?php echo ($Te55_autori ?? null)?>" style="width: 90px;">
             <?php echo $Le55_autori?>
           </td>
           <td>
@@ -232,7 +232,7 @@ if (!empty($e55_autori) &&
         </tr>
 
         <tr style="height: 20px;">
-          <td nowrap title="<?php echo (isset($Te55_sequen) ? $Te55_sequen : null)?>">
+          <td nowrap title="<?php echo ($Te55_sequen ?? null)?>">
             <strong>Sequência:</strong>
           </td>
           <td>
@@ -241,7 +241,7 @@ if (!empty($e55_autori) &&
         </tr>
 
         <tr style="height: 20px;">
-          <td nowrap title="<?php echo (isset($Te55_item) ? $Te55_item : null)?>">
+          <td nowrap title="<?php echo ($Te55_item ?? null)?>">
             <?php db_ancora($Le55_item,"js_pesquisae55_item(true);",$db_opcao); ?>
           </td>
           <td>
@@ -309,7 +309,7 @@ if (!empty($e55_autori) &&
 
                 db_fieldsmemory($result99,$i);
                 $r="ele_$codele";
-                $$r = "$elemento01#$o56_descr";
+                ${$r} = "$elemento01#$o56_descr";
                 db_input("ele_$codele",20,0,true,'hidden',3);
               }
             }
@@ -318,8 +318,8 @@ if (!empty($e55_autori) &&
         </tr>
 
         <tr style="height: 20px;">
-          <td nowrap title="<?php echo (isset($Te55_quant) ? $Te55_quant : null)?>">
-            <?php echo (isset($Le55_quant) ? $Le55_quant : null)?>
+          <td nowrap title="<?php echo ($Te55_quant ?? null)?>">
+            <?php echo ($Le55_quant ?? null)?>
           </td>
           <td>
             <?php
@@ -342,7 +342,7 @@ if (!empty($e55_autori) &&
             $oDaoMatUnid      = new cl_matunid();
             $sSqlBuscaUnidade = $oDaoMatUnid->sql_query_file(null, "m61_codmatunid,substr(m61_descr,1,20) as m61_descr", "m61_descr");
             $rsBuscaUnidade   = $oDaoMatUnid->sql_record($sSqlBuscaUnidade);
-            $aUnidadesMedidas = array();
+            $aUnidadesMedidas = [];
             $iValueUnidade  = null;
             if ($oDaoMatUnid->numrows > 0) {
 
@@ -351,7 +351,7 @@ if (!empty($e55_autori) &&
                 $oStdUnidadeMedida = db_utils::fieldsMemory($rsBuscaUnidade, $iRow);
                 $aUnidadesMedidas[$oStdUnidadeMedida->m61_codmatunid] = $oStdUnidadeMedida->m61_descr;
 
-                if (strtolower(trim($oStdUnidadeMedida->m61_descr)) == 'unidade' )  {
+                if (strtolower(trim((string) $oStdUnidadeMedida->m61_descr)) == 'unidade' )  {
                   $iValueUnidade = $oStdUnidadeMedida->m61_codmatunid;
                 }
               }
@@ -430,10 +430,10 @@ if (!empty($e55_autori) &&
         </tr>
 
         <tr style="height: 20px;">
-          <td nowrap title="<?php echo (isset($Te55_descr) ? $Te55_descr : null)?>" colspan="2">
+          <td nowrap title="<?php echo ($Te55_descr ?? null)?>" colspan="2">
             <fieldset style="width:60%;">
               <legend>
-                <?php echo (isset($Le55_descr) ? $Le55_descr : null)?>
+                <?php echo ($Le55_descr ?? null)?>
               </legend>
               <?php
               $lDisabled = false;
@@ -496,7 +496,7 @@ if (!empty($e55_autori) &&
       <tr>
         <td valign="top"  align='center' width="90%"  height="100%">
           <?php
-          $aCamposSqlItens = array(
+          $aCamposSqlItens = [
             'e55_autori',
             'e55_item',
             '(select m61_descr from matunid where m61_codmatunid = e55_matunid) as m61_descr',
@@ -507,13 +507,13 @@ if (!empty($e55_autori) &&
             'e55_vlrun',
             'round(e55_vltot,2) as e55_vltot',
             'pc01_descrmater',
-          );
+          ];
           $sSqlItens = $clempautitem->sql_query_pcmaterele($e55_autori, null, implode(',', $aCamposSqlItens), "e55_sequen");
-          $chavepri  = array(
+          $chavepri  = [
             "e55_autori" => $e55_autori,
-            "e55_sequen" => (isset($e55_sequen) ? $e55_sequen : null),
-          );
-          $aCamposGrid = array(
+            "e55_sequen" => ($e55_sequen ?? null),
+          ];
+          $aCamposGrid = [
             'e55_sequen',
             'e55_item',
             'pc07_codele',
@@ -523,7 +523,7 @@ if (!empty($e55_autori) &&
             'e55_quant',
             'e55_vlrun',
             'e55_vltot',
-          );
+          ];
           $cliframe_alterar_excluir->chavepri      = $chavepri;
           $cliframe_alterar_excluir->sql           = $sSqlItens;
           $cliframe_alterar_excluir->campos        = implode(',', $aCamposGrid);
@@ -712,7 +712,7 @@ if (!empty($e55_autori) &&
     db_iframe_empautitem.hide();
     <?php
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
     }
     ?>
   }

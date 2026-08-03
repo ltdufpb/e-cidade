@@ -189,7 +189,7 @@ class RelatorioEmpenhoClassificacaoCredores
     /**
      * @param DBDate|null $oDataInicial
      */
-    public function setDataInicialNota(DBDate $oDataInicial = null)
+    public function setDataInicialNota(?DBDate $oDataInicial = null)
     {
         $this->oDataNotaInicial = $oDataInicial;
     }
@@ -197,7 +197,7 @@ class RelatorioEmpenhoClassificacaoCredores
     /**
      * @param DBDate|null $oDataFinal
      */
-    public function setDataFinalNota(DBDate $oDataFinal = null)
+    public function setDataFinalNota(?DBDate $oDataFinal = null)
     {
         $this->oDataNotaFinal = $oDataFinal;
     }
@@ -226,14 +226,14 @@ class RelatorioEmpenhoClassificacaoCredores
     {
         $aInformacoes = $this->getDadosImprimir();
 
-        $informacoesAgrupadasPorListaRecurso = array();
+        $informacoesAgrupadasPorListaRecurso = [];
         /* agrupando as informações por lista de classificação e recurso */
         foreach ($aInformacoes as $stdLinha) {
             $indice = $stdLinha->codigo_classificacao;
             if (empty($informacoesAgrupadasPorListaRecurso[$indice])) {
                 $informacoesAgrupadasPorListaRecurso[$indice] = new stdClass();
                 $informacoesAgrupadasPorListaRecurso[$indice]->classificacao_codigo = $indice;
-                $informacoesAgrupadasPorListaRecurso[$indice]->recursos = array();
+                $informacoesAgrupadasPorListaRecurso[$indice]->recursos = [];
             }
 
             $codigoRecurso = $stdLinha->codigo_recurso;
@@ -242,7 +242,7 @@ class RelatorioEmpenhoClassificacaoCredores
                 $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso]->codigo = $codigoRecurso;
                 $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso]->descricao = $stdLinha->descricao_recurso;
                 $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso]->complemento = $stdLinha->complemento;
-                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso]->linhas = array();
+                $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso]->linhas = [];
             }
 
             $informacoesAgrupadasPorListaRecurso[$indice]->recursos[$codigoRecurso]->linhas[] = $stdLinha;
@@ -327,7 +327,7 @@ class RelatorioEmpenhoClassificacaoCredores
                     $this->oPdf->cell(20, 4, $dataLiquidacao, 0, 0, PDFDocument::ALIGN_CENTER, $lPreencher);
                     $this->oPdf->cell(20, 4, $sDataVencimento, 0, 0, PDFDocument::ALIGN_CENTER, $lPreencher);
                     $this->oPdf->cell(20, 4, $sDataPagamento, 0, 0, PDFDocument::ALIGN_CENTER, $lPreencher);
-                    $this->oPdf->cell(82, 4, substr($oStdInformacao->razao_social, 0, 95), 0, 0,
+                    $this->oPdf->cell(82, 4, substr((string) $oStdInformacao->razao_social, 0, 95), 0, 0,
                         PDFDocument::ALIGN_LEFT, $lPreencher);
                     $this->oPdf->cell(20, 4, db_formatar($oStdInformacao->valor, 'f'), 0, 1, PDFDocument::ALIGN_RIGHT,
                         $lPreencher);
@@ -413,8 +413,8 @@ class RelatorioEmpenhoClassificacaoCredores
      *
      * @throws BusinessException
      * @throws ParameterException
-     * @deprecated
      */
+    #[\Deprecated]
     private function naoUtilizar()
     {
 
@@ -489,7 +489,7 @@ class RelatorioEmpenhoClassificacaoCredores
             $this->oPdf->cell(25, 4, $sDataRecebimento, 0, 0, PDFDocument::ALIGN_CENTER, $lPreencher);
             $this->oPdf->cell(25, 4, $sDataVencimento, 0, 0, PDFDocument::ALIGN_CENTER, $lPreencher);
             $this->oPdf->cell(25, 4, $sDataPagamento, 0, 0, PDFDocument::ALIGN_CENTER, $lPreencher);
-            $this->oPdf->cell(82, 4, substr($oStdInformacao->razao_social, 0, 95), 0, 0, PDFDocument::ALIGN_LEFT,
+            $this->oPdf->cell(82, 4, substr((string) $oStdInformacao->razao_social, 0, 95), 0, 0, PDFDocument::ALIGN_LEFT,
                 $lPreencher);
             $this->oPdf->cell(20, 4, db_formatar($oStdInformacao->valor, 'f'), 0, 1, PDFDocument::ALIGN_RIGHT,
                 $lPreencher);
@@ -641,7 +641,7 @@ class RelatorioEmpenhoClassificacaoCredores
      */
     private function getDadosImprimir()
     {
-        $aCampos = array(
+        $aCampos = [
             "e60_numemp  as codigo_empenho",
             "e60_codemp  as numero_empenho",
             "e60_anousu  as ano",
@@ -664,9 +664,9 @@ class RelatorioEmpenhoClassificacaoCredores
             'trim(e09_justificativa) as justificativa_pagamento',
             'trim(cc31_justificativa) as justificativa_dispensa',
             'o56_elemento as desdobramento',
-        );
+        ];
 
-        $aWhere = array(
+        $aWhere = [
             "e60_instit = {$this->oInstituicao->getCodigo()}",
             'e81_cancelado is null',
             "e53_vlranu <> e53_valor",
@@ -676,7 +676,7 @@ class RelatorioEmpenhoClassificacaoCredores
                 ) as x where cc36_dataretorno is null
               )
             )"
-        );
+        ];
 
         if ($this->exibirAPagar() && !$this->todos()) {
             $aWhere[] = "round(e53_valor, 2) <> round(e53_vlrpag +e53_vlranu, 2)";

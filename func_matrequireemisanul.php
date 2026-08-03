@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matrequi_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatrequi = new cl_matrequi;
 $clmatrequi->rotulo->label("m40_codigo");
 $clmatrequi->rotulo->label("m40_codigo");
@@ -93,9 +93,9 @@ $clmatrequi->rotulo->label("m40_codigo");
         }else{
            $sql = $clmatrequi->sql_query_almox("",$campos,"m40_codigo",$where);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m40_codigo)){
-          $repassa = array("chave_m40_codigo"=>$chave_m40_codigo,"chave_m40_codigo"=>$chave_m40_codigo);
+          $repassa = ["chave_m40_codigo"=>$chave_m40_codigo,"chave_m40_codigo"=>$chave_m40_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

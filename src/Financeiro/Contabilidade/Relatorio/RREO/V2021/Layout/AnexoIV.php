@@ -612,8 +612,8 @@ class AnexoIV
         }
         $sBorda = in_array(
             $oStdLinha->ordem,
-            array( static::PREVIDENCIARIO_TOTAL_DESPESAS,
-                   static::TOTAL_DESPESAS_PREVIDENCIARIAS_RPPS_FUNDO_EM_REPARTICAO)
+            [ static::PREVIDENCIARIO_TOTAL_DESPESAS,
+                   static::TOTAL_DESPESAS_PREVIDENCIARIAS_RPPS_FUNDO_EM_REPARTICAO]
         ) ? "TB" : '';
 
         $lUltimoPeriodo = $this->oRelatorio->getPeriodo()->getCodigo() == 11;
@@ -737,7 +737,7 @@ class AnexoIV
         }
         $sBorda = in_array(
             $oStdLinha->ordem,
-            array(static::PREVIDENCIARIO_TOTAL_RECEITAS, static::TOTAL_RECEITAS_PREVIDENCIARIAS_RPPS_FUNDO_REPARTICAO)
+            [static::PREVIDENCIARIO_TOTAL_RECEITAS, static::TOTAL_RECEITAS_PREVIDENCIARIAS_RPPS_FUNDO_REPARTICAO]
         ) ? "TB" : '';
 
         $this->oPdf->cell(
@@ -835,7 +835,7 @@ class AnexoIV
     {
         return in_array(
             $iOrdem,
-            array(static::PREVIDENCIARIO_TOTAL_RECEITAS,
+            [static::PREVIDENCIARIO_TOTAL_RECEITAS,
                   static::PREVIDENCIARIO_TOTAL_DESPESAS,
                   static::TOTAL_RECEITAS_PREVIDENCIARIAS_RPPS_FUNDO_REPARTICAO,
                   static::TOTAL_DESPESAS_PREVIDENCIARIAS_RPPS_FUNDO_EM_REPARTICAO,
@@ -844,7 +844,7 @@ class AnexoIV
                   static::RECEITAS_PREVIDENCIARIAS_BENEFICIOS_MANTIDOS_PELO_TESOURO_FIM,
                   static::DESPESAS_PREVIDENCIARIAS_BENEFICIOS_MANTIDOS_PELO_TESOURO_FIM
 
-                )
+                ]
         );
     }
 
@@ -891,7 +891,7 @@ class AnexoIV
         $this->oPdf->addHeaderDescription('');
         $this->oPdf->addHeaderDescription(DemonstrativoFiscal::getEnteFederativo($oPrefeitura));
 
-        $aInstituicoes = explode(',', $this->oRelatorio->getInstituicoes());
+        $aInstituicoes = explode(',', (string) $this->oRelatorio->getInstituicoes());
 
         if (count($aInstituicoes) == 1) {
             $oInstituicao = \InstituicaoRepository::getInstituicaoByCodigo($aInstituicoes[0]);

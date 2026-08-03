@@ -45,7 +45,7 @@ define('COM_INDICE_POR_ANO', 't');
 $oGet       = db_utils::postMemory($_GET);
 $iAnoSessao = db_getsession("DB_anousu");
 
-$aTipoPrograma = array();
+$aTipoPrograma = [];
 $aTipoPrograma[0] = "Todos";
 $aTipoPrograma[3] = "Programas Temáticos";
 $aTipoPrograma[4] = "Programas de Gestão, Manutenção e Serviços";
@@ -108,11 +108,11 @@ $iTamanhoFonte = 6;
 
 try {
 
-  $aCodigoProgramas = explode(",", $oGet->sProgramas);
+  $aCodigoProgramas = explode(",", (string) $oGet->sProgramas);
 
-  if (trim($oGet->sProgramas) == "") {
+  if (trim((string) $oGet->sProgramas) == "") {
 
-    $aWherePrograma  = array();
+    $aWherePrograma  = [];
     $aWherePrograma[] = "o08_ppaversao = {$oGet->iVersao}";
     /**
      * Alterado lógica para filtrar pelo competencia do ppa
@@ -210,8 +210,8 @@ try {
         imprimirCabecalhoIndicadores($oPdf, $iAlturaLinha, $iTamanhoFonte);
       }
       $oPdf->SetFont('arial', '', $iTamanhoFonte);
-      $oPdf->Cell(100, $iAlturaLinha, substr($oStdIndicador->s_descricao, 0, 80), "TR", 0, "L");
-      $oPdf->Cell(30,  $iAlturaLinha, substr($oStdIndicador->s_unidade, 0, 23),   "TR", 0, "L");
+      $oPdf->Cell(100, $iAlturaLinha, substr((string) $oStdIndicador->s_descricao, 0, 80), "TR", 0, "L");
+      $oPdf->Cell(30,  $iAlturaLinha, substr((string) $oStdIndicador->s_unidade, 0, 23),   "TR", 0, "L");
       $oPdf->Cell(20,  $iAlturaLinha, $oStdIndicador->i_ano,                      "TR", 0, "C");
       $oPdf->Cell(40,  $iAlturaLinha, $oStdIndicador->n_valor,                    "T",  1, "R");
     }
@@ -242,7 +242,7 @@ try {
        */
       $oPdf->SetFont('arial', '', $iTamanhoFonte);
       $oPdf->Cell(30,  $iAlturaLinha, $oObjetivo->getCodigoSequencial(),          "TBR", 0, "C");
-      $oPdf->Cell(160, $iAlturaLinha, substr($oObjetivo->getDescricao(), 0, 125), "TB",  1, "L");
+      $oPdf->Cell(160, $iAlturaLinha, substr((string) $oObjetivo->getDescricao(), 0, 125), "TB",  1, "L");
       $oPdf->MultiCell(190, $iAlturaLinha, $oObjetivo->getObjetivo(), "TB", "L");
 
       /**
@@ -264,7 +264,7 @@ try {
       imprimirCabecalhoMetas($oPdf, $iAlturaLinha, $iTamanhoFonte, $sPeriodoPrograma);
 
       $aMetas       = $oObjetivo->getMetas();
-      $aIniciativas = array();
+      $aIniciativas = [];
 
       /**
        * Percorre as metas do objetivo
@@ -314,9 +314,7 @@ try {
        */
       if($imprimirIndices == COM_INDICE_POR_ANO) {
 
-        usort($aIniciativas, function($objeto1, $objeto2) {
-          return strcmp($objeto1->getAno(), $objeto2->getAno());
-        });
+        usort($aIniciativas, fn($objeto1, $objeto2) => strcmp((string) $objeto1->getAno(), (string) $objeto2->getAno()));
       }
 
       /**

@@ -53,7 +53,7 @@ try {
      */
   	case 'valorPadraoProcedimento':
 
-  	  $aWhere = array();
+  	  $aWhere = [];
   	  if ( !empty($oParam->iCodigo) ) {
   	    $aWhere[] = "sd63_i_codigo = {$oParam->iCodigo}";
   	  }
@@ -104,7 +104,7 @@ try {
         throw new DBException( _M( MENSAGENS_TFD4_AJUDACUSTO_RPC . 'ajudas_custo_vazia', $oErro ) );
       }
 
-      $oRetorno->aAjudasCusto = array();
+      $oRetorno->aAjudasCusto = [];
 
       for( $iContador = 0; $iContador < $iTotalAjudasCusto; $iContador++ ) {
 
@@ -123,9 +123,9 @@ try {
         $oDadosRetorno->iCgsBeneficiado = $oCgsBeneficiado->getCodigo();
         $oDadosRetorno->sCgsBeneficiado = urlencode( $oCgsBeneficiado->getNome() );
         $oDadosRetorno->iCodigoAjuda    = $oDadosAjudaCusto->tf12_i_codigo;
-        $oDadosRetorno->sDescricaoAjuda = urlencode( $oDadosAjudaCusto->tf12_descricao );
+        $oDadosRetorno->sDescricaoAjuda = urlencode( (string) $oDadosAjudaCusto->tf12_descricao );
         $oDadosRetorno->fValor          = $oDadosAjudaCusto->tf15_f_valoremitido;
-        $oDadosRetorno->sObservacao     = urlencode( $oDadosAjudaCusto->tf15_observacao );
+        $oDadosRetorno->sObservacao     = urlencode( (string) $oDadosAjudaCusto->tf15_observacao );
 
         $oRetorno->aAjudasCusto[] = $oDadosRetorno;
       }

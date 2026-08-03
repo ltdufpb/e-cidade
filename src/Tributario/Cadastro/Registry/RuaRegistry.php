@@ -16,7 +16,7 @@ class RuaRegistry
     /**
      * @var Rua[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     public static function set(Rua $ruas)
     {

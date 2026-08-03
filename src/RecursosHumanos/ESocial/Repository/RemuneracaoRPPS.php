@@ -146,9 +146,7 @@ SQL;
             throw new DBException($mensagem);
         }
 
-        return db_utils::makeCollectionFromRecord($rsRhPessoalMov, function ($retorno) {
-            return $retorno->cgm;
-        });
+        return db_utils::makeCollectionFromRecord($rsRhPessoalMov, fn($retorno) => $retorno->cgm);
     }
 
     /**

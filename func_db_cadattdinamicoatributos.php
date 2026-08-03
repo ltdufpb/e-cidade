@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_cadattdinamicoatributos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_cadattdinamicoatributos = new cl_db_cadattdinamicoatributos;
 $cldb_cadattdinamicoatributos->rotulo->label("db109_sequencial");
 $cldb_cadattdinamicoatributos->rotulo->label("db109_sequencial");
@@ -98,9 +98,9 @@ $cldb_cadattdinamicoatributos->rotulo->label("db109_sequencial");
         }else{
            $sql = $cldb_cadattdinamicoatributos->sql_query("",$campos,"db109_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db109_sequencial)){
-          $repassa = array("chave_db109_sequencial"=>$chave_db109_sequencial,"chave_db109_sequencial"=>$chave_db109_sequencial);
+          $repassa = ["chave_db109_sequencial"=>$chave_db109_sequencial,"chave_db109_sequencial"=>$chave_db109_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

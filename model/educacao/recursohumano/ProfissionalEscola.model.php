@@ -76,13 +76,13 @@ class ProfissionalEscola
   /**
    * @var AtividadeProfissionalEscola[]
    */
-    protected $aAtividades = array();
+    protected $aAtividades = [];
 
   /**
    * Rela??es de trabalho que o profissional da escola possui
    * @var RelacaoTrabalho[]
    */
-    protected $aRelacoesTrabalho = array();
+    protected $aRelacoesTrabalho = [];
 
   /**
    * Identifica??o do profissional da escola( Matr?cula / CGM )
@@ -326,7 +326,7 @@ class ProfissionalEscola
             $sWhere .= " and (ed22_datafim >= '{$dataFim}' or ed22_datafim is null) ";
         }
 
-        $aHorariosRegencia     = array();
+        $aHorariosRegencia     = [];
         $oDaoRecHumanoHoraDisp = new cl_rechumanohoradisp();
         $sSqlHorarioRegencia   = $oDaoRecHumanoHoraDisp->sql_query_disponivel_periodo(null, "*", $sOrdem, $sWhere);
         $rsHorariosRegencia    = db_query($sSqlHorarioRegencia);

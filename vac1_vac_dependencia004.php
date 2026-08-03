@@ -33,7 +33,7 @@ require_once(modification("classes/db_vac_dependencia_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oIframeAE          = new cl_iframe_alterar_excluir;
 $oDaoVacDependencia = new cl_vac_dependencia;

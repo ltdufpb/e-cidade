@@ -23,7 +23,7 @@ class Linha
     /**
      * @var Coluna[]
      */
-    public $colunas = array();
+    public $colunas = [];
 
     /**
      * @var bool

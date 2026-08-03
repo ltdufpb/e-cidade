@@ -28,13 +28,13 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($arg)) {
-  $str = split("\?",$HTTP_SERVER_VARS['QUERY_STRING']);
-  $str1 = base64_decode($str[0]);
-  $str2 = base64_decode($str[1]);
+  $str = preg_split("#\\?#m",(string) $_SERVER['QUERY_STRING']);
+  $str1 = base64_decode((string) $str[0]);
+  $str2 = base64_decode((string) $str[1]);
   echo "$str1<br>$str2";
-  parse_str($str1);
+  parse_str($str1, $result);
   parse_str($str2);  
 }
 if(isset($retorno)) {
@@ -54,11 +54,11 @@ if(isset($retorno)) {
   ";
   exit;
 }
-$arg = explode("==",$arg);
-if(empty($HTTP_POST_VARS["filtro"]))
-  $HTTP_POST_VARS["filtro"] = $arg[1];
+$arg = explode("==",(string) $arg);
+if(empty($_POST["filtro"]))
+  $_POST["filtro"] = $arg[1];
 else
-  $arg[1] = $HTTP_POST_VARS["filtro"];
+  $arg[1] = $_POST["filtro"];
   
   switch($campo) {
     case "nomeruas":
@@ -88,8 +88,8 @@ else
 <td align="center" nowrap>
 
 <form name="form5" method="post">
-  <input type="text" name="filtro" value="<?=@$HTTP_POST_VARS['filtro']?>" onBlur="window.focus();">
-  <input type="hidden" name="arg" value="<?=@$HTTP_POST_VARS['arg']?>">
+  <input type="text" name="filtro" value="<?=@$_POST['filtro']?>" onBlur="window.focus();">
+  <input type="hidden" name="arg" value="<?=@$_POST['arg']?>">
   <input type="submit" name="procurar" value="Procurar">
 </form>
 </td>
@@ -97,7 +97,7 @@ else
 <tr>
 <td align="center">
 <?php 
-db_lov($sql,15,"db_ruas.php?".base64_encode("campo=$campo"),$HTTP_POST_VARS["filtro"]);
+db_lov($sql,15,"db_ruas.php?".base64_encode("campo=$campo"),$_POST["filtro"]);
 ?>
 </td>
 </tr>

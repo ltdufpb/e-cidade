@@ -35,7 +35,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_seleciona = new cl_iframe_seleciona;
 $aux = new cl_arquivo_auxiliar;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>

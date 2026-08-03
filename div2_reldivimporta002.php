@@ -40,8 +40,8 @@ $oRetorno = new stdClass();
 $oRetorno->erro = false;
 $oRetorno->sMessage = '';
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 // *** dataini => 2009-12-01
 // *** datafim => 2009-12-17
@@ -431,10 +431,10 @@ if ($iNumRownsSql == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado.');
 }
 
-$aLongoPrazo = array();
-$aCurtoPrazo = array();
-$aResumos = array();
-$controleArrecadacoesPrazo = array();
+$aLongoPrazo = [];
+$aCurtoPrazo = [];
+$aResumos = [];
+$controleArrecadacoesPrazo = [];
 
 $aAgrupador['proced'] = 'v01_proced';
 $aAgrupador['receita'] = 'k00_receit';
@@ -455,8 +455,8 @@ if ($lTipoRel == 0) {
         $controleArrecadacoesPrazo[] = $numpreNumpar;
 
         foreach ($aAgrupador as $sDescrAgrupa => $sCampo) {
-            if (in_array($oDadosImpDivida->k03_tipo, array(5, 15, 18))
-              || (in_array($oDadosImpDivida->k03_tipo, array(6, 13)) && $oDadosImpDivida->v01_dtvenc > $dtDataLimite)) {
+            if (in_array($oDadosImpDivida->k03_tipo, [5, 15, 18])
+              || (in_array($oDadosImpDivida->k03_tipo, [6, 13]) && $oDadosImpDivida->v01_dtvenc > $dtDataLimite)) {
                 if (isset($aLongoPrazo[$sDescrAgrupa][$oDadosImpDivida->$sCampo])) {
                     $aLongoPrazo[$sDescrAgrupa][$oDadosImpDivida->$sCampo]['nVlrHist'] += $oDadosImpDivida->v01_vlrhis;
                     $aLongoPrazo[$sDescrAgrupa][$oDadosImpDivida->$sCampo]['nVlrCorr'] += $oDadosImpDivida->corrigido;
@@ -472,7 +472,7 @@ if ($lTipoRel == 0) {
                     $aLongoPrazo[$sDescrAgrupa][$oDadosImpDivida->$sCampo]['nTotal'] = $oDadosImpDivida->total;
                 }
             } else {
-                if (in_array($oDadosImpDivida->k03_tipo, array(6, 13)) && $oDadosImpDivida->v01_dtvenc <= $dtDataLimite) {
+                if (in_array($oDadosImpDivida->k03_tipo, [6, 13]) && $oDadosImpDivida->v01_dtvenc <= $dtDataLimite) {
                     if (isset($aCurtoPrazo[$sDescrAgrupa][$oDadosImpDivida->$sCampo])) {
                         $aCurtoPrazo[$sDescrAgrupa][$oDadosImpDivida->$sCampo]['nVlrHist'] += $oDadosImpDivida->v01_vlrhis;
                         $aCurtoPrazo[$sDescrAgrupa][$oDadosImpDivida->$sCampo]['nVlrCorr'] += $oDadosImpDivida->corrigido;
@@ -513,7 +513,7 @@ if ($lTipoRel == 0) {
 }
 
 // Cria lista com exercícios de 3 anos anteriores aos exercícios selecionados
-$aDataDebitos = explode("-", $oParametros->dataini);
+$aDataDebitos = explode("-", (string) $oParametros->dataini);
 
 for ($iInd = 1; $iInd <= 3; $iInd++) {
     $aExercicioPago[] = ($aDataDebitos[0] - $iInd);
@@ -632,10 +632,10 @@ $head4 = "PERÍODO: " . db_formatar($oParametros->dataini, 'd') . " à " . db_form
 $head5 = "TIPO DE RELATÓRIO: " . $sTipoRel;
 $head6 = "TIPO DE INSCRIÇÃO: " . $sTipoImp;
 
-$aDadosSintetico = array();
-$aDadosAnalitico = array();
-$aQtdTotProced = array();
-$aDados = array();
+$aDadosSintetico = [];
+$aDadosAnalitico = [];
+$aQtdTotProced = [];
+$aDados = [];
 
 $nVlrTotalHist = 0;
 $nVlrTotalCort = 0;
@@ -649,7 +649,7 @@ $nVlrGeralTotalMul = 0;
 $nVlrGeralTotal = 0;
 $nTotalVlrProced = 0;
 $lImprime = true;
-$controleArrecadacoes = array();
+$controleArrecadacoes = [];
 
 if ($lTipoRel == 0) {
     for ($iInd = 0; $iInd < $iNumRownsSql; $iInd++) {
@@ -699,7 +699,7 @@ if ($lTipoRel == 0) {
     $pdf->SetFillColor(235);
 
     foreach ($aDadosSintetico as $iCodImp => $aDadosImp) {
-        $sNome = substr($aDadosImp['oDadosImp']->sUsuario, 0, 35);
+        $sNome = substr((string) $aDadosImp['oDadosImp']->sUsuario, 0, 35);
 
         if ($pdf->gety() > $pdf->h - 30 || $lImprime) {
             $lImprime = false;
@@ -813,7 +813,7 @@ if ($lTipoRel == 0) {
             }
         }
 
-        $aTotalGeral = array();
+        $aTotalGeral = [];
 
         if (isset($aCurtoPrazo[$sTipoAgrupa])) {
             if ($pdf->gety() > $pdf->h - 30) {
@@ -1142,11 +1142,11 @@ if ($lTipoRel == 0) {
         }
     }
 
-    $aVlrGeralTotalHist = array();
-    $aVlrGeralTotalCort = array();
-    $aVlrGeralTotalJur = array();
-    $aVlrGeralTotalMul = array();
-    $aVlrGeralTotal = array();
+    $aVlrGeralTotalHist = [];
+    $aVlrGeralTotalCort = [];
+    $aVlrGeralTotalJur = [];
+    $aVlrGeralTotalMul = [];
+    $aVlrGeralTotal = [];
 
     $pdf = new PDF();
     $pdf->Open();
@@ -1156,7 +1156,7 @@ if ($lTipoRel == 0) {
     $pdf->SetFillColor(235);
 
     foreach ($aDadosAnalitico as $iCodImp => $aDadosImp) {
-        $sNome = substr($aDadosImp['oDadosImp']->sUsuario, 0, 35);
+        $sNome = substr((string) $aDadosImp['oDadosImp']->sUsuario, 0, 35);
 
         if ($pdf->gety() > $pdf->h - 30 || $lImprime) {
             $lImprime = false;
@@ -1217,11 +1217,11 @@ if ($lTipoRel == 0) {
         $nVlrTotalMul = 0;
         $nVlrTotal = 0;
 
-        $aVlrTotalHist = array();
-        $aVlrTotalCort = array();
-        $aVlrTotalJur = array();
-        $aVlrTotalMul = array();
-        $aVlrTotal = array();
+        $aVlrTotalHist = [];
+        $aVlrTotalCort = [];
+        $aVlrTotalJur = [];
+        $aVlrTotalMul = [];
+        $aVlrTotal = [];
 
         foreach ($aDadosImp['aListaDiv'] as $iInd => $oDadosDiv) {
             if ($pdf->gety() > $pdf->h - 30 || $lImprime) {
@@ -1259,7 +1259,7 @@ if ($lTipoRel == 0) {
             }
 
             $pdf->SetFont($sLetra, '', 5);
-            $sNomeContrib = substr($oDadosDiv->sNomeContrib, 0, 25);
+            $sNomeContrib = substr((string) $oDadosDiv->sNomeContrib, 0, 25);
 
             $pdf->Cell(14, 3, $oDadosDiv->CArrec, 0, 0, "C", 0);
             $pdf->Cell(10, 3, $oDadosDiv->Parc, 0, 0, "C", 0);

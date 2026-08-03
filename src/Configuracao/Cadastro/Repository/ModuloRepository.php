@@ -16,7 +16,7 @@ class ModuloRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * DiversosRepository constructor.
@@ -51,7 +51,7 @@ class ModuloRepository
             throw new Exception("Não foi possível buscar os menus.");
         }
 
-        $registros = array();
+        $registros = [];
 
         if (pg_num_rows($rs) === 0) {
             return $registros;

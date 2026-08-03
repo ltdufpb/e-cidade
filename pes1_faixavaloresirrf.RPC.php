@@ -176,5 +176,5 @@ function carregarDados($iCodigoTabela) {
   return db_utils::getCollectionByRecord($rsSql);
 
 }
-$oRetorno->message = urlencode($oRetorno->message);
+$oRetorno->message = urlencode((string) $oRetorno->message);
 echo $oJson->encode($oRetorno);

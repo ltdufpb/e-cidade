@@ -32,7 +32,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_ipe_classe.php"));
 $clipe    = new cl_ipe;
 
-$oGet = db_utils::postmemory($HTTP_GET_VARS);
+$oGet = db_utils::postmemory($_GET);
 
 db_sel_cfpess($oGet->iAno, $oGet->iMes, "r11_codipe, r11_percentualipe");
 
@@ -55,7 +55,7 @@ $head5 = "Percentual: {$r11_percentualipe}%";
 
 $sSql = $clipe->sql_query_relatorio_ipergs($oGet->iAno, $oGet->iMes, db_getsession("DB_instit"), $oGet->sTipo, $oGet->lUnificado, $oGet->sListaLotacoes);
 $rsDados = db_query($sSql);
-$iLinhas = pg_numrows($rsDados);
+$iLinhas = pg_num_rows($rsDados);
 
 if ($iLinhas == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dados para o IPE no período de '.$oGet->mes.' / '.$oGet->ano);
@@ -80,7 +80,7 @@ for ($iInd = 0; $iInd < $iLinhas; $iInd++) {
   $oDados = db_utils::fieldsMemory($rsDados,$iInd);
   
   if ($oPdf->gety() > $oPdf->h - 30 || $iInd == 0 ) {
-    fc_cabecalho($oPdf, $oGet->sTipo, ($oGet->sListaLotacoes!=""?true:false), 4);
+    fc_cabecalho($oPdf, $oGet->sTipo, ($oGet->sListaLotacoes!=""?true:false));
     $lPreencheCelula = 1;
     
   }

@@ -39,7 +39,7 @@ class DotacaoLic extends BaseAbstract {
 	 * Tipos de objeto da licitação para os quais não deve-se enviar a licitação.
 	 * @var array
 	 */
-	private static $aTiposObjetosNaoMostrar = array('CON', 'PER', 'ALB');
+	private static $aTiposObjetosNaoMostrar = ['CON', 'PER', 'ALB'];
 
   /**
    * Código do leiaute versão 1.2
@@ -93,11 +93,11 @@ class DotacaoLic extends BaseAbstract {
 
 		$sModalidade = $oLicitacao->getModalidade()->getSiglaTipoCompraTribunal();
 		$lUsaRegistroPreco = $oLicitacao->usaRegistroDePreco();
-		if (in_array($sModalidade, array('RPO'))) {
+		if (in_array($sModalidade, ['RPO'])) {
 			return false;
 		}
 
-		if (in_array($sModalidade, array('CNC', 'PRE', 'PRP', 'RDC'))) {
+		if (in_array($sModalidade, ['CNC', 'PRE', 'PRP', 'RDC'])) {
 			return !$lUsaRegistroPreco;
 		}
 		return true;

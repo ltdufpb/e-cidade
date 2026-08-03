@@ -44,9 +44,9 @@ class Reconhecimento {
    * @return ReconhecimentoModel[]
    * @throws \DBException
    */
-  public function getAcordosParaReconhecimento(\Instituicao $instituicao, DBCompetencia $competencia = null, Acordo $acordo = null) {
+  public function getAcordosParaReconhecimento(\Instituicao $instituicao, ?DBCompetencia $competencia = null, ?Acordo $acordo = null) {
 
-    $aWhere = array("ac16_instit = {$instituicao->getCodigo()}");
+    $aWhere = ["ac16_instit = {$instituicao->getCodigo()}"];
     if (!empty($acordo)) {
       $aWhere[] = "ac16_sequencial = {$acordo->getCodigo()}";
     }
@@ -67,9 +67,9 @@ class Reconhecimento {
    * @return ReconhecimentoModel[]
    * @throws \DBException
    */
-  public static function getReconhecimentosAbertosAteCompetencia(\Instituicao $instituicao, DBCompetencia $competencia, Acordo $acordo = null) {
+  public static function getReconhecimentosAbertosAteCompetencia(\Instituicao $instituicao, DBCompetencia $competencia, ?Acordo $acordo = null) {
 
-    $aWhere = array("ac16_instit = {$instituicao->getCodigo()}");
+    $aWhere = ["ac16_instit = {$instituicao->getCodigo()}"];
 
     if (!empty($acordo)) {
       $aWhere[] = "ac16_sequencial = {$acordo->getCodigo()}";
@@ -88,7 +88,7 @@ class Reconhecimento {
    * @return ReconhecimentoModel[]
    * @throws \DBException
    */
-  public static function getReconhecimentosFechados(DBCompetencia $oCompetencia = null, $iCredor, $iContrato) {
+  public static function getReconhecimentosFechados(?DBCompetencia $oCompetencia = null, $iCredor = null, $iContrato = null) {
 
     $oProgramacaoFinanceira    = new \cl_programacaofinanceira();
     $lBuscaAnosAnteriores = true;

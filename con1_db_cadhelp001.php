@@ -33,13 +33,13 @@ include(modification("classes/db_db_cadhelp_classe.php"));
 include(modification("classes/db_db_itenshelp_classe.php"));
 include(modification("classes/db_db_itensmenu_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_cadhelp = new cl_db_cadhelp;
 $cldb_itenshelp = new cl_db_itenshelp;
 $cldb_itensmenu = new cl_db_itensmenu;
 $db_opcao = 1;
 $db_botao = true;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   db_inicio_transacao();
   $erro = false;
   $cldb_cadhelp->incluir($id_help);
@@ -125,7 +125,7 @@ if($cldb_cadhelp->erro_status=="0"){
     echo "<script> document.form1.".$cldb_cadhelp->erro_campo.".focus();</script>";
   };
 }else{
-  if(isset($automatico) && isset($HTTP_POST_VARS["db_opcao"])){
+  if(isset($automatico) && isset($_POST["db_opcao"])){
     $cldb_cadhelp->erro(true,false);
     echo "<script>
           parent.document.getElementById('menuHelp').click();

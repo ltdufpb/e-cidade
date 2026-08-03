@@ -99,7 +99,7 @@ try {
       if ( $oSolicita->possuiEstimativaValida() ) {
         $lPossuiEstimativas = true;
       }
-      $aItensRetorno = array();
+      $aItensRetorno = [];
       foreach ($aItens as $oItem) {
 
         $oStdItem = new stdClass();

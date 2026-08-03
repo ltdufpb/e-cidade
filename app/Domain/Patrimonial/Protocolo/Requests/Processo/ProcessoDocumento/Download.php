@@ -9,6 +9,7 @@ class Download extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -30,19 +31,20 @@ class Download extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "id.required" => utf8_encode("Código da arquivo não informado."),
-            "id.filled" => utf8_encode("O código da arquivo informado está vazio."),
-            "id.integer" => utf8_encode("Código inválido da arquivo."),
+            "id.required" => mb_convert_encoding("Código da arquivo não informado.", 'UTF-8', 'ISO-8859-1'),
+            "id.filled" => mb_convert_encoding("O código da arquivo informado está vazio.", 'UTF-8', 'ISO-8859-1'),
+            "id.integer" => mb_convert_encoding("Código inválido da arquivo.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

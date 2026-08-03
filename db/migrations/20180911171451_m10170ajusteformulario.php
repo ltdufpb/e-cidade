@@ -10,7 +10,7 @@ class M10170ajusteformulario extends PostgresMigration
         $this->execute("insert into esocialformulariotipo values (17, 'S-2205 - Alteração de Dados Cadastrais do Trabalhador')");
         $this->execute("insert into esocialversaoformulario values (nextval('esocialversaoformulario_rh211_sequencial_seq'), 2.4, 3000028, 17);");
 
-        $aSql = array();
+        $aSql = [];
 
         $aSql[] = "insert into db_itensmenu ( id_item ,descricao ,help ,funcao ,itemativo ,manutencao ,desctec ,libcliente )
                   values ( 10572 ,'Alteração Cadastral do Trabalhador' ,'Alteração Cadastral do Trabalhador' ,'eso4_alteradadoscadastrais001.php' ,'1' ,'1' ,'Alteração dos dados cadastrais esocial' ,'true' );";
@@ -24,7 +24,7 @@ class M10170ajusteformulario extends PostgresMigration
     public function down()
     {
 
-        $aSql = array();
+        $aSql = [];
 
         $aSql[] = "delete from db_menu  where  id_item = 10466 AND id_item_filho = 10572;";
         $aSql[] = "delete from db_itensmenu  where  id_item = 10220;";

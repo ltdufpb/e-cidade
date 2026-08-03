@@ -29,7 +29,7 @@ class Anexo7 extends Base implements In22
     /**
      * @var \stdClass[]
      */
-    protected $linhas = array();
+    protected $linhas = [];
 
     /**
      * @return mixed|void
@@ -69,12 +69,12 @@ class Anexo7 extends Base implements In22
             if (!empty($linha->ano)) {
                 $valorRelacao = ($linha->mes / $linha->ano) * 100;
             }
-            $this->linhas[] = (object)array(
+            $this->linhas[] = (object)[
                 "origemrecurso" => $linha->descricao,
                 "nomes" => $this->formataValor($linha->mes),
                 "noano" => $this->formataValor($linha->ano),
                 "relacao" => round($valorRelacao, 2),
-            );
+            ];
         }
         return true;
     }

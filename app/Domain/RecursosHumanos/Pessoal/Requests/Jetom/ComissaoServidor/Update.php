@@ -11,6 +11,7 @@ class Update extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -55,6 +56,7 @@ class Update extends BaseFormRequest
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [

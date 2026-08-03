@@ -34,15 +34,15 @@ include(modification("classes/db_db_documento_classe.php"));
 include(modification("classes/db_db_paragrafo_classe.php"));
 include(modification("classes/db_db_docparag_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $cldb_config    = new cl_db_config;
 $cldb_documento = new cl_db_documento;
 $cldb_paragrafo = new cl_db_paragrafo;
 $cldb_docparag = new cl_db_docparag;
 $db_opcao = 22;
 $db_botao = false;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $cldb_documento->alterar($db03_docum);
@@ -92,7 +92,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 if($cldb_documento->erro_status=="0"){
   $cldb_documento->erro(true,false);
   $db_botao=true;

@@ -293,7 +293,7 @@ $c36_sequencial = $oGet->iCodigoInscricao;
               </td>
               <td>
                 <?php
-                  $aLiquidar = array('0' => 'NÃO' , '1' => 'SIM');
+                  $aLiquidar = ['0' => 'NÃO' , '1' => 'SIM'];
                   db_select('lLiquidar', $aLiquidar, true, $db_opcao, "onchange='js_mostraLiquidar();'");
                 ?>
               </td>

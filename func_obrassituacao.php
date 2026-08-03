@@ -33,10 +33,10 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_obrassituacao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-$oGet = db_utils::postMemory($HTTP_GET_VARS);
+$oGet = db_utils::postMemory($_GET);
 
 $clobrassituacao = new cl_obrassituacao;
 $clobrassituacao->rotulo->label("ob28_sequencial");
@@ -119,10 +119,10 @@ $clobrassituacao->rotulo->label("ob28_descricao");
           
         }
         
-        $repassa = array();
+        $repassa = [];
         
         if(isset($chave_ob28_descricao)){
-          $repassa = array("chave_ob28_sequencial"=>$chave_ob28_sequencial,"chave_ob28_descricao"=>$chave_ob28_descricao);
+          $repassa = ["chave_ob28_sequencial"=>$chave_ob28_sequencial,"chave_ob28_descricao"=>$chave_ob28_descricao];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

@@ -85,7 +85,7 @@ db_textarea('h50_obs',8,60,$Ih50_obs,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Quesito','2'=>'Pergunta','3'=>'Ambos');
+$x = ['1'=>'Quesito','2'=>'Pergunta','3'=>'Ambos'];
 db_select('h50_confobs',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -203,7 +203,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rhestagio.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

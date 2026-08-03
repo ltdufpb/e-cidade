@@ -13,7 +13,7 @@ class UnidadeMaterialRepository {
    *
    * @var array
    */
-  private $aItens = array();
+  private $aItens = [];
   /**
    * Instancia da classe
    *

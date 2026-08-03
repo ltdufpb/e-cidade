@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhelementoemp_classe.php"));
 include(modification("classes/db_rhelementoemppcmater_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clrhelementoemp        = new cl_rhelementoemp;
 $clrhelementoemppcmater = new cl_rhelementoemppcmater;
@@ -127,7 +127,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </html>
 <?php 
 if(isset($alterar)){
-  if (trim(@$erro_msg) != ""){
+  if (trim((string) @$erro_msg) != ""){
     db_msgbox($erro_msg);
   }
 

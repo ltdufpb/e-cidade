@@ -42,7 +42,7 @@ include(modification("classes/db_conlancamdot_classe.php"));
 include(modification("classes/db_conlancamdig_classe.php"));
 include(modification("libs/db_libcontabilidade.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clconlancamval = new cl_conlancamval;

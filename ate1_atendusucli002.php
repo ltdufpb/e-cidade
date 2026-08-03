@@ -55,9 +55,9 @@ include(modification("dbforms/db_classesgenericas.php"));
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <?php 
-      $clcriaabas->identifica = array("atendusucli"=>"atendusucli","atendusucliitem"=>"atendusucliitem"); 
-      $clcriaabas->src = array("atendusucli"=>"ate1_atendusucli005.php");
-      $clcriaabas->disabled   =  array("atendusucliitem"=>"true"); 
+      $clcriaabas->identifica = ["atendusucli"=>"atendusucli","atendusucliitem"=>"atendusucliitem"]; 
+      $clcriaabas->src = ["atendusucli"=>"ate1_atendusucli005.php"];
+      $clcriaabas->disabled   =  ["atendusucliitem"=>"true"]; 
       $clcriaabas->cria_abas(); 
       ?> 
     </td>

@@ -33,7 +33,7 @@ include(modification("classes/db_serie_classe.php"));
 include(modification("classes/db_serieequiv_classe.php"));
 include(modification("classes/db_ensino_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clserie = new cl_serie;
 $clserieequiv = new cl_serieequiv;
 $clensino = new cl_ensino;

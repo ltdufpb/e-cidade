@@ -37,7 +37,7 @@ $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 $clrhregime = new cl_rhregime;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -127,7 +127,7 @@ function js_emite(){
         </td>
         <td>
           <?php 
-          $arr_folha = array("r14"=>"Salário", "r35"=>"13o. Salário","r48"=>"Complementar","r20"=>"Rescisão",);
+          $arr_folha = ["r14"=>"Salário", "r35"=>"13o. Salário","r48"=>"Complementar","r20"=>"Rescisão",];
           db_select('folha',$arr_folha,true,4);
           ?>
        </td>
@@ -138,7 +138,7 @@ function js_emite(){
     </td>
     <td>
       <?php 
-      $arr_vinculo = array("T"=>"Todos", "A"=>"Ativos", "I"=>"Inativos","P"=>"Pensionistas","IP"=>"Inativos/Pensionistas");
+      $arr_vinculo = ["T"=>"Todos", "A"=>"Ativos", "I"=>"Inativos","P"=>"Pensionistas","IP"=>"Inativos/Pensionistas"];
       db_select('vinculo', $arr_vinculo, true, 4);
       ?>
     </td>
@@ -148,7 +148,7 @@ function js_emite(){
         </td>
         <td>
           <?php 
-          $arr_ordem = array("A"=>"Alfabética", "N"=>"Numérica");
+          $arr_ordem = ["A"=>"Alfabética", "N"=>"Numérica"];
           db_select('ordem',$arr_ordem,true,4);
           ?>
        </td>
@@ -158,7 +158,7 @@ function js_emite(){
         </td>
         <td>
           <?php 
-          $arr_sembase = array("N"=>"Não", "S"=>"Sim");
+          $arr_sembase = ["N"=>"Não", "S"=>"Sim"];
           db_select('sembase',$arr_sembase,true,4);
           ?>
        </td>

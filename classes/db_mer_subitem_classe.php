@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE mer_subitem
 class cl_mer_subitem { 
    // cria variaveis de erro 
-   var $rotulo          = null; 
-   var $query_sql       = null; 
-   var $numrows         = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status     = null; 
-   var $erro_sql        = null; 
-   var $erro_banco      = null;  
-   var $erro_msg        = null;  
-   var $erro_campo      = null;  
-   var $pagina_retorno  = null; 
+   public $rotulo          = null; 
+   public $query_sql       = null; 
+   public $numrows         = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status     = null; 
+   public $erro_sql        = null; 
+   public $erro_banco      = null;  
+   public $erro_msg        = null;  
+   public $erro_campo      = null;  
+   public $pagina_retorno  = null; 
    // cria variaveis do arquivo 
-   var $me29_i_codigo        = 0; 
-   var $me29_i_refeicao        = 0; 
-   var $me29_i_alimentonovo        = 0; 
-   var $me29_i_alimentoorig        = 0; 
-   var $me29_f_quantidade        = 0; 
-   var $me29_c_medidacaseira        = null; 
-   var $me29_d_inicio_dia    = null; 
-   var $me29_d_inicio_mes    = null; 
-   var $me29_d_inicio_ano    = null; 
-   var $me29_d_inicio        = null; 
-   var $me29_d_fim_dia    = null; 
-   var $me29_d_fim_mes    = null; 
-   var $me29_d_fim_ano    = null; 
-   var $me29_d_fim        = null; 
-   var $me29_t_obs        = null; 
+   public $me29_i_codigo        = 0; 
+   public $me29_i_refeicao        = 0; 
+   public $me29_i_alimentonovo        = 0; 
+   public $me29_i_alimentoorig        = 0; 
+   public $me29_f_quantidade        = 0; 
+   public $me29_c_medidacaseira        = null; 
+   public $me29_d_inicio_dia    = null; 
+   public $me29_d_inicio_mes    = null; 
+   public $me29_d_inicio_ano    = null; 
+   public $me29_d_inicio        = null; 
+   public $me29_d_fim_dia    = null; 
+   public $me29_d_fim_mes    = null; 
+   public $me29_d_fim_ano    = null; 
+   public $me29_d_fim        = null; 
+   public $me29_t_obs        = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  me29_i_codigo = int4 = código 
                  me29_i_refeicao = int4 = Refeição 
                  me29_i_alimentonovo = int4 = Alimento Substituído 
@@ -70,10 +70,10 @@ class cl_mer_subitem {
                  me29_t_obs = text = Justificativa 
                  ";
    //funcao construtor da classe 
-   function cl_mer_subitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mer_subitem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -199,10 +199,10 @@ class cl_mer_subitem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->me29_i_codigo = pg_result($result,0,0); 
+       $this->me29_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from mer_subitem_me29_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $me29_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $me29_i_codigo)){
          $this->erro_sql = " Campo me29_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -246,7 +246,7 @@ class cl_mer_subitem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "substituição de itens ($this->me29_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "substituição de itens já Cadastrado";
@@ -270,18 +270,18 @@ class cl_mer_subitem {
      $resaco = $this->sql_record($this->sql_query_file($this->me29_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14462,'$this->me29_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2549,14462,'','".AddSlashes(pg_result($resaco,0,'me29_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2549,14463,'','".AddSlashes(pg_result($resaco,0,'me29_i_refeicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2549,14464,'','".AddSlashes(pg_result($resaco,0,'me29_i_alimentonovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2549,14465,'','".AddSlashes(pg_result($resaco,0,'me29_i_alimentoorig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2549,14466,'','".AddSlashes(pg_result($resaco,0,'me29_f_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2549,14467,'','".AddSlashes(pg_result($resaco,0,'me29_c_medidacaseira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2549,14468,'','".AddSlashes(pg_result($resaco,0,'me29_d_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2549,14469,'','".AddSlashes(pg_result($resaco,0,'me29_d_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2549,14470,'','".AddSlashes(pg_result($resaco,0,'me29_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2549,14462,'','".AddSlashes(pg_fetch_result($resaco,0,'me29_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2549,14463,'','".AddSlashes(pg_fetch_result($resaco,0,'me29_i_refeicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2549,14464,'','".AddSlashes(pg_fetch_result($resaco,0,'me29_i_alimentonovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2549,14465,'','".AddSlashes(pg_fetch_result($resaco,0,'me29_i_alimentoorig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2549,14466,'','".AddSlashes(pg_fetch_result($resaco,0,'me29_f_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2549,14467,'','".AddSlashes(pg_fetch_result($resaco,0,'me29_c_medidacaseira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2549,14468,'','".AddSlashes(pg_fetch_result($resaco,0,'me29_d_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2549,14469,'','".AddSlashes(pg_fetch_result($resaco,0,'me29_d_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2549,14470,'','".AddSlashes(pg_fetch_result($resaco,0,'me29_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -290,10 +290,10 @@ class cl_mer_subitem {
       $this->atualizacampos();
      $sql = " update mer_subitem set ";
      $virgula = "";
-     if(trim($this->me29_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_i_codigo"])){ 
+     if(trim((string) $this->me29_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_i_codigo"])){ 
        $sql  .= $virgula." me29_i_codigo = $this->me29_i_codigo ";
        $virgula = ",";
-       if(trim($this->me29_i_codigo) == null ){ 
+       if(trim((string) $this->me29_i_codigo) == null ){ 
          $this->erro_sql = " Campo código nao Informado.";
          $this->erro_campo = "me29_i_codigo";
          $this->erro_banco = "";
@@ -303,10 +303,10 @@ class cl_mer_subitem {
          return false;
        }
      }
-     if(trim($this->me29_i_refeicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_i_refeicao"])){ 
+     if(trim((string) $this->me29_i_refeicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_i_refeicao"])){ 
        $sql  .= $virgula." me29_i_refeicao = $this->me29_i_refeicao ";
        $virgula = ",";
-       if(trim($this->me29_i_refeicao) == null ){ 
+       if(trim((string) $this->me29_i_refeicao) == null ){ 
          $this->erro_sql = " Campo Refeição nao Informado.";
          $this->erro_campo = "me29_i_refeicao";
          $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_mer_subitem {
          return false;
        }
      }
-     if(trim($this->me29_i_alimentonovo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_i_alimentonovo"])){ 
+     if(trim((string) $this->me29_i_alimentonovo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_i_alimentonovo"])){ 
        $sql  .= $virgula." me29_i_alimentonovo = $this->me29_i_alimentonovo ";
        $virgula = ",";
-       if(trim($this->me29_i_alimentonovo) == null ){ 
+       if(trim((string) $this->me29_i_alimentonovo) == null ){ 
          $this->erro_sql = " Campo Alimento Substituído nao Informado.";
          $this->erro_campo = "me29_i_alimentonovo";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_mer_subitem {
          return false;
        }
      }
-     if(trim($this->me29_i_alimentoorig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_i_alimentoorig"])){ 
+     if(trim((string) $this->me29_i_alimentoorig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_i_alimentoorig"])){ 
        $sql  .= $virgula." me29_i_alimentoorig = $this->me29_i_alimentoorig ";
        $virgula = ",";
-       if(trim($this->me29_i_alimentoorig) == null ){ 
+       if(trim((string) $this->me29_i_alimentoorig) == null ){ 
          $this->erro_sql = " Campo Alimento nao Informado.";
          $this->erro_campo = "me29_i_alimentoorig";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_mer_subitem {
          return false;
        }
      }
-     if(trim($this->me29_f_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_f_quantidade"])){ 
+     if(trim((string) $this->me29_f_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_f_quantidade"])){ 
        $sql  .= $virgula." me29_f_quantidade = $this->me29_f_quantidade ";
        $virgula = ",";
-       if(trim($this->me29_f_quantidade) == null ){ 
+       if(trim((string) $this->me29_f_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "me29_f_quantidade";
          $this->erro_banco = "";
@@ -355,10 +355,10 @@ class cl_mer_subitem {
          return false;
        }
      }
-     if(trim($this->me29_c_medidacaseira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_c_medidacaseira"])){ 
+     if(trim((string) $this->me29_c_medidacaseira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_c_medidacaseira"])){ 
        $sql  .= $virgula." me29_c_medidacaseira = '$this->me29_c_medidacaseira' ";
        $virgula = ",";
-       if(trim($this->me29_c_medidacaseira) == null ){ 
+       if(trim((string) $this->me29_c_medidacaseira) == null ){ 
          $this->erro_sql = " Campo Medida caseira nao Informado.";
          $this->erro_campo = "me29_c_medidacaseira";
          $this->erro_banco = "";
@@ -368,10 +368,10 @@ class cl_mer_subitem {
          return false;
        }
      }
-     if(trim($this->me29_d_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_d_inicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["me29_d_inicio_dia"] !="") ){ 
+     if(trim((string) $this->me29_d_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_d_inicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["me29_d_inicio_dia"] !="") ){ 
        $sql  .= $virgula." me29_d_inicio = '$this->me29_d_inicio' ";
        $virgula = ",";
-       if(trim($this->me29_d_inicio) == null ){ 
+       if(trim((string) $this->me29_d_inicio) == null ){ 
          $this->erro_sql = " Campo Data Inicio nao Informado.";
          $this->erro_campo = "me29_d_inicio_dia";
          $this->erro_banco = "";
@@ -384,7 +384,7 @@ class cl_mer_subitem {
        if(isset($GLOBALS["HTTP_POST_VARS"]["me29_d_inicio_dia"])){ 
          $sql  .= $virgula." me29_d_inicio = null ";
          $virgula = ",";
-         if(trim($this->me29_d_inicio) == null ){ 
+         if(trim((string) $this->me29_d_inicio) == null ){ 
            $this->erro_sql = " Campo Data Inicio nao Informado.";
            $this->erro_campo = "me29_d_inicio_dia";
            $this->erro_banco = "";
@@ -395,10 +395,10 @@ class cl_mer_subitem {
          }
        }
      }
-     if(trim($this->me29_d_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_d_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["me29_d_fim_dia"] !="") ){ 
+     if(trim((string) $this->me29_d_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_d_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["me29_d_fim_dia"] !="") ){ 
        $sql  .= $virgula." me29_d_fim = '$this->me29_d_fim' ";
        $virgula = ",";
-       if(trim($this->me29_d_fim) == null ){ 
+       if(trim((string) $this->me29_d_fim) == null ){ 
          $this->erro_sql = " Campo data final nao Informado.";
          $this->erro_campo = "me29_d_fim_dia";
          $this->erro_banco = "";
@@ -411,7 +411,7 @@ class cl_mer_subitem {
        if(isset($GLOBALS["HTTP_POST_VARS"]["me29_d_fim_dia"])){ 
          $sql  .= $virgula." me29_d_fim = null ";
          $virgula = ",";
-         if(trim($this->me29_d_fim) == null ){ 
+         if(trim((string) $this->me29_d_fim) == null ){ 
            $this->erro_sql = " Campo data final nao Informado.";
            $this->erro_campo = "me29_d_fim_dia";
            $this->erro_banco = "";
@@ -422,10 +422,10 @@ class cl_mer_subitem {
          }
        }
      }
-     if(trim($this->me29_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_t_obs"])){ 
+     if(trim((string) $this->me29_t_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["me29_t_obs"])){ 
        $sql  .= $virgula." me29_t_obs = '$this->me29_t_obs' ";
        $virgula = ",";
-       if(trim($this->me29_t_obs) == null ){ 
+       if(trim((string) $this->me29_t_obs) == null ){ 
          $this->erro_sql = " Campo Justificativa nao Informado.";
          $this->erro_campo = "me29_t_obs";
          $this->erro_banco = "";
@@ -443,27 +443,27 @@ class cl_mer_subitem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14462,'$this->me29_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me29_i_codigo"]) || $this->me29_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2549,14462,'".AddSlashes(pg_result($resaco,$conresaco,'me29_i_codigo'))."','$this->me29_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2549,14462,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me29_i_codigo'))."','$this->me29_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me29_i_refeicao"]) || $this->me29_i_refeicao != "")
-           $resac = db_query("insert into db_acount values($acount,2549,14463,'".AddSlashes(pg_result($resaco,$conresaco,'me29_i_refeicao'))."','$this->me29_i_refeicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2549,14463,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me29_i_refeicao'))."','$this->me29_i_refeicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me29_i_alimentonovo"]) || $this->me29_i_alimentonovo != "")
-           $resac = db_query("insert into db_acount values($acount,2549,14464,'".AddSlashes(pg_result($resaco,$conresaco,'me29_i_alimentonovo'))."','$this->me29_i_alimentonovo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2549,14464,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me29_i_alimentonovo'))."','$this->me29_i_alimentonovo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me29_i_alimentoorig"]) || $this->me29_i_alimentoorig != "")
-           $resac = db_query("insert into db_acount values($acount,2549,14465,'".AddSlashes(pg_result($resaco,$conresaco,'me29_i_alimentoorig'))."','$this->me29_i_alimentoorig',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2549,14465,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me29_i_alimentoorig'))."','$this->me29_i_alimentoorig',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me29_f_quantidade"]) || $this->me29_f_quantidade != "")
-           $resac = db_query("insert into db_acount values($acount,2549,14466,'".AddSlashes(pg_result($resaco,$conresaco,'me29_f_quantidade'))."','$this->me29_f_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2549,14466,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me29_f_quantidade'))."','$this->me29_f_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me29_c_medidacaseira"]) || $this->me29_c_medidacaseira != "")
-           $resac = db_query("insert into db_acount values($acount,2549,14467,'".AddSlashes(pg_result($resaco,$conresaco,'me29_c_medidacaseira'))."','$this->me29_c_medidacaseira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2549,14467,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me29_c_medidacaseira'))."','$this->me29_c_medidacaseira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me29_d_inicio"]) || $this->me29_d_inicio != "")
-           $resac = db_query("insert into db_acount values($acount,2549,14468,'".AddSlashes(pg_result($resaco,$conresaco,'me29_d_inicio'))."','$this->me29_d_inicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2549,14468,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me29_d_inicio'))."','$this->me29_d_inicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me29_d_fim"]) || $this->me29_d_fim != "")
-           $resac = db_query("insert into db_acount values($acount,2549,14469,'".AddSlashes(pg_result($resaco,$conresaco,'me29_d_fim'))."','$this->me29_d_fim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2549,14469,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me29_d_fim'))."','$this->me29_d_fim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["me29_t_obs"]) || $this->me29_t_obs != "")
-           $resac = db_query("insert into db_acount values($acount,2549,14470,'".AddSlashes(pg_result($resaco,$conresaco,'me29_t_obs'))."','$this->me29_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2549,14470,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'me29_t_obs'))."','$this->me29_t_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -508,18 +508,18 @@ class cl_mer_subitem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14462,'$me29_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2549,14462,'','".AddSlashes(pg_result($resaco,$iresaco,'me29_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2549,14463,'','".AddSlashes(pg_result($resaco,$iresaco,'me29_i_refeicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2549,14464,'','".AddSlashes(pg_result($resaco,$iresaco,'me29_i_alimentonovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2549,14465,'','".AddSlashes(pg_result($resaco,$iresaco,'me29_i_alimentoorig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2549,14466,'','".AddSlashes(pg_result($resaco,$iresaco,'me29_f_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2549,14467,'','".AddSlashes(pg_result($resaco,$iresaco,'me29_c_medidacaseira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2549,14468,'','".AddSlashes(pg_result($resaco,$iresaco,'me29_d_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2549,14469,'','".AddSlashes(pg_result($resaco,$iresaco,'me29_d_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2549,14470,'','".AddSlashes(pg_result($resaco,$iresaco,'me29_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2549,14462,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me29_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2549,14463,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me29_i_refeicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2549,14464,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me29_i_alimentonovo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2549,14465,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me29_i_alimentoorig'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2549,14466,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me29_f_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2549,14467,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me29_c_medidacaseira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2549,14468,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me29_d_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2549,14469,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me29_d_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2549,14470,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'me29_t_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from mer_subitem
@@ -579,7 +579,7 @@ class cl_mer_subitem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:mer_subitem";
@@ -594,7 +594,7 @@ class cl_mer_subitem {
    function sql_query ( $me29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -621,7 +621,7 @@ class cl_mer_subitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -634,7 +634,7 @@ class cl_mer_subitem {
    function sql_query_file ( $me29_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -655,7 +655,7 @@ class cl_mer_subitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -44,7 +44,7 @@ $clcgm        = new cl_cgm;
 $clrotulo = new rotulocampo;
 $clcgm->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 

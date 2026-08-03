@@ -14,15 +14,12 @@ use RubricaRepository;
 class ControleAfastamentoService
 {
 
-    private $repositorio;
-
     /**
      * ControleAfastamentoService constructor.
      * @param ControleAfastamentoRepository $repositorio
      */
-    public function __construct(ControleAfastamentoRepository $repositorio)
+    public function __construct(private readonly ControleAfastamentoRepository $repositorio)
     {
-        $this->repositorio = $repositorio;
     }
 
     /**
@@ -59,7 +56,7 @@ class ControleAfastamentoService
 
         $rs = db_query($sql);
 
-        $faixas = array();
+        $faixas = [];
 
         while ($faixa = pg_fetch_object($rs)) {
             $faixas[] = $faixa;
@@ -98,7 +95,7 @@ class ControleAfastamentoService
             throw new Exception('Não foi possível buscar as rubricas que são proporcionalizaveis.');
         }
 
-        $rubricas = array();
+        $rubricas = [];
 
         while ($codigoRubrica = pg_fetch_object($rs)) {
             $rubricas[] = RubricaRepository::getInstanciaByCodigo($codigoRubrica->codigo, $instituicao->getCodigo());

@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("classes/db_lab_requiitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-function avisoNenhumRegistro()
+function avisoNenhumRegistro(): never
 {
   die("
     <table width='100%'>
@@ -156,7 +156,7 @@ function imprimiCabecalhoSintetico($pdf, $dado)
 function imprimiLinhaSintetico($pdf, $dado)
 {
   $pdf->setfont('arial', '', 7);
-  $aProc = explode("__", $dado->conferencia);
+  $aProc = explode("__", (string) $dado->conferencia);
   $procedimento = $aProc[1];
   $descricao = substr($aProc[0],0,58);
 
@@ -220,7 +220,7 @@ function imprimiInfoLaboratorio($pdf, $dado)
 
 function imprimiLinhaAnalitico($pdf, $dado)
 {
-  $aProc = explode("__", $dado->conferencia);
+  $aProc = explode("__", (string) $dado->conferencia);
   $procedimento = $aProc[1];
   $valor = $aProc[2];
 
@@ -274,7 +274,7 @@ function imprimirDadosAnalitico($pdf, $dados)
     }
 
     imprimiLinhaAnalitico($pdf, $dado);
-    $total += explode("__", $dado->conferencia)[2];
+    $total += explode("__", (string) $dado->conferencia)[2];
   }
   imprimiTotalAnalitico($pdf, $total);
 }

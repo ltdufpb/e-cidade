@@ -36,7 +36,7 @@ $clpcsubgrupo = new cl_pcsubgrupo;
 $clpcsubgrupo->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("pc76_pcsubgrupo");
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if (isset($atualizar)) {
 	db_inicio_transacao();
@@ -54,8 +54,8 @@ if (isset($atualizar)) {
 	reset($vt);
 	for ($i = 0; $i < $ta; $i++) {
 		$chave = key($vt);
-		if (substr($chave, 0, 5) == "CHECK") {
-			$dados = explode("_", $chave);
+		if (str_starts_with((string) $chave, "CHECK")) {
+			$dados = explode("_", (string) $chave);
 			$clpcfornesubgrupo->pc76_pcforne = $pc76_pcforne;
 			$clpcfornesubgrupo->pc76_pcsubgrupo = $dados[1];
 			$clpcfornesubgrupo->incluir(null);

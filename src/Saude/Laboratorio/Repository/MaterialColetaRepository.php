@@ -56,7 +56,7 @@ class MaterialColetaRepository
         }
 
         $array = pg_fetch_all($rs);
-        $materiaisColeta = array();
+        $materiaisColeta = [];
         foreach ($array as $materialColeta) {
             $materiaisColeta[] = MaterialColeta::fromState($materialColeta);
         }

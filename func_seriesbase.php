@@ -35,13 +35,13 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $HTTP_SERVER_VARS["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $oDaoSerie = new cl_serie;
 $oDaoSerie->rotulo->label( "ed11_i_codigo" );
 $oDaoSerie->rotulo->label( "ed11_c_descr" );
 
-$aWhere = array();
+$aWhere = [];
 if ( !empty($base) ) {
   $aWhere[] = " ed34_i_base = {$base} ";
 }
@@ -85,7 +85,7 @@ if ( !empty($base) ) {
               </tr>
               <tr>
                 <td colspan="2" align="center">
-                  <input name="curso" type="hidden" value="<?=isset( $curso ) ? $curso : "";?>">
+                  <input name="curso" type="hidden" value="<?=$curso ?? "";?>">
                   <?php
                     if ( isset( $inicial ) ) {
                   ?>
@@ -118,9 +118,9 @@ if ( !empty($base) ) {
       $aWhere[] = " ed11_c_descr like '{$chave_ed11_c_descr}%' ";
     }
 
-    $aRepassa = array();
+    $aRepassa = [];
     if ( isset($chave_ed11_i_codigo) ) {
-     $aRepassa = array("chave_ed11_i_codigo" => $chave_ed11_i_codigo, "chave_ed11_c_descr" => $chave_ed11_c_descr);
+     $aRepassa = ["chave_ed11_i_codigo" => $chave_ed11_i_codigo, "chave_ed11_c_descr" => $chave_ed11_c_descr];
     }
 
     $sSql = $oDaoSerie->sql_query_turma(null, $sCampos, " ed11_i_sequencia ", implode(" and ", $aWhere));

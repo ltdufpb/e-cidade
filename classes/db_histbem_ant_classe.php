@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE histbem_ant
 class cl_histbem_ant { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t05_class = null; 
-   var $t05_data_dia = null; 
-   var $t05_data_mes = null; 
-   var $t05_data_ano = null; 
-   var $t05_data = null; 
-   var $t05_ccusto = null; 
-   var $t05_situac = null; 
-   var $t05_histor = null; 
+   public $t05_class = null; 
+   public $t05_data_dia = null; 
+   public $t05_data_mes = null; 
+   public $t05_data_ano = null; 
+   public $t05_data = null; 
+   public $t05_ccusto = null; 
+   public $t05_situac = null; 
+   public $t05_histor = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t05_class = char(    13) = Codigo do Bem 
                  t05_data = date = Data acontecimento 
                  t05_ccusto = char(     6) = Centro de Custo 
@@ -59,10 +59,10 @@ class cl_histbem_ant {
                  t05_histor = char(    60) = Descricao do acontecimento 
                  ";
    //funcao construtor da classe 
-   function cl_histbem_ant() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("histbem_ant"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -156,7 +156,7 @@ class cl_histbem_ant {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Registra qualquer acontecimento com o bem dentro d () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Registra qualquer acontecimento com o bem dentro d já Cadastrado";
@@ -183,10 +183,10 @@ class cl_histbem_ant {
       $this->atualizacampos();
      $sql = " update histbem_ant set ";
      $virgula = "";
-     if(trim($this->t05_class)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t05_class"])){ 
+     if(trim((string) $this->t05_class)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t05_class"])){ 
        $sql  .= $virgula." t05_class = '$this->t05_class' ";
        $virgula = ",";
-       if(trim($this->t05_class) == null ){ 
+       if(trim((string) $this->t05_class) == null ){ 
          $this->erro_sql = " Campo Codigo do Bem nao Informado.";
          $this->erro_campo = "t05_class";
          $this->erro_banco = "";
@@ -196,10 +196,10 @@ class cl_histbem_ant {
          return false;
        }
      }
-     if(trim($this->t05_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t05_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t05_data_dia"] !="") ){ 
+     if(trim((string) $this->t05_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t05_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t05_data_dia"] !="") ){ 
        $sql  .= $virgula." t05_data = '$this->t05_data' ";
        $virgula = ",";
-       if(trim($this->t05_data) == null ){ 
+       if(trim((string) $this->t05_data) == null ){ 
          $this->erro_sql = " Campo Data acontecimento nao Informado.";
          $this->erro_campo = "t05_data_dia";
          $this->erro_banco = "";
@@ -212,7 +212,7 @@ class cl_histbem_ant {
        if(isset($GLOBALS["HTTP_POST_VARS"]["t05_data_dia"])){ 
          $sql  .= $virgula." t05_data = null ";
          $virgula = ",";
-         if(trim($this->t05_data) == null ){ 
+         if(trim((string) $this->t05_data) == null ){ 
            $this->erro_sql = " Campo Data acontecimento nao Informado.";
            $this->erro_campo = "t05_data_dia";
            $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_histbem_ant {
          }
        }
      }
-     if(trim($this->t05_ccusto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t05_ccusto"])){ 
+     if(trim((string) $this->t05_ccusto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t05_ccusto"])){ 
        $sql  .= $virgula." t05_ccusto = '$this->t05_ccusto' ";
        $virgula = ",";
-       if(trim($this->t05_ccusto) == null ){ 
+       if(trim((string) $this->t05_ccusto) == null ){ 
          $this->erro_sql = " Campo Centro de Custo nao Informado.";
          $this->erro_campo = "t05_ccusto";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_histbem_ant {
          return false;
        }
      }
-     if(trim($this->t05_situac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t05_situac"])){ 
+     if(trim((string) $this->t05_situac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t05_situac"])){ 
        $sql  .= $virgula." t05_situac = '$this->t05_situac' ";
        $virgula = ",";
-       if(trim($this->t05_situac) == null ){ 
+       if(trim((string) $this->t05_situac) == null ){ 
          $this->erro_sql = " Campo Situacao do Bem nao Informado.";
          $this->erro_campo = "t05_situac";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_histbem_ant {
          return false;
        }
      }
-     if(trim($this->t05_histor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t05_histor"])){ 
+     if(trim((string) $this->t05_histor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t05_histor"])){ 
        $sql  .= $virgula." t05_histor = '$this->t05_histor' ";
        $virgula = ",";
-       if(trim($this->t05_histor) == null ){ 
+       if(trim((string) $this->t05_histor) == null ){ 
          $this->erro_sql = " Campo Descricao do acontecimento nao Informado.";
          $this->erro_campo = "t05_histor";
          $this->erro_banco = "";
@@ -343,7 +343,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:histbem_ant";
@@ -357,7 +357,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="histbem_ant.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -378,7 +378,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -408,7 +408,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -33,7 +33,7 @@ class RotuloCampoDB {
     //#99#//"TC"+ nome do campo -> Variavel com o tipo de campo do banco de dados
     //#99#//"LS"+ nome do campo -> Variavel para colocar como label de campo sem as tags STRONG
 
-    $sCampoTrim = trim($campo);
+    $sCampoTrim = trim((string) $campo);
     $result = pg_exec("select c.descricao,
                               c.rotulo,
                               c.nomecam,
@@ -46,80 +46,80 @@ class RotuloCampoDB {
                               c.valorinicial,
                               c.rotulorel
                          from db_syscampo c
-                        where c.nomecam = '${sCampoTrim}'");
-    $numrows = pg_numrows($result);
+                        where c.nomecam = '{$sCampoTrim}'");
+    $numrows = pg_num_rows($result);
     for ($i = 0; $i < $numrows; $i ++) {
 
       /// variavel com o tipo de campo
-      $variavel = trim("I".pg_result($result, $i, "nomecam"));
+      $variavel = trim("I".pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      $$variavel = pg_result($result, $i, "aceitatipo");
+      ${$variavel} = pg_fetch_result($result, $i, "aceitatipo");
 
       /// variavel para determinar o autocomplete
-      $variavel = trim("A".pg_result($result, $i, "nomecam"));
+      $variavel = trim("A".pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      if (pg_result($result, $i, "autocompl") == 'f') {
-        $$variavel = "off";
+      if (pg_fetch_result($result, $i, "autocompl") == 'f') {
+        ${$variavel} = "off";
       } else {
-        $$variavel = "on";
+        ${$variavel} = "on";
       }
       /// variavel para preenchimento obrigatorio
-      $variavel = trim("U".pg_result($result, $i, "nomecam"));
+      $variavel = trim("U".pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      $$variavel = pg_result($result, $i, "nulo");
+      ${$variavel} = pg_fetch_result($result, $i, "nulo");
       /// variavel para colocar maiusculo
-      $variavel = trim("G".pg_result($result, $i, "nomecam"));
+      $variavel = trim("G".pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      $$variavel = pg_result($result, $i, "maiusculo");
+      ${$variavel} = pg_fetch_result($result, $i, "maiusculo");
 
 
 
       /// variavel para colocar no erro do javascript de preenchimento de campo
-      $variavel = trim("S".pg_result($result, $i, "nomecam"));
+      $variavel = trim("S".pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      $$variavel = pg_result($result, $i, "rotulo");
+      ${$variavel} = pg_fetch_result($result, $i, "rotulo");
       /// variavel para colocar como label de campo
-      $variavel = trim("L".pg_result($result, $i, "nomecam"));
+      $variavel = trim("L".pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      $$variavel = "<strong>".ucfirst(pg_result($result, $i, "rotulo")).":</strong>";
+      ${$variavel} = "<strong>".ucfirst(pg_fetch_result($result, $i, "rotulo")).":</strong>";
 
       /// variavel para colocar como label de campo
-      $variavel = trim("LS".pg_result($result, $i, "nomecam"));
+      $variavel = trim("LS".pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      $$variavel = ucfirst(pg_result($result, $i, "rotulo"));
+      ${$variavel} = ucfirst(pg_fetch_result($result, $i, "rotulo"));
 
       /// vaariavel para colocat na tag title dos campos
-      $variavel = trim("T".pg_result($result, $i, "nomecam"));
+      $variavel = trim("T".pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      $$variavel = ucfirst(pg_result($result, $i, "descricao"))."\n\nCampo:".pg_result($result, $i, "nomecam");
+      ${$variavel} = ucfirst(pg_fetch_result($result, $i, "descricao"))."\n\nCampo:".pg_fetch_result($result, $i, "nomecam");
 
       /// variavel para incluir o tamanhoda tag maxlength dos campos
-      $variavel = trim("M".pg_result($result, $i, "nomecam"));
+      $variavel = trim("M".pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      $$variavel = pg_result($result, $i, "tamanho");
+      ${$variavel} = pg_fetch_result($result, $i, "tamanho");
 
       /// variavel para controle de campos nulos
-      $variavel = trim("N".pg_result($result, $i, "nomecam"));
+      $variavel = trim("N".pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      $$variavel = pg_result($result, $i, "nulo");
-      if ($$variavel == "t")
-        $$variavel = "style=\"background-color:#E6E4F1\"";
+      ${$variavel} = pg_fetch_result($result, $i, "nulo");
+      if (${$variavel} == "t")
+        ${$variavel} = "style=\"background-color:#E6E4F1\"";
       else
-        $$variavel = "";
+        ${$variavel} = "";
 
       /// variavel para colocar como label de campo nos relatorios
-      $variavel = trim("RL".pg_result($result, $i, "nomecam"));
+      $variavel = trim("RL".pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      $$variavel = ucfirst(pg_result($result, $i, "rotulorel"));
+      ${$variavel} = ucfirst(pg_fetch_result($result, $i, "rotulorel"));
       /// variavel para colocar o tipo de campo
-      $variavel = "TC".trim(pg_result($result, $i, "nomecam"));
+      $variavel = "TC".trim(pg_fetch_result($result, $i, "nomecam"));
       global ${$variavel};
-      $$variavel = pg_result($result, $i, "conteudo");
+      ${$variavel} = pg_fetch_result($result, $i, "conteudo");
 
-      if ('DBtxt' == substr(trim(pg_result($result, $i, "nomecam")), 0, 5)) {
-        $variavel = trim(pg_result($result, $i, "nomecam"));
+      if (str_starts_with(trim(pg_fetch_result($result, $i, "nomecam")), 'DBtxt')) {
+        $variavel = trim(pg_fetch_result($result, $i, "nomecam"));
         global ${$variavel};
-        $$variavel = pg_result($result, $i, "valorinicial");
+        ${$variavel} = pg_fetch_result($result, $i, "valorinicial");
       }
 
     }

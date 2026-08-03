@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE recfgts
 class cl_recfgts { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $r58_regist = 0; 
-   var $r58_subpes = null; 
-   var $r58_dtpag_dia = null; 
-   var $r58_dtpag_mes = null; 
-   var $r58_dtpag_ano = null; 
-   var $r58_dtpag = null; 
-   var $r58_base = 0; 
-   var $r58_base13 = 0; 
+   public $r58_regist = 0; 
+   public $r58_subpes = null; 
+   public $r58_dtpag_dia = null; 
+   public $r58_dtpag_mes = null; 
+   public $r58_dtpag_ano = null; 
+   public $r58_dtpag = null; 
+   public $r58_base = 0; 
+   public $r58_base13 = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  r58_regist = int4 = Codigo do Funcionario 
                  r58_subpes = char(     7) = ano/mes ref.recolhimento 
                  r58_dtpag = date = Data do pagamento 
@@ -59,10 +59,10 @@ class cl_recfgts {
                  r58_base13 = float8 = valor da base fgts 13.sal. 
                  ";
    //funcao construtor da classe 
-   function cl_recfgts() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recfgts"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -156,7 +156,7 @@ class cl_recfgts {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "controle de recolhimento de fgts                   () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "controle de recolhimento de fgts                   já Cadastrado";
@@ -183,10 +183,10 @@ class cl_recfgts {
       $this->atualizacampos();
      $sql = " update recfgts set ";
      $virgula = "";
-     if(trim($this->r58_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r58_regist"])){ 
+     if(trim((string) $this->r58_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r58_regist"])){ 
        $sql  .= $virgula." r58_regist = $this->r58_regist ";
        $virgula = ",";
-       if(trim($this->r58_regist) == null ){ 
+       if(trim((string) $this->r58_regist) == null ){ 
          $this->erro_sql = " Campo Codigo do Funcionario nao Informado.";
          $this->erro_campo = "r58_regist";
          $this->erro_banco = "";
@@ -196,10 +196,10 @@ class cl_recfgts {
          return false;
        }
      }
-     if(trim($this->r58_subpes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r58_subpes"])){ 
+     if(trim((string) $this->r58_subpes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r58_subpes"])){ 
        $sql  .= $virgula." r58_subpes = '$this->r58_subpes' ";
        $virgula = ",";
-       if(trim($this->r58_subpes) == null ){ 
+       if(trim((string) $this->r58_subpes) == null ){ 
          $this->erro_sql = " Campo ano/mes ref.recolhimento nao Informado.";
          $this->erro_campo = "r58_subpes";
          $this->erro_banco = "";
@@ -209,10 +209,10 @@ class cl_recfgts {
          return false;
        }
      }
-     if(trim($this->r58_dtpag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r58_dtpag_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r58_dtpag_dia"] !="") ){ 
+     if(trim((string) $this->r58_dtpag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r58_dtpag_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r58_dtpag_dia"] !="") ){ 
        $sql  .= $virgula." r58_dtpag = '$this->r58_dtpag' ";
        $virgula = ",";
-       if(trim($this->r58_dtpag) == null ){ 
+       if(trim((string) $this->r58_dtpag) == null ){ 
          $this->erro_sql = " Campo Data do pagamento nao Informado.";
          $this->erro_campo = "r58_dtpag_dia";
          $this->erro_banco = "";
@@ -225,7 +225,7 @@ class cl_recfgts {
        if(isset($GLOBALS["HTTP_POST_VARS"]["r58_dtpag_dia"])){ 
          $sql  .= $virgula." r58_dtpag = null ";
          $virgula = ",";
-         if(trim($this->r58_dtpag) == null ){ 
+         if(trim((string) $this->r58_dtpag) == null ){ 
            $this->erro_sql = " Campo Data do pagamento nao Informado.";
            $this->erro_campo = "r58_dtpag_dia";
            $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_recfgts {
          }
        }
      }
-     if(trim($this->r58_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r58_base"])){ 
+     if(trim((string) $this->r58_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r58_base"])){ 
        $sql  .= $virgula." r58_base = $this->r58_base ";
        $virgula = ",";
-       if(trim($this->r58_base) == null ){ 
+       if(trim((string) $this->r58_base) == null ){ 
          $this->erro_sql = " Campo valor da base de fgts nao Informado.";
          $this->erro_campo = "r58_base";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_recfgts {
          return false;
        }
      }
-     if(trim($this->r58_base13)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r58_base13"])){ 
+     if(trim((string) $this->r58_base13)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r58_base13"])){ 
        $sql  .= $virgula." r58_base13 = $this->r58_base13 ";
        $virgula = ",";
-       if(trim($this->r58_base13) == null ){ 
+       if(trim((string) $this->r58_base13) == null ){ 
          $this->erro_sql = " Campo valor da base fgts 13.sal. nao Informado.";
          $this->erro_campo = "r58_base13";
          $this->erro_banco = "";
@@ -343,7 +343,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:recfgts";

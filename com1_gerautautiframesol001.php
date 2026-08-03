@@ -56,8 +56,8 @@ include(modification("classes/db_pcsubgrupo_classe.php"));
 require_once(modification("classes/db_empautitempcprocitem_classe.php"));
 
 $pc10_resumo = null;
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clsolicita             = new cl_solicita;
 $clsolicitem            = new cl_solicitem;
@@ -104,31 +104,31 @@ if (isset($pc10_resumo) && trim($pc10_resumo) != ""){
 
 if (isset ($incluir)) {
 
-  $pc10_resumo = addslashes(stripslashes(chop($pc10_resumo)));
+  $pc10_resumo = addslashes(stripslashes(chop((string) $pc10_resumo)));
 
 	if (isset ($pc10_numero) && trim($pc10_numero) != "") {
 		// arrays para dados do empautoriza
-		$arr_vals = Array ();
-		$arr_cgms = Array ();
-		$arr_help = Array ();
+		$arr_vals =  [];
+		$arr_cgms =  [];
+		$arr_help =  [];
 		$indexaut = 0;
 
 		// arrays para dados do empautitem
-		$arr_proc = Array ();
-		$arr_hell = Array ();
+		$arr_proc =  [];
+		$arr_hell =  [];
 		$indexitm = 0;
 		$vir = "";
 
 		db_inicio_transacao();
 		$clpcdotac->sql_record("update empparametro set e39_anousu = e39_anousu where e39_anousu =".db_getsession("DB_anousu"));
 
-		$diferenca = Array ();
-		$difindex = Array ();
+		$diferenca =  [];
+		$difindex =  [];
 		$iindexdif = 0;
 
-		$arr_soli = Array ();
-		$arr_orci = Array ();
-		$arr_forn = Array ();
+		$arr_soli =  [];
+		$arr_orci =  [];
+		$arr_forn =  [];
 
 		$sqlerro = false;
 		$clpcproc->pc80_data     = date("Y-m-d", db_getsession("DB_datausu"));
@@ -218,7 +218,7 @@ if (isset ($incluir)) {
 				//$result_itensinclui = $clsolicitem->sql_record($clsolicitem->sql_query_rel(null, " distinct pc11_codigo as index,pc13_valor,pc13_quant,pc11_vlrun as valorunitarioincluir", "", " pc11_numero=$pc10_numero "));
 				$result_itensinclui = $clsolicitem->sql_record($clsolicitem->sql_query_rel(null, " distinct pc11_codigo as index,(pc11_quant*pc11_vlrun) as valor_sol,pc11_quant,pc11_vlrun as valorunitarioincluir", "", " pc11_numero=$pc10_numero "));
 				$numrows_itensinclui = $clsolicitem->numrows;
-				if (trim($pc20_codorc) != "") {
+				if (trim((string) $pc20_codorc) != "") {
 					$result_orcamforne = $clpcorcamval->sql_record($clpcorcamval->sql_query_importa(null, null, "pc21_numcgm,pc29_solicitem,pc23_valor,pc23_quant,pc23_obs,pc23_orcamforne,pc23_vlrun as valorunitarioincluir", "pc22_orcamitem", " pc22_codorc=$pc20_codorc "));
 					$numrows_orcamforne = $clpcorcamval->numrows;
 					for ($i = 0; $i < $numrows_orcamforne; $i ++) {
@@ -257,13 +257,13 @@ if (isset ($incluir)) {
 								$clpcorcamtroca->pc25_orcamitem = $arr_orci[$arr_parcount[$countinicio]];
 								$clpcorcamtroca->pc25_motivo = $pc25_motivo;
 
-                if (trim(@$pc25_forneant)==""){
+                if (trim((string) @$pc25_forneant)==""){
                      $clpcorcamtroca->pc25_forneant = $clpcorcamforne->pc21_orcamforne;
                 } else {
                      $clpcorcamtroca->pc25_forneant = $pc25_forneant;
                 }
 
-                if (trim(@$pc25_forneatu)==""){
+                if (trim((string) @$pc25_forneatu)==""){
                      $clpcorcamtroca->pc25_forneatu = $clpcorcamforne->pc21_orcamforne;
                 } else {
                      $clpcorcamtroca->pc25_forneatu = $pc25_forneatu;
@@ -319,21 +319,21 @@ if (isset ($incluir)) {
 		}
 		$contadorARR_Ant = "";
 
-		$arr_inclusaoAUTs = Array ();
-		$arr_inclusaoAUTd = Array ();
-		$arr_inclusaoAUTf = Array ();
-		$arr_inclusaoITM  = Array ();
-		$arr_inclusaoDOT  = Array ();
-		$arr_contincITEM  = Array ();
+		$arr_inclusaoAUTs =  [];
+		$arr_inclusaoAUTd =  [];
+		$arr_inclusaoAUTf =  [];
+		$arr_inclusaoITM  =  [];
+		$arr_inclusaoDOT  =  [];
+		$arr_contincITEM  =  [];
 		$cont_autori = 0;
 		$vir = "";
 		if ($sqlerro == false && isset ($pc22_codorc) && trim($pc22_codorc) != "") {
 
-			$arr_recebe = split(",", $valores);
+			$arr_recebe = preg_split("#,#m", $valores);
 
 			for ($i = 0; $i < sizeof($arr_recebe); $i ++) {
 
-				$splitARR        = split("_", $arr_recebe[$i]);
+				$splitARR        = preg_split("#_#m", (string) $arr_recebe[$i]);
 				$contadorARR     = $splitARR[1];
 				$pc11_codigo     = $splitARR[2];
 				$pc13_coddot     = $splitARR[3];
@@ -393,17 +393,17 @@ if (isset ($incluir)) {
 				$clempautoriza->e54_numcgm = $arr_inclusaoAUTf[$i +1];
 				$clempautoriza->e54_login = $e54_login;
 				$clempautoriza->e54_codcom = $e54_codcom;
-				$clempautoriza->e54_destin = addslashes(stripslashes($e54_destin));
+				$clempautoriza->e54_destin = addslashes(stripslashes((string) $e54_destin));
 				$clempautoriza->e54_valor = $somatorio;
 				$clempautoriza->e54_anousu = $e54_anousu;
 				$clempautoriza->e54_tipol = $e54_tipol;
-				$clempautoriza->e54_numerl = addslashes(stripslashes($e54_numerl));
-				$clempautoriza->e54_praent = addslashes(stripslashes($e54_praent));
-				$clempautoriza->e54_entpar = addslashes(stripslashes($e54_entpar));
-				$clempautoriza->e54_conpag = addslashes(stripslashes($e54_conpag));
-				$clempautoriza->e54_codout = addslashes(stripslashes($e54_codout));
-				$clempautoriza->e54_contat = addslashes(stripslashes($e54_contat));
-				$clempautoriza->e54_telef  = addslashes(stripslashes($e54_telef));
+				$clempautoriza->e54_numerl = addslashes(stripslashes((string) $e54_numerl));
+				$clempautoriza->e54_praent = addslashes(stripslashes((string) $e54_praent));
+				$clempautoriza->e54_entpar = addslashes(stripslashes((string) $e54_entpar));
+				$clempautoriza->e54_conpag = addslashes(stripslashes((string) $e54_conpag));
+				$clempautoriza->e54_codout = addslashes(stripslashes((string) $e54_codout));
+				$clempautoriza->e54_contat = addslashes(stripslashes((string) $e54_contat));
+				$clempautoriza->e54_telef  = addslashes(stripslashes((string) $e54_telef));
 				$clempautoriza->e54_numsol = 0;
 				$clempautoriza->e54_anulad = "null";
 				$clempautoriza->e54_emiss = $e54_emiss;
@@ -529,9 +529,9 @@ if (isset ($incluir)) {
 				}
 			}
 
-			$arr_comitens = split(",", $aSeqDotacoes[$i +1]);
+			$arr_comitens = preg_split("#,#m", (string) $aSeqDotacoes[$i +1]);
 			if ($sqlerro == true) {
-				$arr_comitens = Array ();
+				$arr_comitens =  [];
 			}
 
 			for ($ii = 0; $ii < sizeof($arr_comitens); $ii ++) {
@@ -574,7 +574,7 @@ if (isset ($incluir)) {
 						$vltot = $vlunit;
 					}
 					if ((isset ($pc01_servico) && (trim($pc01_servico) == "f" || trim($pc01_servico) == "")) || !isset ($pc01_servico)) {
-						$unid = trim(substr($m61_descr, 0, 10));
+						$unid = trim(substr((string) $m61_descr, 0, 10));
 						if ($m61_usaquant == "t") {
 							$unid .= " ($pc17_quant UNIDADES)";
 						}
@@ -592,7 +592,7 @@ if (isset ($incluir)) {
 					//echo "vltot: $vltot  vluni: $vluni";
 					$clempautitem->e55_vltot              = $vltot;
 					$clempautitem->e55_vlrun              = $vluni;
-					$clempautitem->e55_descr              = $descr.addslashes(stripslashes($resumsol))."\n".$observ;
+					$clempautitem->e55_descr              = $descr.addslashes(stripslashes((string) $resumsol))."\n".$observ;
 					$clempautitem->e55_codele             = $codele;
 
 					$lControlaQuantidade = $pc11_servicoquantidade == 't' ? true : false;
@@ -641,7 +641,7 @@ if (isset ($pc10_numero) && trim($pc10_numero) != "") {
 	if ($clpcorcamitemsol->numrows > 0) {
 		db_fieldsmemory($result_maxorcam, 0);
 		$pc20_codorc = $pcorcam;
-		if (trim($pcorcam) != "") {
+		if (trim((string) $pcorcam) != "") {
 			$issetorc = true;
 			$result_itensorcamento = $clpcorcamitemsol->sql_record($clpcorcamitemsol->sql_query_dotac(null,
 			                                                       null,
@@ -776,7 +776,7 @@ if ($ninclui == true) {
 	db_input('e54_contat',20,$Ie54_contat,true,'hidden',3,"");
 	db_input('e54_telef',20,$Ie54_telef,true,'hidden',3,"");
 	db_input('pc10_numero', 8, $Ipc10_numero, true, 'hidden', 3);
-    ?><textarea name="pc10_resumo" style="visibility: hidden"><?=addslashes(stripslashes(chop($pc10_resumo)))?></textarea><?php 
+    ?><textarea name="pc10_resumo" style="visibility: hidden"><?=addslashes(stripslashes(chop((string) $pc10_resumo)))?></textarea><?php 
 	db_input('pc20_codorc', 8, $Ipc20_codorc, true, 'hidden', 3);
 	db_input('e54_codcom', 8, $Ie54_codcom, true, 'hidden', 3);
 	db_input('e54_codtipo', 8, $Ie54_codtipo, true, 'hidden', 3);
@@ -798,7 +798,7 @@ if ($ninclui == true) {
 	echo "  <td nowrap class='bordas' colspan='2' align='center'><strong>$pc10_numero</strong></td>";
 	echo "  <td nowrap class='bordas' colspan='1' align='center'><strong>".db_formatar($pc10_data, 'd')."</strong></td>";
 	echo "  <td class='bordas' colspan='3'><strong>$descrdepto</strong></td>";
-	echo "  <td class='bordas' colspan='5'><strong>".stripslashes($pc10_resumo)."</strong>&nbsp;</td>";
+	echo "  <td class='bordas' colspan='5'><strong>".stripslashes((string) $pc10_resumo)."</strong>&nbsp;</td>";
 	echo "</tr>";
 	echo "<tr>\n";
 	echo "  <td nowrap colspan='11'align='left'><strong>&nbsp;</strong></td>\n";
@@ -827,13 +827,13 @@ if ($ninclui == true) {
 	for ($i = 0; $i < $numrows_itens; $i ++) {
 		db_fieldsmemory($result_final, $i);
 
-		if (trim($pc13_coddot) == "")
+		if (trim((string) $pc13_coddot) == "")
 			continue;
 
 		if ($i < $numrows_itens -1) {
-			$proxitem   = pg_result($result_final, $i +1, "pc11_codigo");
-			$proxdotac  = pg_result($result_final, $i +1, "pc13_coddot");
-			$proxcontra = pg_result($result_final, $i +1, "pc19_orctiporec");
+			$proxitem   = pg_fetch_result($result_final, $i +1, "pc11_codigo");
+			$proxdotac  = pg_fetch_result($result_final, $i +1, "pc13_coddot");
+			$proxcontra = pg_fetch_result($result_final, $i +1, "pc19_orctiporec");
 			if ($proxitem == $pc11_codigo && $proxdotac == $pc13_coddot && $proxcontra == $pc19_orctiporec) {
 				continue;
 			}
@@ -858,13 +858,13 @@ if ($ninclui == true) {
 	for ($i = 0; $i < $numrows_itens; $i ++) {
 		db_fieldsmemory($result_final, $i);
 
-		if (trim($pc13_coddot) == "")
+		if (trim((string) $pc13_coddot) == "")
 			continue;
 
 		if ($i < $numrows_itens -1) {
-			$proxitem = pg_result($result_final, $i +1, "pc11_codigo");
-			$proxdotac = pg_result($result_final, $i +1, "pc13_coddot");
-			$proxcontra = pg_result($result_final, $i +1, "pc19_orctiporec");
+			$proxitem = pg_fetch_result($result_final, $i +1, "pc11_codigo");
+			$proxdotac = pg_fetch_result($result_final, $i +1, "pc13_coddot");
+			$proxcontra = pg_fetch_result($result_final, $i +1, "pc19_orctiporec");
 			if ($proxitem == $pc11_codigo && $proxdotac == $pc13_coddot && $proxcontra == $pc19_orctiporec)
 				continue;
 		}
@@ -876,7 +876,7 @@ if ($ninclui == true) {
 		db_fieldsmemory($result, 0, true);
 
 		$valdisp = 'valdisp_'.$contador;
-		$$valdisp = (0 + $atual_menos_reservado) + $saldodotacoes[$pc13_coddot];
+		${$valdisp} = (0 + $atual_menos_reservado) + $saldodotacoes[$pc13_coddot];
 
 		if (($codele_ant != $pc18_codele) or ($dot_ant != $pc13_coddot)) {
 			$testatot = 0;
@@ -913,7 +913,7 @@ if ($ninclui == true) {
 		$simnao = "Não";
 		$simnaod = "disabled";
 		$bordas = "bordas01";
-		if ($$valdisp >= 0) {
+		if (${$valdisp} >= 0) {
 			$result_altext = $clorcreservasol->sql_record($clorcreservasol->sql_query_orcreserva(
 			                                              null,
 			                                              null,
@@ -928,7 +928,7 @@ if ($ninclui == true) {
 			}
 			if ($clorcreservasol->numrows > 0) {
 				db_fieldsmemory($result_altext, 0, true);
-				$$valdisp += $o80_valor;
+				${$valdisp} += $o80_valor;
 
 				if (isset ($valor) && isset ($quantidade)) {
 					if ($o80_valor < $valor * $pc13_quant) {
@@ -940,7 +940,7 @@ if ($ninclui == true) {
 					}
 				}
 			}
-			if ($$valdisp >= $testatot) {
+			if (${$valdisp} >= $testatot) {
 				$altcoddot = true;
 				$simnao = "Sim";
 				$simnaod = "";
@@ -951,8 +951,8 @@ if ($ninclui == true) {
 		echo "<tr>\n";
 		echo "  <td nowrap class='$bordas' align='center' >$pc11_codigo</td>\n";
 		echo "  <td nowrap class='$bordas' align='center' >$pc01_codmater</td>\n";
-		echo "  <td class='$bordas' align='left' >".ucfirst(strtolower($pc01_descrmater))."</td>\n";
-		echo "  <td class='$bordas' align='left' >".stripslashes($observ)."&nbsp;</td>\n";
+		echo "  <td class='$bordas' align='left' >".ucfirst(strtolower((string) $pc01_descrmater))."</td>\n";
+		echo "  <td class='$bordas' align='left' >".stripslashes((string) $observ)."&nbsp;</td>\n";
 		echo "  <td class='$bordas' align='left' >$nomfornec</td>\n";
 		echo "  <td nowrap class='$bordas' align='center' >$pc13_coddot</td>\n";
 		echo "  <td nowrap class='$bordas' align='right'  >$pc13_quant</td>\n";

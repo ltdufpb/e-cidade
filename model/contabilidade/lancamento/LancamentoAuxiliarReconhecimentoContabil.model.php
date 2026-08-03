@@ -133,6 +133,7 @@ class LancamentoAuxiliarReconhecimentoContabil extends LancamentoAuxiliarBase im
    * Seta valor para o complemento do lançamento contábil
    * @see LancamentoAuxiliarBase::setObservacaoHistorico()
    */
+  #[\Override]
   public function setObservacaoHistorico($sObservacaoHistorico) {
   	$this->sComplemento = $sObservacaoHistorico;
   }
@@ -141,6 +142,7 @@ class LancamentoAuxiliarReconhecimentoContabil extends LancamentoAuxiliarBase im
    * Retorna o complemento do lançamento contábil
    * @see LancamentoAuxiliarBase::getObservacaoHistorico()
    */
+  #[\Override]
   public function getObservacaoHistorico() {
   	return $this->sComplemento;
   }

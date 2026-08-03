@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE sau_cgserrado
 class cl_sau_cgserrado { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s128_i_codigo = 0; 
-   var $s128_i_numcgs = 0; 
-   var $s128_v_nome = null; 
+   public $s128_i_codigo = 0; 
+   public $s128_i_numcgs = 0; 
+   public $s128_v_nome = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s128_i_codigo = int4 = Código 
                  s128_i_numcgs = int4 = CGS 
                  s128_v_nome = varchar(255) = Nome 
                  ";
    //funcao construtor da classe 
-   function cl_sau_cgserrado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_cgserrado"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -120,7 +120,7 @@ class cl_sau_cgserrado {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cgserrado ($this->s128_i_codigo."-".$this->s128_i_numcgs) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cgserrado já Cadastrado";
@@ -149,13 +149,13 @@ class cl_sau_cgserrado {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15473,'$this->s128_i_codigo','I')");
          $resac = db_query("insert into db_acountkey values($acount,15474,'$this->s128_i_numcgs','I')");
-         $resac = db_query("insert into db_acount values($acount,2713,15473,'','".AddSlashes(pg_result($resaco,0,'s128_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2713,15474,'','".AddSlashes(pg_result($resaco,0,'s128_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2713,15475,'','".AddSlashes(pg_result($resaco,0,'s128_v_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2713,15473,'','".AddSlashes(pg_fetch_result($resaco,0,'s128_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2713,15474,'','".AddSlashes(pg_fetch_result($resaco,0,'s128_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2713,15475,'','".AddSlashes(pg_fetch_result($resaco,0,'s128_v_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -165,10 +165,10 @@ class cl_sau_cgserrado {
       $this->atualizacampos();
      $sql = " update sau_cgserrado set ";
      $virgula = "";
-     if(trim($this->s128_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s128_i_codigo"])){ 
+     if(trim((string) $this->s128_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s128_i_codigo"])){ 
        $sql  .= $virgula." s128_i_codigo = $this->s128_i_codigo ";
        $virgula = ",";
-       if(trim($this->s128_i_codigo) == null ){ 
+       if(trim((string) $this->s128_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "s128_i_codigo";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_sau_cgserrado {
          return false;
        }
      }
-     if(trim($this->s128_i_numcgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s128_i_numcgs"])){ 
+     if(trim((string) $this->s128_i_numcgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s128_i_numcgs"])){ 
        $sql  .= $virgula." s128_i_numcgs = $this->s128_i_numcgs ";
        $virgula = ",";
-       if(trim($this->s128_i_numcgs) == null ){ 
+       if(trim((string) $this->s128_i_numcgs) == null ){ 
          $this->erro_sql = " Campo CGS não informado.";
          $this->erro_campo = "s128_i_numcgs";
          $this->erro_banco = "";
@@ -191,10 +191,10 @@ class cl_sau_cgserrado {
          return false;
        }
      }
-     if(trim($this->s128_v_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s128_v_nome"])){ 
+     if(trim((string) $this->s128_v_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s128_v_nome"])){ 
        $sql  .= $virgula." s128_v_nome = '$this->s128_v_nome' ";
        $virgula = ",";
-       if(trim($this->s128_v_nome) == null ){ 
+       if(trim((string) $this->s128_v_nome) == null ){ 
          $this->erro_sql = " Campo Nome não informado.";
          $this->erro_campo = "s128_v_nome";
          $this->erro_banco = "";
@@ -221,16 +221,16 @@ class cl_sau_cgserrado {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,15473,'$this->s128_i_codigo','A')");
            $resac = db_query("insert into db_acountkey values($acount,15474,'$this->s128_i_numcgs','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s128_i_codigo"]) || $this->s128_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,2713,15473,'".AddSlashes(pg_result($resaco,$conresaco,'s128_i_codigo'))."','$this->s128_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2713,15473,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s128_i_codigo'))."','$this->s128_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s128_i_numcgs"]) || $this->s128_i_numcgs != "")
-             $resac = db_query("insert into db_acount values($acount,2713,15474,'".AddSlashes(pg_result($resaco,$conresaco,'s128_i_numcgs'))."','$this->s128_i_numcgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2713,15474,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s128_i_numcgs'))."','$this->s128_i_numcgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s128_v_nome"]) || $this->s128_v_nome != "")
-             $resac = db_query("insert into db_acount values($acount,2713,15475,'".AddSlashes(pg_result($resaco,$conresaco,'s128_v_nome'))."','$this->s128_v_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2713,15475,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s128_v_nome'))."','$this->s128_v_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -284,13 +284,13 @@ class cl_sau_cgserrado {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,15473,'$s128_i_codigo','E')");
            $resac  = db_query("insert into db_acountkey values($acount,15474,'$s128_i_numcgs','E')");
-           $resac  = db_query("insert into db_acount values($acount,2713,15473,'','".AddSlashes(pg_result($resaco,$iresaco,'s128_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2713,15474,'','".AddSlashes(pg_result($resaco,$iresaco,'s128_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2713,15475,'','".AddSlashes(pg_result($resaco,$iresaco,'s128_v_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2713,15473,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s128_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2713,15474,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s128_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2713,15475,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s128_v_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

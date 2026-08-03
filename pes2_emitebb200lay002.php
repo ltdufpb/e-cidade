@@ -32,8 +32,8 @@ include(modification("dbforms/db_layouttxt.php"));
 include(modification("classes/db_folha_classe.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 
 $clfolha       = new cl_folha;
 $clrharqbanco  = new cl_rharqbanco;
@@ -56,14 +56,14 @@ if($clrharqbanco->numrows>0){
   db_fieldsmemory($result_arqbanco,0);
 
   if(isset($datagera) && $datagera!=""){
-    $datag = split('-',$datagera);
+    $datag = preg_split('#\-#m',(string) $datagera);
     $datag_dia=$datag[2];
     $datag_mes=$datag[1];
     $datag_ano=$datag[0];
   }
 
   if(isset($datadeposit) && $datadeposit!=""){
-    $datad = split('-',$datadeposit);
+    $datad = preg_split('#\-#m',(string) $datadeposit);
     $datad_dia = $datad[2];
     $datad_mes = $datad[1];
     $datad_ano = $datad[0];
@@ -131,7 +131,7 @@ if($sqlerro == false){
       $tipoderetorno  = 'RET';
       $brancos6 = '00';
       $db_layouttxt = new db_layouttxt(7,$nomearquivotxt);
-      db_setaPropriedadesLayoutTxt(&$db_layouttxt,1);
+      db_setaPropriedadesLayoutTxt($db_layouttxt,1);
 
 
       $confcontaagencia = 1;
@@ -174,7 +174,7 @@ if($sqlerro == false){
         $totalquant ++;
 	      $totalvalor += $r38_liq;
         $confcontaagencia = '3';
-        $brancos2 = db_formatar(substr($z01_cgccpf,0,9),'s','0',12,'e',0);
+        $brancos2 = db_formatar(substr((string) $z01_cgccpf,0,9),'s','0',12,'e',0);
 
         $r38_agenc = db_formatar(str_replace('.','',str_replace('-','',$r38_agenc)),'s','0', 5,'e',0);
         $r38_conta = db_formatar(str_replace('.','',str_replace('-','',$r38_conta)),'s','0',12,'e',0);
@@ -185,7 +185,7 @@ if($sqlerro == false){
         $agenciafunc   = substr($r38_agenc,0,(strlen($r38_agenc) - 1));
 	      $rh01_regist   = $r38_regist;
 
-        db_setaPropriedadesLayoutTxt(&$db_layouttxt,3);
+        db_setaPropriedadesLayoutTxt($db_layouttxt,3);
       }
 
       $sequencialbb120 ++;
@@ -199,7 +199,7 @@ if($sqlerro == false){
       $pdf->cell(20,$alt,db_formatar($totalvalor,"f"),"TB",0,"C",1);
       $pdf->cell(50,$alt,"","RTB",1,"C",1);
 
-      db_setaPropriedadesLayoutTxt(&$db_layouttxt,5);
+      db_setaPropriedadesLayoutTxt($db_layouttxt,5);
 
       //////////////////////////////////
       $pdf->Output($nomearquivopdf,false,true);

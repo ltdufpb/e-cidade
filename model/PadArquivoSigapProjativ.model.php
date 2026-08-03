@@ -36,7 +36,7 @@ final class PadArquivoSigapProjativ extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "ProjetoAtividadeOperacaoEspecial";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   public function gerarDados() {
@@ -52,7 +52,7 @@ final class PadArquivoSigapProjativ extends PadArquivoSigap {
      * Separamos a data do em ano, mes, dia
      */
     $iCodigoInstit  = db_getsession("DB_instit");
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     
     $sSqlProAtiv  = "select distinct ";
     $sSqlProAtiv .= "       o55_anousu as anousu,";
@@ -75,9 +75,9 @@ final class PadArquivoSigapProjativ extends PadArquivoSigap {
       $oProjAtivRetorno->patCodigoEntidade          = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oProjAtivRetorno->patMesAnoMovimento         = $sDiaMesAno;
       $oProjAtivRetorno->patExercicio               = $oProjAtiv->anousu;
-      $oProjAtivRetorno->patCodigoProjetoAtividade  = str_pad($oProjAtiv->codigo, 3, "0", STR_PAD_LEFT);
-      $oProjAtivRetorno->patNomeProjetoAtividade    = str_pad($oProjAtiv->nome, 80,".", STR_PAD_RIGHT);
-      $oProjAtivRetorno->patIdentificador           = str_pad($oProjAtiv->identificador, 2, '0', STR_PAD_LEFT);
+      $oProjAtivRetorno->patCodigoProjetoAtividade  = str_pad((string) $oProjAtiv->codigo, 3, "0", STR_PAD_LEFT);
+      $oProjAtivRetorno->patNomeProjetoAtividade    = str_pad((string) $oProjAtiv->nome, 80,".", STR_PAD_RIGHT);
+      $oProjAtivRetorno->patIdentificador           = str_pad((string) $oProjAtiv->identificador, 2, '0', STR_PAD_LEFT);
       array_push($this->aDados, $oProjAtivRetorno);
       
     }
@@ -85,14 +85,14 @@ final class PadArquivoSigapProjativ extends PadArquivoSigap {
   
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "patCodigoEntidade",
                         "patMesAnoMovimento",
                         "patExercicio",
                         "patCodigoProjetoAtividade",
                         "patNomeProjetoAtividade",
                         "patIdentificador",
-                       );
+                       ];
     return $aElementos;  
   }
   

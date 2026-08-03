@@ -58,11 +58,11 @@ class FormularioRepository
 
         $perguntasMapeadas = $mapeador->getPerguntas();
         $dados = new \stdClass();
-        $dados->fields = array();
-        $dados->respostas =array();
+        $dados->fields = [];
+        $dados->respostas =[];
 
         $iColunas = 1;
-        $listaColunas = array();
+        $listaColunas = [];
 
         foreach ($formulario->getPerguntas() as $pergunta) {
             $listaColunas[] = $pergunta->getIdentificador();
@@ -82,7 +82,7 @@ class FormularioRepository
             $listaColunas = $novasColunas;
         }
         $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
-        $aWhere   = array("db101_sequencial = {$formulario->getCodigo()}");
+        $aWhere   = ["db101_sequencial = {$formulario->getCodigo()}"];
 
         $group  = " group by db106_resposta ";
 
@@ -132,7 +132,7 @@ class FormularioRepository
                         if ($coluna == $identificadorCampo) {
                             $valor = $valorResposta->getValor();
                             $pergunta = $valorResposta->getPergunta();
-                            if (in_array($pergunta->getTipoResposta(), array(1, 3))) {
+                            if (in_array($pergunta->getTipoResposta(), [1, 3])) {
                                 $valor = $valorResposta->getOpcao()->getDescricao();
                             }
 
@@ -167,10 +167,10 @@ class FormularioRepository
         $where = '';
 
         $dados = new \stdClass();
-        $dados->respostas =array();
+        $dados->respostas =[];
 
         $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
-        $aWhere   = array("db101_sequencial = {$formulario->getCodigo()}");
+        $aWhere   = ["db101_sequencial = {$formulario->getCodigo()}"];
 
         $sSqlRespostas  = $oDaoAvaliacaoResposta->sql_query_avaliacao(
             null,
@@ -213,7 +213,7 @@ class FormularioRepository
         $where = " and db103_identificadorcampo = 'codRubr' and db106_resposta = '{$rubrica}'";
 
         $oDaoAvaliacaoResposta = new \cl_avaliacaogrupoperguntaresposta;
-        $aWhere   = array("db101_sequencial = {$codigoFormulario}");
+        $aWhere   = ["db101_sequencial = {$codigoFormulario}"];
 
         $sSqlRespostas  = $oDaoAvaliacaoResposta->sql_query_avaliacao(
             null,
@@ -255,12 +255,12 @@ class FormularioRepository
 
         if (is_array($tags) && count($tags) > 0) {
             if (!$invert) {
-                return preg_replace('@<(?!(?:'. implode('|', $tags) .')\b)(\w+)\b.*?>.*?</\1>@si', '', $text);
+                return preg_replace('@<(?!(?:'. implode('|', $tags) .')\b)(\w+)\b.*?>.*?</\1>@si', '', (string) $text);
             } else {
-                return preg_replace('@<('. implode('|', $tags) .')\b.*?>.*?</\1>@si', '', $text);
+                return preg_replace('@<('. implode('|', $tags) .')\b.*?>.*?</\1>@si', '', (string) $text);
             }
         } elseif (!$invert) {
-            return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', $text);
+            return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', (string) $text);
         }
         return $text;
     }

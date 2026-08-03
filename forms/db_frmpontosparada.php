@@ -115,7 +115,7 @@ $oRotulo->label("ed82_c_nome");
           <label class="bold" for="tipo">Tipo: </label></td>
         <td colspan="3">
           <?php
-            $aTipo = array(1 => "Departamento", 2 => "Parada", 3 => "Escola Procedência");
+            $aTipo = [1 => "Departamento", 2 => "Parada", 3 => "Escola Procedência"];
             db_select("tipo", $aTipo, "", 1);
           ?>
         </td>

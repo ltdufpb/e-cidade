@@ -118,17 +118,17 @@ class RelatorioCompensacoes
 
 		$rsDados = $this->getDados();
 
-		$aCompensacoes = array();
-		$aValorReceitaDestinoCompensacao = array();
-		$aValidaNumpreNumparReceita = array();
+		$aCompensacoes = [];
+		$aValorReceitaDestinoCompensacao = [];
+		$aValidaNumpreNumparReceita = [];
 		$iQuantidadeRegistros = pg_num_rows($rsDados);
 		for ($iRegistro = 0; $iRegistro < $iQuantidadeRegistros; $iRegistro++) {
 
 			$oStdRegistro = db_utils::fieldsMemory($rsDados, $iRegistro);
-			$oStdPessoa = (object) array(
+			$oStdPessoa = (object) [
 				'nome' => $oStdRegistro->nome_cgm,
 				'cgm' => $oStdRegistro->numero_cgm,
-			);
+			];
 
 			if (!isset($aValorReceitaDestinoCompensacao[$oStdRegistro->compensacao][$oStdRegistro->receita_debito])) {
 
@@ -144,7 +144,7 @@ class RelatorioCompensacoes
 
 			}
 
-			$oCompensacao = (object) array(
+			$oCompensacao = (object) [
 				'credito' => $oStdRegistro->credito,
 				'estrutural' => $oStdRegistro->estrutural,
 				'descr_estrutural' => $oStdRegistro->descricao_estrutural,
@@ -153,7 +153,7 @@ class RelatorioCompensacoes
 				'valor' => $aValorReceitaDestinoCompensacao[$oStdRegistro->compensacao][$oStdRegistro->receita_debito],
 				'tipo_debito' => $oStdRegistro->tipo_debito,
 				'data_compensacao' => $oStdRegistro->data_compensacao,
-			);
+			];
 
 			if (isset($aCompensacoes[$oStdRegistro->compensacao])) {
 
@@ -162,8 +162,8 @@ class RelatorioCompensacoes
 			} else {
 
 				$oStdCompensacao = new stdClass;
-				$oStdCompensacao->aPessoas = array($oStdRegistro->numero_cgm => $oStdPessoa);
-				$oStdCompensacao->aReceitas = array($oStdRegistro->receita_debito => $oCompensacao);
+				$oStdCompensacao->aPessoas = [$oStdRegistro->numero_cgm => $oStdPessoa];
+				$oStdCompensacao->aReceitas = [$oStdRegistro->receita_debito => $oCompensacao];
 				$aCompensacoes[$oStdRegistro->compensacao] = $oStdCompensacao;
 			}
 		}
@@ -180,7 +180,7 @@ class RelatorioCompensacoes
 
 		$oDaoAbatimentoUtilizacao = new cl_abatimento();
 
-		$sCampos = implode(',', array(
+		$sCampos = implode(',', [
 			"k157_abatimento    as credito",
 			"k170_utilizacao    as compensacao",
 			"z01_numcgm         as numero_cgm",
@@ -195,11 +195,11 @@ class RelatorioCompensacoes
 			"recibo.k00_numpre  as origem",
 			"k02_descr          as receita_debito_descricao",
 			"arretipo.k00_descr as tipo_debito",
-		));
+		]);
 
-		$aWhere = array(
+		$aWhere = [
 			"k157_tipoutilizacao = '" . CreditoCompensacao::TIPO_UTILIZACAO_COMPENSACAO . "'",
-		);
+		];
 
 		if ($this->getCgm()) {
 			$aWhere[] = "arrenumcgm.k00_numcgm = {$this->getCgm()}";
@@ -341,7 +341,7 @@ class RelatorioCompensacoes
 	{
 
 		$aDados = $this->processarDados();
-		$aReceitas = array();
+		$aReceitas = [];
 
 		// agrupa um array de obj por receitas
 		foreach ($aDados as $oStdCompensacao) {
@@ -352,7 +352,7 @@ class RelatorioCompensacoes
 				$oReceitas->iCodigo = $oMaOe->receita;
 				$oReceitas->sDescricao = $oMaOe->descricao;
 				$oReceitas->nValor = $oMaOe->valor;
-				$aReceitas[str_pad($oMaOe->receita, 10, " ", STR_PAD_LEFT) . " - " . $oMaOe->descricao][] = $oReceitas;
+				$aReceitas[str_pad((string) $oMaOe->receita, 10, " ", STR_PAD_LEFT) . " - " . $oMaOe->descricao][] = $oReceitas;
 			}
 		}
 
@@ -363,7 +363,7 @@ class RelatorioCompensacoes
 	{
 
 		$aReceitas = $this->getReceitas();
-		$aDadosTotais = array();
+		$aDadosTotais = [];
 
 		//  Inicia com o Cabecalho do totalizador
 		$oDadosTotais = new stdClass();
@@ -430,7 +430,7 @@ class RelatorioCompensacoes
 	private function escreveTotalEstrutural($aDados)
 	{
 
-		$aValor = array();
+		$aValor = [];
 
 		foreach ($aDados as $oDados) {
 

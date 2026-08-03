@@ -111,10 +111,10 @@ require_once(modification("dbforms/db_classesgenericas.php"));
                       </td>
                       <td>
                           <?php
-                          $aOpcoesDistribuicao = array(
+                          $aOpcoesDistribuicao = [
                             '0' => 'Não',
                             '1' => 'Sim',
-                          );
+                          ];
                           db_select('distribuicao_zerada', $aOpcoesDistribuicao, true, 1, 'style="width: 50%;"');
                           ?>
                       </td>
@@ -151,10 +151,10 @@ require_once(modification("dbforms/db_classesgenericas.php"));
                       </td>
                       <td>
                           <?php
-                          $aOpcoesQuebraPagina = array(
+                          $aOpcoesQuebraPagina = [
                             '0' => 'Nenhuma',
                             '1' => 'Por Departamento',
-                          );
+                          ];
                           db_select('quebra_pagina', $aOpcoesQuebraPagina, true, 1, 'style="width: 50%;"');
                           ?>
                       </td>
@@ -166,10 +166,10 @@ require_once(modification("dbforms/db_classesgenericas.php"));
                       </td>
                       <td>
                           <?php
-                          $aOpcoesAgrupar = array(
+                          $aOpcoesAgrupar = [
                             '1' => 'Sim',
                             '0' => 'Não',
-                          );
+                          ];
                           db_select('agrupar', $aOpcoesAgrupar, true, 1, 'style="width: 50%;"');
                           ?>
                       </td>

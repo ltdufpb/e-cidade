@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("model/issqn/NotaFiscalISSQN.model.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clnotasiss = new cl_notasiss;
 $db_opcao = 1;
@@ -58,7 +58,7 @@ $db_botao = true;
 </body>
 </html>
 <?php
-if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir" ) {
+if ( (isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir" ) {
 
   db_inicio_transacao();
 

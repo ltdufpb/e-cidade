@@ -77,7 +77,7 @@ function montasemana($dData, $iSemana = null, $iAno = null) {
   */
   if ($iSemana == null) { 
   	
-    $dData      = explode('/', $dData);
+    $dData      = explode('/', (string) $dData);
     // Pego o número do dia da semana. (0 => Domingo, 6 => Sábado)
     $iDiaSemana = date('w', mktime(0, 0, 0, $dData[1], $dData[0], $dData[2]));
     for ($iCont = 0; $iCont < 7; $iCont++) {
@@ -164,7 +164,7 @@ function montasemana($dData, $iSemana = null, $iAno = null) {
 
 function semanasigla($data,$comp = 0,$num = 7) {
   if ($num == 7) {
-	$data = explode("/", $data);
+	$data = explode("/", (string) $data);
 	$fator=date("w", mktime(0,0,0,$data[1],$data[0],$data[2]));
   } else {
     $fator=$num;
@@ -242,7 +242,7 @@ function numerosemana($data,$ano = "0") {
 	
   if ($ano=="0") {
   	
-    $data      = explode("/",$data);
+    $data      = explode("/",(string) $data);
     $timestamp = mktime(0, 0, 0, $data[1], $data[0], $data[2]);
     
    } else {
@@ -280,7 +280,7 @@ function quantsemana($mes,$ano = "0") {
 
 function somardata($data, $dias= 0, $meses = 0, $ano = 0) {
 	
-  $data     = explode("/", $data);
+  $data     = explode("/", (string) $data);
   $novadata = date("d/m/Y", mktime(0, 0, 0, $data[1] + $meses,   $data[0] + $dias, $data[2] + $ano) );
   return $novadata;
   
@@ -319,8 +319,8 @@ if (isset($semana)) {?>
                                                                            AND ed04_i_escola = $escola"
                                                                         )
                                              );
-       $calibra = (pg_result($resultdias,0,0)-1);
-       $calibra2 = pg_result($resultdias,(pg_num_rows($resultdias)-1),0);
+       $calibra = (pg_fetch_result($resultdias,0,0)-1);
+       $calibra2 = pg_fetch_result($resultdias,(pg_num_rows($resultdias)-1),0);
        
      } else {
      	
@@ -332,7 +332,7 @@ if (isset($semana)) {?>
      for ($dia=$calibra;$dia<$calibra2;$dia++) {
      	
        $sigla = semanasigla("",1,$dia);
-       $d1    = substr($semana[$dia],0,5);
+       $d1    = substr((string) $semana[$dia],0,5);
        echo "<td><center>$sigla<br><b>$d1</b></center></td>";
        
      }
@@ -358,7 +358,7 @@ if (isset($semana)) {?>
        $d1=$semana[$calibra];
        for ($dia=$calibra;$dia<$calibra2;$dia++) {
        	
-         $d2=substr($d1,6,4)."-".substr($d1,3,2)."-".substr($d1,0,2);
+         $d2=substr((string) $d1,6,4)."-".substr((string) $d1,3,2)."-".substr((string) $d1,0,2);
          $campos = " me12_i_codigo,me01_i_codigo,me01_c_nome " ;
          $sWhere = " me12_d_data='$d2' AND me12_i_tprefeicao=$me03_i_codigo "; 
          $sWhere = " AND me12_i_escola=$escola AND me12_i_cardapiotipo=$cardapio";
@@ -383,7 +383,7 @@ if (isset($semana)) {?>
                                                 );
            if ($clferiado->numrows==0) {
            	
-             if (substr($d1,3,2)==$mes) {
+             if (substr((string) $d1,3,2)==$mes) {
              	
                $estado  = "disponivel";
                $nome    = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -401,7 +401,7 @@ if (isset($semana)) {?>
            	
              db_fieldsmemory($resultferiado,0);
              $estado   = "indisponivel";
-             $nome     = substr($ed54_c_descr,0,11);
+             $nome     = substr((string) $ed54_c_descr,0,11);
              $blokeado = " disabled ";
              $quadro  .= "_0";
              
@@ -420,14 +420,14 @@ if (isset($semana)) {?>
            if ($clmer_cardapiodata->numrows!=0) {
            	
              $estado   = "Ocupado";
-             $nome     = substr($me01_c_nome,0,11);
+             $nome     = substr((string) $me01_c_nome,0,11);
              $quadro  .= "_$me01_i_codigo";
              $blokeado = " disabled ";
              
            } else {
            	
              $estado  = "Ocupado";
-             $nome    = substr($me01_c_nome,0,11);
+             $nome    = substr((string) $me01_c_nome,0,11);
              $quadro .= "_$me01_i_codigo";
              
            }

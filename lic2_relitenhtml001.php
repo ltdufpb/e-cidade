@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("l20_codigo");
@@ -98,8 +98,8 @@ function js_emite(){
     <td align="left" nowrap><b>Delimitador de Campos :</b></td>
     <td align="left" nowrap>
       <?php 
-        $aDelimitador = array("1" => "Aspas Duplas",
-                              "2" => "Aspas Simples");
+        $aDelimitador = ["1" => "Aspas Duplas",
+                              "2" => "Aspas Simples"];
         db_select('delimitador', $aDelimitador, true, 1, "");
       ?>
     </td>
@@ -108,8 +108,8 @@ function js_emite(){
     <td align="left" nowrap><b>Layout:</b></td>
     <td align="left" nowrap>
       <?php 
-        $aLayout= array("1" => "Layout 1",
-                              "2" => "Layout 2 (sem seq item)");
+        $aLayout= ["1" => "Layout 1",
+                              "2" => "Layout 2 (sem seq item)"];
         db_select('layout', $aLayout, true, 1, "");
       ?>
     </td>

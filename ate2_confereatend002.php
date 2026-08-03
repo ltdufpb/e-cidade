@@ -26,8 +26,8 @@
  */
 
 require(modification('fpdf151/pdf.php'));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 /*
 echo "
 data1 = $data1 <br> 
@@ -138,14 +138,14 @@ if($linhas>0){
   $pdf->SetTextColor(0,0,0);
   $pdf->SetFillColor(210);
   
-  $totalpormodulo  = array();
-  $totalpormotivo  = array();
-  $totalporcliente = array();
-  $totalporproced  = array();
-  $totalportecnico = array();
-  $totalporarea    = array();
+  $totalpormodulo  = [];
+  $totalpormotivo  = [];
+  $totalporcliente = [];
+  $totalporproced  = [];
+  $totalportecnico = [];
+  $totalporarea    = [];
   
-  $array_totays = array();
+  $array_totays = [];
   
   $array_totays[0][0] = "MÓDULO";
   $array_totays[0][1] = "totalpormodulo";
@@ -208,7 +208,7 @@ if($linhas>0){
          $pdf->Cell(20,5,substr("$tec", 0, 11),1,0,"L",1);
          $pdf->Cell(25,5,substr("$cliente", 0, 16),1,0,"L",1);
          $pdf->Cell(23,5,substr("$motivo", 0, 14),1,0,"L",1);
-         $pdf->Cell(30,5,substr(strtoupper($nomemod), 0, 16),1,0,"L",1);
+         $pdf->Cell(30,5,substr(strtoupper((string) $nomemod), 0, 16),1,0,"L",1);
          $pdf->Cell(25,5,substr("$area", 0, 16),1,0,"L",1);
          $pdf->Cell(14,5,db_formatar($at02_datafim,'d'),1,0,"L",1);
          $pdf->Cell(10,5,$at05_horaini,1,0,"L",1);
@@ -277,10 +277,10 @@ if($linhas>0){
        $pdf->cell(60,5,$array_totays[$reg][0],1,0,"L",1);
        $pdf->cell(20,5,"QUANT",1,1,"C",1);
        
-     	array_multisort($$array_totays[$reg][1], SORT_DESC);
+     	array_multisort(${$array_totays}[$reg][1], SORT_DESC);
      	
        $total_quant=0;
-       foreach ($$array_totays[$reg][1] as $k => $v) {
+       foreach (${$array_totays}[$reg][1] as $k => $v) {
          $pdf->cell(60,5,$k,0,0,"L",0);
          $pdf->cell(20,5,db_formatar($v[0], 'f'),0,1,"R",0);
          $total_quant+=$v[0];

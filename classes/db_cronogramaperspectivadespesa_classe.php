@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE cronogramaperspectivadespesa
 class cl_cronogramaperspectivadespesa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o130_sequencial = 0; 
-   var $o130_cronogramaperspectiva = 0; 
-   var $o130_coddot = 0; 
-   var $o130_anousu = 0; 
+   public $o130_sequencial = 0; 
+   public $o130_cronogramaperspectiva = 0; 
+   public $o130_coddot = 0; 
+   public $o130_anousu = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o130_sequencial = int4 = Código Sequencial 
                  o130_cronogramaperspectiva = int4 = Código da Perspectiva 
                  o130_coddot = int4 = Código da Dotação 
                  o130_anousu = int4 = Ano da Dotação 
                  ";
    //funcao construtor da classe 
-   function cl_cronogramaperspectivadespesa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cronogramaperspectivadespesa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_cronogramaperspectivadespesa {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o130_sequencial = pg_result($result,0,0); 
+       $this->o130_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cronogramaperspectivadespesa_o130_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o130_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o130_sequencial)){
          $this->erro_sql = " Campo o130_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_cronogramaperspectivadespesa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Despesas do Cronograma ($this->o130_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Despesas do Cronograma já Cadastrado";
@@ -180,13 +180,13 @@ class cl_cronogramaperspectivadespesa {
      $resaco = $this->sql_record($this->sql_query_file($this->o130_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15014,'$this->o130_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2639,15014,'','".AddSlashes(pg_result($resaco,0,'o130_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2639,15015,'','".AddSlashes(pg_result($resaco,0,'o130_cronogramaperspectiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2639,15016,'','".AddSlashes(pg_result($resaco,0,'o130_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2639,15017,'','".AddSlashes(pg_result($resaco,0,'o130_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2639,15014,'','".AddSlashes(pg_fetch_result($resaco,0,'o130_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2639,15015,'','".AddSlashes(pg_fetch_result($resaco,0,'o130_cronogramaperspectiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2639,15016,'','".AddSlashes(pg_fetch_result($resaco,0,'o130_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2639,15017,'','".AddSlashes(pg_fetch_result($resaco,0,'o130_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_cronogramaperspectivadespesa {
       $this->atualizacampos();
      $sql = " update cronogramaperspectivadespesa set ";
      $virgula = "";
-     if(trim($this->o130_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o130_sequencial"])){ 
+     if(trim((string) $this->o130_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o130_sequencial"])){ 
        $sql  .= $virgula." o130_sequencial = $this->o130_sequencial ";
        $virgula = ",";
-       if(trim($this->o130_sequencial) == null ){ 
+       if(trim((string) $this->o130_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o130_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_cronogramaperspectivadespesa {
          return false;
        }
      }
-     if(trim($this->o130_cronogramaperspectiva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o130_cronogramaperspectiva"])){ 
+     if(trim((string) $this->o130_cronogramaperspectiva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o130_cronogramaperspectiva"])){ 
        $sql  .= $virgula." o130_cronogramaperspectiva = $this->o130_cronogramaperspectiva ";
        $virgula = ",";
-       if(trim($this->o130_cronogramaperspectiva) == null ){ 
+       if(trim((string) $this->o130_cronogramaperspectiva) == null ){ 
          $this->erro_sql = " Campo Código da Perspectiva nao Informado.";
          $this->erro_campo = "o130_cronogramaperspectiva";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_cronogramaperspectivadespesa {
          return false;
        }
      }
-     if(trim($this->o130_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o130_coddot"])){ 
+     if(trim((string) $this->o130_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o130_coddot"])){ 
        $sql  .= $virgula." o130_coddot = $this->o130_coddot ";
        $virgula = ",";
-       if(trim($this->o130_coddot) == null ){ 
+       if(trim((string) $this->o130_coddot) == null ){ 
          $this->erro_sql = " Campo Código da Dotação nao Informado.";
          $this->erro_campo = "o130_coddot";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_cronogramaperspectivadespesa {
          return false;
        }
      }
-     if(trim($this->o130_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o130_anousu"])){ 
+     if(trim((string) $this->o130_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o130_anousu"])){ 
        $sql  .= $virgula." o130_anousu = $this->o130_anousu ";
        $virgula = ",";
-       if(trim($this->o130_anousu) == null ){ 
+       if(trim((string) $this->o130_anousu) == null ){ 
          $this->erro_sql = " Campo Ano da Dotação nao Informado.";
          $this->erro_campo = "o130_anousu";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_cronogramaperspectivadespesa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15014,'$this->o130_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o130_sequencial"]) || $this->o130_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2639,15014,'".AddSlashes(pg_result($resaco,$conresaco,'o130_sequencial'))."','$this->o130_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2639,15014,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o130_sequencial'))."','$this->o130_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o130_cronogramaperspectiva"]) || $this->o130_cronogramaperspectiva != "")
-           $resac = db_query("insert into db_acount values($acount,2639,15015,'".AddSlashes(pg_result($resaco,$conresaco,'o130_cronogramaperspectiva'))."','$this->o130_cronogramaperspectiva',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2639,15015,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o130_cronogramaperspectiva'))."','$this->o130_cronogramaperspectiva',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o130_coddot"]) || $this->o130_coddot != "")
-           $resac = db_query("insert into db_acount values($acount,2639,15016,'".AddSlashes(pg_result($resaco,$conresaco,'o130_coddot'))."','$this->o130_coddot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2639,15016,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o130_coddot'))."','$this->o130_coddot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o130_anousu"]) || $this->o130_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,2639,15017,'".AddSlashes(pg_result($resaco,$conresaco,'o130_anousu'))."','$this->o130_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2639,15017,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o130_anousu'))."','$this->o130_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_cronogramaperspectivadespesa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15014,'$o130_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2639,15014,'','".AddSlashes(pg_result($resaco,$iresaco,'o130_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2639,15015,'','".AddSlashes(pg_result($resaco,$iresaco,'o130_cronogramaperspectiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2639,15016,'','".AddSlashes(pg_result($resaco,$iresaco,'o130_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2639,15017,'','".AddSlashes(pg_result($resaco,$iresaco,'o130_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2639,15014,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o130_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2639,15015,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o130_cronogramaperspectiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2639,15016,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o130_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2639,15017,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o130_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cronogramaperspectivadespesa
@@ -376,7 +376,7 @@ class cl_cronogramaperspectivadespesa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cronogramaperspectivadespesa";
@@ -391,7 +391,7 @@ class cl_cronogramaperspectivadespesa {
    function sql_query ( $o130_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_cronogramaperspectivadespesa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -439,7 +439,7 @@ class cl_cronogramaperspectivadespesa {
    function sql_query_file ( $o130_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -460,7 +460,7 @@ class cl_cronogramaperspectivadespesa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,7 +473,7 @@ class cl_cronogramaperspectivadespesa {
  function sql_query_dotacao ( $o130_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -505,7 +505,7 @@ class cl_cronogramaperspectivadespesa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -552,7 +552,7 @@ class cl_cronogramaperspectivadespesa {
    * @param $sGroup
    * @return string
    */
-  public function sql_query_dotacoes_fora_cronograma($sCampos = '*', $iCodigoCronograma, $sWhere = null, $sOrder = null, $sGroup = null) {
+  public function sql_query_dotacoes_fora_cronograma($sCampos = '*', $iCodigoCronograma = null, $sWhere = null, $sOrder = null, $sGroup = null) {
 
     $sSqlMetas  = "select {$sCampos} ";
     $sSqlMetas .= " from orcdotacao ";

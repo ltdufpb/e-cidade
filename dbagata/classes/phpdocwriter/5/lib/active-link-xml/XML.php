@@ -40,8 +40,8 @@ class XML extends Tree
 {
 
 	// protected variables
-	var $tag;
-	var $pathSeparator;
+	public $tag;
+	public $pathSeparator;
 
 	/**
 	  *	If argument is an XML String it parses the string into XML object
@@ -51,15 +51,14 @@ class XML extends Tree
 	  *	@param		optional string argument
 	  *	@returns	none
 	  */
-	function XML($argument = "")
+	function __construct($argument = "")
        	{
 		$success = false;
-		parent::__construct();
 		$this->pathSeparator = "/";
 		$this->tag = new Tag();
 		if(is_string($argument)) {
 			// if this is an XML string to be parsed
-			if(strpos($argument, $this->tag->tagEndOpen) > 0 || strpos($argument, $this->tag->tagClose) > 0)
+			if(strpos($argument, (string) $this->tag->tagEndOpen) > 0 || strpos($argument, (string) $this->tag->tagClose) > 0)
 				$this->parseFromString($argument);
 			// else if this is a tag path to be created
 			elseif(strpos($argument, $this->pathSeparator) > 0) {
@@ -86,7 +85,7 @@ class XML extends Tree
 	function addXMLAsBranch($xml, $id = -1)
        	{
 		$success = false;
-		if(is_object($xml) && get_class($xml) == "XML") {
+		if(is_object($xml) && $xml::class == "XML") {
 			$newBranch = new XMLBranch();
 			$newBranch->nodes = $xml->nodes;
 			$newBranch->tag = $xml->tag;
@@ -105,7 +104,7 @@ class XML extends Tree
 	function addXMLBranch($xmlBranch, $id = -1)
        	{
 		$success = false;
-		if(is_object($xmlBranch) && get_class($xmlBranch) == "XMLBranch") {
+		if(is_object($xmlBranch) && $xmlBranch::class == "XMLBranch") {
 			$xmlBranch->setParentXML($this);
 			$success = $this->addNode($id, $xmlBranch);
 		}
@@ -122,7 +121,7 @@ class XML extends Tree
 	function addXMLLeaf($xmlLeaf, $id = -1)
        	{
 		$success = false;
-		if(is_object($xmlLeaf) && get_class($xmlLeaf) == "XMLLeaf") {
+		if(is_object($xmlLeaf) && $xmlLeaf::class == "XMLLeaf") {
 			$xmlLeaf->setParentXML($this);
 			$success = $this->addNode($id, $xmlLeaf);
 		}
@@ -140,15 +139,15 @@ class XML extends Tree
 	  */
 	function getBranches($tagPath = "", $tagName = "", $attrName = "", $attrValue = "")
        	{
-		$branchArray = array();
+		$branchArray = [];
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
-		$tags = explode($this->pathSeparator, $tagPath);
+		$tags = explode($this->pathSeparator, (string) $tagPath);
 		if($this->tag->getTagName() == $tags[0]) {
 			if(count($tags) == 1) {
 				$arrKeys = array_keys($this->nodes);
 				for($index = 0; $index < count($arrKeys); $index ++) {
-					if(gettype($this->nodes[$arrKeys[$index]]) == "object" && get_class($this->nodes[$arrKeys[$index]]) == "XMLBranch") {
+					if(gettype($this->nodes[$arrKeys[$index]]) == "object" && $this->nodes[$arrKeys[$index]]::class == "XMLBranch") {
 						if(($tagName == "" || $this->nodes[$arrKeys[$index]]->tag->getTagName() == $tagName) &&
 							($attrName == "" || $this->nodes[$arrKeys[$index]]->tag->attributeExists($attrName)) &&
 							($attrValue == "" || $this->nodes[$arrKeys[$index]]->tag->getTagAttribute($attrName) == $attrValue)) {
@@ -160,7 +159,7 @@ class XML extends Tree
 			else {
 				$arrKeys = array_keys($this->nodes);
 				for($index = 0; $index < count($arrKeys); $index ++) {
-					if(gettype($this->nodes[$arrKeys[$index]]) == "object" && get_class($this->nodes[$arrKeys[$index]]) == "XMLBranch") {
+					if(gettype($this->nodes[$arrKeys[$index]]) == "object" && $this->nodes[$arrKeys[$index]]::class == "XMLBranch") {
 						if($this->nodes[$arrKeys[$index]]->tag->getTagName() == $tags[1]) {
 							$newTagPath = implode($this->pathSeparator, array_slice($tags, 1));
 							$newArray = $this->nodes[$arrKeys[$index]]->getBranches($newTagPath, $tagName, $attrName, $attrValue);
@@ -178,10 +177,10 @@ class XML extends Tree
 	
 	function getLastBranch($tagPath = "", $tagName = "", $attrName = "", $attrValue = "")
        	{
-		$branchArray = array();
+		$branchArray = [];
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
-		$tags = explode($this->pathSeparator, $tagPath);
+		$tags = explode($this->pathSeparator, (string) $tagPath);
 		if($this->tag->getTagName() == $tags[0]) {
 			if(count($tags) == 1) {
 				$arrKeys = array_keys($this->nodes);
@@ -190,7 +189,7 @@ class XML extends Tree
 // 				print_r ($this->nodes[$arrKeys[$last]]);
 // 				print "<br><br>";
 				
-				if(gettype($this->nodes[$arrKeys[$last]]) == "object" && get_class($this->nodes[$arrKeys[$last]]) == "XMLBranch") {
+				if(gettype($this->nodes[$arrKeys[$last]]) == "object" && $this->nodes[$arrKeys[$last]]::class == "XMLBranch") {
 					if(($tagName == "" || $this->nodes[$arrKeys[$last]]->tag->getTagName() == $tagName) &&
 						($attrName == "" || $this->nodes[$arrKeys[$last]]->tag->attributeExists($attrName)) &&
 						($attrValue == "" || $this->nodes[$arrKeys[$last]]->tag->getTagAttribute($attrName) == $attrValue)) {
@@ -203,7 +202,7 @@ class XML extends Tree
 				print "hola";
 				$last = count($arrKeys) - 1;
 				for($index = 0; $index < count($arrKeys); $index ++) {
-					if(gettype($this->nodes[$arrKeys[$index]]) == "object" && get_class($this->nodes[$arrKeys[$index]]) == "XMLBranch") {
+					if(gettype($this->nodes[$arrKeys[$index]]) == "object" && $this->nodes[$arrKeys[$index]]::class == "XMLBranch") {
 						if($this->nodes[$arrKeys[$index]]->tag->getTagName() == $tags[1]) {
 							$newTagPath = implode($this->pathSeparator, array_slice($tags, 1));
 							$newArray = $this->nodes[$arrKeys[$index]]->getLastBranch($newTagPath, $tagName, $attrName, $attrValue);
@@ -214,7 +213,7 @@ class XML extends Tree
 				}
 			}
 		}
-		if(gettype($lastbranch) == "object" && get_class($lastbranch) == "XMLBranch")
+		if(gettype($lastbranch) == "object" && $lastbranch::class == "XMLBranch")
 			return $lastbranch;
 		else
 			return false;
@@ -228,15 +227,15 @@ class XML extends Tree
 	  */
 	function getLeafs($tagPath = "")
        	{
-		$leafArray = array();
+		$leafArray = [];
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
-		$tags = explode($this->pathSeparator, $tagPath);
+		$tags = explode($this->pathSeparator, (string) $tagPath);
 		if($this->tag->getTagName() == $tags[0]) {
 			if(count($tags) == 1) {
 				$arrKeys = array_keys($this->nodes);
 				for($index = 0; $index < count($arrKeys); $index ++) {
-					if(gettype($this->nodes[$arrKeys[$index]]) == "object" && get_class($this->nodes[$arrKeys[$index]]) == "XMLLeaf") {
+					if(gettype($this->nodes[$arrKeys[$index]]) == "object" && $this->nodes[$arrKeys[$index]]::class == "XMLLeaf") {
 						$leafArray[] = $this->nodes[$arrKeys[$index]];
 					}
 				}
@@ -244,7 +243,7 @@ class XML extends Tree
 			else {
 				$arrKeys = array_keys($this->nodes);
 				for($index = 0; $index < count($arrKeys); $index ++) {
-					if(gettype($this->nodes[$arrKeys[$index]]) == "object" && get_class($this->nodes[$arrKeys[$index]]) == "XMLBranch") {
+					if(gettype($this->nodes[$arrKeys[$index]]) == "object" && $this->nodes[$arrKeys[$index]]::class == "XMLBranch") {
 						if($this->nodes[$arrKeys[$index]]->tag->getTagName() == $tags[1]) {
 							$newTagPath = implode($this->pathSeparator, array_slice($tags, 1));
 							$newArray = $this->nodes[$arrKeys[$index]]->getLeafs($newTagPath);
@@ -271,7 +270,7 @@ class XML extends Tree
        	{
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
-		$tags = explode($this->pathSeparator, $tagPath);
+		$tags = explode($this->pathSeparator, (string) $tagPath);
 		$attributeValue = false;
 		if($this->tag->getTagName() == $tags[0]) {
 			if(sizeof($tags) == 1) {
@@ -280,7 +279,7 @@ class XML extends Tree
 			}
 			else {
 				foreach($this->nodes as $node) {
-					if(get_class($node) == "XMLBranch")
+					if($node::class == "XMLBranch")
 						if($node->tag->getTagName() == $tags[1]) {
 							$newTagPath = implode($this->pathSeparator, array_slice($tags, 1));
 							$attributeValue = $node->getTagAttribute($attributeName, $newTagPath);
@@ -301,14 +300,14 @@ class XML extends Tree
        	{
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
-		$tags = explode($this->pathSeparator, $tagPath);
+		$tags = explode($this->pathSeparator, (string) $tagPath);
 		$tagValue = false;
 		if($this->tag->getTagName() == $tags[0]) {
 			if(sizeof($tags) == 1)
 				$tagValue = $this->getXMLContent();
 			else {
 				foreach($this->nodes as $node) {
-					if(get_class($node) == "XMLBranch")
+					if($node::class == "XMLBranch")
 						if($node->tag->getTagName() == $tags[1]) {
 							$newTagPath = implode($this->pathSeparator, array_slice($tags, 1));
 							$tagValue = $node->getTagContent($newTagPath);
@@ -339,9 +338,9 @@ class XML extends Tree
 		$xmlContent = "";
 		foreach($this->nodes as $node) {
 			if(gettype($node) == "object") {
-				if(get_class($node) == "XMLBranch")
+				if($node::class == "XMLBranch")
 					$xmlContent .= $node->getXMLString();
-				elseif(get_class($node) == "XMLLeaf")
+				elseif($node::class == "XMLLeaf")
 					$xmlContent .= $node->getValue();
 			}
 		}
@@ -368,11 +367,11 @@ class XML extends Tree
 		}
 		foreach($this->nodes as $node) {
 			if(gettype($node) == "object") {
-				if(get_class($node) == "XMLBranch") {
+				if($node::class == "XMLBranch") {
 					$this->tag->tagContent .= $node->getXMLString($newIndent);
 					$containsBranches = true;
 				}
-				elseif(get_class($node) == "XMLLeaf") {
+				elseif($node::class == "XMLLeaf") {
 					$this->tag->tagContent .= $node->getValue();
 					$containsLeafs = true;
 				}
@@ -394,7 +393,7 @@ class XML extends Tree
        	{
 		$hasBranch = false;
 		foreach($this->nodes as $node) {
-			if(get_class($node) == "XMLBranch") {
+			if($node::class == "XMLBranch") {
 				$hasBranch = true;
 				break;
 			}
@@ -411,7 +410,7 @@ class XML extends Tree
        	{
 		$hasLeaf = false;
 		foreach($this->nodes as $node) {
-			if(get_class($node) == "XMLLeaf") {
+			if($node::class == "XMLLeaf") {
 				$hasLeaf = true;
 				break;
 			}
@@ -444,16 +443,16 @@ class XML extends Tree
 		$tempTag = new Tag();
 		$parseString = $this->tag->getTagContent();
 		while($tagParsed = $tempTag->setTagFromString($parseString)) {
-			if($tagParsed[0] != 0 && trim(substr($parseString, 0, $tagParsed[0]) != ""))
-				$this->addXMLLeaf(new XMLLeaf(substr($parseString, 0, $tagParsed[0])));
+			if($tagParsed[0] != 0 && trim(substr((string) $parseString, 0, $tagParsed[0]) != ""))
+				$this->addXMLLeaf(new XMLLeaf(substr((string) $parseString, 0, $tagParsed[0])));
 			$branch = new XMLBranch();
 			$branch->setTag($tempTag);
 			$branch->parseNodesFromTag();
 			$branch->tag->setTagContent("");
 			$this->addXMLBranch($branch);
-			$parseString = substr($parseString, $tagParsed[1]);
+			$parseString = substr((string) $parseString, $tagParsed[1]);
 		}
-		if(strlen($parseString) > 0 && trim($parseString) != "")
+		if(strlen((string) $parseString) > 0 && trim((string) $parseString) != "")
 			$this->addXMLLeaf(new XMLLeaf($parseString));
 	}
 
@@ -464,7 +463,7 @@ class XML extends Tree
 	function removeAllBranches()
        	{
 		foreach($this->nodes as $key => $value) {
-			if(get_class($value) == "XMLBranch")
+			if($value::class == "XMLBranch")
 				unset($this->nodes[$key]);
 		}
 	}
@@ -476,7 +475,7 @@ class XML extends Tree
 	function removeAllLeafs()
        	{
 		foreach($this->nodes as $key => $value) {
-			if(get_class($value) == "XMLLeaf")
+			if($value::class == "XMLLeaf")
 				unset($this->nodes[$key]);
 		}
 	}
@@ -493,8 +492,8 @@ class XML extends Tree
 	function removeBranches($tagPath = "", $tagName = "", $attrName = "", $attrValue = "")
        	{
 		$branchesDeleted = 0;
-		$referencedBranches = array();
-		$tags = explode($this->pathSeparator, $tagPath);
+		$referencedBranches = [];
+		$tags = explode($this->pathSeparator, (string) $tagPath);
 		if(count($tags) > 1) {
 			$parentTagName = array_pop($tags);
 			$parentTagPath = implode($this->pathSeparator, $tags);
@@ -506,7 +505,7 @@ class XML extends Tree
 		for($i = 0; $i < count($referencedBranches); $i ++) {
 			$arrKeys = array_keys($referencedBranches[$i]->nodes);
 			for($index = 0; $index < count($arrKeys); $index ++) {
-				if(gettype($referencedBranches[$i]->nodes[$arrKeys[$index]]) == "object" && get_class($referencedBranches[$i]->nodes[$arrKeys[$index]]) == "XMLBranch") {
+				if(gettype($referencedBranches[$i]->nodes[$arrKeys[$index]]) == "object" && $referencedBranches[$i]->nodes[$arrKeys[$index]]::class == "XMLBranch") {
 					if(($tagName == "" || $referencedBranches[$i]->nodes[$arrKeys[$index]]->tag->getTagName() == $tagName) &&
 						($attrName == "" || $referencedBranches[$i]->nodes[$arrKeys[$index]]->tag->attributeExists($attrName)) &&
 						($attrValue == "" || $referencedBranches[$i]->nodes[$arrKeys[$index]]->tag->getTagAttribute($attrName) == $attrValue)) {
@@ -529,7 +528,7 @@ class XML extends Tree
 	function setBranchTag($branchId, $tag)
        	{
 		$success = true;
-		if(get_class($this->nodes[$branchId]) == "XMLBranch" && get_class($tag) == "Tag")
+		if($this->nodes[$branchId]::class == "XMLBranch" && $tag::class == "Tag")
 			$this->nodes[$branchId]->setTag($tag);
 		else
 			$success = false;
@@ -545,7 +544,7 @@ class XML extends Tree
 	function setTag($tag)
        	{
 		$success = true;
-		if(get_class($tag) == "Tag")
+		if($tag::class == "Tag")
 			$this->tag = $tag;
 		else
 			$success = false;
@@ -565,7 +564,7 @@ class XML extends Tree
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
 		$success = true;
-		$tags = explode($this->pathSeparator, $tagPath);
+		$tags = explode($this->pathSeparator, (string) $tagPath);
 		if($this->tag->getTagName() == $tags[0]) {
 			if(sizeof($tags) == 1)
 				$this->tag->setAttribute($attributeName, $attributeValue);
@@ -575,7 +574,7 @@ class XML extends Tree
 				$arrKeys = array_keys($this->nodes);
 				for($index = 0; $index < count($arrKeys); $index ++) {
 					$node =& $this->nodes[$arrKeys[$index]];
-					if(get_class($node) == "XMLBranch")
+					if($node::class == "XMLBranch")
 						if($node->tag->getTagName() == $tags[1]) {
 							$newTagPath = implode($this->pathSeparator, array_slice($tags, 1));
 							$success = $node->setTagAttribute($attributeName, $attributeValue, $newTagPath);
@@ -605,7 +604,7 @@ class XML extends Tree
 		if($tagPath == "")
 			$tagPath = $this->tag->getTagName();
 		$success = true;
-		$tags = explode($this->pathSeparator, $tagPath);
+		$tags = explode($this->pathSeparator, (string) $tagPath);
 		if($this->tag->getTagName() == $tags[0]) {
 			if(sizeof($tags) == 1) {
 				//$this->nodes = array(new XMLLeaf($content));
@@ -618,7 +617,7 @@ class XML extends Tree
 				$arrKeys = array_keys($this->nodes);
 				for($index = 0; $index < count($arrKeys); $index ++) {
 					$node =& $this->nodes[$arrKeys[$index]];
-					if(get_class($node) == "XMLBranch")
+					if($node::class == "XMLBranch")
 						if($node->tag->getTagName() == $tags[1]) {
 							$newTagPath = implode($this->pathSeparator, array_slice($tags, 1));
 							$success = $node->setTagContent($content, $newTagPath);

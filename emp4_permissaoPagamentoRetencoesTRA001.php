@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 $oPost = db_utils::postMemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if (isset($oPost->salvar)) {
 
@@ -43,10 +43,10 @@ if (isset($oPost->salvar)) {
       }
       
       if (!empty($oPost->unidades)) {
-        $aUnidades = explode(",",$oPost->unidades);
+        $aUnidades = explode(",",(string) $oPost->unidades);
         
         foreach($aUnidades as $sUnidade) {
-            list($orgao,$unidade,$instituicao) = explode("|",$sUnidade);
+            [$orgao, $unidade, $instituicao] = explode("|",$sUnidade);
             
             $cl_retencaotiporecorcunidadeliberaremessa->incluir($orgao, $unidade, $instituicao);
             if ($cl_retencaotiporecorcunidadeliberaremessa->erro_status == "0") {
@@ -127,7 +127,7 @@ if (isset($oPost->salvar)) {
            echo "<tr>";
            echo " <td> ";
            echo "   <input type='checkbox' name='{$sNomeCampo}' id='{$sNomeCampo}' {$sChecked}> ";
-           echo $oDados->o41_orgao.".".str_pad($oDados->o41_unidade,3,"0",STR_PAD_LEFT)." - ".$oDados->o41_descr;
+           echo $oDados->o41_orgao.".".str_pad((string) $oDados->o41_unidade,3,"0",STR_PAD_LEFT)." - ".$oDados->o41_descr;
            echo " </td>";
            echo "</tr>";
            

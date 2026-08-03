@@ -32,14 +32,14 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
 
   echo "<script>location.href='fis1_auto005.php'</script>";
   exit;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clauto            = new cl_auto;
 $clautolocal       = new cl_autolocal;
@@ -58,7 +58,7 @@ $clfiscalsanitario = new cl_fiscalsanitario;
 $db_opcao = 1;
 $db_botao = true;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   db_inicio_transacao();
   $sqlerro=false;
@@ -296,7 +296,7 @@ if(isset($rnum) && $rnum != ""){
     }
 }
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   db_msgbox($erro);
   if($sqlerro==true){

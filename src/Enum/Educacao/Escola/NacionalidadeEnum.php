@@ -25,11 +25,11 @@ class NacionalidadeEnum extends Enum
      */
     public function name()
     {
-        $data = array(
+        $data = [
             self::BRASILEIRO => "Brasileira",
             self::NATURALIZADO => "Brasileira no Exterior ou Naturalizado",
             self::ESTRANGEIRO => "Estrangeira",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Zona de residência não encontrada.');
@@ -43,15 +43,16 @@ class NacionalidadeEnum extends Enum
      * @return array
      * @throws Exception
      */
+    #[\Override]
     public static function toArrayWithNames()
     {
         $tipos = self::values();
-        $return = array();
+        $return = [];
         foreach ($tipos as $tipo) {
-            $return[] = array(
+            $return[] = [
                 'value' => $tipo->value(),
                 'name' => $tipo->name()
-            );
+            ];
         }
 
         return $return;

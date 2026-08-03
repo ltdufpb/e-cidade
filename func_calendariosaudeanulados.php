@@ -32,19 +32,19 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_undmedhorario_ext_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']); // ta com o globals desativado no php -- Crestani
+parse_str((string) $_SERVER['QUERY_STRING'], $result); // ta com o globals desativado no php -- Crestani
 
 
 class calendario{ 
-   var $sem;//Array com os dias da semana como índice 
-   var $mes;//Array com os meses do ano 
-   var $nome_objeto_data;
-   var $shutdown_function = "";
-   var $centralagenda="N";
+   public $sem;//Array com os dias da semana como índice 
+   public $mes;//Array com os meses do ano 
+   public $nome_objeto_data;
+   public $shutdown_function = "";
+   public $centralagenda="N";
 
    function inicializa(){//Atribui valores para $sem e $mes.
-       $this->sem=array('Sun'=>1,'Mon'=>2,'Tue'=>3,'Wed'=>4,'Thu'=>5,'Fri'=>6,'Sat'=>7);
-       $this->mes=array('1'=>'JANEIRO','2'=>'FEVEREIRO','3'=>'MARÇO','4'=>'ABRIL','5'=>'MAIO','6'=>'JUNHO','7'=>'JULHO','8'=>'AGOSTO','9'=>'SETEMBRO','10'=>'OUTUBRO','11'=>'NOVEMBRO','12'=>'DEZEMBRO');
+       $this->sem=['Sun'=>1,'Mon'=>2,'Tue'=>3,'Wed'=>4,'Thu'=>5,'Fri'=>6,'Sat'=>7];
+       $this->mes=['1'=>'JANEIRO','2'=>'FEVEREIRO','3'=>'MARÇO','4'=>'ABRIL','5'=>'MAIO','6'=>'JUNHO','7'=>'JULHO','8'=>'AGOSTO','9'=>'SETEMBRO','10'=>'OUTUBRO','11'=>'NOVEMBRO','12'=>'DEZEMBRO'];
    } 
 
    function aux($i){//Complementa a tabela com espaços em branco 
@@ -54,7 +54,7 @@ class calendario{
       } 
       return $retval; 
    }
-   
+
    function arr_search( $array, $valor ){
       	for( $x=0; $x < count($array); $x++){
       		if( $array[$x] == $valor ){
@@ -63,8 +63,8 @@ class calendario{
       	}
       	return false;      	
    }
-   
-	function cria($dia,$mes,$ano,$marca=0,$str_where, $result_unidademedico,$fechar=false){
+
+	function cria($dia,$mes,$ano,$marca=0,$str_where = null, $result_unidademedico = null,$fechar=false){
 		$this->inicializa();
 		$last  =date ("d", mktime (0,0,0,$mes+1,0,$ano));/*Inteiro do ultimo dia do mês*/
 		if($last<$dia) {
@@ -81,7 +81,7 @@ class calendario{
 			$valor=$this->sem[$diasem]-1;
 			$str="<tr align=center >".$this->aux($valor);
 		}
-		
+
 		//Pega os dias da semana
 		for( $x=0; $x < pg_num_rows( $result_unidademedico ); $x++){
 			$obj_result = db_utils::fieldsMemory($result_unidademedico,$x);
@@ -91,8 +91,8 @@ class calendario{
 		$clsau_config  = db_utils::getDao("sau_config_ext");
 		$resSau_Config = $clsau_config->sql_record( $clsau_config->sql_query_ext() );
 		$objSau_Config = db_utils::fieldsMemory($resSau_Config,0);
-		
-		
+
+
 		for($i=1;$i < ($last+1);$i++){       //; pega todos os dias do mes informado....
 			$diasem=date ("D", mktime (0,0,0,$mes,$i,$ano));
 			if($this->sem[$diasem] == 1){
@@ -103,7 +103,7 @@ class calendario{
 			}
 			$data_script = "$ano-$mes-$s";
 			$str.="<td     ";
-			
+
 			if($marca != 0){  // marca o dia atual em laranja
 				$str .= "onmouseover=\"js_mostra('parecerr".$i."',event); \" onmouseout=\"js_oculta('parecerr".$i."',event);\" ";
 			}
@@ -112,17 +112,17 @@ class calendario{
 			//if($this->sem[$diasem] == 1 || $this->sem[$diasem] == 7){
 			//	$str.="  bgcolor=#CCCCCC ";
 			//}
-			
+
 			$str .=" width=\"25\" ";
-			
+
 			if( ( $ano.str_pad($mes,2,'0',STR_PAD_LEFT).str_pad($i,2,'0',STR_PAD_LEFT) >= date("Ymd") || $objSau_Config->s103_c_cancelafa == 'S' 
 			    ) &&
 				( isset($arr_diasem) && $this->arr_search( $arr_diasem, $this->sem[$diasem] ) )
 			) {
 				$booMostradiv     = false;
-        
+
         $iUsuario = db_getsession('DB_id_usuario');
-				
+
         $str_query = "select sd30_i_turno,
 				                  sd30_i_fichas,
 				                  sd30_i_reservas,
@@ -142,7 +142,7 @@ class calendario{
                                             and s114_i_login = $iUsuario
 		            								)
 				                    and sd23_i_undmedhor= sd30_i_codigo
-				                    
+
 				                  group by sd23_d_consulta
 				               )::integer as total_agendado
 				            from undmedhorario
@@ -164,13 +164,13 @@ class calendario{
 							       ( sd30_d_valinicial is not null and sd30_d_valinicial <= '$ano/$mes/$s' ) 
 							      )						      
 				             ";
-					
-          
+
+
           $result_undmedhorario = db_query( $str_query ) or die( "ERRO: <p> $str_query ");
 					if( pg_num_rows($result_undmedhorario) > 0 ){
 						$obj_undmedhorario  = db_utils::fieldsMemory($result_undmedhorario,0);
 					}
-				
+
 				if( $booMostradiv == false && pg_num_rows($result_undmedhorario) > 0 ) {
 				    //Pega mais de uma hora para o mesmo dia
 					$str_msg           = "";
@@ -194,7 +194,7 @@ class calendario{
 							$str_cor = " > ";  // marcar o dia atual
 						}
 					}
-					
+
 					$str    .= $str_cor;
           if($lFlagTemAnulado) {
   					$str    .=" <a href=\"\" onclick=\"return janela($s,$mes,$ano,$fechar,".($obj_undmedhorario->sd30_i_fichas - $obj_undmedhorario->total_agendado ).");\"><font size='4'> $s </a> ";
@@ -203,7 +203,7 @@ class calendario{
           }
 					$booMostradiv = true;
 				}
-				
+
 				if( $booMostradiv ){
 					//*Div
 					$str .= "";
@@ -233,14 +233,14 @@ class calendario{
 			}else{
 					$str .="><font size='4'> $s";
 			}
-			
+
 			$str .="</font> </td>";
-			
+
 			if($this->sem[$diasem] == 7){
 				$str.="</tr>";
 			}
 		}
-		
+
 		$diasem=date ("D", mktime (0,0,0,$mes,$last,$ano));
 
 		if($this->sem[$diasem] != 7){
@@ -269,7 +269,7 @@ class calendario{
 			         <a href=\"func_calendariosaudeanulados.php?".($this->shutdown_function!=""?"shutdown_function=".$this->shutdown_function."&":"")."nome_objeto_data=".$this->nome_objeto_data."&ano_solicitado=".($ano)."&mes_solicitado=".($mes-1)."&".$str_where."&sd02_c_centralagenda={$this->centralagenda} \"> << </a>
 			         ".$this->mes[$mes]."
 			         <a href=\"func_calendariosaudeanulados.php?".($this->shutdown_function!=""?"shutdown_function=".$this->shutdown_function."&":"")."nome_objeto_data=".$this->nome_objeto_data."&ano_solicitado=".($ano)."&mes_solicitado=".($mes+1)."&".$str_where."&sd02_c_centralagenda={$this->centralagenda} \"> >> </a>
-			
+
 				</FONT> 
 			       </td>
 			     </tr>
@@ -351,7 +351,7 @@ if( ( isset($sd27_i_rhcbo) && (int)@$sd27_i_rhcbo != 0 ) ||( isset($sd27_i_codig
 	if( pg_num_rows($result) > 0 ){
 		$obj_result = db_utils::fieldsMemory($result,0);
 		$fechar     = isset($fechar)?true:0;
-		$clcalendario->cria(date("d",db_getsession("DB_datausu")),date("$mes_solicitado"),date("$ano_solicitado"),1,$str_where, $result, $fechar );
+		$clcalendario->cria(date("d",db_getsession("DB_datausu")),date("$mes_solicitado"),date("$ano_solicitado"),1 );
 	}else{
 		echo "Nehuma informa&ccedil;&atilde;o encontrada";
 	}

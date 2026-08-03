@@ -4,51 +4,8 @@ namespace ECidade\Patrimonial\Licitacao\ComprasPublicas\Model;
 class ComprasPublicasProposta
 {
   
-    private $idItem;
-    private $liclicitem;
-    private $data;
-    private $hora;
-    private $idFornecedor;
-    private $modelo;
-    private $marca;
-    private $fabricante;
-    private $detalhamento;
-    private $validadeProposta;
-    private $valorUnitario;
-    private $valorDesconto;
-    private $valorTotal;
-    private $valido = false;
-
-    public function __construct(
-        $idItem,
-        $liclicitem,
-        $data,
-        $hora,
-        $idFornecedor,
-        $modelo,
-        $marca,
-        $fabricante,
-        $detalhamento,
-        $validadeProposta,
-        $valorUnitario,
-        $valorDesconto,
-        $valorTotal,
-        $valido
-    ) {
-        $this->idItem           = $idItem;
-        $this->liclicitem       = $liclicitem;
-        $this->data             = $data;
-        $this->hora             = $hora;
-        $this->idFornecedor     = $idFornecedor;
-        $this->modelo           = $modelo;
-        $this->marca            = $marca;
-        $this->fabricante       = $fabricante;
-        $this->detalhamento     = $detalhamento;
-        $this->validadeProposta = $validadeProposta;
-        $this->valorUnitario    = $valorUnitario;
-        $this->valorDesconto    = $valorDesconto;
-        $this->valorTotal       = $valorTotal;
-        $this->valido           = $valido;
+    public function __construct(private $idItem, private $liclicitem, private $data, private $hora, private $idFornecedor, private $modelo, private $marca, private $fabricante, private $detalhamento, private $validadeProposta, private $valorUnitario, private $valorDesconto, private $valorTotal, private $valido)
+    {
     }
 
     public function setData($data)

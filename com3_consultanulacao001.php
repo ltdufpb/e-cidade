@@ -94,7 +94,7 @@ $oData = new DBDate($oStdAnulacao->pc67_data);
             <fieldset style="width: 96%">
               <legend class="bold">Motivo</legend>
               <div style="width: 100%; height: 150px; background-color: #FFFFFF">
-                <?php echo nl2br($oStdAnulacao->pc67_motivo);?>
+                <?php echo nl2br((string) $oStdAnulacao->pc67_motivo);?>
               </div>
             </fieldset>
           </td>

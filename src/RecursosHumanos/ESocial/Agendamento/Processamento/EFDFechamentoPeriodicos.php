@@ -37,14 +37,12 @@ use ECidade\RecursosHumanos\ESocial\Repository;
 class EFDFechamentoPeriodicos extends ProcessamentoAbstract implements ProcessamentoInterface
 {
 
-    private $cgm;
     /**
      * ProcessamentoInterface constructor.
      * @param $cgm
      */
-    public function __construct($cgm, $ano = null, $mes = null)
+    public function __construct(private $cgm, $ano = null, $mes = null)
     {
-        $this->cgm = $cgm;
         $this->ano = $ano;
         $this->mes = $mes;
 

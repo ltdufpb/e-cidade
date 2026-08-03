@@ -37,16 +37,10 @@ abstract class Factory {
 
     $oRegistro = null;
 
-    switch ($oEmissao->getTipo()) {
-
-      case EmissaoGeral::TIPO_IPTU:
-        $oRegistro = new IPTU();
-        break;
-
-      default:
-        $oRegistro = new Padrao();
-        break;
-    }
+    $oRegistro = match ($oEmissao->getTipo()) {
+        EmissaoGeral::TIPO_IPTU => new IPTU(),
+        default => new Padrao(),
+    };
 
     $oRegistro->setEmissao($oEmissao);
     return $oRegistro;

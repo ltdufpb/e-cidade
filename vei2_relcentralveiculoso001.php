@@ -38,7 +38,7 @@ $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 $clveiccadcentral = new cl_veiccadcentral;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -96,7 +96,7 @@ function js_emite(){
         </td>
         <td nowrap>
 	<?php 
-          $y = array("s"=>"Sim","n"=>"Não");
+          $y = ["s"=>"Sim","n"=>"Não"];
           db_select("quebra",$y,true,2); 
 	?>
         </td>

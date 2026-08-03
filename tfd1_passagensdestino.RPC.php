@@ -41,7 +41,7 @@ if (!isset($oPost->json)) {
 
 $oPost->json = str_replace("\\","",$oPost->json);
 $oParametro  = JSON::create()->parse($oPost->json);
-$oRetorno    = (object)array( 'erro' => false, 'mensagem'=> '');
+$oRetorno    = (object)[ 'erro' => false, 'mensagem'=> ''];
 
 try {
 

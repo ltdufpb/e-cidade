@@ -28,17 +28,11 @@
 
 class BarraProgressoCli {
   
-  private $aCaracteres    = array(0 =>'\\', 1 => '|', 2 => '/', 3 => '-'); 
+  private $aCaracteres    = [0 =>'\\', 1 => '|', 2 => '/', 3 => '-']; 
   private $iPonteiro      = 0;
   private $iContador      = 0;
-  private $nTotalRegistros;
-  private $iLarguraBarra;
-  private $sSimboloProgresso;
-  function __construct($nTotalRegistros, $iLarguraBarra = 70, $sSimbolo = "=") {
-    
-    $this->nTotalRegistros   = $nTotalRegistros;
-    $this->iLarguraBarra     = $iLarguraBarra;
-    $this->sSimboloProgresso = $sSimbolo;
+  function __construct(private $nTotalRegistros, private $iLarguraBarra = 70, private $sSimboloProgresso = "=")
+  {
   }
   
   function atualizar() {
@@ -53,7 +47,7 @@ class BarraProgressoCli {
     
     $nTamanhoEspaco    = 100 / $this->iLarguraBarra;
     $nTamanhoProgreso  = (int)$nPercentual / $nTamanhoEspaco;
-    $sEspacosProgresso = (int)$nPercentual == 0 ? '' : str_repeat( $this->sSimboloProgresso, $nTamanhoProgreso - 1) . $sSimbolo;
+    $sEspacosProgresso = (int)$nPercentual == 0 ? '' : str_repeat( (string) $this->sSimboloProgresso, $nTamanhoProgreso - 1) . $sSimbolo;
     $sBarra            = "[".str_pad($sEspacosProgresso, $this->iLarguraBarra, " ", STR_PAD_RIGHT)."]";
     
     echo "Processando Registro: $sFrase $sBarra [$sPercentual%]        \r";
@@ -62,7 +56,7 @@ class BarraProgressoCli {
     
     if ($this->nTotalRegistros == $this->iPonteiro) {
       
-      $sEspacosProgresso = (int)$nPercentual == 0 ? '' : str_repeat( $this->sSimboloProgresso , $nTamanhoProgreso);
+      $sEspacosProgresso = (int)$nPercentual == 0 ? '' : str_repeat( (string) $this->sSimboloProgresso , $nTamanhoProgreso);
       $sBarra            = "[".str_pad($sEspacosProgresso, $this->iLarguraBarra, " ", STR_PAD_RIGHT)."]";
       
       echo "Completo            : $sFrase $sBarra [$sPercentual%]        \r";

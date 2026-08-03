@@ -35,12 +35,12 @@ class Modification extends XMLParse {
   /**
    * @var array
    */
-  private $operations = array();
+  private $operations = [];
 
   /**
    * @var array
    */
-  private $filesOperations = array();
+  private $filesOperations = [];
 
   /**
    * @return integer
@@ -89,8 +89,8 @@ class Modification extends XMLParse {
    */
   public function parse() {
 
-    $this->operations = array();
-    $this->filesOperations = array();
+    $this->operations = [];
+    $this->filesOperations = [];
     $this->type = 'global';
     $this->id = null;
     $this->label = null;
@@ -125,7 +125,7 @@ class Modification extends XMLParse {
     foreach ($files as $nodeFile) {
 
       // regex de caminhos de arquivos para ignorar
-      $ignoreRegexPath = array();
+      $ignoreRegexPath = [];
 
       // busca atributo path da tag <ignore> e converte de glob pattern para regex
       foreach ($this->xpath->query('ignore', $nodeFile) as $nodeIgnore) {
@@ -159,7 +159,7 @@ class Modification extends XMLParse {
    * @param array $ignoreRegexPath
    * @return \ECidade\Modification\Parse\Modification
    */
-  private function loadFiles($path, $basePath = ECIDADE_PATH, $recursive = false, $ignoreRegexPath = array()) {
+  private function loadFiles($path, $basePath = ECIDADE_PATH, $recursive = false, $ignoreRegexPath = []) {
 
     $files = Glob::find($path, $basePath, $recursive);
     $operationsPath = str_replace(ECIDADE_PATH, null, $basePath) . $path;
@@ -176,7 +176,7 @@ class Modification extends XMLParse {
       }
 
       if (!isset($this->filesOperations[$file])) {
-        $this->filesOperations[$file] = array();
+        $this->filesOperations[$file] = [];
       }
 
       if (!in_array($operationsPath, $this->filesOperations[$file])) {

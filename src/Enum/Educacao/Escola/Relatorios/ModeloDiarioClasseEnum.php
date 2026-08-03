@@ -48,13 +48,13 @@ class ModeloDiarioClasseEnum extends Enum
      */
     public function name()
     {
-        $data = array(
+        $data = [
             self::ESPECIAL => "Turmas de AC e AEE",
             self::MODELO_UMA_DISCIPLINA_PAGINA => "Uma disciplina por página (Área)",
             self::MODELO_DUAS_PAGINAS => "Duas páginas por disciplina (Página 1 - Presenças / Página 2 - Avaliações)",
             self::MODELO_CURRICULO => "Todas disciplinas em uma página (Currículo)",
             self::MODELO_EJA => "Turma EJA",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Modelo não encontrado.');
@@ -68,15 +68,16 @@ class ModeloDiarioClasseEnum extends Enum
      * @return array
      * @throws Exception
      */
+    #[\Override]
     public static function toArrayWithNames()
     {
         $tipos = self::values();
-        $return = array();
+        $return = [];
         foreach ($tipos as $tipo) {
-            $return[] = array(
+            $return[] = [
                 'value' => $tipo->value(),
                 'name' => $tipo->name()
-            );
+            ];
         }
 
         return $return;

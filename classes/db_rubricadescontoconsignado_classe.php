@@ -3,35 +3,35 @@
 //CLASSE DA ENTIDADE rubricadescontoconsignado
 class cl_rubricadescontoconsignado { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh140_sequencial = 0; 
-   var $rh140_rubric = null; 
-   var $rh140_instit = 0; 
-   var $rh140_ordem = 0; 
+   public $rh140_sequencial = 0; 
+   public $rh140_rubric = null; 
+   public $rh140_instit = 0; 
+   public $rh140_ordem = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh140_sequencial = int8 = Sequencial 
                  rh140_rubric = char(4) = Rubrica 
                  rh140_instit = int4 = Instituição 
                  rh140_ordem = int4 = Ordem 
                  ";
    //funcao construtor da classe 
-   function cl_rubricadescontoconsignado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rubricadescontoconsignado"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -93,10 +93,10 @@ class cl_rubricadescontoconsignado {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh140_sequencial = pg_result($result,0,0); 
+       $this->rh140_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rubricadescontoconsignado_rh140_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh140_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh140_sequencial)){
          $this->erro_sql = " Campo rh140_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,7 +130,7 @@ class cl_rubricadescontoconsignado {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Rubrica Desconto Consignado ($this->rh140_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Rubrica Desconto Consignado já Cadastrado";
@@ -159,13 +159,13 @@ class cl_rubricadescontoconsignado {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20691,'$this->rh140_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3724,20691,'','".AddSlashes(pg_result($resaco,0,'rh140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3724,20692,'','".AddSlashes(pg_result($resaco,0,'rh140_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3724,20693,'','".AddSlashes(pg_result($resaco,0,'rh140_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3724,20694,'','".AddSlashes(pg_result($resaco,0,'rh140_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3724,20691,'','".AddSlashes(pg_fetch_result($resaco,0,'rh140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3724,20692,'','".AddSlashes(pg_fetch_result($resaco,0,'rh140_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3724,20693,'','".AddSlashes(pg_fetch_result($resaco,0,'rh140_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3724,20694,'','".AddSlashes(pg_fetch_result($resaco,0,'rh140_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -175,10 +175,10 @@ class cl_rubricadescontoconsignado {
       $this->atualizacampos();
      $sql = " update rubricadescontoconsignado set ";
      $virgula = "";
-     if(trim($this->rh140_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_sequencial"])){ 
+     if(trim((string) $this->rh140_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_sequencial"])){ 
        $sql  .= $virgula." rh140_sequencial = $this->rh140_sequencial ";
        $virgula = ",";
-       if(trim($this->rh140_sequencial) == null ){ 
+       if(trim((string) $this->rh140_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "rh140_sequencial";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_rubricadescontoconsignado {
          return false;
        }
      }
-     if(trim($this->rh140_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_rubric"])){ 
+     if(trim((string) $this->rh140_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_rubric"])){ 
        $sql  .= $virgula." rh140_rubric = '$this->rh140_rubric' ";
        $virgula = ",";
-       if(trim($this->rh140_rubric) == null ){ 
+       if(trim((string) $this->rh140_rubric) == null ){ 
          $this->erro_sql = " Campo Rubrica não informado.";
          $this->erro_campo = "rh140_rubric";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_rubricadescontoconsignado {
          return false;
        }
      }
-     if(trim($this->rh140_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_instit"])){ 
+     if(trim((string) $this->rh140_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_instit"])){ 
        $sql  .= $virgula." rh140_instit = $this->rh140_instit ";
        $virgula = ",";
-       if(trim($this->rh140_instit) == null ){ 
+       if(trim((string) $this->rh140_instit) == null ){ 
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "rh140_instit";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_rubricadescontoconsignado {
          return false;
        }
      }
-     if(trim($this->rh140_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_ordem"])){ 
+     if(trim((string) $this->rh140_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh140_ordem"])){ 
        $sql  .= $virgula." rh140_ordem = $this->rh140_ordem ";
        $virgula = ",";
-       if(trim($this->rh140_ordem) == null ){ 
+       if(trim((string) $this->rh140_ordem) == null ){ 
          $this->erro_sql = " Campo Ordem não informado.";
          $this->erro_campo = "rh140_ordem";
          $this->erro_banco = "";
@@ -241,17 +241,17 @@ class cl_rubricadescontoconsignado {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20691,'$this->rh140_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh140_sequencial"]) || $this->rh140_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3724,20691,'".AddSlashes(pg_result($resaco,$conresaco,'rh140_sequencial'))."','$this->rh140_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3724,20691,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh140_sequencial'))."','$this->rh140_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh140_rubric"]) || $this->rh140_rubric != "")
-             $resac = db_query("insert into db_acount values($acount,3724,20692,'".AddSlashes(pg_result($resaco,$conresaco,'rh140_rubric'))."','$this->rh140_rubric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3724,20692,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh140_rubric'))."','$this->rh140_rubric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh140_instit"]) || $this->rh140_instit != "")
-             $resac = db_query("insert into db_acount values($acount,3724,20693,'".AddSlashes(pg_result($resaco,$conresaco,'rh140_instit'))."','$this->rh140_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3724,20693,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh140_instit'))."','$this->rh140_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh140_ordem"]) || $this->rh140_ordem != "")
-             $resac = db_query("insert into db_acount values($acount,3724,20694,'".AddSlashes(pg_result($resaco,$conresaco,'rh140_ordem'))."','$this->rh140_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3724,20694,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh140_ordem'))."','$this->rh140_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -305,13 +305,13 @@ class cl_rubricadescontoconsignado {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20691,'$rh140_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3724,20691,'','".AddSlashes(pg_result($resaco,$iresaco,'rh140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3724,20692,'','".AddSlashes(pg_result($resaco,$iresaco,'rh140_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3724,20693,'','".AddSlashes(pg_result($resaco,$iresaco,'rh140_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3724,20694,'','".AddSlashes(pg_result($resaco,$iresaco,'rh140_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3724,20691,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh140_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3724,20692,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh140_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3724,20693,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh140_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3724,20694,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh140_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -372,7 +372,7 @@ class cl_rubricadescontoconsignado {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rubricadescontoconsignado";
@@ -387,7 +387,7 @@ class cl_rubricadescontoconsignado {
    function sql_query ( $rh140_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -412,7 +412,7 @@ class cl_rubricadescontoconsignado {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_rubricadescontoconsignado {
    function sql_query_file ( $rh140_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_rubricadescontoconsignado {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

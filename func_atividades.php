@@ -51,7 +51,7 @@
   <tr> 
     <td align="center" valign="middle"> 
       <?php 
-  $nomeDigitadoParaPesquisa = strtoupper($nomeDigitadoParaPesquisa);
+  $nomeDigitadoParaPesquisa = strtoupper((string) $nomeDigitadoParaPesquisa);
   $sql = "
          select  q03_ativ, q03_descr, q03_atmemo
          from ativid

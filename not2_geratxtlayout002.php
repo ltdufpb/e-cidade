@@ -132,10 +132,10 @@ $sSqlDadosCarne .= "                             from termo ";
 $sSqlDadosCarne .= "                            where v07_numpre = debitos.k22_numpre ";
 $sSqlDadosCarne .= "                         )            as numero_parcelamento,";
 
-$dVencimento = implode("-", array_reverse(explode("/", $oGet->sDataVenc)));
+$dVencimento = implode("-", array_reverse(explode("/", (string) $oGet->sDataVenc)));
 
 // se data preechida
-if (trim($oGet->sDataVenc) != '') {
+if (trim((string) $oGet->sDataVenc) != '') {
 
     // se data preechida e utilizacao "v" = vencidas, testa se vencimento do debito menor que a data especificada coloca a data especificada, senao coloca a data do debito
     if ($iUtilizacao == "v") {
@@ -143,7 +143,7 @@ if (trim($oGet->sDataVenc) != '') {
         // se data preechida e utilizacao "t" = todas, sempre coloca a data especificada
     } else {
         $sSqlDadosCarne .= "                      '" . implode("-",
-            array_reverse(explode("/", $oGet->sDataVenc))) . "' as vencimento_parcela, ";
+            array_reverse(explode("/", (string) $oGet->sDataVenc))) . "' as vencimento_parcela, ";
     }
 
 // se data nao for preechida, sempre utiliza a data de vencimento original do debito
@@ -177,10 +177,10 @@ $sSqlDadosCarne .= "                   where listadeb.k61_codigo = {$oGet->sList
 //$sSqlDadosCarne .= "                     and listadeb.k61_numpre = 6502581 and listadeb.k61_numpar = 36       ";
 $sSqlDadosCarne .= "                     and lista.k60_instit    = {$iInstit}                                 ";
 
-if (trim($oGet->nValorIni) != '') {
+if (trim((string) $oGet->nValorIni) != '') {
     $sSqlDadosCarne .= "                   and debitos.k22_vlrhis >= {$oGet->nValorIni}                         ";
 }
-if (trim($oGet->nValorFin) != '') {
+if (trim((string) $oGet->nValorFin) != '') {
     $sSqlDadosCarne .= "                   and debitos.k22_vlrhis <= {$oGet->nValorFin}                         ";
 }
 
@@ -235,7 +235,7 @@ if ($iLinhasDadosCarne > 0) {
 
         $sOrigemAntes = $sOrigem;
 
-        if (trim($oGet->iQtd) != '') {
+        if (trim((string) $oGet->iQtd) != '') {
             if ($iQtdOrigem > $oGet->iQtd) {
                 break;
             }
@@ -301,7 +301,7 @@ if ($iLinhasDadosCarne > 0) {
             $sSqlConsultaUnica .= "            from recibounica                                ";
             $sSqlConsultaUnica .= "           where recibounica.k00_numpre = {$oDadosCarne->codigo_arrecadacao} ";
 
-            if (trim($oGet->sDataVenc) != '') {
+            if (trim((string) $oGet->sDataVenc) != '') {
                 // Caso seja informado a data de vencimento, deve ser retornado somente as únicas que não estejam vencidas até a data informada.
                 $sSqlConsultaUnica .= "           and recibounica.k00_dtvenc >= '{$dVencimento}'::date  ";
             } else {
@@ -398,7 +398,7 @@ if ($iLinhasDadosCarne > 0) {
                     $oDetalheLote->valor_total_parcela = $oDadosUnica->vlrtotal;
                     $oDetalheLote->numero_notificacao = $oDadosCarne->numero_notificacao;
                     $oDetalheLote->exercicios = $oDadosCarne->exercicio;
-                    $oDetalheLote->valor_taxa_expediente = str_pad($valorTaxaExpediente, 10, '0', STR_PAD_LEFT);
+                    $oDetalheLote->valor_taxa_expediente = str_pad((string) $valorTaxaExpediente, 10, '0', STR_PAD_LEFT);
 
                     $aDadosTxt[$sOrigem]['aDetalhes'][] = $oDetalheLote;
                 }
@@ -534,7 +534,7 @@ if ($iLinhasDadosCarne > 0) {
             $oHeaderLote->dg_cedente = $oConvenio->getDigitoCedente();
 
 
-            if (trim($oDadosCarne->tipo_origem) == 'M') {
+            if (trim((string) $oDadosCarne->tipo_origem) == 'M') {
 
                 $sSqlEnderecoEntrega = " select substr(fc_iptuender,001,40) as logradouro, ";
                 $sSqlEnderecoEntrega .= "        substr(fc_iptuender,042,10) as numero,     ";
@@ -741,7 +741,7 @@ function obtemTerceiroDigito($arreTipo, $regraEmissao, $numpre, $unica = false)
 function getValorTaxaExpediente($numnov)
 {
     $repository = new RecibopagaRepository(DataBase::getInstance(), new \cl_recibopaga());
-    $where = array("k00_numnov = {$numnov}", "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO);
+    $where = ["k00_numnov = {$numnov}", "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO];
     $reciboPaga = $repository->findAll(implode(' AND ', $where))->get(0);
 
     return $reciboPaga->getValor();

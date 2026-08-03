@@ -55,11 +55,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica = array( "rhtipoperda"                 => "Tipo de Perda",
+       $clcriaabas->identifica = [ "rhtipoperda"                 => "Tipo de Perda",
                                         "rhtipoperdatipoassentamento" => "Assentamento"
-                                      ); 
-	     $clcriaabas->src        = array("rhtipoperda"=>"rec1_rhtipoperda005.php");
-	     $clcriaabas->disabled   = array("rhtipoperdatipoassentamento"=>"true"); 
+                                      ]; 
+	     $clcriaabas->src        = ["rhtipoperda"=>"rec1_rhtipoperda005.php"];
+	     $clcriaabas->disabled   = ["rhtipoperdatipoassentamento"=>"true"]; 
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>

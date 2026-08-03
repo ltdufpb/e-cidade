@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_veiccentral_classe.php"));
 include(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clveiccentral            = new cl_veiccentral;
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
@@ -164,7 +164,7 @@ if(isset($incluir)||isset($excluir)){
     }
   }
 
-  if (trim($erro_msg) != ""){
+  if (trim((string) $erro_msg) != ""){
     db_msgbox($erro_msg);
   }
 }

@@ -85,7 +85,7 @@ if( isset( $chavepesquisa ) ) {
   $rsTipoSanguineo   = $oDaoTipoSanguineo->sql_record($sSqlTipoSanguineo);
   $iLinhas           = $oDaoTipoSanguineo->numrows;
 
-  $aTiposSanguineos = array();
+  $aTiposSanguineos = [];
 
   if ( isset( $rsTipoSanguineo ) && $iLinhas > 0) {
 

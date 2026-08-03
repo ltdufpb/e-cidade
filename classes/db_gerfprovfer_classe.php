@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE gerfprovfer
 class cl_gerfprovfer { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $r93_anousu = 0; 
-   var $r93_mesusu = 0; 
-   var $r93_regist = 0; 
-   var $r93_rubric = null; 
-   var $r93_valor = 0; 
-   var $r93_pd = 0; 
-   var $r93_quant = 0; 
-   var $r93_lotac = null; 
-   var $r93_semest = 0; 
-   var $r93_tpp = null; 
-   var $r93_instit = 0; 
+   public $r93_anousu = 0; 
+   public $r93_mesusu = 0; 
+   public $r93_regist = 0; 
+   public $r93_rubric = null; 
+   public $r93_valor = 0; 
+   public $r93_pd = 0; 
+   public $r93_quant = 0; 
+   public $r93_lotac = null; 
+   public $r93_semest = 0; 
+   public $r93_tpp = null; 
+   public $r93_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  r93_anousu = int4 = Ano do Exercicio 
                  r93_mesusu = int4 = Mes do Exercicio 
                  r93_regist = int4 = Codigo do Funcionario 
@@ -68,10 +68,10 @@ class cl_gerfprovfer {
                  r93_instit = int4 = codigo da instituicao 
                  ";
    //funcao construtor da classe 
-   function cl_gerfprovfer() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("gerfprovfer"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -235,7 +235,7 @@ class cl_gerfprovfer {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Financeiro de Provisao de Ferias ($this->r93_anousu."-".$this->r93_mesusu."-".$this->r93_regist."-".$this->r93_rubric."-".$this->r93_tpp) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Financeiro de Provisao de Ferias já Cadastrado";
@@ -259,24 +259,24 @@ class cl_gerfprovfer {
      $resaco = $this->sql_record($this->sql_query_file($this->r93_anousu,$this->r93_mesusu,$this->r93_regist,$this->r93_rubric,$this->r93_tpp));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13315,'$this->r93_anousu','I')");
        $resac = db_query("insert into db_acountkey values($acount,13316,'$this->r93_mesusu','I')");
        $resac = db_query("insert into db_acountkey values($acount,13317,'$this->r93_regist','I')");
        $resac = db_query("insert into db_acountkey values($acount,13318,'$this->r93_rubric','I')");
        $resac = db_query("insert into db_acountkey values($acount,13324,'$this->r93_tpp','I')");
-       $resac = db_query("insert into db_acount values($acount,2332,13315,'','".AddSlashes(pg_result($resaco,0,'r93_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2332,13316,'','".AddSlashes(pg_result($resaco,0,'r93_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2332,13317,'','".AddSlashes(pg_result($resaco,0,'r93_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2332,13318,'','".AddSlashes(pg_result($resaco,0,'r93_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2332,13319,'','".AddSlashes(pg_result($resaco,0,'r93_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2332,13320,'','".AddSlashes(pg_result($resaco,0,'r93_pd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2332,13321,'','".AddSlashes(pg_result($resaco,0,'r93_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2332,13322,'','".AddSlashes(pg_result($resaco,0,'r93_lotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2332,13323,'','".AddSlashes(pg_result($resaco,0,'r93_semest'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2332,13324,'','".AddSlashes(pg_result($resaco,0,'r93_tpp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2332,13325,'','".AddSlashes(pg_result($resaco,0,'r93_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2332,13315,'','".AddSlashes(pg_fetch_result($resaco,0,'r93_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2332,13316,'','".AddSlashes(pg_fetch_result($resaco,0,'r93_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2332,13317,'','".AddSlashes(pg_fetch_result($resaco,0,'r93_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2332,13318,'','".AddSlashes(pg_fetch_result($resaco,0,'r93_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2332,13319,'','".AddSlashes(pg_fetch_result($resaco,0,'r93_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2332,13320,'','".AddSlashes(pg_fetch_result($resaco,0,'r93_pd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2332,13321,'','".AddSlashes(pg_fetch_result($resaco,0,'r93_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2332,13322,'','".AddSlashes(pg_fetch_result($resaco,0,'r93_lotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2332,13323,'','".AddSlashes(pg_fetch_result($resaco,0,'r93_semest'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2332,13324,'','".AddSlashes(pg_fetch_result($resaco,0,'r93_tpp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2332,13325,'','".AddSlashes(pg_fetch_result($resaco,0,'r93_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -285,10 +285,10 @@ class cl_gerfprovfer {
       $this->atualizacampos();
      $sql = " update gerfprovfer set ";
      $virgula = "";
-     if(trim($this->r93_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_anousu"])){ 
+     if(trim((string) $this->r93_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_anousu"])){ 
        $sql  .= $virgula." r93_anousu = $this->r93_anousu ";
        $virgula = ",";
-       if(trim($this->r93_anousu) == null ){ 
+       if(trim((string) $this->r93_anousu) == null ){ 
          $this->erro_sql = " Campo Ano do Exercicio nao Informado.";
          $this->erro_campo = "r93_anousu";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_gerfprovfer {
          return false;
        }
      }
-     if(trim($this->r93_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_mesusu"])){ 
+     if(trim((string) $this->r93_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_mesusu"])){ 
        $sql  .= $virgula." r93_mesusu = $this->r93_mesusu ";
        $virgula = ",";
-       if(trim($this->r93_mesusu) == null ){ 
+       if(trim((string) $this->r93_mesusu) == null ){ 
          $this->erro_sql = " Campo Mes do Exercicio nao Informado.";
          $this->erro_campo = "r93_mesusu";
          $this->erro_banco = "";
@@ -311,10 +311,10 @@ class cl_gerfprovfer {
          return false;
        }
      }
-     if(trim($this->r93_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_regist"])){ 
+     if(trim((string) $this->r93_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_regist"])){ 
        $sql  .= $virgula." r93_regist = $this->r93_regist ";
        $virgula = ",";
-       if(trim($this->r93_regist) == null ){ 
+       if(trim((string) $this->r93_regist) == null ){ 
          $this->erro_sql = " Campo Codigo do Funcionario nao Informado.";
          $this->erro_campo = "r93_regist";
          $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_gerfprovfer {
          return false;
        }
      }
-     if(trim($this->r93_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_rubric"])){ 
+     if(trim((string) $this->r93_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_rubric"])){ 
        $sql  .= $virgula." r93_rubric = '$this->r93_rubric' ";
        $virgula = ",";
-       if(trim($this->r93_rubric) == null ){ 
+       if(trim((string) $this->r93_rubric) == null ){ 
          $this->erro_sql = " Campo Rubrica nao Informado.";
          $this->erro_campo = "r93_rubric";
          $this->erro_banco = "";
@@ -337,10 +337,10 @@ class cl_gerfprovfer {
          return false;
        }
      }
-     if(trim($this->r93_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_valor"])){ 
+     if(trim((string) $this->r93_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_valor"])){ 
        $sql  .= $virgula." r93_valor = $this->r93_valor ";
        $virgula = ",";
-       if(trim($this->r93_valor) == null ){ 
+       if(trim((string) $this->r93_valor) == null ){ 
          $this->erro_sql = " Campo Valor da Rubrica nao Informado.";
          $this->erro_campo = "r93_valor";
          $this->erro_banco = "";
@@ -350,10 +350,10 @@ class cl_gerfprovfer {
          return false;
        }
      }
-     if(trim($this->r93_pd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_pd"])){ 
+     if(trim((string) $this->r93_pd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_pd"])){ 
        $sql  .= $virgula." r93_pd = $this->r93_pd ";
        $virgula = ",";
-       if(trim($this->r93_pd) == null ){ 
+       if(trim((string) $this->r93_pd) == null ){ 
          $this->erro_sql = " Campo Indica se e Prov ou Desc. nao Informado.";
          $this->erro_campo = "r93_pd";
          $this->erro_banco = "";
@@ -363,10 +363,10 @@ class cl_gerfprovfer {
          return false;
        }
      }
-     if(trim($this->r93_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_quant"])){ 
+     if(trim((string) $this->r93_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_quant"])){ 
        $sql  .= $virgula." r93_quant = $this->r93_quant ";
        $virgula = ",";
-       if(trim($this->r93_quant) == null ){ 
+       if(trim((string) $this->r93_quant) == null ){ 
          $this->erro_sql = " Campo Quantidade lancada na Rubrica nao Informado.";
          $this->erro_campo = "r93_quant";
          $this->erro_banco = "";
@@ -376,10 +376,10 @@ class cl_gerfprovfer {
          return false;
        }
      }
-     if(trim($this->r93_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_lotac"])){ 
+     if(trim((string) $this->r93_lotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_lotac"])){ 
        $sql  .= $virgula." r93_lotac = '$this->r93_lotac' ";
        $virgula = ",";
-       if(trim($this->r93_lotac) == null ){ 
+       if(trim((string) $this->r93_lotac) == null ){ 
          $this->erro_sql = " Campo Lotação nao Informado.";
          $this->erro_campo = "r93_lotac";
          $this->erro_banco = "";
@@ -389,10 +389,10 @@ class cl_gerfprovfer {
          return false;
        }
      }
-     if(trim($this->r93_semest)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_semest"])){ 
+     if(trim((string) $this->r93_semest)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_semest"])){ 
        $sql  .= $virgula." r93_semest = $this->r93_semest ";
        $virgula = ",";
-       if(trim($this->r93_semest) == null ){ 
+       if(trim((string) $this->r93_semest) == null ){ 
          $this->erro_sql = " Campo Semestre nao Informado.";
          $this->erro_campo = "r93_semest";
          $this->erro_banco = "";
@@ -402,10 +402,10 @@ class cl_gerfprovfer {
          return false;
        }
      }
-     if(trim($this->r93_tpp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_tpp"])){ 
+     if(trim((string) $this->r93_tpp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_tpp"])){ 
        $sql  .= $virgula." r93_tpp = '$this->r93_tpp' ";
        $virgula = ",";
-       if(trim($this->r93_tpp) == null ){ 
+       if(trim((string) $this->r93_tpp) == null ){ 
          $this->erro_sql = " Campo Tipo da Rubrica nao Informado.";
          $this->erro_campo = "r93_tpp";
          $this->erro_banco = "";
@@ -415,10 +415,10 @@ class cl_gerfprovfer {
          return false;
        }
      }
-     if(trim($this->r93_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_instit"])){ 
+     if(trim((string) $this->r93_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r93_instit"])){ 
        $sql  .= $virgula." r93_instit = $this->r93_instit ";
        $virgula = ",";
-       if(trim($this->r93_instit) == null ){ 
+       if(trim((string) $this->r93_instit) == null ){ 
          $this->erro_sql = " Campo codigo da instituicao nao Informado.";
          $this->erro_campo = "r93_instit";
          $this->erro_banco = "";
@@ -448,7 +448,7 @@ class cl_gerfprovfer {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13315,'$this->r93_anousu','A')");
          $resac = db_query("insert into db_acountkey values($acount,13316,'$this->r93_mesusu','A')");
@@ -456,27 +456,27 @@ class cl_gerfprovfer {
          $resac = db_query("insert into db_acountkey values($acount,13318,'$this->r93_rubric','A')");
          $resac = db_query("insert into db_acountkey values($acount,13324,'$this->r93_tpp','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r93_anousu"]) || $this->r93_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,2332,13315,'".AddSlashes(pg_result($resaco,$conresaco,'r93_anousu'))."','$this->r93_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2332,13315,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r93_anousu'))."','$this->r93_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r93_mesusu"]) || $this->r93_mesusu != "")
-           $resac = db_query("insert into db_acount values($acount,2332,13316,'".AddSlashes(pg_result($resaco,$conresaco,'r93_mesusu'))."','$this->r93_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2332,13316,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r93_mesusu'))."','$this->r93_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r93_regist"]) || $this->r93_regist != "")
-           $resac = db_query("insert into db_acount values($acount,2332,13317,'".AddSlashes(pg_result($resaco,$conresaco,'r93_regist'))."','$this->r93_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2332,13317,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r93_regist'))."','$this->r93_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r93_rubric"]) || $this->r93_rubric != "")
-           $resac = db_query("insert into db_acount values($acount,2332,13318,'".AddSlashes(pg_result($resaco,$conresaco,'r93_rubric'))."','$this->r93_rubric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2332,13318,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r93_rubric'))."','$this->r93_rubric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r93_valor"]) || $this->r93_valor != "")
-           $resac = db_query("insert into db_acount values($acount,2332,13319,'".AddSlashes(pg_result($resaco,$conresaco,'r93_valor'))."','$this->r93_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2332,13319,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r93_valor'))."','$this->r93_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r93_pd"]) || $this->r93_pd != "")
-           $resac = db_query("insert into db_acount values($acount,2332,13320,'".AddSlashes(pg_result($resaco,$conresaco,'r93_pd'))."','$this->r93_pd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2332,13320,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r93_pd'))."','$this->r93_pd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r93_quant"]) || $this->r93_quant != "")
-           $resac = db_query("insert into db_acount values($acount,2332,13321,'".AddSlashes(pg_result($resaco,$conresaco,'r93_quant'))."','$this->r93_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2332,13321,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r93_quant'))."','$this->r93_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r93_lotac"]) || $this->r93_lotac != "")
-           $resac = db_query("insert into db_acount values($acount,2332,13322,'".AddSlashes(pg_result($resaco,$conresaco,'r93_lotac'))."','$this->r93_lotac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2332,13322,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r93_lotac'))."','$this->r93_lotac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r93_semest"]) || $this->r93_semest != "")
-           $resac = db_query("insert into db_acount values($acount,2332,13323,'".AddSlashes(pg_result($resaco,$conresaco,'r93_semest'))."','$this->r93_semest',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2332,13323,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r93_semest'))."','$this->r93_semest',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r93_tpp"]) || $this->r93_tpp != "")
-           $resac = db_query("insert into db_acount values($acount,2332,13324,'".AddSlashes(pg_result($resaco,$conresaco,'r93_tpp'))."','$this->r93_tpp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2332,13324,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r93_tpp'))."','$this->r93_tpp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r93_instit"]) || $this->r93_instit != "")
-           $resac = db_query("insert into db_acount values($acount,2332,13325,'".AddSlashes(pg_result($resaco,$conresaco,'r93_instit'))."','$this->r93_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2332,13325,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r93_instit'))."','$this->r93_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -521,24 +521,24 @@ class cl_gerfprovfer {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13315,'$r93_anousu','E')");
          $resac = db_query("insert into db_acountkey values($acount,13316,'$r93_mesusu','E')");
          $resac = db_query("insert into db_acountkey values($acount,13317,'$r93_regist','E')");
          $resac = db_query("insert into db_acountkey values($acount,13318,'$r93_rubric','E')");
          $resac = db_query("insert into db_acountkey values($acount,13324,'$r93_tpp','E')");
-         $resac = db_query("insert into db_acount values($acount,2332,13315,'','".AddSlashes(pg_result($resaco,$iresaco,'r93_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2332,13316,'','".AddSlashes(pg_result($resaco,$iresaco,'r93_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2332,13317,'','".AddSlashes(pg_result($resaco,$iresaco,'r93_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2332,13318,'','".AddSlashes(pg_result($resaco,$iresaco,'r93_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2332,13319,'','".AddSlashes(pg_result($resaco,$iresaco,'r93_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2332,13320,'','".AddSlashes(pg_result($resaco,$iresaco,'r93_pd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2332,13321,'','".AddSlashes(pg_result($resaco,$iresaco,'r93_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2332,13322,'','".AddSlashes(pg_result($resaco,$iresaco,'r93_lotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2332,13323,'','".AddSlashes(pg_result($resaco,$iresaco,'r93_semest'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2332,13324,'','".AddSlashes(pg_result($resaco,$iresaco,'r93_tpp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2332,13325,'','".AddSlashes(pg_result($resaco,$iresaco,'r93_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2332,13315,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r93_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2332,13316,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r93_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2332,13317,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r93_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2332,13318,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r93_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2332,13319,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r93_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2332,13320,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r93_pd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2332,13321,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r93_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2332,13322,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r93_lotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2332,13323,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r93_semest'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2332,13324,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r93_tpp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2332,13325,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r93_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from gerfprovfer
@@ -622,7 +622,7 @@ class cl_gerfprovfer {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:gerfprovfer";
@@ -637,7 +637,7 @@ class cl_gerfprovfer {
    function sql_query ( $r93_anousu=null,$r93_mesusu=null,$r93_regist=null,$r93_rubric=null,$r93_tpp=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -693,7 +693,7 @@ class cl_gerfprovfer {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -706,7 +706,7 @@ class cl_gerfprovfer {
    function sql_query_file ( $r93_anousu=null,$r93_mesusu=null,$r93_regist=null,$r93_rubric=null,$r93_tpp=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -759,7 +759,7 @@ class cl_gerfprovfer {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

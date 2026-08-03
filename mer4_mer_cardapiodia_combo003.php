@@ -40,7 +40,7 @@ $result_cardapio = $clmer_tipocardapio->sql_record($clmer_tipocardapio->sql_quer
                                                                                   "",
                                                                                   "me27_i_codigo = $cardapio"
                                                                                  ));
-$ed52_i_ano = pg_result($result_cardapio,0,0);
+$ed52_i_ano = pg_fetch_result($result_cardapio,0,0);
 
 function montasemana($dData, $iSemana = null, $iAno = null) {
 
@@ -52,7 +52,7 @@ function montasemana($dData, $iSemana = null, $iAno = null) {
   */
   if ($iSemana == null) { 
   	
-    $dData      = explode('/', $dData);
+    $dData      = explode('/', (string) $dData);
     // Pego o número do dia da semana. (0 => Domingo, 6 => Sábado)
     $iDiaSemana = date('w', mktime(0, 0, 0, $dData[1], $dData[0], $dData[2]));
     for ($iCont = 0; $iCont < 7; $iCont++) {
@@ -139,7 +139,7 @@ function montasemana($dData, $iSemana = null, $iAno = null) {
 
 function somardata($data, $dias= 0, $meses = 0, $ano = 0) {
 	
-  $data     = explode("/", $data);
+  $data     = explode("/", (string) $data);
   $novadata = date("d/m/Y", mktime(0, 0, 0, $data[1] + $meses,   $data[0] + $dias, $data[2] + $ano));
   return $novadata;
   
@@ -171,11 +171,11 @@ $dData   = "01/$mes/".$ed52_i_ano;
 do {
 
   $aSemana = montasemana($dData);
-  $aData   = explode('/', $aSemana[0]);
+  $aData   = explode('/', (string) $aSemana[0]);
   if ($iCont > 1 && $aData[1] != $mes) { // A semana já começa com dias do próximo mês, então, saio do laço
     break;
   }
-  $aData   = explode('/', $aSemana[6]);
+  $aData   = explode('/', (string) $aSemana[6]);
   $iSemana = date('W', mktime(0, 0, 0, $aData[1], $aData[0], $aData[2]));
 
   /* 30 é um número intermediário, pois esperasse valores entre 46 e 53 para as semanas de dezembro.

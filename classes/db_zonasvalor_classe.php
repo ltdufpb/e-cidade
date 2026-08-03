@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE zonasvalor
 class cl_zonasvalor { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j51_zona = 0; 
-   var $j51_anousu = 0; 
-   var $j51_valorm2t = 0; 
-   var $j51_valorm2c = 0; 
+   public $j51_zona = 0; 
+   public $j51_anousu = 0; 
+   public $j51_valorm2t = 0; 
+   public $j51_valorm2c = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j51_zona = int8 = Zona Fiscal 
                  j51_anousu = int8 = Exercício 
                  j51_valorm2t = float8 = Valor Terreno (m²) 
                  j51_valorm2c = float8 = Valor Construção (m²) 
                  ";
    //funcao construtor da classe 
-   function cl_zonasvalor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("zonasvalor"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,7 +134,7 @@ class cl_zonasvalor {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Valores por zona fiscal ($this->j51_zona."-".$this->j51_anousu) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Valores por zona fiscal já Cadastrado";
@@ -158,14 +158,14 @@ class cl_zonasvalor {
      $resaco = $this->sql_record($this->sql_query_file($this->j51_zona,$this->j51_anousu));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5688,'$this->j51_zona','I')");
        $resac = db_query("insert into db_acountkey values($acount,5689,'$this->j51_anousu','I')");
-       $resac = db_query("insert into db_acount values($acount,897,5688,'','".AddSlashes(pg_result($resaco,0,'j51_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,897,5689,'','".AddSlashes(pg_result($resaco,0,'j51_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,897,5687,'','".AddSlashes(pg_result($resaco,0,'j51_valorm2t'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,897,6018,'','".AddSlashes(pg_result($resaco,0,'j51_valorm2c'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,897,5688,'','".AddSlashes(pg_fetch_result($resaco,0,'j51_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,897,5689,'','".AddSlashes(pg_fetch_result($resaco,0,'j51_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,897,5687,'','".AddSlashes(pg_fetch_result($resaco,0,'j51_valorm2t'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,897,6018,'','".AddSlashes(pg_fetch_result($resaco,0,'j51_valorm2c'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -174,10 +174,10 @@ class cl_zonasvalor {
       $this->atualizacampos();
      $sql = " update zonasvalor set ";
      $virgula = "";
-     if(trim($this->j51_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_zona"])){ 
+     if(trim((string) $this->j51_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_zona"])){ 
        $sql  .= $virgula." j51_zona = $this->j51_zona ";
        $virgula = ",";
-       if(trim($this->j51_zona) == null ){ 
+       if(trim((string) $this->j51_zona) == null ){ 
          $this->erro_sql = " Campo Zona Fiscal nao Informado.";
          $this->erro_campo = "j51_zona";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_zonasvalor {
          return false;
        }
      }
-     if(trim($this->j51_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_anousu"])){ 
+     if(trim((string) $this->j51_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_anousu"])){ 
        $sql  .= $virgula." j51_anousu = $this->j51_anousu ";
        $virgula = ",";
-       if(trim($this->j51_anousu) == null ){ 
+       if(trim((string) $this->j51_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "j51_anousu";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_zonasvalor {
          return false;
        }
      }
-     if(trim($this->j51_valorm2t)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_valorm2t"])){ 
+     if(trim((string) $this->j51_valorm2t)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_valorm2t"])){ 
        $sql  .= $virgula." j51_valorm2t = $this->j51_valorm2t ";
        $virgula = ",";
-       if(trim($this->j51_valorm2t) == null ){ 
+       if(trim((string) $this->j51_valorm2t) == null ){ 
          $this->erro_sql = " Campo Valor Terreno (m²) nao Informado.";
          $this->erro_campo = "j51_valorm2t";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_zonasvalor {
          return false;
        }
      }
-     if(trim($this->j51_valorm2c)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_valorm2c"])){ 
+     if(trim((string) $this->j51_valorm2c)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j51_valorm2c"])){ 
        $sql  .= $virgula." j51_valorm2c = $this->j51_valorm2c ";
        $virgula = ",";
-       if(trim($this->j51_valorm2c) == null ){ 
+       if(trim((string) $this->j51_valorm2c) == null ){ 
          $this->erro_sql = " Campo Valor Construção (m²) nao Informado.";
          $this->erro_campo = "j51_valorm2c";
          $this->erro_banco = "";
@@ -237,18 +237,18 @@ class cl_zonasvalor {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5688,'$this->j51_zona','A')");
          $resac = db_query("insert into db_acountkey values($acount,5689,'$this->j51_anousu','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j51_zona"]))
-           $resac = db_query("insert into db_acount values($acount,897,5688,'".AddSlashes(pg_result($resaco,$conresaco,'j51_zona'))."','$this->j51_zona',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,897,5688,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j51_zona'))."','$this->j51_zona',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j51_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,897,5689,'".AddSlashes(pg_result($resaco,$conresaco,'j51_anousu'))."','$this->j51_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,897,5689,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j51_anousu'))."','$this->j51_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j51_valorm2t"]))
-           $resac = db_query("insert into db_acount values($acount,897,5687,'".AddSlashes(pg_result($resaco,$conresaco,'j51_valorm2t'))."','$this->j51_valorm2t',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,897,5687,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j51_valorm2t'))."','$this->j51_valorm2t',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j51_valorm2c"]))
-           $resac = db_query("insert into db_acount values($acount,897,6018,'".AddSlashes(pg_result($resaco,$conresaco,'j51_valorm2c'))."','$this->j51_valorm2c',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,897,6018,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j51_valorm2c'))."','$this->j51_valorm2c',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -293,14 +293,14 @@ class cl_zonasvalor {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5688,'$j51_zona','E')");
          $resac = db_query("insert into db_acountkey values($acount,5689,'$j51_anousu','E')");
-         $resac = db_query("insert into db_acount values($acount,897,5688,'','".AddSlashes(pg_result($resaco,$iresaco,'j51_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,897,5689,'','".AddSlashes(pg_result($resaco,$iresaco,'j51_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,897,5687,'','".AddSlashes(pg_result($resaco,$iresaco,'j51_valorm2t'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,897,6018,'','".AddSlashes(pg_result($resaco,$iresaco,'j51_valorm2c'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,897,5688,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j51_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,897,5689,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j51_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,897,5687,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j51_valorm2t'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,897,6018,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j51_valorm2c'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from zonasvalor
@@ -366,7 +366,7 @@ class cl_zonasvalor {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:zonasvalor";
@@ -380,7 +380,7 @@ class cl_zonasvalor {
    function sql_query ( $j51_zona=null,$j51_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -410,7 +410,7 @@ class cl_zonasvalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,7 +422,7 @@ class cl_zonasvalor {
    function sql_query_file ( $j51_zona=null,$j51_anousu=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_zonasvalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

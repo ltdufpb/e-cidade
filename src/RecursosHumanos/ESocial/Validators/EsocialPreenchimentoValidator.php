@@ -9,12 +9,12 @@ abstract class EsocialPreenchimentoValidator
     /**
      * @var stdClass[]
      */
-    protected $perguntas = array();
+    protected $perguntas = [];
 
     /**
      * @var string[]
      */
-    private $erros = array();
+    private $erros = [];
 
     abstract public function validar();
 
@@ -98,7 +98,7 @@ abstract class EsocialPreenchimentoValidator
      */
     public function setPerguntas(array $perguntas)
     {
-        $this->perguntas = array();
+        $this->perguntas = [];
 
         foreach ($perguntas as $codPergunta => $opcoes) {
             $pergunta = new stdClass();

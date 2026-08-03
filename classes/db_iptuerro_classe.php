@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE iptuerro
 class cl_iptuerro { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j24_anousu = 0; 
-   var $j24_matric = 0; 
-   var $j24_idbql = 0; 
-   var $j24_erro = 0; 
-   var $j24_descr = null; 
+   public $j24_anousu = 0; 
+   public $j24_matric = 0; 
+   public $j24_idbql = 0; 
+   public $j24_erro = 0; 
+   public $j24_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j24_anousu = int4 = Exercicio 
                  j24_matric = int4 = Matricula 
                  j24_idbql = int4 = Codigo do Lote 
@@ -56,10 +56,10 @@ class cl_iptuerro {
                  j24_descr = varchar(40) = Descricao 
                  ";
    //funcao construtor da classe 
-   function cl_iptuerro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptuerro"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -146,7 +146,7 @@ class cl_iptuerro {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -173,10 +173,10 @@ class cl_iptuerro {
       $this->atualizacampos();
      $sql = " update iptuerro set ";
      $virgula = "";
-     if(trim($this->j24_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j24_anousu"])){ 
+     if(trim((string) $this->j24_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j24_anousu"])){ 
        $sql  .= $virgula." j24_anousu = $this->j24_anousu ";
        $virgula = ",";
-       if(trim($this->j24_anousu) == null ){ 
+       if(trim((string) $this->j24_anousu) == null ){ 
          $this->erro_sql = " Campo Exercicio nao Informado.";
          $this->erro_campo = "j24_anousu";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_iptuerro {
          return false;
        }
      }
-     if(trim($this->j24_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j24_matric"])){ 
+     if(trim((string) $this->j24_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j24_matric"])){ 
        $sql  .= $virgula." j24_matric = $this->j24_matric ";
        $virgula = ",";
-       if(trim($this->j24_matric) == null ){ 
+       if(trim((string) $this->j24_matric) == null ){ 
          $this->erro_sql = " Campo Matricula nao Informado.";
          $this->erro_campo = "j24_matric";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_iptuerro {
          return false;
        }
      }
-     if(trim($this->j24_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j24_idbql"])){ 
+     if(trim((string) $this->j24_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j24_idbql"])){ 
        $sql  .= $virgula." j24_idbql = $this->j24_idbql ";
        $virgula = ",";
-       if(trim($this->j24_idbql) == null ){ 
+       if(trim((string) $this->j24_idbql) == null ){ 
          $this->erro_sql = " Campo Codigo do Lote nao Informado.";
          $this->erro_campo = "j24_idbql";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_iptuerro {
          return false;
        }
      }
-     if(trim($this->j24_erro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j24_erro"])){ 
+     if(trim((string) $this->j24_erro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j24_erro"])){ 
        $sql  .= $virgula." j24_erro = $this->j24_erro ";
        $virgula = ",";
-       if(trim($this->j24_erro) == null ){ 
+       if(trim((string) $this->j24_erro) == null ){ 
          $this->erro_sql = " Campo Codigo do Erro nao Informado.";
          $this->erro_campo = "j24_erro";
          $this->erro_banco = "";
@@ -225,10 +225,10 @@ class cl_iptuerro {
          return false;
        }
      }
-     if(trim($this->j24_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j24_descr"])){ 
+     if(trim((string) $this->j24_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j24_descr"])){ 
        $sql  .= $virgula." j24_descr = '$this->j24_descr' ";
        $virgula = ",";
-       if(trim($this->j24_descr) == null ){ 
+       if(trim((string) $this->j24_descr) == null ){ 
          $this->erro_sql = " Campo Descricao nao Informado.";
          $this->erro_campo = "j24_descr";
          $this->erro_banco = "";
@@ -319,7 +319,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptuerro";

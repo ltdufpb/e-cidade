@@ -31,10 +31,10 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lote_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (!isset($pesquisar)) {
-    parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+    parse_str((string) $_SERVER["QUERY_STRING"]);
 }
 $cllote = new cl_lote;
 $cllote->rotulo->label();
@@ -106,7 +106,7 @@ if (!isset($pesquisa_chave)) {
 
         $chave = "";
         if (isset($setor) && !empty($setor)) {
-            $setor = str_pad($setor, 4, "0", STR_PAD_LEFT);
+            $setor = str_pad((string) $setor, 4, "0", STR_PAD_LEFT);
         }
         $chave .= "lote.j34_setor = '$setor' ";
         if (isset($quadra) && !empty($quadra)) {
@@ -114,7 +114,7 @@ if (!isset($pesquisa_chave)) {
             if (!empty($chave)) {
                 $chave .= " and ";
             }
-            $quadra = str_pad($quadra, 4, "0", STR_PAD_LEFT);
+            $quadra = str_pad((string) $quadra, 4, "0", STR_PAD_LEFT);
             $chave .= " lote.j34_quadra = '$quadra' ";
         }
         if (isset($lote) && !empty($lote)) {
@@ -122,7 +122,7 @@ if (!isset($pesquisa_chave)) {
             if (!empty($chave)) {
                 $chave .= " and ";
             }
-            $lote = str_pad($lote, 4, "0", STR_PAD_LEFT);
+            $lote = str_pad((string) $lote, 4, "0", STR_PAD_LEFT);
             $chave .= " lote.j34_lote = '$lote' ";
         }
         if ($chave != "") {
@@ -162,19 +162,19 @@ if (!isset($pesquisa_chave)) {
             $wsetor = "";
             if (isset($chave_j34_setor) && ($chave_j34_setor != "")) {
 
-                $chave_j34_setor = str_pad($chave_j34_setor, 4, "0", STR_PAD_LEFT);
+                $chave_j34_setor = str_pad((string) $chave_j34_setor, 4, "0", STR_PAD_LEFT);
                 $wsetor = "lote.j34_setor='$chave_j34_setor'";
                 $wx = " and ";
             }
             if (isset($chave_j34_quadra) && ($chave_j34_quadra != "")) {
 
-                $chave_j34_quadra = str_pad($chave_j34_quadra, 4, "0", STR_PAD_LEFT);
+                $chave_j34_quadra = str_pad((string) $chave_j34_quadra, 4, "0", STR_PAD_LEFT);
                 $wquadra = $wx . "lote.j34_quadra='$chave_j34_quadra'";
                 $wx = " and ";
             }
             if (isset($chave_j34_lote) && ($chave_j34_lote != "")) {
 
-                $chave_j34_lote = str_pad($chave_j34_lote, 4, "0", STR_PAD_LEFT);
+                $chave_j34_lote = str_pad((string) $chave_j34_lote, 4, "0", STR_PAD_LEFT);
                 $wlote = $wx . "lote.j34_lote='$chave_j34_lote'";
                 $wx = " and ";
             }

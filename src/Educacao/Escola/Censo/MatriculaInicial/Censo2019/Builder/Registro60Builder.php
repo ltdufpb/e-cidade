@@ -27,20 +27,20 @@ class Registro60Builder
     /**
      * @var array
      */
-    protected $tipoTransporte = array();
+    protected $tipoTransporte = [];
 
     /**
      * @var Registro60
      */
     protected $registro;
 
-    protected $multiEtapasCenso = array(3, 22, 23, 72, 56, 64);
+    protected $multiEtapasCenso = [3, 22, 23, 72, 56, 64];
 
-    protected $deParaEscolarizacaoOutroEspaco = array(
+    protected $deParaEscolarizacaoOutroEspaco = [
         Aluno::ESCOLARIZACAO_ESPECIAL_HOSPITAL => 2,
         Aluno::ESCOLARIZACAO_ESPECIAL_DOMICILIO => 3,
         Aluno::ESCOLARIZACAO_ESPECIAL_NAO => 1
-    );
+    ];
 
     public function addMatricula(MatriculaCensoVo $matricula)
     {
@@ -77,7 +77,7 @@ class Registro60Builder
         $aluno = $this->matricula->getAluno();
         $this->registro->setCodigoInepEscola($this->matricula->getTurma()->getEscola()->getCodigoInep());
         $this->registro->setCodigoPessoa(Pessoa::buildCodigoAluno($aluno->getCodigo()));
-        $this->registro->setCodigoInep(trim($aluno->getCodigoInep()));
+        $this->registro->setCodigoInep(trim((string) $aluno->getCodigoInep()));
 
         $this->registro->setCodigoTurma(Turma::buildCodigoTurmaRegular($this->matricula->getTurma()->getCodigoTurma()));
         if (!$this->matricula->getTurma()->isEscolarizacao()) {
@@ -109,7 +109,7 @@ class Registro60Builder
             foreach ($disciplinas as $disciplina) {
                 $tipoBase = $disciplina->getTipoBase();
                 if (EstruturaCurricularEnum::ITINERARIO_FORMATIVO == $tipoBase['ed182_estrutura_curricular']) {
-                    $areasItinerario = json_decode($tipoBase['ed182_tipo_itinerario_informativo']);
+                    $areasItinerario = json_decode((string) $tipoBase['ed182_tipo_itinerario_informativo']);
                     foreach ($areasItinerario as $area) {
                         $this->registro->setAreasItinerarioFormativo($area);
                         if (intval($area) == TipoItinerarioFormativoEnum::ITINERARIO_FORMATIVO_INTEGRADO) {

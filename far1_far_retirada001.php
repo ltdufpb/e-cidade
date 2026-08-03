@@ -64,7 +64,7 @@ if (isset($oConfigFarmacia) && $oConfigFarmacia->fa02_i_acaoprog != 0 && $oConfi
 
 function calcula_data($data, $dias = 0, $meses = 0, $ano = 0)
 {
-    $data = explode("-", $data);
+    $data = explode("-", (string) $data);
     $novadata = date("Y-m-d", mktime(0, 0, 0, $data[1] + $meses, $data[2] + $dias, $data[0] + $ano));
     return $novadata;
 }
@@ -135,19 +135,12 @@ db_menu();
 </html>
 <?php
 if (isset($oConfigFarmacia)) {
-    switch ($oConfigFarmacia->fa02_i_cursor) {
-        case 1:
-            $sCampoFoco = "fa04_i_cgsund";
-            break;
-        case 2:
-            $sCampoFoco = "s115_c_cartaosus";
-            break;
-        case 3:
-            $sCampoFoco = "z01_v_nome";
-            break;
-        default:
-            $sCampoFoco = "fa04_i_cgsund";
-    }
+    $sCampoFoco = match ($oConfigFarmacia->fa02_i_cursor) {
+        1 => "fa04_i_cgsund",
+        2 => "s115_c_cartaosus",
+        3 => "z01_v_nome",
+        default => "fa04_i_cgsund",
+    };
 } else {
     $sCampoFoco = "fa04_i_cgsund";
 }

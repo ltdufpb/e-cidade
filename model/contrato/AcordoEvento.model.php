@@ -111,7 +111,7 @@ class AcordoEvento {
    * Documentos vinculados ao evento
    * @var DocumentoEventoAcordo[]
    */
-  private $aDocumentos = array();
+  private $aDocumentos = [];
 
   /**
    * Código do acordo
@@ -136,7 +136,7 @@ class AcordoEvento {
       return;
     }
     $oDaoEvento       = new cl_acordoevento();
-    if (!$oDadosEvento = db_utils::getRowFromDao($oDaoEvento, array($iCodigoEvento))) {
+    if (!$oDadosEvento = db_utils::getRowFromDao($oDaoEvento, [$iCodigoEvento])) {
       throw new BusinessException("Evento com o código {$iCodigoEvento} não cadastrado");
     }
 
@@ -390,7 +390,7 @@ class AcordoEvento {
         case self::TIPO_EVENTO_RETORNO_EFEITOS_CONTRATO:
 
             $dataEvento = $this->getData() == null ? null : $this->getData()->getDate("Y-m-d");
-            $suspensao = array();
+            $suspensao = [];
             $oSuspensao = new cl_acordoparalisacao();
             $codAcordo = $this->getAcordo()->getCodigo();
             $acordo = new Acordo($codAcordo);

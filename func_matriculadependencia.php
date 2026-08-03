@@ -35,8 +35,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoMatricula = db_utils::getdao('matricula');
 $oDaoTurma     = db_utils::getdao('turma');
@@ -129,13 +129,13 @@ $clrotulo->label("ed47_v_nome");
               $sWhere .= "                          ) ";
               $sSql    = $oDaoMatricula->sql_query_matriculadependencia("",$sCampos, $sOrderBy, $sWhere);
               
-              $repassa = array();
+              $repassa = [];
               
               if (isset($chave_ed60_i_codigo)) {
-                $repassa = array(
+                $repassa = [
                                  "chave_ed60_i_codigo" => $chave_ed60_i_codigo,
                                  "chave_ed47_v_nome"   => $chave_ed47_v_nome
-                                );
+                                ];
               }
             
               db_lovrot($sSql,15,"()","",$funcao_js,"","NoMe",$repassa);

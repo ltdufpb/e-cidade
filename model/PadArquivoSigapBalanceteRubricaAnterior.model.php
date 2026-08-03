@@ -42,7 +42,7 @@ final class PadArquivoSigapBalanceteRubricaAnterior extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "BalanceteRubricaAnterior";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -62,7 +62,7 @@ final class PadArquivoSigapBalanceteRubricaAnterior extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     
     $oInstituicao   = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit   = db_getsession("DB_instit");
@@ -111,7 +111,7 @@ final class PadArquivoSigapBalanceteRubricaAnterior extends PadArquivoSigap {
       }
                                                                                         
     }
-    $aMeses = array( 1 => "Janeiro",
+    $aMeses = [ 1 => "Janeiro",
                      2 => "Fevereiro", 
                      3 => "Marco",
                      4 => "Abril", 
@@ -123,7 +123,7 @@ final class PadArquivoSigapBalanceteRubricaAnterior extends PadArquivoSigap {
                     10 => "Outubro", 
                     11 => "Novembro", 
                     12 => "Dezembro", 
-                   );
+                   ];
     
     $sSqlDadosRubrica .= "from orcdotacao ";
     $sSqlDadosRubrica .= "    inner join conlancamdot on o58_anousu = c73_anousu and o58_coddot  = c73_coddot ";
@@ -151,14 +151,14 @@ final class PadArquivoSigapBalanceteRubricaAnterior extends PadArquivoSigap {
       $oDespesaRetorno = new stdClass();
       $oDespesaRetorno->bdaCodigoEntidade                 = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oDespesaRetorno->bdaMesAnoMovimento                = $sDiaMesAno;
-      $oDespesaRetorno->bdaCodigoOrgao                   = str_pad($oDespesa->o58_orgao, 2, 0, STR_PAD_LEFT);
-      $oDespesaRetorno->bdaCodigoUnidadeOrcamentaria     = str_pad($oDespesa->o58_unidade, 2, 0, STR_PAD_LEFT);
-      $oDespesaRetorno->bdaCodigoFuncao                  = str_pad($oDespesa->o58_funcao, 2, 0, STR_PAD_LEFT);
-      $oDespesaRetorno->bdaCodigoSubFuncao               = str_pad($oDespesa->o58_subfuncao, 3, 0, STR_PAD_LEFT);
-      $oDespesaRetorno->bdaCodigoPrograma                = str_pad($oDespesa->o58_programa, 4 , 0, STR_PAD_LEFT);
-      $oDespesaRetorno->bdaCodigoProjetoAtividade        = str_pad($oDespesa->o58_projativ, 5, 0, STR_PAD_LEFT);
-      $oDespesaRetorno->bdaCodigoElemento                = str_pad($oDespesa->o56_elemento,15,"0");
-      $oDespesaRetorno->bdaCodigoRecursoVinculado        = str_pad($oDespesa->o58_codigo, 4, 0, STR_PAD_LEFT);;
+      $oDespesaRetorno->bdaCodigoOrgao                   = str_pad((string) $oDespesa->o58_orgao, 2, 0, STR_PAD_LEFT);
+      $oDespesaRetorno->bdaCodigoUnidadeOrcamentaria     = str_pad((string) $oDespesa->o58_unidade, 2, 0, STR_PAD_LEFT);
+      $oDespesaRetorno->bdaCodigoFuncao                  = str_pad((string) $oDespesa->o58_funcao, 2, 0, STR_PAD_LEFT);
+      $oDespesaRetorno->bdaCodigoSubFuncao               = str_pad((string) $oDespesa->o58_subfuncao, 3, 0, STR_PAD_LEFT);
+      $oDespesaRetorno->bdaCodigoPrograma                = str_pad((string) $oDespesa->o58_programa, 4 , 0, STR_PAD_LEFT);
+      $oDespesaRetorno->bdaCodigoProjetoAtividade        = str_pad((string) $oDespesa->o58_projativ, 5, 0, STR_PAD_LEFT);
+      $oDespesaRetorno->bdaCodigoElemento                = str_pad((string) $oDespesa->o56_elemento,15,"0");
+      $oDespesaRetorno->bdaCodigoRecursoVinculado        = str_pad((string) $oDespesa->o58_codigo, 4, 0, STR_PAD_LEFT);;
       for ($j = 1; $j <= 12; $j++) {
 
         $oDespesaRetorno->{"bdaValorEmpenhado{$aMeses[$j]}"} = $oDespesa->{"emp{$j}"} - $oDespesa->{"eemp{$j}"};
@@ -178,7 +178,7 @@ final class PadArquivoSigapBalanceteRubricaAnterior extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "bdaCodigoEntidade",
                         "bdaMesAnoMovimento",
                         "bdaCodigoOrgao",
@@ -225,7 +225,7 @@ final class PadArquivoSigapBalanceteRubricaAnterior extends PadArquivoSigap {
                         "bdaValorPagoOutubro",
                         "bdaValorPagoNovembro",
                         "bdaValorPagoDezembro",
-                       );
+                       ];
     return $aElementos;  
   }
   

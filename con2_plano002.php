@@ -40,39 +40,24 @@ $clconplanoreduz = new cl_conplanoreduz;
 $clrotulo = new rotulocampo;
 $clrotulo->label("o15_descr");
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $anousu = db_getsession("DB_anousu");
 
 $instit = str_replace("-", ",", $instit);
 function php_espaco($nivel)
 {
     $espaco = "";
-    switch ($nivel) {
-        case 1 :
-            $espaco = "";
-            break;
-        case 2 :
-            $espaco = " ";
-            break;
-        case 3 :
-            $espaco = "    ";
-            break;
-        case 4 :
-            $espaco = "       ";
-            break;
-        case 5 :
-            $espaco = "           ";
-            break;
-        case 6 :
-            $espaco = "              ";
-            break;
-        case 7 :
-            $espaco = "                  ";
-            break;
-        case 8 :
-            $espaco = "                      ";
-            break;
-    }
+    $espaco = match ($nivel) {
+        1 => "",
+        2 => " ",
+        3 => "    ",
+        4 => "       ",
+        5 => "           ",
+        6 => "              ",
+        7 => "                  ",
+        8 => "                      ",
+        default => $espaco,
+    };
     return $espaco;
 }
 
@@ -104,7 +89,7 @@ $alt = 4;
 $pagina = 1;
 
 
-for ($i = 0; $i < pg_numrows($result); $i++) {
+for ($i = 0; $i < pg_num_rows($result); $i++) {
     db_fieldsmemory($result, $i);
     if ($pdf->gety() > $pdf->h - 40 || $pagina == 1) {
         $pagina = 0;
@@ -135,8 +120,8 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     $espaco = php_espaco($nivel);
     $pdf->cell(25, $alt, $c60_estrut, 0, 0, "L", $cfundo);
     $pdf->cell(15, $alt, $c61_reduz, 0, 0, "C", $cfundo);
-    $pdf->cell(80, $alt, "$espaco" . substr($c60_descr, 0, 42), 0, 0, "L", $cfundo);
-    $pdf->cell(6, $alt, substr($c51_descr, 0, 1), 0, 0, "L", $cfundo);
+    $pdf->cell(80, $alt, "$espaco" . substr((string) $c60_descr, 0, 42), 0, 0, "L", $cfundo);
+    $pdf->cell(6, $alt, substr((string) $c51_descr, 0, 1), 0, 0, "L", $cfundo);
     $pdf->cell(6, $alt, "$c52_descrred", 0, 0, "L", $cfundo);
 
     $pdf->cell(11, $alt, $o15_recurso, 0, 0, "C", $cfundo);

@@ -37,7 +37,7 @@ $clobraspropri=new cl_obraspropri;
 $clobrasender=new cl_obrasender;
 $clobraslote=new cl_obraslote;
 $clobraslotei=new cl_obraslotei;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //echo $codigo;exit;
 if(!isset($codigo) || $codigo==''){
   db_redireciona('db_erros.php?fechar=true&db_erro=Carta de habitação não encontrada!');
@@ -88,10 +88,10 @@ $pdf->SetFont('Arial','',11);
 $instit = db_getsession("DB_instit");
 $sqltexto = "select * from db_textos where id_instit = $instit and ( descrtexto like 'habite%' or descrtexto like 'ass_habite%')";
 $resulttexto = db_query($sqltexto);
-for( $xx = 0;$xx < pg_numrows($resulttexto);$xx ++ ){
+for( $xx = 0;$xx < pg_num_rows($resulttexto);$xx ++ ){
   db_fieldsmemory($resulttexto,$xx);
   $text  = $descrtexto;
-  $$text = db_geratexto($conteudotexto);
+  ${$text} = db_geratexto($conteudotexto);
 }
 $alt=4;
 ////////relatorio

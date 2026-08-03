@@ -69,7 +69,7 @@ $DB_BASE     = "ontem_20130220_1900";
     $rsStartSession = db_query("select fc_startsession()");
     db_inicio_transacao();
 
-    list($iAnoServidor, $iMesServidor, $iDiaServidor) = explode("-", date("Y-m-d"));
+    [$iAnoServidor, $iMesServidor, $iDiaServidor] = explode("-", date("Y-m-d"));
 
     /**
      * Buscamos as instituicoes cadastradas para o sistema.
@@ -80,7 +80,7 @@ $DB_BASE     = "ontem_20130220_1900";
     }
     $aInstituicoes = db_utils::getCollectionByRecord($rsBuscaInstituicao) ;
 
-    $HTTP_SERVER_VARS = null;
+    $_SERVER = null;
     db_putsession("DB_anousu",     "{$iAnoServidor}");
     db_putsession("DB_id_usuario", "1");
     db_putsession("DB_acessado",   "0");
@@ -138,7 +138,7 @@ $DB_BASE     = "ontem_20130220_1900";
         echo " => Processando Planilha {$oStdPlanilha->k80_codpla} - {$oStdPlanilha->k80_data}\n";
 
         $oPlanilha = new PlanilhaArrecadacao($oStdPlanilha->k80_codpla);
-        list($iAno, $iMes, $iDia) = explode("-", $oStdPlanilha->k80_dtaut);
+        [$iAno, $iMes, $iDia] = explode("-", (string) $oStdPlanilha->k80_dtaut);
         db_putsession("DB_datausu", mktime(0, 0, 0, $iMes, $iDia, $iAno));
         $oPlanilha->estornar();
         $oPlanilha->autenticar();

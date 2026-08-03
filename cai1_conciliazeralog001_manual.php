@@ -38,8 +38,8 @@ include(modification("classes/db_conciliacor_classe.php"));
 include(modification("classes/db_conciliaextrato_classe.php"));
 include(modification("classes/db_conciliaitem_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clcontabancaria = new cl_contabancaria;
 $db_opcao = 1;
 $db_botao = false;
@@ -65,9 +65,9 @@ if( isset($db83_sequencial) ) {
    if($clcontabancaria->numrows!=0){
       db_fieldsmemory($result,0);
 
-      $data_dia = substr($data,8,2);
-      $data_mes = substr($data,5,2);
-      $data_ano = substr($data,0,4);
+      $data_dia = substr((string) $data,8,2);
+      $data_mes = substr((string) $data,5,2);
+      $data_ano = substr((string) $data,0,4);
 
 
       $errosql = false;

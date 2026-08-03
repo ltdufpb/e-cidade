@@ -59,7 +59,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
        onclick="js_cancela();"  <?=($db_botao==false?"disabled":"")?> >
 <br><br>
 <?php 
-$chavepri                                = array("me33_i_codigo"=>@$me33_i_codigo);
+$chavepri                                = ["me33_i_codigo"=>@$me33_i_codigo];
 $cliframe_alterar_excluir->chavepri      = $chavepri;
 $cliframe_alterar_excluir->sql           = $clmer_intoleranciaalimentar->sql_query(null,'*',null,"");
 $cliframe_alterar_excluir->campos        ="me33_i_codigo,me33_c_descr";

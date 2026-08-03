@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $ed100_i_historicompsfora=$ed100_i_historicompsfora;
 ?>
 <?php 
@@ -102,7 +102,7 @@ if (isset ( $ordenacao ) ) {
         }
         for($i=0;$i<$linhas;$i++){
           $dados1 = pg_fetch_array($query1);
-          echo "<option value=\"".$dados1["ed100_i_codigo"]."\">".trim($dados1["ed232_c_descr"])."</option>\n";
+          echo "<option value=\"".$dados1["ed100_i_codigo"]."\">".trim((string) $dados1["ed232_c_descr"])."</option>\n";
         }
      ?>
     </select>

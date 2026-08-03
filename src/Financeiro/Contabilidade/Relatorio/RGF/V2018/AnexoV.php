@@ -46,31 +46,33 @@ class AnexoV extends AnexoV2017
     /**
      * @var array
      */
-    protected $linhasAnaliticas = array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16);
+    protected $linhasAnaliticas = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16];
 
     /**
      * @var array
      */
-    private $recursos = array();
+    private $recursos = [];
 
     /**
      * @return object
      * @throws Exception
      */
+    #[\Override]
     public function getDadosSimplificado()
     {
         $this->getDados();
 
-        return (object)array(
+        return (object)[
             'rp_nao_processado' => $this->aLinhasConsistencia[17]->rp_empenhado_nao_processado,
             'disponibilidade_caixa_liquida' => $this->aLinhasConsistencia[17]->disp_caixa_liquida
-        );
+        ];
     }
 
     /**
      * @return array
      * @throws Exception
      */
+    #[\Override]
     public function getDados($trazerConfiguracaoPadrao = true)
     {
         RelatoriosLegaisBase::getDados($trazerConfiguracaoPadrao);
@@ -96,6 +98,7 @@ class AnexoV extends AnexoV2017
     /**
      * @throws Exception
      */
+    #[\Override]
     protected function processarObrigacoesFinanceiras()
     {
         $recursos = RecursoRepository::getValoresRecursosPorCompetencia(

@@ -41,7 +41,7 @@ $clrotulo->label('DBtxt22');
 
 $codrel = 100;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -65,11 +65,11 @@ db_postmemory($HTTP_POST_VARS);
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas");
-    $clcriaabas->title      = array("relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas");
-    $clcriaabas->src  = array("relatorio"=> "orc2_convenioIRF1C001.php",
-                              "notas"    => "con2_conrelnotas.php?c83_codrel=$codrel");
-    $clcriaabas->sizecampo= array("relatorio"=>"23","notas"=>"23");
+    $clcriaabas->identifica = ["relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas"];
+    $clcriaabas->title      = ["relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas"];
+    $clcriaabas->src  = ["relatorio"=> "orc2_convenioIRF1C001.php",
+                              "notas"    => "con2_conrelnotas.php?c83_codrel=$codrel"];
+    $clcriaabas->sizecampo= ["relatorio"=>"23","notas"=>"23"];
     $clcriaabas->cria_abas();    
     ?>
     </center>

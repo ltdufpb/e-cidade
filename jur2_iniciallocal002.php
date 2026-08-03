@@ -27,8 +27,8 @@
 
 include(modification("fpdf151/pdf.php"));
 include(modification("classes/db_inicial_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clinicial  = new cl_inicial;
 $auxiliar  = new cl_inicial;
 
@@ -158,7 +158,7 @@ $tam=4;
       $pdf->Cell(40,$tam,"$vara",0,0,"L",0); 
       $pdf->Cell(20,$tam,"$v56_data",0,0,"C",0); 
       $pdf->Cell(40,$tam,"$situacao",0,1,"L",0); // <br>
-      
+
     }// end for
     
   }

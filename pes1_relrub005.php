@@ -36,7 +36,7 @@ include(modification("classes/db_selecao_classe.php"));
 $clrelrub = new cl_relrub;
 $clrelrubmov = new cl_relrubmov;
 $clselecao = new cl_selecao;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){

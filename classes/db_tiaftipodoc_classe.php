@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE tiaftipodoc
 class cl_tiaftipodoc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y98_tiafdoc = 0; 
-   var $y98_descr = null; 
+   public $y98_tiafdoc = 0; 
+   public $y98_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y98_tiafdoc = int4 = Codigo do documento 
                  y98_descr = text = Descrição do documento 
                  ";
    //funcao construtor da classe 
-   function cl_tiaftipodoc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tiaftipodoc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_tiaftipodoc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y98_tiafdoc = pg_result($result,0,0); 
+       $this->y98_tiafdoc = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tiaftipodoc_y98_tiafdoc_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y98_tiafdoc)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y98_tiafdoc)){
          $this->erro_sql = " Campo y98_tiafdoc maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_tiaftipodoc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo do documento do tiaf ($this->y98_tiafdoc) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo do documento do tiaf já Cadastrado";
@@ -152,11 +152,11 @@ class cl_tiaftipodoc {
      $resaco = $this->sql_record($this->sql_query_file($this->y98_tiafdoc));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7358,'$this->y98_tiafdoc','I')");
-       $resac = db_query("insert into db_acount values($acount,1227,7358,'','".AddSlashes(pg_result($resaco,0,'y98_tiafdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1227,7359,'','".AddSlashes(pg_result($resaco,0,'y98_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1227,7358,'','".AddSlashes(pg_fetch_result($resaco,0,'y98_tiafdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1227,7359,'','".AddSlashes(pg_fetch_result($resaco,0,'y98_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_tiaftipodoc {
       $this->atualizacampos();
      $sql = " update tiaftipodoc set ";
      $virgula = "";
-     if(trim($this->y98_tiafdoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y98_tiafdoc"])){ 
+     if(trim((string) $this->y98_tiafdoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y98_tiafdoc"])){ 
        $sql  .= $virgula." y98_tiafdoc = $this->y98_tiafdoc ";
        $virgula = ",";
-       if(trim($this->y98_tiafdoc) == null ){ 
+       if(trim((string) $this->y98_tiafdoc) == null ){ 
          $this->erro_sql = " Campo Codigo do documento nao Informado.";
          $this->erro_campo = "y98_tiafdoc";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_tiaftipodoc {
          return false;
        }
      }
-     if(trim($this->y98_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y98_descr"])){ 
+     if(trim((string) $this->y98_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y98_descr"])){ 
        $sql  .= $virgula." y98_descr = '$this->y98_descr' ";
        $virgula = ",";
-       if(trim($this->y98_descr) == null ){ 
+       if(trim((string) $this->y98_descr) == null ){ 
          $this->erro_sql = " Campo Descrição do documento nao Informado.";
          $this->erro_campo = "y98_descr";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_tiaftipodoc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7358,'$this->y98_tiafdoc','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y98_tiafdoc"]))
-           $resac = db_query("insert into db_acount values($acount,1227,7358,'".AddSlashes(pg_result($resaco,$conresaco,'y98_tiafdoc'))."','$this->y98_tiafdoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1227,7358,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y98_tiafdoc'))."','$this->y98_tiafdoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y98_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1227,7359,'".AddSlashes(pg_result($resaco,$conresaco,'y98_descr'))."','$this->y98_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1227,7359,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y98_descr'))."','$this->y98_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_tiaftipodoc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7358,'$y98_tiafdoc','E')");
-         $resac = db_query("insert into db_acount values($acount,1227,7358,'','".AddSlashes(pg_result($resaco,$iresaco,'y98_tiafdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1227,7359,'','".AddSlashes(pg_result($resaco,$iresaco,'y98_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1227,7358,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y98_tiafdoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1227,7359,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y98_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tiaftipodoc
@@ -314,7 +314,7 @@ class cl_tiaftipodoc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tiaftipodoc";
@@ -328,7 +328,7 @@ class cl_tiaftipodoc {
    function sql_query ( $y98_tiafdoc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -349,7 +349,7 @@ class cl_tiaftipodoc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_tiaftipodoc {
    function sql_query_file ( $y98_tiafdoc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_tiaftipodoc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

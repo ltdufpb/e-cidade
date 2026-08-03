@@ -53,7 +53,7 @@ $clrotulo->label("j34_lote");
 $clrotulo->label("j34_quadra");
 $clrotulo->label("j34_setor");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_POST_VARS,2);
 
 $clruas = new cl_ruas;
@@ -141,7 +141,7 @@ if (isset ($gerar)) {
            
 	        $result = db_query($sql);
 
-			$numrows = pg_numrows($result);
+			$numrows = pg_num_rows($result);
 			if ($result == false || $numrows == 0) {
 				$erro = true;
 				$descricao_erro .= "Não existe matricula cadastrada!";
@@ -161,25 +161,25 @@ if (isset ($gerar)) {
 						flush();
 								//----------  CAD. MATRICULAS ------------------------------------------------------
 
-								fputs($clabre_arquivo->arquivo, str_pad(@ $j01_matric, 10));
-								fputs($clabre_arquivo->arquivo, str_pad(@ $z01_nome, 40));
-								fputs($clabre_arquivo->arquivo, str_pad(@ $z01_ender, 40));
-								fputs($clabre_arquivo->arquivo, str_pad(@ $j34_setor,4));
-								fputs($clabre_arquivo->arquivo, str_pad(@ $j34_quadra,4));
-								fputs($clabre_arquivo->arquivo, str_pad(@ $j34_lote,4));
+								fputs($clabre_arquivo->arquivo, str_pad((string) @ $j01_matric, 10));
+								fputs($clabre_arquivo->arquivo, str_pad((string) @ $z01_nome, 40));
+								fputs($clabre_arquivo->arquivo, str_pad((string) @ $z01_ender, 40));
+								fputs($clabre_arquivo->arquivo, str_pad((string) @ $j34_setor,4));
+								fputs($clabre_arquivo->arquivo, str_pad((string) @ $j34_quadra,4));
+								fputs($clabre_arquivo->arquivo, str_pad((string) @ $j34_lote,4));
 								if ($j39_codigo != "") {
-									fputs($clabre_arquivo->arquivo, str_pad(@ $j39_codigo, 10));
-									fputs($clabre_arquivo->arquivo, str_pad(@ $rua_iptuconstr, 40));
-									fputs($clabre_arquivo->arquivo, str_pad(@ $j39_numero, 10));
-									fputs($clabre_arquivo->arquivo, str_pad(@ $j39_compl, 50));
+									fputs($clabre_arquivo->arquivo, str_pad((string) @ $j39_codigo, 10));
+									fputs($clabre_arquivo->arquivo, str_pad((string) @ $rua_iptuconstr, 40));
+									fputs($clabre_arquivo->arquivo, str_pad((string) @ $j39_numero, 10));
+									fputs($clabre_arquivo->arquivo, str_pad((string) @ $j39_compl, 50));
 								} else {
-									fputs($clabre_arquivo->arquivo, str_pad(@ $j49_codigo, 10));
-									fputs($clabre_arquivo->arquivo, str_pad(@ $rua_testada, 40));
-									fputs($clabre_arquivo->arquivo, str_pad(@ $j15_numero, 10));
-									fputs($clabre_arquivo->arquivo, str_pad(@ $j15_compl, 50));
+									fputs($clabre_arquivo->arquivo, str_pad((string) @ $j49_codigo, 10));
+									fputs($clabre_arquivo->arquivo, str_pad((string) @ $rua_testada, 40));
+									fputs($clabre_arquivo->arquivo, str_pad((string) @ $j15_numero, 10));
+									fputs($clabre_arquivo->arquivo, str_pad((string) @ $j15_compl, 50));
 								}
-								fputs($clabre_arquivo->arquivo, str_pad(@ $j34_area, 15));
-								fputs($clabre_arquivo->arquivo, str_pad(@ $j34_totcon, 15));
+								fputs($clabre_arquivo->arquivo, str_pad((string) @ $j34_area, 15));
+								fputs($clabre_arquivo->arquivo, str_pad((string) @ $j34_totcon, 15));
 								/*
 								if ($j39_codigo != "") {
 									$result_vlrvenal_con = $cliptucale->sql_record($cliptucale->sql_query_file(db_getsession("DB_anousu"), $j01_matric, $j39_idcons, "sum(j22_valor) as vlr_venal_con"));
@@ -215,8 +215,8 @@ if (isset ($gerar)) {
 								}
 								*/
 								fputs($clabre_arquivo->arquivo, str_pad(@ round($j36_testad,2), 15));
-								fputs($clabre_arquivo->arquivo, str_pad(@ $j34_zona, 5));
-								fputs($clabre_arquivo->arquivo, str_pad(@ $j49_face, 5));
+								fputs($clabre_arquivo->arquivo, str_pad((string) @ $j34_zona, 5));
+								fputs($clabre_arquivo->arquivo, str_pad((string) @ $j49_face, 5));
 
 								fputs($clabre_arquivo->arquivo, "\n");
 								//---------------------------------------------------------------------------------------														
@@ -241,7 +241,7 @@ function db_contador($apelido, $expressao, $contador, $valor) {
 	//  echo "x: $contador - valor: $valor<br>";
 	$contadorant = $contador +1;
 	$contador += $valor;
-	return str_pad($apelido, 30)." - ".str_pad($expressao, 80)." - ".str_pad($valor, 4, "0", STR_PAD_LEFT)." - ".str_pad($contadorant, 4, "0", STR_PAD_LEFT)." - ".str_pad($contador, 4, "0", STR_PAD_LEFT)."\n";
+	return str_pad((string) $apelido, 30)." - ".str_pad((string) $expressao, 80)." - ".str_pad((string) $valor, 4, "0", STR_PAD_LEFT)." - ".str_pad($contadorant, 4, "0", STR_PAD_LEFT)." - ".str_pad($contador, 4, "0", STR_PAD_LEFT)."\n";
 }
 ?>
 <form name="form1" action="" method="post" >

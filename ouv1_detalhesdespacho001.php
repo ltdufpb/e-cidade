@@ -61,7 +61,7 @@ if ( $lDeptoSessao ) {
 
 	  try {
 	  	$oProcessoOuvidoria->incluirRecebimento($oGet->iCodProcesso,$sMsgRecebimento);
-	  } catch (Exception $eException) {
+	  } catch (Exception) {
 	  	$lErro = true;
 	  }
 
@@ -84,13 +84,13 @@ if ( $lDeptoSessao ) {
    <tr>
        <td>
         <?php 
-          $clcriaabas->identifica = array("listadespacho" => "Despachos do Processo",
+          $clcriaabas->identifica = ["listadespacho" => "Despachos do Processo",
                                           "despachoatual" => "Despacho Atual",
-                                          "anexardocumentos" => "Anexar Documentos");
+                                          "anexardocumentos" => "Anexar Documentos"];
 
-          $clcriaabas->title = array("listadespacho" => "Despachos do Processo",
+          $clcriaabas->title = ["listadespacho" => "Despachos do Processo",
                                "despachoatual" => "Despacho Atual",
-                               "anexardocumentos" => "Anexar Documentos");
+                               "anexardocumentos" => "Anexar Documentos"];
 
           if ( $lDeptoSessao ) {
           	$sQuerySessao = 'true';
@@ -102,10 +102,10 @@ if ( $lDeptoSessao ) {
           $sQuery .= "&lDeptoSessao={$sQuerySessao}";
           $sQuery .= "&iCodigoProcesso={$oGet->iCodProcesso}";
 
-          $clcriaabas->src = array("listadespacho" => "ouv1_detalhesdespacho002.php{$sQuery}",
+          $clcriaabas->src = ["listadespacho" => "ouv1_detalhesdespacho002.php{$sQuery}",
                                    "despachoatual" => "ouv1_detalhesdespacho003.php{$sQuery}",
-                                   "anexardocumentos" => "prot4_processodocumento001.php{$sQuery}");
-         $clcriaabas->disabled = array("anexardocumentos" => "true");
+                                   "anexardocumentos" => "prot4_processodocumento001.php{$sQuery}"];
+         $clcriaabas->disabled = ["anexardocumentos" => "true"];
 
 
 	        $clcriaabas->cria_abas();

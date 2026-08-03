@@ -35,7 +35,7 @@ include(modification("classes/db_veiccentral_classe.php"));
 include(modification("classes/db_veiccadcentral_classe.php"));
 include(modification("classes/db_veicmotoristascentral_classe.php"));
 include(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clveiccentral            = new cl_veiccentral;
 $clveiccadcentral         = new cl_veiccadcentral;
 $clveicmotoristascentral  = new cl_veicmotoristascentral;
@@ -168,7 +168,7 @@ if(isset($incluir)||isset($excluir)){
     }
   }
 
-  if (trim($erro_msg) != ""){
+  if (trim((string) $erro_msg) != ""){
     db_msgbox($erro_msg);
   }
 }

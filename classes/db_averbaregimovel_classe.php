@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE averbaregimovel
 class cl_averbaregimovel { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j78_averbacao = 0; 
-   var $j78_matric = null; 
-   var $j78_protocolo = null; 
+   public $j78_averbacao = 0; 
+   public $j78_matric = null; 
+   public $j78_protocolo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j78_averbacao = int4 = Código Averbação 
                  j78_matric = char(20) = Matrícula Reg. Imóvel 
                  j78_protocolo = char(20) = Protocolo Reg. Imóvel 
                  ";
    //funcao construtor da classe 
-   function cl_averbaregimovel() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbaregimovel"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,7 +119,7 @@ class cl_averbaregimovel {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "averbaregimovel ($this->j78_averbacao) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "averbaregimovel já Cadastrado";
@@ -143,12 +143,12 @@ class cl_averbaregimovel {
      $resaco = $this->sql_record($this->sql_query_file($this->j78_averbacao));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9605,'$this->j78_averbacao','I')");
-       $resac = db_query("insert into db_acount values($acount,1652,9605,'','".AddSlashes(pg_result($resaco,0,'j78_averbacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1652,9606,'','".AddSlashes(pg_result($resaco,0,'j78_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1652,9607,'','".AddSlashes(pg_result($resaco,0,'j78_protocolo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1652,9605,'','".AddSlashes(pg_fetch_result($resaco,0,'j78_averbacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1652,9606,'','".AddSlashes(pg_fetch_result($resaco,0,'j78_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1652,9607,'','".AddSlashes(pg_fetch_result($resaco,0,'j78_protocolo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -157,10 +157,10 @@ class cl_averbaregimovel {
       $this->atualizacampos();
      $sql = " update averbaregimovel set ";
      $virgula = "";
-     if(trim($this->j78_averbacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_averbacao"])){ 
+     if(trim((string) $this->j78_averbacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_averbacao"])){ 
        $sql  .= $virgula." j78_averbacao = $this->j78_averbacao ";
        $virgula = ",";
-       if(trim($this->j78_averbacao) == null ){ 
+       if(trim((string) $this->j78_averbacao) == null ){ 
          $this->erro_sql = " Campo Código Averbação nao Informado.";
          $this->erro_campo = "j78_averbacao";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_averbaregimovel {
          return false;
        }
      }
-     if(trim($this->j78_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_matric"])){ 
+     if(trim((string) $this->j78_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_matric"])){ 
        $sql  .= $virgula." j78_matric = '$this->j78_matric' ";
        $virgula = ",";
-       if(trim($this->j78_matric) == null ){ 
+       if(trim((string) $this->j78_matric) == null ){ 
          $this->erro_sql = " Campo Matrícula Reg. Imóvel nao Informado.";
          $this->erro_campo = "j78_matric";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_averbaregimovel {
          return false;
        }
      }
-     if(trim($this->j78_protocolo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_protocolo"])){ 
+     if(trim((string) $this->j78_protocolo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j78_protocolo"])){ 
        $sql  .= $virgula." j78_protocolo = '$this->j78_protocolo' ";
        $virgula = ",";
-       if(trim($this->j78_protocolo) == null ){ 
+       if(trim((string) $this->j78_protocolo) == null ){ 
          $this->erro_sql = " Campo Protocolo Reg. Imóvel nao Informado.";
          $this->erro_campo = "j78_protocolo";
          $this->erro_banco = "";
@@ -204,15 +204,15 @@ class cl_averbaregimovel {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9605,'$this->j78_averbacao','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j78_averbacao"]))
-           $resac = db_query("insert into db_acount values($acount,1652,9605,'".AddSlashes(pg_result($resaco,$conresaco,'j78_averbacao'))."','$this->j78_averbacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1652,9605,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j78_averbacao'))."','$this->j78_averbacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j78_matric"]))
-           $resac = db_query("insert into db_acount values($acount,1652,9606,'".AddSlashes(pg_result($resaco,$conresaco,'j78_matric'))."','$this->j78_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1652,9606,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j78_matric'))."','$this->j78_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j78_protocolo"]))
-           $resac = db_query("insert into db_acount values($acount,1652,9607,'".AddSlashes(pg_result($resaco,$conresaco,'j78_protocolo'))."','$this->j78_protocolo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1652,9607,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j78_protocolo'))."','$this->j78_protocolo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -257,12 +257,12 @@ class cl_averbaregimovel {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9605,'$j78_averbacao','E')");
-         $resac = db_query("insert into db_acount values($acount,1652,9605,'','".AddSlashes(pg_result($resaco,$iresaco,'j78_averbacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1652,9606,'','".AddSlashes(pg_result($resaco,$iresaco,'j78_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1652,9607,'','".AddSlashes(pg_result($resaco,$iresaco,'j78_protocolo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1652,9605,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j78_averbacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1652,9606,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j78_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1652,9607,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j78_protocolo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from averbaregimovel
@@ -322,7 +322,7 @@ class cl_averbaregimovel {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:averbaregimovel";
@@ -336,7 +336,7 @@ class cl_averbaregimovel {
    function sql_query ( $j78_averbacao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -359,7 +359,7 @@ class cl_averbaregimovel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -371,7 +371,7 @@ class cl_averbaregimovel {
    function sql_query_file ( $j78_averbacao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_averbaregimovel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

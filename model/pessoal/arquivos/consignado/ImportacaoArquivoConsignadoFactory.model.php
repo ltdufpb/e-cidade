@@ -35,14 +35,10 @@ class ImportacaoArquivoConsignadoFactory {
 	 */
 	public static function getByBanco(Banco $oBanco, $sNomeArquivo, DBCompetencia $oCompetencia, Instituicao $oInstituicao) {
 
-		switch ($oBanco->getCodigo()) {
-			case ImportacaoArquivoConsignado::IMPORTACAO_CONSIGNADO_CAIXA: // Caixa
-				return new \ImportacaoArquivoConsignadoCaixa($sNomeArquivo, $oCompetencia, $oInstituicao);
-				break;
-			
-			default:
-				throw new BusinessException("Não há implementação de importação de arquivo consignado para o banco informado.");
-				break;
-		}
+		return match ($oBanco->getCodigo()) {
+            // Caixa
+            ImportacaoArquivoConsignado::IMPORTACAO_CONSIGNADO_CAIXA => new \ImportacaoArquivoConsignadoCaixa($sNomeArquivo, $oCompetencia, $oInstituicao),
+            default => throw new BusinessException("Não há implementação de importação de arquivo consignado para o banco informado."),
+        };
 	}
 }

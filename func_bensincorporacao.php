@@ -40,14 +40,14 @@ $daoDepartamento = new cl_db_depart();
 $camposDpto = "coddepto, descrdepto";
 $whereDpto = "instit = $instituicao";
 $rsDepartamentos = db_query($daoDepartamento->sql_query_file(null, $camposDpto, "2", $whereDpto));
-$departamentos = array();
+$departamentos = [];
 db_utils::makeCollectionFromRecord($rsDepartamentos, function ($dado) use (&$departamentos) {
     $departamentos[$dado->coddepto] = $dado->descrdepto;
 });
 
 db_postmemory($_POST);
 $get = db_utils::postMemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrotulo = new rotulocampo;
 $clrotulo->label('t52_bem');
 $clrotulo->label('t52_ident');
@@ -58,10 +58,10 @@ $clrotulo->label('descrdepto');
 $campos = "distinct bens.t52_bem, bens.t52_codcla, bens.t52_valaqu, bens.t52_dtaqu, bens.t52_ident, bens.t52_descr, 
 bens.t52_obs, bens.t52_depart, bens.t52_instit";
 
-$where = array(
+$where = [
     "not exists (select 1 from bensbaix where bensbaix.t55_codbem = t52_bem)",
     "t52_instit = {$instituicao}"
-);
+];
 ?>
 <html>
 <head>
@@ -133,14 +133,14 @@ if (!empty($dpto)) {
 }
 
 if (!isset($pesquisa_chave)) {
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_t52_ident)) {
-        $repassa = array(
+        $repassa = [
             "chave_t52_ident" => $chave_t52_ident,
             "chave_t52_bem" => $chave_t52_bem,
             "chave_t52_descr" => $chave_t52_descr,
             "dpto" => $dpto,
-        );
+        ];
     }
 
     $daoBem = new cl_bens();

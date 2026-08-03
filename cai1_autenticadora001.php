@@ -31,12 +31,12 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-if(isset($HTTP_POST_VARS["enviar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["enviar"])) {
+  db_postmemory($_POST);
   $result = db_query("select k11_ipterm 
                      from cfautent 
 	             where k11_instit = ".db_getsession("DB_instit")." and k11_ipterm = '".$k11_ipterm."'");
-  if(pg_numrows($result) == 0) {
+  if(pg_num_rows($result) == 0) {
       $flag = true;
   }
   else {
@@ -45,7 +45,7 @@ if(isset($HTTP_POST_VARS["enviar"])) {
 
   if($flag==true) {
       $result = db_query("select max(k11_id) + 1 from cfautent");
-      $k11_id = pg_result($result,0,0);
+      $k11_id = pg_fetch_result($result,0,0);
       $k11_id = $k11_id==""?"1":$k11_id;
       db_query("insert into cfautent(k11_id,
                                     k11_ident1,

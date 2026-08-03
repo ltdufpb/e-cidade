@@ -51,8 +51,8 @@ $oParametros = $oJson->decode(str_replace("\\", "", $oGet->json));
 $oInstituicao = InstituicaoRepository::getInstituicaoSessao();
 
 
-$dtPagamento = explode("/", $oParametros->dtPagamento);
-$dtDocumento = explode("/", $oParametros->dtPagamento);
+$dtPagamento = explode("/", (string) $oParametros->dtPagamento);
+$dtDocumento = explode("/", (string) $oParametros->dtPagamento);
 
 $anoPagamento = $dtPagamento[2];
 
@@ -67,7 +67,7 @@ $descDataDocumento = $dtDocumento[0] .' de '.  $mesDocumento . ' de ' . $dtDocum
 $iAnoFolha =  DBPessoal::getAnoFolha() ;
 $iMesFolha =  DBPessoal::getMesFolha();
 
-$aWhere = array();
+$aWhere = [];
 
 switch ($oParametros->iTipoRelatorio) {
 
@@ -155,21 +155,11 @@ $sCampos .= "   case when r30_per1i between '{$dataInicial}' and '{$dataFinal}' 
 
 $ordem = "";
 
-switch ($oParametros->ordem) {
-
-    case "alfabetica":
-        $ordem= "rh55_descr";
-        break;
-
-    case "numerica":
-
-        $ordem = "rh01_regist";
-        break;
-
-    default:
-        $ordem = "rh55_descr";
-        break;
-}
+$ordem = match ($oParametros->ordem) {
+    "alfabetica" => "rh55_descr",
+    "numerica" => "rh01_regist",
+    default => "rh55_descr",
+};
 
 try{
 
@@ -222,8 +212,8 @@ foreach ($aDadosRelatorios as $registro) {
     $periodoAquisitivo = db_formatar($registro->periodo_aquisitivo_inicial,'d') . ' á '. db_formatar($registro->periodo_aquisitivo_final,'d');
     $periodoGozo       = db_formatar($registro->periodogozoinicial,'d') . ' á '. db_formatar($registro->periodogozofinal,'d');
     $oParagrafo->db02_texto =  str_replace(
-        array('#periodoAquisitivo#', '#periodoGozo#','#dataPagamento#', '#dataVoltarTrabalho#'),
-        array($periodoAquisitivo,$periodoGozo,$descDataPagamento, $dataRetorno),
+        ['#periodoAquisitivo#', '#periodoGozo#','#dataPagamento#', '#dataVoltarTrabalho#'],
+        [$periodoAquisitivo,$periodoGozo,$descDataPagamento, $dataRetorno],
         $oParagrafo->db02_texto
     );
 
@@ -251,7 +241,7 @@ foreach ($aDadosRelatorios as $registro) {
     $alt = 4;
 
     $pdf->Cell(110, $alt + 0.5, 'Colaborador: '. $matricula .' - '. $nome, 0, 0, "L", 0);
-    $pdf->Cell(80,  $alt + 0.5, 'CPF: '. substr($cpf,0,3).".".substr($cpf,3,3).".".substr($cpf,6,3)."-".substr($cpf,9,2), 0, 1, "d", 0);
+    $pdf->Cell(80,  $alt + 0.5, 'CPF: '. substr((string) $cpf,0,3).".".substr((string) $cpf,3,3).".".substr((string) $cpf,6,3)."-".substr((string) $cpf,9,2), 0, 1, "d", 0);
     $pdf->Cell(110, $alt + 0.5, 'Escala: '. $escala, 0, 0, "L", 0);
     $pdf->Cell(80,  $alt + 0.5, 'Cargo: '. $cargo, 0, 1, "L", 0);
     $pdf->Cell(112, $alt + 0.5, 'Local: '. $registro->codigolocal.'   '.$local, 0, 0, "L", 0);
@@ -309,7 +299,7 @@ foreach ($aDadosRelatorios as $registro) {
     $alt = 4;
 
     $pdf->Cell(110, $alt + 0.5, 'Colaborador: '. $matricula .' - '. $nome, 0, 0, "L", 0);
-    $pdf->Cell(80,  $alt + 0.5, 'CPF: '.substr($cpf,0,3).".".substr($cpf,3,3).".".substr($cpf,6,3)."-".substr($cpf,9,2), 0, 1, "d", 0);
+    $pdf->Cell(80,  $alt + 0.5, 'CPF: '.substr((string) $cpf,0,3).".".substr((string) $cpf,3,3).".".substr((string) $cpf,6,3)."-".substr((string) $cpf,9,2), 0, 1, "d", 0);
     $pdf->Cell(110, $alt + 0.5, 'Escala: '. $escala, 0, 0, "L", 0);
     $pdf->Cell(80,  $alt + 0.5, 'Cargo: '. $cargo, 0, 1, "L", 0);
     $pdf->Cell(112, $alt + 0.5, 'Local: '. $registro->codigolocal.'   '.$local, 0, 0, "L", 0);

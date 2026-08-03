@@ -31,12 +31,12 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_vistoriarec_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clvistoriarec = new cl_vistoriarec;
 $db_opcao = 22;
 $db_botao = false;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $clvistoriarec->excluir($y76_codvist,$y76_receita_old);
@@ -75,7 +75,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   js_setatabulacao();
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clvistoriarec->erro_status=="0"){
     $clvistoriarec->erro(true,false);
     $db_botao=true;

@@ -1,65 +1,65 @@
 <?php
-return array(
-    "ideLotacao" => array(
-        'properties' => array(
+return [
+    "ideLotacao" => [
+        'properties' => [
             "codLotacao",
             "iniValid",
             "fimValid",
-        )
-    ),
-    "dadosLotacao"=> array(
-        'properties' => array(
+        ]
+    ],
+    "dadosLotacao"=> [
+        'properties' => [
             "tpLotacao",
-            "tpInsc" => array(
+            "tpInsc" => [
                 "type" => "int"
-            ),
+            ],
             "nrInsc",
-        ),
-        "groups" => array(
-            "fpasLotacao" => array(
-                "properties" => array(
-                    "fpas" => array(
+        ],
+        "groups" => [
+            "fpasLotacao" => [
+                "properties" => [
+                    "fpas" => [
                         "type" => "int"
-                    ),
+                    ],
                     "codTercs",
                     "codTercsSusp",
-                ),
-                "groups" => array (
-                    "procJudTerceiro" => array(
+                ],
+                "groups" =>  [
+                    "procJudTerceiro" => [
                         "type" => "array",
-                        "items" => array(
-                            "properties" => array(
+                        "items" => [
+                            "properties" => [
                                 "codTerc",
                                 "nrProcJud",
                                 "codSusp",
-                            )
-                        )
-                    )
-                )
-            ),
-            "infoEmprParcial" => array (
-                "properties" => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            "infoEmprParcial" =>  [
+                "properties" => [
 
-                    "tpInscContrat" => array(
+                    "tpInscContrat" => [
                         "type" => "int"
-                    ),
+                    ],
                     "nrInscContrat",
-                    "tpInscProp" => array(
+                    "tpInscProp" => [
                         "type" => "int"
-                    ),
+                    ],
                     "nrInscProp",
-                )
-            ),
-            "dadosOpPort" => array(
-                "properties" => array(
-                    "aliqRat" => array(
+                ]
+            ],
+            "dadosOpPort" => [
+                "properties" => [
+                    "aliqRat" => [
                         "type" => "int"
-                    ),
-                    "fap" => array(
+                    ],
+                    "fap" => [
                         "type" => "float"
-                    ),
-                )
-            )
-        )
-    )
-);
+                    ],
+                ]
+            ]
+        ]
+    ]
+];

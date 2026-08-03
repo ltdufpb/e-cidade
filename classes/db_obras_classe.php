@@ -59,7 +59,7 @@ class cl_obras
     public function __construct()
     {
         $this->rotulo = new rotulo("obras");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -200,10 +200,10 @@ class cl_obras
          $this->erro_status = "0";
          return false;
        }
-       $this->ob01_codobra = pg_result($result,0,0);
+       $this->ob01_codobra = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from obras_ob01_codobra_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ob01_codobra)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ob01_codobra)){
          $this->erro_sql = " Campo ob01_codobra maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -259,7 +259,7 @@ class cl_obras
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cadastro de obras ($this->ob01_codobra) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cadastro de obras já Cadastrado";
@@ -288,24 +288,24 @@ class cl_obras
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5909,'$this->ob01_codobra','I')");
-         $resac = db_query("insert into db_acount values($acount,946,1010571,'','".AddSlashes(pg_result($resaco,0,'ob01_arquitetoobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,5909,'','".AddSlashes(pg_result($resaco,0,'ob01_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,1010570,'','".AddSlashes(pg_result($resaco,0,'ob01_responsavelprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,5910,'','".AddSlashes(pg_result($resaco,0,'ob01_nomeobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,5913,'','".AddSlashes(pg_result($resaco,0,'ob01_tiporesp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,5914,'','".AddSlashes(pg_result($resaco,0,'ob01_regular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,18629,'','".AddSlashes(pg_result($resaco,0,'ob01_dtobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,18630,'','".AddSlashes(pg_result($resaco,0,'ob01_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,18631,'','".AddSlashes(pg_result($resaco,0,'ob01_nometitularproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,18632,'','".AddSlashes(pg_result($resaco,0,'ob01_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,18633,'','".AddSlashes(pg_result($resaco,0,'ob01_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,1013148,'','".AddSlashes(pg_result($resaco,0,'ob01_numeroartprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,1013150,'','".AddSlashes(pg_result($resaco,0,'ob01_numerorrtprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,1013243,'','".AddSlashes(pg_result($resaco,0,'ob01_numeroarttecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,946,1013244,'','".AddSlashes(pg_result($resaco,0,'ob01_numerorrttecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,1010571,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_arquitetoobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,5909,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,1010570,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_responsavelprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,5910,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_nomeobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,5913,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_tiporesp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,5914,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_regular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,18629,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_dtobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,18630,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,18631,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_nometitularproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,18632,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,18633,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,1013148,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_numeroartprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,1013150,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_numerorrtprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,1013243,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_numeroarttecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,946,1013244,'','".AddSlashes(pg_fetch_result($resaco,0,'ob01_numerorrttecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -316,8 +316,8 @@ class cl_obras
       $this->atualizacampos();
      $sql = " update obras set ";
      $virgula = "";
-     if(trim($this->ob01_arquitetoobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_arquitetoobra"])){
-      if(trim($this->ob01_arquitetoobra)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_arquitetoobra"])){
+     if(trim((string) $this->ob01_arquitetoobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_arquitetoobra"])){
+      if(trim((string) $this->ob01_arquitetoobra)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_arquitetoobra"])){
         $this->ob01_arquitetoobra = 'null';
       }
       $sql  .= $virgula." ob01_arquitetoobra = $this->ob01_arquitetoobra ";
@@ -336,10 +336,10 @@ class cl_obras
     //      return false;
     //    }
     //  }
-     if(trim($this->ob01_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_codobra"])){
+     if(trim((string) $this->ob01_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_codobra"])){
        $sql  .= $virgula." ob01_codobra = $this->ob01_codobra ";
        $virgula = ",";
-       if(trim($this->ob01_codobra) == null ){
+       if(trim((string) $this->ob01_codobra) == null ){
          $this->erro_sql = " Campo Código da Obra não informado.";
          $this->erro_campo = "ob01_codobra";
          $this->erro_banco = "";
@@ -349,8 +349,8 @@ class cl_obras
          return false;
        }
      }
-     if(trim($this->ob01_responsavelprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_responsavelprojeto"])){
-      if(trim($this->ob01_responsavelprojeto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_responsavelprojeto"])){
+     if(trim((string) $this->ob01_responsavelprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_responsavelprojeto"])){
+      if(trim((string) $this->ob01_responsavelprojeto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_responsavelprojeto"])){
         $this->ob01_responsavelprojeto = "0" ;
       }
       $sql  .= $virgula." ob01_responsavelprojeto = '$this->ob01_responsavelprojeto' ";
@@ -369,10 +369,10 @@ class cl_obras
     //      return false;
     //    }
     //  }
-     if(trim($this->ob01_nomeobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_nomeobra"])){
+     if(trim((string) $this->ob01_nomeobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_nomeobra"])){
        $sql  .= $virgula." ob01_nomeobra = '$this->ob01_nomeobra' ";
        $virgula = ",";
-       if(trim($this->ob01_nomeobra) == null ){
+       if(trim((string) $this->ob01_nomeobra) == null ){
          $this->erro_sql = " Campo Nome da Obra não informado.";
          $this->erro_campo = "ob01_nomeobra";
          $this->erro_banco = "";
@@ -382,10 +382,10 @@ class cl_obras
          return false;
        }
      }
-     if(trim($this->ob01_tiporesp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_tiporesp"])){
+     if(trim((string) $this->ob01_tiporesp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_tiporesp"])){
        $sql  .= $virgula." ob01_tiporesp = $this->ob01_tiporesp ";
        $virgula = ",";
-       if(trim($this->ob01_tiporesp) == null ){
+       if(trim((string) $this->ob01_tiporesp) == null ){
          $this->erro_sql = " Campo Tipo de Responsável não informado.";
          $this->erro_campo = "ob01_tiporesp";
          $this->erro_banco = "";
@@ -395,10 +395,10 @@ class cl_obras
          return false;
        }
      }
-     if(trim($this->ob01_regular)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_regular"])){
+     if(trim((string) $this->ob01_regular)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_regular"])){
        $sql  .= $virgula." ob01_regular = '$this->ob01_regular' ";
        $virgula = ",";
-       if(trim($this->ob01_regular) == null ){
+       if(trim((string) $this->ob01_regular) == null ){
          $this->erro_sql = " Campo Obra Regular não informado.";
          $this->erro_campo = "ob01_regular";
          $this->erro_banco = "";
@@ -408,10 +408,10 @@ class cl_obras
          return false;
        }
      }
-     if(trim($this->ob01_dtobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_dtobra_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob01_dtobra_dia"] !="") ){
+     if(trim((string) $this->ob01_dtobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_dtobra_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob01_dtobra_dia"] !="") ){
        $sql  .= $virgula." ob01_dtobra = '$this->ob01_dtobra' ";
        $virgula = ",";
-       if(trim($this->ob01_dtobra) == null ){
+       if(trim((string) $this->ob01_dtobra) == null ){
          $this->erro_sql = " Campo Data Obra não informado.";
          $this->erro_campo = "ob01_dtobra_dia";
          $this->erro_banco = "";
@@ -424,7 +424,7 @@ class cl_obras
        if(isset($GLOBALS["HTTP_POST_VARS"]["ob01_dtobra_dia"])){
          $sql  .= $virgula." ob01_dtobra = null ";
          $virgula = ",";
-         if(trim($this->ob01_dtobra) == null ){
+         if(trim((string) $this->ob01_dtobra) == null ){
            $this->erro_sql = " Campo Data Obra não informado.";
            $this->erro_campo = "ob01_dtobra_dia";
            $this->erro_banco = "";
@@ -435,18 +435,18 @@ class cl_obras
          }
        }
      }
-     if(trim($this->ob01_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_processo"])){
+     if(trim((string) $this->ob01_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_processo"])){
        if ($this->ob01_processo == "") {
         $this->ob01_processo = 'null';
        }
        $sql  .= $virgula." ob01_processo = $this->ob01_processo ";
        $virgula = ",";
      }
-     if(trim($this->ob01_nometitularproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_nometitularproc"])){
+     if(trim((string) $this->ob01_nometitularproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_nometitularproc"])){
        $sql  .= $virgula." ob01_nometitularproc = '$this->ob01_nometitularproc' ";
        $virgula = ",";
      }
-     if(trim($this->ob01_dtprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_dtprocesso_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob01_dtprocesso_dia"] !="") ){
+     if(trim((string) $this->ob01_dtprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_dtprocesso_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob01_dtprocesso_dia"] !="") ){
        $sql  .= $virgula." ob01_dtprocesso = '$this->ob01_dtprocesso' ";
        $virgula = ",";
      } else {
@@ -455,33 +455,33 @@ class cl_obras
          $virgula = ",";
        }
      }
-     if(trim($this->ob01_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_obs"])){
+     if(trim((string) $this->ob01_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_obs"])){
        $sql  .= $virgula." ob01_obs = '$this->ob01_obs' ";
        $virgula = ",";
      }
-     if(trim($this->ob01_numeroartprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_numeroartprojeto"])){
-        if(trim($this->ob01_numeroartprojeto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_numeroartprojeto"])){
+     if(trim((string) $this->ob01_numeroartprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_numeroartprojeto"])){
+        if(trim((string) $this->ob01_numeroartprojeto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_numeroartprojeto"])){
            $this->ob01_numeroartprojeto = "0" ;
         }
        $sql  .= $virgula." ob01_numeroartprojeto = '$this->ob01_numeroartprojeto' ";
        $virgula = ",";
      }
-     if(trim($this->ob01_numerorrtprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_numerorrtprojeto"])){
-        if(trim($this->ob01_numerorrtprojeto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_numerorrtprojeto"])){
+     if(trim((string) $this->ob01_numerorrtprojeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_numerorrtprojeto"])){
+        if(trim((string) $this->ob01_numerorrtprojeto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_numerorrtprojeto"])){
            $this->ob01_numerorrtprojeto = "0" ;
         }
        $sql  .= $virgula." ob01_numerorrtprojeto = '$this->ob01_numerorrtprojeto' ";
        $virgula = ",";
      }
-     if(trim($this->ob01_numeroarttecnico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_numeroarttecnico"])){
-        if(trim($this->ob01_numeroarttecnico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_numeroarttecnico"])){
+     if(trim((string) $this->ob01_numeroarttecnico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_numeroarttecnico"])){
+        if(trim((string) $this->ob01_numeroarttecnico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_numeroarttecnico"])){
           $this->ob01_numeroarttecnico = "0" ;
         }
         $sql  .= $virgula." ob01_numeroarttecnico = '$this->ob01_numeroarttecnico' ";
         $virgula = ",";
       }
-      if(trim($this->ob01_numerorrttecnico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_numerorrttecnico"])){
-          if(trim($this->ob01_numerorrttecnico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_numerorrttecnico"])){
+      if(trim((string) $this->ob01_numerorrttecnico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob01_numerorrttecnico"])){
+          if(trim((string) $this->ob01_numerorrttecnico)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ob01_numerorrttecnico"])){
             $this->ob01_numerorrttecnico = "0" ;
           }
         $sql  .= $virgula." ob01_numerorrttecnico = '$this->ob01_numerorrttecnico' ";
@@ -501,39 +501,39 @@ class cl_obras
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,5909,'$this->ob01_codobra','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_arquitetoobra"]) || $this->ob01_arquitetoobra != "")
-             $resac = db_query("insert into db_acount values($acount,946,1010571,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_arquitetoobra'))."','$this->ob01_arquitetoobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,1010571,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_arquitetoobra'))."','$this->ob01_arquitetoobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_codobra"]) || $this->ob01_codobra != "")
-             $resac = db_query("insert into db_acount values($acount,946,5909,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_codobra'))."','$this->ob01_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,5909,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_codobra'))."','$this->ob01_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_responsavelprojeto"]) || $this->ob01_responsavelprojeto != "")
-             $resac = db_query("insert into db_acount values($acount,946,1010570,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_responsavelprojeto'))."','$this->ob01_responsavelprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,1010570,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_responsavelprojeto'))."','$this->ob01_responsavelprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_nomeobra"]) || $this->ob01_nomeobra != "")
-             $resac = db_query("insert into db_acount values($acount,946,5910,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_nomeobra'))."','$this->ob01_nomeobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,5910,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_nomeobra'))."','$this->ob01_nomeobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_tiporesp"]) || $this->ob01_tiporesp != "")
-             $resac = db_query("insert into db_acount values($acount,946,5913,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_tiporesp'))."','$this->ob01_tiporesp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,5913,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_tiporesp'))."','$this->ob01_tiporesp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_regular"]) || $this->ob01_regular != "")
-             $resac = db_query("insert into db_acount values($acount,946,5914,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_regular'))."','$this->ob01_regular',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,5914,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_regular'))."','$this->ob01_regular',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_dtobra"]) || $this->ob01_dtobra != "")
-             $resac = db_query("insert into db_acount values($acount,946,18629,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_dtobra'))."','$this->ob01_dtobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,18629,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_dtobra'))."','$this->ob01_dtobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_processo"]) || $this->ob01_processo != "")
-             $resac = db_query("insert into db_acount values($acount,946,18630,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_processo'))."','$this->ob01_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,18630,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_processo'))."','$this->ob01_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_nometitularproc"]) || $this->ob01_nometitularproc != "")
-             $resac = db_query("insert into db_acount values($acount,946,18631,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_nometitularproc'))."','$this->ob01_nometitularproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,18631,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_nometitularproc'))."','$this->ob01_nometitularproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_dtprocesso"]) || $this->ob01_dtprocesso != "")
-             $resac = db_query("insert into db_acount values($acount,946,18632,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_dtprocesso'))."','$this->ob01_dtprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,18632,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_dtprocesso'))."','$this->ob01_dtprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_obs"]) || $this->ob01_obs != "")
-             $resac = db_query("insert into db_acount values($acount,946,18633,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_obs'))."','$this->ob01_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,18633,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_obs'))."','$this->ob01_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_numeroartprojeto"]) || $this->ob01_numeroartprojeto != "")
-             $resac = db_query("insert into db_acount values($acount,946,1013148,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_numeroartprojeto'))."','$this->ob01_numeroartprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,1013148,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_numeroartprojeto'))."','$this->ob01_numeroartprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_numerorrtprojeto"]) || $this->ob01_numerorrtprojeto != "")
-             $resac = db_query("insert into db_acount values($acount,946,1013150,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_numerorrtprojeto'))."','$this->ob01_numerorrtprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,1013150,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_numerorrtprojeto'))."','$this->ob01_numerorrtprojeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_numeroarttecnico"]) || $this->ob01_numeroarttecnico != "")
-             $resac = db_query("insert into db_acount values($acount,946,1013243,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_numeroarttecnico'))."','$this->ob01_numeroarttecnico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,1013243,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_numeroarttecnico'))."','$this->ob01_numeroarttecnico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob01_numerorrttecnico"]) || $this->ob01_numerorrttecnico != "")
-             $resac = db_query("insert into db_acount values($acount,946,1013244,'".AddSlashes(pg_result($resaco,$conresaco,'ob01_numerorrttecnico'))."','$this->ob01_numerorrttecnico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,946,1013244,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob01_numerorrttecnico'))."','$this->ob01_numerorrttecnico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -587,24 +587,24 @@ class cl_obras
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,5909,'$ob01_codobra','E')");
-           $resac  = db_query("insert into db_acount values($acount,946,1010571,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_arquitetoobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,5909,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,1010570,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_responsavelprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,5910,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_nomeobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,5913,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_tiporesp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,5914,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_regular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,18629,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_dtobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,18630,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,18631,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_nometitularproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,18632,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,18633,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,1013148,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_numeroartprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,1013150,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_numerorrtprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,1013243,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_numeroarttecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,946,1013244,'','".AddSlashes(pg_result($resaco,$iresaco,'ob01_numerorrttecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,1010571,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_arquitetoobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,5909,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,1010570,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_responsavelprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,5910,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_nomeobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,5913,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_tiporesp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,5914,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_regular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,18629,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_dtobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,18630,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,18631,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_nometitularproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,18632,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,18633,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,1013148,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_numeroartprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,1013150,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_numerorrtprojeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,1013243,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_numeroarttecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,946,1013244,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob01_numerorrttecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -723,7 +723,7 @@ class cl_obras
 
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = preg_split("#\\##m",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -761,7 +761,7 @@ class cl_obras
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = preg_split("#\\##m",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -1254,7 +1254,7 @@ class cl_obras
         return $sql;
     }
 
-    function sqlResponsavelArquiteto($campos = array(), $where = array())
+    function sqlResponsavelArquiteto($campos = [], $where = [])
     {
         $campos = count($campos) > 0 ? implode(', ', $campos) : '*';
         $where = count($where) > 0 ? ' where ' . implode(' AND ', $where) : '';

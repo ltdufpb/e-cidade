@@ -97,7 +97,7 @@ if ($p58_codigo) {
       <td>
       <?php 
         $sql = "select nome from db_usuarios where id_usuario = ".$sDbIdUsuario;
-        echo pg_result(db_query($sql),0,"nome");
+        echo pg_fetch_result(db_query($sql),0,"nome");
       ?>
       </td>
     </tr>
@@ -629,7 +629,7 @@ function js_pesquisadpto() {
 
 function js_preenchepesquisa(p58_codproc) {
     db_iframe.hide();
-    location.href = '<?php echo basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?p58_codproc=" + p58_codproc;
+    location.href = '<?php echo basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?p58_codproc=" + p58_codproc;
 }
 
 $("btnAnexarDocumento").observe("click", function () {

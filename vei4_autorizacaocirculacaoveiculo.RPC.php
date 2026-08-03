@@ -82,9 +82,9 @@ try {
       $oAutorizacaoCirculacao = new VeiculoAutorizacaoCirculacao($oParam->iCodigoAutorizacao);
 
       $oRetorno->iMotorista   = $oAutorizacaoCirculacao->getMotorista()->getCodigo();
-      $oRetorno->sMotorista   = urlencode($oAutorizacaoCirculacao->getMotorista()->getCGMMotorista()->getNomeCompleto());
+      $oRetorno->sMotorista   = urlencode((string) $oAutorizacaoCirculacao->getMotorista()->getCGMMotorista()->getNomeCompleto());
       $oRetorno->iVeiculo     = $oAutorizacaoCirculacao->getVeiculo()->getCodigo();
-      $oRetorno->sVeiculo     = urlencode($oAutorizacaoCirculacao->getVeiculo()->getPlaca());
+      $oRetorno->sVeiculo     = urlencode((string) $oAutorizacaoCirculacao->getVeiculo()->getPlaca());
       $oRetorno->sDataInicial = $oAutorizacaoCirculacao->getDataInicial()->getDate(DBDate::DATA_PTBR);
       $oRetorno->sDataFinal   = $oAutorizacaoCirculacao->getDataFinal()->getDate(DBDate::DATA_PTBR);
       $oRetorno->sObservacao  = urlencode($oAutorizacaoCirculacao->getObservacao());

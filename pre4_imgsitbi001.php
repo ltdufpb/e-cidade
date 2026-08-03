@@ -30,44 +30,44 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-$DocHome = "http://".$_SERVER["SERVER_ADDR"].substr($_SERVER['PHP_SELF'],0,strrpos($_SERVER['PHP_SELF'],"/"));
-$DocRoot = substr($_SERVER['SCRIPT_FILENAME'],0,strrpos($_SERVER['SCRIPT_FILENAME'],"/"));
+$DocHome = "http://".$_SERVER["SERVER_ADDR"].substr((string) $_SERVER['PHP_SELF'],0,strrpos((string) $_SERVER['PHP_SELF'],"/"));
+$DocRoot = substr((string) $_SERVER['SCRIPT_FILENAME'],0,strrpos((string) $_SERVER['SCRIPT_FILENAME'],"/"));
 
-if(isset($HTTP_POST_VARS["confirmar"])) {
-  $imagem = $HTTP_POST_VARS["imagem"];
-  $aux = split("-",$imagem);
+if(isset($_POST["confirmar"])) {
+  $imagem = $_POST["imagem"];
+  $aux = preg_split("#\\-#m",(string) $imagem);
   $TestaMatricula = 0;
-  if($HTTP_POST_VARS["matricula"] != $aux[0] && $HTTP_POST_VARS["matricula"] != "") {
-    $matricula = trim($HTTP_POST_VARS["matricula"]);
+  if($_POST["matricula"] != $aux[0] && $_POST["matricula"] != "") {
+    $matricula = trim((string) $_POST["matricula"]);
 	$result = db_query("select j01_matric from iptubase where j01_matric = $matricula");
-	if(pg_numrows($result) == 0)
+	if(pg_num_rows($result) == 0)
 	  $TestaMatricula = 1;
   } else
     $matricula = $aux[0];
   if($TestaMatricula == 0) {
-    $data = @$aux[1]."-".@$aux[2]."-".substr(@$aux[3],0,strpos(@$aux[3],"."));
-    $data_input = $HTTP_POST_VARS["data_ano"]."-".$HTTP_POST_VARS["data_mes"]."-".$HTTP_POST_VARS["data_dia"];  
+    $data = @$aux[1]."-".@$aux[2]."-".substr((string) @$aux[3],0,strpos((string) @$aux[3],"."));
+    $data_input = $_POST["data_ano"]."-".$_POST["data_mes"]."-".$_POST["data_dia"];  
     if($data != $data_input) {
-      if(checkdate($HTTP_POST_VARS["data_mes"],$HTTP_POST_VARS["data_dia"],$HTTP_POST_VARS["data_ano"])) {  
+      if(checkdate($_POST["data_mes"],$_POST["data_dia"],$_POST["data_ano"])) {  
         $data = $data_input;
 	  } else {
         db_msgbox("Data do formulário inválida");
 	    db_redireciona();
 	  }
     } else {
-      if(!checkdate($aux[2],substr($aux[3],0,strpos($aux[3],".")),$aux[1])) {
+      if(!checkdate($aux[2],substr((string) $aux[3],0,strpos((string) $aux[3],".")),$aux[1])) {
         db_msgbox("Data do arquivo inválida");   	    
 	    db_redireciona();
 	    exit;
 	  }
     }
     db_query("begin");
-    $oid = pg_loimport($DocRoot."/tmp/".$imagem) or die("Erro(21) importando imagem");
+    $oid = pg_lo_import($DocRoot."/tmp/".$imagem) or die("Erro(21) importando imagem");
     db_query("insert into db_imgsitbi(matricula,data,arq) values('$matricula','$data',$oid)") or die("Erro(22) inserindo em db_imgsitbi");
     db_query("commit");  
   } else {
     db_msgbox("A matricula ($matricula) informada não existe");
-    $HTTP_POST_VARS["procura"] = "procura";
+    $_POST["procura"] = "procura";
 	$name = $imagem;
   }
 }
@@ -105,14 +105,14 @@ table {
 	<center>
   <form method="post" enctype="multipart/form-data" name="form1">
     <?php 
-	if(isset($HTTP_POST_VARS["procura"])) {
+	if(isset($_POST["procura"])) {
 	  if(isset($_FILES["arq"]))
         db_postmemory($_FILES["arq"]);	  
-	  $aux = split("-",$name);
+	  $aux = preg_split("#\\-#m",(string) $name);
       $matricula = @$aux[0];
       $data_ano = @$aux[1];
 	  $data_mes = @$aux[2];
-	  $data_dia = substr(@$aux[3],0,strpos(@$aux[3],"."));	  
+	  $data_dia = substr((string) @$aux[3],0,strpos((string) @$aux[3],"."));	  
 	  $cod_matricula = $matricula;	  
 	  if(is_integer($matricula)) {
         $result = db_query("select proprietario.*,o.z01_nome as promitente, i.z01_nome as imobiliaria from 
@@ -122,7 +122,7 @@ table {
 			  			 where p.j01_matric = $cod_matricula");
       }						 
 						 
-	  if(pg_numrows($result) > 0) {
+	  if(pg_num_rows($result) > 0) {
 	    db_fieldsmemory($result,0);
 	    if(isset($_FILES["arq"]))
 		  copy($tmp_name,$DocRoot."/tmp/".$name);

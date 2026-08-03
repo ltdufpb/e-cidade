@@ -94,7 +94,7 @@ $sTitulo    = $oRelatorio->getDescricao();
             		<td align="left" >
                   <?php
                   $aPeriodos         = $oRelatorio->getPeriodos();
-                  $aListaPeriodos    = array();
+                  $aListaPeriodos    = [];
                   $aListaPeriodos[0] = "Selecione";
 
                   foreach ($aPeriodos as $oPeriodo) {

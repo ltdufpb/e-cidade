@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_tiposerviconotafiscal_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $cltiposerviconotafiscal = new cl_tiposerviconotafiscal();
 $cltiposerviconotafiscal->rotulo->label('e18_sequencial');
 $cltiposerviconotafiscal->rotulo->label('e18_descricao');
@@ -58,9 +58,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $cltiposerviconotafiscal->sql_query("",$campos,"e18_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e18_descricao)){
-          $repassa = array("chave_e18_sequencial"=>$chave_e18_sequencial,"chave_e18_descricao"=>$chave_e18_descricao);
+          $repassa = ["chave_e18_sequencial"=>$chave_e18_sequencial,"chave_e18_descricao"=>$chave_e18_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

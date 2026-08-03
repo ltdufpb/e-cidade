@@ -62,7 +62,7 @@ if(isset($o64_proces)){
     for($i=0; $i<$numrows99; $i++){
       db_fieldsmemory($result99,$i);
       $x  = "o91_valor_".$o64_exercicio."_".$o65_mes;
-      $$x  = number_format($o65_valor,"2",".","");
+      ${$x}  = number_format($o65_valor,"2",".","");
       
     }
   }
@@ -73,10 +73,10 @@ if(isset($o64_proces)){
   for($i=0; $i<$numrows; $i++){
     db_fieldsmemory($result,$i);
     $x  = "o64_codseqimpmov_$o64_exercicio";
-    $$x  = $o64_codseqimpmov;
+    ${$x}  = $o64_codseqimpmov;
     
     $x  = "total_$o64_exercicio";
-    $$x  = number_format($o64_valor,"2",".","");
+    ${$x}  = number_format($o64_valor,"2",".","");
   }
   
 } 
@@ -180,7 +180,7 @@ db_input('o64_proces',8,$Io64_proces,true,'hidden',3);
        <b>Exerc</b>
     </td>
 <?php 
-    $arr_mes = array("1"=>"JAN","2"=>"FEV","3"=>"MAR","4"=>"ABR","5"=>"MAI","6"=>"JUN","7"=>"JUL","8"=>"AGO","9"=>"SET","10"=>"OUT","11"=>"NOV","12"=>"DEZ");
+    $arr_mes = ["1"=>"JAN","2"=>"FEV","3"=>"MAR","4"=>"ABR","5"=>"MAI","6"=>"JUN","7"=>"JUL","8"=>"AGO","9"=>"SET","10"=>"OUT","11"=>"NOV","12"=>"DEZ"];
     for($t=1; $t<count($arr_mes)+1; $t++){   
       echo "<td nowrap align='center'><b>";
       echo  $arr_mes[$t];
@@ -201,16 +201,16 @@ db_input('o64_proces',8,$Io64_proces,true,'hidden',3);
 for($i=$o96_anoini; $i<= $o96_anofim; $i++){
     
      $x = "o64_valor_$i";
-     $$x  = "";
+     ${$x}  = "";
       
      $x = "o56_elemento_$i";
-     $$x = "";
+     ${$x} = "";
      
      $x = "o64_quantmed_$i";
-     $$x = "";
+     ${$x} = "";
      
      $x = "o93_codigo_$i";
-     $$x = "";
+     ${$x} = "";
 
       
    if(isset($o64_proces) && $o64_proces!='' && empty($novo) && empty($incluir) && empty($alterar)){
@@ -221,13 +221,13 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
    
 	  
        $x = "o64_valor_$i";
-       $$x = $o64_valor;
+       ${$x} = $o64_valor;
      }
    }
    db_input("o64_codseqimpmov_$i",8,$Io64_codseqimpmov,true,'hidden');
 
    $x = "o64_exercicio_$i";
-   $$x = $i;
+   ${$x} = $i;
 ?>
 
 
@@ -239,7 +239,7 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
 <?php 
     $total = "total_$i";  
     $tot=0; 
-    $valparc = number_format($$total/12,"2",".","");
+    $valparc = number_format(${$total}/12,"2",".","");
     $somatot = 0;
     for($t=1; $t<count($arr_mes)+1; $t++){   
       echo "<td nowrap>";
@@ -247,20 +247,20 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
           
 	$tot += $valparc;
 
-	if($t==12 && $tot != $$total){
-           if($tot>$$total){
-	      $valparc = $valparc - number_format($tot-$$total,"2",".","");
+	if($t==12 && $tot != ${$total}){
+           if($tot>${$total}){
+	      $valparc = $valparc - number_format($tot-${$total},"2",".","");
 	   }else{
-	      $valparc +=  number_format($$total-$tot,"2",".","");
+	      $valparc +=  number_format(${$total}-$tot,"2",".","");
 	   } 
 	}
          
         $valmes = "o64_valor_".$i."_$t";
 	
 	if(empty($numrows99) || $numrows99 == 0 ){
-          $$valmes = $valparc;
+          ${$valmes} = $valparc;
         }else{
-	  $somatot += $$valmes;
+	  $somatot += ${$valmes};
 	}  	 
     
 
@@ -270,10 +270,10 @@ for($i=$o96_anoini; $i<= $o96_anofim; $i++){
     }
 
       $soma  = "somatot_$i";  
-      $$soma = number_format($somatot,"2",".","");
+      ${$soma} = number_format($somatot,"2",".","");
       
       $resto  = "resto_$i";  
-      $$resto = number_format($$total - $somatot,"2",".","");
+      ${$resto} = number_format(${$total} - $somatot,"2",".","");
 ?>
 
     <td nowrap title="">

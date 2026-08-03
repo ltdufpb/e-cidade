@@ -48,7 +48,7 @@ if ($oPars->method == "getOrgaos"){
                                              ,"o40_descr"
                                              ,$sWhere)
                                             );
-  $aOrgaos = array();                                          
+  $aOrgaos = [];                                          
   if ($oOrcUnidade->numrows > 0){                                         
     
     for ($iInd = 0; $iInd < $oOrcUnidade->numrows; $iInd++){
@@ -70,7 +70,7 @@ if ($oPars->method == "getOrgaos"){
                                              ,$sWhere)
                                             );
                                         
-  $aOrgaos = array();                                          
+  $aOrgaos = [];                                          
   if ($oOrcUnidade->numrows > 0){                                         
     
     for ($iInd = 0; $iInd < $oOrcUnidade->numrows; $iInd++){

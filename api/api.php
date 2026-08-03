@@ -27,7 +27,7 @@ require_once(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'bootstrap.php');
 // @todo Revisar essa logica
 // Criamos um request fake para poder utilizar o recursos dos modifications.
 
-$_SERVER['REQUEST_URI'] = preg_replace('/(.*?)\/w\/\d+(.*)/', '$1$2', $_SERVER['REQUEST_URI']);
+$_SERVER['REQUEST_URI'] = preg_replace('/(.*?)\/w\/\d+(.*)/', '$1$2', (string) $_SERVER['REQUEST_URI']);
 
 $front = new Front();
 $ecidadeRequest = new EcidadeRequest($front->getPath());
@@ -44,9 +44,9 @@ $app['class.loader'] = Registry::get('app.loader');
 $app->register(new ServiceControllerServiceProvider());
 
 // app api version1 routes
-$app->register(new APIServiceProvider(), array(
+$app->register(new APIServiceProvider(), [
     'ecidade_api.mount_prefix' => ApplicationConfig::APPLICATION_PREFIX
-));
+]);
 
 /**
  * Legacy compat
@@ -95,10 +95,10 @@ if (RouteConfig::isGuarded($ecidadeRequest->getUri())) {
 
 // app error handling
 $app->error(function (Exception $e, $code) use ($app) {
-    $response = array(
+    $response = [
         "statusCode" => $code,
         "message" => DBString::utf8_encode_all($e->getMessage())
-    );
+    ];
 
     if ($app['debug']) {
         $response["stacktrace"] = $e->getTraceAsString();

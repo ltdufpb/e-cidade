@@ -42,14 +42,14 @@ abstract class HorusArquivoBase  {
   const INCONSISTENTE        = 5;
   const CONCLUIDO            = 6;
 
-  protected static $aSituacoes = array(
+  protected static $aSituacoes = [
     self::SEM_DADOS            => "SEM DADOS",
     self::AGUARDANDO_ENVIO     => "AGUARDANDO ENVIO",
     self::PARCIALMENTE_ENVIADO => "PARCIALMENTE ENVIADO",
     self::AGUARDANDO_HORUS     => "AGUARDANDO HÓRUS",
     self::INCONSISTENTE        => "INCONSISTENTE",
     self::CONCLUIDO            => "CONCLUÍDO",
-  );
+  ];
 
   /**
    * Competencia que será extraido os dados
@@ -123,7 +123,7 @@ abstract class HorusArquivoBase  {
     $this->oXML->endElement();
 
     $this->oXML->startElement("coMunicipioIbge");
-    $this->oXML->text( substr($this->oUPS->getIBGE(), 0, 6));
+    $this->oXML->text( substr((string) $this->oUPS->getIBGE(), 0, 6));
     $this->oXML->endElement();
 
     $this->oXML->startElement("coUfIbge");
@@ -327,7 +327,7 @@ abstract class HorusArquivoBase  {
     /**
      * Se código IBGE tem menos de 6 digitos é considerado inválido
      */
-    if ( strlen($this->oUPS->getIBGE()) < 6 ) {
+    if ( strlen((string) $this->oUPS->getIBGE()) < 6 ) {
 
       $oMsgErro->sDepartamento = $this->oUPS->getCodigo() . ' - ' . $this->oUPS->getDepartamento()->getNomeDepartamento();
       throw new BusinessException( _M( self::MENSAGEM . "ups_ibeg_inconsistente", $oMsgErro) );
@@ -422,7 +422,7 @@ abstract class HorusArquivoBase  {
    * @return string
    */
   public function getSituacaoArquivo( $iSituacaoArquivo ) {
-    return isset(self::$aSituacoes[$iSituacaoArquivo]) ? self::$aSituacoes[$iSituacaoArquivo] : null;
+    return self::$aSituacoes[$iSituacaoArquivo] ?? null;
   }
 
   /**

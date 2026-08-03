@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcduplicacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcduplicacao = new cl_orcduplicacao;
 $clorcduplicacao->rotulo->label("o75_sequencial");
 $clorcduplicacao->rotulo->label("o75_tipo");
@@ -98,9 +98,9 @@ $clorcduplicacao->rotulo->label("o75_tipo");
         }else{
            $sql = $clorcduplicacao->sql_query("",$campos,"o75_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o75_tipo)){
-          $repassa = array("chave_o75_sequencial"=>$chave_o75_sequencial,"chave_o75_tipo"=>$chave_o75_tipo);
+          $repassa = ["chave_o75_sequencial"=>$chave_o75_sequencial,"chave_o75_tipo"=>$chave_o75_tipo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

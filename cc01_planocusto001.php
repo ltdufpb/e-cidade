@@ -68,13 +68,13 @@ $clcriaabas = new cl_criaabas();
             <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
               <center>
                 <?php 
-				  $clcriaabas->identifica = array("custoplano"=>"Plano de Custo","custoanaliticabens"=>"Plano de custo analítico dos bens");
-				  $clcriaabas->title      = array("custoplano"=>"Plano de Custo","custoanaliticabens"=>"Plano de custo analítico dos bens");
-				  $clcriaabas->src	      = array("custoplano"		  =>"cus1_custoplano001.php",
-								             	  "custoanaliticabens"=>"cus1_custoplanoanaliticabens001.php");
-				  $clcriaabas->disabled   = array("custoanaliticabens"=>"true");
-				  $clcriaabas->sizecampo  = array("custoplano"=>"40",
-				  								  "custoanaliticabens"=>"40");				    
+				  $clcriaabas->identifica = ["custoplano"=>"Plano de Custo","custoanaliticabens"=>"Plano de custo analítico dos bens"];
+				  $clcriaabas->title      = ["custoplano"=>"Plano de Custo","custoanaliticabens"=>"Plano de custo analítico dos bens"];
+				  $clcriaabas->src	      = ["custoplano"		  =>"cus1_custoplano001.php",
+								             	  "custoanaliticabens"=>"cus1_custoplanoanaliticabens001.php"];
+				  $clcriaabas->disabled   = ["custoanaliticabens"=>"true"];
+				  $clcriaabas->sizecampo  = ["custoplano"=>"40",
+				  								  "custoanaliticabens"=>"40"];				    
 				  $clcriaabas->cria_abas();
     			?>
               </center>

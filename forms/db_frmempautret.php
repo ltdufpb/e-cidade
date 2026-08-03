@@ -65,7 +65,7 @@ $clrotulo->label('e53_valor');
     </td>
   </tr>
   <?php 
-  $retencoes = array ();
+  $retencoes =  [];
   $res = $clpagordemtiporec->sql_record($clpagordemtiporec->sql_query_retencao(null, "e65_seq, k02_drecei, e59_codrec, e59_aliquota,
                                                                                       case when e65_receita is null then e59_codrec else e65_receita end as e65_receita,
                                                                                       case when e65_aliquota is null then e59_aliquota else e65_aliquota end as e65_aliquota,
@@ -77,14 +77,14 @@ $clrotulo->label('e53_valor');
       db_fieldsmemory($res, $x);
       $marca = false;
       $bloqueia_aliquota = 3;
-      if(trim($e65_seq) != ""){
-        if(trim($e59_codrec) == "" || (trim($e59_codrec) != "" && $e59_aliquota != $e65_aliquota)){
+      if(trim((string) $e65_seq) != ""){
+        if(trim((string) $e59_codrec) == "" || (trim((string) $e59_codrec) != "" && $e59_aliquota != $e65_aliquota)){
           $bloqueia_aliquota = 1;
         }
         $e59_codrec = $e65_receita;
         $e59_aliquota = $e65_aliquota;
         $v = 'valor_chk_'.$cont;
-        $$v = $e65_valor;
+        ${$v} = $e65_valor;
         $marca = true;
       }
       ?>
@@ -95,8 +95,8 @@ $clrotulo->label('e53_valor');
         <td>
           <?php  
           $v  = 'receita_chk_'.$cont;
-          $$v = $e59_codrec;
-          global $$v;                  
+          ${$v} = $e59_codrec;
+          global ${$v};                  
           db_input('receita_chk_'.$cont, 10, '', true, 'text',3);
           ?>
         </td>
@@ -104,8 +104,8 @@ $clrotulo->label('e53_valor');
         <td align=right>
           <?php 
           $v = 'aliquota_chk_'.$cont;
-          $$v   = $e59_aliquota;
-          global $$v;
+          ${$v}   = $e59_aliquota;
+          global ${$v};
           db_input('aliquota_chk_'.$cont, 15, $Ie53_valor, true, 'text',$bloqueia_aliquota, '','','','text-align:right')
           ?>
         </td>

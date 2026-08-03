@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE procjurjudicialadvog
 class cl_procjurjudicialadvog { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v65_sequencial = 0; 
-   var $v65_advog = 0; 
-   var $v65_procjurjudicial = 0; 
-   var $v65_principal = 'f'; 
+   public $v65_sequencial = 0; 
+   public $v65_advog = 0; 
+   public $v65_procjurjudicial = 0; 
+   public $v65_principal = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v65_sequencial = int4 = Sequencial 
                  v65_advog = int4 = CGM do advogado 
                  v65_procjurjudicial = int4 = Processo Judicial 
                  v65_principal = bool = Principal 
                  ";
    //funcao construtor da classe 
-   function cl_procjurjudicialadvog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procjurjudicialadvog"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_procjurjudicialadvog {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v65_sequencial = pg_result($result,0,0); 
+       $this->v65_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from procjurjudicialadvog_v65_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v65_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v65_sequencial)){
          $this->erro_sql = " Campo v65_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_procjurjudicialadvog {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Advogado do processo judicial ($this->v65_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Advogado do processo judicial já Cadastrado";
@@ -180,13 +180,13 @@ class cl_procjurjudicialadvog {
      $resaco = $this->sql_record($this->sql_query_file($this->v65_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12686,'$this->v65_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2216,12686,'','".AddSlashes(pg_result($resaco,0,'v65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2216,12689,'','".AddSlashes(pg_result($resaco,0,'v65_advog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2216,12687,'','".AddSlashes(pg_result($resaco,0,'v65_procjurjudicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2216,12688,'','".AddSlashes(pg_result($resaco,0,'v65_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2216,12686,'','".AddSlashes(pg_fetch_result($resaco,0,'v65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2216,12689,'','".AddSlashes(pg_fetch_result($resaco,0,'v65_advog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2216,12687,'','".AddSlashes(pg_fetch_result($resaco,0,'v65_procjurjudicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2216,12688,'','".AddSlashes(pg_fetch_result($resaco,0,'v65_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_procjurjudicialadvog {
       $this->atualizacampos();
      $sql = " update procjurjudicialadvog set ";
      $virgula = "";
-     if(trim($this->v65_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v65_sequencial"])){ 
+     if(trim((string) $this->v65_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v65_sequencial"])){ 
        $sql  .= $virgula." v65_sequencial = $this->v65_sequencial ";
        $virgula = ",";
-       if(trim($this->v65_sequencial) == null ){ 
+       if(trim((string) $this->v65_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "v65_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_procjurjudicialadvog {
          return false;
        }
      }
-     if(trim($this->v65_advog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v65_advog"])){ 
+     if(trim((string) $this->v65_advog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v65_advog"])){ 
        $sql  .= $virgula." v65_advog = $this->v65_advog ";
        $virgula = ",";
-       if(trim($this->v65_advog) == null ){ 
+       if(trim((string) $this->v65_advog) == null ){ 
          $this->erro_sql = " Campo CGM do advogado nao Informado.";
          $this->erro_campo = "v65_advog";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_procjurjudicialadvog {
          return false;
        }
      }
-     if(trim($this->v65_procjurjudicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v65_procjurjudicial"])){ 
+     if(trim((string) $this->v65_procjurjudicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v65_procjurjudicial"])){ 
        $sql  .= $virgula." v65_procjurjudicial = $this->v65_procjurjudicial ";
        $virgula = ",";
-       if(trim($this->v65_procjurjudicial) == null ){ 
+       if(trim((string) $this->v65_procjurjudicial) == null ){ 
          $this->erro_sql = " Campo Processo Judicial nao Informado.";
          $this->erro_campo = "v65_procjurjudicial";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_procjurjudicialadvog {
          return false;
        }
      }
-     if(trim($this->v65_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v65_principal"])){ 
+     if(trim((string) $this->v65_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v65_principal"])){ 
        $sql  .= $virgula." v65_principal = '$this->v65_principal' ";
        $virgula = ",";
-       if(trim($this->v65_principal) == null ){ 
+       if(trim((string) $this->v65_principal) == null ){ 
          $this->erro_sql = " Campo Principal nao Informado.";
          $this->erro_campo = "v65_principal";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_procjurjudicialadvog {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12686,'$this->v65_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v65_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2216,12686,'".AddSlashes(pg_result($resaco,$conresaco,'v65_sequencial'))."','$this->v65_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2216,12686,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v65_sequencial'))."','$this->v65_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v65_advog"]))
-           $resac = db_query("insert into db_acount values($acount,2216,12689,'".AddSlashes(pg_result($resaco,$conresaco,'v65_advog'))."','$this->v65_advog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2216,12689,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v65_advog'))."','$this->v65_advog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v65_procjurjudicial"]))
-           $resac = db_query("insert into db_acount values($acount,2216,12687,'".AddSlashes(pg_result($resaco,$conresaco,'v65_procjurjudicial'))."','$this->v65_procjurjudicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2216,12687,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v65_procjurjudicial'))."','$this->v65_procjurjudicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v65_principal"]))
-           $resac = db_query("insert into db_acount values($acount,2216,12688,'".AddSlashes(pg_result($resaco,$conresaco,'v65_principal'))."','$this->v65_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2216,12688,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v65_principal'))."','$this->v65_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_procjurjudicialadvog {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12686,'$v65_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2216,12686,'','".AddSlashes(pg_result($resaco,$iresaco,'v65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2216,12689,'','".AddSlashes(pg_result($resaco,$iresaco,'v65_advog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2216,12687,'','".AddSlashes(pg_result($resaco,$iresaco,'v65_procjurjudicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2216,12688,'','".AddSlashes(pg_result($resaco,$iresaco,'v65_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2216,12686,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2216,12689,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v65_advog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2216,12687,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v65_procjurjudicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2216,12688,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v65_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from procjurjudicialadvog
@@ -376,7 +376,7 @@ class cl_procjurjudicialadvog {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procjurjudicialadvog";
@@ -391,7 +391,7 @@ class cl_procjurjudicialadvog {
    function sql_query ( $v65_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_procjurjudicialadvog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,7 +430,7 @@ class cl_procjurjudicialadvog {
    function sql_query_file ( $v65_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_procjurjudicialadvog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,7 +465,7 @@ class cl_procjurjudicialadvog {
    function sql_query_susp ( $v65_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -492,7 +492,7 @@ class cl_procjurjudicialadvog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

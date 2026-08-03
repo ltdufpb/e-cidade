@@ -34,7 +34,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhpromocao_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $oGet        = db_utils::postMemory($_GET);
 $oRhpromocao = new cl_rhpromocao;
 
@@ -55,7 +55,7 @@ $aRhPromocao    = db_utils::fieldsMemory($rsRhPromocao, 0);
 $rh01_regist    = $iMatricula;
 $h72_sequencial = $aRhPromocao->h72_sequencial;
 $z01_nome       = $aRhPromocao->z01_nome; 
-$datainicial    = implode("/", array_reverse(explode("-",$aRhPromocao->h72_dtinicial)));
+$datainicial    = implode("/", array_reverse(explode("-",(string) $aRhPromocao->h72_dtinicial)));
 
 
 

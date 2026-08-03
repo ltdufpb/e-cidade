@@ -74,7 +74,7 @@ db_input('yx_valor',15,$Iyx_valor,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('yx_sexo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -85,7 +85,7 @@ db_select('yx_sexo',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Casado','2'=>'Solteiro');
+$x = ['1'=>'Casado','2'=>'Solteiro'];
 db_select('yx_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -122,7 +122,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tnomeitem.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

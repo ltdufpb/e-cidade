@@ -166,7 +166,7 @@ if( !empty( $sWhereSelecao ) ){
 $oDaoRhpessoalmov  = new cl_rhpessoalmov();
 $sSqlRhpessoalmov  = $oDaoRhpessoalmov->sql_servidorCargoLotacaoSecretarias( $sCampos, $sWhere, $sOrder, $iInstit, $iAnoUsu, $iMesUsu );
 $rsDAORhpessoalmov = db_query($sSqlRhpessoalmov);
-if ( pg_numrows($rsDAORhpessoalmov) == 0 ){
+if ( pg_num_rows($rsDAORhpessoalmov) == 0 ){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários no período de '.$iMesUsu.' / '.$iAnoUsu);
 }
 
@@ -184,7 +184,7 @@ $alt 		 = 4;
 $funcao  = '';
 $head5   = "PERÍODO : ".$iMesUsu." / ".$iAnoUsu;
 
-for( $iRegistro = 0; $iRegistro < pg_numrows($rsDAORhpessoalmov); $iRegistro++ ){
+for( $iRegistro = 0; $iRegistro < pg_num_rows($rsDAORhpessoalmov); $iRegistro++ ){
 
   db_fieldsmemory( $rsDAORhpessoalmov, $iRegistro );
 
@@ -327,13 +327,13 @@ for( $iRegistro = 0; $iRegistro < pg_numrows($rsDAORhpessoalmov); $iRegistro++ )
 
        if($tipo == 'o'){
          $pdf->cell(50,$alt,$rh37_descr ,0,0,"L",0);
-         $pdf->cell(45,$alt,substr($endereco,0,25),0,0,"L",0);
+         $pdf->cell(45,$alt,substr((string) $endereco,0,25),0,0,"L",0);
          $pdf->cell(40,$alt,$z01_bairro ,0,0,"L",0);
          $pdf->cell(25,$alt,$z01_munic  ,0,0,"L",0);
          $pdf->cell(07,$alt,$z01_uf		  ,0,0,"C",0);
          $pdf->cell(20,$alt,db_formatar($z01_cep,'cep')	  ,0,1,"C",0);
        }else{
-         $pdf->cell(45,$alt,substr($endereco,0,25),0,0,"L",0);
+         $pdf->cell(45,$alt,substr((string) $endereco,0,25),0,0,"L",0);
          $pdf->cell(45,$alt,$z01_bairro ,0,0,"L",0);
          $pdf->cell(45,$alt,$z01_munic  ,0,0,"L",0);
          $pdf->cell(10,$alt,$z01_uf     ,0,0,"C",0);

@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -52,29 +52,29 @@ $clcriaabas = new cl_criaabas;
        <td>
        <?php
 
-         $clcriaabas->identifica = array("auto"        => "Auto de Infração",
+         $clcriaabas->identifica = ["auto"        => "Auto de Infração",
                                          "autolevanta"  => "Levantamento",
                                          "autotipo"     => "Procedência",
                                          "receitas"     => "Receitas",
                                          "fiscais"      => "Fiscais",
                                          "testem"       => "Testemunhas",
-                                         "calculo"      => "Cálculo");
+                                         "calculo"      => "Cálculo"];
 
-         $clcriaabas->title      = array("auto"        => "Auto de Infração",
+         $clcriaabas->title      = ["auto"        => "Auto de Infração",
                                          "autolevanta"  => "Levantamento",
                                          "autotipo"     => "Procedência",
                                          "receitas"     => "Receitas",
                                          "fiscais"      => "Fiscais",
                                          "testem"       => "Testemunhas",
-                                         "calculo"      => "Cálculo");
+                                         "calculo"      => "Cálculo"];
 
-         $clcriaabas->src        = array("auto"        => "fis1_auto001.php?abas=1",
+         $clcriaabas->src        = ["auto"        => "fis1_auto001.php?abas=1",
                                          "autolevanta"  => "fis1_autolevanta001.php",
                                          "autotipo"     => "fis1_autotipo001.php",
                                          "receitas"     => "fis1_autorec001.php",
                                          "fiscais"      => "fis1_autousu001.php",
                                          "teste"        => "fis1_autotestem001.php",
-                                         "calculo"      => "fis1_autocalc001.php");
+                                         "calculo"      => "fis1_autocalc001.php"];
          $clcriaabas->cria_abas();
        ?>
        </td>

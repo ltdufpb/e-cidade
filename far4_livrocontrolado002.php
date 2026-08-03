@@ -33,8 +33,8 @@ require_once(modification('libs/db_stdlibwebseller.php'));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $oDaoFarMater        = db_utils::getdao('far_matersaude');
 $oDaoFechaLivro      = db_utils::getdao('far_fechalivro');
@@ -47,7 +47,7 @@ $iCodigoDepartamento = db_getsession("DB_coddepto");
  *
  * @return
  */
-function erro($sDescricao) {
+function erro($sDescricao): never {
 
   ?>
   <table width='100%'>
@@ -185,11 +185,11 @@ function imprimirCabecalho($oPdf, $sDescriçãoMedicamento) {
  */
 function imprimirRetirada($oPdf, $oRetirada, $dSaldo) {
 
-  $aData    = explode("-", $oRetirada->m80_data);
+  $aData    = explode("-", (string) $oRetirada->m80_data);
   $dEntrada = 0.0;
   $dSaida   = 0.0;
   $dPerda   = 0.0;
-  $aDados   = Array();
+  $aDados   = [];
   global $iNumRegPagina;
 
   if ($oRetirada->m81_tipo == 1) {
@@ -344,8 +344,8 @@ $oPdf = new PDF();
 $oPdf->Open();
 $oPdf->AliasNbPages();
 $oPdf->setfillcolor(223);
-$oPdf->SetWidths(array( 10,  10,  10,  20,  80,  12,  12,  12,  12,  20,  22,  50, 10));
-$oPdf->SetAligns(array("C", "C", "C", "C", "L", "R", "R", "R", "C", "C", "C", "L", "C"));
+$oPdf->SetWidths([ 10,  10,  10,  20,  80,  12,  12,  12,  12,  20,  22,  50, 10]);
+$oPdf->SetAligns(["C", "C", "C", "C", "L", "R", "R", "R", "C", "C", "C", "L", "C"]);
 $head1 = "LIVRO CONTROLADOS";
 $head2 = "LIVRO:   ".getNomeLivro($livro);
 $head3 = "PERIODO: ".$fa26_d_dataini. " ATÉ " .$fa26_d_datafim;

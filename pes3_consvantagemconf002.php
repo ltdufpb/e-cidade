@@ -6,12 +6,12 @@ require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_usuariosonline.php');
 require_once modification('dbforms/db_funcoes.php');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 foreach ($queryString as $key => $value) {
         ${$key} = $value;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (isset($atualizar)) {
 
@@ -306,14 +306,14 @@ if (isset($atualizar)) {
 
                         for ($i = 0; $i < pg_num_rows($res); $i++) {
 
-                                $tipo = pg_result($res, $i, 'h88_condicao');
-                                $form = pg_result($res, $i, 'h88_resultado');
-                                $operador = pg_result($res, $i, 'h88_operador');
-                                $multiplicador = pg_result($res, $i, 'h88_multiplicador');
+                                $tipo = pg_fetch_result($res, $i, 'h88_condicao');
+                                $form = pg_fetch_result($res, $i, 'h88_resultado');
+                                $operador = pg_fetch_result($res, $i, 'h88_operador');
+                                $multiplicador = pg_fetch_result($res, $i, 'h88_multiplicador');
 
                                 echo " <tr> 
     <td > ";
-                                eval('$asse' . $i . ' = ' . pg_result($res, $i, 'h88_codigo') . ';');
+                                eval('$asse' . $i . ' = ' . pg_fetch_result($res, $i, 'h88_codigo') . ';');
                                 db_selectrecord("asse$i", $record, 1, 2, "", "", "", "Nenhum");
 
                                 // <input name='asse$i' size='5' value='".pg_result($res,$i,'h88_codigo')."'>

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_recreparcori_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrecreparcori = new cl_recreparcori;
 $clrecreparcori->rotulo->label("k70_codigo");
 $clrecreparcori->rotulo->label("k70_recori");
@@ -101,9 +101,9 @@ $clrecreparcori->rotulo->label("k70_recori");
         }else{
            $sql = $clrecreparcori->sql_query_dadosrec("",$campos,"k70_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k70_recori)){
-          $repassa = array("chave_k70_codigo"=>$chave_k70_codigo,"chave_k70_recori"=>$chave_k70_recori);
+          $repassa = ["chave_k70_codigo"=>$chave_k70_codigo,"chave_k70_recori"=>$chave_k70_recori];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

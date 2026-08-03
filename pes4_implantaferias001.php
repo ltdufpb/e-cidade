@@ -108,7 +108,7 @@ if(isset($enviar) || isset($alterar)){
      }
   }
        
-  if(trim($r30_per2i_dia) != "" && trim($r30_per2i_mes) != "" && trim($r30_per2i_ano) != ""){
+  if(trim((string) $r30_per2i_dia) != "" && trim($r30_per2i_mes) != "" && trim((string) $r30_per2i_ano) != ""){
     $r30_dias2 = $r30_ndias - $r30_abono - $r30_dias1;
   }else{
     $r30_tip2 = "";
@@ -123,8 +123,8 @@ if(isset($enviar) || isset($alterar)){
     $r30_dias2 = 0;
   }
 
-  $matriz1 = array();
-  $matriz2 = array();
+  $matriz1 = [];
+  $matriz2 = [];
   $matriz1[1] = "r30_anousu";
   $matriz1[2] = "r30_mesusu";
   $matriz1[3] = "r30_regist";
@@ -150,12 +150,12 @@ if(isset($enviar) || isset($alterar)){
   $r30_proc2_reverso = $r30_proc2;
 
   if(isset($r30_proc1) && !empty($r30_proc1)) {
-    list($r30_proc1_mes, $r30_proc1_ano) = explode("/", $r30_proc1);
+    [$r30_proc1_mes, $r30_proc1_ano] = explode("/", (string) $r30_proc1);
     $r30_proc1_reverso = $r30_proc1_ano ."/". $r30_proc1_mes;
   }
 
   if(isset($r30_proc2) && !empty($r30_proc2)) {
-    list($r30_proc2_mes, $r30_proc2_ano) = explode("/", $r30_proc2);
+    [$r30_proc2_mes, $r30_proc2_ano] = explode("/", (string) $r30_proc2);
     $r30_proc2_reverso = $r30_proc2_ano ."/". $r30_proc2_mes;
   }
 
@@ -209,7 +209,7 @@ if(isset($enviar) || isset($alterar)){
     $db_opcao = 3;
     $dbopcao  = true;
   }
-  $arr_perai = split("/",$r30_perai);
+  $arr_perai = preg_split("#\\/#m",(string) $r30_perai);
   $r30_perai = $arr_perai[2]."-".$arr_perai[1]."-".$arr_perai[0];
   $result_dados_ferias = $clcadferia->sql_record($clcadferia->sql_query_pesquisa(null," cadferia.*, rh05_recis, z01_nome, z01_numcgm ",""," r30_anousu = ".$r30_anousu." and r30_mesusu = ".$r30_mesusu." and r30_regist = ".$r30_regist." and r30_perai = '".$r30_perai."'"));
   if($clcadferia->numrows > 0){

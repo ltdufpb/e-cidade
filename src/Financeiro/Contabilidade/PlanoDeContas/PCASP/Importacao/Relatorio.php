@@ -36,11 +36,6 @@ use \ECidade\Financeiro\Contabilidade\PlanoDeContas\PCASP\Importacao\Modelo;
 class Relatorio {
 
   /**
-   * @var Importacao
-   */
-  private $oImportacao;
-
-  /**
    * @var \stdClass[]
    */
   private $aDadosImprimir;
@@ -48,14 +43,14 @@ class Relatorio {
   /**
    * @var Conta[]
    */
-  private $aContasExclusao = array();
+  private $aContasExclusao = [];
 
   /**
    * Relatorio constructor.
    * @param \ECidade\Financeiro\Contabilidade\PlanoDeContas\PCASP\Importacao\Importacao $oImportacao
    */
-  public function __construct(Importacao $oImportacao) {
-    $this->oImportacao = $oImportacao;
+  public function __construct(private readonly Importacao $oImportacao)
+  {
   }
 
   /**
@@ -88,16 +83,16 @@ class Relatorio {
       $iNivelEstrutural    = \ContaPlano::getNivelEstrutura($oConta->getEstrutural());
       $sEstruturalAteNivel = \ContaPlano::getEstruturalAteNivel($oConta->getEstrutural(), $iNivelEstrutural);
 
-      $aWhere = array(
+      $aWhere = [
         "conplano.c60_estrut ilike '".str_replace('.', '', $sEstruturalAteNivel)."%'",
         "conplano.c60_anousu = {$iExercicio}",
         "conlancamval.c69_anousu = {$iExercicio}"
-      );
+      ];
 
-      $aCampos = array(
+      $aCampos = [
         'distinct conplano.c60_estrut as estrutural',
         'conplano.c60_descr as titulo',
-      );
+      ];
 
       $oDaoReduzidos      = new \cl_conplanoreduz();
       $sSqlBuscaReduzidos = $oDaoReduzidos->sql_query_razao(null, null, implode(',', $aCampos), "conplano.c60_estrut", implode(' and ', $aWhere));
@@ -130,18 +125,18 @@ class Relatorio {
 
     $oPdf = new \PDFTable();
 
-    $oPdf->setHeaders(array("Estrutural", "Descrição da Conta"));
+    $oPdf->setHeaders(["Estrutural", "Descrição da Conta"]);
     $oPdf->setPercentWidth(true);
-    $oPdf->setColumnsWidth(array("20", "80"));
-    $oPdf->setColumnsAlign(array('center', 'center'));
+    $oPdf->setColumnsWidth(["20", "80"]);
+    $oPdf->setColumnsAlign(['center', 'center']);
 
     foreach ($this->aDadosImprimir as $oDadoImprimir){
 
       $oPdf->addLineInformation(
-        array(
+        [
           $oDadoImprimir->estrutural,
           $oDadoImprimir->titulo
-        )
+        ]
       );
     }
 

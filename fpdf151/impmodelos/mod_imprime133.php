@@ -7,7 +7,7 @@ $this->objpdf->AliasNbPages();
 	$pagina = 1;
 	$xlin = 20;
 	$xcol = 4;
-	
+
 	$this->objpdf->setfillcolor(245);
 	$this->objpdf->rect($xcol-2,$xlin-18,206,292,2,'DF','1234');
 	$this->objpdf->setfillcolor(255,255,255);
@@ -22,7 +22,7 @@ $this->objpdf->AliasNbPages();
 	$this->objpdf->Setfont('Arial','',7);
 	$this->objpdf->text(40,$xlin-11,$this->enderpref);
 	$this->objpdf->text(40,$xlin- 8,$this->municpref);
-	if(trim($this->faxpref)!=""){
+	if(trim((string) $this->faxpref)!=""){
 	  $this->faxpref = " / ".$this->faxpref;
 	}
 	$this->objpdf->text(40,$xlin- 5,$this->telefpref.$this->faxpref);
@@ -43,7 +43,7 @@ $this->objpdf->AliasNbPages();
 	$this->objpdf->text($xcol+  2,$xlin+17,'Data');
 	$this->objpdf->text($xcol+  2,$xlin+25,'Resumo');
 	$this->objpdf->Setfont('Arial','',8);
-	
+
         // Imprime dados do orçamento e solicitação
 	$this->objpdf->text($xcol+ 23,$xlin+ 8,':  '.$this->orccodigo);
 	$this->objpdf->text($xcol+125,$xlin+ 8,':  '.$this->orcdtlim);
@@ -53,7 +53,7 @@ $this->objpdf->AliasNbPages();
 	if(isset($this->Sdata) && trim($this->Sdata)!=""){
 	  $this->Sdata = db_formatar($this->Sdata,'d');
 	}
-	if(trim($this->labtipo)!=""){
+	if(trim((string) $this->labtipo)!=""){
 	  $this->objpdf->text($xcol+125,$xlin+17,':  '.$this->Stipcom);
 	}
 	$this->objpdf->text($xcol+ 23,$xlin+17,':  '.$this->Sdata);
@@ -71,7 +71,7 @@ $this->objpdf->AliasNbPages();
 	$this->objpdf->text($xcol+2,$xlin+34,'Dados do Fornecedor');
 	$this->objpdf->Setfont('Arial','B',8);
 	$this->objpdf->text($xcol+109,$xlin+38,'Numcgm');
-	$this->objpdf->text($xcol+150,$xlin+38,(strlen($this->cnpj) == 11?'CPF':'CNPJ'));
+	$this->objpdf->text($xcol+150,$xlin+38,(strlen((string) $this->cnpj) == 11?'CPF':'CNPJ'));
 	$this->objpdf->text($xcol+  2,$xlin+38,'Nome');
 	$this->objpdf->text($xcol+  2,$xlin+42,'Endereço');
 	$this->objpdf->text($xcol+102,$xlin+42,'Complemento');
@@ -83,7 +83,7 @@ $this->objpdf->AliasNbPages();
         // Imprime dados dos fornecedores
 	$this->objpdf->text($xcol+18,$xlin+ 38,':  '.$this->nome);
 	$this->objpdf->text($xcol+122,$xlin+38,':  '.$this->numcgm);
-	$this->objpdf->text($xcol+163,$xlin+38,':  '.(strlen($this->cnpj) == 11?db_formatar($this->cnpj,'cpf'):db_formatar($this->cnpj,'cnpj')));
+	$this->objpdf->text($xcol+163,$xlin+38,':  '.(strlen((string) $this->cnpj) == 11?db_formatar($this->cnpj,'cpf'):db_formatar($this->cnpj,'cnpj')));
 	$this->objpdf->text($xcol+18,$xlin+ 42,':  '.$this->ender);
 	$this->objpdf->text($xcol+122,$xlin+42,':  '.$this->compl);
 	$this->objpdf->text($xcol+18,$xlin+ 46,':  '.$this->munic.'-'.$this->uf);
@@ -109,7 +109,7 @@ $this->objpdf->AliasNbPages();
 	  $this->objpdf->rect($xcol    ,$setaut+6,30,6,2,'DF','12');
 	  $this->objpdf->rect($xcol+30 ,$setaut+6,30,6,2,'DF','12');
 	  $this->objpdf->rect($xcol+60 ,$setaut+6,142,6,2,'DF','12');
-	  
+
 	  $this->objpdf->rect($xcol    ,$setaut+12,30,$contadepart+1,2,'DF','34');
 	  $this->objpdf->rect($xcol+30 ,$setaut+12,30,$contadepart+1,2,'DF','34');
 	  $this->objpdf->rect($xcol+60 ,$setaut+12,142,$contadepart+1,2,'DF','34');
@@ -125,14 +125,14 @@ $this->objpdf->AliasNbPages();
 	  $this->objpdf->setx($xcol);
 	  $this->objpdf->setleftmargin(4);
 	  $this->objpdf->Setfont('Arial','',7);
-	  $this->objpdf->SetAligns(array('C','C','L'));
-	  $this->objpdf->SetWidths(array(30,30,142));
+	  $this->objpdf->SetAligns(['C','C','L']);
+	  $this->objpdf->SetWidths([30,30,142]);
 	  for($i=0;$i<$this->linhasdosdepart;$i++){
 	    db_fieldsmemory($this->recorddosdepart,$i);
-	    $solicita  = trim(pg_result($this->recorddosdepart,$i,$this->Snumdepart));
-	    $codigodep = trim(pg_result($this->recorddosdepart,$i,$this->Scoddepto));
-	    $descrdep  = trim(pg_result($this->recorddosdepart,$i,$this->Sdescrdepto));
-	    $this->objpdf->Row(array($solicita,$codigodep,$descrdep),4,false,4);
+	    $solicita  = trim(pg_fetch_result($this->recorddosdepart,$i,$this->Snumdepart));
+	    $codigodep = trim(pg_fetch_result($this->recorddosdepart,$i,$this->Scoddepto));
+	    $descrdep  = trim(pg_fetch_result($this->recorddosdepart,$i,$this->Sdescrdepto));
+	    $this->objpdf->Row([$solicita,$codigodep,$descrdep],4,false,4);
 	  }
 	  $getdoy = $this->objpdf->gety()+2-$xlin;
 	}
@@ -163,7 +163,7 @@ $this->objpdf->AliasNbPages();
 	$this->objpdf->rect($xcol,    $xlin+$getdoy+6,10,$alturaini,2,'DF','34');
         // Caixa da quantidade
 	$this->objpdf->rect($xcol+ 10,$xlin+$getdoy+6,12,$alturaini,2,'DF','34');
-	
+
 	$this->objpdf->rect($xcol+ 22,$xlin+$getdoy+6,22,$alturaini,2,'DF','34');
         // Caixa dos materiais ou serviços
 	$this->objpdf->rect($xcol+ 44,$xlin+$getdoy+6,98,$alturaini,2,'DF','34');
@@ -173,7 +173,7 @@ $this->objpdf->AliasNbPages();
 	$this->objpdf->rect($xcol+172,$xlin+$getdoy+6,30,$alturaini,2,'DF','34');
 
    	$this->objpdf->sety($xlin+48);
-	
+
 	$alt = 4;
         // Label das colunas
 	$this->objpdf->Setfont('Arial','B',8);
@@ -184,9 +184,9 @@ $this->objpdf->AliasNbPages();
 	$this->objpdf->text($xcol+ 145,$xlin+$getdoy+4,'VALOR UNITÁRIO');
 	$this->objpdf->text($xcol+ 176,$xlin+$getdoy+4,'VALOR TOTAL');
         $maiscol = 0;
-	$this->objpdf->SetWidths(array(10,12,22,95,30,30));
-	$this->objpdf->SetAligns(array('C','C','C','J','R','R'));
-	
+	$this->objpdf->SetWidths([10,12,22,95,30,30]);
+	$this->objpdf->SetAligns(['C','C','C','J','R','R']);
+
 	$this->objpdf->setleftmargin(4);
 	$this->objpdf->sety($xlin+$getdoy+7);
 	$this->objpdf->setfillcolor(235);
@@ -204,20 +204,20 @@ $this->objpdf->AliasNbPages();
 	  $pgto  = "";
 	  $resumo = "";
 
-          $descricaoitem =trim(pg_result($this->recorddositens,$ii,$this->descricaoitem));
-	  
-	  if(trim(pg_result($this->recorddositens,$ii,$this->sprazo))!=""){
-	    $prazo = pg_result($this->recorddositens,$ii,$this->sprazo);
+          $descricaoitem =trim(pg_fetch_result($this->recorddositens,$ii,$this->descricaoitem));
+
+	  if(trim(pg_fetch_result($this->recorddositens,$ii,$this->sprazo))!=""){
+	    $prazo = pg_fetch_result($this->recorddositens,$ii,$this->sprazo);
 	    $prazo = "PRAZO: ".trim($prazo);
 	  }
-	  if(trim(pg_result($this->recorddositens,$ii,$this->spgto))!=""){
-	    $pgto  = pg_result($this->recorddositens,$ii,$this->spgto);
+	  if(trim(pg_fetch_result($this->recorddositens,$ii,$this->spgto))!=""){
+	    $pgto  = pg_fetch_result($this->recorddositens,$ii,$this->spgto);
 	    $pgto = "CONDIÇÃO: ".trim($pgto);
 	  }
-	  if(trim(pg_result($this->recorddositens,$ii,$this->sresum)!="")){
-	    $resumo = "RESUMO: ".pg_result($this->recorddositens,$ii,$this->sresum);
+	  if(trim(pg_fetch_result($this->recorddositens,$ii,$this->sresum)!="")){
+	    $resumo = "RESUMO: ".pg_fetch_result($this->recorddositens,$ii,$this->sresum);
 	    if($descricaoitem == "" || $descricaoitem == null){
-	      $descricaoitem = trim(pg_result($this->recorddositens,$ii,$this->sresum));
+	      $descricaoitem = trim(pg_fetch_result($this->recorddositens,$ii,$this->sresum));
 	      $resumo="";
 	    }
 	  }
@@ -226,13 +226,13 @@ $this->objpdf->AliasNbPages();
 	    $muda_pagina = false;
 	    $this->objpdf->sety($xlin+12);
 	  }
-	  
-	  $unid  = pg_result($this->recorddositens,$ii,$this->sunidade);
-	  $codunid    = pg_result($this->recorddositens,$ii,$this->scodunid);
-	  $servico    = pg_result($this->recorddositens,$ii,$this->sservico);
-	  $quantunid  = pg_result($this->recorddositens,$ii,$this->squantunid);	  
-	  $susaquant  = pg_result($this->recorddositens,$ii,$this->susaquant);
-	  
+
+	  $unid  = pg_fetch_result($this->recorddositens,$ii,$this->sunidade);
+	  $codunid    = pg_fetch_result($this->recorddositens,$ii,$this->scodunid);
+	  $servico    = pg_fetch_result($this->recorddositens,$ii,$this->sservico);
+	  $quantunid  = pg_fetch_result($this->recorddositens,$ii,$this->squantunid);	  
+	  $susaquant  = pg_fetch_result($this->recorddositens,$ii,$this->susaquant);
+
 	  $dist = 2.7;
 	  if(trim($codunid)!=""){
 	    $unid = trim(substr($unid,0,10));
@@ -245,22 +245,22 @@ $this->objpdf->AliasNbPages();
 	  }
 
 	  $this->objpdf->Setfont('Arial','',8);
-          $this->objpdf->Row(array(pg_result($this->recorddositens,$ii,$this->item),
-	                           pg_result($this->recorddositens,$ii,$this->quantitem),
+          $this->objpdf->Row([pg_fetch_result($this->recorddositens,$ii,$this->item),
+	                           pg_fetch_result($this->recorddositens,$ii,$this->quantitem),
 				   $unid,
 				   $descricaoitem,
 				   '',
-				   ''),3,false,3);
+				   ''],3,false,3);
 	  if(isset($resumo) && $resumo!=""){
-	    $this->objpdf->Row(array('','','',$resumo,'',''),$dist,false,2.7);
+	    $this->objpdf->Row(['','','',$resumo,'',''],$dist,false,2.7);
 	  }
 	  if(isset($prazo) && $prazo!=""){
-	    $this->objpdf->Row(array('','','',$prazo,'',''),$dist,false,2.7);
+	    $this->objpdf->Row(['','','',$prazo,'',''],$dist,false,2.7);
 	  }	    
 	  if(isset($pgto) && $pgto!=""){
-	    $this->objpdf->Row(array('','','',$pgto,'',''),$dist,false,2.7);
+	    $this->objpdf->Row(['','','',$pgto,'',''],$dist,false,2.7);
 	  }
-	  
+
 	  $this->objpdf->Setfont('Arial','B',8);
           /////// troca de pagina
 	  if( $this->objpdf->gety() > $this->objpdf->h - 30){
@@ -277,7 +277,7 @@ $this->objpdf->AliasNbPages();
 	    }
             $this->objpdf->addpage();
             $pagina += 1;	   
-	    
+
   	    $this->objpdf->settopmargin(1);
 	    $xlin = 20;
 	    $xcol = 4;
@@ -295,13 +295,13 @@ $this->objpdf->AliasNbPages();
 	    $this->objpdf->Setfont('Arial','',7);
 	    $this->objpdf->text(40,$xlin-11,$this->enderpref);
 	    $this->objpdf->text(40,$xlin-8,$this->municpref);
-	    if(trim($this->faxpref)!=""){
+	    if(trim((string) $this->faxpref)!=""){
 	      $this->faxpref = " / ".$this->faxpref;
 	    }
 	    $this->objpdf->text(40,$xlin- 5,$this->telefpref.$this->faxpref);
 	    $this->objpdf->text(40,$xlin-2,$this->emailpref);
 	    $this->objpdf->text(40,$xlin+ 1,db_formatar($this->cgcpref,'cnpj'));
-	    
+
             $xlin = -30;
 	    $this->objpdf->Setfont('Arial','B',8);
 
@@ -339,7 +339,7 @@ $this->objpdf->AliasNbPages();
         // caixas para total
 
 	$this->objpdf->Setfont('Arial','B',8);
-	
+
 	$this->objpdf->rect($xcol,    $xlin+262,142, 10,2,'DF','34');
 	$this->objpdf->rect($xcol+142,$xlin+262,30, 10,2,'DF','34');
 	$this->objpdf->rect($xcol+172,$xlin+262,30, 10,2,'DF','34');
@@ -347,6 +347,6 @@ $this->objpdf->AliasNbPages();
 
 	//	echo $this->numaut."<br>";
 	//	echo $pagina;exit;
-    
-     
+
+
 ?>

@@ -92,11 +92,11 @@ final class TermoTaxaParcela extends \BaseClassRepository
      */
     private function makeCollection($rsResult)
     {
-        $aCollection = array();
+        $aCollection = [];
         $aResult = pg_fetch_all($rsResult);
 
         if (empty($aResult)) {
-            return array();
+            return [];
         }
 
         foreach ($aResult as $oResult) {

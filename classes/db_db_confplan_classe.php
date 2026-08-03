@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE db_confplan
 class cl_db_confplan { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $w10_valor = 0; 
-   var $w10_receit = 0; 
-   var $w10_hist = 0; 
-   var $w10_tipo = 0; 
-   var $w10_dia = 0; 
+   public $w10_valor = 0; 
+   public $w10_receit = 0; 
+   public $w10_hist = 0; 
+   public $w10_tipo = 0; 
+   public $w10_dia = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  w10_valor = float8 = Valor Mínimo 
                  w10_receit = int4 = Receita 
                  w10_hist = int4 = Histórico Débito 
@@ -56,10 +56,10 @@ class cl_db_confplan {
                  w10_dia = int4 = Dia Vencimento 
                  ";
    //funcao construtor da classe 
-   function cl_db_confplan() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_confplan"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -155,7 +155,7 @@ class cl_db_confplan {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Configuração de Planilhas () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Configuração de Planilhas já Cadastrado";
@@ -182,10 +182,10 @@ class cl_db_confplan {
       $this->atualizacampos();
      $sql = " update db_confplan set ";
      $virgula = "";
-     if(trim($this->w10_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w10_valor"])){ 
+     if(trim((string) $this->w10_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w10_valor"])){ 
        $sql  .= $virgula." w10_valor = $this->w10_valor ";
        $virgula = ",";
-       if(trim($this->w10_valor) == null ){ 
+       if(trim((string) $this->w10_valor) == null ){ 
          $this->erro_sql = " Campo Valor Mínimo nao Informado.";
          $this->erro_campo = "w10_valor";
          $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_db_confplan {
          return false;
        }
      }
-     if(trim($this->w10_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w10_receit"])){ 
+     if(trim((string) $this->w10_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w10_receit"])){ 
        $sql  .= $virgula." w10_receit = $this->w10_receit ";
        $virgula = ",";
-       if(trim($this->w10_receit) == null ){ 
+       if(trim((string) $this->w10_receit) == null ){ 
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "w10_receit";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_db_confplan {
          return false;
        }
      }
-     if(trim($this->w10_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w10_hist"])){ 
+     if(trim((string) $this->w10_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w10_hist"])){ 
        $sql  .= $virgula." w10_hist = $this->w10_hist ";
        $virgula = ",";
-       if(trim($this->w10_hist) == null ){ 
+       if(trim((string) $this->w10_hist) == null ){ 
          $this->erro_sql = " Campo Histórico Débito nao Informado.";
          $this->erro_campo = "w10_hist";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_db_confplan {
          return false;
        }
      }
-     if(trim($this->w10_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w10_tipo"])){ 
+     if(trim((string) $this->w10_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w10_tipo"])){ 
        $sql  .= $virgula." w10_tipo = $this->w10_tipo ";
        $virgula = ",";
-       if(trim($this->w10_tipo) == null ){ 
+       if(trim((string) $this->w10_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo de Débito nao Informado.";
          $this->erro_campo = "w10_tipo";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_db_confplan {
          return false;
        }
      }
-     if(trim($this->w10_dia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w10_dia"])){ 
+     if(trim((string) $this->w10_dia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w10_dia"])){ 
        $sql  .= $virgula." w10_dia = $this->w10_dia ";
        $virgula = ",";
-       if(trim($this->w10_dia) == null){
+       if(trim((string) $this->w10_dia) == null){
          $this->erro_sql = " Campo Dia Vencimento nao Informado.";
          $this->erro_campo = "w10_dia";
          $this->erro_banco = "";
@@ -337,7 +337,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_confplan";
@@ -351,7 +351,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="db_confplan.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -377,7 +377,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,7 +389,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -407,7 +407,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

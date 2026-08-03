@@ -31,10 +31,10 @@ require_once(modification("libs/db_utils.php"));
 
 $oGet          = db_utils::postMemory($_GET);
 $iInstituicao  = db_getsession("DB_instit");
-$dtDataInicial = date("d-m-Y",strtotime($oGet->dtDataInicial));
-$dtDataFinal   = date("d-m-Y",strtotime($oGet->dtDataFinal));
+$dtDataInicial = date("d-m-Y",strtotime((string) $oGet->dtDataInicial));
+$dtDataFinal   = date("d-m-Y",strtotime((string) $oGet->dtDataFinal));
 
-list($iAnoInicial, $iMesInicial, $iDiaInicial) = explode('-', $oGet->dtDataInicial);
+[$iAnoInicial, $iMesInicial, $iDiaInicial] = explode('-', (string) $oGet->dtDataInicial);
 
 /**
  * Realiza consulta das contas e seus respectivos itens
@@ -64,7 +64,7 @@ if ($iTotalBens == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro={$sMsg}");
 }
 //Array das contas
-$aContas = array();
+$aContas = [];
 
 /**
  * Para cada Acumulado de entrada, agrupado por conta, verificar o saldo anterior e gravar em um array
@@ -199,13 +199,13 @@ foreach ($aContas as $iIndiceContas => $oConta) {
       $oStdTotal->nSaldoGeral    = 0;
 
     }
-    imprimirCabecalho($oPdf, $iAlturalinha, $dtDataInicial, $dtDataFinal);
+    imprimirCabecalho($oPdf, $iAlturalinha, $dtDataInicial);
     $lImprime = false;
   }
 
   $oPdf->setfont('arial','',6);
   $oPdf->cell(30 ,  $iAlturalinha, $oConta->sEstrutural                     , 1, 0, "C", 0); // classificacao        || codigo plano contas
-  $oPdf->cell(60 ,  $iAlturalinha, substr($oConta->sDescricao ,0 , 40)      , 1, 0, "L", 0); // classificacao        || interpretação
+  $oPdf->cell(60 ,  $iAlturalinha, substr((string) $oConta->sDescricao ,0 , 40)      , 1, 0, "L", 0); // classificacao        || interpretação
   $oPdf->cell(50 ,  $iAlturalinha, db_formatar($oConta->nSaldoAnterior,"f") , 1, 0, "R", 0); // saldo anterior       || __/__/__ (R$)
   $oPdf->cell(45 ,  $iAlturalinha, db_formatar($oConta->nTotalEntrada,"f")  , 1, 0, "R", 0); // movimentacao periodo || Entradas
   $oPdf->cell(45 ,  $iAlturalinha, db_formatar($oConta->nTotalSaidas,"f")   , 1, 0, "R", 0); // movimentacao periodo || Saidas

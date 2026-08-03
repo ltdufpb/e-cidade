@@ -35,8 +35,8 @@ include(modification("classes/db_corrente_classe.php"));
 include(modification("classes/db_saltescontrapartida_classe.php"));
 include(modification("classes/db_saltesextra_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clsaltes              = new cl_saltes;
 $clcorrente            = new cl_corrente;
@@ -45,7 +45,7 @@ $clsaltesextra         = new cl_saltesextra;
 $db_botao              = false;
 $db_opcao              = 33;
 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Excluir"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Excluir"){
      $erro = false;
      db_inicio_transacao();
        $db_opcao = 3;
@@ -117,7 +117,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Excluir"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Excluir"){
     if($clsaltes->erro_status=="0"){
         $clsaltes->erro(true,false);
     }else{

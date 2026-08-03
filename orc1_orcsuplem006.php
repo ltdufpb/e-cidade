@@ -34,15 +34,15 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcsuplemval_classe.php"));
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clorcsuplem = new cl_orcsuplem;
 $clorcsuplemval = new cl_orcsuplemval;  // usada para exlusao de itens 
 
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
     $db_opcao = 3;
      // exclui registros filhos 
        $codsup = $o46_codsup;
@@ -121,7 +121,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clorcsuplem->erro_status=="0"){
     $clorcsuplem->erro(true,false); // 
   }else{

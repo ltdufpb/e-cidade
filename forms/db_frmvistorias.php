@@ -373,14 +373,14 @@ if ($db_opcao == 1) {
 	  $y11_compl=$compl;
 	  if(@$rua!=""){
 		  $result_descr = db_query("select j14_nome from ruas where j14_codigo = $rua");
-		  if (pg_numrows($result_descr)>0){
+		  if (pg_num_rows($result_descr)>0){
 		  	db_fieldsmemory($result_descr,0);
 		  	$j14_nome_exec = $j14_nome;
 		  }
 	  }
 	  if(@$bairro!=""){
 		  $result_descr = db_query("select j13_descr from bairro where j13_codi = $bairro");
-		  if (pg_numrows($result_descr)>0){
+		  if (pg_num_rows($result_descr)>0){
 		  	db_fieldsmemory($result_descr,0);
 		  	$j13_descr_exec = $j13_descr;
 		  }

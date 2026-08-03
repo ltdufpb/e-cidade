@@ -36,7 +36,7 @@ $clrhestagio = new cl_rhestagio;
  
 $clrhestagiocriterio = new cl_rhestagiocriterio;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

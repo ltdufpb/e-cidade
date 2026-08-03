@@ -68,7 +68,7 @@ class OutrosDados
         }
         if (array_key_exists('e171_dados', $state)) {
             if (!empty($state['e171_dados'])) {
-                $self->setOutrosDados(json_decode($state['e171_dados']));
+                $self->setOutrosDados(json_decode((string) $state['e171_dados']));
             }
         }
 

@@ -36,8 +36,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cursoedu_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $iEscola = db_getsession("DB_coddepto");
 $lEsc    = false;
@@ -153,9 +153,9 @@ $clrotulo->label("ed220_i_procedimento");
 
                     if ($oDaoTurno->numrows == 0) {
 
-                      $aTurno = array(
+                      $aTurno = [
                                       '' => 'NENHUM REGISTRO'
-                                     );
+                                     ];
                       db_select('ed57_i_turno', $aTurno, true, 1, "");
 
                     } else {
@@ -173,9 +173,9 @@ $clrotulo->label("ed220_i_procedimento");
 
                     if ($oDaoCalendario->numrows == 0) {
 
-                      $aCalendario = array(
+                      $aCalendario = [
                                            '' => 'NENHUM REGISTRO'
-                                          );
+                                          ];
                       db_select('ed57_i_calendario', $aCalendario, true, 1, "");
 
                     } else {
@@ -197,9 +197,9 @@ $clrotulo->label("ed220_i_procedimento");
 
                     if ($oDaoProcedimento->numrows == 0) {
 
-                      $aProcedimento = array(
+                      $aProcedimento = [
                                              '' => 'NENHUM REGISTRO'
-                                            );
+                                            ];
                       db_select('ed57_i_procedimento', $aProcedimento, true, 1, "");
 
                     } else {

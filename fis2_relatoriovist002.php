@@ -56,7 +56,7 @@ $clrotulo->label("y77_descricao");
 $clcgm->rotulo->label();
 $clvistorias->rotulo->label();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $dbdeptoatual=db_getsession("DB_coddepto");
 $and = "and";
@@ -205,7 +205,7 @@ for($r=0;$r<$linhas;$r++){
     $pdf->Ln(4);
     $pdf->Cell(75,4,$RLj14_nome.': '.@$j14_nome,1,0,"J",1);
     $pdf->Cell(35,4,$RLz01_numero.': '.@$z01_numero,1,"J",1,30);
-    $pdf->Cell(80,4,$RLz01_compl.': '.substr(@$z01_compl, 0, 100),1,"J",1,30);
+    $pdf->Cell(80,4,$RLz01_compl.': '.substr((string) @$z01_compl, 0, 100),1,"J",1,30);
     $pdf->Ln(4);
     $pdf->Cell(75,4,$RLz01_munic.': '.@$z01_munic,1,0,"J",1);
     $pdf->Cell(80,4,$RLj13_descr.': '.@$j13_descr,1,0,"J",1);
@@ -230,7 +230,7 @@ for($r=0;$r<$linhas;$r++){
     $pdf->Cell(75,4,$RLj14_nome.': '.@$rlocal,1,0,"J",1);
     $pdf->Cell(55,4,$RLj13_descr.': '.@$blocal,1,0,"J",1);
     $pdf->Cell(20,4,$RLz01_numero.': '.@$y10_numero,1,"J",1,30);
-    $pdf->Cell(40,4,$RLz01_compl.': '.substr(@$y10_compl, 0,17),1,"J",1,30);
+    $pdf->Cell(40,4,$RLz01_compl.': '.substr((string) @$y10_compl, 0,17),1,"J",1,30);
     $pdf->Ln(4);
     $pdf->SetFillColor(230);
     $pdf->Cell(190,4,"LOCAL DA EXECUÇÃO DA VISTORIA",1,0,"C",1);
@@ -239,7 +239,7 @@ for($r=0;$r<$linhas;$r++){
     $pdf->Cell(75,4,$RLj14_nome.': '.@$rexec,1,0,"J",1);
     $pdf->Cell(55,4,$RLj13_descr.': '.@$bexec,1,0,"J",1);
     $pdf->Cell(20,4,$RLz01_numero.': '.@$y11_numero,1,"J",1,30);
-    $pdf->Cell(40,4,$RLz01_compl.': '.substr(@$y11_compl, 0,17),1,"J",1,30);
+    $pdf->Cell(40,4,$RLz01_compl.': '.substr((string) @$y11_compl, 0,17),1,"J",1,30);
     $pdf->Ln(4);
     $resultfiscal = $clvistusuario->sql_record($clvistusuario->sql_query($y70_codvist,"","db_usuarios.nome as fiscal,y75_obs"));
     if($clvistusuario->numrows > 0){
@@ -272,12 +272,12 @@ for($r=0;$r<$linhas;$r++){
         $pdf->Cell(40,4,$RLy76_receita.'',1,0,"C",1);
         $pdf->Cell(40,4,$RLy76_valor.'',1,0,"C",1);
         $pdf->Cell(110,4,$RLy76_descr.'',1,1,"C",1);
-        $pdf->SetAligns(array("C","C","C"));
-        $pdf->SetWidths(array(40,40,110));
+        $pdf->SetAligns(["C","C","C"]);
+        $pdf->SetWidths([40,40,110]);
         for($i=0;$i<$clvistoriarec->numrows;$i++){
           db_fieldsmemory($resultrec,$i);
-          $pdf->SetAligns(array("C","C","C"));
-          $pdf->Row(array($y76_receita,db_formatar($y76_valor,'f'),$y76_descr),3);
+          $pdf->SetAligns(["C","C","C"]);
+          $pdf->Row([$y76_receita,db_formatar($y76_valor,'f'),$y76_descr],3);
         }
       }
     }

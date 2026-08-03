@@ -47,7 +47,7 @@ $oRetorno->iStatus  = 1;
 
 $oRetorno->sMessage = '';
 
-$aDadosRetorno      = array();
+$aDadosRetorno      = [];
 
 $sTmpNomeArquivo    = "tmp/GEODADOS_{$oParam->iFormato}_" . db_getsession('DB_id_usuario') . "_" . date("dmYHisu") . ".csv";
 
@@ -498,8 +498,8 @@ function layout2($aGeodados, $aCaracteristicasDisponiveis, $sNomeArquivo, $sZipT
     $oGeodadosLayout2->rua_tipo_testada          = $oLote->getCodigoTipoLogradouro();
     $oGeodadosLayout2->rua_tipo_sigla_testada    = $oLote->getSiglaTipoLogradouro();
 
-    $aCaracteristicasFaceLote = array();
-    $aCaracteristicasLote     = array();
+    $aCaracteristicasFaceLote = [];
+    $aCaracteristicasLote     = [];
 
     foreach ($oLote->getCaracteristicasFace() as $oCaracteristicaFace) {
       $aCaracteristicasFaceLote[$oCaracteristicaFace->iCodigoGrupo] = $oCaracteristicaFace;
@@ -665,7 +665,7 @@ function layout2($aGeodados, $aCaracteristicasDisponiveis, $sNomeArquivo, $sZipT
             $oGeodadosLayout2->valor_iptu_construcao  = ($oCalculoConstrucao->nValor *  ($oCalculoIptu->nAliquota / 100));
           }
 
-          $aCaracteristicasConstrucao = array();
+          $aCaracteristicasConstrucao = [];
 
           foreach ($oConstrucao->getCaracteristicasConstrucao() as $oCaracteristicaConstrucao) {
             $aCaracteristicasConstrucao[$oCaracteristicaConstrucao->iCodigoGrupo] = $oCaracteristicaConstrucao;
@@ -723,7 +723,7 @@ function layout2($aGeodados, $aCaracteristicasDisponiveis, $sNomeArquivo, $sZipT
 
   fclose($pArquivo);
 
-  compactaArquivos(array(str_replace('tmp/', '', $sNomeArquivo)), $sZipTmpNomeArquivo);
+  compactaArquivos([str_replace('tmp/', '', $sNomeArquivo)], $sZipTmpNomeArquivo);
 }
 
 function layout3($aGeodados, $oLayoutTxt, $aCaracteristicasDisponiveis) {
@@ -826,8 +826,8 @@ function layout3($aGeodados, $oLayoutTxt, $aCaracteristicasDisponiveis) {
     $oGeodadosLayout3->lote_area          = $oLote->getAreaLote();
     $oGeodadosLayout3->valor_testada_lote = $oLote->getValorTestadaLote();
 
-    $aCaracteristicasFaceLote   = array();
-    $aCaracteristicasLote       = array();
+    $aCaracteristicasFaceLote   = [];
+    $aCaracteristicasLote       = [];
 
     foreach ($oLote->getCaracteristicasFace() as $oCaracteristicaFace) {
       $aCaracteristicasFaceLote[$oCaracteristicaFace->iCodigoGrupo] = $oCaracteristicaFace;
@@ -957,41 +957,41 @@ function layout3($aGeodados, $oLayoutTxt, $aCaracteristicasDisponiveis) {
 
 function geraLinhaArquivo($pArquivo, $oLinhaArquivo, $sSeparador = ';', $lCabecalho = false) {
 
-  $oLinha->matricula                      =  trim($oLinhaArquivo->matricula                     );
-  $oLinha->referencia_anterior            =  trim($oLinhaArquivo->referencia_anterior           );
-  $oLinha->codigo_setor                   =  trim($oLinhaArquivo->codigo_setor                  );
-  $oLinha->codigo_quadra                  =  trim($oLinhaArquivo->codigo_quadra                 );
-  $oLinha->codigo_lote                    =  trim($oLinhaArquivo->codigo_lote                   );
-  $oLinha->proprietario                   =  trim($oLinhaArquivo->proprietario                  );
-  $oLinha->promitente                     =  trim($oLinhaArquivo->promitente                    );
-  $oLinha->rua_tipo_sigla_testada         =  trim($oLinhaArquivo->rua_tipo_sigla_testada        );
-  $oLinha->rua_codigo                     =  trim($oLinhaArquivo->rua_codigo                    );
-  $oLinha->rua_nome                       =  trim($oLinhaArquivo->rua_nome                      );
-  $oLinha->construcao_numero              =  trim($oLinhaArquivo->construcao_numero             );
-  $oLinha->construcao_complemento         =  trim($oLinhaArquivo->construcao_complemento        );
-  $oLinha->bairro_codigo                  =  trim($oLinhaArquivo->bairro_codigo                 );
-  $oLinha->bairro_descricao               =  trim($oLinhaArquivo->bairro_descricao              );
-  $oLinha->rua_cep                        =  trim($oLinhaArquivo->rua_cep                       );
-  $oLinha->lote_codigo_loteamento         =  trim($oLinhaArquivo->lote_codigo_loteamento        );
-  $oLinha->lote_descricao_loteamento      =  trim($oLinhaArquivo->lote_descricao_loteamento     );
-  $oLinha->lote_area                      =  trim($oLinhaArquivo->lote_area                     );
-  $oLinha->codigo_construcao              =  trim($oLinhaArquivo->codigo_construcao             );
-  $oLinha->construcao_area                =  trim($oLinhaArquivo->construcao_area               );
-  $oLinha->valor_testada_lote             =  trim($oLinhaArquivo->valor_testada_lote            );
-  $oLinha->valor_venal_terreno            =  trim($oLinhaArquivo->valor_venal_terreno           );
-  $oLinha->valor_venal_construcao         =  trim($oLinhaArquivo->valor_venal_construcao        );
-  $oLinha->valor_iptu_terreno             =  trim($oLinhaArquivo->valor_iptu_terreno            );
-  $oLinha->valor_iptu_construcao          =  trim($oLinhaArquivo->valor_iptu_construcao         );
-  $oLinha->isencao_codigo                 =  trim($oLinhaArquivo->isencao_codigo                );
-  $oLinha->isencao_descricao              =  trim($oLinhaArquivo->isencao_descricao             );
-  $oLinha->endereco_entrega               =  trim($oLinhaArquivo->endereco_entrega              );
-  $oLinha->endereco_entrega_numero        =  trim($oLinhaArquivo->endereco_entrega_numero       );
-  $oLinha->endereco_entrega_complemento   =  trim($oLinhaArquivo->endereco_entrega_complemento  );
-  $oLinha->endereco_entrega_bairro        =  trim($oLinhaArquivo->endereco_entrega_bairro       );
-  $oLinha->endereco_entrega_municipio     =  trim($oLinhaArquivo->endereco_entrega_municipio    );
-  $oLinha->endereco_entrega_uf            =  trim($oLinhaArquivo->endereco_entrega_uf           );
-  $oLinha->endereco_entrega_cep           =  trim($oLinhaArquivo->endereco_entrega_cep          );
-  $oLinha->endereco_entrega_caixapostal   =  trim($oLinhaArquivo->endereco_entrega_caixapostal  );
+  $oLinha->matricula                      =  trim((string) $oLinhaArquivo->matricula                     );
+  $oLinha->referencia_anterior            =  trim((string) $oLinhaArquivo->referencia_anterior           );
+  $oLinha->codigo_setor                   =  trim((string) $oLinhaArquivo->codigo_setor                  );
+  $oLinha->codigo_quadra                  =  trim((string) $oLinhaArquivo->codigo_quadra                 );
+  $oLinha->codigo_lote                    =  trim((string) $oLinhaArquivo->codigo_lote                   );
+  $oLinha->proprietario                   =  trim((string) $oLinhaArquivo->proprietario                  );
+  $oLinha->promitente                     =  trim((string) $oLinhaArquivo->promitente                    );
+  $oLinha->rua_tipo_sigla_testada         =  trim((string) $oLinhaArquivo->rua_tipo_sigla_testada        );
+  $oLinha->rua_codigo                     =  trim((string) $oLinhaArquivo->rua_codigo                    );
+  $oLinha->rua_nome                       =  trim((string) $oLinhaArquivo->rua_nome                      );
+  $oLinha->construcao_numero              =  trim((string) $oLinhaArquivo->construcao_numero             );
+  $oLinha->construcao_complemento         =  trim((string) $oLinhaArquivo->construcao_complemento        );
+  $oLinha->bairro_codigo                  =  trim((string) $oLinhaArquivo->bairro_codigo                 );
+  $oLinha->bairro_descricao               =  trim((string) $oLinhaArquivo->bairro_descricao              );
+  $oLinha->rua_cep                        =  trim((string) $oLinhaArquivo->rua_cep                       );
+  $oLinha->lote_codigo_loteamento         =  trim((string) $oLinhaArquivo->lote_codigo_loteamento        );
+  $oLinha->lote_descricao_loteamento      =  trim((string) $oLinhaArquivo->lote_descricao_loteamento     );
+  $oLinha->lote_area                      =  trim((string) $oLinhaArquivo->lote_area                     );
+  $oLinha->codigo_construcao              =  trim((string) $oLinhaArquivo->codigo_construcao             );
+  $oLinha->construcao_area                =  trim((string) $oLinhaArquivo->construcao_area               );
+  $oLinha->valor_testada_lote             =  trim((string) $oLinhaArquivo->valor_testada_lote            );
+  $oLinha->valor_venal_terreno            =  trim((string) $oLinhaArquivo->valor_venal_terreno           );
+  $oLinha->valor_venal_construcao         =  trim((string) $oLinhaArquivo->valor_venal_construcao        );
+  $oLinha->valor_iptu_terreno             =  trim((string) $oLinhaArquivo->valor_iptu_terreno            );
+  $oLinha->valor_iptu_construcao          =  trim((string) $oLinhaArquivo->valor_iptu_construcao         );
+  $oLinha->isencao_codigo                 =  trim((string) $oLinhaArquivo->isencao_codigo                );
+  $oLinha->isencao_descricao              =  trim((string) $oLinhaArquivo->isencao_descricao             );
+  $oLinha->endereco_entrega               =  trim((string) $oLinhaArquivo->endereco_entrega              );
+  $oLinha->endereco_entrega_numero        =  trim((string) $oLinhaArquivo->endereco_entrega_numero       );
+  $oLinha->endereco_entrega_complemento   =  trim((string) $oLinhaArquivo->endereco_entrega_complemento  );
+  $oLinha->endereco_entrega_bairro        =  trim((string) $oLinhaArquivo->endereco_entrega_bairro       );
+  $oLinha->endereco_entrega_municipio     =  trim((string) $oLinhaArquivo->endereco_entrega_municipio    );
+  $oLinha->endereco_entrega_uf            =  trim((string) $oLinhaArquivo->endereco_entrega_uf           );
+  $oLinha->endereco_entrega_cep           =  trim((string) $oLinhaArquivo->endereco_entrega_cep          );
+  $oLinha->endereco_entrega_caixapostal   =  trim((string) $oLinhaArquivo->endereco_entrega_caixapostal  );
 
   if ($oLinha->valor_testada_lote     and $lCabecalho == false) {
     $oLinha->valor_testada_lote     = round($oLinha->valor_testada_lote, 2);
@@ -1019,12 +1019,12 @@ function geraLinhaArquivo($pArquivo, $oLinhaArquivo, $sSeparador = ';', $lCabeca
       $sCaracteristicasFaceDescricao        = "caracteristicas_face_descricao_" . $iCaracteristica;
       $iCaracteristicasFacePontos           = "caracteristicas_face_pontos_"    . $iCaracteristica;
 
-      $oLinha->$sCaracteristicasFaceTipo             = trim($oLinhaArquivo->$sCaracteristicasFaceTipo            );
-      $oLinha->$iCaracteristicasFaceIdGrupo          = trim($oLinhaArquivo->$iCaracteristicasFaceIdGrupo         );
-      $oLinha->$sCaracteristicasFaceGrupo            = trim($oLinhaArquivo->$sCaracteristicasFaceGrupo           );
-      $oLinha->$iCaracteristicasFaceIdCaracteristica = trim($oLinhaArquivo->$iCaracteristicasFaceIdCaracteristica);
-      $oLinha->$sCaracteristicasFaceDescricao        = trim($oLinhaArquivo->$sCaracteristicasFaceDescricao       );
-      $oLinha->$iCaracteristicasFacePontos           = trim($oLinhaArquivo->$iCaracteristicasFacePontos          );
+      $oLinha->$sCaracteristicasFaceTipo             = trim((string) $oLinhaArquivo->$sCaracteristicasFaceTipo            );
+      $oLinha->$iCaracteristicasFaceIdGrupo          = trim((string) $oLinhaArquivo->$iCaracteristicasFaceIdGrupo         );
+      $oLinha->$sCaracteristicasFaceGrupo            = trim((string) $oLinhaArquivo->$sCaracteristicasFaceGrupo           );
+      $oLinha->$iCaracteristicasFaceIdCaracteristica = trim((string) $oLinhaArquivo->$iCaracteristicasFaceIdCaracteristica);
+      $oLinha->$sCaracteristicasFaceDescricao        = trim((string) $oLinhaArquivo->$sCaracteristicasFaceDescricao       );
+      $oLinha->$iCaracteristicasFacePontos           = trim((string) $oLinhaArquivo->$iCaracteristicasFacePontos          );
     }
   }
 
@@ -1038,12 +1038,12 @@ function geraLinhaArquivo($pArquivo, $oLinhaArquivo, $sSeparador = ';', $lCabeca
       $sCaracteristicasLoteDescricao        = "caracteristicas_lote_descricao_" . $iCaracteristica;
       $iCaracteristicasLotePontos           = "caracteristicas_lote_pontos_"    . $iCaracteristica;
 
-      $oLinha->$sCaracteristicasLoteTipo             = trim($oLinhaArquivo->$sCaracteristicasLoteTipo            );
-      $oLinha->$iCaracteristicasLoteIdGrupo          = trim($oLinhaArquivo->$iCaracteristicasLoteIdGrupo         );
-      $oLinha->$sCaracteristicasLoteGrupo            = trim($oLinhaArquivo->$sCaracteristicasLoteGrupo           );
-      $oLinha->$iCaracteristicasLoteIdCaracteristica = trim($oLinhaArquivo->$iCaracteristicasLoteIdCaracteristica);
-      $oLinha->$sCaracteristicasLoteDescricao        = trim($oLinhaArquivo->$sCaracteristicasLoteDescricao       );
-      $oLinha->$iCaracteristicasLotePontos           = trim($oLinhaArquivo->$iCaracteristicasLotePontos          );
+      $oLinha->$sCaracteristicasLoteTipo             = trim((string) $oLinhaArquivo->$sCaracteristicasLoteTipo            );
+      $oLinha->$iCaracteristicasLoteIdGrupo          = trim((string) $oLinhaArquivo->$iCaracteristicasLoteIdGrupo         );
+      $oLinha->$sCaracteristicasLoteGrupo            = trim((string) $oLinhaArquivo->$sCaracteristicasLoteGrupo           );
+      $oLinha->$iCaracteristicasLoteIdCaracteristica = trim((string) $oLinhaArquivo->$iCaracteristicasLoteIdCaracteristica);
+      $oLinha->$sCaracteristicasLoteDescricao        = trim((string) $oLinhaArquivo->$sCaracteristicasLoteDescricao       );
+      $oLinha->$iCaracteristicasLotePontos           = trim((string) $oLinhaArquivo->$iCaracteristicasLotePontos          );
     }
   }
 
@@ -1058,12 +1058,12 @@ function geraLinhaArquivo($pArquivo, $oLinhaArquivo, $sSeparador = ';', $lCabeca
       $sCaracteristicasConstrucaoDescricao        = "caracteristicas_construcao_descricao_" . $iCaracteristica;
       $iCaracteristicasConstrucaoPontos           = "caracteristicas_construcao_pontos_"    . $iCaracteristica;
 
-      $oLinha->$sCaracteristicasConstrucaoTipo             = trim($oLinhaArquivo->$sCaracteristicasConstrucaoTipo            );
-      $oLinha->$iCaracteristicasConstrucaoIdGrupo          = trim($oLinhaArquivo->$iCaracteristicasConstrucaoIdGrupo         );
-      $oLinha->$sCaracteristicasConstrucaoGrupo            = trim($oLinhaArquivo->$sCaracteristicasConstrucaoGrupo           );
-      $oLinha->$iCaracteristicasConstrucaoIdCaracteristica = trim($oLinhaArquivo->$iCaracteristicasConstrucaoIdCaracteristica);
-      $oLinha->$sCaracteristicasConstrucaoDescricao        = trim($oLinhaArquivo->$sCaracteristicasConstrucaoDescricao       );
-      $oLinha->$iCaracteristicasConstrucaoPontos           = trim($oLinhaArquivo->$iCaracteristicasConstrucaoPontos          );
+      $oLinha->$sCaracteristicasConstrucaoTipo             = trim((string) $oLinhaArquivo->$sCaracteristicasConstrucaoTipo            );
+      $oLinha->$iCaracteristicasConstrucaoIdGrupo          = trim((string) $oLinhaArquivo->$iCaracteristicasConstrucaoIdGrupo         );
+      $oLinha->$sCaracteristicasConstrucaoGrupo            = trim((string) $oLinhaArquivo->$sCaracteristicasConstrucaoGrupo           );
+      $oLinha->$iCaracteristicasConstrucaoIdCaracteristica = trim((string) $oLinhaArquivo->$iCaracteristicasConstrucaoIdCaracteristica);
+      $oLinha->$sCaracteristicasConstrucaoDescricao        = trim((string) $oLinhaArquivo->$sCaracteristicasConstrucaoDescricao       );
+      $oLinha->$iCaracteristicasConstrucaoPontos           = trim((string) $oLinhaArquivo->$iCaracteristicasConstrucaoPontos          );
     }
   }
 

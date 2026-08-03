@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE pontoparada
 class cl_pontoparada {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $tre04_sequencial = 0;
-   var $tre04_cadenderbairrocadenderrua = 0;
-   var $tre04_nome = null;
-   var $tre04_abreviatura = null;
-   var $tre04_pontoreferencia = null;
-   var $tre04_latitude = 0;
-   var $tre04_longitude = 0;
-   var $tre04_tipo = 0;
+   public $tre04_sequencial = 0;
+   public $tre04_cadenderbairrocadenderrua = 0;
+   public $tre04_nome = null;
+   public $tre04_abreviatura = null;
+   public $tre04_pontoreferencia = null;
+   public $tre04_latitude = 0;
+   public $tre04_longitude = 0;
+   public $tre04_tipo = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  tre04_sequencial = int4 = Sequencial
                  tre04_cadenderbairrocadenderrua = int4 = Sequencial
                  tre04_nome = varchar(70) = Nome
@@ -62,10 +62,10 @@ class cl_pontoparada {
                  tre04_tipo = int4 = Tipo
                  ";
    //funcao construtor da classe
-   function cl_pontoparada() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pontoparada");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -146,10 +146,10 @@ class cl_pontoparada {
          $this->erro_status = "0";
          return false;
        }
-       $this->tre04_sequencial = pg_result($result,0,0);
+       $this->tre04_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from pontoparada_tre04_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tre04_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tre04_sequencial)){
          $this->erro_sql = " Campo tre04_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -191,7 +191,7 @@ class cl_pontoparada {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ponto de parada ($this->tre04_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ponto de parada já Cadastrado";
@@ -220,17 +220,17 @@ class cl_pontoparada {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20082,'$this->tre04_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3601,20082,'','".AddSlashes(pg_result($resaco,0,'tre04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3601,20083,'','".AddSlashes(pg_result($resaco,0,'tre04_cadenderbairrocadenderrua'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3601,20084,'','".AddSlashes(pg_result($resaco,0,'tre04_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3601,20085,'','".AddSlashes(pg_result($resaco,0,'tre04_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3601,20086,'','".AddSlashes(pg_result($resaco,0,'tre04_pontoreferencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3601,20087,'','".AddSlashes(pg_result($resaco,0,'tre04_latitude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3601,20088,'','".AddSlashes(pg_result($resaco,0,'tre04_longitude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3601,20089,'','".AddSlashes(pg_result($resaco,0,'tre04_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3601,20082,'','".AddSlashes(pg_fetch_result($resaco,0,'tre04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3601,20083,'','".AddSlashes(pg_fetch_result($resaco,0,'tre04_cadenderbairrocadenderrua'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3601,20084,'','".AddSlashes(pg_fetch_result($resaco,0,'tre04_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3601,20085,'','".AddSlashes(pg_fetch_result($resaco,0,'tre04_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3601,20086,'','".AddSlashes(pg_fetch_result($resaco,0,'tre04_pontoreferencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3601,20087,'','".AddSlashes(pg_fetch_result($resaco,0,'tre04_latitude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3601,20088,'','".AddSlashes(pg_fetch_result($resaco,0,'tre04_longitude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3601,20089,'','".AddSlashes(pg_fetch_result($resaco,0,'tre04_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -240,10 +240,10 @@ class cl_pontoparada {
       $this->atualizacampos();
      $sql = " update pontoparada set ";
      $virgula = "";
-     if(trim($this->tre04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_sequencial"])){
+     if(trim((string) $this->tre04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_sequencial"])){
        $sql  .= $virgula." tre04_sequencial = $this->tre04_sequencial ";
        $virgula = ",";
-       if(trim($this->tre04_sequencial) == null ){
+       if(trim((string) $this->tre04_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "tre04_sequencial";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_pontoparada {
          return false;
        }
      }
-     if(trim($this->tre04_cadenderbairrocadenderrua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_cadenderbairrocadenderrua"])){
+     if(trim((string) $this->tre04_cadenderbairrocadenderrua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_cadenderbairrocadenderrua"])){
        $sql  .= $virgula." tre04_cadenderbairrocadenderrua = $this->tre04_cadenderbairrocadenderrua ";
        $virgula = ",";
-       if(trim($this->tre04_cadenderbairrocadenderrua) == null ){
+       if(trim((string) $this->tre04_cadenderbairrocadenderrua) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "tre04_cadenderbairrocadenderrua";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_pontoparada {
          return false;
        }
      }
-     if(trim($this->tre04_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_nome"])){
+     if(trim((string) $this->tre04_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_nome"])){
        $sql  .= $virgula." tre04_nome = '$this->tre04_nome' ";
        $virgula = ",";
-       if(trim($this->tre04_nome) == null ){
+       if(trim((string) $this->tre04_nome) == null ){
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "tre04_nome";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_pontoparada {
          return false;
        }
      }
-     if(trim($this->tre04_abreviatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_abreviatura"])){
+     if(trim((string) $this->tre04_abreviatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_abreviatura"])){
        $sql  .= $virgula." tre04_abreviatura = '$this->tre04_abreviatura' ";
        $virgula = ",";
-       if(trim($this->tre04_abreviatura) == null ){
+       if(trim((string) $this->tre04_abreviatura) == null ){
          $this->erro_sql = " Campo Abreviatura nao Informado.";
          $this->erro_campo = "tre04_abreviatura";
          $this->erro_banco = "";
@@ -292,22 +292,22 @@ class cl_pontoparada {
          return false;
        }
      }
-     if(trim($this->tre04_pontoreferencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_pontoreferencia"])){
+     if(trim((string) $this->tre04_pontoreferencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_pontoreferencia"])){
        $sql  .= $virgula." tre04_pontoreferencia = '$this->tre04_pontoreferencia' ";
        $virgula = ",";
      }
-     if(trim($this->tre04_latitude)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_latitude"])){
+     if(trim((string) $this->tre04_latitude)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_latitude"])){
        $sql  .= $virgula." tre04_latitude = $this->tre04_latitude ";
        $virgula = ",";
      }
-     if(trim($this->tre04_longitude)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_longitude"])){
+     if(trim((string) $this->tre04_longitude)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_longitude"])){
        $sql  .= $virgula." tre04_longitude = $this->tre04_longitude ";
        $virgula = ",";
      }
-     if(trim($this->tre04_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_tipo"])){
+     if(trim((string) $this->tre04_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre04_tipo"])){
        $sql  .= $virgula." tre04_tipo = $this->tre04_tipo ";
        $virgula = ",";
-       if(trim($this->tre04_tipo) == null ){
+       if(trim((string) $this->tre04_tipo) == null ){
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "tre04_tipo";
          $this->erro_banco = "";
@@ -331,25 +331,25 @@ class cl_pontoparada {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20082,'$this->tre04_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre04_sequencial"]) || $this->tre04_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3601,20082,'".AddSlashes(pg_result($resaco,$conresaco,'tre04_sequencial'))."','$this->tre04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3601,20082,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre04_sequencial'))."','$this->tre04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre04_cadenderbairrocadenderrua"]) || $this->tre04_cadenderbairrocadenderrua != "")
-             $resac = db_query("insert into db_acount values($acount,3601,20083,'".AddSlashes(pg_result($resaco,$conresaco,'tre04_cadenderbairrocadenderrua'))."','$this->tre04_cadenderbairrocadenderrua',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3601,20083,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre04_cadenderbairrocadenderrua'))."','$this->tre04_cadenderbairrocadenderrua',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre04_nome"]) || $this->tre04_nome != "")
-             $resac = db_query("insert into db_acount values($acount,3601,20084,'".AddSlashes(pg_result($resaco,$conresaco,'tre04_nome'))."','$this->tre04_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3601,20084,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre04_nome'))."','$this->tre04_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre04_abreviatura"]) || $this->tre04_abreviatura != "")
-             $resac = db_query("insert into db_acount values($acount,3601,20085,'".AddSlashes(pg_result($resaco,$conresaco,'tre04_abreviatura'))."','$this->tre04_abreviatura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3601,20085,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre04_abreviatura'))."','$this->tre04_abreviatura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre04_pontoreferencia"]) || $this->tre04_pontoreferencia != "")
-             $resac = db_query("insert into db_acount values($acount,3601,20086,'".AddSlashes(pg_result($resaco,$conresaco,'tre04_pontoreferencia'))."','$this->tre04_pontoreferencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3601,20086,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre04_pontoreferencia'))."','$this->tre04_pontoreferencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre04_latitude"]) || $this->tre04_latitude != "")
-             $resac = db_query("insert into db_acount values($acount,3601,20087,'".AddSlashes(pg_result($resaco,$conresaco,'tre04_latitude'))."','$this->tre04_latitude',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3601,20087,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre04_latitude'))."','$this->tre04_latitude',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre04_longitude"]) || $this->tre04_longitude != "")
-             $resac = db_query("insert into db_acount values($acount,3601,20088,'".AddSlashes(pg_result($resaco,$conresaco,'tre04_longitude'))."','$this->tre04_longitude',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3601,20088,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre04_longitude'))."','$this->tre04_longitude',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre04_tipo"]) || $this->tre04_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,3601,20089,'".AddSlashes(pg_result($resaco,$conresaco,'tre04_tipo'))."','$this->tre04_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3601,20089,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre04_tipo'))."','$this->tre04_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -403,17 +403,17 @@ class cl_pontoparada {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20082,'$tre04_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3601,20082,'','".AddSlashes(pg_result($resaco,$iresaco,'tre04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3601,20083,'','".AddSlashes(pg_result($resaco,$iresaco,'tre04_cadenderbairrocadenderrua'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3601,20084,'','".AddSlashes(pg_result($resaco,$iresaco,'tre04_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3601,20085,'','".AddSlashes(pg_result($resaco,$iresaco,'tre04_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3601,20086,'','".AddSlashes(pg_result($resaco,$iresaco,'tre04_pontoreferencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3601,20087,'','".AddSlashes(pg_result($resaco,$iresaco,'tre04_latitude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3601,20088,'','".AddSlashes(pg_result($resaco,$iresaco,'tre04_longitude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3601,20089,'','".AddSlashes(pg_result($resaco,$iresaco,'tre04_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3601,20082,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3601,20083,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre04_cadenderbairrocadenderrua'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3601,20084,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre04_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3601,20085,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre04_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3601,20086,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre04_pontoreferencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3601,20087,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre04_latitude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3601,20088,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre04_longitude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3601,20089,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre04_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -474,7 +474,7 @@ class cl_pontoparada {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pontoparada";
@@ -489,7 +489,7 @@ class cl_pontoparada {
    function sql_query ( $tre04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -513,7 +513,7 @@ class cl_pontoparada {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -526,7 +526,7 @@ class cl_pontoparada {
    function sql_query_file ( $tre04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -547,7 +547,7 @@ class cl_pontoparada {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,7 +561,7 @@ class cl_pontoparada {
   function sql_query_departamento ( $tre04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -584,7 +584,7 @@ class cl_pontoparada {
           $sql .= $sql2;
           if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = preg_split("#\\##m",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
               $sql .= $virgula.$campos_sql[$i];
@@ -600,7 +600,7 @@ class cl_pontoparada {
 
     if ($campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
 
       for ($i=0;$i<sizeof($campos_sql);$i++) {
@@ -633,7 +633,7 @@ class cl_pontoparada {
     if ($ordem != null ) {
 
       $sql        .= " order by ";
-      $campos_sql  = split("#",$ordem);
+      $campos_sql  = preg_split("#\\##m",(string) $ordem);
       $virgula     = "";
 
       for ($i = 0; $i < sizeof($campos_sql); $i++) {

@@ -97,7 +97,7 @@ function js_limpa() {
             <td><b>Nível:</b></td>
             <td>
               <?php 
-                $aNivel = array('1A' => 'Órgão Até o Nível',
+                $aNivel = ['1A' => 'Órgão Até o Nível',
                                 '2A' => 'Unidade Até o Nível',
                                 '3A' => 'Função Até o Nível',
                                 '3B' => 'Função só o Nível',
@@ -110,7 +110,7 @@ function js_limpa() {
                                 '7A' => 'Elemento Até o Nível',
                                 '7B' => 'Elemento só o Nível',
                                 '8A' => 'Recurso Até o Nível',
-                                '8B' => 'Recurso só o Nível');
+                                '8B' => 'Recurso só o Nível'];
                 
                 db_select('nivel', $aNivel, true, 2, "style='width:100%'");
               ?>

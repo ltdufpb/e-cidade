@@ -8,7 +8,7 @@ abstract class DebitoContaStatus
   const ATIVO = 2;
   const INATIVO = 3;
 
-  public static $sDescricao = array(self::PENDENTE => 'Pendente',
+  public static $sDescricao = [self::PENDENTE => 'Pendente',
                                     self::ATIVO => 'Ativo',
-                                    self::INATIVO => 'Inativo');
+                                    self::INATIVO => 'Inativo'];
 }

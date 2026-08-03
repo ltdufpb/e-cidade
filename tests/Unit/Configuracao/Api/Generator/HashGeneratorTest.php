@@ -15,7 +15,6 @@ class HashGeneratorTest extends TestCase
 
     protected function setUp()
     {
-        parent::setUp();
         $this->key = time() . '_KEY';
     }
 
@@ -44,16 +43,16 @@ class HashGeneratorTest extends TestCase
 
     public function testShouldDecryptDeepArray()
     {
-        $data = array(
+        $data = [
             'name' => 'John',
-            'options' => array(
+            'options' => [
                 'opt1' => 'аю',
                 'opt2' => 'BB',
-                0 => array(
+                0 => [
                     'outro'
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $hash = HashGenerator::encrypt($data, $this->key);
         $decrypted = HashGenerator::decrypt($hash, $this->key);
 
@@ -70,13 +69,13 @@ class HashGeneratorTest extends TestCase
      */
     public function provideData()
     {
-        return array(
-            array(
-                array(
+        return [
+            [
+                [
                     'name' => 'john',
                     'i_love_u' => 3000
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 }

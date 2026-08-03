@@ -57,10 +57,10 @@ if ($method == "getDadosExame"){
   
 } else if ($method == "salvarExame") {
   
-  $array = array(
+  $array = [
                  "h56_rhestagiocomissao" => $objJson->h56_estagiocomissao,
                  "h56_avaliador"         => $objJson->h56_avaliador
-                );
+                ];
   echo  $objExame->salvarExame($array);
   
 }

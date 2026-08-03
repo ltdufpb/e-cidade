@@ -49,7 +49,7 @@ try {
 
             $sql = $daoTetoOrcamentario->sql_query($codigo, $campos);
             $rs = db_query($sql);
-            $retorno->tetosOrcamentarios = array();
+            $retorno->tetosOrcamentarios = [];
 
             if (!$rs) {
                 throw new DBException("Erro ao buscar os tetos orçamentários.");
@@ -91,8 +91,8 @@ try {
 
             $daoTetoOrcamentario = new cl_teto_orcamentario();
 
-            $orgao = substr($parametros->unidade, 0, 2);
-            $unidade = substr($parametros->unidade, 2, 2);
+            $orgao = substr((string) $parametros->unidade, 0, 2);
+            $unidade = substr((string) $parametros->unidade, 2, 2);
 
             $where  = " c40_ano                        = {$parametros->ano}";
             $where .= " AND c40_orgao                  = {$orgao}";
@@ -160,7 +160,7 @@ try {
                     }
 
                     $linhasPrevisaoDespesa = pg_num_rows($rsPrevisaoDespesa);
-                    $codigosPrevisaoDespesa = array();
+                    $codigosPrevisaoDespesa = [];
                     for ($i = 0; $i < $linhasPrevisaoDespesa; $i++) {
                         $codigosPrevisaoDespesa[] = db_utils::fieldsMemory($rsPrevisaoDespesa, $i)->c333_sequencial;
                     }

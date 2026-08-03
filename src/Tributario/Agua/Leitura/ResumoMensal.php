@@ -13,22 +13,11 @@ class ResumoMensal {
   private $aLeituras;
 
   /**
-   * @var int
-   */
-  private $iAno;
-
-  /**
-   * @var int
-   */
-  private $iMes;
-
-  /**
    * @param integer $iMes
    * @param integer $iAno
    */
-  public function __construct($iMes, $iAno) {
-    $this->iMes = $iMes;
-    $this->iAno = $iAno;
+  public function __construct(private $iMes, private $iAno)
+  {
   }
 
   /**
@@ -57,9 +46,7 @@ class ResumoMensal {
    */
   public function getDataLeitura() {
 
-    return DBDate::createFromTimestamp(max(array_map(function (AguaLeitura $oLeitura) {
-      return $oLeitura->getDataLeitura() ? $oLeitura->getDataLeitura()->getTimeStamp() : 0;
-    }, $this->aLeituras)));
+    return DBDate::createFromTimestamp(max(array_map(fn(AguaLeitura $oLeitura) => $oLeitura->getDataLeitura() ? $oLeitura->getDataLeitura()->getTimeStamp() : 0, $this->aLeituras)));
   }
 
   /**
@@ -84,9 +71,7 @@ class ResumoMensal {
    */
   public function getConsumo() {
 
-    return array_sum(array_map(function (AguaLeitura $oLeitura) {
-      return $oLeitura->getConsumo();
-    }, $this->aLeituras));
+    return array_sum(array_map(fn(AguaLeitura $oLeitura) => $oLeitura->getConsumo(), $this->aLeituras));
   }
 
   /**
@@ -94,8 +79,6 @@ class ResumoMensal {
    */
   public function getLeitura() {
 
-    return min(array_map(function (AguaLeitura $oLeitura) {
-      return $oLeitura->getLeitura();
-    }, $this->aLeituras));
+    return min(array_map(fn(AguaLeitura $oLeitura) => $oLeitura->getLeitura(), $this->aLeituras));
   }
 }

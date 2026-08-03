@@ -234,7 +234,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'','z01_nomeescrito')
     </td>
    <td>
 <?php 
-$x = array('I'=>'Inclusão','A'=>'Alteração');
+$x = ['I'=>'Inclusão','A'=>'Alteração'];
 db_select('q29_tipo',$x,true,2);
 ?>
     </td>
@@ -368,7 +368,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 <?php 

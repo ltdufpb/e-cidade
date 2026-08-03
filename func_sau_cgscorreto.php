@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_cgscorreto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_cgscorreto = new cl_sau_cgscorreto;
 $clsau_cgscorreto->rotulo->label("s127_i_codigo");
 $clsau_cgscorreto->rotulo->label("s127_i_numcgs");
@@ -98,9 +98,9 @@ $clsau_cgscorreto->rotulo->label("s127_i_numcgs");
         }else{
            $sql = $clsau_cgscorreto->sql_query("",$campos,"s127_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s127_i_codigo)){
-          $repassa = array("chave_s127_i_codigo"=>$chave_s127_i_codigo,"chave_s127_i_codigo"=>$chave_s127_i_codigo);
+          $repassa = ["chave_s127_i_codigo"=>$chave_s127_i_codigo,"chave_s127_i_codigo"=>$chave_s127_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_undmedhorario_classe.php"));
 include(modification("classes/db_medicos_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clundmedhorario = new cl_undmedhorario;
 $clmedicos = new cl_medicos;
 $db_botao = true;
@@ -72,7 +72,7 @@ if(isset($excluir)){
             and extract(dow from sd23_d_consulta ) = $sd30_i_diasemana ";
 
  $result = db_query( $sql );
- if( pg_numrows( $result ) > 0 ){
+ if( pg_num_rows( $result ) > 0 ){
      echo "<script>alert('Profissional tem agendamentos efetuadas posteriormente. Não permitindo a exclusão do horário')</script>";
  }else{
      db_inicio_transacao();

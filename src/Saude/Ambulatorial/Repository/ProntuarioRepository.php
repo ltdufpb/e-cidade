@@ -39,20 +39,15 @@ class ProntuarioRepository
     /**
      * @var array
      */
-    private $scopes = array();
-
-    /**
-     * @var Object
-     */
-    private $dao;
+    private $scopes = [];
 
     /**
      * ProntuarioRepository constructor.
      * @param $dao \cl_prontuarios
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**

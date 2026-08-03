@@ -6,7 +6,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_empagemovjustificativa_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempagemovjustificativa = new cl_empagemovjustificativa;
 $clempagemovjustificativa->rotulo->label("e09_codmov");
 $clempagemovjustificativa->rotulo->label("e09_sequencial");
@@ -48,9 +48,9 @@ if(!isset($pesquisa_chave)){
   }else{
     $sql = $clempagemovjustificativa->sql_query("",$campos,"e09_codmov","");
   }
-  $repassa = array();
+  $repassa = [];
   if(isset($chave_e09_sequencial)){
-    $repassa = array("chave_e09_codmov"=>$chave_e09_codmov,"chave_e09_sequencial"=>$chave_e09_sequencial);
+    $repassa = ["chave_e09_codmov"=>$chave_e09_codmov,"chave_e09_sequencial"=>$chave_e09_sequencial];
   }
   echo '<div class="container">';
   echo '  <fieldset>';

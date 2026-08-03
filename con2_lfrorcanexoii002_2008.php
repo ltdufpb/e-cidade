@@ -32,12 +32,12 @@ include(modification("libs/db_libcontabilidade.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $anousu  = db_getsession("DB_anousu");
 $instit  = db_getsession("DB_instit");
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 
 $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 
@@ -45,7 +45,7 @@ db_fieldsmemory($resultinst,0);
 $descr_inst = "MUNICÍPIO DE ".$munic;
 $classinatura = new cl_assinatura;
 
-  $nivela = substr($nivel,0,1);
+  $nivela = substr((string) $nivel,0,1);
   $sele_work = ' o58_instit in ('.str_replace('-',', ',$db_selinstit).')';
   
 	$sql_orgaos = "select distinct o41_orgao
@@ -53,7 +53,7 @@ $classinatura = new cl_assinatura;
 			                inner join orcorgao on o41_orgao = o40_orgao and o40_anousu = $anousu
 		             where o41_anousu = $anousu and o41_instit  in (".str_replace('-', ',', $db_selinstit).")";
   $res_orgaos  = @db_query($sql_orgaos);
-  $numrows     = @pg_numrows($res_orgaos);
+  $numrows     = @pg_num_rows($res_orgaos);
   $orgaos      = "";
   $separador   = "";
   
@@ -68,12 +68,12 @@ $classinatura = new cl_assinatura;
   db_query("begin");
   db_query("create temp table t(o58_orgao int8,o58_unidade int8,o58_funcao int8,o58_subfuncao int8,o58_programa int8,o58_projativ int8,o58_elemento int8,o58_codigo int8)");
     
-  $xcampos = split("-",$orgaos);
+  $xcampos = preg_split("#\\-#m",$orgaos);
   
   for($i=0;$i < sizeof($xcampos);$i++){
      $where = '';
      $virgula = ''; 
-     $xxcampos = split("_",$xcampos[$i]);
+     $xxcampos = preg_split("#_#m",(string) $xcampos[$i]);
      for($ii=0;$ii<sizeof($xxcampos);$ii++){
         if($ii > 0){
           $where .= $virgula.$xxcampos[$ii];
@@ -101,9 +101,9 @@ db_query("commit");
 
 $dados = data_periodo($anousu,$bimestre);
 
-$periodo  = strtoupper($dados["periodo"]);
-$perini   = split("-",$dados[0]);
-$perfin   = split("-",$dados[1]);
+$periodo  = strtoupper((string) $dados["periodo"]);
+$perini   = preg_split("#\\-#m",(string) $dados[0]);
+$perfin   = preg_split("#\\-#m",(string) $dados[1]);
 
 $mesini   = strtoupper(db_mes($perini[1]));
 $mesfin   = strtoupper(db_mes($perfin[1]));
@@ -233,7 +233,7 @@ $y =0;
 db_fieldsmemory($result,0);
 $func_muda = $o58_funcao;
 $total_e = 0;
-for($y=0;$y<pg_numrows($result_grup);$y++){
+for($y=0;$y<pg_num_rows($result_grup);$y++){
    db_fieldsmemory($result_grup,$y);
    $soma_dot[$y]       = $dot_ini_s;
    $soma_dot_at[$y]    = $dot_ini_s + $suplementado_s - $reduzir;//
@@ -250,7 +250,7 @@ for($y=0;$y<pg_numrows($result_grup);$y++){
 }
 
 $total_e_intra = 0;
-for($y=0;$y<pg_numrows($result_grup_intra);$y++){
+for($y=0;$y<pg_num_rows($result_grup_intra);$y++){
    db_fieldsmemory($result_grup_intra,$y);
    $soma_dot_intra[$y]       = $dot_ini_s;
    $soma_dot_at_intra[$y]    = $dot_ini_s + $suplementado_s - $reduzir;//
@@ -321,7 +321,7 @@ $pdf->setfont('arial','',4);
 $pdf->ln(2);
 $pdf->cell(1,$alt,'RREO - Anexo II (LRF, Art. 52, inciso II, alínea "c")',"B",0,"L",0);
 $pdf->cell(190,$alt,'R$ 1,00',"B",1,"R",0);
-cabecalho($bimestre,&$pdf); 
+cabecalho($bimestre); 
 db_fieldsmemory($result,0);
 $funcao = 0;
 $soma_dot_ini = 0;
@@ -358,7 +358,7 @@ $pdf->setfont('arial','B',5);
 $pos_exceto_intra = $pdf->getY();
  
 
-for ($i=0;$i<pg_numrows($result);$i++) {
+for ($i=0;$i<pg_num_rows($result);$i++) {
   
   db_fieldsmemory($result,$i);
   $coltotal = $liquidado_acumulado_p;
@@ -372,7 +372,7 @@ for ($i=0;$i<pg_numrows($result);$i++) {
     $soma_inscrito     += abs($empenhado_acumulado_p - $anulado_acumulado_p - $liquidado_acumulado_p);
   }
 }
-for($i=0;$i<pg_numrows($result_intra);$i++){
+for($i=0;$i<pg_num_rows($result_intra);$i++){
   
   db_fieldsmemory($result_intra,$i);
   $coltotal = $liquidado_acumulado_p;
@@ -414,28 +414,28 @@ $soma_nobliquidado = 0;
 $soma_aliquidado = 0;
 
 */  
-for($i=0;$i<pg_numrows($result);$i++) {
-  
+for($i=0;$i<pg_num_rows($result);$i++) {
+
   $ae = 0;
   $atotal =0;
   db_fieldsmemory($result,$i);
   if($pdf->gety() > $pdf->h-35) {
-    
+
      $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","T",1,"R",0); 
      $pdf->cell(190,$alt,'',"T",1,"L",0);
-     
+
      $pdf->addpage();
      $pdf->ln(2);
      $pdf->cell(190,$alt,'Continuação '.($pdf->pageNo()-1)."/{nb}","B",1,"R",0);
      $pdf->cell(1,$alt,'RREO - Anexo II (LRF, Art. 52, inciso II, alínea "c")',"B",0,"L",0);
      $pdf->cell(190,$alt,'R$ 1,00',"B",1,"R",0);
-     cabecalho($bimestre,&$pdf); 
+     cabecalho($bimestre); 
     #funcao....
-  
+
   }
 
   if ($o58_funcao != $func_muda) {
-   
+
     $pdf->setfont('arial','B',5);
     $pdf->cell(40,$alt,$o52_descr,"R",0,"L",0);
     $pdf->cell($iTamanhoDotacaoInicial      , $alt, db_formatar($soma_dot[$y],'f'),"LR",0,"R",0);
@@ -447,7 +447,7 @@ for($i=0;$i<pg_numrows($result);$i++) {
     if ($bimestre == "6B") {
       $pdf->cell($iTamanhoInscritos, $alt, db_formatar($soma_inscritos[$y],'f'),"LR",0,"R",0);
     }
-   
+
     @$etotal = (($soma_inscritos[$y]+$soma_liq_ac[$y])/($nTotalDespesasLiquidadas))*100;
     $pdf->cell($iTamanhoTotalSobreB,$alt,db_formatar($etotal,'f'),"LR",0,"R",0);
     @$ae = (($soma_inscritos[$y]+$soma_liq_ac[$y])/$soma_dot_at[$y])*100;
@@ -458,7 +458,7 @@ for($i=0;$i<pg_numrows($result);$i++) {
 
   }
   $pdf->setfont('arial','',5);
-  $pdf->cell(40,$alt,"   ".substr($o53_descr,0,32),"R",0,"L",0);
+  $pdf->cell(40,$alt,"   ".substr((string) $o53_descr,0,32),"R",0,"L",0);
   $pdf->cell($iTamanhoDotacaoInicial      , $alt,db_formatar($dot_ini_p,'f'),"LR",0,"R",0);
   $pdf->cell($iTamanhoDotacaoAtualizado   , $alt,db_formatar($dot_ini_p + $suplementado_p - $reduzir_p,'f'),"LR",0,"R",0);
   $pdf->cell($iTamanhoEmpenhadoNoBimestre , $alt,db_formatar($empenhado_p - $anulado_p,'f'),"LR",0,"R",0);
@@ -479,7 +479,7 @@ for($i=0;$i<pg_numrows($result);$i++) {
   }
   $pdf->cell($iTamanhoTotalBSobreA,$alt,db_formatar($ae,'f'),"LR",0,"R",0);
   $pdf->cell($iTamanhoSaldoLiquidar,$alt,db_formatar(($dot_ini_p + $suplementado_p - $reduzir_p)-($inscrito_p+$liquidado_acumulado_p),'f'),0,1,"R",0);
-  
+
   $coltotal          = $liquidado_acumulado_p;
   /*$soma_dot_ini      = $soma_dot_ini      + $dot_ini_p;
   $soma_atualizada   = $soma_atualizada   + (($dot_ini_p + $suplementado_p) - $reduzir_p);
@@ -515,28 +515,28 @@ $pdf->cell($iTamanhoTotalBSobreA , $alt, db_formatar($ttotalae,"f"),"LR",0,"R",0
 $pdf->cell($iTamanhoSaldoLiquidar, $alt, db_formatar($xsoma_atualizada - ($xsoma_inscritos+$xsoma_aliquidado),'f'),"L",1,"R",0);
 
 $y = 0; 
-for($i=0;$i<pg_numrows($result_intra);$i++) {
-  
+for($i=0;$i<pg_num_rows($result_intra);$i++) {
+
   $ae = 0;
   $atotal =0;
   db_fieldsmemory($result_intra,$i);
-  
+
   if ($pdf->gety() > $pdf->h-35) {
-    
+
      $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","T",1,"R",0); 
      $pdf->cell(190,$alt,'',"T",1,"L",0);
-     
+
      $pdf->addpage();
      $pdf->ln(2);
      $pdf->cell(190,$alt,'Continuação '.($pdf->pageNo()-1)."/{nb}","B",1,"R",0);
      $pdf->cell(1,$alt,'RREO - Anexo II (LRF, Art. 52, inciso II, alínea "c")',"B",0,"L",0);
      $pdf->cell(190,$alt,'R$ 1,00',"B",1,"R",0);
-     cabecalho($bimestre,&$pdf); 
-  
+     cabecalho($bimestre); 
+
   }
 
   if ($o58_funcao != $func_muda) {
-    
+
     $pdf->setfont('arial','B',5);
     $pdf->cell(40,$alt,$o52_descr,"R",0,"L",0);
     $pdf->cell($iTamanhoDotacaoInicial      , $alt, db_formatar($soma_dot_intra[$y],'f'),"LR",0,"R",0);
@@ -548,7 +548,7 @@ for($i=0;$i<pg_numrows($result_intra);$i++) {
     if ($bimestre == "6B") {
       $pdf->cell($iTamanhoInscritos, $alt, db_formatar($soma_inscritos_intra[$y],'f'),"LR",0,"R",0);
     }
-    
+
     @$etotal = (($soma_inscritos_intra[$y]+$soma_liq_ac_intra[$y])/$nTotalDespesasLiquidadas)*100;
     $pdf->cell($iTamanhoTotalSobreB,$alt,db_formatar($etotal,'f'),"LR",0,"R",0);
     @$ae = (($soma_inscritos_intra[$y]+$soma_liq_ac[$y])/$soma_dot_at_intra[$y])*100;
@@ -556,11 +556,11 @@ for($i=0;$i<pg_numrows($result_intra);$i++) {
     $pdf->cell($iTamanhoTotalBSobreA,$alt,db_formatar($ae,'f'),"LR",0,"R",0);
     $pdf->cell($iTamanhoSaldoLiquidar,$alt,db_formatar($soma_dot_at_intra[$y]-($soma_inscritos_intra[$y]+$soma_liq_ac_intra[$y]),'f'),"L",1,"R",0);
     $y++;
-  
+
   }
-  
+
     $pdf->setfont('arial','',5);
-    $pdf->cell(40,$alt,"   ".substr($o53_descr,0,32),"R",0,"L",0);
+    $pdf->cell(40,$alt,"   ".substr((string) $o53_descr,0,32),"R",0,"L",0);
     $pdf->cell($iTamanhoDotacaoInicial,$alt,db_formatar($dot_ini_p,'f'),"LR",0,"R",0);
     $pdf->cell($iTamanhoDotacaoAtualizado,$alt,db_formatar($dot_ini_p + $suplementado_p - $reduzir_p,'f'),"LR",0,"R",0);
     $pdf->cell($iTamanhoEmpenhadoNoBimestre,$alt,db_formatar($empenhado_p - $anulado_p,'f'),"LR",0,"R",0);
@@ -570,7 +570,7 @@ for($i=0;$i<pg_numrows($result_intra);$i++) {
     if ($bimestre == "6B") {
       $pdf->cell($iTamanhoInscritos, $alt, db_formatar($inscrito_p,'f'),"LR",0,"R",0);
     }
-     
+
     @$etotal = (($inscrito_p+$liquidado_acumulado_p)/$nTotalDespesasLiquidadas)*100;
     $pdf->cell($iTamanhoTotalSobreB,$alt,db_formatar($etotal,'f'),"LR",0,"R",0);
     if (($dot_ini_p + $suplementado_p) != 0) {
@@ -580,7 +580,7 @@ for($i=0;$i<pg_numrows($result_intra);$i++) {
     }
     $pdf->cell($iTamanhoTotalBSobreA,$alt,db_formatar($ae,'f'),"LR",0,"R",0);
     $pdf->cell($iTamanhoSaldoLiquidar,$alt,db_formatar(($dot_ini_p + $suplementado_p)-($inscrito_p+$liquidado_acumulado_p),'f'),0,1,"R",0);
-  
+
   $coltotal = $liquidado_acumulado_p;
   /*$soma_dot_ini      = $soma_dot_ini      + $dot_ini_p;
   $soma_atualizada   = $soma_atualizada   + (($dot_ini_p + $suplementado_p) - $reduzir_p);
@@ -615,12 +615,12 @@ $pdf->cell($iTamanhoTotalSobreB, $alt, db_formatar($totalae,'f'),"LRTB",0,"R",0)
 $pdf->cell($iTamanhoTotalBSobreA , $alt, db_formatar($ttotalae,"f"),"LRTB",0,"R",0);
 $pdf->cell($iTamanhoSaldoLiquidar, $alt, db_formatar($soma_atualizada - ($soma_inscrito+$soma_aliquidado),'f'),"LTB",1,"R",0);
 
-notasExplicativas(&$pdf,52,"{$bimestre}",190);
+notasExplicativas($pdf,52,"{$bimestre}",190);
 
 $pdf->ln(20);
 
 // assinaturas
-assinaturas(&$pdf,&$classinatura,'LRF');
+assinaturas($pdf,$classinatura,'LRF');
 
 $pdf->Output();
 

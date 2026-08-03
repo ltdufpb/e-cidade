@@ -215,7 +215,7 @@ $sql .= "   order by recurso,rubric                                             
 
 $rsSql = db_query($sql);
 
-if(pg_numrows($rsSql) == 0){
+if(pg_num_rows($rsSql) == 0){
   
   db_redireciona('db_erros.php?fechar=true&db_erro=Não nenhum registro encontrado no período de '.$mes.' / '.$ano);
   
@@ -247,7 +247,7 @@ $t_desc      = 0;
 $t_liqu      = 0;
 $xsec = '';
 $oPdf->setfillcolor(235);
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
   
    db_fieldsmemory($result,$x);
    

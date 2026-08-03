@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 
@@ -87,7 +87,7 @@ function js_emite(){
 
 	<td><strong>Tipo:</strong>&nbsp;&nbsp;
     <?php 
-	  $x = array ("a" => "Analítico", "s" => "Sintético");
+	  $x =  ["a" => "Analítico", "s" => "Sintético"];
 	  db_select('tipo', $x, true, 4, "");
 	?>
 

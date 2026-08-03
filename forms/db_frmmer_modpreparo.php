@@ -125,7 +125,7 @@ if(isset($opcao) && $opcao=="alterar"){
        <?=($db_botao1 == false?"disabled":"")?> >
 <br><br>
 <?php 
- $chavepri= array("me05_i_codigo"=>@$me05_i_codigo);
+ $chavepri= ["me05_i_codigo"=>@$me05_i_codigo];
  $cliframe_alterar_excluir->chavepri = $chavepri;
  if (isset($me05_i_cardapio) && @$me05_i_cardapio != "") {
    $cliframe_alterar_excluir->sql = $clmer_modpreparo->sql_query(null,'*',null," me05_i_cardapio = $me05_i_cardapio");

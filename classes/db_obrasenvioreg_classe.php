@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE obrasenvioreg
 class cl_obrasenvioreg { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ob17_codobrasenvioreg = 0; 
-   var $ob17_codobrasenvio = 0; 
-   var $ob17_codobra = 0; 
+   public $ob17_codobrasenvioreg = 0; 
+   public $ob17_codobrasenvio = 0; 
+   public $ob17_codobra = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ob17_codobrasenvioreg = int8 = Código 
                  ob17_codobrasenvio = int8 = Código do envio 
                  ob17_codobra = int4 = Código da obra 
                  ";
    //funcao construtor da classe 
-   function cl_obrasenvioreg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obrasenvioreg"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -91,10 +91,10 @@ class cl_obrasenvioreg {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ob17_codobrasenvioreg = pg_result($result,0,0); 
+       $this->ob17_codobrasenvioreg = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from obrasenvioreg_ob17_codobrasenvioreg_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ob17_codobrasenvioreg)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ob17_codobrasenvioreg)){
          $this->erro_sql = " Campo ob17_codobrasenvioreg maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -126,7 +126,7 @@ class cl_obrasenvioreg {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Registro das obras enviadas ($this->ob17_codobrasenvioreg) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Registro das obras enviadas já Cadastrado";
@@ -150,12 +150,12 @@ class cl_obrasenvioreg {
      $resaco = $this->sql_record($this->sql_query_file($this->ob17_codobrasenvioreg));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6432,'$this->ob17_codobrasenvioreg','I')");
-       $resac = db_query("insert into db_acount values($acount,1056,6432,'','".AddSlashes(pg_result($resaco,0,'ob17_codobrasenvioreg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1056,6431,'','".AddSlashes(pg_result($resaco,0,'ob17_codobrasenvio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1056,6433,'','".AddSlashes(pg_result($resaco,0,'ob17_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1056,6432,'','".AddSlashes(pg_fetch_result($resaco,0,'ob17_codobrasenvioreg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1056,6431,'','".AddSlashes(pg_fetch_result($resaco,0,'ob17_codobrasenvio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1056,6433,'','".AddSlashes(pg_fetch_result($resaco,0,'ob17_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -164,10 +164,10 @@ class cl_obrasenvioreg {
       $this->atualizacampos();
      $sql = " update obrasenvioreg set ";
      $virgula = "";
-     if(trim($this->ob17_codobrasenvioreg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob17_codobrasenvioreg"])){ 
+     if(trim((string) $this->ob17_codobrasenvioreg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob17_codobrasenvioreg"])){ 
        $sql  .= $virgula." ob17_codobrasenvioreg = $this->ob17_codobrasenvioreg ";
        $virgula = ",";
-       if(trim($this->ob17_codobrasenvioreg) == null ){ 
+       if(trim((string) $this->ob17_codobrasenvioreg) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ob17_codobrasenvioreg";
          $this->erro_banco = "";
@@ -177,10 +177,10 @@ class cl_obrasenvioreg {
          return false;
        }
      }
-     if(trim($this->ob17_codobrasenvio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob17_codobrasenvio"])){ 
+     if(trim((string) $this->ob17_codobrasenvio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob17_codobrasenvio"])){ 
        $sql  .= $virgula." ob17_codobrasenvio = $this->ob17_codobrasenvio ";
        $virgula = ",";
-       if(trim($this->ob17_codobrasenvio) == null ){ 
+       if(trim((string) $this->ob17_codobrasenvio) == null ){ 
          $this->erro_sql = " Campo Código do envio nao Informado.";
          $this->erro_campo = "ob17_codobrasenvio";
          $this->erro_banco = "";
@@ -190,10 +190,10 @@ class cl_obrasenvioreg {
          return false;
        }
      }
-     if(trim($this->ob17_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob17_codobra"])){ 
+     if(trim((string) $this->ob17_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob17_codobra"])){ 
        $sql  .= $virgula." ob17_codobra = $this->ob17_codobra ";
        $virgula = ",";
-       if(trim($this->ob17_codobra) == null ){ 
+       if(trim((string) $this->ob17_codobra) == null ){ 
          $this->erro_sql = " Campo Código da obra nao Informado.";
          $this->erro_campo = "ob17_codobra";
          $this->erro_banco = "";
@@ -211,15 +211,15 @@ class cl_obrasenvioreg {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6432,'$this->ob17_codobrasenvioreg','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ob17_codobrasenvioreg"]))
-           $resac = db_query("insert into db_acount values($acount,1056,6432,'".AddSlashes(pg_result($resaco,$conresaco,'ob17_codobrasenvioreg'))."','$this->ob17_codobrasenvioreg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1056,6432,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob17_codobrasenvioreg'))."','$this->ob17_codobrasenvioreg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ob17_codobrasenvio"]))
-           $resac = db_query("insert into db_acount values($acount,1056,6431,'".AddSlashes(pg_result($resaco,$conresaco,'ob17_codobrasenvio'))."','$this->ob17_codobrasenvio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1056,6431,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob17_codobrasenvio'))."','$this->ob17_codobrasenvio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ob17_codobra"]))
-           $resac = db_query("insert into db_acount values($acount,1056,6433,'".AddSlashes(pg_result($resaco,$conresaco,'ob17_codobra'))."','$this->ob17_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1056,6433,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob17_codobra'))."','$this->ob17_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -264,12 +264,12 @@ class cl_obrasenvioreg {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6432,'$ob17_codobrasenvioreg','E')");
-         $resac = db_query("insert into db_acount values($acount,1056,6432,'','".AddSlashes(pg_result($resaco,$iresaco,'ob17_codobrasenvioreg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1056,6431,'','".AddSlashes(pg_result($resaco,$iresaco,'ob17_codobrasenvio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1056,6433,'','".AddSlashes(pg_result($resaco,$iresaco,'ob17_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1056,6432,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob17_codobrasenvioreg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1056,6431,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob17_codobrasenvio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1056,6433,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob17_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from obrasenvioreg
@@ -329,7 +329,7 @@ class cl_obrasenvioreg {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:obrasenvioreg";
@@ -343,7 +343,7 @@ class cl_obrasenvioreg {
    function sql_query ( $ob17_codobrasenvioreg=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -368,7 +368,7 @@ class cl_obrasenvioreg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,7 +380,7 @@ class cl_obrasenvioreg {
    function sql_query_file ( $ob17_codobrasenvioreg=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -401,7 +401,7 @@ class cl_obrasenvioreg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

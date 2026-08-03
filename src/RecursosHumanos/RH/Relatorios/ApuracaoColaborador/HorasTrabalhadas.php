@@ -75,6 +75,7 @@ class HorasTrabalhadas extends Layout
         //@todo implementar total geral
     }
 
+    #[\Override]
     public function setPdf($pdf)
     {
         parent::setPdf($pdf);

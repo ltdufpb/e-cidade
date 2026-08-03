@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_calend_classe.php"));
 include(modification("classes/db_clientes_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cale                = new db_calendario;
 
@@ -41,4 +41,4 @@ $sql = db_getsession("segundoacesso")." = '$data'  and nome = '$identifica'";
 db_lovrot("$sql",30,'()');
 
 
-$cale->monta_fim_pagina(false);
+$cale->monta_fim_pagina();

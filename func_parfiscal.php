@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parfiscal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clparfiscal = new cl_parfiscal;
 $clparfiscal->rotulo->label("y32_instit");
 $clparfiscal->rotulo->label("y32_tipo");
@@ -78,9 +78,9 @@ $clparfiscal->rotulo->label("y32_tipo");
         }else{
            $sql = $clparfiscal->sql_query("",$campos,"y32_instit","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_y32_tipo)){
-          $repassa = array("chave_y32_instit"=>$chave_y32_instit,"chave_y32_tipo"=>$chave_y32_tipo);
+          $repassa = ["chave_y32_instit"=>$chave_y32_instit,"chave_y32_tipo"=>$chave_y32_tipo];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

@@ -20,34 +20,34 @@ class M8641DispensaPontoEletronico extends PostgresMigration
   private function criarDicionario() {
 
     // campos
-    $aColumns = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-    $aValues  = array(
-      array(1009351,'rh01_registrapontoeletronico','bool','Controla se o servidor bate o ponto ou se ele é lançado automaticamente, de acordo com a sua jornada.','t', 'Registra Ponto Eletrônico',1,'f','f','f',5,'text','Registra Ponto Eletrônico'),
-    );
-    $table = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+    $aColumns = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+    $aValues  = [
+      [1009351,'rh01_registrapontoeletronico','bool','Controla se o servidor bate o ponto ou se ele é lançado automaticamente, de acordo com a sua jornada.','t', 'Registra Ponto Eletrônico',1,'f','f','f',5,'text','Registra Ponto Eletrônico'],
+    ];
+    $table = $this->table('db_syscampo', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // vincula os campos as tabelas
-    $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-    $aValues  = array(
-      array(1153,1009351,27,0),
-    );
-    $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+    $aValues  = [
+      [1153,1009351,27,0],
+    ];
+    $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
   }
 
   private function adicionarCampo() {
 
-    $this->table('rhpessoal',    array('schema'=>'pessoal'))
-      ->addColumn('rh01_registrapontoeletronico', 'boolean', array('default' => true))
+    $this->table('rhpessoal',    ['schema'=>'pessoal'])
+      ->addColumn('rh01_registrapontoeletronico', 'boolean', ['default' => true])
       ->save();
   }
 
   private function removerCampo() {
 
-    $this->table('rhpessoal', array('schema' => 'pessoal'))
+    $this->table('rhpessoal', ['schema' => 'pessoal'])
       ->removeColumn('rh01_registrapontoeletronico')
       ->save();
   }

@@ -53,7 +53,7 @@ db_app::import("educacao.censo.CensoUFRepository");
 $oJson              = new Services_JSON();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno           = new stdClass();
-$oRetorno->dados    = array();
+$oRetorno->dados    = [];
 $oRetorno->status   = 1;
 
 switch ($oParam->exec){
@@ -63,12 +63,12 @@ switch ($oParam->exec){
     try {
       
       $oBase = new ImportacaoCadastroUnico();
-      $oBase->processarArquivo(utf8_decode($oParam->arquivo));
+      $oBase->processarArquivo(mb_convert_encoding($oParam->arquivo, 'ISO-8859-1'));
       $oRetorno->message = "Base importada com sucesso!";
       
     } catch (FileException $oErro) {
       
-      $sArquivo           = basename($oParam->arquivo);
+      $sArquivo           = basename((string) $oParam->arquivo);
       $oRetorno->message  = "Falha ao carregar arquivo \"$sArquivo\"!\n";
       $oRetorno->message .= $oErro->getMessage();
       $oRetorno->status   = 2;
@@ -85,7 +85,7 @@ switch ($oParam->exec){
     
     try {
 
-      $oImportacaoBeneficio        = new ImportacaoBeneficiosCidadao(utf8_decode($oParam->arquivo));
+      $oImportacaoBeneficio        = new ImportacaoBeneficiosCidadao(mb_convert_encoding($oParam->arquivo, 'ISO-8859-1'));
       $oRetorno->lPossuiBeneficios = false;
       $oRetorno->sCompetencia      = "{$oImportacaoBeneficio->getMesCompetencia()}/{$oImportacaoBeneficio->getAnoCompetencia()}";
       if ($oImportacaoBeneficio->hasBeneficiosNaCompetencia()) {
@@ -103,7 +103,7 @@ switch ($oParam->exec){
     try {
     
       db_inicio_transacao();
-      $oImportacaoBeneficio = new ImportacaoBeneficiosCidadao(utf8_decode($oParam->arquivo));
+      $oImportacaoBeneficio = new ImportacaoBeneficiosCidadao(mb_convert_encoding($oParam->arquivo, 'ISO-8859-1'));
       $oImportacaoBeneficio->processarArquivo();
       db_fim_transacao(false);
       $oRetorno->status = 1;
@@ -204,15 +204,7 @@ switch ($oParam->exec){
         db_fim_transacao();
       }
       $oRetorno->message .= urlencode("Avaliações importadas com sucesso");
-    } catch (BusinessException $oErro) {
-      
-      db_fim_transacao(true);
-      $oRetorno->message = urlencode($oErro->getMessage());
-    } catch (Exception $oErro) {
-      
-      db_fim_transacao(true);
-      $oRetorno->message = urlencode($oErro->getMessage());
-    } catch (ParameterException $oErro) {
+    } catch (BusinessException|Exception|ParameterException $oErro) {
       
       db_fim_transacao(true);
       $oRetorno->message = urlencode($oErro->getMessage());

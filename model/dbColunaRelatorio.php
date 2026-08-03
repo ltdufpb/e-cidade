@@ -93,13 +93,13 @@ final class dbColunaRelatorio implements iGeradorRelatorio {
    * @return string
    */
   public function getNome() {
-  
+
       if (db_utils::isUTF8($this->sNome)) {
-        return utf8_decode($this->sNome);
+        return mb_convert_encoding($this->sNome, 'ISO-8859-1');
       } else {
         return $this->sNome;
       }
-  	
+
    // return $this->sNome;
   }
   
@@ -121,7 +121,7 @@ final class dbColunaRelatorio implements iGeradorRelatorio {
   public function getAlias() {
 
 	    if (db_utils::isUTF8($this->sAlias)) {
-	      return utf8_decode($this->sAlias);
+	      return mb_convert_encoding($this->sAlias, 'ISO-8859-1');
 	    } else {
 	      return $this->sAlias;
 	    }
@@ -259,15 +259,15 @@ final class dbColunaRelatorio implements iGeradorRelatorio {
 
     $oXmlWriter->startElement('Campo');
     
-    $oXmlWriter->writeAttribute('id', utf8_encode($this->iId));
-    $oXmlWriter->writeAttribute('nome', utf8_encode($this->sNome));
-    $oXmlWriter->writeAttribute('alias', utf8_encode($this->sAlias));
-    $oXmlWriter->writeAttribute('largura', utf8_encode($this->iLargura));
-    $oXmlWriter->writeAttribute('alinhamento', utf8_encode($this->sAlinhamento));
-    $oXmlWriter->writeAttribute('alinhamentocab', utf8_encode($this->sAlinhamentoCab));
-    $oXmlWriter->writeAttribute('mascara', utf8_encode($this->sMascara));
-    $oXmlWriter->writeAttribute('totalizar', utf8_encode($this->sTotalizar));
-    $oXmlWriter->writeAttribute('quebra', utf8_encode($this->lQuebra));
+    $oXmlWriter->writeAttribute('id', mb_convert_encoding($this->iId, 'UTF-8', 'ISO-8859-1'));
+    $oXmlWriter->writeAttribute('nome', mb_convert_encoding($this->sNome, 'UTF-8', 'ISO-8859-1'));
+    $oXmlWriter->writeAttribute('alias', mb_convert_encoding($this->sAlias, 'UTF-8', 'ISO-8859-1'));
+    $oXmlWriter->writeAttribute('largura', mb_convert_encoding($this->iLargura, 'UTF-8', 'ISO-8859-1'));
+    $oXmlWriter->writeAttribute('alinhamento', mb_convert_encoding($this->sAlinhamento, 'UTF-8', 'ISO-8859-1'));
+    $oXmlWriter->writeAttribute('alinhamentocab', mb_convert_encoding($this->sAlinhamentoCab, 'UTF-8', 'ISO-8859-1'));
+    $oXmlWriter->writeAttribute('mascara', mb_convert_encoding($this->sMascara, 'UTF-8', 'ISO-8859-1'));
+    $oXmlWriter->writeAttribute('totalizar', mb_convert_encoding($this->sTotalizar, 'UTF-8', 'ISO-8859-1'));
+    $oXmlWriter->writeAttribute('quebra', mb_convert_encoding($this->lQuebra, 'UTF-8', 'ISO-8859-1'));
     
     $oXmlWriter->endElement();
     

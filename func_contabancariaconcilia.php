@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contabancaria_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clcontabancaria = new cl_contabancaria;
 $clcontabancaria->rotulo->label("db83_sequencial");
@@ -108,9 +108,9 @@ $clcontabancaria->rotulo->label("db83_descricao");
         }else{
            $sql = $clcontabancaria->sql_query_concilia("",$campos,"db83_sequencial",$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db83_descricao)){
-          $repassa = array("chave_db83_sequencial"=>$chave_db83_sequencial,"chave_db83_descricao"=>$chave_db83_descricao);
+          $repassa = ["chave_db83_sequencial"=>$chave_db83_sequencial,"chave_db83_descricao"=>$chave_db83_descricao];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

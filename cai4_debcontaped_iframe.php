@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("k00_numpre");
@@ -95,7 +95,7 @@ $sql = "select arrecad.k00_numpre,k00_numpar,k00_dtvenc,sum(k00_valor)as k00_val
 	              group by arrecad.k00_numpre,k00_numpar,k00_dtvenc,arrecad.k00_tipo,k00_descr
 				  order by arrecad.k00_numpre,arrecad.k00_numpar                  ";
 $result = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 if ($numrows > 0) {
 	echo "
 	    <tr class='bordas'>
@@ -125,7 +125,7 @@ for ($i = 0; $i < $numrows; $i ++) {
                   
     $chek="";
     $result_marca=db_query($sql_marca);               
-    if (pg_numrows($result_marca)>0){
+    if (pg_num_rows($result_marca)>0){
     	$chek="checked";
     }
 	echo "<tr>	    

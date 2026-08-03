@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["salvar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["salvar"])) {
+  db_postmemory($_POST);
   db_query("BEGIN");
   db_query("UPDATE db_confmensagem SET mens = '$obs1',alinhamento = 'posx1=$posx1&posy1=$posy1&tam1=$tam1' where cod = 'obsboleto1'");
   db_query("UPDATE db_confmensagem SET mens = '$obs2',alinhamento = 'posx2=$posx2&posy2=$posy2&tam2=$tam2' where cod = 'obsboleto2'");
@@ -40,14 +40,14 @@ if(isset($HTTP_POST_VARS["salvar"])) {
   db_query("COMMIT");
 }
 $result = db_query("select mens,alinhamento from db_confmensagem where cod in('obsboleto1','obsboleto2','obsboleto3','obsboleto4')");
-$obs1 = @pg_result($result,0,0);
-parse_str(@pg_result($result,0,1));
-$obs2 = @pg_result($result,1,0);
-parse_str(@pg_result($result,1,1));
-$obs3 = @pg_result($result,2,0);
-parse_str(@pg_result($result,2,1));
-$obs4 = @pg_result($result,3,0);
-parse_str(@pg_result($result,3,1));
+$obs1 = @pg_fetch_result($result,0,0);
+parse_str(@pg_fetch_result($result,0,1), $result);
+$obs2 = @pg_fetch_result($result,1,0);
+parse_str(@pg_fetch_result($result,1,1), $result);
+$obs3 = @pg_fetch_result($result,2,0);
+parse_str(@pg_fetch_result($result,2,1), $result);
+$obs4 = @pg_fetch_result($result,3,0);
+parse_str(@pg_fetch_result($result,3,1), $result);
 ?>
 <html>
 <head>

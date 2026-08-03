@@ -43,7 +43,7 @@ $clrotulo->label('e86_data');
 $clrotulo->label('e82_codord');
 $clrotulo->label('e81_valor');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 if(isset($dtini_ano) && $dtini_ano!=""){

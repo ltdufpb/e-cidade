@@ -63,7 +63,7 @@ require_once(modification('libs/db_utils.php'));
                       <b>Situação Exames:</b>
                     </td>
                     <td align="left">
-                      <?php $aX = array(0=>'TODOS', 1=>'ATIVOS', 2=>'DESATIVADOS');
+                      <?php $aX = [0=>'TODOS', 1=>'ATIVOS', 2=>'DESATIVADOS'];
                       db_select('situacao',$aX,true,1,"");?>
                     </td>
                   </tr>

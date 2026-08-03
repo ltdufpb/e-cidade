@@ -47,7 +47,7 @@ $clrotulo->label("pc23_quant");
 $clrotulo->label("pc23_vlrun");
 $clrotulo->label("pc23_valor");
 $clrotulo->label("pc23_obs");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $result_orcamitem = $clpcorcamjulg->sql_record($clpcorcamjulg->sql_query_relmotivo(null,null,"distinct on (pc22_orcamitem) pc22_orcamitem,pc29_orcamitem,pc31_orcamitem","pc22_orcamitem","pc20_codorc = ".$orcam));
 $numrows          = $clpcorcamjulg->numrows;
@@ -63,9 +63,9 @@ if($clempparametro->numrows > 0){
 db_fieldsmemory($result_orcamitem, 0);
 
 $head2 = "Relatório de motivos para troca";
-if(trim($pc29_orcamitem) != ""){
+if(trim((string) $pc29_orcamitem) != ""){
 	$head4 = "Orçamento de solicitação de compras";
-}else if(trim($pc31_orcamitem) != ""){
+}else if(trim((string) $pc31_orcamitem) != ""){
 	$head4 = "Orçamento de processo de compras";
 }
 $head5 = "Número do orçamento: ".$orcam;
@@ -118,12 +118,12 @@ for($i=1; $i <= $numrows; $i++){
        $result_menorpreco  = $clpcorcamval->sql_record($clpcorcamval->sql_query_julg(null,null,"pc23_valor,pc23_quant,pc23_obs,pc23_vlrun,z01_numcgm,z01_nome","pc23_valor","pc23_orcamitem = ".$pc22_orcamitem." and pc24_orcamitem is not null"));
        $result_forneatual  = $clpcorcamval->sql_record($clpcorcamval->sql_query_julg(null,null,"pc23_valor,pc23_quant,pc23_obs,pc23_vlrun,z01_numcgm,z01_nome","","pc23_orcamitem = ".$pc22_orcamitem." and pc24_pontuacao=1"));
 
-       if (trim($pc29_orcamitem) != "") {
+       if (trim((string) $pc29_orcamitem) != "") {
             $result_pcmatersol = $clpcorcamitem->sql_record($clpcorcamitem->sql_query_pcmatersol($pc22_orcamitem,"pc11_codigo as codigo,pc01_codmater,pc01_descrmater"));
             if ($clpcorcamitem->numrows > 0) {
                  db_fieldsmemory($result_pcmatersol,0);
             }
-       } elseif (trim($pc31_orcamitem) != "") {
+       } elseif (trim((string) $pc31_orcamitem) != "") {
             $result_pcmaterproc = $clpcorcamitem->sql_record($clpcorcamitem->sql_query_pcmaterproc($pc22_orcamitem,"pc81_codprocitem as codigo,pc01_codmater,pc01_descrmater"));
             if ($clpcorcamitem->numrows > 0) {
                  db_fieldsmemory($result_pcmaterproc,0);

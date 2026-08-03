@@ -37,7 +37,7 @@ class MaterialIncorporadoRepository
     /**
      * @var MaterialIncorporadoModel[]
      */
-    private $materiaisIncorporado = array();
+    private $materiaisIncorporado = [];
 
     public function addMaterialIncorporavel(MaterialIncorporadoModel $materialIncorporado)
     {

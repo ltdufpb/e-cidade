@@ -37,8 +37,8 @@ require_once(modification("classes/db_conlancamdig_classe.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clconplano       = new cl_conplano;
@@ -149,7 +149,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
  function js_preenchepesquisa(chave){
      db_iframe_conlancamemp.hide();
     <?php   
-    echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo "location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     ?>
  }
 </script>

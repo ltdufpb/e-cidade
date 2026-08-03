@@ -56,7 +56,7 @@
           <td align="center">
             <b>Opções;</b>
             <?php 
-              $aOpcaoBairros = array(0 => "Com os bairros selecionados", 1 => "Sem os bairros selecionados");
+              $aOpcaoBairros = [0 => "Com os bairros selecionados", 1 => "Sem os bairros selecionados"];
               db_select("iOpcaoBairro", $aOpcaoBairros, true, 1);
             ?>
           </td>

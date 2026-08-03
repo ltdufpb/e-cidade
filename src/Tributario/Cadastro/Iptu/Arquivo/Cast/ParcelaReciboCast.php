@@ -10,16 +10,13 @@ use ECidade\Tributario\Library\ArrayCollection;
 
 final class ParcelaReciboCast extends Cast
 {
-    private $reciboValorTotalStrategy;
-
-    public function __construct(ReciboValorTotal $reciboValorTotal)
+    public function __construct(private readonly ReciboValorTotal $reciboValorTotalStrategy)
     {
-        $this->reciboValorTotalStrategy = $reciboValorTotal;
     }
 
     public function arrayFromReciboCollection(ReciboCollection $reciboCollection)
     {
-        $array = array();
+        $array = [];
 
         foreach ($reciboCollection as $i => $recibo) {
             

@@ -61,13 +61,13 @@ class CaraliqIPTU implements iViradaIPTU {
    * Campos chave configurados na tabela iptutabelasconfigcampochave
    * @var array
    */
-  private $aCampoChave    = array();
+  private $aCampoChave    = [];
   
   /**
    * Campos correcao configurados na tabela iptutabelasconfigcampocorrecao
    * @var array
    */
-  private $aCampoCorrecao = array();
+  private $aCampoCorrecao = [];
   
   /**
    * @return $this->iAnoAtual
@@ -295,12 +295,12 @@ class CaraliqIPTU implements iViradaIPTU {
             $oDaoCaraLiq->$sNomeCampoCaraLiq = "{$nSomaPercentual}";
           } else {
           	
-          	if (trim($sNomeCampoCaraLiq) == 'j73_anousu') {
+          	if (trim((string) $sNomeCampoCaraLiq) == 'j73_anousu') {
           		
           		$iAnoUso = $this->getAnoNovo();
           		$oDaoCaraLiq->j73_anousu = $iAnoUso;
           		
-          	} else if (trim($sNomeCampoCaraLiq) == 'j73_caract') {
+          	} else if (trim((string) $sNomeCampoCaraLiq) == 'j73_caract') {
           		
               $iCaract = $oDadosCaraLiq->$sNomeCampoCaraLiq;
               

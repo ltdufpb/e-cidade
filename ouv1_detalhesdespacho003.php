@@ -89,7 +89,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1;" >
 	<form name="form1" action="">
-        <input type="hidden" id="storage" name="storage" value="<?php echo isset($oGet->storage) ? $oGet->storage : "" ?>">
+        <input type="hidden" id="storage" name="storage" value="<?php echo $oGet->storage ?? "" ?>">
 		<table align="center" >
 		  <tr>
 		    <td>
@@ -115,8 +115,8 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
 	              <td>
 	                <?php 
 
-	                  if ( trim($p58_dtproc) != '' ) {
-		                  $aDataProc = explode('-',$p58_dtproc);
+	                  if ( trim((string) $p58_dtproc) != '' ) {
+		                  $aDataProc = explode('-',(string) $p58_dtproc);
 		                  $iDia = $aDataProc[2];
 		                  $iMes = $aDataProc[1];
 		                  $iAno = $aDataProc[0];
@@ -225,7 +225,7 @@ if ( $clOuvidoriaAtendimentoLocal->numrows > 0 ) {
                 </td>
                 <td>
                   <?php 
-                    $aPublico = array("s"=>"Sim","n"=>"Não");
+                    $aPublico = ["s"=>"Sim","n"=>"Não"];
                     db_select('publico',$aPublico,true,1,'');
                   ?>
                 </td>

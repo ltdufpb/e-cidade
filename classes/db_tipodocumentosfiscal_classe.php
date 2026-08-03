@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE tipodocumentosfiscal
 class cl_tipodocumentosfiscal { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e12_sequencial = 0; 
-   var $e12_descricao = null; 
+   public $e12_sequencial = 0; 
+   public $e12_descricao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e12_sequencial = int4 = Código 
                  e12_descricao = varchar(50) = Descriçao 
                  ";
    //funcao construtor da classe 
-   function cl_tipodocumentosfiscal() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipodocumentosfiscal"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_tipodocumentosfiscal {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e12_sequencial = pg_result($result,0,0); 
+       $this->e12_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tipodocumentosfiscal_e12_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e12_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e12_sequencial)){
          $this->erro_sql = " Campo e12_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_tipodocumentosfiscal {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo Documentos Fiscais ($this->e12_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo Documentos Fiscais já Cadastrado";
@@ -152,11 +152,11 @@ class cl_tipodocumentosfiscal {
      $resaco = $this->sql_record($this->sql_query_file($this->e12_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14634,'$this->e12_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2572,14634,'','".AddSlashes(pg_result($resaco,0,'e12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2572,14635,'','".AddSlashes(pg_result($resaco,0,'e12_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2572,14634,'','".AddSlashes(pg_fetch_result($resaco,0,'e12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2572,14635,'','".AddSlashes(pg_fetch_result($resaco,0,'e12_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_tipodocumentosfiscal {
       $this->atualizacampos();
      $sql = " update tipodocumentosfiscal set ";
      $virgula = "";
-     if(trim($this->e12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e12_sequencial"])){ 
+     if(trim((string) $this->e12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e12_sequencial"])){ 
        $sql  .= $virgula." e12_sequencial = $this->e12_sequencial ";
        $virgula = ",";
-       if(trim($this->e12_sequencial) == null ){ 
+       if(trim((string) $this->e12_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "e12_sequencial";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_tipodocumentosfiscal {
          return false;
        }
      }
-     if(trim($this->e12_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e12_descricao"])){ 
+     if(trim((string) $this->e12_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e12_descricao"])){ 
        $sql  .= $virgula." e12_descricao = '$this->e12_descricao' ";
        $virgula = ",";
-       if(trim($this->e12_descricao) == null ){ 
+       if(trim((string) $this->e12_descricao) == null ){ 
          $this->erro_sql = " Campo Descriçao nao Informado.";
          $this->erro_campo = "e12_descricao";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_tipodocumentosfiscal {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14634,'$this->e12_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e12_sequencial"]) || $this->e12_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2572,14634,'".AddSlashes(pg_result($resaco,$conresaco,'e12_sequencial'))."','$this->e12_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2572,14634,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e12_sequencial'))."','$this->e12_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e12_descricao"]) || $this->e12_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,2572,14635,'".AddSlashes(pg_result($resaco,$conresaco,'e12_descricao'))."','$this->e12_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2572,14635,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e12_descricao'))."','$this->e12_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_tipodocumentosfiscal {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14634,'$e12_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2572,14634,'','".AddSlashes(pg_result($resaco,$iresaco,'e12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2572,14635,'','".AddSlashes(pg_result($resaco,$iresaco,'e12_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2572,14634,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2572,14635,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e12_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tipodocumentosfiscal
@@ -314,7 +314,7 @@ class cl_tipodocumentosfiscal {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tipodocumentosfiscal";
@@ -329,7 +329,7 @@ class cl_tipodocumentosfiscal {
    function sql_query ( $e12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -350,7 +350,7 @@ class cl_tipodocumentosfiscal {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -363,7 +363,7 @@ class cl_tipodocumentosfiscal {
    function sql_query_file ( $e12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_tipodocumentosfiscal {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

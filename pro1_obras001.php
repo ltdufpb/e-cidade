@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if (!isset($abas)) {
     echo "<script>location.href='pro1_obras005.php?db_opcao=1'</script>";
@@ -57,7 +57,7 @@ $db_botao = true;
 $sqlerro = false;
 $erro = "";
 
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Incluir") {
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Incluir") {
     db_inicio_transacao();
 
     $clobras->ob01_responsavelprojeto = $_POST["ob15_sequencial"];
@@ -133,7 +133,7 @@ if (isset($pri)) {
   </body>
   </html>
 <?php
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Incluir") {
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Incluir") {
     if ($sqlerro == true) {
         db_msgbox($erro);
 

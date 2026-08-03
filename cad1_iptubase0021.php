@@ -40,9 +40,9 @@ $verilote          = false;
 $verimatricula     = false;
 $j18_utidadosdiver = false;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 if(isset($testaentra)&& $testaentra=="true"){
   $result = $cliptubase->sql_record($cliptubase->sql_query($j01_matric,"z01_nome",""));
@@ -52,7 +52,7 @@ if(isset($testaentra)&& $testaentra=="true"){
 }
 $sqlcfiptu = "select * from cfiptu where j18_anousu = ".db_getsession('DB_anousu');
 $rsparametro = db_query($sqlcfiptu);
-$numrows     = pg_numrows($rsparametro);
+$numrows     = pg_num_rows($rsparametro);
 if($numrows > 0){
   db_fieldsmemory($rsparametro,0);
 }else{

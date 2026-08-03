@@ -14,6 +14,7 @@ class EstimativaReceitaCronogramaBuilder extends EstimativaReceitaBuilder
         $this->mapper = new EstimativaReceitaCronogramaMapper();
     }
 
+    #[\Override]
     public function buildAnalitico($dados, EstruturalReceita $estrutural, $temDesdobramento = false)
     {
         $this->defaultData($estrutural, $dados, $temDesdobramento);

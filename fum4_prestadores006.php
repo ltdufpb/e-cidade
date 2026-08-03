@@ -45,7 +45,7 @@ if (isset($liberaaba) && $liberaaba) {
       $sql = $clservicos->sql_query($_POST['fm08_codigo']);
       $result = $clservicos->sql_record($sql);
 
-      if (pg_numrows($result) > 0) {
+      if (pg_num_rows($result) > 0) {
          db_fieldsmemory($result, 0);   
          $db_opcao = 2;
          $db_botao = true;                    
@@ -54,7 +54,7 @@ if (isset($liberaaba) && $liberaaba) {
       $sql = $clprestador->sql_query($opcaoaba, 'fm06_codigo as fm08_prestador, fm06_numcgm as fm08_prestador_cgm, z01_nome as nome_prestador');
       $result = $clprestador->sql_record($sql);
 
-      if (pg_numrows($result) > 0) {
+      if (pg_num_rows($result) > 0) {
           db_fieldsmemory($result, 0);
       }
       $db_opcao = 1; 
@@ -62,7 +62,7 @@ if (isset($liberaaba) && $liberaaba) {
       $sql = $clprestador->sql_query($chavepesquisa, 'fm06_codigo as fm08_prestador, fm06_numcgm as fm08_prestador_cgm, z01_nome as nome_prestador');
       $result = $clprestador->sql_record($sql);
 
-      if (pg_numrows($result) > 0) {
+      if (pg_num_rows($result) > 0) {
           db_fieldsmemory($result, 0);
       }
       $db_opcao = 1;
@@ -85,7 +85,7 @@ if ($opcao == 'excluir') {
     $sql = $clprestador->sql_query($fm08_prestador);
     $result = $clprestador->sql_record($sql);
 
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
         db_fieldsmemory($result, 0);
     }
 

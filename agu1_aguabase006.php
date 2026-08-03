@@ -48,7 +48,7 @@
   $clhistocorrencia       = new cl_histocorrencia;
   $clhistocorrenciamatric = new cl_histocorrenciamatric;
 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   
   $db_opcao = 33;
   $db_botao = false;
@@ -115,7 +115,7 @@
   
     //exclusao das ocorrencias 
     $result  = $clhistocorrenciamatric->sql_record($clhistocorrenciamatric->sql_query("", "ar25_histocorrencia", "ar25_histocorrencia", "ar25_matric = $x01_matric"));
-    $numrows = pg_numrows($result);
+    $numrows = pg_num_rows($result);
     
     if ($numrows > 0) {
       for($i = 0; $i < $numrows; $i++) {

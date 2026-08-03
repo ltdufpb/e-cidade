@@ -73,17 +73,17 @@ require_once(modification("libs/db_utils.php"));
 	$where .= "and arretipo.k00_tipo in ($oGet->aTipoDebito) ";
   }
 
-	$aCabecalho       = array();
+	$aCabecalho       = [];
   $alt              = 5;
   $fonte            = 8;
   $iList            = 1;
   $codPrescr        = null;
-  $aCabecalho       = array();
-  $aTotalMatric     = array();
-  $aTotalInscr      = array();
-  $aTotalCgm        = array();
-  $aTotalExerc      = array();
-  $aTotalOrigem     = array();
+  $aCabecalho       = [];
+  $aTotalMatric     = [];
+  $aTotalInscr      = [];
+  $aTotalCgm        = [];
+  $aTotalExerc      = [];
+  $aTotalOrigem     = [];
   $iNroMatric       = 0;
   $iTotalParcial    = 0;
   $iNroInscr        = 0;
@@ -98,7 +98,7 @@ require_once(modification("libs/db_utils.php"));
   $GeralVlrMulta    = 0;
   $GeralVlrJuros    = 0;
   $GeralTotal       = 0;
-  $aEstrutural      = array();
+  $aEstrutural      = [];
   $head2 = "RELATÓRIO DE DÍVIDA PRESCRITA";
   $head3 = "DE ".db_formatar($oGet->datai,"d")." À ".db_formatar($oGet->dataf,"d");
   $head4 = $headOrdem;
@@ -190,7 +190,7 @@ require_once(modification("libs/db_utils.php"));
 	$rsPrescr    = db_query($sqlPrescr) or die($sqlPrescr);
 	$iRowsPrescr = pg_num_rows($rsPrescr);
 
-	$aResumos = array();
+	$aResumos = [];
 	$aAgrupaResumo['proced']      = 'v03_codigo';
 	$aAgrupaResumo['receita']     = 'k30_receit';
 	$aAgrupaResumo['tipo_proced'] = 'v03_tributaria';
@@ -251,11 +251,11 @@ require_once(modification("libs/db_utils.php"));
 
 		if($oGet->seltipo == "c"){
 
-			if( in_array( array($oPrescr->k30_numcgm,$oPrescr->k00_matric,$oPrescr->k00_inscr), $aCabecalho) ) {
+			if( in_array( [$oPrescr->k30_numcgm,$oPrescr->k00_matric,$oPrescr->k00_inscr], $aCabecalho) ) {
 				$lImprimeCab = false;
 			  $lImprimeSubTotal = false;
 			}else{
-				$aCabecalho[0] = array( $oPrescr->k30_numcgm, $oPrescr->k00_matric, $oPrescr->k00_inscr );
+				$aCabecalho[0] = [ $oPrescr->k30_numcgm, $oPrescr->k00_matric, $oPrescr->k00_inscr ];
 				$lImprimeCab = true;
 			  $lImprimeSubTotal = true;
 			}
@@ -284,7 +284,7 @@ require_once(modification("libs/db_utils.php"));
 
         $iTotalParcial = 0;
 
-        if(trim($oPrescr->k00_inscr) != "" ) {
+        if(trim((string) $oPrescr->k00_inscr) != "" ) {
         	if(isset($aTotalOrigem["INSCRIÇÃO"])){
 						 $aTotalOrigem["INSCRIÇÃO"]['valor' ] += $SubTotalVlrHist;
 						 $aTotalOrigem["INSCRIÇÃO"]['vlrcor'] += $SubTotalVlrCorr;
@@ -298,7 +298,7 @@ require_once(modification("libs/db_utils.php"));
 						 $aTotalOrigem["INSCRIÇÃO"]['juros' ]  = $SubTotalVlrJuros;
 						 $aTotalOrigem["INSCRIÇÃO"]['total' ]  = $SubTotal;
 					}
-        }else if(trim($oPrescr->k00_matric) != "") {
+        }else if(trim((string) $oPrescr->k00_matric) != "") {
         	if(isset($aTotalOrigem["MATRÍCULA"])){
 						 $aTotalOrigem["MATRÍCULA"]['valor' ] += $SubTotalVlrHist;
 						 $aTotalOrigem["MATRÍCULA"]['vlrcor'] += $SubTotalVlrCorr;
@@ -371,7 +371,7 @@ require_once(modification("libs/db_utils.php"));
 					foreach ($aTotalExerc as $key=> $aExercicio) {
 
 						$pdf->cell(80,$alt,""				 	 ,0,0,"C",0);
-						$pdf->cell(20,$alt,strtoupper($key),0,0,"C",0);
+						$pdf->cell(20,$alt,strtoupper((string) $key),0,0,"C",0);
 						$pdf->cell(20,$alt,db_formatar($aExercicio['valor' ],"f"),0,0,"R",0);
 						$pdf->cell(20,$alt,db_formatar($aExercicio['vlrcor'],"f"),0,0,"R",0);
 						$pdf->cell(20,$alt,db_formatar($aExercicio['multa' ],"f"),0,0,"R",0);
@@ -533,7 +533,7 @@ require_once(modification("libs/db_utils.php"));
 			$pdf->cell(20,$alt,$oPrescr->k30_numpre                    ,0,0,"C",$iList);
 			$pdf->cell(15,$alt,$oPrescr->k30_numpar                    ,0,0,"C",$iList);
 			$pdf->cell(15,$alt,$oPrescr->v01_exerc                     ,0,0,"C",$iList);
-			$pdf->cell(45,$alt,$oPrescr->v03_codigo ." - ". substr($oPrescr->v03_descr,0,30),0,0,"L",$iList);
+			$pdf->cell(45,$alt,$oPrescr->v03_codigo ." - ". substr((string) $oPrescr->v03_descr,0,30),0,0,"L",$iList);
 			$pdf->cell(15,$alt,$oPrescr->k30_receit                    ,0,0,"C",$iList);
       $pdf->cell(25,$alt,$oPrescr->login                         ,0,0,"C",$iList);
       $pdf->cell(20,$alt,($oPrescr->k30_anulado == "f" ? "Não" : db_formatar($oPrescr->k120_data,'d')) ,0,1,"C",$iList);

@@ -10,7 +10,7 @@ class protocoloTipoProcessoRPC
 {
 
     private $request;
-    private $response = array('success' => false, 'message' => '', 'data' => null);
+    private $response = ['success' => false, 'message' => '', 'data' => null];
 
     public function __construct()
     {

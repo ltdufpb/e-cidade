@@ -84,7 +84,7 @@ class RegraPonto {
 	 * @var Array
 	 * @access public
 	 */
-	private $aRubricas = array();
+	private $aRubricas = [];
 	
 	/**
 	 * Instância do objeto Instituição
@@ -134,7 +134,7 @@ class RegraPonto {
 																																						 $sWhereRegraPontoRhRubricas);
 		$rsRegraPontoRhRubricas      = $oDaoRegraPontoRhRubricas->sql_record($sSqlRegraPontoRhRubricas);
 		
-		$this->aRubricas = array();
+		$this->aRubricas = [];
 		foreach (db_utils::getCollectionByRecord($rsRegraPontoRhRubricas) as $oRegraPontoRhRubrica) {
 			$this->adicionarRubrica(new Rubrica($oRegraPontoRhRubrica->codigo_rubrica));
 		}
@@ -243,7 +243,7 @@ class RegraPonto {
 	 * @return void.
 	 */
 	public function limparRubricas() {
-		$this->aRubricas = array();
+		$this->aRubricas = [];
 	}
 
 	/**
@@ -440,7 +440,7 @@ class RegraPonto {
 		$rsRegraPontoRhRubricas   	= $oDaoRegraPontoRhrubricas->sql_record($sSqlRegraPontoRhRubricas);
 		$aRegras                    = db_utils::getCollectionByRecord($rsRegraPontoRhRubricas);
 		
-		$aRegrasLancamento          = array();
+		$aRegrasLancamento          = [];
 		foreach ($aRegras as $oRegra) {
 
 			$aRegrasLancamento[] = new RegraPonto($oRegra->codigo_regra);

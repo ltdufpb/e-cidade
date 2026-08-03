@@ -10,12 +10,12 @@ class CalendarioResource
      */
     public static function toArray(array $calendarios)
     {
-        $data = array();
+        $data = [];
         foreach ($calendarios as $calendario) {
-            $data[] = (object) array(
+            $data[] = (object) [
                 'id' => $calendario->ed52_i_codigo,
-                'descricao' => trim($calendario->ed52_c_descr)
-            );
+                'descricao' => trim((string) $calendario->ed52_c_descr)
+            ];
         }
         return $data;
     }

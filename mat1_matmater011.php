@@ -52,7 +52,7 @@ $db_botao = true;
 
 if(isset($incluir)) {
   db_inicio_transacao();
-  $m60_descr=addslashes($m60_descr);
+  $m60_descr=addslashes((string) $m60_descr);
   $m60_ativo="t";
   $clmatmater->m60_descr = $m60_descr;
   $clmatmater->m60_codmatunid = $m60_codmatunid;

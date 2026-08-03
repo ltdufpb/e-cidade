@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_clientesprodutoscomercial_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clclientesprodutoscomercial = new cl_clientesprodutoscomercial;
 $clclientesprodutoscomercial->rotulo->label("at91_sequencial");
 $clclientesprodutoscomercial->rotulo->label("at91_nome");
@@ -98,9 +98,9 @@ $clclientesprodutoscomercial->rotulo->label("at91_nome");
         }else{
            $sql = $clclientesprodutoscomercial->sql_query("",$campos,"at91_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at91_nome)){
-          $repassa = array("chave_at91_sequencial"=>$chave_at91_sequencial,"chave_at91_nome"=>$chave_at91_nome);
+          $repassa = ["chave_at91_sequencial"=>$chave_at91_sequencial,"chave_at91_nome"=>$chave_at91_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

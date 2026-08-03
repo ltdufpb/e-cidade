@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
 $clrotulo->label('codsubrec');
 $clrotulo->label('k07_descr');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>

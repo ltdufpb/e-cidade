@@ -49,26 +49,12 @@ use ServidorRepository;
 class ControleRubricasMatriculasService
 {
     /**
-     * @var ControleRubricasMatriculasRepository l
-     */
-    private $repository;
-
-    /**
-     * @var ControleRubricasMatriculasBuilder
-     */
-    private $builder;
-
-    /**
      * ControleHorasExtrasMatriculasService constructor.
      * @param ControleRubricasMatriculasRepository $repository
      * @param ControleRubricasMatriculasBuilder $builder
      */
-    public function __construct(
-        ControleRubricasMatriculasRepository $repository,
-        ControleRubricasMatriculasBuilder $builder
-    ) {
-        $this->repository = $repository;
-        $this->builder = $builder;
+    public function __construct(private readonly ControleRubricasMatriculasRepository $repository, private readonly ControleRubricasMatriculasBuilder $builder)
+    {
     }
 
     /**

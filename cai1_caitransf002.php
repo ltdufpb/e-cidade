@@ -55,15 +55,15 @@ $db_opcao   = 1;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-     $clcriaabas->identifica = array("transf"=>"Transferência","lanc"=>"Outros Lançamentos");
-     $clcriaabas->title      = array("transf"=>"Transferência","lanc"=>"Outros Lançamentos");
+     $clcriaabas->identifica = ["transf"=>"Transferência","lanc"=>"Outros Lançamentos"];
+     $clcriaabas->title      = ["transf"=>"Transferência","lanc"=>"Outros Lançamentos"];
      if (isset($chavepesquisa)) {
-       $clcriaabas->src  = array("transf"=>"cai1_caitransf005.php?chavepesquisa=$chavepesquisa","lanc"=>"cai1_caitransflanc001.php");
+       $clcriaabas->src  = ["transf"=>"cai1_caitransf005.php?chavepesquisa=$chavepesquisa","lanc"=>"cai1_caitransflanc001.php"];
      } else {  
-       $clcriaabas->src  = array("transf"=>"cai1_caitransf005.php","lanc"=>"cai1_caitransflanc001.php");
+       $clcriaabas->src  = ["transf"=>"cai1_caitransf005.php","lanc"=>"cai1_caitransflanc001.php"];
      }
-     $clcriaabas->sizecampo= array("transf"=>"25","lanc"=>"20");
-     $clcriaabas->disabled = array("lanc"=>false);   
+     $clcriaabas->sizecampo= ["transf"=>"25","lanc"=>"20"];
+     $clcriaabas->disabled = ["lanc"=>false];   
      $clcriaabas->cria_abas();   
     ?>
     </center>

@@ -121,7 +121,7 @@ if ($oDaofar_tiporeceitapadrao->numrows > 0) {
                     <b>Tipo de Retirada:</b>
                     <div style="width: 165px;">
                     <?php
-                    $aOptions = array("1" => "Normal", "2" => "Não Padronizada");
+                    $aOptions = ["1" => "Normal", "2" => "Não Padronizada"];
                     db_select(
                         "fa04_tiporetirada",
                         $aOptions,
@@ -638,12 +638,12 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
             function formata_data($dData, $iTipo = 1)
             {
                 if ($iTipo == 1) {
-                    $dData = explode('/', $dData);
+                    $dData = explode('/', (string) $dData);
                     $dData = $dData[2] . '-' . $dData[1] . '-' . $dData[0];
                     return $dData;
                 }
 
-                $dData = explode('-', $dData);
+                $dData = explode('-', (string) $dData);
                 $dData = $dData[2] . '/' . $dData[1] . '/' . $dData[0];
                 return $dData;
             }
@@ -1064,7 +1064,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                         validade = new Date(aData[2], (aData[1] - 1), aData[0]);
                         // Valida se não possui Próx. Disp.
                         if (avet[3] == '') {
-                            <?php $aVet = explode('-', $dHoje);
+                            <?php $aVet = explode('-', (string) $dHoje);
                             echo " hoje = new Date($aVet[0]," . ($aVet[1] - 1) . ",$aVet[2]); ";?>
                             tratamento = somaDataDiaMesAno(hoje, avet[4], 0, 0);
                         } else {
@@ -1087,7 +1087,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                 if (avet[9] != '' && avet[9].split('/').length == 3) {
                     aData = avet[9].split('/');
                     validade = aData[2].substr(0, 4) + aData[1] + aData[0];
-                    <?php $aVet = explode('-', $dHoje);
+                    <?php $aVet = explode('-', (string) $dHoje);
                     echo " hoje = $aVet[0]$aVet[1]$aVet[2]; ";?>
                     if (validade <= hoje) {
                         if (bAlertas != undefined && bAlertas == true) {
@@ -1557,7 +1557,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
                     aData = avet[9].split('/');
                     validade = new Date(aData[2], (aData[1] - 1), aData[0]);
                     if (avet[3] == '') {
-                        <?php $aVet = explode('-', $dHoje);
+                        <?php $aVet = explode('-', (string) $dHoje);
                         echo " hoje = new Date($aVet[0]," . ($aVet[1] - 1) . ",$aVet[2]); ";?>
                         tratamento = somaDataDiaMesAno(hoje, avet[4], 0, 0);
                     } else {
@@ -1578,7 +1578,7 @@ if ($oDaoFarMaterSaude->numrows <= 0) {
             if (avet[9] != '' && avet[9].split('/').length == 3) {
                 aData = avet[9].split('/');
                 validade = aData[2].substr(0, 4) + aData[1] + aData[0];
-                <?php $aVet = explode('-', $dHoje);
+                <?php $aVet = explode('-', (string) $dHoje);
                 echo " hoje = $aVet[0]$aVet[1]$aVet[2]; ";?>
                 if (validade <= hoje) {
                     if (bAlertas != undefined && bAlertas == true) {

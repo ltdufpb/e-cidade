@@ -35,8 +35,6 @@
  */
 class AvaliacaoRecursosHumanos {
 
-  private $iCodigoPromocao;
-
   private $iCodigoAvaliacao;
 
   /**
@@ -70,10 +68,9 @@ class AvaliacaoRecursosHumanos {
    */
 
 
-  public function __construct($iCodigoPromocao, $iCodigoAvaliacao = null) {
+  public function __construct(private $iCodigoPromocao, $iCodigoAvaliacao = null) {
 
      
-    $this->iCodigoPromocao = $iCodigoPromocao;
     $this->dInclusao       = date("Y-m-d", db_getsession("DB_datausu"));
     $this->iUsuario        = db_getsession('DB_id_usuario');
      
@@ -123,7 +120,7 @@ class AvaliacaoRecursosHumanos {
      
     require_once(modification("classes/db_rhavaliacao_classe.php"));
     $oDaoRHAvaliacao   = new cl_rhavaliacao();
-    $aAnoAvaliacao     = explode("-", $dDataAvaliacao);
+    $aAnoAvaliacao     = explode("-", (string) $dDataAvaliacao);
     $iAnoAvaliacao     = $aAnoAvaliacao[0];
     $sWhere            = "h73_rhpromocao = {$this->iCodigoPromocao} and extract(year from h73_dtavaliacao) = {$iAnoAvaliacao} ";
     $sSqlDataAvaliacao = $oDaoRHAvaliacao->sql_query(null, "*", null, $sWhere);
@@ -274,7 +271,7 @@ class AvaliacaoRecursosHumanos {
   	                                                              "h75_rhavaliacao = {$this->iCodigoAvaliacao}");
   	$rsCursos    = $oDaoRhpromocaocursosavaliacao->sql_record($sSqlCursos);
   	
-  	$aRetorno    = array();
+  	$aRetorno    = [];
 
   	$aCursos     = db_utils::getCollectionByRecord($rsCursos);
   	

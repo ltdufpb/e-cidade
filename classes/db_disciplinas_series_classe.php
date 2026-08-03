@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE disciplinas_series
 class cl_disciplinas_series { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed31_i_codigo = 0; 
-   var $ed31_i_disciplina = 0; 
-   var $ed31_i_series = 0; 
+   public $ed31_i_codigo = 0; 
+   public $ed31_i_disciplina = 0; 
+   public $ed31_i_series = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed31_i_codigo = int8 = Código 
                  ed31_i_disciplina = int8 = Disciplina 
                  ed31_i_series = int8 = Série 
                  ";
    //funcao construtor da classe 
-   function cl_disciplinas_series() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disciplinas_series"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_disciplinas_series {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed31_i_codigo = pg_result($result,0,0); 
+       $this->ed31_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = @db_query("select last_value from disciplinas_series_ed31_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed31_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed31_i_codigo)){
          $this->erro_sql = " Campo ed31_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_disciplinas_series {
      $result = @db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Disciplinas por Séries ($this->ed31_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Disciplinas por Séries já Cadastrado";
@@ -166,11 +166,11 @@ class cl_disciplinas_series {
      $resaco = $this->sql_record($this->sql_query_file($this->ed31_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,1006208,'$this->ed31_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1006025,1006208,'','".AddSlashes(pg_result($resaco,0,'ed31_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006025,1006210,'','".AddSlashes(pg_result($resaco,0,'ed31_i_disciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006025,1006209,'','".AddSlashes(pg_result($resaco,0,'ed31_i_series'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006025,1006208,'','".AddSlashes(pg_fetch_result($resaco,0,'ed31_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006025,1006210,'','".AddSlashes(pg_fetch_result($resaco,0,'ed31_i_disciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006025,1006209,'','".AddSlashes(pg_fetch_result($resaco,0,'ed31_i_series'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -179,10 +179,10 @@ class cl_disciplinas_series {
       $this->atualizacampos();
      $sql = " update disciplinas_series set ";
      $virgula = "";
-     if(trim($this->ed31_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed31_i_codigo"])){ 
+     if(trim((string) $this->ed31_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed31_i_codigo"])){ 
        $sql  .= $virgula." ed31_i_codigo = $this->ed31_i_codigo ";
        $virgula = ",";
-       if(trim($this->ed31_i_codigo) == null ){ 
+       if(trim((string) $this->ed31_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ed31_i_codigo";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_disciplinas_series {
          return false;
        }
      }
-     if(trim($this->ed31_i_disciplina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed31_i_disciplina"])){ 
+     if(trim((string) $this->ed31_i_disciplina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed31_i_disciplina"])){ 
        $sql  .= $virgula." ed31_i_disciplina = $this->ed31_i_disciplina ";
        $virgula = ",";
-       if(trim($this->ed31_i_disciplina) == null ){ 
+       if(trim((string) $this->ed31_i_disciplina) == null ){ 
          $this->erro_sql = " Campo Disciplina nao Informado.";
          $this->erro_campo = "ed31_i_disciplina";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_disciplinas_series {
          return false;
        }
      }
-     if(trim($this->ed31_i_series)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed31_i_series"])){ 
+     if(trim((string) $this->ed31_i_series)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed31_i_series"])){ 
        $sql  .= $virgula." ed31_i_series = $this->ed31_i_series ";
        $virgula = ",";
-       if(trim($this->ed31_i_series) == null ){ 
+       if(trim((string) $this->ed31_i_series) == null ){ 
          $this->erro_sql = " Campo Série nao Informado.";
          $this->erro_campo = "ed31_i_series";
          $this->erro_banco = "";
@@ -226,14 +226,14 @@ class cl_disciplinas_series {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountkey values($acount,1006208,'$this->ed31_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed31_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1006025,1006208,'".AddSlashes(pg_result($resaco,$conresaco,'ed31_i_codigo'))."','$this->ed31_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006025,1006208,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed31_i_codigo'))."','$this->ed31_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed31_i_disciplina"]))
-           $resac = db_query("insert into db_acount values($acount,1006025,1006210,'".AddSlashes(pg_result($resaco,$conresaco,'ed31_i_disciplina'))."','$this->ed31_i_disciplina',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006025,1006210,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed31_i_disciplina'))."','$this->ed31_i_disciplina',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ed31_i_series"]))
-           $resac = db_query("insert into db_acount values($acount,1006025,1006209,'".AddSlashes(pg_result($resaco,$conresaco,'ed31_i_series'))."','$this->ed31_i_series',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006025,1006209,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed31_i_series'))."','$this->ed31_i_series',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = @db_query($sql);
@@ -278,11 +278,11 @@ class cl_disciplinas_series {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountkey values($acount,1006208,'$ed31_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1006025,1006208,'','".AddSlashes(pg_result($resaco,$iresaco,'ed31_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006025,1006210,'','".AddSlashes(pg_result($resaco,$iresaco,'ed31_i_disciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006025,1006209,'','".AddSlashes(pg_result($resaco,$iresaco,'ed31_i_series'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006025,1006208,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed31_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006025,1006210,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed31_i_disciplina'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006025,1006209,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed31_i_series'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from disciplinas_series
@@ -342,7 +342,7 @@ class cl_disciplinas_series {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:disciplinas_series";
@@ -357,7 +357,7 @@ class cl_disciplinas_series {
    function sql_query ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,7 +381,7 @@ class cl_disciplinas_series {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_disciplinas_series {
    function sql_query_file ( $ed31_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_disciplinas_series {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

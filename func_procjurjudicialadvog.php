@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procjurjudicialadvog_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocjurjudicialadvog = new cl_procjurjudicialadvog;
 $clprocjurjudicialadvog->rotulo->label("v65_sequencial");
 $clprocjurjudicialadvog->rotulo->label("v65_advog");
@@ -98,9 +98,9 @@ $clprocjurjudicialadvog->rotulo->label("v65_advog");
         }else{
            $sql = $clprocjurjudicialadvog->sql_query("",$campos,"v65_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v65_advog)){
-          $repassa = array("chave_v65_sequencial"=>$chave_v65_sequencial,"chave_v65_advog"=>$chave_v65_advog);
+          $repassa = ["chave_v65_sequencial"=>$chave_v65_sequencial,"chave_v65_advog"=>$chave_v65_advog];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

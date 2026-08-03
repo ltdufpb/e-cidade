@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE db_remessawebservice
 class cl_db_remessawebservice { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db127_sequencial = 0; 
-   var $db127_sistemaexterno = 0; 
-   var $db127_usuario = 0; 
-   var $db127_descricao = null; 
-   var $db127_datacriacao_dia = null; 
-   var $db127_datacriacao_mes = null; 
-   var $db127_datacriacao_ano = null; 
-   var $db127_datacriacao = null; 
-   var $db127_dataprocessamento_dia = null; 
-   var $db127_dataprocessamento_mes = null; 
-   var $db127_dataprocessamento_ano = null; 
-   var $db127_dataprocessamento = null; 
-   var $db127_processada = 'f'; 
+   public $db127_sequencial = 0; 
+   public $db127_sistemaexterno = 0; 
+   public $db127_usuario = 0; 
+   public $db127_descricao = null; 
+   public $db127_datacriacao_dia = null; 
+   public $db127_datacriacao_mes = null; 
+   public $db127_datacriacao_ano = null; 
+   public $db127_datacriacao = null; 
+   public $db127_dataprocessamento_dia = null; 
+   public $db127_dataprocessamento_mes = null; 
+   public $db127_dataprocessamento_ano = null; 
+   public $db127_dataprocessamento = null; 
+   public $db127_processada = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db127_sequencial = int4 = Sequencial 
                  db127_sistemaexterno = int4 = Sistema Externo 
                  db127_usuario = int4 = Usuario 
@@ -66,10 +66,10 @@ class cl_db_remessawebservice {
                  db127_processada = bool = Processada 
                  ";
    //funcao construtor da classe 
-   function cl_db_remessawebservice() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_remessawebservice"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -169,10 +169,10 @@ class cl_db_remessawebservice {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db127_sequencial = pg_result($result,0,0); 
+       $this->db127_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_remessawebservice_db127_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db127_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db127_sequencial)){
          $this->erro_sql = " Campo db127_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -212,7 +212,7 @@ class cl_db_remessawebservice {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Remessa de Dados ($this->db127_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Remessa de Dados já Cadastrado";
@@ -236,16 +236,16 @@ class cl_db_remessawebservice {
      $resaco = $this->sql_record($this->sql_query_file($this->db127_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19030,'$this->db127_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3389,19030,'','".AddSlashes(pg_result($resaco,0,'db127_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3389,19053,'','".AddSlashes(pg_result($resaco,0,'db127_sistemaexterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3389,19057,'','".AddSlashes(pg_result($resaco,0,'db127_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3389,19052,'','".AddSlashes(pg_result($resaco,0,'db127_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3389,19055,'','".AddSlashes(pg_result($resaco,0,'db127_datacriacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3389,19056,'','".AddSlashes(pg_result($resaco,0,'db127_dataprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3389,19054,'','".AddSlashes(pg_result($resaco,0,'db127_processada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3389,19030,'','".AddSlashes(pg_fetch_result($resaco,0,'db127_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3389,19053,'','".AddSlashes(pg_fetch_result($resaco,0,'db127_sistemaexterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3389,19057,'','".AddSlashes(pg_fetch_result($resaco,0,'db127_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3389,19052,'','".AddSlashes(pg_fetch_result($resaco,0,'db127_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3389,19055,'','".AddSlashes(pg_fetch_result($resaco,0,'db127_datacriacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3389,19056,'','".AddSlashes(pg_fetch_result($resaco,0,'db127_dataprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3389,19054,'','".AddSlashes(pg_fetch_result($resaco,0,'db127_processada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -254,10 +254,10 @@ class cl_db_remessawebservice {
       $this->atualizacampos();
      $sql = " update db_remessawebservice set ";
      $virgula = "";
-     if(trim($this->db127_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_sequencial"])){ 
+     if(trim((string) $this->db127_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_sequencial"])){ 
        $sql  .= $virgula." db127_sequencial = $this->db127_sequencial ";
        $virgula = ",";
-       if(trim($this->db127_sequencial) == null ){ 
+       if(trim((string) $this->db127_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db127_sequencial";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_db_remessawebservice {
          return false;
        }
      }
-     if(trim($this->db127_sistemaexterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_sistemaexterno"])){ 
+     if(trim((string) $this->db127_sistemaexterno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_sistemaexterno"])){ 
        $sql  .= $virgula." db127_sistemaexterno = $this->db127_sistemaexterno ";
        $virgula = ",";
-       if(trim($this->db127_sistemaexterno) == null ){ 
+       if(trim((string) $this->db127_sistemaexterno) == null ){ 
          $this->erro_sql = " Campo Sistema Externo nao Informado.";
          $this->erro_campo = "db127_sistemaexterno";
          $this->erro_banco = "";
@@ -280,10 +280,10 @@ class cl_db_remessawebservice {
          return false;
        }
      }
-     if(trim($this->db127_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_usuario"])){ 
+     if(trim((string) $this->db127_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_usuario"])){ 
        $sql  .= $virgula." db127_usuario = $this->db127_usuario ";
        $virgula = ",";
-       if(trim($this->db127_usuario) == null ){ 
+       if(trim((string) $this->db127_usuario) == null ){ 
          $this->erro_sql = " Campo Usuario nao Informado.";
          $this->erro_campo = "db127_usuario";
          $this->erro_banco = "";
@@ -293,10 +293,10 @@ class cl_db_remessawebservice {
          return false;
        }
      }
-     if(trim($this->db127_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_descricao"])){ 
+     if(trim((string) $this->db127_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_descricao"])){ 
        $sql  .= $virgula." db127_descricao = '$this->db127_descricao' ";
        $virgula = ",";
-       if(trim($this->db127_descricao) == null ){ 
+       if(trim((string) $this->db127_descricao) == null ){ 
          $this->erro_sql = " Campo Descricao da Remessa nao Informado.";
          $this->erro_campo = "db127_descricao";
          $this->erro_banco = "";
@@ -306,10 +306,10 @@ class cl_db_remessawebservice {
          return false;
        }
      }
-     if(trim($this->db127_datacriacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao_dia"] !="") ){ 
+     if(trim((string) $this->db127_datacriacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao_dia"] !="") ){ 
        $sql  .= $virgula." db127_datacriacao = '$this->db127_datacriacao' ";
        $virgula = ",";
-       if(trim($this->db127_datacriacao) == null ){ 
+       if(trim((string) $this->db127_datacriacao) == null ){ 
          $this->erro_sql = " Campo Data criacao nao Informado.";
          $this->erro_campo = "db127_datacriacao_dia";
          $this->erro_banco = "";
@@ -322,7 +322,7 @@ class cl_db_remessawebservice {
        if(isset($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao_dia"])){ 
          $sql  .= $virgula." db127_datacriacao = null ";
          $virgula = ",";
-         if(trim($this->db127_datacriacao) == null ){ 
+         if(trim((string) $this->db127_datacriacao) == null ){ 
            $this->erro_sql = " Campo Data criacao nao Informado.";
            $this->erro_campo = "db127_datacriacao_dia";
            $this->erro_banco = "";
@@ -333,7 +333,7 @@ class cl_db_remessawebservice {
          }
        }
      }
-     if(trim($this->db127_dataprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_dataprocessamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db127_dataprocessamento_dia"] !="") ){ 
+     if(trim((string) $this->db127_dataprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_dataprocessamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db127_dataprocessamento_dia"] !="") ){ 
        $sql  .= $virgula." db127_dataprocessamento = '$this->db127_dataprocessamento' ";
        $virgula = ",";
      }     else{ 
@@ -342,10 +342,10 @@ class cl_db_remessawebservice {
          $virgula = ",";
        }
      }
-     if(trim($this->db127_processada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_processada"])){ 
+     if(trim((string) $this->db127_processada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db127_processada"])){ 
        $sql  .= $virgula." db127_processada = '$this->db127_processada' ";
        $virgula = ",";
-       if(trim($this->db127_processada) == null ){ 
+       if(trim((string) $this->db127_processada) == null ){ 
          $this->erro_sql = " Campo Processada nao Informado.";
          $this->erro_campo = "db127_processada";
          $this->erro_banco = "";
@@ -363,23 +363,23 @@ class cl_db_remessawebservice {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19030,'$this->db127_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db127_sequencial"]) || $this->db127_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3389,19030,'".AddSlashes(pg_result($resaco,$conresaco,'db127_sequencial'))."','$this->db127_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3389,19030,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db127_sequencial'))."','$this->db127_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db127_sistemaexterno"]) || $this->db127_sistemaexterno != "")
-           $resac = db_query("insert into db_acount values($acount,3389,19053,'".AddSlashes(pg_result($resaco,$conresaco,'db127_sistemaexterno'))."','$this->db127_sistemaexterno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3389,19053,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db127_sistemaexterno'))."','$this->db127_sistemaexterno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db127_usuario"]) || $this->db127_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3389,19057,'".AddSlashes(pg_result($resaco,$conresaco,'db127_usuario'))."','$this->db127_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3389,19057,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db127_usuario'))."','$this->db127_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db127_descricao"]) || $this->db127_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,3389,19052,'".AddSlashes(pg_result($resaco,$conresaco,'db127_descricao'))."','$this->db127_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3389,19052,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db127_descricao'))."','$this->db127_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db127_datacriacao"]) || $this->db127_datacriacao != "")
-           $resac = db_query("insert into db_acount values($acount,3389,19055,'".AddSlashes(pg_result($resaco,$conresaco,'db127_datacriacao'))."','$this->db127_datacriacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3389,19055,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db127_datacriacao'))."','$this->db127_datacriacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db127_dataprocessamento"]) || $this->db127_dataprocessamento != "")
-           $resac = db_query("insert into db_acount values($acount,3389,19056,'".AddSlashes(pg_result($resaco,$conresaco,'db127_dataprocessamento'))."','$this->db127_dataprocessamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3389,19056,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db127_dataprocessamento'))."','$this->db127_dataprocessamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db127_processada"]) || $this->db127_processada != "")
-           $resac = db_query("insert into db_acount values($acount,3389,19054,'".AddSlashes(pg_result($resaco,$conresaco,'db127_processada'))."','$this->db127_processada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3389,19054,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db127_processada'))."','$this->db127_processada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,16 +424,16 @@ class cl_db_remessawebservice {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19030,'$db127_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3389,19030,'','".AddSlashes(pg_result($resaco,$iresaco,'db127_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3389,19053,'','".AddSlashes(pg_result($resaco,$iresaco,'db127_sistemaexterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3389,19057,'','".AddSlashes(pg_result($resaco,$iresaco,'db127_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3389,19052,'','".AddSlashes(pg_result($resaco,$iresaco,'db127_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3389,19055,'','".AddSlashes(pg_result($resaco,$iresaco,'db127_datacriacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3389,19056,'','".AddSlashes(pg_result($resaco,$iresaco,'db127_dataprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3389,19054,'','".AddSlashes(pg_result($resaco,$iresaco,'db127_processada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3389,19030,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db127_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3389,19053,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db127_sistemaexterno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3389,19057,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db127_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3389,19052,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db127_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3389,19055,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db127_datacriacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3389,19056,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db127_dataprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3389,19054,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db127_processada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_remessawebservice
@@ -493,7 +493,7 @@ class cl_db_remessawebservice {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_remessawebservice";
@@ -508,7 +508,7 @@ class cl_db_remessawebservice {
    function sql_query ( $db127_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -531,7 +531,7 @@ class cl_db_remessawebservice {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -544,7 +544,7 @@ class cl_db_remessawebservice {
    function sql_query_file ( $db127_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -565,7 +565,7 @@ class cl_db_remessawebservice {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -15,7 +15,7 @@ class RecursoRegistry
     /**
      * @var Recurso[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Recurso $complemento

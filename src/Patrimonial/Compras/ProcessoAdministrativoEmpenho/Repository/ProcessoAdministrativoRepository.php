@@ -39,20 +39,15 @@ class ProcessoAdministrativoRepository
     /**
      * @var array
      */
-    private $scopes = array();
-
-    /**
-     * @var Object
-     */
-    private $dao;
+    private $scopes = [];
 
     /**
      * ProcessoAdministrativoRepository constructor.
      * @param $dao \cl_empautorizaprocesso
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**
@@ -61,7 +56,7 @@ class ProcessoAdministrativoRepository
      * @return bool|ProcessoAdministrativo
      * @throws \Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query_file(null, implode(', ', $columns), null, "e150_empautoriza = {$id}");
         $rs = db_query($sql);

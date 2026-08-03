@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pagordem_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clpagordem = new cl_pagordem;
 

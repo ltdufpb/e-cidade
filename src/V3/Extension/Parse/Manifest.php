@@ -34,12 +34,12 @@ class Manifest extends XML {
   /**
    * @param array
    */
-  private $modifications = array();
+  private $modifications = [];
 
   /**
    * @param array
    */
-  private $events = array();
+  private $events = [];
 
   /**
    * @return integer
@@ -92,8 +92,8 @@ class Manifest extends XML {
     $this->version = null;
     $this->manager = null;
     $this->type = 'global';
-    $this->modifications = array();
-    $this->events = array();
+    $this->modifications = [];
+    $this->events = [];
 
     $nodeId = $this->dom->getElementsByTagName('id')->item(0);
     $nodeVersion = $this->dom->getElementsByTagName('version')->item(0);
@@ -119,7 +119,7 @@ class Manifest extends XML {
     if (!empty($nodeModifications)) {
 
       $modificationManager = new Manager();
-      $modifications = array();
+      $modifications = [];
 
       foreach ($nodeModifications->getElementsByTagName('modification') as $nodeModification) {
 

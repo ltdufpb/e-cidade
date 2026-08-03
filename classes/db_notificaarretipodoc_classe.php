@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE notificaarretipodoc
 class cl_notificaarretipodoc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k101_sequencial = 0; 
-   var $k101_db_documento = 0; 
-   var $k101_tipo = 0; 
+   public $k101_sequencial = 0; 
+   public $k101_db_documento = 0; 
+   public $k101_tipo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k101_sequencial = int4 = Sequencial 
                  k101_db_documento = int4 = Documento 
                  k101_tipo = int4 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_notificaarretipodoc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notificaarretipodoc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_notificaarretipodoc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k101_sequencial = pg_result($result,0,0); 
+       $this->k101_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from notificaarretipodoc_k101_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k101_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k101_sequencial)){
          $this->erro_sql = " Campo k101_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_notificaarretipodoc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Documento de notificação por tipo ($this->k101_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Documento de notificação por tipo já Cadastrado";
@@ -166,12 +166,12 @@ class cl_notificaarretipodoc {
      $resaco = $this->sql_record($this->sql_query_file($this->k101_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12094,'$this->k101_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2097,12094,'','".AddSlashes(pg_result($resaco,0,'k101_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2097,12095,'','".AddSlashes(pg_result($resaco,0,'k101_db_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2097,12096,'','".AddSlashes(pg_result($resaco,0,'k101_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2097,12094,'','".AddSlashes(pg_fetch_result($resaco,0,'k101_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2097,12095,'','".AddSlashes(pg_fetch_result($resaco,0,'k101_db_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2097,12096,'','".AddSlashes(pg_fetch_result($resaco,0,'k101_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_notificaarretipodoc {
       $this->atualizacampos();
      $sql = " update notificaarretipodoc set ";
      $virgula = "";
-     if(trim($this->k101_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k101_sequencial"])){ 
+     if(trim((string) $this->k101_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k101_sequencial"])){ 
        $sql  .= $virgula." k101_sequencial = $this->k101_sequencial ";
        $virgula = ",";
-       if(trim($this->k101_sequencial) == null ){ 
+       if(trim((string) $this->k101_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k101_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_notificaarretipodoc {
          return false;
        }
      }
-     if(trim($this->k101_db_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k101_db_documento"])){ 
+     if(trim((string) $this->k101_db_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k101_db_documento"])){ 
        $sql  .= $virgula." k101_db_documento = $this->k101_db_documento ";
        $virgula = ",";
-       if(trim($this->k101_db_documento) == null ){ 
+       if(trim((string) $this->k101_db_documento) == null ){ 
          $this->erro_sql = " Campo Documento nao Informado.";
          $this->erro_campo = "k101_db_documento";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_notificaarretipodoc {
          return false;
        }
      }
-     if(trim($this->k101_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k101_tipo"])){ 
+     if(trim((string) $this->k101_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k101_tipo"])){ 
        $sql  .= $virgula." k101_tipo = $this->k101_tipo ";
        $virgula = ",";
-       if(trim($this->k101_tipo) == null ){ 
+       if(trim((string) $this->k101_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "k101_tipo";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_notificaarretipodoc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12094,'$this->k101_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k101_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2097,12094,'".AddSlashes(pg_result($resaco,$conresaco,'k101_sequencial'))."','$this->k101_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2097,12094,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k101_sequencial'))."','$this->k101_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k101_db_documento"]))
-           $resac = db_query("insert into db_acount values($acount,2097,12095,'".AddSlashes(pg_result($resaco,$conresaco,'k101_db_documento'))."','$this->k101_db_documento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2097,12095,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k101_db_documento'))."','$this->k101_db_documento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k101_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,2097,12096,'".AddSlashes(pg_result($resaco,$conresaco,'k101_tipo'))."','$this->k101_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2097,12096,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k101_tipo'))."','$this->k101_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_notificaarretipodoc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12094,'$k101_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2097,12094,'','".AddSlashes(pg_result($resaco,$iresaco,'k101_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2097,12095,'','".AddSlashes(pg_result($resaco,$iresaco,'k101_db_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2097,12096,'','".AddSlashes(pg_result($resaco,$iresaco,'k101_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2097,12094,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k101_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2097,12095,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k101_db_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2097,12096,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k101_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from notificaarretipodoc
@@ -345,7 +345,7 @@ class cl_notificaarretipodoc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:notificaarretipodoc";
@@ -359,7 +359,7 @@ class cl_notificaarretipodoc {
    function sql_query ( $k101_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_notificaarretipodoc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,7 +397,7 @@ class cl_notificaarretipodoc {
    function sql_query_file ( $k101_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_notificaarretipodoc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

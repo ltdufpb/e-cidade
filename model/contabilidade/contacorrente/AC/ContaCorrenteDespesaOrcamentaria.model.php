@@ -48,7 +48,7 @@ class ContaCorrenteDespesaOrcamentaria extends ContaCorrenteBase {
    * Campos que serão utilizados por esta conta corrente
    * @var array
    */
-  public static $aCamposDetalhe = array(
+  public static $aCamposDetalhe = [
     'c19_sequencial',
     'c19_contacorrente',
     'c19_orctiporec',
@@ -60,7 +60,7 @@ class ContaCorrenteDespesaOrcamentaria extends ContaCorrenteBase {
     'c19_estrutural',
     'c19_orcdotacao',
     'c19_orcdotacaoanousu'
-  );
+  ];
 
   /**
    * @param int $iCodigoLancamento
@@ -83,7 +83,7 @@ class ContaCorrenteDespesaOrcamentaria extends ContaCorrenteBase {
 
     $oContaCorrenteDetalhe = $this->oContaCorrenteDetalhe;
 
-    $aWhere = array(
+    $aWhere = [
        "c19_contacorrente       = ".self::CONTA_CORRENTE
       ,"c19_orctiporec          = {$oContaCorrenteDetalhe->getRecurso()->getCodigo()}"
       ,"c19_instit              = {$iInstituicao}"
@@ -92,7 +92,7 @@ class ContaCorrenteDespesaOrcamentaria extends ContaCorrenteBase {
       ,"c19_estrutural          = '{$oContaCorrenteDetalhe->getDotacao()->getElemento()}'"
       ,"c19_orcdotacao          = {$oContaCorrenteDetalhe->getDotacao()->getCodigo()}"
       ,"c19_orcdotacaoanousu    = {$oContaCorrenteDetalhe->getDotacao()->getAno()}"
-    );
+    ];
 
     if ( $oContaCorrenteDetalhe->getEmpenho() instanceof EmpenhoFinanceiro) {
 

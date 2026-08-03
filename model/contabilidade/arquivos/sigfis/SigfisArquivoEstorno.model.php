@@ -113,26 +113,26 @@ class SigfisArquivoEstorno extends SigfisArquivoBase implements iPadArquivoTXTBa
         /**
          * extraindo o ano e o mês da data do estorno 
          */
-        $aData = explode('-', $oEstorno->e94_data);
+        $aData = explode('-', (string) $oEstorno->e94_data);
         $iAnoMes = $aData[0].$aData[1];
         
         /**
          * Manipulmos o campo o54_descr eliminando quebras de linha
          */
-        $sMotivoestorno = utf8_decode(str_replace(array('\n', '\r'), ' ', substr($oEstorno->e94_motivo, 0, 120)));
+        $sMotivoestorno = mb_convert_encoding(str_replace(['\n', '\r'], ' ', substr((string) $oEstorno->e94_motivo, 0, 120)), 'ISO-8859-1');
     		
     	  $oDadosLinha = new stdClass();
-    	  $oDadosLinha->cd_Unidade              = str_pad($this->sCodigoTribunal, 4, ' ', STR_PAD_LEFT);
-    	  $oDadosLinha->cd_UnidadeOrcamentaria  = str_pad($oEstorno->o58_unidade, 4, ' ', STR_PAD_LEFT);
-    	  $oDadosLinha->nu_Empenho              = str_pad($oEstorno->e60_codemp, 10, ' ', STR_PAD_RIGHT);
+    	  $oDadosLinha->cd_Unidade              = str_pad((string) $this->sCodigoTribunal, 4, ' ', STR_PAD_LEFT);
+    	  $oDadosLinha->cd_UnidadeOrcamentaria  = str_pad((string) $oEstorno->o58_unidade, 4, ' ', STR_PAD_LEFT);
+    	  $oDadosLinha->nu_Empenho              = str_pad((string) $oEstorno->e60_codemp, 10, ' ', STR_PAD_RIGHT);
     	  $oDadosLinha->dt_Ano                  = $oEstorno->e60_anousu;
-    	  $oDadosLinha->nu_Estorno              = str_pad($oEstorno->e94_codanu,  6, ' ', STR_PAD_LEFT);
+    	  $oDadosLinha->nu_Estorno              = str_pad((string) $oEstorno->e94_codanu,  6, ' ', STR_PAD_LEFT);
     	  $oDadosLinha->dt_Estorno              = str_replace('/', '', db_formatar($oEstorno->e94_data,"d"));
     	  $oDadosLinha->de_MotivoEstorno        = str_pad($sMotivoestorno,      120, ' ', STR_PAD_RIGHT);
     	  $oDadosLinha->vl_Estorno              = str_pad($iValorSemSeparador,   16, ' ', STR_PAD_LEFT);
     	  $oDadosLinha->st_DespesaLiquidada     = 2;
     	  $oDadosLinha->dt_AnoMes               = $iAnoMes;
-    	  $oDadosLinha->cd_Orgao                = str_pad($oEstorno->o58_orgao,   4, ' ', STR_PAD_LEFT);
+    	  $oDadosLinha->cd_Orgao                = str_pad((string) $oEstorno->o58_orgao,   4, ' ', STR_PAD_LEFT);
     	  $oDadosLinha->Reservado_tce           = str_pad('0',                   10, ' ', STR_PAD_RIGHT);
     	  $oDadosLinha->codigolinha             = 414;
     	  $this->aDados[]                       = $oDadosLinha; 

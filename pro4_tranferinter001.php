@@ -57,7 +57,7 @@ $clrotulo->label('p68_codproc');
 $clrotulo->label('p89_usuario');
 $clrotulo->label('nome');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (isset($incluir)) {
     db_inicio_transacao();
@@ -86,13 +86,13 @@ if (isset($incluir)) {
         }
     }
     if ($sqlerro == false) {
-        $vt = $HTTP_POST_VARS;
+        $vt = $_POST;
         $ta = sizeof($vt);
         reset($vt);
         for ($i = 0; $i < $ta; $i++) {
             $chave = key($vt);
-            if (substr($chave, 0, 5) == "CHECK") {
-                $dados = split("_", $chave);
+            if (str_starts_with((string) $chave, "CHECK")) {
+                $dados = preg_split("#_#m", (string) $chave);
                 $result1 = $clprotprocesso->sql_record($clprotprocesso->sql_query_file($dados[1],
                     'p58_codandam, p58_codproc'));
                 db_fieldsmemory($result1, 0);
@@ -198,7 +198,7 @@ if (isset($incluir)) {
                                 </td>
                                 <td>
                                     <?php 
-                                    $x = array("t" => "Sim", "f" => "Não");
+                                    $x = ["t" => "Sim", "f" => "Não"];
                                     db_select('p88_publico', $x, true, 1, "");
 
                                     ?>
@@ -250,7 +250,7 @@ if (isset($incluir)) {
                     $sql .= " WHERE x.p68_codproc IS NULL ";
                     $sql .= " ORDER BY p58_codproc DESC ";
                     $result = db_query($sql);
-                    $numrows = pg_numrows($result);
+                    $numrows = pg_num_rows($result);
                     if ($numrows > 0) {
                     } else {
                         echo "<br><br><b>Sem Processos!!</b>";
@@ -268,12 +268,12 @@ if (isset($incluir)) {
                        where p63_codproc = $p58_codproc";
 
                         $result_proc = db_query($sql_proc);
-                        if (pg_numrows($result_proc) != 0) {
-                            for ($yy = 0; $yy < pg_numrows($result_proc); $yy++) {
+                        if (pg_num_rows($result_proc) != 0) {
+                            for ($yy = 0; $yy < pg_num_rows($result_proc); $yy++) {
                                 db_fieldsmemory($result_proc, $yy);
                                 $sql_and = "select * from proctransand where p64_codtran=$p63_codtran";
                                 $result_and = db_query($sql_and);
-                                if (pg_numrows($result_and) == 0) {
+                                if (pg_num_rows($result_and) == 0) {
                                     $passou = false;
                                 }
                             }

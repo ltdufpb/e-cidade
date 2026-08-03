@@ -51,7 +51,7 @@
   <tr> 
     <td align="center" valign="middle"> 
       <?php 
-  $nomeDigitadoParaPesquisa = strtoupper($nomeDigitadoParaPesquisa);
+  $nomeDigitadoParaPesquisa = strtoupper((string) $nomeDigitadoParaPesquisa);
   $sql = "
          select distinct q10_numcgm as db_numerocgm, 
 		 z01_numcgm, z01_nome, z01_ender,

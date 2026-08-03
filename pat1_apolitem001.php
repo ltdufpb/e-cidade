@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_apolitem_classe.php"));
 include(modification("classes/db_apolice_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clapolitem = new cl_apolitem;
 $clapolice = new cl_apolice;
 $db_opcao = 22;

@@ -27,7 +27,7 @@ try {
         case 'importarArquivo' :
 
             $oFiles = db_utils::postMemory($_FILES);
-            if (strtolower(substr($oFiles->arquivo['name'], -4)) != '.csv') {
+            if (strtolower(substr((string) $oFiles->arquivo['name'], -4)) != '.csv') {
                 throw new BusinessException("Arquivo importado com formato inválido! Arquivo deve ser do formato CSV.");
             }
 
@@ -42,7 +42,7 @@ try {
                 throw new BusinessException("Não é possível importar arquivo vazio.");
             }
             $erros = [];
-            if (str_replace(array(" ", "\n"), '', $linhas[0]) != 'dotacao;complemento') {
+            if (str_replace([" ", "\n"], '', $linhas[0]) != 'dotacao;complemento') {
                 throw new BusinessException("O arquivo informado não é um arquivo valido para essa importação.");
             }
             foreach ($linhas as $i => $linha) {
@@ -68,7 +68,7 @@ try {
             $nomeChave = "sigap_complemento_recurso_{$oParam->anoSelecionado}";
             $dados = file_get_contents($oFiles->arquivo['tmp_name']);
             $opcao = \ECidade\Configuracao\Opcao\Opcao::salvar($nomeChave, $dados, $oParam->anoSelecionado);
-            $oRetorno->sMessage = utf8_encode("Importação efetuada com sucesso!");
+            $oRetorno->sMessage = mb_convert_encoding("Importação efetuada com sucesso!", 'UTF-8', 'ISO-8859-1');
             break;
         case "downloadArquivo":
             $nomeChave = "sigap_complemento_recurso_{$oParam->anoSelecionado}";
@@ -84,7 +84,7 @@ try {
 } catch (Exception $eErro) {
     db_fim_transacao(true);
     $oRetorno->iStatus = 2;
-    $oRetorno->sMessage = utf8_encode($eErro->getMessage());
+    $oRetorno->sMessage = mb_convert_encoding($eErro->getMessage(), 'UTF-8', 'ISO-8859-1');
 }
 
 $oRetorno->erro = $oRetorno->status;

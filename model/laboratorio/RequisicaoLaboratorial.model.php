@@ -595,7 +595,7 @@ class RequisicaoLaboratorial
             $exames[] = $exame->toArray();
         }
 
-        return array(
+        return [
           'la22_i_codigo'       => $this->getCodigo(),
           'la22_i_departamento' => $this->getDepartamento(),
           'la22_i_cgs'          => $this->getCgs(),
@@ -611,6 +611,6 @@ class RequisicaoLaboratorial
           'la22_t_observacao'   => $this->getObservacao(),
           'la22_c_contato'      => $this->getContato(),
           'requisicaoExames'    => $exames,
-        );
+        ];
     }
 }

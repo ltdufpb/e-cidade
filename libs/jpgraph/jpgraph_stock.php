@@ -15,22 +15,22 @@
 // CLASS StockPlot
 //===================================================
 class StockPlot extends Plot {
-    var $iWidth=9;
-    var $iEndLines=1;
-    var $iStockColor1='white',$iStockColor2='darkred',$iStockColor3='darkred';
-    var $iTupleSize = 4;
+    public $iWidth=9;
+    public $iEndLines=1;
+    public $iStockColor1='white',$iStockColor2='darkred',$iStockColor3='darkred';
+    public $iTupleSize = 4;
 //---------------
 // CONSTRUCTOR
-    function StockPlot(&$datay,$datax=false) {
+    function __construct(&$datay,$datax=false) {
 	if( count($datay) % $this->iTupleSize ) {
-	    JpGraphError::Raise('Data values for Stock charts must contain an even multiple of '.$this->iTupleSize.' data points.');
+	    (new JpGraphError())->Raise('Data values for Stock charts must contain an even multiple of '.$this->iTupleSize.' data points.');
 	}
-	$this->Plot($datay,$datax);
+	\Plot::__construct($datay, $datax);
 	$this->numpoints /= $this->iTupleSize;
     }
 //---------------
 // PUBLIC METHODS
-	
+
     function SetColor($aColor,$aColor1='white',$aColor2='darkred',$aColor3='darkred') {
 	$this->color = $aColor;
 	$this->iStockColor1 = $aColor1;
@@ -58,14 +58,14 @@ class StockPlot extends Plot {
 	$graph->xaxis->scale->ticks->SetXLabelOffset($a);
 	$graph->SetTextScaleOff($b);						
     }
-	
+
     // Method description
     function Stroke($img,$xscale,$yscale) {
 	$n=$this->numpoints;
 	if( $this->center ) $n--;
 	if( isset($this->coords[1]) ) {
 	    if( count($this->coords[1])!=$n )
-		JpGraphError::Raise("Number of X and Y points are not equal. Number of X-points:".count($this->coords[1])." Number of Y-points:$numpoints");
+		(new JpGraphError())->Raise("Number of X and Y points are not equal. Number of X-points:".count($this->coords[1])." Number of Y-points:$numpoints");
 	    else
 		$exist_x = true;
 	}
@@ -76,7 +76,7 @@ class StockPlot extends Plot {
 	    $xs=$this->coords[1][0];
 	else
 	    $xs=0;
-		
+
 	$ts = $this->iTupleSize;
 	$this->csimareas = '';
 	for( $i=0; $i<$n; ++$i) {
@@ -87,7 +87,7 @@ class StockPlot extends Plot {
 	    if( $exist_x ) $x=$this->coords[1][$i];
 	    else $x=$i;
 	    $xt = $xscale->Translate($x);
-	    
+
 	    $neg = $this->coords[0][$i*$ts] > $this->coords[0][$i*$ts+1] ;
 	    $yopen  = $yscale->Translate($this->coords[0][$i*$ts]);
 	    $yclose = $yscale->Translate($this->coords[0][$i*$ts+1]);
@@ -108,7 +108,7 @@ class StockPlot extends Plot {
 		$img->SetColor($this->iStockColor2);
 	    else
 		$img->SetColor($this->color);
-	
+
 	    $img->Rectangle($xl,$yopen,$xr,$yclose);
 
 	    if( $yopen < $yclose ) {
@@ -157,10 +157,9 @@ class StockPlot extends Plot {
 // CLASS BoxPlot
 //===================================================
 class BoxPlot extends StockPlot {
-    var $iPColor='black',$iNColor='white';
-    function BoxPlot($datay,$datax=false) {
+    public $iPColor='black',$iNColor='white';
+    function __construct($datay,$datax=false) {
 	$this->iTupleSize=5;
-	parent::StockPlot($datay,$datax);
     }
 
     function SetMedianColor($aPos,$aNeg) {
@@ -173,7 +172,7 @@ class BoxPlot extends StockPlot {
 	    $img->SetColor($this->iNColor);
 	else
 	    $img->SetColor($this->iPColor);
-	
+
 	$y = $yscale->Translate($this->coords[0][$i*5+4]);
 	$img->Line($xl,$y,$xr,$y);
     }

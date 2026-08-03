@@ -89,7 +89,7 @@ class calculoRetencaoIrrfFisica implements iCalculoRetencao {
    *
    * @var array
    */
-  private $aCodigoMovimentos = array();
+  private $aCodigoMovimentos = [];
   
   /**
    * metodo construtor da classe
@@ -259,8 +259,8 @@ class calculoRetencaoIrrfFisica implements iCalculoRetencao {
     if ($this->dtBaseCalculo != "") {
       
       
-      $iMesBase  = date("m", strtotime($this->dtBaseCalculo));
-      $iAnoBase  = date("Y", strtotime($this->dtBaseCalculo));
+      $iMesBase  = date("m", strtotime((string) $this->dtBaseCalculo));
+      $iAnoBase  = date("Y", strtotime((string) $this->dtBaseCalculo));
       
       
     }

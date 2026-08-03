@@ -7,7 +7,7 @@ require_once modification("dbforms/db_funcoes.php");
 require_once modification("classes/db_classificacaocredores_classe.php");
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $oPost = db_utils::postMemory($_POST);
 $Lcc30_codigo = null;
 $Icc30_codigo = null;
@@ -38,7 +38,7 @@ $oDaoClassificacaoCredores->rotulo->label("cc30_descricao");
         <td><label for="cc30_descricao"><?php echo $Lcc30_descricao ?></label></td>
         <td>
           <?php
-          $cc30_descricao = !empty($cc30_descricao) ? htmlentities(stripslashes($cc30_descricao), ENT_QUOTES, 'ISO-8859-1') : '';
+          $cc30_descricao = !empty($cc30_descricao) ? htmlentities(stripslashes((string) $cc30_descricao), ENT_QUOTES, 'ISO-8859-1') : '';
           db_input("cc30_descricao", 50, $Icc30_descricao, true, "text", 4);
           ?>
         </td>
@@ -53,11 +53,11 @@ $oDaoClassificacaoCredores->rotulo->label("cc30_descricao");
 <?php
 if(!isset($pesquisa_chave)) {
 
-  $aCampos = array(
+  $aCampos = [
     "cc30_codigo",
     "cc30_descricao",
     "cc30_dispensa"
-  );
+  ];
   $campos = implode(',', $aCampos);
 
   if ( !empty($oPost->chave_cc30_codigo) ) {
@@ -68,13 +68,13 @@ if(!isset($pesquisa_chave)) {
     $sSql = $oDaoClassificacaoCredores->sql_query(null, $campos, "cc30_codigo");
   }
 
-  $repassa = array();
+  $repassa = [];
   if(isset($chave_cc30_codigo)) {
 
-    $repassa = array(
+    $repassa = [
       "chave_cc30_codigo" => $chave_cc30_codigo,
       "cc30_descricao"    => $oPost->cc30_descricao,
-    );
+    ];
   }
 
   echo '<div class="container">';

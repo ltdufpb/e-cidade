@@ -43,7 +43,7 @@ class cl_parprojetos
     public function __construct()
     {
         $this->rotulo = new rotulo("parprojetos"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -179,7 +179,7 @@ class cl_parprojetos
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parametros do Módulo Projetos ($this->ob21_anousu) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parametros do Módulo Projetos já Cadastrado";
@@ -208,19 +208,19 @@ class cl_parprojetos
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11870,'$this->ob21_anousu','I')");
-         $resac = db_query("insert into db_acount values($acount,2051,11870,'','".AddSlashes(pg_result($resaco,0,'ob21_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2051,11872,'','".AddSlashes(pg_result($resaco,0,'ob21_numeracaohabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2051,11873,'','".AddSlashes(pg_result($resaco,0,'ob21_ultnumerohabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2051,18648,'','".AddSlashes(pg_result($resaco,0,'ob21_grupotipoocupacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2051,18649,'','".AddSlashes(pg_result($resaco,0,'ob21_grupotipoconstrucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2051,18650,'','".AddSlashes(pg_result($resaco,0,'ob21_grupotipolancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2051,18651,'','".AddSlashes(pg_result($resaco,0,'ob21_tipocartaalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2051,18652,'','".AddSlashes(pg_result($resaco,0,'ob21_tipocartahabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2051,1013146,'','".AddSlashes(pg_result($resaco,0,'ob21_localcertificadoa1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2051,1013147,'','".AddSlashes(pg_result($resaco,0,'ob21_senhacertificadoa1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2051,11870,'','".AddSlashes(pg_fetch_result($resaco,0,'ob21_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2051,11872,'','".AddSlashes(pg_fetch_result($resaco,0,'ob21_numeracaohabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2051,11873,'','".AddSlashes(pg_fetch_result($resaco,0,'ob21_ultnumerohabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2051,18648,'','".AddSlashes(pg_fetch_result($resaco,0,'ob21_grupotipoocupacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2051,18649,'','".AddSlashes(pg_fetch_result($resaco,0,'ob21_grupotipoconstrucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2051,18650,'','".AddSlashes(pg_fetch_result($resaco,0,'ob21_grupotipolancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2051,18651,'','".AddSlashes(pg_fetch_result($resaco,0,'ob21_tipocartaalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2051,18652,'','".AddSlashes(pg_fetch_result($resaco,0,'ob21_tipocartahabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2051,1013146,'','".AddSlashes(pg_fetch_result($resaco,0,'ob21_localcertificadoa1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2051,1013147,'','".AddSlashes(pg_fetch_result($resaco,0,'ob21_senhacertificadoa1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -231,10 +231,10 @@ class cl_parprojetos
       $this->atualizacampos();
      $sql = " update parprojetos set ";
      $virgula = "";
-     if(trim($this->ob21_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_anousu"])){ 
+     if(trim((string) $this->ob21_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_anousu"])){ 
        $sql  .= $virgula." ob21_anousu = $this->ob21_anousu ";
        $virgula = ",";
-       if(trim($this->ob21_anousu) == null ){ 
+       if(trim((string) $this->ob21_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício não informado.";
          $this->erro_campo = "ob21_anousu";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_parprojetos
          return false;
        }
      }
-     if(trim($this->ob21_numeracaohabite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_numeracaohabite"])){ 
+     if(trim((string) $this->ob21_numeracaohabite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_numeracaohabite"])){ 
        $sql  .= $virgula." ob21_numeracaohabite = $this->ob21_numeracaohabite ";
        $virgula = ",";
-       if(trim($this->ob21_numeracaohabite) == null ){ 
+       if(trim((string) $this->ob21_numeracaohabite) == null ){ 
          $this->erro_sql = " Campo Numeração Habite-se não informado.";
          $this->erro_campo = "ob21_numeracaohabite";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_parprojetos
          return false;
        }
      }
-     if(trim($this->ob21_ultnumerohabite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_ultnumerohabite"])){ 
+     if(trim((string) $this->ob21_ultnumerohabite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_ultnumerohabite"])){ 
        $sql  .= $virgula." ob21_ultnumerohabite = $this->ob21_ultnumerohabite ";
        $virgula = ",";
-       if(trim($this->ob21_ultnumerohabite) == null ){ 
+       if(trim((string) $this->ob21_ultnumerohabite) == null ){ 
          $this->erro_sql = " Campo Número Habite-se não informado.";
          $this->erro_campo = "ob21_ultnumerohabite";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_parprojetos
          return false;
        }
      }
-     if(trim($this->ob21_grupotipoocupacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_grupotipoocupacao"])){ 
+     if(trim((string) $this->ob21_grupotipoocupacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_grupotipoocupacao"])){ 
        $sql  .= $virgula." ob21_grupotipoocupacao = $this->ob21_grupotipoocupacao ";
        $virgula = ",";
-       if(trim($this->ob21_grupotipoocupacao) == null ){ 
+       if(trim((string) $this->ob21_grupotipoocupacao) == null ){ 
          $this->erro_sql = " Campo Grupo Tipo Ocupação não informado.";
          $this->erro_campo = "ob21_grupotipoocupacao";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_parprojetos
          return false;
        }
      }
-     if(trim($this->ob21_grupotipoconstrucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_grupotipoconstrucao"])){ 
+     if(trim((string) $this->ob21_grupotipoconstrucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_grupotipoconstrucao"])){ 
        $sql  .= $virgula." ob21_grupotipoconstrucao = $this->ob21_grupotipoconstrucao ";
        $virgula = ",";
-       if(trim($this->ob21_grupotipoconstrucao) == null ){ 
+       if(trim((string) $this->ob21_grupotipoconstrucao) == null ){ 
          $this->erro_sql = " Campo Grupo Tipo Construção não informado.";
          $this->erro_campo = "ob21_grupotipoconstrucao";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_parprojetos
          return false;
        }
      }
-     if(trim($this->ob21_grupotipolancamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_grupotipolancamento"])){ 
+     if(trim((string) $this->ob21_grupotipolancamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_grupotipolancamento"])){ 
        $sql  .= $virgula." ob21_grupotipolancamento = $this->ob21_grupotipolancamento ";
        $virgula = ",";
-       if(trim($this->ob21_grupotipolancamento) == null ){ 
+       if(trim((string) $this->ob21_grupotipolancamento) == null ){ 
          $this->erro_sql = " Campo Grupo Tipo Lançamento não informado.";
          $this->erro_campo = "ob21_grupotipolancamento";
          $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_parprojetos
          return false;
        }
      }
-     if(trim($this->ob21_tipocartaalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_tipocartaalvara"])){ 
+     if(trim((string) $this->ob21_tipocartaalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_tipocartaalvara"])){ 
        $sql  .= $virgula." ob21_tipocartaalvara = $this->ob21_tipocartaalvara ";
        $virgula = ",";
-       if(trim($this->ob21_tipocartaalvara) == null ){ 
+       if(trim((string) $this->ob21_tipocartaalvara) == null ){ 
          $this->erro_sql = " Campo Tipo Carta Alvará não informado.";
          $this->erro_campo = "ob21_tipocartaalvara";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_parprojetos
          return false;
        }
      }
-     if(trim($this->ob21_tipocartahabite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_tipocartahabite"])){ 
+     if(trim((string) $this->ob21_tipocartahabite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_tipocartahabite"])){ 
        $sql  .= $virgula." ob21_tipocartahabite = $this->ob21_tipocartahabite ";
        $virgula = ",";
-       if(trim($this->ob21_tipocartahabite) == null ){ 
+       if(trim((string) $this->ob21_tipocartahabite) == null ){ 
          $this->erro_sql = " Campo Tipo Carta Habite-se não informado.";
          $this->erro_campo = "ob21_tipocartahabite";
          $this->erro_banco = "";
@@ -335,11 +335,11 @@ class cl_parprojetos
          return false;
        }
      }
-     if(trim($this->ob21_localcertificadoa1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_localcertificadoa1"])){ 
+     if(trim((string) $this->ob21_localcertificadoa1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_localcertificadoa1"])){ 
        $sql  .= $virgula." ob21_localcertificadoa1 = '$this->ob21_localcertificadoa1' ";
        $virgula = ",";
      }
-     if(trim($this->ob21_senhacertificadoa1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_senhacertificadoa1"])){ 
+     if(trim((string) $this->ob21_senhacertificadoa1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob21_senhacertificadoa1"])){ 
        $sql  .= $virgula." ob21_senhacertificadoa1 = '$this->ob21_senhacertificadoa1' ";
        $virgula = ",";
      }
@@ -357,29 +357,29 @@ class cl_parprojetos
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,11870,'$this->ob21_anousu','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob21_anousu"]) || $this->ob21_anousu != "")
-             $resac = db_query("insert into db_acount values($acount,2051,11870,'".AddSlashes(pg_result($resaco,$conresaco,'ob21_anousu'))."','$this->ob21_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2051,11870,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob21_anousu'))."','$this->ob21_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob21_numeracaohabite"]) || $this->ob21_numeracaohabite != "")
-             $resac = db_query("insert into db_acount values($acount,2051,11872,'".AddSlashes(pg_result($resaco,$conresaco,'ob21_numeracaohabite'))."','$this->ob21_numeracaohabite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2051,11872,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob21_numeracaohabite'))."','$this->ob21_numeracaohabite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob21_ultnumerohabite"]) || $this->ob21_ultnumerohabite != "")
-             $resac = db_query("insert into db_acount values($acount,2051,11873,'".AddSlashes(pg_result($resaco,$conresaco,'ob21_ultnumerohabite'))."','$this->ob21_ultnumerohabite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2051,11873,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob21_ultnumerohabite'))."','$this->ob21_ultnumerohabite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob21_grupotipoocupacao"]) || $this->ob21_grupotipoocupacao != "")
-             $resac = db_query("insert into db_acount values($acount,2051,18648,'".AddSlashes(pg_result($resaco,$conresaco,'ob21_grupotipoocupacao'))."','$this->ob21_grupotipoocupacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2051,18648,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob21_grupotipoocupacao'))."','$this->ob21_grupotipoocupacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob21_grupotipoconstrucao"]) || $this->ob21_grupotipoconstrucao != "")
-             $resac = db_query("insert into db_acount values($acount,2051,18649,'".AddSlashes(pg_result($resaco,$conresaco,'ob21_grupotipoconstrucao'))."','$this->ob21_grupotipoconstrucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2051,18649,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob21_grupotipoconstrucao'))."','$this->ob21_grupotipoconstrucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob21_grupotipolancamento"]) || $this->ob21_grupotipolancamento != "")
-             $resac = db_query("insert into db_acount values($acount,2051,18650,'".AddSlashes(pg_result($resaco,$conresaco,'ob21_grupotipolancamento'))."','$this->ob21_grupotipolancamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2051,18650,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob21_grupotipolancamento'))."','$this->ob21_grupotipolancamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob21_tipocartaalvara"]) || $this->ob21_tipocartaalvara != "")
-             $resac = db_query("insert into db_acount values($acount,2051,18651,'".AddSlashes(pg_result($resaco,$conresaco,'ob21_tipocartaalvara'))."','$this->ob21_tipocartaalvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2051,18651,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob21_tipocartaalvara'))."','$this->ob21_tipocartaalvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob21_tipocartahabite"]) || $this->ob21_tipocartahabite != "")
-             $resac = db_query("insert into db_acount values($acount,2051,18652,'".AddSlashes(pg_result($resaco,$conresaco,'ob21_tipocartahabite'))."','$this->ob21_tipocartahabite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2051,18652,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob21_tipocartahabite'))."','$this->ob21_tipocartahabite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob21_localcertificadoa1"]) || $this->ob21_localcertificadoa1 != "")
-             $resac = db_query("insert into db_acount values($acount,2051,1013146,'".AddSlashes(pg_result($resaco,$conresaco,'ob21_localcertificadoa1'))."','$this->ob21_localcertificadoa1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2051,1013146,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob21_localcertificadoa1'))."','$this->ob21_localcertificadoa1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob21_senhacertificadoa1"]) || $this->ob21_senhacertificadoa1 != "")
-             $resac = db_query("insert into db_acount values($acount,2051,1013147,'".AddSlashes(pg_result($resaco,$conresaco,'ob21_senhacertificadoa1'))."','$this->ob21_senhacertificadoa1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2051,1013147,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob21_senhacertificadoa1'))."','$this->ob21_senhacertificadoa1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -433,19 +433,19 @@ class cl_parprojetos
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,11870,'$ob21_anousu','E')");
-           $resac  = db_query("insert into db_acount values($acount,2051,11870,'','".AddSlashes(pg_result($resaco,$iresaco,'ob21_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2051,11872,'','".AddSlashes(pg_result($resaco,$iresaco,'ob21_numeracaohabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2051,11873,'','".AddSlashes(pg_result($resaco,$iresaco,'ob21_ultnumerohabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2051,18648,'','".AddSlashes(pg_result($resaco,$iresaco,'ob21_grupotipoocupacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2051,18649,'','".AddSlashes(pg_result($resaco,$iresaco,'ob21_grupotipoconstrucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2051,18650,'','".AddSlashes(pg_result($resaco,$iresaco,'ob21_grupotipolancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2051,18651,'','".AddSlashes(pg_result($resaco,$iresaco,'ob21_tipocartaalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2051,18652,'','".AddSlashes(pg_result($resaco,$iresaco,'ob21_tipocartahabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2051,1013146,'','".AddSlashes(pg_result($resaco,$iresaco,'ob21_localcertificadoa1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2051,1013147,'','".AddSlashes(pg_result($resaco,$iresaco,'ob21_senhacertificadoa1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2051,11870,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob21_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2051,11872,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob21_numeracaohabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2051,11873,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob21_ultnumerohabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2051,18648,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob21_grupotipoocupacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2051,18649,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob21_grupotipoconstrucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2051,18650,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob21_grupotipolancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2051,18651,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob21_tipocartaalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2051,18652,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob21_tipocartahabite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2051,1013146,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob21_localcertificadoa1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2051,1013147,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob21_senhacertificadoa1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

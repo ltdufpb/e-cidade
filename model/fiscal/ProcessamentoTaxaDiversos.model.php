@@ -199,7 +199,7 @@ class ProcessamentoTaxaDiversos
     }
 
     $retorno  = db_utils::fieldsMemory($rsArrecad,0)->retorno;
-    $iRetorno = substr(trim($retorno),0,1);
+    $iRetorno = substr(trim((string) $retorno),0,1);
 
     if ($iRetorno != '9') {
       throw new BusinessException($retorno);

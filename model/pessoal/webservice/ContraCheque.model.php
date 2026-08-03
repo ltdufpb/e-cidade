@@ -66,7 +66,7 @@ class ContraChequeWebService {
         /**
          * Corrige caracteres especias enviados por parametro
          */
-        $oGet->sMensagem = stripslashes(urldecode($oGet->sMensagem));
+        $oGet->sMensagem = stripslashes(urldecode((string) $oGet->sMensagem));
         $sMatricula   = $matricula;
         $iAnoFolha    = $ano;
         $iMesFolha    = $mes;
@@ -384,23 +384,12 @@ class ContraChequeWebService {
         ) AS xxx, generate_series(1, $oGet->iNumVias)
     ORDER BY
     ";
-    switch ($oGet->sOrdem) {
-    case 'L':
-        $sSql .= " estrutural, nome, matricula";
-        break;
-
-    case 'N':
-        $sSql .= " nome, matricula";
-        break;
-
-    case 'T':
-        $sSql .= " localtrabalho, nome, matricula";
-        break;
-
-    default:
-        $sSql .= " matricula";
-        break;
-    }
+    match ($oGet->sOrdem) {
+        'L' => $sSql .= " estrutural, nome, matricula",
+        'N' => $sSql .= " nome, matricula",
+        'T' => $sSql .= " localtrabalho, nome, matricula",
+        default => $sSql .= " matricula",
+    };
 
     /**
      * busca URL do cliente.
@@ -447,7 +436,7 @@ class ContraChequeWebService {
     $oPDF->emailpref        = $oConfig->email;
     $oPDF->ano              = $oGet->iAno;
     $oPDF->mes              = $oGet->iMes;
-    $oPDF->mensagem         = utf8_decode($oGet->sMensagem);
+    $oPDF->mensagem         = mb_convert_encoding($oGet->sMensagem, 'ISO-8859-1');
     $oPDF->qualarquivo      = $sTitulo;
 
     $lin = 1;
@@ -457,10 +446,10 @@ class ContraChequeWebService {
 
     $rsResult         = db_query("SELECT nextval('rhemitecontracheque_rh85_sequencial_seq') AS sequencial");
     $oSeqContraCheque = db_utils::fieldsMemory($rsResult, 0);
-    $iSequencial      = str_pad($oSeqContraCheque->sequencial, 6, '0', STR_PAD_LEFT);
+    $iSequencial      = str_pad((string) $oSeqContraCheque->sequencial, 6, '0', STR_PAD_LEFT);
 
     $iMes             = str_pad($oGet->iMes, 2, '0', STR_PAD_LEFT);
-    $iMatricula       = str_pad($oServidor->matricula, 6, '0', STR_PAD_LEFT);
+    $iMatricula       = str_pad((string) $oServidor->matricula, 6, '0', STR_PAD_LEFT);
     $iMod1            = db_CalculaDV($iMatricula);
     $iMod2            = db_CalculaDV($iMatricula . $iMod1 . $iMes . $oGet->iAno . $iSequencial);
 

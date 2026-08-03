@@ -57,7 +57,7 @@ $oParametros            = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno->erro         = false;
 $oRetorno->sMensagem    = '';
 
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 
 try {
 
@@ -66,9 +66,9 @@ try {
     case "gerarTXT" :
 
       unset($_SESSION['aInconsistencia']);
-      db_putsession("aInconsistencia", array());
+      db_putsession("aInconsistencia", []);
 
-      $iMes            = str_pad($oParametros->iMes, 2, "0", STR_PAD_LEFT);
+      $iMes            = str_pad((string) $oParametros->iMes, 2, "0", STR_PAD_LEFT);
    	  $iAno            = $oParametros->iAno;
       $lAviso          = $oParametros->lAviso;
 
@@ -77,13 +77,13 @@ try {
 
       $sSufixo = "{$iMes}-{$iAno}-{$dNomeArquivo}-{$hNomeArquivo}";
 
-      $aErros          = array();
+      $aErros          = [];
 
       $iInconsistencia = 0;
       $lIncluir        = false;
       $iUltimoDiaMes   = date("d", strtotime("{$iAno}-{$iMes}-".cal_days_in_month(CAL_GREGORIAN, $iMes,$iAno)));
 
-      $aInconsistencia = array();
+      $aInconsistencia = [];
 
       // Busca dados da tabela parprojetos
       $anousu = db_getsession('DB_anousu');
@@ -102,7 +102,7 @@ try {
       /**
        * Query com os dados principais
        */
-      $aDadosSisobra   = array();
+      $aDadosSisobra   = [];
       $sSqlSisobra     = $oObras->sql_queryDadosSisobraWebservice($iMes, $iAno);
       $rsSisobra       = $oObras->sql_record($sSqlSisobra);
       if($rsSisobra){
@@ -121,9 +121,9 @@ try {
       foreach ($aDadosSisobra as $key => $value) {
         /********** ATRIBUIÇÃO DE DADOS HABITE-SE E ALVARÁ PARA O XML **********/
 
-        $anoMesHabitese = date("Ym", strtotime($value->datahabitese));
+        $anoMesHabitese = date("Ym", strtotime((string) $value->datahabitese));
         $anoMesParametro = $iAno.'-'.$iMes.'-01';
-        $anoMesParametro = date("Ym", strtotime($anoMesParametro));
+        $anoMesParametro = date("Ym", strtotime((string) $anoMesParametro));
 
         // Se registro atual possui codigo habitese e é do mesmo periodo do parametro, gera XML leiaute habitese
         if (!empty($value->codigohabitese) && $anoMesHabitese == $anoMesParametro) {
@@ -135,21 +135,21 @@ try {
           $getAlvaraHabiteseExistente = $client->getAlvaraHabiteseExistente();
           if (!empty($getAlvaraHabiteseExistente)) {
             // ER047
-            $aInconsistencia[] = array(
+            $aInconsistencia[] = [
               'tipo'=>'ERRO',
-              'registro'=>utf8_encode('Habite-se: '.$value->codigohabitese),
-              'detalhe'=>utf8_encode('O habite-se já está cadastrado. O número do habite-se náo poderá repetir no período do ano para uma mesma prefeitura.'),
+              'registro'=>mb_convert_encoding('Habite-se: '.$value->codigohabitese, 'UTF-8', 'ISO-8859-1'),
+              'detalhe'=>mb_convert_encoding('O habite-se já está cadastrado. O número do habite-se náo poderá repetir no período do ano para uma mesma prefeitura.', 'UTF-8', 'ISO-8859-1'),
               'tipoErro'=>'ER047'
-            );
+            ];
             // Caso Habite-se seja total
             if (!$value->tipohabitese) {
               // ER048
-              $aInconsistencia[] = array(
+              $aInconsistencia[] = [
                 'tipo'=>'ERRO',
-                'registro'=>utf8_encode('Habitese: '.$value->codigohabitese)." Obra:".$value->codigoobra,
-                'detalhe'=>utf8_encode('Já existe um habite-se total cadastrado para o alvará '.$value->alvaraobra.'.'),
+                'registro'=>mb_convert_encoding('Habitese: '.$value->codigohabitese, 'UTF-8', 'ISO-8859-1')." Obra:".$value->codigoobra,
+                'detalhe'=>mb_convert_encoding('Já existe um habite-se total cadastrado para o alvará '.$value->alvaraobra.'.', 'UTF-8', 'ISO-8859-1'),
                 'tipoErro'=>'ER048'
-              );
+              ];
             }
           } else {
             // $oConsultarDocumento = new ConsultarDocumento('alvara', $value->alvaraobra, $iAno);
@@ -195,10 +195,10 @@ try {
 
           // Atribui dados para as devidas tags
             // Formata valor do atributo Id conforme manual do sisobra
-          if (strlen($value->codigohabitese) < 7) {
-            $idHabitese = str_pad($value->codigohabitese, 7, 0, STR_PAD_RIGHT);
-          } else if (strlen($value->codigohabitese) > 7) {
-            $idHabitese = substr($value->codigohabitese, 0, 7);
+          if (strlen((string) $value->codigohabitese) < 7) {
+            $idHabitese = str_pad((string) $value->codigohabitese, 7, 0, STR_PAD_RIGHT);
+          } else if (strlen((string) $value->codigohabitese) > 7) {
+            $idHabitese = substr((string) $value->codigohabitese, 0, 7);
           }
           $idHabitese = "id".$idHabitese;
           $oRegistroHabitese->setId($idHabitese);
@@ -234,11 +234,11 @@ try {
           } else if ($value->categoria == "REGULARIZAÇÃO") {
             $oRegistroAreaPrincipal->setCategoria("obra_nova");
           } else {
-            $oRegistroAreaPrincipal->setCategoria(strtolower($value->categoria));
+            $oRegistroAreaPrincipal->setCategoria(strtolower((string) $value->categoria));
           }
 
-          $oRegistroAreaPrincipal->setDestinacao(strtolower($value->destinacao));
-          $oRegistroAreaPrincipal->setTipoObra(strtolower($value->tipoobra));
+          $oRegistroAreaPrincipal->setDestinacao(strtolower((string) $value->destinacao));
+          $oRegistroAreaPrincipal->setTipoObra(strtolower((string) $value->tipoobra));
           if ($value->destinacao == 'CONJUNTO_HABITACIONAL_POPULAR') {
             $oRegistroAreaPrincipal->setQtdTotalUnidadesBloco($qtdTotalUnidadesBloco->ob07_unidades);
           }
@@ -253,11 +253,11 @@ try {
           } else if ($dadosCaracterCategoriaAreaComplementar->j31_descr == "REGULARIZAÇÃO") {
             $oRegistroAreaComplementar->setCategoria("existente");
           } else {
-            $oRegistroAreaComplementar->setCategoria(strtolower($dadosCaracterCategoriaAreaComplementar->j31_descr));
+            $oRegistroAreaComplementar->setCategoria(strtolower((string) $dadosCaracterCategoriaAreaComplementar->j31_descr));
           }
 
-          $oRegistroAreaComplementar->setDestinacao(strtolower($dadosCaracterDestinacaoAreaComplementar->j31_descr));
-          $oRegistroAreaComplementar->setTipoObra(strtolower($dadosObrasConstrAreaComplementar->ob27_tipo));
+          $oRegistroAreaComplementar->setDestinacao(strtolower((string) $dadosCaracterDestinacaoAreaComplementar->j31_descr));
+          $oRegistroAreaComplementar->setTipoObra(strtolower((string) $dadosObrasConstrAreaComplementar->ob27_tipo));
 
           if($dadosObrasConstrAreaComplementar->ob27_tipo == 1) {
             $oRegistroAreaComplementar->setTipoAreaComplementar("quadra");
@@ -283,12 +283,12 @@ try {
           /********** Atribui erros de Habitese ao array de inconsistencias **********/
           // ER005
           if ($value->datafimobra > $value->datahabitese) {
-            $aInconsistencia[] = array(
+            $aInconsistencia[] = [
               'tipo'=>'ERRO',
               'registro'=>'Habite-se: '.$value->codigohabitese." Obra:".$value->codigoobra,
               'detalhe'=>'A Data do Final da Obra deve ser menor ou igual a Data do Habite-se.',
               'tipoErro'=>'ER005'
-            );
+            ];
           }
           // ER029
           if ($value->destinacao == 'CASA_POPULAR' ||
@@ -299,12 +299,12 @@ try {
               $dadosObrasConstrAreaComplementar->ob27_medidaareadescoberta
             ;
             if ($totalArea > 70) {
-              $aInconsistencia[] = array(
+              $aInconsistencia[] = [
                 'tipo'=>'ERRO',
                 'registro'=>'Habite-se: '.$value->codigohabitese." Obra:".$value->codigoobra,
-                'detalhe'=>utf8_encode('Para destinação "Casa Popular" a soma das áreas não pode ser maior que 70m².'),
+                'detalhe'=>mb_convert_encoding('Para destinação "Casa Popular" a soma das áreas não pode ser maior que 70m².', 'UTF-8', 'ISO-8859-1'),
                 'tipoErro'=>'ER029'
-              );
+              ];
             }
           }
           // ER039
@@ -314,33 +314,33 @@ try {
               $dadosObrasConstrAreaComplementar->ob27_medidaareadescoberta
             ;
             if (($totalArea / $qtdTotalUnidadesBloco->ob07_unidades) > 70) {
-              $aInconsistencia[] = array(
+              $aInconsistencia[] = [
                 'tipo'=>'ERRO',
                 'registro'=>'Habite-se: '.$value->codigohabitese." Obra:".$value->codigoobra,
-                  'detalhe'=>utf8_encode('Rejeição do documento Para destinação "Conjunto Habitacional Popular" a soma da área principal e complementar dividida pela quantidade total de unidades não pode ser maior que 70m². A destinação deve ser "Residencial Multifamiliar".'),
+                  'detalhe'=>mb_convert_encoding('Rejeição do documento Para destinação "Conjunto Habitacional Popular" a soma da área principal e complementar dividida pela quantidade total de unidades não pode ser maior que 70m². A destinação deve ser "Residencial Multifamiliar".', 'UTF-8', 'ISO-8859-1'),
                 'tipoErro'=>'ER039'
-              );
+              ];
             }
           }
           // ER066
           if ($value->datahabitese <= $value->dataalvara) {
-            $aInconsistencia[] = array(
+            $aInconsistencia[] = [
               'tipo'=>'ERRO',
               'registro'=>'Habite-se: '.$value->codigohabitese." Obra:".$value->codigoobra,
-              'detalhe'=>utf8_encode('A Data do Habite-se deve ser posterior a Data do Alvará vinculado.'),
+              'detalhe'=>mb_convert_encoding('A Data do Habite-se deve ser posterior a Data do Alvará vinculado.', 'UTF-8', 'ISO-8859-1'),
               'tipoErro'=>'ER066'
-            );
+            ];
           }
 
         }
 
         // Verifica se habitese atual não é do mesmo periodo do parametro, porem o alvará
-        $anoMesAlvara = date("Ym", strtotime($value->dataalvara));
+        $anoMesAlvara = date("Ym", strtotime((string) $value->dataalvara));
 
         if ($anoMesAlvara == $anoMesParametro) {
           $sqlGetAlvaraInexistente = "SELECT * FROM obrasenvioregalvara WHERE ob31_codalvara = $value->alvaraobra";
           $resultSqlGetAlvaraInexistente = db_query($sqlGetAlvaraInexistente);
-          if (pg_numrows($resultSqlGetAlvaraInexistente) == 0) {
+          if (pg_num_rows($resultSqlGetAlvaraInexistente) == 0) {
             $alvaraInexistente = $value->alvaraobra;
           }
         }
@@ -355,12 +355,12 @@ try {
           $getAlvaraHabiteseExistente = $client->getAlvaraHabiteseExistente();
           if (!empty($getAlvaraHabiteseExistente)) {
             // ER042
-            $aInconsistencia[] = array(
+            $aInconsistencia[] = [
               'tipo'=>'ERRO',
-              'registro'=>utf8_encode('Alvará: '.$value->alvaraobra),
-                'detalhe'=>utf8_encode('O alvará já está cadastrado. O número do alvará não poderá repetir no período do ano para uma mesma prefeitura.'),
+              'registro'=>mb_convert_encoding('Alvará: '.$value->alvaraobra, 'UTF-8', 'ISO-8859-1'),
+                'detalhe'=>mb_convert_encoding('O alvará já está cadastrado. O número do alvará não poderá repetir no período do ano para uma mesma prefeitura.', 'UTF-8', 'ISO-8859-1'),
               'tipoErro'=>'ER042'
-            );
+            ];
           }
 
           // Inicia a busca de dados para montar XML do Alvará
@@ -407,15 +407,15 @@ try {
           // Formata valor do atributo Id conforme manual do sisobra
 
           if($value->idalvara == null){
-            if (strlen($value->codigoobra) < 7) {
-              $idAlvara = str_pad($value->codigoobra, 6, 0, STR_PAD_RIGHT);
-            } else if (strlen($value->codigoobra) > 7) {
-              $idAlvara = substr($value->codigoobra, 0, 6);
+            if (strlen((string) $value->codigoobra) < 7) {
+              $idAlvara = str_pad((string) $value->codigoobra, 6, 0, STR_PAD_RIGHT);
+            } else if (strlen((string) $value->codigoobra) > 7) {
+              $idAlvara = substr((string) $value->codigoobra, 0, 6);
             }
             $idAlvara = "id"."9".$idAlvara;
             $oRegistroAlvara->setId($idAlvara);
           } else {
-            $idAlvara = str_pad($value->idalvara, 7, 0, STR_PAD_LEFT);
+            $idAlvara = str_pad((string) $value->idalvara, 7, 0, STR_PAD_LEFT);
             $idAlvara = "id".$idAlvara;
             $oRegistroAlvara->setId($idAlvara);
           }
@@ -426,12 +426,12 @@ try {
           $oRegistroAlvara->setDataAlvara($value->dataalvara);
 
           if (empty($value->datainicioobra)) {
-            $aInconsistencia[] = array(
+            $aInconsistencia[] = [
               'tipo'=>'ERRO',
-              'registro'=>utf8_encode('Alvará: '.$value->alvaraobra)." Obra:".$value->codigoobra,
-              'detalhe'=>utf8_encode('A Data do Início da Obra deve ser informada.'),
+              'registro'=>mb_convert_encoding('Alvará: '.$value->alvaraobra, 'UTF-8', 'ISO-8859-1')." Obra:".$value->codigoobra,
+              'detalhe'=>mb_convert_encoding('A Data do Início da Obra deve ser informada.', 'UTF-8', 'ISO-8859-1'),
               'tipoErro'=>'ER089'
-            );
+            ];
           } else {
             $oRegistroAlvara->setDataInicioObra($value->datainicioobra);
           }
@@ -442,15 +442,15 @@ try {
           if ($value->respexecobra == 51) {
             $oRegistroAlvara->setProprietarioDoImovel(true);
           } else if ($value->respexecobra == 52) {
-            if (strlen($dadosCgcCpf->z01_cgccpf) == 11) {
+            if (strlen((string) $dadosCgcCpf->z01_cgccpf) == 11) {
               $oRegistroAlvara->setDonoDaObraCpf($dadosCgcCpf->z01_cgccpf);
-            } else if (strlen($dadosCgcCpf->z01_cgccpf)>11) {
+            } else if (strlen((string) $dadosCgcCpf->z01_cgccpf)>11) {
               $oRegistroAlvara->setDonoDaObraCnpj($dadosCgcCpf->z01_cgccpf);
             }
           } else if ($value->respexecobra == 55) {
-            if (strlen($dadosCgcCpf->z01_cgccpf) == 11) {
+            if (strlen((string) $dadosCgcCpf->z01_cgccpf) == 11) {
               $oRegistroAlvara->setIncorporadorConstrucaoCivilCpf($dadosCgcCpf->z01_cgccpf);
-            } else if (strlen($dadosCgcCpf->z01_cgccpf)>11) {
+            } else if (strlen((string) $dadosCgcCpf->z01_cgccpf)>11) {
               $oRegistroAlvara->setIncorporadorConstrucaoCivilCnpj($dadosCgcCpf->z01_cgccpf);
           }
           } else if ($value->respexecobra == 53) {
@@ -462,30 +462,30 @@ try {
             
             $numeroOutrosProp = pg_num_rows($rsOutrosPropri);
             
-            if (strlen($dadosCgcCpf->z01_cgccpf) == 11) {
+            if (strlen((string) $dadosCgcCpf->z01_cgccpf) == 11) {
               $oRegistroAlvara->setCpfResponsavelPrincipal($dadosCgcCpf->z01_cgccpf);
 
               if ($numeroOutrosProp > 0) {             
                 for ($iNumero = 0; $iNumero < $numeroOutrosProp; $iNumero++) {
                   $oOutrosProprietarios = db_utils::fieldsMemory($rsOutrosPropri, $iNumero);
 
-                  if (strlen($oOutrosProprietarios->z01_cgccpf) == 11) {
+                  if (strlen((string) $oOutrosProprietarios->z01_cgccpf) == 11) {
                     $oRegistroAlvara->addConstrucaoNomeColetivoCpf($oOutrosProprietarios->z01_cgccpf);
-                  } else if (strlen($oOutrosProprietarios->z01_cgccpf)>11) {
+                  } else if (strlen((string) $oOutrosProprietarios->z01_cgccpf)>11) {
                     $oRegistroAlvara->addConstrucaoNomeColetivoCnpj($oOutrosProprietarios->z01_cgccpf);
                   }
               }
                 
-              } else if (strlen($dadosCgcCpf->z01_cgccpf)>11) {
+              } else if (strlen((string) $dadosCgcCpf->z01_cgccpf)>11) {
                 $oRegistroAlvara->setCnpjResponsavelPrincipal($dadosCgcCpf->z01_cgccpf);
                 
                 if ($numeroOutrosProp > 0) {             
                   for ($iNumero = 0; $iNumero < $numeroOutrosProp; $iNumero++) {
                     $oOutrosProprietarios = db_utils::fieldsMemory($rsOutrosPropri, $iNumero);
   
-                    if (strlen($oOutrosProprietarios->z01_cgccpf) == 11) {
+                    if (strlen((string) $oOutrosProprietarios->z01_cgccpf) == 11) {
                       $oRegistroAlvara->addConstrucaoNomeColetivoCpf($oOutrosProprietarios->z01_cgccpf);
-                    } else if (strlen($oOutrosProprietarios->z01_cgccpf)>11) {
+                    } else if (strlen((string) $oOutrosProprietarios->z01_cgccpf)>11) {
                       $oRegistroAlvara->addConstrucaoNomeColetivoCnpj($oOutrosProprietarios->z01_cgccpf);
                     }
                   }
@@ -501,19 +501,19 @@ try {
           // $oRegistroAlvara->setCnpjResponsavelPrincipal();
 
           if (empty($value->cepobra)) {
-            $aInconsistencia[] = array(
+            $aInconsistencia[] = [
               'tipo'=>'ERRO',
-              'registro'=>utf8_encode('Alvará: '.$value->alvaraobra)." Obra:".$value->codigoobra,
-              'detalhe'=>utf8_encode('CEP deve ser informado.'),
+              'registro'=>mb_convert_encoding('Alvará: '.$value->alvaraobra, 'UTF-8', 'ISO-8859-1')." Obra:".$value->codigoobra,
+              'detalhe'=>mb_convert_encoding('CEP deve ser informado.', 'UTF-8', 'ISO-8859-1'),
               'tipoErro'=>'ERRO'
-            );
-          } else if ((strlen($value->cepobra) < 8) || (strlen($value->cepobra) > 8)) {
-            $aInconsistencia[] = array(
+            ];
+          } else if ((strlen((string) $value->cepobra) < 8) || (strlen((string) $value->cepobra) > 8)) {
+            $aInconsistencia[] = [
               'tipo'=>'ERRO',
-              'registro'=>utf8_encode('Alvará: '.$value->alvaraobra)." Obra:".$value->codigoobra,
-              'detalhe'=>utf8_encode('CEP está no formato inválido.'),
+              'registro'=>mb_convert_encoding('Alvará: '.$value->alvaraobra, 'UTF-8', 'ISO-8859-1')." Obra:".$value->codigoobra,
+              'detalhe'=>mb_convert_encoding('CEP está no formato inválido.', 'UTF-8', 'ISO-8859-1'),
               'tipoErro'=>'ERRO'
-            );
+            ];
           } else {
             $oRegistroAlvara->setCep($value->cepobra);
           }
@@ -530,9 +530,9 @@ try {
             $oRegistroAlvara->setValorUnidadeMedida('');
           }
 
-          if (strlen($value->propriobracgccpf) == 11) {
+          if (strlen((string) $value->propriobracgccpf) == 11) {
             $oRegistroAlvara->setProprietarioObraCpf($value->propriobracgccpf);
-          } else if (strlen($value->propriobracgccpf) > 11) {
+          } else if (strlen((string) $value->propriobracgccpf) > 11) {
             $oRegistroAlvara->setProprietarioObraCnpj($value->propriobracgccpf);
           }
 
@@ -543,20 +543,20 @@ try {
           // Dados Responsável Técnico
           if (pg_num_rows($resultResponsavelTecnico) > 0) {
             if (empty($dadosResponsavelTecnico->ob01_numeroarttecnico) && empty($dadosResponsavelTecnico->ob01_numerorrttecnico)) {
-              $aInconsistencia[] = array(
+              $aInconsistencia[] = [
                 'tipo'=>'ERRO',
-                'registro'=>utf8_encode('Alvará: '.$value->alvaraobra)." Obra:".$value->codigoobra,
-                'detalhe'=>utf8_encode('ART ou RRT do Responsável Técnico deve ser informado.'),
+                'registro'=>mb_convert_encoding('Alvará: '.$value->alvaraobra, 'UTF-8', 'ISO-8859-1')." Obra:".$value->codigoobra,
+                'detalhe'=>mb_convert_encoding('ART ou RRT do Responsável Técnico deve ser informado.', 'UTF-8', 'ISO-8859-1'),
                 'tipoErro'=>'ERRO'
-              );
+              ];
             }
             if (empty($dadosResponsavelTecnico->ob15_profissao)) {
-              $aInconsistencia[] = array(
+              $aInconsistencia[] = [
                 'tipo'=>'ERRO',
-                'registro'=>utf8_encode('Alvará: '.$value->alvaraobra)." Obra:".$value->codigoobra,
-                'detalhe'=>utf8_encode('Campo Profissão deve ser atribuído ao Responsável Técnico.'),
+                'registro'=>mb_convert_encoding('Alvará: '.$value->alvaraobra, 'UTF-8', 'ISO-8859-1')." Obra:".$value->codigoobra,
+                'detalhe'=>mb_convert_encoding('Campo Profissão deve ser atribuído ao Responsável Técnico.', 'UTF-8', 'ISO-8859-1'),
                 'tipoErro'=>'ERRO'
-              );
+              ];
             }
             else {
               // Caso responsável técnico seja engenheiro
@@ -576,19 +576,19 @@ try {
           // Dados Responsável Projeto
           if (pg_num_rows($resultResponsavelProjeto) > 0) {
             if (empty($dadosResponsavelProjeto->ob01_numeroartprojeto) && empty($dadosResponsavelProjeto->ob01_numerorrtprojeto)) {
-              $aInconsistencia[] = array(
+              $aInconsistencia[] = [
                 'tipo'=>'ERRO',
-                'registro'=>utf8_encode('Alvará: '.$value->alvaraobra)." Obra:".$value->codigoobra,
-                'detalhe'=>utf8_encode('ART ou RRT do Responsável Projeto deve ser informado.'),
+                'registro'=>mb_convert_encoding('Alvará: '.$value->alvaraobra, 'UTF-8', 'ISO-8859-1')." Obra:".$value->codigoobra,
+                'detalhe'=>mb_convert_encoding('ART ou RRT do Responsável Projeto deve ser informado.', 'UTF-8', 'ISO-8859-1'),
                 'tipoErro'=>'ERRO'
-              );
+              ];
             } if (empty($dadosResponsavelProjeto->ob15_profissao)) {
-              $aInconsistencia[] = array(
+              $aInconsistencia[] = [
                 'tipo'=>'ERRO',
-                'registro'=>utf8_encode('Alvará: '.$value->alvaraobra)." Obra:".$value->codigoobra,
-                'detalhe'=>utf8_encode('Campo Profissão deve ser atribuído ao Responsável Projeto.'),
+                'registro'=>mb_convert_encoding('Alvará: '.$value->alvaraobra, 'UTF-8', 'ISO-8859-1')." Obra:".$value->codigoobra,
+                'detalhe'=>mb_convert_encoding('Campo Profissão deve ser atribuído ao Responsável Projeto.', 'UTF-8', 'ISO-8859-1'),
                 'tipoErro'=>'ERRO'
-              );
+              ];
             }
             else {
               // Caso responsável projeto seja engenheiro
@@ -617,11 +617,11 @@ try {
           } else if ($value->categoria == "REGULARIZAÇÃO") {
             $oRegistroAreaPrincipal->setCategoria("existente");
           } else {
-            $oRegistroAreaPrincipal->setCategoria(strtolower($value->categoria));
+            $oRegistroAreaPrincipal->setCategoria(strtolower((string) $value->categoria));
           }
 
           $oRegistroAreaPrincipal->setDestinacao($value->destinacao);
-          $oRegistroAreaPrincipal->setTipoObra(strtolower($value->tipoobra));
+          $oRegistroAreaPrincipal->setTipoObra(strtolower((string) $value->tipoobra));
           if ($value->destinacao == 'CONJUNTO_HABITACIONAL_POPULAR') {
             $oRegistroAreaPrincipal->setQtdTotalUnidadesBloco($qtdTotalUnidadesBloco->ob07_unidades);
           }
@@ -635,11 +635,11 @@ try {
           } else if ($dadosCaracterCategoriaAreaComplementar->j31_descr == "REGULARIZAÇÃO") {
             $oRegistroAreaComplementar->setCategoria("existente");
           } else {
-            $oRegistroAreaComplementar->setCategoria(strtolower($dadosCaracterCategoriaAreaComplementar->j31_descr));
+            $oRegistroAreaComplementar->setCategoria(strtolower((string) $dadosCaracterCategoriaAreaComplementar->j31_descr));
           }
 
-          $oRegistroAreaComplementar->setDestinacao(strtolower($dadosCaracterDestinacaoAreaComplementar->j31_descr));
-          $oRegistroAreaComplementar->setTipoObra(strtolower($dadosObrasConstrAreaComplementar->ob27_tipo));
+          $oRegistroAreaComplementar->setDestinacao(strtolower((string) $dadosCaracterDestinacaoAreaComplementar->j31_descr));
+          $oRegistroAreaComplementar->setTipoObra(strtolower((string) $dadosObrasConstrAreaComplementar->ob27_tipo));
 
           if($dadosObrasConstrAreaComplementar->ob27_tipo == 1) {
             $oRegistroAreaComplementar->setTipoAreaComplementar("quadra");
@@ -665,12 +665,12 @@ try {
           /********** Atribui erros de Habitese ao array de inconsistencias **********/
           // ER008
           if (!empty($value->datafimobra) && $value->datafimobra <= $value->datainicioobra) {
-            $aInconsistencia[] = array(
+            $aInconsistencia[] = [
               'tipo'=>'ERRO',
-              'registro'=>utf8_encode('Alvará: '.$value->alvaraobra)." Obra:".$value->codigoobra,
-              'detalhe'=>utf8_encode('A Data do Final de Obra deve ser posterior á Data de Início da Obra.'),
+              'registro'=>mb_convert_encoding('Alvará: '.$value->alvaraobra, 'UTF-8', 'ISO-8859-1')." Obra:".$value->codigoobra,
+              'detalhe'=>mb_convert_encoding('A Data do Final de Obra deve ser posterior á Data de Início da Obra.', 'UTF-8', 'ISO-8859-1'),
               'tipoErro'=>'ER008'
-            );
+            ];
           }
           // ER029
           if ($value->destinacao == 'CASA_POPULAR' ||
@@ -681,12 +681,12 @@ try {
               $dadosObrasConstrAreaComplementar->ob27_medidaareadescoberta
             ;
             if ($totalArea > 70) {
-              $aInconsistencia[] = array(
+              $aInconsistencia[] = [
                 'tipo'=>'ERRO',
-                'registro'=>utf8_encode('Alvará: '.$value->alvaraobra)." Obra:".$value->codigoobra,
-                  'detalhe'=>utf8_encode('Para destinação "Casa Popular" a soma das áreas não pode ser maior que 70m².'),
+                'registro'=>mb_convert_encoding('Alvará: '.$value->alvaraobra, 'UTF-8', 'ISO-8859-1')." Obra:".$value->codigoobra,
+                  'detalhe'=>mb_convert_encoding('Para destinação "Casa Popular" a soma das áreas não pode ser maior que 70m².', 'UTF-8', 'ISO-8859-1'),
                 'tipoErro'=>'ER029'
-              );
+              ];
             }
           }
           // ER039
@@ -696,12 +696,12 @@ try {
               $dadosObrasConstrAreaComplementar->ob27_medidaareadescoberta
             ;
             if (($totalArea / $qtdTotalUnidadesBloco->ob07_unidades) > 70) {
-              $aInconsistencia[] = array(
+              $aInconsistencia[] = [
                 'tipo'=>'ERRO',
-                'registro'=>utf8_encode('Alvará: '.$value->alvaraobra)." Obra:".$value->codigoobra,
-                  'detalhe'=>utf8_encode('Rejeição do documento Para destinação "Conjunto Habitacional Popular" a soma da área principal e complementar dividida pela quantidade total de unidades não pode ser maior que 70m². A destinação deve ser "Residencial Multifamiliar".'),
+                'registro'=>mb_convert_encoding('Alvará: '.$value->alvaraobra, 'UTF-8', 'ISO-8859-1')." Obra:".$value->codigoobra,
+                  'detalhe'=>mb_convert_encoding('Rejeição do documento Para destinação "Conjunto Habitacional Popular" a soma da área principal e complementar dividida pela quantidade total de unidades não pode ser maior que 70m². A destinação deve ser "Residencial Multifamiliar".', 'UTF-8', 'ISO-8859-1'),
                 'tipoErro'=>'ER039'
-              );
+              ];
             }
           }
           $alvaraInexistente = "";
@@ -720,11 +720,11 @@ try {
 
       $oRecepcaoLoteXml = $oRecepcaoLote->gerar()->saveXML();
 
-      $oRecepcaoLoteXml = utf8_decode($oRecepcaoLoteXml);
+      $oRecepcaoLoteXml = mb_convert_encoding($oRecepcaoLoteXml, 'ISO-8859-1');
       $oRecepcaoLoteXml = str_replace('&lt;', '<', $oRecepcaoLoteXml);
       $oRecepcaoLoteXml = str_replace('&gt;', '>', $oRecepcaoLoteXml);
 
-      $filenameXml = loggerSis("loteobras-{$sSufixo}.xml", utf8_encode($oRecepcaoLoteXml));
+      $filenameXml = loggerSis("loteobras-{$sSufixo}.xml", mb_convert_encoding($oRecepcaoLoteXml, 'UTF-8', 'ISO-8859-1'));
 
       // Verifica se array de inconsistencias é vazio para retornar erros na tela
       if (!empty($aInconsistencia)) {
@@ -766,24 +766,24 @@ try {
                 $codRetorno == 'IN004' ||
                 $codRetorno == 'IN006'
             ) && !empty($protocolo)) {
-              $aAlvarasValidos[] = array(
+              $aAlvarasValidos[] = [
                 'numeroAlvara'=>$numeroAlvara,
                 'protocolo'=>$protocolo
-              );
-              $aInconsistencia[] = array(
+              ];
+              $aInconsistencia[] = [
                 'tipo'=>'SUCESSO',
-                'registro'=>utf8_encode('Alvará: ').$numeroAlvara." Obra:".$value->codigoobra,
+                'registro'=>mb_convert_encoding('Alvará: ', 'UTF-8', 'ISO-8859-1').$numeroAlvara." Obra:".$value->codigoobra,
                 'detalhe'=>$descricao,
                 'tipoErro'=>$codRetorno
-              );
+              ];
             // Caso tenha retorno com erro
             } else {
-              $aInconsistencia[] = array(
+              $aInconsistencia[] = [
                 'tipo'=>'ERRO',
-                'registro'=>utf8_encode('Alvará: ').$numeroAlvara." Obra:".$value->codigoobra,
+                'registro'=>mb_convert_encoding('Alvará: ', 'UTF-8', 'ISO-8859-1').$numeroAlvara." Obra:".$value->codigoobra,
                 'detalhe'=>$descricao,
                 'tipoErro'=>$codRetorno
-              );
+              ];
             }
           }
           // Caso tenham múltiplos registros
@@ -795,23 +795,23 @@ try {
                   $value['codRetorno'] == 'IN004' ||
                   $value['codRetorno'] == 'IN006'
               ) && !empty($value['protocolo'])) {
-                  $aAlvarasValidos[] = array(
+                  $aAlvarasValidos[] = [
                     'numeroAlvara'=>$value['numeroAlvara'],
                     'protocolo'=>$value['protocolo']
-                  );
-                  $aInconsistencia[] = array(
+                  ];
+                  $aInconsistencia[] = [
                     'tipo'=>'SUCESSO',
-                    'registro'=>utf8_encode('Alvará: ').$value['numeroAlvara']." Obra:".$value->codigoobra,
+                    'registro'=>mb_convert_encoding('Alvará: ', 'UTF-8', 'ISO-8859-1').$value['numeroAlvara']." Obra:".$value->codigoobra,
                     'detalhe'=>$value['descricao'],
                     'tipoErro'=>$value['codRetorno']
-                  );
+                  ];
               } else {
-                $aInconsistencia[] = array(
+                $aInconsistencia[] = [
                   'tipo'=>'ERRO',
-                  'registro'=>utf8_encode('Alvará: ').$value['numeroAlvara']." Obra:".$value->codigoobra,
+                  'registro'=>mb_convert_encoding('Alvará: ', 'UTF-8', 'ISO-8859-1').$value['numeroAlvara']." Obra:".$value->codigoobra,
                   'detalhe'=>$value['descricao'],
                   'tipoErro'=>$value['codRetorno']
-                );
+                ];
               }
             }
           }
@@ -837,24 +837,24 @@ try {
                 $codRetorno == 'IN004' ||
                 $codRetorno == 'IN006'
             ) && !empty($protocolo)) {
-              $aHabitesesValidos[] = array(
+              $aHabitesesValidos[] = [
                 'numeroHabitese'=>$numeroHabitese,
                 'protocolo'=>$protocolo
-              );
-              $aInconsistencia[] = array(
+              ];
+              $aInconsistencia[] = [
                 'tipo'=>'SUCESSO',
-                'registro'=>utf8_encode('Habite-se: ').$numeroHabitese." Obra:".$value->codigoobra,
+                'registro'=>mb_convert_encoding('Habite-se: ', 'UTF-8', 'ISO-8859-1').$numeroHabitese." Obra:".$value->codigoobra,
                 'detalhe'=>$descricao,
                 'tipoErro'=>$codRetorno
-              );
+              ];
             // Caso tenha retorno com erro
             } else {
-              $aInconsistencia[] = array(
+              $aInconsistencia[] = [
                 'tipo'=>'ERRO',
-                'registro'=>utf8_encode('Habite-se: ').$numeroHabitese." Obra:".$value->codigoobra,
+                'registro'=>mb_convert_encoding('Habite-se: ', 'UTF-8', 'ISO-8859-1').$numeroHabitese." Obra:".$value->codigoobra,
                 'detalhe'=>$descricao,
                 'tipoErro'=>$codRetorno
-              );
+              ];
             }
           }
           // Caso sejam múltiplos registros
@@ -866,24 +866,24 @@ try {
                   $value['codRetorno'] == 'IN004' ||
                   $value['codRetorno'] == 'IN006'
               ) && !empty($value['protocolo'])) {
-                $aHabitesesValidos[] = array(
+                $aHabitesesValidos[] = [
                   'numeroHabitese'=>$value['numeroHabitese'],
                   'protocolo'=>$value['protocolo']
-                );
-                $aInconsistencia[] = array(
+                ];
+                $aInconsistencia[] = [
                   'tipo'=>'SUCESSO',
-                  'registro'=>utf8_encode('Habite-se: ').$value['numeroHabitese']." Obra:".$value->codigoobra,
+                  'registro'=>mb_convert_encoding('Habite-se: ', 'UTF-8', 'ISO-8859-1').$value['numeroHabitese']." Obra:".$value->codigoobra,
                   'detalhe'=>$value['descricao'],
                   'tipoErro'=>$value['codRetorno']
-                );
+                ];
               // Caso tenha retorno com erro
               } else {
-                $aInconsistencia[] = array(
+                $aInconsistencia[] = [
                   'tipo'=>'ERRO',
-                  'registro'=>utf8_encode('Habite-se: ').$value['numeroHabitese']." Obra:".$value->codigoobra,
+                  'registro'=>mb_convert_encoding('Habite-se: ', 'UTF-8', 'ISO-8859-1').$value['numeroHabitese']." Obra:".$value->codigoobra,
                   'detalhe'=>$value['descricao'],
                   'tipoErro'=>$value['codRetorno']
-                );
+                ];
               }
             }
           }
@@ -898,12 +898,12 @@ try {
               $descricao = $value;
             }
           }
-          $aInconsistencia[] = array(
+          $aInconsistencia[] = [
             'tipo'=>'ERRO',
             'registro'=>'',
             'detalhe'=>$descricao,
             'tipoErro'=>$codRetorno
-          );
+          ];
         }
 
         // Caso tenham dados enviados com sucesso, libera inserção no banco
@@ -1031,13 +1031,13 @@ try {
     break;
   }
 
-  $oRetorno->sMensagem = urlencode($oRetorno->sMensagem);
+  $oRetorno->sMensagem = urlencode((string) $oRetorno->sMensagem);
   echo $oJson->encode($oRetorno);
 
 } catch (Exception $eErro){
 
   $oRetorno->erro      = true;
-  $oRetorno->sMensagem = urlencode($eErro->getMessage());
+  $oRetorno->sMensagem = urlencode((string) $eErro->getMessage());
   echo $oJson->encode($oRetorno);
 }
 
@@ -1093,12 +1093,12 @@ function validaDados( $mValor, $iRegistroObra, $sMensagem, $iTamanhoCampo, $lObr
     }
 
     $oErros->registro = is_string($iRegistroObra) ? $iRegistroObra : "Obra: {$iRegistroObra} ";
-    $oErros->detalhe  = urlencode($sMensagem);
+    $oErros->detalhe  = urlencode((string) $sMensagem);
     $aErros[]         = $oErros;
     db_putsession("aInconsistencia", $aErros);
   }
 
-  return str_pad(trim($mValor), $iTamanhoCampo, $sComplea, $cStrPad);
+  return str_pad(trim((string) $mValor), $iTamanhoCampo, $sComplea, $cStrPad);
 }
 
 /**
@@ -1113,7 +1113,7 @@ function getTipoIdentificacao($iCgcCpf, $iRegistroObra, $sDetalhe, $iNumCgm) {
   $aErros = db_getsession("aInconsistencia");
 
   // CNPJ
-  if( strlen($iCgcCpf) > 11 ) {
+  if( strlen((string) $iCgcCpf) > 11 ) {
 
     if( validaCNPJ($iCgcCpf) == true ) {
       return 1; // cnpj
@@ -1160,12 +1160,12 @@ function validaCPF($cpf) {
   /**
    *  Verifiva se o número digitado contém todos os digitos
    */
-  $cpf = str_pad(preg_replace('[^0-9]', '', $cpf), 11, '0', STR_PAD_LEFT);
+  $cpf = str_pad((string) preg_replace('[^0-9]', '', (string) $cpf), 11, '0', STR_PAD_LEFT);
 
   /**
    * Verifica se nenhuma das sequencias abaixo foi digitada, caso seja, retorna falso
    */
-  if ( strlen($cpf) != 11 || $cpf == '00000000000' || $cpf == '11111111111' || $cpf == '22222222222' || $cpf == '33333333333' || $cpf == '44444444444' || $cpf == '55555555555' ||
+  if ( strlen((string) $cpf) != 11 || $cpf == '00000000000' || $cpf == '11111111111' || $cpf == '22222222222' || $cpf == '33333333333' || $cpf == '44444444444' || $cpf == '55555555555' ||
                              $cpf == '66666666666' || $cpf == '77777777777' || $cpf == '88888888888' || $cpf == '99999999999') {
     return false;
 
@@ -1177,12 +1177,12 @@ function validaCPF($cpf) {
     for ($t = 9; $t < 11; $t++) {
 
       for ($d = 0, $c = 0; $c < $t; $c++) {
-        $d += $cpf{$c} * (($t + 1) - $c);
+        $d += $cpf[$c] * (($t + 1) - $c);
       }
 
       $d = ((10 * $d) % 11) % 10;
 
-      if ($cpf{$c} != $d) {
+      if ($cpf[$c] != $d) {
         return false;
       }
     }
@@ -1199,7 +1199,7 @@ function validaCNPJ($cnpj) {
   if ((int)$cnpj == 0) {
     return false;
   }
-  if (strlen($cnpj) != 14) {
+  if (strlen((string) $cnpj) != 14) {
     return false;
   }
   $soma = 0;
@@ -1250,7 +1250,7 @@ function loggerSis($sNomeArquivo, $conteudo)
     $sFileName = "tmp/sisobras-".$sNomeArquivo;
 
     $fileOpen = fopen($sFileName, "a+");
-    fwrite($fileOpen, $conteudo);
+    fwrite($fileOpen, (string) $conteudo);
     fclose($fileOpen);
 
     return $sFileName;

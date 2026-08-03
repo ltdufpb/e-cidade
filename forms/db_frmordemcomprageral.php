@@ -244,9 +244,9 @@ if (isset($listagem_empenhos) && $listagem_empenhos!='' ){
 							 echo "  </td>";
                echo "  <td class='linhagrid'id='empenho{$oEmpenho->e62_sequencial}' align='center'>{$oEmpenho->e60_numemp}</td>";
                echo "  <td class='linhagrid' align='center'><small>{$oEmpenho->e62_item}</small></td>";		    
-               echo "  <td class='linhagrid' nowrap align='left' title='$oEmpenho->pc01_descrmater'><small>".substr($oEmpenho->pc01_descrmater,0,20)."&nbsp;</small></td>";
+               echo "  <td class='linhagrid' nowrap align='left' title='$oEmpenho->pc01_descrmater'><small>".substr((string) $oEmpenho->pc01_descrmater,0,20)."&nbsp;</small></td>";
                echo "  <td class='linhagrid' id='sequen{$oEmpenho->e62_sequencial}' align='center'>$oEmpenho->e62_sequen</td>";
-               echo "  <td class='linhagrid' nowrap align='left' title='$oEmpenho->e62_descr'><small>".substr($oEmpenho->e62_descr,0,20)."&nbsp;</small></td>";
+               echo "  <td class='linhagrid' nowrap align='left' title='$oEmpenho->e62_descr'><small>".substr((string) $oEmpenho->e62_descr,0,20)."&nbsp;</small></td>";
                echo "  <td class='linhagrid' align='center'>$oEmpenho->e62_quant</td>";
                echo "  <td class='linhagrid' align='center'>$oEmpenho->e62_vltot</td>";
                echo "  <td class='linhagrid' id='e62_vluni{$oEmpenho->e62_sequencial}'align='center'>";

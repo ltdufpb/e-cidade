@@ -197,7 +197,7 @@ class Processar
         $processamento->setMatricula($this->getMatricula());
         $processamento->setProcesso($processo);
         $processamento->setStatus($erro_status == true ? "t" : "f");
-        $processamento->setErro(addslashes($erro));
+        $processamento->setErro(addslashes((string) $erro));
         $processamento->setInstituicao($this->getInstituicao());
         $processamento->setUsuario(db_getsession('DB_id_usuario'));
         $processamento->setData(date('Y-m-d H:i:s'));

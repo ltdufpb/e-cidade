@@ -45,24 +45,12 @@ class NotasExplicativas implements ArquivosSigapFiscalInterface
      * @var Periodo
      */
     private $periodo;
-    /**
-     * @var array
-     */
-    private $codigoInstituicoes;
-    /**
-     * @var integer
-     */
-    private $codigoTCE;
 
     /**
      * Array com as notas explicativas dos relatórios enviados. indexado pelo código do demonstrativo
      * @var array
      */
     private $notas = [];
-    /**
-     * @var int
-     */
-    private $ano;
 
     /**
      * @var string[]
@@ -105,12 +93,9 @@ class NotasExplicativas implements ArquivosSigapFiscalInterface
      * @param integer $ano
      * @param integer $codigoTCE
      */
-    public function __construct(Periodo $periodo, array $codigoInstituicoes, $ano, $codigoTCE)
+    public function __construct(Periodo $periodo, private readonly array $codigoInstituicoes, private $ano, private $codigoTCE)
     {
         $this->periodo = $periodo;
-        $this->codigoInstituicoes = $codigoInstituicoes;
-        $this->codigoTCE = $codigoTCE;
-        $this->ano = $ano;
     }
 
     public function processar()
@@ -160,7 +145,7 @@ class NotasExplicativas implements ArquivosSigapFiscalInterface
             'nteMesAnoMovimento' => $this->periodo->getDataFinal($this->ano)->getDate(),
             'ntePeriodo' => $periodo,
             'nteDemonstrativo' => $demonstrativo,
-            'nteNotaExplicativa' => utf8_encode($nota),
+            'nteNotaExplicativa' => mb_convert_encoding($nota, 'UTF-8', 'ISO-8859-1'),
         ];
     }
 

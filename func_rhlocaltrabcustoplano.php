@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhlocaltrabcustoplano_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhlocaltrabcustoplano = new cl_rhlocaltrabcustoplano;
 $clrhlocaltrabcustoplano->rotulo->label("rh86_sequencial");
 $clrhlocaltrabcustoplano->rotulo->label("rh86_rhlocaltrab");
@@ -98,9 +98,9 @@ $clrhlocaltrabcustoplano->rotulo->label("rh86_rhlocaltrab");
         }else{
            $sql = $clrhlocaltrabcustoplano->sql_query("",$campos,"rh86_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh86_rhlocaltrab)){
-          $repassa = array("chave_rh86_sequencial"=>$chave_rh86_sequencial,"chave_rh86_rhlocaltrab"=>$chave_rh86_rhlocaltrab);
+          $repassa = ["chave_rh86_sequencial"=>$chave_rh86_sequencial,"chave_rh86_rhlocaltrab"=>$chave_rh86_rhlocaltrab];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

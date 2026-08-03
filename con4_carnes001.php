@@ -30,10 +30,10 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["cadastrar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["cadastrar"])) {
+  db_postmemory($_POST);
   db_query("insert into db_ values('$campo',$posx,$posy)");
-} else if(isset($HTTP_POST_VARS["formulario"])) {
+} else if(isset($_POST["formulario"])) {
 
 }
 ?>

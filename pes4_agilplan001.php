@@ -42,7 +42,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 ?>
@@ -121,13 +121,13 @@ if (isset($_POST["processar"])) {
   $iDiaVencimentoCartao = $oPost->diavencimento;
   echo "<script>document.getElementById('termometro').style.display=''</script>";
   
-  $aEstadoCivil = array(
+  $aEstadoCivil = [
                       1 => "Solteiro",
                       0 => "Solteiro",
                         2 => "Casado",
                         3 => "Viuvo",
                         4 => 'Divorciado'
-                       );
+                       ];
                        
   $sSqlTotalProventos  = "select sum(r53_valor) as salario ";
   $sSqlTotalProventos .= "  from gerffx    ";
@@ -219,15 +219,15 @@ if (isset($_POST["processar"])) {
     $sLinha .= str_repeat(" ", 15);//identificador
     $oLinha  = db_utils::fieldsMemory($rsDados, $i);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->nomefuncionario, 0, 50), 50, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->nomefuncionario, 0, 50), 50, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->nomefuncionario, 0, 20), 20, " ", STR_PAD_RIGHT);  
+    $sLinha .= str_pad(substr((string) $oLinha->nomefuncionario, 0, 20), 20, " ", STR_PAD_RIGHT);  
     $sLinha .= $sFiller;
     $sLinha .= $oLinha->datanascimento;
     $sLinha .= $sFiller;
-    $sLinha .= str_pad($oLinha->cpf, 15, " ", STR_PAD_LEFT);
+    $sLinha .= str_pad((string) $oLinha->cpf, 15, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->nacionalidade, 0, 13), 13, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->nacionalidade, 0, 13), 13, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
     $sLinha .= $oLinha->sexofuncionario;
     $sLinha .= $sFiller;
@@ -235,38 +235,38 @@ if (isset($_POST["processar"])) {
     $sLinha .= $sFiller;
     $sLinha .= str_pad('', 2, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->identidade, 0, 20), 20, " ", STR_PAD_LEFT);
+    $sLinha .= str_pad(substr((string) $oLinha->identidade, 0, 20), 20, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
     $sLinha .= str_pad('', 6, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
     $sLinha .= str_pad('', 2, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->pai, 0, 50),  50, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->pai, 0, 50),  50, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->mae, 0, 50),  50, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->mae, 0, 50),  50, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->email, 0, 30),  30, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->email, 0, 30),  30, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
     $sLinha .= str_pad('',  3, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad($iDiaVencimentoCartao,  2, "0", STR_PAD_LEFT);
+    $sLinha .= str_pad((string) $iDiaVencimentoCartao,  2, "0", STR_PAD_LEFT);
     /*
      * dados residenciais
      */
     $sLinha .= $sFiller;
     $sLinha .= str_pad(substr($oLinha->endereco.", {$oLinha->numeroendereco}", 0, 50),  50, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->bairrofunc, 0, 20),  20, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->bairrofunc, 0, 20),  20, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->cidadefunc, 0, 20),  20, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->cidadefunc, 0, 20),  20, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->unidadeferderacaouf, 0, 3),  3, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->unidadeferderacaouf, 0, 3),  3, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->cepfuncionario, 0, 10),  10, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->cepfuncionario, 0, 10),  10, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->telefone, 0, 15),  15, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->telefone, 0, 15),  15, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->telefonecelular, 0, 15),  15, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->telefonecelular, 0, 15),  15, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
     $sLinha .= str_pad('',  1, " ", STR_PAD_RIGHT);
     /*
@@ -281,13 +281,13 @@ if (isset($_POST["processar"])) {
      * referencia bancaria
      */
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->nomebanco, 0, 30), 30, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->nomebanco, 0, 30), 30, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
     $sLinha .= str_pad(substr("{$oLinha->agenciabanco}{$oLinha->dvagenciabanco}", 0, 6), 6, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
     $sLinha .= str_pad(substr("{$oLinha->contabanco}{$oLinha->dvcontabanco}", 0, 12), 12, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(trim($oLinha->codigobanco), 3, " ", STR_PAD_LEFT);
+    $sLinha .= str_pad(trim((string) $oLinha->codigobanco), 3, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
     $sLinha .= str_pad('', 2, " ", STR_PAD_LEFT);
     
@@ -301,27 +301,27 @@ if (isset($_POST["processar"])) {
      * Dados Profissionais
      */
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->nomeinst, 0, 35), 35, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->nomeinst, 0, 35), 35, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
     $sLinha .= str_pad(substr($oLinha->ender.", ".$oLinha->numero, 0, 50), 50, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->cep, 0, 10), 10, " ", STR_PAD_LEFT);
+    $sLinha .= str_pad(substr((string) $oLinha->cep, 0, 10), 10, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->bairro, 0, 20), 20, " ", STR_PAD_LEFT);
+    $sLinha .= str_pad(substr((string) $oLinha->bairro, 0, 20), 20, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->munic, 0, 20), 20, " ", STR_PAD_LEFT);
+    $sLinha .= str_pad(substr((string) $oLinha->munic, 0, 20), 20, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->uf, 0, 20), 20, " ", STR_PAD_LEFT);
+    $sLinha .= str_pad(substr((string) $oLinha->uf, 0, 20), 20, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->telef, 0, 15), 15, " ", STR_PAD_LEFT);
+    $sLinha .= str_pad(substr((string) $oLinha->telef, 0, 15), 15, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
     $sLinha .= str_pad('', 6, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
     $sLinha .= str_pad('', 35, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->nomecargofuncionario, 0, 35), 35, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(substr((string) $oLinha->nomecargofuncionario, 0, 35), 35, " ", STR_PAD_RIGHT);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad(substr($oLinha->dataadmissao, 7, 2)." ".substr($oLinha->dataadmissao, 7, 2), 5, " ", STR_PAD_LEFT);
+    $sLinha .= str_pad(substr((string) $oLinha->dataadmissao, 7, 2)." ".substr((string) $oLinha->dataadmissao, 7, 2), 5, " ", STR_PAD_LEFT);
     $sLinha .= $sFiller;
     $sLinha .= str_pad(str_replace(".","",number_format($oLinha->valorsalario, 2, "","")), 10, 0, STR_PAD_LEFT);
     $sLinha .= $sFiller;
@@ -340,7 +340,7 @@ if (isset($_POST["processar"])) {
      */
     $sLinha .= str_repeat(" ", 133);
     $sLinha .= $sFiller;
-    $sLinha .= str_pad($oLinha->codigoregistrofuncionario, 15, "0", STR_PAD_LEFT);  
+    $sLinha .= str_pad((string) $oLinha->codigoregistrofuncionario, 15, "0", STR_PAD_LEFT);  
     fputs($rsArquivo, $sLinha."\n");
     db_atutermometro($i, $iNumRows, "pessoal");
   }

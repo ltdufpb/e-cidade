@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_sql.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 ?>
 </script>
 <html>
@@ -133,18 +133,18 @@ $sql = "select q03_ativ,
 	        where q82_classe in ($dados)"; 
 
 $result = db_query($sql);
-if(pg_numrows($result) == 0 ){
+if(pg_num_rows($result) == 0 ){
   db_redireciona("db_erros.php?fechar=true&db_erro=Não Existe Atividade Para o Intervalo Digitado.&pagina_retorno=iss4_pgtoclasse001.php");
   exit;
 }
 
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
   echo "<form name=\"form1\" id=\"form1\" method=\"post\" target=\"relatorio\">\n";
   echo "<table valign=\"top\" border=\"0\" cellspacing=\"1\" cellpadding=\"0\">\n";
   echo "<tr align=\"top\">";
   echo "<td width=\"43%\" height=\"30\" colspan=\"6\" bordercolor=\"#FFFFCC\"><div align=\"center\"><font size=\"2\">"; 
 
-  $aMeses = array();
+  $aMeses = [];
   $aMeses[1]  = "janeiro";
   $aMeses[2]  = "fevereiro";
   $aMeses[3]  = "março";
@@ -167,18 +167,18 @@ $numrows = pg_numrows($result);
 	echo "<strong> No ano de : </strong>\n";
   db_input("ano", 4, 1, null, "text", 1, "onchange='validaAno();'", null, null, "", 4);
 
-  $x = array("p"=>"Pagamento","c"=>"Competência");
+  $x = ["p"=>"Pagamento","c"=>"Competência"];
   db_select('tipo',$x,'text',2); 
 
-  $y = array("m"=>"Valores por mes","t"=>"Somente totais");
+  $y = ["m"=>"Valores por mes","t"=>"Somente totais"];
   db_select('totais',$y,'text',2); 
 
 	echo "<br />";
 
-  $z = array("a"=>"Alfabética","v"=>"Valor decrescente","n"=>"Código da atividade");
+  $z = ["a"=>"Alfabética","v"=>"Valor decrescente","n"=>"Código da atividade"];
   db_select('ordem',$z,'text',2);
 
-  $a = array("s"=>"Quebrar por atividade","n"=>"Não quebrar por atividade");
+  $a = ["s"=>"Quebrar por atividade","n"=>"Não quebrar por atividade"];
   db_select('quebrar',$a,'text',2);
 
   echo "&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp";

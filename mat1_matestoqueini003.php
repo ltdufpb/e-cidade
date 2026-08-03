@@ -67,8 +67,8 @@ db_app::import("Dotacao");
 db_app::import("contabilidade.contacorrente.*");
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -127,7 +127,7 @@ if (isset($excluir)) {
    if($clmatestoqueini->numrows>0){
      db_fieldsmemory($result,0);
      if ($m77_dtvalidade != "") {
-        list($m77_dtvalidade_ano,$m77_dtvalidade_mes,$m77_dtvalidade_dia) = explode("-",$m77_dtvalidade);
+        [$m77_dtvalidade_ano, $m77_dtvalidade_mes, $m77_dtvalidade_dia] = explode("-",(string) $m77_dtvalidade);
       }
      $db_botao = true;
    }else{

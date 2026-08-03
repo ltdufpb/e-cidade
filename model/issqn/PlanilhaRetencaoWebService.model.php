@@ -147,7 +147,8 @@ class PlanilhaRetencaoWebService extends planilhaRetencao {
     return $this->getCodigoPlanilha();
   }
 
-  public function anularPlanilha() {
+  #[\Override]
+  public function anularPlanilha($sMotivo) {
 
     if (!db_utils::inTransaction()) {
       throw new Exception("Sem transação ativa");

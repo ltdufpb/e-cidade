@@ -45,11 +45,6 @@ class AfastamentoTemporario extends ProcessamentoAbstract implements Processamen
     /**
      * @var
      */
-    private $iCgm;
-
-    /**
-     * @var
-     */
     private $ano;
 
     /**
@@ -62,9 +57,13 @@ class AfastamentoTemporario extends ProcessamentoAbstract implements Processamen
      *
      * @param $iCgm
      */
-    public function __construct($iCgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $iCgm
+    )
     {
-        $this->iCgm = $iCgm;
     }
 
     /**

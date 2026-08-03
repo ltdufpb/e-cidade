@@ -55,8 +55,8 @@ if (isset($oGet->apensado) && empty($oGet->apensado))  {
   $lMostrarApensado = false;
 }
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clprotprocesso       = new cl_protprocesso;
 $clprotprocessodoc    = new cl_procprocessodoc;
 $clprocandam          = new cl_procandam;
@@ -74,10 +74,10 @@ $cod_procandamint = 0;
 $arquiv = false;
 $arqant = false;
 
-$aTiposTextoDespachos   = array(
+$aTiposTextoDespachos   = [
                                 1 => "Interno",
                                 2 => ""
-                               );
+                               ];
 
 $oDaoProcessosApensados = db_utils::getDao('processosapensados');
 $sCampos                = 'p58_dtproc as data_processo, p30_procapensado as codigo_processo, z01_nome as titular,';
@@ -173,12 +173,12 @@ if (isset ($codproc) && $codproc != "") {
        }
        
        if ($vEspaco == 0){
-         $pdf->cell(75,  $alt, substr($oDocumento->p56_descr,0,90), 0, 0, "L", 0);
+         $pdf->cell(75,  $alt, substr((string) $oDocumento->p56_descr,0,90), 0, 0, "L", 0);
          $pdf->cell(100, $alt, 'Recebido :', 0, 0, "R", 0);
          $pdf->cell(75,  $alt, $vSelecionado, 0, 1, "L", 0);
        } else {
          $pdf->cell(25,  $alt, 0, 0, "R", 0);
-         $pdf->cell(75,  $alt, substr($oDocumento->p56_descr,0,90), 0, 0, "L", 0);
+         $pdf->cell(75,  $alt, substr((string) $oDocumento->p56_descr,0,90), 0, 0, "L", 0);
          $pdf->cell(100, $alt, 'Recebido :', 0, 0, "R", 0);
          $pdf->cell(75,  $alt, $vSelecionado, 0, 1, "L", 0);                	
        }
@@ -225,8 +225,8 @@ if (isset ($codproc) && $codproc != "") {
   						$pdf->cell(15, $alt, db_formatar($p58_dtproc, 'd'), 0, 0, "C", 0);
   						$pdf->cell(10, $alt, $p58_hora, 0, 0, "C", 0);
   						$pdf->cell(40, $alt, substr($p58_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  						$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  						$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  						$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  						$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   						$pdf->cell(80, $alt, 'Processo Criado', 0, 0, "L", 0);
   						$pdf->cell(65, $alt, '', 0, 1, "C", 0);
   					}
@@ -270,8 +270,8 @@ if (isset ($codproc) && $codproc != "") {
   						$pdf->cell(15, $alt, db_formatar($p62_dttran, 'd'), 0, 0, "C", 0);
   						$pdf->cell(10, $alt, $p62_hora, 0, 0, "C", 0);
   						$pdf->cell(40, $alt, substr($p62_coddepto.'-'.$deptoatual,0,25), 0, 0, "L", 0);
-  						$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  						$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  						$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  						$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   						$pdf->cell(80, $alt, "Tramite Inicial $p62_codtran: {$coddeptodestino} - {$deptodestino}{$sUsuarioDestino}", 0, 0, "L", 0);
   						$pdf->cell(65, $alt, '', 0, 1, "C", 0);
   						$tramite = 1;
@@ -291,8 +291,8 @@ if (isset ($codproc) && $codproc != "") {
   							$pdf->cell(15, $alt, db_formatar($p62_dttran, 'd'), 0, 0, "C", 0);
   							$pdf->cell(10, $alt, $p62_hora, 0, 0, "C", 0);
   							$pdf->cell(40, $alt, substr($p62_coddepto.'-'.$deptoatual,0,25), 0, 0, "L", 0);
-  							$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  							$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  							$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  							$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   							$pdf->cell(80, $alt, substr('Tranferência ' . $p62_codtran . ' p/ o Departamento: '.$coddeptodestino.' - '.$deptodestino, 0, 58), 0, 0, "L", 0);
   							$pdf->cell(65, $alt, '', 0, 1, "C", 0);
   						}
@@ -306,8 +306,8 @@ if (isset ($codproc) && $codproc != "") {
   						  $pdf->cell(15, $alt, db_formatar($p61_dtandam, 'd'), 0, 0, "C", 0);
   							$pdf->cell(10, $alt, $p61_hora, 0, 0, "C", 0);
   							$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  							$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  							$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  							$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  							$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   
   							if ($arquiv == true) {
   								$result_arqandam = $clarqandam->sql_record($clarqandam->sql_query_file(null, "*", null, "p69_codandam = $p61_codandam"));
@@ -359,16 +359,16 @@ if (isset ($codproc) && $codproc != "") {
   										$pdf->cell(15, $alt, db_formatar($p78_data, 'd'), 0, 0, "C", 0);
   										$pdf->cell(10, $alt, $p78_hora, 0, 0, "C", 0);
   										$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  										$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  										$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  										$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  										$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   										$pdf->cell(80, $alt, "{$tipo_despacho} {$aTiposTextoDespachos[$codigo_tipo_despacho]}", 0, 0, "L", 0);
 
   										//Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
   										if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
-  										    $sDespacho = html_entity_decode($p78_despacho);
+  										    $sDespacho = html_entity_decode((string) $p78_despacho);
                                                                                     $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
                                                                                } else {
-                                                                                    $pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+                                                                                    $pdf->multicell(65, $alt, html_entity_decode((string) $p78_despacho), 0, "L", 0);
                                                                                }
 
                                                                                $cod_procandamint = $p78_sequencial;
@@ -404,10 +404,10 @@ if (isset ($codproc) && $codproc != "") {
   										$pdf->cell(15, $alt, db_formatar($p88_data, 'd'), 0, 0, "C", 0);
   										$pdf->cell(10, $alt, $p88_hora, 0, 0, "C", 0);
   										$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  										$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
+  										$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
   										$pdf->cell(45, $alt, $usuatual, 0, 0, "L", 0);
   										$pdf->cell(80, $alt, substr("Tranferência Interna - {$p87_codtransferint} para {$idusudestino} - {$usudestino}", 0, 58), 0, 0, "L", 0);
-  										$pdf->multicell(65, $alt, html_entity_decode($p88_despacho), 0, "L", 0);
+  										$pdf->multicell(65, $alt, html_entity_decode((string) $p88_despacho), 0, "L", 0);
   										$result_procandamintand = $clprocandamintand->sql_record($clprocandamintand->sql_query_file(null, "*", "p86_codtrans", "p86_codtrans=$p88_codigo and p86_codandam = $p87_codandam "));
   										if ($clprocandamintand->numrows != 0) {
   											db_fieldsmemory($result_procandamintand, 0);
@@ -449,31 +449,31 @@ if (isset ($codproc) && $codproc != "") {
   													  $pdf->cell(15, $alt, db_formatar($p78_data, 'd'), 0, 0, "C", 0);
   														$pdf->cell(10, $alt, $p78_hora, 0, 0, "C", 0);
   														$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  														$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  														$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  														$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  														$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   														$pdf->cell(80, $alt, 'Recebeu Transferência Interna', 0, 0, "L", 0);
   														
   														//Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 														if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
-														    $sDespacho = html_entity_decode($p78_despacho);
+														    $sDespacho = html_entity_decode((string) $p78_despacho);
 														    $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
 														} else {
-														    $pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+														    $pdf->multicell(65, $alt, html_entity_decode((string) $p78_despacho), 0, "L", 0);
 														}
 
   													} else {
   														$pdf->cell(15, $alt, db_formatar($p78_data, 'd'), 0, 0, "C", 0);
   														$pdf->cell(10, $alt, $p78_hora, 0, 0, "C", 0);
   														$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  														$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  														$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  														$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  														$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   														$pdf->cell(80, $alt, "{$tipo_despacho} {$aTiposTextoDespachos[$codigo_tipo_despacho]}", 0, 0, "L", 0);
   														//Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 														if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
-														    $sDespacho = html_entity_decode($p78_despacho);
+														    $sDespacho = html_entity_decode((string) $p78_despacho);
 														    $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
 														} else {
-														    $pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+														    $pdf->multicell(65, $alt, html_entity_decode((string) $p78_despacho), 0, "L", 0);
 														}
   													}
   													$cod_usu = $p78_usuario;
@@ -493,8 +493,8 @@ if (isset ($codproc) && $codproc != "") {
   					$pdf->cell(15, $alt, db_formatar($p61_dtandam, 'd'), 0, 0, "C", 0);
   					$pdf->cell(10, $alt, $p61_hora, 0, 0, "C", 0);
   					$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  					$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  					$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  					$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  					$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   					$pdf->cell(80, $alt, 'Recebeu Processo', 0, 0, "L", 0);
   					$pdf->multicell(65, $alt, $p58_despacho, 0, "L", 0);
   						
@@ -509,8 +509,8 @@ if (isset ($codproc) && $codproc != "") {
   					$pdf->cell(15, $alt, db_formatar($p61_dtandam, 'd'), 0, 0, "C", 0);
   					$pdf->cell(10, $alt, $p61_hora, 0, 0, "C", 0);
   					$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  					$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  					$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  					$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  					$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   					$pdf->cell(80, $alt, 'Recebeu Processo', 0, 0, "L", 0);
   					$pdf->multicell(65, $alt, $p61_despacho, 0, "L", 0);
             $sSqlQueryDespacho = $clprocandamint->sql_query_sim(null,
@@ -528,16 +528,16 @@ if (isset ($codproc) && $codproc != "") {
   								$pdf->cell(15, $alt, db_formatar($p78_data, 'd'), 0, 0, "C", 0);
   								$pdf->cell(10, $alt, $p78_hora, 0, 0, "C", 0);
   								$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  								$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  							  $pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  								$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  							  $pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   							  $pdf->cell(80, $alt, "{$tipo_despacho} {$aTiposTextoDespachos[$codigo_tipo_despacho]}", 0, 0, "L", 0);
 			            
 							  //Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 							  if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
-							      $sDespacho = html_entity_decode($p78_despacho);
+							      $sDespacho = html_entity_decode((string) $p78_despacho);
 							      $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
 							  } else {
-							    $pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+							    $pdf->multicell(65, $alt, html_entity_decode((string) $p78_despacho), 0, "L", 0);
 							  }
 
   								$cod_procandamint = $p78_sequencial;
@@ -555,16 +555,16 @@ if (isset ($codproc) && $codproc != "") {
   								$pdf->cell(15, $alt, db_formatar($p78_data, 'd'), 0, 0, "C", 0);
   								$pdf->cell(10, $alt, $p78_hora, 0, 0, "C", 0);
   								$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  								$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  								$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  								$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  								$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   								$pdf->cell(80, $alt, 'Despacho Interno', 0, 0, "L", 0);
   								
 								  //Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 								  if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
-								      $sDespacho = html_entity_decode($p78_despacho);
+								      $sDespacho = html_entity_decode((string) $p78_despacho);
 								      $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
 								  } else {
-								    $pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+								    $pdf->multicell(65, $alt, html_entity_decode((string) $p78_despacho), 0, "L", 0);
 								  }
 
   								$result_procandamintand = $clprocandamintand->sql_record($clprocandamintand->sql_query_file(null, "*", "p86_codtrans", "p86_codtrans=$p88_codigo and p86_codandam = $p87_codandam "));
@@ -594,16 +594,16 @@ if (isset ($codproc) && $codproc != "") {
   												$pdf->cell(15, $alt, db_formatar($p78_data, 'd'), 0, 0, "C", 0);
   														$pdf->cell(10, $alt, $p78_hora, 0, 0, "C", 0);
   														$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  														$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  														$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  														$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  														$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   														$pdf->cell(80, $alt, 'Recebeu Transferência Interna', 0, 0, "L", 0);
   														
 													      //Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 													      if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
-														  $sDespacho = html_entity_decode($p78_despacho);
+														  $sDespacho = html_entity_decode((string) $p78_despacho);
 														  $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
 													      } else {
-														$pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+														$pdf->multicell(65, $alt, html_entity_decode((string) $p78_despacho), 0, "L", 0);
 													      }
 
   													} else {
@@ -611,14 +611,14 @@ if (isset ($codproc) && $codproc != "") {
   														$pdf->cell(10, $alt, $p78_hora, 0, 0, "C", 0);
   														$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
   														$pdf->cell(25, $alt, $nomeinstabrev, 0, 0, "L", 0);
-  														$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  														$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   														$pdf->cell(80, $alt, "{$tipo_despacho} {$aTiposTextoDespachos[$codigo_tipo_despacho]}", 0, 0, "L", 0);
   														//Validamos se o plugin EditorTextoDespacho está instalado para remover as tags HTml do PDF.
 													      if (is_dir($sDirPluginEditorTexto) || is_dir($sDirPluginFpdfhtml)) {
-														  $sDespacho = html_entity_decode($p78_despacho);
+														  $sDespacho = html_entity_decode((string) $p78_despacho);
 														  $pdf->multicell(65, $alt, filter_var($sDespacho, FILTER_SANITIZE_STRING), 0, "L", 0);
 													      } else {
-														$pdf->multicell(65, $alt, html_entity_decode($p78_despacho), 0, "L", 0);
+														$pdf->multicell(65, $alt, html_entity_decode((string) $p78_despacho), 0, "L", 0);
 													      }
   											}
   											$cod_usu = $p78_usuario;
@@ -643,19 +643,19 @@ if (isset ($codproc) && $codproc != "") {
   				$pdf->cell(15, $alt, db_formatar($p61_dtandam, 'd'), 0, 0, "C", 0);
   				$pdf->cell(10, $alt, $p61_hora, 0, 0, "C", 0);
   				$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  				$pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
-  				$pdf->cell(45, $alt, substr($nome,0,25), 0, 0, "L", 0);
+  				$pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
+  				$pdf->cell(45, $alt, substr((string) $nome,0,25), 0, 0, "L", 0);
   				$pdf->cell(80, $alt, 'Processo Arquivado', 0, 0, "L", 0);
-  				$pdf->multicell(65, $alt, html_entity_decode($p61_despacho), 0, "L", 0);
+  				$pdf->multicell(65, $alt, html_entity_decode((string) $p61_despacho), 0, "L", 0);
   
   				if (isset ($p90_andatual) && $p90_andatual == "t") {
   					$pdf->cell(15, $alt, db_formatar($p61_dtandam, 'd'), 0, 0, "C", 0);
   					$pdf->cell(10, $alt, $p61_hora, 0, 0, "C", 0);
   					$pdf->cell(40, $alt, substr($p61_coddepto.'-'.$descrdepto,0,25), 0, 0, "L", 0);
-  				  $pdf->cell(25, $alt, substr($nomeinstabrev,0,14), 0, 0, "L", 0);
+  				  $pdf->cell(25, $alt, substr((string) $nomeinstabrev,0,14), 0, 0, "L", 0);
   					$pdf->cell(45, $alt, $nome, 0, 0, "L", 0);
   					$pdf->cell(80, $alt, 'Recebeu Processo', 0, 0, "L", 0);
-  					$pdf->multicell(65, $alt, html_entity_decode($p58_despacho), 0, "L", 0);
+  					$pdf->multicell(65, $alt, html_entity_decode((string) $p58_despacho), 0, "L", 0);
   				}
   			}
   		}

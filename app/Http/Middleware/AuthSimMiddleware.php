@@ -38,7 +38,7 @@ class AuthSimMiddleware
             Log::warning("[Api SIM] Erro: {$exception->getMessage()}", ['data' => $dataLogger]);
             return response()->json([
                 'error' => true,
-                'message' => utf8_encode($exception->getMessage())
+                'message' => mb_convert_encoding($exception->getMessage(), 'UTF-8', 'ISO-8859-1')
             ], $exception->getCode()?:500);
         }
 
@@ -51,8 +51,8 @@ class AuthSimMiddleware
      */
     private function parseToken($token)
     {
-        $basicToken = base64_decode(substr($token, 6, -1));
-        list($user, $hash) = explode(':', $basicToken);
+        $basicToken = base64_decode(substr((string) $token, 6, -1));
+        [$user, $hash] = explode(':', $basicToken);
         return (object)['user' => $user, 'hash' => $hash];
     }
 

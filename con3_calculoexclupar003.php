@@ -48,15 +48,15 @@ $clrotulo->label("j01_matric");
 $clrotulo->label("z01_nome");
 $db_opcao = 1;
 $db_botao = true;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if(isset($confirmar)){
   $sqlerro=false;
    $result=$clcontricalc->sql_record($clcontricalc->sql_query(null, "d09_numpre",null,"d09_contri = $d02_contri and d09_matric = $j01_matric"));
    db_fieldsmemory($result,0); 
    $result=db_query("select arrecad.k00_numpre from arrecant inner join arrecad on arrecad.k00_numpre=arrecant.k00_numpre where arrecant.k00_numpre=$d09_numpre");
-   if(pg_numrows($result)>0){
+   if(pg_num_rows($result)>0){
      die("ja foi pago");
    }else{
     db_inicio_transacao();

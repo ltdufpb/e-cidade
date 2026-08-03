@@ -57,7 +57,7 @@ if ($oGet->tipo == "urbano") {
     <table width="750px;">
       <tr align="center">
         <td>
-          <b>I.T.B.I. <?= strtoupper($oGet->tipo) ?></b>
+          <b>I.T.B.I. <?= strtoupper((string) $oGet->tipo) ?></b>
         </td>
       </tr>
       <tr>

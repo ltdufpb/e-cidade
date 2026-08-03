@@ -56,7 +56,7 @@ class DeParaRecursosSiconfiService
 
         foreach ($linhas as $linha) {
             $siconfi = $linha[$this->columnSiconf];
-            $codigoSiconfi = substr($siconfi, 1);
+            $codigoSiconfi = substr((string) $siconfi, 1);
             $siconf = FontesSiconfi::find($codigoSiconfi);
             if (empty($siconf)) {
                 continue;
@@ -69,7 +69,7 @@ class DeParaRecursosSiconfiService
 
             $fonte->classificacao()->associate($siconf->classificacao);
             $fonte->codigo_siconfi = $siconfi;
-            $fonte->gestao = str_pad($linha[$this->columnGestao], 4, 0, STR_PAD_LEFT);
+            $fonte->gestao = str_pad((string) $linha[$this->columnGestao], 4, 0, STR_PAD_LEFT);
             $fonte->tipo_detalhamento = $linha[$this->columnTipoDetalhamento];
 
             if ($dados['atualizaNome'] == 1) {

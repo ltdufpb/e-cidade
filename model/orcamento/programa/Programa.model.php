@@ -194,7 +194,7 @@ class Programa {
       throw new DBException($sMensagemErro);
     }
 
-    $this->aObjetivos = array();
+    $this->aObjetivos = [];
     for ($iObjetivo = 0; $iObjetivo < $iTotalObjetivos; $iObjetivo++) {
 
       $oStdObjetivo                                      = db_utils::fieldsMemory($rsResultado, $iObjetivo);
@@ -246,7 +246,7 @@ class Programa {
     $sWherePrograma .= " order by o05_anoreferencia ";
     $sCamposPrograma = "sum(o05_valor) as o05_valor, ppaestimativa.o05_anoreferencia";
 
-    $aValoresRetorno          = array();
+    $aValoresRetorno          = [];
     $oDaoPPADotacao           = db_utils::getDao('ppadotacao');
     $sSqlBuscaValoresPrograma = $oDaoPPADotacao->sql_query_despesa_programa(null, $sCamposPrograma, null, $sWherePrograma);
     $rsBuscaValoresPrograma   = $oDaoPPADotacao->sql_record($sSqlBuscaValoresPrograma);
@@ -273,7 +273,7 @@ class Programa {
 
     $sWhereIndicadores  = "     orcindicaprograma.o18_orcprograma = {$iCodigoPrograma}";
     $sWhereIndicadores .= " and orcindicaprograma.o18_anousu      = {$iAno}";
-    $aCamposIndicadores = array();
+    $aCamposIndicadores = [];
 
     $sCamposIndicadores  = " orcindica.o10_descr as s_descricao,";
     $sCamposIndicadores .= " orcindica.o10_descrunidade as s_unidade,";
@@ -285,7 +285,7 @@ class Programa {
     $oDaoIndicadores      = db_utils::getDao("orcindicaprograma");
     $sSqlIndicadores      = $oDaoIndicadores->sql_query_indicadores(null, $sCamposIndicadores, $sOrderIndicadores, $sWhereIndicadores);
     $rsIndicadores        = $oDaoIndicadores->sql_record($sSqlIndicadores);
-    $aValoresRetorno = array();
+    $aValoresRetorno = [];
     for ($iIndicador = 0; $iIndicador < $oDaoIndicadores->numrows; $iIndicador++) {
 
       $oStdIndicadores   = db_utils::fieldsMemory($rsIndicadores, $iIndicador);

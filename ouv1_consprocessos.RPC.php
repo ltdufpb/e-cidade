@@ -168,7 +168,7 @@ if($oParam->acao == 'pesquisar'){
  		$sQueryProcessos .=	"		 )													";								
 		$sQueryProcessos .=	"	) 														";   
 		
-		if (trim($oParam->processo[0]->p58_codigo) != '') {
+		if (trim((string) $oParam->processo[0]->p58_codigo) != '') {
 	  	$sQueryProcessos .=	" and p58_codigo = ".$oParam->processo[0]->p58_codigo;
 		}
 		
@@ -183,7 +183,7 @@ if($oParam->acao == 'pesquisar'){
 		} else {
 			
 			$oRetorno->status = 0;
-			$oRetorno->message = utf8_encode("Usuário:\\n\\n Nenhum processo encontrado para o departamento selecionado!\\n\\nAdministrador:\\n\\n");
+			$oRetorno->message = mb_convert_encoding("Usuário:\\n\\n Nenhum processo encontrado para o departamento selecionado!\\n\\nAdministrador:\\n\\n", 'UTF-8', 'ISO-8859-1');
 		}
 		
 } else if ($oParam->processo[0]->tipo == 1) {
@@ -211,20 +211,20 @@ if($oParam->acao == 'pesquisar'){
      * filtro pelo codigo do atendimento/processo Codigo ouvidoria = ov09_ouvidoriaatendimento
      * Código processo = p58_codproc
      */     
-		if (trim($oParam->processo[0]->p58_codigo)) {
+		if (trim((string) $oParam->processo[0]->p58_codigo)) {
 			$sQueryProcessos .= " and protprocesso.p58_codigo                     = {$oParam->processo[0]->p58_codigo} ";
 		}
-		if (trim($oParam->processo[0]->iCodigoAtendimento)) {
+		if (trim((string) $oParam->processo[0]->iCodigoAtendimento)) {
 			$sQueryProcessos .= " and processoouvidoria.ov09_ouvidoriaatendimento = {$oParam->processo[0]->iCodigoAtendimento} ";
 		}
-		if (trim($oParam->processo[0]->iNumeroProcesso)) {
+		if (trim((string) $oParam->processo[0]->iNumeroProcesso)) {
 			$sQueryProcessos .= " and processoouvidoria.ov09_protprocesso         = {$oParam->processo[0]->iNumeroProcesso} ";
 		}
 		if ( $oParam->processo[0]->p58_coddepto != 0 ) {
 		  $sQueryProcessos   .= "	and pa.p61_coddepto = ".$oParam->processo[0]->p58_coddepto;
 		}
 		
-		if ( trim($oParam->processo[0]->p58_codigo) != '' ) {
+		if ( trim((string) $oParam->processo[0]->p58_codigo) != '' ) {
 		  $sQueryProcessos   .= "  and pp.p58_codigo = ".$oParam->processo[0]->p58_codigo;
 		}
 		
@@ -248,7 +248,7 @@ if($oParam->acao == 'pesquisar'){
 		} else {
 			
 			$oRetorno->status = 0;
-			$oRetorno->message = utf8_encode("Usuário:\\n\\n Nenhum processo em andamento para o departamento selecionado!\\n\\nAdministrador:\\n\\n");
+			$oRetorno->message = mb_convert_encoding("Usuário:\\n\\n Nenhum processo em andamento para o departamento selecionado!\\n\\nAdministrador:\\n\\n", 'UTF-8', 'ISO-8859-1');
 		}
 				
 } else if($oParam->processo[0]->tipo == 2) {
@@ -354,7 +354,7 @@ if($oParam->acao == 'pesquisar'){
  		$sQueryProcessos .= " 	)									 ";
 		$sQueryProcessos .= " )    ";
 		
-		if ( trim($oParam->processo[0]->p58_codigo) != '' ) {
+		if ( trim((string) $oParam->processo[0]->p58_codigo) != '' ) {
 		  $sQueryProcessos .= " and p58_codigo = ".$oParam->processo[0]->p58_codigo; 
 		}
 		
@@ -369,13 +369,13 @@ if($oParam->acao == 'pesquisar'){
     }        
     
     
-    if (trim($oParam->processo[0]->p58_codigo) != '') {
+    if (trim((string) $oParam->processo[0]->p58_codigo) != '') {
       $sQueryProcessos .= " and p58_codigo                 = {$oParam->processo[0]->p58_codigo}      ";
     }
-    if (trim($oParam->processo[0]->iCodigoAtendimento) != '') {
+    if (trim((string) $oParam->processo[0]->iCodigoAtendimento) != '') {
     	$sQueryProcessos .= " and processoouvidoria.ov09_ouvidoriaatendimento = {$oParam->processo[0]->iCodigoAtendimento} ";
     }
-    if (trim($oParam->processo[0]->iNumeroProcesso) != '') {
+    if (trim((string) $oParam->processo[0]->iNumeroProcesso) != '') {
     	$sQueryProcessos .= " and processoouvidoria.ov09_protprocesso         = {$oParam->processo[0]->iNumeroProcesso} ";
     }
     //
@@ -388,7 +388,7 @@ if($oParam->acao == 'pesquisar'){
 			$oRetorno->status = 1;
 		}else{
 			$oRetorno->status = 0;
-			$oRetorno->message = utf8_encode("Usuário:\\n\\n Nenhum processo em atrazo para o departamento selecionado!\\n\\nAdministrador:\\n\\n");
+			$oRetorno->message = mb_convert_encoding("Usuário:\\n\\n Nenhum processo em atrazo para o departamento selecionado!\\n\\nAdministrador:\\n\\n", 'UTF-8', 'ISO-8859-1');
 		}
 
 	}

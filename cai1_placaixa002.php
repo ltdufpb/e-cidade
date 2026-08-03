@@ -60,9 +60,9 @@ db_validarMenuPCASP(db_getsession("DB_itemmenu_acessado", false));
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-	 $clcriaabas->identifica = array("placaixa"=>"Planilha","placaixarec"=>"Receitas");
-	 $clcriaabas->src = array("placaixa"=>"cai1_placaixa005.php");
-	 $clcriaabas->disabled   =  array("placaixarec"=>"true");
+	 $clcriaabas->identifica = ["placaixa"=>"Planilha","placaixarec"=>"Receitas"];
+	 $clcriaabas->src = ["placaixa"=>"cai1_placaixa005.php"];
+	 $clcriaabas->disabled   =  ["placaixarec"=>"true"];
 	 $clcriaabas->cria_abas();
        ?>
        </td>

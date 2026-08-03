@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rharquivossiprev_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrharquivossiprev = new cl_rharquivossiprev;
 $clrharquivossiprev->rotulo->label("rh94_sequencial");
 $clrharquivossiprev->rotulo->label("rh94_sequencial");
@@ -98,9 +98,9 @@ $clrharquivossiprev->rotulo->label("rh94_sequencial");
         }else{
            $sql = $clrharquivossiprev->sql_query("",$campos,"rh94_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh94_sequencial)){
-          $repassa = array("chave_rh94_sequencial"=>$chave_rh94_sequencial,"chave_rh94_sequencial"=>$chave_rh94_sequencial);
+          $repassa = ["chave_rh94_sequencial"=>$chave_rh94_sequencial,"chave_rh94_sequencial"=>$chave_rh94_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empempenho_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempempenho = new cl_empempenho;
 $clempempenho->rotulo->label("e60_numemp");
 $clempempenho->rotulo->label("e60_codemp");
@@ -133,7 +133,7 @@ $rotulo->label("z01_cgccpf");
         }else if( isset($chave_e60_codemp) && (trim($chave_e60_codemp) != "" ) ){
 
 
-          $arr = split("/",$chave_e60_codemp);
+          $arr = preg_split("#\\/#m",$chave_e60_codemp);
           
           if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
 
@@ -164,22 +164,15 @@ $rotulo->label("z01_cgccpf");
           $sql = $clempempenho->sql_queryMovimentacaoPatrimonial("",$campos,"e60_numemp","$dbwhere and z01_cgccpf like '$chave_z01_cgccpf%'");
         }else{
 
-          switch ($iDocumento) {
-            
-            case "212" :
-            case "213" :
-              $dbwhere .= '';
-            break;
-
-            default;
-              
-              $dbwhere .= " and e60_anousu = ".db_getsession("DB_anousu");
-          }
+          match ($iDocumento) {
+              "212", "213" => $dbwhere .= '',
+              default => $dbwhere .= " and e60_anousu = ".db_getsession("DB_anousu"),
+          };
           
           $sql = $clempempenho->sql_queryMovimentacaoPatrimonial("",$campos,"e60_numemp","{$dbwhere}");
         }
         
-        $repassa = array("chave_z01_nome"=>@$chave_z01_nome);
+        $repassa = ["chave_z01_nome"=>@$chave_z01_nome];
         
         $result = $clempempenho->sql_record($sql);
         

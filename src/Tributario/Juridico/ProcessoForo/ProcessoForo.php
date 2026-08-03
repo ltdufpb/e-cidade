@@ -33,7 +33,7 @@ use DateTime;
 use ECidade\Tributario\Juridico\Inicial\Inicial as InicialEntity;
 use ECidade\Tributario\Juridico\ProcessoForoPartilha\ProcessoForoPartilha as ProcessoForoPartilhaEntity;
 
-class ProcessoForo implements Interfaces\ParcelamentoHonorario
+class ProcessoForo implements Interfaces\ParcelamentoHonorario, \Stringable
 {
     /**
      * @var int
@@ -94,7 +94,7 @@ class ProcessoForo implements Interfaces\ParcelamentoHonorario
     private $iniciais;
 
     /** @var ProcessoForoPartilhaEntity[] */
-    private $processoForoPartilhas = array();
+    private $processoForoPartilhas = [];
 
 
     private $parcelasHonorarios;
@@ -344,9 +344,9 @@ class ProcessoForo implements Interfaces\ParcelamentoHonorario
         return null;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->iCodigo;
+        return (string) $this->iCodigo;
     }
 
     /**

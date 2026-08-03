@@ -73,7 +73,7 @@ class Municipio {
    * Array com os bairros vinculados ao municipio
    * @var array
    */
-  private $aBairros = array();
+  private $aBairros = [];
   
   /**
    * Construtor da classe. Recebe como parametro o sequencial da tabela cadendermunicipio

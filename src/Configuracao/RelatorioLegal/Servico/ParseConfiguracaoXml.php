@@ -8,16 +8,11 @@ use stdClass;
 
 class ParseConfiguracaoXml
 {
-    private $linha;
     /**
-     * @var integer
+     * @param int $exercicio
      */
-    private $exercicio;
-
-    public function __construct($linha, $exercicio)
+    public function __construct(private $linha, private $exercicio)
     {
-        $this->linha = $linha;
-        $this->exercicio = $exercicio;
     }
 
     public function parse($stringXml)
@@ -88,9 +83,7 @@ class ParseConfiguracaoXml
         $valor = $item->item(0)->getAttribute("valor");
         $valores = [];
         if ($valor !== '') {
-            $valores = array_map(function ($v) {
-                return trim($v);
-            }, explode(',', $valor));
+            $valores = array_map(trim(...), explode(',', (string) $valor));
         }
         return (object)[
             'operador' => $item->item(0)->getAttribute("operador"),
@@ -108,17 +101,12 @@ class ParseConfiguracaoXml
     public function buscarContas($estrutural)
     {
         $ateNivel = estruturalAteNivel($estrutural);
-        switch ($this->linha->origem) {
-            case 1:
-                return $this->getEstruturaisAnaliticosReceita($ateNivel);
-            case 2:
-            case 4:
-                return $this->getEstruturaisDespesa($ateNivel);
-            case 3:
-                return $this->getEstruturaisVerificacao($ateNivel);
-            default:
-                return [$estrutural];
-        }
+        return match ($this->linha->origem) {
+            1 => $this->getEstruturaisAnaliticosReceita($ateNivel),
+            2, 4 => $this->getEstruturaisDespesa($ateNivel),
+            3 => $this->getEstruturaisVerificacao($ateNivel),
+            default => [$estrutural],
+        };
     }
 
     /**
@@ -162,9 +150,7 @@ class ParseConfiguracaoXml
      */
     private function matchEstrutural($contas, $ateNivel)
     {
-        return array_filter($contas, function ($estrutural) use ($ateNivel) {
-            return strpos($estrutural, $ateNivel) === 0;
-        });
+        return array_filter($contas, fn($estrutural) => str_starts_with((string) $estrutural, (string) $ateNivel));
     }
 
     /**
@@ -176,9 +162,7 @@ class ParseConfiguracaoXml
     {
         $ateNivel = estruturalAteNivel($estrutural);
 
-        $contasProcessadas = array_filter($contasProcessadas, function ($natureza) use ($ateNivel) {
-            return strpos($natureza, $ateNivel) !== 0;
-        });
+        $contasProcessadas = array_filter($contasProcessadas, fn($natureza) => !str_starts_with((string) $natureza, $ateNivel));
     }
 
     /**

@@ -11,7 +11,7 @@ final class ExercicioRepository extends DataBaseRepository
     public function find($matricula, $ano)
     {
         $exercicio = new Exercicio();
-        $objetoRetorno  = (object)array(
+        $objetoRetorno  = (object)[
              'iptucor'         => 0
             ,'iptujuros'       => 0
             ,'iptumulta'       => 0
@@ -24,7 +24,7 @@ final class ExercicioRepository extends DataBaseRepository
             ,'j22_valor'    => 0
             ,'j23_vlrter'   => 0
             ,'j23_aliq'     => 0
-        );
+        ];
 
         $sqlCalculoIPTU  = " select sum(j21_valor) as total_j21_valor,   ";
         $sqlCalculoIPTU .= "        count(*)       as quant_taxas        ";

@@ -77,9 +77,9 @@ $anousu = db_getsession("DB_anousu");
             </tr>
             <tr>
                 <td align=right nowrap title="<?= @$Tpc03_natureza ?>"><?= @$Lpc03_natureza ?> </td>
-                <td><?php  $natureza = array('1' => 'Produto',
+                <td><?php  $natureza = ['1' => 'Produto',
                         '2' => 'Serviço',
-                        '3' => 'Medicamento');
+                        '3' => 'Medicamento'];
                     db_select('pc05_natureza', $natureza, true, $db_opcao, "");
                     ?>
                 </td>
@@ -101,7 +101,7 @@ $anousu = db_getsession("DB_anousu");
                             }
                         }
                     }
-                    $xx = array("true" => "SIM", "false" => "NAO");
+                    $xx = ["true" => "SIM", "false" => "NAO"];
                     db_select('pc05_ativo', $xx, true, $db_opcao, "");
                     ?>
                 </td>
@@ -162,7 +162,7 @@ $anousu = db_getsession("DB_anousu");
         db_iframe_pcgrupo.hide();
         <?php 
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

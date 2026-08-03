@@ -35,15 +35,12 @@ require_once(modification("interfaces/iLog.interface.php"));
 
 class DBLogXML implements iLog {
 
-  private $sCaminhoArquivo = null;
-
   /**
    * Construtor da Classe
    * @param integer $sCaminhoArquivo
    */
-  public function __construct($sCaminhoArquivo) {
+  public function __construct(private $sCaminhoArquivo) {
 
-    $this->sCaminhoArquivo = $sCaminhoArquivo;
     $this->abrirNovoLog();
   }
 
@@ -60,7 +57,7 @@ class DBLogXML implements iLog {
 
     $oLog  = $oXML->createElement("Log");
     $oLog  ->setAttribute( "InstanteLog", time() );
-    $oLog  ->setAttribute( "TextoLog"   , urlencode($sTextoLog) );
+    $oLog  ->setAttribute( "TextoLog"   , urlencode((string) $sTextoLog) );
     $oLog  ->setAttribute( "TipoLog"    , $iTipoLog);
     $oLogs ->appendChild($oLog);
     $oXML  ->save($this->sCaminhoArquivo);

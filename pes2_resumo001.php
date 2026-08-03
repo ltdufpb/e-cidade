@@ -114,7 +114,7 @@ db_postmemory($_POST);
        
        $geraform->tipofol = true;                      // MOSTRAR DO CAMPO PARA TIPO DE FOLHA
        
-       $geraform->arr_tipofol = array(
+       $geraform->arr_tipofol = [
                                       "r14"=>"Salário",
                                       "r48"=>"Complementar",
                                       "r20"=>"Rescisão",
@@ -122,7 +122,7 @@ db_postmemory($_POST);
                                       "r22"=>"Adiantamento",
                                       "r93"=>"Provisão de Férias",
                                       "r94"=>"Provisão 13o. Salário"
-                                     );
+                                     ];
        $geraform->complementar = "r48";                // VALUE DA COMPLEMENTAR PARA BUSCAR SEMEST 
        
        $geraform->campo_auxilio_regi = "faixa_regis";  // NOME DO DAS MATRÍCULAS SELECIONADAS
@@ -171,7 +171,7 @@ db_postmemory($_POST);
   		 <td>Com Quebra :</td>
   		 <td>
            <?php
-              $x = array("f"=>"NÃO","t"=>"SIM");
+              $x = ["f"=>"NÃO","t"=>"SIM"];
               db_select('com_quebra',$x,true,4,"");
            ?>
   		 </td>

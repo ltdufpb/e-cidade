@@ -41,7 +41,7 @@ include(modification("classes/db_departdiv_classe.php"));
 include(modification("classes/db_histbemdiv_classe.php"));
 include(modification("classes/db_bensdiv_classe.php"));
 include(modification("classes/db_histbensocorrencia_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_usuarios = new cl_db_usuarios;
 $clbenstransfconf = new cl_benstransfconf;
 $clbenstransfcodigo = new cl_benstransfcodigo;
@@ -151,10 +151,10 @@ if (isset ($incluir)) {
 					}
 				}
 				$info = "t31_divisao_$t95_codbem";
-				if ($$info!=""){	
+				if (${$info}!=""){	
 					if ($sqlerro == false) {				
 						$clhistbemdiv->t32_histbem=$t97_histbem;
-						$clhistbemdiv->t32_divisao=$$info;
+						$clhistbemdiv->t32_divisao=${$info};
 						$clhistbemdiv->incluir(null);
 						if ($clhistbemdiv->erro_status == 0) {
 							$sqlerro = true;
@@ -172,7 +172,7 @@ if (isset ($incluir)) {
 							} 
 						}
 						if ($sqlerro == false) {
-							$clbensdiv->t33_divisao=$$info;
+							$clbensdiv->t33_divisao=${$info};
 							$clbensdiv->incluir($t95_codbem);
 							if($clbensdiv->erro_status==0){
 								$sqlerro=true;

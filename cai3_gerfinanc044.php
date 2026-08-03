@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -41,7 +41,7 @@ if(isset($parcel)){
 		where parcel=$parcel  
         ";
 }
-$modo=base64_decode($modo);
+$modo=base64_decode((string) $modo);
 ?>
 <html>
 <head>

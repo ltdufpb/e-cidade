@@ -36,7 +36,7 @@ class ArquivoConsignadoManualParcelaRepository {
   /**
    * @var ArquivoConsignadoManualRepository[]
    */
-  public $itens = array();
+  public $itens = [];
 
   private function __construct() {}
 
@@ -96,7 +96,7 @@ class ArquivoConsignadoManualParcelaRepository {
     $oDaoConsignadoServidor->rh152_nome                = $oArquivoConsignadoManual->getServidor()->getCgm()->getNome();
     $oDaoConsignadoServidor->rh152_consignadomotivo    = $oArquivoConsignadoManualParcela->getMotivo();
     $oDaoConsignadoServidor->rh152_consignadomovimento = $oArquivoConsignadoManual->getCodigo();
-    $oDaoConsignadoServidor->rh152_consignadomotivo    = $oArquivoConsignadoManualParcela->getMotivo() === null ? 'null' : $oArquivoConsignadoManualParcela->getMotivo();
+    $oDaoConsignadoServidor->rh152_consignadomotivo    = $oArquivoConsignadoManualParcela->getMotivo() ?? 'null';
     $iCodigoMovimentoServidor = $oArquivoConsignadoManualParcela->getCodigoMovimentoServidor();
     if (empty($iCodigoMovimentoServidor)) {
 
@@ -227,7 +227,7 @@ class ArquivoConsignadoManualParcelaRepository {
       throw  new BusinessException("NNãao foi possível pesquisar os dados da parcela para o financiamento {$arquivoConsignadoManual->getCodigo()}");
     }
     $iTotalLinhas = pg_num_rows($rsFinanciamento);
-    $aParcelas = array();
+    $aParcelas = [];
     for ($iParcela = 0; $iParcela < $iTotalLinhas; $iParcela++) {
 
       $oDadosParcela = db_utils::fieldsMemory($rsFinanciamento, $iParcela);
@@ -243,7 +243,7 @@ class ArquivoConsignadoManualParcelaRepository {
   private static function getParcelasDoFinanciamentoFiltroCompetencia(ArquivoConsignadoManual $arquivoConsignadoManual, DBCompetencia $competencia, $filtro = DBCompetencia::COMPARACAO_MAIOR) {
 
     $aParcelas = self::getParcelasDoFinanciamento($arquivoConsignadoManual);
-    $aParcelasCompetencia = array();
+    $aParcelasCompetencia = [];
     foreach ($aParcelas as $parcela) {
 
       if (!$parcela->getCompetencia()->comparar($competencia, $filtro)) {
@@ -300,14 +300,14 @@ class ArquivoConsignadoManualParcelaRepository {
    */
   public static function getParcelasProcessadasNaCompetencia(DBCompetencia $competencia, Instituicao $instituicao, $banco = null) {
     
-    $aParcelasNaCompetencia              = array();
-    $aWhererhconsignadomovimentomanual   = array();
+    $aParcelasNaCompetencia              = [];
+    $aWhererhconsignadomovimentomanual   = [];
 
     $oDaorhconsignadomovimentomanual     = db_utils::getDao('rhconsignadomovimentomanual');
 
-    $aCamposrhconsignadomovimentomanual  = array('rh182_sequencial', 'rh152_sequencial', 'rh153_sequencial', 'rh182_ano', 'rh182_mes', 
+    $aCamposrhconsignadomovimentomanual  = ['rh182_sequencial', 'rh152_sequencial', 'rh153_sequencial', 'rh182_ano', 'rh182_mes', 
                                                  'rh152_regist', 'rh153_rubrica', 'rh152_consignadomotivo', 'rh154_motivo', 'rh182_processado',
-                                                 'rh153_parcela', 'rh153_totalparcelas', 'rh153_valordescontar', 'rh153_valordescontado', 'rh151_sequencial');
+                                                 'rh153_parcela', 'rh153_totalparcelas', 'rh153_valordescontar', 'rh153_valordescontado', 'rh151_sequencial'];
     $sCamposrhconsignadomovimentomanual  = implode(', ', $aCamposrhconsignadomovimentomanual);
 
     $aWhererhconsignadomovimentomanual[] = "rh151_instit     = ". $instituicao->getCodigo();
@@ -357,7 +357,7 @@ class ArquivoConsignadoManualParcelaRepository {
       throw  new BusinessException("Não foi possível pesquisar os dados da parcela para a competência {$competencia->getCompetencia()}");
     }
     $iTotalLinhas = pg_num_rows($rsFinanciamento);
-    $aParcelas = array();
+    $aParcelas = [];
     for ($iParcela = 0; $iParcela < $iTotalLinhas; $iParcela++) {
 
       $oDadosParcela = db_utils::fieldsMemory($rsFinanciamento, $iParcela);
@@ -380,7 +380,7 @@ class ArquivoConsignadoManualParcelaRepository {
   public static function getParcelasParaProcessamentoNaCompetencia(DBCompetencia $competencia, Instituicao $instituicao) {
 
     $aParcelas = self::getParcelasNaCompetencia($competencia, $instituicao);
-    $aParcelasProcessamento = array();
+    $aParcelasProcessamento = [];
     foreach ($aParcelas as $oParcela) {
 
       if ($oParcela->isProcessado()) {

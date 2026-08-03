@@ -19,7 +19,7 @@ class Condominio extends Processamento {
     $this->validarParametros();
 
     $nConsumo = $this->getConsumo() / count($this->aEconomias);
-    $aResultados = array();
+    $aResultados = [];
     foreach ($this->getEconomias() as $oEconomia) {
 
       $oAguaIsencao = $oEconomia->getIsencao();
@@ -34,10 +34,10 @@ class Condominio extends Processamento {
       }
       $oProcessamento->processar();
 
-      $aResultados[] = array(
+      $aResultados[] = [
         'responsavel' => $oEconomia,
         'resultado' => $oProcessamento->getResultadoCollection(),
-      );
+      ];
     }
 
     return $aResultados;

@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 $clcriaabas     = new cl_criaabas;
 $db_opcao = 1;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -57,9 +57,9 @@ db_postmemory($HTTP_POST_VARS);
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("iptucalcpadrao"=>"Cálculo","iptucalcpadraoconstr"=>"Construções","iptutaxamatric"=>"Taxas"); 
-	 $clcriaabas->src = array("iptucalcpadrao"=>"cad1_iptucalcpadrao004.php?j01_matric=$j01_matric&forma=$forma&exec=$exec&perc=$perc");
-	 $clcriaabas->disabled   =  array("iptucalcpadraoconstr"=>"true","iptutaxamatric"=>"true"); 
+	 $clcriaabas->identifica = ["iptucalcpadrao"=>"Cálculo","iptucalcpadraoconstr"=>"Construções","iptutaxamatric"=>"Taxas"]; 
+	 $clcriaabas->src = ["iptucalcpadrao"=>"cad1_iptucalcpadrao004.php?j01_matric=$j01_matric&forma=$forma&exec=$exec&perc=$perc"];
+	 $clcriaabas->disabled   =  ["iptucalcpadraoconstr"=>"true","iptutaxamatric"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

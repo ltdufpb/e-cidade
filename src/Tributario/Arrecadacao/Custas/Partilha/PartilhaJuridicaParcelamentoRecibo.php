@@ -57,6 +57,7 @@ final class PartilhaJuridicaParcelamentoRecibo extends Simulacao implements Inte
      * @return array|ProcessoForoPartilha|ReciboModel|Taxa[]|null
      * @throws \DBException
      */
+    #[\Override]
     public function processar()
     {
         $processoForoPartilha = parent::processar();
@@ -173,7 +174,7 @@ final class PartilhaJuridicaParcelamentoRecibo extends Simulacao implements Inte
 
             if ($processoForoPartilhaCusta->getTaxa()->isAplicaHonorario()
                 && $this->processoForo->getParcelasHonorarios() > 1) {
-                $numpar = array();
+                $numpar = [];
 
                 $debitos = $this->recibo->getDebitosRecibo();
 
@@ -184,7 +185,7 @@ final class PartilhaJuridicaParcelamentoRecibo extends Simulacao implements Inte
                     }
                 }
             } else {
-                $numpar = array($numpar);
+                $numpar = [$numpar];
             }
 
             $calculoParcelamentoHonorario = new CalculaParcelamentoHonorarioRepository(

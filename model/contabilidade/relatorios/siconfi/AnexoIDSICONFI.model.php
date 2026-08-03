@@ -76,18 +76,11 @@ class AnexoIDSICONFI extends RelatoriosLegaisBase implements AnexoSICONFI {
    */
   public function gerar($sTipo) {
 
-    switch ($sTipo) {
-
-      case AnexoSICONFI::TIPO_CSV:
-        $this->gerarCSV();
-        break;
-      case AnexoSICONFI::TIPO_PDF:
-        $this->gerarPDF();
-        break;
-      default:
-        throw new Exception("Opção inválida.");
-        break;
-    }
+    match ($sTipo) {
+        AnexoSICONFI::TIPO_CSV => $this->gerarCSV(),
+        AnexoSICONFI::TIPO_PDF => $this->gerarPDF(),
+        default => throw new Exception("Opção inválida."),
+    };
     return $this->sNomeArquivo;
   }
 
@@ -137,7 +130,7 @@ class AnexoIDSICONFI extends RelatoriosLegaisBase implements AnexoSICONFI {
       throw new Exception("Não foi possível gerar o arquivo.");
     }
 
-    $aColunas = array("DESPESAS ORÇAMENTÁRIAS", "DESPESAS EMPENHADAS", "DESPESAS LIQUIDADAS", "DESPESAS PAGAS", "INSCRIÇÃO DE RP NÃO PROCESSADOS", "INSCRIÇÃO DE RP PROCESSADOS");
+    $aColunas = ["DESPESAS ORÇAMENTÁRIAS", "DESPESAS EMPENHADAS", "DESPESAS LIQUIDADAS", "DESPESAS PAGAS", "INSCRIÇÃO DE RP NÃO PROCESSADOS", "INSCRIÇÃO DE RP PROCESSADOS"];
     $this->escreverLinhaCSV($hArquivo, $aColunas);
 
     foreach ($aDados as $oLinha) {
@@ -149,7 +142,7 @@ class AnexoIDSICONFI extends RelatoriosLegaisBase implements AnexoSICONFI {
       $nRPNaoProcessado    = trim(db_formatar($oLinha->colunas->rp_nao_processado, 'f'));
       $nRPProcessado       = trim(db_formatar($oLinha->colunas->rp_processado, 'f'));
 
-      $aLinha =  array($sDescricao, $nDespesasEmpenhadas, $nDespesasLiquidadas, $nDespesasPagas, $nRPNaoProcessado, $nRPProcessado);
+      $aLinha =  [$sDescricao, $nDespesasEmpenhadas, $nDespesasLiquidadas, $nDespesasPagas, $nRPNaoProcessado, $nRPProcessado];
       $this->escreverLinhaCSV($hArquivo, $aLinha);
     }
 
@@ -206,7 +199,7 @@ class AnexoIDSICONFI extends RelatoriosLegaisBase implements AnexoSICONFI {
    */
   private function escreverLinhaCSV($hArquivo, $aLinha) {
 
-    $lEscreveu = fputcsv($hArquivo, $aLinha, ";");
+    $lEscreveu = fputcsv($hArquivo, $aLinha, ";", escape: '\\');
     if ($lEscreveu === false) {
       throw new Exception("Não foi possível escrever no arquivo.");
     }
@@ -249,7 +242,7 @@ class AnexoIDSICONFI extends RelatoriosLegaisBase implements AnexoSICONFI {
   private function prepararDados() {
 
     $aLinhasRelatorio = parent::getDados();
-    $aDadosRelatorio  = array();
+    $aDadosRelatorio  = [];
 
     foreach ($aLinhasRelatorio as $oStdLinhaRelatorio) {
 

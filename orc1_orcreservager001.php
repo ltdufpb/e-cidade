@@ -38,7 +38,7 @@ include(modification("classes/db_orcelemento_classe.php"));
 include(modification("classes/db_orcdotacao_classe.php"));
 include(modification("libs/db_liborcamento.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcreserva    = new cl_orcreserva ; // tabela de reserva
 $clorcreservager = new cl_orcreservager; // tabela de reserva automatica
@@ -136,7 +136,7 @@ function js_testaperc(){
 }
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clorcreservager->erro_status=="0"){
     $clorcreservager->erro(true,false);
     $db_botao=true;

@@ -94,17 +94,17 @@ class Registro30Validator
         $this->registros20 = $registros20;
     }
 
-    public function setRegistro40(Registro40 $registro40 = null)
+    public function setRegistro40(?Registro40 $registro40 = null)
     {
         $this->registro40 = $registro40;
     }
 
-    public function setRegistros50(array $registros50 = null)
+    public function setRegistros50(?array $registros50 = null)
     {
         $this->registros50 = $registros50;
     }
 
-    public function setRegistro60(Registro60 $registro60 = null)
+    public function setRegistro60(?Registro60 $registro60 = null)
     {
         $this->registro60 = $registro60;
     }
@@ -121,7 +121,7 @@ class Registro30Validator
     public function log($dado)
     {
         $tipo = "Servidor";
-        if (strpos($this->registro->getCodigoPessoa(), (string)Pessoa::CODIGO_ALUNO) === 0) {
+        if (str_starts_with((string) $this->registro->getCodigoPessoa(), (string)Pessoa::CODIGO_ALUNO)) {
             $tipo = "Aluno";
         }
 
@@ -146,12 +146,7 @@ class Registro30Validator
      */
     private function isPreenchidoMany(array $campos)
     {
-        foreach ($campos as $campo) {
-            if (!$this->isPreenchido($campo)) {
-                return false;
-            }
-        }
-        return true;
+        return array_all($campos, fn($campo) => $this->isPreenchido($campo));
     }
 
     /**
@@ -316,7 +311,7 @@ class Registro30Validator
             return;
         }
 
-        if (strlen($dado) > 20) {
+        if (strlen((string) $dado) > 20) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
@@ -337,7 +332,7 @@ class Registro30Validator
             return;
         }
 
-        if (strlen($dado) != 12) {
+        if (strlen((string) $dado) != 12) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
@@ -354,12 +349,12 @@ class Registro30Validator
         $nacionalidade = $this->registro->getNacionalidade();
         $campo = 'Número do CPF';
 
-        if (!$this->isPreenchido($dado) && in_array($nacionalidade, array(1, 2)) && !empty($this->registro40)) {
+        if (!$this->isPreenchido($dado) && in_array($nacionalidade, [1, 2]) && !empty($this->registro40)) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
 
-        if (!$this->isPreenchido($dado) && in_array($nacionalidade, array(1, 2)) && !empty($this->registros50)) {
+        if (!$this->isPreenchido($dado) && in_array($nacionalidade, [1, 2]) && !empty($this->registros50)) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -368,7 +363,7 @@ class Registro30Validator
             return;
         }
 
-        if (strlen($dado) != 11) {
+        if (strlen((string) $dado) != 11) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
@@ -381,7 +376,7 @@ class Registro30Validator
     {
         $dado = $this->registro->getNome();
 
-        $aNome = explode(" ", $dado);
+        $aNome = explode(" ", (string) $dado);
         $cpf = $this->registro->getCpf();
 
         if (!$this->isPreenchido($cpf)) {
@@ -407,7 +402,7 @@ class Registro30Validator
             return;
         }
 
-        list($dia, $mes, $ano) = sscanf($dado, '%d/%d/%d');
+        [$dia, $mes, $ano] = sscanf($dado, '%d/%d/%d');
         if (!checkdate($mes, $dia, $ano)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
@@ -434,7 +429,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -458,7 +453,7 @@ class Registro30Validator
             return;
         }
 
-        $aNome = explode(" ", $dado);
+        $aNome = explode(" ", (string) $dado);
         $cpf = $this->registro->getCpf();
         if (!$this->isPreenchido($cpf)) {
             if (strlen($aNome[0]) == 1 && (isset($aNome[1]) && strlen($aNome[1]) == 1)) {
@@ -470,7 +465,7 @@ class Registro30Validator
             return;
         }
 
-        if (strlen($dado) > 100) {
+        if (strlen((string) $dado) > 100) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
@@ -487,7 +482,7 @@ class Registro30Validator
         $filiacao1 = $this->registro->getFiliacao1();
         $campo = 'Filiação 2 (preferencialmente o nome do pai)';
 
-        $aNome = explode(" ", $dado);
+        $aNome = explode(" ", (string) $dado);
         $cpf = $this->registro->getCpf();
 
 
@@ -505,7 +500,7 @@ class Registro30Validator
             return;
         }
 
-        if (strlen($dado) > 100) {
+        if (strlen((string) $dado) > 100) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
@@ -513,7 +508,7 @@ class Registro30Validator
             $this->log(sprintf('O campo "%s" contém caracteres inválidos.', $campo));
         }
 
-        if (str_word_count($dado) <= 1) {
+        if (str_word_count((string) $dado) <= 1) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -534,7 +529,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2))) {
+        if (!in_array($dado, [1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -549,7 +544,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1, 2, 3, 4, 5))) {
+        if (!in_array($dado, [0, 1, 2, 3, 4, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -564,7 +559,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2, 3))) {
+        if (!in_array($dado, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -580,7 +575,7 @@ class Registro30Validator
             return;
         }
 
-        if ($dado != 76 && in_array($nacionalidade, array(1, 2))) {
+        if ($dado != 76 && in_array($nacionalidade, [1, 2])) {
             $this->log(sprintf(
                 'O campo "%s" deve ser preenchido com 76 quando o campo "Nacionalidade" for preenchido com '.
                 '"Brasileira" ou "Brasileira - nascido no Exterior ou Naturalizado".',
@@ -627,11 +622,11 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($dado != 1 && !empty($this->registro60) && $this->turmaModalidadeAny(array(2))) {
+        if ($dado != 1 && !empty($this->registro60) && $this->turmaModalidadeAny([2])) {
             $this->log(
                 'A pessoa física tem vínculo de aluno(a) em turma de educação especial mas informou que '.
                 'não possui deficiência, transtorno do espectro autista ou altas habilidades/ superdotação'
@@ -650,7 +645,7 @@ class Registro30Validator
     {
         $deficiencia = $this->registro->getDeficienciaOuAltismoOuSuperdotacao();
 
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getCegueira();
         $campos[] = $this->registro->getBaixaVisao();
         $campos[] = $this->registro->getSurdez();
@@ -661,7 +656,7 @@ class Registro30Validator
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $this->registro->getTranstornoAutista();
         $campos[] = $this->registro->getSuperdotacao();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) && $deficiencia == 1 && $campos[1] < 1) {
@@ -694,7 +689,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -731,7 +726,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -761,7 +756,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -795,7 +790,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -824,7 +819,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -849,7 +844,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -874,7 +869,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -899,11 +894,11 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getCegueira();
         $campos[] = $this->registro->getBaixaVisao();
         $campos[] = $this->registro->getSurdez();
@@ -911,7 +906,7 @@ class Registro30Validator
         $campos[] = $this->registro->getSurdocegueira();
         $campos[] = $this->registro->getDeficienciaFisica();
         $campos[] = $this->registro->getDeficienciaintelectual();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) && $campos[1] >= 2 && $dado != 1) {
@@ -951,7 +946,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -976,14 +971,14 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
 
     private function validarRecursosNecessarios()
     {
-        $deficiencias = array();
+        $deficiencias = [];
         $deficiencias[] = $cegueira = $this->registro->getCegueira();
         $deficiencias[] = $this->registro->getBaixaVisao();
         $deficiencias[] = $this->registro->getSurdez();
@@ -993,10 +988,10 @@ class Registro30Validator
         $deficiencias[] = $this->registro->getDeficienciaintelectual();
         $deficiencias[] = $this->registro->getDeficienciaMultipla();
         $deficiencias[] = $this->registro->getTranstornoAutista();
-        $deficiencias = array_diff($deficiencias, array(null));
+        $deficiencias = array_diff($deficiencias, [null]);
         $deficiencias = array_count_values($deficiencias);
 
-        $recursos = array();
+        $recursos = [];
         $recursos[] = $this->registro->getAuxilioLedor();
         $recursos[] = $auxilioTranscricao = $this->registro->getAuxilioTranscricao();
         $recursos[] = $this->registro->getGuiaInterprete();
@@ -1009,15 +1004,15 @@ class Registro30Validator
         $recursos[] = $this->registro->getProvaVideoLibras();
         $recursos[] = $this->registro->getProvaBraille();
         $recursos[] = $this->registro->getNenhumRecurso();
-        $recursos = array_diff($recursos, array(null));
+        $recursos = array_diff($recursos, [null]);
         $recursos = array_count_values($recursos);
 
         if ($recursos < 1 &&
             isset($deficiencias[1]) &&
             $deficiencias[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4))
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4])
         ) {
             $this->log(
                 'Os Recursos necessários para uso do(a) aluno(a) e para a participação em avaliações do Inep '.
@@ -1040,7 +1035,7 @@ class Registro30Validator
         $recursoNenhum = $this->registro->getNenhumRecurso();
         $campo = 'Auxílio ledor';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $visaoBaixa = $this->registro->getBaixaVisao();
         $campos[] = $this->registro->getSurdez();
@@ -1051,14 +1046,14 @@ class Registro30Validator
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $transtornoAutista = $this->registro->getTranstornoAutista();
 
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1077,7 +1072,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1088,14 +1083,14 @@ class Registro30Validator
             ));
         }
 
-        if ($dado == 1 && !in_array(1, array(
+        if ($dado == 1 && !in_array(1, [
                 $cegueira,
                 $visaoBaixa,
                 $surdocegueira,
                 $deficienciaFisica,
                 $deficienciaIntelectual,
                 $transtornoAutista
-            ))) {
+            ])) {
             $this->log(sprintf('Combinação de tipos de deficiências incompatíveis com o recurso "%s".', $campo));
         }
     }
@@ -1106,7 +1101,7 @@ class Registro30Validator
         $recursoNenhum = $this->registro->getNenhumRecurso();
         $campo = 'Auxílio transcrição';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $visaoBaixa = $this->registro->getBaixaVisao();
         $campos[] = $this->registro->getSurdez();
@@ -1116,14 +1111,14 @@ class Registro30Validator
         $campos[] = $deficienciaIntelectual = $this->registro->getDeficienciaintelectual();
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $transtornoAutista = $this->registro->getTranstornoAutista();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1142,7 +1137,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1153,14 +1148,14 @@ class Registro30Validator
             ));
         }
 
-        if ($dado == 1 && !in_array(1, array(
+        if ($dado == 1 && !in_array(1, [
                 $cegueira,
                 $visaoBaixa,
                 $surdocegueira,
                 $deficienciaFisica,
                 $deficienciaIntelectual,
                 $transtornoAutista
-            ))) {
+            ])) {
             $this->log(sprintf('Combinação de tipos de deficiências incompatíveis com o recurso "%s".', $campo));
         }
     }
@@ -1171,7 +1166,7 @@ class Registro30Validator
         $recursoNenhum = $this->registro->getNenhumRecurso();
         $campo = 'Guia-Intérprete';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getCegueira();
         $campos[] = $this->registro->getBaixaVisao();
         $campos[] = $this->registro->getSurdez();
@@ -1181,14 +1176,14 @@ class Registro30Validator
         $campos[] = $this->registro->getDeficienciaintelectual();
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $this->registro->getTranstornoAutista();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1207,7 +1202,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1229,7 +1224,7 @@ class Registro30Validator
         $recursoNenhum = $this->registro->getNenhumRecurso();
         $campo = 'Tradutor-Intérprete de Libras';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $this->registro->getBaixaVisao();
         $campos[] = $surdez = $this->registro->getSurdez();
@@ -1239,14 +1234,14 @@ class Registro30Validator
         $campos[] = $this->registro->getDeficienciaintelectual();
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $this->registro->getTranstornoAutista();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1265,7 +1260,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1276,7 +1271,7 @@ class Registro30Validator
             ));
         }
 
-        if ($dado == 1 && !in_array(1, array($surdez, $surdocegueira, $deficienciaAuditiva))) {
+        if ($dado == 1 && !in_array(1, [$surdez, $surdocegueira, $deficienciaAuditiva])) {
             $this->log(sprintf('Combinação de tipos de deficiências incompatíveis com o recurso "%s".', $campo));
         }
 
@@ -1294,7 +1289,7 @@ class Registro30Validator
         $recursoNenhum = $this->registro->getNenhumRecurso();
         $campo = 'Leitura Labial';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $this->registro->getBaixaVisao();
         $campos[] = $surdez = $this->registro->getSurdez();
@@ -1304,14 +1299,14 @@ class Registro30Validator
         $campos[] = $this->registro->getDeficienciaintelectual();
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $this->registro->getTranstornoAutista();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(16, 7, 18, 11, 41, 27, 28, 32, 33, 37, 38)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([16, 7, 18, 11, 41, 27, 28, 32, 33, 37, 38]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1330,7 +1325,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1341,7 +1336,7 @@ class Registro30Validator
             ));
         }
 
-        if ($dado == 1 && !in_array(1, array($surdez, $surdocegueira, $deficienciaAuditiva))) {
+        if ($dado == 1 && !in_array(1, [$surdez, $surdocegueira, $deficienciaAuditiva])) {
             $this->log(sprintf('Combinação de tipos de deficiências incompatíveis com o recurso "%s".', $campo));
         }
 
@@ -1361,7 +1356,7 @@ class Registro30Validator
         $provaBraille = $this->registro->getProvaBraille();
         $campo = 'Prova Ampliada (Fonte 18)';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $visaoBaixa = $this->registro->getBaixaVisao();
         $campos[] = $this->registro->getSurdez();
@@ -1371,14 +1366,14 @@ class Registro30Validator
         $campos[] = $this->registro->getDeficienciaintelectual();
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $this->registro->getTranstornoAutista();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1397,7 +1392,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1408,7 +1403,7 @@ class Registro30Validator
             ));
         }
 
-        if ($dado == 1 && !in_array(1, array($visaoBaixa, $surdocegueira))) {
+        if ($dado == 1 && !in_array(1, [$visaoBaixa, $surdocegueira])) {
             $this->log(sprintf('Combinação de tipos de deficiências incompatíveis com o recurso "%s".', $campo));
         }
 
@@ -1443,7 +1438,7 @@ class Registro30Validator
         $provaBraille = $this->registro->getProvaBraille();
         $campo = 'Prova superampliada (Fonte 24)';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $visaoBaixa = $this->registro->getBaixaVisao();
         $campos[] = $this->registro->getSurdez();
@@ -1453,14 +1448,14 @@ class Registro30Validator
         $campos[] = $this->registro->getDeficienciaintelectual();
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $this->registro->getTranstornoAutista();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1479,7 +1474,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1490,7 +1485,7 @@ class Registro30Validator
             ));
         }
 
-        if ($dado == 1 && !in_array(1, array($visaoBaixa, $surdocegueira))) {
+        if ($dado == 1 && !in_array(1, [$visaoBaixa, $surdocegueira])) {
             $this->log(sprintf('Combinação de tipos de deficiências incompatíveis com o recurso "%s".', $campo));
         }
 
@@ -1516,7 +1511,7 @@ class Registro30Validator
         $recursoNenhum = $this->registro->getNenhumRecurso();
         $campo = 'CD com áudio para deficiente visual';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $visaoBaixa = $this->registro->getBaixaVisao();
         $campos[] = $surdez = $this->registro->getSurdez();
@@ -1526,14 +1521,14 @@ class Registro30Validator
         $campos[] = $deficienciaIntelectual = $this->registro->getDeficienciaintelectual();
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $transtornoAutista = $this->registro->getTranstornoAutista();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1552,7 +1547,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1563,14 +1558,14 @@ class Registro30Validator
             ));
         }
 
-        if ($dado == 1 && !in_array(1, array(
+        if ($dado == 1 && !in_array(1, [
                 $cegueira,
                 $visaoBaixa,
                 $surdocegueira,
                 $deficienciaFisica,
                 $deficienciaIntelectual,
                 $transtornoAutista
-            ))) {
+            ])) {
             $this->log(sprintf('Combinação de tipos de deficiências incompatíveis com o recurso "%s".', $campo));
         }
 
@@ -1588,7 +1583,7 @@ class Registro30Validator
         $recursoNenhum = $this->registro->getNenhumRecurso();
         $campo = 'Prova de Língua Portuguesa como Segunda Língua para surdos e deficientes auditivos';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $this->registro->getBaixaVisao();
         $campos[] = $surdez = $this->registro->getSurdez();
@@ -1598,14 +1593,14 @@ class Registro30Validator
         $campos[] = $this->registro->getDeficienciaintelectual();
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $this->registro->getTranstornoAutista();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1624,7 +1619,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1635,7 +1630,7 @@ class Registro30Validator
             ));
         }
 
-        if ($dado == 1 && !in_array(1, array($surdez, $deficienciaAuditiva, $surdocegueira))) {
+        if ($dado == 1 && !in_array(1, [$surdez, $deficienciaAuditiva, $surdocegueira])) {
             $this->log(sprintf('Combinação de tipos de deficiências incompatíveis com o recurso "%s".', $campo));
         }
 
@@ -1653,7 +1648,7 @@ class Registro30Validator
         $recursoNenhum = $this->registro->getNenhumRecurso();
         $campo = 'Prova em Vídeo em Libras';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $this->registro->getBaixaVisao();
         $campos[] = $surdez = $this->registro->getSurdez();
@@ -1663,14 +1658,14 @@ class Registro30Validator
         $campos[] = $this->registro->getDeficienciaintelectual();
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $this->registro->getTranstornoAutista();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1689,7 +1684,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1700,7 +1695,7 @@ class Registro30Validator
             ));
         }
 
-        if ($dado == 1 && !in_array(1, array($deficienciaAuditiva, $surdocegueira, $surdez))) {
+        if ($dado == 1 && !in_array(1, [$deficienciaAuditiva, $surdocegueira, $surdez])) {
             $this->log(sprintf('Combinação de tipos de deficiências incompatíveis com o recurso "%s".', $campo));
         }
 
@@ -1718,7 +1713,7 @@ class Registro30Validator
         $recursoNenhum = $this->registro->getNenhumRecurso();
         $campo = 'Material didático e prova em Braille';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $this->registro->getBaixaVisao();
         $campos[] = $this->registro->getSurdez();
@@ -1728,14 +1723,14 @@ class Registro30Validator
         $campos[] = $this->registro->getDeficienciaintelectual();
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $this->registro->getTranstornoAutista();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1754,7 +1749,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1765,7 +1760,7 @@ class Registro30Validator
             ));
         }
 
-        if ($dado == 1 && !in_array(1, array($cegueira, $surdocegueira))) {
+        if ($dado == 1 && !in_array(1, [$cegueira, $surdocegueira])) {
             $this->log(sprintf('Combinação de tipos de deficiências incompatíveis com o recurso "%s".', $campo));
         }
     }
@@ -1775,7 +1770,7 @@ class Registro30Validator
         $dado = $this->registro->getNenhumRecurso();
         $campo = 'Recursos para uso do(a) aluno(a) em sala de aula e para participação em avaliações do Inep (Saeb)';
 
-        $campos = array();
+        $campos = [];
         $campos[] = $cegueira = $this->registro->getCegueira();
         $campos[] = $this->registro->getBaixaVisao();
         $campos[] = $this->registro->getSurdez();
@@ -1785,14 +1780,14 @@ class Registro30Validator
         $campos[] = $this->registro->getDeficienciaintelectual();
         $campos[] = $this->registro->getDeficienciaMultipla();
         $campos[] = $this->registro->getTranstornoAutista();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) &&
             $campos[1] > 0 &&
             !empty($this->registro60) &&
-            $this->turmaEtapaAny(array(15, 18, 41, 27, 28, 32, 33)) &&
-            $this->turmaModalidadeAny(array(1, 4)) &&
+            $this->turmaEtapaAny([15, 18, 41, 27, 28, 32, 33]) &&
+            $this->turmaModalidadeAny([1, 4]) &&
             !$this->isPreenchido($dado)
         ) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
@@ -1811,7 +1806,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1871,12 +1866,12 @@ class Registro30Validator
             return;
         }
 
-        if (strlen($dado) != 32) {
+        if (strlen((string) $dado) != 32) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
-        $inicio = mb_substr($dado, 0, 30);
-        $verificador = mb_strtolower(mb_substr($dado, 30, 2));
+        $inicio = mb_substr((string) $dado, 0, 30);
+        $verificador = mb_strtolower(mb_substr((string) $dado, 30, 2));
         if (!DBString::isSomenteNumero($inicio) || !(DBString::isSomenteNumero($verificador) || $verificador == "xx")) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
@@ -1921,7 +1916,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2))) {
+        if (!in_array($dado, [1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -1940,7 +1935,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(32, 68, 76, 170, 328, 254, 600, 604, 740, 858, 862))) {
+        if (!in_array($dado, [32, 68, 76, 170, 328, 254, 600, 604, 740, 858, 862])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -1998,7 +1993,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2))) {
+        if (!in_array($dado, [1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -2018,7 +2013,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2, 3, 7))) {
+        if (!in_array($dado, [1, 2, 3, 7])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2049,7 +2044,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2, 7, 6))) {
+        if (!in_array($dado, [1, 2, 7, 6])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -2065,7 +2060,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($escolaridade, array(7, 6)) && $this->isPreenchido($dado)) {
+        if (!in_array($escolaridade, [7, 6]) && $this->isPreenchido($dado)) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -2073,7 +2068,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2, 3, 4))) {
+        if (!in_array($dado, [1, 2, 3, 4])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -2125,7 +2120,7 @@ class Registro30Validator
             return;
         }
 
-        if (strlen($dado) != 4) {
+        if (strlen((string) $dado) != 4) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2216,7 +2211,7 @@ class Registro30Validator
             return;
         }
 
-        if (strlen($dado) != 4) {
+        if (strlen((string) $dado) != 4) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2314,7 +2309,7 @@ class Registro30Validator
             return;
         }
 
-        if (strlen($dado) != 4) {
+        if (strlen((string) $dado) != 4) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2361,7 +2356,7 @@ class Registro30Validator
             $this->log(sprintf('O campo "%s foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($dado, array(32, 99))) {
+        if ($this->isPreenchido($dado) && in_array($dado, [32, 99])) {
             $this->log(sprintf('O campo "%s foi preenchido quando não deveria ser preenchido.', $campo));
         }
     }
@@ -2380,7 +2375,7 @@ class Registro30Validator
             return;
         }
 
-        if (in_array($dado, array(32, 99))) {
+        if (in_array($dado, [32, 99])) {
             $this->log(sprintf('O campo "%s foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -2408,7 +2403,7 @@ class Registro30Validator
             return;
         }
 
-        if (in_array($dado, array(32, 99))) {
+        if (in_array($dado, [32, 99])) {
             $this->log(sprintf('O campo "%s foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -2449,7 +2444,7 @@ class Registro30Validator
     {
         $campo = sprintf('Tipo de pós-graduação %s', $key + 1);
         $dado = $pos['ed183_tipoformacao'];
-        if (!in_array($dado, array(1, 2, 3))) {
+        if (!in_array($dado, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -2501,7 +2496,7 @@ class Registro30Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2530,7 +2525,7 @@ class Registro30Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2559,7 +2554,7 @@ class Registro30Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2589,7 +2584,7 @@ class Registro30Validator
 
     private function validarOutrosCursos()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getCreche();
         $campos[] = $this->registro->getPreEscola();
         $campos[] = $this->registro->getAnosIniciais();
@@ -2607,7 +2602,7 @@ class Registro30Validator
         $campos[] = $this->registro->getGestaoEscolar();
         $campos[] = $this->registro->getOutros();
         $campos[] = $this->registro->getNenhumCurso();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
         $campos = array_count_values($campos);
 
         if (isset($campos[1]) && $campos[1] < 1) {
@@ -2637,7 +2632,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2668,7 +2663,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2700,7 +2695,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2732,7 +2727,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2763,7 +2758,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2795,7 +2790,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2826,7 +2821,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2857,7 +2852,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2888,7 +2883,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2919,7 +2914,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2951,7 +2946,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2982,7 +2977,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3014,7 +3009,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3046,7 +3041,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3077,7 +3072,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3108,7 +3103,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($dado, array(0, 1))) {
+        if (!in_array($dado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -3138,7 +3133,7 @@ class Registro30Validator
             return;
         }
 
-        if (!in_array($nenhumCurso, array(0, 1))) {
+        if (!in_array($nenhumCurso, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -3161,14 +3156,14 @@ class Registro30Validator
             return;
         }
 
-        if (strlen($dado) > 100) {
+        if (strlen((string) $dado) > 100) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
         $regex = "/^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)";
         $regex .= "*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|";
         $regex .= "([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i";
-        if (!preg_match($regex, $dado)) {
+        if (!preg_match($regex, (string) $dado)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }

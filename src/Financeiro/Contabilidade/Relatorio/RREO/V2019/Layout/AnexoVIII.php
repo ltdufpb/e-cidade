@@ -39,18 +39,18 @@ class AnexoVIII extends Layout2018
 
     const TOTAL_LINHAS_FINANCEIRO = 13;
 
-    protected $aPosicoes = array(
-        self::RECEITA_RESULTANTE_IMPOSTO => array('inicio' => 1, 'fim' => 23), //0
-        self::RECEITA_ADICIONAL => array('inicio' => 24, 'fim' => 37), //1
-        self::RECEITA_FUNDEB => array('inicio' => 38, 'fim' => 49), //2
-        self::DESPESA_FUNDEB => array('inicio' => 50, 'fim' => 56), //3
-        self::DEDUCAO_FUNDEB => array('inicio' => 57, 'fim' => 63), //4
-        self::INDICADOR_FUNDEB => array('inicio' => 64, 'fim' => 67), //5
-        self::CONTROLE_USO_RECURSO_SUBSEQUENTE => array('inicio' => 68, 'fim' => 69), //6
-        self::DESPESA_MDE => array('inicio' => 70, 'fim' => 84), //7
-        self::DEDUCAO_LIMITE_CONSTITUCIONAL => array('inicio' => 85, 'fim' => 93), //8
-        self::OUTRAS_DESPESAS_INF_CONTROLE => array('inicio' => 94, 'fim' => 99),//9
-        self::RP_VINCULADO_ENSINO => array('inicio' => 100, 'fim' => 102),//10
-        self::CONTROLE_FINANCEIRO => array('inicio' => 103, 'fim' => 115),//11
-    );
+    protected $aPosicoes = [
+        self::RECEITA_RESULTANTE_IMPOSTO => ['inicio' => 1, 'fim' => 23], //0
+        self::RECEITA_ADICIONAL => ['inicio' => 24, 'fim' => 37], //1
+        self::RECEITA_FUNDEB => ['inicio' => 38, 'fim' => 49], //2
+        self::DESPESA_FUNDEB => ['inicio' => 50, 'fim' => 56], //3
+        self::DEDUCAO_FUNDEB => ['inicio' => 57, 'fim' => 63], //4
+        self::INDICADOR_FUNDEB => ['inicio' => 64, 'fim' => 67], //5
+        self::CONTROLE_USO_RECURSO_SUBSEQUENTE => ['inicio' => 68, 'fim' => 69], //6
+        self::DESPESA_MDE => ['inicio' => 70, 'fim' => 84], //7
+        self::DEDUCAO_LIMITE_CONSTITUCIONAL => ['inicio' => 85, 'fim' => 93], //8
+        self::OUTRAS_DESPESAS_INF_CONTROLE => ['inicio' => 94, 'fim' => 99],//9
+        self::RP_VINCULADO_ENSINO => ['inicio' => 100, 'fim' => 102],//10
+        self::CONTROLE_FINANCEIRO => ['inicio' => 103, 'fim' => 115],//11
+    ];
 }

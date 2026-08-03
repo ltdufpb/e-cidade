@@ -91,7 +91,7 @@ function js_relatorio(){
     </td>
     <td align="left">
     <?php 
-     $xx = array("a"=>"Alfabética","n"=>"Numérica","d"=>"Admissão");
+     $xx = ["a"=>"Alfabética","n"=>"Numérica","d"=>"Admissão"];
      db_select('ordem',$xx,true,4,"");
     ?>
     </td>

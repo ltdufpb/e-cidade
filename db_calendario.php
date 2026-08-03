@@ -28,29 +28,29 @@
 
 class db_calendario {
   
-  var $pagina_original = null;
-  var $clcalend     = null; 
-  var $anousu       = null;
-  var $mesatual     = null;
-  var $diaatual     = null;
-  var $matriz_layer = array();
-  var $sql_cruzamento= null;
-  var $sql_segundoacesso = null;
-  var $pagina_alvo  = null;
-  var $pagina_alvo_relatorio  = null;
+  public $pagina_original = null;
+  public $clcalend     = null; 
+  public $anousu       = null;
+  public $mesatual     = null;
+  public $diaatual     = null;
+  public $matriz_layer = [];
+  public $sql_cruzamento= null;
+  public $sql_segundoacesso = null;
+  public $pagina_alvo  = null;
+  public $pagina_alvo_relatorio  = null;
 
 
-  var $titulo_primeira_coluna_anual_sem = 'Módulos';
+  public $titulo_primeira_coluna_anual_sem = 'Módulos';
 
   
-  var $javascript   = null;
-  var $qualmes      = array("Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"); 
-  var $trocalinha   = false;
-  var $monta_menu   = false;
+  public $javascript   = null;
+  public $qualmes      = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]; 
+  public $trocalinha   = false;
+  public $monta_menu   = false;
 
-  function db_calendario (){
+  function __construct (){
   	
-  	$this->pagina_original = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]); 
+  	$this->pagina_original = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]); 
   	
   }
   
@@ -138,15 +138,15 @@ class db_calendario {
       }  
     
       if( $mes == $this->mesatual ){
-        echo "<td ><fieldset><Legend><strong>".strtoupper($this->qualmes[$mes-1])."</strong></legend>\n";
+        echo "<td ><fieldset><Legend><strong>".strtoupper((string) $this->qualmes[$mes-1])."</strong></legend>\n";
       }else{
-        echo "<td ><fieldset><Legend>".strtoupper($this->qualmes[$mes-1])."</legend>\n";
+        echo "<td ><fieldset><Legend>".strtoupper((string) $this->qualmes[$mes-1])."</legend>\n";
       }
 
       echo "<table cellspacing=2>\n";
 
       $dia = 1;
-      $matriz_dia = array("Dom" ,"Seg","Ter" ,"Qua","Qui","Sex","Sab");
+      $matriz_dia = ["Dom" ,"Seg","Ter" ,"Qua","Qui","Sex","Sab"];
       for($y=0;$y<=$xlinha;$y++) {
        
         echo "<tr>\n";
@@ -213,9 +213,9 @@ class db_calendario {
        $result = $this->clcalend->sql_record($this->clcalend->sql_query($this->anousu."-".$mesm."-".$diam));
        
        if($this->clcalend->numrows != 0){
-       	
+
          //$this->matriz_layer[$this->anousu."-".$mesm."-".$diam] = $result;
-       
+
          $color = 'red1'; // onMouseOver="js_mostra_text(true,\'div_calend_'.$this->anousu."-".$mesm."-".$diam.'\',event);" onMouseOut="js_mostra_text(false,\'div_calend_'.$this->anousu."-".$mesm."-".$diam.'\',event)"';
        
        }
@@ -287,12 +287,12 @@ class db_calendario {
       $this->mesatual = date("m",db_getsession("DB_datausu"));
       $this->diaatual = date("d",db_getsession("DB_datausu"));
     }else{
-      $this->anousu   = substr($data,0,4);    	
-      $this->mesatual = substr($data,5,2);
-      $this->diaatual = substr($data,8,2);      
+      $this->anousu   = substr((string) $data,0,4);    	
+      $this->mesatual = substr((string) $data,5,2);
+      $this->diaatual = substr((string) $data,8,2);      
       if($metodo=='mais'){
       	
-        $this->diaatual = substr($data,8,2)+1; 
+        $this->diaatual = substr((string) $data,8,2)+1; 
         $datat = mktime(0,0,0,$this->mesatual,$this->diaatual,$this->anousu);
         
         if( $datat == 0){
@@ -315,7 +315,7 @@ class db_calendario {
 
       }else if($metodo=='menos'){
       	
-        $this->diaatual = substr($data,8,2)-1;      
+        $this->diaatual = substr((string) $data,8,2)-1;      
         $datat = mktime(0,0,0,$this->mesatual,$this->diaatual,$this->anousu);
         while (date('w',$datat) != 1){
           $this->diaatual -= 1;
@@ -410,7 +410,7 @@ class db_calendario {
     echo "<table cellspacing=0 border=1 width='100%'>\n";  
     echo "<tr >\n";
  
-    $matriz_dia = array("Segunda","Terça" ,"Quarta","Quinta","Sexta","Sábado","Domingo");
+    $matriz_dia = ["Segunda","Terça" ,"Quarta","Quinta","Sexta","Sábado","Domingo"];
     
     echo "<td height=40 align='left' bgcolor='lightgreen' width='20%' >";
     echo "Clientes";
@@ -439,7 +439,7 @@ class db_calendario {
               from calend
               where k13_data = '".date('Y-m-d',$datat)."'";
       $resultc = db_query($sql);
-      if( pg_numrows($resultc) > 0 ){
+      if( pg_num_rows($resultc) > 0 ){
         $cor = 'lightblue';
       }
       if( date('w',$datat) == 0 ||
@@ -463,14 +463,14 @@ class db_calendario {
 
     if($this->clcalend->numrows>0){
 
-      $lin  = pg_fieldname($result,0);
-      $col  = pg_fieldname($result,1);
-      $qcol  = pg_fieldname($result,2);
-      $val  = pg_fieldname($result,3);
-      global $$lin,$$col,$$val,$$qcol;
+      $lin  = pg_field_name($result,0);
+      $col  = pg_field_name($result,1);
+      $qcol  = pg_field_name($result,2);
+      $val  = pg_field_name($result,3);
+      global ${$lin},${$col},${$val},${$qcol};
 
     
-      $matriz_imp = array();
+      $matriz_imp = [];
 
       $chave = "";
       $chave_1 = "";
@@ -480,16 +480,16 @@ class db_calendario {
         $nova_linha  = false;
         $nova_coluna = false;
         $carac = "";
-        $conteudo = substr($$val,0,5);
-        if( isset($matriz_imp[$$lin][$$qcol][substr($$col,8,2)]) ){
+        $conteudo = substr((string) ${$val},0,5);
+        if( isset($matriz_imp[${$lin}][${$qcol}][substr((string) ${$col},8,2)]) ){
           $carac = ", ";
-          if(strpos("-".$matriz_imp[$$lin][$$qcol][substr($$col,8,2)],$conteudo) > 0 ){
+          if(strpos("-".$matriz_imp[${$lin}][${$qcol}][substr((string) ${$col},8,2)],$conteudo) > 0 ){
           	$conteudo="";
           }
         }else{
-          $matriz_imp[$$lin][$$qcol][substr($$col,8,2)] = "";
+          $matriz_imp[${$lin}][${$qcol}][substr((string) ${$col},8,2)] = "";
         }
-        $matriz_imp[$$lin][$$qcol][substr($$col,8,2)] .= $carac.$conteudo;
+        $matriz_imp[${$lin}][${$qcol}][substr((string) ${$col},8,2)] .= $carac.$conteudo;
       
       }
       for($i=0; $i < count($matriz_imp);$i++){
@@ -509,7 +509,7 @@ class db_calendario {
           
           $datat = date("Y-m-d",mktime(0,0,0,$this->mesatual,$c,$this->anousu));
           
-          $identifica = split("-",key($matriz_imp));
+          $identifica = preg_split("#\\-#m",(string) key($matriz_imp));
                    
           if( isset($matriz_imp[key($matriz_imp)]['m'][substr($datat,8,2)]) ){
           	$color = "red";
@@ -539,7 +539,7 @@ class db_calendario {
           
           $datat = date("Y-m-d",mktime(0,0,0,$this->mesatual,$c,$this->anousu));
           
-          $identifica = split("-",key($matriz_imp));
+          $identifica = preg_split("#\\-#m",(string) key($matriz_imp));
                    
           if( isset($matriz_imp[key($matriz_imp)]["t"][substr($datat,8,2)]) ){
           	$color = "red";
@@ -592,11 +592,11 @@ class db_calendario {
       $this->diaatual = date("d",db_getsession("DB_datausu"));
 
     }else{
-      $this->anousu   = substr($data,0,4);    	
-      $this->mesatual = substr($data,5,2);
+      $this->anousu   = substr((string) $data,0,4);    	
+      $this->mesatual = substr((string) $data,5,2);
       
       if($metodo=='mais'){
-        $this->diaatual = substr($data,8,2)+1;      
+        $this->diaatual = substr((string) $data,8,2)+1;      
         $datat = mktime(0,0,0,$this->mesatual,$this->diaatual,$this->anousu);
       	
         if( $datat == 0){
@@ -613,7 +613,7 @@ class db_calendario {
 
       }else if($metodo=='menos'){
       	
-        $this->diaatual = substr($data,8,2)-1;      
+        $this->diaatual = substr((string) $data,8,2)-1;      
         $datat = mktime(0,0,0,$this->mesatual,$this->diaatual,$this->anousu);
         while (date('w',$datat) != 1){
           $this->diaatual -= 1;
@@ -708,7 +708,7 @@ class db_calendario {
     echo "<table cellspacing=0 border=1 width='100%'>\n";  
     echo "<tr >\n";
  
-    $matriz_dia = array("Segunda","Terça" ,"Quarta","Quinta","Sexta","Sábado","Domingo");
+    $matriz_dia = ["Segunda","Terça" ,"Quarta","Quinta","Sexta","Sábado","Domingo"];
     
     echo "<td height=40 align='left' bgcolor='lightgreen' width='30%' >";
     echo "Clientes";
@@ -741,13 +741,13 @@ class db_calendario {
 
     if($this->clcalend->numrows>0){
 
-      $lin  = pg_fieldname($result,0);
-      $col  = pg_fieldname($result,1);
-      $val  = pg_fieldname($result,2);
-      global $$lin,$$col,$$val;
+      $lin  = pg_field_name($result,0);
+      $col  = pg_field_name($result,1);
+      $val  = pg_field_name($result,2);
+      global ${$lin},${$col},${$val};
 
     
-      $matriz_imp = array();
+      $matriz_imp = [];
 
       $chave = "";
       $chave_1 = "";
@@ -757,16 +757,16 @@ class db_calendario {
         $nova_linha  = false;
         $nova_coluna = false;
         $carac = "";
-        $conteudo = substr($$val,0,5);
-        if( isset($matriz_imp[$$lin][substr($$col,8,2)]) ){
+        $conteudo = substr((string) ${$val},0,5);
+        if( isset($matriz_imp[${$lin}][substr((string) ${$col},8,2)]) ){
           $carac = ", ";
-          if(strpos("-".$matriz_imp[$$lin][substr($$col,8,2)],$conteudo) > 0 ){
+          if(strpos("-".$matriz_imp[${$lin}][substr((string) ${$col},8,2)],$conteudo) > 0 ){
           	$conteudo="";
           }
         }else{
-          $matriz_imp[$$lin][substr($$col,8,2)] = "";
+          $matriz_imp[${$lin}][substr((string) ${$col},8,2)] = "";
         }
-        $matriz_imp[$$lin][substr($$col,8,2)] .= $carac.$conteudo;
+        $matriz_imp[${$lin}][substr((string) ${$col},8,2)] .= $carac.$conteudo;
       
       }
       for($i=0; $i < count($matriz_imp);$i++){
@@ -780,7 +780,7 @@ class db_calendario {
           
           $datat = date("Y-m-d",mktime(0,0,0,$this->mesatual,$c,$this->anousu));
           
-          $identifica = split("-",key($matriz_imp));
+          $identifica = preg_split("#\\-#m",(string) key($matriz_imp));
                    
           if( isset($matriz_imp[key($matriz_imp)][substr($datat,8,2)]) ){
           	$color = "red";
@@ -833,12 +833,12 @@ class db_calendario {
       $this->diaatual = date("d",db_getsession("DB_datausu"));
 
     }else{
-      $this->anousu   = substr($data,0,4);    	
-      $this->mesatual = substr($data,5,2);
-      $this->diaatual = substr($data,8,2);
+      $this->anousu   = substr((string) $data,0,4);    	
+      $this->mesatual = substr((string) $data,5,2);
+      $this->diaatual = substr((string) $data,8,2);
       
       if($metodo=='mais'){
-        $this->diaatual = substr($data,8,2)+1;      
+        $this->diaatual = substr((string) $data,8,2)+1;      
         $datat = mktime(0,0,0,$this->mesatual,$ths->diaatual,$this->anousu);
       	
         if( $datat == 0){
@@ -855,7 +855,7 @@ class db_calendario {
 
       }else if($metodo=='menos'){
       	
-        $this->diaatual = substr($data,8,2)-1;      
+        $this->diaatual = substr((string) $data,8,2)-1;      
         $datat = mktime(0,0,0,$this->mesatual,$ths->diaatual,$this->anousu);
         while (date('w',$datat) != 1){
           $this->diaatual -= 1;
@@ -913,8 +913,8 @@ class db_calendario {
     echo "<table cellspacing=0 border=1 width='100%'>\n";  
     echo "<tr >\n";
  
-    $matriz_mes = array("01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho",
-                        "07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+    $matriz_mes = ["01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho",
+                        "07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
     
     echo "<td height=40 align='left' bgcolor='lightgreen' width='30%' >";
     echo "Módulos";
@@ -933,13 +933,13 @@ class db_calendario {
 
     if($this->clcalend->numrows>0){
 
-      $lin  = pg_fieldname($result,0);
-      $col  = pg_fieldname($result,1);
-      $val  = pg_fieldname($result,2);
-      global $$lin,$$col,$$val;
+      $lin  = pg_field_name($result,0);
+      $col  = pg_field_name($result,1);
+      $val  = pg_field_name($result,2);
+      global ${$lin},${$col},${$val};
 
     
-      $matriz_imp = array();
+      $matriz_imp = [];
 
       $chave = "";
       $chave_1 = "";
@@ -949,16 +949,16 @@ class db_calendario {
         $nova_linha  = false;
         $nova_coluna = false;
         $carac = "";
-        $conteudo = substr($$val,0,1);
-        if( isset($matriz_imp[$$lin][substr($$col,5,2)]) ){
+        $conteudo = substr((string) ${$val},0,1);
+        if( isset($matriz_imp[${$lin}][substr((string) ${$col},5,2)]) ){
           $carac = ",";
-          if(strpos("-".$matriz_imp[$$lin][substr($$col,5,2)],$conteudo) > 0 ){
+          if(strpos("-".$matriz_imp[${$lin}][substr((string) ${$col},5,2)],$conteudo) > 0 ){
           	$conteudo="";
           }
         }else{
-          $matriz_imp[$$lin][substr($$col,5,2)] = "";
+          $matriz_imp[${$lin}][substr((string) ${$col},5,2)] = "";
         }
-        $matriz_imp[$$lin][substr($$col,5,2)] .= $carac.$conteudo;
+        $matriz_imp[${$lin}][substr((string) ${$col},5,2)] .= $carac.$conteudo;
       
       }
       for($i=0; $i < count($matriz_imp);$i++){
@@ -1022,12 +1022,12 @@ class db_calendario {
       $this->diaatual = date("d",db_getsession("DB_datausu"));
 
     }else{
-      $this->anousu   = substr($data,0,4);    	
-      $this->mesatual = substr($data,5,2);
-      $this->diaatual = substr($data,8,2);
+      $this->anousu   = substr((string) $data,0,4);    	
+      $this->mesatual = substr((string) $data,5,2);
+      $this->diaatual = substr((string) $data,8,2);
       
       if($metodo=='mais'){
-        $this->diaatual = substr($data,8,2)+1;      
+        $this->diaatual = substr((string) $data,8,2)+1;      
         $datat = mktime(0,0,0,$this->mesatual,$ths->diaatual,$this->anousu);
       	
         if( $datat == 0){
@@ -1044,7 +1044,7 @@ class db_calendario {
 
       }else if($metodo=='menos'){
       	
-        $this->diaatual = substr($data,8,2)-1;      
+        $this->diaatual = substr((string) $data,8,2)-1;      
         $datat = mktime(0,0,0,$this->mesatual,$ths->diaatual,$this->anousu);
         while (date('w',$datat) != 1){
           $this->diaatual -= 1;
@@ -1100,8 +1100,8 @@ class db_calendario {
     echo "<table cellspacing=0 border=1 width='100%'>\n";  
     echo "<tr >\n";
  
-    $matriz_mes = array("01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho",
-                        "07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+    $matriz_mes = ["01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho",
+                        "07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
     
     echo "<td height=40 align='left' bgcolor='lightgreen' width='10%' rowspan='2' nowrap>";
     echo $this->titulo_primeira_coluna_anual_sem;
@@ -1116,7 +1116,7 @@ class db_calendario {
       echo "</td>\n";
 
     }*/
-    $qsemana = array();
+    $qsemana = [];
     for($mes=$this->mesatual;$mes< 13;$mes ++){
     	
       //echo "<td height=10 align='center' bgcolor='lightgreen' title=".$matriz_mes[db_formatar($mes,'s','0',2)]." >";
@@ -1141,7 +1141,7 @@ class db_calendario {
 
     echo "</tr>\n";
     echo "<tr>\n";
-    $qsemana = array();
+    $qsemana = [];
     for($mes=$this->mesatual;$mes< 13;$mes ++){
     	
       //echo "<td height=10 align='center' bgcolor='lightgreen' title=".$matriz_mes[db_formatar($mes,'s','0',2)]." >";
@@ -1170,13 +1170,13 @@ class db_calendario {
 
     if($this->clcalend->numrows>0){
 
-      $lin  = pg_fieldname($result,0);
-      $col  = pg_fieldname($result,1);
-      $val  = pg_fieldname($result,2);
-      global $$lin,$$col,$$val;
+      $lin  = pg_field_name($result,0);
+      $col  = pg_field_name($result,1);
+      $val  = pg_field_name($result,2);
+      global ${$lin},${$col},${$val};
 
     
-      $matriz_imp = array();
+      $matriz_imp = [];
 
       $chave = "";
       $chave_1 = "";
@@ -1186,16 +1186,16 @@ class db_calendario {
         $nova_linha  = false;
         $nova_coluna = false;
         $carac = "";
-        $conteudo = substr($$val,0,1);
-        if( isset($matriz_imp[$$lin][$$col]) ){
+        $conteudo = substr((string) ${$val},0,1);
+        if( isset($matriz_imp[${$lin}][${$col}]) ){
           $carac = ",";
-          if(strpos("-".$matriz_imp[$$lin][$$col],$conteudo) > 0 ){
+          if(strpos("-".$matriz_imp[${$lin}][${$col}],$conteudo) > 0 ){
           	$conteudo="";
           }
         }else{
-          $matriz_imp[$$lin][$$col] = "";
+          $matriz_imp[${$lin}][${$col}] = "";
         }
-        $matriz_imp[$$lin][$$col] .= $carac.$conteudo;
+        $matriz_imp[${$lin}][${$col}] .= $carac.$conteudo;
       
       }
       $qq++;
@@ -1265,12 +1265,12 @@ class db_calendario {
        echo "<div id='div_calend_".$data."' style='position:absolute;left:10px; top:10px; visibility:hidden ; background-color:#6699CC ; border:2px outset #cccccc; align:left'>
              <table>
             ";
-       for($md=0;$md<pg_numrows($this->matriz_layer[key($this->matriz_layer)]);$md++){
+       for($md=0;$md<pg_num_rows($this->matriz_layer[key($this->matriz_layer)]);$md++){
        	  echo "
 	         <tr>
 	         <td align='left'>
              <font color='black' face='arial' size='2'><strong>Data:</strong>:</font><br>
-	         <font color='black' face='arial' size='1'>".pg_result($this->matriz_layer[key($this->matriz_layer)],$md,0)."</font>
+	         <font color='black' face='arial' size='1'>".pg_fetch_result($this->matriz_layer[key($this->matriz_layer)],$md,0)."</font>
 	         </td>
 		     </tr>";
        }
@@ -1284,7 +1284,7 @@ class db_calendario {
   }
 
 
-  function monta_javascript($funcao,$param=null,$conteudo){
+  function monta_javascript($funcao,$param=null,$conteudo = null){
   	$this->javascript .= "function $funcao ($param){ $conteudo } \n";
   }
 

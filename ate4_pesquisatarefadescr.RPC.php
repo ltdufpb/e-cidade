@@ -33,7 +33,7 @@ require_once modification("libs/JSON.php");
 require_once modification("libs/db_utils.php");
 
 $oJson        = new services_json();
-$sDescrTarefa = utf8_decode($_POST["string"]);
+$sDescrTarefa = mb_convert_encoding($_POST["string"], 'ISO-8859-1');
 
 $sSqlTarefas = "select at40_sequencial as cod,
                        substr(at40_descr,1,48) as label  

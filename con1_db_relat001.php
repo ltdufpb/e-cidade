@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("db_relat"=>"db_relat","db_relattabelas"=>"db_relattabelas","db_relatfiltros"=>"db_relatfiltros","db_relatcabec"=>"db_relatcabec","db_relatselecionados"=>"db_relatselecionados","db_relatsoma"=>"db_relatsoma","db_relatquebra"=>"db_relatquebra"); 
-	 $clcriaabas->src = array("db_relat"=>"con1_db_relat004.php");
-	 $clcriaabas->disabled   =  array("db_relattabelas"=>"true","db_relatfiltros"=>"true","db_relatcabec"=>"true","db_relatselecionados"=>"true","db_relatsoma"=>"true","db_relatquebra"=>"true"); 
+	 $clcriaabas->identifica = ["db_relat"=>"db_relat","db_relattabelas"=>"db_relattabelas","db_relatfiltros"=>"db_relatfiltros","db_relatcabec"=>"db_relatcabec","db_relatselecionados"=>"db_relatselecionados","db_relatsoma"=>"db_relatsoma","db_relatquebra"=>"db_relatquebra"]; 
+	 $clcriaabas->src = ["db_relat"=>"con1_db_relat004.php"];
+	 $clcriaabas->disabled   =  ["db_relattabelas"=>"true","db_relatfiltros"=>"true","db_relatcabec"=>"true","db_relatselecionados"=>"true","db_relatsoma"=>"true","db_relatquebra"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

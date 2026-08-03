@@ -39,6 +39,7 @@ class Repository extends AbstractRepository implements RepositoryInterface
    * @param Mensal $oMensal
    * @throws \DBException
    */
+  #[\Override]
   public function add(Mensal $oMensal)
   {
     $iGrupo = parent::add($oMensal);
@@ -77,6 +78,7 @@ class Repository extends AbstractRepository implements RepositoryInterface
    * Remove os dados do Exame
    * @param Mensal
    */
+  #[\Override]
   public function remove(Mensal $oMensal)
   {
     $oInfoAdicional = $oMensal->getInformacaoAdicional();
@@ -90,11 +92,11 @@ class Repository extends AbstractRepository implements RepositoryInterface
     foreach ($aPrestadorExame as $iIndice => $iPrestadorExame) {
 
       $sDataInicial  = $oMensal->getAno() . '-';
-      $sDataInicial .= str_pad($oMensal->getMes(), 2, '0', STR_PAD_LEFT) . '-';
+      $sDataInicial .= str_pad((string) $oMensal->getMes(), 2, '0', STR_PAD_LEFT) . '-';
       $sDataInicial .= '01';
 
       $sDataFinal  = $oMensal->getAno() . '-';
-      $sDataFinal .= str_pad($oMensal->getMes(), 2, '0', STR_PAD_LEFT) . '-';
+      $sDataFinal .= str_pad((string) $oMensal->getMes(), 2, '0', STR_PAD_LEFT) . '-';
       $sDataFinal .= DBDate::getQuantidadeDiasMes($oMensal->getMes(), $oMensal->getAno());
 
       $sWhereHorarios  = " s112_i_prestadorvinc = $iPrestadorExame ";
@@ -125,6 +127,7 @@ class Repository extends AbstractRepository implements RepositoryInterface
   }
 
 
+  #[\Override]
   public function getCotaByIdGrupo($iGrupo)
   {
     $oCotaGrupo = parent::getCotaByIdGrupo($iGrupo);
@@ -146,7 +149,7 @@ class Repository extends AbstractRepository implements RepositoryInterface
     }
 
     $aGrupoExames    = \db_utils::getCollectionByRecord($rsPrestador);
-    $aPrestadorExame = array();
+    $aPrestadorExame = [];
 
     foreach ($aGrupoExames as $iIndice => $oGrupoExame) {
       $aPrestadorExame[] = $oGrupoExame->age03_prestadorvinculos;
@@ -169,29 +172,29 @@ class Repository extends AbstractRepository implements RepositoryInterface
   {
     $oDaoCotas = new \cl_cotaprestadoraexamemensal();
 
-    $sCampos = implode(', ', array(
+    $sCampos = implode(', ', [
       'age01_tipo',
       'age01_ano',
       'age01_mes',
       'age01_quantidade',
       'age02_sequencial',
       'age02_nome'
-    ));
+    ]);
 
-    $sGroupBy = implode(',', array(
+    $sGroupBy = implode(',', [
       'age01_tipo',
       'age01_ano',
       'age01_mes',
       'age01_quantidade',
       'age02_sequencial',
       'age02_nome'
-    ));
+    ]);
 
-    $sOrderBy = implode(',', array(
+    $sOrderBy = implode(',', [
       'age01_ano',
       'age01_mes',
       'age02_nome'
-    ));
+    ]);
 
     $sSqlCotas = $oDaoCotas->getQueryByPrestador($iPrestador, $sCampos, $sOrderBy, $sGroupBy);
 
@@ -199,7 +202,7 @@ class Repository extends AbstractRepository implements RepositoryInterface
     if (!$rsCotas) {
       throw new DBException('Erro ao buscar as cotas do prestador desejado.');
     }
-    $aRetorno = array();
+    $aRetorno = [];
 
     while ($oCota = pg_fetch_object($rsCotas)) {
 
@@ -232,7 +235,7 @@ class Repository extends AbstractRepository implements RepositoryInterface
       $sPrestadorExame = implode(',',$prestadorExame);
     }
 
-    $aWhere   = array();
+    $aWhere   = [];
     $aWhere[] = "age03_prestadorvinculos in ($sPrestadorExame)";
     $aWhere[] = "age01_mes = $iMes";
     $aWhere[] = "age01_ano = $iAno";

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_projetosativid_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_projetosativid = new cl_db_projetosativid;
 $cldb_projetosativid->rotulo->label("at62_codigo");
 $cldb_projetosativid->rotulo->label("at62_descr");
@@ -98,9 +98,9 @@ $cldb_projetosativid->rotulo->label("at62_descr");
         }else{
            $sql = $cldb_projetosativid->sql_query("",$campos,"at62_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at62_descr)){
-          $repassa = array("chave_at62_codigo"=>$chave_at62_codigo,"chave_at62_descr"=>$chave_at62_descr);
+          $repassa = ["chave_at62_codigo"=>$chave_at62_codigo,"chave_at62_descr"=>$chave_at62_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

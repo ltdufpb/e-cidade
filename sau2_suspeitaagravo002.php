@@ -33,15 +33,15 @@ require_once(modification("libs/JSON.php"));
 
 $oGet            = db_utils::postMemory( $_GET );
 $sWhere          = '';
-$aWhere          = array();
-$aBairros        = array();
-$aDadosAgrupados = array();
+$aWhere          = [];
+$aBairros        = [];
+$aDadosAgrupados = [];
 
 /**
  * Objeto com as informações padrão do relatório
  */
 $oFiltros                       = new stdClass();
-$oFiltros->aAgravosSelecionados = array();
+$oFiltros->aAgravosSelecionados = [];
 $oFiltros->iAltura              = 4;
 $oFiltros->iLargura             = 192;
 
@@ -124,7 +124,7 @@ if( $rsBairro && pg_num_rows( $rsBairro ) > 0 ) {
 
     $sBairro                     = db_utils::fieldsMemory( $rsBairro, $iContador )->j13_descr;
     $oBairro                     = new stdClass();
-    $aAgravos                    = array();
+    $aAgravos                    = [];
     $aDadosAgrupados[ $sBairro ] = $aAgravos;
 
     $sBairro    = "'{$sBairro}'";

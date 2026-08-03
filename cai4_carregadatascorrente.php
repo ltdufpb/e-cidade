@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_corrente_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcorrente = new cl_corrente;
 
 $strRetorno = "";
@@ -43,8 +43,8 @@ $traco      = "-";
 
 
 if (isset($sData) && $sData != "") {
-    $sWhereData = " and k12_data > '".implode("-",array_reverse(explode("/",$sData )))."'";
-    $sWhereExtrato = " and k86_data > '".implode("-",array_reverse(explode("/",$sData )))."'";
+    $sWhereData = " and k12_data > '".implode("-",array_reverse(explode("/",(string) $sData )))."'";
+    $sWhereExtrato = " and k86_data > '".implode("-",array_reverse(explode("/",(string) $sData )))."'";
 }
 
 $sWhereReduz  = " select c61_reduz ";

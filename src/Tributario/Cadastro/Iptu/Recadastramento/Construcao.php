@@ -20,7 +20,7 @@ class Construcao
      * Caracteristicas da construção
      * @var array
      */
-    private $aCaracteristicas = array();
+    private $aCaracteristicas = [];
 
     /**
      * Id da construcao
@@ -62,7 +62,7 @@ class Construcao
      * CGMs que são proprietários da matrícula
      * @var array
      */
-    private $aCgm = array();
+    private $aCgm = [];
 
     /**
      * Código da matrícula reservado pelo schema

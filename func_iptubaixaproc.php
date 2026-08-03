@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptubaixaproc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptubaixaproc = new cl_iptubaixaproc;
 $cliptubaixaproc->rotulo->label("j03_matric");
 $cliptubaixaproc->rotulo->label("j03_codproc");
@@ -98,9 +98,9 @@ $cliptubaixaproc->rotulo->label("j03_codproc");
         }else{
            $sql = $cliptubaixaproc->sql_query("",$campos,"j03_matric","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j03_codproc)){
-          $repassa = array("chave_j03_matric"=>$chave_j03_matric,"chave_j03_codproc"=>$chave_j03_codproc);
+          $repassa = ["chave_j03_matric"=>$chave_j03_matric,"chave_j03_codproc"=>$chave_j03_codproc];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

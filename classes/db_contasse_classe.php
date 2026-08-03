@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE contasse
 class cl_contasse { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h14_regime = 0; 
-   var $h14_tpcont = null; 
-   var $h14_assent = null; 
+   public $h14_regime = 0; 
+   public $h14_tpcont = null; 
+   public $h14_assent = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h14_regime = int4 = Codigo do Regime do Func. 
                  h14_tpcont = varchar(2) = Tipo 
                  h14_assent = varchar(5) = Assentamento 
                  ";
    //funcao construtor da classe 
-   function cl_contasse() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contasse"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -121,7 +121,7 @@ class cl_contasse {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Assentamentos para cada tipo de contrato           ($this->h14_regime."-".$this->h14_tpcont."-".$this->h14_assent) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Assentamentos para cada tipo de contrato           já Cadastrado";
@@ -145,14 +145,14 @@ class cl_contasse {
      $resaco = $this->sql_record($this->sql_query_file($this->h14_regime,$this->h14_tpcont,$this->h14_assent));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,3844,'$this->h14_regime','I')");
        $resac = db_query("insert into db_acountkey values($acount,3845,'$this->h14_tpcont','I')");
        $resac = db_query("insert into db_acountkey values($acount,3846,'$this->h14_assent','I')");
-       $resac = db_query("insert into db_acount values($acount,541,3844,'','".AddSlashes(pg_result($resaco,0,'h14_regime'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,541,3845,'','".AddSlashes(pg_result($resaco,0,'h14_tpcont'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,541,3846,'','".AddSlashes(pg_result($resaco,0,'h14_assent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,541,3844,'','".AddSlashes(pg_fetch_result($resaco,0,'h14_regime'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,541,3845,'','".AddSlashes(pg_fetch_result($resaco,0,'h14_tpcont'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,541,3846,'','".AddSlashes(pg_fetch_result($resaco,0,'h14_assent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -161,10 +161,10 @@ class cl_contasse {
       $this->atualizacampos();
      $sql = " update contasse set ";
      $virgula = "";
-     if(trim($this->h14_regime)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h14_regime"])){ 
+     if(trim((string) $this->h14_regime)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h14_regime"])){ 
        $sql  .= $virgula." h14_regime = $this->h14_regime ";
        $virgula = ",";
-       if(trim($this->h14_regime) == null ){ 
+       if(trim((string) $this->h14_regime) == null ){ 
          $this->erro_sql = " Campo Codigo do Regime do Func. nao Informado.";
          $this->erro_campo = "h14_regime";
          $this->erro_banco = "";
@@ -174,10 +174,10 @@ class cl_contasse {
          return false;
        }
      }
-     if(trim($this->h14_tpcont)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h14_tpcont"])){ 
+     if(trim((string) $this->h14_tpcont)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h14_tpcont"])){ 
        $sql  .= $virgula." h14_tpcont = '$this->h14_tpcont' ";
        $virgula = ",";
-       if(trim($this->h14_tpcont) == null ){ 
+       if(trim((string) $this->h14_tpcont) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "h14_tpcont";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_contasse {
          return false;
        }
      }
-     if(trim($this->h14_assent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h14_assent"])){ 
+     if(trim((string) $this->h14_assent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h14_assent"])){ 
        $sql  .= $virgula." h14_assent = '$this->h14_assent' ";
        $virgula = ",";
-       if(trim($this->h14_assent) == null ){ 
+       if(trim((string) $this->h14_assent) == null ){ 
          $this->erro_sql = " Campo Assentamento nao Informado.";
          $this->erro_campo = "h14_assent";
          $this->erro_banco = "";
@@ -214,17 +214,17 @@ class cl_contasse {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3844,'$this->h14_regime','A')");
          $resac = db_query("insert into db_acountkey values($acount,3845,'$this->h14_tpcont','A')");
          $resac = db_query("insert into db_acountkey values($acount,3846,'$this->h14_assent','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h14_regime"]))
-           $resac = db_query("insert into db_acount values($acount,541,3844,'".AddSlashes(pg_result($resaco,$conresaco,'h14_regime'))."','$this->h14_regime',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,541,3844,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h14_regime'))."','$this->h14_regime',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h14_tpcont"]))
-           $resac = db_query("insert into db_acount values($acount,541,3845,'".AddSlashes(pg_result($resaco,$conresaco,'h14_tpcont'))."','$this->h14_tpcont',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,541,3845,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h14_tpcont'))."','$this->h14_tpcont',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h14_assent"]))
-           $resac = db_query("insert into db_acount values($acount,541,3846,'".AddSlashes(pg_result($resaco,$conresaco,'h14_assent'))."','$this->h14_assent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,541,3846,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h14_assent'))."','$this->h14_assent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -269,14 +269,14 @@ class cl_contasse {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3844,'$h14_regime','E')");
          $resac = db_query("insert into db_acountkey values($acount,3845,'$h14_tpcont','E')");
          $resac = db_query("insert into db_acountkey values($acount,3846,'$h14_assent','E')");
-         $resac = db_query("insert into db_acount values($acount,541,3844,'','".AddSlashes(pg_result($resaco,$iresaco,'h14_regime'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,541,3845,'','".AddSlashes(pg_result($resaco,$iresaco,'h14_tpcont'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,541,3846,'','".AddSlashes(pg_result($resaco,$iresaco,'h14_assent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,541,3844,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h14_regime'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,541,3845,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h14_tpcont'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,541,3846,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h14_assent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from contasse
@@ -348,7 +348,7 @@ class cl_contasse {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:contasse";

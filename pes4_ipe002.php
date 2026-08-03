@@ -71,7 +71,7 @@ if($clrhipe->numrows > 0){
 
       $prov = 0;
       
-      if(trim($rh01_regist) != "" && ($rh14_valor == 0 || trim($rh14_valor) == "")){
+      if(trim((string) $rh01_regist) != "" && ($rh14_valor == 0 || trim((string) $rh14_valor) == "")){
 
         /////////////
         // Se for funcionário e o valor do rhipe for igual a zero
@@ -121,7 +121,7 @@ if($clrhipe->numrows > 0){
               $prov += $r20_valor;
             }
 
-            if( strtolower($rh30_vinculo) != "a" ){
+            if( strtolower((string) $rh30_vinculo) != "a" ){
               db_retorno_variaveis($anousu, $mesusu, $rh01_regist);
               if( $prov == 0 && ( $rh14_estado == "22" )){
                 $prov = $f007;

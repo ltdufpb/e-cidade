@@ -33,7 +33,7 @@ require_once(modification('libs/db_utils.php'));
 require_once(modification('dbforms/db_funcoes.php'));
 
 $queryString = [];
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 db_postmemory($queryString);
 db_postmemory($_POST);
 
@@ -118,7 +118,7 @@ $db_botao = false;
                             $oDaoDbDepart = new cl_db_depart;
                             $sSql = $oDaoDbDepart->sql_query_file(null, 'coddepto, descrdepto', 'coddepto');
                             $rs = $oDaoDbDepart->sql_record($sSql);
-                            $aX = array();
+                            $aX = [];
                             $aX[-1] = 'TODOS';
                             for ($iCont = 0; $iCont < $oDaoDbDepart->numrows; $iCont++) {
                                 $oDados = db_utils::fieldsmemory($rs, $iCont);
@@ -138,7 +138,7 @@ $db_botao = false;
                             $oDaoLabLaboratorio = new cl_lab_laboratorio;
                             $sSql = $oDaoLabLaboratorio->sql_query_file(null, 'la02_i_codigo, la02_c_descr');
                             $rs = $oDaoLabLaboratorio->sql_record($sSql);
-                            $aX = array();
+                            $aX = [];
                             for ($iCont = 0; $iCont < $oDaoLabLaboratorio->numrows; $iCont++) {
                                 $oDados = db_utils::fieldsmemory($rs, $iCont);
                                 $aX[$oDados->la02_i_codigo] = $oDados->la02_c_descr;

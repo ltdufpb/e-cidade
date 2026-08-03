@@ -17,11 +17,8 @@ use Illuminate\Support\Facades\Log;
 
 class ProcessoEletronicoController extends Controller
 {
-    private $processoEletronicoService;
-
-    public function __construct(ProcessoEletronicoService $processoEletronicoService)
+    public function __construct(private readonly ProcessoEletronicoService $processoEletronicoService)
     {
-        $this->processoEletronicoService = $processoEletronicoService;
     }
 
     public function mensagens($numero_processo)
@@ -78,7 +75,7 @@ class ProcessoEletronicoController extends Controller
             $solicitacao->setClientAPPAtendimentoID($request->get('client_atendimento_id'));
             return (array)$solicitacao->salvar();
         } catch (\Exception $ex) {
-            return response(utf8_encode(urldecode($ex->getMessage())), 400);
+            return response(mb_convert_encoding(urldecode($ex->getMessage()), 'UTF-8', 'ISO-8859-1'), 400);
         }
     }
 

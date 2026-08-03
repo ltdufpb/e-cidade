@@ -26,7 +26,7 @@ SQL_UP_RELATORIOS
     function anexoI_UP()
     {
 
-        $sqls           = array();
+        $sqls           = [];
         $idRelatorio = 182;
         $sql_orcparamrelperiodos = "
                 INSERT INTO orcparamrelperiodos VALUES 

@@ -150,14 +150,14 @@ if (isset($c70_codlan) && $c70_codlan != "") {
 
     $sql1 = "select c71_codlan from conlancamdoc where c71_codlan=$c70_codlan";
     $result1 = db_query($sql1);
-    $linhas1 = pg_numrows($result1);
+    $linhas1 = pg_num_rows($result1);
 
     if ($linhas1 > 0) {
 
         $sql2
             = "select * from conlancamdoc inner join conhistdoc on c71_coddoc=c53_coddoc where c71_codlan=$c70_codlan";
         $result2 = db_query($sql2);
-        $linhas2 = pg_numrows($result2);
+        $linhas2 = pg_num_rows($result2);
 
         if ($linhas2 > 0) {
             $oResultado = db_utils::fieldsMemory($result2, 0);
@@ -237,7 +237,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
                     <td nowrap title="<?= $Tc78_chave ?>"><strong> <?= $Lc78_chave ?> </strong></td>
                     <td>
                         <?PHP
-                        if (isset($HTTP_SESSION_VARS["llote"]) && $db_opcao == 1) {
+                        if (isset($_SESSION["llote"]) && $db_opcao == 1) {
                             $c78_chave = db_getsession("llote");
                         }
                         db_input("c78_chave", 10, "", true, 'text', $db_opcao, "");
@@ -391,7 +391,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
                         <strong>Tipo de Lançamento:</strong></td>
                     <td>
                         <?php 
-                        $matarr = array('0' => 'Execu??o', '2000' => 'Abertura', '1000' => 'Fechamento');
+                        $matarr = ['0' => 'Execu??o', '2000' => 'Abertura', '1000' => 'Fechamento'];
                         db_select('c71_coddoc', $matarr, true, 2);
                         ?>
                     </td>
@@ -664,7 +664,7 @@ db_app::load("widgets/datagrid/plugins/DBHint.plugin.js");
         if ($db_opcao != 1) {
 
             echo " location.href = '"
-                . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])
+                . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])
                 . "?chavepesquisa='+chave";
         }
         ?>

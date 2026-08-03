@@ -35,7 +35,7 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oLoteRegistroPonto = new cl_loteregistroponto;
 
@@ -76,7 +76,7 @@ $sSqlRhPrePontoLoteRegistro = "
        ";
 
 $rsRhPrePontoLoteRegistro = db_query($sSqlRhPrePontoLoteRegistro);
-$xxnum = pg_numrows($rsRhPrePontoLoteRegistro);
+$xxnum = pg_num_rows($rsRhPrePontoLoteRegistro);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Erro na pesquisa do lote - '.$lote);
 
@@ -92,7 +92,7 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 4;
-for($x = 0; $x < pg_numrows($rsRhPrePontoLoteRegistro);$x++){
+for($x = 0; $x < pg_num_rows($rsRhPrePontoLoteRegistro);$x++){
    
    $oRhPrePontoLoteRegistro = db_utils::fieldsMemory($rsRhPrePontoLoteRegistro,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){

@@ -115,7 +115,7 @@ db_input('x26_percentual',6,$Ix26_percentual,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("x26_codisencaorec"=>@$x26_codisencaorec);
+	 $chavepri= ["x26_codisencaorec"=>@$x26_codisencaorec];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 //$cliframe_alterar_excluir->sql     = $claguaisencaorec->sql_query_file($x26_codisencaorec);
 	 $cliframe_alterar_excluir->sql     = $claguaisencaorec->sql_query(null, "*", "x26_codconsumotipo", "x26_codisencao=$x26_codisencao");

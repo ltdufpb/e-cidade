@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ouvidoriaatendimentolocal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clouvidoriaatendimentolocal = new cl_ouvidoriaatendimentolocal;
 $clouvidoriaatendimentolocal->rotulo->label("ov24_sequencial");
 $clouvidoriaatendimentolocal->rotulo->label("ov24_ouvidoriacadlocal");
@@ -98,9 +98,9 @@ $clouvidoriaatendimentolocal->rotulo->label("ov24_ouvidoriacadlocal");
         }else{
            $sql = $clouvidoriaatendimentolocal->sql_query("",$campos,"ov24_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov24_ouvidoriacadlocal)){
-          $repassa = array("chave_ov24_sequencial"=>$chave_ov24_sequencial,"chave_ov24_ouvidoriacadlocal"=>$chave_ov24_ouvidoriacadlocal);
+          $repassa = ["chave_ov24_sequencial"=>$chave_ov24_sequencial,"chave_ov24_ouvidoriacadlocal"=>$chave_ov24_ouvidoriacadlocal];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

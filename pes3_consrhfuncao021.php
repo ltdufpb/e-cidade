@@ -39,8 +39,8 @@ $clrhfuncao = new cl_rhfuncao();
 $clrhregime = new cl_rhregime();
 $clrhfuncao->rotulo->label();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $aux_lotacao = false;
 $aux_selecao = false;
@@ -76,10 +76,10 @@ if(isset($selecao) && !empty($selecao)) {
   
 }
 
-      $arr_valtotal = Array();
-      $arr_valinati = Array();
-      $arr_valativo = Array();
-      $arr_valpensi = Array();
+      $arr_valtotal = [];
+      $arr_valinati = [];
+      $arr_valativo = [];
+      $arr_valpensi = [];
       if(isset($funcao) && trim($funcao)!=""){
 	$porfuncao = true;
         $sql1 = "
@@ -116,7 +116,7 @@ if(isset($selecao) && !empty($selecao)) {
 					  order by z01_nome ";
 		    $result_funcionarios = db_query($sql1);
         
-        if(pg_numrows($result_funcionarios) == 0){
+        if(pg_num_rows($result_funcionarios) == 0){
       	  db_msgbox("Cargo não encontrado");
       	  echo "<script>parent.location.href = 'pes3_consrhfuncao001.php'</script>";
         }
@@ -176,7 +176,7 @@ if(isset($selecao) && !empty($selecao)) {
            order by funcao ";
 
 		    $result_funcoes = db_query($sql1);
-			  $numrows = pg_numrows($result_funcoes);	
+			  $numrows = pg_num_rows($result_funcoes);	
         if($numrows == 0){
       	  db_msgbox("Nenhum cargo encontrado");
       	  echo "<script>parent.location.href = 'pes3_consrhfuncao001.php'</script>";
@@ -192,7 +192,7 @@ $colunas = "";
 $virgula = "";
 for($x = 0; $x < $clrhregime->numrows; $x ++) {
   db_fieldsmemory($result_regime, $x);
-  $colunas .= $virgula.strtolower($rh30_vinculo);
+  $colunas .= $virgula.strtolower((string) $rh30_vinculo);
   $virgula = ",";
 }
 
@@ -251,7 +251,7 @@ if ($porfuncao == true) {
     <?php
 
     $cor = "#EFE029";
-    $totalfunc = pg_numrows($result_funcionarios);
+    $totalfunc = pg_num_rows($result_funcionarios);
     for ($x = 0; $x < $totalfunc; $x ++) {
         db_fieldsmemory($result_funcionarios, $x);
         if ($cor == "#EFE029"){
@@ -317,8 +317,8 @@ if ($porfuncao == true) {
     $anterior   = "";
     $saldo      = 0;
 
-    $totalfunc = pg_numrows($result_funcoes);
-    for ($x = 0; $x < pg_numrows($result_funcoes); $x ++) {
+    $totalfunc = pg_num_rows($result_funcoes);
+    for ($x = 0; $x < pg_num_rows($result_funcoes); $x ++) {
         db_fieldsmemory($result_funcoes, $x);
         if ($cor == "#EFE029"){
             $cor = "#E4F471";

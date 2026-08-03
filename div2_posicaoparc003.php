@@ -41,8 +41,8 @@
   $clrotulo->label('k60_descr');
   $clrotulo->label('k51_procede');
   $clrotulo->label('k51_descr');
-  db_postmemory($HTTP_POST_VARS);
-  db_postmemory($HTTP_SERVER_VARS);
+  db_postmemory($_POST);
+  db_postmemory($_SERVER);
 
   $db_botao = true;
 ?>
@@ -207,8 +207,8 @@
             <td>Número da Parcela em Atraso:</td>
             <td>
               <?php
-                $y = array("C" => "Considerar",
-                           "D" => "Desconsiderar");
+                $y = ["C" => "Considerar",
+                           "D" => "Desconsiderar"];
                 db_select('considera', $y, true, 2);
 
                 db_input("numparcini", 4, $IDBtxt34, true, 'text', 4, 'onchange=document.form1.numparcfim.value="";');
@@ -224,9 +224,9 @@
             <td>Ordem:</td>
             <td>
               <?php
-                $x = array("NP"   => "Numpre/Numpar",
+                $x = ["NP"   => "Numpre/Numpar",
                            "DTPV" => "Data da primeira parcela vencida",
-                           "NOME" => "Nome do contribuinte");
+                           "NOME" => "Nome do contribuinte"];
                 db_select('ordem', $x, true, 2);
               ?>
             </td>
@@ -235,9 +235,9 @@
              <td>Emitir :</td>
              <td>
                <?php
-                 $x = array("RG" => "Relatório e Gráfico",
+                 $x = ["RG" => "Relatório e Gráfico",
                             "R"  => "Somente Relatório",
-                            "G"  => "Somente Gráfico");
+                            "G"  => "Somente Gráfico"];
                  db_select('grafico', $x, true, 2);
                ?>
              </td>

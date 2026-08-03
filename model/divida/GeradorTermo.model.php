@@ -200,7 +200,7 @@ class GeradorTermo
 
             $rsDadosInicial = db_query($sSqlDadosInicial);
 
-            if (pg_numrows($rsDadosInicial) > 0) {
+            if (pg_num_rows($rsDadosInicial) > 0) {
 
                 $oDadosInicial = db_utils::fieldsMemory($rsDadosInicial, 0);
                 $this->oDocumento->processoforo = $oDadosInicial->processoforo;
@@ -292,7 +292,7 @@ class GeradorTermo
 
         $pdf->setfont('arial', '', 10);
 
-        $aCgcCpf = array();
+        $aCgcCpf = [];
         $aDadosDevedor = $oCertidao->getDevedoresEnvolvidos($lTipoOrdem);
 
         foreach ($aDadosDevedor->aDevedores as $oDevedor) {
@@ -301,7 +301,7 @@ class GeradorTermo
 
             $pdf->setfont('arial', '', 8);
             $pdf->Ln(1);
-            $pdf->cell(30, 3, substr($oDevedor->tipo, 0, 15), 0, 0, "L", 0);
+            $pdf->cell(30, 3, substr((string) $oDevedor->tipo, 0, 15), 0, 0, "L", 0);
             $pdf->Cell(110, 3, $oDevedor->nome, 0, 0, "L", 0);
             $pdf->Cell(20, 3, $oDevedor->numcgm, 0, 0, "L", 0);
             $pdf->Cell(30, 3, $oDevedor->cgcCpf, 0, 1, "L", 0);
@@ -350,24 +350,24 @@ class GeradorTermo
             $pdf->Ln(3);
       
             $pdf->setfont('arial', '', 8);
-            $pdf->cell(120, 3, 'ENDEREÇO: ' . (isset($oOrigem->endereco) ? $oOrigem->endereco : ""), 0, 0, "l", 0);
-            $pdf->cell(40, 3, 'BAIRRO : ' . (isset($oOrigem->bairro) ? $oOrigem->bairro : ""), 0, 1, "l", 0);
-            $pdf->cell(120, 3, 'CIDADE : ' . (isset($oOrigem->cidade) ? $oOrigem->cidade : ""), 0, 0, "l", 0);
-            $pdf->cell(40, 3, 'CEP : ' . (isset($oOrigem->cep) ? $oOrigem->cep : ""), 0, 1, "l", 0);
-            $pdf->cell(30, 3, 'SETOR  : ' . (isset($oOrigem->setor) ? $oOrigem->setor : ""), 0, 0, "l", 0);
-            $pdf->cell(30, 3, 'QUADRA : ' . (isset($oOrigem->quadra) ? $oOrigem->quadra : ""), 0, 0, "l", 0);
-            $pdf->cell(30, 3, 'LOTE : ' . (isset($oOrigem->lote) ? $oOrigem->lote : ""), 0, 0, "l", 0);
-            $pdf->cell(30, 3, 'MATRÍCULA : ' . (isset($oOrigem->matricula) ? $oOrigem->matricula : ""), 0, 0, "l", 0);
-            $pdf->cell(30, 3, 'MATRÍCULA REG.IMÓVEL: ' . (isset($oOrigem->matricula_ri) ? $oOrigem->matricula_ri : ""), 0, 1, "l",
+            $pdf->cell(120, 3, 'ENDEREÇO: ' . ($oOrigem->endereco ?? ""), 0, 0, "l", 0);
+            $pdf->cell(40, 3, 'BAIRRO : ' . ($oOrigem->bairro ?? ""), 0, 1, "l", 0);
+            $pdf->cell(120, 3, 'CIDADE : ' . ($oOrigem->cidade ?? ""), 0, 0, "l", 0);
+            $pdf->cell(40, 3, 'CEP : ' . ($oOrigem->cep ?? ""), 0, 1, "l", 0);
+            $pdf->cell(30, 3, 'SETOR  : ' . ($oOrigem->setor ?? ""), 0, 0, "l", 0);
+            $pdf->cell(30, 3, 'QUADRA : ' . ($oOrigem->quadra ?? ""), 0, 0, "l", 0);
+            $pdf->cell(30, 3, 'LOTE : ' . ($oOrigem->lote ?? ""), 0, 0, "l", 0);
+            $pdf->cell(30, 3, 'MATRÍCULA : ' . ($oOrigem->matricula ?? ""), 0, 0, "l", 0);
+            $pdf->cell(30, 3, 'MATRÍCULA REG.IMÓVEL: ' . ($oOrigem->matricula_ri ?? ""), 0, 1, "l",
             0);
 
 
             if ($oCfiptu->j18_utilizaloc == 't') {
                 $pdf->cell(60, 5,
-                    'DADOS DE LOCALIZACAO: SETOR  : ' . (isset($oOrigem->setorloc) ? $oOrigem->setorloc : "") . '-'
-                    . (isset($oOrigem->descrsetorloc) ? $oOrigem->descrsetorloc : "") .
-                    ' QUADRA : ' . (isset($oOrigem->quadraloc) ? $oOrigem->quadraloc : "") .
-                    ' - LOTE : ' . (isset($oOrigem->loteloc) ? $oOrigem->loteloc : ""), 0, 0, "l", 0);
+                    'DADOS DE LOCALIZACAO: SETOR  : ' . ($oOrigem->setorloc ?? "") . '-'
+                    . ($oOrigem->descrsetorloc ?? "") .
+                    ' QUADRA : ' . ($oOrigem->quadraloc ?? "") .
+                    ' - LOTE : ' . ($oOrigem->loteloc ?? ""), 0, 0, "l", 0);
                 $pdf->ln();
             }
 
@@ -399,16 +399,16 @@ class GeradorTermo
 
                 }
                 $pdf->cell(35, 5, 'INSCRIÇÃO: ', 0, 0, "L", 0);
-                $pdf->cell(100, 5, (isset($oOrigem->inscricao) ? $oOrigem->inscricao : ""), 0, 0, "L", 0);
+                $pdf->cell(100, 5, ($oOrigem->inscricao ?? ""), 0, 0, "L", 0);
                 $pdf->ln();
                 $pdf->cell(35, 5, 'REF. AO ALVARÁ : ', 0, 0, "L", 0);
-                $pdf->cell(100, 5, (isset($oOrigem->endereco) ? $oOrigem->endereco : ""), 0, 1, "L", 0);
+                $pdf->cell(100, 5, ($oOrigem->endereco ?? ""), 0, 1, "L", 0);
                 $pdf->cell(35, 5, 'BAIRRO : ', 0, 0, "l", 0);
-                $pdf->cell(100, 5, (isset($oOrigem->bairro) ? $oOrigem->bairro : ""), 0, 1, "l", 0);
+                $pdf->cell(100, 5, ($oOrigem->bairro ?? ""), 0, 1, "l", 0);
                 $pdf->cell(35, 5, 'CIDADE : ', 0, 0, "l", 0);
-                $pdf->cell(100, 5, (isset($oOrigem->cidade) ? $oOrigem->cidade : ""), 0, 0, "l", 0);
+                $pdf->cell(100, 5, ($oOrigem->cidade ?? ""), 0, 0, "l", 0);
                 $pdf->cell(15, 5, 'CEP : ', 0, 0, "l", 0);
-                $pdf->cell(100, 5, (isset($oOrigem->cep) ? $oOrigem->cep : ""), 0, 1, "l", 0);
+                $pdf->cell(100, 5, ($oOrigem->cep ?? ""), 0, 1, "l", 0);
                 $pdf->cell(190, 0.7, '', "TB", 1, "L", 0);
                 $pdf->Ln(3);
             }
@@ -526,14 +526,14 @@ class GeradorTermo
      * @param pdf3 $pdf
      * @param termoinscr $oCertidao
      */
-    private function drawDebitos(pdf3 $pdf, termoinscr $oCertidao, $oPardiv, $lTotaliza = false, $lReemissao)
+    private function drawDebitos(pdf3 $pdf, termoinscr $oCertidao, $oPardiv, $lTotaliza = false, $lReemissao = null)
     {   
 
         $aDebitos = $oCertidao->getDebitos($lReemissao);
             
-        $aDebitosOrdenado = array();
-        $aTotaisAno = array();
-        $oTotalGeral = array();
+        $aDebitosOrdenado = [];
+        $aTotaisAno = [];
+        $oTotalGeral = [];
 
         foreach ($aDebitos as $oDebito) {
            
@@ -677,9 +677,9 @@ class GeradorTermo
                 $pdf->Cell(10, 5, $oDebito->exercicio, 1, 0, "C", 0);
                 $pdf->Cell(8, 5, $oDebito->numpar, 1, 0, "C", 0);
                 /* $pdf->Cell(10, 5, $oDebito->livro . "/" . $oDebito->folha, 1, 0, "C", 0); */
-                $pdf->Cell(15, 5, ucfirst($oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
-                if (strlen($oDebito->procedencia) == 20) {
-                    $procedencia = substr($oDebito->procedencia, 0, 15);
+                $pdf->Cell(15, 5, ucfirst((string) $oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
+                if (strlen((string) $oDebito->procedencia) == 20) {
+                    $procedencia = substr((string) $oDebito->procedencia, 0, 15);
                 } else {
                     $procedencia = $oDebito->procedencia;
                 }
@@ -707,9 +707,9 @@ class GeradorTermo
                     $pdf->SetFont('', 'I', 5);
                     $pdf->setX(10);
 
-                    $pdf->SetAligns(array('J'));
-                    $pdf->SetWidths(array(195));
-                    $pdf->Row_multicell(array("Observação: {$oDebito->observacao}"), 4, true, 4, 0, true, true,
+                    $pdf->SetAligns(['J']);
+                    $pdf->SetWidths([195]);
+                    $pdf->Row_multicell(["Observação: {$oDebito->observacao}"], 4, true, 4, 0, true, true,
                         3, 3);
 
                     $pdf->SetFont('', '', 6);
@@ -791,14 +791,14 @@ class GeradorTermo
 
         } else {
 
-            $dataemis = mktime(0, 0, 0, substr($sData, 5, 2),
-                substr($sData, 8, 2),
-                substr($sData, 0, 4)
+            $dataemis = mktime(0, 0, 0, substr((string) $sData, 5, 2),
+                substr((string) $sData, 8, 2),
+                substr((string) $sData, 0, 4)
             );
-            $anoemis = substr($sData, 0, 4);
-            $xmes = substr($sData, 5, 2);
-            $xdia = substr($sData, 8, 2);
-            $xano = substr($sData, 0, 4);
+            $anoemis = substr((string) $sData, 0, 4);
+            $xmes = substr((string) $sData, 5, 2);
+            $xdia = substr((string) $sData, 8, 2);
+            $xano = substr((string) $sData, 0, 4);
 
         }
 
@@ -826,7 +826,7 @@ class GeradorTermo
         foreach ($aAssinaturas as $oAssinaturas) {
 
             if ($oAssinaturas->db02_descr == "ASSINATURAS_CODIGOPHP") {
-                $assinaturas_php = trim($oAssinaturas->db02_texto);
+                $assinaturas_php = trim((string) $oAssinaturas->db02_texto);
             }
             if ($oAssinaturas->db04_ordem == '4') {
                 $asssec = $oAssinaturas->db02_texto;

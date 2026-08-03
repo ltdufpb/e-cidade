@@ -24,8 +24,8 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt
  *                                licenca/licenca_pt.txt
  */
-$modulos = array('0' => 'Selecionar Módulo');
-$grupos = array('0' => 'Selecionar Grupo');
+$modulos = ['0' => 'Selecionar Módulo'];
+$grupos = ['0' => 'Selecionar Grupo'];
 
 $clworkflow->rotulo->label();
 $cltipoproc->rotulo->label();

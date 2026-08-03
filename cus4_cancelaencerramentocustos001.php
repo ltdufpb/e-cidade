@@ -46,9 +46,9 @@ include(modification("dbforms/db_funcoes.php"));
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
 db_postmemory($_POST);
-$aParamKeys = array(
+$aParamKeys = [
                     db_getsession("DB_anousu")
-                   );
+                   ];
 $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
 $iTipoControleCustos = 0; 
 $db_opcao            = 1;

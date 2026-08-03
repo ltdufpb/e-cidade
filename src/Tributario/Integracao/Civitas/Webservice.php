@@ -33,11 +33,11 @@ class Webservice extends DBSoapServer
 {
     public function __construct()
     {
-        $options = array(
+        $options = [
           'soap_version' => SOAP_1_1,
           'uri'          => $this->getUrl("webservices/integracaoCivitas.php"),
           'trace'        => TRUE
-        );
+        ];
 
         parent::__construct($this->getUrl("webservices/documents/civitas.wsdl"), $options);
     }

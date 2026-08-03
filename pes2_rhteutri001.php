@@ -41,7 +41,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -121,7 +121,7 @@ db_postmemory($HTTP_POST_VARS);
         </td>
         <td>
            <?php 
-           $xy = array("a"=>"Ativos","t"=>"Todos","i"=>"Inativos");
+           $xy = ["a"=>"Ativos","t"=>"Todos","i"=>"Inativos"];
            db_select('tipo',$xy,true,1,"");
           ?>
         </td>
@@ -132,7 +132,7 @@ db_postmemory($HTTP_POST_VARS);
         </td>
         <td>
            <?php 
-           $x = array("n"=>"Numérica","a"=>"Alfabética");
+           $x = ["n"=>"Numérica","a"=>"Alfabética"];
            db_select('ordem',$x,true,1,"");
           ?>
         </td>

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -76,7 +76,7 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align='left'>
       <?php 
-      $arr_comsaldo = array("t"=>"Todos","f"=>"Somente com saldo");
+      $arr_comsaldo = ["t"=>"Todos","f"=>"Somente com saldo"];
       db_select("comsaldo", $arr_comsaldo, true, 1);
       ?>
     </td>
@@ -87,7 +87,7 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align='left'>
       <?php 
-      $arr_conta = array(0=>"Todos",1=>"Com conta bancária",2=>"Sem conta bancária");
+      $arr_conta = [0=>"Todos",1=>"Com conta bancária",2=>"Sem conta bancária"];
       db_select("conta", $arr_conta, true, 1);
       ?>
     </td>
@@ -98,7 +98,7 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align='left'>
       <?php 
-      $arr_quebra = array(0=>"Sim",1=>"Não");
+      $arr_quebra = [0=>"Sim",1=>"Não"];
       db_select("quebra", $arr_quebra, true, 1);
       ?>
     </td>

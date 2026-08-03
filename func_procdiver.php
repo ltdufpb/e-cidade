@@ -35,8 +35,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 require_once(modification("classes/db_procdiver_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clprocdiver = new cl_procdiver;
 $clprocdiver->rotulo->label("dv09_procdiver");
@@ -98,8 +98,8 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
 
                 if (isset($excecao) AND !empty($excecao)) {
                     if (isset($valorExcecao) AND !empty($valorExcecao)) {
-                        $excecoes = explode("|", $excecao);
-                        $valorExcecao = explode("|", $valorExcecao);
+                        $excecoes = explode("|", (string) $excecao);
+                        $valorExcecao = explode("|", (string) $valorExcecao);
 
                         foreach ($excecoes as $key => $excecao) {
                             if (!empty($valorExcecao[$key])) {
@@ -138,9 +138,9 @@ $dtHoje       = date("Y-m-d", db_getsession("DB_datausu"));
                     } else {
                         $sql = $clprocdiver->sql_query("", $campos, "dv09_procdiver", " dv09_instit = {$iInstituicao} and (dv09_dtlimite is null or dv09_dtlimite >= '{$dtHoje}') {$sWhereExcecao}");
                     }
-                    $repassa = array();
+                    $repassa = [];
                     if (isset($chave_dv09_descr)) {
-                        $repassa = array("chave_dv09_procdiver" => $chave_dv09_procdiver, "chave_dv09_descr" => $chave_dv09_descr);
+                        $repassa = ["chave_dv09_procdiver" => $chave_dv09_procdiver, "chave_dv09_descr" => $chave_dv09_descr];
                     }
                     db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
                 } else {

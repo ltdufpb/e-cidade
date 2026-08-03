@@ -61,9 +61,7 @@ try {
             $service = new ServidorProcessosJudiciaisFolhaService();
             $processosJudiciais = $service->buscarProcessosJudiciaisPorMatriculaCompetencia($parametros);
 
-            $retorno->processosJudiciais = array_map(function (ServidorProcessosJudiciaisFolha $processosJudiciais) {
-                return $processosJudiciais->toArray();
-            }, $processosJudiciais);
+            $retorno->processosJudiciais = array_map(fn(ServidorProcessosJudiciaisFolha $processosJudiciais) => $processosJudiciais->toArray(), $processosJudiciais);
             break;
     }
 

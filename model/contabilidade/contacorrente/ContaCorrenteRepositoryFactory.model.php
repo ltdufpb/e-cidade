@@ -55,35 +55,14 @@ class ContaCorrenteRepositoryFactory {
    */
   public static function getInstance($iConta, $dtInicial, $dtFinal) {
 
-    switch($iConta) {
-
-      case DomicilioBancario::CONTA_CORRENTE:
-
-        $oRetorno = new DomicilioBancarioRepository($dtInicial, $dtFinal);
-        break;
-
-      case AdiantamentoConcessao::CONTA_CORRENTE:
-
-        $oRetorno = new AdiantamentoConcessaoRepository($dtInicial, $dtFinal);
-        break;
-
-      case CredorFornecedorDevedor::CONTA_CORRENTE:
-
-        $oRetorno = new CredorFornecedorDevedorRepository($dtInicial, $dtFinal);
-        break;
-
-      case DisponibilidadeFinanceira::CONTA_CORRENTE:
-
-        $oRetorno = new DisponibilidadeFinanceiraRepository($dtInicial, $dtFinal);
-        break;
-
-      case ContaCorrenteContrato::CONTA_CORRENTE:
-
-          $oRetorno = new ContaCorrenteContratoRepository($dtInicial, $dtFinal);
-          break;
-
-
-    }
+    $oRetorno = match ($iConta) {
+        DomicilioBancario::CONTA_CORRENTE => new DomicilioBancarioRepository($dtInicial, $dtFinal),
+        AdiantamentoConcessao::CONTA_CORRENTE => new AdiantamentoConcessaoRepository($dtInicial, $dtFinal),
+        CredorFornecedorDevedor::CONTA_CORRENTE => new CredorFornecedorDevedorRepository($dtInicial, $dtFinal),
+        DisponibilidadeFinanceira::CONTA_CORRENTE => new DisponibilidadeFinanceiraRepository($dtInicial, $dtFinal),
+        ContaCorrenteContrato::CONTA_CORRENTE => new ContaCorrenteContratoRepository($dtInicial, $dtFinal),
+        default => $oRetorno,
+    };
 
     return $oRetorno;
   }

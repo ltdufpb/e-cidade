@@ -43,7 +43,7 @@ include(modification("classes/db_db_ordemorigem_classe.php"));
 include(modification("classes/db_db_ordemcli_classe.php"));
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_ordem = new cl_db_ordem;
 $cldb_ordemandam = new cl_db_ordemandam;
 $cldb_ordemmod = new cl_db_ordemmod;
@@ -153,7 +153,7 @@ if(isset($alterar)){
       
       // loop para insercao dos arquivos anexados na tabela db_ordemimagens
       $numarq = sizeof($arquivos);
-      $matriz=split("-",$descrimg);
+      $matriz=preg_split("#\\-#m",(string) $descrimg);
       for ($i=0;$i<$numarq;$i++) {
         $nomearquivo = $arquivos[$i].".dbordem";
         $oid = pg_lo_import($nomearquivo) or die($nomearquivo." Erro(39). Gravando imagem na tabela.");
@@ -195,7 +195,7 @@ if(isset($alterar)){
       $identificaCamposEmail =  $cldb_usuarios->sql_record($sql);
       db_fieldsmemory($identificaCamposEmail,0);
       $destinatario = $nomedestinatario." <".$emaildestinatario.">";
-      
+
 	  $sufixo = "você";
     }else{
       $identificaCamposEmail =   $cldb_usuarios->sql_record("Select u.email as emailremetente, u.nome as nomeremetente, u.id_usuario, du.coddepto, 
@@ -225,7 +225,7 @@ if(isset($alterar)){
 
     $mensagem = "
 	    Uma ordem de servico foi alterado para ".$sufixo.".\n
-		      
+
 		      O usuario ".$nomeremetente."  alterou a  ordem de servico para ".$sufixo.", com a seguinte descricao:\n
 		      ".str_replace("\n","<br> ",$descricao)."\n
 		    O prazo limite para o servico e dia ".$prevmail.".\n
@@ -390,17 +390,17 @@ if(isset($alterar)){
   $des=str_replace("\n","\\n",$descricao);
     $mensagemResponsavelDepartamento = "
 	    Uma nova ordem de servico foi alterada para seu departamento.\n
-		
+
 	 O usuário ".$nomeremetente." alterou a  ordem de servico de código: ".$codordem." para seu departamento (".$descrdepto."), com a seguinte descrição:\n
 		      ".$des."\n
 		      O prazo limite para o servico é dia ".$prevmail.".\n
-		      
+
 		      ".$fraseAnexo.".\n
-		
+
 		  Mail enviado automaticamente  pelo Sistema de Ordens de Servico\n
 		  DBSeller Informatica 
       ";
-				       
+
     $headers = "Content-Type:text/html;";
 
     mail($destinatario,$assunto,$mensagem,$headers);  // envia o mail para o destinatario da ordem

@@ -34,8 +34,8 @@ $clrotulo = new rotulocampo;
 $clcgmcorreto = new cl_cgmcorreto;
 $clrotulo->label("z10_numcgm");
 $clrotulo->label("z01_nome");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_cgmerrado.location.href='pro1_cgmerrado002.php?chavepesquisa=$z11_codigo&chavepesquisa1=$z11_numcgm'</script>";
 }
@@ -93,7 +93,7 @@ db_input('z11_nome',40,$Iz11_nome,true,'text',3,'')
    //$sql="$clcgmerrado->sql_query("","","cgmerrado.z11_numcgm,cgm.z01_nome,cgmerrado.z11_codigo",""," cgmerrado.z11_codigo = ".@$z11_codigo."")";
    //die($sql);
 //die($clcgmerrado->sql_query("","","cgmerrado.z11_numcgm,cgm.z01_nome,cgmerrado.z11_codigo",""," cgmerrado.z11_codigo = ".@$z11_codigo.""));
-    $chavepri= array("z11_codigo"=>@$z11_codigo,"z11_numcgm"=>@$z11_numcgm);
+    $chavepri= ["z11_codigo"=>@$z11_codigo,"z11_numcgm"=>@$z11_numcgm];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="z11_codigo,z11_numcgm,z11_nome";
     $cliframe_alterar_excluir->sql=$sql;

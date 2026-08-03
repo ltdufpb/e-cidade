@@ -48,11 +48,6 @@ class AnexoI
     protected $aLinhas;
 
     /**
-     * @var integer
-     */
-    protected $iAno;
-
-    /**
      * @var \sInstituicao
      */
     protected $sInstituicao;
@@ -136,15 +131,14 @@ class AnexoI
      * @param \Periodo $oPeriodo
      * @param \Instituicao $oInstituicao
      */
-    public function __construct($iAno, \Periodo $oPeriodo, $sInstituicao)
+    public function __construct(protected $iAno, \Periodo $oPeriodo, $sInstituicao)
     {
 
-        $this->iAno = $iAno;
         $this->oPeriodo = $oPeriodo;
         $this->sInstituicao = $sInstituicao;
 
         $iAux = static::COLUNA3PEQUENA + 2;
-        $this->aLinhaDespesa = array(
+        $this->aLinhaDespesa = [
             static::COLUNA3DEFAULT,
             static::COLUNA3PEQUENA,
             static::COLUNA3PEQUENA,
@@ -156,9 +150,9 @@ class AnexoI
             static::COLUNA3PEQUENA,
             $iAux,
             static::COLUNA3PEQUENA
-        );
+        ];
 
-        $this->aLinhaReceita = array(
+        $this->aLinhaReceita = [
             static::COLUNA1DEFAULT,
             static::COLUNA2DEFAULT,
             static::COLUNA2DEFAULT,
@@ -167,7 +161,7 @@ class AnexoI
             static::COLUNA2DEFAULT,
             static::COLUNA2PEQUENA,
             static::COLUNA1PEQUENA
-        );
+        ];
     }
 
     /**

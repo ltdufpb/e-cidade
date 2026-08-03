@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oGridAltExc         = new cl_iframe_alterar_excluir;
 $oDaoKitMaterialItem = db_utils::getdao("sam_kit_material_item");
 

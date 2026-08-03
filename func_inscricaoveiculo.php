@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"],  $queryString);    
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"],  $queryString);    
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -92,7 +92,7 @@ if (!empty($_GET['calculo']) && $_GET['calculo'] == '1') {
     </div>
     <?php
         $campos = "q172_sequencial, q172_datacadastro, q172_issbase, z01_numcgm, z01_nome, q123_sequencial as db_issalvara";
-        $where = array();
+        $where = [];
         
         if ($calculo) {
             $where[] = "q02_dtbaix is null";

@@ -4,14 +4,6 @@ namespace ECidade\Patrimonial\Compras\AutorizacaoEmpenho\Model;
 
 class AndamentoPreAutorizacao
 {
-    protected $id;
-    
-    protected $empautoriza_id;
-    
-    protected $status_id;
-    
-    protected $id_usuario;
-
     protected $status;
 
     protected $usuario;
@@ -19,17 +11,13 @@ class AndamentoPreAutorizacao
     protected $data;
 
     public function __construct(
-        $id = null,
-        $empautoriza_id = null,
-        $status_id = null,
+        protected $id = null,
+        protected $empautoriza_id = null,
+        protected $status_id = null,
         $observacao = null,
-        $id_usuario = null
+        protected $id_usuario = null
     ) {
-        $this->id = $id;
-        $this->empautoriza_id  = $empautoriza_id;
-        $this->status_id  = $status_id;
         $this->observacao  = $observacao;
-        $this->id_usuario  = $id_usuario;
     }
     
     /**

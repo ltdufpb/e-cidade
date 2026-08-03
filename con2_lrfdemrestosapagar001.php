@@ -64,12 +64,12 @@ $oPost = db_utils::postMemory($_POST);
     <?php 
 
     
-    $clcriaabas->identifica = array("relatorio"=>"Relatorio", "notas"=>"Notas Explicativas");
-    $clcriaabas->title      = array("relatorio"=>"Relatorio", "notas"=> "Notas Explicativas");
-    $clcriaabas->src  		= array("relatorio" => "con2_lrfdemrestosapagar011.php",
-                             	    "notas"     => "con2_conrelnotas.php?c83_codrel=58");
+    $clcriaabas->identifica = ["relatorio"=>"Relatorio", "notas"=>"Notas Explicativas"];
+    $clcriaabas->title      = ["relatorio"=>"Relatorio", "notas"=> "Notas Explicativas"];
+    $clcriaabas->src  		= ["relatorio" => "con2_lrfdemrestosapagar011.php",
+                             	    "notas"     => "con2_conrelnotas.php?c83_codrel=58"];
     
-    $clcriaabas->sizecampo= array("relatorio"=>"23","notas" =>"23");
+    $clcriaabas->sizecampo= ["relatorio"=>"23","notas" =>"23"];
 
 
     $clcriaabas->cria_abas();    

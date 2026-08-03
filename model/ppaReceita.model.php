@@ -28,8 +28,6 @@
 
 class ppaReceita {
 
-  private $iCodigoVersao = 0;
-
   private $oDadosLei = "";
 
   private $sInstituicoes = null;
@@ -38,9 +36,8 @@ class ppaReceita {
   /**
    *
    */
-  public function __construct($iCodigoVersao) {
+  public function __construct(private $iCodigoVersao) {
 
-    $this->iCodigoVersao = $iCodigoVersao;
     $oDaoPPaLei       = db_utils::getDao("ppaversao");
     $rsPPalei         = $oDaoPPaLei->sql_record($oDaoPPaLei->sql_query($this->iCodigoVersao));
     $this->oDadosLei  = db_utils::fieldsMemory($rsPPalei, 0);
@@ -74,7 +71,7 @@ class ppaReceita {
     /**
      * Pesquisamos a mascara que está sendo usado na CP.
      */
-    $aParametros = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+    $aParametros = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
     if (count($aParametros) == 0) {
       throw new Exception("Parametros do orçamento não encontrados para o ano ".db_getsession("DB_anousu"));
     }
@@ -226,7 +223,7 @@ class ppaReceita {
    */
   function processarEstimativasGlobais($iAnoInicial, $iAnoFinal, $lForcaCalculoAnterior = false) {
 
-    $aParametros = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+    $aParametros = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
     if (count($aParametros) == 0) {
       throw new Exception("Parametros do orçamento não encontrados para o ano ".db_getsession("DB_anousu"));
     }
@@ -260,7 +257,7 @@ class ppaReceita {
     $oDaoPppaEstimativa        = db_utils::getDao("ppaestimativa");
     $oDaoPppaEstimativaReceita = db_utils::getDao("ppaestimativareceita");
     $aValoresBases             = db_utils::getCollectionByRecord($rsBuscaEstimativaGlobal);
-    $aValoresContaAnoAnterior  = array();
+    $aValoresContaAnoAnterior  = [];
     foreach ($aValoresBases as $oValorBase) {
 
       $nValorAnterior = 0;
@@ -476,7 +473,7 @@ class ppaReceita {
    */
   public function getQuadroEstimativas($sEstrutural = null, $aRecursos = null) {
 
-    $aParametros = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+    $aParametros = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
     if (count($aParametros) == 0) {
       throw new Exception("Parametros do orçamento não encontrados para o ano ".db_getsession("DB_anousu"));
     }
@@ -515,7 +512,7 @@ class ppaReceita {
       throw new Exception($sMsg);
     }
     $iCaracteristicaPadrao = $oDadosEstrutura->db77_estrut;
-    $aQuadroEstimativa     = array();
+    $aQuadroEstimativa     = [];
 
     /*
      * Receitas
@@ -571,7 +568,7 @@ class ppaReceita {
 
     $aFontes         = db_utils::getCollectionByRecord($rsFontes);
     $oDaoPPAReceita  = db_utils::getDao("ppaestimativareceita");
-    $aEstruturaisPai = array();
+    $aEstruturaisPai = [];
     $iIndex          = 0;
     /*
      * Percorremos os dados da receita e fizemos os calculos da projecao
@@ -580,18 +577,18 @@ class ppaReceita {
 
         $oLinhaQuadro                    = new stdClass();
         $oLinhaQuadro->iCodigo           = $oFonteDados->o57_codfon;
-        $oLinhaQuadro->sDescricao        = urlencode($oFonteDados->o57_descr);
+        $oLinhaQuadro->sDescricao        = urlencode((string) $oFonteDados->o57_descr);
         $oLinhaQuadro->iRecurso          = $oFonteDados->siconfi;
         $oLinhaQuadro->iGestao           = $oFonteDados->gestao;
         $oLinhaQuadro->iEstrutural       = $oFonteDados->c60_estrut;
         $oLinhaQuadro->lDeducao          = $oFonteDados->deducao;
-        $oLinhaQuadro->sDescricaoRecurso = urlencode($oFonteDados->siconfi_descricao);
+        $oLinhaQuadro->sDescricaoRecurso = urlencode((string) $oFonteDados->siconfi_descricao);
         $oLinhaQuadro->iReduz            = $oFonteDados->c61_reduz;
         $oLinhaQuadro->iConcarPeculiar   = "{$oFonteDados->o70_concarpeculiar}";
         if ($oFonteDados->o70_concarpeculiar == 0) {
           $oLinhaQuadro->iConcarPeculiar = $iCaracteristicaPadrao;
         }
-        $oLinhaQuadro->aDesdobramentos   = array();
+        $oLinhaQuadro->aDesdobramentos   = [];
         $oLinhaQuadro->lDesdobra = $oFonteDados->o60_codfon != ""?true:false;
         if ($oFonteDados->o70_concarpeculiar != 0) {
           $oLinhaQuadro->lDesdobra = false;
@@ -612,7 +609,7 @@ class ppaReceita {
         /*
          * Montamos a base de calculo
         */
-        $oLinhaQuadro->aBaseCalculo  = array();
+        $oLinhaQuadro->aBaseCalculo  = [];
         for ($iAno = $iAnoBaseInicio; $iAno < $oPpaLei->o01_anoinicio; $iAno++) {
 
           $oLinhaQuadro->aBaseCalculo["{$iAno}"] = 0;
@@ -639,7 +636,7 @@ class ppaReceita {
         } else {
           $oLinhaQuadro->nMediaBase = 0;
         }
-        $oLinhaQuadro->aEstimativas  = array();
+        $oLinhaQuadro->aEstimativas  = [];
         /*
          * Valores das estimativas (intervalo de anos da lei do ppa)
          */
@@ -692,7 +689,7 @@ class ppaReceita {
 
   function saveEstimativas($iCodCon, $iAno, $nValor, $iTipo, $iConcarpeculiar=0) {
 
-    $aParametros = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+    $aParametros = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
     if (count($aParametros) == 0) {
       throw new Exception("Parametros do orçamento não encontrados para o ano ".db_getsession("DB_anousu"));
     }
@@ -746,7 +743,7 @@ class ppaReceita {
   */
   function processarEstimativas($iCodCon, $iAno, $iConcarpeculiar = 0) {
 
-    $aParametros = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+    $aParametros = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
     if (count($aParametros) == 0) {
       throw new Exception("Parametros do orçamento não encontrados para o ano ".db_getsession("DB_anousu"));
     }
@@ -944,7 +941,7 @@ class ppaReceita {
     $sSqlDesdobramentos .= "  where o57_anousu = {$iAno} ";
     $sSqlDesdobramentos .= "    and o57_fonte like '{$iEstrutural}%'";
     $rsDesdobramentos    = db_query($sSqlDesdobramentos);
-    $aDesdobramentos     = array();
+    $aDesdobramentos     = [];
     if ($rsDesdobramentos && pg_num_rows($rsDesdobramentos) > 0) {
       $aDesdobramentos = db_utils::getCollectionByRecord($rsDesdobramentos);
     }
@@ -959,7 +956,7 @@ class ppaReceita {
   function adicionarEstimativa($oEstimativa) {
 
 
-    $aParametros = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+    $aParametros = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
     if (count($aParametros) == 0) {
       throw new Exception("Parametros do orçamento não encontrados para o ano ".db_getsession("DB_anousu"));
     }
@@ -1118,10 +1115,10 @@ class ppaReceita {
     }
 
     $oDadosLeiBase  = db_utils::fieldsMemory($rsVersao, 0);
-    $aAnosVersao    = array();
-    $aAnosImportar  = array();
-    $aAnosBase      = array();
-    $aAnosProcessar = array();
+    $aAnosVersao    = [];
+    $aAnosImportar  = [];
+    $aAnosBase      = [];
+    $aAnosProcessar = [];
     /**
      * Criamos um array com os anos da lei que usamos como base
      */

@@ -37,8 +37,8 @@ include(modification("classes/db_fiscalultandam_classe.php"));
 include(modification("classes/db_fandam_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clfiscaltipo     = new cl_fiscaltipo;
 $clfiscalrec      = new cl_fiscalrec;
 $clfandam         = new cl_fandam;
@@ -191,7 +191,7 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir") {
 js_setatabulacao();
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clfiscaltipo->erro_status=="0"){
     $clfiscaltipo->erro(true,false);
     $db_botao=true;

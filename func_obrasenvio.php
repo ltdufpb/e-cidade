@@ -33,9 +33,9 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 require_once(modification("classes/db_obrasenvio_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoObrasEnvio = new cl_obrasenvio;
 $oDaoObrasEnvio->rotulo->label("ob16_codobrasenvio");

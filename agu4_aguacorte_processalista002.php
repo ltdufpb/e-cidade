@@ -27,8 +27,8 @@
 
 require(modification("fpdf151/pdf.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 /***
  *
@@ -55,7 +55,7 @@ if(!empty($x40_codcorte)) {
 
   $sQueryAguaCorte = "select x40_tipomatricula from aguacorte where x40_codcorte = $x40_codcorte";
   $result = db_query($sQueryAguaCorte) or die($sQueryAguaCorte);
-  $x40_tipomatricula = pg_result($result,0);
+  $x40_tipomatricula = pg_fetch_result($result,0);
 
   if ($x40_tipomatricula == 1){
     $head7 .= "  Matrícula: TODAS   ";
@@ -167,7 +167,7 @@ $sql .= "	order by " . ($quebrarentrega == "s"?"x01_entrega, ":"") . "j14_nome, 
 //die( $sql );
 
 $result = db_query($sql) or die($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 if ($numrows == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Nao existem itens cadastrados para fazer a consulta.');
@@ -235,10 +235,10 @@ for($x=0; $x<$numrows; $x++) {
 
       $pdf->cell(275,$alt,$j88_sigla . " " . $x01_codrua . " - " . $j14_nome,"T",1,"L",0);
       $pdf->setfont('arial','',9);
-      $pdf->cell($Mx01_numero*$fator,$alt,substr($RLx01_numero,0,3),1,0,"C",1);
+      $pdf->cell($Mx01_numero*$fator,$alt,substr((string) $RLx01_numero,0,3),1,0,"C",1);
       $pdf->cell($Mx11_complemento*$fator,$alt,$RLx11_complemento,1,0,"C",1);
       $pdf->cell($Mx04_nrohidro*$fator,$alt,$RLx04_nrohidro,1,0,"C",1);
-      $pdf->cell($Mx42_codsituacao*$fator,$alt,substr($RLx42_codsituacao,0,3),1,0,"C",1);
+      $pdf->cell($Mx42_codsituacao*$fator,$alt,substr((string) $RLx42_codsituacao,0,3),1,0,"C",1);
       $pdf->cell($Mx01_matric*$fator,$alt,$RLx01_matric,1,0,"C",1); 
       $pdf->cell($largCod *$fator,$alt,"Cod",1,0,"C",1);
       $pdf->cell($largData*$fator,$alt,"Data",1,0,"C",1);
@@ -287,7 +287,7 @@ for($x=0; $x<$numrows; $x++) {
   }
   
   $fundo = 0;
-  $pdf->cell($Mx01_numero*$fator,      $alt, $x01_numero . trim(substr($x01_orientacao,0,1)),1,0,"C",$fundo);
+  $pdf->cell($Mx01_numero*$fator,      $alt, $x01_numero . trim(substr((string) $x01_orientacao,0,1)),1,0,"C",$fundo);
   $pdf->cell($Mx11_complemento*$fator, $alt, $x11_complemento,1,0,"C",$fundo);
   $pdf->cell($Mx04_nrohidro*$fator,    $alt, $x04_nrohidro,1,0,"L",$fundo);
   $pdf->cell($Mx42_codsituacao*$fator, $alt, $x42_codsituacao,1,0,"C",$fundo);
@@ -313,19 +313,19 @@ for($x=0; $x<$numrows; $x++) {
     }
   } else {
 
-    if ($ultlograd != pg_result($result,$x+1,"x01_codrua")) {
+    if ($ultlograd != pg_fetch_result($result,$x+1,"x01_codrua")) {
       $imptotallograd=true;
     }
 
     if ($quebrarentrega == "s") {
       if ($quebrarlograd == "s") {
 
-        if ($ultentrega != pg_result($result,$x+1,"x01_entrega") or $imptotallograd == true) {
+        if ($ultentrega != pg_fetch_result($result,$x+1,"x01_entrega") or $imptotallograd == true) {
           $imptotalentrega=true;
         } 
 
       } else {
-        if ($ultentrega != pg_result($result,$x+1,"x01_entrega")) {
+        if ($ultentrega != pg_fetch_result($result,$x+1,"x01_entrega")) {
           $imptotalentrega=true;
         }
       }

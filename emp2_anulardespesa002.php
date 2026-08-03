@@ -31,7 +31,7 @@ include(modification("libs/db_sql.php"));
 
 $classinatura = new cl_assinatura;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 // Parametros
 //e60_numemp         integer  NUmero do empenho 
@@ -45,7 +45,7 @@ db_fieldsmemory($resultpref,0);
 if(isset($e60_numemp) && $e60_numemp != ''){
    $dbwhere =" e60_numemp = $e60_numemp ";
 } else if (isset($e60_codemp) && $e60_codemp !=''){
-	      $arr = split("/",$e60_codemp);
+	      $arr = preg_split("#\\/#m",(string) $e60_codemp);
 	      if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
 		$dbwhere_ano = " and e60_anousu = ".$arr[1];
        	      }else{
@@ -68,7 +68,7 @@ $sqlemp = "
 $result = db_query($sqlemp);	
 // db_criatabela($result);exit;
 
-if (pg_numrows($result)==0){
+if (pg_num_rows($result)==0){
    db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado !  ");
    exit;
 }

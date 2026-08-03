@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguacoletorexporta_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claguacoletorexporta = new cl_aguacoletorexporta;
 $claguacoletorexporta->rotulo->label("x49_sequencial");
 
@@ -77,7 +77,7 @@ $mesusu = date('m');
 				<td colspan="2">
 				<?php 
 				
-				$vAno = array(""=>"", db_getsession("DB_anousu") => db_getsession("DB_anousu"), db_getsession("DB_anousu") + 1 => db_getsession("DB_anousu") + 1);
+				$vAno = [""=>"", db_getsession("DB_anousu") => db_getsession("DB_anousu"), db_getsession("DB_anousu") + 1 => db_getsession("DB_anousu") + 1];
 				
 				db_select("x21_exerc",$vAno,true,1,"style=\"width: 90px\"","chave_x21_exerc","","","");
 				?>
@@ -88,7 +88,7 @@ $mesusu = date('m');
 				</td>
 				<td colspan="2">
 				<?php 
-				$result=array(""=>"", "1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+				$result=[""=>"", "1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
 				db_select("x21_mes",$result,true,1,"style=\"width: 90px\"","chave_x21_mes");
 					
 				?>

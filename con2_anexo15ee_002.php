@@ -32,14 +32,14 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_libcontabilidade.php"));
 include(modification("libs/db_liborcamento.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
       $descr_inst .= $xvirg.$nomeinst ;
         $xvirg = ', ';
@@ -114,33 +114,33 @@ $totalmutp  = 0;
 $totalvara  = 0;
 $totalvarp  = 0;
 
-$rec_descr  = array();
-$rec_vlr    = array();
+$rec_descr  = [];
+$rec_vlr    = [];
 
-$fun_descr  = array();
-$fun_vlr    = array();
+$fun_descr  = [];
+$fun_vlr    = [];
 
-$inta_descr = array();
-$inta_vlr   = array();
-$intp_descr = array();
-$intp_vlr   = array();
+$inta_descr = [];
+$inta_vlr   = [];
+$intp_descr = [];
+$intp_vlr   = [];
 
-$muta_descr = array();
-$muta_vlr   = array();
-$mutp_descr = array();
-$mutp_vlr   = array();
+$muta_descr = [];
+$muta_vlr   = [];
+$mutp_descr = [];
+$mutp_vlr   = [];
 
-$vara_descr = array();
-$vara_vlr   = array();
-$varp_descr = array();
-$varp_vlr   = array();
+$vara_descr = [];
+$vara_vlr   = [];
+$varp_descr = [];
+$varp_vlr   = [];
 
 $pdf->addpage();
 $pdf->setfont('arial','b',8);
 $pdf->cell(95,$alt,"R E C E I T A S",0,0,"C",0);
 $pdf->cell(95,$alt,"D E S P E S A S",0,1,"C",0);
 $pdf->ln(3);
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
    db_fieldsmemory($result,$i);
    if($o57_descr == '')
      continue;
@@ -153,7 +153,7 @@ for($i=0;$i<pg_numrows($result);$i++){
    $rec_vlr[$a]   = $saldo_arrecadado_acumulado;
    $a += 1;
 }
-for($ii=0;$ii<pg_numrows($result1);$ii++){
+for($ii=0;$ii<pg_num_rows($result1);$ii++){
    db_fieldsmemory($result1,$ii);
    if($o57_descr == '')
      continue;
@@ -167,9 +167,9 @@ for($ii=0;$ii<pg_numrows($result1);$ii++){
    $b += 1;
 }
 $pdf->ln(2);
-for($i=0;$i<pg_numrows($result2);$i++){
+for($i=0;$i<pg_num_rows($result2);$i++){
    db_fieldsmemory($result2,$i);
-   if (substr($estrutural,0,3) != "312" && substr($estrutural,0,3) != "412")
+   if (!str_starts_with((string) $estrutural, "312") && !str_starts_with((string) $estrutural, "412"))
       continue;
    $nivel = db_le_mae_sistema($estrutural,true);
    if($nivel > 4)
@@ -178,7 +178,7 @@ for($i=0;$i<pg_numrows($result2);$i++){
      $espaco = '    ';
    else
      $espaco = '';
-   if( substr($estrutural,0,1) == 4 ){
+   if( substr((string) $estrutural,0,1) == 4 ){
       $inta_descr[$c] = $espaco.$c60_descr;
       $inta_vlr[$c]   = $saldo_final;
       $c += 1;
@@ -256,9 +256,9 @@ $pdf->cell(95,$alt,"II - M U T A Ç Õ E S    P A T R I M O N I A I S",0,0,"L",0);
 $pdf->cell(95,$alt,"II - M U T A Ç Õ E S    P A T R I M O N I A I S",0,1,"L",0);
 $pdf->ln(3);
 
-for($i=0;$i<pg_numrows($result2);$i++){
+for($i=0;$i<pg_num_rows($result2);$i++){
    db_fieldsmemory($result2,$i);
-   if (substr($estrutural,0,3) != "313" && substr($estrutural,0,3) != "413")
+   if (!str_starts_with((string) $estrutural, "313") && !str_starts_with((string) $estrutural, "413"))
       continue;
    $nivel = db_le_mae_sistema($estrutural,true);
    
@@ -272,7 +272,7 @@ for($i=0;$i<pg_numrows($result2);$i++){
  else
    $espaco = '      ';
 
-   if( substr($estrutural,0,1) == 4 ){
+   if( substr((string) $estrutural,0,1) == 4 ){
       $muta_descr[$e] = $espaco.'   '.$c60_descr;
       $muta_vlr[$e]   = $saldo_final;
       $e += 1;
@@ -314,9 +314,9 @@ $pdf->cell(95,$alt,"III - I N D E P E N D E N T E   D A   E X E C.   O R Ç A M."
 $pdf->cell(95,$alt,"III - I N D E P E N D E N T E   D A   E X E C.   O R Ç A M.",0,1,"L",0);
 $pdf->ln(3);
 
-for($i=0;$i<pg_numrows($result2);$i++){
+for($i=0;$i<pg_num_rows($result2);$i++){
    db_fieldsmemory($result2,$i);
-   if (substr($estrutural,0,3) != "321" && substr($estrutural,0,3) != "421")
+   if (!str_starts_with((string) $estrutural, "321") && !str_starts_with((string) $estrutural, "421"))
       continue;
    $nivel = db_le_mae_sistema($estrutural,true);
    
@@ -330,7 +330,7 @@ for($i=0;$i<pg_numrows($result2);$i++){
  else
    $espaco = '      ';
 
-   if( substr($estrutural,0,1) == 4 ){
+   if( substr((string) $estrutural,0,1) == 4 ){
       $vara_descr[$g] = $espaco.'   '.$c60_descr;
       $vara_vlr[$g]   = $saldo_final;
       $g += 1;
@@ -400,7 +400,7 @@ $pdf->cell(25,$alt,db_formatar($totaldespesas + $superavit,'f'),0,1,"R",0);
 
 $pdf->Ln(15);
 
-assinaturas(&$pdf,&$classinatura,'BG');
+assinaturas($pdf,$classinatura,'BG');
 
 
 

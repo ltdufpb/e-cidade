@@ -48,7 +48,7 @@ abstract class ServidorRepository
    * @var Array
    * @access private
    */
-    private static $aInstanciasServidores = array();
+    private static $aInstanciasServidores = [];
 
   /**
    * Adiciona uma rubrica ao array de servidores
@@ -124,7 +124,7 @@ abstract class ServidorRepository
 
         $aArgumentos           = func_get_args();
         $iQuantidadeArgumentos = func_num_args();
-        $aServidores           = array();
+        $aServidores           = [];
         $sTipoBusca            = null;
 
       /**
@@ -147,9 +147,9 @@ abstract class ServidorRepository
         } elseif ($iQuantidadeArgumentos >= 3) {
             $sTipoBusca  = "INTERVALO";
             $iChaveBusca = $mLotacoes;
-            list($iPrimeiroArgumento, $iSegundoArgumento) = explode(",", $mLotacoes, 2);
+            [$iPrimeiroArgumento, $iSegundoArgumento] = explode(",", $mLotacoes, 2);
 
-            if (strpos($iSegundoArgumento, ",") !== false) {
+            if (str_contains($iSegundoArgumento, ",")) {
                 throw new BusinessException("Erro ao informar range de lotações.");
             }
         }
@@ -216,7 +216,7 @@ abstract class ServidorRepository
 
         $aArgumentos           = func_get_args();
         $iQuantidadeArgumentos = func_num_args();
-        $aServidores           = array();
+        $aServidores           = [];
         $sTipoBusca            = null;
 
       /**
@@ -303,7 +303,7 @@ abstract class ServidorRepository
         $oDaoRHRegime     = new cl_rhregime;
         $sSqlServidores   = $oDaoRHRegime->sql_query_servidores($iAnoFolha, $iMesFolha, $iCodigoRegime, "rh02_regist", $iInstituicao);
         $rsServidores     = db_query($sSqlServidores);
-        $aServidores      = array();
+        $aServidores      = [];
 
         if (!$rsServidores) {
             throw new DBException("Erro ao Buscar sevidores pelo Regime");
@@ -342,7 +342,7 @@ abstract class ServidorRepository
         $oDaoRHPesLocalTrab = db_utils::getDao("rhpeslocaltrab");
         $sSqlServidores     = $oDaoRHPesLocalTrab->sql_query_servidores($iAnoFolha, $iMesFolha, $iCodigoLocalTrabalho, "rh02_regist", $iInstituicao);
         $rsServidores       = db_query($sSqlServidores);
-        $aServidores      = array();
+        $aServidores      = [];
 
         if (!$rsServidores) {
             throw new DBException("Erro ao Buscar sevidores pelo Local de Trabalho");
@@ -380,7 +380,7 @@ abstract class ServidorRepository
         $oDaoRHLotaVinc = db_utils::getDao("rhlotavinc");
         $sSqlServidores = $oDaoRHLotaVinc->sql_query_servidores($iAnoFolha, $iMesFolha, $iCodigoRecurso, "rh02_regist", $iInstituicao);
         $rsServidores   = db_query($sSqlServidores);
-        $aServidores    = array();
+        $aServidores    = [];
 
         if (!$rsServidores) {
             throw new DBException("Erro ao Buscar sevidores pelo Recurso");
@@ -418,7 +418,7 @@ abstract class ServidorRepository
         $sSqlServidores = $oDaoSelecao->sql_query_servidores($iAnoFolha, $iMesFolha, $iCodigoSelecao, "rh02_regist", $iInstituicao);
 
         $rsServidores   = db_query($sSqlServidores);
-        $aServidores    = array();
+        $aServidores    = [];
 
         if (!$rsServidores) {
             throw new DBException("Erro ao Buscar sevidores pela Selecão");
@@ -462,7 +462,7 @@ abstract class ServidorRepository
         $sSqlServidores = $oDaoSelecao->sql_query_servidores($iAnoFolha, $iMesFolha, $iCodigoSelecao, "rh02_regist, rh01_admiss", $iInstituicao);
 
         $rsServidores   = db_query($sSqlServidores);
-        $aServidores    = array();
+        $aServidores    = [];
 
         if (!$rsServidores) {
             throw new DBException("Erro ao Buscar sevidores pela Selecão");
@@ -514,7 +514,7 @@ abstract class ServidorRepository
         );
 
         $rsServidores   = db_query($sSqlServidores);
-        $aServidores    = array();
+        $aServidores    = [];
 
         if (!$rsServidores) {
             throw new DBException("Erro ao Buscar sevidores pela Selecão");
@@ -540,7 +540,7 @@ abstract class ServidorRepository
 
     public static function getServidoresByMatriculas($iAnoFolha, $iMesFolha, $aMatriculas, $iInstituicao = null)
     {
-        $aServidores    = array();
+        $aServidores    = [];
         foreach ($aMatriculas as $iMatriculaServidor) {
             $aServidores[$iMatriculaServidor] = ServidorRepository::getInstanciaByCodigo($iMatriculaServidor, $iAnoFolha, $iMesFolha, $iInstituicao);
         }
@@ -580,7 +580,7 @@ abstract class ServidorRepository
 
         $rsServidoresPorVinculo = $oDaoRhRegime->sql_record($sSqlServidoresPorVinculo);
 
-        $aServidores            = array();
+        $aServidores            = [];
 
         for ($iIndice =0; $iIndice < $oDaoRhRegime->numrows; $iIndice++) {
             $oServidorPorVinculo = db_utils::fieldsMemory($rsServidoresPorVinculo, $iIndice);
@@ -606,7 +606,7 @@ abstract class ServidorRepository
     public static function getServidoresNoIntervalo(DBDate $oDataInicial, DBDate $oDataFinal, $iMatricula)
     {
 
-        $aServidores   = array();
+        $aServidores   = [];
         $aCompetencias = array_reverse(DBPessoal::getCompetenciasIntervalo($oDataInicial, $oDataFinal));
 
         foreach ($aCompetencias as $oCompetencia) {
@@ -616,7 +616,7 @@ abstract class ServidorRepository
                     $oCompetencia->getAno(),
                     $oCompetencia->getMes()
                 );
-            } catch (BusinessException $eErro) {
+            } catch (BusinessException) {
               //caso não exitsta servidor na competencia.
                 continue;
             }
@@ -648,7 +648,7 @@ abstract class ServidorRepository
                 $sSigla = PontoSalario::SIGLA_TABELA;
                 break;
             default:
-                return array();
+                return [];
         }
 
         $iInstituicao = db_getsession('DB_instit');
@@ -668,7 +668,7 @@ abstract class ServidorRepository
             throw new DBException($oDaoPonto->erro_msg);
         }
 
-        $aServidores = array();
+        $aServidores = [];
 
         for ($iNumeroServidor = 0; $iNumeroServidor < pg_num_rows($rsServidores); $iNumeroServidor++) {
             $oDadosServidor                          = db_utils::fieldsMemory($rsServidores, $iNumeroServidor);
@@ -706,7 +706,7 @@ abstract class ServidorRepository
                 $sSigla = CalculoFolhaSalario::SIGLA_TABELA;
                 break;
             default:
-                return array();
+                return [];
         }
 
         $sWhere  = "{$sSigla}_anousu = {$iAno} and ";
@@ -731,7 +731,7 @@ abstract class ServidorRepository
             throw new DBException("erro");
         }
 
-        $aServidores = array();
+        $aServidores = [];
 
         for ($iNumeroServidor = 0; $iNumeroServidor < pg_num_rows($rsServidores); $iNumeroServidor++) {
             $oServidor     = db_utils::fieldsMemory($rsServidores, $iNumeroServidor);
@@ -746,13 +746,13 @@ abstract class ServidorRepository
         $oDaoRHPessoalMov = new cl_rhpessoalmov();
         $sSqlRhPessoalMov = $oDaoRHPessoalMov->sql_duplo_vinculo($oFolha->getCompetencia()->getAno(), $oFolha->getCompetencia()->getMes());
         $rsRhPessoalMov   = db_query($sSqlRhPessoalMov);
-        $aServidores      = array();
+        $aServidores      = [];
 
 
         if (pg_num_rows($rsRhPessoalMov) > 0) {
             for ($iTotalDuploVinculo = 0; $iTotalDuploVinculo < pg_num_rows($rsRhPessoalMov); $iTotalDuploVinculo++) {
                 $oServidor = db_utils::fieldsMemory($rsRhPessoalMov, $iTotalDuploVinculo);
-                $aServidores = array_merge($aServidores, explode(',', $oServidor->rh01_regist));
+                $aServidores = array_merge($aServidores, explode(',', (string) $oServidor->rh01_regist));
             }
         }
 
@@ -786,7 +786,7 @@ abstract class ServidorRepository
                 $iSequencialFolha = $oFolhaPagamento->getSequencial();
                 break;
             default:
-                return array();
+                return [];
         }
 
         $sWhere         = "rh143_folhapagamento = {$iSequencialFolha} ";
@@ -803,7 +803,7 @@ abstract class ServidorRepository
             throw new DBException("Erro ao consultar os servidores do histórico cálculo.");
         }
 
-        $aServidores = array();
+        $aServidores = [];
 
         for ($iNumeroServidor = 0; $iNumeroServidor < pg_num_rows($rsServidores); $iNumeroServidor++) {
             $oServidor     = db_utils::fieldsMemory($rsServidores, $iNumeroServidor);
@@ -840,7 +840,7 @@ abstract class ServidorRepository
                 $iSequencialFolha = $oFolhaPagamento->getSequencial();
                 break;
             default:
-                return array();
+                return [];
         }
 
         $sWhere         = "rh144_folhapagamento = {$iSequencialFolha} ";
@@ -851,7 +851,7 @@ abstract class ServidorRepository
             throw new DBException("Erro ao consultar os servidores do histórico ponto.");
         }
 
-        $aServidores = array();
+        $aServidores = [];
 
         for ($iNumeroServidor = 0; $iNumeroServidor < pg_num_rows($rsServidores); $iNumeroServidor++) {
             $oServidor     = db_utils::fieldsMemory($rsServidores, $iNumeroServidor);
@@ -901,7 +901,7 @@ abstract class ServidorRepository
       //Usando o array post para pegar os nomes dos atributos da classe cl_rhpessoalmov
         $propriedadesRhPessoalMov = $_POST;
         foreach ($propriedadesRhPessoalMov as $key => $value) {
-            if (strpos($key, 'rh02') === false) {
+            if (!str_contains((string) $key, 'rh02')) {
                 unset($propriedadesRhPessoalMov[$key]);
             }
         }
@@ -972,13 +972,13 @@ abstract class ServidorRepository
 
         try {
             $oServidor = new Servidor($iMatricula, $iAnoFolha, $iMesFolha, $iInstituicao);
-        } catch (Exception $eException) {
+        } catch (Exception) {
             $lMatriculaValida = false;
         }
         return $lMatriculaValida;
     }
 
-    public static function getServidoresByTabelaPrevidencia($iTabelaPrevidencia, DBCompetencia $oCompetencia = null)
+    public static function getServidoresByTabelaPrevidencia($iTabelaPrevidencia, ?DBCompetencia $oCompetencia = null)
     {
 
         if (is_null($oCompetencia)) {
@@ -994,7 +994,7 @@ abstract class ServidorRepository
             "rh02_tbprev = {$iTabelaPrevidencia} and rh02_anousu = {$oCompetencia->getAno()} and rh02_mesusu = {$oCompetencia->getMes()}"
         );
         $rsMatriculas           = db_query($sSqlMatriculas);
-        $aServidoresEncontrados = array();
+        $aServidoresEncontrados = [];
 
         if (!$rsMatriculas) {
             throw new DBException("Não foi possível retornar os dados dos servidores para a Tabela de Previdencia informada.");
@@ -1008,7 +1008,7 @@ abstract class ServidorRepository
         return $aServidoresEncontrados;
     }
 
-    public static function getServidoresByCgm(CgmFisico $oCgm, DBCompetencia $oCompetencia = null)
+    public static function getServidoresByCgm(CgmFisico $oCgm, ?DBCompetencia $oCompetencia = null)
     {
 
         if (is_null($oCompetencia)) {
@@ -1027,7 +1027,7 @@ abstract class ServidorRepository
       and rh02_instit = ".db_getsession("DB_instit")
         );
         $rsMatriculas           = db_query($sSqlMatriculas);
-        $aServidoresEncontrados = array();
+        $aServidoresEncontrados = [];
 
         if (!$rsMatriculas) {
             throw new DBException("Não foi possível retornar os dados dos Servidores.");
@@ -1042,7 +1042,7 @@ abstract class ServidorRepository
     }
 
 
-    public static function getServidoresPorTipoAssentamento($iTipoAssentamento, DBDate $oDataMinima = null)
+    public static function getServidoresPorTipoAssentamento($iTipoAssentamento, ?DBDate $oDataMinima = null)
     {
 
         $sData = "";
@@ -1067,7 +1067,7 @@ abstract class ServidorRepository
       /**
        * @var Servidor[]
        */
-        $aServidores = array();
+        $aServidores = [];
 
         foreach (db_utils::getCollectionByRecord($rsMatriculas) as $oDadosServidor) {
             $aServidores[] = ServidorRepository::getInstanciaByCodigo(
@@ -1156,9 +1156,7 @@ abstract class ServidorRepository
             throw new DBException('Erro ao buscar os servidores do ponto eletrônico.');
         }
 
-        return db_utils::makeCollectionFromRecord($rsRhPessoal, function ($oRetorno) {
-            return ServidorRepository::getInstanciaByCodigo($oRetorno->rh01_regist);
-        });
+        return db_utils::makeCollectionFromRecord($rsRhPessoal, fn($oRetorno) => ServidorRepository::getInstanciaByCodigo($oRetorno->rh01_regist));
     }
 
   /**
@@ -1191,9 +1189,7 @@ abstract class ServidorRepository
             throw new DBException('Erro ao buscar os servidores da competência.');
         }
 
-        return db_utils::makeCollectionFromRecord($rsRhPessoalMov, function ($oRetorno) {
-            return ServidorRepository::getInstanciaByCodigo($oRetorno->rh02_regist);
-        });
+        return db_utils::makeCollectionFromRecord($rsRhPessoalMov, fn($oRetorno) => ServidorRepository::getInstanciaByCodigo($oRetorno->rh02_regist));
     }
 
       /**
@@ -1224,9 +1220,7 @@ abstract class ServidorRepository
           throw new DBException('Erro ao buscar os servidores da competência.');
       }
 
-      return db_utils::makeCollectionFromRecord($result, function ($oRetorno) {
-          return ServidorRepository::getInstanciaByCodigo($oRetorno->rh01_regist);
-      });
+      return db_utils::makeCollectionFromRecord($result, fn($oRetorno) => ServidorRepository::getInstanciaByCodigo($oRetorno->rh01_regist));
   }
 
     /**
@@ -1238,9 +1232,9 @@ abstract class ServidorRepository
      */
     public static function getRegistraPontoNoPeriodoPorMatricula($matricula, $dataInicio = null, $dataFim = null)
     {
-        $whereCondicao1 = array(
+        $whereCondicao1 = [
             "rh215_matricula = {$matricula}"
-        );
+        ];
 
         if (!empty($dataInicio) && !empty($dataFim)) {
             $whereCondicao1[] = "rh215_data BETWEEN '{$dataInicio}' AND '{$dataFim}'";
@@ -1252,10 +1246,10 @@ abstract class ServidorRepository
             $dataInicio = date('Y-m-d', db_getsession('DB_datausu'));
         }
 
-        $whereSubQuery = implode(' AND ', array(
+        $whereSubQuery = implode(' AND ', [
             "rh215_matricula = {$matricula}",
             "rh215_data < '{$dataInicio}'"
-        ));
+        ]);
 
         $subQuery = "
             SELECT rh215_sequencial
@@ -1265,10 +1259,10 @@ abstract class ServidorRepository
             LIMIT 1
         ";
 
-        $sWhere = implode(' OR ', array(
+        $sWhere = implode(' OR ', [
             "({$whereCondicao1})",
             "(rh215_sequencial IN ({$subQuery}))"
-        ));
+        ]);
 
         $oDaoRegistrapontoeletronicohistorico = new cl_registrapontoeletronicohistorico();
         $sSqlRegistrapontoeletronicohistorico = $oDaoRegistrapontoeletronicohistorico->sql_query_file(
@@ -1458,9 +1452,7 @@ abstract class ServidorRepository
             throw new DBException('Erro ao buscar os servidores da competência.');
         }
 
-        return db_utils::makeCollectionFromRecord($rsRhPessoal, function ($oRetorno) {
-            return ServidorRepository::getInstanciaByCodigo($oRetorno->rh01_regist);
-        });
+        return db_utils::makeCollectionFromRecord($rsRhPessoal, fn($oRetorno) => ServidorRepository::getInstanciaByCodigo($oRetorno->rh01_regist));
     }
 
     /**
@@ -1488,9 +1480,7 @@ abstract class ServidorRepository
             throw new DBException('Erro ao buscar os servidores da competência.');
         }
 
-        return db_utils::makeCollectionFromRecord($rsRhPessoal, function ($oRetorno) {
-            return ServidorRepository::getInstanciaByCodigo($oRetorno->rh01_regist);
-        });
+        return db_utils::makeCollectionFromRecord($rsRhPessoal, fn($oRetorno) => ServidorRepository::getInstanciaByCodigo($oRetorno->rh01_regist));
     }
 
     /**
@@ -1505,7 +1495,7 @@ abstract class ServidorRepository
             throw new ParameterException("CPF não informado.");
         }
 
-        $cpf        = preg_replace('/\D/', '', $cpf);
+        $cpf        = preg_replace('/\D/', '', (string) $cpf);
         $oRhpessoal = new cl_rhpessoal();
 
         $sWhereRhpessoal = "cgm.z01_cgccpf = '{$cpf}'";
@@ -1520,9 +1510,7 @@ abstract class ServidorRepository
             return null;
         }
 
-        return db_utils::makeCollectionFromRecord($rsRhPessoal, function ($oRetorno) {
-            return ServidorRepository::getInstanciaByCodigo($oRetorno->rh01_regist);
-        });
+        return db_utils::makeCollectionFromRecord($rsRhPessoal, fn($oRetorno) => ServidorRepository::getInstanciaByCodigo($oRetorno->rh01_regist));
     }
 
     /**
@@ -1547,9 +1535,7 @@ abstract class ServidorRepository
             throw new DBException('Erro ao buscar os servidores da competência.');
         }
 
-        return db_utils::makeCollectionFromRecord($rs, function ($oRetorno) {
-            return ServidorRepository::getInstanciaByCodigo($oRetorno->rh02_regist);
-        });
+        return db_utils::makeCollectionFromRecord($rs, fn($oRetorno) => ServidorRepository::getInstanciaByCodigo($oRetorno->rh02_regist));
     }
 
     public static function getServidoresCompetenciaReintegracao($iAno, $iMes, $instituicao)
@@ -1564,8 +1550,6 @@ abstract class ServidorRepository
             throw new DBException('Erro ao buscar os servidores da competência.');
         }
 
-        return db_utils::makeCollectionFromRecord($rs, function ($oRetorno) {
-          return ServidorRepository::getInstanciaByCodigo($oRetorno->h25_regist);
-        });
+        return db_utils::makeCollectionFromRecord($rs, fn($oRetorno) => ServidorRepository::getInstanciaByCodigo($oRetorno->h25_regist));
     }
 }

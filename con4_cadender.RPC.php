@@ -58,14 +58,14 @@ try {
 
       if (isset($oParam->iPais)) {
 
-        $oRetorno->aEstados = array();
+        $oRetorno->aEstados = [];
         $oPaisEndereco      = new PaisEndereco($oParam->iPais);
         foreach($oPaisEndereco->getEstadosVinculados() as $oEstado) {
 
           $oDadosEstado              = new stdClass();
           $oDadosEstado->iSequencial = $oEstado->getSequencial();
-          $oDadosEstado->sDescricao  = urlencode($oEstado->getDescricao());
-          $oDadosEstado->sSigla      = urlencode($oEstado->getSigla());
+          $oDadosEstado->sDescricao  = urlencode((string) $oEstado->getDescricao());
+          $oDadosEstado->sSigla      = urlencode((string) $oEstado->getSigla());
           $oRetorno->aEstados[]      = $oDadosEstado;
         }
       }
@@ -82,18 +82,18 @@ try {
 
       if (isset($oParam->iEstado)) {
 
-        $oRetorno->aMunicipios = array();
+        $oRetorno->aMunicipios = [];
         $oEstado               = new Estado($oParam->iEstado);
 
         foreach($oEstado->getMunicipiosVinculados() as $oMunicipio) {
 
           $oDadosMunicipio              = new stdClass();
           $oDadosMunicipio->iSequencial = $oMunicipio->getSequencial();
-          $oDadosMunicipio->sDescricao  = urlencode($oMunicipio->getDescricao());
+          $oDadosMunicipio->sDescricao  = urlencode((string) $oMunicipio->getDescricao());
           $oRetorno->aMunicipios[]      = $oDadosMunicipio;
         }
         
-        usort($oRetorno->aMunicipios, "ordernarMunicipios");
+        usort($oRetorno->aMunicipios, ordernarMunicipios(...));
       }
       break;
 
@@ -108,14 +108,14 @@ try {
 
       if (isset($oParam->iMunicipio)) {
 
-        $oRetorno->aBairros = array();
+        $oRetorno->aBairros = [];
         $oMunicipio         = new Municipio($oParam->iMunicipio);
 
         foreach ($oMunicipio->getBairroVinculados() as $oBairro) {
 
           $oDadosBairro              = new stdClass();
           $oDadosBairro->iSequencial = $oBairro->getSequencial();
-          $oDadosBairro->sDescricao  = urlencode($oBairro->getDescricao());
+          $oDadosBairro->sDescricao  = urlencode((string) $oBairro->getDescricao());
           $oRetorno->aBairros[]      = $oDadosBairro;
         }
       }
@@ -196,19 +196,19 @@ try {
 
       if (isset($oParam->iBairro)) {
 
-        $oRetorno->aLogradouros = array();
+        $oRetorno->aLogradouros = [];
         $oBairro                = new Bairro($oParam->iBairro);
 
         foreach ($oBairro->getLogradourosVinculados() as $oLogradouro) {
 
           $oDadosLogradouro              = new stdClass();
           $oDadosLogradouro->iSequencial = $oLogradouro->getSequencial();
-          $oDadosLogradouro->sDescricao  = urlencode($oLogradouro->getDescricao());
+          $oDadosLogradouro->sDescricao  = urlencode((string) $oLogradouro->getDescricao());
           $oRetorno->aLogradouros[]      = $oDadosLogradouro;
         }
       } else if (isset($oParam->iMunicipio)) {
 
-        $oRetorno->aLogradouros = array();
+        $oRetorno->aLogradouros = [];
         $oMunicipio             = new Municipio($oParam->iMunicipio);
 
         foreach ($oMunicipio->getBairroVinculados() as $oBairro) {
@@ -217,7 +217,7 @@ try {
 
             $oDadosLogradouro              = new stdClass();
             $oDadosLogradouro->iSequencial = $oLogradouro->getSequencial();
-            $oDadosLogradouro->sDescricao  = urlencode($oLogradouro->getDescricao());
+            $oDadosLogradouro->sDescricao  = urlencode((string) $oLogradouro->getDescricao());
             $oRetorno->aLogradouros[]      = $oDadosLogradouro;
           }
         }
@@ -235,14 +235,14 @@ try {
 
       if ($oParam->iLogradouro) {
 
-        $oRetorno->aBairros  = array();
+        $oRetorno->aBairros  = [];
         $oLogradouro         = new Logradouro($oParam->iLogradouro);
 
         foreach ($oLogradouro->getBairrosVinculados() as $oBairro) {
 
           $oDadosBairro = new stdClass();
           $oDadosBairro->iSequencial = $oBairro->getSequencial();
-          $oDadosBairro->sDescricao  = urlencode($oBairro->getDescricao());
+          $oDadosBairro->sDescricao  = urlencode((string) $oBairro->getDescricao());
           $oRetorno->aBairros[]      = $oDadosBairro;
         }
       }
@@ -278,17 +278,7 @@ try {
       }
       break;
   }
-} catch (ParameterException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->iStatus   = 2;
-  $oRetorno->sMensagem = urlencode($oErro->getMessage());
-} catch (BusinessException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->iStatus   = 2;
-  $oRetorno->sMensagem = urlencode($oErro->getMessage());
-} catch (DBException $oErro) {
+} catch (ParameterException|BusinessException|DBException $oErro) {
 
   db_fim_transacao(true);
   $oRetorno->iStatus   = 2;
@@ -301,7 +291,7 @@ try {
  * @param string $aProximoArray
  */
 function ordernarMunicipios($aArrayAtual, $aProximoArray) {
-  return strcasecmp(urldecode($aArrayAtual->sDescricao), urldecode($aProximoArray->sDescricao));
+  return strcasecmp(urldecode((string) $aArrayAtual->sDescricao), urldecode((string) $aProximoArray->sDescricao));
 }
 
 echo $oJson->encode($oRetorno);

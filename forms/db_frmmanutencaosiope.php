@@ -144,7 +144,7 @@ $sNameBotaoProcessar = "incluir";
                       $sCampos = "si01_id, si01_descricao";
                       $sSqlSiopeSituacao = $clsiopesituacao->sql_query_file(null, $sCampos, "si01_id");
                       $rsSiopeSituacao = $clsiopesituacao->sql_record($sSqlSiopeSituacao);
-                      $aSituacao = array("0" => "Selecione");
+                      $aSituacao = ["0" => "Selecione"];
     
                       if ($clsiopesituacao->numrows > 0){
                         while ($aRetornoSituacao = pg_fetch_object($rsSiopeSituacao)) {
@@ -169,7 +169,7 @@ $sNameBotaoProcessar = "incluir";
                      $sCampos = "si07_segmento, si07_descricao";
                      $sSqlSiopeSegmento = $clsiopesegmentoatuacao->sql_query_file(null, $sCampos, "si07_segmento");
                      $rsSiopeSegmento = $clsiopesegmentoatuacao->sql_record($sSqlSiopeSegmento);
-                     $aSegmento = array("0" => "Selecione");
+                     $aSegmento = ["0" => "Selecione"];
                      
                      if ($clsiopesegmentoatuacao->numrows > 0){
                        while ($aRetornoSegmento = pg_fetch_object($rsSiopeSegmento)) {
@@ -193,7 +193,7 @@ $sNameBotaoProcessar = "incluir";
 
                            $sSqlQualificacaoServidor = $clsiopeservidorqualificacao->sql_query_file($rh01_regist, null, "si08_qualificacao");
                            $rsQualificacaoServidor = $clsiopeservidorqualificacao->sql_record($sSqlQualificacaoServidor);
-                           $aQualificacaoServidor = array();
+                           $aQualificacaoServidor = [];
 
                            if ($clsiopeservidorqualificacao->numrows > 0){
                               while ($aRetornoQualificacaoServidor = pg_fetch_object($rsQualificacaoServidor)) {
@@ -298,11 +298,11 @@ $sNameBotaoProcessar = "incluir";
     function js_preenchepesquisa(chave, iInstit){
       db_iframe_rhpessoal.hide();
       <?php
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
       ?>
     }
 
 
-    <?php echo (isset($sPosScripts) ? $sPosScripts : ""); ?>
+    <?php echo ($sPosScripts ?? ""); ?>
   </script>
 </html>

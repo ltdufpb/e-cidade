@@ -66,7 +66,7 @@ if(isset($e69_numemp) && $e69_numemp!='' && empty($duv_msg)){
 	   $tot_valor    = '0.00';
        }  
    //fim  
-   
+
    //pega valores se tiver nota lanaçada
         $tem_elemento = false;
        if(isset($e69_codnota)){
@@ -85,7 +85,7 @@ if(isset($e69_numemp) && $e69_numemp!='' && empty($duv_msg)){
 	     $total_vlranu = '0.00';
        } 
   //fim
-  
+
      //tot_xxx total de todas as ordens
      //total_xx total de só uma orde
 
@@ -102,7 +102,7 @@ if(isset($e69_numemp) && $e69_numemp!='' && empty($duv_msg)){
 	$vlrdis = number_format($vlrdis,"2",".","");
 	$vlrpag = $vlrdis;
     //fim
-   
+
     //rotina que verifica se a nota já foi liquidada
     if($total_vlrliq != 0 && $db_opcao!=1){
 	$db_botao=false;
@@ -443,7 +443,7 @@ function js_preenchepesquisa(chave){
   db_iframe_empnota.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

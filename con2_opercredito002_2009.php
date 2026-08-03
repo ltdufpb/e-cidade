@@ -48,23 +48,23 @@ if (!isset($arqinclude)){
   $oOrcParamRelopcre = new cl_orcparamrelopcre;
   $clorcparamelemento = new cl_orcparamelemento();
   
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
   
 }
 
 include_once(modification("libs/db_utils.php"));
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,munic,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
 $nTotalRcl = 0;
 //******************************************************************
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
   }else{
@@ -117,7 +117,7 @@ $dt               = data_periodo($anousu,$periodo); // no dbforms/db_funcoes.php
 $dt_ini_plano     = $dt[0];  // data inicial do periodo
 $dt_ini           = "{$anousu}-01-01";  // data inicial do periodo
 $dt_fim           = $dt[1];  // data final do período
-$dt = split('-',$dt_fim);  // mktime -- (mes,caddia,ano)
+$dt = preg_split('#\-#m',(string) $dt_fim);  // mktime -- (mes,caddia,ano)
 $dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1]+1,"01",$anousu_ant));
 $dt_fim_ant = $anousu_ant.'-12-31';
 $iCodigoRelatorio = 63;
@@ -132,7 +132,7 @@ for ($i = 1; $i <=16;$i++) {
   $aParametros[$i]["atebim"]  = 0;
   if ($i == 10) {
 
-    $aParametros[$i]["itens"] = Array();
+    $aParametros[$i]["itens"] = [];
 
     for ($j = 0; $j < count($aParametros[$i]["params"]); $j++) {
       
@@ -193,7 +193,7 @@ for ($iParam = 1; $iParam <= 16; $iParam++) {
 /**
  * Linhas do relatorio
  */
-$aLinhasRelatorio              = array();
+$aLinhasRelatorio              = [];
 $aLinhasRelatorio[0]["label"]  = "SUJEITAS AO LIMITE PARA FINS DE CONTRATAÇÃO (I)";    
 $aLinhasRelatorio[1]["label"]  = "    Mobiliária";    
 $aLinhasRelatorio[2]["label"]  = "       Interna";    
@@ -210,7 +210,7 @@ $aLinhasRelatorio[12]["label"] = "                Demais Antecipações de Receita
 $aLinhasRelatorio[13]["label"] = "            Assunção, Reconhecimento e Confissão de Dívidas (LRF, art. 29, § 1º)";      
 $aLinhasRelatorio[14]["label"] = "            Outras Operações de Crédito";      
 $aLinhasRelatorio[15]["label"] = "        Externa";      
-$aLinhasRelatorio[15]["itens"] = array();      
+$aLinhasRelatorio[15]["itens"] = [];      
 $aLinhasRelatorio[16]["label"] = "NÃO SUJEITAS AO LIMITE PARA FINS DE CONTRATAÇÃO (II)";      
 $aLinhasRelatorio[17]["label"] = "    Parcelamentos de Dívidas";      
 $aLinhasRelatorio[18]["label"] = "        De Tributos";      
@@ -326,9 +326,9 @@ $nValorInternoExterno    = 0;
 $nPercValorInterno       = 0;
 $nPercValorAntecipacao   = 0;
 
-$aOperacaoCredito["interna"]     = array();//linhas operacoes internas
-$aOperacaoCredito["externa"]     = array();//linhas operacoes externas
-$aOperacaoCredito["antecipacao"] = array();//linhas operacoes antecipadas;
+$aOperacaoCredito["interna"]     = [];//linhas operacoes internas
+$aOperacaoCredito["externa"]     = [];//linhas operacoes externas
+$aOperacaoCredito["antecipacao"] = [];//linhas operacoes antecipadas;
 $sTodasInstit = null;
 
 $rsInstit =  db_query("select codigo from db_config");
@@ -416,7 +416,7 @@ if (!isset($arqinclude)){
       foreach ($aLinhasRelatorio[15]["itens"] as $item) {
 
         
-        $pdf->cell(100,$alt,"            ".ucfirst(strtolower($item["descricao"])),"R",0,"L");
+        $pdf->cell(100,$alt,"            ".ucfirst(strtolower((string) $item["descricao"])),"R",0,"L");
         $pdf->cell(45,$alt,db_formatar($item["nobim"],"f"),"R",0,"R");
         $pdf->cell(45,$alt,db_formatar($item["atebim"],"f"),"L",1,"R");
            
@@ -451,7 +451,7 @@ if (!isset($arqinclude)){
   
   $pdf->ln();
   // ----------------------------------------------------------------
-  notasExplicativas(&$pdf, 63, $periodo,190); 
+  notasExplicativas($pdf, 63, $periodo,190); 
   
   $pdf->Ln(5);
   
@@ -459,7 +459,7 @@ if (!isset($arqinclude)){
   $pdf->setfont('arial','',5);
   $pdf->ln(20);
   
-  assinaturas(&$pdf,&$classinatura,'GF');
+  assinaturas($pdf,$classinatura,'GF');
   
   $pdf->Output();
 }

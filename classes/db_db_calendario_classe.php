@@ -29,39 +29,39 @@
 //CLASSE DA ENTIDADE db_calendario
 class cl_db_calendario { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s_codigo = 0; 
-   var $s_datainicio_dia = null; 
-   var $s_datainicio_mes = null; 
-   var $s_datainicio_ano = null; 
-   var $s_datainicio = null; 
-   var $s_horainicio = null; 
-   var $s_datafim_dia = null; 
-   var $s_datafim_mes = null; 
-   var $s_datafim_ano = null; 
-   var $s_datafim = null; 
-   var $s_horafim = null; 
-   var $s_secretaria = 0; 
-   var $s_descricao = null; 
-   var $s_localid = null; 
-   var $s_telefone = null; 
-   var $s_email = null; 
-   var $s_obs = null; 
-   var $s_intext = 'f'; 
+   public $s_codigo = 0; 
+   public $s_datainicio_dia = null; 
+   public $s_datainicio_mes = null; 
+   public $s_datainicio_ano = null; 
+   public $s_datainicio = null; 
+   public $s_horainicio = null; 
+   public $s_datafim_dia = null; 
+   public $s_datafim_mes = null; 
+   public $s_datafim_ano = null; 
+   public $s_datafim = null; 
+   public $s_horafim = null; 
+   public $s_secretaria = 0; 
+   public $s_descricao = null; 
+   public $s_localid = null; 
+   public $s_telefone = null; 
+   public $s_email = null; 
+   public $s_obs = null; 
+   public $s_intext = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s_codigo = int4 = Código 
                  s_datainicio = date = Data início 
                  s_horainicio = varchar(5) = Hora início 
@@ -76,10 +76,10 @@ class cl_db_calendario {
                  s_intext = bool = Intext 
                  ";
    //funcao construtor da classe 
-   function cl_db_calendario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_calendario"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -264,7 +264,7 @@ class cl_db_calendario {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Calendário () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Calendário já Cadastrado";
@@ -291,10 +291,10 @@ class cl_db_calendario {
       $this->atualizacampos();
      $sql = " update db_calendario set ";
      $virgula = "";
-     if(trim($this->s_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_codigo"])){ 
+     if(trim((string) $this->s_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_codigo"])){ 
        $sql  .= $virgula." s_codigo = $this->s_codigo ";
        $virgula = ",";
-       if(trim($this->s_codigo) == null ){ 
+       if(trim((string) $this->s_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "s_codigo";
          $this->erro_banco = "";
@@ -304,10 +304,10 @@ class cl_db_calendario {
          return false;
        }
      }
-     if(trim($this->s_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s_datainicio_dia"] !="") ){ 
+     if(trim((string) $this->s_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s_datainicio_dia"] !="") ){ 
        $sql  .= $virgula." s_datainicio = '$this->s_datainicio' ";
        $virgula = ",";
-       if(trim($this->s_datainicio) == null ){ 
+       if(trim((string) $this->s_datainicio) == null ){ 
          $this->erro_sql = " Campo Data início nao Informado.";
          $this->erro_campo = "s_datainicio_dia";
          $this->erro_banco = "";
@@ -320,7 +320,7 @@ class cl_db_calendario {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s_datainicio_dia"])){ 
          $sql  .= $virgula." s_datainicio = null ";
          $virgula = ",";
-         if(trim($this->s_datainicio) == null ){ 
+         if(trim((string) $this->s_datainicio) == null ){ 
            $this->erro_sql = " Campo Data início nao Informado.";
            $this->erro_campo = "s_datainicio_dia";
            $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_db_calendario {
          }
        }
      }
-     if(trim($this->s_horainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_horainicio"])){ 
+     if(trim((string) $this->s_horainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_horainicio"])){ 
        $sql  .= $virgula." s_horainicio = '$this->s_horainicio' ";
        $virgula = ",";
-       if(trim($this->s_horainicio) == null ){ 
+       if(trim((string) $this->s_horainicio) == null ){ 
          $this->erro_sql = " Campo Hora início nao Informado.";
          $this->erro_campo = "s_horainicio";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_db_calendario {
          return false;
        }
      }
-     if(trim($this->s_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s_datafim_dia"] !="") ){ 
+     if(trim((string) $this->s_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s_datafim_dia"] !="") ){ 
        $sql  .= $virgula." s_datafim = '$this->s_datafim' ";
        $virgula = ",";
-       if(trim($this->s_datafim) == null ){ 
+       if(trim((string) $this->s_datafim) == null ){ 
          $this->erro_sql = " Campo Data fim nao Informado.";
          $this->erro_campo = "s_datafim_dia";
          $this->erro_banco = "";
@@ -360,7 +360,7 @@ class cl_db_calendario {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s_datafim_dia"])){ 
          $sql  .= $virgula." s_datafim = null ";
          $virgula = ",";
-         if(trim($this->s_datafim) == null ){ 
+         if(trim((string) $this->s_datafim) == null ){ 
            $this->erro_sql = " Campo Data fim nao Informado.";
            $this->erro_campo = "s_datafim_dia";
            $this->erro_banco = "";
@@ -371,10 +371,10 @@ class cl_db_calendario {
          }
        }
      }
-     if(trim($this->s_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_horafim"])){ 
+     if(trim((string) $this->s_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_horafim"])){ 
        $sql  .= $virgula." s_horafim = '$this->s_horafim' ";
        $virgula = ",";
-       if(trim($this->s_horafim) == null ){ 
+       if(trim((string) $this->s_horafim) == null ){ 
          $this->erro_sql = " Campo Hora fim nao Informado.";
          $this->erro_campo = "s_horafim";
          $this->erro_banco = "";
@@ -384,10 +384,10 @@ class cl_db_calendario {
          return false;
        }
      }
-     if(trim($this->s_secretaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_secretaria"])){ 
+     if(trim((string) $this->s_secretaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_secretaria"])){ 
        $sql  .= $virgula." s_secretaria = $this->s_secretaria ";
        $virgula = ",";
-       if(trim($this->s_secretaria) == null ){ 
+       if(trim((string) $this->s_secretaria) == null ){ 
          $this->erro_sql = " Campo Secretaria nao Informado.";
          $this->erro_campo = "s_secretaria";
          $this->erro_banco = "";
@@ -397,10 +397,10 @@ class cl_db_calendario {
          return false;
        }
      }
-     if(trim($this->s_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_descricao"])){ 
+     if(trim((string) $this->s_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_descricao"])){ 
        $sql  .= $virgula." s_descricao = '$this->s_descricao' ";
        $virgula = ",";
-       if(trim($this->s_descricao) == null ){ 
+       if(trim((string) $this->s_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "s_descricao";
          $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_db_calendario {
          return false;
        }
      }
-     if(trim($this->s_localid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_localid"])){ 
+     if(trim((string) $this->s_localid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_localid"])){ 
        $sql  .= $virgula." s_localid = '$this->s_localid' ";
        $virgula = ",";
-       if(trim($this->s_localid) == null ){ 
+       if(trim((string) $this->s_localid) == null ){ 
          $this->erro_sql = " Campo Localidade nao Informado.";
          $this->erro_campo = "s_localid";
          $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_db_calendario {
          return false;
        }
      }
-     if(trim($this->s_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_telefone"])){ 
+     if(trim((string) $this->s_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_telefone"])){ 
        $sql  .= $virgula." s_telefone = '$this->s_telefone' ";
        $virgula = ",";
-       if(trim($this->s_telefone) == null ){ 
+       if(trim((string) $this->s_telefone) == null ){ 
          $this->erro_sql = " Campo Telefone nao Informado.";
          $this->erro_campo = "s_telefone";
          $this->erro_banco = "";
@@ -436,10 +436,10 @@ class cl_db_calendario {
          return false;
        }
      }
-     if(trim($this->s_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_email"])){ 
+     if(trim((string) $this->s_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_email"])){ 
        $sql  .= $virgula." s_email = '$this->s_email' ";
        $virgula = ",";
-       if(trim($this->s_email) == null ){ 
+       if(trim((string) $this->s_email) == null ){ 
          $this->erro_sql = " Campo Email nao Informado.";
          $this->erro_campo = "s_email";
          $this->erro_banco = "";
@@ -449,10 +449,10 @@ class cl_db_calendario {
          return false;
        }
      }
-     if(trim($this->s_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_obs"])){ 
+     if(trim((string) $this->s_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_obs"])){ 
        $sql  .= $virgula." s_obs = '$this->s_obs' ";
        $virgula = ",";
-       if(trim($this->s_obs) == null ){ 
+       if(trim((string) $this->s_obs) == null ){ 
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "s_obs";
          $this->erro_banco = "";
@@ -462,10 +462,10 @@ class cl_db_calendario {
          return false;
        }
      }
-     if(trim($this->s_intext)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_intext"])){ 
+     if(trim((string) $this->s_intext)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_intext"])){ 
        $sql  .= $virgula." s_intext = '$this->s_intext' ";
        $virgula = ",";
-       if(trim($this->s_intext) == null ){ 
+       if(trim((string) $this->s_intext) == null ){ 
          $this->erro_sql = " Campo Intext nao Informado.";
          $this->erro_campo = "s_intext";
          $this->erro_banco = "";
@@ -556,7 +556,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_calendario";

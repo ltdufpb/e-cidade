@@ -71,8 +71,8 @@ $db_opcao        = 1;
 $db_botao        = true;
 $sFgts           = "1";
 $iInstit         = db_getsession("DB_instit");
-$aListaGerados   = array();
-$aListaSemPIS    = array();
+$aListaGerados   = [];
+$aListaSemPIS    = [];
 $lErro           = false;
 
 if ( isset($oPost->gerar) ) {
@@ -369,34 +369,34 @@ if ( isset($oPost->gerar) ) {
         $nTotalSalMaternidade = 0;
 
         if ( !$lMes13 ) {
-          $aSiglas = array("r14","r48","r35","r20");
+          $aSiglas = ["r14","r48","r35","r20"];
         } else {
-          $aSiglas = array("r35");
+          $aSiglas = ["r35"];
         }
 
         $sRubricaInssSal  = "R9".db_formatar((($oCfPess->r11_tbprev * 3) - 2),"s","0",2,"e",0);
         $sRubricaInssS13  = "R9".db_formatar((($oCfPess->r11_tbprev * 3) - 1),"s","0",2,"e",0);
         $sRubricaInssFer  = "R9".db_formatar((($oCfPess->r11_tbprev * 3))    ,"s","0",2,"e",0);
 
-        if ( trim($oCfPess->r11_rubdec) != "" ){
+        if ( trim((string) $oCfPess->r11_rubdec) != "" ){
           $sRubricaAdiantamento = ",'".$oCfPess->r11_rubdec."'";
         } else {
           $sRubricaAdiantamento = '';
         }
 
-        $aSalarioMaternidade = Array();
-        $aSalarioFamilia     = Array();
-        $aBaseFGTS           = Array();
-        $aBaseFGTS13         = Array();
-        $aFGTS13             = Array();
-        $aFGTS               = Array();
-        $aBaseINSS           = Array();
-        $aBaseINSS13         = Array();
-        $aBaseDescINSS       = Array();
-        $aDescINSS           = Array();
-        $aDescINSS13         = Array();
-        $aBaseINSSR990       = Array();
-        $aComplemento13      = Array();
+        $aSalarioMaternidade = [];
+        $aSalarioFamilia     = [];
+        $aBaseFGTS           = [];
+        $aBaseFGTS13         = [];
+        $aFGTS13             = [];
+        $aFGTS               = [];
+        $aBaseINSS           = [];
+        $aBaseINSS13         = [];
+        $aBaseDescINSS       = [];
+        $aDescINSS           = [];
+        $aDescINSS13         = [];
+        $aBaseINSSR990       = [];
+        $aComplemento13      = [];
 
         for ( $i=0; $i < $clrhpessoal->numrows; $i++ ){
 
@@ -458,7 +458,7 @@ if ( isset($oPost->gerar) ) {
 
                     $oDadosGer = db_utils::fieldsMemory($rsDadosGer, $im);
 
-                    if ( in_array($oDadosGer->rubri,array('R919','R921')) ) {
+                    if ( in_array($oDadosGer->rubri,['R919','R921']) ) {
 
                       $nTotalSalFamilia += $oDadosGer->valor;
                       $nSalarioFamilia  += $oDadosGer->valor;
@@ -744,7 +744,7 @@ if ( isset($oPost->gerar) ) {
               $aDescINSS13[$oPessoal->rh01_regist] > 0  || $aBaseINSSR990[$oPessoal->rh01_regist] > 0) {
 
               if ($oPessoal->h13_tpcont >= 12) {
-                if($iMesUsu == 12 && trim($oPessoal->rh05_recis) != "" ){
+                if($iMesUsu == 12 && trim((string) $oPessoal->rh05_recis) != "" ){
 
                   $remuneracaosem13 = $aBaseINSS[$oPessoal->rh01_regist];
                   $remuneracao13 = 0;
@@ -763,7 +763,7 @@ if ( isset($oPost->gerar) ) {
                 continue;
               }
 
-              if(trim($oPessoal->rh05_recis) != "" && $codrec == "115"){
+              if(trim((string) $oPessoal->rh05_recis) != "" && $codrec == "115"){
 
                 if($oPessoal->h13_tpcont < 12){
 
@@ -783,7 +783,7 @@ if ( isset($oPost->gerar) ) {
                 }
               }
 
-              if((trim($oPessoal->rh05_recis) == "" && $lMes13) || (trim($oPessoal->rh05_recis) != "" && !$lMes13)){
+              if((trim((string) $oPessoal->rh05_recis) == "" && $lMes13) || (trim((string) $oPessoal->rh05_recis) != "" && !$lMes13)){
                 $remuneracao13 = $aBaseINSS13[$oPessoal->rh01_regist];
                 if($lMes13){
                   $remuneracao13 = 0;
@@ -796,7 +796,7 @@ if ( isset($oPost->gerar) ) {
               $recis_mes = '';
               $recis_ano = '';
 
-              if(trim($oPessoal->rh05_recis) != ""){
+              if(trim((string) $oPessoal->rh05_recis) != ""){
                 $recis_dia = (int) db_subdata($oPessoal->rh05_recis,"d");
                 $recis_mes = (int) db_subdata($oPessoal->rh05_recis,"m");
                 $recis_ano = (int) db_subdata($oPessoal->rh05_recis,"a");
@@ -806,7 +806,7 @@ if ( isset($oPost->gerar) ) {
                 $valorrescis = $remuneracao13;
               }
 
-              if(trim($oPessoal->rh05_recis) != "" || $lMes13){
+              if(trim((string) $oPessoal->rh05_recis) != "" || $lMes13){
                 if($recis_ano == (int)$iAnoUsu && $recis_mes == (int)$iMesUsu){
                   $valorrescis = $aBaseINSS13[$oPessoal->rh01_regist];
                   if($aBaseINSS13[$oPessoal->rh01_regist] == 0 ){
@@ -820,13 +820,13 @@ if ( isset($oPost->gerar) ) {
                 }
               }
 
-              $ocorrencia = trim($oPessoal->rh02_ocorre);
-              if(trim($oPessoal->rh02_ocorre) == ""){
+              $ocorrencia = trim((string) $oPessoal->rh02_ocorre);
+              if(trim((string) $oPessoal->rh02_ocorre) == ""){
                 $ocorrencia = "  ";
               }
               if((int)($iAnoUsu.$iMesUsu) > 200306 && ($oPessoal->rh51_basefo > 0 ||
                   $oPessoal->rh51_descfo > 0 || $oPessoal->rh51_b13fo > 0 || $oPessoal->rh51_d13fo > 0)) {
-                if(trim($oPessoal->rh51_ocorre) != ""){
+                if(trim((string) $oPessoal->rh51_ocorre) != ""){
                   $ocorrencia = $oPessoal->rh51_ocorre;
                 }
               }
@@ -852,7 +852,7 @@ if ( isset($oPost->gerar) ) {
               }
 
               if($mpis == true){
-                if(trim($ocorrencia) == "" || (int)$ocorrencia == 1){
+                if(trim((string) $ocorrencia) == "" || (int)$ocorrencia == 1){
                   $ocorrencia = "05";
                 }else if((int)$ocorrencia == 2){
                   $ocorrencia = "06";
@@ -883,25 +883,25 @@ if ( isset($oPost->gerar) ) {
               $xctps_s = str_repeat(" ",5);
 
               $stringcategoriactps = "-01-02-03-04-06-07-26";
-              $posicaocategoria = strpos($stringcategoriactps,$oPessoal->h13_tpcont);
+              $posicaocategoria = strpos($stringcategoriactps,(string) $oPessoal->h13_tpcont);
 
               if($posicaocategoria !== false){
                 $xctps_n = db_formatar($oPessoal->rh16_ctps_n,"s","0",7,"e",0);
                 $xctps_s = db_formatar($oPessoal->rh16_ctps_s,"s","0",5,"e",0);
-                if(trim($oPessoal->rh15_data) != ""){
+                if(trim((string) $oPessoal->rh15_data) != ""){
                   $xctps_d = db_formatar($oPessoal->rh15_data,"d");
                 }
               }
 
               $data_admiss = str_repeat(" ",8);
               $stringcategoriaadmiss = "-01-03-04-05-06-07-11-12-19-20-21-26";
-              $posicaocategoria = strpos($stringcategoriaadmiss,$oPessoal->h13_tpcont);
+              $posicaocategoria = strpos($stringcategoriaadmiss,(string) $oPessoal->h13_tpcont);
               if($posicaocategoria !== false){
                 $data_admiss = db_formatar($oPessoal->rh01_admiss,"d");
               }
 
               $stringcategoriaregist = "-06-13-14-15-16-17-18-22-23-24-25";
-              $posicaocategoria = strpos($stringcategoriaregist,$oPessoal->h13_tpcont);
+              $posicaocategoria = strpos($stringcategoriaregist,(string) $oPessoal->h13_tpcont);
               if($posicaocategoria !== false){
                 $iRegist = str_repeat(" ",11);
               } else {
@@ -912,7 +912,7 @@ if ( isset($oPost->gerar) ) {
               }
               $data_nasc = str_repeat(" ",8);
               $stringcategorianasc = "-01-02-03-04-05-06-07-12-19-20-21-26";
-              $posicaocategoria = strpos($stringcategorianasc,$oPessoal->h13_tpcont);
+              $posicaocategoria = strpos($stringcategorianasc,(string) $oPessoal->h13_tpcont);
               if($posicaocategoria !== false){
                 $data_nasc = db_formatar($oPessoal->rh01_nasc,"d");
               }
@@ -1003,8 +1003,8 @@ if ( isset($oPost->gerar) ) {
 
                   if(
                       ((int)db_subdata($r45_dtafas,"m") == (int)$iMesUsu && (int)db_subdata($r45_dtafas,"a") == (int)$iAnoUsu) ||
-                      ((int)db_subdata($r45_dtafas,"a") <  (int)$iAnoUsu && (trim($r45_dtreto) == "" || ((int)db_subdata($r45_dtreto,"m") >= (int)$iMesUsu && (int)db_subdata($r45_dtreto,"a") >= (int)$iAnoUsu))) ||
-                      (((int)db_subdata($r45_dtafas,"m") <= (int)$iMesUsu && (int)db_subdata($r45_dtafas,"a") <= (int)$iAnoUsu) && (trim($r45_dtreto) == "" || ((int)db_subdata($r45_dtreto,"m") >= (int)$iMesUsu && (int)db_subdata($r45_dtreto,"a") >= (int)$iAnoUsu))) ||
+                      ((int)db_subdata($r45_dtafas,"a") <  (int)$iAnoUsu && (trim((string) $r45_dtreto) == "" || ((int)db_subdata($r45_dtreto,"m") >= (int)$iMesUsu && (int)db_subdata($r45_dtreto,"a") >= (int)$iAnoUsu))) ||
+                      (((int)db_subdata($r45_dtafas,"m") <= (int)$iMesUsu && (int)db_subdata($r45_dtafas,"a") <= (int)$iAnoUsu) && (trim((string) $r45_dtreto) == "" || ((int)db_subdata($r45_dtreto,"m") >= (int)$iMesUsu && (int)db_subdata($r45_dtreto,"a") >= (int)$iAnoUsu))) ||
                       ((int)db_subdata($r45_dtreto,"a") > (int)$iAnoUsu)
                   ){
                     $situacao = $r45_situac;
@@ -1028,7 +1028,7 @@ if ( isset($oPost->gerar) ) {
                         db_fieldsmemory($result_codmovsefip, 0);
                         $datamov = $dataafasta;
                         $codmov  = $r45_codafa;
-                      }else if(db_subdata($dataretorno,"m") < $iMesUsu && db_subdata($dataretorno,"a") < $iAnoUsu && trim($r45_codret) != ""){
+                      }else if(db_subdata($dataretorno,"m") < $iMesUsu && db_subdata($dataretorno,"a") < $iAnoUsu && trim((string) $r45_codret) != ""){
                         $datamov = $dataafasta;
                         $codmov  = $r45_codafa;
                       }else{
@@ -1121,7 +1121,7 @@ if ( isset($oPost->gerar) ) {
                 }
               }
               $codmov = "";
-              if(trim($oPessoal->rh05_recis) != "" && !$lMes13 ){
+              if(trim((string) $oPessoal->rh05_recis) != "" && !$lMes13 ){
                 $result_dadosrescisao = $clrescisao->sql_record($clrescisao->sql_query_file($iAnoUsu,
                     $iMesUsu,
                     $oPessoal->rh30_regime,
@@ -1431,7 +1431,7 @@ db_app::load("estilos.css, grid.style.css");
                 <td nowrap align="right" title="Código do recolhimento"><b>Código:</b>
                 </td>
                 <td><?php 
-                $aCodrec = array("115" => "115", "150" => "150");
+                $aCodrec = ["115" => "115", "150" => "150"];
                 db_select('codrec',$aCodrec,true,1);
                 ?>
                 </td>
@@ -1451,9 +1451,9 @@ db_app::load("estilos.css, grid.style.css");
                 </td>
                 <td><?php 
                 $indrecfgts  = 1;
-                $aIndRecFGTS = array("0"=>"Nenhum",
+                $aIndRecFGTS = ["0"=>"Nenhum",
                     "1"=>"GFIP no prazo",
-                    "2"=>"GFIP em atraso");
+                    "2"=>"GFIP em atraso"];
 
                 db_select('indrecfgts',$aIndRecFGTS,true,1,"onchange='js_verindices(\"dtrecfgts\",this.value, false);'");
                 ?>
@@ -1470,9 +1470,9 @@ db_app::load("estilos.css, grid.style.css");
                 </td>
                 <td><?php 
                 $indrecinss  = 1;
-                $aIndRecINSS = array("0"=>"Não gera GPS",
+                $aIndRecINSS = ["0"=>"Não gera GPS",
                     "1"=>"GPS no prazo",
-                    "2"=>"GPS em atraso");
+                    "2"=>"GPS em atraso"];
 
                 db_select('indrecinss',$aIndRecINSS,true,1,"onchange='js_verindices(\"dtrecinss\",this.value, true);'");
                 ?>
@@ -1533,7 +1533,7 @@ db_app::load("estilos.css, grid.style.css");
                 </td>
                 <td><?php 
                 $alteraender = "N";
-                $arr_alteraender = array("S"=>"Sim","N"=>"Não");
+                $arr_alteraender = ["S"=>"Sim","N"=>"Não"];
                 db_select('alteraender',$arr_alteraender,true,1,"");
                 ?>
                 </td>
@@ -1541,7 +1541,7 @@ db_app::load("estilos.css, grid.style.css");
                 </td>
                 <td><?php 
                 $alteracnae = "P";
-                $arr_alteracnae = array("S"=>"Sim","N"=>"Não","A"=>"Alt. Preponderante","P"=>"Não Alt. Preponderante");
+                $arr_alteracnae = ["S"=>"Sim","N"=>"Não","A"=>"Alt. Preponderante","P"=>"Não Alt. Preponderante"];
                 db_select('alteracnae',$arr_alteracnae,true,1,"");
                 ?>
                 </td>
@@ -1655,7 +1655,7 @@ db_app::load("estilos.css, grid.style.css");
                 </td>
                 <td><?php 
                 $gerarcompensacao = 2;
-                db_select("gerarcompensacao", array(1 => "Sim", 2 => "Não"), true, 1, "onchange='js_liberarCompensacao()'");
+                db_select("gerarcompensacao", [1 => "Sim", 2 => "Não"], true, 1, "onchange='js_liberarCompensacao()'");
                 ?>
                 </td>
                 <td><b>Valor da Compensação:</b>
@@ -1904,7 +1904,7 @@ function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_codmovsefip.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }
   ?>
 }

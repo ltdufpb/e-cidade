@@ -81,7 +81,7 @@ final class HonorarioParcelamento extends Model
         }
 
         if (array_key_exists('ar43_processoforo', $state)) {
-            $processoForoRepository = ProcessoForoRepository::getInstance();
+            $processoForoRepository = (new ProcessoForoRepository())->getInstance();
             $processoForo = $processoForoRepository->getByCodigo($state['ar43_processoforo']);
             $honorarioParcelamento->setProcessoForo($processoForo);
 

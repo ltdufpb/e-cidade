@@ -55,7 +55,7 @@ switch ($oParam->exec) {
 
         $sNomeArquivoAluno = "tmp/arquivoaluno.txt";
         $sNomeArquivoDocentes = "tmp/arquivodocentes.txt";
-        $aArquivosGerados = array();
+        $aArquivosGerados = [];
 
         try {
 
@@ -96,7 +96,7 @@ switch ($oParam->exec) {
             }
             $rArquivo = fopen($oParam->arquivo, "r");
             $sPrimeiraLinha = fgets($rArquivo);
-            $iTamanhoLinha = strlen(str_replace(array("\r", "\n"), "", $sPrimeiraLinha));
+            $iTamanhoLinha = strlen(str_replace(["\r", "\n"], "", $sPrimeiraLinha));
 
             db_inicio_transacao();
             switch ($oParam->tiporetorno) {
@@ -115,7 +115,7 @@ switch ($oParam->exec) {
                         if ((int)$oLinha->codigoalunoinep == 0) {
                             continue;
                         }
-                        if (trim($oLinha->idalunoinep) == "") {
+                        if (trim((string) $oLinha->idalunoinep) == "") {
                             continue;
                         }
                         $oDaoAluno->ed47_i_codigo = $oLinha->codigoalunoinep;
@@ -291,13 +291,13 @@ function gerarDadosDocentesSemInep($oParam, $sNomeArquivo)
 
     $censo = new Censo();
     $dataCenso = $censo->getDataCenso()->getDate();
-    $where = array(
+    $where = [
         "ed20_i_codigoinep is null",
         "ed52_i_ano = {$iAno} ",
         "ed01_c_regencia = 'S' ",
         "ed75_i_escola  in({$iEscola})",
         "(ed75_i_saidaescola is null or ed75_i_saidaescola >= '{$dataCenso}')"
-    );
+    ];
     $where = implode(" and ", $where);
     $sSqlDadosDocente = $oDaoRecHumano->sql_query_solicitaseminep("", $sCampos, "", $where);
     $rsDadosDocente = $oDaoRecHumano->sql_record($sSqlDadosDocente);
@@ -305,7 +305,7 @@ function gerarDadosDocentesSemInep($oParam, $sNomeArquivo)
     /**
      * Agrupamos os dados do docente por codigo de CGM.
      */
-    $aDocentesSemInep = array();
+    $aDocentesSemInep = [];
     for ($iContador = 0; $iContador < $iLinhas; $iContador++) {
 
         $oDadosDocente = db_utils::fieldsmemory($rsDadosDocente, $iContador);

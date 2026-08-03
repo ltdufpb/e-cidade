@@ -41,7 +41,7 @@ include(modification("classes/db_cgsfatorderisco_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcgs_und         = new cl_cgs_und;
 $clprontuarios     = new cl_prontuarios_ext;
@@ -64,8 +64,8 @@ if( isset($chavepesquisacgs) && (int)$chavepesquisacgs != 0){
 					<select name="cgsfatorderisco" id="cgsfatorderisco" size="10" onclick="js_desabexc()"     style="font-size:9px;width:400px;height:120px" multiple disable>
 					<?php 
 					$result_cgsfatorderisco = db_query( $clcgsfatorderisco->sql_query(null,"*","s105_v_descricao","s106_i_cgs = $chavepesquisacgs") );
-					if( pg_numrows($result_cgsfatorderisco) > 0 ){
-						for($i=0; $i < pg_numrows($result_cgsfatorderisco); $i++ ){
+					if( pg_num_rows($result_cgsfatorderisco) > 0 ){
+						for($i=0; $i < pg_num_rows($result_cgsfatorderisco); $i++ ){
 							$obj_cgsfatorderisco = db_utils::fieldsMemory($result_cgsfatorderisco,$i);
 							echo "<option value={$obj_cgsfatorderisco->s105_i_codigo}>{$obj_cgsfatorderisco->s105_v_descricao}</option>";
 						}

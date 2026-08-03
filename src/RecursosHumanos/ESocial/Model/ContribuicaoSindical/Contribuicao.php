@@ -206,13 +206,13 @@ class Contribuicao
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'sequencial' => $this->getSequencial(),
             'sindicato' => $this->getSindicato()->toArray(),
             'codigoTipoContribuicao' => $this->getTipoContribuicao(),
             'descricaoTipoContribuicao' => TipoContribuicao::get($this->getTipoContribuicao()),
             'valor' => $this->getValor()
-        );
+        ];
 
         return $retorno;
     }

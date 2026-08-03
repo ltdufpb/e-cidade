@@ -159,11 +159,11 @@ switch ($oParam->exec) {
 
   case "alterarOrigensAbatimento":
 
-    $aRetorno = array();
+    $aRetorno = [];
     $aRetorno["status"]  = 1;
     $aRetorno["message"] = urlencode("Processamento efetuado com sucesso");
 
-    $aArreckey = array();
+    $aArreckey = [];
 
     try {
 
@@ -244,7 +244,7 @@ switch ($oParam->exec) {
 
   case "exluirCredito":
 
-    $aRetorno = array();
+    $aRetorno = [];
     $aRetorno["status"]  = 1;
     $aRetorno["message"] = urlencode("Processamento efetuado com sucesso");
 
@@ -348,10 +348,10 @@ switch ($oParam->exec) {
    */
   case "pagamentoCredito":
 
-    $aRetorno = array(
+    $aRetorno = [
       "erro" => false,
       "message" => urlencode("Processamento efetuado com sucesso")
-    );
+    ];
 
     try {
 
@@ -369,10 +369,10 @@ switch ($oParam->exec) {
     } catch (Exception $oException) {
 
       db_fim_transacao(true);
-      $aRetorno = array(
+      $aRetorno = [
         "erro" => true,
         "message" => urlencode($oException->getMessage())
-      );
+      ];
     }
 
     echo $oJson->encode($aRetorno);
@@ -381,10 +381,10 @@ switch ($oParam->exec) {
 
   case "getCreditoCorrigido":
 
-    $aRetorno = array(
+    $aRetorno = [
       "erro" => false,
       "message" => false,
-    );
+    ];
 
     try {
 
@@ -393,10 +393,10 @@ switch ($oParam->exec) {
 
     } catch (Exception $oException) {
 
-      $aRetorno = array(
+      $aRetorno = [
         "erro" => true,
         "message" => $oException->getMessage()
-      );
+      ];
     }
 
     echo $oJson->encode($aRetorno);
@@ -404,7 +404,7 @@ switch ($oParam->exec) {
 
   case "compensacaoCredito":
 
-    $aRetorno = array();
+    $aRetorno = [];
     $aRetorno["erro"]  = false;
     $aRetorno["message"] = urlencode("Processamento efetuado com sucesso");
 
@@ -456,7 +456,7 @@ switch ($oParam->exec) {
         break;
   case "exluirPagamentoParcial":
 
-    $aRetorno = array();
+    $aRetorno = [];
     $aRetorno["status"]  = 1;
     $aRetorno["message"] = urlencode("Processamento efetuado com sucesso");
 
@@ -480,14 +480,10 @@ switch ($oParam->exec) {
       $oDadosPagtoParcial    = db_utils::getCollectionByRecord($rsDadosPagtoParcial);
 
       $sSql = $oDaoAbatimentoArreckey->sql_query(null, 'k128_sequencial', null, 'k128_abatimento = ' . $oParam->iAbatimento);
-      $sequencialAbatimentoArreckey = db_utils::makeCollectionFromRecord(db_query($sSql), function($item) {
-          return $item->k128_sequencial;
-      });
+      $sequencialAbatimentoArreckey = db_utils::makeCollectionFromRecord(db_query($sSql), fn($item) => $item->k128_sequencial);
 
       $sSql = $oDaoAbatimentoArreckeyArrecadCompos->sql_query(null, 'k129_arrecadcompos', null, 'k129_abatimentoarreckey IN(' . implode(',', $sequencialAbatimentoArreckey) . ')');
-      $sequencialArreCadCompos = db_utils::makeFromRecord(db_query($sSql), function($item) {
-          return $item->k129_arrecadcompos;
-      });
+      $sequencialArreCadCompos = db_utils::makeFromRecord(db_query($sSql), fn($item) => $item->k129_arrecadcompos);
 
       /*
        * Inicio exclusão do abatimento

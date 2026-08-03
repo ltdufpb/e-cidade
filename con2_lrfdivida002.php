@@ -43,8 +43,8 @@ if (!isset($arqinclude)){
 	$clconrelinfo   = new cl_conrelinfo;
   $cldb_config  = new cl_db_config;
 
-	parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-	db_postmemory($HTTP_SERVER_VARS);
+	parse_str((string) $_SERVER['QUERY_STRING'], $result);
+	db_postmemory($_SERVER);
 
 }
 
@@ -62,14 +62,14 @@ if ($clconrelinfo->numrows > 0 ){
 
 }
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
   } else {
@@ -92,13 +92,13 @@ $head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
 // verifica se foi informada datas iniciais e finais
 $usa_datas = false;
-if (strlen($dtini)>5 && strlen($dtfin)>5){
+if (strlen((string) $dtini)>5 && strlen((string) $dtfin)>5){
   $usa_datas = true;
 }
 
 $dt     = data_periodo($anousu,$periodo);
-$dt_ini = split("-",$dt[0]);
-$dt_fin = split("-",$dt[1]);
+$dt_ini = preg_split("#\\-#m",(string) $dt[0]);
+$dt_fin = preg_split("#\\-#m",(string) $dt[1]);
 
 $period = "PERIODO: ".strtoupper(db_mes("01"))." A ".strtoupper(db_mes($dt_fin[1]))." DE ".$anousu;
 
@@ -165,7 +165,7 @@ if ($periodo=='1Q'){
 */
 
 if ($usa_datas==true) {
-  $dt = split('-',$dtfin);  // mktime -- (mes,dia,ano)
+  $dt = preg_split('#\-#m',(string) $dtfin);  // mktime -- (mes,dia,ano)
   $dtini_ant = date('Y-m-d',mktime(0,0,0,$dt[1],$dt[2]-364,$dt[0]));
 }
 
@@ -249,7 +249,7 @@ for ($linha=1;$linha<=26;$linha++){
 }  
 
 // exercico + primeiro quadrimestre ou seleção por periodo informado
-for($i=0;$i< pg_numrows($result_01);$i++) {
+for($i=0;$i< pg_num_rows($result_01);$i++) {
   db_fieldsmemory($result_01,$i);
   
   for ($linha=1;$linha<=16;$linha++){
@@ -264,7 +264,7 @@ for($i=0;$i< pg_numrows($result_01);$i++) {
 }
 
 // segundo quadrimestre e terceiro quadrimestre
-for($i=0;$i< pg_numrows($result_02);$i++) {
+for($i=0;$i< pg_num_rows($result_02);$i++) {
   db_fieldsmemory($result_02,$i);
   
   for ($linha=1;$linha<=16;$linha++){
@@ -279,7 +279,7 @@ for($i=0;$i< pg_numrows($result_02);$i++) {
 
 /////////// atribuição de valores
 for ($i=1;$i<=4;$i++) {
-  $pp = array('1'=>'ano','2'=>'quad1','3'=>'quad2','4'=>'quad3');
+  $pp = ['1'=>'ano','2'=>'quad1','3'=>'quad2','4'=>'quad3'];
   
   // atribuições diretas
   $texto[2]  [$pp[$i]] =  $parametro[1][$pp[$i]];//div mobiliaria
@@ -391,7 +391,7 @@ if ($usa_datas == false ){
 
 // --
 
-$pcol = array(1=>'ano',2=>'quad1',3=>'quad2',4=>'quad3');
+$pcol = [1=>'ano',2=>'quad1',3=>'quad2',4=>'quad3'];
 
 if (!isset($arqinclude)){
 
@@ -879,7 +879,7 @@ if (!isset($arqinclude)){
 	$pdf->ln($linhas);
 	// assinaturas
 
-	assinaturas(&$pdf,&$classinatura,'GF');
+	assinaturas($pdf,$classinatura,'GF');
 
 	$pdf->Output();
 

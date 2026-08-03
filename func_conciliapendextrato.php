@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conciliapendextrato_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconciliapendextrato = new cl_conciliapendextrato;
 $clconciliapendextrato->rotulo->label("k88_sequencial");
 $clconciliapendextrato->rotulo->label("k88_extratolinha");
@@ -98,9 +98,9 @@ $clconciliapendextrato->rotulo->label("k88_extratolinha");
         }else{
            $sql = $clconciliapendextrato->sql_query("",$campos,"k88_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k88_extratolinha)){
-          $repassa = array("chave_k88_sequencial"=>$chave_k88_sequencial,"chave_k88_extratolinha"=>$chave_k88_extratolinha);
+          $repassa = ["chave_k88_sequencial"=>$chave_k88_sequencial,"chave_k88_extratolinha"=>$chave_k88_extratolinha];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

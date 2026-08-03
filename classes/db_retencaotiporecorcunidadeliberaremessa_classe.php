@@ -29,7 +29,7 @@ class cl_retencaotiporecorcunidadeliberaremessa
     public function __construct()
     {
         $this->rotulo = new rotulo("retencaotiporecorcunidadeliberaremessa"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -98,7 +98,7 @@ class cl_retencaotiporecorcunidadeliberaremessa
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Libera Unidade para Configurar Retenção na Agenda ($this->e287_orgao."-".$this->e287_unidade."-".$this->e287_instituicao) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Libera Unidade para Configurar Retenção na Agenda já Cadastrado";
@@ -127,14 +127,14 @@ class cl_retencaotiporecorcunidadeliberaremessa
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1014458,'$this->e287_orgao','I')");
          $resac = db_query("insert into db_acountkey values($acount,1014459,'$this->e287_unidade','I')");
          $resac = db_query("insert into db_acountkey values($acount,1014460,'$this->e287_instituicao','I')");
-         $resac = db_query("insert into db_acount values($acount,1010983,1014458,'','".AddSlashes(pg_result($resaco,0,'e287_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010983,1014459,'','".AddSlashes(pg_result($resaco,0,'e287_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010983,1014460,'','".AddSlashes(pg_result($resaco,0,'e287_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010983,1014458,'','".AddSlashes(pg_fetch_result($resaco,0,'e287_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010983,1014459,'','".AddSlashes(pg_fetch_result($resaco,0,'e287_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010983,1014460,'','".AddSlashes(pg_fetch_result($resaco,0,'e287_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -145,10 +145,10 @@ class cl_retencaotiporecorcunidadeliberaremessa
       $this->atualizacampos();
      $sql = " update retencaotiporecorcunidadeliberaremessa set ";
      $virgula = "";
-     if(trim($this->e287_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e287_orgao"])){ 
+     if(trim((string) $this->e287_orgao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e287_orgao"])){ 
        $sql  .= $virgula." e287_orgao = $this->e287_orgao ";
        $virgula = ",";
-       if(trim($this->e287_orgao) == null ){ 
+       if(trim((string) $this->e287_orgao) == null ){ 
          $this->erro_sql = " Campo Orgão não informado.";
          $this->erro_campo = "e287_orgao";
          $this->erro_banco = "";
@@ -158,10 +158,10 @@ class cl_retencaotiporecorcunidadeliberaremessa
          return false;
        }
      }
-     if(trim($this->e287_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e287_unidade"])){ 
+     if(trim((string) $this->e287_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e287_unidade"])){ 
        $sql  .= $virgula." e287_unidade = $this->e287_unidade ";
        $virgula = ",";
-       if(trim($this->e287_unidade) == null ){ 
+       if(trim((string) $this->e287_unidade) == null ){ 
          $this->erro_sql = " Campo Unidade não informado.";
          $this->erro_campo = "e287_unidade";
          $this->erro_banco = "";
@@ -171,10 +171,10 @@ class cl_retencaotiporecorcunidadeliberaremessa
          return false;
        }
      }
-     if(trim($this->e287_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e287_instituicao"])){ 
+     if(trim((string) $this->e287_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e287_instituicao"])){ 
        $sql  .= $virgula." e287_instituicao = $this->e287_instituicao ";
        $virgula = ",";
-       if(trim($this->e287_instituicao) == null ){ 
+       if(trim((string) $this->e287_instituicao) == null ){ 
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "e287_instituicao";
          $this->erro_banco = "";
@@ -204,17 +204,17 @@ class cl_retencaotiporecorcunidadeliberaremessa
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1014458,'$this->e287_orgao','A')");
            $resac = db_query("insert into db_acountkey values($acount,1014459,'$this->e287_unidade','A')");
            $resac = db_query("insert into db_acountkey values($acount,1014460,'$this->e287_instituicao','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e287_orgao"]) || $this->e287_orgao != "")
-             $resac = db_query("insert into db_acount values($acount,1010983,1014458,'".AddSlashes(pg_result($resaco,$conresaco,'e287_orgao'))."','$this->e287_orgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010983,1014458,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e287_orgao'))."','$this->e287_orgao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e287_unidade"]) || $this->e287_unidade != "")
-             $resac = db_query("insert into db_acount values($acount,1010983,1014459,'".AddSlashes(pg_result($resaco,$conresaco,'e287_unidade'))."','$this->e287_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010983,1014459,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e287_unidade'))."','$this->e287_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e287_instituicao"]) || $this->e287_instituicao != "")
-             $resac = db_query("insert into db_acount values($acount,1010983,1014460,'".AddSlashes(pg_result($resaco,$conresaco,'e287_instituicao'))."','$this->e287_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010983,1014460,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e287_instituicao'))."','$this->e287_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -268,14 +268,14 @@ class cl_retencaotiporecorcunidadeliberaremessa
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1014458,'$e287_orgao','E')");
            $resac  = db_query("insert into db_acountkey values($acount,1014459,'$e287_unidade','E')");
            $resac  = db_query("insert into db_acountkey values($acount,1014460,'$e287_instituicao','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010983,1014458,'','".AddSlashes(pg_result($resaco,$iresaco,'e287_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010983,1014459,'','".AddSlashes(pg_result($resaco,$iresaco,'e287_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010983,1014460,'','".AddSlashes(pg_result($resaco,$iresaco,'e287_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010983,1014458,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e287_orgao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010983,1014459,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e287_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010983,1014460,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e287_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

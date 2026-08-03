@@ -95,13 +95,13 @@ if ((int)$_SESSION['DB_itemmenu_acessado'] === 228110) {
 	$this->objpdf->text($xcol+108,$xlin+4,'Dados do Credor:');
 	$this->objpdf->Setfont('Arial','B',8);
 	$this->objpdf->text($xcol+107,$xlin+7,'Numcgm');
-        $this->objpdf->text($xcol+140,$xlin+7,(strlen($this->cnpj) == 11?'CPF':'CNPJ'));
+        $this->objpdf->text($xcol+140,$xlin+7,(strlen((string) $this->cnpj) == 11?'CPF':'CNPJ'));
 	$this->objpdf->text($xcol+107,$xlin+11,'Nome');
 	$this->objpdf->text($xcol+107,$xlin+15,'Endereço');
 	$this->objpdf->text($xcol+107,$xlin+19,'Município');
 	$this->objpdf->Setfont('Arial','',8);
 	$this->objpdf->text($xcol+124,$xlin+7,': '.$this->numcgm);
-	$this->objpdf->text($xcol+149,$xlin+7,':  '.(strlen($this->cnpj) == 11?db_formatar($this->cnpj,'cpf'):db_formatar($this->cnpj,'cnpj')).'  Fone: '.$this->telefone);
+	$this->objpdf->text($xcol+149,$xlin+7,':  '.(strlen((string) $this->cnpj) == 11?db_formatar($this->cnpj,'cpf'):db_formatar($this->cnpj,'cnpj')).'  Fone: '.$this->telefone);
 	$this->objpdf->text($xcol+124,$xlin+11,': '.$this->nome);
 	$this->objpdf->text($xcol+124,$xlin+15,': '.$this->ender.'  '.$this->compl);
 	$this->objpdf->text($xcol+124,$xlin+19,': '.$this->munic.'-'.$this->uf.'    CEP : '.$this->cep);
@@ -176,10 +176,10 @@ if ((int)$_SESSION['DB_itemmenu_acessado'] === 228110) {
 	   }
 
 	   
-           if(strtoupper(trim($this->municpref)) == 'SAPIRANGA'){
+           if(strtoupper(trim((string) $this->municpref)) == 'SAPIRANGA'){
 	      $this->objpdf->line($xcol+10,$xlin+210,$xcol+55,$xlin+210);
 	      $this->objpdf->SetFont('Arial','',6);
-	      $this->objpdf->text($xcol+29-(strlen($this->assinatura2)/2),$xlin+212,$this->assinatura2);
+	      $this->objpdf->text($xcol+29-(strlen((string) $this->assinatura2)/2),$xlin+212,$this->assinatura2);
 	   }						       
 
 	        $this->objpdf->line($xcol+73,$xlin+225,$xcol+125,$xlin+225);

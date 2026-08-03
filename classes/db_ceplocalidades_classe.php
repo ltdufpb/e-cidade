@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE ceplocalidades
 class cl_ceplocalidades { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cp05_codlocalidades = 0; 
-   var $cp05_sigla = null; 
-   var $cp05_localidades = null; 
-   var $cp05_cepinicial = null; 
-   var $cp05_cepfinal = null; 
-   var $cp05_tipo = null; 
-   var $cp05_situacao = null; 
-   var $cp05_codsubordinacao = 0; 
+   public $cp05_codlocalidades = 0; 
+   public $cp05_sigla = null; 
+   public $cp05_localidades = null; 
+   public $cp05_cepinicial = null; 
+   public $cp05_cepfinal = null; 
+   public $cp05_tipo = null; 
+   public $cp05_situacao = null; 
+   public $cp05_codsubordinacao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cp05_codlocalidades = int8 = Codigo da Localidade 
                  cp05_sigla = varchar(2) = Sigla Estado 
                  cp05_localidades = varchar(72) = Cadastro de Localidades 
@@ -62,10 +62,10 @@ class cl_ceplocalidades {
                  cp05_codsubordinacao = int8 = Codigo Subordinação 
                  ";
    //funcao construtor da classe 
-   function cl_ceplocalidades() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ceplocalidades"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -167,10 +167,10 @@ class cl_ceplocalidades {
          $this->erro_status = "0";
          return false; 
        }
-       $this->cp05_codlocalidades = pg_result($result,0,0); 
+       $this->cp05_codlocalidades = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from ceplocalidades_cp05_codlocalidades_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cp05_codlocalidades)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cp05_codlocalidades)){
          $this->erro_sql = " Campo cp05_codlocalidades maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -212,7 +212,7 @@ class cl_ceplocalidades {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Localidades ($this->cp05_codlocalidades) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Localidades já Cadastrado";
@@ -236,17 +236,17 @@ class cl_ceplocalidades {
      $resaco = $this->sql_record($this->sql_query_file($this->cp05_codlocalidades));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7189,'$this->cp05_codlocalidades','I')");
-       $resac = db_query("insert into db_acount values($acount,1196,7189,'','".AddSlashes(pg_result($resaco,0,'cp05_codlocalidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1196,7190,'','".AddSlashes(pg_result($resaco,0,'cp05_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1196,7191,'','".AddSlashes(pg_result($resaco,0,'cp05_localidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1196,7192,'','".AddSlashes(pg_result($resaco,0,'cp05_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1196,7193,'','".AddSlashes(pg_result($resaco,0,'cp05_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1196,7194,'','".AddSlashes(pg_result($resaco,0,'cp05_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1196,7195,'','".AddSlashes(pg_result($resaco,0,'cp05_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1196,7196,'','".AddSlashes(pg_result($resaco,0,'cp05_codsubordinacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1196,7189,'','".AddSlashes(pg_fetch_result($resaco,0,'cp05_codlocalidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1196,7190,'','".AddSlashes(pg_fetch_result($resaco,0,'cp05_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1196,7191,'','".AddSlashes(pg_fetch_result($resaco,0,'cp05_localidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1196,7192,'','".AddSlashes(pg_fetch_result($resaco,0,'cp05_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1196,7193,'','".AddSlashes(pg_fetch_result($resaco,0,'cp05_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1196,7194,'','".AddSlashes(pg_fetch_result($resaco,0,'cp05_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1196,7195,'','".AddSlashes(pg_fetch_result($resaco,0,'cp05_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1196,7196,'','".AddSlashes(pg_fetch_result($resaco,0,'cp05_codsubordinacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -255,10 +255,10 @@ class cl_ceplocalidades {
       $this->atualizacampos();
      $sql = " update ceplocalidades set ";
      $virgula = "";
-     if(trim($this->cp05_codlocalidades)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_codlocalidades"])){ 
+     if(trim((string) $this->cp05_codlocalidades)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_codlocalidades"])){ 
        $sql  .= $virgula." cp05_codlocalidades = $this->cp05_codlocalidades ";
        $virgula = ",";
-       if(trim($this->cp05_codlocalidades) == null ){ 
+       if(trim((string) $this->cp05_codlocalidades) == null ){ 
          $this->erro_sql = " Campo Codigo da Localidade nao Informado.";
          $this->erro_campo = "cp05_codlocalidades";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_ceplocalidades {
          return false;
        }
      }
-     if(trim($this->cp05_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_sigla"])){ 
+     if(trim((string) $this->cp05_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_sigla"])){ 
        $sql  .= $virgula." cp05_sigla = '$this->cp05_sigla' ";
        $virgula = ",";
-       if(trim($this->cp05_sigla) == null ){ 
+       if(trim((string) $this->cp05_sigla) == null ){ 
          $this->erro_sql = " Campo Sigla Estado nao Informado.";
          $this->erro_campo = "cp05_sigla";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_ceplocalidades {
          return false;
        }
      }
-     if(trim($this->cp05_localidades)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_localidades"])){ 
+     if(trim((string) $this->cp05_localidades)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_localidades"])){ 
        $sql  .= $virgula." cp05_localidades = '$this->cp05_localidades' ";
        $virgula = ",";
-       if(trim($this->cp05_localidades) == null ){ 
+       if(trim((string) $this->cp05_localidades) == null ){ 
          $this->erro_sql = " Campo Cadastro de Localidades nao Informado.";
          $this->erro_campo = "cp05_localidades";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_ceplocalidades {
          return false;
        }
      }
-     if(trim($this->cp05_cepinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_cepinicial"])){ 
+     if(trim((string) $this->cp05_cepinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_cepinicial"])){ 
        $sql  .= $virgula." cp05_cepinicial = '$this->cp05_cepinicial' ";
        $virgula = ",";
-       if(trim($this->cp05_cepinicial) == null ){ 
+       if(trim((string) $this->cp05_cepinicial) == null ){ 
          $this->erro_sql = " Campo Cep inicial nao Informado.";
          $this->erro_campo = "cp05_cepinicial";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_ceplocalidades {
          return false;
        }
      }
-     if(trim($this->cp05_cepfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_cepfinal"])){ 
+     if(trim((string) $this->cp05_cepfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_cepfinal"])){ 
        $sql  .= $virgula." cp05_cepfinal = '$this->cp05_cepfinal' ";
        $virgula = ",";
-       if(trim($this->cp05_cepfinal) == null ){ 
+       if(trim((string) $this->cp05_cepfinal) == null ){ 
          $this->erro_sql = " Campo Cep final nao Informado.";
          $this->erro_campo = "cp05_cepfinal";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_ceplocalidades {
          return false;
        }
      }
-     if(trim($this->cp05_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_tipo"])){ 
+     if(trim((string) $this->cp05_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_tipo"])){ 
        $sql  .= $virgula." cp05_tipo = '$this->cp05_tipo' ";
        $virgula = ",";
-       if(trim($this->cp05_tipo) == null ){ 
+       if(trim((string) $this->cp05_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "cp05_tipo";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_ceplocalidades {
          return false;
        }
      }
-     if(trim($this->cp05_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_situacao"])){ 
+     if(trim((string) $this->cp05_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_situacao"])){ 
        $sql  .= $virgula." cp05_situacao = '$this->cp05_situacao' ";
        $virgula = ",";
-       if(trim($this->cp05_situacao) == null ){ 
+       if(trim((string) $this->cp05_situacao) == null ){ 
          $this->erro_sql = " Campo Situação nao Informado.";
          $this->erro_campo = "cp05_situacao";
          $this->erro_banco = "";
@@ -346,10 +346,10 @@ class cl_ceplocalidades {
          return false;
        }
      }
-     if(trim($this->cp05_codsubordinacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_codsubordinacao"])){ 
+     if(trim((string) $this->cp05_codsubordinacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp05_codsubordinacao"])){ 
        $sql  .= $virgula." cp05_codsubordinacao = $this->cp05_codsubordinacao ";
        $virgula = ",";
-       if(trim($this->cp05_codsubordinacao) == null ){ 
+       if(trim((string) $this->cp05_codsubordinacao) == null ){ 
          $this->erro_sql = " Campo Codigo Subordinação nao Informado.";
          $this->erro_campo = "cp05_codsubordinacao";
          $this->erro_banco = "";
@@ -367,25 +367,25 @@ class cl_ceplocalidades {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7189,'$this->cp05_codlocalidades','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp05_codlocalidades"]))
-           $resac = db_query("insert into db_acount values($acount,1196,7189,'".AddSlashes(pg_result($resaco,$conresaco,'cp05_codlocalidades'))."','$this->cp05_codlocalidades',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1196,7189,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp05_codlocalidades'))."','$this->cp05_codlocalidades',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp05_sigla"]))
-           $resac = db_query("insert into db_acount values($acount,1196,7190,'".AddSlashes(pg_result($resaco,$conresaco,'cp05_sigla'))."','$this->cp05_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1196,7190,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp05_sigla'))."','$this->cp05_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp05_localidades"]))
-           $resac = db_query("insert into db_acount values($acount,1196,7191,'".AddSlashes(pg_result($resaco,$conresaco,'cp05_localidades'))."','$this->cp05_localidades',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1196,7191,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp05_localidades'))."','$this->cp05_localidades',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp05_cepinicial"]))
-           $resac = db_query("insert into db_acount values($acount,1196,7192,'".AddSlashes(pg_result($resaco,$conresaco,'cp05_cepinicial'))."','$this->cp05_cepinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1196,7192,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp05_cepinicial'))."','$this->cp05_cepinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp05_cepfinal"]))
-           $resac = db_query("insert into db_acount values($acount,1196,7193,'".AddSlashes(pg_result($resaco,$conresaco,'cp05_cepfinal'))."','$this->cp05_cepfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1196,7193,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp05_cepfinal'))."','$this->cp05_cepfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp05_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1196,7194,'".AddSlashes(pg_result($resaco,$conresaco,'cp05_tipo'))."','$this->cp05_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1196,7194,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp05_tipo'))."','$this->cp05_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp05_situacao"]))
-           $resac = db_query("insert into db_acount values($acount,1196,7195,'".AddSlashes(pg_result($resaco,$conresaco,'cp05_situacao'))."','$this->cp05_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1196,7195,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp05_situacao'))."','$this->cp05_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp05_codsubordinacao"]))
-           $resac = db_query("insert into db_acount values($acount,1196,7196,'".AddSlashes(pg_result($resaco,$conresaco,'cp05_codsubordinacao'))."','$this->cp05_codsubordinacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1196,7196,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp05_codsubordinacao'))."','$this->cp05_codsubordinacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -430,17 +430,17 @@ class cl_ceplocalidades {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7189,'$cp05_codlocalidades','E')");
-         $resac = db_query("insert into db_acount values($acount,1196,7189,'','".AddSlashes(pg_result($resaco,$iresaco,'cp05_codlocalidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1196,7190,'','".AddSlashes(pg_result($resaco,$iresaco,'cp05_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1196,7191,'','".AddSlashes(pg_result($resaco,$iresaco,'cp05_localidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1196,7192,'','".AddSlashes(pg_result($resaco,$iresaco,'cp05_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1196,7193,'','".AddSlashes(pg_result($resaco,$iresaco,'cp05_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1196,7194,'','".AddSlashes(pg_result($resaco,$iresaco,'cp05_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1196,7195,'','".AddSlashes(pg_result($resaco,$iresaco,'cp05_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1196,7196,'','".AddSlashes(pg_result($resaco,$iresaco,'cp05_codsubordinacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1196,7189,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp05_codlocalidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1196,7190,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp05_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1196,7191,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp05_localidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1196,7192,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp05_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1196,7193,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp05_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1196,7194,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp05_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1196,7195,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp05_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1196,7196,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp05_codsubordinacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from ceplocalidades
@@ -500,7 +500,7 @@ class cl_ceplocalidades {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:ceplocalidades";
@@ -514,7 +514,7 @@ class cl_ceplocalidades {
    function sql_query ( $cp05_codlocalidades=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,7 +536,7 @@ class cl_ceplocalidades {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -548,7 +548,7 @@ class cl_ceplocalidades {
    function sql_query_file ( $cp05_codlocalidades=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -569,7 +569,7 @@ class cl_ceplocalidades {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

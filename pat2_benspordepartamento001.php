@@ -53,7 +53,7 @@ $postgresResourceOrgao = $oOrgao->sql_record(
   )
 );
 
-$arrayOrgao = array(0 => 'Selecione um Órgão');
+$arrayOrgao = [0 => 'Selecione um Órgão'];
 while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
   $arrayOrgao[$row['o40_orgao']] = $row['o40_descr'];
 }
@@ -145,7 +145,7 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
                 db_input('lista_departamento', 10, true, 3, 'hidden', 3);
                 db_input('lista_divisaodepartamento', 10, true, 3, 'hidden', 3);
 
-                $aTipos = array(0 => 'Sem as divisões selecionadas', 1 => 'Com as divisões selecionadas');
+                $aTipos = [0 => 'Sem as divisões selecionadas', 1 => 'Com as divisões selecionadas'];
                 db_select('usardivisao', $aTipos, true, 1);
 
                 $oDptoDivisao                                =  new cl_arquivo_auxiliar();
@@ -339,9 +339,9 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
             <td>Convênio:</td>
             <td>
               <?php
-                $aConvenios = array (1 => "Ambos",
+                $aConvenios =  [1 => "Ambos",
                                      2 => "Apenas vinculado a convênios",
-                                     3 => "Apenas não vinculado a convênios");
+                                     3 => "Apenas não vinculado a convênios"];
               db_select("vinculoconvenio", $aConvenios, true, 2, "onchange='js_showCedentes()'");
               ?>
             </td>
@@ -384,7 +384,7 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
             <td>Características Adicionais do Bem:</td>
             <td>
               <?php
-                $aCaracteristicaAdicional = array("f" => "Não", "t" => "Sim");
+                $aCaracteristicaAdicional = ["f" => "Não", "t" => "Sim"];
                 db_select("lCaracteristicaAdicional", $aCaracteristicaAdicional, true, 1);
               ?>
             </td>
@@ -393,7 +393,7 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
             <td>Imprimir Valor da Aquisição:</td>
             <td>
               <?php
-                $aValorAquisicao = array("f" => "Não", "t" => "Sim");
+                $aValorAquisicao = ["f" => "Não", "t" => "Sim"];
                 db_select("lImprimeValorAquisicao", $aValorAquisicao, true, 1);
               ?>
             </td>
@@ -404,7 +404,7 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
             </td>
             <td>
               <?php
-                $filtroColunas = array("1" => "Não", "2" => "Sim");
+                $filtroColunas = ["1" => "Não", "2" => "Sim"];
                 db_select("filtroColunas", $filtroColunas, true, 1);
               ?>
             </td>
@@ -413,7 +413,7 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
             <td>Listar:</td>
             <td>
               <?php
-			          $aListarBens = array("1" => "Todos", "2" => "Não Baixados", "3" => "Baixados");
+			          $aListarBens = ["1" => "Todos", "2" => "Não Baixados", "3" => "Baixados"];
 			          db_select("iListarBens", $aListarBens, true, 1);
               ?>
             </td>
@@ -422,7 +422,7 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
             <td>Ordem:</td>
             <td>
               <?php
-			          $aOrdemBens = array("1" => "Placa", "2" => "Código", "3" => "Descricao");
+			          $aOrdemBens = ["1" => "Placa", "2" => "Código", "3" => "Descricao"];
 			          db_select("iOrdem", $aOrdemBens, true, 1);
               ?>
             </td>
@@ -431,7 +431,7 @@ while ($row = pg_fetch_assoc($postgresResourceOrgao)) {
             <td>Quebra de Página:</td>
             <td>
               <?php
-			          $aQuebraPagina = array("1" => "Não", "2" => "Departamento / Divisão");
+			          $aQuebraPagina = ["1" => "Não", "2" => "Departamento / Divisão"];
 			          db_select("iQuebraPagina", $aQuebraPagina, true, 1);
               ?>
             </td>

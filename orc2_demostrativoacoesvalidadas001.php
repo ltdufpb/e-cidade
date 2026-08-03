@@ -46,7 +46,7 @@ $clrotulo->label("o01_anofinal");
 $clrotulo->label("o01_sequencial");
 $clrotulo->label("o01_numerolei");
 $db_opcao = 1;
-$aAnos    = array();
+$aAnos    = [];
 $lProcessaManual = false;
 if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
 
@@ -169,7 +169,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
               </td>
               <td>
                 <?php 
-				  				$aRodape = array("s"=>"Sim","n"=>"Não");
+				  				$aRodape = ["s"=>"Sim","n"=>"Não"];
                   db_select("selrodape",$aRodape,true,1,"");
                 ?>
               </td>
@@ -180,7 +180,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
               </td>
               <td>
                 <?php 
-				  				$aForma = array("a"=>"Analítico","s"=>"Sintético");
+				  				$aForma = ["a"=>"Analítico","s"=>"Sintético"];
                   db_select("selforma",$aForma,true,1,"");
                 ?>
               </td>
@@ -191,7 +191,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
               </td>
               <td>
                 <?php 
-                  $aQuebra = array("true"=>"Sim","false"=>"Não");
+                  $aQuebra = ["true"=>"Sim","false"=>"Não"];
                   db_select("selquebra",$aQuebra,true,1,"");
                 ?>
               </td>
@@ -202,10 +202,10 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
               </td>
               <td>
                 <?php 
-                  $aModelo = array(
+                  $aModelo = [
                                    1 => "PPA",
                                    2 => "LDO"
-                                  );
+                                  ];
                   db_select("selmodelo",$aModelo,true,1,"onchange='js_setModelo(this.value)'");
                 ?>
               </td>
@@ -228,10 +228,10 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
               </td>
               <td>
                 <?php 
-                  $aValores = array(
+                  $aValores = [
                                    1 => "SIM",
                                    2 => "NAO"
-                                  );
+                                  ];
                   db_select("imprimevalores",$aValores,true,1,"");
                 ?>
               </td>
@@ -299,7 +299,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
             </tr>
 			<tr>
 			  <td><strong>Layout:</strong></td>
-			  <td> <?php  $aLayout = array("1"=>"Layout 1","2"=>"Layout 2");
+			  <td> <?php  $aLayout = ["1"=>"Layout 1","2"=>"Layout 2"];
                   db_select("layout",$aLayout,true,1,""); ?></td>
 			 </tr>
           </table>

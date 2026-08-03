@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("face"=>"Face","facevalor"=>"Valor"); 
-	 $clcriaabas->src = array("face"=>"cad1_face004.php");
-	 $clcriaabas->disabled   =  array("facevalor"=>"true"); 
+	 $clcriaabas->identifica = ["face"=>"Face","facevalor"=>"Valor"]; 
+	 $clcriaabas->src = ["face"=>"cad1_face004.php"];
+	 $clcriaabas->disabled   =  ["facevalor"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

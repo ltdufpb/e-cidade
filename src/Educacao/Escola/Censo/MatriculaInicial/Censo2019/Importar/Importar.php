@@ -246,13 +246,13 @@ class Importar implements ImportarInterface
         );
         $complemento = "não possui valor ou o valor informado está inválido.";
         $codigoTurmaInep = $registro->getCodigoTurmaInep();
-        if (empty($codigoTurmaInep) || strlen($codigoTurmaInep) > 10) {
+        if (empty($codigoTurmaInep) || strlen((string) $codigoTurmaInep) > 10) {
             $mensagem = sprintf('%s campo "Código da turma - INEP %s', $msgErro, $complemento);
             $log->add(LogImportarCodigoInep::ERRO, $mensagem);
             $registroValido = false;
         }
         $codigoInep = $registro->getCodigoInep();
-        if (empty($codigoInep) || strlen($codigoInep) != 12) {
+        if (empty($codigoInep) || strlen((string) $codigoInep) != 12) {
             $mensagem = sprintf(
                 '%s campo "Código de identificação única do aluno - INEP %s',
                 $msgErro,
@@ -263,7 +263,7 @@ class Importar implements ImportarInterface
         }
 
         $codigoMatricula = $registro->getCodigoMatricula();
-        if (empty($codigoMatricula) || strlen($codigoMatricula) > 12) {
+        if (empty($codigoMatricula) || strlen((string) $codigoMatricula) > 12) {
             $mensagem = sprintf('%s campo "Código da Matrícula - INEP %s', $msgErro, $complemento);
             $log->add(LogImportarCodigoInep::ERRO, $mensagem);
             $registroValido = false;

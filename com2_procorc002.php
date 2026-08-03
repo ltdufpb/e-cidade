@@ -80,12 +80,12 @@ $resultpref        = db_query($sqlpref);
 db_fieldsmemory($resultpref,0);
 $rsParam           = $clpcparam->sql_record($clpcparam->sql_query(db_getsession("DB_instit"),"*"));
 $oParam            = db_utils::fieldsMemory($rsParam,0);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $fornecedores = "";
 $vir = "";
 if(isset($forne) && $forne != "branco"){
-  $arr_forne = split("forn_",$forne);
+  $arr_forne = preg_split("#forn_#m",$forne);
   for($i=1;$i<sizeof($arr_forne);$i++){
     $fornecedores .= $vir.$arr_forne[$i];
     $vir = ",";
@@ -191,7 +191,7 @@ $sqlparag = "select db02_texto
 
 $resparag = @db_query($sqlparag);
 
-if (@pg_numrows($resparag) > 0){
+if (@pg_num_rows($resparag) > 0){
      db_fieldsmemory($resparag,0);
      $pdf1->declaracao = $db02_texto;
 } else {
@@ -224,7 +224,7 @@ for($i=0;$i<$numrows_pcorcamforne;$i++){
   $pdf1->labdados    = "PROCESSO DE COMPRAS N";
   $pdf1->labtitulo   = "Proc. compras";
   $pdf1->prefeitura  = @$nomeinst;
-  $pdf1->enderpref   = trim(@$ender).",".@$numero;
+  $pdf1->enderpref   = trim((string) @$ender).",".@$numero;
   $pdf1->municpref   = @$munic;
   $pdf1->telefpref   = @$telef;
   $pdf1->logo        = @$logo;
@@ -258,8 +258,8 @@ for($i=0;$i<$numrows_pcorcamforne;$i++){
   $pdf1->orccotacao  = $cotacaoprevia;
 
   if(isset($z01_cep) && $z01_cep!=""){
-    $ah = substr(@$z01_cep,0,5);
-    $dh = substr(@$z01_cep,5,3);
+    $ah = substr((string) @$z01_cep,0,5);
+    $dh = substr((string) @$z01_cep,5,3);
     $z01_cep = $ah.'-'.$dh;
   }
 

@@ -193,7 +193,7 @@ $clrotulo->label("m63_codpcmater");
         </td>
         <td>
             <?php
-            $xx = array("t"=>"SIM","f"=>"NAO");
+            $xx = ["t"=>"SIM","f"=>"NAO"];
             db_select('m60_ativo',$xx,true,$db_opcao,"");
             ?>
         </td>
@@ -204,7 +204,7 @@ $clrotulo->label("m63_codpcmater");
         </td>
         <td>
             <?php
-            $xx = array("f"=>"NAO", "t"=>"SIM");
+            $xx = ["f"=>"NAO", "t"=>"SIM"];
             $m60_servico_disabled = $db_opcao != 1 ? "disabled" : "";
             db_select('m60_servico', $xx, true, $db_opcao, $m60_servico_disabled);
             ?>
@@ -383,7 +383,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_matmater.hide();
   <?php 
   if($db_opcao!=1) {
-    echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo "location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

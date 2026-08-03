@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE certidarqretorno
 class cl_certidarqretorno { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v84_sequencial = 0; 
-   var $v84_certidarqremessa = 0; 
-   var $v84_nomearq = null; 
-   var $v84_dtarquivo = null; 
-   var $v84_dtprocessamento_dia = null; 
-   var $v84_dtprocessamento_mes = null; 
-   var $v84_dtprocessamento_ano = null; 
-   var $v84_dtprocessamento = null; 
+   public $v84_sequencial = 0; 
+   public $v84_certidarqremessa = 0; 
+   public $v84_nomearq = null; 
+   public $v84_dtarquivo = null; 
+   public $v84_dtprocessamento_dia = null; 
+   public $v84_dtprocessamento_mes = null; 
+   public $v84_dtprocessamento_ano = null; 
+   public $v84_dtprocessamento = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v84_sequencial = int4 = Sequencial 
                  v84_certidarqremessa = int4 = Lista 
                  v84_nomearq = varchar(50) = Nome do Arquivo 
@@ -59,10 +59,10 @@ class cl_certidarqretorno {
                  v84_dtprocessamento = date = Data de processamento 
                  ";
    //funcao construtor da classe 
-   function cl_certidarqretorno() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certidarqretorno"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_certidarqretorno {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v84_sequencial = pg_result($result,0,0); 
+       $this->v84_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from certidarqretorno_v84_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v84_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v84_sequencial)){
          $this->erro_sql = " Campo v84_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_certidarqretorno {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "certidarqretorno ($this->v84_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "certidarqretorno já Cadastrado";
@@ -204,14 +204,14 @@ class cl_certidarqretorno {
      $resaco = $this->sql_record($this->sql_query_file($this->v84_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18175,'$this->v84_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3211,18175,'','".AddSlashes(pg_result($resaco,0,'v84_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3211,18176,'','".AddSlashes(pg_result($resaco,0,'v84_certidarqremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3211,18177,'','".AddSlashes(pg_result($resaco,0,'v84_nomearq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3211,18178,'','".AddSlashes(pg_result($resaco,0,'v84_dtarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3211,18179,'','".AddSlashes(pg_result($resaco,0,'v84_dtprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3211,18175,'','".AddSlashes(pg_fetch_result($resaco,0,'v84_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3211,18176,'','".AddSlashes(pg_fetch_result($resaco,0,'v84_certidarqremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3211,18177,'','".AddSlashes(pg_fetch_result($resaco,0,'v84_nomearq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3211,18178,'','".AddSlashes(pg_fetch_result($resaco,0,'v84_dtarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3211,18179,'','".AddSlashes(pg_fetch_result($resaco,0,'v84_dtprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_certidarqretorno {
       $this->atualizacampos();
      $sql = " update certidarqretorno set ";
      $virgula = "";
-     if(trim($this->v84_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v84_sequencial"])){ 
+     if(trim((string) $this->v84_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v84_sequencial"])){ 
        $sql  .= $virgula." v84_sequencial = $this->v84_sequencial ";
        $virgula = ",";
-       if(trim($this->v84_sequencial) == null ){ 
+       if(trim((string) $this->v84_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "v84_sequencial";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_certidarqretorno {
          return false;
        }
      }
-     if(trim($this->v84_certidarqremessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v84_certidarqremessa"])){ 
+     if(trim((string) $this->v84_certidarqremessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v84_certidarqremessa"])){ 
        $sql  .= $virgula." v84_certidarqremessa = $this->v84_certidarqremessa ";
        $virgula = ",";
-       if(trim($this->v84_certidarqremessa) == null ){ 
+       if(trim((string) $this->v84_certidarqremessa) == null ){ 
          $this->erro_sql = " Campo Lista nao Informado.";
          $this->erro_campo = "v84_certidarqremessa";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_certidarqretorno {
          return false;
        }
      }
-     if(trim($this->v84_nomearq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v84_nomearq"])){ 
+     if(trim((string) $this->v84_nomearq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v84_nomearq"])){ 
        $sql  .= $virgula." v84_nomearq = '$this->v84_nomearq' ";
        $virgula = ",";
-       if(trim($this->v84_nomearq) == null ){ 
+       if(trim((string) $this->v84_nomearq) == null ){ 
          $this->erro_sql = " Campo Nome do Arquivo nao Informado.";
          $this->erro_campo = "v84_nomearq";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_certidarqretorno {
          return false;
        }
      }
-     if(trim($this->v84_dtarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v84_dtarquivo"])){ 
+     if(trim((string) $this->v84_dtarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v84_dtarquivo"])){ 
        $sql  .= $virgula." v84_dtarquivo = '$this->v84_dtarquivo' ";
        $virgula = ",";
-       if(trim($this->v84_dtarquivo) == null ){ 
+       if(trim((string) $this->v84_dtarquivo) == null ){ 
          $this->erro_sql = " Campo Data do Arquivo de retorno nao Informado.";
          $this->erro_campo = "v84_dtarquivo";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_certidarqretorno {
          return false;
        }
      }
-     if(trim($this->v84_dtprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v84_dtprocessamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v84_dtprocessamento_dia"] !="") ){ 
+     if(trim((string) $this->v84_dtprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v84_dtprocessamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v84_dtprocessamento_dia"] !="") ){ 
        $sql  .= $virgula." v84_dtprocessamento = '$this->v84_dtprocessamento' ";
        $virgula = ",";
-       if(trim($this->v84_dtprocessamento) == null ){ 
+       if(trim((string) $this->v84_dtprocessamento) == null ){ 
          $this->erro_sql = " Campo Data de processamento nao Informado.";
          $this->erro_campo = "v84_dtprocessamento_dia";
          $this->erro_banco = "";
@@ -288,7 +288,7 @@ class cl_certidarqretorno {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v84_dtprocessamento_dia"])){ 
          $sql  .= $virgula." v84_dtprocessamento = null ";
          $virgula = ",";
-         if(trim($this->v84_dtprocessamento) == null ){ 
+         if(trim((string) $this->v84_dtprocessamento) == null ){ 
            $this->erro_sql = " Campo Data de processamento nao Informado.";
            $this->erro_campo = "v84_dtprocessamento_dia";
            $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_certidarqretorno {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18175,'$this->v84_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v84_sequencial"]) || $this->v84_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3211,18175,'".AddSlashes(pg_result($resaco,$conresaco,'v84_sequencial'))."','$this->v84_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3211,18175,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v84_sequencial'))."','$this->v84_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v84_certidarqremessa"]) || $this->v84_certidarqremessa != "")
-           $resac = db_query("insert into db_acount values($acount,3211,18176,'".AddSlashes(pg_result($resaco,$conresaco,'v84_certidarqremessa'))."','$this->v84_certidarqremessa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3211,18176,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v84_certidarqremessa'))."','$this->v84_certidarqremessa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v84_nomearq"]) || $this->v84_nomearq != "")
-           $resac = db_query("insert into db_acount values($acount,3211,18177,'".AddSlashes(pg_result($resaco,$conresaco,'v84_nomearq'))."','$this->v84_nomearq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3211,18177,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v84_nomearq'))."','$this->v84_nomearq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v84_dtarquivo"]) || $this->v84_dtarquivo != "")
-           $resac = db_query("insert into db_acount values($acount,3211,18178,'".AddSlashes(pg_result($resaco,$conresaco,'v84_dtarquivo'))."','$this->v84_dtarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3211,18178,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v84_dtarquivo'))."','$this->v84_dtarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v84_dtprocessamento"]) || $this->v84_dtprocessamento != "")
-           $resac = db_query("insert into db_acount values($acount,3211,18179,'".AddSlashes(pg_result($resaco,$conresaco,'v84_dtprocessamento'))."','$this->v84_dtprocessamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3211,18179,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v84_dtprocessamento'))."','$this->v84_dtprocessamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_certidarqretorno {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18175,'$v84_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3211,18175,'','".AddSlashes(pg_result($resaco,$iresaco,'v84_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3211,18176,'','".AddSlashes(pg_result($resaco,$iresaco,'v84_certidarqremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3211,18177,'','".AddSlashes(pg_result($resaco,$iresaco,'v84_nomearq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3211,18178,'','".AddSlashes(pg_result($resaco,$iresaco,'v84_dtarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3211,18179,'','".AddSlashes(pg_result($resaco,$iresaco,'v84_dtprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3211,18175,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v84_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3211,18176,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v84_certidarqremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3211,18177,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v84_nomearq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3211,18178,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v84_dtarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3211,18179,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v84_dtprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from certidarqretorno
@@ -431,7 +431,7 @@ class cl_certidarqretorno {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:certidarqretorno";
@@ -446,7 +446,7 @@ class cl_certidarqretorno {
    function sql_query ( $v84_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,7 +469,7 @@ class cl_certidarqretorno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,7 +482,7 @@ class cl_certidarqretorno {
    function sql_query_file ( $v84_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -503,7 +503,7 @@ class cl_certidarqretorno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

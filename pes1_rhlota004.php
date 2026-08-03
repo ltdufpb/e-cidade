@@ -42,7 +42,7 @@ include(modification("classes/db_cfpess_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhlota = new cl_rhlota;
 $clrhlotavinc = new cl_rhlotavinc;
 $clrhlotavincele = new cl_rhlotavincele;
@@ -85,7 +85,7 @@ $resultcpfcgc = $clcgm->sql_record($clcgm->sql_query($z01_numcgm,"z01_cgccpf"));
         db_fieldsmemory($resultcpfcgc,0);
 
     }
-if (strlen(trim($z01_cgccpf))!=14){
+if (strlen(trim((string) $z01_cgccpf))!=14){
 $sqlerro = true;
 $erro_msg="CNPJ Inválido";
 }
@@ -93,7 +93,7 @@ $erro_msg="CNPJ Inválido";
 
   if($sqlerro == false){
     $clrhlota->r70_codestrut      = $r11_codestrut;
-    $clrhlota->r70_estrut         = str_replace(".","",(isset($r70_estrut) ? $r70_estrut : ""));
+    $clrhlota->r70_estrut         = str_replace(".","",($r70_estrut ?? ""));
     $clrhlota->r70_descr          = $r70_descr    ;
     $clrhlota->r70_analitica      = "$r70_analitica";
     $clrhlota->r70_instit         = $r70_instit;

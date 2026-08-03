@@ -35,7 +35,7 @@ $objJSON = new Services_JSON();
 $aHistoricosNaoEncontrados = db_getsession("aHistoricosNaoEncontrados");
 db_destroysession('aHistoricosNaoEncontrados');
 
-$sDataArquivo = implode('/', array_reverse( explode("-",$dataarq) ) );
+$sDataArquivo = implode('/', array_reverse( explode("-",(string) $dataarq) ) );
 
 $head1 = "INCONSISTÊNCIAS DE MOVIMENTOS BANCARIOS ";
 $head2 = "";

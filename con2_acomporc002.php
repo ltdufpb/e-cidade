@@ -35,8 +35,8 @@ require_once(modification("libs/db_liborcamento.php"));
 $oGet = db_utils::postMemory($_GET);
 $iInstit = str_replace("-",",",$oGet->instit);
 
-$sAgrupador1 = substr($oGet->sAgrupador1,0,1);
-$sAgrupador2 = substr($oGet->sAgrupador2,0,1);
+$sAgrupador1 = substr((string) $oGet->sAgrupador1,0,1);
+$sAgrupador2 = substr((string) $oGet->sAgrupador2,0,1);
 
 $iNivel = $sAgrupador2;
 if ($sAgrupador1 > $sAgrupador2) {
@@ -196,9 +196,7 @@ if ($iNivel == 8) {
     $dao = new cl_orctiporec();
     $rsRecurso = db_query($dao->sql_query_file(null, 'distinct o15_recurso', null, $filtro));
 
-    $recursos = db_utils::makeCollectionFromRecord($rsRecurso, function ($dado) {
-        return $dado->o15_recurso;
-    });
+    $recursos = db_utils::makeCollectionFromRecord($rsRecurso, fn($dado) => $dado->o15_recurso);
     if ($iNivel == $sAgrupador1) {
         $aCodAgrupa1 = $recursos;
     } else {
@@ -210,9 +208,9 @@ if ($iNivel == 8) {
 $iAnoUsu = db_getsession('DB_anousu');
 $dataini = db_getsession('DB_anousu')."-01-01";
 
-$iDia = substr($oGet->dataf,0,2);
-$iMes = substr($oGet->dataf,3,2);
-$iAno = substr($oGet->dataf,6,4);
+$iDia = substr((string) $oGet->dataf,0,2);
+$iMes = substr((string) $oGet->dataf,3,2);
+$iAno = substr((string) $oGet->dataf,6,4);
 
 // Caso seja o último dia do mês a variável "$PrevPerVal" será multiplicada pelo mês da data selecionada, caso contrário multiplicará pelo mês anterior
 

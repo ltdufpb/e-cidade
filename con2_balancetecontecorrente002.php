@@ -65,13 +65,13 @@ if ($oDaoContaCorrente->numrows == 0) {
   exit;
 }
 
-$aDtInicial = explode("/", $oGet->dtInicial);
-$aDtFinal   = explode("/", $oGet->dtFinal);
+$aDtInicial = explode("/", (string) $oGet->dtInicial);
+$aDtFinal   = explode("/", (string) $oGet->dtFinal);
 
 $dtInicial = "{$aDtInicial[2]}-{$aDtInicial[1]}-{$aDtInicial[0]}";
 $dtFinal   = "{$aDtFinal[2]}-{$aDtFinal[1]}-{$aDtFinal[0]}";
 
-$aRepository = array();
+$aRepository = [];
 for ($iConta = 0; $iConta < $oDaoContaCorrente->numrows; $iConta++) {
 
   $oStdContaCorrente = db_utils::fieldsMemory($rsBuscaContas, $iConta);
@@ -144,17 +144,17 @@ foreach ($aRepository as $oContaCorrente) {
     $fTotalSaldoAnterior = 0;
     $fTotalSaldoFinal    = 0;
 
-    $aDigitosNegativo = array(2, 6, 8);
-    $aDigitosPositivo = array(1, 5, 7);
+    $aDigitosNegativo = [2, 6, 8];
+    $aDigitosPositivo = [1, 5, 7];
 
     foreach ($oConta->aContas as $oStdMovimento) {
 
-      $iDigitoEstrutural = substr($oStdMovimento->contaPCASP->c60_estrut, 0, 1);
+      $iDigitoEstrutural = substr((string) $oStdMovimento->contaPCASP->c60_estrut, 0, 1);
 
       $oPdf->setfont('arial','',$iFonte);
 
       //Dados da conta
-      $sDescricaoConta = substr($oStdMovimento->contaPCASP->c60_descr, 0, 28);
+      $sDescricaoConta = substr((string) $oStdMovimento->contaPCASP->c60_descr, 0, 28);
       $oPdf->cell(20, $iAlturaLinha, "{$oStdMovimento->contaPCASP->c60_estrut}", "" , 0, "L" , 0);
       $oPdf->cell(40, $iAlturaLinha, "{$sDescricaoConta}", "" , 0, "L" , 0);
       $oPdf->cell(10, $iAlturaLinha, "{$oStdMovimento->contaPCASP->c61_reduz}", "" , 0, "L" , 0);

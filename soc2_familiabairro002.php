@@ -48,7 +48,7 @@ db_app::import("exceptions.*");
 
 
 $oGet        = db_utils::postMemory($_GET);
-$aBairros    = explode(",", $oGet->sBairros);
+$aBairros    = explode(",", (string) $oGet->sBairros);
 $sBairros    = "'".implode("','", $aBairros)."'";
 
 /**
@@ -61,7 +61,7 @@ $sOrder      = " to_ascii(trim(cidadao.ov02_bairro)) ";
 $sSqlFamilia = $oDaoFamilia->sql_query_completa(null, " as04_sequencial", $sOrder, $sWhere);
 $rsFamilia   = $oDaoFamilia->sql_record($sSqlFamilia);
 $iLinhas     = $oDaoFamilia->numrows;
-$aFamilias   = array();
+$aFamilias   = [];
 
 if ($iLinhas == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhuma família encontrada.");
@@ -98,12 +98,12 @@ $iTotalRegistros = 0;
  * iTipoFamilia == 2 imprime as famílias que possuem benefícios 
  */
 
-$aSituacoesValidas = array('EM PAGAMENTO', 'LIBERADO', 'CONCEDIDO');
+$aSituacoesValidas = ['EM PAGAMENTO', 'LIBERADO', 'CONCEDIDO'];
 if ($oGet->iTipoFamilia == 2 ) {
   
   $head2 = "Famílias: Somente com Benefícios";
   
-  $aArrayAuxiliarFamilia = array();
+  $aArrayAuxiliarFamilia = [];
   
   foreach ($aFamilias as $oFamilia) {
     
@@ -157,7 +157,7 @@ foreach ($aFamilias as $oFamilia) {
   $oPdf->Cell(25,  $iHeigth, "{$iCodigoFamilia}",       "TBRL", 0);
   $oPdf->Cell(80,  $iHeigth, "{$sResponsavel}",         "TBRL", 0);
   $oPdf->Cell(25,  $iHeigth, "{$sTelefone}",            "TBRL", 0);
-  $oPdf->Cell(55,  $iHeigth, substr($sBairro, 0, 40) ,  "TBRL", 0);
+  $oPdf->Cell(55,  $iHeigth, substr((string) $sBairro, 0, 40) ,  "TBRL", 0);
   $oPdf->Cell(70,  $iHeigth, substr($sEndereco, 0, 60), "LTB",  1);
   
   $iTotalRegistros ++;

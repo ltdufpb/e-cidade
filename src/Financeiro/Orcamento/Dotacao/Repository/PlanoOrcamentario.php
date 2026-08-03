@@ -47,7 +47,7 @@ class PlanoOrcamentario extends \BaseClassRepository
     /**
      * @var PlanoOrcamentarioModel[]
      */
-    protected $aColecao = array();
+    protected $aColecao = [];
 
     /**
      * Busca por código

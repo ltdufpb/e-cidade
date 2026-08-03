@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -105,7 +105,7 @@ function js_emite(){
         </td>
         <td>
           <?php 
-          $arr_folha = array("t"=>"Todos", "c"=>"CLT", "e"=>"Extra Quandro");
+          $arr_folha = ["t"=>"Todos", "c"=>"CLT", "e"=>"Extra Quandro"];
           db_select('tipo',$arr_folha,true,4);
           ?>
        </td>

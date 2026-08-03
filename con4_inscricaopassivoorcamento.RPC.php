@@ -55,7 +55,7 @@ $oJson              = new services_json();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
 
 $oRetorno           = new stdClass();
-$oRetorno->dados    = array();
+$oRetorno->dados    = [];
 $oRetorno->status   = 1;
 
 switch ($oParam->exec) {
@@ -138,13 +138,7 @@ switch ($oParam->exec) {
 
       db_fim_transacao(false);
 
-    } catch (BusinessException $eErro) {      
-
-      $oRetorno->message = urlencode(str_replace("\\n", "\n", $eErro->getMessage()));
-      $oRetorno->status  = 2;
-      db_fim_transacao(true);
-
-    } catch (Exception $eErro) {
+    } catch (BusinessException|Exception $eErro) {
 
       $oRetorno->message = urlencode(str_replace("\\n", "\n", $eErro->getMessage()));
       $oRetorno->status  = 2;
@@ -248,11 +242,11 @@ switch ($oParam->exec) {
         $oLinha = db_utils::fieldsMemory($rsElementos, $i);
         $oDado  = new stdClass();
         //$oDado->lServico                = $oLinha->pc01_servico;
-        $oDado->elemento                = substr($oLinha->o56_elemento, 0, 7);
+        $oDado->elemento                = substr((string) $oLinha->o56_elemento, 0, 7);
         $oDado->estrutural              = $oLinha->o56_elemento;
-        $oDado->descricao               = urlencode($oLinha->o56_descr);
+        $oDado->descricao               = urlencode((string) $oLinha->o56_descr);
         $oDado->codigoElemento          = $oLinha->pc07_codele;
-        $oDado->codigoElementoDescricao = "{$oLinha->pc07_codele} - ".urlencode($oLinha->o56_descr);
+        $oDado->codigoElementoDescricao = "{$oLinha->pc07_codele} - ".urlencode((string) $oLinha->o56_descr);
 
         $oRetorno->lServico = $oLinha->pc01_servico;
         $oRetorno->dados[] = $oDado;

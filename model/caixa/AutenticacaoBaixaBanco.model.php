@@ -35,12 +35,6 @@ class AutenticacaoBaixaBanco
 {
 
     /**
-     * Planilha de Arrecadacao
-     * @var integer
-     */
-    private $iCodigoBaixaBanco;
-
-    /**
      * Data da autenticacao
      * @var integer
      */
@@ -74,13 +68,15 @@ class AutenticacaoBaixaBanco
 
     /**
      *
-     * @param integer $iCodigoClassificacao Codigo da Classificacao
+     * @param integer $iCodigoBaixaBanco Codigo da Classificacao
      * @throws ParameterException
      */
-    public function __construct($iCodigoClassificacao)
+    public function __construct(/**
+     * Planilha de Arrecadacao
+     */
+    private $iCodigoBaixaBanco)
     {
 
-        $this->iCodigoBaixaBanco = $iCodigoClassificacao;
         $this->dtAutenticacao = date("Y-m-d", db_getsession("DB_datausu"));
         $this->iCodigoUsuario = db_getsession("DB_id_usuario");
         $this->sIpTerminal = db_getsession("DB_ip");
@@ -113,7 +109,7 @@ class AutenticacaoBaixaBanco
         }
 
         $sRetornoAutenticacao = db_utils::fieldsMemory($rsAutenticacao, 0)->fc_autenticabaixa;
-        if (substr($sRetornoAutenticacao, 0, 1) != '1') {
+        if (!str_starts_with((string) $sRetornoAutenticacao, '1')) {
             $sMsgErro = "Erro ao Autenticar.\n";
             $sMsgErro .= $sRetornoAutenticacao;
             throw new BusinessException($sMsgErro);
@@ -154,7 +150,7 @@ class AutenticacaoBaixaBanco
     protected function executarLancamentoContabeis($lDesconto = false, $lArrecadaDesconto = false)
     {
 
-        $aWhereReceitas = array();
+        $aWhereReceitas = [];
         $aWhereReceitas[] = "k12_codcla = {$this->iCodigoBaixaBanco}";
         $aWhereReceitas[] = "orcreceita.o70_anousu = {$this->iAnoUsu}";
 
@@ -320,7 +316,7 @@ class AutenticacaoBaixaBanco
                 $oDadoAutenticacao = db_utils::fieldsMemory($rsBuscaReceita, $iRowExtra);
                 $oContaContabil = new ContaPlanoPCASP(null, $iAnoSessao, $oDadoAutenticacao->k02_reduz);
                 $iCodigoDocumento = 160;
-                if (substr($oContaContabil->getEstrutural(), 0, 4) != '2188') {
+                if (!str_starts_with($oContaContabil->getEstrutural(), '2188')) {
                     $iCodigoDocumento = 150;
                 }
                 $sObservacaoHistorico = "Arrecadação de receita extra-orçamentária via baixa de banco.";

@@ -39,11 +39,6 @@ class EFDReaberturaEventos extends ProcessamentoAbstract implements Processament
 {
 
     /**
-     * @var string
-     */
-    private $cgm;
-
-    /**
      * @var null
      */
     private $instituicao;
@@ -64,10 +59,10 @@ class EFDReaberturaEventos extends ProcessamentoAbstract implements Processament
      * @param null $instituicao
      * @param null $ano
      * @param null $mes
+     * @param string $cgm
      */
-    public function __construct($cgm, $instituicao = null, $ano = null, $mes = null)
+    public function __construct(private $cgm, $instituicao = null, $ano = null, $mes = null)
     {
-        $this->cgm = $cgm;
         $this->instituicao = $instituicao;
         $this->ano = $ano;
         $this->mes = $mes;

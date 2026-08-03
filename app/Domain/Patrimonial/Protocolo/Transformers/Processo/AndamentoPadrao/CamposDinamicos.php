@@ -19,9 +19,7 @@ class CamposDinamicos extends TransformerAbstract
             return $this->parseResponseObject($campos);
         }
 
-        $campos = collect($campos)->groupBy(function ($campo) {
-            return $campo->p110_sequencial;
-        })->toArray();
+        $campos = collect($campos)->groupBy(fn($campo) => $campo->p110_sequencial)->toArray();
 
         return collect($campos)->flatMap(function ($campo, $index) {
 
@@ -29,12 +27,10 @@ class CamposDinamicos extends TransformerAbstract
             $opcoes = [];
 
             if (!empty($campoAtual->defcampo) && !empty($campoAtual->defdescr)) {
-                $opcoes = array_map(function ($opcao) {
-                    return (object) [
-                        'id'        => $opcao['defcampo'],
-                        'descricao' => $opcao['defdescr']
-                    ];
-                }, $campo);
+                $opcoes = array_map(fn($opcao) => (object) [
+                    'id'        => $opcao['defcampo'],
+                    'descricao' => $opcao['defdescr']
+                ], $campo);
             }
 
             return [
@@ -45,7 +41,7 @@ class CamposDinamicos extends TransformerAbstract
 
     protected function parseResponseObject($object, $opcoes = [])
     {
-        $object->conteudo = preg_replace('/\(.*\)/', '', $object->conteudo);
+        $object->conteudo = preg_replace('/\(.*\)/', '', (string) $object->conteudo);
 
         switch (trim($object->conteudo)) {
             case 'bool':
@@ -83,7 +79,7 @@ class CamposDinamicos extends TransformerAbstract
             'obrigatorio'      => (bool)$object->p110_obrigatorio,
             'campo' =>[
                 'codcam'           => $object->p110_codcam,
-                'nomecam'          => !empty($object->nomecam) ? trim($object->nomecam) : '',
+                'nomecam'          => !empty($object->nomecam) ? trim((string) $object->nomecam) : '',
                 'label'            => !empty($object->rotulo) ? $object->rotulo : '',
                 'descricao'        => !empty($object->descricao) ? $object->descricao : '',
                 'tipo'             => $tipo,

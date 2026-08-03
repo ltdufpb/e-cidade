@@ -62,9 +62,9 @@ $sSqlAcordo .= " where e100_numemp = {$e60_numemp} ";
     <tr>
       <td align="center" valign="top">
           <?php
-          $totalizacao = array();
+          $totalizacao = [];
 
-          db_lovrot($sSqlAcordo, 15, "()", "", "js_mostraContrato|ac16_sequencial", "", "NoMe", array(), false,
+          db_lovrot($sSqlAcordo, 15, "()", "", "js_mostraContrato|ac16_sequencial", "", "NoMe", [], false,
             $totalizacao);
           ?>
       </td>

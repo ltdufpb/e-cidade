@@ -28,10 +28,10 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 //parse_str($HTTP_SERVER_VARS['HTTP_USER_AGENT']);
-$e_linux = strpos(strtolower($HTTP_USER_AGENT),'linux') ;
+$e_linux = strpos(strtolower((string) $HTTP_USER_AGENT),'linux') ;
 
 if($e_linux > 0){
   $troca_linha = "\n";
@@ -149,7 +149,7 @@ global $fopag_dtpago,
       $lin .=  db_str($fopag_dv_cc_deposito,1,0,"0");
       $lin .=  "00000000000000";
       $lin .=  bb_space(18);
-      $lin .=  str_pad( $d08_email, 80 );
+      $lin .=  str_pad( (string) $d08_email, 80 );
       $lin .=  bb_space(43);
       fputs($arquivo,$lin.$troca_linha);
 
@@ -191,16 +191,16 @@ global $fopag_dtpago,
             if(!$tem_pis_igual){
                $total_registros += 1;
                $lin  =  "2";
-               $lin .=  substr(str_pad($pessoal[$Ipes]["r01_pis"],11),0,11);
-               $lin .=  substr(str_pad(trim($pessoal[$Ipes]["z01_nome"]),50),0,50);
+               $lin .=  substr(str_pad((string) $pessoal[$Ipes]["r01_pis"],11),0,11);
+               $lin .=  substr(str_pad(trim((string) $pessoal[$Ipes]["z01_nome"]),50),0,50);
                $lin .=  substr(db_str($pessoal[$Ipes]["r01_regist"],15,0,"0"),0,15);
-               $lin .=  substr(str_pad(trim( $pessoal[$Ipes]["z01_ender"]),50),0,50);
+               $lin .=  substr(str_pad(trim( (string) $pessoal[$Ipes]["z01_ender"]),50),0,50);
                $lin .=  substr(db_str($pessoal[$Ipes]["z01_numero"],5,0,"0"),0,5);
                $lin .=  bb_space(15);
-               $lin .=  substr(str_pad(trim( $pessoal[$Ipes]["z01_bairro"]),30),0,30);
-               $lin .=  substr(str_pad(trim( $pessoal[$Ipes]["z01_munic"]),30),0,30);
-               $lin .=  substr(str_pad($pessoal[$Ipes]["z01_uf"],2),0,2);
-               $lin .=  substr(str_pad($pessoal[$Ipes]["z01_cep"],8),0,8);
+               $lin .=  substr(str_pad(trim( (string) $pessoal[$Ipes]["z01_bairro"]),30),0,30);
+               $lin .=  substr(str_pad(trim( (string) $pessoal[$Ipes]["z01_munic"]),30),0,30);
+               $lin .=  substr(str_pad((string) $pessoal[$Ipes]["z01_uf"],2),0,2);
+               $lin .=  substr(str_pad((string) $pessoal[$Ipes]["z01_cep"],8),0,8);
                $lin .=  bb_space(11);
                fputs($arquivo,$lin.$troca_linha);
 

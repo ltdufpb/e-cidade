@@ -75,8 +75,8 @@ if ($solicitacao == "construcoes") {
 </table>
 <table width="100%" height="100%"  border="0" align="left"  cellpadding="0" cellspacing="2">
 <?php 
-  if(pg_numrows($result_obrasconstr)!= 0) {
-    for ($x=0;$x < pg_numrows($result_obrasconstr);$x++ ){
+  if(pg_num_rows($result_obrasconstr)!= 0) {
+    for ($x=0;$x < pg_num_rows($result_obrasconstr);$x++ ){
       db_fieldsmemory($result_obrasconstr,$x);
       $result_obrasender=$clobrasender->sql_record($clobrasender->sql_query(null,"*","","ob07_codconstr=$ob08_codconstr"));
       if($clobrasender->numrows>0){

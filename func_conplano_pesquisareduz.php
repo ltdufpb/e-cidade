@@ -34,7 +34,7 @@ include(modification("classes/db_conplano_classe.php"));
 db_postmemory($_POST);
 extract($_GET);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconplano = new cl_conplano;
 $clconplano->rotulo->label("c60_codcon");
 $clconplano->rotulo->label("c60_descr");
@@ -42,7 +42,7 @@ $clconplano->rotulo->label("c60_estrut");
 $clrotulo = new rotulocampo;
 $clrotulo->label("c61_reduz");
 
-$aWhere = array();
+$aWhere = [];
 $sAno   = db_getsession("DB_anousu");
 ?>
 <html>
@@ -134,7 +134,7 @@ $sAno   = db_getsession("DB_anousu");
            }
         }
 
-        if(isset($chave_c60_codcon) && (trim($chave_c61_reduz)!="")) {
+        if(isset($chave_c60_codcon) && (trim((string) $chave_c61_reduz)!="")) {
 
           $aWhere[] = "c61_reduz=$chave_c61_reduz";
           $sOrder   = 'c60_codcon';

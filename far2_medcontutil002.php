@@ -31,7 +31,7 @@ require_once(modification("fpdf151/pdf.php"));
 require_once(modification('libs/db_utils.php'));
 require_once(modification('libs/db_stdlibwebseller.php'));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoFarParametros = db_utils::getdao("far_parametros");
 $oFarControlemed = db_utils::getdao("far_controlemed");
@@ -142,10 +142,10 @@ if ($iDispensacao == 1) {
 $iTotal = 0;
 $iSoma = 0;
 $iMedicamento = 0;
-$aSomaMedicamento = array();
+$aSomaMedicamento = [];
 $oMedicamentos = db_utils::fieldsmemory($rsMedicamentos, 0);
 $iMedicamento = $oMedicamentos->fa01_i_codigo;
-$aMedicamentos = array();
+$aMedicamentos = [];
 
 //Calcula total de pacientes por medicamentos
 for ($iCount = 0; $iCount < $iMedicamentosLinhas; $iCount++) {
@@ -220,7 +220,7 @@ for ($iCount = 0; $iCount < count($aMedicamentos); $iCount++) {
     }
     $pdf->setfont('arial', '', 8);
     $pdf->cell(13, 5, $aMedicamentos[$iCount]["z01_i_cgsund"], 1, 0, "R", 0);
-    $pdf->cell(65, 5, substr($aMedicamentos[$iCount]["z01_v_nome"], 0, 35), 1, 0, "L", 0);
+    $pdf->cell(65, 5, substr((string) $aMedicamentos[$iCount]["z01_v_nome"], 0, 35), 1, 0, "L", 0);
     $pdf->cell(20, 5, $aMedicamentos[$iCount]["z01_v_cgccpf"], 1, 0, "L", 0);
     $pdf->cell(75, 5, $aMedicamentos[$iCount]["z01_v_ender"], 1, 0, "L", 0);
     $pdf->cell(17, 5, $aMedicamentos[$iCount]["z01_v_telef"], 1, 1, "L", 0);

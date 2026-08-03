@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE levcgm
 class cl_levcgm { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y93_codlev = 0; 
-   var $y93_numcgm = 0; 
+   public $y93_codlev = 0; 
+   public $y93_numcgm = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y93_codlev = int4 = Código do Levantamento 
                  y93_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_levcgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levcgm"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_levcgm {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "levcgm ($this->y93_codlev) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "levcgm já Cadastrado";
@@ -129,11 +129,11 @@ class cl_levcgm {
      $resaco = $this->sql_record($this->sql_query_file($this->y93_codlev));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5025,'$this->y93_codlev','I')");
-       $resac = db_query("insert into db_acount values($acount,712,5025,'','".AddSlashes(pg_result($resaco,0,'y93_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,712,5026,'','".AddSlashes(pg_result($resaco,0,'y93_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,712,5025,'','".AddSlashes(pg_fetch_result($resaco,0,'y93_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,712,5026,'','".AddSlashes(pg_fetch_result($resaco,0,'y93_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_levcgm {
       $this->atualizacampos();
      $sql = " update levcgm set ";
      $virgula = "";
-     if(trim($this->y93_codlev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y93_codlev"])){ 
+     if(trim((string) $this->y93_codlev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y93_codlev"])){ 
        $sql  .= $virgula." y93_codlev = $this->y93_codlev ";
        $virgula = ",";
-       if(trim($this->y93_codlev) == null ){ 
+       if(trim((string) $this->y93_codlev) == null ){ 
          $this->erro_sql = " Campo Código do Levantamento nao Informado.";
          $this->erro_campo = "y93_codlev";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_levcgm {
          return false;
        }
      }
-     if(trim($this->y93_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y93_numcgm"])){ 
+     if(trim((string) $this->y93_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y93_numcgm"])){ 
        $sql  .= $virgula." y93_numcgm = $this->y93_numcgm ";
        $virgula = ",";
-       if(trim($this->y93_numcgm) == null ){ 
+       if(trim((string) $this->y93_numcgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "y93_numcgm";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_levcgm {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5025,'$this->y93_codlev','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y93_codlev"]))
-           $resac = db_query("insert into db_acount values($acount,712,5025,'".AddSlashes(pg_result($resaco,$conresaco,'y93_codlev'))."','$this->y93_codlev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,712,5025,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y93_codlev'))."','$this->y93_codlev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y93_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,712,5026,'".AddSlashes(pg_result($resaco,$conresaco,'y93_numcgm'))."','$this->y93_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,712,5026,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y93_numcgm'))."','$this->y93_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_levcgm {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5025,'$y93_codlev','E')");
-         $resac = db_query("insert into db_acount values($acount,712,5025,'','".AddSlashes(pg_result($resaco,$iresaco,'y93_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,712,5026,'','".AddSlashes(pg_result($resaco,$iresaco,'y93_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,712,5025,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y93_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,712,5026,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y93_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from levcgm
@@ -291,7 +291,7 @@ class cl_levcgm {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:levcgm";
@@ -305,7 +305,7 @@ class cl_levcgm {
    function sql_query ( $y93_codlev=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -328,7 +328,7 @@ class cl_levcgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -340,7 +340,7 @@ class cl_levcgm {
    function sql_query_file ( $y93_codlev=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_levcgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

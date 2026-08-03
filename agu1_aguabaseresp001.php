@@ -33,8 +33,8 @@
   include(modification("classes/db_aguabase_classe.php"));
   include(modification("dbforms/db_funcoes.php"));
   
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-  db_postmemory($HTTP_POST_VARS);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
+  db_postmemory($_POST);
 
   $claguabaseresp = new cl_aguabaseresp;
   $claguabase = new cl_aguabase;
@@ -43,9 +43,9 @@
   $db_botao = false;
 
   if (isset($alterar) || isset($excluir) || isset($incluir)) {
-    
+
     $sqlerro = false;
-    
+
     /*
       $claguabaseresp->x14_matric = $x14_matric;
       $claguabaseresp->x14_numcgm = $x14_numcgm;

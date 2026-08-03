@@ -40,7 +40,7 @@ require_once modification("libs/JSON.php");
 $oPost       = db_utils::postMemory($_REQUEST);
 $oPost->json = str_replace("\\","",$oPost->json);
 $oParametro  = JSON::create()->parse($oPost->json);
-$oRetorno    = (object)array( 'erro' => false, 'mensagem'=> '');
+$oRetorno    = (object)[ 'erro' => false, 'mensagem'=> ''];
 
 try {
 
@@ -146,14 +146,14 @@ try {
 
         case 'getConfiguracoesLotacaoPorLotacao':
 
-            $oRetorno->configuracoes = (object)array(
+            $oRetorno->configuracoes = (object)[
               'rh195_tolerancia'     => null,
               'rh195_hora_extra_50'  => null,
               'rh195_hora_extra_75'  => null,
               'rh195_hora_extra_100' => null,
               'rh195_supervisor'     => null,
               'nome_supervisor'      => null
-            );
+            ];
 
             if(!empty($oParametro->iCodigoLotacao)) {
 
@@ -172,9 +172,7 @@ try {
 
                 if(pg_num_rows($rsConfiguracoesLotacao) > 0) {
 
-                    $oRetorno->configuracoes = db_utils::makeFromRecord($rsConfiguracoesLotacao, function ($oResponse) {
-                        return $oResponse;
-                    });
+                    $oRetorno->configuracoes = db_utils::makeFromRecord($rsConfiguracoesLotacao, fn($oResponse) => $oResponse);
                 }
             }
             break;
@@ -253,7 +251,7 @@ try {
                 throw new ParameterException("Informe o código da Justificativa.");
             }
 
-            $oRetorno->tiposAssentamentos = array();
+            $oRetorno->tiposAssentamentos = [];
 
             $oJustificativaModel = new JustificativaModel();
             $oJustificativaModel->setCodigo($oParametro->codigoJustificativa);
@@ -268,7 +266,7 @@ try {
 
         case 'buscarTiposAssentamentos':
 
-            $oRetorno->tiposAssentamentos = array();
+            $oRetorno->tiposAssentamentos = [];
             $aTipoAssentamentos           = TipoAssentamentoRepository::getInstanciasPorNatureza(Assentamento::NATUREZA_JUSTIFICATIVA);
 
             foreach($aTipoAssentamentos as $oTipoAssentamento) {
@@ -285,8 +283,8 @@ try {
 
     case 'buscarTiposAssentamentosConfiguradosNaoPerdeDSR':
 
-      $oRetorno->tiposAssentamentos = array();
-      $aTipoAssentamentos           = array();
+      $oRetorno->tiposAssentamentos = [];
+      $aTipoAssentamentos           = [];
       $parametrosAssentamentosNaoPerdeDSR = ParametrosPontoRepository::create()->getConfiguracoesAssentamentosNaoPerdeDSR(db_getsession('DB_instit'));
 
       if (!empty($parametrosAssentamentosNaoPerdeDSR)) {
@@ -329,10 +327,10 @@ try {
         $daoPontoeletronicoassentamentosnaoperdedsr->rh218_tipoasse    = $oParametro->iCodigo;
         $daoPontoeletronicoassentamentosnaoperdedsr->rh218_instituicao = db_getsession('DB_instit');
 
-        $whereExcluir = implode(' AND ', array(
+        $whereExcluir = implode(' AND ', [
           'rh218_tipoasse     =' . $oParametro->iCodigo,
           'rh218_instituicao  =' . db_getsession('DB_instit'),
-        ));
+        ]);
 
         if(!$daoPontoeletronicoassentamentosnaoperdedsr->excluir(null, $whereExcluir)) {
           throw new DBException($daoPontoeletronicoassentamentosnaoperdedsr->erro_msg);

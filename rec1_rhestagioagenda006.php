@@ -38,7 +38,7 @@ include(modification("classes/estagioAvaliacoes.classe.php"));
 $clrhestagioagenda     = new cl_rhestagioagenda;
 $clrhestagioagendadata = new cl_rhestagioagendadata;
 $clrhestagioresultado  = new cl_rhestagioresultado;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

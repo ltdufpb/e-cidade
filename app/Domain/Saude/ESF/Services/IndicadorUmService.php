@@ -28,6 +28,7 @@ class IndicadorUmService extends IndicadorDesempenhoService
      * @param Collection $atendimentos
      * @return array
      */
+    #[\Override]
     protected function processar(Collection $atendimentos)
     {
         $builder = new IndicadorUmBuilder;

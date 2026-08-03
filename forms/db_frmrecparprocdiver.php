@@ -94,7 +94,7 @@ db_input('k02_descr',32,$Ik02_descr,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("procdiver"=>@$procdiver,"receita"=>@$receita);
+	 $chavepri= ["procdiver"=>@$procdiver,"receita"=>@$receita];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 //	 echo $clrecparprocdiver->sql_query_file($procdiver);
 	 $cliframe_alterar_excluir->sql     = $clrecparprocdiver->sql_query_file($procdiver);

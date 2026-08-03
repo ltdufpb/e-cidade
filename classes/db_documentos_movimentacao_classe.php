@@ -42,7 +42,7 @@ class cl_documentos_movimentacao
     public function __construct()
     {
         $this->rotulo = new rotulo("documentos_movimentacao");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -152,10 +152,10 @@ class cl_documentos_movimentacao
          $this->erro_status = "0";
          return false;
        }
-       $this->p117_codigo = pg_result($result,0,0);
+       $this->p117_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from documentos_movimentacao_p117_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p117_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p117_codigo)){
          $this->erro_sql = " Campo p117_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -197,7 +197,7 @@ class cl_documentos_movimentacao
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Movimentação dos Documentos ($this->p117_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Movimentação dos Documentos já Cadastrado";
@@ -226,17 +226,17 @@ class cl_documentos_movimentacao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1014023,'$this->p117_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010904,1014023,'','".AddSlashes(pg_result($resaco,0,'p117_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010904,1014024,'','".AddSlashes(pg_result($resaco,0,'p117_documento_andamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010904,1014025,'','".AddSlashes(pg_result($resaco,0,'p117_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010904,1014026,'','".AddSlashes(pg_result($resaco,0,'p117_protprocessodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010904,1014027,'','".AddSlashes(pg_result($resaco,0,'p117_processo_atividadesexecucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010904,1014028,'','".AddSlashes(pg_result($resaco,0,'p117_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010904,1014160,'','".AddSlashes(pg_result($resaco,0,'p117_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010904,1014165,'','".AddSlashes(pg_result($resaco,0,'p117_invalida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010904,1014023,'','".AddSlashes(pg_fetch_result($resaco,0,'p117_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010904,1014024,'','".AddSlashes(pg_fetch_result($resaco,0,'p117_documento_andamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010904,1014025,'','".AddSlashes(pg_fetch_result($resaco,0,'p117_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010904,1014026,'','".AddSlashes(pg_fetch_result($resaco,0,'p117_protprocessodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010904,1014027,'','".AddSlashes(pg_fetch_result($resaco,0,'p117_processo_atividadesexecucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010904,1014028,'','".AddSlashes(pg_fetch_result($resaco,0,'p117_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010904,1014160,'','".AddSlashes(pg_fetch_result($resaco,0,'p117_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010904,1014165,'','".AddSlashes(pg_fetch_result($resaco,0,'p117_invalida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -247,10 +247,10 @@ class cl_documentos_movimentacao
       $this->atualizacampos();
      $sql = " update documentos_movimentacao set ";
      $virgula = "";
-     if(trim($this->p117_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_codigo"])){
+     if(trim((string) $this->p117_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_codigo"])){
        $sql  .= $virgula." p117_codigo = $this->p117_codigo ";
        $virgula = ",";
-       if(trim($this->p117_codigo) == null ){
+       if(trim((string) $this->p117_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "p117_codigo";
          $this->erro_banco = "";
@@ -260,10 +260,10 @@ class cl_documentos_movimentacao
          return false;
        }
      }
-     if(trim($this->p117_documento_andamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_documento_andamento"])){
+     if(trim((string) $this->p117_documento_andamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_documento_andamento"])){
        $sql  .= $virgula." p117_documento_andamento = $this->p117_documento_andamento ";
        $virgula = ",";
-       if(trim($this->p117_documento_andamento) == null ){
+       if(trim((string) $this->p117_documento_andamento) == null ){
          $this->erro_sql = " Campo Documento não informado.";
          $this->erro_campo = "p117_documento_andamento";
          $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_documentos_movimentacao
          return false;
        }
      }
-     if(trim($this->p117_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_id_usuario"])){
+     if(trim((string) $this->p117_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_id_usuario"])){
        $sql  .= $virgula." p117_id_usuario = $this->p117_id_usuario ";
        $virgula = ",";
-       if(trim($this->p117_id_usuario) == null ){
+       if(trim((string) $this->p117_id_usuario) == null ){
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "p117_id_usuario";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_documentos_movimentacao
          return false;
        }
      }
-     if(trim($this->p117_protprocessodocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_protprocessodocumento"])){
+     if(trim((string) $this->p117_protprocessodocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_protprocessodocumento"])){
        $sql  .= $virgula." p117_protprocessodocumento = $this->p117_protprocessodocumento ";
        $virgula = ",";
-       if(trim($this->p117_protprocessodocumento) == null ){
+       if(trim((string) $this->p117_protprocessodocumento) == null ){
          $this->erro_sql = " Campo Documento do processo não informado.";
          $this->erro_campo = "p117_protprocessodocumento";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_documentos_movimentacao
          return false;
        }
      }
-     if(trim($this->p117_processo_atividadesexecucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_processo_atividadesexecucao"])){
+     if(trim((string) $this->p117_processo_atividadesexecucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_processo_atividadesexecucao"])){
        $sql  .= $virgula." p117_processo_atividadesexecucao = $this->p117_processo_atividadesexecucao ";
        $virgula = ",";
-       if(trim($this->p117_processo_atividadesexecucao) == null ){
+       if(trim((string) $this->p117_processo_atividadesexecucao) == null ){
          $this->erro_sql = " Campo Atividades de execução não informado.";
          $this->erro_campo = "p117_processo_atividadesexecucao";
          $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_documentos_movimentacao
          return false;
        }
      }
-     if(trim($this->p117_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["p117_data_dia"] !="") ){
+     if(trim((string) $this->p117_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["p117_data_dia"] !="") ){
        $sql  .= $virgula." p117_data = '$this->p117_data' ";
        $virgula = ",";
-       if(trim($this->p117_data) == null ){
+       if(trim((string) $this->p117_data) == null ){
          $this->erro_sql = " Campo Data não informado.";
          $this->erro_campo = "p117_data_dia";
          $this->erro_banco = "";
@@ -328,7 +328,7 @@ class cl_documentos_movimentacao
        if(isset($GLOBALS["HTTP_POST_VARS"]["p117_data_dia"])){
          $sql  .= $virgula." p117_data = null ";
          $virgula = ",";
-         if(trim($this->p117_data) == null ){
+         if(trim((string) $this->p117_data) == null ){
            $this->erro_sql = " Campo Data não informado.";
            $this->erro_campo = "p117_data_dia";
            $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_documentos_movimentacao
          }
        }
      }
-     if(trim($this->p117_devolucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_devolucao"])){
+     if(trim((string) $this->p117_devolucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_devolucao"])){
        $sql  .= $virgula." p117_devolucao = '$this->p117_devolucao' ";
        $virgula = ",";
-       if(trim($this->p117_devolucao) == null ){
+       if(trim((string) $this->p117_devolucao) == null ){
          $this->erro_sql = " Campo Devolucao não informado.";
          $this->erro_campo = "p117_devolucao";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_documentos_movimentacao
          return false;
        }
      }
-     if(trim($this->p117_invalida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_invalida"])){
+     if(trim((string) $this->p117_invalida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p117_invalida"])){
        $sql  .= $virgula." p117_invalida = '$this->p117_invalida' ";
        $virgula = ",";
-       if(trim($this->p117_invalida) == null ){
+       if(trim((string) $this->p117_invalida) == null ){
          $this->erro_sql = " Campo Inválida não informado.";
          $this->erro_campo = "p117_invalida";
          $this->erro_banco = "";
@@ -379,25 +379,25 @@ class cl_documentos_movimentacao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1014023,'$this->p117_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p117_codigo"]) || $this->p117_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010904,1014023,'".AddSlashes(pg_result($resaco,$conresaco,'p117_codigo'))."','$this->p117_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010904,1014023,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p117_codigo'))."','$this->p117_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p117_documento_andamento"]) || $this->p117_documento_andamento != "")
-             $resac = db_query("insert into db_acount values($acount,1010904,1014024,'".AddSlashes(pg_result($resaco,$conresaco,'p117_documento_andamento'))."','$this->p117_documento_andamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010904,1014024,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p117_documento_andamento'))."','$this->p117_documento_andamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p117_id_usuario"]) || $this->p117_id_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,1010904,1014025,'".AddSlashes(pg_result($resaco,$conresaco,'p117_id_usuario'))."','$this->p117_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010904,1014025,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p117_id_usuario'))."','$this->p117_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p117_protprocessodocumento"]) || $this->p117_protprocessodocumento != "")
-             $resac = db_query("insert into db_acount values($acount,1010904,1014026,'".AddSlashes(pg_result($resaco,$conresaco,'p117_protprocessodocumento'))."','$this->p117_protprocessodocumento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010904,1014026,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p117_protprocessodocumento'))."','$this->p117_protprocessodocumento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p117_processo_atividadesexecucao"]) || $this->p117_processo_atividadesexecucao != "")
-             $resac = db_query("insert into db_acount values($acount,1010904,1014027,'".AddSlashes(pg_result($resaco,$conresaco,'p117_processo_atividadesexecucao'))."','$this->p117_processo_atividadesexecucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010904,1014027,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p117_processo_atividadesexecucao'))."','$this->p117_processo_atividadesexecucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p117_data"]) || $this->p117_data != "")
-             $resac = db_query("insert into db_acount values($acount,1010904,1014028,'".AddSlashes(pg_result($resaco,$conresaco,'p117_data'))."','$this->p117_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010904,1014028,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p117_data'))."','$this->p117_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p117_devolucao"]) || $this->p117_devolucao != "")
-             $resac = db_query("insert into db_acount values($acount,1010904,1014160,'".AddSlashes(pg_result($resaco,$conresaco,'p117_devolucao'))."','$this->p117_devolucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010904,1014160,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p117_devolucao'))."','$this->p117_devolucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p117_invalida"]) || $this->p117_invalida != "")
-             $resac = db_query("insert into db_acount values($acount,1010904,1014165,'".AddSlashes(pg_result($resaco,$conresaco,'p117_invalida'))."','$this->p117_invalida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010904,1014165,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p117_invalida'))."','$this->p117_invalida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -451,17 +451,17 @@ class cl_documentos_movimentacao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1014023,'$p117_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010904,1014023,'','".AddSlashes(pg_result($resaco,$iresaco,'p117_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010904,1014024,'','".AddSlashes(pg_result($resaco,$iresaco,'p117_documento_andamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010904,1014025,'','".AddSlashes(pg_result($resaco,$iresaco,'p117_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010904,1014026,'','".AddSlashes(pg_result($resaco,$iresaco,'p117_protprocessodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010904,1014027,'','".AddSlashes(pg_result($resaco,$iresaco,'p117_processo_atividadesexecucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010904,1014028,'','".AddSlashes(pg_result($resaco,$iresaco,'p117_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010904,1014160,'','".AddSlashes(pg_result($resaco,$iresaco,'p117_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010904,1014165,'','".AddSlashes(pg_result($resaco,$iresaco,'p117_invalida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010904,1014023,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p117_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010904,1014024,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p117_documento_andamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010904,1014025,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p117_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010904,1014026,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p117_protprocessodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010904,1014027,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p117_processo_atividadesexecucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010904,1014028,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p117_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010904,1014160,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p117_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010904,1014165,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p117_invalida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

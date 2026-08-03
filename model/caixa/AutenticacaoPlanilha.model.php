@@ -62,7 +62,7 @@ class AutenticacaoPlanilha {
    * @param  PlanilhaArrecadacao $oPlanilha
    * @throws ParameterException
    */
-  public function __construct (PlanilhaArrecadacao $oPlanilha = null) {
+  public function __construct (?PlanilhaArrecadacao $oPlanilha = null) {
 
     if (!$oPlanilha instanceof PlanilhaArrecadacao) {
       throw new ParameterException("Não é um objeto do tipo PlanilhaArrecadacao.");
@@ -93,7 +93,7 @@ class AutenticacaoPlanilha {
     }
 
   	$sRetornoAutenticacao = db_utils::fieldsMemory($rsAutenticacao, 0)->fc_autenticaplanilha;
-  	if (substr($sRetornoAutenticacao, 0, 1) != '1') {
+  	if (!str_starts_with((string) $sRetornoAutenticacao, '1')) {
 
   		$sMsgErro  = "Erro ao Autenticar.\n";
   		$sMsgErro .= $sRetornoAutenticacao;
@@ -206,7 +206,7 @@ class AutenticacaoPlanilha {
     }
 
   	$sRetornoEstorno = db_utils::fieldsMemory($rsEstorno, 0)->fc_estornoplanilha;
-  	if (substr($sRetornoEstorno, 0, 1) != '1') {
+  	if (!str_starts_with((string) $sRetornoEstorno, '1')) {
 
   		$sMsgErro  = "Erro ao Autenticar.\n";
   		$sMsgErro .= $sRetornoEstorno;
@@ -262,7 +262,7 @@ class AutenticacaoPlanilha {
   public function executarLancamentoContabeis(
       $iCodigoAutenticacao, 
       $lEstorno=false, 
-      $oDadoAutenticacao,
+      $oDadoAutenticacao = null,
       $oReceitaPlanilha = null
   ) {
 
@@ -288,7 +288,7 @@ class AutenticacaoPlanilha {
     for ($iRowReceita = 0; $iRowReceita < $iTotalReceitas; $iRowReceita++) {
 
     	$oDadoSqlGeral = db_utils::fieldsMemory($rsBuscaDadosPlanilha, $iRowReceita);
-    	$aReceitas     = array();
+    	$aReceitas     = [];
 
       $iAno              = db_getsession('DB_anousu');
     	$oReceitaContabil  = ReceitaContabilRepository::getReceitaByCodigo($oDadoSqlGeral->k02_codrec, $iAno);
@@ -388,7 +388,7 @@ class AutenticacaoPlanilha {
      * @throws BusinessException
      * @throws Exception
      */
-  public function executarLancamentosReceitaExtraOrcamentaria($iCodigoAutenticacao, $lEstorno = false, $oDadoAutenticacao) {
+  public function executarLancamentosReceitaExtraOrcamentaria($iCodigoAutenticacao, $lEstorno = false, $oDadoAutenticacao = null) {
 
     $sCamposExtra  = "corrente.k12_autent, corrente.k12_data, corrente.k12_id, k12_conta,";
     $sCamposExtra .= "tabrec.k02_codigo,";
@@ -458,7 +458,7 @@ class AutenticacaoPlanilha {
       }
 
       $oContaContabil = new ContaPlanoPCASP(null, $iAnoSessao, $oDadoAutenticacao->k02_reduz);
-      if ( substr($oContaContabil->getEstrutural(), 0, 4) != '2188' ) {
+      if ( !str_starts_with($oContaContabil->getEstrutural(), '2188') ) {
         $iCodigoDocumento = ( $lEstorno? 152: 150 );
         if( $planilhaFolha ){
             $iCodigoDocumento = ( $lEstorno? 153: 151 );

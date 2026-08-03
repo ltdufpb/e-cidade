@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_cgmdoc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcgmdoc = new cl_cgmdoc;
 $clcgm = new cl_cgm;
 $db_opcao = 1;

@@ -35,14 +35,8 @@ final class FixaJuridicaParcelamento implements Interfaces\Validador
 {
     private $validacao;
 
-    private $termo;
-
-    private $processoForo;
-
-    public function __construct(Termo $termo, ProcessoForo $processoForo)
+    public function __construct(private readonly Termo $termo, private readonly ProcessoForo $processoForo)
     {
-        $this->termo = $termo;
-        $this->processoForo = $processoForo;
     }
 
     public function processarValidacao()

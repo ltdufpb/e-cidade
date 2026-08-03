@@ -97,9 +97,9 @@ if(isset($db_opcaoal)){
             $result_pres = $clliccomissaocgm->sql_record($sSql);
 
             if ($result_pres && $clliccomissaocgm->numrows > 0) {
-              $aTipo = array('M'=>'Membro/Suplente','P'=>'Presidente');
+              $aTipo = ['M'=>'Membro/Suplente','P'=>'Presidente'];
             }else{
-              $aTipo = array('P'=>'Presidente','M'=>'Membro/Suplente');
+              $aTipo = ['P'=>'Presidente','M'=>'Membro/Suplente'];
             }
 
             $aTipo['G'] = 'Pregoeiro';
@@ -130,10 +130,10 @@ if(isset($db_opcaoal)){
     <tr>
       <td valign="top"  align="center">
         <?php
-        $chavepri = array(
+        $chavepri = [
           "l31_codigo"      => $l31_codigo,
           "l31_liccomissao" => $l31_liccomissao,
-        );
+        ];
         $cliframe_alterar_excluir->chavepri      = $chavepri;
         $cliframe_alterar_excluir->sql           = $clliccomissaocgm->sql_query(null, "*", null, "l31_liccomissao = $l31_liccomissao");
         $cliframe_alterar_excluir->campos        = "l31_codigo, l31_numcgm, z01_nome, l31_tipo";

@@ -38,7 +38,7 @@ class ConjuntoLancamentoPadronizado {
   /**
    * @var array
    */
-  private $aLancamentosPadronizados = array();
+  private $aLancamentosPadronizados = [];
 
   /**
    * Caminho do arquivo XML contendo as configurações

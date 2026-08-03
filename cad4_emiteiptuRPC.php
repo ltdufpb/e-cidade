@@ -45,23 +45,23 @@ $sMsg   = "";
     * 
     */
 if (isset($_POST["json"])) {
-	
+
 	$oParam            = $oJson->decode(db_stdClass::db_stripTagsJson(str_replace("\\","",$_POST["json"])));
 	$oRetorno          = new stdClass();
 	$oRetorno->status  = 1;
 	$oRetorno->message = 1;
 	$lErro             = false;
 	$sMensagem         = "";   
-	
-	$aDadosUnicas      = array();
-	
+
+	$aDadosUnicas      = [];
+
   switch ($oParam->exec) {
-    
+
     case 'VerUnicas' :
-    	
+
       $iAnousu     = $oParam->iAnousu;
     	$sDatausu    = date('Y-m-d',db_getsession('DB_datausu'));
-      
+
           $sSqlUnicas = "
             select distinct 
                    k00_dtvenc, 
@@ -86,25 +86,25 @@ if (isset($_POST["json"])) {
 
 	    $rsUnicas = db_query($sSqlUnicas);
 	    $aUnicas  = db_utils::getCollectionByRecord($rsUnicas, false, false, false);
-    	
+
 	    foreach ($aUnicas as $iIndUnicas => $oValorUnicas){
-	    	
+
 	    	$oDadosUnicas = new stdClass();
 	    	$oDadosUnicas->id     = $oValorUnicas->k00_dtvenc . "=" . $oValorUnicas->k00_dtoper . "=" . $oValorUnicas->k00_percdes;
-	    	$oDadosUnicas->unicas = utf8_encode("Vencimento: "      . db_formatar($oValorUnicas->k00_dtvenc, "d") . 
+	    	$oDadosUnicas->unicas = mb_convert_encoding("Vencimento: "      . db_formatar($oValorUnicas->k00_dtvenc, "d") . 
 	    	                                    " - Lançamento: "   . db_formatar($oValorUnicas->k00_dtoper, "d") . 
-	    	                                    " - Desconto: "     . $oValorUnicas->k00_percdes . " %");
+	    	                                    " - Desconto: "     . $oValorUnicas->k00_percdes . " %", 'UTF-8', 'ISO-8859-1');
 	    	$aDadosUnicas[] = $oDadosUnicas;
-	    	
+
 	    }
 
     break;  
-    
+
   }
-  
+
   $oRetorno->dados      =   $aDadosUnicas;
   echo $oJson->encode($oRetorno);   
-  
+
        /*
         *   Se nao for consulta de unicas segue o codigo como antes
         */
@@ -129,7 +129,7 @@ if (isset($_POST["json"])) {
      $sSqlBuscaTipo .= "  where j18_anousu = {$oPost->anousu}                                          ";
 
      $rsBuscaTipo = db_query($sSqlBuscaTipo);
-     $iLinhasTipo = pg_numrows($rsBuscaTipo);
+     $iLinhasTipo = pg_num_rows($rsBuscaTipo);
    
      if ( $iLinhasTipo > 0 ) {
      
@@ -154,7 +154,7 @@ if (isset($_POST["json"])) {
      
    }
 
-   $aRetornaCampos = array("lErro"=>$lErro, "sMsg"=>urlencode($sMsg));
+   $aRetornaCampos = ["lErro"=>$lErro, "sMsg"=>urlencode($sMsg)];
    
    echo $oJson->encode($aRetornaCampos);	
 	

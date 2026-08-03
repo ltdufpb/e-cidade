@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE empautorizainscricaopassivo
 class cl_empautorizainscricaopassivo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e16_empautoriza = 0; 
-   var $e16_inscricaopassivo = 0; 
+   public $e16_empautoriza = 0; 
+   public $e16_inscricaopassivo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e16_empautoriza = int4 = Autorização 
                  e16_inscricaopassivo = int4 = Inscrição Passiva 
                  ";
    //funcao construtor da classe 
-   function cl_empautorizainscricaopassivo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empautorizainscricaopassivo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -104,7 +104,7 @@ class cl_empautorizainscricaopassivo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "autorização de empenho () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "autorização de empenho já Cadastrado";
@@ -131,10 +131,10 @@ class cl_empautorizainscricaopassivo {
       $this->atualizacampos();
      $sql = " update empautorizainscricaopassivo set ";
      $virgula = "";
-     if(trim($this->e16_empautoriza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_empautoriza"])){ 
+     if(trim((string) $this->e16_empautoriza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_empautoriza"])){ 
        $sql  .= $virgula." e16_empautoriza = $this->e16_empautoriza ";
        $virgula = ",";
-       if(trim($this->e16_empautoriza) == null ){ 
+       if(trim((string) $this->e16_empautoriza) == null ){ 
          $this->erro_sql = " Campo Autorização nao Informado.";
          $this->erro_campo = "e16_empautoriza";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_empautorizainscricaopassivo {
          return false;
        }
      }
-     if(trim($this->e16_inscricaopassivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_inscricaopassivo"])){ 
+     if(trim((string) $this->e16_inscricaopassivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_inscricaopassivo"])){ 
        $sql  .= $virgula." e16_inscricaopassivo = $this->e16_inscricaopassivo ";
        $virgula = ",";
-       if(trim($this->e16_inscricaopassivo) == null ){ 
+       if(trim((string) $this->e16_inscricaopassivo) == null ){ 
          $this->erro_sql = " Campo Inscrição Passiva nao Informado.";
          $this->erro_campo = "e16_inscricaopassivo";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empautorizainscricaopassivo";
@@ -253,7 +253,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="empautorizainscricaopassivo.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -284,7 +284,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -297,7 +297,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -315,7 +315,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -34,8 +34,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_areaconhecimento_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clareaconhecimento = new cl_areaconhecimento;
 $clareaconhecimento->rotulo->label("ed293_sequencial");
@@ -114,13 +114,13 @@ $clareaconhecimento->rotulo->label("ed293_descr");
                 $sql = $clareaconhecimento->sql_query("", $campos, "ed293_sequencial", "ed293_ativo = 1");
               }
               
-              $repassa = array();
+              $repassa = [];
               
               if (isset($chave_ed293_sequencial)) {
-                $repassa = array(
+                $repassa = [
                                   "chave_ed293_sequencial" => $chave_ed293_sequencial,
                                   "chave_ed293_sequencial" => $chave_ed293_sequencial
-                                );
+                                ];
               }
               
               db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

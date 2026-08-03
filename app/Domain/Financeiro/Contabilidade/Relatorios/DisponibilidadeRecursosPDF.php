@@ -16,9 +16,7 @@ class DisponibilidadeRecursosPDF extends \FpdfMultiCellBorder
      */
     private $texto;
 
-    private $filtros ;
-
-    public function __construct($filtros)
+    public function __construct(private $filtros)
     {
         parent::__construct();
 
@@ -32,8 +30,6 @@ class DisponibilidadeRecursosPDF extends \FpdfMultiCellBorder
         $this->mostrarRodape(true);
         $this->mostrarEmissor(true);
         $this->mostrarTotalDePaginas(true);
-
-        $this->filtros = $filtros;
 
         global $head1, $head3;
 

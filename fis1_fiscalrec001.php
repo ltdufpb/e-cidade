@@ -33,8 +33,8 @@ include(modification("classes/db_fiscalrec_classe.php"));
 include(modification("classes/db_fiscalprocrec_classe.php"));
 include(modification("classes/db_fiscaltipo_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfiscalrec      = new cl_fiscalrec;
 $clfiscalprocrec  = new cl_fiscalprocrec;
 $clfiscaltipo     = new cl_fiscaltipo;
@@ -42,7 +42,7 @@ $db_opcao = 1;
 $db_botao = true;
 $lSqlErro = false;
 global $y42_codnoti;
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir") {
 	
   db_inicio_transacao();
 
@@ -108,7 +108,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Inclui
 js_setatabulacao();
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clfiscalrec->erro_status=="0"){
     $clfiscalrec->erro(true,false);
     $db_botao=true;

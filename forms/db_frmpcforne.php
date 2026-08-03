@@ -98,7 +98,7 @@ db_textarea('pc60_obs',2,80,$Ipc60_obs,true,'text',$db_opcao,"")
     </td>
     <td>
 <?php 
-$x = array("f"=>"Não","t"=>"Sim");
+$x = ["f"=>"Não","t"=>"Sim"];
 db_select('pc60_bloqueado',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -109,7 +109,7 @@ db_select('pc60_bloqueado',$x,true,$db_opcao,"");
     </td>
     <td>
       <?php
-        $opcoes = array("f"=>"Não", "t"=>"Sim");
+        $opcoes = ["f"=>"Não", "t"=>"Sim"];
         db_select('pc60_indicativocprb', $opcoes, true, $db_opcao);
       ?>
     </td>
@@ -165,7 +165,7 @@ function js_preenchepesquisa(chave){
   db_iframe_pcforne.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

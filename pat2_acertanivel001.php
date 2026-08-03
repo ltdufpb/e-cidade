@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -54,7 +54,7 @@ if(isset($emite2)){
                   from clabens 
                   where t64_class ilike '$estrutural%' and t64_instit = $iInstituicao ";
     $res_nivel = db_query($sql_nivel) or die($sql_nivel);
-    $num_nivel = pg_numrows($res_nivel);
+    $num_nivel = pg_num_rows($res_nivel);
     for($yy = 0; $yy < $num_nivel ; $yy++){
       db_fieldsmemory($res_nivel, $yy);
       $sql_ins_nivel = "insert into clabensconplano values(nextval('clabensconplano_t86_sequencial_seq'),
@@ -86,12 +86,12 @@ function nivel_conta($estrutura){
   
   $res_nivel = db_query($sql_nivel);
 
-  $num_nivel = pg_numrows($res_nivel);
+  $num_nivel = pg_num_rows($res_nivel);
      
   
   for($x = 0 ; $x < $num_nivel ; $x++ ){
      db_fieldsmemory($res_nivel,$x);
-     $parte = substr($estrutura,$db78_inicio, $db78_tamanho);
+     $parte = substr((string) $estrutura,$db78_inicio, $db78_tamanho);
      if($parte+0 > 0 ){
        $nivel = $db78_nivel+1;
      }

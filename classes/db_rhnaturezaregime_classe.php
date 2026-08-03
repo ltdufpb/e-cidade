@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE rhnaturezaregime
 class cl_rhnaturezaregime { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh71_sequencial = 0; 
-   var $rh71_descricao = null; 
+   public $rh71_sequencial = 0; 
+   public $rh71_descricao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh71_sequencial = int4 = Codigo da Natureza 
                  rh71_descricao = varchar(50) = Descrição da Natureza 
                  ";
    //funcao construtor da classe 
-   function cl_rhnaturezaregime() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhnaturezaregime"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_rhnaturezaregime {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh71_sequencial = pg_result($result,0,0); 
+       $this->rh71_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhnaturezaregime_rh71_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh71_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh71_sequencial)){
          $this->erro_sql = " Campo rh71_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_rhnaturezaregime {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Natureza do regime ($this->rh71_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Natureza do regime já Cadastrado";
@@ -152,11 +152,11 @@ class cl_rhnaturezaregime {
      $resaco = $this->sql_record($this->sql_query_file($this->rh71_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11890,'$this->rh71_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2056,11890,'','".AddSlashes(pg_result($resaco,0,'rh71_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2056,11891,'','".AddSlashes(pg_result($resaco,0,'rh71_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2056,11890,'','".AddSlashes(pg_fetch_result($resaco,0,'rh71_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2056,11891,'','".AddSlashes(pg_fetch_result($resaco,0,'rh71_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_rhnaturezaregime {
       $this->atualizacampos();
      $sql = " update rhnaturezaregime set ";
      $virgula = "";
-     if(trim($this->rh71_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh71_sequencial"])){ 
+     if(trim((string) $this->rh71_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh71_sequencial"])){ 
        $sql  .= $virgula." rh71_sequencial = $this->rh71_sequencial ";
        $virgula = ",";
-       if(trim($this->rh71_sequencial) == null ){ 
+       if(trim((string) $this->rh71_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo da Natureza nao Informado.";
          $this->erro_campo = "rh71_sequencial";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_rhnaturezaregime {
          return false;
        }
      }
-     if(trim($this->rh71_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh71_descricao"])){ 
+     if(trim((string) $this->rh71_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh71_descricao"])){ 
        $sql  .= $virgula." rh71_descricao = '$this->rh71_descricao' ";
        $virgula = ",";
-       if(trim($this->rh71_descricao) == null ){ 
+       if(trim((string) $this->rh71_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição da Natureza nao Informado.";
          $this->erro_campo = "rh71_descricao";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_rhnaturezaregime {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11890,'$this->rh71_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh71_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2056,11890,'".AddSlashes(pg_result($resaco,$conresaco,'rh71_sequencial'))."','$this->rh71_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2056,11890,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh71_sequencial'))."','$this->rh71_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh71_descricao"]))
-           $resac = db_query("insert into db_acount values($acount,2056,11891,'".AddSlashes(pg_result($resaco,$conresaco,'rh71_descricao'))."','$this->rh71_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2056,11891,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh71_descricao'))."','$this->rh71_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_rhnaturezaregime {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11890,'$rh71_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2056,11890,'','".AddSlashes(pg_result($resaco,$iresaco,'rh71_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2056,11891,'','".AddSlashes(pg_result($resaco,$iresaco,'rh71_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2056,11890,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh71_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2056,11891,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh71_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhnaturezaregime
@@ -314,7 +314,7 @@ class cl_rhnaturezaregime {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhnaturezaregime";

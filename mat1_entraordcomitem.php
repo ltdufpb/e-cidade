@@ -35,8 +35,8 @@ include(modification("classes/db_matestoqueitemoc_classe.php"));
 include(modification("classes/db_matestoqueitem_classe.php"));
 include(modification("classes/db_transmater_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clmatestoqueitem = new cl_matestoqueitem;
 $clmatestoqueitemoc = new cl_matestoqueitemoc;
@@ -125,7 +125,7 @@ $clrotulo->label("e62_descr");
   	   }else{
 	     echo "<tr>	    
    	           <td class='bordas_corp' align='center'><small>$e60_codemp </small></td>
-	           <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr($pc01_descrmater,0,20)."&nbsp;</small></td>
+	           <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr((string) $pc01_descrmater,0,20)."&nbsp;</small></td>
                    <td class='bordas_corp' align='right'><b><small>".db_formatar($valoruni,'f')."</small></b></td>
                    <td class='bordas_corp' align='right'><b><small>".db_formatar($vlto,'f')."</small></b></td>";
 	     if ($pc01_servico=="f"){
@@ -138,7 +138,7 @@ $clrotulo->label("e62_descr");
                echo "</small></td>";
              }else{
                $quant="quant_$e62_codele"."_"."$m52_valor"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i";
-               $$quant=$m52_quant;
+               ${$quant}=$m52_quant;
                $quantidade=$m52_quant;
                echo "<td class='bordas_corp' align='center'><small>$quantidade</small></td>
   	             <td class='bordas_corp' align='center'><small>";
@@ -167,7 +167,7 @@ $clrotulo->label("e62_descr");
 	   }else{
 	     echo "<tr>	    
    	           <td class='bordas_corp' align='center'><small>$e60_codemp </small></td>
-	           <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr($pc01_descrmater,0,20)."&nbsp;</small></td>
+	           <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr((string) $pc01_descrmater,0,20)."&nbsp;</small></td>
                    <td class='bordas_corp' align='right'><b><small>".db_formatar($valoruni,'f')."</small></b></td>
                    <td class='bordas_corp' align='right'><b><small>".db_formatar($valortotal,'f')."</small></b></td>
 	           <td class='bordas_corp' align='center'><small>$m52_quant</small></td>";
@@ -180,7 +180,7 @@ $clrotulo->label("e62_descr");
 	       echo "</small></td>";
 	     }else{
                $quant="quant_$e62_codele"."_"."$m52_valor"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i";
-               $$quant=$m52_quant;
+               ${$quant}=$m52_quant;
 	       echo" <td class='bordas_corp' align='center'><small>";
 	       db_input("quant_$e62_codele"."_"."$m52_valor"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i",6,0,true,'text',3);
 	       echo "</small></td>";

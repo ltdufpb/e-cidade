@@ -51,8 +51,8 @@ $clobrashabiteprot= new cl_obrashabiteprot;
 
 $oLibDocumento    = new libdocumento(1021);
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 if(!isset($codigo) || $codigo==''){
   
@@ -165,7 +165,7 @@ $data = date("Y-m-d",DB_getsession("DB_datausu"));
 $dia  = date("d");
 $mes  = date("m");
 $ano  = date("Y");
-$mes_extenso  = array("01"=>"janeiro","02"=>"fevereiro","03"=>"março","04"=>"abril","05"=>"maio","06"=>"junho","07"=>"julho","08"=>"agosto","09"=>"setembro","10"=>"outubro","11"=>"novembro","12"=>"dezembro");
+$mes_extenso  = ["01"=>"janeiro","02"=>"fevereiro","03"=>"março","04"=>"abril","05"=>"maio","06"=>"junho","07"=>"julho","08"=>"agosto","09"=>"setembro","10"=>"outubro","11"=>"novembro","12"=>"dezembro"];
 $data_extenso = $munic.", ".$dia." de ".$mes_extenso[$mes]." de ".$ano.".";
 
 /*============================================================  O DOCUMENTO PDF  ==============================================================================================*/ 
@@ -191,7 +191,7 @@ $sqlparag = "select *
 
 
 $resparag = db_query($sqlparag);
-$numrows  = pg_numrows($resparag);
+$numrows  = pg_num_rows($resparag);
 
 if($numrows == 0 ){
   
@@ -203,8 +203,8 @@ if($numrows == 0 ){
 
 $oLibDocumento->codhab                  = @$cod_hab;//igo;
 $oLibDocumento->numero                  = @$ob07_numero;
-$oLibDocumento->nome                    = ucwords(strtolower($z01_nome));
-$oLibDocumento->rua                     = ucwords(strtolower(@$j14_nome));
+$oLibDocumento->nome                    = ucwords(strtolower((string) $z01_nome));
+$oLibDocumento->rua                     = ucwords(strtolower((string) @$j14_nome));
 $oLibDocumento->tipoconstr              = @$j31_descr;
 $oLibDocumento->codproc                 = $codproc;
 $oLibDocumento->datavist                = db_dataextenso(db_strtotime($ob09_data),"");

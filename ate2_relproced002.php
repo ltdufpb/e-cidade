@@ -31,7 +31,7 @@ include(modification("classes/db_db_sysmodulo_classe.php"));
 $total2 = 0;
 $cl_db_sysmodulo = new cl_db_sysmodulo;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 //echo "rel 2 ......<br> data = $data  <br> data1 = $data1 ";
 $pdf = new PDF(); // abre a classe
@@ -83,7 +83,7 @@ order by nomemod ";
 $resultmodulo = $cl_db_sysmodulo->sql_record($sqlmod);
 $linhas =  $cl_db_sysmodulo->numrows;
 
-$totalprocedgeral = array();
+$totalprocedgeral = [];
 $colunas = (195/$linhasmot);
 for($m=0;$m < $linhasmot;$m++) {
 	db_fieldsmemory($resultmot,$m);
@@ -104,7 +104,7 @@ if($linhas >0){
 			$pdf->Cell(65,6,$nome_modulo,0,0,"L",1);
 		}
 
-		$totalproced = array();
+		$totalproced = [];
 		$colunas = (195/$linhasmot);
 		for($m=0;$m < $linhasmot;$m++) {
 			db_fieldsmemory($resultmot,$m);
@@ -137,7 +137,7 @@ if($linhas >0){
         
 				if ($tipo == "a") {
 					$pdf->SetFont($Letra,'',9);
-					$pdf->Cell(65,6,substr($descrproced,0,30),1,0,"L",0);
+					$pdf->Cell(65,6,substr((string) $descrproced,0,30),1,0,"L",0);
 				}
         
         // OS MOTIVOS

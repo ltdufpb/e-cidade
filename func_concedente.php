@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_concedente_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconcedente = new cl_concedente;
 $clconcedente->rotulo->label("o108_sequencial");
 $clconcedente->rotulo->label("o108_numcgm");
@@ -98,9 +98,9 @@ $clconcedente->rotulo->label("o108_numcgm");
         }else{
            $sql = $clconcedente->sql_query("",$campos,"o108_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o108_numcgm)){
-          $repassa = array("chave_o108_sequencial"=>$chave_o108_sequencial,"chave_o108_numcgm"=>$chave_o108_numcgm);
+          $repassa = ["chave_o108_sequencial"=>$chave_o108_sequencial,"chave_o108_numcgm"=>$chave_o108_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -34,8 +34,8 @@ include(modification("classes/db_rhpagocor_classe.php"));
 include(modification("classes/db_folha_classe.php"));
 include(modification("classes/db_rhpesjustica_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clfolha = new cl_folha;
 $clrhpagocor = new cl_rhpagocor;
 $clrhpesjustica = new cl_rhpesjustica;
@@ -115,7 +115,7 @@ if(!isset($rh58_datai_dia) && !isset($rh58_datai_mes) && !isset($rh58_datai_ano)
                 <td align="right"><b>Pagar:</b></td>
                 <td>
                   <?php 
-                  $arr_pagar = Array(0=>"Todos",1=>"Funcionários que não estão na justiça");
+                  $arr_pagar = [0=>"Todos",1=>"Funcionários que não estão na justiça"];
                   db_select("pagar", $arr_pagar, true, 1, "");
                   ?>
                 </td>

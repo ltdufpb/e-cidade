@@ -199,7 +199,7 @@ class Import
    */
     private function extractQuestions(Array $groups)
     {
-        $questions = array();
+        $questions = [];
 
         foreach ($groups as $group) {
             $questions = array_merge($questions, $group->getPerguntas());
@@ -214,7 +214,7 @@ class Import
    */
     private function extractOptionsAnwser(Array $questions)
     {
-        $options = array();
+        $options = [];
 
         foreach ($questions as $question) {
             $options = array_merge($options, $question->getOpcoes());
@@ -230,7 +230,7 @@ class Import
    */
     private function extractId(Array $array)
     {
-        $result = array();
+        $result = [];
         foreach ($array as $object) {
             if (!!$object->getCodigo()) {
                 $result[] = $object->getCodigo();

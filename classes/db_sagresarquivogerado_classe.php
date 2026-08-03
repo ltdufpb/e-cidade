@@ -38,7 +38,7 @@ class cl_sagresarquivogerado
     public function __construct()
     {
         $this->rotulo = new rotulo("sagresarquivogerado"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -130,10 +130,10 @@ class cl_sagresarquivogerado
          $this->erro_status = "0";
          return false; 
        }
-       $this->c141_sequencial = pg_result($result,0,0); 
+       $this->c141_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from sagresarquivogerado_c141_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c141_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c141_sequencial)){
          $this->erro_sql = " Campo c141_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -171,7 +171,7 @@ class cl_sagresarquivogerado
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Arquivos gerados no SAGRES ($this->c141_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Arquivos gerados no SAGRES já Cadastrado";
@@ -200,15 +200,15 @@ class cl_sagresarquivogerado
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1013741,'$this->c141_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010864,1013741,'','".AddSlashes(pg_result($resaco,0,'c141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010864,1013742,'','".AddSlashes(pg_result($resaco,0,'c141_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010864,1013743,'','".AddSlashes(pg_result($resaco,0,'c141_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010864,1013744,'','".AddSlashes(pg_result($resaco,0,'c141_codlayout'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010864,1013745,'','".AddSlashes(pg_result($resaco,0,'c141_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010864,1013746,'','".AddSlashes(pg_result($resaco,0,'c141_json'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010864,1013741,'','".AddSlashes(pg_fetch_result($resaco,0,'c141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010864,1013742,'','".AddSlashes(pg_fetch_result($resaco,0,'c141_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010864,1013743,'','".AddSlashes(pg_fetch_result($resaco,0,'c141_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010864,1013744,'','".AddSlashes(pg_fetch_result($resaco,0,'c141_codlayout'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010864,1013745,'','".AddSlashes(pg_fetch_result($resaco,0,'c141_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010864,1013746,'','".AddSlashes(pg_fetch_result($resaco,0,'c141_json'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -219,10 +219,10 @@ class cl_sagresarquivogerado
       $this->atualizacampos();
      $sql = " update sagresarquivogerado set ";
      $virgula = "";
-     if(trim($this->c141_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_sequencial"])){ 
+     if(trim((string) $this->c141_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_sequencial"])){ 
        $sql  .= $virgula." c141_sequencial = $this->c141_sequencial ";
        $virgula = ",";
-       if(trim($this->c141_sequencial) == null ){ 
+       if(trim((string) $this->c141_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "c141_sequencial";
          $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_sagresarquivogerado
          return false;
        }
      }
-     if(trim($this->c141_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_usuario"])){ 
+     if(trim((string) $this->c141_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_usuario"])){ 
        $sql  .= $virgula." c141_usuario = $this->c141_usuario ";
        $virgula = ",";
-       if(trim($this->c141_usuario) == null ){ 
+       if(trim((string) $this->c141_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "c141_usuario";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_sagresarquivogerado
          return false;
        }
      }
-     if(trim($this->c141_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c141_data_dia"] !="") ){ 
+     if(trim((string) $this->c141_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c141_data_dia"] !="") ){ 
        $sql  .= $virgula." c141_data = '$this->c141_data' ";
        $virgula = ",";
-       if(trim($this->c141_data) == null ){ 
+       if(trim((string) $this->c141_data) == null ){ 
          $this->erro_sql = " Campo Data de execução não informado.";
          $this->erro_campo = "c141_data_dia";
          $this->erro_banco = "";
@@ -261,7 +261,7 @@ class cl_sagresarquivogerado
        if(isset($GLOBALS["HTTP_POST_VARS"]["c141_data_dia"])){ 
          $sql  .= $virgula." c141_data = null ";
          $virgula = ",";
-         if(trim($this->c141_data) == null ){ 
+         if(trim((string) $this->c141_data) == null ){ 
            $this->erro_sql = " Campo Data de execução não informado.";
            $this->erro_campo = "c141_data_dia";
            $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_sagresarquivogerado
          }
        }
      }
-     if(trim($this->c141_codlayout)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_codlayout"])){ 
+     if(trim((string) $this->c141_codlayout)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_codlayout"])){ 
        $sql  .= $virgula." c141_codlayout = $this->c141_codlayout ";
        $virgula = ",";
-       if(trim($this->c141_codlayout) == null ){ 
+       if(trim((string) $this->c141_codlayout) == null ){ 
          $this->erro_sql = " Campo Código de identificação do layout não informado.";
          $this->erro_campo = "c141_codlayout";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_sagresarquivogerado
          return false;
        }
      }
-     if(trim($this->c141_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_nomearquivo"])){ 
+     if(trim((string) $this->c141_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_nomearquivo"])){ 
        $sql  .= $virgula." c141_nomearquivo = '$this->c141_nomearquivo' ";
        $virgula = ",";
-       if(trim($this->c141_nomearquivo) == null ){ 
+       if(trim((string) $this->c141_nomearquivo) == null ){ 
          $this->erro_sql = " Campo Nome do arquivo não informado.";
          $this->erro_campo = "c141_nomearquivo";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_sagresarquivogerado
          return false;
        }
      }
-     if(trim($this->c141_json)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_json"])){ 
+     if(trim((string) $this->c141_json)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c141_json"])){ 
        $sql  .= $virgula." c141_json = '$this->c141_json' ";
        $virgula = ",";
-       if(trim($this->c141_json) == null ){ 
+       if(trim((string) $this->c141_json) == null ){ 
          $this->erro_sql = " Campo JSON não informado.";
          $this->erro_campo = "c141_json";
          $this->erro_banco = "";
@@ -325,21 +325,21 @@ class cl_sagresarquivogerado
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1013741,'$this->c141_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c141_sequencial"]) || $this->c141_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010864,1013741,'".AddSlashes(pg_result($resaco,$conresaco,'c141_sequencial'))."','$this->c141_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010864,1013741,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c141_sequencial'))."','$this->c141_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c141_usuario"]) || $this->c141_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,1010864,1013742,'".AddSlashes(pg_result($resaco,$conresaco,'c141_usuario'))."','$this->c141_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010864,1013742,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c141_usuario'))."','$this->c141_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c141_data"]) || $this->c141_data != "")
-             $resac = db_query("insert into db_acount values($acount,1010864,1013743,'".AddSlashes(pg_result($resaco,$conresaco,'c141_data'))."','$this->c141_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010864,1013743,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c141_data'))."','$this->c141_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c141_codlayout"]) || $this->c141_codlayout != "")
-             $resac = db_query("insert into db_acount values($acount,1010864,1013744,'".AddSlashes(pg_result($resaco,$conresaco,'c141_codlayout'))."','$this->c141_codlayout',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010864,1013744,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c141_codlayout'))."','$this->c141_codlayout',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c141_nomearquivo"]) || $this->c141_nomearquivo != "")
-             $resac = db_query("insert into db_acount values($acount,1010864,1013745,'".AddSlashes(pg_result($resaco,$conresaco,'c141_nomearquivo'))."','$this->c141_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010864,1013745,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c141_nomearquivo'))."','$this->c141_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c141_json"]) || $this->c141_json != "")
-             $resac = db_query("insert into db_acount values($acount,1010864,1013746,'".AddSlashes(pg_result($resaco,$conresaco,'c141_json'))."','$this->c141_json',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010864,1013746,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c141_json'))."','$this->c141_json',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -393,15 +393,15 @@ class cl_sagresarquivogerado
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1013741,'$c141_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010864,1013741,'','".AddSlashes(pg_result($resaco,$iresaco,'c141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010864,1013742,'','".AddSlashes(pg_result($resaco,$iresaco,'c141_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010864,1013743,'','".AddSlashes(pg_result($resaco,$iresaco,'c141_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010864,1013744,'','".AddSlashes(pg_result($resaco,$iresaco,'c141_codlayout'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010864,1013745,'','".AddSlashes(pg_result($resaco,$iresaco,'c141_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010864,1013746,'','".AddSlashes(pg_result($resaco,$iresaco,'c141_json'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010864,1013741,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010864,1013742,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c141_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010864,1013743,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c141_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010864,1013744,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c141_codlayout'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010864,1013745,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c141_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010864,1013746,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c141_json'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

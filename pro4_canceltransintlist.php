@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("p58_codproc");
@@ -99,7 +99,7 @@ function js_marca(obj){
        $sSqlProcessos .= "       inner join cgm          on z01_numcgm   = p58_numcgm ";
        $sSqlProcessos .= " where p87_codtransferint={$cod}";
        $result=db_query($sSqlProcessos);
-       $numrows=pg_numrows($result);
+       $numrows=pg_num_rows($result);
        if($numrows>0){ 
           echo "
 	  <br><br>

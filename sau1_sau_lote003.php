@@ -34,7 +34,7 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsau_lote         = db_utils::getdao('sau_lote');
 $clsau_lotepront    = db_utils::getdao('sau_lotepront_ext');
@@ -173,7 +173,7 @@ function excluirProntuariosLote($aLista) {
     }
     if ($oDaoProntagend->erro_status == "0" && $lExec) {
 
-      $$oErro->sMsg  = $oDaoProntagend->erro_msg;
+      ${$oErro}->sMsg  = $oDaoProntagend->erro_msg;
       $oErro->lError = true;
 
     }
@@ -258,7 +258,7 @@ if(isset($excluirlote)){
   $rsResult = $clsau_lotepront->sql_record($sSql);
   if ($clsau_lotepront->numrows > 0) {
 
-    $aLista = array();
+    $aLista = [];
   	for ($iX = 0; $iX < $clsau_lotepront->numrows; $iX++) {
 
     	$oPront   = db_utils::fieldsmemory($rsResult, $iX);

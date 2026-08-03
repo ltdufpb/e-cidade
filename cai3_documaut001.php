@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_saltes_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cliframe_seleciona_documaut = new cl_iframe_seleciona;
 $clsaltes                    = new cl_saltes;
@@ -108,7 +108,7 @@ $clrotulo->label("k12_codord");
             <td align="right" nowrap title="<?=$Tk12_estorn?>"><?=$Lk12_estorn?></td>
             <td align="left" nowrap>
             <?php 
-		  	       $matriz = array("T"=>"TODOS","f"=>"NAO","t"=>"SIM");
+		  	       $matriz = ["T"=>"TODOS","f"=>"NAO","t"=>"SIM"];
 				       db_select("k12_estorn",$matriz,true,4);
 				    ?>
             </td>
@@ -117,7 +117,7 @@ $clrotulo->label("k12_codord");
             <td align="right" nowrap title="<?=$Te90_cancelado?>"><b>Imprime Arquivos Cancelados:&nbsp;&nbsp;</b>
             <td align="left" nowrap>
             <?php 
-               $matriz = array("f"=>"NAO","t"=>"SIM");
+               $matriz = ["f"=>"NAO","t"=>"SIM"];
                db_select("cancelados",$matriz,true,4);
             ?>
             </td>
@@ -184,7 +184,7 @@ $clrotulo->label("k12_codord");
            if(isset($ordens_selecionadas)&&trim($ordens_selecionadas)!=""){
                $k12_codord = str_replace("|",",",$ordens_selecionadas);
                $k12_codord = substr($k12_codord,0,strlen($k12_codord)-1);
-               $vetor      = @split(",",$k12_codord);
+               $vetor      = @preg_split("#,#m",$k12_codord);
                if(sizeof($vetor)==0){
                    $vetor[0] = $k12_codord;
                }

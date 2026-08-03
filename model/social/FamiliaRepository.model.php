@@ -32,7 +32,7 @@
  */
 class FamiliaRepository {
 
-  protected $aFamilias = array();
+  protected $aFamilias = [];
   
   protected static $oInstance;
   
@@ -58,10 +58,10 @@ class FamiliaRepository {
    */
   public static function getFamiliaByCodigo($iCodigoFamilia) {
   
-    if (!array_key_exists($iCodigoFamilia, FamiliaRepository::getInstance()->aFamilias)) {
-      FamiliaRepository::getInstance()->aFamilias[$iCodigoFamilia] = new Familia($iCodigoFamilia);
+    if (!array_key_exists($iCodigoFamilia, $this->getInstance()->aFamilias)) {
+      $this->getInstance()->aFamilias[$iCodigoFamilia] = new Familia($iCodigoFamilia);
     }
-    return FamiliaRepository::getInstance()->aFamilias[$iCodigoFamilia];
+    return $this->getInstance()->aFamilias[$iCodigoFamilia];
   }
   
   /**
@@ -78,15 +78,15 @@ class FamiliaRepository {
     if ($oDaoFamilia->numrows > 0) {
       
        $iCodigoSequencial = db_utils::fieldsMemory($rsDadosFamilia, 0)->as15_cidadaofamilia;
-       if (!isset(FamiliaRepository::getInstance()->aFamilias[$iCodigoSequencial])) {
+       if (!isset($this->getInstance()->aFamilias[$iCodigoSequencial])) {
          
          $oFamilia = new Familia($iCodigoSequencial);
-         FamiliaRepository::getInstance()->adicionarFamilia($oFamilia);
+         $this->getInstance()->adicionarFamilia($oFamilia);
        }
        
     }
-    if (isset(FamiliaRepository::getInstance()->aFamilias[$iCodigoSequencial])) {
-      return FamiliaRepository::getInstance()->aFamilias[$iCodigoSequencial];
+    if (isset($this->getInstance()->aFamilias[$iCodigoSequencial])) {
+      return $this->getInstance()->aFamilias[$iCodigoSequencial];
     } else {
       return false;
     }
@@ -97,13 +97,13 @@ class FamiliaRepository {
    * @param Familia $oFamilia
    */
   public static function adicionarFamilia(Familia $oFamilia) {
-    FamiliaRepository::getInstance()->aFamilias[$oFamilia->getCodigoSequencial()] = $oFamilia;
+    $this->getInstance()->aFamilias[$oFamilia->getCodigoSequencial()] = $oFamilia;
   }
   
   public static function removerFamilia(Familia $oFamilia) {
     
-    if (isset(FamiliaRepository::getInstance()->aFamilias[$oFamilia->getCodigoSequencial()])) {
-      unset(FamiliaRepository::getInstance()->aFamilias[$oFamilia->getCodigoSequencial()]);
+    if (isset($this->getInstance()->aFamilias[$oFamilia->getCodigoSequencial()])) {
+      unset($this->getInstance()->aFamilias[$oFamilia->getCodigoSequencial()]);
     }
   }
   
@@ -120,11 +120,11 @@ class FamiliaRepository {
       for ($iFamilia = 0; $iFamilia < $oDaoFamilia->numrows; $iFamilia++) {
         
         $oDadosFamilia = db_utils::fieldsMemory($rsFamilia, $iFamilia);
-        FamiliaRepository::getInstance()->adicionarFamilia(new Familia($oDadosFamilia->codigo_familia));
+        $this->getInstance()->adicionarFamilia(new Familia($oDadosFamilia->codigo_familia));
         unset($oDadosFamilia);
       }
     }
-    return FamiliaRepository::getInstance()->aFamilias;   
+    return $this->getInstance()->aFamilias;   
   }
   
   protected function __clone(){}
@@ -148,7 +148,7 @@ class FamiliaRepository {
       for ($i = 0; $i < $iLinhas; $i++) {
         
         $iCodigoFamilia = db_utils::fieldsMemory($rsAvaliacao, $i)->as06_cidadaofamilia;
-        return FamiliaRepository::getInstance()->getFamiliaByCodigo($iCodigoFamilia);
+        return $this->getInstance()->getFamiliaByCodigo($iCodigoFamilia);
       }
     }
     return false; 

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cepestados_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcepestados = new cl_cepestados;
 $clcepestados->rotulo->label("cp03_sigla");
 $clcepestados->rotulo->label("cp03_estado");
@@ -98,9 +98,9 @@ $clcepestados->rotulo->label("cp03_estado");
         }else{
            $sql = $clcepestados->sql_query("",$campos,"cp03_sigla","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cp03_sigla)){
-          $repassa = array("chave_cp03_sigla"=>$chave_cp03_sigla,"chave_cp03_sigla"=>$chave_cp03_sigla);
+          $repassa = ["chave_cp03_sigla"=>$chave_cp03_sigla,"chave_cp03_sigla"=>$chave_cp03_sigla];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

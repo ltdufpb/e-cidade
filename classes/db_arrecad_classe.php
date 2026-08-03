@@ -29,39 +29,39 @@
 //CLASSE DA ENTIDADE arrecad
 class cl_arrecad {
   // cria variaveis de erro
-  var $rotulo     = null;
-  var $query_sql  = null;
-  var $numrows    = 0;
-  var $numrows_incluir = 0;
-  var $numrows_alterar = 0;
-  var $numrows_excluir = 0;
-  var $erro_status= null;
-  var $erro_sql   = null;
-  var $erro_banco = null;
-  var $erro_msg   = null;
-  var $erro_campo = null;
-  var $pagina_retorno = null;
+  public $rotulo     = null;
+  public $query_sql  = null;
+  public $numrows    = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status= null;
+  public $erro_sql   = null;
+  public $erro_banco = null;
+  public $erro_msg   = null;
+  public $erro_campo = null;
+  public $pagina_retorno = null;
   // cria variaveis do arquivo
-  var $k00_numpre = 0;
-  var $k00_numpar = 0;
-  var $k00_numcgm = 0;
-  var $k00_dtoper_dia = null;
-  var $k00_dtoper_mes = null;
-  var $k00_dtoper_ano = null;
-  var $k00_dtoper = null;
-  var $k00_receit = 0;
-  var $k00_hist = 0;
-  var $k00_valor = 0;
-  var $k00_dtvenc_dia = null;
-  var $k00_dtvenc_mes = null;
-  var $k00_dtvenc_ano = null;
-  var $k00_dtvenc = null;
-  var $k00_numtot = 0;
-  var $k00_numdig = 0;
-  var $k00_tipo = 0;
-  var $k00_tipojm = 0;
+  public $k00_numpre = 0;
+  public $k00_numpar = 0;
+  public $k00_numcgm = 0;
+  public $k00_dtoper_dia = null;
+  public $k00_dtoper_mes = null;
+  public $k00_dtoper_ano = null;
+  public $k00_dtoper = null;
+  public $k00_receit = 0;
+  public $k00_hist = 0;
+  public $k00_valor = 0;
+  public $k00_dtvenc_dia = null;
+  public $k00_dtvenc_mes = null;
+  public $k00_dtvenc_ano = null;
+  public $k00_dtvenc = null;
+  public $k00_numtot = 0;
+  public $k00_numdig = 0;
+  public $k00_tipo = 0;
+  public $k00_tipojm = 0;
   // cria propriedade com as variaveis do arquivo
-  var $campos = "
+  public $campos = "
                  k00_numpre = int4 = Numpre
                  k00_numpar = int4 = Parcela
                  k00_numcgm = int4 = cgm
@@ -76,10 +76,10 @@ class cl_arrecad {
                  k00_tipojm = int4 = tipo de juro e multa
                  ";
   //funcao construtor da classe
-  function cl_arrecad() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("arrecad");
-    $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+    $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
   function erro($mostra,$retorna) {
@@ -264,7 +264,7 @@ class cl_arrecad {
     $result = db_query($sql);
     if($result==false){
       $this->erro_banco = str_replace("\n","",@pg_last_error());
-      if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+      if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
         $this->erro_sql   = " () nao Incluído. Inclusao Abortada.";
         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
         $this->erro_banco = " já Cadastrado";
@@ -291,10 +291,10 @@ class cl_arrecad {
     $this->atualizacampos();
     $sql = " update arrecad set ";
     $virgula = "";
-    if(trim($this->k00_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpre"])){
+    if(trim((string) $this->k00_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpre"])){
       $sql  .= $virgula." k00_numpre = $this->k00_numpre ";
       $virgula = ",";
-      if(trim($this->k00_numpre) == null ){
+      if(trim((string) $this->k00_numpre) == null ){
         $this->erro_sql = " Campo Numpre nao Informado.";
         $this->erro_campo = "k00_numpre";
         $this->erro_banco = "";
@@ -304,10 +304,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpar"])){
+    if(trim((string) $this->k00_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpar"])){
       $sql  .= $virgula." k00_numpar = $this->k00_numpar ";
       $virgula = ",";
-      if(trim($this->k00_numpar) == null ){
+      if(trim((string) $this->k00_numpar) == null ){
         $this->erro_sql = " Campo Parcela nao Informado.";
         $this->erro_campo = "k00_numpar";
         $this->erro_banco = "";
@@ -317,10 +317,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numcgm"])){
+    if(trim((string) $this->k00_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numcgm"])){
       $sql  .= $virgula." k00_numcgm = $this->k00_numcgm ";
       $virgula = ",";
-      if(trim($this->k00_numcgm) == null ){
+      if(trim((string) $this->k00_numcgm) == null ){
         $this->erro_sql = " Campo cgm nao Informado.";
         $this->erro_campo = "k00_numcgm";
         $this->erro_banco = "";
@@ -330,10 +330,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k00_dtoper_dia"] !="") ){
+    if(trim((string) $this->k00_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k00_dtoper_dia"] !="") ){
       $sql  .= $virgula." k00_dtoper = '$this->k00_dtoper' ";
       $virgula = ",";
-      if(trim($this->k00_dtoper) == null ){
+      if(trim((string) $this->k00_dtoper) == null ){
         $this->erro_sql = " Campo DT.Lanc nao Informado.";
         $this->erro_campo = "k00_dtoper_dia";
         $this->erro_banco = "";
@@ -346,7 +346,7 @@ class cl_arrecad {
       if(isset($GLOBALS["HTTP_POST_VARS"]["k00_dtoper_dia"])){
         $sql  .= $virgula." k00_dtoper = null ";
         $virgula = ",";
-        if(trim($this->k00_dtoper) == null ){
+        if(trim((string) $this->k00_dtoper) == null ){
           $this->erro_sql = " Campo DT.Lanc nao Informado.";
           $this->erro_campo = "k00_dtoper_dia";
           $this->erro_banco = "";
@@ -357,10 +357,10 @@ class cl_arrecad {
         }
       }
     }
-    if(trim($this->k00_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_receit"])){
+    if(trim((string) $this->k00_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_receit"])){
       $sql  .= $virgula." k00_receit = $this->k00_receit ";
       $virgula = ",";
-      if(trim($this->k00_receit) == null ){
+      if(trim((string) $this->k00_receit) == null ){
         $this->erro_sql = " Campo Receita nao Informado.";
         $this->erro_campo = "k00_receit";
         $this->erro_banco = "";
@@ -370,10 +370,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist"])){
+    if(trim((string) $this->k00_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist"])){
       $sql  .= $virgula." k00_hist = $this->k00_hist ";
       $virgula = ",";
-      if(trim($this->k00_hist) == null ){
+      if(trim((string) $this->k00_hist) == null ){
         $this->erro_sql = " Campo Histórico de Cálculo nao Informado.";
         $this->erro_campo = "k00_hist";
         $this->erro_banco = "";
@@ -383,10 +383,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_valor"])){
+    if(trim((string) $this->k00_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_valor"])){
       $sql  .= $virgula." k00_valor = $this->k00_valor ";
       $virgula = ",";
-      if(trim($this->k00_valor) == null ){
+      if(trim((string) $this->k00_valor) == null ){
         $this->erro_sql = " Campo Valor nao Informado.";
         $this->erro_campo = "k00_valor";
         $this->erro_banco = "";
@@ -396,10 +396,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k00_dtvenc_dia"] !="") ){
+    if(trim((string) $this->k00_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k00_dtvenc_dia"] !="") ){
       $sql  .= $virgula." k00_dtvenc = '$this->k00_dtvenc' ";
       $virgula = ",";
-      if(trim($this->k00_dtvenc) == null ){
+      if(trim((string) $this->k00_dtvenc) == null ){
         $this->erro_sql = " Campo DT.Venc nao Informado.";
         $this->erro_campo = "k00_dtvenc_dia";
         $this->erro_banco = "";
@@ -412,7 +412,7 @@ class cl_arrecad {
       if(isset($GLOBALS["HTTP_POST_VARS"]["k00_dtvenc_dia"])){
         $sql  .= $virgula." k00_dtvenc = null ";
         $virgula = ",";
-        if(trim($this->k00_dtvenc) == null ){
+        if(trim((string) $this->k00_dtvenc) == null ){
           $this->erro_sql = " Campo DT.Venc nao Informado.";
           $this->erro_campo = "k00_dtvenc_dia";
           $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_arrecad {
         }
       }
     }
-    if(trim($this->k00_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numtot"])){
+    if(trim((string) $this->k00_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numtot"])){
       $sql  .= $virgula." k00_numtot = $this->k00_numtot ";
       $virgula = ",";
-      if(trim($this->k00_numtot) == null ){
+      if(trim((string) $this->k00_numtot) == null ){
         $this->erro_sql = " Campo Tot nao Informado.";
         $this->erro_campo = "k00_numtot";
         $this->erro_banco = "";
@@ -436,10 +436,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_numdig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numdig"])){
+    if(trim((string) $this->k00_numdig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numdig"])){
       $sql  .= $virgula." k00_numdig = $this->k00_numdig ";
       $virgula = ",";
-      if(trim($this->k00_numdig) == null ){
+      if(trim((string) $this->k00_numdig) == null ){
         $this->erro_sql = " Campo D nao Informado.";
         $this->erro_campo = "k00_numdig";
         $this->erro_banco = "";
@@ -449,10 +449,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_tipo"])){
+    if(trim((string) $this->k00_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_tipo"])){
       $sql  .= $virgula." k00_tipo = $this->k00_tipo ";
       $virgula = ",";
-      if(trim($this->k00_tipo) == null ){
+      if(trim((string) $this->k00_tipo) == null ){
         $this->erro_sql = " Campo Tipo de Débito nao Informado.";
         $this->erro_campo = "k00_tipo";
         $this->erro_banco = "";
@@ -462,10 +462,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_tipojm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_tipojm"])){
+    if(trim((string) $this->k00_tipojm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_tipojm"])){
       $sql  .= $virgula." k00_tipojm = $this->k00_tipojm ";
       $virgula = ",";
-      if(trim($this->k00_tipojm) == null ){
+      if(trim((string) $this->k00_tipojm) == null ){
         $this->erro_sql = " Campo tipo de juro e multa nao Informado.";
         $this->erro_campo = "k00_tipojm";
         $this->erro_banco = "";
@@ -560,7 +560,7 @@ class cl_arrecad {
       $this->erro_status = "0";
       return false;
     }
-    $this->numrows = pg_numrows($result);
+    $this->numrows = pg_num_rows($result);
     if($this->numrows==0){
       $this->erro_banco = "";
       $this->erro_sql   = "Record Vazio na Tabela:arrecad";
@@ -575,10 +575,10 @@ class cl_arrecad {
     $this->atualizacampos();
     $sql = " update arrecad set ";
     $virgula = "";
-    if(trim($this->k00_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpre"])){
+    if(trim((string) $this->k00_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpre"])){
       $sql  .= $virgula." k00_numpre = $this->k00_numpre ";
       $virgula = ",";
-      if(trim($this->k00_numpre) == null ){
+      if(trim((string) $this->k00_numpre) == null ){
         $this->erro_sql = " Campo Numpre nao Informado.";
         $this->erro_campo = "k00_numpre";
         $this->erro_banco = "";
@@ -588,10 +588,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpar"])){
+    if(trim((string) $this->k00_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numpar"])){
       $sql  .= $virgula." k00_numpar = $this->k00_numpar ";
       $virgula = ",";
-      if(trim($this->k00_numpar) == null ){
+      if(trim((string) $this->k00_numpar) == null ){
         $this->erro_sql = " Campo Parcela nao Informado.";
         $this->erro_campo = "k00_numpar";
         $this->erro_banco = "";
@@ -601,10 +601,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numcgm"])){
+    if(trim((string) $this->k00_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numcgm"])){
       $sql  .= $virgula." k00_numcgm = $this->k00_numcgm ";
       $virgula = ",";
-      if(trim($this->k00_numcgm) == null ){
+      if(trim((string) $this->k00_numcgm) == null ){
         $this->erro_sql = " Campo cgm nao Informado.";
         $this->erro_campo = "k00_numcgm";
         $this->erro_banco = "";
@@ -614,10 +614,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k00_dtoper_dia"] !="") ){
+    if(trim((string) $this->k00_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k00_dtoper_dia"] !="") ){
       $sql  .= $virgula." k00_dtoper = '$this->k00_dtoper' ";
       $virgula = ",";
-      if(trim($this->k00_dtoper) == null ){
+      if(trim((string) $this->k00_dtoper) == null ){
         $this->erro_sql = " Campo DT.Lanc nao Informado.";
         $this->erro_campo = "k00_dtoper_dia";
         $this->erro_banco = "";
@@ -630,7 +630,7 @@ class cl_arrecad {
       if(isset($GLOBALS["HTTP_POST_VARS"]["k00_dtoper_dia"])){
         $sql  .= $virgula." k00_dtoper = null ";
         $virgula = ",";
-        if(trim($this->k00_dtoper) == null ){
+        if(trim((string) $this->k00_dtoper) == null ){
           $this->erro_sql = " Campo DT.Lanc nao Informado.";
           $this->erro_campo = "k00_dtoper_dia";
           $this->erro_banco = "";
@@ -641,10 +641,10 @@ class cl_arrecad {
         }
       }
     }
-    if(trim($this->k00_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_receit"])){
+    if(trim((string) $this->k00_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_receit"])){
       $sql  .= $virgula." k00_receit = $this->k00_receit ";
       $virgula = ",";
-      if(trim($this->k00_receit) == null ){
+      if(trim((string) $this->k00_receit) == null ){
         $this->erro_sql = " Campo Receita nao Informado.";
         $this->erro_campo = "k00_receit";
         $this->erro_banco = "";
@@ -654,10 +654,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist"])){
+    if(trim((string) $this->k00_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_hist"])){
       $sql  .= $virgula." k00_hist = $this->k00_hist ";
       $virgula = ",";
-      if(trim($this->k00_hist) == null ){
+      if(trim((string) $this->k00_hist) == null ){
         $this->erro_sql = " Campo Hist.Calc. nao Informado.";
         $this->erro_campo = "k00_hist";
         $this->erro_banco = "";
@@ -667,10 +667,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_valor"])){
+    if(trim((string) $this->k00_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_valor"])){
       $sql  .= $virgula." k00_valor = $this->k00_valor ";
       $virgula = ",";
-      if(trim($this->k00_valor) == null ){
+      if(trim((string) $this->k00_valor) == null ){
         $this->erro_sql = " Campo Valor nao Informado.";
         $this->erro_campo = "k00_valor";
         $this->erro_banco = "";
@@ -680,10 +680,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k00_dtvenc_dia"] !="") ){
+    if(trim((string) $this->k00_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k00_dtvenc_dia"] !="") ){
       $sql  .= $virgula." k00_dtvenc = '$this->k00_dtvenc' ";
       $virgula = ",";
-      if(trim($this->k00_dtvenc) == null ){
+      if(trim((string) $this->k00_dtvenc) == null ){
         $this->erro_sql = " Campo DT.Venc nao Informado.";
         $this->erro_campo = "k00_dtvenc_dia";
         $this->erro_banco = "";
@@ -696,7 +696,7 @@ class cl_arrecad {
       if(isset($GLOBALS["HTTP_POST_VARS"]["k00_dtvenc_dia"])){
         $sql  .= $virgula." k00_dtvenc = null ";
         $virgula = ",";
-        if(trim($this->k00_dtvenc) == null ){
+        if(trim((string) $this->k00_dtvenc) == null ){
           $this->erro_sql = " Campo DT.Venc nao Informado.";
           $this->erro_campo = "k00_dtvenc_dia";
           $this->erro_banco = "";
@@ -707,10 +707,10 @@ class cl_arrecad {
         }
       }
     }
-    if(trim($this->k00_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numtot"])){
+    if(trim((string) $this->k00_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numtot"])){
       $sql  .= $virgula." k00_numtot = $this->k00_numtot ";
       $virgula = ",";
-      if(trim($this->k00_numtot) == null ){
+      if(trim((string) $this->k00_numtot) == null ){
         $this->erro_sql = " Campo Tot nao Informado.";
         $this->erro_campo = "k00_numtot";
         $this->erro_banco = "";
@@ -720,10 +720,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_numdig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numdig"])){
+    if(trim((string) $this->k00_numdig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numdig"])){
       $sql  .= $virgula." k00_numdig = $this->k00_numdig ";
       $virgula = ",";
-      if(trim($this->k00_numdig) == null ){
+      if(trim((string) $this->k00_numdig) == null ){
         $this->erro_sql = " Campo D nao Informado.";
         $this->erro_campo = "k00_numdig";
         $this->erro_banco = "";
@@ -733,10 +733,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_tipo"])){
+    if(trim((string) $this->k00_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_tipo"])){
       $sql  .= $virgula." k00_tipo = $this->k00_tipo ";
       $virgula = ",";
-      if(trim($this->k00_tipo) == null ){
+      if(trim((string) $this->k00_tipo) == null ){
         $this->erro_sql = " Campo tipo de debito nao Informado.";
         $this->erro_campo = "k00_tipo";
         $this->erro_banco = "";
@@ -746,10 +746,10 @@ class cl_arrecad {
         return false;
       }
     }
-    if(trim($this->k00_tipojm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_tipojm"])){
+    if(trim((string) $this->k00_tipojm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_tipojm"])){
       $sql  .= $virgula." k00_tipojm = $this->k00_tipojm ";
       $virgula = ",";
-      if(trim($this->k00_tipojm) == null ){
+      if(trim((string) $this->k00_tipojm) == null ){
         $this->erro_sql = " Campo tipo de juro e multa nao Informado.";
         $this->erro_campo = "k00_tipojm";
         $this->erro_banco = "";
@@ -802,20 +802,20 @@ class cl_arrecad {
       $sql .= " and k00_receit = $receit";
     }
     $result=@db_query($sql);
-    $numrows =  pg_numrows($result);
+    $numrows =  pg_num_rows($result);
     if($result!=false && $numrows>0){
-      $k00_numpre = pg_result($result,0,"k00_numpre");
-      $k00_numpar = pg_result($result,0,"k00_numpar");
-      $k00_numcgm = pg_result($result,0,"k00_numcgm");
-      $k00_dtoper = pg_result($result,0,"k00_dtoper");
-      $k00_receit = pg_result($result,0,"k00_receit");
-      $k00_hist = pg_result($result,0,"k00_hist");
-      $k00_valor = pg_result($result,0,"k00_valor");
-      $k00_dtvenc = pg_result($result,0,"k00_dtvenc");
-      $d00_numtot = pg_result($result,0,"k00_numtot");
-      $k00_numdig = pg_result($result,0,"k00_numdig");
-      $k00_tipo = pg_result($result,0,"k00_tipo");
-      $k00_tipojm = pg_result($result,0,"k00_tipojm");
+      $k00_numpre = pg_fetch_result($result,0,"k00_numpre");
+      $k00_numpar = pg_fetch_result($result,0,"k00_numpar");
+      $k00_numcgm = pg_fetch_result($result,0,"k00_numcgm");
+      $k00_dtoper = pg_fetch_result($result,0,"k00_dtoper");
+      $k00_receit = pg_fetch_result($result,0,"k00_receit");
+      $k00_hist = pg_fetch_result($result,0,"k00_hist");
+      $k00_valor = pg_fetch_result($result,0,"k00_valor");
+      $k00_dtvenc = pg_fetch_result($result,0,"k00_dtvenc");
+      $d00_numtot = pg_fetch_result($result,0,"k00_numtot");
+      $k00_numdig = pg_fetch_result($result,0,"k00_numdig");
+      $k00_tipo = pg_fetch_result($result,0,"k00_tipo");
+      $k00_tipojm = pg_fetch_result($result,0,"k00_tipojm");
       for($a=0; $a<$numrows; $a++){
         $sql_in = "insert into arreold(
                                        k00_numpre
@@ -877,7 +877,7 @@ class cl_arrecad {
   function sql_query ( $oid = null,$campos="arrecad.oid,*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -905,7 +905,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -917,7 +917,7 @@ class cl_arrecad {
   function sql_query_div ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -939,7 +939,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -970,7 +970,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -982,7 +982,7 @@ class cl_arrecad {
   function sql_query_file_instit ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1001,7 +1001,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1013,7 +1013,7 @@ class cl_arrecad {
   function sql_query_info ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1037,7 +1037,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1050,7 +1050,7 @@ class cl_arrecad {
   function sql_query_arrecad ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1071,7 +1071,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1084,7 +1084,7 @@ class cl_arrecad {
   function sql_query_instit ( $oid = null,$campos="arrecad.oid,*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1112,7 +1112,7 @@ class cl_arrecad {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -1130,20 +1130,20 @@ class cl_arrecad {
       $sql .= " and k00_numpar = $numpar";
     }
     $result=@db_query($sql);
-    $numrows =  pg_numrows($result);
+    $numrows =  pg_num_rows($result);
     if($result!=false && $numrows>0){
-      $k00_numpre = pg_result($result,0,"k00_numpre");
-      $k00_numpar = pg_result($result,0,"k00_numpar");
-      $k00_numcgm = pg_result($result,0,"k00_numcgm");
-      $k00_dtoper = pg_result($result,0,"k00_dtoper");
-      $k00_receit = pg_result($result,0,"k00_receit");
-      $k00_hist   = pg_result($result,0,"k00_hist");
-      $k00_valor = pg_result($result,0,"k00_valor");
-      $k00_dtvenc = pg_result($result,0,"k00_dtvenc");
-      $d00_numtot = pg_result($result,0,"k00_numtot");
-      $k00_numdig = pg_result($result,0,"k00_numdig");
-      $k00_tipo = pg_result($result,0,"k00_tipo");
-      $k00_tipojm = pg_result($result,0,"k00_tipojm");
+      $k00_numpre = pg_fetch_result($result,0,"k00_numpre");
+      $k00_numpar = pg_fetch_result($result,0,"k00_numpar");
+      $k00_numcgm = pg_fetch_result($result,0,"k00_numcgm");
+      $k00_dtoper = pg_fetch_result($result,0,"k00_dtoper");
+      $k00_receit = pg_fetch_result($result,0,"k00_receit");
+      $k00_hist   = pg_fetch_result($result,0,"k00_hist");
+      $k00_valor = pg_fetch_result($result,0,"k00_valor");
+      $k00_dtvenc = pg_fetch_result($result,0,"k00_dtvenc");
+      $d00_numtot = pg_fetch_result($result,0,"k00_numtot");
+      $k00_numdig = pg_fetch_result($result,0,"k00_numdig");
+      $k00_tipo = pg_fetch_result($result,0,"k00_tipo");
+      $k00_tipojm = pg_fetch_result($result,0,"k00_tipojm");
       for($a=0; $a<$numrows; $a++){
         $sql_in = "insert into arrecant(
 	                                       k00_numpre
@@ -1309,14 +1309,14 @@ class cl_arrecad {
    * @return string
    */
   public function sqlDebitosPorTipoContribuinte(
-    $aCampos = array(),
-    $aWhere = array(),
-    $iCodigo,
-    $iTipoContribuinte,
-    $aOrdenacao = array()
+    $aCampos = [],
+    $aWhere = [],
+    $iCodigo = null,
+    $iTipoContribuinte = null,
+    $aOrdenacao = []
   ) {
 
-    if(!in_array($iTipoContribuinte, array(1, 2, 3))) {
+    if(!in_array($iTipoContribuinte, [1, 2, 3])) {
       return null;
     }
 
@@ -1383,7 +1383,7 @@ class cl_arrecad {
    * @param array $aWhere
    * @return string
    */
-  public function sqlTiposDebitosGeral($aCampos = array(), $aWhere = array()) {
+  public function sqlTiposDebitosGeral($aCampos = [], $aWhere = []) {
 
     $sCampos = count($aCampos) > 0 ? implode(", ", $aCampos) : "*";
 

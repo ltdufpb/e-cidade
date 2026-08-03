@@ -30,7 +30,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_sql.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
 
 $clarreprescr = new cl_arreprescr;
 ?>
@@ -163,9 +163,9 @@ function js_OpenRelatorio(xxaondeJanela,xxnomeJanela,xxarquivoJanela,xxtituloJan
         echo "   <td width='4%'  nowrap align='right'>  ".$k30_numtot."                  </td> ";
         echo "   <td width='10%' nowrap>                ".db_formatar($k30_dtvenc,'d')." </td> ";
         echo "   <td width='5%'  nowrap align='right'>  ".$k30_hist."                    </td> ";
-        echo "   <td width='11%' nowrap>                ".str_pad($k01_descr,20)."       </td> ";
+        echo "   <td width='11%' nowrap>                ".str_pad((string) $k01_descr,20)."       </td> ";
         echo "   <td width='8%'  nowrap align='center'> ".$k30_receit."                  </td> ";
-        echo "   <td width='12%' align='center' nowrap> ".str_pad($k02_drecei,40)."      </td> ";
+        echo "   <td width='12%' align='center' nowrap> ".str_pad((string) $k02_drecei,40)."      </td> ";
         echo "   <td width='9%'  nowrap align='right'>  ".db_formatar($valor,'f')."&nbsp;</td> ";
         echo " </tr> ";
 

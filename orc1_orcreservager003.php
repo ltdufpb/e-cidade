@@ -36,7 +36,7 @@ require_once(modification("classes/db_orcdotacao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_liborcamento.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcreserva    = new cl_orcreserva ; // tabela de reserva
 $clorcreservager = new cl_orcreservager; // tabela de reserva automatica
@@ -67,9 +67,9 @@ if(isset($processar)){
   }
 
   $result = db_query($sql);
-  if(pg_numrows($result)>0){
+  if(pg_num_rows($result)>0){
 
-    for($i=0;$i<pg_numrows($result);$i++){
+    for($i=0;$i<pg_num_rows($result);$i++){
       db_fieldsmemory($result,$i);
       // pegar o indice a ser bloqueado
       $o33_perc = ((100 - $o33_perc)/100);
@@ -80,7 +80,7 @@ if(isset($processar)){
                   inner join orcdotacao on o58_anousu = o80_anousu and o58_coddot = o80_coddot
               where o58_projativ = $o33_projativ and o58_codigo = $o33_codigo";
       $re = db_query($sql);
-      for($x=0;$x<pg_numrows($re);$x++){
+      for($x=0;$x<pg_num_rows($re);$x++){
         db_fieldsmemory($re,$x);
         $sql = "delete from orcreservager where o84_codres = $o84_codres";
         $r = db_query($sql);
@@ -91,7 +91,7 @@ if(isset($processar)){
       // verifica as docoes e distribui cfeo saldo de cada uma
       $res = $clorcreserprev->sql_reserva_prev(true,$o33_projativ,$o33_codigo);
       //db_criatabela($res);
-      for($x=0;$x<pg_numrows($res);$x++){
+      for($x=0;$x<pg_num_rows($res);$x++){
         db_fieldsmemory($res,$x);
         $calcula = round($atual_menos_reservado * $o33_perc,2);
 
@@ -156,8 +156,8 @@ if(isset($processar)){
         </td>
         <td>
           <?php 
-          $mes12 = array("1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio",
-                         "6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+          $mes12 = ["1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio",
+                         "6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
           for($i=1;$i<13;$i++){
             if($i >= date("m",db_getsession("DB_datausu"))){
               $messel[$i] = $mes12[$i];

@@ -10,7 +10,7 @@
 // Copyright (C) 2001,2002 Johan Persson
 //========================================================================
 */
- 
+
 // constants for the (filled) area
 DEFINE("LP_AREA_FILLED", true);
 DEFINE("LP_AREA_NOT_FILLED", false);
@@ -22,20 +22,20 @@ DEFINE("LP_AREA_NO_BORDER",true);
 // Description: 
 //===================================================
 class LinePlot extends Plot{
-    var $filled=false;
-    var $fill_color='blue';
-    var $mark=null;
-    var $step_style=false, $center=false;
-    var $line_style=1;	// Default to solid
-    var $filledAreas = array(); // array of arrays(with min,max,col,filled in them)
-    var $barcenter=false;  // When we mix line and bar. Should we center the line in the bar.
-    var $fillFromMin = false ;
-    var $fillgrad=false,$fillgrad_fromcolor='navy',$fillgrad_tocolor='silver',$fillgrad_numcolors=100;
+    public $filled=false;
+    public $fill_color='blue';
+    public $mark=null;
+    public $step_style=false, $center=false;
+    public $line_style=1;	// Default to solid
+    public $filledAreas = []; // array of arrays(with min,max,col,filled in them)
+    public $barcenter=false;  // When we mix line and bar. Should we center the line in the bar.
+    public $fillFromMin = false ;
+    public $fillgrad=false,$fillgrad_fromcolor='navy',$fillgrad_tocolor='silver',$fillgrad_numcolors=100;
 
 //---------------
 // CONSTRUCTOR
-    function LinePlot(&$datay,$datax=false) {
-	$this->Plot($datay,$datax);
+    function __construct(&$datay,$datax=false) {
+	\Plot::__construct($datay, $datax);
 	$this->mark = new PlotMark();
     }
 //---------------
@@ -45,7 +45,7 @@ class LinePlot extends Plot{
     function SetFilled($aFlag=true) {
     	JpGraphError::Raise('LinePlot::SetFilled() is deprecated. Use SetFillColor()');
     }
-	
+
     function SetBarCenter($aFlag=true) {
 	$this->barcenter=$aFlag;
     }
@@ -53,19 +53,19 @@ class LinePlot extends Plot{
     function SetStyle($aStyle) {
 	$this->line_style=$aStyle;
     }
-	
+
     function SetStepStyle($aFlag=true) {
 	$this->step_style = $aFlag;
     }
-	
+
     function SetColor($aColor) {
 	parent::SetColor($aColor);
     }
-	
+
     function SetFillFromYMin($f=true) {
 	$this->fillFromMin = $f ;
     }
-    
+
     function SetFillColor($aColor,$aFilled=true) {
 	$this->fill_color=$aColor;
 	$this->filled=$aFilled;
@@ -78,7 +78,7 @@ class LinePlot extends Plot{
 	$this->filled = $aFilled;
 	$this->fillgrad = true;
     }
-	
+
     function Legend(&$graph) {
 	if( $this->legend!="" ) {
 	    if( $this->filled ) {
@@ -100,9 +100,9 @@ class LinePlot extends Plot{
 	    $aMin = $aMax;
 	    $aMax = $tmp;
 	} 
-	$this->filledAreas[] = array($aMin,$aMax,$aColor,$aFilled,$aBorder);
+	$this->filledAreas[] = [$aMin,$aMax,$aColor,$aFilled,$aBorder];
     }
-	
+
     // Gets called before any axis are stroked
     function PreStrokeAdjust(&$graph) {
 
@@ -123,7 +123,7 @@ class LinePlot extends Plot{
 	    //$graph->xaxis->scale->ticks->SupressMinorTickMarks();
 	}
     }
-	
+
     function Stroke(&$img,&$xscale,&$yscale) {
 	$numpoints=count($this->coords[0]);
 	if( isset($this->coords[1]) ) {
@@ -157,7 +157,7 @@ class LinePlot extends Plot{
 	$img->SetStartPoint($xscale->Translate($xs),
 			    $yscale->Translate($this->coords[0][$startpoint]));
 
-		
+
 	if( $this->filled ) {
 	    $cord[] = $xscale->Translate($xs);
 	    $min = $yscale->GetMinVal();
@@ -178,12 +178,12 @@ class LinePlot extends Plot{
 	$img->SetLineWeight($this->weight);
 	$img->SetLineStyle($this->line_style);
 	for( $pnts=$startpoint+1; $pnts<$numpoints; ++$pnts) {
-	    
+
 	    if( $exist_x ) $x=$this->coords[1][$pnts];
 	    else $x=$pnts+$textadj;
 	    $xt = $xscale->Translate($x);
 	    $yt = $yscale->Translate($this->coords[0][$pnts]);
-	    
+
 	    $y=$this->coords[0][$pnts];
 	    if( $this->step_style && is_numeric($y) ) {
 		$img->StyleLineTo($xt,$yt_old);
@@ -191,7 +191,7 @@ class LinePlot extends Plot{
 
 		$cord[] = $xt;
 		$cord[] = $yt_old;
-	
+
 		$cord[] = $xt;
 		$cord[] = $yt;
 
@@ -259,7 +259,7 @@ class LinePlot extends Plot{
 					    ($this->filledAreas[$i][1] - $this->filledAreas[$i][0] + ($this->step_style ? 0 : 1))  * $factor));
 		$areaCoords[] = $areaCoords[sizeof($areaCoords)-2]; // last x
 		$areaCoords[] = $minY; // last y
-	    
+
 		if($this->filledAreas[$i][3]) {
 		    $img->SetColor($this->filledAreas[$i][2]);
 		    $img->FilledPolygon($areaCoords);
@@ -276,7 +276,7 @@ class LinePlot extends Plot{
 		else
 	    	    $img->Polygon($cord);
 
-		$areaCoords = array();
+		$areaCoords = [];
 	    }
 	}	
 
@@ -316,10 +316,10 @@ class LinePlot extends Plot{
 // Description: 
 //===================================================
 class AccLinePlot extends Plot {
-    var $plots=null,$nbrplots=0,$numpoints=0;
+    public $plots=null,$nbrplots=0,$numpoints=0;
 //---------------
 // CONSTRUCTOR
-    function AccLinePlot($plots) {
+    function __construct($plots) {
         $this->plots = $plots;
 	$this->nbrplots = count($plots);
 	$this->numpoints = $plots[0]->numpoints;		
@@ -331,14 +331,14 @@ class AccLinePlot extends Plot {
 	foreach( $this->plots as $p )
 	    $p->DoLegend($graph);
     }
-	
+
     function Max() {
-	list($xmax) = $this->plots[0]->Max();
+	[$xmax] = $this->plots[0]->Max();
 	$nmax=0;
 	for($i=0; $i<count($this->plots); ++$i) {
 	    $n = count($this->plots[$i]->coords[0]);
 	    $nmax = max($nmax,$n);
-	    list($x) = $this->plots[$i]->Max();
+	    [$x] = $this->plots[$i]->Max();
 	    $xmax = Max($xmax,$x);
 	}
 	for( $i = 0; $i < $nmax; $i++ ) {
@@ -354,16 +354,16 @@ class AccLinePlot extends Plot {
 	    $ymax[$i] = $y;
 	}
 	$ymax = max($ymax);
-	return array($xmax,$ymax);
+	return [$xmax,$ymax];
     }	
 
     function Min() {
 	$nmax=0;
-	list($xmin,$ysetmin) = $this->plots[0]->Min();
+	[$xmin, $ysetmin] = $this->plots[0]->Min();
 	for($i=0; $i<count($this->plots); ++$i) {
 	    $n = count($this->plots[$i]->coords[0]);
 	    $nmax = max($nmax,$n);
-	    list($x,$y) = $this->plots[$i]->Min();
+	    [$x, $y] = $this->plots[$i]->Min();
 	    $xmin = Min($xmin,$x);
 	    $ysetmin = Min($y,$ysetmin);
 	}
@@ -380,7 +380,7 @@ class AccLinePlot extends Plot {
 	    $ymin[$i] = $y;
 	}
 	$ymin = Min($ysetmin,Min($ymin));
-	return array($xmin,$ymin);
+	return [$xmin,$ymin];
     }
 
     // Gets called before any axis are stroked
@@ -390,7 +390,7 @@ class AccLinePlot extends Plot {
 	// offset we don't touch it.
 	// (We check for empty in case the scale is  a log scale 
 	// and hence doesn't contain any xlabel_offset)
-	
+
 	if( empty($graph->xaxis->scale->ticks->xlabel_offset) ||
 	    $graph->xaxis->scale->ticks->xlabel_offset == 0 ) {
 	    if( $this->center ) {
@@ -403,7 +403,7 @@ class AccLinePlot extends Plot {
 	    $graph->SetTextScaleOff($b);						
 	    $graph->xaxis->scale->ticks->SupressMinorTickMarks();
 	}
-	
+
     }
 
     // To avoid duplicate of line drawing code here we just

@@ -3,6 +3,7 @@ namespace ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2020\Layout;
 
 class AnexoVI extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\Layout\AnexoVI
 {
+    #[\Override]
     protected function imprimirAjusteMetodologico()
     {
 
@@ -38,6 +39,7 @@ class AnexoVI extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\Lay
         $this->pdf->ln(4);
     }
 
+    #[\Override]
     protected function imprimirInformacoesAdicionais()
     {
         $this->pdf->setBold(true);

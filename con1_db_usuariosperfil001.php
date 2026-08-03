@@ -38,7 +38,7 @@ $cldb_usuarios = new cl_db_usuarios;
 $cldb_userinst = new cl_db_userinst;
 $cldb_config   = new cl_db_config;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -49,7 +49,7 @@ if(isset($incluir)){
   $result = $cldb_usuarios->sql_record($cldb_usuarios->sql_query_file(null,"senha",null,"login = '$login'"));
   if($cldb_usuarios->numrows > 0){
       echo "<script>alert('Usuario ja cadastrado.');</script>";
-      db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+      db_redireciona($_SERVER['PHP_SELF']);
   }
 
   $cldb_usuarios->nome         = "$nome";

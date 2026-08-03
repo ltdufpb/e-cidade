@@ -112,7 +112,7 @@ db_input('nome',20,$Inome,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('s127_b_proc',$x,true,$db_opcao,($db_opcao == 1?"onChange='this.options[0].selected = true'":""));
 ?>
     </td>

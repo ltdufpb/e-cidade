@@ -93,7 +93,7 @@ db_input('o56_elemento',13,$Io56_elemento,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("rh24_rubric"=>@$rh24_rubric,"rh24_codele"=>@$rh24_codele);
+	 $chavepri= ["rh24_rubric"=>@$rh24_rubric,"rh24_codele"=>@$rh24_codele];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhrubelementoprinc->sql_query_file($rh24_rubric);
 	 $cliframe_alterar_excluir->campos  ="rh24_rubric,rh24_codele";

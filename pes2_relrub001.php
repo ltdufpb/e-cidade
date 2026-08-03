@@ -39,7 +39,7 @@ $clselecao = new cl_selecao;
 $clrotulo = new rotulocampo;
 $clrotulo->label("rh45_codigo");
 $clrotulo->label("rh45_descr");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 ?>
@@ -60,7 +60,7 @@ $db_botao = true;
   <tr>
     <td colspan="2">
     <?php 
-      $arr_pontosgerfs_inicial = Array(
+      $arr_pontosgerfs_inicial = [
                                    "00" =>"Salário",
                                    "01" =>"Adiantamento",
                                    "02" =>"Férias",
@@ -72,8 +72,8 @@ $db_botao = true;
                                    "08" =>"Ponto Complementar",
                                    "09" =>"Ponto Rescisão",
                                    "10"=>"Ponto 13o"
-                                  );
-      $arr_pontosgerfs_final   = Array();
+                                  ];
+      $arr_pontosgerfs_final   = [];
       db_multiploselect("valor","descr", "", "", $arr_pontosgerfs_inicial, $arr_pontosgerfs_final, 11);
     ?>
     </td>
@@ -113,21 +113,21 @@ $db_botao = true;
 		$geraform->qbrnome = "quebra";
 		$geraform->aignome = "ativos";
 		
-		$geraform->arr_tipoarq = Array('pdf'  => 'PDF',
-																	 'csv'  => 'CSV');
+		$geraform->arr_tipoarq = ['pdf'  => 'PDF',
+																	 'csv'  => 'CSV'];
 		
-		$geraform->arr_tipores = Array(
+		$geraform->arr_tipores = [
 		                               "g"=>"Geral",
 		                               "o"=>"Órgão",
 		                               "l"=>"Unidade",
 		                               "lc"=>"Unidade Completa",
 		                               "m"=>"Matrícula",
 					       "t"=>"Local de Trabalho"
-		                              );
-		$geraform->arr_mostord = Array(
+		                              ];
+		$geraform->arr_mostord = [
 		                               "a"=>"Alfabético",
 		                               "n"=>"Numérico"
-		                              );
+		                              ];
 		$geraform->gera_form(null,null);
 		?>
       </table>

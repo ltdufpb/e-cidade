@@ -80,7 +80,7 @@ if (!$lMesmoUsuario) {
 
              $rsUsuario = db_query("select nome from db_usuarios where id_usuario = {$iUsuario} ");
              if ($rsUsuario != false && pg_num_rows($rsUsuario) > 0) {
-               echo pg_result($rsUsuario, 0, "nome");
+               echo pg_fetch_result($rsUsuario, 0, "nome");
              }
              ?>
             </td>
@@ -98,7 +98,7 @@ if (!$lMesmoUsuario) {
 
              $rsDepartamento = db_query("select descrdepto from db_depart where coddepto = {$iDepartamento} ");
              if ($rsDepartamento != false && pg_num_rows($rsDepartamento) > 0) {
-               echo pg_result($rsDepartamento, 0, "descrdepto");
+               echo pg_fetch_result($rsDepartamento, 0, "descrdepto");
              }
              ?>
             </td>
@@ -323,7 +323,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 js_pesquisaProcessoOuvidoria(true);
 </script>

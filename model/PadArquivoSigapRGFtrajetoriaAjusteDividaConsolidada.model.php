@@ -41,7 +41,7 @@ final class PadArquivoSigapRGFtrajetoriaAjusteDividaConsolidada extends PadArqui
   public function __construct() {
     
     $this->sNomeArquivo = "RGFTrajetoriaAjusteDividaConsolidada";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -61,7 +61,7 @@ final class PadArquivoSigapRGFtrajetoriaAjusteDividaConsolidada extends PadArqui
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao  = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit  = db_getsession("DB_instit");
 
@@ -78,7 +78,7 @@ final class PadArquivoSigapRGFtrajetoriaAjusteDividaConsolidada extends PadArqui
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                          "tdcCodigoEntidade",
                          "tdcMesAnoMovimento",
                          "tdcExercicio",
@@ -86,7 +86,7 @@ final class PadArquivoSigapRGFtrajetoriaAjusteDividaConsolidada extends PadArqui
                          "tdc2oQuadDCLsRCL",
                          "tdc3oQuadDCLsRCL",
                          "tdcLimiteDeEndividamento"
-                       );
+                       ];
     return $aElementos;  
   }
   

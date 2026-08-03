@@ -32,7 +32,7 @@ include(modification("libs/db_sql.php"));
 
 $classinatura = new cl_assinatura;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 //z01_numcgm       integer  Numero do CGM
 //valor_anular     integer  Valor
@@ -51,7 +51,7 @@ $sql = " select z01_numcgm,z01_nome,z01_cgccpf
 $result = db_query($sql);	
 // db_criatabela($result);exit;
 
-if (pg_numrows($result)==0){
+if (pg_num_rows($result)==0){
    db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado !  ");
 }
 db_fieldsmemory($result,0);

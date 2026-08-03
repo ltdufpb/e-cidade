@@ -30,7 +30,7 @@ require_once modification('libs/db_conecta.php');
 require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_usuariosonline.php');
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']), $queryString);
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -39,9 +39,9 @@ foreach ($queryString as $key => $value) {
 db_postmemory($_GET);
 db_postmemory($_POST);
 
-$tabela = isset($HTTP_POST_VARS["tabela"]) ? $HTTP_POST_VARS["tabela"] : $tabela;
+$tabela = $_POST["tabela"] ?? $tabela;
 $nomearq = db_query("select nomearq from db_sysarquivo where codarq = $tabela");
-$nomearq = pg_result($nomearq, 0, 0);
+$nomearq = pg_fetch_result($nomearq, 0, 0);
 ?>
 <html>
 <head>
@@ -96,7 +96,7 @@ $nomearq = pg_result($nomearq, 0, 0);
             <?php
             // verifica se esta clicando no botao para atualizar, se nao ele
             // escreve os campos
-            if (!isset($HTTP_POST_VARS["atualizar"]) && !isset($HTTP_POST_VARS["excluir"])) {
+            if (!isset($_POST["atualizar"]) && !isset($_POST["excluir"])) {
                 $resultc = db_query("select c.nomecam, c.codcam
                      from db_syscampo c
                      inner join db_sysarqcamp p
@@ -123,11 +123,11 @@ $nomearq = pg_result($nomearq, 0, 0);
                                 <td align="right" valign="top"><b>Nome : <b></td>
                                 <td>
                                     <?php
-                                    $numrows = pg_numrows($result);
+                                    $numrows = pg_num_rows($result);
                 if ($numrows > 0) {
                     echo "<textarea name=alt_ind rows='7' cols='40'>";
                     for ($i = 0; $i < $numrows; $i++) {
-                        echo "#" . trim(pg_result($result, $i, "nomecam")) . "#" . "\n";
+                        echo "#" . trim(pg_fetch_result($result, $i, "nomecam")) . "#" . "\n";
                     }
                     echo "</textarea>";
                 } else {
@@ -144,19 +144,19 @@ $nomearq = pg_result($nomearq, 0, 0);
                                         <?php
                                         $camiden = "";
                 if ($result && pg_num_rows($result) > 0) {
-                    $camiden = pg_result($result, 0, "camiden");
+                    $camiden = pg_fetch_result($result, 0, "camiden");
                 }
 
-                for ($i = 0; $i < pg_numrows($resultc); $i++) {
-                    echo "<option value='" . pg_result(
+                for ($i = 0; $i < pg_num_rows($resultc); $i++) {
+                    echo "<option value='" . pg_fetch_result(
                         $resultc,
                         $i,
                         "codcam"
-                                            ) . "' " . ($camiden == pg_result(
+                                            ) . "' " . ($camiden == pg_fetch_result(
                                                 $resultc,
                                                 $i,
                                                 "codcam"
-                                                    ) ? "selected" : "") . ">" . trim(pg_result(
+                                                    ) ? "selected" : "") . ">" . trim(pg_fetch_result(
                                                         $resultc,
                                                         $i,
                                                         "nomecam"
@@ -181,10 +181,10 @@ $nomearq = pg_result($nomearq, 0, 0);
                 <?php
 // se clicou no botao de atualizacao, ele atualiza os campos
             } else {
-                if (isset($HTTP_POST_VARS["atualizar"])) {
-                    db_postmemory($HTTP_POST_VARS);
+                if (isset($_POST["atualizar"])) {
+                    db_postmemory($_POST);
                     db_query("BEGIN");
-                    $alt_ind = split("\r\n", $alt_ind);
+                    $alt_ind = preg_split("#\r\n#m", (string) $alt_ind);
                     $result = db_query("delete from db_sysprikey where codarq = $tabela") or die("Erro(94) deletando db_sysprikey");
                     for ($i = 0; $i < sizeof($alt_ind) - 1; $i++) {
                         if ($alt_ind[$i] != "" && $alt_ind[$i] != " " && $alt_ind[$i] != "  ") {
@@ -195,7 +195,7 @@ $nomearq = pg_result($nomearq, 0, 0);
                 from db_syscampo
                 where nomecam = '" . $alt_ind[$i] . "'") or die("Erro(100) selecionando db_syscampo");
                             $s = $i + 1;
-                            $result = db_query("insert into db_sysprikey (codarq,codcam,sequen,camiden) values($tabela," . pg_result(
+                            $result = db_query("insert into db_sysprikey (codarq,codcam,sequen,camiden) values($tabela," . pg_fetch_result(
                                 $result,
                                 0,
                                 'codcam'
@@ -205,8 +205,8 @@ $nomearq = pg_result($nomearq, 0, 0);
                     db_query("END");
                     db_redireciona("sys3_campos001.php?" . base64_encode("tabela=$tabela"));
                 } else {
-                    if (isset($HTTP_POST_VARS["excluir"])) {
-                        db_postmemory($HTTP_POST_VARS);
+                    if (isset($_POST["excluir"])) {
+                        db_postmemory($_POST);
                         $result = db_query("delete from db_sysprikey where codarq = $tabela");
                         db_redireciona("sys3_campos001.php?" . base64_encode("tabela=$tabela"));
                     }

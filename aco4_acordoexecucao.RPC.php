@@ -47,7 +47,7 @@ try {
 
       $oAcordo       = AcordoRepository::getByCodigo($oParam->iCodigoAcordo);
       $aItensAcordo  = $oAcordo->getItens();
-      $aItensRetorno = array();
+      $aItensRetorno = [];
 
       $oRetorno->percentual_executado = 0;
       $nValorTotalContrato            = 0;
@@ -57,7 +57,7 @@ try {
         $oStdItem                     = new stdClass();
         $oStdItem->codigo             = $oItem->getCodigo();
         $oStdItem->descricao          = $oItem->getMaterial()->getDescricao();
-        $oStdItem->unidade            = urlencode($oItem->getDescricaoUnidade());
+        $oStdItem->unidade            = urlencode((string) $oItem->getDescricaoUnidade());
         $oStdItem->quantidade         = $oItem->getQuantidade();
         $oStdItem->valor              = $oItem->getValorTotal();
         $oStdItem->ordem              = $oItem->getOrdem();
@@ -99,7 +99,7 @@ try {
 
       if (!$oItem->temSaldoParaExecucaoDosValores($oExecucao)) {
 
-        $sItem = urldecode($oItem->getMaterial()->getDescricao());
+        $sItem = urldecode((string) $oItem->getMaterial()->getDescricao());
         throw new BusinessException("O item {$sItem} não possui saldo para execução dos valores informados.");
       }
 
@@ -124,7 +124,7 @@ try {
       $oRetorno->servico = $oItem->getMaterial()->isServico();
       $aExecucoes = $oItem->getExecucoes();
 
-      $oRetorno->execucoes = array();
+      $oRetorno->execucoes = [];
       $oRetorno->percentual_executado = $oItem->getPercentualExecutado();
       foreach ($aExecucoes as $oExecucao) {
 
@@ -134,8 +134,8 @@ try {
         $oStdExecucao->data_final      = $oExecucao->getDataFinal()->getDate();
         $oStdExecucao->quantidade      = $oExecucao->getQuantidade();
         $oStdExecucao->valor           = $oExecucao->getValor();
-        $oStdExecucao->nota_fiscal     = urlencode($oExecucao->getNotaFiscal());
-        $oStdExecucao->processo        = urlencode($oExecucao->getProcesso());
+        $oStdExecucao->nota_fiscal     = urlencode((string) $oExecucao->getNotaFiscal());
+        $oStdExecucao->processo        = urlencode((string) $oExecucao->getProcesso());
         $oRetorno->execucoes[]         = $oStdExecucao;
       }
       break;
@@ -148,11 +148,11 @@ try {
   $oRetorno->erro     = true;
   $oRetorno->mensagem = urlencode($oBussinesException->getMessage());
 
-} catch (ParameterException $oParameterException) {
+} catch (ParameterException) {
 
   db_fim_transacao(true);
   $oRetorno->erro = true;
-} catch (Exception $oParameterException) {
+} catch (Exception) {
 
   db_fim_transacao(true);
   $oRetorno->error = true;

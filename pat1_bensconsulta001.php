@@ -46,9 +46,9 @@ $clapolitem = new cl_apolitem;
 
 $clrotulo = new rotulocampo;
 $clbens->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $t52_bem = 5;
-  if(isset($t52_bem) && $t52_bem!=""){
+  if(isset($t52_bem) && $t52_bem!=0){
     $result = $clbens->sql_record($clbens->sql_query($t52_bem));
     $numrows = $clbens->numrows;
   if($numrows>0){
@@ -176,7 +176,7 @@ $t52_bem = 5;
     </td>
   </tr>
   <?php 
-    $data = split("-",$t52_dtaqu);
+    $data = preg_split("#\\-#m",(string) $t52_dtaqu);
     $t52_dtaqu_dia = $data[2];
     $t52_dtaqu_mes = $data[1];
     $t52_dtaqu_ano = $data[0];

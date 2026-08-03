@@ -52,11 +52,11 @@ class R2099 extends EventoAbstract
      */
     public function buscarCodigoPreenchimento(stdClass $parametros)
     {
-        $where = array(
+        $where = [
             "eso32_cgmcontribuinte = {$this->getCgm()->getCodigo()}",
             "eso32_ano = {$parametros->ano}",
             "eso32_mes = {$parametros->mes}",
-        );
+        ];
 
         $sql = $this->dao->sql_query_file(null, "*", 'eso32_sequencial DESC', implode(' AND ', $where));
         $rs = db_query($sql);
@@ -77,7 +77,7 @@ class R2099 extends EventoAbstract
      * @param array $parametros
      * @return int
      */
-    public function persistir(Avaliacao $avaliacao, array $parametros = array())
+    public function persistir(Avaliacao $avaliacao, array $parametros = [])
     {
         $preenchimento = $avaliacao->getAvaliacaoGrupo();
         if (empty($parametros['preenchimento'])) {

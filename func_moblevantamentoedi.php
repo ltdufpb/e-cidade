@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_moblevantamentoedi_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmoblevantamentoedi = new cl_moblevantamentoedi;
 $clmoblevantamentoedi->rotulo->label("j96_sequen");
 $clmoblevantamentoedi->rotulo->label("j96_codimporta");
@@ -98,9 +98,9 @@ $clmoblevantamentoedi->rotulo->label("j96_codimporta");
         }else{
            $sql = $clmoblevantamentoedi->sql_query("",$campos,"j96_sequen","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j96_codimporta)){
-          $repassa = array("chave_j96_sequen"=>$chave_j96_sequen,"chave_j96_codimporta"=>$chave_j96_codimporta);
+          $repassa = ["chave_j96_sequen"=>$chave_j96_sequen,"chave_j96_codimporta"=>$chave_j96_codimporta];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

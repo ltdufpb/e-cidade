@@ -30,10 +30,10 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["excluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["excluir"])) {
+  db_postmemory($_POST);
   $result = db_query("select k00_tipo from arretipo where k00_tipo = $k00_tipo");
-  if(pg_numrows($result) == 0 ) {
+  if(pg_num_rows($result) == 0 ) {
     db_msgbox("Registro não encontrado");
 	db_redireciona();	
   }

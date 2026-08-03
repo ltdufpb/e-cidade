@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_unidadegestora_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clunidadegestora = new cl_unidadegestora;
 $clunidadegestora->rotulo->label("k171_sequencial");
 $clunidadegestora->rotulo->label("k171_nome");
@@ -38,7 +38,7 @@ $clunidadegestora->rotulo->label("k171_nome");
   </form>
       <?php
       
-      $aWhere = array('instit = '.db_getsession("DB_instit"));
+      $aWhere = ['instit = '.db_getsession("DB_instit")];
       if(!isset($pesquisa_chave)){
         if(isset($campos)==false){
            if(file_exists("funcoes/db_func_unidadegestora.php")==true){
@@ -55,9 +55,9 @@ $clunidadegestora->rotulo->label("k171_nome");
          }
         
         $sql = $clunidadegestora->sql_query("",$campos, "k171_nome", implode(" and ", $aWhere));        
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k171_nome)){
-          $repassa = array("chave_k171_sequencial"=>$chave_k171_sequencial,"chave_k171_nome"=>$chave_k171_nome);
+          $repassa = ["chave_k171_sequencial"=>$chave_k171_sequencial,"chave_k171_nome"=>$chave_k171_nome];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

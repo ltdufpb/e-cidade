@@ -34,7 +34,7 @@ include(modification("classes/db_benscorlanc_classe.php"));
 include(modification("classes/db_benscorr_classe.php"));
 $clbenscorlanc = new cl_benscorlanc;
 $clbenscorr = new cl_benscorr;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 

@@ -31,10 +31,10 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $iEscola = db_getsession('DB_coddepto');
-$aWhere  = array();
+$aWhere  = [];
 
 // só filtra escola quando acessado do módulo escola
 if ( db_getsession('DB_modulo') == 1100747 ) {
@@ -107,9 +107,9 @@ $sCampos .= " case when ed40_desativado is true then 'Desativado' else 'Ativo' e
       $sWhere = implode(' and ', $aWhere);
       $sSql   = $oDaoProcedimento->sql_query_origem_procedimento(null, $sCampos, "2", $sWhere);
 
-      $repassa = array();
+      $repassa = [];
       if(isset($chave_ed40_c_descr)){
-        $repassa = array("chave_ed40_i_codigo"=>$chave_ed40_i_codigo,"chave_ed40_c_descr"=>$chave_ed40_c_descr);
+        $repassa = ["chave_ed40_i_codigo"=>$chave_ed40_i_codigo,"chave_ed40_c_descr"=>$chave_ed40_c_descr];
       }
 
       echo '<div class="container">';

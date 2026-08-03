@@ -87,7 +87,7 @@ require_once(modification("model/estoque/Almoxarifado.model.php"));
       throw new Exception("Nao foi localizada nenhuma transferencia em aberto.");
     }
 
-    $aCodigosAlmoxarifado = array();
+    $aCodigosAlmoxarifado = [];
 
     echo "### Iniciando Processamento ###\n";
     echo "Total de Transferencias Pendentes: {$iTotalTransferencias}\n\n";

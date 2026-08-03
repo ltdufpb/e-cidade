@@ -54,13 +54,13 @@ $oJsonArquivo = $oJson->decode( $sArquivoLog );
  * Array para armazenar as mensagens de erro
  * @param array
  */
-$aErros = array();
+$aErros = [];
 
 /**
  * Array para armazenar os alunos importados com sucesso
  * @param array
  */
-$aSucessos = array();
+$aSucessos = [];
 
 /**
  * Define Largura e Altura padrões para a linha do arquivo PDF
@@ -83,12 +83,12 @@ if ( !isset( $oJsonArquivo->aLogs ) || count( $oJsonArquivo->aLogs ) == 0 ) {
  */
 foreach ( $oJsonArquivo->aLogs as $oLog ) {
 
-  if ( trim( $oLog->tipo ) == "ERRO" ) {
-    $aErros[] = utf8_decode( $oLog->sMensagem );
+  if ( trim( (string) $oLog->tipo ) == "ERRO" ) {
+    $aErros[] = mb_convert_encoding( $oLog->sMensagem, 'ISO-8859-1' );
   }
   
-  if ( trim( $oLog->tipo ) == "INFO" ) {
-    $aSucessos[] = utf8_decode( $oLog->sMensagem );
+  if ( trim( (string) $oLog->tipo ) == "INFO" ) {
+    $aSucessos[] = mb_convert_encoding( $oLog->sMensagem, 'ISO-8859-1' );
   }
 }
 

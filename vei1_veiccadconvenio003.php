@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadconvenio_classe.php"));
 include(modification("classes/db_veiccadconveniocgm_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clveiccadconvenio    = new cl_veiccadconvenio;
 $clveiccadconveniocgm = new cl_veiccadconveniocgm;

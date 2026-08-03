@@ -30,7 +30,7 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("classes/db_baixabib_classe.php"));
 require_once(modification("classes/db_biblioteca_classe.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clbiblioteca = new cl_biblioteca;
 $clbaixa      = new cl_baixabib;
 $depto        = db_getsession("DB_coddepto");

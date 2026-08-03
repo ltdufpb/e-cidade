@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_progavalpedag_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprogavalpedag = new cl_progavalpedag;
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
@@ -61,7 +61,7 @@ $clrotulo->label("ed117_c_tipo");
       <?php db_input("ed117_i_ano",4,$Ied117_i_ano,true,"text",4,"","chave_ed117_i_ano");?>
       <?=@$Led117_c_tipo?>
       <?php 
-      $x = array(''=>'','A'=>'AVALIA플O','U'=>'AUTO-AVALIA플O');
+      $x = [''=>'','A'=>'AVALIA플O','U'=>'AUTO-AVALIA플O'];
       db_select('ed117_c_tipo',$x,true,@$db_opcao,"");
       ?>
      </td>
@@ -97,9 +97,9 @@ $clrotulo->label("ed117_c_tipo");
     }else{
      $sql = $clprogavalpedag->sql_query(""," DISTINCT ".$campos,"ed117_i_ano desc,z01_nome"," ed117_i_codigo > 0 GROUP BY ed112_i_rhpessoal,z01_nome,ed107_c_descr,ed117_i_ano,ed117_c_tipo,ed112_c_situacao");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_z01_nome)){
-     $repassa = array("chave_z01_nome"=>$chave_z01_nome,"chave_ed117_i_ano"=>$chave_ed117_i_ano,"ed117_c_tipo"=>$ed117_c_tipo);
+     $repassa = ["chave_z01_nome"=>$chave_z01_nome,"chave_ed117_i_ano"=>$chave_ed117_i_ano,"ed117_c_tipo"=>$ed117_c_tipo];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

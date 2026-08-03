@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empparametro_classe.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 $clempparametro = new cl_empparametro;
 $rsParametro    = $clempparametro->sql_record($clempparametro->sql_query_file(db_getsession("DB_anousu")));
 if ($clempparametro->numrows > 0) {

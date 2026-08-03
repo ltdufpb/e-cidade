@@ -180,7 +180,7 @@ db_input('nomefuncao',49,$Inomefuncao,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Alimentação','2'=>'Refeição');
+$x = ['1'=>'Alimentação','2'=>'Refeição'];
 db_select('rh47_tipovale',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -294,7 +294,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rhvisavale.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

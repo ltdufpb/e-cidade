@@ -156,13 +156,13 @@ class HistoricoDesmembramento
      */
     public function toArray()
     {
-        $entidade = array(
+        $entidade = [
             'v37_inicial_old' => $this->inicialOld,
             'v37_inicial' => $this->inicial,
             'v37_cda_old' => $this->cdaOld,
             'v37_cda' => $this->cda,
             'v37_usuario' => $this->usuario
-        );
+        ];
 
         if ($this->sequencial) {
             $entidade['v37_sequencial'] = $this->sequencial;

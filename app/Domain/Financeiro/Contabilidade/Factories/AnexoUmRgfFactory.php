@@ -30,14 +30,11 @@ class AnexoUmRgfFactory extends AnexosFactory
     {
         $opcao = static::getOpcao($exercicio, static::OPCAO_MODELO);
 
-        switch ($opcao->getValor()) {
-            case 'in13':
-                return static::getCodigoRelatorioInRS($exercicio);
-            case 'mdf':
-                return static::getCodigoRelatorioMDF($exercicio);
-            default:
-                throw new Exception("Não foi implementado o modelo para configuração atual.");
-        }
+        return match ($opcao->getValor()) {
+            'in13' => static::getCodigoRelatorioInRS($exercicio),
+            'mdf' => static::getCodigoRelatorioMDF($exercicio),
+            default => throw new Exception("Não foi implementado o modelo para configuração atual."),
+        };
     }
 
     /**
@@ -46,12 +43,10 @@ class AnexoUmRgfFactory extends AnexosFactory
      */
     private static function getCodigoRelatorioMDF($exercicio)
     {
-        switch ($exercicio) {
-            case 2021:
-                return 260;
-            default:
-                return 260;
-        }
+        return match ($exercicio) {
+            2021 => 260,
+            default => 260,
+        };
     }
 
     /**
@@ -60,25 +55,20 @@ class AnexoUmRgfFactory extends AnexosFactory
      */
     private static function getCodigoRelatorioInRS($exercicio)
     {
-        switch ($exercicio) {
-            case 2021:
-                return 261;
-            default:
-                return 261;
-        }
+        return match ($exercicio) {
+            2021 => 261,
+            default => 261,
+        };
     }
 
     private static function getRota($exercicio)
     {
         $opcao = static::getOpcao($exercicio, static::OPCAO_MODELO);
 
-        switch ($opcao->getValor()) {
-            case 'in13':
-                return 'financeiro/contabilidade/relatorio/rgf/anexo-1-in-rs';
-            case 'mdf':
-                return 'financeiro/contabilidade/relatorio/rgf/anexo-1-mdf';
-            default:
-                throw new Exception("Não foi implementado o modelo para configuração atual.");
-        }
+        return match ($opcao->getValor()) {
+            'in13' => 'financeiro/contabilidade/relatorio/rgf/anexo-1-in-rs',
+            'mdf' => 'financeiro/contabilidade/relatorio/rgf/anexo-1-mdf',
+            default => throw new Exception("Não foi implementado o modelo para configuração atual."),
+        };
     }
 }

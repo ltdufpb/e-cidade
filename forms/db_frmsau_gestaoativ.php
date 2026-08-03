@@ -77,7 +77,7 @@ if(isset($opcao) && $opcao=="alterar"){
   </td>
   <td>
    <?php 
-   $x = array(''=>'','1'=>'AMBULATORIAL','2'=>'HOSPITALAR');
+   $x = [''=>'','1'=>'AMBULATORIAL','2'=>'HOSPITALAR'];
    db_select('sd45_i_programa',$x,true,$db_opcao," onchange='js_limpaprograma();'");
    ?>
   </td>
@@ -88,7 +88,7 @@ if(isset($opcao) && $opcao=="alterar"){
   </td>
   <td>
    <?php 
-   $x = array(''=>'','1'=>'ESTADUAL','2'=>'MUNICIPAL');
+   $x = [''=>'','1'=>'ESTADUAL','2'=>'MUNICIPAL'];
    db_select('sd47_i_indgestao',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -123,7 +123,7 @@ if(isset($opcao) && $opcao=="alterar"){
               sd45_v_descricao
              ";
    $escola = db_getsession("DB_coddepto");
-   $chavepri= array("sd47_i_codigo"=>@$sd47_i_codigo,"sd47_i_unidade"=>@$sd47_i_unidade,"descrdepto"=>@$descrdepto,"sd45_i_programa"=>@$sd45_i_programa,"sd47_i_indgestao"=>@$sd47_i_indgestao,"sd47_i_programa"=>@$sd47_i_programa,"sd45_v_descricao"=>@$sd45_v_descricao);
+   $chavepri= ["sd47_i_codigo"=>@$sd47_i_codigo,"sd47_i_unidade"=>@$sd47_i_unidade,"descrdepto"=>@$descrdepto,"sd45_i_programa"=>@$sd45_i_programa,"sd47_i_indgestao"=>@$sd47_i_indgestao,"sd47_i_programa"=>@$sd47_i_programa,"sd45_v_descricao"=>@$sd45_v_descricao];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clsau_gestaoativ->sql_query("",$campos,""," sd47_i_unidade = $sd47_i_unidade");
    $cliframe_alterar_excluir->campos  ="sd47_i_codigo,sd45_i_programa,sd45_v_descricao,sd47_i_indgestao";

@@ -80,7 +80,7 @@ class cl_obrasalvara
     public function __construct()
     {
         $this->rotulo = new rotulo('obrasalvara');
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -163,10 +163,10 @@ class cl_obrasalvara
               $this->erro_status = "0";
               return false;
           }
-          $this->ob04_idalvara = pg_result($result, 0, 0);
+          $this->ob04_idalvara = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM obrasalvara_ob04_idalvara_seq");
-            if ($result && pg_result($result, 0, 0) < $this->ob04_idalvara) {
+            if ($result && pg_fetch_result($result, 0, 0) < $this->ob04_idalvara) {
                 $this->erro_sql = " Campo ob04_idalvara maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -258,7 +258,7 @@ class cl_obrasalvara
      $result = db_query($sql);
      if ($result == false) { 
        $this->erro_banco = str_replace("\n", "", @pg_last_error());
-       if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+       if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
          $this->erro_sql = "alvara da obra () não Incluído. Inclusão Abortada.";
          $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "alvara da obra já cadastrado";
@@ -285,22 +285,22 @@ class cl_obrasalvara
        $resaco = $this->sql_record($this->sql_query_file($this->ob04_codobra  ));
        if ($resaco != false || $this->numrows != 0) {
          $resac = db_query("SELECT nextval('db_acount_id_acount_seq') AS acount");
-         $acount = pg_result($resac, 0, 0);
+         $acount = pg_fetch_result($resac, 0, 0);
          $resac = db_query("INSERT INTO db_acountacesso VALUES ($acount, " . db_getsession("DB_acessado") . ")");
          $resac = db_query("INSERT INTO db_acountkey VALUES ($acount,5917,'$this->ob04_codobra','I')");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,5917,'','" . AddSlashes(pg_result($resaco,0,'ob04_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,5918,'','" . AddSlashes(pg_result($resaco,0,'ob04_alvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,5919,'','" . AddSlashes(pg_result($resaco,0,'ob04_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,18640,'','" . AddSlashes(pg_result($resaco,0,'ob04_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,18641,'','" . AddSlashes(pg_result($resaco,0,'ob04_titularprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,18642,'','" . AddSlashes(pg_result($resaco,0,'ob04_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,18643,'','" . AddSlashes(pg_result($resaco,0,'ob04_obsprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,18644,'','" . AddSlashes(pg_result($resaco,0,'ob04_dtvalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,20461,'','" . AddSlashes(pg_result($resaco,0,'ob04_dataexpedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,1010575,'','" . AddSlashes(pg_result($resaco,0,'ob04_classe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,1010576,'','" . AddSlashes(pg_result($resaco,0,'ob04_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,1010577,'','" . AddSlashes(pg_result($resaco,0,'ob04_datacancelamentoreativacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,949,1014584,'','".AddSlashes(pg_result($resaco,0,'ob04_idalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,5917,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,5918,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_alvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,5919,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,18640,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,18641,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_titularprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,18642,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,18643,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_obsprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,18644,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_dtvalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,20461,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_dataexpedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,1010575,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_classe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,1010576,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,949,1010577,'','" . AddSlashes(pg_fetch_result($resaco,0,'ob04_datacancelamentoreativacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,949,1014584,'','".AddSlashes(pg_fetch_result($resaco,0,'ob04_idalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -390,10 +390,10 @@ class cl_obrasalvara
         } else {
             $sql .= "{$virgula} ob04_datacancelamentoreativacao = NULL ";
         }
-        if(trim($this->ob04_idalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob04_idalvara"])){ 
+        if(trim((string) $this->ob04_idalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob04_idalvara"])){ 
           $sql  .= $virgula." ob04_idalvara = $this->ob04_idalvara ";
           $virgula = ",";
-          if(trim($this->ob04_idalvara) == null ){ 
+          if(trim((string) $this->ob04_idalvara) == null ){ 
             $this->erro_sql = " Campo Id alvará não informado.";
             $this->erro_campo = "ob04_idalvara";
             $this->erro_banco = "";
@@ -419,35 +419,35 @@ class cl_obrasalvara
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,5917,'$this->ob04_codobra','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_codobra"]) || $this->ob04_codobra != "")
-             $resac = db_query("insert into db_acount values($acount,949,5917,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_codobra'))."','$this->ob04_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,5917,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_codobra'))."','$this->ob04_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_alvara"]) || $this->ob04_alvara != "")
-             $resac = db_query("insert into db_acount values($acount,949,5918,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_alvara'))."','$this->ob04_alvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,5918,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_alvara'))."','$this->ob04_alvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_data"]) || $this->ob04_data != "")
-             $resac = db_query("insert into db_acount values($acount,949,5919,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_data'))."','$this->ob04_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,5919,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_data'))."','$this->ob04_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_processo"]) || $this->ob04_processo != "")
-             $resac = db_query("insert into db_acount values($acount,949,18640,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_processo'))."','$this->ob04_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,18640,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_processo'))."','$this->ob04_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_titularprocesso"]) || $this->ob04_titularprocesso != "")
-             $resac = db_query("insert into db_acount values($acount,949,18641,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_titularprocesso'))."','$this->ob04_titularprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,18641,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_titularprocesso'))."','$this->ob04_titularprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_dtprocesso"]) || $this->ob04_dtprocesso != "")
-             $resac = db_query("insert into db_acount values($acount,949,18642,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_dtprocesso'))."','$this->ob04_dtprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,18642,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_dtprocesso'))."','$this->ob04_dtprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_obsprocesso"]) || $this->ob04_obsprocesso != "")
-             $resac = db_query("insert into db_acount values($acount,949,18643,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_obsprocesso'))."','$this->ob04_obsprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,18643,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_obsprocesso'))."','$this->ob04_obsprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_dtvalidade"]) || $this->ob04_dtvalidade != "")
-             $resac = db_query("insert into db_acount values($acount,949,18644,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_dtvalidade'))."','$this->ob04_dtvalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,18644,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_dtvalidade'))."','$this->ob04_dtvalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_dataexpedicao"]) || $this->ob04_dataexpedicao != "")
-             $resac = db_query("insert into db_acount values($acount,949,20461,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_dataexpedicao'))."','$this->ob04_dataexpedicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,20461,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_dataexpedicao'))."','$this->ob04_dataexpedicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_classe"]) || $this->ob04_classe != "")
-             $resac = db_query("insert into db_acount values($acount,949,1010575,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_classe'))."','$this->ob04_classe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,1010575,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_classe'))."','$this->ob04_classe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_ativo"]) || $this->ob04_ativo != "")
-             $resac = db_query("insert into db_acount values($acount,949,1010576,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_ativo'))."','$this->ob04_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,1010576,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_ativo'))."','$this->ob04_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_datacancelamentoreativacao"]) || $this->ob04_datacancelamentoreativacao != "")
-             $resac = db_query("insert into db_acount values($acount,949,1010577,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_datacancelamentoreativacao'))."','$this->ob04_datacancelamentoreativacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,1010577,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_datacancelamentoreativacao'))."','$this->ob04_datacancelamentoreativacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
              if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_idalvara"]) || $this->ob04_idalvara != "")
-             $resac = db_query("insert into db_acount values($acount,949,1014584,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_idalvara'))."','$this->ob04_idalvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,1014584,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_idalvara'))."','$this->ob04_idalvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -559,10 +559,10 @@ class cl_obrasalvara
         } else {
             $sql .= "{$virgula} ob04_datacancelamentoreativacao = NULL ";
         }
-        if(trim($this->ob04_idalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob04_idalvara"])){ 
+        if(trim((string) $this->ob04_idalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob04_idalvara"])){ 
           $sql  .= $virgula." ob04_idalvara = $this->ob04_idalvara ";
           $virgula = ",";
-          if(trim($this->ob04_idalvara) == null ){ 
+          if(trim((string) $this->ob04_idalvara) == null ){ 
             $this->erro_sql = " Campo Id alvará não informado.";
             $this->erro_campo = "ob04_idalvara";
             $this->erro_banco = "";
@@ -588,35 +588,35 @@ class cl_obrasalvara
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,5917,'$this->ob04_codobra','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_codobra"]) || $this->ob04_codobra != "")
-             $resac = db_query("insert into db_acount values($acount,949,5917,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_codobra'))."','$this->ob04_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,5917,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_codobra'))."','$this->ob04_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_alvara"]) || $this->ob04_alvara != "")
-             $resac = db_query("insert into db_acount values($acount,949,5918,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_alvara'))."','$this->ob04_alvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,5918,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_alvara'))."','$this->ob04_alvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_data"]) || $this->ob04_data != "")
-             $resac = db_query("insert into db_acount values($acount,949,5919,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_data'))."','$this->ob04_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,5919,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_data'))."','$this->ob04_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_processo"]) || $this->ob04_processo != "")
-             $resac = db_query("insert into db_acount values($acount,949,18640,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_processo'))."','$this->ob04_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,18640,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_processo'))."','$this->ob04_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_titularprocesso"]) || $this->ob04_titularprocesso != "")
-             $resac = db_query("insert into db_acount values($acount,949,18641,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_titularprocesso'))."','$this->ob04_titularprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,18641,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_titularprocesso'))."','$this->ob04_titularprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_dtprocesso"]) || $this->ob04_dtprocesso != "")
-             $resac = db_query("insert into db_acount values($acount,949,18642,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_dtprocesso'))."','$this->ob04_dtprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,18642,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_dtprocesso'))."','$this->ob04_dtprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_obsprocesso"]) || $this->ob04_obsprocesso != "")
-             $resac = db_query("insert into db_acount values($acount,949,18643,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_obsprocesso'))."','$this->ob04_obsprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,18643,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_obsprocesso'))."','$this->ob04_obsprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_dtvalidade"]) || $this->ob04_dtvalidade != "")
-             $resac = db_query("insert into db_acount values($acount,949,18644,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_dtvalidade'))."','$this->ob04_dtvalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,18644,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_dtvalidade'))."','$this->ob04_dtvalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_dataexpedicao"]) || $this->ob04_dataexpedicao != "")
-             $resac = db_query("insert into db_acount values($acount,949,20461,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_dataexpedicao'))."','$this->ob04_dataexpedicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,20461,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_dataexpedicao'))."','$this->ob04_dataexpedicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_classe"]) || $this->ob04_classe != "")
-             $resac = db_query("insert into db_acount values($acount,949,1010575,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_classe'))."','$this->ob04_classe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,1010575,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_classe'))."','$this->ob04_classe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_ativo"]) || $this->ob04_ativo != "")
-             $resac = db_query("insert into db_acount values($acount,949,1010576,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_ativo'))."','$this->ob04_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,1010576,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_ativo'))."','$this->ob04_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_datacancelamentoreativacao"]) || $this->ob04_datacancelamentoreativacao != "")
-             $resac = db_query("insert into db_acount values($acount,949,1010577,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_datacancelamentoreativacao'))."','$this->ob04_datacancelamentoreativacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,1010577,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_datacancelamentoreativacao'))."','$this->ob04_datacancelamentoreativacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
              if (isset($GLOBALS["HTTP_POST_VARS"]["ob04_idalvara"]) || $this->ob04_idalvara != "")
-             $resac = db_query("insert into db_acount values($acount,949,1014584,'".AddSlashes(pg_result($resaco,$conresaco,'ob04_idalvara'))."','$this->ob04_idalvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,949,1014584,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob04_idalvara'))."','$this->ob04_idalvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -667,22 +667,22 @@ class cl_obrasalvara
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,5917,'$ob04_codobra','E')");
-           $resac  = db_query("insert into db_acount values($acount,949,5917,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,5918,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_alvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,5919,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,18640,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,18641,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_titularprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,18642,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,18643,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_obsprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,18644,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_dtvalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,20461,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_dataexpedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,1010575,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_classe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,1010576,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,1010577,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_datacancelamentoreativacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,949,1014584,'','".AddSlashes(pg_result($resaco,$iresaco,'ob04_idalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,5917,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,5918,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_alvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,5919,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,18640,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,18641,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_titularprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,18642,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,18643,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_obsprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,18644,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_dtvalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,20461,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_dataexpedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,1010575,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_classe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,1010576,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,1010577,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_datacancelamentoreativacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,949,1014584,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob04_idalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -831,7 +831,7 @@ class cl_obrasalvara
    public function sql_query_txt ( $ob04_codobra=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -858,7 +858,7 @@ class cl_obrasalvara
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -870,7 +870,7 @@ class cl_obrasalvara
    public function sql_queryobras ( $ob04_codobra=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -893,7 +893,7 @@ class cl_obrasalvara
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -957,7 +957,7 @@ class cl_obrasalvara
 
     return $sSql;
   }
-   public function sql_query_obrasalvaras_relatorio($sCampos = "*", $sWhere, $lHabite = null, $sOrderBy = null) {
+   public function sql_query_obrasalvaras_relatorio($sCampos = "*", $sWhere = null, $lHabite = null, $sOrderBy = null) {
   	
     $sSql  = "select distinct {$sCampos}                                                                  \n";
     $sSql .= "  from obrasalvara                                                                    \n";
@@ -1101,7 +1101,7 @@ class cl_obrasalvara
                             and date_part('year', ob04_data) = {$anoAlvara}");
     	if (pg_num_rows($rsAlvara) > 0) {
     		
-    		$this->erro_msg    = "Código do alvará já registrado para a obra ". pg_result($rsAlvara,0,0);
+    		$this->erro_msg    = "Código do alvará já registrado para a obra ". pg_fetch_result($rsAlvara,0,0);
     		$this->erro_status = "0";
     		return false;
     	}
@@ -1126,10 +1126,10 @@ class cl_obrasalvara
           $this->erro_status = "0";
           return false;
       }
-      $this->ob04_idalvara = pg_result($result, 0, 0);
+      $this->ob04_idalvara = pg_fetch_result($result, 0, 0);
     } else {
         $result = db_query("SELECT last_value FROM obrasalvara_ob04_idalvara_seq");
-        if ($result && pg_result($result, 0, 0) < $this->ob04_idalvara) {
+        if ($result && pg_fetch_result($result, 0, 0) < $this->ob04_idalvara) {
             $this->erro_sql = " Campo ob04_idalvara maior que último número da sequencia.";
             $this->erro_banco = "Sequencia menor que este número.";
             $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -1171,7 +1171,7 @@ class cl_obrasalvara
   	$result = db_query($sql);
   	if($result==false){
   		$this->erro_banco = str_replace("\n","",@pg_last_error());
-  		if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+  		if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
   			$this->erro_sql   = "alvara da obra ($this->ob04_codobra) nao Incluído. Inclusao Abortada.";
   			$this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
   			$this->erro_banco = "alvara da obra já Cadastrado";
@@ -1195,18 +1195,18 @@ class cl_obrasalvara
   	$resaco = $this->sql_record($this->sql_query_file($this->ob04_codobra));
   	if(($resaco!=false)||($this->numrows!=0)){
   		$resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-  		$acount = pg_result($resac,0,0);
+  		$acount = pg_fetch_result($resac,0,0);
   		$resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
   		$resac = db_query("insert into db_acountkey values($acount,5917,'$this->ob04_codobra','I')");
-  		$resac = db_query("insert into db_acount values($acount,949,5917,'','".AddSlashes(pg_result($resaco,0,'ob04_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-  		$resac = db_query("insert into db_acount values($acount,949,5918,'','".AddSlashes(pg_result($resaco,0,'ob04_alvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-  		$resac = db_query("insert into db_acount values($acount,949,5919,'','".AddSlashes(pg_result($resaco,0,'ob04_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-  		$resac = db_query("insert into db_acount values($acount,949,18640,'','".AddSlashes(pg_result($resaco,0,'ob04_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-  		$resac = db_query("insert into db_acount values($acount,949,18641,'','".AddSlashes(pg_result($resaco,0,'ob04_titularprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-  		$resac = db_query("insert into db_acount values($acount,949,18642,'','".AddSlashes(pg_result($resaco,0,'ob04_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-  		$resac = db_query("insert into db_acount values($acount,949,18643,'','".AddSlashes(pg_result($resaco,0,'ob04_obsprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-  		$resac = db_query("insert into db_acount values($acount,949,18644,'','".AddSlashes(pg_result($resaco,0,'ob04_dtvalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-      $resac = db_query("insert into db_acount values($acount,949,1014584,'','".AddSlashes(pg_result($resaco,0,'ob04_idalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+  		$resac = db_query("insert into db_acount values($acount,949,5917,'','".AddSlashes(pg_fetch_result($resaco,0,'ob04_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+  		$resac = db_query("insert into db_acount values($acount,949,5918,'','".AddSlashes(pg_fetch_result($resaco,0,'ob04_alvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+  		$resac = db_query("insert into db_acount values($acount,949,5919,'','".AddSlashes(pg_fetch_result($resaco,0,'ob04_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+  		$resac = db_query("insert into db_acount values($acount,949,18640,'','".AddSlashes(pg_fetch_result($resaco,0,'ob04_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+  		$resac = db_query("insert into db_acount values($acount,949,18641,'','".AddSlashes(pg_fetch_result($resaco,0,'ob04_titularprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+  		$resac = db_query("insert into db_acount values($acount,949,18642,'','".AddSlashes(pg_fetch_result($resaco,0,'ob04_dtprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+  		$resac = db_query("insert into db_acount values($acount,949,18643,'','".AddSlashes(pg_fetch_result($resaco,0,'ob04_obsprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+  		$resac = db_query("insert into db_acount values($acount,949,18644,'','".AddSlashes(pg_fetch_result($resaco,0,'ob04_dtvalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+      $resac = db_query("insert into db_acount values($acount,949,1014584,'','".AddSlashes(pg_fetch_result($resaco,0,'ob04_idalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
   	}
   	return true;
   }

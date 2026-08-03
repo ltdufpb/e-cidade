@@ -100,7 +100,7 @@ db_input('rh27_descr', 40, $Irh27_descr, true, 'text', 3, '');
     </td>
     <td>
 <?php 
-$arr_quantval = array('V'=>'Valor','Q'=>'Quantidade');
+$arr_quantval = ['V'=>'Valor','Q'=>'Quantidade'];
 db_select("rh46_quantval",$arr_quantval,true,$db_opcao);
 ?>
     </td>
@@ -131,7 +131,7 @@ db_select("rh46_quantval",$arr_quantval,true,$db_opcao);
    }
 
    $sql = $clrelrubmov->sql_query(null,"rh46_seq, rh46_codigo, rh46_rubric||'-'||rh27_descr as rh46_rubric,case when rh46_quantval='V' then 'Valor' else 'Quantidade' end as rh46_quantval","rh46_seq",$dbwhere);
-	 $chavepri= array("rh46_seq"=>@$rh46_seq);
+	 $chavepri= ["rh46_seq"=>@$rh46_seq];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $sql;
 	 $cliframe_alterar_excluir->campos  ="rh46_seq,rh46_rubric,rh46_quantval";

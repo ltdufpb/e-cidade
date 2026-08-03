@@ -29,7 +29,7 @@
  include(modification("fpdf151/pdf.php"));
 
   // variaveis de cabeçalho;
-  db_postmemory($HTTP_SERVER_VARS);
+  db_postmemory($_SERVER);
   
   $sql = "select
                e54_numsol,
@@ -48,7 +48,7 @@
 		";
 
   $res = db_query($sql) ;
-  if (pg_numrows($res) == 0 ){
+  if (pg_num_rows($res) == 0 ){
     db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado");
   } 
 
@@ -73,7 +73,7 @@
  $tam=4;
  $header = true;
 
- for ($x = 0;$x < pg_numrows($res);$x++){
+ for ($x = 0;$x < pg_num_rows($res);$x++){
      if (($pdf->gety() > $pdf->h - 40) || ($header==true)) {
  	 $pdf->addpage(); 
 	 $header = false;

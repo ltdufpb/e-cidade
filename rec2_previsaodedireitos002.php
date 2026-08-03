@@ -17,7 +17,7 @@ $aServidores         = ServidorRepository::getServidoresBySelecao(DBPessoal::get
 );
 
 
-$aServidoresComDireito = array();
+$aServidoresComDireito = [];
 $oDataInicio = new DBDate($oGet->data_inicio);
 $oDataFim    = new DBDate($oGet->data_fim);
 foreach ($aServidores as $oServidor) {
@@ -83,9 +83,7 @@ foreach ($aServidores as $oServidor) {
     $aServidoresComDireito[] = $oStdServidorComDireito;
   }
 
-  uasort($aServidoresComDireito, function ($oServidorAtual, $oServidor) {
-    return $oServidorAtual->data_concessao->getTimeStamp() > $oServidor->data_concessao->getTimeStamp();
-  });
+  uasort($aServidoresComDireito, fn($oServidorAtual, $oServidor) => $oServidorAtual->data_concessao->getTimeStamp() > $oServidor->data_concessao->getTimeStamp());
 }
 $oPdf = new PDFNovo();
 $oPdf->addHeader( "Previsão de Direitos" );

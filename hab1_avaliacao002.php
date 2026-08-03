@@ -68,27 +68,27 @@ if(isset($_GET['iTipoAvaliacao'])) {
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-       $clcriaabas->identifica  = array("avaliacao"=>"Formulário",
+       $clcriaabas->identifica  = ["avaliacao"=>"Formulário",
                                         "avaliacaogrupopergunta"=>"Grupos",
                                         "avaliacaopergunta"=>"Perguntas",
-                                        "carga"=>"Carga");
+                                        "carga"=>"Carga"];
 
-       $clcriaabas->title       = array("avaliacao"=>"Formulário",
+       $clcriaabas->title       = ["avaliacao"=>"Formulário",
                                         "avaliacaogrupopergunta"=>"Grupos",
                                         "avaliacaopergunta"=>"Perguntas",
-                                        "carga"=>"Carga");
+                                        "carga"=>"Carga"];
 
-	     $clcriaabas->src         = array("avaliacao"=>"hab1_avaliacao005.php?iTipoAvaliacao={$iTipoAvaliacao}",
-                                        "carga"=>"hab1_avaliacao005.php?db101_sequencial={$iTipoAvaliacao}");
+	     $clcriaabas->src         = ["avaliacao"=>"hab1_avaliacao005.php?iTipoAvaliacao={$iTipoAvaliacao}",
+                                        "carga"=>"hab1_avaliacao005.php?db101_sequencial={$iTipoAvaliacao}"];
 
-       $clcriaabas->sizecampo   = array("avaliacao"=>"23",
+       $clcriaabas->sizecampo   = ["avaliacao"=>"23",
                                         "avaliacaogrupopergunta"=>"23",
                                         "avaliacaopergunta"=>"23",
-                                        "carga"=>"23");
+                                        "carga"=>"23"];
 
-       $clcriaabas->disabled    = array("avaliacaopergunta"=>"true",
+       $clcriaabas->disabled    = ["avaliacaopergunta"=>"true",
                                         "avaliacaogrupopergunta"=>"true",
-                                        "carga"=>"true");
+                                        "carga"=>"true"];
 
         // Caso seja Questionário interno, cria aba nova
         if ($iTipoAvaliacao == 6) {

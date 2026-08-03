@@ -84,7 +84,7 @@ class encaminhamento {
 
          $oDadosUnidademedicos = db_utils::fieldsmemory($rsUnidademedicos,$iCont);
          $oUnidades->oUnidades[$iCont]->iCodigo = $oDadosUnidademedicos->sd04_i_unidade;
-         $oUnidades->oUnidades[$iCont]->sDescr = urlencode($oDadosUnidademedicos->descr_unidade);
+         $oUnidades->oUnidades[$iCont]->sDescr = urlencode((string) $oDadosUnidademedicos->descr_unidade);
 
       }
 
@@ -195,7 +195,7 @@ class encaminhamento {
 
         $oDadosSau_procencaminhamento = db_utils::fieldsmemory($rsSau_procencaminhamento,$iCont);
         $oProcedimentos->oProcedimentos[$iCont]->iCodigo = $oDadosSau_procencaminhamento->s143_i_procedimento;
-        $oProcedimentos->oProcedimentos[$iCont]->sDescr = urlencode($oDadosSau_procencaminhamento->sd63_c_nome);
+        $oProcedimentos->oProcedimentos[$iCont]->sDescr = urlencode((string) $oDadosSau_procencaminhamento->sd63_c_nome);
         $oProcedimentos->oProcedimentos[$iCont]->sProcedimento = $oDadosSau_procencaminhamento->sd63_c_procedimento;
 
       }

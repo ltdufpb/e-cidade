@@ -96,7 +96,7 @@ db_textarea('j75_obs',0,60,$Ij75_obs,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Escritura','2'=>'Registro de Imóveis','3'=>'Contrato');
+$x = ['1'=>'Escritura','2'=>'Registro de Imóveis','3'=>'Contrato'];
 db_select('j75_tipo',$x,true,$db_opcao,"onchange='js_submit();'");
 ?>
 <?=@$Lj75_dttipo?>
@@ -217,7 +217,7 @@ db_input('j94_tabelionato',30,$Ij94_tabelionato,true,'text',$db_opcao,"")
 if (!isset($j75_situacao)){
 	$j75_situacao = 1;
 }
-$y = array('1'=>'Não Processada','2'=>'Processada');
+$y = ['1'=>'Não Processada','2'=>'Processada'];
 db_select('j75_situacao',$y,true,3,"");
 
 ?></td>
@@ -281,7 +281,7 @@ function js_preenchepesquisa(chave){
   db_iframe_averbacao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -41,8 +41,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_sau_motivo_ausencia_classe.php"));
 $clmotivo_ausencia = new cl_sau_motivo_ausencia;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 //$clmedicos                = new cl_medicos;
@@ -65,13 +65,13 @@ if(isset($incluir)||isset($alterar)){
 	$db_opcao = isset($alterar)?2:$db_opcao;	
 	$db_opcao2 = isset($alterar)?22:$db_opcao;	
 	
-	$inicio_ano = substr( $sd06_d_inicio, 6, 4 );
-	$inicio_mes = substr( $sd06_d_inicio, 3, 2 );
-	$inicio_dia = substr( $sd06_d_inicio, 0, 2 );
+	$inicio_ano = substr( (string) $sd06_d_inicio, 6, 4 );
+	$inicio_mes = substr( (string) $sd06_d_inicio, 3, 2 );
+	$inicio_dia = substr( (string) $sd06_d_inicio, 0, 2 );
 	            
-	$fim_ano = substr( $sd06_d_fim, 6, 4 );
-	$fim_mes = substr( $sd06_d_fim, 3, 2 );
-	$fim_dia = substr( $sd06_d_fim, 0, 2 );
+	$fim_ano = substr( (string) $sd06_d_fim, 6, 4 );
+	$fim_mes = substr( (string) $sd06_d_fim, 3, 2 );
+	$fim_dia = substr( (string) $sd06_d_fim, 0, 2 );
 	
 	$clagendamentos->sql_record( $clagendamentos->sql_query_ext("","*",null,"sd27_i_codigo = $sd06_i_especmed  and sd23_d_consulta between '$inicio_ano/$inicio_mes/$inicio_dia'  and  '$fim_ano/$fim_mes/$fim_dia' ") );
 	if( $clagendamentos->numrows > 0 ){

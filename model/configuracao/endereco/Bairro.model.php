@@ -61,7 +61,7 @@ class Bairro {
    * Array dos logradouros vinculados ao bairro
    * @var array
    */
-  private $aLogradouros = array();
+  private $aLogradouros = [];
   
   /**
    * Construtor da classe. Recebe como parametro o sequencial da tabela cadenderbairro

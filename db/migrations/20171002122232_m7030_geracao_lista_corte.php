@@ -15,10 +15,10 @@ class M7030GeracaoListaCorte extends PostgresMigration
     public function upAguaCorteMat()
     {
         //Altera tabela aguacortemat
-        $table = $this->table('aguacortemat', array('schema'=>'agua'));
-        $table->addColumn('x41_aguacontrato', 'integer', array('null' => true, 'limit' => 10))
-              ->addForeignKey('x41_aguacontrato', 'agua.aguacontrato', 'x54_sequencial', array('constraint' => 'aguacortemat_aguacontrato_fk'))
-              ->addIndex(array('x41_aguacontrato'), array('unique' => false, 'name'=> 'aguacortemat_aguacontrato_in'))
+        $table = $this->table('aguacortemat', ['schema'=>'agua']);
+        $table->addColumn('x41_aguacontrato', 'integer', ['null' => true, 'limit' => 10])
+              ->addForeignKey('x41_aguacontrato', 'agua.aguacontrato', 'x54_sequencial', ['constraint' => 'aguacortemat_aguacontrato_fk'])
+              ->addIndex(['x41_aguacontrato'], ['unique' => false, 'name'=> 'aguacortemat_aguacontrato_in'])
               ->save();
     }
 
@@ -48,7 +48,7 @@ class M7030GeracaoListaCorte extends PostgresMigration
     public function downAguaCorteMat()
     {
         //Altera tabela aguacortemat
-        $table = $this->table('aguacortemat', array('schema'=>'agua'));
+        $table = $this->table('aguacortemat', ['schema'=>'agua']);
         $table->removeColumn('x41_aguacontrato')
               ->save();
     }

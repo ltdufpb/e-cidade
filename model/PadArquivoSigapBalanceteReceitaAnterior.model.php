@@ -42,7 +42,7 @@ final class PadArquivoSigapBalanceteReceitaAnterior extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "BalanceteReceitaAnterior";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -62,7 +62,7 @@ final class PadArquivoSigapBalanceteReceitaAnterior extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     
     $oInstituicao   = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit   = db_getsession("DB_instit");
@@ -95,16 +95,16 @@ final class PadArquivoSigapBalanceteReceitaAnterior extends PadArquivoSigap {
       
       $oReceitaRetorno->braCodigoEntidade                 = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oReceitaRetorno->braMesAnoMovimento                = $sDiaMesAno;
-      $oReceitaRetorno->braContaReceita                   = str_pad($oReceita->o57_fonte, 20, 0, STR_PAD_RIGHT);
-      $oReceitaRetorno->braCodigoOrgaoUnidadeOrcamentaria = str_pad($oInstituicao->codtrib, 4, "0", STR_PAD_LEFT);
+      $oReceitaRetorno->braContaReceita                   = str_pad((string) $oReceita->o57_fonte, 20, 0, STR_PAD_RIGHT);
+      $oReceitaRetorno->braCodigoOrgaoUnidadeOrcamentaria = str_pad((string) $oInstituicao->codtrib, 4, "0", STR_PAD_LEFT);
       $nSaldoInicial = $oReceita->saldo_inicial;
       $oReceita->saldo_inicial = str_pad(number_format(abs($oReceita->saldo_inicial),2,".",""), 13,'0', STR_PAD_LEFT);
       $oReceitaRetorno->braValorReceitaOrcada  = $oReceita->saldo_inicial;
       $oReceita->saldo_arrecadado_acumulado = str_pad(number_format(abs($oReceita->saldo_arrecadado_acumulado) 
                                                            ,2,".",""), 12,'0', STR_PAD_LEFT);
       $oReceitaRetorno->braValorReceitaRealizada   = $oReceita->saldo_arrecadado_acumulado;
-      $oReceitaRetorno->braCodigoRecursoVinculado  = str_pad($oReceita->o70_codigo, 4, "0", STR_PAD_LEFT); 
-      $oReceitaRetorno->braDescricaoContaReceita   = substr($oReceita->o57_descr, 0, 255); 
+      $oReceitaRetorno->braCodigoRecursoVinculado  = str_pad((string) $oReceita->o70_codigo, 4, "0", STR_PAD_LEFT); 
+      $oReceitaRetorno->braDescricaoContaReceita   = substr((string) $oReceita->o57_descr, 0, 255); 
       $oReceitaRetorno->braTipoNivelConta          = ($oReceita->o70_codrec==0?'S':'A'); 
       $oReceitaRetorno->braNumeroNivelContaReceita = $oReceita->nivel;
       $this->aDados[] =  $oReceitaRetorno; 
@@ -120,7 +120,7 @@ final class PadArquivoSigapBalanceteReceitaAnterior extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "braCodigoEntidade",
                         "braMesAnoMovimento",
                         "braContaReceita",
@@ -131,7 +131,7 @@ final class PadArquivoSigapBalanceteReceitaAnterior extends PadArquivoSigap {
                         "braDescricaoContaReceita",
                         "braTipoNivelConta",
                         "braNumeroNivelContaReceita"
-                       );
+                       ];
     return $aElementos;  
   }
   

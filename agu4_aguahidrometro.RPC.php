@@ -73,14 +73,14 @@ switch ($oParam->sExec) {
       if($oDaoAguaHidroTroca->numrows > 0){
       	
         $oRetorno->status  = 2;
-        $oRetorno->message = utf8_encode('Matrícula sem hidrômetro.');
+        $oRetorno->message = mb_convert_encoding('Matrícula sem hidrômetro.', 'UTF-8', 'ISO-8859-1');
         
       }
     
     } else {
     
       $oRetorno->status  = 3;
-      $oRetorno->message = utf8_encode('Matrícula sem hidrômetro.');
+      $oRetorno->message = mb_convert_encoding('Matrícula sem hidrômetro.', 'UTF-8', 'ISO-8859-1');
       
     }
     

@@ -10,7 +10,7 @@ use ECidade\RecursosHumanos\ESocial\Model\Configuracao;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $rotulo = new rotulocampo;
 $rotulo->label("z01_nome");
@@ -28,7 +28,7 @@ $instituicao = null;
 if (!empty($_GET["instituicao"])) {
     $instituicao = $_GET["instituicao"];
 }
-$where = array();
+$where = [];
 $where[] = " db102_avaliacao = {$formularioId} ";
 
 ?>
@@ -67,12 +67,12 @@ $where[] = " db102_avaliacao = {$formularioId} ";
         <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_avaliacaogruporespostaavisoprevio.hide();">
     </form>
     <?php
-    $campos = array(
+    $campos = [
         "distinct eso07_avaliacaogruporesposta as db_preenchimento",
         "eso07_empregador",
         "z01_nome as dl_empregador",
         "eso07_regist"
-    );
+    ];
     if (!isset($pesquisa_chave)) {
         if (isset($chave_eso07_empregador) && (trim($chave_eso07_empregador) != "")) {
             $where[] = " eso07_empregador = {$chave_eso07_empregador} ";
@@ -82,15 +82,15 @@ $where[] = " db102_avaliacao = {$formularioId} ";
             $where[] = " eso07_regist ilike '{$chave_eso07_regist}%' ";
         }
 
-        $order = array('eso07_avaliacaogruporesposta', 'eso07_regist');
+        $order = ['eso07_avaliacaogruporesposta', 'eso07_regist'];
         $sql = $dao->buscaPreenchimento($campos, $where, $order, $instituicao);
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_z01_nome)) {
-            $repassa = array(
+            $repassa = [
                 "chave_eso07_empregador" => $chave_eso07_empregador,
                 "chave_z01_nome" => $chave_z01_nome,
                 "chave_eso07_regist" => $chave_eso07_regist
-            );
+            ];
         }
 
         echo '<div class="container">';

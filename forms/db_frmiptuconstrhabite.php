@@ -60,7 +60,7 @@ $oRotulo->label("j131_obs");
     <td title="Origem do Processo"> <b>Processo do Sistema:</b> </td>
     <td >
      <?php 
-      $x = array("S"=>"Sim", "N"=>"Não");
+      $x = ["S"=>"Sim", "N"=>"Não"];
       db_select("lProcesso", $x, true, $db_opcao, "onChange=js_montaCampoProcesso()");
      ?>
     </td>
@@ -141,7 +141,7 @@ $oRotulo->label("j131_obs");
     <td title="Habite-se do Sistema?"> <b>Habite-se do Sistema:</b> </td>
     <td >
      <?php 
-      $x = array("S"=>"Sim", "N"=>"Não");
+      $x = ["S"=>"Sim", "N"=>"Não"];
       db_select("lHabite", $x, true, $db_opcao, "onChange=js_montaCampoHabite()");
      ?>
     </td>
@@ -260,7 +260,7 @@ $oRotulo->label("j131_obs");
    <td colspan="2">
      <?php 
      if(isset($j131_idcons)){
-         $chavepri= array("j131_idcons"=>$j131_idcons,"j131_matric"=>$j131_matric,"j131_sequencial"=>@$j131_sequencial);
+         $chavepri= ["j131_idcons"=>$j131_idcons,"j131_matric"=>$j131_matric,"j131_sequencial"=>@$j131_sequencial];
          $cliframe_alterar_excluir->chavepri= $chavepri;
          $cliframe_alterar_excluir->sql     = $cliptuconstrhabite->sql_query(null,"*",null, "j131_matric = {$j131_matric} and j131_idcons = {$j131_idcons}");
          $cliframe_alterar_excluir->campos  ="j131_sequencial,j131_matric,j131_idcons,j131_cadhab,j131_codprot,j131_usuario,j131_data,j131_hora";

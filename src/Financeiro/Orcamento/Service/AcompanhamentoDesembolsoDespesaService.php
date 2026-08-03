@@ -46,12 +46,12 @@ class AcompanhamentoDesembolsoDespesaService extends CronogramaDesembolsoService
             }
 
             $data->valor_base = $this->identificaValorBase($base, $data);
-            $data->orgao = str_pad($data->orgao, 2, '0', STR_PAD_LEFT);
-            $data->unidade = str_pad($data->unidade, 2, '0', STR_PAD_LEFT);
-            $data->funcao = str_pad($data->funcao, 2, '0', STR_PAD_LEFT);
-            $data->subfuncao = str_pad($data->subfuncao, 3, '0', STR_PAD_LEFT);
-            $data->programa = str_pad($data->programa, 4, '0', STR_PAD_LEFT);
-            $data->projeto = str_pad($data->projeto, 4, '0', STR_PAD_LEFT);
+            $data->orgao = str_pad((string) $data->orgao, 2, '0', STR_PAD_LEFT);
+            $data->unidade = str_pad((string) $data->unidade, 2, '0', STR_PAD_LEFT);
+            $data->funcao = str_pad((string) $data->funcao, 2, '0', STR_PAD_LEFT);
+            $data->subfuncao = str_pad((string) $data->subfuncao, 3, '0', STR_PAD_LEFT);
+            $data->programa = str_pad((string) $data->programa, 4, '0', STR_PAD_LEFT);
+            $data->projeto = str_pad((string) $data->projeto, 4, '0', STR_PAD_LEFT);
             $data->descricao_base_calculo = $base->name();
             return $data;
         });

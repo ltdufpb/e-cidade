@@ -33,7 +33,7 @@ include(modification("classes/db_db_sysarqarq_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 $cldb_sysarqarq = new cl_db_sysarqarq;
 //
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -133,7 +133,7 @@ if (isset($modulo_testa)) {
                 $modulo = "";
                 //define quantos checkboxes iram ficar por linha da tabela.
                 $quebratab = 1;
-                while ($j < pg_numrows($rstab)) {
+                while ($j < pg_num_rows($rstab)) {
                     db_fieldsmemory($rstab, $j);
                     /*
                       "0"  Manutenção

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $clrotulo = new rotulocampo;
 $clrharqbanco->rotulo->label();
@@ -255,7 +255,7 @@ function js_controlarodape(mostra, hora){
     </td>
     <td>
       <?php 
-      $arr_tiparq = Array(
+      $arr_tiparq = [
                           "f"=>"FUNDEB",
                           "d"=>"FUNDEF",
                           "m"=>"MDE",
@@ -279,7 +279,7 @@ function js_controlarodape(mostra, hora){
 			                    "15"=>"FES/PACS",
 			                    "16"=>"DST-AIDS/FNS",
 			                    "t"=>"Todos",
-                         );
+                         ];
       db_select("tiparq", $arr_tiparq, true, 1);
       ?>
     </td>

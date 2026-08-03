@@ -35,8 +35,8 @@ include(modification("classes/db_mer_cardapiodia_classe.php"));
 include(modification("classes/db_mer_cardapiotipo_classe.php"));
 include(modification("classes/db_mer_tprefeicao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clmer_cardapio     = new cl_mer_cardapio;
 $clmer_cardapiodata = new cl_mer_cardapiodata;
 $clmer_cardapiodia  = new cl_mer_cardapiodia;
@@ -55,7 +55,7 @@ if (isset($alterar)) {
   if ($clmer_cardapio->erro_status=="1") {
   	
     $clmer_cardapiotipo->excluir(""," me21_i_cardapio = $me01_i_codigo");
-    $vet = explode(",",$lista);
+    $vet = explode(",",(string) $lista);
     for ($x=0;$x<count($vet);$x++) {
     	
       $clmer_cardapiotipo->me21_i_cardapio   = $me01_i_codigo;

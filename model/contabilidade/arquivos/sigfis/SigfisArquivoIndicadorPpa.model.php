@@ -91,10 +91,10 @@ class SigfisArquivoIndicadorPpa extends SigfisArquivoBase implements iPadArquivo
             $oDadosIndicador                     = db_utils::fieldsMemory($rsIndicadores, $iIndicador);
             $oDadosPrograma                      = new stdClass();
             $oDadosPrograma->codigolinha         = 398;
-            $oDadosPrograma->nu_Indicador        = str_pad($oDadosIndicador->o10_indica,  6, " ", STR_PAD_LEFT);
-            $oDadosPrograma->cd_Unidade          = str_pad($this->sCodigoTribunal,        4, " ", STR_PAD_LEFT);
-            $oDadosPrograma->cd_SubPrograma      = str_pad($oPrograma->iCodigo,           4, "0", STR_PAD_LEFT);
-            $oDadosPrograma->de_Indicador        = str_pad($oDadosIndicador->o10_descr, 120, " ", STR_PAD_RIGHT);
+            $oDadosPrograma->nu_Indicador        = str_pad((string) $oDadosIndicador->o10_indica,  6, " ", STR_PAD_LEFT);
+            $oDadosPrograma->cd_Unidade          = str_pad((string) $this->sCodigoTribunal,        4, " ", STR_PAD_LEFT);
+            $oDadosPrograma->cd_SubPrograma      = str_pad((string) $oPrograma->iCodigo,           4, "0", STR_PAD_LEFT);
+            $oDadosPrograma->de_Indicador        = str_pad((string) $oDadosIndicador->o10_descr, 120, " ", STR_PAD_RIGHT);
             $nValorInicial                       = number_format($oDadosIndicador->o10_valorindiceref, 2, "", "");
             $oDadosPrograma->Situacao_Inicial    = str_pad($nValorInicial,               16, " ", STR_PAD_LEFT);
             $nValorModificado                    = number_format($oDadosIndicador->o10_valorindicefinal, 2, "", "");

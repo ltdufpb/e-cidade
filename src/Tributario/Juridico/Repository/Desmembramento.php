@@ -29,16 +29,10 @@ namespace ECidade\Tributario\Juridico\Repository;
 
 final class Desmembramento
 {
-    private $instituicao;
-    private $data;
-    private $ano;
-    private $filtro = array();
+    private $filtro = [];
 
-    public function __construct($instituicao, $data, $ano)
+    public function __construct(private $instituicao, private $data, private $ano)
     {
-        $this->instituicao = $instituicao;
-        $this->data = $data;
-        $this->ano = $ano;
     }
 
     public function getByCgm($cgm)
@@ -172,7 +166,7 @@ final class Desmembramento
             throw new \Exception('Nenhuma certidão encontrada para divida informada.');
         }
 
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $item['v14_certid'];
         }
@@ -206,10 +200,10 @@ final class Desmembramento
             throw new \Exception('Nenhuma inicial encontrada para as dívidas selecionadas');
         }
 
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             if (empty($data[$item['v51_inicial']])) {
-                $data[$item['v51_inicial']] = array();
+                $data[$item['v51_inicial']] = [];
             }
             $data[$item['v51_inicial']][] = $item['v51_certidao'];
         }

@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE arrecadcompos
 class cl_arrecadcompos { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k00_sequencial = 0; 
-   var $k00_arreckey = 0; 
-   var $k00_vlrhist = 0; 
-   var $k00_correcao = 0; 
-   var $k00_juros = 0; 
-   var $k00_multa = 0; 
+   public $k00_sequencial = 0; 
+   public $k00_arreckey = 0; 
+   public $k00_vlrhist = 0; 
+   public $k00_correcao = 0; 
+   public $k00_juros = 0; 
+   public $k00_multa = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k00_sequencial = int4 = Código da arrecadação suspensa 
                  k00_arreckey = int4 = arreckey 
                  k00_vlrhist = float8 = Histórico 
@@ -58,10 +58,10 @@ class cl_arrecadcompos {
                  k00_multa = float8 = Multa 
                  ";
    //funcao construtor da classe 
-   function cl_arrecadcompos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arrecadcompos"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,10 +143,10 @@ class cl_arrecadcompos {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k00_sequencial = pg_result($result,0,0); 
+       $this->k00_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from arrecadcompos_k00_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k00_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k00_sequencial)){
          $this->erro_sql = " Campo k00_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_arrecadcompos {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "arrecadcompos ($this->k00_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "arrecadcompos já Cadastrado";
@@ -208,15 +208,15 @@ class cl_arrecadcompos {
      $resaco = $this->sql_record($this->sql_query_file($this->k00_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11816,'$this->k00_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3022,11816,'','".AddSlashes(pg_result($resaco,0,'k00_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3022,17106,'','".AddSlashes(pg_result($resaco,0,'k00_arreckey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3022,17136,'','".AddSlashes(pg_result($resaco,0,'k00_vlrhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3022,17109,'','".AddSlashes(pg_result($resaco,0,'k00_correcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3022,17110,'','".AddSlashes(pg_result($resaco,0,'k00_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3022,17111,'','".AddSlashes(pg_result($resaco,0,'k00_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3022,11816,'','".AddSlashes(pg_fetch_result($resaco,0,'k00_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3022,17106,'','".AddSlashes(pg_fetch_result($resaco,0,'k00_arreckey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3022,17136,'','".AddSlashes(pg_fetch_result($resaco,0,'k00_vlrhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3022,17109,'','".AddSlashes(pg_fetch_result($resaco,0,'k00_correcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3022,17110,'','".AddSlashes(pg_fetch_result($resaco,0,'k00_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3022,17111,'','".AddSlashes(pg_fetch_result($resaco,0,'k00_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -225,10 +225,10 @@ class cl_arrecadcompos {
       $this->atualizacampos();
      $sql = " update arrecadcompos set ";
      $virgula = "";
-     if(trim($this->k00_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_sequencial"])){ 
+     if(trim((string) $this->k00_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_sequencial"])){ 
        $sql  .= $virgula." k00_sequencial = $this->k00_sequencial ";
        $virgula = ",";
-       if(trim($this->k00_sequencial) == null ){ 
+       if(trim((string) $this->k00_sequencial) == null ){ 
          $this->erro_sql = " Campo Código da arrecadação suspensa nao Informado.";
          $this->erro_campo = "k00_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_arrecadcompos {
          return false;
        }
      }
-     if(trim($this->k00_arreckey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_arreckey"])){ 
+     if(trim((string) $this->k00_arreckey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_arreckey"])){ 
        $sql  .= $virgula." k00_arreckey = $this->k00_arreckey ";
        $virgula = ",";
-       if(trim($this->k00_arreckey) == null ){ 
+       if(trim((string) $this->k00_arreckey) == null ){ 
          $this->erro_sql = " Campo arreckey nao Informado.";
          $this->erro_campo = "k00_arreckey";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_arrecadcompos {
          return false;
        }
      }
-     if(trim($this->k00_vlrhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_vlrhist"])){ 
+     if(trim((string) $this->k00_vlrhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_vlrhist"])){ 
        $sql  .= $virgula." k00_vlrhist = $this->k00_vlrhist ";
        $virgula = ",";
-       if(trim($this->k00_vlrhist) == null ){ 
+       if(trim((string) $this->k00_vlrhist) == null ){ 
          $this->erro_sql = " Campo Histórico nao Informado.";
          $this->erro_campo = "k00_vlrhist";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_arrecadcompos {
          return false;
        }
      }
-     if(trim($this->k00_correcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_correcao"])){ 
+     if(trim((string) $this->k00_correcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_correcao"])){ 
        $sql  .= $virgula." k00_correcao = $this->k00_correcao ";
        $virgula = ",";
-       if(trim($this->k00_correcao) == null ){ 
+       if(trim((string) $this->k00_correcao) == null ){ 
          $this->erro_sql = " Campo Correcao nao Informado.";
          $this->erro_campo = "k00_correcao";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_arrecadcompos {
          return false;
        }
      }
-     if(trim($this->k00_juros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_juros"])){ 
+     if(trim((string) $this->k00_juros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_juros"])){ 
        $sql  .= $virgula." k00_juros = $this->k00_juros ";
        $virgula = ",";
-       if(trim($this->k00_juros) == null ){ 
+       if(trim((string) $this->k00_juros) == null ){ 
          $this->erro_sql = " Campo Juros nao Informado.";
          $this->erro_campo = "k00_juros";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_arrecadcompos {
          return false;
        }
      }
-     if(trim($this->k00_multa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_multa"])){ 
+     if(trim((string) $this->k00_multa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_multa"])){ 
        $sql  .= $virgula." k00_multa = $this->k00_multa ";
        $virgula = ",";
-       if(trim($this->k00_multa) == null ){ 
+       if(trim((string) $this->k00_multa) == null ){ 
          $this->erro_sql = " Campo Multa nao Informado.";
          $this->erro_campo = "k00_multa";
          $this->erro_banco = "";
@@ -311,21 +311,21 @@ class cl_arrecadcompos {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11816,'$this->k00_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k00_sequencial"]) || $this->k00_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3022,11816,'".AddSlashes(pg_result($resaco,$conresaco,'k00_sequencial'))."','$this->k00_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3022,11816,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k00_sequencial'))."','$this->k00_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k00_arreckey"]) || $this->k00_arreckey != "")
-           $resac = db_query("insert into db_acount values($acount,3022,17106,'".AddSlashes(pg_result($resaco,$conresaco,'k00_arreckey'))."','$this->k00_arreckey',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3022,17106,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k00_arreckey'))."','$this->k00_arreckey',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k00_vlrhist"]) || $this->k00_vlrhist != "")
-           $resac = db_query("insert into db_acount values($acount,3022,17136,'".AddSlashes(pg_result($resaco,$conresaco,'k00_vlrhist'))."','$this->k00_vlrhist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3022,17136,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k00_vlrhist'))."','$this->k00_vlrhist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k00_correcao"]) || $this->k00_correcao != "")
-           $resac = db_query("insert into db_acount values($acount,3022,17109,'".AddSlashes(pg_result($resaco,$conresaco,'k00_correcao'))."','$this->k00_correcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3022,17109,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k00_correcao'))."','$this->k00_correcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k00_juros"]) || $this->k00_juros != "")
-           $resac = db_query("insert into db_acount values($acount,3022,17110,'".AddSlashes(pg_result($resaco,$conresaco,'k00_juros'))."','$this->k00_juros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3022,17110,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k00_juros'))."','$this->k00_juros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k00_multa"]) || $this->k00_multa != "")
-           $resac = db_query("insert into db_acount values($acount,3022,17111,'".AddSlashes(pg_result($resaco,$conresaco,'k00_multa'))."','$this->k00_multa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3022,17111,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k00_multa'))."','$this->k00_multa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -370,15 +370,15 @@ class cl_arrecadcompos {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11816,'$k00_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3022,11816,'','".AddSlashes(pg_result($resaco,$iresaco,'k00_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3022,17106,'','".AddSlashes(pg_result($resaco,$iresaco,'k00_arreckey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3022,17136,'','".AddSlashes(pg_result($resaco,$iresaco,'k00_vlrhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3022,17109,'','".AddSlashes(pg_result($resaco,$iresaco,'k00_correcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3022,17110,'','".AddSlashes(pg_result($resaco,$iresaco,'k00_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3022,17111,'','".AddSlashes(pg_result($resaco,$iresaco,'k00_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3022,11816,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k00_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3022,17106,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k00_arreckey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3022,17136,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k00_vlrhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3022,17109,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k00_correcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3022,17110,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k00_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3022,17111,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k00_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from arrecadcompos
@@ -438,7 +438,7 @@ class cl_arrecadcompos {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:arrecadcompos";
@@ -453,7 +453,7 @@ class cl_arrecadcompos {
    function sql_query ( $k00_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,7 +476,7 @@ class cl_arrecadcompos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,7 +489,7 @@ class cl_arrecadcompos {
    function sql_query_file ( $k00_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,7 +510,7 @@ class cl_arrecadcompos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

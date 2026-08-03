@@ -248,6 +248,7 @@ class Desconto extends Abatimento {
    * Salva ou altera o Descontto
    * @return boolean
    */
+  #[\Override]
   public function salvar() {
 
     if (!db_utils::inTransaction()) {
@@ -404,11 +405,11 @@ class Desconto extends Abatimento {
 
     $oDaoAbatimento = new cl_abatimento();
 
-    $aTiposOrigem = array(
+    $aTiposOrigem = [
         Debito::ORIGEM_CGM        => "numcgm",
         Debito::ORIGEM_INSCRICAO  => "inscr",
         Debito::ORIGEM_MATRICULA  => "matric"
-    );
+    ];
 
     if (!isset($aTiposOrigem[$sTipoOrigem])) {
       throw new ParameterException("Tipo de Origem não existe");
@@ -429,7 +430,7 @@ class Desconto extends Abatimento {
 
     $aDadosDescontos = db_utils::getCollectionByRecord($rsDescontos);
 
-    $aDescontos = array();
+    $aDescontos = [];
 
     foreach ($aDadosDescontos as $oDadosDesconto) {
       $iCodigoAbatimento = $oDadosDesconto->k125_sequencial;

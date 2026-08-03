@@ -29,23 +29,23 @@
 //CLASSE DA ENTIDADE tnomeitem
 class cl_tnomeitem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $yx_coditem = 0; 
-   var $yx_codigo = 0; 
-   var $yx_valor = 0; 
-   var $yx_sexo = 'f'; 
-   var $yx_tipo = null; 
+   public $yx_coditem = 0; 
+   public $yx_codigo = 0; 
+   public $yx_valor = 0; 
+   public $yx_sexo = 'f'; 
+   public $yx_tipo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  yx_coditem = int4 = Código Ítem 
                  yx_codigo = int4 = Código 
                  yx_valor = float8 = Valor 
@@ -53,10 +53,10 @@ class cl_tnomeitem {
                  yx_tipo = char(1) = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_tnomeitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tnomeitem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -128,10 +128,10 @@ class cl_tnomeitem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->yx_coditem = pg_result($result,0,0); 
+       $this->yx_coditem = pg_fetch_result($result,0,0); 
      }else{
        $result = @db_query("select last_value from tnomeitem_yx_coditem_seq");
-       if(($result != false) && (pg_result($result,0,0) < $yx_coditem)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $yx_coditem)){
          $this->erro_sql = " Campo yx_coditem maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -167,7 +167,7 @@ class cl_tnomeitem {
      $result = @db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Itens dios nomes ($this->yx_coditem) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Itens dios nomes já Cadastrado";
@@ -189,13 +189,13 @@ class cl_tnomeitem {
      $resaco = $this->sql_record($this->sql_query_file($this->yx_coditem));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,5205,'$this->yx_coditem','I')");
-       $resac = db_query("insert into db_acount values($acount,758,5205,'','".AddSlashes(pg_result($resaco,0,'yx_coditem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,758,5206,'','".AddSlashes(pg_result($resaco,0,'yx_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,758,5207,'','".AddSlashes(pg_result($resaco,0,'yx_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,758,5208,'','".AddSlashes(pg_result($resaco,0,'yx_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,758,5209,'','".AddSlashes(pg_result($resaco,0,'yx_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,758,5205,'','".AddSlashes(pg_fetch_result($resaco,0,'yx_coditem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,758,5206,'','".AddSlashes(pg_fetch_result($resaco,0,'yx_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,758,5207,'','".AddSlashes(pg_fetch_result($resaco,0,'yx_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,758,5208,'','".AddSlashes(pg_fetch_result($resaco,0,'yx_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,758,5209,'','".AddSlashes(pg_fetch_result($resaco,0,'yx_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -204,10 +204,10 @@ class cl_tnomeitem {
       $this->atualizacampos();
      $sql = " update tnomeitem set ";
      $virgula = "";
-     if(trim($this->yx_coditem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_coditem"])){ 
+     if(trim((string) $this->yx_coditem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_coditem"])){ 
        $sql  .= $virgula." yx_coditem = $this->yx_coditem ";
        $virgula = ",";
-       if(trim($this->yx_coditem) == null ){ 
+       if(trim((string) $this->yx_coditem) == null ){ 
          $this->erro_sql = " Campo Código Ítem nao Informado.";
          $this->erro_campo = "yx_coditem";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_tnomeitem {
          return false;
        }
      }
-     if(trim($this->yx_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_codigo"])){ 
+     if(trim((string) $this->yx_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_codigo"])){ 
        $sql  .= $virgula." yx_codigo = $this->yx_codigo ";
        $virgula = ",";
-       if(trim($this->yx_codigo) == null ){ 
+       if(trim((string) $this->yx_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "yx_codigo";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_tnomeitem {
          return false;
        }
      }
-     if(trim($this->yx_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_valor"])){ 
+     if(trim((string) $this->yx_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_valor"])){ 
        $sql  .= $virgula." yx_valor = $this->yx_valor ";
        $virgula = ",";
-       if(trim($this->yx_valor) == null ){ 
+       if(trim((string) $this->yx_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "yx_valor";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_tnomeitem {
          return false;
        }
      }
-     if(trim($this->yx_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_sexo"])){ 
+     if(trim((string) $this->yx_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_sexo"])){ 
        $sql  .= $virgula." yx_sexo = '$this->yx_sexo' ";
        $virgula = ",";
-       if(trim($this->yx_sexo) == null ){ 
+       if(trim((string) $this->yx_sexo) == null ){ 
          $this->erro_sql = " Campo Sexo nao Informado.";
          $this->erro_campo = "yx_sexo";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_tnomeitem {
          return false;
        }
      }
-     if(trim($this->yx_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_tipo"])){ 
+     if(trim((string) $this->yx_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["yx_tipo"])){ 
        $sql  .= $virgula." yx_tipo = '$this->yx_tipo' ";
        $virgula = ",";
-       if(trim($this->yx_tipo) == null ){ 
+       if(trim((string) $this->yx_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "yx_tipo";
          $this->erro_banco = "";
@@ -273,18 +273,18 @@ class cl_tnomeitem {
 ";
      $resaco = $this->sql_record($this->sql_query_file($this->yx_coditem));
      if($this->numrows>0){       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,5205,'$this->yx_coditem','A')");
        if(isset($GLOBALS["HTTP_POST_VARS"]["yx_coditem"]))
-         $resac = db_query("insert into db_acount values($acount,758,5205,'".AddSlashes(pg_result($resaco,0,'yx_coditem'))."','$this->yx_coditem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,758,5205,'".AddSlashes(pg_fetch_result($resaco,0,'yx_coditem'))."','$this->yx_coditem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["yx_codigo"]))
-         $resac = db_query("insert into db_acount values($acount,758,5206,'".AddSlashes(pg_result($resaco,0,'yx_codigo'))."','$this->yx_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,758,5206,'".AddSlashes(pg_fetch_result($resaco,0,'yx_codigo'))."','$this->yx_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["yx_valor"]))
-         $resac = db_query("insert into db_acount values($acount,758,5207,'".AddSlashes(pg_result($resaco,0,'yx_valor'))."','$this->yx_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,758,5207,'".AddSlashes(pg_fetch_result($resaco,0,'yx_valor'))."','$this->yx_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["yx_sexo"]))
-         $resac = db_query("insert into db_acount values($acount,758,5208,'".AddSlashes(pg_result($resaco,0,'yx_sexo'))."','$this->yx_sexo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,758,5208,'".AddSlashes(pg_fetch_result($resaco,0,'yx_sexo'))."','$this->yx_sexo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["yx_tipo"]))
-         $resac = db_query("insert into db_acount values($acount,758,5209,'".AddSlashes(pg_result($resaco,0,'yx_tipo'))."','$this->yx_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,758,5209,'".AddSlashes(pg_fetch_result($resaco,0,'yx_tipo'))."','$this->yx_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @db_query($sql);
      if($result==false){ 
@@ -321,13 +321,13 @@ class cl_tnomeitem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
-         $resac = db_query("insert into db_acountkey values($acount,5205,'".pg_result($resaco,$iresaco,'yx_coditem')."','E')");
-         $resac = db_query("insert into db_acount values($acount,758,5205,'','".AddSlashes(pg_result($resaco,$iresaco,'yx_coditem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,758,5206,'','".AddSlashes(pg_result($resaco,$iresaco,'yx_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,758,5207,'','".AddSlashes(pg_result($resaco,$iresaco,'yx_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,758,5208,'','".AddSlashes(pg_result($resaco,$iresaco,'yx_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,758,5209,'','".AddSlashes(pg_result($resaco,$iresaco,'yx_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $acount = pg_fetch_result($resac,0,0);
+         $resac = db_query("insert into db_acountkey values($acount,5205,'".pg_fetch_result($resaco,$iresaco,'yx_coditem')."','E')");
+         $resac = db_query("insert into db_acount values($acount,758,5205,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'yx_coditem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,758,5206,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'yx_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,758,5207,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'yx_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,758,5208,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'yx_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,758,5209,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'yx_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tnomeitem
@@ -380,7 +380,7 @@ class cl_tnomeitem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tnomeitem";
@@ -395,7 +395,7 @@ class cl_tnomeitem {
    function sql_query ( $yx_coditem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_tnomeitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,7 +430,7 @@ class cl_tnomeitem {
    function sql_query_file ( $yx_coditem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_tnomeitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

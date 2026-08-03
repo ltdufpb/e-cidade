@@ -48,8 +48,8 @@
 
   include(modification("dbforms/db_funcoes.php")) ;
   
-  db_postmemory($HTTP_SERVER_VARS);
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_SERVER);
+  db_postmemory($_POST);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //    Identifica usuario que está acessando o sistema. Isto será usado para selecionar
@@ -59,7 +59,7 @@
 
   $resultPesquisaNome = db_query("select nome from db_usuarios where id_usuario = $DB_id_usuario");
 
-  $nomeUsuario = pg_result($resultPesquisaNome,0,0);
+  $nomeUsuario = pg_fetch_result($resultPesquisaNome,0,0);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //     Esta página utiliza o recurso de iframe. O iframe chamará esta mesma página para
@@ -90,9 +90,9 @@
 // para apresentar o resultado  da pesquisa, então o botão pesquisar foi acionado, e 
 // dentro do iframe ocorrerá o código abaixo.
 ///////////////////////////////////////////////////////////////////////////////////////
-  if (isset($HTTP_POST_VARS["pesquisar"])) { 
+  if (isset($_POST["pesquisar"])) { 
 
-    db_postmemory($HTTP_POST_VARS);
+    db_postmemory($_POST);
 
     if($ordem_data == "dtlanc"){
       $order = " order by dataordem $sentido";
@@ -161,7 +161,7 @@
 	}
 	$result = db_query($sql);
 
- 	$num = pg_numrows($result);
+ 	$num = pg_num_rows($result);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //    Tabela que mostra o resultado da consulta sql realizada
@@ -192,28 +192,28 @@
 <?php  
   for ($i=0;$i<$num;$i++) { 
 
-  $ordemAtual = pg_result($result,$i,"codordem");  // Variável utilizada para verificar se a ordem foi finalizada ou não
+  $ordemAtual = pg_fetch_result($result,$i,"codordem");  // Variável utilizada para verificar se a ordem foi finalizada ou não
 
   $verificaSituacao = db_query("select codordem from db_ordemfim where codordem = $ordemAtual limit 1");
 
-  $numItemsEncontrados = pg_numrows($verificaSituacao);
+  $numItemsEncontrados = pg_num_rows($verificaSituacao);
 
   if ($numItemsEncontrados == 0) {$finalizado = "Não";} else {$finalizado = "Sim";}
 
 ?>
-      <tr  onMouseOut="document.getElementById('descr_<?=$i?>').style.visibility='hidden'" onMouseOver="document.getElementById('descr_<?=$i?>').style.visibility='visible'"  onClick="location.href='con6_ordempesquisa.php?numOrdem=<?php  echo pg_result($result,$i,"codordem"); ?>'" <?php  echo $i%2==0?"bgcolor=\"#E796A4\"":"bgcolor=\"#97B5E6\"" ?> style="cursor:hand;font-size:13px"> 
+      <tr  onMouseOut="document.getElementById('descr_<?=$i?>').style.visibility='hidden'" onMouseOver="document.getElementById('descr_<?=$i?>').style.visibility='visible'"  onClick="location.href='con6_ordempesquisa.php?numOrdem=<?php  echo pg_fetch_result($result,$i,"codordem"); ?>'" <?php  echo $i%2==0?"bgcolor=\"#E796A4\"":"bgcolor=\"#97B5E6\"" ?> style="cursor:hand;font-size:13px"> 
 
-        <td align="center"><?=pg_result($result,$i,"codordem")?>&nbsp;</td>
+        <td align="center"><?=pg_fetch_result($result,$i,"codordem")?>&nbsp;</td>
 
-        <td align="center"><?=pg_result($result,$i,"dataordem")?>&nbsp;</td>
+        <td align="center"><?=pg_fetch_result($result,$i,"dataordem")?>&nbsp;</td>
 
-        <td align="center"><?=pg_result($result,$i,"dataprev")?>&nbsp;</td>
+        <td align="center"><?=pg_fetch_result($result,$i,"dataprev")?>&nbsp;</td>
 
         <td align="center"><?=$finalizado?>&nbsp;</td>
 
-        <td align="center"><?=pg_result($result,$i,"nome")?>&nbsp;</td>
+        <td align="center"><?=pg_fetch_result($result,$i,"nome")?>&nbsp;</td>
 
-        <td align="center"><?=pg_result($result,$i,"descrdepto")?>&nbsp;</td>
+        <td align="center"><?=pg_fetch_result($result,$i,"descrdepto")?>&nbsp;</td>
 
       </tr>
 	  <?php 
@@ -222,7 +222,7 @@
 	  <td>
 	  <table id='descr_$i' bgcolor='#cccccc' style='position:absolute;visibility:hidden;border: 2px outset #cccccc'>
 	    <tr style=\"font-size:13px\">
-		<td colspan=\"4\"> Descrição ordem ".pg_result($result,$i,"codordem").": ".str_replace("\n","<br>",pg_result($result,$i,"descricao"))."&nbsp;</td>
+		<td colspan=\"4\"> Descrição ordem ".pg_fetch_result($result,$i,"codordem").": ".str_replace("\n","<br>",pg_fetch_result($result,$i,"descricao"))."&nbsp;</td>
 	    </tr>
 	  </table>  
 	  </td>
@@ -264,30 +264,30 @@
         </tr>
         <tr style="font-size:13px"> 
           <td width="10%">C&oacute;d. <strong> 
-            <?=pg_result($pesquisaDadosOrdem,0,"codordem")?>
+            <?=pg_fetch_result($pesquisaDadosOrdem,0,"codordem")?>
             </strong></td>
           <td width="20%">Data: <strong> 
-            <?=pg_result($pesquisaDadosOrdem,0,"dataordem")?>
+            <?=pg_fetch_result($pesquisaDadosOrdem,0,"dataordem")?>
             </strong></td>
           <td width="20%">Previs&atilde;o: <strong> 
-            <?=pg_result($pesquisaDadosOrdem,0,"dataprev")?>
+            <?=pg_fetch_result($pesquisaDadosOrdem,0,"dataprev")?>
             </strong></td>
           <td width="40%">Criada por <strong> 
-            <?=pg_result($pesquisaDadosOrdem,0,"nomeUsuario")?>
+            <?=pg_fetch_result($pesquisaDadosOrdem,0,"nomeUsuario")?>
             </strong></td>
         </tr>
         <tr style="font-size:13px"> 
           <td colspan="3">Destinat&aacute;rio atual: <strong> 
-            <?=pg_result($pesquisaDadosOrdem,0,"nomeDestinatario")?>
+            <?=pg_fetch_result($pesquisaDadosOrdem,0,"nomeDestinatario")?>
             </strong></td>
           <td>Departamento: <strong> 
-            <?=pg_result($pesquisaDadosOrdem,0,"descrdepto")?>
+            <?=pg_fetch_result($pesquisaDadosOrdem,0,"descrdepto")?>
             </strong></td>
         </tr>
         <tr style="font-size:13px"> 
           <td colspan="4"><p><strong>Descri&ccedil;&atilde;o :</strong></p>
             <p> 
-              <?=str_replace("\n","<br> ",pg_result($pesquisaDadosOrdem,0,"descricao"))?>
+              <?=str_replace("\n","<br> ",pg_fetch_result($pesquisaDadosOrdem,0,"descricao"))?>
             </p></td>
         </tr>
         <tr align="center" style="font-size:13px"> 
@@ -308,7 +308,7 @@
   								 where o.codordem = $numOrdem
 								 order by datainicial, codandam
 								");
-  $numSelecionaAndamento = pg_numrows($selecionaAndamento);
+  $numSelecionaAndamento = pg_num_rows($selecionaAndamento);
   
   for ($i=0;$i<$numSelecionaAndamento;$i++) {
   echo "
@@ -320,13 +320,13 @@
 		<td width=\"20%\">Data inicio</td>
 	  </tr>
 	  <tr align=\"center\" bgcolor=\"#97B5E6\" style=\"font-size:13px\"> 
-		<td>".pg_result($selecionaAndamento,$i,"codandam")."&nbsp;</td>
-		<td>".pg_result($selecionaAndamento,$i,"codordem")."&nbsp;</td>
-		<td>".pg_result($selecionaAndamento,$i,"nome")."&nbsp;</td>
-		<td>".pg_result($selecionaAndamento,$i,"datainicial")."&nbsp;</td>
+		<td>".pg_fetch_result($selecionaAndamento,$i,"codandam")."&nbsp;</td>
+		<td>".pg_fetch_result($selecionaAndamento,$i,"codordem")."&nbsp;</td>
+		<td>".pg_fetch_result($selecionaAndamento,$i,"nome")."&nbsp;</td>
+		<td>".pg_fetch_result($selecionaAndamento,$i,"datainicial")."&nbsp;</td>
 	  </tr>
 	  <tr bgcolor=\"#97B5E6\" style=\"font-size:13px\">
-		<td colspan=\"4\"> Descrição: ".str_replace("\n","<br>",pg_result($selecionaAndamento,$i,"descricao"))."&nbsp;</td>
+		<td colspan=\"4\"> Descrição: ".str_replace("\n","<br>",pg_fetch_result($selecionaAndamento,$i,"descricao"))."&nbsp;</td>
 	  </tr>
 	</table><br>
   \n";
@@ -431,9 +431,9 @@
 							 and u.usuext = 0
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_numrows($result);
+		$numrows = pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
-		  echo "<option  ".(db_getsession("DB_id_usuario") == pg_result($result,$i,"id_usuario")?"selected":"")." style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
+		  echo "<option  ".(db_getsession("DB_id_usuario") == pg_fetch_result($result,$i,"id_usuario")?"selected":"")." style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"login")."</option>\n";
 		}  
 		?>
 	       </select>
@@ -458,9 +458,9 @@
 							 and u.usuext = 0
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_numrows($result);
+		$numrows = pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
-		  echo "<option  ".(db_getsession("DB_id_usuario") == pg_result($result,$i,"id_usuario")?"selected":"")." style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
+		  echo "<option  ".(db_getsession("DB_id_usuario") == pg_fetch_result($result,$i,"id_usuario")?"selected":"")." style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"login")."</option>\n";
 		}  
 		?>
 	       </select>
@@ -485,9 +485,9 @@
 							 and u.usuext = 0
 							 order by lower(u.login)");
 		}				
-		$numrows = pg_numrows($result);
+		$numrows = pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
-		  echo "<option  ".(db_getsession("DB_id_usuario") == pg_result($result,$i,"id_usuario")?"selected":"")." style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_result($result,$i,"id_usuario")."\">".pg_result($result,$i,"login")."</option>\n";
+		  echo "<option  ".(db_getsession("DB_id_usuario") == pg_fetch_result($result,$i,"id_usuario")?"selected":"")." style='text-align:left;color:black;letter-spacing:normal'  value=\"".pg_fetch_result($result,$i,"id_usuario")."\">".pg_fetch_result($result,$i,"login")."</option>\n";
 		}  
 		?>
 	       </select>&nbsp;&nbsp;<input type="radio" checked name="todas" value="t">todas<input type="radio" name="todas" value="n">não finalizadas<input type="radio" name="todas" value="f">finalizadas

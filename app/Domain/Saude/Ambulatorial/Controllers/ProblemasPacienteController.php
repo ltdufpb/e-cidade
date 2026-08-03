@@ -10,14 +10,8 @@ use Illuminate\Http\Request;
 
 class ProblemasPacienteController extends Controller
 {
-    /**
-     * @var ProblemasPacienteService
-     */
-    private $service;
-
-    public function __construct(ProblemasPacienteService $service)
+    public function __construct(private readonly ProblemasPacienteService $service)
     {
-        $this->service = $service;
     }
     
     public function salvar(SalvarProblemasPacienteRequest $request)

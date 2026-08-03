@@ -61,13 +61,13 @@ class ZonasvalorIPTU implements iViradaIPTU {
    * Campos chave configurados na tabela iptutabelasconfigcampochave
    * @var array
    */
-  private $aCampoChave    = array();
+  private $aCampoChave    = [];
   
   /**
    * Campos correcao configurados na tabela iptutabelasconfigcampocorrecao
    * @var array
    */
-  private $aCampoCorrecao = array();
+  private $aCampoCorrecao = [];
   
   /**
    * @return $this->iAnoAtual
@@ -295,11 +295,11 @@ class ZonasvalorIPTU implements iViradaIPTU {
             $oDaoZonasValor->$sNomeCampoZonasValor = "{$nSomaPercentual}";
           } else {
           	
-            if (trim($sNomeCampoZonasValor) == 'j51_zona') {
+            if (trim((string) $sNomeCampoZonasValor) == 'j51_zona') {
               $iZona = $oDadosZonasValor->$sNomeCampoZonasValor;
             }
             
-          	if (trim($sNomeCampoZonasValor) == 'j51_anousu') {
+          	if (trim((string) $sNomeCampoZonasValor) == 'j51_anousu') {
           		$iAnoUso = $this->getAnoNovo();
           	}
             

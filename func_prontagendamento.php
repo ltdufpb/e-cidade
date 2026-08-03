@@ -31,7 +31,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clprontagendamento = new cl_prontagendamento;
 $clprontagendamento->rotulo->label();
@@ -96,7 +96,7 @@ $oRotulo->label("z01_v_nome");
       <tr>
         <td align="center" valign="top">
           <?php
-          $aWhere   = array();
+          $aWhere   = [];
           $aWhere[] = "sd02_i_codigo = " . db_getsession("DB_coddepto");
           $aWhere[] = "sd23_d_consulta = current_date";
 
@@ -135,10 +135,10 @@ $oRotulo->label("z01_v_nome");
             $sWhere = implode(" AND ", $aWhere);
             $sSql   = $clprontagendamento->sql_query_ext("", $campos, "s102_i_codigo", $sWhere);
 
-            $repassa = array();
+            $repassa = [];
 
             if(isset($chave_s102_i_codigo)) {
-              $repassa = array("chave_s102_i_codigo" => $chave_s102_i_codigo);
+              $repassa = ["chave_s102_i_codigo" => $chave_s102_i_codigo];
             }
 
             db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

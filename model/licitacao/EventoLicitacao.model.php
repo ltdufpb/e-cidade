@@ -142,7 +142,7 @@ class EventoLicitacao {
   /**
    * @var array
    */
-  private $aDocumentos = array();
+  private $aDocumentos = [];
 
   /**
    * Construtor
@@ -510,10 +510,10 @@ class EventoLicitacao {
   public static function getEventosEncerramento($lEncerramentoPadrao = false) {
 
     if ($lEncerramentoPadrao) {
-      return array(self::TIPO_EVENTO_ENCERRAMENTO);
+      return [self::TIPO_EVENTO_ENCERRAMENTO];
     }
 
-    return array(
+    return [
       self::TIPO_EVENTO_ANULACAO_DETERMINACAO_JUDICIAL,
       self::TIPO_EVENTO_ANULACAO_OFICIO,
 			self::TIPO_EVENTO_ENCERRAMENTO_FALTA_PROPOSTAS_CLASSIFICADAS,
@@ -521,7 +521,7 @@ class EventoLicitacao {
 			self::TIPO_EVENTO_ENCERRAMENTO_FALTA_INTERESSADOS,
 			self::TIPO_EVENTO_ENCERRAMENTO,
 			self::TIPO_EVENTO_REVOGACAO_OFICIO
-    );
+    ];
   }
 
   /**
@@ -549,11 +549,11 @@ class EventoLicitacao {
       throw new ParameterException("Parâmetro Evento é de preenchimento obrigatório.");
     }
 
-    $aWhere = array(
+    $aWhere = [
       "l46_liclicita = {$iCodigoLicitacao}",
       "l46_fase = {$iFase}",
       "l46_liclicitatipoevento = {$iEvento}"
-    );
+    ];
 
     $oDaoEvento    = new cl_liclicitaevento();
     $oSqlEvento    = $oDaoEvento->sql_query_file(null, "1", null, implode(' and ', $aWhere));

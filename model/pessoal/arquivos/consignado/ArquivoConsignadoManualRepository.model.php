@@ -36,7 +36,7 @@ class ArquivoConsignadoManualRepository {
   /**
    * @var ArquivoConsignadoManual[]
    */
-  public $itens = array();
+  public $itens = [];
 
   private function __construct() {}
 
@@ -93,7 +93,7 @@ class ArquivoConsignadoManualRepository {
      * Verificamos se o consignado que estamos realizando é um refinanciamento ou portabilidade,
      * caso sim, removos as parcelas do financiamento anterior
      */
-    if (in_array($oArquivo->getSituacao(), array(ArquivoConsignadoManual::SITUACAO_PORTADO, ArquivoConsignadoManual::SITUACAO_REFINANCIADO))) {
+    if (in_array($oArquivo->getSituacao(), [ArquivoConsignadoManual::SITUACAO_PORTADO, ArquivoConsignadoManual::SITUACAO_REFINANCIADO])) {
 
       if ($oArquivo->getConsignadoOrigem() == '') {
         throw new BusinessException('Para realializar um refinanciamento ou uma portabilidade, é necessário informar um consignado de origem.');
@@ -106,7 +106,7 @@ class ArquivoConsignadoManualRepository {
       }
     }
 
-    $aParcelasConsignado = array();
+    $aParcelasConsignado = [];
 
     if (self::deveAlterarParcelasDoContrato($oArquivo) && !$lRecriarParcelas) {
 
@@ -156,7 +156,7 @@ class ArquivoConsignadoManualRepository {
     }
 
 
-    if (!$oArquivo->isProcessado() && !in_array($oArquivo->getSituacao(), array(ArquivoConsignadoManual::SITUACAO_CANCELADO, ArquivoConsignadoManual::SITUACAO_INATIVO)) && !$lRecriarParcelas) {
+    if (!$oArquivo->isProcessado() && !in_array($oArquivo->getSituacao(), [ArquivoConsignadoManual::SITUACAO_CANCELADO, ArquivoConsignadoManual::SITUACAO_INATIVO]) && !$lRecriarParcelas) {
 
       $aParcelas = $oArquivo->adicionarParcelas($oArquivo->getParcelaInicial());
       foreach ($aParcelas as $oParcela) {
@@ -222,9 +222,9 @@ class ArquivoConsignadoManualRepository {
       $oDaoConsignado    = new cl_rhconsignadomovimentomanual();
       $sWhere            = "rh151_sequencial = {$iCodigo}";
       $sWhere           .= " and rh151_tipoconsignado = '" . ArquivoConsignado::TIPO_MANUAL."'";
-      $aCampos           = array('rh151_sequencial','rh152_regist','rh153_rubrica','rh151_ano',
+      $aCampos           = ['rh151_sequencial','rh152_regist','rh153_rubrica','rh151_ano',
                             'rh151_mes','rh153_totalparcelas','rh153_valordescontar','rh151_processado::int','rh151_situacao',
-                            'rh151_tipoconsignado','rh151_instit','rh151_banco','rh151_consignadoorigem');
+                            'rh151_tipoconsignado','rh151_instit','rh151_banco','rh151_consignadoorigem'];
       $sCampos           = implode(', ', $aCampos);
       $sSqlFinanciamento = $oDaoConsignado->sql_query_dados_financiamento(null, $sCampos, 'rh151_sequencial limit 1', $sWhere);
       $rsFinanciamento   = db_query($sSqlFinanciamento);
@@ -292,7 +292,7 @@ class ArquivoConsignadoManualRepository {
    */
   public static function getContratosAtivos($servidor = null) {
 
-    $aWhere    = array();
+    $aWhere    = [];
     $sMensagem = "Não foi possivel pesquisar os financiamentos";
     if ($servidor instanceof Servidor) {
       $sMensagem .= " do servidor {$servidor->getMatricula()}";
@@ -301,9 +301,9 @@ class ArquivoConsignadoManualRepository {
 
     $oInstituicao      = InstituicaoRepository::getInstituicaoSessao();
     $oDaoConsignado    = new cl_rhconsignadomovimentomanual();
-    $aCampos           = array('rh151_sequencial', 'rh152_regist', 'rh151_banco', 'rh151_processado::int');
-    $aCampos           = array_merge($aCampos, array('rh151_situacao', 'rh151_consignadoorigem', 'rh151_ano'));
-    $aCampos           = array_merge($aCampos, array('rh151_mes', 'rh151_instit', 'rh151_tipoconsignado'));
+    $aCampos           = ['rh151_sequencial', 'rh152_regist', 'rh151_banco', 'rh151_processado::int'];
+    $aCampos           = array_merge($aCampos, ['rh151_situacao', 'rh151_consignadoorigem', 'rh151_ano']);
+    $aCampos           = array_merge($aCampos, ['rh151_mes', 'rh151_instit', 'rh151_tipoconsignado']);
     $aWhere[]          = "rh151_instit      = ".$oInstituicao->getCodigo();
     //$aWhere[]          = "rh182_processado is false";
     $aWhere[]          = "rh151_tipoconsignado = '" . ArquivoConsignado::TIPO_MANUAL."'";
@@ -324,7 +324,7 @@ class ArquivoConsignadoManualRepository {
 
     if (pg_num_rows($rsFinanciamento) > 0) {
 
-      $aFinanciamentos = array();
+      $aFinanciamentos = [];
       $aFinanciamentos = db_utils::makeCollectionFromRecord($rsFinanciamento, function ($oDadosFinanciamento) {
 
         $oDadosFinanciamento->rh182_processado     = true;
@@ -349,7 +349,7 @@ class ArquivoConsignadoManualRepository {
    */
   public static function deveAlterarParcelasDoContrato(ArquivoConsignado $oArquivo) {
 
-    $aListaSituacoes =  array(ArquivoConsignadoManual::SITUACAO_NORMAL, ArquivoConsignadoManual::SITUACAO_CANCELADO);
+    $aListaSituacoes =  [ArquivoConsignadoManual::SITUACAO_NORMAL, ArquivoConsignadoManual::SITUACAO_CANCELADO];
     return in_array($oArquivo->getSituacao(), $aListaSituacoes ) && !$oArquivo->isProcessado();
 
   }

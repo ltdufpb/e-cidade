@@ -40,6 +40,7 @@ class AnexoI extends LayoutAnexoI2017
     const LINHADESPESAINTRAINICIO = 170;
     const LINHADESPESAINTRAFIM = 179;
 
+    #[\Override]
     protected function processar()
     {
         $this->relatorio = new Relatorio($this->iAno, Relatorio::CODIGO_RELATORIO, $this->oPeriodo->getCodigo());
@@ -51,14 +52,15 @@ class AnexoI extends LayoutAnexoI2017
         $this->ajustaDespesas();
     }
 
+    #[\Override]
     protected function formataValor($linha)
     {
-        $linhasCondicao = array(
+        $linhasCondicao = [
             Relatorio::LINHA_DEFICIT_VI,
             Relatorio::LINHA_SUPERAVIT_FINANCEIRO_UTILIZADO_CREDITOS_ADICIONAIS,
             Relatorio::LINHA_REABERTURA_CREDITOS_ADICIONAIS,
             Relatorio::LINHA_SUPERAVIT_XIII
-        );
+        ];
 
         if (in_array($linha->ordem, $linhasCondicao)) {
             array_map(function ($coluna) use ($linha) {
@@ -73,6 +75,7 @@ class AnexoI extends LayoutAnexoI2017
         }
     }
 
+    #[\Override]
     protected function adicionarLegendas()
     {
         if ($this->oPdf->gety() > $this->oPdf->h - 35) {

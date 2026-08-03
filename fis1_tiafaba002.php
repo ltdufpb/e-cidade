@@ -33,9 +33,9 @@ include(modification("classes/db_tiaf_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS,2);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
+db_postmemory($_POST,2);
 
 $clrotulo      = new rotulocampo;
 $cltiaftipodoc = new cl_tiaftipodoc;
@@ -79,7 +79,7 @@ if (isset($incluir) && $incluir == "Incluir"){
     	$sqlerro=true;
     	//db_msgbox("Erro!");
     }else{
-        
+
     }
 	db_fim_transacao($sqlerro);
 	//db_msgbox($erro_msg."  ".$erro_msg);
@@ -95,7 +95,7 @@ if (isset($incluir) && $incluir == "Excluir"){
 		$erro_msg= $cltiafdoc->erro_msg;
     	$sqlerro=true;
     }else{
-        
+
     }
 	db_fim_transacao($sqlerro);
 	//db_msgbox($erro_msg."  ".$erro_msg);
@@ -125,7 +125,7 @@ if (isset($incluir) && $incluir == "Alterar"){
 //////////////////////////////////////////////////////////////////
  
 if (isset($opcao) && $opcao != ""){
-	$tipobotao = ucfirst($opcao);
+	$tipobotao = ucfirst((string) $opcao);
 	if (isset($opcao) && $opcao == "excluir"){
 		$db_opcao = 3;
 	}elseif (isset($opcao) && $opcao == "alterar"){

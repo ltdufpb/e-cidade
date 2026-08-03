@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cidadaocadastrounico_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcidadaocadastrounico = new cl_cidadaocadastrounico;
 $clcidadaocadastrounico->rotulo->label("as02_sequencial");
 $clcidadaocadastrounico->rotulo->label("as02_cidadao");
@@ -99,9 +99,9 @@ $clcidadaocadastrounico->rotulo->label("as02_cidadao");
         }else{
            $sql = $clcidadaocadastrounico->sql_query("",$campos,"as02_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_as02_cidadao)){
-          $repassa = array("chave_as02_sequencial"=>$chave_as02_sequencial,"chave_as02_cidadao"=>$chave_as02_cidadao);
+          $repassa = ["chave_as02_sequencial"=>$chave_as02_sequencial,"chave_as02_cidadao"=>$chave_as02_cidadao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

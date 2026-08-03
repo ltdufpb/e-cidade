@@ -58,20 +58,20 @@ $clcriaabas = new cl_criaabas;
      <td>
      <?php 
      
-       $clcriaabas->identifica = array("dadosloteamento"     =>"Dados Loteamento", 
-                                       "dadoscgm"            =>"Dados Cgm");
+       $clcriaabas->identifica = ["dadosloteamento"     =>"Dados Loteamento", 
+                                       "dadoscgm"            =>"Dados Cgm"];
        
-       $clcriaabas->title      = array("dadosloteamento"     =>"Dados Loteamento", 
-                                       "dadoscgm"            =>"Dados Cgm");
+       $clcriaabas->title      = ["dadosloteamento"     =>"Dados Loteamento", 
+                                       "dadoscgm"            =>"Dados Cgm"];
            
-       $clcriaabas->src        = array("dadosloteamento"     =>"cad1_loteam006.php",
-                                       "dadoscgm"            =>"");    
+       $clcriaabas->src        = ["dadosloteamento"     =>"cad1_loteam006.php",
+                                       "dadoscgm"            =>""];    
        
-       $clcriaabas->sizecampo  = array("dadosloteamento"     =>"20",
-                                       "dadoscgm"            =>"20");
+       $clcriaabas->sizecampo  = ["dadosloteamento"     =>"20",
+                                       "dadoscgm"            =>"20"];
   
-       $clcriaabas->disabled   = array("dadosloteamento"     =>false,
-                                       "dadoscgm"            =>true);       
+       $clcriaabas->disabled   = ["dadosloteamento"     =>false,
+                                       "dadoscgm"            =>true];       
      
        $clcriaabas->cria_abas();   
         

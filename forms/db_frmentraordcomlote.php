@@ -212,11 +212,11 @@ if ($m51_tipo == 2){
 
      $oNotas         = db_utils::fieldsMemory($rsNotas,0);
      $e69_numero     = $oNotas->e69_numero;
-     $dtAux          = explode("-", $oNotas->e69_dtrecebe);
+     $dtAux          = explode("-", (string) $oNotas->e69_dtrecebe);
      $e69_dtrecebe_dia = $dtAux[2];
      $e69_dtrecebe_mes = $dtAux[1];
      $e69_dtrecebe_ano = $dtAux[0];
-     $dtAux            = explode("-", $oNotas->e69_dtnota);
+     $dtAux            = explode("-", (string) $oNotas->e69_dtnota);
      $e69_dtnota_dia = $dtAux[2];
      $e69_dtnota_mes = $dtAux[1];
      $e69_dtnota_ano = $dtAux[0];

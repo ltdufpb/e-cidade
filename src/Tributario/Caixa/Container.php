@@ -8,13 +8,9 @@ final class Container extends ContainerAbstract
 {
     public function charge()
     {
-        $this->content = array(
-            'ArrecadCollectionCast' => function ($container) {
-                return new \ECidade\Tributario\Caixa\Cast\ArrecadCollectionCast();
-            },
-            'RecibopagaCollectionCast' => function ($container) {
-                return new \ECidade\Tributario\Caixa\Cast\RecibopagaCollectionCast();
-            },
+        $this->content = [
+            'ArrecadCollectionCast' => fn($container) => new \ECidade\Tributario\Caixa\Cast\ArrecadCollectionCast(),
+            'RecibopagaCollectionCast' => fn($container) => new \ECidade\Tributario\Caixa\Cast\RecibopagaCollectionCast(),
             'DebitoRepository' => function ($container) {
 
                 $dataBase = $container->get('DataBase');
@@ -39,9 +35,7 @@ final class Container extends ContainerAbstract
                     $arrecadCollectionCast
                 );
             },
-            'ReciboValorTotal' => function ($container) {
-                return new \ECidade\Tributario\Caixa\Entity\Strategy\ReciboValorTotal();
-            },
+            'ReciboValorTotal' => fn($container) => new \ECidade\Tributario\Caixa\Entity\Strategy\ReciboValorTotal(),
             'NumpreSequenceRepository' => function ($container) {
 
                 $dataBase = $container->get('DataBase');
@@ -179,9 +173,7 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Caixa\Repository\ListaRepository($database, $listaDao);
             },
-            'ListaCast' => function ($container) {
-                return new \ECidade\Tributario\Caixa\Cast\ListaCast();
-            },
+            'ListaCast' => fn($container) => new \ECidade\Tributario\Caixa\Cast\ListaCast(),
             'ListaRepository' => function ($container) {
                 $listaRepository = $container->get("Model\ListaRepository");
                 $listaCast = $container->get("ListaCast");
@@ -208,9 +200,7 @@ final class Container extends ContainerAbstract
                     $listaDebitoRepository
                 );
             },
-            'ReciboCast' => function ($container) {
-                return new \ECidade\Tributario\Caixa\Cast\ReciboCast();
-            },
+            'ReciboCast' => fn($container) => new \ECidade\Tributario\Caixa\Cast\ReciboCast(),
             'ReciboDocumentoService' => function ($container) {
                 $reciboCast = $container->get('ReciboCast');
 
@@ -223,6 +213,6 @@ final class Container extends ContainerAbstract
             // arreold
             // arrehist
             // recibo
-        );
+        ];
     }
 }

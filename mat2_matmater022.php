@@ -37,7 +37,7 @@ $clrotulo->label('pc01_codmater');
 $clrotulo->label('pc01_descrmater');
 //$clrotulo->label('m61_abrev');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $xordem  = '';
@@ -108,7 +108,7 @@ $result =$clmatmater->sql_record($sql);
 
 //$result =  $clmatmater->sql_record($clmatmater->sql_query_com(null,"*",$xordem,$dbwhere));
 //db_criatabela($result);exit;
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem unidades cadastrados.');
 }
@@ -120,7 +120,7 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 4;
-for ($x = 0; $x < pg_numrows($result); $x++) {
+for ($x = 0; $x < pg_num_rows($result); $x++) {
   db_fieldsmemory($result,$x);
   if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
     $pdf->addpage();
@@ -137,7 +137,7 @@ for ($x = 0; $x < pg_numrows($result); $x++) {
   }
   $pdf->setfont('arial','',7);
   $pdf->cell(20, $alt, $m60_codmater,0,0,"C",0);
-  $pdf->cell(90, $alt, substr($m60_descr, 0, 60), 0, 0, "L", 0);
+  $pdf->cell(90, $alt, substr((string) $m60_descr, 0, 60), 0, 0, "L", 0);
   $pdf->cell(20, $alt, $pc01_codmater,0,0,"C",0);
   $pdf->cell(80, $alt, $pc01_descrmater,0,1,"L",0);
   

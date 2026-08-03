@@ -77,7 +77,7 @@ $clpcproc = new cl_pcproc();
 $db_opcao      = 1;
 $db_botao      = false;
 $altcoddot     = false;
-$aParametrosOrcamento = db_stdClass::getParametro("orcparametro",array(db_getsession("DB_anousu")));
+$aParametrosOrcamento = db_stdClass::getParametro("orcparametro",[db_getsession("DB_anousu")]);
 // Alteração feita para processo de compra e licitacao
 if (isset($param) && trim($param) != "") {
   $parametro = "&param=" . $param;
@@ -207,7 +207,7 @@ if (isset($incluir) && $sqlerro == false) {
   if ($clsolicitemele->numrows > 0) {
 
     $oElementoItem = db_utils::fieldsMemory($rsElementoItem, 0);
-    if (substr($oElementoItem->o56_elemento,0,7) != substr($oElementoDotacao->o56_elemento,0,7)) {
+    if (substr((string) $oElementoItem->o56_elemento,0,7) != substr((string) $oElementoDotacao->o56_elemento,0,7)) {
 
       $sqlerro  = true;
       $erro_msg = "Elemento da dotacao ($oElementoDotacao->o56_elemento) e do item ($oElementoItem->o56_elemento) não conferem.\\nDotação não Inclusa.";
@@ -303,12 +303,12 @@ if (isset($incluir) && $sqlerro == false) {
 			 	                       where pc13_anousu = " . db_getsession("DB_anousu") . " and
 				                             pc13_depto  = " . db_getsession("DB_coddepto") . "
 				                       order by pc13_codigo desc limit 1");
-        if (@pg_numrows($res_pcdotac) > 0) {
+        if (@pg_num_rows($res_pcdotac) > 0) {
           db_fieldsmemory($res_pcdotac, 0);
           $flag_dotac = true;
         }
 
-        if (! isset($nreserva) && trim($nreserva) != "") {
+        if (! isset($nreserva) && trim((string) $nreserva) != "") {
           $nreserva = true;
         }
       }
@@ -355,7 +355,7 @@ if (isset($incluir) && $sqlerro == false) {
       }
     }
   }
-  
+
   //db_fim_transacao($sqlerro);
 } else if (isset($alterar) && $sqlerro == false) {
 
@@ -417,8 +417,8 @@ if (isset($incluir) && $sqlerro == false) {
     }
   } else {
     if (isset($itens) && trim($itens) != "") {
-      $vet_itens = split("#", $itens);
-      $vet_dotac_itens = split("#", $dotac_itens);
+      $vet_itens = preg_split("#\\##m", $itens);
+      $vet_dotac_itens = preg_split("#\\##m", $dotac_itens);
       $virgula = "";
       $lista_itens = "";
       $lista_dotac_itens = "";
@@ -427,7 +427,7 @@ if (isset($incluir) && $sqlerro == false) {
 
 
       for($i = 0; $i < sizeof($vet_itens); $i ++) {
-        if (strlen($vet_itens [$i]) > 0) {
+        if (strlen((string) $vet_itens [$i]) > 0) {
           $lista_itens .= $virgula . $vet_itens [$i];
           $virgula = ", ";
         }
@@ -435,7 +435,7 @@ if (isset($incluir) && $sqlerro == false) {
 
       $virgula = "";
       for($i = 0; $i < sizeof($vet_dotac_itens); $i ++) {
-        if (strlen($vet_dotac_itens [$i]) > 0) {
+        if (strlen((string) $vet_dotac_itens [$i]) > 0) {
           $lista_dotac_itens .= $virgula . $vet_dotac_itens [$i];
           $virgula = ", ";
         }
@@ -734,7 +734,7 @@ if (isset($pesquisa_dot)) {
 $pc30_gerareserva = $gerareservaold;
 
 if ($pc30_ultdotac == "t") {
-  if (! isset($pc13_coddot) && trim(@$pc13_coddot) == "") {
+  if (! isset($pc13_coddot) && trim((string) @$pc13_coddot) == "") {
     if (db_getsession("DB_coddot", false) != null) {
       $res_pcdotac = @db_query("select pc13_codigo as coddotseq, pc13_coddot as coddot, pc13_anousu, pc13_depto, descrdepto
 	                                 from pcdotac
@@ -742,7 +742,7 @@ if ($pc30_ultdotac == "t") {
 			 	         where pc13_anousu = " . db_getsession("DB_anousu") . " and
 				               pc13_coddot = " . db_getsession("DB_coddot") . "
 				         order by pc13_codigo desc limit 1");
-      if (@pg_numrows($res_pcdotac) > 0) {
+      if (@pg_num_rows($res_pcdotac) > 0) {
         db_fieldsmemory($res_pcdotac, 0);
         $pc13_coddot = $coddot;
       }

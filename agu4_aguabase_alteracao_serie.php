@@ -38,7 +38,7 @@ $claguabase = new cl_aguabase;
 $claguabasecar = new cl_aguabasecar;
 $clcaracter = new cl_caracter;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>

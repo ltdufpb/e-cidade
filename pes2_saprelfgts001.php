@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -89,12 +89,12 @@ function js_emite(){
            $sqlanomes = "select max(r11_anousu||lpad(r11_mesusu,2,0)) from cfpess";
            $resultanomes = db_query($sqlanomes);
            db_fieldsmemory($resultanomes,0);
-           $DBtxt23 = substr($max,0,4);
+           $DBtxt23 = substr((string) $max,0,4);
            db_input('DBtxt23',4,$IDBtxt23,true,'text',2,'')
           ?>
           &nbsp;/&nbsp;
           <?php 
-           $DBtxt25 = substr($max,4,2);
+           $DBtxt25 = substr((string) $max,4,2);
            db_input('DBtxt25',2,$IDBtxt25,true,'text',2,'')
           ?>
         </td>
@@ -104,7 +104,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-            $xx = array("n"=>"Numérica","a"=>"Alfabética");
+            $xx = ["n"=>"Numérica","a"=>"Alfabética"];
             db_select('ordem',$xx,true,4,"");
 	  ?>
 	</td>

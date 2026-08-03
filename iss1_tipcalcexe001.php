@@ -34,8 +34,8 @@ require_once(modification("classes/db_tipcalcexe_classe.php"));
 require_once(modification("classes/db_tipcalc_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cltipcalcexe = new cl_tipcalcexe;
 $cltipcalc    = new cl_tipcalc;

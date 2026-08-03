@@ -209,7 +209,7 @@ class AnexoIV
                 static::FINANCEIRO_ADMNISTRACAO,
                 static::FINANCEIRO_RESULTADO_PREVIDENCIARIO
             )) {
-                if ($this->oRelatorio->getAno() >= 2020 && in_array($oStdLinha->ordem, array(92,93,94))) {
+                if ($this->oRelatorio->getAno() >= 2020 && in_array($oStdLinha->ordem, [92,93,94])) {
                     continue;
                 }
 
@@ -250,7 +250,7 @@ class AnexoIV
             }
 
 
-            if ($this->oRelatorio->getAno() >= 2020 && in_array($oStdLinha->ordem, array(111, 112))) {
+            if ($this->oRelatorio->getAno() >= 2020 && in_array($oStdLinha->ordem, [111, 112])) {
                 if ($oStdLinha->ordem == 111) {
                     $this->oPdf->addPage();
                     $this->cabecalhoReceita('Administração RPPS', 'RECEITAS DA ADMINISTRAÇÃO - RPPS');
@@ -258,7 +258,7 @@ class AnexoIV
                 $this->imprimeReceita($oStdLinha);
             }
 
-            if ($this->oRelatorio->getAno() >= 2020 && in_array($oStdLinha->ordem, array(113, 114, 115, 116))) {
+            if ($this->oRelatorio->getAno() >= 2020 && in_array($oStdLinha->ordem, [113, 114, 115, 116])) {
                 if ($oStdLinha->ordem == 113) {
                     $this->oPdf->Cell($this->oPdf->getAvailWidth(), 4, '', 'T', 1);
                     $this->espaco(4);
@@ -306,7 +306,7 @@ class AnexoIV
         $this->oPdf->addHeaderDescription('');
         $this->oPdf->addHeaderDescription(DemonstrativoFiscal::getEnteFederativo($oPrefeitura));
 
-        $aInstituicoes = explode(",", $this->oRelatorio->getInstituicoes());
+        $aInstituicoes = explode(",", (string) $this->oRelatorio->getInstituicoes());
 
         if (count($aInstituicoes) == 1) {
             $oInstituicao = \InstituicaoRepository::getInstituicaoByCodigo($aInstituicoes[0]);
@@ -384,7 +384,7 @@ class AnexoIV
         }
         $sBorda = in_array(
             $oStdLinha->ordem,
-            array(static::PREVIDENCIARIO_TOTAL_RECEITAS, static::FINANCEIRO_TOTAL_RECEITAS)
+            [static::PREVIDENCIARIO_TOTAL_RECEITAS, static::FINANCEIRO_TOTAL_RECEITAS]
         ) ? "TB" : '';
 
         $this->oPdf->cell(
@@ -443,12 +443,12 @@ class AnexoIV
     {
         return in_array(
             $iOrdem,
-            array(static::PREVIDENCIARIO_TOTAL_RECEITAS,
+            [static::PREVIDENCIARIO_TOTAL_RECEITAS,
                 static::PREVIDENCIARIO_TOTAL_DESPESAS,
                 static::PREVIDENCIARIO_RESULTADO_PREVIDENCIÁRIO,
                 static::FINANCEIRO_TOTAL_RECEITAS,
                 static::FINANCEIRO_TOTAL_DESPESAS,
-                static::FINANCEIRO_RESULTADO_PREVIDENCIARIO)
+                static::FINANCEIRO_RESULTADO_PREVIDENCIARIO]
         );
     }
 
@@ -544,7 +544,7 @@ class AnexoIV
             static::PREVIDENCIARIO_RESULTADO_PREVIDENCIÁRIO
         ) || in_array(
             $oStdLinha->ordem,
-            array(static::FINANCEIRO_TOTAL_DESPESAS, static::FINANCEIRO_RESULTADO_PREVIDENCIARIO)
+            [static::FINANCEIRO_TOTAL_DESPESAS, static::FINANCEIRO_RESULTADO_PREVIDENCIARIO]
         ) ? 'TB' : '';
         $sAlinhamento = 'R';
 

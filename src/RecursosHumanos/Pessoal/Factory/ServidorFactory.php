@@ -90,7 +90,7 @@ class ServidorFactory
             $iInfoArray = explode(",", $iInfoArray);
         }
 
-        $retorno = array();
+        $retorno = [];
         switch ($iTipo) {//Fazer constante para os valores
             case self::POR_PADRAO:
                 //Falta implementação do between e in. Então mas é utilizado o foreach dentro da função
@@ -124,7 +124,7 @@ class ServidorFactory
                 break;
             case self::POR_LOCALDETRABALHO:
                 //Falta implementação do between e in. Então foi utilizado o foreach
-                $retorno = array();
+                $retorno = [];
                 foreach ($iInfoArray as $localTrabalho) {
                     $retorno = array_merge($retorno,
                         ServidorRepository::getServidoresByLocalTrabalho(
@@ -174,7 +174,7 @@ class ServidorFactory
             $dados->intervalo->final = $parametros->InputIntervaloFinal;
         } else {
             if ($parametros->oCboTipoFiltro == "2") {
-                $dados->dados = explode(",", $parametros->dados);
+                $dados->dados = explode(",", (string) $parametros->dados);
             }
         }
         $result = $this->getInstance($dados->dados, $dados->iTipo, $dados->intervalo);

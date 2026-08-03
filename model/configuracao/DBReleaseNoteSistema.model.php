@@ -26,7 +26,7 @@ class DBReleaseNoteSistema extends DBReleaseNote {
       return null;
     } 
 
-    return 'v2.' . preg_replace('/^v2\./', '', $this->sVersao);
+    return 'v2.' . preg_replace('/^v2\./', '', (string) $this->sVersao);
   }
 
   /**
@@ -59,7 +59,7 @@ class DBReleaseNoteSistema extends DBReleaseNote {
    */
   public function getMudancasLidas($iSorting = self::SORT_ASC) {
 
-    $aMudancasLidas = array();
+    $aMudancasLidas = [];
 
     $rsMudancaLidas = $this->getDadosReleaseNote($iSorting);
 
@@ -97,13 +97,13 @@ class DBReleaseNoteSistema extends DBReleaseNote {
 
     $sSqlInsert = "insert into db_releasenotes (db147_sequencial, db147_nomearquivo, db147_db_versao, db147_id_usuario) values ";
 
-    $aArquivosInserir = array();
-    $aVersoesDelete = array();
-    $aSqlInsert = array();
+    $aArquivosInserir = [];
+    $aVersoesDelete = [];
+    $aSqlInsert = [];
     
     foreach ($aArquivosLidos as $oArquivoLido) {
 
-      $aVersao = explode(".", $oArquivoLido->sVersao);
+      $aVersao = explode(".", (string) $oArquivoLido->sVersao);
       $iCodVersao = $aVersao[1];
       $iCodRelease = $aVersao[2];
 

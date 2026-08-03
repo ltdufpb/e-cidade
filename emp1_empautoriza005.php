@@ -36,8 +36,8 @@ require_once(modification("model/CgmFactory.model.php"));
 require_once(modification("model/fornecedor.model.php"));
 require_once(modification("classes/db_empautorizaprocesso_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clempautpresta = new cl_empautpresta;
 $clempprestatip = new cl_empprestatip;
@@ -182,7 +182,7 @@ if (isset($erro_msg)) {
 
 if (isset($chavepesquisa)) {
     if (!empty($e54_numerl)) {
-        $dadosLicitacao = explode('/', $e54_numerl);
+        $dadosLicitacao = explode('/', (string) $e54_numerl);
 
         $numeroLicitacao = $dadosLicitacao[0];
         $anoLicitacao = $dadosLicitacao[1];

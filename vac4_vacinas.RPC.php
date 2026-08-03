@@ -53,7 +53,7 @@ if ($oParam->exec == 'getCgsCns') {
 
     $oDadosCgsCartaoSus     = db_utils::fieldsmemory($rsCgsCartaoSus, 0);
     $oRetorno->z01_i_cgsund = $oDadosCgsCartaoSus->z01_i_cgsund;
-    $oRetorno->z01_v_nome   = urlencode($oDadosCgsCartaoSus->z01_v_nome);
+    $oRetorno->z01_v_nome   = urlencode((string) $oDadosCgsCartaoSus->z01_v_nome);
 
   } else {
  
@@ -68,7 +68,7 @@ if ($oParam->exec == 'getVacinaMaterial') {
 	
   $sWhere = "vc29_i_vacina = ".$oParam->iVacina;
   $oDaoVacinaMaterial = db_utils::getdao('vac_vacinamaterial');
-  $aItens             = array();
+  $aItens             = [];
   $sCampos = "vc29_i_codigo,m60_descr,vc29_i_dose,m60_codmater";
   $sSql               = $oDaoVacinaMaterial->sql_query(null,$sCampos,"m60_descr",$sWhere);
   $rsVacinaMaterial   = $oDaoVacinaMaterial->sql_record($sSql);
@@ -116,7 +116,7 @@ if ($oParam->exec == 'getGridLotes') {
     $sWhere = "vc15_i_vacina = ".$oParam->iCodVacina;
   }
   $oDaoVacinaLote = db_utils::getdao('vac_vacinalote');
-  $aItens         = array();
+  $aItens         = [];
   $sSql           = $oDaoVacinaLote->sql_query_matestoque(null,"vc15_i_codigo,vc06_c_descr,m77_lote",null,$sWhere);
   $rsVacinalote   = $oDaoVacinaLote->sql_record($sSql);
   for ($iX = 0; $iX < $oDaoVacinaLote->numrows; $iX++) {
@@ -138,7 +138,7 @@ if ($oParam->exec == 'getGridBoletim') {
     $sWhere = " vc13_i_vacina = ".$oParam->iCodVacina;
   }
   $oDaoBoletim = db_utils::getdao('vac_boletim');
-  $aItens      = array();
+  $aItens      = [];
   $sCampos     = "vc13_i_codigo,vc13_c_descr,";
   $sCampos    .= "vc13_i_diaini,vc13_i_mesini,vc13_i_anoini,vc13_i_diafim,vc13_i_mesfim,vc13_i_anofim"; 
   $sSql        = $oDaoBoletim->sql_query(null,$sCampos,null,$sWhere);
@@ -197,7 +197,7 @@ if ($oParam->exec == 'getGridDevolucao') {
   $sCampos          .= "$sSubSql) as quantidade_atendida";
   $sSql              = $oDaoVacFechamento->sql_query2(null,$sCampos,null,$sWhere,$oParam->iLote);
   $rsVacinas         = $oDaoVacFechamento->sql_record($sSql);
-  $aItens            = array();
+  $aItens            = [];
   $iCont             = 0;
   for ($iX = 0; $iX < $oDaoVacFechamento->numrows; $iX++) {
 
@@ -264,11 +264,11 @@ if ($oParam->exec == 'getGridBaixa') {
   $sCampos       .= "(sum(vc16_n_quant)+($sSubsql))/vc29_i_dose as doses_baixar";
   $sSql           = $oDaoAplicalote->sql_query2(null,$sCampos,null,$sWhere);
   $rsVacinas      = $oDaoAplicalote->sql_record($sSql);
-  $aItens         = array();
+  $aItens         = [];
   for ($iX = 0; $iX < $oDaoAplicalote->numrows; $iX++) {
 
     $oDados         = db_utils::fieldsmemory($rsVacinas,$iX,true);
-    $aItens[$iX][0] = urlencode($oDados->vc06_c_descr);
+    $aItens[$iX][0] = urlencode((string) $oDados->vc06_c_descr);
     $aItens[$iX][1] = $oDados->m77_lote;
     $aItens[$iX][2] = $oDados->m77_dtvalidade;
     $aItens[$iX][3] = $oDados->estoque;
@@ -309,7 +309,7 @@ if ($oParam->exec == 'getGridBaixa') {
   for ($iX = 0+$iTam; $iX < $iFim; $iX++) {
 
     $oDados         = db_utils::fieldsmemory($rsVacinas,$iY,true);
-    $aItens[$iX][0] = urlencode($oDados->vc06_c_descr);
+    $aItens[$iX][0] = urlencode((string) $oDados->vc06_c_descr);
     $aItens[$iX][1] = $oDados->m77_lote;
     $aItens[$iX][2] = $oDados->m77_dtvalidade;
     $aItens[$iX][3] = $oDados->estoque;
@@ -339,7 +339,7 @@ if ($oParam->exec == 'getIdadeDiaMesAno') {
 
     $dDataAtual       = date('d/m/Y', db_getsession('DB_datausu'));
     $aDataAtual       = explode('/', $dDataAtual);
-    $aDataNasc        = explode('-', $oParam->z01_d_nasc);
+    $aDataNasc        = explode('-', (string) $oParam->z01_d_nasc);
     $sIdade           = calcage((int)$aDataNasc[2], (int)$aDataNasc[1], (int)$aDataNasc[0], 
                                 (int)$aDataAtual[0], (int)$aDataAtual[1], (int)$aDataAtual[2], 2);
     $aIdade           = explode(' || ', $sIdade);
@@ -492,8 +492,8 @@ if ($oParam->exec == 'getDadosVacinas') {
     /* A variável $oDados->aplicacao contém as informações da aplicação da vacina concatenadas com ' || ',
        que são buscadas no select acima. Caso a vacina (dose) ainda não tenha sido aplicada, a variável estará vazia */
     if (!empty($oDados->aplicacao)) {
-     
-      $aAplicacao     = explode(' || ', $oDados->aplicacao);
+
+      $aAplicacao     = explode(' || ', (string) $oDados->aplicacao);
       $dDataAplicacao = $aAplicacao[0]; // data da aplicacao
       $sObsAplicacao  = $aAplicacao[1]; // obs da aplicacao
       $iLogin         = $aAplicacao[2]; // codigo do usuario que lancou a aplicacao
@@ -503,7 +503,7 @@ if ($oParam->exec == 'getDadosVacinas') {
  
     }
    
-    $aNasc = explode('-', $dNasc);
+    $aNasc = explode('-', (string) $dNasc);
  
     /* Cálculo da data de vencimento (último dia em que é permitido tomar a vacina)*/
     $dVencimento = somaDataDiaMesAno($aNasc[2], $aNasc[1], $aNasc[0], 
@@ -528,9 +528,9 @@ if ($oParam->exec == 'getDadosVacinas') {
  
     $aDadosVacinas[$iCont] = new StdClass();
     $aDadosVacinas[$iCont]->vc07_i_codigo  = $oDados->vc07_i_codigo;
-    $aDadosVacinas[$iCont]->vc05_c_descr   = urlencode($oDados->vc05_c_descr);
-    $aDadosVacinas[$iCont]->vc03_c_descr   = urlencode($oDados->vc03_c_descr);
-    $aDadosVacinas[$iCont]->vc07_c_nome    = urlencode($oDados->vc07_c_nome);
+    $aDadosVacinas[$iCont]->vc05_c_descr   = urlencode((string) $oDados->vc05_c_descr);
+    $aDadosVacinas[$iCont]->vc03_c_descr   = urlencode((string) $oDados->vc03_c_descr);
+    $aDadosVacinas[$iCont]->vc07_c_nome    = urlencode((string) $oDados->vc07_c_nome);
     $aDadosVacinas[$iCont]->dataAplicacao  = $dDataAplicacao;
     $aDadosVacinas[$iCont]->obsAplicacao   = urlencode($sObsAplicacao);
     $aDadosVacinas[$iCont]->foraRede       = $sForaRede;
@@ -603,10 +603,10 @@ if ($oParam->exec == 'confirmarVacinasForaRede') {
   if ($oDaoVacAplica->erro_status == '0') {
 
     $oRetorno->iStatus  = 0;
-    $oRetorno->sMessage = urlencode($oDaoVacAplica->erro_msg);
+    $oRetorno->sMessage = urlencode((string) $oDaoVacAplica->erro_msg);
 
   } else {
-    $oRetorno->sMessage = urlencode($oDaoVacAplica->erro_msg);
+    $oRetorno->sMessage = urlencode((string) $oDaoVacAplica->erro_msg);
   }
   
 }

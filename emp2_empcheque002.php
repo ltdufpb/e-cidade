@@ -44,16 +44,16 @@ $clrotulo->label('e86_data');
 $clrotulo->label('e82_codord');
 $clrotulo->label('e81_valor');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (isset($dtini) && $dtini != "") {
-  $dtini = implode("-", array_reverse(explode("/", $dtini)));
+  $dtini = implode("-", array_reverse(explode("/", (string) $dtini)));
 } else {
   $dtini = date("Y-m-d",db_getsession("DB_datausu"));
 }
 
 if (isset($dtfim) && $dtfim != "") {
-  $dtfim = implode("-", array_reverse(explode("/", $dtfim)));
+  $dtfim = implode("-", array_reverse(explode("/", (string) $dtfim)));
 } else {
   $dtfim = date("Y-m-d",db_getsession("DB_datausu"));
 }

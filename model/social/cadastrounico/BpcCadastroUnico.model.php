@@ -45,19 +45,13 @@ final class BpcCadastroUnico extends ProcessarSituacaoCadastroUnico implements I
    * Array com as linhas não processadas
    * @var array
    */
-  private $aNaoProcessados = array();
+  private $aNaoProcessados = [];
 
   /**
    * Tipo da situação referente ao arquivo BPC
    * @var integer
    */
   protected $iTipoSituacao = 2;
-
-  /**
-   * Nome do arquivo a ser processado
-   * @var string
-   */
-  private $sNomeArquivo;
 
   /**
    * Nome dos arquivos com as linhas não processadas
@@ -79,10 +73,13 @@ final class BpcCadastroUnico extends ProcessarSituacaoCadastroUnico implements I
 
   /**
    * Construtor da classe. Recebe como parametro o nome do arquivo a ser processado
+   * @param string $sArquivo
    */
-  public function __construct($sArquivo) {
+  public function __construct(/**
+   * Nome do arquivo a ser processado
+   */
+  private $sNomeArquivo) {
 
-    $this->sNomeArquivo = $sArquivo;
     $this->fArquivoLog  = fopen("{$this->sNomeArquivoNaoProcessados}", 'w');
   }
 

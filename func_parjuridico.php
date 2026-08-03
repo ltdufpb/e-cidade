@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parjuridico_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clparjuridico = new cl_parjuridico;
 $clparjuridico->rotulo->label("v19_anousu");
 $clparjuridico->rotulo->label("v19_instit");
@@ -79,9 +79,9 @@ $clparjuridico->rotulo->label("v19_instit");
         }else{
            $sql = $clparjuridico->sql_query(db_getsession('DB_anousu'),"",$campos,"v19_anousu#v19_instit","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v19_instit)){
-          $repassa = array("chave_v19_anousu"=>$chave_v19_anousu,"chave_v19_instit"=>$chave_v19_instit);
+          $repassa = ["chave_v19_anousu"=>$chave_v19_anousu,"chave_v19_instit"=>$chave_v19_instit];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

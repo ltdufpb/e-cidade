@@ -8,132 +8,132 @@ final class Contribuinte extends Layout
 {
     public function __construct()
     {
-        $this->fields = array(
-            'NOME' => array(
+        $this->fields = [
+            'NOME' => [
                  'name'        => 'NOME'
                 ,'description' => 'NOME A SER IMPRESSO NO CARNE'
                 ,'size'        => 40
-            )
-            ,'PROMITENTE' => array(
+            ]
+            ,'PROMITENTE' => [
                  'name'        => 'PROMITENTE'
                 ,'description' => 'PROMITENTE COMPRADOR POR CONTRATO'
                 ,'size'        => 40
-            )
-            ,'PROPRIETARIO' => array(
+            ]
+            ,'PROPRIETARIO' => [
                  'name'        => 'PROPRIETARIOESCRITURA'
                 ,'description' => 'PROPRIETARIO DA ESCRITURA'
                 ,'size'        => 40
-            )
-            ,'PROPRIETARIOENDERECO' => array(
+            ]
+            ,'PROPRIETARIOENDERECO' => [
                  'name'        => 'ENDNOME'
                 ,'description' => 'ENDERECO DO CGM DO PROPRIETARIO'
                 ,'size'        => 40
-            )
-            ,'PROPRIETARIONUMERO' => array(
+            ]
+            ,'PROPRIETARIONUMERO' => [
                  'name'        => 'NUMIMONOME'
                 ,'description' => 'NUMERO DO IMOVEL DO CGM DO PROPRIETARIO'
                 ,'size'        => 10
-            )
-            ,'PROPRIETARIOCOMPLEMENTO' => array(
+            ]
+            ,'PROPRIETARIOCOMPLEMENTO' => [
                  'name'        => 'COMPLIMONOME'
                 ,'description' => 'COMPLEMENTO DO CGM DO PROPRIETARIO'
                 ,'size'        => 20
-            )
-            ,'PROPRIETARIOMUNICIPIO' => array(
+            ]
+            ,'PROPRIETARIOMUNICIPIO' => [
                  'name'        => 'MUNICNOME'
                 ,'description' => 'MUNICIPIO DO CGM DO PROPRIETARIO'
                 ,'size'        => 20
-            )
-            ,'PROPRIETARIOCEP' => array(
+            ]
+            ,'PROPRIETARIOCEP' => [
                  'name'        => 'CEPNOME'
                 ,'description' => 'CEP DO CGM DO PROPRIETARIO'
                 ,'size'        => 8
-            )
-            ,'PROPRIETARIOUF' => array(
+            ]
+            ,'PROPRIETARIOUF' => [
                  'name'        => 'UFNOME'
                 ,'description' => 'UF DO CGM DO PROPRIETARIO'
                 ,'size'        => 2
-            )
-            ,'PROPRIETARIOCNPJCPF' => array(
+            ]
+            ,'PROPRIETARIOCNPJCPF' => [
                  'name'        => 'CNPJCPFNOME'
                 ,'description' => 'CNPJ/CPF DO CGM DO PROPRIETARIO'
                 ,'size'        => 20
-            )
-            ,'IMOVELCODIGOLOGRADOURO' => array(
+            ]
+            ,'IMOVELCODIGOLOGRADOURO' => [
                  'name'        => 'CODLOGIMO'
                 ,'description' => 'CODIGO DO LOGRADOURO DO IMOVEL'
                 ,'size'        => 6
-            )
-            ,'IMOVELTIPOLOGRADOURO' => array(
+            ]
+            ,'IMOVELTIPOLOGRADOURO' => [
                  'name'        => 'TIPOLOGIMO'
                 ,'description' => 'TIPO DO LOGRADOURO DO IMOVEL'
                 ,'size'        => 20
-            )
-            ,'IMOVELNOMELOGRADOURO' => array(
+            ]
+            ,'IMOVELNOMELOGRADOURO' => [
                  'name'        => 'DESCRLOGIMO'
                 ,'description' => 'NOME DO LOGRADOURO PRINCIPAL DO IMOVEL'
                 ,'size'        => 50
-            )
-            ,'IMOVELNUMERO' => array(
+            ]
+            ,'IMOVELNUMERO' => [
                  'name'        => 'NUMIMOIMO'
                 ,'description' => 'NUMERO DO IMOVEL'
                 ,'size'        => 10
-            )
-            ,'IMOVELCOMPLEMENTO' => array(
+            ]
+            ,'IMOVELCOMPLEMENTO' => [
                  'name'        => 'COMPLIMOIMO'
                 ,'description' => 'COMPLEMENTO DO IMOVEL'
                 ,'size'        => 20
-            )
-            ,'IMOVELBAIRRO' => array(
+            ]
+            ,'IMOVELBAIRRO' => [
                  'name'        => 'BAIIMO'
                 ,'description' => 'BAIRRO DO IMOVEL'
                 ,'size'        => 40
-            )
-            ,'ENTREGALOGRADOURO' => array(
+            ]
+            ,'ENTREGALOGRADOURO' => [
                  'name'        => 'LOGRADENDENT'
                 ,'description' => 'DESCRICAO DO LOGRADOURO DO ENDERECO DE ENTREGA'
                 ,'size'        => 50
-            )
-            ,'ENTREGANUMERO' => array(
+            ]
+            ,'ENTREGANUMERO' => [
                  'name'        => 'NUMIMOENDENT'
                 ,'description' => 'NUMERO DO ENDERECO DE ENTREGA'
                 ,'size'        => 10
-            )
-            ,'ENTREGACOMPLEMENTO' => array(
+            ]
+            ,'ENTREGACOMPLEMENTO' => [
                  'name'        => 'COMPLENDENT'
                 ,'description' => 'COMPLEMENTO DO ENDERECO DE ENTREGA'
                 ,'size'        => 20
-            )
-            ,'ENTREGABAIRRO' => array(
+            ]
+            ,'ENTREGABAIRRO' => [
                  'name'        => 'BAIENDENT'
                 ,'description' => 'BAIRRO DO ENDERECO DE ENTREGA'
                 ,'size'        => 40
-            )
-            ,'ENTREGACIDADE' => array(
+            ]
+            ,'ENTREGACIDADE' => [
                  'name'        => 'CIDENDENT'
                 ,'description' => 'CIDADE DO ENDERECO DE ENTREGA'
                 ,'size'        => 40
-            )
-            ,'ENTREGAUF' => array(
+            ]
+            ,'ENTREGAUF' => [
                  'name'        => 'UFENDENT'
                 ,'description' => 'UF DO ENDERECO DE ENTREGA'
                 ,'size'        => 2
-            )
-            ,'ENTREGACEP' => array(
+            ]
+            ,'ENTREGACEP' => [
                  'name'        => 'CEPENDENT'
                 ,'description' => 'CEP DO ENDERECO DE ENTREGA'
                 ,'size'        => 10
-            )
-            ,'ENTREGACAIXAPOSTAL' => array(
+            ]
+            ,'ENTREGACAIXAPOSTAL' => [
                  'name'        => 'CXPENDENT'
                 ,'description' => 'CAIXA POSTAL DO ENDERECO DE ENTREGA'
                 ,'size'        => 10
-            )
-            ,'ENTREGADESTINATARIO' => array(
+            ]
+            ,'ENTREGADESTINATARIO' => [
                  'name'        => 'DESTENDENT'
                 ,'description' => 'DESTINATARIO DO ENDERECO DE ENTREGA'
                 ,'size'        => 40
-            )
-        );
+            ]
+        ];
     }
 }

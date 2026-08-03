@@ -60,10 +60,10 @@ $db_opcao = 1;
      MsgAviso(db_getsession("DB_coddepto"),"periodoavaliacao");
    }
    
-   $clcriaabas->identifica = array("a1"=>"Geral","a2"=>"Períodos de Avaliação","a3"=>"Feriados e Eventos");
-   $clcriaabas->sizecampo  = array("a1"=>"20","a2"=>"25","a3"=>"25");
-   $clcriaabas->src        = array("a1"=>"edu1_calendario002.php","a2"=>"","a3"=>"");
-   $clcriaabas->disabled   = array("a2"=>"true","a3"=>"true");
+   $clcriaabas->identifica = ["a1"=>"Geral","a2"=>"Períodos de Avaliação","a3"=>"Feriados e Eventos"];
+   $clcriaabas->sizecampo  = ["a1"=>"20","a2"=>"25","a3"=>"25"];
+   $clcriaabas->src        = ["a1"=>"edu1_calendario002.php","a2"=>"","a3"=>""];
+   $clcriaabas->disabled   = ["a2"=>"true","a3"=>"true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->iframe_height = "600";
    $clcriaabas->iframe_width = "100%";

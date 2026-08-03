@@ -100,7 +100,7 @@ class Session extends RequestBag
     private function getCurrentSessionData()
     {
 
-        $result = array();
+        $result = [];
         $path = session_save_path() . DS . 'sess_' . $this->id();
 
       // @todo - guardar log de erro

@@ -124,18 +124,18 @@ try {
 
         $oRetorno->iTurma                       = $oParam->iTurma;
         $oRetorno->iEtapa                       = $oParam->iEtapa;
-        $oRetorno->sEscola                      = urlencode($oTurma->getEscola()->getNome());
-        $oRetorno->sCalendario                  = urlencode($oTurma->getCalendario()->getDescricao());
-        $oRetorno->sCurso                       = urlencode($oTurma->getBaseCurricular()->getCurso()->getNome());
-        $oRetorno->sBaseCurricular              = urlencode($oTurma->getBaseCurricular()->getDescricao());
-        $oRetorno->sTurma                       = urlencode($oTurma->getDescricao());
-        $oRetorno->sEtapa                       = urlencode($oEtapa->getNome());
-        $oRetorno->sProcedimentoAvaliacao       = urlencode($oProcedimentoAvaliacao->getDescricao());
-        $oRetorno->sTipoProcedimentoAvaliacao   = urlencode($oProcedimentoAvaliacao->getFormaAvaliacao()->getTipo());
+        $oRetorno->sEscola                      = urlencode((string) $oTurma->getEscola()->getNome());
+        $oRetorno->sCalendario                  = urlencode((string) $oTurma->getCalendario()->getDescricao());
+        $oRetorno->sCurso                       = urlencode((string) $oTurma->getBaseCurricular()->getCurso()->getNome());
+        $oRetorno->sBaseCurricular              = urlencode((string) $oTurma->getBaseCurricular()->getDescricao());
+        $oRetorno->sTurma                       = urlencode((string) $oTurma->getDescricao());
+        $oRetorno->sEtapa                       = urlencode((string) $oEtapa->getNome());
+        $oRetorno->sProcedimentoAvaliacao       = urlencode((string) $oProcedimentoAvaliacao->getDescricao());
+        $oRetorno->sTipoProcedimentoAvaliacao   = urlencode((string) $oProcedimentoAvaliacao->getFormaAvaliacao()->getTipo());
         $oRetorno->sFormaObtencaoResultado      = '';
         $oRetorno->lUtilizaProporcionalidade    = false;
         $oRetorno->lUtilizaAvaliacaoAlternativa = false;
-        $oRetorno->sTurno                       = urlencode($oTurma->getTurno()->getDescricao());
+        $oRetorno->sTurno                       = urlencode((string) $oTurma->getTurno()->getDescricao());
         $oRetorno->sFrequencia                  = urlencode("PERIODOS");
         $oRetorno->lTurmaEncerrada              = $oTurma->encerradaNaEtapa($oEtapa);
         $oRetorno->lTurmaEncerradaParcial       = $oTurma->encerradaParcial($oEtapa);
@@ -176,7 +176,7 @@ try {
           $oRetorno->sFrequencia = urlencode("DIAS LETIVOS");
         }
 
-        $oRetorno->aDisciplinas = array();
+        $oRetorno->aDisciplinas = [];
 
         /**
          * Percorremos as disciplinas da turma, armazenando em um objeto os atributos da disciplina e dos periodos de
@@ -194,14 +194,14 @@ try {
 
           $oDadosDisciplina                  = new stdClass();
           $oDadosDisciplina->iCodigo         = $oDisciplina->getCodigo();
-          $oDadosDisciplina->sDescricao      = urlencode($oDisciplina->getDisciplina()->getNomeDisciplina());
-          $oDadosDisciplina->sAbrev          = urlencode($oDisciplina->getDisciplina()->getAbreviatura());
-          $oDadosDisciplina->lEncerrada      = urlencode($oDisciplina->isEncerrada());
+          $oDadosDisciplina->sDescricao      = urlencode((string) $oDisciplina->getDisciplina()->getNomeDisciplina());
+          $oDadosDisciplina->sAbrev          = urlencode((string) $oDisciplina->getDisciplina()->getAbreviatura());
+          $oDadosDisciplina->lEncerrada      = urlencode((string) $oDisciplina->isEncerrada());
           $oDadosDisciplina->lTratada        = $oDisciplina->getFrequenciaGlobal() == "A" ? true : false;
           $oDadosDisciplina->lObrigatoria    = $oDisciplina->isObrigatoria();
           $oRegencia                         = RegenciaRepository::getRegenciaByCodigo($oDisciplina->getCodigo());
           $oDadosDisciplina->sFormaAvaliacao = $oRegencia->getProcedimentoAvaliacao()->getFormaAvaliacao()->getTipo();
-          $oDadosDisciplina->aPeriodos       = array();
+          $oDadosDisciplina->aPeriodos       = [];
 
           foreach($oTurma->getProcedimentoDeAvaliacaoDaEtapa($oEtapa)->getElementos() as $oAvaliacao) {
 
@@ -234,7 +234,7 @@ try {
 
       if (isset($oParam->iTurma) && isset($oParam->iEtapa) && !empty($oParam->iTurma) && !empty($oParam->iEtapa)) {
 
-        $oRetorno->aPeriodos    = array();
+        $oRetorno->aPeriodos    = [];
         $oTurma                 = TurmaRepository::getTurmaByCodigo($oParam->iTurma);
         $oEtapa                 = EtapaRepository::getEtapaByCodigo($oParam->iEtapa);
         $oProcedimentoAvaliacao = $oTurma->getProcedimentoDeAvaliacaoDaEtapa($oEtapa);
@@ -244,7 +244,7 @@ try {
 
             $oDadosPeriodo               = new stdClass();
             $oDadosPeriodo->iCodigo      = $oElemento->getPeriodoAvaliacao()->getCodigo();
-            $oDadosPeriodo->sAbreviatura = urlencode($oElemento->getPeriodoAvaliacao()->getDescricaoAbreviada());
+            $oDadosPeriodo->sAbreviatura = urlencode((string) $oElemento->getPeriodoAvaliacao()->getDescricaoAbreviada());
             $oRetorno->aPeriodos[]       = $oDadosPeriodo;
           }
         }
@@ -266,17 +266,7 @@ try {
 
       break;
   }
-} catch (ParameterException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = urlencode($oErro->getMessage());
-} catch (BusinessException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = urlencode($oErro->getMessage());
-} catch (DBException $oErro) {
+} catch (ParameterException|BusinessException|DBException $oErro) {
 
   db_fim_transacao(true);
   $oRetorno->status  = 2;

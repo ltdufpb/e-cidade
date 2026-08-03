@@ -36,7 +36,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $anousu = db_getsession("DB_anousu");
 

@@ -93,13 +93,13 @@ $db_opcao = 1;
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
      <?php 
-       $clcriaabas->identifica = array(
+       $clcriaabas->identifica = [
                                        "cgm"        => "Dados CGM",
                                        "documentos" => "Documentos",
                                        "fotos"      => "Fotos"
-                                     );
-       $clcriaabas->src        = array("cgm" => "prot1_cadgeralmunic005.php".$sQueryUrl);
-       $clcriaabas->disabled   = array("documentos"=>"true");
+                                     ];
+       $clcriaabas->src        = ["cgm" => "prot1_cadgeralmunic005.php".$sQueryUrl];
+       $clcriaabas->disabled   = ["documentos"=>"true"];
        $clcriaabas->cria_abas();
      ?>
     </td>

@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matmater_classe.php"));
 include(modification("classes/db_transmater_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clmatmater = new cl_matmater;
 $cltransmater = new cl_transmater;
 $clmatmater->rotulo->label("m60_codmater");
@@ -162,7 +162,7 @@ function js_ret(chave, chave2, validade){
         }else{
            $sql = $clmatmater->sql_query("",$campos,"m60_codmater","m60_ativo is true {$whereServico}");
         }
-        db_lovrot($sql,15,"()","","js_ret|m60_codmater|m60_descr|m60_controlavalidade","","NoMe",array(),false);
+        db_lovrot($sql,15,"()","","js_ret|m60_codmater|m60_descr|m60_controlavalidade","","NoMe",[],false);
         //db_lovrot($sql,15,"()","","js_ret|m60_codmater");
       }
        ?>

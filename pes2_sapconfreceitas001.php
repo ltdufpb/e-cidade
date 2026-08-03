@@ -41,7 +41,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -98,7 +98,7 @@ function js_emite(){
     <td align="right"><b>Cálculo:</b</td>
     <td>
       <?php 
-      $x = array("s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento");
+      $x = ["s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento"];
       db_select('ponto',$x,true,4,"onchange='js_submita(this.value);'");
       ?>
     </td>
@@ -112,7 +112,7 @@ function js_emite(){
     <td align="right"><b>Complementar:</b</td>
     <td>
      <?php 
-     db_selectrecord('complementar', $result_gerfcom, true, 4, "", "", "", Array("0","Todos..."), "", 1);
+     db_selectrecord('complementar', $result_gerfcom, true, 4, "", "", "", ["0","Todos..."], "", 1);
      ?>
     </td>
   </tr>

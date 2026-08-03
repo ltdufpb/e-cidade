@@ -37,6 +37,7 @@ class ComprovanteDesfazimentoTefService extends ComprovanteDesfazimentoTef
         return $this;
     }
 
+    #[\Override]
     public function gerar()
     {
         $this->buscarDados();

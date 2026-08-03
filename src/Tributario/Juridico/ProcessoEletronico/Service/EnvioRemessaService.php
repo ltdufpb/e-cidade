@@ -34,11 +34,6 @@ class EnvioRemessaService
     private $oAutoInfracaoRepository;
 
     /**
-     * @var Configuracao
-     */
-    private $oCofiguracao;
-
-    /**
      * @var \Instituicao
      */
     private $oInstituicao;
@@ -54,28 +49,18 @@ class EnvioRemessaService
     private $sDataGeracaoEnvio;
 
     /**
-     * @var Integracao
-     */
-    private $oIntegracao;
-
-    /**
-     * @var $oProcessoEletronico
-     */
-    private $oProcessoEletronico;
-
-    /**
      * EnvioRemessaService constructor.
-     * @param Configuracao $oConfiguracao
+     * @param Configuracao $oCofiguracao
      * @param \Instituicao $oInstituicao
      * @param Integracao $oIntegracao
      */
-    public function __construct(Configuracao $oConfiguracao, \Instituicao $oInstituicao,
-                                Integracao $oIntegracao, \ECidade\Tributario\Juridico\ProcessoEletronico\ProcessoEletronico $oProcessoEletronico)
+    public function __construct(private readonly Configuracao $oCofiguracao, \Instituicao $oInstituicao,
+                                private readonly Integracao $oIntegracao, /**
+                                 * @var $oProcessoEletronico
+                                 */
+                                private readonly \ECidade\Tributario\Juridico\ProcessoEletronico\ProcessoEletronico $oProcessoEletronico)
     {
-        $this->oCofiguracao = $oConfiguracao;
         $this->oInstituicao = $oInstituicao;
-        $this->oIntegracao = $oIntegracao;
-        $this->oProcessoEletronico = $oProcessoEletronico;
 
         $this->oCertidaoRepository = new CertidaoRepository();
         $this->oAdvogadoRepository = new AdvogadoRepository();
@@ -138,12 +123,12 @@ class EnvioRemessaService
 
         $oDadosEnvioRemessa = new \stdClass();
 
-        EnvioRemessaBuilder::createDadosBasicos($oDadosEnvioRemessa, array(
+        EnvioRemessaBuilder::createDadosBasicos($oDadosEnvioRemessa, [
             'sDataGeracaoEnvio' => $this->sDataGeracaoEnvio,
             'codigo_processo_eletronico' => $oDados->codigo_processo_eletronico,
             'localidade' => $this->oCofiguracao->getLocalidade(),
             'valortotalinicial' => $oInicial->getValorAtualizadoAte(new \DateTime())
-        ));
+        ]);
 
         EnvioRemessaBuilder::createPoloAtivo($oDadosEnvioRemessa, $this->oInstituicao);
 

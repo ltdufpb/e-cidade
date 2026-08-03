@@ -29,7 +29,7 @@ require_once(modification("fpdf151/scpdf.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 db_postmemory( $_POST );
 
 set_time_limit(0);
@@ -39,10 +39,10 @@ $clprontproced = new cl_prontproced;
 $clcgs_und     = new cl_cgs_und;
 
 //Quebra e verifica se a chave do prontuario for multipla para imprimir varios
-$aChaveProntuarios = explode(",",$chave_sd29_i_prontuario);
+$aChaveProntuarios = explode(",",(string) $chave_sd29_i_prontuario);
 $iTam              = count($aChaveProntuarios);
-$result            = array();
-$linhas            = array();
+$result            = [];
+$linhas            = [];
 
 for( $iX = 0; $iX < $iTam; $iX++ ) {
 
@@ -124,7 +124,7 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
     $pdf->text( $pdf->getX() + 60,$pdf->getY() + 3, "NÚMERO DO ATENDIMENTO" );
 
     $pdf->setfont( 'arial', 'b', 8 );
-    $pdf->text( $pdf->getX() + 60, $pdf->getY() + 7, str_pad( $sd24_i_codigo, 40, " ", STR_PAD_LEFT ) );
+    $pdf->text( $pdf->getX() + 60, $pdf->getY() + 7, str_pad( (string) $sd24_i_codigo, 40, " ", STR_PAD_LEFT ) );
 
     $pdf->setfont( 'arial', 'b', 7 );
     $pdf->text( $pdf->getX() + 60, $pdf->getY() + 11, "FAMÍLIA PSF:" . $sd33_v_descricao );
@@ -150,12 +150,12 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
     $alt = $pdf->getY() + 5;
     $pdf->setfont( 'arial', 'b', 7 );
 
-    $pdf->text( $pdf->getX() + 2, $alt + 23, "NOME DA UNIDADE: ".substr( $descrdepto, 0, 17 ) );
-    $pdf->text( $pdf->getX() + 2, $alt + 26, substr( $descrdepto, 17, 40 ) );
-    $pdf->text( $pdf->getX() + 2, $alt + 29, "ENDEREÇO: ".substr( $est_ender, 0, 40 ) );
-    $pdf->text( $pdf->getX() + 2, $alt + 32, substr( $est_ender, 41, 40 ) );
-    $pdf->text( $pdf->getX() + 2, $alt + 35, "MUNICÍPIO: ".substr( $est_munic, 0, 40 ) );
-    $pdf->text( $pdf->getX() + 2, $alt + 38, substr( $est_munic, 41, 40 ) );
+    $pdf->text( $pdf->getX() + 2, $alt + 23, "NOME DA UNIDADE: ".substr( (string) $descrdepto, 0, 17 ) );
+    $pdf->text( $pdf->getX() + 2, $alt + 26, substr( (string) $descrdepto, 17, 40 ) );
+    $pdf->text( $pdf->getX() + 2, $alt + 29, "ENDEREÇO: ".substr( (string) $est_ender, 0, 40 ) );
+    $pdf->text( $pdf->getX() + 2, $alt + 32, substr( (string) $est_ender, 41, 40 ) );
+    $pdf->text( $pdf->getX() + 2, $alt + 35, "MUNICÍPIO: ".substr( (string) $est_munic, 0, 40 ) );
+    $pdf->text( $pdf->getX() + 2, $alt + 38, substr( (string) $est_munic, 41, 40 ) );
     $pdf->text( $pdf->getX() + 2, $alt + 41, "UF:" . $est_uf );
     $pdf->text( $pdf->getX() + 2, $alt + 46, "CÓDIGO SIA/SUS:" . $sd02_c_siasus );
 
@@ -208,12 +208,12 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
       db_fieldsmemory( $result_prof, 0 );
 
       $pdf->setfont( 'arial', '', 7 );
-      $pdf->SetWidths( array( 19, 38, 55, 53, 24 ) );
-      $pdf->SetAligns( array( "C", "C", "L", "J", "L" ) );
+      $pdf->SetWidths( [ 19, 38, 55, 53, 24 ] );
+      $pdf->SetAligns( [ "C", "C", "L", "J", "L" ] );
 
       $nbx = "";
-      $sd24_d_cadastro2 = substr( $sd24_d_cadastro, 8, 2) . "/" . substr( $sd24_d_cadastro, 5, 2 ) . "/" . substr( $sd24_d_cadastro, 0, 4 );
-      $pdf->Row( array( $rh70_estrutural, $sd63_c_procedimento, $sd63_c_nome, $sd24_d_cadastro2, $nbx ), 3, false, 3 );
+      $sd24_d_cadastro2 = substr( (string) $sd24_d_cadastro, 8, 2) . "/" . substr( (string) $sd24_d_cadastro, 5, 2 ) . "/" . substr( (string) $sd24_d_cadastro, 0, 4 );
+      $pdf->Row( [ $rh70_estrutural, $sd63_c_procedimento, $sd63_c_nome, $sd24_d_cadastro2, $nbx ], 3, false, 3 );
       $pdf->line( $lar + 58,  $pdf->getY(), $lar +58 + 19,  $pdf->getY() );
       $pdf->line( $lar + 79,  $pdf->getY(), $lar +74 + 40,  $pdf->getY() );
       $pdf->line( $lar + 116, $pdf->getY(), $lar +116 + 92, $pdf->getY() );
@@ -225,10 +225,10 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
     //Linha 3 - 1Âª Retangulo Unidade prestadora
     db_fieldsmemory( $result_cgs, 0 );
 
-    $sexo  = array( "F" => "Feminino", "M" => "Masculino" );
-    $dia   = substr( $z01_d_nasc, 8, 2 );
-    $mes   = substr( $z01_d_nasc, 5, 2 );
-    $ano   = substr( $z01_d_nasc, 0, 4 );
+    $sexo  = [ "F" => "Feminino", "M" => "Masculino" ];
+    $dia   = substr( (string) $z01_d_nasc, 8, 2 );
+    $mes   = substr( (string) $z01_d_nasc, 5, 2 );
+    $ano   = substr( (string) $z01_d_nasc, 0, 4 );
     $idade = calcage( $dia, $mes, $ano, date("d"), date("m"), date("Y") );
 
     $pdf->rect( $pdf->getX(), $pdf->getY() + 68, 56, 61, "D" );
@@ -252,8 +252,8 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
     $pdf->text( $pdf->getX() + 2, $alt + 29, "ENDEREÇO: " . substr( $z01_v_ender . ", " . $z01_i_numero . ", " . $z01_v_compl, 0, 21 ) );
     $pdf->text( $pdf->getX() + 2, $alt + 32, substr( $z01_v_ender . ", " . $z01_i_numero . ", " . $z01_v_compl, 21, 40 ) );
     $pdf->text( $pdf->getX() + 2, $alt + 35, "BAIRRO: " . $z01_v_bairro );
-    $pdf->text( $pdf->getX() + 2, $alt + 41, "MUNICÍPIO:" . substr( $z01_v_munic, 0, 40 ) );
-    $pdf->text( $pdf->getX() + 2, $alt + 44, substr( $z01_v_munic, 40, 40 ) );
+    $pdf->text( $pdf->getX() + 2, $alt + 41, "MUNICÍPIO:" . substr( (string) $z01_v_munic, 0, 40 ) );
+    $pdf->text( $pdf->getX() + 2, $alt + 44, substr( (string) $z01_v_munic, 40, 40 ) );
     $pdf->text( $pdf->getX() + 2, $alt + 47, "UF:" . $est_uf . " IDADE:" . $idade );
     $pdf->text( $pdf->getX() + 2, $alt + 53, "SEXO: " . $sexo[$z01_v_sexo] );
     $pdf->text( $pdf->getX() + 2, $alt + 59, "DATA NASC:" . $dia . "/" . $mes . "/" . $ano );
@@ -308,7 +308,7 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
 
     $fTamFolha = 210.0; //tamanho da folha
     $sRodape = "Usuário: $login - $nome    Data: ".db_formatar($sd24_d_cadastro, 'd').
-               '    Hora: '.substr($sd24_c_cadastro,0,8).'    Base: '.db_base_ativa();
+               '    Hora: '.substr((string) $sd24_c_cadastro,0,8).'    Base: '.db_base_ativa();
 
     $fTamString = $pdf->getStringWidth($sRodape);
     $fXRodape   = ($fTamFolha - $fTamString) / 2.0;

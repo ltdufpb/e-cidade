@@ -128,7 +128,7 @@ try {
 
       $oRetorno->codigoProcesso       = $oLicencaValida->am08_protprocesso;
       $oRetorno->tipoEmissao          = array_pop($aTipoEmissao);
-      $oRetorno->tipoLicenca          = utf8_encode($oTipoLicenca->getDescricao());
+      $oRetorno->tipoLicenca          = mb_convert_encoding($oTipoLicenca->getDescricao(), 'UTF-8', 'ISO-8859-1');
       $oRetorno->codigoLicenca        = $iCodigoLicencaEmpreendimento;
       $oRetorno->codigoParecerTecnico = $oLicencaValida->am08_sequencial;
       $oRetorno->dataVencimento       = $oDataVencimento->format('d/m/Y');

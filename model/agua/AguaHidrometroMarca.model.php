@@ -28,11 +28,6 @@
 class AguaHidrometroMarca {
 
   /**
-   * @var integer Código
-   */
-  private $iCodigo;
-
-  /**
    * @var string Nome
    */
   private $sNome;
@@ -89,9 +84,8 @@ class AguaHidrometroMarca {
    * @param null $iCodigo
    * @throws DBException
    */
-  public function __construct($iCodigo = null) {
+  public function __construct(private $iCodigo = null) {
 
-    $this->iCodigo = $iCodigo;
     if ($this->iCodigo === null) {
       return;
     }

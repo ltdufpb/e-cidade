@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE tarefa_autcanc
 class cl_tarefa_autcanc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at38_tarefaaut = 0; 
-   var $at38_usuario = 0; 
-   var $at38_data_dia = null; 
-   var $at38_data_mes = null; 
-   var $at38_data_ano = null; 
-   var $at38_data = null; 
-   var $at38_hora = null; 
-   var $at38_ip = null; 
+   public $at38_tarefaaut = 0; 
+   public $at38_usuario = 0; 
+   public $at38_data_dia = null; 
+   public $at38_data_mes = null; 
+   public $at38_data_ano = null; 
+   public $at38_data = null; 
+   public $at38_hora = null; 
+   public $at38_ip = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at38_tarefaaut = int4 = Código da Autorização cancelada 
                  at38_usuario = int4 = Usuário que cancelou 
                  at38_data = date = Data do cancelamento 
@@ -59,10 +59,10 @@ class cl_tarefa_autcanc {
                  at38_ip = varchar(15) = IP 
                  ";
    //funcao construtor da classe 
-   function cl_tarefa_autcanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tarefa_autcanc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -157,7 +157,7 @@ class cl_tarefa_autcanc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Autorizações canceladas ($this->at38_tarefaaut) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Autorizações canceladas já Cadastrado";
@@ -181,14 +181,14 @@ class cl_tarefa_autcanc {
      $resaco = $this->sql_record($this->sql_query_file($this->at38_tarefaaut));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8821,'$this->at38_tarefaaut','I')");
-       $resac = db_query("insert into db_acount values($acount,1506,8821,'','".AddSlashes(pg_result($resaco,0,'at38_tarefaaut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1506,8822,'','".AddSlashes(pg_result($resaco,0,'at38_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1506,8823,'','".AddSlashes(pg_result($resaco,0,'at38_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1506,8824,'','".AddSlashes(pg_result($resaco,0,'at38_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1506,8825,'','".AddSlashes(pg_result($resaco,0,'at38_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1506,8821,'','".AddSlashes(pg_fetch_result($resaco,0,'at38_tarefaaut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1506,8822,'','".AddSlashes(pg_fetch_result($resaco,0,'at38_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1506,8823,'','".AddSlashes(pg_fetch_result($resaco,0,'at38_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1506,8824,'','".AddSlashes(pg_fetch_result($resaco,0,'at38_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1506,8825,'','".AddSlashes(pg_fetch_result($resaco,0,'at38_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -197,10 +197,10 @@ class cl_tarefa_autcanc {
       $this->atualizacampos();
      $sql = " update tarefa_autcanc set ";
      $virgula = "";
-     if(trim($this->at38_tarefaaut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at38_tarefaaut"])){ 
+     if(trim((string) $this->at38_tarefaaut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at38_tarefaaut"])){ 
        $sql  .= $virgula." at38_tarefaaut = $this->at38_tarefaaut ";
        $virgula = ",";
-       if(trim($this->at38_tarefaaut) == null ){ 
+       if(trim((string) $this->at38_tarefaaut) == null ){ 
          $this->erro_sql = " Campo Código da Autorização cancelada nao Informado.";
          $this->erro_campo = "at38_tarefaaut";
          $this->erro_banco = "";
@@ -210,10 +210,10 @@ class cl_tarefa_autcanc {
          return false;
        }
      }
-     if(trim($this->at38_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at38_usuario"])){ 
+     if(trim((string) $this->at38_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at38_usuario"])){ 
        $sql  .= $virgula." at38_usuario = $this->at38_usuario ";
        $virgula = ",";
-       if(trim($this->at38_usuario) == null ){ 
+       if(trim((string) $this->at38_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário que cancelou nao Informado.";
          $this->erro_campo = "at38_usuario";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_tarefa_autcanc {
          return false;
        }
      }
-     if(trim($this->at38_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at38_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at38_data_dia"] !="") ){ 
+     if(trim((string) $this->at38_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at38_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at38_data_dia"] !="") ){ 
        $sql  .= $virgula." at38_data = '$this->at38_data' ";
        $virgula = ",";
-       if(trim($this->at38_data) == null ){ 
+       if(trim((string) $this->at38_data) == null ){ 
          $this->erro_sql = " Campo Data do cancelamento nao Informado.";
          $this->erro_campo = "at38_data_dia";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_tarefa_autcanc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["at38_data_dia"])){ 
          $sql  .= $virgula." at38_data = null ";
          $virgula = ",";
-         if(trim($this->at38_data) == null ){ 
+         if(trim((string) $this->at38_data) == null ){ 
            $this->erro_sql = " Campo Data do cancelamento nao Informado.";
            $this->erro_campo = "at38_data_dia";
            $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_tarefa_autcanc {
          }
        }
      }
-     if(trim($this->at38_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at38_hora"])){ 
+     if(trim((string) $this->at38_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at38_hora"])){ 
        $sql  .= $virgula." at38_hora = '$this->at38_hora' ";
        $virgula = ",";
-       if(trim($this->at38_hora) == null ){ 
+       if(trim((string) $this->at38_hora) == null ){ 
          $this->erro_sql = " Campo Hora do cancelamento nao Informado.";
          $this->erro_campo = "at38_hora";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_tarefa_autcanc {
          return false;
        }
      }
-     if(trim($this->at38_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at38_ip"])){ 
+     if(trim((string) $this->at38_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at38_ip"])){ 
        $sql  .= $virgula." at38_ip = '$this->at38_ip' ";
        $virgula = ",";
-       if(trim($this->at38_ip) == null ){ 
+       if(trim((string) $this->at38_ip) == null ){ 
          $this->erro_sql = " Campo IP nao Informado.";
          $this->erro_campo = "at38_ip";
          $this->erro_banco = "";
@@ -284,19 +284,19 @@ class cl_tarefa_autcanc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8821,'$this->at38_tarefaaut','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at38_tarefaaut"]))
-           $resac = db_query("insert into db_acount values($acount,1506,8821,'".AddSlashes(pg_result($resaco,$conresaco,'at38_tarefaaut'))."','$this->at38_tarefaaut',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1506,8821,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at38_tarefaaut'))."','$this->at38_tarefaaut',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at38_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1506,8822,'".AddSlashes(pg_result($resaco,$conresaco,'at38_usuario'))."','$this->at38_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1506,8822,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at38_usuario'))."','$this->at38_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at38_data"]))
-           $resac = db_query("insert into db_acount values($acount,1506,8823,'".AddSlashes(pg_result($resaco,$conresaco,'at38_data'))."','$this->at38_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1506,8823,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at38_data'))."','$this->at38_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at38_hora"]))
-           $resac = db_query("insert into db_acount values($acount,1506,8824,'".AddSlashes(pg_result($resaco,$conresaco,'at38_hora'))."','$this->at38_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1506,8824,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at38_hora'))."','$this->at38_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at38_ip"]))
-           $resac = db_query("insert into db_acount values($acount,1506,8825,'".AddSlashes(pg_result($resaco,$conresaco,'at38_ip'))."','$this->at38_ip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1506,8825,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at38_ip'))."','$this->at38_ip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -341,14 +341,14 @@ class cl_tarefa_autcanc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8821,'$at38_tarefaaut','E')");
-         $resac = db_query("insert into db_acount values($acount,1506,8821,'','".AddSlashes(pg_result($resaco,$iresaco,'at38_tarefaaut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1506,8822,'','".AddSlashes(pg_result($resaco,$iresaco,'at38_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1506,8823,'','".AddSlashes(pg_result($resaco,$iresaco,'at38_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1506,8824,'','".AddSlashes(pg_result($resaco,$iresaco,'at38_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1506,8825,'','".AddSlashes(pg_result($resaco,$iresaco,'at38_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1506,8821,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at38_tarefaaut'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1506,8822,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at38_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1506,8823,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at38_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1506,8824,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at38_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1506,8825,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at38_ip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tarefa_autcanc
@@ -408,7 +408,7 @@ class cl_tarefa_autcanc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tarefa_autcanc";
@@ -422,7 +422,7 @@ class cl_tarefa_autcanc {
    function sql_query ( $at38_tarefaaut=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_tarefa_autcanc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_tarefa_autcanc {
    function sql_query_file ( $at38_tarefaaut=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -480,7 +480,7 @@ class cl_tarefa_autcanc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

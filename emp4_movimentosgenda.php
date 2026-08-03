@@ -34,7 +34,7 @@ require_once(modification("classes/db_empagemov_classe.php"));
 $clempagemov = new cl_empagemov;
 $clrotulo = new rotulocampo;
 
-parse_str(base64_decode($_SERVER["QUERY_STRING"]));
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
 db_postmemory($_POST);
 
 $clrotulo->label("e60_numemp");
@@ -101,7 +101,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
 
                             $result = $clempagemov->sql_record($sql);
 
-                            db_lovrot($sql, 15, "()", "", $js_funcao, '', 'pgtoEmpenho', array(), false);
+                            db_lovrot($sql, 15, "()", "", $js_funcao, '', 'pgtoEmpenho', [], false);
                             ?>
                         </fieldset>
                     </td>
@@ -143,7 +143,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
 
                             $rsRetencao = $clempagemov->sql_record($sql);
 
-                            db_lovrot($sql, 15, "()", "", $js_funcao, '', 'pgtoRetecoes', array(), false);
+                            db_lovrot($sql, 15, "()", "", $js_funcao, '', 'pgtoRetecoes', [], false);
                             ?>
                         </fieldset>
                     </td>

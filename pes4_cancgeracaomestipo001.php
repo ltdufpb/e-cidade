@@ -49,7 +49,7 @@ if ( isset($oPost->cancelar) ) {
 	
 	db_inicio_transacao();
 
-	$aLotes  = array();  
+	$aLotes  = [];  
 	
 	$sWhere  = "     r18_anousu = {$oPost->anofolha}  ";
 	$sWhere .= " and r18_mesusu = {$oPost->mesfolha}  ";
@@ -152,8 +152,8 @@ if ( isset($oPost->cancelar) ) {
               </td>
               <td>
                 <?php 
-                   $aTipo = array("f"=>"Funcionários",
-                                  "p"=>"Pensão Alimentícia");
+                   $aTipo = ["f"=>"Funcionários",
+                                  "p"=>"Pensão Alimentícia"];
                    db_select("tipoGera",$aTipo,true,1,"onChange='document.form1.submit();' style='width:150px;'");
                 ?>
               </td>             
@@ -165,21 +165,21 @@ if ( isset($oPost->cancelar) ) {
               <td>
                 <?php   
                   if ( isset($oPost->tipoGera) && $oPost->tipoGera == "p" ) {
-			               $aTipoFolha = array(
+			               $aTipoFolha = [
 			                                    "7"=>"Salário",
 			                                    "8"=>"Complementar",
 			                                    "9"=>"Rescisão",
 			                                    "10"=>"13o. Salário",
 			                                    "6"=>"Férias"
-			                                  );
+			                                  ];
 			            } else {
-			               $aTipoFolha = array(
+			               $aTipoFolha = [
 			                                    "1"=>"Salário",
 			                                    "2"=>"Complementar",
 			                                    "3"=>"Rescisão",
 			                                    "4"=>"13o. Salário",
 			                                    "5"=>"Adiantamento"
-			                                  );                                           
+			                                  ];                                           
 			            }
                  
                   db_select("tipoFolha",$aTipoFolha,true,1,"style='width:150px;'");

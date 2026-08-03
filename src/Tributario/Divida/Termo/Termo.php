@@ -184,7 +184,7 @@ class Termo
     /**
      * @var Arrepaga[]
      */
-    private $pagamentos = array();
+    private $pagamentos = [];
 
     /**
      * @var Disbanco
@@ -821,7 +821,7 @@ class Termo
     public function withPagamentos()
     {
         if (empty($this->pagamentos)) {
-            $pagamentos = TermoRepository::getInstance()->getPagamentosPorTermo($this);
+            $pagamentos = (new TermoRepository())->getInstance()->getPagamentosPorTermo($this);
             $this->setPagamentos($pagamentos);
         }
 
@@ -884,7 +884,7 @@ class Termo
         $dao  = new \cl_termoreparc();
         $sSql = $dao->sql_query_file(null, "v08_parcelorigem", null, "v08_parcel =  $iTermo ");
 
-        $aTermo = array();
+        $aTermo = [];
 
         $rs   = $dao->sql_record($sSql);
         if ($dao->numrows > 0) {

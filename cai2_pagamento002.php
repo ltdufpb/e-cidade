@@ -28,7 +28,7 @@
 //include(modification("libs/db_stdlib.php"));
 //    echo 'ala pucha';
 include(modification("fpdf151/pdf.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 $where    = "";
 $and      = "";
@@ -39,7 +39,7 @@ $MSGhead6 = "PERÍODO NÃO INFORMADO";
 $msg_ERRO = "";
 if(isset($conta) && trim($conta)!="" && $conta!=0){
   $result_contsaltes = db_query("select k13_descr from saltes where k13_conta=$conta");
-  if(pg_numrows($result)>0 ){
+  if(pg_num_rows($result)>0 ){
     db_fieldsmemory($result_contsaltes,0);
   }
   $msg_ERRO = $br." - Conta: ".$conta." (".$k13_descr.") ";  
@@ -88,7 +88,7 @@ $sql = "
      ";
 //die($sql);
 $result_somaval = db_query($sql);
-$numrows = pg_numrows($result_somaval);
+$numrows = pg_num_rows($result_somaval);
 if($numrows == 0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Não existem valores com os seguintes dados informados:<br> $msg_ERRO");
 }

@@ -24,11 +24,11 @@ class Recadastramento
             $this->request = (object)$request;
         }
 
-        $this->response = (object)array(
+        $this->response = (object)[
             'success' => false,
             "message" => "",
             "data" => []
-        );
+        ];
         $this->route();
     }
 
@@ -279,7 +279,7 @@ SELECT
 
         $where = "";
         if (!empty($this->request->searchMatricula)) {
-            $matriculas = explode(",", $this->request->searchMatricula);
+            $matriculas = explode(",", (string) $this->request->searchMatricula);
             $matriculasAux = [];
             foreach ($matriculas as $matricula) {
                 if (empty($matricula)) {
@@ -472,7 +472,7 @@ SELECT
             $this->response->total = (int)$total->total;
             $this->response->success = true;
             db_query("COMMIT;");
-        } catch (\Exception $ex) {
+        } catch (\Exception) {
             db_query("ROLLBACK;");
         }
 
@@ -486,11 +486,11 @@ SELECT
                 throw new \Exception("Não encontrado seleção");
             }
 
-            $erros = array();
+            $erros = [];
 
             foreach ($this->request->selecao as $servidor) {
                 try {
-                    $atendimento = explode("/", $servidor->numero_atendimento);
+                    $atendimento = explode("/", (string) $servidor->numero_atendimento);
                     if (count($atendimento) != 2) {
                         throw new \Exception("Atendimento referente a matricula {$servidor->matricula}  tem formato inválido!");
                     }
@@ -531,7 +531,7 @@ SELECT
                 throw new \Exception("Não encontrado formulario");
             }
 
-            $atendimento = explode("/", $this->request->atendimento);
+            $atendimento = explode("/", (string) $this->request->atendimento);
             if (count($atendimento) != 2) {
                 throw new \Exception("Atendimento tem formato inválido!");
             }

@@ -24,7 +24,7 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt 
  *                                licenca/licenca_pt.txt 
  */
- 
+
 
 require(modification('fpdf151/pdf.php'));
 include(modification("dbforms/db_funcoes.php"));
@@ -44,7 +44,7 @@ $cltarefacadsituacao = new cl_tarefacadsituacao;
 $cltarefacadmotivo = new cl_tarefacadmotivo;
 $cltarefalog         = new cl_tarefalog;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //echo $HTTP_SERVER_VARS['QUERY_STRING'];
 $varwhere = " 1=1 ";
 
@@ -89,7 +89,7 @@ if (isset($at40_motivo) and $at40_motivo != "0") {
 
 if (isset($at40_cliente) and $at40_cliente != "Todos") {
   $varwhere .= " and tarefaclientes.at70_cliente = $at40_cliente ";
-  
+
   $result_clientes = $clclientes->sql_record($clclientes->sql_query($at40_cliente,"at01_nomecli","",""));
   if ($clclientes->numrows > 0) {
     db_fieldsmemory($result_clientes,0);
@@ -97,7 +97,7 @@ if (isset($at40_cliente) and $at40_cliente != "Todos") {
     $at01_nomecli= "";
   }
   $filtro3 = "CLIENTE: $at01_nomecli\n";
-  
+
 } else {
   $filtro3 = "SEM CLIENTE ESPECIFICADO\n";
 }
@@ -131,7 +131,7 @@ if (isset($at40_progressoini) and (isset($at40_progressofim))) {
 
 if (isset($at40_proced) and $at40_proced != "0") {
   $varwhere .= " and tarefaproced.at41_proced = $at40_proced ";
-  
+
   $result_proced = $cldb_proced->sql_record($cldb_proced->sql_query($at40_proced,"at30_descr","",""));
   if ($cldb_proced->numrows > 0) {
     db_fieldsmemory($result_proced,0);
@@ -139,21 +139,21 @@ if (isset($at40_proced) and $at40_proced != "0") {
     $at30_descr = "";
   }
   $filtro6 = "PROCEDIMENTO: $at30_descr\n";
-  
+
 } else {
   $filtro6 = "SEM PROCEDIMENTO ESPECIFICADO\n";
 }
 
 if (isset($at40_situacao) and $at40_situacao != "0") {
   $varwhere .= " and tarefasituacao.at47_situacao in ($at40_situacao) ";
-  
+
   $result_situacao = $cltarefacadsituacao->sql_record($cltarefacadsituacao->sql_query(null,"at46_descr","","at46_codigo in ($at40_situacao)"));
   $descr = "";
   if ($cltarefacadsituacao->numrows > 0) {
     $virgula = "";
     for($x=0; $x<$cltarefacadsituacao->numrows; $x++) {
       db_fieldsmemory($result_situacao, $x);
-      $descr .= $virgula." ".trim($at46_descr);
+      $descr .= $virgula." ".trim((string) $at46_descr);
       $virgula = ",";
     }
   }  
@@ -162,7 +162,7 @@ if (isset($at40_situacao) and $at40_situacao != "0") {
   } else {  
     $filtro7 = "SITUACAO: $descr\n";
   }
-  
+
 } else {
   $filtro7 = "SEM SITUACAO ESPECIFICADA\n";
 }
@@ -218,20 +218,20 @@ if (isset($tipodatafinal)&&$tipodatafinal=="E"){
 // fim filtro datas
 
 if(!isset($pesquisa_chave)){
-  
+
   if (isset($at40_responsavel) and $at40_responsavel != "0" or 1==1) {
     $campos = "tarefa.at40_sequencial, (select max(at43_diaini) as at43_diaini from tarefalog where at43_tarefa = tarefa.at40_sequencial and at43_progresso = 100) as db_dia100, tarefa.at40_autorizada as dl_aut, tarefa.at40_progresso::integer,case tarefa.at40_prioridade when 1 then 'Baixa' when 2 then 'Média' when 3 then 'Alta' end as at40_prioridade,tarefa.at40_diaini,tarefa.at40_previsao||'/'||tarefa.at40_tipoprevisao as dl_Duração,tarefa.at40_diafim,(tarefa.at40_diafim::date - '".date("Y-m-d",db_getsession("DB_datausu"))."'::date) as dl_Pendente,tarefaenvol.at45_perc as dl_Envolvimento,clientes.at01_nomecli as nome_cliente,tarefa_lanc.at36_usuario as db_usulanc,tarefa_lanc.at36_tarefa as db_tarefa,db_usuarios.nome as dl_Envolvido,db_usuarios_lanc.nome as dl_Criador,tarefa.at40_descr || '-'||at40_obs||'/'||db_proced.at30_descr as dl_Tarefa,db_proced.at30_descr as dl_proced";
   } elseif (isset($at40_responsavel) and $at40_responsavel == "0") {
     $campos = "tarefa.at40_sequencial, (select max(at43_diaini) as at43_diaini from tarefalog where at43_tarefa = tarefa.at40_sequencial and at43_progresso = 100) as db_dia100, tarefa.at40_autorizada as dl_aut, tarefa.at40_progresso::integer,case tarefa.at40_prioridade when 1 then 'Baixa' when 2 then 'Média' when 3 then 'Alta' end as at40_prioridade,tarefa.at40_diaini,tarefa.at40_previsao||'/'||tarefa.at40_tipoprevisao as dl_Duração,tarefa.at40_diafim,(tarefa.at40_diafim::date - '".date("Y-m-d",db_getsession("DB_datausu"))."'::date) as dl_Pendente,clientes.at01_nomecli as nome_cliente,tarefa_lanc.at36_usuario as db_usulanc,tarefa_lanc.at36_tarefa as db_tarefa,db_usuarios_lanc.nome as dl_Criador, tarefa.at40_descr||'-'||at40_obs||'/'||db_proced.at30_descr as dl_Tarefa,db_proced.at30_descr as dl_proced ";
   }
-  
+
   if(isset($chave_at40_sequencial) && (trim($chave_at40_sequencial)!="" or 1==2) ){
     //$sql = $cltarefa->sql_query($chave_at40_sequencial,$campos,"dl_pendente, at40_sequencial","at40_autorizada is true");
     $sql = $cltarefa->sql_query($chave_at40_sequencial,$campos,"dl_pendente, at40_sequencial"," at40_ativo is true");
   }else if(isset($chave_at40_descr) && (trim($chave_at40_descr)!="") or 1==2){
     $sql = $cltarefa->sql_query("",$campos,"dl_pendente, at40_descr"," at40_descr like '$chave_at40_descr%' and at40_ativo is true");
   } else {
-    
+
     if(isset($at40_sequencial) && ($at40_sequencial != "") ){
       $varwhere = " at40_sequencial = $at40_sequencial ";
       $sql = $cltarefa->sql_query_cons_envol("",$campos,"dl_pendente, tarefa.at40_prioridade desc",$varwhere);
@@ -241,19 +241,19 @@ if(!isset($pesquisa_chave)){
       //$sql = $cltarefa->sql_query_cons_tarefa("",$campos,"dl_pendente, tarefa.at40_prioridade desc",$varwhere);
       $sql = $cltarefa->sql_query_cons_envol("",$campos,"dl_pendente, tarefa.at40_prioridade desc",$varwhere);
     }
-    
+
     $sql = "select at40_sequencial, db_dia100, dl_aut, at40_progresso,at40_prioridade,at40_diaini,dl_Duração,at40_diafim,dl_Pendente,min(dl_Envolvimento) as dl_Envolvimento,min(nome_cliente) as nome_cliente,db_usulanc,db_tarefa,min(dl_Envolvido) as dl_Envolvido,dl_Criador,dl_Tarefa,dl_proced from (select * from (select distinct * from ($sql) as x) as y $varwhere_envol order by " . ($ordem == 1?"at40_diafim,":"") . " at40_prioridade, dl_pendente * -1 desc) as x where $varwhere1 group by at40_diafim, at40_sequencial, db_dia100, dl_aut, at40_progresso,at40_prioridade,at40_diaini,dl_Duração,dl_Pendente,db_usulanc,db_tarefa,dl_Criador,dl_Tarefa,dl_proced";
-    
+
     if (isset($tipo_rel)&&$tipo_rel=="c"){
       $sql .= " order by at40_diafim";
     }
   }
-  
+
 }
 //die($sql);
 $result = db_query($sql) or die($sql);
 
-if($result==false || pg_numrows($result)==0){
+if($result==false || pg_num_rows($result)==0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Sem registros!');
   exit;
 }
@@ -279,7 +279,7 @@ $pdf->setfont('Arial','B',9); // seta a fonte como arial, bold e tamanho 9
 
 $ultatend = 0;
 $tamanho = 4;
-$numlinha = pg_numrows($result);
+$numlinha = pg_num_rows($result);
 
 $p=0;
 if (isset($tipo_rel)&&$tipo_rel=="c"){
@@ -291,31 +291,31 @@ if (isset($tipo_rel)&&$tipo_rel=="c"){
       $pdf->cell(30,$tamanho,"CODIGO",1,0,"C",0);
       $pdf->cell(30,$tamanho,"INICIO",1,0,"C",0);
       $pdf->Cell(18,$tamanho,"FIM", 1, 0, "C", 0);
-      
+
       $pdf->Cell(50,$tamanho,"PROCEDIMENTO",1, 0, "C", 0);
       $pdf->Cell(0,$tamanho,"CLIENTE",1, 1, "C", 0);
-      
+
       $pdf->Cell(0,$tamanho,"DESCRICAO",1, 1, "C", 0);
-      
+
       if ($opcao_rel != "S") {
         $pdf->Cell(276,$tamanho,"ANDAMENTO",1, 0, "L", 0);
         $pdf->Ln();
       }
       $p=0;
     }
-    
+
     $pdf->cell(30,$tamanho,$at40_sequencial,0,0,"L",$p);
     $pdf->cell(30,$tamanho,db_formatar($at40_diaini, 'd'),0,0,"L",$p);
     $pdf->cell(18,$tamanho,db_formatar($at40_diafim, 'd'),0,0,"L",$p);
     $pdf->cell(50,$tamanho,$dl_proced,0,0,"L",$p);
-    
+
     $pdf->cell(0,$tamanho,$nome_cliente,0,1,"L",$p);
-    
+
     $pdf->multicell(0,$tamanho,$dl_tarefa,0,"L",$p);
     if ($opcao_rel == "S") {
       $pdf->ln();
     }
-    
+
     if ($opcao_rel != "S"){
       $sql = "select at43_descr,
       at43_obs,
@@ -331,7 +331,7 @@ if (isset($tipo_rel)&&$tipo_rel=="c"){
       where at43_tarefa=$at40_sequencial 
       order by at43_sequencial";
       $res_tarefalog = db_query($sql);
-      $numrows       = pg_numrows($res_tarefalog);
+      $numrows       = pg_num_rows($res_tarefalog);
       if ($numrows > 0){
         for($i=0; $i < $numrows; $i++){
           db_fieldsmemory($res_tarefalog,$i);
@@ -345,13 +345,13 @@ if (isset($tipo_rel)&&$tipo_rel=="c"){
       }
       $pdf->ln();
     }
-    
+
     if ($p==1){
       $p=0;
     }else{
       $p=1;
     }
-		
+
   } 
 }else{
   for($x=0; $x < $numlinha;$x++) {
@@ -371,9 +371,9 @@ if (isset($tipo_rel)&&$tipo_rel=="c"){
       $pdf->Cell(50,$tamanho,"ENVOLVIDO",1, 0, "C", $p);
       $pdf->Cell(50,$tamanho,"CRIADOR",1, 0, "C", $p);
       $pdf->Ln();
-      
+
       $pdf->Cell(276,$tamanho,"DESCRICAO",1, 1, "C", $p);
-      
+
       if ($opcao_rel != "S") {
         $pdf->Cell(276,$tamanho,"ANDAMENTO",1, 0, "L", $p);
         $pdf->Ln();
@@ -384,14 +384,14 @@ if (isset($tipo_rel)&&$tipo_rel=="c"){
 				$p=1;
 			}
     }
-    
+
     if($x % 2 == 0) {
       $corfundo = 200;
     }else{
       $corfundo = 245;
     }
 //    $pdf->SetFillColor($corfundo);
-    
+
     $pdf->cell(20,$tamanho,$at40_sequencial,0,0,"L",$p);
     $pdf->cell(10,$tamanho,($dl_aut == 't'?"SIM":"NAO"),0,0,"L",$p);
     $pdf->cell(10,$tamanho,$at40_progresso,0,0,"L",$p);
@@ -403,9 +403,9 @@ if (isset($tipo_rel)&&$tipo_rel=="c"){
     $pdf->cell(15,$tamanho,$dl_envolvimento,0,0,"L",$p);
     $pdf->cell(50,$tamanho,$nome_cliente,0,0,"L",$p);
     $pdf->cell(50,$tamanho,$dl_envolvido,0,0,"L",$p);
-    $pdf->cell(50,$tamanho,substr($dl_criador,0,23),0,0,"L",$p);
+    $pdf->cell(50,$tamanho,substr((string) $dl_criador,0,23),0,0,"L",$p);
     $pdf->Ln();
-    
+
     $pdf->multicell(276,5,$dl_tarefa,0,"L",$p);
     if ($opcao_rel == "S"){
       $pdf->Ln();
@@ -415,7 +415,7 @@ if (isset($tipo_rel)&&$tipo_rel=="c"){
     }else{
       $p=1;
     }
-    
+
     if ($opcao_rel != "S"){
       $sql = "select at43_descr,
       at43_obs,
@@ -433,7 +433,7 @@ if (isset($tipo_rel)&&$tipo_rel=="c"){
       where at43_tarefa=$at40_sequencial 
       order by at43_sequencial";
       $res_tarefalog = db_query($sql) or die($sql);
-      $numrows       = pg_numrows($res_tarefalog);
+      $numrows       = pg_num_rows($res_tarefalog);
       if ($numrows > 0){
 				$pdf->Ln(5);
 				$pdf->setfont('Arial','B',12); // seta a fonte como arial, bold e tamanho 9

@@ -35,10 +35,10 @@ require_once modification("dbforms/db_funcoes.php");
 
 
 $oParam = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
-$retorno = (object)array(
+$retorno = (object)[
     'mensagem' => null,
     'erro' => false,
-);
+];
 
 $ano = DB_getsession('DB_anousu');
 db_inicio_transacao();

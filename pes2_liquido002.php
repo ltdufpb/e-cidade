@@ -30,7 +30,7 @@ require_once (modification("libs/db_stdlib.php"));
 require_once (modification("libs/db_conecta.php"));
 require_once (modification("libs/db_utils.php"));
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 db_postmemory($_SERVER);
 
 if (! isset($faixa1) || (empty($faixa1) && $faixa1 != 0) || ! isset($faixa2) || (empty($faixa2) && $faixa2 != 0)) {
@@ -181,7 +181,7 @@ if ($func_lota != 'l') {
         db_redireciona('db_erros.php?fechar=true&db_erro=Verifique se foi gerado a folha em disco');
     }
 
-    for ($x = 0; $x < pg_numrows($result); $x ++) {
+    for ($x = 0; $x < pg_num_rows($result); $x ++) {
         db_fieldsmemory($result, $x);
         if ($pdf->gety() > $pdf->getH() - 30 || $troca != 0) {
             $pdf->addpage();
@@ -266,7 +266,7 @@ if ($func_lota != 'l') {
 
     $result1 = db_query($sql1);
 
-    for ($xx = 0; $xx < pg_numrows($result1); $xx ++) {
+    for ($xx = 0; $xx < pg_num_rows($result1); $xx ++) {
         
         db_fieldsmemory($result1, $xx);
 

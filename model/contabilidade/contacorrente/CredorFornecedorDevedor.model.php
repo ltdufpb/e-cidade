@@ -153,6 +153,7 @@ class CredorFornecedorDevedor extends ContaCorrenteBase implements IContaCorrent
    * Retorna o objeto conta corrente
    * @return ContaCorrente
    */
+  #[\Override]
   public function getContaCorrente() {
     return $this->oContaCorrente;
   }

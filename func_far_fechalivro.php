@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_fechalivro_classe.php"));
 include(modification("classes/db_far_modelolivro_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_fechalivro = new cl_far_fechalivro;
 $clfar_modelolivro = new cl_far_modelolivro;
 $clfar_fechalivro->rotulo->label("fa26_i_codigo");
@@ -106,9 +106,9 @@ $clfar_fechalivro->rotulo->label("fa16_i_codigo");
          }
          $sql = $clfar_fechalivro->sql_query("",$campos,"fa26_d_datafim desc ","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa26_i_codigo)){
-          $repassa = array("chave_fa26_i_codigo"=>$chave_fa26_i_codigo,"chave_fa26_i_codigo"=>$chave_fa26_i_codigo);
+          $repassa = ["chave_fa26_i_codigo"=>$chave_fa26_i_codigo,"chave_fa26_i_codigo"=>$chave_fa26_i_codigo];
         }
         db_lovrot($sql,4,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

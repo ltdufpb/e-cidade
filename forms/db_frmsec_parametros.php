@@ -48,10 +48,10 @@ $oGet      = db_utils::postMemory($_GET);
           </td>
           <td>
             <?php
-              $aOpcoesCenso = array(
+              $aOpcoesCenso = [
                                     '1' => 'Importar todos registros do arquivo',
                                     '2' => 'Importar apenas registros ativos na escola'
-                                   );
+                                   ];
               db_select('ed290_importcenso', $aOpcoesCenso, true, $db_opcao, "");
             ?>
           </td>
@@ -80,11 +80,11 @@ $oGet      = db_utils::postMemory($_GET);
               <td title="<?=$Ted290_bncc?>"><?=$Led290_bncc;?></td>
               <td>
                   <?php
-                    $aOpcoesCenso = array(
+                    $aOpcoesCenso = [
                       '1' => 'BNCC Padrão',
                       '2' => 'BNCC Editada',
                       '3' => 'Referencial Curricular Estadual'
-                    );
+                    ];
                     db_select('ed290_bncc', $aOpcoesCenso, true, $db_opcao, "");
                   ?>
               </td>
@@ -113,10 +113,10 @@ $oGet      = db_utils::postMemory($_GET);
           </td>
           <td>
             <?php
-              $aOpcoesCor = array(
+              $aOpcoesCor = [
                                     '0' => 'Descrição Disciplina/Nome Professor',
                                     '1' => 'Quadro de Horários na Consulta'
-                                   );
+                                   ];
               db_select('ed290_cordisciplinaquadro', $aOpcoesCor, true, $db_opcao, "");
             ?>
           </td>

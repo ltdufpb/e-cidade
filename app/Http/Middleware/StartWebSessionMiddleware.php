@@ -25,7 +25,7 @@ class StartWebSessionMiddleware
     public function handle($request, Closure $next)
     {
         session_start();
-        $this->logAcesso(substr($request->getPathInfo(), 1));
+        $this->logAcesso(substr((string) $request->getPathInfo(), 1));
 
         return $next($request);
     }

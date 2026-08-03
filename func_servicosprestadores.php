@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_servicosprestadores_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -62,9 +62,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clservicosprestadores->sql_query("",$campos,"fm08_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fm08_prestador)){
-          $repassa = array("chave_fm08_codigo"=>$chave_fm08_codigo,"chave_fm08_prestador"=>$chave_fm08_prestador);
+          $repassa = ["chave_fm08_codigo"=>$chave_fm08_codigo,"chave_fm08_prestador"=>$chave_fm08_prestador];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

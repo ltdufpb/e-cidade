@@ -95,7 +95,7 @@ class LancamentoAuxiliarReconhecimentoReceitaFatoGerador extends LancamentoAuxil
     
     $oDaoConLancamCompl = db_utils::getDao('conlancamcompl');
     $oDaoConLancamCompl->c72_codlan  = $iCodigoLancamento;
-    $oDaoConLancamCompl->c72_complem = addslashes($this->getObservacaoHistorico());
+    $oDaoConLancamCompl->c72_complem = addslashes((string) $this->getObservacaoHistorico());
     $oDaoConLancamCompl->incluir($iCodigoLancamento);
     
     if ($oDaoConLancamCompl->erro_status == "0") {
@@ -187,6 +187,7 @@ class LancamentoAuxiliarReconhecimentoReceitaFatoGerador extends LancamentoAuxil
    * Seta a observação do histórico da operação
    * @param string $sObservacaoHistorico
    */
+  #[\Override]
   public function setObservacaoHistorico($sObservacaoHistorico) {
     $this->sObservacao = $sObservacaoHistorico;
   }
@@ -195,6 +196,7 @@ class LancamentoAuxiliarReconhecimentoReceitaFatoGerador extends LancamentoAuxil
    * Retorna a observacao do historico
    * @see ILancamentoAuxiliar::getObservacaoHistorico()
    */
+  #[\Override]
   public function getObservacaoHistorico() {
     return $this->sObservacao;
   }

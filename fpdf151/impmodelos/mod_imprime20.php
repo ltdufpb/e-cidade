@@ -13,7 +13,7 @@ $cldb_config = new cl_db_config;
 global $logo, $db21_codcli;
 $resinst = $cldb_config->sql_record($cldb_config->sql_query_file(db_getsession("DB_instit"), 'logo, db21_codcli'));
 db_fieldsmemory($resinst,0);
-$logofundo = substr($logo,0,strpos($logo,"."));
+$logofundo = substr((string) $logo,0,strpos((string) $logo,"."));
 /*   F U N D O   D O   D O C U M E N T O  */
 if (file_exists('imagens/files/' . $logofundo.'_fundoalvara_sanitario.jpg')){
   $this->objpdf->Image('imagens/files/'.$logofundo.'_fundoalvara_sanitario.jpg',60,80,100);
@@ -160,7 +160,7 @@ $nTamanhoTotalMultiCell = ($this->objpdf->nbLines(120, $this->descrativ) * 4);
 $nTotalLinhas = $this->objpdf->nbLines(120, $this->descrativ);
 $altrect += ($nTotalLinhas*4);
 $posicaoY = $this->objpdf->gety();
-$this->objpdf->Multicell(120, 5, mb_strtoupper($this->descrativ));
+$this->objpdf->Multicell(120, 5, mb_strtoupper((string) $this->descrativ));
 $posicaoYAtual = $this->objpdf->getY();
 if ($this->impdatas == 't'){
 
@@ -181,7 +181,7 @@ if ($this->impobsativ == 't'){
     $this->objpdf->setx(15);
     $obs = $this->obsativ;
     $this->objpdf->Cell(15,5,"",0,0,"C",0);
-    $this->objpdf->Cell(177,5,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,1,"L",0);
+    $this->objpdf->Cell(177,5,"OBS: ".substr((string) $obs,0,65).(strlen((string) $obs) > 65 ? "...":""),0,1,"L",0);
   }else{
     $this->objpdf->setx(15);
     $this->objpdf->Cell(15,5,"",0,0,"C",0);
@@ -258,7 +258,7 @@ if (isset($this->outrasativs)!=""){
     $nTotalLinhas = $this->objpdf->nbLines(120, $descr);
     $altrect += ($nTotalLinhas*4);
     $posicaoY = $this->objpdf->gety();
-    $this->objpdf->Multicell(120, 5, mb_strtoupper($descr));
+    $this->objpdf->Multicell(120, 5, mb_strtoupper((string) $descr));
     $posicaoYAtual = $this->objpdf->getY();
 
 //    $this->objpdf->Cell(120,$altlin,$descr,0,0,"L",0);
@@ -290,7 +290,7 @@ if (isset($this->outrasativs)!=""){
         $this->objpdf->Cell(183,1,"",0,1,"L",0);
         $this->objpdf->setx(15);
         $this->objpdf->Cell(15,$altlin,"",0,0,"C",0);
-        $this->objpdf->Cell(177,$altlin,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,1,"L",0);
+        $this->objpdf->Cell(177,$altlin,"OBS: ".substr((string) $obs,0,65).(strlen((string) $obs) > 65 ? "...":""),0,1,"L",0);
       }else{
         $this->objpdf->setx(15);
         $this->objpdf->Cell(183,1,"",0,1,"L",0);
@@ -330,7 +330,7 @@ $linha = $this->objpdf->gety()+6;
 $this->objpdf->sety($linha-8);
 $this->objpdf->SetFont('Arial','',13);
 
-if(trim($this->lancobs) != '' && $db21_codcli == 12 ){
+if(trim((string) $this->lancobs) != '' && $db21_codcli == 12 ){
   $this->objpdf->Multicell(0,6,$this->lancobs); // observação
   $this->objpdf->ln(2);
 }
@@ -346,21 +346,21 @@ if(isset($this->lancobs) && $this->impobslanc == 't'){
   $this->objpdf->Cell(12,3,"",0,0,"L",0);
 
 
-  $aObs    = split("\n",$obs);
+  $aObs    = preg_split("#\n#m",$obs);
   $iTotaln = count($aObs);
   $sObs = "";
 
-  $this->objpdf->SetWidths(array(30, 150));
-  $this->objpdf->SetAligns(array('L', 'L'));
+  $this->objpdf->SetWidths([30, 150]);
+  $this->objpdf->SetAligns(['L', 'L']);
 
   if ($iTotaln < 6) {
-    $this->objpdf->Row(array("Observação :", reduz_obs($obs)), 6, false, 7, 2, true);
+    $this->objpdf->Row(["Observação :", reduz_obs($obs)], 6, false, 7, 2, true);
   } else {
 
     for ($iObs = 0; $iObs < 5; $iObs ++) {
       $sObs = $sObs.$aObs[$iObs]."\n";
     }
-    $this->objpdf->Row(array("Observação :", reduz_obs($sObs)), 6, false, 7, 2, true);
+    $this->objpdf->Row(["Observação :", reduz_obs($sObs)], 6, false, 7, 2, true);
   }
 
 

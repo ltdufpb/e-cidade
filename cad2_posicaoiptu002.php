@@ -32,7 +32,7 @@ include(modification("libs/db_sql.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $head3 = "ESTATÍSTICAS D0 IPTU";
@@ -68,7 +68,7 @@ inner join iptucalc on j23_matric = j21_matric and j23_anousu = j21_anousu
 where j21_anousu = $exercicio $where_considerar
 group by j21_receit, k02_drecei";
 $Result_calc =  db_query($sql_calc);
-$NumRows_calc = pg_numrows($Result_calc);
+$NumRows_calc = pg_num_rows($Result_calc);
 for($w=0;$w<$NumRows_calc;$w++){
 	db_fieldsmemory($Result_calc,$w);
     if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){    	
@@ -93,7 +93,7 @@ for($w=0;$w<$NumRows_calc;$w++){
 $pdf->setfont('arial','b',8);
 $sql_mat_calc="select count(*) as mat_calc from iptucalc where j23_anousu = $exercicio $where_considerar";
 $Result_mat_calc =  db_query($sql_mat_calc);
-$NumRows_mat_calc = pg_numrows($Result_mat_calc);
+$NumRows_mat_calc = pg_num_rows($Result_mat_calc);
 if ($NumRows_mat_calc>0){
 	db_fieldsmemory($Result_mat_calc,0);
     $pdf->cell(120,$alt,'TOTAL DE MATRICULAS CALCULADAS :  '.$mat_calc,"T",0,"L",0);						
@@ -120,7 +120,7 @@ where j20_anousu = $exercicio $where_considerar
   )
 group by k00_receit, k02_drecei";
 $Result_pago =  db_query($sql_pago);
-$NumRows_pago = pg_numrows($Result_pago);
+$NumRows_pago = pg_num_rows($Result_pago);
 for($w=0;$w<$NumRows_pago;$w++){
 	db_fieldsmemory($Result_pago,$w);
     if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){    	
@@ -151,7 +151,7 @@ inner join iptucalc on j20_matric = j23_matric and j20_anousu = j23_anousu
 where j20_anousu = $exercicio
 ) as x";
 $Result_mat_pag =  db_query($sql_mat_pag);
-$NumRows_mat_pag = pg_numrows($Result_mat_pag);
+$NumRows_mat_pag = pg_num_rows($Result_mat_pag);
 if ($NumRows_mat_pag>0){
 	db_fieldsmemory($Result_mat_pag,0);
     $pdf->cell(120,$alt,'TOTAL DE MATRICULAS QUE EFETUARAM PAGAMENTO :  '.$mat_pag,"T",0,"L",0);						
@@ -173,7 +173,7 @@ inner join tabrec on v03_receit = k02_codigo
 where v01_exerc = $exercicio $where_considerar
 group by v03_receit, k02_drecei";
 $Result_div =  db_query($sql_div);
-$NumRows_div = pg_numrows($Result_div);
+$NumRows_div = pg_num_rows($Result_div);
 for($w=0;$w<$NumRows_div;$w++){
 	db_fieldsmemory($Result_div,$w);
     if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){    	
@@ -208,7 +208,7 @@ inner join arrematric on arrematric.k00_numpre = v01_numpre
 where v01_exerc = $exercicio $where_considerar
 ) as x";
 $Result_mat_div =  db_query($sql_mat_div);
-$NumRows_mat_div = pg_numrows($Result_mat_div);
+$NumRows_mat_div = pg_num_rows($Result_mat_div);
 if ($NumRows_mat_div>0){
 	db_fieldsmemory($Result_mat_div,0);
     $pdf->cell(120,$alt,'TOTAL DE MATRICULAS INSCRITAS EM DIVIDA :  '.$mat_div,"T",0,"L",0);						

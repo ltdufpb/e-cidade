@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE bairrofator
 class cl_bairrofator { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j112_sequencial = 0; 
-   var $j112_bairro = 0; 
-   var $j112_anousu = 0; 
-   var $j112_fator = 0; 
+   public $j112_sequencial = 0; 
+   public $j112_bairro = 0; 
+   public $j112_anousu = 0; 
+   public $j112_fator = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j112_sequencial = int4 = Sequencial 
                  j112_bairro = int4 = Bairro 
                  j112_anousu = int4 = Ano Uso 
                  j112_fator = float8 = Fator 
                  ";
    //funcao construtor da classe 
-   function cl_bairrofator() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bairrofator"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_bairrofator {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j112_sequencial = pg_result($result,0,0); 
+       $this->j112_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from bairrofator_j112_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j112_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j112_sequencial)){
          $this->erro_sql = " Campo j112_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_bairrofator {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Bairro Fator ($this->j112_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Bairro Fator já Cadastrado";
@@ -180,13 +180,13 @@ class cl_bairrofator {
      $resaco = $this->sql_record($this->sql_query_file($this->j112_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15082,'$this->j112_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2653,15082,'','".AddSlashes(pg_result($resaco,0,'j112_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2653,15083,'','".AddSlashes(pg_result($resaco,0,'j112_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2653,15084,'','".AddSlashes(pg_result($resaco,0,'j112_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2653,15085,'','".AddSlashes(pg_result($resaco,0,'j112_fator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2653,15082,'','".AddSlashes(pg_fetch_result($resaco,0,'j112_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2653,15083,'','".AddSlashes(pg_fetch_result($resaco,0,'j112_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2653,15084,'','".AddSlashes(pg_fetch_result($resaco,0,'j112_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2653,15085,'','".AddSlashes(pg_fetch_result($resaco,0,'j112_fator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_bairrofator {
       $this->atualizacampos();
      $sql = " update bairrofator set ";
      $virgula = "";
-     if(trim($this->j112_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j112_sequencial"])){ 
+     if(trim((string) $this->j112_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j112_sequencial"])){ 
        $sql  .= $virgula." j112_sequencial = $this->j112_sequencial ";
        $virgula = ",";
-       if(trim($this->j112_sequencial) == null ){ 
+       if(trim((string) $this->j112_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j112_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_bairrofator {
          return false;
        }
      }
-     if(trim($this->j112_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j112_bairro"])){ 
+     if(trim((string) $this->j112_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j112_bairro"])){ 
        $sql  .= $virgula." j112_bairro = $this->j112_bairro ";
        $virgula = ",";
-       if(trim($this->j112_bairro) == null ){ 
+       if(trim((string) $this->j112_bairro) == null ){ 
          $this->erro_sql = " Campo Bairro nao Informado.";
          $this->erro_campo = "j112_bairro";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_bairrofator {
          return false;
        }
      }
-     if(trim($this->j112_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j112_anousu"])){ 
+     if(trim((string) $this->j112_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j112_anousu"])){ 
        $sql  .= $virgula." j112_anousu = $this->j112_anousu ";
        $virgula = ",";
-       if(trim($this->j112_anousu) == null ){ 
+       if(trim((string) $this->j112_anousu) == null ){ 
          $this->erro_sql = " Campo Ano Uso nao Informado.";
          $this->erro_campo = "j112_anousu";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_bairrofator {
          return false;
        }
      }
-     if(trim($this->j112_fator)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j112_fator"])){ 
+     if(trim((string) $this->j112_fator)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j112_fator"])){ 
        $sql  .= $virgula." j112_fator = $this->j112_fator ";
        $virgula = ",";
-       if(trim($this->j112_fator) == null ){ 
+       if(trim((string) $this->j112_fator) == null ){ 
          $this->erro_sql = " Campo Fator nao Informado.";
          $this->erro_campo = "j112_fator";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_bairrofator {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15082,'$this->j112_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j112_sequencial"]) || $this->j112_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2653,15082,'".AddSlashes(pg_result($resaco,$conresaco,'j112_sequencial'))."','$this->j112_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2653,15082,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j112_sequencial'))."','$this->j112_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j112_bairro"]) || $this->j112_bairro != "")
-           $resac = db_query("insert into db_acount values($acount,2653,15083,'".AddSlashes(pg_result($resaco,$conresaco,'j112_bairro'))."','$this->j112_bairro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2653,15083,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j112_bairro'))."','$this->j112_bairro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j112_anousu"]) || $this->j112_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,2653,15084,'".AddSlashes(pg_result($resaco,$conresaco,'j112_anousu'))."','$this->j112_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2653,15084,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j112_anousu'))."','$this->j112_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j112_fator"]) || $this->j112_fator != "")
-           $resac = db_query("insert into db_acount values($acount,2653,15085,'".AddSlashes(pg_result($resaco,$conresaco,'j112_fator'))."','$this->j112_fator',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2653,15085,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j112_fator'))."','$this->j112_fator',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_bairrofator {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15082,'$j112_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2653,15082,'','".AddSlashes(pg_result($resaco,$iresaco,'j112_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2653,15083,'','".AddSlashes(pg_result($resaco,$iresaco,'j112_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2653,15084,'','".AddSlashes(pg_result($resaco,$iresaco,'j112_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2653,15085,'','".AddSlashes(pg_result($resaco,$iresaco,'j112_fator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2653,15082,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j112_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2653,15083,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j112_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2653,15084,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j112_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2653,15085,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j112_fator'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from bairrofator
@@ -376,7 +376,7 @@ class cl_bairrofator {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:bairrofator";
@@ -391,7 +391,7 @@ class cl_bairrofator {
    function sql_query ( $j112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_bairrofator {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_bairrofator {
    function sql_query_file ( $j112_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_bairrofator {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

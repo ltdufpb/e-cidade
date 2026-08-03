@@ -1394,7 +1394,7 @@ perc_aplicado = ($th
     /**
      * Imprime o cabeçalho da despesa.
      */
-    protected function cabecalhoDespesa($legendaQuadro = null, $sTitulo = null, array $aTituloColuna = null)
+    protected function cabecalhoDespesa($legendaQuadro = null, $sTitulo = null, ?array $aTituloColuna = null)
     {
         $legenda = 'DESPESAS PREVIDENCIÁRIAS - RPPS (FUNDO EM CAPITALIZAÇÃO)';
 
@@ -1679,7 +1679,7 @@ perc_aplicado = ($th
         $this->oPdf->addHeaderDescription('');
         $this->oPdf->addHeaderDescription(DemonstrativoFiscal::getEnteFederativo($oPrefeitura));
 
-        $aInstituicoes = explode(',', $this->oRelatorio->getInstituicoes());
+        $aInstituicoes = explode(',', (string) $this->oRelatorio->getInstituicoes());
 
         if (count($aInstituicoes) == 1) {
             $oInstituicao = \InstituicaoRepository::getInstituicaoByCodigo($aInstituicoes[0]);

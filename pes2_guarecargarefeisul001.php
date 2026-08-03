@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -106,7 +106,7 @@ if (isset($gera)){
  
 ///  echo "<br><br><br><br><br>".$sql;
   $result = pg_query($sql);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  for($x = 0;$x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
   fputs($arquivo,$tipo."\r\n");
   }
@@ -190,7 +190,7 @@ if (isset($gera)){
         </td>
         <td align="left">
           <?php 
-            $arr_totais = array("t"=>"Tudo","s"=>"Somente Totais");
+            $arr_totais = ["t"=>"Tudo","s"=>"Somente Totais"];
             db_select('totais',$arr_totais ,true,4,"");
 	        ?>
 	      </td>

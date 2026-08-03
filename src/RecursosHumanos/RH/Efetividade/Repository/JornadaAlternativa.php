@@ -20,7 +20,7 @@ class JornadaAlternativa extends \BaseClassRepository
      */
     protected static $oInstance;
 
-    protected $jornadas = array();
+    protected $jornadas = [];
 
     /**
      * Retorna uma instância de Jornada
@@ -47,10 +47,10 @@ class JornadaAlternativa extends \BaseClassRepository
         }
 
         $whereDatas = "rh212_data >= '{$data->getDate()}'";
-        $where = array(
+        $where = [
             "rh212_matricula = {$servidor->getMatricula()}",
             $whereDatas
-        );
+        ];
         $sSqlDadosJornada = "select * from jornadaservidor where ".implode(" and ", $where);
         $rsDadosJornada = db_query($sSqlDadosJornada);
         if (!$rsDadosJornada) {

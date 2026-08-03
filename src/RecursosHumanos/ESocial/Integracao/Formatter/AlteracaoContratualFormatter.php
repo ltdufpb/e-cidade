@@ -25,6 +25,7 @@ class AlteracaoContratualFormatter extends ServidorFormatter
      * @param array $dados
      * @return array
      */
+    #[\Override]
     public function formatar($dados, $alteracao = true)
     {
         $retorno = [];

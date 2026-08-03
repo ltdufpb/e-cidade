@@ -101,7 +101,7 @@ db_app::load("widgets/windowAux.widget.js");
                 if(isset($pc10_data) && trim($pc10_data) != ""){
                   $recebedata = $pc10_data;
                 }
-                $arr_data = split("-",$recebedata);
+                $arr_data = preg_split("#\\-#m",$recebedata);
                 @$pc10_datadia = $arr_data[2];
                 @$pc10_datames = $arr_data[1];
                 @$pc10_dataano = $arr_data[0];
@@ -116,7 +116,7 @@ db_app::load("widgets/windowAux.widget.js");
               </td>
               <td colspan='3'>
               <?php 
-               @$pc10_resumo = htmlspecialchars_decode(stripslashes($pc10_resumo));
+               @$pc10_resumo = htmlspecialchars_decode(stripslashes((string) $pc10_resumo));
                db_textarea("pc10_resumo",10,120,"",true,"text",$db_opcao,"","","",735);
               ?>
               </td>

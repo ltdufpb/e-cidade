@@ -54,10 +54,10 @@ $clcriaabas     = new cl_criaabas;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-      $clcriaabas->identifica = array("a1"=>"Unidade","a2"=>"Médicos");
-      $clcriaabas->src = array("a1"=>"sau1_unidademedicos001.php","a2"=>"sau1_unidademedicos004.php");
-      $clcriaabas->disabled   =  array("a2"=>"true");
-      $clcriaabas->sizecampo  = array("a1"=>27,"a2"=>15);
+      $clcriaabas->identifica = ["a1"=>"Unidade","a2"=>"Médicos"];
+      $clcriaabas->src = ["a1"=>"sau1_unidademedicos001.php","a2"=>"sau1_unidademedicos004.php"];
+      $clcriaabas->disabled   =  ["a2"=>"true"];
+      $clcriaabas->sizecampo  = ["a1"=>27,"a2"=>15];
       $clcriaabas->scrolling = "no";
       $clcriaabas->iframe_width = 770;
       $clcriaabas->cria_abas();

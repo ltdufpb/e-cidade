@@ -32,8 +32,8 @@ $clfisctestem->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("y30_data");
 $clrotulo->label("z01_nome");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_test.location.href='fis1_fisctestem002.php?chavepesquisa=$y23_codnoti&chavepesquisa1=$y23_numcgm'</script>";
 }
@@ -93,7 +93,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3,'')
   <tr>
     <td align="top" colspan="2">
    <?php 
-    $chavepri= array("y23_codnoti"=>$y23_codnoti,"y23_numcgm"=>@$y23_numcgm);
+    $chavepri= ["y23_codnoti"=>$y23_codnoti,"y23_numcgm"=>@$y23_numcgm];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y23_codnoti,y23_numcgm,z01_nome";
     $cliframe_alterar_excluir->sql=$clfisctestem->sql_query("","","*",""," y23_codnoti = $y23_codnoti");

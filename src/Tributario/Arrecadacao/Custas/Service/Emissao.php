@@ -62,17 +62,17 @@ final class Emissao implements Service
      * array de Regras de Emissao
      * @RegraEmissao
      */
-    private $regrasEmissao = array();
+    private $regrasEmissao = [];
 
     /**
      * @var array
      */
-    private $iniciais = array();
+    private $iniciais = [];
 
     /**
      * Array de Numpres (indice do array) com array de numpar para cada numpre
      */
-    private $numpres = array();
+    private $numpres = [];
 
     /**
      * $carne
@@ -169,12 +169,12 @@ final class Emissao implements Service
         $debitoCollectionRepository = $this->container->get('DebitoCollectionRepository');
         $arrecadRepository = $this->container->get('Caixa\ArrecadRepository');
 
-        $listaRecibos = array();
-        $debitos = array();
+        $listaRecibos = [];
+        $debitos = [];
         $this->setTipoModelo();
 
         $listaRecibos = $this->geraListaRecibos();
-        $recibos = array();
+        $recibos = [];
 
         $whereLoteador = $this->getWhereLoteador();
 
@@ -325,14 +325,14 @@ final class Emissao implements Service
      */
     public function setNumpres($numpres)
     {
-        $this->iniciais = array();
+        $this->iniciais = [];
         $this->numpres = $numpres;
 
         /**
          * Calcula o numpar mínimo e máximo para a regra de
          * emissão
          */
-        $numparesDeTodos = array();
+        $numparesDeTodos = [];
         foreach ($this->numpres as $numparesDoNumpre) {
             $numparesDeTodos = array_merge($numparesDeTodos, $numparesDoNumpre);
         }
@@ -353,11 +353,11 @@ final class Emissao implements Service
 
     private function getInicialByNumpres($numpres)
     {
-        $iniciais = array();
+        $iniciais = [];
         foreach ($numpres as $numpre => $numpar) {
-            $termoRepository = Termo::getInstance();
+            $termoRepository = (new Termo())->getInstance();
             $termo = $termoRepository->getByNumpre($numpre);
-            $termoInicialRepository = TermoInicial::getInstance();
+            $termoInicialRepository = (new TermoInicial())->getInstance();
             foreach ($termoInicialRepository->setReturnFullItem(true)->getByTermo($termo->getCodigo()) as $termoIni) {
                 $iniciais[] = $termoIni->getInicial()->getCodigo();
             }
@@ -465,7 +465,7 @@ final class Emissao implements Service
      */
     private function geraListaRecibos()
     {
-        $recibos = array();
+        $recibos = [];
 
         if (empty($this->numpres) && empty($this->iniciais)) {
             throw new BusinessException("Não houveram iniciais/numpres informados.");
@@ -477,7 +477,7 @@ final class Emissao implements Service
                     // Cada parcela se torna 1 recibo
                     foreach ($numpares as $numpar) {
                         $recibo = new stdClass;
-                        $recibo->numpres = array($numpre => array($numpar));
+                        $recibo->numpres = [$numpre => [$numpar]];
                         $recibos[] = $recibo;
                     }
                 }
@@ -485,7 +485,7 @@ final class Emissao implements Service
                 // Cada inicial se torna 1 recibo
                 foreach ($this->iniciais as $inicial) {
                     $recibo = new stdClass;
-                    $recibo->iniciais = array($inicial);
+                    $recibo->iniciais = [$inicial];
                     $recibos[] = $recibo;
                 }
             }
@@ -581,7 +581,7 @@ final class Emissao implements Service
                 throw new Exception('Não foi possível verificar o loteador.');
             }
 
-            if (pg_numrows($rs) > 0) {
+            if (pg_num_rows($rs) > 0) {
                 return "and k40_forma = 3";
             }
         }

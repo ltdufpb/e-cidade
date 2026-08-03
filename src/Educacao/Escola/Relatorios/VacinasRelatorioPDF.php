@@ -7,15 +7,12 @@ use FpdfMultiCellBorder;
 
 class VacinasRelatorioPDF extends FpdfMultiCellBorder
 {
-    /**
+    public function __construct(/**
      * @var []
      */
-    private $dados;
-
-    public function __construct($dados, $tipo)
+    private $dados, $tipo)
     {
         parent::__construct();
-        $this->dados = $dados;
 
         global $head2;
         global $head3;

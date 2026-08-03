@@ -52,7 +52,7 @@ $where = "";
 if(isset($e60_numemp) && trim($e60_numemp)!=""){
   $where .= " where empempenho.e60_numemp=".$e60_numemp;
 }else if(isset($e60_codemp) && trim($e60_codemp)!=""){
-  $arr = split("/",$e60_codemp);
+  $arr = preg_split("#\\/#m",$e60_codemp);
   $where .= " where empempenho.e60_codemp=".$arr[0];
   if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
     $where   .= " and empempenho.e60_anousu = ".$arr[1];

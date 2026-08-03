@@ -70,7 +70,7 @@ class Consistencia extends \BaseClassRepository
         $consistencias = \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
             $consistencia = new \stdClass();
             $consistencia->id = $retorno->db160_sequencial;
-            $consistencia->jsonConsistencia = \JSON::create()->parse(preg_replace('/\n/', ' ', $retorno->db160_json));
+            $consistencia->jsonConsistencia = \JSON::create()->parse(preg_replace('/\n/', ' ', (string) $retorno->db160_json));
 
             return $consistencia;
         });
@@ -87,7 +87,7 @@ class Consistencia extends \BaseClassRepository
      * @throws \DBException
      * @throws \ParameterException
      */
-    public function executarConsistencia($idConsistencia, array $filtros = null)
+    public function executarConsistencia($idConsistencia, ?array $filtros = null)
     {
         if (empty($idConsistencia)) {
             throw new \ParameterException("Código da consistência não informado.");
@@ -95,14 +95,14 @@ class Consistencia extends \BaseClassRepository
 
         $rs = $this->getRecordConsistenciaSistema(" db160_json ", " db160_sequencial = {$idConsistencia} ");
 
-        $jsonConsistencia = preg_replace('/\n/', ' ', \db_utils::fieldsMemory($rs, 0)->db160_json);
+        $jsonConsistencia = preg_replace('/\n/', ' ', (string) \db_utils::fieldsMemory($rs, 0)->db160_json);
 
         $json = \json::create()->parse($jsonConsistencia, \JSON::UTF8_DECODE, false);
         $sqlCorrecao = $json->sql->consistencia;
 
         if (is_array($filtros)) {
             foreach ($filtros as $filtro) {
-                $sqlCorrecao =   str_replace("#$filtro->nome#", urldecode($filtro->valor), $sqlCorrecao);
+                $sqlCorrecao =   str_replace("#$filtro->nome#", urldecode((string) $filtro->valor), $sqlCorrecao);
             }
         }
         $rsConsistencia = \db_query($sqlCorrecao);
@@ -115,9 +115,7 @@ class Consistencia extends \BaseClassRepository
             return false;
         }
 
-        $registrosConsistencia = \db_utils::makeCollectionFromRecord($rsConsistencia, function ($retorno) {
-            return $retorno;
-        });
+        $registrosConsistencia = \db_utils::makeCollectionFromRecord($rsConsistencia, fn($retorno) => $retorno);
 
         return $registrosConsistencia;
     }
@@ -132,7 +130,7 @@ class Consistencia extends \BaseClassRepository
      * @throws \DBException
      * @throws \ParameterException
      */
-    public function executarCorrecao($idConsistencia, $registrosCorrecao = array())
+    public function executarCorrecao($idConsistencia, $registrosCorrecao = [])
     {
         if (empty($idConsistencia)) {
             throw new \ParameterException("Código da consistência não informado.");
@@ -145,7 +143,7 @@ class Consistencia extends \BaseClassRepository
 
         $rs = $this->getRecordConsistenciaSistema(" db160_json ", " db160_sequencial = {$idConsistencia} ");
 
-        $jsonConsistencias =  preg_replace('/\n/', ' ', \db_utils::fieldsMemory($rs, 0)->db160_json);
+        $jsonConsistencias =  preg_replace('/\n/', ' ', (string) \db_utils::fieldsMemory($rs, 0)->db160_json);
         $consistenciaSistema = new ConsistenciaSistema();
         $consistenciaSistema->setConfiguracao(\JSON::create()->parse($jsonConsistencias));
 
@@ -164,7 +162,7 @@ class Consistencia extends \BaseClassRepository
     {
 
         $rs = $this->getRecordConsistenciaSistema(" db160_json ", " db160_sequencial = {$idConsistencia} ");
-        $jsonConsistencias =  preg_replace('/\n/', ' ', \db_utils::fieldsMemory($rs, 0)->db160_json);
+        $jsonConsistencias =  preg_replace('/\n/', ' ', (string) \db_utils::fieldsMemory($rs, 0)->db160_json);
         $jsonConsistencias = \JSON::create()->parse($jsonConsistencias);
 
         if (empty($jsonConsistencias->sql) || empty($jsonConsistencias->sql->correcao)) {
@@ -203,7 +201,7 @@ class Consistencia extends \BaseClassRepository
 
         $rs = $this->getRecordConsistenciaSistema(" db160_json ", " db160_sequencial = {$idConsistencia} ");
 
-        $jsonConsistencia =  preg_replace('/\n/', ' ', \db_utils::fieldsMemory($rs, 0)->db160_json);
+        $jsonConsistencia =  preg_replace('/\n/', ' ', (string) \db_utils::fieldsMemory($rs, 0)->db160_json);
         $campos =  \JSON::create()
             ->parse($jsonConsistencia)
             ->formulario
@@ -224,9 +222,7 @@ class Consistencia extends \BaseClassRepository
         }
 
         $rsOpcoes = \db_query($sqlOpcao);
-        $opcoes = \db_utils::makeCollectionFromRecord($rsOpcoes, function ($retorno) {
-            return $retorno;
-        });
+        $opcoes = \db_utils::makeCollectionFromRecord($rsOpcoes, fn($retorno) => $retorno);
 
         return $opcoes;
     }
@@ -269,7 +265,7 @@ class Consistencia extends \BaseClassRepository
 
         $rs = $this->getRecordConsistenciaSistema(" db160_json ", " db160_sequencial = {$idConsistencia} ");
 
-        $jsonConsistencia =  preg_replace('/\n/', ' ', \db_utils::fieldsMemory($rs, 0)->db160_json);
+        $jsonConsistencia =  preg_replace('/\n/', ' ', (string) \db_utils::fieldsMemory($rs, 0)->db160_json);
         $sql = \JSON::create()->parse($jsonConsistencia)->sql;
 
         if (empty($sql)) {
@@ -290,7 +286,7 @@ class Consistencia extends \BaseClassRepository
     public function getAjuda($idConsistencia)
     {
         $rs = $this->getRecordConsistenciaSistema(" db160_json ", " db160_sequencial = {$idConsistencia} ");
-        $jsonConsistencia =  preg_replace('/\n/', ' ', \db_utils::fieldsMemory($rs, 0)->db160_json);
+        $jsonConsistencia =  preg_replace('/\n/', ' ', (string) \db_utils::fieldsMemory($rs, 0)->db160_json);
         $sql = \JSON::create()->parse($jsonConsistencia);
         if (!empty($sql->ajuda)) {
             return $sql->ajuda;
@@ -308,7 +304,7 @@ class Consistencia extends \BaseClassRepository
     public function getColunas($id)
     {
         $rs = $this->getRecordConsistenciaSistema(" db160_json ", " db160_sequencial = {$id} ");
-        $jsonConsistencia =  preg_replace('/\n/', ' ', \db_utils::fieldsMemory($rs, 0)->db160_json);
+        $jsonConsistencia =  preg_replace('/\n/', ' ', (string) \db_utils::fieldsMemory($rs, 0)->db160_json);
         $json = \JSON::create()->parse($jsonConsistencia);
         return $json->formulario->campos;
     }

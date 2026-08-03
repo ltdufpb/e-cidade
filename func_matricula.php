@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matricula_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatricula = new cl_matricula;
 $clmatricula->rotulo->label("ed60_matricula");
 $clrotulo = new rotulocampo;
@@ -115,10 +115,10 @@ $clrotulo->label("ed47_v_nome");
       }else{
         $sql = $clmatricula->sql_query("",$campos,"ed60_i_numaluno,to_ascii(ed47_v_nome)"," ed60_i_turma = $turma AND ed60_c_concluida = 'N' ".$where);
       }
-      $repassa = array();
+      $repassa = [];
 
       if(isset($chave_ed60_matricula)) {
-        $repassa = array("chave_ed60_matricula"=>$chave_ed60_matricula,"chave_ed47_v_nome"=>$chave_ed47_v_nome);
+        $repassa = ["chave_ed60_matricula"=>$chave_ed60_matricula,"chave_ed47_v_nome"=>$chave_ed47_v_nome];
       }
       db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
     } else {

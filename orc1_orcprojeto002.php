@@ -36,12 +36,12 @@ include(modification("dbforms/db_classesgenericas.php"));
 
 $clcriaabas      = new cl_criaabas;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $codrel = 15; // balancete orcamentario
 
@@ -68,12 +68,12 @@ $codrel = 15; // balancete orcamentario
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("projeto"=>"Projeto","emissao"=>"Dados de Emissão");
-    $clcriaabas->title      = array("projeto"=>"Projeto","emissao"=>"Dados de Emissão");
-    $clcriaabas->src  = array("projeto"=>"orc1_orcprojeto022.php",
+    $clcriaabas->identifica = ["projeto"=>"Projeto","emissao"=>"Dados de Emissão"];
+    $clcriaabas->title      = ["projeto"=>"Projeto","emissao"=>"Dados de Emissão"];
+    $clcriaabas->src  = ["projeto"=>"orc1_orcprojeto022.php",
                               "emissao"=>"orc1_orcprojeto012.php"
-                              );
-    $clcriaabas->sizecampo= array("projeto"=>"33","emissao"=>"33");
+                              ];
+    $clcriaabas->sizecampo= ["projeto"=>"33","emissao"=>"33"];
     $clcriaabas->cria_abas();    
     ?>
     </center>

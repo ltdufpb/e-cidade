@@ -42,8 +42,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_arrecant_classe.php"));
 include(modification("classes/db_arreinscr_classe.php"));
 include(modification("classes/db_arrenumcgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clissvar      = new cl_issvar;
 $clissvarnotas = new cl_issvarnotas;
 $clissbase     = new cl_issbase;
@@ -177,8 +177,8 @@ if(empty($entrar) && isset($q05_codigo) && $q05_codigo>0){//quando vier o código
            }
         }  
     }else{
-      $codigos=array();
-      $codigos_pagos=array();
+      $codigos=[];
+      $codigos_pagos=[];
       for($i=0;$i<$numrows65;$i++){//numero de registro encontrados no arreinscr
         db_fieldsmemory($result65,$i);
         $result77=$clissvar->sql_record($clissvar->sql_query("","q05_codigo","","q05_numpre=$k00_numpre"));
@@ -208,8 +208,7 @@ if(empty($entrar) && isset($q05_codigo) && $q05_codigo>0){//quando vier o código
       }else if(sizeof($codigos)>0){//se tiver sido encontrado algum registro no ISSVAR que ainda não foi pago
           $varios_codigos=$codigos;
           if(sizeof($codigos)==1){
-  	    reset($codigos);
-  	    $chave=key($codigos);
+  	    $chave=array_key_first($codigos);
             $unico_codigo=$codigos[$chave];
           }	
       }else if(sizeof($codigos_pagos)>0){//se tiver sido encontrado algum registro no ISSVAR que já foi pago

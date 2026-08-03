@@ -46,8 +46,8 @@ $clrotulo->label("j01_matric");
 $clrotulo->label("z01_nome");
 $db_opcao = 1;
 $db_botao = true;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if(isset($confirmar)){
   $sqlerro=false;
@@ -154,7 +154,7 @@ function js_trocacontri(obj){
       db_fieldsmemory($result02,0);
       $provenc=$privenc_dia;
       $x="contri_".$d07_contri;
-      $$x=$xparcelas."XX".$xprivenc_dia."XX".$xprivenc_mes."XX".$xprivenc_ano;
+      ${$x}=$xparcelas."XX".$xprivenc_dia."XX".$xprivenc_mes."XX".$xprivenc_ano;
       db_input('contri_'.$d07_contri,10,0,true,'hidden',1);
     }
   ?>

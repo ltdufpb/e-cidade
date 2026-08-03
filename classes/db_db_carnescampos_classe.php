@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE db_carnescampos
 class cl_db_carnescampos { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $codmodelo = 0; 
-   var $posxmodelo = 0; 
-   var $posymodelo = 0; 
-   var $nomecam = null; 
-   var $tipocamp = 'f'; 
+   public $codmodelo = 0; 
+   public $posxmodelo = 0; 
+   public $posymodelo = 0; 
+   public $nomecam = null; 
+   public $tipocamp = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  codmodelo = int4 = Código Modelo 
                  posxmodelo = int4 = Posição Horizontal 
                  posymodelo = int4 = Posição Vertical 
@@ -56,10 +56,10 @@ class cl_db_carnescampos {
                  tipocamp = bool = Tipo Campos 
                  ";
    //funcao construtor da classe 
-   function cl_db_carnescampos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_carnescampos"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -146,7 +146,7 @@ class cl_db_carnescampos {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Campos dos Carnes () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Campos dos Carnes já Cadastrado";
@@ -173,10 +173,10 @@ class cl_db_carnescampos {
       $this->atualizacampos();
      $sql = " update db_carnescampos set ";
      $virgula = "";
-     if(trim($this->codmodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codmodelo"])){ 
+     if(trim((string) $this->codmodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codmodelo"])){ 
        $sql  .= $virgula." codmodelo = $this->codmodelo ";
        $virgula = ",";
-       if(trim($this->codmodelo) == null ){ 
+       if(trim((string) $this->codmodelo) == null ){ 
          $this->erro_sql = " Campo Código Modelo nao Informado.";
          $this->erro_campo = "codmodelo";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_db_carnescampos {
          return false;
        }
      }
-     if(trim($this->posxmodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["posxmodelo"])){ 
+     if(trim((string) $this->posxmodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["posxmodelo"])){ 
        $sql  .= $virgula." posxmodelo = $this->posxmodelo ";
        $virgula = ",";
-       if(trim($this->posxmodelo) == null ){ 
+       if(trim((string) $this->posxmodelo) == null ){ 
          $this->erro_sql = " Campo Posição Horizontal nao Informado.";
          $this->erro_campo = "posxmodelo";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_db_carnescampos {
          return false;
        }
      }
-     if(trim($this->posymodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["posymodelo"])){ 
+     if(trim((string) $this->posymodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["posymodelo"])){ 
        $sql  .= $virgula." posymodelo = $this->posymodelo ";
        $virgula = ",";
-       if(trim($this->posymodelo) == null ){ 
+       if(trim((string) $this->posymodelo) == null ){ 
          $this->erro_sql = " Campo Posição Vertical nao Informado.";
          $this->erro_campo = "posymodelo";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_db_carnescampos {
          return false;
        }
      }
-     if(trim($this->nomecam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomecam"])){ 
+     if(trim((string) $this->nomecam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomecam"])){ 
        $sql  .= $virgula." nomecam = '$this->nomecam' ";
        $virgula = ",";
-       if(trim($this->nomecam) == null ){ 
+       if(trim((string) $this->nomecam) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "nomecam";
          $this->erro_banco = "";
@@ -225,10 +225,10 @@ class cl_db_carnescampos {
          return false;
        }
      }
-     if(trim($this->tipocamp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tipocamp"])){ 
+     if(trim((string) $this->tipocamp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tipocamp"])){ 
        $sql  .= $virgula." tipocamp = '$this->tipocamp' ";
        $virgula = ",";
-       if(trim($this->tipocamp) == null ){ 
+       if(trim((string) $this->tipocamp) == null ){ 
          $this->erro_sql = " Campo Tipo Campos nao Informado.";
          $this->erro_campo = "tipocamp";
          $this->erro_banco = "";
@@ -319,7 +319,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_carnescampos";

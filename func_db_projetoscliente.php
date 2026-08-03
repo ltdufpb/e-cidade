@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_projetoscliente_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_projetoscliente = new cl_db_projetoscliente;
 $cldb_projetoscliente->rotulo->label("at60_codproj");
 $cldb_projetoscliente->rotulo->label("at60_codcli");
@@ -98,9 +98,9 @@ $cldb_projetoscliente->rotulo->label("at60_codcli");
         }else{
            $sql = $cldb_projetoscliente->sql_query("",$campos,"at60_codproj","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at60_codcli)){
-          $repassa = array("chave_at60_codproj"=>$chave_at60_codproj,"chave_at60_codcli"=>$chave_at60_codcli);
+          $repassa = ["chave_at60_codproj"=>$chave_at60_codproj,"chave_at60_codcli"=>$chave_at60_codcli];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

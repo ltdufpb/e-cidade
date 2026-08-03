@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cfop_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcfop = new cl_cfop;
 $clcfop->rotulo->label("e10_sequencial");
 $clcfop->rotulo->label("e10_descricao");
@@ -98,9 +98,9 @@ $clcfop->rotulo->label("e10_descricao");
         }else{
            $sql = $clcfop->sql_query("",$campos,"e10_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e10_descricao)){
-          $repassa = array("chave_e10_sequencial"=>$chave_e10_sequencial,"chave_e10_descricao"=>$chave_e10_descricao);
+          $repassa = ["chave_e10_sequencial"=>$chave_e10_sequencial,"chave_e10_descricao"=>$chave_e10_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

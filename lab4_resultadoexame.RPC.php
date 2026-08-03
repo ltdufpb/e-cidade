@@ -79,7 +79,7 @@ try {
         throw new BusinessException( _M( MENSAGENS_RESULTADOEXAME_RPC . "requisicao_nao_informada" ) );
       }
 
-      $oRetorno->aExames       = array();
+      $oRetorno->aExames       = [];
       $oRequisicaoLaboratorial = new RequisicaoLaboratorial( $oParam->iRequisicao );
 
       foreach( $oRequisicaoLaboratorial->getRequisicoesDeExames() as $oRequisicaoExame ) {
@@ -91,7 +91,7 @@ try {
         $oDadosExame              = new stdClass();
         $oDadosExame->iCodigoItem = $oRequisicaoExame->getCodigo();
         $oDadosExame->iExame      = $oRequisicaoExame->getExame()->getCodigo();
-        $oDadosExame->sExame      = urlencode( $oRequisicaoExame->getExame()->getNome() );
+        $oDadosExame->sExame      = urlencode( (string) $oRequisicaoExame->getExame()->getNome() );
         $oRetorno->aExames[]      = $oDadosExame;
       }
 

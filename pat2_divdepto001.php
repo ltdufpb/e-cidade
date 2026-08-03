@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $aux = new cl_arquivo_auxiliar;
 ?>
 <html>
@@ -67,7 +67,7 @@ $aux = new cl_arquivo_auxiliar;
         </td>
         <td>
           <?php 
-            $x = array("T"=>"TODOS","true"=>"ATIVOS","false"=>"INATIVOS");
+            $x = ["T"=>"TODOS","true"=>"ATIVOS","false"=>"INATIVOS"];
             db_select("listar_depart",$x,true,4);
           ?>
         </td>
@@ -78,7 +78,7 @@ $aux = new cl_arquivo_auxiliar;
         </td>
         <td>
           <?php 
-            $x = array("T"=>"TODAS","true"=>"ATIVAS","false"=>"INATIVAS");
+            $x = ["T"=>"TODAS","true"=>"ATIVAS","false"=>"INATIVAS"];
             db_select("listar_divisao",$x,true,4);
           ?>
         </td>

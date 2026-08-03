@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_modulos_classe.php"));
 include(modification("classes/db_db_versao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo      		= new rotulocampo;
 $cldb_modulos       = new cl_db_modulos;
@@ -98,16 +98,16 @@ function monta_menu_func_contarefa($item_modulo,$id_modulo,$id_usuario,$espacos,
   //echo "<br><br>menu pai == $sql <br> ";
   $res = db_query($sql) or die($sql);
 
-  if(pg_numrows($res)>0){
+  if(pg_num_rows($res)>0){
 
-    for($i=0;$i<pg_numrows($res);$i++){
+    for($i=0;$i<pg_num_rows($res);$i++){
 
-      $item_filho		= pg_result($res,$i,0);
-      $descricao		= pg_result($res,$i,1);
-      $funcao				= trim(pg_result($res,$i,2));
-      $item					= trim(pg_result($res,$i,3));
-      $codproced		= trim(pg_result($res,$i,4));
-			$descrproced	= trim(pg_result($res,$i,5));
+      $item_filho		= pg_fetch_result($res,$i,0);
+      $descricao		= pg_fetch_result($res,$i,1);
+      $funcao				= trim(pg_fetch_result($res,$i,2));
+      $item					= trim(pg_fetch_result($res,$i,3));
+      $codproced		= trim(pg_fetch_result($res,$i,4));
+			$descrproced	= trim(pg_fetch_result($res,$i,5));
 			
       if($nivel ==0){
         echo "<td nowrap> ";
@@ -121,12 +121,12 @@ function monta_menu_func_contarefa($item_modulo,$id_modulo,$id_usuario,$espacos,
                 where id_item = $item_filho";
       //  echo "<br><br> menu filho == $sql <br> ";
         $resproced = db_query($sql);
-        if(pg_numrows($resproced)>0){
+        if(pg_num_rows($resproced)>0){
           global $codproced,$descrproced;
           db_fieldsmemory($resproced,0);
           $descr = $descrproced."\n";
-          if(pg_numrows($resproced)>1){
-            for($p=0;$p<pg_numrows($resproced);$p++){
+          if(pg_num_rows($resproced)>1){
+            for($p=0;$p<pg_num_rows($resproced);$p++){
               global $codproced,$descrproced;
               db_fieldsmemory($resproced,$p);
               $descr .= $descrproced."\n";
@@ -163,7 +163,7 @@ function monta_menu_func_contarefa($item_modulo,$id_modulo,$id_usuario,$espacos,
       //  echo "<br><br> menu filho else== $sql <br> ";
         $resproced = db_query($sql);
 
-        if(pg_numrows($resproced)>0){
+        if(pg_num_rows($resproced)>0){
           global $codproced;
           db_fieldsmemory($resproced,0);
           monta_menu_func_contarefa($item_filho,$id_modulo,$id_usuario,$espacos."&nbsp&nbsp&nbsp",1,@$codproced);

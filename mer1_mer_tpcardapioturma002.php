@@ -34,8 +34,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_tpcardapioturma_classe.php"));
 include(modification("classes/db_mer_cardapioescola_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_tpcardapioturma = new cl_mer_tpcardapioturma;
 $clmer_cardapioescola = new cl_mer_cardapioescola;
 if(isset($coddisciplinas)){
@@ -50,7 +50,7 @@ if(isset($coddisciplinas)){
            where me28_i_cardapioescola =$codcardapioescola";
  
   $result = db_query($sql);
-  $linhas = pg_numrows($result);
+  $linhas = pg_num_rows($result);
   
   if ($linhas>0) {     
     for ($t=0;$t<$linhas;$t++) {  

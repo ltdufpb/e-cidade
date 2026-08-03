@@ -132,6 +132,7 @@ class Faltas extends Layout
         $this->setDadosRelatorio($dadosRelatorio);
     }
 
+    #[\Override]
     public function setPdf($pdf)
     {
         parent::setPdf($pdf);

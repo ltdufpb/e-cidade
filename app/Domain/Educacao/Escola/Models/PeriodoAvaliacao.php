@@ -17,6 +17,6 @@ class PeriodoAvaliacao extends Model
 
     public function getEd09CDescrAttribute()
     {
-        return trim($this->attributes['ed09_c_descr']);
+        return trim((string) $this->attributes['ed09_c_descr']);
     }
 }

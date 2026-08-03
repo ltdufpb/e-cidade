@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE prontuariosclassificacaorisco
 class cl_prontuariosclassificacaorisco { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd101_codigo = 0; 
-   var $sd101_prontuarios = 0; 
-   var $sd101_classificacaorisco = 0; 
+   public $sd101_codigo = 0; 
+   public $sd101_prontuarios = 0; 
+   public $sd101_classificacaorisco = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd101_codigo = int4 = Código 
                  sd101_prontuarios = int4 = Prontuário 
                  sd101_classificacaorisco = int4 = Classificação de Risco 
                  ";
    //funcao construtor da classe 
-   function cl_prontuariosclassificacaorisco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontuariosclassificacaorisco"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_prontuariosclassificacaorisco {
          $this->erro_status = "0";
          return false; 
        }
-       $this->sd101_codigo = pg_result($result,0,0); 
+       $this->sd101_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from prontuariosclassificacaorisco_sd101_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $sd101_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $sd101_codigo)){
          $this->erro_sql = " Campo sd101_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_prontuariosclassificacaorisco {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Prontuarios com classificação de risco ($this->sd101_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Prontuarios com classificação de risco já Cadastrado";
@@ -145,12 +145,12 @@ class cl_prontuariosclassificacaorisco {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20919,'$this->sd101_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,3764,20919,'','".AddSlashes(pg_result($resaco,0,'sd101_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3764,20920,'','".AddSlashes(pg_result($resaco,0,'sd101_prontuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3764,20921,'','".AddSlashes(pg_result($resaco,0,'sd101_classificacaorisco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3764,20919,'','".AddSlashes(pg_fetch_result($resaco,0,'sd101_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3764,20920,'','".AddSlashes(pg_fetch_result($resaco,0,'sd101_prontuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3764,20921,'','".AddSlashes(pg_fetch_result($resaco,0,'sd101_classificacaorisco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_prontuariosclassificacaorisco {
       $this->atualizacampos();
      $sql = " update prontuariosclassificacaorisco set ";
      $virgula = "";
-     if(trim($this->sd101_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd101_codigo"])){ 
+     if(trim((string) $this->sd101_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd101_codigo"])){ 
        $sql  .= $virgula." sd101_codigo = $this->sd101_codigo ";
        $virgula = ",";
-       if(trim($this->sd101_codigo) == null ){ 
+       if(trim((string) $this->sd101_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "sd101_codigo";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_prontuariosclassificacaorisco {
          return false;
        }
      }
-     if(trim($this->sd101_prontuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd101_prontuarios"])){ 
+     if(trim((string) $this->sd101_prontuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd101_prontuarios"])){ 
        $sql  .= $virgula." sd101_prontuarios = $this->sd101_prontuarios ";
        $virgula = ",";
-       if(trim($this->sd101_prontuarios) == null ){ 
+       if(trim((string) $this->sd101_prontuarios) == null ){ 
          $this->erro_sql = " Campo Prontuário não informado.";
          $this->erro_campo = "sd101_prontuarios";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_prontuariosclassificacaorisco {
          return false;
        }
      }
-     if(trim($this->sd101_classificacaorisco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd101_classificacaorisco"])){ 
+     if(trim((string) $this->sd101_classificacaorisco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd101_classificacaorisco"])){ 
        $sql  .= $virgula." sd101_classificacaorisco = $this->sd101_classificacaorisco ";
        $virgula = ",";
-       if(trim($this->sd101_classificacaorisco) == null ){ 
+       if(trim((string) $this->sd101_classificacaorisco) == null ){ 
          $this->erro_sql = " Campo Classificação de Risco não informado.";
          $this->erro_campo = "sd101_classificacaorisco";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_prontuariosclassificacaorisco {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20919,'$this->sd101_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd101_codigo"]) || $this->sd101_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3764,20919,'".AddSlashes(pg_result($resaco,$conresaco,'sd101_codigo'))."','$this->sd101_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3764,20919,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd101_codigo'))."','$this->sd101_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd101_prontuarios"]) || $this->sd101_prontuarios != "")
-             $resac = db_query("insert into db_acount values($acount,3764,20920,'".AddSlashes(pg_result($resaco,$conresaco,'sd101_prontuarios'))."','$this->sd101_prontuarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3764,20920,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd101_prontuarios'))."','$this->sd101_prontuarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd101_classificacaorisco"]) || $this->sd101_classificacaorisco != "")
-             $resac = db_query("insert into db_acount values($acount,3764,20921,'".AddSlashes(pg_result($resaco,$conresaco,'sd101_classificacaorisco'))."','$this->sd101_classificacaorisco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3764,20921,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd101_classificacaorisco'))."','$this->sd101_classificacaorisco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_prontuariosclassificacaorisco {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20919,'$sd101_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3764,20919,'','".AddSlashes(pg_result($resaco,$iresaco,'sd101_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3764,20920,'','".AddSlashes(pg_result($resaco,$iresaco,'sd101_prontuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3764,20921,'','".AddSlashes(pg_result($resaco,$iresaco,'sd101_classificacaorisco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3764,20919,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd101_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3764,20920,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd101_prontuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3764,20921,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd101_classificacaorisco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

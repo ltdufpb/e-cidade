@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_procsemfatura_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_procsemfatura = new cl_sau_procsemfatura;
 $clsau_procsemfatura->rotulo->label("s146_c_cod");
 $clsau_procsemfatura->rotulo->label("s146_c_descr");
@@ -98,9 +98,9 @@ $clsau_procsemfatura->rotulo->label("s146_c_descr");
         }else{
            $sql = $clsau_procsemfatura->sql_query("",$campos,"s146_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s146_c_cod)){
-          $repassa = array("chave_s146_c_cod"=>$chave_s146_c_cod,"chave_s146_c_descr"=>$chave_s146_c_descr);
+          $repassa = ["chave_s146_c_cod"=>$chave_s146_c_cod,"chave_s146_c_descr"=>$chave_s146_c_descr];
         }
         //echo" SQL-> [$sql] <br><br>";
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

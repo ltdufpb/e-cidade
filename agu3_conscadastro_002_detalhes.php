@@ -54,7 +54,7 @@ require_once(modification("libs/db_utils.php"));
 <body>
 <?php
 
-  db_postmemory($HTTP_GET_VARS,0);
+  db_postmemory($_GET,0);
 
   $Consulta = new ConsultaAguaBase($parametro);
   $rotulo = new rotulocampo();
@@ -62,7 +62,7 @@ require_once(modification("libs/db_utils.php"));
   // CARACTERISTICAS
   if ($solicitacao == "CaracteristicasDoImovel") {
     db_lovrot($Consulta->GetAguaBaseCarSQL(), 15, "()", "", "");
-    
+
   //
   // ISENCOES
   //
@@ -215,7 +215,7 @@ require_once(modification("libs/db_utils.php"));
   
     $rCalc = $Consulta->RecordSetAguaCalc();
 
-    $iLinhas = pg_numrows($rCalc);
+    $iLinhas = pg_num_rows($rCalc);
 
     if ( $iLinhas == 0 ) {
 
@@ -323,7 +323,7 @@ require_once(modification("libs/db_utils.php"));
                   $rCalcVal = $Consulta->RecordSetAguaCalcVal($x22_codcalc);
                   $nSoma    = 0;
                   
-                  for ($indy = 0; $indy < pg_numrows($rCalcVal); $indy++ ) {
+                  for ($indy = 0; $indy < pg_num_rows($rCalcVal); $indy++ ) {
                     
                     db_fieldsmemory($rCalcVal, $indy);
                     $nSoma += $x23_valor;
@@ -366,8 +366,8 @@ require_once(modification("libs/db_utils.php"));
     <?php 
   } else if ($solicitacao == "Ocorrencia") {
     echo "<br>";
-   
-     db_lovrot($Consulta->getHistOcorrenciaMatric(), 8, "()", "", "", "", "NoMe", array(), true, array(), 'V');
+
+     db_lovrot($Consulta->getHistOcorrenciaMatric(), 8, "()", "", "", "", "NoMe", [], true, [], 'V');
 //     echo "<script>function mensagem(mensagem){ alert(mensagem); }</script>";
   /////////////////////////////////////////////////////////////////////////////////////////////////////
   } else if ($solicitacao == "BaixaImoveis") {

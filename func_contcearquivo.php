@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contcearquivo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcontcearquivo = new cl_contcearquivo;
 $clcontcearquivo->rotulo->label("c11_sequencial");
 $clcontcearquivo->rotulo->label("c11_id_usuario");
@@ -88,9 +88,9 @@ $clcontcearquivo->rotulo->label("c11_id_usuario");
         }else{
            $sql = $clcontcearquivo->sql_query("",$campos,"c11_sequencial desc","c11_instit = " . db_getsession("DB_instit"));
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c11_id_usuario)){
-          $repassa = array("chave_c11_sequencial"=>$chave_c11_sequencial,"chave_c11_id_usuario"=>$chave_c11_id_usuario);
+          $repassa = ["chave_c11_sequencial"=>$chave_c11_sequencial,"chave_c11_id_usuario"=>$chave_c11_id_usuario];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa,false);
       }else{

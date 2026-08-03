@@ -40,7 +40,7 @@ require_once(modification('dbforms/db_funcoes.php'));
 require_once(modification('classes/db_db_estruturavalor_classe.php'));
 require_once(modification('classes/db_issgruposervicoativid_classe.php'));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 db_postmemory($_POST);
 
@@ -172,7 +172,7 @@ if (isset($chavepesquisa)) {
 </body>
 </html>
 <?php
-  if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar") {
+  if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar") {
 
     if ($sqlerro == true) {
 

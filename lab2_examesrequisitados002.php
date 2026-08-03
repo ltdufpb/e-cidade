@@ -33,8 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("std/DBDate.php"));
 
 $oGet            = db_utils::postMemory($_GET);
-$aFiltroSituacao = array();
-$aSituacoes      = array();
+$aFiltroSituacao = [];
+$aSituacoes      = [];
 
 try {
 
@@ -64,7 +64,7 @@ try {
     $aSituacoes[]      = "Entregue";
   }
 
-  $aWhere       = array();
+  $aWhere       = [];
   $sPeriodo     = "";
   $sLaboratorio = "";
   $sSetor       = "";
@@ -156,7 +156,7 @@ try {
   }
 
   $iLinha = pg_num_rows($rsExames);
-  $aDados = array();
+  $aDados = [];
 
   /**
    * Array com os campos que devem ser apresentados no cabeçalho.
@@ -170,7 +170,7 @@ try {
    *      ['resultado'] - Padrão
    *      ['entrega']   - Padrão
    */
-  $aCabecalho = array();
+  $aCabecalho = [];
 
   for ($i = 0; $i < $iLinha; $i++) {
 
@@ -206,7 +206,7 @@ try {
       $oDadosSetor               = new stdClass();
       $oDadosSetor->sSetor       = $oExame->setor;
       $oDadosSetor->sLaboratorio = $oExame->laboratorio;
-      $oDadosSetor->aRequisicoes = array();
+      $oDadosSetor->aRequisicoes = [];
       $aDados[$iSetor]           = $oDadosSetor;
     }
 
@@ -221,7 +221,7 @@ try {
       $oData                  = new DBDate($oExame->data_requisicao);
       $oRequisicao->sData     = $oData->getDate( DBDate::DATA_PTBR );
       $oRequisicao->sPaciente = $oExame->paciente;
-      $oRequisicao->aExames   = array();
+      $oRequisicao->aExames   = [];
 
       $aDados[$iSetor]->aRequisicoes[$iRequisicao] = $oRequisicao;
     }
@@ -229,7 +229,7 @@ try {
     /**
      * Array com as informações dos exames, indexado pelos campos a serem impressos
      */
-    $aExamesRequisicao              = array();
+    $aExamesRequisicao              = [];
     $aExamesRequisicao['exame']     = $oExame->exame;
     $aExamesRequisicao['material']  = $oExame->material;
 
@@ -381,7 +381,7 @@ try {
     foreach( $oDadosSetor->aRequisicoes as $oRequisicao ) {
 
       $oPdf->SetFont( 'arial', 'b', 7 );
-      $sRequisicao  = "Requisição: {$oRequisicao->iCodigo} - Paciente: " . substr($oRequisicao->sPaciente, 0 , 63);
+      $sRequisicao  = "Requisição: {$oRequisicao->iCodigo} - Paciente: " . substr((string) $oRequisicao->sPaciente, 0 , 63);
       $sRequisicao .= " - Data: {$oRequisicao->sData}";
       $oPdf->Cell($iLarguraPadrao, $iAlturaPadrao, $sRequisicao, "TB", 1, "L", 1);
 
@@ -406,7 +406,7 @@ try {
           $oPdf->Cell(
                        $aCabecalho[$sIndice]->iLargura,
                        $iAlturaPadrao,
-                       substr( $sExame, 0 , $aCabecalho[$sIndice]->iSubStr ),
+                       substr( (string) $sExame, 0 , $aCabecalho[$sIndice]->iSubStr ),
                        $aCabecalho[$sIndice]->sBorda,
                        0,
                        "L"
@@ -429,6 +429,6 @@ try {
 
 } catch (Exception $oErro) {
 
-  $sMensagem = trim( preg_replace('/\s+/', ' ', $oErro->getMessage() ));
+  $sMensagem = trim( (string) preg_replace('/\s+/', ' ', $oErro->getMessage() ));
   db_redireciona("db_erros.php?fechar=true&db_erro={$sMensagem}");
 }

@@ -60,17 +60,17 @@ $clcriaabas = new cl_criaabas;
     <center>
     <?php 
     
-    $clcriaabas->identifica = array( "processo"=>"Dados Processo", "advogados"=>"Advogados");
-    $clcriaabas->title      = array( "processo"=>"Dados Processo", "advogados"=>"Advogados");
+    $clcriaabas->identifica = [ "processo"=>"Dados Processo", "advogados"=>"Advogados"];
+    $clcriaabas->title      = [ "processo"=>"Dados Processo", "advogados"=>"Advogados"];
     
-    $clcriaabas->src  		= array( "processo"	  => "arr1_procjur011.php",
-    								 "advogados"  => "arr1_procjur111.php");
+    $clcriaabas->src  		= [ "processo"	  => "arr1_procjur011.php",
+    								 "advogados"  => "arr1_procjur111.php"];
     
-    $clcriaabas->sizecampo  = array( "processo"   =>"23",
-    							     "advogados"  =>"23");
+    $clcriaabas->sizecampo  = [ "processo"   =>"23",
+    							     "advogados"  =>"23"];
 	
-	$clcriaabas->disabled   = array( "processo"   =>false,
-								     "advogados"  =>true);
+	$clcriaabas->disabled   = [ "processo"   =>false,
+								     "advogados"  =>true];
     
     $clcriaabas->cria_abas();    
     ?>

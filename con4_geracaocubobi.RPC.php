@@ -62,7 +62,7 @@ try {
                             where {$sWhereCubos}";
 
       $rsCubos          = db_query( $sSqlCubos );
-      $oRetorno->aCubos = array();
+      $oRetorno->aCubos = [];
 
       if ( !$rsCubos ) {
 
@@ -79,7 +79,7 @@ try {
 
         $oCubo                       = new stdClass();
         $oCubo->iCubo                = $oDadosCubo->db63_sequencial;
-        $oCubo->sCubo                = urlencode($oDadosCubo->db63_nomerelatorio);
+        $oCubo->sCubo                = urlencode((string) $oDadosCubo->db63_nomerelatorio);
         $oCubo->lPossuiPeriodicidade = $oDadosCubo->agendado=="t"?true:false;
         
         $oRetorno->aCubos[] = $oCubo;

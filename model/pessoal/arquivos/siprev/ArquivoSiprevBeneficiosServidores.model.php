@@ -27,15 +27,15 @@
 class ArquivoSiprevBeneficiosServidores extends ArquivoSiprevBase {
 
   protected $sNomeArquivo                  = "10-BeneficiosServidores";
-  public    $aTipoAposentadoriaServidor    = array();
-  public    $aServidoresSalarioFamilia     = array();
-  public    $aServidoresSalarioMaternidade = array();
-  public    $aServidoresAuxilioDoenca      = array();
-  public    $aRubricasAuxilioDoenca        = array();
-  public    $aRubricasSalarioMaternidade   = array();
+  public    $aTipoAposentadoriaServidor    = [];
+  public    $aServidoresSalarioFamilia     = [];
+  public    $aServidoresSalarioMaternidade = [];
+  public    $aServidoresAuxilioDoenca      = [];
+  public    $aRubricasAuxilioDoenca        = [];
+  public    $aRubricasSalarioMaternidade   = [];
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["10"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["10"] = [];
   }
 
   public function getDados() {
@@ -81,7 +81,7 @@ class ArquivoSiprevBeneficiosServidores extends ArquivoSiprevBase {
       throw new DBException('Erro ao buscar os benefícios do servidor.');
     }
 
-    $aErros      = array();
+    $aErros      = [];
     $oInstancia  = $this;
     $iAnoFinal   = $this->iAnoFinal; 
     $iMesFinal   = $this->iMesFinal;
@@ -124,14 +124,14 @@ class ArquivoSiprevBeneficiosServidores extends ArquivoSiprevBase {
      */
     $this->rubricasDoencaMaternidade();
 
-    $aDadosBeneficiosServidores = array();
+    $aDadosBeneficiosServidores = [];
 
     foreach($aServidores as $oServidor) {
 
       $oBeneficioServidor = $this->preencheBeneficioServidor($oServidor);
       if($oBeneficioServidor != null) {
 
-        $aLinhas                      = array('beneficioServidor' => $oBeneficioServidor);
+        $aLinhas                      = ['beneficioServidor' => $oBeneficioServidor];
         $aDadosBeneficiosServidores[] = (object)$aLinhas;
       }
     }
@@ -222,7 +222,7 @@ class ArquivoSiprevBeneficiosServidores extends ArquivoSiprevBase {
         /**
          * Valida se o servidor possui rubrica de salário família
          */
-        if(in_array($oEventoFinanceiro->getRubrica()->getCodigo(), array('R918', 'R919', 'R920'))) {
+        if(in_array($oEventoFinanceiro->getRubrica()->getCodigo(), ['R918', 'R919', 'R920'])) {
 
           $oInstancia->aServidoresSalarioFamilia[] = $oServidor->getMatricula();
           return $oEventoFinanceiro->getValor();
@@ -262,7 +262,7 @@ class ArquivoSiprevBeneficiosServidores extends ArquivoSiprevBase {
    * @return array
    */
   public function getElementos() {
-    return array($this->atributosBeneficioServidor());
+    return [$this->atributosBeneficioServidor()];
   }
 
   /**
@@ -271,19 +271,19 @@ class ArquivoSiprevBeneficiosServidores extends ArquivoSiprevBase {
    */
   private function atributosBeneficioServidor() {
 
-    $aServidor                 = array();
+    $aServidor                 = [];
     $aServidor["nome"]         = "servidor";
-    $aServidor["propriedades"] = array( "nome", "numeroCPF", "numeroNIT" );
+    $aServidor["propriedades"] = [ "nome", "numeroCPF", "numeroNIT" ];
 
-    $aBeneficioServidor                 = array();
+    $aBeneficioServidor                 = [];
     $aBeneficioServidor['nome']         = 'beneficioServidor';
-    $aBeneficioServidor['propriedades'] = array(
+    $aBeneficioServidor['propriedades'] = [
       'operacao',
       'tipoBeneficio',
       'vlAtualBeneficio',
       'dtUltimaAtualizacao',
       $aServidor
-    );
+    ];
 
     return $aBeneficioServidor;
   }
@@ -317,7 +317,7 @@ class ArquivoSiprevBeneficiosServidores extends ArquivoSiprevBase {
     }
 
     $nValorTotal                               = $nValorSalario + $nValorComplementar + $nValorDecimo;
-    $aBeneficioServidor                        = array();
+    $aBeneficioServidor                        = [];
     $aBeneficioServidor['operacao']            = "I";
     $aBeneficioServidor['tipoBeneficio']       = $iTipoBeneficio;
     $aBeneficioServidor['vlAtualBeneficio']    = number_format($nValorTotal, 2, '.', '');
@@ -356,7 +356,7 @@ class ArquivoSiprevBeneficiosServidores extends ArquivoSiprevBase {
   public function validarDadosBeneficiosServidores(Servidor $oServidor) {
 
     $oCgm           = $oServidor->getCgm();
-    $aErrosRegistro = array();
+    $aErrosRegistro = [];
 
     $lPisValido = DBString::isPIS($oCgm->getPIS());
     $lCpfValido = DBString::isCPF($oCgm->getCpf());
@@ -384,10 +384,10 @@ class ArquivoSiprevBeneficiosServidores extends ArquivoSiprevBase {
    */
   private function getErro(Servidor $oServidor, $sErro) {
 
-    return array(
+    return [
       $oServidor->getInstituicao()->getDescricao(),
       $oServidor->getCgm()->getCodigo() . " - " . $oServidor->getCgm()->getNome(),
       $sErro,
-    );
+    ];
   }
 }

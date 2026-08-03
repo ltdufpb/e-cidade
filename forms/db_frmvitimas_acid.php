@@ -108,7 +108,7 @@ db_input('tr10_nome',30,$Itr10_nome,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Feminino','2'=>'Masculino','NI'=>'NI');
+$x = ['1'=>'Feminino','2'=>'Masculino','NI'=>'NI'];
 db_select('tr10_sexo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -152,7 +152,7 @@ db_input('tr10_situacao',1,$Itr10_situacao,true,'text',$db_opcao,"")
                            when tr10_sexo = 2 then 'Masculino'
                            when tr10_sexo = 3 then 'NI' end ) as tr10_sexo,
                      tr10_idade";
-         $chavepri= array("tr10_id"=>@$tr10_id);
+         $chavepri= ["tr10_id"=>@$tr10_id];
          $cliframe_alterar_excluir->chavepri=$chavepri;
          $cliframe_alterar_excluir->sql     = $clvitimas_acid->sql_query(null,$sCampos,"tr10_id","tr10_idacidente = $tr10_idacidente");
          $cliframe_alterar_excluir->campos  = "tr06_descr,tr10_id,tr10_situacao,tr10_nome,tr10_sexo";
@@ -221,7 +221,7 @@ function js_preenchepesquisa(chave){
   db_iframe_vitimas_acid.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

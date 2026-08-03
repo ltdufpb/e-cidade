@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE db_certidaoweb
 class cl_db_certidaoweb { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $codcert = null; 
-   var $tipocer = 0; 
-   var $cerdtemite_dia = null; 
-   var $cerdtemite_mes = null; 
-   var $cerdtemite_ano = null; 
-   var $cerdtemite = null; 
-   var $cerhora = null; 
-   var $cerdtvenc_dia = null; 
-   var $cerdtvenc_mes = null; 
-   var $cerdtvenc_ano = null; 
-   var $cerdtvenc = null; 
-   var $cerip = null; 
-   var $ceracesso = null; 
-   var $cercertidao = 0; 
-   var $cernomecontr = null; 
-   var $cerweb = 'f'; 
-   var $cerhtml = null; 
+   public $codcert = null; 
+   public $tipocer = 0; 
+   public $cerdtemite_dia = null; 
+   public $cerdtemite_mes = null; 
+   public $cerdtemite_ano = null; 
+   public $cerdtemite = null; 
+   public $cerhora = null; 
+   public $cerdtvenc_dia = null; 
+   public $cerdtvenc_mes = null; 
+   public $cerdtvenc_ano = null; 
+   public $cerdtvenc = null; 
+   public $cerip = null; 
+   public $ceracesso = null; 
+   public $cercertidao = 0; 
+   public $cernomecontr = null; 
+   public $cerweb = 'f'; 
+   public $cerhtml = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  codcert = varchar(50) = Código da certidão 
                  tipocer = int8 = tipo de certidao 
                  cerdtemite = date = data da emissao 
@@ -74,10 +74,10 @@ class cl_db_certidaoweb {
                  cerhtml = text = Certidão HTML 
                  ";
    //funcao construtor da classe 
-   function cl_db_certidaoweb() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_certidaoweb"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -218,11 +218,11 @@ class cl_db_certidaoweb {
           return false; 
         }
 
-        $this->codcert = pg_result($result,0,0); 
+        $this->codcert = pg_fetch_result($result,0,0); 
       } else {
         $result = db_query("select last_value from db_certidaoweb_codcert_seq");
 
-        if (($result != false) && (pg_result($result,0,0) < $codcert)) {
+        if (($result != false) && (pg_fetch_result($result,0,0) < $codcert)) {
           $this->erro_sql     = " Campo codcert maior que último número da sequencia.";
           $this->erro_banco   = "Sequencia menor que este número.";
           $this->erro_msg     = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -265,7 +265,7 @@ class cl_db_certidaoweb {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "certidao_web () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "certidao_web já Cadastrado";
@@ -292,10 +292,10 @@ class cl_db_certidaoweb {
       $this->atualizacampos();
      $sql = " update db_certidaoweb set ";
      $virgula = "";
-     if(trim($this->codcert)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcert"])){ 
+     if(trim((string) $this->codcert)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcert"])){ 
        $sql  .= $virgula." codcert = '$this->codcert' ";
        $virgula = ",";
-       if(trim($this->codcert) == null ){ 
+       if(trim((string) $this->codcert) == null ){ 
          $this->erro_sql = " Campo Código da certidão nao Informado.";
          $this->erro_campo = "codcert";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_db_certidaoweb {
          return false;
        }
      }
-     if(trim($this->tipocer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tipocer"])){ 
+     if(trim((string) $this->tipocer)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tipocer"])){ 
        $sql  .= $virgula." tipocer = $this->tipocer ";
        $virgula = ",";
-       if(trim($this->tipocer) == null ){ 
+       if(trim((string) $this->tipocer) == null ){ 
          $this->erro_sql = " Campo tipo de certidao nao Informado.";
          $this->erro_campo = "tipocer";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_db_certidaoweb {
          return false;
        }
      }
-     if(trim($this->cerdtemite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerdtemite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cerdtemite_dia"] !="") ){ 
+     if(trim((string) $this->cerdtemite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerdtemite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cerdtemite_dia"] !="") ){ 
        $sql  .= $virgula." cerdtemite = '$this->cerdtemite' ";
        $virgula = ",";
-       if(trim($this->cerdtemite) == null ){ 
+       if(trim((string) $this->cerdtemite) == null ){ 
          $this->erro_sql = " Campo data da emissao nao Informado.";
          $this->erro_campo = "cerdtemite_dia";
          $this->erro_banco = "";
@@ -334,7 +334,7 @@ class cl_db_certidaoweb {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cerdtemite_dia"])){ 
          $sql  .= $virgula." cerdtemite = null ";
          $virgula = ",";
-         if(trim($this->cerdtemite) == null ){ 
+         if(trim((string) $this->cerdtemite) == null ){ 
            $this->erro_sql = " Campo data da emissao nao Informado.";
            $this->erro_campo = "cerdtemite_dia";
            $this->erro_banco = "";
@@ -345,10 +345,10 @@ class cl_db_certidaoweb {
          }
        }
      }
-     if(trim($this->cerhora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerhora"])){ 
+     if(trim((string) $this->cerhora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerhora"])){ 
        $sql  .= $virgula." cerhora = '$this->cerhora' ";
        $virgula = ",";
-       if(trim($this->cerhora) == null ){ 
+       if(trim((string) $this->cerhora) == null ){ 
          $this->erro_sql = " Campo hora da emissao nao Informado.";
          $this->erro_campo = "cerhora";
          $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_db_certidaoweb {
          return false;
        }
      }
-     if(trim($this->cerdtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerdtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cerdtvenc_dia"] !="") ){ 
+     if(trim((string) $this->cerdtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerdtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cerdtvenc_dia"] !="") ){ 
        $sql  .= $virgula." cerdtvenc = '$this->cerdtvenc' ";
        $virgula = ",";
-       if(trim($this->cerdtvenc) == null ){ 
+       if(trim((string) $this->cerdtvenc) == null ){ 
          $this->erro_sql = " Campo data de venc nao Informado.";
          $this->erro_campo = "cerdtvenc_dia";
          $this->erro_banco = "";
@@ -374,7 +374,7 @@ class cl_db_certidaoweb {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cerdtvenc_dia"])){ 
          $sql  .= $virgula." cerdtvenc = null ";
          $virgula = ",";
-         if(trim($this->cerdtvenc) == null ){ 
+         if(trim((string) $this->cerdtvenc) == null ){ 
            $this->erro_sql = " Campo data de venc nao Informado.";
            $this->erro_campo = "cerdtvenc_dia";
            $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_db_certidaoweb {
          }
        }
      }
-     if(trim($this->cerip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerip"])){ 
+     if(trim((string) $this->cerip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerip"])){ 
        $sql  .= $virgula." cerip = '$this->cerip' ";
        $virgula = ",";
-       if(trim($this->cerip) == null ){ 
+       if(trim((string) $this->cerip) == null ){ 
          $this->erro_sql = " Campo ip nao Informado.";
          $this->erro_campo = "cerip";
          $this->erro_banco = "";
@@ -398,10 +398,10 @@ class cl_db_certidaoweb {
          return false;
        }
      }
-     if(trim($this->ceracesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ceracesso"])){ 
+     if(trim((string) $this->ceracesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ceracesso"])){ 
        $sql  .= $virgula." ceracesso = '$this->ceracesso' ";
        $virgula = ",";
-       if(trim($this->ceracesso) == null ){ 
+       if(trim((string) $this->ceracesso) == null ){ 
          $this->erro_sql = " Campo Acesso nao Informado.";
          $this->erro_campo = "ceracesso";
          $this->erro_banco = "";
@@ -411,14 +411,14 @@ class cl_db_certidaoweb {
          return false;
        }
      }
-     if(trim($this->cercertidao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cercertidao"])){ 
+     if(trim((string) $this->cercertidao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cercertidao"])){ 
        $sql  .= $virgula." cercertidao = $this->cercertidao ";
        $virgula = ",";
      }
-     if(trim($this->cernomecontr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cernomecontr"])){ 
+     if(trim((string) $this->cernomecontr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cernomecontr"])){ 
        $sql  .= $virgula." cernomecontr = '$this->cernomecontr' ";
        $virgula = ",";
-       if(trim($this->cernomecontr) == null ){ 
+       if(trim((string) $this->cernomecontr) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "cernomecontr";
          $this->erro_banco = "";
@@ -428,10 +428,10 @@ class cl_db_certidaoweb {
          return false;
        }
      }
-     if(trim($this->cerweb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerweb"])){ 
+     if(trim((string) $this->cerweb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerweb"])){ 
        $sql  .= $virgula." cerweb = '$this->cerweb' ";
        $virgula = ",";
-       if(trim($this->cerweb) == null ){ 
+       if(trim((string) $this->cerweb) == null ){ 
          $this->erro_sql = " Campo Web nao Informado.";
          $this->erro_campo = "cerweb";
          $this->erro_banco = "";
@@ -441,7 +441,7 @@ class cl_db_certidaoweb {
          return false;
        }
      }
-     if(trim($this->cerhtml)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerhtml"])){ 
+     if(trim((string) $this->cerhtml)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cerhtml"])){ 
        $sql  .= $virgula." cerhtml = '$this->cerhtml' ";
        $virgula = ",";
      }
@@ -526,7 +526,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_certidaoweb";

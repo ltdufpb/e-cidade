@@ -86,7 +86,7 @@ class RelatorioDiarioClasseCompleto extends RelatorioDiarioClasseBase {
    * Dados do cabeçalho separado por disciplina
    * @var array
    */
-  private $aCabecalhoSegundaPagina = array();
+  private $aCabecalhoSegundaPagina = [];
 
   private $iLarguraColunaNota = 15;
 
@@ -173,6 +173,7 @@ class RelatorioDiarioClasseCompleto extends RelatorioDiarioClasseBase {
   /**
    * Sobrescreve o método da assinatura, com os dados padrão do modelo
    */
+  #[\Override]
   public function escreverAssinatura() {
 
     $this->SetFont( 'arial', 'b', 7 );
@@ -205,7 +206,7 @@ class RelatorioDiarioClasseCompleto extends RelatorioDiarioClasseBase {
     $sDescricaoLegenda['S']  = "S - Sexo";
     $sDescricaoLegenda['FA'] = "FA - Faltas Abonadas";
 
-    $aLegendasImprimir = array();
+    $aLegendasImprimir = [];
 
     foreach ($aLegendas as $sLegenda => $lLeganda) {
 
@@ -361,7 +362,7 @@ class RelatorioDiarioClasseCompleto extends RelatorioDiarioClasseBase {
   private function getAvaliacoesTurma() {
 
     $oProcedimentoAvaliacao    = $this->oTurma->getProcedimentoDeAvaliacaoDaEtapa($this->oEtapa);
-    $aAvaliacaoTurma           = array();
+    $aAvaliacaoTurma           = [];
 
     foreach ($oProcedimentoAvaliacao->getAvaliacoes() as $oAvaliacao ) {
 
@@ -730,6 +731,7 @@ class RelatorioDiarioClasseCompleto extends RelatorioDiarioClasseBase {
    * Realiza a chamada das funções para impressão do relatório
    * @throws Exception
    */
+  #[\Override]
   public function escrever() {
 
     $this->estruturaSubCabecalho();

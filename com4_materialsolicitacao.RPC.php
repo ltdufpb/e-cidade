@@ -62,7 +62,7 @@ try {
       $oDadosMaterial = db_utils::fieldsMemory($rsMateiral, 0);
       
       $oRetorno->dados = new StdClass();
-      $oRetorno->dados->descricaocomplemento = urlencode($oDadosMaterial->pc01_complmater);
+      $oRetorno->dados->descricaocomplemento = urlencode((string) $oDadosMaterial->pc01_complmater);
       $oRetorno->dados->liberaresumo         = $oDadosMaterial->pc01_liberaresumo;
 
       break;
@@ -76,7 +76,7 @@ try {
         throw new Exception("Ocorreu um erro ao consultar as unidades de medida dos materiais.");
       }
 
-      $aUnidades = array();
+      $aUnidades = [];
       for($iRowUnidade = 0; $iRowUnidade < $oDaoUnidade->numrows; $iRowUnidade++){
 
         $oStdUnidade = db_utils::fieldsMemory($rsUnidade, $iRowUnidade, false, false, true);

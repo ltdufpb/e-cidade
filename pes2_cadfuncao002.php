@@ -37,7 +37,7 @@ $clrotulo->label('r37_cbo');
 $clrotulo->label('r37_lei');
 $clrotulo->label('r37_class');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oGet = db_utils::postMemory($_GET,0);
 
@@ -74,7 +74,7 @@ $sSql .= "    where {$sWhere}                                                   
 $sSql .= " {$sOrder}                                                                                                  ";
 
 $rsSql = db_query($sSql);
-$iRows = pg_numrows($rsSql);
+$iRows = pg_num_rows($rsSql);
 
 if ($iRows == 0){
   $sMsg = "Não existem Códigos cadastrados no período de $oGet->mes / $oGet->ano";
@@ -94,8 +94,8 @@ $alt   = 4;
 for ( $x = 0; $x < $iRows; $x++ ) {
 	
    $oCargos  = db_utils::fieldsMemory($rsSql,$x);
-   $iTamDesc = strlen($oCargos->r37_descr);
-   $iTamLei  = strlen($oCargos->r37_lei);
+   $iTamDesc = strlen((string) $oCargos->r37_descr);
+   $iTamLei  = strlen((string) $oCargos->r37_lei);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
     
       $pdf->addpage();

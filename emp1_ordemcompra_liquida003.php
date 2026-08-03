@@ -84,8 +84,8 @@ $clpagordem = new cl_pagordem;
 $clpagordemele = new cl_pagordemele;
 $clpagordemnota = new cl_pagordemnota;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $valor_total = 0;
 $sqlerro = false;
@@ -113,17 +113,17 @@ if (isset ($valores) && isset ($incluir)) {
 	
 	
 
-	$dados = split("quant_", "$valores"); //  [empenho|sequencial| iNA|quantidade ]	
-	$valordoitem = split("valor_", "$val"); // [NA|empenho|sequencial|valor_digitado] 
+	$dados = preg_split("#quant_#m", "$valores"); //  [empenho|sequencial| iNA|quantidade ]	
+	$valordoitem = preg_split("#valor_#m", "$val"); // [NA|empenho|sequencial|valor_digitado] 
 
 	for ($i = 1; $i < sizeof($dados); $i ++) {
 		if ($sqlerro == false) {
-			$numero = split("_", $dados[$i]);
+			$numero = preg_split("#_#m", (string) $dados[$i]);
 			$numemp = $numero[0];
 			$sequen = $numero[1];
 			$quanti = $numero[3];
 
-			$vlsoitem = split("_", $valordoitem[$i]);
+			$vlsoitem = preg_split("#_#m", (string) $valordoitem[$i]);
 			$vl_soma_item = $vlsoitem[3];
 			$vl_soma_item = str_replace(",", ".", "$vl_soma_item");
 			//  $valor_total+=$vl_soma_item;
@@ -200,11 +200,11 @@ if (isset ($valores) && isset ($incluir)) {
 
 	for ($i = 1; $i < sizeof($dados); $i ++) {
 		if ($sqlerro == false) {
-			$numero = split("_", $dados[$i]);
+			$numero = preg_split("#_#m", (string) $dados[$i]);
 			$numemp = $numero[0];
 			$sequen = $numero[1];
 			$quanti = $numero[3];
-			$vlsoitem = split("_", $valordoitem[$i]);
+			$vlsoitem = preg_split("#_#m", (string) $valordoitem[$i]);
 			$vl_soma_item = $vlsoitem[3];
 			$vl_soma_item = str_replace(",", ".", "$vl_soma_item");
 
@@ -342,7 +342,7 @@ if (isset ($incluir)) {
 			$headers  = "Content-Type:text/html;";  	  	
 		  $objteste = new libdocumento(1750);
 		  $corpo    = $objteste->emiteDocHTML();
-  	  $mail     = mail($z01_email,"Ordem de Compra Nº $codigo","$corpo",$headers);
+  	  $mail     = mail((string) $z01_email,"Ordem de Compra Nº $codigo","$corpo",$headers);
 			if ($mail==true){
 				db_msgbox("E-mail enviado com sucesso!!");  		
 			}else{

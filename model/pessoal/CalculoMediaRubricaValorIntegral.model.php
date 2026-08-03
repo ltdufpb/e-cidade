@@ -37,18 +37,6 @@
 class CalculoMediaRubricaValorIntegral implements ICalculoMediaRubrica{
   
   /**
-   * Instancia do Servidor
-   * @var Servidor
-   */
-  private $oServidor;
-  
-  /**
-   * Instancia da Rubrica
-   * @var Rubrica
-   */
-  private $oRubrica;
-  
-  /**
    * Objeto com daata inicial
    * @var DBDate
    */
@@ -91,10 +79,14 @@ class CalculoMediaRubricaValorIntegral implements ICalculoMediaRubrica{
    * @param DBDate $oDataInicial
    * @param DBDate $oDataFinal
    */
-  public function __construct ( Servidor $oServidor, Rubrica $oRubrica, DBDate $oDataInicial, DBDate $oDataFinal ) {
+  public function __construct ( /**
+   * Instancia do Servidor
+   */
+  private Servidor $oServidor, /**
+   * Instancia da Rubrica
+   */
+  private Rubrica $oRubrica, DBDate $oDataInicial, DBDate $oDataFinal ) {
     
-    $this->oServidor    = $oServidor;
-    $this->oRubrica     = $oRubrica;
     $this->oDataInicial = $oDataInicial;
     $this->oDataFinal   = $oDataFinal;
     $this->setAnoFolha(db_anofolha());

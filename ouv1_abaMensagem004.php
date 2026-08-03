@@ -66,7 +66,7 @@ if (!empty($oPost) && $oPost->actionMensagem == 'salvar') {
 
 try {
     $tipoProcesso = getTipoProcesso($iCod);
-} catch (\Exception $ex) {
+} catch (\Exception) {
 }
 
 

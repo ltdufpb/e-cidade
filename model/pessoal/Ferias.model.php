@@ -99,7 +99,7 @@ class Ferias {
    * array com os dados dos periodos de ferias
    * @var array
    */
-  private $aPeriodoGozo = array();
+  private $aPeriodoGozo = [];
    
   /**
    * DAO da tabela rhferias
@@ -314,7 +314,7 @@ class Ferias {
      
     if (!empty($iCodigoFerias) || isset($this->iCodigoFerias) && count($this->aPeriodoGozo) == 0) {
        
-      $aPeriodos    = array();
+      $aPeriodos    = [];
        
       if (empty($iCodigoFerias)) {
         $iCodigoFerias = $this->getCodigoFerias();
@@ -505,7 +505,7 @@ class Ferias {
     $sSqlExisteCompetencia = $this->oDaoFerias->sql_query(null, "rh109_sequencial", "rh109_periodoaquisitivoinicial", $sWhere);
     $rsExisteCompetencia   = $this->oDaoFerias->sql_record($sSqlExisteCompetencia);
     
-    $aFerias = array();
+    $aFerias = [];
      
     if ($this->oDaoFerias->numrows > 0) {
       
@@ -694,7 +694,7 @@ class Ferias {
     $iDiasDireito  = 30;
     $iDiasGozados  = $this->getDiasGozados($iCodigoFerias);
     $iDiasAbonados = $this->getDiasAbonados($iCodigoFerias);
-    $iDiasDesconto = $this->getDiasDesconto($iCodigoFerias);
+    $iDiasDesconto = $this->getDiasDesconto();
 
     $iDiasDireito  = $iDiasDireito - ($iDiasGozados + $iDiasAbonados);
 

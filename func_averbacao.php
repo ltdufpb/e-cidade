@@ -35,7 +35,7 @@ require_once(modification("classes/db_setorloc_classe.php"));
 require_once(modification("libs/db_app.utils.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claverbacao = new cl_averbacao;
 $claverbacao->rotulo->label("j75_codigo");
 $claverbacao->rotulo->label("j75_codigo");
@@ -69,7 +69,7 @@ $clrotulo->label("j06_lote");
               <?php
 		            db_input("j75_codigo",6,$Ij75_codigo,true,"text",4,"","chave_j75_codigo");
 
-			          $yy = array('1'=>'Não Processado','2'=>'Processado');
+			          $yy = ['1'=>'Não Processado','2'=>'Processado'];
                 db_select('j75_situacao',$yy,true,1,"onChange='form1.submit();'");
 		          ?>
             </td>
@@ -152,9 +152,9 @@ $clrotulo->label("j06_lote");
            $sql = $claverbacao->sql_query_loteloc("",$campos,"j75_codigo",$db_where);
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j75_codigo)){
-          $repassa = array("chave_j75_codigo"=>$chave_j75_codigo,"chave_j75_codigo"=>$chave_j75_codigo);
+          $repassa = ["chave_j75_codigo"=>$chave_j75_codigo,"chave_j75_codigo"=>$chave_j75_codigo];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

@@ -110,7 +110,7 @@ $j39_idcons = $oPost->iConstrucao;
     $linhasareatotal = pg_num_rows($resultareatotal);
     if ($linhasareatotal > 0) {
         $temareatotal = "";
-        $areatotal = pg_result($resultareatotal, 0);
+        $areatotal = pg_fetch_result($resultareatotal, 0);
     } else {
         $temareatotal = "disabled";
         $areatotal = "Não Informado";
@@ -128,7 +128,7 @@ $j39_idcons = $oPost->iConstrucao;
     $linhasareaconst = pg_num_rows($resultareaconst);
     if ($linhasareaconst > 0) {
         $temareaconst = "";
-        $areaconst = pg_result($resultareaconst, 0);
+        $areaconst = pg_fetch_result($resultareaconst, 0);
     } else {
         $temareaconst = "disabled";
         $areaconst = "Não Informado";
@@ -145,7 +145,7 @@ $j39_idcons = $oPost->iConstrucao;
     $linhasareaconsttotal = pg_num_rows($resultareaconsttotal);
     if ($linhasareaconsttotal > 0) {
         $temareaconsttotal = "";
-        $areaconsttotal = pg_result($resultareaconsttotal, 0);
+        $areaconsttotal = pg_fetch_result($resultareaconsttotal, 0);
     } else {
         $temareaconsttotal = "disabled";
         $areaconsttotal = "Não Informado";
@@ -156,8 +156,8 @@ $j39_idcons = $oPost->iConstrucao;
     $rsHabite = db_query($sSqlHabite);
     if (pg_num_rows($rsHabite) > 0) {
         $temhabite = "";
-        $numhabite = pg_result($rsHabite, 0, 0);
-        $dthabite = pg_result($rsHabite, 0, 1);
+        $numhabite = pg_fetch_result($rsHabite, 0, 0);
+        $dthabite = pg_fetch_result($rsHabite, 0, 1);
     } else {
         $temhabite = "disabled";
         $numhabite = "Não Informado";
@@ -207,11 +207,11 @@ $j39_idcons = $oPost->iConstrucao;
           <td nowrap>
               <?php
               $lProcessoSistema = true;
-              $aProcessoSistema = array(
+              $aProcessoSistema = [
                 "0" => "SELECIONE...",
                 "1" => "NÃO",
                 "2" => "SIM"
-              );
+              ];
               ?>
             <select id='lProcessoSistema' name='lProcessoSistema' onchange='js_processoSistema();' style='width: 95px'>
               <option value="2">SELECIONE...</option>

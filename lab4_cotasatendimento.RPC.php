@@ -81,7 +81,7 @@ try {
      */
     case "buscarDadosLaboratorios":
 
-      $oRetorno->aLaboratorios = array();
+      $oRetorno->aLaboratorios = [];
       $oDaoLaboratorio         = new cl_lab_laboratorio();
       $sCamposAtendimento      = " la45_sequencial as codigo_cota,  la45_quantidade as limite_diario,";
       $sCamposAtendimento     .= " la02_i_codigo as codigo_laboratorio, la02_c_descr as laboratorio";
@@ -102,7 +102,7 @@ try {
         $oLaboratorio->iLaboratorio  = $oDadosLimite->codigo_laboratorio;
         $oLaboratorio->sNome         = $oDadosLimite->laboratorio;
         $oLaboratorio->iLimiteDiario = $oDadosLimite->limite_diario;
-        $oLaboratorio->aExames       = array();
+        $oLaboratorio->aExames       = [];
 
         $sCamposExame    = " la09_i_codigo as setor_exame, la08_i_codigo as codigo_exame, la08_c_descr as exame, ";
         $sCamposExame   .= " la46_sequencial as codigo_cota_exame, la46_quantidade as limite_exame";
@@ -207,7 +207,7 @@ try {
         throw new ParameterException( _M(ARQUIVO_MENSAGEM_COTAS . "informe_codigo_exame") );
       }
 
-      excluirCotasExames( array($oParam), $oDaoCotaExame, $oDaoCotaExameUsado );
+      excluirCotasExames( [$oParam], $oDaoCotaExame, $oDaoCotaExameUsado );
 
       $oRetorno->oExameRemovido                   = new stdClass();
       $oRetorno->oExameRemovido->iCodigoCotaExame = $oParam->iCodigoCotaExame;
@@ -432,7 +432,7 @@ function migrarLimiteAtendimentoUsado( $oParam, $oDaoCotaUsadoAtendimento, $sDat
  */
 function migrarLimiteAtendimentoExameUsado( $oParam, $oDaoCotaExameUsado, $sDataAtual ) {
 
-  $aExames = array();
+  $aExames = [];
 
   foreach ( $oParam->aExames as $oExame ) {
     $aExames[] = $oExame->iSetorExame;
@@ -490,7 +490,7 @@ function migrarLimiteAtendimentoExameUsado( $oParam, $oDaoCotaExameUsado, $sData
  */
 function buscarRequisicoes( $oParam, $oDaoRequisicao, $sDataAtual ) {
 
-  $aRequisicoes      = array();
+  $aRequisicoes      = [];
   $sCamposRequisicao = " count(la21_i_setorexame), la22_i_codigo";
   $sWhereRequisicao  = " la21_d_data >= '{$sDataAtual}' AND la24_i_laboratorio = {$oParam->iLaboratorio}";
   $sWhereRequisicao .= " group by la22_i_codigo having count(*) = 1;";
@@ -694,7 +694,7 @@ function buscaLimiteAtendimentoPorExame( $aCodigoDoSetorExame ) {
 function quantificaExamesPorDia( $rsLaboratorios, $aCodigoDoSetorExame ) {
 
   $iLinhas      = pg_num_rows($rsLaboratorios);
-  $aLaboratorio = array();
+  $aLaboratorio = [];
   for ($i = 0; $i < $iLinhas; $i++) {
 
     $oDadoLaboratorio = db_utils::fieldsMemory($rsLaboratorios, $i);
@@ -705,8 +705,8 @@ function quantificaExamesPorDia( $rsLaboratorios, $aCodigoDoSetorExame ) {
       $oLaboratorio->iCodigoLimiteAtendimento    = $oDadoLaboratorio->la45_sequencial;
       $oLaboratorio->iLimite                     = $oDadoLaboratorio->la45_quantidade;
       $oLaboratorio->iLaboratorio                = $oDadoLaboratorio->la45_lab_laboratorio;
-      $oLaboratorio->aNumeroExamesDia            = array();
-      $oLaboratorio->aExameAgendado              = array();
+      $oLaboratorio->aNumeroExamesDia            = [];
+      $oLaboratorio->aExameAgendado              = [];
       $aLaboratorio[$oLaboratorio->iLaboratorio] = $oLaboratorio;
     }
 
@@ -719,7 +719,7 @@ function quantificaExamesPorDia( $rsLaboratorios, $aCodigoDoSetorExame ) {
 
 
     if ( !array_key_exists($sDataExame, $aLaboratorio[$oLaboratorio->iLaboratorio]->aExameAgendado) ) {
-      $aLaboratorio[$oLaboratorio->iLaboratorio]->aExameAgendado[$sDataExame] = array();
+      $aLaboratorio[$oLaboratorio->iLaboratorio]->aExameAgendado[$sDataExame] = [];
     }
 
     $aLaboratorio[$oLaboratorio->iLaboratorio]->aExameAgendado[$sDataExame][] = $oDadoLaboratorio->la09_i_codigo;
@@ -745,7 +745,7 @@ function alteraQuantidadeCotas( $oRetorno, $oParam, $lForcarInclusao = false ) {
 
     foreach ($oLaboratorio->aNumeroExamesDia as $sDataAgenda => $iTotalExames ) {
 
-      $sData = implode('-', array_reverse(explode('/', $sDataAgenda)));
+      $sData = implode('-', array_reverse(explode('/', (string) $sDataAgenda)));
 
       $sWhereLimiteDia  = " la62_limiteatendimento = {$oLaboratorio->iCodigoLimiteAtendimento} ";
       $sWhereLimiteDia .= " and la62_data = '{$sData}' ";
@@ -787,7 +787,7 @@ function validaCotas( $oParam ) {
     throw new Exception( _M(ARQUIVO_MENSAGEM_COTAS . "exames_nao_informados") );
   }
 
-  $aCodigoDoSetorExame = array();
+  $aCodigoDoSetorExame = [];
   foreach ($oParam->aExamesAgendados as $oExame) {
     $aCodigoDoSetorExame[$oExame->iSetorExame] = $oExame->dataAgenda;
   }
@@ -795,7 +795,7 @@ function validaCotas( $oParam ) {
   $rsLaboratorios = buscaLimiteAtendimentoPorExame( $aCodigoDoSetorExame );
 
   if ( pg_num_rows($rsLaboratorios) == 0 )  {
-    return  array();
+    return  [];
   }
 
   return quantificaExamesPorDia( $rsLaboratorios, $aCodigoDoSetorExame );

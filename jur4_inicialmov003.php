@@ -51,7 +51,7 @@ $clinicialmov->rotulo->label();
 $clinicialmov->rotulo->tlabel();
 
 if ( isset($excluir) ) {
-	
+
 	// faz a consulta para validar se a situação e número da inicial são válidos
 
   // situação
@@ -75,7 +75,7 @@ if ( isset($excluir) ) {
 		// exclui a movimentação da inicial
 		$clinicialmov->v56_codmov = $oRetorno->v50_codmov;
     $clinicialmov->excluir($oRetorno->v50_codmov);
-	 
+
 	  // consulta a última situação para a inicial
 		$sSql     = " select max(v56_codmov) as	v56_codmov		 		  	";
 		$sSql    .= "   from inicialmov														  ";
@@ -85,10 +85,10 @@ if ( isset($excluir) ) {
     $oRetorno = db_utils::fieldsMemory($rResult, 0);
 
 		// atualiza a situação da inicial com a última movimentação dela
-		
+
 		$clinicial->v50_codmov= $oRetorno->v56_codmov;
     $clinicial->alterar($v50_inicial);
-		
+
 		if ( ( $clinicialmov->erro_status != 0 ) or ( $clinicial->erro_status != 0 ) ) {
       db_fim_transacao(false);
   	} else {

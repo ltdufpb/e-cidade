@@ -85,7 +85,7 @@ if(isset($opcao) && $opcao=="alterar"){
   </td>
   <td>
    <?php 
-   $x = array(''=>'','1'=>'VÍNCULO EMPREGATÍCIO','2'=>'AUTÔNOMO');
+   $x = [''=>'','1'=>'VÍNCULO EMPREGATÍCIO','2'=>'AUTÔNOMO'];
    db_select('sd36_c_vinculo',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -138,7 +138,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top"><br>
   <?php 
-  $chavepri= array("sd36_i_codigo"=>@$sd36_i_codigo
+  $chavepri= ["sd36_i_codigo"=>@$sd36_i_codigo
                   ,"sd36_i_medico"=>@$sd36_i_medico
                   ,"z01_nome"=>@$z01_nome
                   ,"sd36_i_rhcbo"=>@$sd36_i_rhcbo
@@ -150,7 +150,7 @@ if(isset($opcao) && $opcao=="alterar"){
                   ,"sd36_i_crm"=>@$sd36_i_crm
                   ,"sd36_c_crmuf"=>@$sd36_c_crmuf
                   ,"sd36_c_crmorgao"=>@$sd36_c_crmorgao
-                  );
+                  ];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clmedicoscbo->sql_query("","*",""," sd36_i_medico = $sd36_i_medico");
    @$cliframe_alterar_excluir->campos  ="rh70_estrutural,rh70_descr,sd36_i_crm,sd36_c_crmuf,sd36_c_crmorgao,sd36_i_chambul,sd36_i_choutros";

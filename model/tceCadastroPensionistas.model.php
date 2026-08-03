@@ -35,12 +35,6 @@ class tceCadastroPensionistas extends tceEstruturaBasica
 
     const CODIGO_ARQUIVO = 310;
 
-    public $iInstit = "";
-    public $sInstituicoes = "";
-    public $sDataIni = "";
-    public $sDataFim = "";
-    public $sCodRemessa = "";
-
     private $oLeiaute = null;
 
     /**
@@ -54,19 +48,13 @@ class tceCadastroPensionistas extends tceEstruturaBasica
      * @param $sInstituicoes
      * @throws Exception
      */
-    function __construct($iInstit, $sCodRemessa, $sDataIni, $sDataFim, $oData, $oLeiaute = null, $sInstituicoes)
+    function __construct(public $iInstit, public $sCodRemessa, public $sDataIni, public $sDataFim, $oData, $oLeiaute = null, public $sInstituicoes = null)
     {
         try {
             parent::__construct(self::CODIGO_ARQUIVO, self::NOME_ARQUIVO);
         } catch (Exception $e) {
             throw $e;
         }
-
-        $this->iInstit = $iInstit;
-        $this->sInstituicoes = $sInstituicoes;
-        $this->sDataIni = $sDataIni;
-        $this->sDataFim = $sDataFim;
-        $this->sCodRemessa = $sCodRemessa;
 
         if ($oLeiaute != null) {
             $this->oLeiaute = $oLeiaute;
@@ -118,8 +106,8 @@ class tceCadastroPensionistas extends tceEstruturaBasica
      */
     function sqlCadastroPensionista($sDatafim, $sDataini)
     {
-        list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim) = explode("-", $sDatafim);
-        list ($iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni) = explode("-", $sDataini);
+        [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDatafim);
+        [$iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni] = explode("-", (string) $sDataini);
 
         $sql = <<<SQL
             select

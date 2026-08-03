@@ -155,9 +155,7 @@ class RelatorioProgramaTematicoService
 
     private function organizaComissao()
     {
-        $cgms = $this->planejamento->comissoes->map(function (Comissao $comissao) {
-            return $comissao->cgm->z01_nome;
-        })->toArray();
+        $cgms = $this->planejamento->comissoes->map(fn(Comissao $comissao) => $comissao->cgm->z01_nome)->toArray();
         $this->dados['planejamento']['comissao'] = $cgms;
     }
 
@@ -198,14 +196,12 @@ class RelatorioProgramaTematicoService
      */
     private function organizaIndicadores(Collection $indicadores)
     {
-        return $indicadores->map(function (IndicadorProgramaEstrategico $indicador) {
-            return [
-                'descricao' => $indicador->indicador->o10_descr,
-                'unidade' => $indicador->indicador->o10_descrunidade,
-                'ano' => $indicador->pl22_ano,
-                'indice' => $indicador->pl22_indice,
-            ];
-        })->toArray();
+        return $indicadores->map(fn(IndicadorProgramaEstrategico $indicador) => [
+            'descricao' => $indicador->indicador->o10_descr,
+            'unidade' => $indicador->indicador->o10_descrunidade,
+            'ano' => $indicador->pl22_ano,
+            'indice' => $indicador->pl22_indice,
+        ])->toArray();
     }
 
     /**

@@ -126,7 +126,7 @@ try {
             $oDomXml->load('config/sigfis/vinculoplanoconta.xml');
             $oNoConta            = $oDomXml->getElementsByTagName("contas");
             $aContas             = $oDomXml->getElementsByTagName("conta");
-            $aRecursosVinculados = array();
+            $aRecursosVinculados = [];
             $oDaoConplano        = db_utils::getDao("conplano");
             foreach ($aContas as $oConta) {
 
@@ -137,8 +137,8 @@ try {
                 if ($oDaoConplano->numrows == 1) {
 
                     $oDadosConta       = db_utils::fieldsMemory($rsDescricaoConta, 0);
-                    $sDescricaoConta   = urlencode($oDadosConta->c60_descr);
-                    $sEstruturalConta  = urlencode($oDadosConta->c60_estrut);
+                    $sDescricaoConta   = urlencode((string) $oDadosConta->c60_descr);
+                    $sEstruturalConta  = urlencode((string) $oDadosConta->c60_estrut);
 
                     $oContaVinculado                = new stdClass();
                     $oContaVinculado->descricaoconta= $sDescricaoConta;
@@ -171,8 +171,8 @@ try {
             $oDomXml->load('config/sigfis/vinculoplanoconta.xml');
             $oNoContas           = $oDomXml->getElementsByTagName("contas");
             $aContasRemover      = $oDomXml->getElementsByTagName("conta");
-            $aNodesRemover       = array();
-            $aContasVinculados   = array();
+            $aNodesRemover       = [];
+            $aContasVinculados   = [];
             foreach ($aContasRemover as $oConta) {
 
                 $iCodigoConta       = $oConta->getAttribute("contaplano");
@@ -189,7 +189,7 @@ try {
 
         case 'importarArquivoVinculos':
             $oFiles = db_utils::postMemory($_FILES);
-            if (strtolower(substr($oFiles->arquivo['name'], -4)) != '.csv') {
+            if (strtolower(substr((string) $oFiles->arquivo['name'], -4)) != '.csv') {
                 throw new BusinessException("Arquivo com formato inválido, o arquivo deve estar no formato CSV.");
             }
 
@@ -208,13 +208,13 @@ try {
 
             $anousu = db_getsession('DB_anousu');
 
-            $erros = array();
+            $erros = [];
 
             foreach ($dadosArquivo as $linha => $dado) {
 
                 $linha++;
 
-                list($codigoTce, $estrutural) = array_map('trim', explode(',', $dado));
+                [$codigoTce, $estrutural] = array_map(trim(...), explode(',', $dado));
 
                 if ($linha == 1 && (!is_numeric($codigoTce) || !is_numeric($estrutural))) {
                     continue;

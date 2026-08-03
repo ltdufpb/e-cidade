@@ -55,7 +55,7 @@ if(isset($z01_i_cgsund)){
              rhcbo.rh70_descr as dl_Especialidade,           
              sau_cid.sd70_c_nome as dl_Problemas_Relacionados ";
 	 $sql=$cl_prontproced->sql_query_prontuario2("",$campos,""," sd24_i_numcgs = $z01_i_cgsund ");
-   $repassa = array("chave_sd24_i_codigo"=>@$chave_sd24_i_codigo);
+   $repassa = ["chave_sd24_i_codigo"=>@$chave_sd24_i_codigo];
    db_lovrot($sql,15,"()","","");
     
 }

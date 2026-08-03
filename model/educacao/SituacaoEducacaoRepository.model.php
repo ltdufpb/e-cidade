@@ -37,7 +37,7 @@
      * Collection de SituacaoEducacao
      * @var array
      */
-    private $aSituacaoEducacao = array();
+    private $aSituacaoEducacao = [];
     
     /**
      * Instancia da classe

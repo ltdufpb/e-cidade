@@ -14,14 +14,14 @@ class MensageriaLicencaProcessamentoTask extends Task implements iTarefa {
    *
    * @var Licenca[]
    */
-  private $aLicencas = array();
+  private $aLicencas = [];
 
   /**
    * Datas de vencimento para buscar acordos com data de terminio menor ou igual
    *
    * @var Array
    */
-  private $aDataVencimento = array();
+  private $aDataVencimento = [];
 
   /**
    * Codigo dos usuarios que serao notificados
@@ -29,7 +29,7 @@ class MensageriaLicencaProcessamentoTask extends Task implements iTarefa {
    *
    * @var Array
    */
-  private $aCodigoMensageriaLicencaUsuario = array();
+  private $aCodigoMensageriaLicencaUsuario = [];
 
   /**
    * Codigo do departamento com os codigo dos usuarios que tem permissao nele
@@ -37,13 +37,14 @@ class MensageriaLicencaProcessamentoTask extends Task implements iTarefa {
    *
    * @var Array
    */
-  private $aCodigoDepartamentoUsuario = array();
+  private $aCodigoDepartamentoUsuario = [];
 
   /**
    * Inicia Execucao da Tarefa
    *
    * @return void
    */
+  #[\Override]
   public function iniciar() {
 
     parent::iniciar();
@@ -53,10 +54,10 @@ class MensageriaLicencaProcessamentoTask extends Task implements iTarefa {
       /**
        * Variaveis necessarias para usar as bibliotecas padroes
        */
-      global $HTTP_SERVER_VARS, $HTTP_POST_VARS, $HTTP_GET_VARS, $_SESSION, $conn;
-      $HTTP_SERVER_VARS = $_SESSION;
-      $HTTP_POST_VARS = $_POST;
-      $HTTP_GET_VARS = $_GET;
+      global $_SERVER, $_POST, $_GET, $_SESSION, $conn;
+      $_SERVER = $_SESSION;
+      $_POST = $_POST;
+      $_GET = $_GET;
 
       require_once modification("libs/db_conn.php");
       require_once modification("libs/db_stdlib.php");
@@ -232,7 +233,7 @@ class MensageriaLicencaProcessamentoTask extends Task implements iTarefa {
 
       $oDataVencimento = new DBDate( $oLicenca->getParecerTecnico()->getDataVencimento() );
 
-      $aVariaveisLicenca = array(
+      $aVariaveisLicenca = [
 
         '[nome_emp]'   => $oLicenca->getParecerTecnico()->getEmpreendimento()->getNome(),
         '[codigo_emp]' => $oLicenca->getParecerTecnico()->getEmpreendimento()->getSequencial(),
@@ -240,15 +241,15 @@ class MensageriaLicencaProcessamentoTask extends Task implements iTarefa {
         '[tipo]'       => $oLicenca->getParecerTecnico()->getTipoLicenca()->getDescricao(),
         '[data]'       => $oDataVencimento->getDate( DBDate::DATA_PTBR ),
         '[processo]'   => $oLicenca->getParecerTecnico()->getProtProcesso()
-      );
+      ];
 
 
       $sAssuntoLicenca    = strtr($oMensageriaLicenca->getAssunto(), $aVariaveisLicenca);
       $sMensagemLicenca   = strtr($oMensageriaLicenca->getMensagem(), $aVariaveisLicenca);
       $oDBDateAtual       = new DBDate(date('Y-m-d'));
       $iDiasVencimento    = DBDate::calculaIntervaloEntreDatas(new DBDate($oLicenca->getParecerTecnico()->getDataVencimento()), $oDBDateAtual, 'd');
-      $aDestinatarios     = array();
-      $aUsuarioNotificado = array();
+      $aDestinatarios     = [];
+      $aUsuarioNotificado = [];
 
       foreach ($this->aCodigoMensageriaLicencaUsuario as $iCodigoMensageriaLicencaUsuario) {
 
@@ -275,7 +276,7 @@ class MensageriaLicencaProcessamentoTask extends Task implements iTarefa {
           continue;
         }
 
-        $aDestinatarios[]     = array('sLogin' => $oUsuarioSistema->getLogin(), 'sSistema' => $sSistema);
+        $aDestinatarios[]     = ['sLogin' => $oUsuarioSistema->getLogin(), 'sSistema' => $sSistema];
         $aUsuarioNotificado[] = $oUsuarioSistema->getCodigo();
       }
 
@@ -325,12 +326,12 @@ class MensageriaLicencaProcessamentoTask extends Task implements iTarefa {
    */
   private function enviarNotificacao($sAssunto, $sMensagem, $sSistema, Array $aDestinatarios) {
 
-    $aMensagem = array(
+    $aMensagem = [
       'iTipo'          => MensageriaCliente::TIPO_NOTIFICACAO,
       'sAssunto'       => $sAssunto,
       'sConteudo'      => $sMensagem,
       'aDestinatarios' => $aDestinatarios
-    );
+    ];
 
     $lEnviado = MensageriaCliente::enviar($sSistema, $sSistema, $aMensagem);
 

@@ -46,7 +46,7 @@ $oGet          = db_utils::postMemory($_GET);
 $oDaoRecHumano = new cl_rechumano();
 
 $iEscola        = db_getsession("DB_coddepto");
-$aWhereSubQuery = array();
+$aWhereSubQuery = [];
 
 $aWhereSubQuery[] = " ed58_i_regencia = {$oGet->regencia} ";
 $aWhereSubQuery[] = " ed17_i_escola   = {$iEscola} ";
@@ -78,8 +78,8 @@ if ($iRegistros == 0) {
 	db_redireciona("db_erros.php?fechar=true&db_erro={$sMsqErro}");
 }
 
-$aPeriodos   = array();
-$aDiaSemana  = array();
+$aPeriodos   = [];
+$aDiaSemana  = [];
 $iDisciplina = '';
 $iEnsino     = '';
 $iCalendario = '';
@@ -133,14 +133,14 @@ if ($iRegistrosRecHumano == 0) {
 	db_redireciona("db_erros.php?fechar=true&db_erro={$sMsqErro}");
 }
 
-$aRecHumano = array();
+$aRecHumano = [];
 
 for ($i = 0; $i < $iRegistrosRecHumano; $i++) {
 	$aRecHumano[] = db_utils::fieldsMemory($rsRecHumano, $i)->ed20_i_codigo;
 }
 
 $sRecHumanos           = implode(', ', $aRecHumano);
-$aWhereDisponibilidade = array();
+$aWhereDisponibilidade = [];
 foreach ($aPeriodosNoDia as  $iDia => $aPeriodos) {
   $sPeriodos               = implode(",", $aPeriodos);
   $sWhereDiaSemana         = "(docentetemdisponibilidade(ed20_i_codigo::integer, array[$sPeriodos], $iDia, $iEscola, $iAno) is true)";
@@ -187,7 +187,7 @@ $iRegistrosDisponivel  = $oDaoRecHumano->numrows;
 	<div>
 	<?php
 		if ($iRegistrosDisponivel > 0) {
-			db_lovrot($sSqlRegenteDisponivel, 15, "()", "", $oGet->funcao_js, "", "NoMe", array());
+			db_lovrot($sSqlRegenteDisponivel, 15, "()", "", $oGet->funcao_js, "", "NoMe", []);
 		} else {
 			echo "<h3>Sem regente disponível para a regência selecionada</h3>";
 		}

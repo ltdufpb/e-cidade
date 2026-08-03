@@ -39,7 +39,7 @@ class AreaComplementar
     /**
      * @var AreaComplementarModel[]
      */
-    private $areasComplementares = array();
+    private $areasComplementares = [];
 
     /**
      * @param AreaComplementarModel $areaComplementarModel

@@ -40,8 +40,8 @@ class Registro10Builder extends BuilderFormulario
     private $registro;
 
     private $codigoInep;
-    private $dadosAbaInfraEstrutura = array();
-    private $dadosLinguaIndigena = array();
+    private $dadosAbaInfraEstrutura = [];
+    private $dadosLinguaIndigena = [];
 
     public function __construct()
     {

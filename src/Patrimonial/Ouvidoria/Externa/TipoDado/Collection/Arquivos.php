@@ -38,7 +38,7 @@ class Arquivos
     /**
      * @var ArquivoModel[]
      */
-    private $colecao = array();
+    private $colecao = [];
 
     /**
      * @param ArquivoModel $arquivoModel

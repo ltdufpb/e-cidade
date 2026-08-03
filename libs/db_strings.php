@@ -43,13 +43,13 @@ class db_strings {
   /**
    * Quebra uma string passando por parâmetro o número máximo de caracteres retornando um array
    *
-   * @deprecated
    * @see DBString::quebraLinha()
    * @param string  $sString
    * @param integer $iNroMaxCaract
    * @param string  $sValorCompl
    * @return array
    */
+  #[\Deprecated]
   function quebraLinha($sString,$iNroMaxCaract,$sValorCompl=' '){
 
     require_once modification("std/DBString.php");

@@ -54,21 +54,21 @@ $sql02 = "
 		where db_ordemmod.codordem= $cod_ord_and;
 	   ";
 $result02 = db_query($sql02);
-$numrows02 = pg_numrows($result02);
+$numrows02 = pg_num_rows($result02);
 echo "     <br>
 		<table width=80% border=1 align=\"center\" cellpadding=0 cellspacing=0>
 		  <tr> 
 			<td width=\"10%\"   align=\"center\" nowrap bgcolor=\"#CDCDFF\" style=\"font-size:13px\">ordem 
-			  :<strong> ".pg_result($result, 0, "codordem")."</strong>
+			  :<strong> ".pg_fetch_result($result, 0, "codordem")."</strong>
 			</td>
 			<td width=\"18%\"   align=\"center\" nowrap bgcolor=\"#CDCDFF\" style=\"font-size:13px\">Data 
-			  <strong>: ".pg_result($result, 0, "dataordem")."</strong>
+			  <strong>: ".pg_fetch_result($result, 0, "dataordem")."</strong>
 	       	        </td>
 			<td width=\"22%\"   align=\"center\" nowrap bgcolor=\"#CDCDFF\" style=\"font-size:13px\">Previsão 
-			  <strong>: ".pg_result($result, 0, "dataprev")."</strong>
+			  <strong>: ".pg_fetch_result($result, 0, "dataprev")."</strong>
 			</td>
 			<td width=\"50%\"   align=\"center\" nowrap bgcolor=\"#CDCDFF\" style=\"font-size:13px\">Destinat&aacute;rio 
-			  <strong>:".pg_result($result, 0, "nomeusureceb")." </strong>
+			  <strong>:".pg_fetch_result($result, 0, "nomeusureceb")." </strong>
 		        </td>
 			<td>
 			  <b>Módulo:</b>
@@ -76,8 +76,8 @@ echo "     <br>
 			  
 		  </tr>
 		  <tr> 
-			<td colspan=\"3\" style=\"font-size:13px\"><strong>Cadastrado por: </strong>".pg_result($result, 0, "nome")."</td>
-			<td style=\"font-size:13px\"><strong>Departamento: </strong>".pg_result($result, 0, "descrdepto")."</td>
+			<td colspan=\"3\" style=\"font-size:13px\"><strong>Cadastrado por: </strong>".pg_fetch_result($result, 0, "nome")."</td>
+			<td style=\"font-size:13px\"><strong>Departamento: </strong>".pg_fetch_result($result, 0, "descrdepto")."</td>
 		        <td>";
 if ($numrows02 > 0) {
 	for ($i = 0; $i < $numrows02; $i ++) {
@@ -88,13 +88,13 @@ if ($numrows02 > 0) {
 	echo "Todos";
 }
 
-@$status = pg_result($result,0,"status");
+@$status = pg_fetch_result($result,0,"status");
 
 echo "</td>
        <form name=form1 method=post>
 
       <td>";  
-       $mtr = array ();
+       $mtr =  [];
        $mtr[1] = "Em Desenvolvimento";
        $mtr[2] = "Liberada P/Teste";
        /* $mtr[3] = "Retorno/Teste";
@@ -106,10 +106,10 @@ echo " </td>
 ////////////////////
 // formulario de entrada de dados
   $resultPesquisaNome = db_query("select nome from db_usuarios where id_usuario = $DB_id_usuario");
-  $nomeUsuario = pg_result($resultPesquisaNome,0,0); 
+  $nomeUsuario = pg_fetch_result($resultPesquisaNome,0,0); 
 
   $departamentos = db_query("select * from db_depart");
-  $numeroDepartamentos = pg_numrows($departamentos);
+  $numeroDepartamentos = pg_num_rows($departamentos);
 
     echo "\n\n<script>\n";
     for ($i=0;$i<$numeroDepartamentos;$i++) {
@@ -117,13 +117,13 @@ echo " </td>
 	                   from db_usuarios us
         	           inner join db_depusu du 
 		        	   on du.id_usuario = us.id_usuario
-        			   where coddepto = ".pg_result($departamentos,$i,"coddepto"));
-	  $numusu = pg_numrows($usu);
+        			   where coddepto = ".pg_fetch_result($departamentos,$i,"coddepto"));
+	  $numusu = pg_num_rows($usu);
 	  $aux= '';
 	  $c = '';
- 	  echo strtolower(str_replace(" ","_",pg_result($departamentos,$i,"descrdepto")))." = new Array(";
+ 	  echo strtolower(str_replace(" ","_",pg_fetch_result($departamentos,$i,"descrdepto")))." = new Array(";
       for($j=0;$j<$numusu;$j++) {
-        $aux .= "$c'".pg_result($usu,$j,"nome")."'";
+        $aux .= "$c'".pg_fetch_result($usu,$j,"nome")."'";
 		$c = ",";
 	  }
 	  echo $aux.");\n";
@@ -188,12 +188,12 @@ echo " </td>
                   <td width="54%" nowrap style="font-size:13px" >
 				  <select name="depto" id="depto" onChange="vai(eval(this.options[this.selectedIndex].value))">
 				  <?php  
-				    $descratual = pg_result($result,0,"descrdepto");
+				    $descratual = pg_fetch_result($result,0,"descrdepto");
 					$listaDepartamentos = db_query("select * from db_depart where descrdepto not like '$descratual'");
-					$numdep = pg_numrows($listaDepartamentos);
- 				    echo "<option selected value=\"".strtolower(str_replace(" ","_",pg_result($result,0,"descrdepto")))."\">".pg_result($result,0,"descrdepto")."</option>";
+					$numdep = pg_num_rows($listaDepartamentos);
+ 				    echo "<option selected value=\"".strtolower(str_replace(" ","_",pg_fetch_result($result,0,"descrdepto")))."\">".pg_fetch_result($result,0,"descrdepto")."</option>";
 					for ($i=0;$i<$numdep;$i++) {
-					  echo "<option value=\"".strtolower(str_replace(" ","_",pg_result($listaDepartamentos,$i,"descrdepto")))."\">".pg_result($listaDepartamentos,$i,"descrdepto")."</option>";
+					  echo "<option value=\"".strtolower(str_replace(" ","_",pg_fetch_result($listaDepartamentos,$i,"descrdepto")))."\">".pg_fetch_result($listaDepartamentos,$i,"descrdepto")."</option>";
 					}
 				  ?> 
                   </select>
@@ -204,18 +204,18 @@ echo " </td>
                   <td nowrap style="font-size:13px" ><select name="usuarioescolhido" id="select">
                     <?php  
 					
-					$coddepartamento = pg_result($result,0,"coddepto");
-					$nome = pg_result($result,0,"nomeusureceb");
+					$coddepartamento = pg_fetch_result($result,0,"coddepto");
+					$nome = pg_fetch_result($result,0,"nomeusureceb");
 					if ($nome=="") {$nome=$nomeUsuario;}
 					$listanomes = db_query("select u.id_usuario , d.nome
 				                     from db_depusu u 
 									 inner join db_usuarios d
 									 on d.id_usuario = u.id_usuario
 									 where u.coddepto = $coddepartamento");
-					$numnomes = pg_numrows($listanomes); 
+					$numnomes = pg_num_rows($listanomes); 
 					for ($i=0;$i<$numnomes;$i++) {
-					  if (pg_result($listanomes,$i,"nome")==$nome) {$estado="selected";} else {$estado="";}
-					  echo "<option ".$estado." value=\"".pg_result($listanomes,$i,"nome")."\">".pg_result($listanomes,$i,"nome")."</option>";
+					  if (pg_fetch_result($listanomes,$i,"nome")==$nome) {$estado="selected";} else {$estado="";}
+					  echo "<option ".$estado." value=\"".pg_fetch_result($listanomes,$i,"nome")."\">".pg_fetch_result($listanomes,$i,"nome")."</option>";
 					}
 
 					?>                    
@@ -256,7 +256,7 @@ echo " </td>
   echo "<table border=1 align=center width=90%>   
 	 	    <tr> 
 		  	<td colspan=\"5\" style=\"font-size:13px\"><strong>Descrição:<br>
-			   </strong>TEXTO DA ORDEM :     ".str_replace("\n", "<br> ", pg_result($result, 0, "descricao"))."</td>
+			   </strong>TEXTO DA ORDEM :     ".str_replace("\n", "<br> ", pg_fetch_result($result, 0, "descricao"))."</td>
 		    </tr>		  		
        ";
 
@@ -274,16 +274,16 @@ $selecionaAndamento = db_query(
   			where o.codordem = $cod_ord_and
 		        order by codandam
 								");
-  $numSelecionaAndamento = pg_numrows($selecionaAndamento);
+  $numSelecionaAndamento = pg_num_rows($selecionaAndamento);
   
   
   
   for ($i=0;$i<$numSelecionaAndamento;$i++) {
-  	 $and     = pg_result($selecionaAndamento,$i,"codandam");
-     $ordem = pg_result($selecionaAndamento,$i,"codordem");
-     $nome_and = pg_result($selecionaAndamento,$i,"nome_andamento");
-     $dt       =  pg_result($selecionaAndamento,$i,"datainicial");
-     $descricao = str_replace("\n","<br>",pg_result($selecionaAndamento,$i,"descricao"));
+  	 $and     = pg_fetch_result($selecionaAndamento,$i,"codandam");
+     $ordem = pg_fetch_result($selecionaAndamento,$i,"codordem");
+     $nome_and = pg_fetch_result($selecionaAndamento,$i,"nome_andamento");
+     $dt       =  pg_fetch_result($selecionaAndamento,$i,"datainicial");
+     $descricao = str_replace("\n","<br>",pg_fetch_result($selecionaAndamento,$i,"descricao"));
 	
      echo "
 		  <tr> 

@@ -34,60 +34,62 @@ class importacaoCenso2010 extends importacaoCenso {
    * e le as linhas do layout de cada registro cadastrado
    * @override 
    */
+  #[\Override]
   function getLinhasArquivo() {
-    
+
     $oDBLayoutReader = new DBLayoutReader($this->iCodigoLayout, $this->sCaminhoArquivo, false);   
     $aLinhasArquivo  = $oDBLayoutReader->getLines();
     return $aLinhasArquivo;
-    
+
   }//fecha a funcao getLinhasArquivo
-   
+
   /**
    * função que valida o arquivo txt para importacao dos dados, verifica se o codigo inep é da escola 
    * onde o usuario esta logado, e verifica também o ano atual
    * @override
    */
+  #[\Override]
   function validaArquivo() {
 
     $sMsgErro      = "Importação de Arquivo Censo abortada!\n";
     $oDaoEscola    = db_utils::getdao('escola');
     $pArquivoCenso = fopen($this->sCaminhoArquivo, "r");
-    
+
     if (!$pArquivoCenso) {
       throw new Exception(" Não foi possível abrir o arquivo para importação! ");   
     }    
-    
+
     $sSqlEscola = $oDaoEscola->sql_query("", "ed18_c_codigoinep", "", "ed18_i_codigo = ".db_getsession("DB_coddepto"));      
     $rsEscola   = $oDaoEscola->sql_record($sSqlEscola);         
     if ($oDaoEscola->numrows > 0) {
       $iInepBanco = db_utils::fieldsMemory($rsEscola, 0)->ed18_c_codigoinep;   
     }
-    
+
     $sLinha         = fgets($pArquivoCenso);
     $iAno           = substr($sLinha, 33, 4);
     $iTipoRegistro  = substr($sLinha, 0, 2);
     $iCodigoInepTxt = substr($sLinha, 12, 8);
 
     if ($iTipoRegistro != "00") {
-      
+
       fclose($pArquivoCenso);
       throw new Exception(" Arquivo informado não é um arquivo de exportação geral gerado pelo Educacenso! ");        
-        
+
     } elseif ($iCodigoInepTxt != $iInepBanco) {
-      
+
       fclose($pArquivoCenso);
       throw new Exception(" Arquivo não pertence a esta escola, código inep diferente do que informado no arquivo! ");  
-                 
+
     } elseif ($this->iAnoEscolhido != $iAno) {
-      
+
       fclose($pArquivoCenso);
       throw new Exception(" Arquivo informado não pertence ao ano de ".$this->iAnoEscolhido);
-                
+
     }
-    
+
     rewind($pArquivoCenso); 
     while (!feof($pArquivoCenso)) {
-      
+
       $sLinha = fgets($pArquivoCenso);
       $iLinha = substr($sLinha, 0, 2);
       /**
@@ -96,25 +98,25 @@ class importacaoCenso2010 extends importacaoCenso {
       if (empty($iLinha)) {
         continue;
       }   
-      
+
       if ($iLinha != "00" && $iLinha != "10" && $iLinha != "20" 
           && $iLinha != "30" && $iLinha != "40" && $iLinha != "50"
           && $iLinha != "51" && $iLinha != "60" && $iLinha != "70" 
           && $iLinha != "80") {
-            
+
         fclose($pArquivoCenso);    
         throw new Exception(" Arquivo informado não é valido, existe registro de código ".
                             $iLinha." que é desconhecido"
                            );
-        
+
       } //fecha o if que verifica os tipos de registros  
-           
+
     }//fecha o while
-    
+
     fclose($pArquivoCenso);
-    
+
   } //fecha a funcao validaArquivo
-  
+
 }//fecha a classe
 
 ?>

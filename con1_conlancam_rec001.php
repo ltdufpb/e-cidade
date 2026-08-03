@@ -37,8 +37,8 @@ include(modification("classes/db_conlancamdig_classe.php"));
 include(modification("classes/db_conplano_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clconplano     = new cl_conplano;
@@ -82,7 +82,7 @@ $campos="c69_data,c69_codlan,c69_sequen,c69_codhist,c50_descr,
         ) as  DL_credito_descr
 	 ";
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Consultar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Consultar"){
      $db_opcao=2;
      //-- seleciona todos os lancamentos do lote informado e coloca num recordset
      if ($data_ini_ano !=""){   

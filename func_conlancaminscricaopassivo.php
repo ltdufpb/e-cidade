@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conlancaminscricaopassivo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconlancaminscricaopassivo = new cl_conlancaminscricaopassivo;
 $clconlancaminscricaopassivo->rotulo->label("c37_sequencial");
 $clconlancaminscricaopassivo->rotulo->label("c37_inscricaopassivo");
@@ -98,9 +98,9 @@ $clconlancaminscricaopassivo->rotulo->label("c37_inscricaopassivo");
         }else{
            $sql = $clconlancaminscricaopassivo->sql_query("",$campos,"c37_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c37_sequencial)){
-          $repassa = array("chave_c37_sequencial"=>$chave_c37_sequencial,"chave_c37_sequencial"=>$chave_c37_sequencial);
+          $repassa = ["chave_c37_sequencial"=>$chave_c37_sequencial,"chave_c37_sequencial"=>$chave_c37_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

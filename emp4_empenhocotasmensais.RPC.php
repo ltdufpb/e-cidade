@@ -53,7 +53,7 @@ try {
 
       $oEmpenho = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($oParam->iNumeroEmpenho);
       $aCotasMensais = $oEmpenho->getCotasMensais();
-      $oRetorno->cotas = array();
+      $oRetorno->cotas = [];
       $lCotaMensais = $oEmpenho->temCotaMensais();
       $nValorCota = 0;
       $oRetorno->valorempenho = $oEmpenho->getValorEmpenho();
@@ -77,7 +77,7 @@ try {
 
         $oCota = new StdClass();
         $oCota->nome_mes = urlencode(db_mes($oCotaMensal->getMes(), 2));
-        $oCota->mes = urlencode($oCotaMensal->getMes());
+        $oCota->mes = urlencode((string) $oCotaMensal->getMes());
         $oCota->valor = $oCotaMensal->getValor();
         $oCota->permitealterar = $oCotaMensal->getMes() >= $oDataEmpenho->getMes();
         if (!$lCotaMensais) {
@@ -96,7 +96,7 @@ try {
     case  'salvar' :
 
       $oEmpenho = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($oParam->iNumeroEmpenho);
-      $aCotas = array();
+      $aCotas = [];
       foreach ($oParam->cotas as $oCota) {
 
         $oCotaMensal = new EmpenhoCotaMensal();

@@ -33,7 +33,7 @@ include(modification("classes/db_rhvisavalecad_classe.php"));
 include(modification("classes/db_rhvisavale_classe.php"));
 include(modification("classes/db_db_sysfuncoes_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhvisavalecad = new cl_rhvisavalecad;
 $clrhvisavale    = new cl_rhvisavale;
 $db_opcao = 1;

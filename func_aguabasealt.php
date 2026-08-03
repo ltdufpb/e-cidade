@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguabase_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claguabase = new cl_aguabase;
 $claguabase->rotulo->label("x01_matric");
 $claguabase->rotulo->label("x01_numcgm");
@@ -163,7 +163,7 @@ $clrotulo->label("j13_descr");
           if($claguabase->numrows!=0){
             db_fieldsmemory($result,0);
 
-            if(trim($x01_multiplicador) == "f"){
+            if(trim((string) $x01_multiplicador) == "f"){
 	      $x01_multiplicador = "Não";
 	    }else{
 	      $x01_multiplicador = "Sim";

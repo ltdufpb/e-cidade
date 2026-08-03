@@ -95,7 +95,7 @@ $db_opcao = 1;
             <td align="right"> <strong>Opção de Seleção :<strong></td>
              <td align="left">&nbsp;&nbsp;&nbsp;
               <?php
-                $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
+                $xxx = ["S"=>"Somente Selecionados","N"=>"Menos os Selecionados"];
                 db_select('param_where',$xxx,true,2);
               ?>
               </td>
@@ -104,7 +104,7 @@ $db_opcao = 1;
             <td align="right"> <strong>Ordem :<strong></td>
             <td align="left">&nbsp;&nbsp;&nbsp;
               <?php
-                $yyy = array("alf"=>"Alfabética","num"=>"Numérica");
+                $yyy = ["alf"=>"Alfabética","num"=>"Numérica"];
                 db_select('order',$yyy,true,2);
               ?>&nbsp;&nbsp;&nbsp;
             </td>

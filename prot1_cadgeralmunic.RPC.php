@@ -93,7 +93,7 @@ switch ($oParam->exec) {
       }
 
       //Se houve retorno tenho fazer o cadastro de endereco para retornar a chave
-      if (trim($oCidadao->z01_ender) != "") {
+      if (trim((string) $oCidadao->z01_ender) != "") {
 
         $oEnderecoCidadao = endereco::buscaEnderecoCidadao($oCidadao->ov02_sequencial, $oCidadao->ov02_seq, false);
 
@@ -104,28 +104,28 @@ switch ($oParam->exec) {
             $oEndereco = new endereco(null);
 
             $oEndereco->setCodigoEstado(1);
-            if (trim($oEnderecoCidadao[0]->db71_sequencial) != "") {
+            if (trim((string) $oEnderecoCidadao[0]->db71_sequencial) != "") {
               $oEndereco->setCodigoEstado($oEnderecoCidadao[0]->db71_sequencial);
             }
 
             $oEndereco->setCodigoMunicipio(0);
-            if (trim($oEnderecoCidadao[0]->db72_sequencial) != "") {
+            if (trim((string) $oEnderecoCidadao[0]->db72_sequencial) != "") {
               $oEndereco->setCodigoMunicipio($oEnderecoCidadao[0]->db72_sequencial);
-            } else if(trim($oEnderecoCidadao[0]->ov02_munic) != ""){
-              $oEndereco->setDescricaoMunicipio(trim($oEnderecoCidadao[0]->ov02_munic));
+            } else if(trim((string) $oEnderecoCidadao[0]->ov02_munic) != ""){
+              $oEndereco->setDescricaoMunicipio(trim((string) $oEnderecoCidadao[0]->ov02_munic));
               $oEndereco->setCodigoMunicipio(null);
             }
 
             $oEndereco->setCodigoBairro(0);
-            if (trim($oEnderecoCidadao[0]->db73_sequencial) != "") {
+            if (trim((string) $oEnderecoCidadao[0]->db73_sequencial) != "") {
               $oEndereco->setCodigoBairro($oEnderecoCidadao[0]->db73_sequencial);
-            } else if(trim($oEnderecoCidadao[0]->ov02_bairro) != ""){
-              $oEndereco->setDescricaoBairro(trim($oEnderecoCidadao[0]->ov02_bairro));
+            } else if(trim((string) $oEnderecoCidadao[0]->ov02_bairro) != ""){
+              $oEndereco->setDescricaoBairro(trim((string) $oEnderecoCidadao[0]->ov02_bairro));
               $oEndereco->setCodigoBairro(null);
             }
 
             $oEndereco->setCodigoRua($oEnderecoCidadao[0]->db74_sequencial);
-            if (trim($oEnderecoCidadao[0]->db74_sequencial) == "") {
+            if (trim((string) $oEnderecoCidadao[0]->db74_sequencial) == "") {
               $oEndereco->setCodigoRua('');
               $oEndereco->setDescricaoRua($oEnderecoCidadao[0]->ov02_endereco);
             }
@@ -220,52 +220,52 @@ switch ($oParam->exec) {
     $postgresResource = db_query($sSql);
     $rs = pg_fetch_assoc($postgresResource);
 
-    $sTipoPessoa = strlen($rs['z01_cgccpf']) == 14 ? 'juridica' : 'fisica';
+    $sTipoPessoa = strlen((string) $rs['z01_cgccpf']) == 14 ? 'juridica' : 'fisica';
 
     $oCgm = new stdClass();
 
     $oCgm->z01_numcgm = $rs['z05_numcgm'];
-    $oCgm->z01_cadast = date('d/m/Y', strtotime($rs['z05_cadast']));
+    $oCgm->z01_cadast = date('d/m/Y', strtotime((string) $rs['z05_cadast']));
     $oCgm->z01_cpf = $rs['z05_cgccpf'];
     $oCgm->z01_fax = $rs['z05_fax'];
     $oCgm->z01_cxpostal = $rs['z05_cxpostal'];
     $oCgm->z01_cxposcon = $rs['z05_cxposcon'];
-    $oCgm->z01_obs = urlencode($rs['z05_obs']);
+    $oCgm->z01_obs = urlencode((string) $rs['z05_obs']);
     $oCgm->z01_telef = $rs['z05_telef'];
     $oCgm->z01_telcel = $rs['z05_telcel'];
     $oCgm->z01_incest = $rs['z05_incest'];
-    $oCgm->municipio = urlencode($rs['z05_munic']);
+    $oCgm->municipio = urlencode((string) $rs['z05_munic']);
     $oCgm->z01_telcon = $rs['z05_telcon'];
     $oCgm->z01_celcon = $rs['z05_celcon'];
-    $oCgm->z01_nomecomple = urlencode($rs['z05_nomecomple']);
-    $oCgm->data_alteracao = date('d/m/Y', strtotime($rs['z05_data_alt']));
+    $oCgm->z01_nomecomple = urlencode((string) $rs['z05_nomecomple']);
+    $oCgm->data_alteracao = date('d/m/Y', strtotime((string) $rs['z05_data_alt']));
 
     if ($sTipoPessoa == 'fisica') {
       $oCgm->z01_ident = $rs['z05_ident'];
-      $oCgm->z01_nome = urlencode($rs['z05_nome']);
-      $oCgm->z01_pai = urlencode($rs['z05_pai']);
-      $oCgm->z01_mae = urlencode($rs['z05_mae']);
+      $oCgm->z01_nome = urlencode((string) $rs['z05_nome']);
+      $oCgm->z01_pai = urlencode((string) $rs['z05_pai']);
+      $oCgm->z01_mae = urlencode((string) $rs['z05_mae']);
       $oCgm->z01_nasc = $rs['z05_nasc'];
       $oCgm->z01_estciv = $rs['z05_estciv'];
       $oCgm->z01_sexo = $rs['z05_sexo'];
       $oCgm->z01_nacion = $rs['z05_nacion'];
-      $oCgm->z01_profis = urlencode($rs['z05_profis']);
-      $oCgm->z01_email = urlencode($rs['z05_email']);
-      $oCgm->z01_emailc = urlencode($rs['z05_emailc']);
+      $oCgm->z01_profis = urlencode((string) $rs['z05_profis']);
+      $oCgm->z01_email = urlencode((string) $rs['z05_email']);
+      $oCgm->z01_emailc = urlencode((string) $rs['z05_emailc']);
       $oCgm->z01_dtfalecimento = $rs['z05_dtfalecimento'];
       $oCgm->z01_identorgao = $rs['z05_identorgao'];
       $oCgm->z01_identdtexp = $rs['z05_identdexp'];
       $oCgm->z01_naturalidade = $rs['z05_naturalidade'];
       $oCgm->z01_escolaridade = $rs['z05_escolaridade'];
       $oCgm->z01_trabalha = $rs['z05_trabalha'];
-      $oCgm->z01_localtrabalha = urlencode($rs['z05_localtrabalha']);
+      $oCgm->z01_localtrabalha = urlencode((string) $rs['z05_localtrabalha']);
       $oCgm->z01_renda = $rs['z05_renda'];
       $oCgm->z01_pis = $rs['z05_pis'];
       $oCgm->z04_rhcbo = $rs['z05_rhcbo'];
       $oCgm->z01_genero = $rs['z01_genero'];
     } else {
-      $oCgm->z01_contato = urlencode($rs['z05_contato']);
-      $oCgm->z01_nomefanta = urlencode($rs['z05_nomefanta']);
+      $oCgm->z01_contato = urlencode((string) $rs['z05_contato']);
+      $oCgm->z01_nomefanta = urlencode((string) $rs['z05_nomefanta']);
       $oCgm->nire = $rs['z05_nire'];
     }
 
@@ -285,7 +285,7 @@ switch ($oParam->exec) {
     // Aqui Valida se o usuario tem permissao para manipular CPF zerado {00000000000}
     $lPermissaoCpfZerado = db_permissaomenu(db_getsession("DB_anousu"),604, 3775);
 
-    if ($oCgm->isFisico() && $lPermissaoCpfZerado == 'false' && trim($oCgm->getCpf()) == '00000000000') {
+    if ($oCgm->isFisico() && $lPermissaoCpfZerado == 'false' && trim((string) $oCgm->getCpf()) == '00000000000') {
 
       $oRetorno->status = 2;
       $oRetorno->message = urlencode($sMsgPermissao);
@@ -308,34 +308,34 @@ switch ($oParam->exec) {
       $oCgmFisico = new stdClass();
 
       $oCgmFisico->lfisico    = true;
-      $oCgmFisico->z01_cadast = date('d/m/Y', strtotime($oCgm->getCadastro()));
+      $oCgmFisico->z01_cadast = date('d/m/Y', strtotime((string) $oCgm->getCadastro()));
 
       $oCgmFisico->z01_numcgm        = $oCgm->getCodigo();
       $oCgmFisico->z01_cpf           = $oCgm->getCpf();
       $oCgmFisico->z01_ident         = $oCgm->getIdentidade();
-      $oCgmFisico->z01_nome          = urlencode($oCgm->getNome());
-      $oCgmFisico->z01_nomecomple    = urlencode($oCgm->getNomeCompleto());
-      $oCgmFisico->z01_pai           = urlencode($oCgm->getNomePai());
-      $oCgmFisico->z01_mae           = urlencode($oCgm->getNomeMae());
+      $oCgmFisico->z01_nome          = urlencode((string) $oCgm->getNome());
+      $oCgmFisico->z01_nomecomple    = urlencode((string) $oCgm->getNomeCompleto());
+      $oCgmFisico->z01_pai           = urlencode((string) $oCgm->getNomePai());
+      $oCgmFisico->z01_mae           = urlencode((string) $oCgm->getNomeMae());
       $oCgmFisico->z01_nasc          = $oCgm->getDataNascimento();
       $oCgmFisico->z01_estciv        = $oCgm->getEstadoCivil();
       $oCgmFisico->z01_sexo          = $oCgm->getSexo();
       $oCgmFisico->z01_nacion        = $oCgm->getNacionalidade();
-      $oCgmFisico->municipio         = urlencode($oCgm->getMunicipio());
-      $oCgmFisico->z01_profis        = urlencode($oCgm->getProfissao());
+      $oCgmFisico->municipio         = urlencode((string) $oCgm->getMunicipio());
+      $oCgmFisico->z01_profis        = urlencode((string) $oCgm->getProfissao());
       $oCgmFisico->z01_telef         = $oCgm->getTelefone();
       $oCgmFisico->z01_telcel        = $oCgm->getCelular();
-      $oCgmFisico->z01_email         = urlencode($oCgm->getEmail());
+      $oCgmFisico->z01_email         = urlencode((string) $oCgm->getEmail());
       $oCgmFisico->z01_telcon        = $oCgm->getTelefoneComercial();
       $oCgmFisico->z01_celcon        = $oCgm->getCelularComercial();
-      $oCgmFisico->z01_emailc        = urlencode($oCgm->getEmailComercial());
+      $oCgmFisico->z01_emailc        = urlencode((string) $oCgm->getEmailComercial());
       $oCgmFisico->z01_dtfalecimento = $oCgm->getDataFalecimento();
       $oCgmFisico->z01_identorgao    = $oCgm->getIdentOrgao();
       $oCgmFisico->z01_identdtexp    = $oCgm->getIdentDataExp();
       $oCgmFisico->z01_naturalidade  = $oCgm->getNaturalidade();
       $oCgmFisico->z01_escolaridade  = $oCgm->getEscolaridade();
       $oCgmFisico->z01_trabalha      = $oCgm->getTrabalha();
-      $oCgmFisico->z01_localtrabalha = urlencode($oCgm->getLocalTrabalho());
+      $oCgmFisico->z01_localtrabalha = urlencode((string) $oCgm->getLocalTrabalho());
       $oCgmFisico->z01_renda         = $oCgm->getRenda();
       $oCgmFisico->z01_pis           = $oCgm->getPIS();
       $oCgmFisico->z01_foto          = $oCgm->getFotoPrincipal();
@@ -345,7 +345,7 @@ switch ($oParam->exec) {
       $oCgmFisico->z01_cxpostal      = $oCgm->getCaixaPostal();
       $oCgmFisico->z01_cxposcon      = $oCgm->getCaixaPostalComercial();
       $oCgmFisico->z01_incest        = $oCgm->getInscricaoEstadual();
-      $oCgmFisico->z01_obs           = urlencode($oCgm->getObs());
+      $oCgmFisico->z01_obs           = urlencode((string) $oCgm->getObs());
 
       $oCgmFisico->z04_rhcbo             = $oCgm->getCBO();
       /**
@@ -371,9 +371,9 @@ switch ($oParam->exec) {
       /**
        *  Campos para e-social - FIM
        */
-      $oCgmFisico->z09_documento         = urlencode($oCgm->getDocumentoEstrangeiro());
-      $oCgmFisico->z09_pais              = urlencode($oCgm->getPaisEstrangeiro());
-      $oCgmFisico->z09_cidade            = urlencode($oCgm->getCidadeEstrangeiro());
+      $oCgmFisico->z09_documento         = urlencode((string) $oCgm->getDocumentoEstrangeiro());
+      $oCgmFisico->z09_pais              = urlencode((string) $oCgm->getPaisEstrangeiro());
+      $oCgmFisico->z09_cidade            = urlencode((string) $oCgm->getCidadeEstrangeiro());
       // dd($oCgmFisico);
       $oRetorno->cgm = $oCgmFisico;
 
@@ -383,42 +383,42 @@ switch ($oParam->exec) {
       $oCgmJuridico = new stdClass();
 
       $oCgmJuridico->lfisico = false;
-      $oCgmJuridico->z01_cadast = date('d/m/Y', strtotime($oCgm->getCadastro()));
+      $oCgmJuridico->z01_cadast = date('d/m/Y', strtotime((string) $oCgm->getCadastro()));
 
       $oCgmJuridico->z01_numcgm      = $oCgm->getCodigo();
       $oCgmJuridico->z01_cgc         = $oCgm->getCnpj();
       $oCgmJuridico->z01_incest      = $oCgm->getInscricaoEstadual();
-      $oCgmJuridico->municipio       = urlencode($oCgm->getMunicipio());
+      $oCgmJuridico->municipio       = urlencode((string) $oCgm->getMunicipio());
       $oCgmJuridico->z01_telef       = $oCgm->getTelefone();
       $oCgmJuridico->z01_telcel      = $oCgm->getCelular();
-      $oCgmJuridico->z01_email       = urlencode($oCgm->getEmail());
+      $oCgmJuridico->z01_email       = urlencode((string) $oCgm->getEmail());
       $oCgmJuridico->z01_telcon      = $oCgm->getTelefoneComercial();
       $oCgmJuridico->z01_celcon      = $oCgm->getCelularComercial();
-      $oCgmJuridico->z01_emailc      = urlencode($oCgm->getEmailComercial());
-      $oCgmJuridico->z01_nome        = urlencode($oCgm->getNome());
-      $oCgmJuridico->z01_contato     = urlencode($oCgm->getContato());
-      $oCgmJuridico->z01_nomefanta   = urlencode($oCgm->getNomeFantasia());
-      $oCgmJuridico->z01_nomecomple  = urlencode($oCgm->getNomeCompleto());
+      $oCgmJuridico->z01_emailc      = urlencode((string) $oCgm->getEmailComercial());
+      $oCgmJuridico->z01_nome        = urlencode((string) $oCgm->getNome());
+      $oCgmJuridico->z01_contato     = urlencode((string) $oCgm->getContato());
+      $oCgmJuridico->z01_nomefanta   = urlencode((string) $oCgm->getNomeFantasia());
+      $oCgmJuridico->z01_nomecomple  = urlencode((string) $oCgm->getNomeCompleto());
       $oCgmJuridico->z01_foto        = $oCgm->getFotoPrincipal();
       $oCgmJuridico->nire            = $oCgm->getNire();
       // dados para novo cadastro CGM
       $oCgmJuridico->z01_fax         = $oCgm->getFax();
       $oCgmJuridico->z01_cxpostal    = $oCgm->getCaixaPostal();
       $oCgmJuridico->z01_cxposcon    = $oCgm->getCaixaPostalComercial();
-      $oCgmJuridico->z01_obs         = urlencode($oCgm->getObs());
+      $oCgmJuridico->z01_obs         = urlencode((string) $oCgm->getObs());
 
       $oRetorno->cgm = $oCgmJuridico;
     }
 
     $oRetorno->endereco = false;
-    if (trim($oRetorno->cgm->z01_numcgm) != '') {
+    if (trim((string) $oRetorno->cgm->z01_numcgm) != '') {
 
       $oRetorno->endereco = endereco::findCgmEnderecoByCgm($oRetorno->cgm->z01_numcgm);
 
       $oRetorno->tipoempresa = $oCgm->getTipoEmpresa();
 
       if ($oRetorno->tipoempresa !== false) {
-       $oRetorno->tipoempresa[0]->db98_descricao = urlencode($oRetorno->tipoempresa[0]->db98_descricao);
+       $oRetorno->tipoempresa[0]->db98_descricao = urlencode((string) $oRetorno->tipoempresa[0]->db98_descricao);
       }
 
       $oRetorno->cgmmunicipio = $oCgm->getCgmMunicipio();
@@ -470,7 +470,7 @@ switch ($oParam->exec) {
 
     $aAux = (array) $oParam->pessoa;
 
-    $aCamposObrigatoriosNaoPreenchidos = array();
+    $aCamposObrigatoriosNaoPreenchidos = [];
 
     while ($row = pg_fetch_assoc($oPostgresResource)) {
       if (empty($aAux[$row['p73_html_id']])
@@ -550,10 +550,10 @@ switch ($oParam->exec) {
       $oCgm->setEstadoCivil($oParam->pessoa->z01_estciv);
       $oCgm->setSexo($oParam->pessoa->z01_sexo);
       $oCgm->setNacionalidade($oParam->pessoa->z01_nacion);
-      $oCgm->setTelefone(preg_replace("/[^0-9|()-.]/", "", $oParam->pessoa->z01_telef));
-      $oCgm->setCelular(preg_replace("/[^0-9|()-.]/", "", $oParam->pessoa->z01_telcel));
-      $oCgm->setTelefoneComercial(preg_replace("/[^0-9|()-.]/", "", $oParam->pessoa->z01_telcon));
-      $oCgm->setCelularComercial(preg_replace("/[^0-9|()-.]/", "", $oParam->pessoa->z01_celcon));
+      $oCgm->setTelefone(preg_replace("/[^0-9|()-.]/", "", (string) $oParam->pessoa->z01_telef));
+      $oCgm->setCelular(preg_replace("/[^0-9|()-.]/", "", (string) $oParam->pessoa->z01_telcel));
+      $oCgm->setTelefoneComercial(preg_replace("/[^0-9|()-.]/", "", (string) $oParam->pessoa->z01_telcon));
+      $oCgm->setCelularComercial(preg_replace("/[^0-9|()-.]/", "", (string) $oParam->pessoa->z01_celcon));
       $oCgm->setDataNascimento($oParam->pessoa->z01_nasc);
       $oCgm->setDataFalecimento($oParam->pessoa->z01_dtfalecimento);
       $oCgm->setIdentDataExp($oParam->pessoa->z01_identdtexp);
@@ -575,9 +575,9 @@ switch ($oParam->exec) {
       $oCgm->setRenda($oParam->pessoa->z01_renda);
 
       /*seta os endereços*/
-      
+
       $oEnderecoPrimario   = endereco::findEnderecoByCodigo($oParam->endereco->idEndPrimario,   false);
-      
+
       $oEnderecoSecundario = false;
       if (!empty($oParam->endereco->idEndSecundario)) {
         $oEnderecoSecundario = endereco::findEnderecoByCodigo($oParam->endereco->idEndSecundario, false);
@@ -652,7 +652,7 @@ switch ($oParam->exec) {
       }
       //Aqui vai manipular o cidadaocgm
       if (!$sqlErro) {
-        if (trim($oParam->cidadao->ov02_sequencial) != "" && trim($oParam->cidadao->ov02_seq) != "") {
+        if (trim((string) $oParam->cidadao->ov02_sequencial) != "" && trim((string) $oParam->cidadao->ov02_seq) != "") {
 
           $oDaoCidadoCgm    = db_utils::getDao("cidadaocgm");
           $sCampos = " * ";
@@ -670,7 +670,7 @@ switch ($oParam->exec) {
             $oDaoCidadoCgm->incluir(null);
             if ($oDaoCidadoCgm->erro_status == "0") {
               $oRetorno->status = 2;
-              $oRetorno->message = urlencode($oDaoCidadoCgm->erro_msg);
+              $oRetorno->message = urlencode((string) $oDaoCidadoCgm->erro_msg);
               $sqlErro = true;
             }
           }
@@ -687,7 +687,7 @@ switch ($oParam->exec) {
             if ($oDaoCidado->erro_status == 0) {
 
               $oRetorno->status = 2;
-              $oRetorno->message = urlencode($oDaoCidado->erro_msg);
+              $oRetorno->message = urlencode((string) $oDaoCidado->erro_msg);
               $sqlErro = true;
             }
           }
@@ -809,7 +809,7 @@ switch ($oParam->exec) {
 
       if (!$sqlErro) {
 
-        if (trim($oParam->cidadao->ov02_sequencial) != "" && trim($oParam->cidadao->ov02_seq) != "") {
+        if (trim((string) $oParam->cidadao->ov02_sequencial) != "" && trim((string) $oParam->cidadao->ov02_seq) != "") {
 
           $oDaoCidadoCgm    = db_utils::getDao("cidadaocgm");
           $sCampos = " * ";
@@ -828,7 +828,7 @@ switch ($oParam->exec) {
             if ($oDaoCidadoCgm->erro_status == "0") {
 
               $oRetorno->status = 2;
-              $oRetorno->message = urlencode($oDaoCidadoCgm->erro_msg);
+              $oRetorno->message = urlencode((string) $oDaoCidadoCgm->erro_msg);
               $sqlErro = true;
 
             }
@@ -846,7 +846,7 @@ switch ($oParam->exec) {
             if ($oDaoCidado->erro_status == "0") {
 
               $oRetorno->status = 2;
-              $oRetorno->message = urlencode($oDaoCidado->erro_msg);
+              $oRetorno->message = urlencode((string) $oDaoCidado->erro_msg);
               $sqlErro = true;
             }
           }
@@ -873,7 +873,7 @@ switch ($oParam->exec) {
       /**
        * Se Tipo Empresa for diferente de vazio inseri
        */
-      if (trim($oParam->tipoEmpresa->iTipoEmpresa) != "") {
+      if (trim((string) $oParam->tipoEmpresa->iTipoEmpresa) != "") {
 
         $oDaoCgmTipoEmpresa->z03_numcgm      = $oCgm->getCodigo();
         $oDaoCgmTipoEmpresa->z03_tipoempresa = $oParam->tipoEmpresa->iTipoEmpresa;
@@ -881,7 +881,7 @@ switch ($oParam->exec) {
 
         if ($oDaoCgmTipoEmpresa->erro_status == "0") {
           $oRetorno->status = 2;
-          $oRetorno->message = urlencode($oDaoCgmTipoEmpresa->erro_msg);
+          $oRetorno->message = urlencode((string) $oDaoCgmTipoEmpresa->erro_msg);
           $sqlErro = true;
         }
 
@@ -918,7 +918,7 @@ switch ($oParam->exec) {
     // Aqui Valida se o usuario tem permissao para manipular CPF zerado {00000000000}
     $lPermissaoCpfZerado = db_permissaomenu(db_getsession("DB_anousu"),604,4459);
 
-    if ($oCgm->isFisico() && $lPermissaoCpfZerado == 'false' && trim($oCgm->getCpf()) == '00000000000') {
+    if ($oCgm->isFisico() && $lPermissaoCpfZerado == 'false' && trim((string) $oCgm->getCpf()) == '00000000000') {
 
       $oRetorno->status = 2;
       $oRetorno->message = urlencode($sMsgPermissao);
@@ -938,19 +938,19 @@ switch ($oParam->exec) {
     $oCgm->setCodigo($oParam->pessoa->z01_numcgm);
 
     if (isset($oParam->pessoa->z01_ender)) {
-      $oCgm->setEnderecoPrimario(utf8_decode(db_stdClass::db_stripTagsJson(($oParam->pessoa->z01_ender))));
+      $oCgm->setEnderecoPrimario(mb_convert_encoding(db_stdClass::db_stripTagsJson(($oParam->pessoa->z01_ender)), 'ISO-8859-1'));
     }
     if (isset($oParam->pessoa->z01_numero)) {
       $oCgm->setNumero($oParam->pessoa->z01_numero);
     }
     if (isset($oParam->pessoa->z01_compl)) {
-      $oCgm->setComplemento((utf8_decode(db_stdClass::db_stripTagsJson($oParam->pessoa->z01_compl))));
+      $oCgm->setComplemento((mb_convert_encoding(db_stdClass::db_stripTagsJson($oParam->pessoa->z01_compl), 'ISO-8859-1')));
     }
     if (isset($oParam->pessoa->z01_telef)) {
       $oCgm->setTelefone($oParam->pessoa->z01_telef);
     }
     if (isset($oParam->pessoa->z01_email)) {
-      $oCgm->setEmail((utf8_decode(db_stdClass::db_stripTagsJson($oParam->pessoa->z01_email))));
+      $oCgm->setEmail((mb_convert_encoding(db_stdClass::db_stripTagsJson($oParam->pessoa->z01_email), 'ISO-8859-1')));
     }
     if (isset($oParam->pessoa->z01_cpf)) {
 
@@ -984,7 +984,7 @@ switch ($oParam->exec) {
       $oCgm->setMunicipio($oParam->pessoa->z01_munic);
     }
     if (isset($oParam->pessoa->z01_bairro)) {
-      $oCgm->setBairro((utf8_decode(db_stdClass::db_stripTagsJson($oParam->pessoa->z01_bairro))));
+      $oCgm->setBairro((mb_convert_encoding(db_stdClass::db_stripTagsJson($oParam->pessoa->z01_bairro), 'ISO-8859-1')));
     }
     if (isset($oParam->pessoa->z01_cep)) {
       $oCgm->setCep($oParam->pessoa->z01_cep);

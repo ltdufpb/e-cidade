@@ -172,8 +172,8 @@ if(isset($cancelar)){
  */
 function validaTelefone( $sTelefone ) {
 
-  $iPrimeiroNumero = substr($sTelefone, 0, 1);
-  $iTotalNumeros   = strlen($sTelefone);
+  $iPrimeiroNumero = substr((string) $sTelefone, 0, 1);
+  $iTotalNumeros   = strlen((string) $sTelefone);
   $sString         = str_replace($iPrimeiroNumero, " ", $sTelefone, $iContador);
 
   if ($iContador == $iTotalNumeros) {

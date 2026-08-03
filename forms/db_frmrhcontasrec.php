@@ -265,13 +265,13 @@ if ($db_opcao == 1) {
       db_iframe_rhcontasrec.hide();
       <?php
         if ($db_opcao != 1) {
-          echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) 
+          echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) 
                . "?chavepesquisa=' + iConta + '&chavepesquisa1=' + iCodigo + "
                . "'&chavepesquisa3=' + iAnousu";
         }
       ?>
     }
 
-    <?php echo (isset($sPosScripts) ? $sPosScripts : ""); ?>
+    <?php echo ($sPosScripts ?? ""); ?>
   </script>
 </html>

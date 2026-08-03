@@ -21,41 +21,41 @@ class M9418MultasTransito extends PostgresMigration
 
   private function criarmenu() {
      // Cria o item de MENU
-    $aColumns   =  array('id_item' ,'descricao' ,'help' ,'funcao' ,'itemativo' ,'manutencao' ,'desctec' ,'libcliente');
-    $aValues    =  array(
-      array(10448 ,'Cadastro de Infrações de Trânsito' ,'Cadastro de Infrações de Trânsito' ,'' ,'1' ,'1' ,'Menu referente ao cadastro de infrações de trânsito.' ,'true' ),
-      array(10449 ,'Inclusão' ,'Incluir infrações de trânsito' ,'inf1_infracaotransito.php?iOpcao=1' ,'1' ,'1' ,'Inclusão de Infrações de trânsito' ,'true' ),
-      array(10450 ,'Alteração','Alterar infrações de trânsito' ,'inf1_infracaotransito.php?iOpcao=2' ,'1' ,'1' ,'Alteração de Infrações de trânsito' ,'true'),
-      array(10451 ,'Exclusão' ,'Excluir infrações de trânsito' ,'inf1_infracaotransito.php?iOpcao=3' ,'1' ,'1' ,'Excluir infrações de trânsito' ,'true'),
-      array(10452 ,'Infrações de Trânsito ' ,'Infrações de Trânsito ' ,'' ,'1' ,'1' ,'Importação do arquivo de multas e as configurações das receitas para cada nivel de multa. ' ,'true'),
-      array(10453 ,'Configuração de Receita das Infrações' ,'Configuração de Receita das Infrações' ,'inf4_receitasinfracaotransito004.php' ,'1' ,'1' ,'Configurações de receita das infrações, conforme o nível de gravidade. ' ,'true'),
-      array(10454 ,'Importação do Arquivo de Multas' ,'Importação do Arquivo de Multas' ,'inf4_importacaoinfracaotransito005.php' ,'1' ,'1' ,'Importação do arquivo de multas' ,'true'),
-      array(10455 ,'Relatórios de Infrações de Trânsito' ,'Relatórios de Infrações de Trânsito' ,'' ,'1' ,'1' ,'Relatórios referente a importação dos arquivos de multas de trânsito' ,'false' ),
-      array(10456 ,'Arrecadação de Multas de Trânsito' ,'Arrecadação de Multas de Trânsito' ,'inf2_arrecmultastransito002.php' ,'1' ,'1' ,'Relatório que demonstra as arrecadações das multas de trânsito.' ,'false'),
-      array(10457 ,'Pagamentos em Duplicidade' ,'Pagamentos em Duplicidade' ,'inf2_pagamentoduplicidade002.php' ,'1' ,'1' ,'Relatório que demonstra os pagamentos feitos em duplicidades.' ,'false'),
+    $aColumns   =  ['id_item' ,'descricao' ,'help' ,'funcao' ,'itemativo' ,'manutencao' ,'desctec' ,'libcliente'];
+    $aValues    =  [
+      [10448 ,'Cadastro de Infrações de Trânsito' ,'Cadastro de Infrações de Trânsito' ,'' ,'1' ,'1' ,'Menu referente ao cadastro de infrações de trânsito.' ,'true' ],
+      [10449 ,'Inclusão' ,'Incluir infrações de trânsito' ,'inf1_infracaotransito.php?iOpcao=1' ,'1' ,'1' ,'Inclusão de Infrações de trânsito' ,'true' ],
+      [10450 ,'Alteração','Alterar infrações de trânsito' ,'inf1_infracaotransito.php?iOpcao=2' ,'1' ,'1' ,'Alteração de Infrações de trânsito' ,'true'],
+      [10451 ,'Exclusão' ,'Excluir infrações de trânsito' ,'inf1_infracaotransito.php?iOpcao=3' ,'1' ,'1' ,'Excluir infrações de trânsito' ,'true'],
+      [10452 ,'Infrações de Trânsito ' ,'Infrações de Trânsito ' ,'' ,'1' ,'1' ,'Importação do arquivo de multas e as configurações das receitas para cada nivel de multa. ' ,'true'],
+      [10453 ,'Configuração de Receita das Infrações' ,'Configuração de Receita das Infrações' ,'inf4_receitasinfracaotransito004.php' ,'1' ,'1' ,'Configurações de receita das infrações, conforme o nível de gravidade. ' ,'true'],
+      [10454 ,'Importação do Arquivo de Multas' ,'Importação do Arquivo de Multas' ,'inf4_importacaoinfracaotransito005.php' ,'1' ,'1' ,'Importação do arquivo de multas' ,'true'],
+      [10455 ,'Relatórios de Infrações de Trânsito' ,'Relatórios de Infrações de Trânsito' ,'' ,'1' ,'1' ,'Relatórios referente a importação dos arquivos de multas de trânsito' ,'false' ],
+      [10456 ,'Arrecadação de Multas de Trânsito' ,'Arrecadação de Multas de Trânsito' ,'inf2_arrecmultastransito002.php' ,'1' ,'1' ,'Relatório que demonstra as arrecadações das multas de trânsito.' ,'false'],
+      [10457 ,'Pagamentos em Duplicidade' ,'Pagamentos em Duplicidade' ,'inf2_pagamentoduplicidade002.php' ,'1' ,'1' ,'Relatório que demonstra os pagamentos feitos em duplicidades.' ,'false'],
 
-    );
+    ];
 
-    $table      = $this->table('db_itensmenu', array('schema' => 'configuracoes'));
+    $table      = $this->table('db_itensmenu', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // Víncula item de menu
-    $aColumns   =    array('id_item', 'id_item_filho', 'menusequencia', 'modulo');
-    $aValues    =    array(
-      array(29 ,10448 ,279 ,39),
-      array(10448 ,10449 ,1 ,39),
-      array(10448 ,10450 ,2 ,39),
-      array(10448 ,10451 ,3 ,39),
-      array(32 ,10452 ,489 ,39),
-      array(10452 ,10453 ,1 ,39),
-      array(10452 ,10454 ,2 ,39),
-      array(30 ,10455 ,468 ,39),
-      array(10455 ,10456 ,1 ,39),
-      array(10455 ,10457 ,2 ,39),
-    );
+    $aColumns   =    ['id_item', 'id_item_filho', 'menusequencia', 'modulo'];
+    $aValues    =    [
+      [29 ,10448 ,279 ,39],
+      [10448 ,10449 ,1 ,39],
+      [10448 ,10450 ,2 ,39],
+      [10448 ,10451 ,3 ,39],
+      [32 ,10452 ,489 ,39],
+      [10452 ,10453 ,1 ,39],
+      [10452 ,10454 ,2 ,39],
+      [30 ,10455 ,468 ,39],
+      [10455 ,10456 ,1 ,39],
+      [10455 ,10457 ,2 ,39],
+    ];
 
-    $table      =  $this->table('db_menu', array('schema' => 'configuracoes'));
+    $table      =  $this->table('db_menu', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
   }

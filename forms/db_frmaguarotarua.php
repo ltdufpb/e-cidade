@@ -140,10 +140,10 @@
         <td nowrap title="<?=@$Tx07_orientacao?>"><?=@$Lx07_orientacao?></td>
         <td>
           <?php 
-            $x = array("-"=>"---------",
+            $x = ["-"=>"---------",
                        "D"=>"DIREITA",
                        "E"=>"ESQUERDA",
-                       "S"=>"SUL");
+                       "S"=>"SUL"];
             
             db_select('x07_orientacao',$x,true,$db_opcao,  "onchange = 'js_verifica_numeracao_rua()'");
           ?>
@@ -169,7 +169,7 @@
 	    <tr>
 		    <td valign="top" align="center">
 		      <?php 
-            $chavepri= array("x07_codrotarua"=>@$x07_codrotarua);
+            $chavepri= ["x07_codrotarua"=>@$x07_codrotarua];
             $cliframe_alterar_excluir->chavepri      = $chavepri;
             $cliframe_alterar_excluir->sql           = $claguarotarua->sql_query(null, "*", null, "x07_codrota = $x07_codrota");
             //$cliframe_alterar_excluir->campos      = "x07_codrotarua, x07_codrota, x07_codrua, x07_ordem, x07_nroini, x07_nrofim";

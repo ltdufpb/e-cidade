@@ -44,7 +44,7 @@ $oConfig->iMargemEtiqueta  = 15;
  * Array contendo os livros que serão impressos
  * @var array
  */
-$aLivros = array();
+$aLivros = [];
 
 try {
 
@@ -95,8 +95,8 @@ foreach ($aLivros as $iIndex => $oDados) {
     $iContadorCelulas = 0;
   }
 
-  $sMsg  = substr($oDados->bi06_classcdd, 0,12). "\n";
-  $sMsg .= substr($oDados->bi06_cutter,0,12). "\n";
+  $sMsg  = substr((string) $oDados->bi06_classcdd, 0,12). "\n";
+  $sMsg .= substr((string) $oDados->bi06_cutter,0,12). "\n";
   $sMsg .= (!empty($oDados->bi06_volume)) ? "V. {$oDados->bi06_volume}\n" :  " \n";
   $sMsg .= "Ex. {$oDados->bi23_exemplar}\n";
 
@@ -117,7 +117,7 @@ foreach ($aLivros as $iIndex => $oDados) {
   }
 
   $oPdf->MultiCell($oConfig->iTamanhoCelula, 5, $sMsg, 0 );
-  $oPdf->Text($iMargemCodBarras +9 , $oPdf->getY()-11, str_pad($oDados->bi23_codbarras, 13, 0, STR_PAD_LEFT));
+  $oPdf->Text($iMargemCodBarras +9 , $oPdf->getY()-11, str_pad((string) $oDados->bi23_codbarras, 13, 0, STR_PAD_LEFT));
   $oPdf->int25($iMargemCodBarras, $oPdf->getY()-10, $oDados->bi23_codbarras, 9, 0.4);//codbarras
   $oPdf->ln(3);
   $iContadorCelulas++;

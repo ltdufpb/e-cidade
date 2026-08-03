@@ -32,9 +32,9 @@ try {
             $retorno->formulario = $avaliacaoAdapter->getObject();
             break;
         case 'salvar':
-            $where = array(
+            $where = [
                 "eso19_codigoconvocacao = '{$parametros->codConv}'"
-            );
+            ];
 
             $dao = new cl_avaliacaogruporespostatrabintermitente();
             $sql = $dao->sql_query_file(null, 'eso19_avaliacaogruporesposta', null, implode(' AND ', $where));
@@ -86,9 +86,9 @@ try {
             $retorno->empregadores = db_utils::getCollectionByRecord($resultadoSqlCgm);
             break;
         case 'verificarSeExisteConvocacao':
-            $where = array(
+            $where = [
                 "eso19_codigoconvocacao = '{$parametros->codConv}'"
-            );
+            ];
 
             $dao = new cl_avaliacaogruporespostatrabintermitente();
             $sql = $dao->sql_query_file(null, 'eso19_matricula', null, implode(' AND ', $where));
@@ -107,7 +107,7 @@ try {
             }
             break;
         case 'consultarServidores':
-            $where = array();
+            $where = [];
 
             if ($parametros->cpf !== '') {
                 $where[] = "z01_cgccpf = '{$parametros->cpf}'";
@@ -144,7 +144,7 @@ try {
                 throw new Exception('Nenhum registro encontrado para os filtros informados.');
             }
 
-            $retorno->resultados = array();
+            $retorno->resultados = [];
 
             while ($servidor = pg_fetch_object($rs)) {
                 $formato = strlen($servidor->cpf) === 11 ? 'CPF' : 'cnpj';
@@ -154,7 +154,7 @@ try {
 
             break;
         case 'consultarPreenchimentos':
-            $campos = array(
+            $campos = [
                 'cgm.z01_nome AS nome',
                 'cgm.z01_cgccpf AS cpf',
                 'rhpessoal.rh01_numcgm AS cgm',
@@ -162,9 +162,9 @@ try {
                 'avaliacaogruporespostatrabintermitente.eso19_avaliacaogruporesposta AS preenchimento',
                 'avaliacaogruporespostatrabintermitente.eso19_codigoconvocacao AS codigo_convocacao',
                 'avaliacaoresposta.db106_resposta :: date AS data_inicio'
-            );
+            ];
 
-            $where = array();
+            $where = [];
 
             if ($parametros->cpf !== '') {
                 $where[] = "cpf = '{$parametros->cpf}'";
@@ -204,7 +204,7 @@ try {
                 throw new Exception('Nenhum registro encontrado para os filtros informados.');
             }
 
-            $retorno->resultados = array();
+            $retorno->resultados = [];
 
             while ($preenchimento = pg_fetch_object($rs)) {
                 $formato = strlen($preenchimento->cpf) === 11 ? 'CPF' : 'cnpj';

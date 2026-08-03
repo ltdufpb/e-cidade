@@ -40,9 +40,7 @@ class PublicidadeSigapFiscalResource
      */
     public static function toArray(array $publicidades)
     {
-        return array_map(function (PublicidadeSigapFiscal $publicidade) {
-            return self::toObject($publicidade);
-        }, $publicidades);
+        return array_map(self::toObject(...), $publicidades);
     }
 
     /**

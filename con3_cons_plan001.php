@@ -40,8 +40,8 @@ include(modification("classes/db_orcfontes_classe.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_conplanoreduz_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clconplano     = new cl_conplano;
 $clconlancamval = new cl_conlancamval;
@@ -162,7 +162,7 @@ function js_emite(opcao,origem){
            </table>
            <?php  
  
-           if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+           if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
                $perini=$ini;
                $perfin=$fim; 
                if (isset($c61_reduz) && ($c61_reduz!="")) {

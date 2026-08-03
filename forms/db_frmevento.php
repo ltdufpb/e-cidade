@@ -79,7 +79,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed96_i_codigo"=>@$ed96_i_codigo,"ed96_c_descr"=>@$ed96_c_descr,"ed96_c_abrev"=>@$ed96_c_abrev);
+   $chavepri= ["ed96_i_codigo"=>@$ed96_i_codigo,"ed96_c_descr"=>@$ed96_c_descr,"ed96_c_abrev"=>@$ed96_c_abrev];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clevento->sql_query($ed96_i_codigo,"*","ed96_c_descr");
    $cliframe_alterar_excluir->campos  ="ed96_i_codigo,ed96_c_descr,ed96_c_abrev";

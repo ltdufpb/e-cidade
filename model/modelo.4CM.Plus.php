@@ -35,6 +35,7 @@ class modelo4CMPlus extends modelo4CM {
    * Método para validar se o modelo corresponde o modelo da
    * etiqueta.
    */
+  #[\Override]
   protected function validaImpressora() {
 
     $oDocXml = new DOMDocument();

@@ -72,11 +72,11 @@ $clparcustos = new cl_parcustos();
             <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
               <center>
                 <?php 
-				  $clcriaabas->identifica = array("custoplano"        =>"Plano de Custo","custoanaliticabens"=>"Bens");
-				  $clcriaabas->title      = array("custoplano"        =>"Plano de Custo","custoanaliticabens"=>"Bens");
-				  $clcriaabas->src	      = array("custoplano"		  =>"cus1_custoplano002.php","custoanaliticabens"=>"cus1_custoplanoanaliticabens002.php");
-				  $clcriaabas->disabled   = array("custoanaliticabens"=>"true");
-				  $clcriaabas->sizecampo  = array("custoplano"        =>"30","custoanaliticabens"=>"30");				    
+				  $clcriaabas->identifica = ["custoplano"        =>"Plano de Custo","custoanaliticabens"=>"Bens"];
+				  $clcriaabas->title      = ["custoplano"        =>"Plano de Custo","custoanaliticabens"=>"Bens"];
+				  $clcriaabas->src	      = ["custoplano"		  =>"cus1_custoplano002.php","custoanaliticabens"=>"cus1_custoplanoanaliticabens002.php"];
+				  $clcriaabas->disabled   = ["custoanaliticabens"=>"true"];
+				  $clcriaabas->sizecampo  = ["custoplano"        =>"30","custoanaliticabens"=>"30"];				    
 				  $clcriaabas->cria_abas();
     			?>
               </center>

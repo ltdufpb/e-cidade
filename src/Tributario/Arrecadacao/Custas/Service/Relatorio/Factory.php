@@ -19,13 +19,10 @@ abstract class Factory
      */
     public static function create($tipoDebito, $cadTipo, $debitos)
     {
-        switch ($cadTipo) {
-            case 18:
-                return new Inicial($tipoDebito, $cadTipo, $debitos);
-            case 13:
-                return new Parcelamento($tipoDebito, $cadTipo, $debitos);
-            default:
-                throw new \Exception("Não foi encontrado relatório de custas para este tipo de débito.");
-        }
+        return match ($cadTipo) {
+            18 => new Inicial($tipoDebito, $cadTipo, $debitos),
+            13 => new Parcelamento($tipoDebito, $cadTipo, $debitos),
+            default => throw new \Exception("Não foi encontrado relatório de custas para este tipo de débito."),
+        };
     }
 }

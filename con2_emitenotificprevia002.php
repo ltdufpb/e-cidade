@@ -44,7 +44,7 @@ $sAgt             = "contrib/con2_emitenotificprevia002.agt";
 $sNomeRelatorio   = "tmp/notificPrevia".date("YmdHis").db_getsession("DB_id_usuario").".pdf";
 $sCaminhoSalvoSxw = "tmp/docSalvoSxw".date("YmdHis").db_getsession("DB_id_usuario").".sxw";
 
-$aParam            = array();
+$aParam            = [];
 $aParam['$edital'] = $oGet->edital;
 
 db_stdClass::oo2pdf(2, null, $sAgt, $aParam, $sCaminhoSalvoSxw, $sNomeRelatorio);

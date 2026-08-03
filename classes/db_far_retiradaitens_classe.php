@@ -61,7 +61,7 @@ class cl_far_retiradaitens {
    public function __construct(){ 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_retiradaitens"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    public function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_far_retiradaitens {
          $this->erro_status = "0";
          return false; 
        }
-       $this->fa06_i_codigo = pg_result($result,0,0); 
+       $this->fa06_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from faretiradait_fa06_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa06_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa06_i_codigo)){
          $this->erro_sql = " Campo fa06_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -172,7 +172,7 @@ class cl_far_retiradaitens {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "far_retiradaitens ($this->fa06_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "far_retiradaitens já Cadastrado";
@@ -196,15 +196,15 @@ class cl_far_retiradaitens {
      $resaco = $this->sql_record($this->sql_query_file($this->fa06_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12133,'$this->fa06_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2109,12133,'','".AddSlashes(pg_result($resaco,0,'fa06_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2109,12134,'','".AddSlashes(pg_result($resaco,0,'fa06_t_posologia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2109,12135,'','".AddSlashes(pg_result($resaco,0,'fa06_i_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2109,12190,'','".AddSlashes(pg_result($resaco,0,'fa06_i_matersaude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2109,12204,'','".AddSlashes(pg_result($resaco,0,'fa06_f_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2109,12803,'','".AddSlashes(pg_result($resaco,0,'fa06_t_controlado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2109,12133,'','".AddSlashes(pg_fetch_result($resaco,0,'fa06_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2109,12134,'','".AddSlashes(pg_fetch_result($resaco,0,'fa06_t_posologia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2109,12135,'','".AddSlashes(pg_fetch_result($resaco,0,'fa06_i_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2109,12190,'','".AddSlashes(pg_fetch_result($resaco,0,'fa06_i_matersaude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2109,12204,'','".AddSlashes(pg_fetch_result($resaco,0,'fa06_f_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2109,12803,'','".AddSlashes(pg_fetch_result($resaco,0,'fa06_t_controlado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -213,10 +213,10 @@ class cl_far_retiradaitens {
       $this->atualizacampos();
      $sql = " update far_retiradaitens set ";
      $virgula = "";
-     if(trim($this->fa06_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_i_codigo"])){ 
+     if(trim((string) $this->fa06_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_i_codigo"])){ 
        $sql  .= $virgula." fa06_i_codigo = $this->fa06_i_codigo ";
        $virgula = ",";
-       if(trim($this->fa06_i_codigo) == null ){ 
+       if(trim((string) $this->fa06_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "fa06_i_codigo";
          $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_far_retiradaitens {
          return false;
        }
      }
-     if(trim($this->fa06_t_posologia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_t_posologia"])){ 
+     if(trim((string) $this->fa06_t_posologia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_t_posologia"])){ 
        $sql  .= $virgula." fa06_t_posologia = '$this->fa06_t_posologia' ";
        $virgula = ",";
-       if(trim($this->fa06_t_posologia) == null ){ 
+       if(trim((string) $this->fa06_t_posologia) == null ){ 
          $this->erro_sql = " Campo Posologia nao Informado.";
          $this->erro_campo = "fa06_t_posologia";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_far_retiradaitens {
          return false;
        }
      }
-     if(trim($this->fa06_i_retirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_i_retirada"])){ 
+     if(trim((string) $this->fa06_i_retirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_i_retirada"])){ 
        $sql  .= $virgula." fa06_i_retirada = $this->fa06_i_retirada ";
        $virgula = ",";
-       if(trim($this->fa06_i_retirada) == null ){ 
+       if(trim((string) $this->fa06_i_retirada) == null ){ 
          $this->erro_sql = " Campo Retirada nao Informado.";
          $this->erro_campo = "fa06_i_retirada";
          $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_far_retiradaitens {
          return false;
        }
      }
-     if(trim($this->fa06_i_matersaude)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_i_matersaude"])){ 
+     if(trim((string) $this->fa06_i_matersaude)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_i_matersaude"])){ 
        $sql  .= $virgula." fa06_i_matersaude = $this->fa06_i_matersaude ";
        $virgula = ",";
-       if(trim($this->fa06_i_matersaude) == null ){ 
+       if(trim((string) $this->fa06_i_matersaude) == null ){ 
          $this->erro_sql = " Campo Medicamento nao Informado.";
          $this->erro_campo = "fa06_i_matersaude";
          $this->erro_banco = "";
@@ -265,10 +265,10 @@ class cl_far_retiradaitens {
          return false;
        }
      }
-     if(trim($this->fa06_f_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_f_quant"])){ 
+     if(trim((string) $this->fa06_f_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_f_quant"])){ 
        $sql  .= $virgula." fa06_f_quant = $this->fa06_f_quant ";
        $virgula = ",";
-       if(trim($this->fa06_f_quant) == null ){ 
+       if(trim((string) $this->fa06_f_quant) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "fa06_f_quant";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_far_retiradaitens {
          return false;
        }
      }
-     if(trim($this->fa06_t_controlado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_t_controlado"])){ 
+     if(trim((string) $this->fa06_t_controlado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa06_t_controlado"])){ 
        $sql  .= $virgula." fa06_t_controlado = '$this->fa06_t_controlado' ";
        $virgula = ",";
-       if(trim($this->fa06_t_controlado) == null ){ 
+       if(trim((string) $this->fa06_t_controlado) == null ){ 
          $this->erro_sql = " Campo Med.Controlado nao Informado.";
          $this->erro_campo = "fa06_t_controlado";
          $this->erro_banco = "";
@@ -299,21 +299,21 @@ class cl_far_retiradaitens {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12133,'$this->fa06_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa06_i_codigo"]) || $this->fa06_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2109,12133,'".AddSlashes(pg_result($resaco,$conresaco,'fa06_i_codigo'))."','$this->fa06_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2109,12133,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa06_i_codigo'))."','$this->fa06_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa06_t_posologia"]) || $this->fa06_t_posologia != "")
-           $resac = db_query("insert into db_acount values($acount,2109,12134,'".AddSlashes(pg_result($resaco,$conresaco,'fa06_t_posologia'))."','$this->fa06_t_posologia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2109,12134,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa06_t_posologia'))."','$this->fa06_t_posologia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa06_i_retirada"]) || $this->fa06_i_retirada != "")
-           $resac = db_query("insert into db_acount values($acount,2109,12135,'".AddSlashes(pg_result($resaco,$conresaco,'fa06_i_retirada'))."','$this->fa06_i_retirada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2109,12135,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa06_i_retirada'))."','$this->fa06_i_retirada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa06_i_matersaude"]) || $this->fa06_i_matersaude != "")
-           $resac = db_query("insert into db_acount values($acount,2109,12190,'".AddSlashes(pg_result($resaco,$conresaco,'fa06_i_matersaude'))."','$this->fa06_i_matersaude',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2109,12190,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa06_i_matersaude'))."','$this->fa06_i_matersaude',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa06_f_quant"]) || $this->fa06_f_quant != "")
-           $resac = db_query("insert into db_acount values($acount,2109,12204,'".AddSlashes(pg_result($resaco,$conresaco,'fa06_f_quant'))."','$this->fa06_f_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2109,12204,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa06_f_quant'))."','$this->fa06_f_quant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa06_t_controlado"]) || $this->fa06_t_controlado != "")
-           $resac = db_query("insert into db_acount values($acount,2109,12803,'".AddSlashes(pg_result($resaco,$conresaco,'fa06_t_controlado'))."','$this->fa06_t_controlado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2109,12803,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa06_t_controlado'))."','$this->fa06_t_controlado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -358,15 +358,15 @@ class cl_far_retiradaitens {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12133,'$fa06_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2109,12133,'','".AddSlashes(pg_result($resaco,$iresaco,'fa06_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2109,12134,'','".AddSlashes(pg_result($resaco,$iresaco,'fa06_t_posologia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2109,12135,'','".AddSlashes(pg_result($resaco,$iresaco,'fa06_i_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2109,12190,'','".AddSlashes(pg_result($resaco,$iresaco,'fa06_i_matersaude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2109,12204,'','".AddSlashes(pg_result($resaco,$iresaco,'fa06_f_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2109,12803,'','".AddSlashes(pg_result($resaco,$iresaco,'fa06_t_controlado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2109,12133,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa06_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2109,12134,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa06_t_posologia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2109,12135,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa06_i_retirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2109,12190,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa06_i_matersaude'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2109,12204,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa06_f_quant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2109,12803,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa06_t_controlado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from far_retiradaitens
@@ -426,7 +426,7 @@ class cl_far_retiradaitens {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:far_retiradaitens";
@@ -441,7 +441,7 @@ class cl_far_retiradaitens {
   public function sql_query ( $fa06_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,7 +465,7 @@ class cl_far_retiradaitens {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -478,7 +478,7 @@ class cl_far_retiradaitens {
   public function sql_query_file ( $fa06_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -499,7 +499,7 @@ class cl_far_retiradaitens {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_far_retiradaitens {
   public function sql_query_matrequitens($m40_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
     $sql = "select ";
     if ($campos != "*" ) {
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -542,7 +542,7 @@ class cl_far_retiradaitens {
     $sql .= $sql2;
     if ($ordem != null ) {
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -555,7 +555,7 @@ class cl_far_retiradaitens {
   public function sql_query_posologia ( $fa06_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -590,7 +590,7 @@ class cl_far_retiradaitens {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -603,7 +603,7 @@ class cl_far_retiradaitens {
   public function sql_query_retiradaitens( $fa06_i_codigo=null,$campos="*",$ordem=null,$dbwhere="",$group_by=null){ 
      $sql = "select ";
      if($campos != "*"){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -641,7 +641,7 @@ class cl_far_retiradaitens {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -664,7 +664,7 @@ class cl_far_retiradaitens {
   public function sql_query_retiradas_continuados($m40_codigo=null,$campos="*",$ordem=null,$dbwhere="") {
     $sql = "select ";
     if ($campos != "*" ) {
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -696,7 +696,7 @@ class cl_far_retiradaitens {
     $sql .= $sql2;
     if ($ordem != null ) {
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -716,7 +716,7 @@ class cl_far_retiradaitens {
   public function sql_query_historicoretiradas($z01_i_cgsund=null,$campos="*",$ordem=null,$dbwhere="") {
     $sql = "select ";
     if ($campos != "*" ) {
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -752,7 +752,7 @@ class cl_far_retiradaitens {
     $sql .= $sql2;
     if ($ordem != null ) {
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",$ordem);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -766,7 +766,7 @@ class cl_far_retiradaitens {
                                                   $sGroupBy = '', $sWhereDepartamentos = '') {
     $sql = "select ";
     if ($campos != "*" ) {
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -845,7 +845,7 @@ class cl_far_retiradaitens {
 
     if ($ordem != null ) {
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for ($i=0; $i<sizeof($campos_sql); $i++) {
         $sql .= $virgula.$campos_sql[$i];
@@ -860,7 +860,7 @@ class cl_far_retiradaitens {
     $sSql = 'select ';
     if ($sCampos != '*') {
 
-      $sCamposSql = split('#', $sCampos);
+      $sCamposSql = preg_split('#\##m', $sCampos);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++){
 
@@ -906,7 +906,7 @@ class cl_far_retiradaitens {
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = split('#', $sOrdem);
+      $sCamposSql = preg_split('#\##m', (string) $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 

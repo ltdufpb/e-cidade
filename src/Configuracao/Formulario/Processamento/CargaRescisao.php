@@ -37,7 +37,7 @@ class CargaRescisao extends Carga
     /**
      * @var array
      */
-    private $rescisoes = array();
+    private $rescisoes = [];
 
     /**
      * @var \Instituicao
@@ -62,7 +62,7 @@ class CargaRescisao extends Carga
     /**
      * @var array
      */
-    public $rubricasSemGrupo = array();
+    public $rubricasSemGrupo = [];
 
     private $callbackSaveForm;
 
@@ -96,6 +96,7 @@ class CargaRescisao extends Carga
     /**
      * executa o processamento da Carga
      */
+    #[\Override]
     public function executar()
     {
         $rescisoes = $this->prepararDadosDaRescisao();
@@ -142,12 +143,12 @@ class CargaRescisao extends Carga
                     if (empty($rubrica->identificador_grupo)) {
                         $instancia->rubricasSemGrupo[$rescisao->matricula][] = $rubrica->codrubr;
                     }
-                    $rubrica->idetabrubr = htmlentities($rubrica->idetabrubr);
+                    $rubrica->idetabrubr = htmlentities((string) $rubrica->idetabrubr);
                 }
 
                 unset($rubrica);
                 $json = json_encode($rubricas);
-                $rescisao->desligamento_rubricas_json = html_entity_decode(utf8_decode($json));
+                $rescisao->desligamento_rubricas_json = html_entity_decode(mb_convert_encoding($json, 'ISO-8859-1'));
             }
 
             return $rescisao;
@@ -162,18 +163,18 @@ class CargaRescisao extends Carga
             return null;
         }
 
-        $dados = array(
-            array(
+        $dados = [
+            [
                 'Matricula',
                 'Rubricas'
-            )
-        );
+            ]
+        ];
 
         foreach ($this->rubricasSemGrupo as $matricula => $rubricas) {
-            $dados[] = array(
+            $dados[] = [
                 (string) $matricula,
                 implode(', ', $rubricas)
-            );
+            ];
         }
 
         $csv = new Dumper();
@@ -229,15 +230,16 @@ class CargaRescisao extends Carga
      * @return Resposta|null
      * @throws \Exception
      */
+    #[\Override]
     protected function pesquisarRespostaDoFormularioComOsCamposChave($dados)
     {
         $aPerguntasChaves = $this->formulario->getPerguntasIdentificadoras();
 
         if (!empty($aPerguntasChaves)) {
-            $aCampos = array();
+            $aCampos = [];
 
             foreach ($aPerguntasChaves as $pergunta) {
-                $aCampos[] = array("pergunta" => $pergunta, "resposta" => $dados->{$pergunta->getIdentificadorCampo()});
+                $aCampos[] = ["pergunta" => $pergunta, "resposta" => $dados->{$pergunta->getIdentificadorCampo()}];
             }
 
             if (count($aCampos) == 0) {

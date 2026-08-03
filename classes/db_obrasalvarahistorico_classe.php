@@ -29,41 +29,41 @@
 //CLASSE DA ENTIDADE obrasalvarahistorico
 class cl_obrasalvarahistorico { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ob35_sequencial = 0; 
-   var $ob35_codobra = 0; 
-   var $ob35_datainicial_dia = null; 
-   var $ob35_datainicial_mes = null; 
-   var $ob35_datainicial_ano = null; 
-   var $ob35_datainicial = null; 
-   var $ob35_datafinal_dia = null; 
-   var $ob35_datafinal_mes = null; 
-   var $ob35_datafinal_ano = null; 
-   var $ob35_datafinal = null; 
+   public $ob35_sequencial = 0; 
+   public $ob35_codobra = 0; 
+   public $ob35_datainicial_dia = null; 
+   public $ob35_datainicial_mes = null; 
+   public $ob35_datainicial_ano = null; 
+   public $ob35_datainicial = null; 
+   public $ob35_datafinal_dia = null; 
+   public $ob35_datafinal_mes = null; 
+   public $ob35_datafinal_ano = null; 
+   public $ob35_datafinal = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ob35_sequencial = int4 = Sequencial 
                  ob35_codobra = int4 = Código da Obra 
                  ob35_datainicial = date = Data Inicial 
                  ob35_datafinal = date = Data Final 
                  ";
    //funcao construtor da classe 
-   function cl_obrasalvarahistorico() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obrasalvarahistorico"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -130,10 +130,10 @@ class cl_obrasalvarahistorico {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ob35_sequencial = pg_result($result,0,0); 
+       $this->ob35_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from obrasalvarahistorico_ob35_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ob35_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ob35_sequencial)){
          $this->erro_sql = " Campo ob35_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -167,7 +167,7 @@ class cl_obrasalvarahistorico {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Histórico dos alvarás ($this->ob35_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Histórico dos alvarás já Cadastrado";
@@ -196,13 +196,13 @@ class cl_obrasalvarahistorico {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20457,'$this->ob35_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3679,20457,'','".AddSlashes(pg_result($resaco,0,'ob35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3679,20458,'','".AddSlashes(pg_result($resaco,0,'ob35_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3679,20459,'','".AddSlashes(pg_result($resaco,0,'ob35_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3679,20460,'','".AddSlashes(pg_result($resaco,0,'ob35_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3679,20457,'','".AddSlashes(pg_fetch_result($resaco,0,'ob35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3679,20458,'','".AddSlashes(pg_fetch_result($resaco,0,'ob35_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3679,20459,'','".AddSlashes(pg_fetch_result($resaco,0,'ob35_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3679,20460,'','".AddSlashes(pg_fetch_result($resaco,0,'ob35_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -212,10 +212,10 @@ class cl_obrasalvarahistorico {
       $this->atualizacampos();
      $sql = " update obrasalvarahistorico set ";
      $virgula = "";
-     if(trim($this->ob35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob35_sequencial"])){ 
+     if(trim((string) $this->ob35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob35_sequencial"])){ 
        $sql  .= $virgula." ob35_sequencial = $this->ob35_sequencial ";
        $virgula = ",";
-       if(trim($this->ob35_sequencial) == null ){ 
+       if(trim((string) $this->ob35_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "ob35_sequencial";
          $this->erro_banco = "";
@@ -225,10 +225,10 @@ class cl_obrasalvarahistorico {
          return false;
        }
      }
-     if(trim($this->ob35_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob35_codobra"])){ 
+     if(trim((string) $this->ob35_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob35_codobra"])){ 
        $sql  .= $virgula." ob35_codobra = $this->ob35_codobra ";
        $virgula = ",";
-       if(trim($this->ob35_codobra) == null ){ 
+       if(trim((string) $this->ob35_codobra) == null ){ 
          $this->erro_sql = " Campo Código da Obra não informado.";
          $this->erro_campo = "ob35_codobra";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_obrasalvarahistorico {
          return false;
        }
      }
-     if(trim($this->ob35_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob35_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob35_datainicial_dia"] !="") ){ 
+     if(trim((string) $this->ob35_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob35_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob35_datainicial_dia"] !="") ){ 
        $sql  .= $virgula." ob35_datainicial = '$this->ob35_datainicial' ";
        $virgula = ",";
-       if(trim($this->ob35_datainicial) == null ){ 
+       if(trim((string) $this->ob35_datainicial) == null ){ 
          $this->erro_sql = " Campo Data Inicial não informado.";
          $this->erro_campo = "ob35_datainicial_dia";
          $this->erro_banco = "";
@@ -254,7 +254,7 @@ class cl_obrasalvarahistorico {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ob35_datainicial_dia"])){ 
          $sql  .= $virgula." ob35_datainicial = null ";
          $virgula = ",";
-         if(trim($this->ob35_datainicial) == null ){ 
+         if(trim((string) $this->ob35_datainicial) == null ){ 
            $this->erro_sql = " Campo Data Inicial não informado.";
            $this->erro_campo = "ob35_datainicial_dia";
            $this->erro_banco = "";
@@ -265,7 +265,7 @@ class cl_obrasalvarahistorico {
          }
        }
      }
-     if(trim($this->ob35_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob35_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob35_datafinal_dia"] !="") ){ 
+     if(trim((string) $this->ob35_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob35_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ob35_datafinal_dia"] !="") ){ 
        $sql  .= $virgula." ob35_datafinal = '$this->ob35_datafinal' ";
        $virgula = ",";
      }     else{ 
@@ -288,17 +288,17 @@ class cl_obrasalvarahistorico {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20457,'$this->ob35_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ob35_sequencial"]) || $this->ob35_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3679,20457,'".AddSlashes(pg_result($resaco,$conresaco,'ob35_sequencial'))."','$this->ob35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3679,20457,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob35_sequencial'))."','$this->ob35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ob35_codobra"]) || $this->ob35_codobra != "")
-             $resac = db_query("insert into db_acount values($acount,3679,20458,'".AddSlashes(pg_result($resaco,$conresaco,'ob35_codobra'))."','$this->ob35_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3679,20458,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob35_codobra'))."','$this->ob35_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ob35_datainicial"]) || $this->ob35_datainicial != "")
-             $resac = db_query("insert into db_acount values($acount,3679,20459,'".AddSlashes(pg_result($resaco,$conresaco,'ob35_datainicial'))."','$this->ob35_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3679,20459,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob35_datainicial'))."','$this->ob35_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ob35_datafinal"]) || $this->ob35_datafinal != "")
-             $resac = db_query("insert into db_acount values($acount,3679,20460,'".AddSlashes(pg_result($resaco,$conresaco,'ob35_datafinal'))."','$this->ob35_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3679,20460,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob35_datafinal'))."','$this->ob35_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -352,13 +352,13 @@ class cl_obrasalvarahistorico {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20457,'$ob35_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3679,20457,'','".AddSlashes(pg_result($resaco,$iresaco,'ob35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3679,20458,'','".AddSlashes(pg_result($resaco,$iresaco,'ob35_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3679,20459,'','".AddSlashes(pg_result($resaco,$iresaco,'ob35_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3679,20460,'','".AddSlashes(pg_result($resaco,$iresaco,'ob35_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3679,20457,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3679,20458,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob35_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3679,20459,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob35_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3679,20460,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob35_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -419,7 +419,7 @@ class cl_obrasalvarahistorico {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:obrasalvarahistorico";
@@ -434,7 +434,7 @@ class cl_obrasalvarahistorico {
    function sql_query ( $ob35_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -457,7 +457,7 @@ class cl_obrasalvarahistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -470,7 +470,7 @@ class cl_obrasalvarahistorico {
    function sql_query_file ( $ob35_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -491,7 +491,7 @@ class cl_obrasalvarahistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

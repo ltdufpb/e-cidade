@@ -279,7 +279,7 @@ if( $rsMedicos && pg_num_rows( $rsMedicos ) > 0 ) {
     <tr>
       <td valign="top" align="center"><br>
       <?php
-      $chavepri= array("sd29_i_codigo"=>@$sd29_i_codigo );
+      $chavepri= ["sd29_i_codigo"=>@$sd29_i_codigo ];
 
       $cliframe_alterar_excluir->chavepri      = $chavepri;
       @$cliframe_alterar_excluir->sql          = $clprontproced->sql_query_ext("","*","sd29_i_codigo","sd29_i_prontuario = $chavepesquisaprontuario");

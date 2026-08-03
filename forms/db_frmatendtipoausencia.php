@@ -57,7 +57,7 @@ db_input('at71_descr',20,$Iat71_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('at71_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -75,7 +75,7 @@ function js_preenchepesquisa(chave){
   db_iframe_atendtipoausencia.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

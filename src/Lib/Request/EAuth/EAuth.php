@@ -205,7 +205,7 @@ class EAuth
             ];
 
             $response = $request->request('POST', $this->getRouteToken(), $options);
-            $obj = (object)json_decode($response->getBody(), true);
+            $obj = (object)json_decode((string) $response->getBody(), true);
 
             if (empty($obj->access_token)) {
                 throw new \Exception("Erro ao buscar token");
@@ -218,84 +218,84 @@ class EAuth
 
     private function getHeaders()
     {
-        return array(
+        return [
             'Authorization' => 'Bearer ' . $this->token,
             'Accept' => 'application/json',
-        );
+        ];
     }
 
     public function validarUsuarioExiste($cpfcnpj)
     {
         $request = new Client();
-        $options = array(
+        $options = [
             'headers' => $this->getHeaders(),
-            'form_params' => array(
+            'form_params' => [
                 'cpfcnpj' => $cpfcnpj,
                 'municipio' => $this->getMunicipio()
-            )
-        );
+            ]
+        ];
 
         return $request->request('POST', $this->getRouteValidaExsite(), $options);
     }
 
     public function salvarUsuarioEauth($nome, $email, $cpfcnpj, $client_app_id)
     {
-        if (!mb_detect_encoding($nome, 'UTF-8', true)) {
+        if (!mb_detect_encoding((string) $nome, 'UTF-8', true)) {
             $nome = mb_convert_encoding($nome, "UTF-8");
         }
 
-        if (!mb_detect_encoding($email, 'UTF-8', true)) {
+        if (!mb_detect_encoding((string) $email, 'UTF-8', true)) {
             $email = mb_convert_encoding($email, "UTF-8");
         }
 
-        if (!mb_detect_encoding($cpfcnpj, 'UTF-8', true)) {
+        if (!mb_detect_encoding((string) $cpfcnpj, 'UTF-8', true)) {
             $cpfcnpj = mb_convert_encoding($cpfcnpj, "UTF-8");
         }
 
         $request = new Client();
-        $options = array(
+        $options = [
             'headers' => $this->getHeaders(),
-            'form_params' => array(
+            'form_params' => [
                 'name' => $nome,
                 'email' => $email,
                 'cpfcnpj' => $cpfcnpj,
                 'municipio' => $this->getMunicipio(),
                 'client_id' => $client_app_id
-            )
-        );
+            ]
+        ];
         $response = $request->request('POST', $this->getRouteUserSave(), $options);
-        return (object)json_decode($response->getBody(), true);
+        return (object)json_decode((string) $response->getBody(), true);
     }
 
     public function consultaUserCpf($cpfcnpj)
     {
         $request = new Client();
-        $options = array(
+        $options = [
             'headers' => $this->getHeaders(),
-        );
-        $params = http_build_query(array(
-            'cpfcnpj' => str_replace(array(".", "-", "/"), "", $cpfcnpj),
+        ];
+        $params = http_build_query([
+            'cpfcnpj' => str_replace([".", "-", "/"], "", $cpfcnpj),
             'municipio' => $this->getMunicipio()
-        ));
+        ]);
         $response = $request->get($this->getRouteUserCpf()."?{$params}", $options);
-        return (object)json_decode($response->getBody(), true);
+        return (object)json_decode((string) $response->getBody(), true);
     }
 
     public function sendMessage($cpfCnpj, $client_app_id, $message, $email = null, $anonimo = false)
     {
         $request = new Client();
         $message = \DBString::utf8_encode_all($message);
-        $options = array(
+        $options = [
             'headers' => $this->getHeaders(),
-            'form_params' => array(
+            'form_params' => [
                 'cpfcnpj' => $cpfCnpj,
                 'client_id' => $client_app_id,
                 'message' => $message,
                 'email' => $email,
                 'anonimo' => $anonimo
-            )
-        );
+            ]
+        ];
         $response = $request->request('POST', $this->getRouteEmailMessage(), $options);
-        return (object)json_decode($response->getBody(), true);
+        return (object)json_decode((string) $response->getBody(), true);
     }
 }

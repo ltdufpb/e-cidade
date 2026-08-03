@@ -34,7 +34,7 @@ include(modification("classes/db_exemplar_classe.php"));
 include(modification("classes/db_impexemplar_classe.php"));
 include(modification("classes/db_impexemplaritem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clexemplar = new cl_exemplar;
 $climpexemplar = new cl_impexemplar;
 $climpexemplaritem = new cl_impexemplaritem;
@@ -56,9 +56,9 @@ if(isset($processar)){
   $climpexemplar->excluir($bi24_codigo);
   db_msgbox("Todos exemplares desta impressão foram marcados como NÃO IMPRESSOS");
  }
- $bi24_data_dia = substr($bi24_data,0,2);
- $bi24_data_mes = substr($bi24_data,3,2);
- $bi24_data_ano = substr($bi24_data,6,4);
+ $bi24_data_dia = substr((string) $bi24_data,0,2);
+ $bi24_data_mes = substr((string) $bi24_data,3,2);
+ $bi24_data_ano = substr((string) $bi24_data,6,4);
  db_redireciona("bib4_cancimpressao001.php");
  exit;
 }

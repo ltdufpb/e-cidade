@@ -34,26 +34,23 @@ require_once(modification('libs/db_libdocumento.php'));
 class DocumentoOrdemServico {
 
   /**
-   * @type VeiculoManutencao
-   */
-  private $oManutencao;
-
-  /**
-   * @type Instituicao
-   */
-  private $oInstituicao;
-
-  /**
    * @type PDFDocument
    */
   private $oPdf;
 
   const ASSINATURA_PADRAO = 5020;
 
-  public function __construct(VeiculoManutencao $oVeiculoManutencao, Instituicao $oInstituicao) {
-
-    $this->oManutencao  = $oVeiculoManutencao;
-    $this->oInstituicao = $oInstituicao;
+  public function __construct(
+      /**
+       * @type VeiculoManutencao
+       */
+      private readonly VeiculoManutencao $oManutencao,
+      /**
+       * @type Instituicao
+       */
+      private readonly Instituicao $oInstituicao
+  )
+  {
   }
 
 

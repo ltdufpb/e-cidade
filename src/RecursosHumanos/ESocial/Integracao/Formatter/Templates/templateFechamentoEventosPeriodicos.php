@@ -25,9 +25,9 @@
  *                                licenca/licenca_pt.txt
  */
 
-return array(
-    "infoFech" => array(
-        "properties" => array(
+return [
+    "infoFech" => [
+        "properties" => [
             "evtRemun",
             "evtComProd",
             "evtContratAvNP",
@@ -35,6 +35,6 @@ return array(
             "indExcApur1250",
             "transDCTFWeb",
             "naoValid"
-        )
-    )
-);
+        ]
+    ]
+];

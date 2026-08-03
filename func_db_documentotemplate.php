@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_db_documentotemplate_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 if (!isset($chave_db82_sequencial)) {
     $chave_db82_sequencial = '';
@@ -134,12 +134,12 @@ $cldb_documentotemplate->rotulo->label("db82_descricao");
                 $chave_db82_descricao = str_replace("\\", "", $chave_db82_descricao);
             }
 
-            $repassa = array();
+            $repassa = [];
             if (isset($chave_db82_descricao)) {
-                $repassa = array(
+                $repassa = [
                   "chave_db82_sequencial" => $chave_db82_sequencial,
                   "chave_db82_descricao"  => $chave_db82_descricao
-                );
+                ];
             }
             db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
         } else {

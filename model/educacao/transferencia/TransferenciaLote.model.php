@@ -81,7 +81,7 @@ class TransferenciaLote {
    * Todos alunos que foram transferidos neste lote
    * @var Matricula[]
    */
-  private $aMatriculas = array();
+  private $aMatriculas = [];
 
   function __construct($iCodigo = null) {
 
@@ -198,7 +198,7 @@ class TransferenciaLote {
   public function getMatriculas() {
 
     if ( empty($this->iCodigo) ) {
-      return array();
+      return [];
     }
 
     if ( count($this->aMatriculas) > 0 ) {
@@ -312,7 +312,7 @@ class TransferenciaLote {
       return true;
     }
 
-    $aAlunosJaTransferidas = array();
+    $aAlunosJaTransferidas = [];
     for ($i = 0; $i < $iLinhas; $i++) {
 
       $iCodigoMatricula        = db_utils::fieldsMemory($rs, $i)->ed138_matricula;

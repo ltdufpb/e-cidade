@@ -32,7 +32,7 @@ $clatividaderh->rotulo->label();
 $oDaoFuncaoAtividade->rotulo->label();
 $db_botao1 = false;
 
-$aFuncoes            = array();
+$aFuncoes            = [];
 $sSqlFuncaoAtividade = $oDaoFuncaoAtividade->sql_query_file( null, "ed119_sequencial, ed119_descricao" );
 $rsFuncaoAtividade   = db_query( $sSqlFuncaoAtividade );
 
@@ -42,7 +42,7 @@ if( $rsFuncaoAtividade && pg_num_rows( $rsFuncaoAtividade ) > 0 ) {
   for( $iContador = 0; $iContador < $iTotalFuncaoAtividade; $iContador++ ) {
 
     $oDadosFuncaoAtividade                                = db_utils::fieldsMemory( $rsFuncaoAtividade, $iContador );
-    $aFuncoes[ $oDadosFuncaoAtividade->ed119_sequencial ] = mb_strtoupper( $oDadosFuncaoAtividade->ed119_descricao );
+    $aFuncoes[ $oDadosFuncaoAtividade->ed119_sequencial ] = mb_strtoupper( (string) $oDadosFuncaoAtividade->ed119_descricao );
   }
 }
 
@@ -112,7 +112,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           </td>
           <td>
             <?php
-              $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
+              $x = [ 'N' => 'NÃO', 'S' => 'SIM' ];
               db_select( 'ed01_c_regencia', $x, true, $db_opcao );
             ?>
           </td>
@@ -128,13 +128,13 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           </td>
         </tr>
         <tr  style="display: none;"> 
-          <input type="hidden" id="docencia" value="<?=isset($ed01_c_docencia) ?$ed01_c_docencia : "" ?>">
+          <input type="hidden" id="docencia" value="<?=$ed01_c_docencia ?? "" ?>">
           <td nowrap title="<?php echo $Ted01_c_docencia; ?>">
             <label for='ed01_c_docencia'><?php echo $Led01_c_docencia; ?></label>
           </td>
           <td>
             <?php
-            $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
+            $x = [ 'N' => 'NÃO', 'S' => 'SIM' ];
             db_select( 'ed01_c_docencia', $x, true, $db_opcao );
             ?>
           </td>
@@ -145,11 +145,11 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           </td>
           <td>
             <?php
-            $aFuncao = array(
+            $aFuncao = [
                               "1" => "NÃO",
                               "2" => "DIRETOR(A)",
                               "3" => "SECRETÁRIO(A)"
-                            );
+                            ];
             db_select( 'ed01_i_funcaoadmin', $aFuncao, true, $db_opcao, "" );
             ?>
           </td>
@@ -160,7 +160,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           </td>
           <td>
             <?php
-            $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
+            $x = [ 'N' => 'NÃO', 'S' => 'SIM' ];
             db_select( 'ed01_c_exigeato', $x, true, $db_opcao );
             ?>
           </td>
@@ -171,7 +171,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           </td>
           <td>
             <?php
-            $x = array( 'FUNC' => 'FUNCIONÁRIOS', 'PROF' => 'PROFESSORES' );
+            $x = [ 'FUNC' => 'FUNCIONÁRIOS', 'PROF' => 'PROFESSORES' ];
             db_select( 'ed01_c_efetividade', $x, true, $db_opcao );
             ?>
           </td>
@@ -182,7 +182,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
           </td>
           <td>
             <?php
-            $x = array( 'f' => 'NÃO', 't' => 'SIM' );
+            $x = [ 'f' => 'NÃO', 't' => 'SIM' ];
             db_select( 'ed01_atividadeescolar', $x, true, $db_opcao );
             ?>
           </td>
@@ -192,7 +192,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
             <label for='ed01_permissao_diario'><b>Permissão do Diário:</b></label>
           </td>
           <td>
-            <input type="hidden" id="permissao_diario" value="<?=isset($ed01_permissao_diario) ? $ed01_permissao_diario : ""?>">
+            <input type="hidden" id="permissao_diario" value="<?=$ed01_permissao_diario ?? ""?>">
             <select id="ed01_permissao_diario" name="ed01_permissao_diario" style="width: 100%;">
               <option value="0">SEM PERMISSÃO</option>
               <option value="0">PROFESSOR</option>
@@ -252,7 +252,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
       $ed01_funcaoatividade  = '';
       $ed01_atividadeescolar = '';
       $ed01_permissao_diario = '';
-      $aChaves  = array(
+      $aChaves  = [
                          "ed01_i_codigo"         => $ed01_i_codigo,
                          "ed01_c_descr"          => $ed01_c_descr,
                          "ed01_c_regencia"       => $ed01_c_regencia,
@@ -263,7 +263,7 @@ if( isset( $opcao ) && $opcao == "alterar" ) {
                          "ed01_funcaoatividade"  => $ed01_funcaoatividade,
                          "ed01_atividadeescolar" => $ed01_atividadeescolar,
                          "ed01_permissao_diario" => $ed01_permissao_diario
-                       );
+                       ];
 
       $sCamposFrame  = "ed01_i_codigo, ed01_c_descr, ed01_c_regencia, ed01_c_docencia, ed01_c_exigeato";
    

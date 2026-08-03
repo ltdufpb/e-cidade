@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 //$ano = 2006;
@@ -88,8 +88,8 @@ group by o15_codigo, o15_descr";
 $result_orgao   = db_query($sql_orgao);
 $result_recurso = db_query($sql_recurso);
 
-$num_orgao      = pg_numrows($result_orgao);
-$num_recurso    = pg_numrows($result_recurso);
+$num_orgao      = pg_num_rows($result_orgao);
+$num_recurso    = pg_num_rows($result_recurso);
 
 //echo "<br> orgao $num_orgao   ".$sql_orgao;
 //echo "<br> recurso $num_recurso  ".$sql_recurso;exit;

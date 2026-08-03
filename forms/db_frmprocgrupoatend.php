@@ -100,7 +100,7 @@ db_input('sd15_c_descr',50,$Isd15_c_descr,true,'text',3,'')
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("sd17_i_codigo"=>@$sd17_i_codigo,"sd17_i_procedimento"=>@$sd17_i_procedimento,"sd17_i_grupoatend"=>@$sd17_i_grupoatend,"sd15_c_descr"=>@$sd15_c_descr);
+   $chavepri= ["sd17_i_codigo"=>@$sd17_i_codigo,"sd17_i_procedimento"=>@$sd17_i_procedimento,"sd17_i_grupoatend"=>@$sd17_i_grupoatend,"sd15_c_descr"=>@$sd15_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clprocgrupoatend->sql_query($sd17_i_codigo,"sd17_i_codigo,sd15_i_codigo,sd17_i_procedimento,sd15_c_descr,sd17_i_grupoatend","sd15_i_codigo","sd17_i_procedimento = $sd17_i_procedimento");
    $cliframe_alterar_excluir->campos  ="sd15_i_codigo,sd15_c_descr";
@@ -174,7 +174,7 @@ function js_preenchepesquisa(chave){
   db_iframe_procgrupoatend.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

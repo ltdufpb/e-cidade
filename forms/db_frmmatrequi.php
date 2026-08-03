@@ -215,7 +215,7 @@ function js_preenchepesquisa(chave){
   db_iframe_matrequi.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;\n";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;\n";
     if($db_opcao==3||$db_opcao==33){
       echo " parent.iframe_matrequiitem.location.href='mat1_matrequiitemalt001.php?m40_codigo='+chave+'&db_opcao=3'; \n";
     }else{

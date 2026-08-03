@@ -101,7 +101,7 @@ if (isset($alterar) || isset($incluir)) {
     }
 
     if (!empty($bdi)) {
-        $aListaBdi = explode("bdi_", $bdi);
+        $aListaBdi = explode("bdi_", (string) $bdi);
     }
 
     if (!empty($encargossociais)) {
@@ -109,11 +109,11 @@ if (isset($alterar) || isset($incluir)) {
     }
 
     if (!empty($notatecnica)) {
-        $aListaNotaTecnica = explode("notatecnica_", $notatecnica);
+        $aListaNotaTecnica = explode("notatecnica_", (string) $notatecnica);
     }
 
     if (!empty($taxahomologada)) {
-        $aTaxasHomologadas = explode("txhomologada_", $taxahomologada);
+        $aTaxasHomologadas = explode("txhomologada_", (string) $taxahomologada);
     }
 
     if (isset($dataval) && trim($dataval)!="") {
@@ -150,31 +150,31 @@ if (isset($alterar) || isset($incluir)) {
         db_inicio_transacao();
         for ($i = 1; $i < sizeof($arrval); $i++) {
 
-            $codvalun = explode("_",$arrvalun[$i]);
+            $codvalun = explode("_",(string) $arrvalun[$i]);
             $codval   = explode("_",$arrval[$i]);
-            $codqtd   = explode("_",$arrqtd[$i]);
-            $desmrk   = explode("_",$arrmrk[$i]);
+            $codqtd   = explode("_",(string) $arrqtd[$i]);
+            $desmrk   = explode("_",(string) $arrmrk[$i]);
             $validmin = @$arrdat[$i];
-            $quantOrc = explode("_",$arrqtdorcada[$i]);
+            $quantOrc = explode("_",(string) $arrqtdorcada[$i]);
 
             if (isset($aListaBdi)) {
-                $aBdi      = explode("_", $aListaBdi[$i]);
+                $aBdi      = explode("_", (string) $aListaBdi[$i]);
                 $nBdiValor = $aBdi[1];
             }
 
             if (isset($aTaxasHomologadas)) {
-                $aTaxa = explode('_', $aTaxasHomologadas[$i]);
+                $aTaxa = explode('_', (string) $aTaxasHomologadas[$i]);
                 $nTaxaHomologada = $aTaxa[1];
             }
 
             if (isset($aListaEncargosSociais)) {
 
-                $aEncargosSociais    = explode("_", $aListaEncargosSociais[$i]);
+                $aEncargosSociais    = explode("_", (string) $aListaEncargosSociais[$i]);
                 $nEncargoSocialValor = $aEncargosSociais[1];
             }
 
             if (isset($aListaNotaTecnica)) {
-                $aNotaTecnica      = explode("_", $aListaNotaTecnica[$i]);
+                $aNotaTecnica      = explode("_", (string) $aListaNotaTecnica[$i]);
                 $nNotaTecnicaValor = $aNotaTecnica[1];
             }
 
@@ -235,9 +235,9 @@ if (isset($alterar) || isset($incluir)) {
             if (isset($incluir) && $sqlerro == false && $orcamval != 0) {
 
                 $pc23_valor = $orcamval;
-                if (trim($validmin)!= '' ) {
+                if (trim((string) $validmin)!= '' ) {
 
-                    $arr_d    = explode("-",$validmin);
+                    $arr_d    = explode("-",(string) $validmin);
                     $validmin = $arr_d[2]."-".$arr_d[1]."-".$arr_d[0];
                     if (trim($validmin) == "--" || trim($validmin) == '') {
                         $validmin=null;

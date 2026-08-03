@@ -33,24 +33,10 @@
 class ppa {
 
   /**
-   * Código da Lei da PPA
-   * @var integer
-   */
-  private $iCodigoLei    = null;
-
-  /**
    * Código da perspectiva relacionada a lei
    * @var integer
    */
   private $iCodigoVersao = null;
-
-  /**
-   * Tipo de PPA
-   * 1 - Receita
-   * 2 - Despesa
-   * @var integer
-   */
-  private $iTipo         = null;
 
   /**
    * Armazena um objeto do tipo ppaReceita ou ppaDespesa de acordo com o $iTipo
@@ -85,19 +71,24 @@ class ppa {
    * @param integer $iTipo
    * @param string $iVersao
    */
-  public function __construct($iCodigoLei, $iTipo, $iVersao=null) {
-
-    $this->iCodigoLei = $iCodigoLei;
-    $this->iTipo      = $iTipo;
+  public function __construct(/**
+   * Código da Lei da PPA
+   */
+  private $iCodigoLei, /**
+   * Tipo de PPA
+   * 1 - Receita
+   * 2 - Despesa
+   */
+  private $iTipo, $iVersao=null) {
 
     if ($iVersao != null) {
 
-      if ($iTipo == 1) {
+      if ($this->iTipo == 1) {
 
          require_once(modification("model/ppaReceita.model.php"));
          $this->oObjeto =  new ppaReceita($iVersao);
 
-      } else if ($iTipo == 2) {
+      } else if ($this->iTipo == 2) {
 
          require_once(modification("model/ppadespesa.model.php"));
          $this->oObjeto =  new ppaDespesa($iVersao);
@@ -157,7 +148,7 @@ class ppa {
    */
   public function estruturalNivel($sEstrutural) {
 
-    $iNiveis = array();
+    $iNiveis = [];
     $iAux    = 1;
     $iNiveis = explode(".", $sEstrutural);
     $iLaco   = count($iNiveis);
@@ -174,7 +165,7 @@ class ppa {
   function criaContaMae($string) {
 
   	$string = db_formatar($string,"sistema");
-  	$iNivel = ppa::estruturalNivel($string);
+  	$iNivel = $this->estruturalNivel($string);
   	$stringnova = "";
   	$aNiveis = explode(".", $string);
     for ($i = 0;  $i < $iNivel; $i++) {
@@ -239,7 +230,7 @@ class ppa {
                                                           "o119_versao",
                                                           "o119_ppalei = {$this->iCodigoLei} {$sWhere} ");
     $rsVersao      = $oDaoPPaVersao->sql_record($sSqlVersao);
-    $aVersoes     = array();
+    $aVersoes     = [];
     for ($i = 0; $i < $oDaoPPaVersao->numrows; $i++) {
 
       $oVersao = db_utils::fieldsMemory($rsVersao, $i);

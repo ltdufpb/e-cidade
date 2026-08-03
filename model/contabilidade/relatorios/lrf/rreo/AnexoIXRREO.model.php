@@ -111,11 +111,12 @@ class AnexoIXRREO extends RelatoriosLegaisBase implements AnexoRREO {
    *
    * @return array - Colecao de stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
      $oRetorno                     = new stdClass();
-     $oRetorno->quadroreceitas     = array();
-     $oRetorno->quadrodespesas     = array();
+     $oRetorno->quadroreceitas     = [];
+     $oRetorno->quadrodespesas     = [];
      $oRetorno->resultadoregraouro = new stdClass();
 
 
@@ -363,7 +364,7 @@ class AnexoIXRREO extends RelatoriosLegaisBase implements AnexoRREO {
     foreach ($aDadosAnexoXI->quadroreceitas as $oQuadroReceita) {
 
       $oPdf->SetFont('arial', '', $iTamFonte);
-      $oPdf->Cell(64, $iAltCell, substr($oQuadroReceita->descricaolinha, 0, 70),        'R', 0, "L", 0);
+      $oPdf->Cell(64, $iAltCell, substr((string) $oQuadroReceita->descricaolinha, 0, 70),        'R', 0, "L", 0);
       $oPdf->Cell(42, $iAltCell, db_formatar($oQuadroReceita->previsaoatualizada, 'f'), 'RL', 0, "R", 0);
       $oPdf->Cell(49, $iAltCell, db_formatar($oQuadroReceita->receitaatualizada, 'f'),  'RL', 0, "R", 0);
       $oPdf->Cell(35, $iAltCell, db_formatar($oQuadroReceita->saldoaarealizar, 'f'),    'L', 1, "R", 0);
@@ -407,7 +408,7 @@ class AnexoIXRREO extends RelatoriosLegaisBase implements AnexoRREO {
     foreach ($aDadosAnexoXI->quadrodespesas as $oQuadroDespesas) {
 
       $oPdf->SetFont('arial', '', $iTamFonte);
-      $oPdf->Cell(64, $iAltCell, substr($oQuadroDespesas->descricaolinha, 0, 70),        'R', 0, "L", 0);
+      $oPdf->Cell(64, $iAltCell, substr((string) $oQuadroDespesas->descricaolinha, 0, 70),        'R', 0, "L", 0);
       $oPdf->Cell(42, $iAltCell, db_formatar($oQuadroDespesas->dotacaoatualizada, 'f'),  'RL', 0, "R", 0);
       $oPdf->Cell(24.5, $iAltCell, db_formatar($oQuadroDespesas->despesaliquidada, 'f'), 'R', 0, "R", 0);
       $oPdf->Cell(24.5, $iAltCell, db_formatar($oQuadroDespesas->inscritasemrp, 'f'),    'L', 0, "R", 0);

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitprogramalote_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabitprogramalote = new cl_habitprogramalote;
 $clhabitprogramalote->rotulo->label("ht05_sequencial");
 $clhabitprogramalote->rotulo->label("ht05_habitprograma");
@@ -98,9 +98,9 @@ $clhabitprogramalote->rotulo->label("ht05_habitprograma");
         }else{
            $sql = $clhabitprogramalote->sql_query("",$campos,"ht05_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ht05_habitprograma)){
-          $repassa = array("chave_ht05_sequencial"=>$chave_ht05_sequencial,"chave_ht05_habitprograma"=>$chave_ht05_habitprograma);
+          $repassa = ["chave_ht05_sequencial"=>$chave_ht05_sequencial,"chave_ht05_habitprograma"=>$chave_ht05_habitprograma];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

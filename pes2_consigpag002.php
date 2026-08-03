@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("libs/db_utils.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 /*
  * VERIFICA SE VEIO A VARIAVEL COMPLEMENTAR, SE VEIO, INCLUI NA CLAUSULA
@@ -117,7 +117,7 @@ $iNumRows = pg_num_rows($resQuery);
 $sValorCompararQuebra = "";
 $sCampoQuebrar = "rh73_rubric";
 $total_ger = 0;
-$aTotalRecurso = array();
+$aTotalRecurso = [];
 if ($iNumRows == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dados no período de ' . $mes . ' / ' . $ano);
 } else {

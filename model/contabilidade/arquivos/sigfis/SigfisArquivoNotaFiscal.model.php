@@ -99,10 +99,10 @@ class SigfisArquivoNotaFiscal extends SigfisArquivoBase implements iPadArquivoTX
       }
       
       for ($i = 0; $i < $clConLanCamEmp->numrows; $i++) {
-        
+
         $oDadosQuery = new stdClass();
         $oDadosQuery = db_utils::fieldsMemory($rsConLanCamEmp, $i);
-        
+
         if ($oDadosQuery->valor_pago == 0 ){
            continue;
         }
@@ -111,50 +111,50 @@ class SigfisArquivoNotaFiscal extends SigfisArquivoBase implements iPadArquivoTX
          * Verifica se a Conta retornada possui vinculo com a conta do Sigfis
          */
 //        if ($oVinculo = SigfisVinculoConta::getVinculoConta($oDadosQuery->c61_codcon)) {
-          
+
           $sObServacao = str_replace("\n", " ", $oDadosQuery->e50_obs);
           $sObServacao = str_replace("\r", " ", $sObServacao);
-    		
-          $aData = explode('-', $oDadosQuery->c70_data);
+
+          $aData = explode('-', (string) $oDadosQuery->c70_data);
     		  $iDataPagamentoNota = $aData[2].$aData[1].$aData[0];
     		  $iAnoPagamentoNota = $aData[0];
-    		
-          $aDataNota = explode('-', $oDadosQuery->e69_dtnota);
+
+          $aDataNota = explode('-', (string) $oDadosQuery->e69_dtnota);
     		  $iDataNota = $aDataNota[2].$aDataNota[1].$aDataNota[0];
     		  $iAnoMesNota = $aDataNota[0].$aDataNota[1];
-    		
+
           $fValorDecimal = db_formatar($oDadosQuery->e70_valor, 'p');
     	    $iValorSemSeparador = str_replace('.', '', $fValorDecimal);
-    	  
-          $sObjetoNota = utf8_decode(str_replace(array('\n', '\r'), ' ', $oDadosQuery->e50_obs));
-          
+
+          $sObjetoNota = mb_convert_encoding(str_replace(['\n', '\r'], ' ', $oDadosQuery->e50_obs), 'ISO-8859-1');
+
           $oDados                = new stdClass();
 //          $sUnidadeOrcamentaria  = str_pad($oDadosQuery->o58_orgao, 2, '0', STR_PAD_LEFT);
-          $sUnidadeOrcamentaria = str_pad($oDadosQuery->o58_unidade,4, ' ', STR_PAD_LEFT);
-          
+          $sUnidadeOrcamentaria = str_pad((string) $oDadosQuery->o58_unidade,4, ' ', STR_PAD_LEFT);
+
           $dtPagamento           = $this->formataData($oDadosQuery->c70_data);
           $dtEmissao   = $this->formataData($oDadosQuery->e50_data);
-          
-          $oDados->cd_Unidade              = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
+
+          $oDados->cd_Unidade              = str_pad((string) $this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
           $oDados->cd_UnidadeOrcamentaria  = str_pad($sUnidadeOrcamentaria,     4, ' ', STR_PAD_LEFT); 
-          $oDados->nu_Empenho              = str_pad($oDadosQuery->e60_codemp, 10, ' ', STR_PAD_RIGHT);
+          $oDados->nu_Empenho              = str_pad((string) $oDadosQuery->e60_codemp, 10, ' ', STR_PAD_RIGHT);
           $oDados->dt_PagamentoEmpenho     = $dtPagamento;
-	        $oDados->nu_NotaFiscal           = str_pad(substr($oDadosQuery->e69_numero,0,10), 10, ' ', STR_PAD_RIGHT);
+	        $oDados->nu_NotaFiscal           = str_pad(substr((string) $oDadosQuery->e69_numero,0,10), 10, ' ', STR_PAD_RIGHT);
           $oDados->dt_Ano                  = $iAnoPagamentoNota;      
-	        $oDados->nu_SerieNota            = str_pad($oDadosQuery->e11_seriefiscal,        3, ' ', STR_PAD_RIGHT);
+	        $oDados->nu_SerieNota            = str_pad((string) $oDadosQuery->e11_seriefiscal,        3, ' ', STR_PAD_RIGHT);
 	        $oDados->nu_SubSerieNota         = str_pad('',                             3, ' ', STR_PAD_RIGHT);
-          $oDados->nu_CGCEmitente          = str_pad($oDadosQuery->z01_cgccpf, 14, ' ', STR_PAD_RIGHT);
-          $oDados->nm_EmitenteNota         = str_pad(substr($oDadosQuery->z01_nome, 0, 30), 50, ' ', STR_PAD_RIGHT);
+          $oDados->nu_CGCEmitente          = str_pad((string) $oDadosQuery->z01_cgccpf, 14, ' ', STR_PAD_RIGHT);
+          $oDados->nm_EmitenteNota         = str_pad(substr((string) $oDadosQuery->z01_nome, 0, 30), 50, ' ', STR_PAD_RIGHT);
           $oDados->tp_EmitenteNota         = $oDadosQuery->tipo_pessoa;
 	        $oDados->dt_NotaFiscal           = $iDataNota;
 	        $oDados->vl_NotaFiscal           = str_pad($iValorSemSeparador,           16, ' ', STR_PAD_LEFT);
 	        $oDados->Reservado_tce           = str_pad(' ',                           16, ' ', STR_PAD_RIGHT);
 	        $oDados->de_ObjetoNota           = str_pad(substr( str_replace( "\n", "", $sObjetoNota ), 0, 120), 120, ' ', STR_PAD_RIGHT);
 	        $oDados->dt_AnoMes               = $iAnoMesNota;
-	        $oDados->cd_Orgao                = str_pad($oDadosQuery->o58_orgao,              4, ' ', STR_PAD_LEFT);
+	        $oDados->cd_Orgao                = str_pad((string) $oDadosQuery->o58_orgao,              4, ' ', STR_PAD_LEFT);
 	        $oDados->nu_EmpenhoSup           = str_pad(' ',            10, ' ', STR_PAD_RIGHT);
 	        $oDados->codigolinha             = 418;
-  
+
           $this->aDados[] = $oDados;
 /*
         } else {

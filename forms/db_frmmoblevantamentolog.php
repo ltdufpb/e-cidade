@@ -94,7 +94,7 @@ db_input('j98_testada',15,$Ij98_testada,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Com Asfalto','2'=>'Calçamento','3'=>'Sem Pavimento','4'=>'Pedra Irregular');
+$x = ['1'=>'Com Asfalto','2'=>'Calçamento','3'=>'Sem Pavimento','4'=>'Pedra Irregular'];
 db_select('j98_pavim',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -105,7 +105,7 @@ db_select('j98_pavim',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('S'=>'SIM','N'=>'NÃO');
+$x = ['S'=>'SIM','N'=>'NÃO'];
 db_select('j98_agua',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -116,7 +116,7 @@ db_select('j98_agua',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('S'=>'SIM','N'=>'NÃO');
+$x = ['S'=>'SIM','N'=>'NÃO'];
 db_select('j98_esgoto',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -127,7 +127,7 @@ db_select('j98_esgoto',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('S'=>'SIM','N'=>'NÃO');
+$x = ['S'=>'SIM','N'=>'NÃO'];
 db_select('j98_eletrica',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -138,7 +138,7 @@ db_select('j98_eletrica',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('S'=>'SIM','N'=>'NÃO');
+$x = ['S'=>'SIM','N'=>'NÃO'];
 db_select('j98_meiofio',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -149,7 +149,7 @@ db_select('j98_meiofio',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('S'=>'SIM','N'=>'NÃO');
+$x = ['S'=>'SIM','N'=>'NÃO'];
 db_select('j98_iluminacao',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -160,7 +160,7 @@ db_select('j98_iluminacao',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('S'=>'SIM','N'=>'NÃO');
+$x = ['S'=>'SIM','N'=>'NÃO'];
 db_select('j98_telefonia',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -171,7 +171,7 @@ db_select('j98_telefonia',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('S'=>'SIM','N'=>'NÃO');
+$x = ['S'=>'SIM','N'=>'NÃO'];
 db_select('j98_lixo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -212,7 +212,7 @@ function js_preenchepesquisa(chave){
   db_iframe_moblevantamentolog.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

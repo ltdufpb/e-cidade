@@ -40,8 +40,8 @@ require_once(modification("classes/db_cgm_classe.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("classes/db_listacda_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clcgm           = new cl_cgm;
 $cllista         = new cl_lista;

@@ -6,8 +6,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_acordoclassificacao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clacordoclassificacao = new cl_acordoclassificacao;
 ?>
@@ -50,7 +50,7 @@ $clacordoclassificacao = new cl_acordoclassificacao;
           }
 
           $sql = $clacordoclassificacao->sql_query();
-          $repassa = array();
+          $repassa = [];
           db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
 
         } else {

@@ -20,7 +20,7 @@ class DisponibilidadeRecursoService
     public function relatorioSaldoDisponibilidadeRecurso($filtros)
     {
 
-        $aDadosRelatorio = array();
+        $aDadosRelatorio = [];
         $oDao = new cl_conplanoreduz;
 
         $sql = $oDao->sql_query_saldo_disponibilidade_recurso($filtros);
@@ -64,10 +64,10 @@ class DisponibilidadeRecursoService
 
     public function obterDadosConferenciaPorRecurso($filtros)
     {
-        $aDadosRelatorio = array();
+        $aDadosRelatorio = [];
 
-        $filtros->dataInicial = implode('-', array_reverse(explode('/', $filtros->dataInicial)));
-        $filtros->dataFinal = implode('-', array_reverse(explode('/', $filtros->dataFinal)));
+        $filtros->dataInicial = implode('-', array_reverse(explode('/', (string) $filtros->dataInicial)));
+        $filtros->dataFinal = implode('-', array_reverse(explode('/', (string) $filtros->dataFinal)));
 
         $oDao = new cl_conlancam;
         $sql = $oDao->sql_conferenciaPorRecurso($filtros);
@@ -92,9 +92,7 @@ class DisponibilidadeRecursoService
             $oDados->recurso = $oDadosConsulta->recurso;
             $oDados->o15_descr = $oDadosConsulta->o15_descr;
 
-            $valorExtra = array_filter($valoresExtraOrcamentario, function ($valorExtra) use ($oDados) {
-                return $oDados->recurso == $valorExtra->recurso;
-            });
+            $valorExtra = array_filter($valoresExtraOrcamentario, fn($valorExtra) => $oDados->recurso == $valorExtra->recurso);
 
             $saldo_extra_orcamentario = 0;
             if (!empty($valorExtra)) {

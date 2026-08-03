@@ -64,12 +64,12 @@ if ($oParam->sSigla != 'r') {
   
 }
 
-$aTiposFolha["r48"] = array("sigla" => "r48", "tabela" => "gerfcom");
-$aTiposFolha["r20"] = array("sigla" => "r20", "tabela" => "gerfres");
-$aTiposFolha["r35"] = array("sigla" => "r35", "tabela" => "gerfs13");
-$aTiposFolha["r22"] = array("sigla" => "r22", "tabela" => "gerfadi");
-$aTiposFolha["r14"] = array("sigla" => "r14", "tabela" => "gerfsal");      
-$aRecursos     = array();
+$aTiposFolha["r48"] = ["sigla" => "r48", "tabela" => "gerfcom"];
+$aTiposFolha["r20"] = ["sigla" => "r20", "tabela" => "gerfres"];
+$aTiposFolha["r35"] = ["sigla" => "r35", "tabela" => "gerfs13"];
+$aTiposFolha["r22"] = ["sigla" => "r22", "tabela" => "gerfadi"];
+$aTiposFolha["r14"] = ["sigla" => "r14", "tabela" => "gerfsal"];      
+$aRecursos     = [];
 $sSqlRecursos  = "select distinct o15_codigo,";
 $sSqlRecursos .= "       o15_descr ";
 $sSqlRecursos .= "  from rhempenhofolha";
@@ -240,38 +240,14 @@ if (pg_num_rows($rsRecursos) > 0) {
   }
 }
 
-switch ($oParam->sSigla) {
-	
-  case "r14":
-	  
-		$sPonto = "Salário";
-	  break;
-	  
-  case "r48":
-    
-  	$sPonto = "Complementar";
-    break;
-    
-  case "r35":
-    
-    $sPonto = "13o Salário";  	
-    break;
-    
-  case "r20":
-    
-  	$sPonto = "Rescisão";
-    break;
-  
-  case "r22":
-    
-  	$sPonto = "Adiantamento";
-    break;      
-    
-  default:
-    
-    $sPonto = "Todos";
-    break;    	
-}
+$sPonto = match ($oParam->sSigla) {
+    "r14" => "Salário",
+    "r48" => "Complementar",
+    "r35" => "13o Salário",
+    "r20" => "Rescisão",
+    "r22" => "Adiantamento",
+    default => "Todos",
+};
 
 switch ($oParam->iTipo) {
 	 
@@ -319,12 +295,12 @@ $pdf->SetFillColor(240);
 foreach ($aRecursos as $oRecurso) {
   
   if ($i == 1 || $pdf->GetY() > $pdf->h - 25) {
-    cabecalhoRelatorio($pdf, $sFonte, $iAlt);
+    cabecalhoRelatorio($pdf, $sFonte);
   }
   
   $pdf->SetFont($sFonte, "", 7);
   $pdf->cell(18, $iAlt, $oRecurso->o15_codigo, "TBR", 0, "R");
-  $pdf->cell(50, $iAlt, substr($oRecurso->o15_descr, 0, 30), 1, 0, "L");
+  $pdf->cell(50, $iAlt, substr((string) $oRecurso->o15_descr, 0, 30), 1, 0, "L");
   $pdf->cell(30, $iAlt, db_formatar($oRecurso->nValorEmpenhos, "f"), "TBL", 0, "R");  
   $pdf->cell(30, $iAlt, db_formatar($oRecurso->nValorSlips, "f"), "TBL", 0, "R");  
   $pdf->cell(30, $iAlt, db_formatar($oRecurso->nValorRetencoes, "f"), "TBL", 0, "R");  

@@ -20,6 +20,7 @@ class PlanoOrcamentarioReceitaRSBuilder extends PlanoOrcamentarioReceitaBuilder
         8 => 'Juros de Mora da Dívida Ativa',
     ];
 
+    #[\Override]
     public function build()
     {
         $dados = [];

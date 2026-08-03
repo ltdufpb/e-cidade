@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_sanitario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -56,9 +56,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("vistorias"=>"Vistorias","fiscais"=>"Fiscais"); 
-       $clcriaabas->title = array("vistorias"=>"Vistorias","fiscais"=>"Fiscais da Vistoria");    
-       $clcriaabas->src = array("vistorias"=>"fis1_vistorias001.php?abas=1","fiscais"=>"fis1_vistusuario001.php");  
+       $clcriaabas->identifica = ["vistorias"=>"Vistorias","fiscais"=>"Fiscais"]; 
+       $clcriaabas->title = ["vistorias"=>"Vistorias","fiscais"=>"Fiscais da Vistoria"];    
+       $clcriaabas->src = ["vistorias"=>"fis1_vistorias001.php?abas=1","fiscais"=>"fis1_vistusuario001.php"];  
        $clcriaabas->cria_abas();    
      ?> 
      </td>

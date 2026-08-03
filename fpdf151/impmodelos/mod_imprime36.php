@@ -36,8 +36,8 @@ for ($j = 0; $j < $iNumRows; $j++) {
   $this->objpdf->Setfont('Arial', '', 9);
   $xlin += 10;
   $this->objpdf->Roundedrect($xcol +142, $xlin -12, 60, 12, 2, 'DF', '1234');
-  $this->objpdf->text($xcol +144, $xlin -9, 'Slip N'.chr(176).' '.db_formatar(pg_result($this->dados, $j, "k17_codigo"), 's', '0', 6, 'e'));
-  $this->objpdf->text($xcol +144, $xlin -5, 'Emissao : '.db_formatar(pg_result($this->dados, $j, "k17_data"), 'd'));
+  $this->objpdf->text($xcol +144, $xlin -9, 'Slip N'.chr(176).' '.db_formatar(pg_fetch_result($this->dados, $j, "k17_codigo"), 's', '0', 6, 'e'));
+  $this->objpdf->text($xcol +144, $xlin -5, 'Emissao : '.db_formatar(pg_fetch_result($this->dados, $j, "k17_data"), 'd'));
   $this->objpdf->Setfont('Arial', '', 7);
   $this->objpdf->text($xcol + 144, $xlin -1, 'Emissor: '.$this->nome_usuario);
   $this->objpdf->Setfont('Arial', '', 9);
@@ -46,8 +46,8 @@ for ($j = 0; $j < $iNumRows; $j++) {
   $this->objpdf->Setfont('Arial', '', 8);
   $this->objpdf->text($xcol +2, $xlin +6, 'Conta Débito (Recebe):');
   $this->objpdf->Setfont('Arial', 'B', 10);
-  if (pg_result($this->dados, 0, "k17_debito") != 0) {
-    $this->objpdf->text($xcol +10, $xlin +12, pg_result($this->dados, $j, "k17_debito").'   -   '.pg_result($this->dados, $j, "descr_debito"));
+  if (pg_fetch_result($this->dados, 0, "k17_debito") != 0) {
+    $this->objpdf->text($xcol +10, $xlin +12, pg_fetch_result($this->dados, $j, "k17_debito").'   -   '.pg_fetch_result($this->dados, $j, "descr_debito"));
   } else {
     $this->objpdf->text($xcol +10, $xlin +12, '______________________________');
   }
@@ -55,8 +55,8 @@ for ($j = 0; $j < $iNumRows; $j++) {
   $this->objpdf->text($xcol +2, $xlin +24, 'Conta Crédito (Paga):');
   $this->objpdf->Setfont('Arial', 'B', 10);
 
-  if (pg_result($this->dados, 0, "k17_credito") != 0) {
-    $this->objpdf->text($xcol +10, $xlin +30, pg_result($this->dados, $j, "k17_credito").'   -   '.pg_result($this->dados, $j, "descr_credito"));
+  if (pg_fetch_result($this->dados, 0, "k17_credito") != 0) {
+    $this->objpdf->text($xcol +10, $xlin +30, pg_fetch_result($this->dados, $j, "k17_credito").'   -   '.pg_fetch_result($this->dados, $j, "descr_credito"));
   } else {
     $this->objpdf->text($xcol +10, $xlin +30, '______________________________');
   }
@@ -64,7 +64,7 @@ for ($j = 0; $j < $iNumRows; $j++) {
   $maiscol = 0;
   $this->objpdf->Roundedrect($xcol, $xlin +37, 202, 45, 2, 'DF', '1234');
   $this->objpdf->SetY($xlin +42);
-  $this->objpdf->multicell(0, 5, 'Favorecido    :   '.pg_result($this->dados, $j, "z01_numcgm") .' - '.pg_result($this->dados, $j, "z01_nome"));
+  $this->objpdf->multicell(0, 5, 'Favorecido    :   '.pg_fetch_result($this->dados, $j, "z01_numcgm") .' - '.pg_fetch_result($this->dados, $j, "z01_nome"));
 
   /**
    * Dados bancarios do credor
@@ -83,39 +83,39 @@ for ($j = 0; $j < $iNumRows; $j++) {
 
   if (USE_PCASP && isset($this->sEvento)) {
 
-    $sEvento = pg_result($this->dados, $j, "k152_sequencial").'  -  '.pg_result($this->dados, $j, "k152_descricao");
+    $sEvento = pg_fetch_result($this->dados, $j, "k152_sequencial").'  -  '.pg_fetch_result($this->dados, $j, "k152_descricao");
     $this->objpdf->multicell(0, 5, 'Evento           :   '.strtoupper($sEvento));
   }
 
-  $this->objpdf->multicell(0, 5, 'Histórico        :   '.pg_result($this->dados, $j, "k17_hist").'  -  '.pg_result($this->dados, $j, "descr_hist"));
+  $this->objpdf->multicell(0, 5, 'Histórico        :   '.pg_fetch_result($this->dados, $j, "k17_hist").'  -  '.pg_fetch_result($this->dados, $j, "descr_hist"));
   if (!empty($this->recurso_slip)) {
       $textoFonte = "Fonte              : ".$this->recurso_slip->o15_descr;
       $this->objpdf->multicell(0, 5, $textoFonte);
   }
 
-  $this->objpdf->multicell(0, 5, 'Finalidade Pagamento :   '.pg_result($this->dados, $j, "e151_codigo").'  -  '.pg_result($this->dados, $j, "e151_descricao"));
+  $this->objpdf->multicell(0, 5, 'Finalidade Pagamento :   '.pg_fetch_result($this->dados, $j, "e151_codigo").'  -  '.pg_fetch_result($this->dados, $j, "e151_descricao"));
 
   $this->objpdf->cell(20, 5, 'Observações :   ', 0, 1, "L");
   $this->objpdf->Setfont('Arial', '', 8);
-  $sTextoObservacao = pg_result($this->dados, $j, "k17_texto");
+  $sTextoObservacao = pg_fetch_result($this->dados, $j, "k17_texto");
   $sTextoObservacao = str_replace('\n', "\n", $sTextoObservacao);
   if (strlen($sTextoObservacao) > 700) {
     $sTextoObservacao = substr(str_repeat("1", 900), 0, 700)." ...";
   }
   $this->objpdf->multicell(0, 4, $sTextoObservacao);
   //$this->objpdf->multicell(0, 4, pg_result($this->dados, $j, "k17_texto"). (pg_result($this->dados, $j, "k18_codigo") != 0 ? "\n"."Anulado em ".db_formatar(pg_result($this->dados, $j, "k17_dtanu"), 'd')."\n"."Motivo : ".pg_result($this->dados, $j, "k18_motivo") : ''));
-    if(pg_result($this->dados,0,"k17_situacao") == 3){
+    if(pg_fetch_result($this->dados,0,"k17_situacao") == 3){
     $this->objpdf->Setfont('Arial', 'b', 8);
-    $this->objpdf->multicell(190, 3,"Estornado em ". db_formatar(pg_result($this->dados, 0, "k17_dtestorno"),'d'), 0, "L");
+    $this->objpdf->multicell(190, 3,"Estornado em ". db_formatar(pg_fetch_result($this->dados, 0, "k17_dtestorno"),'d'), 0, "L");
     $this->objpdf->Setfont('Arial', '', 8);
-    $motivo = substr((pg_result($this->dados, 0, "k17_motivoestorno")),0,900);
+    $motivo = substr((pg_fetch_result($this->dados, 0, "k17_motivoestorno")),0,900);
     $this->objpdf->Setfont('Arial', '', 8);
     $this->objpdf->multicell(190, 3,"Motivo : ".$motivo, 0, "L");
-  }else if(pg_result($this->dados,0,"k17_situacao") == 4){
+  }else if(pg_fetch_result($this->dados,0,"k17_situacao") == 4){
     $this->objpdf->Setfont('Arial', 'b', 8);
-    $this->objpdf->multicell(190, 3,"Anulado em ".db_formatar(pg_result($this->dados, $j, "k17_dtanu"), 'd'), 0, "L");
+    $this->objpdf->multicell(190, 3,"Anulado em ".db_formatar(pg_fetch_result($this->dados, $j, "k17_dtanu"), 'd'), 0, "L");
     $this->objpdf->Setfont('Arial', '', 8);
-    $this->objpdf->multicell(190, 3,"Motivo : ".substr(pg_result($this->dados, $j, "k18_motivo"),0,900), 0, "L");
+    $this->objpdf->multicell(190, 3,"Motivo : ".substr(pg_fetch_result($this->dados, $j, "k18_motivo"),0,900), 0, "L");
   }
 
   $this->objpdf->Setfont('Arial', '', 8);
@@ -123,8 +123,8 @@ for ($j = 0; $j < $iNumRows; $j++) {
   $this->objpdf->text($xcol +2, $xlin +87, 'Valor');
   $this->objpdf->Setfont('Arial', 'B', 10);
   $this->objpdf->SetY($xlin +89);
-  $extenso = db_extenso(pg_result($this->dados, $j, "k17_valor"));
-  $this->objpdf->multicell(0, 4, 'R$ '.db_formatar(pg_result($this->dados, $j, "k17_valor"), 'f').'('.$extenso.')');
+  $extenso = db_extenso(pg_fetch_result($this->dados, $j, "k17_valor"));
+  $this->objpdf->multicell(0, 4, 'R$ '.db_formatar(pg_fetch_result($this->dados, $j, "k17_valor"), 'f').'('.$extenso.')');
 
   //Alterado dia 12/01/2006
   //O emissor aparece ao lado da folha como foi solicitado.

@@ -16,7 +16,7 @@ class AreaProcedimentoResultadoRegistry
     /**
      * @var AreaProcedimentoResultado[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param AreaProcedimentoResultado $areaProcedimentoResultado

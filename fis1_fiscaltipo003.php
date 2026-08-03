@@ -38,8 +38,8 @@ include(modification("classes/db_fiscalusuario_classe.php"));
 include(modification("classes/db_fandam_classe.php"));
 include(modification("classes/db_fandamusu_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clfiscaltipo     = new cl_fiscaltipo;
 $clfiscalrec      = new cl_fiscalrec;
 $clfiscalprocrec  = new cl_fiscalprocrec;
@@ -50,7 +50,7 @@ $clfiscalusuario  = new cl_fiscalusuario;
 $clfiscalultandam = new cl_fiscalultandam;
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $db_opcao = 3;
   $result = $clfiscalprocrec->sql_record($clfiscalprocrec->sql_query_fiscaltipo("",""," distinct y45_receit,y45_codtipo,y45_descr,y45_valor",""," y31_codnoti = $y31_codnoti"));
@@ -120,7 +120,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 js_tabulacaoforms("form1","db_opcao",true,1,"db_opcao",true);
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clfiscaltipo->erro_status=="0"){
     $clfiscaltipo->erro(true,false);
   }else{

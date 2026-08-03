@@ -264,7 +264,7 @@ $oRotulo->label("z01_i_numero");
                   </td>
                   <td>
                     <?php
-                    $x = array("Masculino"=>"Masculino", "Feminino"=>"Feminino");
+                    $x = ["Masculino"=>"Masculino", "Feminino"=>"Feminino"];
                     db_select('z01_v_sexo', $x, true, $db_opcao, 'onchange="js_change();"');
                     ?>
                   </td>

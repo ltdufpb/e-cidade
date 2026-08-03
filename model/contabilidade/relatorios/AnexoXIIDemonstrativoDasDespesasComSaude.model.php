@@ -70,7 +70,7 @@ class AnexoXIIDemonstrativoDasDespesasComSaude extends RelatoriosLegaisBase {
    * Array contendo somentes os restos a pagar cadastrados para $this->iAnoUsu dos anos ($this->iAnoUsu - 2) até ($this->iAnoUsu - 4).
    * @var array
    */
-  private $aLinhasRestosPagar = array();
+  private $aLinhasRestosPagar = [];
 
   /**
    * Realiza a emição do relatório.
@@ -118,12 +118,13 @@ class AnexoXIIDemonstrativoDasDespesasComSaude extends RelatoriosLegaisBase {
    * aos 4 últimos anos.
    */
 //  public function executarRestosPagar() {
-   public function executarRestosPagar(array $linhas = array(), $coluna = null){
+   #[\Override]
+   public function executarRestosPagar(array $linhas = [], $coluna = null){
 
 
     $oDaoRestosAPagar         = new cl_empresto();
-    $this->aLinhasRestosPagar = array();
-    $aConfiguracaoManual      = array();
+    $this->aLinhasRestosPagar = [];
+    $aConfiguracaoManual      = [];
 
     //Pega os restos a pargar configurados manualmente.
     foreach ($this->aLinhasConsistencia[self::LINHA_INICIO_EXECUCAO_RESTOS]->oLinhaRelatorio->getValoresColunas(null, null, $this->getInstituicoes(), $this->iAnoUsu) as $oConfiguracaoManual) {
@@ -473,18 +474,18 @@ class AnexoXIIDemonstrativoDasDespesasComSaude extends RelatoriosLegaisBase {
     $iAltura            = 4;
     $nLarguraTitulo     = $this->ultimoPeriodo() ? 0.34 : 0.44;
     $sTitulo            = "DESPESAS COM SAÚDE (Por grupo de natureza da despesa)";
-    $aFormulas          = array(" (e)", " (f)", " (f/e) x 100", " (g)", " (g/e) x 100");
+    $aFormulas          = [" (e)", " (f)", " (f/e) x 100", " (g)", " (g/e) x 100"];
 
     if (Check::between($iLinha, self::LINHA_INICIO_DESPESAS_NAO_COMPUTADAS, self::LINHA_FIM_DESPESAS_NAO_COMPUTADAS)) {
 
       $sTitulo = "DESPESAS COM SAÚDE NÃO COMPUTADAS PARA FINS DE APURAÇÃO DO PERCENTUAL MÍNIMO";
-      $aFormulas = array("", " (h)", " (h/IVf) x 100", " (i)", " (i/IVg) x 100");
+      $aFormulas = ["", " (h)", " (h/IVf) x 100", " (i)", " (i/IVg) x 100"];
     }
 
     if (Check::between($iLinha, self::LINHA_INICIO_DESPESAS_POR_SUBFUNCAO, self::LINHA_FIM_DESPESAS_POR_SUBFUNCAO)) {
 
       $sTitulo = "DESPESAS COM SAÚDE (Por subfunção)";
-      $aFormulas = array("", " (l)", " (l/total l) x 100", " (m)", " (m/total m) x 100");
+      $aFormulas = ["", " (l)", " (l/total l) x 100", " (m)", " (m/total m) x 100"];
     }
 
     $nAltura                  = $this->oPdf->getMultiCellHeight($iLarguraDisponivel * $nLarguraTitulo, $iAltura, $sTitulo);
@@ -725,7 +726,7 @@ class AnexoXIIDemonstrativoDasDespesasComSaude extends RelatoriosLegaisBase {
           && count($oLinha->oLinhaRelatorio->getValoresColunas(null, null, $this->getInstituicoes(), $this->iAnoUsu))) {
 
       //Array para organizar por ano.
-      $aConfiguracaoManual = array();
+      $aConfiguracaoManual = [];
       foreach($oLinha->oLinhaRelatorio->getValoresColunas(null, null, $this->getInstituicoes(), $this->iAnoUsu) as $oColunas) {
 
         $iAnoDeste = $oColunas->colunas[0]->o117_valor;

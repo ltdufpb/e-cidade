@@ -61,19 +61,19 @@ if($db_opcao==1){
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica = array("a1"=>"Exame",
+   $clcriaabas->identifica = ["a1"=>"Exame",
                                    "a2"=>"Material de coleta",
                                    "a3"=>"Informações",
                                    "a4"=>"Requisitos",
                                    "a5"=>"Atributos",
-                                   "a6"=>"Procedimentos");
-   $clcriaabas->src = array("a1"=>"$arquivo",
+                                   "a6"=>"Procedimentos"];
+   $clcriaabas->src = ["a1"=>"$arquivo",
                             "a2"=>"",
                             "a3"=>"",
                             "a4"=>"",
-                            "a6"=>"");
-   $clcriaabas->sizecampo  = array("a1"=>20,"a2"=>30,"a3"=>20,"a4"=>20,"a5"=>20,"a6"=>20);
-   $clcriaabas->disabled   =  array("a1"=>"false","a2"=>"true","a3"=>"true","a4"=>"true","a5"=>"true","a6"=>"true");
+                            "a6"=>""];
+   $clcriaabas->sizecampo  = ["a1"=>20,"a2"=>30,"a3"=>20,"a4"=>20,"a5"=>20,"a6"=>20];
+   $clcriaabas->disabled   =  ["a1"=>"false","a2"=>"true","a3"=>"true","a4"=>"true","a5"=>"true","a6"=>"true"];
    $clcriaabas->scrolling  = "no";
    $clcriaabas->iframe_height= "110%";
    $clcriaabas->iframe_width = "100%";

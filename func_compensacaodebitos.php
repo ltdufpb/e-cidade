@@ -33,10 +33,10 @@ include(modification("dbforms/db_funcoes.php"));
 
 $oGET          = db_utils::postMemory($_GET);
 $oPOST         = db_utils::postMemory($_POST);
-$iChave        = isset($oGET->pesquisa_chave) ? $oGET->pesquisa_chave : null;
-$iCgm          = isset($oGET->cgm) ? $oGET->cgm : null;
-$sSelecionados = isset($oGET->selecionados) ? $oGET->selecionados : null;
-$iSequencial   = isset($oPOST->chave_codigo) ? $oPOST->chave_codigo : null;
+$iChave        = $oGET->pesquisa_chave ?? null;
+$iCgm          = $oGET->cgm ?? null;
+$sSelecionados = $oGET->selecionados ?? null;
+$iSequencial   = $oPOST->chave_codigo ?? null;
 ?>
 <html>
 <head>
@@ -77,7 +77,7 @@ $iSequencial   = isset($oPOST->chave_codigo) ? $oPOST->chave_codigo : null;
   if ($iCgm) :
 
     $iInstituicao = db_getsession('DB_instit');
-    $sCamposDebitos = implode(", ", array(
+    $sCamposDebitos = implode(", ", [
       "distinct arrecad.k00_numpre",
       "arrecad.k00_numpar",
       "arrecad.k00_tipo",
@@ -85,11 +85,11 @@ $iSequencial   = isset($oPOST->chave_codigo) ? $oPOST->chave_codigo : null;
       "arretipo.k00_descr",
       "arrecad.k00_numcgm",
       "sum(arrecad.k00_valor) as dl_Valor_Hist"
-    ));
+    ]);
 
-    $aWhereDebitos = array(
+    $aWhereDebitos = [
       "arrecad.k00_valor > 0"
-    );
+    ];
 
     if ($iSequencial) {
       $aWhereDebitos[] = "arrecad.k00_numpre = {$iSequencial}";
@@ -104,11 +104,11 @@ $iSequencial   = isset($oPOST->chave_codigo) ? $oPOST->chave_codigo : null;
      */
     if ($sSelecionados) {
 
-      $aWhereSelecionados = array();
+      $aWhereSelecionados = [];
       $aDebitos = explode('|', $sSelecionados);
       foreach ($aDebitos as $sDebito) {
 
-        list($iNumpre, $iNumpar) = explode('/', $sDebito);
+        [$iNumpre, $iNumpar] = explode('/', $sDebito);
         $aWhereSelecionados[] = "(arrecad.k00_numpre, arrecad.k00_numpar) <> ({$iNumpre}, {$iNumpar})";
       }
       $sWhereSelecionados = ' (' . implode(' and ', $aWhereSelecionados) . ') ';
@@ -117,14 +117,14 @@ $iSequencial   = isset($oPOST->chave_codigo) ? $oPOST->chave_codigo : null;
 
     $sWhereDebitos = implode(' and ', $aWhereDebitos);
 
-    $sGroupBy = implode(", ", array(
+    $sGroupBy = implode(", ", [
       "arrecad.k00_numpre",
       "arrecad.k00_numpar",
       "arrecad.k00_tipo",
       "arrecad.k00_dtvenc",
       "arrecad.k00_numcgm",
       "arretipo.k00_descr"
-    ));
+    ]);
 
     $sSql = "select {$sCamposDebitos} ";
     $sSql .= " from arrenumcgm ";
@@ -136,12 +136,12 @@ $iSequencial   = isset($oPOST->chave_codigo) ? $oPOST->chave_codigo : null;
     $sSql .= " group by {$sGroupBy} ";
     $sSql .= " order by arrecad.k00_numpre, arrecad.k00_numpar, arrecad.k00_dtvenc";
 
-    $aRepassa = array();
+    $aRepassa = [];
     if(isset($iSequencial)) :
 
-      $aRepassa = array(
+      $aRepassa = [
         "chave_codigo" => $iSequencial,
-      );
+      ];
     endif;
     ?>
 

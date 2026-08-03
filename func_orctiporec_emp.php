@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orctiporec_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorctiporec = new cl_orctiporec;
 $clorctiporec->rotulo->label("o15_codigo");
 $clorctiporec->rotulo->label("o15_descr");

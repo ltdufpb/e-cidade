@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -70,7 +70,7 @@ function js_emite(){
         </td>
         <td>
 	  <?php  
-	  $tipo = array("t"=>"Todas Receitas","o"=>"Receitas Orcamentárias","e"=>"Receitas Extra-orçamentárias");
+	  $tipo = ["t"=>"Todas Receitas","o"=>"Receitas Orcamentárias","e"=>"Receitas Extra-orçamentárias"];
 	  db_select("listar",$tipo,true,2); ?>
         </td>
       </tr>

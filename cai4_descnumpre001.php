@@ -34,8 +34,8 @@
   include(modification("classes/db_arrehist_classe.php"));
   include(modification("dbforms/db_funcoes.php"));
   //parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-  db_postmemory($HTTP_POST_VARS);
-  db_postmemory($HTTP_GET_VARS);
+  db_postmemory($_POST);
+  db_postmemory($_GET);
   $clrotulo = new rotulocampo;
   $clarrehist = new cl_arrehist;
   $clarrecad = new cl_arrecad;
@@ -44,11 +44,11 @@
   	
     if (!empty($DBtxt9)) {
       $record = debitos_numpre($k00_numpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"), 0, "", "", "");
-      if (pg_numrows($record) != 0) {  
+      if (pg_num_rows($record) != 0) {  
         $numpar = $k00_numpar;
         $receit = $k00_receit;
         $ttotal = 0;
-        for ($i=0; $i<pg_numrows($record); $i++) {
+        for ($i=0; $i<pg_num_rows($record); $i++) {
           db_fieldsmemory($record,$i);
           if ($numpar!=0 && $numpar == $k00_numpar ) {
             if ($receit!=0 && $receit == $k00_receit) {
@@ -70,7 +70,7 @@
 				db_inicio_transacao();
 
         $erro = false;
-        for ($i=0; $i<pg_numrows($record); $i++) {
+        for ($i=0; $i<pg_num_rows($record); $i++) {
           db_fieldsmemory($record,$i);
           $processa = false;
           if ($numpar!=0 && $numpar == $k00_numpar ) {
@@ -312,8 +312,8 @@ if (isset($k00_numpre)) {
   $record = debitos_numpre($k00_numpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"),0,'',''," and y.k00_hist <> 918");
  
   if ($record!=false) {
-    if (pg_numrows($record) != 0) {
-      $matrec=array();
+    if (pg_num_rows($record) != 0) {
+      $matrec=[];
       $matpar["0"]="Todas Parcelas ...";
       $matrec["0"]="Todas Receitas ...";
       $valor = 0;
@@ -323,7 +323,7 @@ if (isset($k00_numpre)) {
       $tvlrdesconto= 0;
 	  $tvlrhist = 0;
       $ttotal = 0;
-      for ($i=0; $i<pg_numrows($record); $i++) {
+      for ($i=0; $i<pg_num_rows($record); $i++) {
         db_fieldsmemory($record,$i);
         $matpar[$k00_numpar]= "$k00_numpar";
         if ($numpar!=0 && $k00_numpar == $numpar) {

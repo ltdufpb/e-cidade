@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 $clcadescrito = new cl_cadescrito;
 $clescrito = new cl_escrito;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){
@@ -49,7 +49,7 @@ if(isset($alterar)){
      if (empty($q86_datalimite)) {
        $sDataFim = 'null';
      } else {
-       $sDataFim  = substr($q86_datalimite,6,4)."-".substr($q86_datalimite,3,2)."-".substr($q86_datalimite,0,2);
+       $sDataFim  = substr((string) $q86_datalimite,6,4)."-".substr((string) $q86_datalimite,3,2)."-".substr((string) $q86_datalimite,0,2);
      }
      $sWhere = " q10_numcgm = {$q86_numcgm}";
      $resultCli = $clescrito->sql_record($clescrito->sql_query_file(null, 'q10_sequencial', null, $sWhere));

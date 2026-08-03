@@ -198,7 +198,7 @@ if (isset($db_opcaoal)){
 				    <td valign="top"  align="center">  
 					    <?php 
 					    
-					      $aChavePri     = array("at94_sequencial"=>@$at94_sequencial);
+					      $aChavePri     = ["at94_sequencial"=>@$at94_sequencial];
 					      $sWhereAtributo = "at94_cliente = {$oGet->at94_cliente} "; 
 					      $sSqlAtributo   = $clClienteAtributoValor->sql_query(null,"*",null,$sWhereAtributo);
 					      

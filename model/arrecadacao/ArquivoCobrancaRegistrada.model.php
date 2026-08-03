@@ -30,11 +30,11 @@ require_once(modification('std/DBLargeObject.php'));
 
 class ArquivoCobrancaRegistrada {
   
-  var $iIdAtosDistribuidores             = "";
-  var $iIdTaxaJudiciaria                 = "";
-  var $iIdAtosEscrivaesDividaAtiva       = "";
-  var $iIdAcrescimo                      = "";
-  var $iIdAtosOficiaisJusticaAvaliadores = "";
+  public $iIdAtosDistribuidores             = "";
+  public $iIdTaxaJudiciaria                 = "";
+  public $iIdAtosEscrivaesDividaAtiva       = "";
+  public $iIdAcrescimo                      = "";
+  public $iIdAtosOficiaisJusticaAvaliadores = "";
   function __construct() {
     
       	
@@ -84,7 +84,7 @@ class ArquivoCobrancaRegistrada {
     $oDaoDbConfig             = db_utils::getDao('db_config');
   	$oLayoutTxt               = new db_layouttxt(100, "tmp/".$sNomeArq);
   	
-    $aPartilhaCustas          = array();
+    $aPartilhaCustas          = [];
     $iRegistro = 1;
     
     
@@ -123,8 +123,8 @@ class ArquivoCobrancaRegistrada {
       throw new Exception("[ 3 ] - Erro ao inserir dados em Partilha Arquivo\n {$oDaoPartilhaArquivo->erro_msg}");
     }
     
-    $aDtProcessamento = split("-",$dtProcessamento);
-    $sDtProcessamento = $aDtProcessamento[2].$aDtProcessamento[1].substr($aDtProcessamento[0],2,2);
+    $aDtProcessamento = preg_split("#\\-#m",$dtProcessamento);
+    $sDtProcessamento = $aDtProcessamento[2].$aDtProcessamento[1].substr((string) $aDtProcessamento[0],2,2);
     
     /*
      * Montanos o Header do Arquivo com as informações do convênio e sequencial de geração do arquivo
@@ -136,17 +136,17 @@ class ArquivoCobrancaRegistrada {
     $oHeader->fixo3                               = "01";
     $oHeader->fixo4                               = "COBRANCA";
     $oHeader->fixo5                               = str_repeat(" ",7); //brancos
-    $oHeader->prefixo_agencia                     = str_pad(substr($oConvenioCobranca->db89_codagencia,-4),  4, "0", STR_PAD_LEFT);
-    $oHeader->dv_prefixo_agencia                  = str_pad($oConvenioCobranca->db89_digito     ,  1, "0", STR_PAD_LEFT);
-    $oHeader->codigo_cedente                      = str_pad($oConvenioCobranca->ar13_cedente    ,  8, "0", STR_PAD_LEFT);
-    $oHeader->dv_codigo_cedente                   = str_pad($oConvenioCobranca->ar13_digcedente ,  1, "0", STR_PAD_LEFT);;
+    $oHeader->prefixo_agencia                     = str_pad(substr((string) $oConvenioCobranca->db89_codagencia,-4),  4, "0", STR_PAD_LEFT);
+    $oHeader->dv_prefixo_agencia                  = str_pad((string) $oConvenioCobranca->db89_digito     ,  1, "0", STR_PAD_LEFT);
+    $oHeader->codigo_cedente                      = str_pad((string) $oConvenioCobranca->ar13_cedente    ,  8, "0", STR_PAD_LEFT);
+    $oHeader->dv_codigo_cedente                   = str_pad((string) $oConvenioCobranca->ar13_digcedente ,  1, "0", STR_PAD_LEFT);;
     $oHeader->fixo6                               = "000000";  
-    $oHeader->nome_cliente                        = str_pad($oDbConfig->nomeinst                , 30, " ", STR_PAD_RIGHT);
+    $oHeader->nome_cliente                        = str_pad((string) $oDbConfig->nomeinst                , 30, " ", STR_PAD_RIGHT);
     $oHeader->banco                               = "001BANCO DO BRASIL"; //fixo
     $oHeader->data_gravacao                       = $sDtProcessamento;
-    $oHeader->sequencial_remessa                  = str_pad($oDaoPartilhaArquivo->v78_sequencial, 7, "0", STR_PAD_LEFT);
+    $oHeader->sequencial_remessa                  = str_pad((string) $oDaoPartilhaArquivo->v78_sequencial, 7, "0", STR_PAD_LEFT);
     $oHeader->fixo7                               = str_repeat(" ",22); //brancos
-    $oHeader->numero_convenio_banco               = str_pad($oConvenioCobranca->ar13_convenio,    7, "0", STR_PAD_LEFT);
+    $oHeader->numero_convenio_banco               = str_pad((string) $oConvenioCobranca->ar13_convenio,    7, "0", STR_PAD_LEFT);
     $oHeader->fixo8                               = str_repeat(" ",258); //brancos
     $oHeader->sequencial_registro                 = "000001";
     if ( $oLayoutTxt->setByLineOfDBUtils($oHeader,1,"0") == false ) {
@@ -170,25 +170,25 @@ class ArquivoCobrancaRegistrada {
         
         $sNumeroControleParticipante = $aDados->z01_numcgm.$aDados->numbanco.str_replace("-","",$aDados->k00_dtpaga);
         
-        $aDataEmissao    = split("-",$aDados->k00_dtoper);
-        $sDataEmissao    = $aDataEmissao[2].$aDataEmissao[1].substr($aDataEmissao[0],2,2);
+        $aDataEmissao    = preg_split("#\\-#m",(string) $aDados->k00_dtoper);
+        $sDataEmissao    = $aDataEmissao[2].$aDataEmissao[1].substr((string) $aDataEmissao[0],2,2);
 
-        $aDataVencimento = split("-",$aDados->k00_dtpaga);
-        $sDataVencimento = $aDataVencimento[2].$aDataVencimento[1].substr($aDataVencimento[0],2,2); 
+        $aDataVencimento = preg_split("#\\-#m",(string) $aDados->k00_dtpaga);
+        $sDataVencimento = $aDataVencimento[2].$aDataVencimento[1].substr((string) $aDataVencimento[0],2,2); 
         
         $nValor    = number_format(round($aDados->valor_total_recibo,2), 2, '', '');
         
         $oDetalhe = new stdClass();
         $oDetalhe->id                                   = "7"; 
         $oDetalhe->tipo_inscricao_empresa               = "02";
-        $oDetalhe->inscricao_empresa                    = str_pad($oDbConfig->z01_cgccpf                    , 14, "0", STR_PAD_LEFT); 
-        $oDetalhe->prefixo_agencia                      = str_pad(substr($oConvenioCobranca->db89_codagencia,-4),  4, "0", STR_PAD_LEFT);
-        $oDetalhe->dv_prefixo_agencia                   = str_pad($oConvenioCobranca->db89_digito           ,  1, "0", STR_PAD_LEFT); 
-        $oDetalhe->codigo_cedente                       = str_pad($oConvenioCobranca->ar13_cedente          ,  8, "0", STR_PAD_LEFT);
-        $oDetalhe->dv_codigo_cedente                    = str_pad($oConvenioCobranca->ar13_digcedente       ,  1, "0", STR_PAD_LEFT);
-        $oDetalhe->numero_convenio                      = str_pad($oConvenioCobranca->ar13_convenio         ,  7, "0", STR_PAD_LEFT);
+        $oDetalhe->inscricao_empresa                    = str_pad((string) $oDbConfig->z01_cgccpf                    , 14, "0", STR_PAD_LEFT); 
+        $oDetalhe->prefixo_agencia                      = str_pad(substr((string) $oConvenioCobranca->db89_codagencia,-4),  4, "0", STR_PAD_LEFT);
+        $oDetalhe->dv_prefixo_agencia                   = str_pad((string) $oConvenioCobranca->db89_digito           ,  1, "0", STR_PAD_LEFT); 
+        $oDetalhe->codigo_cedente                       = str_pad((string) $oConvenioCobranca->ar13_cedente          ,  8, "0", STR_PAD_LEFT);
+        $oDetalhe->dv_codigo_cedente                    = str_pad((string) $oConvenioCobranca->ar13_digcedente       ,  1, "0", STR_PAD_LEFT);
+        $oDetalhe->numero_convenio                      = str_pad((string) $oConvenioCobranca->ar13_convenio         ,  7, "0", STR_PAD_LEFT);
         $oDetalhe->numero_controle_participante         = str_pad($sNumeroControleParticipante              , 25, "0", STR_PAD_LEFT);
-        $oDetalhe->nosso_numero                         = str_pad($aDados->numbanco                         , 17, "0", STR_PAD_RIGHT); 
+        $oDetalhe->nosso_numero                         = str_pad((string) $aDados->numbanco                         , 17, "0", STR_PAD_RIGHT); 
         $oDetalhe->fixo1                                = str_repeat("0",2);  //00         
         $oDetalhe->fixo2                                = str_repeat("0",2);  //00 
         $oDetalhe->fixo3                                = str_repeat(" ",3);  //brancos            
@@ -218,7 +218,7 @@ class ArquivoCobrancaRegistrada {
         $oDetalhe->valor_abatimento                     = str_repeat("0",13); //00000000000
         $oDetalhe->tipo_inscricao_sacado                = str_repeat("0",2);  //00
         $oDetalhe->documento_sacado                     = str_repeat("0",14); //00000000000000           
-        $oDetalhe->nome_sacado                          = str_pad($aDados->z01_nome, 37, " ", STR_PAD_RIGHT); 
+        $oDetalhe->nome_sacado                          = str_pad((string) $aDados->z01_nome, 37, " ", STR_PAD_RIGHT); 
         $oDetalhe->fixo7                                = str_repeat(" ",3);  //brancos
         $oDetalhe->fixo8                                = str_repeat(" ",15); //brancos
 
@@ -242,7 +242,7 @@ class ArquivoCobrancaRegistrada {
         $oDetalhe->observacoes                          = str_repeat(" ",40); //brancos 
         $oDetalhe->numero_dias_protesto                 = str_repeat("0",2);  //00
         $oDetalhe->fixo9                                = str_repeat(" ",1); 
-        $oDetalhe->sequencial_registro                  = str_pad($iRegistro, 6, "0", STR_PAD_LEFT);
+        $oDetalhe->sequencial_registro                  = str_pad((string) $iRegistro, 6, "0", STR_PAD_LEFT);
         if ( $oLayoutTxt->setByLineOfDBUtils($oDetalhe,3,7) == false ) {
           throw new Exception ("[ 5 ] - Erro ao gerar Detalhe do Arquivo");
         }        
@@ -254,45 +254,45 @@ class ArquivoCobrancaRegistrada {
         $iRegistro++;
         $oDetalheAuxiliar = new stdClass();
         $oDetalheAuxiliar->id                           = "2";
-        $oDetalheAuxiliar->nosso_numero                 = str_pad($aDados->numbanco                         , 17, "0", STR_PAD_RIGHT);
+        $oDetalheAuxiliar->nosso_numero                 = str_pad((string) $aDados->numbanco                         , 17, "0", STR_PAD_RIGHT);
 
-        $oDetalheAuxiliar->banco_credito1               = str_pad($aDados->banco_TJ                         ,  3, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->banco_credito1               = str_pad((string) $aDados->banco_TJ                         ,  3, "0", STR_PAD_LEFT);
         $oDetalheAuxiliar->camara_compensacao1          = str_repeat("0",3);
-        $oDetalheAuxiliar->prefixo_agencia_credito1     = str_pad(substr($aDados->codagencia_TJ,-4)         ,  4, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->dv_prefixo_agencia_credito1  = str_pad($aDados->dvagencia_TJ                     ,  1, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->conta_credito1               = str_pad($aDados->conta_TJ                         , 11, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->dv_conta_credito1            = str_pad($aDados->dvconta_TJ                       ,  1, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->nome_favorecido1             = str_pad($aDados->nome_TJ                          , 30, " ", STR_PAD_RIGHT);
+        $oDetalheAuxiliar->prefixo_agencia_credito1     = str_pad(substr((string) $aDados->codagencia_TJ,-4)         ,  4, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->dv_prefixo_agencia_credito1  = str_pad((string) $aDados->dvagencia_TJ                     ,  1, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->conta_credito1               = str_pad((string) $aDados->conta_TJ                         , 11, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->dv_conta_credito1            = str_pad((string) $aDados->dvconta_TJ                       ,  1, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->nome_favorecido1             = str_pad((string) $aDados->nome_TJ                          , 30, " ", STR_PAD_RIGHT);
         $oDetalheAuxiliar->valor_partilha1              = str_pad(number_format(round($aDados->valor_TJ,2), 2, '', ''), 13, "0", STR_PAD_LEFT);
         $oDetalheAuxiliar->brancos1                     = str_repeat(" ",13);
 
-        $oDetalheAuxiliar->banco_credito2               = str_pad($aDados->banco_FUNPERJ                     ,  3, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->banco_credito2               = str_pad((string) $aDados->banco_FUNPERJ                     ,  3, "0", STR_PAD_LEFT);
         $oDetalheAuxiliar->camara_compensacao2          = str_repeat("0",3);
-        $oDetalheAuxiliar->prefixo_agencia_credito2     = str_pad(substr($aDados->codagencia_FUNPERJ,-4)     ,  4, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->dv_prefixo_agencia_credito2  = str_pad($aDados->dvagencia_FUNPERJ                 ,  1, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->conta_credito2               = str_pad($aDados->conta_FUNPERJ                     , 11, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->dv_conta_credito2            = str_pad($aDados->dvconta_FUNPERJ                   ,  1, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->nome_favorecido2             = str_pad($aDados->nome_FUNPERJ                      , 30, " ", STR_PAD_RIGHT);
+        $oDetalheAuxiliar->prefixo_agencia_credito2     = str_pad(substr((string) $aDados->codagencia_FUNPERJ,-4)     ,  4, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->dv_prefixo_agencia_credito2  = str_pad((string) $aDados->dvagencia_FUNPERJ                 ,  1, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->conta_credito2               = str_pad((string) $aDados->conta_FUNPERJ                     , 11, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->dv_conta_credito2            = str_pad((string) $aDados->dvconta_FUNPERJ                   ,  1, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->nome_favorecido2             = str_pad((string) $aDados->nome_FUNPERJ                      , 30, " ", STR_PAD_RIGHT);
         $oDetalheAuxiliar->valor_partilha2              = str_pad(number_format(round($aDados->valor_FUNPERJ,2), 2, '', ''), 13, "0", STR_PAD_LEFT);
         $oDetalheAuxiliar->brancos2                     = str_repeat(" ",13);
                 
-        $oDetalheAuxiliar->banco_credito3               = str_pad($aDados->banco_CAARJ                       ,  3, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->banco_credito3               = str_pad((string) $aDados->banco_CAARJ                       ,  3, "0", STR_PAD_LEFT);
         $oDetalheAuxiliar->camara_compensacao3          = str_repeat("0",3);
-        $oDetalheAuxiliar->prefixo_agencia_credito3     = str_pad(substr($aDados->codagencia_CAARJ,-4)       ,  4, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->dv_prefixo_agencia_credito3  = str_pad($aDados->dvagencia_CAARJ                   ,  1, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->conta_credito3               = str_pad($aDados->conta_CAARJ                       , 11, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->dv_conta_credito3            = str_pad($aDados->dvconta_CAARJ                     ,  1, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->nome_favorecido3             = str_pad($aDados->nome_CAARJ                        , 30, " ", STR_PAD_RIGHT);
+        $oDetalheAuxiliar->prefixo_agencia_credito3     = str_pad(substr((string) $aDados->codagencia_CAARJ,-4)       ,  4, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->dv_prefixo_agencia_credito3  = str_pad((string) $aDados->dvagencia_CAARJ                   ,  1, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->conta_credito3               = str_pad((string) $aDados->conta_CAARJ                       , 11, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->dv_conta_credito3            = str_pad((string) $aDados->dvconta_CAARJ                     ,  1, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->nome_favorecido3             = str_pad((string) $aDados->nome_CAARJ                        , 30, " ", STR_PAD_RIGHT);
         $oDetalheAuxiliar->valor_partilha3              = str_pad(number_format(round($aDados->valor_CAARJ,2), 2, '', ''), 13, "0", STR_PAD_LEFT);
         $oDetalheAuxiliar->brancos3                     = str_repeat(" ",13);
        
-        $oDetalheAuxiliar->banco_credito4               = str_pad($aDados->banco_FUNDPERJ                    ,  3, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->banco_credito4               = str_pad((string) $aDados->banco_FUNDPERJ                    ,  3, "0", STR_PAD_LEFT);
         $oDetalheAuxiliar->camara_compensacao4          = str_repeat("0",3);
-        $oDetalheAuxiliar->prefixo_agencia_credito4     = str_pad(substr($aDados->codagencia_FUNDPERJ,-4)    ,  4, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->dv_prefixo_agencia_credito4  = str_pad($aDados->dvagencia_FUNDPERJ                ,  1, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->conta_credito4               = str_pad($aDados->conta_FUNDPERJ                    , 11, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->dv_conta_credito4            = str_pad($aDados->dvconta_FUNDPERJ                  ,  1, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliar->nome_favorecido4             = str_pad($aDados->nome_FUNDPERJ                     , 30, " ", STR_PAD_RIGHT);
+        $oDetalheAuxiliar->prefixo_agencia_credito4     = str_pad(substr((string) $aDados->codagencia_FUNDPERJ,-4)    ,  4, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->dv_prefixo_agencia_credito4  = str_pad((string) $aDados->dvagencia_FUNDPERJ                ,  1, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->conta_credito4               = str_pad((string) $aDados->conta_FUNDPERJ                    , 11, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->dv_conta_credito4            = str_pad((string) $aDados->dvconta_FUNDPERJ                  ,  1, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->nome_favorecido4             = str_pad((string) $aDados->nome_FUNDPERJ                     , 30, " ", STR_PAD_RIGHT);
         $oDetalheAuxiliar->valor_partilha4              = str_pad(number_format(round($aDados->valor_FUNDPERJ,2), 2, '', ''), 13, "0", STR_PAD_LEFT);
         $oDetalheAuxiliar->brancos4                     = str_repeat(" ",13);
         
@@ -308,7 +308,7 @@ class ArquivoCobrancaRegistrada {
         $oDetalheAuxiliar->tipo_documento_favorecido4   = "4";
         $oDetalheAuxiliar->numero_documento_favorecido4 = $aDados->cgccpf_FUNDPERJ;
     
-        $oDetalheAuxiliar->sequencial                   = str_pad($iRegistro ,  6, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliar->sequencial                   = str_pad((string) $iRegistro ,  6, "0", STR_PAD_LEFT);
         if ( $oLayoutTxt->setByLineOfDBUtils($oDetalheAuxiliar,3,2) == false ) {
           throw new Exception ("[ 6 ] - Erro ao gerar Detalhe Auxiliar do Arquivo");
         }
@@ -320,15 +320,15 @@ class ArquivoCobrancaRegistrada {
         $iRegistro++;
         $oDetalheAuxiliar = new stdClass();
         $oDetalheAuxiliarPref->id                           = "2";
-        $oDetalheAuxiliarPref->nosso_numero                 = str_pad($aDados->numbanco                       , 17, "0", STR_PAD_RIGHT);
+        $oDetalheAuxiliarPref->nosso_numero                 = str_pad((string) $aDados->numbanco                       , 17, "0", STR_PAD_RIGHT);
         
-        $oDetalheAuxiliarPref->banco_credito1               = str_pad($aDados->banco_INSTITUICAO                     ,  3, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliarPref->banco_credito1               = str_pad((string) $aDados->banco_INSTITUICAO                     ,  3, "0", STR_PAD_LEFT);
         $oDetalheAuxiliarPref->camara_compensacao1          = str_repeat("0",3);
-        $oDetalheAuxiliarPref->prefixo_agencia_credito1     = str_pad(substr($aDados->codagencia_INSTITUICAO,-4)     ,  4, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliarPref->dv_prefixo_agencia_credito1  = str_pad($aDados->dvagencia_INSTITUICAO                 ,  1, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliarPref->conta_credito1               = str_pad($aDados->conta_INSTITUICAO                     , 11, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliarPref->dv_conta_credito1            = str_pad($aDados->dvconta_INSTITUICAO                   ,  1, "0", STR_PAD_LEFT);
-        $oDetalheAuxiliarPref->nome_favorecido1             = str_pad($aDados->nome_INSTITUICAO                      , 30, " ", STR_PAD_RIGHT);
+        $oDetalheAuxiliarPref->prefixo_agencia_credito1     = str_pad(substr((string) $aDados->codagencia_INSTITUICAO,-4)     ,  4, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliarPref->dv_prefixo_agencia_credito1  = str_pad((string) $aDados->dvagencia_INSTITUICAO                 ,  1, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliarPref->conta_credito1               = str_pad((string) $aDados->conta_INSTITUICAO                     , 11, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliarPref->dv_conta_credito1            = str_pad((string) $aDados->dvconta_INSTITUICAO                   ,  1, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliarPref->nome_favorecido1             = str_pad((string) $aDados->nome_INSTITUICAO                      , 30, " ", STR_PAD_RIGHT);
         $oDetalheAuxiliarPref->valor_partilha1              = str_pad(number_format(round($aDados->valor_recibo,2), 2, '', ''), 13, "0", STR_PAD_LEFT);
         $oDetalheAuxiliarPref->brancos1                     = str_repeat(" ",13);
         
@@ -374,7 +374,7 @@ class ArquivoCobrancaRegistrada {
         $oDetalheAuxiliarPref->tipo_documento_favorecido4   = "4";
         $oDetalheAuxiliarPref->numero_documento_favorecido4 = str_repeat(" ",14);      
     
-        $oDetalheAuxiliarPref->sequencial                   = str_pad($iRegistro, 6, "0", STR_PAD_LEFT);
+        $oDetalheAuxiliarPref->sequencial                   = str_pad((string) $iRegistro, 6, "0", STR_PAD_LEFT);
         if ( $oLayoutTxt->setByLineOfDBUtils($oDetalheAuxiliarPref,3,2) == false ) {
           throw new Exception ("[ 6 ] - Erro ao gerar Detalhe Auxiliar referente aos dados da Prefeitura do Arquivo");
         }
@@ -384,7 +384,7 @@ class ArquivoCobrancaRegistrada {
     $oTrailer = new stdClass();
     $oTrailer->id      = "9";  
     $oTrailer->brancos = str_repeat(" ",393); //fixo
-    $oTrailer->sequencial_ultimo_registro = str_pad($iRegistro+1, 6, "0", STR_PAD_LEFT);
+    $oTrailer->sequencial_ultimo_registro = str_pad((string) ($iRegistro + 1), 6, "0", STR_PAD_LEFT);
     if ( $oLayoutTxt->setByLineOfDBUtils($oTrailer,5,9) == false ) {
       throw new Exception("[ 7 ] Erro ao gerar trailer do Arquivo");
     }
@@ -423,7 +423,7 @@ class ArquivoCobrancaRegistrada {
     $oDaoDbConfig            = db_utils::getDao('db_config');
   	$oLayoutTxt              = new db_layouttxt(101, "tmp/".$sNomeArq);
   	
-    $aPartilhaCustas         = array();  
+    $aPartilhaCustas         = [];  
     $iRegistro = 1;
     
   	//Buscamos os dados da instituição
@@ -443,17 +443,17 @@ class ArquivoCobrancaRegistrada {
       throw new Exception("[ 3 ] - Erro ao inserir dados em Partilha Arquivo\n {$oDaoPartilhaArquivo->erro_msg}");
     }
     
-    $aDtProcessamento = split("-",$dtProcessamento);
+    $aDtProcessamento = preg_split("#\\-#m",$dtProcessamento);
     $sDtProcessamento = $aDtProcessamento[2].$aDtProcessamento[1].$aDtProcessamento[0];
 
     $oHeader = new stdClass();
     $oHeader->id                         = "0";
     $oHeader->data_geracao_arquivo       = date("dmY",db_getsession("DB_datausu"));
-    $oHeader->codigo_identificador_TJERJ = str_pad($oDbConfig->db21_codtj, 5, "0",STR_PAD_LEFT) ;
-    $oHeader->nome_municipio             = str_pad($oDbConfig->munic, 30, " ", STR_PAD_RIGHT) ;
+    $oHeader->codigo_identificador_TJERJ = str_pad((string) $oDbConfig->db21_codtj, 5, "0",STR_PAD_LEFT) ;
+    $oHeader->nome_municipio             = str_pad((string) $oDbConfig->munic, 30, " ", STR_PAD_RIGHT) ;
     $oHeader->versao_layout              = "0300";
     $oHeader->data_movimento             = $sDtProcessamento;
-    $oHeader->sequencial_arquivo         = str_pad($oDaoPartilhaArquivo->v78_sequencial, 3, "0", STR_PAD_LEFT);
+    $oHeader->sequencial_arquivo         = str_pad((string) $oDaoPartilhaArquivo->v78_sequencial, 3, "0", STR_PAD_LEFT);
     $oHeader->brancos                    = str_repeat(" ",236);
     $oHeader->sequencial_registro        = "00001";
     if ( $oLayoutTxt->setByLineOfDBUtils($oHeader,1,"0") == false ) {
@@ -469,33 +469,33 @@ class ArquivoCobrancaRegistrada {
       
         $iRegistro++;
         
-        $aDataVencimento         = split("-",$aDados->k00_dtpaga);
+        $aDataVencimento         = preg_split("#\\-#m",(string) $aDados->k00_dtpaga);
         $sDataVencimento         = $aDataVencimento[2].$aDataVencimento[1].$aDataVencimento[0];
         
-        $aDataUltimaDistribuicao = split("-",$aDados->v70_data);
+        $aDataUltimaDistribuicao = preg_split("#\\-#m",(string) $aDados->v70_data);
         $sDataUltimaDistribuicao = $aDataUltimaDistribuicao[2].$aDataUltimaDistribuicao[1].$aDataUltimaDistribuicao[0];
        
         $oDetalheTipo1 = new stdClass();
         $oDetalheTipo1->id                              = "1";
-        $oDetalheTipo1->nosso_numero                    = str_pad($aDados->numbanco                                             , 17, "0", STR_PAD_RIGHT);
+        $oDetalheTipo1->nosso_numero                    = str_pad((string) $aDados->numbanco                                             , 17, "0", STR_PAD_RIGHT);
         $oDetalheTipo1->data_vencimento_boleto_bancario = $sDataVencimento; 
         $oDetalheTipo1->valor_total_boleto_bancario     = str_pad(number_format(round($aDados->valor_total_recibo,2), 2, '', ''), 14, "0", STR_PAD_LEFT);
   
-        $oDetalheTipo1->conta_corrente_TJERJ            = str_pad($aDados->conta_TJ                                             , 10, "0", STR_PAD_LEFT);
+        $oDetalheTipo1->conta_corrente_TJERJ            = str_pad((string) $aDados->conta_TJ                                             , 10, "0", STR_PAD_LEFT);
         $oDetalheTipo1->valor_devido_TJERJ              = str_pad(number_format(round($aDados->valor_TJ,2), 2, '', '')          ,  9, "0", STR_PAD_LEFT);
                                                                                                                                 
-        $oDetalheTipo1->conta_corrente_CAARJ            = str_pad($aDados->conta_CAARJ                                          , 10, "0", STR_PAD_LEFT);
+        $oDetalheTipo1->conta_corrente_CAARJ            = str_pad((string) $aDados->conta_CAARJ                                          , 10, "0", STR_PAD_LEFT);
         $oDetalheTipo1->valor_devido_CAARJ              = str_pad(number_format(round($aDados->valor_CAARJ,2), 2, '', '')       ,  9, "0", STR_PAD_LEFT);
                                                                                                                                 
-        $oDetalheTipo1->conta_corrente_FUNDPERJ         = str_pad($aDados->conta_FUNDPERJ                                       , 10, "0", STR_PAD_LEFT);
+        $oDetalheTipo1->conta_corrente_FUNDPERJ         = str_pad((string) $aDados->conta_FUNDPERJ                                       , 10, "0", STR_PAD_LEFT);
         $oDetalheTipo1->valor_devido_FUNDPERJ           = str_pad(number_format(round($aDados->valor_FUNDPERJ,2), 2, '', '')    ,  9, "0", STR_PAD_LEFT);
                                                                                                                                 
-        $oDetalheTipo1->conta_corrente_FUNPERJ          = str_pad($aDados->conta_FUNPERJ                                        , 10, "0", STR_PAD_LEFT);
+        $oDetalheTipo1->conta_corrente_FUNPERJ          = str_pad((string) $aDados->conta_FUNPERJ                                        , 10, "0", STR_PAD_LEFT);
         $oDetalheTipo1->valor_devido_FUNPERJ            = str_pad(number_format(round($aDados->valor_FUNPERJ,2), 2, '', '')     ,  9, "0", STR_PAD_LEFT);
                                                                                                                                 
         $oDetalheTipo1->reservado_TJERJ                 = str_repeat(" ",19);
         $oDetalheTipo1->brancos                         = str_repeat(" ",160);
-        $oDetalheTipo1->sequencial_registro             = str_pad($iRegistro, 5, "0", STR_PAD_LEFT);
+        $oDetalheTipo1->sequencial_registro             = str_pad((string) $iRegistro, 5, "0", STR_PAD_LEFT);
         if ( $oLayoutTxt->setByLineOfDBUtils($oDetalheTipo1,3,1) == false ) {
           throw new Exception ("[ 7 ] - Erro ao gerar Detalhe Tipo 1 do Arquivo");
         }        
@@ -504,40 +504,40 @@ class ArquivoCobrancaRegistrada {
         $iRegistro++;
         $oDetalheTipo3 = new stdClass();
         $oDetalheTipo3->id                                                = "3";
-        $oDetalheTipo3->numero_certidao                                   = str_pad($aDados->v51_certidao                           , 10, "0", STR_PAD_LEFT);
-        $oDetalheTipo3->numero_processo_tj                                = str_pad($aDados->codforo_antigo                         , 14, " ", STR_PAD_LEFT); //NUMERO ANTIGO DO PROCESSO DO TJ
+        $oDetalheTipo3->numero_certidao                                   = str_pad((string) $aDados->v51_certidao                           , 10, "0", STR_PAD_LEFT);
+        $oDetalheTipo3->numero_processo_tj                                = str_pad((string) $aDados->codforo_antigo                         , 14, " ", STR_PAD_LEFT); //NUMERO ANTIGO DO PROCESSO DO TJ
         $oDetalheTipo3->data_ultima_distribuicao_processo                 = "$sDataUltimaDistribuicao"; 
         $oDetalheTipo3->valor_total_tributo_devido_processo               = str_pad(number_format(round($aDados->v70_valorinicial,2), 2, '', ''), 12, "0", STR_PAD_LEFT);
         $oDetalheTipo3->numero_parcela                                    = "999";
         $oDetalheTipo3->total_parcelas                                    = "001";
         
-        $oDetalheTipo3->codigo_receita_CAARJ                              = str_pad($aDados->codigo_receita_CAARJ              , 5, "0", STR_PAD_LEFT);
+        $oDetalheTipo3->codigo_receita_CAARJ                              = str_pad((string) $aDados->codigo_receita_CAARJ              , 5, "0", STR_PAD_LEFT);
         $oDetalheTipo3->valor_CAARJ                                       = str_pad(number_format(round($aDados->valor_CAARJ,2), 2, '', ''), 9, "0", STR_PAD_LEFT) ;
         
-        $oDetalheTipo3->codigo_receita_atos_oficiais_justica_avaliadores  = str_pad($aDados->codigo_receita_atos_oficiais_justica_avaliadores                      , 5, "0", STR_PAD_LEFT) ;
+        $oDetalheTipo3->codigo_receita_atos_oficiais_justica_avaliadores  = str_pad((string) $aDados->codigo_receita_atos_oficiais_justica_avaliadores                      , 5, "0", STR_PAD_LEFT) ;
         $oDetalheTipo3->valor_receita_atos_oficiais_justica_avaliadores   = str_pad(number_format(round($aDados->valor_receita_atos_oficiais_justica_avaliadores,2), 2, '', ''), 9, "0", STR_PAD_LEFT) ;
         
-        $oDetalheTipo3->codigo_receita_atos_escrivaes_divida_ativa        = str_pad($aDados->codigo_receita_atos_escrivaes_divida_ativa                             , 5, "0", STR_PAD_LEFT);      
+        $oDetalheTipo3->codigo_receita_atos_escrivaes_divida_ativa        = str_pad((string) $aDados->codigo_receita_atos_escrivaes_divida_ativa                             , 5, "0", STR_PAD_LEFT);      
         $oDetalheTipo3->valor_receita_atos_escrivaes_divida_ativa         = str_pad(number_format(round($aDados->valor_receita_atos_escrivaes_divida_ativa,2), 2, '', ''), 9, "0", STR_PAD_LEFT);
          
-        $oDetalheTipo3->codigo_receita_taxa_judiciaria                    = str_pad($aDados->codigo_receita_taxa_judiciaria                                        , 5, "0", STR_PAD_LEFT);
+        $oDetalheTipo3->codigo_receita_taxa_judiciaria                    = str_pad((string) $aDados->codigo_receita_taxa_judiciaria                                        , 5, "0", STR_PAD_LEFT);
         $oDetalheTipo3->valor_receita_taxa_judiciaria                     = str_pad(number_format(round($aDados->valor_receita_taxa_judiciaria,2), 2, '', ''), 9, "0", STR_PAD_LEFT);
               
-        $oDetalheTipo3->codigo_receita_atos_distribuidores                = str_pad($aDados->codigo_receita_atos_distribuidores                                    , 10, "0", STR_PAD_LEFT);
+        $oDetalheTipo3->codigo_receita_atos_distribuidores                = str_pad((string) $aDados->codigo_receita_atos_distribuidores                                    , 10, "0", STR_PAD_LEFT);
         $oDetalheTipo3->valor_receita_atos_distribuidores                 = str_pad(number_format(round($aDados->valor_receita_atos_distribuidores,2), 2, '', ''), 9, "0", STR_PAD_LEFT);
         
         $oDetalheTipo3->conta_corrente_acrescimo_20                       = "";
         $oDetalheTipo3->valor_corrente_acrescimo_20                       = str_pad(number_format(round($aDados->valor_corrente_acrescimo_20,2), 2, '', ''),  9, "0", STR_PAD_LEFT);
         
-        $oDetalheTipo3->conta_FUNPERJ                                     = str_pad($aDados->conta_FUNPERJ                                                         , 10, "0", STR_PAD_LEFT);
+        $oDetalheTipo3->conta_FUNPERJ                                     = str_pad((string) $aDados->conta_FUNPERJ                                                         , 10, "0", STR_PAD_LEFT);
         $oDetalheTipo3->valor_FUNPERJ                                     = str_pad(number_format(round($aDados->valor_FUNPERJ,2), 2, '', ''),  9, "0", STR_PAD_LEFT);
         
-        $oDetalheTipo3->conta_FUNDPERJ                                    = str_pad($aDados->conta_FUNDPERJ                                                        , 10, "0", STR_PAD_LEFT);
+        $oDetalheTipo3->conta_FUNDPERJ                                    = str_pad((string) $aDados->conta_FUNDPERJ                                                        , 10, "0", STR_PAD_LEFT);
         $oDetalheTipo3->valor_FUNDPERJ                                    = str_pad(number_format(round($aDados->valor_FUNDPERJ,2), 2, '', ''),  9, "0", STR_PAD_LEFT);
   
-        $oDetalheTipo3->reservado_TJERJ                                   = str_pad($aDados->codforo_novo                                                          , 25, " ", STR_PAD_RIGHT) ; //NUMERO DO PROCESSO DO FORO NOVO
+        $oDetalheTipo3->reservado_TJERJ                                   = str_pad((string) $aDados->codforo_novo                                                          , 25, " ", STR_PAD_RIGHT) ; //NUMERO DO PROCESSO DO FORO NOVO
         $oDetalheTipo3->brancos                                           = str_repeat(" ",87);
-        $oDetalheTipo3->sequencial_registro                               = str_pad($iRegistro, 5, "0", STR_PAD_LEFT);
+        $oDetalheTipo3->sequencial_registro                               = str_pad((string) $iRegistro, 5, "0", STR_PAD_LEFT);
         if ( $oLayoutTxt->setByLineOfDBUtils($oDetalheTipo3,3,3) == false ) {
           throw new Exception ("[ 8 ] - Erro ao gerar Detalhe Tipo 2 do Arquivo");
         }
@@ -547,7 +547,7 @@ class ArquivoCobrancaRegistrada {
     $oTrailer = new stdClass();
     $oTrailer->id                        = "9";
     $oTrailer->brancos                   = str_repeat(" ",294);
-    $oTrailer->sequencial_registro       = str_pad($iRegistro+1, 5, "0", STR_PAD_LEFT);
+    $oTrailer->sequencial_registro       = str_pad((string) ($iRegistro + 1), 5, "0", STR_PAD_LEFT);
     if ( $oLayoutTxt->setByLineOfDBUtils($oTrailer,5,9) == false ) {
       throw new Exception("[ 9 ] Erro ao gerar trailer do Arquivo");
     }
@@ -579,8 +579,8 @@ class ArquivoCobrancaRegistrada {
 
     $oProcessoForoPartilhaCusta = db_utils::getDao('processoforopartilhacusta');
     
-    $aRegistrosAgrupados        = array();
-    $aPatrilhaCustas            = array();
+    $aRegistrosAgrupados        = [];
+    $aPatrilhaCustas            = [];
     
     $sCampos  = " recibopaga.k00_numpre,                                                         \n";
     $sCampos .= " recibopaga.k00_numnov,                                                         \n";
@@ -659,8 +659,8 @@ class ArquivoCobrancaRegistrada {
 
       }
 
-      $aRecibo    = array();
-      $aRegistros = array();
+      $aRecibo    = [];
+      $aRegistros = [];
 
       for ($iInd = 0; $iInd < pg_num_rows($rsDados); $iInd ++) {
 
@@ -668,7 +668,7 @@ class ArquivoCobrancaRegistrada {
 
         if (!isset($aRegistros[$oRegistro->k00_numnov])) { 
           $oDados     = new stdClass();
-          $aTaxas     = array();
+          $aTaxas     = [];
         } else {
           $oDados = $aRegistros[$oRegistro->k00_numnov];
         }
@@ -776,7 +776,7 @@ class ArquivoCobrancaRegistrada {
             if ($iPosM > 0) {
 
               $sOrigemNumpreMatric = substr(str_replace("M","",$sOrigemNumpre),$iPosM, strlen($sOrigemNumpre));
-              $aMatric = split(",",$sOrigemNumpreMatric);
+              $aMatric = preg_split("#,#m",$sOrigemNumpreMatric);
 
               $sSqlProprietario  = " select z01_numcgm,                 "; 
               $sSqlProprietario .= "        z01_nome,                   ";
@@ -806,7 +806,7 @@ class ArquivoCobrancaRegistrada {
             if ($iPosI > 0 && $iPosM == 0) {
 
               $sOrigemNumpreInscr = substr(str_replace("I","",$sOrigemNumpre),$iPosM, strlen($sOrigemNumpre));
-              $aInscr = split(",",$sOrigemNumpreInscr);
+              $aInscr = preg_split("#,#m",$sOrigemNumpreInscr);
 
               $sSqlEmpresa  = " select z01_numcgm,                 "; 
               $sSqlEmpresa .= "        z01_nome,                   ";
@@ -905,7 +905,7 @@ class ArquivoCobrancaRegistrada {
            * 5 - INSTITUICAO - Dados do cadastro da instituição
            */
            
-          switch (trim($oRegistro->favorecido_cgccpf)) {
+          switch (trim((string) $oRegistro->favorecido_cgccpf)) {
             
             //TJ 
             case "28538734000148":
@@ -917,7 +917,7 @@ class ArquivoCobrancaRegistrada {
                $oDados->nome_TJ            = $oRegistro->favorecido_nome;
                $oDados->cgccpf_TJ          = $oRegistro->favorecido_cgccpf;
                $oDados->banco_TJ           = $oRegistro->favorecido_banco;
-               $oDados->codagencia_TJ      = substr($oRegistro->favorecido_agencia,-4);
+               $oDados->codagencia_TJ      = substr((string) $oRegistro->favorecido_agencia,-4);
                $oDados->dvagencia_TJ       = $oRegistro->favorecido_agenciadv;
                $oDados->conta_TJ           = $oRegistro->favorecido_conta;
                $oDados->dvconta_TJ         = $oRegistro->favorecido_contadv;
@@ -973,7 +973,7 @@ class ArquivoCobrancaRegistrada {
              $oDados->nome_FUNPERJ             = $oRegistro->favorecido_nome;
              $oDados->cgccpf_FUNPERJ           = $oRegistro->favorecido_cgccpf;
              $oDados->banco_FUNPERJ            = $oRegistro->favorecido_banco;
-             $oDados->codagencia_FUNPERJ       = substr($oRegistro->favorecido_agencia,-4);
+             $oDados->codagencia_FUNPERJ       = substr((string) $oRegistro->favorecido_agencia,-4);
              $oDados->dvagencia_FUNPERJ        = $oRegistro->favorecido_agenciadv;
              $oDados->conta_FUNPERJ            = $oRegistro->favorecido_conta;
              $oDados->dvconta_FUNPERJ          = $oRegistro->favorecido_contadv;
@@ -991,7 +991,7 @@ class ArquivoCobrancaRegistrada {
              $oDados->nome_CAARJ               = $oRegistro->favorecido_nome;
              $oDados->cgccpf_CAARJ             = $oRegistro->favorecido_cgccpf;
              $oDados->banco_CAARJ              = $oRegistro->favorecido_banco;
-             $oDados->codagencia_CAARJ         = substr($oRegistro->favorecido_agencia,-4);
+             $oDados->codagencia_CAARJ         = substr((string) $oRegistro->favorecido_agencia,-4);
              $oDados->dvagencia_CAARJ          = $oRegistro->favorecido_agenciadv;
              $oDados->conta_CAARJ              = $oRegistro->favorecido_conta;
              $oDados->dvconta_CAARJ            = $oRegistro->favorecido_contadv;
@@ -1009,7 +1009,7 @@ class ArquivoCobrancaRegistrada {
              $oDados->nome_FUNDPERJ            = $oRegistro->favorecido_nome;
              $oDados->cgccpf_FUNDPERJ          = $oRegistro->favorecido_cgccpf;
              $oDados->banco_FUNDPERJ           = $oRegistro->favorecido_banco;
-             $oDados->codagencia_FUNDPERJ      = substr($oRegistro->favorecido_agencia,-4);
+             $oDados->codagencia_FUNDPERJ      = substr((string) $oRegistro->favorecido_agencia,-4);
              $oDados->dvagencia_FUNDPERJ       = $oRegistro->favorecido_agenciadv;
              $oDados->conta_FUNDPERJ           = $oRegistro->favorecido_conta;
              $oDados->dvconta_FUNDPERJ         = $oRegistro->favorecido_contadv;
@@ -1029,7 +1029,7 @@ class ArquivoCobrancaRegistrada {
           $oDados->nome_INSTITUICAO            = $oDadosInstituicao->z01_nome;
           $oDados->cgccpf_INSTITUICAO          = $oDadosInstituicao->z01_cgccpf;
           $oDados->banco_INSTITUICAO           = $oDadosInstituicao->db90_codban;
-          $oDados->codagencia_INSTITUICAO      = substr($oDadosInstituicao->db89_codagencia,-4);
+          $oDados->codagencia_INSTITUICAO      = substr((string) $oDadosInstituicao->db89_codagencia,-4);
           $oDados->dvagencia_INSTITUICAO       = $oDadosInstituicao->db89_digito;
           $oDados->conta_INSTITUICAO           = $oDadosInstituicao->db83_conta;
           $oDados->dvconta_INSTITUICAO         = $oDadosInstituicao->db83_dvconta;

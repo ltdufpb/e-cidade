@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $pdf = new PDF(); 
 $pdf->Open(); 
 $pdf->AliasNbPages(); 
@@ -73,7 +73,7 @@ from arrepaga f
     order by e.z01_nome 
   ";
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos para a receita '.$codrec.' no período de '.db_formatar($datai,'d').' a '.db_formatar($dataf,'d'));
 
@@ -106,7 +106,7 @@ for($i=0;$i<$xxnum;$i++) {
 		$pdf->ln(1);
 	  } 
       $numcgm = $z01_numcgm;
-      $pdf->cell(60,4,substr($z01_nome,0,35),0,0,"L",$pre);
+      $pdf->cell(60,4,substr((string) $z01_nome,0,35),0,0,"L",$pre);
       $pdf->cell(100,4,$z01_ender,0,0,"L",$pre);
       $pdf->cell(50,4,$z01_cgccpf,0,0,"L",$pre);
       $pdf->cell(20,4,$mes,0,0,"L",$pre);

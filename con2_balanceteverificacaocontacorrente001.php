@@ -41,7 +41,7 @@ $campos = "c122_sequencial as codigo, c122_descricao as nome";
 $sqlContaCorrente = $daoContaCorrente->sql_query_file(null, $campos, "c122_sequencial", $where);
 $rsContaCorrentes = db_query($sqlContaCorrente);
 $totalLinhas = pg_num_rows($rsContaCorrentes);
-$contascorrentes = array("0" => "Selecione");
+$contascorrentes = ["0" => "Selecione"];
 for ($i = 0; $i < $totalLinhas; $i++) {
 
     $dado = db_utils::fieldsMemory($rsContaCorrentes, $i);
@@ -126,22 +126,22 @@ for ($i = 0; $i < $totalLinhas; $i++) {
                                     <td colspan="3">
                                         <?php
                                         if (!USE_PCASP) {
-                                            $aOpcoesSistema = array(
+                                            $aOpcoesSistema = [
                                                 'T' => 'Todos',
                                                 'F' => 'Financeiro',
                                                 'C' => 'Compensado',
                                                 'P' => 'Patrimonial',
                                                 'O' => 'Orçamentário',
-                                            );
+                                            ];
                                         } else {
-                                            $aOpcoesSistema = array(
+                                            $aOpcoesSistema = [
                                                 '' => 'Todos',
                                                 '0' => 'Não aplicável',
                                                 '1' => 'Subsistema de Informações Orçamentárias',
                                                 '2' => 'Subsistema de informações Patrimoniais',
                                                 '3' => 'Subsistema de Custos',
                                                 '4' => 'Subsistema de Compensação',
-                                            );
+                                            ];
                                         }
                                         $sistema_contas = 'T';
                                         db_select("sistema_contas", $aOpcoesSistema, true, 2, 'style="width: 100%;"')
@@ -157,12 +157,12 @@ for ($i = 0; $i < $totalLinhas; $i++) {
                                         </td>
                                         <td colspan="3">
                                             <?php
-                                            $aIndicadores = array(
+                                            $aIndicadores = [
                                                 '' => 'Todos',
                                                 'N' => 'N - Não se aplica',
                                                 'F' => 'F - Financeiro',
                                                 'P' => 'P - Permanente',
-                                            );
+                                            ];
                                             db_select('indicador_superavit', $aIndicadores, true, 1,
                                                 'style="width: 50%;"');
                                             ?>
@@ -177,10 +177,10 @@ for ($i = 0; $i < $totalLinhas; $i++) {
                                     </td>
                                     <td colspan="3">
                                         <?php
-                                        $aOpcoesEncerramento = array(
+                                        $aOpcoesEncerramento = [
                                             'n' => 'Não',
                                             's' => 'Sim',
-                                        );
+                                        ];
                                         db_select('encerramento', $aOpcoesEncerramento, true, 1, 'style="width: 50%;"');
                                         ?>
                                     </td>

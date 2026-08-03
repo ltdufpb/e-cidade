@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 $pdf = new PDF();

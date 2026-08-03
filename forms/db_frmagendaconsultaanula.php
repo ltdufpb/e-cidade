@@ -97,7 +97,7 @@ $oRotulo->label("sd23_d_consulta");
     </td>
     <td> 
       <?php 
-      $aX = array('1'=>'Cancelado', '2'=>'Faltou', '3'=>'Outros');
+      $aX = ['1'=>'Cancelado', '2'=>'Faltou', '3'=>'Outros'];
       db_select('s114_i_situacao', $aX, true, $db_opcao, "");
       ?>
     </td>
@@ -163,7 +163,7 @@ function js_preenchepesquisa(chave){
   db_iframe_agendaconsultaanula.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

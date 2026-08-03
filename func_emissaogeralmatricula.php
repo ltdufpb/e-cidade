@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_emissaogeralmatricula_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clemissaogeralmatricula = new cl_emissaogeralmatricula;
 $clemissaogeralmatricula->rotulo->label("tr03_sequencial");
 $clemissaogeralmatricula->rotulo->label("tr03_matric");
@@ -52,9 +52,9 @@ $clemissaogeralmatricula->rotulo->label("tr03_matric");
         }else{
            $sql = $clemissaogeralmatricula->sql_query("",$campos,"tr03_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_tr03_matric)){
-          $repassa = array("chave_tr03_sequencial"=>$chave_tr03_sequencial,"chave_tr03_matric"=>$chave_tr03_matric);
+          $repassa = ["chave_tr03_sequencial"=>$chave_tr03_sequencial,"chave_tr03_matric"=>$chave_tr03_matric];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

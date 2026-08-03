@@ -39,7 +39,7 @@ class MensageriaAcordoProcessamento {
    * Dias a vencer para avisar o usuário
    * @var array
    */
-  private $aDiasAviso = array();
+  private $aDiasAviso = [];
 
   /**
    * Usuarios do Sistema que devem ser avisados
@@ -144,7 +144,7 @@ class MensageriaAcordoProcessamento {
     $oDaoMensageriaUsuario = new cl_mensageriaacordodb_usuario();
     $sSqlBuscaDias         = $oDaoMensageriaUsuario->sql_query_file(null, "distinct ac52_dias" , 'ac52_dias');
     $rsBuscaDias           = $oDaoMensageriaUsuario->sql_record($sSqlBuscaDias);
-    $aDiasRemover          = array();
+    $aDiasRemover          = [];
 
     for ($iRowDia = 0; $iRowDia < $oDaoMensageriaUsuario->numrows; $iRowDia++) {
 
@@ -181,7 +181,7 @@ class MensageriaAcordoProcessamento {
    */
   private function excluirUsuarios() {
 
-    $aUsuariosSelecionados = array();
+    $aUsuariosSelecionados = [];
     foreach ($this->getUsuariosAviso() as $oUsuarioSistema) {
       $aUsuariosSelecionados[] = $oUsuarioSistema->getIdUsuario();
     }
@@ -189,7 +189,7 @@ class MensageriaAcordoProcessamento {
     $oDaoMensageriaUsuario = new cl_mensageriaacordodb_usuario();
     $sSqlBuscUsuario       = $oDaoMensageriaUsuario->sql_query_file(null, "distinct ac52_db_usuarios" , 'ac52_db_usuarios');
     $rsBuscaUsuario        = $oDaoMensageriaUsuario->sql_record($sSqlBuscUsuario);
-    $aUsuarioRemover       = array();
+    $aUsuarioRemover       = [];
     for ($iRowUsuario = 0; $iRowUsuario < $oDaoMensageriaUsuario->numrows; $iRowUsuario++) {
 
       $iStdUsuario = db_utils::fieldsMemory($rsBuscaUsuario, $iRowUsuario)->ac52_db_usuarios;

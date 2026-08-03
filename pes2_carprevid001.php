@@ -30,7 +30,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpessoal_classe.php"));
 include(modification("classes/db_rhdepend_classe.php"));
 include(modification("libs/db_sql.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhpessoal = new cl_rhpessoal;
 $clrhdepend = new cl_rhdepend;
 $clsql  = new cl_gera_sql_folha;
@@ -91,7 +91,7 @@ if(isset($emite)){
   $camposSQL.= " z01_cep, ";
   $camposSQL.= $complSQL;
 
-  $arr_sql = Array(0=>$folha,1=>$rubbase,2=>$rubdesc,3=>$siglas,4=>$siglac);
+  $arr_sql = [0=>$folha,1=>$rubbase,2=>$rubdesc,3=>$siglas,4=>$siglac];
 //echo "<BR> 1  passou aqui !!! __> ".$clrhpessoal->sql_query_relPREVID(null,$camposSQL," rh01_regist limit 5"," rh02_tbprev = 1 and rh05_recis is null ",null,null,$arr_sql);
   $result_dados_imprime = $clrhpessoal->sql_record($clrhpessoal->sql_query_relPREVID(null,$camposSQL," rh01_regist limit 5"," rh02_tbprev = 1 and rh05_recis is null ",null,null,$arr_sql));
 
@@ -184,7 +184,7 @@ if(isset($emite)){
     </td>
     <td>
       <?php 
-      $arr_folha = array("s"=>"Salário","d"=>"Décimo");
+      $arr_folha = ["s"=>"Salário","d"=>"Décimo"];
       db_select("folha", $arr_folha, true, 1);
       ?>
     </td>

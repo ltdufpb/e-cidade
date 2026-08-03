@@ -58,7 +58,7 @@ if (isset($chavepesquisa)) {
     $db_botao = true;
     $oCgm = db_utils::fieldsMemory($result, 0);
 
-    if (strlen($oCgm->z01_cgccpf) == 14) {
+    if (strlen((string) $oCgm->z01_cgccpf) == 14) {
       $lPessoaFisica = false;
     }
   }

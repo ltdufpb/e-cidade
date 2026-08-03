@@ -92,12 +92,12 @@ $alt = 4;
 
 $pdf->addTitulo("Relatórios de usuários que estão na versão 2 do e-cidade");
 
-cabecalho($pdf, $alt);
+cabecalho($pdf);
 $bDestaca = false;
 foreach ($userV2 as $user) {
     
     if ($pdf->GetY() >= ($pdf->getH() - 15)) {
-        cabecalho($pdf, $alt);
+        cabecalho($pdf);
     }
 
     $pdf->cell(15, $alt, $user->id_usuario, 0, 0, "R", $bDestaca);

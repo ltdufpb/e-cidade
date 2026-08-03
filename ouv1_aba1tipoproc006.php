@@ -35,8 +35,8 @@ include(modification("classes/db_tipoprocdepto_classe.php"));
 include(modification("classes/db_tipoprocformareclamacao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);

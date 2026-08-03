@@ -46,7 +46,7 @@ use ECidade\Tributario\Arrecadacao\Model\TaxaEspecifica as TaxaEspecificaModel;
 use ECidade\Tributario\Caixa\Repository\RecibopagaRepository;
 use ECidade\Tributario\Library\DataBase;
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $cldb_bancos = new cl_db_bancos();
 
@@ -89,8 +89,8 @@ $impmodelo = 1;
 
 if (isset($unica) && $unica != "") {
 
-    $vt = explode("U", $unica);
-    $unicas = array();
+    $vt = explode("U", (string) $unica);
+    $unicas = [];
 
     foreach ($vt as $i => $v) {
 
@@ -128,7 +128,7 @@ $sqlparag .= "  where db03_tipodoc = 1017 ";
 $sqlparag .= "    and db03_instit = " . db_getsession("DB_instit") . " order by db04_ordem ";
 
 $resparag = db_query($sqlparag);
-if (pg_numrows($resparag) == 0) {
+if (pg_num_rows($resparag) == 0) {
     $pdf1->secretaria = 'SECRETARIA DE FINANÇAS';
 } else {
 
@@ -299,7 +299,7 @@ $rsNumpres = db_query($sql) or die($sql);
 
 $H_ANOUSU = db_getsession("DB_anousu");
 $H_DATAUSU = db_getsession('DB_datausu');
-$intNumrowsNumpre = pg_numrows($rsNumpres);
+$intNumrowsNumpre = pg_num_rows($rsNumpres);
 
 if ($intNumrowsNumpre == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem inscrições com calculo efetuado.');
@@ -313,14 +313,14 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
 
     db_fieldsmemory($rsNumpres, $inti);
 
-    $vt = Array();
+    $vt = [];
     $sWhereNumPar = null;
     if (isset($numparini)) {
         $sWhereNumPar = " and arrecad.k00_numpar between {$numparini} and {$numparfim}";
     }
     $sqlnumpar = " select * from arrecad where $inti = $inti and k00_numpre = $q01_numpre and k00_tipo = $tipo_debito {$sWhereNumPar} order by k00_numpar";
     $rsNumpar = db_query($sqlnumpar);
-    $rsNumrowspar = pg_numrows($rsNumpar);
+    $rsNumrowspar = pg_num_rows($rsNumpar);
     if ($rsNumrowspar == 0) {
         continue;
     }
@@ -353,15 +353,15 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
 
     if (sizeof($numpres) < 1) {
 
-        $numpres = array(
+        $numpres = [
 
           "0" => "0",
           "1" => $numpre_unica . 'P000'
-        );
+        ];
         $unica = 1;
     } else {
 
-        if (isset($HTTP_POST_VARS ["numpre_unica"])) {
+        if (isset($_POST ["numpre_unica"])) {
 
             if ($numpre_unica != '') {
                 $unica = 1;
@@ -416,7 +416,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                          where db03_tipodoc = 1017 and db03_instit = " . db_getsession("DB_instit") . " order by db04_ordem ";
 
             $resparag = db_query($sqlparag);
-            if (pg_numrows($resparag) == 0) {
+            if (pg_num_rows($resparag) == 0) {
                 $pdf1->secretaria = 'SECRETARIA DE FINANÇAS';
             } else {
                 db_fieldsmemory($resparag, 0);
@@ -466,7 +466,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
 
         $rsOrigem = db_query($sqlorigem) or die($sqlorigem);
 
-        if (pg_numrows($rsOrigem) > 0) {
+        if (pg_num_rows($rsOrigem) > 0) {
             db_fieldsmemory($rsOrigem, 0);
         } else {
 
@@ -530,7 +530,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
 
                 if ($resultfin != false) {
 
-                    for ($unicont = 0; $unicont < pg_numrows($resultfin); $unicont++) {
+                    for ($unicont = 0; $unicont < pg_num_rows($resultfin); $unicont++) {
 
                         db_fieldsmemory($resultfin, $unicont);
 
@@ -554,10 +554,10 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                                 }
 
                                 $repository = new RecibopagaRepository(DataBase::getInstance(), new cl_recibopaga());
-                                $where = array(
+                                $where = [
                                   "k00_numnov = {$oRecibo->getNumpreRecibo()}",
                                   "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO
-                                );
+                                ];
                                 $reciboPaga = $repository->findAll(implode(' AND ', $where))->get(0);
                                 $valorTaxaExpediente = !empty($reciboPaga->getValor()) ? (float)$reciboPaga->getValor() : 0;
                             } catch (Exception $eException) {
@@ -647,20 +647,20 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                         $datavencimento = $dtvencunic;
                         $tmpdt = substr($db_datausu, 0, 4) . substr($db_datausu, 5, 2) . substr($db_datausu, 8, 2);
 
-                        if (strtotime($tmpdt) > strtotime($datavencimento) && $k00_valor > 0) {
+                        if (strtotime($tmpdt) > strtotime((string) $datavencimento) && $k00_valor > 0) {
                             $datavencimento = $tmpdt;
                         }
 
                         if (isset($emiscarneiframe) && $emiscarneiframe == 'n') {
 
-                            if (substr($datavencimento, 0, 4) > db_getsession('DB_anousu')) {
+                            if (substr((string) $datavencimento, 0, 4) > db_getsession('DB_anousu')) {
                                 continue;
                             }
                         }
 
                         if ($oRegraEmissao->isCobranca()) {
 
-                            if (substr($datavencimento, 0, 4) > db_getsession('DB_anousu') && $k00_valor > 0) {
+                            if (substr((string) $datavencimento, 0, 4) > db_getsession('DB_anousu') && $k00_valor > 0) {
 
                                 $k00_valor = 0;
                                 $especie = $ninfla;
@@ -771,7 +771,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                         $pdf1->tipocompl = 'Número:';
                         $pdf1->dtparapag = db_formatar($dtvencunic, 'd');
 
-                        if (!empty($HTTP_POST_VARS ["ver_matric"])) {
+                        if (!empty($_POST ["ver_matric"])) {
 
                             $pdf1->descr11_1 = $z01_cgmpri . " - " . $proprietario;
                             $pdf1->descr11_2 = $xender;
@@ -930,18 +930,18 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                                     $sqlhist .= "					 k99_numpar                                   ";
                                     $result = db_query($sqlhist);
 
-                                    if (pg_numrows($result) != false) {
+                                    if (pg_num_rows($result) != false) {
 
                                         $exercv = "0000";
-                                        for ($xy = 0; $xy < pg_numrows($result); $xy++) {
+                                        for ($xy = 0; $xy < pg_num_rows($result); $xy++) {
 
-                                            if ($exercv != pg_result($result, $xy, 0)) {
+                                            if ($exercv != pg_fetch_result($result, $xy, 0)) {
 
-                                                $exercv = pg_result($result, $xy, 0);
-                                                $histparcela .= "  " . pg_result($result, $xy, 0) . ": Parc:";
+                                                $exercv = pg_fetch_result($result, $xy, 0);
+                                                $histparcela .= "  " . pg_fetch_result($result, $xy, 0) . ": Parc:";
                                             }
 
-                                            $histparcela .= "-" . pg_result($result, $xy, 1);
+                                            $histparcela .= "-" . pg_fetch_result($result, $xy, 1);
                                         }
                                     }
 
@@ -986,24 +986,24 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                                     $sqlhist .= "		k99_numpar	                                                                ";
 
                                     $result = db_query($sqlhist) or die($sqlhist);
-                                    $histant = pg_result($result, 0, "k00_origem") . "-" . pg_result($result, 0,
+                                    $histant = pg_fetch_result($result, 0, "k00_origem") . "-" . pg_fetch_result($result, 0,
                                         "k00_descr");
-                                    $histparcela .= pg_result($result, 0, "k00_descr") . "=>" . pg_result($result,
+                                    $histparcela .= pg_fetch_result($result, 0, "k00_descr") . "=>" . pg_fetch_result($result,
                                         0, "k00_origem") . " / PARCELAS: ";
 
-                                    for ($xy = 0; $xy < pg_numrows($result); $xy++) {
+                                    for ($xy = 0; $xy < pg_num_rows($result); $xy++) {
 
-                                        if (pg_result($result, $xy, "k00_origem") . "-" . pg_result($result, $xy,
+                                        if (pg_fetch_result($result, $xy, "k00_origem") . "-" . pg_fetch_result($result, $xy,
                                             "k00_descr") != $histant) {
 
-                                            $histparcela .= "-" . pg_result($result, $xy,
-                                                "k00_descr") . "=>" . pg_result($result, $xy,
+                                            $histparcela .= "-" . pg_fetch_result($result, $xy,
+                                                "k00_descr") . "=>" . pg_fetch_result($result, $xy,
                                                 "k00_origem") . " / PARCELAS: ";
-                                            $histant = pg_result($result, $xy,
-                                                "k00_origem") . "-" . pg_result($result, $xy, "k00_descr");
+                                            $histant = pg_fetch_result($result, $xy,
+                                                "k00_origem") . "-" . pg_fetch_result($result, $xy, "k00_descr");
                                         }
 
-                                        $histparcela .= pg_result($result, $xy, "k99_numpar") . " ";
+                                        $histparcela .= pg_fetch_result($result, $xy, "k99_numpar") . " ";
                                     }
                                 }
 
@@ -1014,11 +1014,11 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                              * FIM MODELO 2
                              */
                             $pdf1->descr11_1 = $z01_numcgm . " - " . $z01_nome;
-                            $pdf1->descr11_2 = strtoupper($z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . ($z01_compl != "" ? " / " . $z01_compl : ""));
+                            $pdf1->descr11_2 = strtoupper((string) $z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . ($z01_compl != "" ? " / " . $z01_compl : ""));
                             $pdf1->descr3_1 = $z01_numcgm . " - " . $z01_nome;
                             $pdf1->predescr3_1 = $z01_numcgm . " - " . $z01_nome;
-                            $pdf1->descr3_2 = strtoupper($z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . '  ' . $z01_compl);
-                            $pdf1->predescr3_2 = strtoupper($z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . '  ' . $z01_compl);
+                            $pdf1->descr3_2 = strtoupper((string) $z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . '  ' . $z01_compl);
+                            $pdf1->predescr3_2 = strtoupper((string) $z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . '  ' . $z01_compl);
                             $pdf1->cgccpf = $z01_cgccpf;
                         }
                         $pdf1->predescr12_1 = '';
@@ -1040,7 +1040,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                          */
                         $rsmsgcarne = db_query("select k03_msgcarne, k03_msgbanco from numpref where k03_anousu = " . db_getsession("DB_anousu"));
 
-                        if (pg_numrows($rsmsgcarne) > 0) {
+                        if (pg_num_rows($rsmsgcarne) > 0) {
                             db_fieldsmemory($rsmsgcarne, 0);
                         }
 
@@ -1061,7 +1061,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
 
                                 $sqlaliq = "select q05_aliq,q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
                                 $rsIssvarano = db_query($sqlaliq);
-                                $intNumrows = pg_numrows($rsIssvarano);
+                                $intNumrows = pg_num_rows($rsIssvarano);
 
                                 if ($intNumrows == 0) {
 
@@ -1121,14 +1121,14 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                             }
                         }
 
-                        $tipoExercicio = array();
+                        $tipoExercicio = [];
                         $pdf1->tipo_exerc = '';
                         if (!empty($k00_tipo)) {
                             $tipoExercicio[] = $k00_tipo;
                         }
 
                         if (!empty($k00_dtoper)) {
-                            $tipoExercicio[] = substr($k00_dtoper, 0, 4);
+                            $tipoExercicio[] = substr((string) $k00_dtoper, 0, 4);
                         }
 
                         if (!empty($tipoExercicio)) {
@@ -1137,9 +1137,9 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
 
                         $pdf1->imprime();
                         $intixxx++;
-                        $pdf1->arraycodtipo = array();
-                        $pdf1->arraycodreceitas = array();
-                        $pdf1->arrayvalreceitas = array();
+                        $pdf1->arraycodtipo = [];
+                        $pdf1->arraycodreceitas = [];
+                        $pdf1->arrayvalreceitas = [];
                     }
                 }
 
@@ -1203,10 +1203,10 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                     }
 
                     $repository = new RecibopagaRepository(DataBase::getInstance(), new cl_recibopaga());
-                    $where = array(
+                    $where = [
                       "k00_numnov = {$oRecibo->getNumpreRecibo()}",
                       "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO
-                    );
+                    ];
                     $reciboPaga = $repository->findAll(implode(' AND ', $where))->get(0);
                     $valorTaxaExpediente = !empty($reciboPaga->getValor()) ? (float)$reciboPaga->getValor() : 0;
                 } catch (Exception $eException) {
@@ -1281,7 +1281,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                 if ($k03_tipo == 3) {
 
                     $rsAnoissvar = db_query("select q05_ano from issvar where q05_numpre = $k00_numpre");
-                    $intAnoissvar = pg_numrows($rsAnoissvar);
+                    $intAnoissvar = pg_num_rows($rsAnoissvar);
 
                     db_fieldsmemory($rsAnoissvar, 0);
 
@@ -1391,7 +1391,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
             $pdf1->descr1 = $numero;
             $pdf1->descr2 = db_numpre($k00_numnov, 0) . ($tipo_debito == "3" ? db_formatar($k00_numpar, "s", "0", 3,
                 "e") : "000");
-            $pdf1->tipo_exerc = "$k00_tipo / " . substr($k00_dtoper, 0, 4);
+            $pdf1->tipo_exerc = "$k00_tipo / " . substr((string) $k00_dtoper, 0, 4);
             if ($k03_tipo == 19) {
                 $pdf1->tipodebito = $y77_descricao;
             }
@@ -1479,10 +1479,10 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
             $pdf1->cgccpf = $z01_cgccpf;
 
             $pdf1->descr11_1 = $z01_numcgm . " - " . $z01_nome;
-            $pdf1->descr11_2 = strtoupper($z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . ($z01_compl != "" ? " / " . $z01_compl : ""));
+            $pdf1->descr11_2 = strtoupper((string) $z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . ($z01_compl != "" ? " / " . $z01_compl : ""));
             $pdf1->descr11_3 = $z01_bairro;
             $pdf1->descr3_1 = $z01_numcgm . " - " . $z01_nome;
-            $pdf1->descr3_2 = strtoupper($z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . '  ' . $z01_compl);
+            $pdf1->descr3_2 = strtoupper((string) $z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . '  ' . $z01_compl);
             $pdf1->descr3_3 = $z01_bairro;
             $pdf1->cep = $z01_cep;
             $pdf1->precep = $z01_cep;
@@ -1618,18 +1618,18 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                     $sqlhist .= "					 k99_numpar                               ";
                     $result = db_query($sqlhist);
 
-                    if (pg_numrows($result) != false) {
+                    if (pg_num_rows($result) != false) {
 
                         $exercv = "0000";
-                        for ($xy = 0; $xy < pg_numrows($result); $xy++) {
+                        for ($xy = 0; $xy < pg_num_rows($result); $xy++) {
 
-                            if ($exercv != pg_result($result, $xy, 0)) {
+                            if ($exercv != pg_fetch_result($result, $xy, 0)) {
 
-                                $exercv = pg_result($result, $xy, 0);
-                                $histparcela .= "  " . pg_result($result, $xy, 0) . ": Parc:";
+                                $exercv = pg_fetch_result($result, $xy, 0);
+                                $histparcela .= "  " . pg_fetch_result($result, $xy, 0) . ": Parc:";
                             }
 
-                            $histparcela .= "-" . pg_result($result, $xy, 1);
+                            $histparcela .= "-" . pg_fetch_result($result, $xy, 1);
                         }
                     }
 
@@ -1675,22 +1675,22 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                     $sqlhist .= "		k99_numpar	                                                                ";
 
                     $result = db_query($sqlhist) or die($sqlhist);
-                    $histant = pg_result($result, 0, "k00_origem") . "-" . pg_result($result, 0, "k00_descr");
-                    $histparcela .= pg_result($result, 0, "k00_descr") . "=>" . pg_result($result, 0,
+                    $histant = pg_fetch_result($result, 0, "k00_origem") . "-" . pg_fetch_result($result, 0, "k00_descr");
+                    $histparcela .= pg_fetch_result($result, 0, "k00_descr") . "=>" . pg_fetch_result($result, 0,
                         "k00_origem") . " / PARCELAS: ";
 
-                    for ($xy = 0; $xy < pg_numrows($result); $xy++) {
+                    for ($xy = 0; $xy < pg_num_rows($result); $xy++) {
 
-                        if (pg_result($result, $xy, "k00_origem") . "-" . pg_result($result, $xy,
+                        if (pg_fetch_result($result, $xy, "k00_origem") . "-" . pg_fetch_result($result, $xy,
                             "k00_descr") != $histant) {
 
-                            $histparcela .= "-" . pg_result($result, $xy, "k00_descr") . "=>" . pg_result($result,
+                            $histparcela .= "-" . pg_fetch_result($result, $xy, "k00_descr") . "=>" . pg_fetch_result($result,
                                 $xy, "k00_origem") . " / PARCELAS: ";
-                            $histant = pg_result($result, $xy, "k00_origem") . "-" . pg_result($result, $xy,
+                            $histant = pg_fetch_result($result, $xy, "k00_origem") . "-" . pg_fetch_result($result, $xy,
                                 "k00_descr");
                         }
 
-                        $histparcela .= pg_result($result, $xy, "k99_numpar") . " ";
+                        $histparcela .= pg_fetch_result($result, $xy, "k99_numpar") . " ";
                     }
                 }
 
@@ -1717,7 +1717,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
 
                     $resultdiversos = db_query($sqldiversos);
 
-                    if (pg_numrows($resultdiversos) > 0) {
+                    if (pg_num_rows($resultdiversos) > 0) {
 
                         db_fieldsmemory($resultdiversos, 0, true);
                         $pdf1->descr4_2 = substr($dv05_obs, 0, 100);
@@ -1730,7 +1730,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                         $sqldiversos = "select distinct dv05_obs from diversos where dv05_numpre = $k00_numpre and dv05_instit = " . db_getsession('DB_instit') . "";
                         $resultdiversos = db_query($sqldiversos);
 
-                        if (pg_numrows($resultdiversos) > 0) {
+                        if (pg_num_rows($resultdiversos) > 0) {
 
                             db_fieldsmemory($resultdiversos, 0, true);
                             $pdf1->descr4_2 = substr($dv05_obs, 0, 100);
@@ -1815,7 +1815,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                     $pdf1->tipodebito = $k00_descr . " " . $q01_anousu;
                     $sqlaliq = "select q05_aliq,q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
                     $rsIssvarano = db_query($sqlaliq);
-                    $intNumrows = pg_numrows($rsIssvarano);
+                    $intNumrows = pg_num_rows($rsIssvarano);
 
                     if ($intNumrows == 0) {
 
@@ -1878,7 +1878,7 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                                         from numpref
                                        where k03_anousu = " . db_getsession("DB_anousu"));
 
-            if (pg_numrows($rsmsgcarne) > 0) {
+            if (pg_num_rows($rsmsgcarne) > 0) {
                 db_fieldsmemory($rsmsgcarne, 0);
             }
 
@@ -1926,22 +1926,22 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
 
                 if (isset($k00_msgparcvenc) && $k00_msgparcvenc != "") {
 
-                    if (strlen($k00_msgparcvenc) > 50) {
-                        $part1 = substr(substr($k00_msgparcvenc, 0, 50), 0,
-                          strrpos(substr($k00_msgparcvenc, 0, 50), ' '));
+                    if (strlen((string) $k00_msgparcvenc) > 50) {
+                        $part1 = substr(substr((string) $k00_msgparcvenc, 0, 50), 0,
+                          strrpos(substr((string) $k00_msgparcvenc, 0, 50), ' '));
                     } else {
-                        $part1 = substr(substr($k00_msgparcvenc, 0, 50), 0, strlen($k00_msgparcvenc));
+                        $part1 = substr(substr((string) $k00_msgparcvenc, 0, 50), 0, strlen((string) $k00_msgparcvenc));
                     }
 
-                    if (strlen($k00_msgparcvencvenc) > 100) {
-                        $part2 = substr(substr($k00_msgparcvenc, strlen($part1), 50), 0,
-                          strrpos(substr($k00_msgparcvenc, strlen($part1), strlen($k00_msgparcvenc)), ' '));
+                    if (strlen((string) $k00_msgparcvencvenc) > 100) {
+                        $part2 = substr(substr((string) $k00_msgparcvenc, strlen($part1), 50), 0,
+                          strrpos(substr((string) $k00_msgparcvenc, strlen($part1), strlen((string) $k00_msgparcvenc)), ' '));
                     } else {
-                        $part2 = substr(substr($k00_msgparcvenc, strlen($part1) + 1, 50), 0, strlen($k00_msgparcvenc));
+                        $part2 = substr(substr((string) $k00_msgparcvenc, strlen($part1) + 1, 50), 0, strlen((string) $k00_msgparcvenc));
                     }
 
-                    if (strlen($k00_msgparcvenc) > 105) {
-                        $part3 = substr(substr($k00_msgparcvenc, strlen($part2), 50), 0, strlen($k00_msgparcvenc));
+                    if (strlen((string) $k00_msgparcvenc) > 105) {
+                        $part3 = substr(substr((string) $k00_msgparcvenc, strlen($part2), 50), 0, strlen((string) $k00_msgparcvenc));
                     }
 
                     $pdf1->descr16_1 = $part1;
@@ -1953,36 +1953,36 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                 }
             } elseif (isset($k00_msgparc) && $k00_msgparc != "") {
 
-                $pdf1->descr16_1 = substr($k00_msgparc, 0, 50);
-                $pdf1->descr16_2 = substr($k00_msgparc, 50, 50);
-                $pdf1->descr16_3 = substr($k00_msgparc, 100, 50);
-                $pdf1->predescr16_1 = substr($k00_msgparc, 0, 50);
-                $pdf1->predescr16_2 = substr($k00_msgparc, 50, 50);
-                $pdf1->predescr16_3 = substr($k00_msgparc, 100, 50);
+                $pdf1->descr16_1 = substr((string) $k00_msgparc, 0, 50);
+                $pdf1->descr16_2 = substr((string) $k00_msgparc, 50, 50);
+                $pdf1->descr16_3 = substr((string) $k00_msgparc, 100, 50);
+                $pdf1->predescr16_1 = substr((string) $k00_msgparc, 0, 50);
+                $pdf1->predescr16_2 = substr((string) $k00_msgparc, 50, 50);
+                $pdf1->predescr16_3 = substr((string) $k00_msgparc, 100, 50);
             } else {
 
                 if (isset($k03_msgcarne) && $k03_msgcarne != "") {
 
-                    $pdf1->descr16_1 = substr($k03_msgcarne, 0, 50);
-                    $pdf1->descr16_2 = substr($k03_msgcarne, 50, 50);
-                    $pdf1->descr16_3 = substr($k03_msgcarne, 100, 50);
-                    $pdf1->predescr16_1 = substr($k03_msgcarne, 0, 50);
-                    $pdf1->predescr16_2 = substr($k03_msgcarne, 50, 50);
-                    $pdf1->predescr16_3 = substr($k03_msgcarne, 100, 50);
+                    $pdf1->descr16_1 = substr((string) $k03_msgcarne, 0, 50);
+                    $pdf1->descr16_2 = substr((string) $k03_msgcarne, 50, 50);
+                    $pdf1->descr16_3 = substr((string) $k03_msgcarne, 100, 50);
+                    $pdf1->predescr16_1 = substr((string) $k03_msgcarne, 0, 50);
+                    $pdf1->predescr16_2 = substr((string) $k03_msgcarne, 50, 50);
+                    $pdf1->predescr16_3 = substr((string) $k03_msgcarne, 100, 50);
                 } else {
 
-                    if (pg_numrows($resparag) == 0) {
+                    if (pg_num_rows($resparag) == 0) {
                         $db02_texto = "";
                     } else {
                         db_fieldsmemory($resparag, 0);
                     }
 
-                    $pdf1->descr16_1 = substr($db02_texto, 0, 55);
-                    $pdf1->descr16_2 = substr($db02_texto, 55, 55);
-                    $pdf1->descr16_3 = substr($db02_texto, 110, 55);
-                    $pdf1->predescr16_1 = substr($db02_texto, 0, 55);
-                    $pdf1->predescr16_2 = substr($db02_texto, 55, 55);
-                    $pdf1->predescr16_3 = substr($db02_texto, 110, 55);
+                    $pdf1->descr16_1 = substr((string) $db02_texto, 0, 55);
+                    $pdf1->descr16_2 = substr((string) $db02_texto, 55, 55);
+                    $pdf1->descr16_3 = substr((string) $db02_texto, 110, 55);
+                    $pdf1->predescr16_1 = substr((string) $db02_texto, 0, 55);
+                    $pdf1->predescr16_2 = substr((string) $db02_texto, 55, 55);
+                    $pdf1->predescr16_3 = substr((string) $db02_texto, 110, 55);
                 }
             }
 
@@ -2037,15 +2037,15 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
                     throw new DBException("Erro ao buscar o valor corrigido, juros, multa e desconto.");
                 }
 
-                $linhas = pg_numrows($rs);
+                $linhas = pg_num_rows($rs);
 
                 $uvlrjuros = 0;
                 $uvlrmulta = 0;
                 $uvlrdesconto = 0;
                 $desconto = 0;
-                $pdf1->arraycodtipo = array();
-                $pdf1->arraycodreceitas = array();
-                $pdf1->arrayvalreceitas = array();
+                $pdf1->arraycodtipo = [];
+                $pdf1->arraycodreceitas = [];
+                $pdf1->arrayvalreceitas = [];
 
                 for ($i = 0; $i < $linhas; $i++) {
 
@@ -2080,9 +2080,9 @@ for ($inti = 0; $inti < $intNumrowsNumpre; $inti++) {
 
                 $pdf1->imprime();
 
-                $pdf1->arraycodtipo = array();
-                $pdf1->arraycodreceitas = array();
-                $pdf1->arrayvalreceitas = array();
+                $pdf1->arraycodtipo = [];
+                $pdf1->arraycodreceitas = [];
+                $pdf1->arrayvalreceitas = [];
             }
 
             $intixxx++;

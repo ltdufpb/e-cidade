@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE veiculotransportemunicipalveiculos
 class cl_veiculotransportemunicipalveiculos { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tre02_sequencial = 0; 
-   var $tre02_veiculos = 0; 
-   var $tre02_veiculotransportemunicipal = 0; 
+   public $tre02_sequencial = 0; 
+   public $tre02_veiculos = 0; 
+   public $tre02_veiculotransportemunicipal = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tre02_sequencial = int4 = Sequencial 
                  tre02_veiculos = int4 = Código do Veiculo 
                  tre02_veiculotransportemunicipal = int4 = Sequencial 
                  ";
    //funcao construtor da classe 
-   function cl_veiculotransportemunicipalveiculos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiculotransportemunicipalveiculos"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_veiculotransportemunicipalveiculos {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tre02_sequencial = pg_result($result,0,0); 
+       $this->tre02_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from veiculotransportemunicipalveiculos_tre02_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tre02_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tre02_sequencial)){
          $this->erro_sql = " Campo tre02_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_veiculotransportemunicipalveiculos {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Veículo transporte municipal veículos ($this->tre02_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Veículo transporte municipal veículos já Cadastrado";
@@ -171,12 +171,12 @@ class cl_veiculotransportemunicipalveiculos {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20076,'$this->tre02_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3599,20076,'','".AddSlashes(pg_result($resaco,0,'tre02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3599,20077,'','".AddSlashes(pg_result($resaco,0,'tre02_veiculos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3599,20078,'','".AddSlashes(pg_result($resaco,0,'tre02_veiculotransportemunicipal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3599,20076,'','".AddSlashes(pg_fetch_result($resaco,0,'tre02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3599,20077,'','".AddSlashes(pg_fetch_result($resaco,0,'tre02_veiculos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3599,20078,'','".AddSlashes(pg_fetch_result($resaco,0,'tre02_veiculotransportemunicipal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_veiculotransportemunicipalveiculos {
       $this->atualizacampos();
      $sql = " update veiculotransportemunicipalveiculos set ";
      $virgula = "";
-     if(trim($this->tre02_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre02_sequencial"])){ 
+     if(trim((string) $this->tre02_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre02_sequencial"])){ 
        $sql  .= $virgula." tre02_sequencial = $this->tre02_sequencial ";
        $virgula = ",";
-       if(trim($this->tre02_sequencial) == null ){ 
+       if(trim((string) $this->tre02_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "tre02_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_veiculotransportemunicipalveiculos {
          return false;
        }
      }
-     if(trim($this->tre02_veiculos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre02_veiculos"])){ 
+     if(trim((string) $this->tre02_veiculos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre02_veiculos"])){ 
        $sql  .= $virgula." tre02_veiculos = $this->tre02_veiculos ";
        $virgula = ",";
-       if(trim($this->tre02_veiculos) == null ){ 
+       if(trim((string) $this->tre02_veiculos) == null ){ 
          $this->erro_sql = " Campo Código do Veiculo nao Informado.";
          $this->erro_campo = "tre02_veiculos";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_veiculotransportemunicipalveiculos {
          return false;
        }
      }
-     if(trim($this->tre02_veiculotransportemunicipal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre02_veiculotransportemunicipal"])){ 
+     if(trim((string) $this->tre02_veiculotransportemunicipal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre02_veiculotransportemunicipal"])){ 
        $sql  .= $virgula." tre02_veiculotransportemunicipal = $this->tre02_veiculotransportemunicipal ";
        $virgula = ",";
-       if(trim($this->tre02_veiculotransportemunicipal) == null ){ 
+       if(trim((string) $this->tre02_veiculotransportemunicipal) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "tre02_veiculotransportemunicipal";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_veiculotransportemunicipalveiculos {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20076,'$this->tre02_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre02_sequencial"]) || $this->tre02_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3599,20076,'".AddSlashes(pg_result($resaco,$conresaco,'tre02_sequencial'))."','$this->tre02_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3599,20076,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre02_sequencial'))."','$this->tre02_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre02_veiculos"]) || $this->tre02_veiculos != "")
-             $resac = db_query("insert into db_acount values($acount,3599,20077,'".AddSlashes(pg_result($resaco,$conresaco,'tre02_veiculos'))."','$this->tre02_veiculos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3599,20077,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre02_veiculos'))."','$this->tre02_veiculos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre02_veiculotransportemunicipal"]) || $this->tre02_veiculotransportemunicipal != "")
-             $resac = db_query("insert into db_acount values($acount,3599,20078,'".AddSlashes(pg_result($resaco,$conresaco,'tre02_veiculotransportemunicipal'))."','$this->tre02_veiculotransportemunicipal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3599,20078,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre02_veiculotransportemunicipal'))."','$this->tre02_veiculotransportemunicipal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_veiculotransportemunicipalveiculos {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20076,'$tre02_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3599,20076,'','".AddSlashes(pg_result($resaco,$iresaco,'tre02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3599,20077,'','".AddSlashes(pg_result($resaco,$iresaco,'tre02_veiculos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3599,20078,'','".AddSlashes(pg_result($resaco,$iresaco,'tre02_veiculotransportemunicipal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3599,20076,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3599,20077,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre02_veiculos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3599,20078,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre02_veiculotransportemunicipal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -367,7 +367,7 @@ class cl_veiculotransportemunicipalveiculos {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:veiculotransportemunicipalveiculos";
@@ -382,7 +382,7 @@ class cl_veiculotransportemunicipalveiculos {
    function sql_query ( $tre02_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_veiculotransportemunicipalveiculos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,7 +430,7 @@ class cl_veiculotransportemunicipalveiculos {
    function sql_query_file ( $tre02_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_veiculotransportemunicipalveiculos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

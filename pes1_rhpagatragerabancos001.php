@@ -34,8 +34,8 @@ include(modification("classes/db_rhpagatra_classe.php"));
 include(modification("classes/db_rhpagocor_classe.php"));
 include(modification("classes/db_rhpesjustica_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clrhpagatra = new cl_rhpagatra;
 $clrhpagocor = new cl_rhpagocor;
 $clrhpesjustica = new cl_rhpesjustica;
@@ -55,8 +55,8 @@ if(isset($incluir)){
 
     $dbwhere.= " and ( ";
     for($i=0; $i<count($selecionados); $i++){
-      $anoescolha = substr($selecionados[$i],0,4);
-      $mesescolha = substr($selecionados[$i],4,2);
+      $anoescolha = substr((string) $selecionados[$i],0,4);
+      $mesescolha = substr((string) $selecionados[$i],4,2);
       $dbwhere .= $or." (rh57_ano = ".$anoescolha." and rh57_mes = ".$mesescolha.") ";
       $or = " or ";
     }

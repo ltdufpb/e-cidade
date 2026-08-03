@@ -35,8 +35,8 @@ require_once(modification("classes/db_leitor_classe.php"));
 require_once(modification("classes/db_carteira_classe.php"));
 require_once(modification("classes/db_cidadao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clleitor   = new cl_leitor;
 $clcarteira = new cl_carteira;

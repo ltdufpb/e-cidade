@@ -33,7 +33,7 @@ include(modification("classes/db_lab_atributo_classe.php"));
 include(modification("classes/db_lab_exameatributoligacao_classe.php"));
 include(modification("classes/db_lab_parametros_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cllab_atributo = new cl_lab_atributo;
 $cllab_exameatributoligacao = new cl_lab_exameatributoligacao;
 $cllab_parametros = new cl_lab_parametros;

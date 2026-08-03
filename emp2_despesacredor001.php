@@ -35,8 +35,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_empempenho_classe.php"));
 
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 //---- instancia classes
 $clempempenho = new cl_empempenho;
@@ -100,7 +100,7 @@ if (!isset($testdt)){
           <td align="center">
             <strong>Opções:</strong>
             <?php 
-            $opcoes = Array("com"=>"Com os credores selecionados","sem"=>"Sem os credores selecionadas");
+            $opcoes = ["com"=>"Com os credores selecionados","sem"=>"Sem os credores selecionadas"];
             db_select("ver",$opcoes,true,1);
             ?>
             <!--
@@ -164,7 +164,7 @@ if (!isset($testdt)){
 	      </td>
 	      <td align="left" valign="top">
 	        <?php 
-	        $opcoes = Array(
+	        $opcoes = [
                             "1" => "Todos",
                             "2" => "Não empenhados",
                             "3" => "Somente empenhados",
@@ -180,7 +180,7 @@ if (!isset($testdt)){
                             "13"=> "Sem liquidação",
                             "14"=> "Parcialmente pagos",
                             "15"=> "Totalmente pagos",
-                           );
+                           ];
             db_select("filtro",$opcoes,true,1);
             ?>
             <br><br>

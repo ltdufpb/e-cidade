@@ -33,7 +33,7 @@
   include(modification("dbforms/db_classesgenericas.php"));
   include(modification("classes/db_pcparam_classe.php"));
 
-  db_postmemory($HTTP_GET_VARS);
+  db_postmemory($_GET);
 
   $clpcparam  = new cl_pcparam;
   $clcriaabas = new cl_criaabas;
@@ -76,17 +76,17 @@
 	}
 
         if(isset($pc30_sugforn) && $pc30_sugforn=='t'){
-            $clcriaabas->identifica = array("solicita"=>"Solicitação","solicitem"=>"Itens/Dotações","sugforn"=>"Fornecedor sugerido");//nome do iframe e o label    
-            $clcriaabas->src = array("solicita"=>"com1_solicita004.php".$parametro);    
-            $clcriaabas->title      = array("solicita"=>"Solicitação de compras","solicitem"=>"Itens/Dotações","sugforn"=>"Fornecedores Sugeridos");//nome do iframe e o label    
-            $clcriaabas->sizecampo  = array("solicita"=>"20","solicitem"=>"20","sugforn"=>"25");       
-            $clcriaabas->disabled = array("solicitem"=>"true","sugforn"=>"true");
+            $clcriaabas->identifica = ["solicita"=>"Solicitação","solicitem"=>"Itens/Dotações","sugforn"=>"Fornecedor sugerido"];//nome do iframe e o label    
+            $clcriaabas->src = ["solicita"=>"com1_solicita004.php".$parametro];    
+            $clcriaabas->title      = ["solicita"=>"Solicitação de compras","solicitem"=>"Itens/Dotações","sugforn"=>"Fornecedores Sugeridos"];//nome do iframe e o label    
+            $clcriaabas->sizecampo  = ["solicita"=>"20","solicitem"=>"20","sugforn"=>"25"];       
+            $clcriaabas->disabled = ["solicitem"=>"true","sugforn"=>"true"];
         } else {
-            $clcriaabas->identifica = array("solicita"=>"Solicitação","solicitem"=>"Itens/Dotações");//nome do iframe e o label    
-            $clcriaabas->src = array("solicita"=>"com1_solicita004.php".$parametro);    
-            $clcriaabas->title      = array("solicita"=>"Solicitação de compras","solicitem"=>"Itens/Dotações");//nome do iframe e o label    
-            $clcriaabas->sizecampo  = array("solicita"=>"20","solicitem"=>"20");
-            $clcriaabas->disabled = array("solicitem"=>"true");
+            $clcriaabas->identifica = ["solicita"=>"Solicitação","solicitem"=>"Itens/Dotações"];//nome do iframe e o label    
+            $clcriaabas->src = ["solicita"=>"com1_solicita004.php".$parametro];    
+            $clcriaabas->title      = ["solicita"=>"Solicitação de compras","solicitem"=>"Itens/Dotações"];//nome do iframe e o label    
+            $clcriaabas->sizecampo  = ["solicita"=>"20","solicitem"=>"20"];
+            $clcriaabas->disabled = ["solicitem"=>"true"];
         }
 
         $clcriaabas->cria_abas();           

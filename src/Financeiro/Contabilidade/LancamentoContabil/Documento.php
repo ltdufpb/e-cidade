@@ -210,7 +210,7 @@ class Documento
      */
     public static function isPagamentoExtra($documento)
     {
-        $documentosPagamentoExtra = array(161, 163, 151, 153, 120, 121);
+        $documentosPagamentoExtra = [161, 163, 151, 153, 120, 121];
         return in_array($documento, $documentosPagamentoExtra);
     }
 
@@ -221,7 +221,7 @@ class Documento
      */
     public static function isRecebimentoExtra($documento)
     {
-        $documentosPagamentoExtra = array(160, 162, 150, 152, 130, 131);
+        $documentosPagamentoExtra = [160, 162, 150, 152, 130, 131];
         return in_array($documento, $documentosPagamentoExtra);
     }
 
@@ -232,7 +232,7 @@ class Documento
      */
     public static function isTransferenciaDecendio($documento)
     {
-        $documentosPagamentoExtra = array(140, 141);
+        $documentosPagamentoExtra = [140, 141];
         return in_array($documento, $documentosPagamentoExtra);
     }
 
@@ -243,7 +243,7 @@ class Documento
      */
     public static function isTransferenciaCoberturaFinanceiro($documento)
     {
-        $documentosPagamentoExtra = array(142, 143);
+        $documentosPagamentoExtra = [142, 143];
         return in_array($documento, $documentosPagamentoExtra);
     }
 }

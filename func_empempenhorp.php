@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empempenho_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempempenho = new cl_empempenho;
 $clempempenho->rotulo->label("e60_numemp");
 $clempempenho->rotulo->label("e60_codemp");
@@ -139,7 +139,7 @@ $rotulo->label("z01_cgccpf");
         } else {
           $sql = "";
         }
-        $repassa = array("chave_z01_nome" => @$chave_z01_nome);
+        $repassa = ["chave_z01_nome" => @$chave_z01_nome];
         if (!empty($sql)) {
 
           $result = $clempempenho->sql_record($sql);

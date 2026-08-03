@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE far_devolucaomed
 class cl_far_devolucaomed { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $fa23_i_codigo = 0; 
-   var $fa23_i_quantidade = 0; 
-   var $fa23_c_motivo = null; 
-   var $fa23_i_devolucao = 0; 
-   var $fa23_i_retiradaitens = 0; 
-   var $fa23_i_cancelamento = 0; 
+   public $fa23_i_codigo = 0; 
+   public $fa23_i_quantidade = 0; 
+   public $fa23_c_motivo = null; 
+   public $fa23_i_devolucao = 0; 
+   public $fa23_i_retiradaitens = 0; 
+   public $fa23_i_cancelamento = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  fa23_i_codigo = int4 = Código 
                  fa23_i_quantidade = int4 = Quantidade 
                  fa23_c_motivo = char(40) = Motivo 
@@ -58,10 +58,10 @@ class cl_far_devolucaomed {
                  fa23_i_cancelamento = int4 = Cancelamento 
                  ";
    //funcao construtor da classe 
-   function cl_far_devolucaomed() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_devolucaomed"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,10 +143,10 @@ class cl_far_devolucaomed {
          $this->erro_status = "0";
          return false; 
        }
-       $this->fa23_i_codigo = pg_result($result,0,0); 
+       $this->fa23_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from far_devolucaomed_fa23_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa23_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa23_i_codigo)){
          $this->erro_sql = " Campo fa23_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_far_devolucaomed {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "far_devolucaomed ($this->fa23_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "far_devolucaomed já Cadastrado";
@@ -208,15 +208,15 @@ class cl_far_devolucaomed {
      $resaco = $this->sql_record($this->sql_query_file($this->fa23_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14037,'$this->fa23_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2471,14037,'','".AddSlashes(pg_result($resaco,0,'fa23_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2471,14039,'','".AddSlashes(pg_result($resaco,0,'fa23_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2471,14072,'','".AddSlashes(pg_result($resaco,0,'fa23_c_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2471,16234,'','".AddSlashes(pg_result($resaco,0,'fa23_i_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2471,17112,'','".AddSlashes(pg_result($resaco,0,'fa23_i_retiradaitens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2471,17113,'','".AddSlashes(pg_result($resaco,0,'fa23_i_cancelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2471,14037,'','".AddSlashes(pg_fetch_result($resaco,0,'fa23_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2471,14039,'','".AddSlashes(pg_fetch_result($resaco,0,'fa23_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2471,14072,'','".AddSlashes(pg_fetch_result($resaco,0,'fa23_c_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2471,16234,'','".AddSlashes(pg_fetch_result($resaco,0,'fa23_i_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2471,17112,'','".AddSlashes(pg_fetch_result($resaco,0,'fa23_i_retiradaitens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2471,17113,'','".AddSlashes(pg_fetch_result($resaco,0,'fa23_i_cancelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -225,10 +225,10 @@ class cl_far_devolucaomed {
       $this->atualizacampos();
      $sql = " update far_devolucaomed set ";
      $virgula = "";
-     if(trim($this->fa23_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_codigo"])){ 
+     if(trim((string) $this->fa23_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_codigo"])){ 
        $sql  .= $virgula." fa23_i_codigo = $this->fa23_i_codigo ";
        $virgula = ",";
-       if(trim($this->fa23_i_codigo) == null ){ 
+       if(trim((string) $this->fa23_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "fa23_i_codigo";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_far_devolucaomed {
          return false;
        }
      }
-     if(trim($this->fa23_i_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_quantidade"])){ 
+     if(trim((string) $this->fa23_i_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_quantidade"])){ 
        $sql  .= $virgula." fa23_i_quantidade = $this->fa23_i_quantidade ";
        $virgula = ",";
-       if(trim($this->fa23_i_quantidade) == null ){ 
+       if(trim((string) $this->fa23_i_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "fa23_i_quantidade";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_far_devolucaomed {
          return false;
        }
      }
-     if(trim($this->fa23_c_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_c_motivo"])){ 
+     if(trim((string) $this->fa23_c_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_c_motivo"])){ 
        $sql  .= $virgula." fa23_c_motivo = '$this->fa23_c_motivo' ";
        $virgula = ",";
-       if(trim($this->fa23_c_motivo) == null ){ 
+       if(trim((string) $this->fa23_c_motivo) == null ){ 
          $this->erro_sql = " Campo Motivo nao Informado.";
          $this->erro_campo = "fa23_c_motivo";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_far_devolucaomed {
          return false;
        }
      }
-     if(trim($this->fa23_i_devolucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_devolucao"])){ 
+     if(trim((string) $this->fa23_i_devolucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_devolucao"])){ 
        $sql  .= $virgula." fa23_i_devolucao = $this->fa23_i_devolucao ";
        $virgula = ",";
-       if(trim($this->fa23_i_devolucao) == null ){ 
+       if(trim((string) $this->fa23_i_devolucao) == null ){ 
          $this->erro_sql = " Campo Devolucao nao Informado.";
          $this->erro_campo = "fa23_i_devolucao";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_far_devolucaomed {
          return false;
        }
      }
-     if(trim($this->fa23_i_retiradaitens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_retiradaitens"])){ 
+     if(trim((string) $this->fa23_i_retiradaitens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_retiradaitens"])){ 
        $sql  .= $virgula." fa23_i_retiradaitens = $this->fa23_i_retiradaitens ";
        $virgula = ",";
-       if(trim($this->fa23_i_retiradaitens) == null ){ 
+       if(trim((string) $this->fa23_i_retiradaitens) == null ){ 
          $this->erro_sql = " Campo Ítem da Retirada nao Informado.";
          $this->erro_campo = "fa23_i_retiradaitens";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_far_devolucaomed {
          return false;
        }
      }
-     if(trim($this->fa23_i_cancelamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_cancelamento"])){ 
+     if(trim((string) $this->fa23_i_cancelamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_cancelamento"])){ 
        $sql  .= $virgula." fa23_i_cancelamento = $this->fa23_i_cancelamento ";
        $virgula = ",";
-       if(trim($this->fa23_i_cancelamento) == null ){ 
+       if(trim((string) $this->fa23_i_cancelamento) == null ){ 
          $this->erro_sql = " Campo Cancelamento nao Informado.";
          $this->erro_campo = "fa23_i_cancelamento";
          $this->erro_banco = "";
@@ -311,21 +311,21 @@ class cl_far_devolucaomed {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14037,'$this->fa23_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_codigo"]) || $this->fa23_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2471,14037,'".AddSlashes(pg_result($resaco,$conresaco,'fa23_i_codigo'))."','$this->fa23_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2471,14037,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa23_i_codigo'))."','$this->fa23_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_quantidade"]) || $this->fa23_i_quantidade != "")
-           $resac = db_query("insert into db_acount values($acount,2471,14039,'".AddSlashes(pg_result($resaco,$conresaco,'fa23_i_quantidade'))."','$this->fa23_i_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2471,14039,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa23_i_quantidade'))."','$this->fa23_i_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa23_c_motivo"]) || $this->fa23_c_motivo != "")
-           $resac = db_query("insert into db_acount values($acount,2471,14072,'".AddSlashes(pg_result($resaco,$conresaco,'fa23_c_motivo'))."','$this->fa23_c_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2471,14072,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa23_c_motivo'))."','$this->fa23_c_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_devolucao"]) || $this->fa23_i_devolucao != "")
-           $resac = db_query("insert into db_acount values($acount,2471,16234,'".AddSlashes(pg_result($resaco,$conresaco,'fa23_i_devolucao'))."','$this->fa23_i_devolucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2471,16234,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa23_i_devolucao'))."','$this->fa23_i_devolucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_retiradaitens"]) || $this->fa23_i_retiradaitens != "")
-           $resac = db_query("insert into db_acount values($acount,2471,17112,'".AddSlashes(pg_result($resaco,$conresaco,'fa23_i_retiradaitens'))."','$this->fa23_i_retiradaitens',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2471,17112,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa23_i_retiradaitens'))."','$this->fa23_i_retiradaitens',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa23_i_cancelamento"]) || $this->fa23_i_cancelamento != "")
-           $resac = db_query("insert into db_acount values($acount,2471,17113,'".AddSlashes(pg_result($resaco,$conresaco,'fa23_i_cancelamento'))."','$this->fa23_i_cancelamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2471,17113,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa23_i_cancelamento'))."','$this->fa23_i_cancelamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -370,15 +370,15 @@ class cl_far_devolucaomed {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14037,'$fa23_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2471,14037,'','".AddSlashes(pg_result($resaco,$iresaco,'fa23_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2471,14039,'','".AddSlashes(pg_result($resaco,$iresaco,'fa23_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2471,14072,'','".AddSlashes(pg_result($resaco,$iresaco,'fa23_c_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2471,16234,'','".AddSlashes(pg_result($resaco,$iresaco,'fa23_i_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2471,17112,'','".AddSlashes(pg_result($resaco,$iresaco,'fa23_i_retiradaitens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2471,17113,'','".AddSlashes(pg_result($resaco,$iresaco,'fa23_i_cancelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2471,14037,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa23_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2471,14039,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa23_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2471,14072,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa23_c_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2471,16234,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa23_i_devolucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2471,17112,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa23_i_retiradaitens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2471,17113,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa23_i_cancelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from far_devolucaomed
@@ -438,7 +438,7 @@ class cl_far_devolucaomed {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:far_devolucaomed";
@@ -453,7 +453,7 @@ class cl_far_devolucaomed {
    function sql_query ( $fa23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -491,7 +491,7 @@ class cl_far_devolucaomed {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -504,7 +504,7 @@ class cl_far_devolucaomed {
    function sql_query_file ( $fa23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -525,7 +525,7 @@ class cl_far_devolucaomed {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -537,7 +537,7 @@ class cl_far_devolucaomed {
    function sql_query_devolucao ( $fa23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,7 +561,7 @@ class cl_far_devolucaomed {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -577,7 +577,7 @@ class cl_far_devolucaomed {
      
      $sSql = "select ";
      if($sCampos != "*" ){
-       $sCamposSql = split("#",$sCampos);
+       $sCamposSql = preg_split("#\\##m",$sCampos);
        $sVirgula = "";
 
        for ($i = 0; $i < sizeof($sCamposSql); $i++) {
@@ -613,7 +613,7 @@ class cl_far_devolucaomed {
 
      if ($sOrdem != null ) {
        $sSql .= " order by ";
-       $sCamposSql = split("#",$sOrdem);
+       $sCamposSql = preg_split("#\\##m",(string) $sOrdem);
        $sVirgula = "";
        
        for ($i = 0; $i< sizeof($sCamposSql); $i++){

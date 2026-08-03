@@ -42,10 +42,10 @@ class R2010 extends EventoAbstract
     const ADMINISTRATIVO = 1;
     const JURIDICO = 2;
 
-    private $tipos = array(
+    private $tipos = [
         self::ADMINISTRATIVO => 'Adminstrativo',
         self::JURIDICO => 'Juridico'
-    );
+    ];
 
     /**
      * @param stdClass $parametros
@@ -57,9 +57,9 @@ class R2010 extends EventoAbstract
         }
 
         $dao = new cl_avaliacaogruporespostaretencaoservicostomados();
-        $where = array(
+        $where = [
             "efd04_avaliacaogruporesposta = $parametros->preenchimento"
-        );
+        ];
 
         $sql = $dao->sql_query_file(null, "*", 'efd04_sequencial DESC', implode(' AND ', $where));
         $rs = db_query($sql);
@@ -81,7 +81,7 @@ class R2010 extends EventoAbstract
      * @return int
      * @throws Exception
      */
-    public function persistir(Avaliacao $avaliacao, array $parametros = array())
+    public function persistir(Avaliacao $avaliacao, array $parametros = [])
     {
         $dao = new cl_avaliacaogruporespostaretencaoservicostomados();
         if (!empty($parametros['preenchimento'])) {
@@ -94,12 +94,12 @@ class R2010 extends EventoAbstract
         $cgmPrestador = $parametros['z01_numcgm'];
         $cgmContribuinte = $this->getCgm()->getCodigo();
 
-        $where = array(
+        $where = [
             "efd04_cgmcontribuinte = {$cgmContribuinte}",
             "efd04_cgmprestador = {$cgmPrestador}",
             "efd04_ano = {$ano}",
             "efd04_mes = {$mes}",
-        );
+        ];
 
         $sql = $dao->sql_query_file(null, "*", null, implode(' and ', $where));
         $rs = db_query($sql);
@@ -129,12 +129,12 @@ class R2010 extends EventoAbstract
     function buscarCodigoPreenchimentoByCompetenciaCgm($parametros){
         $dao = new cl_avaliacaogruporespostaretencaoservicostomados();
 
-        $where = array(
+        $where = [
             "efd04_cgmcontribuinte = {$parametros->cgm}",
             "efd04_cgmprestador = {$parametros->cgmprestador}",
             "efd04_ano = {$parametros->ano}",
             "efd04_mes = {$parametros->mes}",
-        );
+        ];
 
         $sql = $dao->sql_query_file(null, "*", 'efd04_sequencial DESC', implode(' AND ', $where));
         $rs = db_query($sql);

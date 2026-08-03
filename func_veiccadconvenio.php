@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadconvenio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveiccadconvenio = new cl_veiccadconvenio;
 $clveiccadconvenio->rotulo->label("ve17_sequencial");
 $clveiccadconvenio->rotulo->label("ve17_descr");
@@ -98,9 +98,9 @@ $clveiccadconvenio->rotulo->label("ve17_descr");
         }else{
            $sql = $clveiccadconvenio->sql_query("",$campos,"ve17_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve17_descr)){
-          $repassa = array("chave_ve17_sequencial"=>$chave_ve17_sequencial,"chave_ve17_descr"=>$chave_ve17_descr);
+          $repassa = ["chave_ve17_sequencial"=>$chave_ve17_sequencial,"chave_ve17_descr"=>$chave_ve17_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

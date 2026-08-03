@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atividadeimpactoporte_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatividadeimpactoporte = new cl_atividadeimpactoporte;
 $clatividadeimpactoporte->rotulo->label("am04_sequencial");
 $clatividadeimpactoporte->rotulo->label("am04_atividadeimpacto");
@@ -78,9 +78,9 @@ $clatividadeimpactoporte->rotulo->label("am04_atividadeimpacto");
         }else{
            $sql = $clatividadeimpactoporte->sql_query("",$campos,"am04_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_am04_atividadeimpacto)){
-          $repassa = array("chave_am04_sequencial"=>$chave_am04_sequencial,"chave_am04_atividadeimpacto"=>$chave_am04_atividadeimpacto);
+          $repassa = ["chave_am04_sequencial"=>$chave_am04_sequencial,"chave_am04_atividadeimpacto"=>$chave_am04_atividadeimpacto];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

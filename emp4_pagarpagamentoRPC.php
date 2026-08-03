@@ -80,16 +80,16 @@ switch ($oParam->exec) {
 
       $sWhere .= " and e91_codcheque is not null";
       if ($oParam->params[0]->dtChequeIni != "" && $oParam->params[0]-> dtChequeFim== "") {
-        $sWhere .= " and e86_data = '".implode("-",array_reverse(explode("/",$oParam->params[0]->dtChequeIni)))."'";
+        $sWhere .= " and e86_data = '".implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtChequeIni)))."'";
       } else if ($oParam->params[0]->dtChequeIni != "" && $oParam->params[0]->dtChequeFim != "") {
 
-        $dtChequeIni = implode("-",array_reverse(explode("/",$oParam->params[0]->dtChequeIni)));
-        $dtChequeFim = implode("-",array_reverse(explode("/",$oParam->params[0]->dtChequeFim)));
+        $dtChequeIni = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtChequeIni)));
+        $dtChequeFim = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtChequeFim)));
         $sWhere .= " and e86_data between '{$dtChequeIni}' and '{$dtChequeFim}'";
 
       } else if ($oParam->params[0]->dtChequeIni == "" && $oParam->params[0]->dtChequeFim != "") {
 
-        $dtChequeFim  = implode("-",array_reverse(explode("/",$oParam->params[0]->dtChequeFim)));
+        $dtChequeFim  = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtChequeFim)));
         $sWhere    .= " and e86_data <= '{$dtChequeFim}'";
       }
 
@@ -108,34 +108,34 @@ switch ($oParam->exec) {
     }
 
     if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim == "") {
-      $sWhere .= " and e50_data = '".implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)))."'";
+      $sWhere .= " and e50_data = '".implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataIni)))."'";
     } else if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim != "") {
-      $dtDataIni = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)));
-      $dtDataFim = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+      $dtDataIni = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataIni)));
+      $dtDataFim = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataFim)));
       $sWhere .= " and e50_data between '{$dtDataIni}' and '{$dtDataFim}'";
     } else if ($oParam->params[0]->dtDataIni == "" && $oParam->params[0]->dtDataFim != "") {
-      $dtDataFim  = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+      $dtDataFim  = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataFim)));
       $sWhere    .= " and e50_data <= '{$dtDataFim}'";
     }
 
     //Filtro para Empenho
     if ($oParam->params[0]->iCodEmp != '' and $oParam->params[0]->iCodEmp2 == "") {
-      if (strpos($oParam->params[0]->iCodEmp,"/")) {
-        $aEmpenho = explode("/",$oParam->params[0]->iCodEmp);
+      if (strpos((string) $oParam->params[0]->iCodEmp,"/")) {
+        $aEmpenho = explode("/",(string) $oParam->params[0]->iCodEmp);
         $sWhere .= " and e60_codemp = '{$aEmpenho[0]}' and e60_anousu={$aEmpenho[1]}";
       } else {
         $sWhere .= " and e60_codemp = '{$oParam->params[0]->iCodEmp}' and e60_anousu=".db_getsession("DB_anousu");
       }
     } else if ($oParam->params[0]->iCodEmp != "" and $oParam->params[0]->iCodEmp2 != "") {
       $sWhere .= "  and (";
-      if (strpos($oParam->params[0]->iCodEmp,"/")) {
-        $aEmpenho = explode("/",$oParam->params[0]->iCodEmp);
+      if (strpos((string) $oParam->params[0]->iCodEmp,"/")) {
+        $aEmpenho = explode("/",(string) $oParam->params[0]->iCodEmp);
         $sWhere .= " (cast(e60_codemp as integer) >= {$aEmpenho[0]} and e60_anousu={$aEmpenho[1]} )";
       } else {
         $sWhere .= " (cast(e60_codemp as integer) >= {$oParam->params[0]->iCodEmp} and e60_anousu=".db_getsession("DB_anousu").")";
       }
-      if (strpos($oParam->params[0]->iCodEmp2,"/")) {
-        $aEmpenho = explode("/",$oParam->params[0]->iCodEmp2);
+      if (strpos((string) $oParam->params[0]->iCodEmp2,"/")) {
+        $aEmpenho = explode("/",(string) $oParam->params[0]->iCodEmp2);
         $sWhere .= " or  (cast(e60_codemp as integer) <= {$aEmpenho[0]} and e60_anousu={$aEmpenho[1]} )";
       } else {
         $sWhere .= "  or (cast(e60_codemp as integer) <= {$oParam->params[0]->iCodEmp2} and e60_anousu=".db_getsession("DB_anousu").")";
@@ -168,7 +168,7 @@ switch ($oParam->exec) {
     }
 
     if ($oParam->params[0]->sDtAut != '') {
-      $oParam->params[0]->sDtAut = implode("-", array_reverse(explode("/", $oParam->params[0]->sDtAut)));
+      $oParam->params[0]->sDtAut = implode("-", array_reverse(explode("/", (string) $oParam->params[0]->sDtAut)));
       $sWhere .= " and e42_dtpagamento = '{$oParam->params[0]->sDtAut}'";
     }
 
@@ -204,10 +204,10 @@ switch ($oParam->exec) {
     if (is_array($oParam->aMovimentos)) {
 
       try {
-        $oRetorno->aAutenticacoes = array();
+        $oRetorno->aAutenticacoes = [];
         $oRetorno->iItipoAutent   = 0;
-        $oRetorno->aAutenticacoes = array();
-        $aSlipAutomatico = array();
+        $oRetorno->aAutenticacoes = [];
+        $aSlipAutomatico = [];
         db_inicio_transacao();
         foreach ($oParam->aMovimentos as $oMovimento) {
 
@@ -375,7 +375,7 @@ switch ($oParam->exec) {
 
         $oNota = new stdClass;
         $oNota->e69_codnota = $iCodigoNota;
-        $oNota->aItens = array();
+        $oNota->aItens = [];
 
         $nDescontoSaldo = $oParam->nValorEstornar;
 
@@ -450,7 +450,7 @@ switch ($oParam->exec) {
       $oRetorno->message = urlEncode($eErroAutenticacao->getMessage());
     }
 
-    $oRetorno->sAutenticacao = urlEncode($oParam->sString);
+    $oRetorno->sAutenticacao = urlEncode((string) $oParam->sString);
     echo $oJson->encode($oRetorno);
 
     /*

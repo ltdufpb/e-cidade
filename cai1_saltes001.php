@@ -47,7 +47,7 @@ if ( isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Incluir" ) {
   $erro=false;
   db_inicio_transacao();
 
-  $dtImplantacao = explode("/",$k13_dtimplantacao,3);
+  $dtImplantacao = explode("/",(string) $k13_dtimplantacao,3);
   $dtDia         = $dtImplantacao[0];
   $dtMes         = $dtImplantacao[1];
   $dtAno         = $dtImplantacao[2];
@@ -117,7 +117,7 @@ if ( isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Incluir" ) {
   </body>
   </html>
 <?php 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Incluir"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Incluir"){
 
   if ( $clsaltes->erro_status == "0" ) {
 

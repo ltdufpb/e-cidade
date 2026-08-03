@@ -35,7 +35,7 @@ include(modification("classes/db_rhcadregime_classe.php"));
 $clrotulo = new rotulocampo;
 $clinssirf = new cl_inssirf;
 $clrhcadrefime = new cl_rhcadregime;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -128,8 +128,8 @@ function js_detectaarquivo(arquivo,pdf){
           </td>
           <td>
             <?php 
-            $arr_tipofolha = Array("S"=>"Salário",
-                                   "D"=>"13o Salário");
+            $arr_tipofolha = ["S"=>"Salário",
+                                   "D"=>"13o Salário"];
             db_select("sal_dec", $arr_tipofolha, true, 1);
             ?>
           </td>
@@ -152,12 +152,12 @@ function js_detectaarquivo(arquivo,pdf){
           </td>
           <td>
             <?php 
-            $arr_vinculo = Array("t"=>"Todos",
+            $arr_vinculo = ["t"=>"Todos",
                                  "a"=>"Ativos",
                                  "i"=>"Inativos",
                                  "p"=>"Pensionistas",
                                  "ip"=>"Inativos/Pensionistas"
-                                 );
+                                 ];
             db_select("vinculo", $arr_vinculo, true, 1);
             ?>
           </td>
@@ -177,7 +177,7 @@ function js_detectaarquivo(arquivo,pdf){
                     </td>
                     <td align="left">
                     <?php 
-                      $arr_sf = array("s"=>"SIM", "n"=>"Não");
+                      $arr_sf = ["s"=>"SIM", "n"=>"Não"];
                       db_select('sf',$arr_sf,true,4);
                     ?>
                     </td>
@@ -187,7 +187,7 @@ function js_detectaarquivo(arquivo,pdf){
                     </td>
                     <td align="left">
                     <?php 
-                      $arr_lg = array("s"=>"SIM", "n"=>"Não");
+                      $arr_lg = ["s"=>"SIM", "n"=>"Não"];
                       db_select('lg',$arr_lg,true,4);
                     ?>
                     </td>
@@ -197,7 +197,7 @@ function js_detectaarquivo(arquivo,pdf){
                     </td>
                     <td align="left">
                     <?php 
-                      $arr_ls = array("s"=>"SIM", "n"=>"Não");
+                      $arr_ls = ["s"=>"SIM", "n"=>"Não"];
                       db_select('ls',$arr_ls,true,4);
                     ?>
                     </td>

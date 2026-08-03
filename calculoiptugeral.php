@@ -127,7 +127,7 @@ set_time_limit(0);
 $cliptubase = new cl_iptubase;
 $result = db_query("begin;");
 
-$ini = mktime();
+$ini = time();
 
 $iniciocalculo = mktime(date("H"), date("i"), date("s"), 0, 0, 0);
 db_msg("- Inicio do Calculo: ".date("H:i:s", $iniciocalculo));
@@ -163,7 +163,7 @@ if ($cliptubase->numrows==0) {
 
 				$resultcfiptu=db_query("select distinct j18_anousu, j18_permvenc from cfiptu order by j18_anousu desc");
 				$j18_permvenc = 1;
-				if(pg_numrows($resultcfiptu) > 0){
+				if(pg_num_rows($resultcfiptu) > 0){
 					db_fieldsmemory($resultcfiptu,0);
 				}
 				if ($j18_permvenc == 0) {
@@ -180,7 +180,7 @@ if ($cliptubase->numrows==0) {
         if ($resultcalc != false) {
           db_fieldsmemory($resultcalc,0);
           db_termo($ii+1, $total_reg, "Matricula: $j01_matric");
-          $insert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric,".substr($fc_calculoiptu,0,2).",'".trim(substr($fc_calculoiptu,2))."')";
+          $insert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric,".substr((string) $fc_calculoiptu,0,2).",'".trim(substr((string) $fc_calculoiptu,2))."')";
           $resultinsert = db_query($insert) or die($insert);
           if ($resultinsert == false) {
             $erro=true;
@@ -196,7 +196,7 @@ if ($cliptubase->numrows==0) {
       }
 
       $fimcalculo = mktime(date("H"), date("i"), date("s"), 0, 0, 0);
-      $fim = mktime();
+      $fim = time();
 
       $tempo = date("H:i:s", $fim - $ini);
 

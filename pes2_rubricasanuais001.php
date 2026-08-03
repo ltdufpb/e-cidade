@@ -102,7 +102,7 @@ $geraform->onchpad = true;
             </td>
             <td>
               <?php 
-              $arr_tipo = array("v" => "Valor", "q" => "Quantidade");
+              $arr_tipo = ["v" => "Valor", "q" => "Quantidade"];
               db_select("tipo", $arr_tipo, true, 1, "");
               ?>
             </td>
@@ -117,16 +117,16 @@ $geraform->onchpad = true;
             <td nowrap colspan="2">
               <?php 
               db_input("folhaselecion", 3, 0, true, 'hidden', 3);
-              $arr_pontosgerfs_inicial = array();
-              $arr_pontosgerfs_final   = array();
-              $arr_pontos              = array(
+              $arr_pontosgerfs_inicial = [];
+              $arr_pontosgerfs_final   = [];
+              $arr_pontos              = [
                 "1" =>"Salário",
                 "2" =>"Adiantamento",
                 "3" =>"Complementar",
                 "4" =>"Rescisão",
                 "5" =>"Saldo do 13o",
                 "6" =>"Cálculo Fixo"
-              );
+              ];
 
               if(isset($objeto1)){
                 foreach ($objeto1 as $index) {

@@ -69,7 +69,7 @@ $clmatunid->rotulo->label();
           </td>
           <td>
             <?php
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('m61_usaquant',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -83,7 +83,7 @@ $clmatunid->rotulo->label();
       if(!isset($m61_usadec)){
         $m61_usadec = 't';
       }
-      $x = array("f"=>"NAO","t"=>"SIM");
+      $x = ["f"=>"NAO","t"=>"SIM"];
       db_select('m61_usadec',$x,true,$db_opcao,"");
       ?>
           </td>
@@ -113,7 +113,7 @@ function js_preenchepesquisa(chave){
   db_iframe_matunid.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

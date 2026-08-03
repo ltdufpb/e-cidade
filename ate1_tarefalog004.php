@@ -37,7 +37,7 @@ include(modification("classes/db_tarefalog_classe.php"));
 include(modification("classes/db_tarefalogsituacao_classe.php"));
 include(modification("classes/db_db_usuarios_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltarefa            = new cl_tarefa;
 $cltarefalog         = new cl_tarefalog;
 $cltarefalogsituacao = new cl_tarefalogsituacao;

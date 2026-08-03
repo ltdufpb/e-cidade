@@ -8,20 +8,20 @@ class M9217TarifaFormaArrecadacaoDebito extends PostgresMigration
   {
     $this->criarEstruturaEcidade();
 
-    $tabelaFormaArrecadacao = $this->table('formaarrecadacao', array('schema' => 'caixa', 'id' => 'k178_sequencial', 'primary_key' => array('k178_sequencial')));
+    $tabelaFormaArrecadacao = $this->table('formaarrecadacao', ['schema' => 'caixa', 'id' => 'k178_sequencial', 'primary_key' => ['k178_sequencial']]);
     $tabelaFormaArrecadacao
-      ->addColumn('k178_codigo'   , 'string', array('limit' => 5))
-      ->addColumn('k178_descricao', 'string', array('limit' => 200))
+      ->addColumn('k178_codigo'   , 'string', ['limit' => 5])
+      ->addColumn('k178_descricao', 'string', ['limit' => 200])
       ->create();
 
-    $tabelaDisbanco = $this->table('disbancotarifa', array('schema' => 'caixa', 'id' => 'k179_sequencial', 'primary_key' => array('k179_sequencial')));
+    $tabelaDisbanco = $this->table('disbancotarifa', ['schema' => 'caixa', 'id' => 'k179_sequencial', 'primary_key' => ['k179_sequencial']]);
     $tabelaDisbanco
-      ->addColumn('k179_idret', 'integer', array('null' => false))
-      ->addColumn('k179_formaarrecadacao', 'integer', array('null' => false))
-      ->addColumn('k179_valor', 'decimal', array('null' => false))
+      ->addColumn('k179_idret', 'integer', ['null' => false])
+      ->addColumn('k179_formaarrecadacao', 'integer', ['null' => false])
+      ->addColumn('k179_valor', 'decimal', ['null' => false])
       ->addForeignKey('k179_idret', 'disbanco', 'idret')
       ->addForeignKey('k179_formaarrecadacao', 'formaarrecadacao', 'k178_sequencial')
-      ->addIndex('k179_idret', array('unique' => true))
+      ->addIndex('k179_idret', ['unique' => true])
       ->create();
 
 
@@ -54,9 +54,9 @@ SQLINSERTFORMAARRECADACAO
   {
     $this->downEstruturaECidade();
 
-    $tabela = $this->table('disbancotarifa', array('schema' => 'caixa'));
+    $tabela = $this->table('disbancotarifa', ['schema' => 'caixa']);
     $tabela->drop();
-    $tabela = $this->table('formaarrecadacao', array('schema' => 'caixa'));
+    $tabela = $this->table('formaarrecadacao', ['schema' => 'caixa']);
     $tabela->drop();
 
     $this->execute("update db_itensmenu set libcliente = 'true' where id_item = 5062;");

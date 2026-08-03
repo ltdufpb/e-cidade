@@ -48,7 +48,7 @@ require_once(modification("libs/db_app.utils.php"));
 $cldb_config   = new cl_db_config;
 $cldb_docparag = new cl_db_docparag;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>

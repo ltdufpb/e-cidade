@@ -33,7 +33,7 @@ include(modification("classes/db_sau_examerequisitos_classe.php"));
 include(modification("classes/db_sau_exames_classe.php"));
 include(modification("classes/db_sau_requisitos_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clsau_examerequisitos = new cl_sau_examerequisitos;
 $clsau_exames = new cl_sau_exames;
 $clsau_requisitos = new cl_sau_requisitos;

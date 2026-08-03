@@ -8,11 +8,8 @@ use ECidade\Patrimonial\Protocolo\Processo\ProcessoEletronico\Filter\ListagemPro
 
 final class Service extends BaseService
 {
-    private $consultaProcessosRepository;
-
-    public function __construct(RepositoryConsultaProcesso $consultaProcessosRepository)
+    public function __construct(private readonly RepositoryConsultaProcesso $consultaProcessosRepository)
     {
-        $this->consultaProcessosRepository = $consultaProcessosRepository;
     }
 
     public function listarProcessos(FiltroListagemProcessos $filtro)

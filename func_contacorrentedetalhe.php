@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contacorrentedetalhe_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcontacorrentedetalhe = new cl_contacorrentedetalhe;
 $clcontacorrentedetalhe->rotulo->label("c19_sequencial");
 $clcontacorrentedetalhe->rotulo->label("c19_sequencial");
@@ -98,11 +98,11 @@ $campos  = "distinct c19_sequencial, cast(cast(c61_reduz as varchar ) || ' - ' |
            $sql = $clcontacorrentedetalhe->sql_query_fileAtributos(null, $campos, "c19_sequencial", $sWhere);
         }
         
-        $repassa = array();
+        $repassa = [];
         
         if(isset($chave_c19_sequencial)){
 
-          $repassa = array("chave_c19_sequencial" => $chave_c19_sequencial, "chave_c19_sequencial" => $chave_c19_sequencial);
+          $repassa = ["chave_c19_sequencial" => $chave_c19_sequencial, "chave_c19_sequencial" => $chave_c19_sequencial];
           
         }
         

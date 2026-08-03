@@ -1376,7 +1376,7 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
         $descricaoLegenda['S'] = "S - Sexo";
         $descricaoLegenda['FA'] = "FA - Faltas Abonadas";
 
-        $legendasImprimir = array();
+        $legendasImprimir = [];
 
         foreach ($legendas as $sigla => $legenda) {
             if ($legenda) {
@@ -1708,7 +1708,7 @@ abstract class DiarioClassePdf extends FpdfMultiCellBorder
      * @param TurmaDiarioClasse $turma
      * @throws Exception
      */
-    private function escreverColunasTurmaGlobalizada($ultimaPagina, TurmaDiarioClasse $turma = null, $titulo = false)
+    private function escreverColunasTurmaGlobalizada($ultimaPagina, ?TurmaDiarioClasse $turma = null, $titulo = false)
     {
         if (!$ultimaPagina || !$this->turmaGlobalizada) {
             return;

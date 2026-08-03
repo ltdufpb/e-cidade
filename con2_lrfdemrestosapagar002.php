@@ -44,7 +44,7 @@ $clorcparamrelnota = new cl_orcparamrelnota;
 
 $oGet            = db_utils::postMemory($_GET);
 // instituições selecionadas na tela
-$aListaSelInstit = explode("-",$oGet->db_selinstit);
+$aListaSelInstit = explode("-",(string) $oGet->db_selinstit);
 
 $iAnoUsu	       = db_getsession('DB_anousu');
 $db_selinstit    = $oGet->db_selinstit;
@@ -64,7 +64,7 @@ if (!isset($lGeraPDF)){
 
 
 // Todas instituições
-$aListaInstit     = array();
+$aListaInstit     = [];
 $rsListaInstit    = $cldb_config->sql_record($cldb_config->sql_query_file(null,"codigo"));
 $iNroLinhasInstit = pg_num_rows($rsListaInstit);
 
@@ -543,14 +543,14 @@ $iNroLinhaNota = $clorcparamrelnota->numrows;
 
 if ($iNroLinhaNota > 0) {
   $oNota = db_utils::fieldsMemory($rsNotas,0);
-  notasExplicativas(&$pdf,58,$oNota->o42_periodo,190);
+  notasExplicativas($pdf,58,$oNota->o42_periodo,190);
 } else {
-  notasExplicativas(&$pdf,58,'1B',190);	 
+  notasExplicativas($pdf,58,'1B',190);	 
 }
 
 $pdf->Ln($iAlt*2);
 
-assinaturas(&$pdf,&$classinatura,'GF');
+assinaturas($pdf,$classinatura,'GF');
 
 $pdf->Output();
 

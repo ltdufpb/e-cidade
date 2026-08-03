@@ -100,27 +100,27 @@
 
 		for($ii = $comeco; $ii < $this->linhasbens ; $ii++) {
 
-		  $iResBem            = trim(pg_result($this->recordbens,$ii,$this->bem));
-		  $sPlacaIdent        = trim(pg_result($this->recordbens,$ii,$this->t52_ident));
+		  $iResBem            = trim(pg_fetch_result($this->recordbens,$ii,$this->bem));
+		  $sPlacaIdent        = trim(pg_fetch_result($this->recordbens,$ii,$this->t52_ident));
 		  
-		  $sResDescricao      = trim(pg_result($this->recordbens,$ii,$this->descr_bem));
+		  $sResDescricao      = trim(pg_fetch_result($this->recordbens,$ii,$this->descr_bem));
 		  if (strlen($sResDescricao) > 20) {
-		  	$sResDescricao = substr(trim(pg_result($this->recordbens,$ii,$this->descr_bem)),0,20)."...";
+		  	$sResDescricao = substr(trim(pg_fetch_result($this->recordbens,$ii,$this->descr_bem)),0,20)."...";
 		  }
 		  		  
-		  $iResClassificacao  = pg_result($this->recordbens,$ii,$this->class_bem);
+		  $iResClassificacao  = pg_fetch_result($this->recordbens,$ii,$this->class_bem);
 		  
-		  $sResDivisaoOrigem  = trim(pg_result($this->recordbens,$ii,$this->divorigem));
+		  $sResDivisaoOrigem  = trim(pg_fetch_result($this->recordbens,$ii,$this->divorigem));
 		  if (strlen($sResDivisaoOrigem) > 24) {
-		    $sResDivisaoOrigem = substr(trim(pg_result($this->recordbens,$ii,$this->divorigem)),0,24)."...";
+		    $sResDivisaoOrigem = substr(trim(pg_fetch_result($this->recordbens,$ii,$this->divorigem)),0,24)."...";
 		  }
 		  
-		  $sResDivisaoDestino = trim(pg_result($this->recordbens,$ii,$this->divdestino));
+		  $sResDivisaoDestino = trim(pg_fetch_result($this->recordbens,$ii,$this->divdestino));
 		  if (strlen($sResDivisaoDestino) > 24) {
-		  	$sResDivisaoDestino = substr(trim(pg_result($this->recordbens,$ii,$this->divdestino)),0,24)."...";
+		  	$sResDivisaoDestino = substr(trim(pg_fetch_result($this->recordbens,$ii,$this->divdestino)),0,24)."...";
 		  }
 		  
-		  $sResCondicao = substr(trim(pg_result($this->recordbens,$ii,$this->situacao)),0,10);
+		  $sResCondicao = substr(trim(pg_fetch_result($this->recordbens,$ii,$this->situacao)),0,10);
 		  
       $this->objpdf->SetX($xcol);
       $this->objpdf->cell(10, 3, $iResBem           , 0, 0, "R", 0);
@@ -177,7 +177,7 @@
 
 		$this->objpdf->Setfont('Arial','',8);
 
-    $sObservacao = "OBSERVAÇÕES: " . trim($this->obstransf, "\n");
+    $sObservacao = "OBSERVAÇÕES: " . trim((string) $this->obstransf, "\n");
     $sObservacao = substr($sObservacao, 0, 400);
     $iLinhasOcupadasObservacao = $this->objpdf->NbLines(200, $sObservacao);
 

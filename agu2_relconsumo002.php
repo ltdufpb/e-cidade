@@ -40,18 +40,18 @@ $oGet  = db_utils::postMemory($_GET);
 /**
  * chaves separadas por virgula. ex: '1, 2, 3'
  */
-$sZonaFiscal     = isset($oGet->zonafiscal)     ? $oGet->zonafiscal     : '';
-$sZonaEntrega    = isset($oGet->zonaentrega)    ? $oGet->zonaentrega    : '';
-$sLogradouro     = isset($oGet->logradouro)     ? $oGet->logradouro     : '';
-$sBairro         = isset($oGet->bairro)         ? $oGet->bairro         : '';
+$sZonaFiscal     = $oGet->zonafiscal ?? '';
+$sZonaEntrega    = $oGet->zonaentrega ?? '';
+$sLogradouro     = $oGet->logradouro ?? '';
+$sBairro         = $oGet->bairro ?? '';
 
-$iConsumoInicial = isset($oGet->consumoinicial) ? $oGet->consumoinicial : '';
-$iConsumoFinal   = isset($oGet->consumofinal)   ? $oGet->consumofinal   : '';
+$iConsumoInicial = $oGet->consumoinicial ?? '';
+$iConsumoFinal   = $oGet->consumofinal ?? '';
 
-$dDataInicial    = isset($oGet->datainicial)    ? $oGet->datainicial    : '';
-$dDataFinal      = isset($oGet->datafinal)      ? $oGet->datafinal      : '';
+$dDataInicial    = $oGet->datainicial ?? '';
+$dDataFinal      = $oGet->datafinal ?? '';
 
-$sOrdenar        = isset($oGet->ordenar)        ? $oGet->ordenar        : '';
+$sOrdenar        = $oGet->ordenar ?? '';
 
 $sSql = "
 select distinct 
@@ -163,7 +163,7 @@ $troca = 1;
 $alt   = 4;
 $total = 0;
 
-for($i = 0; $i < pg_numrows($rSql); $i++) {
+for($i = 0; $i < pg_num_rows($rSql); $i++) {
   
   $oSql = db_utils::fieldsMemory($rSql, $i, true);
   

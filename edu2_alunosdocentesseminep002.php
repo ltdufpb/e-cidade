@@ -38,12 +38,10 @@ try {
     if (!isset($_GET['filtros'])) {
         throw new Exception('Não foi informado os filros para emissão do relatório.');
     }
-    $filtros = JSON::create()->parse(base64_decode($_GET['filtros']));
+    $filtros = JSON::create()->parse(base64_decode((string) $_GET['filtros']));
 
     $censo = new Censo($filtros->ano);
-    $escolas = array_map(function ($codigo) {
-        return EscolaRepository::getEscolaByCodigo($codigo);
-    }, $filtros->escolas);
+    $escolas = array_map(fn($codigo) => EscolaRepository::getEscolaByCodigo($codigo), $filtros->escolas);
 
     $dadosExportacao = new DadosExportacaoIdentificacao();
     $dadosExportacao->setCenso($censo);

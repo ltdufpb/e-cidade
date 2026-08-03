@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_grupoexames_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_grupoexames = new cl_sau_grupoexames;
 $clsau_grupoexames->rotulo->label("s130_i_codigo");
 $clsau_grupoexames->rotulo->label("s130_c_descricao");
@@ -98,9 +98,9 @@ $clsau_grupoexames->rotulo->label("s130_c_descricao");
         }else{
            $sql = $clsau_grupoexames->sql_query("",$campos,"s130_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s130_c_descricao)){
-          $repassa = array("chave_s130_i_codigo"=>$chave_s130_i_codigo,"chave_s130_c_descricao"=>$chave_s130_c_descricao);
+          $repassa = ["chave_s130_i_codigo"=>$chave_s130_i_codigo,"chave_s130_c_descricao"=>$chave_s130_c_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

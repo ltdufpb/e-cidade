@@ -54,14 +54,14 @@ switch($oParam->exec) {
 
   case 'processarDadosConvenio' :
   	
-  	$aDadosRubricas         = array();
+  	$aDadosRubricas         = [];
 		$clconvenio             = new cl_convenio;
 		$clrelac                = new cl_relac;
 		$clmovrel               = new cl_movrel;
 		$clrhpessoal            = new cl_rhpessoal;
-		$aRubricasCadastradas   = array();   
-		$aRubricas              = array();
-		$aErrosRhPessoalRecisao = array();
+		$aRubricasCadastradas   = [];   
+		$aRubricas              = [];
+		$aErrosRhPessoalRecisao = [];
 		$iInstituicao           = db_getsession("DB_instit");
 		
     $iAno            = $oParam->iAno;
@@ -169,7 +169,7 @@ switch($oParam->exec) {
 	      /**
 	       * Valida dados da Rubrica 1
 	       */
-	      if (trim($rub01) != "" && $rub01 > 0) {
+	      if (trim((string) $rub01) != "" && $rub01 > 0) {
 	        
 	        if ($iQuant1 > 0) {
 	          $r1 = true;
@@ -189,7 +189,7 @@ switch($oParam->exec) {
         /**
          * Valida dados da Rubrica 2
          */
-	      if (trim($rub02) != "" && $rub02 > 0) {
+	      if (trim((string) $rub02) != "" && $rub02 > 0) {
 	        
 	        if ($iQuant2 > 0) {
 	          $r2      = true;
@@ -208,7 +208,7 @@ switch($oParam->exec) {
         /**
          * Valida dados da Rubrica 3
          */
-	      if (trim($rub03) != "" && $rub03 > 0) {
+	      if (trim((string) $rub03) != "" && $rub03 > 0) {
 
 	        if ($iQuant3 > 0) {
 	          $r3 = true;

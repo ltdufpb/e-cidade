@@ -318,7 +318,7 @@ class Promocao {
   		throw new Exception("Todas Avalições para esta Promoções foram Cadastradas.");
   	}
   	$aAnoLimite    = explode("-", $this->getDataInicioPromocao());
-  	$aAnoAvaliacao = explode("-", $dtAvaliacao);
+  	$aAnoAvaliacao = explode("-", (string) $dtAvaliacao);
   	$iAnoLimite    = $aAnoLimite[0] + $this->getPeriodoPromocao();
   	$iAnoAvaliacao = $aAnoAvaliacao[0];
   	
@@ -384,7 +384,7 @@ class Promocao {
       throw new Exception ($oDaoRHAvaliacao->erro_msg);
     }
     
-    $aAvaliacoes = array();
+    $aAvaliacoes = [];
     
     if ( $oDaoRHAvaliacao->numrows > 0) {
       

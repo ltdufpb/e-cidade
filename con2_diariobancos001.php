@@ -35,7 +35,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -138,7 +138,7 @@ function js_emite(){
     <tr>
       <td colspan="2" align = "center"><strong>Tipo : </strong>
         <?php 
-       	  $result1=array("A"=>"Analítico","S"=>"Sintético");
+       	  $result1=["A"=>"Analítico","S"=>"Sintético"];
 	  db_select("tipo",$result1,true,2);
 	?>
       </td>
@@ -147,7 +147,7 @@ function js_emite(){
     <tr>
       <td colspan="2" align = "center"><strong>Somente contas com Movimento : </strong>
         <?php 
-       	  $result2=array("S"=>"SIM","N"=>"NÃO");
+       	  $result2=["S"=>"SIM","N"=>"NÃO"];
 	  db_select("movimento",$result2,true,2);
 	?>
       </td>
@@ -156,7 +156,7 @@ function js_emite(){
     <tr>
       <td colspan="2" align = "center"><strong>Somente contas com diferença: </strong>
         <?php 
-       	  $result2=array("N"=>"NAO","S"=>"SIM");
+       	  $result2=["N"=>"NAO","S"=>"SIM"];
 	  db_select("diferenca",$result2,true,2);
 	?>
       </td>
@@ -165,7 +165,7 @@ function js_emite(){
     <tr>
       <td colspan="2" align = "center"><strong>Considerar lançamentos genericos (3000): </strong>
         <?php 
-       	  $result2=array("S"=>"SIM","N"=>"NÃO");
+       	  $result2=["S"=>"SIM","N"=>"NÃO"];
 	  db_select("considerarlancgenericos",$result2,true,2);
 	?>
       </td>

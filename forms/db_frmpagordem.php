@@ -44,7 +44,7 @@ $clrotulo->label("z01_nome");
 $db_opcao_desab=1;
 $desabilita =  false;
 if(isset($e50_numemp)){
-  
+
    //rotina que traz os dados do empenho
      $result = $clempempenho->sql_record($clempempenho->sql_query_file($e50_numemp)); 
      db_fieldsmemory($result,0);
@@ -62,7 +62,7 @@ if(isset($e50_numemp)){
 	   $tot_valor    = '0.00';
        }  
    //fim  
-   
+
    //pega valores se tiver ordem lanaçada
         $tem_elemento = false;
        if(isset($e50_codord)){
@@ -81,12 +81,12 @@ if(isset($e50_numemp)){
 	     $total_vlranu = '0.00';
        } 
   //fim
-  
+
      //tot_xxx total de todas as ordens
      //total_xx total de só uma orde
 
 
-     
+
     //rotina que irá pegar os valores das notas liquidadas... 
        if($db_opcao==3){
          $sql = $clempnotaele->sql_query_ordem(null,null,"sum(e70_valor) as tot_valor_nota, sum(e70_vlrliq) as tot_vlrliq_nota, sum(e70_vlranu) as tot_vlranu_nota","","e60_numemp=$e50_numemp and e71_codord =$e50_codord  and e70_vlrliq <> 0 and ((e71_codnota is not  null  and e71_anulado='f') ) group by e71_codord "); 
@@ -108,7 +108,7 @@ if(isset($e50_numemp)){
 
 		//valores sem notas...
 		$vlrdis = ($e60_vlrliq-$e60_vlrpag) -   ($tot_valor - $tot_vlranu - $tot_vlrpag) - ($tot_valor_nota-$tot_vlranu_nota)  ;
-		
+
 	  //valores sem notas...
           $vlrdis = ($e60_vlrliq-$e60_vlrpag) -   ($tot_valor - $tot_vlranu - $tot_vlrpag)  ;
           $vlrdis = ($e60_vlrliq-$e60_vlrpag) -   ($tot_valor - $tot_vlranu - $tot_vlrpag)  ;
@@ -116,8 +116,8 @@ if(isset($e50_numemp)){
 
 	  //valores com notas..
           $saldo_nota =  number_format(($tot_valor_nota-$tot_vlranu_nota),"2",".","");
-          
-	  
+
+
 	  if($saldo_nota>$vlrdis){
 	    $saldo = '0.00';
 	  }else{
@@ -126,29 +126,29 @@ if(isset($e50_numemp)){
 	  $vlrpag = '0.00';
 
 
-	  
-	  
+
+
 
 	}elseif($db_opcao==3){
 
 	  $vlrdis = ($total_valor-$total_vlrpag-$total_vlranu);
-           
+
 	  $saldo_nota = ($tot_valor_nota-$tot_vlranu_nota) ;
 	  $saldo = ($total_valor-$total_vlranu) - $saldo_nota;
 	  $vlrpag = '0.00';
 	}else{  
 
-              
-	  
-	  
+
+
+
 	  //valores sem notas...
           $vlrdis = ($e60_vlrliq-$e60_vlrpag) -   ($tot_valor - $tot_vlranu - $tot_vlrpag)  ;
 
 
 	  //valores com notas..
           $saldo_nota =  number_format(($tot_valor_nota-$tot_vlranu_nota),"2",".","");
-          
-	  
+
+
 	  if($saldo_nota>$vlrdis){
 	    $saldo = '0.00';
 	  }else{
@@ -162,10 +162,10 @@ if(isset($e50_numemp)){
 
 	$vlrdis = number_format($vlrdis,"2",".","");
     //fim
- 
-     
+
+
     //rotina que verifica se o valor disponivel eh maior que zero
-    
+
       if(($vlrdis==0||$vlrdis=='')&& $db_opcao!=2 && !isset($incluirimp)){
 	$db_botao=false;
 	$desabilita =  true;
@@ -831,7 +831,7 @@ function js_preenchepesquisa(chave){
      db_iframe_pagordem.hide();
   <?php 
      }
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&z01_numcgm2='+document.form1.z01_numcgm2.value";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&z01_numcgm2='+document.form1.z01_numcgm2.value";
   ?>
 }
 function js_imprimir(){

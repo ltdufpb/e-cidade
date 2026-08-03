@@ -91,11 +91,11 @@
       
   try {
     $aDeducoesCapitalIntra  = $oPPA->getQuadroEstimativas(98);
-  } catch (Exception $eException ) {
+  } catch (Exception ) {
     $lImprimeDeducoesCapitalIntra  = false;  
   }      
 
-  $aAno = array();
+  $aAno = [];
   
   for ( $iInd = $oGet->anoini; $iInd <= $oGet->anofin; $iInd++ ) {
   	$aAno[] = $iInd;
@@ -142,17 +142,17 @@
 
   if ( $lImprimeReceitaCorrente ) {
     foreach ( $aReceitasCorrente as $iInd => $oDados ){
-      if ( substr($oDados->iEstrutural,3,14) == "0000000000000" ) {
+      if ( substr((string) $oDados->iEstrutural,3,14) == "0000000000000" ) {
     	
-        if ($oDados->iEstrutural{2} == 0) {
-      	  $sDescrReceita = " ".urldecode($oDados->sDescricao);
+        if ($oDados->iEstrutural[2] == 0) {
+      	  $sDescrReceita = " ".urldecode((string) $oDados->sDescricao);
       	  
   		  $nTotalAno1 += $oDados->aEstimativas[$iAno1];
   		  $nTotalAno2 += $oDados->aEstimativas[$iAno2];
   		  $nTotalAno3 += $oDados->aEstimativas[$iAno3];
   		  $nTotalAno4 += $oDados->aEstimativas[$iAno4];      	  
         } else {
-      	  $sDescrReceita = "   ".ucwords(strtolower(urldecode($oDados->sDescricao)));	
+      	  $sDescrReceita = "   ".ucwords(strtolower(urldecode((string) $oDados->sDescricao)));	
         }
       
         $pdf->cell(70,$alt,$sDescrReceita								,"TBR",0,"L",0);
@@ -167,10 +167,10 @@
   
   if ( $lImprimeReceitaCapital ) {
     foreach ( $aReceitasCapital as $iInd => $oDados ){
-      if ( substr($oDados->iEstrutural,3,14) == "0000000000000" ) {
+      if ( substr((string) $oDados->iEstrutural,3,14) == "0000000000000" ) {
     	
-        if ($oDados->iEstrutural{2} == 0) {
-      	  $sDescrReceita = " ".urldecode($oDados->sDescricao);
+        if ($oDados->iEstrutural[2] == 0) {
+      	  $sDescrReceita = " ".urldecode((string) $oDados->sDescricao);
       	  
   		  $nTotalAno1 += $oDados->aEstimativas[$iAno1];
   		  $nTotalAno2 += $oDados->aEstimativas[$iAno2];
@@ -178,7 +178,7 @@
   		  $nTotalAno4 += $oDados->aEstimativas[$iAno4];      	  
       	  
         } else {
-          $sDescrReceita = "   ".ucwords(strtolower(urldecode($oDados->sDescricao)));	
+          $sDescrReceita = "   ".ucwords(strtolower(urldecode((string) $oDados->sDescricao)));	
         }
       
         $pdf->cell(70,$alt,$sDescrReceita								 ,"TBR",0,"L",0);
@@ -195,9 +195,9 @@
   
   if ( $lImprimeReceitaCorrenteIntra ) {
     foreach ( $aReceitasCorrenteIntra as $iInd => $oDados ){
-      if ( substr($oDados->iEstrutural,2,14) == "00000000000000" ) {
+      if ( substr((string) $oDados->iEstrutural,2,14) == "00000000000000" ) {
       	
-        $pdf->cell(70,$alt," ".urldecode($oDados->sDescricao)		     ,"TBR",0,"L",0);
+        $pdf->cell(70,$alt," ".urldecode((string) $oDados->sDescricao)		     ,"TBR",0,"L",0);
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno1],"f"),"TBR",0,"R",0);  
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno2],"f"),"TBR",0,"R",0);
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno3],"f"),"TBR",0,"R",0);
@@ -214,9 +214,9 @@
   
   if ( $lImprimeReceitaCapitalIntra ) {
     foreach ( $aReceitasCapitalIntra as $iInd => $oDados ){
-      if ( substr($oDados->iEstrutural,2,14) == "0000000000000" ) {
+      if ( substr((string) $oDados->iEstrutural,2,14) == "0000000000000" ) {
       	
-        $pdf->cell(70,$alt," ".urldecode($oDados->sDescricao)            ,"TBR",0,"L",0);
+        $pdf->cell(70,$alt," ".urldecode((string) $oDados->sDescricao)            ,"TBR",0,"L",0);
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno1],"f"),"TBR",0,"R",0);  
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno2],"f"),"TBR",0,"R",0);
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno3],"f"),"TBR",0,"R",0);
@@ -236,10 +236,10 @@
 
   if ( $lImprimeDeducoesCorrente ) {
     foreach ( $aDeducoesCorrente as $iInd => $oDados ){
-      if ( substr($oDados->iEstrutural,3,14) == "0000000000000" ) {
+      if ( substr((string) $oDados->iEstrutural,3,14) == "0000000000000" ) {
     	
-        if ($oDados->iEstrutural{2} == 0) {
-      	  $sDescrReceita = " ".urldecode($oDados->sDescricao);
+        if ($oDados->iEstrutural[2] == 0) {
+      	  $sDescrReceita = " ".urldecode((string) $oDados->sDescricao);
       	  
   		  $nTotalAno1 += $oDados->aEstimativas[$iAno1];
   		  $nTotalAno2 += $oDados->aEstimativas[$iAno2];
@@ -247,7 +247,7 @@
   		  $nTotalAno4 += $oDados->aEstimativas[$iAno4];      	  
               	  
         } else {
-       	  $sDescrReceita = "   ".ucwords(strtolower(urldecode($oDados->sDescricao)));	
+       	  $sDescrReceita = "   ".ucwords(strtolower(urldecode((string) $oDados->sDescricao)));	
         }
 
         $pdf->cell(70,$alt,$sDescrReceita								 ,"TBR",0,"L",0);
@@ -262,10 +262,10 @@
   
   if ( $lImprimeDeducoesCapital ) {
     foreach ( $aDeducoesCapital as $iInd => $oDados ){
-      if ( substr($oDados->iEstrutural,3,14) == "0000000000000" ) {
+      if ( substr((string) $oDados->iEstrutural,3,14) == "0000000000000" ) {
     	
-        if ($oDados->iEstrutural{2} == 0) {
-      	  $sDescrReceita = " ".urldecode($oDados->sDescricao);
+        if ($oDados->iEstrutural[2] == 0) {
+      	  $sDescrReceita = " ".urldecode((string) $oDados->sDescricao);
       	  
   		  $nTotalAno1 += $oDados->aEstimativas[$iAno1];
   		  $nTotalAno2 += $oDados->aEstimativas[$iAno2];
@@ -273,7 +273,7 @@
   		  $nTotalAno4 += $oDados->aEstimativas[$iAno4];
   		    		        	  
         } else {
-      	  $sDescrReceita = "   ".ucwords(strtolower(urldecode($oDados->sDescricao)));	
+      	  $sDescrReceita = "   ".ucwords(strtolower(urldecode((string) $oDados->sDescricao)));	
         }
       
         $pdf->cell(70,$alt,$sDescrReceita								 ,"TBR",0,"L",0);
@@ -290,8 +290,8 @@
   
   if ( $lImprimeDeducoesCorrenteIntra ) {  
     foreach ( $aDeducoesCorrenteIntra as $iInd => $oDados ){
-      if ( substr($oDados->iEstrutural,2,14) == "0000000000000" ) {
-        $pdf->cell(70,$alt," ".urldecode($oDados->sDescricao)            ,"TBR",0,"L",0);
+      if ( substr((string) $oDados->iEstrutural,2,14) == "0000000000000" ) {
+        $pdf->cell(70,$alt," ".urldecode((string) $oDados->sDescricao)            ,"TBR",0,"L",0);
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno1],"f"),"TBR",0,"R",0);  
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno2],"f"),"TBR",0,"R",0);
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno3],"f"),"TBR",0,"R",0);
@@ -308,8 +308,8 @@
   
   if ( $lImprimeDeducoesCapitalIntra ) {
     foreach ( $aDeducoesCapitalIntra as $iInd => $oDados ){
-      if ( substr($oDados->iEstrutural,2,14) == "0000000000000" ) {
-        $pdf->cell(70,$alt," ".urldecode($oDados->sDescricao)            ,"TBR",0,"L",0);
+      if ( substr((string) $oDados->iEstrutural,2,14) == "0000000000000" ) {
+        $pdf->cell(70,$alt," ".urldecode((string) $oDados->sDescricao)            ,"TBR",0,"L",0);
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno1],"f"),"TBR",0,"R",0);  
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno2],"f"),"TBR",0,"R",0);
         $pdf->cell(30,$alt,db_formatar($oDados->aEstimativas[$iAno3],"f"),"TBR",0,"R",0);

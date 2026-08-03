@@ -3,26 +3,26 @@
 //CLASSE DA ENTIDADE rhconsignadomovimentoservidor
 class cl_rhconsignadomovimentoservidor { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh152_sequencial = 0; 
-   var $rh152_consignadomovimento = 0; 
-   var $rh152_regist = null; 
-   var $rh152_nome = null; 
-   var $rh152_consignadomotivo = 0; 
+   public $rh152_sequencial = 0; 
+   public $rh152_consignadomovimento = 0; 
+   public $rh152_regist = null; 
+   public $rh152_nome = null; 
+   public $rh152_consignadomotivo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh152_sequencial = int4 =  
                  rh152_consignadomovimento = int4 = Movimento 
                  rh152_regist = varchar(10) = Matrícula 
@@ -30,10 +30,10 @@ class cl_rhconsignadomovimentoservidor {
                  rh152_consignadomotivo = int4 = Motivo 
                  ";
    //funcao construtor da classe 
-   function cl_rhconsignadomovimentoservidor() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhconsignadomovimentoservidor"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -84,10 +84,10 @@ class cl_rhconsignadomovimentoservidor {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh152_sequencial = pg_result($result,0,0); 
+       $this->rh152_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhconsignadomovimentoservidor_rh152_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh152_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh152_sequencial)){
          $this->erro_sql = " Campo rh152_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -123,7 +123,7 @@ class cl_rhconsignadomovimentoservidor {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "rhconsignadomovimentoservidor ($this->rh152_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "rhconsignadomovimentoservidor já Cadastrado";
@@ -152,14 +152,14 @@ class cl_rhconsignadomovimentoservidor {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21012,'$this->rh152_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3786,21012,'','".AddSlashes(pg_result($resaco,0,'rh152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3786,21013,'','".AddSlashes(pg_result($resaco,0,'rh152_consignadomovimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3786,21014,'','".AddSlashes(pg_result($resaco,0,'rh152_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3786,21015,'','".AddSlashes(pg_result($resaco,0,'rh152_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3786,21016,'','".AddSlashes(pg_result($resaco,0,'rh152_consignadomotivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3786,21012,'','".AddSlashes(pg_fetch_result($resaco,0,'rh152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3786,21013,'','".AddSlashes(pg_fetch_result($resaco,0,'rh152_consignadomovimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3786,21014,'','".AddSlashes(pg_fetch_result($resaco,0,'rh152_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3786,21015,'','".AddSlashes(pg_fetch_result($resaco,0,'rh152_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3786,21016,'','".AddSlashes(pg_fetch_result($resaco,0,'rh152_consignadomotivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -169,10 +169,10 @@ class cl_rhconsignadomovimentoservidor {
       $this->atualizacampos();
      $sql = " update rhconsignadomovimentoservidor set ";
      $virgula = "";
-     if(trim($this->rh152_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh152_sequencial"])){ 
+     if(trim((string) $this->rh152_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh152_sequencial"])){ 
        $sql  .= $virgula." rh152_sequencial = $this->rh152_sequencial ";
        $virgula = ",";
-       if(trim($this->rh152_sequencial) == null ){ 
+       if(trim((string) $this->rh152_sequencial) == null ){ 
          $this->erro_sql = " Campo  não informado.";
          $this->erro_campo = "rh152_sequencial";
          $this->erro_banco = "";
@@ -182,10 +182,10 @@ class cl_rhconsignadomovimentoservidor {
          return false;
        }
      }
-     if(trim($this->rh152_consignadomovimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh152_consignadomovimento"])){ 
+     if(trim((string) $this->rh152_consignadomovimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh152_consignadomovimento"])){ 
        $sql  .= $virgula." rh152_consignadomovimento = $this->rh152_consignadomovimento ";
        $virgula = ",";
-       if(trim($this->rh152_consignadomovimento) == null ){ 
+       if(trim((string) $this->rh152_consignadomovimento) == null ){ 
          $this->erro_sql = " Campo Movimento não informado.";
          $this->erro_campo = "rh152_consignadomovimento";
          $this->erro_banco = "";
@@ -195,16 +195,16 @@ class cl_rhconsignadomovimentoservidor {
          return false;
        }
      }
-     if(trim($this->rh152_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh152_regist"])){ 
+     if(trim((string) $this->rh152_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh152_regist"])){ 
        $sql  .= $virgula." rh152_regist = '$this->rh152_regist' ";
        $virgula = ",";
      }
-     if(trim($this->rh152_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh152_nome"])){ 
+     if(trim((string) $this->rh152_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh152_nome"])){ 
        $sql  .= $virgula." rh152_nome = '$this->rh152_nome' ";
        $virgula = ",";
      }
-     if(trim($this->rh152_consignadomotivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh152_consignadomotivo"])){ 
-        if(trim($this->rh152_consignadomotivo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh152_consignadomotivo"])){ 
+     if(trim((string) $this->rh152_consignadomotivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh152_consignadomotivo"])){ 
+        if(trim((string) $this->rh152_consignadomotivo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh152_consignadomotivo"])){ 
            $this->rh152_consignadomotivo = "0" ; 
         } 
        $sql  .= $virgula." rh152_consignadomotivo = $this->rh152_consignadomotivo ";
@@ -224,19 +224,19 @@ class cl_rhconsignadomovimentoservidor {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21012,'$this->rh152_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh152_sequencial"]) || $this->rh152_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3786,21012,'".AddSlashes(pg_result($resaco,$conresaco,'rh152_sequencial'))."','$this->rh152_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3786,21012,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh152_sequencial'))."','$this->rh152_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh152_consignadomovimento"]) || $this->rh152_consignadomovimento != "")
-             $resac = db_query("insert into db_acount values($acount,3786,21013,'".AddSlashes(pg_result($resaco,$conresaco,'rh152_consignadomovimento'))."','$this->rh152_consignadomovimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3786,21013,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh152_consignadomovimento'))."','$this->rh152_consignadomovimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh152_regist"]) || $this->rh152_regist != "")
-             $resac = db_query("insert into db_acount values($acount,3786,21014,'".AddSlashes(pg_result($resaco,$conresaco,'rh152_regist'))."','$this->rh152_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3786,21014,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh152_regist'))."','$this->rh152_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh152_nome"]) || $this->rh152_nome != "")
-             $resac = db_query("insert into db_acount values($acount,3786,21015,'".AddSlashes(pg_result($resaco,$conresaco,'rh152_nome'))."','$this->rh152_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3786,21015,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh152_nome'))."','$this->rh152_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh152_consignadomotivo"]) || $this->rh152_consignadomotivo != "")
-             $resac = db_query("insert into db_acount values($acount,3786,21016,'".AddSlashes(pg_result($resaco,$conresaco,'rh152_consignadomotivo'))."','$this->rh152_consignadomotivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3786,21016,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh152_consignadomotivo'))."','$this->rh152_consignadomotivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -290,14 +290,14 @@ class cl_rhconsignadomovimentoservidor {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21012,'$rh152_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3786,21012,'','".AddSlashes(pg_result($resaco,$iresaco,'rh152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3786,21013,'','".AddSlashes(pg_result($resaco,$iresaco,'rh152_consignadomovimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3786,21014,'','".AddSlashes(pg_result($resaco,$iresaco,'rh152_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3786,21015,'','".AddSlashes(pg_result($resaco,$iresaco,'rh152_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3786,21016,'','".AddSlashes(pg_result($resaco,$iresaco,'rh152_consignadomotivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3786,21012,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3786,21013,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh152_consignadomovimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3786,21014,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh152_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3786,21015,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh152_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3786,21016,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh152_consignadomotivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

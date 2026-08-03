@@ -216,6 +216,7 @@ class LancamentoAuxiliarEmpenhoPassivo extends LancamentoAuxiliarBase implements
    *  Retorna o código do Favorecido
    *  @return integer
    **/
+  #[\Override]
   public function getFavorecido() {
     return $this->iCodigoFavorecido;
   }
@@ -224,6 +225,7 @@ class LancamentoAuxiliarEmpenhoPassivo extends LancamentoAuxiliarBase implements
    *  Seta o código do Favorecido
    *  @param integer
    **/
+  #[\Override]
   public function setFavorecido($iCodigoFavorecido) {
     $this->iCodigoFavorecido = $iCodigoFavorecido;
   }
@@ -232,6 +234,7 @@ class LancamentoAuxiliarEmpenhoPassivo extends LancamentoAuxiliarBase implements
    *  Retorna o código do Elemento
    *  @return integer
    **/
+  #[\Override]
   public function getCodigoElemento() {
     return $this->iCodigoFavorecido;  
   }
@@ -240,6 +243,7 @@ class LancamentoAuxiliarEmpenhoPassivo extends LancamentoAuxiliarBase implements
    *  Seta o código do Elemento
    *  @param integer
    **/
+  #[\Override]
   public function setCodigoElemento($iCodigoElemento) {
     $this->iCodigoElemento = $iCodigoElemento;
   }
@@ -249,6 +253,7 @@ class LancamentoAuxiliarEmpenhoPassivo extends LancamentoAuxiliarBase implements
    *  Retorna o Número do Empenho
    *  @return integer
    **/
+  #[\Override]
   public function getNumeroEmpenho() {
     return $this->iNumeroEmpenho;  
   }
@@ -257,6 +262,7 @@ class LancamentoAuxiliarEmpenhoPassivo extends LancamentoAuxiliarBase implements
    *  Seta o Número do Empenho
    *  @param integer
    **/
+  #[\Override]
   public function setNumeroEmpenho($iNumeroEmpenho) {
     $this->iNumeroEmpenho = $iNumeroEmpenho;
   }
@@ -265,6 +271,7 @@ class LancamentoAuxiliarEmpenhoPassivo extends LancamentoAuxiliarBase implements
    *  Retorna o código do Dotação
    *  @return integer
    **/
+  #[\Override]
   public function getCodigoDotacao() {
     return $this->iCodigoDotacao;
   }
@@ -273,6 +280,7 @@ class LancamentoAuxiliarEmpenhoPassivo extends LancamentoAuxiliarBase implements
    *  Seta o código do Dotação
    *  @param integer
    **/
+  #[\Override]
   public function setCodigoDotacao($iCodigoDotacao) {
     $this->iCodigoDotacao = $iCodigoDotacao;
   }
@@ -368,6 +376,7 @@ class LancamentoAuxiliarEmpenhoPassivo extends LancamentoAuxiliarBase implements
    * Retorna a observação do histórico da operação
    * @return string
    */
+  #[\Override]
   public function getObservacaoHistorico() {
     return $this->sObservacaoHistorico;
   }
@@ -377,6 +386,7 @@ class LancamentoAuxiliarEmpenhoPassivo extends LancamentoAuxiliarBase implements
    * Seta a observação do histórico da operação
    * @param string
    */
+  #[\Override]
   public function setObservacaoHistorico($sObservacaoHistorico) {
     $this->sObservacaoHistorico = $sObservacaoHistorico;
   }

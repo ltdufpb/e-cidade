@@ -53,7 +53,7 @@ class TefMapper
 
         $aAuxiliar = array_flip($colunas);
 
-        $this->fromTo = array();
+        $this->fromTo = [];
 
         foreach ($data as $indice => $dado) {
             if (in_array($dado, $colunas)) {

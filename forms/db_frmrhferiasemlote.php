@@ -58,8 +58,8 @@
 				  </td>
 				  <td colspan="3">
 				    <?php 
-				      $aTiposApuracao = array('N' => "Período Aquisitivo Normal",
-				                              'E' => "Período Específico");
+				      $aTiposApuracao = ['N' => "Período Aquisitivo Normal",
+				                              'E' => "Período Específico"];
 				      db_select('r30_tipoapuracaomedia', $aTiposApuracao, true, 1, "style='width: 385px;' onchange='js_alteraApuracaoMedia();' ");
 				    ?>
 				  </td>
@@ -100,8 +100,8 @@
 				  </td>
 				  <td>
 				    <?php 
-				      $aOpcoesFeriasProcessadas = array('2' => 'NÃO',
-				                                        '1' => 'SIM');
+				      $aOpcoesFeriasProcessadas = ['2' => 'NÃO',
+				                                        '1' => 'SIM'];
 				      db_select("filtraferiasprocessadas", $aOpcoesFeriasProcessadas, true, 1, "style='width: 141px;'");
 				    ?>
 				  </td>
@@ -110,9 +110,9 @@
 				  </td>
 				  <td>
 				    <?php 
-				      $aOpcoesPeriodoAquisito = array('3' => 'Todos',
+				      $aOpcoesPeriodoAquisito = ['3' => 'Todos',
 				                                      '1' => 'Vencidos até',
-				                                      '2' => 'Não vencidos');
+				                                      '2' => 'Não vencidos'];
 				      db_select('periodoaquisitivo', $aOpcoesPeriodoAquisito, 
 				                true, 1, " onchange='js_alteraPeriodosAquisitivos();' ");
 				    ?>
@@ -134,8 +134,8 @@
 				  </td>
 				  <td colspan="3">
 				    <?php 
-				      $aOpcoesTipoProcessamento = array('1' => 'Com confirmação',
-				                                        '2' => 'Sem confirmação');
+				      $aOpcoesTipoProcessamento = ['1' => 'Com confirmação',
+				                                        '2' => 'Sem confirmação'];
 				      db_select('tipoprocessamento', $aOpcoesTipoProcessamento, true, 1);
 				    ?>
 				  </td>
@@ -187,8 +187,8 @@
 					</td>
 					<td>
 						<?php 
-						  $aOpcoesTipoPonto = array('S' => 'Salário',
-						                            'C' => 'Complementar');
+						  $aOpcoesTipoPonto = ['S' => 'Salário',
+						                            'C' => 'Complementar'];
 						  db_select('rh110_tipoponto', $aOpcoesTipoPonto, true, $db_opcao, "style='width: 125px;'");
 						?>
 					</td>
@@ -199,7 +199,7 @@
 					</td>
 					<td>
 					  <?php
-              $aOpcoesPagaTerco = array('false' => 'NÃO', 'true' => 'SIM');
+              $aOpcoesPagaTerco = ['false' => 'NÃO', 'true' => 'SIM'];
               db_select('rh110_pagaterco', $aOpcoesPagaTerco, true, $db_opcao, "style='width: 125px;'");
             ?>
 					</td>

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_meicgmvalida_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmeicgmvalida = new cl_meicgmvalida;
 $clmeicgmvalida->rotulo->label("q117_sequencial");
 $clmeicgmvalida->rotulo->label("q117_meicgm");
@@ -98,9 +98,9 @@ $clmeicgmvalida->rotulo->label("q117_meicgm");
         }else{
            $sql = $clmeicgmvalida->sql_query("",$campos,"q117_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q117_meicgm)){
-          $repassa = array("chave_q117_sequencial"=>$chave_q117_sequencial,"chave_q117_meicgm"=>$chave_q117_meicgm);
+          $repassa = ["chave_q117_sequencial"=>$chave_q117_sequencial,"chave_q117_meicgm"=>$chave_q117_meicgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

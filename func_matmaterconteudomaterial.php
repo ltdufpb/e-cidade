@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_matmaterconteudomaterial_classe.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $oDaoConteudoMaterial = new cl_matmaterconteudomaterial;
 $oDaoConteudoMaterial->rotulo->label("m08_codigo");
 
@@ -84,7 +84,7 @@ $oRotulo->label("m60_descr");
         $sCampos .= " m08_quantidade ";
 
 
-        $aWhere = array();
+        $aWhere = [];
         if (isset($chave_m08_codigo) && (trim($chave_m08_codigo)!="") ) {
           $aWhere[] = " m08_codigo = {$chave_m08_codigo} ";
         } else if (isset($chave_m60_descr) && (trim($chave_m60_descr)!="") ) {
@@ -93,9 +93,9 @@ $oRotulo->label("m60_descr");
         $sWhere  = implode(" and ", $aWhere );
         $sql     = $oDaoConteudoMaterial->sql_query("", $sCampos, "m08_codigo", $sWhere);
 
-        $repassa = array();
+        $repassa = [];
         if ( isset($chave_m08_codigo) ) {
-          $repassa = array("chave_m08_codigo"=>$chave_m08_codigo,"chave_m60_descr"=>$chave_m60_descr);
+          $repassa = ["chave_m08_codigo"=>$chave_m08_codigo,"chave_m60_descr"=>$chave_m60_descr];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

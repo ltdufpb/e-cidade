@@ -51,7 +51,7 @@ switch ($oParam->exec) {
     case "getNotasPendentes":
         $dtImplantacaoDepreciacao = BemDepreciacao::retornaDataImplantacaoDepreciacao(db_getsession("DB_instit"));
 
-        $oRetorno->aNotasPendentes = array();
+        $oRetorno->aNotasPendentes = [];
         $sCamposBensPendentes = "distinct ";
         $sCamposBensPendentes .= "m52_codordem as codigonota,";
         $sCamposBensPendentes .= "e69_numemp as numeroempenho,";
@@ -120,7 +120,7 @@ switch ($oParam->exec) {
         break;
 
     case "getBensPorCodigoNota":
-        $oRetorno->aNotasPendentes = array();
+        $oRetorno->aNotasPendentes = [];
         $sCamposBensNotaPendentes = "distinct e69_codnota as codigonota,";
         $sCamposBensNotaPendentes .= "         e69_numemp as numeroempenho,";
         $sCamposBensNotaPendentes .= "         o56_elemento as desdobramento,";

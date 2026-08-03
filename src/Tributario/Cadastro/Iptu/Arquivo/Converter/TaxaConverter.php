@@ -14,17 +14,17 @@ final class TaxaConverter extends Converter
 
         $taxa = $taxas['iptu'];
 
-        $s .= str_pad($taxa->getDescricao(), 40);
-        $s .= str_pad($this->format->decimal($taxa->getQuantidade(), "f", " ", 10), "0", STR_PAD_LEFT);
-        $s .= str_pad($this->format->decimal($taxa->getValorTotal(), "f", " ", 18), 18, " ", STR_PAD_LEFT);
-        $s .= str_pad($this->format->decimal($taxa->getValorParcela(), 'f', " ", 18), 18, " ", STR_PAD_LEFT);
+        $s .= str_pad((string) $taxa->getDescricao(), 40);
+        $s .= str_pad((string) $this->format->decimal($taxa->getQuantidade(), "f", " ", 10), "0", STR_PAD_LEFT);
+        $s .= str_pad((string) $this->format->decimal($taxa->getValorTotal(), "f", " ", 18), 18, " ", STR_PAD_LEFT);
+        $s .= str_pad((string) $this->format->decimal($taxa->getValorParcela(), 'f', " ", 18), 18, " ", STR_PAD_LEFT);
 
         $taxa = $taxas['taxa'];
         
-        $s .= str_pad($taxa->getDescricao(), 40);
-        $s .= str_pad($this->format->decimal($taxa->getQuantidade(), "f", " ", 10), "0", STR_PAD_LEFT);
-        $s .= str_pad($this->format->decimal($taxa->getValorTotal(), "f", " ", 18), 18, " ", STR_PAD_LEFT);
-        $s .= str_pad($this->format->decimal($taxa->getValorParcela(), 'f', " ", 18), 18, " ", STR_PAD_LEFT);
+        $s .= str_pad((string) $taxa->getDescricao(), 40);
+        $s .= str_pad((string) $this->format->decimal($taxa->getQuantidade(), "f", " ", 10), "0", STR_PAD_LEFT);
+        $s .= str_pad((string) $this->format->decimal($taxa->getValorTotal(), "f", " ", 18), 18, " ", STR_PAD_LEFT);
+        $s .= str_pad((string) $this->format->decimal($taxa->getValorParcela(), 'f', " ", 18), 18, " ", STR_PAD_LEFT);
 
         return $s;
     }
@@ -32,9 +32,9 @@ final class TaxaConverter extends Converter
     public function get(Entity $taxa)
     {
         $s = str_pad($taxa->getDescricao(), 40);
-        $s .= str_pad($this->format->decimal($taxa->getQuantidade(), "f", " ", 10), "0", STR_PAD_LEFT);
-        $s .= str_pad($this->format->decimal($taxa->getValorTotal(), "f", " ", 18), 18, " ", STR_PAD_LEFT);
-        $s .= str_pad($this->format->decimal($taxa->getValorParcela(), 'f', " ", 18), 18, " ", STR_PAD_LEFT);
+        $s .= str_pad((string) $this->format->decimal($taxa->getQuantidade(), "f", " ", 10), "0", STR_PAD_LEFT);
+        $s .= str_pad((string) $this->format->decimal($taxa->getValorTotal(), "f", " ", 18), 18, " ", STR_PAD_LEFT);
+        $s .= str_pad((string) $this->format->decimal($taxa->getValorParcela(), 'f', " ", 18), 18, " ", STR_PAD_LEFT);
 
         return $s;
     }
@@ -57,10 +57,10 @@ final class TaxaConverter extends Converter
 
         $s = "";
 
-        $s .= str_pad($taxaDescricao['iptu']['codigo_arrecadacao'], 11, " ", STR_PAD_LEFT);
+        $s .= str_pad((string) $taxaDescricao['iptu']['codigo_arrecadacao'], 11, " ", STR_PAD_LEFT);
         $s .= $this->format->decimal(abs($taxaDescricao['iptu']['valor']), "f", " ", 11);
 
-        $s .= str_pad($taxaDescricao['taxa']['codigo_arrecadacao'], 11, " ", STR_PAD_LEFT);
+        $s .= str_pad((string) $taxaDescricao['taxa']['codigo_arrecadacao'], 11, " ", STR_PAD_LEFT);
         $s .= $this->format->decimal(abs($taxaDescricao['taxa']['valor']), "f", " ", 11);
         return $s;
     }

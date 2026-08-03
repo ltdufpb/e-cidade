@@ -63,7 +63,7 @@ include(modification("dbforms/db_funcoes.php"));
      $img_size = getimagesize($tmp_name);
      $scale = @min(105/$img_size[0], 120/$img_size[1]);
 
-     $imagem_gerada = "tmp/".rand(0,999999999).".jpg";
+     $imagem_gerada = "tmp/".random_int(0,999999999).".jpg";
     // Se a imagem não está no tmp/ ela é criada
      if (!file_exists($imagem_gerada)) {
      // Se a imagem é maior que o permitido(200x200), encolhe ela

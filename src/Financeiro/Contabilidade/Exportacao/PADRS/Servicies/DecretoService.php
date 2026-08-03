@@ -15,31 +15,15 @@ class DecretoService extends PadService
     protected $fileName = 'DECRETO.TXT';
 
     /**
-     * @var int
-     */
-    protected $ano;
-    /**
-     * @var string
-     */
-    protected $dataInicial;
-    /**
-     * @var string
-     */
-    protected $dataFinal;
-
-    /**
      * BalanceteReceitaAnteriorService constructor.
      * @param Instituicao[] $instituicoes
      * @param integer $ano para calculo
      * @param string $dataInicial
      * @param string $dataFinal
      */
-    public function __construct(array $instituicoes, $ano, $dataInicial, $dataFinal)
+    public function __construct(array $instituicoes, protected $ano, protected $dataInicial, protected $dataFinal)
     {
         $this->instituicoes = $instituicoes;
-        $this->ano = $ano;
-        $this->dataInicial = $dataInicial;
-        $this->dataFinal = $dataFinal;
     }
 
     protected function getDados()
@@ -106,13 +90,10 @@ class DecretoService extends PadService
 
     protected function getBuilder()
     {
-        switch ($this->ano) {
-            case 2020:
-                return new DecretoBuilder2020();
-            case 2021:
-                return new DecretoBuilder2021();
-            default:
-                throw new Exception("Layout {$this->fileName} não foi implementado para o ano {$this->ano}.");
-        }
+        return match ($this->ano) {
+            2020 => new DecretoBuilder2020(),
+            2021 => new DecretoBuilder2021(),
+            default => throw new Exception("Layout {$this->fileName} não foi implementado para o ano {$this->ano}."),
+        };
     }
 }

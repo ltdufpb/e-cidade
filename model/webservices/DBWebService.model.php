@@ -40,12 +40,12 @@ require_once(modification("model/configuracao/DBLog.model.php"));
  */
 class DBWebService {
 
-  static private $aInstancia = array();
+  static private $aInstancia = [];
 
   public function __construct() {
 
     if ( isset($_SESSION['DB_debugon'] ) ) {
-      set_error_handler(array($this, "handlerError"));
+      set_error_handler($this->handlerError(...));
     }
   }
   /**
@@ -57,20 +57,11 @@ class DBWebService {
 
     if ( !isset(DBWebService::$aInstancia[$sMetodo]) ) {
 
-      switch ( $sMetodo ) {
-
-        case "consultar":
-          DBWebService::$aInstancia[$sMetodo] = new ConsultaDados();
-        break;
-
-        case "processar":
-          DBWebService::$aInstancia[$sMetodo] = new Processamento();
-        break;
-
-        default:
-          throw new SoapFault( "e-Cidade", utf8_encode("Metodo '{$sMetodo}' nao existe.") );
-        break;
-      }
+      DBWebService::$aInstancia[$sMetodo] = match ($sMetodo) {
+          "consultar" => new ConsultaDados(),
+          "processar" => new Processamento(),
+          default => throw new SoapFault( "e-Cidade", mb_convert_encoding("Metodo '{$sMetodo}' nao existe.", 'UTF-8', 'ISO-8859-1') ),
+      };
     }
     return DBWebService::$aInstancia[$sMetodo];
   }
@@ -95,11 +86,11 @@ class DBWebService {
       Autenticacao::validaConexao($aArgumentos[0]);
 
       $oRequisicao = DBWebService::getInstance( $sMetodo );
-      $oResposta   = call_user_func_array( array( $oRequisicao, $sMetodo ), $aArgumentos );
+      $oResposta   = call_user_func_array( [ $oRequisicao, $sMetodo ], $aArgumentos );
        
       return $oResposta;
     } catch ( Exception $oExcecao ){
-      throw new SoapFault( "e-Cidade", utf8_encode($oExcecao->getMessage()) );
+      throw new SoapFault( "e-Cidade", mb_convert_encoding($oExcecao->getMessage(), 'UTF-8', 'ISO-8859-1') );
     }
   }
 
@@ -113,7 +104,7 @@ class DBWebService {
    */
   public function handlerError($errno, $errstr, $errfile, $errline) {
 
-    $aTiposErro = array(
+    $aTiposErro = [
       E_ERROR             => 'E_ERROR',
       E_WARNING           => 'E_WARNING',
       E_PARSE             => 'E_PARSE',
@@ -129,7 +120,7 @@ class DBWebService {
       E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
       E_DEPRECATED        => 'E_DEPRECATED',
       E_USER_DEPRECATED   => 'E_USER_DEPRECATED'
-    );
+    ];
 
      if ( $errno == E_DEPRECATED ) return;
      if ( $errno == E_NOTICE     ) return;

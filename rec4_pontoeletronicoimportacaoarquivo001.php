@@ -35,13 +35,13 @@ require_once modification("dbforms/db_funcoes.php");
 $clrotulo = new rotulocampo;
 $clrotulo->label("rh196_arquivo");
 
-$listaSobrescreverArquivo = array(0=>'Não',1=>'Sim');
+$listaSobrescreverArquivo = [0=>'Não',1=>'Sim'];
 ?>
 <html>
 <head>
   <meta http-equiv="Expires" CONTENT="0">
   <?php
-  db_app::load(array(
+  db_app::load([
     "strings.js",
     "scripts.js",
     "dates.js",
@@ -54,7 +54,7 @@ $listaSobrescreverArquivo = array(0=>'Não',1=>'Sim');
     "estilos.css",
     "grid.style.css",
     "classes/recursoshumanos/Efetividade/PeriodoEfetividade.js"
-  ));
+  ]);
   ?>
   <style type="text/css">
   </style>

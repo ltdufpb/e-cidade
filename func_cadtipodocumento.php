@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadtipodocumento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcadtipodocumento = new cl_cadtipodocumento;
 $clcadtipodocumento->rotulo->label("db123_sequencial");
 $clcadtipodocumento->rotulo->label("db123_tipo");
@@ -98,9 +98,9 @@ $clcadtipodocumento->rotulo->label("db123_tipo");
         }else{
            $sql = $clcadtipodocumento->sql_query("",$campos,"db123_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db123_tipo)){
-          $repassa = array("chave_db123_sequencial"=>$chave_db123_sequencial,"chave_db123_tipo"=>$chave_db123_tipo);
+          $repassa = ["chave_db123_sequencial"=>$chave_db123_sequencial,"chave_db123_tipo"=>$chave_db123_tipo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

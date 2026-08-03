@@ -38,7 +38,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 /*Require plugin SMSAgendamento - SMSAgendamentoConsulta - NÃO APAGAR*/
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sd02_i_codigo            = db_getsession("DB_coddepto");
 $oDaoagendamentos         = new cl_agendamentos_ext;

@@ -86,8 +86,8 @@ require_once(modification("libs/db_utils.php"));
         exit;
        }
        
-       $oPdf2->SetWidths(array(35, 75, 20, 70, 7, 20, 30, 25));
-       $oPdf2->SetAligns(array("L", "L", "L", "L", "L","L","L","L"));      
+       $oPdf2->SetWidths([35, 75, 20, 70, 7, 20, 30, 25]);
+       $oPdf2->SetAligns(["L", "L", "L", "L", "L","L","L","L"]);      
   
        for ($iContar = 0; $iContar < $iLinhasRecHumano; $iContar++) {
 
@@ -119,7 +119,7 @@ require_once(modification("libs/db_utils.php"));
 
          } //if que verifica a primeira pagina ou quebra de pagina
 
-         $aDados    = Array();
+         $aDados    = [];
          $aDados[0] = $oDados->codigodocenteescola;
          $aDados[1] = $oDados->nomedocente;
          $aDados[2] = $oDados->datadenascimento;
@@ -130,7 +130,7 @@ require_once(modification("libs/db_utils.php"));
          $aDados[7] = $oDados->idinep;
 
          for ($iConta = 0; $iConta < count($aDados); $iConta++) {//for que percorre o tamanho do array
-             
+
            //calcula o tamanho da linha em relação a coluna
 
            if ($iLines <  $oPdf2->NbLines($oPdf2->widths[$iConta], $aDados[$iConta])) {

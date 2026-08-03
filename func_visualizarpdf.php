@@ -32,7 +32,7 @@ if (empty($_GET['file'])) {
     throw new Exception('Arquivo não informado');
 }
 
-$file = urldecode($_GET['file']);
+$file = urldecode((string) $_GET['file']);
 $extension = explode('.', $file);
 $extension = end($extension);
 

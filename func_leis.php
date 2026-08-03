@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_leis_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clleis = new cl_leis;
 $clleis->rotulo->label("h08_codlei");
 $clleis->rotulo->label("h08_numero");
@@ -81,7 +81,7 @@ $clleis->rotulo->label("h08_tipo");
 		$chave_h08_tipo = $chave_tipo;
 		$db_opcao = 3;
               }
-              $arr_tipo = Array("T"=>"Todos", "A"=>"Avanço", "G"=>"Gratificação", "C"=>"Cargos", "O"=>"Outros");
+              $arr_tipo = ["T"=>"Todos", "A"=>"Avanço", "G"=>"Gratificação", "C"=>"Cargos", "O"=>"Outros"];
               db_select("chave_h08_tipo", $arr_tipo, true, $db_opcao);
               ?>
             </td>
@@ -120,9 +120,9 @@ $clleis->rotulo->label("h08_tipo");
            $sql = $clleis->sql_query_file(null,$campos,"h08_codlei",str_replace("and","",$dbwhere));
         }
 //	echo $sql;
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h08_numero)){
-          $repassa = array("chave_h08_codlei"=>$chave_h08_codlei,"chave_h08_numero"=>$chave_h08_numero);
+          $repassa = ["chave_h08_codlei"=>$chave_h08_codlei,"chave_h08_numero"=>$chave_h08_numero];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -43,7 +43,7 @@ $clrotulo->label("r70_estrut");
 $clrotulo->label("r70_descr");
 $clrotulo->label("r70_codigo");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $head5 = "PERÍODO: ".db_formatar($datai,"d")." até ".db_formatar($dataf,"d");
 
@@ -105,21 +105,21 @@ if($regime != ""){
 if($adm_dem == 'a'){
   $head3 = "FUNCIONÁRIOS ADMITIDOS";
    
-  if(trim($datai) != "" && trim($dataf) != ""){
+  if(trim((string) $datai) != "" && trim((string) $dataf) != ""){
     $dbwhere.= " rh01_admiss between '".$datai."' and '".$dataf."' ";
-  }else if(trim($datai) != ""){
+  }else if(trim((string) $datai) != ""){
     $dbwhere.= " rh01_admiss >= '".$datai."' ";
-  }else if(trim($dataf) != ""){
+  }else if(trim((string) $dataf) != ""){
     $dbwhere.= " rh01_admiss <= '".$dataf."' ";
   }
 }else{
   $head3 = "FUNCIONÁRIOS DEMITIDOS";
    
-  if(trim($datai) != "" && trim($dataf) != ""){
+  if(trim((string) $datai) != "" && trim((string) $dataf) != ""){
     $dbwhere.= " rh05_recis between '".$datai."' and '".$dataf."' ";
-  }else if(trim($datai) != ""){
+  }else if(trim((string) $datai) != ""){
     $dbwhere.= " rh05_recis >= '".$datai."' ";
-  }else if(trim($dataf) != ""){
+  }else if(trim((string) $dataf) != ""){
     $dbwhere.= " rh05_recis <= '".$dataf."' ";
   }
 }
@@ -228,7 +228,7 @@ for($x=0; $x<$numrows_dados; $x++){
   $pdf->setfont("arial",$put_b,7);
   $pdf->cell(13,$alt,$rh01_regist,$put_t,0,"C",$pre);
   $pdf->cell(65,$alt,$z01_nome,$put_t,0,"L",$pre);
-  $pdf->cell(70,$alt,substr($$valorImprime,0,40),$put_t,0,"L",$pre);
+  $pdf->cell(70,$alt,substr((string) ${$valorImprime},0,40),$put_t,0,"L",$pre);
   $pdf->cell(15,$alt,db_formatar($rh01_admiss,"d"),$put_t,0,"C",$pre);
   $pdf->cell(15,$alt,db_formatar($rh05_recis,"d"),$put_t,0,"C",$pre);
   $pdf->cell(13,$alt,$rh03_padrao,$put_t,1,"L",$pre);

@@ -51,13 +51,13 @@ $dbwhere2     = "";
 $dbwhere_lote = "";
 
 if ($clpcorcamforne->numrows > 0){
-     if (trim(substr($lote,0,13)) == "LOTE_AUTOITEM"){  // Tipo de julgamento por Item (1)
+     if (trim(substr((string) $lote,0,13)) == "LOTE_AUTOITEM"){  // Tipo de julgamento por Item (1)
           db_fieldsmemory($result_troca,0);
           $pc25_orcamitem = $pc24_orcamitem;
           $dbwhere        = " and pc22_orcamitem=$pc25_orcamitem";
           $dbwhere2       = " and pc23_orcamitem=$pc25_orcamitem";
           $tipojulg       = 1;  
-     } else if (trim($lote) == "GLOBAL"){               // Tipo de julgamento Global   (2)
+     } else if (trim((string) $lote) == "GLOBAL"){               // Tipo de julgamento Global   (2)
           $tipojulg       = 2; 
      } else {                                           // Tipo de julgamento por Lote (3)
           $tipojulg       = 3; 
@@ -149,13 +149,13 @@ if ($clpcorcamforne->numrows > 0){
     if ($clpcorcamforne->numrows > 0){
          for($i = 0; $i < $clpcorcamforne->numrows; $i++){
               db_fieldsmemory($result_fornec,$i);
-              if (trim($pc23_valor) != ""){
+              if (trim((string) $pc23_valor) != ""){
                    break;
               }
          }
     }
 
-    if (trim(@$pc23_valor) == ""){
+    if (trim((string) @$pc23_valor) == ""){
          $pc23_valor = 0;
     }
     $pc23_valor = db_formatar($pc23_valor,"f");

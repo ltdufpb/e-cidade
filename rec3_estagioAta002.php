@@ -68,7 +68,7 @@ $rQuesitos    = db_query($SQLQuesitos);
 for ($j = 0; $j < pg_num_rows($rQuesitos); $j++){
 
   $oQuesitos = db_utils::fieldsMemory($rQuesitos, $j);
-  $aQuesitos[$oQuesitos->h51_sequencial] = array("descricao" => $oQuesitos->h51_descr, "pontos" => $oQuesitos->pontos); 
+  $aQuesitos[$oQuesitos->h51_sequencial] = ["descricao" => $oQuesitos->h51_descr, "pontos" => $oQuesitos->pontos]; 
 }
 $pdf                    = new scpdf("P","mm","A4");
 $pdf->open();

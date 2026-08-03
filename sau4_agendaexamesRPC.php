@@ -135,7 +135,7 @@ if ($oParam->exec == "getExames") {
   if ($oDaoAgendaExame->erro_status == 0) {
 
     $oRetorno->status  = 2;
-    $oRetorno->message = urlencode($oDaoAgendaExame->erro_msg);
+    $oRetorno->message = urlencode((string) $oDaoAgendaExame->erro_msg);
 
   }
   if ($oRetorno->status == 1 ) {
@@ -146,7 +146,7 @@ if ($oParam->exec == "getExames") {
     $oDaoAgendaExameResultado->excluir(null,"s134_i_agendaexameconfirma = {$oDaoAgendaExame->s133_i_codigo}");
     if ($oParam->sResultadoExame != "") {
 
-      $aAtributos = explode(",", $oParam->sResultadoExame);
+      $aAtributos = explode(",", (string) $oParam->sResultadoExame);
       foreach ($aAtributos as $iAtributo => $sValor) {
 
         $aValor = explode("-",$sValor);
@@ -157,7 +157,7 @@ if ($oParam->exec == "getExames") {
         if ($oDaoAgendaExameResultado->erro_status == 0) {
 
           $oRetorno->status  = 2;
-          $oRetorno->message = urlencode($oDaoAgendaExameResultado->erro_msg);
+          $oRetorno->message = urlencode((string) $oDaoAgendaExameResultado->erro_msg);
           break;
 
         }
@@ -179,14 +179,14 @@ if ($oParam->exec == "getExames") {
   if ($oDaoAgendaExameResultado->erro_status == 0) {
 
     $oRetorno->status  = 2;
-    $oRetorno->message = urlencode($oDaoAgendaExameResultado->erro_msg);
+    $oRetorno->message = urlencode((string) $oDaoAgendaExameResultado->erro_msg);
 
   }
   $oDaoAgendaExame->excluir($oParam->iConfirmaExame);
   if ($oDaoAgendaExame->erro_status == 0) {
 
     $oRetorno->status  = 2;
-    $oRetorno->message = urlencode($oDaoAgendaExame->erro_msg);
+    $oRetorno->message = urlencode((string) $oDaoAgendaExame->erro_msg);
 
   }
   if ($oRetorno->status == 1) {

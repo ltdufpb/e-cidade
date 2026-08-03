@@ -56,7 +56,7 @@ $clrotulo->label("e53_vlranu");
 $clrotulo->label("e53_vlrpag");
 $clrotulo->label("e96_codigo");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oGet = db_utils::postMemory($_GET);
 
@@ -213,15 +213,15 @@ for($x=0;$x<$numrows;$x++){
   $numrows_movconta = $clempagemovconta->numrows;
   if($numrows_movconta>0){
     db_fieldsmemory($result_movconta,0);
-    if(trim($digito)!=""){
+    if(trim((string) $digito)!=""){
       $digito = "-$digito";
     }
-    if(trim($digitoc)!=""){
+    if(trim((string) $digitoc)!=""){
       $digitoc = "-$digitoc";
     }
   }
 
-  if(trim($db_banco)==trim($banco)){
+  if(trim((string) $db_banco)==trim((string) $banco)){
     $codigopagamento = "DEP";
   }else if($e81_valor<5000){
     $codigopagamento = "DOC";
@@ -318,7 +318,7 @@ for($x=0;$x<$numrows;$x++){
   $pdf->cell(20,$alt,db_formatar($e81_valor,"f"),0,1,"R",$cor);
   $total++;
   $valorconta+= $e81_valor;
-  if(trim($db_banco)==trim($banco)){
+  if(trim((string) $db_banco)==trim((string) $banco)){
     $valdep += $e81_valor;
     $totdep += $e81_valor;
   }else if($e81_valor<5000){

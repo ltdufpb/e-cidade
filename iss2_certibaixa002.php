@@ -35,8 +35,8 @@ require_once(modification("classes/db_parissqn_classe.php"));
 require_once(modification("dbagata/classes/core/AgataAPI.class"));
 require_once(modification("model/documentoTemplate.model.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $sCaminhoMensagem = "tributario.issqn.iss2_certibaixa002.";
 
@@ -52,7 +52,7 @@ $sSqlTabativBaixa .= "  from tabativbaixa                                 ";
 $sSqlTabativBaixa .= " where q11_inscr = " .$inscr;
 
 $rsTabativBaixa    = db_query($sSqlTabativBaixa);
-if (pg_numrows($rsTabativBaixa) == 0 || !$rsTabativBaixa ){
+if (pg_num_rows($rsTabativBaixa) == 0 || !$rsTabativBaixa ){
 
   db_msgbox(_M($sCaminhoMensagem."baixa_incricao_nao_encontrada"));
   exit;
@@ -92,7 +92,7 @@ $sCaminhoSalvoSxw = "tmp/CertidaoBaixaInscricao_{$sDescrDoc}_{$inscr}.sxw";
 
 $sAgt             = "issqn/certidao_baixa_inscricao.agt";
 
-$aParam           = array();
+$aParam           = [];
 $aParam['$inscr'] = $inscr;
 
 db_stdClass::oo2pdf(46, $iDocumentoTemplate, $sAgt, $aParam, $sCaminhoSalvoSxw, $sNomeRelatorio);

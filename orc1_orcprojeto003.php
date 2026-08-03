@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_orcprojeto_classe.php"));
 include(modification("classes/db_orcsuplem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clorcprojeto = new cl_orcprojeto;
 $clorcsuplem = new cl_orcsuplem;
 

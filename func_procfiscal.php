@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procfiscal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocfiscal = new cl_procfiscal;
 $clprocfiscal->rotulo->label("y100_sequencial");
 $clprocfiscal->rotulo->label("y100_coddepto");
@@ -98,9 +98,9 @@ $clprocfiscal->rotulo->label("y100_coddepto");
         }else{
            $sql = $clprocfiscal->sql_query("",$campos,"y100_sequencial","y100_coddepto= ".db_getsession("DB_coddepto")."");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_y100_coddepto)){
-          $repassa = array("chave_y100_sequencial"=>$chave_y100_sequencial,"chave_y100_coddepto"=>$chave_y100_coddepto);
+          $repassa = ["chave_y100_sequencial"=>$chave_y100_sequencial,"chave_y100_coddepto"=>$chave_y100_coddepto];
         }
 				
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

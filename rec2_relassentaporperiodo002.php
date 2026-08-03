@@ -28,7 +28,7 @@
 require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $where = 'where 1 = 1';
@@ -103,7 +103,7 @@ $sql = "
 
 $result = db_query($sql);
 //db_criatabela($result);exit;
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    
             db_redireciona('db_erros.php?fechar=true&db_erro=Não existem assentamentos cadastrados para o período informado');
@@ -119,7 +119,7 @@ $troca      = 1;
 $alt        = 4;
 $total      = 0;
 $total_dias = 0;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage('L');

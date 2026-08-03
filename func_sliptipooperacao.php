@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sliptipooperacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsliptipooperacao = new cl_sliptipooperacao;
 $clsliptipooperacao->rotulo->label("k152_sequencial");
 $clsliptipooperacao->rotulo->label("k152_sequencial");
@@ -98,9 +98,9 @@ $clsliptipooperacao->rotulo->label("k152_sequencial");
         }else{
            $sql = $clsliptipooperacao->sql_query("",$campos,"k152_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k152_sequencial)){
-          $repassa = array("chave_k152_sequencial"=>$chave_k152_sequencial,"chave_k152_sequencial"=>$chave_k152_sequencial);
+          $repassa = ["chave_k152_sequencial"=>$chave_k152_sequencial,"chave_k152_sequencial"=>$chave_k152_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

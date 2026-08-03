@@ -42,7 +42,7 @@ $oBalancoOrcamentarioRepo = BalancoOrcamentarioRepository::getInstance();
 $iCodigoRelatorio         = $oBalancoOrcamentarioRepo->getCodigoRelatorioByAno($iAnoUsu);
 $oRelatorio               = new relatorioContabil($iCodigoRelatorio);
 $aPeriodos                = $oRelatorio->getPeriodos();
-$aListaPeriodos           = array();
+$aListaPeriodos           = [];
 
 $aListaPeriodos[0] = "Selecione";
 foreach ($aPeriodos as $oPeriodo) {

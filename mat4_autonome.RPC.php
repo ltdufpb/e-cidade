@@ -36,7 +36,7 @@ $oJson   = new services_json();
 
 $sStr    = $_POST['string'];
 $sStr    = crossUrlDecode($sStr);
-$sStr    = html_entity_decode($sStr);
+$sStr    = html_entity_decode((string) $sStr);
 
 $iCodigo = $_GET['iCodigo'];
 
@@ -70,15 +70,15 @@ function crossUrlDecode($sSource) {
 
   $sDecodedStr = '';
   $iPos        = 0;
-  $iLen        = strlen($sSource);
+  $iLen        = strlen((string) $sSource);
 
   while ($iPos < $iLen) {
 
-    $sCharAt = substr($sSource, $iPos, 1);
+    $sCharAt = substr((string) $sSource, $iPos, 1);
     if ($sCharAt == 'Ã') {
 
-      $sChar2       = substr($sSource, $iPos, 2);
-      $sDecodedStr .= htmlentities(utf8_decode($sChar2), ENT_QUOTES, 'ISO-8859-1');
+      $sChar2       = substr((string) $sSource, $iPos, 2);
+      $sDecodedStr .= htmlentities(mb_convert_encoding($sChar2, 'ISO-8859-1'), ENT_QUOTES, 'ISO-8859-1');
       $iPos        += 2;
 
     } elseif(ord($sCharAt) > 127) {
@@ -89,20 +89,20 @@ function crossUrlDecode($sSource) {
     } elseif($sCharAt == '%') {
 
       $iPos++;
-      $sHex2   = substr($sSource, $iPos, 2);
+      $sHex2   = substr((string) $sSource, $iPos, 2);
       $sDecHex = chr(hexdec($sHex2));
 
       if ($sDecHex == 'Ã') {
 
           $iPos += 2;
-          if (substr($sSource, $iPos, 1) == '%') {
+          if (substr((string) $sSource, $iPos, 1) == '%') {
 
             $iPos++;
-            $sChar2a      = chr(hexdec(substr($sSource, $iPos, 2)));
-            $sDecodedStr .= htmlentities(utf8_decode($sDecHex . $sChar2a), ENT_QUOTES, 'ISO-8859-1');
+            $sChar2a      = chr(hexdec(substr((string) $sSource, $iPos, 2)));
+            $sDecodedStr .= htmlentities(mb_convert_encoding($sDecHex . $sChar2a, 'ISO-8859-1'), ENT_QUOTES, 'ISO-8859-1');
 
           } else {
-            $sDecodedStr .= htmlentities(utf8_decode($sDecHex));
+            $sDecodedStr .= htmlentities(mb_convert_encoding($sDecHex, 'ISO-8859-1'));
           }
 
       } else {

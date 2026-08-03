@@ -74,9 +74,9 @@ if (!isset($anoMatricula) OR empty($anoMatricula)) {
 
 //$calculoRetroativoIptuRepository->getAlteraSearchPath();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 $oDaoIPTUConstr              = new cl_iptuconstr_extends;
 $oDaoIPTUBase                = new cl_iptubase;
@@ -149,8 +149,8 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
 } elseif ( isset($incluir ) ) {
   if (empty($j39_idcons)) {
       if ($liberaCalculoRetroativo) {
-          $arrayIdCons = array();
-        
+          $arrayIdCons = [];
+
           for ($anoMatricula = $anoRetroativoMatricula; $anoMatricula <= $iAnousu; $anoMatricula++) {
               $calculoRetroativoIptuRepository->setAnoRetroativoMatricula($anoMatricula);
               $calculoRetroativoIptuRepository->getAlteraSearchPath();
@@ -164,7 +164,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
   }
 
   $sAnosQuePossuemMesmaConstrucao = "";
-  $iAnousu = ($replicaDadosAnos == 0 ? $anoRetroativoMatricula : (isset($anoLimiteReplicaDados) ? $anoLimiteReplicaDados : $anousu));
+  $iAnousu = ($replicaDadosAnos == 0 ? $anoRetroativoMatricula : ($anoLimiteReplicaDados ?? $anousu));
   for ($anoMatricula = intval($anoRetroativoMatricula); $anoMatricula <= $iAnousu; $anoMatricula++) {
       //Aqui executa a validação se existe a mesma construção nos anos posteriores, que é para não tentar incluir a mesma novamente.
       $esquema = "cadastro";
@@ -174,7 +174,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
       $sSqlGetConstrucao = "Select * from $esquema.iptuconstr where j39_matric = $j39_matric and j39_idcons = $j39_idcons";
       $resultGetConstrucao = db_query($sSqlGetConstrucao);
       $numLinhasGetConstrucao = pg_num_rows($resultGetConstrucao);
-        
+
       if($numLinhasGetConstrucao > 0){
           if($sAnosQuePossuemMesmaConstrucao == ""){
               $sAnosQuePossuemMesmaConstrucao = $anoMatricula;
@@ -229,7 +229,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
               $lSqlErro = true;
           }
 
-          $matriz= explode("X",$caracteristica);
+          $matriz= explode("X",(string) $caracteristica);
 
           for ($i=0;$i<sizeof($matriz);$i++) {
 
@@ -305,7 +305,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
 } elseif ( isset($alterar) ) {
     $lSqlErro == false;
     $sAnosConstrucaoInexistente = "";
-    $iAnousu = ($replicaDadosAnos == 0 ? $anoRetroativoMatricula : (isset($anoLimiteReplicaDados) ? $anoLimiteReplicaDados : $anousu));
+    $iAnousu = ($replicaDadosAnos == 0 ? $anoRetroativoMatricula : ($anoLimiteReplicaDados ?? $anousu));
     for ($anoMatricula = intval($anoRetroativoMatricula); $anoMatricula <= $iAnousu; $anoMatricula++) {
         //Aqui executa a validação se existe a mesma construção nos anos posteriores, que é para não tentar incluir a mesma novamente.
         $esquema = "cadastro";
@@ -323,14 +323,14 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
             }
         }
     }
-  
+
     if ($sAnosConstrucaoInexistente != "") {
         $sMensagemErro="Não é possivel replicar esta alteração para os anos selecionados pois a mesma não existe nos anos: $sAnosConstrucaoInexistente";
         $lSqlErro = true;
     }
-  
+
     if ($lSqlErro == false) {
-        $iAnousu = ($replicaDadosAnos == 0 ? $anoRetroativoMatricula : (isset($anoLimiteReplicaDados) ? $anoLimiteReplicaDados : $anousu));
+        $iAnousu = ($replicaDadosAnos == 0 ? $anoRetroativoMatricula : ($anoLimiteReplicaDados ?? $anousu));
         for ($anoMatricula = intval($anoRetroativoMatricula); $anoMatricula <= $iAnousu; $anoMatricula++) {
             if ($anoMatricula == $anoRetroativoMatricula) {
                 if (empty($anoLimiteReplicaDados)) {
@@ -406,7 +406,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
                     $lSqlErro = true;
                 }
 
-                $matriz= explode("X",$caracteristica);
+                $matriz= explode("X",(string) $caracteristica);
                 $oDaoCarConstr->j48_matric=$j39_matric;
                 $oDaoCarConstr->j48_idcons=$j39_idcons;
 
@@ -450,7 +450,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
                 $sWhere = $notin." j48_idcons = ".$j39_idcons." and j48_matric = ".$j39_matric;
                 $sqlExclusao = $oDaoCarConstr->sql_query_file(null,null,null,"j48_caract",null,$sWhere);
                 $rsExclusao  = $oDaoCarConstr->sql_record($sqlExclusao);
-                
+
                 if ($oDaoCarConstr->numrows > 0) {
                     for ($ie = 0; $ie < $oDaoCarConstr->numrows; $ie++) {
                         db_fieldsmemory($rsExclusao, $ie);
@@ -489,12 +489,12 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
                     db_query("select fc_putsession('DB_anoretroativo', '{$anoRetroativoMatricula} Á {$anoLimiteReplicaDados}')");
                 }
             }
-    
+
             if ($liberaCalculoRetroativo) {
                 $calculoRetroativoIptuRepository->setAnoRetroativoMatricula($anoMatricula);
                 $calculoRetroativoIptuRepository->getAlteraSearchPath();                    
             }
-    
+
             $lSqlErro = false;
             if (isset($j39_dtdemo_ano) && isset($j39_dtdemo_mes) && isset($j39_dtdemo_dia)) {
                 $dtdemo = $j39_dtdemo_ano."-".$j39_dtdemo_mes."-".$j39_dtdemo_dia;
@@ -536,7 +536,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
         $calculoRetroativoIptuRepository->setAnoRetroativoMatricula($anoMatricula);
         $calculoRetroativoIptuRepository->getAlteraSearchPath();                    
     }
-    
+
     $lSqlErro = false;
     // verifica se é  principal
     $sWhere = "j39_idprinc is true and j39_dtdemo is null";
@@ -674,7 +674,7 @@ if ( isset($j39_idcons) && $j39_idcons=="nova"  &&  empty($incluir ) ) {
     if ($anoMatricula == $anoRetroativoMatricula) {
         db_query("select fc_delsession('DB_anoretroativo')");
     }
-    
+
 }
 
   /**

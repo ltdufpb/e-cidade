@@ -67,7 +67,7 @@ class logatividade {
    * 
    * @var array;
    */
-  private $aIssBaseLog = array();
+  private $aIssBaseLog = [];
   
   public function __construct(){
     
@@ -103,7 +103,7 @@ class logatividade {
    * @param integer $iLogTipo codigo do tipo de log
    * @param integer $iCodAtividade codigo da atividade
    */
-  public function identificaAlteracao($iInscricao = null, $iOpcao, $iLogTipo = null, $iCodAtividade = null) {
+  public function identificaAlteracao($iInscricao = null, $iOpcao = null, $iLogTipo = null, $iCodAtividade = null) {
     
     if ($iInscricao == null) {
       throw  new Exception("Erro: Inscrição não informada.");

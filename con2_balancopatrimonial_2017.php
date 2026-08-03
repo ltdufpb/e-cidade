@@ -17,7 +17,7 @@ require_once(modification("fpdf151/PDFDocument.php"));
 
 $oGet = db_utils::postMemory($_GET);
 
-$aQuadros = array();
+$aQuadros = [];
 try {
 
     if (empty($oGet->periodo)) {

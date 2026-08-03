@@ -40,6 +40,7 @@ class MetasVersusCotasService extends BaseRelatoriosCronograma
         $this->metasArrecadacaoService = new MetasArrecadacaoService($filtros);
     }
 
+    #[\Override]
     protected function processaFiltros(array $filtros)
     {
         parent::processaFiltros($filtros);
@@ -121,16 +122,12 @@ class MetasVersusCotasService extends BaseRelatoriosCronograma
                     /**
                      * @var DetalhamentoDespesa $detalhamentoDespesa
                      */
-                    $valorBase = $detalhamentoDespesa->getValores()->filter(function (Valor $valor) {
-                        return $valor->pl10_ano === $this->exercicio;
-                    })->shift();
+                    $valorBase = $detalhamentoDespesa->getValores()->filter(fn(Valor $valor) => $valor->pl10_ano === $this->exercicio)->shift();
                     /**
                      * @var CronogramaDesembolsoDespesa $cronograma
                      */
                     $cronograma = $detalhamentoDespesa->cronogramaDesembolso->filter(
-                        function (CronogramaDesembolsoDespesa $cronograma) {
-                            return $cronograma->exercicio === $this->exercicio;
-                        }
+                        fn(CronogramaDesembolsoDespesa $cronograma) => $cronograma->exercicio === $this->exercicio
                     )->shift();
 
                     $data = (object)$cronograma->toArray();

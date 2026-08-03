@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $claluno = new cl_aluno;
 $clserie = new cl_serie;
@@ -52,7 +52,7 @@ $clrotulo->label("ed47_c_codigoinep");
 $clrotulo->label("ed47_c_nis");
 $clrotulo->label("ed47_certidaomatricula");
 
-$repassa = array();
+$repassa = [];
 
 // Busca campo em Secretaria > Procedimentos > Parâmetros > Parâmetros Globais > Habilita Consulta Aluno Por Escola.
 $sqlSecParametros = $clsecparametros->sql_query("", "ed290_habilitaconsultaalunoporescola");
@@ -184,7 +184,7 @@ if ($sHabilitaConsultaAlunoPorEscola == 't') {
                             $sSqlSerie = $clserie->sql_query_equiv("", $sCamposSerie, " ed11_i_ensino, ed11_i_sequencia", "");
                             $result_serie = $clserie->sql_record($sSqlSerie);
 
-                            $x = array('' => 'NENHUM REGISTRO');
+                            $x = ['' => 'NENHUM REGISTRO'];
                             if ($clserie->numrows > 0) {
                                 $x = [''=> ' '];
                                 while ($state = pg_fetch_array($result_serie)) {
@@ -201,7 +201,7 @@ if ($sHabilitaConsultaAlunoPorEscola == 't') {
                         </td>
                         <td>
                             <?php
-                            $x = array(
+                            $x = [
                                 '' => '',
                                 'APROVADO' => 'APROVADO',
                                 'CANCELADO' => 'CANCELADO',
@@ -214,7 +214,7 @@ if ($sHabilitaConsultaAlunoPorEscola == 't') {
                                 'REPETENTE' => 'REPETENTE',
                                 'TRANSFERIDO FORA' => 'TRANSFERIDO FORA',
                                 'TRANSFERIDO REDE' => 'TRANSFERIDO REDE'
-                            );
+                            ];
                             db_select('situacao', $x, true, 1, "onFocus=\"nextfield='pesquisar2'\"");
                             ?>
                         </td>
@@ -388,7 +388,7 @@ if (!isset($pesquisa_chave) && (!isset($pesquisa_chave2))) {
     }
 
     if (isset($chave_ed47_i_codigo)) {
-        $repassa = array("chave_ed47_i_codigo" => $chave_ed47_i_codigo,
+        $repassa = ["chave_ed47_i_codigo" => $chave_ed47_i_codigo,
             "chave_ed47_v_nome" => $chave_ed47_v_nome,
             "chave_ed47_v_mae" => $chave_ed47_v_mae,
             "chave_ed47_v_pai" => $chave_ed47_v_pai,
@@ -400,7 +400,7 @@ if (!isset($pesquisa_chave) && (!isset($pesquisa_chave2))) {
             "ed47_c_nis" => $ed47_c_nis,
             "ed47_certidaomatricula" => $ed47_certidaomatricula,
             "situacao" => $situacao
-        );
+        ];
     }
 
     if (isset($iEscola) && trim($iEscola) != '' && $sHabilitaConsultaAlunoPorEscola != 't') {

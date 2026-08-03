@@ -124,11 +124,11 @@ $iDepto   = db_getsession('DB_coddepto');
             </td>
             <td>
             <?php
-              $aParam = Array(
+              $aParam = [
                 "0" => "SELECIONE",
                 "1" => "PDF",
                 "2" => "MATRICIAL",
-              );
+              ];
               db_select( 'atributos', $aParam, "", 1 );
             ?>
             </td>

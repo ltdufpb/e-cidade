@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 $cliframe_seleciona = new cl_iframe_seleciona;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $anoorigem  = db_getsession("DB_anousu");
 $anodestino = $anoorigem + 1;
@@ -98,7 +98,7 @@ $sqlitem_disabled .= "         end"; //acrescentado o item 23 CONFIGURAÇÕES PADR
  * Desabilitar os itens quando o usuário utilizar o pcasp
  * Variavel da sessão ou anodestino igual ao ano da implantação do pcasp (pcasp.txt)
  */
-$aPcasp    = array();
+$aPcasp    = [];
 $aPcasp[0] = "";
 if ( file_exists("config/pcasp.txt") ) {
 	$aPcasp = file("config/pcasp.txt");

@@ -31,8 +31,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhgeracaofolha_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhgeracaofolha = new cl_rhgeracaofolha();
 $clrhgeracaofolha->rotulo->label("rh102_sequencial"); 
@@ -129,9 +129,9 @@ if( !empty($ativas) ){
           $chave_rh102_descricao = str_replace("\\", "", $chave_rh102_descricao);
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_rh102_sequencial)) {
-          $repassa = array("chave_rh102_sequencial" => $chave_rh102_sequencial, "chave_rh102_descricao" => $chave_rh102_descricao);
+          $repassa = ["chave_rh102_sequencial" => $chave_rh102_sequencial, "chave_rh102_descricao" => $chave_rh102_descricao];
         }
         
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

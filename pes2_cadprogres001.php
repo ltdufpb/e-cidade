@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -101,7 +101,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-            $xx = array("n"=>"Numérica","a"=>"Alfabética");
+            $xx = ["n"=>"Numérica","a"=>"Alfabética"];
             db_select('ordem',$xx,true,4,"");
 	  ?>
 	</td>
@@ -111,7 +111,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-            $xx = array("t"=>"Todos","c"=>"CLT","e"=>"Estatutário","x"=>"Extra-Quadro");
+            $xx = ["t"=>"Todos","c"=>"CLT","e"=>"Estatutário","x"=>"Extra-Quadro"];
             db_select('regime',$xx,true,4,"");
 	  ?>
 	</td>

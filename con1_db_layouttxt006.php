@@ -36,7 +36,7 @@ include(modification("classes/db_db_layoutcampos_classe.php"));
 $cldb_layouttxt = new cl_db_layouttxt;
 $cldb_layoutlinha = new cl_db_layoutlinha;
 $cldb_layoutcampos = new cl_db_layoutcampos;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

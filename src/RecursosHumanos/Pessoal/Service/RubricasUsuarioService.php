@@ -65,23 +65,21 @@ class RubricasUsuarioService
      */
     public function toArray(array $rubricaUsuario)
     {
-        return array_map(function (RubricasUsuario $rubricaUsuario) {
-            return array(
-                'sequencial' => $rubricaUsuario->getSequencial(),
-                'usuario' => array(
-                    'codigo' => $rubricaUsuario->getUsuario()->getCodigo(),
-                    'nome' => $rubricaUsuario->getUsuario()->getNome(),
-                ),
-                'instituicao' => array(
-                    'codigo' => $rubricaUsuario->getInstituicao()->getCodigo(),
-                    'descricao' => $rubricaUsuario->getInstituicao()->getDescricao(),
-                ),
-                'rubrica' => array(
-                    'codigo' => $rubricaUsuario->getRubrica()->getCodigo(),
-                    'descricao' => $rubricaUsuario->getRubrica()->getDescricao(),
-                )
-            );
-        }, $rubricaUsuario);
+        return array_map(fn(RubricasUsuario $rubricaUsuario) => [
+            'sequencial' => $rubricaUsuario->getSequencial(),
+            'usuario' => [
+                'codigo' => $rubricaUsuario->getUsuario()->getCodigo(),
+                'nome' => $rubricaUsuario->getUsuario()->getNome(),
+            ],
+            'instituicao' => [
+                'codigo' => $rubricaUsuario->getInstituicao()->getCodigo(),
+                'descricao' => $rubricaUsuario->getInstituicao()->getDescricao(),
+            ],
+            'rubrica' => [
+                'codigo' => $rubricaUsuario->getRubrica()->getCodigo(),
+                'descricao' => $rubricaUsuario->getRubrica()->getDescricao(),
+            ]
+        ], $rubricaUsuario);
     }
 
     /**

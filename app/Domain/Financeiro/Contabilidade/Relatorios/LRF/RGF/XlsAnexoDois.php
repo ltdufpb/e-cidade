@@ -7,6 +7,7 @@ class XlsAnexoDois extends XlsRGF
     protected $nomeArquivo = "RGF - Anexo II";
     protected $saveAs = 'tmp/RGF_Anexo_II.xlsx';
 
+    #[\Override]
     public function setAnoReferencia($ano)
     {
         $this->setVariavel('ano_referencia', 'Ano de referência: ' . $ano);

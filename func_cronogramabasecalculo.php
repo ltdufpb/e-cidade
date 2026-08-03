@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cronogramabasecalculo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcronogramabasecalculo = new cl_cronogramabasecalculo;
 $clcronogramabasecalculo->rotulo->label("o125_sequencial");
 $clcronogramabasecalculo->rotulo->label("o125_cronogramaperspectiva");
@@ -98,9 +98,9 @@ $clcronogramabasecalculo->rotulo->label("o125_cronogramaperspectiva");
         }else{
            $sql = $clcronogramabasecalculo->sql_query("",$campos,"o125_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o125_cronogramaperspectiva)){
-          $repassa = array("chave_o125_sequencial"=>$chave_o125_sequencial,"chave_o125_cronogramaperspectiva"=>$chave_o125_cronogramaperspectiva);
+          $repassa = ["chave_o125_sequencial"=>$chave_o125_sequencial,"chave_o125_cronogramaperspectiva"=>$chave_o125_cronogramaperspectiva];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

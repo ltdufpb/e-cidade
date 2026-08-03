@@ -32,10 +32,10 @@ require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 
 $oParam   = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
-$oRetorno = (object) array(
+$oRetorno = (object) [
   'message' => '',
   'erro'    => false
-);
+];
 
 try {
 
@@ -53,19 +53,19 @@ try {
       }
 
       $oCategoria = new AguaCategoriaConsumo((integer) $oParam->iCodigo);
-      $oRetorno->oCategoriaConsumo = (object) array(
+      $oRetorno->oCategoriaConsumo = (object) [
         'iCodigo'    => $oCategoria->getCodigo(),
         'sDescricao' => $oCategoria->getDescricao(),
         'iExercicio' => $oCategoria->getExercicio(),
-      );
+      ];
 
       break;
 
     case "listarTiposEstruturaTarifaria":
 
-      $aTipos = array();
+      $aTipos = [];
       foreach (AguaEstruturaTarifaria::getTiposEstrutura() as $iCodigo => $sTipo) {
-        $aTipos[] = (object) array('iCodigo' => $iCodigo, 'sDescricao' => $sTipo);
+        $aTipos[] = (object) ['iCodigo' => $iCodigo, 'sDescricao' => $sTipo];
       }
 
       $oRetorno->aTipos = $aTipos;
@@ -105,7 +105,7 @@ try {
         throw new ParameterException('Código não informado.');
       }
 
-      $aEstruturasTarifarias = array();
+      $aEstruturasTarifarias = [];
       $aTiposEstrutura = AguaEstruturaTarifaria::getTiposEstrutura();
       $oCategoria = new AguaCategoriaConsumo($oParam->iCodigo);
       if ($oCategoria->getEstruturas()) {
@@ -122,7 +122,7 @@ try {
             }
           }
 
-          $aEstruturasTarifarias[] = (object) array(
+          $aEstruturasTarifarias[] = (object) [
             'iCodigo'          => $oEstrutura->getCodigo(),
             'iTipoConsumo'     => $oEstrutura->getCodigoTipoConsumo(),
             'sTipoConsumo'     => $oEstrutura->getTipoConsumo()->getDescricao(),
@@ -132,7 +132,7 @@ try {
             'iFaixaConsumoAte' => $oEstrutura->getValorFinal(),
             'nValor'           => $oEstrutura->getValor(),
             'iPercentual'      => $oEstrutura->getPercentual(),
-          );
+          ];
         }
       }
       $oRetorno->aEstruturasTarifarias = $aEstruturasTarifarias;
@@ -149,7 +149,7 @@ try {
       $aTiposEstrutura = AguaEstruturaTarifaria::getTiposEstrutura();
       $sTipoEstrutura = $aTiposEstrutura[$oEstruturaTarifaria->getCodigoTipoEstrutura()];
 
-      $oRetorno->oEstruturaTarifaria = (object) array(
+      $oRetorno->oEstruturaTarifaria = (object) [
         'iCodigo'          => $oEstruturaTarifaria->getCodigo(),
         'iTipoConsumo'     => $oEstruturaTarifaria->getCodigoTipoConsumo(),
         'sTipoConsumo'     => $oEstruturaTarifaria->getTipoConsumo()->getDescricao(),
@@ -159,7 +159,7 @@ try {
         'iFaixaConsumoAte' => $oEstruturaTarifaria->getValorFinal(),
         'nValor'           => $oEstruturaTarifaria->getValor(),
         'iPercentual'      => $oEstruturaTarifaria->getPercentual(),
-      );
+      ];
 
       break;
 
@@ -181,7 +181,7 @@ try {
       }
 
       $oEstruturaTarifaria->setValor(0);
-      if ($oParam->nValor && in_array($oParam->iTipoEstrutura, array(AguaEstruturaTarifaria::TIPO_FAIXA_CONSUMO, AguaEstruturaTarifaria::TIPO_VALOR_FIXO))) {
+      if ($oParam->nValor && in_array($oParam->iTipoEstrutura, [AguaEstruturaTarifaria::TIPO_FAIXA_CONSUMO, AguaEstruturaTarifaria::TIPO_VALOR_FIXO])) {
         $oEstruturaTarifaria->setValor((float) $oParam->nValor);
       }
 

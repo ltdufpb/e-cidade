@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_confmensagem
 class cl_db_confmensagem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cod = null; 
-   var $mens = null; 
-   var $alinhamento = null; 
-   var $instit = 0; 
+   public $cod = null; 
+   public $mens = null; 
+   public $alinhamento = null; 
+   public $instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cod = varchar(200) = Código da mensagem 
                  mens = text = Mensagem 
                  alinhamento = varchar(30) = Alinhamento 
                  instit = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_db_confmensagem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_confmensagem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -132,7 +132,7 @@ class cl_db_confmensagem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Configurações de mensagem () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Configurações de mensagem já Cadastrado";
@@ -159,10 +159,10 @@ class cl_db_confmensagem {
       $this->atualizacampos();
      $sql = " update db_confmensagem set ";
      $virgula = "";
-     if(trim($this->cod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cod"])){ 
+     if(trim((string) $this->cod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cod"])){ 
        $sql  .= $virgula." cod = '$this->cod' ";
        $virgula = ",";
-       if(trim($this->cod) == null ){ 
+       if(trim((string) $this->cod) == null ){ 
          $this->erro_sql = " Campo Código da mensagem nao Informado.";
          $this->erro_campo = "cod";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_db_confmensagem {
          return false;
        }
      }
-     if(trim($this->mens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["mens"])){ 
+     if(trim((string) $this->mens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["mens"])){ 
        $sql  .= $virgula." mens = '$this->mens' ";
        $virgula = ",";
-       if(trim($this->mens) == null ){ 
+       if(trim((string) $this->mens) == null ){ 
          $this->erro_sql = " Campo Mensagem nao Informado.";
          $this->erro_campo = "mens";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_db_confmensagem {
          return false;
        }
      }
-     if(trim($this->alinhamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["alinhamento"])){ 
+     if(trim((string) $this->alinhamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["alinhamento"])){ 
        $sql  .= $virgula." alinhamento = '$this->alinhamento' ";
        $virgula = ",";
-       if(trim($this->alinhamento) == null ){ 
+       if(trim((string) $this->alinhamento) == null ){ 
          $this->erro_sql = " Campo Alinhamento nao Informado.";
          $this->erro_campo = "alinhamento";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_db_confmensagem {
          return false;
        }
      }
-     if(trim($this->instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["instit"])){ 
+     if(trim((string) $this->instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["instit"])){ 
        $sql  .= $virgula." instit = $this->instit ";
        $virgula = ",";
-       if(trim($this->instit) == null ){ 
+       if(trim((string) $this->instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "instit";
          $this->erro_banco = "";
@@ -292,7 +292,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_confmensagem";
@@ -306,7 +306,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="db_confmensagem.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -329,7 +329,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -341,7 +341,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -359,7 +359,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

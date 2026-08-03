@@ -49,6 +49,7 @@ class AnexoIV extends Layout2018
     CONST FINANCEIRO_RECURSOS_COBERTURA                    = 109;
     CONST FINANCEIRO_RECURSOS_RESERVA                      = 110;
 
+    #[\Override]
     function nota2()
     {
         $this->oPdf->cell($this->oPdf->getAvailWidth(), 4, '2 O resultado previdenciário poderá ser apresentada por meio da diferença entre previsão da receita e a dotação da despesa e entre a receita realizada e a despesa liquidada (do 1º ao 5º bimestre) e a despesa liquidada (no 6º bimestre).', 0, 1);

@@ -19,7 +19,7 @@ class DBLayoutTXT {
     }
 
     $oDaoDBLayout = new cl_db_layouttxt();
-    $oDadosLayout         = db_utils::getRowFromDao($oDaoDBLayout, array($iCodigo));
+    $oDadosLayout         = db_utils::getRowFromDao($oDaoDBLayout, [$iCodigo]);
     if (empty($oDadosLayout)) {
       return;
     }

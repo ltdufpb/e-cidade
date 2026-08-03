@@ -30,7 +30,7 @@ class TipoEventoAcordo {
   const EVENTO_DOCUMENTOS = 15;
 
   //#8016 - Apostila será ocultada provisoriamente, o sistema nao suporta esse tipo de evento no momento.
-  private static $aTipos = array(
+  private static $aTipos = [
     1  => "Anulação por determinação judicial",
     2  => "Anulação de ofício",
     3  => "Apostila",
@@ -47,9 +47,9 @@ class TipoEventoAcordo {
     14 => "Termo de recebimento provisório",
     15 => "Documentos",
     16 => "Termo de Indenização"
-  );
+  ];
 
-  private static $aSiglas = array(
+  private static $aSiglas = [
     1  => "ADC",
     2  => "AOC",
     3  => "APO",
@@ -66,7 +66,7 @@ class TipoEventoAcordo {
     14 => "TRP",
     15 => "NINF",
     16 => "TIN"
-  );
+  ];
 
   public static function getTipos() {
     return self::$aTipos;

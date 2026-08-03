@@ -54,7 +54,7 @@ class ConfiguracaoConsignado {
        return;
     }
     $oDaoConfiguracaoConsignado = new cl_rhconsignacaobancolayout();
-    $oDadosConfiguracao         = db_utils::getRowFromDao($oDaoConfiguracaoConsignado, array($iCodigo));
+    $oDadosConfiguracao         = db_utils::getRowFromDao($oDaoConfiguracaoConsignado, [$iCodigo]);
     if (empty($oDadosConfiguracao)) {
       return;
     }

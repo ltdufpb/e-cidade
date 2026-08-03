@@ -107,6 +107,7 @@ class Decreto extends \ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Layouts
         return $this;
     }
 
+    #[\Override]
     public function toArray()
     {
         return [

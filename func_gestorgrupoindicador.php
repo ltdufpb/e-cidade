@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_gestorgrupoindicador_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clgestorgrupoindicador = new cl_gestorgrupoindicador;
 $clgestorgrupoindicador->rotulo->label("g03_sequencial");
@@ -105,9 +105,9 @@ $clgestorgrupoindicador->rotulo->label("g03_sequencial");
           $sql = $clgestorgrupoindicador->sql_query(null, $campos, "g03_sequencial", $sWhere);
         }
         
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_g03_sequencial)) {
-          $repassa = array("chave_g03_sequencial" => $chave_g03_sequencial);
+          $repassa = ["chave_g03_sequencial" => $chave_g03_sequencial];
         }
         
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

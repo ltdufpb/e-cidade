@@ -49,24 +49,12 @@ class ArquivoFonte implements ArquivosSigapFiscalInterface
      * @var Periodo
      */
     private $periodo;
-    /**
-     * @var array
-     */
-    private $codigoInstituicoes;
-    /**
-     * @var integer
-     */
-    private $codigoTCE;
 
     /**
      * Array com as notas explicativas dos relatórios enviados. indexado pelo código do demonstrativo
      * @var array
      */
     private $notas = [];
-    /**
-     * @var int
-     */
-    private $ano;
 
     /**
      * @var string[]
@@ -85,12 +73,13 @@ class ArquivoFonte implements ArquivosSigapFiscalInterface
     private $departamento;
 
 
-    public function __construct(Periodo $periodo, array $codigoInstituicoes, $ano, $codigoTCE)
+    /**
+     * @param int $codigoTCE
+     * @param int $ano
+     */
+    public function __construct(Periodo $periodo, private readonly array $codigoInstituicoes, private $ano, private $codigoTCE)
     {
         $this->periodo = $periodo;
-        $this->codigoInstituicoes = $codigoInstituicoes;
-        $this->codigoTCE = $codigoTCE;
-        $this->ano = $ano;
     }
 
     /**
@@ -107,8 +96,8 @@ class ArquivoFonte implements ArquivosSigapFiscalInterface
         $dados = [
             'fntCodigoEntidade' => $this->codigoTCE,
             'fntMesAnoMovimento' => $this->periodo->getDataFinal($this->ano)->convertTo(DBDate::DATA_EN),
-            'fntSistema' => utf8_encode(self::SISTEMA),
-            'fntUnidResponsavel' => utf8_encode($unidade),
+            'fntSistema' => mb_convert_encoding(self::SISTEMA, 'UTF-8', 'ISO-8859-1'),
+            'fntUnidResponsavel' => mb_convert_encoding($unidade, 'UTF-8', 'ISO-8859-1'),
             'fntMesAnoEmissao' => date('Y-m-d'),
             'fntHora' => date('H:i'),
         ];

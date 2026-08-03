@@ -35,7 +35,7 @@ require_once(modification("classes/db_acordo_classe.php"));
 
 $lAtivo = '';
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $clacordo = new cl_acordo;
 $clacordo->rotulo->label();
@@ -154,10 +154,10 @@ $iInstituicaoSessao = db_getsession('DB_instit');
 
               if (isset($lAtivo)) {
 
-                  if ($lAtivo == 1) {
+                  if (0 == 1) {
                       $sWhere .= " and ac17_ativo is true";
                   } else {
-                      if ($lAtivo == 2) {
+                      if (0 == 2) {
                           $sWhere .= " and ac17_ativo is false";
                       }
                   }
@@ -203,7 +203,7 @@ $iInstituicaoSessao = db_getsession('DB_instit');
                */
               if (!empty($ac16_numeroacordo)) {
 
-                  $aNumeroAcordo = explode('/', $ac16_numeroacordo);
+                  $aNumeroAcordo = explode('/', (string) $ac16_numeroacordo);
                   $iNumero = $aNumeroAcordo[0];
                   $iAno = !empty($aNumeroAcordo[1]) ? $aNumeroAcordo[1] : db_getsession("DB_anousu");
                   $sWhere = "ac16_numeroacordo = {$iNumero} and ac16_anousu = {$iAno} and ac16_instit = {$iInstituicaoSessao} and {$sDepartamentos}";
@@ -225,13 +225,13 @@ $iInstituicaoSessao = db_getsession('DB_instit');
                   }
               }
 
-              $repassa = array();
+              $repassa = [];
 
               if (isset($chave_ac16_sequencial)) {
-                  $repassa = array(
+                  $repassa = [
                     "chave_ac16_sequencial" => $chave_ac16_sequencial,
                     "chave_ac16_sequencial" => $chave_ac16_sequencial
-                  );
+                  ];
               }
 
               db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

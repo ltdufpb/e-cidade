@@ -41,7 +41,7 @@ include(modification("classes/db_placaixarec_classe.php"));
 include(modification("classes/db_orcreserprev_classe.php"));
 include(modification("classes/db_sliprecurso_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $rotulo = new rotulocampo;
 $rotulo->label('o15_codigo');

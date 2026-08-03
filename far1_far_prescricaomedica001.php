@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_far_prescricaomedica_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clfar_prescricaomedica = new cl_far_prescricaomedica;
 $db_opcao = 1;
 $db_botao = true;
@@ -79,7 +79,7 @@ if(isset($incluir)){
   }else{
 	$clfar_prescricaomedica->erro(true,false);
     $result = @db_query("select last_value from far_prescricaomedica_fa20_codigo_seq");
-    $ultimo = pg_result($result,0,0);
+    $ultimo = pg_fetch_result($result,0,0);
     db_redireciona("far1_far_prescricaomedica002.php?chavepesquisa=$ultimo");
   }
 }

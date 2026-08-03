@@ -68,13 +68,13 @@ $rsConfereorcsuplementacaoparametro          = $clorcsuplementacaoparametro->sql
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	     $clcriaabas->identifica = array("orcsuplementacaoparametro"=>"Parâmetros","orcsuplementacaoparametrocriterio"=>"Critérios"); 
+	     $clcriaabas->identifica = ["orcsuplementacaoparametro"=>"Parâmetros","orcsuplementacaoparametrocriterio"=>"Critérios"]; 
 	      if($clorcsuplementacaoparametro->numrows > 0 ){
-          $clcriaabas->src = array("orcsuplementacaoparametro"=>"orc1_orcsuplementacaoparametro005.php");
+          $clcriaabas->src = ["orcsuplementacaoparametro"=>"orc1_orcsuplementacaoparametro005.php"];
         }else {
-          $clcriaabas->src = array("orcsuplementacaoparametro"=>"orc1_orcsuplementacaoparametro004.php");
+          $clcriaabas->src = ["orcsuplementacaoparametro"=>"orc1_orcsuplementacaoparametro004.php"];
         }
-	     $clcriaabas->disabled   =  array("orcsuplementacaoparametrocriterio"=>"true"); 
+	     $clcriaabas->disabled   =  ["orcsuplementacaoparametrocriterio"=>"true"]; 
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>

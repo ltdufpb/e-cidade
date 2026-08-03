@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE clientedebito
 class cl_clientedebito { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j98_sequencia = 0; 
-   var $j98_codigo_cliente = 0; 
-   var $j98_valor = 0; 
+   public $j98_sequencia = 0; 
+   public $j98_codigo_cliente = 0; 
+   public $j98_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j98_sequencia = int4 = sequencia 
                  j98_codigo_cliente = int4 = Código do Cliente 
                  j98_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_clientedebito() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("clientedebito"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_clientedebito {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j98_sequencia = pg_result($result,0,0); 
+       $this->j98_sequencia = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from clientedebito_j98_sequencia_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j98_sequencia)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j98_sequencia)){
          $this->erro_sql = " Campo j98_sequencia maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_clientedebito {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cliente Debito ($this->j98_sequencia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cliente Debito já Cadastrado";
@@ -166,12 +166,12 @@ class cl_clientedebito {
      $resaco = $this->sql_record($this->sql_query_file($this->j98_sequencia));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6337,'$this->j98_sequencia','I')");
-       $resac = db_query("insert into db_acount values($acount,1035,6337,'','".AddSlashes(pg_result($resaco,0,'j98_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1035,6338,'','".AddSlashes(pg_result($resaco,0,'j98_codigo_cliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1035,6339,'','".AddSlashes(pg_result($resaco,0,'j98_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1035,6337,'','".AddSlashes(pg_fetch_result($resaco,0,'j98_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1035,6338,'','".AddSlashes(pg_fetch_result($resaco,0,'j98_codigo_cliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1035,6339,'','".AddSlashes(pg_fetch_result($resaco,0,'j98_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_clientedebito {
       $this->atualizacampos();
      $sql = " update clientedebito set ";
      $virgula = "";
-     if(trim($this->j98_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j98_sequencia"])){ 
+     if(trim((string) $this->j98_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j98_sequencia"])){ 
        $sql  .= $virgula." j98_sequencia = $this->j98_sequencia ";
        $virgula = ",";
-       if(trim($this->j98_sequencia) == null ){ 
+       if(trim((string) $this->j98_sequencia) == null ){ 
          $this->erro_sql = " Campo sequencia nao Informado.";
          $this->erro_campo = "j98_sequencia";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_clientedebito {
          return false;
        }
      }
-     if(trim($this->j98_codigo_cliente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j98_codigo_cliente"])){ 
+     if(trim((string) $this->j98_codigo_cliente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j98_codigo_cliente"])){ 
        $sql  .= $virgula." j98_codigo_cliente = $this->j98_codigo_cliente ";
        $virgula = ",";
-       if(trim($this->j98_codigo_cliente) == null ){ 
+       if(trim((string) $this->j98_codigo_cliente) == null ){ 
          $this->erro_sql = " Campo Código do Cliente nao Informado.";
          $this->erro_campo = "j98_codigo_cliente";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_clientedebito {
          return false;
        }
      }
-     if(trim($this->j98_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j98_valor"])){ 
+     if(trim((string) $this->j98_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j98_valor"])){ 
        $sql  .= $virgula." j98_valor = $this->j98_valor ";
        $virgula = ",";
-       if(trim($this->j98_valor) == null ){ 
+       if(trim((string) $this->j98_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "j98_valor";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_clientedebito {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6337,'$this->j98_sequencia','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j98_sequencia"]))
-           $resac = db_query("insert into db_acount values($acount,1035,6337,'".AddSlashes(pg_result($resaco,$conresaco,'j98_sequencia'))."','$this->j98_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1035,6337,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j98_sequencia'))."','$this->j98_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j98_codigo_cliente"]))
-           $resac = db_query("insert into db_acount values($acount,1035,6338,'".AddSlashes(pg_result($resaco,$conresaco,'j98_codigo_cliente'))."','$this->j98_codigo_cliente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1035,6338,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j98_codigo_cliente'))."','$this->j98_codigo_cliente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j98_valor"]))
-           $resac = db_query("insert into db_acount values($acount,1035,6339,'".AddSlashes(pg_result($resaco,$conresaco,'j98_valor'))."','$this->j98_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1035,6339,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j98_valor'))."','$this->j98_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_clientedebito {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6337,'$j98_sequencia','E')");
-         $resac = db_query("insert into db_acount values($acount,1035,6337,'','".AddSlashes(pg_result($resaco,$iresaco,'j98_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1035,6338,'','".AddSlashes(pg_result($resaco,$iresaco,'j98_codigo_cliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1035,6339,'','".AddSlashes(pg_result($resaco,$iresaco,'j98_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1035,6337,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j98_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1035,6338,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j98_codigo_cliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1035,6339,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j98_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from clientedebito
@@ -345,7 +345,7 @@ class cl_clientedebito {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:clientedebito";

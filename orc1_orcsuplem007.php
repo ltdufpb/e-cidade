@@ -35,8 +35,8 @@ require(modification("classes/db_conhistdoc_classe.php"));
 include(modification("classes/db_orcsuplemtipo_classe.php"));
 include(modification("classes/db_orcsuplemval_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clorcsuplemtipo = new cl_orcsuplemtipo;
 $clorcsuplem = new cl_orcsuplem;

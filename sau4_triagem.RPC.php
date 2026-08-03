@@ -67,7 +67,7 @@ try {
      */
     case 'getProcedimentosConfigurados':
 
-      $oRetorno->aProcedimentos   = array();
+      $oRetorno->aProcedimentos   = [];
       $oDaoProcedimentoTriagem    = db_utils::getDao("parametroprocedimentotriagem");
       $sCamposProcedimentoTriagem = "s166_sau_procedimento, sd63_c_procedimento, sd63_c_nome";
       $sSqlProcedimentoTriagem    = $oDaoProcedimentoTriagem->sql_query(
@@ -84,8 +84,8 @@ try {
           $oDadosProcedimentosTriagem                 = db_utils::fieldsMemory($rsProcedimentoTriagem, $iContador);
           $oRetornoProcedimentoTriagem                = new stdClass();
           $oRetornoProcedimentoTriagem->iCodigo       = $oDadosProcedimentosTriagem->s166_sau_procedimento;
-          $oRetornoProcedimentoTriagem->iProcedimento = urlencode($oDadosProcedimentosTriagem->sd63_c_procedimento);
-          $oRetornoProcedimentoTriagem->sDescricao    = urlencode($oDadosProcedimentosTriagem->sd63_c_nome);
+          $oRetornoProcedimentoTriagem->iProcedimento = urlencode((string) $oDadosProcedimentosTriagem->sd63_c_procedimento);
+          $oRetornoProcedimentoTriagem->sDescricao    = urlencode((string) $oDadosProcedimentosTriagem->sd63_c_nome);
           $oRetorno->aProcedimentos[]                 = $oRetornoProcedimentoTriagem;
           unset($oRetornoProcedimentoTriagem);
         }
@@ -318,7 +318,7 @@ try {
         $oRetorno->nTemperatura   = $nTemperatura;
         $oMedico                  = $oTriagemAvulsa->getMedico();
         $oRetorno->iMedico        = $oMedico->getCodigo();
-        $oRetorno->sMedico        = urlencode($oMedico->getNome());
+        $oRetorno->sMedico        = urlencode((string) $oMedico->getNome());
 
         if( empty( $oDadosRetorno->s155_i_codigo ) ) {
           $oRetorno->lSomenteTriagem = true;
@@ -331,7 +331,7 @@ try {
 
     case 'buscaCBOS':
 
-      $oRetorno->aCbos = array();
+      $oRetorno->aCbos = [];
       $oDaoFarCbos     = new cl_far_cbos();
       $sSqlFarCbos     = $oDaoFarCbos->sql_query_file();
       $rsFarCbos       = db_query( $sSqlFarCbos );
@@ -351,8 +351,8 @@ try {
           $oDadosRetorno           = db_utils::fieldsMemory( $rsFarCbos, $iContador );
           $oDadosCbos              = new stdClass();
           $oDadosCbos->iCbos       = $oDadosRetorno->fa53_i_codigo;
-          $oDadosCbos->sCbos       = urlencode( $oDadosRetorno->fa53_c_descr );
-          $oDadosCbos->sEstrutural = urlencode( $oDadosRetorno->fa53_c_estrutural );
+          $oDadosCbos->sCbos       = urlencode( (string) $oDadosRetorno->fa53_c_descr );
+          $oDadosCbos->sEstrutural = urlencode( (string) $oDadosRetorno->fa53_c_estrutural );
           $oRetorno->aCbos[]       = $oDadosCbos;
         }
       }
@@ -394,7 +394,7 @@ try {
         throw new DBException( _M( ARQUIVO_MENSAGEM . 'erro_buscar_cbos', $oErro ) );
       }
 
-      $oRetorno->aEspecialidades = array();
+      $oRetorno->aEspecialidades = [];
 
       if( pg_num_rows( $rsUnidadeMedicos ) > 0 ) {
 
@@ -428,7 +428,7 @@ try {
     */
     case 'buscaProcedimentosTriagem':
 
-      $oRetorno->aProcedimentosTriagem = array();
+      $oRetorno->aProcedimentosTriagem = [];
       $oDaoProcedimentoTriagem         = new cl_parametroprocedimentotriagem();
       $sSqlProcedimentoTriagem         = $oDaoProcedimentoTriagem->sql_query(null, "s166_sau_procedimento");
       $rsProcedimentoTriagem           = db_query( $sSqlProcedimentoTriagem );
@@ -562,7 +562,7 @@ try {
 
         $oDadosEspecialidade      = db_utils::fieldsMemory( $rsProntProced, 0);
         $oRetorno->iEspecialidade = $oDadosEspecialidade->rh70_sequencial;
-        $oRetorno->sEspecialidade = urlencode( $oDadosEspecialidade->rh70_descr );
+        $oRetorno->sEspecialidade = urlencode( (string) $oDadosEspecialidade->rh70_descr );
       }
 
       break;
@@ -579,7 +579,7 @@ try {
         throw new DBException(  _M(ARQUIVO_MENSAGEM . "erro_buscar_classificacao_risco", $oErro) );
       }
 
-      $oRetorno->aClassificacoesRisco = array();
+      $oRetorno->aClassificacoesRisco = [];
 
       $iTotalClassificacaoRisco = pg_num_rows( $rsClassificacaoRisco );
       for( $iContador = 0; $iContador < $iTotalClassificacaoRisco;  $iContador++ ) {
@@ -587,7 +587,7 @@ try {
         $oDadosClassificacaoRisco        = db_utils::fieldsMemory( $rsClassificacaoRisco, $iContador );
         $oClassificacaoRisco             = new stdClass();
         $oClassificacaoRisco->iCodigo    = $oDadosClassificacaoRisco->sd78_codigo;
-        $oClassificacaoRisco->sDescricao = urlencode( $oDadosClassificacaoRisco->sd78_descricao );
+        $oClassificacaoRisco->sDescricao = urlencode( (string) $oDadosClassificacaoRisco->sd78_descricao );
         $oClassificacaoRisco->sCor       = $oDadosClassificacaoRisco->sd78_cor;
 
         $oRetorno->aClassificacoesRisco[] = $oClassificacaoRisco;
@@ -599,7 +599,7 @@ try {
         $prontuarioService = new ProntuarioService(new ProntuarioRepository(new \cl_prontuarios()));
         $dadosGestante = $prontuarioService->buscaDadosGestante($oParam->iProntuario);
         $data = $dadosGestante[0]['sd24_dum'] ? date("d/m/Y", strtotime(str_replace("-", "/", $dadosGestante[0]['sd24_dum']))) : "";
-        $oRetorno->idadeGestacional = $dadosGestante[0]['sd24_idadegestacional'] ? $dadosGestante[0]['sd24_idadegestacional'] : "";
+        $oRetorno->idadeGestacional = $dadosGestante[0]['sd24_idadegestacional'] ?: "";
         $oRetorno->dum = $data;
     break;
   }
@@ -622,7 +622,7 @@ function validaDados( $oParam ) {
   /**
    * Valida quantidade de números decimais do peso informado
    */
-  $aPeso = explode(".", $oParam->nPeso);
+  $aPeso = explode(".", (string) $oParam->nPeso);
   if ( count($aPeso) == 2 ) {
 
     if ( count($aPeso[1]) > 3) {
@@ -679,7 +679,7 @@ function buscaProfissionalSaude( $oRetorno ) {
   if ( pg_num_rows($rsMedicos) > 0 ) {
 
     $oProfissional     = db_utils::fieldsmemory($rsMedicos, 0);
-    $oRetorno->sMedico = urlencode($oProfissional->z01_nome);
+    $oRetorno->sMedico = urlencode((string) $oProfissional->z01_nome);
     $oRetorno->iMedico = $oProfissional->sd03_i_codigo;
     $oRetorno->lProfissionalSaude = true;
   }

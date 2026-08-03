@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_responsaveltecnico_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clresponsaveltecnico = new cl_responsaveltecnico;
 $clresponsaveltecnico->rotulo->label("am07_sequencial");
 $clresponsaveltecnico->rotulo->label("am07_cgm");
@@ -78,9 +78,9 @@ $clresponsaveltecnico->rotulo->label("am07_cgm");
         }else{
            $sql = $clresponsaveltecnico->sql_query("",$campos,"am07_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_am07_cgm)){
-          $repassa = array("chave_am07_sequencial"=>$chave_am07_sequencial,"chave_am07_cgm"=>$chave_am07_cgm);
+          $repassa = ["chave_am07_sequencial"=>$chave_am07_sequencial,"chave_am07_cgm"=>$chave_am07_cgm];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

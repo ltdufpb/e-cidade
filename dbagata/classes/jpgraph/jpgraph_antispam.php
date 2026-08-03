@@ -9,9 +9,9 @@
 //========================================================================
 
 class HandDigits {
-    var $chars = array();
-    var $iHeight=30, $iWidth=30;
-    function HandDigits() {
+    public $chars = [];
+    public $iHeight=30, $iWidth=30;
+    function __construct() {
 
 //==========================================================
 // lj-small.jpg
@@ -544,11 +544,9 @@ $this->chars['q'][1]=
 
 class AntiSpam {
 
-    var $iData='';
-    var $iDD=null;
+    public $iDD=null;
 
-    function AntiSpam($aData='') {
-	$this->iData = $aData;
+    function __construct(public $iData='') {
 	$this->iDD = new HandDigits();	
     }
 
@@ -559,14 +557,14 @@ class AntiSpam {
     function Rand($aLen) {
 	$d='';
 	for($i=0; $i < $aLen; ++$i) {
-	    if( rand(0,9) < 6 ) {
+	    if( random_int(0,9) < 6 ) {
 		// Digits
-		$d .= chr( ord('1') + rand(0,8) );
+		$d .= chr( ord('1') + random_int(0,8) );
 	    }
 	    else {
 		// Letters
 		do {
-		    $offset = rand(0,25);
+		    $offset = random_int(0,25);
 		} while ( $offset==14 );
 		$d .= chr( ord('a') + $offset );
 	    }
@@ -577,13 +575,13 @@ class AntiSpam {
 
     function Stroke($aStrokeFileName="") {
 
-	$n=strlen($this->iData);
+	$n=strlen((string) $this->iData);
 	if( $n==0 ) {
 	    return false;
 	}
 
 	for($i=0; $i < $n; ++$i ) {
-	    if( $this->iData[$i]==='0' || strtolower($this->iData[$i])==='o') {
+	    if( $this->iData[$i]==='0' || strtolower((string) $this->iData[$i])==='o') {
 		return false;
 	    }
 	}
@@ -595,7 +593,7 @@ class AntiSpam {
 
 	$start=0;
 	for($i=0; $i < $n; ++$i ) {
-	    $dimg = imagecreatefromstring(base64_decode($this->iDD->chars[strtolower($this->iData[$i])][1]));
+	    $dimg = imagecreatefromstring(base64_decode((string) $this->iDD->chars[strtolower((string) $this->iData[$i])][1]));
 	    imagecopy($img,$dimg,$start,0,0,0,imagesx($dimg), $this->iDD->iHeight);
 	    $start += imagesx($dimg);
 	}

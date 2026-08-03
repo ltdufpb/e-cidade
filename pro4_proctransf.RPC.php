@@ -62,7 +62,7 @@ switch ($oPost->sMethod) {
     case 'validaDeptoInicial':
 
         $aListaProcesso = $oJson->decode(str_replace("\\", "", $oPost->aListaProcesso));
-        $aListaDiferenca = array();
+        $aListaDiferenca = [];
         foreach ($aListaProcesso as $iInd => $iCodProcesso) {
             $rsAndPadrao = $clProtProcesso->sql_record($clProtProcesso->sql_query_andpadrao($iCodProcesso, "*",
                 "p53_ordem desc"));
@@ -81,7 +81,7 @@ switch ($oPost->sMethod) {
                 }
             }
         }
-        $aRetorno = array("aListaDiferenca" => $aListaDiferenca);
+        $aRetorno = ["aListaDiferenca" => $aListaDiferenca];
         break;
 
     case 'incluirTramite':
@@ -279,11 +279,11 @@ switch ($oPost->sMethod) {
         } else {
             $iCodTran = '';
         }
-        $aRetorno = array(
+        $aRetorno = [
             "lErro" => $lErro,
             "sMsg" => urlencode($sMsgErro),
             "iCodTran" => $iCodTran
-        );
+        ];
         break;
 
     case 'incluirTransferencia':
@@ -385,7 +385,7 @@ switch ($oPost->sMethod) {
                 if ($oPost->iGrupo != 2) {
                     try {
                         $departamento = DBDepartamentoRepository::getPorCodigo($oPost->iCodDeptoRec);
-                    } catch (Exception $e) {
+                    } catch (Exception) {
                         $departamento = null;
                     }
 
@@ -405,16 +405,16 @@ switch ($oPost->sMethod) {
         } else {
             $iCodTran = '';
         }
-        $aRetorno = array(
+        $aRetorno = [
             "lErro" => $lErro,
             "sMsg" => urlencode($sMsgErro),
             "iCodTran" => $iCodTran
-        );
+        ];
         break;
 
     case 'validaProximoDepto':
         $aListaProcesso = $oJson->decode(str_replace("\\", "", $oPost->aListaProcesso));
-        $aListaDiferenca = array();
+        $aListaDiferenca = [];
         foreach ($aListaProcesso as $iInd => $iCodProcesso) {
             $rsDadosProcesso = $clProtProcesso->sql_record($clProtProcesso->sql_query($iCodProcesso));
             $oDadosProcesso = db_utils::fieldsMemory($rsDadosProcesso, 0, false, false, true);
@@ -442,7 +442,7 @@ switch ($oPost->sMethod) {
                 $aListaDiferenca[] = $oDadosProcesso;
             }
         }
-        $aRetorno = array("aListaDiferenca" => $aListaDiferenca);
+        $aRetorno = ["aListaDiferenca" => $aListaDiferenca];
         break;
 
     /**
@@ -458,7 +458,7 @@ switch ($oPost->sMethod) {
         $iInstituicao = db_getsession("DB_instit");
         $iDepartamento = db_getsession("DB_coddepto");
         $iIdUsuario = db_getsession("DB_id_usuario");
-        $sOrdem = (isset($oPost->sOrdem)) ? $oPost->sOrdem : " p58_codproc ";
+        $sOrdem = $oPost->sOrdem ?? " p58_codproc ";
         /**
          * Declaração da parte comumentre os dois tipos de WHERE
          */
@@ -474,7 +474,7 @@ switch ($oPost->sMethod) {
         $sSqlBuscaProcessos = $oDaoProtProcesso->sql_query_processosemtramit($oPost->iGrupo, $sOrdem, $sWhereProcessos);
         $rsBuscaProcessos   = $oDaoProtProcesso->sql_record($sSqlBuscaProcessos);
         
-        $aProcessosEncontrados = array();
+        $aProcessosEncontrados = [];
         for ($iIndiceProcessos = 0; $iIndiceProcessos < $oDaoProtProcesso->numrows; $iIndiceProcessos++) {
             $oProcessoEncontrado = db_utils::fieldsMemory($rsBuscaProcessos, $iIndiceProcessos);
             $lLimite = "false";
@@ -487,14 +487,14 @@ switch ($oPost->sMethod) {
             }
             $oProcesso = new stdClass();
             $oProcesso->p58_codproc = $oProcessoEncontrado->p58_codproc;
-            $oProcesso->z01_nome = urlencode($oProcessoEncontrado->z01_nome);
-            $oProcesso->p51_descr = urlencode($oProcessoEncontrado->p51_descr);
+            $oProcesso->z01_nome = urlencode((string) $oProcessoEncontrado->z01_nome);
+            $oProcesso->p51_descr = urlencode((string) $oProcessoEncontrado->p51_descr);
             $oProcesso->p58_id_usuario = $oProcessoEncontrado->p58_id_usuario;
             $oProcesso->p58_codandam = $oProcessoEncontrado->p58_codandam;
             $oProcesso->ov01_numero = $oProcessoEncontrado->ov01_numero;
             $oProcesso->ov01_anousu = $oProcessoEncontrado->ov01_anousu;
             $oProcesso->coddepto = $oProcessoEncontrado->coddepto;
-            $oProcesso->descrdepto = urlencode($oProcessoEncontrado->descrdepto);
+            $oProcesso->descrdepto = urlencode((string) $oProcessoEncontrado->descrdepto);
             $oProcesso->limite = $oProcessoEncontrado->limite;
             $oProcesso->limiteBloqueado = $lLimite;
             $oProcesso->p58_ano = $oProcessoEncontrado->p58_ano;
@@ -504,7 +504,7 @@ switch ($oPost->sMethod) {
             $aProcessosEncontrados[] = $oProcesso;
         }
         
-        $aRetorno = array('aProcessosEncontrados' => $aProcessosEncontrados);
+        $aRetorno = ['aProcessosEncontrados' => $aProcessosEncontrados];
         break;
 }
 

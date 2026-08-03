@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_far_retirada_classe.php"));
 require_once(modification("classes/db_far_retiradaitens_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo            = new rotulocampo;
 $clfar_retiradaitens = new cl_far_retiradaitens;

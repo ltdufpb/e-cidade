@@ -76,7 +76,7 @@ try {
 
     case "alterarSitucacao":
 
-      if (!in_array($oParam->iHomologado, array(cronogramaFinanceiro::SITUACAO_ABERTO, cronogramaFinanceiro::SITUACAO_HOMOLOGADO))) {
+      if (!in_array($oParam->iHomologado, [cronogramaFinanceiro::SITUACAO_ABERTO, cronogramaFinanceiro::SITUACAO_HOMOLOGADO])) {
         throw new Exception("A Situação informada é invalida.");
       }
 

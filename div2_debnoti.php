@@ -31,9 +31,9 @@ include(modification("libs/db_sql.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('');
 $clrotulo->label('z01_nome');
-db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 $chaves1 = db_getsession('chaves1');
 db_destroysession('chaves1');
 $head3 = "Débitos notificados que não foram prescritos.";
@@ -56,9 +56,9 @@ if( $rsCriaTabela == false ){
 }
 $where = " where ";
 $or = ""; 
-$arr_info = split("XVX",$chaves1);
+$arr_info = preg_split("#XVX#m",$chaves1);
 for ($w=0;$w<count($arr_info);$w++){
-	$arr_dados = split("-",$arr_info[$w]);
+	$arr_dados = preg_split("#\\-#m",(string) $arr_info[$w]);
 	$numpre1 = $arr_dados[0];
 	$numpar1 = $arr_dados[1];
 	//$where .= $or." (listadeb.k61_numpre = $numpre and listadeb.k61_numpar= $numpar)  ";
@@ -110,7 +110,7 @@ $sql ="select k00_numcgm,k00_matric,k00_inscr,k00_numpre,k00_numpar,k53_notifica
 					    		";
 									//die($sql);
 $result=db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 if ($numrows == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
@@ -150,7 +150,7 @@ for($x = 0; $x < $numrows;$x++){
    $pdf->cell(15,$alt,$k00_inscr,0,0,"C",$p);
    $pdf->cell(15,$alt,$k00_numpre,0,0,"C",$p);
    $pdf->cell(15,$alt,$k00_numpar,0,0,"C",$p);
-   $pdf->cell(50,$alt,substr($z01_nome,0,28),0,0,"L",$p);
+   $pdf->cell(50,$alt,substr((string) $z01_nome,0,28),0,0,"L",$p);
    $pdf->cell(20,$alt,$k53_notifica,0,0,"C",$p);
    $pdf->cell(15,$alt,$k63_codigo,0,0,"C",$p);
    $pdf->cell(15,$alt,db_formatar($k50_dtemite,"d"),0,0,"C",$p);

@@ -72,7 +72,7 @@ switch ($oParam->exec) {
           $oPais               = new stdClass();
           $oPais->codigo       = $oDadosPais->codigo;
           $oPais->codpais      = $oDadosPais->codpais;
-          $oPais->descricao    = utf8_encode($oDadosPais->db70_descricao);
+          $oPais->descricao    = mb_convert_encoding($oDadosPais->db70_descricao, 'UTF-8', 'ISO-8859-1');
           $oRetorno->aPaises[] = $oPais;
         }
 

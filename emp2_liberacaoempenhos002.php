@@ -47,12 +47,12 @@ $sAnd          = "";
 if (isset($oGet->dtliberacaoini) && isset($oGet->dtliberacaofim)) {
       
   if (!empty($oGet->dtliberacaoini)) {
-    $dtDataIni = split("/", $oGet->dtliberacaoini);
+    $dtDataIni = preg_split("#\\/#m", (string) $oGet->dtliberacaoini);
     $dtDataIni = $dtDataIni[2]."-".$dtDataIni[1]."-".$dtDataIni[0];
   }
 
   if (!empty($oGet->dtliberacaofim)) {
-    $dtDataFim = split("/", $oGet->dtliberacaofim);
+    $dtDataFim = preg_split("#\\/#m", (string) $oGet->dtliberacaofim);
     $dtDataFim = $dtDataFim[2]."-".$dtDataFim[1]."-".$dtDataFim[0];
   }
        
@@ -208,7 +208,7 @@ for ( $iInd = 0; $iInd  < $iRsSql; $iInd++ ) {
     }
     
     if (!empty($oEmpenhos->z01_cgccpf)) {
-    	$iTam = strlen($oEmpenhos->z01_cgccpf);
+    	$iTam = strlen((string) $oEmpenhos->z01_cgccpf);
     	if ($iTam == 11) {
     		$sCpfCnpj = db_formatar($oEmpenhos->z01_cgccpf,'cpf');
     	} else {

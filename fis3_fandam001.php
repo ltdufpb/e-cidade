@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='fis3_fandam005.php'</script>";
   exit;
@@ -41,7 +41,7 @@ include(modification("classes/db_fandam_classe.php"));
 include(modification("classes/db_fandamusu_classe.php"));
 include(modification("classes/db_vistusuario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo        = new rotulocampo;
 $clvistorias     = new cl_vistorias;
 $cltipovistorias = new cl_tipovistorias;
@@ -52,7 +52,7 @@ $clvistusuario   = new cl_vistusuario;
 $clrotulo->label("y39_codandam");
 $db_opcao = 1;
 $db_botao = true;
-if(isset($y70_codvist) && !isset($HTTP_POST_VARS["db_opcao"])){
+if(isset($y70_codvist) && !isset($_POST["db_opcao"])){
    $db_opcao = 3;
 //   die($clvistorias->sql_query($y70_codvist,"vistorias.*,tipovistorias.y77_descricao")); 
    $result = $clvistorias->sql_record($clvistorias->sql_query($y70_codvist,"vistorias.*,tipovistorias.y77_descricao")); 
@@ -73,7 +73,7 @@ if(isset($y70_codvist) && !isset($HTTP_POST_VARS["db_opcao"])){
      exit;
    }
 }
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   db_inicio_transacao();
   $sqlerro = false;
   $clfandam->incluir($y39_codandam);
@@ -138,7 +138,7 @@ function js_vist(codigo){
 }
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clvistorias->erro_status=="0"){
     $clvistorias->erro(true,false);
     $db_botao=true;

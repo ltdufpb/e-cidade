@@ -68,9 +68,9 @@ $db_opcao = 1;
 		  $prorrogar = 0;
 	  }
      
-	  $clcriaabas->identifica = array("tarefa"=>"Tarefa","tarefaobs"=>"Observações","tarefausu"=>"Usu. iniciais","tarefaclientes"=>"Clientes","tarefalog"=>"Registros","tarefaanexos"=>"Anexos");
-	  $clcriaabas->src        = array("tarefa"=>"ate1_tarefa005.php?aut=".$aut."&canc=".$canc."&prorrogar=".$prorrogar."&tipotar=".@$tipotar);
-	  $clcriaabas->disabled   = array("tarefausu"=>"true","tarefaclientes"=>"true","tarefaanexos"=>"true"); 
+	  $clcriaabas->identifica = ["tarefa"=>"Tarefa","tarefaobs"=>"Observações","tarefausu"=>"Usu. iniciais","tarefaclientes"=>"Clientes","tarefalog"=>"Registros","tarefaanexos"=>"Anexos"];
+	  $clcriaabas->src        = ["tarefa"=>"ate1_tarefa005.php?aut=".$aut."&canc=".$canc."&prorrogar=".$prorrogar."&tipotar=".@$tipotar];
+	  $clcriaabas->disabled   = ["tarefausu"=>"true","tarefaclientes"=>"true","tarefaanexos"=>"true"]; 
 	  $clcriaabas->cria_abas(); 
        ?> 
        </td>

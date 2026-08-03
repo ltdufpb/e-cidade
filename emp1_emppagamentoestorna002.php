@@ -98,8 +98,8 @@ $cltranslan = new cl_translan;
 $ip = db_getsession("DB_ip");
 $porta = 5001;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $db_opcao = 22;
 $db_botao = false;
@@ -129,7 +129,7 @@ if (isset($confirmar)) {
 
       // verifica se esta na empresto
       $result  = db_query("select e91_numemp from empresto where e91_numemp = $e60_numemp");
-      $tot_reg = pg_numrows($result);
+      $tot_reg = pg_num_rows($result);
 
       if ($tot_reg == 0) {
         $erro_msg = "Pagamento de RP não estornado";
@@ -146,7 +146,7 @@ if (isset($confirmar)) {
 
       //db_criatabela($result_erro);exit;
 
-      $erro_msg = pg_result($result_erro, 0, 0);
+      $erro_msg = pg_fetch_result($result_erro, 0, 0);
 
       if (substr($erro_msg, 0, 2) > 0) {
 
@@ -169,11 +169,11 @@ if (isset($confirmar)) {
     }
   }
   //array que irá armazenar os valores de cada elemento para fazer os lancamentos contabeis
-  $arr_codeleval = array();
-  $arr_dados = split("#", $dados);
+  $arr_codeleval = [];
+  $arr_dados = preg_split("#\\##m", $dados);
   $tam = count($arr_dados);
   for ($i = 0; $i < $tam; $i ++) {
-    $arr_ele = split("-", $arr_dados[$i]);
+    $arr_ele = preg_split("#\\-#m", (string) $arr_dados[$i]);
     //$arr_ele[0] é o codigo do elemento   $arr_ele[1] é o valor que será estornado  $arr_ele[2] é o valor que já foi anulado
 
     $elemento = $arr_ele[0];
@@ -299,10 +299,10 @@ if (isset($confirmar)) {
         if ($sqlerro == false) {
           $result85 = db_query("select fc_lancam_dotacao($e60_coddot,'$datausu',$c71_coddoc,'$valor_estornar') as dotacao");
           db_fieldsmemory($result85, 0);
-          if (substr($dotacao, 0, 1) == 0) {
+          if (substr((string) $dotacao, 0, 1) == 0) {
             //quando o primeiro caractere for igual a zero eh porque deu erro
             $sqlerro = true;
-            $erro_msg = "Erro na atualização do orçamento \\n ".substr($dotacao, 1);
+            $erro_msg = "Erro na atualização do orçamento \\n ".substr((string) $dotacao, 1);
           }
         }
         /*fim-orcdotacaoval*/
@@ -551,7 +551,7 @@ die();
         $erro_msg = "Erro na função FC_AUTENTEMP!!";
       } else {
         db_fieldsmemory($result, 0);
-				if (substr($retorno,0,1) != '1'){
+				if (!str_starts_with((string) $retorno, '1')){
 
             $erro_msg = $retorno;
 						$sqlerro  = true;
@@ -637,7 +637,7 @@ if (isset($pag_emp) && empty($confirmar) ) {
   $db_botao = true;
   //rotina que traz os dados de empempenho
   if (isset($e60_codemp) && $e60_codemp != '') {
-    $arr = split("/", $e60_codemp);
+    $arr = preg_split("#\\/#m", (string) $e60_codemp);
     if (count($arr) == 2 && isset($arr[1]) && $arr[1] != '') {
       $dbwhere_ano = " and e60_anousu = ".$arr[1];
     } else {
@@ -667,7 +667,7 @@ if (isset($pag_emp) && empty($confirmar) ) {
     $existe_ordem = true;
     // db_fieldsmemory($result01,0);
     // if($saldo!=0){
-    php_erro("Empenho possui ordens de pagamento, acesse pelo numero da OP !",'true');
+    php_erro("Empenho possui ordens de pagamento, acesse pelo numero da OP !");
     exit;
     // }
 

@@ -133,7 +133,7 @@ function js_atualiza2(qual){
 			    ?>
                 <select onChange="js_atualiza1(this.name)" name="debito" id="debito">
                 <?php 
-				    for($i=0;$i<pg_numrows($result_conta1);$i++){
+				    for($i=0;$i<pg_num_rows($result_conta1);$i++){
 	                  db_fieldsmemory($result_conta1,$i,true,true);
   	                  echo "<option value=\"$c61_reduz\" ".(isset($debito)?($debito==$c61_reduz?"selected":""):"").">$c61_reduz</option>";
 		            }
@@ -142,7 +142,7 @@ function js_atualiza2(qual){
               &nbsp;&nbsp; 
               <select onChange="js_atualiza1(this.name)" name="descr_debito" id="descr_debito"> 
               <?php 
- 				    for($i=0;$i<pg_numrows($result_conta1);$i++){
+ 				    for($i=0;$i<pg_num_rows($result_conta1);$i++){
 	                  db_fieldsmemory($result_conta1,$i);
   	                  echo "<option value=\"$c61_reduz\" ".(isset($debito)?($debito==$c61_reduz?"selected":""):"").">$c60_descr</option>";
 		            }
@@ -165,7 +165,7 @@ function js_atualiza2(qual){
 			    ?>
    			      <select onChange="js_atualiza2(this.name)" name="credito" id="credito">
                   <?php 
- 				     for($i=0;$i<pg_numrows($result_conta2);$i++){
+ 				     for($i=0;$i<pg_num_rows($result_conta2);$i++){
 	                     db_fieldsmemory($result_conta2,$i);
   	                     echo "<option value=\"$k13_reduz\" ".(isset($credito)?($credito==$c01_reduz?"selected":""):"").">$k13_reduz</option>";
 		              }
@@ -174,7 +174,7 @@ function js_atualiza2(qual){
                    &nbsp;&nbsp; 
 				   <select onChange="js_atualiza2(this.name)" <?=$read_only?> name="descr_credito" id="descr_credito">
 				   <?php 
- 				   for($i=0;$i<pg_numrows($result_conta2);$i++){
+ 				   for($i=0;$i<pg_num_rows($result_conta2);$i++){
 	                  db_fieldsmemory($result_conta2,$i);
   	                  echo "<option value=\"$k13_reduz\" ".(isset($credito)?($credito==$k13_reduz?"selected":""):"").">$k13_descr</option>";
 		           }

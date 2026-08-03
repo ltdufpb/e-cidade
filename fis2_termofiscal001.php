@@ -111,7 +111,7 @@ if ($numrowstipo > 0){
         <td><b>Opcoes : </b></td>
         <td>
            <?php 
-			$l = array ("c" => "Com as classes selecionadas", "s" => "Sem as classes selecionadas");
+			$l =  ["c" => "Com as classes selecionadas", "s" => "Sem as classes selecionadas"];
 			db_select('tipo', $l, true, 2);
 		   ?>
 	    </td>
@@ -120,7 +120,7 @@ if ($numrowstipo > 0){
         <td><b>Reemissão : </b></td>
         <td>
            <?php 
-			$re = array ("n" => "Não", "s" => "Sim");
+			$re =  ["n" => "Não", "s" => "Sim"];
 			db_select('reemis', $re, true, 2);
 		   ?>
 	    </td>

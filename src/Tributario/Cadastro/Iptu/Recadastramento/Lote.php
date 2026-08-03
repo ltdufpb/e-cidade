@@ -33,7 +33,7 @@ class Lote
      * Array de características
      * @var array
      */
-    private $aCaracteristicasLote = array();
+    private $aCaracteristicasLote = [];
 
     /**
      * Código do Lote(idbql)

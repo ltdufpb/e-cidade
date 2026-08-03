@@ -61,10 +61,10 @@ switch ($id){
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php
-   $clcriaabas->identifica   = array("a1"=>"Dados Pessoais","a2"=>"Outros Dados","a3"=>"Documentos");
-   $clcriaabas->sizecampo    = array("a1"=>"15","a2"=>"10","a3"=>"15");
-   $clcriaabas->src          = array("a1"=>$arquivo,"a2"=>"","a3"=>"");
-   $clcriaabas->disabled     = array("a2"=>"true","a3"=>"true");
+   $clcriaabas->identifica   = ["a1"=>"Dados Pessoais","a2"=>"Outros Dados","a3"=>"Documentos"];
+   $clcriaabas->sizecampo    = ["a1"=>"15","a2"=>"10","a3"=>"15"];
+   $clcriaabas->src          = ["a1"=>$arquivo,"a2"=>"","a3"=>""];
+   $clcriaabas->disabled     = ["a2"=>"true","a3"=>"true"];
    $clcriaabas->cordisabled  = "#9b9b9b";
    $clcriaabas->iframe_width = "100%";
    $clcriaabas->cria_abas();

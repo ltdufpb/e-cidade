@@ -74,11 +74,11 @@ try {
             break;
 
         case 'getFormulariosESocial':
-            $oRetorno->formularios = array();
+            $oRetorno->formularios = [];
 
             $aFormularios = Formulario::getByVersaoAtual();
             foreach ($aFormularios as $oFormulario) {
-                if (trim($oFormulario->getCarga()) == '') {
+                if (trim((string) $oFormulario->getCarga()) == '') {
                     continue;
                 }
 

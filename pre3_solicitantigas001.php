@@ -75,7 +75,7 @@ input {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC">
-<?php  if(!isset($HTTP_POST_VARS["consultar"])) { ?>
+<?php  if(!isset($_POST["consultar"])) { ?>
 <table width="790" border="0" cellpadding="0" cellspacing="0" bgcolor="#5786B2">
   <tr> 
     <td width="360">&nbsp;</td>
@@ -147,7 +147,7 @@ input {
 </table>
 <?php  } else { ?>
 <?php 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $query = "SELECT 
 w11_revisado as \"Revisado\",

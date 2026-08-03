@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE db_sysfuncoescliente
 class cl_db_sysfuncoescliente { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db41_sysfuncoescliente = 0; 
-   var $db41_cliente = 0; 
-   var $db41_funcao = 0; 
+   public $db41_sysfuncoescliente = 0; 
+   public $db41_cliente = 0; 
+   public $db41_funcao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db41_sysfuncoescliente = int4 = Codigo 
                  db41_cliente = int4 = Código do cliente 
                  db41_funcao = int4 = Código Função 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysfuncoescliente() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysfuncoescliente"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_db_sysfuncoescliente {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db41_sysfuncoescliente = pg_result($result,0,0); 
+       $this->db41_sysfuncoescliente = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_sysfuncoescliente_db41_sysfuncoescliente_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db41_sysfuncoescliente)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db41_sysfuncoescliente)){
          $this->erro_sql = " Campo db41_sysfuncoescliente maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_db_sysfuncoescliente {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "db_sysfuncoescliente ($this->db41_sysfuncoescliente) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "db_sysfuncoescliente já Cadastrado";
@@ -166,12 +166,12 @@ class cl_db_sysfuncoescliente {
      $resaco = $this->sql_record($this->sql_query_file($this->db41_sysfuncoescliente));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9467,'$this->db41_sysfuncoescliente','I')");
-       $resac = db_query("insert into db_acount values($acount,1625,9467,'','".AddSlashes(pg_result($resaco,0,'db41_sysfuncoescliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1625,9469,'','".AddSlashes(pg_result($resaco,0,'db41_cliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1625,9470,'','".AddSlashes(pg_result($resaco,0,'db41_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1625,9467,'','".AddSlashes(pg_fetch_result($resaco,0,'db41_sysfuncoescliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1625,9469,'','".AddSlashes(pg_fetch_result($resaco,0,'db41_cliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1625,9470,'','".AddSlashes(pg_fetch_result($resaco,0,'db41_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_db_sysfuncoescliente {
       $this->atualizacampos();
      $sql = " update db_sysfuncoescliente set ";
      $virgula = "";
-     if(trim($this->db41_sysfuncoescliente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db41_sysfuncoescliente"])){ 
+     if(trim((string) $this->db41_sysfuncoescliente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db41_sysfuncoescliente"])){ 
        $sql  .= $virgula." db41_sysfuncoescliente = $this->db41_sysfuncoescliente ";
        $virgula = ",";
-       if(trim($this->db41_sysfuncoescliente) == null ){ 
+       if(trim((string) $this->db41_sysfuncoescliente) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "db41_sysfuncoescliente";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_db_sysfuncoescliente {
          return false;
        }
      }
-     if(trim($this->db41_cliente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db41_cliente"])){ 
+     if(trim((string) $this->db41_cliente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db41_cliente"])){ 
        $sql  .= $virgula." db41_cliente = $this->db41_cliente ";
        $virgula = ",";
-       if(trim($this->db41_cliente) == null ){ 
+       if(trim((string) $this->db41_cliente) == null ){ 
          $this->erro_sql = " Campo Código do cliente nao Informado.";
          $this->erro_campo = "db41_cliente";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_db_sysfuncoescliente {
          return false;
        }
      }
-     if(trim($this->db41_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db41_funcao"])){ 
+     if(trim((string) $this->db41_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db41_funcao"])){ 
        $sql  .= $virgula." db41_funcao = $this->db41_funcao ";
        $virgula = ",";
-       if(trim($this->db41_funcao) == null ){ 
+       if(trim((string) $this->db41_funcao) == null ){ 
          $this->erro_sql = " Campo Código Função nao Informado.";
          $this->erro_campo = "db41_funcao";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_db_sysfuncoescliente {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9467,'$this->db41_sysfuncoescliente','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db41_sysfuncoescliente"]))
-           $resac = db_query("insert into db_acount values($acount,1625,9467,'".AddSlashes(pg_result($resaco,$conresaco,'db41_sysfuncoescliente'))."','$this->db41_sysfuncoescliente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1625,9467,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db41_sysfuncoescliente'))."','$this->db41_sysfuncoescliente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db41_cliente"]))
-           $resac = db_query("insert into db_acount values($acount,1625,9469,'".AddSlashes(pg_result($resaco,$conresaco,'db41_cliente'))."','$this->db41_cliente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1625,9469,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db41_cliente'))."','$this->db41_cliente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db41_funcao"]))
-           $resac = db_query("insert into db_acount values($acount,1625,9470,'".AddSlashes(pg_result($resaco,$conresaco,'db41_funcao'))."','$this->db41_funcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1625,9470,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db41_funcao'))."','$this->db41_funcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_db_sysfuncoescliente {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9467,'$db41_sysfuncoescliente','E')");
-         $resac = db_query("insert into db_acount values($acount,1625,9467,'','".AddSlashes(pg_result($resaco,$iresaco,'db41_sysfuncoescliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1625,9469,'','".AddSlashes(pg_result($resaco,$iresaco,'db41_cliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1625,9470,'','".AddSlashes(pg_result($resaco,$iresaco,'db41_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1625,9467,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db41_sysfuncoescliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1625,9469,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db41_cliente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1625,9470,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db41_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_sysfuncoescliente
@@ -345,7 +345,7 @@ class cl_db_sysfuncoescliente {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_sysfuncoescliente";
@@ -359,7 +359,7 @@ class cl_db_sysfuncoescliente {
    function sql_query ( $db41_sysfuncoescliente=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_db_sysfuncoescliente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_db_sysfuncoescliente {
    function sql_query_file ( $db41_sysfuncoescliente=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_db_sysfuncoescliente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

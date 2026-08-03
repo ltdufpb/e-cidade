@@ -35,15 +35,15 @@ include(modification("classes/db_editalproj_classe.php"));
 include(modification("classes/db_editaldoc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $cledital     = new cl_edital;
 $cleditalrua  = new cl_editalrua;
 $cleditalproj = new cl_editalproj;
 $cleditaldoc  = new cl_editaldoc;
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $db_opcao = 3;
 
@@ -60,7 +60,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
     $cleditaldoc->excluir(null," d13_edital = $codedi ");
     if ( $cleditaldoc->erro_status == '0' ) {
       $sqlerro = true;
-      break;
+      return;
     }
   }
 

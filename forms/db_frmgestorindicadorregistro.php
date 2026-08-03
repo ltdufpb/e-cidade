@@ -172,7 +172,7 @@ if (isset($opcao) && $opcao == "alterar") {
   <tr>
     <td valign="top"> 
     <?php 
-     $chavepri= array("g05_sequencial"=>@$g05_sequencial);
+     $chavepri= ["g05_sequencial"=>@$g05_sequencial];
      $cliframe_alterar_excluir->chavepri=$chavepri;
      
      $sWhere        = "g05_instit = {$iInstit} ";

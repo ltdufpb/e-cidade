@@ -49,7 +49,7 @@ class GeracaoArquivoRetornoConsignet {
    * @param DBCompetencia $oCompetencia
    * @throws DBException
    */
-  public function __construct( Instituicao $oInstituicao, DBCompetencia $oCompetencia = null) {
+  public function __construct( Instituicao $oInstituicao, ?DBCompetencia $oCompetencia = null) {
 
     $this->oArquivoMovimentacao = ArquivoConsignetRepository::getUltimoArquivo($oInstituicao, $oCompetencia, true);
     $this->oArquivoMovimentacao->carregarRegistros();
@@ -93,7 +93,7 @@ class GeracaoArquivoRetornoConsignet {
   private function getRegistros() {
 
     $aRegistros = $this->oArquivoMovimentacao->getRegistros();
-    $aRetorno   = array();
+    $aRetorno   = [];
     $this->oArquivoMovimentacao->limparRegistros();
 
     foreach ( $aRegistros as $oRegistro ) {
@@ -117,12 +117,12 @@ class GeracaoArquivoRetornoConsignet {
 
       $oRetorno                    = new stdClass();
 
-      $oRetorno->matricula         = str_pad($oRegistro->getMatricula(), 10, "0", STR_PAD_LEFT);
+      $oRetorno->matricula         = str_pad((string) $oRegistro->getMatricula(), 10, "0", STR_PAD_LEFT);
       $oRetorno->cpf               = $oRegistro->getServidor()->hasCgm() ? $oRegistro->getServidor()->getCgm()->getCpf() : '' ;
       $oRetorno->nome_servidor     = $oRegistro->getNome();
       $oRetorno->estabelecimento   = $oRegistro->getArquivo()->getInstituicao()->getSequencial();
       $oRetorno->orgao             = $oRegistro->getArquivo()->getInstituicao()->getSequencial();
-      $oRetorno->rubrica           = str_pad($oRegistro->getRubric(), 4, "0", STR_PAD_LEFT);
+      $oRetorno->rubrica           = str_pad((string) $oRegistro->getRubric(), 4, "0", STR_PAD_LEFT);
       $oRetorno->valor_previsto    = $oRegistro->getValorParcela();
 
       $oRetorno->valor_descontado  = $nValor;

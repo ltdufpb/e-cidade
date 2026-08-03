@@ -90,7 +90,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ma05_i_codigo"=>@$ma05_i_codigo,"ma05_i_marca"=>@$ma05_i_marca,"ma05_i_local"=>@$ma05_i_local,"ma04_c_descr"=>@$ma04_c_descr);
+   $chavepri= ["ma05_i_codigo"=>@$ma05_i_codigo,"ma05_i_marca"=>@$ma05_i_marca,"ma05_i_local"=>@$ma05_i_local,"ma04_c_descr"=>@$ma04_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $clmarcaloc->sql_query("","marcaloc.ma05_i_codigo,marcaloc.ma05_i_marca,marcaloc.ma05_i_local,localmarca.ma04_i_codigo,localmarca.ma04_c_descr,localmarca.ma04_c_subdistrito","","marcaloc.ma05_i_marca = ".@$ma05_i_marca);
    //$cliframe_alterar_excluir->sql_disabled  = $clautoracervo->sql_query("","*","","bi21_acervo = $bi21_acervo");

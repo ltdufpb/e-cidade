@@ -62,12 +62,12 @@ if($db_opcao==1){
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica = array('a1'=>'Central de Agendamentos',
-                                   'a2'=>'Prestadoras');
-   $clcriaabas->src = array('a1'=>$sArquivo,
-                            'a2'=>'');
-   $clcriaabas->sizecampo  = array('a1'=>25,'a2'=>25);
-   $clcriaabas->disabled   =  array('a1'=>'false','a2'=>'true');
+   $clcriaabas->identifica = ['a1'=>'Central de Agendamentos',
+                                   'a2'=>'Prestadoras'];
+   $clcriaabas->src = ['a1'=>$sArquivo,
+                            'a2'=>''];
+   $clcriaabas->sizecampo  = ['a1'=>25,'a2'=>25];
+   $clcriaabas->disabled   =  ['a1'=>'false','a2'=>'true'];
    $clcriaabas->scrolling  = 'no';
    $clcriaabas->iframe_height= '600';
    $clcriaabas->iframe_width= '100%';

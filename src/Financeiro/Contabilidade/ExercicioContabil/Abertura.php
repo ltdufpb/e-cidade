@@ -37,7 +37,7 @@ class Abertura extends ExercicioContabil
      */
     public function getDocumentosParaProcessamento()
     {
-        return array(
+        return [
             Documento::ABERTURA_ORCAMENTO_RECEITA,
             Documento::ABERTURA_ORCAMENTO_DESPESA,
             //Documento::ABERTURA_TRANSFERENCIA_SALDOS_RPNP_EX_ANT, nao serao processados esse ano  (2020)
@@ -45,7 +45,7 @@ class Abertura extends ExercicioContabil
             Documento::ABERTURA_TRANSFERENCIA_SALDOS_RPNP_INSCRITOS_EX_ANT,
             Documento::ABERTURA_TRANSFERENCIA_SALDOS_RPP_INSCRITOS_EX_ANT,
 
-        );
+        ];
     }
 
     protected function cancelarDocumento($codigoDocumento)
@@ -81,6 +81,7 @@ class Abertura extends ExercicioContabil
      * @return boolean true
      * @throws \Exception
      */
+    #[\Override]
     public function cancelar()
     {
         foreach ($this->getDocumentosParaProcessamento() as $codigoDocumento) {
@@ -146,7 +147,7 @@ class Abertura extends ExercicioContabil
             $documento,
             $eventoContabil
         ) {
-            $instancia->mensagensLog = array();
+            $instancia->mensagensLog = [];
             $lancamentoAuxiliar = $instancia->getLancamentoAuxiliar($documento, $dados);
             if (empty($lancamentoAuxiliar)) {
                 throw new \Exception("Não foi possível executar identificar o o lancamento. ");

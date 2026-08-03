@@ -88,7 +88,7 @@ db_input('t52_descr',40,$It52_descr,true,'text',3);
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("t82_codapo"=>@$t82_codapo,"t82_codbem"=>@$t82_codbem);
+	 $chavepri= ["t82_codapo"=>@$t82_codapo,"t82_codbem"=>@$t82_codbem];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clapolitem->sql_query_file($t82_codapo);
 	 $cliframe_alterar_excluir->campos  ="t82_codapo,t82_codbem";

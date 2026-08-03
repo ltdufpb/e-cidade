@@ -31,11 +31,6 @@
 class PlanilhaDistribuicao {
 
   /**
-   * @var integer
-   */
-  private $iCodigo;
-
-  /**
    * @var string
    */
   private $sDescricao;
@@ -44,13 +39,13 @@ class PlanilhaDistribuicao {
    *
    * @var MaterialAlmoxarifado[]
    */
-  private $aMateriais = array();
+  private $aMateriais = [];
 
   /**
    *
    * @var DBDepartamento[]
    */
-  private $aDepartamentos = array();
+  private $aDepartamentos = [];
 
   const LINHA_DEPARTAMENTOS         = 1;
   const LINHA_INICIO_MATERIAIS      = 4;
@@ -62,15 +57,14 @@ class PlanilhaDistribuicao {
    * @param integer $iCodigo Sequencial da planilha
    * @throws ParameterException
    */
-  public function __construct($iCodigo = null) {
+  public function __construct(private $iCodigo = null) {
 
-    $this->iCodigo = $iCodigo;
     if (empty($this->iCodigo)) {
       return;
     }
 
     $oDaoPlanilha = new cl_planilhadistribuicao;
-    $sSqlPlanilha = $oDaoPlanilha->sql_query_file($iCodigo);
+    $sSqlPlanilha = $oDaoPlanilha->sql_query_file($this->iCodigo);
     $rsPlanilha   = $oDaoPlanilha->sql_record($sSqlPlanilha);
     if ($oDaoPlanilha->numrows == 0) {
       throw new ParameterException("Planilha não encontrada.");
@@ -280,12 +274,12 @@ class PlanilhaDistribuicao {
    */
   private function gerarCabecalho() {
 
-    $aColunasDescricao    = array(null,null);
+    $aColunasDescricao    = [null,null];
 
-    $aLinhas = array();
+    $aLinhas = [];
     $iDepartamentosNaoAtendidos = 0;
     $aDepartamentosAtendidos = $this->getDepartamentosAtendidos();
-    $aColunasCodigo = array(null,null);
+    $aColunasCodigo = [null,null];
     foreach ($this->getDepartamentos() as $iChave => $oDepartamento) {
 
       /**
@@ -302,7 +296,7 @@ class PlanilhaDistribuicao {
 
     $iQuantidadeColunas   = count($this->getDepartamentos()) - $iDepartamentosNaoAtendidos;
     $aDepartamento        = array_fill(0, $iQuantidadeColunas, 'Departamento');
-    $aColunasDepartamento = array_merge(array(null,null), $aDepartamento);
+    $aColunasDepartamento = array_merge([null,null], $aDepartamento);
 
     /**
      * Repete a coluna "Quantidade" para cada departamento
@@ -311,7 +305,7 @@ class PlanilhaDistribuicao {
     $aLinhas[] = $aColunasDepartamento;
     $aLinhas[] = $aColunasCodigo;
     $aLinhas[] = $aColunasDescricao;
-    $aLinhas[] = array_merge(array('Código', 'Material - Unidade'), $aQuantidade);
+    $aLinhas[] = array_merge(['Código', 'Material - Unidade'], $aQuantidade);
 
     return $aLinhas;
   }
@@ -323,13 +317,13 @@ class PlanilhaDistribuicao {
    */
   private function gerarLinhas() {
 
-    $aLinhas = array();
+    $aLinhas = [];
     foreach ($this->getMateriais() as $oMaterial) {
 
       if (!$oMaterial->ativo()) {
         continue;
       }
-      $aLinhas[] = array($oMaterial->getCodigo(), "{$oMaterial->getDescricao()} - {$oMaterial->getUnidade()->getAbreviatura()}");
+      $aLinhas[] = [$oMaterial->getCodigo(), "{$oMaterial->getDescricao()} - {$oMaterial->getUnidade()->getAbreviatura()}"];
     }
 
     return $aLinhas;
@@ -349,7 +343,7 @@ class PlanilhaDistribuicao {
     $aLinhas          = array_merge($aLinhasCabecalho, $aLinhasCorpo);
 
     foreach ($aLinhas as $aLinha) {
-      fputcsv($hArquivo, $aLinha, ';', '"');
+      fputcsv($hArquivo, $aLinha, ';', '"', escape: '\\');
     }
     fclose($hArquivo);
 
@@ -393,8 +387,8 @@ class PlanilhaDistribuicao {
    */
   private function toFloat($sValor) {
 
-    $aOpcoesPonto   = array('options' => array('decimal' => '.'));
-    $aOpcoesVirgula = array('options' => array('decimal' => ','));
+    $aOpcoesPonto   = ['options' => ['decimal' => '.']];
+    $aOpcoesVirgula = ['options' => ['decimal' => ',']];
     $nFloatPonto    = filter_var($sValor, FILTER_VALIDATE_FLOAT, $aOpcoesPonto);
     $nFloatVirgula  = filter_var($sValor, FILTER_VALIDATE_FLOAT, $aOpcoesVirgula);
 
@@ -446,8 +440,8 @@ class PlanilhaDistribuicao {
       throw new FileException("Ocorreu um erro ao tentar ler o arquivo '{$sNomeArquivo}'.");
     }
 
-    $aLinhas = array();
-    while (($aDados = fgetcsv($hArquivo, 0, ';', '"')) !== false) {
+    $aLinhas = [];
+    while (($aDados = fgetcsv($hArquivo, 0, ';', '"', escape: '\\')) !== false) {
       $aLinhas[] = $aDados;
     }
 
@@ -456,9 +450,9 @@ class PlanilhaDistribuicao {
      */
     $aDepartamentosAtendidos  = $this->getDepartamentosAtendidos($iAlmoxarifado);
     $lSemDados                = true;
-    $aRequisicoes             = array(array('Código da Requisição', 'Departamento'));
+    $aRequisicoes             = [['Código da Requisição', 'Departamento']];
     $nQtdColunasDepartamentos = !empty($aLinhas[self::LINHA_DEPARTAMENTOS]) ? count($aLinhas[self::LINHA_DEPARTAMENTOS]) : 0;
-    $aDadosRequisicoes = array();
+    $aDadosRequisicoes = [];
     for ($iColunaDepartamento = self::COLUNA_INICIO_DEPARTAMENTOS; $iColunaDepartamento < $nQtdColunasDepartamentos; $iColunaDepartamento++) {
 
       $iDataHora     = time();
@@ -507,7 +501,7 @@ class PlanilhaDistribuicao {
        */
       try {
         $oDepartamento = new DBDepartamento($iDepartamento);
-      } catch (Exception $oException) {
+      } catch (Exception) {
         throw new Exception("O departamento de código {$iDepartamento} não existe.");
       }
 
@@ -527,7 +521,7 @@ class PlanilhaDistribuicao {
       $oDadosRequisicao->m40_obs       = 'Requisição automática gerada por Planilha de Distribuição.';
       $oDadosRequisicao->m40_auto      = 'false';
       $oDadosRequisicao->oDepartamento = $oDepartamento;
-      $oDadosRequisicao->aItens        = array();
+      $oDadosRequisicao->aItens        = [];
 
       for ($iLinhaAtual = self::LINHA_INICIO_MATERIAIS; $iLinhaAtual < count($aLinhas); $iLinhaAtual++) {
 
@@ -574,7 +568,7 @@ class PlanilhaDistribuicao {
          */
         try {
           $oMaterial = new MaterialAlmoxarifado($iMaterial);
-        } catch (Exception $oException) {
+        } catch (Exception) {
           throw new Exception("O material de código {$iMaterial} não existe.");
         }
 
@@ -655,7 +649,7 @@ class PlanilhaDistribuicao {
         }
       }
 
-      $aRequisicoes[] = array($oDaoMaterialRequisicao->m40_codigo, "{$oDadosRequisicao->oDepartamento->getCodigo()} - {$oDadosRequisicao->oDepartamento->getNomeDepartamento()}");
+      $aRequisicoes[] = [$oDaoMaterialRequisicao->m40_codigo, "{$oDadosRequisicao->oDepartamento->getCodigo()} - {$oDadosRequisicao->oDepartamento->getNomeDepartamento()}"];
     }
 
     /**
@@ -664,7 +658,7 @@ class PlanilhaDistribuicao {
     $sNomeArquivoRetorno = 'tmp/retorno_planilhadistribuicao_' . time() . '.csv';
     $hArquivoRetorno = fopen($sNomeArquivoRetorno, 'w');
     foreach ($aRequisicoes as $aColunasLinha) {
-      fputcsv($hArquivoRetorno, $aColunasLinha, ';', '"');
+      fputcsv($hArquivoRetorno, $aColunasLinha, ';', '"', escape: '\\');
     }
     fclose($hArquivoRetorno);
 

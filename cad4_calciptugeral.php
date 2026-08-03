@@ -30,7 +30,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 define("CALCULAR_PAGO_SIM", "1");
 define("CALCULAR_PAGO_NAO", "2");
@@ -95,10 +95,10 @@ if (isset($calcular)) {
                                 <td><strong><label for="calcular_pago">Calcular IPTU Quitado:</label></strong></td>
                                 <td>
                                     <?php
-                                    $aOpcoes = array( "0" => "Selecione",
+                                    $aOpcoes = [ "0" => "Selecione",
                                         CALCULAR_PAGO_SIM  => "Sim",
                                         CALCULAR_PAGO_NAO  => "Não" 
-                                    );
+                                    ];
                                     db_select("calcular_pago", $aOpcoes, true, 2, "style=\"width: 75px;\"");
                                     ?>
                                 </td>
@@ -107,7 +107,7 @@ if (isset($calcular)) {
                                 <td><strong><label for="financeiro">Calcular Financeiro:</label></strong></td>
                                 <td>
                                     <?php
-                                    $x = array("0" => "Sim", "1" => "Não");
+                                    $x = ["0" => "Sim", "1" => "Não"];
                                     db_select("financeiro", $x, true, 2, "style=\"width: 75px;\"");
                                     ?>
                                 </td>
@@ -117,11 +117,11 @@ if (isset($calcular)) {
                                 <td>
                                     <?php
                                     $result = db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
-                                    if (pg_numrows($result) > 0) {
+                                    if (pg_num_rows($result) > 0) {
                                         ?>
                                         <select name="anousu" style="width: 75px;" onChange="buscaTaxas()">
                                             <?php 
-                                            for($i = 0; $i < pg_numrows($result); $i++) {
+                                            for($i = 0; $i < pg_num_rows($result); $i++) {
                                                 db_fieldsmemory($result,$i);
                                                 ?>
                                                 <option value='<?=$j18_anousu?>'><?=$j18_anousu?></option>
@@ -211,7 +211,7 @@ if (isset($calcular)) {
                     $xInicio = time();
                     $sql = "select j01_matric from iptubase";
                     $result  = db_query( $sql );
-                    $numrows = pg_numrows($result);
+                    $numrows = pg_num_rows($result);
                     
                     if ($numrows == 0) {
                         echo "<script>alert('Sem matrículas a calcular!');</script>";
@@ -253,7 +253,7 @@ if (isset($calcular)) {
 
                                     $resultcfiptu = db_query("select distinct j18_anousu, j18_permvenc from cfiptu where j18_anousu = $anousu");
                                     $j18_permvenc = 1;
-                                    if (pg_numrows($resultcfiptu) > 0) {
+                                    if (pg_num_rows($resultcfiptu) > 0) {
                                         db_fieldsmemory($resultcfiptu, 0);
                                     }
 
@@ -275,7 +275,7 @@ if (isset($calcular)) {
                                         }
 
                                         $oVerificaCalculo = db_utils::fieldsMemory($rsVerifica, 0);
-                                        $iCodigoLog = substr($oVerificaCalculo->verificacalculo, 3, 2);
+                                        $iCodigoLog = substr((string) $oVerificaCalculo->verificacalculo, 3, 2);
 
                                         if ($iCodigoLog == IPTU_QUITADO) {
                                             $sSqlMensagemLog = "select j62_descr from iptucadlogcalc where j62_codigo = $iCodigoLog";
@@ -286,7 +286,7 @@ if (isset($calcular)) {
                                                 $lCalcula = false;
                                             } else {
                                                 $oMensagemLog = db_utils::fieldsMemory($rsMensagemLog, 0);
-                                                $sMensagemLog = trim(preg_replace('/^[0-9]*/', '', trim($oMensagemLog->j62_descr)));
+                                                $sMensagemLog = trim((string) preg_replace('/^[0-9]*/', '', trim((string) $oMensagemLog->j62_descr)));
                                                 $lCalcula = false;
                                             }
                                         }
@@ -312,9 +312,9 @@ if (isset($calcular)) {
 
                                         if ($resultcalc) {
                                             db_fieldsmemory($resultcalc, 0);
-                                            preg_match('/[0-9]*/', trim($fc_calculoiptu), $aTipoLogCalc);
+                                            preg_match('/[0-9]*/', trim((string) $fc_calculoiptu), $aTipoLogCalc);
 
-                                            $insert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric," . $aTipoLogCalc[0] . ",'" . trim(preg_replace('/^[0-9]*/', '', trim($fc_calculoiptu))) . "')";
+                                            $insert = "insert into iptucalclogmat values ($j27_codigo,$j01_matric," . $aTipoLogCalc[0] . ",'" . trim((string) preg_replace('/^[0-9]*/', '', trim((string) $fc_calculoiptu))) . "')";
                                             $resultinsert = db_query($insert) or die($insert);
                                             if ($resultinsert == false) {
                                                 $erro = true;

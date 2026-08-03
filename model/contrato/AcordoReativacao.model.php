@@ -4,18 +4,12 @@ class AcordoReativacao {
   
   
   const CAMINHO_MENSAGEM = "patrimonial.contratos.AcordoReativacao.";
-  /**
-   * 
-   * Ultima paralizacao do acordo 
-   * @var AcordoParalisacao
-   */
-  private $oParalizacao;
   
   /**
    * Lista de periodos que ficaram paralizados;
    * @var array;
    */
-  private $aPeriodos = array();
+  private $aPeriodos = [];
   
   /**
    * Data de reativa��o do contrato
@@ -27,7 +21,7 @@ class AcordoReativacao {
    * periodos novos incluidos a partir de periodos paralisados
    * @var array
    */
-  private $aPeriodosComplementares = array();
+  private $aPeriodosComplementares = [];
   
   /**
    * Observacao da reativacao;
@@ -38,9 +32,14 @@ class AcordoReativacao {
  /**
   * Realiza a reativa��o de um contrato que esta paralizado
   */
-  public function __construct(AcordoParalisacao $oParalizacao) {
-    
-    $this->oParalizacao = $oParalizacao; 
+  public function __construct(
+      /**
+       *
+       * Ultima paralizacao do acordo
+       */
+      private readonly AcordoParalisacao $oParalizacao
+  )
+  {
   }
   
   public function setObservacao( $sObservacao ){
@@ -99,7 +98,7 @@ class AcordoReativacao {
     $oNovaDataFinalAcordo->modificarIntervalo("+ {$iTotalDiasParalisados} days");
     
     $lPeriodoComercial       = $this->oParalizacao->getAcordo()->getPeriodoComercial();
-    $aPeriodosComplementares = array();
+    $aPeriodosComplementares = [];
     if (!$lPeriodoComercial) {
       
       $aPeriodosComplementares = AcordoPosicao::calcularPeriodosMensais($oDtUltimaPosicao->getDate("d/m/Y"), 
@@ -169,7 +168,7 @@ class AcordoReativacao {
     
     foreach ($oQuadro->aItens as $oItem) {
       
-      $aItensPrevisao = array();
+      $aItensPrevisao = [];
       foreach ($oItem->previsoes as $oPrevisao) {
         
         if (in_array($oPrevisao->codigovigencia, $this->aPeriodos)) {

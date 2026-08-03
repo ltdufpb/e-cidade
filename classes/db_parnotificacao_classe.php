@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE parnotificacao
 class cl_parnotificacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k102_anousu = 0; 
-   var $k102_docnotpadrao = 0; 
-   var $k102_instit = 0; 
-   var $k102_tipoemissao = 0; 
+   public $k102_anousu = 0; 
+   public $k102_docnotpadrao = 0; 
+   public $k102_instit = 0; 
+   public $k102_tipoemissao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k102_anousu = int4 = Exercício 
                  k102_docnotpadrao = int4 = Documento Padrão 
                  k102_instit = int4 = Instituição 
                  k102_tipoemissao = int4 = Emitir Notificações 
                  ";
    //funcao construtor da classe 
-   function cl_parnotificacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parnotificacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -133,7 +133,7 @@ class cl_parnotificacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parametros das Notificações ($this->k102_anousu) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parametros das Notificações já Cadastrado";
@@ -157,13 +157,13 @@ class cl_parnotificacao {
      $resaco = $this->sql_record($this->sql_query_file($this->k102_anousu));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12111,'$this->k102_anousu','I')");
-       $resac = db_query("insert into db_acount values($acount,2101,12111,'','".AddSlashes(pg_result($resaco,0,'k102_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2101,12112,'','".AddSlashes(pg_result($resaco,0,'k102_docnotpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2101,12113,'','".AddSlashes(pg_result($resaco,0,'k102_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2101,13768,'','".AddSlashes(pg_result($resaco,0,'k102_tipoemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2101,12111,'','".AddSlashes(pg_fetch_result($resaco,0,'k102_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2101,12112,'','".AddSlashes(pg_fetch_result($resaco,0,'k102_docnotpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2101,12113,'','".AddSlashes(pg_fetch_result($resaco,0,'k102_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2101,13768,'','".AddSlashes(pg_fetch_result($resaco,0,'k102_tipoemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -172,10 +172,10 @@ class cl_parnotificacao {
       $this->atualizacampos();
      $sql = " update parnotificacao set ";
      $virgula = "";
-     if(trim($this->k102_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k102_anousu"])){ 
+     if(trim((string) $this->k102_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k102_anousu"])){ 
        $sql  .= $virgula." k102_anousu = $this->k102_anousu ";
        $virgula = ",";
-       if(trim($this->k102_anousu) == null ){ 
+       if(trim((string) $this->k102_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "k102_anousu";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_parnotificacao {
          return false;
        }
      }
-     if(trim($this->k102_docnotpadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k102_docnotpadrao"])){ 
+     if(trim((string) $this->k102_docnotpadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k102_docnotpadrao"])){ 
        $sql  .= $virgula." k102_docnotpadrao = $this->k102_docnotpadrao ";
        $virgula = ",";
-       if(trim($this->k102_docnotpadrao) == null ){ 
+       if(trim((string) $this->k102_docnotpadrao) == null ){ 
          $this->erro_sql = " Campo Documento Padrão nao Informado.";
          $this->erro_campo = "k102_docnotpadrao";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_parnotificacao {
          return false;
        }
      }
-     if(trim($this->k102_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k102_instit"])){ 
+     if(trim((string) $this->k102_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k102_instit"])){ 
        $sql  .= $virgula." k102_instit = $this->k102_instit ";
        $virgula = ",";
-       if(trim($this->k102_instit) == null ){ 
+       if(trim((string) $this->k102_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "k102_instit";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_parnotificacao {
          return false;
        }
      }
-     if(trim($this->k102_tipoemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k102_tipoemissao"])){ 
+     if(trim((string) $this->k102_tipoemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k102_tipoemissao"])){ 
        $sql  .= $virgula." k102_tipoemissao = $this->k102_tipoemissao ";
        $virgula = ",";
-       if(trim($this->k102_tipoemissao) == null ){ 
+       if(trim((string) $this->k102_tipoemissao) == null ){ 
          $this->erro_sql = " Campo Emitir Notificações nao Informado.";
          $this->erro_campo = "k102_tipoemissao";
          $this->erro_banco = "";
@@ -232,17 +232,17 @@ class cl_parnotificacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12111,'$this->k102_anousu','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k102_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,2101,12111,'".AddSlashes(pg_result($resaco,$conresaco,'k102_anousu'))."','$this->k102_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2101,12111,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k102_anousu'))."','$this->k102_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k102_docnotpadrao"]))
-           $resac = db_query("insert into db_acount values($acount,2101,12112,'".AddSlashes(pg_result($resaco,$conresaco,'k102_docnotpadrao'))."','$this->k102_docnotpadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2101,12112,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k102_docnotpadrao'))."','$this->k102_docnotpadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k102_instit"]))
-           $resac = db_query("insert into db_acount values($acount,2101,12113,'".AddSlashes(pg_result($resaco,$conresaco,'k102_instit'))."','$this->k102_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2101,12113,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k102_instit'))."','$this->k102_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k102_tipoemissao"]))
-           $resac = db_query("insert into db_acount values($acount,2101,13768,'".AddSlashes(pg_result($resaco,$conresaco,'k102_tipoemissao'))."','$this->k102_tipoemissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2101,13768,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k102_tipoemissao'))."','$this->k102_tipoemissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -287,13 +287,13 @@ class cl_parnotificacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12111,'$k102_anousu','E')");
-         $resac = db_query("insert into db_acount values($acount,2101,12111,'','".AddSlashes(pg_result($resaco,$iresaco,'k102_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2101,12112,'','".AddSlashes(pg_result($resaco,$iresaco,'k102_docnotpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2101,12113,'','".AddSlashes(pg_result($resaco,$iresaco,'k102_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2101,13768,'','".AddSlashes(pg_result($resaco,$iresaco,'k102_tipoemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2101,12111,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k102_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2101,12112,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k102_docnotpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2101,12113,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k102_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2101,13768,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k102_tipoemissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from parnotificacao
@@ -353,7 +353,7 @@ class cl_parnotificacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:parnotificacao";
@@ -393,7 +393,7 @@ class cl_parnotificacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,7 +427,7 @@ class cl_parnotificacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

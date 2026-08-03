@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
 $oDadoEtapa = new cl_censoetapa;
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 ?>
 <html>
 <head>
@@ -66,30 +66,30 @@ parse_str( $_SERVER["QUERY_STRING"] );
             $oCalendario   = new Calendario( $iCalendario );
             $iAnoCenso     = DadosCenso::getUltimoAnoEtapaCenso();
             $iAnoConsulta  = 2014;
-            $aEnsinosCenso = array( 12, 13, 22, 23, 24, 51, 56, 58 );
+            $aEnsinosCenso = [ 12, 13, 22, 23, 24, 51, 56, 58 ];
             
             if ( $oCalendario->getAnoExecucao() > 2014 && $oCalendario->getAnoExecucao() == $iAnoCenso ) {
 
               $iAnoConsulta  = $iAnoCenso;
-              $aEnsinosCenso = array( 3, 12, 13, 22, 23, 24, 56, 72);
+              $aEnsinosCenso = [ 3, 12, 13, 22, 23, 24, 56, 72];
             }
 
             $sCondicao      = " ed266_i_codigo in ( " . implode( ", ", $aEnsinosCenso ) . " )";
 
-            if( trim( $abrevtipoensino ) == "ER" ) {
+            if( trim( (string) $abrevtipoensino ) == "ER" ) {
               $sCondicao .= " AND ed131_regular = 'S'";
-            } else if( trim( $abrevtipoensino ) == "ES" ) {
+            } else if( trim( (string) $abrevtipoensino ) == "ES" ) {
               $sCondicao .= " AND ed131_especial = 'S'";
-            } else if( trim( $abrevtipoensino ) == "EJ" ) {
+            } else if( trim( (string) $abrevtipoensino ) == "EJ" ) {
               $sCondicao .= " AND ed131_eja = 'S'";
-            } else if ( trim( $abrevtipoensino) == "EP" ) {
+            } else if ( trim( (string) $abrevtipoensino) == "EP" ) {
               $sCondicao .= " AND ed131_profissional = 'S'";
             }
             
             $sCondicao .= " AND ed131_ano = {$iAnoConsulta}";
             $sCondicao .= " AND ed10_i_codigo = {$iEnsino}";
 
-            $repassa = array();
+            $repassa = [];
             $sql     = $oDadoEtapa->sql_query_mediacao( "", "", $campos, "ed266_c_descr", $sCondicao );
             db_lovrot( $sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa );
           }

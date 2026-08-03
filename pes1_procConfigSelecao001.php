@@ -129,7 +129,7 @@ if ( $iSelecao == 1) {
   
   if ( $sTipoFiltroIframe != "" && $sTipoFiltroIframe == "1" ) {
 
-    $aExplode         = explode("and", $sConteudoSelecaoIframe);
+    $aExplode         = explode("and", (string) $sConteudoSelecaoIframe);
     $iRegistIni       = trim($aExplode[0]);
     $iRegistFim       = trim($aExplode[1]);
     $sDispMatricInter = '';
@@ -156,7 +156,7 @@ if ( $iSelecao == 1) {
 
   if ( $sTipoFiltroIframe != "" && $sTipoFiltroIframe == "1" ) {
 
-    $aExplode        = explode("and", $sConteudoSelecaoIframe);
+    $aExplode        = explode("and", (string) $sConteudoSelecaoIframe);
     $iLotacIni       = trim($aExplode[0]);
     $iLotacFim       = trim($aExplode[1]);
     $sDispLotacInter = '';
@@ -178,7 +178,7 @@ if ( $iSelecao == 1) {
   
   if ( $sTipoFiltroIframe != "" && $sTipoFiltroIframe == "1" ) {
 
-    $aExplode        = explode("and", $sConteudoSelecaoIframe);
+    $aExplode        = explode("and", (string) $sConteudoSelecaoIframe);
     $iCargoIni       = trim($aExplode[0]);
     $iCargoFim       = trim($aExplode[1]);
     $sDispCargoInter = '';
@@ -199,7 +199,7 @@ if ( $iSelecao == 1) {
 }
 
 
-db_postmemory($HTTP_GET_VARS,0)
+db_postmemory($_GET,0)
 
 ?>
 
@@ -228,7 +228,7 @@ db_postmemory($HTTP_GET_VARS,0)
         <td width="100"><b>Tipo de Filtro:</b></td>
         <td colspan="2">
           <?php 
-            $aTipoFiltros = array("0" => "Selecione um Filtro", "1" => "Intervalo", "2" => "Selecionados");
+            $aTipoFiltros = ["0" => "Selecione um Filtro", "1" => "Intervalo", "2" => "Selecionados"];
             db_select("sTipoFiltro", $aTipoFiltros, true, 1, "style='width: 210px'");
           ?>
         </td>

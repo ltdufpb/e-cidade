@@ -28,10 +28,10 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 $clrotulo = new rotulocampo;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-if(file_exists(base64_decode($arquivo))){
-  include(modification(base64_decode($arquivo)));
+if(file_exists(base64_decode((string) $arquivo))){
+  include(modification(base64_decode((string) $arquivo)));
 }else{
   echo "
   
@@ -105,17 +105,17 @@ function js_marca(obj){
       <table border='1' width="100%" bgcolor="#cccccc" id="tabela_seleciona">
 <?php 
 if(isset($sql) && $sql!=""){ 
-  $sql=base64_decode($sql);
+  $sql=base64_decode((string) $sql);
   $campos=base64_decode($campos);
-  $msg_vazio=base64_decode($msg_vazio);
+  $msg_vazio=base64_decode((string) $msg_vazio);
 }
 if(isset($sql_disabled) && $sql_disabled!=""){ 
-  $sql_disabled=base64_decode($sql_disabled);
+  $sql_disabled=base64_decode((string) $sql_disabled);
   $result03=db_query($sql_disabled);
   $numrows03=pg_num_rows($result03);
 }
 if(isset($sql_marca) && $sql_marca!=""){ 
-  $sql_marca=base64_decode($sql_marca);
+  $sql_marca=base64_decode((string) $sql_marca);
   $result02=db_query($sql_marca);
   $numrows02=pg_num_rows($result02);
 }
@@ -123,8 +123,8 @@ if(isset($sql_marca) && $sql_marca!=""){
 
 if(isset($sql) && $sql!=""){ 
        $result=db_query($sql);
-       $numrows=pg_numrows($result);
-       $numcols=pg_numfields($result);
+       $numrows=pg_num_rows($result);
+       $numcols=pg_num_fields($result);
        if($db_opcao=="Incluir"){
        } 
        if($db_opcao=="Incluir"){
@@ -135,7 +135,7 @@ if(isset($sql) && $sql!=""){
           $db_opcao=3;
        }
        if($numrows>0){ 
-	  $matriz_campos=split(",",$campos); 
+	  $matriz_campos=preg_split("#,#m",$campos); 
           $numcolunas=sizeof($matriz_campos);
           echo "   <tr class='cabec'>";
            /*funcao a ser executada apos clicar no marcador*/  
@@ -152,12 +152,12 @@ if(isset($sql) && $sql!=""){
 	    $Tlabel="T$campo";
 	    $Llabel="L$campo";
 	    
-	    if(substr($campo,0,3) == "db_"){
+	    if(str_starts_with($campo, "db_")){
 	      $nomcampo = ucfirst(substr($campo,3));
 	    }else{
-	      $nomcampo = $$Llabel;
+	      $nomcampo = ${$Llabel};
 	    }
-	      echo " <td class='cabec' ".($corponowrap=="true"?"nowrap":"")." title='".$$Tlabel."'>".str_replace(":","",$nomcampo)."</td>\n";
+	      echo " <td class='cabec' ".($corponowrap=="true"?"nowrap":"")." title='".${$Tlabel}."'>".str_replace(":","",$nomcampo)."</td>\n";
 	  }  
           echo "   </tr>"; 	   
           $cabec=true;
@@ -168,16 +168,16 @@ if(isset($sql) && $sql!=""){
 
        //rotina para marcar os campos
        if(isset($cabec) && $cabec==true){
-         $matriz02=split(",",$chaves);       
+         $matriz02=preg_split("#,#m",$chaves);       
          for($i=0; $i<$numrows; $i++){
            db_fieldsmemory($result,$i,true);
            $checa="";
            if(isset($sql_marca) && $sql_marca!=""){ 
              for($s=0;$s<$numrows02;$s++){
                for($w=0; $w<sizeof($matriz02); $w++){
-                 $campo=pg_result($result02,$s,$matriz02[$w]);   
+                 $campo=pg_fetch_result($result02,$s,$matriz02[$w]);   
 	//	 echo "<br>".$matriz02[$w]."--".$campo."--".$$matriz02[$w].">>>>>>>>>>>>>>";
-                 if($campo==$$matriz02[$w]){
+                 if($campo==${$matriz02}[$w]){
                    $checa=" checked ";  
                    $s=$numrows02;
 		   break;
@@ -200,8 +200,8 @@ if(isset($sql) && $sql!=""){
            if(isset($sql_disabled) && $sql_disabled!=""){ 
              for($s=0;$s<$numrows03;$s++){
                for($w=0; $w<sizeof($matriz02); $w++){
-                 $campo=pg_result($result03,$s,$matriz02[$w]);   
-                 if($campo==$$matriz02[$w]){
+                 $campo=pg_fetch_result($result03,$s,$matriz02[$w]);   
+                 if($campo==${$matriz02}[$w]){
                    $pode = " disabled   ";  
 	           $cr= " style=\"background-color:#DEB887\"";
                    $s=$numrows03;
@@ -222,12 +222,12 @@ if(isset($sql) && $sql!=""){
            $li=$i+1; 
            echo "   <tr id='linha_$li' >";
            if($db_opcao!=3){  
-	     $matris=split(",",$chaves);
+	     $matris=preg_split("#,#m",$chaves);
 	     $valor='';
 	     $esp='';
 	     for($t=0; $t<count($matris); $t++){
 	       $rr=$matris[$t];
-	       $valor.=$esp.$$rr;
+	       $valor.=$esp.${$rr};
 	       $esp='_';
 	     }
 	     
@@ -240,28 +240,28 @@ if(isset($sql) && $sql!=""){
              echo "<td $cr align='left'><input disabled id='CHECK_$li' name='CHECK_$li' type='checkbox' $checa $pode ></td>";
            }
 	   for($w=0; $w<$numcolunas; $w++){
- 	     $campo=strtolower(trim($matriz_campos[$w]));
+ 	     $campo=strtolower(trim((string) $matriz_campos[$w]));
 	     $Tlabel="T$campo";
   	     $Llabel="L$campo";
 
-	    if(substr($campo,0,3) == "db_"){
+	    if(str_starts_with($campo, "db_")){
 	      $nomcampo = ucfirst(substr($campo,3));
 	    }else{
-	      $nomcampo = $$Llabel;
+	      $nomcampo = ${$Llabel};
 	    }
 
 
 
 	     
-	     if($$campo=="t"){
-                $$campo="Sim";
-	     }else if($$campo=="f"){
-                $$campo="Não";
+	     if(${$campo}=="t"){
+                ${$campo}="Sim";
+	     }else if(${$campo}=="f"){
+                ${$campo}="Não";
 	     }
                 
-	     echo "   <td $cr id='".$campo."_".$li."' title='".$$Tlabel."' ".($corponowrap=="true"?"nowrap":"")." class='corpo'>".$$campo."&nbsp;</td>";
+	     echo "   <td $cr id='".$campo."_".$li."' title='".${$Tlabel}."' ".($corponowrap=="true"?"nowrap":"")." class='corpo'>".${$campo}."&nbsp;</td>";
 	    if(isset($input_hidden) && $input_hidden==true){ 
-             echo "   <input id='in_".$campo."_".$li."' name='in_".$campo."_".$li."' type='hidden'  value='".$$campo."'>";
+             echo "   <input id='in_".$campo."_".$li."' name='in_".$campo."_".$li."' type='hidden'  value='".${$campo}."'>";
 	    } 
 	     if($w+1==$numcolunas){
 	       if($db_opcao==33){
@@ -281,7 +281,7 @@ if(isset($sql) && $sql!=""){
 </body>  
 </html>
 <?php 
- $retorno = @unlink(base64_decode($arquivo));
+ $retorno = @unlink(base64_decode((string) $arquivo));
  if($retorno==false){
    echo "<blink>Carregando...</blink>";
  }

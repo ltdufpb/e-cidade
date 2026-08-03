@@ -45,7 +45,7 @@ class RefactorGeracaoBoleto
     /**
      * variaveis o array $aDados
      */
-    private $aDebitosSelecionados = array();
+    private $aDebitosSelecionados = [];
 
     /**
      * codigo do modelo de impressão
@@ -58,7 +58,7 @@ class RefactorGeracaoBoleto
      * @var array
      * @access private
      */
-    private $aDadosNumpre = array();
+    private $aDadosNumpre = [];
 
     private $ver_matric;
     private $ver_inscr;
@@ -126,7 +126,7 @@ class RefactorGeracaoBoleto
     public function set($sVariavel, $valor)
     {
         if (!property_exists($this, $sVariavel)) {
-            throw new Exception(__CLASS__ . ": Propriedade {$sVariavel} não encontrada.");
+            throw new Exception(self::class . ": Propriedade {$sVariavel} não encontrada.");
         }
 
         $this->{$sVariavel} = $valor;
@@ -182,7 +182,7 @@ class RefactorGeracaoBoleto
         $rs_cgc = db_query($sql_cgc);
 
         $oConfig = new StdClass();
-        $oConfig->db21_codcli = pg_result($rs_cgc, 0, 1);
+        $oConfig->db21_codcli = pg_fetch_result($rs_cgc, 0, 1);
 
         /**
          * Busca parâmetros do tributario
@@ -228,7 +228,7 @@ class RefactorGeracaoBoleto
         }
         $dtOperacao = date("Y-m-d", db_getsession("DB_datausu"));
 
-        $aRecibosComCustasEmitidos = array();
+        $aRecibosComCustasEmitidos = [];
         /*
          * Caso atributo $this->geracarne for != "" eh uma emissao de carne
          *   Caso contrario eh uma emissao de recibo
@@ -254,9 +254,9 @@ class RefactorGeracaoBoleto
         $aTipoInicial[2] = 13;
 
         $iTipoModeloRecibo = 2;       //Cadtipomod
-        $oRetorno->aSessoesRecibo = array();
-        $oRetorno->aSessoesCarne = array();
-        $oRetorno->recibos_emitidos = array();
+        $oRetorno->aSessoesRecibo = [];
+        $oRetorno->aSessoesCarne = [];
+        $oRetorno->recibos_emitidos = [];
 
         $lForcaVencimento = $this->forcarvencimento == "true" ? true : false;
 
@@ -264,13 +264,13 @@ class RefactorGeracaoBoleto
         $oDaoProcessoForoPartilha = db_utils::getDao('processoforopartilha');
         $oDaoProcessoForoPartilhaCusta = db_utils::getDao('processoforopartilhacusta');
 
-        $oRetorno->aSessoes = array();
+        $oRetorno->aSessoes = [];
 
         $oDebitosFormulario = $this->retornaDebitosSelecionados($this, $oArretipo->k00_tipoagrup);
         $aChecks = $oDebitosFormulario->aDadosChecks;
         $aDadosForm = $oDebitosFormulario->aOutrosDados;
         $aIniciais = $oDebitosFormulario->aIniciais;
-        $aRecibopaga_numnov = array();
+        $aRecibopaga_numnov = [];
         $sGeraCarne = $oDebitosFormulario->sGeraCarne;
         $lCarne = empty($sGeraCarne) ? true : false;
 
@@ -281,7 +281,7 @@ class RefactorGeracaoBoleto
          */
         if ($lConfReemissaoRecibo) {
             foreach ($oDebitosFormulario->aValidaNumpre as $iNumpre) {
-                $aNumpresOrigem = array();
+                $aNumpresOrigem = [];
                 $aProcessosForo = $oDaoProcessoForoPartilhaCusta->getProcessoForoByNumprePacelamento($iNumpre,
                   $oArretipo->k03_tipo);
                 if (count($aProcessosForo) == 0) {
@@ -388,15 +388,15 @@ class RefactorGeracaoBoleto
             throw new Exception(pg_last_error());
         }
 
-        $iRowsRegraEmissao = pg_numrows($rsSqlRegraEmissao);
+        $iRowsRegraEmissao = pg_num_rows($rsSqlRegraEmissao);
 
         /**
          * Valida se existe alguma regra de emissao cadastrada no sistema
          */
         if ($iRowsRegraEmissao > 0) {
             $aRegrasEmissao = db_utils::getCollectionByRecord($rsSqlRegraEmissao);
-            $aRegrasEmissaoEspecifica = array();
-            $aRegrasEmissaoGeral = array();
+            $aRegrasEmissaoEspecifica = [];
+            $aRegrasEmissaoGeral = [];
 
             /**
              * Separa as regras de emissao se são regras gerais e regras especificas para tipo de débito
@@ -418,7 +418,7 @@ class RefactorGeracaoBoleto
             /**
              * Percorre as regras selecionadas
              */
-            $aDadosCompletos = array();
+            $aDadosCompletos = [];
 
             foreach ($aRegrasEmissao as $iIndiceRegra => $oRegraEmissao) {
                 /**
@@ -449,17 +449,17 @@ class RefactorGeracaoBoleto
                 foreach ($aChecks as $iInd => $aVal) {
                     if (($aVal["Numpar"] >= $oRegraEmissao->k48_parcini) && ($aVal["Numpar"] <= $oRegraEmissao->k48_parcfim)) {
                         $aRecibos[$oRegraEmissao->k48_sequencial][] = "(k00_numpre in({$aVal['Numpre']}) and k00_numpar = {$aVal['Numpar']})";
-                        $aCompara[$oRegraEmissao->k48_sequencial][] = $aVal['Numpre'] . str_pad($aVal['Numpar'], 3, 0,
+                        $aCompara[$oRegraEmissao->k48_sequencial][] = $aVal['Numpre'] . str_pad((string) $aVal['Numpar'], 3, 0,
                             STR_PAD_LEFT);
 
                         $aNumparCompara[$oRegraEmissao->k48_sequencial][] = $aVal['Numpar'];
                         $aNumpreCompara[$oRegraEmissao->k48_sequencial][] = $aVal['Numpre'];
-                        $aNumpres_emissao[$oRegraEmissao->k48_sequencial][] = array($aVal['Numpre'], $aVal['Numpar']);
+                        $aNumpres_emissao[$oRegraEmissao->k48_sequencial][] = [$aVal['Numpre'], $aVal['Numpar']];
                     }
                 }
 
-                $aNumpresRecibo = array();
-                $aParcelasRecibo = array();
+                $aNumpresRecibo = [];
+                $aParcelasRecibo = [];
 
                 /**
                  * Percorre os debitos selecionados
@@ -532,10 +532,10 @@ class RefactorGeracaoBoleto
                          * Cria array de dados que serão gravados na sessao
                          * Tambem cria um array das parcelas para serem utilizadas valores maximos e minimos da regra de emissao
                          */
-                        $aDadosCarne[$iIndiceRegra]["numpres_emissao"][] = array(
+                        $aDadosCarne[$iIndiceRegra]["numpres_emissao"][] = [
                           $aValores["Numpre"],
                           $aValores["Numpar"]
-                        );
+                        ];
                         $aDadosCarne[$iIndiceRegra]["convenio"] = $oRegraEmissao->ar11_cadtipoconvenio;
                         $aDadosCarne[$iIndiceRegra][$iIndice] = $aValores["valor"];
                         $aParcelasSeparadas[$iIndiceRegra][] = $aValores["Numpar"];
@@ -555,9 +555,9 @@ class RefactorGeracaoBoleto
                 $rsSqlNumNov = db_query($sSqlNumNov);
                 $sNumNov = db_utils::fieldsMemory($rsSqlNumNov, 0)->k00_numnov;
 
-                $iDiferenca = array();
+                $iDiferenca = [];
 
-                foreach (explode(",", $sNumNov) as $sNumNovEmitido) {
+                foreach (explode(",", (string) $sNumNov) as $sNumNovEmitido) {
                     if ($sNumNovEmitido != "" && $lConfReemissaoRecibo) {
                         $aRecibopaga_numnov[] = $sNumNovEmitido;
                     }
@@ -578,7 +578,7 @@ class RefactorGeracaoBoleto
                          * Caso exista caso para comparação apenas faz reemissao do recibo
                          * Caso algum numpre ou numpar esteja faltanto ou sobrando emite um novo recibo.
                          */
-                        $aComparaBanco = explode("|", $oNumpreNumpar->numpre_numpar);
+                        $aComparaBanco = explode("|", (string) $oNumpreNumpar->numpre_numpar);
                         $iDiferenca[] = count(array_diff($aCompara[$oRegraEmissao->k48_sequencial], $aComparaBanco)) +
                           count(array_diff($aComparaBanco, $aCompara[$oRegraEmissao->k48_sequencial]));
                     }
@@ -631,7 +631,7 @@ class RefactorGeracaoBoleto
                                     $oUltimoDiaMenos5 = db_utils::fieldsMemory($rsUltimoDiaMenos5, 0);
 
                                     $db_datausu_dia = substr($db_datausu, 8, 2);
-                                    $oUltimoDiaMenos5->dia = substr($oUltimoDiaMenos5->ultimo_dia_menos_5, 8, 2);
+                                    $oUltimoDiaMenos5->dia = substr((string) $oUltimoDiaMenos5->ultimo_dia_menos_5, 8, 2);
 
                                     if ($db_datausu_dia > $oUltimoDiaMenos5->dia) {
                                         $iSomaDia = 2;
@@ -645,9 +645,9 @@ class RefactorGeracaoBoleto
                                     $oUltimoDia = db_utils::fieldsMemory($rsUltimoDia, 0);
                                     $db_datausu = $oUltimoDia->ultimo_dia;
 
-                                    $db_datausu_mes = substr($db_datausu, 5, 2);
-                                    $db_datausu_dia = substr($db_datausu, 8, 2);
-                                    $db_datausu_ano = substr($db_datausu, 0, 4);
+                                    $db_datausu_mes = substr((string) $db_datausu, 5, 2);
+                                    $db_datausu_dia = substr((string) $db_datausu, 8, 2);
+                                    $db_datausu_ano = substr((string) $db_datausu, 0, 4);
                                     $dVencimento = $db_datausu;
                                 }
                             }
@@ -674,14 +674,14 @@ class RefactorGeracaoBoleto
                               entao data de vencimento + 1
                             */
                             if ($lConvenioCobrancaValido && !CobrancaRegistrada::utilizaIntegracaoWebService($oRegraEmissao->k48_cadconvenio) && (db_strtotime($dtOperacao) == db_strtotime($dVencimento))) {
-                                $dVencimento = date('Y-m-d', strtotime("+1 day", strtotime($dVencimento)));
+                                $dVencimento = date('Y-m-d', strtotime("+1 day", strtotime((string) $dVencimento)));
                             }
 
                             $oRecibo->setNumBco($iCodigoConvenioCobranca);
                             $oRecibo->setDataRecibo($dVencimento);
 
                             $oRecibo->setDataVencimentoRecibo($dVencimento);
-                            $oRecibo->setExercicioRecibo(substr($dVencimento, 0, 4));
+                            $oRecibo->setExercicioRecibo(substr((string) $dVencimento, 0, 4));
                             $oRecibo->setGeracaoTaxaExpediente($this->geraTaxaExpediente);
                             $oRecibo->emiteRecibo($lConvenioCobrancaValido);
 
@@ -742,7 +742,7 @@ class RefactorGeracaoBoleto
                                           $sWherePartilhaProcesso
                                         );
                                         $rsSqlPartilhaProcesso = db_query($sSqlPartilhaProcesso);
-                                        $iNumRowsPartilhaProcesso = pg_numrows($rsSqlPartilhaProcesso);
+                                        $iNumRowsPartilhaProcesso = pg_num_rows($rsSqlPartilhaProcesso);
 
                                         if ($rsSqlPartilhaProcesso && $iNumRowsPartilhaProcesso == 0) {
                                             /**
@@ -844,7 +844,7 @@ class RefactorGeracaoBoleto
                                 $nValorTotalCustas = 0.00;
                             }
 
-                            $iNumpre = isset($this->aDebitosSelecionados[0]->iNumpre) ? $this->aDebitosSelecionados[0]->iNumpre : 0;
+                            $iNumpre = $this->aDebitosSelecionados[0]->iNumpre ?? 0;
 
                             $sSqlTxBancaria = "select distinct k00_txban::numeric(15,2) as tx_banc     ";
                             $sSqlTxBancaria .= "  from arretipo                                ";
@@ -939,15 +939,15 @@ class RefactorGeracaoBoleto
      */
     public function retornaDebitosSelecionados($oFormulario, $iTipoAgrupamento = null)
     {
-        $aChecks = array();
-        $aParcelas = array();
-        $aDadosForm = array();
+        $aChecks = [];
+        $aParcelas = [];
+        $aDadosForm = [];
         $sGeraCarne = "";
         $iI = 0;
         $sRecibos = '';
-        $aInicial = array();
+        $aInicial = [];
         $iTotalSelecionados = 0;
-        $aObjDebitos = array();
+        $aObjDebitos = [];
 
         /**
          * Valida se é uma inicial do Foro
@@ -971,12 +971,12 @@ class RefactorGeracaoBoleto
                     foreach ($aIniciais as $oInicial) {
                         $aParcelas[] = $oInicial->k00_numpar;
                         $sValores = "N" . $oInicial->k00_numpre . "P" . $oInicial->k00_numpar . "R0";
-                        $aChecks["CHECK" . $iI] = array(
+                        $aChecks["CHECK" . $iI] = [
                           "Numpre"  => $oInicial->k00_numpre,
                           "Numpar"  => $oInicial->k00_numpar,
                           "Receita" => "0",
                           "valor"   => $sValores
-                        );
+                        ];
 
                         /**
                          * Cria array com os numpres e numpar dos débitos
@@ -1010,7 +1010,7 @@ class RefactorGeracaoBoleto
         } else {
             foreach ($oFormulario->aDadosNumpre as $sChave => $sValor) {
                 if (stripos(" " . $sChave, "CHECK")) {
-                    $aNumpre = split("N", $sValor);
+                    $aNumpre = preg_split("#N#m", (string) $sValor);
 
                     foreach ($aNumpre as $iIndiceNumpre => $sNumpres) {
                         if ($sNumpres == "") {
@@ -1019,19 +1019,19 @@ class RefactorGeracaoBoleto
                         if ($sNumpres != "") {
                             $iTotalSelecionados++;
                         }
-                        $aParcela = split("P", $sNumpres);
+                        $aParcela = preg_split("#P#m", $sNumpres);
                         $iNumpre = $aParcela[0];
-                        $aSliceParcela = split("R", $aParcela[1]);
+                        $aSliceParcela = preg_split("#R#m", (string) $aParcela[1]);
                         $iNumpar = (int)$aSliceParcela[0];
                         $iReceita = (int)$aSliceParcela[1];
 
                         $aParcelas[] = $iNumpar;
-                        $aChecks["CHECK" . $iI] = array(
+                        $aChecks["CHECK" . $iI] = [
                           "Numpre"  => $iNumpre,
                           "Numpar"  => $iNumpar,
                           "Receita" => $iReceita,
                           "valor"   => "N" . $sNumpres
-                        );
+                        ];
 
                         /**
                          * Cria array com os numpres e numpar dos débitos
@@ -1056,12 +1056,12 @@ class RefactorGeracaoBoleto
                         $aDadosForm[$sChave] = $sValor;
                         if (!empty($oFormulario->numpre_unica)) {
                             $aParcelas[] = 0;
-                            $aChecks["CHECKU" . $iI] = array(
+                            $aChecks["CHECKU" . $iI] = [
                               "Numpre"  => $oFormulario->numpre_unica,
                               "Numpar"  => 0,
                               "Receita" => 0,
                               "valor"   => "N0"
-                            );
+                            ];
 
                             $oNumpreNumpar = new stdClass();
                             $oNumpreNumpar->iNumpre = $oFormulario->numpre_unica;
@@ -1109,14 +1109,14 @@ class RefactorGeracaoBoleto
                 $iI++;
                 $oDebitosAgrupados->iNumpre;
 
-                $aChecks["CHECK" . $iI] = array(
+                $aChecks["CHECK" . $iI] = [
                   "Numpre"  => $oDebitosAgrupados->iNumpre,
                   "Numpar"  => $oDebitosAgrupados->iNumpar,
                   "Receita" => $oDebitosAgrupados->iReceit,
                   "valor"   => "N" . $oDebitosAgrupados->iNumpre .
                     "P" . $oDebitosAgrupados->iNumpar .
                     "R" . $oDebitosAgrupados->iReceit
-                );
+                ];
 
                 /**
                  * Cria array com os numpres e numpar dos débitos
@@ -1144,7 +1144,7 @@ class RefactorGeracaoBoleto
             $sSqlLoteador .= "   where j120_cgm = {$oFormulario->ver_numcgm}                   ";
 
             $rsSqlLoteador = db_query($sSqlLoteador) or die($sSqlLoteador);
-            if (pg_numrows($rsSqlLoteador) > 0) {
+            if (pg_num_rows($rsSqlLoteador) > 0) {
                 $lLoteador = true;
             }
         }
@@ -1203,8 +1203,8 @@ class RefactorGeracaoBoleto
         $sql_cgc = "select cgc, db21_codcli from db_config where codigo = " . db_getsession("DB_instit");
         $rs_cgc = db_query($sql_cgc);
         $oConfig = new stdClass();
-        $oConfig->cgc = pg_result($rs_cgc, 0, 0);
-        $oConfig->db21_codcli = pg_result($rs_cgc, 0, 1);
+        $oConfig->cgc = pg_fetch_result($rs_cgc, 0, 0);
+        $oConfig->db21_codcli = pg_fetch_result($rs_cgc, 0, 1);
 
         /* testa se está em dia com IPTU */
         $iTemDesconto = 1;
@@ -1243,8 +1243,8 @@ class RefactorGeracaoBoleto
             $sIptuAberto .= " where case when k28_numpre is not null then case when ( k27_data + k27_dias >= current_date ) then false else true end else true end ";
 
             $rsIptuAberto = db_query($sIptuAberto) or die($sIptuAberto);
-            if (pg_numrows($rsIptuAberto) > 0) {
-                $iQuantAberto = pg_result($rsIptuAberto, 0, 0);
+            if (pg_num_rows($rsIptuAberto) > 0) {
+                $iQuantAberto = pg_fetch_result($rsIptuAberto, 0, 0);
                 if ((int)@$ver_matric > 0) {
                     $iParcTesta = 2;
                 } else {
@@ -1267,7 +1267,7 @@ class RefactorGeracaoBoleto
       where k00_numpre = $numpre
       and k00_numpar = $numpar";
         $resultvenc = db_query($sqlvenc) or die($sqlvenc);
-        if (pg_numrows($resultvenc) == 0) {
+        if (pg_num_rows($resultvenc) == 0) {
             return 0;
         }
         db_fieldsmemory($resultvenc, 0);
@@ -1291,7 +1291,7 @@ class RefactorGeracaoBoleto
         }
 
         $resulttipoparc = db_query($sqltipoparc) or die($sqltipoparc);
-        if (pg_numrows($resulttipoparc) > 0) {
+        if (pg_num_rows($resulttipoparc) > 0) {
             db_fieldsmemory($resulttipoparc, 0);
         } else {
 
@@ -1313,7 +1313,7 @@ class RefactorGeracaoBoleto
             }
             $resulttipoparc = db_query($sqltipoparc) or die($sqltipoparc);
 
-            if (pg_numrows($resulttipoparc) == 1) {
+            if (pg_num_rows($resulttipoparc) == 1) {
                 db_fieldsmemory($resulttipoparc, 0);
             } else {
                 $k40_todasmarc = false;
@@ -1324,7 +1324,7 @@ class RefactorGeracaoBoleto
         $resulttipoparcdeb = db_query($sqltipoparcdeb) or die($sqltipoparcdeb);
         $passar = false;
 
-        if (pg_numrows($resulttipoparcdeb) == 0) {
+        if (pg_num_rows($resulttipoparcdeb) == 0) {
             $passar = true;
         } else {
             $sqltipoparcdeb = "select k40_codigo, k40_todasmarc
@@ -1338,12 +1338,12 @@ class RefactorGeracaoBoleto
                 $sqltipoparcdeb .= " and case when $iTemDesconto = 0 and k40_codigo = 3 then false else true end ";
             }
             $resulttipoparcdeb = db_query($sqltipoparcdeb) or die($sqltipoparcdeb);
-            if (pg_numrows($resulttipoparcdeb) > 0) {
+            if (pg_num_rows($resulttipoparcdeb) > 0) {
                 $passar = true;
             }
         }
 
-        if (pg_numrows($resulttipoparc) == 0 or ($k40_todasmarc == 't' ? $totalregistrospassados <> $totregistros : false) or $passar == false) {
+        if (pg_num_rows($resulttipoparc) == 0 or ($k40_todasmarc == 't' ? $totalregistrospassados <> $totregistros : false) or $passar == false) {
             $desconto = 0;
         } else {
             $desconto = $k40_codigo;

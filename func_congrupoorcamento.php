@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_congrupoorcamento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcongrupoorcamento = new cl_congrupoorcamento;
 $clcongrupoorcamento->rotulo->label("c20_sequencial");
 $clcongrupoorcamento->rotulo->label("c20_descr");
@@ -98,9 +98,9 @@ $clcongrupoorcamento->rotulo->label("c20_descr");
         }else{
            $sql = $clcongrupoorcamento->sql_query("",$campos,"c20_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c20_descr)){
-          $repassa = array("chave_c20_sequencial"=>$chave_c20_sequencial,"chave_c20_descr"=>$chave_c20_descr);
+          $repassa = ["chave_c20_sequencial"=>$chave_c20_sequencial,"chave_c20_descr"=>$chave_c20_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

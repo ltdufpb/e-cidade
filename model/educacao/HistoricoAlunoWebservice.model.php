@@ -64,7 +64,7 @@ class HistoricoAlunoWebservice {
     $rsHistoricos            = $oDaoHistorico->sql_record($sSqlHistorico);
     $iTotalLinhas            = $oDaoHistorico->numrows;
     $oHistoricoDados         = new stdClass();
-    $oHistoricoDados->etapas = array();
+    $oHistoricoDados->etapas = [];
     $oHistoricoDados->linhas = $iTotalLinhas;
     $oHistoricoDados->query  = $sSqlHistorico;
     if ($rsHistoricos && $iTotalLinhas > 0) {
@@ -80,7 +80,7 @@ class HistoricoAlunoWebservice {
       }
     }
     
-    uasort($oHistoricoDados->etapas, array($this, "ordenarEtapas"));
+    uasort($oHistoricoDados->etapas, $this->ordenarEtapas(...));
     return $oHistoricoDados;
   }
   
@@ -91,7 +91,7 @@ class HistoricoAlunoWebservice {
    */
   protected function getEtapasHistorico(HistoricoAluno $oHistorico) {
     
-    $aEtapas = array();
+    $aEtapas = [];
     foreach ($oHistorico->getEtapas() as $oEtapa) {
       
       /**
@@ -105,14 +105,14 @@ class HistoricoAlunoWebservice {
       $sTermoResultado = DBEducacaoTermo::getTermoEncerramento($iEnsino, $oEtapa->getResultadoAno(), $iAno);
       
       $oEtapaRetorno                    = new stdClass();
-      $oEtapaRetorno->etapa             = utf8_encode($oEtapa->getEtapa()->getNome());
-      $oEtapaRetorno->curso             = utf8_encode($oHistorico->getCursoHistorico()->getNome());
-      $oEtapaRetorno->escola_etapa      = utf8_encode($oEtapa->getEscola()->getNome());
-      $oEtapaRetorno->ano_etapa         = utf8_encode($oEtapa->getAnoCurso());
-      $oEtapaRetorno->minimo_aprovacao  = utf8_encode($oEtapa->getMininoParaAprovacao());
-      $oEtapaRetorno->resultado_etapa   = utf8_encode($sTermoResultado[0]->sDescricao);
-      $oEtapaRetorno->ordem_etapa       = utf8_encode($oEtapa->getEtapa()->getOrdem());
-      $oEtapaRetorno->situacao_etapa    = utf8_encode($oEtapa->getSituacaoEtapa());
+      $oEtapaRetorno->etapa             = mb_convert_encoding($oEtapa->getEtapa()->getNome(), 'UTF-8', 'ISO-8859-1');
+      $oEtapaRetorno->curso             = mb_convert_encoding($oHistorico->getCursoHistorico()->getNome(), 'UTF-8', 'ISO-8859-1');
+      $oEtapaRetorno->escola_etapa      = mb_convert_encoding($oEtapa->getEscola()->getNome(), 'UTF-8', 'ISO-8859-1');
+      $oEtapaRetorno->ano_etapa         = mb_convert_encoding($oEtapa->getAnoCurso(), 'UTF-8', 'ISO-8859-1');
+      $oEtapaRetorno->minimo_aprovacao  = mb_convert_encoding($oEtapa->getMininoParaAprovacao(), 'UTF-8', 'ISO-8859-1');
+      $oEtapaRetorno->resultado_etapa   = mb_convert_encoding($sTermoResultado[0]->sDescricao, 'UTF-8', 'ISO-8859-1');
+      $oEtapaRetorno->ordem_etapa       = mb_convert_encoding($oEtapa->getEtapa()->getOrdem(), 'UTF-8', 'ISO-8859-1');
+      $oEtapaRetorno->situacao_etapa    = mb_convert_encoding($oEtapa->getSituacaoEtapa(), 'UTF-8', 'ISO-8859-1');
       $oEtapaRetorno->disciplinas_etapa = $this->getDisciplinasDaEtapa($oEtapa);
       $oEtapaRetorno->dias_letivos      = $oEtapa->getDiasLetivos();
       $oEtapaRetorno->carga_horaria     = $oEtapa->getCargaHoraria();
@@ -128,7 +128,7 @@ class HistoricoAlunoWebservice {
    */
   protected function getDisciplinasDaEtapa (HistoricoEtapa $oEtapa) {
     
-    $aDisciplinas = array();
+    $aDisciplinas = [];
     $iAno            = $oEtapa->getAnoCurso();
     $iEnsino         = $oEtapa->getEtapa()->getEnsino()->getCodigo();
     foreach ($oEtapa->getDisciplinas() as $oDisciplinaHistorico) {
@@ -140,12 +140,12 @@ class HistoricoAlunoWebservice {
                                                                );
       
       $oDisciplina                            = new stdClass();
-      $oDisciplina->nome_disciplina           = utf8_encode($oDisciplinaHistorico->getDisciplina()->getNomeDisciplina());
-      $oDisciplina->resultado_disciplina      = utf8_encode($sTermoResultado[0]->sDescricao);
-      $oDisciplina->aproveitamento_disciplina = utf8_encode($oDisciplinaHistorico->getResultadoObtido());
-      $oDisciplina->situacao_disciplina       = utf8_encode($oDisciplinaHistorico->getSituacaoDisciplina());
-      $oDisciplina->carga_horaria             = utf8_encode($oDisciplinaHistorico->getCargaHoraria());
-      $oDisciplina->ordem_disciplina          = utf8_encode($oDisciplinaHistorico->getOrdem());
+      $oDisciplina->nome_disciplina           = mb_convert_encoding($oDisciplinaHistorico->getDisciplina()->getNomeDisciplina(), 'UTF-8', 'ISO-8859-1');
+      $oDisciplina->resultado_disciplina      = mb_convert_encoding($sTermoResultado[0]->sDescricao, 'UTF-8', 'ISO-8859-1');
+      $oDisciplina->aproveitamento_disciplina = mb_convert_encoding($oDisciplinaHistorico->getResultadoObtido(), 'UTF-8', 'ISO-8859-1');
+      $oDisciplina->situacao_disciplina       = mb_convert_encoding($oDisciplinaHistorico->getSituacaoDisciplina(), 'UTF-8', 'ISO-8859-1');
+      $oDisciplina->carga_horaria             = mb_convert_encoding($oDisciplinaHistorico->getCargaHoraria(), 'UTF-8', 'ISO-8859-1');
+      $oDisciplina->ordem_disciplina          = mb_convert_encoding($oDisciplinaHistorico->getOrdem(), 'UTF-8', 'ISO-8859-1');
       $aDisciplinas[] = $oDisciplina;
     }
     return $aDisciplinas;

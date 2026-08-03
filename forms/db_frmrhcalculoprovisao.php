@@ -61,7 +61,7 @@ $clrotulo = new rotulocampo;
     <td>
       <?php 
         // necessário definir nome para o select
-        $aTipos = array("F"=>"Férias", "D"=>"13° Salário");             
+        $aTipos = ["F"=>"Férias", "D"=>"13° Salário"];             
         db_select("tipoger", $aTipos, true, 1); 
       ?>
     </td>

@@ -39,14 +39,14 @@ require_once(modification("libs/exceptions/ParameterException.php"));
 
 $oParam      = db_utils::postMemory($_GET);
 $oCidadao    = CidadaoRepository::getCidadaoByCodigo($oParam->iCidadao);
-$aCursos     = array();
+$aCursos     = [];
 $sDataInicio = '';
 $sDataFinal  = '';
 
 /**
  * Montamos o where de acordo com os parametros enviados via $_GET
  */
-$aWhereData = array();
+$aWhereData = [];
 $sWhereData = '';
 
 if (!empty($oParam->sDataInicial)) {

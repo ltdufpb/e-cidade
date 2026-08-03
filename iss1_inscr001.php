@@ -102,7 +102,7 @@ function js_removeElementSelect() {
 							<td> <b> Pessoa </b> </td>
 							<td>
 							  <?php 
-								  $aPessoa = array ("j" => "Jurídica", "f" => "Física", "t" => "Todas");
+								  $aPessoa =  ["j" => "Jurídica", "f" => "Física", "t" => "Todas"];
 								  db_select("pessoa", $aPessoa, null, 1); 
 							  ?>
 							</td> 
@@ -112,7 +112,7 @@ function js_removeElementSelect() {
 							<td> <b> Baixada </b> </td>
 							<td>
 							  <?php 
-								  $aBaixada = array ("n" => "Não", "s" => "Sim", "t" => "Todas");
+								  $aBaixada =  ["n" => "Não", "s" => "Sim", "t" => "Todas"];
 								  db_select("baixada", $aBaixada, null, 1); 
 							  ?>
 							</td> 
@@ -122,7 +122,7 @@ function js_removeElementSelect() {
 							<td> <b> Atividade </b> </td>
 							<td>
 							  <?php 
-								  $aAtividade = array ("p" => "Somente Principal", "t" => "Todas");
+								  $aAtividade =  ["p" => "Somente Principal", "t" => "Todas"];
 								  db_select("atividade", $aAtividade, null, 1,"onchange='js_removeElementSelect()'"); 
 							  ?>
 							</td> 
@@ -132,7 +132,7 @@ function js_removeElementSelect() {
 							<td> <b> Ordenar por </b> </td>
 							<td>
 							  <?php 
-								  $aOrdem = array ("i" => "Inscrição", "n" => "Nome", "a" => "Atividade");
+								  $aOrdem =  ["i" => "Inscrição", "n" => "Nome", "a" => "Atividade"];
 								  db_select("ordem", $aOrdem, null, 1); 
 							  ?>
 							</td>

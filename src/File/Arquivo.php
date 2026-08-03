@@ -81,7 +81,7 @@ class Arquivo
 
         $path = realpath($path) ?: $path;
 
-        $tempPath = tempnam(dirname($path), basename($path));
+        $tempPath = tempnam(dirname((string) $path), basename((string) $path));
 
         chmod($tempPath, 0777 - umask());
 
@@ -265,7 +265,7 @@ class Arquivo
      */
     public function name($path)
     {
-        return pathinfo($path, PATHINFO_FILENAME);
+        return pathinfo((string) $path, PATHINFO_FILENAME);
     }
 
     /**
@@ -276,7 +276,7 @@ class Arquivo
      */
     public function basename($path)
     {
-        return pathinfo($path, PATHINFO_BASENAME);
+        return pathinfo((string) $path, PATHINFO_BASENAME);
     }
 
     /**
@@ -287,7 +287,7 @@ class Arquivo
      */
     public function dirname($path)
     {
-        return pathinfo($path, PATHINFO_DIRNAME);
+        return pathinfo((string) $path, PATHINFO_DIRNAME);
     }
 
     /**
@@ -298,7 +298,7 @@ class Arquivo
      */
     public function extension($path)
     {
-        return pathinfo($path, PATHINFO_EXTENSION);
+        return pathinfo((string) $path, PATHINFO_EXTENSION);
     }
 
     /**
@@ -462,7 +462,7 @@ class Arquivo
                 if (!@unlink($path)) {
                     $success = false;
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 $success = false;
             }
         }
@@ -570,7 +570,7 @@ class Arquivo
      */
     public function directories($directory)
     {
-        $directories = array();
+        $directories = [];
 
         foreach (Finder::create()->in($directory)->directories()->depth(0)->sortByName() as $dir) {
             $directories[] = $dir->getPathname();

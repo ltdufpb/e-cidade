@@ -32,7 +32,7 @@ require_once(modification("classes/db_prontproced_ext_classe.php"));
 require_once(modification("classes/db_cgs_und_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 try {
 
@@ -106,7 +106,7 @@ try {
     throw new Exception("Nenhum registro para o relatório.");
   }
 
-  $aProfissionais = array();
+  $aProfissionais = [];
 
   for ($i = 0; $i < pg_num_rows($res_prontproced); $i++) {
 
@@ -116,13 +116,13 @@ try {
     // Verifica se o profissional já está na lista
     if ( !array_key_exists($sd03_i_cgm, $aProfissionais) ) {
 
-      $aProfissionais[$sd03_i_cgm] = array(
+      $aProfissionais[$sd03_i_cgm] = [
         'codigo'       => $sd03_i_codigo,
         'nome'         => $z01_nome,
         'cbo'          => "{$rh70_estrutural} - {$rh70_descr}",
-        'matriculas'   => array(),
-        'ups'          => array(),
-      );
+        'matriculas'   => [],
+        'ups'          => [],
+      ];
 
       $oDaoRhPessoal = db_utils::getdao('rhpessoal');
       $sSql          = $oDaoRhPessoal->sql_query_func_rhpessoal("", "rh01_regist,rh05_recis", "", "rh01_numcgm = {$sd03_i_cgm}");
@@ -149,22 +149,22 @@ try {
     // Adiciona a UPS ao profissional
     if ( !array_key_exists($sd02_i_codigo, $aProfissionais[$sd03_i_cgm]['ups']) ) {
 
-      $aProfissionais[$sd03_i_cgm]['ups'][$sd02_i_codigo] = array(
+      $aProfissionais[$sd03_i_cgm]['ups'][$sd02_i_codigo] = [
         'codigo'       => $sd02_i_codigo,
         'nome'         => $descrdepto,
-        'atendimentos' => array(),
-      );
+        'atendimentos' => [],
+      ];
     }
 
     // Adiciona os atendimentos em cada UPS
     if ( !array_key_exists($sd24_i_codigo, $aProfissionais[$sd03_i_cgm]['ups'][$sd02_i_codigo]['atendimentos']) ) {
 
-      $aProfissionais[$sd03_i_cgm]['ups'][$sd02_i_codigo]['atendimentos'][$sd24_i_codigo] = array(
+      $aProfissionais[$sd03_i_cgm]['ups'][$sd02_i_codigo]['atendimentos'][$sd24_i_codigo] = [
         'faa'           => $sd24_i_codigo,
         'cgs'           => $z01_i_cgsund,
         'nome'          => $z01_v_nome,
-        'procedimentos' => array(),
-      );
+        'procedimentos' => [],
+      ];
     }
 
     // Adiciona os procedimentos em cada atendimento
@@ -187,7 +187,7 @@ try {
     $pdf->setfont('times','b',8);
     $pdf->cell(10,5,"CBO:",0,0,"L",1);
     $pdf->setfont('times','',8);
-    $pdf->cell(80,5, substr(trim($aProfissional['cbo']), 0, 50) ,0,1,"L",1);
+    $pdf->cell(80,5, substr(trim((string) $aProfissional['cbo']), 0, 50) ,0,1,"L",1);
     $pdf->setfont('times','b',8);
     $pdf->cell(20,5,"Matrícula(s):",0,0,"L",1);
     $pdf->setfont('times','',8);
@@ -238,7 +238,7 @@ try {
 
         $pdf->cell(10,4,$aAtendimento['faa'],0,0,"L",0);
         $pdf->cell(15,4,$aAtendimento['cgs'],0,0,"L",0);
-        $pdf->cell(55,4,substr(trim($aAtendimento['nome']),0,33),0,0,"L",0);
+        $pdf->cell(55,4,substr(trim((string) $aAtendimento['nome']),0,33),0,0,"L",0);
         $pdf->cell(100,4, substr("{$iCodigoProcedimento} - {$nomeProcedimento}", 0, 77),0,1,"L",0);
 
         $iTotalProcedimentos++;
@@ -248,7 +248,7 @@ try {
 
       $pdf->cell(10,4,$aAtendimento['faa'],0,0,"L",0);
       $pdf->cell(15,4,$aAtendimento['cgs'],0,0,"L",0);
-      $pdf->cell(165,4,substr(trim($aAtendimento['nome'], ' '),0,104),0,1,"L",0);
+      $pdf->cell(165,4,substr(trim((string) $aAtendimento['nome'], ' '),0,104),0,1,"L",0);
     }
 
     return $iTotalProcedimentos;

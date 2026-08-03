@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -303,7 +303,7 @@ if( isset($pesquisar) ){
   $totbas = 0;
   $totfbas= 0;
   $totout= 0;
-  for($i=0;$i<pg_numrows($result);$i++){
+  for($i=0;$i<pg_num_rows($result);$i++){
     db_fieldsmemory($result,$i);
     echo "<tr>";
     if($area!=9999){
@@ -445,7 +445,7 @@ if( isset($pesquisar) ){
   $xtotbas = 0;
   $xtotfbas= 0;
   $xtotout= 0;
-  for($i=0;$i<pg_numrows($result);$i++){
+  for($i=0;$i<pg_num_rows($result);$i++){
     db_fieldsmemory($result,$i);
     echo "<tr>";
     if($area!=9999){

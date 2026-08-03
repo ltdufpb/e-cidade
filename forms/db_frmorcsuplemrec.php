@@ -151,7 +151,7 @@ function valida_dados(){
   $sSqlReceitas .= "                                      and o06_anousu     = c61_anousu";     
   $sSqlReceitas .= "  where  c61_instit = ".db_getsession("DB_instit");     
   $sSqlReceitas .= "    and  o137_orcsuplem = {$o46_codsup} ";
-  $chavepri= array("o85_anousu"=>$anousu,"o85_codrec"=>@$o85_codrec, "tipo"=>@$tipo);
+  $chavepri= ["o85_anousu"=>$anousu,"o85_codrec"=>@$o85_codrec, "tipo"=>@$tipo];
   $cliframe_alterar_excluir->chavepri=$chavepri;       
   $cliframe_alterar_excluir->sql = $sSqlReceitas;
   $cliframe_alterar_excluir->campos ="o85_codrec, o85_anousu, o50_estrutreceita ,o85_valor, tipo";

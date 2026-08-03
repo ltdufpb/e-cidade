@@ -48,7 +48,7 @@ if (isset($oGet->codproc) && !empty($oGet->codproc) && !isset($oGet->numero)) {
 
 if (isset($oGet->numero) && !empty($oGet->numero)) {
 
-    $aNumeroProcesso = explode("/", $oGet->numero);
+    $aNumeroProcesso = explode("/", (string) $oGet->numero);
     $iAno = db_getsession("DB_anousu");
     $iNumeroProcesso = $aNumeroProcesso[0];
 

@@ -38,7 +38,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('j14_nome');
 $clrotulo->label('d01_numero');
 $clrotulo->label('nome');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $dbwhere="1=1";
 $and="";
 
@@ -185,7 +185,7 @@ $sql =  "
         ";
 
 $result = db_query($sql) or die($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 if ($numrows == 0) {
 	$erro = true;
@@ -235,16 +235,16 @@ for ($i = 0;$i < $numrows;$i++){
     }
   }
 
-	fputs($clabre_arquivo->arquivo, str_pad($j01_matric,10,'0',STR_PAD_LEFT).";");
+	fputs($clabre_arquivo->arquivo, str_pad((string) $j01_matric,10,'0',STR_PAD_LEFT).";");
 
 	fputs($clabre_arquivo->arquivo, trim(db_formatar($valor_imposto_1   ,'f')).";");
 	fputs($clabre_arquivo->arquivo, trim(db_formatar($valor_imposto_2   ,'f')).";");
 	fputs($clabre_arquivo->arquivo, trim(db_formatar($percentual_imposto,'f')).";");
 
-	fputs($clabre_arquivo->arquivo, trim($j23_tipoim_ano1)                    .";");
-	fputs($clabre_arquivo->arquivo, trim($j23_tipoim_ano2)                    .";");
+	fputs($clabre_arquivo->arquivo, trim((string) $j23_tipoim_ano1)                    .";");
+	fputs($clabre_arquivo->arquivo, trim((string) $j23_tipoim_ano2)                    .";");
 
-	fputs($clabre_arquivo->arquivo, ( trim($j23_tipoim_ano1) == trim($j23_tipoim_ano2)?"IGUAL":"DIFERENTE" ) .";");
+	fputs($clabre_arquivo->arquivo, ( trim((string) $j23_tipoim_ano1) == trim((string) $j23_tipoim_ano2)?"IGUAL":"DIFERENTE" ) .";");
 
 	fputs($clabre_arquivo->arquivo, trim(db_formatar($valor_taxas_1		  ,'f')).";");
 	fputs($clabre_arquivo->arquivo, trim(db_formatar($valor_taxas_2		  ,'f')).";");

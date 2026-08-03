@@ -35,8 +35,8 @@ $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
 $clrotulo->label('d02_contri');
 $clrotulo->label('d07_matric');
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $db_botao = true;
 ?>
@@ -261,7 +261,7 @@ function js_emite(tiporel){
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
           <?php 
-	  $x = array("2"=>"Somente Selecionados","3"=>"Menos os Selecionados");
+	  $x = ["2"=>"Somente Selecionados","3"=>"Menos os Selecionados"];
 	  db_select('tipo',$x,true,2);
           ?>
 
@@ -392,7 +392,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 </script>

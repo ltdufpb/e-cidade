@@ -32,9 +32,9 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_atividadeimpacto_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatividadeimpacto = new cl_atividadeimpacto;
 $clatividadeimpacto->rotulo->label("am03_sequencial");
 $clatividadeimpacto->rotulo->label("am03_descricao");
@@ -82,9 +82,9 @@ $clatividadeimpacto->rotulo->label("am03_descricao");
         }else{
            $sql = $clatividadeimpacto->sql_query_agrupado("",$campos,"am03_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_am03_descricao)){
-          $repassa = array("chave_am03_sequencial"=>$chave_am03_sequencial,"chave_am03_descricao"=>$chave_am03_descricao);
+          $repassa = ["chave_am03_sequencial"=>$chave_am03_sequencial,"chave_am03_descricao"=>$chave_am03_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

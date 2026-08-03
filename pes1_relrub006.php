@@ -36,7 +36,7 @@ $oDaoRelRubRelRubCampos = db_utils::getDao('relrubrelrubcampos');
 $clrelrub               = db_utils::getDao('relrub');
 $clrelrubmov            = db_utils::getDao('relrubmov');
 $clselecao              = db_utils::getDao('selecao');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

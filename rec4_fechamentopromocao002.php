@@ -61,7 +61,7 @@ $h72_dtfinal_dia = date('d', db_getsession("DB_datausu"));
 $h72_dtfinal_mes = date('m', db_getsession("DB_datausu")); 
 $h72_dtfinal_ano = date('Y', db_getsession("DB_datausu"));
 
-$oGet	  = db_utils::postmemory($HTTP_GET_VARS);
+$oGet	  = db_utils::postmemory($_GET);
 
 if( isset($oGet->iCodigoMatricula) ) {
 
@@ -79,9 +79,9 @@ if( isset($oGet->iCodigoMatricula) ) {
 	$z01_nome          = $oPromocao->z01_nome;
 	$h72_regist        = $oPromocao->h72_regist;
   $h72_dtinicial     = $oPromocao->h72_dtinicial;
-  $h72_dtinicial_dia = date('d', strtotime($h72_dtinicial));
-  $h72_dtinicial_mes = date('m', strtotime($h72_dtinicial));
-  $h72_dtinicial_ano = date('Y', strtotime($h72_dtinicial));
+  $h72_dtinicial_dia = date('d', strtotime((string) $h72_dtinicial));
+  $h72_dtinicial_mes = date('m', strtotime((string) $h72_dtinicial));
+  $h72_dtinicial_ano = date('Y', strtotime((string) $h72_dtinicial));
 }
 
 db_app::load('scripts.js, prototype.js, strings.js, widgets/windowAux.widget.js, widgets/dbmessageBoard.widget.js, dbtextField.widget.js, datagrid.widget.js');

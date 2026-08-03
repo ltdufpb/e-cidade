@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE tecnico
 class cl_tecnico { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at03_codatend = 0; 
-   var $at03_id_usuario = 0; 
+   public $at03_codatend = 0; 
+   public $at03_id_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at03_codatend = int4 = Código 
                  at03_id_usuario = int4 = Técnico 
                  ";
    //funcao construtor da classe 
-   function cl_tecnico() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tecnico"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_tecnico {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Técnico ($this->at03_codatend."-".$this->at03_id_usuario) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Técnico já Cadastrado";
@@ -130,12 +130,12 @@ class cl_tecnico {
      $resaco = $this->sql_record($this->sql_query_file($this->at03_codatend,$this->at03_id_usuario));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,2555,'$this->at03_codatend','I')");
        $resac = db_query("insert into db_acountkey values($acount,2556,'$this->at03_id_usuario','I')");
-       $resac = db_query("insert into db_acount values($acount,418,2555,'','".AddSlashes(pg_result($resaco,0,'at03_codatend'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,418,2556,'','".AddSlashes(pg_result($resaco,0,'at03_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,418,2555,'','".AddSlashes(pg_fetch_result($resaco,0,'at03_codatend'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,418,2556,'','".AddSlashes(pg_fetch_result($resaco,0,'at03_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_tecnico {
       $this->atualizacampos();
      $sql = " update tecnico set ";
      $virgula = "";
-     if(trim($this->at03_codatend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at03_codatend"])){ 
+     if(trim((string) $this->at03_codatend)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at03_codatend"])){ 
        $sql  .= $virgula." at03_codatend = $this->at03_codatend ";
        $virgula = ",";
-       if(trim($this->at03_codatend) == null ){ 
+       if(trim((string) $this->at03_codatend) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "at03_codatend";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_tecnico {
          return false;
        }
      }
-     if(trim($this->at03_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at03_id_usuario"])){ 
+     if(trim((string) $this->at03_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at03_id_usuario"])){ 
        $sql  .= $virgula." at03_id_usuario = $this->at03_id_usuario ";
        $virgula = ",";
-       if(trim($this->at03_id_usuario) == null ){ 
+       if(trim((string) $this->at03_id_usuario) == null ){ 
          $this->erro_sql = " Campo Técnico nao Informado.";
          $this->erro_campo = "at03_id_usuario";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_tecnico {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2555,'$this->at03_codatend','A')");
          $resac = db_query("insert into db_acountkey values($acount,2556,'$this->at03_id_usuario','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at03_codatend"]))
-           $resac = db_query("insert into db_acount values($acount,418,2555,'".AddSlashes(pg_result($resaco,$conresaco,'at03_codatend'))."','$this->at03_codatend',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,418,2555,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at03_codatend'))."','$this->at03_codatend',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at03_id_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,418,2556,'".AddSlashes(pg_result($resaco,$conresaco,'at03_id_usuario'))."','$this->at03_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,418,2556,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at03_id_usuario'))."','$this->at03_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_tecnico {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2555,'$at03_codatend','E')");
          $resac = db_query("insert into db_acountkey values($acount,2556,'$at03_id_usuario','E')");
-         $resac = db_query("insert into db_acount values($acount,418,2555,'','".AddSlashes(pg_result($resaco,$iresaco,'at03_codatend'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,418,2556,'','".AddSlashes(pg_result($resaco,$iresaco,'at03_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,418,2555,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at03_codatend'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,418,2556,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at03_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tecnico
@@ -304,7 +304,7 @@ class cl_tecnico {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tecnico";
@@ -318,7 +318,7 @@ class cl_tecnico {
    function sql_query ( $at03_codatend=null,$at03_id_usuario=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -350,7 +350,7 @@ class cl_tecnico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -362,7 +362,7 @@ class cl_tecnico {
    function sql_query_file ( $at03_codatend=null,$at03_id_usuario=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,7 +391,7 @@ class cl_tecnico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -403,7 +403,7 @@ class cl_tecnico {
    function sql_query_usuarios ( $at03_codatend=null,$at03_id_usuario=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,7 +430,7 @@ class cl_tecnico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

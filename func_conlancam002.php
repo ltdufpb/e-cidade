@@ -35,9 +35,9 @@ require_once(modification("classes/db_conlancamcompl_classe.php"));
 require_once(modification("classes/db_conlancamdig_classe.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clconplano     = new cl_conplano;
 $clconlancamval = new cl_conlancamval;
@@ -131,7 +131,7 @@ if( isset($chavepesquisa)){
                       <b> Listar lançamentos de retenções:</b>
                   </label>
                   <?php
-                  $a = array( 'n' => 'Não', 's' => 'Sim');
+                  $a = [ 'n' => 'Não', 's' => 'Sim'];
                   db_select('combo_opcoes',$a,true, 1,"onChange=\"location.href='func_conlancam002.php?chavepesquisa={$chavepesquisa}&combo_opcoes='+\$F('combo_opcoes')\"");
                   ?>
               </td>
@@ -141,7 +141,7 @@ if( isset($chavepesquisa)){
                   <?php 
                   if (isset($sql)) {
                       $js_funcao="parent.js_infoLancamento|c70_codlan";
-                      db_lovrot($sql,15,"()","",$js_funcao,"","form1",array(),false,array());
+                      db_lovrot($sql,15,"()","",$js_funcao,"","form1",[],false,[]);
                   }
                   ?>
               </td>

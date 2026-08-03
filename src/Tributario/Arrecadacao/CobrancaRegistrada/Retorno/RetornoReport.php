@@ -142,8 +142,8 @@ class RetornoReport
 
         $sOcorrencia = $oRetorno->aOcorrencia[($iLinha - 1)];
 
-        if (strlen($sOcorrencia) > 90) {
-          $sOcorrencia = substr($sOcorrencia, 0, 90) . "...";
+        if (strlen((string) $sOcorrencia) > 90) {
+          $sOcorrencia = substr((string) $sOcorrencia, 0, 90) . "...";
         }
 
         $oPdf->Cell($iCellWidthOcorrencia, $iAltura, $sOcorrencia, 1, 0, "L", $iClr);

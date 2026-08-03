@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_conhistdoc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconhistdoc = new cl_conhistdoc;
 $clconhistdoc->rotulo->label("c53_coddoc");
 $clconhistdoc->rotulo->label("c53_descr");
@@ -43,7 +43,7 @@ if (isset($iCodigoTipoDocumento) && !empty($iCodigoTipoDocumento)) {
 }
 
 if(!USE_PCASP and false) {
-  $aDocumentosValidos = array(
+  $aDocumentosValidos = [
                               100,
                               33,
                               3,
@@ -64,7 +64,7 @@ if(!USE_PCASP and false) {
                               32,
   		                      58,
   		                      61
-                             );
+                             ];
   $sDocumentosValidos   = implode(",", $aDocumentosValidos);
 
 }

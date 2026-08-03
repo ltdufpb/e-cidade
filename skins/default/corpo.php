@@ -33,7 +33,7 @@
   <script>
 
     <?php
-     if (pg_numrows($rsInstituicao) > 0){
+     if (pg_num_rows($rsInstituicao) > 0){
 
       db_fieldsmemory($rsInstituicao, 0);
 
@@ -101,7 +101,7 @@
             /**
              * Define path do diretorio de imagens
              */
-            $aCaminhoImagem = pathinfo( $_SERVER["SCRIPT_FILENAME"] );
+            $aCaminhoImagem = pathinfo( (string) $_SERVER["SCRIPT_FILENAME"] );
             $sCaminhoImagem = $aCaminhoImagem["dirname"] . "/";
 
             for($i = 0;$i < $iNumRowsModulos; $i++) {
@@ -109,9 +109,9 @@
               /**
                * Carrega ou gera imagem do módulo
                */
-              if ( trim( pg_result($rsModulos,$i,"imagem") ) == "" ){
+              if ( trim( pg_fetch_result($rsModulos,$i,"imagem") ) == "" ){
 
-                $sNomeImagem = pg_result($rsModulos,$i,"id_item").".png";
+                $sNomeImagem = pg_fetch_result($rsModulos,$i,"id_item").".png";
                 $sLinkImagem = "skins/img.php?file=Modulos/" . $sNomeImagem;
 
                 /**
@@ -126,16 +126,16 @@
                   $sLinkImagem = "skins/img.php?file=logoFallBack.png";
                 }
               }else{
-                $sLinkImagem = pg_result($rsModulos,$i,"imagem");
+                $sLinkImagem = pg_fetch_result($rsModulos,$i,"imagem");
               }
 
               echo "<td align=\"center\" class=\"bordas\">
                       <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
                         <tr>
-                          <td align=\"center\" valign=\"middle\"><a title='".pg_result($rsModulos,$i,"help")."' id=\"link\" href=\"modulos.php?".base64_encode("anousu=".pg_result($rsModulos,$i,"anousu")."&modulo=".pg_result($rsModulos,$i,"id_item")."&nomemod=".pg_result($rsModulos,$i,"nome_modulo"))."\"><img src=\"$sLinkImagem\" alt=\"".pg_result($rsModulos,$i,"help")."\" onmouseover=\"js_msg_status(this.alt)\" onmouseout=\"js_msg_status('Selecione o módulo clicando na figura.')\" border=\"0\" ></a></td>
+                          <td align=\"center\" valign=\"middle\"><a title='".pg_fetch_result($rsModulos,$i,"help")."' id=\"link\" href=\"modulos.php?".base64_encode("anousu=".pg_fetch_result($rsModulos,$i,"anousu")."&modulo=".pg_fetch_result($rsModulos,$i,"id_item")."&nomemod=".pg_fetch_result($rsModulos,$i,"nome_modulo"))."\"><img src=\"$sLinkImagem\" alt=\"".pg_fetch_result($rsModulos,$i,"help")."\" onmouseover=\"js_msg_status(this.alt)\" onmouseout=\"js_msg_status('Selecione o módulo clicando na figura.')\" border=\"0\" ></a></td>
                         </tr>
                         <tr>
-                          <td align=\"center\" valign=\"middle\"><a href=\"modulos.php?".base64_encode("anousu=".pg_result($rsModulos,$i,"anousu")."&modulo=".pg_result($rsModulos,$i,"id_item")."&nomemod=".pg_result($rsModulos,$i,"nome_modulo"))."\" title=\"".pg_result($rsModulos,$i,"help")."\"  onmouseover=\"js_msg_status(this.title)\" onmouseout=\"js_msg_status('Selecione o módulo clicando na figura.')\">".pg_result($rsModulos,$i,"descr_modulo")."</a></td>
+                          <td align=\"center\" valign=\"middle\"><a href=\"modulos.php?".base64_encode("anousu=".pg_fetch_result($rsModulos,$i,"anousu")."&modulo=".pg_fetch_result($rsModulos,$i,"id_item")."&nomemod=".pg_fetch_result($rsModulos,$i,"nome_modulo"))."\" title=\"".pg_fetch_result($rsModulos,$i,"help")."\"  onmouseover=\"js_msg_status(this.title)\" onmouseout=\"js_msg_status('Selecione o módulo clicando na figura.')\">".pg_fetch_result($rsModulos,$i,"descr_modulo")."</a></td>
                         </tr>
                       </table>
                     </td>\n";
@@ -154,6 +154,6 @@
 </body>
 <script type="text/javascript">
   parent.bstatus.document.getElementById('st').innerHTML       = '&nbsp;&nbsp;Selecione o módulo clicando na figura.';
-  parent.bstatus.document.getElementById('dtatual').innerHTML  = '<?php echo (isset($HTTP_SESSION_VARS["DB_datausu"])?date("d/m/Y",db_getsession("DB_datausu")):date("d/m/Y")) ?>';
-  parent.bstatus.document.getElementById('dtanousu').innerHTML = '<?php echo (isset($HTTP_SESSION_VARS["DB_anousu"])?db_getsession("DB_anousu"):date("Y")) ?>';
+  parent.bstatus.document.getElementById('dtatual').innerHTML  = '<?php echo (isset($_SESSION["DB_datausu"])?date("d/m/Y",db_getsession("DB_datausu")):date("d/m/Y")) ?>';
+  parent.bstatus.document.getElementById('dtanousu').innerHTML = '<?php echo (isset($_SESSION["DB_anousu"])?db_getsession("DB_anousu"):date("Y")) ?>';
 </script>

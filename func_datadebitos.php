@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_datadebitos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldatadebitos = new cl_datadebitos;
 $cldatadebitos->rotulo->label("k115_sequencial");
 $cldatadebitos->rotulo->label("k115_data");
@@ -98,9 +98,9 @@ $cldatadebitos->rotulo->label("k115_data");
         }else{
            $sql = $cldatadebitos->sql_query("",$campos,"k115_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k115_data)){
-          $repassa = array("chave_k115_sequencial"=>$chave_k115_sequencial,"chave_k115_data"=>$chave_k115_data);
+          $repassa = ["chave_k115_sequencial"=>$chave_k115_sequencial,"chave_k115_data"=>$chave_k115_data];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

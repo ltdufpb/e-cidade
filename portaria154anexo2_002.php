@@ -38,7 +38,7 @@ try {
         throw new BusinessException("Matrícula não informada!");
     }
 
-    $oServidor = \ServidorRepository::getServidoresByMatriculas(\DBPessoal::getAnoFolha(), \DBPessoal::getMesFolha(), array($oParam->matricula));
+    $oServidor = \ServidorRepository::getServidoresByMatriculas(\DBPessoal::getAnoFolha(), \DBPessoal::getMesFolha(), [$oParam->matricula]);
     $oServidor = $oServidor[$oParam->matricula];
     $oCgm = $oServidor->getCgm();
     $oPrefeitura = InstituicaoRepository::getInstituicaoByCodigo(db_getsession("DB_instit"));
@@ -87,7 +87,7 @@ SQL;
         throw new BusinessException("Nenhuma informação encontrada para a matrícula " . $oParam->matricula);
     }
     
-    $aMeses = array(
+    $aMeses = [
         1 => "JANEIRO", 
         2 => "FEVEREIRO", 
         3 => "MARÇO", 
@@ -101,10 +101,10 @@ SQL;
         11 => "NOVEMBRO", 
         12 => "DEZEMBRO",
         13 => "13º SALARIO / GRAT. NATALINA"
-    );
+    ];
 
     // Todo ano possui 12 meses com valor default zerado
-    $aMesesDefault = array(
+    $aMesesDefault = [
         1 => 0.00, 
         2 => 0.00, 
         3 => 0.00, 
@@ -118,8 +118,8 @@ SQL;
         11 => 0.00, 
         12 => 0.00,
         13 => 0.00
-    );
-    $registros =  array();
+    ];
+    $registros =  [];
 
     for ($i = 0; $i < $qtdRegistros; $i ++) {
         $registro  = \db_utils::fieldsMemory($rs, $i);
@@ -144,14 +144,14 @@ SQL;
     $quantidadeMaximaColunas = 5;
     $qtdTabelas  = ceil(sizeof($registros) / $quantidadeMaximaColunas);
     $contador = 0;
-    $tabelas = array();
+    $tabelas = [];
     $registrosTabela = $registros;
     for ($i = 0; $i < $qtdTabelas; $i++) {
-        $aColunas = array("Mês");
+        $aColunas = ["Mês"];
         $j = 0;
         foreach ($registrosTabela as $key => $value) {
             if ($j < $quantidadeMaximaColunas) {
-                $aColunas[] = array("exercicio" => $key, "valores" => $value);
+                $aColunas[] = ["exercicio" => $key, "valores" => $value];
                 unset($registrosTabela[$key]);        
             } else {
                 continue;
@@ -321,7 +321,7 @@ SQL;
 
     $oPdf->SetFontSize(10);
     $oPdf->setBold(1);
-    $aUnidadeGestora = array(1 => "RPPS", 2 => "RGPS");
+    $aUnidadeGestora = [1 => "RPPS", 2 => "RGPS"];
     $oPdf->Cell(90, 4, "UNIDADE GESTORA DO " . $aUnidadeGestora[$oParam->unidadegestora], 0, 1, 'L', 0); 
     $oPdf->setBold(0);
     $oPdf->SetFontSize(8);

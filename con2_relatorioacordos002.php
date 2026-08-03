@@ -94,7 +94,7 @@ if (isset($oPost->ac16_datainicio)) {
   if (!empty($oPost->ac16_datainicio)) {
 
     $sDataInicio = $oPost->ac16_datainicio;
-    $dtIni       = implode("-",array_reverse(explode("/",$sDataInicio)));
+    $dtIni       = implode("-",array_reverse(explode("/",(string) $sDataInicio)));
     $sWhere     .= "{$sAnd} acordo.ac16_datainicio >= '{$dtIni}'";
     $sAnd        = " and ";
   }
@@ -105,7 +105,7 @@ if (isset($oPost->ac16_datafim)) {
   if (!empty($oPost->ac16_datafim)) {
 
     $sDataFim = $oPost->ac16_datafim;
-    $dtFim    = implode("-",array_reverse(explode("/",$sDataFim)));
+    $dtFim    = implode("-",array_reverse(explode("/",(string) $sDataFim)));
     $sWhere  .= "{$sAnd} acordo.ac16_datafim <= '{$dtFim}'";
     $sAnd     = " and ";
   }
@@ -190,7 +190,7 @@ if (isset($oPost->listaitens)) {
 
   if (!empty($oPost->listaitens)) {
 
-    if (trim($oPost->listaitens) == 'S') {
+    if (trim((string) $oPost->listaitens) == 'S') {
     	$sListarItens = 'Sim';
     }
   }
@@ -202,7 +202,7 @@ if (isset($oPost->listamovimentacao)) {
 
   if (!empty($oPost->listamovimentacao)) {
 
-  	if (trim($oPost->listamovimentacao) == 'S') {
+  	if (trim((string) $oPost->listamovimentacao) == 'S') {
   		$sListarMovimentacao = 'Sim';
   	}
   }
@@ -214,7 +214,7 @@ if (isset($oPost->listaautorizacao)) {
 
   if (!empty($oPost->listaautorizacao)) {
 
-    if (trim($oPost->listaautorizacao) == 'S') {
+    if (trim((string) $oPost->listaautorizacao) == 'S') {
       $sListarAutorizacao = 'Sim';
     }
   }
@@ -226,13 +226,13 @@ if (isset($oPost->ordem)) {
 
   if (!empty($oPost->ordem)) {
 
-    if (trim($oPost->ordem) == 1) {
+    if (trim((string) $oPost->ordem) == 1) {
       $sOrder = 'acordo.ac16_dataassinatura';
-    } else if (trim($oPost->ordem) == 2) {
+    } else if (trim((string) $oPost->ordem) == 2) {
       $sOrder = 'acordo.ac16_contratado';
-    } else if (trim($oPost->ordem) == 3) {
+    } else if (trim((string) $oPost->ordem) == 3) {
       $sOrder = 'acordo.ac16_numero';
-    } else if (trim($oPost->ordem) == 4) {
+    } else if (trim((string) $oPost->ordem) == 4) {
       $sOrder = 'acordo.ac16_anousu';
     }
   }
@@ -263,7 +263,7 @@ if ( $clacordo->numrows == 0  ) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado!");
 }
 
-$aDadosAcordo = array();
+$aDadosAcordo = [];
 $aTiposInstrumento = Acordo::getTiposInstrumento();
 
 for ($iInd = 0; $iInd < $clacordo->numrows; $iInd++) {
@@ -317,7 +317,7 @@ for ($iInd = 0; $iInd < $clacordo->numrows; $iInd++) {
   $oComissao         = $oAcordo->getComissao();
   $sComissao         = $oComissao->getCodigo() . " - " . $oComissao->getDescricao();
   $aMembros          = $oComissao->getMembros();
-  $aDescricaoMembros = array();
+  $aDescricaoMembros = [];
 
   foreach ($aMembros as $oMembros) {
 
@@ -334,7 +334,7 @@ for ($iInd = 0; $iInd < $clacordo->numrows; $iInd++) {
     case 1:
 
     	$aProcessoCompra      = $oAcordo->getProcessosDeCompras();
-    	$aDadosProcessoCompra = array();
+    	$aDadosProcessoCompra = [];
     	foreach ($aProcessoCompra as $oProcessoCompras) {
 
     		$aDadosProcessoCompra[] = $oProcessoCompras->getCodigo();
@@ -346,7 +346,7 @@ for ($iInd = 0; $iInd < $clacordo->numrows; $iInd++) {
     case 2:
 
     	$aLicitacoes     = $oAcordo->getLicitacoes();
-    	$aListaLicitacao = array();
+    	$aListaLicitacao = [];
 
     	foreach ($aLicitacoes as $oLicitacoes) {
     		$aListaLicitacao[] = $oLicitacoes->getCodigo();
@@ -373,7 +373,7 @@ for ($iInd = 0; $iInd < $clacordo->numrows; $iInd++) {
     case 6:
 
     	$aEmpenhos = $oAcordo->getEmpenhos();
-    	$aLista    = array();
+    	$aLista    = [];
     	foreach ($aEmpenhos as $oEmpenho) {
     		$aLista[] = $oEmpenho->getCodigo() . "/" . $oEmpenho->getAnoUso();
     	}
@@ -388,7 +388,7 @@ for ($iInd = 0; $iInd < $clacordo->numrows; $iInd++) {
   }
 
   $oDadosAcordo->getOrigem       = $sOrigem;
-  $oDadosAcordo->aItens          = array();
+  $oDadosAcordo->aItens          = [];
   /*
    * Agrupa por Itens
    */
@@ -398,14 +398,14 @@ for ($iInd = 0; $iInd < $clacordo->numrows; $iInd++) {
 
       $oDadosAcordoItens                       = new stdClass();
       $oDadosAcordoItens->getCodigo            = $oAcordoItens->getCodigo();
-      $oDadosAcordoItens->getCodigoMaterial    = substr($oAcordoItens->getMaterial()->getMaterial(), 0, 32);
-      $oDadosAcordoItens->getDescricaoMaterial = urldecode($oAcordoItens->getMaterial()->getDescricao());
+      $oDadosAcordoItens->getCodigoMaterial    = substr((string) $oAcordoItens->getMaterial()->getMaterial(), 0, 32);
+      $oDadosAcordoItens->getDescricaoMaterial = urldecode((string) $oAcordoItens->getMaterial()->getDescricao());
       $oDadosAcordoItens->getUnidade           = $oAcordoItens->getUnidade();
       $oDadosAcordoItens->getQuantidade        = $oAcordoItens->getQuantidade();
       $oDadosAcordoItens->getValorUnitario     = $oAcordoItens->getValorUnitario();
       $oDadosAcordoItens->getValorTotal        = $oAcordoItens->getValorTotal();
       $oDadosAcordoItens->getDotacoes          = $oAcordoItens->getDotacoes();
-      $oDadosAcordoItens->getResumo            = urldecode($oAcordoItens->getResumo());
+      $oDadosAcordoItens->getResumo            = urldecode((string) $oAcordoItens->getResumo());
 
       $oDadosAcordo->getValorTotal += $oAcordoItens->getValorTotal();
 
@@ -413,7 +413,7 @@ for ($iInd = 0; $iInd < $clacordo->numrows; $iInd++) {
     }
     $aDadosAcordo[] = $oDadosAcordo;
 
-  } catch (Exception $e) {
+  } catch (Exception) {
 
   }
 }
@@ -480,7 +480,7 @@ foreach ($aDadosAcordo as $oDadoAcordo) {
          */
         $oPdf->SetFont('Arial','',$iFonte-1);
         $oPdf->Cell(28 ,$iAlt,$oDadoAcordoItem->getCodigo                                      ,'TBR',0,'C',$iCorFundo);
-        $oPdf->Cell(63 ,$iAlt,substr(urldecode($oDadoAcordoItem->getDescricaoMaterial), 0, 32)     ,1,0,'L',$iCorFundo);
+        $oPdf->Cell(63 ,$iAlt,substr(urldecode((string) $oDadoAcordoItem->getDescricaoMaterial), 0, 32)     ,1,0,'L',$iCorFundo);
         $oPdf->Cell(28 ,$iAlt,$oDadoAcordoItem->getQuantidade                                      ,1,0,'R',$iCorFundo);
         $oPdf->Cell(28 ,$iAlt,$oDadoAcordoItem->getUnidade                                         ,1,0,'R',$iCorFundo);
         $oPdf->Cell(28 ,$iAlt,trim(db_formatar($oDadoAcordoItem->getValorUnitario,'f'))            ,1,0,'R',$iCorFundo);
@@ -498,7 +498,7 @@ foreach ($aDadosAcordo as $oDadoAcordo) {
 
         $oPdf->SetFont('Arial','',$iFonte-1);
         $oPdf->MultiCell(75,$iAlt,trim($sDotacao)                                                ,'TBL','L',$iCorFundo);
-        $oPdf->MultiCell(278,$iAlt,urldecode($oDadoAcordoItem->getResumo)                         ,'TB','L',$iCorFundo);
+        $oPdf->MultiCell(278,$iAlt,urldecode((string) $oDadoAcordoItem->getResumo)                         ,'TB','L',$iCorFundo);
 
         if ($oPdf->GetY() > ($oPdf->h - 50)) {
 
@@ -565,9 +565,9 @@ foreach ($aDadosAcordo as $oDadoAcordo) {
          */
         $oPdf->SetFont('Arial','',$iFonte-1);
         $oPdf->Cell(50 ,$iAlt,$oDadoAcordoMovimentacao->hora                                   ,'TBR',0,'C',$iCorFundo);
-        $oPdf->Cell(172 ,$iAlt,urldecode($oDadoAcordoMovimentacao->descricao)                      ,1,0,'L',$iCorFundo);
+        $oPdf->Cell(172 ,$iAlt,urldecode((string) $oDadoAcordoMovimentacao->descricao)                      ,1,0,'L',$iCorFundo);
         $oPdf->Cell(56 ,$iAlt,db_formatar($oDadoAcordoMovimentacao->ac10_datamovimento, 'd')   ,'TBL',1,'C',$iCorFundo);
-        $oPdf->MultiCell(278,$iAlt,urldecode($oDadoAcordoMovimentacao->observacao)                ,'TB','L',$iCorFundo);
+        $oPdf->MultiCell(278,$iAlt,urldecode((string) $oDadoAcordoMovimentacao->observacao)                ,'TB','L',$iCorFundo);
 
         if ($oPdf->GetY() > ($oPdf->h - 50)) {
 
@@ -662,7 +662,7 @@ function imprimirCabecalhoAcordos($oPdf, $oDado, $lImprime, $iFonte, $iAlt) {
   $oPdf->SetFont('Arial','B',$iFonte);
   $oPdf->Cell(35 ,$iAlt,'Tipo do Acordo: ',0,0,'L',0);
   $oPdf->SetFont('Arial','',$iFonte-1);
-  $oPdf->Cell(107 ,$iAlt,urldecode($oDado->getTipoAcordo),0,0,'L',0);
+  $oPdf->Cell(107 ,$iAlt,urldecode((string) $oDado->getTipoAcordo),0,0,'L',0);
 
   $oPdf->SetFont('Arial','B',$iFonte);
   $oPdf->Cell(35 ,$iAlt,'Tipo de Instrumento: ',0,0,'L',0);
@@ -692,7 +692,7 @@ function imprimirCabecalhoAcordos($oPdf, $oDado, $lImprime, $iFonte, $iAlt) {
   $oPdf->SetFont('Arial','B',$iFonte);
   $oPdf->Cell(35 ,$iAlt,'Situação Atual: ',0,0,'L',0);
   $oPdf->SetFont('Arial','',$iFonte-1);
-  $oPdf->Cell(107 ,$iAlt,urldecode($oDado->getSituacao),0,0,'L',0);
+  $oPdf->Cell(107 ,$iAlt,urldecode((string) $oDado->getSituacao),0,0,'L',0);
 
   $oPdf->SetFont('Arial','B',$iFonte);
   $oPdf->Cell(35 ,$iAlt,'Classificação: ',0,0,'L',0);
@@ -703,12 +703,12 @@ function imprimirCabecalhoAcordos($oPdf, $oDado, $lImprime, $iFonte, $iAlt) {
   $oPdf->SetFont('Arial','B',$iFonte);
   $oPdf->Cell(35 ,$iAlt,'Contratado: ',0,0,'L',0);
   $oPdf->SetFont('Arial','',$iFonte-1);
-  $oPdf->Cell(107 ,$iAlt,urldecode($oDado->getContratado),0,0,'L',0);
+  $oPdf->Cell(107 ,$iAlt,urldecode((string) $oDado->getContratado),0,0,'L',0);
 
   $oPdf->SetFont('Arial','B',$iFonte);
   $oPdf->Cell(35 ,$iAlt,'Grupo de Acordo: ',0,0,'L',0);
   $oPdf->SetFont('Arial','',$iFonte-1);
-  $oPdf->Cell(107 ,$iAlt,urldecode($oDado->getGrupoAcordo),0,0,'L',0);
+  $oPdf->Cell(107 ,$iAlt,urldecode((string) $oDado->getGrupoAcordo),0,0,'L',0);
   $oPdf->ln();
 
   $oPdf->SetFont('Arial','B',$iFonte);
@@ -737,35 +737,35 @@ function imprimirCabecalhoAcordos($oPdf, $oDado, $lImprime, $iFonte, $iAlt) {
   $oPdf->SetFont('Arial','B',$iFonte);
   $oPdf->Cell(35 ,$iAlt,'Departamento: ',0,0,'L',0);
   $oPdf->SetFont('Arial','',$iFonte-1);
-  $oPdf->Cell(107 ,$iAlt,urldecode($oDado->getDepartamento),0,0,'L',0);
+  $oPdf->Cell(107 ,$iAlt,urldecode((string) $oDado->getDepartamento),0,0,'L',0);
   $oPdf->ln();
 
   $oPdf->SetFont('Arial', 'B', $iFonte);
   $oPdf->Cell(35 ,$iAlt,'Origem: ', 0, 0, 'L', 0);
   $oPdf->SetFont('Arial', '', $iFonte-1);
-  $oPdf->Cell(107, $iAlt, urldecode($oDado->getOrigem),0, 0, "L", 0);
+  $oPdf->Cell(107, $iAlt, urldecode((string) $oDado->getOrigem),0, 0, "L", 0);
 
   $oPdf->SetFont('Arial', 'B', $iFonte);
   $oPdf->Cell(35 ,$iAlt, 'Resumo do Objeto: ', 0, 0, 'L', 0);
   $oPdf->SetFont('Arial', '', $iFonte-1);
-  $oPdf->MultiCell(246, $iAlt, urldecode($oDado->getResumoObjeto), 0, "L", 0);
+  $oPdf->MultiCell(246, $iAlt, urldecode((string) $oDado->getResumoObjeto), 0, "L", 0);
 
   $oPdf->SetFont('Arial','B',$iFonte);
   $oPdf->Cell(35 ,$iAlt,'Comissão: ' ,0,0,'L',0);
   $oPdf->SetFont('Arial','',$iFonte-1);
-  $oPdf->Cell(107 ,$iAlt,urldecode($oDado->getComissao),0,0,'L',0);
+  $oPdf->Cell(107 ,$iAlt,urldecode((string) $oDado->getComissao),0,0,'L',0);
   $oPdf->ln();
 
   $oPdf->SetFont('Arial','B',$iFonte);
   $oPdf->Cell(35 ,$iAlt,'Licitação: ' ,0,0,'L',0);
   $oPdf->SetFont('Arial','',$iFonte-1);
-  $oPdf->Cell(107 ,$iAlt,urldecode($oDado->sLicitacao),0,0,'L',0);
+  $oPdf->Cell(107 ,$iAlt,urldecode((string) $oDado->sLicitacao),0,0,'L',0);
   $oPdf->ln();
 
   $oPdf->SetFont('Arial','B',$iFonte);
   $oPdf->Cell(35 ,$iAlt,'Membros: ',0,0,'L',0);
   $oPdf->SetFont('Arial','',$iFonte-1);
-  $oPdf->MultiCell(107,$iAlt,urldecode($oDado->getComissaoMembros),0,"L",0);
+  $oPdf->MultiCell(107,$iAlt,urldecode((string) $oDado->getComissaoMembros),0,"L",0);
 
   $oPdf->Cell(278,$iAlt-3,'','T',0,"C",0);
   $oPdf->ln();

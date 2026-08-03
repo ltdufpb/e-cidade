@@ -63,7 +63,7 @@ $DB_BASE     = "ontem_20130220_1900";
     $rsStartSession = db_query("select fc_startsession()");
     db_inicio_transacao();
 
-    list($iAnoServidor, $iMesServidor, $iDiaServidor) = explode("-", date("Y-m-d"));
+    [$iAnoServidor, $iMesServidor, $iDiaServidor] = explode("-", date("Y-m-d"));
 
     /**
      * Buscamos as instituicoes cadastradas para o sistema.
@@ -74,7 +74,7 @@ $DB_BASE     = "ontem_20130220_1900";
     }
     $aInstituicoes = db_utils::getCollectionByRecord($rsBuscaInstituicao) ;
 
-    $HTTP_SERVER_VARS = null;
+    $_SERVER = null;
     db_putsession("DB_anousu",     "{$iAnoServidor}");
     db_putsession("DB_id_usuario", "1");
     db_putsession("DB_acessado",   "0");
@@ -96,7 +96,7 @@ $DB_BASE     = "ontem_20130220_1900";
 
       db_putsession("DB_instit", $oInstituicao->codigo);
       db_putsession("DB_ip",     $sIpTerminal);
-      db_putsession("DB_datausu", mktime());
+      db_putsession("DB_datausu", time());
 
       echo "\n\nPROCESSANDO SLIPS DA INSTITUICAO {$oInstituicao->codigo} - {$oInstituicao->nomeinst}\n\n";
 
@@ -115,11 +115,11 @@ $DB_BASE     = "ontem_20130220_1900";
       }
 
       $iTotalRegistroSlip = pg_num_rows($rsBuscaSlip);
-      $aSlipsEncontrados  = array();
+      $aSlipsEncontrados  = [];
       for ($iRowSlip = 0; $iRowSlip < $iTotalRegistroSlip; $iRowSlip++) {
 
         $oStdDadoSlip = db_utils::fieldsMemory($rsBuscaSlip, $iRowSlip);
-        list($iAnoAutent, $iMesAutent, $iDiaAutent) = explode("-", $oStdDadoSlip->k17_dtaut);
+        [$iAnoAutent, $iMesAutent, $iDiaAutent] = explode("-", (string) $oStdDadoSlip->k17_dtaut);
 
         db_putsession("DB_datausu", mktime(0, 0, 0, $iMesAutent, $iDiaAutent, $iAnoAutent));
 
@@ -215,7 +215,7 @@ $DB_BASE     = "ontem_20130220_1900";
         }
 
         $oTransferencia = TransferenciaFactory::getInstance($iCodigoVinculo, $oStdDadoSlip->k17_codigo);
-        list($iAno, $iMes, $iDia) = explode("-", $oStdDadoSlip->k17_dtaut);
+        [$iAno, $iMes, $iDia] = explode("-", (string) $oStdDadoSlip->k17_dtaut);
         db_putsession("DB_datausu", mktime(0, 0, 0, $iMes, $iDia, $iAno));
         $oTransferencia->executaAutenticacao();
         $oTransferencia->executarLancamentoContabil();

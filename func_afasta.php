@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_afasta_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clafasta = new cl_afasta;
 $clrotulo = new rotulocampo;

@@ -43,7 +43,7 @@ $clseguradoras->rotulo->label();
 $clrotulo->label("z01_nome"); //classificação
 $clrotulo->label("t64_class"); //classificação
 $clrotulo->label("descrdepto"); //classificação
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if((isset($t81_codapo) && trim($t81_codapo)!="")){
@@ -81,7 +81,7 @@ $alt = 4;
 $head2 = "VENCIMENTO DA APÓLICE (".db_formatar($t81_venc,"d").")";
 $head4 = "CÓDIGO: $t81_codapo";
 $head5 = "DESCRIÇÃO: $t81_apolice";
-$head7 = "SEGURADORA: ".substr($z01_nome,0,35);
+$head7 = "SEGURADORA: ".substr((string) $z01_nome,0,35);
 $head8 = "CONTATO: $t80_contato";
 
 $pdf->addpage();
@@ -105,7 +105,7 @@ $pdf->ln(1);
     $pdf->setfont('arial','',6);
     $pdf->cell(20,$alt,$t52_bem   ,0,0,"C",0);
     $pdf->cell(25,$alt,$t52_ident ,0,0,"L",0);
-    $pdf->cell(75,$alt,substr($t52_descr,0,60),0,0,"L",0);
+    $pdf->cell(75,$alt,substr((string) $t52_descr,0,60),0,0,"L",0);
     $pdf->cell(20,$alt,$t64_class ,0,0,"C",0);
     $pdf->cell(50,$alt,$descrdepto,0,1,"L",0);
     $total++;

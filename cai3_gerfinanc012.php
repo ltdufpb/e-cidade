@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_arrecad_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 
 if(isset($desconto)){
@@ -41,7 +41,7 @@ if(isset($desconto)){
   if (!empty($desconto)){
      $clarrecad = new cl_arrecad;
      $record = debitos_numpre($k00_numpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"));
-     if(pg_numrows($record) != 0){
+     if(pg_num_rows($record) != 0){
 	     db_fieldsmemory();      
      }
   }  
@@ -138,8 +138,8 @@ function js_calmulta(){
     $receit = 0;
 	 
   $record = debitos_numpre($k00_numpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"));
-  if(pg_numrows($record) != 0){
-    $matrec=array();
+  if(pg_num_rows($record) != 0){
+    $matrec=[];
     $matpar["0"]="Todas Parcelas ...";
     $matrec["0"]="Todas Receitas ...";
     $valor = 0;
@@ -148,7 +148,7 @@ function js_calmulta(){
 	$tvlrmulta= 0;
 	$tvlrdesconto= 0;
     $ttotal = 0;
-    for($i=0;$i<pg_numrows($record);$i++){
+    for($i=0;$i<pg_num_rows($record);$i++){
 	  db_fieldsmemory($record,$i);
       $matpar[$k00_numpar]= "$k01_descr";
 	  if($numpar!=0 && $k00_numpar == $numpar){ 

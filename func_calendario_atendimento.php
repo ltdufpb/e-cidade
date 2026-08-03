@@ -55,35 +55,35 @@ if ( isset($seleciona) || isset($acumulaseleciona) || isset($lembrete) ){
 
      $result = db_query($sql);
 
-     $tarefa = $HTTP_POST_VARS["tarefa"];
+     $tarefa = $_POST["tarefa"];
    }else{
      // lembrete fica com tarefa 0
      $tarefa = 0;
-     $tarefa_old = $HTTP_POST_VARS["tarefa"];
+     $tarefa_old = $_POST["tarefa"];
    }
  
 
-   $ano    = $HTTP_POST_VARS["ano"];
-   $mes    = $HTTP_POST_VARS["mes"];
-   $observacao = $HTTP_POST_VARS["observacao"];
-   $at77_hora = $HTTP_POST_VARS["at77_hora"];
+   $ano    = $_POST["ano"];
+   $mes    = $_POST["mes"];
+   $observacao = $_POST["observacao"];
+   $at77_hora = $_POST["at77_hora"];
    if( $at77_hora == ''){
      $at77_hora = '08:30';
    }
 
-   $dia=array();
-   $tecnico=array();
-   reset($HTTP_POST_VARS);
-   for($i=0;$i<count($HTTP_POST_VARS);$i++){
+   $dia=[];
+   $tecnico=[];
+   reset($_POST);
+   for($i=0;$i<count($_POST);$i++){
 
-     if( substr(key($HTTP_POST_VARS),0,4) == "dia_"){
-       $dia[] = $HTTP_POST_VARS[key($HTTP_POST_VARS)];
+     if( str_starts_with((string) key($_POST), "dia_")){
+       $dia[] = $_POST[key($_POST)];
      }
-     if( substr(key($HTTP_POST_VARS),0,8) == "tecnico_"){
-       $tecnico[] = $HTTP_POST_VARS[key($HTTP_POST_VARS)];
+     if( str_starts_with((string) key($_POST), "tecnico_")){
+       $tecnico[] = $_POST[key($_POST)];
      }
 
-     next($HTTP_POST_VARS);
+     next($_POST);
 
    }
  
@@ -105,12 +105,12 @@ if ( isset($seleciona) || isset($acumulaseleciona) || isset($lembrete) ){
                   and at77_id_usuario   = ".db_getsession("DB_id_usuario")."
                   and at77_usuenvolvido = ".db_getsession("DB_id_usuario")."
                   and at77_dataagenda   = '".$ano."-".$mes."-".$dia[$i]."'
-                  and at77_hora         = '".trim($at77_hora)."'"."
+                  and at77_hora         = '".trim((string) $at77_hora)."'"."
                   and at77_observacao = '$observacao'";
 
        $result = db_query($sql);
 
-       if ( pg_numrows($result) == 0 ){
+       if ( pg_num_rows($result) == 0 ){
 
           $sql = " insert into tarefaagenda values(nextval('tarefaagenda_at77_sequen_seq'),
                                               $tarefa,
@@ -133,7 +133,7 @@ if ( isset($seleciona) || isset($acumulaseleciona) || isset($lembrete) ){
                      and at77_id_usuario   = ".db_getsession("DB_id_usuario")."
                      and at77_usuenvolvido = ".db_getsession("DB_id_usuario")."
                      and at77_dataagenda   = '".$ano."-".$mes."-".$dia[$i]."'
-                     and at77_hora         = '".trim($at77_hora)."'";
+                     and at77_hora         = '".trim((string) $at77_hora)."'";
 
        }
        $result = db_query($sql);
@@ -155,7 +155,7 @@ if ( isset($seleciona) || isset($acumulaseleciona) || isset($lembrete) ){
 
          $result = db_query($sql);
 
-         if ( pg_numrows($result) == 0 ){
+         if ( pg_num_rows($result) == 0 ){
 
            $sql = " insert into tarefaagenda values(nextval('tarefaagenda_at77_sequen_seq'),
                                               $tarefa,
@@ -196,21 +196,21 @@ if ( isset($seleciona) || isset($acumulaseleciona) || isset($lembrete) ){
 }
 
 class calendario{ 
-   var $sem;//Array com os dias da semana como índice 
-   var $mes;//Array com os meses do ano 
-   var $nome_objeto_data;
-   var $shutdown_function = "";
-   var $tarefa = "";
-   var $tarefadescricao = "";
-   var $data = "";
-   var $mensagem_tarefa = "";
-   var $observacao = "";
-   var $hora= "";
-   var $fechar = "";
+   public $sem;//Array com os dias da semana como índice 
+   public $mes;//Array com os meses do ano 
+   public $nome_objeto_data;
+   public $shutdown_function = "";
+   public $tarefa = "";
+   public $tarefadescricao = "";
+   public $data = "";
+   public $mensagem_tarefa = "";
+   public $observacao = "";
+   public $hora= "";
+   public $fechar = "";
 
    function inicializa(){//Atribui valores para $sem e $mes.
-       $this->sem=array('Sun'=>1,'Mon'=>2,'Tue'=>3,'Wed'=>4,'Thu'=>5,'Fri'=>6,'Sat'=>7);
-       $this->mes=array('1'=>'JANEIRO','2'=>'FEVEREIRO','3'=>'MARÇO','4'=>'ABRIL','5'=>'MAIO','6'=>'JUNHO','7'=>'JULHO','8'=>'AGOSTO','9'=>'SETEMBRO','10'=>'OUTUBRO','11'=>'NOVEMBRO','12'=>'DEZEMBRO');
+       $this->sem=['Sun'=>1,'Mon'=>2,'Tue'=>3,'Wed'=>4,'Thu'=>5,'Fri'=>6,'Sat'=>7];
+       $this->mes=['1'=>'JANEIRO','2'=>'FEVEREIRO','3'=>'MARÇO','4'=>'ABRIL','5'=>'MAIO','6'=>'JUNHO','7'=>'JULHO','8'=>'AGOSTO','9'=>'SETEMBRO','10'=>'OUTUBRO','11'=>'NOVEMBRO','12'=>'DEZEMBRO'];
    } 
 
    function aux($i){//Complementa a tabela com espaços em branco 
@@ -248,22 +248,22 @@ class calendario{
              where at40_sequencial = ".$this->tarefa." 
                and at77_id_usuario = ".db_getsession("DB_id_usuario");
      $result = db_query($sql);
-     if( pg_numrows($result) > 0 ){
-       $this->tarefadescricao = pg_result($result,0,'at40_descr');
-       $this->observacao = pg_result($result,0,'at77_observacao');
-       $this->hora = pg_result($result,0,'at77_hora');
+     if( pg_num_rows($result) > 0 ){
+       $this->tarefadescricao = pg_fetch_result($result,0,'at40_descr');
+       $this->observacao = pg_fetch_result($result,0,'at77_observacao');
+       $this->hora = pg_fetch_result($result,0,'at77_hora');
      }
-     $qual_dia_agenda=array();
-     $tecnico_envol = array();
-     for($dd=0;$dd<pg_numrows($result);$dd++){
-       $diaagenda = pg_result($result,$dd,'at77_dataagenda');
+     $qual_dia_agenda=[];
+     $tecnico_envol = [];
+     for($dd=0;$dd<pg_num_rows($result);$dd++){
+       $diaagenda = pg_fetch_result($result,$dd,'at77_dataagenda');
        if( $diaagenda != '' && (substr($diaagenda,5,2)+0) == $mes && substr($diaagenda,0,4)==$ano ){
          $qual_dia_agenda[(substr($diaagenda,8,2))+0] = (substr($diaagenda,8,2)+0);
        }
        if( $diaagenda != '' && (substr($diaagenda,5,2)+0 != $mes || substr($diaagenda,0,4)!=$ano) ){
          $this->mensagem_tarefa = "Mês: ".substr($diaagenda,5,2)." Ano: ".substr($diaagenda,0,4);
        }
-       $tecnico_env = pg_result($result,$dd,'at77_usuenvolvido');
+       $tecnico_env = pg_fetch_result($result,$dd,'at77_usuenvolvido');
        $tecnico_envol[$tecnico_env] = $tecnico_env;
      }
 
@@ -429,7 +429,7 @@ class calendario{
                         where db_depusu.id_usuario = ".db_getsession("DB_id_usuario");
      $rResult = db_query($sSqlQuemAcessa);
 
-     if(pg_result($rResult,0,0) != 708 && pg_result($rResult,0,0) != 717){
+     if(pg_fetch_result($rResult,0,0) != 708 && pg_fetch_result($rResult,0,0) != 717){
        $sSqlClientes .= " where at01_status is true "; 
      
      }
@@ -554,14 +554,14 @@ class calendario{
                and at77_usuenvolvido = ".db_getsession("DB_id_usuario");
      $result = db_query($sql);
       
-     if (pg_numrows($result)>0){
+     if (pg_num_rows($result)>0){
 
-       for($i=0;$i<pg_numrows($result);$i++){
+       for($i=0;$i<pg_num_rows($result);$i++){
 
-         $descr         = pg_result($result,$i,'at77_observacao');
-         $nomeoutros    = pg_result($result,$i,'nomeoutros');
-         $datainclusao  = db_formatar(pg_result($result,$i,'at77_datainclusao'),'d');
-         $dataagenda    = db_formatar(pg_result($result,$i,'at77_dataagenda'),'d');
+         $descr         = pg_fetch_result($result,$i,'at77_observacao');
+         $nomeoutros    = pg_fetch_result($result,$i,'nomeoutros');
+         $datainclusao  = db_formatar(pg_fetch_result($result,$i,'at77_datainclusao'),'d');
+         $dataagenda    = db_formatar(pg_fetch_result($result,$i,'at77_dataagenda'),'d');
          $str .= "<tr><td colspan='7'><font size='1'><strong>$nomeoutros</strong> - $descr - $datainclusao - $dataagenda </font></td></tr>";
        }
 
@@ -583,8 +583,8 @@ class calendario{
                order by nome ";
      $result = db_query($sql);
 
-     for($i=0;$i<pg_numrows($result);$i++){
-       $idtec = pg_result($result,$i,'at27_usuarios');
+     for($i=0;$i<pg_num_rows($result);$i++){
+       $idtec = pg_fetch_result($result,$i,'at27_usuarios');
        if( $idtec != db_getsession("DB_id_usuario") ){
 
          $str .= "<tr>
@@ -596,10 +596,10 @@ class calendario{
                  where at45_tarefa = ".$this->tarefa." and at45_usuario = $idtec and at45_perc = 100";
 
          $result_envol = db_query($sql);
-         if( pg_numrows($result_envol) > 0 ){
-           $str .= "<font size='1' color='red'>".pg_result($result,$i,'nome')."</font></td></tr>";
+         if( pg_num_rows($result_envol) > 0 ){
+           $str .= "<font size='1' color='red'>".pg_fetch_result($result,$i,'nome')."</font></td></tr>";
          }else{
-           $str .= "<font size='1'>".pg_result($result,$i,'nome')."</font></td></tr>";
+           $str .= "<font size='1'>".pg_fetch_result($result,$i,'nome')."</font></td></tr>";
          }
        }
      }
@@ -630,13 +630,13 @@ class calendario{
 
      $result = db_query($sql);
       
-     if (pg_numrows($result)>0){
+     if (pg_num_rows($result)>0){
 
-       for($i=0;$i<pg_numrows($result);$i++){
-         $codtarefa = pg_result($result,$i,'at77_tarefa');
-         $descr  = pg_result($result,$i,'at40_descr');
-         $datainclusao  = db_formatar(pg_result($result,$i,'at77_datainclusao'),'d');
-         $hora  = pg_result($result,$i,'at77_hora');
+       for($i=0;$i<pg_num_rows($result);$i++){
+         $codtarefa = pg_fetch_result($result,$i,'at77_tarefa');
+         $descr  = pg_fetch_result($result,$i,'at40_descr');
+         $datainclusao  = db_formatar(pg_fetch_result($result,$i,'at77_datainclusao'),'d');
+         $hora  = pg_fetch_result($result,$i,'at77_hora');
          $str .= "<tr>
                     <td><font size='1'><strong>
                       <a href='#' onclick='js_pesquisa_tarefa($codtarefa)' >$codtarefa</a>&nbsp<strong><a href='#' onclick='js_abre_agendamento($codtarefa)'>$hora</a></strong></strong> - $descr - $datainclusao </font>

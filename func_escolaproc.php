@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_escolaproc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clescolaproc = new cl_escolaproc;
 $clescolaproc->rotulo->label("ed82_i_codigo");
 $clescolaproc->rotulo->label("ed82_c_nome");
@@ -96,9 +96,9 @@ $clescolaproc->rotulo->label("ed82_c_nome");
       }else{
        $sql = $clescolaproc->sql_query("",$campos,"ed82_c_nome","");
       }
-      $repassa = array();
+      $repassa = [];
       if(isset($chave_ed82_i_codigo)){
-       $repassa = array("chave_ed82_i_codigo"=>$chave_ed82_i_codigo,"chave_ed82_c_nome"=>$chave_ed82_c_nome);
+       $repassa = ["chave_ed82_i_codigo"=>$chave_ed82_i_codigo,"chave_ed82_c_nome"=>$chave_ed82_c_nome];
       }
       db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
     } else {

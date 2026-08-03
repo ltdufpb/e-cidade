@@ -142,7 +142,7 @@ $res_margem = pg_query($sql_margem) or die($sql_margem);
                                        and sum(r14_valor) > 4252.40
                                    ))";
   $res_plano_saude = pg_query($sql_plano_saude) or die($sql_plano_saude);
-  
+
   $sql_plano_saude1 = "
                       update gerfsal set r14_valor = $valor_plano_saude1
                       where r14_anousu = $ano

@@ -47,7 +47,7 @@ $clrotulo->label('k60_codigo');
 $clrotulo->label('k60_descr');
 $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS);
 $clnotidebitos    = new cl_notidebitos;
 $clnotidebitosreg = new cl_notidebitosreg;

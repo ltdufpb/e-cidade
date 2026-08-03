@@ -35,8 +35,8 @@ class RecadastroImobiliarioFacesQuadra {
   private $oArquivo;
   private $oCabecalhoArquivo;
   private $oRodapeArquivo;
-  private $aRegistrosArquivo    = array();
-  private $aTabelas             = array();
+  private $aRegistrosArquivo    = [];
+  private $aTabelas             = [];
   private $oConfiguracao;
   private $oLog;
   private $oJson;
@@ -52,7 +52,7 @@ class RecadastroImobiliarioFacesQuadra {
     $this->oLog                  = new DBLog("TXT",PATH_IMPORTACAO . "log/log_faces_" . str_ireplace("/", "_",$sCaminhoArquivo) . date("Y_m_d") ."log");
     $this->oJson                 = new services_json();
     $this->aDadosCaracteristicas = $this->oJson->decode(str_replace("\\","", file_get_contents(PATH_IMPORTACAO . 'libs/caracteristicas.json')));
-    $this->aFacesValidacao       = array();
+    $this->aFacesValidacao       = [];
     
     $sDataHora = date('YmdHi');
     
@@ -526,7 +526,7 @@ class RecadastroImobiliarioFacesQuadra {
     }
 
     if ( pg_num_rows($rsFaceQuadra) > 0 ) {
-      return db_utils::fieldsMemory($rsFaceQuadra, 0);
+      return (new db_utils())->fieldsMemory($rsFaceQuadra, 0);
     }
 
     return false; 

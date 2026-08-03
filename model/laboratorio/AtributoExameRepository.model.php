@@ -40,7 +40,7 @@ class AtributoExameRepository
      * Collection de AtributoExame
      * @var AtributoExame[]
      */
-    private $aItens = array();
+    private $aItens = [];
 
     private function __construct()
     {

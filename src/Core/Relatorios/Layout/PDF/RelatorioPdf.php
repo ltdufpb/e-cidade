@@ -18,19 +18,19 @@ abstract class RelatorioPdf implements Layout
      */
     protected $pdf;
     /**
-     * Array com os dados a ser impressos
-     * @var array
-     */
-    protected $dados = [];
-    /**
      * @var CampoDinamico[]
      */
     protected $campos = [];
 
-    public function __construct(FPDF $pdf, $dados)
+    /**
+     * @param mixed[] $dados
+     */
+    public function __construct(FPDF $pdf, /**
+     * Array com os dados a ser impressos
+     */
+    protected $dados)
     {
         $this->pdf = $pdf;
-        $this->dados = $dados;
     }
 
     abstract public function imprimir($fileName = null);
@@ -76,17 +76,17 @@ abstract class RelatorioPdf implements Layout
     private function imprimeMultiCell($linha)
     {
         // Variáveis para controle das celulas
-        $aAlturaLinha = array();
+        $aAlturaLinha = [];
         foreach ($linha->getColunas() as $coluna) {
             $aAlturaLinha[] = $this->pdf->NbLines($coluna->w, $coluna->value);
         }
-        $iLinhas = array_reduce($aAlturaLinha, "DBNumber::maiorValor");
+        $iLinhas = array_reduce($aAlturaLinha, DBNumber::maiorValor(...));
         $iAlturaLinha = $linha->alturaLinha * $iLinhas;
 
         $yAntes = $this->pdf->getY();
         $iX = $this->pdf->getX();
 
-        $aDadosBordas = array();
+        $aDadosBordas = [];
 
         foreach ($linha->getColunas() as $coluna) {
             $this->pdf->SetXY($iX, $yAntes);
@@ -229,7 +229,7 @@ abstract class RelatorioPdf implements Layout
         $this->pdf->Cell($labelSize, 4, $label);
         $this->pdf->SetFont('Arial', '', 7);
 
-        $conteudo = trim($coluna->getCampo()->getValue());
+        $conteudo = trim((string) $coluna->getCampo()->getValue());
         $tamanhoString = $this->pdf->GetStringWidth($conteudo);
 
         if ($tamanhoString > $contentSize) {

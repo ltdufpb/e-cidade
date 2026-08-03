@@ -26,7 +26,7 @@
  */
 
 require(modification('fpdf151/pdf.php'));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sqlcgm="select z01_numcgm ,z01_nome, z01_cgccpf from cgm where z01_numcgm = $cgm";
 $resultcgm = db_query($sqlcgm);
@@ -113,7 +113,7 @@ $totalreg=0;
 		for($i=0;$i < $linhasprestador;$i++){
 			db_fieldsmemory($resultprestador,$i);
 			$pdf->Cell(15,6,$cgm,0,0,"C",0);
-			$pdf->Cell(50,6,substr($tomador,0,30),0,0,"L",0);
+			$pdf->Cell(50,6,substr((string) $tomador,0,30),0,0,"L",0);
 			$pdf->Cell(15,6,$q20_mes,0,0,"C",0);
 			$pdf->Cell(15,6,$q20_ano,0,0,"C",0);
 			$pdf->Cell(15,6,$q21_nota,0,0,"C",0);

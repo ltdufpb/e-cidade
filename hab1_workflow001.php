@@ -48,15 +48,15 @@ $db_opcao   = 1;
   <tr> 
     <td> 
      <?php 
-       $clcriaabas->identifica = array( "workflow"     => "Workflow",
-                                        "workflowativ" => "Atividades");
+       $clcriaabas->identifica = [ "workflow"     => "Workflow",
+                                        "workflowativ" => "Atividades"];
         
-       $clcriaabas->src        = array( "workflow"     => "hab1_workflow004.php");
+       $clcriaabas->src        = [ "workflow"     => "hab1_workflow004.php"];
        
-       $clcriaabas->sizecampo  = array( "workflow"     => "23",
-                                        "workflowativ" => "23");
+       $clcriaabas->sizecampo  = [ "workflow"     => "23",
+                                        "workflowativ" => "23"];
        
-       $clcriaabas->disabled   = array( "workflowativ" => "true");
+       $clcriaabas->disabled   = [ "workflowativ" => "true"];
         
        $clcriaabas->cria_abas(); 
      ?> 

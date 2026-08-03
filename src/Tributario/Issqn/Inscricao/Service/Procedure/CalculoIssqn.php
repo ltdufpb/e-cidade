@@ -18,9 +18,7 @@ class CalculoIssqn extends Procedure
      */
     public function execute(Empresa $empresa, DateTime $dataCalculo, $codigoInstituiacao, $ano)
     {
-        $atividades = array_map(function ($atividade) {
-            return $atividade->getSequencial();
-        }, $empresa->getAtividades());
+        $atividades = array_map(fn($atividade) => $atividade->getSequencial(), $empresa->getAtividades());
 
         /**
          * @todo implementar todos os tipos (TODOS, ISSQN e ALVARÁ)
@@ -45,7 +43,7 @@ class CalculoIssqn extends Procedure
 
         $resultado  = \db_utils::fieldsMemory($rs, 0)->resultado_calculo;
 
-        if (substr($resultado, 0, 2) != "01") {
+        if (!str_starts_with((string) $resultado, "01")) {
             throw new \BusinessException("Erro ao Processar Cálculo : \n\n{$resultado}");
         }
 

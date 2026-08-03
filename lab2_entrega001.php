@@ -31,7 +31,7 @@ $cllab_entrega = new cl_lab_entrega;
 
 if(isset($dataini) && $datafim!=""){
   @$d1= substr(@$dataini,6,4)."-".substr(@$dataini,3,2)."-".substr(@$dataini,0,2);
-  @$d2= substr(@$datafim,6,4)."-".substr(@$datafim,3,2)."-".substr(@$datafim,0,2);
+  @$d2= substr((string) @$datafim,6,4)."-".substr((string) @$datafim,3,2)."-".substr((string) @$datafim,0,2);
   $where = " la22_d_data between '$d1' and '$d2'";
   
 }
@@ -133,10 +133,10 @@ $d=0;
 	  $pdf->setfillcolor(240);
       $pdf->cell(20,4,$la22_i_codigo,0,0,"L",1);//requisicao
       $pdf->cell(20,4,db_formatar($la22_d_data,'d'),0,0,"L",1);//data
-      $pdf->cell(60,4,substr($z01_v_nome,0,80),0,0,"L",1);//paciente
-      $pdf->cell(60,4,substr($la31_retiradopor,0,80),0,0,"L",1);//data retirada
-      $pdf->cell(60,4,substr($la08_c_descr,0,50),0,0,"L",1);//descr exame
-      $pdf->cell(60,4,substr($la15_c_descr,0,50),0,1,"L",1);//descr material
+      $pdf->cell(60,4,substr((string) $z01_v_nome,0,80),0,0,"L",1);//paciente
+      $pdf->cell(60,4,substr((string) $la31_retiradopor,0,80),0,0,"L",1);//data retirada
+      $pdf->cell(60,4,substr((string) $la08_c_descr,0,50),0,0,"L",1);//descr exame
+      $pdf->cell(60,4,substr((string) $la15_c_descr,0,50),0,1,"L",1);//descr material
 	
 	  $d = $la22_i_codigo; 
 	  $total +=1;
@@ -144,12 +144,12 @@ $d=0;
 	 
 
     $pdf->cell(15,5,"",0,0,"L",0);
-    $pdf->cell(45,6,substr($la33_c_descr,0,40),0,0,"L",0);//tipo doc rg ou cpf
-	$pdf->cell(40,6,substr($la31_c_documento,0,12),0,0,"L",0);//num doc 
+    $pdf->cell(45,6,substr((string) $la33_c_descr,0,40),0,0,"L",0);//tipo doc rg ou cpf
+	$pdf->cell(40,6,substr((string) $la31_c_documento,0,12),0,0,"L",0);//num doc 
     $pdf->cell(35,6,db_formatar($la32_d_data,'d'),0,0,"L",0);//data coleta
 	$pdf->cell(30,6,db_formatar($la31_d_data,'d'),0,0,"L",0);//data entrega
     $pdf->cell(30,6,$la31_c_hora,0,0,"L",0);// hora da entrega
-    $pdf->cell(50,6,substr($nome,0,50),0,1,"L",0);//usuario que entregou
+    $pdf->cell(50,6,substr((string) $nome,0,50),0,1,"L",0);//usuario que entregou
 	$cont++;
    }
 $pdf->Output();

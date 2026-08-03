@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_autolevanta_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clautolevanta = new cl_autolevanta;
 $clautolevanta->rotulo->label("y117_sequencial");
 $clautolevanta->rotulo->label("y117_levanta");
@@ -78,9 +78,9 @@ $clautolevanta->rotulo->label("y117_levanta");
         }else{
            $sql = $clautolevanta->sql_query("",$campos,"y117_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_y117_levanta)){
-          $repassa = array("chave_y117_sequencial"=>$chave_y117_sequencial,"chave_y117_levanta"=>$chave_y117_levanta);
+          $repassa = ["chave_y117_sequencial"=>$chave_y117_sequencial,"chave_y117_levanta"=>$chave_y117_levanta];
         }
 
         if (!isset($lovrot)) {

@@ -44,7 +44,7 @@ $clrotulo->label("q02_inscr");
 $clrotulo->label("y63_aliquota");
 $cllevantanotas->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $pdf = new PDF();
 $pdf->Open();
@@ -171,7 +171,7 @@ for ($x=0; $x<$numrows01; $x++) {
 
     $dtoper = date("Y-m-d",db_getsession("DB_datausu"));
 
-    $aData = explode("-", $y63_dtvenc);
+    $aData = explode("-", (string) $y63_dtvenc);
     $dDtOperData = $aData[0] . "-" . $aData[1] . "-01";
 
     /**
@@ -192,13 +192,13 @@ for ($x=0; $x<$numrows01; $x++) {
     if ($y32_tipodatavencimento == 2 && isset($y50_dtvenc)) {
         $dDataVencParam = $y50_dtvenc;
     }
-        
+
     if ( intval(str_replace('-', '', $y63_dtvenc)) < intval(str_replace('-', '', $dDataOperParam)) ) {
       $dDataVencParam = $dDataOperParam;
 
-    
+
     }
-    
+
     //dd($dDataOperParam, $dDataVencParam, $y63_dtvenc, $dDtOperData );
     //* talvez mudar para $dDataOperParam = $y63_dtvenc;
 

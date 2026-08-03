@@ -46,14 +46,14 @@ $clrotulo->label("e82_codord");
 $clrotulo->label("e60_codemp");
 $clrotulo->label("e87_codgera");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $dbwhere = " e80_instit = " . db_getsession("DB_instit") . " and e92_processa = 't' and e92_sequencia <> 35 and e60_instit = ".db_getsession("DB_instit");
 $valorin = "";
 if(trim($selecionadas) != ""){
   $virgula = "";
-  $arr_selecionadas = split(",",$selecionadas);
+  $arr_selecionadas = preg_split("#,#m",$selecionadas);
   for($i=0; $i<count($arr_selecionadas); $i++){
     $valorin .= $virgula.$arr_selecionadas[$i];
     $virgula = ",";
@@ -156,10 +156,10 @@ $alt = 4;
 $pagadora = "";
 $arquivos = "";
 
-$arr_valconta = Array();
-$arr_valmovis = Array();
-$arr_valarqui = Array();
-$arr_valarquis = Array();
+$arr_valconta = [];
+$arr_valmovis = [];
+$arr_valarqui = [];
+$arr_valarquis = [];
 
 $arr_valtconta = 0;
 $arr_valtmovis = 0;
@@ -210,7 +210,7 @@ for($i=0;$i<$numrows_valores;$i++){
     $true_ou_false = true;
   }  
   if($pagadora!=$e83_codtipo || $true_ou_false == true){
-  	if(trim($pagadora) != "" && $pagadora!=$e83_codtipo){
+  	if(trim((string) $pagadora) != "" && $pagadora!=$e83_codtipo){
       $pdf->ln(3);
   	}
     $pagadora = $e83_codtipo;

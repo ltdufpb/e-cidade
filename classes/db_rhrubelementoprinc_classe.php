@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE rhrubelementoprinc
 class cl_rhrubelementoprinc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh24_instit = 0; 
-   var $rh24_rubric = null; 
-   var $rh4_codele = 0; 
-   var $rh24_codele = 0; 
+   public $rh24_instit = 0; 
+   public $rh24_rubric = null; 
+   public $rh4_codele = 0; 
+   public $rh24_codele = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh24_instit = int4 = Cod. Instituição 
                  rh24_rubric = varchar(4) = Código da Rubrica 
                  rh4_codele = int4 = Código elemento 
                  rh24_codele = int4 = Elemento 
                  ";
    //funcao construtor da classe 
-   function cl_rhrubelementoprinc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhrubelementoprinc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -135,7 +135,7 @@ class cl_rhrubelementoprinc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Elemento de despesa default da rubrica. ($this->rh24_rubric."-".$this->rh4_codele."-".$this->rh24_instit) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Elemento de despesa default da rubrica. já Cadastrado";
@@ -159,15 +159,15 @@ class cl_rhrubelementoprinc {
      $resaco = $this->sql_record($this->sql_query_file($this->rh24_rubric,$this->rh4_codele,$this->rh24_instit));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7126,'$this->rh24_rubric','I')");
        $resac = db_query("insert into db_acountkey values($acount,7127,'$this->rh4_codele','I')");
        $resac = db_query("insert into db_acountkey values($acount,9910,'$this->rh24_instit','I')");
-       $resac = db_query("insert into db_acount values($acount,1179,9910,'','".AddSlashes(pg_result($resaco,0,'rh24_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1179,7126,'','".AddSlashes(pg_result($resaco,0,'rh24_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1179,7127,'','".AddSlashes(pg_result($resaco,0,'rh4_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1179,8985,'','".AddSlashes(pg_result($resaco,0,'rh24_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1179,9910,'','".AddSlashes(pg_fetch_result($resaco,0,'rh24_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1179,7126,'','".AddSlashes(pg_fetch_result($resaco,0,'rh24_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1179,7127,'','".AddSlashes(pg_fetch_result($resaco,0,'rh4_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1179,8985,'','".AddSlashes(pg_fetch_result($resaco,0,'rh24_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -176,10 +176,10 @@ class cl_rhrubelementoprinc {
       $this->atualizacampos();
      $sql = " update rhrubelementoprinc set ";
      $virgula = "";
-     if(trim($this->rh24_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh24_instit"])){ 
+     if(trim((string) $this->rh24_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh24_instit"])){ 
        $sql  .= $virgula." rh24_instit = $this->rh24_instit ";
        $virgula = ",";
-       if(trim($this->rh24_instit) == null ){ 
+       if(trim((string) $this->rh24_instit) == null ){ 
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "rh24_instit";
          $this->erro_banco = "";
@@ -189,10 +189,10 @@ class cl_rhrubelementoprinc {
          return false;
        }
      }
-     if(trim($this->rh24_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh24_rubric"])){ 
+     if(trim((string) $this->rh24_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh24_rubric"])){ 
        $sql  .= $virgula." rh24_rubric = '$this->rh24_rubric' ";
        $virgula = ",";
-       if(trim($this->rh24_rubric) == null ){ 
+       if(trim((string) $this->rh24_rubric) == null ){ 
          $this->erro_sql = " Campo Código da Rubrica nao Informado.";
          $this->erro_campo = "rh24_rubric";
          $this->erro_banco = "";
@@ -202,10 +202,10 @@ class cl_rhrubelementoprinc {
          return false;
        }
      }
-     if(trim($this->rh4_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh4_codele"])){ 
+     if(trim((string) $this->rh4_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh4_codele"])){ 
        $sql  .= $virgula." rh4_codele = $this->rh4_codele ";
        $virgula = ",";
-       if(trim($this->rh4_codele) == null ){ 
+       if(trim((string) $this->rh4_codele) == null ){ 
          $this->erro_sql = " Campo Código elemento nao Informado.";
          $this->erro_campo = "rh4_codele";
          $this->erro_banco = "";
@@ -215,10 +215,10 @@ class cl_rhrubelementoprinc {
          return false;
        }
      }
-     if(trim($this->rh24_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh24_codele"])){ 
+     if(trim((string) $this->rh24_codele)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh24_codele"])){ 
        $sql  .= $virgula." rh24_codele = $this->rh24_codele ";
        $virgula = ",";
-       if(trim($this->rh24_codele) == null ){ 
+       if(trim((string) $this->rh24_codele) == null ){ 
          $this->erro_sql = " Campo Elemento nao Informado.";
          $this->erro_campo = "rh24_codele";
          $this->erro_banco = "";
@@ -242,19 +242,19 @@ class cl_rhrubelementoprinc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7126,'$this->rh24_rubric','A')");
          $resac = db_query("insert into db_acountkey values($acount,7127,'$this->rh4_codele','A')");
          $resac = db_query("insert into db_acountkey values($acount,9910,'$this->rh24_instit','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh24_instit"]))
-           $resac = db_query("insert into db_acount values($acount,1179,9910,'".AddSlashes(pg_result($resaco,$conresaco,'rh24_instit'))."','$this->rh24_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1179,9910,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh24_instit'))."','$this->rh24_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh24_rubric"]))
-           $resac = db_query("insert into db_acount values($acount,1179,7126,'".AddSlashes(pg_result($resaco,$conresaco,'rh24_rubric'))."','$this->rh24_rubric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1179,7126,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh24_rubric'))."','$this->rh24_rubric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh4_codele"]))
-           $resac = db_query("insert into db_acount values($acount,1179,7127,'".AddSlashes(pg_result($resaco,$conresaco,'rh4_codele'))."','$this->rh4_codele',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1179,7127,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh4_codele'))."','$this->rh4_codele',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh24_codele"]))
-           $resac = db_query("insert into db_acount values($acount,1179,8985,'".AddSlashes(pg_result($resaco,$conresaco,'rh24_codele'))."','$this->rh24_codele',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1179,8985,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh24_codele'))."','$this->rh24_codele',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -299,15 +299,15 @@ class cl_rhrubelementoprinc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7126,'$rh24_rubric','E')");
          $resac = db_query("insert into db_acountkey values($acount,7127,'$rh4_codele','E')");
          $resac = db_query("insert into db_acountkey values($acount,9910,'$rh24_instit','E')");
-         $resac = db_query("insert into db_acount values($acount,1179,9910,'','".AddSlashes(pg_result($resaco,$iresaco,'rh24_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1179,7126,'','".AddSlashes(pg_result($resaco,$iresaco,'rh24_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1179,7127,'','".AddSlashes(pg_result($resaco,$iresaco,'rh4_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1179,8985,'','".AddSlashes(pg_result($resaco,$iresaco,'rh24_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1179,9910,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh24_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1179,7126,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh24_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1179,7127,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh4_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1179,8985,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh24_codele'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhrubelementoprinc
@@ -379,7 +379,7 @@ class cl_rhrubelementoprinc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhrubelementoprinc";
@@ -393,7 +393,7 @@ class cl_rhrubelementoprinc {
    function sql_query ( $rh24_rubric=null,$rh4_codele=null,$rh24_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -435,7 +435,7 @@ class cl_rhrubelementoprinc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_rhrubelementoprinc {
    function sql_query_file ( $rh24_rubric=null,$rh4_codele=null,$rh24_instit=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,7 +484,7 @@ class cl_rhrubelementoprinc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

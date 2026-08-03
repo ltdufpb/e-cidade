@@ -44,7 +44,7 @@ $oRetorno             = new stdClass();
 $oRetorno->iStatus    = 1;
 $oRetorno->erro       = false;
 $oRetorno->sMensagem  = '';
-$aRegistros           = array();
+$aRegistros           = [];
 
 try {
 
@@ -200,7 +200,7 @@ try {
           $mensagem .= "e já possui protocolo de envio. Este motivo só pode ser alterado para o motivo {$motivoDestino}.\n";
           $mensagem .= "Consulte a rotina DB:RECURSOSHUMANOS > eSocial > Procedimentos > Configuração > Vínculo de Afastamento.";
 
-          $tiposValidar = array(1, 3);
+          $tiposValidar = [1, 3];
           if (in_array((int)$atributoHiddenOrigem->valorDefault, $tiposValidar)) {
 
               if (is_null($atributoHiddenDestino)) {
@@ -230,7 +230,7 @@ try {
               }
 
               $oRetorno->possuiProtocoloEsocial = $possuiProtocolo;
-          } catch (Exception $oErro) {
+          } catch (Exception) {
               $oRetorno->sMensagem  = "Erro ao acessar o sistema do eSocial.\nNão foi possível verificar se assentamento selecionado foi enviado para o eSocial.";
               $oRetorno->erro  = true;
           }

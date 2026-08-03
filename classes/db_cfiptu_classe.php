@@ -29,59 +29,59 @@
 //CLASSE DA ENTIDADE cfiptu
 class cl_cfiptu {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $j18_anousu = 0;
-   var $j18_vlrref = 0;
-   var $j18_dtoper_dia = null;
-   var $j18_dtoper_mes = null;
-   var $j18_dtoper_ano = null;
-   var $j18_dtoper = null;
-   var $j18_rterri = 0;
-   var $j18_rpredi = 0;
-   var $j18_vencim = 0;
-   var $j18_logradauto = 'f';
-   var $j18_segundavia = 0;
-   var $j18_infla = null;
-   var $j18_utilizasetfisc = 'f';
-   var $j18_testadanumero = 'f';
-   var $j18_excconscalc = 'f';
-   var $j18_textoprom = null;
-   var $j18_calcvenc = 0;
-   var $j18_utilizaloc = 'f';
-   var $j18_permvenc = 0;
-   var $j18_utidadosdiver = 'f';
-   var $j18_dadoscertisen = 0;
-   var $j18_formatsetor = 0;
-   var $j18_formatquadra = 0;
-   var $j18_formatlote = 0;
-   var $j18_utilpontos = 0;
-   var $j18_ordendent = 0;
-   var $j18_iptuhistisen = 0;
-   var $j18_db_sysfuncoes = 0;
-   var $j18_tipoisen = 0;
-   var $j18_perccorrepadrao = 0;
-   var $j18_templatecertidaoexitencia = 0;
-   var $j18_templatecertidaoisencao = null;
-   var $j18_receitacreditorecalculo = null;
-   var $j18_tipodebitorecalculo = null;
-   var $j18_taxaseparada = 0; 
-   var $j18_permitectmcgf = 'f'; 
-   var $j18_bicmarcasigilo = 'f'; 
-   var $j18_utilizaareaprivativa = 'f'; 
+   public $j18_anousu = 0;
+   public $j18_vlrref = 0;
+   public $j18_dtoper_dia = null;
+   public $j18_dtoper_mes = null;
+   public $j18_dtoper_ano = null;
+   public $j18_dtoper = null;
+   public $j18_rterri = 0;
+   public $j18_rpredi = 0;
+   public $j18_vencim = 0;
+   public $j18_logradauto = 'f';
+   public $j18_segundavia = 0;
+   public $j18_infla = null;
+   public $j18_utilizasetfisc = 'f';
+   public $j18_testadanumero = 'f';
+   public $j18_excconscalc = 'f';
+   public $j18_textoprom = null;
+   public $j18_calcvenc = 0;
+   public $j18_utilizaloc = 'f';
+   public $j18_permvenc = 0;
+   public $j18_utidadosdiver = 'f';
+   public $j18_dadoscertisen = 0;
+   public $j18_formatsetor = 0;
+   public $j18_formatquadra = 0;
+   public $j18_formatlote = 0;
+   public $j18_utilpontos = 0;
+   public $j18_ordendent = 0;
+   public $j18_iptuhistisen = 0;
+   public $j18_db_sysfuncoes = 0;
+   public $j18_tipoisen = 0;
+   public $j18_perccorrepadrao = 0;
+   public $j18_templatecertidaoexitencia = 0;
+   public $j18_templatecertidaoisencao = null;
+   public $j18_receitacreditorecalculo = null;
+   public $j18_tipodebitorecalculo = null;
+   public $j18_taxaseparada = 0; 
+   public $j18_permitectmcgf = 'f'; 
+   public $j18_bicmarcasigilo = 'f'; 
+   public $j18_utilizaareaprivativa = 'f'; 
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  j18_anousu = int4 = Exercício
                  j18_vlrref = float8 = Valor Referência
                  j18_dtoper = date = Data Operação
@@ -119,10 +119,10 @@ class cl_cfiptu {
 		 j18_utilizaareaprivativa = bool = Utiliza Área Privativa 
                  ";
    //funcao construtor da classe
-   function cl_cfiptu() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfiptu");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -542,7 +542,7 @@ class cl_cfiptu {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parametros ($this->j18_anousu) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parametros já Cadastrado";
@@ -571,45 +571,45 @@ class cl_cfiptu {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,808,'$this->j18_anousu','I')");
-         $resac = db_query("insert into db_acount values($acount,153,808,'','".AddSlashes(pg_result($resaco,0,'j18_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,809,'','".AddSlashes(pg_result($resaco,0,'j18_vlrref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,810,'','".AddSlashes(pg_result($resaco,0,'j18_dtoper'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,812,'','".AddSlashes(pg_result($resaco,0,'j18_rterri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,811,'','".AddSlashes(pg_result($resaco,0,'j18_rpredi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,813,'','".AddSlashes(pg_result($resaco,0,'j18_vencim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,7320,'','".AddSlashes(pg_result($resaco,0,'j18_logradauto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,7415,'','".AddSlashes(pg_result($resaco,0,'j18_segundavia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,7623,'','".AddSlashes(pg_result($resaco,0,'j18_infla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,7870,'','".AddSlashes(pg_result($resaco,0,'j18_utilizasetfisc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,7932,'','".AddSlashes(pg_result($resaco,0,'j18_testadanumero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,7979,'','".AddSlashes(pg_result($resaco,0,'j18_excconscalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,8646,'','".AddSlashes(pg_result($resaco,0,'j18_textoprom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,8754,'','".AddSlashes(pg_result($resaco,0,'j18_calcvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,8756,'','".AddSlashes(pg_result($resaco,0,'j18_utilizaloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,8810,'','".AddSlashes(pg_result($resaco,0,'j18_permvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,8980,'','".AddSlashes(pg_result($resaco,0,'j18_utidadosdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,9139,'','".AddSlashes(pg_result($resaco,0,'j18_dadoscertisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,9542,'','".AddSlashes(pg_result($resaco,0,'j18_formatsetor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,9543,'','".AddSlashes(pg_result($resaco,0,'j18_formatquadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,9544,'','".AddSlashes(pg_result($resaco,0,'j18_formatlote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,9762,'','".AddSlashes(pg_result($resaco,0,'j18_utilpontos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,9856,'','".AddSlashes(pg_result($resaco,0,'j18_ordendent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,9858,'','".AddSlashes(pg_result($resaco,0,'j18_iptuhistisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,10824,'','".AddSlashes(pg_result($resaco,0,'j18_db_sysfuncoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,10831,'','".AddSlashes(pg_result($resaco,0,'j18_tipoisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,11059,'','".AddSlashes(pg_result($resaco,0,'j18_perccorrepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,18859,'','".AddSlashes(pg_result($resaco,0,'j18_templatecertidaoexitencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,20545,'','".AddSlashes(pg_result($resaco,0,'j18_templatecertidaoisencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,21918,'','".AddSlashes(pg_result($resaco,0,'j18_receitacreditorecalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,21919,'','".AddSlashes(pg_result($resaco,0,'j18_tipodebitorecalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,1010302,'','".AddSlashes(pg_result($resaco,0,'j18_taxaseparada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,808,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,809,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_vlrref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,810,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_dtoper'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,812,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_rterri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,811,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_rpredi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,813,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_vencim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,7320,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_logradauto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,7415,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_segundavia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,7623,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_infla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,7870,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_utilizasetfisc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,7932,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_testadanumero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,7979,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_excconscalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,8646,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_textoprom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,8754,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_calcvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,8756,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_utilizaloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,8810,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_permvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,8980,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_utidadosdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,9139,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_dadoscertisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,9542,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_formatsetor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,9543,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_formatquadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,9544,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_formatlote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,9762,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_utilpontos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,9856,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_ordendent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,9858,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_iptuhistisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,10824,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_db_sysfuncoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,10831,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_tipoisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,11059,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_perccorrepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,18859,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_templatecertidaoexitencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,20545,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_templatecertidaoisencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,21918,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_receitacreditorecalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,21919,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_tipodebitorecalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,1010302,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_taxaseparada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
 
-         $resac = db_query("insert into db_acount values($acount,153,1013275,'','".pg_result($resaco,0,'j18_permitectmcgf')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,153,1013276,'','".pg_result($resaco,0,'j18_bicmarcasigilo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-	 $resac = db_query("insert into db_acount values($acount,153,1014558,'','".AddSlashes(pg_result($resaco,0,'j18_utilizaareaprivativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,1013275,'','".pg_fetch_result($resaco,0,'j18_permitectmcgf')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,153,1013276,'','".pg_fetch_result($resaco,0,'j18_bicmarcasigilo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+	 $resac = db_query("insert into db_acount values($acount,153,1014558,'','".AddSlashes(pg_fetch_result($resaco,0,'j18_utilizaareaprivativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -619,10 +619,10 @@ class cl_cfiptu {
       $this->atualizacampos();
      $sql = " update cfiptu set ";
      $virgula = "";
-     if(trim($this->j18_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_anousu"])){
+     if(trim((string) $this->j18_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_anousu"])){
        $sql  .= $virgula." j18_anousu = $this->j18_anousu ";
        $virgula = ",";
-       if(trim($this->j18_anousu) == null ){
+       if(trim((string) $this->j18_anousu) == null ){
          $this->erro_sql = " Campo Exercício não informado.";
          $this->erro_campo = "j18_anousu";
          $this->erro_banco = "";
@@ -632,10 +632,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_vlrref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_vlrref"])){
+     if(trim((string) $this->j18_vlrref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_vlrref"])){
        $sql  .= $virgula." j18_vlrref = $this->j18_vlrref ";
        $virgula = ",";
-       if(trim($this->j18_vlrref) == null ){
+       if(trim((string) $this->j18_vlrref) == null ){
          $this->erro_sql = " Campo Valor Referência não informado.";
          $this->erro_campo = "j18_vlrref";
          $this->erro_banco = "";
@@ -645,10 +645,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j18_dtoper_dia"] !="") ){
+     if(trim((string) $this->j18_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j18_dtoper_dia"] !="") ){
        $sql  .= $virgula." j18_dtoper = '$this->j18_dtoper' ";
        $virgula = ",";
-       if(trim($this->j18_dtoper) == null ){
+       if(trim((string) $this->j18_dtoper) == null ){
          $this->erro_sql = " Campo Data Operação não informado.";
          $this->erro_campo = "j18_dtoper_dia";
          $this->erro_banco = "";
@@ -661,7 +661,7 @@ class cl_cfiptu {
        if(isset($GLOBALS["HTTP_POST_VARS"]["j18_dtoper_dia"])){
          $sql  .= $virgula." j18_dtoper = null ";
          $virgula = ",";
-         if(trim($this->j18_dtoper) == null ){
+         if(trim((string) $this->j18_dtoper) == null ){
            $this->erro_sql = " Campo Data Operação não informado.";
            $this->erro_campo = "j18_dtoper_dia";
            $this->erro_banco = "";
@@ -672,10 +672,10 @@ class cl_cfiptu {
          }
        }
      }
-     if(trim($this->j18_rterri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_rterri"])){
+     if(trim((string) $this->j18_rterri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_rterri"])){
        $sql  .= $virgula." j18_rterri = $this->j18_rterri ";
        $virgula = ",";
-       if(trim($this->j18_rterri) == null ){
+       if(trim((string) $this->j18_rterri) == null ){
          $this->erro_sql = " Campo Receita Territorial não informado.";
          $this->erro_campo = "j18_rterri";
          $this->erro_banco = "";
@@ -685,10 +685,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_rpredi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_rpredi"])){
+     if(trim((string) $this->j18_rpredi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_rpredi"])){
        $sql  .= $virgula." j18_rpredi = $this->j18_rpredi ";
        $virgula = ",";
-       if(trim($this->j18_rpredi) == null ){
+       if(trim((string) $this->j18_rpredi) == null ){
          $this->erro_sql = " Campo Receita Predial não informado.";
          $this->erro_campo = "j18_rpredi";
          $this->erro_banco = "";
@@ -698,10 +698,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_vencim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_vencim"])){
+     if(trim((string) $this->j18_vencim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_vencim"])){
        $sql  .= $virgula." j18_vencim = $this->j18_vencim ";
        $virgula = ",";
-       if(trim($this->j18_vencim) == null ){
+       if(trim((string) $this->j18_vencim) == null ){
          $this->erro_sql = " Campo Tabela de Vencimento não informado.";
          $this->erro_campo = "j18_vencim";
          $this->erro_banco = "";
@@ -711,10 +711,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_logradauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_logradauto"])){
+     if(trim((string) $this->j18_logradauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_logradauto"])){
        $sql  .= $virgula." j18_logradauto = '$this->j18_logradauto' ";
        $virgula = ",";
-       if(trim($this->j18_logradauto) == null ){
+       if(trim((string) $this->j18_logradauto) == null ){
          $this->erro_sql = " Campo Código do Logradouro Automático não informado.";
          $this->erro_campo = "j18_logradauto";
          $this->erro_banco = "";
@@ -724,10 +724,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_segundavia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_segundavia"])){
+     if(trim((string) $this->j18_segundavia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_segundavia"])){
        $sql  .= $virgula." j18_segundavia = $this->j18_segundavia ";
        $virgula = ",";
-       if(trim($this->j18_segundavia) == null ){
+       if(trim((string) $this->j18_segundavia) == null ){
          $this->erro_sql = " Campo Segunda Via não informado.";
          $this->erro_campo = "j18_segundavia";
          $this->erro_banco = "";
@@ -737,10 +737,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_infla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_infla"])){
+     if(trim((string) $this->j18_infla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_infla"])){
        $sql  .= $virgula." j18_infla = '$this->j18_infla' ";
        $virgula = ",";
-       if(trim($this->j18_infla) == null ){
+       if(trim((string) $this->j18_infla) == null ){
          $this->erro_sql = " Campo Código do Inflator não informado.";
          $this->erro_campo = "j18_infla";
          $this->erro_banco = "";
@@ -750,10 +750,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_utilizasetfisc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_utilizasetfisc"])){
+     if(trim((string) $this->j18_utilizasetfisc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_utilizasetfisc"])){
        $sql  .= $virgula." j18_utilizasetfisc = '$this->j18_utilizasetfisc' ";
        $virgula = ",";
-       if(trim($this->j18_utilizasetfisc) == null ){
+       if(trim((string) $this->j18_utilizasetfisc) == null ){
          $this->erro_sql = " Campo Utiliza Setor FIscal não informado.";
          $this->erro_campo = "j18_utilizasetfisc";
          $this->erro_banco = "";
@@ -763,10 +763,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_testadanumero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_testadanumero"])){
+     if(trim((string) $this->j18_testadanumero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_testadanumero"])){
        $sql  .= $virgula." j18_testadanumero = '$this->j18_testadanumero' ";
        $virgula = ",";
-       if(trim($this->j18_testadanumero) == null ){
+       if(trim((string) $this->j18_testadanumero) == null ){
          $this->erro_sql = " Campo Utiliza Número na Testada não informado.";
          $this->erro_campo = "j18_testadanumero";
          $this->erro_banco = "";
@@ -776,10 +776,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_excconscalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_excconscalc"])){
+     if(trim((string) $this->j18_excconscalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_excconscalc"])){
        $sql  .= $virgula." j18_excconscalc = '$this->j18_excconscalc' ";
        $virgula = ",";
-       if(trim($this->j18_excconscalc) == null ){
+       if(trim((string) $this->j18_excconscalc) == null ){
          $this->erro_sql = " Campo Excluir Construção do Cálculo não informado.";
          $this->erro_campo = "j18_excconscalc";
          $this->erro_banco = "";
@@ -789,14 +789,14 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_textoprom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_textoprom"])){
+     if(trim((string) $this->j18_textoprom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_textoprom"])){
        $sql  .= $virgula." j18_textoprom = '$this->j18_textoprom' ";
        $virgula = ",";
      }
-     if(trim($this->j18_calcvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_calcvenc"])){
+     if(trim((string) $this->j18_calcvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_calcvenc"])){
        $sql  .= $virgula." j18_calcvenc = $this->j18_calcvenc ";
        $virgula = ",";
-       if(trim($this->j18_calcvenc) == null ){
+       if(trim((string) $this->j18_calcvenc) == null ){
          $this->erro_sql = " Campo Perguntar Vencimentos Durante Cálculo não informado.";
          $this->erro_campo = "j18_calcvenc";
          $this->erro_banco = "";
@@ -806,10 +806,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_utilizaloc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_utilizaloc"])){
+     if(trim((string) $this->j18_utilizaloc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_utilizaloc"])){
        $sql  .= $virgula." j18_utilizaloc = '$this->j18_utilizaloc' ";
        $virgula = ",";
-       if(trim($this->j18_utilizaloc) == null ){
+       if(trim((string) $this->j18_utilizaloc) == null ){
          $this->erro_sql = " Campo Utilizar Informações de Localização não informado.";
          $this->erro_campo = "j18_utilizaloc";
          $this->erro_banco = "";
@@ -819,10 +819,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_permvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_permvenc"])){
+     if(trim((string) $this->j18_permvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_permvenc"])){
        $sql  .= $virgula." j18_permvenc = $this->j18_permvenc ";
        $virgula = ",";
-       if(trim($this->j18_permvenc) == null ){
+       if(trim((string) $this->j18_permvenc) == null ){
          $this->erro_sql = " Campo Permite Escolher Vencimentos Durante Cálculo não informado.";
          $this->erro_campo = "j18_permvenc";
          $this->erro_banco = "";
@@ -832,10 +832,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_utidadosdiver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_utidadosdiver"])){
+     if(trim((string) $this->j18_utidadosdiver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_utidadosdiver"])){
        $sql  .= $virgula." j18_utidadosdiver = '$this->j18_utidadosdiver' ";
        $virgula = ",";
-       if(trim($this->j18_utidadosdiver) == null ){
+       if(trim((string) $this->j18_utidadosdiver) == null ){
          $this->erro_sql = " Campo Utiliza Dados Diversos no Cálculo não informado.";
          $this->erro_campo = "j18_utidadosdiver";
          $this->erro_banco = "";
@@ -845,10 +845,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_dadoscertisen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_dadoscertisen"])){
+     if(trim((string) $this->j18_dadoscertisen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_dadoscertisen"])){
        $sql  .= $virgula." j18_dadoscertisen = $this->j18_dadoscertisen ";
        $virgula = ",";
-       if(trim($this->j18_dadoscertisen) == null ){
+       if(trim((string) $this->j18_dadoscertisen) == null ){
          $this->erro_sql = " Campo Dados da Certidão de Isenção não informado.";
          $this->erro_campo = "j18_dadoscertisen";
          $this->erro_banco = "";
@@ -858,10 +858,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_formatsetor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_formatsetor"])){
+     if(trim((string) $this->j18_formatsetor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_formatsetor"])){
        $sql  .= $virgula." j18_formatsetor = $this->j18_formatsetor ";
        $virgula = ",";
-       if(trim($this->j18_formatsetor) == null ){
+       if(trim((string) $this->j18_formatsetor) == null ){
          $this->erro_sql = " Campo Permite Digitar para Setor não informado.";
          $this->erro_campo = "j18_formatsetor";
          $this->erro_banco = "";
@@ -871,10 +871,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_formatquadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_formatquadra"])){
+     if(trim((string) $this->j18_formatquadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_formatquadra"])){
        $sql  .= $virgula." j18_formatquadra = $this->j18_formatquadra ";
        $virgula = ",";
-       if(trim($this->j18_formatquadra) == null ){
+       if(trim((string) $this->j18_formatquadra) == null ){
          $this->erro_sql = " Campo Permite Digitar para Quadra não informado.";
          $this->erro_campo = "j18_formatquadra";
          $this->erro_banco = "";
@@ -884,10 +884,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_formatlote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_formatlote"])){
+     if(trim((string) $this->j18_formatlote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_formatlote"])){
        $sql  .= $virgula." j18_formatlote = $this->j18_formatlote ";
        $virgula = ",";
-       if(trim($this->j18_formatlote) == null ){
+       if(trim((string) $this->j18_formatlote) == null ){
          $this->erro_sql = " Campo Permite Digitar para o Lote não informado.";
          $this->erro_campo = "j18_formatlote";
          $this->erro_banco = "";
@@ -897,10 +897,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_utilpontos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_utilpontos"])){
+     if(trim((string) $this->j18_utilpontos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_utilpontos"])){
        $sql  .= $virgula." j18_utilpontos = $this->j18_utilpontos ";
        $virgula = ",";
-       if(trim($this->j18_utilpontos) == null ){
+       if(trim((string) $this->j18_utilpontos) == null ){
          $this->erro_sql = " Campo Utilizar Pontuação por Construção não informado.";
          $this->erro_campo = "j18_utilpontos";
          $this->erro_banco = "";
@@ -910,10 +910,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_ordendent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_ordendent"])){
+     if(trim((string) $this->j18_ordendent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_ordendent"])){
        $sql  .= $virgula." j18_ordendent = $this->j18_ordendent ";
        $virgula = ",";
-       if(trim($this->j18_ordendent) == null ){
+       if(trim((string) $this->j18_ordendent) == null ){
          $this->erro_sql = " Campo Ordem no Endereço de Entrega não informado.";
          $this->erro_campo = "j18_ordendent";
          $this->erro_banco = "";
@@ -923,10 +923,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_iptuhistisen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_iptuhistisen"])){
+     if(trim((string) $this->j18_iptuhistisen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_iptuhistisen"])){
        $sql  .= $virgula." j18_iptuhistisen = $this->j18_iptuhistisen ";
        $virgula = ",";
-       if(trim($this->j18_iptuhistisen) == null ){
+       if(trim((string) $this->j18_iptuhistisen) == null ){
          $this->erro_sql = " Campo Código do histórico de isenção não informado.";
          $this->erro_campo = "j18_iptuhistisen";
          $this->erro_banco = "";
@@ -936,10 +936,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_db_sysfuncoes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_db_sysfuncoes"])){
+     if(trim((string) $this->j18_db_sysfuncoes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_db_sysfuncoes"])){
        $sql  .= $virgula." j18_db_sysfuncoes = $this->j18_db_sysfuncoes ";
        $virgula = ",";
-       if(trim($this->j18_db_sysfuncoes) == null ){
+       if(trim((string) $this->j18_db_sysfuncoes) == null ){
          $this->erro_sql = " Campo Código Função não informado.";
          $this->erro_campo = "j18_db_sysfuncoes";
          $this->erro_banco = "";
@@ -949,10 +949,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_tipoisen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_tipoisen"])){
+     if(trim((string) $this->j18_tipoisen)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_tipoisen"])){
        $sql  .= $virgula." j18_tipoisen = $this->j18_tipoisen ";
        $virgula = ",";
-       if(trim($this->j18_tipoisen) == null ){
+       if(trim((string) $this->j18_tipoisen) == null ){
          $this->erro_sql = " Campo Código da Isenção não informado.";
          $this->erro_campo = "j18_tipoisen";
          $this->erro_banco = "";
@@ -962,45 +962,45 @@ class cl_cfiptu {
          return false;
        }
      }
-    if(trim($this->j18_templatecertidaoexitencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_templatecertidaoexitencia"])){
-       if(trim($this->j18_templatecertidaoexitencia)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j18_templatecertidaoisencao"])){
+    if(trim((string) $this->j18_templatecertidaoexitencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_templatecertidaoexitencia"])){
+       if(trim((string) $this->j18_templatecertidaoexitencia)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j18_templatecertidaoisencao"])){
            $this->j18_templatecertidaoexitencia = "null" ;
         }
        $sql  .= $virgula." j18_templatecertidaoexitencia = $this->j18_templatecertidaoexitencia ";
        $virgula = ",";
      }
-     if(trim($this->j18_perccorrepadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_perccorrepadrao"])){
-        if(trim($this->j18_perccorrepadrao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j18_perccorrepadrao"])){
+     if(trim((string) $this->j18_perccorrepadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_perccorrepadrao"])){
+        if(trim((string) $this->j18_perccorrepadrao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j18_perccorrepadrao"])){
            $this->j18_perccorrepadrao = "0" ;
         }
        $sql  .= $virgula." j18_perccorrepadrao = $this->j18_perccorrepadrao ";
        $virgula = ",";
      }
-     if(trim($this->j18_templatecertidaoisencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_templatecertidaoisencao"])){
-        if(trim($this->j18_templatecertidaoisencao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j18_templatecertidaoisencao"])){
+     if(trim((string) $this->j18_templatecertidaoisencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_templatecertidaoisencao"])){
+        if(trim((string) $this->j18_templatecertidaoisencao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j18_templatecertidaoisencao"])){
            $this->j18_templatecertidaoisencao = "null" ;
         }
        $sql  .= $virgula." j18_templatecertidaoisencao = $this->j18_templatecertidaoisencao ";
        $virgula = ",";
      }
-     if(trim($this->j18_receitacreditorecalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_receitacreditorecalculo"])){
-        if(trim($this->j18_receitacreditorecalculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j18_receitacreditorecalculo"])){
+     if(trim((string) $this->j18_receitacreditorecalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_receitacreditorecalculo"])){
+        if(trim((string) $this->j18_receitacreditorecalculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j18_receitacreditorecalculo"])){
            $this->j18_receitacreditorecalculo = "null" ;
         }
        $sql  .= $virgula." j18_receitacreditorecalculo = $this->j18_receitacreditorecalculo ";
        $virgula = ",";
      }
-     if(trim($this->j18_tipodebitorecalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_tipodebitorecalculo"])){
-        if(trim($this->j18_tipodebitorecalculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j18_tipodebitorecalculo"])){
+     if(trim((string) $this->j18_tipodebitorecalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_tipodebitorecalculo"])){
+        if(trim((string) $this->j18_tipodebitorecalculo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j18_tipodebitorecalculo"])){
            $this->j18_tipodebitorecalculo = "null" ;
         }
        $sql  .= $virgula." j18_tipodebitorecalculo = $this->j18_tipodebitorecalculo ";
        $virgula = ",";
      }
-     if(trim($this->j18_taxaseparada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_taxaseparada"])){ 
+     if(trim((string) $this->j18_taxaseparada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_taxaseparada"])){ 
        $sql  .= $virgula." j18_taxaseparada = $this->j18_taxaseparada ";
        $virgula = ",";
-       if(trim($this->j18_taxaseparada) == null ){ 
+       if(trim((string) $this->j18_taxaseparada) == null ){ 
          $this->erro_sql = " Campo Calcular Taxas Separadas não informado.";
          $this->erro_campo = "j18_taxaseparada";
          $this->erro_banco = "";
@@ -1010,10 +1010,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_permitectmcgf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_permitectmcgf"])){ 
+     if(trim((string) $this->j18_permitectmcgf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_permitectmcgf"])){ 
        $sql  .= $virgula." j18_permitectmcgf = '$this->j18_permitectmcgf' ";
        $virgula = ",";
-       if(trim($this->j18_permitectmcgf) == null ){ 
+       if(trim((string) $this->j18_permitectmcgf) == null ){ 
          $this->erro_sql = " Campo Permite consultar CTM com Matric na CGF nao Informado.";
          $this->erro_campo = "j18_permitectmcgf";
          $this->erro_banco = "";
@@ -1023,10 +1023,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_bicmarcasigilo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_bicmarcasigilo"])){ 
+     if(trim((string) $this->j18_bicmarcasigilo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_bicmarcasigilo"])){ 
        $sql  .= $virgula." j18_bicmarcasigilo = '$this->j18_bicmarcasigilo' ";
        $virgula = ",";
-       if(trim($this->j18_bicmarcasigilo) == null ){ 
+       if(trim((string) $this->j18_bicmarcasigilo) == null ){ 
          $this->erro_sql = " Campo BIC Marca Emissão Dados Sigilosos nao Informado.";
          $this->erro_campo = "j18_bicmarcasigilo";
          $this->erro_banco = "";
@@ -1036,10 +1036,10 @@ class cl_cfiptu {
          return false;
        }
      }
-     if(trim($this->j18_utilizaareaprivativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_utilizaareaprivativa"])){ 
+     if(trim((string) $this->j18_utilizaareaprivativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j18_utilizaareaprivativa"])){ 
        $sql  .= $virgula." j18_utilizaareaprivativa = '$this->j18_utilizaareaprivativa' ";
        $virgula = ",";
-       if(trim($this->j18_utilizaareaprivativa) == null ){ 
+       if(trim((string) $this->j18_utilizaareaprivativa) == null ){ 
          $this->erro_sql = " Campo Utiliza Área Privativa não informado.";
          $this->erro_campo = "j18_utilizaareaprivativa";
          $this->erro_banco = "";
@@ -1064,79 +1064,79 @@ class cl_cfiptu {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,808,'$this->j18_anousu','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_anousu"]) || $this->j18_anousu != "")
-             $resac = db_query("insert into db_acount values($acount,153,808,'".AddSlashes(pg_result($resaco,$conresaco,'j18_anousu'))."','$this->j18_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,808,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_anousu'))."','$this->j18_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_vlrref"]) || $this->j18_vlrref != "")
-             $resac = db_query("insert into db_acount values($acount,153,809,'".AddSlashes(pg_result($resaco,$conresaco,'j18_vlrref'))."','$this->j18_vlrref',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,809,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_vlrref'))."','$this->j18_vlrref',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_dtoper"]) || $this->j18_dtoper != "")
-             $resac = db_query("insert into db_acount values($acount,153,810,'".AddSlashes(pg_result($resaco,$conresaco,'j18_dtoper'))."','$this->j18_dtoper',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,810,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_dtoper'))."','$this->j18_dtoper',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_rterri"]) || $this->j18_rterri != "")
-             $resac = db_query("insert into db_acount values($acount,153,812,'".AddSlashes(pg_result($resaco,$conresaco,'j18_rterri'))."','$this->j18_rterri',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,812,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_rterri'))."','$this->j18_rterri',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_rpredi"]) || $this->j18_rpredi != "")
-             $resac = db_query("insert into db_acount values($acount,153,811,'".AddSlashes(pg_result($resaco,$conresaco,'j18_rpredi'))."','$this->j18_rpredi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,811,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_rpredi'))."','$this->j18_rpredi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_vencim"]) || $this->j18_vencim != "")
-             $resac = db_query("insert into db_acount values($acount,153,813,'".AddSlashes(pg_result($resaco,$conresaco,'j18_vencim'))."','$this->j18_vencim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,813,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_vencim'))."','$this->j18_vencim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_logradauto"]) || $this->j18_logradauto != "")
-             $resac = db_query("insert into db_acount values($acount,153,7320,'".AddSlashes(pg_result($resaco,$conresaco,'j18_logradauto'))."','$this->j18_logradauto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,7320,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_logradauto'))."','$this->j18_logradauto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_segundavia"]) || $this->j18_segundavia != "")
-             $resac = db_query("insert into db_acount values($acount,153,7415,'".AddSlashes(pg_result($resaco,$conresaco,'j18_segundavia'))."','$this->j18_segundavia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,7415,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_segundavia'))."','$this->j18_segundavia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_infla"]) || $this->j18_infla != "")
-             $resac = db_query("insert into db_acount values($acount,153,7623,'".AddSlashes(pg_result($resaco,$conresaco,'j18_infla'))."','$this->j18_infla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,7623,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_infla'))."','$this->j18_infla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_utilizasetfisc"]) || $this->j18_utilizasetfisc != "")
-             $resac = db_query("insert into db_acount values($acount,153,7870,'".AddSlashes(pg_result($resaco,$conresaco,'j18_utilizasetfisc'))."','$this->j18_utilizasetfisc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,7870,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_utilizasetfisc'))."','$this->j18_utilizasetfisc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_testadanumero"]) || $this->j18_testadanumero != "")
-             $resac = db_query("insert into db_acount values($acount,153,7932,'".AddSlashes(pg_result($resaco,$conresaco,'j18_testadanumero'))."','$this->j18_testadanumero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,7932,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_testadanumero'))."','$this->j18_testadanumero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_excconscalc"]) || $this->j18_excconscalc != "")
-             $resac = db_query("insert into db_acount values($acount,153,7979,'".AddSlashes(pg_result($resaco,$conresaco,'j18_excconscalc'))."','$this->j18_excconscalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,7979,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_excconscalc'))."','$this->j18_excconscalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_textoprom"]) || $this->j18_textoprom != "")
-             $resac = db_query("insert into db_acount values($acount,153,8646,'".AddSlashes(pg_result($resaco,$conresaco,'j18_textoprom'))."','$this->j18_textoprom',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,8646,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_textoprom'))."','$this->j18_textoprom',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_calcvenc"]) || $this->j18_calcvenc != "")
-             $resac = db_query("insert into db_acount values($acount,153,8754,'".AddSlashes(pg_result($resaco,$conresaco,'j18_calcvenc'))."','$this->j18_calcvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,8754,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_calcvenc'))."','$this->j18_calcvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_utilizaloc"]) || $this->j18_utilizaloc != "")
-             $resac = db_query("insert into db_acount values($acount,153,8756,'".AddSlashes(pg_result($resaco,$conresaco,'j18_utilizaloc'))."','$this->j18_utilizaloc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,8756,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_utilizaloc'))."','$this->j18_utilizaloc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_permvenc"]) || $this->j18_permvenc != "")
-             $resac = db_query("insert into db_acount values($acount,153,8810,'".AddSlashes(pg_result($resaco,$conresaco,'j18_permvenc'))."','$this->j18_permvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,8810,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_permvenc'))."','$this->j18_permvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_utidadosdiver"]) || $this->j18_utidadosdiver != "")
-             $resac = db_query("insert into db_acount values($acount,153,8980,'".AddSlashes(pg_result($resaco,$conresaco,'j18_utidadosdiver'))."','$this->j18_utidadosdiver',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,8980,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_utidadosdiver'))."','$this->j18_utidadosdiver',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_dadoscertisen"]) || $this->j18_dadoscertisen != "")
-             $resac = db_query("insert into db_acount values($acount,153,9139,'".AddSlashes(pg_result($resaco,$conresaco,'j18_dadoscertisen'))."','$this->j18_dadoscertisen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,9139,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_dadoscertisen'))."','$this->j18_dadoscertisen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_formatsetor"]) || $this->j18_formatsetor != "")
-             $resac = db_query("insert into db_acount values($acount,153,9542,'".AddSlashes(pg_result($resaco,$conresaco,'j18_formatsetor'))."','$this->j18_formatsetor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,9542,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_formatsetor'))."','$this->j18_formatsetor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_formatquadra"]) || $this->j18_formatquadra != "")
-             $resac = db_query("insert into db_acount values($acount,153,9543,'".AddSlashes(pg_result($resaco,$conresaco,'j18_formatquadra'))."','$this->j18_formatquadra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,9543,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_formatquadra'))."','$this->j18_formatquadra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_formatlote"]) || $this->j18_formatlote != "")
-             $resac = db_query("insert into db_acount values($acount,153,9544,'".AddSlashes(pg_result($resaco,$conresaco,'j18_formatlote'))."','$this->j18_formatlote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,9544,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_formatlote'))."','$this->j18_formatlote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_utilpontos"]) || $this->j18_utilpontos != "")
-             $resac = db_query("insert into db_acount values($acount,153,9762,'".AddSlashes(pg_result($resaco,$conresaco,'j18_utilpontos'))."','$this->j18_utilpontos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,9762,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_utilpontos'))."','$this->j18_utilpontos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_ordendent"]) || $this->j18_ordendent != "")
-             $resac = db_query("insert into db_acount values($acount,153,9856,'".AddSlashes(pg_result($resaco,$conresaco,'j18_ordendent'))."','$this->j18_ordendent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,9856,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_ordendent'))."','$this->j18_ordendent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_iptuhistisen"]) || $this->j18_iptuhistisen != "")
-             $resac = db_query("insert into db_acount values($acount,153,9858,'".AddSlashes(pg_result($resaco,$conresaco,'j18_iptuhistisen'))."','$this->j18_iptuhistisen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,9858,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_iptuhistisen'))."','$this->j18_iptuhistisen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_db_sysfuncoes"]) || $this->j18_db_sysfuncoes != "")
-             $resac = db_query("insert into db_acount values($acount,153,10824,'".AddSlashes(pg_result($resaco,$conresaco,'j18_db_sysfuncoes'))."','$this->j18_db_sysfuncoes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,10824,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_db_sysfuncoes'))."','$this->j18_db_sysfuncoes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_tipoisen"]) || $this->j18_tipoisen != "")
-             $resac = db_query("insert into db_acount values($acount,153,10831,'".AddSlashes(pg_result($resaco,$conresaco,'j18_tipoisen'))."','$this->j18_tipoisen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,10831,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_tipoisen'))."','$this->j18_tipoisen',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_perccorrepadrao"]) || $this->j18_perccorrepadrao != "")
-             $resac = db_query("insert into db_acount values($acount,153,11059,'".AddSlashes(pg_result($resaco,$conresaco,'j18_perccorrepadrao'))."','$this->j18_perccorrepadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,11059,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_perccorrepadrao'))."','$this->j18_perccorrepadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_templatecertidaoexitencia"]) || $this->j18_templatecertidaoexitencia != "")
-             $resac = db_query("insert into db_acount values($acount,153,18859,'".AddSlashes(pg_result($resaco,$conresaco,'j18_templatecertidaoexitencia'))."','$this->j18_templatecertidaoexitencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,18859,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_templatecertidaoexitencia'))."','$this->j18_templatecertidaoexitencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_templatecertidaoisencao"]) || $this->j18_templatecertidaoisencao != "")
-             $resac = db_query("insert into db_acount values($acount,153,20545,'".AddSlashes(pg_result($resaco,$conresaco,'j18_templatecertidaoisencao'))."','$this->j18_templatecertidaoisencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,20545,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_templatecertidaoisencao'))."','$this->j18_templatecertidaoisencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_receitacreditorecalculo"]) || $this->j18_receitacreditorecalculo != "")
-             $resac = db_query("insert into db_acount values($acount,153,21918,'".AddSlashes(pg_result($resaco,$conresaco,'j18_receitacreditorecalculo'))."','$this->j18_receitacreditorecalculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,21918,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_receitacreditorecalculo'))."','$this->j18_receitacreditorecalculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_tipodebitorecalculo"]) || $this->j18_tipodebitorecalculo != "")
-             $resac = db_query("insert into db_acount values($acount,153,21919,'".AddSlashes(pg_result($resaco,$conresaco,'j18_tipodebitorecalculo'))."','$this->j18_tipodebitorecalculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,21919,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_tipodebitorecalculo'))."','$this->j18_tipodebitorecalculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j18_taxaseparada"]) || $this->j18_taxaseparada != "")
-             $resac = db_query("insert into db_acount values($acount,153,1010302,'".AddSlashes(pg_result($resaco,$conresaco,'j18_taxaseparada'))."','$this->j18_taxaseparada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,1010302,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_taxaseparada'))."','$this->j18_taxaseparada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j18_permitectmcgf"]))
-             $resac = db_query("insert into db_acount values($acount,153,1013275,'".pg_result($resaco,0,'j18_permitectmcgf')."','$this->j18_permitectmcgf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,1013275,'".pg_fetch_result($resaco,0,'j18_permitectmcgf')."','$this->j18_permitectmcgf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j18_bicmarcasigilo"]))
-             $resac = db_query("insert into db_acount values($acount,153,1013276,'".pg_result($resaco,0,'j18_bicmarcasigilo')."','$this->j18_bicmarcasigilo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,1013276,'".pg_fetch_result($resaco,0,'j18_bicmarcasigilo')."','$this->j18_bicmarcasigilo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j18_utilizaareaprivativa"]) || $this->j18_utilizaareaprivativa != "")
-             $resac = db_query("insert into db_acount values($acount,153,1014558,'".AddSlashes(pg_result($resaco,$conresaco,'j18_utilizaareaprivativa'))."','$this->j18_utilizaareaprivativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,153,1014558,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j18_utilizaareaprivativa'))."','$this->j18_utilizaareaprivativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -1190,44 +1190,44 @@ class cl_cfiptu {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,808,'$j18_anousu','E')");
-           $resac  = db_query("insert into db_acount values($acount,153,808,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,809,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_vlrref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,810,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_dtoper'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,812,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_rterri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,811,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_rpredi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,813,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_vencim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,7320,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_logradauto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,7415,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_segundavia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,7623,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_infla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,7870,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_utilizasetfisc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,7932,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_testadanumero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,7979,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_excconscalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,8646,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_textoprom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,8754,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_calcvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,8756,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_utilizaloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,8810,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_permvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,8980,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_utidadosdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,9139,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_dadoscertisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,9542,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_formatsetor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,9543,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_formatquadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,9544,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_formatlote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,9762,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_utilpontos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,9856,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_ordendent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,9858,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_iptuhistisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,10824,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_db_sysfuncoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,10831,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_tipoisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,11059,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_perccorrepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,18859,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_templatecertidaoexitencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,20545,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_templatecertidaoisencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,21918,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_receitacreditorecalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,21919,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_tipodebitorecalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,153,1010302,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_taxaseparada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,153,1013275,'','".pg_result($resaco,0,'j18_permitectmcgf')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,153,1013276,'','".pg_result($resaco,0,'j18_bicmarcasigilo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-	   $resac = db_query("insert into db_acount values($acount,153,1014558,'','".AddSlashes(pg_result($resaco,$iresaco,'j18_utilizaareaprivativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,808,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,809,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_vlrref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,810,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_dtoper'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,812,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_rterri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,811,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_rpredi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,813,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_vencim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,7320,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_logradauto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,7415,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_segundavia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,7623,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_infla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,7870,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_utilizasetfisc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,7932,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_testadanumero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,7979,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_excconscalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,8646,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_textoprom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,8754,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_calcvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,8756,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_utilizaloc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,8810,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_permvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,8980,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_utidadosdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,9139,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_dadoscertisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,9542,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_formatsetor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,9543,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_formatquadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,9544,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_formatlote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,9762,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_utilpontos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,9856,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_ordendent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,9858,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_iptuhistisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,10824,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_db_sysfuncoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,10831,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_tipoisen'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,11059,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_perccorrepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,18859,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_templatecertidaoexitencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,20545,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_templatecertidaoisencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,21918,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_receitacreditorecalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,21919,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_tipodebitorecalculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,153,1010302,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_taxaseparada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,153,1013275,'','".pg_fetch_result($resaco,0,'j18_permitectmcgf')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,153,1013276,'','".pg_fetch_result($resaco,0,'j18_bicmarcasigilo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+	   $resac = db_query("insert into db_acount values($acount,153,1014558,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j18_utilizaareaprivativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -1368,7 +1368,7 @@ class cl_cfiptu {
    function sql_query_param ( $j18_anousu=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1392,7 +1392,7 @@ class cl_cfiptu {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

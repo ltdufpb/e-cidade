@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 $rotulocampo = new rotulocampo;
 $rotulocampo->label("c60_estrut");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>

@@ -41,22 +41,11 @@ abstract class Factory {
    */
   public static function getModelo($sCodigoBanco) {
 
-    switch ($sCodigoBanco) {
-      case BB::CODIGO_BANCO:
-        return new BB();
-      break;
-
-      case CEF::CODIGO_BANCO:
-        return new CEF();
-      break;
-
-      case Banrisul::CODIGO_BANCO:
-        return new Banrisul();
-      break;
-
-      default:
-        throw new \Exception("Banco {$sCodigoBanco} não encontrado");
-      break;
-    }
+    return match ($sCodigoBanco) {
+        BB::CODIGO_BANCO => new BB(),
+        CEF::CODIGO_BANCO => new CEF(),
+        Banrisul::CODIGO_BANCO => new Banrisul(),
+        default => throw new \Exception("Banco {$sCodigoBanco} não encontrado"),
+    };
   }
 }

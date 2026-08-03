@@ -80,10 +80,10 @@ class Incorporacao
      * 710 - estorno de serviço
      * @var array
      */
-    private $documentos = array(
-        'inclusao' => array(707, 709),
-        'estorno' => array(708, 710),
-    );
+    private $documentos = [
+        'inclusao' => [707, 709],
+        'estorno' => [708, 710],
+    ];
 
     /**
      * @param Bem $bem
@@ -324,12 +324,12 @@ class Incorporacao
 
         $ano = $maiorReavaliacao->getAno();
         $mes = $maiorReavaliacao->getMes();
-        $where = array(
+        $where = [
             "t78_ano       = {$ano}",
             "t78_instit    = {$mes}",
             "t78_mes       = {$this->bem->getInstituicao()}",
             "t78_estornado is false",
-        );
+        ];
         // verifica se ja foi escriturado na contabilidade no mês
         $daoContabilidade = new \cl_bensdepreciacaolancamento();
         $rs = db_query($daoContabilidade->sql_query_file(null, 1, null, implode(' and ', $where)));
@@ -347,12 +347,12 @@ class Incorporacao
             $mes = 1;
         }
 
-        $where = array(
+        $where = [
             "benshistoricocalculo.t57_ano >= {$ano}",
             "benshistoricocalculo.t57_mes > {$mes}",
             "benshistoricocalculo.t57_ativo is true",
             "benshistoricocalculo.t57_processado is true",
-        );
+        ];
         $daoHistorico = new \cl_benshistoricocalculo();
         $rsHistorico = db_query($daoHistorico->sql_query_file(null, '*', null, implode(' and ', $where)));
         if (!$rsHistorico) {
@@ -378,7 +378,7 @@ class Incorporacao
      */
     private function identificaDataUltimaReavaliacao()
     {
-        $competenciasSelecionadas = array(); // para validar se foi selecionado mais de um mês
+        $competenciasSelecionadas = []; // para validar se foi selecionado mais de um mês
         $maiorReavaliacao = null;
         foreach ($this->materiaisIncorporado->get() as $material) {
             $competenciaSelecionada = $this->montaCompetencia($material->getData());

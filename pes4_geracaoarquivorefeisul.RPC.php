@@ -14,7 +14,7 @@ $oRetorno               = new stdClass();
 $oRetorno->erro         = false;
 $oRetorno->iStatus      = true;
 $oRetorno->sMessage     = '';
-$sPedido                = isset($oParam->exec) ? $oParam->exec : '';
+$sPedido                = $oParam->exec ?? '';
 
 try {
 

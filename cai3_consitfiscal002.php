@@ -33,7 +33,7 @@
   include(modification("classes/db_issbase_classe.php"));
   include(modification("classes/db_iptubase_classe.php"));
   include(modification("classes/db_termo_classe.php"));
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
   $clcgm = new cl_cgm;
   $clissbase = new cl_issbase;
   $cliptubase = new cl_iptubase;
@@ -54,7 +54,7 @@
      }
 
   $result= db_query($sql);
-  $num= pg_numrows($result);
+  $num= pg_num_rows($result);
 }
 
 ?>

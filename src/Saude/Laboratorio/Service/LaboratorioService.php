@@ -43,15 +43,12 @@ use Cgs;
  */
 class LaboratorioService
 {
-    private $repositorio;
-
     /**
      * LaboratorioService constructor.
      * @param LaboratorioRepository $repositorio
      */
-    public function __construct(LaboratorioRepository $repositorio)
+    public function __construct(private readonly LaboratorioRepository $repositorio)
     {
-        $this->repositorio = $repositorio;
     }
 
     /**
@@ -61,16 +58,16 @@ class LaboratorioService
     {
 
         $laboratorio = new laboratorio();
-        $laboratorio->setCodigo(isset($parametros->la22_i_codigo) ? $parametros->la22_i_codigo : '');
-        $laboratorio->setTipo(isset($parametros->la02_i_tipo) ? $parametros->la02_i_tipo : '');
-        $laboratorio->setDescricao(isset($parametros->la02_c_descr) ? $parametros->la02_c_descr : '');
-        $laboratorio->setAlvara(isset($parametros->la02_i_alvara) ? $parametros->la02_i_alvara : '');
-        $laboratorio->setCnes(isset($parametros->la02_i_cnes) ? $parametros->la02_i_cnes : '');
-        $laboratorio->setEndereco(isset($parametros->la02_c_endereco) ? $parametros->la02_c_endereco : '');
-        $laboratorio->setTelefone(isset($parametros->la02_i_telefone) ? $parametros->la02_i_telefone : '');
-        $laboratorio->setNumero(isset($parametros->la02_c_numero) ? $parametros->la02_c_numero : '');
-        $laboratorio->setTurnoAtendimento(isset($parametros->la02_i_turnoatend) ? $parametros->la02_i_turnoatend : '');
-        $laboratorio->setInterfaceado(isset($parametros->la02_interfaceado) ? $parametros->la02_interfaceado : '');
+        $laboratorio->setCodigo($parametros->la22_i_codigo ?? '');
+        $laboratorio->setTipo($parametros->la02_i_tipo ?? '');
+        $laboratorio->setDescricao($parametros->la02_c_descr ?? '');
+        $laboratorio->setAlvara($parametros->la02_i_alvara ?? '');
+        $laboratorio->setCnes($parametros->la02_i_cnes ?? '');
+        $laboratorio->setEndereco($parametros->la02_c_endereco ?? '');
+        $laboratorio->setTelefone($parametros->la02_i_telefone ?? '');
+        $laboratorio->setNumero($parametros->la02_c_numero ?? '');
+        $laboratorio->setTurnoAtendimento($parametros->la02_i_turnoatend ?? '');
+        $laboratorio->setInterfaceado($parametros->la02_interfaceado ?? '');
 
         $laboratorio = $this->repositorio->salvar($laboratorio);
 

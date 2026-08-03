@@ -35,8 +35,8 @@ require_once(modification("classes/db_arrecant_classe.php"));
 require_once(modification("classes/db_vistorianumpre_classe.php"));
 require_once(modification("classes/db_vistorias_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clvistorias = new cl_vistorias;
 $clarrecad   = new cl_arrecad;

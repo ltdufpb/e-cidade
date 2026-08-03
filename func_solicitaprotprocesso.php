@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_solicitaprotprocesso_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsolicitaprotprocesso = new cl_solicitaprotprocesso;
 $clsolicitaprotprocesso->rotulo->label("pc90_sequencial");
 $clsolicitaprotprocesso->rotulo->label("pc90_numeroprocesso");
@@ -98,9 +98,9 @@ $clsolicitaprotprocesso->rotulo->label("pc90_numeroprocesso");
         }else{
            $sql = $clsolicitaprotprocesso->sql_query("",$campos,"pc90_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_pc90_numeroprocesso)){
-          $repassa = array("chave_pc90_sequencial"=>$chave_pc90_sequencial,"chave_pc90_numeroprocesso"=>$chave_pc90_numeroprocesso);
+          $repassa = ["chave_pc90_sequencial"=>$chave_pc90_sequencial,"chave_pc90_numeroprocesso"=>$chave_pc90_numeroprocesso];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

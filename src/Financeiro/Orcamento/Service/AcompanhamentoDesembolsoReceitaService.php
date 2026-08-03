@@ -269,9 +269,7 @@ class AcompanhamentoDesembolsoReceitaService extends CronogramaDesembolsoService
 
                 if (!array_key_exists($fonte, $receitas)) {
                     // localiza a fonte de receita para setar a descrição
-                    $fonteReceita = $fontesReceitas->filter(function (FonteReceita $fonteReceita) use ($fonte) {
-                        return $fonteReceita->o57_fonte === $fonte;
-                    })->shift();
+                    $fonteReceita = $fontesReceitas->filter(fn(FonteReceita $fonteReceita) => $fonteReceita->o57_fonte === $fonte)->shift();
 
                     if (is_null($fonteReceita)) {
                         $msg = sprintf(

@@ -193,7 +193,7 @@ class PcaspBuilder
      */
     private function normalize($string)
     {
-        return mb_strtoupper(str_replace(' ', '', trim($string)), 'ISO-8859-1');
+        return mb_strtoupper(str_replace(' ', '', trim((string) $string)), 'ISO-8859-1');
     }
 
     /**
@@ -208,7 +208,7 @@ class PcaspBuilder
         }
 
         // se o valor não inicar com PO
-        if (strpos($dado['informacoescomplementares'], $this->informacaoComplementar) !== 0) {
+        if (!str_starts_with((string) $dado['informacoescomplementares'], (string) $this->informacaoComplementar)) {
             return null;
         }
 

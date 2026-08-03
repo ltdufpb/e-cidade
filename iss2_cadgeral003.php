@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $auxAtiv  = new cl_arquivo_auxiliar;
 $clrotulo = new rotulocampo;
@@ -78,7 +78,7 @@ function js_emite(){
 							</td>
 							<td>
 								<?php 
-									$aAgrupa = array("n"=>"Nenhuma","a"=>"Atividade Principal","b"=>"Bairro","c"=>"Classe");
+									$aAgrupa = ["n"=>"Nenhuma","a"=>"Atividade Principal","b"=>"Bairro","c"=>"Classe"];
 									db_select("selAgrupa",$aAgrupa,true,2);
 								?>
 							</td>
@@ -90,7 +90,7 @@ function js_emite(){
 							</td>
 							<td>
 								<?php  
-									$tipo_ordem = array("t"=>"Todos","c"=>"Não Baixados" ,"b"=>"Baixados");
+									$tipo_ordem = ["t"=>"Todos","c"=>"Não Baixados" ,"b"=>"Baixados"];
 									db_select("baix",$tipo_ordem,true,2,"style='width:145px;'"); 
 								?>
 							</td>
@@ -102,7 +102,7 @@ function js_emite(){
 							</td>
 							<td>
 								<?php  
-									$aOrdem = array("i"=>"Inscrição","c"=>"CGM","n"=>"Nome","a"=>"Atividade Principal","l"=>"Classe","b"=>"Bairro");
+									$aOrdem = ["i"=>"Inscrição","c"=>"CGM","n"=>"Nome","a"=>"Atividade Principal","l"=>"Classe","b"=>"Bairro"];
 									db_select("selOrdem",$aOrdem,true,2,"style='width:145px;'"); 
 								?>
 							</td>

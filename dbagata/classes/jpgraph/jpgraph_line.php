@@ -22,21 +22,21 @@ DEFINE("LP_AREA_NO_BORDER",true);
 // Description: 
 //===================================================
 class LinePlot extends Plot{
-    var $filled=false;
-    var $fill_color='blue';
-    var $mark=null;
-    var $step_style=false, $center=false;
-    var $line_style=1;	// Default to solid
-    var $filledAreas = array(); // array of arrays(with min,max,col,filled in them)
-    var $barcenter=false;  // When we mix line and bar. Should we center the line in the bar.
-    var $fillFromMin = false ;
-    var $fillgrad=false,$fillgrad_fromcolor='navy',$fillgrad_tocolor='silver',$fillgrad_numcolors=100;
-    var $iFastStroke=false;
+    public $filled=false;
+    public $fill_color='blue';
+    public $mark=null;
+    public $step_style=false, $center=false;
+    public $line_style=1;	// Default to solid
+    public $filledAreas = []; // array of arrays(with min,max,col,filled in them)
+    public $barcenter=false;  // When we mix line and bar. Should we center the line in the bar.
+    public $fillFromMin = false ;
+    public $fillgrad=false,$fillgrad_fromcolor='navy',$fillgrad_tocolor='silver',$fillgrad_numcolors=100;
+    public $iFastStroke=false;
 
 //---------------
 // CONSTRUCTOR
-    function LinePlot(&$datay,$datax=false) {
-	$this->Plot($datay,$datax);
+    function __construct(&$datay,$datax=false) {
+	\Plot::__construct($datay, $datax);
 	$this->mark = new PlotMark();
     }
 //---------------
@@ -44,9 +44,9 @@ class LinePlot extends Plot{
 
     // Set style, filled or open
     function SetFilled($aFlag=true) {
-    	JpGraphError::RaiseL(10001);//('LinePlot::SetFilled() is deprecated. Use SetFillColor()');
+    	(new JpGraphError())->RaiseL(10001);//('LinePlot::SetFilled() is deprecated. Use SetFillColor()');
     }
-	
+
     function SetBarCenter($aFlag=true) {
 	$this->barcenter=$aFlag;
     }
@@ -54,19 +54,19 @@ class LinePlot extends Plot{
     function SetStyle($aStyle) {
 	$this->line_style=$aStyle;
     }
-	
+
     function SetStepStyle($aFlag=true) {
 	$this->step_style = $aFlag;
     }
-	
+
     function SetColor($aColor) {
 	parent::SetColor($aColor);
     }
-	
+
     function SetFillFromYMin($f=true) {
 	$this->fillFromMin = $f ;
     }
-    
+
     function SetFillColor($aColor,$aFilled=true) {
 	$this->fill_color=$aColor;
 	$this->filled=$aFilled;
@@ -79,7 +79,7 @@ class LinePlot extends Plot{
 	$this->filled = $aFilled;
 	$this->fillgrad = true;
     }
-	
+
     function Legend(&$graph) {
 	if( $this->legend!="" ) {
 	    if( $this->filled && !$this->fillgrad ) {
@@ -88,7 +88,7 @@ class LinePlot extends Plot{
 				    $this->legendcsimtarget,$this->legendcsimalt,$this->legendcsimwintarget);
 	    } 
 	    elseif( $this->fillgrad ) {
-		$color=array($this->fillgrad_fromcolor,$this->fillgrad_tocolor);
+		$color=[$this->fillgrad_fromcolor,$this->fillgrad_tocolor];
 		// In order to differentiate between gradients and cooors specified as an RGB triple
 		$graph->legend->Add($this->legend,$color,"",-2 /* -GRAD_HOR */,
 				    $this->legendcsimtarget,$this->legendcsimalt,$this->legendcsimwintarget);
@@ -108,9 +108,9 @@ class LinePlot extends Plot{
 	    $aMin = $aMax;
 	    $aMax = $tmp;
 	} 
-	$this->filledAreas[] = array($aMin,$aMax,$aColor,$aFilled,$aBorder);
+	$this->filledAreas[] = [$aMin,$aMax,$aColor,$aFilled,$aBorder];
     }
-	
+
     // Gets called before any axis are stroked
     function PreStrokeAdjust(&$graph) {
 
@@ -163,7 +163,7 @@ class LinePlot extends Plot{
 		// Just ignore
 	    }
 	    else {
-		JpGraphError::RaiseL(10002);//('Plot too complicated for fast line Stroke. Use standard Stroke()');
+		(new JpGraphError())->RaiseL(10002);//('Plot too complicated for fast line Stroke. Use standard Stroke()');
 		return;
 	    }
 	    ++$pnts;
@@ -172,13 +172,13 @@ class LinePlot extends Plot{
 	$img->Polygon($cord,false,true);
 
     }
-	
+
     function Stroke(&$img,&$xscale,&$yscale) {
 	$idx=0;
 	$numpoints=count($this->coords[0]);
 	if( isset($this->coords[1]) ) {
 	    if( count($this->coords[1])!=$numpoints )
-		JpGraphError::RaiseL(2003,count($this->coords[1]),$numpoints);
+		(new JpGraphError())->RaiseL(2003, count($this->coords[1]), $numpoints);
 //("Number of X and Y points are not equal. Number of X-points:".count($this->coords[1])." Number of Y-points:$numpoints");
 	    else
 		$exist_x = true;
@@ -239,12 +239,12 @@ class LinePlot extends Plot{
 	$pnts=$startpoint+1;
 	$firstnonumeric = false;
 	while( $pnts < $numpoints ) {
-	    
+
 	    if( $exist_x ) $x=$this->coords[1][$pnts];
 	    else $x=$pnts+$textadj;
 	    $xt = $xscale->Translate($x);
 	    $yt = $yscale->Translate($this->coords[0][$pnts]);
-	    
+
 	    $y=$this->coords[0][$pnts];
 	    if( $this->step_style ) {
 		// To handle null values within step style we need to record the
@@ -362,7 +362,7 @@ class LinePlot extends Plot{
 					    ($this->filledAreas[$i][1] - $this->filledAreas[$i][0] + ($this->step_style ? 0 : 1))  * $factor));
 		$areaCoords[] = $areaCoords[sizeof($areaCoords)-2]; // last x
 		$areaCoords[] = $minY; // last y
-	    
+
 		if($this->filledAreas[$i][3]) {
 		    $img->SetColor($this->filledAreas[$i][2]);
 		    $img->FilledPolygon($areaCoords);
@@ -379,7 +379,7 @@ class LinePlot extends Plot{
 		else
 	    	    $img->Polygon($cord);
 
-		$areaCoords = array();
+		$areaCoords = [];
 	    }
 	}	
 
@@ -423,11 +423,11 @@ class LinePlot extends Plot{
 // Description: 
 //===================================================
 class AccLinePlot extends Plot {
-    var $plots=null,$nbrplots=0,$numpoints=0;
-    var $iStartEndZero=true;
+    public $plots=null,$nbrplots=0,$numpoints=0;
+    public $iStartEndZero=true;
 //---------------
 // CONSTRUCTOR
-    function AccLinePlot($plots) {
+    function __construct($plots) {
         $this->plots = $plots;
 	$this->nbrplots = count($plots);
 	$this->numpoints = $plots[0]->numpoints;
@@ -435,7 +435,7 @@ class AccLinePlot extends Plot {
 	// Verify that all plots have the same number of data points
 	for( $i=1; $i < $this->nbrplots; ++$i ) {
 	    if( $plots[$i]->numpoints != $this->numpoints ) {
-		JpGraphError::RaiseL(10003);//('Each plot in an accumulated lineplot must have the same number of data points',0)
+		(new JpGraphError())->RaiseL(10003);//('Each plot in an accumulated lineplot must have the same number of data points',0)
 	    }
 	} 
 
@@ -451,15 +451,15 @@ class AccLinePlot extends Plot {
 	for($i=0; $i < $n; ++$i )
 	    $this->plots[$i]->DoLegend($graph);
     }
-	
+
     function Max() {
-	list($xmax) = $this->plots[0]->Max();
+	[$xmax] = $this->plots[0]->Max();
 	$nmax=0;
 	$n = count($this->plots);
 	for($i=0; $i < $n; ++$i) {
 	    $nc = count($this->plots[$i]->coords[0]);
 	    $nmax = max($nmax,$nc);
-	    list($x) = $this->plots[$i]->Max();
+	    [$x] = $this->plots[$i]->Max();
 	    $xmax = Max($xmax,$x);
 	}
 	for( $i = 0; $i < $nmax; $i++ ) {
@@ -475,17 +475,17 @@ class AccLinePlot extends Plot {
 	    $ymax[$i] = $y;
 	}
 	$ymax = max($ymax);
-	return array($xmax,$ymax);
+	return [$xmax,$ymax];
     }	
 
     function Min() {
 	$nmax=0;
-	list($xmin,$ysetmin) = $this->plots[0]->Min();
+	[$xmin, $ysetmin] = $this->plots[0]->Min();
 	$n = count($this->plots);
 	for($i=0; $i < $n; ++$i) {
 	    $nc = count($this->plots[$i]->coords[0]);
 	    $nmax = max($nmax,$nc);
-	    list($x,$y) = $this->plots[$i]->Min();
+	    [$x, $y] = $this->plots[$i]->Min();
 	    $xmin = Min($xmin,$x);
 	    $ysetmin = Min($y,$ysetmin);
 	}
@@ -502,7 +502,7 @@ class AccLinePlot extends Plot {
 	    $ymin[$i] = $y;
 	}
 	$ymin = Min($ysetmin,Min($ymin));
-	return array($xmin,$ymin);
+	return [$xmin,$ymin];
     }
 
     // Gets called before any axis are stroked
@@ -512,7 +512,7 @@ class AccLinePlot extends Plot {
 	// offset we don't touch it.
 	// (We check for empty in case the scale is  a log scale 
 	// and hence doesn't contain any xlabel_offset)
-	
+
 	if( empty($graph->xaxis->scale->ticks->xlabel_offset) ||
 	    $graph->xaxis->scale->ticks->xlabel_offset == 0 ) {
 	    if( $this->center ) {
@@ -525,7 +525,7 @@ class AccLinePlot extends Plot {
 	    $graph->SetTextScaleOff($b);						
 	    $graph->xaxis->scale->ticks->SupressMinorTickMarks();
 	}
-	
+
     }
 
     function SetInterpolateMode($aIntMode) {
@@ -539,7 +539,7 @@ class AccLinePlot extends Plot {
 
 	$n=count($aData);
 	$i=0;
-    
+
 	// If first point is undefined we will set it to the same as the first 
 	// valid data
 	if( $aData[$i]==='-' ) {

@@ -40,36 +40,19 @@ use ECidade\Saude\Laboratorio\Integracao\Luckmann\Model\TagXML as TagXMLModel;
 class TagXML
 {
     /**
-     * @var TagsXML
-     */
-    private $tagsXmlCollection;
-
-    /**
-     * @var File
-     */
-    private $file;
-
-    /**
-     * @var int
-     */
-    private $tipoArquivo;
-
-    /**
      * @var array
      */
     private $estruturaXml;
 
     /**
      * TagXML constructor.
-     * @param TagsXML $tagsXml
+     * @param TagsXML $tagsXmlCollection
      * @param File $file
      * @param $tipoArquivo
+     * @param int $tipoArquivo
      */
-    public function __construct(TagsXML $tagsXml, File $file, $tipoArquivo)
+    public function __construct(private readonly TagsXML $tagsXmlCollection, private readonly File $file, private $tipoArquivo)
     {
-        $this->tagsXmlCollection = $tagsXml;
-        $this->file = $file;
-        $this->tipoArquivo = $tipoArquivo;
     }
 
     /**
@@ -79,7 +62,7 @@ class TagXML
     public function criarInstancias()
     {
         $arquivo = Arquivo::getPorTipo($this->tipoArquivo);
-        $this->estruturaXml = json_decode($this->file->read($arquivo), true);
+        $this->estruturaXml = json_decode((string) $this->file->read($arquivo), true);
 
         $this->percorreEstruturaAtual(current($this->estruturaXml));
 
@@ -94,7 +77,7 @@ class TagXML
         $tagXml = new TagXMLModel();
         $tagXml->setNome($elementoArray['nome']);
         $tagXml->setCampoPai($elementoArray['campo_pai']);
-        $tagXml->setUnico(isset($elementoArray['unico']) ? $elementoArray['unico'] : true);
+        $tagXml->setUnico($elementoArray['unico'] ?? true);
 
         $this->tagsXmlCollection->add($tagXml);
 

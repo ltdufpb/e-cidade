@@ -49,7 +49,7 @@ if ( pg_num_rows( $rsLabResp ) > 0 ) {
   $sAssinatura   = $oDadosRetorno->assinatura;
 }
 
-$aAtributosSelecionaveis  = array();
+$aAtributosSelecionaveis  = [];
 $oDaoAtributoSelecionavel = new cl_lab_valorreferenciasel();
 $sSqlAtributos            = $oDaoAtributoSelecionavel->sql_query_file();
 $rsAtributosSelecionaveis = $oDaoAtributoSelecionavel->sql_record($sSqlAtributos);
@@ -75,7 +75,7 @@ if ($cllab_requiitem->numrows==0) {
   $oExame            = $oRequisicao->getExame();
   $oResultadoExame   = $oRequisicao->getResultado();
   $aAtributos        = $oExame->getAtributos();
-  $aAtributosDoExame = array();
+  $aAtributosDoExame = [];
   foreach ($aAtributos as $oAtributo) {
 
     $oAtributoDoExame                  = new stdClass();
@@ -185,7 +185,7 @@ if ($cllab_requiitem->numrows==0) {
   $pdf->rect( 8, 250, $larg + 185, $alt - 30, 3, '', '1234' );
   $pdf->cell( 50, 5, "", 0, 1, "L", 0 );
 
-  if (trim($oResultadoExame->getConsideracao()) != "") {
+  if (trim((string) $oResultadoExame->getConsideracao()) != "") {
 
     $pdf->setfont( $sFonte, 'b', 8 );
     $pdf->cell( 10, 5, "Considerações:", 0, 1, "L", 0 );
@@ -196,7 +196,7 @@ if ($cllab_requiitem->numrows==0) {
   	
    $arquivo = "tmp/".$la24_c_nomearq;
    db_query("begin");
-   pg_loexport( $sAssinatura, $arquivo );
+   pg_lo_export( $sAssinatura, $arquivo );
    db_query("end");
   } else {
     $arquivo = "";

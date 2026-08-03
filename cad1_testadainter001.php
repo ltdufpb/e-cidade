@@ -51,8 +51,8 @@ $cltesinter->rotulo->label();
 $cltesinterlote = new cl_tesinterlote;
 $cltesinterlote->rotulo->label();
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $oGet = db_utils::postMemory($_GET);
 
@@ -64,9 +64,9 @@ if (isset($enviar)) {
                 '*',
                 '',
                 " j34_setor = '" .
-                str_pad($j34_setor, 4, "0", STR_PAD_LEFT) .
+                str_pad((string) $j34_setor, 4, "0", STR_PAD_LEFT) .
                 "' and j34_quadra = '" .
-                str_pad($j34_quadra, 4, "0", STR_PAD_LEFT) . "'"));
+                str_pad((string) $j34_quadra, 4, "0", STR_PAD_LEFT) . "'"));
   $matriz = "";
   $car = "";
 
@@ -81,8 +81,8 @@ if (isset($enviar)) {
       $tesinter_excluida = "tesinter_excluida" . $i;
       $j39_sequencial = "j39_sequencial" . $i;
 
-      if (((isset($$idbql) && $$idbql != "0") || (isset($$outro) && $$outro != "0"))) {
-         $matriz .= $car . $$idbql . "-" . $$orientacao . "-" . $$testad . "-" . $$testle . "-" . (isset($$outro) ? $$outro : "0") . "-" . (isset($$j84_observacao) ? $$j84_observacao : "") . "-" . $$tesinter_excluida . "-" . $$j39_sequencial;
+      if (((isset(${$idbql}) && ${$idbql} != "0") || (isset(${$outro}) && ${$outro} != "0"))) {
+         $matriz .= $car . ${$idbql} . "-" . ${$orientacao} . "-" . ${$testad} . "-" . ${$testle} . "-" . (${$outro} ?? "0") . "-" . (${$j84_observacao} ?? "") . "-" . ${$tesinter_excluida} . "-" . ${$j39_sequencial};
       }
 
       $car = "X";
@@ -99,8 +99,8 @@ if (isset($idbql) && $idbql != '' && empty($car)) {
   }
 }
 
-if (isset($$idbql) && $$idbql != '') {
-  $rsDadosLote = $cllote->sql_record($cllote->sql_query(null,'j34_lote',null," j34_idbql = {$$idbql} "));
+if (isset(${$idbql}) && ${$idbql} != '') {
+  $rsDadosLote = $cllote->sql_record($cllote->sql_query(null,'j34_lote',null," j34_idbql = {${$idbql}} "));
   if ($cllote->numrows > 0) {
      db_fieldsmemory($rsDadosLote,0);
   }
@@ -306,9 +306,9 @@ function js_validaLinha(idLinha){
         $sSqlLotes = $cllote->sql_query(null,
             ' * ',
             null,
-            " j34_setor = '" . str_pad($j34_setor, 4, "0", STR_PAD_LEFT) .
+            " j34_setor = '" . str_pad((string) $j34_setor, 4, "0", STR_PAD_LEFT) .
             "' and j34_quadra = '" .
-            str_pad($j34_quadra, 4, "0", STR_PAD_LEFT) . "' ");
+            str_pad((string) $j34_quadra, 4, "0", STR_PAD_LEFT) . "' ");
         
         $rsLotes = $cllote->sql_record($sSqlLotes);
 
@@ -345,7 +345,7 @@ function js_validaLinha(idLinha){
             $sqlOutros .= " union ";
             $sqlOutros .= " select j92_sequencial,j92_descr from tesintertipo ";
             $rsOutros = db_query($sqlOutros);
-            $intOutros = pg_numrows($rsOutros);
+            $intOutros = pg_num_rows($rsOutros);
 
             for ($iOutros = 0; $iOutros < $intOutros; $iOutros++) {
                 db_fieldsmemory($rsOutros, $iOutros);
@@ -355,12 +355,12 @@ function js_validaLinha(idLinha){
             $sqlIdbql = " select 0 as j34_idbql, 'Nenhum' as descr from lote union ";
             $sqlIdbql .= " select j34_idbql, j34_lote::text as descr ";
             $sqlIdbql .= "   from lote ";
-            $sqlIdbql .= " where j34_setor  = '" . @str_pad($j34_setor, 4, "0", STR_PAD_LEFT) . "'";
-            $sqlIdbql .= "   and j34_quadra = '" . @str_pad($j34_quadra, 4, "0", STR_PAD_LEFT) . "'";
-            $sqlIdbql .= "   and j34_lote  != '" . @str_pad($j34_lote, 4, "0", STR_PAD_LEFT) . "'";
+            $sqlIdbql .= " where j34_setor  = '" . @str_pad((string) $j34_setor, 4, "0", STR_PAD_LEFT) . "'";
+            $sqlIdbql .= "   and j34_quadra = '" . @str_pad((string) $j34_quadra, 4, "0", STR_PAD_LEFT) . "'";
+            $sqlIdbql .= "   and j34_lote  != '" . @str_pad((string) $j34_lote, 4, "0", STR_PAD_LEFT) . "'";
 
             $rsIdbql = db_query($sqlIdbql);
-            $intIdbql = pg_numrows($rsIdbql);
+            $intIdbql = pg_num_rows($rsIdbql);
 
             for ($iIdbql = 0; $iIdbql < $intIdbql; $iIdbql++) {
                 db_fieldsmemory($rsIdbql, $iIdbql);
@@ -372,7 +372,7 @@ function js_validaLinha(idLinha){
             $sqlOri .= "select j64_sequencial, j64_descricao from orientacao ";
 
             $rsOri = db_query($sqlOri);
-            $intOri = pg_numrows($rsOri);
+            $intOri = pg_num_rows($rsOri);
 
             for ($iOri = 0; $iOri < $intOri; $iOri++) {
                 db_fieldsmemory($rsOri, $iOri);
@@ -386,12 +386,12 @@ function js_validaLinha(idLinha){
 
             echo "<tbody style='background-color:#FFFFFF'>";
 
-            $aDesabilitar = array();
+            $aDesabilitar = [];
 
             for ($iTes = 0; $iTes < $intNumLinhasVolta; $iTes++) {
             
                 if (count($matrizvolta) > 0) {
-                   $matrizdados = explode("-", $matrizvolta[$iTes]);
+                   $matrizdados = explode("-", (string) $matrizvolta[$iTes]);
                    if (empty($matrizdados[0]) && empty($matrizdados[4]) && empty($matrizdados[7])) {
                       array_pop($matrizvolta);
                    }
@@ -404,7 +404,7 @@ function js_validaLinha(idLinha){
 
                 $temvalor = false;
                 if ($fq < $iTestadas && count($matrizvolta) > 0) {
-                    $matrizdados = explode("-", $matrizvolta[$fq]);
+                    $matrizdados = explode("-", (string) $matrizvolta[$fq]);
                     $temvalor = true;
                 } else {
                     $temvalor = false;
@@ -430,28 +430,28 @@ function js_validaLinha(idLinha){
                     }
 
                     $x = "idbql" . $fq;
-                    $$x = $matrizdados[0];
+                    ${$x} = $matrizdados[0];
 
                     $x = "origem" . $fq;
-                    $$x = $matrizdados[1];
+                    ${$x} = $matrizdados[1];
 
                     $x = "j39_testad" . $fq;
-                    $$x = $matrizdados[2];
+                    ${$x} = $matrizdados[2];
 
                     $x = "j39_testle" . $fq;
-                    $$x = $matrizdados[3];
+                    ${$x} = $matrizdados[3];
 
                     $x = "outro" . $fq;
-                    $$x = $matrizdados[4];
+                    ${$x} = $matrizdados[4];
 
                     $x = "j84_observacao" . $fq;
-                    $$x = $matrizdados[5];
+                    ${$x} = $matrizdados[5];
 
                     $x = "tesinter_excluida" . $fq;
-                    $$x = $matrizdados[6];
+                    ${$x} = $matrizdados[6];
 
                     $x = "j39_sequencial" . $fq;
-                    $$x = $matrizdados[7];
+                    ${$x} = $matrizdados[7];
 
                     $iIdbql = $matrizdados[0];
                     $oDaoProprietario = db_utils::getDao("iptubase");
@@ -469,7 +469,7 @@ function js_validaLinha(idLinha){
                     }
 
                     $x = "iProprietario" . $fq;
-                    $$x = $sProprietario;
+                    ${$x} = $sProprietario;
 
                     if ($fq < $iTestadas - 1) {
                         $disabled = 'disabled';
@@ -486,22 +486,22 @@ function js_validaLinha(idLinha){
                 }
 
                 $aux = "j39_testad" . $fq;
-                if (!isset($$aux) || $$aux == '') {
-                    $$aux = 0;
+                if (!isset(${$aux}) || ${$aux} == '') {
+                    ${$aux} = 0;
                 }
                 $aux = "j39_testle" . $fq;
-                if (!isset($$aux) || $$aux == '') {
-                    $$aux = 0;
+                if (!isset(${$aux}) || ${$aux} == '') {
+                    ${$aux} = 0;
                 }
                 $x = "j39_testle" . $fq;
                 $aux = "tesinter_excluida" . $fq;
-                if (!isset($$aux) || $$aux == '') {
-                    $$aux = 0;
+                if (!isset(${$aux}) || ${$aux} == '') {
+                    ${$aux} = 0;
                 }
                 $x = "tesinter_excluida" . $fq;
                 $aux = "j39_sequencial" . $fq;
-                if (!isset($$aux) || $$aux == '') {
-                    $$aux = 0;
+                if (!isset(${$aux}) || ${$aux} == '') {
+                    ${$aux} = 0;
                 }
                 $x = "j39_sequencial" . $fq;
 

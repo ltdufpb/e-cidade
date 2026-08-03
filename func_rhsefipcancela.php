@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhsefipcancela_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhsefipcancela = new cl_rhsefipcancela;
 $clrhsefipcancela->rotulo->label("rh91_sequencial");
 $clrhsefipcancela->rotulo->label("rh91_rhsefip");
@@ -98,9 +98,9 @@ $clrhsefipcancela->rotulo->label("rh91_rhsefip");
         }else{
            $sql = $clrhsefipcancela->sql_query("",$campos,"rh91_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh91_rhsefip)){
-          $repassa = array("chave_rh91_sequencial"=>$chave_rh91_sequencial,"chave_rh91_rhsefip"=>$chave_rh91_rhsefip);
+          $repassa = ["chave_rh91_sequencial"=>$chave_rh91_sequencial,"chave_rh91_rhsefip"=>$chave_rh91_rhsefip];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

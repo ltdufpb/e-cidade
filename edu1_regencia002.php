@@ -34,8 +34,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clregencia                      = new cl_regencia;
 $clturma                         = new cl_turma;
@@ -59,7 +59,7 @@ $oDaoDiarioAvaliacaoAlternativa  = new cl_diarioavaliacaoalternativa();
 
 if(isset($codnobase)){
   
- $arr_descricao = explode(",",$descrdisciplina);
+ $arr_descricao = explode(",",(string) $descrdisciplina);
  $arr_regencia = explode(",",$codnobase);
  
  for ($r = 0; $r < count($arr_regencia); $r++) {
@@ -79,7 +79,7 @@ if(isset($codnobase)){
    $result_exc = db_query($sql_exc);
    $linhas_exc = pg_num_rows($result_exc);
    
-   if (pg_result($result11, 0, 0) == "S") {
+   if (pg_fetch_result($result11, 0, 0) == "S") {
      
      db_fieldsmemory($result11, 0);
      db_msgbox("Exclusão não permitida! Disciplina $arr_descricao[$r] já foi encerrada para todos alunos nesta turma.");
@@ -184,7 +184,7 @@ if(isset($codnobase)){
      
      if ($iTotalLinhasDiario > 0) {
         
-       $aDiarioClasseExcluidos = array();
+       $aDiarioClasseExcluidos = [];
        for ($iDiario = 0; $iDiario < $iTotalLinhasDiario; $iDiario++) {
           
          $oDadosDiarioClasse       = db_utils::fieldsMemory($rsDiarioClasse, $iDiario);

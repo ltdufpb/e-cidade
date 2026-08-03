@@ -44,7 +44,7 @@ $clrotulo->label("y90_codtiaf");
 		    $rsResult = $cltiafprazo->sql_record($cltiafprazo->sql_query("","*","","y96_codtiaf = $y90_codtiaf ".$where));
 		    if ($cltiafdoc->numrows > 0){
 		    	db_fieldsmemory($rsResult,0);
-		    	list($y96_prazo_ano,$y96_prazo_mes,$y96_prazo_dia) = split ("-", $y96_prazo);
+		    	[$y96_prazo_ano, $y96_prazo_mes, $y96_prazo_dia] = preg_split ("#\\-#m", (string) $y96_prazo);
 		    }  
 	    }
 	    else{
@@ -115,7 +115,7 @@ $clrotulo->label("y90_codtiaf");
   </table>
   <?php 
        //echo($cltiafprazo->sql_query("","*","","y96_codtiaf = $y90_codtiaf"));
-       $chavepri= array("y90_codtiaf"=>$y90_codtiaf,"y96_codigo"=>$y96_codigo);
+       $chavepri= ["y90_codtiaf"=>$y90_codtiaf,"y96_codigo"=>$y96_codigo];
        $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->sql     = $cltiafprazo->sql_query("","*","","y96_codtiaf = $y90_codtiaf");
        $cliframe_alterar_excluir->campos  = "y96_codtiaf, y97_codproc, y90_data, y96_prazo";
@@ -192,7 +192,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tiafprazoproc.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

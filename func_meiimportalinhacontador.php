@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_meiimportalinhacontador_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmeiimportalinhacontador = new cl_meiimportalinhacontador;
 $clmeiimportalinhacontador->rotulo->label("q109_sequencial");
 $clmeiimportalinhacontador->rotulo->label("q109_meiimportalinha");
@@ -98,9 +98,9 @@ $clmeiimportalinhacontador->rotulo->label("q109_meiimportalinha");
         }else{
            $sql = $clmeiimportalinhacontador->sql_query("",$campos,"q109_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q109_meiimportalinha)){
-          $repassa = array("chave_q109_sequencial"=>$chave_q109_sequencial,"chave_q109_meiimportalinha"=>$chave_q109_meiimportalinha);
+          $repassa = ["chave_q109_sequencial"=>$chave_q109_sequencial,"chave_q109_meiimportalinha"=>$chave_q109_meiimportalinha];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

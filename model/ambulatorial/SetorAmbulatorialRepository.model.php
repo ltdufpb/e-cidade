@@ -34,7 +34,7 @@ class SetorAmbulatorialRepository {
   /**
    * @var array
    */
-  private $aSetorAmbulatorial = array();
+  private $aSetorAmbulatorial = [];
 
   /**
    * @var SetorAmbulatorialRepository

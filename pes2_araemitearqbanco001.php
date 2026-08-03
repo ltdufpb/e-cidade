@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $clrotulo = new rotulocampo;
 $clrharqbanco->rotulo->label();
@@ -290,7 +290,7 @@ function js_controlarodape(mostra){
     </td>
     <td>
       <?php 
-      $arr_qfolha = Array(
+      $arr_qfolha = [
                           "A"=>"FOLHA A",
 	                  "B"=>"FOLHA B",
                           "C"=>"FOLHA C",
@@ -298,7 +298,7 @@ function js_controlarodape(mostra){
                           "E"=>"FOLHA E",
                           "F"=>"FOLHA F",
                           "G"=>"FOLHA G"
-                         );
+                         ];
       db_select("qfolha", $arr_qfolha, true, 1);
       ?>
     </td>
@@ -311,11 +311,11 @@ function js_controlarodape(mostra){
     </td>
     <td>
       <?php 
-      $arr_qcc = Array(
+      $arr_qcc = [
                           "d"=>"Outras",
 	                  "e"=>"Educacao",
                           "s"=>"Saude"
-                         );
+                         ];
       db_select("qcc", $arr_qcc, true, 1);
       ?>
     </td>

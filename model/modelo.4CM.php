@@ -119,13 +119,13 @@ class modelo4CM extends modeloEtiquetaBasica{
 
   protected function substituiVariaveis($texto){
 
-      $txt = split(" ", $texto);
+      $txt = preg_split("# #m", (string) $texto);
 
       $texto1 = '';
       for ($x = 0; $x < sizeof($txt); $x ++) {
 
-        if (substr($txt[$x], 0, 1) == "$") {
-           $txt1 = substr($txt[$x], 1);
+        if (str_starts_with((string) $txt[$x], "$")) {
+           $txt1 = substr((string) $txt[$x], 1);
            if(isset($this->oBem->$txt1)){
             $texto1 .= 	$this->oBem->$txt1." ";
            }

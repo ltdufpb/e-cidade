@@ -258,7 +258,7 @@ if(!isset($opcao_dtterm)){
         </td>
         <td> 
           <?php 
-          $x = array("f"=>"NAO","t"=>"SIM");
+          $x = ["f"=>"NAO","t"=>"SIM"];
           db_select('h16_conver',$x,true,$db_opcao,"");
           ?>
         </td>
@@ -563,7 +563,7 @@ if(!isset($opcao_dtterm)){
     <?php }?>
     <?php 
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
     ?>
   }

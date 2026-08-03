@@ -218,7 +218,7 @@ switch ($objParam->exec){
 		for( $intX=0; $intX<$intQuant; $intX++){
 			$clprontproced->sd29_i_prontuario   	= $objParam->sd24_i_codigo;
 			$clprontproced->sd29_i_procedimento 	= $objParam->sd29_i_procedimento;
-			$clprontproced->sd29_d_data         	= implode("-",array_reverse(explode("/", $objParam->sd29_d_data)));
+			$clprontproced->sd29_d_data         	= implode("-",array_reverse(explode("/", (string) $objParam->sd29_d_data)));
 			$clprontproced->sd29_c_hora         	= $objParam->sd29_c_hora;
 			$clprontproced->sd29_t_tratamento   	= $objParam->sd29_t_tratamento;
 			$clprontproced->sd29_i_usuario      	= DB_getsession("DB_id_usuario");
@@ -232,7 +232,7 @@ switch ($objParam->exec){
 			$clprontproced->incluir(null);
 			if( $clprontproced->numrows_incluir == 0){
 				$objRetorno->status  = 2;
-				$objRetorno->message = urlencode($clprontproced->erro_msg);
+				$objRetorno->message = urlencode((string) $clprontproced->erro_msg);
 				break;
 			}else{
 				if( (int)$objParam->sd70_i_codigo > 0 ){
@@ -241,7 +241,7 @@ switch ($objParam->exec){
 					$clprontprocedcid->incluir(null);
 					if( $clprontprocedcid->numrows_incluir == 0){
 						$objRetorno->status  = 2;
-						$objRetorno->message = urlencode($clprontprocedcid->erro_msg);
+						$objRetorno->message = urlencode((string) $clprontprocedcid->erro_msg);
 						break;
 					}
 				}
@@ -254,7 +254,7 @@ switch ($objParam->exec){
 			$clprontuarios->alterar($objParam->sd24_i_codigo);
 			if( $clprontuarios->numrows_alterar == 0){
 				$objRetorno->status  = 2;
-				$objRetorno->message = urlencode($clprontuarios->erro_msg);
+				$objRetorno->message = urlencode((string) $clprontuarios->erro_msg);
 			}
 		}
 		db_fim_transacao( $objRetorno->status == 2 );
@@ -270,7 +270,7 @@ switch ($objParam->exec){
 			$clprontproced->sd29_i_procedimento 	= $objParam->sd29_i_procedimento;
 			$clprontproced->sd29_i_profissional 	= $objParam->sd29_i_profissional;
 			$clprontproced->sd29_t_tratamento   	= $objParam->sd29_t_tratamento;
-			$clprontproced->sd29_d_data         	= implode("-",array_reverse(explode("/", $objParam->sd29_d_data)));
+			$clprontproced->sd29_d_data         	= implode("-",array_reverse(explode("/", (string) $objParam->sd29_d_data)));
 			$clprontproced->sd29_c_hora         	= $objParam->sd29_c_hora;
 			$clprontproced->sd29_i_usuario      	= DB_getsession("DB_id_usuario");
 			$clprontproced->sd29_idadegestacional   = $objParam->sd29_idadegestacional;
@@ -278,7 +278,7 @@ switch ($objParam->exec){
 			$clprontproced->alterar($objParam->sd29_i_codigo);
 			if( $clprontproced->numrows_alterar == 0 ){
 				$objRetorno->status  = 2;
-				$objRetorno->message = urlencode( $clprontproced->erro_msg );
+				$objRetorno->message = urlencode( (string) $clprontproced->erro_msg );
 			}else{
 				$clprontprocedcid= db_utils::getDao("prontprocedcid");
 				$clprontprocedcid->excluir(null, "s135_i_prontproced = {$objParam->sd29_i_codigo}");
@@ -288,7 +288,7 @@ switch ($objParam->exec){
 					$clprontprocedcid->incluir(null);
 					if( $clprontprocedcid->numrows_incluir == 0){
 						$objRetorno->status  = 2;
-						$objRetorno->message = urlencode($clprontprocedcid->erro_msg);
+						$objRetorno->message = urlencode((string) $clprontprocedcid->erro_msg);
 						break;
 					}
 				}
@@ -310,13 +310,13 @@ switch ($objParam->exec){
 			$clprontprocedcid->excluir(null, "s135_i_prontproced = {$objParam->sd29_i_codigo}");
 			if( $clprontprocedcid->erro_status == "0" && $clprontprocedcid->numrows_excluir == 0 ){
 				$objRetorno->status  = 2;
-				$objRetorno->message = urlencode( $clprontprocedcid->erro_msg );
+				$objRetorno->message = urlencode( (string) $clprontprocedcid->erro_msg );
 			}
 			if( $objRetorno->status == 1){
 				$clprontproced->excluir($objParam->sd29_i_codigo);
 				if( $clprontproced->numrows_excluir == 0 ){
 					$objRetorno->status  = 2;
-					$objRetorno->message = urlencode( $clprontproced->erro_msg );
+					$objRetorno->message = urlencode( (string) $clprontproced->erro_msg );
 				}else{
 					$clprontproced->sql_record( $clprontproced->sql_query(null,"*","", "prontproced.sd29_i_prontuario = {$objParam->sd24_i_codigo}") );
 					if( $clprontproced->numrows == 0){
@@ -326,7 +326,7 @@ switch ($objParam->exec){
 						$clprontuarios->alterar($objParam->sd24_i_codigo);
 						if( $clprontuarios->numrows_alterar == 0){
 							$objRetorno->status  = 2;
-							$objRetorno->message = urlencode( $clprontuarios->erro_msg );
+							$objRetorno->message = urlencode( (string) $clprontuarios->erro_msg );
 						}
 					}
 				}
@@ -341,12 +341,12 @@ switch ($objParam->exec){
   	$result = $oDaoProntuarios->sql_record($sSql);
   	$objRetorno->sql = $sSql;
     if ($oDaoProntuarios->numrows > 0) {
-    	$aItens = array();
+    	$aItens = [];
     	for($iX=0;$iX<$oDaoProntuarios->numrows;$iX++){
     		$oProntuarios = db_utils::fieldsmemory($result,$iX,true);
     	  $aItens[$iX][0] = $oProntuarios->sd24_d_cadastro;
     	  $aItens[$iX][1] = $oProntuarios->sd70_c_cid;
-    	  $aItens[$iX][2] = urlencode($oProntuarios->sd70_c_nome);
+    	  $aItens[$iX][2] = urlencode((string) $oProntuarios->sd70_c_nome);
     	}
     	$objRetorno->aItens = $aItens;
     }else{

@@ -23,12 +23,12 @@ class EnvioRemessaParser
         $oRetornoRemessa = new RetornoRemessa();
 
         $oRetornoRemessa->setStatus($data->sucesso);
-        $oRetornoRemessa->setMensagem(utf8_decode($data->mensagem));
+        $oRetornoRemessa->setMensagem(mb_convert_encoding($data->mensagem, 'ISO-8859-1'));
         $oRetornoRemessa->setRecibo($data->recibo);
         $oRetornoRemessa->setDataOperacao(self::formatDate($data->dataOperacao));
         $oRetornoRemessa->setProtocoloRecebimento($data->protocoloRecebimento);
 
-        $parametros = array();
+        $parametros = [];
 
         foreach ($data->parametro as $param) {
             $parametros[$param->nome] = $param->valor;
@@ -37,7 +37,7 @@ class EnvioRemessaParser
         if (!empty($parametros['ORGAO_DESTINO'])) {
 
             $oRetornoRemessa->setCartorio(self::getCartorio($parametros['ORGAO_DESTINO']));
-            $oRetornoRemessa->setOrgao(utf8_decode($parametros['ORGAO_DESTINO']));
+            $oRetornoRemessa->setOrgao(mb_convert_encoding($parametros['ORGAO_DESTINO'], 'ISO-8859-1'));
         }
 
         if (!empty($parametros['NUMERO_PROCESSO'])) {
@@ -55,7 +55,7 @@ class EnvioRemessaParser
      */
     private static function getCartorio($strOrgao)
     {
-        $explod = explode('-', $strOrgao);
+        $explod = explode('-', (string) $strOrgao);
         $cartorio = trim($explod[0]);
 
         return $cartorio;
@@ -69,8 +69,8 @@ class EnvioRemessaParser
      */
     private static function formatDate($dataOperacao)
     {
-        $strFormat  = substr($dataOperacao, 0, 8);
-        $strFormat .= ' ' . substr($dataOperacao, 8, 14);
+        $strFormat  = substr((string) $dataOperacao, 0, 8);
+        $strFormat .= ' ' . substr((string) $dataOperacao, 8, 14);
 
         return $strFormat;
     }

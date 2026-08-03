@@ -28,6 +28,7 @@ class RelatorioPlanejamentoRclService extends AnexosLDOService
         $this->parser = OutrosAnexosRclFactory::getModeloRelatorio($filtros['tipo_planejamento']);
     }
 
+    #[\Override]
     protected function processar()
     {
         parent::processar();
@@ -75,13 +76,12 @@ class RelatorioPlanejamentoRclService extends AnexosLDOService
     protected function processaLinha31e33($linha)
     {
         $estimativas = $this->estimativasPlanejamentoCompativeisReceita($linha->parametros->contas);
-        $novasEstimativas = $estimativas->filter(function (EstimativaReceita $estimativaReceita) use ($linha) {
-            return $this->verificaFiltrosOrcamento($estimativaReceita, $linha->parametros->orcamento);
-        });
+        $novasEstimativas = $estimativas->filter(fn(EstimativaReceita $estimativaReceita) => $this->verificaFiltrosOrcamento($estimativaReceita, $linha->parametros->orcamento));
 
         $this->processaEstimativas($novasEstimativas, $linha);
     }
 
+    #[\Override]
     protected function processaLinhas()
     {
         $linhas = $this->getLinhas();

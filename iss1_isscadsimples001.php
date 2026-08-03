@@ -34,7 +34,7 @@ require_once(modification("classes/db_isscadsimples_classe.php"));
 require_once(modification("classes/db_issbase_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $post                 = db_utils::postmemory($_POST);
 
 $clisscadsimples      = new cl_isscadsimples();
@@ -52,7 +52,7 @@ if(isset($incluir)){
 
   if (isset($post->q38_dtinicial)){
 
-      $dataIni  = split("/",$post->q38_dtinicial);
+      $dataIni  = preg_split("#\\/#m",$post->q38_dtinicial);
       $dataIni2 = $dataIni[2]."-".$dataIni[1]."-".$dataIni[0];
   }else{
       $dataIni2 = $post->q38_dtinicial_ano."-".$post->q38_dtinicial_mes."-".$post->q38_dtinicial_dia;

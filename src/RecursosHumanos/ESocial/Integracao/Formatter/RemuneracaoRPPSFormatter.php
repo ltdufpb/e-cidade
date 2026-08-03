@@ -128,6 +128,7 @@ class RemuneracaoRPPSFormatter extends Formatter
      * @throws \BusinessException
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dados = (object) $dados;
@@ -173,9 +174,9 @@ class RemuneracaoRPPSFormatter extends Formatter
 
 
         $dadoFormatado = new stdClass();
-        $dadoFormatado->dmDev = array();
+        $dadoFormatado->dmDev = [];
         $dadoFormatado->referencia = $cgm . '-' . $this->remuneracaoRPPSService->getAnoCompetencia()
-        . str_pad($this->remuneracaoRPPSService->getMesCompetencia(), 2, '0', STR_PAD_LEFT);
+        . str_pad((string) $this->remuneracaoRPPSService->getMesCompetencia(), 2, '0', STR_PAD_LEFT);
 
         if ($this->isDecimoTerceiro) {
             $dadoFormatado->referencia .= '-2';
@@ -368,7 +369,7 @@ class RemuneracaoRPPSFormatter extends Formatter
     {
         $dadoFormatado->ideTrabalhador->infoMV = new stdClass();
         $dadoFormatado->ideTrabalhador->infoMV->indMV = null;
-        $dadoFormatado->ideTrabalhador->infoMV->remunOutrEmpr = array();
+        $dadoFormatado->ideTrabalhador->infoMV->remunOutrEmpr = [];
     }
 
     /**
@@ -652,6 +653,7 @@ class RemuneracaoRPPSFormatter extends Formatter
         }
     }
 
+    #[\Override]
     public function truncar($valor)
     {
         $valor = abs(round($valor, 6));

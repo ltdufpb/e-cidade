@@ -29,7 +29,7 @@ $clmer_cardapioescola->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("me32_i_codigo");
 $clrotulo->label("me27_c_nome");
-$me27_c_nome = stripslashes($me27_c_nome);
+$me27_c_nome = stripslashes((string) $me27_c_nome);
 ?>
 <table border="0">
   <tr colspan="4">

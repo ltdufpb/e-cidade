@@ -10,17 +10,11 @@ use JSON;
 class ConsultaService
 {
     /**
-     * @var \stdClass
-     */
-    private $parametros;
-
-    /**
      * ConsultaService constructor.
      * @param \stdClass $parametros
      */
-    public function __construct(\stdClass $parametros)
+    public function __construct(private readonly \stdClass $parametros)
     {
-        $this->parametros = $parametros;
     }
 
     /**
@@ -46,7 +40,7 @@ class ConsultaService
 
         $cgmResponsavel = CgmFactory::getInstanceByCgm($this->parametros->cgmResponsavel);
         $eventos = JSON::create()->parse($this->parametros->data);
-        $dados = array();
+        $dados = [];
         foreach ($eventos as $evento) {
             foreach ($evento->totalizadores as $layout => $totalizador) {
                 $formatter = new ConsultaFormatter($totalizador, $layout);
@@ -86,7 +80,7 @@ class ConsultaService
 
         $cgmResponsavel = CgmFactory::getInstanceByCgm($this->parametros->cgmResponsavel);
         $eventos = JSON::create()->parse($this->parametros->data);
-        $dados = array();
+        $dados = [];
         foreach ($eventos as $evento) {
             foreach ($evento->totalizadores as $layout => $totalizador) {
                 $formatter = new ConsultaFormatter($totalizador, $layout);

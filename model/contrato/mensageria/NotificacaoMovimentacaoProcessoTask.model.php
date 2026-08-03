@@ -12,16 +12,17 @@ use ECidade\Patrimonial\Protocolo\Repositorio\ProcessoRepositorio;
 class NotificacaoMovimentacaoProcessoTask extends \Task implements \iTarefa
 {
 
+    #[\Override]
     public function iniciar()
     {
         parent::iniciar();
 
         try {
 
-            global $HTTP_SERVER_VARS, $HTTP_POST_VARS, $HTTP_GET_VARS, $_SESSION, $conn;
-            $HTTP_SERVER_VARS = $_SESSION;
-            $HTTP_POST_VARS = $_POST;
-            $HTTP_GET_VARS = $_GET;
+            global $_SERVER, $_POST, $_GET, $_SESSION, $conn;
+            $_SERVER = $_SESSION;
+            $_POST = $_POST;
+            $_GET = $_GET;
 
             require_once modification("libs/db_conn.php");
             require_once modification("libs/db_stdlib.php");
@@ -91,13 +92,13 @@ class NotificacaoMovimentacaoProcessoTask extends \Task implements \iTarefa
                                                                        ->getDate(DBDate::DATA_PTBR);
 
                 $sConteudoLink = str_replace(
-                    array('[numero]/[ano]'),
-                    array('<a href="#" onclick="consultaProcesso(' . $oProcesso->getCodigo() . ',false,this)">[numero]/[ano]</a>'),
+                    ['[numero]/[ano]'],
+                    ['<a href="#" onclick="consultaProcesso(' . $oProcesso->getCodigo() . ',false,this)">[numero]/[ano]</a>'],
                     $oNotificacao->p101_mensagem
                 );
                 $sConteudo = str_replace(
-                    array('[numero]', '[ano]', '[data_final]', '[data_inicial]'),
-                    array($iNumeroProcesso, $iAno, $sDataLimiteParaMovimentacao, $sDataUltimaMovimentacao),
+                    ['[numero]', '[ano]', '[data_final]', '[data_inicial]'],
+                    [$iNumeroProcesso, $iAno, $sDataLimiteParaMovimentacao, $sDataUltimaMovimentacao],
                     $sConteudoLink
                 );
 
@@ -108,22 +109,22 @@ class NotificacaoMovimentacaoProcessoTask extends \Task implements \iTarefa
                     continue;
                 }
 
-                $aDestiEnv = array();
+                $aDestiEnv = [];
 
                 foreach ($aDestinatarios as $aDestinatario) {
 
-                    $aDestiEnv[] = array(
+                    $aDestiEnv[] = [
                          'sLogin'   => $aDestinatario['login'],
                          'sSistema' => $sSistema
-                    );
+                    ];
                 }
 
-                $aMensagem = array(
+                $aMensagem = [
                     'iTipo'     => Cliente::TIPO_NOTIFICACAO,
                     'sAssunto'  => $oNotificacao->p101_assunto,
                     'sConteudo' => $sConteudo,
                     'aDestinatarios' => $aDestiEnv
-                );
+                ];
 
                 Cliente::enviar($remetente->getLogin() , $sSistema, $aMensagem);
 

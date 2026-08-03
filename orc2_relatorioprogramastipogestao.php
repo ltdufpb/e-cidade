@@ -157,7 +157,7 @@ function imprimirPrograma ($oPrograma, $oStdEstimado, $oPdf, $iAlturaLinha, $lIm
 
   if ($lPrimeiraLinha) {
 
-    $sDescricao      = substr($oPrograma->getDescricao(), 0 , 110);
+    $sDescricao      = substr((string) $oPrograma->getDescricao(), 0 , 110);
     $iCodigoPrograma = $oPrograma->getCodigoPrograma();
   }
 
@@ -188,7 +188,7 @@ try {
 	$sProgramas = $oGet->sProgramas;
 	if (empty($sProgramas)) {
 
-		$aWherePrograma  = array();
+		$aWherePrograma  = [];
 		$aWherePrograma[] = "o08_ppaversao = {$oGet->iVersao}";
 		/**
 		 * Alterado lógica para filtrar pelo competencia do ppa

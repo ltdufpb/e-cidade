@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_publicidadesigap_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clpublicidadesigap = new cl_publicidadesigap;
 $clpublicidadesigap->rotulo->label("c48_sequencial"); 
@@ -89,9 +89,9 @@ $clpublicidadesigap->rotulo->label("c48_sequencial");
         }else{
            $sql = $clpublicidadesigap->sql_query("",$campos,"c48_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c48_sequencial)){
-          $repassa = array("chave_c48_sequencial"=>$chave_c48_sequencial);
+          $repassa = ["chave_c48_sequencial"=>$chave_c48_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

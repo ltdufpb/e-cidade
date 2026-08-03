@@ -57,7 +57,7 @@ db_input('c20_descr',50,$Ic20_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Interno','2'=>'Cliente');
+$x = ['1'=>'Interno','2'=>'Cliente'];
 db_select('c20_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -75,7 +75,7 @@ function js_preenchepesquisa(chave){
   db_iframe_congrupo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

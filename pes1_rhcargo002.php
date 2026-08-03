@@ -36,7 +36,7 @@ $rh04_datafinal_dia = '';
 $rh04_datafinal_mes = '';
 $rh04_datafinal_ano = '';
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clrhcargo = new cl_rhcargo;
@@ -50,11 +50,11 @@ if (isset($alterar)) {
     $clrhcargo->rh04_instit = db_getsession("DB_instit");
 
     if (!empty($_POST['rh04_datainicial'])) {
-        $clrhcargo->rh04_datainicial = implode('-', array_reverse(explode('/', $_POST['rh04_datainicial']))) ;
+        $clrhcargo->rh04_datainicial = implode('-', array_reverse(explode('/', (string) $_POST['rh04_datainicial']))) ;
     }
 
     if (!empty($_POST['rh04_datafinal'])) {
-        $clrhcargo->rh04_datafinal = implode('-', array_reverse(explode('/', $_POST['rh04_datafinal']))) ;
+        $clrhcargo->rh04_datafinal = implode('-', array_reverse(explode('/', (string) $_POST['rh04_datafinal']))) ;
     }
 
     $clrhcargo->alterar($rh04_codigo, db_getsession("DB_instit"));

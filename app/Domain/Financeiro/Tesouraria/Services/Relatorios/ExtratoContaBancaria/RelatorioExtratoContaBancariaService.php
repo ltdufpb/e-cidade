@@ -100,7 +100,7 @@ class RelatorioExtratoContaBancariaService extends ExtratoContaBancariaService
         $movimentacoesconta = DB::select($this->getMovimentacaoConta($contamovimento));
 
         $k13_reduz = $contamovimento->k13_reduz;
-        $this->contasMovimento[$k13_reduz]->data = array();
+        $this->contasMovimento[$k13_reduz]->data = [];
         $this->saldo_dia_debito = 0;
         $this->saldo_dia_credito = 0;
 
@@ -148,7 +148,7 @@ class RelatorioExtratoContaBancariaService extends ExtratoContaBancariaService
                 }
 
                 $this->contasMovimento[$k13_reduz]->data[$iInd]->data = $movimentacao->data;
-                $this->contasMovimento[$k13_reduz]->data[$iInd]->movimentacoes = array();
+                $this->contasMovimento[$k13_reduz]->data[$iInd]->movimentacoes = [];
             }
 
 
@@ -269,8 +269,8 @@ class RelatorioExtratoContaBancariaService extends ExtratoContaBancariaService
     public function agrupaContas()
     {
         if ($this->filtroAgrupaPor != 1 || $this->filtroReceitasPor == 2) {
-            $aMovimentacao = array();
-            $aContasNovas = array();
+            $aMovimentacao = [];
+            $aContasNovas = [];
             foreach ($this->contasMovimento as $key2 => $oConta) {
                 $aContasNovas[$key2] = $oConta;
                 foreach ($oConta->data as $key1 => $oData) {
@@ -464,14 +464,14 @@ class RelatorioExtratoContaBancariaService extends ExtratoContaBancariaService
                         }
                     }
                     $aContasNovas[$oConta->k13_reduz]->data[$key1]->movimentacoes = $aMovimentacao;
-                    $aMovimentacao = array();
+                    $aMovimentacao = [];
                 }
             }
     
             $this->contasMovimento = $aContasNovas;
         } elseif ($this->filtroAgrupaPor == 1 && $this->filtroPagempenhos == 2) {
-                $aMovimentacao = array();
-                $aContasNovas = array();
+                $aMovimentacao = [];
+                $aContasNovas = [];
     
             foreach ($this->contasMovimento as $key2 => $oConta) {
                 $aContasNovas[$key2] = $oConta;
@@ -508,7 +508,7 @@ class RelatorioExtratoContaBancariaService extends ExtratoContaBancariaService
                         }
                     }
                     $aContasNovas[$oConta->k13_reduz]->data[$key1]->movimentacoes = $aMovimentacao;
-                    $aMovimentacao = array();
+                    $aMovimentacao = [];
                 }
             }
 

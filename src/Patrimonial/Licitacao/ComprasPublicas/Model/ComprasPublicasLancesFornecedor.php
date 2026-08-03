@@ -10,42 +10,8 @@ use Exception;
 class ComprasPublicasLancesFornecedor
 {
     
-    private $idItem;
-    private $liclicitem;
-    private $data;
-    private $hora;
-    private $fornecedor;
-    private $valido;
-    private $cancelado;
-    private $justificativa;
-    private $vlrun;
-    private $vlrtot;
-    private $vlrdesc;
-
-    public function __construct(
-        $idItem,
-        $liclicitem,
-        $data,
-        $hora,
-        $fornecedor,
-        $valido,
-        $cancelado,
-        $justificativa,
-        $vlrun,
-        $vlrtot,
-        $vlrdesc = 0
-    ) {
-        $this->idItem        = $idItem;
-        $this->liclicitem    = $liclicitem;
-        $this->data          = $data;
-        $this->hora          = $hora;
-        $this->fornecedor    = $fornecedor;
-        $this->valido        = $valido;
-        $this->cancelado     = $cancelado;
-        $this->justificativa = $justificativa;
-        $this->vlrun         = $vlrun;
-        $this->vlrtot        = $vlrtot;
-        $this->vlrdesc       = $vlrdesc;
+    public function __construct(private $idItem, private $liclicitem, private $data, private $hora, private $fornecedor, private $valido, private $cancelado, private $justificativa, private $vlrun, private $vlrtot, private $vlrdesc = 0)
+    {
     }
     
     public function getValorTotal()

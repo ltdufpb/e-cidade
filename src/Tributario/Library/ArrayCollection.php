@@ -4,9 +4,9 @@ namespace ECidade\Tributario\Library;
 
 abstract class ArrayCollection extends Collection
 {
-    protected $collection = array();
+    protected $collection = [];
 
-    public function __construct(array $collection = array())
+    public function __construct(array $collection = [])
     {
         parent::__construct();
         $this->size = count($collection);

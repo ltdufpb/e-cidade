@@ -26,20 +26,15 @@
  */
 
 class cl_carne {
-  var $rotulo = null;
-  var $db_erro = null;
-  var $i = null;
-  var $np = null;
-  var $npi= null;
-  var $npf= null;
-  var $sql = null;
-  var $resultparcelas = null;
-  var $result = null;
+  public $rotulo = null;
+  public $db_erro = null;
+  public $i = null;
+  public $sql = null;
+  public $resultparcelas = null;
+  public $result = null;
   
-  function cl_carne($numpre,$numparini,$numparfim) {
-    $this->np  = $numpre;
-    $this->npi = $numparini;
-    $this->npf = $numparfim;	
+  function __construct(public $np, public $npi, public $npf)
+  {
   }  
   function verifica(){
     if($this->np == 0 or $this->np == ""){
@@ -63,7 +58,7 @@ class cl_carne {
 	  }
 	}
     $this->resultparcelas = db_query($this->sql);
-	if(pg_numrows($this->resultparcelas)==0){
+	if(pg_num_rows($this->resultparcelas)==0){
 	  $this->db_erro = "Código de Arrecadacao nao Encontrado ou Quitado.";
 	  return false;
 	}
@@ -75,9 +70,9 @@ class cl_carne {
 	               from arrecad 
 				   where k00_numpre = $this->np and ( ";
 	 $or = "";
-	 echo pg_numrows($this->resultparcelas);			   
+	 echo pg_num_rows($this->resultparcelas);			   
 	 for($i=0;$i < $this->resultparcelas;$i++){
-	   $this->sqlporreceita .= $or." k00_numpar = ".pg_result($this->resultparcelas,$i,"k00_numpar");
+	   $this->sqlporreceita .= $or." k00_numpar = ".pg_fetch_result($this->resultparcelas,$i,"k00_numpar");
 	   $or = " or ";
      }
      $this->sqlporreceita .= ") group by k00_numpre,k00_numpar,k00_receit,k00_dtvenc,k00_dtoper";

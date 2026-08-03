@@ -34,7 +34,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 
 $clcriaabas = new cl_criaabas;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -58,30 +58,30 @@ db_postmemory($HTTP_POST_VARS);
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
 	<?php 
-      $clcriaabas->identifica = array("veiccadcentral"         => "Dados da central",
+      $clcriaabas->identifica = ["veiccadcentral"         => "Dados da central",
                                       "veiccadcentraldepart"   => "Departamentos",
                                       "veicmotoristascentral"  => "Motoristas",
-                                      "veiccadcentralveiculo"  => "Veiculos");
+                                      "veiccadcentralveiculo"  => "Veiculos"];
 
-      $clcriaabas->title      = array("veiccadcentral"         => "Dados da central",
+      $clcriaabas->title      = ["veiccadcentral"         => "Dados da central",
                                       "veiccadcentraldepart"   => "Departamentos",
                                       "veicmotoristascentral"  => "Motoristas",
-                                      "veiccadcentralveiculo"  => "Veiculos");
+                                      "veiccadcentralveiculo"  => "Veiculos"];
 
-      $clcriaabas->src        = array("veiccadcentral"         => "vei1_veiccadcentral004.php",
+      $clcriaabas->src        = ["veiccadcentral"         => "vei1_veiccadcentral004.php",
                                       "veiccadcentraldepart"   => "vei1_veiccadcentraldepart001.php",
                                       "veicmotoristascentral"  => "vei1_veicmotoristascentral001.php",
-                                      "veiccadcentralveiculo"  => "vei1_veiccadcentralveiculo001.php" );
+                                      "veiccadcentralveiculo"  => "vei1_veiccadcentralveiculo001.php" ];
 
-      $clcriaabas->disabled   = array("veiccadcentral"         => "false",
+      $clcriaabas->disabled   = ["veiccadcentral"         => "false",
                                       "veiccadcentraldepart"   => "true",
                                       "veicmotoristascentral"  => "true",
-                                      "veiccadcentralveiculo"  => "true");    
+                                      "veiccadcentralveiculo"  => "true"];    
 
-      $clcriaabas->sizecampo  = array("veiccadcentral"         => "23",
+      $clcriaabas->sizecampo  = ["veiccadcentral"         => "23",
                                       "veiccadcentraldepart"   => "23",
                                       "veicmotoristascentral"  => "23",
-                                      "veiccadcentralveiculo"  => "23");
+                                      "veiccadcentralveiculo"  => "23"];
 
       $clcriaabas->cria_abas();    
 	?>

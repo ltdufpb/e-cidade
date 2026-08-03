@@ -36,8 +36,8 @@ include(modification("classes/db_tabrec_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_editaldoc_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $cledital     = new cl_edital;
 $cltabrec     = new cl_tabrec;
@@ -46,7 +46,7 @@ $clparcontrib = new cl_parcontrib;
 $cleditalproj = new cl_editalproj;
 $db_opcao     = 1;
 $db_botao     = true;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   $sqlerro=false;
   db_inicio_transacao();
   $cledital->d01_idlog=db_getsession("DB_id_usuario");
@@ -66,7 +66,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
   
   }
   
-  $dados=split("XX",$codigo);
+  $dados=preg_split("#XX#m",(string) $codigo);
   for($r=0; $r<sizeof($dados); $r++){
       if($dados[$r]!=""){
         $cleditalproj->d10_codedi=$codedi;
@@ -80,7 +80,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
   }
   db_fim_transacao($sqlerro);
 }
-if(empty($HTTP_POST_VARS["db_opcao"])){ 
+if(empty($_POST["db_opcao"])){ 
   $result01 = $clparcontrib->sql_record($clparcontrib->sql_query("","d12_perc as d01_perc,d12_perunica as d01_perunica,d12_receita as d01_receit,k02_descr,d12_numtot as d01_numtot"));
   db_fieldsmemory($result01,0);
 }  
@@ -130,7 +130,7 @@ if($cledital->erro_status=="0"){
 }else{
   $cledital->erro(true,true);
 };
-if(empty($HTTP_POST_VARS["db_opcao"])){ 
+if(empty($_POST["db_opcao"])){ 
   $data=date("d,m,Y",db_getsession('DB_datausu'));
   echo "
     <script>

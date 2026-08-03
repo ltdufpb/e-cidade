@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pactovalor_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clpactovalor = new cl_pactovalor;
 $clpactovalor->rotulo->label();
@@ -119,10 +119,10 @@ $clpactovalor->rotulo->label();
            $sql = $clpactovalor->sql_query("",$campos,"o87_sequencial",$sWhere);
         }
         
-        $repassa = array();
+        $repassa = [];
         
         if(isset($chave_o87_pactoplano)){
-          $repassa = array("chave_o87_sequencial"=>$chave_o87_sequencial,"chave_o87_pactoplano"=>$chave_o87_pactoplano);
+          $repassa = ["chave_o87_sequencial"=>$chave_o87_sequencial,"chave_o87_pactoplano"=>$chave_o87_pactoplano];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

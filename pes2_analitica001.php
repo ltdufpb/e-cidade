@@ -108,24 +108,24 @@ db_postmemory($_POST);
       $geraform->tipofol = true;                      // MOSTRAR DO CAMPO PARA TIPO DE FOLHA
       if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
     
-        $geraform->arr_tipofol = array(
+        $geraform->arr_tipofol = [
           'r14' => 'Salário',
           'r48' => 'Complementar',
           'sup' => 'Suplementar',
           'r20' => 'Rescisão',
           'r35' => '13o. Salário',
           'r22' => 'Adiantamento'
-        );
+        ];
         $geraform->suplementar  = "sup";
       } else {
     
-        $geraform->arr_tipofol = array(
+        $geraform->arr_tipofol = [
           'r14' => 'Salário',
           'r48' => 'Complementar',
           'r20' => 'Rescisão',
           'r35' => '13o. Salário',
           'r22' => 'Adiantamento'
-        );
+        ];
       }
     
       $geraform->complementar       = "r48";                // VALUE DA COMPLEMENTAR PARA BUSCAR SEMEST
@@ -146,7 +146,7 @@ db_postmemory($_POST);
         </td>
         <td>
           <?php
-          $arr_AS = array('a' => 'Analítica','s'=>'Sintética');
+          $arr_AS = ['a' => 'Analítica','s'=>'Sintética'];
           db_select("ansin",$arr_AS,true,1,"");
           ?>
         </td>
@@ -157,7 +157,7 @@ db_postmemory($_POST);
         </td>
         <td>
           <?php
-          $arr_AS = array('s' => 'Sim','n'=>'Não');
+          $arr_AS = ['s' => 'Sim','n'=>'Não'];
           db_select("afastado",$arr_AS,true,1,"");
           ?>
         </td>

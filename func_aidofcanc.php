@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aidofcanc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claidofcanc = new cl_aidofcanc;
 $claidofcanc->rotulo->label("y03_codigo");
 $claidofcanc->rotulo->label("y03_codigo");
@@ -86,9 +86,9 @@ $claidofcanc->rotulo->label("y03_codigo");
         }else{
            $sql = $claidofcanc->sql_query("",$campos,"y03_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_y03_codigo)){
-          $repassa = array("chave_y03_codigo"=>$chave_y03_codigo,"chave_y03_codigo"=>$chave_y03_codigo);
+          $repassa = ["chave_y03_codigo"=>$chave_y03_codigo,"chave_y03_codigo"=>$chave_y03_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

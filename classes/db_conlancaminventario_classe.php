@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE conlancaminventario
 class cl_conlancaminventario { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c85_sequencial = 0; 
-   var $c85_codlan = 0; 
-   var $c85_escriturainventario = 0; 
-   var $c85_reduz = 0; 
-   var $c85_anousu = 0; 
+   public $c85_sequencial = 0; 
+   public $c85_codlan = 0; 
+   public $c85_escriturainventario = 0; 
+   public $c85_reduz = 0; 
+   public $c85_anousu = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c85_sequencial = int4 = Sequencia lançamento inventario 
                  c85_codlan = int4 = Lançamento 
                  c85_escriturainventario = int4 = Escritura Inventário 
@@ -56,10 +56,10 @@ class cl_conlancaminventario {
                  c85_anousu = int4 = Exercício 
                  ";
    //funcao construtor da classe 
-   function cl_conlancaminventario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancaminventario"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_conlancaminventario {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c85_sequencial = pg_result($result,0,0); 
+       $this->c85_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from conlancaminventario_c85_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c85_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c85_sequencial)){
          $this->erro_sql = " Campo c85_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -171,7 +171,7 @@ class cl_conlancaminventario {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Lançamento inventário ($this->c85_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Lançamento inventário já Cadastrado";
@@ -195,14 +195,14 @@ class cl_conlancaminventario {
      $resaco = $this->sql_record($this->sql_query_file($this->c85_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19450,'$this->c85_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3452,19450,'','".AddSlashes(pg_result($resaco,0,'c85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3452,19451,'','".AddSlashes(pg_result($resaco,0,'c85_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3452,19452,'','".AddSlashes(pg_result($resaco,0,'c85_escriturainventario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3452,19509,'','".AddSlashes(pg_result($resaco,0,'c85_reduz'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3452,19510,'','".AddSlashes(pg_result($resaco,0,'c85_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3452,19450,'','".AddSlashes(pg_fetch_result($resaco,0,'c85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3452,19451,'','".AddSlashes(pg_fetch_result($resaco,0,'c85_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3452,19452,'','".AddSlashes(pg_fetch_result($resaco,0,'c85_escriturainventario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3452,19509,'','".AddSlashes(pg_fetch_result($resaco,0,'c85_reduz'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3452,19510,'','".AddSlashes(pg_fetch_result($resaco,0,'c85_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -211,10 +211,10 @@ class cl_conlancaminventario {
       $this->atualizacampos();
      $sql = " update conlancaminventario set ";
      $virgula = "";
-     if(trim($this->c85_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_sequencial"])){ 
+     if(trim((string) $this->c85_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_sequencial"])){ 
        $sql  .= $virgula." c85_sequencial = $this->c85_sequencial ";
        $virgula = ",";
-       if(trim($this->c85_sequencial) == null ){ 
+       if(trim((string) $this->c85_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencia lançamento inventario nao Informado.";
          $this->erro_campo = "c85_sequencial";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_conlancaminventario {
          return false;
        }
      }
-     if(trim($this->c85_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_codlan"])){ 
+     if(trim((string) $this->c85_codlan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_codlan"])){ 
        $sql  .= $virgula." c85_codlan = $this->c85_codlan ";
        $virgula = ",";
-       if(trim($this->c85_codlan) == null ){ 
+       if(trim((string) $this->c85_codlan) == null ){ 
          $this->erro_sql = " Campo Lançamento nao Informado.";
          $this->erro_campo = "c85_codlan";
          $this->erro_banco = "";
@@ -237,10 +237,10 @@ class cl_conlancaminventario {
          return false;
        }
      }
-     if(trim($this->c85_escriturainventario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_escriturainventario"])){ 
+     if(trim((string) $this->c85_escriturainventario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_escriturainventario"])){ 
        $sql  .= $virgula." c85_escriturainventario = $this->c85_escriturainventario ";
        $virgula = ",";
-       if(trim($this->c85_escriturainventario) == null ){ 
+       if(trim((string) $this->c85_escriturainventario) == null ){ 
          $this->erro_sql = " Campo Escritura Inventário nao Informado.";
          $this->erro_campo = "c85_escriturainventario";
          $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_conlancaminventario {
          return false;
        }
      }
-     if(trim($this->c85_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_reduz"])){ 
+     if(trim((string) $this->c85_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_reduz"])){ 
        $sql  .= $virgula." c85_reduz = $this->c85_reduz ";
        $virgula = ",";
-       if(trim($this->c85_reduz) == null ){ 
+       if(trim((string) $this->c85_reduz) == null ){ 
          $this->erro_sql = " Campo Reduzido nao Informado.";
          $this->erro_campo = "c85_reduz";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_conlancaminventario {
          return false;
        }
      }
-     if(trim($this->c85_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_anousu"])){ 
+     if(trim((string) $this->c85_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c85_anousu"])){ 
        $sql  .= $virgula." c85_anousu = $this->c85_anousu ";
        $virgula = ",";
-       if(trim($this->c85_anousu) == null ){ 
+       if(trim((string) $this->c85_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "c85_anousu";
          $this->erro_banco = "";
@@ -284,19 +284,19 @@ class cl_conlancaminventario {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19450,'$this->c85_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c85_sequencial"]) || $this->c85_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3452,19450,'".AddSlashes(pg_result($resaco,$conresaco,'c85_sequencial'))."','$this->c85_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3452,19450,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c85_sequencial'))."','$this->c85_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c85_codlan"]) || $this->c85_codlan != "")
-           $resac = db_query("insert into db_acount values($acount,3452,19451,'".AddSlashes(pg_result($resaco,$conresaco,'c85_codlan'))."','$this->c85_codlan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3452,19451,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c85_codlan'))."','$this->c85_codlan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c85_escriturainventario"]) || $this->c85_escriturainventario != "")
-           $resac = db_query("insert into db_acount values($acount,3452,19452,'".AddSlashes(pg_result($resaco,$conresaco,'c85_escriturainventario'))."','$this->c85_escriturainventario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3452,19452,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c85_escriturainventario'))."','$this->c85_escriturainventario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c85_reduz"]) || $this->c85_reduz != "")
-           $resac = db_query("insert into db_acount values($acount,3452,19509,'".AddSlashes(pg_result($resaco,$conresaco,'c85_reduz'))."','$this->c85_reduz',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3452,19509,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c85_reduz'))."','$this->c85_reduz',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c85_anousu"]) || $this->c85_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,3452,19510,'".AddSlashes(pg_result($resaco,$conresaco,'c85_anousu'))."','$this->c85_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3452,19510,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c85_anousu'))."','$this->c85_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -341,14 +341,14 @@ class cl_conlancaminventario {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19450,'$c85_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3452,19450,'','".AddSlashes(pg_result($resaco,$iresaco,'c85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3452,19451,'','".AddSlashes(pg_result($resaco,$iresaco,'c85_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3452,19452,'','".AddSlashes(pg_result($resaco,$iresaco,'c85_escriturainventario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3452,19509,'','".AddSlashes(pg_result($resaco,$iresaco,'c85_reduz'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3452,19510,'','".AddSlashes(pg_result($resaco,$iresaco,'c85_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3452,19450,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3452,19451,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c85_codlan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3452,19452,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c85_escriturainventario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3452,19509,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c85_reduz'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3452,19510,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c85_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from conlancaminventario
@@ -408,7 +408,7 @@ class cl_conlancaminventario {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conlancaminventario";
@@ -423,7 +423,7 @@ class cl_conlancaminventario {
    function sql_query ( $c85_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,7 +453,7 @@ class cl_conlancaminventario {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -466,7 +466,7 @@ class cl_conlancaminventario {
    function sql_query_file ( $c85_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -487,7 +487,7 @@ class cl_conlancaminventario {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

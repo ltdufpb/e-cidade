@@ -30,35 +30,35 @@
 class cl_familiamicroarea
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $sd35_i_codigo = 0;
-    var $sd35_i_familia = 0;
-    var $sd35_i_microarea = 0;
+    public $sd35_i_codigo = 0;
+    public $sd35_i_familia = 0;
+    public $sd35_i_microarea = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  sd35_i_codigo = int4 = Código 
                  sd35_i_familia = int4 = Família Saúde 
                  sd35_i_microarea = int4 = Micro Área Saúde 
                  ";
 
     //funcao construtor da classe
-    function cl_familiamicroarea()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("familiamicroarea");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -122,10 +122,10 @@ class cl_familiamicroarea
 
                 return false;
             }
-            $this->sd35_i_codigo = pg_result($result, 0, 0);
+            $this->sd35_i_codigo = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from familiamicroarea_codigo_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $sd35_i_codigo)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $sd35_i_codigo)) {
                 $this->erro_sql = " Campo sd35_i_codigo maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -161,7 +161,7 @@ class cl_familiamicroarea
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Família Micro Área ($this->sd35_i_codigo) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Família Micro Área já Cadastrado";
@@ -189,14 +189,14 @@ class cl_familiamicroarea
         $resaco = $this->sql_record($this->sql_query_file($this->sd35_i_codigo));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,11310,'$this->sd35_i_codigo','I')");
-            $resac = db_query("insert into db_acount values($acount,1945,11310,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1945,11310,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'sd35_i_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1945,11311,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1945,11311,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'sd35_i_familia')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1945,11312,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1945,11312,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'sd35_i_microarea')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -209,10 +209,10 @@ class cl_familiamicroarea
         $this->atualizacampos();
         $sql = " update familiamicroarea set ";
         $virgula = "";
-        if (trim($this->sd35_i_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["sd35_i_codigo"])) {
+        if (trim((string) $this->sd35_i_codigo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["sd35_i_codigo"])) {
             $sql .= $virgula . " sd35_i_codigo = $this->sd35_i_codigo ";
             $virgula = ",";
-            if (trim($this->sd35_i_codigo) == null) {
+            if (trim((string) $this->sd35_i_codigo) == null) {
                 $this->erro_sql = " Campo Código nao Informado.";
                 $this->erro_campo = "sd35_i_codigo";
                 $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_familiamicroarea
                 return false;
             }
         }
-        if (trim($this->sd35_i_familia) != "" || isset($GLOBALS["HTTP_POST_VARS"]["sd35_i_familia"])) {
+        if (trim((string) $this->sd35_i_familia) != "" || isset($GLOBALS["HTTP_POST_VARS"]["sd35_i_familia"])) {
             $sql .= $virgula . " sd35_i_familia = $this->sd35_i_familia ";
             $virgula = ",";
-            if (trim($this->sd35_i_familia) == null) {
+            if (trim((string) $this->sd35_i_familia) == null) {
                 $this->erro_sql = " Campo Família Saúde nao Informado.";
                 $this->erro_campo = "sd35_i_familia";
                 $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_familiamicroarea
                 return false;
             }
         }
-        if (trim($this->sd35_i_microarea) != "" || isset($GLOBALS["HTTP_POST_VARS"]["sd35_i_microarea"])) {
+        if (trim((string) $this->sd35_i_microarea) != "" || isset($GLOBALS["HTTP_POST_VARS"]["sd35_i_microarea"])) {
             $sql .= $virgula . " sd35_i_microarea = $this->sd35_i_microarea ";
             $virgula = ",";
-            if (trim($this->sd35_i_microarea) == null) {
+            if (trim((string) $this->sd35_i_microarea) == null) {
                 $this->erro_sql = " Campo Micro Área Saúde nao Informado.";
                 $this->erro_campo = "sd35_i_microarea";
                 $this->erro_banco = "";
@@ -262,21 +262,21 @@ class cl_familiamicroarea
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,11310,'$this->sd35_i_codigo','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["sd35_i_codigo"])) {
-                    $resac = db_query("insert into db_acount values($acount,1945,11310,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1945,11310,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'sd35_i_codigo')) . "','$this->sd35_i_codigo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["sd35_i_familia"])) {
-                    $resac = db_query("insert into db_acount values($acount,1945,11311,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1945,11311,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'sd35_i_familia')) . "','$this->sd35_i_familia'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["sd35_i_microarea"])) {
-                    $resac = db_query("insert into db_acount values($acount,1945,11312,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1945,11312,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'sd35_i_microarea')) . "','$this->sd35_i_microarea'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -332,16 +332,16 @@ class cl_familiamicroarea
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,11310,'$sd35_i_codigo','E')");
-                $resac = db_query("insert into db_acount values($acount,1945,11310,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1945,11310,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'sd35_i_codigo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1945,11311,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1945,11311,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'sd35_i_familia')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1945,11312,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1945,11312,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'sd35_i_microarea')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -413,7 +413,7 @@ class cl_familiamicroarea
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:familiamicroarea";
@@ -457,7 +457,7 @@ class cl_familiamicroarea
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -498,7 +498,7 @@ class cl_familiamicroarea
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -536,7 +536,7 @@ class cl_familiamicroarea
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

@@ -77,7 +77,7 @@
    	 </td>
    	 <td>		     
    	  <?php 
-   	   $x = array("0"=>"NÃO", "1"=>"SIM");
+   	   $x = ["0"=>"NÃO", "1"=>"SIM"];
    	   db_select("iDebuga", $x, true,1,"style='width: 84px;'");
    	  ?>
    	 </td>

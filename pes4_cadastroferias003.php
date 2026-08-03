@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhferias         = new cl_rhferias;
 $clrhferiasperiodo  = new cl_rhferiasperiodo;
 $db_opcao    = 1;

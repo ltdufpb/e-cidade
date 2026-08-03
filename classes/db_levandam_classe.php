@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE levandam
 class cl_levandam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y67_codlev = 0; 
-   var $y67_codandam = 0; 
+   public $y67_codlev = 0; 
+   public $y67_codandam = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y67_codlev = int4 = Código do Levantamento 
                  y67_codandam = int8 = Codigo do Andamento Gerado 
                  ";
    //funcao construtor da classe 
-   function cl_levandam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("levandam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_levandam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "levandam ($this->y67_codlev."-".$this->y67_codandam) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "levandam já Cadastrado";
@@ -130,12 +130,12 @@ class cl_levandam {
      $resaco = $this->sql_record($this->sql_query_file($this->y67_codlev,$this->y67_codandam));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5045,'$this->y67_codlev','I')");
        $resac = db_query("insert into db_acountkey values($acount,5046,'$this->y67_codandam','I')");
-       $resac = db_query("insert into db_acount values($acount,717,5045,'','".AddSlashes(pg_result($resaco,0,'y67_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,717,5046,'','".AddSlashes(pg_result($resaco,0,'y67_codandam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,717,5045,'','".AddSlashes(pg_fetch_result($resaco,0,'y67_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,717,5046,'','".AddSlashes(pg_fetch_result($resaco,0,'y67_codandam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_levandam {
       $this->atualizacampos();
      $sql = " update levandam set ";
      $virgula = "";
-     if(trim($this->y67_codlev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y67_codlev"])){ 
+     if(trim((string) $this->y67_codlev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y67_codlev"])){ 
        $sql  .= $virgula." y67_codlev = $this->y67_codlev ";
        $virgula = ",";
-       if(trim($this->y67_codlev) == null ){ 
+       if(trim((string) $this->y67_codlev) == null ){ 
          $this->erro_sql = " Campo Código do Levantamento nao Informado.";
          $this->erro_campo = "y67_codlev";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_levandam {
          return false;
        }
      }
-     if(trim($this->y67_codandam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y67_codandam"])){ 
+     if(trim((string) $this->y67_codandam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y67_codandam"])){ 
        $sql  .= $virgula." y67_codandam = $this->y67_codandam ";
        $virgula = ",";
-       if(trim($this->y67_codandam) == null ){ 
+       if(trim((string) $this->y67_codandam) == null ){ 
          $this->erro_sql = " Campo Codigo do Andamento Gerado nao Informado.";
          $this->erro_campo = "y67_codandam";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_levandam {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5045,'$this->y67_codlev','A')");
          $resac = db_query("insert into db_acountkey values($acount,5046,'$this->y67_codandam','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y67_codlev"]))
-           $resac = db_query("insert into db_acount values($acount,717,5045,'".AddSlashes(pg_result($resaco,$conresaco,'y67_codlev'))."','$this->y67_codlev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,717,5045,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y67_codlev'))."','$this->y67_codlev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y67_codandam"]))
-           $resac = db_query("insert into db_acount values($acount,717,5046,'".AddSlashes(pg_result($resaco,$conresaco,'y67_codandam'))."','$this->y67_codandam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,717,5046,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y67_codandam'))."','$this->y67_codandam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_levandam {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5045,'$y67_codlev','E')");
          $resac = db_query("insert into db_acountkey values($acount,5046,'$y67_codandam','E')");
-         $resac = db_query("insert into db_acount values($acount,717,5045,'','".AddSlashes(pg_result($resaco,$iresaco,'y67_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,717,5046,'','".AddSlashes(pg_result($resaco,$iresaco,'y67_codandam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,717,5045,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y67_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,717,5046,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y67_codandam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from levandam
@@ -304,7 +304,7 @@ class cl_levandam {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:levandam";

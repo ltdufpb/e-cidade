@@ -34,7 +34,7 @@ $clrotulo->label("e69_numero");
 $clorctiporec->rotulo->label();
 $clempempenho->rotulo->label();
 $db_opcao_inf=1;
-$sfileName = basename($_SERVER['PHP_SELF']);
+$sfileName = basename((string) $_SERVER['PHP_SELF']);
 if ($sfileName == "emp4_anularrpproc.php"){
 
   $sLabelSaldo  = "Processado";

@@ -95,15 +95,15 @@ class DeclaracaoQuitacao {
    * lista dos debitos da declaracao de quitacao
    * @var array
    */
-  protected $aDebitos = array();
+  protected $aDebitos = [];
 
   /**
    * array com o codigo de todas as declarações requisitadas na operação
    * @var array
    */
-  protected $aDeclaracoes = array();
+  protected $aDeclaracoes = [];
   
-  protected $aDebitosDeclaracao = array();
+  protected $aDebitosDeclaracao = [];
 
   /**
    * Método construtor do model declaracao de quitacao
@@ -735,7 +735,7 @@ class DeclaracaoQuitacao {
     
     $rDaoDeclQuitacao = $oDaoDeclQuitacao->sql_record($sSqlDeclQuitacao);
 
-    $aExerciciosDeclaracao = array();
+    $aExerciciosDeclaracao = [];
 
     if($oDaoDeclQuitacao->numrows > 0) {
 
@@ -761,7 +761,7 @@ class DeclaracaoQuitacao {
     
     $rDaoDeclQuitacao = $oDaoDeclQuitacao->sql_record($sSqlDeclQuitacao);
 
-    $aDeclaracaoesOrigem = array();
+    $aDeclaracaoesOrigem = [];
 
     if($oDaoDeclQuitacao->numrows > 0) {
 

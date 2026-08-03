@@ -38,15 +38,12 @@ use Exception;
 
 class ReaberturaEventosPeriodicos extends ProcessamentoAbstract implements ProcessamentoInterface
 {
-    private $cgm;
-
     private $ano;
 
     private $mes;
 
-    public function __construct($cgm)
+    public function __construct(private $cgm)
     {
-        $this->cgm = $cgm;
     }
 
     /**

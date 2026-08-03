@@ -41,12 +41,7 @@ class RegistroCollection implements \Countable, \Iterator, \ArrayAccess
 
     private $iPosition = 0;
 
-  /**
-   * @var EmissaoGeral
-   */
-    private $oEmissaoGeral;
-
-    public function __construct($resource, EmissaoGeral $oEmissao)
+    public function __construct($resource, private readonly EmissaoGeral $oEmissaoGeral)
     {
 
         if (empty($resource)) {
@@ -55,7 +50,6 @@ class RegistroCollection implements \Countable, \Iterator, \ArrayAccess
 
         $this->resource = $resource;
         $this->iNumRows = pg_num_rows($resource);
-        $this->oEmissaoGeral = $oEmissao;
     }
 
     public function count()

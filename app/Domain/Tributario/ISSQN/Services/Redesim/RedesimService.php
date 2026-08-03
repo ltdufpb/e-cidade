@@ -74,7 +74,7 @@ class RedesimService
         $oAtendimento->metadados = \JSON::create()->parse($oAtendimento->metadados);
 
         $oCgmResponsavel = $atendimentoProcessoService->getCgmResponsavelByMetadados($oAtendimento->metadados);
-        $cgm = (new CidadaoCgmLegacyService())->getCgmBySolicitacao($oAtendimento);
+        $cgm = new CidadaoCgmLegacyService()->getCgmBySolicitacao($oAtendimento);
 
         if (!$oCgmResponsavel) {
             $oCgmResponsavel = $cgm;
@@ -124,7 +124,7 @@ class RedesimService
      */
     private function initSession($iTipoProcesso)
     {
-        $andamentoPadrao = AndamentoPadrao::ordem(1)->tipoProcesso($iTipoProcesso)->first();
+        $andamentoPadrao = (new AndamentoPadrao())->ordem(1)->tipoProcesso($iTipoProcesso)->first();
 
         if (!$andamentoPadrao) {
             throw new BusinessException("Andamento do processo de ordem 1 (um) não configurado.");

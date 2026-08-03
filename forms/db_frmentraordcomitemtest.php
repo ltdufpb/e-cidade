@@ -36,8 +36,8 @@ include(modification("classes/db_matestoqueitemoc_classe.php"));
 include(modification("classes/db_matestoqueitem_classe.php"));
 include(modification("classes/db_transmater_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clmatestoqueitem = new cl_matestoqueitem;
 $clmatestoqueitemoc = new cl_matestoqueitemoc;
@@ -148,18 +148,18 @@ if ($clmatordemitement->numrows!=0){
 	     if ($quantidade!=0||$clmatordemitement->numrows!=0){
 	       echo "<tr>	    
 		     <td class='bordas_corp' align='center'><small>$e60_codemp </small></td>
-		     <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr($pc01_descrmater,0,20)."&nbsp;</small></td>
+		     <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr((string) $pc01_descrmater,0,20)."&nbsp;</small></td>
 		     <td class='bordas_corp' align='right'><b><small>".db_formatar($valoruni,'f')."</small></b></td>
 		     <td class='bordas_corp' align='right'><b><small>".db_formatar($vlto,'f')."</small></b></td>";
 	       if ($pc01_servico=="f"){
 		 $val="valor_$i";
 		 $quant="quant_$e62_codele"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i";
 		 if (isset($zera)){
-  		   $$val=db_formatar('0','f');
-		   $$quant='0';
+  		   ${$val}=db_formatar('0','f');
+		   ${$quant}='0';
 		 }else{
-  		   $$val=db_formatar($valortotal,'f');
-		   $$quant=$quantidade;
+  		   ${$val}=db_formatar($valortotal,'f');
+		   ${$quant}=$quantidade;
 		 }
 		 echo "<td class='bordas_corp' align='center'><small>$quantidade</small></td>
 		       <td class='bordas_corp' align='center'><small>";
@@ -173,11 +173,11 @@ if ($clmatordemitement->numrows!=0){
 		 $val="valor_$i";
 		 $quant="quant_$e62_codele"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i";
 		 if (isset($zera)){
-  		   $$val=db_formatar('0','f');
-		   $$quant='0';
+  		   ${$val}=db_formatar('0','f');
+		   ${$quant}='0';
 		 }else{
-  		   $$val=db_formatar($valortotal,'f');
-		   $$quant=$m52_quant;
+  		   ${$val}=db_formatar($valortotal,'f');
+		   ${$quant}=$m52_quant;
 		 }
 		 $quantidade=$m52_quant;
 		 echo "<td class='bordas_corp' align='center'><small>$quantidade</small></td>
@@ -189,7 +189,7 @@ if ($clmatordemitement->numrows!=0){
 		 echo "</small></td>";
 	       }
 	       $q="controle_$i";
-	       $$q=$m52_quant;
+	       ${$q}=$m52_quant;
 	       db_input("controle_$i",10,0,true,'hidden',3);
 	       echo" <td class='bordas_corp' align='left' nowrap ><small>";
 	       $result_itens=$cltransmater->sql_record($cltransmater->sql_query(null,"m63_codmatmater,m60_descr",null,"m63_codpcmater=$pc01_codmater and m63_codmatmater not in (select m54_codmatmater from matordemitement where m54_codmatordemitem=$m52_codlanc) "));
@@ -221,7 +221,7 @@ if ($clmatordemitement->numrows!=0){
 	     if ($m52_quant!=0||$clmatordemitement->numrows!=0){
 	       echo "<tr>	    
 		     <td class='bordas_corp' align='center'><small>$e60_codemp </small></td>
-		     <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr($pc01_descrmater,0,20)."&nbsp;</small></td>
+		     <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr((string) $pc01_descrmater,0,20)."&nbsp;</small></td>
 		     <td class='bordas_corp' align='right'><b><small>".db_formatar($valoruni,'f')."</small></b></td>
 		     <td class='bordas_corp' align='right'><b><small>".db_formatar($valortotal,'f')."</small></b></td>
 		     <td class='bordas_corp' align='center'><small>$m52_quant</small></td>";
@@ -229,11 +229,11 @@ if ($clmatordemitement->numrows!=0){
 		 $val="valor_$i";
 		 $quant="quant_$e62_codele"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i";
 		 if (isset($zera)){
-  		   $$val=db_formatar('0','f');
-		   $$quant='0';
+  		   ${$val}=db_formatar('0','f');
+		   ${$quant}='0';
 		 }else{
-  		   $$val=db_formatar($valortotal,'f');
-		   $$quant=$m52_quant;
+  		   ${$val}=db_formatar($valortotal,'f');
+		   ${$quant}=$m52_quant;
 		 }
 		 echo "<td class='bordas_corp' align='center'><small>";
 		 db_input("quant_$e62_codele"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i",6,0,true,'text',1,"onchange='js_verifica($m52_quant,this.value,this.name,$valoruni,$i);' ondblclick='js_zera(this.name,\"$i\");'");
@@ -245,11 +245,11 @@ if ($clmatordemitement->numrows!=0){
 		 $val="valor_$i";
 		 $quant="quant_$e62_codele"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i";
 		 if (isset($zera)){
-  		   $$val=db_formatar('0','f');
-		   $$quant='0';
+  		   ${$val}=db_formatar('0','f');
+		   ${$quant}='0';
 		 }else{
-  		   $$val=db_formatar($valortotal,'f');
-		   $$quant=$m52_quant;
+  		   ${$val}=db_formatar($valortotal,'f');
+		   ${$quant}=$m52_quant;
 		 }
 		 echo" <td class='bordas_corp' align='center'><small>";
 		 db_input("quant_$e62_codele"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i",6,0,true,'text',3);
@@ -259,7 +259,7 @@ if ($clmatordemitement->numrows!=0){
 		 echo "</small></td>";
 	       }
 	       $q="controle_$i";
-	       $$q=$m52_quant;
+	       ${$q}=$m52_quant;
 	       db_input("controle_$i",10,0,true,'hidden',3);
 	       echo "<td class='bordas_corp' align='left' nowrap ><small>";
 	       $result_itens=$cltransmater->sql_record($cltransmater->sql_query(null,"m63_codmatmater,m60_descr",null,"m63_codpcmater=$pc01_codmater and m63_codmatmater not in (select m54_codmatmater from matordemitement where m54_codmatordemitem=$m52_codlanc) "));
@@ -283,7 +283,7 @@ if ($clmatordemitement->numrows!=0){
 		   echo "<tr>";
 		   echo "
 			 <td class='bordas_corp' align='center'><small>$e60_codemp </small></td>
-			 <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr($pc01_descrmater,0,20)."&nbsp;</small></td>
+			 <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr((string) $pc01_descrmater,0,20)."&nbsp;</small></td>
 			 <td class='bordas_corp' align='right'><small>".db_formatar($m54_valor_unitario,'f')."</small></td>
 			 <td class='bordas_corp' align='right'><small>".db_formatar($vltot,'f')."</small></td>
 			 <td class='bordas_corp' align='center'><small>$m54_quantidade</small></td>

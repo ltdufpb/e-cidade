@@ -27,9 +27,9 @@
 
 
 class cl_cgm {
-  var $rotulo = null;
+  public $rotulo = null;
 
-  function cl_cgm() {
+  function __construct() {
     $this->rotulo = new rotulo("cgm");
   }
   function sqldadosNome($filtro = "") {
@@ -37,7 +37,7 @@ class cl_cgm {
   }
   function dadosNome($filtro = "") {
     $result = pg_exec($this->sqldadosNome($filtro));
-    if(pg_numrows($result) > 0)
+    if(pg_num_rows($result) > 0)
 	  return $result;
 	else
 	  $db_erro = 'Nenhum Registro Selecionado';
@@ -48,7 +48,7 @@ class cl_cgm {
   }
   function dadosCodigo($filtro = "") {
     $result = pg_exec($this->sqldadosCodigo($filtro));
-    if(pg_numrows($result) > 0)
+    if(pg_num_rows($result) > 0)
 	  return $result;
 	else
 	  $db_erro = 'Nenhum Registro Selecionado';

@@ -10,11 +10,6 @@ use stdClass;
 
 class CondicoesSaudePdf extends Pdf
 {
-    /**
-     * @var array
-     */
-    private $dados;
-
     private $isDeficiencia;
 
     /**
@@ -22,10 +17,9 @@ class CondicoesSaudePdf extends Pdf
      * @param stdClass $filtros
      * @throws Exception
      */
-    public function __construct(array $dados, stdClass $filtros)
+    public function __construct(private array $dados, stdClass $filtros)
     {
         parent::__construct();
-        $this->dados = $dados;
         $this->isDeficiencia = $filtros->condicao == SituacaoCondicaoPacienteEnum::DEFICIENCIA;
         $this->setTitulo($filtros);
     }
@@ -121,11 +115,11 @@ class CondicoesSaudePdf extends Pdf
         $this->addTitulo('');
         $filtrosSelecionados = [];
         $condicao = $filtros->condicao
-            ? (new SituacaoCondicaoPacienteEnum((int)$filtros->condicao))->name()
+            ? new SituacaoCondicaoPacienteEnum((int)$filtros->condicao)->name()
             : 'SEM CONDIÇÃO';
         $filtrosSelecionados[] = "Situação/Condição: {$condicao}";
         $faixaEtaria = $filtros->faixaEtaria
-            ? (new FaixaEtariaEnum((int)$filtros->faixaEtaria))->name()
+            ? new FaixaEtariaEnum((int)$filtros->faixaEtaria)->name()
             : 'TODAS';
         $filtrosSelecionados[] = "Faixa Etária: {$faixaEtaria}";
         $this->addTitulo(implode(', ', $filtrosSelecionados));

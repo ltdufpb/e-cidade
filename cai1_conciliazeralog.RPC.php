@@ -62,7 +62,7 @@ switch($oParam->exec) {
 	    /*
 	     * Set de Objetos
 	     */
-	  $sDataProcessamento    = implode('-',array_reverse(explode('/',$oParam->data)));
+	  $sDataProcessamento    = implode('-',array_reverse(explode('/',(string) $oParam->data)));
       $oConciliaPendCorrente = new cl_conciliapendcorrente();
       $oConciliaPendExtrato  = new cl_conciliapendextrato();
       $oConciliaCor          = new cl_conciliacor();

@@ -125,7 +125,7 @@ $db_botao = true;
 <?php 
 if(isset($incluir)){
 
-  if (trim(@$erro_msg)!=""){
+  if (trim((string) @$erro_msg)!=""){
        db_msgbox($erro_msg);
   }
   if($sqlerro==true){

@@ -131,7 +131,7 @@ $clrotulo = new rotulocampo;
 
                                                 db_fieldsmemory($res_liclicitemlote, $i);
 
-                                                if(trim($l04_descricao) == "") {
+                                                if(trim((string) $l04_descricao) == "") {
 
                                                     $achou    = true;
                                                     $db_botao = false;

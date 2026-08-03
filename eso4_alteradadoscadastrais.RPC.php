@@ -98,9 +98,7 @@ try {
                     throw new DBException("Não há empregadores cadastrados para essa matrícula {$oParam->matricula}.");
                 }
 
-                $cgmResponsavel = \db_utils::makeFromRecord($resultadoSqlCgm, function ($retorno) {
-                    return new CgmJuridico($retorno->cgm);
-                }, 0);
+                $cgmResponsavel = \db_utils::makeFromRecord($resultadoSqlCgm, fn($retorno) => new CgmJuridico($retorno->cgm), 0);
 
                 $factory->setCgmResponsavel($cgmResponsavel);
                 $sugestao = $factory->porTipo(Tipo::ALTERACAO_TRABALHADOR_SEM_VINCULO);
@@ -164,9 +162,7 @@ try {
                 return $oStdMatricula;
             }, $aMatriculas);
 
-            usort($oRetorno->matriculas, function ($oMatricula, $oProximaMatricula) {
-                return ($oMatricula->matricula > $oProximaMatricula->matricula);
-            });
+            usort($oRetorno->matriculas, fn($oMatricula, $oProximaMatricula) => $oMatricula->matricula > $oProximaMatricula->matricula);
             break;
         case 'limparRespostas':
             if (empty($oParam->pergunta)) {
@@ -188,9 +184,7 @@ try {
                 break;
             }
 
-            $respostasApagar = db_utils::makeCollectionFromRecord($rsAvaliacaoResposta, function ($retorno) {
-                return $retorno->respostas;
-            });
+            $respostasApagar = db_utils::makeCollectionFromRecord($rsAvaliacaoResposta, fn($retorno) => $retorno->respostas);
 
             $oDaoAvaliacaoGrupoPerguntaResposta = new cl_avaliacaogrupoperguntaresposta();
 

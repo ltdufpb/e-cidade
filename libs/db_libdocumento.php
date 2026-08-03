@@ -25,13 +25,11 @@
  *                licenca/licenca_pt.txt
  */
 
-class libdocumento {
+class libdocumento implements \Stringable {
 
-  public $iTipoDoc      = 0;
-  public $iCodDoc       = 0;
-  public $aParagrafos     = array();
-  public $aParametros     = array();
-  public $aCampos       = array();
+  public $aParagrafos     = [];
+  public $aParametros     = [];
+  public $aCampos       = [];
   public $iInstit       = null;
   public $strDocHTML    = null;
   public $oDbDocumentoDAO   = null;
@@ -57,10 +55,8 @@ class libdocumento {
    * @param  db03_tipodoc  integer  Codigo do tipo do documento (tabela db_tipodoc);
    * @param  db03_cododc   integer  Codigo do documento (tabela db_tipodoc);
    */
-  public function __construct($db03_tipodoc = null, $db03_coddoc = null) {
+  public function __construct(public $iTipoDoc = null, public $iCodDoc = null) {
 
-    $this->iTipoDoc = $db03_tipodoc;
-    $this->iCodDoc  = $db03_coddoc;
     // verifica se foi definido a classe cl_db_documento
     if (!class_exists("cl_db_documento")) {
       require_once(modification("classes/db_db_documento_classe.php"));
@@ -82,7 +78,7 @@ class libdocumento {
       require_once(modification("libs/db_libparagrafo.php"));
     }
 
-    $this->aCampos = array(
+    $this->aCampos = [
       "db_documentopadrao" => "db60_coddoc    as db03_docum,
                       db60_descr     as db03_descr,
                       db60_tipodoc   as db03_tipodoc,
@@ -131,7 +127,7 @@ class libdocumento {
       "ordem"         => "db04_ordem",
       "instit"        => "db03_instit",
       "institpadrao"  => "db60_instit"
-    );
+    ];
 
     $this->cldb_documento = new cl_db_documento();
     $this->cldb_documento->sql_record($this->cldb_documento->sql_query(null, "*", null, "db03_tipodoc = {$this->iTipoDoc} and db03_instit = ".db_getsession('DB_instit')));
@@ -176,7 +172,7 @@ class libdocumento {
     }
   }
 
-  public function __toString() {
+  public function __toString(): string {
     return "Object";
   }
 
@@ -277,7 +273,7 @@ class libdocumento {
       $sSql = $this->oDbDocParagDAO->sql_query(null, null, "{$this->sCamposDocParag}", "{$this->sNomeCampoOrdem}", $sWhere);
       $this->rsParag = $this->oDbDocParagDAO->sql_record($sSql);
 
-      $aParagrafos = array();
+      $aParagrafos = [];
       if ($this->rsParag && pg_num_rows($this->rsParag) > 0) {
 
         $aParagrafos = pg_fetch_all($this->rsParag);
@@ -320,7 +316,7 @@ class libdocumento {
       next($this->aParagrafos);
     }
 
-    return nl2br($this->strDocHTML);
+    return nl2br((string) $this->strDocHTML);
   }
 
   /**
@@ -335,16 +331,16 @@ class libdocumento {
     $texto1 = '';
     for ($x = 0; $x < sizeof($txt); $x ++) {
 
-      if (substr($txt[$x], 0, 1) == "$") {
+      if (str_starts_with($txt[$x], "$")) {
 
         $txt1 = substr($txt[$x], 1);
-        global $$txt1;
-        $texto1 .= $$txt1;
+        global ${$txt1};
+        $texto1 .= ${$txt1};
       } else {
 
-        if ((substr($txt[$x], 0, 2) == '\n')or(substr($txt[$x], 0, 4) == '<br>')) {
+        if ((str_starts_with($txt[$x], '\n'))or(str_starts_with($txt[$x], '<br>'))) {
           $texto1 .= "\n";
-        } elseif (substr($txt[$x], 0, 2) == '\t') {
+        } elseif (str_starts_with($txt[$x], '\t')) {
           $texto1 .= "\t";
         } else {
           $texto1 .= $txt[$x];
@@ -362,7 +358,7 @@ class libdocumento {
 
     for ($x = 0; $x < sizeof($txt); $x ++) {
 
-      if (substr($txt[$x], 0, 1) == "$") {
+      if (str_starts_with($txt[$x], "$")) {
 
         $txt1 = substr($txt[$x], 1);
         if (isset($this->$txt1)) {
@@ -370,11 +366,11 @@ class libdocumento {
         }
       } else {
 
-        if ((substr($txt[$x], 0, 2) == '\n') || (substr($txt[$x], 0, 4) == '<br>')) {
+        if ((str_starts_with($txt[$x], '\n')) || (str_starts_with($txt[$x], '<br>'))) {
           $texto1 .= "\n";
         } else {
 
-          if (substr($txt[$x], 0, 2) == '\t') {
+          if (str_starts_with($txt[$x], '\t')) {
             $texto1 .= "\t";
           } else {
             $texto1 .= $txt[$x];

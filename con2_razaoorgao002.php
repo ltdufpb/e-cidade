@@ -30,7 +30,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conlancamdot_classe.php"));
 include(modification("classes/db_conlancamval_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //-- classes
 $clrotulo = new rotulocampo;
 $clconlancamdot = new cl_conlancamdot;
@@ -220,18 +220,18 @@ if ($quebra=="g" and $tipo=="a"){
     	    {
                  $pdf->Ln();
 	         $pdf->SetFont('Arial','B',7);	 
-	         $pdf->Cell(20,$tam,strtoupper($RLc69_codlan),1,0,"C",1);
-	         $pdf->Cell(20,$tam,strtoupper($RLc69_sequen),1,0,"C",1);	 
-                 $pdf->Cell(20,$tam,strtoupper($RLc69_data)  ,1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLc69_debito),1,0,"C",1); // recurso
-		 $pdf->Cell(80,$tam,strtoupper($RLc60_descr) ,1,0,"L",1); // recurso
-                 $pdf->Cell(20,$tam,strtoupper($RLc69_valor),1,1,"C",1); // cod+estrut dotatao // quebra linha
+	         $pdf->Cell(20,$tam,strtoupper((string) $RLc69_codlan),1,0,"C",1);
+	         $pdf->Cell(20,$tam,strtoupper((string) $RLc69_sequen),1,0,"C",1);	 
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLc69_data)  ,1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLc69_debito),1,0,"C",1); // recurso
+		 $pdf->Cell(80,$tam,strtoupper((string) $RLc60_descr) ,1,0,"L",1); // recurso
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLc69_valor),1,1,"C",1); // cod+estrut dotatao // quebra linha
                  // $pdf->setX(150);
-		 $pdf->Cell(20,$tam,strtoupper($RLc53_coddoc),1,0,"C",1);
-		 $pdf->Cell(40,$tam,strtoupper($RLc53_descr)  ,1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLc69_credito),1,0,"C",1);
-                 $pdf->Cell(80,$tam,strtoupper($RLc60_descr)  ,1,0,"L",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLc69_valor)  ,1,1,"C",1);
+		 $pdf->Cell(20,$tam,strtoupper((string) $RLc53_coddoc),1,0,"C",1);
+		 $pdf->Cell(40,$tam,strtoupper((string) $RLc53_descr)  ,1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLc69_credito),1,0,"C",1);
+                 $pdf->Cell(80,$tam,strtoupper((string) $RLc60_descr)  ,1,0,"L",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLc69_valor)  ,1,1,"C",1);
 	         $pdf->SetFont('Arial','',7);	
 		 $pdf->Ln();
 		 $imprime_header=false;
@@ -324,11 +324,11 @@ if ($quebra=="g" and $tipo=="s"){
   		$pdf->SetFont('Arial','',7);	
 		// header das colunas
                 $pdf->SetFont('Arial','B',7);	 
-	        $pdf->Cell(20,$tam,strtoupper($RLc69_codlan),1,0,"C",1);
-                $pdf->Cell(20,$tam,strtoupper($RLc69_data)  ,1,0,"C",1);
-                $pdf->Cell(20,$tam,strtoupper($RLc53_coddoc),1,0,"C",1); // recurso
-		$pdf->Cell(100,$tam,strtoupper($RLc53_descr),1,0,"L",1); // recurso
-                $pdf->Cell(20,$tam,strtoupper($RLc69_valor) ,1,1,"C",1);  // cod+estrut dotatao // quebra linha
+	        $pdf->Cell(20,$tam,strtoupper((string) $RLc69_codlan),1,0,"C",1);
+                $pdf->Cell(20,$tam,strtoupper((string) $RLc69_data)  ,1,0,"C",1);
+                $pdf->Cell(20,$tam,strtoupper((string) $RLc53_coddoc),1,0,"C",1); // recurso
+		$pdf->Cell(100,$tam,strtoupper((string) $RLc53_descr),1,0,"L",1); // recurso
+                $pdf->Cell(20,$tam,strtoupper((string) $RLc69_valor) ,1,1,"C",1);  // cod+estrut dotatao // quebra linha
 	        $pdf->SetFont('Arial','',7);	
 
 	    }
@@ -346,7 +346,7 @@ if ($quebra=="g" and $tipo=="s"){
     	            $pdf->Cell(160,$tam,"Total"                 ,'T',0,"R",0); // recurso
                     $pdf->Cell(20,$tam,db_formatar($__total,'f'),'T',1,"R",0);  //  quebra linha         	            
 		    $__total=0;
- 
+
                     /*
 	 	    $sql01 = "select c53_coddoc, c53_descr, sum(conlancam.c70_valor) as total
                               from conlancamdot
@@ -364,7 +364,7 @@ if ($quebra=="g" and $tipo=="s"){
 	                   $pdf->Cell(20,$tam,$c53_coddoc            ,'B',0,"C",0);
 		           $pdf->Cell(100,$tam,$c53_descr            ,'B',0,"L",0);
  		           $pdf->Cell(20,$tam,db_formatar($total,'f'),'B',1,"R",0); // quebra linha              
-                                    		
+
 		    } */  
             }       
 	   /* */
@@ -415,9 +415,9 @@ if ($quebra=="g" and $tipo=="r"){
                 // inprime header do detalhe
                  $pdf->SetFont('Arial','B',7);	 
 		 $pdf->setX(50);
-                 $pdf->Cell(20,$tam,strtoupper($RLc53_coddoc),'B',0,"C",0); // recurso
-		 $pdf->Cell(100,$tam,strtoupper($RLc53_descr),'B',0,"L",0); // recurso
-                 $pdf->Cell(20,$tam,strtoupper($RLc69_valor) ,'B',1,"R",0);  // cod+estrut dotatao // quebra linha		
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLc53_coddoc),'B',0,"C",0); // recurso
+		 $pdf->Cell(100,$tam,strtoupper((string) $RLc53_descr),'B',0,"L",0); // recurso
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLc69_valor) ,'B',1,"R",0);  // cod+estrut dotatao // quebra linha		
 	    }
 	    /* detalhe */
 	    $pdf->Ln(1);
@@ -436,7 +436,7 @@ if ($quebra=="g" and $tipo=="r"){
                     $pdf->Cell(100,$tam,""                      ,'T',0,"R",0);  //quebra inha	    
 	            $pdf->Cell(20,$tam,db_formatar($__total,'f'),'T',0,"R",0);  //quebra inha	    
 		    $__total=0;
-        
+
 	    }  
     }  /* end loop */
 

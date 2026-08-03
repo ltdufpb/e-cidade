@@ -49,6 +49,7 @@ class AnexoIV extends AnexoIV2018
      *
      * @throws \Exception
      */
+    #[\Override]
     protected function processaLinhasQuadro2()
     {
         $linhas = $this->aLinhasConsistencia;
@@ -142,6 +143,7 @@ class AnexoIV extends AnexoIV2018
      *
      * @return \stdClass
      */
+    #[\Override]
     public function getDadosSimplificado()
     {
         /*

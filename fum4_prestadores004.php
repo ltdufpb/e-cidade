@@ -63,7 +63,7 @@ if (isset($chavepesquisa)) {
   $sql = $clprestador->sql_query(intval($chavepesquisa), $sCampos);
   $result = $clprestador->sql_record($sql);
 
-  if (pg_numrows($result) > 0) {
+  if (pg_num_rows($result) > 0) {
       db_fieldsmemory($result, 0);
       if (!isset($bt_excluir)) {
          $db_opcao = 2;
@@ -122,8 +122,8 @@ if (isset($incluir)) {
    db_inicio_transacao();
    $servico = $clservicos->sql_query_file('','fm08_codigo', null, 'fm08_prestador = '.$fm06_codigo);
    $resp = db_query($servico);
-   if (pg_numrows($resp) > 0) {
-      for ($i=0;$i < pg_numrows($resp); $i++) {
+   if (pg_num_rows($resp) > 0) {
+      for ($i=0;$i < pg_num_rows($resp); $i++) {
           db_fieldsmemory($resp, $i);
           $excluirServico = $clservicos->excluir($fm08_codigo);
           if (!$excluirServico) {
@@ -136,8 +136,8 @@ if (isset($incluir)) {
    $profissional = $clprofissional->sql_query_file('','fm07_codigo', null, 'fm07_prestador = '.$fm06_codigo);
    $resp = db_query($profissional);
 
-   if (pg_numrows($resp) > 0) {
-      for ($i=0;$i < pg_numrows($resp); $i++) {
+   if (pg_num_rows($resp) > 0) {
+      for ($i=0;$i < pg_num_rows($resp); $i++) {
           db_fieldsmemory($resp, $i);
           $excluirProfissional = $clprofissional->excluir($fm07_codigo, 'fm07_codigo = '.$fm07_codigo);
           if (!$excluirProfissional) {
@@ -202,9 +202,9 @@ function js_preenchepesquisa(sChave) {
   db_iframe_prestadores.hide();
   <?php
     if ($db_opcao == 2) {
-      echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?db_opcao=1&chavepesquisa=' + sChave;";
+      echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?db_opcao=1&chavepesquisa=' + sChave;";
     } else if ($db_opcao == 3) {
-      echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?bt_excluir=true&chavepesquisa=' + sChave;";
+      echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?bt_excluir=true&chavepesquisa=' + sChave;";
     }
   ?>
 }

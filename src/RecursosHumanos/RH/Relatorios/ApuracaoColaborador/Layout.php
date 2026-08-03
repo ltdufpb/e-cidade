@@ -39,11 +39,11 @@ use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Repository\DiaTrabalho as
  */
 class Layout extends EstruturaBasica
 {
-    public static $filtros = array(
+    public static $filtros = [
       1 => 'Seleção',
       2 => 'Matrícula',
       3 => 'Local de Trabalho'
-    );
+    ];
 
     /**
      * @var \stdClass
@@ -53,7 +53,7 @@ class Layout extends EstruturaBasica
     /**
      * @var array
      */
-    private $dadosRelatorio = array();
+    private $dadosRelatorio = [];
 
     /**
      * @var EscalaServidor
@@ -148,7 +148,7 @@ class Layout extends EstruturaBasica
      */
     protected function getMarcacoes(MarcacoesPontoCollection $marcacoesPontoCollection)
     {
-        $marcacoes = array();
+        $marcacoes = [];
 
         foreach ($marcacoesPontoCollection->getMarcacoes() as $marcacao) {
             if ($marcacao === null || $marcacao->getMarcacao() === null) {
@@ -170,7 +170,7 @@ class Layout extends EstruturaBasica
         $dadosServidor = new \stdClass();
         $dadosServidor->matricula = $servidor->getMatricula();
         $dadosServidor->nome = $servidor->getCgm()->getNome();
-        $dadosServidor->jornadas = array();
+        $dadosServidor->jornadas = [];
 
         return $dadosServidor;
     }
@@ -186,14 +186,14 @@ class Layout extends EstruturaBasica
         $dadosJornada->escala = $escalaServidorData->getEscalaTrabalho()->getCodigo();
         $dadosJornada->jornada = $diaTrabalho->getJornada()->getCodigo();
 
-        $horarios = array();
+        $horarios = [];
 
         foreach ($diaTrabalho->getJornada()->getHoras() as $hora) {
             $horarios[] = $hora->sHora;
         }
 
         $dadosJornada->horario = implode(' ', $horarios);
-        $dadosJornada->dadosApurados = array();
+        $dadosJornada->dadosApurados = [];
 
         return $dadosJornada;
     }

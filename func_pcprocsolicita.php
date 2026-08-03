@@ -45,7 +45,7 @@ $iIdUsuario    = db_getsession("DB_id_usuario");
 
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsolicita = new cl_solicita;
 $oRotulo = new rotulocampo();
@@ -246,7 +246,7 @@ $sWhereContrato = " and 1 = 1 ";
           }
         }
 
-        db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",array(),false);
+        db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",[],false);
 
       } else {
 

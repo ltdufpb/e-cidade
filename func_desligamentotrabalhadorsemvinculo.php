@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhpessoal_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $daoAvaliacaoGrupoRespostaTSVE = new cl_avaliacaogruporespostatertrabasemvinc;
 $rotulo = new rotulocampo();
@@ -90,8 +90,8 @@ $rotulo->label('z01_nome');
 <?php
     
     $codigoInsituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
-    $whereFiltrosPesquisa = array();
-    $repassa = array();
+    $whereFiltrosPesquisa = [];
+    $repassa = [];
 
     $whereFiltrosPesquisa[] = "rh01_instit = {$codigoInsituicao}";
 
@@ -108,14 +108,14 @@ $rotulo->label('z01_nome');
     }
 
     if(isset($campos) == false) {
-        $campos = array("rhpessoal.rh01_regist, cgm.z01_numcgm, cgm.z01_nome");
+        $campos = ["rhpessoal.rh01_regist, cgm.z01_numcgm, cgm.z01_nome"];
     }
 
-    $ordem = array("cgm.z01_nome");
+    $ordem = ["cgm.z01_nome"];
     $sql = $daoAvaliacaoGrupoRespostaTSVE->buscaServidorCargaDesligamento($campos, $ordem, $whereFiltrosPesquisa);
     
     if(isset($chave_rh01_regist)) {
-        $repassa = array("chave_rh01_regist"=>$chave_rh01_regist,"chave_z01_nome=>$chave_z01_nome");
+        $repassa = ["chave_rh01_regist"=>$chave_rh01_regist,"chave_z01_nome=>$chave_z01_nome"];
     }
 
     echo '<div class="container">';

@@ -21,126 +21,126 @@ include(modification("fpdf151/assinatura.php"));
 class db_impcarne extends cl_assinatura {
 //class db_impcarne {
 
-  var $cgccpf = null;
-  var $enderpref = null;
-  var $cgcpref   = null;
-  var $tipocompl = null;
-  var $tipolograd= null;
-  var $tipobairro= null;
-  var $municpref = null;
-  var $telefpref = null;
-  var $faxpref   = null;
-  var $emailpref = null;
-  var $nome      = null;
-  var $ender     = null;
-  var $compl     = null;
-  var $munic     = null;
-  var $uf        = null;
-  var $fax       = null;
-  var $contato   = null;
-  var $cep       = null;
+  public $cgccpf = null;
+  public $enderpref = null;
+  public $cgcpref   = null;
+  public $tipocompl = null;
+  public $tipolograd= null;
+  public $tipobairro= null;
+  public $municpref = null;
+  public $telefpref = null;
+  public $faxpref   = null;
+  public $emailpref = null;
+  public $nome      = null;
+  public $ender     = null;
+  public $compl     = null;
+  public $munic     = null;
+  public $uf        = null;
+  public $fax       = null;
+  public $contato   = null;
+  public $cep       = null;
   
 
   
 
-  var $Sdescrdepto      = '';    //responsï¿½vel pelo departamento
-  var $Snumdepart       = '';    //responsï¿½vel pelo departamento
+  public $Sdescrdepto      = '';    //responsï¿½vel pelo departamento
+  public $Snumdepart       = '';    //responsï¿½vel pelo departamento
   
 
 
 // Variáveis necessárias para requisição de retirada de medicamentos da farmacia
-  var $Rnumero            = null;
-  var $Ratendrequi        = null;
-  var $Rdata		          = null;
-  var $Rdepart            = null;
-  var $Rhora              = null;
-  var $Rresumo            = null;
-  var $Rnomeus            = null;
-  var $Rreceita           = null;
-  var $Rdtvalidadereceita = null;
-  var $Rtpreceita         = null;
-  var $Rrequisitante      = null;
-  var $Rident             = null;
-  var $Rendereco          = null;
-  var $Rnumeros           = null;  
-  var $rcodmaterial       = null;
-  var $rdescmaterial      = null;
-  var $runidadesaida      = null;
-  var $rquantdeitens      = null;  
-  var $casadec            = null;
-  var $ratendente         = null;
-  var $rcodatend          = null;
-  var $rcodprof           = null;
-  var $rprofissional      = null;
-  var $rlocalizacao       = null;
-  var $robsdositens       = null;
-  var $Rcoddepart         = null;
+  public $Rnumero            = null;
+  public $Ratendrequi        = null;
+  public $Rdata		          = null;
+  public $Rdepart            = null;
+  public $Rhora              = null;
+  public $Rresumo            = null;
+  public $Rnomeus            = null;
+  public $Rreceita           = null;
+  public $Rdtvalidadereceita = null;
+  public $Rtpreceita         = null;
+  public $Rrequisitante      = null;
+  public $Rident             = null;
+  public $Rendereco          = null;
+  public $Rnumeros           = null;  
+  public $rcodmaterial       = null;
+  public $rdescmaterial      = null;
+  public $runidadesaida      = null;
+  public $rquantdeitens      = null;  
+  public $casadec            = null;
+  public $ratendente         = null;
+  public $rcodatend          = null;
+  public $rcodprof           = null;
+  public $rprofissional      = null;
+  public $rlocalizacao       = null;
+  public $robsdositens       = null;
+  public $Rcoddepart         = null;
   
 
 //variaveis do modulo laboratorio para emitir o comprovante de requisicao de exames
 //****************************************************************//
-  var $Rmedico         = null; 
-  var $Rusuario        = null;
-  var $Rpaciente       = null;
-  var $Rresponsavel    = null;
-  var $Rlaboratorio    = null;
-  var $Rnomeusuario    = null;
-  var $Rrequisito      = null;
-  var $rcodrequisicao  = null;
-  var $rsetor          = null;
-  var $rexame          = null;
-  var $rdata           = null;
-  var $rhora           = null;
-  var $rentrega        = null;
+  public $Rmedico         = null; 
+  public $Rusuario        = null;
+  public $Rpaciente       = null;
+  public $Rresponsavel    = null;
+  public $Rlaboratorio    = null;
+  public $Rnomeusuario    = null;
+  public $Rrequisito      = null;
+  public $rcodrequisicao  = null;
+  public $rsetor          = null;
+  public $rexame          = null;
+  public $rdata           = null;
+  public $rhora           = null;
+  public $rentrega        = null;
 
 //variaveis do modulo tfd para emitir o recibo de ajuda de custo
 //****************************************************************//
 
-  var $Rretirou      = null;
-  var $Rcgsretirou = null;
-  var $Rcpf          = null;
-  var $Ridentidade   = null;
-  var $Rhoratfd         = null;
-  var $Rdatatfd         = null;
-  var $Rcodatendente = null;
-  var $Ratendente    = null;
-  var $rcodcgs       = null;
-  var $rbeneficiado  = null;
-  var $rvalor        = null;       
-  var $rprocedimento =null;
+  public $Rretirou      = null;
+  public $Rcgsretirou = null;
+  public $Rcpf          = null;
+  public $Ridentidade   = null;
+  public $Rhoratfd         = null;
+  public $Rdatatfd         = null;
+  public $Rcodatendente = null;
+  public $Ratendente    = null;
+  public $rcodcgs       = null;
+  public $rbeneficiado  = null;
+  public $rvalor        = null;       
+  public $rprocedimento =null;
   // VARIAVEIS DO RETÂNGULO PACIENTE
-  var $sRNomePaciente     = null;
-  var $iRsCnsPaciente     = null;
-  var $dRNascPaciente     = null;
-  var $sRIdentPaciente    = null;
-  var $sRCpfPaciente      = null;
-  var $sRCartSusPaciente  = null;
-  var $sRMaePaciente      = null;
-  var $sRSexoPaciente     = null;
-  var $sREnderecoPaciente = null;
-  var $sRNumeroPaciente   = null; 
-  var $sRComplPaciente    = null;
-  var $sRBairroPaciente   = null;
-  var $sRMunicPaciente    = null;
-  var $sRUfPaciente       = null;
-  var $sRCepPaciente      = null;
-  var $sRTelPaciente      = null;
-  var $sRCelPaciente      = null;
+  public $sRNomePaciente     = null;
+  public $iRsCnsPaciente     = null;
+  public $dRNascPaciente     = null;
+  public $sRIdentPaciente    = null;
+  public $sRCpfPaciente      = null;
+  public $sRCartSusPaciente  = null;
+  public $sRMaePaciente      = null;
+  public $sRSexoPaciente     = null;
+  public $sREnderecoPaciente = null;
+  public $sRNumeroPaciente   = null; 
+  public $sRComplPaciente    = null;
+  public $sRBairroPaciente   = null;
+  public $sRMunicPaciente    = null;
+  public $sRUfPaciente       = null;
+  public $sRCepPaciente      = null;
+  public $sRTelPaciente      = null;
+  public $sRCelPaciente      = null;
   
-  var $sRtf15_observacao  = null;
-  var $sRtf12_descricao   = null;
-  var $iRtf01_i_codigo    = null;
+  public $sRtf15_observacao  = null;
+  public $sRtf12_descricao   = null;
+  public $iRtf01_i_codigo    = null;
   
   // VARIAVEIS DA CAPA DE PROCESSO
-  var $result_vars;
+  public $result_vars;
 
 //************************************************************//
     
-  function db_impcarne($objpdf,$impmodelo){
+  function __construct($objpdf,$impmodelo){
     $this->objpdf = $objpdf;
     $this->impmodelo = $impmodelo; 
   }
-  function muda_pag($pagina,$xlin,$xcol,$fornec="false",&$contapagina,$mais=1){
+  function muda_pag($pagina,$xlin,$xcol,$fornec="false",&$contapagina = null,$mais=1){
     global $resparag, $resparagpadrao, $db61_texto, $db02_texto, $maislin, $xtotal, $flag_rodape;
 
     $x = false;
@@ -184,7 +184,7 @@ class db_impcarne extends cl_assinatura {
 			 
         $resparag = @db_query($sqlparag);
 
-        if(@pg_numrows($resparag) > 0){
+        if(@pg_num_rows($resparag) > 0){
             db_fieldsmemory($resparag,0);
 
             eval($db02_texto);
@@ -199,7 +199,7 @@ class db_impcarne extends cl_assinatura {
 			 
             $resparagpadrao = @db_query($sqlparagpadrao);
             
-            if(@pg_numrows($resparagpadrao) > 0){
+            if(@pg_num_rows($resparagpadrao) > 0){
                 db_fieldsmemory($resparagpadrao,0);
 
                 eval($db61_texto);

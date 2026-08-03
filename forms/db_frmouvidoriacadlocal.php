@@ -75,9 +75,9 @@
 			        </td>
 			        <td> 
 			          <?php 
-			            $aTipoLocal = array("g"=>"Geral",
+			            $aTipoLocal = ["g"=>"Geral",
 			                                "e"=>"Endereço",
-			                                "d"=>"Departamento");
+			                                "d"=>"Departamento"];
 			            
 			            db_select('tipoLocal',$aTipoLocal,true,$db_opcao,"onChange='js_validaTipo();'");
 			          ?>
@@ -373,14 +373,14 @@ function js_preenchepesquisa(chave){
   db_iframe_ouvidoriacadlocal.hide();
   <?php 
 	  if($db_opcao!=1){
-	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+	    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	  }
   ?>
 }
 
 function js_recarregaTela(){
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
   ?>
 }
 

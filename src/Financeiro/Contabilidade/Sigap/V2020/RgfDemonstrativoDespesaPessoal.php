@@ -100,9 +100,7 @@ class RgfDemonstrativoDespesaPessoal extends ArquivoSigapFiscal
         $this->quadrimestre = PeriodoDePara::quadrimestre($this->periodo);
 
 
-        $instituicoes = array_map(function ($instituicao) {
-            return \InstituicaoRepository::getInstituicaoByCodigo($instituicao);
-        }, $this->codigoInstituicoes);
+        $instituicoes = array_map(fn($instituicao) => \InstituicaoRepository::getInstituicaoByCodigo($instituicao), $this->codigoInstituicoes);
         $this->periodo = new \Periodo($this->codigosQuadrimestres[$this->periodo->getCodigo()]);
         $oAnexo = AnexoI::getInstance($this->ano, $this->periodo, $instituicoes, 2);
 

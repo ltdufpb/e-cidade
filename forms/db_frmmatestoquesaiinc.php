@@ -87,7 +87,7 @@ from (
         $sTextoPontoPedido .= $oMaterialAlmoxarifado->getPontoDePedidoNoAlmoxarifado($oAlmoxarifado) . "</b>.";
         $sDisplayPontoPedido = '';
     }
-  } catch (Exception $eErro) {
+  } catch (Exception) {
       $numrows_matestoque = 0;
   }
 }
@@ -333,7 +333,7 @@ function js_preenchepesquisa(chave){
   db_iframe_matestoqueinimei.hide();
   <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

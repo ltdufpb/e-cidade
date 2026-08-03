@@ -31,7 +31,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_config_ext_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_config = new cl_sau_config_ext;
 ?>
 <html>
@@ -69,7 +69,7 @@ $clsau_config = new cl_sau_config_ext;
            }
         }
 	         $sql = $clsau_config->sql_query_ext();
-        $repassa = array();
+        $repassa = [];
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){

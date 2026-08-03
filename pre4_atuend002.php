@@ -34,7 +34,7 @@ include(modification("classes/db_cgm_classe.php"));
 $cldb_cgmatualiza = new cl_db_cgmatualiza;
 $cldb_cgmatualizaliga = new cl_db_cgmatualizaliga;
 $cl_cgm = new cl_cgm;
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
 ?>
 <html>
 <head>
@@ -78,31 +78,31 @@ input {
 </head>
 <body bgcolor="#CCCCCC" bgcolor="#CCCCCC" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
   <?php 
-  if(isset($HTTP_POST_VARS["numcgm"])) {
-        $cgccpf = @$HTTP_POST_VARS["ck_cgccpf"]=="1"?@$HTTP_POST_VARS["cgccpf"]:@$HTTP_POST_VARS["z01_cgccpf"];
-        $nome = @$HTTP_POST_VARS["ck_nome"]=="1"?@$HTTP_POST_VARS["nome"]:@$HTTP_POST_VARS["z01_nome"];
-        $ender = @$HTTP_POST_VARS["ck_ender"]=="1"?@$HTTP_POST_VARS["ender"]:@$HTTP_POST_VARS["z01_ender"];
-        $munic = @$HTTP_POST_VARS["ck_munic"]=="1"?@$HTTP_POST_VARS["munic"]:@$HTTP_POST_VARS["z01_munic"];
-        $uf = @$HTTP_POST_VARS["ck_uf"]=="1"?@$HTTP_POST_VARS["uf"]:@$HTTP_POST_VARS["z01_uf"];
-        $cep = @$HTTP_POST_VARS["ck_cep"]=="1"?@$HTTP_POST_VARS["cep"]:@$HTTP_POST_VARS["z01_cep"];
-        $telef = @$HTTP_POST_VARS["ck_telef"]=="1"?@$HTTP_POST_VARS["telef"]:@$HTTP_POST_VARS["z01_telef"];
-        $ident = @$HTTP_POST_VARS["ck_ident"]=="1"?@$HTTP_POST_VARS["ident"]:@$HTTP_POST_VARS["z01_ident"];
-        $bairro = @$HTTP_POST_VARS["ck_bairro"]=="1"?@$HTTP_POST_VARS["bairro"]:@$HTTP_POST_VARS["z01_bairro"];
-        $incest = @$HTTP_POST_VARS["ck_incest"]=="1"?@$HTTP_POST_VARS["incest"]:@$HTTP_POST_VARS["z01_incest"];
-        $telcel = @$HTTP_POST_VARS["ck_telcel"]=="1"?@$HTTP_POST_VARS["telcel"]:@$HTTP_POST_VARS["z01_telcel"];
-        $email = @$HTTP_POST_VARS["ck_email"]=="1"?@$HTTP_POST_VARS["email"]:@$HTTP_POST_VARS["z01_email"];
-        $endcon = @$HTTP_POST_VARS["ck_endcon"]=="1"?@$HTTP_POST_VARS["endcon"]:@$HTTP_POST_VARS["z01_endcon"];
-        $muncon = @$HTTP_POST_VARS["ck_muncon"]=="1"?@$HTTP_POST_VARS["muncon"]:@$HTTP_POST_VARS["z01_muncon"];
-        $baicon = @$HTTP_POST_VARS["ck_baicon"]=="1"?@$HTTP_POST_VARS["baicon"]:@$HTTP_POST_VARS["z01_baicon"];
-        $ufcon = @$HTTP_POST_VARS["ck_ufcon"]=="1"?@$HTTP_POST_VARS["ufcon"]:@$HTTP_POST_VARS["z01_ufcon"];
-        $cepcon = @$HTTP_POST_VARS["ck_cepcon"]=="1"?@$HTTP_POST_VARS["cepcon"]:@$HTTP_POST_VARS["z01_cepcon"];
-        $telcon = @$HTTP_POST_VARS["ck_telcon"]=="1"?@$HTTP_POST_VARS["telcon"]:@$HTTP_POST_VARS["z01_telcon"];
-        $celcon = @$HTTP_POST_VARS["ck_celcon"]=="1"?@$HTTP_POST_VARS["celcon"]:@$HTTP_POST_VARS["z01_celcon"];
-        $emailc = @$HTTP_POST_VARS["ck_emailc"]=="1"?@$HTTP_POST_VARS["emailc"]:@$HTTP_POST_VARS["z01_emailc"];
+  if(isset($_POST["numcgm"])) {
+        $cgccpf = @$_POST["ck_cgccpf"]=="1"?@$_POST["cgccpf"]:@$_POST["z01_cgccpf"];
+        $nome = @$_POST["ck_nome"]=="1"?@$_POST["nome"]:@$_POST["z01_nome"];
+        $ender = @$_POST["ck_ender"]=="1"?@$_POST["ender"]:@$_POST["z01_ender"];
+        $munic = @$_POST["ck_munic"]=="1"?@$_POST["munic"]:@$_POST["z01_munic"];
+        $uf = @$_POST["ck_uf"]=="1"?@$_POST["uf"]:@$_POST["z01_uf"];
+        $cep = @$_POST["ck_cep"]=="1"?@$_POST["cep"]:@$_POST["z01_cep"];
+        $telef = @$_POST["ck_telef"]=="1"?@$_POST["telef"]:@$_POST["z01_telef"];
+        $ident = @$_POST["ck_ident"]=="1"?@$_POST["ident"]:@$_POST["z01_ident"];
+        $bairro = @$_POST["ck_bairro"]=="1"?@$_POST["bairro"]:@$_POST["z01_bairro"];
+        $incest = @$_POST["ck_incest"]=="1"?@$_POST["incest"]:@$_POST["z01_incest"];
+        $telcel = @$_POST["ck_telcel"]=="1"?@$_POST["telcel"]:@$_POST["z01_telcel"];
+        $email = @$_POST["ck_email"]=="1"?@$_POST["email"]:@$_POST["z01_email"];
+        $endcon = @$_POST["ck_endcon"]=="1"?@$_POST["endcon"]:@$_POST["z01_endcon"];
+        $muncon = @$_POST["ck_muncon"]=="1"?@$_POST["muncon"]:@$_POST["z01_muncon"];
+        $baicon = @$_POST["ck_baicon"]=="1"?@$_POST["baicon"]:@$_POST["z01_baicon"];
+        $ufcon = @$_POST["ck_ufcon"]=="1"?@$_POST["ufcon"]:@$_POST["z01_ufcon"];
+        $cepcon = @$_POST["ck_cepcon"]=="1"?@$_POST["cepcon"]:@$_POST["z01_cepcon"];
+        $telcon = @$_POST["ck_telcon"]=="1"?@$_POST["telcon"]:@$_POST["z01_telcon"];
+        $celcon = @$_POST["ck_celcon"]=="1"?@$_POST["celcon"]:@$_POST["z01_celcon"];
+        $emailc = @$_POST["ck_emailc"]=="1"?@$_POST["emailc"]:@$_POST["z01_emailc"];
 
         if(!empty($numcgm)){
          $result = db_query("UPDATE db_cgmatualiza SET w11_revisado = 't' WHERE w11_sequencial = $retorno") or die("Erro(53) atualizando tabela db_cgmatualiza");
-         if(pg_cmdtuples($result) <= 0)
+         if(pg_affected_rows($result) <= 0)
           db_erro("Erro atualizando tabela db_cgmatualiza.");
            $sql = "UPDATE cgm SET
                        z01_cgccpf = '$cgccpf',
@@ -201,7 +201,7 @@ input {
                   and w11_revisado = 'f'
                ";
         $result = db_query($sql);
-        if(pg_numrows($result) > 0)
+        if(pg_num_rows($result) > 0)
           db_fieldsmemory($result,0);
         else
           db_erro("Erro no select da tabela db_cgmatualizaliga.");

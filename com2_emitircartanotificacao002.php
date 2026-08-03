@@ -43,7 +43,7 @@ $sAgt             = "patrimonio/com2_emitecartanotificacao003.agt";
 $sNomeRelatorio   = "tmp/cartaNotificacaoDebitos".date("YmdHis").db_getsession("DB_id_usuario").".pdf";
 $sCaminhoSalvoSxw = "tmp/docCartaNotificacaoSalvoSxw".date("YmdHis").db_getsession("DB_id_usuario").".sxw";
 
-$aParam                     = array();
+$aParam                     = [];
 $aParam['$iCodigoBloqueio'] = $oGet->iCodigoNotificaBloqueioFornecedor;
 
 db_stdClass::oo2pdf(11, null, $sAgt, $aParam, $sCaminhoSalvoSxw, $sNomeRelatorio);

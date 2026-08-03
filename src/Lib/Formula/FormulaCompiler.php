@@ -37,11 +37,6 @@ use Exception;
 abstract class FormulaCompiler
 {
     /**
-     * @var string
-     */
-    private $formula;
-
-    /**
      * @var Compiler
      */
     private $compiler;
@@ -49,15 +44,14 @@ abstract class FormulaCompiler
     /**
      * @var array
      */
-    private $variaveis = array();
+    private $variaveis = [];
 
     /**
      * FormulaCompiler constructor.
      * @param string $formula
      */
-    public function __construct($formula)
+    public function __construct(private $formula)
     {
-        $this->formula = $formula;
         $this->compiler = new Compiler();
     }
 

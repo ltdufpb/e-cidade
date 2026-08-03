@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE bodesp
 class cl_bodesp { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $bo05_cod_desp = 0; 
-   var $bo05_codmov = 0; 
-   var $bo05_datadesp_dia = null; 
-   var $bo05_datadesp_mes = null; 
-   var $bo05_datadesp_ano = null; 
-   var $bo05_datadesp = null; 
-   var $bo05_coddepto_ori = 0; 
-   var $bo05_coddepto_dest = 0; 
-   var $bo05_despacho = null; 
+   public $bo05_cod_desp = 0; 
+   public $bo05_codmov = 0; 
+   public $bo05_datadesp_dia = null; 
+   public $bo05_datadesp_mes = null; 
+   public $bo05_datadesp_ano = null; 
+   public $bo05_datadesp = null; 
+   public $bo05_coddepto_ori = 0; 
+   public $bo05_coddepto_dest = 0; 
+   public $bo05_despacho = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  bo05_cod_desp = int4 = Código do Despacho 
                  bo05_codmov = int4 = Número do movimento 
                  bo05_datadesp = date = Data do despacho 
@@ -61,10 +61,10 @@ class cl_bodesp {
                  bo05_despacho = text = Despacho 
                  ";
    //funcao construtor da classe 
-   function cl_bodesp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("bodesp"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_bodesp {
          $this->erro_status = "0";
          return false; 
        }
-       $this->bo05_cod_desp = pg_result($result,0,0); 
+       $this->bo05_cod_desp = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tel_coddesp_seq");
-       if(($result != false) && (pg_result($result,0,0) < $bo05_cod_desp)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $bo05_cod_desp)){
          $this->erro_sql = " Campo bo05_cod_desp maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_bodesp {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Despacho ($this->bo05_cod_desp) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Despacho já Cadastrado";
@@ -218,15 +218,15 @@ class cl_bodesp {
      $resaco = $this->sql_record($this->sql_query_file($this->bo05_cod_desp));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8596,'$this->bo05_cod_desp','I')");
-       $resac = db_query("insert into db_acount values($acount,1462,8596,'','".AddSlashes(pg_result($resaco,0,'bo05_cod_desp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1462,8597,'','".AddSlashes(pg_result($resaco,0,'bo05_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1462,8598,'','".AddSlashes(pg_result($resaco,0,'bo05_datadesp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1462,8599,'','".AddSlashes(pg_result($resaco,0,'bo05_coddepto_ori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1462,8600,'','".AddSlashes(pg_result($resaco,0,'bo05_coddepto_dest'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1462,8601,'','".AddSlashes(pg_result($resaco,0,'bo05_despacho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1462,8596,'','".AddSlashes(pg_fetch_result($resaco,0,'bo05_cod_desp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1462,8597,'','".AddSlashes(pg_fetch_result($resaco,0,'bo05_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1462,8598,'','".AddSlashes(pg_fetch_result($resaco,0,'bo05_datadesp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1462,8599,'','".AddSlashes(pg_fetch_result($resaco,0,'bo05_coddepto_ori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1462,8600,'','".AddSlashes(pg_fetch_result($resaco,0,'bo05_coddepto_dest'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1462,8601,'','".AddSlashes(pg_fetch_result($resaco,0,'bo05_despacho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_bodesp {
       $this->atualizacampos();
      $sql = " update bodesp set ";
      $virgula = "";
-     if(trim($this->bo05_cod_desp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_cod_desp"])){ 
+     if(trim((string) $this->bo05_cod_desp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_cod_desp"])){ 
        $sql  .= $virgula." bo05_cod_desp = $this->bo05_cod_desp ";
        $virgula = ",";
-       if(trim($this->bo05_cod_desp) == null ){ 
+       if(trim((string) $this->bo05_cod_desp) == null ){ 
          $this->erro_sql = " Campo Código do Despacho nao Informado.";
          $this->erro_campo = "bo05_cod_desp";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_bodesp {
          return false;
        }
      }
-     if(trim($this->bo05_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_codmov"])){ 
+     if(trim((string) $this->bo05_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_codmov"])){ 
        $sql  .= $virgula." bo05_codmov = $this->bo05_codmov ";
        $virgula = ",";
-       if(trim($this->bo05_codmov) == null ){ 
+       if(trim((string) $this->bo05_codmov) == null ){ 
          $this->erro_sql = " Campo Número do movimento nao Informado.";
          $this->erro_campo = "bo05_codmov";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_bodesp {
          return false;
        }
      }
-     if(trim($this->bo05_datadesp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_datadesp_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bo05_datadesp_dia"] !="") ){ 
+     if(trim((string) $this->bo05_datadesp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_datadesp_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bo05_datadesp_dia"] !="") ){ 
        $sql  .= $virgula." bo05_datadesp = '$this->bo05_datadesp' ";
        $virgula = ",";
-       if(trim($this->bo05_datadesp) == null ){ 
+       if(trim((string) $this->bo05_datadesp) == null ){ 
          $this->erro_sql = " Campo Data do despacho nao Informado.";
          $this->erro_campo = "bo05_datadesp_dia";
          $this->erro_banco = "";
@@ -277,7 +277,7 @@ class cl_bodesp {
        if(isset($GLOBALS["HTTP_POST_VARS"]["bo05_datadesp_dia"])){ 
          $sql  .= $virgula." bo05_datadesp = null ";
          $virgula = ",";
-         if(trim($this->bo05_datadesp) == null ){ 
+         if(trim((string) $this->bo05_datadesp) == null ){ 
            $this->erro_sql = " Campo Data do despacho nao Informado.";
            $this->erro_campo = "bo05_datadesp_dia";
            $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_bodesp {
          }
        }
      }
-     if(trim($this->bo05_coddepto_ori)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_coddepto_ori"])){ 
+     if(trim((string) $this->bo05_coddepto_ori)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_coddepto_ori"])){ 
        $sql  .= $virgula." bo05_coddepto_ori = $this->bo05_coddepto_ori ";
        $virgula = ",";
-       if(trim($this->bo05_coddepto_ori) == null ){ 
+       if(trim((string) $this->bo05_coddepto_ori) == null ){ 
          $this->erro_sql = " Campo Departamento de Origem nao Informado.";
          $this->erro_campo = "bo05_coddepto_ori";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_bodesp {
          return false;
        }
      }
-     if(trim($this->bo05_coddepto_dest)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_coddepto_dest"])){ 
+     if(trim((string) $this->bo05_coddepto_dest)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_coddepto_dest"])){ 
        $sql  .= $virgula." bo05_coddepto_dest = $this->bo05_coddepto_dest ";
        $virgula = ",";
-       if(trim($this->bo05_coddepto_dest) == null ){ 
+       if(trim((string) $this->bo05_coddepto_dest) == null ){ 
          $this->erro_sql = " Campo Departamento de Destino nao Informado.";
          $this->erro_campo = "bo05_coddepto_dest";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_bodesp {
          return false;
        }
      }
-     if(trim($this->bo05_despacho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_despacho"])){ 
+     if(trim((string) $this->bo05_despacho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bo05_despacho"])){ 
        $sql  .= $virgula." bo05_despacho = '$this->bo05_despacho' ";
        $virgula = ",";
-       if(trim($this->bo05_despacho) == null ){ 
+       if(trim((string) $this->bo05_despacho) == null ){ 
          $this->erro_sql = " Campo Despacho nao Informado.";
          $this->erro_campo = "bo05_despacho";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_bodesp {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8596,'$this->bo05_cod_desp','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bo05_cod_desp"]))
-           $resac = db_query("insert into db_acount values($acount,1462,8596,'".AddSlashes(pg_result($resaco,$conresaco,'bo05_cod_desp'))."','$this->bo05_cod_desp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1462,8596,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bo05_cod_desp'))."','$this->bo05_cod_desp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bo05_codmov"]))
-           $resac = db_query("insert into db_acount values($acount,1462,8597,'".AddSlashes(pg_result($resaco,$conresaco,'bo05_codmov'))."','$this->bo05_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1462,8597,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bo05_codmov'))."','$this->bo05_codmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bo05_datadesp"]))
-           $resac = db_query("insert into db_acount values($acount,1462,8598,'".AddSlashes(pg_result($resaco,$conresaco,'bo05_datadesp'))."','$this->bo05_datadesp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1462,8598,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bo05_datadesp'))."','$this->bo05_datadesp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bo05_coddepto_ori"]))
-           $resac = db_query("insert into db_acount values($acount,1462,8599,'".AddSlashes(pg_result($resaco,$conresaco,'bo05_coddepto_ori'))."','$this->bo05_coddepto_ori',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1462,8599,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bo05_coddepto_ori'))."','$this->bo05_coddepto_ori',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bo05_coddepto_dest"]))
-           $resac = db_query("insert into db_acount values($acount,1462,8600,'".AddSlashes(pg_result($resaco,$conresaco,'bo05_coddepto_dest'))."','$this->bo05_coddepto_dest',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1462,8600,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bo05_coddepto_dest'))."','$this->bo05_coddepto_dest',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bo05_despacho"]))
-           $resac = db_query("insert into db_acount values($acount,1462,8601,'".AddSlashes(pg_result($resaco,$conresaco,'bo05_despacho'))."','$this->bo05_despacho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1462,8601,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bo05_despacho'))."','$this->bo05_despacho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_bodesp {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8596,'$bo05_cod_desp','E')");
-         $resac = db_query("insert into db_acount values($acount,1462,8596,'','".AddSlashes(pg_result($resaco,$iresaco,'bo05_cod_desp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1462,8597,'','".AddSlashes(pg_result($resaco,$iresaco,'bo05_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1462,8598,'','".AddSlashes(pg_result($resaco,$iresaco,'bo05_datadesp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1462,8599,'','".AddSlashes(pg_result($resaco,$iresaco,'bo05_coddepto_ori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1462,8600,'','".AddSlashes(pg_result($resaco,$iresaco,'bo05_coddepto_dest'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1462,8601,'','".AddSlashes(pg_result($resaco,$iresaco,'bo05_despacho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1462,8596,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bo05_cod_desp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1462,8597,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bo05_codmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1462,8598,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bo05_datadesp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1462,8599,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bo05_coddepto_ori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1462,8600,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bo05_coddepto_dest'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1462,8601,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bo05_despacho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from bodesp
@@ -462,7 +462,7 @@ class cl_bodesp {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:bodesp";
@@ -476,7 +476,7 @@ class cl_bodesp {
    function sql_query ( $bo05_cod_desp=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -501,7 +501,7 @@ class cl_bodesp {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -513,7 +513,7 @@ class cl_bodesp {
    function sql_query_file ( $bo05_cod_desp=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -534,7 +534,7 @@ class cl_bodesp {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

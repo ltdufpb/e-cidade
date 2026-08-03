@@ -29,9 +29,9 @@
     include(modification("dbforms/db_funcoes.php"));
     include(modification("dbforms/db_classesgenericas.php"));
 
-if( isset($HTTP_GET_VARS["data1"]) && isset( $HTTP_GET_VARS["data2"])){
+if( isset($_GET["data1"]) && isset( $_GET["data2"])){
 
-    db_postmemory($HTTP_POST_VARS);
+    db_postmemory($_POST);
     /*
     $str_sql = "select q50_data,q50_hora,q50_numpre, q50_numpar,q50_vlrinf,k00_inscr, cgm2.z01_cgccpf as cpf_cont , cgm2.z01_nome as contrib,cgm.z01_numcgm as cgm_log, cgm.z01_cgccpf as cpf_log,cgm.z01_nome as logado
 				from issvarlancval 
@@ -101,7 +101,7 @@ if( isset($HTTP_GET_VARS["data1"]) && isset( $HTTP_GET_VARS["data2"])){
 //die($str_sql);
 
     $result = db_query($str_sql) or die("FALHA: <br>$str_sql" );
-    if(pg_numrows($result)==0){
+    if(pg_num_rows($result)==0){
       db_redireciona('db_erros.php?fechar=true&db_erro=Não existem informações pata gerar o relatório.');
     }
     $head2 = "Lançamentos efetuados no DBPREF/DBPORTAL";
@@ -116,7 +116,7 @@ if( isset($HTTP_GET_VARS["data1"]) && isset( $HTTP_GET_VARS["data2"])){
 
     $pag = 1;
 
-    for ($x = 0 ; $x < pg_numrows($result);$x++){
+    for ($x = 0 ; $x < pg_num_rows($result);$x++){
         db_fieldsmemory($result,$x);
         if (($pdf->gety() > $pdf->h - 30) || $pag == 1 ){
             $pdf->addpage("L");

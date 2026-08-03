@@ -43,7 +43,7 @@
  	 c= data, recebe do banco e faz 16/08/2005 = 16082005
   */
  function formatar($field,$size,$tipo=""){
-    $field = trim($field);
+    $field = trim((string) $field);
     if ((strlen($field) > $size ) && $tipo !='d' ){
        $field = substr($field,0,$size);
     }   
@@ -67,7 +67,7 @@
        $field = espaco($size-(strlen($field)),'0').$field;
 
     } else if ($tipo =="d"){  
-       $dt= split("-",$field);
+       $dt= preg_split("#\\-#m",$field);
        $field = "$dt[2]$dt[1]$dt[0]";
     }  
     return $field;

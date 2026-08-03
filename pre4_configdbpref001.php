@@ -33,9 +33,9 @@ require_once(modification("classes/db_configdbpref_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_libdicionario.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clconfigdbpref = new cl_configdbpref;
 $db_botao = true;

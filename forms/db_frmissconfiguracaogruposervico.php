@@ -30,8 +30,8 @@ $oDaoConfiguracaoGrupo->rotulo->label();
 $oRotulo = new rotulocampo();
 $oRotulo->label("q126_sequencial");
 
-$aLocalPagamento = array(1 => 'Local de prestação', 2 => 'Sede Prestador', 3 => 'Sede Tomador');
-$aTipoTributacao = array(1 => 'Fixo', 2 => 'Variável', 3 => 'Não Incide');
+$aLocalPagamento = [1 => 'Local de prestação', 2 => 'Sede Prestador', 3 => 'Sede Tomador'];
+$aTipoTributacao = [1 => 'Fixo', 2 => 'Variável', 3 => 'Não Incide'];
 
 $sDesabilitaBotao = $db_opcao ? null : 'disabled="true"';
 
@@ -157,7 +157,7 @@ $sDesabilitaBotao = $db_opcao ? null : 'disabled="true"';
 				ORDER BY q162_data_fim DESC
 		";
 		$result = db_query($sql);
-		$num = pg_numrows($result);
+		$num = pg_num_rows($result);
 		?>
 		<br><br>
 		<fieldset>
@@ -177,10 +177,10 @@ $sDesabilitaBotao = $db_opcao ? null : 'disabled="true"';
 						db_fieldsmemory($result,$i);
 						if (!empty($q162_data_fim)) {
 							// Formata data para mostrar na tabela de vínculos
-							$data_fim = strtotime($q162_data_fim);
+							$data_fim = strtotime((string) $q162_data_fim);
 							$data_fim = date('d/m/Y',$data_fim);
 
-							$q162_data_fim = strtotime($q162_data_fim);
+							$q162_data_fim = strtotime((string) $q162_data_fim);
 						} else {
 							$data_fim = "Sem Data";
 							$q162_data_fim = "";

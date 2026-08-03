@@ -61,7 +61,7 @@ $cllistadoc    = new cl_listadoc;
 $clcadconvenio = new cl_cadconvenio;
 $cldb_config   = new cl_db_config;
  
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $rsCadConvenio = $clcadconvenio->sql_record($clcadconvenio->sql_query_arrecadacao(null,"ar11_sequencial",null," ar11_instit = ".db_getsession('DB_instit')));
 $oCadConvenio  = db_utils::fieldsMemory($rsCadConvenio,0);
@@ -148,7 +148,7 @@ $sql .= "         where iptucalc.j23_anousu = $anousu $wheretipo $limit ) as x "
 $sql .= " order by $orderby "; 
 
 $rsUnica 	  = db_query($sql) or die($sql);
-$numrowsunica = pg_numrows($rsUnica);
+$numrowsunica = pg_num_rows($rsUnica);
 
 if ($numrowsunica == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existe calculo para o IPTU '.$anousu);
@@ -197,7 +197,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
 			 and k00_dtvenc < '".date("Y-m-d", db_getsession("DB_datausu"))."' limit 1";
 
   $rsResulant = db_query($sql);
-  $numlin = pg_numrows($rsResulant);
+  $numlin = pg_num_rows($rsResulant);
   
   if ($numlin > 0) {
     $pdf2->iptdebant = "Há Débitos Anteriores, favor procurar Setor de Dívida Ativa";
@@ -208,7 +208,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
 
   unset ($resultpro);
   
-  $vt = $HTTP_POST_VARS;
+  $vt = $_POST;
   $tam = sizeof($vt);
   reset($vt);
   $numpres = "";
@@ -218,19 +218,19 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
     next($vt);
   }
   
-  $numpres = split("N", $numpres);
+  $numpres = preg_split("#N#m", $numpres);
   
   $unica = false;
   if (sizeof($numpres) < 2) {
-    $numpres = array ("0" => "0", "1" => $numpre_unica.'P000');
+    $numpres =  ["0" => "0", "1" => $numpre_unica.'P000'];
     $unica = true;
   } else {
-    if (isset ($HTTP_POST_VARS["numpre_unica"])) {
+    if (isset ($_POST["numpre_unica"])) {
       $unica = true;
     }
   }
   for ($volta = 1; $volta < sizeof($numpres); $volta ++) {
-    $codigos = split("P", $numpres[$volta]);
+    $codigos = preg_split("#P#m", (string) $numpres[$volta]);
   }
   
   $resultunica = db_query("select j23_anousu from iptucalc inner join iptunump on j20_anousu = j23_anousu and j20_matric = j23_matric where j20_numpre = $numpre_unica");
@@ -238,7 +238,7 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
   $pdf2->iptj23_anousu = $j23_anousu;
   
   $resultunica = db_query("select * from recibounica where k00_numpre = $numpre_unica");
-  if (pg_numrows($resultunica)){
+  if (pg_num_rows($resultunica)){
     db_fieldsmemory($resultunica, 0);
     $vencunica = db_formatar($k00_dtvenc, "d");
   }
@@ -251,14 +251,14 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
               where r.k00_numpre = ".$codigos[0]." and r.k00_dtvenc >= '".date('Y-m-d', db_getsession("DB_datausu"))."'::date limit 1";
     $linha = 220;
     $resultfin = db_query($sql) or die($sql);
-    if ($resultfin != false && pg_numrows($resultfin) > 0) {
+    if ($resultfin != false && pg_num_rows($resultfin) > 0) {
       db_fieldsmemory($resultfin, 0);
 
-      $uvlrhis      = substr($fc_calcula,1,13);
-      $uvlrcor      = substr($fc_calcula,14,13);
-      $uvlrjuros    = substr($fc_calcula,27,13);
-      $uvlrmulta    = substr($fc_calcula,40,13);
-      $uvlrdesconto = substr($fc_calcula,53,13);
+      $uvlrhis      = substr((string) $fc_calcula,1,13);
+      $uvlrcor      = substr((string) $fc_calcula,14,13);
+      $uvlrjuros    = substr((string) $fc_calcula,27,13);
+      $uvlrmulta    = substr((string) $fc_calcula,40,13);
+      $uvlrdesconto = substr((string) $fc_calcula,53,13);
       $utotal       = @$uvlrcor+@$uvlrjuro+@$uvlrmulta-@$uvlrdesconto;
       
       $pdf2->iptk00_percdes = $k00_percdes;
@@ -296,14 +296,14 @@ for ($iunica=0;$iunica < $numrowsunica;$iunica++){
           where j22_anousu = $j23_anousu 
             and j22_matric = $matric";
   $sqlres = db_query($sql);
-  if (pg_numrows($sqlres) > 0) {
+  if (pg_num_rows($sqlres) > 0) {
     db_fieldsmemory($sqlres, 0);
   } else {
     $vlredi = 0;
   }
   $sql = "select j23_vlrter, j23_aliq from iptucalc where j23_anousu = $j23_anousu and j23_matric = $matric";
   $sqlres = db_query($sql);
-  if (pg_numrows($sqlres) > 0) {
+  if (pg_num_rows($sqlres) > 0) {
     db_fieldsmemory($sqlres, 0);
     $pdf2->iptj23_aliq = $j23_aliq;
   }else{

@@ -32,19 +32,19 @@ include(modification("libs/db_sql.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $classinatura = new cl_assinatura;
 
 
 //$tipo_agrupa = substr($nivel,0,1);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
       $descr_inst .= $xvirg.$nomeinstabrev ;
         $xvirg = ', ';
@@ -58,26 +58,26 @@ if($origem == "O"){
   if($opcao == 3)
     $head6 = "PERÍODO : ".db_formatar($perini,'d')." A ".db_formatar($perfin,'d') ;
   else
-    $head6 = "PERÍODO : ".strtoupper(db_mes(substr($perini,5,2)))." A ".strtoupper(db_mes(substr($perfin,5,2)));
+    $head6 = "PERÍODO : ".strtoupper(db_mes(substr((string) $perini,5,2)))." A ".strtoupper(db_mes(substr((string) $perfin,5,2)));
 }
 // pesquisa a conta mae da receita
 $head3 = "LISTAGEM DE ATIVIDADES/PROJETOS";
 $head4 = "EXERCICIO: ".db_getsession("DB_anousu")." - ".$xtipo;
 $head5 = "INSTITUIÇÕES : ".$descr_inst;
 
-$xcampos = split("-",$orgaos);
+$xcampos = preg_split("#\\-#m",$orgaos);
 
 
-if(substr($nivel,0,1) == '1'){
+if(str_starts_with((string) $nivel, '1')){
   $xwhere1 = " trim(to_char(o58_orgao,'99')) in (";
-}elseif(substr($nivel,0,1) == '2'){
+}elseif(str_starts_with((string) $nivel, '2')){
   $xwhere1 = " trim(to_char(o58_orgao,'99'))||'.'||trim(to_char(o58_unidade,'99')) in (";
-}elseif(substr($nivel,0,1) == '6'){
+}elseif(str_starts_with((string) $nivel, '6')){
   $xwhere1 = " trim(to_char(o58_projativ,'9999999999999')) in (";
 }
 $virgula1 = ' ';
 for($i=0;$i < sizeof($xcampos);$i++){
-   $xxcampos = split("_",$xcampos[$i]);
+   $xxcampos = preg_split("#_#m",(string) $xcampos[$i]);
    $virgula = '';
    $where  = "'";
    $where1 = "'";
@@ -167,7 +167,7 @@ $totativg = 0;
 $totoperg = 0;
 $qualpa   = 0;
 		
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
 
   db_fieldsmemory($result,$i);
 

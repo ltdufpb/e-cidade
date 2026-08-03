@@ -170,7 +170,7 @@ function js_preenchepesquisa(chave){
 	db_iframe_histocorrencia.hide();
   <?php 
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }
@@ -179,7 +179,7 @@ function js_preenchepesquisaCGM(chave, chave2){
 	db_iframe_histocorrencia.hide();
   <?php 
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipoPesquisa=cgm&chavepesquisa='+chave+'&idchave='+chave2";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipoPesquisa=cgm&chavepesquisa='+chave+'&idchave='+chave2";
     }
   ?>
 }
@@ -188,7 +188,7 @@ function js_preenchepesquisaMatric(chave, chave2){
 	db_iframe_histocorrencia.hide();
   <?php 
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipoPesquisa=matric&chavepesquisa='+chave+'&idchave='+chave2";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipoPesquisa=matric&chavepesquisa='+chave+'&idchave='+chave2";
     }
   ?>
 }
@@ -197,7 +197,7 @@ function js_preenchepesquisaInscr(chave, chave2){
 	db_iframe_histocorrencia.hide();
   <?php 
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipoPesquisa=inscr&chavepesquisa='+chave+'&idchave='+chave2";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tipoPesquisa=inscr&chavepesquisa='+chave+'&idchave='+chave2";
     }
   ?>
 }

@@ -66,9 +66,9 @@ require_once(modification("libs/db_liborcamento.php"));
                 <td><strong>Tipo de Usuário:</strong></td>
                 <td>
                   <?php 
-                    $aTiposUsuario = array ('t' => 'Todos', 
+                    $aTiposUsuario =  ['t' => 'Todos', 
                                             '0' => 'Internos', 
-                                            '1' => 'Externos');
+                                            '1' => 'Externos'];
                     db_select('iTipoUsuario', $aTiposUsuario, true, 1,"style='width:125px'");
                   ?>
                 </td>
@@ -77,7 +77,7 @@ require_once(modification("libs/db_liborcamento.php"));
                 <td><strong>Somente Ativos:</strong></td>
                 <td>
                   <?php 
-                    $aSomenteAtivos = array(1 => 'Sim', 0 => 'Não');
+                    $aSomenteAtivos = [1 => 'Sim', 0 => 'Não'];
                     db_select('iSomenteAtivo', $aSomenteAtivos, true, 1,"style='width:125px'");
                   ?>
                 </td>

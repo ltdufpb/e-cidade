@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_registroprecoparam_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clregistroprecoparam = new cl_registroprecoparam;
 $clregistroprecoparam->rotulo->label("pc08_instit");
 $clregistroprecoparam->rotulo->label("pc08_instit");
@@ -98,9 +98,9 @@ $clregistroprecoparam->rotulo->label("pc08_instit");
         }else{
            $sql = $clregistroprecoparam->sql_query("",$campos,"pc08_instit","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_pc08_instit)){
-          $repassa = array("chave_pc08_instit"=>$chave_pc08_instit,"chave_pc08_instit"=>$chave_pc08_instit);
+          $repassa = ["chave_pc08_instit"=>$chave_pc08_instit,"chave_pc08_instit"=>$chave_pc08_instit];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

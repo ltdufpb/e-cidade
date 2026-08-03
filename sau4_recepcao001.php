@@ -104,13 +104,13 @@ if( isset( $incluir ) ) {
 
       //Gera Numero  do Atendimento
       $sql_fc    = "select fc_numatend()";
-      $query_fc  = db_query($sql_fc) or die(pg_errormessage().$sql_fc);
+      $query_fc  = db_query($sql_fc) or die(pg_last_error().$sql_fc);
 
       if($query_fc == false){
         throw new Exception('Erro ao selecionar sequência do prontuário!');
       }
 
-      $fc_numatend = explode(",",pg_result($query_fc,0,0));
+      $fc_numatend = explode(",",pg_fetch_result($query_fc,0,0));
     }
 
     db_inicio_transacao();
@@ -231,9 +231,9 @@ if( isset( $incluir ) ) {
     //Incluir/Alterar Prontuario
     if( !isset($sd24_i_codigo) || (int)$sd24_i_codigo == 0 ){
 
-      $clprontuarios->sd24_i_ano              = trim($fc_numatend[0]);
-      $clprontuarios->sd24_i_mes              = trim($fc_numatend[1]);
-      $clprontuarios->sd24_i_seq              = trim($fc_numatend[2]);
+      $clprontuarios->sd24_i_ano              = trim((string) $fc_numatend[0]);
+      $clprontuarios->sd24_i_mes              = trim((string) $fc_numatend[1]);
+      $clprontuarios->sd24_i_seq              = trim((string) $fc_numatend[2]);
       $clprontuarios->sd24_i_unidade          = $sd24_i_unidade;
       $clprontuarios->sd24_i_numcgs           = $z01_i_cgsund;
       $clprontuarios->sd24_d_cadastro         = date("Y-m-d");

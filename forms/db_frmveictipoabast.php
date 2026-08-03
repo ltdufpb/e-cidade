@@ -79,7 +79,7 @@ $clveictipoabast->rotulo->label();
     <?php
 
     if($db_opcao!=1){
-      echo " location.href = '".basename($_SERVER['PHP_SELF'])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $_SERVER['PHP_SELF'])."?chavepesquisa='+chave";
     }
     ?>
   }

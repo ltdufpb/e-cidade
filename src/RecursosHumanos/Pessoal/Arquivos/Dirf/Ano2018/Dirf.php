@@ -50,8 +50,8 @@ class Dirf extends \ECidade\RecursosHumanos\Pessoal\Arquivos\Dirf\Ano2017\Dirf
         $sWhereBaseRubricas .= "   and r09_base    IN ('B901', 'B914' , 'B932')   ";
         $sWhereBaseRubricas .= "   and r09_instit  = " . db_getsession("DB_instit");
 
-        $aTabelasCalculo         = array('gerfsal' => 'r14', 'gerfcom' => 'r48', 'gerfres' => 'r20', 'gerffer' => 'r31');
-        $aQueryCalculoFinanceiro = array();
+        $aTabelasCalculo         = ['gerfsal' => 'r14', 'gerfcom' => 'r48', 'gerfres' => 'r20', 'gerffer' => 'r31'];
+        $aQueryCalculoFinanceiro = [];
 
         foreach ($aTabelasCalculo as $sTabela => $sSigla) {
 
@@ -68,7 +68,7 @@ class Dirf extends \ECidade\RecursosHumanos\Pessoal\Arquivos\Dirf\Ano2017\Dirf
         }
 
         $sInformacaoComplementar = '';
-        $sSqlBaseInfPlanoSaude   = implode($aQueryCalculoFinanceiro, 'union');
+        $sSqlBaseInfPlanoSaude   = implode('union', $aQueryCalculoFinanceiro);
         $rsBaseInfPlanoSaude     = \db_query($sSqlBaseInfPlanoSaude);
 
         if ($rsBaseInfPlanoSaude && pg_num_rows($rsBaseInfPlanoSaude) > 0) {
@@ -76,7 +76,7 @@ class Dirf extends \ECidade\RecursosHumanos\Pessoal\Arquivos\Dirf\Ano2017\Dirf
           for ($iRubricaPlano = 0; $iRubricaPlano < pg_num_rows($rsBaseInfPlanoSaude); $iRubricaPlano++) {
 
             $oRubricaPlanoSaude       = \db_utils::fieldsMemory($rsBaseInfPlanoSaude, $iRubricaPlano);
-            $aNomeRubrica             = explode(" ", $oRubricaPlanoSaude->rh27_descr);
+            $aNomeRubrica             = explode(" ", (string) $oRubricaPlanoSaude->rh27_descr);
             $sInformacaoComplementar .= "{$aNomeRubrica[0]}(".trim(db_formatar($oRubricaPlanoSaude->valor, 'f')).")";
           }
         }

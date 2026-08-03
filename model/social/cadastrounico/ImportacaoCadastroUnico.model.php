@@ -98,7 +98,7 @@ class ImportacaoCadastroUnico {
    * Cache com os telefones de contato da familia que esta sendo importadas
    * @var array
    */
-  protected $aTelefonesContatoFamilia = array();
+  protected $aTelefonesContatoFamilia = [];
   public function __construct() {
 
 
@@ -199,7 +199,7 @@ class ImportacaoCadastroUnico {
 
           $this->iTotalFamilias++;
           $this->adicionarFamilia($oLinha);
-          $this->aTelefonesContatoFamilia = array();
+          $this->aTelefonesContatoFamilia = [];
           $sChaveRegistro                 = $oLinha->cod_familiar_fam;
           break;
 
@@ -406,68 +406,25 @@ class ImportacaoCadastroUnico {
      * Realizamos um de para dos tipo do parentesco do cadastro unico para o e-cidade.
      * os dados para verificacao, sao so dados da tabela tipofamiliar.
      */
-    switch ($oLinha->cod_parentesco_rf_pessoa) {
-
-      case 1:
-
-        $iTipoFamiliar = 0;
-        break;
-
-      case 2:
-
-        $iTipoFamiliar = 15;
-        break;
-
-      case 3:
-
-        $iTipoFamiliar = 1;
-        break;
-
-      case 4:
-
-        $iTipoFamiliar = 2;
-        break;
-
-      case 5:
-
-        $iTipoFamiliar = 10;
-        break;
-
-      case 6:
-
-        $iTipoFamiliar = 5;
-        break;
-
-     case 7:
-
-        $iTipoFamiliar = 6;
-        break;
-
-     case 8 :
-        $iTipoFamiliar = 14;
-        break;
-
-      case 9:
-        $iTipoFamiliar = 14;
-        break;
-
-      case 10:
-        $iTipoFamiliar = 14;
-        break;
-
-      case 11:
-        $iTipoFamiliar = 14;
-        break;
-
-      default:
-        $iTipoFamiliar = 14;
-        break;
-    }
+    $iTipoFamiliar = match ($oLinha->cod_parentesco_rf_pessoa) {
+        1 => 0,
+        2 => 15,
+        3 => 1,
+        4 => 2,
+        5 => 10,
+        6 => 5,
+        7 => 6,
+        8 => 14,
+        9 => 14,
+        10 => 14,
+        11 => 14,
+        default => 14,
+    };
 
     $lCidadaoJaAtualizado = false;
     if ($oCidadao->getDataAtualizacaoCadastroUnico() != "") {
 
-      $sDataAtualizacaoCidadao = implode("-", array_reverse(explode("/", $oCidadao->getDataAtualizacaoCadastroUnico())));
+      $sDataAtualizacaoCidadao = implode("-", array_reverse(explode("/", (string) $oCidadao->getDataAtualizacaoCadastroUnico())));
       $sDataArquivo            = implode("-", array_reverse(explode("/", $this->parseDateCadastroUnico($oLinha->dta_atual_memb))));
       if (db_strtotime($sDataArquivo) <= db_strtotime($sDataAtualizacaoCidadao)) {
         $lCidadaoJaAtualizado = true;
@@ -507,7 +464,7 @@ class ImportacaoCadastroUnico {
     if ($oLinha->num_identidade_pessoa == '') {
       $oLinha->num_identidade_pessoa = '0';
     }
-    if (trim($oLinha->num_cpf_pessoa) == '') {
+    if (trim((string) $oLinha->num_cpf_pessoa) == '') {
       $oLinha->num_cpf_pessoa = '00000000000';
     }
     $this->oCidadao->setIdentidade($oLinha->num_identidade_pessoa);
@@ -528,9 +485,9 @@ class ImportacaoCadastroUnico {
    */
   protected function parseDateCadastroUnico($sData) {
 
-    return substr($sData, 0, 2)."/".
-           substr($sData, 2, 2)."/".
-           substr($sData, 4, 4);
+    return substr((string) $sData, 0, 2)."/".
+           substr((string) $sData, 2, 2)."/".
+           substr((string) $sData, 4, 4);
   }
 
   /**
@@ -544,8 +501,8 @@ class ImportacaoCadastroUnico {
      */
     foreach ($this->oFamilia->getComposicaoFamiliar() as $oCidadao) {
 
-      $sDataAtualizacaoCidadao         = implode("-", array_reverse(explode("/", $oCidadao->getDataAtualizacaoCadastroUnico())));
-      $sDataAtualizacaoCidadaoAnterior = implode("-", array_reverse(explode("/", $oCidadao->getDataAtualizacaoAnterior())));
+      $sDataAtualizacaoCidadao         = implode("-", array_reverse(explode("/", (string) $oCidadao->getDataAtualizacaoCadastroUnico())));
+      $sDataAtualizacaoCidadaoAnterior = implode("-", array_reverse(explode("/", (string) $oCidadao->getDataAtualizacaoAnterior())));
       if ($oCidadao->getDataAtualizacaoAnterior() == "" ||
          db_strtotime($sDataAtualizacaoCidadaoAnterior) < db_strtotime($sDataAtualizacaoCidadao)) {
         $oCidadao->salvar();
@@ -574,14 +531,14 @@ class ImportacaoCadastroUnico {
    */
   protected function vaccum() {
 
-    $aListaTabelas = array("cidadaoavaliacao",
+    $aListaTabelas = ["cidadaoavaliacao",
                            "cidadao",
                            "cidadaocadastrounico",
                            "cidadaofamilia",
                            "cidadaofamiliaavaliacao",
                            "cidadaocomposicaofamiliar",
                            "cadastrounicobasemunicipal"
-                         );
+                         ];
     foreach ($aListaTabelas as $sTabela) {
       db_query("ANALYZE {$sTabela}");
     }
@@ -612,7 +569,7 @@ class ImportacaoCadastroUnico {
     /**
      * Pesquisamos apenas os dados referentes a familia.
      */
-    $aDadosBaseMunicipalExcluir = array();
+    $aDadosBaseMunicipalExcluir = [];
     $sWhere                    = "as09_chaveregistro = '{$oFamilia->getCodigoFamiliarCadastroUnico()}'";
     $sWhere           .= "and as09_tiporegistro in (1, 2, 3, 11)";
     $sSqlDadosFamilia  = $oDaoBaseMunicipal->sql_query_file(null,
@@ -629,11 +586,11 @@ class ImportacaoCadastroUnico {
     if (count($aLinhasArquivo) == 0) {
       return true;
     }
-    $aCodigoGrupoAvaliacao = array("01" => array(3000016, 3000017, 3000018),
-                                   "02" => array(3000019),
-                                   "03" => array(3000020),
-                                   "11" => array(3000028)
-                                  );
+    $aCodigoGrupoAvaliacao = ["01" => [3000016, 3000017, 3000018],
+                                   "02" => [3000019],
+                                   "03" => [3000020],
+                                   "11" => [3000028]
+                                  ];
     foreach ($aLinhasArquivo as $oLinha) {
 
       $aDadosBaseMunicipalExcluir[] = $oLinha->as09_sequencial;
@@ -705,7 +662,7 @@ class ImportacaoCadastroUnico {
     /**
      * Pesquisamos apenas os dados referentes a familia.
      */
-    $aDadosBaseMunicipalExcluir = array();
+    $aDadosBaseMunicipalExcluir = [];
     $sWhere                    = "as09_chaveregistro = '{$oCidadao->getCodigoCadastroUnico()}'";
     $sWhere           .= "and as09_tiporegistro in (4, 5, 6, 7, 8, 12)";
     $sSqlDadosCidadao  = $oDaoBaseMunicipal->sql_query_file(null,
@@ -723,13 +680,13 @@ class ImportacaoCadastroUnico {
     }
 
     $oLayoutReader         = new DBLayoutReader(ImportacaoCadastroUnico::CODIGO_LAYOUT, 'null', false, false);
-    $aCodigoGrupoAvaliacao = array("04" => array(3000022),
-                                   "05" => array(3000023),
-                                   "06" => array(3000024),
-                                   "07" => array(3000025),
-                                   "08" => array(3000026),
-                                   "12" => array(3000029)
-                                  );
+    $aCodigoGrupoAvaliacao = ["04" => [3000022],
+                                   "05" => [3000023],
+                                   "06" => [3000024],
+                                   "07" => [3000025],
+                                   "08" => [3000026],
+                                   "12" => [3000029]
+                                  ];
 
     foreach ($aLinhasArquivo as $oLinha) {
 
@@ -785,14 +742,14 @@ class ImportacaoCadastroUnico {
    */
   protected function importarTelefones($oLinha) {
 
-    $aCamposTelefone = array(
+    $aCamposTelefone = [
                              "num_tel_contato_1_fam",
                              "num_tel_contato_2_fam",
                              "num_tel_contato_3_fam",
                              "num_tel_contato_4_fam",
-                            );
+                            ];
 
-    $this->aTelefonesContatoFamilia = array();
+    $this->aTelefonesContatoFamilia = [];
     foreach ($aCamposTelefone as $iIndice => $sCampoTelefone) {
 
       if (isset($oLinha->{$sCampoTelefone}) && $oLinha->{$sCampoTelefone} != "") {
@@ -800,8 +757,8 @@ class ImportacaoCadastroUnico {
         $sNumeroTelefone = $oLinha->{$sCampoTelefone};
 
         $oNumeroTelefone = new stdClass();
-        $oNumeroTelefone->numero = substr($sNumeroTelefone, 2);
-        $oNumeroTelefone->ddd    = substr($sNumeroTelefone, 0, 2);
+        $oNumeroTelefone->numero = substr((string) $sNumeroTelefone, 2);
+        $oNumeroTelefone->ddd    = substr((string) $sNumeroTelefone, 0, 2);
         /**
          * Utilizamos o primeiro telefone como principal;
          */

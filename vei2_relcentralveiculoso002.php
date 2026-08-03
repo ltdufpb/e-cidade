@@ -32,7 +32,7 @@ $clrotulo = new rotulocampo;
 $clveiccadcentral = new cl_veiccadcentral;
 //$clrotulo->label('m61_abrev');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($quebra == 's'){
@@ -81,7 +81,7 @@ $result_motoristas =  $clveiccadcentral->sql_record($clveiccadcentral->sql_query
 
 
 
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem centrais .');
 }
@@ -96,7 +96,7 @@ $alt = 4;
 
 $passa=false;
 $codigocentral="";
-for($x = 0; $x < pg_numrows($result_central);$x++){
+for($x = 0; $x < pg_num_rows($result_central);$x++){
 db_fieldsmemory($result_central,$x);
    
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 )

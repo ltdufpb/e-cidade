@@ -448,7 +448,7 @@ if ($db_opcao == 2 || $db_opcao == 22) {
         db_iframe_orctiporecconvenio.hide();
         <?php 
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

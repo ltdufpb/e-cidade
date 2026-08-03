@@ -32,11 +32,6 @@ use ECidade\Financeiro\Contabilidade\Relatorio\DemonstrativoFiscal;
 class AnexoIII extends RelatorioLegal implements InterfaceRelatorioLegal
 {
     /**
-     * @var integer
-     */
-    private $ano;
-
-    /**
      * @var \Periodo
      */
     private $periodo;
@@ -44,19 +39,17 @@ class AnexoIII extends RelatorioLegal implements InterfaceRelatorioLegal
     /**
      * @var array
      */
-    private $descricaoMes = array(4=>"ABRIL", 6 => "JUNHO", 8 => "AGOSTO", 12 => "DEZEMBRO");
+    private $descricaoMes = [4=>"ABRIL", 6 => "JUNHO", 8 => "AGOSTO", 12 => "DEZEMBRO"];
 
     /**
      * AnexoIII constructor.
      * @param int $ano
      * @param \Periodo $periodo
      */
-    public function __construct($ano, $periodo)
+    public function __construct(private $ano, $periodo)
     {
         $this->oPdf = new \PDFDocument("P");
         $this->oPdf->setFillColor(235);
-
-        $this->ano = $ano;
         $this->periodo = $periodo;
     }
 

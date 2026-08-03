@@ -44,8 +44,8 @@ if (!isset($arqinclude)) {
   //  $cldb_config       = new cl_db_config;
   $clorcparamrelnota = new cl_orcparamrelnota;
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
 }
 
@@ -54,14 +54,14 @@ include(modification("classes/db_db_config_classe.php"));
 $cldb_config = new cl_db_config;
 
 // -------------------------------------
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,munic,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
     $descr_inst .= $xvirg.$nomeinstabrev;
     $flag_abrev  = true;
   }else{
@@ -88,7 +88,7 @@ if (!isset($arqinclude)) {
   $dt_ini_ant= $dt[0]; // data inicial do período
   $dt_fin_ant= $dt[1]; // data final do período
 
-  $bimestre = substr($periodo,0,1); // bimestre do exercicio atual
+  $bimestre = substr((string) $periodo,0,1); // bimestre do exercicio atual
 
 }
 
@@ -101,7 +101,7 @@ if ($dtini!=''&&$dtfin!='') {
   $dt_ini = $dtini;
   $dt_fin = $dtfin;
 
-  $dt     = split("-",$dt_ini);
+  $dt     = preg_split("#\\-#m",(string) $dt_ini);
   $mes    = $dt[1];
 
   // 1 Bimestre
@@ -119,9 +119,9 @@ if ($dtini!=''&&$dtfin!='') {
     $bimestre = 6;      
   }
 
-  $dt = split('-',$dt_fin);
+  $dt = preg_split('#\-#m',(string) $dt_fin);
   $dt_ini_ant = $anousu_ant.'-'.$dt[1].'-'.$dt[2];
-  $dt = split('-',$dt_fin);
+  $dt = preg_split('#\-#m',(string) $dt_fin);
   $dt_fin_ant = $anousu_ant.'-'.$dt[1].'-'.$dt[2];
 
 }  
@@ -152,18 +152,18 @@ if (!isset($arqinclude)){
 
 
   if ($tipo_emissao!='datas'){
-    $dtd1   = split('-',$dt_ini);
-    $dtd2   = split('-',$dt_fin);
+    $dtd1   = preg_split('#\-#m',(string) $dt_ini);
+    $dtd2   = preg_split('#\-#m',(string) $dt_fin);
     $dt1    = "$dtd1[2]/$dtd1[1]/$dtd1[0]";
     $dt2    = "$dtd2[2]/$dtd2[1]/$dtd2[0]";
     $txt    = strtoupper(db_mes('01'));
-    $dt     = split("-",$dt_fin);
+    $dt     = preg_split("#\\-#m",(string) $dt_fin);
     $txt   .= " A ".strtoupper(db_mes($dt[1]));
     $txt   .= "  / ".$anousu;
 
   }else {
-    $dtd1  = split('-',$dt_ini);
-    $dtd2  = split('-',$dt_fin);
+    $dtd1  = preg_split('#\-#m',(string) $dt_ini);
+    $dtd2  = preg_split('#\-#m',(string) $dt_fin);
     $dt1   = "$dtd1[2]/$dtd1[1]/$dtd1[0]";
     $dt2   = "$dtd2[2]/$dtd2[1]/$dtd2[0]";
     $head5 = "EMISSÃO POR DATAS";
@@ -335,7 +335,7 @@ for ($p=1;$p<=21;$p++) {
         if (!isset($Trec[0][12])) $Trec[0][12]= $dezembro;  else $Trec[0][12]+= $dezembro;	  
       } else {
         // Trec da linha 1 contem o total da dedução da receita corrente
-        if (db_conplano_grupo($anousu - 1, substr($estrutural, 0, 3)."%", 9001) == true){  // 497 e 917 
+        if (db_conplano_grupo($anousu - 1, substr((string) $estrutural, 0, 3)."%", 9001) == true){  // 497 e 917 
           if (!isset($Trec[1][1]))  $Trec[1][1]  = ($janeiro);    else {$Trec[1][1]  += ($janeiro); }  
           if (!isset($Trec[1][2]))  $Trec[1][2]  = ($fevereiro);  else {$Trec[1][2]  += ($fevereiro); }  
           if (!isset($Trec[1][3]))  $Trec[1][3]  = ($marco);      else {$Trec[1][3]  += ($marco);  }
@@ -474,7 +474,7 @@ for ($p=1;$p<=21;$p++) {
         if (!isset($TrecB[0][13])) $TrecB[0][13]= ($o70_valor+$adicional); else $TrecB[0][13]+= ($o70_valor+$adicional);
       } else {
         // Trec da linha 1 contem o total da dedução da receita corrente
-        if (db_conplano_grupo($anousu,substr($estrutural,0,3)."%",9001) == true){  // 497 e 917 
+        if (db_conplano_grupo($anousu,substr((string) $estrutural,0,3)."%",9001) == true){  // 497 e 917 
           if (!isset($TrecB[1][1]))  $TrecB[1][1]= ($janeiro);    else $TrecB[1][1] += ($janeiro);
           if (!isset($TrecB[1][2]))  $TrecB[1][2]= ($fevereiro);  else $TrecB[1][2] += ($fevereiro);
           if (!isset($TrecB[1][3]))  $TrecB[1][3]= ($marco);      else $TrecB[1][3] += ($marco);
@@ -510,7 +510,7 @@ for ($p=1;$p<=21;$p++) {
 
 // ------------------------------
 // somadores avulsos
-$tot_rec_trib = array(); //zera matriz
+$tot_rec_trib = []; //zera matriz
 for ($x=0;$x<=13;$x++){
   $tot_rec_trib[0][$x]=0;
 }  
@@ -543,7 +543,7 @@ for ($x=1;$x<=4;$x++){
 }
 
 // 
-$tot_transf = array(); //zera matriz
+$tot_transf = []; //zera matriz
 for ($x=0;$x<=13;$x++){
   $tot_transf[0][$x]=0;
 }  
@@ -920,9 +920,9 @@ if (!isset($arqinclude)){
 
   $pdf->ln();
   // ----------------------------------------------------------------
-  notasExplicativas(&$pdf, 27,"{$bimestre}B",280); 
+  notasExplicativas($pdf, 27,"{$bimestre}B",280); 
   $pdf->ln(15);
-  assinaturas(&$pdf,&$classinatura,'LRF');
+  assinaturas($pdf,$classinatura,'LRF');
   $pdf->Output();
 
 }

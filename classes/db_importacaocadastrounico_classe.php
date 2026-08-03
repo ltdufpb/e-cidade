@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE importacaocadastrounico
 class cl_importacaocadastrounico { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $as07_sequencial = 0; 
-   var $as07_usuario = 0; 
-   var $as07_dataarquivo_dia = null; 
-   var $as07_dataarquivo_mes = null; 
-   var $as07_dataarquivo_ano = null; 
-   var $as07_dataarquivo = null; 
-   var $as07_dataprocessamento_dia = null; 
-   var $as07_dataprocessamento_mes = null; 
-   var $as07_dataprocessamento_ano = null; 
-   var $as07_dataprocessamento = null; 
-   var $as07_hora = null; 
+   public $as07_sequencial = 0; 
+   public $as07_usuario = 0; 
+   public $as07_dataarquivo_dia = null; 
+   public $as07_dataarquivo_mes = null; 
+   public $as07_dataarquivo_ano = null; 
+   public $as07_dataarquivo = null; 
+   public $as07_dataprocessamento_dia = null; 
+   public $as07_dataprocessamento_mes = null; 
+   public $as07_dataprocessamento_ano = null; 
+   public $as07_dataprocessamento = null; 
+   public $as07_hora = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  as07_sequencial = int4 = Código 
                  as07_usuario = int4 = Usuário 
                  as07_dataarquivo = date = Data do Arquivo 
@@ -62,10 +62,10 @@ class cl_importacaocadastrounico {
                  as07_hora = char(5) = Hora 
                  ";
    //funcao construtor da classe 
-   function cl_importacaocadastrounico() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("importacaocadastrounico"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -151,10 +151,10 @@ class cl_importacaocadastrounico {
          $this->erro_status = "0";
          return false; 
        }
-       $this->as07_sequencial = pg_result($result,0,0); 
+       $this->as07_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from importacaocadastrounico_as07_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $as07_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $as07_sequencial)){
          $this->erro_sql = " Campo as07_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -190,7 +190,7 @@ class cl_importacaocadastrounico {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "importacaocadastrounico ($this->as07_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "importacaocadastrounico já Cadastrado";
@@ -214,14 +214,14 @@ class cl_importacaocadastrounico {
      $resaco = $this->sql_record($this->sql_query_file($this->as07_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19090,'$this->as07_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3397,19090,'','".AddSlashes(pg_result($resaco,0,'as07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3397,19091,'','".AddSlashes(pg_result($resaco,0,'as07_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3397,19092,'','".AddSlashes(pg_result($resaco,0,'as07_dataarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3397,19093,'','".AddSlashes(pg_result($resaco,0,'as07_dataprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3397,19094,'','".AddSlashes(pg_result($resaco,0,'as07_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3397,19090,'','".AddSlashes(pg_fetch_result($resaco,0,'as07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3397,19091,'','".AddSlashes(pg_fetch_result($resaco,0,'as07_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3397,19092,'','".AddSlashes(pg_fetch_result($resaco,0,'as07_dataarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3397,19093,'','".AddSlashes(pg_fetch_result($resaco,0,'as07_dataprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3397,19094,'','".AddSlashes(pg_fetch_result($resaco,0,'as07_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -230,10 +230,10 @@ class cl_importacaocadastrounico {
       $this->atualizacampos();
      $sql = " update importacaocadastrounico set ";
      $virgula = "";
-     if(trim($this->as07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_sequencial"])){ 
+     if(trim((string) $this->as07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_sequencial"])){ 
        $sql  .= $virgula." as07_sequencial = $this->as07_sequencial ";
        $virgula = ",";
-       if(trim($this->as07_sequencial) == null ){ 
+       if(trim((string) $this->as07_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "as07_sequencial";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_importacaocadastrounico {
          return false;
        }
      }
-     if(trim($this->as07_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_usuario"])){ 
+     if(trim((string) $this->as07_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_usuario"])){ 
        $sql  .= $virgula." as07_usuario = $this->as07_usuario ";
        $virgula = ",";
-       if(trim($this->as07_usuario) == null ){ 
+       if(trim((string) $this->as07_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "as07_usuario";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_importacaocadastrounico {
          return false;
        }
      }
-     if(trim($this->as07_dataarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo_dia"] !="") ){ 
+     if(trim((string) $this->as07_dataarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo_dia"] !="") ){ 
        $sql  .= $virgula." as07_dataarquivo = '$this->as07_dataarquivo' ";
        $virgula = ",";
-       if(trim($this->as07_dataarquivo) == null ){ 
+       if(trim((string) $this->as07_dataarquivo) == null ){ 
          $this->erro_sql = " Campo Data do Arquivo nao Informado.";
          $this->erro_campo = "as07_dataarquivo_dia";
          $this->erro_banco = "";
@@ -272,7 +272,7 @@ class cl_importacaocadastrounico {
        if(isset($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo_dia"])){ 
          $sql  .= $virgula." as07_dataarquivo = null ";
          $virgula = ",";
-         if(trim($this->as07_dataarquivo) == null ){ 
+         if(trim((string) $this->as07_dataarquivo) == null ){ 
            $this->erro_sql = " Campo Data do Arquivo nao Informado.";
            $this->erro_campo = "as07_dataarquivo_dia";
            $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_importacaocadastrounico {
          }
        }
      }
-     if(trim($this->as07_dataprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento_dia"] !="") ){ 
+     if(trim((string) $this->as07_dataprocessamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento_dia"] !="") ){ 
        $sql  .= $virgula." as07_dataprocessamento = '$this->as07_dataprocessamento' ";
        $virgula = ",";
-       if(trim($this->as07_dataprocessamento) == null ){ 
+       if(trim((string) $this->as07_dataprocessamento) == null ){ 
          $this->erro_sql = " Campo Data de Processamento nao Informado.";
          $this->erro_campo = "as07_dataprocessamento_dia";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_importacaocadastrounico {
        if(isset($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento_dia"])){ 
          $sql  .= $virgula." as07_dataprocessamento = null ";
          $virgula = ",";
-         if(trim($this->as07_dataprocessamento) == null ){ 
+         if(trim((string) $this->as07_dataprocessamento) == null ){ 
            $this->erro_sql = " Campo Data de Processamento nao Informado.";
            $this->erro_campo = "as07_dataprocessamento_dia";
            $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_importacaocadastrounico {
          }
        }
      }
-     if(trim($this->as07_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_hora"])){ 
+     if(trim((string) $this->as07_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as07_hora"])){ 
        $sql  .= $virgula." as07_hora = '$this->as07_hora' ";
        $virgula = ",";
-       if(trim($this->as07_hora) == null ){ 
+       if(trim((string) $this->as07_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "as07_hora";
          $this->erro_banco = "";
@@ -331,19 +331,19 @@ class cl_importacaocadastrounico {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19090,'$this->as07_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["as07_sequencial"]) || $this->as07_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3397,19090,'".AddSlashes(pg_result($resaco,$conresaco,'as07_sequencial'))."','$this->as07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3397,19090,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as07_sequencial'))."','$this->as07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["as07_usuario"]) || $this->as07_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3397,19091,'".AddSlashes(pg_result($resaco,$conresaco,'as07_usuario'))."','$this->as07_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3397,19091,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as07_usuario'))."','$this->as07_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["as07_dataarquivo"]) || $this->as07_dataarquivo != "")
-           $resac = db_query("insert into db_acount values($acount,3397,19092,'".AddSlashes(pg_result($resaco,$conresaco,'as07_dataarquivo'))."','$this->as07_dataarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3397,19092,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as07_dataarquivo'))."','$this->as07_dataarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["as07_dataprocessamento"]) || $this->as07_dataprocessamento != "")
-           $resac = db_query("insert into db_acount values($acount,3397,19093,'".AddSlashes(pg_result($resaco,$conresaco,'as07_dataprocessamento'))."','$this->as07_dataprocessamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3397,19093,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as07_dataprocessamento'))."','$this->as07_dataprocessamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["as07_hora"]) || $this->as07_hora != "")
-           $resac = db_query("insert into db_acount values($acount,3397,19094,'".AddSlashes(pg_result($resaco,$conresaco,'as07_hora'))."','$this->as07_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3397,19094,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as07_hora'))."','$this->as07_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -388,14 +388,14 @@ class cl_importacaocadastrounico {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19090,'$as07_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3397,19090,'','".AddSlashes(pg_result($resaco,$iresaco,'as07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3397,19091,'','".AddSlashes(pg_result($resaco,$iresaco,'as07_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3397,19092,'','".AddSlashes(pg_result($resaco,$iresaco,'as07_dataarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3397,19093,'','".AddSlashes(pg_result($resaco,$iresaco,'as07_dataprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3397,19094,'','".AddSlashes(pg_result($resaco,$iresaco,'as07_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3397,19090,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3397,19091,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as07_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3397,19092,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as07_dataarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3397,19093,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as07_dataprocessamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3397,19094,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as07_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from importacaocadastrounico
@@ -455,7 +455,7 @@ class cl_importacaocadastrounico {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:importacaocadastrounico";
@@ -470,7 +470,7 @@ class cl_importacaocadastrounico {
    function sql_query ( $as07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -492,7 +492,7 @@ class cl_importacaocadastrounico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -505,7 +505,7 @@ class cl_importacaocadastrounico {
    function sql_query_file ( $as07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -526,7 +526,7 @@ class cl_importacaocadastrounico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

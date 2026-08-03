@@ -40,7 +40,7 @@ require_once(modification("dbforms/db_funcoes.php"));
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <meta http-equiv="Expires" CONTENT="0">
     <?php
-    db_app::load(array(
+    db_app::load([
       "scripts.js",
       "strings.js",
       "prototype.js",
@@ -50,11 +50,11 @@ require_once(modification("dbforms/db_funcoes.php"));
       "DBInputHora.widget.js",
       "estilos.css",
       "AjaxRequest.js"
-    ));
-    $aTipos = array(
+    ]);
+    $aTipos = [
       'f'=>'Não',
       't'=>'Sim'
-    );
+    ];
     ?>
 </head>
 <body>

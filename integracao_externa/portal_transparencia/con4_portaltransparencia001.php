@@ -45,12 +45,12 @@ if(defined('ECIDADE_PATH')){
 
 ini_set("memory_limit", '-1');
 
-$HTTP_SESSION_VARS['DB_acessado']       = 1;
-$HTTP_SESSION_VARS['DB_datausu']        = time();
-$HTTP_SESSION_VARS['DB_anousu']         = date('Y',time());
-$HTTP_SESSION_VARS['DB_id_usuario']     = 1;
-$HTTP_SESSION_VARS['DB_login']          = '';
-$HTTP_SESSION_VARS['DB_traceLogAcount'] = false;
+$_SESSION['DB_acessado']       = 1;
+$_SESSION['DB_datausu']        = time();
+$_SESSION['DB_anousu']         = date('Y',time());
+$_SESSION['DB_id_usuario']     = 1;
+$_SESSION['DB_login']          = '';
+$_SESSION['DB_traceLogAcount'] = false;
 
 $iAnoAtual = date('Y',time());
 
@@ -90,7 +90,7 @@ if ( $iParamLog == 1 ) {
   $sArquivoLog = null;
 } else {
 
-  $sCaminho = realpath(dirname(__FILE__));
+  $sCaminho = realpath(__DIR__);
   if ( defined('ECIDADE_PATH') ) {
     $sCaminho = ECIDADE_PATH . 'integracao_externa' . DS . 'portal_transparencia';
   }
@@ -139,9 +139,9 @@ chdir($sCaminhoScript);
  *  dados apartir do exercício informado.
  */
 $iExercicioBase = EXERCICIO_BASE;
-$aIntegracoesRealizar = array();
+$aIntegracoesRealizar = [];
 if (defined("INTEGRACOES_TRANSPARENCIA")) {
-  $aIntegracoesRealizar = explode(",", INTEGRACOES_TRANSPARENCIA);
+  $aIntegracoesRealizar = explode(",", (string) INTEGRACOES_TRANSPARENCIA);
 }
 
 /**
@@ -151,7 +151,7 @@ $lUsarPcasp         = false;
 $sSqlConParametro   = " select c90_usapcasp ";
 $sSqlConParametro  .= "   from contabilidade.conparametro ";
 $rsConParametro     = db_query($sSqlConParametro);
-$lParametroUsaPCASP = pg_result($rsConParametro, 0, 0);
+$lParametroUsaPCASP = pg_fetch_result($rsConParametro, 0, 0);
 $iAnoServidor       = date("Y");
 
 $iAnoImplantacaoPCASP = 2013;
@@ -164,7 +164,7 @@ if ($lParametroUsaPCASP == 't') {
   $rsTipoInstituicao    = db_query($connOrigem, $sSqlTipoInstituicao);
   if (pg_num_rows($rsTipoInstituicao) == 1 && isset($iAnoServidor)) {
 
-    $iTipoInstituicao = pg_result($rsTipoInstituicao, 0, "db21_tipoinstit");
+    $iTipoInstituicao = pg_fetch_result($rsTipoInstituicao, 0, "db21_tipoinstit");
     if ($iTipoInstituicao == 101) {
 
       if ($iAnoServidor >= 2012) {
@@ -267,7 +267,7 @@ try {
   }
 
 
-  $rsUpgradeDatabase = upgradeDatabase($connDestino,'.',$sSchema);
+  $rsUpgradeDatabase = upgradeDatabase($connDestino,'.');
 
   if (!$rsUpgradeDatabase) {
     throw new Exception("Falha ao atualizar base de dados!");
@@ -293,7 +293,7 @@ try {
 
   for ( $iInd=0; $iInd < $iLinhasCorrigeConplano; $iInd++ ) {
 
-    $oConplano = db_utils::fieldsMemory($rsCorrigeConplano,$iInd);
+    $oConplano = (new db_utils())->fieldsMemory($rsCorrigeConplano, $iInd);
 
     $sSqlOrcElemento = " select *
                            from orcelemento
@@ -311,7 +311,7 @@ try {
      */
     if ( $iLinhasOrcElemento > 0 ) {
 
-      $oOrcElemento = db_utils::fieldsMemory($rsOrcElemento,0);
+      $oOrcElemento = (new db_utils())->fieldsMemory($rsOrcElemento, 0);
 
       $sTabelaPlano = "conplano";
       if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
@@ -354,7 +354,7 @@ try {
 
       if ($iLinhasConplano > 0) {
 
-        $oConplanoOrigem    = db_utils::fieldsMemory($rsConplano,0);
+        $oConplanoOrigem    = (new db_utils())->fieldsMemory($rsConplano, 0);
         $sTabelaPlano = "conplano";
         if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
           $sTabelaPlano = "conplanoorcamento";
@@ -410,7 +410,7 @@ try {
 
   for ( $iInd=0; $iInd < $iLinhasCorrigeConplano; $iInd++ ) {
 
-    $oConplano = db_utils::fieldsMemory($rsCorrigeConplano,$iInd);
+    $oConplano = (new db_utils())->fieldsMemory($rsCorrigeConplano, $iInd);
 
 
 
@@ -431,7 +431,7 @@ try {
 
     if ( $iLinhasOrcFontes > 0 ) {
 
-      $oOrcFontes = db_utils::fieldsMemory($rsOrcFontes,0);
+      $oOrcFontes = (new db_utils())->fieldsMemory($rsOrcFontes, 0);
       $sTabelaPlano = "conplano";
       if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
         $sTabelaPlano = "conplanoorcamento";
@@ -477,7 +477,7 @@ try {
         if (USE_PCASP && $iExercicio >= ANO_IMPLANTACAO_PCASP) {
           $sTabelaPlano = "conplanoorcamento";
         }
-        $oConplanoOrigem    = db_utils::fieldsMemory($rsConplano,0);
+        $oConplanoOrigem    = (new db_utils())->fieldsMemory($rsConplano, 0);
 
         $sSqlInsereConplano = " insert into {$sTabelaPlano} ( c60_codcon,
                                                        c60_anousu,
@@ -557,23 +557,23 @@ try {
   /**
    *  Arrays utilizados  para  referenciar os respectivos códigos de origem aos IDs novos gerados.
    */
-  $aListaInstit                  = array();
-  $aListaOrgao                   = array();
-  $aListaUnidade                 = array();
-  $aListaProjeto                 = array();
-  $aListaFuncao                  = array();
-  $aListaSubFuncao               = array();
-  $aListaPrograma                = array();
-  $aListaRecurso                 = array();
-  $aListaPlanoConta              = array();
-  $aListaReceita                 = array();
-  $aListaDotacao                 = array();
-  $aListaEmpenhoMovimentacaoTipo = array();
-  $aMatrizMovimentacaoServidor   = array();
-  $aListaEmpenho                 = array();
-  $aListaMovEmpenho              = array();
-  $aListaMovEmpenhoOp            = array();
-  $aListaMovEmpenhoCod           = array();
+  $aListaInstit                  = [];
+  $aListaOrgao                   = [];
+  $aListaUnidade                 = [];
+  $aListaProjeto                 = [];
+  $aListaFuncao                  = [];
+  $aListaSubFuncao               = [];
+  $aListaPrograma                = [];
+  $aListaRecurso                 = [];
+  $aListaPlanoConta              = [];
+  $aListaReceita                 = [];
+  $aListaDotacao                 = [];
+  $aListaEmpenhoMovimentacaoTipo = [];
+  $aMatrizMovimentacaoServidor   = [];
+  $aListaEmpenho                 = [];
+  $aListaMovEmpenho              = [];
+  $aListaMovEmpenhoOp            = [];
+  $aListaMovEmpenhoCod           = [];
 
 
   // TABELA DE IMPORTÇOES *******************************************************************************************//
@@ -620,7 +620,7 @@ try {
   for ( $iInd=0; $iInd < $iRowsInstit; $iInd++ ) {
 
     logProcessamento($iInd,$iRowsInstit,$iParamLog);
-    $oInstit = db_utils::fieldsMemory($rsInstit,$iInd);
+    $oInstit = (new db_utils())->fieldsMemory($rsInstit, $iInd);
     $oTBInstituicoes->setByLineOfDBUtils($oInstit);
     try {
       $oTBInstituicoes->insertValue();
@@ -659,7 +659,7 @@ try {
 
   for ( $iInd=0; $iInd < $iRowsListaInstitDestino; $iInd++ ) {
 
-    $oInstitDestino = db_utils::fieldsMemory($rsListaInstitDestino,$iInd);
+    $oInstitDestino = (new db_utils())->fieldsMemory($rsListaInstitDestino, $iInd);
     $aListaInstit[$oInstitDestino->codinstit] = $oInstitDestino->id;
 
   }
@@ -696,7 +696,7 @@ try {
   for ( $iInd=0; $iInd < $iRowsOrgao; $iInd++ ) {
 
     logProcessamento($iInd,$iRowsOrgao,$iParamLog);
-    $oOrgao = db_utils::fieldsMemory($rsOrgao,$iInd);
+    $oOrgao = (new db_utils())->fieldsMemory($rsOrgao, $iInd);
     $oOrgao->instituicao_id = $aListaInstit[$oOrgao->codinstit];
     $oTBOrgaos->setByLineOfDBUtils($oOrgao);
     try {
@@ -734,7 +734,7 @@ try {
 
   for ( $iInd=0; $iInd < $iRowsListaOrgaoDestino; $iInd++ ) {
 
-    $oOrgaoDestino = db_utils::fieldsMemory($rsListaOrgaoDestino,$iInd);
+    $oOrgaoDestino = (new db_utils())->fieldsMemory($rsListaOrgaoDestino, $iInd);
     $aListaOrgao[$oOrgaoDestino->codorgao][$oOrgaoDestino->exercicio] = $oOrgaoDestino->id;
 
   }
@@ -773,7 +773,7 @@ try {
   for ( $iInd=0; $iInd < $iRowsUnidade; $iInd++ ) {
 
     logProcessamento($iInd,$iRowsUnidade,$iParamLog);
-    $oUnidade = db_utils::fieldsMemory($rsUnidade,$iInd);
+    $oUnidade = (new db_utils())->fieldsMemory($rsUnidade, $iInd);
     $oUnidade->instituicao_id = $aListaInstit[$oUnidade->codinstit];
     $oUnidade->orgao_id       = $aListaOrgao[$oUnidade->codorgao][$oUnidade->exercicio];
     $oTBUnidades->setByLineOfDBUtils($oUnidade);
@@ -812,7 +812,7 @@ try {
 
   for ( $iInd=0; $iInd < $iRowsListaUnidadeDestino; $iInd++ ) {
 
-    $oUnidadeDestino = db_utils::fieldsMemory($rsListaUnidadeDestino,$iInd);
+    $oUnidadeDestino = (new db_utils())->fieldsMemory($rsListaUnidadeDestino, $iInd);
     $aListaUnidade[$oUnidadeDestino->codunidade][$oUnidadeDestino->exercicio] = $oUnidadeDestino->id;
 
   }
@@ -850,7 +850,7 @@ try {
   for ( $iInd=0; $iInd < $iRowsProjeto; $iInd++ ) {
 
     logProcessamento($iInd,$iRowsProjeto,$iParamLog);
-    $oProjeto = db_utils::fieldsMemory($rsProjeto,$iInd);
+    $oProjeto = (new db_utils())->fieldsMemory($rsProjeto, $iInd);
     $oProjeto->instituicao_id = $aListaInstit[$oProjeto->codinstit];
     $oTBProjetos->setByLineOfDBUtils($oProjeto);
     try {
@@ -888,7 +888,7 @@ try {
 
   for ( $iInd=0; $iInd < $iRowsListaProjetoDestino; $iInd++ ) {
 
-    $oProjetoDestino = db_utils::fieldsMemory($rsListaProjetoDestino,$iInd);
+    $oProjetoDestino = (new db_utils())->fieldsMemory($rsListaProjetoDestino, $iInd);
     $aListaProjeto[$oProjetoDestino->codprojeto][$oProjetoDestino->exercicio] = $oProjetoDestino->id;
 
   }
@@ -923,7 +923,7 @@ try {
   for ( $iInd=0; $iInd < $iRowsFuncao; $iInd++ ) {
 
     logProcessamento($iInd,$iRowsFuncao,$iParamLog);
-    $oFuncao = db_utils::fieldsMemory($rsFuncao,$iInd);
+    $oFuncao = (new db_utils())->fieldsMemory($rsFuncao, $iInd);
     $oTBFuncoes->setByLineOfDBUtils($oFuncao);
     try {
       $oTBFuncoes->insertValue();
@@ -960,7 +960,7 @@ try {
 
   for ( $iInd=0; $iInd < $iRowsListaFuncaoDestino; $iInd++ ) {
 
-    $oFuncaoDestino = db_utils::fieldsMemory($rsListaFuncaoDestino,$iInd);
+    $oFuncaoDestino = (new db_utils())->fieldsMemory($rsListaFuncaoDestino, $iInd);
     $aListaFuncao[$oFuncaoDestino->codfuncao] = $oFuncaoDestino->id;
 
   }
@@ -995,7 +995,7 @@ try {
   for ( $iInd=0; $iInd < $iRowsSubFuncao; $iInd++ ) {
 
     logProcessamento($iInd,$iRowsSubFuncao,$iParamLog);
-    $oSubFuncao = db_utils::fieldsMemory($rsSubFuncao,$iInd);
+    $oSubFuncao = (new db_utils())->fieldsMemory($rsSubFuncao, $iInd);
     $oTBSubFuncoes->setByLineOfDBUtils($oSubFuncao);
     try {
       $oTBSubFuncoes->insertValue();
@@ -1033,7 +1033,7 @@ try {
 
   for ( $iInd=0; $iInd < $iRowsListaSubFuncaoDestino; $iInd++ ) {
 
-    $oSubFuncaoDestino = db_utils::fieldsMemory($rsListaSubFuncaoDestino,$iInd);
+    $oSubFuncaoDestino = (new db_utils())->fieldsMemory($rsListaSubFuncaoDestino, $iInd);
     $aListaSubFuncao[$oSubFuncaoDestino->codsubfuncao] = $oSubFuncaoDestino->id;
 
   }
@@ -1069,7 +1069,7 @@ try {
   for ( $iInd=0; $iInd < $iRowsPrograma; $iInd++ ) {
 
     logProcessamento($iInd,$iRowsPrograma,$iParamLog);
-    $oPrograma = db_utils::fieldsMemory($rsPrograma,$iInd);
+    $oPrograma = (new db_utils())->fieldsMemory($rsPrograma, $iInd);
     $oTBProgramas->setByLineOfDBUtils($oPrograma);
     try {
       $oTBProgramas->insertValue();
@@ -1106,7 +1106,7 @@ try {
 
   for ( $iInd=0; $iInd < $iRowsListaProgramaDestino; $iInd++ ) {
 
-    $oProgramaDestino = db_utils::fieldsMemory($rsListaProgramaDestino,$iInd);
+    $oProgramaDestino = (new db_utils())->fieldsMemory($rsListaProgramaDestino, $iInd);
     $aListaPrograma[$oProgramaDestino->codprograma][$oProgramaDestino->exercicio] = $oProgramaDestino->id;
 
   }
@@ -1144,13 +1144,13 @@ try {
                 and substr(o56_elemento,6,6)='000000'  order by 1 , o56_anousu desc
 ";
  $rsModalidades = db_query($connOrigem, $sSqlModalidade );
-if ( pg_numrows($rsModalidades) > 0 ) {
+if ( pg_num_rows($rsModalidades) > 0 ) {
 
-  $iRowsModalidades =  pg_numrows($rsModalidades);  
+  $iRowsModalidades =  pg_num_rows($rsModalidades);  
   for($iModalidade = 0; $iModalidade < $iRowsModalidades;$iModalidade++  ) {
 
     logProcessamento($iModalidade,$iRowsModalidades,$iParamLog);  
-    $oDadosModalidade = db_utils::fieldsMemory( $rsModalidades, $iModalidade );
+    $oDadosModalidade = (new db_utils())->fieldsMemory($rsModalidades, $iModalidade);
 
     $oTBTransferenciasModalidades->setByLineOfDBUtils( $oDadosModalidade);
     try {
@@ -1185,14 +1185,14 @@ if ( pg_numrows($rsModalidades) > 0 ) {
                       and substr(o56_elemento,9,4)='0000'  order by 1 , o56_anousu desc
 ";
  $rsModalidades = db_query($connOrigem, $sSqlModalidade );
-if ( pg_numrows($rsModalidades) > 0 ) {
+if ( pg_num_rows($rsModalidades) > 0 ) {
 
-    $iRowsSubvencoes = pg_numrows($rsModalidades);
+    $iRowsSubvencoes = pg_num_rows($rsModalidades);
     for($iModalidade = 0; $iModalidade < $iRowsSubvencoes;$iModalidade++  ) {
 
         
         logProcessamento($iModalidade,$iRowsSubvencoes,$iParamLog);
-        $oDadosModalidade = db_utils::fieldsMemory( $rsModalidades, $iModalidade );
+        $oDadosModalidade = (new db_utils())->fieldsMemory($rsModalidades, $iModalidade);
 
         $oTBTransferenciasModalidades->setByLineOfDBUtils( $oDadosModalidade);
         try {
@@ -1352,17 +1352,17 @@ select extract(year from c70_data)::integer as exercicio,
 
 $rsTransferencias = db_query($connOrigem,  $sSqlTransferencias  );
 
-if (pg_numrows($rsTransferencias ) > 0 ) {
+if (pg_num_rows($rsTransferencias ) > 0 ) {
 
 
-    $iRowsTransferencias = pg_numrows($rsTransferencias);
+    $iRowsTransferencias = pg_num_rows($rsTransferencias);
 
     try {
 
       for($iTransferencia = 0; $iTransferencia < $iRowsTransferencias; $iTransferencia++ ){
 
         logProcessamento($iTransferencias,$iRowsTransferencias,$iParamLog); 
-        $oDadosTransferencia = db_utils::fieldsMemory($rsTransferencias, $iTransferencia);
+        $oDadosTransferencia = (new db_utils())->fieldsMemory($rsTransferencias, $iTransferencia);
         $oTBTransferenciasFinanceiras->setByLineOfDBUtils( $oDadosTransferencia);
         $oTBTransferenciasFinanceiras->insertValue();
       }
@@ -1425,7 +1425,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
   for ( $iInd=0; $iInd < $iRowsRecurso; $iInd++ ) {
 
     logProcessamento($iInd,$iRowsRecurso,$iParamLog);
-    $oRecurso = db_utils::fieldsMemory($rsRecurso,$iInd);
+    $oRecurso = (new db_utils())->fieldsMemory($rsRecurso, $iInd);
     $oTBRecursos->setByLineOfDBUtils($oRecurso);
     try {
       $oTBRecursos->insertValue();
@@ -1462,7 +1462,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
   for ( $iInd=0; $iInd < $iRowsListaRecursoDestino; $iInd++ ) {
 
-    $oRecursoDestino = db_utils::fieldsMemory($rsListaRecursoDestino,$iInd);
+    $oRecursoDestino = (new db_utils())->fieldsMemory($rsListaRecursoDestino, $iInd);
     $aListaRecurso[$oRecursoDestino->codrecurso] = $oRecursoDestino->id;
   }
 
@@ -1516,7 +1516,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
   for ( $iInd=0; $iInd < $iRowsPlanoConta; $iInd++ ) {
 
     logProcessamento($iInd,$iRowsPlanoConta,$iParamLog);
-    $oPlanoConta = db_utils::fieldsMemory($rsPlanoConta,$iInd);
+    $oPlanoConta = (new db_utils())->fieldsMemory($rsPlanoConta, $iInd);
     $oTBPlanoContas->setByLineOfDBUtils($oPlanoConta);
     try {
       $oTBPlanoContas->insertValue();
@@ -1553,7 +1553,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
   for ( $iInd=0; $iInd < $iRowsListaPlanoContaDestino; $iInd++ ) {
 
-    $oPlanoContaDestino = db_utils::fieldsMemory($rsListaPlanoContaDestino,$iInd);
+    $oPlanoContaDestino = (new db_utils())->fieldsMemory($rsListaPlanoContaDestino, $iInd);
     $aListaPlanoConta[$oPlanoContaDestino->codcon][$oPlanoContaDestino->exercicio] = $oPlanoContaDestino->id;
   }
 
@@ -1594,7 +1594,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ( $iInd=0; $iInd < $iRowsReceita; $iInd++ ) {
 
       logProcessamento($iInd,$iRowsReceita,$iParamLog);
-      $oReceita = db_utils::fieldsMemory($rsReceita,$iInd);
+      $oReceita = (new db_utils())->fieldsMemory($rsReceita, $iInd);
       if ( !isset($aListaPlanoConta[$oReceita->codcon][$oReceita->exercicio]) ) {
         throw new Exception("ERRO-0: Plano de Contas não encontrado CODCON: $oReceita->codcon  EXERCICIO: $oReceita->exercicio RECEITA: $oReceita->codreceita");
       }
@@ -1637,7 +1637,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
     for ( $iInd=0; $iInd < $iRowsListaReceitaDestino; $iInd++ ) {
 
-      $oReceitaDestino = db_utils::fieldsMemory($rsListaReceitaDestino,$iInd);
+      $oReceitaDestino = (new db_utils())->fieldsMemory($rsListaReceitaDestino, $iInd);
       $aListaReceita[$oReceitaDestino->codreceita][$oReceitaDestino->exercicio] = $oReceitaDestino->id;
 
     }
@@ -1727,14 +1727,14 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ( $iInd=0; $iInd < $iRowsReceitaMovimentacao; $iInd++ ) {
 
       logProcessamento($iInd,$iRowsReceitaMovimentacao,$iParamLog);
-      $oReceitaMovimentacao = db_utils::fieldsMemory($rsReceitaMovimentacao,$iInd);
+      $oReceitaMovimentacao = (new db_utils())->fieldsMemory($rsReceitaMovimentacao, $iInd);
       $sSqlReceitaSaldo = "EXECUTE stmt_receitasaldo({$oReceitaMovimentacao->exercicio}, {$oReceitaMovimentacao->codreceita})";
       $rsReceitaSaldo = db_query($connOrigem, $sSqlReceitaSaldo);
       $iRowsReceitaSaldo = pg_num_rows($rsReceitaSaldo);
       if ( $iRowsReceitaSaldo ==  0 ) {
         $oReceitaMovimentacao->valor_previsao_atualizada = 0;
       } else {
-        $oReceitaMovimentacao->valor_previsao_atualizada = pg_result($rsReceitaSaldo, 0, 0);
+        $oReceitaMovimentacao->valor_previsao_atualizada = pg_fetch_result($rsReceitaSaldo, 0, 0);
       }
       $oReceitaMovimentacao->receita_id = $aListaReceita[$oReceitaMovimentacao->codreceita][$oReceitaMovimentacao->exercicio];
       $oTBReceitasMovimentacoes->setByLineOfDBUtils($oReceitaMovimentacao);
@@ -1817,7 +1817,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ($iInd = 0; $iInd < $iRowsDotacao; $iInd++) {
 
       logProcessamento($iInd, $iRowsDotacao, $iParamLog);
-      $oDotacao = db_utils::fieldsMemory($rsDotacao, $iInd);
+      $oDotacao = (new db_utils())->fieldsMemory($rsDotacao, $iInd);
       if (!isset($aListaProjeto[$oDotacao->codprojeto][$oDotacao->exercicio])) {
         $sMsg = "ERRO-0: Projeto não encontrado PROJETO: $oDotacao->codprojeto  EXERCICIO: $oDotacao->exercicio ";
         $sMsg .= "DOTAÇÃO: $oDotacao->coddotacao ";
@@ -1872,7 +1872,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
     for ($iInd = 0; $iInd < $iRowsListaDotacaoDestino; $iInd++) {
 
-      $oDotacaoDestino                                                          = db_utils::fieldsMemory($rsListaDotacaoDestino, $iInd);
+      $oDotacaoDestino                                                          = (new db_utils())->fieldsMemory($rsListaDotacaoDestino, $iInd);
       $aListaDotacao[$oDotacaoDestino->coddotacao][$oDotacaoDestino->exercicio] = $oDotacaoDestino->id;
 
     }
@@ -1921,7 +1921,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ( $iInd=0; $iInd < $iRowsClassificaocaoCredor; $iInd++ ) {
 
       logProcessamento($iInd,$iRowsClassificaocaoCredor,$iParamLog);
-      $oClassificacaoCredor = db_utils::fieldsMemory($rsClassificacaoCredor,$iInd);
+      $oClassificacaoCredor = (new db_utils())->fieldsMemory($rsClassificacaoCredor, $iInd);
       $oTBClassificacaoCredor->setByLineOfDBUtils($oClassificacaoCredor);
       try {
         $oTBClassificacaoCredor->insertValue();
@@ -2054,7 +2054,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
   for ( $iInd=0; $iInd < $iRowsPessoas; $iInd++ ) {
 
     logProcessamento($iInd,$iRowsPessoas,$iParamLog);
-    $oPessoas = db_utils::fieldsMemory($rsPessoas,$iInd);
+    $oPessoas = (new db_utils())->fieldsMemory($rsPessoas, $iInd);
     $oTBPessoas->setByLineOfDBUtils($oPessoas);
     try {
       $oTBPessoas->insertValue();
@@ -2108,9 +2108,9 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
      * o número da autorização como indice do array
      */
     if ($iRowsLic > 0) {
-      $aListaLic = array();
+      $aListaLic = [];
       for ( $iInd=0; $iInd < $iRowsLic; $iInd++ ) {
-        $oLic = db_utils::fieldsMemory($rsLic, $iInd);
+        $oLic = (new db_utils())->fieldsMemory($rsLic, $iInd);
         $oDadosNovos = new stdClass();
         $oDadosNovos->l20_dtpublic = $oLic->l20_dtpublic;
         $oDadosNovos->l20_numero = $oLic->l20_numero;
@@ -2196,7 +2196,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ($iInd = 0; $iInd < $iRowsEmpenho; $iInd++) {
 
       logProcessamento($iInd, $iRowsEmpenho, $iParamLog);
-      $oEmpenho = db_utils::fieldsMemory($rsEmpenho, $iInd);
+      $oEmpenho = (new db_utils())->fieldsMemory($rsEmpenho, $iInd);
       /**
        * Removido daqui o bloco de cadastro de pessoas/CGM para aumento da performance
        */
@@ -2216,14 +2216,14 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         throw new Exception($sMsg);
       }
       $sTipoCompra = "";
-      if (trim($oEmpenho->codautoriza) != '') {
+      if (trim((string) $oEmpenho->codautoriza) != '') {
         /**
          * Removido daqui o bloco de busca de licitações para aumento de performance
          * substituido pela busca no array $aListaLic que já foi pré carregado
          */
         if (isset($aListaLic)) {
           if (array_key_exists($oEmpenho->codautoriza, $aListaLic)) {
-            $aData       = explode("-", $aListaLic[$oEmpenho->codautoriza]->l20Pdtpublic);
+            $aData       = explode("-", (string) $aListaLic[$oEmpenho->codautoriza]->l20Pdtpublic);
             $iAnoLic     = $aData[0];
             $sNumeroLic  = $aListaLic[$oEmpenho->codautoriza]->l20_numero . "/" . $iAnoLic;
             $sTipoCompra = $aListaLic[$oEmpenho->codautoriza]->l03_descr . " Número Licitação : {$sNumeroLic}";
@@ -2232,7 +2232,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       }
       if (trim($sTipoCompra) == '') {
         $sTipoCompra = $oEmpenho->descrtipocompra;
-        if (trim($oEmpenho->numero_licitacao) != '') {
+        if (trim((string) $oEmpenho->numero_licitacao) != '') {
           $sTipoCompra .= " Número Licitação : {$oEmpenho->numero_licitacao}";
         }
       }
@@ -2270,7 +2270,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
      *  Cria um array com os códigos de empenho separados por vírgula
      *  para ser utilizado na filtragem das próximas consultas
      */
-    $filtroCodigosEmpenhos = implode($aListaEmpenho, ',');
+    $filtroCodigosEmpenhos = implode(',', $aListaEmpenho);
 
     // FIM EMPENHOS ***************************************************************************************************//
 
@@ -2306,7 +2306,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ($iInd = 0; $iInd < $iLinhasItensEmpenho; $iInd++) {
 
       logProcessamento($iInd, $iLinhasItensEmpenho, $iParamLog);
-      $oItemEmpenho = db_utils::fieldsMemory($rsItensEmpenho, $iInd);
+      $oItemEmpenho = (new db_utils())->fieldsMemory($rsItensEmpenho, $iInd);
       if ($oItemEmpenho->descricao == '') {
         $oItemEmpenho->descricao = 'DESCRIÇÃO NÃO ESPECIFICADA';
       }
@@ -2358,7 +2358,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       for ($iInd = 0; $iInd < $iLinhasProcessosEmpenho; $iInd++) {
 
         logProcessamento($iInd, $iLinhasProcessosEmpenho, $iParamLog);
-        $oProcessoEmpenho = db_utils::fieldsMemory($rsProcessosEmpenho, $iInd);
+        $oProcessoEmpenho = (new db_utils())->fieldsMemory($rsProcessosEmpenho, $iInd);
         $oTBEmpenhosProcessos->setByLineOfDBUtils($oProcessoEmpenho);
         try {
           $oTBEmpenhosProcessos->insertValue();
@@ -2419,7 +2419,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ( $iInd=0; $iInd < $iRowsTiposMovEmp; $iInd++ ) {
 
       logProcessamento($iInd,$iRowsTiposMovEmp,$iParamLog);
-      $oTiposMovEmp = db_utils::fieldsMemory($rsTiposMovEmp,$iInd);
+      $oTiposMovEmp = (new db_utils())->fieldsMemory($rsTiposMovEmp, $iInd);
       $oTBEmpenhosMovimentacoesTipos->setByLineOfDBUtils($oTiposMovEmp);
       $aListaEmpenhoMovimentacaoTipo[$oTiposMovEmp->codtipo] = $oTiposMovEmp->id;
       try {
@@ -2497,7 +2497,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ($iInd = 0; $iInd < $iRowsEmpenhoMovimentacao; $iInd++) {
 
       logProcessamento($iInd, $iRowsEmpenhoMovimentacao, $iParamLog);
-      $oEmpenhoMovimentacao = db_utils::fieldsMemory($rsEmpenhoMovimentacao, $iInd);
+      $oEmpenhoMovimentacao = (new db_utils())->fieldsMemory($rsEmpenhoMovimentacao, $iInd);
       if ($oEmpenhoMovimentacao->op <> '') {
         $aListaMovEmpenho[$oEmpenhoMovimentacao->codlan] = $iInd+1;
         $aListaMovEmpenhoOp[] = $oEmpenhoMovimentacao->op;
@@ -2567,7 +2567,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       for ($iIndJustificativa = 0; $iIndJustificativa < $iRowsEmpenhoMovimentacaoJustificativa; $iIndJustificativa++) {
 
         logProcessamento($iIndJustificativa, $iRowsEmpenhoMovimentacaoJustificativa, $iParamLog);
-        $oEmpenhoMovimentacaoJustificativa = db_utils::fieldsMemory($rsEmpenhoMovimentacaoJustificativa, $iIndJustificativa);
+        $oEmpenhoMovimentacaoJustificativa = (new db_utils())->fieldsMemory($rsEmpenhoMovimentacaoJustificativa, $iIndJustificativa);
         $oTBClassificacaoCredorMovimentacao->id                        = '';
         $oTBClassificacaoCredorMovimentacao->justificativa             = $oEmpenhoMovimentacaoJustificativa->justificativa;
         $oTBClassificacaoCredorMovimentacao->empenhos_movimentacoes_id = $aListaMovEmpenho[$oEmpenhoMovimentacaoJustificativa->codlan];
@@ -2648,7 +2648,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       for ($iIndInformacaoDiaria = 0; $iIndInformacaoDiaria < $iRowsInformacaoDiaria; $iIndInformacaoDiaria++) {
 
         logProcessamento($iInd, $iRowsInformacaoDiaria, $iParamLog);
-        $oInformacaoDiaria = db_utils::fieldsMemory($rsInformacaoDiaria, $iIndInformacaoDiaria);
+        $oInformacaoDiaria = (new db_utils())->fieldsMemory($rsInformacaoDiaria, $iIndInformacaoDiaria);
         $oTBDetalheDiaria->id = '';
         $oTBDetalheDiaria->empenho_movimentacao = $aListaMovEmpenho[$oInformacaoDiaria->codlan];
         $oTBDetalheDiaria->servidor_matricula = $oInformacaoDiaria->servidor_matricula;
@@ -2703,9 +2703,9 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
   // SERVIDORES **********************************************************************************************//
 
   if (IMPORTAR_SERVIDORES) {
-    
+
     db_logTitulo(" IMPORTA CARGOS ", $sArquivoLog, $iParamLog);
-    
+
     $sSqlDadosCargos  = " select rh37_funcao            as id,                ";
     $sSqlDadosCargos .= "        rh37_instit            as instituicao,       ";
     $sSqlDadosCargos .= "        rh37_descr             as descricao,         ";
@@ -2715,7 +2715,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $sSqlDadosCargos .= "   from rhfuncao                                     ";
     $sSqlDadosCargos .= "   left join rhinstrucao                             ";
     $sSqlDadosCargos .= "     on rh21_instru = rh37_rhinstrucao               ";
-    
+
     $rsCargos    = db_query($connOrigem, $sSqlDadosCargos);
 
     $iRowsCargos = pg_num_rows($rsCargos);
@@ -2730,7 +2730,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ($iInd = 0; $iInd < $iRowsCargos; $iInd++ ) {
 
       logProcessamento($iInd, $iRowsCargos, $iParamLog);
-      $oCargosRow                 = db_utils::fieldsMemory($rsCargos, $iInd);
+      $oCargosRow                 = (new db_utils())->fieldsMemory($rsCargos, $iInd);
       $oCargosRow->instituicao_id = $aListaInstit[$oCargosRow->instituicao];
       $oTBCargos->setByLineOfDBUtils($oCargosRow, true);
 
@@ -2836,7 +2836,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ($iInd = 0; $iInd < $iRowsServidores; $iInd++ ) {
 
       logProcessamento($iInd, $iRowsServidores, $iParamLog);
-      $oServidorRow                 = db_utils::fieldsMemory($rsServidores, $iInd);
+      $oServidorRow                 = (new db_utils())->fieldsMemory($rsServidores, $iInd);
       $oServidorRow->instituicao_id = $aListaInstit[$oServidorRow->instituicao];
       $oTBServidores->setByLineOfDBUtils($oServidorRow, true);
 
@@ -2882,7 +2882,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ($iInd = 0; $iInd < $iRowsServidores; $iInd++) {
 
       logProcessamento($iInd, $iRowsServidores, $iParamLog);
-      $oMovimentacaoServidorRow = db_utils::fieldsMemory($rsServidoresMovimentacao, $iInd);
+      $oMovimentacaoServidorRow = (new db_utils())->fieldsMemory($rsServidoresMovimentacao, $iInd);
       $oTBMovimentacoesServidores->setByLineOfDBUtils($oMovimentacaoServidorRow);
       try {
           $oTBMovimentacoesServidores->insertValue();
@@ -2910,7 +2910,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
     for ( $iInd=0; $iInd < $iRowsListaServidorMovimentacao; $iInd++ ) {
 
-      $oServidorMovimentacaoRow = db_utils::fieldsMemory($rsListaServidorMovimentacao, $iInd);
+      $oServidorMovimentacaoRow = (new db_utils())->fieldsMemory($rsListaServidorMovimentacao, $iInd);
       $aMatrizMovimentacaoServidor[$oServidorMovimentacaoRow->ano][$oServidorMovimentacaoRow->mes]
       [$oServidorMovimentacaoRow->servidor_id] = $oServidorMovimentacaoRow->id;
 
@@ -3081,7 +3081,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
     for ($iServidor = 0; $iServidor < $iDadosServidores; $iServidor++) {
 
-      $oDadosServidores = db_utils::fieldsMemory($rsDadosServidores, $iServidor);
+      $oDadosServidores = (new db_utils())->fieldsMemory($rsDadosServidores, $iServidor);
       $mes = $oDadosServidores->mes;
       $ano = $oDadosServidores->ano;
 
@@ -3166,7 +3166,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       for ($iInd = 0; $iInd < $iRowsFolhaPagamento; $iInd++) {
 
         logProcessamento($iInd, $iRowsFolhaPagamento, $iParamLog);
-        $oFolhaPagamentoRow = db_utils::fieldsMemory($rsFolhaPagamento, $iInd);
+        $oFolhaPagamentoRow = (new db_utils())->fieldsMemory($rsFolhaPagamento, $iInd);
         if ( !empty($aMatrizMovimentacaoServidor[$oFolhaPagamentoRow->ano][$oFolhaPagamentoRow->mes][$oFolhaPagamentoRow->matricula]) ) {
 
           $oFolhaPagamentoRow->servidor_movimentacao_id = $aMatrizMovimentacaoServidor[$oFolhaPagamentoRow->ano]
@@ -3184,7 +3184,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
       try {
         $oTBFolhaPagamento->persist();
-      } catch (Exception $e) {
+      } catch (Exception) {
         throw new Exception("ERRO-0: {$eException->getMessage()}");
       }
 
@@ -3225,14 +3225,14 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     for ($iInd = 0; $iInd < $iRowsRecursosHumanos; $iInd++) {
 
       logProcessamento($iInd, $iRowsRecursosHumanos, $iParamLog);
-      $oRecursosHumanosRow = db_utils::fieldsMemory($rsRecursosHumanos, $iInd);
+      $oRecursosHumanosRow = (new db_utils())->fieldsMemory($rsRecursosHumanos, $iInd);
       $oTBAssentamentos->setByLineOfDBUtils($oRecursosHumanosRow, true);
 
     }
 
     try {
       $oTBAssentamentos->persist();
-    } catch (Exception $e) {
+    } catch (Exception) {
       throw new Exception("ERRO-0: {$eException->getMessage()}");
     }
     // FIM IMPORTACAO RECURSOS HUMANOS ASSENTAMENTOS //
@@ -3267,13 +3267,13 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       throw new Exception('Nenhuma classificacao encontrada!');
     }
 
-    $aBemClassificacao = array();
+    $aBemClassificacao = [];
     db_logNumReg($iRowsBemClassificacao, $sArquivoLog, $iParamLog);
 
     for ($iInd = 0; $iInd < $iRowsBemClassificacao; $iInd++) {
 
       logProcessamento($iInd, $iRowsBemClassificacao, $iParamLog);
-      $oBemClassificacao     = db_utils::fieldsMemory($rsBemClassificacao, $iInd);
+      $oBemClassificacao     = (new db_utils())->fieldsMemory($rsBemClassificacao, $iInd);
       $oBemClassificacao->id = '';
       $oTBBemClassificacao->setByLineOfDBUtils($oBemClassificacao);
       try {
@@ -3306,13 +3306,13 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       throw new Exception('Nenhum tipo de bem encontrado!');
     }
 
-    $aBemTipo = array();
+    $aBemTipo = [];
     db_logNumReg($iRowsBemTipo, $sArquivoLog, $iParamLog);
 
     for ($iInd = 0; $iInd < $iRowsBemTipo; $iInd++) {
 
       logProcessamento($iInd, $iRowsBemTipo, $iParamLog);
-      $oBemTipo     = db_utils::fieldsMemory($rsBemTipo, $iInd);
+      $oBemTipo     = (new db_utils())->fieldsMemory($rsBemTipo, $iInd);
       $oBemTipo->id = '';
       $oTBBemTipo->setByLineOfDBUtils($oBemTipo);
       try {
@@ -3345,13 +3345,13 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       throw new Exception('Nenhum tipo de aquisicao de bem encontrado!');
     }
 
-    $aBemAquisicaoTipo = array();
+    $aBemAquisicaoTipo = [];
     db_logNumReg($iRowsBemAquisicaoTipo, $sArquivoLog, $iParamLog);
 
     for ($iInd = 0; $iInd < $iRowsBemAquisicaoTipo; $iInd++) {
 
       logProcessamento($iInd, $iRowsBemAquisicaoTipo, $iParamLog);
-      $oBemAquisicaoTipo     = db_utils::fieldsMemory($rsBemAquisicaoTipo, $iInd);
+      $oBemAquisicaoTipo     = (new db_utils())->fieldsMemory($rsBemAquisicaoTipo, $iInd);
       $oBemAquisicaoTipo->id = '';
       $oTBBemAquisicaoTipo->setByLineOfDBUtils($oBemAquisicaoTipo);
       try {
@@ -3384,13 +3384,13 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       throw new Exception('Nenhum departamento encontrado!');
     }
 
-    $aDepartamento = array();
+    $aDepartamento = [];
     db_logNumReg($iRowsDepartamento, $sArquivoLog, $iParamLog);
 
     for ($iInd = 0; $iInd < $iRowsDepartamento; $iInd++) {
 
       logProcessamento($iInd, $iRowsDepartamento, $iParamLog);
-      $oDepartamento     = db_utils::fieldsMemory($rsDepartamento, $iInd);
+      $oDepartamento     = (new db_utils())->fieldsMemory($rsDepartamento, $iInd);
       $oDepartamento->id = '';
       $oTBDepartamento->setByLineOfDBUtils($oDepartamento);
       try {
@@ -3423,13 +3423,13 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       throw new Exception('Nenhuma divisao encontrado!');
     }
 
-    $aDivisaoDepartamento = array();
+    $aDivisaoDepartamento = [];
     db_logNumReg($iRowsDivisaoDepartamento, $sArquivoLog, $iParamLog);
 
     for ($iInd = 0; $iInd < $iRowsDivisaoDepartamento; $iInd++) {
 
       logProcessamento($iInd, $iRowsDivisaoDepartamento, $iParamLog);
-      $oDivisaoDepartamento     = db_utils::fieldsMemory($rsDivisaoDepartamento, $iInd);
+      $oDivisaoDepartamento     = (new db_utils())->fieldsMemory($rsDivisaoDepartamento, $iInd);
       $oDivisaoDepartamento->id = '';
       $oTBDivisaoDepartamento->setByLineOfDBUtils($oDivisaoDepartamento);
       try {
@@ -3462,13 +3462,13 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       throw new Exception('Nenhuma tipo de depreciacao encontrado!');
     }
 
-    $aBemTipoDepreciacao = array();
+    $aBemTipoDepreciacao = [];
     db_logNumReg($iRowsBemTipoDepreciacao, $sArquivoLog, $iParamLog);
 
     for ($iInd = 0; $iInd < $iRowsBemTipoDepreciacao; $iInd++) {
 
       logProcessamento($iInd, $iRowsBemTipoDepreciacao, $iParamLog);
-      $oBemTipoDepreciacao     = db_utils::fieldsMemory($rsBemTipoDepreciacao, $iInd);
+      $oBemTipoDepreciacao     = (new db_utils())->fieldsMemory($rsBemTipoDepreciacao, $iInd);
       $oBemTipoDepreciacao->id = '';
       $oTBBemTipoDepreciacao->setByLineOfDBUtils($oBemTipoDepreciacao);
       try {
@@ -3492,9 +3492,9 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       throw new Exception('Nenhuma instituicao encontrada!');
     }
 
-    $aInstituicoes = array();
+    $aInstituicoes = [];
     for ($iInd = 0; $iInd < $iRowsInstituicoes; $iInd++) {
-      $oInstituicao                            = db_utils::fieldsMemory($rsInstituicoes, $iInd);
+      $oInstituicao                            = (new db_utils())->fieldsMemory($rsInstituicoes, $iInd);
       $aInstituicoes[$oInstituicao->codinstit] = $oInstituicao->id;
     }
 
@@ -3556,7 +3556,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
       for ($iInd = 0; $iInd < $iRowsPatrimonio; $iInd++) {
 
         logProcessamento($iInd, $iRowsPatrimonio, $iParamLog);
-        $oPatrimonio = db_utils::fieldsMemory($rsPatrimonio, $iInd);
+        $oPatrimonio = (new db_utils())->fieldsMemory($rsPatrimonio, $iInd);
         $oPatrimonio->bem_tipo_id             = $aBemTipo[$oPatrimonio->codbemtipo];
         $oPatrimonio->departamento_id         = $aDepartamento[$oPatrimonio->codigo_departamento];
         $oPatrimonio->bem_tipo_depreciacao_id = 0;
@@ -3583,7 +3583,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         $rsOrgao = db_query($connOrigem, $sSqlOrgao);
         if (!empty($rsOrgao) && pg_num_rows($rsOrgao) > 0) {
 
-          $oOrgao = db_utils::fieldsMemory($rsOrgao, 0);
+          $oOrgao = (new db_utils())->fieldsMemory($rsOrgao, 0);
 
           $sSqlOrgaoDestino = "
         select id
@@ -3597,7 +3597,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
           if (!empty($rsOrgaoDestino) && pg_num_rows($rsOrgaoDestino) > 0) {
 
-            $oOrgaoDestino         = db_utils::fieldsMemory($rsOrgaoDestino, 0);
+            $oOrgaoDestino         = (new db_utils())->fieldsMemory($rsOrgaoDestino, 0);
             $oPatrimonio->orgao_id = $oOrgaoDestino->id;
 
             $sSqlOrgaoUnidade = "
@@ -3610,7 +3610,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
             $rsOrgaoUnidade = db_query($connDestino, $sSqlOrgaoUnidade);
             if (!empty($rsOrgaoUnidade) && pg_num_rows($rsOrgaoUnidade) > 0) {
 
-              $oOrgaoUnidade           = db_utils::fieldsMemory($rsOrgaoUnidade, 0);
+              $oOrgaoUnidade           = (new db_utils())->fieldsMemory($rsOrgaoUnidade, 0);
               $oPatrimonio->unidade_id = $oOrgaoUnidade->id;
             }
           }
@@ -3632,7 +3632,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
           if (!empty($rsDepreciacao) && pg_num_rows($rsDepreciacao) > 0) {
 
-            $oDepreciacao                         = db_utils::fieldsMemory($rsDepreciacao, 0);
+            $oDepreciacao                         = (new db_utils())->fieldsMemory($rsDepreciacao, 0);
             $oPatrimonio->bem_tipo_depreciacao_id = $aBemTipoDepreciacao[$oDepreciacao->codigo_tipo_depreciacao];
             $oPatrimonio->tipo_depreciacao        = $oDepreciacao->tipo_depreciacao;
             $oPatrimonio->valor_depreciavel       = $oDepreciacao->depreciacao;
@@ -3666,7 +3666,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
           if (!empty($rsBaixa) && pg_num_rows($rsBaixa) > 0) {
 
-            $oBaixa = db_utils::fieldsMemory($rsBaixa, 0);
+            $oBaixa = (new db_utils())->fieldsMemory($rsBaixa, 0);
 
             if (pg_num_rows($rsBaixa) > 1) {
 
@@ -3723,7 +3723,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     $rsTemVeiculos       = db_query($sSqlTemVeiculos);
     $iQuantidadeVeiculos = 0;
     if ($rsTemVeiculos && pg_num_rows($rsTemVeiculos) === 1) {
-      $iQuantidadeVeiculos = (int) db_utils::fieldsMemory($rsTemVeiculos, 0)->resultado;
+      $iQuantidadeVeiculos = (int) (new db_utils())->fieldsMemory($rsTemVeiculos, 0)->resultado;
     }
 
     $lPularImportacaoVeiculos = false;
@@ -3734,13 +3734,13 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
     }
 
     if (!$lPularImportacaoVeiculos) {
-      $aVeiculoUtilizacao = array();
+      $aVeiculoUtilizacao = [];
       db_logNumReg($iRowsVeiculoUtilizacao,$sArquivoLog,$iParamLog);
 
       for ( $iInd=0; $iInd < $iRowsVeiculoUtilizacao; $iInd++ ) {
 
         logProcessamento($iInd,$iRowsVeiculoUtilizacao,$iParamLog);
-        $oVeiculoUtilizacao = db_utils::fieldsMemory($rsVeiculoUtilizacao, $iInd);
+        $oVeiculoUtilizacao = (new db_utils())->fieldsMemory($rsVeiculoUtilizacao, $iInd);
         $oTBVeiculoUtilizacao->setByLineOfDBUtils($oVeiculoUtilizacao);
         try {
           $oTBVeiculoUtilizacao->insertValue();
@@ -3773,13 +3773,13 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         throw new Exception('Nenhuma tipo de veiculo encontrado!');
       }
 
-      $aVeiculoTipo = array();
+      $aVeiculoTipo = [];
       db_logNumReg($iRowsVeiculoTipo,$sArquivoLog,$iParamLog);
 
       for ( $iInd=0; $iInd < $iRowsVeiculoTipo; $iInd++ ) {
 
         logProcessamento($iInd,$iRowsVeiculoTipo,$iParamLog);
-        $oVeiculoTipo = db_utils::fieldsMemory($rsVeiculoTipo, $iInd);
+        $oVeiculoTipo = (new db_utils())->fieldsMemory($rsVeiculoTipo, $iInd);
         $oTBVeiculoTipo->setByLineOfDBUtils($oVeiculoTipo);
         try {
           $oTBVeiculoTipo->insertValue();
@@ -3811,13 +3811,13 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         throw new Exception('Nenhuma marca de veiculo encontrada!');
       }
 
-      $aVeiculoMarca = array();
+      $aVeiculoMarca = [];
       db_logNumReg($iRowsVeiculoMarca,$sArquivoLog,$iParamLog);
 
       for ( $iInd=0; $iInd < $iRowsVeiculoMarca; $iInd++ ) {
 
         logProcessamento($iInd,$iRowsVeiculoMarca,$iParamLog);
-        $oVeiculoMarca = db_utils::fieldsMemory($rsVeiculoMarca,$iInd);
+        $oVeiculoMarca = (new db_utils())->fieldsMemory($rsVeiculoMarca, $iInd);
         $oVeiculoMarca->id = '';
         $oTBMarca->setByLineOfDBUtils($oVeiculoMarca);
         try {
@@ -3850,13 +3850,13 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         throw new Exception('Nenhum modelo de veiculo encontrado!');
       }
 
-      $aVeiculoModelo = array();
+      $aVeiculoModelo = [];
       db_logNumReg($iRowsVeiculoModelo,$sArquivoLog,$iParamLog);
 
       for ( $iInd=0; $iInd < $iRowsVeiculoModelo; $iInd++ ) {
 
         logProcessamento($iInd,$iRowsVeiculoModelo,$iParamLog);
-        $oVeiculoModelo = db_utils::fieldsMemory($rsVeiculoModelo,$iInd);
+        $oVeiculoModelo = (new db_utils())->fieldsMemory($rsVeiculoModelo, $iInd);
         $oVeiculoModelo->id = '';
         $oTBModelo->setByLineOfDBUtils($oVeiculoModelo);
         try {
@@ -3929,13 +3929,13 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
         db_logTitulo(" Nenhum veiculo encontrado! ", $sArquivoLog, $iParamLog);
       }
 
-      $aVeiculo = array();
+      $aVeiculo = [];
       db_logNumReg($iRowsVeiculo,$sArquivoLog,$iParamLog);
 
       for ( $iInd=0; $iInd < $iRowsVeiculo; $iInd++ ) {
 
         logProcessamento($iInd,$iRowsVeiculo,$iParamLog);
-        $oVeiculo = db_utils::fieldsMemory($rsVeiculo, $iInd);
+        $oVeiculo = (new db_utils())->fieldsMemory($rsVeiculo, $iInd);
         $oVeiculo->instituicao_id  = $aInstituicoes[$oVeiculo->instituicao];
         $oVeiculo->departamento_id = $aDepartamento[$oVeiculo->departamento];
         $oVeiculo->marca_id        = $aVeiculoMarca[$oVeiculo->marca];
@@ -3990,8 +3990,8 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
    * Exclui os large objects vinculados ao schema de backup
    */
 
-  $aLargeObjectsToRemove = array( 'licitacoes_documentos' => 'documento',
-                                  'acordo_documentos' => 'arquivo' );
+  $aLargeObjectsToRemove = [ 'licitacoes_documentos' => 'documento',
+                                  'acordo_documentos' => 'arquivo' ];
 
   if ( $iLinhasSchemasAtual > 0 ) {
 
@@ -4005,7 +4005,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
       for ($iIndice = 0; $iIndice < pg_num_rows($rsFilesToRemove); $iIndice++) {
 
-        $oRow            = db_utils::fieldsMemory($rsFilesToRemove, $iIndice);
+        $oRow            = (new db_utils())->fieldsMemory($rsFilesToRemove, $iIndice);
         $sSqlBuscaObjeto = "select pg_largeobject.loid
                               from pg_largeobject
                              where pg_largeobject.loid = {$oRow->{$sNomeCampoOid}} ";
@@ -4035,7 +4035,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
   for ($iInd=0; $iInd < $iLinhasSchemasAntigos; $iInd++ ) {
 
-    $oSchemaAntigo = db_utils::fieldsMemory($rsSchemasAntigos,$iInd);
+    $oSchemaAntigo = (new db_utils())->fieldsMemory($rsSchemasAntigos, $iInd);
 
     $sSqlExcluiSchemaAntigo = " DROP SCHEMA {$oSchemaAntigo->schema_name} CASCADE ";
 
@@ -4083,7 +4083,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
     for ( $iInd=0; $iInd < $iLinhasGlossariosTipos; $iInd++ ) {
 
-      $oGloassariosTipos = db_utils::fieldsMemory($rsDadosGlossariosTipos,$iInd);
+      $oGloassariosTipos = (new db_utils())->fieldsMemory($rsDadosGlossariosTipos, $iInd);
 
       $oTBGlossariosTipos->setByLineOfDBUtils($oGloassariosTipos);
 
@@ -4118,7 +4118,7 @@ db_logTitulo(" IMPORTA RECURSOS ",$sArquivoLog,$iParamLog);
 
     for ( $iInd=0; $iInd < $iLinhasGlossarios; $iInd++ ) {
 
-      $oGloassarios = db_utils::fieldsMemory($rsDadosGlossarios,$iInd);
+      $oGloassarios = (new db_utils())->fieldsMemory($rsDadosGlossarios, $iInd);
 
       $oTBGlossarios->setByLineOfDBUtils($oGloassarios);
 

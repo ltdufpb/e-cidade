@@ -422,7 +422,7 @@ class RegraCompensacao {
     
     $rsRegraCompensacao   = $oDaoRegraCompensacao->sql_record($sSqlRegraCompensacao);
     
-    $aRegrasCompensacao   = array();
+    $aRegrasCompensacao   = [];
     
     foreach (db_utils::getCollectionByRecord($rsRegraCompensacao) as $oRegraCompensacao) {
       

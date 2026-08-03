@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE grupoproc
 class cl_grupoproc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd11_c_codigo = null; 
-   var $sd11_c_descr = null; 
-   var $sd11_f_orcamento = 0; 
+   public $sd11_c_codigo = null; 
+   public $sd11_c_descr = null; 
+   public $sd11_f_orcamento = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd11_c_codigo = char(5) = Código 
                  sd11_c_descr = char(40) = Descrição 
                  sd11_f_orcamento = float4 = Orçamento 
                  ";
    //funcao construtor da classe 
-   function cl_grupoproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("grupoproc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,7 +119,7 @@ class cl_grupoproc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Grupo de Procedimentos ($this->sd11_c_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Grupo de Procedimentos já Cadastrado";
@@ -143,12 +143,12 @@ class cl_grupoproc {
      $resaco = $this->sql_record($this->sql_query_file($this->sd11_c_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,100004,'$this->sd11_c_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,100002,100004,'','".AddSlashes(pg_result($resaco,0,'sd11_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,100002,100005,'','".AddSlashes(pg_result($resaco,0,'sd11_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,100002,100006,'','".AddSlashes(pg_result($resaco,0,'sd11_f_orcamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100002,100004,'','".AddSlashes(pg_fetch_result($resaco,0,'sd11_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100002,100005,'','".AddSlashes(pg_fetch_result($resaco,0,'sd11_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100002,100006,'','".AddSlashes(pg_fetch_result($resaco,0,'sd11_f_orcamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -157,10 +157,10 @@ class cl_grupoproc {
       $this->atualizacampos();
      $sql = " update grupoproc set ";
      $virgula = "";
-     if(trim($this->sd11_c_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd11_c_codigo"])){ 
+     if(trim((string) $this->sd11_c_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd11_c_codigo"])){ 
        $sql  .= $virgula." sd11_c_codigo = '$this->sd11_c_codigo' ";
        $virgula = ",";
-       if(trim($this->sd11_c_codigo) == null ){ 
+       if(trim((string) $this->sd11_c_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sd11_c_codigo";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_grupoproc {
          return false;
        }
      }
-     if(trim($this->sd11_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd11_c_descr"])){ 
+     if(trim((string) $this->sd11_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd11_c_descr"])){ 
        $sql  .= $virgula." sd11_c_descr = '$this->sd11_c_descr' ";
        $virgula = ",";
-       if(trim($this->sd11_c_descr) == null ){ 
+       if(trim((string) $this->sd11_c_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "sd11_c_descr";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_grupoproc {
          return false;
        }
      }
-     if(trim($this->sd11_f_orcamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd11_f_orcamento"])){ 
+     if(trim((string) $this->sd11_f_orcamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd11_f_orcamento"])){ 
        $sql  .= $virgula." sd11_f_orcamento = $this->sd11_f_orcamento ";
        $virgula = ",";
-       if(trim($this->sd11_f_orcamento) == null ){ 
+       if(trim((string) $this->sd11_f_orcamento) == null ){ 
          $this->erro_sql = " Campo Orçamento nao Informado.";
          $this->erro_campo = "sd11_f_orcamento";
          $this->erro_banco = "";
@@ -204,15 +204,15 @@ class cl_grupoproc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,100004,'$this->sd11_c_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd11_c_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,100002,100004,'".AddSlashes(pg_result($resaco,$conresaco,'sd11_c_codigo'))."','$this->sd11_c_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100002,100004,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd11_c_codigo'))."','$this->sd11_c_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd11_c_descr"]))
-           $resac = db_query("insert into db_acount values($acount,100002,100005,'".AddSlashes(pg_result($resaco,$conresaco,'sd11_c_descr'))."','$this->sd11_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100002,100005,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd11_c_descr'))."','$this->sd11_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd11_f_orcamento"]))
-           $resac = db_query("insert into db_acount values($acount,100002,100006,'".AddSlashes(pg_result($resaco,$conresaco,'sd11_f_orcamento'))."','$this->sd11_f_orcamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100002,100006,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd11_f_orcamento'))."','$this->sd11_f_orcamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -257,12 +257,12 @@ class cl_grupoproc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,100004,'$sd11_c_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,100002,100004,'','".AddSlashes(pg_result($resaco,$iresaco,'sd11_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,100002,100005,'','".AddSlashes(pg_result($resaco,$iresaco,'sd11_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,100002,100006,'','".AddSlashes(pg_result($resaco,$iresaco,'sd11_f_orcamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100002,100004,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd11_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100002,100005,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd11_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100002,100006,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd11_f_orcamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from grupoproc
@@ -322,7 +322,7 @@ class cl_grupoproc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:grupoproc";
@@ -336,7 +336,7 @@ class cl_grupoproc {
    function sql_query ( $sd11_c_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -357,7 +357,7 @@ class cl_grupoproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -369,7 +369,7 @@ class cl_grupoproc {
    function sql_query_file ( $sd11_c_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ class cl_grupoproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

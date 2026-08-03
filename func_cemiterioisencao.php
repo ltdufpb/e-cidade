@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cemiterioisencao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcemiterioisencao = new cl_cemiterioisencao;
 $clcemiterioisencao->rotulo->label("cm34_sequencial");
 $clcemiterioisencao->rotulo->label("cm34_descricao");
@@ -98,9 +98,9 @@ $clcemiterioisencao->rotulo->label("cm34_descricao");
         }else{
            $sql = $clcemiterioisencao->sql_query("",$campos,"cm34_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cm34_descricao)){
-          $repassa = array("chave_cm34_sequencial"=>$chave_cm34_sequencial,"chave_cm34_descricao"=>$chave_cm34_descricao);
+          $repassa = ["chave_cm34_sequencial"=>$chave_cm34_sequencial,"chave_cm34_descricao"=>$chave_cm34_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

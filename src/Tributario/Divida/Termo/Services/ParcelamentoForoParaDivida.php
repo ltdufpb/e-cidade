@@ -48,96 +48,6 @@ class ParcelamentoForoParaDivida
     const TIPO_DIVIDA_ATIVA = 5;
 
     /**
-     * @var ArreforoRepository
-     */
-    private $arreforoRepository;
-
-    /**
-     * @var ArrecadRepository
-     */
-    private $arrecadRepository;
-
-    /**
-     * @var ArreoldRepository
-     */
-    private $arreoldRepository;
-
-    /**
-     * @var CertidaoRepository;
-     */
-    private $certidaoRepository;
-
-    /**
-     * @var CertidaoDividaRepository
-     */
-    private $certidaoDividaRepository;
-
-    /**
-     * @var CertidaoTermoRepository
-     */
-    private $certidaoTermoRepository;
-
-    /**
-     * @var ACertidaoRepository
-     */
-    private $aCertidaoRepository;
-
-    /**
-     * @var ACertidaoTermoRepository
-     */
-    private $aCertidaoTermoRepository;
-
-    /**
-     * @var ACertidaoDividaRepository
-     */
-    private $aCertidaoDividaRepository;
-
-    /**
-     * @var ListaCDARepository
-     */
-    private $listaCDARepository;
-
-    /**
-     * @var TermoRepository
-     */
-    private $termoRepository;
-
-    /**
-     * @var TermoInicialRepository
-     */
-    private $termoInicialRepository;
-
-    /**
-     * @var TermoDividaRepository
-     */
-    private $termoDividaRepository;
-
-    /**
-     * @var TermoReparcelamentoRepository
-     */
-    private $termoReparcelamentoRepository;
-
-    /**
-     * @var InicialRepository
-     */
-    private $inicialRepository;
-
-    /**
-     * @var InicialMovRepository
-     */
-    private $inicialMovRepository;
-
-    /**
-     * @var InicialCertRepository
-     */
-    private $inicialCertRepository;
-
-    /**
-     * @var InicialNumpreRepository
-     */
-    private $inicialNumpreRepository;
-
-    /**
      * @var Integer
      */
     private $parcelamento;
@@ -221,44 +131,29 @@ class ParcelamentoForoParaDivida
      * @return ParcelamentoForoParaDivida
      */
     public function __construct(
-        ArreforoRepository $arreforoRepository,
-        ArrecadRepository $arrecadRepository,
-        ArreoldRepository $arreoldRepository,
-        CertidaoRepository $certidaoRepository,
-        CertidaoDividaRepository $certidaoDividaRepository,
-        CertidaoTermoRepository $certidaoTermoRepository,
-        ACertidaoRepository $aCertidaoRepository,
-        ACertidaoTermoRepository $aCertidaoTermoRepository,
-        ACertidaoDividaRepository $aCertidaoDividaRepository,
-        ListaCDARepository $listaCDARepository,
-        TermoRepository $termoRepository,
-        TermoInicialRepository $termoInicialRepository,
-        TermoDividaRepository $termoDividaRepository,
-        TermoReparcelamentoRepository $termoReparcelamentoRepository,
-        InicialRepository $inicialRepository,
-        InicialMovRepository $inicialMovRepository,
-        InicialCertRepository $inicialCertRepository,
-        InicialNumpreRepository $inicialNumpreRepository,
+        private readonly ArreforoRepository $arreforoRepository,
+        private readonly ArrecadRepository $arrecadRepository,
+        private readonly ArreoldRepository $arreoldRepository,
+        /**
+         * @var CertidaoRepository;
+         */
+        private readonly CertidaoRepository $certidaoRepository,
+        private readonly CertidaoDividaRepository $certidaoDividaRepository,
+        private readonly CertidaoTermoRepository $certidaoTermoRepository,
+        private readonly ACertidaoRepository $aCertidaoRepository,
+        private readonly ACertidaoTermoRepository $aCertidaoTermoRepository,
+        private readonly ACertidaoDividaRepository $aCertidaoDividaRepository,
+        private readonly ListaCDARepository $listaCDARepository,
+        private readonly TermoRepository $termoRepository,
+        private readonly TermoInicialRepository $termoInicialRepository,
+        private readonly TermoDividaRepository $termoDividaRepository,
+        private readonly TermoReparcelamentoRepository $termoReparcelamentoRepository,
+        private readonly InicialRepository $inicialRepository,
+        private readonly InicialMovRepository $inicialMovRepository,
+        private readonly InicialCertRepository $inicialCertRepository,
+        private readonly InicialNumpreRepository $inicialNumpreRepository,
         DividaRepository $dividaRepository
     ) {
-        $this->arreforoRepository = $arreforoRepository;
-        $this->arrecadRepository = $arrecadRepository;
-        $this->arreoldRepository = $arreoldRepository;
-        $this->certidaoRepository = $certidaoRepository;
-        $this->certidaoDividaRepository = $certidaoDividaRepository;
-        $this->certidaoTermoRepository = $certidaoTermoRepository;
-        $this->aCertidaoRepository = $aCertidaoRepository;
-        $this->aCertidaoTermoRepository = $aCertidaoTermoRepository;
-        $this->aCertidaoDividaRepository = $aCertidaoDividaRepository;
-        $this->listaCDARepository = $listaCDARepository;
-        $this->termoRepository = $termoRepository;
-        $this->termoInicialRepository = $termoInicialRepository;
-        $this->termoDividaRepository = $termoDividaRepository;
-        $this->termoReparcelamentoRepository = $termoReparcelamentoRepository;
-        $this->inicialRepository = $inicialRepository;
-        $this->inicialMovRepository = $inicialMovRepository;
-        $this->inicialCertRepository = $inicialCertRepository;
-        $this->inicialNumpreRepository = $inicialNumpreRepository;
         $this->dividaRepository = $dividaRepository;
     }
 
@@ -377,9 +272,7 @@ class ParcelamentoForoParaDivida
 
     private function mapAndImplodeModel($arrModel, $keyFuncName)
     {
-        $array = array_map(function ($model) use ($keyFuncName) {
-            return $model->$keyFuncName();
-        }, $arrModel);
+        $array = array_map(fn($model) => $model->$keyFuncName(), $arrModel);
 
         return implode(',', $array);
     }
@@ -416,7 +309,7 @@ class ParcelamentoForoParaDivida
     {
         $data = new \DBDate(date("d/m/Y"));
         $hora = date('h:i');
-        $arrAcertids = array();
+        $arrAcertids = [];
 
         // 10 - Insere na "acertid" dados de movimentação das certidoes  que tem registro na "certter"
         foreach ($this->certidao as $certidao) {

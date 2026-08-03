@@ -39,11 +39,11 @@
         </td>
         <td> 
         <?php 
-          $aSelecoes = array(
+          $aSelecoes = [
             ""  => "Todas",
             "1" => "Não Vinculadas a Servidores/Pensionistas",
             "2" => "Vinculadas a Servidores/Pensionistas",
-          );
+          ];
           db_select("mostra_tipo_conta", $aSelecoes, true, 1, "onChange=\"document.getElementById('chave_tipo_conta').value = this.value;\"", "chave_tipo_conta");
           if ( !isset($mostra_tipo_conta) && isset($chave_tipo_conta) ) {
             $mostra_tipo_conta = $chave_tipo_conta;

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parecertecnico_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clparecertecnico = new cl_parecertecnico;
 $clparecertecnico->rotulo->label("am08_sequencial");
 $clparecertecnico->rotulo->label("am08_datavencimento");
@@ -78,9 +78,9 @@ $clparecertecnico->rotulo->label("am08_datavencimento");
         }else{
            $sql = $clparecertecnico->sql_query("",$campos,"am08_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_am08_datavencimento)){
-          $repassa = array("chave_am08_sequencial"=>$chave_am08_sequencial,"chave_am08_datavencimento"=>$chave_am08_datavencimento);
+          $repassa = ["chave_am08_sequencial"=>$chave_am08_sequencial,"chave_am08_datavencimento"=>$chave_am08_datavencimento];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

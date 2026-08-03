@@ -133,7 +133,7 @@ function js_emite()
          <strong>Emite Rodapé:</strong> 
        </td>
        <td>
-       <?php $aOpcoesRodape = array ('S' => 'SIM', 'N' => 'NÃO');
+       <?php $aOpcoesRodape =  ['S' => 'SIM', 'N' => 'NÃO'];
             db_select('mostra_rodape', $aOpcoesRodape, true, 2, "");
         ?>
        </td>

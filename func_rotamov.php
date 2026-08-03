@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rotamov_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrotamov = new cl_rotamov;
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed217_i_codigo");
@@ -99,9 +99,9 @@ $clrotulo->label("ed217_c_nome");
         }else{
            $sql = $clrotamov->sql_query("",$campos,"ed220_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed220_i_codigo)){
-          $repassa = array("chave_ed220_i_codigo"=>$chave_ed220_i_codigo,"chave_ed220_i_codigo"=>$chave_ed220_i_codigo);
+          $repassa = ["chave_ed220_i_codigo"=>$chave_ed220_i_codigo,"chave_ed220_i_codigo"=>$chave_ed220_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

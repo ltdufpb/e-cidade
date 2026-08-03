@@ -33,7 +33,7 @@ include(modification("classes/db_db_versaocpd_classe.php"));
 include(modification("classes/db_db_versao_classe.php"));
 include(modification("classes/db_db_versaocpdarq_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS,2);
 $cldb_versaocpd    = new cl_db_versaocpd;
 $cldb_versaocpdarq = new cl_db_versaocpdarq;

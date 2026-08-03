@@ -38,7 +38,7 @@
      * Array de string com o conteúdo de cada arquivo TXT a ser impresso em cada posição do vetor.
      * @var array(string) $sArquivoModelo
      */
-    private $aArquivos = array();
+    private $aArquivos = [];
     
     /**
      * Número de linhas que cada folha suporta na impressão.
@@ -84,7 +84,7 @@
     * o próximo inicia no começo da próxima página. Se quiser impressão sequencial, passar tudo como
     * um único arquivo.
     */
-    function  __construct($sIdElementoPai, $aArquivos = array()) {
+    function  __construct($sIdElementoPai, $aArquivos = []) {
       
       if (empty($sIdElementoPai)) {
         throw new Exception('Impossível carregar o visualizador. Elemento pai não informado.');
@@ -93,7 +93,7 @@
       if (!empty($aArquivos)) {
         
         if (!is_array($aArquivos)) {
-          $this->aArquivos = array($aArquivos);
+          $this->aArquivos = [$aArquivos];
         } else {
           $this->aArquivos = $aArquivos;
         }
@@ -232,7 +232,7 @@
 <?php 
         foreach ($this->aArquivos as $sArquivo) {
 
-          $sArquivo = str_replace(array('"', "\n"), array('\"', '\n'), $sArquivo);
+          $sArquivo = str_replace(['"', "\n"], ['\"', '\n'], $sArquivo);
           //remover caracteres de controle de impressão
           $sArquivo = str_replace(chr(15), '<font size=\"1\">', $sArquivo);
           $sArquivo = str_replace(chr(18), '</font>', $sArquivo);

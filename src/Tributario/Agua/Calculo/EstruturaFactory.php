@@ -19,19 +19,11 @@ class EstruturaFactory {
    */
   public static function create($iTipoEstruturaTarifaria) {
 
-    switch ($iTipoEstruturaTarifaria) {
-
-      case AguaEstruturaTarifaria::TIPO_FAIXA_CONSUMO:
-        return new FaixaConsumo;
-
-      case AguaEstruturaTarifaria::TIPO_PERCENTUAL:
-        return new Percentual;
-
-      case AguaEstruturaTarifaria::TIPO_VALOR_FIXO:
-        return new ValorFixo;
-
-      default:
-        throw new \Exception('Nenhuma Estrutura de Cálculo aplicável.');
-    }
+    return match ($iTipoEstruturaTarifaria) {
+        AguaEstruturaTarifaria::TIPO_FAIXA_CONSUMO => new FaixaConsumo,
+        AguaEstruturaTarifaria::TIPO_PERCENTUAL => new Percentual,
+        AguaEstruturaTarifaria::TIPO_VALOR_FIXO => new ValorFixo,
+        default => throw new \Exception('Nenhuma Estrutura de Cálculo aplicável.'),
+    };
   }
 }

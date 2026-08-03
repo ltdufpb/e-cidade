@@ -48,7 +48,7 @@ $rsDocumentoTemplate   = $oDaoDocumentoTemplate->sql_record($sSqlDocumentoTempla
 		    </td>
 		    <td> 
 				<?php 
-				$x = array('1'=>'Sequencial infinito','2'=>'Sequencial reiniciado a cada virada de ano');
+				$x = ['1'=>'Sequencial infinito','2'=>'Sequencial reiniciado a cada virada de ano'];
 				db_select('ov06_tiponumprocesso',$x,true,$db_opcao,"");
 				?>
 		    </td>
@@ -80,7 +80,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_ouvidoriaparametro.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

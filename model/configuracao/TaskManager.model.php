@@ -79,7 +79,7 @@ class TaskManager {
    *
    * @var array
    */
-  private static $aTarefasExecutando = array();
+  private static $aTarefasExecutando = [];
 
   /**
    * Diretorio da Fila das Tarefas

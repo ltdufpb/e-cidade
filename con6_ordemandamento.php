@@ -49,8 +49,8 @@ $cldb_usuarios = new cl_db_usuarios;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  rotina para incluir um novo andamento em uma ordem de servico.
-if (isset ($HTTP_POST_VARS["incluir"])) {
-	db_postmemory($HTTP_POST_VARS);
+if (isset ($_POST["incluir"])) {
+	db_postmemory($_POST);
 	if (!checkdate($dtini_mes, $dtini_dia, $dtini_ano))
 		db_erro("Erro (11). Data invalida.");
 	$dtini = $dtini_ano."-".$dtini_mes."-".$dtini_dia;
@@ -60,11 +60,11 @@ if (isset ($HTTP_POST_VARS["incluir"])) {
 		$dtfim = "null";
 	} // data final pode vir nula
 	$result = db_query("select max(codandam) + 1 from db_ordemandam");
-	$codigo = pg_result($result, 0, 0);
+	$codigo = pg_fetch_result($result, 0, 0);
 	$codigo = $codigo == "" ? "1" : $codigo;
 	// seleciona o usuario que foi escolhido para ser o novo destinatario desta ordem de servico.
 	$pesquisaidusuario = db_query("select id_usuario from db_usuarios where nome = '$usuarioescolhido'");
-	$idusuario = pg_result($pesquisaidusuario, 0, "id_usuario");
+	$idusuario = pg_fetch_result($pesquisaidusuario, 0, "id_usuario");
 	$usuario_atual = db_getsession("DB_id_usuario");
 	// insere o novo andamento
 	$result = db_query("insert into db_ordemandam values 
@@ -77,10 +77,10 @@ if (isset ($HTTP_POST_VARS["incluir"])) {
 	                           where codordem = $codordem");
 	db_msgbox("Incluida com sucesso.");
 	db_redireciona("con6_ordemandamento.php");
-} else	if (isset ($HTTP_POST_VARS["cancela"])) {
+} else	if (isset ($_POST["cancela"])) {
 		db_redireciona("con6_ordemandamento.php");
-} elseif (isset ($HTTP_POST_VARS["recebe"])) {
-			db_postmemory($HTTP_POST_VARS);
+} elseif (isset ($_POST["recebe"])) {
+			db_postmemory($_POST);
 			$dtatual = date("Y-m-d"); // insere a data final com a data do sistema.
 			db_query("begin");
 			$result = db_query("update db_ordem set dtrecebe = '$dtatual', 
@@ -92,8 +92,8 @@ if (isset ($HTTP_POST_VARS["incluir"])) {
 
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//  rotina para finalizar uma ordem de servico.
-} else if (isset ($HTTP_POST_VARS["finaliza"])) {
-				db_postmemory($HTTP_POST_VARS);
+} else if (isset ($_POST["finaliza"])) {
+				db_postmemory($_POST);
 				$dtatual = date("Y-m-d"); // insere a data final com a data do sistema.
 				$dataAtualEmail = date("d/m/Y"); // formatação da data para aparecer no email
 				db_query("begin");
@@ -109,11 +109,11 @@ if (isset ($HTTP_POST_VARS["incluir"])) {
 					$dtfim = "null";
 				}
 				$result = db_query("select max(codandam) + 1 from db_ordemandam");
-				$codigo = pg_result($result, 0, 0);
+				$codigo = pg_fetch_result($result, 0, 0);
 				$codigo = $codigo == "" ? "1" : $codigo;
 				// seleciona usuario na tabela db_usuario pelo nome do destinatario escolhido.
 				$pesquisaidusuario = db_query("select id_usuario from db_usuarios where nome = '$usuarioescolhido'");
-				$idusuario = pg_result($pesquisaidusuario, 0, "id_usuario");
+				$idusuario = pg_fetch_result($pesquisaidusuario, 0, "id_usuario");
 				$result = db_query("insert into db_ordemandam values ($codigo,$codordem,'$dtini',$dtfim,'$hrini','$hrfim','$descr',$idusuario)") or die("Erro: (12). Processo de inclusao.");
 				$updatedb_ordem = db_query("update db_ordem set usureceb = $idusuario where codordem = $codordem");
 				///////////////////////////////////////////////////
@@ -123,8 +123,8 @@ if (isset ($HTTP_POST_VARS["incluir"])) {
 													inner join db_usuarios u on u.id_usuario = o.id_usuario
 													where o.codordem = $codordem
 				                              ");
-				$nom = pg_result($informacoesSobreOrdem, 0, "nome");
-				$emai = pg_result($informacoesSobreOrdem, 0, "email");
+				$nom = pg_fetch_result($informacoesSobreOrdem, 0, "nome");
+				$emai = pg_fetch_result($informacoesSobreOrdem, 0, "email");
 				$destinatario = $emai;
 				$headers = "Content-Type:text/html;";
 				$assunto = "DBSeller - Sua solicitação de ordem de serviço foi finalizada.";
@@ -156,7 +156,7 @@ if (isset ($HTTP_POST_VARS["incluir"])) {
 						   ";
 				}
 				$mensagem .= "	 
-					 O prazo limite para o serviço foi dia ".pg_result($informacoesSobreOrdem, 0, "dataprev")." e ela foi finalizada no dia ".$dataAtualEmail."\n
+					 O prazo limite para o serviço foi dia ".pg_fetch_result($informacoesSobreOrdem, 0, "dataprev")." e ela foi finalizada no dia ".$dataAtualEmail."\n
 					 Esta mensagem nao sera enviada novamente.\n
 					 Mail enviado automaticamente pelo Sistema de Ordens de Servico.\n
 				     ";
@@ -203,7 +203,7 @@ if (isset ($HTTP_POST_VARS["incluir"])) {
 				              <tr> 
 				                <td><ul>
 				                    <li><font size=\"2\" face=\"Arial, Helvetica, sans-serif\">O prazo 
-				                      limite para o servi&ccedil;o foi dia <strong>".pg_result($informacoesSobreOrdem, 0, "dataprev")."</strong> 
+				                      limite para o servi&ccedil;o foi dia <strong>".pg_fetch_result($informacoesSobreOrdem, 0, "dataprev")."</strong> 
 				                      e ela foi finalizada no dia <strong>".$dataAtualEmail."</strong>.</font></li>
 				                  </ul></td>
 				              </tr>
@@ -350,7 +350,7 @@ function js_reload(){
 	db_lovrot($sql, 200, "()", "", $funcao_js);
 
 } else {
-	
+
 	include(modification("con6_ordemandamento002.php"));
 	// se entrou aqui, é porque foi clicado em cima de uma ordem para inserir andamentos
 

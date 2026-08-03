@@ -33,8 +33,8 @@ include(modification("classes/db_db_almoxdepto_classe.php"));
 include(modification("classes/db_db_almox_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cldb_almoxdepto = new cl_db_almoxdepto;
 $cldb_almox = new cl_db_almox;

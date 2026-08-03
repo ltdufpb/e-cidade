@@ -158,7 +158,7 @@ if (isset($j46_codigo) && $j46_codigo=="nova") {
         }
 
         if ($trans_erro == false) {
-            $taxa = explode("X", $dadostaxa);
+            $taxa = explode("X", (string) $dadostaxa);
             for ($r = 0; $r < sizeof($taxa); $r++) {
 
                 if ($taxa[$r] != "") {
@@ -235,7 +235,7 @@ if (isset($j46_codigo) && $j46_codigo=="nova") {
             $trans_erro = true;
             db_fim_transacao($trans_erro);
             //break;
-        } elseif (pg_numrows($rsIsenexe) == 0) {
+        } elseif (pg_num_rows($rsIsenexe) == 0) {
         $clisenexe->incluir($j46_codigo, $ano);
 
         if ($clisenexe->erro_status=="0") {
@@ -247,7 +247,7 @@ if (isset($j46_codigo) && $j46_codigo=="nova") {
         }
     }
 
-    $taxa = explode("X", $dadostaxa);
+    $taxa = explode("X", (string) $dadostaxa);
 
     for ($r = 0; $r < sizeof($taxa); $r++) {
         if ($taxa[$r] != "") {
@@ -271,7 +271,7 @@ if (isset($j46_codigo) && $j46_codigo=="nova") {
                                  AND j56_receit = $receita");
 
             $rsIsentaxa = db_query($sSqlIsentaxa);
-            if (pg_numrows($rsIsentaxa) > 0) {
+            if (pg_num_rows($rsIsentaxa) > 0) {
                 $clisentaxa->alterar($j46_codigo, $receita);
             } else {
                 $clisentaxa->incluir($j46_codigo, $receita);
@@ -849,7 +849,7 @@ if (isset($j46_codigo) && $j46_codigo=="nova") {
     }
 
     function js_preenchepesquisa(chave) {
-        location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+        location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
     }
 
     function js_pesquisaj46_matric(mostra) {
@@ -880,7 +880,7 @@ if (isset($j46_codigo) && $j46_codigo=="nova") {
 
     function js_preenchepesquisa(chave) {
         db_iframe.hide();
-        location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?chavepesquisa=" + chave;
+        location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + "?chavepesquisa=" + chave;
     }
 
     function js_cgm(mostra) {

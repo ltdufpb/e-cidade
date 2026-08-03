@@ -26,7 +26,7 @@
  */
 
 include(modification("fpdf151/pdf.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $pdf = new PDF("L"); 
 $pdf->Open(); 
 $pdf->AliasNbPages(); 
@@ -108,7 +108,7 @@ $sql .= "   group by j23_tipoim ";
 
 $result = db_query($sql) or die($sql);
 
-for($i=0;$i < pg_numrows($result);$i++){
+for($i=0;$i < pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   if($j23_tipoim == 'P'){
     $v_vlrvenalpred = $vlrvenalpre+$vlrvenalter;
@@ -191,9 +191,9 @@ $result=db_query($sql) or die($sql);
 $TotalTaxas  = 0;
 $TotalQTaxas = 0;
 
-for($i = 0;$i < pg_numrows($result);$i++){
-  $TotalTaxas  += pg_result($result,$i,"totaltaxa");
-  $TotalQTaxas += pg_result($result,$i,"quanttaxa");
+for($i = 0;$i < pg_num_rows($result);$i++){
+  $TotalTaxas  += pg_fetch_result($result,$i,"totaltaxa");
+  $TotalQTaxas += pg_fetch_result($result,$i,"quanttaxa");
 }
 
 $head4 = "IPTU PAGO";
@@ -250,14 +250,14 @@ if ($TotalQTaxas != 0){
   $pdf->SetFont('Arial','B',9);
 }
 
-for($i = 0;$i < pg_numrows($result);$i++){
+for($i = 0;$i < pg_num_rows($result);$i++){
   //   $pdf->Cell(30,8,"",$bordat,0,"L",$preenc);
   if($TotalQTaxas != 0){ 
-    $pdf->Cell(20,8,pg_result($result,$i,"taxa")." - ","LTB",0,"R",$preenc);
-    $pdf->Cell(70,8,pg_result($result,$i,"descrtaxa"),"RTB",0,"L",$preenc);
-    $pdf->Cell(30,8,number_format(pg_result($result,$i,"quanttaxa"),0,",","."),$bordat,0,"R",$preenc);
-    $pdf->Cell(30,8,number_format(pg_result($result,$i,"totaltaxa"),2,",","."),$bordat,0,"R",$preenc);
-    $pdf->Cell(30,8,number_format((pg_result($result,$i,"totaltaxa")/$TotalGeral)*100,2,",",".")." %",$bordat,1,"R",$preenc);
+    $pdf->Cell(20,8,pg_fetch_result($result,$i,"taxa")." - ","LTB",0,"R",$preenc);
+    $pdf->Cell(70,8,pg_fetch_result($result,$i,"descrtaxa"),"RTB",0,"L",$preenc);
+    $pdf->Cell(30,8,number_format(pg_fetch_result($result,$i,"quanttaxa"),0,",","."),$bordat,0,"R",$preenc);
+    $pdf->Cell(30,8,number_format(pg_fetch_result($result,$i,"totaltaxa"),2,",","."),$bordat,0,"R",$preenc);
+    $pdf->Cell(30,8,number_format((pg_fetch_result($result,$i,"totaltaxa")/$TotalGeral)*100,2,",",".")." %",$bordat,1,"R",$preenc);
   }
 }
 if($TotalQTaxas != 0){ 
@@ -379,7 +379,7 @@ for ($mes = $mesini; $mes <= $mesfim; $mes++ ) {
   //die($sql);			
 
   $result = db_query($sql) or die($sql);
-  if (pg_numrows($result)==0){
+  if (pg_num_rows($result)==0){
     continue;
   }
   
@@ -393,7 +393,7 @@ for ($mes = $mesini; $mes <= $mesfim; $mes++ ) {
   $totquantmatric 		= 0;
   $totquantpropri 		= 0;  
   
-  for ($reg = 0; $reg < pg_numrows($result); $reg++) {
+  for ($reg = 0; $reg < pg_num_rows($result); $reg++) {
     db_fieldsmemory($result,$reg);
     if ($j20_tipo == "IPTU") {
       if ($j20_forma == "UNICA") {
@@ -418,7 +418,7 @@ for ($mes = $mesini; $mes <= $mesfim; $mes++ ) {
     $pre = 1;
   }
   
-  $pdf->cell(10,4,str_pad($mes,2,'0',STR_PAD_LEFT),0,0,"R",$pre);
+  $pdf->cell(10,4,str_pad((string) $mes,2,'0',STR_PAD_LEFT),0,0,"R",$pre);
   
   $pdf->cell(22,4,db_formatar($iptu_parc,'f'),0,0,"R",$pre);
   $pdf->cell(22,4,db_formatar($taxa_parc,'f'),0,0,"R",$pre);

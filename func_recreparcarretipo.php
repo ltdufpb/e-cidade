@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_recreparcarretipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrecreparcarretipo = new cl_recreparcarretipo;
 $clrecreparcarretipo->rotulo->label("k72_sequencial");
 $clrecreparcarretipo->rotulo->label("k72_codigo");
@@ -98,9 +98,9 @@ $clrecreparcarretipo->rotulo->label("k72_codigo");
         }else{
            $sql = $clrecreparcarretipo->sql_query("",$campos,"k72_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k72_codigo)){
-          $repassa = array("chave_k72_sequencial"=>$chave_k72_sequencial,"chave_k72_codigo"=>$chave_k72_codigo);
+          $repassa = ["chave_k72_sequencial"=>$chave_k72_sequencial,"chave_k72_codigo"=>$chave_k72_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -27,10 +27,10 @@ class SalvarOrganogramaRequest extends DBFormRequest
         return [
             'required' => 'O campo :attribute deve ser informado.',
             'integer' => 'O campo :attribute deve ser do tipo inteiro.',
-            'descricao.string' => utf8_encode('A descrição deve ser do tipo string.'),
-            'descricao.max' => utf8_encode('A quantidade máxima caracteres para a descrição é de 100.'),
-            'departamentofilho.different' => utf8_encode('Operação não permitida.'),
-            'departamentofilho.unique' => utf8_encode('Departamento já vinculado à Instituição.')
+            'descricao.string' => mb_convert_encoding('A descrição deve ser do tipo string.', 'UTF-8', 'ISO-8859-1'),
+            'descricao.max' => mb_convert_encoding('A quantidade máxima caracteres para a descrição é de 100.', 'UTF-8', 'ISO-8859-1'),
+            'departamentofilho.different' => mb_convert_encoding('Operação não permitida.', 'UTF-8', 'ISO-8859-1'),
+            'departamentofilho.unique' => mb_convert_encoding('Departamento já vinculado à Instituição.', 'UTF-8', 'ISO-8859-1')
         ];
     }
 }

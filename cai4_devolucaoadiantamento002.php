@@ -174,7 +174,7 @@ db_app::load("dbtextFieldData.widget.js");
           </td>
           <td>
             <?php
-              list($iAno, $iMes, $iDia) = explode("-", date("Y-m-d", db_getsession("DB_datausu")));
+              [$iAno, $iMes, $iDia] = explode("-", date("Y-m-d", db_getsession("DB_datausu")));
               db_inputdata('dtVencimento', $iDia, $iMes, $iAno, true, 'text', $db_opcao);
             ?>
           </td>

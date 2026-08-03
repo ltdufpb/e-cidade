@@ -29,42 +29,42 @@
 //CLASSE DA ENTIDADE utilizac
 class cl_utilizac { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $u04_codvei = 0; 
-   var $u04_datas_dia = null; 
-   var $u04_datas_mes = null; 
-   var $u04_datas_ano = null; 
-   var $u04_datas = null; 
-   var $u04_horas = null; 
-   var $u04_kms = 0; 
-   var $u04_destin = null; 
-   var $u04_ccust = null; 
-   var $u04_datad_dia = null; 
-   var $u04_datad_mes = null; 
-   var $u04_datad_ano = null; 
-   var $u04_datad = null; 
-   var $u04_horad = null; 
-   var $u04_kmd = 0; 
-   var $u04_login = null; 
-   var $u04_dtalt_dia = null; 
-   var $u04_dtalt_mes = null; 
-   var $u04_dtalt_ano = null; 
-   var $u04_dtalt = null; 
-   var $u04_numcgm = 0; 
+   public $u04_codvei = 0; 
+   public $u04_datas_dia = null; 
+   public $u04_datas_mes = null; 
+   public $u04_datas_ano = null; 
+   public $u04_datas = null; 
+   public $u04_horas = null; 
+   public $u04_kms = 0; 
+   public $u04_destin = null; 
+   public $u04_ccust = null; 
+   public $u04_datad_dia = null; 
+   public $u04_datad_mes = null; 
+   public $u04_datad_ano = null; 
+   public $u04_datad = null; 
+   public $u04_horad = null; 
+   public $u04_kmd = 0; 
+   public $u04_login = null; 
+   public $u04_dtalt_dia = null; 
+   public $u04_dtalt_mes = null; 
+   public $u04_dtalt_ano = null; 
+   public $u04_dtalt = null; 
+   public $u04_numcgm = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  u04_codvei = int4 = Codigo do Veiculo 
                  u04_datas = date = Data da saida do veiculo 
                  u04_horas = char(     4) = Hora da saida do veiculo 
@@ -79,10 +79,10 @@ class cl_utilizac {
                  u04_numcgm = int4 = Numero CGM 
                  ";
    //funcao construtor da classe 
-   function cl_utilizac() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("utilizac"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -274,7 +274,7 @@ class cl_utilizac {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela de controle de utilizacao de veiculos e maq () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela de controle de utilizacao de veiculos e maq já Cadastrado";
@@ -301,10 +301,10 @@ class cl_utilizac {
       $this->atualizacampos();
      $sql = " update utilizac set ";
      $virgula = "";
-     if(trim($this->u04_codvei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_codvei"])){ 
+     if(trim((string) $this->u04_codvei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_codvei"])){ 
        $sql  .= $virgula." u04_codvei = $this->u04_codvei ";
        $virgula = ",";
-       if(trim($this->u04_codvei) == null ){ 
+       if(trim((string) $this->u04_codvei) == null ){ 
          $this->erro_sql = " Campo Codigo do Veiculo nao Informado.";
          $this->erro_campo = "u04_codvei";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_utilizac {
          return false;
        }
      }
-     if(trim($this->u04_datas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_datas_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["u04_datas_dia"] !="") ){ 
+     if(trim((string) $this->u04_datas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_datas_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["u04_datas_dia"] !="") ){ 
        $sql  .= $virgula." u04_datas = '$this->u04_datas' ";
        $virgula = ",";
-       if(trim($this->u04_datas) == null ){ 
+       if(trim((string) $this->u04_datas) == null ){ 
          $this->erro_sql = " Campo Data da saida do veiculo nao Informado.";
          $this->erro_campo = "u04_datas_dia";
          $this->erro_banco = "";
@@ -330,7 +330,7 @@ class cl_utilizac {
        if(isset($GLOBALS["HTTP_POST_VARS"]["u04_datas_dia"])){ 
          $sql  .= $virgula." u04_datas = null ";
          $virgula = ",";
-         if(trim($this->u04_datas) == null ){ 
+         if(trim((string) $this->u04_datas) == null ){ 
            $this->erro_sql = " Campo Data da saida do veiculo nao Informado.";
            $this->erro_campo = "u04_datas_dia";
            $this->erro_banco = "";
@@ -341,10 +341,10 @@ class cl_utilizac {
          }
        }
      }
-     if(trim($this->u04_horas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_horas"])){ 
+     if(trim((string) $this->u04_horas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_horas"])){ 
        $sql  .= $virgula." u04_horas = '$this->u04_horas' ";
        $virgula = ",";
-       if(trim($this->u04_horas) == null ){ 
+       if(trim((string) $this->u04_horas) == null ){ 
          $this->erro_sql = " Campo Hora da saida do veiculo nao Informado.";
          $this->erro_campo = "u04_horas";
          $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_utilizac {
          return false;
        }
      }
-     if(trim($this->u04_kms)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_kms"])){ 
+     if(trim((string) $this->u04_kms)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_kms"])){ 
        $sql  .= $virgula." u04_kms = $this->u04_kms ";
        $virgula = ",";
-       if(trim($this->u04_kms) == null ){ 
+       if(trim((string) $this->u04_kms) == null ){ 
          $this->erro_sql = " Campo Km da saida do veiculo nao Informado.";
          $this->erro_campo = "u04_kms";
          $this->erro_banco = "";
@@ -367,10 +367,10 @@ class cl_utilizac {
          return false;
        }
      }
-     if(trim($this->u04_destin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_destin"])){ 
+     if(trim((string) $this->u04_destin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_destin"])){ 
        $sql  .= $virgula." u04_destin = '$this->u04_destin' ";
        $virgula = ",";
-       if(trim($this->u04_destin) == null ){ 
+       if(trim((string) $this->u04_destin) == null ){ 
          $this->erro_sql = " Campo Destino do Veiculo nao Informado.";
          $this->erro_campo = "u04_destin";
          $this->erro_banco = "";
@@ -380,10 +380,10 @@ class cl_utilizac {
          return false;
        }
      }
-     if(trim($this->u04_ccust)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_ccust"])){ 
+     if(trim((string) $this->u04_ccust)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_ccust"])){ 
        $sql  .= $virgula." u04_ccust = '$this->u04_ccust' ";
        $virgula = ",";
-       if(trim($this->u04_ccust) == null ){ 
+       if(trim((string) $this->u04_ccust) == null ){ 
          $this->erro_sql = " Campo Centro de Custo (materiais) nao Informado.";
          $this->erro_campo = "u04_ccust";
          $this->erro_banco = "";
@@ -393,10 +393,10 @@ class cl_utilizac {
          return false;
        }
      }
-     if(trim($this->u04_datad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_datad_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["u04_datad_dia"] !="") ){ 
+     if(trim((string) $this->u04_datad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_datad_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["u04_datad_dia"] !="") ){ 
        $sql  .= $virgula." u04_datad = '$this->u04_datad' ";
        $virgula = ",";
-       if(trim($this->u04_datad) == null ){ 
+       if(trim((string) $this->u04_datad) == null ){ 
          $this->erro_sql = " Campo Data da devolucao do veiculo nao Informado.";
          $this->erro_campo = "u04_datad_dia";
          $this->erro_banco = "";
@@ -409,7 +409,7 @@ class cl_utilizac {
        if(isset($GLOBALS["HTTP_POST_VARS"]["u04_datad_dia"])){ 
          $sql  .= $virgula." u04_datad = null ";
          $virgula = ",";
-         if(trim($this->u04_datad) == null ){ 
+         if(trim((string) $this->u04_datad) == null ){ 
            $this->erro_sql = " Campo Data da devolucao do veiculo nao Informado.";
            $this->erro_campo = "u04_datad_dia";
            $this->erro_banco = "";
@@ -420,10 +420,10 @@ class cl_utilizac {
          }
        }
      }
-     if(trim($this->u04_horad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_horad"])){ 
+     if(trim((string) $this->u04_horad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_horad"])){ 
        $sql  .= $virgula." u04_horad = '$this->u04_horad' ";
        $virgula = ",";
-       if(trim($this->u04_horad) == null ){ 
+       if(trim((string) $this->u04_horad) == null ){ 
          $this->erro_sql = " Campo Hora da devolucao do veiculo nao Informado.";
          $this->erro_campo = "u04_horad";
          $this->erro_banco = "";
@@ -433,10 +433,10 @@ class cl_utilizac {
          return false;
        }
      }
-     if(trim($this->u04_kmd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_kmd"])){ 
+     if(trim((string) $this->u04_kmd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_kmd"])){ 
        $sql  .= $virgula." u04_kmd = $this->u04_kmd ";
        $virgula = ",";
-       if(trim($this->u04_kmd) == null ){ 
+       if(trim((string) $this->u04_kmd) == null ){ 
          $this->erro_sql = " Campo Km da devolucao do veiculo nao Informado.";
          $this->erro_campo = "u04_kmd";
          $this->erro_banco = "";
@@ -446,10 +446,10 @@ class cl_utilizac {
          return false;
        }
      }
-     if(trim($this->u04_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_login"])){ 
+     if(trim((string) $this->u04_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_login"])){ 
        $sql  .= $virgula." u04_login = '$this->u04_login' ";
        $virgula = ",";
-       if(trim($this->u04_login) == null ){ 
+       if(trim((string) $this->u04_login) == null ){ 
          $this->erro_sql = " Campo Login do Usuario nao Informado.";
          $this->erro_campo = "u04_login";
          $this->erro_banco = "";
@@ -459,10 +459,10 @@ class cl_utilizac {
          return false;
        }
      }
-     if(trim($this->u04_dtalt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_dtalt_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["u04_dtalt_dia"] !="") ){ 
+     if(trim((string) $this->u04_dtalt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_dtalt_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["u04_dtalt_dia"] !="") ){ 
        $sql  .= $virgula." u04_dtalt = '$this->u04_dtalt' ";
        $virgula = ",";
-       if(trim($this->u04_dtalt) == null ){ 
+       if(trim((string) $this->u04_dtalt) == null ){ 
          $this->erro_sql = " Campo Data da alteracao nao Informado.";
          $this->erro_campo = "u04_dtalt_dia";
          $this->erro_banco = "";
@@ -475,7 +475,7 @@ class cl_utilizac {
        if(isset($GLOBALS["HTTP_POST_VARS"]["u04_dtalt_dia"])){ 
          $sql  .= $virgula." u04_dtalt = null ";
          $virgula = ",";
-         if(trim($this->u04_dtalt) == null ){ 
+         if(trim((string) $this->u04_dtalt) == null ){ 
            $this->erro_sql = " Campo Data da alteracao nao Informado.";
            $this->erro_campo = "u04_dtalt_dia";
            $this->erro_banco = "";
@@ -486,10 +486,10 @@ class cl_utilizac {
          }
        }
      }
-     if(trim($this->u04_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_numcgm"])){ 
+     if(trim((string) $this->u04_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u04_numcgm"])){ 
        $sql  .= $virgula." u04_numcgm = $this->u04_numcgm ";
        $virgula = ",";
-       if(trim($this->u04_numcgm) == null ){ 
+       if(trim((string) $this->u04_numcgm) == null ){ 
          $this->erro_sql = " Campo Numero CGM nao Informado.";
          $this->erro_campo = "u04_numcgm";
          $this->erro_banco = "";
@@ -580,7 +580,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:utilizac";

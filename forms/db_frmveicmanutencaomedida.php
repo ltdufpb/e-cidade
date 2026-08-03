@@ -116,7 +116,7 @@ $ve66_usuario = db_getsession("DB_id_usuario");
     </td>
     <td> 
       <?php 
-      $x = array("t"=>"SIM","f"=>"NAO");
+      $x = ["t"=>"SIM","f"=>"NAO"];
       db_select('ve66_ativo',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -192,7 +192,7 @@ function js_preenchepesquisa(chave){
   db_iframe_veicmanutencaomedida.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

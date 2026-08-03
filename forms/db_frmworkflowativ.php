@@ -179,7 +179,7 @@ db_input('db117_db_cadattdinamico',10,$Idb117_db_cadattdinamico,true,'hidden',3)
 			  $sSqlWorkflowAtivAndPadrao  = $clworkflowativandpadrao->sql_query(null, "*", $sOrderBy, $sWhere);
 
         $cliframe_alterar_excluir->sql           = $sSqlWorkflowAtivAndPadrao;
-        $cliframe_alterar_excluir->chavepri      = array("db114_sequencial" => @$db114_sequencial);
+        $cliframe_alterar_excluir->chavepri      = ["db114_sequencial" => @$db114_sequencial];
         $cliframe_alterar_excluir->campos        = "db114_sequencial, db114_descricao, db114_workflow, ";
         $cliframe_alterar_excluir->campos       .= "coddepto, descrdepto, db114_ordem                  ";
         $cliframe_alterar_excluir->legenda       = "ATIVIDADES LANÇADAS";

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_leis_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clleis = new cl_leis;
 $db_botao = true;
 $clleis->rotulo->label();
@@ -89,26 +89,26 @@ if(isset($h08_codlei) && trim($h08_codlei) != ""){
 	  $h08_anos  = "h08_anos".$i;
 	  $h08_perc  = "h08_perc".$i;
 	  $h08_car   = "h08_car".$i;
-	  if(isset($$h08_anos) && $$h08_anos == 0 && isset($$h08_perc) && $$h08_perc == 0){
-	    $$h08_anos = "";
-	    $$h08_perc = "";
-	    $$h08_car  = "";
+	  if(isset(${$h08_anos}) && ${$h08_anos} == 0 && isset(${$h08_perc}) && ${$h08_perc} == 0){
+	    ${$h08_anos} = "";
+	    ${$h08_perc} = "";
+	    ${$h08_car}  = "";
 	  }
 	?>
         <tr>
           <td align="center" class="bordas1"> 
             <?php 
-            db_input('h08_anos'.$i,2,$$Ih08_anos,true,'text',$db_opcao,"")
+            db_input('h08_anos'.$i,2,${$Ih08_anos},true,'text',$db_opcao,"")
             ?>
           </td>
           <td align="center" class="bordas1"> 
             <?php 
-            db_input('h08_perc'.$i,5,$$Ih08_perc,true,'text',$db_opcao,"")
+            db_input('h08_perc'.$i,5,${$Ih08_perc},true,'text',$db_opcao,"")
             ?>
           </td>
           <td align="center" class="bordas1"> 
             <?php 
-            db_input('h08_car'.$i,3,$$Ih08_car,true,'text',$db_opcao,"")
+            db_input('h08_car'.$i,3,${$Ih08_car},true,'text',$db_opcao,"")
             ?>
           </td>
         </tr>
@@ -132,26 +132,26 @@ if(isset($h08_codlei) && trim($h08_codlei) != ""){
 	  $h08_anos  = "h08_anos".$i;
 	  $h08_perc  = "h08_perc".$i;
 	  $h08_car   = "h08_car".$i;
-	  if(isset($$h08_anos) && $$h08_anos == 0 && isset($$h08_perc) && $$h08_perc == 0){
-	    $$h08_anos = "";
-	    $$h08_perc = "";
-	    $$h08_car  = "";
+	  if(isset(${$h08_anos}) && ${$h08_anos} == 0 && isset(${$h08_perc}) && ${$h08_perc} == 0){
+	    ${$h08_anos} = "";
+	    ${$h08_perc} = "";
+	    ${$h08_car}  = "";
 	  }
 	?>
         <tr>
           <td align="center" class="bordas1"> 
             <?php 
-            db_input('h08_anos'.$i,2,$$Ih08_anos,true,'text',$db_opcao,"")
+            db_input('h08_anos'.$i,2,${$Ih08_anos},true,'text',$db_opcao,"")
             ?>
           </td>
           <td align="center" class="bordas1"> 
             <?php 
-            db_input('h08_perc'.$i,5,$$Ih08_perc,true,'text',$db_opcao,"")
+            db_input('h08_perc'.$i,5,${$Ih08_perc},true,'text',$db_opcao,"")
             ?>
           </td>
           <td align="center" class="bordas1"> 
             <?php 
-            db_input('h08_car'.$i,3,$$Ih08_car,true,'text',$db_opcao,"")
+            db_input('h08_car'.$i,3,${$Ih08_car},true,'text',$db_opcao,"")
             ?>
           </td>
         </tr>

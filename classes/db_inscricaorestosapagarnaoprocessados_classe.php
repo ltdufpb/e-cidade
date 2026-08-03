@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE inscricaorestosapagarnaoprocessados
 class cl_inscricaorestosapagarnaoprocessados { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c107_sequencial = 0; 
-   var $c107_usuario = 0; 
-   var $c107_instit = 0; 
-   var $c107_ano = 0; 
-   var $c107_processado = 'f'; 
+   public $c107_sequencial = 0; 
+   public $c107_usuario = 0; 
+   public $c107_instit = 0; 
+   public $c107_ano = 0; 
+   public $c107_processado = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c107_sequencial = int4 = Sequencial 
                  c107_usuario = int4 = Cod. Usuário 
                  c107_instit = int4 = Cod. Instituição 
@@ -56,10 +56,10 @@ class cl_inscricaorestosapagarnaoprocessados {
                  c107_processado = bool = Processado 
                  ";
    //funcao construtor da classe 
-   function cl_inscricaorestosapagarnaoprocessados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("inscricaorestosapagarnaoprocessados"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_inscricaorestosapagarnaoprocessados {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c107_sequencial = pg_result($result,0,0); 
+       $this->c107_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from inscricaorestosapagarnaoprocessados_c107_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c107_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c107_sequencial)){
          $this->erro_sql = " Campo c107_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_inscricaorestosapagarnaoprocessados {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Inscrição de RP's não processados ($this->c107_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Inscrição de RP's não processados já Cadastrado";
@@ -194,14 +194,14 @@ class cl_inscricaorestosapagarnaoprocessados {
      $resaco = $this->sql_record($this->sql_query_file($this->c107_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19500,'$this->c107_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3466,19500,'','".AddSlashes(pg_result($resaco,0,'c107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3466,19503,'','".AddSlashes(pg_result($resaco,0,'c107_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3466,19504,'','".AddSlashes(pg_result($resaco,0,'c107_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3466,19501,'','".AddSlashes(pg_result($resaco,0,'c107_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3466,19502,'','".AddSlashes(pg_result($resaco,0,'c107_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3466,19500,'','".AddSlashes(pg_fetch_result($resaco,0,'c107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3466,19503,'','".AddSlashes(pg_fetch_result($resaco,0,'c107_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3466,19504,'','".AddSlashes(pg_fetch_result($resaco,0,'c107_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3466,19501,'','".AddSlashes(pg_fetch_result($resaco,0,'c107_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3466,19502,'','".AddSlashes(pg_fetch_result($resaco,0,'c107_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_inscricaorestosapagarnaoprocessados {
       $this->atualizacampos();
      $sql = " update inscricaorestosapagarnaoprocessados set ";
      $virgula = "";
-     if(trim($this->c107_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c107_sequencial"])){ 
+     if(trim((string) $this->c107_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c107_sequencial"])){ 
        $sql  .= $virgula." c107_sequencial = $this->c107_sequencial ";
        $virgula = ",";
-       if(trim($this->c107_sequencial) == null ){ 
+       if(trim((string) $this->c107_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "c107_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_inscricaorestosapagarnaoprocessados {
          return false;
        }
      }
-     if(trim($this->c107_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c107_usuario"])){ 
+     if(trim((string) $this->c107_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c107_usuario"])){ 
        $sql  .= $virgula." c107_usuario = $this->c107_usuario ";
        $virgula = ",";
-       if(trim($this->c107_usuario) == null ){ 
+       if(trim((string) $this->c107_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "c107_usuario";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_inscricaorestosapagarnaoprocessados {
          return false;
        }
      }
-     if(trim($this->c107_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c107_instit"])){ 
+     if(trim((string) $this->c107_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c107_instit"])){ 
        $sql  .= $virgula." c107_instit = $this->c107_instit ";
        $virgula = ",";
-       if(trim($this->c107_instit) == null ){ 
+       if(trim((string) $this->c107_instit) == null ){ 
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "c107_instit";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_inscricaorestosapagarnaoprocessados {
          return false;
        }
      }
-     if(trim($this->c107_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c107_ano"])){ 
+     if(trim((string) $this->c107_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c107_ano"])){ 
        $sql  .= $virgula." c107_ano = $this->c107_ano ";
        $virgula = ",";
-       if(trim($this->c107_ano) == null ){ 
+       if(trim((string) $this->c107_ano) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "c107_ano";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_inscricaorestosapagarnaoprocessados {
          return false;
        }
      }
-     if(trim($this->c107_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c107_processado"])){ 
+     if(trim((string) $this->c107_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c107_processado"])){ 
        $sql  .= $virgula." c107_processado = '$this->c107_processado' ";
        $virgula = ",";
-       if(trim($this->c107_processado) == null ){ 
+       if(trim((string) $this->c107_processado) == null ){ 
          $this->erro_sql = " Campo Processado nao Informado.";
          $this->erro_campo = "c107_processado";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_inscricaorestosapagarnaoprocessados {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19500,'$this->c107_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c107_sequencial"]) || $this->c107_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3466,19500,'".AddSlashes(pg_result($resaco,$conresaco,'c107_sequencial'))."','$this->c107_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3466,19500,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c107_sequencial'))."','$this->c107_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c107_usuario"]) || $this->c107_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3466,19503,'".AddSlashes(pg_result($resaco,$conresaco,'c107_usuario'))."','$this->c107_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3466,19503,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c107_usuario'))."','$this->c107_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c107_instit"]) || $this->c107_instit != "")
-           $resac = db_query("insert into db_acount values($acount,3466,19504,'".AddSlashes(pg_result($resaco,$conresaco,'c107_instit'))."','$this->c107_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3466,19504,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c107_instit'))."','$this->c107_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c107_ano"]) || $this->c107_ano != "")
-           $resac = db_query("insert into db_acount values($acount,3466,19501,'".AddSlashes(pg_result($resaco,$conresaco,'c107_ano'))."','$this->c107_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3466,19501,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c107_ano'))."','$this->c107_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c107_processado"]) || $this->c107_processado != "")
-           $resac = db_query("insert into db_acount values($acount,3466,19502,'".AddSlashes(pg_result($resaco,$conresaco,'c107_processado'))."','$this->c107_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3466,19502,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c107_processado'))."','$this->c107_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_inscricaorestosapagarnaoprocessados {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19500,'$c107_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3466,19500,'','".AddSlashes(pg_result($resaco,$iresaco,'c107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3466,19503,'','".AddSlashes(pg_result($resaco,$iresaco,'c107_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3466,19504,'','".AddSlashes(pg_result($resaco,$iresaco,'c107_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3466,19501,'','".AddSlashes(pg_result($resaco,$iresaco,'c107_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3466,19502,'','".AddSlashes(pg_result($resaco,$iresaco,'c107_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3466,19500,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c107_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3466,19503,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c107_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3466,19504,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c107_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3466,19501,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c107_ano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3466,19502,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c107_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from inscricaorestosapagarnaoprocessados
@@ -407,7 +407,7 @@ class cl_inscricaorestosapagarnaoprocessados {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:inscricaorestosapagarnaoprocessados";
@@ -422,7 +422,7 @@ class cl_inscricaorestosapagarnaoprocessados {
    function sql_query ( $c107_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_inscricaorestosapagarnaoprocessados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -460,7 +460,7 @@ class cl_inscricaorestosapagarnaoprocessados {
    function sql_query_file ( $c107_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,7 +481,7 @@ class cl_inscricaorestosapagarnaoprocessados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

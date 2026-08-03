@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_controleacessoalunoregistro_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcontroleacessoalunoregistro = new cl_controleacessoalunoregistro;
 $clcontroleacessoalunoregistro->rotulo->label("ed101_sequencial");
 $clcontroleacessoalunoregistro->rotulo->label("ed101_matricula");
@@ -98,9 +98,9 @@ $clcontroleacessoalunoregistro->rotulo->label("ed101_matricula");
         }else{
            $sql = $clcontroleacessoalunoregistro->sql_query("",$campos,"ed101_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed101_matricula)){
-          $repassa = array("chave_ed101_sequencial"=>$chave_ed101_sequencial,"chave_ed101_matricula"=>$chave_ed101_matricula);
+          $repassa = ["chave_ed101_sequencial"=>$chave_ed101_sequencial,"chave_ed101_matricula"=>$chave_ed101_matricula];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -75,7 +75,7 @@ class Calculo {
     }
 
     $iQuantidadeValores = pg_num_rows($rsLinhasValores);
-    $aValores = array();
+    $aValores = [];
     for ($iValor = 0; $iValor < $iQuantidadeValores; $iValor++) {
 
       $oLinhaValor = pg_fetch_object($rsLinhasValores, $iValor);
@@ -144,7 +144,7 @@ class Calculo {
     }
 
     $iQuantidadeResultados = pg_num_rows($rsLinhaCalculo);
-    $aResultados = array();
+    $aResultados = [];
     for ($iLinha = 0; $iLinha < $iQuantidadeResultados; $iLinha++) {
       $aResultados[] = $this->hydrate($rsLinhaCalculo, $iLinha);
     }
@@ -181,7 +181,7 @@ class Calculo {
    */
   public function find($iCodigo) {
 
-    $aResults = $this->findBy(array("x22_codcalc = {$iCodigo}"), null, 1);
+    $aResults = $this->findBy(["x22_codcalc = {$iCodigo}"], null, 1);
     if ($aResults) {
       return current($aResults);
     }

@@ -46,27 +46,17 @@ final class Container extends ContainerAbstract
 
     public function charge()
     {
-        $this->content = array(
-            'DataBase' => function ($container) {
-                return \ECidade\Tributario\Library\DataBase::getInstance();
-            },
-            'File' => function ($container) {
-                return new \ECidade\Library\File\File();
-            },
+        $this->content = [
+            'DataBase' => fn($container) => \ECidade\Tributario\Library\DataBase::getInstance(),
+            'File' => fn($container) => new \ECidade\Library\File\File(),
             'FileService' => function ($container) {
                 $file = $container->get('File');
                 return new \ECidade\Library\File\FileService($file);
             },
-            'Format' => function ($container) {
-                return new \ECidade\Tributario\Library\Format();
-            },
-            'Session' => function ($container) {
-                return new \ECidade\Tributario\Library\Session();
-            },
-            'DataBaseLegacy' => function ($container) {
-                return \ECidade\V3\Datasource\Database::getInstance();
-            },
-        );
+            'Format' => fn($container) => new \ECidade\Tributario\Library\Format(),
+            'Session' => fn($container) => new \ECidade\Tributario\Library\Session(),
+            'DataBaseLegacy' => fn($container) => \ECidade\V3\Datasource\Database::getInstance(),
+        ];
 
         $this->content = array_merge(
             $this->content,

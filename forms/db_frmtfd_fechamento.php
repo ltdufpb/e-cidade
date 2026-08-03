@@ -77,7 +77,7 @@ $clrotulo->label("nome");
 				<tr>
 						<td><b>Tipo Financiamnto:</b></td>
 						<td colspan="3">
-										<?php $x = array();
+										<?php $x = [];
 										$sWhere = "sd65_i_anocomp=(select max(sd65_i_anocomp) from sau_financiamento) and sd65_i_mescomp=( 
 												select max(sd65_i_mescomp) from sau_financiamento where sd65_i_anocomp=(
 												select max(sd65_i_anocomp) from sau_financiamento))";
@@ -128,7 +128,7 @@ $clrotulo->label("nome");
  <tr>
   <td valign="top">
   <?php 
-    $chavepri                     = array("tf32_i_codigo"=>@$tf32_i_codigo);
+    $chavepri                     = ["tf32_i_codigo"=>@$tf32_i_codigo];
     $sCampos                      = " tf32_i_mescompetencia||'/'||tf32_i_anocompetencia as tf32_i_mescompetencia,";
     $sCampos                     .= " tf32_d_datafim,tf32_c_descr,tf32_i_codigo,tf32_i_financiamento,sd65_c_nome, "; 
     $sCampos                     .= " nome,tf32_d_datasistema,tf32_c_horasistema,tf32_d_datainicio ";

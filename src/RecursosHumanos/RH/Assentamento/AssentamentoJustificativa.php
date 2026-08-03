@@ -271,7 +271,7 @@ class AssentamentoJustificativa extends \Assentamento {
         $periodo = 0;
 
 
-        $horasTotais = array();
+        $horasTotais = [];
         $quantidadeHorasJornada = 4;
         for ($i = 0; $i < $quantidadeHorasJornada; $i = $i + 2) {
             $indiceEntrada = $i;

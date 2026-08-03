@@ -16,14 +16,13 @@ class AnexoOitoFactory extends AnexosFactory implements AnexosFactoryInterface
 
     public static function getCodigoRelatorio($exercicio)
     {
-        switch ($exercicio) {
-            case 2021:
-                return 245;
-            default:
-                return 245;
-        }
+        return match ($exercicio) {
+            2021 => 245,
+            default => 245,
+        };
     }
 
+    #[\Override]
     public static function getProgramaRelatorio($exercicio)
     {
         return 'pla2_anexos_rreo_consolida001.php';

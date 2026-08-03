@@ -33,13 +33,13 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_db_syscampo_classe.php');
 require_once modification('classes/db_db_sysarquivo_classe.php');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_syscampo = new cl_db_syscampo;
 $cldb_sysarquivo = new cl_db_sysarquivo;
 $cldb_syscampo->rotulocl->label("codcam");

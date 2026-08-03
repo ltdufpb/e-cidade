@@ -74,12 +74,12 @@ if ($oParam->exec == "getDados_solicitacao") {
 
      } else {
 
-         echo $oJson->encode ( array ("status" => 2, "message" => urlencode ( "Não Foi possivel consultar itens." ) ) );
+         echo $oJson->encode (  ["status" => 2, "message" => urlencode ( "Não Foi possivel consultar itens." ) ] );
 		}
 	} catch ( Exception $eExeption ) {
 
 		$sError = $eExeption->getMessage ();
-		echo $oJson->encode ( array ("status" => 2, "message" => urlencode ( $sError ) ) );
+		echo $oJson->encode (  ["status" => 2, "message" => urlencode ( $sError ) ] );
 	}
 }
 
@@ -97,12 +97,12 @@ if ($oParam->exec == "getLotes") {
 
 			echo $oJson->encode ( $oRetorno );
 		} else {
-			echo $oJson->encode ( array ("status" => 2, "message" => urlencode ( "Não Foi possivel consultar itens." ) ) );
+			echo $oJson->encode (  ["status" => 2, "message" => urlencode ( "Não Foi possivel consultar itens." ) ] );
 		}
 	} catch ( Exception $eException ) {
 
 		$sError = $eException->getMessage ();
-		echo $oJson->encode ( array ("status" => 2, "message" => urlencode ( $sError ) ) );
+		echo $oJson->encode (  ["status" => 2, "message" => urlencode ( $sError ) ] );
 
 	}
 
@@ -111,14 +111,14 @@ if ($oParam->exec == "saveLote") {
 
 	$oMaterialEstoque = new materialEstoque ( $oParam->params [0]->iCodMater );
 	$oMaterialEstoque->saveLoteSession ( $oParam->params [0]->aItens );
-	echo $oJson->encode ( array ("status" => 1, "message" => "" ) );
+	echo $oJson->encode (  ["status" => 1, "message" => "" ] );
 
 }
 if ($oParam->exec == "cancelarLote") {
 
 	$oMaterialEstoque = new materialEstoque ( $oParam->params [0]->iCodMater );
 	$oMaterialEstoque->cancelarLoteSession ();
-	echo $oJson->encode ( array ("status" => 1, "message" => "" ) );
+	echo $oJson->encode (  ["status" => 1, "message" => "" ] );
 
 }
 if ($oParam->exec == "atendeSolicitacao") {
@@ -150,7 +150,7 @@ if ($oParam->exec == "atendeSolicitacao") {
 		$oMaterialEstoque->cancelarLoteSession ();
 
 	}
-	echo $oJson->encode ( array ("status" => 1, "message" => "" ) );
+	echo $oJson->encode (  ["status" => 1, "message" => "" ] );
 }else if ($oParam->exec == "anulapedido") {  ///função que faz a anulação dos itens da requisição
 
  	 db_inicio_transacao();
@@ -170,6 +170,6 @@ if ($oParam->exec == "atendeSolicitacao") {
 	    $erro_msg = str_replace("\n", "\\n",$eErro->getMessage());
 
 	  }
-	  echo $oJson->encode(array("status" => 1, "message"=> "Inclusão efetuada com Sucesso"));
+	  echo $oJson->encode(["status" => 1, "message"=> "Inclusão efetuada com Sucesso"]);
 }
 ?>

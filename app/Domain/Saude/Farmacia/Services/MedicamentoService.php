@@ -6,14 +6,8 @@ use App\Domain\Saude\Farmacia\Repositories\MedicamentoRepository;
 
 class MedicamentoService
 {
-    /**
-     * @var MedicamentoRepository
-     */
-    private $repository;
-
-    public function __construct(MedicamentoRepository $repository)
+    public function __construct(private readonly MedicamentoRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     /**

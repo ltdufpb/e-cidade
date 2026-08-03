@@ -18,12 +18,12 @@ class RouteConfig
      */
     public static function routes()
     {
-        return array(
+        return [
             self::ROUTE_LOGIN,
             self::ROUTE_TRIBUTARIO_RECIBO,
             self::ROUTE_MATRICULA_INSCRICAO,
             self::ROUTE_MATRICULA_EMISSAO_PROTOCOLO,
-        );
+        ];
     }
 
     /**
@@ -32,12 +32,12 @@ class RouteConfig
      */
     public static function routesMenu()
     {
-        return array(
+        return [
             self::ROUTE_LOGIN => MenuAcessadoSession::build(1, 1),
             self::ROUTE_TRIBUTARIO_RECIBO => MenuAcessadoSession::build(56, 1985522),
             self::ROUTE_MATRICULA_INSCRICAO => MenuAcessadoSession::build(56, 1985522),
             self::ROUTE_MATRICULA_EMISSAO_PROTOCOLO => MenuAcessadoSession::build(56, 1985522),
-        );
+        ];
     }
 
     /**
@@ -45,9 +45,9 @@ class RouteConfig
      */
     public static function userAuthRoutes()
     {
-        return array(
+        return [
             self::ROUTE_TRIBUTARIO_RECIBO
-        );
+        ];
     }
 
     /**
@@ -78,7 +78,7 @@ class RouteConfig
      */
     public static function normalizeRequestRoute($route)
     {
-        $match = preg_replace('/^([^_]+_){2}([^_]+)/', '', $route);
+        $match = preg_replace('/^([^_]+_){2}([^_]+)/', '', (string) $route);
         return str_replace('_', '/', $match);
     }
 }

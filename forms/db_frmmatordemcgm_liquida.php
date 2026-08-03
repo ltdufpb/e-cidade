@@ -249,7 +249,7 @@ if ($clmatparam->numrows > 0) {
           <td colspan='2' align='center'>
 	  <?php if ($e60_numcgm!=""){
 	      $result=db_query("select * from empempenho inner join empempitem on e62_numemp = e60_numemp inner join pcmater on pc01_codmater = e62_item where e60_numcgm=$e60_numcgm");
-	      if (pg_numrows($result)>0){?>
+	      if (pg_num_rows($result)>0){?>
               <input name="incluir" type="submit"  value="Incluir">
 	      <input name="voltar" type="button" value="Voltar" onclick="location.href='emp1_ordemcompra001.php';" >
 	  <?php }else{?>

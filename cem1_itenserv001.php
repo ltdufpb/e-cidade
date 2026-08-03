@@ -37,8 +37,8 @@ require_once(modification("classes/db_taxaservval_classe.php"));
 require_once(modification("classes/db_txsepultamentos_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -106,7 +106,7 @@ if ( isset($incluir) ) {
 	    $result_arrecad = db_query($sSql) or die("Erro ao incluir em arrecad.");
       $oArrecad       = db_utils::fieldsMemory($result_arrecad, 0);
 
-	    if ( substr( $oArrecad->retorno, 0, 1 ) != '9' ) {
+	    if ( !str_starts_with((string) $oArrecad->retorno, '9') ) {
 	      db_msgbox($oArrecad->retorno);
 	    }
 	  }

@@ -112,21 +112,21 @@ class GeracaoPlanilhaIapep {
   
   	$oDaoRhPessoalMov   = new cl_rhpessoalmov();
 
-    $aTipoVinculos = explode(",", $oParametros->sTipoVinculo);
-    $aArquivos     = array();
+    $aTipoVinculos = explode(",", (string) $oParametros->sTipoVinculo);
+    $aArquivos     = [];
 
     foreach ($aTipoVinculos as $sTipoVinculo) {
 
-      $aTabelas = array(
+      $aTabelas = [
         'r48' => 'gerfcom',
         'r14' => 'gerfsal',
         'r20' => 'gerfres'
-      );
+      ];
 
       if ( $lIsPlanilha13 ) {
-        $aTabelas = array(
+        $aTabelas = [
           'r35' => 'gerfs13'
-        );
+        ];
       }
 
      /**
@@ -254,13 +254,13 @@ class GeracaoPlanilhaIapep {
   
   	$oDaoRhPessoalMov   			  = new cl_rhpessoalmov();
 
-    $aDadosRetorno = array(
-      'A' => array(),
-      'I' => array(),
-      'P' => array()
-    );
+    $aDadosRetorno = [
+      'A' => [],
+      'I' => [],
+      'P' => []
+    ];
 
-    $aTipoVinculos = explode(",", $oParametros->sTipoVinculo);
+    $aTipoVinculos = explode(",", (string) $oParametros->sTipoVinculo);
 
     foreach ($aTipoVinculos as $sTipoVinculo) {
       
@@ -309,22 +309,22 @@ class GeracaoPlanilhaIapep {
   
   	foreach ( $aDados as $sTipoVinculo => $aDado ){
 
-  		${"iQuantidadeServidores".$sTipoVinculo}                       = isset($aDado->quantidadeservidores) ? $aDado->quantidadeservidores : 0;
+  		${"iQuantidadeServidores".$sTipoVinculo}                       = $aDado->quantidadeservidores ?? 0;
   
-      ${"iTotalFolhaBruta".$sTipoVinculo}                            = isset($aDado->totalfolhabruta) ?  $aDado->totalfolhabruta : 0;
-      ${"iTotalContribuicaoPrevidenciaria".$sTipoVinculo}            = isset($aDado->totalcontribuicaoprevidenciaria) ? $aDado->totalcontribuicaoprevidenciaria : 0;
-      ${"iTotalContribuicaoPrevidenciariaServidor".$sTipoVinculo}    = isset($aDado->totalcontribuicaoprevidenciariaservidor) ? $aDado->totalcontribuicaoprevidenciariaservidor   : 0;
-      ${"iTotalContribuicaoPatronalServidor".$sTipoVinculo}          = isset($aDado->totalcontribuicaopatronalservidor) ? $aDado->totalcontribuicaopatronalservidor         : 0;
+      ${"iTotalFolhaBruta".$sTipoVinculo}                            = $aDado->totalfolhabruta ?? 0;
+      ${"iTotalContribuicaoPrevidenciaria".$sTipoVinculo}            = $aDado->totalcontribuicaoprevidenciaria ?? 0;
+      ${"iTotalContribuicaoPrevidenciariaServidor".$sTipoVinculo}    = $aDado->totalcontribuicaoprevidenciariaservidor ?? 0;
+      ${"iTotalContribuicaoPatronalServidor".$sTipoVinculo}          = $aDado->totalcontribuicaopatronalservidor ?? 0;
  
-      ${"iTotalFolhaBruta13".$sTipoVinculo}                          = isset($aDado->totalfolhabruta13) ? $aDado->totalfolhabruta13                         : 0;
-      ${"iTotalContribuicaoPrevidenciaria13".$sTipoVinculo}          = isset($aDado->totalcontribuicaoprevidenciaria13) ? $aDado->totalcontribuicaoprevidenciaria13         : 0;
-      ${"iTotalContribuicaoPrevidenciariaServidor13".$sTipoVinculo}  = isset($aDado->totalcontribuicaoprevidenciariaservidor13) ? $aDado->totalcontribuicaoprevidenciariaservidor13 : 0;
-      ${"iTotalContribuicaoPatronalServidor13".$sTipoVinculo}        = isset($aDado->totalcontribuicaopatronalservidor13) ? $aDado->totalcontribuicaopatronalservidor13       : 0;
+      ${"iTotalFolhaBruta13".$sTipoVinculo}                          = $aDado->totalfolhabruta13 ?? 0;
+      ${"iTotalContribuicaoPrevidenciaria13".$sTipoVinculo}          = $aDado->totalcontribuicaoprevidenciaria13 ?? 0;
+      ${"iTotalContribuicaoPrevidenciariaServidor13".$sTipoVinculo}  = $aDado->totalcontribuicaoprevidenciariaservidor13 ?? 0;
+      ${"iTotalContribuicaoPatronalServidor13".$sTipoVinculo}        = $aDado->totalcontribuicaopatronalservidor13 ?? 0;
                                                                                                                                             
-      $iTotalizadorFolhaBruta                                       += isset($aDado->totalizadorfolhabruta) ? $aDado->totalizadorfolhabruta : 0                             ;
-      $iTotalizadorContribuicaoPrevidenciariaServidor               += isset($aDado->totalizadorcontribuicaoprevidenciariaservidor) ? $aDado->totalizadorcontribuicaoprevidenciariaservidor : 0     ;
-      $iTotalizadorContribuicaoPatronalServidor                     += isset($aDado->totalizadorcontribuicaopatronalservidor) ? $aDado->totalizadorcontribuicaopatronalservidor : 0           ;
-      $iTotalizadorContribuicaoPrevicendiaPatronalServidor          += isset($aDado->totalizadorcontribuicaoprevicendiapatronalservidor) ? $aDado->totalizadorcontribuicaoprevicendiapatronalservidor : 0;
+      $iTotalizadorFolhaBruta                                       += $aDado->totalizadorfolhabruta ?? 0                             ;
+      $iTotalizadorContribuicaoPrevidenciariaServidor               += $aDado->totalizadorcontribuicaoprevidenciariaservidor ?? 0     ;
+      $iTotalizadorContribuicaoPatronalServidor                     += $aDado->totalizadorcontribuicaopatronalservidor ?? 0           ;
+      $iTotalizadorContribuicaoPrevicendiaPatronalServidor          += $aDado->totalizadorcontribuicaoprevicendiapatronalservidor ?? 0;
   	}
   	
   	if ( $iQuantidadeServidoresA == 0 && 

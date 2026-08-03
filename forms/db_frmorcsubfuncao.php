@@ -128,7 +128,7 @@ if ($db_opcao == 3 || $db_opcao == 33) {
         db_iframe_orcsubfuncao.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave;";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave;";
         }
         ?>
     }

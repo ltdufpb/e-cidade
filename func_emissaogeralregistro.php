@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_emissaogeralregistro_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clemissaogeralregistro = new cl_emissaogeralregistro;
 $clemissaogeralregistro->rotulo->label("tr02_sequencial");
 $clemissaogeralregistro->rotulo->label("tr02_emissaogeral");
@@ -52,9 +52,9 @@ $clemissaogeralregistro->rotulo->label("tr02_emissaogeral");
         }else{
            $sql = $clemissaogeralregistro->sql_query("",$campos,"tr02_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_tr02_emissaogeral)){
-          $repassa = array("chave_tr02_sequencial"=>$chave_tr02_sequencial,"chave_tr02_emissaogeral"=>$chave_tr02_emissaogeral);
+          $repassa = ["chave_tr02_sequencial"=>$chave_tr02_sequencial,"chave_tr02_emissaogeral"=>$chave_tr02_emissaogeral];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

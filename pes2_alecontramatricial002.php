@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_layouttxt.php"));
-db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_SERVER);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sql = "select * from db_config where codigo = ".db_getsession("DB_instit");
 $result = db_query($sql);
@@ -144,7 +144,7 @@ $sql = "select distinct
 	     $txt_where
 	order by estrut,z01_nome ";
 $res = db_query($sql);
-$num = pg_numrows($res);
+$num = pg_num_rows($res);
 if($num == 0){
   echo "<script>parent.js_detectaarquivo('',true,'Não existe Cálculo no período de $mes / $ano')</script>";
   exit;

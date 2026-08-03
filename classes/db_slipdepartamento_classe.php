@@ -27,7 +27,7 @@ class cl_slipdepartamento
     public function __construct()
     {
         $this->rotulo = new rotulo("slipdepartamento"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -82,7 +82,7 @@ class cl_slipdepartamento
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Departamento do Slip ($this->k211_slip) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Departamento do Slip já Cadastrado";
@@ -111,11 +111,11 @@ class cl_slipdepartamento
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1014409,'$this->k211_slip','I')");
-         $resac = db_query("insert into db_acount values($acount,1010975,1014409,'','".AddSlashes(pg_result($resaco,0,'k211_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010975,1014410,'','".AddSlashes(pg_result($resaco,0,'k211_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010975,1014409,'','".AddSlashes(pg_fetch_result($resaco,0,'k211_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010975,1014410,'','".AddSlashes(pg_fetch_result($resaco,0,'k211_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -126,10 +126,10 @@ class cl_slipdepartamento
       $this->atualizacampos();
      $sql = " update slipdepartamento set ";
      $virgula = "";
-     if(trim($this->k211_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k211_slip"])){ 
+     if(trim((string) $this->k211_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k211_slip"])){ 
        $sql  .= $virgula." k211_slip = $this->k211_slip ";
        $virgula = ",";
-       if(trim($this->k211_slip) == null ){ 
+       if(trim((string) $this->k211_slip) == null ){ 
          $this->erro_sql = " Campo Slip não informado.";
          $this->erro_campo = "k211_slip";
          $this->erro_banco = "";
@@ -139,10 +139,10 @@ class cl_slipdepartamento
          return false;
        }
      }
-     if(trim($this->k211_depart)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k211_depart"])){ 
+     if(trim((string) $this->k211_depart)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k211_depart"])){ 
        $sql  .= $virgula." k211_depart = $this->k211_depart ";
        $virgula = ",";
-       if(trim($this->k211_depart) == null ){ 
+       if(trim((string) $this->k211_depart) == null ){ 
          $this->erro_sql = " Campo Departamento não informado.";
          $this->erro_campo = "k211_depart";
          $this->erro_banco = "";
@@ -166,13 +166,13 @@ class cl_slipdepartamento
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1014409,'$this->k211_slip','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k211_slip"]) || $this->k211_slip != "")
-             $resac = db_query("insert into db_acount values($acount,1010975,1014409,'".AddSlashes(pg_result($resaco,$conresaco,'k211_slip'))."','$this->k211_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010975,1014409,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k211_slip'))."','$this->k211_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k211_depart"]) || $this->k211_depart != "")
-             $resac = db_query("insert into db_acount values($acount,1010975,1014410,'".AddSlashes(pg_result($resaco,$conresaco,'k211_depart'))."','$this->k211_depart',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010975,1014410,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k211_depart'))."','$this->k211_depart',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -226,11 +226,11 @@ class cl_slipdepartamento
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1014409,'$k211_slip','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010975,1014409,'','".AddSlashes(pg_result($resaco,$iresaco,'k211_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010975,1014410,'','".AddSlashes(pg_result($resaco,$iresaco,'k211_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010975,1014409,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k211_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010975,1014410,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k211_depart'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

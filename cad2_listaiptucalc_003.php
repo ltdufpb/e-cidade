@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 include(modification("fpdf151/pdf.php"));
 $db_anousu= db_getsession("DB_anousu");
 $sql="select j01_matric,
@@ -38,7 +38,7 @@ $sql="select j01_matric,
 	  order by $ordem
 ";
 $result=db_query($sql);
-if(pg_numrows($result)==0){
+if(pg_num_rows($result)==0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem matrículas Calculadas: Exercício:'.$db_anousu);
 }else{
 
@@ -74,7 +74,7 @@ $totvlrbombeiro=0;
 $totvlrlimpeza=0;
 $totvlrgeral=0;
 
-for($i = 0;$i < pg_numrows($result);$i++){
+for($i = 0;$i < pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   //echo $j01_matric;
   if($linha > 55 ){
@@ -105,7 +105,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
   $vlrlimpeza = 0;
   $vlrbombeiro = 0;
   $vlrgeral = 0;  
-  for($x=0;$x<pg_numrows($resultv);$x++){
+  for($x=0;$x<pg_num_rows($resultv);$x++){
     db_fieldsmemory($resultv,$x);
 	if($j21_receit==7){
 	  $vlriptu += $j21_valor;

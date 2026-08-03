@@ -32,7 +32,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("fpdf151/assinatura.php"));
 include(modification("libs/db_sql.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $classinatura = new cl_assinatura;
 
@@ -70,7 +70,7 @@ $head4 = "PERÍODO: ".db_formatar($data_ini, 'd')." a ".db_formatar($data_fim, 'd
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in ($instits)");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins ++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins ++) {
 	db_fieldsmemory($resultinst, $xins);
 	$descr_inst .= $xvirg.$nomeinst;
 	$xvirg = ', ';
@@ -87,7 +87,7 @@ $alt = 4;
 
 $imprimecabec = false;
 
-$array_totais = array();
+$array_totais = [];
 $sWhere       = "" ;
 for ($tiporel = 0; $tiporel <= 1; $tiporel++) {
 
@@ -217,7 +217,7 @@ for ($tiporel = 0; $tiporel <= 1; $tiporel++) {
 	//--//
 	$sSqlSuplementacoes = "{$sql} union all {$sSqlDotacoesPPA}";
 	$res = db_query($sSqlSuplementacoes) or die($sSqlSuplementacoes);
-	if (pg_numrows($res) == 0) {
+	if (pg_num_rows($res) == 0) {
 		continue;
 //		db_redireciona('db_erros.php?db_erro=Sem projetos neste periodo&fechar=true');
 	}
@@ -226,7 +226,7 @@ for ($tiporel = 0; $tiporel <= 1; $tiporel++) {
 	//db_criatabela($res);
 	//exit;
 
-	$rows = pg_numrows($res);
+	$rows = pg_num_rows($res);
 	$pagina              = 1;
 	$tot_sup             = 0;
 	$tot_red             = 0;
@@ -236,7 +236,7 @@ for ($tiporel = 0; $tiporel <= 1; $tiporel++) {
 	$codsup_reduzido     = 0;
 	$codsup_receita      = 0;
 
-	if (pg_numrows($res)>0){
+	if (pg_num_rows($res)>0){
 		db_fieldsmemory($res, 0);
 		$codsup = $o47_codsup;
 	}
@@ -341,7 +341,7 @@ for ($tiporel = 0; $tiporel <= 1; $tiporel++) {
 		$pdf->Cell(15, $alt, "$o39_codproj", 0, 0, "C", '0');
 		$pdf->Cell(62, $alt, "$lei", 0, 0, "L", 'L');
 		$pdf->Cell(16, $alt, substr("$decreto",0,8), 0, 0, "C", 'L');
-		$pdf->Cell(70, $alt, substr($o48_descr, 0, 37), 0, 0, "L", '0');
+		$pdf->Cell(70, $alt, substr((string) $o48_descr, 0, 37), 0, 0, "L", '0');
 		$pdf->Cell(20, $alt, "$o47_coddot", 0, 0, "C", '0');
 
 
@@ -542,7 +542,7 @@ $sql .= " order by orcprojeto.o39_codproj, o47_codsup ,o47_coddot";
 //--//
 $res = db_query($sql) or die($sql);
 
-$rows = pg_numrows($res);
+$rows = pg_num_rows($res);
 $pagina  = 0;
 $tot_sup = 0;
 $tot_red = 0;
@@ -603,7 +603,7 @@ if ($rows > 0 ) {
 						 where o46_tiposup in ($vTipos) and o85_codsup = $codsup";
 				 $ress = db_query($sql);
 
-			 for($xx=0;$xx<pg_numrows($ress);$xx++){
+			 for($xx=0;$xx<pg_num_rows($ress);$xx++){
 						 db_fieldsmemory($ress,$xx);
 
 							 $pdf->setX(3);
@@ -644,7 +644,7 @@ if ($rows > 0 ) {
 		$pdf->Cell(20, $alt, "$o39_codproj", 0, 0, "C", '0');
 		$pdf->Cell(30, $alt, "$lei", 0, 0, "L", 'L');
 		$pdf->Cell(30, $alt, "$decreto", 0, 0, "L", 'L');
-		$pdf->Cell(70, $alt, substr($o48_descr, 0, 37), 0, 0, "L", '0');
+		$pdf->Cell(70, $alt, substr((string) $o48_descr, 0, 37), 0, 0, "L", '0');
 		$pdf->Cell(20, $alt, "$o47_coddot", 0, 0, "C", '0');
 		$pdf->Cell(20, $alt, "$o58_codigo", 0, 0, "C", '0');
 		$pdf->Cell(25, $alt, db_formatar($suplementado, 'f'), 0, 0, "R", '0');
@@ -684,7 +684,7 @@ if ($rows > 0 ) {
 						 where o46_tiposup in ($vTipos) and o85_codsup = $codsup";
 						 $ress = db_query($sql);
 
-			 for($xx=0;$xx<pg_numrows($ress);$xx++){
+			 for($xx=0;$xx<pg_num_rows($ress);$xx++){
 				 db_fieldsmemory($ress,$xx);
 							 $pdf->setX(3);
 

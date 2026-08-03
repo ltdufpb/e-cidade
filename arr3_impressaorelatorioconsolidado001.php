@@ -47,16 +47,16 @@ $oHeader               = db_utils::fieldsMemory($rsConsolidacaoDebitos, 0);
 
 $sDisabled             = 'disabled';
 
-$aFiltros              = array(0 => '---', 
+$aFiltros              = [0 => '---', 
                                1 => '---', 
-                               2 => '---');
+                               2 => '---'];
 
 $iQuantidade           = $oConsolidacaoDebitos->numrows;
 
 if ($iQuantidade > 0) {
 	
 	$sDisabled = '';	
-	$aFiltros = explode('|', $oHeader->k161_filtrosselecionados);
+	$aFiltros = explode('|', (string) $oHeader->k161_filtrosselecionados);
 		
 }
 
@@ -121,7 +121,7 @@ db_app::load("estilos.css, grid.style.css, scripts.js, strings.js, prototype.js,
 				<td style="width:25%"><strong>Quebra por Relatório:</strong></td>
 				<td align="left">
 					<?php
-						$aQuebraPagina = array(1 => 'SIM', 0 => 'NÃO');
+						$aQuebraPagina = [1 => 'SIM', 0 => 'NÃO'];
 						db_select('lQuebraPagina', $aQuebraPagina, true, 1);
 					?>
 				</td>

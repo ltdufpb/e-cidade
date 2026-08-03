@@ -34,8 +34,8 @@ include(modification("classes/db_proced_classe.php"));
 require_once(modification('libs/db_utils.php'));
 require_once(modification("libs/db_libpostgres.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $clpostgresqlutils = new PostgreSQLUtils;
 $clproced          = new cl_proced;
@@ -131,7 +131,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
               <td>Data do calculo:</td>
 		  	<td>
 		  	  <?php
-            $arrayDatas = array();
+            $arrayDatas = [];
             $sqlDataDebitos  = "select distinct k115_data from datadebitos where k115_instit = $instit order by k115_data desc";
             $rsDataDebitos   = db_query($sqlDataDebitos);
             $intDatas        = pg_num_rows($rsDataDebitos);
@@ -152,9 +152,9 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
               <td>Tipo:</td>
               <td>
                 <?php 
-           		  $matriz = array("r"=>"Resumido",
+           		  $matriz = ["r"=>"Resumido",
 		                          "c"=>"Completo",
-		                         );
+		                         ];
 		          db_select("tiporel", $matriz,true,"");
            	    ?>
           	</td>

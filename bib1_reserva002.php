@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clreserva    = new cl_reserva;
 $clcarteira   = new cl_carteira;
@@ -90,7 +90,7 @@ if (isset($alterar)) {
     $erro = true;
   } else if(    @$bi14_leitor != "" 
              && $clcarteira->numrows > 0 
-             && str_replace("-", "", pg_result($resultY, 0, 'bi16_validade')) - date("Ymd") < 0) {
+             && str_replace("-", "", pg_fetch_result($resultY, 0, 'bi16_validade')) - date("Ymd") < 0) {
 
     db_fieldsmemory($resultY, 0);
     ?>

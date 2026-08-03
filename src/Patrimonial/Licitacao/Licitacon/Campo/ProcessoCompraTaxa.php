@@ -229,7 +229,7 @@ class ProcessoCompraTaxa
             return '';
         }
 
-        $where = array();
+        $where = [];
         $where[] = 'l20_codigo = ' . $licitacao->getCodigo();
 
         if ($codigoItem = $this->getCodigoItem()) {
@@ -272,6 +272,6 @@ class ProcessoCompraTaxa
         $taxa = filter_var($taxa, FILTER_VALIDATE_FLOAT);
         $taxa = number_format($taxa, 2, ',', '');
 
-        return $taxa ? $taxa : '0,00';
+        return $taxa ?: '0,00';
     }
 }

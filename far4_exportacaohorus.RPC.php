@@ -78,28 +78,12 @@ try {
 
       foreach ( $oParam->aArquivos as $iArquivo ) {
 
-        switch ( $iArquivo ) {
-
-          case HorusArquivoBase::ARQUIVO_ENTRADA:
-
-            $oArquivo = new HorusEntradaMedicamento( $oDBCompetencia, $oUnidadeProntoSocorro, $oUsuarioSistema );
-            break;
-
-          case HorusArquivoBase::ARQUIVO_SAIDA:
-
-            $oArquivo = new HorusSaidaMedicamento( $oDBCompetencia, $oUnidadeProntoSocorro, $oUsuarioSistema );
-            break;
-
-          case HorusArquivoBase::ARQUIVO_DISPENSACAO:
-
-            $oArquivo = new HorusDispensacaoMedicamento( $oDBCompetencia, $oUnidadeProntoSocorro, $oUsuarioSistema );
-            break;
-
-          default:
-
-            throw new BusinessException( _M( MENSAGEM_EXPORTACAOHORUSRPC . 'tipo_arquivo_nao_encontrado' ) );
-            break;
-        }
+        $oArquivo = match ($iArquivo) {
+            HorusArquivoBase::ARQUIVO_ENTRADA => new HorusEntradaMedicamento( $oDBCompetencia, $oUnidadeProntoSocorro, $oUsuarioSistema ),
+            HorusArquivoBase::ARQUIVO_SAIDA => new HorusSaidaMedicamento( $oDBCompetencia, $oUnidadeProntoSocorro, $oUsuarioSistema ),
+            HorusArquivoBase::ARQUIVO_DISPENSACAO => new HorusDispensacaoMedicamento( $oDBCompetencia, $oUnidadeProntoSocorro, $oUsuarioSistema ),
+            default => throw new BusinessException( _M( MENSAGEM_EXPORTACAOHORUSRPC . 'tipo_arquivo_nao_encontrado' ) ),
+        };
 
         $oHorus->adicionarArquivo($oArquivo);
       }
@@ -118,7 +102,7 @@ try {
       $oUnidadeProntoSocorro  = new UnidadeProntoSocorro( db_getsession('DB_coddepto') );
       $oRetorno->sCompetencia = $iMes < 10 ? "0{$iMes}/{$iAno}" : "{$iMes}/{$iAno}";
 
-      $oRetorno->aArquivos = array();
+      $oRetorno->aArquivos = [];
 
       $oEntrada     = new HorusEntradaMedicamento( $oDBCompetencia, $oUnidadeProntoSocorro, $oUsuarioSistema );
       $oSaida       = new HorusSaidaMedicamento( $oDBCompetencia, $oUnidadeProntoSocorro, $oUsuarioSistema );
@@ -180,22 +164,22 @@ try {
 
 function retornaObjeto( $oDadosArquivo, $iTipoArquivo, $sNomeTipoArquivo ) {
 
-  $aCoresSituacaos = array(
+  $aCoresSituacaos = [
                             HorusArquivoBase::SEM_DADOS            => "#989898",
                             HorusArquivoBase::AGUARDANDO_ENVIO     => "#1165a0",
                             HorusArquivoBase::PARCIALMENTE_ENVIADO => "#1165a0",
                             HorusArquivoBase::AGUARDANDO_HORUS     => "#1165a0",
                             HorusArquivoBase::INCONSISTENTE        => "#1165a0",
                             HorusArquivoBase::CONCLUIDO            => "#51a011",
-                          );
+                          ];
 
   $oRetornaDadosArquivo = new stdClass();
   $oRetornaDadosArquivo->iTipo         = $iTipoArquivo;
   $oRetornaDadosArquivo->iSituacao     = $oDadosArquivo->situacaoArquivoCompetencia( $iTipoArquivo );
-  $oRetornaDadosArquivo->sSituacao     = urlencode( $oDadosArquivo->getSituacaoArquivo($oRetornaDadosArquivo->iSituacao) );
+  $oRetornaDadosArquivo->sSituacao     = urlencode( (string) $oDadosArquivo->getSituacaoArquivo($oRetornaDadosArquivo->iSituacao) );
   $oRetornaDadosArquivo->sCorSituacao  = urlencode($aCoresSituacaos[ $oRetornaDadosArquivo->iSituacao ]);
   $oRetornaDadosArquivo->lPermiteEnvio = $oDadosArquivo->permiteEnvio( $iTipoArquivo );
-  $oRetornaDadosArquivo->sTipoArquivo  = urlencode($sNomeTipoArquivo);
+  $oRetornaDadosArquivo->sTipoArquivo  = urlencode((string) $sNomeTipoArquivo);
   return $oRetornaDadosArquivo;
 }
 

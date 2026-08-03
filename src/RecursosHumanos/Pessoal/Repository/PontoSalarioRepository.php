@@ -33,7 +33,7 @@ use Exception;
 
 class PontoSalarioRepository
 {
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param $matricula
@@ -90,7 +90,7 @@ class PontoSalarioRepository
             throw new Exception("Não foi possível o ponto salário.\nContate o suporte.");
         }
 
-        $pontoSalario = array();
+        $pontoSalario = [];
 
         if (pg_num_rows($rs) === 0) {
             return $pontoSalario;

@@ -56,7 +56,7 @@ class ImportacaoBeneficiosCidadao {
    * LIsta de Beneficios
    * @var CidadaoBeneficio
    */
-  protected $aBeneficios = array();
+  protected $aBeneficios = [];
   
   protected $iAnoCompentencia;
   
@@ -114,7 +114,7 @@ class ImportacaoBeneficiosCidadao {
 
       $sLinha = fgets($rArquivo);
       if ($iLinha == 0) {
-        
+
         $iLinha++;
         continue;
       }
@@ -123,45 +123,45 @@ class ImportacaoBeneficiosCidadao {
       if (!$oLinha) {
         continue;
       }
-      
+
       /**
        * Linha é invalida quando o nis do beneficiario for vazia
        */
-      if (trim($oLinha->nis_beneficiario) == '') {
+      if (trim((string) $oLinha->nis_beneficiario) == '') {
         continue;
       }
-      $iProgramaSocial   = substr($oLinha->codigo_programa, 0, 9);
+      $iProgramaSocial   = substr((string) $oLinha->codigo_programa, 0, 9);
       $oBeneficio        = new CidadaoBeneficio();
-      list($iMes, $iAno) = explode("/",  $oLinha->mes_ano); 
+      [$iMes, $iAno] = explode("/",  (string) $oLinha->mes_ano); 
       $oBeneficio->setAnoCompetencia($iAno);
       $oBeneficio->setMesCompetencia($iMes);
-      
-      if (trim($oLinha->dt_concessao) != "") {
+
+      if (trim((string) $oLinha->dt_concessao) != "") {
         $oBeneficio->setDataConcessao(new DBDate($oLinha->dt_concessao));
       }
-      if (trim($oLinha->dt_situacao) != '') {
+      if (trim((string) $oLinha->dt_situacao) != '') {
         $oBeneficio->setDataSituacao(new DBDate($oLinha->dt_situacao)); 
       }
-      
-      $oBeneficio->setJustificativa(pg_escape_string(utf8_decode($oLinha->justificativa)));
-      $oBeneficio->setMotivo(addslashes(utf8_decode($oLinha->motivo)));
+
+      $oBeneficio->setJustificativa(pg_escape_string(mb_convert_encoding($oLinha->justificativa, 'ISO-8859-1')));
+      $oBeneficio->setMotivo(addslashes(mb_convert_encoding($oLinha->motivo, 'ISO-8859-1')));
       $oBeneficio->setNis($oLinha->nis_beneficiario);
       $oBeneficio->setProgramaSocial($iProgramaSocial);
       $oBeneficio->setSituacao($oLinha->situacao);
-      $oBeneficio->setTipoBeneficio(strtoupper(db_removeAcentuacao(trim($oLinha->tipo_beneficio))));
+      $oBeneficio->setTipoBeneficio(strtoupper(db_removeAcentuacao(trim((string) $oLinha->tipo_beneficio))));
       array_push($this->aBeneficios, $oBeneficio);         
-      
+
       /**
        * Persistimos os dados a cada tamanho de bloco completado.
        */
       if ($iLinha >= $iTamanhoBloco) {
-        
+
         $this->salvarBloco();
         $iLinha = 1;
       }
-      
+
       $this->iTotalBeneficios++;
-      
+
       /*
        * 
        */
@@ -183,7 +183,7 @@ class ImportacaoBeneficiosCidadao {
     }
     db_fim_transacao(false);
     db_inicio_transacao();
-    $this->aBeneficios = array();
+    $this->aBeneficios = [];
   }
   
   /**
@@ -257,9 +257,9 @@ class ImportacaoBeneficiosCidadao {
       $iLinha++;
     }
     $oLinha                 = $this->oLayoutReader->processarLinha($sLinha, 0, true, false, false);
-    if (strpos($oLinha->mes_ano, "/") !== false) {
+    if (str_contains((string) $oLinha->mes_ano, "/")) {
       
-      list($iMes, $iAno)      = explode("/",  $oLinha->mes_ano);
+      [$iMes, $iAno]      = explode("/",  (string) $oLinha->mes_ano);
       $this->iAnoCompentencia = $iAno;
       $this->iMesCompetencia  = $iMes;
     }

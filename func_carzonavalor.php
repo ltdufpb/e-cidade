@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_carzonavalor_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcarzonavalor = new cl_carzonavalor;
 $clcarzonavalor->rotulo->label("j72_sequencial");
@@ -104,10 +104,10 @@ $clcarzonavalor->rotulo->label("j72_anousu");
           $sql = $clcarzonavalor->sql_query("",$campos,"j72_sequencial","");
         }
         
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j72_sequencial)){
-          $repassa = array("chave_j72_sequencial" => $chave_j72_sequencial,
-                           "chave_j72_anousu"     => $chave_j72_anousu);
+          $repassa = ["chave_j72_sequencial" => $chave_j72_sequencial,
+                           "chave_j72_anousu"     => $chave_j72_anousu];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

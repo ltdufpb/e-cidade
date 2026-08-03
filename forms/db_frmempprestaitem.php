@@ -163,13 +163,13 @@ if (!empty($e45_tipo)) {
                         db_input('e446_quantidade', 10, $Ie446_quantidade, true, 'hidden',1);
                         db_input('e446_movimento', 10, $Ie446_movimento, true, 'hidden',1);
 
-                        $e446_datainicio_dia = substr($e446_datainicio, 8);
-                        $e446_datainicio_mes = substr($e446_datainicio, 5, 2);
-                        $e446_datainicio_ano = substr($e446_datainicio, 0, 4);
+                        $e446_datainicio_dia = substr((string) $e446_datainicio, 8);
+                        $e446_datainicio_mes = substr((string) $e446_datainicio, 5, 2);
+                        $e446_datainicio_ano = substr((string) $e446_datainicio, 0, 4);
 
-                        $e446_datafim_dia = substr($e446_datafim, 8);
-                        $e446_datafim_mes = substr($e446_datafim, 5, 2);
-                        $e446_datafim_ano = substr($e446_datafim, 0, 4);
+                        $e446_datafim_dia = substr((string) $e446_datafim, 8);
+                        $e446_datafim_mes = substr((string) $e446_datafim, 5, 2);
+                        $e446_datafim_ano = substr((string) $e446_datafim, 0, 4);
                         ?>
                         <td nowrap title="<?=@$Te46_nome?>">
                             <?php db_ancora("Matrícula", "js_pesquisarh01_regist(true);", 1);?>
@@ -270,7 +270,7 @@ if (!empty($e45_tipo)) {
                         <td nowrap title="<?=@$Te446_tipodiaria?>"><?=@$Le446_tipodiaria?></td>
                         <td>
                             <?php 
-                            $arr = array("dentroestado"=>"Dentro do Estado", "foraestado"=>"Fora do Estado","forapais"=>"Fora do País");
+                            $arr = ["dentroestado"=>"Dentro do Estado", "foraestado"=>"Fora do Estado","forapais"=>"Fora do País"];
                             db_select("e446_tipodiaria", $arr, true, $db_opcao);
                             ?>                        
                         </td>
@@ -298,7 +298,7 @@ if (!empty($e45_tipo)) {
                     if ($clemppresta->numrows==0) {
                         $db_opcao=33;
                     }
-                    $chavepri = array("e46_numemp"=>$e46_numemp,"e46_codigo"=>@$e46_codigo);
+                    $chavepri = ["e46_numemp"=>$e46_numemp,"e46_codigo"=>@$e46_codigo];
                     $cliframe_alterar_excluir->chavepri=$chavepri;
                     $cliframe_alterar_excluir->sql     = $clempprestaitem->sql_query_file(null,"*","","e46_emppresta=$oGet->e45_sequencial");
                     $cliframe_alterar_excluir->campos  ="e46_codigo,e46_nota,e46_valor,e46_descr,e46_cnpj,e46_cpf,e46_nome";

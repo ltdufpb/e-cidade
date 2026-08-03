@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbinomecgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clitbinomecgm = new cl_itbinomecgm;
 $clitbinomecgm->rotulo->label("it21_sequencial");
 $clitbinomecgm->rotulo->label("it21_numcgm");
@@ -98,9 +98,9 @@ $clitbinomecgm->rotulo->label("it21_numcgm");
         }else{
            $sql = $clitbinomecgm->sql_query("",$campos,"it21_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_it21_numcgm)){
-          $repassa = array("chave_it21_sequencial"=>$chave_it21_sequencial,"chave_it21_numcgm"=>$chave_it21_numcgm);
+          $repassa = ["chave_it21_sequencial"=>$chave_it21_sequencial,"chave_it21_numcgm"=>$chave_it21_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

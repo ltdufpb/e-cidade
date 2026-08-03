@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_cgs_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clcgs = new cl_cgs;
 $clcgm = new cl_cgm;
 $db_opcao = 22;
@@ -103,7 +103,7 @@ if(isset($alterar) || isset($incluir)){
     }
   }else{
    db_msgbox($clcgs->erro_msg);
-   db_redireciona(basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?cgm=".$cgm."&numero=".$numero."&tp=".$tp);
+   db_redireciona(basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?cgm=".$cgm."&numero=".$numero."&tp=".$tp);
   }
 }
 ?>

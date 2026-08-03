@@ -63,16 +63,16 @@ try {
   if ( $oParam->sMethod == 'consultarAtividades' ) {
     
     $sWhere       = "";
-    $sDataInicial = implode("-", array_reverse(explode("/",$oParam->sDataInicial)));
-    $sDataFinal   = implode("-", array_reverse(explode("/",$oParam->sDataFinal)));
+    $sDataInicial = implode("-", array_reverse(explode("/",(string) $oParam->sDataInicial)));
+    $sDataFinal   = implode("-", array_reverse(explode("/",(string) $oParam->sDataFinal)));
      
     if ($oParam->sDataInicial != '' || $oParam->sDataFinal != '') {
         
-      if (trim($oParam->sDataInicial) != '') {
+      if (trim((string) $oParam->sDataInicial) != '') {
         $sWhere .= " and p62_dttran >= '{$sDataInicial}'::date ";
       }
         
-      if (trim($oParam->sDataInicial) != '') {
+      if (trim((string) $oParam->sDataInicial) != '') {
         $sWhere .= " and p62_dttran <= '{$sDataFinal}'::date ";
       }        
     }      
@@ -105,7 +105,7 @@ try {
       
     $rsAtividades = db_query($sSqlAtividades);
     $aAtividades  = db_utils::getCollectionByRecord($rsAtividades,false,false,true);
-    $aRetornoAtividades = array();
+    $aRetornoAtividades = [];
     
     foreach ($aAtividades as $oAtividade) {
 
@@ -136,7 +136,7 @@ try {
       $oDadosAtividades->sData              = db_formatar($oAtividade->p62_dttran,'d');
       $oDadosAtividades->iCodInteresse      = $oAtividade->ht20_sequencial;
       $oDadosAtividades->sCodWorkFlowAtiv   = $oWorkFlowAtividade->db114_sequencial;
-      $oDadosAtividades->sDescrWorkFlowAtiv = urlencode($oWorkFlowAtividade->db114_descricao);
+      $oDadosAtividades->sDescrWorkFlowAtiv = urlencode((string) $oWorkFlowAtividade->db114_descricao);
       $oDadosAtividades->iGrupoAtributos    = $oWorkFlowAtividade->db117_db_cadattdinamico;
         
       $aRetornoAtividades[] = $oDadosAtividades;
@@ -173,7 +173,7 @@ try {
       throw new Exception($clWorkFlowAtivExec->erro_msg);
     }
 
-    if (trim($iGrupoValorAtributo) != '') {
+    if (trim((string) $iGrupoValorAtributo) != '') {
       
       $clWorkFlowAtivExecAtributoValor = new cl_workflowativexecucaoatributovalor();
       $clWorkFlowAtivExecAtributoValor->db111_workflowativexec         = $clWorkFlowAtivExec->db113_sequencial;

@@ -29,19 +29,19 @@
   include(modification("fpdf151/pdf.php"));
   // variaveis de cabeçalho
   
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  $sql=base64_decode($sql); 
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  $sql=base64_decode((string) $sql); 
   
   $pega = @db_query("select * from db_gerador where codger=$codigo");
-  $tsql= @pg_result($pega,0,"sqlger");
+  $tsql= @pg_fetch_result($pega,0,"sqlger");
   if(@$libera==true&&$tsql==$sql){
     $busca= db_query("select * from db_gerador where codger=$codigo");
-    $limite= pg_result($busca,0,5);
-    $tvisualizacao= pg_result($busca,0,6);
-    $intercalar1= pg_result($busca,0,7);
-    $intercalar2= pg_result($busca,0,8);
-    $pcabecaltura= pg_result($busca,0,9);
-    $pcorpaltura= pg_result($busca,0,10);
+    $limite= pg_fetch_result($busca,0,5);
+    $tvisualizacao= pg_fetch_result($busca,0,6);
+    $intercalar1= pg_fetch_result($busca,0,7);
+    $intercalar2= pg_fetch_result($busca,0,8);
+    $pcabecaltura= pg_fetch_result($busca,0,9);
+    $pcorpaltura= pg_fetch_result($busca,0,10);
   }else{
     $sele="selected";
     $sele1="checked";  
@@ -52,7 +52,7 @@
   
   $rotulocampo = new rotulocampo;
   $clrotulolov = new rotulolov;
-  $fm_numfields = pg_numfields($resultsql);
+  $fm_numfields = pg_num_fields($resultsql);
 ?>                                           
 <script>
 function gera(){
@@ -252,40 +252,40 @@ border: 2px outset #999999;
 	      </tr>
 	      <?php 
                  for ($i = 0;$i < $fm_numfields;$i++){
-	          $qualcampo = pg_fieldname($resultsql,$i);
+	          $qualcampo = pg_field_name($resultsql,$i);
                   $tcampo = "T".$qualcampo;
                   $lcampo = "L".$qualcampo;
                   $mcampo = "M".$qualcampo;
                 
-		  $clrotulolov->label(pg_fieldname($resultsql,$i));
+		  $clrotulolov->label(pg_field_name($resultsql,$i));
                   $largura =(($clrotulolov->tamanho>strlen($clrotulolov->titulo)?$clrotulolov->tamanho:strlen($clrotulolov->titulo))*2)+2;
 
                   if(@$libera==true&&$tsql==$sql){
                     $consult= db_query("select * from db_gerpref where codger = $codigo");
-                    $tcabecfonte =@pg_result($consult,$i,2);
-                    $tcabectamanho = @pg_result($consult,$i,3);
-                    $tcabecn = @pg_result($consult,$i,4);
-                    $tcabeci = @pg_result($consult,$i,5);
-                    $tcabecs= @pg_result($consult,$i,6);
-                    $tcabeccortexto= @pg_result($consult,$i,7);
-                    $tcabeccorborda= @pg_result($consult,$i,8);
-                    $tcabeccorfundo= @pg_result($consult,$i,9);
-                    $tcabecaltura= @pg_result($consult,$i,10);
-                    $tcabeclargura= @pg_result($consult,$i,11);
+                    $tcabecfonte =@pg_fetch_result($consult,$i,2);
+                    $tcabectamanho = @pg_fetch_result($consult,$i,3);
+                    $tcabecn = @pg_fetch_result($consult,$i,4);
+                    $tcabeci = @pg_fetch_result($consult,$i,5);
+                    $tcabecs= @pg_fetch_result($consult,$i,6);
+                    $tcabeccortexto= @pg_fetch_result($consult,$i,7);
+                    $tcabeccorborda= @pg_fetch_result($consult,$i,8);
+                    $tcabeccorfundo= @pg_fetch_result($consult,$i,9);
+                    $tcabecaltura= @pg_fetch_result($consult,$i,10);
+                    $tcabeclargura= @pg_fetch_result($consult,$i,11);
                   }
 	      ?>
 	      <tr height="28" width="100%"  class='corpo'>
 	        <?php 
-		$qualcampo = pg_fieldname($resultsql,$i);
+		$qualcampo = pg_field_name($resultsql,$i);
                 $rotulocampo->label($qualcampo);
                 $tcampo = "T".$qualcampo;
                 $lcampo = "L".$qualcampo;
                 $mcampo = "M".$qualcampo;
 		
 		?>
-	        <td  height="25" width="20%" bordercolor="#ffffff"nowrap title="<?=$$tcampo?>">
+	        <td  height="25" width="20%" bordercolor="#ffffff"nowrap title="<?=${$tcampo}?>">
                   <?php 
-		   echo $$lcampo;
+		   echo ${$lcampo};
 	           ?>
 		</td>
 		  <td width="14%" nowrap bordercolor="#ffffff">
@@ -396,32 +396,32 @@ border: 2px outset #999999;
 	  <td align="center"width="10%" nowrap bordercolor="#cccccc">Largura</td>
 	</tr>
 	 <?php  for ($i = 0;$i < $fm_numfields;$i++){
-	      $qualcampo = pg_fieldname($resultsql,$i);
+	      $qualcampo = pg_field_name($resultsql,$i);
               $tcampo = "T".$qualcampo;
               $lcampo = "L".$qualcampo;
               $mcampo = "M".$qualcampo;
-	      $clrotulolov->label(pg_fieldname($resultsql,$i));
+	      $clrotulolov->label(pg_field_name($resultsql,$i));
               $largura =(($clrotulolov->tamanho>strlen($clrotulolov->titulo)?$clrotulolov->tamanho:strlen($clrotulolov->titulo))*2)+2;
 
               if(@$libera==true&&$tsql==$sql){
                 $consult= db_query("select * from db_gerpref where codger=$codigo");
-                $tcorpfonte = @pg_result($consult,$i,12);
-                $tcorpopcao = @pg_result($consult,$i,13);
-                $tcorptamanho = @pg_result($consult,$i,14);
-                $tcorpn = @pg_result($consult,$i,15);
-                $tcorpi = @pg_result($consult,$i,16);
-                $tcorps= @pg_result($consult,$i,17);
-                $tcorpcortexto= @pg_result($consult,$i,18);
-                $tcorpcorborda= @pg_result($consult,$i,19);
-                $tcorpcorfundo= @pg_result($consult,$i,20);
-                $tcorpaltura= @pg_result($consult,$i,21);
-                $tcorplargura= @pg_result($consult,$i,22); 
+                $tcorpfonte = @pg_fetch_result($consult,$i,12);
+                $tcorpopcao = @pg_fetch_result($consult,$i,13);
+                $tcorptamanho = @pg_fetch_result($consult,$i,14);
+                $tcorpn = @pg_fetch_result($consult,$i,15);
+                $tcorpi = @pg_fetch_result($consult,$i,16);
+                $tcorps= @pg_fetch_result($consult,$i,17);
+                $tcorpcortexto= @pg_fetch_result($consult,$i,18);
+                $tcorpcorborda= @pg_fetch_result($consult,$i,19);
+                $tcorpcorfundo= @pg_fetch_result($consult,$i,20);
+                $tcorpaltura= @pg_fetch_result($consult,$i,21);
+                $tcorplargura= @pg_fetch_result($consult,$i,22); 
  	      }    	
           ?> 
 	      <tr height="25"  class='corpo'>
-	        <td  height="25" width="20%" bordercolor="#ffffff"nowrap title="<?=$$tcampo?>">
+	        <td  height="25" width="20%" bordercolor="#ffffff"nowrap title="<?=${$tcampo}?>">
                   <?php 
-	           echo $$lcampo;
+	           echo ${$lcampo};
 		   ?>
 		</td>
 	        <td width="14%" bordercolor="#ffffff"nowrap>

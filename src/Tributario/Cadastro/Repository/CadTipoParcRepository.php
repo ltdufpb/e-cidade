@@ -18,7 +18,7 @@ class CadTipoParcRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * InicialRepository constructor.
@@ -64,7 +64,7 @@ class CadTipoParcRepository
             throw new Exception("Não foi possível o tipo de parcelamento.");
         }
 
-        $arrCadTipoParc = array();
+        $arrCadTipoParc = [];
 
         if (pg_num_rows($rs) === 0) {
             return $arrCadTipoParc;

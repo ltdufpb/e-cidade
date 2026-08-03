@@ -31,11 +31,6 @@
 class AguaTipoContrato {
 
   /**
-   * @var integer Código Sequencial
-   */
-  private $iCodigo;
-
-  /**
    * @var string Descrição do Tipo
    */
   private $sDescricao;
@@ -73,9 +68,8 @@ class AguaTipoContrato {
    * @param string|null $iCodigo
    * @throws DBException
    */
-  public function __construct($iCodigo = null) {
+  public function __construct(private $iCodigo = null) {
 
-    $this->iCodigo = $iCodigo;
     if (!$this->iCodigo) {
       return;
     }

@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE benstransfcodigo
 class cl_benstransfcodigo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t95_codtran = 0; 
-   var $t95_codbem = 0; 
-   var $t95_situac = 0; 
-   var $t95_histor = null; 
+   public $t95_codtran = 0; 
+   public $t95_codbem = 0; 
+   public $t95_situac = 0; 
+   public $t95_histor = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t95_codtran = int8 = Transferência 
                  t95_codbem = int8 = Código do bem 
                  t95_situac = int8 = Código da situação 
                  t95_histor = text = Histórico 
                  ";
    //funcao construtor da classe 
-   function cl_benstransfcodigo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benstransfcodigo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -125,7 +125,7 @@ class cl_benstransfcodigo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Itens tranferencias ($this->t95_codtran."-".$this->t95_codbem) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Itens tranferencias já Cadastrado";
@@ -149,14 +149,14 @@ class cl_benstransfcodigo {
      $resaco = $this->sql_record($this->sql_query_file($this->t95_codtran,$this->t95_codbem));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5830,'$this->t95_codtran','I')");
        $resac = db_query("insert into db_acountkey values($acount,5831,'$this->t95_codbem','I')");
-       $resac = db_query("insert into db_acount values($acount,943,5830,'','".AddSlashes(pg_result($resaco,0,'t95_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,943,5831,'','".AddSlashes(pg_result($resaco,0,'t95_codbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,943,5981,'','".AddSlashes(pg_result($resaco,0,'t95_situac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,943,5982,'','".AddSlashes(pg_result($resaco,0,'t95_histor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,943,5830,'','".AddSlashes(pg_fetch_result($resaco,0,'t95_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,943,5831,'','".AddSlashes(pg_fetch_result($resaco,0,'t95_codbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,943,5981,'','".AddSlashes(pg_fetch_result($resaco,0,'t95_situac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,943,5982,'','".AddSlashes(pg_fetch_result($resaco,0,'t95_histor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_benstransfcodigo {
       $this->atualizacampos();
      $sql = " update benstransfcodigo set ";
      $virgula = "";
-     if(trim($this->t95_codtran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t95_codtran"])){ 
+     if(trim((string) $this->t95_codtran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t95_codtran"])){ 
        $sql  .= $virgula." t95_codtran = $this->t95_codtran ";
        $virgula = ",";
-       if(trim($this->t95_codtran) == null ){ 
+       if(trim((string) $this->t95_codtran) == null ){ 
          $this->erro_sql = " Campo Transferência nao Informado.";
          $this->erro_campo = "t95_codtran";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_benstransfcodigo {
          return false;
        }
      }
-     if(trim($this->t95_codbem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t95_codbem"])){ 
+     if(trim((string) $this->t95_codbem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t95_codbem"])){ 
        $sql  .= $virgula." t95_codbem = $this->t95_codbem ";
        $virgula = ",";
-       if(trim($this->t95_codbem) == null ){ 
+       if(trim((string) $this->t95_codbem) == null ){ 
          $this->erro_sql = " Campo Código do bem nao Informado.";
          $this->erro_campo = "t95_codbem";
          $this->erro_banco = "";
@@ -191,10 +191,10 @@ class cl_benstransfcodigo {
          return false;
        }
      }
-     if(trim($this->t95_situac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t95_situac"])){ 
+     if(trim((string) $this->t95_situac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t95_situac"])){ 
        $sql  .= $virgula." t95_situac = $this->t95_situac ";
        $virgula = ",";
-       if(trim($this->t95_situac) == null ){ 
+       if(trim((string) $this->t95_situac) == null ){ 
          $this->erro_sql = " Campo Código da situação nao Informado.";
          $this->erro_campo = "t95_situac";
          $this->erro_banco = "";
@@ -204,7 +204,7 @@ class cl_benstransfcodigo {
          return false;
        }
      }
-     if(trim($this->t95_histor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t95_histor"])){ 
+     if(trim((string) $this->t95_histor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t95_histor"])){ 
        $sql  .= $virgula." t95_histor = '$this->t95_histor' ";
        $virgula = ",";
      }
@@ -219,18 +219,18 @@ class cl_benstransfcodigo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5830,'$this->t95_codtran','A')");
          $resac = db_query("insert into db_acountkey values($acount,5831,'$this->t95_codbem','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t95_codtran"]) || $this->t95_codtran != "")
-           $resac = db_query("insert into db_acount values($acount,943,5830,'".AddSlashes(pg_result($resaco,$conresaco,'t95_codtran'))."','$this->t95_codtran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,943,5830,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t95_codtran'))."','$this->t95_codtran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t95_codbem"]) || $this->t95_codbem != "")
-           $resac = db_query("insert into db_acount values($acount,943,5831,'".AddSlashes(pg_result($resaco,$conresaco,'t95_codbem'))."','$this->t95_codbem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,943,5831,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t95_codbem'))."','$this->t95_codbem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t95_situac"]) || $this->t95_situac != "")
-           $resac = db_query("insert into db_acount values($acount,943,5981,'".AddSlashes(pg_result($resaco,$conresaco,'t95_situac'))."','$this->t95_situac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,943,5981,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t95_situac'))."','$this->t95_situac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t95_histor"]) || $this->t95_histor != "")
-           $resac = db_query("insert into db_acount values($acount,943,5982,'".AddSlashes(pg_result($resaco,$conresaco,'t95_histor'))."','$this->t95_histor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,943,5982,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t95_histor'))."','$this->t95_histor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -275,14 +275,14 @@ class cl_benstransfcodigo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5830,'$t95_codtran','E')");
          $resac = db_query("insert into db_acountkey values($acount,5831,'$t95_codbem','E')");
-         $resac = db_query("insert into db_acount values($acount,943,5830,'','".AddSlashes(pg_result($resaco,$iresaco,'t95_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,943,5831,'','".AddSlashes(pg_result($resaco,$iresaco,'t95_codbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,943,5981,'','".AddSlashes(pg_result($resaco,$iresaco,'t95_situac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,943,5982,'','".AddSlashes(pg_result($resaco,$iresaco,'t95_histor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,943,5830,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t95_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,943,5831,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t95_codbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,943,5981,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t95_situac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,943,5982,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t95_histor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from benstransfcodigo
@@ -348,7 +348,7 @@ class cl_benstransfcodigo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:benstransfcodigo";
@@ -363,7 +363,7 @@ class cl_benstransfcodigo {
    function sql_query ( $t95_codtran=null,$t95_codbem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,7 +405,7 @@ class cl_benstransfcodigo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_benstransfcodigo {
    function sql_query_file ( $t95_codtran=null,$t95_codbem=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_benstransfcodigo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_benstransfcodigo {
    function sql_query_benstransf ( $t95_codtran=null,$t95_codbem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -490,7 +490,7 @@ class cl_benstransfcodigo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -547,7 +547,7 @@ class cl_benstransfcodigo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -559,7 +559,7 @@ class cl_benstransfcodigo {
    function sql_query_div ( $t95_codtran=null,$t95_codbem=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -598,7 +598,7 @@ class cl_benstransfcodigo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -39,7 +39,7 @@ $processo        = new processoProtocolo($parametros->iCodProcesso);
 $documentos      = $processo->getDocumentos();
 
 
-$anexos          = array();
+$anexos          = [];
 $item            = 0;
 $nroLinhas       = 0;
 $maximoPorLinha  = 5;
@@ -63,7 +63,7 @@ if(!empty($documentos)) {
 
             if($documento->estorage()) {
 
-                $referenciaDocumento = preg_replace('/\D/', '', $nomeDocumento);
+                $referenciaDocumento = preg_replace('/\D/', '', (string) $nomeDocumento);
                 $referenciaDocumento = trim($referenciaDocumento);
                 $descricaoDocumento  = '';
                 $nomeDocumento       = $documento->getDescricao();
@@ -72,12 +72,12 @@ if(!empty($documentos)) {
             }
 
 
-            $anexos[] = (object) array(
+            $anexos[] = (object) [
                 'referencia' => $referenciaDocumento,
                 'descricao'  => $descricaoDocumento,
                 'nome'       => $nomeDocumento,
                 'path'       => $pathDocumento
-            );
+            ];
         }
 
     } catch (Exception $e) {

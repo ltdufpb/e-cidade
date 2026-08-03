@@ -65,11 +65,11 @@ foreach ($aInconsistencia as $oIndiceDados => $oValorDados) {
 
 	$pdf->setfont('arial','',$iFonte);
 
-	$iAltura = $pdf->getMultiCellHeight(115, $iAlturalinha, urldecode($oValorDados->sDetalhe));
+	$iAltura = $pdf->getMultiCellHeight(115, $iAlturalinha, urldecode((string) $oValorDados->sDetalhe));
 
 	$pdf->cell(25 ,  $iAltura, "{$oValorDados->sTipo}"           ,  "TBR",  0, "L", 0);
-	$pdf->cell(50 ,  $iAltura, urldecode($oValorDados->sCnpj), "LTBR", 0, "L", 0);
-	$pdf->MultiCell(115,  $iAlturalinha, urldecode($oValorDados->sDetalhe) ,  "TBL", "L");
+	$pdf->cell(50 ,  $iAltura, urldecode((string) $oValorDados->sCnpj), "LTBR", 0, "L", 0);
+	$pdf->MultiCell(115,  $iAlturalinha, urldecode((string) $oValorDados->sDetalhe) ,  "TBL", "L");
 	imprimirCabecalho($pdf, $iAlturalinha, false);
 }
 

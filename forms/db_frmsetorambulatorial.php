@@ -45,7 +45,7 @@ if ($db_opcao == 1) {
               </td>
               <td>
                 <?php
-                  $x = array('1' => 'RECEPÇÃO', '2' => 'TRIAGEM', '3' => 'CONSULTA MÉDICA', '4' => 'EXTERNO');
+                  $x = ['1' => 'RECEPÇÃO', '2' => 'TRIAGEM', '3' => 'CONSULTA MÉDICA', '4' => 'EXTERNO'];
                   db_select('sd91_local', $x, true, $db_opcao, "");
                 ?>
               </td>
@@ -75,11 +75,11 @@ if ($db_opcao == 1) {
       db_iframe_setorambulatorial.hide();
       <?php
         if ($db_opcao != 1) {
-          echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
+          echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
         }
       ?>
     }
 
-    <?php echo (isset($sPosScripts) ? $sPosScripts : ""); ?>
+    <?php echo ($sPosScripts ?? ""); ?>
   </script>
 </html>

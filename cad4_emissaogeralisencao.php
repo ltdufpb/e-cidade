@@ -38,7 +38,7 @@ require_once(modification("libs/db_utils.php"));
 
 <head>
   <?php
-  db_app::load(array(
+  db_app::load([
     "estilos.css",
     "prototype.js",
     "scripts.js",
@@ -47,7 +47,7 @@ require_once(modification("libs/db_utils.php"));
     "DBAncora.widget.js",
     "DBLookUp.widget.js",
     "EmissaoRelatorio.js"
-  ));
+  ]);
   ?>
 
 <script language="JavaScript" type="text/javascript" src="scripts/classes/http/http.js"></script>

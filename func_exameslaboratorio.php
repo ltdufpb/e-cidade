@@ -33,7 +33,7 @@ require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_lab_exame_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oRotulo = new rotulocampo();
 $oRotulo->label("la09_i_codigo");
@@ -43,7 +43,7 @@ $oRotulo->label("la08_c_descr");
 $oDaoExame = new \cl_lab_exame();
 
 $sCampos = " la09_i_exame, la08_c_descr, la09_i_codigo as db_la09_i_codigo";
-$aWhere  = array();
+$aWhere  = [];
 if ( !empty( $_GET['iLaboratorio'] ) ) {
   $aWhere[] = " la24_i_laboratorio = " .$_GET['iLaboratorio'];
 }
@@ -87,9 +87,9 @@ if ( !empty( $_GET['iLaboratorio'] ) ) {
     $sWhere = implode(" and ", $aWhere);
     $sSql   = $oDaoExame->sql_query_exame_laboratorio(null, $sCampos, "la08_c_descr", $sWhere);
 
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_la09_i_exame)) {
-      $repassa = array("chave_la09_i_exame" => $chave_la09_i_exame, "chave_la08_c_descr" => $chave_la08_c_descr);
+      $repassa = ["chave_la09_i_exame" => $chave_la09_i_exame, "chave_la08_c_descr" => $chave_la08_c_descr];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

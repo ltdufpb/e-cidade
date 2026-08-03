@@ -199,7 +199,7 @@ if (isset($incluir) || isset($alterar) || isset($excluir)) {
     }
   }
 
-  if (trim($erro_msg) != "") {
+  if (trim((string) $erro_msg) != "") {
     db_msgbox($erro_msg);
   }
 }

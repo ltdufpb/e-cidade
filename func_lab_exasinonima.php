@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lab_exasinonima_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_exasinonima = new cl_lab_exasinonima;
 $cllab_exasinonima->rotulo->label("la18_i_codigo");
 $cllab_exasinonima->rotulo->label("la18_i_codigo");
@@ -98,9 +98,9 @@ $cllab_exasinonima->rotulo->label("la18_i_codigo");
         }else{
            $sql = $cllab_exasinonima->sql_query("",$campos,"la18_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la18_i_codigo)){
-          $repassa = array("chave_la18_i_codigo"=>$chave_la18_i_codigo,"chave_la18_i_codigo"=>$chave_la18_i_codigo);
+          $repassa = ["chave_la18_i_codigo"=>$chave_la18_i_codigo,"chave_la18_i_codigo"=>$chave_la18_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

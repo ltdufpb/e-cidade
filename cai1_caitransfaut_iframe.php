@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_caitransfseq_classe.php"));
 include(modification("classes/db_saltes_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = false;
@@ -52,7 +52,7 @@ $retencao = $clsaltes->sql_record(
                        null,
                       "k13_conta,k13_descr","k13_descr",
 	 	      "k13_limite is null or k13_limite >='".date('Y-m-d',db_getsession("DB_datausu"))."'"));
-$matriz_retencao = array();
+$matriz_retencao = [];
 $matriz_retencao[0] = '** Selecione ';
 for ($x=0;$x<$clsaltes->numrows;$x++){
   db_fieldsmemory($retencao,$x);

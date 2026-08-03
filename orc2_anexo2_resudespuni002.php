@@ -32,17 +32,17 @@ include(modification("libs/db_sql.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $classinatura = new cl_assinatura;
 
-$tipo_agrupa = substr($nivel,0,1);
-$xinstit = split("-",$db_selinstit);
+$tipo_agrupa = substr((string) $nivel,0,1);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = pg_exec("select codigo,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
       $descr_inst .= $xvirg.$nomeinstabrev ;
         $xvirg = ', ';
@@ -64,7 +64,7 @@ if($origem == "O"){
   if($opcao == 3)
     $head6 = "PERÍODO : ".db_formatar($perini,'d')." A ".db_formatar($perfin,'d') ;
   else
-    $head6 = "PERÍODO : ".strtoupper(db_mes(substr($perini,5,2)))." A ".strtoupper(db_mes(substr($perfin,5,2)));
+    $head6 = "PERÍODO : ".strtoupper(db_mes(substr((string) $perini,5,2)))." A ".strtoupper(db_mes(substr((string) $perfin,5,2)));
 }
 
 $head2 = "RESUMO DA DESPESA";
@@ -87,22 +87,22 @@ $result = pg_exec($sql);
 //$result = pg_exec("select * from work");
 //db_criatabela($result);exit;
 
-$xcampos = split("-",$orgaos);
+$xcampos = preg_split("#\\-#m",$orgaos);
 
 
-if(substr($nivel,0,1) == '1'){
+if(str_starts_with((string) $nivel, '1')){
   $xwhere  = " trim(to_char(orgao,'999')) in (";
   $xwhere1 = " trim(to_char(o58_orgao,'999')) in (";
-}elseif(substr($nivel,0,1) == '2'){
+}elseif(str_starts_with((string) $nivel, '2')){
   $xwhere = " trim(to_char(orgao,'999'))||'.'||trim(to_char(unidade,'999')) in (";
   $xwhere1 = " trim(to_char(o58_orgao,'999'))||'.'||trim(to_char(o58_unidade,'999')) in (";
-}elseif(substr($nivel,0,1) == '7'){
+}elseif(str_starts_with((string) $nivel, '7')){
   $xwhere = " to_char(elemento,'9999999999999') in (";
   $xwhere1 = " to_char(o58_elemento,'9999999999999') in (";
 }
 $virgula1 = ' ';
 for($i=0;$i < sizeof($xcampos);$i++){
-   $xxcampos = split("_",$xcampos[$i]);
+   $xxcampos = preg_split("#_#m",(string) $xcampos[$i]);
    $virgula = '';
    $where  = "'";
    $where1 = "'";
@@ -135,7 +135,7 @@ $valor = 0;
 if($origem == "O"){
   $tipo_balanco=1;
 }
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   if($tipo_balanco==1){
     $valor = $dot_ini;
@@ -147,7 +147,7 @@ for($i=0;$i<pg_numrows($result_rec);$i++){
     $valor = $pago;
   }
 
-  $o56_elemento = substr($o58_elemento,0,3);
+  $o56_elemento = substr((string) $o58_elemento,0,3);
   $sql = "update work set valor = valor+$valor where work.elemento = '$o56_elemento' and orgao = ".$o58_orgao. " and unidade = ".$o58_unidade;
   $result = pg_exec($sql);
 
@@ -184,7 +184,7 @@ $tvalor2=0;
 $tvalor3=0;
 $ttotal4=0;
 $pagina = 1;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
 
   if($pdf->gety()>$pdf->h-30 || $pagina ==1){
@@ -204,9 +204,9 @@ for($i=0;$i<pg_numrows($result);$i++){
   }
   $pdf->setfont('arial','',6);
   if ($tipo_agrupa==1){
-     $pdf->cell(60,$alt,db_formatar($orgao,'orgao')."-".substr($o40_descr,0,40),0,0,"L",0);
+     $pdf->cell(60,$alt,db_formatar($orgao,'orgao')."-".substr((string) $o40_descr,0,40),0,0,"L",0);
   } else {
-    $pdf->cell(60,$alt,db_formatar($orgao,'orgao').db_formatar($unidade,'orgao')."-".substr($o41_descr,0,40),0,0,"L",0);
+    $pdf->cell(60,$alt,db_formatar($orgao,'orgao').db_formatar($unidade,'orgao')."-".substr((string) $o41_descr,0,40),0,0,"L",0);
   }
   $pdf->cell(35,$alt,db_formatar($valor1,'f'),0,0,"R",0);
   $pdf->cell(35,$alt,db_formatar($valor2,'f'),0,0,"R",0);
@@ -258,7 +258,7 @@ $tvalor3=0;
 $tvalor4=0;
 $ttotal4=0;
 $pagina = 1;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   if($valor==-1){
     continue;
@@ -284,9 +284,9 @@ for($i=0;$i<pg_numrows($result);$i++){
 
   $pdf->setfont('arial','',6);
   if ($tipo_agrupa==1) {
-     $pdf->cell(60,$alt,db_formatar(substr($orgao,0,40),'orgao')."-".substr($o40_descr,0,40),0,0,"L",0);
+     $pdf->cell(60,$alt,db_formatar(substr((string) $orgao,0,40),'orgao')."-".substr((string) $o40_descr,0,40),0,0,"L",0);
   } else {
-    $pdf->cell(60,$alt,db_formatar(substr($orgao,0,40),'orgao').db_formatar($unidade,'orgao')."-".substr($o41_descr,0,40),0,0,"L",0);
+    $pdf->cell(60,$alt,db_formatar(substr((string) $orgao,0,40),'orgao').db_formatar($unidade,'orgao')."-".substr((string) $o41_descr,0,40),0,0,"L",0);
   }
   $pdf->cell(35,$alt,db_formatar($valor1,'f'),0,0,"R",0);
   $pdf->cell(35,$alt,db_formatar($valor2,'f'),0,0,"R",0);
@@ -326,7 +326,7 @@ $tvalor2=0;
 $ttotal4=0;
 $pagina = 1;
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   if($valor==-1){
     continue;
@@ -348,9 +348,9 @@ for($i=0;$i<pg_numrows($result);$i++){
   }
   $pdf->setfont('arial','',6);
   if ($tipo_agrupa==1)
-     $pdf->cell(50,$alt,db_formatar(substr($orgao,0,40),'orgao')."-".substr($o40_descr,0,40),0,0,"L",0);
+     $pdf->cell(50,$alt,db_formatar(substr((string) $orgao,0,40),'orgao')."-".substr((string) $o40_descr,0,40),0,0,"L",0);
   else
-    $pdf->cell(60,$alt,db_formatar(substr($orgao,0,40),'orgao').db_formatar($unidade,'orgao')."-".substr($o41_descr,0,40),0,0,"L",0);
+    $pdf->cell(60,$alt,db_formatar(substr((string) $orgao,0,40),'orgao').db_formatar($unidade,'orgao')."-".substr((string) $o41_descr,0,40),0,0,"L",0);
   $pdf->cell(45,$alt,db_formatar($valor1,'f'),0,0,"R",0);
   $pdf->cell(45,$alt,db_formatar($valor2,'f'),0,0,"R",0);
   $pdf->cell(40,$alt,db_formatar($valor1+$valor2,'f'),0,1,"R",0);

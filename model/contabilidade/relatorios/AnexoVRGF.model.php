@@ -37,7 +37,7 @@ require_once(modification("model/contabilidade/relatorios/RelatoriosLegaisBase.m
 class AnexoVRGF extends RelatoriosLegaisBase  {
   
   
-  private $aCacheRecursos = array();
+  private $aCacheRecursos = [];
   
   /**
    * @param integer $iAnoUsu ano de emissao do relatorio
@@ -64,7 +64,8 @@ class AnexoVRGF extends RelatoriosLegaisBase  {
    *                               ->disponibilidadeliquida
    * @return Object - Colecao de stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
   	
     
     /**
@@ -90,7 +91,7 @@ class AnexoVRGF extends RelatoriosLegaisBase  {
       }
     }
     unset($aInstituicoes);
-    $aLinhas   = array();
+    $aLinhas   = [];
     $oRetorno  = new stdClass();
     $oRecursos = $this->initRecursosRetorno(); 
     $oRetorno->recursosVinculados    = $oRecursos->recursosVinculados;
@@ -123,8 +124,8 @@ class AnexoVRGF extends RelatoriosLegaisBase  {
     /**
      * percorremos os valores lancados manuais para as linhas 
      */
-    $aDadosRecurso   = array();
-    $aLinhaRelatorio = array();
+    $aDadosRecurso   = [];
+    $aLinhaRelatorio = [];
     for ($iLinha = 1; $iLinha <= 6; $iLinha++) {
       
       $oLinhaRelatorio          = new linhaRelatorioContabil($this->iCodigoRelatorio, $iLinha);
@@ -329,7 +330,7 @@ class AnexoVRGF extends RelatoriosLegaisBase  {
     /**
      * percorremos todos os recursos informados, e mostramos apenas os que possuim movimentacoes.
      */
-    $aRecursosVinculados = array();
+    $aRecursosVinculados = [];
     foreach ($oRetorno->recursosVinculados as $iRecurso => &$oRecurso) {
       
       if (round($oRecurso->disponibilidadebruta, 2) != 0 || round($oRecurso->obrigacoesfinanceiras, 2) != 0) {
@@ -339,7 +340,7 @@ class AnexoVRGF extends RelatoriosLegaisBase  {
       }
     }
     
-    $aRecursosNaoVinculados = array();
+    $aRecursosNaoVinculados = [];
     foreach ($oRetorno->recursosNaoVinculados as $iRecurso => &$oRecurso) {
       
       if (round($oRecurso->disponibilidadebruta, 2) != 0 || round($oRecurso->obrigacoesfinanceiras, 2) != 0) {

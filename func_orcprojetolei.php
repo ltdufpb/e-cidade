@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcprojetolei_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcprojetolei = new cl_orcprojetolei;
 $clorcprojetolei->rotulo->label("o138_sequencial");
 $clorcprojetolei->rotulo->label("o138_numerolei");
@@ -98,9 +98,9 @@ $clorcprojetolei->rotulo->label("o138_numerolei");
         }else{
            $sql = $clorcprojetolei->sql_query("",$campos,"o138_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o138_numerolei)){
-          $repassa = array("chave_o138_sequencial"=>$chave_o138_sequencial,"chave_o138_numerolei"=>$chave_o138_numerolei);
+          $repassa = ["chave_o138_sequencial"=>$chave_o138_sequencial,"chave_o138_numerolei"=>$chave_o138_numerolei];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

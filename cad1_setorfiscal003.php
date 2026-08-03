@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("setorfiscal"=>"Setor Fiscal","setorfiscalvalor"=>"Valor"); 
-	 $clcriaabas->src = array("setorfiscal"=>"cad1_setorfiscal006.php");
-	 $clcriaabas->disabled   =  array("setorfiscalvalor"=>"true"); 
+	 $clcriaabas->identifica = ["setorfiscal"=>"Setor Fiscal","setorfiscalvalor"=>"Valor"]; 
+	 $clcriaabas->src = ["setorfiscal"=>"cad1_setorfiscal006.php"];
+	 $clcriaabas->disabled   =  ["setorfiscalvalor"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

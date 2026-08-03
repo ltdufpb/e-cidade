@@ -36,7 +36,7 @@ include_once(modification("dbforms/db_classesgenericas.php"));
 $cliframe_seleciona = new cl_iframe_seleciona;
 
 //db_postmemory($HTTP_POST_VARS,2);//exit;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 
 ?>
@@ -91,7 +91,7 @@ td {
     <td nowrap title="" align="center">
 		<strong>Tipo:&nbsp;&nbsp;</strong>
 		<?php 
-	  $tipo = array("a"=>"Ativas","t"=>"Todas","b"=>"Baixadas");
+	  $tipo = ["a"=>"Ativas","t"=>"Todas","b"=>"Baixadas"];
 	  db_select("tipo",$tipo,true,2);
 		?>
     <td>
@@ -101,7 +101,7 @@ td {
     <td nowrap title="" align="center">
 		<strong>Debitos:&nbsp;&nbsp;</strong>
 		<?php 
-	  $debitos = array("d"=>"Em débito","t"=>"Todas","s"=>"Sem débito");
+	  $debitos = ["d"=>"Em débito","t"=>"Todas","s"=>"Sem débito"];
 	  db_select("debitos",$debitos,true,2);
 		?>
     <td>

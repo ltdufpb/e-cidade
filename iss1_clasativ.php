@@ -44,7 +44,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('q12_classe');
 $clrotulo->label('q12_descr');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if ((isset($q12_classe) && $q12_classe!="") && (isset($atualizar))){
   db_inicio_transacao();
@@ -66,13 +66,13 @@ if ((isset($q12_classe) && $q12_classe!="") && (isset($atualizar))){
     }
   }  
   
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+    if(str_starts_with((string) $chave, "CHECK")){
+      $dados=preg_split("#_#m",(string) $chave); 
       $clclasativ->q82_ativ=$dados[1];
       $clclasativ->q82_classe=$q12_classe;
       $clclasativ->incluir($dados[1],$q12_classe);

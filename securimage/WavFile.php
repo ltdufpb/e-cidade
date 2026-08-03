@@ -72,7 +72,7 @@
 *
 */
 
-class WavFile
+class WavFile implements \Stringable
 {
     /*%******************************************************************************************%*/
     // Class constants
@@ -139,12 +139,12 @@ class WavFile
     /** @var array Log base modifier lookup table for a given threshold (in 0.05 steps) used by normalizeSample.
      * Adjusts the slope (1st derivative) of the log function at the threshold to 1 for a smooth transition
      * from linear to logarithmic amplitude output. */
-    protected static $LOOKUP_LOGBASE = array(
+    protected static $LOOKUP_LOGBASE = [
         2.513, 2.667, 2.841, 3.038, 3.262,
         3.520, 3.819, 4.171, 4.589, 5.093,
         5.711, 6.487, 7.483, 8.806, 10.634,
         13.302, 17.510, 24.970, 41.155, 96.088
-    );
+    ];
 
     /** @var int The actual physical file size */
     protected $_actualSize;
@@ -260,9 +260,9 @@ class WavFile
             $this->openWav($numChannelsOrFileName, is_bool($sampleRateOrReadData) ? $sampleRateOrReadData : true);
 
         } else {
-            $this->setNumChannels(is_null($numChannelsOrFileName) ? 1 : $numChannelsOrFileName)
-                 ->setSampleRate(is_null($sampleRateOrReadData) ? 8000 : $sampleRateOrReadData)
-                 ->setBitsPerSample(is_null($bitsPerSample) ? 8 : $bitsPerSample);
+            $this->setNumChannels($numChannelsOrFileName ?? 1)
+                 ->setSampleRate($sampleRateOrReadData ?? 8000)
+                 ->setBitsPerSample($bitsPerSample ?? 8);
         }
     }
 
@@ -279,7 +279,7 @@ class WavFile
      *
      * @return string  The encoded file.
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->makeHeader() .
                $this->getDataSubchunk();
@@ -299,7 +299,7 @@ class WavFile
     public static function unpackSample($sampleBinary, $bitDepth = null)
     {
         if ($bitDepth === null) {
-            $bitDepth = strlen($sampleBinary) * 8;
+            $bitDepth = strlen((string) $sampleBinary) * 8;
         }
 
         switch ($bitDepth) {
@@ -309,7 +309,7 @@ class WavFile
 
             case 16:
                 // signed short, little endian
-                $data = unpack('v', $sampleBinary);
+                $data = unpack('v', (string) $sampleBinary);
                 $sample = $data[1];
                 if ($sample >= 0x8000) {
                     $sample -= 0x10000;
@@ -318,7 +318,7 @@ class WavFile
 
             case 24:
                 // 3 byte packed signed integer, little endian
-                $data = unpack('C3', $sampleBinary);
+                $data = unpack('C3', (string) $sampleBinary);
                 $sample = $data[1] | ($data[2] << 8) | ($data[3] << 16);
                 if ($sample >= 0x800000) {
                     $sample -= 0x1000000;
@@ -327,7 +327,7 @@ class WavFile
 
             case 32:
                 // 32-bit float
-                $data = unpack('f', $sampleBinary);
+                $data = unpack('f', (string) $sampleBinary);
                 return $data[1];
 
             default:
@@ -383,12 +383,12 @@ class WavFile
     public static function unpackSampleBlock($sampleBlock, $bitDepth, $numChannels = null) {
         $sampleBytes = $bitDepth / 8;
         if ($numChannels === null) {
-            $numChannels = strlen($sampleBlock) / $sampleBytes;
+            $numChannels = strlen((string) $sampleBlock) / $sampleBytes;
         }
 
-        $samples = array();
+        $samples = [];
         for ($i = 0; $i < $numChannels; $i++) {
-            $sampleBinary = substr($sampleBlock, $i * $sampleBytes, $sampleBytes);
+            $sampleBinary = substr((string) $sampleBlock, $i * $sampleBytes, $sampleBytes);
             $samples[$i + 1] = self::unpackSample($sampleBinary, $bitDepth);
         }
 
@@ -563,7 +563,7 @@ class WavFile
 
     protected function setDataSize($dataSize = null) {
         if (is_null($dataSize)) {
-            $this->_dataSize = strlen($this->_samples);
+            $this->_dataSize = strlen((string) $this->_samples);
         } else {
             $this->_dataSize = $dataSize;
         }
@@ -708,7 +708,7 @@ class WavFile
     }
 
     public function setBitsPerSample($bitsPerSample) {
-        if (!in_array($bitsPerSample, array(8, 16, 24, 32))) {
+        if (!in_array($bitsPerSample, [8, 16, 24, 32])) {
             throw new WavFileException('Unsupported bits per sample. Only 8, 16, 24 and 32 bits are supported.');
         } elseif ($this->_samples !== '') {
             trigger_error('Wav already has sample data. Changing the bits per sample does not convert and may corrupt the data.', E_USER_NOTICE);
@@ -933,8 +933,8 @@ class WavFile
             throw new WavFileException('Failed to open "' . $filename . '" for writing.');
         }
 
-        fwrite($fp, $this->makeHeader());
-        fwrite($fp, $this->getDataSubchunk());
+        fwrite($fp, (string) $this->makeHeader());
+        fwrite($fp, (string) $this->getDataSubchunk());
         fclose($fp);
 
         return $this;
@@ -1001,7 +1001,7 @@ class WavFile
         }
 
         // prepare stream
-        fwrite($this->_fp, $data);
+        fwrite($this->_fp, (string) $data);
         rewind($this->_fp);
 
         // free the passed data
@@ -1058,13 +1058,13 @@ class WavFile
 
         // read the common header
         $header = fread($this->_fp, 36);  // minimum size of the wav header
-        if (strlen($header) < 36) {
+        if (strlen((string) $header) < 36) {
             throw new WavFormatException('Not wav format. Header too short.', 1);
         }
 
 
         // check "RIFF" header
-        $RIFF = unpack('NChunkID/VChunkSize/NFormat', $header);
+        $RIFF = unpack('NChunkID/VChunkSize/NFormat', (string) $header);
 
         if ($RIFF['ChunkID'] != 0x52494646) {  // "RIFF"
             throw new WavFormatException('Not wav format. "RIFF" signature missing.', 2);
@@ -1087,7 +1087,7 @@ class WavFile
         // check common "fmt " subchunk
         $fmt = unpack('NSubchunkID/VSubchunkSize/vAudioFormat/vNumChannels/'
                      .'VSampleRate/VByteRate/vBlockAlign/vBitsPerSample',
-                     substr($header, 12));
+                     substr((string) $header, 12));
 
         if ($fmt['SubchunkID'] != 0x666d7420) {  // "fmt "
             throw new WavFormatException('Bad wav header. Expected "fmt " subchunk.', 11);
@@ -1112,9 +1112,9 @@ class WavFile
             throw new WavFormatException('Invalid sample rate in "fmt " subchunk.', 15);
         }
 
-        if (   ($fmt['AudioFormat'] == self::WAVE_FORMAT_PCM && !in_array($fmt['BitsPerSample'], array(8, 16, 24)))
+        if (   ($fmt['AudioFormat'] == self::WAVE_FORMAT_PCM && !in_array($fmt['BitsPerSample'], [8, 16, 24]))
             || ($fmt['AudioFormat'] == self::WAVE_FORMAT_IEEE_FLOAT && $fmt['BitsPerSample'] != 32)
-            || ($fmt['AudioFormat'] == self::WAVE_FORMAT_EXTENSIBLE && !in_array($fmt['BitsPerSample'], array(8, 16, 24, 32))))
+            || ($fmt['AudioFormat'] == self::WAVE_FORMAT_EXTENSIBLE && !in_array($fmt['BitsPerSample'], [8, 16, 24, 32])))
         {
             throw new WavFormatException('Only 8, 16 and 24-bit PCM and 32-bit IEEE FLOAT (EXTENSIBLE) audio is supported.', 16);
         }
@@ -1145,7 +1145,7 @@ class WavFile
         if ($fmt['SubchunkSize'] > 16) {
             // possibly handle malformed subchunk without a padding byte
             $extendedFmt = fread($this->_fp, $fmt['SubchunkSize'] - 16 + ($fmt['SubchunkSize'] & 1));  // also read padding byte
-            if (strlen($extendedFmt) < $fmt['SubchunkSize'] - 16) {
+            if (strlen((string) $extendedFmt) < $fmt['SubchunkSize'] - 16) {
                 throw new WavFormatException('Not wav format. Header too short.', 1);
             }
         }
@@ -1153,11 +1153,11 @@ class WavFile
 
         // check extended "fmt " for EXTENSIBLE Audio Format
         if ($fmt['AudioFormat'] == self::WAVE_FORMAT_EXTENSIBLE) {
-            if (strlen($extendedFmt) < 24) {
+            if (strlen((string) $extendedFmt) < 24) {
                 throw new WavFormatException('Invalid EXTENSIBLE "fmt " subchunk size. Found ' . $fmt['SubchunkSize'] . ', expected at least 40.', 19);
             }
 
-            $extensibleFmt = unpack('vSize/vValidBitsPerSample/VChannelMask/H32SubFormat', substr($extendedFmt, 0, 24));
+            $extensibleFmt = unpack('vSize/vValidBitsPerSample/VChannelMask/H32SubFormat', substr((string) $extendedFmt, 0, 24));
 
             if (   $extensibleFmt['SubFormat'] != self::WAVE_SUBFORMAT_PCM
                 && $extensibleFmt['SubFormat'] != self::WAVE_SUBFORMAT_IEEE_FLOAT)
@@ -1165,7 +1165,7 @@ class WavFile
                 throw new WavFormatException('Unsupported audio format. Only PCM or IEEE FLOAT (EXTENSIBLE) audio is supported.', 13);
             }
 
-            if (   ($extensibleFmt['SubFormat'] == self::WAVE_SUBFORMAT_PCM && !in_array($fmt['BitsPerSample'], array(8, 16, 24)))
+            if (   ($extensibleFmt['SubFormat'] == self::WAVE_SUBFORMAT_PCM && !in_array($fmt['BitsPerSample'], [8, 16, 24]))
                 || ($extensibleFmt['SubFormat'] == self::WAVE_SUBFORMAT_IEEE_FLOAT && $fmt['BitsPerSample'] != 32))
             {
                 throw new WavFormatException('Only 8, 16 and 24-bit PCM and 32-bit IEEE FLOAT (EXTENSIBLE) audio is supported.', 16);
@@ -1195,13 +1195,13 @@ class WavFile
                 }
             }
 
-            $this->_fmtExtendedSize    = strlen($extendedFmt);
+            $this->_fmtExtendedSize    = strlen((string) $extendedFmt);
             $this->_validBitsPerSample = $extensibleFmt['ValidBitsPerSample'];
             $this->_channelMask        = $extensibleFmt['ChannelMask'];
             $this->_audioSubFormat     = $extensibleFmt['SubFormat'];
 
         } else {
-            $this->_fmtExtendedSize    = strlen($extendedFmt);
+            $this->_fmtExtendedSize    = strlen((string) $extendedFmt);
             $this->_validBitsPerSample = $fmt['BitsPerSample'];
             $this->_channelMask        = 0;
             $this->_audioSubFormat     = null;
@@ -1209,25 +1209,25 @@ class WavFile
 
 
         // read additional subchunks until "data" subchunk is found
-        $factSubchunk = array();
-        $dataSubchunk = array();
+        $factSubchunk = [];
+        $dataSubchunk = [];
 
         while (!feof($this->_fp)) {
             $subchunkHeader = fread($this->_fp, 8);
-            if (strlen($subchunkHeader) < 8) {
+            if (strlen((string) $subchunkHeader) < 8) {
                 throw new WavFormatException('Missing "data" subchunk.', 101);
             }
 
-            $subchunk = unpack('NSubchunkID/VSubchunkSize', $subchunkHeader);
+            $subchunk = unpack('NSubchunkID/VSubchunkSize', (string) $subchunkHeader);
 
             if ($subchunk['SubchunkID'] == 0x66616374) {        // "fact"
                 // possibly handle malformed subchunk without a padding byte
                 $subchunkData = fread($this->_fp, $subchunk['SubchunkSize'] + ($subchunk['SubchunkSize'] & 1));  // also read padding byte
-                if (strlen($subchunkData) < 4) {
+                if (strlen((string) $subchunkData) < 4) {
                     throw new WavFormatException('Invalid "fact" subchunk.', 102);
                 }
 
-                $factParams = unpack('VSampleLength', substr($subchunkData, 0, 4));
+                $factParams = unpack('VSampleLength', substr((string) $subchunkData, 0, 4));
                 $factSubchunk = array_merge($subchunk, $factParams);
 
             } elseif ($subchunk['SubchunkID'] == 0x64617461) {  // "data"
@@ -1272,7 +1272,7 @@ class WavFile
         $numBlocks = (int)($dataSubchunk['SubchunkSize'] / $fmt['BlockAlign']);
 
         if (empty($factSubchunk)) {  // construct fake "fact" subchunk
-            $factSubchunk = array('SubchunkSize' => 0, 'SampleLength' => $numBlocks);
+            $factSubchunk = ['SubchunkSize' => 0, 'SampleLength' => $numBlocks];
         }
 
         if ($factSubchunk['SampleLength'] != $numBlocks) {
@@ -1350,7 +1350,7 @@ class WavFile
 
 
         // read data
-        return substr($this->_samples, $offset, $this->_blockAlign);
+        return substr((string) $this->_samples, $offset, $this->_blockAlign);
     }
 
     /**
@@ -1366,7 +1366,7 @@ class WavFile
         // check preconditions
         $blockAlign = $this->_blockAlign;
         if (!isset($sampleBlock[$blockAlign - 1]) || isset($sampleBlock[$blockAlign])) {  // faster than: if (strlen($sampleBlock) != $blockAlign)
-            throw new WavFileException('Incorrect sample block size. Got ' . strlen($sampleBlock) . ', expected ' . $blockAlign . '.');
+            throw new WavFileException('Incorrect sample block size. Got ' . strlen((string) $sampleBlock) . ', expected ' . $blockAlign . '.');
         }
 
         if (!$this->_dataSize_valid) {
@@ -1424,7 +1424,7 @@ class WavFile
         }
 
         // read binary value
-        $sampleBinary = substr($this->_samples, $offset, $sampleBytes);
+        $sampleBinary = substr((string) $this->_samples, $offset, $sampleBytes);
 
         // convert binary to value
         switch ($this->_bitsPerSample) {
@@ -1434,7 +1434,7 @@ class WavFile
 
             case 16:
                 // signed short, little endian
-                $data = unpack('v', $sampleBinary);
+                $data = unpack('v', (string) $sampleBinary);
                 $sample = $data[1];
                 if ($sample >= 0x8000) {
                     $sample -= 0x10000;
@@ -1443,7 +1443,7 @@ class WavFile
 
             case 24:
                 // 3 byte packed signed integer, little endian
-                $data = unpack('C3', $sampleBinary);
+                $data = unpack('C3', (string) $sampleBinary);
                 $sample = $data[1] | ($data[2] << 8) | ($data[3] << 16);
                 if ($sample >= 0x800000) {
                     $sample -= 0x1000000;
@@ -1452,7 +1452,7 @@ class WavFile
 
             case 32:
                 // 32-bit float
-                $data = unpack('f', $sampleBinary);
+                $data = unpack('f', (string) $sampleBinary);
                 return (float)$data[1];
 
             default:
@@ -1552,7 +1552,7 @@ class WavFile
         } else {
             // replace
             for ($i = 0; $i < $sampleBytes; ++$i) {
-                $this->_samples{$offset + $i} = $sampleBinary{$i};
+                $this->_samples[$offset + $i] = $sampleBinary[$i];
             }
         }
 
@@ -1606,7 +1606,7 @@ class WavFile
         if (array_key_exists(self::FILTER_MIX, $filters)) {
             if (!is_array($filters[self::FILTER_MIX])) {
                 // assume the 'wav' parameter
-                $filters[self::FILTER_MIX] = array('wav' => $filters[self::FILTER_MIX]);
+                $filters[self::FILTER_MIX] = ['wav' => $filters[self::FILTER_MIX]];
             }
 
             $mix_wav = @$filters[self::FILTER_MIX]['wav'];
@@ -1687,7 +1687,7 @@ class WavFile
 
                 /************* DEGRADE FILTER *******************/
                 if ($filter_degrade) {
-                    $sampleFloat += rand(1000000 * ($degrade_quality - 1), 1000000 * (1 - $degrade_quality)) / 1000000;
+                    $sampleFloat += random_int(1000000 * ($degrade_quality - 1), 1000000 * (1 - $degrade_quality)) / 1000000;
                 }
 
                 /************* VOLUME FILTER *******************/
@@ -1735,10 +1735,10 @@ class WavFile
      * @throws WavFileException
      */
     public function mergeWav(WavFile $wav, $normalizeThreshold = null) {
-        return $this->filter(array(
+        return $this->filter([
             WavFile::FILTER_MIX       => $wav,
             WavFile::FILTER_NORMALIZE => $normalizeThreshold
-        ));
+        ]);
     }
 
     /**
@@ -1770,9 +1770,9 @@ class WavFile
      */
     public function degrade($quality = 1.0)
     {
-        return $this->filter(self::FILTER_DEGRADE, array(
+        return $this->filter(self::FILTER_DEGRADE, [
             WavFile::FILTER_DEGRADE => $quality
-        ));
+        ]);
     }
 
     /**
@@ -1791,9 +1791,9 @@ class WavFile
 
         for ($s = 0; $s < $numSamples; ++$s) {
             if ($bitDepth == 32) {
-                $val = rand(-$percent * 10000, $percent * 10000) / 1000000;
+                $val = random_int(-$percent * 10000, $percent * 10000) / 1000000;
             } else {
-                $val = rand($minAmp, $maxAmp);
+                $val = random_int($minAmp, $maxAmp);
                 $val = (int)($val * $percent / 100);
             }
 
@@ -1818,7 +1818,7 @@ class WavFile
 
         $tempWav = new WavFile($this->getNumChannels(), $this->getSampleRate(), $bitsPerSample);
         $tempWav->filter(
-            array(self::FILTER_MIX => $this),
+            [self::FILTER_MIX => $this],
             0,
             $this->getNumBlocks()
         );
@@ -1879,7 +1879,7 @@ class WavFile
         if (php_sapi_name() == 'cli') {
             return $s;
         } else {
-            return nl2br($s);
+            return nl2br((string) $s);
         }
     }
 }

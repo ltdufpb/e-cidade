@@ -36,8 +36,8 @@ include(modification("classes/db_issbase_classe.php"));
 include(modification("classes/db_propri_classe.php"));
 include(modification("classes/db_promitente_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 $db_opcao = 1;
 
 if(!isset($_self)){
@@ -209,7 +209,7 @@ MM_reloadPage(true);
   }
 
 $cor="#EFE029";
-    for($x=0;$x<pg_numrows($result);$x++){
+    for($x=0;$x<pg_num_rows($result);$x++){
 	  db_fieldsmemory($result,$x,true);
         if($cor=="#EFE029")
            $cor="#E4F471";
@@ -279,7 +279,7 @@ $cor="#EFE029";
               $resultparalisada = db_query($sqlparalisada) or die($sqlparalisada);
 
               //Inclusão situação da empresa
-              if (pg_numrows($resultparalisada) > 0) {
+              if (pg_num_rows($resultparalisada) > 0) {
                 echo "Paralisada"; 
               } else {
                 echo "Ativa"; 

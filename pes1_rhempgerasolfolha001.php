@@ -36,8 +36,8 @@ include(modification("dbforms/db_solicitafolha.php"));
 include(modification("classes/db_rhempfolha_classe.php"));
 include(modification("classes/db_rhelementoemp_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhempfolha       = new cl_rhempfolha;
 $clrhelementoemp    = new cl_rhelementoemp;
@@ -262,7 +262,7 @@ if (isset($confirma) || isset($gera)) {
     }
     
     if ($sqlerro == false) {
-      $arr_solicitacoes  = array(array("solicitacao"));
+      $arr_solicitacoes  = [["solicitacao"]];
       $cont_solicitacoes = 0;
 
       $res_solicita = $clrhsolicita->sql_record($clrhsolicita->sql_query_file(null,"rh33_solicita",null,"rh33_anousu   = $ano and
@@ -314,7 +314,7 @@ if (isset($confirma) || isset($gera)) {
                                                                                                                                 rh36_pcmater is not null"));
       $numrows_elementoemp = $clrhelementoemp->numrows;
       if ($numrows_elementoemp > 0) {
-        $arr_solicita  = array(array("solicitacao","dotacao"));
+        $arr_solicita  = [["solicitacao","dotacao"]];
         $cont_solicita = 0;
 
         db_criatermometro("gerar_solicitacao","Concluido...","blue",1,"Gerando solicitações...");

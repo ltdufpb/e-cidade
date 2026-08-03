@@ -46,7 +46,7 @@ db_input('codigo',2,$Icodigo,true,'hidden',3,"")
             </td>
             <td> 
               <?php 
-              $arr_ativo = array(1=>"On line",2=>"Não permitir novos logs",3=>"Off line");
+              $arr_ativo = [1=>"On line",2=>"Não permitir novos logs",3=>"Off line"];
               if($db21_ativo == 0){
                 $arr_ativo[0] = "Indefinido (Default: ".$arr_ativo[1].")";
               }
@@ -81,7 +81,7 @@ function js_preenchepesquisa(chave){
   db_iframe_db_config.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

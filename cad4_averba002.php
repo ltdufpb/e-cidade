@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptubase_classe.php"));
 include(modification("classes/db_averba_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clcgm = new cl_cgm;
 $cliptubase = new cl_iptubase;
 $cliptubase->rotulo->label();
@@ -58,7 +58,7 @@ if(isset($incluir)){
   db_inicio_transacao();
   $j55_codave="";
   $data = date("Y-m-d",db_getsession("DB_datausu"));
-  $dat = split("-",$data);
+  $dat = preg_split("#\\-#m",$data);
   $claverba->j55_data=$data;
   $claverba->j55_data_dia=$dat[0];
   $claverba->j55_data_mes=$dat[1];
@@ -167,7 +167,7 @@ if(isset($incluir)){
           <td>
 <?php 
   $result = $claverba->sql_record($claverba->sql_query($j01_matric,"max(j55_codave)","","j55_matric=$j01_matric"));
-  $ultimo=pg_result($result,0,0); 
+  $ultimo=pg_fetch_result($result,0,0); 
   $result = $claverba->sql_record($claverba->sql_query($j01_matric,"cgm.z01_nome,j55_cidade,j55_data,j55_regimo,j55_numcgm","","j01_matric=$j01_matric and j55_codave=$ultimo"));
   if($claverba->numrows!=0){
     db_fieldsmemory($result,0);
@@ -182,7 +182,7 @@ if(isset($incluir)){
     $j55_numcgm="";
     $z01_nome="";
     $z01_numcgm="";
-    $matriz=split("-", $j55_data2); 
+    $matriz=preg_split("#\\-#m", (string) $j55_data2); 
     $ano=$matriz[2]; 
     $mes=$matriz[1]; 
     $dia=$matriz[0]; 

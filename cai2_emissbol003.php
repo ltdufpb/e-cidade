@@ -27,7 +27,7 @@
 
 require_once modification('fpdf151/pdf.php');
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $seleciona_conta = '';
 $descr_conta = 'TODAS AS CONTAS';
 
@@ -92,7 +92,7 @@ $CoL8 = 25;
 $StrPad1 = 20;
 $StrPad2 = 26;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -227,7 +227,7 @@ $sSql .= "                 $ordem                                               
 $sSql .= "      ) as x order by {$sOrdem}";
 
 $result = db_query($sSql) or die ($sSql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 $QuebraPagina = 10;
 $total = 0;
@@ -268,20 +268,20 @@ for ($i = 0; $i < $numrows; $i++) {
         $data_ant = $corrente_data;
     }
 
-    if (trim($coremp_empen) != "" || trim($coremp_cheque) != "" || trim($coremp_empen) != "" || trim($coremp_anousu) != "") {
+    if (trim((string) $coremp_empen) != "" || trim((string) $coremp_cheque) != "" || trim((string) $coremp_empen) != "" || trim((string) $coremp_anousu) != "") {
         $coremp = true;
     }
-    if (trim($corlanc_conta) != "" || trim($corlanc_descr) != "" || trim($corlanc_slip) != "") {
+    if (trim((string) $corlanc_conta) != "" || trim((string) $corlanc_descr) != "" || trim((string) $corlanc_slip) != "") {
         $corlanc = true;
     }
-    if (trim($cornump_numpre) != "" || trim($cornump_numpar) != "" || trim($cornump_receit) != "" || trim($cornump_descr) != "" || trim($cornump_valor) != "") {
+    if (trim((string) $cornump_numpre) != "" || trim((string) $cornump_numpar) != "" || trim((string) $cornump_receit) != "" || trim((string) $cornump_descr) != "" || trim((string) $cornump_valor) != "") {
         $cornump = true;
         $passa = true;
         if ($velho_nump_id == $corrente_id && $velho_nump_data == $corrente_data && $velho_nump_autent == $corrente_autent) {
             $passa = false;
         }
     }
-    if (trim($corcla_codcla) != "") {
+    if (trim((string) $corcla_codcla) != "") {
         $corcla = true;
     }
 
@@ -497,7 +497,7 @@ if ($tiporel == "c") {
 $pdf->Cell(20, 5, "TIPO", "TBL", 0, "C", 1);
 $pdf->Cell(50, 5, "TOTAL", "RTB", 1, "C", 1);
 
-for ($regtotal = 0; $regtotal < pg_numrows($result); $regtotal++) {
+for ($regtotal = 0; $regtotal < pg_num_rows($result); $regtotal++) {
     db_fieldsmemory($result, $regtotal);
     $pdf->Cell(20, 5, $tipo, "", 0, "E", 0);
     $pdf->Cell(50, 5, number_format($valor, 2, ",", "."), 0, 1, "R", 0);

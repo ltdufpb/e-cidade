@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptubase_classe.php"));
 include_once(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -56,9 +56,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Classes","g2"=>"Atividades","g3"=>"Ruas");
-       $clcriaabas->title = array("g1"=>"Selecionar Classe da Atividade","g2"=>"Selecionar Atividade","g3"=>"Selecionar Ruas");
-       $clcriaabas->src = array("g1"=>"iss4_contativ_aba001.php","g2"=>"iss4_contativ_aba002.php","g3"=>"iss4_contativ_aba003.php");
+       $clcriaabas->identifica = ["g1"=>"Classes","g2"=>"Atividades","g3"=>"Ruas"];
+       $clcriaabas->title = ["g1"=>"Selecionar Classe da Atividade","g2"=>"Selecionar Atividade","g3"=>"Selecionar Ruas"];
+       $clcriaabas->src = ["g1"=>"iss4_contativ_aba001.php","g2"=>"iss4_contativ_aba002.php","g3"=>"iss4_contativ_aba003.php"];
        $clcriaabas->cria_abas();
      ?> 
      </td>

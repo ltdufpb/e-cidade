@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ppalei_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clppalei = new cl_ppalei;
 $clppalei->rotulo->label("o01_sequencial");
 $clppalei->rotulo->label("o01_descricao");
@@ -108,9 +108,9 @@ $clppalei->rotulo->label("o01_descricao");
         }else{
            $sql = $clppalei->sql_query("", $campos, "o01_sequencial", $sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o01_descricao)){
-          $repassa = array("chave_o01_sequencial"=>$chave_o01_sequencial,"chave_o01_descricao"=>$chave_o01_descricao);
+          $repassa = ["chave_o01_sequencial"=>$chave_o01_sequencial,"chave_o01_descricao"=>$chave_o01_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

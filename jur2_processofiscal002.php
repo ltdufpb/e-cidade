@@ -32,8 +32,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("std/db_stdClass.php"));
 require_once(modification("classes/db_parjuridico_classe.php"));
 require_once(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost           = db_utils::postMemory($_POST);
 $oGet            = db_utils::postMemory($_GET);
@@ -42,11 +42,11 @@ $clcgm           = new cl_cgm;
 
 // filtros pela remessa
 $sArquivoRemessa = $oGet->sNomeRemessa;
-$dDataRemessa    = implode("-", array_reverse(explode("/",$oGet->sDataRemessa)));
+$dDataRemessa    = implode("-", array_reverse(explode("/",(string) $oGet->sDataRemessa)));
 
 // filtros pelo retorno
 $sArquivoRetorno = $oGet->sNomeRetorno;
-$dDataRetorno    = implode("-", array_reverse(explode("/",$oGet->sDataRetorno)));
+$dDataRetorno    = implode("-", array_reverse(explode("/",(string) $oGet->sDataRetorno)));
 $iSeqRetorno     = $oGet->iSeqRetorno;
 
 // filtros registro
@@ -59,13 +59,13 @@ $iTotalInscr     = 0;
 $iTotalGeral     = 0;
 $sVirgula        = ""; 
 $sListaExerc     = "";
-$aDadosGeral     = array();
-$aListaIniciais  = array();
-$aExercDivida    = array();
-$aDadosAgrupados = array();
-$aExercDivida    = array();
-$aExercParc      = array();
-$aExercReparc    = array();
+$aDadosGeral     = [];
+$aListaIniciais  = [];
+$aExercDivida    = [];
+$aDadosAgrupados = [];
+$aExercDivida    = [];
+$aExercParc      = [];
+$aExercReparc    = [];
 
 
 /**

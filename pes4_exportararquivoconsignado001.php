@@ -102,7 +102,7 @@ $oGet    = db_utils::postMemory($_GET);
             </td>
             <td>
               <?php
-              db_select('tipo_lancamento', array('S'=>'Selecione', 'M'=>'Manual', 'A'=>'Arquivo'), true, 1, "onchange='configuraTipoLancamento(this)'");//, $nomevar = "", $bgcolor = "")
+              db_select('tipo_lancamento', ['S'=>'Selecione', 'M'=>'Manual', 'A'=>'Arquivo'], true, 1, "onchange='configuraTipoLancamento(this)'");//, $nomevar = "", $bgcolor = "")
               ?>
             </td>
           </tr>

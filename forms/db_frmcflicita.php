@@ -139,7 +139,7 @@ if ($db_opcao == 1) {
                 </td>
                 <td>
                     <?php
-                    db_select("l03_usaregistropreco", array("t" => "Sim", "f" => "Não"), true, $db_opcao);
+                    db_select("l03_usaregistropreco", ["t" => "Sim", "f" => "Não"], true, $db_opcao);
                     ?>
                 </td>
             </tr>
@@ -224,7 +224,7 @@ if ($db_opcao == 1) {
         db_iframe_cflicita.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

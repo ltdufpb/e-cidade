@@ -32,14 +32,14 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_renovacoes_classe.php"));
 include(modification("classes/db_sepulta_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS); 
+db_postmemory($_POST); 
 $clsepulta   = new cl_sepulta;
 $clrenovacoes = new cl_renovacoes;
 $db_botao = true;
 if(isset($incluir)){
  
-$data1 = strtotime(substr($cm01_d_falecimento,6,4).'-'.substr($cm01_d_falecimento,3,2).'-'.substr($cm01_d_falecimento,0,2)); 
-$data2 = strtotime(substr($cm07_d_vencimento,6,4).'-'.substr($cm07_d_vencimento,3,2).'-'.substr($cm07_d_vencimento,0,2));
+$data1 = strtotime(substr((string) $cm01_d_falecimento,6,4).'-'.substr((string) $cm01_d_falecimento,3,2).'-'.substr((string) $cm01_d_falecimento,0,2)); 
+$data2 = strtotime(substr((string) $cm07_d_vencimento,6,4).'-'.substr((string) $cm07_d_vencimento,3,2).'-'.substr((string) $cm07_d_vencimento,0,2));
 
   if($data1 > $data2){
    db_msgbox('Aviso:\nA data Informada de vencimento da Renovação da Sepultura é inferior a data de Falecimento do Sepultamento');

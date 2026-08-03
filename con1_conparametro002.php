@@ -31,12 +31,12 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_conparametro_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clconparametro = new cl_conparametro;
 $db_opcao = 22;
 $db_botao = false;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
    db_inicio_transacao();
    $result = $clconparametro->sql_record($clconparametro->sql_query());
    if($result==false || $clconparametro->numrows==0){
@@ -86,7 +86,7 @@ $db_botao = true;
 </html>
 <?php 
 
-	if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+	if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 	  if($clconparametro->erro_status=="0"){
 	    $clconparametro->erro(true,false);
 	    $db_botao=true;

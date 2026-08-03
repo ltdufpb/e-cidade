@@ -47,12 +47,12 @@ $oGet = db_utils::postMemory($_GET);
 
 
 if(mb_detect_encoding($oGet->sDiretor.'x', 'UTF-8','ISO-8859-1') == 'UTF-8' ){
-    $oGet->sDiretor =  utf8_decode($oGet->sDiretor);
+    $oGet->sDiretor =  mb_convert_encoding($oGet->sDiretor, 'ISO-8859-1');
 }
 
 
 $oParametros->aMatriculas = $oJson->decode(str_replace("\\", "", $oGet->aMatriculas));
-$aDiretor = explode('|', $oGet->sDiretor);
+$aDiretor = explode('|', (string) $oGet->sDiretor);
 $oParametros->sDiretor = '';
 $oParametros->sCargo = '';
 $oParametros->lTemDiretor = false;
@@ -80,12 +80,12 @@ $oParametros->iAlturaLinha = 6;
 
 $oParametros->sObservacao = "";
 
-if (trim($oGet->sObservacao) != '') {
+if (trim((string) $oGet->sObservacao) != '') {
 
     $oParametros->sObservacao = trim(db_stdClass::db_stripTagsJsonSemEscape($oGet->sObservacao));
 
     if (mb_detect_encoding($oGet->sObservacao . 'x', 'UTF-8', 'ISO-8859-1') == 'UTF-8') {
-        $oParametros->sObservacao = utf8_decode(trim(db_stdClass::db_stripTagsJsonSemEscape($oGet->sObservacao)));// Wallace 2018-06-18 Convertendo para ISO
+        $oParametros->sObservacao = mb_convert_encoding(trim(db_stdClass::db_stripTagsJsonSemEscape($oGet->sObservacao)), 'ISO-8859-1');// Wallace 2018-06-18 Convertendo para ISO
 
     }
 
@@ -93,7 +93,7 @@ if (trim($oGet->sObservacao) != '') {
 }
 
 $oTurma = TurmaRepository::getTurmaByCodigo($oGet->iTurma);
-$aTurno = array();
+$aTurno = [];
 
 $aTurno[] = $oTurma->getTurno()->getCodigoTurno();
 if ($oTurma->temTurnoAdicional() != "") {
@@ -112,7 +112,7 @@ if ($oDaoPeriodoEscola->numrows == 0) {
 $oDadosHorarioTurno = db_utils::fieldsMemory($rsHorarioTurno, 0);
 
 
-$aGradeHorario = array();
+$aGradeHorario = [];
 
 if ($oParametros->lExibeGradeAluno) {
 
@@ -146,8 +146,8 @@ if ($oParametros->lExibeGradeAluno) {
 }
 
 
-$aParagrafos = array();
-$aDadosAlunos = array();
+$aParagrafos = [];
+$aDadosAlunos = [];
 
 foreach ($oParametros->aMatriculas as $oMat) {
 
@@ -167,14 +167,14 @@ foreach ($oParametros->aMatriculas as $oMat) {
         $oParagrafo->mes_extenso_nascimento = DBDate::getMesExtenso((int)$oDataNascimento->getMes());
         $oParagrafo->mes_numeral_nascimento = $oDataNascimento->getMes();
         $oParagrafo->ano_nascimento = $oDataNascimento->getAno();
-    } catch (Exception $oErro) {
+    } catch (Exception) {
 
         $oParagrafo->dia_nascimento = "";
         $oParagrafo->mes_extenso_nascimento = "";
         $oParagrafo->mes_numeral_nascimento = "";
         $oParagrafo->ano_nascimento = "";
     }
-    $aFiliacao = array();
+    $aFiliacao = [];
 
     if ($oMatricula->getAluno()->getNomeMae() != '') {
         $aFiliacao[] = $oMatricula->getAluno()->getNomeMae();
@@ -202,12 +202,12 @@ foreach ($oParametros->aMatriculas as $oMat) {
     $oParagrafo->hora_inicial = $oDadosHorarioTurno->hora_inicio;
     $oParagrafo->hora_final   = $oDadosHorarioTurno->hora_fim;
     $oParagrafo->ano_declaracao        = $oMatricula->getTurma()->getCalendario()->getAnoExecucao();
-    if(substr($oGrade->getMatricula()->retornaAndamentoDaMatricula(),0,11) == "TRANSFERIDO" ){ //2018-06-20 Se a primeira palavra for transferido entrar na condição
+    if(str_starts_with((string) $oGrade->getMatricula()->retornaAndamentoDaMatricula(), "TRANSFERIDO") ){ //2018-06-20 Se a primeira palavra for transferido entrar na condição
         $oParagrafo->situacao_aluno = " tendo sido  TRANSFERIDO(a)."; //2018-06-20 Criado para enviar a informação para a variável que será recebida como parâmetro no Sistema E-cidade
     }else {
         $oParagrafo->situacao_aluno = $oGrade->getMatricula()->retornaAndamentoDaMatricula() == "EM ANDAMENTO" ? "." : ", tendo sido " . $oGrade->getMatricula()->retornaAndamentoDaMatricula() . "(a)."; //2018-06-20 Se em andamento não imprimir este status
     }
-    if(($oGrade->getMatricula()->retornaAndamentoDaMatricula() == "EM ANDAMENTO") && (substr($oGrade->getMatricula()->getSituacao(),0,10) == "DESISTENTE" )) { 
+    if(($oGrade->getMatricula()->retornaAndamentoDaMatricula() == "EM ANDAMENTO") && (str_starts_with((string) $oGrade->getMatricula()->getSituacao(), "DESISTENTE") )) { 
         $oParagrafo->situacao_aluno = " tendo sido DESISTENTE.";
     }
 

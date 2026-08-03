@@ -41,7 +41,7 @@ $clempagetipo  = new cl_empagetipo;
 
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_seleciona = new cl_iframe_seleciona;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
 $clrotulo = new rotulocampo;
@@ -284,11 +284,11 @@ for($i=0; $i<$numrows; $i++){
   //- ($tot_valor - $e81_valor);
   
   $x= "disponivel_$e50_codord";
-  $$x = number_format($disponivel,"2",".","");
+  ${$x} = number_format($disponivel,"2",".","");
   
   $x= "valor_$e50_codord";
-  $$x = number_format($disponivel,"2",".","");
-  if($$x==0){
+  ${$x} = number_format($disponivel,"2",".","");
+  if(${$x}==0){
     continue;
   }
   
@@ -306,11 +306,11 @@ for($i=0; $i<$numrows; $i++){
 																					) as x order by tipo_conta, e83_conta"
 																					);
   $numrows05 = $clempagetipo->numrows;
-  $arr = array();
+  $arr = [];
   $arr['0']="Nenhum";
   for($r=0; $r<$numrows05; $r++){
     db_fieldsmemory($result05,$r);
-    $arr[$codtipo] = $e83_conta . " - " . $e83_descr . " - " . str_pad($c61_codigo, 4, "0", STR_PAD_LEFT);
+    $arr[$codtipo] = $e83_conta . " - " . $e83_descr . " - " . str_pad((string) $c61_codigo, 4, "0", STR_PAD_LEFT);
   }
   flush();
 $tipo=$clempagetipo->sql_record($clempagetipo->sql_query_conta(null,"distinct e83_codtipo as cod_tipo",null," e81_numemp=$e60_numemp and e50_anousu=".db_getsession("DB_anousu")));

@@ -239,7 +239,7 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
 
 	     foreach ( $aListaCaracImovel as $aChave){
 
-	       $aListaDadosCaracImovel = split("X",$aChave);
+	       $aListaDadosCaracImovel = preg_split("#X#m",$aChave);
 	       if ($aListaDadosCaracImovel[0]=="") {
            continue;
          }
@@ -250,7 +250,7 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
                                                                                                  " it19_guia = ".$oPost->it01_guia."
                                                                                                and it19_codigo = ".$aListaDadosCaracImovel[0]."
                                                                                                and it19_tipocaract = 1"));
-         $iDadosCaractRural  = @pg_numrows($rsDadosCaractRural);
+         $iDadosCaractRural  = @pg_num_rows($rsDadosCaractRural);
 
 	       $clitbiruralcaract->it19_guia       = $clitbi->it01_guia;
 	       $clitbiruralcaract->it19_codigo     = @$aListaDadosCaracImovel[0];
@@ -278,7 +278,7 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
 
 	     foreach ( $aListaCaracUtil as $aChave){
 
-	       $aListaDadosCaracUtil = split("X",$aChave);
+	       $aListaDadosCaracUtil = preg_split("#X#m",$aChave);
 	       if ($aListaDadosCaracUtil[0]=="") {
            continue;
          }
@@ -342,7 +342,7 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
 
     foreach ( $aListaFormaPag as $aChave){
 
-  	  $aListaValorFormaPag = split("X",$aChave);
+  	  $aListaValorFormaPag = preg_split("#X#m",$aChave);
 
   	  // $aListaValorFormaPag[0]  -- Código da Forma de Pagamento da Transação
   	  // $aListaValorFormaPag[1]  -- Valor  da Forma de Pagamento da Transação
@@ -472,7 +472,7 @@ if (isset($oPost->alterar) or isset($oPost->liberacao)) {
 
   $rItbiMatric = db_query($clitbimatric->sql_query_file($it22_itbi, null, "it06_matric AS j01_matric"));
 
-  if ($rItbiMatric AND pg_numrows($rItbiMatric) > 0) {
+  if ($rItbiMatric AND pg_num_rows($rItbiMatric) > 0) {
     db_fieldsmemory($rItbiMatric,0);
 
     $rIptuant  = db_query($cliptuant->sql_query_file($j01_matric));

@@ -32,9 +32,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_retencaonatureza_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oGet = db_utils::postMemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clretencaonatureza = new cl_retencaonatureza;
 $clretencaonatureza->rotulo->label("e30_sequencial");
 $clretencaonatureza->rotulo->label("e30_codigo");
@@ -104,9 +104,9 @@ $clretencaonatureza->rotulo->label("e30_codigo");
         }else{
            $sql = $clretencaonatureza->sql_query("",$campos,"e30_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e30_codigo)){
-          $repassa = array("chave_e30_sequencial"=>$chave_e30_sequencial,"chave_e30_codigo"=>$chave_e30_codigo);
+          $repassa = ["chave_e30_sequencial"=>$chave_e30_sequencial,"chave_e30_codigo"=>$chave_e30_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

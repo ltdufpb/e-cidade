@@ -10,16 +10,16 @@
 
 
 class ImgData_Stars extends ImgData {
-    var $name = 'Stars';
-    var $an = array(MARK_IMG_STAR => 'imgdata');
+    public $name = 'Stars';
+    public $an = [MARK_IMG_STAR => 'imgdata'];
 
-    var $colors = array('bluegreen','lightblue','purple','blue','green','pink','red','yellow');
-    var $index  = array('bluegreen'=>3,'lightblue'=>4,'purple'=>1, 
-			'blue'=>5,'green'=>0,'pink'=>7,'red'=>2,'yellow'=>6);
-    var $maxidx = 7 ;
-    var $imgdata ;
+    public $colors = ['bluegreen','lightblue','purple','blue','green','pink','red','yellow'];
+    public $index  = ['bluegreen'=>3,'lightblue'=>4,'purple'=>1, 
+			'blue'=>5,'green'=>0,'pink'=>7,'red'=>2,'yellow'=>6];
+    public $maxidx = 7 ;
+    public $imgdata ;
 
-    function ImgData_Stars() {
+    function __construct() {
 //==========================================================
 // File: bstar_green_001.png
 //==========================================================

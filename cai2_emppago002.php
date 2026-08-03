@@ -49,7 +49,7 @@ $clrotulo->label('k12_autent');
 $clrotulo->label('k13_conta');
 $clrotulo->label('k13_descr');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($ordem = 'e'){
@@ -137,7 +137,7 @@ where " . ($filtraemp == 0?"1 = 1":" tipo = '" . ($filtraemp == 1?"Emp":"RP") . 
 
 $result = db_query($sql);
 //db_criatabela($result);
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem empenhos pagos.');
 
 }
@@ -160,7 +160,7 @@ $tot_valor = 0;
 $tot_geral = 0;
 $tot_banco = 0;
 $geral     = 0;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x,true);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage("L");
@@ -209,9 +209,9 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $pdf->cell(20,$alt,$k12_data,0,0,"C",0);
    $pdf->cell(15,$alt,$k12_autent,0,0,"C",0);
    $pdf->cell(15,$alt,$k13_conta,0,0,"C",0);
-   $pdf->cell(40,$alt,substr($k13_descr,0,25),0,0,"L",0);
+   $pdf->cell(40,$alt,substr((string) $k13_descr,0,25),0,0,"L",0);
    $pdf->cell(18,$alt,$k12_empen,0,0,"C",0);
-   $pdf->cell(15,$alt,trim($e60_codemp).'/'.$e60_anousu,0,0,"C",0);
+   $pdf->cell(15,$alt,trim((string) $e60_codemp).'/'.$e60_anousu,0,0,"C",0);
    $pdf->cell(15,$alt,$e50_codord,0,0,"C",0);
    if( $e50_codord > 0 ){
      $res = $clpagordemnota->sql_record($clpagordemnota->sql_query($e50_codord,null,'e69_numero'));
@@ -219,7 +219,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
        $notas = "";
        for( $ord = 0; $ord < $clpagordemnota->numrows; $ord ++){
        	 db_fieldsmemory($res,$ord);
-       	 $notas .= $sepnotas.trim($e69_numero);
+       	 $notas .= $sepnotas.trim((string) $e69_numero);
        	 $sepnotas = " - ";
        }
      }

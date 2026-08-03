@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE issnotaavulsainscr
 class cl_issnotaavulsainscr { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q52_sequencial = 0; 
-   var $q52_issnotaavulsa = 0; 
-   var $q52_inscr = 0; 
+   public $q52_sequencial = 0; 
+   public $q52_issnotaavulsa = 0; 
+   public $q52_inscr = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q52_sequencial = int4 = Código Sequencial 
                  q52_issnotaavulsa = int4 = Número da Nota 
                  q52_inscr = int4 = Inscrição Municipal 
                  ";
    //funcao construtor da classe 
-   function cl_issnotaavulsainscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issnotaavulsainscr"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_issnotaavulsainscr {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q52_sequencial = pg_result($result,0,0); 
+       $this->q52_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = @db_query("select last_value from issnotaavulsainscr_q52_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q52_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q52_sequencial)){
          $this->erro_sql = " Campo q52_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_issnotaavulsainscr {
      $result = @db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Inscricao da Nota Avulsa ($this->q52_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Inscricao da Nota Avulsa já Cadastrado";
@@ -166,11 +166,11 @@ class cl_issnotaavulsainscr {
      $resaco = $this->sql_record($this->sql_query_file($this->q52_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,10621,'$this->q52_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1827,10621,'','".AddSlashes(pg_result($resaco,0,'q52_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1827,10583,'','".AddSlashes(pg_result($resaco,0,'q52_issnotaavulsa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1827,10584,'','".AddSlashes(pg_result($resaco,0,'q52_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1827,10621,'','".AddSlashes(pg_fetch_result($resaco,0,'q52_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1827,10583,'','".AddSlashes(pg_fetch_result($resaco,0,'q52_issnotaavulsa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1827,10584,'','".AddSlashes(pg_fetch_result($resaco,0,'q52_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -179,10 +179,10 @@ class cl_issnotaavulsainscr {
       $this->atualizacampos();
      $sql = " update issnotaavulsainscr set ";
      $virgula = "";
-     if(trim($this->q52_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q52_sequencial"])){ 
+     if(trim((string) $this->q52_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q52_sequencial"])){ 
        $sql  .= $virgula." q52_sequencial = $this->q52_sequencial ";
        $virgula = ",";
-       if(trim($this->q52_sequencial) == null ){ 
+       if(trim((string) $this->q52_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "q52_sequencial";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_issnotaavulsainscr {
          return false;
        }
      }
-     if(trim($this->q52_issnotaavulsa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q52_issnotaavulsa"])){ 
+     if(trim((string) $this->q52_issnotaavulsa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q52_issnotaavulsa"])){ 
        $sql  .= $virgula." q52_issnotaavulsa = $this->q52_issnotaavulsa ";
        $virgula = ",";
-       if(trim($this->q52_issnotaavulsa) == null ){ 
+       if(trim((string) $this->q52_issnotaavulsa) == null ){ 
          $this->erro_sql = " Campo Número da Nota nao Informado.";
          $this->erro_campo = "q52_issnotaavulsa";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_issnotaavulsainscr {
          return false;
        }
      }
-     if(trim($this->q52_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q52_inscr"])){ 
+     if(trim((string) $this->q52_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q52_inscr"])){ 
        $sql  .= $virgula." q52_inscr = $this->q52_inscr ";
        $virgula = ",";
-       if(trim($this->q52_inscr) == null ){ 
+       if(trim((string) $this->q52_inscr) == null ){ 
          $this->erro_sql = " Campo Inscrição Municipal nao Informado.";
          $this->erro_campo = "q52_inscr";
          $this->erro_banco = "";
@@ -226,14 +226,14 @@ class cl_issnotaavulsainscr {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountkey values($acount,10621,'$this->q52_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q52_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1827,10621,'".AddSlashes(pg_result($resaco,$conresaco,'q52_sequencial'))."','$this->q52_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1827,10621,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q52_sequencial'))."','$this->q52_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q52_issnotaavulsa"]))
-           $resac = db_query("insert into db_acount values($acount,1827,10583,'".AddSlashes(pg_result($resaco,$conresaco,'q52_issnotaavulsa'))."','$this->q52_issnotaavulsa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1827,10583,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q52_issnotaavulsa'))."','$this->q52_issnotaavulsa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q52_inscr"]))
-           $resac = db_query("insert into db_acount values($acount,1827,10584,'".AddSlashes(pg_result($resaco,$conresaco,'q52_inscr'))."','$this->q52_inscr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1827,10584,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q52_inscr'))."','$this->q52_inscr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = @db_query($sql);
@@ -278,11 +278,11 @@ class cl_issnotaavulsainscr {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountkey values($acount,10621,'$q52_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1827,10621,'','".AddSlashes(pg_result($resaco,$iresaco,'q52_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1827,10583,'','".AddSlashes(pg_result($resaco,$iresaco,'q52_issnotaavulsa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1827,10584,'','".AddSlashes(pg_result($resaco,$iresaco,'q52_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1827,10621,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q52_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1827,10583,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q52_issnotaavulsa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1827,10584,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q52_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from issnotaavulsainscr
@@ -342,7 +342,7 @@ class cl_issnotaavulsainscr {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:issnotaavulsainscr";
@@ -357,7 +357,7 @@ class cl_issnotaavulsainscr {
    function sql_query ( $q52_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_issnotaavulsainscr {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_issnotaavulsainscr {
    function sql_query_file ( $q52_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_issnotaavulsainscr {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

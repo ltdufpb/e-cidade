@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 if ((isset($incluir))||(isset($excluir))) {
 	if (isset($depto)){
@@ -55,16 +55,16 @@ if ((isset($incluir))||(isset($excluir))) {
 			order by id_usuario
 		";
 		$result = db_query($sql);
-		$num = pg_numrows($result);
+		$num = pg_num_rows($result);
 		if ($num!=0){
 			if (isset($usuarios)){
 				sort($usuarios);
 			}else{
-				$usuarios[0] = pg_result($result,0,"id_usuario");
+				$usuarios[0] = pg_fetch_result($result,0,"id_usuario");
 			}
 			for ($i=0;$i<$num;$i++){
-				if (!in_array(pg_result($result,$i,"id_usuario"),$usuarios)){
-					array_push($usuarios,pg_result($result,$i,"id_usuario"));
+				if (!in_array(pg_fetch_result($result,$i,"id_usuario"),$usuarios)){
+					array_push($usuarios,pg_fetch_result($result,$i,"id_usuario"));
 				}
 			}
 		}
@@ -81,7 +81,7 @@ if ((isset($incluir))||(isset($excluir))) {
 					and d51_impres = $impressoras[$a]
 				";
 				$result = db_query($sql);
-				$num = pg_numrows($result);
+				$num = pg_num_rows($result);
 				if ($num == 0){
 					if (isset($incluir)){
 						$sql2 = "

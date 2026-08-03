@@ -89,7 +89,7 @@ class cl_afastamentosesocial extends DAOBasica
      * @param string $where
      * @return string
      */
-    public function sql_query_tipo_assentamento($campos = "*", $where)
+    public function sql_query_tipo_assentamento($campos = "*", $where = null)
     {
         $sql  = " select {$campos} ";
         $sql .= "   from afastamentosesocial ";
@@ -102,7 +102,7 @@ class cl_afastamentosesocial extends DAOBasica
         return $sql;
     }
 
-    public function sql_query_mapeamento_atributos( $campos = "*", $where ){
+    public function sql_query_mapeamento_atributos( $campos = "*", $where = null ){
 
         $sql  = " select {$campos} ";
         $sql .= "   from afastamentosesocial ";
@@ -118,7 +118,7 @@ class cl_afastamentosesocial extends DAOBasica
         return $sql;
     }
 
-    public function sql_query_atributos_valores($campos = "*", $where){
+    public function sql_query_atributos_valores($campos = "*", $where = null){
 
         $sql  = " SELECT {$campos}  ";
         $sql .= "   FROM afastamentosesocial ";

@@ -35,7 +35,7 @@
  * @param integer $iFaixaCalculo
  * @param Rubrica $oRubrica
  */
-function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo = null, $iFaixaCalculo = 0, Rubrica $oRubrica = null ) {
+function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo = null, $iFaixaCalculo = 0, ?Rubrica $oRubrica = null ) {
 
   global $aValorTotalPensoes;
    
@@ -60,7 +60,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
 
   global $anousu, $mesusu, $DB_instit;
   global $siglap, $db21_codcli, $cfpess, $subpes,$r110_regisi,$pensao;
-  global $$chamada_geral_arquivo, $minha_calcula_pensao, $campos_pessoal;
+  global ${$chamada_geral_arquivo}, $minha_calcula_pensao, $campos_pessoal;
 
   global $opcao_filtro,$opcao_gml,$r110_regisf,$r110_lotaci, $r110_lotacf,$faixa_regis,$faixa_lotac;
 
@@ -450,7 +450,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
         and r52_anousu = ".$pensao[$Ipensao]["r52_anousu"]." 
         and r52_mesusu < ".$pensao[$Ipensao]["r52_mesusu"]; 
       $rsValorPensao       = db_query($sSqlValorPensao);
-      $pvalor_ad_13salario = pg_result($rsValorPensao,0,0);
+      $pvalor_ad_13salario = pg_fetch_result($rsValorPensao,0,0);
 
       if ($db_debug == true) {
         echo "[calc_pensao:Chamada : $iDebugNumeroChamada] Adiantamentos de 13¬∫ (pvalor_ad_13salario): {$pvalor_ad_13salario} <br>";
@@ -513,8 +513,8 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
     $numcgmp = $pensao[$Ipensao]["r52_numcgm"];
     $condicaoaux  = " and r52_regist = ".db_sqlformat($registrop);
     $condicaoaux .= " and r52_numcgm = ".db_sqlformat($numcgmp);
-    $matriz1 = array();
-    $matriz2 = array();
+    $matriz1 = [];
+    $matriz2 = [];
     $retornar = true;
 
     if ($chamada_geral_arquivo == "gerfs13") {
@@ -587,7 +587,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
         $qual_tpp = $sigla1."tpp";
       }
 
-      $chamada_geral_ = $$chamada_geral_arquivo;
+      $chamada_geral_ = ${$chamada_geral_arquivo};
       for ($Igeral=0; $Igeral<count($chamada_geral_); $Igeral++) {
 
         if( $chamada_geral_[$Igeral][$qual_rub] == "R993" ){
@@ -601,11 +601,11 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
           db_year($cadferia[0][$r30_peri]) > db_val(substr("#".$cadferia[0][$r30_proc],1,4)))
         )
         ) {
-          if (strtolower($cfpess[0]["r11_fersal"]) == "f" && ('t' == $cadferia[0]["r30_paga13"]) ) {
+          if (strtolower((string) $cfpess[0]["r11_fersal"]) == "f" && ('t' == $cadferia[0]["r30_paga13"]) ) {
             // Quando do Adiantamento de FÈrias , n√£o Calcula a Pens√£o de FÈrias se for Pagar como FÈrias e somente 1/3 for sim 
             continue;
           }
-          if ('f' == $cadferia[0]["r30_paga13"] && $cadferia[0][$r30_proc] < $subpes && strtolower($chamada_geral_[$Igeral][$qual_tpp]) == "d" ) {
+          if ('f' == $cadferia[0]["r30_paga13"] && $cadferia[0][$r30_proc] < $subpes && strtolower((string) $chamada_geral_[$Igeral][$qual_tpp]) == "d" ) {
             // N√£o Processar no Calculo da Pens√£o de FÈrias as Rubricas de FÈrias Adiantadas quando somente 1/3 for n√£o  e  Data de Pagto n√£o Venceu  
             continue;
           }
@@ -614,7 +614,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
         // e depois repassada para o salario ou complentar
 
 
-        if ( ( ( strtolower($cfpess[0]["r11_fersal"]) == "f" && ('t' ==  $cadferia[0]["r30_paga13"]) &&
+        if ( ( ( strtolower((string) $cfpess[0]["r11_fersal"]) == "f" && ('t' ==  $cadferia[0]["r30_paga13"]) &&
           db_month($cadferia[0][$r30_peri]) == db_val(substr("#".$cadferia[0][$r30_proc],6,2))
         )
         || 'f' == $cadferia[0]["r30_paga13"]
@@ -649,8 +649,8 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
           // Para pagamento somente 1/3 sim e restante em salario (Pagar como Sal√°rio)
           // para a geracao da Pens√£o de FÈrias so deve levar em conta para o Calculo da Pens√£o 1/3 FÈrias
 
-          if (strtolower($cfpess[0]["r11_fersal"]) == "s" && ('t' == $cadferia[0]["r30_paga13"])) {
-            if (( substr("#". $chamada_geral_[$Igeral][$qual_rub],1,1) != "R" && strtolower($chamada_geral_[$Igeral][$qual_tpp]) != "a" ) ) {
+          if (strtolower((string) $cfpess[0]["r11_fersal"]) == "s" && ('t' == $cadferia[0]["r30_paga13"])) {
+            if (( substr("#". $chamada_geral_[$Igeral][$qual_rub],1,1) != "R" && strtolower((string) $chamada_geral_[$Igeral][$qual_tpp]) != "a" ) ) {
               continue;
             }
           }
@@ -674,7 +674,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
 
                 $pvalor_obriga += $qual_val;
                 if ( $debug ){ 
-                
+
                   echo "<BR> 1 pvalor_obriga ---> $pvalor_obriga rubrica --> ".$chamada_geral_[$Igeral][$qual_rub]." valor --> $qual_val" ;
                   echo "<BR>";
                 }
@@ -683,7 +683,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
               && db_val(substr("#".$chamada_geral_[$Igeral][$qual_rub],2,3)) < 916 ) {
                 $pvalor_obriga += $qual_val;
                 if ( $debug ){
-                
+
                   echo "<BR> 2 pvalor_obriga ---> $pvalor_obriga rubrica --> ".$chamada_geral_[$Igeral][$qual_rub]." valor --> $qual_val" ;
                   echo "<BR>";
                 }
@@ -700,7 +700,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
             ||  ( $chamada_geral_[$Igeral][$qual_rub] == "R915" && $opcao_geral == 3 ) ) {
               $pvalor_obriga += $qual_val;
               if ( $debug ){
-              
+
                 echo "<BR> 3 pvalor_obriga ---> $pvalor_obriga rubrica --> ".$chamada_geral_[$Igeral][$qual_rub]." valor --> $qual_val" ;
                 echo "<BR>";
               }
@@ -799,7 +799,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
 
 
 
-    $formula_pensao = trim($pensao[$Ipensao]["r52_formul"]);
+    $formula_pensao = trim((string) $pensao[$Ipensao]["r52_formul"]);
     $sFormula       = $formula_pensao;
     if (!db_empty($formula_pensao)) {
 
@@ -825,7 +825,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
             $condicaoaux .= " and ".$siglag."rubric = ".db_sqlformat($rubricas_[$Irubricas]["rh27_rubric"] );
             if (db_selectmax($chamada_geral_arquivo, "select * from ".$chamada_geral_arquivo." ".bb_condicaosubpes($siglag ).$condicaoaux )) {
 
-              $arq_       = $$chamada_geral_arquivo;
+              $arq_       = ${$chamada_geral_arquivo};
               $vararq     = $arq_[0][$sigla1."valor"] ;
               $formpensao = db_strtran($formpensao,$rubricas_[$Irubricas]["rh27_rubric"],db_strtran(db_str($vararq,15,2),",","."));
               //echo "<BR> formula da pensao 3 ->  $formpensao";
@@ -850,7 +850,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
           if (db_at("8888",$formpensao) > 0) {
 
             $formpensao = db_strtran($formpensao,"8888",db_strtran(db_str($pvalor_obriga,15,2),",","."));
-             
+
 
             //echo "<BR> formula da pensao 6 ->  $formpensao";
             $temtroca = true;
@@ -974,7 +974,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
       $condicaoaux  = " and ".$siglap."regist = ".db_sqlformat($pensao[$Ipensao]["r52_regist"] );
       $condicaoaux .= " and ".$siglap."rubric = ".db_sqlformat($rubrica_pensao );
 
-      global $$qual_ponto;
+      global ${$qual_ponto};
       if (db_selectmax($qual_ponto, "select * from ".$qual_ponto." ".bb_condicaosubpes($siglap ).$condicaoaux )) {
         $acao = "altera";
       } else {
@@ -984,7 +984,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
       if ($chamada_geral_arquivo == "gerfs13") {
 
         if ($lCalculaPensaoAdiantamento13) {
-          if (db_debug) {
+          if (\DB_DEBUG) {
             echo "[calc_pensao:Chamada : $iDebugNumeroChamada] calculando valor da pensao com adiantamento<br>";
             echo "[calc_pensao:Chamada : $iDebugNumeroChamada] valor da pensao = (valor da pensao * (r52_percadiantamento13)/100) = {$valor_pensao} * (".$pensao[$Ipensao]["r52_percadiantamento13"]."/100) = ".($valor_pensao * ($pensao[$Ipensao]["r52_percadiantamento13"]/100))."<br>";
           }  
@@ -992,7 +992,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
         }
       }
 
-      $ponto            = $$qual_ponto;
+      $ponto            = ${$qual_ponto};
       $qual_val         = $sigla."valor";
       $qual_rep         = $sigla;
       $valor_pensao     = round($valor_pensao,2 );
@@ -1016,8 +1016,8 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
 
         if ($opcao_geral == 1) {
 
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1] = "r10_regist";
           $matriz1[2] = "r10_rubric";
@@ -1050,8 +1050,8 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
           $nValorPensaoIRRF = $matriz2[3];
         } else if ($opcao_geral == 3 ) {
 
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
           $matriz1[1] = "r29_regist";
           $matriz1[2] = "r29_rubric";
           $matriz1[3] = "r29_valor";
@@ -1086,8 +1086,8 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
           $nValorPensaoIRRF = $matriz2[3];
         } else if ($opcao_geral == 8) {
 
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1] = "r47_regist";
           $matriz1[2] = "r47_rubric";
@@ -1118,8 +1118,8 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
 
         } else if ($opcao_geral == 4) {
 
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1] = "r19_regist";
           $matriz1[2] = "r19_rubric";
@@ -1152,8 +1152,8 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
 
         } else if ($opcao_geral == 5) {
 
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1] = "r34_regist";
           $matriz1[2] = "r34_rubric";
@@ -1219,8 +1219,8 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
           db_insert($qual_ponto, $matriz1, $matriz2 );
 
         }
-        $matriz1        = array();
-        $matriz2        = array();
+        $matriz1        = [];
+        $matriz2        = [];
         $registrop      = $pensao[$Ipensao]["r52_regist"];
         $numcgmp        = $pensao[$Ipensao]["r52_numcgm"];
 
@@ -1292,7 +1292,7 @@ function calc_pensao($icalc, $opcao_geral, $opcao_tipo, $chamada_geral_arquivo =
 function getRubricasPensaoAlimenticia( $iInstituicao  = null) {
 
 
-  $iInstituicao = is_null($iInstituicao) ? db_getsession( "DB_instit" ) : $iInstituicao;
+  $iInstituicao ??= db_getsession( "DB_instit" );
 
   /**
    * SQL Com as Faixas de C·lculo
@@ -1307,9 +1307,9 @@ function getRubricasPensaoAlimenticia( $iInstituicao  = null) {
     throw new DBException( "Erro ao Buscar os dados das Faixas de C·lculo das Pensıes.");
   }
 
-  $aRubricasPensaoAlimenticia       = array();
-  $aRubricasPensaoAlimenticiaFerias = array();
-  $aRubricasPensaoAlimenticia13o    = array();
+  $aRubricasPensaoAlimenticia       = [];
+  $aRubricasPensaoAlimenticiaFerias = [];
+  $aRubricasPensaoAlimenticia13o    = [];
 
   foreach ( db_utils::getCollectionByRecord( $rsFaixas ) as $oStdFaixas ) {
 

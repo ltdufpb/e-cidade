@@ -54,7 +54,7 @@ class EvolucaoDividaAtiva {
    * Array com os valores agrupados por conta pcasp
    * @var array
    */
-  private $aRegistrosRelatorio = array();
+  private $aRegistrosRelatorio = [];
 
   /**
    * Método Construtor
@@ -121,7 +121,7 @@ class EvolucaoDividaAtiva {
 
     $aDataDividaAtiva = db_utils::getCollectionByRecord($rsEvolucaoDividaAtiva);
 
-    $aDataDebito      = array();
+    $aDataDebito      = [];
 
     foreach ($aDataDividaAtiva as $oEvolucaoDividaAtiva) {
 
@@ -137,7 +137,7 @@ class EvolucaoDividaAtiva {
 
     $rsGeraData      = pg_query($sSqlGeraData);
     $aDatas          = db_utils::getCollectionByRecord($rsGeraData);
-    $aDatasIntervalo = array();
+    $aDatasIntervalo = [];
 
     foreach ($aDatas as $oDataIntervalo) {
 
@@ -206,7 +206,7 @@ class EvolucaoDividaAtiva {
       if ( $iReceitaAtual != $oValorPorPeriodo->o70_codrec ) {
 
         $iReceitaAtual                             = $oValorPorPeriodo->o70_codrec;
-        $this->aRegistrosRelatorio[$iReceitaAtual] = array(
+        $this->aRegistrosRelatorio[$iReceitaAtual] = [
                                                         'iCondigo'      => $iReceitaAtual,
                                                         'sEstrutural'   => $oValorPorPeriodo->o57_fonte,
                                                         'sDescricao'    => $oValorPorPeriodo->o57_descr,
@@ -217,7 +217,7 @@ class EvolucaoDividaAtiva {
                                                         'nDesconto'     => 0,
                                                         'nAtualizacao'  => 0,
                                                         'nSaldoFinal'   => 0
-                                                      );
+                                                      ];
       }
 
       if ( $iIndice == 0 ) {
@@ -368,9 +368,9 @@ class EvolucaoDividaAtiva {
    */
   public function emitirRelatorio() {
 
-    $aHeaders = array( "Código", "Estrutural", "Descrição", "Saldo Inicial","Inscrições", "Pagamentos", "Cancelamentos", "Descontos", "Atualização", "Saldo Final" );
-    $aWidth   = array( 5, 12, 34, 7, 7, 7, 7, 7, 7, 7 );
-    $aAlign   = array( PDFDocument::ALIGN_CENTER,
+    $aHeaders = [ "Código", "Estrutural", "Descrição", "Saldo Inicial","Inscrições", "Pagamentos", "Cancelamentos", "Descontos", "Atualização", "Saldo Final" ];
+    $aWidth   = [ 5, 12, 34, 7, 7, 7, 7, 7, 7, 7 ];
+    $aAlign   = [ PDFDocument::ALIGN_CENTER,
                        PDFDocument::ALIGN_CENTER,
                        PDFDocument::ALIGN_LEFT,
                        PDFDocument::ALIGN_RIGHT,
@@ -379,7 +379,7 @@ class EvolucaoDividaAtiva {
                        PDFDocument::ALIGN_RIGHT,
                        PDFDocument::ALIGN_RIGHT,
                        PDFDocument::ALIGN_RIGHT,
-                       PDFDocument::ALIGN_RIGHT );
+                       PDFDocument::ALIGN_RIGHT ];
 
     $oPdfTable = new PDFTable(PDFDocument::PRINT_LANDSCAPE);
     $oPdfTable->setTotalByPage(true);
@@ -391,7 +391,7 @@ class EvolucaoDividaAtiva {
     foreach ($this->aRegistrosRelatorio as $this->aRegistroRelatorio) {
 
       $oPdfTable->addLineInformation(
-        array(
+        [
           $this->aRegistroRelatorio['iCondigo'],
           db_formatar($this->aRegistroRelatorio['sEstrutural'], 'receita'),
           $this->aRegistroRelatorio['sDescricao'],
@@ -402,7 +402,7 @@ class EvolucaoDividaAtiva {
           db_formatar(round($this->aRegistroRelatorio['nDesconto'], 2),  'v'),
           db_formatar(round($this->aRegistroRelatorio['nAtualizacao'], 2),  'v'),
           db_formatar(round($this->aRegistroRelatorio['nSaldoFinal'], 2),   'v')
-        )
+        ]
       );
     }
 

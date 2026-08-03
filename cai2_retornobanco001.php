@@ -103,7 +103,7 @@ db_postmemory($_POST);
     <td  align="left" nowrap><?php  db_ancora("<strong>Modelo:</strong>","",3);?>  </td>
     <td align="left" nowrap>
       <?php 
-      $arr_mostra = Array("1"=>"Modelo 1","2"=>"Modelo 2");
+      $arr_mostra = ["1"=>"Modelo 1","2"=>"Modelo 2"];
       db_select("modelo",$arr_mostra,true,4,"onchange='showMessage(this.value);mostrarFiltro();'");
       ?>
     </td>
@@ -153,7 +153,7 @@ db_postmemory($_POST);
 
   */
 
-   $arr_mostra = Array("0"=>"Todos","t"=>"Somente processados","f"=>"Somente não processados");
+   $arr_mostra = ["0"=>"Todos","t"=>"Somente processados","f"=>"Somente não processados"];
    db_select("ordem",$arr_mostra,true,4);
   ?>
     </td>

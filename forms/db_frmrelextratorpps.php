@@ -81,7 +81,7 @@ $ano = db_anofolha();
                 <td><label for="sTipoEmissao">Dados Cadastrais:</label></td>
                 <td>
                   <?php
-                    $xcad = array("p"=>"Período", "a"=>"Atual");
+                    $xcad = ["p"=>"Período", "a"=>"Atual"];
                     db_select('sTipoEmissao',$xcad,true,4,"");
                   ?>
                 </td>
@@ -100,10 +100,10 @@ $ano = db_anofolha();
 
                 <td>
                   <?php
-                    $ordem_resumo = array("g" => "Geral",
+                    $ordem_resumo = ["g" => "Geral",
                     		                  "m" => "Matrícula",
                     		                  "l" => "Lotação",
-                    		                  "t" => "Locais de Trabalho");
+                    		                  "t" => "Locais de Trabalho"];
 
                     db_select('tipo_res', $ordem_resumo,true,2,"onchange=js_mudaresumo(this.value)");
                   ?>
@@ -114,9 +114,9 @@ $ano = db_anofolha();
 
                 <td>
                   <?php
-                    $ordem_filtro = array("0" => " ----------- ",
+                    $ordem_filtro = ["0" => " ----------- ",
                     		                  "i" => "Intervalo",
-                    		                  "s" => "Selecionados");
+                    		                  "s" => "Selecionados"];
 
                     db_select('tipo_fil', $ordem_filtro,true,2,"onchange='js_mostratag(this.value, document.form1.tipo_res);'");
                   ?>
@@ -253,7 +253,7 @@ $ano = db_anofolha();
                 <td width="130px"><label for="ordem">Ordem:</label></td>
                 <td>
                   <?php
-                    $ordemalfnum = array("a"=>"Alfabética ", "n"=>"Numérica");
+                    $ordemalfnum = ["a"=>"Alfabética ", "n"=>"Numérica"];
                     db_select('ordem', $ordemalfnum,true,2,"");
                   ?>
                 </td>

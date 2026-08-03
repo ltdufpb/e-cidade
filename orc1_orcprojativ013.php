@@ -35,9 +35,9 @@ include(modification("classes/db_orcprojativunidaderesp_classe.php"));
 include(modification("classes/db_orciniciativavinculoprojativ_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcprojativ 			   			= new cl_orcprojativ();
 $clorcprojativunidaderesp   = new cl_orcprojativunidaderesp();
@@ -46,7 +46,7 @@ $clorcprojativprogramfisica = new cl_orcprojativprogramfisica();
 $db_botao = false;
 $db_opcao = 33;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 	
 	
 	$lSqlErro = false;
@@ -133,7 +133,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
    db_fieldsmemory($result,0);
    $db_botao = true;
       
-   $digito = ($o55_projativ{0}*1000);
+   $digito = ($o55_projativ[0]*1000);
    
 }
 ?>
@@ -160,9 +160,9 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir" && $lSqlErro == true){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir" && $lSqlErro == true){
 	db_msgbox($sMsgErro);	
-}else if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+}else if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clorcprojativ->erro_status=="0"){
     $clorcprojativ->erro(true,false);
   }else{

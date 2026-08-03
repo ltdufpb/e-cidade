@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptubase_classe.php"));
 include(modification("classes/db_itbi_classe.php"));
 include(modification("libs/db_app.utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(!isset($setorCodigo)) {
 	$setorCodigo = '';
@@ -46,7 +46,7 @@ if(!isset($lote)) {
 	$lote = '';
 }
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptubase = new cl_iptubase;
 $clitbi  = new cl_itbi;
 $cliptubase->rotulo->label("j01_matric");
@@ -174,7 +174,7 @@ $clrotulo->label("z01_nome");
 		}else{
 			$sql2 = "";
 		}
-		$repassa = array('dblov'=>'0');
+		$repassa = ['dblov'=>'0'];
 		
 		if ($sql2 != '') {
 			db_lovrot(@$sql.@$sql2,15,"()","",$funcao_js,"","NoMe",$repassa);

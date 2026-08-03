@@ -56,7 +56,7 @@ class RazaoContaCorrente extends BaseClassRepository
     /**
      * @var RazaoContaCorrenteModel[][]
      */
-    private $colecaoRazaoContaCorrente = array();
+    private $colecaoRazaoContaCorrente = [];
 
     private $unidadeGestora;
 
@@ -96,9 +96,7 @@ class RazaoContaCorrente extends BaseClassRepository
         if ($totalDeRegistros == 0) {
             throw new DBException('Não foram encontradas movimentações para os filtros informados.');
         }
-        $dados = \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-            return $retorno;
-        });
+        $dados = \db_utils::makeCollectionFromRecord($rs, fn($retorno) => $retorno);
 
         return $dados;
     }
@@ -115,7 +113,7 @@ class RazaoContaCorrente extends BaseClassRepository
      */
     private function prepararFiltrosParaBuscarMovimentacoes(\DBDate $dataInicio, \DBDate $dataFim, \stdClass $filtros)
     {
-        $where = array();
+        $where = [];
         $dataInicial = $dataInicio->getDate();
         $dataFinal = $dataFim->getDate();
         $where[] = " data between '{$dataInicial}' and '{$dataFinal}'";
@@ -133,7 +131,7 @@ class RazaoContaCorrente extends BaseClassRepository
         }
 
         if (!empty($filtros->atributos)) {
-            $orAtributos = array();
+            $orAtributos = [];
             foreach ($filtros->atributos as $atributo) {
                 $orAtributos[] = " atributos ilike '%{$atributo->sigla}#{$atributo->valor}%'";
             }
@@ -152,7 +150,7 @@ class RazaoContaCorrente extends BaseClassRepository
      */
     private function prepararFiltrosParaCalcularSaldoFinal(\ECidade\Financeiro\Contabilidade\MatrizSaldoContabil\Model\RazaoContaCorrente $razaocontaCorrenteModel)
     {
-        $where = array();
+        $where = [];
         $dataInicial = $razaocontaCorrenteModel->getDataMovimentacao()->getDate();
         $where[] = " data < '{$dataInicial}'";
         //$where[] = " documento = " . $razaocontaCorrenteModel->getCodigoDocumento();
@@ -380,9 +378,7 @@ class RazaoContaCorrente extends BaseClassRepository
         $configSiconf = new cl_configuracaoinstituicaosiconfi();
         $rs = \db_query($configSiconf->sql_query());
 
-        $instituicoes = \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-            return $retorno->c125_db_config;
-        });
+        $instituicoes = \db_utils::makeCollectionFromRecord($rs, fn($retorno) => $retorno->c125_db_config);
 
         return in_array($codigoInstituicao, $instituicoes);
     }
@@ -406,7 +402,7 @@ class RazaoContaCorrente extends BaseClassRepository
         }
 
         return \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-            $retorno->descricao = urlencode($retorno->descricao);
+            $retorno->descricao = urlencode((string) $retorno->descricao);
             return $retorno;
         });
     }
@@ -426,7 +422,7 @@ class RazaoContaCorrente extends BaseClassRepository
         }
 
         return \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-            $retorno->descricao = urlencode($retorno->descricao);
+            $retorno->descricao = urlencode((string) $retorno->descricao);
             return $retorno;
         });
     }

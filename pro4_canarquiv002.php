@@ -115,7 +115,7 @@ if((isset($p58_codproc))){
 
       $clprocandam->erro(true,false);
       $sqlerro = true;
-      break;
+      return;
     }
 	
     //inclui  o andamento e o cod. do arquivamento e diz se é arquivamento ou desarquivamento na tabela arqandam
@@ -130,7 +130,7 @@ if((isset($p58_codproc))){
 
       $clarqandam->erro(true,false);
       $sqlerro = true;
-      break;
+      return;
     }
 
     //inclui  a transferencia. e o andamento do processo na tabela proctransand;
@@ -144,7 +144,7 @@ if((isset($p58_codproc))){
 
       $clproctransand->erro(true,false);
       $sqlerro = true;
-      break;
+      return;
     }
  
     //atualiza codandam da tabela protprocesso;
@@ -159,7 +159,7 @@ if((isset($p58_codproc))){
 
       $clprotprocesso->erro(true,false);
       $sqlerro = true;
-      break;
+      return;
     }
 
     if($sqlerro == false) {

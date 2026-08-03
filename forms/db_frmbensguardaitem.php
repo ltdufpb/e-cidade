@@ -157,7 +157,7 @@ $iddepart = db_getsession("DB_coddepto");
    <tr>
      <td valign="top"  align="center">  
      <?php 
-     $chavepri = array("t22_codigo" => @$t22_codigo);
+     $chavepri = ["t22_codigo" => @$t22_codigo];
      $cliframe_alterar_excluir->chavepri = $chavepri;
      $cliframe_alterar_excluir->sql = $clbensguardaitem->sql_query(null, "*", null, "t22_bensguarda=$t22_bensguarda");
      $cliframe_alterar_excluir->sql_disabled = $clbensguardaitem->sql_query_dev(null, "*", null, "t22_bensguarda=$t22_bensguarda and t23_guardaitem is not null");

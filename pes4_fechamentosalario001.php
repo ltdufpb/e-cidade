@@ -10,7 +10,7 @@
  require_once(modification("model/pessoal/folhapagamento/FolhaPagamento.model.php"));
  require_once(modification("model/pessoal/folhapagamento/FolhaPagamentoSalario.model.php"));
  define("MENSAGEM", 'recursoshumanos.pessoal.pes4_fechamentosalario001.');
- db_postmemory($HTTP_POST_VARS);
+ db_postmemory($_POST);
 
  $lManutenaoSalario = true;
 

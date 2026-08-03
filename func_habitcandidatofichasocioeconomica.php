@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitcandidatofichasocioeconomica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabitcandidatofichasocioeconomica = new cl_habitcandidatofichasocioeconomica;
 $clhabitcandidatofichasocioeconomica->rotulo->label("ht11_sequencial");
 $clhabitcandidatofichasocioeconomica->rotulo->label("ht11_habitfichasocioeconomica");
@@ -98,9 +98,9 @@ $clhabitcandidatofichasocioeconomica->rotulo->label("ht11_habitfichasocioeconomi
         }else{
            $sql = $clhabitcandidatofichasocioeconomica->sql_query("",$campos,"ht11_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ht11_habitfichasocioeconomica)){
-          $repassa = array("chave_ht11_sequencial"=>$chave_ht11_sequencial,"chave_ht11_habitfichasocioeconomica"=>$chave_ht11_habitfichasocioeconomica);
+          $repassa = ["chave_ht11_sequencial"=>$chave_ht11_sequencial,"chave_ht11_habitfichasocioeconomica"=>$chave_ht11_habitfichasocioeconomica];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

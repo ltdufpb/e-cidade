@@ -32,7 +32,7 @@ try {
 
     $relatorio = RelatorioBalancoPatrimonialFactory::getInstance($ano, $codigoPeriodo);
 
-    $quadros = array();
+    $quadros = [];
 
     if ($get->lQuadroPrincipal === 'true') {
         $quadros[] = $relatorio->getQuadroPrincipal();

@@ -55,37 +55,37 @@ $db_opcao = 1;
   <td height="460" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
-   $clcriaabas->identifica = array("a1" => "Dados Pessoais",
+   $clcriaabas->identifica = ["a1" => "Dados Pessoais",
                                    "a2" => "Documentos",
                                    "a3" => "Cursos",
                                    "a4" => "Documentos Pendentes",
                                    "a5" => "Necessidades Especiais",
                                    "a6" => "Matrícula INEP",
                                    "a7" => "Transportes Utilizados"
-                                   );
-   $clcriaabas->sizecampo  = array("a1" => "15",
+                                   ];
+   $clcriaabas->sizecampo  = ["a1" => "15",
                                    "a2" => "10",
                                    "a3" => "15",
                                    "a4" => "25",
                                    "a5" => "25",
                                    "a6" => "15",
                                    "a7" => "30"
-                                  );
-   $clcriaabas->src        = array("a1" => "edu1_alunodados001.php",
+                                  ];
+   $clcriaabas->src        = ["a1" => "edu1_alunodados001.php",
                                    "a2" => "edu1_aluno001.php",
                                    "a3" => "",
                                    "a4" => "",
                                    "a5" => "",
                                    "a6" => "",
                                    "a7" => ""
-                                  );
-   $clcriaabas->disabled   = array("a2" => "true",
+                                  ];
+   $clcriaabas->disabled   = ["a2" => "true",
                                    "a3" => "true",
                                    "a4" => "true",
                                    "a5" => "true",
                                    "a6" => "true",
                                    "a7" => "true"
-                                  );
+                                  ];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->scrolling = "no";
    $clcriaabas->iframe_height= "1200";

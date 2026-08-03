@@ -33,10 +33,8 @@ class AnexoCincoRgfFactory extends AnexosFactory implements AnexosFactoryInterfa
      */
     public static function getService($exercicio, $filtros)
     {
-        switch ($exercicio) {
-            case 2022:
-            default:
-                return new AnexoCincoService($filtros);
-        }
+        return match ($exercicio) {
+            default => new AnexoCincoService($filtros),
+        };
     }
 }

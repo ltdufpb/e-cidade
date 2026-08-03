@@ -41,7 +41,7 @@ class PropostaLicitaCon extends ArquivoLicitaCon
     /**
      * @var array
      */
-    private $aDadosProposta = array();
+    private $aDadosProposta = [];
 
     /**
      * PropostaLicitaCon constructor.
@@ -72,18 +72,18 @@ class PropostaLicitaCon extends ArquivoLicitaCon
      */
     private function preparaPropostas()
     {
-        $aSituacoes = array(
+        $aSituacoes = [
           SituacaoLicitacao::SITUACAO_JULGADA,
           SituacaoLicitacao::SITUACAO_ADJUDICADA,
           SituacaoLicitacao::SITUACAO_HOMOLOGADA
-        );
+        ];
 
         $aWhere = LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(),
           $this->oCabecalho->getDataGeracao());
         $aWhere[] = 'l20_licsituacao IN (' . implode(', ', $aSituacoes) . ')';
         $aWhere[] = "l44_sigla NOT IN ('RPO','PRD','PRI')";
 
-        $aCampos = array(
+        $aCampos = [
           'pc23_orcamforne AS codigo_fornecedor',
           'l20_codigo AS codigo_licitacao',
           'l20_numero AS numero_licitacao',
@@ -96,7 +96,7 @@ class PropostaLicitaCon extends ArquivoLicitaCon
           'l20_tipojulg AS tipo_julgamento',
           'SUM(coalesce(pc23_notatecnica, 0)) AS nota_tecnica',
           'pcorcamfornelichabilitacao.l17_situacao as situacao'
-        );
+        ];
 
         $sOrder = ' ORDER BY sigla_modalidade, numero_licitacao, documento_fornecedor ';
         $sGroup = ' GROUP BY pc23_orcamforne, z01_numcgm, l20_codigo, l20_numero, l20_anousu, l44_sigla, z01_cgccpf, l20_dataaber, l20_tipojulg, pcorcamfornelichabilitacao.l17_situacao';
@@ -145,7 +145,7 @@ class PropostaLicitaCon extends ArquivoLicitaCon
                 $nValorNotaTecnica = number_format($oStdDadosProposta->nota_tecnica, 2, ',', '');
             }
 
-            if (!$this->mostrarNotaTecnica($lJulgamentoGlobal, $oStdDadosProposta->codigo_licitacao)) {
+            if (!self::mostrarNotaTecnica($lJulgamentoGlobal, $oStdDadosProposta->codigo_licitacao)) {
                 $nValorNotaTecnica = null;
             }
 
@@ -197,7 +197,7 @@ class PropostaLicitaCon extends ArquivoLicitaCon
         $oLicitacaoDinamico = new LicitacaoAtributosDinamicos;
         $oLicitacaoDinamico->setCodigoLicitacao($iCodigoLicitacao);
         $sValorAtributo = $oLicitacaoDinamico->getAtributo('tipolicitacao');
-        $aTiposLicitacao = array('MCA', 'MOQ', 'MOT', 'MPP', 'MTC', 'MTO', 'MTT', 'TPR');
+        $aTiposLicitacao = ['MCA', 'MOQ', 'MOT', 'MPP', 'MTC', 'MTO', 'MTT', 'TPR'];
 
         return in_array($sValorAtributo, $aTiposLicitacao);
     }

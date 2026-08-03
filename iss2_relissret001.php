@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 
@@ -167,10 +167,10 @@ function js_emite(){
                       </td>
                       <td>
                        <?php 
-                         $aOrdem = array('1' => "Competencia", 
+                         $aOrdem = ['1' => "Competencia", 
                                          '2' => "Nome",
                                          '3' => 'Planilha'  
-                                        );
+                                        ];
                          db_select("ordernar",$aOrdem, true, 1);
                        ?>
                       </td>

@@ -37,13 +37,13 @@ $sName         = $_POST["string"];
 $oDomXml       = new DOMDocument();
 $oDomXml->load('config/sigfis/receitasigfis.xml');
 $aContas = $oDomXml->getElementsByTagName("receita");
-$aReceitaRetorno = array();
+$aReceitaRetorno = [];
 foreach ($aContas as $oConta) {
 	
   $iCodigo     = $oConta->getAttribute("codigo");
   $sDescricao  = $oConta->getAttribute("descricao");
-  $iTamanhoPesquisa = strlen($sName);
-  if (strpos(strtolower($sDescricao), strtolower($sName)) !== false ||
+  $iTamanhoPesquisa = strlen((string) $sName);
+  if (str_contains(strtolower($sDescricao), strtolower((string) $sName)) ||
      substr($iCodigo, 0, $iTamanhoPesquisa) == $sName) {
     
     $oReceitaRetorno         = new stdClass();

@@ -33,7 +33,7 @@
  */
 class EscolaEstruturalNotaRepository {
 
-  private $aEscolaEstruturalNota = array();
+  private $aEscolaEstruturalNota = [];
 
   private static $oInstance;
 
@@ -138,6 +138,6 @@ class EscolaEstruturalNotaRepository {
   public static function removeAll() {
 
     unset(self::getInstance()->aEscolaEstruturalNota);
-    self::getInstance()->aEscolaEstruturalNota = array();
+    self::getInstance()->aEscolaEstruturalNota = [];
   }
 }

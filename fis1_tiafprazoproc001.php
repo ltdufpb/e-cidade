@@ -35,8 +35,8 @@ include(modification("classes/db_tiafprazoproc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_POST_VARS,2);
+db_postmemory($_POST);
+db_postmemory($_POST,2);
 $cltiafprazoproc = new cl_tiafprazoproc;
 $cltiafprazo = new cl_tiafprazo;
 $cltiaf = new cl_tiaf;
@@ -125,7 +125,7 @@ if(isset($incluir) && $incluir == "Excluir"){
 ///////////////////////////////////////////////////
 
 if (isset($opcao) && $opcao != ""){
-	$tipobotao = ucfirst($opcao);
+	$tipobotao = ucfirst((string) $opcao);
 	if (isset($opcao) && $opcao == "excluir"){
 		$db_opcao = 3;
 	}elseif (isset($opcao) && $opcao == "alterar"){

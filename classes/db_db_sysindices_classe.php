@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_sysindices
 class cl_db_sysindices { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $codind = 0; 
-   var $nomeind = null; 
-   var $codarq = 0; 
-   var $campounico = null; 
+   public $codind = 0; 
+   public $nomeind = null; 
+   public $codarq = 0; 
+   public $campounico = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  codind = int4 = Codigo 
                  nomeind = char(40) = Nome 
                  codarq = int4 = Codigo Arquivo 
                  campounico = char(1) = Indice Unique 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysindices() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysindices"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -110,10 +110,10 @@ class cl_db_sysindices {
          $this->erro_status = "0";
          return false; 
        }
-       $this->codind = pg_result($result,0,0); 
+       $this->codind = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_sysindices_codind_seq");
-       if(($result != false) && (pg_result($result,0,0) < $codind)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $codind)){
          $this->erro_sql = " Campo codind maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -147,7 +147,7 @@ class cl_db_sysindices {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Indices do sistema ($this->codind) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Indices do sistema já Cadastrado";
@@ -171,13 +171,13 @@ class cl_db_sysindices {
      $resaco = $this->sql_record($this->sql_query_file($this->codind));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,762,'$this->codind','I')");
-       $resac = db_query("insert into db_acount values($acount,147,762,'','".AddSlashes(pg_result($resaco,0,'codind'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,147,763,'','".AddSlashes(pg_result($resaco,0,'nomeind'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,147,759,'','".AddSlashes(pg_result($resaco,0,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,147,764,'','".AddSlashes(pg_result($resaco,0,'campounico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,147,762,'','".AddSlashes(pg_fetch_result($resaco,0,'codind'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,147,763,'','".AddSlashes(pg_fetch_result($resaco,0,'nomeind'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,147,759,'','".AddSlashes(pg_fetch_result($resaco,0,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,147,764,'','".AddSlashes(pg_fetch_result($resaco,0,'campounico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -186,10 +186,10 @@ class cl_db_sysindices {
       $this->atualizacampos();
      $sql = " update db_sysindices set ";
      $virgula = "";
-     if(trim($this->codind)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codind"])){ 
+     if(trim((string) $this->codind)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codind"])){ 
        $sql  .= $virgula." codind = $this->codind ";
        $virgula = ",";
-       if(trim($this->codind) == null ){ 
+       if(trim((string) $this->codind) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "codind";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_db_sysindices {
          return false;
        }
      }
-     if(trim($this->nomeind)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomeind"])){ 
+     if(trim((string) $this->nomeind)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomeind"])){ 
        $sql  .= $virgula." nomeind = '$this->nomeind' ";
        $virgula = ",";
-       if(trim($this->nomeind) == null ){ 
+       if(trim((string) $this->nomeind) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "nomeind";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_db_sysindices {
          return false;
        }
      }
-     if(trim($this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){ 
+     if(trim((string) $this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){ 
        $sql  .= $virgula." codarq = $this->codarq ";
        $virgula = ",";
-       if(trim($this->codarq) == null ){ 
+       if(trim((string) $this->codarq) == null ){ 
          $this->erro_sql = " Campo Codigo Arquivo nao Informado.";
          $this->erro_campo = "codarq";
          $this->erro_banco = "";
@@ -225,7 +225,7 @@ class cl_db_sysindices {
          return false;
        }
      }
-     if(trim($this->campounico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["campounico"])){ 
+     if(trim((string) $this->campounico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["campounico"])){ 
        $sql  .= $virgula." campounico = '$this->campounico' ";
        $virgula = ",";
      }
@@ -237,17 +237,17 @@ class cl_db_sysindices {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,762,'$this->codind','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codind"]))
-           $resac = db_query("insert into db_acount values($acount,147,762,'".AddSlashes(pg_result($resaco,$conresaco,'codind'))."','$this->codind',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,147,762,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codind'))."','$this->codind',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["nomeind"]))
-           $resac = db_query("insert into db_acount values($acount,147,763,'".AddSlashes(pg_result($resaco,$conresaco,'nomeind'))."','$this->nomeind',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,147,763,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'nomeind'))."','$this->nomeind',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codarq"]))
-           $resac = db_query("insert into db_acount values($acount,147,759,'".AddSlashes(pg_result($resaco,$conresaco,'codarq'))."','$this->codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,147,759,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codarq'))."','$this->codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["campounico"]))
-           $resac = db_query("insert into db_acount values($acount,147,764,'".AddSlashes(pg_result($resaco,$conresaco,'campounico'))."','$this->campounico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,147,764,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'campounico'))."','$this->campounico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -292,13 +292,13 @@ class cl_db_sysindices {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,762,'$codind','E')");
-         $resac = db_query("insert into db_acount values($acount,147,762,'','".AddSlashes(pg_result($resaco,$iresaco,'codind'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,147,763,'','".AddSlashes(pg_result($resaco,$iresaco,'nomeind'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,147,759,'','".AddSlashes(pg_result($resaco,$iresaco,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,147,764,'','".AddSlashes(pg_result($resaco,$iresaco,'campounico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,147,762,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codind'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,147,763,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'nomeind'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,147,759,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,147,764,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'campounico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_sysindices
@@ -358,7 +358,7 @@ class cl_db_sysindices {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_sysindices";

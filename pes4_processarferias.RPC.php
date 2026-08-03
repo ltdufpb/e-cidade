@@ -59,9 +59,9 @@ try {
                 $oDataInicioGozo = new DBDate($oParam->datainicio);
             }
 
-            $aCondicoes = array('condicaoPadrao' => true, 'feriasLiberadasRH' => true);
+            $aCondicoes = ['condicaoPadrao' => true, 'feriasLiberadasRH' => true];
             $aPeriodos = $oPeriodosGozo->getPeriodosGozo($oServidor, $oDataInicioGozo, null, $aCondicoes);
-            $oRetorno->ferias = array();
+            $oRetorno->ferias = [];
 
             foreach ($aPeriodos as $indice => $oPeriodoFerias) {
 
@@ -86,7 +86,7 @@ try {
                 $sPeriodo .= " a " . $oPeriodoFerias->getPeriodoFinal()->getDate(DBDate::DATA_PTBR);
 
                 $oStdPeriodo = new stdClass();
-                $oStdPeriodo->servidor = urlencode($oPeriodoFerias->getPeriodoAquisitivo()->getServidor()->getCgm()->getNome());
+                $oStdPeriodo->servidor = urlencode((string) $oPeriodoFerias->getPeriodoAquisitivo()->getServidor()->getCgm()->getNome());
                 $oStdPeriodo->matricula = $oPeriodoFerias->getPeriodoAquisitivo()->getServidor()->getMatricula();
                 $oStdPeriodo->periodo = $sPeriodo;
                 $oStdPeriodo->codigo_periodo_gozo = $oPeriodoFerias->getCodigoPeriodo();

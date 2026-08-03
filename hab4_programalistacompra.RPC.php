@@ -69,9 +69,9 @@ try {
     }
       		    
     $clHabitProgramaListaCompra->ht17_habitprograma  = $oParam->iCodPrograma; 
-    $clHabitProgramaListaCompra->ht17_descricao      = utf8_decode($oParam->sDescricao);
+    $clHabitProgramaListaCompra->ht17_descricao      = mb_convert_encoding($oParam->sDescricao, 'ISO-8859-1');
     $clHabitProgramaListaCompra->ht17_formaavaliacao = $oParam->iFormaAvaliacao;
-    $clHabitProgramaListaCompra->ht17_datalimite     = implode('-',array_reverse(explode('/',$oParam->dtDataLimite)));
+    $clHabitProgramaListaCompra->ht17_datalimite     = implode('-',array_reverse(explode('/',(string) $oParam->dtDataLimite)));
 		
     $clHabitProgramaListaCompra->incluir(null);
     
@@ -90,9 +90,9 @@ try {
               
     $clHabitProgramaListaCompra->ht17_sequencial     = $oParam->iCodLista;
     $clHabitProgramaListaCompra->ht17_habitprograma  = $oParam->iCodPrograma; 
-    $clHabitProgramaListaCompra->ht17_descricao      = utf8_decode($oParam->sDescricao);
+    $clHabitProgramaListaCompra->ht17_descricao      = mb_convert_encoding($oParam->sDescricao, 'ISO-8859-1');
     $clHabitProgramaListaCompra->ht17_formaavaliacao = $oParam->iFormaAvaliacao;
-    $clHabitProgramaListaCompra->ht17_datalimite     = implode('-',array_reverse(explode('/',$oParam->dtDataLimite)));
+    $clHabitProgramaListaCompra->ht17_datalimite     = implode('-',array_reverse(explode('/',(string) $oParam->dtDataLimite)));
     
     $clHabitProgramaListaCompra->alterar($oParam->iCodLista);
     

@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE disclaret
 class cl_disclaret { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $codcla = 0; 
-   var $codret = 0; 
+   public $codcla = 0; 
+   public $codret = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  codcla = int4 = CodCla 
                  codret = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_disclaret() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disclaret"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_disclaret {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Classificações ($this->codcla."-".$this->codret) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Classificações já Cadastrado";
@@ -130,12 +130,12 @@ class cl_disclaret {
      $resaco = $this->sql_record($this->sql_query_file($this->codcla,$this->codret));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1198,'$this->codcla','I')");
        $resac = db_query("insert into db_acountkey values($acount,1179,'$this->codret','I')");
-       $resac = db_query("insert into db_acount values($acount,656,1198,'','".AddSlashes(pg_result($resaco,0,'codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,656,1179,'','".AddSlashes(pg_result($resaco,0,'codret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,656,1198,'','".AddSlashes(pg_fetch_result($resaco,0,'codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,656,1179,'','".AddSlashes(pg_fetch_result($resaco,0,'codret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_disclaret {
       $this->atualizacampos();
      $sql = " update disclaret set ";
      $virgula = "";
-     if(trim($this->codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcla"])){ 
+     if(trim((string) $this->codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcla"])){ 
        $sql  .= $virgula." codcla = $this->codcla ";
        $virgula = ",";
-       if(trim($this->codcla) == null ){ 
+       if(trim((string) $this->codcla) == null ){ 
          $this->erro_sql = " Campo CodCla nao Informado.";
          $this->erro_campo = "codcla";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_disclaret {
          return false;
        }
      }
-     if(trim($this->codret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codret"])){ 
+     if(trim((string) $this->codret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codret"])){ 
        $sql  .= $virgula." codret = $this->codret ";
        $virgula = ",";
-       if(trim($this->codret) == null ){ 
+       if(trim((string) $this->codret) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "codret";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_disclaret {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1198,'$this->codcla','A')");
          $resac = db_query("insert into db_acountkey values($acount,1179,'$this->codret','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codcla"]))
-           $resac = db_query("insert into db_acount values($acount,656,1198,'".AddSlashes(pg_result($resaco,$conresaco,'codcla'))."','$this->codcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,656,1198,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codcla'))."','$this->codcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codret"]))
-           $resac = db_query("insert into db_acount values($acount,656,1179,'".AddSlashes(pg_result($resaco,$conresaco,'codret'))."','$this->codret',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,656,1179,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codret'))."','$this->codret',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_disclaret {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1198,'$codcla','E')");
          $resac = db_query("insert into db_acountkey values($acount,1179,'$codret','E')");
-         $resac = db_query("insert into db_acount values($acount,656,1198,'','".AddSlashes(pg_result($resaco,$iresaco,'codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,656,1179,'','".AddSlashes(pg_result($resaco,$iresaco,'codret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,656,1198,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,656,1179,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from disclaret
@@ -304,7 +304,7 @@ class cl_disclaret {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:disclaret";

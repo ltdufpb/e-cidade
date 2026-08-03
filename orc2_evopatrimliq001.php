@@ -63,21 +63,21 @@ $oPost = db_utils::postMemory($_POST);
     <?php 
 
     
-    $clcriaabas->identifica = array( "relatorio" =>"Relatorio", 
+    $clcriaabas->identifica = [ "relatorio" =>"Relatorio", 
                                      "parametro"=>"Parametros",    
-                                     "notas"     =>"Notas Explicativas");
+                                     "notas"     =>"Notas Explicativas"];
     
-    $clcriaabas->title      = array( "relatorio" =>"Relatorio",
+    $clcriaabas->title      = [ "relatorio" =>"Relatorio",
                                      "parametro"=>"Parametros",
-                                     "notas"     =>"Notas Explicativas");
+                                     "notas"     =>"Notas Explicativas"];
     
-    $clcriaabas->src  		  = array( "relatorio" =>"orc2_evopatrimliq011.php",
+    $clcriaabas->src  		  = [ "relatorio" =>"orc2_evopatrimliq011.php",
                                      "parametro"=>"con4_parametrosrelatorioslegais001.php?c83_codrel=67",    
-                              	     "notas"     =>"con2_conrelnotas.php?c83_codrel=67");
+                              	     "notas"     =>"con2_conrelnotas.php?c83_codrel=67"];
     
-    $clcriaabas->sizecampo  = array( "relatorio" =>"23",
+    $clcriaabas->sizecampo  = [ "relatorio" =>"23",
                                      "parametro"=>"23",      
-                                     "notas"     =>"23");
+                                     "notas"     =>"23"];
 
 
     $clcriaabas->cria_abas();    

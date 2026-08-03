@@ -29,13 +29,13 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 function carrega_destinatario(){
  $texto = "";
  $res = db_query("select id_usuario,nome from db_usuarios order by nome ");    
- for ($x=0;$x < pg_numrows($res);$x++){
+ for ($x=0;$x < pg_num_rows($res);$x++){
         db_fieldsmemory($res,$x);
 	global $id_usuario,$nome,$cod_destinatario;
 	if ($cod_destinatario==$id_usuario){
@@ -81,7 +81,7 @@ function checa_eventos($dia,$mes,$ano){
               order by nome_modulo		   
              ";
     $res = @db_query($sql);    
-    for ($x=0;$x < @pg_numrows($res);$x++){
+    for ($x=0;$x < @pg_num_rows($res);$x++){
         db_fieldsmemory($res,$x);
 	global $nome_modulo,$codordem,$status;
 	$retorno.="<tr><td nowrap>[".$codordem."] ".$nome_modulo."/".$status."</td></tr>";
@@ -90,15 +90,15 @@ function checa_eventos($dia,$mes,$ano){
 }
 // --
 class calendario{ 
-   var $sem;//Array com os dias da semana como índice 
-   var $mes;//Array com os meses do ano 
-   var $nome_objeto_data;
+   public $sem;//Array com os dias da semana como índice 
+   public $mes;//Array com os meses do ano 
+   public $nome_objeto_data;
 
    function inicializa(){//Atribui valores para $sem e $mes.
-       $this->sem=array('Sun'=>1,'Mon'=>2,'Tue'=>3,'Wed'=>4,'Thu'=>5,'Fri'=>6,'Sat'=>7);
-       $this->mes=array('1'=>'JANEIRO','2'=>'FEVEREIRO','3'=>'MARÇO',
+       $this->sem=['Sun'=>1,'Mon'=>2,'Tue'=>3,'Wed'=>4,'Thu'=>5,'Fri'=>6,'Sat'=>7];
+       $this->mes=['1'=>'JANEIRO','2'=>'FEVEREIRO','3'=>'MARÇO',
                         '4'=>'ABRIL','5'=>'MAIO','6'=>'JUNHO','7'=>'JULHO',
-			'8'=>'AGOSTO','9'=>'SETEMBRO','10'=>'OUTUBRO','11'=>'NOVEMBRO','12'=>'DEZEMBRO');
+			'8'=>'AGOSTO','9'=>'SETEMBRO','10'=>'OUTUBRO','11'=>'NOVEMBRO','12'=>'DEZEMBRO'];
    } 
 
    function aux($i){//Complementa a tabela com espaços em branco 

@@ -164,7 +164,7 @@ $db_opcao = 1;
                     <td align=left><strong>Situação:</strong></td>
                     <td colspan=3>
                         <?php
-                        $tipo_ordem = array("A" => "Todas", "1" => "Não Autenticado", "2" => "Autenticado", "3" => "Estornado", "4" => "Cancelado");
+                        $tipo_ordem = ["A" => "Todas", "1" => "Não Autenticado", "2" => "Autenticado", "3" => "Estornado", "4" => "Cancelado"];
                         db_select("situacao", $tipo_ordem, true, 2); ?>
                         <script>
                             document.getElementById('situacao').style.width = '100%';
@@ -221,7 +221,7 @@ $db_opcao = 1;
                     <td align="right"><strong>Opção de Seleção :<strong></td>
                     <td align="left" colspan='4'>
                         <?php 
-                        $xxx = array("S" => "Somente Selecionados", "N" => "Menos os Selecionados");
+                        $xxx = ["S" => "Somente Selecionados", "N" => "Menos os Selecionados"];
                         db_select('parametro', $xxx, true, 2);
                         ?>
                         <script>

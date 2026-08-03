@@ -73,7 +73,7 @@
 
     //db_criatabela($result_erro);exit;
 
-    $erro_msg = pg_result($result_erro,0,0);
+    $erro_msg = pg_fetch_result($result_erro,0,0);
 
     if(substr($erro_msg,0,2) > 0 ){
 
@@ -100,14 +100,14 @@
 
   if($sqlerro==false){
     //array que irá armazenar os valores de cada elemento para fazer os lancamentos contabeis
-    $arr_codeleval = array();
+    $arr_codeleval = [];
 
     //$arr_dados é um array com todos os elementos e seus valores
     //$dados =   $elemento-$valorliquidar#$elemento-$valorliquidar#elemen...
-    $arr_dados = split("#",$dados);
+    $arr_dados = preg_split("#\\##m",$dados);
     $tam = count($arr_dados);
     for($i=0; $i<$tam; $i++){
-	  $arr_ele = split("-",$arr_dados[$i]);
+	  $arr_ele = preg_split("#\\-#m",(string) $arr_dados[$i]);
           $elemento =  $arr_ele[0];
 	  $valor    =  $arr_ele[1];
 
@@ -158,7 +158,7 @@
 
   //rotina pega as notas marcadas para atualizar os valores liquidados da notas
    if($sqlerro==false && isset($chaves) && $chaves!=''){
-      $arr_notas = split("#",$chaves);
+      $arr_notas = preg_split("#\\##m",$chaves);
       $tam = count($arr_notas);
       for($i=0; $i<$tam; $i++){
 	  $nota = $arr_notas[$i];
@@ -256,7 +256,7 @@
 	      /*conlancamnota*/
 
 	      if($sqlerro==false && isset($chaves) && $chaves!=''){
-                 $arr_notas = split("#",$chaves);
+                 $arr_notas = preg_split("#\\##m",$chaves);
                  $tam = count($arr_notas);
                  for($inota=0; $inota<$tam; $inota++){
                    $clconlancamnota->c66_codnota = $arr_notas[$inota];
@@ -311,14 +311,14 @@
 
 		       }else{
 			     //quando for 33
-			     $arr_tipos = array(  "0"=>"33",
+			     $arr_tipos = [  "0"=>"33",
 						  "1"=>"34"
-					       );
-			     if(substr($o56_elemento,0,2) == $arr_tipos[0]){
+					       ];
+			     if(substr((string) $o56_elemento,0,2) == $arr_tipos[0]){
                                  $c71_coddoc = '3';
 				 $cltranslan->db_trans_liquida($e60_codcom,$e64_codele,$e60_anousu);
 				 //$cltranslan->db_trans_liquida_capital($e60_codcom,$e64_codele,$e60_anousu);
-			     }else if(substr($o56_elemento,0,2) == $arr_tipos[1]){
+			     }else if(substr((string) $o56_elemento,0,2) == $arr_tipos[1]){
                                  $c71_coddoc = '23';
 				 $cltranslan->db_trans_liquida_capital($e60_codcom,$e64_codele,$e60_anousu);
 
@@ -354,9 +354,9 @@
 		  if($sqlerro==false){
 		    $result85 = db_query("select fc_lancam_dotacao($e60_coddot,'$datausu',$c71_coddoc,'$valor_liquidar') as dotacao");
 		    db_fieldsmemory($result85,0);
-		    if(substr($dotacao,0,1)==0){ //quando o primeiro caractere for igual a zero eh porque deu erro
+		    if(substr((string) $dotacao,0,1)==0){ //quando o primeiro caractere for igual a zero eh porque deu erro
 		      $sqlerro = true;
-		      $erro_msg = "Erro na atualização do orçamento \\n ".substr($dotacao,1);
+		      $erro_msg = "Erro na atualização do orçamento \\n ".substr((string) $dotacao,1);
 		    }
 		  }
 

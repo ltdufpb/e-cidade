@@ -39,7 +39,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
 $clrotulo = new rotulocampo;
 $cldb_usuarios->rotulo->label();
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 ?>
 <html>
@@ -81,7 +81,7 @@ db_postmemory($_POST);
                 <label for="param_db_usuarios" style="margin-right: 20px"><b>Opções de seleção: </b></label>
 
                 <?php
-                $opcoesUsuarios = array("S" => "Somente Selecionados", "N" => "Menos os Selecionados");
+                $opcoesUsuarios = ["S" => "Somente Selecionados", "N" => "Menos os Selecionados"];
                 db_select('param_db_usuarios', $opcoesUsuarios, true, 2);
                 ?>
             </div>

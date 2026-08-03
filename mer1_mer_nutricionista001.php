@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_nutricionista_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_nutricionista = new cl_mer_nutricionista;
 $db_opcao            = 1;
 $db_opcao1           = 1;
@@ -91,7 +91,7 @@ if (isset($incluir)) {
   	
     $clmer_nutricionista->erro(true,false);
     $result = @db_query("select last_value from mernutricionista_me02_codigo_seq");
-    $ultimo = pg_result($result,0,0);
+    $ultimo = pg_fetch_result($result,0,0);
     db_redireciona("mer1_mer_nutricionista002.php?chavepesquisa=$ultimo&z01_nome=$z01_nome");
     
  }

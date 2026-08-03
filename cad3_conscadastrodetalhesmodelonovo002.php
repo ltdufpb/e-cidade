@@ -166,23 +166,23 @@ $pdf->setfillcolor(235);
 
 $iAlt = 3;
 
-$aDadosImovel = array();
-$aDadosCaractLote = array();
-$aDadosTestadaLote = array();
-$aDadosTestadaInterna = array();
-$aDadosCaractFace = array();
-$aDadosProprietario = array();
-$aDadosOutrosProprietarios = array();
-$aDadosPromitentes = array();
-$aDadosOutrosPromitentes = array();
-$aDadosImobiliaria = array();
-$aDadosEnderecoEntrega = array();
-$aDadosEdificacoes = array();
-$aDadosRegistroImovel = array();
-$aDadosIsencoes = array();
-$aDadosAverbacoes = array();
-$aDadosCalculos = array();
-$aDadosOutrosDados = array();
+$aDadosImovel = [];
+$aDadosCaractLote = [];
+$aDadosTestadaLote = [];
+$aDadosTestadaInterna = [];
+$aDadosCaractFace = [];
+$aDadosProprietario = [];
+$aDadosOutrosProprietarios = [];
+$aDadosPromitentes = [];
+$aDadosOutrosPromitentes = [];
+$aDadosImobiliaria = [];
+$aDadosEnderecoEntrega = [];
+$aDadosEdificacoes = [];
+$aDadosRegistroImovel = [];
+$aDadosIsencoes = [];
+$aDadosAverbacoes = [];
+$aDadosCalculos = [];
+$aDadosOutrosDados = [];
 
 for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
 
@@ -383,7 +383,7 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
                 $oDadosTestadaLote->iTipo = $oDadoTestadaLote->j14_tipo;
                 $oDadosTestadaLote->sOrientacaoTestada = $oDadoTestadaLote->j36_orientacao . "-" . $oDadoTestadaLote->j64_descricao;
                 $oDadosTestadaLote->iCodigoLogr = $oDadoTestadaLote->j14_codigo;
-                $oDadosTestadaLote->sDescrLogr = substr($oDadoTestadaLote->j14_nome, 0, 20);
+                $oDadosTestadaLote->sDescrLogr = substr((string) $oDadoTestadaLote->j14_nome, 0, 20);
                 $oDadosTestadaLote->iNumero = $oDadoTestadaLote->j15_numero;
                 $oDadosTestadaLote->sComplemento = $oDadoTestadaLote->j15_compl;
                 $oDadosTestadaLote->iSegmento    = $oDadoTestadaLote->j37_segmento;
@@ -825,7 +825,7 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
                 $oDadosIsencoes->dtFinal = $oDadoIsencoes->j46_dtfim;
                 $oDadosIsencoes->nPercentual = $oDadoIsencoes->j46_perc;
                 $oDadosIsencoes->sObservacao = $oDadoIsencoes->j46_hist;
-                $oDadosIsencoes->aTaxas = array();
+                $oDadosIsencoes->aTaxas = [];
 
                 $sSqlTaxas = " select j56_perc,                                                                                   ";
                 $sSqlTaxas .= "        k02_codigo,                                                                                 ";
@@ -966,8 +966,8 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
                      + $oDadoCalculo->j23_vlrter);
 
                 $oDadosCalculos->iAreaConstr = $oDadoCalculo->j23_areaed;
-                $oDadosCalculos->aConstrucoes = array();
-                $oDadosCalculos->aValorlancado = array();
+                $oDadosCalculos->aConstrucoes = [];
+                $oDadosCalculos->aValorlancado = [];
 
                 $sWhere = " iptucale.j22_matric = {$oDadoCalculo->j23_matric} ";
                 $sWhere .= " and iptucale.j22_anousu = {$oDadoCalculo->j23_anousu} ";
@@ -1236,7 +1236,7 @@ if (isset($oGet->dadosimovel)) {
             $pdf->cell(40, $iAlt, 'Área Medida', 0, 0, "L", 0);
             $pdf->cell(40, $iAlt, 'Área Preservada', 0, 0, "L", 0);
             $pdf->cell(40, $iAlt, $RLj01_areaprivativa, 0, 1, "L", 0);
-            
+
 
             $pdf->setfont('arial', '', $iFontBic);
             $pdf->cell(40, $iAlt, trim(db_formatar($oDadoImovel->nAreaLote, 'f')), 0, 0, "L", 0);
@@ -1244,7 +1244,7 @@ if (isset($oGet->dadosimovel)) {
             $pdf->cell(40, $iAlt, trim(db_formatar($oDadoImovel->nAreaMedida, 'f')), 0, 0, "L", 0);
             $pdf->cell(40, $iAlt, trim(db_formatar($oDadoImovel->nAreaPreservada, 'f')), 0, 0, "L", 0);
             $pdf->cell(40, $iAlt, trim(db_formatar($oDadoImovel->nAreaPrivativa, 'f')), 0, 1, "L", 0);
-            
+
 
             //$pdf->cell(193, 1, ''                                                                       ,0,1,"L",0);
 
@@ -1297,9 +1297,9 @@ if (isset($oGet->caracteristicaslote)) {
 
                     $pdf->setfont('arial', '', $iFontDados);
                     $pdf->cell(10, $iAlt, $oDadoCaractLote->iCodigo, 0, 0, "L", 0);
-                    $pdf->cell(30, $iAlt, substr($oDadoCaractLote->sDescricao, 0, 20), 0, 0, "L", 0);
+                    $pdf->cell(30, $iAlt, substr((string) $oDadoCaractLote->sDescricao, 0, 20), 0, 0, "L", 0);
                     $pdf->cell(10, $iAlt, $oDadoCaractLote->iCodGrupo, 0, 0, "L", 0);
-                    $pdf->cell(30, $iAlt, substr($oDadoCaractLote->sGrupoDescr, 0, 20), 0, 0, "L", 0);
+                    $pdf->cell(30, $iAlt, substr((string) $oDadoCaractLote->sGrupoDescr, 0, 20), 0, 0, "L", 0);
                     $pdf->cell(20, $iAlt, $oDadoCaractLote->iPonto, 0, 1, "L", 0);
 
                 } else if ($iTotalCaracteristicaLote <= 10) {
@@ -1318,9 +1318,9 @@ if (isset($oGet->caracteristicaslote)) {
                     $pdf->SetX(110);
                     $pdf->setfont('arial', '', $iFontDados);
                     $pdf->cell(10, $iAlt, $oDadoCaractLote->iCodigo, 0, 0, "L", 0);
-                    $pdf->cell(30, $iAlt, substr($oDadoCaractLote->sDescricao, 0, 20), 0, 0, "L", 0);
+                    $pdf->cell(30, $iAlt, substr((string) $oDadoCaractLote->sDescricao, 0, 20), 0, 0, "L", 0);
                     $pdf->cell(10, $iAlt, $oDadoCaractLote->iCodGrupo, 0, 0, "L", 0);
-                    $pdf->cell(30, $iAlt, substr($oDadoCaractLote->sGrupoDescr, 0, 20), 0, 0, "L", 0);
+                    $pdf->cell(30, $iAlt, substr((string) $oDadoCaractLote->sGrupoDescr, 0, 20), 0, 0, "L", 0);
                     $pdf->cell(10, $iAlt, $oDadoCaractLote->iPonto, 0, 1, "L", 0);
 
                 }
@@ -1452,9 +1452,9 @@ if (isset($oGet->caracteristicasface)) {
                 if ($iTotalCaracteristicaFace <= 5) {
 
                     $pdf->cell(10, $iAlt, $oDadoCaracterFace->iCodigo, 0, 0, "L", 0);
-                    $pdf->cell(30, $iAlt, substr($oDadoCaracterFace->sDescricao, 0, 20), 0, 0, "L", 0);
+                    $pdf->cell(30, $iAlt, substr((string) $oDadoCaracterFace->sDescricao, 0, 20), 0, 0, "L", 0);
                     $pdf->cell(20, $iAlt, $oDadoCaracterFace->iCodGrupo, 0, 0, "L", 0);
-                    $pdf->cell(30, $iAlt, substr($oDadoCaracterFace->sGrupoDescr, 0, 20), 0, 0, "L", 0);
+                    $pdf->cell(30, $iAlt, substr((string) $oDadoCaracterFace->sGrupoDescr, 0, 20), 0, 0, "L", 0);
                     $pdf->cell(20, $iAlt, $oDadoCaracterFace->iPonto, 0, 1, "L", 0);
 
                 } else if ($iTotalCaracteristicaFace <= 10) {
@@ -1473,9 +1473,9 @@ if (isset($oGet->caracteristicasface)) {
                     }
                     $pdf->SetX(110);
                     $pdf->cell(10, $iAlt, $oDadoCaracterFace->iCodigo, 0, 0, "L", 0);
-                    $pdf->cell(30, $iAlt, substr($oDadoCaracterFace->sDescricao, 0, 20), 0, 0, "L", 0);
+                    $pdf->cell(30, $iAlt, substr((string) $oDadoCaracterFace->sDescricao, 0, 20), 0, 0, "L", 0);
                     $pdf->cell(20, $iAlt, $oDadoCaracterFace->iCodGrupo, 0, 0, "L", 0);
-                    $pdf->cell(30, $iAlt, substr($oDadoCaracterFace->sGrupoDescr, 0, 20), 0, 0, "L", 0);
+                    $pdf->cell(30, $iAlt, substr((string) $oDadoCaracterFace->sGrupoDescr, 0, 20), 0, 0, "L", 0);
                     $pdf->cell(20, $iAlt, $oDadoCaracterFace->iPonto, 0, 1, "L", 0);
 
                 }
@@ -1519,12 +1519,12 @@ if (isset($oGet->proprietarios)) {
                 $pdf->setfont('arial', '', $iFontBic);
                 $pdf->cell(12, $iAlt, $oDadoPropri->iCgm, 0, 0, "L", 0);
                 //$pdf->cell(8, $iAlt, $oDadoPropri->sTipo                                                   ,0,0,"L",0);
-                $pdf->cell(80, $iAlt, substr($oDadoPropri->sNome, 0, 40), 0, 0, "L", 0);
+                $pdf->cell(80, $iAlt, substr((string) $oDadoPropri->sNome, 0, 40), 0, 0, "L", 0);
 
                 $sCgcCpf = '';
-                if (strlen($oDadoPropri->iCgcCpf) == 11) {
+                if (strlen((string) $oDadoPropri->iCgcCpf) == 11) {
                     $sCgcCpf = db_formatar($oDadoPropri->iCgcCpf, 'cpf');
-                } else if (strlen($oDadoPropri->iCgcCpf) == 14) {
+                } else if (strlen((string) $oDadoPropri->iCgcCpf) == 14) {
                     $sCgcCpf = db_formatar($oDadoPropri->iCgcCpf, 'cnpj');
                 }
 
@@ -1541,9 +1541,9 @@ if (isset($oGet->proprietarios)) {
                 $pdf->cell(40, $iAlt, 'Caixa Postal', 0, 1, "L", 0);
 
                 $pdf->setfont('arial', '', $iFontBic);
-                $pdf->cell(60, $iAlt, substr($oDadoPropri->sLogradouro, 0, 40), 0, 0, "L", 0);
+                $pdf->cell(60, $iAlt, substr((string) $oDadoPropri->sLogradouro, 0, 40), 0, 0, "L", 0);
                 $pdf->cell(25, $iAlt, $oDadoPropri->iNumero, 0, 0, "L", 0);
-                $pdf->cell(60, $iAlt, substr($oDadoPropri->sComplemento, 0, 40), 0, 0, "L", 0);
+                $pdf->cell(60, $iAlt, substr((string) $oDadoPropri->sComplemento, 0, 40), 0, 0, "L", 0);
                 $pdf->cell(40, $iAlt, $oDadoPropri->iCaixaPostal, 0, 1, "L", 0);
 
                 //$pdf->cell(193, 1, ''                                                                       ,0,1,"L",0);
@@ -1583,7 +1583,7 @@ if (isset($oGet->proprietarios)) {
                 $pdf->setfont('arial', '', $iFontBic);
                 $pdf->cell(12, $iAlt, $oDadoPropri->iCgm, 0, 0, "L", 0);
                 //$pdf->cell(8, $iAlt, $oDadoPropri->sTipo, 0, 0, "L", 0);
-                $pdf->cell(80, $iAlt, substr($oDadoPropri->sNome, 0, 40), 0, 0, "L", 0);
+                $pdf->cell(80, $iAlt, substr((string) $oDadoPropri->sNome, 0, 40), 0, 0, "L", 0);
                 $pdf->cell(27, $iAlt, $oDadoPropri->sTipo, 0, 1, "L", 0);
             }
 
@@ -1620,12 +1620,12 @@ if (isset($oGet->outrosproprietarios)) {
                     $pdf->setfont('arial', '', $iFontBic);
                     $pdf->cell(12, $iAlt, $oOutrosPropri->iCgm, 0, 0, "L", 0);
                     //$pdf->cell(8, $iAlt, $oOutrosPropri->sTipo, 0, 0, "L", 0);
-                    $pdf->cell(80, $iAlt, substr($oOutrosPropri->sNome, 0, 30), 0, 0, "L", 0);
+                    $pdf->cell(80, $iAlt, substr((string) $oOutrosPropri->sNome, 0, 30), 0, 0, "L", 0);
 
                     $sCgcCpf = '';
-                    if (strlen($oOutrosPropri->iCgcCpf) == 11) {
+                    if (strlen((string) $oOutrosPropri->iCgcCpf) == 11) {
                         $sCgcCpf = db_formatar($oOutrosPropri->iCgcCpf, 'cpf');
-                    } else if (strlen($oOutrosPropri->iCgcCpf) == 14) {
+                    } else if (strlen((string) $oOutrosPropri->iCgcCpf) == 14) {
                         $sCgcCpf = db_formatar($oOutrosPropri->iCgcCpf, 'cnpj');
                     }
 
@@ -1641,9 +1641,9 @@ if (isset($oGet->outrosproprietarios)) {
                     $pdf->cell(40, $iAlt, 'Caixa Postal', 0, 1, "L", 0);
 
                     $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(60, $iAlt, substr($oOutrosPropri->sLogradouro, 0, 40), 0, 0, "L", 0);
+                    $pdf->cell(60, $iAlt, substr((string) $oOutrosPropri->sLogradouro, 0, 40), 0, 0, "L", 0);
                     $pdf->cell(25, $iAlt, $oOutrosPropri->iNumero, 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, substr($oOutrosPropri->sComplemento, 0, 30), 0, 0, "L", 0);
+                    $pdf->cell(60, $iAlt, substr((string) $oOutrosPropri->sComplemento, 0, 30), 0, 0, "L", 0);
                     $pdf->cell(40, $iAlt, $oOutrosPropri->iCaixaPostal, 0, 1, "L", 0);
 
                     //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
@@ -1686,7 +1686,7 @@ if (isset($oGet->outrosproprietarios)) {
                     $pdf->setfont('arial', '', $iFontBic);
                     $pdf->cell(12, $iAlt, $oOutrosPropri->iCgm, 0, 0, "L", 0);
                     //$pdf->cell(8, $iAlt, $oOutrosPropri->sTipo, 0, 0, "L", 0);
-                    $pdf->cell(80, $iAlt, substr($oOutrosPropri->sNome, 0, 30), 0, 0, "L", 0);
+                    $pdf->cell(80, $iAlt, substr((string) $oOutrosPropri->sNome, 0, 30), 0, 0, "L", 0);
                     $pdf->cell(27, $iAlt, $oOutrosPropri->sTipo, 0, 1, "L", 0);
                 }
             }
@@ -1728,18 +1728,18 @@ if (isset($oGet->promitentes)) {
                 $pdf->setfont('arial', '', $iFontBic);
                     $pdf->cell(12, $iAlt, $oPromitentes->iCgm, 0, 0, "L", 0);
                     //$pdf->cell(8, $iAlt, $oPromitentes->sTipo, 0, 0, "L", 0);
-                    $pdf->cell(57, $iAlt, substr($oPromitentes->sNome, 0, 30), 0, 0, "L", 0);
+                    $pdf->cell(57, $iAlt, substr((string) $oPromitentes->sNome, 0, 30), 0, 0, "L", 0);
 
                 $sCgcCpf = '';
-                if (strlen($oPromitentes->iCgcCpf) == 11) {
+                if (strlen((string) $oPromitentes->iCgcCpf) == 11) {
                     $sCgcCpf = db_formatar($oPromitentes->iCgcCpf, 'cpf');
-                } else if (strlen($oPromitentes->iCgcCpf) == 14) {
+                } else if (strlen((string) $oPromitentes->iCgcCpf) == 14) {
                     $sCgcCpf = db_formatar($oPromitentes->iCgcCpf, 'cnpj');
                 }
 
                     $pdf->cell(34, $iAlt, $sCgcCpf, 0, 0, "L", 0);
-                    $pdf->cell(55, $iAlt, substr($oPromitentes->sContato, 0, 30), 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, substr($oPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
+                    $pdf->cell(55, $iAlt, substr((string) $oPromitentes->sContato, 0, 30), 0, 0, "L", 0);
+                    $pdf->cell(27, $iAlt, substr((string) $oPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
 
                     //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
 
@@ -1750,9 +1750,9 @@ if (isset($oGet->promitentes)) {
                 $pdf->cell(40, $iAlt, 'Caixa Postal', 0, 1, "L", 0);
 
                 $pdf->setfont('arial', '', $iFontBic);
-                $pdf->cell(60, $iAlt, substr($oPromitentes->sLogradouro, 0, 40), 0, 0, "L", 0);
+                $pdf->cell(60, $iAlt, substr((string) $oPromitentes->sLogradouro, 0, 40), 0, 0, "L", 0);
                 $pdf->cell(25, $iAlt, $oPromitentes->iNumero, 0, 0, "L", 0);
-                $pdf->cell(60, $iAlt, substr($oPromitentes->sComplemento, 0, 30), 0, 0, "L", 0);
+                $pdf->cell(60, $iAlt, substr((string) $oPromitentes->sComplemento, 0, 30), 0, 0, "L", 0);
                 $pdf->cell(40, $iAlt, $oPromitentes->iCaixaPostal, 0, 1, "L", 0);
 
                     //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
@@ -1795,8 +1795,8 @@ if (isset($oGet->promitentes)) {
                     $pdf->setfont('arial', '', $iFontBic);
                     $pdf->cell(12, $iAlt, $oPromitentes->iCgm, 0, 0, "L", 0);
                     //$pdf->cell(8, $iAlt, $oPromitentes->sTipo, 0, 0, "L", 0);
-                    $pdf->cell(57, $iAlt, substr($oPromitentes->sNome, 0, 30), 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, substr($oPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
+                    $pdf->cell(57, $iAlt, substr((string) $oPromitentes->sNome, 0, 30), 0, 0, "L", 0);
+                    $pdf->cell(27, $iAlt, substr((string) $oPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
                 }
 
             }
@@ -1835,18 +1835,18 @@ if (isset($oGet->outrospromitentes)) {
                     $pdf->setfont('arial', '', $iFontBic);
                     $pdf->cell(12, $iAlt, $oOutrosPromitentes->iCgm, 0, 0, "L", 0);
                     //$pdf->cell(8, $iAlt, $oOutrosPromitentes->sTipo, 0, 0, "L", 0);
-                    $pdf->cell(57, $iAlt, substr($oOutrosPromitentes->sNome, 0, 30), 0, 0, "L", 0);
+                    $pdf->cell(57, $iAlt, substr((string) $oOutrosPromitentes->sNome, 0, 30), 0, 0, "L", 0);
 
                     $sCgcCpf = '';
-                    if (strlen($oOutrosPromitentes->iCgcCpf) == 11) {
+                    if (strlen((string) $oOutrosPromitentes->iCgcCpf) == 11) {
                         $sCgcCpf = db_formatar($oOutrosPromitentes->iCgcCpf, 'cpf');
-                    } else if (strlen($oOutrosPromitentes->iCgcCpf) == 14) {
+                    } else if (strlen((string) $oOutrosPromitentes->iCgcCpf) == 14) {
                         $sCgcCpf = db_formatar($oOutrosPromitentes->iCgcCpf, 'cnpj');
                     }
 
                     $pdf->cell(34, $iAlt, $sCgcCpf, 0, 0, "L", 0);
-                    $pdf->cell(55, $iAlt, substr($oOutrosPromitentes->sContato, 0, 30), 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, substr($oOutrosPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
+                    $pdf->cell(55, $iAlt, substr((string) $oOutrosPromitentes->sContato, 0, 30), 0, 0, "L", 0);
+                    $pdf->cell(27, $iAlt, substr((string) $oOutrosPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
 
                     //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
 
@@ -1857,9 +1857,9 @@ if (isset($oGet->outrospromitentes)) {
                     $pdf->cell(40, $iAlt, 'Caixa Postal', 0, 1, "L", 0);
 
                     $pdf->setfont('arial', '', $iFontBic);
-                    $pdf->cell(60, $iAlt, substr($oOutrosPromitentes->sLogradouro, 0, 40), 0, 0, "L", 0);
+                    $pdf->cell(60, $iAlt, substr((string) $oOutrosPromitentes->sLogradouro, 0, 40), 0, 0, "L", 0);
                     $pdf->cell(25, $iAlt, $oOutrosPromitentes->iNumero, 0, 0, "L", 0);
-                    $pdf->cell(60, $iAlt, substr($oOutrosPromitentes->sComplemento, 0, 30), 0, 0, "L", 0);
+                    $pdf->cell(60, $iAlt, substr((string) $oOutrosPromitentes->sComplemento, 0, 30), 0, 0, "L", 0);
                     $pdf->cell(40, $iAlt, $oOutrosPromitentes->iCaixaPostal, 0, 1, "L", 0);
 
                     //$pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
@@ -1903,8 +1903,8 @@ if (isset($oGet->outrospromitentes)) {
                     $pdf->setfont('arial', '', $iFontBic);
                     $pdf->cell(12, $iAlt, $oOutrosPromitentes->iCgm, 0, 0, "L", 0);
                     //$pdf->cell(8, $iAlt, $oOutrosPromitentes->sTipo, 0, 0, "L", 0);
-                    $pdf->cell(57, $iAlt, substr($oOutrosPromitentes->sNome, 0, 30), 0, 0, "L", 0);
-                    $pdf->cell(27, $iAlt, substr($oOutrosPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
+                    $pdf->cell(57, $iAlt, substr((string) $oOutrosPromitentes->sNome, 0, 30), 0, 0, "L", 0);
+                    $pdf->cell(27, $iAlt, substr((string) $oOutrosPromitentes->sPromiTipo, 0, 30), 0, 1, "L", 0);
 
                 }
 
@@ -1939,12 +1939,12 @@ if (isset($oGet->imobiliaria)) {
 
                 $pdf->setfont('arial', '', $iFontBic);
                 $pdf->cell(25, $iAlt, $oDadoImobiliaria->iCgm, 0, 0, "L", 0);
-                $pdf->cell(100, $iAlt, substr($oDadoImobiliaria->sNome, 0, 40), 0, 0, "L", 0);
+                $pdf->cell(100, $iAlt, substr((string) $oDadoImobiliaria->sNome, 0, 40), 0, 0, "L", 0);
 
                 $sCgcCpf = '';
-                if (strlen($oDadoImobiliaria->iCgcCpf) == 11) {
+                if (strlen((string) $oDadoImobiliaria->iCgcCpf) == 11) {
                     $sCgcCpf = db_formatar($oDadoImobiliaria->iCgcCpf, 'cpf');
-                } else if (strlen($oDadoImobiliaria->iCgcCpf) == 14) {
+                } else if (strlen((string) $oDadoImobiliaria->iCgcCpf) == 14) {
                     $sCgcCpf = db_formatar($oDadoImobiliaria->iCgcCpf, 'cnpj');
                 }
 
@@ -1959,9 +1959,9 @@ if (isset($oGet->imobiliaria)) {
                 $pdf->cell(30, $iAlt, 'Caixa Postal', 0, 1, "L", 0);
 
                 $pdf->setfont('arial', '', $iFontBic);
-                $pdf->cell(90, $iAlt, substr($oDadoImobiliaria->sLogradouro, 0, 40), 0, 0, "L", 0);
+                $pdf->cell(90, $iAlt, substr((string) $oDadoImobiliaria->sLogradouro, 0, 40), 0, 0, "L", 0);
                 $pdf->cell(15, $iAlt, $oDadoImobiliaria->iNumero, 0, 0, "L", 0);
-                $pdf->cell(50, $iAlt, substr($oDadoImobiliaria->sComplemento, 0, 30), 0, 0, "L", 0);
+                $pdf->cell(50, $iAlt, substr((string) $oDadoImobiliaria->sComplemento, 0, 30), 0, 0, "L", 0);
                 $pdf->cell(30, $iAlt, $oDadoImobiliaria->iCaixaPostal, 0, 1, "L", 0);
 
                 //$pdf->cell(193, 1, ''                                                                       ,0,1,"L",0);
@@ -2001,7 +2001,7 @@ if (isset($oGet->imobiliaria)) {
 
                 $pdf->setfont('arial', '', $iFontBic);
                 $pdf->cell(25, $iAlt, $oDadoImobiliaria->iCgm, 0, 0, "L", 0);
-                $pdf->cell(100, $iAlt, substr($oDadoImobiliaria->sNome, 0, 40), 0, 1, "L", 0);
+                $pdf->cell(100, $iAlt, substr((string) $oDadoImobiliaria->sNome, 0, 40), 0, 1, "L", 0);
 
             }
 
@@ -2033,9 +2033,9 @@ if (isset($oGet->enderecoentrega) && $lImprimeDadosSigilosos) {
             $pdf->cell(30, $iAlt, 'Caixa Postal', 0, 1, "L", 0);
 
             $pdf->setfont('arial', '', $iFontBic);
-            $pdf->cell(70, $iAlt, substr($oEnderecoEntrega->sLogradouro, 0, 40), 0, 0, "L", 0);
+            $pdf->cell(70, $iAlt, substr((string) $oEnderecoEntrega->sLogradouro, 0, 40), 0, 0, "L", 0);
             $pdf->cell(20, $iAlt, $oEnderecoEntrega->iNumero, 0, 0, "L", 0);
-            $pdf->cell(70, $iAlt, substr($oEnderecoEntrega->sComplemento, 0, 30), 0, 0, "L", 0);
+            $pdf->cell(70, $iAlt, substr((string) $oEnderecoEntrega->sComplemento, 0, 30), 0, 0, "L", 0);
             $pdf->cell(30, $iAlt, $oEnderecoEntrega->iCaixaPostal, 0, 1, "L", 0);
 
             //$pdf->cell(193, 1, ''                                                                       ,0,1,"L",0);

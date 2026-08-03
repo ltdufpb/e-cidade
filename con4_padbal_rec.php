@@ -32,13 +32,13 @@ use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
 
 class bal_rec
 {
-    var $arq = null;
+    public $arq = null;
 
-    function bal_rec($header)
+    function __construct($header)
     {
         umask(74);
         $this->arq = fopen("tmp/BAL_REC.TXT", 'w+');
-        fputs($this->arq, $header);
+        fputs($this->arq, (string) $header);
         fputs($this->arq, "\r\n");
     }
 
@@ -101,20 +101,20 @@ class bal_rec
 
         $result = db_query(analiseQueryPlanoOrcamento($result));
 
-        $array_teste = array();
-        $array_erro = array();
+        $array_teste = [];
+        $array_erro = [];
 
         $tottotal = 0;
 
-        for ($i = 1; $i < pg_numrows($result); $i++) {
-            $elemento_original = pg_result($result, $i, "o57_fonte");
-            $elemento = pg_result($result, $i, "o57_fonte");
-            $saldo_inicial = pg_result($result, $i, "saldo_inicial");
-            $saldo_arrecadado_acumulado = pg_result($result, $i, "saldo_arrecadado_acumulado");
-            $recurso = pg_result($result, $i, "recurso");
-            $descr = pg_result($result, $i, "o57_descr");
-            $o70_codrec = pg_result($result, $i, "o70_codrec");
-            $o15_complemento = pg_result($result, $i, 'complemento');
+        for ($i = 1; $i < pg_num_rows($result); $i++) {
+            $elemento_original = pg_fetch_result($result, $i, "o57_fonte");
+            $elemento = pg_fetch_result($result, $i, "o57_fonte");
+            $saldo_inicial = pg_fetch_result($result, $i, "saldo_inicial");
+            $saldo_arrecadado_acumulado = pg_fetch_result($result, $i, "saldo_arrecadado_acumulado");
+            $recurso = pg_fetch_result($result, $i, "recurso");
+            $descr = pg_fetch_result($result, $i, "o57_descr");
+            $o70_codrec = pg_fetch_result($result, $i, "o70_codrec");
+            $o15_complemento = pg_fetch_result($result, $i, 'complemento');
             if ($anousu > 2007) {
                 $sql_orcreceita = "
                     select o70_concarpeculiar
@@ -123,18 +123,18 @@ class bal_rec
                       and orcreceita.o70_codrec = $o70_codrec
                 ";
                 $res_orcreceita = @db_query($sql_orcreceita);
-                if (@pg_numrows($res_orcreceita) != 0) {
-                    $concarpeculiar = formatar(pg_result($res_orcreceita, 0, "o70_concarpeculiar"), 3, "n");
+                if (@pg_num_rows($res_orcreceita) != 0) {
+                    $concarpeculiar = formatar(pg_fetch_result($res_orcreceita, 0, "o70_concarpeculiar"), 3);
                 } else {
                     $concarpeculiar = "000";
                 }
             }
 
-            $o70_instit = pg_result($result, $i, "o70_instit");
-            $nivel = pg_result($result, $i, "nivel");
+            $o70_instit = pg_fetch_result($result, $i, "o70_instit");
+            $nivel = pg_fetch_result($result, $i, "nivel");
 
             if ($anousu > 2007) {
-                if (substr($elemento_original, 0, 1) == "9") {
+                if (str_starts_with($elemento_original, "9")) {
                     if ($concarpeculiar == 0 and 1 == 2) {
                         $concarpeculiar = 101;
                     }
@@ -146,29 +146,29 @@ class bal_rec
             }
 
             $contador++;
-            $line = formatar($elemento, 20, 'n');
+            $line = formatar($elemento, 20);
 
             $orgaotrib = $instituicoes[$o70_instit];
 
-            $line .= formatar($orgaotrib, 4, 'n');
+            $line .= formatar($orgaotrib, 4);
 
             //---------------------------------------------------
             if ($saldo_inicial < 0) {
-                $line .= "-" . formatar(abs($saldo_inicial), 12, 'v');
+                $line .= "-" . formatar(abs($saldo_inicial), 12);
             } else {
-                $line .= formatar(abs($saldo_inicial), 13, 'v');
+                $line .= formatar(abs($saldo_inicial), 13);
             }
             //---------------------------------------------------
             if ($saldo_arrecadado_acumulado < 0) {
-                $line .= "-" . formatar(abs($saldo_arrecadado_acumulado), 12, 'v');
+                $line .= "-" . formatar(abs($saldo_arrecadado_acumulado), 12);
             } else {
-                $line .= "+" . formatar(abs($saldo_arrecadado_acumulado), 12, 'v');
+                $line .= "+" . formatar(abs($saldo_arrecadado_acumulado), 12);
             }
             //---------------------------------------------------
-            $line .= formatar($recurso, 4, 'n');
-            $line .= formatar($descr, 170, 'c');
+            $line .= formatar($recurso, 4);
+            $line .= formatar($descr, 170);
             $line .= ($o70_codrec == 0 ? 'S' : 'A');
-            $line .= formatar($nivel, 2, 'n');
+            $line .= formatar($nivel, 2);
 
             // A partir de 2008, vigora o uso de CARACTERISTICA PECULIAR
             if ($anousu > 2007) {
@@ -176,12 +176,12 @@ class bal_rec
             }
 
             if ($anousu >= 2014) {
-                $nValorInicialMaisPrevisaoAdicional = pg_result($result, $i, "saldo_inicial_prevadic");
+                $nValorInicialMaisPrevisaoAdicional = pg_fetch_result($result, $i, "saldo_inicial_prevadic");
                 $sSinal = "+";
                 if ($nValorInicialMaisPrevisaoAdicional < 0) {
                     $sSinal = "-";
                 }
-                $line .= $sSinal . (formatar(abs($nValorInicialMaisPrevisaoAdicional), 12, 'v'));
+                $line .= $sSinal . (formatar(abs($nValorInicialMaisPrevisaoAdicional), 12));
             }
             if (db_getsession("DB_anousu") >= 2020) {
                 $complementoFonteRecurso = $o15_complemento;
@@ -267,13 +267,13 @@ class bal_rec
                             where o70_anousu = $anousu and c61_reduz is null");
 
         $resultorcreceita = db_query($sqlorcreceita) or die($sqlorcreceita);
-        if (pg_numrows($resultorcreceita) > 0) {
+        if (pg_num_rows($resultorcreceita) > 0) {
             echo "<br><b>ERRO - RECEITAS DO ORCAMENTO SEM REDUZIDO NO PLANO DE CONTAS:</b><br>";
 
-            for ($x = 0; $x < pg_numrows($resultorcreceita); $x++) {
-                $o70_codrec = pg_result($resultorcreceita, $x, "o70_codrec");
-                $o70_codfon = pg_result($resultorcreceita, $x, "o70_codfon");
-                $c60_estrut = pg_result($resultorcreceita, $x, "c60_estrut");
+            for ($x = 0; $x < pg_num_rows($resultorcreceita); $x++) {
+                $o70_codrec = pg_fetch_result($resultorcreceita, $x, "o70_codrec");
+                $o70_codfon = pg_fetch_result($resultorcreceita, $x, "o70_codfon");
+                $c60_estrut = pg_fetch_result($resultorcreceita, $x, "c60_estrut");
 
                 echo "REDUZIDO ORCAMENTO: $o70_codrec - CODCON: $o70_codfon - ESTRUTURAL: $c60_estrut" . "<br>";
             }
@@ -281,7 +281,7 @@ class bal_rec
 
 
         // trailer
-        $contador = espaco(10 - (strlen($contador)), '0') . $contador;
+        $contador = espaco(10 - (strlen($contador))) . $contador;
         $line = "FINALIZADOR" . $contador;
         fputs($this->arq, $line);
         fputs($this->arq, "\r\n");

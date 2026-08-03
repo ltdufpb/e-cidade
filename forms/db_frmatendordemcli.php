@@ -82,10 +82,10 @@ db_textarea('at81_descr',4,49,$Iat81_descr,true,'text',3,"")
     </td>
     <td> 
 <?php 
-  $x = array("1"=>"Baixa",
+  $x = ["1"=>"Baixa",
              "2"=>"Média",
              "3"=>"Alta"
-           );
+           ];
   db_select("at85_prioridade", $x,true,$db_opcao);
 ?>
     </td>
@@ -149,7 +149,7 @@ function js_preenchepesquisa(chave){
   db_iframe_atendordemcli.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

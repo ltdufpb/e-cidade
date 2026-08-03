@@ -40,8 +40,8 @@ $clrotulo->label('k60_codigo');
 $clrotulo->label('k60_descr');
 $clrotulo->label('k51_procede');
 $clrotulo->label('k51_descr');
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $db_botao = true;
 ?>

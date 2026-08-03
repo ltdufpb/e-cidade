@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_agendamentos_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clagendamentos = new cl_agendamentos;
 $sql = "select sd01_c_siasus,
                sd01_i_familia,
@@ -75,7 +75,7 @@ $pdf = new PDF();
 $pdf->Open();
 $pdf->AliasNbPages();
  $head2 = "Ficha de Atendimento";
- $head3 = "Numero do Atendimento: ".substr($sd23_c_atendimento,0,4)." | ".substr($sd23_c_atendimento,4,2)." | ".substr($sd23_c_atendimento,6,5);
+ $head3 = "Numero do Atendimento: ".substr((string) $sd23_c_atendimento,0,4)." | ".substr((string) $sd23_c_atendimento,4,2)." | ".substr((string) $sd23_c_atendimento,6,5);
  $head4 = "Data: ".$sd23_d_data;
  $head5 = "Hora: ".$sd23_c_hora2;
   $pdf->addpage();
@@ -83,7 +83,7 @@ $pdf->AliasNbPages();
   $pdf->setfont('arial','',7);
   $pdf->cell(190,4,"FICHA DE ATENDIMENTO",1,1,"L",1);
   $pdf->cell(40,4,"NUMERO:",1,0,"L",0);
-  $pdf->cell(150,4,substr($sd23_c_atendimento,0,4)." | ".substr($sd23_c_atendimento,4,2)." | ".substr($sd23_c_atendimento,6,5),1,1,"L",0);
+  $pdf->cell(150,4,substr((string) $sd23_c_atendimento,0,4)." | ".substr((string) $sd23_c_atendimento,4,2)." | ".substr((string) $sd23_c_atendimento,6,5),1,1,"L",0);
   $pdf->cell(40,4,"DATA PARA ATENDIMENTO:",1,0,"L",0);
   $pdf->cell(150,4,$sd23_d_consulta." /".$sd23_c_hora,1,1,"L",0);
   $pdf->cell(190,4,"1. UNIDADE PRESTADORA DE ATENDIMENTO",1,1,"L",1);

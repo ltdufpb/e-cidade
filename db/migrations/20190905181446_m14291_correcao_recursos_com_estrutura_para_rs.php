@@ -9,7 +9,7 @@ class M14291CorrecaoRecursosComEstruturaParaRs extends PostgresMigration
     {
 
         $row = $this->fetchRow("select uf from db_config where prefeitura is true");
-        if (strtoupper($row['uf']) !== 'RS') {
+        if (strtoupper((string) $row['uf']) !== 'RS') {
             return true;
         }
 

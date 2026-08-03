@@ -42,8 +42,8 @@ include(modification("classes/db_db_depart_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clcustoplanotipoconta     = new cl_custoplanotipoconta;
 $clcustoplano 		   	   = new cl_custoplano;
@@ -68,7 +68,7 @@ if(isset($excluir)){
   // é permitida. Caso retonar 1 no count o estrutural é do pai e é verificado se existem pendências abaixo deste 
   // nível
   $rsCustoPlano = $clcustoplano->sql_record($clcustoplano->sql_query_file(null,"fc_estrutural_nivel(cc01_estrutural)"));
-  $sRetornoNivel = pg_result($rsCustoPlano,0,0);
+  $sRetornoNivel = pg_fetch_result($rsCustoPlano,0,0);
   
   //se o nível do estrutural for o primeiro significa que é do estrutural pai, então é preciso verificar se o estrutural
   //pai possui pendências antes de executar a exclusão
@@ -77,7 +77,7 @@ if(isset($excluir)){
  	
    //obtém se o pai do estrutural não tem pendências
    $rsPendenciasPai = $clcustoplano->sql_record($clcustoplano->sql_query_file(null,"count(cc01_estrutural)",null,"fc_estrutural_pai(cc01_estrutural) = '$cc01_estrutural' "));
-   $sRetornoPendencias = pg_result($rsPendenciasPai,0,0);
+   $sRetornoPendencias = pg_fetch_result($rsPendenciasPai,0,0);
     
     if($sRetornoPendencias > 0) {   
 	  db_msgbox("Operação abortada! Não é permitido excluir uma conta sintética com pendências no seu estrutural!");
@@ -93,45 +93,45 @@ if(isset($excluir)){
   $rsAnalitica = $clcustoplanoanalitica->sql_record($clcustoplanoanalitica->sql_query_left(null,"*",null," cc04_custoplano = {$cc01_sequencial}"));
 
   if($clcustoplanoanalitica-> numrows > 0) {
- 
+
    @$oRetorno = db_utils::fieldsMemory($rsAnalitica,0);
- 
+
    //verifica se existem registros na tabela custoplanoanaliticabens se não existem exclui registros das tabelas:
    //custoplanotipoconta, custoplanoanalitica, custoplano 
    if($oRetorno->cc05_sequencial == null){
 
     db_inicio_transacao();
-  
+
       //não pode ter ordem de exclusão alterada devido as restrições (FK) de relacionamento do banco de dados  
-		
+
       $clcustoplanotipoconta->excluir("","cc03_custoplanoanalitica = $oRetorno->cc04_sequencial");   
    	  if($clcustoplanotipoconta->erro_status == 0) {
 	    $lSqlErro = true;	 	
 	    $sMsgErro = $clcustoplanotipoconta->erro_msg;
       }
-   
+
       $clcustoplanoanalitica->excluir($oRetorno->cc04_sequencial);
 	  if($clcustoplanoanalitica->erro_status == 0) {
 	    $lSqlErro = true;	 	
 	    $sMsgErro = $clcustoplanoanalitica->erro_msg;
       }
-	
+
       $clcustoplano->excluir($cc01_sequencial); 
       if($clcustoplano->erro_status == 0) {
 	    $lSqlErro = true;	 	
 	    $sMsgErro = $clcustoplano->erro_msg;
       }
-    
+
     db_fim_transacao($lSqlErro);
-  
+
   } 
-	
+
   //se existem bens na tabela custoplanoanaliticabens a exclusão é cancelada
   else if($oRetorno->cc05_sequencial != null){
-  
+
     db_msgbox("Inclusão cancelada não é permitido excluir uma conta com bens vinculados!");
     db_redireciona("cus1_custoplano003.php");  
- 
+
   }
 
   //se a conta é analítica faz a exclusão somente na tabela custoplano

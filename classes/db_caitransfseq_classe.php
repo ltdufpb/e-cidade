@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE caitransfseq
 class cl_caitransfseq { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k94_seqtransf = 0; 
-   var $k94_transf = 0; 
-   var $k94_anousu = 0; 
-   var $k94_data_dia = null; 
-   var $k94_data_mes = null; 
-   var $k94_data_ano = null; 
-   var $k94_data = null; 
-   var $k94_valor = 0; 
-   var $k94_finalidade = null; 
-   var $k94_id_usuario = 0; 
+   public $k94_seqtransf = 0; 
+   public $k94_transf = 0; 
+   public $k94_anousu = 0; 
+   public $k94_data_dia = null; 
+   public $k94_data_mes = null; 
+   public $k94_data_ano = null; 
+   public $k94_data = null; 
+   public $k94_valor = 0; 
+   public $k94_finalidade = null; 
+   public $k94_id_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k94_seqtransf = int8 = Codigo da Transferência 
                  k94_transf = int4 = Trasferencia 
                  k94_anousu = int4 = Exercício 
@@ -63,10 +63,10 @@ class cl_caitransfseq {
                  k94_id_usuario = int4 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_caitransfseq() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("caitransfseq"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_caitransfseq {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k94_seqtransf = pg_result($result,0,0); 
+       $this->k94_seqtransf = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from caitransfseq_k94_seqtransf_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k94_seqtransf)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k94_seqtransf)){
          $this->erro_sql = " Campo k94_seqtransf maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_caitransfseq {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->k94_seqtransf) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -232,16 +232,16 @@ class cl_caitransfseq {
      $resaco = $this->sql_record($this->sql_query_file($this->k94_seqtransf));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8780,'$this->k94_seqtransf','I')");
-       $resac = db_query("insert into db_acount values($acount,1500,8780,'','".AddSlashes(pg_result($resaco,0,'k94_seqtransf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1500,8781,'','".AddSlashes(pg_result($resaco,0,'k94_transf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1500,8784,'','".AddSlashes(pg_result($resaco,0,'k94_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1500,8785,'','".AddSlashes(pg_result($resaco,0,'k94_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1500,8783,'','".AddSlashes(pg_result($resaco,0,'k94_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1500,8782,'','".AddSlashes(pg_result($resaco,0,'k94_finalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1500,8786,'','".AddSlashes(pg_result($resaco,0,'k94_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1500,8780,'','".AddSlashes(pg_fetch_result($resaco,0,'k94_seqtransf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1500,8781,'','".AddSlashes(pg_fetch_result($resaco,0,'k94_transf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1500,8784,'','".AddSlashes(pg_fetch_result($resaco,0,'k94_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1500,8785,'','".AddSlashes(pg_fetch_result($resaco,0,'k94_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1500,8783,'','".AddSlashes(pg_fetch_result($resaco,0,'k94_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1500,8782,'','".AddSlashes(pg_fetch_result($resaco,0,'k94_finalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1500,8786,'','".AddSlashes(pg_fetch_result($resaco,0,'k94_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,10 +250,10 @@ class cl_caitransfseq {
       $this->atualizacampos();
      $sql = " update caitransfseq set ";
      $virgula = "";
-     if(trim($this->k94_seqtransf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_seqtransf"])){ 
+     if(trim((string) $this->k94_seqtransf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_seqtransf"])){ 
        $sql  .= $virgula." k94_seqtransf = $this->k94_seqtransf ";
        $virgula = ",";
-       if(trim($this->k94_seqtransf) == null ){ 
+       if(trim((string) $this->k94_seqtransf) == null ){ 
          $this->erro_sql = " Campo Codigo da Transferência nao Informado.";
          $this->erro_campo = "k94_seqtransf";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_caitransfseq {
          return false;
        }
      }
-     if(trim($this->k94_transf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_transf"])){ 
+     if(trim((string) $this->k94_transf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_transf"])){ 
        $sql  .= $virgula." k94_transf = $this->k94_transf ";
        $virgula = ",";
-       if(trim($this->k94_transf) == null ){ 
+       if(trim((string) $this->k94_transf) == null ){ 
          $this->erro_sql = " Campo Trasferencia nao Informado.";
          $this->erro_campo = "k94_transf";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_caitransfseq {
          return false;
        }
      }
-     if(trim($this->k94_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_anousu"])){ 
+     if(trim((string) $this->k94_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_anousu"])){ 
        $sql  .= $virgula." k94_anousu = $this->k94_anousu ";
        $virgula = ",";
-       if(trim($this->k94_anousu) == null ){ 
+       if(trim((string) $this->k94_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "k94_anousu";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_caitransfseq {
          return false;
        }
      }
-     if(trim($this->k94_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k94_data_dia"] !="") ){ 
+     if(trim((string) $this->k94_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k94_data_dia"] !="") ){ 
        $sql  .= $virgula." k94_data = '$this->k94_data' ";
        $virgula = ",";
-       if(trim($this->k94_data) == null ){ 
+       if(trim((string) $this->k94_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "k94_data_dia";
          $this->erro_banco = "";
@@ -305,7 +305,7 @@ class cl_caitransfseq {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k94_data_dia"])){ 
          $sql  .= $virgula." k94_data = null ";
          $virgula = ",";
-         if(trim($this->k94_data) == null ){ 
+         if(trim((string) $this->k94_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "k94_data_dia";
            $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_caitransfseq {
          }
        }
      }
-     if(trim($this->k94_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_valor"])){ 
+     if(trim((string) $this->k94_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_valor"])){ 
        $sql  .= $virgula." k94_valor = $this->k94_valor ";
        $virgula = ",";
-       if(trim($this->k94_valor) == null ){ 
+       if(trim((string) $this->k94_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "k94_valor";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_caitransfseq {
          return false;
        }
      }
-     if(trim($this->k94_finalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_finalidade"])){ 
+     if(trim((string) $this->k94_finalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_finalidade"])){ 
        $sql  .= $virgula." k94_finalidade = '$this->k94_finalidade' ";
        $virgula = ",";
-       if(trim($this->k94_finalidade) == null ){ 
+       if(trim((string) $this->k94_finalidade) == null ){ 
          $this->erro_sql = " Campo Finalidade nao Informado.";
          $this->erro_campo = "k94_finalidade";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_caitransfseq {
          return false;
        }
      }
-     if(trim($this->k94_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_id_usuario"])){ 
+     if(trim((string) $this->k94_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k94_id_usuario"])){ 
        $sql  .= $virgula." k94_id_usuario = $this->k94_id_usuario ";
        $virgula = ",";
-       if(trim($this->k94_id_usuario) == null ){ 
+       if(trim((string) $this->k94_id_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "k94_id_usuario";
          $this->erro_banco = "";
@@ -363,23 +363,23 @@ class cl_caitransfseq {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8780,'$this->k94_seqtransf','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k94_seqtransf"]))
-           $resac = db_query("insert into db_acount values($acount,1500,8780,'".AddSlashes(pg_result($resaco,$conresaco,'k94_seqtransf'))."','$this->k94_seqtransf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1500,8780,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k94_seqtransf'))."','$this->k94_seqtransf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k94_transf"]))
-           $resac = db_query("insert into db_acount values($acount,1500,8781,'".AddSlashes(pg_result($resaco,$conresaco,'k94_transf'))."','$this->k94_transf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1500,8781,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k94_transf'))."','$this->k94_transf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k94_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,1500,8784,'".AddSlashes(pg_result($resaco,$conresaco,'k94_anousu'))."','$this->k94_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1500,8784,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k94_anousu'))."','$this->k94_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k94_data"]))
-           $resac = db_query("insert into db_acount values($acount,1500,8785,'".AddSlashes(pg_result($resaco,$conresaco,'k94_data'))."','$this->k94_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1500,8785,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k94_data'))."','$this->k94_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k94_valor"]))
-           $resac = db_query("insert into db_acount values($acount,1500,8783,'".AddSlashes(pg_result($resaco,$conresaco,'k94_valor'))."','$this->k94_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1500,8783,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k94_valor'))."','$this->k94_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k94_finalidade"]))
-           $resac = db_query("insert into db_acount values($acount,1500,8782,'".AddSlashes(pg_result($resaco,$conresaco,'k94_finalidade'))."','$this->k94_finalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1500,8782,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k94_finalidade'))."','$this->k94_finalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k94_id_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1500,8786,'".AddSlashes(pg_result($resaco,$conresaco,'k94_id_usuario'))."','$this->k94_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1500,8786,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k94_id_usuario'))."','$this->k94_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,16 +424,16 @@ class cl_caitransfseq {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8780,'$k94_seqtransf','E')");
-         $resac = db_query("insert into db_acount values($acount,1500,8780,'','".AddSlashes(pg_result($resaco,$iresaco,'k94_seqtransf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1500,8781,'','".AddSlashes(pg_result($resaco,$iresaco,'k94_transf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1500,8784,'','".AddSlashes(pg_result($resaco,$iresaco,'k94_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1500,8785,'','".AddSlashes(pg_result($resaco,$iresaco,'k94_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1500,8783,'','".AddSlashes(pg_result($resaco,$iresaco,'k94_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1500,8782,'','".AddSlashes(pg_result($resaco,$iresaco,'k94_finalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1500,8786,'','".AddSlashes(pg_result($resaco,$iresaco,'k94_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1500,8780,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k94_seqtransf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1500,8781,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k94_transf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1500,8784,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k94_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1500,8785,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k94_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1500,8783,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k94_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1500,8782,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k94_finalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1500,8786,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k94_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from caitransfseq
@@ -493,7 +493,7 @@ class cl_caitransfseq {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:caitransfseq";
@@ -507,7 +507,7 @@ class cl_caitransfseq {
    function sql_query ( $k94_seqtransf=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -531,7 +531,7 @@ class cl_caitransfseq {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -543,7 +543,7 @@ class cl_caitransfseq {
    function sql_query_efetuadas ( $k94_seqtransf=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -571,7 +571,7 @@ class cl_caitransfseq {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -583,7 +583,7 @@ class cl_caitransfseq {
    function sql_query_file ( $k94_seqtransf=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -604,7 +604,7 @@ class cl_caitransfseq {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -616,7 +616,7 @@ class cl_caitransfseq {
    function sql_query_notif ( $k94_seqtransf=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -644,7 +644,7 @@ class cl_caitransfseq {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

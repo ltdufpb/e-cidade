@@ -42,11 +42,11 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     public function provideMessages()
     {
-        return array(
-        array('Mensagem 1'),
-        array('Teste de mensagem'),
-        array(123456789)
-        );
+        return [
+        ['Mensagem 1'],
+        ['Teste de mensagem'],
+        [123456789]
+        ];
     }
 
     public function testLogWithWrongLevel()

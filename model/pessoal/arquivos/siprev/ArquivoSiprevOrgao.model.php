@@ -33,7 +33,7 @@ class ArquivoSiprevOrgao extends  ArquivoSiprevBase {
   protected $sRegistro    = "orgaos";
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["03"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["03"] = [];
   }
   public function getDados() {
 
@@ -51,9 +51,9 @@ SQL;
 
     $rsDados      = db_query($sSqlDados);
 
-    $aErros       = array();
+    $aErros       = [];
 
-    if (strlen($this->iNumeroAto) > 12) {
+    if (strlen((string) $this->iNumeroAto) > 12) {
       $aErros[] = $this->getErro("", "Número do Ato Legal é maior que 12 caracteres.");
     }
     $oArquivo    = $this;
@@ -77,13 +77,13 @@ SQL;
     if (count($aErros) > 0) {
 
       ArquivoSiprevBase::$aErrosProcessamento["03"] = array_merge($aErros, ArquivoSiprevBase::$aErrosProcessamento["03"]);
-      return array();
+      return [];
     }
 
-    $aDados       = array();
+    $aDados       = [];
 
     foreach ($aListaDados as $oIndiceDados => $oValorDados) {
-      $aDados[] = (object)array("dadosOrgao" => $this->preencheDadosOrgao($oValorDados));
+      $aDados[] = (object)["dadosOrgao" => $this->preencheDadosOrgao($oValorDados)];
     }
 
     return $aDados;
@@ -91,8 +91,8 @@ SQL;
 
   public function validarDadosInstituicao($oValorDados) {
 
-    $aErrosRegistro   = array();
-    $oValorDados->cgc = trim($oValorDados->cgc);
+    $aErrosRegistro   = [];
+    $oValorDados->cgc = trim((string) $oValorDados->cgc);
 
     if( !empty($oValorDados->cgc) && !DBString::isCNPJ($oValorDados->cgc)) {
       $aErrosRegistro[] = $this->getErro("{$oValorDados->codigo} - {$oValorDados->nomeinst}", "O CNPJ '{$oValorDados->cgc}' é inválido.");
@@ -102,7 +102,7 @@ SQL;
   }
 
   private function getErro($Nome, $sErro) {
-    return array($Nome, $sErro);
+    return [$Nome, $sErro];
   }
 
   /*
@@ -110,7 +110,7 @@ SQL;
    * repassadas para o arquivo que será gerado.
    */
   public function getElementos() {
-    return array($this->atributosDadosOrgao());
+    return [$this->atributosDadosOrgao()];
   }
 
   /**
@@ -119,9 +119,9 @@ SQL;
    */
   private function atributosDadosOrgao() {
 
-    return array(
+    return [
       "nome"  => "dadosOrgao",
-      "propriedades" => array(
+      "propriedades" => [
         "nome",
         "razaoSocial",
         "sigla",
@@ -131,8 +131,8 @@ SQL;
         "gestora",
         "naturezaJuridica",
         $this->atributosUnidadeGestora()
-      )
-    );
+      ]
+    ];
   }
 
   /**
@@ -141,13 +141,13 @@ SQL;
    */
   private function atributosUnidadeGestora() {
 
-    return array(
+    return [
       "nome" => "unidadeGestora",
-      "propriedades" => array(
+      "propriedades" => [
         $this->atributosAtoLegal(),
         $this->atributosRepresentanteLegal(),
-      )
-    );
+      ]
+    ];
   }
 
   /**
@@ -156,16 +156,16 @@ SQL;
    */
   private function atributosAtoLegal() {
 
-    return array(
+    return [
       "nome"         => "atoLegal",
-      "propriedades" => array(
+      "propriedades" => [
         "tipoAto",
         "numero",
         "ano",
         "dataInicioVigencia",
         "dataPublicacao",
-      ),
-    );
+      ],
+    ];
   }
 
   /**
@@ -174,12 +174,12 @@ SQL;
    */
   private function atributosRepresentanteLegal() {
 
-    return array(
+    return [
       "nome"         => "representanteLegal",
-      "propriedades" => array(
+      "propriedades" => [
         "nome",
-      )
-    );
+      ]
+    ];
   }
 
   /**
@@ -189,9 +189,9 @@ SQL;
    */
   private function preencheDadosOrgao($oValorDados) {
 
-    $sAbreviatura = strlen($oValorDados->nomeinstabrev) > 10 ? substr($oValorDados->nomeinstabrev, 0, 10) : $oValorDados->nomeinstabrev;
+    $sAbreviatura = strlen((string) $oValorDados->nomeinstabrev) > 10 ? substr((string) $oValorDados->nomeinstabrev, 0, 10) : $oValorDados->nomeinstabrev;
 
-    $aDadosOrgao                     = array();
+    $aDadosOrgao                     = [];
     $aDadosOrgao["nome"]             = DBString::removerCaracteresEspeciais($oValorDados->nomeinst);
     $aDadosOrgao["razaoSocial"]      = DBString::removerCaracteresEspeciais($oValorDados->nomeinst);
     $aDadosOrgao["sigla"]            = DBString::removerCaracteresEspeciais($sAbreviatura);
@@ -219,7 +219,7 @@ SQL;
    */
   private function preencheUnidadeGestora() {
 
-    $aUnidadeGestora                       = array();
+    $aUnidadeGestora                       = [];
     $aUnidadeGestora["atoLegal"]           = $this->preencheAtoLegal();
     $aUnidadeGestora["representanteLegal"] = $this->preencheRepresentanteLegal();
 
@@ -232,8 +232,8 @@ SQL;
    */
   private function preencheAtoLegal() {
 
-    $aAtoLegal      = array();
-    $DataPublicacao = substr($this->dDataAto,6,4).'-'.substr($this->dDataAto,3,2).'-'.substr($this->dDataAto,0,2);
+    $aAtoLegal      = [];
+    $DataPublicacao = substr((string) $this->dDataAto,6,4).'-'.substr((string) $this->dDataAto,3,2).'-'.substr((string) $this->dDataAto,0,2);
 
     $aAtoLegal["tipoAto"]            = $this->iTipoAto;
     $aAtoLegal["numero"]             = $this->iNumeroAto;
@@ -249,8 +249,8 @@ SQL;
    * @return object
    */
   private function preencheRepresentanteLegal() {
-    return (object) array(
+    return (object) [
       "nome" => $this->cRepresentante
-    );
+    ];
   }
 }

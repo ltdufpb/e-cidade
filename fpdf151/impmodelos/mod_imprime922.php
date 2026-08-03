@@ -177,7 +177,7 @@ $this->objpdf->Text($x + 101, $y + 37, $this->aceite);                      // a
 $this->objpdf->Text($x + 114, $y + 37, date('d/m/Y'));                      // data de opercao   data do processamento
 
 $this->objpdf->Text($x + 3, $y + 44, "");                                 // codigo do cedente
-$this->objpdf->Text($x + 34, $y + 44, substr($this->carteira, 0, -1));                    // carteira
+$this->objpdf->Text($x + 34, $y + 44, substr((string) $this->carteira, 0, -1));                    // carteira
 $this->objpdf->Text($x + 54, $y + 44, $this->especie);                     // especie
 $this->objpdf->Text($x + 80, $y + 44, @$this->quantidade);                 // quantidade
 $this->objpdf->Text($x + 110, $y + 44, @$this->valorhis);                   // valor
@@ -189,7 +189,7 @@ $this->objpdf->SetFont('Arial', '', 9);
 
 if (is_null($this->sMensagemCaixa) || $this->sMensagemCaixa == '') {
 
-    $aDescr12_1 = explode("\n", $this->descr12_1, 3);
+    $aDescr12_1 = explode("\n", (string) $this->descr12_1, 3);
     $sInstrucao = $aDescr12_1[1] . "\n\n";
     $sDescr12_1Complementar = str_replace("\n", " | ", $aDescr12_1[2]);
     $sDescr12_1Complementar = str_replace("\r", " ", $sDescr12_1Complementar);
@@ -198,30 +198,30 @@ if (is_null($this->sMensagemCaixa) || $this->sMensagemCaixa == '') {
     // aumentado tamanho para que caiba os 150 caractéres da mensagem 'Guia Contribuinte' informada em:
     // ARRECADAÇÃO > CADASTROS > TIPO DE DÉBITOS > ALTERAR TIPO DE DÉBITO
     $sInstrucao = substr($sInstrucao, 0, 500);
-    
+
     $this->sMensagemCaixa = $sInstrucao;
 }
 
 $instrucao = "Tipo/Exercício: " . @$this->tipo_exerc . "\n" . @$this->sMensagemCaixa . " \n\n";
 
 if (!empty($this->valororigem)) {
-    $instrucao .= " Valor origem = " . trim($this->valororigem);
+    $instrucao .= " Valor origem = " . trim((string) $this->valororigem);
 }
 
 if (!empty($this->valtotal)) {
-    $instrucao .= " Valor corrigido = " . trim($this->valtotal);
+    $instrucao .= " Valor corrigido = " . trim((string) $this->valtotal);
 }
 
 if (!empty($this->desconto_abatimento)) {
-    $instrucao .= " Desconto/Abatimento = " . trim($this->desconto_abatimento);
+    $instrucao .= " Desconto/Abatimento = " . trim((string) $this->desconto_abatimento);
 }
 
 if (!empty($this->mora_multa)) {
-    $instrucao .= " Mora/Multa = " . trim($this->mora_multa);
+    $instrucao .= " Mora/Multa = " . trim((string) $this->mora_multa);
 }
 
 if (!empty($this->valor_cobrado)) {
-    $instrucao .= " Valor do documento = " . trim($this->valor_cobrado);
+    $instrucao .= " Valor do documento = " . trim((string) $this->valor_cobrado);
 }
 
 if (!empty($this->taxaExpediente)) {
@@ -251,9 +251,9 @@ $this->objpdf->cell(30, 6, @$this->outros_acrecimos, 0, 0, "R");            // o
 $this->objpdf->setXY($x + 136, $y + 67);
 $this->objpdf->cell(30, 6, "", 0, 0, "R");                                  // valor cobrado
 $this->objpdf->SetFont('Arial', '', 6);
-$this->objpdf->Text($x + 3, $y + 78, substr($this->descr11_1, 0, 42));      // sacado 1
+$this->objpdf->Text($x + 3, $y + 78, substr((string) $this->descr11_1, 0, 42));      // sacado 1
 $this->objpdf->Text($x + 100, $y + 78, "CPF/CNPJ: " . db_formatar(@$this->cgccpfcomprador,
-    (strlen(@$this->cgccpfcomprador) < 12 ? 'cpf' : 'cnpj'))); // CPF/CNPJ
+    (strlen((string) @$this->cgccpfcomprador) < 12 ? 'cpf' : 'cnpj'))); // CPF/CNPJ
 $this->objpdf->Text($x + 3, $y + 80.5, $this->descr11_2);                   // sacado 2
 if (!isset($this->ufcgm)) {
     $this->ufcgm = $this->uf_config;

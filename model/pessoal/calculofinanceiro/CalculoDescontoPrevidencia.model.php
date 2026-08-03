@@ -29,8 +29,6 @@ class CalculoDescontoPrevidencia {
 
   const RUBRICA_DESCONTO_PREVIDENCIA  = 'R993';
   const RUBRICAS_DESCONTO_PREVIDENCIA = "R901,R904,R907,R910,R902,R905,R908,R911,R903,R906,R909,R912";
-
-  private $oCalculo;
   private $oPonto;
   private $oServidor;
   private $oRubricaAbono;
@@ -42,11 +40,10 @@ class CalculoDescontoPrevidencia {
    * @access public
    * @return void
    */
-  public function __construct( CalculoFolha $oCalculo) {
+  public function __construct( private readonly CalculoFolha $oCalculo) {
 
-    $this->oCalculo      = $oCalculo;
-    $this->oServidor     = $oCalculo->getServidor();
-    $this->oPonto        = $oCalculo->getServidor()->getPonto(Ponto::FIXO);
+    $this->oServidor     = $this->oCalculo->getServidor();
+    $this->oPonto        = $this->oCalculo->getServidor()->getPonto(Ponto::FIXO);
     $this->oRubricaAbono = self::getRubricaAbono();
     return;
   }

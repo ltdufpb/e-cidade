@@ -18,17 +18,11 @@ use ECidade\Tributario\Integracao\JuntaComercial\Model\QSA\Contador;
 class Validador
 {
     /**
-     * @var Regin
-     */
-    private $dicionario;
-
-    /**
      * Validador constructor.
-     * @param Regin $regin
+     * @param Regin $dicionario
      */
-    public function __construct(Regin $regin)
+    public function __construct(private readonly Regin $dicionario)
     {
-        $this->dicionario = $regin;
     }
 
     /**
@@ -55,7 +49,7 @@ class Validador
     {
         $campo = null;
 
-        if (empty($dadosGrupo->uf) || strlen($dadosGrupo->uf) != 2 || is_numeric($dadosGrupo->uf) ) {
+        if (empty($dadosGrupo->uf) || strlen((string) $dadosGrupo->uf) != 2 || is_numeric($dadosGrupo->uf) ) {
             $campo = 'uf';
         }
 
@@ -86,7 +80,7 @@ class Validador
         if (!is_null($campo)) {
 
             $campo = $this->dicionario->campos[Regin::EMPRESA][$campo];
-            throw new \BusinessException(utf8_encode("O campo $campo esta invalido."));
+            throw new \BusinessException(mb_convert_encoding("O campo $campo esta invalido.", 'UTF-8', 'ISO-8859-1'));
         }
     }
 
@@ -103,7 +97,7 @@ class Validador
             $campo = 'codigo_municipio';
         }
 
-        if (!empty($dadosGrupo->uf) && (strlen($dadosGrupo->uf) != 2 || is_numeric($dadosGrupo->uf) )) {
+        if (!empty($dadosGrupo->uf) && (strlen((string) $dadosGrupo->uf) != 2 || is_numeric($dadosGrupo->uf) )) {
             $campo = 'uf';
         }
 
@@ -114,7 +108,7 @@ class Validador
         if (!is_null($campo)) {
 
             $campo = $this->dicionario->campos[Regin::ENDERECO_INSCRICAO][$campo];
-            throw new \BusinessException(utf8_encode("O campo $campo esta invalido."));
+            throw new \BusinessException(mb_convert_encoding("O campo $campo esta invalido.", 'UTF-8', 'ISO-8859-1'));
         }
     }
 
@@ -131,7 +125,7 @@ class Validador
             $campo = 'codigo_municipio';
         }
 
-        if (!empty($dadosGrupo->uf) && ( strlen($dadosGrupo->uf) != 2 || is_numeric($dadosGrupo->uf) ) ) {
+        if (!empty($dadosGrupo->uf) && ( strlen((string) $dadosGrupo->uf) != 2 || is_numeric($dadosGrupo->uf) ) ) {
             $campo = 'uf';
         }
 
@@ -142,7 +136,7 @@ class Validador
         if (!is_null($campo)) {
 
             $campo = $this->dicionario->campos[Regin::ENDERECO_CGM][$campo];
-            throw new \BusinessException(utf8_encode("O campo $campo esta invalido."));
+            throw new \BusinessException(mb_convert_encoding("O campo $campo esta invalido.", 'UTF-8', 'ISO-8859-1'));
         }
     }
 
@@ -161,7 +155,7 @@ class Validador
                 $campo = 'tipo_relacionamento';
             }
 
-            $dados->cpfcnpj = trim($dados->cpfcnpj);
+            $dados->cpfcnpj = trim((string) $dados->cpfcnpj);
 
             if ( empty($dados->cpfcnpj) || !is_numeric($dados->cpfcnpj) ||
                  (strlen($dados->cpfcnpj) != 14 && strlen($dados->cpfcnpj) != 11 ) ) {
@@ -175,7 +169,7 @@ class Validador
             if (!is_null($campo)) {
 
                 $campo = $this->dicionario->campos[Regin::SOCIO][$campo];
-                throw new \BusinessException(utf8_encode("O campo $campo esta invalido."));
+                throw new \BusinessException(mb_convert_encoding("O campo $campo esta invalido.", 'UTF-8', 'ISO-8859-1'));
             }
         }
     }
@@ -191,7 +185,7 @@ class Validador
 
         foreach ($dadosGrupo as $dados) {
 
-            $dados->cpfcnpj = trim($dados->cpfcnpj);
+            $dados->cpfcnpj = trim((string) $dados->cpfcnpj);
 
             if (empty($dados->cpfcnpj) || !is_numeric($dados->cpfcnpj) ||
               (strlen($dados->cpfcnpj) != 14 && strlen($dados->cpfcnpj) != 11 )) {
@@ -209,7 +203,7 @@ class Validador
             if (!is_null($campo)) {
 
                 $campo = $this->dicionario->campos[Regin::ENDERECO_SOCIO][$campo];
-                throw new \BusinessException(utf8_encode("O campo $campo esta invalido."));
+                throw new \BusinessException(mb_convert_encoding("O campo $campo esta invalido.", 'UTF-8', 'ISO-8859-1'));
             }
         }
     }
@@ -243,7 +237,7 @@ class Validador
             if (!is_null($campo)) {
 
                 $campo = $this->dicionario->campos[Regin::ATIVIDADE][$campo];
-                throw new \BusinessException(utf8_encode("O campo $campo esta invalido."));
+                throw new \BusinessException(mb_convert_encoding("O campo $campo esta invalido.", 'UTF-8', 'ISO-8859-1'));
             }
         }
     }
@@ -273,7 +267,7 @@ class Validador
             if (!is_null($campo)) {
 
                 $campo = $this->dicionario->campos[Regin::EVENTO][$campo];
-                throw new \BusinessException(utf8_encode("O campo $campo esta invalido."));
+                throw new \BusinessException(mb_convert_encoding("O campo $campo esta invalido.", 'UTF-8', 'ISO-8859-1'));
             }
         }
     }
@@ -294,7 +288,7 @@ class Validador
         if (!is_null($campo)) {
 
             $campo = $this->dicionario->campos[Regin::PROTOCOLO][$campo];
-            throw new \BusinessException(utf8_encode("O campo $campo esta invalido."));
+            throw new \BusinessException(mb_convert_encoding("O campo $campo esta invalido.", 'UTF-8', 'ISO-8859-1'));
         }
     }
 }

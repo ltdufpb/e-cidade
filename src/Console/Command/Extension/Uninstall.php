@@ -34,21 +34,12 @@ class Uninstall extends Command
         $logger->setVerbosity(Logger::DEBUG);
         $logger->addHandler(function($output, $level) {
 
-            switch($level) {
-
-            case Logger::DEBUG:
-                $output = Color::set($output, 'light_gray');
-                break;
-
-            case Logger::WARNING:
-                $output = Color::set($output, 'brown');
-                break;
-
-            case Logger::ERROR:
-                $output = Color::set($output, 'red');
-                break;
-
-            }
+            $output = match ($level) {
+                Logger::DEBUG => Color::set($output, 'light_gray'),
+                Logger::WARNING => Color::set($output, 'brown'),
+                Logger::ERROR => Color::set($output, 'red'),
+                default => $output,
+            };
 
             return $output;
         });

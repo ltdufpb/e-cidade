@@ -311,8 +311,8 @@ class Empresa
    */
   private static function persistQsa(\Empresa $empresa)
   {
-    $socios = array();
-    $contadores = array();
+    $socios = [];
+    $contadores = [];
 
     foreach ($empresa->getQsa() as $qsa){
 

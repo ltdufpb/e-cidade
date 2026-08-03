@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcriaabas = new cl_criaabas;
 ?>
@@ -57,17 +57,17 @@ $clcriaabas = new cl_criaabas;
    <tr>
        <td>
         <?php 
-          $clcriaabas->identifica = array("dadosprocesso"=>"Dados Processo",
-                                          "processosapensados"=>"Processos Apensados");
+          $clcriaabas->identifica = ["dadosprocesso"=>"Dados Processo",
+                                          "processosapensados"=>"Processos Apensados"];
           
-          $clcriaabas->title      = array("dadosprocesso"=>"Dados Processo",
-                                          "processosapensados"=>"Processos Apensados");
+          $clcriaabas->title      = ["dadosprocesso"=>"Dados Processo",
+                                          "processosapensados"=>"Processos Apensados"];
           
-          $clcriaabas->src        = array("dadosprocesso"=>"pro4_aba1protprocesso001.php",
-                                          "processosapensados"=>"pro4_aba2protprocesso001.php");
+          $clcriaabas->src        = ["dadosprocesso"=>"pro4_aba1protprocesso001.php",
+                                          "processosapensados"=>"pro4_aba2protprocesso001.php"];
           
-          $clcriaabas->disabled   = array("dadosprocesso"=>"false",
-                                          "processosapensados"=>"true");
+          $clcriaabas->disabled   = ["dadosprocesso"=>"false",
+                                          "processosapensados"=>"true"];
           
           $clcriaabas->cria_abas();
         ?>

@@ -42,12 +42,12 @@ class cl_assentamentosencerramentoefetividade
     /**
      * @var array
      */
-    private $join = array();
+    private $join = [];
 
     public function __construct()
     {
         $this->rotulo = new rotulo('assentamentosencerramentoefetividade');
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -128,10 +128,10 @@ class cl_assentamentosencerramentoefetividade
                 $this->erro_status = "0";
                 return false;
             }
-            $this->rh230_sequencial = pg_result($result, 0, 0);
+            $this->rh230_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM assentamentosencerramentoefetividade_rh230_sequencial_seq");
-            if ($result && pg_result($result, 0, 0) < $rh230_sequencial) {
+            if ($result && pg_fetch_result($result, 0, 0) < $rh230_sequencial) {
                 $this->erro_sql = " Campo rh230_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -176,7 +176,7 @@ class cl_assentamentosencerramentoefetividade
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Assentamentos criados ao encerrar efetividade () não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Assentamentos criados ao encerrar efetividade já cadastrado";
@@ -214,30 +214,30 @@ class cl_assentamentosencerramentoefetividade
             $resaco = $this->sql_record($this->sql_query_file($this->rh230_sequencial));
             if ($resaco != false || $this->numrows != 0) {
                 $resac = db_query("SELECT nextval('db_acount_id_acount_seq') AS acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("INSERT INTO db_acountacesso VALUES ($acount, " . db_getsession("DB_acessado") . ")");
                 $resac = db_query("INSERT INTO db_acountkey VALUES ($acount,1010551,'$this->rh230_sequencial','I')");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010454,1010555,'','" . AddSlashes(pg_result(
+                $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010454,1010555,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'rh230_instituicao'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010454,1010554,'','" . AddSlashes(pg_result(
+                $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010454,1010554,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'rh230_mes'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010454,1010553,'','" . AddSlashes(pg_result(
+                $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010454,1010553,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'rh230_ano'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010454,1010552,'','" . AddSlashes(pg_result(
+                $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010454,1010552,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'rh230_assentamento'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010454,1010551,'','" . AddSlashes(pg_result(
+                $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010454,1010551,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'rh230_sequencial'
@@ -347,39 +347,39 @@ class cl_assentamentosencerramentoefetividade
             if ($this->numrows > 0) {
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010551,'$this->rh230_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh230_instituicao"]) || $this->rh230_instituicao != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010454,1010555,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1010454,1010555,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'rh230_instituicao'
                         )) . "','$this->rh230_instituicao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh230_mes"]) || $this->rh230_mes != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010454,1010554,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1010454,1010554,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'rh230_mes'
                         )) . "','$this->rh230_mes'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh230_ano"]) || $this->rh230_ano != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010454,1010553,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1010454,1010553,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'rh230_ano'
                         )) . "','$this->rh230_ano'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh230_assentamento"]) || $this->rh230_assentamento != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010454,1010552,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1010454,1010552,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'rh230_assentamento'
                         )) . "','$this->rh230_assentamento'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh230_sequencial"]) || $this->rh230_sequencial != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010454,1010551,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1010454,1010551,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'rh230_sequencial'
@@ -443,30 +443,30 @@ class cl_assentamentosencerramentoefetividade
             if (($resaco != false) || ($this->numrows != 0)) {
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010551,'$rh230_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,1010454,1010555,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1010454,1010555,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'rh230_instituicao'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010454,1010554,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1010454,1010554,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'rh230_mes'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010454,1010553,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1010454,1010553,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'rh230_ano'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010454,1010552,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1010454,1010552,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'rh230_assentamento'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010454,1010551,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1010454,1010551,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'rh230_sequencial'
@@ -584,7 +584,7 @@ class cl_assentamentosencerramentoefetividade
      * @param array $order
      * @return string
      */
-    public function sql($columns = array('*'), $where = array(), $order = array())
+    public function sql($columns = ['*'], $where = [], $order = [])
     {
         $columns = implode(', ', $columns);
         $where = $where ? 'WHERE ' . implode(' AND ', $where) : '';

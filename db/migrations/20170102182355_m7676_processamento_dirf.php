@@ -29,14 +29,14 @@ class M7676ProcessamentoDirf extends PostgresMigration
 
 
      $this->execute("create sequence pessoal.rhdirfgeracaopessoalpensionista_rh202_sequencial_seq");
-     $tabela = $this->table('rhdirfgeracaopessoalpensionista', array('schema'=>'pessoal', 'id'=> false, 'primary_key'=>'rh202_sequencial', 'constraint'=>' rhdirfgeracaopessoalpensionista_rh202_sequencial_pk'));
+     $tabela = $this->table('rhdirfgeracaopessoalpensionista', ['schema'=>'pessoal', 'id'=> false, 'primary_key'=>'rh202_sequencial', 'constraint'=>' rhdirfgeracaopessoalpensionista_rh202_sequencial_pk']);
      $tabela->addColumn('rh202_sequencial', 'integer')
         ->addColumn('rh202_numcgm', 'integer')
         ->addColumn('rh202_rhdirfgeracaopessoal', 'integer')
-        ->addForeignKey('rh202_rhdirfgeracaopessoal', 'pessoal.rhdirfgeracaodadospessoal', 'rh96_sequencial', array('constraint' => 'rhdirfgeracaopessoalpensionista_rhdirfgeracaopessoal_fk'))
-        ->addForeignKey('rh202_numcgm', 'protocolo.cgm', 'z01_numcgm',  array('constraint'=>'rhdirfgeracaopessoalpensionista_numcgm_fk'))
-        ->addIndex(array('rh202_rhdirfgeracaopessoal'), array('name' => 'rhdirfgeracaopessoalpensionista_rhdirfgeracaopessoal_in'))
-        ->addIndex(array('rh202_numcgm'), array('name' => 'rhdirfgeracaopessoalpensionista_cgm_in'))
+        ->addForeignKey('rh202_rhdirfgeracaopessoal', 'pessoal.rhdirfgeracaodadospessoal', 'rh96_sequencial', ['constraint' => 'rhdirfgeracaopessoalpensionista_rhdirfgeracaopessoal_fk'])
+        ->addForeignKey('rh202_numcgm', 'protocolo.cgm', 'z01_numcgm',  ['constraint'=>'rhdirfgeracaopessoalpensionista_numcgm_fk'])
+        ->addIndex(['rh202_rhdirfgeracaopessoal'], ['name' => 'rhdirfgeracaopessoalpensionista_rhdirfgeracaopessoal_in'])
+        ->addIndex(['rh202_numcgm'], ['name' => 'rhdirfgeracaopessoalpensionista_cgm_in'])
         ->create();
       $this->execute("ALTER TABLE pessoal.rhdirfgeracaopessoalpensionista ALTER COLUMN rh202_sequencial SET DEFAULT nextval('pessoal.rhdirfgeracaopessoalpensionista_rh202_sequencial_seq')");
 
@@ -62,14 +62,14 @@ class M7676ProcessamentoDirf extends PostgresMigration
       $this->execute("update db_sysarqcamp set codsequencia = 1000646 where codarq = 4020 and codcam = 22316;");
 
       $this->execute("create sequence pessoal.rhdirfgeracaopessoalpensionistavalor_rh203_sequencial_seq");
-      $tabela = $this->table('rhdirfgeracaopessoalpensionistavalor', array('schema'=>'pessoal', 'id'=> false, 'primary_key'=>'rh203_sequencial', 'constraint'=>' rhdirfgeracaopessoalpensionistavalor_rh203_sequencial_pk'));
+      $tabela = $this->table('rhdirfgeracaopessoalpensionistavalor', ['schema'=>'pessoal', 'id'=> false, 'primary_key'=>'rh203_sequencial', 'constraint'=>' rhdirfgeracaopessoalpensionistavalor_rh203_sequencial_pk']);
       $tabela->addColumn('rh203_sequencial', 'integer')
         ->addColumn('rh203_rhdirfgeracaopessoalpensionista', 'integer')
         ->addColumn('rh203_rhdirfgeracaodadospessoalvalor', 'integer')
-        ->addForeignKey('rh203_rhdirfgeracaopessoalpensionista', 'pessoal.rhdirfgeracaopessoalpensionista', 'rh202_sequencial', array('constraint' => 'rhdirfgeracaopessoalpensionistavalor_rhdirfgeracaopessoalpensionista_fk'))
-        ->addForeignKey('rh203_rhdirfgeracaodadospessoalvalor', 'pessoal.rhdirfgeracaodadospessoalvalor', 'rh98_sequencial',  array('constraint'=>'rhdirfgeracaopessoalpensionistavalor_rhdirfgeracaodadospessoalvalor_fk'))
-        ->addIndex(array('rh203_rhdirfgeracaopessoalpensionista'), array('name' => 'rhdirfgeracaopessoalpensionistavalor_pensionista_in'))
-        ->addIndex(array('rh203_rhdirfgeracaodadospessoalvalor'), array('name' => 'rhdirfgeracaopessoalpensionistavalor_valor_in'))
+        ->addForeignKey('rh203_rhdirfgeracaopessoalpensionista', 'pessoal.rhdirfgeracaopessoalpensionista', 'rh202_sequencial', ['constraint' => 'rhdirfgeracaopessoalpensionistavalor_rhdirfgeracaopessoalpensionista_fk'])
+        ->addForeignKey('rh203_rhdirfgeracaodadospessoalvalor', 'pessoal.rhdirfgeracaodadospessoalvalor', 'rh98_sequencial',  ['constraint'=>'rhdirfgeracaopessoalpensionistavalor_rhdirfgeracaodadospessoalvalor_fk'])
+        ->addIndex(['rh203_rhdirfgeracaopessoalpensionista'], ['name' => 'rhdirfgeracaopessoalpensionistavalor_pensionista_in'])
+        ->addIndex(['rh203_rhdirfgeracaodadospessoalvalor'], ['name' => 'rhdirfgeracaopessoalpensionistavalor_valor_in'])
         ->create();
       $this->execute("ALTER TABLE pessoal.rhdirfgeracaopessoalpensionistavalor ALTER COLUMN rh203_sequencial SET DEFAULT nextval('pessoal.rhdirfgeracaopessoalpensionistavalor_rh203_sequencial_seq')");
 
@@ -99,14 +99,14 @@ class M7676ProcessamentoDirf extends PostgresMigration
       $this->execute("update db_sysarqcamp set codsequencia = 1000647 where codarq = 4022 and codcam = 22319;");
 
       $this->execute("create sequence pessoal.rhdirfgeracaopessoalvalorprevidencia_rh204_sequencial_seq");
-      $tabela = $this->table('rhdirfgeracaopessoalvalorprevidencia', array('schema'=>'pessoal', 'id'=> false, 'primary_key'=>'rh204_sequencial', 'constraint'=>' rhdirfgeracaopessoalvalorprevidencia_rh204_sequencial_pk'));
+      $tabela = $this->table('rhdirfgeracaopessoalvalorprevidencia', ['schema'=>'pessoal', 'id'=> false, 'primary_key'=>'rh204_sequencial', 'constraint'=>' rhdirfgeracaopessoalvalorprevidencia_rh204_sequencial_pk']);
       $tabela->addColumn('rh204_sequencial', 'integer')
         ->addColumn('rh204_rhdirfgeracaodadospessoalvalor', 'integer')
         ->addColumn('rh204_numcgm', 'integer')
-        ->addForeignKey('rh204_numcgm', 'protocolo.cgm', 'z01_numcgm', array('constraint' => 'rhdirfgeracaopessoalvalorprevidencia_numcgm_fk'))
-        ->addForeignKey('rh204_rhdirfgeracaodadospessoalvalor', 'pessoal.rhdirfgeracaodadospessoalvalor', 'rh98_sequencial',  array('constraint'=>'rhdirfgeracaopessoalvalorprevidenciar_rhdirfgeracaodadospessoalvalor_fk'))
-        ->addIndex(array('rh204_numcgm'), array('name' => 'rhdirfgeracaopessoalvalorprevidencia_numcgm_in'))
-        ->addIndex(array('rh204_rhdirfgeracaodadospessoalvalor'), array('name' => 'rhdirfgeracaopessoalvalorprevidencia_valor_in'))
+        ->addForeignKey('rh204_numcgm', 'protocolo.cgm', 'z01_numcgm', ['constraint' => 'rhdirfgeracaopessoalvalorprevidencia_numcgm_fk'])
+        ->addForeignKey('rh204_rhdirfgeracaodadospessoalvalor', 'pessoal.rhdirfgeracaodadospessoalvalor', 'rh98_sequencial',  ['constraint'=>'rhdirfgeracaopessoalvalorprevidenciar_rhdirfgeracaodadospessoalvalor_fk'])
+        ->addIndex(['rh204_numcgm'], ['name' => 'rhdirfgeracaopessoalvalorprevidencia_numcgm_in'])
+        ->addIndex(['rh204_rhdirfgeracaodadospessoalvalor'], ['name' => 'rhdirfgeracaopessoalvalorprevidencia_valor_in'])
         ->create();
       $this->execute("ALTER TABLE pessoal.rhdirfgeracaopessoalvalorprevidencia ALTER COLUMN rh204_sequencial SET DEFAULT nextval('pessoal.rhdirfgeracaopessoalvalorprevidencia_rh204_sequencial_seq')");
     }
@@ -124,13 +124,13 @@ class M7676ProcessamentoDirf extends PostgresMigration
       $this->execute("delete from db_sysarqmod where codarq in(4019, 4020, 4022)");
       $this->execute("delete from db_sysarquivo where codarq in(4019, 4020, 4022)");
 
-      $this->table('rhdirfgeracaopessoalvalorprevidencia',  array('schema'=>'pessoal'))->drop();
+      $this->table('rhdirfgeracaopessoalvalorprevidencia',  ['schema'=>'pessoal'])->drop();
       $this->execute('drop sequence pessoal.rhdirfgeracaopessoalvalorprevidencia_rh204_sequencial_seq');
 
-      $this->table('rhdirfgeracaopessoalpensionistavalor',  array('schema'=>'pessoal'))->drop();
+      $this->table('rhdirfgeracaopessoalpensionistavalor',  ['schema'=>'pessoal'])->drop();
       $this->execute('drop sequence pessoal.rhdirfgeracaopessoalpensionistavalor_rh203_sequencial_seq');
 
-      $this->table('rhdirfgeracaopessoalpensionista',  array('schema'=>'pessoal'))->drop();
+      $this->table('rhdirfgeracaopessoalpensionista',  ['schema'=>'pessoal'])->drop();
       $this->execute('drop sequence pessoal.rhdirfgeracaopessoalpensionista_rh202_sequencial_seq');
 
     }

@@ -76,7 +76,7 @@ $clrotulo->label("me33_i_codigo");
        onclick="js_cancela();"  <?=($db_botao==false?"disabled":"")?> >
 <br><br>
 <?php 
-$chavepri                           = array("me34_i_codigo" => @$me34_i_codigo);
+$chavepri                           = ["me34_i_codigo" => @$me34_i_codigo];
 $cliframe_alterar_excluir->chavepri = $chavepri;
 if (isset($me34_i_restricao) && @$me34_i_restricao != "") {
   $cliframe_alterar_excluir->sql = $clmer_restricaointolerancia->sql_query(null,

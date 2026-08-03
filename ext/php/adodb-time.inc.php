@@ -433,7 +433,7 @@ if (!defined('ADODB_ALLOW_NEGATIVE_TS')) define('ADODB_NO_NEGATIVE_TS',1);
 
 function adodb_date_test_date($y1,$m,$d=13)
 {
-	$h = round(rand()% 24);
+	$h = round(random_int(0, mt_getrandmax())% 24);
 	$t = adodb_mktime($h,0,0,$m,$d,$y1);
 	$rez = adodb_date('Y-n-j H:i:s',$t);
 	if ($h == 0) $h = '00';
@@ -551,11 +551,11 @@ function adodb_date_test()
 	flush();
 	for ($i=100; --$i > 0; ) {
 
-		$ts = 3600.0*((rand()%60000)+(rand()%60000))+(rand()%60000);
+		$ts = 3600.0*((random_int(0, mt_getrandmax())%60000)+(random_int(0, mt_getrandmax())%60000))+(random_int(0, mt_getrandmax())%60000);
 		$s1 = date($fmt,$ts);
 		$s2 = adodb_date($fmt,$ts);
 		//print "$s1 <br>$s2 <p>";
-		$pos = strcmp($s1,$s2);
+		$pos = strcmp($s1,(string) $s2);
 
 		if (($s1) != ($s2)) {
 			for ($j=0,$k=strlen($s1); $j < $k; $j++) {
@@ -566,7 +566,7 @@ function adodb_date_test()
 			}
 			print "<b>Error date(): $ts<br><pre> 
 &nbsp; \"$s1\" (date len=".strlen($s1).")
-&nbsp; \"$s2\" (adodb_date len=".strlen($s2).")</b></pre><br>";
+&nbsp; \"$s2\" (adodb_date len=".strlen((string) $s2).")</b></pre><br>";
 			$fail = true;
 		}
 		
@@ -587,18 +587,18 @@ function adodb_date_test()
 	print "<p>Testing random dates between 100 and 4000</p>";
 	adodb_date_test_date(100,1);
 	for ($i=100; --$i >= 0;) {
-		$y1 = 100+rand(0,1970-100);
-		$m = rand(1,12);
+		$y1 = 100+random_int(0,1970-100);
+		$m = random_int(1,12);
 		adodb_date_test_date($y1,$m);
 		
-		$y1 = 3000-rand(0,3000-1970);
+		$y1 = 3000-random_int(0,3000-1970);
 		adodb_date_test_date($y1,$m);
 	}
 	print '<p>';
-	$start = 1960+rand(0,10);
+	$start = 1960+random_int(0,10);
 	$yrs = 12;
 	$i = 365.25*86400*($start-1970);
-	$offset = 36000+rand(10000,60000);
+	$offset = 36000+random_int(10000,60000);
 	$max = 365*$yrs*86400;
 	$lastyear = 0;
 	
@@ -608,7 +608,7 @@ function adodb_date_test()
 	$cnt = 0;
 	for ($max += $i; $i < $max; $i += $offset) {
 		$ret = adodb_date('m,d,Y,H,i,s',$i);
-		$arr = explode(',',$ret);
+		$arr = explode(',',(string) $ret);
 		if ($lastyear != $arr[2]) {
 			$lastyear = $arr[2];
 			print " $lastyear ";
@@ -755,7 +755,7 @@ global $ADODB_DATETIME_CLASS;
 	} else {
 		if (isset($TZ)) return $TZ;
 		$y = date('Y');
-		$TZ = mktime(0,0,0,12,2,$y,0) - gmmktime(0,0,0,12,2,$y,0);
+		$TZ = mktime(0,0,0,12,2,$y) - gmmktime(0,0,0,12,2,$y);
 	}
 	
 	return $TZ;
@@ -797,8 +797,8 @@ echo "<hr />$i ";
 */
 
 
-$_month_table_normal = array("",31,28,31,30,31,30,31,31,30,31,30,31);
-$_month_table_leaf = array("",31,29,31,30,31,30,31,31,30,31,30,31);
+$_month_table_normal = ["",31,28,31,30,31,30,31,31,30,31,30,31];
+$_month_table_leaf = ["",31,29,31,30,31,30,31,31,30,31,30,31];
 	
 function adodb_validdate($y,$m,$d)
 {
@@ -835,15 +835,15 @@ global $_month_table_normal,$_month_table_leaf;
 	
 	if ($d < -12219321600) $d -= 86400*10; // if 15 Oct 1582 or earlier, gregorian correction 
 	
-	$_month_table_normal = array("",31,28,31,30,31,30,31,31,30,31,30,31);
-	$_month_table_leaf = array("",31,29,31,30,31,30,31,31,30,31,30,31);
+	$_month_table_normal = ["",31,28,31,30,31,30,31,31,30,31,30,31];
+	$_month_table_leaf = ["",31,29,31,30,31,30,31,31,30,31,30,31];
 	
 	$d366 = $_day_power * 366;
 	$d365 = $_day_power * 365;
 	
 	if ($d < 0) {
 		
-		if (empty($YRS)) $YRS = array(
+		if (empty($YRS)) $YRS = [
 			1970 => 0,
 			1960 => -315619200,
 			1950 => -631152000,
@@ -881,7 +881,7 @@ global $_month_table_normal,$_month_table_leaf;
 			1630 => -10729324800,
 			1620 => -11044944000,
 			1610 => -11360476800,
-			1600 => -11676096000);
+			1600 => -11676096000];
 
 		if ($is_gmt) $origd = $d;
 		// The valid range of a 32bit signed timestamp is typically from 
@@ -988,7 +988,7 @@ global $_month_table_normal,$_month_table_leaf;
 	$min = floor($d/$_min_power);
 	$secs = $d - $min * $_min_power;
 	if ($fast) {
-		return array(
+		return [
 		'seconds' => $secs,
 		'minutes' => $min,
 		'hours' => $hour,
@@ -998,13 +998,13 @@ global $_month_table_normal,$_month_table_leaf;
 		'yday' => floor($secsInYear/$_day_power),
 		'leap' => $leaf,
 		'ndays' => $ndays
-		);
+		];
 	}
 	
 	
 	$dow = adodb_dow($year,$month,$day);
 
-	return array(
+	return [
 		'seconds' => $secs,
 		'minutes' => $min,
 		'hours' => $hour,
@@ -1016,7 +1016,7 @@ global $_month_table_normal,$_month_table_leaf;
 		'weekday' => gmdate('l',$_day_power*(3+$dow)),
 		'month' => gmdate('F',mktime(0,0,0,$month,2,1971)),
 		0 => $origd
-	);
+	];
 }
 /*
 		if ($isphp5)
@@ -1047,7 +1047,7 @@ function adodb_date2($fmt, $d=false, $is_gmt=false)
 	if ($d !== false) {
 		if (!preg_match( 
 			"|^([0-9]{4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|", 
-			($d), $rr)) return adodb_date($fmt,false,$is_gmt);
+			((string) $d), $rr)) return adodb_date($fmt,false,$is_gmt);
 
 		if ($rr[1] <= 100 && $rr[2]<= 1) return adodb_date($fmt,false,$is_gmt);
 	
@@ -1090,7 +1090,7 @@ global $ADODB_DATETIME_CLASS;
 	$min = $arr['minutes'];
 	$secs = $arr['seconds'];
 	
-	$max = strlen($fmt);
+	$max = strlen((string) $fmt);
 	$dates = '';
 	
 	$isphp5 = PHP_VERSION >= 5;
@@ -1130,7 +1130,7 @@ global $ADODB_DATETIME_CLASS;
 			break;
 			
 		case 'Y': $dates .= $year; break;
-		case 'y': $dates .= substr($year,strlen($year)-2,2); break;
+		case 'y': $dates .= substr((string) $year,strlen((string) $year)-2,2); break;
 		// MONTH
 		case 'm': if ($month<10) $dates .= '0'.$month; else $dates .= $month; break;
 		case 'Q': $dates .= ($month+3)>>2; break;
@@ -1285,8 +1285,8 @@ function adodb_mktime($hr,$min,$sec,$mon=false,$day=false,$year=false,$is_dst=fa
 	$_hour_power = 3600;
 	$_min_power = 60;
 	
-	$_month_table_normal = array("",31,28,31,30,31,30,31,31,30,31,30,31);
-	$_month_table_leaf = array("",31,29,31,30,31,30,31,31,30,31,30,31);
+	$_month_table_normal = ["",31,28,31,30,31,30,31,31,30,31,30,31];
+	$_month_table_leaf = ["",31,29,31,30,31,30,31,31,30,31,30,31];
 	
 	$_total_date = 0;
 	if ($year >= 1970) {
@@ -1328,7 +1328,7 @@ function adodb_mktime($hr,$min,$sec,$mon=false,$day=false,$year=false,$is_dst=fa
 			}
 		}
 		$_total_date += $loop_table[$mon] - $day;
-		
+
 		$_day_time = $hr * $_hour_power + $min * $_min_power + $sec;
 		$_day_time = $_day_power - $_day_time;
 		$ret = -( $_total_date * $_day_power + $_day_time - $gmt_different);
@@ -1369,14 +1369,14 @@ global $ADODB_DATE_LOCALE;
 		$tstr = strtoupper(gmstrftime('%X',31366800)); // 30 Dec 1970, 1 am
 		$hasAM = strrpos($tstr,'M') !== false;
 		
-		$ADODB_DATE_LOCALE = array();
-		$ADODB_DATE_LOCALE[] =  strncmp($tstr,'30',2) == 0 ? 'd'.$sep.'m'.$sep.'y' : 'm'.$sep.'d'.$sep.'y';	
+		$ADODB_DATE_LOCALE = [];
+		$ADODB_DATE_LOCALE[] =  str_starts_with($tstr, '30') ? 'd'.$sep.'m'.$sep.'y' : 'm'.$sep.'d'.$sep.'y';	
 		$ADODB_DATE_LOCALE[]  = ($hasAM) ? 'h:i:s a' : 'H:i:s';
 			
 	}
 	$inpct = false;
 	$fmtdate = '';
-	for ($i=0,$max = strlen($fmt); $i < $max; $i++) {
+	for ($i=0,$max = strlen((string) $fmt); $i < $max; $i++) {
 		$ch = $fmt[$i];
 		if ($ch == '%') {
 			if ($inpct) {

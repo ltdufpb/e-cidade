@@ -31,9 +31,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 /* echo "<br><br>sel = $ssel4[0] <br> ";
 echo " sel = $ssel4[1] <br> ";
 echo " sel = $ssel4[2] <br> "; */
@@ -83,7 +83,7 @@ echo " sel = $ssel4[2] <br> "; */
 		$resultmodulo=db_query($sqlmodulo);
 //		db_criatabela($resultmodulo);
 
-		db_multiploselect("codmod", "nomemod", "nsel4", "ssel4", $resultmodulo, array(), 20, 250,'','',true,'js_pegaValores(document.form1.ssel4);');
+		db_multiploselect("codmod", "nomemod", "nsel4", "ssel4", $resultmodulo, [], 20, 250,'','',true,'js_pegaValores(document.form1.ssel4);');
 		?>
 		</td>
 	</tr>

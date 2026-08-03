@@ -103,7 +103,7 @@ switch ($oParam->exec) {
 	  } else {
 	    $sMensagem  = "Nenhum dado retornado";
 	    $iStatus    = 2;
-	    $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+	    $aRegistros = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
 	  }
 
 	  $oRetorno = new stdClass();
@@ -117,7 +117,7 @@ switch ($oParam->exec) {
     $oRetorno    = new stdClass();
   	$iCgmOrigem  = $oParam->iOrigem;
   	$iCgmDestino = $oParam->iDestino;
-  	$aNumpre     = explode(",",$oParam->sNumPres);
+  	$aNumpre     = explode(",",(string) $oParam->sNumPres);
 
   	try {
   	  db_inicio_transacao();
@@ -392,11 +392,11 @@ switch ($oParam->exec) {
         }
     	}
     	db_fim_transacao(false);
-      echo $oJson->encode(array("status" => 1,"message"=> urlencode("Processamento efetuado com sucesso")));
+      echo $oJson->encode(["status" => 1,"message"=> urlencode("Processamento efetuado com sucesso")]);
 
   	} catch (Exception $eException){
       db_fim_transacao(true);
-      echo $oJson->encode(array("status" => 2,"message"=> urlencode($eException->getMessage())));
+      echo $oJson->encode(["status" => 2,"message"=> urlencode($eException->getMessage())]);
     }
   break;
 }

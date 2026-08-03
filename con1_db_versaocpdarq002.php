@@ -31,12 +31,12 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_db_versaocpdarq_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $cldb_versaocpdarq = new cl_db_versaocpdarq;
 $db_opcao = 22;
 $db_botao = false;
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $cldb_versaocpdarq->alterar($db34_codarq);
@@ -71,7 +71,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar")
 </body>
 </html>
 <?php 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
   if($cldb_versaocpdarq->erro_status=="0"){
     $cldb_versaocpdarq->erro(true,false);
     $db_botao=true;

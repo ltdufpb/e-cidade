@@ -29,20 +29,8 @@ namespace ECidade\Tributario\Arrecadacao\Custas\Calculo;
 
 final class Valor
 {
-    private $valorCorrigido;
-
-    private $valorJuros;
-
-    private $valorMulta;
-
-    private $valorDesconto;
-
-    public function __construct($valorCorrigido, $valorJuros, $valorMulta, $valorDesconto)
+    public function __construct(private $valorCorrigido, private $valorJuros, private $valorMulta, private $valorDesconto)
     {
-        $this->valorCorrigido = $valorCorrigido;
-        $this->valorJuros = $valorJuros;
-        $this->valorMulta = $valorMulta;
-        $this->valorDesconto = $valorDesconto;
     }
 
     public function getValorCorrigido()

@@ -41,7 +41,7 @@ class PeticaoEmissao {
 	 * Array de objetos das petições que serão geradas
 	 * @var array
 	 */
-	protected $aPeticoes = array();		
+	protected $aPeticoes = [];		
 	
 	/**
 	 * Tipo de peticao
@@ -94,7 +94,7 @@ class PeticaoEmissao {
 		$sSqlModelo      = $oDaoParjuridico->sql_query_file(db_getsession("DB_anousu"), db_getsession("DB_instit"), "{$sCampo} as modelo_impressao");
 		$rsModelo        = $oDaoParjuridico->sql_record($sSqlModelo);
 		
-		if ($oDaoParjuridico->numrows == 0 || trim(db_utils::fieldsMemory($rsModelo, 0)->modelo_impressao) == '') {
+		if ($oDaoParjuridico->numrows == 0 || trim((string) db_utils::fieldsMemory($rsModelo, 0)->modelo_impressao) == '') {
 			throw new BusinessException('Nenhum modelo configurado para o ano de ' . db_getsession('DB_anousu'));
 		}
 		

@@ -27,8 +27,8 @@
 
 include(modification("classes/db_tarefa_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltarefaanexos = new cl_tarefaanexos;
 $cltarefa = new cl_tarefa;
 $db_opcao = 22;
@@ -48,7 +48,7 @@ if (isset ($incluir)) {
 		$nometmp = $_FILES["anexoarq"]["tmp_name"];
 		$anexoarq = $nometmp;
 		$localrecebeanexo = $anexoarq;
-		if ($sqlerro == false && trim($localrecebeanexo) != "") {
+		if ($sqlerro == false && trim((string) $localrecebeanexo) != "") {
 			$arquivograva = fopen($localrecebeanexo, "rb");
 			if ($arquivograva == false) {
 				echo "erro arquivograva";
@@ -109,7 +109,7 @@ if (isset ($incluir)) {
 			$nometmp = $_FILES["anexoarq"]["tmp_name"];
 			$anexoarq = $nometmp;
 			$localrecebeanexo = $anexoarq;
-			if ($sqlerro == false && trim($localrecebeanexo) != "") {
+			if ($sqlerro == false && trim((string) $localrecebeanexo) != "") {
 				$arquivograva = fopen($localrecebeanexo, "rb");
 				if ($arquivograva == false) {
 					//echo "erro aruivograva";

@@ -38,7 +38,7 @@ $clrotulo->label("rh27_descr");
   $r11_mesusu = db_mesfolha();
   db_input('r11_anousu',4,$Ir11_anousu,true,'hidden',$db_opcao,"");
   db_input('r11_mesusu',2,$Ir11_mesusu,true,'hidden',$db_opcao,"");
-  $arr_SorN = array("t"=>"Sim","f"=>"Não");
+  $arr_SorN = ["t"=>"Sim","f"=>"Não"];
   ?>
   <tr>
     <td align="center">

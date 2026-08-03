@@ -70,11 +70,11 @@ class MatrizSaldoContabil
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'mes' => $this->getMes(),
             'ano' => $this->getAno()
-        );
+        ];
     }
 
     /**

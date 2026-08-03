@@ -30,7 +30,7 @@ class ArquivoSiprevCargos extends ArquivoSiprevBase {
   protected $sRegistro    = "cargos";
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["07"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["07"] = [];
   }
 
 
@@ -49,11 +49,11 @@ class ArquivoSiprevCargos extends ArquivoSiprevBase {
 
     $rsDados      = db_query($sSqlDados);
     $aListaDados  = db_utils::getCollectionByRecord($rsDados);
-    $aDados       = array();
+    $aDados       = [];
 
     foreach ($aListaDados as $oIndiceDados => $oValorDados) {
 
-      $aLinhas  = array("dadosCargo" => $this->preencheDadosCargo($oValorDados));
+      $aLinhas  = ["dadosCargo" => $this->preencheDadosCargo($oValorDados)];
       $aDados[] = (object) $aLinhas;
     }
 
@@ -65,7 +65,7 @@ class ArquivoSiprevCargos extends ArquivoSiprevBase {
    * repassadas para o arquivo que será gerado.
    */
   public function getElementos() {
-    return array($this->atributosDadosCargo());
+    return [$this->atributosDadosCargo()];
   }
 
   /**
@@ -74,9 +74,9 @@ class ArquivoSiprevCargos extends ArquivoSiprevBase {
    */
   private function atributosDadosCargo() {
 
-    $aDadosCargo = array();
+    $aDadosCargo = [];
     $aDadosCargo["nome"] = "dadosCargo";
-    $aDadosCargo["propriedades"] = array(
+    $aDadosCargo["propriedades"] = [
       "nome",
       "cargoAcumulacao",
       "contagemEspecial",
@@ -84,7 +84,7 @@ class ArquivoSiprevCargos extends ArquivoSiprevBase {
       "dedicacaoExclusiva",
       "aposentadoriaEspecial",
       $this->atributosCarreira()
-    );
+    ];
 
     return $aDadosCargo;
   }
@@ -95,9 +95,9 @@ class ArquivoSiprevCargos extends ArquivoSiprevBase {
    */
   private function atributosCarreira() {
 
-    $aCarreira                 = array();
+    $aCarreira                 = [];
     $aCarreira["nome"]         = "carreira";
-    $aCarreira["propriedades"] = array("nome", $this->atributosOrgao());
+    $aCarreira["propriedades"] = ["nome", $this->atributosOrgao()];
 
     return $aCarreira;
   }
@@ -108,9 +108,9 @@ class ArquivoSiprevCargos extends ArquivoSiprevBase {
    */
   private function atributosOrgao() {
 
-    $aOrgao                 = array();
+    $aOrgao                 = [];
     $aOrgao["nome"]         = "orgao";
-    $aOrgao["propriedades"] = array("nome", "poder");
+    $aOrgao["propriedades"] = ["nome", "poder"];
 
     return $aOrgao;
   }
@@ -122,7 +122,7 @@ class ArquivoSiprevCargos extends ArquivoSiprevBase {
    */
   private function preencheDadosCargo($oValorDados) {
 
-    $aDadosCargo                          = array();
+    $aDadosCargo                          = [];
     $aDadosCargo["nome"]                  = DBString::removerCaracteresEspeciais($oValorDados->rh37_descr);
     $aDadosCargo["cargoAcumulacao"]       = 1;
     $aDadosCargo["contagemEspecial"]      = 1;
@@ -141,7 +141,7 @@ class ArquivoSiprevCargos extends ArquivoSiprevBase {
    */
   private function preencheCarreira($oValorDados) {
 
-    $aCarreira          = array();
+    $aCarreira          = [];
     $aCarreira["nome"]  = "Servidor Público";
     $aCarreira["orgao"] = $this->preencheOrgao($oValorDados);
 
@@ -155,7 +155,7 @@ class ArquivoSiprevCargos extends ArquivoSiprevBase {
    */
   private function preencheOrgao($oValorDados) {
 
-    $aOrgao          = array();
+    $aOrgao          = [];
     $aOrgao["nome"]  = DBString::removerCaracteresEspeciais($oValorDados->nomeinst);
     $aOrgao["poder"] = $oValorDados->poder == 0 ? 6 : $oValorDados->poder;
 

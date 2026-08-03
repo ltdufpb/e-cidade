@@ -36,7 +36,7 @@
   $cl_aguahidromatric_origem  = new cl_aguahidromatric();
   $cl_aguahidromatric_destino = new cl_aguahidromatric();
   
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   $db_opcao = 1;
   $db_botao = true;
   $sqlerro = false;

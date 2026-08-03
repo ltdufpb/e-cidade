@@ -43,7 +43,7 @@ class CgsRepository {
    * Array com os CGSs
    * @var array
    */
-  private $aCGS = array();
+  private $aCGS = [];
 
   /**
    * Instância da classe

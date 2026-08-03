@@ -88,7 +88,7 @@ class cl_orcparamseq
     /**
      * @var array
      */
-    private $leftJoin = array();
+    private $leftJoin = [];
 
     /**
      * cl_orcparamseq constructor.
@@ -96,7 +96,7 @@ class cl_orcparamseq
     public function __construct()
     {
         $this->rotulo = new rotulo('orcparamseq');
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -123,7 +123,7 @@ class cl_orcparamseq
             $this->o69_desdobrarlinha = ($this->o69_desdobrarlinha == "f" ? @$GLOBALS["HTTP_POST_VARS"]["o69_desdobrarlinha"] : $this->o69_desdobrarlinha);
             $this->o69_origem = ($this->o69_origem == "" ? @$GLOBALS["HTTP_POST_VARS"]["o69_origem"] : $this->o69_origem);
 
-            $this->o69_descr = substr($this->o69_labelrel, 0, 60);
+            $this->o69_descr = substr((string) $this->o69_labelrel, 0, 60);
 
             if ($this->o69_origem == 0) {
                 $this->o69_totalizador = 't';
@@ -347,7 +347,7 @@ class cl_orcparamseq
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "o69 ($this->o69_codparamrel." - ".$this->o69_codseq) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "o69 já Cadastrado";
@@ -386,101 +386,101 @@ class cl_orcparamseq
             $resaco = $this->sql_record($this->sql_query_file($this->o69_codparamrel, $this->o69_codseq));
             if (($resaco != false) || ($this->numrows != 0)) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,6577,'$this->o69_codparamrel','I')");
                 $resac = db_query("insert into db_acountkey values($acount,6578,'$this->o69_codseq','I')");
-                $resac = db_query("insert into db_acount values($acount,1082,6577,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,6577,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_codparamrel'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,6578,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,6578,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_codseq'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,6579,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,6579,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_descr'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,8855,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,8855,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_grupo'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,8856,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,8856,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_grupoexclusao'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,8988,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,8988,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_nivel'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,8989,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,8989,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_libnivel'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,8990,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,8990,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_librec'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,8991,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,8991,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_libsubfunc'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,10252,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,10252,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_libfunc'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,11807,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,11807,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_verificaano'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,14102,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,14102,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_labelrel'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,14103,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,14103,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_manual'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,17722,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,17722,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_totalizador'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,17723,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,17723,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_ordem'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,17726,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,17726,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_nivellinha'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,17727,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,17727,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_observacao'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,17910,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,17910,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_desdobrarlinha'
                 )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1082,20474,'','" . AddSlashes(pg_result(
+                $resac = db_query("insert into db_acount values($acount,1082,20474,'','" . AddSlashes(pg_fetch_result(
                     $resaco,
                     0,
                     'o69_origem'
@@ -498,10 +498,10 @@ class cl_orcparamseq
 
         $sql = " UPDATE orcparamseq SET ";
         $virgula = "";
-        if (trim($this->o69_codparamrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_codparamrel"])) {
+        if (trim((string) $this->o69_codparamrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_codparamrel"])) {
             $sql .= $virgula . " o69_codparamrel = $this->o69_codparamrel ";
             $virgula = ",";
-            if (trim($this->o69_codparamrel) == null) {
+            if (trim((string) $this->o69_codparamrel) == null) {
                 $this->erro_sql = " Campo codigo do relatorio não informado.";
                 $this->erro_campo = "o69_codparamrel";
                 $this->erro_banco = "";
@@ -515,10 +515,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_codseq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_codseq"])) {
+        if (trim((string) $this->o69_codseq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_codseq"])) {
             $sql .= $virgula . " o69_codseq = $this->o69_codseq ";
             $virgula = ",";
-            if (trim($this->o69_codseq) == null) {
+            if (trim((string) $this->o69_codseq) == null) {
                 $this->erro_sql = " Campo sequencia da tabela não informado.";
                 $this->erro_campo = "o69_codseq";
                 $this->erro_banco = "";
@@ -532,10 +532,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_descr) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_descr"])) {
+        if (trim((string) $this->o69_descr) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_descr"])) {
             $sql .= $virgula . " o69_descr = '$this->o69_descr' ";
             $virgula = ",";
-            if (trim($this->o69_descr) == null) {
+            if (trim((string) $this->o69_descr) == null) {
                 $this->erro_sql = " Campo descrição não informado.";
                 $this->erro_campo = "o69_descr";
                 $this->erro_banco = "";
@@ -549,10 +549,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_grupo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_grupo"])) {
+        if (trim((string) $this->o69_grupo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_grupo"])) {
             $sql .= $virgula . " o69_grupo = $this->o69_grupo ";
             $virgula = ",";
-            if (trim($this->o69_grupo) == null) {
+            if (trim((string) $this->o69_grupo) == null) {
                 $this->erro_sql = " Campo Grupo de Contas não informado.";
                 $this->erro_campo = "o69_grupo";
                 $this->erro_banco = "";
@@ -566,24 +566,24 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_grupoexclusao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_grupoexclusao"])) {
-            if (trim($this->o69_grupoexclusao) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_grupoexclusao"])) {
+        if (trim((string) $this->o69_grupoexclusao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_grupoexclusao"])) {
+            if (trim((string) $this->o69_grupoexclusao) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_grupoexclusao"])) {
                 $this->o69_grupoexclusao = "0";
             }
             $sql .= $virgula . " o69_grupoexclusao = $this->o69_grupoexclusao ";
             $virgula = ",";
         }
-        if (trim($this->o69_nivel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_nivel"])) {
-            if (trim($this->o69_nivel) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_nivel"])) {
+        if (trim((string) $this->o69_nivel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_nivel"])) {
+            if (trim((string) $this->o69_nivel) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_nivel"])) {
                 $this->o69_nivel = "0";
             }
             $sql .= $virgula . " o69_nivel = $this->o69_nivel ";
             $virgula = ",";
         }
-        if (trim($this->o69_libnivel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libnivel"])) {
+        if (trim((string) $this->o69_libnivel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libnivel"])) {
             $sql .= $virgula . " o69_libnivel = '$this->o69_libnivel' ";
             $virgula = ",";
-            if (trim($this->o69_libnivel) == null) {
+            if (trim((string) $this->o69_libnivel) == null) {
                 $this->erro_sql = " Campo Libera Nivel não informado.";
                 $this->erro_campo = "o69_libnivel";
                 $this->erro_banco = "";
@@ -597,10 +597,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_librec) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_librec"])) {
+        if (trim((string) $this->o69_librec) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_librec"])) {
             $sql .= $virgula . " o69_librec = '$this->o69_librec' ";
             $virgula = ",";
-            if (trim($this->o69_librec) == null) {
+            if (trim((string) $this->o69_librec) == null) {
                 $this->erro_sql = " Campo libera recurso não informado.";
                 $this->erro_campo = "o69_librec";
                 $this->erro_banco = "";
@@ -614,10 +614,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_libsubfunc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libsubfunc"])) {
+        if (trim((string) $this->o69_libsubfunc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libsubfunc"])) {
             $sql .= $virgula . " o69_libsubfunc = '$this->o69_libsubfunc' ";
             $virgula = ",";
-            if (trim($this->o69_libsubfunc) == null) {
+            if (trim((string) $this->o69_libsubfunc) == null) {
                 $this->erro_sql = " Campo Libera SubFunção não informado.";
                 $this->erro_campo = "o69_libsubfunc";
                 $this->erro_banco = "";
@@ -631,10 +631,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_libfunc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libfunc"])) {
+        if (trim((string) $this->o69_libfunc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libfunc"])) {
             $sql .= $virgula . " o69_libfunc = '$this->o69_libfunc' ";
             $virgula = ",";
-            if (trim($this->o69_libfunc) == null) {
+            if (trim((string) $this->o69_libfunc) == null) {
                 $this->erro_sql = " Campo Libera Função não informado.";
                 $this->erro_campo = "o69_libfunc";
                 $this->erro_banco = "";
@@ -648,10 +648,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_verificaano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_verificaano"])) {
+        if (trim((string) $this->o69_verificaano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_verificaano"])) {
             $sql .= $virgula . " o69_verificaano = '$this->o69_verificaano' ";
             $virgula = ",";
-            if (trim($this->o69_verificaano) == null) {
+            if (trim((string) $this->o69_verificaano) == null) {
                 $this->erro_sql = " Campo Verifica Ano não informado.";
                 $this->erro_campo = "o69_verificaano";
                 $this->erro_banco = "";
@@ -665,10 +665,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_labelrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_labelrel"])) {
+        if (trim((string) $this->o69_labelrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_labelrel"])) {
             $sql .= $virgula . " o69_labelrel = '$this->o69_labelrel' ";
             $virgula = ",";
-            if (trim($this->o69_labelrel) == null) {
+            if (trim((string) $this->o69_labelrel) == null) {
                 $this->erro_sql = " Campo Label Relatório não informado.";
                 $this->erro_campo = "o69_labelrel";
                 $this->erro_banco = "";
@@ -690,34 +690,34 @@ class cl_orcparamseq
         }
         $virgula = ",";
 
-        if (trim($this->o69_totalizador) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_totalizador"])) {
+        if (trim((string) $this->o69_totalizador) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_totalizador"])) {
             $sql .= $virgula . " o69_totalizador = '$this->o69_totalizador' ";
             $virgula = ",";
         }
-        if (trim($this->o69_ordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_ordem"])) {
-            if (trim($this->o69_ordem) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_ordem"])) {
+        if (trim((string) $this->o69_ordem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_ordem"])) {
+            if (trim((string) $this->o69_ordem) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_ordem"])) {
                 $this->o69_ordem = "0";
             }
             $sql .= $virgula . " o69_ordem = $this->o69_ordem ";
             $virgula = ",";
         }
-        if (trim($this->o69_nivellinha) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_nivellinha"])) {
-            if (trim($this->o69_nivellinha) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_nivellinha"])) {
+        if (trim((string) $this->o69_nivellinha) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_nivellinha"])) {
+            if (trim((string) $this->o69_nivellinha) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_nivellinha"])) {
                 $this->o69_nivellinha = "0";
             }
             $sql .= $virgula . " o69_nivellinha = $this->o69_nivellinha ";
             $virgula = ",";
         }
-        if (trim($this->o69_observacao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_observacao"])) {
+        if (trim((string) $this->o69_observacao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_observacao"])) {
             $sql .= $virgula . " o69_observacao = '$this->o69_observacao' ";
             $virgula = ",";
         }
-        if (trim($this->o69_desdobrarlinha) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_desdobrarlinha"])) {
+        if (trim((string) $this->o69_desdobrarlinha) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_desdobrarlinha"])) {
             $sql .= $virgula . " o69_desdobrarlinha = '$this->o69_desdobrarlinha' ";
             $virgula = ",";
         }
-        if (trim($this->o69_origem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_origem"])) {
-            if (trim($this->o69_origem) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_origem"])) {
+        if (trim((string) $this->o69_origem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_origem"])) {
+            if (trim((string) $this->o69_origem) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_origem"])) {
                 $this->o69_origem = "0";
             }
             $sql .= $virgula . " o69_origem = $this->o69_origem ";
@@ -737,138 +737,138 @@ class cl_orcparamseq
             if ($this->numrows > 0) {
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,6577,'$this->o69_codparamrel','A')");
                     $resac = db_query("insert into db_acountkey values($acount,6578,'$this->o69_codseq','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_codparamrel"]) || $this->o69_codparamrel != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,6577,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,6577,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_codparamrel'
                         )) . "','$this->o69_codparamrel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_codseq"]) || $this->o69_codseq != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,6578,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,6578,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_codseq'
                         )) . "','$this->o69_codseq'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_descr"]) || $this->o69_descr != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,6579,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,6579,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_descr'
                         )) . "','$this->o69_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_grupo"]) || $this->o69_grupo != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,8855,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,8855,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_grupo'
                         )) . "','$this->o69_grupo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_grupoexclusao"]) || $this->o69_grupoexclusao != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,8856,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,8856,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_grupoexclusao'
                         )) . "','$this->o69_grupoexclusao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_nivel"]) || $this->o69_nivel != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,8988,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,8988,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_nivel'
                         )) . "','$this->o69_nivel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_libnivel"]) || $this->o69_libnivel != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,8989,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,8989,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_libnivel'
                         )) . "','$this->o69_libnivel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_librec"]) || $this->o69_librec != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,8990,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,8990,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_librec'
                         )) . "','$this->o69_librec'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_libsubfunc"]) || $this->o69_libsubfunc != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,8991,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,8991,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_libsubfunc'
                         )) . "','$this->o69_libsubfunc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_libfunc"]) || $this->o69_libfunc != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,10252,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,10252,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_libfunc'
                         )) . "','$this->o69_libfunc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_verificaano"]) || $this->o69_verificaano != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,11807,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,11807,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_verificaano'
                         )) . "','$this->o69_verificaano'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_labelrel"]) || $this->o69_labelrel != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,14102,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,14102,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_labelrel'
                         )) . "','$this->o69_labelrel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_manual"]) || $this->o69_manual != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,14103,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,14103,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_manual'
                         )) . "','$this->o69_manual'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_totalizador"]) || $this->o69_totalizador != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,17722,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,17722,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_totalizador'
                         )) . "','$this->o69_totalizador'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_ordem"]) || $this->o69_ordem != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,17723,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,17723,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_ordem'
                         )) . "','$this->o69_ordem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_nivellinha"]) || $this->o69_nivellinha != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,17726,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,17726,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_nivellinha'
                         )) . "','$this->o69_nivellinha'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_observacao"]) || $this->o69_observacao != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,17727,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,17727,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_observacao'
                         )) . "','$this->o69_observacao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_desdobrarlinha"]) || $this->o69_desdobrarlinha != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,17910,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,17910,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_desdobrarlinha'
                         )) . "','$this->o69_desdobrarlinha'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o69_origem"]) || $this->o69_origem != "") {
-                        $resac = db_query("insert into db_acount values($acount,1082,20474,'" . AddSlashes(pg_result(
+                        $resac = db_query("insert into db_acount values($acount,1082,20474,'" . AddSlashes(pg_fetch_result(
                             $resaco,
                             $conresaco,
                             'o69_origem'
@@ -936,101 +936,101 @@ class cl_orcparamseq
             if (($resaco != false) || ($this->numrows != 0)) {
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,6577,'$o69_codparamrel','E')");
                     $resac = db_query("insert into db_acountkey values($acount,6578,'$o69_codseq','E')");
-                    $resac = db_query("insert into db_acount values($acount,1082,6577,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,6577,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_codparamrel'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,6578,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,6578,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_codseq'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,6579,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,6579,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_descr'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,8855,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8855,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_grupo'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,8856,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8856,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_grupoexclusao'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,8988,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8988,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_nivel'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,8989,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8989,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_libnivel'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,8990,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8990,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_librec'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,8991,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8991,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_libsubfunc'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,10252,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,10252,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_libfunc'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,11807,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,11807,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_verificaano'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,14102,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,14102,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_labelrel'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,14103,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,14103,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_manual'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,17722,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,17722,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_totalizador'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,17723,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,17723,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_ordem'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,17726,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,17726,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_nivellinha'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,17727,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,17727,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_observacao'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,17910,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,17910,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_desdobrarlinha'
                     )) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1082,20474,'','" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,20474,'','" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $iresaco,
                         'o69_origem'
@@ -1119,7 +1119,7 @@ class cl_orcparamseq
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:orcparamseq";
@@ -1174,7 +1174,7 @@ class cl_orcparamseq
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1223,7 +1223,7 @@ class cl_orcparamseq
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1238,10 +1238,10 @@ class cl_orcparamseq
         $this->atualizacampos();
         $sql = " UPDATE orcparamseq SET ";
         $virgula = "";
-        if (trim($this->o69_codparamrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_codparamrel"])) {
+        if (trim((string) $this->o69_codparamrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_codparamrel"])) {
             $sql .= $virgula . " o69_codparamrel = $this->o69_codparamrel ";
             $virgula = ",";
-            if (trim($this->o69_codparamrel) == null) {
+            if (trim((string) $this->o69_codparamrel) == null) {
                 $this->erro_sql = " Campo codigo do relatorio nao Informado.";
                 $this->erro_campo = "o69_codparamrel";
                 $this->erro_banco = "";
@@ -1255,10 +1255,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_codseq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_codseq"])) {
+        if (trim((string) $this->o69_codseq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_codseq"])) {
             $sql .= $virgula . " o69_codseq = $this->o69_codseq ";
             $virgula = ",";
-            if (trim($this->o69_codseq) == null) {
+            if (trim((string) $this->o69_codseq) == null) {
                 $this->erro_sql = " Campo sequencia da tabela nao Informado.";
                 $this->erro_campo = "o69_codseq";
                 $this->erro_banco = "";
@@ -1272,14 +1272,14 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_totalizador) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_totalizador"])) {
+        if (trim((string) $this->o69_totalizador) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_totalizador"])) {
             $sql .= $virgula . " o69_totalizador = '$this->o69_totalizador' ";
             $virgula = ",";
         }
-        if (trim($this->o69_descr) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_descr"])) {
+        if (trim((string) $this->o69_descr) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_descr"])) {
             $sql .= $virgula . " o69_descr = '$this->o69_descr' ";
             $virgula = ",";
-            if (trim($this->o69_descr) == null) {
+            if (trim((string) $this->o69_descr) == null) {
                 $this->erro_sql = " Campo descrição nao Informado.";
                 $this->erro_campo = "o69_descr";
                 $this->erro_banco = "";
@@ -1293,10 +1293,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_grupo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_grupo"])) {
+        if (trim((string) $this->o69_grupo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_grupo"])) {
             $sql .= $virgula . " o69_grupo = $this->o69_grupo ";
             $virgula = ",";
-            if (trim($this->o69_grupo) == null) {
+            if (trim((string) $this->o69_grupo) == null) {
                 $this->erro_sql = " Campo Grupo de Contas nao Informado.";
                 $this->erro_campo = "o69_grupo";
                 $this->erro_banco = "";
@@ -1311,16 +1311,16 @@ class cl_orcparamseq
             }
         }
 
-        if (trim($this->o69_grupoexclusao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_grupoexclusao"])) {
-            if (trim($this->o69_grupoexclusao) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_grupoexclusao"])) {
+        if (trim((string) $this->o69_grupoexclusao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_grupoexclusao"])) {
+            if (trim((string) $this->o69_grupoexclusao) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_grupoexclusao"])) {
                 $this->o69_grupoexclusao = "0";
             }
             $sql .= $virgula . " o69_grupoexclusao = $this->o69_grupoexclusao ";
             $virgula = ",";
         }
 
-        if (trim($this->o69_nivel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_nivel"])) {
-            if (trim($this->o69_nivel) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_nivel"])) {
+        if (trim((string) $this->o69_nivel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_nivel"])) {
+            if (trim((string) $this->o69_nivel) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_nivel"])) {
                 $this->o69_nivel = "0";
             }
             $sql .= $virgula . " o69_nivel = $this->o69_nivel ";
@@ -1328,10 +1328,10 @@ class cl_orcparamseq
         }
 
 
-        if (trim($this->o69_libnivel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libnivel"])) {
+        if (trim((string) $this->o69_libnivel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libnivel"])) {
             $sql .= $virgula . " o69_libnivel = '$this->o69_libnivel' ";
             $virgula = ",";
-            if (trim($this->o69_libnivel) == null) {
+            if (trim((string) $this->o69_libnivel) == null) {
                 $this->erro_sql = " Campo Libera Nivel nao Informado.";
                 $this->erro_campo = "o69_libnivel";
                 $this->erro_banco = "";
@@ -1345,10 +1345,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_librec) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_librec"])) {
+        if (trim((string) $this->o69_librec) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_librec"])) {
             $sql .= $virgula . " o69_librec = '$this->o69_librec' ";
             $virgula = ",";
-            if (trim($this->o69_librec) == null) {
+            if (trim((string) $this->o69_librec) == null) {
                 $this->erro_sql = " Campo libera recurso nao Informado.";
                 $this->erro_campo = "o69_librec";
                 $this->erro_banco = "";
@@ -1362,10 +1362,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_libsubfunc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libsubfunc"])) {
+        if (trim((string) $this->o69_libsubfunc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libsubfunc"])) {
             $sql .= $virgula . " o69_libsubfunc = '$this->o69_libsubfunc' ";
             $virgula = ",";
-            if (trim($this->o69_libsubfunc) == null) {
+            if (trim((string) $this->o69_libsubfunc) == null) {
                 $this->erro_sql = " Campo Libera SubFunção nao Informado.";
                 $this->erro_campo = "o69_libsubfunc";
                 $this->erro_banco = "";
@@ -1380,18 +1380,18 @@ class cl_orcparamseq
             }
         }
 
-        if (trim($this->o69_origem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_origem"])) {
-            if (trim($this->o69_origem) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_origem"])) {
+        if (trim((string) $this->o69_origem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_origem"])) {
+            if (trim((string) $this->o69_origem) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o69_origem"])) {
                 $this->o69_origem = "0";
             }
             $sql .= $virgula . " o69_origem = $this->o69_origem ";
             $virgula = ",";
         }
 
-        if (trim($this->o69_libfunc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libfunc"])) {
+        if (trim((string) $this->o69_libfunc) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_libfunc"])) {
             $sql .= $virgula . " o69_libfunc = '$this->o69_libfunc' ";
             $virgula = ",";
-            if (trim($this->o69_libfunc) == null) {
+            if (trim((string) $this->o69_libfunc) == null) {
                 $this->erro_sql = " Campo Libera Função nao Informado.";
                 $this->erro_campo = "o69_libfunc";
                 $this->erro_banco = "";
@@ -1405,10 +1405,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_verificaano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_verificaano"])) {
+        if (trim((string) $this->o69_verificaano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_verificaano"])) {
             $sql .= $virgula . " o69_verificaano = '$this->o69_verificaano' ";
             $virgula = ",";
-            if (trim($this->o69_verificaano) == null) {
+            if (trim((string) $this->o69_verificaano) == null) {
                 $this->erro_sql = " Campo Verifica Ano nao Informado.";
                 $this->erro_campo = "o69_verificaano";
                 $this->erro_banco = "";
@@ -1422,10 +1422,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_labelrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_labelrel"])) {
+        if (trim((string) $this->o69_labelrel) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_labelrel"])) {
             $sql .= $virgula . " o69_labelrel = '$this->o69_labelrel' ";
             $virgula = ",";
-            if (trim($this->o69_labelrel) == null) {
+            if (trim((string) $this->o69_labelrel) == null) {
                 $this->erro_sql = " Campo Label Relatório nao Informado.";
                 $this->erro_campo = "o69_labelrel";
                 $this->erro_banco = "";
@@ -1439,10 +1439,10 @@ class cl_orcparamseq
                 return false;
             }
         }
-        if (trim($this->o69_manual) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_manual"])) {
+        if (trim((string) $this->o69_manual) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o69_manual"])) {
             $sql .= $virgula . " o69_manual = '$this->o69_manual' ";
             $virgula = ",";
-            if (trim($this->o69_manual) == null) {
+            if (trim((string) $this->o69_manual) == null) {
                 $this->erro_sql = " Campo Manual nao Informado.";
                 $this->erro_campo = "o69_manual";
                 $this->erro_banco = "";
@@ -1473,96 +1473,96 @@ class cl_orcparamseq
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,6577,'$this->o69_codparamrel','A')");
                 $resac = db_query("insert into db_acountkey values($acount,6578,'$this->o69_codseq','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_codparamrel"]) || $this->o69_codparamrel != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,6577,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,6577,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_codparamrel'
                     )) . "','$this->o69_codparamrel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_codseq"]) || $this->o69_codseq != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,6578,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,6578,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_codseq'
                     )) . "','$this->o69_codseq'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_descr"]) || $this->o69_descr != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,6579,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,6579,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_descr'
                     )) . "','$this->o69_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_grupo"]) || $this->o69_grupo != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,8855,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8855,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_grupo'
                     )) . "','$this->o69_grupo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_grupoexclusao"]) || $this->o69_grupoexclusao != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,8856,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8856,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_grupoexclusao'
                     )) . "','$this->o69_grupoexclusao'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_nivel"]) || $this->o69_nivel != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,8988,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8988,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_nivel'
                     )) . "','$this->o69_nivel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_libnivel"]) || $this->o69_libnivel != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,8989,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8989,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_libnivel'
                     )) . "','$this->o69_libnivel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_librec"]) || $this->o69_librec != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,8990,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8990,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_librec'
                     )) . "','$this->o69_librec'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_libsubfunc"]) || $this->o69_libsubfunc != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,8991,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,8991,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_libsubfunc'
                     )) . "','$this->o69_libsubfunc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_libfunc"]) || $this->o69_libfunc != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,10252,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,10252,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_libfunc'
                     )) . "','$this->o69_libfunc'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_verificaano"]) || $this->o69_verificaano != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,11807,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,11807,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_verificaano'
                     )) . "','$this->o69_verificaano'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_labelrel"]) || $this->o69_labelrel != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,14102,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,14102,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_labelrel'
                     )) . "','$this->o69_labelrel'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o69_manual"]) || $this->o69_manual != "") {
-                    $resac = db_query("insert into db_acount values($acount,1082,14103,'" . AddSlashes(pg_result(
+                    $resac = db_query("insert into db_acount values($acount,1082,14103,'" . AddSlashes(pg_fetch_result(
                         $resaco,
                         $conresaco,
                         'o69_manual'
@@ -1658,7 +1658,7 @@ class cl_orcparamseq
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -1674,7 +1674,7 @@ class cl_orcparamseq
      * @param array $order
      * @return string
      */
-    public function sql($columns = array('*'), $where = array(), $order = array())
+    public function sql($columns = ['*'], $where = [], $order = [])
     {
         $columns = implode(', ', $columns);
         $where = $where ? 'WHERE ' . implode(' AND ', $where) : '';

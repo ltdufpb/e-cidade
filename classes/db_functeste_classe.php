@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE functeste
 class cl_functeste { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $funcant = null; 
-   var $descrfunc = null; 
-   var $padraoant = null; 
-   var $funcnova = null; 
+   public $funcant = null; 
+   public $descrfunc = null; 
+   public $padraoant = null; 
+   public $funcnova = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  funcant = varchar(6) = Função Anterior 
                  descrfunc = varchar(40) = Descrição 
                  padraoant = varchar(4) = Padrão Anterior 
                  funcnova = varchar(5) = Função Nova 
                  ";
    //funcao construtor da classe 
-   function cl_functeste() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("functeste"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,7 +134,7 @@ class cl_functeste {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "functeste ($this->funcant."-".$this->descrfunc) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "functeste já Cadastrado";
@@ -158,14 +158,14 @@ class cl_functeste {
      $resaco = $this->sql_record($this->sql_query_file($this->funcant,$this->descrfunc));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6094,'$this->funcant','I')");
        $resac = db_query("insert into db_acountkey values($acount,6095,'$this->descrfunc','I')");
-       $resac = db_query("insert into db_acount values($acount,980,6094,'','".AddSlashes(pg_result($resaco,0,'funcant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,980,6095,'','".AddSlashes(pg_result($resaco,0,'descrfunc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,980,6096,'','".AddSlashes(pg_result($resaco,0,'padraoant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,980,6097,'','".AddSlashes(pg_result($resaco,0,'funcnova'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,980,6094,'','".AddSlashes(pg_fetch_result($resaco,0,'funcant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,980,6095,'','".AddSlashes(pg_fetch_result($resaco,0,'descrfunc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,980,6096,'','".AddSlashes(pg_fetch_result($resaco,0,'padraoant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,980,6097,'','".AddSlashes(pg_fetch_result($resaco,0,'funcnova'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -174,10 +174,10 @@ class cl_functeste {
       $this->atualizacampos();
      $sql = " update functeste set ";
      $virgula = "";
-     if(trim($this->funcant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["funcant"])){ 
+     if(trim((string) $this->funcant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["funcant"])){ 
        $sql  .= $virgula." funcant = '$this->funcant' ";
        $virgula = ",";
-       if(trim($this->funcant) == null ){ 
+       if(trim((string) $this->funcant) == null ){ 
          $this->erro_sql = " Campo Função Anterior nao Informado.";
          $this->erro_campo = "funcant";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_functeste {
          return false;
        }
      }
-     if(trim($this->descrfunc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrfunc"])){ 
+     if(trim((string) $this->descrfunc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descrfunc"])){ 
        $sql  .= $virgula." descrfunc = '$this->descrfunc' ";
        $virgula = ",";
-       if(trim($this->descrfunc) == null ){ 
+       if(trim((string) $this->descrfunc) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "descrfunc";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_functeste {
          return false;
        }
      }
-     if(trim($this->padraoant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["padraoant"])){ 
+     if(trim((string) $this->padraoant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["padraoant"])){ 
        $sql  .= $virgula." padraoant = '$this->padraoant' ";
        $virgula = ",";
-       if(trim($this->padraoant) == null ){ 
+       if(trim((string) $this->padraoant) == null ){ 
          $this->erro_sql = " Campo Padrão Anterior nao Informado.";
          $this->erro_campo = "padraoant";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_functeste {
          return false;
        }
      }
-     if(trim($this->funcnova)!="" || isset($GLOBALS["HTTP_POST_VARS"]["funcnova"])){ 
+     if(trim((string) $this->funcnova)!="" || isset($GLOBALS["HTTP_POST_VARS"]["funcnova"])){ 
        $sql  .= $virgula." funcnova = '$this->funcnova' ";
        $virgula = ",";
-       if(trim($this->funcnova) == null ){ 
+       if(trim((string) $this->funcnova) == null ){ 
          $this->erro_sql = " Campo Função Nova nao Informado.";
          $this->erro_campo = "funcnova";
          $this->erro_banco = "";
@@ -237,18 +237,18 @@ class cl_functeste {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6094,'$this->funcant','A')");
          $resac = db_query("insert into db_acountkey values($acount,6095,'$this->descrfunc','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["funcant"]))
-           $resac = db_query("insert into db_acount values($acount,980,6094,'".AddSlashes(pg_result($resaco,$conresaco,'funcant'))."','$this->funcant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,980,6094,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'funcant'))."','$this->funcant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["descrfunc"]))
-           $resac = db_query("insert into db_acount values($acount,980,6095,'".AddSlashes(pg_result($resaco,$conresaco,'descrfunc'))."','$this->descrfunc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,980,6095,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'descrfunc'))."','$this->descrfunc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["padraoant"]))
-           $resac = db_query("insert into db_acount values($acount,980,6096,'".AddSlashes(pg_result($resaco,$conresaco,'padraoant'))."','$this->padraoant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,980,6096,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'padraoant'))."','$this->padraoant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["funcnova"]))
-           $resac = db_query("insert into db_acount values($acount,980,6097,'".AddSlashes(pg_result($resaco,$conresaco,'funcnova'))."','$this->funcnova',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,980,6097,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'funcnova'))."','$this->funcnova',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -293,14 +293,14 @@ class cl_functeste {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6094,'$funcant','E')");
          $resac = db_query("insert into db_acountkey values($acount,6095,'$descrfunc','E')");
-         $resac = db_query("insert into db_acount values($acount,980,6094,'','".AddSlashes(pg_result($resaco,$iresaco,'funcant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,980,6095,'','".AddSlashes(pg_result($resaco,$iresaco,'descrfunc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,980,6096,'','".AddSlashes(pg_result($resaco,$iresaco,'padraoant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,980,6097,'','".AddSlashes(pg_result($resaco,$iresaco,'funcnova'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,980,6094,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'funcant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,980,6095,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'descrfunc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,980,6096,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'padraoant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,980,6097,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'funcnova'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from functeste
@@ -366,7 +366,7 @@ class cl_functeste {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:functeste";
@@ -380,7 +380,7 @@ class cl_functeste {
    function sql_query ( $funcant=null,$descrfunc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,7 +409,7 @@ class cl_functeste {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_functeste {
    function sql_query_file ( $funcant=null,$descrfunc=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_functeste {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

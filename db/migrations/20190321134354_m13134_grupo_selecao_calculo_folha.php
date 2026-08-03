@@ -12,10 +12,10 @@ class M13134GrupoSelecaoCalculoFolha extends PostgresMigration
 
     public function down()
     {
-        $sqls = array(
+        $sqls = [
             "DELETE FROM selecao WHERE r44_gruposelecao IN(SELECT rh122_sequencial FROM gruposelecao WHERE rh122_sequencial > 2 and rh122_sequencial = (SELECT max(rh122_sequencial) FROM gruposelecao));",
             "DELETE FROM gruposelecao WHERE rh122_sequencial > 2 and rh122_sequencial = (SELECT max(rh122_sequencial) FROM gruposelecao);",
-        );
+        ];
 
         foreach($sqls as $sql) {
             $this->exec($sql);

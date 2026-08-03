@@ -102,8 +102,8 @@ $result_per = $clregenciahorario->sql_record($clregenciahorario->sql_query("",
                                                                         )
                                           );                                    
 db_fieldsmemory($result_per,0);
-$hora1         = (int)substr($menorhorario,0,2);
-$hora2         = (int)substr($maiorhorario,0,2)+1;
+$hora1         = (int)substr((string) $menorhorario,0,2);
+$hora2         = (int)substr((string) $maiorhorario,0,2)+1;
 $horainicial   = $hora1*100;
 $horafinal     = $hora2*100;
 $tempo_ini     = mktime($hora1,0,0,date("m"),date("d"),date("Y"));
@@ -164,7 +164,7 @@ for ($t = $horainicial; $t <= $horafinal; $t += 1) {
 	
   $pdf->setY($top_ini);
   $hora = strlen($t)==3?"0".$t:$t;
-  $hora = substr($hora,0,2).":".substr($hora,2,2);
+  $hora = substr((string) $hora,0,2).":".substr((string) $hora,2,2);
   if($hora <= $horafinal){
   if ($t != 2400) {
   	
@@ -189,7 +189,7 @@ $pdf->setfont('arial','',6);
 ////////Horário do Docente
 $var_left = $tabela1_left+$larg_coluna1;
 
-$aSimult    = array();
+$aSimult    = [];
 $iIndSimult = -1;
 
 $sWhereRecHumanoHoraDisp = "ed75_i_rechumano = {$rechumano} AND ed33_ativo is true";
@@ -232,21 +232,21 @@ if( $lRecHumanoHoraDisp ) {
     for ($t = $horainicial; $t <= $horafinal; $t += 1) {
 
       $hora = strlen($t)==3?"0".$t:$t;
-      $hora = substr($hora,0,2).":".substr($hora,2,2);
+      $hora = substr((string) $hora,0,2).":".substr((string) $hora,2,2);
       if ($clregenciahorario->numrows > 0) {
 
         for ($y = 0; $y < $clregenciahorario->numrows; $y++) {
 
           db_fieldsmemory($result1,$y);
-          if (trim($hora) == trim($ed17_h_inicio)) {
+          if (trim($hora) == trim((string) $ed17_h_inicio)) {
 
-            $tempo_ini = mktime(substr($ed17_h_inicio,0,2),substr($ed17_h_inicio,3,2),0,1,1,1999);
-            $tempo_fim = mktime(substr($ed17_h_fim,0,2),substr($ed17_h_fim,3,2),0,1,1,1999);
+            $tempo_ini = mktime(substr((string) $ed17_h_inicio,0,2),substr((string) $ed17_h_inicio,3,2),0,1,1,1999);
+            $tempo_fim = mktime(substr((string) $ed17_h_fim,0,2),substr((string) $ed17_h_fim,3,2),0,1,1,1999);
             $difermin  = ($tempo_fim-$tempo_ini)/60;
             $difer     = ceil($difermin/2);
             $conta     = $y;
             $proximo   = true;
-            $array     = array();
+            $array     = [];
 
             while ($proximo == true) {
 
@@ -306,8 +306,8 @@ if( $lRecHumanoHoraDisp ) {
                 $aSimult[$iIndSimult]->iDiaSemana      = $oDados->ed58_i_diasemana;
 
               }
-              $tempo_ini = mktime(substr($aSimult[$iIndSimult]->sHoraInicio,0,2),substr($aSimult[$iIndSimult]->sHoraInicio,3,2),0,1,1,1999);
-              $tempo_fim = mktime(substr($aSimult[$iIndSimult]->sHoraFim,0,2),substr($aSimult[$iIndSimult]->sHoraFim,3,2),0,1,1,1999);
+              $tempo_ini = mktime(substr((string) $aSimult[$iIndSimult]->sHoraInicio,0,2),substr((string) $aSimult[$iIndSimult]->sHoraInicio,3,2),0,1,1,1999);
+              $tempo_fim = mktime(substr((string) $aSimult[$iIndSimult]->sHoraFim,0,2),substr((string) $aSimult[$iIndSimult]->sHoraFim,3,2),0,1,1,1999);
               $difermin  = ($tempo_fim-$tempo_ini)/60;
               $difer     = ceil($difermin/5);
               $alt_multi = $difer/4;
@@ -320,14 +320,14 @@ if( $lRecHumanoHoraDisp ) {
 
             } else {
 
-              $tempo_ini = mktime(substr($ed17_h_inicio,0,2),substr($ed17_h_inicio,3,2),0,1,1,1999);
-              $tempo_fim = mktime(substr($ed17_h_fim,0,2),substr($ed17_h_fim,3,2),0,1,1,1999);
+              $tempo_ini = mktime(substr((string) $ed17_h_inicio,0,2),substr((string) $ed17_h_inicio,3,2),0,1,1,1999);
+              $tempo_fim = mktime(substr((string) $ed17_h_fim,0,2),substr((string) $ed17_h_fim,3,2),0,1,1,1999);
               $difermin  = ($tempo_fim-$tempo_ini)/60;
               $difer     = ceil($difermin/5);
               $alt_multi = $difer/4;
               $pdf->setXY($var_left,$ini_top);
-              $texto  = "Escola: ".$ed17_i_escola."\n".substr(trim($ed232_c_descr),0,10)."\nTurma: ";
-              $texto .= substr(trim($ed57_c_descr),0,10)."\n".substr(trim($ed15_c_nome),0,6)."-$ed17_h_inicio / $ed17_h_fim";
+              $texto  = "Escola: ".$ed17_i_escola."\n".substr(trim((string) $ed232_c_descr),0,10)."\nTurma: ";
+              $texto .= substr(trim((string) $ed57_c_descr),0,10)."\n".substr(trim((string) $ed15_c_nome),0,6)."-$ed17_h_inicio / $ed17_h_fim";
               $pdf->multicell($larg_dia,$alt_multi,$texto,1,"J",1,0);
 
             }
@@ -340,15 +340,15 @@ if( $lRecHumanoHoraDisp ) {
         for ($w = 0; $w < $clturmaachorario->numrows; $w++) {
 
           db_fieldsmemory($result3,$w);
-          if (trim($hora) == trim($ed17_h_inicio)) {
+          if (trim($hora) == trim((string) $ed17_h_inicio)) {
 
-            $tempo_ini = mktime(substr($ed17_h_inicio,0,2),substr($ed17_h_inicio,3,2),0,1,1,1999);
-            $tempo_fim = mktime(substr($ed17_h_fim,0,2),substr($ed17_h_fim,3,2),0,1,1,1999);
+            $tempo_ini = mktime(substr((string) $ed17_h_inicio,0,2),substr((string) $ed17_h_inicio,3,2),0,1,1,1999);
+            $tempo_fim = mktime(substr((string) $ed17_h_fim,0,2),substr((string) $ed17_h_fim,3,2),0,1,1,1999);
             $difermin  = ($tempo_fim-$tempo_ini)/60;
             $difer     = ceil($difermin/5);
             $alt_multi = $difer/4;
             $pdf->setXY($var_left,$ini_top);
-            $texto  = "Escola: ".$ed17_i_escola."\n".substr(trim($ed268_c_descr),0,10)."\n".substr(trim($ed15_c_nome),0,6);
+            $texto  = "Escola: ".$ed17_i_escola."\n".substr(trim((string) $ed268_c_descr),0,10)."\n".substr(trim((string) $ed15_c_nome),0,6);
             $texto .= "-$ed17_h_inicio / $ed17_h_fim";
             $pdf->multicell($larg_dia,$alt_multi,$texto,1,"J",1,0);
 
@@ -389,7 +389,7 @@ if (count($aSimult) > 0) { // Tem atendimento simultâneo
   }
   $nYFimDiaSemana = $pdf->getY();
 
-  usort($aSimult, 'cmpPeriodo');
+  usort($aSimult, cmpPeriodo(...));
 
   $pdf->setfillcolor(239);
   $lNovoPer = false;
@@ -467,8 +467,8 @@ if (count($aSimult) > 0) { // Tem atendimento simultâneo
       
     }
     $pdf->setXY($nX, $nYTmp);
-    $texto  = $sQuebra."\n Turma: ". substr(trim($aSimult[$a]->sNomeTurma),0,8)."\n";
-    $texto .= "Disciplina: ".substr(trim($aSimult[$a]->sNomeDisciplina),0,10);
+    $texto  = $sQuebra."\n Turma: ". substr(trim((string) $aSimult[$a]->sNomeTurma),0,8)."\n";
+    $texto .= "Disciplina: ".substr(trim((string) $aSimult[$a]->sNomeDisciplina),0,10);
     $pdf->multicell($larg_dia - 2, $alt_multi, $texto, 0, 1, 'J', false, 0);
     
     $nYmaior  = $nYmaior > $pdf->getY() ? $nYmaior : $pdf->getY();

@@ -214,8 +214,8 @@ function novoHorario($iId, $sHoraIni, $sHoraFim) {
                       </fieldset>
                     </td>
                     <?php 
-                    $aHoraIni = explode(',', $sd06_c_horainicio);
-                    $aHoraFim = explode(',', $sd06_c_horafim);
+                    $aHoraIni = explode(',', (string) $sd06_c_horainicio);
+                    $aHoraFim = explode(',', (string) $sd06_c_horafim);
                     $iTam     = count($aHoraFim);
 
                     for ($iCont = 0; $iCont < $iTam; $iCont++) {

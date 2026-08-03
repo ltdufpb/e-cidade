@@ -91,7 +91,7 @@ db_inputdata('h65_data',@$h65_data_dia,@$h65_data_mes,@$h65_data_ano,true,'text'
     </td>
     <td> 
 <?php 
-$x = array('A'=>'Aprovado','R'=>'Reprovado');
+$x = ['A'=>'Aprovado','R'=>'Reprovado'];
 db_select('h65_resultado',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -187,7 +187,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rhestagioresultado.hide();
   <?php 
 //  if (!isset($oGet->chavepesquisa)){
-    $name = basename($PHP_SELF);
+    $name = basename((string) $PHP_SELF);
     echo "location.href='{$name}?chavepesquisa='+chave";
  // }
   ?>

@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -211,8 +211,8 @@ db_postmemory($HTTP_POST_VARS);
               </td>
               <td align="left">
                 <?php
-                  $aRetiricadora = array( "2"=>"Primeira Entrega",
-                                          "1"=>"Retificadora" );
+                  $aRetiricadora = [ "2"=>"Primeira Entrega",
+                                          "1"=>"Retificadora" ];
                   db_select('retificacao',$aRetiricadora, true, 4, "");
 	              ?>
               </td>

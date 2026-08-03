@@ -39,13 +39,7 @@ use ECidade\Tributario\Juridico\ProcessoEletronico\Repository\ProcessoEletronico
 class Processamento
 {
 
-    /**
-     * Código da lista
-     * @var int
-     */
-    private $lista;
-
-    protected $iniciais = array();
+    protected $iniciais = [];
 
     /**
      * Agrupar iniciais por cgm
@@ -67,12 +61,6 @@ class Processamento
      * Agrupar por auto de infração
      */
     const AGRUPAR_AUTO_INFRACAO = 4;
-
-
-    /**
-     * @var \DateTime
-     */
-    private $dataProcessamento;
 
     /**
      * @var \UsuarioSistema
@@ -120,15 +108,17 @@ class Processamento
     /**
      * Processamento constructor.
      * @param $lista
+     * @param int $lista
      */
     public function __construct(
-        $lista,
-        \DateTime $dataProcessamento,
+        /**
+         * Código da lista
+         */
+        private $lista,
+        private readonly \DateTime $dataProcessamento,
         \UsuarioSistema $usuario,
         \Instituicao $instituicao
     ) {
-        $this->lista = $lista;
-        $this->dataProcessamento = $dataProcessamento;
         $this->usuario = $usuario;
         $this->instituicao = $instituicao;
     }
@@ -148,9 +138,9 @@ class Processamento
         if (!$rsIniciais) {
             throw new \DBException("Erro ao pesquisar iniciais da lista {$this->lista}");
         }
-        $InicialRepository = InicialRepository::getInstance();
+        $InicialRepository = (new InicialRepository())->getInstance();
         $InicialRepository->setReturnFullItem(true);
-        $listaIniciais = array();
+        $listaIniciais = [];
         \db_utils::makeCollectionFromRecord($rsIniciais, function ($dados) use ($InicialRepository, &$listaIniciais) {
 
             $inicial = $InicialRepository->getByCode($dados->inicial);
@@ -219,10 +209,10 @@ class Processamento
     {
 
         $dadosDinamicos = $this->getDadosParaConsultaAgrupado();
-        $where = array(
+        $where = [
             "k61_codigo = {$this->lista}",
             "v38_inicial is null"
-        );
+        ];
         if (!empty($dadosDinamicos->where)) {
             $where[] = $dadosDinamicos->where;
         }
@@ -260,7 +250,7 @@ class Processamento
      */
     public function processarIniciais()
     {
-        $listaDeDocumentosParaAssinar = array();
+        $listaDeDocumentosParaAssinar = [];
         $iniciaisAgrupadas = $this->getIniciaisAgrupadas();
         if (count($iniciaisAgrupadas) == 0) {
             throw new \BusinessException("Sem iniciais para processar na lista {$this->lista}.");
@@ -341,7 +331,7 @@ class Processamento
      */
     public function gerarDocumentoDaInicial(Inicial $inicial)
     {
-        $arquivos = array();
+        $arquivos = [];
         $pdfProcesso = new DocumentoInicial();
         $nomeArquivoMandadoCitacao = 'mandado_citacao_'.$inicial->getCodigo() . ".pdf";
         $caminhoArquivo = 'tmp/' .$nomeArquivoMandadoCitacao;
@@ -398,7 +388,7 @@ class Processamento
      */
     private function moverCertidoesDaInicialParaInicial(Inicial $inicialOrigem, Inicial $inicialNova)
     {
-        $certidaoRepostitory = CertidaoRepository::getInstance();
+        $certidaoRepostitory = (new CertidaoRepository())->getInstance();
         foreach ($inicialOrigem->getCertidoes() as $certidao) {
             $certidaoRepostitory->moverCertidaoParaInicial($certidao, $inicialOrigem, $inicialNova);
         }

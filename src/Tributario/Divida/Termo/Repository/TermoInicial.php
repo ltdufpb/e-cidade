@@ -85,7 +85,7 @@ class TermoInicial extends \BaseClassRepository
         }
 
         if ($this->isPersistPropagation() && $entity->getInicial()) {
-            $inicialRepository = InicialRepository::getInstance()
+            $inicialRepository = (new InicialRepository())->getInstance()
                 ->setPersistPropagation(true);
 
             $inicialRepository->persist($entity->getInicial());
@@ -118,7 +118,7 @@ class TermoInicial extends \BaseClassRepository
             ->setInicial($data->inicial);
 
         if ($this->isReturnFullItem()) {
-            $inicialRepository = InicialRepository::getInstance()
+            $inicialRepository = (new InicialRepository())->getInstance()
                 ->setReturnFullItem(true);
 
             $inicial = $inicialRepository->getByCode($data->inicial);
@@ -184,7 +184,7 @@ class TermoInicial extends \BaseClassRepository
             return null;
         }
 
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $this->make((object) $item);
         }

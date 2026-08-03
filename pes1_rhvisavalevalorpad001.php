@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_rhvisavalecad_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhvisavalecad = new cl_rhvisavalecad;
 $db_opcao = 1;
 $db_botao = true;
@@ -95,7 +95,7 @@ if(isset($incluir)){
     };
   }else{
   	db_msgbox($contador." matrículas atualizadas com sucesso.");
-  	echo "<script>location.href='".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'</script>";
+  	echo "<script>location.href='".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'</script>";
   };
 };
 ?>

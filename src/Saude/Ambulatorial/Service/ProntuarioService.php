@@ -39,15 +39,12 @@ use Cgs;
  */
 class ProntuarioService
 {
-    private $repositorio;
-
     /**
      * ProntuarioService constructor.
      * @param ProntuarioRepository $repositorio
      */
-    public function __construct(ProntuarioRepository $repositorio)
+    public function __construct(private readonly ProntuarioRepository $repositorio)
     {
-        $this->repositorio = $repositorio;
     }
 
     /**
@@ -57,30 +54,30 @@ class ProntuarioService
     {
 
         $prontuario = new Prontuario();
-        $prontuario->setCodigo(isset($parametros->sd24_i_codigo) ? $parametros->sd24_i_codigo : '');
-        $prontuario->setAno(isset($parametros->sd24_i_ano) ? $parametros->sd24_i_ano : '');
-        $prontuario->setMes(isset($parametros->sd24_i_mes) ? $parametros->sd24_i_mes : '');
-        $prontuario->setSequencia(isset($parametros->sd24_i_seq) ? $parametros->sd24_i_seq : '');
-        $prontuario->setUnidade(isset($parametros->sd24_i_unidade) ? $parametros->sd24_i_unidade : '');
+        $prontuario->setCodigo($parametros->sd24_i_codigo ?? '');
+        $prontuario->setAno($parametros->sd24_i_ano ?? '');
+        $prontuario->setMes($parametros->sd24_i_mes ?? '');
+        $prontuario->setSequencia($parametros->sd24_i_seq ?? '');
+        $prontuario->setUnidade($parametros->sd24_i_unidade ?? '');
         $prontuario->setMotivo('');
-        $prontuario->setDataCadastro(isset($parametros->sd24_d_cadastro) ? $parametros->sd24_d_cadastro : '');
-        $prontuario->setHoraCadastro(isset($parametros->sd24_c_cadastro) ? $parametros->sd24_c_cadastro : '');
-        $prontuario->setCid(isset($parametros->sd24_i_cid) ? $parametros->sd24_i_cid : '');
-        $prontuario->setPressao(isset($parametros->sd24_v_pressao) ? $parametros->sd24_v_pressao : '');
-        $prontuario->setPeso(isset($parametros->sd24_f_peso) ? $parametros->sd24_f_peso : '');
-        $prontuario->setTemperatura(isset($parametros->sd24_f_temperatura) ? $parametros->sd24_f_temperatura : '');
-        $prontuario->setProfissional(isset($parametros->sd24_i_profissional) ? $parametros->sd24_i_profissional : '');
-        $prontuario->setDiagnostico(isset($parametros->sd24_t_diagnostico) ? $parametros->sd24_t_diagnostico : '');
-        $prontuario->setSiasih(isset($parametros->sd24_i_siasih) ? $parametros->sd24_i_siasih : '');
-        $prontuario->setDigitada(isset($parametros->sd24_c_digitada) ? $parametros->sd24_c_digitada : '');
-        $prontuario->setLogin(isset($parametros->sd24_i_login) ? $parametros->sd24_i_login : '');
-        $prontuario->setMotivoAtendimento(isset($parametros->sd24_i_motivo) ? $parametros->sd24_i_motivo : '');
-        $prontuario->setTipo(isset($parametros->sd24_i_tipo) ? $parametros->sd24_i_tipo : '');
+        $prontuario->setDataCadastro($parametros->sd24_d_cadastro ?? '');
+        $prontuario->setHoraCadastro($parametros->sd24_c_cadastro ?? '');
+        $prontuario->setCid($parametros->sd24_i_cid ?? '');
+        $prontuario->setPressao($parametros->sd24_v_pressao ?? '');
+        $prontuario->setPeso($parametros->sd24_f_peso ?? '');
+        $prontuario->setTemperatura($parametros->sd24_f_temperatura ?? '');
+        $prontuario->setProfissional($parametros->sd24_i_profissional ?? '');
+        $prontuario->setDiagnostico($parametros->sd24_t_diagnostico ?? '');
+        $prontuario->setSiasih($parametros->sd24_i_siasih ?? '');
+        $prontuario->setDigitada($parametros->sd24_c_digitada ?? '');
+        $prontuario->setLogin($parametros->sd24_i_login ?? '');
+        $prontuario->setMotivoAtendimento($parametros->sd24_i_motivo ?? '');
+        $prontuario->setTipo($parametros->sd24_i_tipo ?? '');
         $prontuario->setAcaoProgramatica(
             isset($parametros->sd24_i_sd24_i_acaoprogtipo) ? $parametros->sd24_i_acaoprog : ''
         );
         $prontuario->setSetorAmbulatorial(
-            isset($parametros->sd24_setorambulatorial) ? $parametros->sd24_setorambulatorial : ''
+            $parametros->sd24_setorambulatorial ?? ''
         );
         $prontuario->setIdadeGestacional($parametros->sd24_idadegestacional);
         $prontuario->setDum($parametros->sd24_dum);

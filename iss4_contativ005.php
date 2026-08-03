@@ -38,8 +38,8 @@ $clrotulo->label("q40_codporte");
 $clrotulo->label("q40_descr");
 
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
  $result = $cl_porte->sql_record($cl_porte->sql_query("","q40_codporte,q40_descr","q40_descr"));
 if($cl_porte->numrows == 0)

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_cadacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_cadacao = new cl_db_cadacao;
 $cldb_cadacao->rotulo->label("k119_sequencial");
 $cldb_cadacao->rotulo->label("k119_sequencial");
@@ -98,9 +98,9 @@ $cldb_cadacao->rotulo->label("k119_sequencial");
         }else{
            $sql = $cldb_cadacao->sql_query("",$campos,"k119_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k119_sequencial)){
-          $repassa = array("chave_k119_sequencial"=>$chave_k119_sequencial,"chave_k119_sequencial"=>$chave_k119_sequencial);
+          $repassa = ["chave_k119_sequencial"=>$chave_k119_sequencial,"chave_k119_sequencial"=>$chave_k119_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

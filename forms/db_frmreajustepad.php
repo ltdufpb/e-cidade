@@ -59,7 +59,7 @@ $clrotulo->label("eso39_descricao");
         if(!isset($lancar)){
           $lancar = "p";
         }
-        $arr_forma = Array('p'=>'Reajusta padrões','f'=>'Atualizar fórmulas');
+        $arr_forma = ['p'=>'Reajusta padrões','f'=>'Atualizar fórmulas'];
         db_select("lancar",$arr_forma,true,1,"onchange='js_desabcampos(this.value);'");
         ?>
       </td>
@@ -89,7 +89,7 @@ $clrotulo->label("eso39_descricao");
           <td align="right" nowrap title="<?=$Teso39_tipo?>"><?=$Leso39_tipo?></td>
           <td align="left" nowrap>
             <?php
-		  	       $matriz = array("T"=>"TODOS","f"=>"NAO","t"=>"SIM");
+		  	       $matriz = ["T"=>"TODOS","f"=>"NAO","t"=>"SIM"];
                $matriz = ["A" => "A - Acordo Coletivo de Trabalho",
                           "B" => "B - Legislação federal, estadual, municipal ou distrital",
                           "C" => "C - Convenção Coletiva de Trabalho",

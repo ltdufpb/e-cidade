@@ -81,7 +81,7 @@
         <td><strong>Data do cálculo:</strong></td>
         <td>
           <?php
-            $aDatas    = array();
+            $aDatas    = [];
             $iNroDatas = 0;
                                                                                                                                                                                                              
             $sSqlDataDebitos  = "select datadebitos as k115_data                                                                                                                                             ";

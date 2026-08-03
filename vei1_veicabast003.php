@@ -35,8 +35,8 @@ include(modification("classes/db_veicabastposto_classe.php"));
 include(modification("classes/db_veicabastpostoempnota_classe.php"));
 include(modification("classes/db_veicabastretirada_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clveiculos = new cl_veiculos;
 $clveicabast = new cl_veicabast;

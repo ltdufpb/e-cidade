@@ -30,16 +30,16 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["excluir"])) {
-  $result = db_query("select v50_codigo from juridico where v50_codigo = ".$HTTP_POST_VARS["codigo"]);
-  if(pg_numrows($result) > 0) {
+if(isset($_POST["excluir"])) {
+  $result = db_query("select v50_codigo from juridico where v50_codigo = ".$_POST["codigo"]);
+  if(pg_num_rows($result) > 0) {
     db_query("BEGIN");
-    $result = db_query("DELETE FROM autproc WHERE v55_proces = ".$HTTP_POST_VARS["codigo"]) or die("Erro(44) deletando autproc");  
-    $result = db_query("delete from juridico where v50_codigo = ".$HTTP_POST_VARS["codigo"]) or die("Erro(43) excluindo juridico");
+    $result = db_query("DELETE FROM autproc WHERE v55_proces = ".$_POST["codigo"]) or die("Erro(44) deletando autproc");  
+    $result = db_query("delete from juridico where v50_codigo = ".$_POST["codigo"]) or die("Erro(43) excluindo juridico");
     db_query("commit");
     db_redireciona();
   } else
-    $DB_ERRO = "Código ".$HTTP_POST_VARS["codigo"]." não encontrado!";
+    $DB_ERRO = "Código ".$_POST["codigo"]." não encontrado!";
 }
 ?>
 <html>

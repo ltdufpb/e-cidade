@@ -71,7 +71,7 @@ $clempparametro	 = new cl_empparametro;
 $sqlpref    = "select * from db_config where codigo = ".db_getsession("DB_instit");
 $resultpref = db_query($sqlpref);
 db_fieldsmemory($resultpref,0);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 // die($clpcparam->sql_query_file(null,"pc30_comsaldo,pc30_permsemdotac,pc30_gerareserva,pc30_libdotac"));
 $result_pcparam = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"),"pc30_comsaldo,pc30_permsemdotac,pc30_gerareserva,pc30_libdotac"));
@@ -132,7 +132,7 @@ if($pc30_permsemdotac=='f') {
 		$lista_itens = "";
 		$virgula     = "";
 		$cod_item    = "";
-		for($i = 0; $i < pg_numrows($result_test_dot); $i++) {
+		for($i = 0; $i < pg_num_rows($result_test_dot); $i++) {
 
 			db_fieldsmemory($result_test_dot,$i);
 			if ($cod_item != $pc11_codigo) {
@@ -152,7 +152,7 @@ if($pc30_permsemdotac=='f') {
 
 			$erro_msg = "Verifique o(s) item(ns) ";
 			$virgula  = "";
-			for($i = 0; $i < pg_numrows($res_itens); $i++) {
+			for($i = 0; $i < pg_num_rows($res_itens); $i++) {
 
 				db_fieldsmemory($res_itens,$i);
 				$erro_msg .= $virgula."<b>".$pc01_codmater." - ".$pc01_descrmater."</b>";
@@ -373,7 +373,7 @@ for ($contador = 0; $contador < $numrows_solicita; $contador++) {
 
 	db_fieldsmemory($result_pesq_solicita,$contador);
 	$pdf1->anulada    = !empty($pc67_sequencial);
-	$pdf1->prefeitura = strlen($nomeinst) > 55 ? $nomeinstabrev : $nomeinst;
+	$pdf1->prefeitura = strlen((string) $nomeinst) > 55 ? $nomeinstabrev : $nomeinst;
 	$pdf1->logo			= $logo;
 	$pdf1->enderpref  = $ender;
 	$pdf1->municpref  = $munic;
@@ -444,7 +444,7 @@ for ($contador = 0; $contador < $numrows_solicita; $contador++) {
 	$result_pesq_pcdotac  = $clsolicitem->sql_record($sSqlBuscaPcDotac);
 	$numrows_pcdotac      = $clsolicitem->numrows;
 
-	$pdf1->valor_orcado   = isset($valor_orcado) ? $valor_orcado : '';
+	$pdf1->valor_orcado   = $valor_orcado ?? '';
 	$pdf1->recorddasdotac = $result_pesq_pcdotac;
 	$pdf1->linhasdasdotac = $numrows_pcdotac;
 	$pdf1->dcodigo        = 'pc13_codigo';
@@ -526,7 +526,7 @@ if(isset($argv[1])){
 
       $pdf1->objpdf->Output("tmp/{$sTipoDocumento}_{$pc10_numero}.pdf");
 
-      $oGerenciador->moverArquivo(array($oStdDadosGED));
+      $oGerenciador->moverArquivo([$oStdDadosGED]);
 
     } catch (Exception $eErro) {
       db_redireciona("db_erros.php?fechar=true&db_erro=".$eErro->getMessage());

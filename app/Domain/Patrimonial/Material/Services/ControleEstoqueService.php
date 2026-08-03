@@ -74,10 +74,7 @@ class ControleEstoqueService
                 $codigoDepartamento = $movimento->estoqueItem->estoque->m70_coddepto;
                 if (is_null($depositos) || !array_key_exists($codigoDepartamento, $depositos)) {
                     $departamento = Departamento::find($codigoDepartamento);
-                    list(
-                        $quantidadeAnterior,
-                        $saldoAnterior
-                        ) = $this->buscarSaldoAnterior($departamento->deposito, $material);
+                    [$quantidadeAnterior, $saldoAnterior] = $this->buscarSaldoAnterior($departamento->deposito, $material);
                     $depositos[$codigoDepartamento] = (object)[
                         "codigo_departamento" => $codigoDepartamento,
                         "codigo" => $departamento->deposito->m91_codigo,
@@ -178,7 +175,7 @@ class ControleEstoqueService
         }
 
         foreach ($movimentosExcluir as $movimentoExcluir) {
-            list($departamento, $key) = explode('#', $movimentoExcluir);
+            [$departamento, $key] = explode('#', $movimentoExcluir);
             unset($movimentacoes[$departamento]->lancamentos[$key]);
         }
 

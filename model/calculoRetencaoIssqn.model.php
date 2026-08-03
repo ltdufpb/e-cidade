@@ -83,7 +83,7 @@ class calculoRetencaoIssqn implements iCalculoRetencao {
    *
    * @var array
    */
-  private $aCodigoMovimentos = array();
+  private $aCodigoMovimentos = [];
   
   /**
    * metodo construtor da classe

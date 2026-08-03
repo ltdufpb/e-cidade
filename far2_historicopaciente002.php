@@ -80,14 +80,14 @@ function verifica_quebra($pdf, $count_linhas_na_pagina)
 
 function formata_data($data)
 {
-  $data = explode('/',$data);
+  $data = explode('/',(string) $data);
   $data = '\''.$data[2].'-'.$data[1].'-'.$data[0].'\'';
   return $data;
 }
 
 function formata_data2($data)
 {
-  $data = explode('-',$data);
+  $data = explode('-',(string) $data);
   $data = $data[2].'/'.$data[1].'/'.$data[0];
   return $data;
 }
@@ -184,7 +184,7 @@ $medicamento2 = '';
 for($count_linhas = 0; $count_linhas < $linhas; $count_linhas++)
 {
   db_fieldsmemory($result,$count_linhas);
-  
+
   if($nome2 != $nome)
   {
     $nome2 = $nome;
@@ -210,7 +210,7 @@ for($count_linhas = 0; $count_linhas < $linhas; $count_linhas++)
 
     if($count_linhas_na_pagina == 0)
       $count_linhas_na_pagina = 4;
-    
+
     $count_medicamentos++;
   }
 
@@ -223,7 +223,7 @@ for($count_linhas = 0; $count_linhas < $linhas; $count_linhas++)
   nova_linha($pdf,$fa07_i_matrequi,$m77_lote,formata_data2($fa04_d_data),$fa06_f_quant,$posologia);
   $count_linhas_na_pagina++;
   $count_linhas_na_pagina = verifica_quebra($pdf, $count_linhas_na_pagina);
-  
+
 
   //echo "Nome: $nome<br>Medicamento: $medicamento<br>Req: $fa07_i_matrequi<br>Data: $fa04_d_data<br>
   //Lote: $m77_lote<br>Posologia: $posologia<br>Quantidade: $fa06_f_quant<br><br><br>";

@@ -82,7 +82,7 @@ $sqlproc = "select p63_codproc,
                  where p63_codtran = $codtran";
 $rspara = db_query($sqlpara);
 
-if (pg_numrows($rspara) == 0) {
+if (pg_num_rows($rspara) == 0) {
 
   db_redireciona('db_erros.php?fechar=true&db_erro=Sem processos nesta transferência!');
   exit;
@@ -120,7 +120,7 @@ for ($multiplo = 1; $multiplo <= $iNumeroPaginas; $multiplo++) {
      * pega o ano da transferencia para colocar ao lado do numero do processo
      * antes vinha com o ano de criação do processo.
      */
-    $aAnoTransferencia = explode("/", $dttran);
+    $aAnoTransferencia = explode("/", (string) $dttran);
     $iAnoTransferencia = $aAnoTransferencia[2];
 
     $pdf->text(120, $xlin - 13, 'Termo de Recebimento nº ' . db_formatar($p63_codtran, "s", "0", 5, "e") . " / " . $iAnoTransferencia);
@@ -179,7 +179,7 @@ for ($multiplo = 1; $multiplo <= $iNumeroPaginas; $multiplo++) {
 
     for ($ii = $multiplofor; $ii < ($multiplo * 15); $ii++) {
 
-      if ($ii >= pg_numrows($rsproc)) {
+      if ($ii >= pg_num_rows($rsproc)) {
         break;
       }
 

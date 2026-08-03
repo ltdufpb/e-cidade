@@ -14,16 +14,16 @@ class M7653CursosEquivalentes extends PostgresMigration
     public function criarMenu()
     {
 
-        $aColumns = array('id_item', 'descricao', 'help', 'funcao', 'itemativo', 'manutencao', 'desctec', 'libcliente');
-        $aValues  = array(array(10387, 'Equivalência entre Cursos' ,'Equivalência entre Cursos' ,'edu1_cursoequivalente001.php' ,'1' ,'1' ,'Informa quais cursos são equivalentes ' ,'true' ));
-        $table    = $this->table('db_itensmenu', array('schema' => 'configuracoes'));
+        $aColumns = ['id_item', 'descricao', 'help', 'funcao', 'itemativo', 'manutencao', 'desctec', 'libcliente'];
+        $aValues  = [[10387, 'Equivalência entre Cursos' ,'Equivalência entre Cursos' ,'edu1_cursoequivalente001.php' ,'1' ,'1' ,'Informa quais cursos são equivalentes ' ,'true' ]];
+        $table    = $this->table('db_itensmenu', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
 
-        $aColumns = array('id_item', 'id_item_filho', 'menusequencia', 'modulo');
-        $aValues  = array(array(1101209 ,10387 ,4 ,7159 ));
-        $table    = $this->table('db_menu', array('schema' => 'configuracoes'));
+        $aColumns = ['id_item', 'id_item_filho', 'menusequencia', 'modulo'];
+        $aValues  = [[1101209 ,10387 ,4 ,7159 ]];
+        $table    = $this->table('db_menu', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
     }
@@ -31,83 +31,83 @@ class M7653CursosEquivalentes extends PostgresMigration
     public function criarDiscionario()
     {
         // tabela
-        $aColumns = array('codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform');
-        $aValues  = array(array(4023, 'cursoequivalencia', 'Cursos equivalentes', 'ed140', '2017-01-06', 'cursoequivalencia', 0, 'f', 'f', 'f', 'f' ));
-        $table    = $this->table('db_sysarquivo', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform'];
+        $aValues  = [[4023, 'cursoequivalencia', 'Cursos equivalentes', 'ed140', '2017-01-06', 'cursoequivalencia', 0, 'f', 'f', 'f', 'f' ]];
+        $table    = $this->table('db_sysarquivo', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // vincula modulo
-        $aColumns = array('codmod', 'codarq' );
-        $aValues  = array(array(61, 4023));
-        $table    = $this->table('db_sysarqmod', array('schema' => 'configuracoes'));
+        $aColumns = ['codmod', 'codarq' ];
+        $aValues  = [[61, 4023]];
+        $table    = $this->table('db_sysarqmod', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // campos
-        $aColumns = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-        $aValues  = array(
-            array(22323,'ed140_sequencial','int4','Código PK','0', 'Código',10,'f','f','f',1,'text','Código'),
-            array(22324,'ed140_cursoedu','int4','Curso referenciado ','0', 'Curso',10,'f','f','f',1,'text','Curso'),
-            array(22325,'ed140_cursoequivalente','int4','Curso que equivale ao curso referente','0', 'Curso equivalente',10,'f','f','f',1,'text','Curso equivalente'),
-        );
-        $table    = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+        $aColumns = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+        $aValues  = [
+            [22323,'ed140_sequencial','int4','Código PK','0', 'Código',10,'f','f','f',1,'text','Código'],
+            [22324,'ed140_cursoedu','int4','Curso referenciado ','0', 'Curso',10,'f','f','f',1,'text','Curso'],
+            [22325,'ed140_cursoequivalente','int4','Curso que equivale ao curso referente','0', 'Curso equivalente',10,'f','f','f',1,'text','Curso equivalente'],
+        ];
+        $table    = $this->table('db_syscampo', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
 
         // inclui a sequence
-        $aColumns = array('codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq');
-        $aValues  = array(array(1000648, 'cursoequivalencia_ed140_sequencial_seq', 1, 1, 9223372036854775807, 1, 1));
-        $table    = $this->table('db_syssequencia', array('schema' => 'configuracoes'));
+        $aColumns = ['codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq'];
+        $aValues  = [[1000648, 'cursoequivalencia_ed140_sequencial_seq', 1, 1, 9223372036854775807, 1, 1]];
+        $table    = $this->table('db_syssequencia', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // vincula os campos as tabelas
-        $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-        $aValues  = array(
-            array(4023, 22323, 1, 1000648),
-            array(4023, 22324, 2, 0),
-            array(4023, 22325, 3, 0),
-        );
-        $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+        $aValues  = [
+            [4023, 22323, 1, 1000648],
+            [4023, 22324, 2, 0],
+            [4023, 22325, 3, 0],
+        ];
+        $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // inclui a chave primaria
-        $aColumns = array('codarq','codcam','sequen','camiden');
-        $aValues  = array(array(4023,22323,1,22323));
-        $table    = $this->table('db_sysprikey', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq','codcam','sequen','camiden'];
+        $aValues  = [[4023,22323,1,22323]];
+        $table    = $this->table('db_sysprikey', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // inclui a chave estrangeira
-        $aColumns = array('codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel');
-        $aValues  = array(
-            array(4023,22324,1,1010048,0),
-            array(4023,22325,1,1010048,0),
-        );
-        $table    = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel'];
+        $aValues  = [
+            [4023,22324,1,1010048,0],
+            [4023,22325,1,1010048,0],
+        ];
+        $table    = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // inclui os indices
-        $aColumns = array('codind', 'nomeind', 'codarq', 'campounico');
-        $aValues  = array(
-            array(4414,'cursoequivalencia_cursoedu_in',4023,'0'),
-            array(4415,'cursoequivalencia_cursoequivalente_in',4023,'0'),
-        );
-        $table    = $this->table('db_sysindices', array('schema' => 'configuracoes'));
+        $aColumns = ['codind', 'nomeind', 'codarq', 'campounico'];
+        $aValues  = [
+            [4414,'cursoequivalencia_cursoedu_in',4023,'0'],
+            [4415,'cursoequivalencia_cursoequivalente_in',4023,'0'],
+        ];
+        $table    = $this->table('db_sysindices', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // vincula os indices
-        $aColumns = array('codind', 'codcam', 'sequen');
-        $aValues  = array(
-            array(4414,22324,1),
-            array(4415,22325,1),
-        );
-        $table    = $this->table('db_syscadind', array('schema' => 'configuracoes'));
+        $aColumns = ['codind', 'codcam', 'sequen'];
+        $aValues  = [
+            [4414,22324,1],
+            [4415,22325,1],
+        ];
+        $table    = $this->table('db_syscadind', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
     }
@@ -115,14 +115,14 @@ class M7653CursosEquivalentes extends PostgresMigration
     public function createTable()
     {
         $this->execute("CREATE SEQUENCE secretariadeeducacao.cursoequivalencia_ed140_sequencial_seq");
-        $tabela = $this->table('cursoequivalencia',  array('schema'=>'secretariadeeducacao', 'id'=> false, 'primary_key'=>'ed140_sequencial', 'constraint'=>'cursoequivalencia_ed140_sequencial_pk'));
+        $tabela = $this->table('cursoequivalencia',  ['schema'=>'secretariadeeducacao', 'id'=> false, 'primary_key'=>'ed140_sequencial', 'constraint'=>'cursoequivalencia_ed140_sequencial_pk']);
         $tabela->addColumn('ed140_sequencial', 'integer')
                ->addColumn('ed140_cursoedu', 'integer')
                ->addColumn('ed140_cursoequivalente', 'integer')
-               ->addForeignKey('ed140_cursoedu', 'escola.cursoedu', 'ed29_i_codigo', array('constraint'=>'cursoequivalencia_ed140_cursoedu_fk'))
-               ->addForeignKey('ed140_cursoequivalente', 'escola.cursoedu', 'ed29_i_codigo',  array('constraint'=>'cursoequivalencia_ed140_cursoequivalente_fk'))
-               ->addIndex(array('ed140_cursoedu'),         array('name' => 'cursoequivalencia_ed140_sequencial_seq_cursoedu_in'))
-               ->addIndex(array('ed140_cursoequivalente'), array('name' => 'cursoequivalencia_ed140_sequencial_seq_cursoequivalente_in'))
+               ->addForeignKey('ed140_cursoedu', 'escola.cursoedu', 'ed29_i_codigo', ['constraint'=>'cursoequivalencia_ed140_cursoedu_fk'])
+               ->addForeignKey('ed140_cursoequivalente', 'escola.cursoedu', 'ed29_i_codigo',  ['constraint'=>'cursoequivalencia_ed140_cursoequivalente_fk'])
+               ->addIndex(['ed140_cursoedu'],         ['name' => 'cursoequivalencia_ed140_sequencial_seq_cursoedu_in'])
+               ->addIndex(['ed140_cursoequivalente'], ['name' => 'cursoequivalencia_ed140_sequencial_seq_cursoequivalente_in'])
                ->create();
         $this->execute("ALTER TABLE secretariadeeducacao.cursoequivalencia ALTER COLUMN ed140_sequencial SET DEFAULT nextval('secretariadeeducacao.cursoequivalencia_ed140_sequencial_seq')");
     }

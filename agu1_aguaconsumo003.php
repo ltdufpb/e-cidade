@@ -59,10 +59,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("aguaconsumo"=>$RLDBtxt_agu001,"aguaconsumorec"=>$RLDBtxt_agu002); 
-         $clcriaabas->title = array("aguaconsumo"=>$TDBtxt_agu001,"aguaconsumorec"=>$TDBtxt_agu002); 
-         $clcriaabas->src = array("aguaconsumo"=>"agu1_aguaconsumo006.php");
-	 $clcriaabas->disabled   =  array("aguaconsumorec"=>"true"); 
+	 $clcriaabas->identifica = ["aguaconsumo"=>$RLDBtxt_agu001,"aguaconsumorec"=>$RLDBtxt_agu002]; 
+         $clcriaabas->title = ["aguaconsumo"=>$TDBtxt_agu001,"aguaconsumorec"=>$TDBtxt_agu002]; 
+         $clcriaabas->src = ["aguaconsumo"=>"agu1_aguaconsumo006.php"];
+	 $clcriaabas->disabled   =  ["aguaconsumorec"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

@@ -40,8 +40,8 @@ include(modification("classes/db_pontof13_classe.php"));
 include(modification("classes/db_pontocom_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 //db_postmemory($HTTP_GET_VARS,2);
 //echo "<BR><BR>".$HTTP_SERVER_VARS['QUERY_STRING'];
 $clcgm = new cl_cgm;
@@ -273,7 +273,7 @@ function js_relatorio(){
                           <input class="btcols" type="text" name="z01_numcgm" value="<?=@$z01_numcgm?>" size="5" readonly> 
                           &nbsp;&nbsp;&nbsp; 
                           <?php 
-					      parse_str($arg);
+					      parse_str((string) $arg, $result);
 					      echo "<strong style=\"color:blue\">";
 					      db_ancora("$Lr01_regist","js_mostrapessoal();return false;", 1);
 					      echo "</strong>

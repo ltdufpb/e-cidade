@@ -45,8 +45,8 @@ if (!isset($arqinclude)){
   $orcparamrel = new cl_orcparamrel;
   $clconrelinfo = new cl_conrelinfo;
   
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
   
   $anousu  = db_getsession("DB_anousu");
   
@@ -61,7 +61,7 @@ $textodt = $dt['texto'];
 // calcula periodo do exercicio anterior para fechar os 12 meses
 $anousu_ant  = db_getsession("DB_anousu")-1;
 // se o ano atual é bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-$dt = split('-',$dt_fin);  // mktime -- (mes,dia,ano)
+$dt = preg_split('#\-#m',(string) $dt_fin);  // mktime -- (mes,dia,ano)
 //$dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1],$dt[2]-365,$dt[0]));
 
 $dt_ini_ant = $anousu_ant."-01-01";
@@ -69,7 +69,7 @@ $dt_fin_ant = $anousu_ant."-12-31";
 
 ////////////////////////////////////////////////////////////////////
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select munic,nomeinst,nomeinstabrev,db21_tipoinstit from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
@@ -79,10 +79,10 @@ $temcamara  = false;
 $temadmind  = false;
 $flag_abrev = false;
 
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
 
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
   } else {
@@ -125,15 +125,15 @@ if ($flag_abrev == false){
 //var_dump($temadmind);
 
 if ($temcamara == true && ($temprefa == true || $temadmind == true)){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODERES EXECUTIVO E LEGISLATIVO";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODERES EXECUTIVO E LEGISLATIVO";
 }
 
 if ($temcamara == true && $temprefa == false && $temadmind == false){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODER LEGISLATIVO";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODER LEGISLATIVO";
 }
 
 if ($temprefa == true && $temcamara == false && ($temadmind == false || $temadmind == true)){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODER EXECUTIVO/ADM. INDIRETA";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODER EXECUTIVO/ADM. INDIRETA";
 }
 
 if ($temcamara == true && $temprefa == false && $temadmind == false){
@@ -147,8 +147,8 @@ if ($temcamara == true && $temprefa == false && $temadmind == false){
   $head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 }
 
-$dt1 = split('-',$dt_ini);
-$dt2 = split('-',$dt_fin); 
+$dt1 = preg_split('#\-#m',$dt_ini);
+$dt2 = preg_split('#\-#m',(string) $dt_fin); 
 if ($tipo_emissao=='periodo'){
   $textodt = strtoupper(db_mes($dt1[1]))." A ".strtoupper(db_mes($dt2[1]))." DE ";
   
@@ -241,7 +241,7 @@ $m_despesa[7]["exercicio"]     = 0;
 $sele_work = 'o58_instit in ('.$instituicao.')   ';
 $result_despesa = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
 
-$dt3 = split("-",$dt_fin);
+$dt3 = preg_split("#\\-#m",(string) $dt_fin);
 if ($dt3[1] == "12"){
   $dt3[1] = 11;
 }
@@ -250,7 +250,7 @@ if ($dt3[1] == "12"){
 ///db_criatabela($result_despesa_ant); exit;
 
 // Exercicio Atual
-for ($x = 0; $x < pg_numrows($result_despesa); $x++){
+for ($x = 0; $x < pg_num_rows($result_despesa); $x++){
   db_fieldsmemory($result_despesa,$x);
 
   $nivel        = $m_despesa[7]["nivel"];
@@ -278,7 +278,7 @@ if ($periodo != "3Q" && $periodo != "2S") {
   $result_despesa_ant = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu_ant,$dt_ini_ant,$dt_fin_ant);
   
   // Exercicio Anterior
-  for ($x = 0; $x < pg_numrows($result_despesa_ant); $x++){
+  for ($x = 0; $x < pg_num_rows($result_despesa_ant); $x++){
     db_fieldsmemory($result_despesa_ant,$x);
   
     $nivel        = $m_despesa[7]["nivel"];
@@ -338,7 +338,7 @@ $result_bal = db_planocontassaldo_completo($anousu,$dt_ini,$dt_fin,false,$sele_w
 
 // calculo do periodo anterior ao exercicio
 @db_query("drop table work_pl");
-$dt3 = split("-",$dt_fin);
+$dt3 = preg_split("#\\-#m",(string) $dt_fin);
 
 if ($dt3[1] == "12"){
   $dt3[1] = 11;
@@ -363,17 +363,17 @@ m_p[linha][1:estruturais]
 --------- [3:saldo ant]
 */
 
-for($x=0;$x< pg_numrows($result_bal);$x++) {
+for($x=0;$x< pg_num_rows($result_bal);$x++) {
   db_fieldsmemory($result_bal,$x);
-  
+
   for ($aa=1;$aa<=8;$aa++){
      if ($aa == 7){
        continue;
      }
 
      $instit      = $c61_instit;
-     $v_elementos = array($estrutural,$instit);
-  
+     $v_elementos = [$estrutural,$instit];
+
      $flag_contar = false;
      if ($instit != 0) {
        if (in_array($v_elementos,$m_p[$aa][1])) {
@@ -387,7 +387,7 @@ for($x=0;$x< pg_numrows($result_bal);$x++) {
          }
        }
     }
-  
+
     if ($flag_contar == true) {
 //    if (in_array($estrutural,$m_p[$aa][1])) {
       if (isset($m_p[$aa][2])){
@@ -408,17 +408,17 @@ if ($periodo != "3Q" && $periodo != "2S") {
   $dt_ini_ant = $anousu_ant."-".($dt3[1]+1)."-01";
   $result_bal_ant =  db_planocontassaldo_completo($anousu_ant,$dt_ini_ant,$dt_fin_ant,false,$sele_work,$aOrcParametro);
   @db_query("drop table work_pl");
-  for($x=0;$x< pg_numrows($result_bal_ant);$x++) {
+  for($x=0;$x< pg_num_rows($result_bal_ant);$x++) {
     db_fieldsmemory($result_bal_ant,$x);
   
     for ($aa=1;$aa<=8;$aa++){
        if ($aa == 7){
          continue;
        }
-  
+
        $instit      = $c61_instit;
-       $v_elementos = array($estrutural,$instit);
-    
+       $v_elementos = [$estrutural,$instit];
+
        $flag_contar = false;
        if ($instit != 0) {
          if (in_array($v_elementos,$m_p[$aa][1])) {
@@ -432,7 +432,7 @@ if ($periodo != "3Q" && $periodo != "2S") {
            }
          }
       }
-    
+
       if ($flag_contar == true) {
   //    if (in_array($estrutural,$m_p[$aa][1])){
         if (isset($m_p[$aa][2])){
@@ -455,7 +455,7 @@ for ($aa=1;$aa<=8;$aa++) {
     
     $pontoz=14;
     for ($tz=13; $tz >= 0; $tz--) {
-      if (substr($m_p[$aa][1][$aaa][0],$tz,1) > 0) {
+      if (substr((string) $m_p[$aa][1][$aaa][0],$tz,1) > 0) {
         $pontoz=$tz;
         break;
       }
@@ -476,7 +476,7 @@ for ($aa=1;$aa<=8;$aa++) {
     inner join orcelemento  on c67_codele = o56_codele and o56_anousu = $anousu
     inner join conlancam    on c70_codlan = c67_codlan
     inner join conlancamdoc on c70_codlan = c71_codlan
-    where o56_elemento like '" . substr($m_p[$aa][1][$aaa][0],0,$pontoz+1) . "%'
+    where o56_elemento like '" . substr((string) $m_p[$aa][1][$aaa][0],0,$pontoz+1) . "%'
     and c71_coddoc in (1,2,3,4,5,6)
     and c70_data between '$dt_ini' and '$dt_fin'
     group by o56_codele,o56_elemento,o56_descr";
@@ -485,8 +485,8 @@ for ($aa=1;$aa<=8;$aa++) {
     
     //		echo "sql - $aa - $aaa - $sql<br>";
     
-    if (pg_numrows($result_ele) > 0) {
-      for ($ele=0; $ele < pg_numrows($result_ele); $ele++) {
+    if (pg_num_rows($result_ele) > 0) {
+      for ($ele=0; $ele < pg_num_rows($result_ele); $ele++) {
         db_fieldsmemory($result_ele, $ele);
         //$m_p[$aa][3] = abs($emp - $anu_emp - $liq);
         $m_p[$aa][3] += $emp - $anu_emp - $liq + $anu_liq;
@@ -785,7 +785,7 @@ if (!isset($arqinclude)) {
     $pdf->ln();
   }
  
-  notasExplicativas(&$pdf, 26, "{$periodo}",195);
+  notasExplicativas($pdf, 26, "{$periodo}",195);
   
   $pdf->Ln(5);
   
@@ -793,7 +793,7 @@ if (!isset($arqinclude)) {
   $pdf->setfont('arial','',5);
   $pdf->ln(20);
   
-  assinaturas(&$pdf,&$classinatura,'GF');
+  assinaturas($pdf,$classinatura,'GF');
   
   $pdf->Output();
   
@@ -803,7 +803,7 @@ $total_despesa_pessoal_limites = $tx[11][2];
 $total_rcl_limites             = $tx[14][2];
 
 if ($periodo == "3Q" || $periodo == "2S"){
-  
+
   $total_despesa_pessoal_limites = $tx[12][2] + $tx[12][3];
   //$total_rcl_limites            *= 2;
 }

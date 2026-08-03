@@ -74,7 +74,7 @@ class DadosAluno2018 extends DadosCensoAluno2016
      */
     protected static function validarRegistro70Coluna26Regra3($exportacao, $dadosAluno)
     {
-        if (!empty($dadosAluno->registro70->complemento) && preg_match("/^(?:(?!\s|[a-zA-Z]|[0-9]|\ª|\º|\-|\/|\.|\,).)*$/", $dadosAluno->registro70->complemento)) {
+        if (!empty($dadosAluno->registro70->complemento) && preg_match("/^(?:(?!\s|[a-zA-Z]|[0-9]|\ª|\º|\-|\/|\.|\,).)*$/", (string) $dadosAluno->registro70->complemento)) {
             $mensagem = "Aluno(a) {$dadosAluno->registro60->codigo_aluno_entidade_escola} - {$dadosAluno->registro60->nome_completo}: \n";
             $mensagem .= "O campo \"Complemento\" foi preenchido com valor inválido.";
 

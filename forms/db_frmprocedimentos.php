@@ -84,7 +84,7 @@ db_input('sd09_f_valor',6,$Isd09_f_valor,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$Isd09_b_pab = array('f'=>'Não','t'=>'Sim');
+$Isd09_b_pab = ['f'=>'Não','t'=>'Sim'];
 db_select('sd09_b_pab',$Isd09_b_pab,true,$db_opcao,"");
 ?>
     </td>
@@ -145,7 +145,7 @@ function js_preenchepesquisa(chave){
   db_iframe_procedimentos.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

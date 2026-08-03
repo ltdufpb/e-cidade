@@ -45,6 +45,7 @@ class CuboBITask extends Task implements iTarefa {
   /**
    * Inicia Execucao da Tarefa
    */
+  #[\Override]
   public function iniciar() {
 
     parent::iniciar();
@@ -137,7 +138,7 @@ class CuboBITask extends Task implements iTarefa {
    */
   private function limpezaArquivo($filepath) {
     
-    $lines = array();
+    $lines = [];
     $lineCount = 0;
 
     // le o conteudo do arquivo antes

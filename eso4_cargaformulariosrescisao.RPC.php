@@ -59,9 +59,7 @@ try {
             );
 
             $rsRescisoes = db_query($sqlDadosRescisao);
-            $retorno->rescisoes = db_utils::makeCollectionFromRecord($rsRescisoes, function ($rescisao) {
-                return $rescisao;
-            });
+            $retorno->rescisoes = db_utils::makeCollectionFromRecord($rsRescisoes, fn($rescisao) => $rescisao);
             break;
 
         case 'processar':
@@ -101,7 +99,7 @@ try {
                 throw new Exception('Nenhuma matrícula informada.');
             }
 
-            $retorno->matriculas = array();
+            $retorno->matriculas = [];
             foreach ($parametro->matriculas as $matricula) {
                 $body = new stdClass();
                 $body->idReferencia = $matricula;

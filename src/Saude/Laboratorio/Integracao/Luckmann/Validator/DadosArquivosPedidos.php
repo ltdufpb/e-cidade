@@ -34,17 +34,11 @@ namespace ECidade\Saude\Laboratorio\Integracao\Luckmann\Validator;
 class DadosArquivosPedidos
 {
     /**
-     * @var array
-     */
-    private $dados;
-
-    /**
      * DadosArquivosPedidos constructor.
      * @param array $dados
      */
-    public function __construct(array $dados)
+    public function __construct(private array $dados)
     {
-        $this->dados = $dados;
     }
 
     /**

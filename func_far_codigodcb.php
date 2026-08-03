@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_codigodcb_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_codigodcb = new cl_far_codigodcb;
 $clfar_codigodcb->rotulo->label("fa28_i_codigo");
 $clfar_codigodcb->rotulo->label("fa28_c_numero");
@@ -98,9 +98,9 @@ $clfar_codigodcb->rotulo->label("fa28_c_numero");
         }else{
            $sql = $clfar_codigodcb->sql_query("",$campos,"fa28_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa28_i_codigo)){
-          $repassa = array("chave_fa28_i_codigo"=>$chave_fa28_i_codigo,"chave_fa28_i_codigo"=>$chave_fa28_i_codigo);
+          $repassa = ["chave_fa28_i_codigo"=>$chave_fa28_i_codigo,"chave_fa28_i_codigo"=>$chave_fa28_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

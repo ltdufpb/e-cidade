@@ -101,13 +101,13 @@ form > fieldset > table > TBODY > tr > td:first-child {
         <td align="left">
           <?php
           
-          $arr_pontos = Array("0" =>"Salário",
+          $arr_pontos = ["0" =>"Salário",
                               "1" =>"Adiantamento",
                               "3" =>"Rescisão",
                               "4" =>"Saldo do 13o",
                               "5" =>"Complementar",
                               "6" =>"Suplementar"
-                             );
+                             ];
       try {
           $oCompetencia         = new DBCompetencia($anofolha, $mesfolha);
   
@@ -144,8 +144,8 @@ form > fieldset > table > TBODY > tr > td:first-child {
         <td>
       </tr>
 		    <?php
-			    $arr_pontosgerfs_inicial = Array();
-			    $arr_pontosgerfs_final   = Array();
+			    $arr_pontosgerfs_inicial = [];
+			    $arr_pontosgerfs_final   = [];
 
 			    if(isset($objeto1)){
 			      foreach ($objeto1 as $index) {
@@ -194,7 +194,7 @@ form > fieldset > table > TBODY > tr > td:first-child {
 				    <td nowrap align="left">
 				    <?php
 					    $pagtosaldo = "f";
-					    $arr_truefalse = array('f'=>'Não','t'=>'Sim');
+					    $arr_truefalse = ['f'=>'Não','t'=>'Sim'];
 					    db_select("pagtosaldo",$arr_truefalse,true,1,"onchange='js_verificacampos(this.name);'");
 				    ?>
 				    </td>
@@ -249,7 +249,7 @@ form > fieldset > table > TBODY > tr > td:first-child {
             </td>
             <td nowrap align="left">
             <?php
-              db_select("bMostraServidores",array('f'=>'Não', 't'=>'Sim'), true, 1, "onchange='js_verificacampos(this.name);'");
+              db_select("bMostraServidores",['f'=>'Não', 't'=>'Sim'], true, 1, "onchange='js_verificacampos(this.name);'");
             ?>
             </td>
           </tr>
@@ -373,7 +373,7 @@ function js_preenchepesquisa(chave){
   db_iframe_folha.hide();
   <?php
 	  if($db_opcao!=1){
-	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+	    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	  }
   ?>
 }

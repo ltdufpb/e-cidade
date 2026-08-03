@@ -34,15 +34,13 @@ use ECidade\Tributario\Juridico\ProcessoForo\Repository\ProcessoForo;
 
 final class Parcelamento implements Service
 {
-    private $termo;
     private $termoRepository;
     private $processoForoRepository;
 
-    public function __construct($termo)
+    public function __construct(private $termo)
     {
-        $this->termo = $termo;
-        $this->termoRepository = Termo::getInstance();
-        $this->processoForoRepository = ProcessoForo::getInstance();
+        $this->termoRepository = (new Termo())->getInstance();
+        $this->processoForoRepository = (new ProcessoForo())->getInstance();
 
         $this->termoRepository->setReturnFullItem(true);
     }
@@ -54,7 +52,7 @@ final class Parcelamento implements Service
         $termoIniciais = $termo->getTermoIniciais();
 
         if (!empty($termoIniciais)) {
-            $processos = array();
+            $processos = [];
 
             foreach ($termoIniciais as $termoInicial) {
                 $inicial = $termoInicial->getInicial();

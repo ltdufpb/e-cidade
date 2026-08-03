@@ -40,18 +40,18 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 //db_postmemory($HTTP_POST_VARS,2);exit;
 
-$xinstit = explode('-', $db_selinstit);
+$xinstit = explode('-', (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
          $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     } else{
@@ -78,7 +78,7 @@ if ($flag_abrev == false){
 $head3 = "INSTITUIÇÕES : ".$descr_inst;
 $head4 = "ANEXO 11 - ".strtoupper(db_mes($mes)) ;
 
-$nivela = substr($vernivel,0,1);
+$nivela = substr((string) $vernivel,0,1);
 $sele_work = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
 if($nivela >= 1){
   $sele_work .= " and exists (select 1 from t where t.o58_orgao = w.o58_orgao) ";
@@ -163,7 +163,7 @@ if($tipo_agrupa > 0){
 }
 
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
   db_fieldsmemory($result,$x,true);
   $aux = $elemento;
   
@@ -175,9 +175,9 @@ for($x = 0; $x < pg_numrows($result);$x++){
     $empliq = $pago;
   }
   
-  if (substr($aux,1,11) == "00000000000"){
+  if (substr((string) $aux,1,11) == "00000000000"){
      $col = 1;
-  }elseif (substr($aux,2,10) == "0000000000"){
+  }elseif (substr((string) $aux,2,10) == "0000000000"){
      $col = '';
      $tot1_orgao   += $dot_ini + $suplemen - $reduzido;
      $tot2_orgao   += $especial; //novo
@@ -196,13 +196,13 @@ for($x = 0; $x < pg_numrows($result);$x++){
      $tot3_geral   += $dot_ini + $suplemen + $especial - $reduzido;           
      $tot4_geral   += $empliq;                                        
      $tot5_geral   += $dot_ini + $suplemen + $especial - $reduzido - $empliq; 
-  }elseif (substr($aux,3,9) == "000000000"){
+  }elseif (substr((string) $aux,3,9) == "000000000"){
      $col = '  ';
-  }elseif (substr($aux,4,8) == "00000000"){
+  }elseif (substr((string) $aux,4,8) == "00000000"){
      $col = '    ';
-  }elseif (substr($aux,7,6) == "000000"){
+  }elseif (substr((string) $aux,7,6) == "000000"){
      $col = '      ';
-  }elseif (substr($aux,9,4) == "0000"){
+  }elseif (substr((string) $aux,9,4) == "0000"){
      $col = '        ';
   }else{
      $col = '          ';
@@ -286,7 +286,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
   }
    
    $pdf->setfont('arial','',$fonte);
-   $pdf->cell(80,$alt,($col==1?" ":$col).substr($descr,0,40),0,0,"L",0);
+   $pdf->cell(80,$alt,($col==1?" ":$col).substr((string) $descr,0,40),0,0,"L",0);
    $pdf->cell(25,$alt,db_formatar($dot_ini + $suplemen - $reduzido,'f'),0,0,"R",0);
    $pdf->cell(25,$alt,db_formatar($especial,'f'),0,0,"R",0);
    $pdf->cell(20,$alt,db_formatar($dot_ini + $suplemen + $especial - $reduzido,'f'),0,0,"R",0);

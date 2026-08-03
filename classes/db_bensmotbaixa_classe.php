@@ -30,35 +30,35 @@
 class cl_bensmotbaixa
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $t51_motivo = 0;
-    var $t51_descr = null;
-    var $t51_anexoobrigatorio = null;
+    public $t51_motivo = 0;
+    public $t51_descr = null;
+    public $t51_anexoobrigatorio = null;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  t51_motivo = int8 = Motivo da baixa 
                  t51_descr = varchar(40) = Descrição do motivo da baixa 
                  t51_anexoobrigatorio = boolean = Controla se o tipo de baixa obriga anexar um documento. 
                  ";
 
     //funcao construtor da classe
-    function cl_bensmotbaixa()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("bensmotbaixa");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -111,10 +111,10 @@ class cl_bensmotbaixa
 
                 return false;
             }
-            $this->t51_motivo = pg_result($result, 0, 0);
+            $this->t51_motivo = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from bensmotbaixa_t51_motivo_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $t51_motivo)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $t51_motivo)) {
                 $this->erro_sql = " Campo t51_motivo maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -150,7 +150,7 @@ class cl_bensmotbaixa
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Motivos de baixa de bens ($this->t51_motivo) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Motivos de baixa de bens já Cadastrado";
@@ -178,14 +178,14 @@ class cl_bensmotbaixa
         $resaco = $this->sql_record($this->sql_query_file($this->t51_motivo));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,5762,'$this->t51_motivo','I')");
-            $resac = db_query("insert into db_acount values($acount,912,5762,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,912,5762,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't51_motivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,912,5763,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,912,5763,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't51_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,912,1011318,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,912,1011318,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 't51_anexoobrigatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -198,10 +198,10 @@ class cl_bensmotbaixa
         $this->atualizacampos();
         $sql = " update bensmotbaixa set ";
         $virgula = "";
-        if (trim($this->t51_motivo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t51_motivo"])) {
+        if (trim((string) $this->t51_motivo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t51_motivo"])) {
             $sql .= $virgula . " t51_motivo = $this->t51_motivo ";
             $virgula = ",";
-            if (trim($this->t51_motivo) == null) {
+            if (trim((string) $this->t51_motivo) == null) {
                 $this->erro_sql = " Campo Motivo da baixa nao Informado.";
                 $this->erro_campo = "t51_motivo";
                 $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_bensmotbaixa
                 return false;
             }
         }
-        if (trim($this->t51_descr) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t51_descr"])) {
+        if (trim((string) $this->t51_descr) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t51_descr"])) {
             $sql .= $virgula . " t51_descr = '$this->t51_descr' ";
             $virgula = ",";
-            if (trim($this->t51_descr) == null) {
+            if (trim((string) $this->t51_descr) == null) {
                 $this->erro_sql = " Campo Descrição do motivo da baixa nao Informado.";
                 $this->erro_campo = "t51_descr";
                 $this->erro_banco = "";
@@ -228,7 +228,7 @@ class cl_bensmotbaixa
                 return false;
             }
         }
-        if (trim($this->t51_anexoobrigatorio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t51_anexoobrigatorio"])) {
+        if (trim((string) $this->t51_anexoobrigatorio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["t51_anexoobrigatorio"])) {
             $sql .= $virgula . " t51_anexoobrigatorio = '$this->t51_anexoobrigatorio' ";
         }
 
@@ -240,21 +240,21 @@ class cl_bensmotbaixa
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,5762,'$this->t51_motivo','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t51_motivo"])) {
-                    $resac = db_query("insert into db_acount values($acount,912,5762,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,912,5762,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't51_motivo')) . "','$this->t51_motivo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t51_descr"])) {
-                    $resac = db_query("insert into db_acount values($acount,912,5763,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,912,5763,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't51_descr')) . "','$this->t51_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["t51_anexoobrigatorio"])) {
-                    $resac = db_query("insert into db_acount values($acount,912,1011318,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,912,1011318,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         't51_anexoobrigatorio')) . "','$this->t51_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -310,16 +310,16 @@ class cl_bensmotbaixa
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,5762,'$t51_motivo','E')");
-                $resac = db_query("insert into db_acount values($acount,912,5762,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,912,5762,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't51_motivo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,912,5763,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,912,5763,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't51_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,912,1011318,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,912,1011318,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     't51_anexoobrigatorio')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -391,7 +391,7 @@ class cl_bensmotbaixa
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:bensmotbaixa";
@@ -433,7 +433,7 @@ class cl_bensmotbaixa
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_bensmotbaixa
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

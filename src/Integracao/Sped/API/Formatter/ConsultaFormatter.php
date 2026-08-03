@@ -40,7 +40,7 @@ class ConsultaFormatter
      */
     public function __construct(\stdClass $data, $layout)
     {
-        if (preg_match('/^R.+/i', $layout)) {
+        if (preg_match('/^R.+/i', (string) $layout)) {
             $refactor = new EFDRetornoRefactor($layout, $data);
             $this->data = $refactor->format();
         } else {
@@ -108,11 +108,11 @@ class ConsultaFormatter
      */
     private function getDescription($name)
     {
-        if (empty($this->descriptions[strtolower($name)])) {
-            return strtolower($name);
+        if (empty($this->descriptions[strtolower((string) $name)])) {
+            return strtolower((string) $name);
         }
 
-        return $this->descriptions[strtolower($name)];
+        return $this->descriptions[strtolower((string) $name)];
     }
 
     /**
@@ -144,7 +144,7 @@ class ConsultaFormatter
 
         // nome do prestador de servico
         if ($name == 'cnpjPrestador') {
-            $cnpj = preg_replace('/\D/', '', $prop);
+            $cnpj = preg_replace('/\D/', '', (string) $prop);
             $prestador = \CgmRepository::getNomeByCNPJ($cnpj);
             if ($prestador) {
                 $prop .= " - " . $prestador;

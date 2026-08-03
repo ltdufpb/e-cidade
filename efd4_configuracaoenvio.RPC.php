@@ -55,10 +55,10 @@ try {
                 }
 
                 $dao = new cl_dataenvioefd();
-                $where = array(
+                $where = [
                     "efd06_instituicao = {$instituicao}",
                     "efd06_arquivo = '{$key}'",
-                );
+                ];
 
                 $sql = $dao->sql_query_file(null, "*", 'efd06_sequencial DESC', implode(' AND ', $where));
                 $rs = db_query($sql);
@@ -104,12 +104,12 @@ try {
             }
 
             $dao = new cl_dataenvioefd();
-            $sql = $dao->query(array(), "efd06_sequencial, efd06_dataenvio, efd06_arquivo, efd06_instituicao", "efd06_instituicao = {$instituicao}", null, 'efd06_sequencial asc', 1);
+            $sql = $dao->query([], "efd06_sequencial, efd06_dataenvio, efd06_arquivo, efd06_instituicao", "efd06_instituicao = {$instituicao}", null, 'efd06_sequencial asc', 1);
             $rs = db_query($sql);
-            $eventos = array();
+            $eventos = [];
 
             while ($evento = pg_fetch_array($rs)) {
-                $aux = array();
+                $aux = [];
                 // $aux['efd06_sequencial']  = $envioArquivo['efd06_sequencial'];
                 $aux['efd06_dataenvio']   = $evento['efd06_dataenvio'];
                 $aux['efd06_arquivo']     = $evento['efd06_arquivo'];

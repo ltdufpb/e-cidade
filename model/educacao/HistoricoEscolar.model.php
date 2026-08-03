@@ -194,7 +194,7 @@ class HistoricoEscolar
         }
 
         $oDataAtual = new DBDate(date('Y-m-d'));
-        $aSituacoes = array('TRANSFERIDO FORA', 'TRANSFERIDO REDE');
+        $aSituacoes = ['TRANSFERIDO FORA', 'TRANSFERIDO REDE'];
 
         /**
          * Se aluno esta transferido e ainda não foi matrículado

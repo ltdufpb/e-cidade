@@ -34,7 +34,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cursoedu_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcurso = new cl_curso;
 $clcurso->rotulo->label("ed29_i_codigo");
 $clcurso->rotulo->label("ed29_c_descr");
@@ -80,14 +80,14 @@ $clcurso->rotulo->label("ed29_c_descr");
 
   $iEscola = db_getsession("DB_coddepto");
   $iModulo = db_getsession('DB_modulo');
-  $aWhere  = array();
+  $aWhere  = [];
   $sQuery  = 'sql_query';
 
   // se acessado do módulo escola, deve filtrar somente os cursos da escola
   if ( $iModulo == 1100747 ) {
 
     $sQuery   = 'sql_query_cursoescola';
-    $aWhere   = array("ed71_c_situacao = 'S'");
+    $aWhere   = ["ed71_c_situacao = 'S'"];
     $aWhere[] = "ed71_i_escola = {$iEscola}";
   }
 

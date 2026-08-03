@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE parcontrib
 class cl_parcontrib { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $d12_receita = 0; 
-   var $d12_numtot = 0; 
-   var $d12_perunica = 0; 
-   var $d12_hist = 0; 
-   var $d12_notitipo = 0; 
-   var $d12_tipo = 0; 
-   var $d12_perc = 0; 
+   public $d12_receita = 0; 
+   public $d12_numtot = 0; 
+   public $d12_perunica = 0; 
+   public $d12_hist = 0; 
+   public $d12_notitipo = 0; 
+   public $d12_tipo = 0; 
+   public $d12_perc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  d12_receita = int4 = codigo da receita 
                  d12_numtot = int4 = Total de parcelas 
                  d12_perunica = float8 = Pecentual desconto única 
@@ -60,10 +60,10 @@ class cl_parcontrib {
                  d12_perc = float8 = Percentual 
                  ";
    //funcao construtor da classe 
-   function cl_parcontrib() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parcontrib"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -162,7 +162,7 @@ class cl_parcontrib {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parâmetros da contribuição () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parâmetros da contribuição já Cadastrado";
@@ -189,13 +189,13 @@ class cl_parcontrib {
       $this->atualizacampos();
      $sql = " update parcontrib set ";
      $virgula = "";
-     if(trim($this->d12_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_receita"])){ 
-        if(trim($this->d12_receita)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_receita"])){ 
+     if(trim((string) $this->d12_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_receita"])){ 
+        if(trim((string) $this->d12_receita)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_receita"])){ 
            $this->d12_receita = "0" ; 
         } 
        $sql  .= $virgula." d12_receita = $this->d12_receita ";
        $virgula = ",";
-       if(trim($this->d12_receita) == null ){ 
+       if(trim((string) $this->d12_receita) == null ){ 
          $this->erro_sql = " Campo codigo da receita nao Informado.";
          $this->erro_campo = "d12_receita";
          $this->erro_banco = "";
@@ -205,13 +205,13 @@ class cl_parcontrib {
          return false;
        }
      }
-     if(trim($this->d12_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_numtot"])){ 
-        if(trim($this->d12_numtot)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_numtot"])){ 
+     if(trim((string) $this->d12_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_numtot"])){ 
+        if(trim((string) $this->d12_numtot)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_numtot"])){ 
            $this->d12_numtot = "0" ; 
         } 
        $sql  .= $virgula." d12_numtot = $this->d12_numtot ";
        $virgula = ",";
-       if(trim($this->d12_numtot) == null ){ 
+       if(trim((string) $this->d12_numtot) == null ){ 
          $this->erro_sql = " Campo Total de parcelas nao Informado.";
          $this->erro_campo = "d12_numtot";
          $this->erro_banco = "";
@@ -221,20 +221,20 @@ class cl_parcontrib {
          return false;
        }
      }
-     if(trim($this->d12_perunica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_perunica"])){ 
-        if(trim($this->d12_perunica)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_perunica"])){ 
+     if(trim((string) $this->d12_perunica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_perunica"])){ 
+        if(trim((string) $this->d12_perunica)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_perunica"])){ 
            $this->d12_perunica = "0" ; 
         } 
        $sql  .= $virgula." d12_perunica = $this->d12_perunica ";
        $virgula = ",";
      }
-     if(trim($this->d12_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_hist"])){ 
-        if(trim($this->d12_hist)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_hist"])){ 
+     if(trim((string) $this->d12_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_hist"])){ 
+        if(trim((string) $this->d12_hist)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_hist"])){ 
            $this->d12_hist = "0" ; 
         } 
        $sql  .= $virgula." d12_hist = $this->d12_hist ";
        $virgula = ",";
-       if(trim($this->d12_hist) == null ){ 
+       if(trim((string) $this->d12_hist) == null ){ 
          $this->erro_sql = " Campo Hist.Calc. nao Informado.";
          $this->erro_campo = "d12_hist";
          $this->erro_banco = "";
@@ -244,13 +244,13 @@ class cl_parcontrib {
          return false;
        }
      }
-     if(trim($this->d12_notitipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_notitipo"])){ 
-        if(trim($this->d12_notitipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_notitipo"])){ 
+     if(trim((string) $this->d12_notitipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_notitipo"])){ 
+        if(trim((string) $this->d12_notitipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_notitipo"])){ 
            $this->d12_notitipo = "0" ; 
         } 
        $sql  .= $virgula." d12_notitipo = $this->d12_notitipo ";
        $virgula = ",";
-       if(trim($this->d12_notitipo) == null ){ 
+       if(trim((string) $this->d12_notitipo) == null ){ 
          $this->erro_sql = " Campo Procedência nao Informado.";
          $this->erro_campo = "d12_notitipo";
          $this->erro_banco = "";
@@ -260,13 +260,13 @@ class cl_parcontrib {
          return false;
        }
      }
-     if(trim($this->d12_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_tipo"])){ 
-        if(trim($this->d12_tipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_tipo"])){ 
+     if(trim((string) $this->d12_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_tipo"])){ 
+        if(trim((string) $this->d12_tipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_tipo"])){ 
            $this->d12_tipo = "0" ; 
         } 
        $sql  .= $virgula." d12_tipo = $this->d12_tipo ";
        $virgula = ",";
-       if(trim($this->d12_tipo) == null ){ 
+       if(trim((string) $this->d12_tipo) == null ){ 
          $this->erro_sql = " Campo tipo de debito nao Informado.";
          $this->erro_campo = "d12_tipo";
          $this->erro_banco = "";
@@ -276,8 +276,8 @@ class cl_parcontrib {
          return false;
        }
      }
-     if(trim($this->d12_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_perc"])){ 
-        if(trim($this->d12_perc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_perc"])){ 
+     if(trim((string) $this->d12_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d12_perc"])){ 
+        if(trim((string) $this->d12_perc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["d12_perc"])){ 
            $this->d12_perc = "0" ; 
         } 
        $sql  .= $virgula." d12_perc = $this->d12_perc ";
@@ -365,7 +365,7 @@ $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:parcontrib";
@@ -379,7 +379,7 @@ $result = db_query($sql);
    function sql_query ( $oid = null,$campos="parcontrib.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,7 +406,7 @@ $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -436,7 +436,7 @@ $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

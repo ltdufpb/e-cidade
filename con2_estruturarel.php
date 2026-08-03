@@ -31,7 +31,7 @@ include(modification("libs/db_libcontabilidade.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("classes/db_orcparamrel_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 $orcparamrel = new cl_orcparamrel;
 
@@ -65,7 +65,7 @@ $lista = $lista.')';
  //   echo $sql;
  //   db_criatabela($res);
 
- if (pg_numrows($res)>0){
+ if (pg_num_rows($res)>0){
 
     $pdf = new PDF(); 
     $pdf->Open(); 
@@ -82,7 +82,7 @@ $lista = $lista.')';
     $pdf->cell(145,$alt,"FINALIDADE",'1',1,"L",0);
 
     $pdf->setfont('arial','',7);
-    for($i=0;$i < pg_numrows($res);$i++){
+    for($i=0;$i < pg_num_rows($res);$i++){
       db_fieldsmemory($res,$i);
 
       $pdf->cell(30,$alt,"$c60_estrut",'1',0,"L",0);

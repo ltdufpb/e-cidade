@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -95,7 +95,7 @@ if (isset($gera)){
     $espaco = str_repeat(' ',122);
     fputs($arquivo,$xano.$xmes.$conv.$espaco."\r\n");
   }
-  for($x = 0;$x < pg_numrows($result);$x++){
+  for($x = 0;$x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
     fputs($arquivo,$tipo."\r\n");
   }
@@ -152,7 +152,7 @@ if (isset($gera)){
         <td align="right"><b>Tipo de Arquivo :&nbsp;&nbsp;<b></td>
 	<td align="left">
 	<?php 
-	  $arr = array('S'=>'Retorno Simba','C'=>'Cartão Servidor');
+	  $arr = ['S'=>'Retorno Simba','C'=>'Cartão Servidor'];
 	  db_select("exporta",$arr,true,1);
 	?>
         </td>

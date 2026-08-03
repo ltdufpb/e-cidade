@@ -93,7 +93,7 @@ $clconcilia->rotulo->label("k68_contabancaria");
 
       $iInstituicao = db_getsession('DB_instit');
 
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = "c61_instit = {$iInstituicao}";
 
       if (!isset($pesquisa_chave)) {
@@ -125,10 +125,10 @@ $clconcilia->rotulo->label("k68_contabancaria");
         $sWhere = implode(" and ", $aWhere);
         $sql    = $clconcilia->sql_query(null, $sCampos, $sOrder, $sWhere);
 
-        $repassa = array();
+        $repassa = [];
 
         if (isset($db83_sequencial)) {
-          $repassa = array("k68_sequencial" => $k68_sequencial, "db83_sequencial" => $db83_sequencial);
+          $repassa = ["k68_sequencial" => $k68_sequencial, "db83_sequencial" => $db83_sequencial];
         }
 
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

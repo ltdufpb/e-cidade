@@ -35,8 +35,8 @@ require_once(modification("classes/db_protprocesso_classe.php"));
 require_once(modification("classes/db_proctransand_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 $db_opcao = 1;
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clprocandam = new cl_procandam;
 $clproctransfer = new cl_proctransfer;
 $clprotprocesso = new cl_protprocesso;
@@ -178,7 +178,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 function js_pesquisap58_numcgm(mostra){
   if(mostra==true){
@@ -207,7 +207,7 @@ onLoad=document.form1.p58_codproc.focus();
 </script>
 <?php 
 
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Consultar"){
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Consultar"){
  
 	$sql = "select p58_codproc, 
                  z01_nome,
@@ -222,7 +222,7 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Consul
  
   if (isset($numeroProcesso) && !empty($numeroProcesso)) {
     
-    $aNumeroProcesso = explode("/", $numeroProcesso);
+    $aNumeroProcesso = explode("/", (string) $numeroProcesso);
     $where .= " and p58_numero = '".$aNumeroProcesso[0]."'" ;
     if (count($aNumeroProcesso) > 1) {
       
@@ -243,9 +243,9 @@ if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Consul
   
   $res = db_query($sql);
 
-	if (pg_numrows($res) > 0) {
+	if (pg_num_rows($res) > 0) {
 		
-	  if (pg_numrows($res) > 1) {
+	  if (pg_num_rows($res) > 1) {
 	  	
 	    echo"<script>
 	    

@@ -68,15 +68,15 @@ $oSuspensoesAtivas         = db_utils::getCollectionByRecord($rsSuspensoesAtivas
 $iTotalSuspensoesAtivas    = count($oSuspensoesAtivas);
 
 
-$rh101_dtinicial           = array("","","");
-$rh101_dtfinal             = array("","","");
+$rh101_dtinicial           = ["","",""];
+$rh101_dtfinal             = ["","",""];
 
 if($iTotalSuspensoesAtivas > 0 ){
 	$oSuspensoesAtivas         = $oSuspensoesAtivas[0];
 	
 	$rh101_sequencial          = $oSuspensoesAtivas->rh101_sequencial;
-	$rh101_dtinicial           = split("-", $oSuspensoesAtivas->rh101_dtinicial);
-	$rh101_dtfinal             = split("-", $oSuspensoesAtivas->rh101_dtfinal);
+	$rh101_dtinicial           = preg_split("#\\-#m", (string) $oSuspensoesAtivas->rh101_dtinicial);
+	$rh101_dtfinal             = preg_split("#\\-#m", (string) $oSuspensoesAtivas->rh101_dtfinal);
 
 } else{
 	

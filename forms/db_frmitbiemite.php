@@ -63,10 +63,10 @@ $clparitbi   = new cl_paritbi;
         <td colspan='3'>
           <?php 
             if ($bEmiteDeclarQuit) {
-                $aTipo = array( 'n'=>'Guia normal',
-                                'q'=>'Declaração de quitação' );
+                $aTipo = [ 'n'=>'Guia normal',
+                                'q'=>'Declaração de quitação' ];
             } else {
-              $aTipo = array( 'n'=>'Guia normal' );
+              $aTipo = [ 'n'=>'Guia normal' ];
             }
             db_select('tipoguia',$aTipo,true,2," style='width:275px;'"); 
           ?>          

@@ -53,10 +53,11 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
    *
    * @return array - Colecao de stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
 
-    $aLinhas          = array();
+    $aLinhas          = [];
     $oDaoPeriodo      = db_utils::getDao("periodo");
     $sSqlDadosPeriodo = $oDaoPeriodo->sql_query_file($this->iCodigoPeriodo);
     $rsPeriodo        = db_query($sSqlDadosPeriodo);
@@ -79,12 +80,12 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
     $iTotalLinhasReceita = pg_num_rows($rsReceita);
     $iTotalLinhasDespesa = pg_num_rows($rsDespesa);
 
-    $aLinhasTotalizadorasImpostoLiquido  = array(2, 3, 4, 5, 6, 7, 8, 9);
-    $aLinhasTotalizadorasTransfConst     = array(11, 12, 13, 14, 15, 16, 17, 18, 19);
-    $aLinhasTotalizadorasRecursoSus      = array(21, 22, 23, 24);
-    $aLinhasTotalizadorasDespCorrente    = array(30, 31, 32);
-    $aLinhasTotalizadorasDespCapital     = array(34, 35, 36);
-    $aLinhasTotalizadorasTotal54         = array(50, 51, 52);
+    $aLinhasTotalizadorasImpostoLiquido  = [2, 3, 4, 5, 6, 7, 8, 9];
+    $aLinhasTotalizadorasTransfConst     = [11, 12, 13, 14, 15, 16, 17, 18, 19];
+    $aLinhasTotalizadorasRecursoSus      = [21, 22, 23, 24];
+    $aLinhasTotalizadorasDespCorrente    = [30, 31, 32];
+    $aLinhasTotalizadorasDespCapital     = [34, 35, 36];
+    $aLinhasTotalizadorasTotal54         = [50, 51, 52];
 
     $aLinhasRelatorio = $this->oRelatorioLegal->getLinhasCompleto();
 
@@ -286,7 +287,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
 
             $oLinha->percentualEmpenhado = $nPercentualEmpenhado;
             $oLinha->percentualLiquidado = $nPercentualLiquidado;
-            if (in_array($this->iCodigoPeriodo, array(11, 13))) {
+            if (in_array($this->iCodigoPeriodo, [11, 13])) {
 
               if (!empty($oLinha->dot_atual)) {
                  $oLinha->percentualLiquidado = ((($oLinha->liq_atebim + $oLinha->insc_rp_np) / $oLinha->dot_atual));
@@ -304,7 +305,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
               $oLinha->percentualLiquidado = ($oLinha->liq_atebim / $aLinhas[37]->liq_atebim) * 100;
             }
 
-            if (in_array($this->iCodigoPeriodo, array(11, 13))) {
+            if (in_array($this->iCodigoPeriodo, [11, 13])) {
 
               $iTotalIV = $aLinhas[37]->insc_rp_np + $aLinhas[37]->liq_atebim;
               if (!empty($iTotalIV)) {
@@ -382,7 +383,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
         */
        if ($iLinha == 28) {
 
-         $aLinhaSomadas  = array(20,25,26,27);
+         $aLinhaSomadas  = [20,25,26,27];
          $oLinhaAcumular = $aLinhas[28];
 
          foreach( $aLinhaSomadas as $iLinhaSomada ) {
@@ -411,7 +412,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
          $oLinhaAcumular->insc_rp_np           += $oLinha->insc_rp_np;
          $oLinhaAcumular->percentualEmpenhado   = @round((($oLinhaAcumular->emp_atebim / $oLinhaAcumular->dot_atual) * 100), 2);
          $oLinhaAcumular->percentualLiquidado   = @round((($oLinhaAcumular->liq_atebim / $oLinhaAcumular->dot_atual) * 100), 2);
-         if (in_array($this->iCodigoPeriodo, array(11, 13))) {
+         if (in_array($this->iCodigoPeriodo, [11, 13])) {
 
            if (!empty($oLinha->dot_atual)) {
              $oLinhaAcumular->percentualLiquidado = ((($oLinha->liq_atebim + $oLinha->insc_rp_np) / $oLinha->dot_atual)) * 100;
@@ -436,7 +437,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
          $oLinhaAcumular->insc_rp_np           += $oLinha->insc_rp_np;
          $oLinhaAcumular->percentualEmpenhado   = @round((($oLinhaAcumular->emp_atebim / $oLinhaAcumular->dot_atual) * 100), 2);
          $oLinhaAcumular->percentualLiquidado   = @round((($oLinhaAcumular->liq_atebim / $oLinhaAcumular->dot_atual) * 100), 2);
-         if (in_array($this->iCodigoPeriodo, array(11, 13))) {
+         if (in_array($this->iCodigoPeriodo, [11, 13])) {
 
            if (!empty($oLinha->dot_atual)) {
              $oLinhaAcumular->percentualLiquidado = ((($oLinha->liq_atebim + $oLinha->insc_rp_np) / $oLinha->dot_atual)) * 100;
@@ -451,7 +452,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
         */
        if ($iLinha == 37) {
 
-         $aLinhaSomadas  = array(29, 33);
+         $aLinhaSomadas  = [29, 33];
          $oLinhaAcumular = $aLinhas[37];
 
          foreach( $aLinhaSomadas as $iLinhaSomada ) {
@@ -464,7 +465,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
            $oLinhaAcumular->insc_rp_np         += $aLinhas[$iLinhaSomada]->insc_rp_np;
            $oLinhaAcumular->percentualEmpenhado = @round((($oLinhaAcumular->emp_atebim / $oLinhaAcumular->dot_atual) * 100), 2);
            $oLinhaAcumular->percentualLiquidado = @round((($oLinhaAcumular->liq_atebim / $oLinhaAcumular->dot_atual) * 100), 2);
-           if (in_array($this->iCodigoPeriodo, array(11, 13))) {
+           if (in_array($this->iCodigoPeriodo, [11, 13])) {
 
              if (!empty($oLinha->dot_atual)) {
                $oLinhaAcumular->percentualLiquidado = ((($oLinha->liq_atebim + $oLinha->insc_rp_np) / $oLinha->dot_atual)) * 100;
@@ -484,7 +485,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
        if ($iLinha == 44) {
 
 
-         $aLinhaSomadas  = array(41, 42, 43);
+         $aLinhaSomadas  = [41, 42, 43];
          $oLinhaAcumular = $aLinhas[40];
 
          foreach( $aLinhaSomadas as $iLinhaSomada ) {
@@ -497,7 +498,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
            $oLinhaAcumular->insc_rp_np         += $aLinhas[$iLinhaSomada]->insc_rp_np;
            $oLinhaAcumular->percentualEmpenhado = @round(($oLinhaAcumular->emp_atebim / $aLinhas[37]->emp_atebim)*100, 2);
            $oLinhaAcumular->percentualLiquidado = @round(($oLinhaAcumular->liq_atebim / $aLinhas[37]->liq_atebim)*100, 2);
-           if (in_array($this->iCodigoPeriodo, array(11, 13))) {
+           if (in_array($this->iCodigoPeriodo, [11, 13])) {
 
              $iTotalIV = $aLinhas[37]->insc_rp_np + $aLinhas[37]->liq_atebim;
              if (!empty($iTotalIV)) {
@@ -513,7 +514,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
        // totalizador V -  linha 49
        if ($iLinha == 48) {
 
-         $aLinhaSomadas  = array(38,39,40,44,45,46,47);
+         $aLinhaSomadas  = [38,39,40,44,45,46,47];
          $oLinhaAcumular = $aLinhas[48];
          foreach( $aLinhaSomadas as $iLinhaSomada ) {
 
@@ -529,7 +530,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
 
 
          $oLinhaAcumular->total_pagar = $oLinhaAcumular->insc_rp_np + $oLinhaAcumular->liq_atebim;
-         if (in_array($this->iCodigoPeriodo, array(11, 13))) {
+         if (in_array($this->iCodigoPeriodo, [11, 13])) {
 
            $iTotalIV = $aLinhas[37]->insc_rp_np + $aLinhas[37]->liq_atebim;
            if (!empty($iTotalIV)) {
@@ -552,7 +553,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
          $oLinha->percentualEmpenhado = @round(($oLinha->emp_atebim /$aLinhas[37]->emp_atebim)*100, 2);
          $oLinha->percentualLiquidado = @round(($oLinha->liq_atebim /$aLinhas[37]->liq_atebim)*100, 2);
          $oLinha->total_pagar         = $oLinha->insc_rp_np + $oLinha->liq_atebim;
-         if (in_array($this->iCodigoPeriodo, array(11, 13))) {
+         if (in_array($this->iCodigoPeriodo, [11, 13])) {
              $oLinha->percentualLiquidado = "-";
          }
          $aLinhas[49] = $oLinha;
@@ -562,7 +563,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
        // totalizador linha 58 VIII = 55+56+57
        if ($iLinha == 57) {
 
-         $aLinhaSomadas  = array(54, 55, 56);
+         $aLinhaSomadas  = [54, 55, 56];
          $oLinha             = $aLinhas[57];
          foreach( $aLinhaSomadas as $iLinhaSomada ) {
 
@@ -577,7 +578,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
        if ($iLinha == 61) {
 
          $oLinha             = $aLinhas[61];
-         $aLinhaSomadas  = array(58, 59, 60);
+         $aLinhaSomadas  = [58, 59, 60];
          foreach( $aLinhaSomadas as $iLinhaSomada ) {
 
            $oLinha->RP_sd_ini  += $aLinhas[$iLinhaSomada]->RP_sd_ini ;
@@ -611,7 +612,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
       $oLinha   = $aLinhas[$iLinhaSomada];
       $oLinha->percentualEmpenhado = @round(($oLinha->emp_atebim / $aLinhas[69]->emp_atebim) * 100, 2);//(I/total I) x 100
       $oLinha->percentualLiquidado = @round(($oLinha->liq_atebim / $aLinhas[69]->liq_atebim) * 100, 2);//(m/total m) x 100
-      if (in_array($this->iCodigoPeriodo, array(11, 13))) {
+      if (in_array($this->iCodigoPeriodo, [11, 13])) {
 
 
         if (!empty($oLinha->dot_atual)) {
@@ -681,7 +682,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
       $aLinhas[52]->rp_apagar  += @$oDadosExecucaoReferencia->a_pagar;
     }
 
-    $aLinhaSomadas  = array(50, 51, 52);
+    $aLinhaSomadas  = [50, 51, 52];
     $oLinha = $aLinhas[53];
     foreach( $aLinhaSomadas as $iLinhaSomada ) {
 
@@ -708,7 +709,7 @@ class AnexoXVILRF extends RelatoriosLegaisBase  {
     $oDadosSimplificado->percent_ate_bim   = $aDadosSimplificado[70]->dot_in;
     $oDadosSimplificado->inscritos_rp_nroc = $aDadosSimplificado[49]->insc_rp_np;
     $oDadosSimplificado->liquidadas        = $aDadosSimplificado[49]->liq_atebim;
-    if (in_array($this->iCodigoPeriodo, array(11, 13))) {
+    if (in_array($this->iCodigoPeriodo, [11, 13])) {
       $oDadosSimplificado->apurado_ate_bim   = $aDadosSimplificado[49]->insc_rp_np + $aDadosSimplificado[49]->liq_atebim;
     }
 

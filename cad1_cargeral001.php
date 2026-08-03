@@ -37,7 +37,7 @@ include(modification("classes/db_carconstr_classe.php")); // nao escrituradas
 include(modification("classes/db_constrcar_classe.php")); // escrituradas
 include(modification("classes/db_caracter_classe.php")); // escrituradas
 include(modification("classes/db_carpadrao_classe.php")); // escrituradas
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //$tipogrupo = 'F';
 //$codigo = 1;
 //echo "<br>".$HTTP_SERVER_VARS["QUERY_STRING"]."<br>";
@@ -61,8 +61,8 @@ if (isset($enviar)) {
   $car     = "X";
   for ($i=0; $i<$clcaracter->numrows; $i++) {
     db_fieldsmemory($result,$i);
-    if (isset($HTTP_POST_VARS['G'.$j31_grupo]) && ($j31_codigo == $HTTP_POST_VARS['G'.$j31_grupo]) ) {
-      $caracte .= $car.$HTTP_POST_VARS['G'.$j31_grupo];
+    if (isset($_POST['G'.$j31_grupo]) && ($j31_codigo == $_POST['G'.$j31_grupo]) ) {
+      $caracte .= $car.$_POST['G'.$j31_grupo];
       $car      = "X";
     }
   }
@@ -103,7 +103,7 @@ if (isset($enviar)) {
       if (!isset($enviar)) {
         if (isset($caracteristica) && ($caracteristica != "") ) {
           //echo "<br>X{$j31_codigo}X - $caracteristica<br>";
-          if (strpos("XXX".$caracteristica, "X".$j31_codigo."X") != 0) {
+          if (!str_starts_with("XXX".$caracteristica, "X".$j31_codigo."X")) {
             $cheque = ' selected ';
           }
         } else {
@@ -127,7 +127,7 @@ if (isset($enviar)) {
 
       } else {
         if ($db_opcao != 1) {
-          if (isset($HTTP_POST_VARS['G'.$j31_grupo]) && ($j31_codigo == $HTTP_POST_VARS['G'.$j31_grupo])) {
+          if (isset($_POST['G'.$j31_grupo]) && ($j31_codigo == $_POST['G'.$j31_grupo])) {
             $cheque = ' selected ';
           }
         }
@@ -180,7 +180,7 @@ if (isset($enviar)) {
       }
 
       ?>
-      <option value="<?=$j31_codigo?>" <?=$cheque?>><?=str_pad($j31_codigo."-".trim($j31_descr),20)?> </option>
+      <option value="<?=$j31_codigo?>" <?=$cheque?>><?=str_pad($j31_codigo."-".trim((string) $j31_descr),20)?> </option>
       <?php 
     }
     ?>

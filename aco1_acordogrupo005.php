@@ -39,7 +39,7 @@ require_once(modification("classes/db_acordotipo_classe.php"));
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clacordogrupo = new cl_acordogrupo;
 $clacordotipo  = new cl_acordotipo;

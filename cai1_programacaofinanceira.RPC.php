@@ -37,7 +37,7 @@ $oJson               = new services_json();
 $oRetorno            = new stdClass(); 
 $oParam              = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno->status    = 0;
-$oRetorno->aParcelas = array();
+$oRetorno->aParcelas = [];
 $iIdUsuario          = db_getsession('DB_id_usuario');
 
 switch ($oParam->exec) {
@@ -53,9 +53,9 @@ switch ($oParam->exec) {
       	$oProgramacaoFinanceira   = $_SESSION["oProgramacaoFinanceira"];
 	      $oProgramacaoFinanceira->setIdUsuario($iIdUsuario);
 	      $oProgramacaoFinanceira->setPeriodicidade($oParam->periodicidade);
-	      $oProgramacaoFinanceira->setDiaPagamento(str_pad(($oParam->diapagamento),2,"0",STR_PAD_LEFT));
+	      $oProgramacaoFinanceira->setDiaPagamento(str_pad(((string) $oParam->diapagamento),2,"0",STR_PAD_LEFT));
 	      $oProgramacaoFinanceira->setValorTotal($oParam->valortotal);
-	      $oProgramacaoFinanceira->processar($oParam->numparcelas,str_pad(($oParam->mesinicial),2,"0",STR_PAD_LEFT));
+	      $oProgramacaoFinanceira->processar($oParam->numparcelas,str_pad(((string) $oParam->mesinicial),2,"0",STR_PAD_LEFT));
 	      
 	      $oRetorno->aParcelas      = $oProgramacaoFinanceira->getParcelas();
 	      $oRetorno->iPeriodicidade = $oProgramacaoFinanceira->getPeriodicidade();
@@ -84,7 +84,7 @@ switch ($oParam->exec) {
       	db_inicio_transacao();
       	
         $oProgramacaoFinanceira   = $_SESSION["oProgramacaoFinanceira"];
-        $sDataPagamento           = implode("-",array_reverse(explode("/",$oParam->dtpagamento)));
+        $sDataPagamento           = implode("-",array_reverse(explode("/",(string) $oParam->dtpagamento)));
         $nValorParcela            = str_replace(",", ".",$oParam->valorparcela);
         $oProgramacaoFinanceira->incluirParcela($oParam->parcela, $sDataPagamento, $nValorParcela);
         
@@ -113,7 +113,7 @@ switch ($oParam->exec) {
     		
     		db_inicio_transacao();
     		
-        $sDataPagamento           = implode("-",array_reverse(explode("/",$oParam->dtpagamento)));
+        $sDataPagamento           = implode("-",array_reverse(explode("/",(string) $oParam->dtpagamento)));
         $nValorParcela            = str_replace(",", ".",$oParam->nvalorparcela);
     	  $oProgramacaoFinanceira   = $_SESSION["oProgramacaoFinanceira"];
         $oProgramacaoFinanceira->alterarParcela($oParam->parcela, $sDataPagamento, $nValorParcela);

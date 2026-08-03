@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tfd_motivoacompanhamento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltfd_motivoacompanhamento = new cl_tfd_motivoacompanhamento;
 $cltfd_motivoacompanhamento->rotulo->label("tf08_i_codigo");
 $cltfd_motivoacompanhamento->rotulo->label("tf08_c_descr");
@@ -98,9 +98,9 @@ $cltfd_motivoacompanhamento->rotulo->label("tf08_c_descr");
         }else{
            $sql = $cltfd_motivoacompanhamento->sql_query("",$campos,"tf08_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_tf08_i_codigo)){
-          $repassa = array("chave_tf08_i_codigo"=>$chave_tf08_i_codigo,"chave_tf08_c_descr"=>$chave_tf08_c_descr);
+          $repassa = ["chave_tf08_i_codigo"=>$chave_tf08_i_codigo,"chave_tf08_c_descr"=>$chave_tf08_c_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

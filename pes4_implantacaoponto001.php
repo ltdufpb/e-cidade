@@ -28,8 +28,8 @@ try {
 
   $oRequest     = db_utils::postMemory($_REQUEST);
   $lSubmit      = isset($oRequest->ano_folha) && isset($oRequest->mes_folha) ? true : false;
-  $ano_folha    = $oRequest->ano_folha = isset($oRequest->ano_folha) ? $oRequest->ano_folha : DBPessoal::getAnoFolha();
-  $mes_folha    = $oRequest->mes_folha = isset($oRequest->mes_folha) ? $oRequest->mes_folha : DBPessoal::getMesFolha();
+  $ano_folha    = ($oRequest->ano_folha ??= DBPessoal::getAnoFolha());
+  $mes_folha    = ($oRequest->mes_folha ??= DBPessoal::getMesFolha());
 
   $oRequest->rh143_valor      = empty($oRequest->rh143_valor) ? "0" : $oRequest->rh143_valor;
   $oRequest->rh143_quantidade = empty($oRequest->rh143_quantidade) ? "0" : $oRequest->rh143_quantidade;
@@ -62,7 +62,7 @@ try {
     db_msgbox("Não existem folhas fechadas para a competência informada.");
   }
 
-  $aCodigosFolha = array();
+  $aCodigosFolha = [];
 
   foreach ( $aFolhas as $oFolha ) {
     $aCodigosFolha[$oFolha->getSequencial()] = $oFolha->getNumero();
@@ -116,7 +116,7 @@ try {
       throw new DBException("Erro ao excluir dados totalizados do cálculo.");
     }
 
-    $sSqlDadosConsolidados = $oDaoRhHistoricoCalculo->sql_query_dados_consolidados(array($oRequest->rh01_regist), $oFolha);
+    $sSqlDadosConsolidados = $oDaoRhHistoricoCalculo->sql_query_dados_consolidados([$oRequest->rh01_regist], $oFolha);
     $rsInsert              = db_query("insert into {$oFolha->getTabelaCalculo()}". $sSqlDadosConsolidados);
     if ( !$rsInsert ) {
       throw new DBException("Erro consolidar dados do cálculo.");

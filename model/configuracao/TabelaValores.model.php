@@ -42,7 +42,7 @@ class TabelaValores {
  	/**
  	 * Faixas da tabela do IRRF
  	 */
- 	protected $aFaixas = array();
+ 	protected $aFaixas = [];
 
  	public function __construct($iCodigoTabela = null) {
     $this->setCodigo($iCodigoTabela);

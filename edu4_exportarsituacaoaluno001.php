@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_calendarioescola_classe.php"));
 include(modification("classes/db_matricula_classe.php"));
 include(modification("classes/db_escoladiretor_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clcalendarioescola = new cl_calendarioescola;
 $clmatricula = new cl_matricula;
@@ -50,8 +50,8 @@ function RetiraAcento($string){
  $acentos = '·ÈÌÛ˙¡…Õ”⁄‡¿¬‚ ÍÙ‘¸‹Ôœˆ÷Ò—„√ı’Á«‰ƒ\'';
  $letras  = 'AEIOUAEIOUAAAAEEOOUUIIOONNAAOOCCAA ';
  $new_string = '';
- for($x=0; $x<strlen($string); $x++){
-  $let = substr($string, $x, 1);
+ for($x=0; $x<strlen((string) $string); $x++){
+  $let = substr((string) $string, $x, 1);
   for($y=0; $y<strlen($acentos); $y++){
    if($let==substr($acentos, $y, 1)){
     $let=substr($letras, $y, 1);
@@ -144,7 +144,7 @@ function TiraCaracteres(&$string,$tipo){
   $string = str_replace("∫","",$string);
   $string = str_replace(" ","",$string);
  }
- $string = strtoupper(RetiraAcento($string));
+ $string = strtoupper((string) RetiraAcento($string));
  return $string;
 }
 function db_criatermometro_edu($dbnametermo='termometro',$dbtexto='ConcluÌdo',$dbcor='blue',$dbborda=1,$dbacao='Aguarde Processando...'){
@@ -383,7 +383,7 @@ function js_valida(){
 if(isset($gerararquivo)){
  echo str_pad("<br>",1100," ",STR_PAD_RIGHT)."\n";
  $clescola = new cl_escola;
- $data_censo = substr($data_censo,6,4)."-".substr($data_censo,3,2)."-".substr($data_censo,0,2);
+ $data_censo = substr((string) $data_censo,6,4)."-".substr((string) $data_censo,3,2)."-".substr((string) $data_censo,0,2);
  $hoje = date("Y-m-d");
  $arquivo_txt = "tmp/censo_sitAluno_".$escola."_".db_getsession("DB_id_usuario")."_".date("dmY")."_".date("His")."_".str_replace("/","",db_formatar($data_censo,'d'))."_".$ed52_i_ano.".txt";
  $logerro_txt = "tmp/censo_sitAluno_".$escola."_".db_getsession("DB_id_usuario")."_".date("dmY")."_".date("His")."_".str_replace("/","",db_formatar($data_censo,'d'))."_".$ed52_i_ano."_logerro.txt";
@@ -394,7 +394,7 @@ if(isset($gerararquivo)){
  $result_diretor = $clescoladiretor->sql_record($clescoladiretor->sql_query("","ed18_c_codigoinep,case when ed20_i_tiposervidor = 1 then trim(cgmrh.z01_nome) else trim(cgmcgm.z01_nome) end as z01_nome,case when ed20_i_tiposervidor = 1 then trim(cgmrh.z01_cgccpf) else trim(cgmcgm.z01_cgccpf) end as z01_cgccpf,case when ed20_i_tiposervidor = 1 then trim(rhfuncao.rh37_descr) else 'DIRETOR' end as rh37_descr,trim(ed254_c_email) as ed254_c_email",""," ed254_i_escola = $escola AND ed254_c_tipo = 'A' LIMIT 1"));
  if($clescoladiretor->numrows>0){
   db_fieldsmemory($result_diretor,0);
-  if(($z01_cgccpf!="" && strlen($z01_cgccpf)!=11) || $z01_cgccpf=="00000000000" || $z01_cgccpf=="00000000191"){
+  if(($z01_cgccpf!="" && strlen((string) $z01_cgccpf)!=11) || $z01_cgccpf=="00000000000" || $z01_cgccpf=="00000000191"){
    $var_erro = "ESCOLA: Campo CPF do Diretor inv·lido.\n";
    fwrite($ponteiro2,$var_erro);
    $erro_diretor = true;
@@ -404,7 +404,7 @@ if(isset($gerararquivo)){
    fwrite($ponteiro2,$var_erro);
    $erro_diretor = true;
   }
-  if($ed254_c_email!="" && (!strstr($ed254_c_email,"@")  || !strstr($ed254_c_email,"."))){
+  if($ed254_c_email!="" && (!strstr((string) $ed254_c_email,"@")  || !strstr((string) $ed254_c_email,"."))){
    $var_erro = "ESCOLA: Campo Email do diretor deve conter arroba e ponto.\n";
    fwrite($ponteiro2,$var_erro);
    $erro_diretor = true;
@@ -463,7 +463,7 @@ if(isset($gerararquivo)){
  $erro_escola = false;
  $erro_turma = false;
  $erro_aluno = false;
- $array_turma = array();
+ $array_turma = [];
  if($clmatricula->numrows>0){
   fwrite($ponteiro2,"Erros encontrados na geraÁ„o do arquivo de exportaÁ„o para o Censo Escolar:\n\n");
   $var_erro = "* Campo CÛdigo INEP da turma deve ser informado quando esta tiver alunos com data da matrÌcula inferior ou igual a data de referÍncia do censo(".db_formatar($data_censo,'d')."):\n";
@@ -473,29 +473,29 @@ if(isset($gerararquivo)){
    $comparadatasaida = str_replace("-","",$ed60_d_datasaida);
    $comparadatacenso = str_replace("-","",$data_censo);   
    db_atutermometro_edu($a, $clmatricula->numrows , 'termometro',1,'...Processando Alunos');
-   $ed18_c_codigoinep = trim($ed18_c_codigoinep)!=""?trim($ed18_c_codigoinep):"";
+   $ed18_c_codigoinep = trim((string) $ed18_c_codigoinep)!=""?trim((string) $ed18_c_codigoinep):"";
    $ed52_i_ano        = trim($ed52_i_ano)!=""?trim($ed52_i_ano):"";
-   $ed57_i_codigo     = trim($ed57_i_codigo)!=""?trim($ed57_i_codigo):"";
-   $ed57_i_codigoinep = trim($ed57_i_codigoinep)!=""?trim($ed57_i_codigoinep):"";
-   $ed57_c_descr      = trim($ed57_c_descr)!=""?trim($ed57_c_descr):"";
-   $ed47_c_codigoinep = trim($ed47_c_codigoinep)!=""?trim($ed47_c_codigoinep):"";
-   $ed47_i_codigo     = trim($ed47_i_codigo)!=""?trim($ed47_i_codigo):"";
-   $ed47_v_nome       = trim($ed47_v_nome)!=""?trim(TiraCaracteres($ed47_v_nome,3)):"";
-   $ed47_d_nasc       = trim($ed47_d_nasc)!=""?db_formatar($ed47_d_nasc,'d'):"";
-   $ed47_v_mae        = trim($ed47_v_mae)!=""?trim(TiraCaracteres($ed47_v_mae,3)):"";
-   $ed60_i_codigo     = trim($ed60_i_codigo)!=""?trim($ed60_i_codigo):"";
-   $ed10_i_tipoensino = trim($ed10_i_tipoensino)!=""?trim($ed10_i_tipoensino):"";
-   $ed221_i_serie     = trim($ed221_i_serie)!=""?trim($ed221_i_serie):"";
-   $ed60_c_situacao   = trim($ed60_c_situacao)!=""?trim($ed60_c_situacao):"";
+   $ed57_i_codigo     = trim((string) $ed57_i_codigo)!=""?trim((string) $ed57_i_codigo):"";
+   $ed57_i_codigoinep = trim((string) $ed57_i_codigoinep)!=""?trim((string) $ed57_i_codigoinep):"";
+   $ed57_c_descr      = trim((string) $ed57_c_descr)!=""?trim((string) $ed57_c_descr):"";
+   $ed47_c_codigoinep = trim((string) $ed47_c_codigoinep)!=""?trim((string) $ed47_c_codigoinep):"";
+   $ed47_i_codigo     = trim((string) $ed47_i_codigo)!=""?trim((string) $ed47_i_codigo):"";
+   $ed47_v_nome       = trim((string) $ed47_v_nome)!=""?trim((string) TiraCaracteres($ed47_v_nome,3)):"";
+   $ed47_d_nasc       = trim((string) $ed47_d_nasc)!=""?db_formatar($ed47_d_nasc,'d'):"";
+   $ed47_v_mae        = trim((string) $ed47_v_mae)!=""?trim((string) TiraCaracteres($ed47_v_mae,3)):"";
+   $ed60_i_codigo     = trim((string) $ed60_i_codigo)!=""?trim((string) $ed60_i_codigo):"";
+   $ed10_i_tipoensino = trim((string) $ed10_i_tipoensino)!=""?trim((string) $ed10_i_tipoensino):"";
+   $ed221_i_serie     = trim((string) $ed221_i_serie)!=""?trim((string) $ed221_i_serie):"";
+   $ed60_c_situacao   = trim((string) $ed60_c_situacao)!=""?trim((string) $ed60_c_situacao):"";
    $sql_etapa = "SELECT ed11_i_codcenso FROM serie WHERE ed11_i_codigo = $ed221_i_serie";
    $result_etapa = db_query($sql_etapa);
    if(pg_num_rows($result_etapa)>0){
-    $ed221_i_serie = pg_result($result_etapa,0,0);
+    $ed221_i_serie = pg_fetch_result($result_etapa,0,0);
    }else{
     db_msgbox("MatrÌcula $ed60_i_codigo do aluno $ed47_v_nome n„o tem vÌnculo com etapas!");
     exit;
    }
-   $array_etapas = array("4","5","6","7","8","9","10","11","14","15","16","17","18","19","20","21","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41");
+   $array_etapas = ["4","5","6","7","8","9","10","11","14","15","16","17","18","19","20","21","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41"];
    $etapa_permitida = false;
    for($rr=0;$rr<count($array_etapas);$rr++){
     if($array_etapas[$rr]==$ed221_i_serie){
@@ -517,9 +517,9 @@ if(isset($gerararquivo)){
     }
     $erro_turma = true;
    }
-   if($admitidoapos==0 && trim($ed60_d_datasaida)==""){
+   if($admitidoapos==0 && trim((string) $ed60_d_datasaida)==""){
     $imprime = "1";
-   }elseif($admitidoapos==0 && trim($ed60_d_datasaida)!="" && trim($comparadatasaida)>trim($comparadatacenso)){
+   }elseif($admitidoapos==0 && trim((string) $ed60_d_datasaida)!="" && trim($comparadatasaida)>trim($comparadatacenso)){
     $imprime = "2";
    }else{
     $imprime = "4";
@@ -544,7 +544,7 @@ if(isset($gerararquivo)){
     }elseif(pg_num_rows($result_matcenso)==0 && $admitidoapos==1){
      $matricula_censo = " ";    	
     }elseif(pg_num_rows($result_matcenso)>0){
-     $matricula_censo = pg_result($result_matcenso,0,0);    	
+     $matricula_censo = pg_fetch_result($result_matcenso,0,0);    	
     }
    }else{
     $matricula_censo = " ";   	

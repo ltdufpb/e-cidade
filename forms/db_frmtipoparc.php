@@ -279,7 +279,7 @@ db_input('k42_minentrada',10,$Ik42_minentrada,true,'text',$db_opcao,"onChange='j
     </td>
     <td>
     <?php 
-    $x = array(0 => 'Todos', 1 => 'Física', 2 => 'Jurídica');
+    $x = [0 => 'Todos', 1 => 'Física', 2 => 'Jurídica'];
     db_select('tipopessoa',$x,true,$db_opcao,"");
     ?>
     </td>
@@ -297,7 +297,7 @@ db_input('k42_minentrada',10,$Ik42_minentrada,true,'text',$db_opcao,"onChange='j
     <?php 
    $campos = 'tipoparc,descr,dtini,dtfim,maxparc,minparc,vlrmin,vlrmax,dtvlr,vlrmindeb,vlrmaxdeb,inflat,descvlr,descmul,descjur,k42_minentrada,cadtipoparc,k40_descr';
    $sqlCaseTipoPessoa = ",case when tipopessoa = 0 then 'Todos' when tipopessoa = 1 then 'Física' when tipopessoa = 2 then 'Jurídica' ELSE '' END as tipopessoa";
-	 $chavepri= array("cadtipoparc"=>@$cadtipoparc,"tipoparc"=>@$tipoparc);
+	 $chavepri= ["cadtipoparc"=>@$cadtipoparc,"tipoparc"=>@$tipoparc];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cltipoparc->sql_query(null,$campos.$sqlCaseTipoPessoa,"tipoparc","cadtipoparc=$cadtipoparc");
 	 $cliframe_alterar_excluir->campos  = $campos.',tipopessoa';

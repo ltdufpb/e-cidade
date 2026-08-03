@@ -80,11 +80,11 @@ $oRotulo->label("c60_descr");
                 <td>Natureza do Saldo:</td>
                 <td>
                   <?php  
-                    $aNaturezaSaldo = array(
+                    $aNaturezaSaldo = [
                                             "C" => "Crédito",
                                             "D" => "Débito",  
                                             "M" => "Mista",  
-                                           );
+                                           ];
                    db_select("naturezasaldo", $aNaturezaSaldo, true, 1);                                           
                   ?>
                 </td>

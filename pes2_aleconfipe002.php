@@ -28,8 +28,8 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_GET_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_GET);
 
 $ano = $anofolha;
 $mes = $mesfolha;
@@ -129,7 +129,7 @@ order by $dborderby
 //echo $sql ; exit;
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem cálculos para o período de '.$mes.' / '.$ano);
 
@@ -158,7 +158,7 @@ $totallot_patro= 0;
 $totallot_total= 0;
 $lotaant = "";
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if($tipores != "g" && $lotaant != $r70_estrut){
      $lotaant = $r70_estrut;
@@ -315,7 +315,7 @@ $sql = "select r36_regist ,
 //echo $sql ; exit;
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem cálculos para o período de '.$mes.' / '.$ano);
 
@@ -332,7 +332,7 @@ $alt        = 4;
 $total_fun  = 0;
 $total_val  = 0;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage();

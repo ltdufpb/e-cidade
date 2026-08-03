@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE mensageriaacordoprocessados
 class cl_mensageriaacordoprocessados { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ac53_sequencial = 0; 
-   var $ac53_mensageriaacordodb_usuarios = 0; 
-   var $ac53_acordo = 0; 
+   public $ac53_sequencial = 0; 
+   public $ac53_mensageriaacordodb_usuarios = 0; 
+   public $ac53_acordo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ac53_sequencial = int4 = Sequencial 
                  ac53_mensageriaacordodb_usuarios = int4 = Usuário 
                  ac53_acordo = int4 = Acordo 
                  ";
    //funcao construtor da classe 
-   function cl_mensageriaacordoprocessados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mensageriaacordoprocessados"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_mensageriaacordoprocessados {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ac53_sequencial = pg_result($result,0,0); 
+       $this->ac53_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from mensageriaacordoprocessados_ac53_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ac53_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ac53_sequencial)){
          $this->erro_sql = " Campo ac53_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_mensageriaacordoprocessados {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Usuários notificados ($this->ac53_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Usuários notificados já Cadastrado";
@@ -145,12 +145,12 @@ class cl_mensageriaacordoprocessados {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20589,'$this->ac53_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3705,20589,'','".AddSlashes(pg_result($resaco,0,'ac53_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3705,20590,'','".AddSlashes(pg_result($resaco,0,'ac53_mensageriaacordodb_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3705,20591,'','".AddSlashes(pg_result($resaco,0,'ac53_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3705,20589,'','".AddSlashes(pg_fetch_result($resaco,0,'ac53_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3705,20590,'','".AddSlashes(pg_fetch_result($resaco,0,'ac53_mensageriaacordodb_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3705,20591,'','".AddSlashes(pg_fetch_result($resaco,0,'ac53_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_mensageriaacordoprocessados {
       $this->atualizacampos();
      $sql = " update mensageriaacordoprocessados set ";
      $virgula = "";
-     if(trim($this->ac53_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac53_sequencial"])){ 
+     if(trim((string) $this->ac53_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac53_sequencial"])){ 
        $sql  .= $virgula." ac53_sequencial = $this->ac53_sequencial ";
        $virgula = ",";
-       if(trim($this->ac53_sequencial) == null ){ 
+       if(trim((string) $this->ac53_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "ac53_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_mensageriaacordoprocessados {
          return false;
        }
      }
-     if(trim($this->ac53_mensageriaacordodb_usuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac53_mensageriaacordodb_usuarios"])){ 
+     if(trim((string) $this->ac53_mensageriaacordodb_usuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac53_mensageriaacordodb_usuarios"])){ 
        $sql  .= $virgula." ac53_mensageriaacordodb_usuarios = $this->ac53_mensageriaacordodb_usuarios ";
        $virgula = ",";
-       if(trim($this->ac53_mensageriaacordodb_usuarios) == null ){ 
+       if(trim((string) $this->ac53_mensageriaacordodb_usuarios) == null ){ 
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "ac53_mensageriaacordodb_usuarios";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_mensageriaacordoprocessados {
          return false;
        }
      }
-     if(trim($this->ac53_acordo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac53_acordo"])){ 
+     if(trim((string) $this->ac53_acordo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ac53_acordo"])){ 
        $sql  .= $virgula." ac53_acordo = $this->ac53_acordo ";
        $virgula = ",";
-       if(trim($this->ac53_acordo) == null ){ 
+       if(trim((string) $this->ac53_acordo) == null ){ 
          $this->erro_sql = " Campo Acordo não informado.";
          $this->erro_campo = "ac53_acordo";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_mensageriaacordoprocessados {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20589,'$this->ac53_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ac53_sequencial"]) || $this->ac53_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3705,20589,'".AddSlashes(pg_result($resaco,$conresaco,'ac53_sequencial'))."','$this->ac53_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3705,20589,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac53_sequencial'))."','$this->ac53_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ac53_mensageriaacordodb_usuarios"]) || $this->ac53_mensageriaacordodb_usuarios != "")
-             $resac = db_query("insert into db_acount values($acount,3705,20590,'".AddSlashes(pg_result($resaco,$conresaco,'ac53_mensageriaacordodb_usuarios'))."','$this->ac53_mensageriaacordodb_usuarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3705,20590,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac53_mensageriaacordodb_usuarios'))."','$this->ac53_mensageriaacordodb_usuarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ac53_acordo"]) || $this->ac53_acordo != "")
-             $resac = db_query("insert into db_acount values($acount,3705,20591,'".AddSlashes(pg_result($resaco,$conresaco,'ac53_acordo'))."','$this->ac53_acordo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3705,20591,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ac53_acordo'))."','$this->ac53_acordo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_mensageriaacordoprocessados {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20589,'$ac53_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3705,20589,'','".AddSlashes(pg_result($resaco,$iresaco,'ac53_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3705,20590,'','".AddSlashes(pg_result($resaco,$iresaco,'ac53_mensageriaacordodb_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3705,20591,'','".AddSlashes(pg_result($resaco,$iresaco,'ac53_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3705,20589,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac53_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3705,20590,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac53_mensageriaacordodb_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3705,20591,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ac53_acordo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -341,7 +341,7 @@ class cl_mensageriaacordoprocessados {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:mensageriaacordoprocessados";
@@ -356,7 +356,7 @@ class cl_mensageriaacordoprocessados {
    function sql_query ( $ac53_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -387,7 +387,7 @@ class cl_mensageriaacordoprocessados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -400,7 +400,7 @@ class cl_mensageriaacordoprocessados {
    function sql_query_file ( $ac53_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_mensageriaacordoprocessados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

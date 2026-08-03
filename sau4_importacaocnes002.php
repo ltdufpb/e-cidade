@@ -46,7 +46,7 @@ if (file_exists($sArquivoLogNovos)) {
 }
 
 
-$aLogs = array();
+$aLogs = [];
 if ( isset($oLogs->aLogs) ) {
   $aLogs = array_merge($aLogs, $oLogs->aLogs);
 }
@@ -55,7 +55,7 @@ if ( isset($oLogsNovos->aLogs) ) {
   $aLogs = array_merge($aLogs, $oLogsNovos->aLogs);
 }
 
-$aDadosOrganizados = array();
+$aDadosOrganizados = [];
 foreach ($aLogs as $oLog) {
 
   $sMensagem = "";
@@ -65,15 +65,15 @@ foreach ($aLogs as $oLog) {
   switch ($oLog->iTipo) {
 
     case 1:
-      $sMensagem = "CNES : {$oLog->sCNES} - ". urldecode($oLog->sMensagem);
+      $sMensagem = "CNES : {$oLog->sCNES} - ". urldecode((string) $oLog->sMensagem);
       break;
     case 2:
 
-      $sMensagem = "CPF: {$oLog->iCpf} - " . urldecode($oLog->sNome) . " - " . urldecode($oLog->sMensagem);
+      $sMensagem = "CPF: {$oLog->iCpf} - " . urldecode((string) $oLog->sNome) . " - " . urldecode((string) $oLog->sMensagem);
       break;
 
     case 3:
-      $sMensagem = "CPF: {$oLog->iCpf} - " . urldecode($oLog->sNome) . " - " . urldecode($oLog->sMensagem);
+      $sMensagem = "CPF: {$oLog->iCpf} - " . urldecode((string) $oLog->sNome) . " - " . urldecode((string) $oLog->sMensagem);
       break;
   }
   $aDadosOrganizados[$oLog->iTipo][] = $sMensagem;

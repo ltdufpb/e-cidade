@@ -10,11 +10,6 @@ use \ECidade\V3\Extension\ParameterBag;
 class Request {
 
   /**
-   * @var string
-   */
-  private $uri;
-
-  /**
    * @var RequestBag
    */
   private $get;
@@ -85,15 +80,18 @@ class Request {
    */
   private $isAsset = false;
 
-  public function __construct($uri = null) {
-    $this->uri = $uri;
+  /**
+   * @param string $uri
+   */
+  public function __construct(private $uri = null)
+  {
   }
 
   /**
    * @param ParameterBag $get
    * @return ParameterBag
    */
-  public function get(ParameterBag $get = null) {
+  public function get(?ParameterBag $get = null) {
 
     if ($get !== null) {
       $this->get = $get;
@@ -110,7 +108,7 @@ class Request {
    * @param ParameterBag $post
    * @return ParameterBag
    */
-  public function post(ParameterBag $post = null) {
+  public function post(?ParameterBag $post = null) {
 
     if ($post !== null) {
       $this->post = $post;
@@ -127,7 +125,7 @@ class Request {
    * @param ParameterBag $server
    * @return ParameterBag
    */
-  public function server(ParameterBag $server = null) {
+  public function server(?ParameterBag $server = null) {
 
     if ($server !== null) {
       $this->server = $server;
@@ -144,7 +142,7 @@ class Request {
    * @param ParameterBag $cookie
    * @return ParameterBag
    */
-  public function cookie(ParameterBag $cookie = null) {
+  public function cookie(?ParameterBag $cookie = null) {
 
     if ($cookie !== null) {
       $this->cookie = $cookie;
@@ -161,7 +159,7 @@ class Request {
    * @param ParameterBag $session
    * @return ParameterBag
    */
-  public function session(ParameterBag $session = null) {
+  public function session(?ParameterBag $session = null) {
 
     if ($session !== null) {
       $this->session = $session;
@@ -178,7 +176,7 @@ class Request {
    * @param ParameterBag $get
    * @return ParameterBag
    */
-  public function params(ParameterBag $param = null) {
+  public function params(?ParameterBag $param = null) {
 
     if ($param !== null) {
       $this->params = $param;
@@ -217,7 +215,7 @@ class Request {
 
   public function parseAccept() {
 
-    $header = explode(',', $this->server()->get('HTTP_ACCEPT') );
+    $header = explode(',', (string) $this->server()->get('HTTP_ACCEPT') );
     $this->accept = current($header);
     return $this->accept;
   }

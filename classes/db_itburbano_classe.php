@@ -58,10 +58,10 @@ class cl_itburbano {
                  it05_itbisituacao = int8 = Situação
                  ";
    //funcao construtor da classe
-   public function cl_itburbano() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itburbano");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    public function erro($mostra,$retorna) {
@@ -161,7 +161,7 @@ class cl_itburbano {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "ITBI Urbano ($this->it05_guia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "ITBI Urbano já Cadastrado";
@@ -185,15 +185,15 @@ class cl_itburbano {
      $resaco = $this->sql_record($this->sql_query_file($this->it05_guia));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5401,'$this->it05_guia','I')");
-       $resac = db_query("insert into db_acount values($acount,796,5401,'','".AddSlashes(pg_result($resaco,0,'it05_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,796,5403,'','".AddSlashes(pg_result($resaco,0,'it05_frente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,796,5405,'','".AddSlashes(pg_result($resaco,0,'it05_fundos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,796,5404,'','".AddSlashes(pg_result($resaco,0,'it05_direito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,796,5406,'','".AddSlashes(pg_result($resaco,0,'it05_esquerdo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,796,5414,'','".AddSlashes(pg_result($resaco,0,'it05_itbisituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,796,5401,'','".AddSlashes(pg_fetch_result($resaco,0,'it05_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,796,5403,'','".AddSlashes(pg_fetch_result($resaco,0,'it05_frente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,796,5405,'','".AddSlashes(pg_fetch_result($resaco,0,'it05_fundos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,796,5404,'','".AddSlashes(pg_fetch_result($resaco,0,'it05_direito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,796,5406,'','".AddSlashes(pg_fetch_result($resaco,0,'it05_esquerdo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,796,5414,'','".AddSlashes(pg_fetch_result($resaco,0,'it05_itbisituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -202,10 +202,10 @@ class cl_itburbano {
       $this->atualizacampos();
      $sql = " update itburbano set ";
      $virgula = "";
-     if(trim($this->it05_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_guia"])){
+     if(trim((string) $this->it05_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_guia"])){
        $sql  .= $virgula." it05_guia = $this->it05_guia ";
        $virgula = ",";
-       if(trim($this->it05_guia) == null ){
+       if(trim((string) $this->it05_guia) == null ){
          $this->erro_sql = " Campo Número da guia de ITBI nao Informado.";
          $this->erro_campo = "it05_guia";
          $this->erro_banco = "";
@@ -215,10 +215,10 @@ class cl_itburbano {
          return false;
        }
      }
-     if(trim($this->it05_frente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_frente"])){
+     if(trim((string) $this->it05_frente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_frente"])){
        $sql  .= $virgula." it05_frente = $this->it05_frente ";
        $virgula = ",";
-       if(trim($this->it05_frente) == null ){
+       if(trim((string) $this->it05_frente) == null ){
          $this->erro_sql = " Campo Frente nao Informado.";
          $this->erro_campo = "it05_frente";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_itburbano {
          return false;
        }
      }
-     if(trim($this->it05_fundos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_fundos"])){
+     if(trim((string) $this->it05_fundos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_fundos"])){
        $sql  .= $virgula." it05_fundos = $this->it05_fundos ";
        $virgula = ",";
-       if(trim($this->it05_fundos) == null ){
+       if(trim((string) $this->it05_fundos) == null ){
          $this->erro_sql = " Campo Fundos nao Informado.";
          $this->erro_campo = "it05_fundos";
          $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_itburbano {
          return false;
        }
      }
-     if(trim($this->it05_direito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_direito"])){
+     if(trim((string) $this->it05_direito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_direito"])){
        $sql  .= $virgula." it05_direito = $this->it05_direito ";
        $virgula = ",";
-       if(trim($this->it05_direito) == null ){
+       if(trim((string) $this->it05_direito) == null ){
          $this->erro_sql = " Campo Lado Direito nao Informado.";
          $this->erro_campo = "it05_direito";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_itburbano {
          return false;
        }
      }
-     if(trim($this->it05_esquerdo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_esquerdo"])){
+     if(trim((string) $this->it05_esquerdo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_esquerdo"])){
        $sql  .= $virgula." it05_esquerdo = $this->it05_esquerdo ";
        $virgula = ",";
-       if(trim($this->it05_esquerdo) == null ){
+       if(trim((string) $this->it05_esquerdo) == null ){
          $this->erro_sql = " Campo Esquerdo nao Informado.";
          $this->erro_campo = "it05_esquerdo";
          $this->erro_banco = "";
@@ -267,11 +267,11 @@ class cl_itburbano {
          return false;
        }
      }
-     if(trim($this->it05_itbisituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_itbisituacao"])){
+     if(trim((string) $this->it05_itbisituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it05_itbisituacao"])){
        $sql  .= $virgula." it05_itbisituacao = $this->it05_itbisituacao ";
        $virgula = ",";
 
-       if(trim($this->it05_itbisituacao) == null ){
+       if(trim((string) $this->it05_itbisituacao) == null ){
          $this->erro_sql = " Campo Situação nao Informado.";
          $this->erro_campo = "it05_itbisituacao";
          $this->erro_banco = "";
@@ -289,21 +289,21 @@ class cl_itburbano {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5401,'$this->it05_guia','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it05_guia"]))
-           $resac = db_query("insert into db_acount values($acount,796,5401,'".AddSlashes(pg_result($resaco,$conresaco,'it05_guia'))."','$this->it05_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,796,5401,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it05_guia'))."','$this->it05_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it05_frente"]))
-           $resac = db_query("insert into db_acount values($acount,796,5403,'".AddSlashes(pg_result($resaco,$conresaco,'it05_frente'))."','$this->it05_frente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,796,5403,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it05_frente'))."','$this->it05_frente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it05_fundos"]))
-           $resac = db_query("insert into db_acount values($acount,796,5405,'".AddSlashes(pg_result($resaco,$conresaco,'it05_fundos'))."','$this->it05_fundos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,796,5405,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it05_fundos'))."','$this->it05_fundos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it05_direito"]))
-           $resac = db_query("insert into db_acount values($acount,796,5404,'".AddSlashes(pg_result($resaco,$conresaco,'it05_direito'))."','$this->it05_direito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,796,5404,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it05_direito'))."','$this->it05_direito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it05_esquerdo"]))
-           $resac = db_query("insert into db_acount values($acount,796,5406,'".AddSlashes(pg_result($resaco,$conresaco,'it05_esquerdo'))."','$this->it05_esquerdo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,796,5406,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it05_esquerdo'))."','$this->it05_esquerdo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it05_itbisituacao"]))
-           $resac = db_query("insert into db_acount values($acount,796,5414,'".AddSlashes(pg_result($resaco,$conresaco,'it05_itbisituacao'))."','$this->it05_itbisituacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,796,5414,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it05_itbisituacao'))."','$this->it05_itbisituacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -348,15 +348,15 @@ class cl_itburbano {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5401,'$it05_guia','E')");
-         $resac = db_query("insert into db_acount values($acount,796,5401,'','".AddSlashes(pg_result($resaco,$iresaco,'it05_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,796,5403,'','".AddSlashes(pg_result($resaco,$iresaco,'it05_frente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,796,5405,'','".AddSlashes(pg_result($resaco,$iresaco,'it05_fundos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,796,5404,'','".AddSlashes(pg_result($resaco,$iresaco,'it05_direito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,796,5406,'','".AddSlashes(pg_result($resaco,$iresaco,'it05_esquerdo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,796,5414,'','".AddSlashes(pg_result($resaco,$iresaco,'it05_itbisituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,796,5401,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it05_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,796,5403,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it05_frente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,796,5405,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it05_fundos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,796,5404,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it05_direito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,796,5406,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it05_esquerdo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,796,5414,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it05_itbisituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from itburbano
@@ -416,7 +416,7 @@ class cl_itburbano {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:itburbano";
@@ -456,7 +456,7 @@ class cl_itburbano {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,7 +489,7 @@ class cl_itburbano {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -529,7 +529,7 @@ class cl_itburbano {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

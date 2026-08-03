@@ -44,7 +44,7 @@ require_once(modification("classes/db_cgmdocumento_classe.php"));
 require_once(modification("classes/db_ruascep_classe.php"));
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcgm          = new cl_cgm();
 $clcgmalt       = new cl_cgmalt();
@@ -59,7 +59,7 @@ $db_opcao = 3;
 $db_botao = false;
 $lSqlErro = false;
 
-if (isset ($HTTP_POST_VARS ["db_opcao"]) && $HTTP_POST_VARS ["db_opcao"] == "Excluir") {
+if (isset ($_POST ["db_opcao"]) && $_POST ["db_opcao"] == "Excluir") {
 	
 	db_inicio_transacao();
 	

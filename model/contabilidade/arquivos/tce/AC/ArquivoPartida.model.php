@@ -62,7 +62,7 @@ class ArquivoPartida extends ArquivoBase {
         }
 
         $sContaCorrente .= str_pad(substr($oContaCorrenteDetalhe->getEstrutural(), 1, 10), 10, '0', STR_PAD_RIGHT);
-        $sContaCorrente .= str_pad( $iRecurso, 3, 0, STR_PAD_LEFT );
+        $sContaCorrente .= str_pad( (string) $iRecurso, 3, 0, STR_PAD_LEFT );
         break;
 
       case 101:
@@ -84,7 +84,7 @@ class ArquivoPartida extends ArquivoBase {
         $sContaCorrente .= substr($sEstrutural, 2, 1);
         $sContaCorrente .= substr($sEstrutural, 3, 2);
         $sContaCorrente .= substr($sEstrutural, 5, 2);
-        $sContaCorrente .= str_pad( $iRecurso, 3, 0, STR_PAD_LEFT );
+        $sContaCorrente .= str_pad( (string) $iRecurso, 3, 0, STR_PAD_LEFT );
 //        $sContaCorrente .= str_pad($oDotacao->getOrgao(), 6, 0, STR_PAD_LEFT);
 //        $sContaCorrente .= str_pad($oDotacao->getUnidade(), 6, 0, STR_PAD_LEFT);
         $sContaCorrente .= str_pad('000304', 6, 0, STR_PAD_LEFT);
@@ -132,7 +132,7 @@ class ArquivoPartida extends ArquivoBase {
         $sContaCorrente .= substr($sEstrutural, 2, 1);
         $sContaCorrente .= substr($sEstrutural, 3, 2);
         $sContaCorrente .= substr($sEstrutural, 5, 2);
-        $sContaCorrente .= str_pad( $iRecurso, 3, 0, STR_PAD_LEFT );
+        $sContaCorrente .= str_pad( (string) $iRecurso, 3, 0, STR_PAD_LEFT );
 //        $sContaCorrente .= str_pad($oDotacao->getOrgao(), 6, 0, STR_PAD_LEFT);
 //        $sContaCorrente .= str_pad($oDotacao->getUnidade(), 6, 0, STR_PAD_LEFT);
         $sContaCorrente .= str_pad('000304', 6, 0, STR_PAD_LEFT);
@@ -160,13 +160,13 @@ class ArquivoPartida extends ArquivoBase {
           $iTipoCredor = 2;
         }
 
-        $sDocumento = trim(preg_replace('/[0\.\-]/', '', $sCpfCnpj));
+        $sDocumento = trim((string) preg_replace('/[0\.\-]/', '', $sCpfCnpj));
         if ( empty($sDocumento) ) {
 
           $oInstituicao = InstituicaoRepository::getInstituicaoByCodigo($oLancamento->c02_instit);
           $sCpfCnpj = $oInstituicao->getCNPJ();
         }
-        $sContaCorrente .= str_pad( $sCpfCnpj, 14, ' ', STR_PAD_RIGHT );
+        $sContaCorrente .= str_pad( (string) $sCpfCnpj, 14, ' ', STR_PAD_RIGHT );
         $sContaCorrente .= $iTipoCredor;
         $sContaCorrente .= str_pad(!empty($iCodigoAnulacao) ? $oEmpenho->getCodigo() : '0', 12, '0', STR_PAD_LEFT);
 
@@ -180,7 +180,7 @@ class ArquivoPartida extends ArquivoBase {
           throw new Exception("Código do recurso não encontrado para o recurso {$oContaCorrenteDetalhe->getRecurso()->getCodigo()}.");
         }
 
-        $sContaCorrente .= str_pad( $iRecurso, 3, 0, STR_PAD_LEFT );
+        $sContaCorrente .= str_pad( (string) $iRecurso, 3, 0, STR_PAD_LEFT );
         break;
 
       case 104:
@@ -199,7 +199,7 @@ class ArquivoPartida extends ArquivoBase {
           $iTipoCredor = 2;
         }
 
-        $sContaCorrente .= str_pad( $sCpfCnpj, 14, ' ', STR_PAD_RIGHT );
+        $sContaCorrente .= str_pad( (string) $sCpfCnpj, 14, ' ', STR_PAD_RIGHT );
         $sContaCorrente .= $iTipoCredor;
 
         break;
@@ -261,7 +261,7 @@ class ArquivoPartida extends ArquivoBase {
           throw new Exception("Número do documento não encontrado para o lançamento {$oLancamento->c69_codlan}.");
         }
 
-        $sContaCorrente .= str_pad( $sNumeroDocumento, 15, ' ', STR_PAD_RIGHT );
+        $sContaCorrente .= str_pad( (string) $sNumeroDocumento, 15, ' ', STR_PAD_RIGHT );
         $sContaCorrente .= $iTipoDocumento;
 
         break;
@@ -285,7 +285,7 @@ class ArquivoPartida extends ArquivoBase {
           throw new Exception("Código do recurso não encontrado para o recurso {$oDotacao->getDadosRecurso()->getCodigo()}.");
         }
 
-        $sContaCorrente .= str_pad( $iRecurso, 3, 0, STR_PAD_LEFT );
+        $sContaCorrente .= str_pad( (string) $iRecurso, 3, 0, STR_PAD_LEFT );
         $sContaCorrente .= str_pad($oEmpenho->getAno(), 4, 0, STR_PAD_LEFT);
         $sContaCorrente .= str_pad($oEmpenho->getCodigo(), 12, 0, STR_PAD_LEFT);
 
@@ -335,9 +335,9 @@ class ArquivoPartida extends ArquivoBase {
     $sWhere .= " and (empageconfche.e91_codcheque is null or empageconfche.e91_ativo is true)                 \n";
     $sWhere .= " and c69_data between '{$this->oDataInicial->getDate()}' and '{$this->oDataFinal->getDate()}' \n";
     $oDaoConlancamval = new cl_conlancamval();
-    $aQuerys = array("D" => "c69_debito", "C" => "c69_credito");
+    $aQuerys = ["D" => "c69_debito", "C" => "c69_credito"];
 
-    $aSqlLancamentos = '';
+    $aSqlLancamentos = [];
 
     foreach ($aQuerys as $sTipo => $sCampo) {
 
@@ -375,7 +375,7 @@ class ArquivoPartida extends ArquivoBase {
     /**
      * Percorre os lançamentos montando o XML
      */
-    $aContasInvalidas = array();
+    $aContasInvalidas = [];
     for ($iRow = 0; $iRow < pg_num_rows($rsLancamentos); $iRow++) {
 
       $oTagPartida = $oXml->createElement("partida");
@@ -453,7 +453,7 @@ class ArquivoPartida extends ArquivoBase {
               );
 
             $sRecurso = ArquivoConfiguracaoTCEAC::getInstancia()->getRecursoPorCodigo($oContaPlano->getRecurso());
-            $sDadosContaCorrente .= str_pad($sRecurso, 3, '0', STR_PAD_LEFT);
+            $sDadosContaCorrente .= str_pad((string) $sRecurso, 3, '0', STR_PAD_LEFT);
             break;
         }
       }
@@ -477,7 +477,7 @@ class ArquivoPartida extends ArquivoBase {
       /**
        * Seta o Identificador Financeiro
        */
-      if ( in_array($oLancamento->c60_identificadorfinanceiro, array("F", "P"))) {
+      if ( in_array($oLancamento->c60_identificadorfinanceiro, ["F", "P"])) {
         $oTagIdentificadorFinanceiro = $oXml->createElement("indicadorSuperavitFinanceiro", $oLancamento->c60_identificadorfinanceiro);
       }
 
@@ -517,7 +517,7 @@ class ArquivoPartida extends ArquivoBase {
     }
 
     if (!empty($aContasInvalidas)) {
-      throw new Exception("Códigos de estrutural inválido para as contas: \n ".implode(array_unique($aContasInvalidas), ",\n"));
+      throw new Exception("Códigos de estrutural inválido para as contas: \n ".implode(",\n", array_unique($aContasInvalidas)));
     }
 
     $oXml->appendChild( $oTagLista );

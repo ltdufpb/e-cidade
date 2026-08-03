@@ -4,10 +4,6 @@ namespace ECidade\Tributario\Cadastro\Iptu\Arquivo\Entity;
 
 final class Filtro
 {
-    private $quantidade;
-
-    private $ano;
-    
     private $iptu;
 
     private $taxas;
@@ -26,14 +22,12 @@ final class Filtro
 
     private $quantidadeParcela;
     
-    public function __construct($quantidade, $ano)
+    public function __construct(private $quantidade, private $ano)
     {
-        $this->quantidade = $quantidade;
-        $this->ano = $ano;
         $this->iptu = false;
-        $this->taxas = array();
-        $this->matriculas = array();
-        $this->cotaUnicas = array();
+        $this->taxas = [];
+        $this->matriculas = [];
+        $this->cotaUnicas = [];
         $this->terceiroDigitoUnica = null;
         $this->terceiroDigitoParcela = null;
     }

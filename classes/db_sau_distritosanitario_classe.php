@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE sau_distritosanitario
 class cl_sau_distritosanitario { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s153_i_codigo = 0; 
-   var $s153_c_codigo = null; 
-   var $s153_c_descr = null; 
+   public $s153_i_codigo = 0; 
+   public $s153_c_codigo = null; 
+   public $s153_c_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s153_i_codigo = int4 = Código 
                  s153_c_codigo = char(2) = Código Distrito 
                  s153_c_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_sau_distritosanitario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_distritosanitario"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_sau_distritosanitario {
          $this->erro_status = "0";
          return false; 
        }
-       $this->s153_i_codigo = pg_result($result,0,0); 
+       $this->s153_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from sau_distritosanitario_s153_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $s153_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $s153_i_codigo)){
          $this->erro_sql = " Campo s153_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_sau_distritosanitario {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "sau_distritosanitario ($this->s153_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "sau_distritosanitario já Cadastrado";
@@ -166,12 +166,12 @@ class cl_sau_distritosanitario {
      $resaco = $this->sql_record($this->sql_query_file($this->s153_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17226,'$this->s153_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,3044,17226,'','".AddSlashes(pg_result($resaco,0,'s153_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3044,17227,'','".AddSlashes(pg_result($resaco,0,'s153_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3044,17228,'','".AddSlashes(pg_result($resaco,0,'s153_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3044,17226,'','".AddSlashes(pg_fetch_result($resaco,0,'s153_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3044,17227,'','".AddSlashes(pg_fetch_result($resaco,0,'s153_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3044,17228,'','".AddSlashes(pg_fetch_result($resaco,0,'s153_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_sau_distritosanitario {
       $this->atualizacampos();
      $sql = " update sau_distritosanitario set ";
      $virgula = "";
-     if(trim($this->s153_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s153_i_codigo"])){ 
+     if(trim((string) $this->s153_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s153_i_codigo"])){ 
        $sql  .= $virgula." s153_i_codigo = $this->s153_i_codigo ";
        $virgula = ",";
-       if(trim($this->s153_i_codigo) == null ){ 
+       if(trim((string) $this->s153_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "s153_i_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_sau_distritosanitario {
          return false;
        }
      }
-     if(trim($this->s153_c_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s153_c_codigo"])){ 
+     if(trim((string) $this->s153_c_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s153_c_codigo"])){ 
        $sql  .= $virgula." s153_c_codigo = '$this->s153_c_codigo' ";
        $virgula = ",";
-       if(trim($this->s153_c_codigo) == null ){ 
+       if(trim((string) $this->s153_c_codigo) == null ){ 
          $this->erro_sql = " Campo Código Distrito nao Informado.";
          $this->erro_campo = "s153_c_codigo";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_sau_distritosanitario {
          return false;
        }
      }
-     if(trim($this->s153_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s153_c_descr"])){ 
+     if(trim((string) $this->s153_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s153_c_descr"])){ 
        $sql  .= $virgula." s153_c_descr = '$this->s153_c_descr' ";
        $virgula = ",";
-       if(trim($this->s153_c_descr) == null ){ 
+       if(trim((string) $this->s153_c_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "s153_c_descr";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_sau_distritosanitario {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17226,'$this->s153_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s153_i_codigo"]) || $this->s153_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3044,17226,'".AddSlashes(pg_result($resaco,$conresaco,'s153_i_codigo'))."','$this->s153_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3044,17226,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s153_i_codigo'))."','$this->s153_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s153_c_codigo"]) || $this->s153_c_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3044,17227,'".AddSlashes(pg_result($resaco,$conresaco,'s153_c_codigo'))."','$this->s153_c_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3044,17227,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s153_c_codigo'))."','$this->s153_c_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s153_c_descr"]) || $this->s153_c_descr != "")
-           $resac = db_query("insert into db_acount values($acount,3044,17228,'".AddSlashes(pg_result($resaco,$conresaco,'s153_c_descr'))."','$this->s153_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3044,17228,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s153_c_descr'))."','$this->s153_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_sau_distritosanitario {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17226,'$s153_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,3044,17226,'','".AddSlashes(pg_result($resaco,$iresaco,'s153_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3044,17227,'','".AddSlashes(pg_result($resaco,$iresaco,'s153_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3044,17228,'','".AddSlashes(pg_result($resaco,$iresaco,'s153_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3044,17226,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s153_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3044,17227,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s153_c_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3044,17228,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s153_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sau_distritosanitario
@@ -345,7 +345,7 @@ class cl_sau_distritosanitario {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sau_distritosanitario";
@@ -360,7 +360,7 @@ class cl_sau_distritosanitario {
    function sql_query ( $s153_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,7 +381,7 @@ class cl_sau_distritosanitario {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_sau_distritosanitario {
    function sql_query_file ( $s153_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_sau_distritosanitario {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

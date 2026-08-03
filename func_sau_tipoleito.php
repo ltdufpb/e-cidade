@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_tipoleito_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_tipoleito = new cl_sau_tipoleito;
 $clsau_tipoleito->rotulo->label("sd80_i_codigo");
 $clsau_tipoleito->rotulo->label("sd80_c_nome");
@@ -98,9 +98,9 @@ $clsau_tipoleito->rotulo->label("sd80_c_nome");
         }else{
            $sql = $clsau_tipoleito->sql_query("",$campos,"sd80_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd80_c_nome)){
-          $repassa = array("chave_sd80_i_codigo"=>$chave_sd80_i_codigo,"chave_sd80_c_nome"=>$chave_sd80_c_nome);
+          $repassa = ["chave_sd80_i_codigo"=>$chave_sd80_i_codigo,"chave_sd80_c_nome"=>$chave_sd80_c_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -36,7 +36,7 @@ include(modification("classes/db_orcparamrel_classe.php"));
 include(modification("classes/db_empresto_classe.php"));
 include(modification("classes/db_empempenho_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $classinatura = new cl_assinatura;
@@ -121,12 +121,12 @@ $iTotOperCapPrev  = 0;
 $iTotOperCapExe   = 0;
 
 
-for ($i=0;$i<pg_numrows($rsReceitaSaldo);$i++){
+for ($i=0;$i<pg_num_rows($rsReceitaSaldo);$i++){
  $oReceitaSaldo = db_utils::fieldsMemory($rsReceitaSaldo,$i);   
 
 //------------------    RECEITAS DE CORRENTE    -------------------//
 		
-		if ((substr($oReceitaSaldo->o57_fonte,0,2)=='41' || substr($oReceitaSaldo->o57_fonte,0,2)=='91' ) && $oReceitaSaldo->o70_codigo == 0){      
+		if ((str_starts_with((string) $oReceitaSaldo->o57_fonte, '41') || str_starts_with((string) $oReceitaSaldo->o57_fonte, '91') ) && $oReceitaSaldo->o70_codigo == 0){      
 			if ($oReceitaSaldo->o57_fonte == '412000000000000' && $oReceitaSaldo->o70_codigo == 0){      
 				 $receita_contribuicoes[0]+= $oReceitaSaldo->saldo_inicial;   
 				 $receita_contribuicoes[1]+= $oReceitaSaldo->saldo_arrecadado_acumulado;   
@@ -146,7 +146,7 @@ for ($i=0;$i<pg_numrows($rsReceitaSaldo);$i++){
 
 //------------------    RECEITAS DE CAPITAL    -------------------//
     
-		if (substr($oReceitaSaldo->o57_fonte,0,2)=='42' && $oReceitaSaldo->o70_codigo == 0){
+		if (str_starts_with((string) $oReceitaSaldo->o57_fonte, '42') && $oReceitaSaldo->o70_codigo == 0){
 			if ($oReceitaSaldo->o57_fonte=='422000000000000' && $oReceitaSaldo->o70_codigo == 0){
 				 $alienacao_bens[0]+= $oReceitaSaldo->saldo_inicial;
 				 $alienacao_bens[1]+= $oReceitaSaldo->saldo_arrecadado_acumulado;
@@ -164,7 +164,7 @@ for ($i=0;$i<pg_numrows($rsReceitaSaldo);$i++){
 		}
 //-----------    OPERAÇÕES INTRA-ORÇAMENTÁRIAS CORRENTES    ------------//
 		
-		if (substr($oReceitaSaldo->o57_fonte,0,2)=='47' && $oReceitaSaldo->o70_codigo == 0){
+		if (str_starts_with((string) $oReceitaSaldo->o57_fonte, '47') && $oReceitaSaldo->o70_codigo == 0){
 			if ($oReceitaSaldo->o57_fonte=='472000000000000' && $oReceitaSaldo->o70_codigo == 0){
 				 $aOperCorrContrib[0]+= $oReceitaSaldo->saldo_inicial;
 				 $aOperCorrContrib[1]+= $oReceitaSaldo->saldo_arrecadado_acumulado;
@@ -183,7 +183,7 @@ for ($i=0;$i<pg_numrows($rsReceitaSaldo);$i++){
 
 //-----------   OPERAÇÕES INTRA-ORÇAMENTÁRIAS DE CAPITAL   ------------//
 		
-		if (substr($oReceitaSaldo->o57_fonte,0,2) == '48' && $oReceitaSaldo->o70_codigo == 0){
+		if (str_starts_with((string) $oReceitaSaldo->o57_fonte, '48') && $oReceitaSaldo->o70_codigo == 0){
 			if ($oReceitaSaldo->o57_fonte == '482000000000000' && $oReceitaSaldo->o70_codigo == 0){
 				 $aOperCapAlienacao[0]	 += $oReceitaSaldo->saldo_inicial;
 				 $aOperCapAlienacao[1]	 += $oReceitaSaldo->saldo_arrecadado_acumulado;
@@ -265,14 +265,14 @@ for($i=0;$i<pg_num_rows($rsDotacaoSaldo);$i++){
 
 	// 1.1.1.1 --	Aplicações Diretas 
 		
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '33190'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33190')){
        $aCredOrcPessoalEncargosAplicDir[0] += $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredOrcPessoalEncargosAplicDir[1] += $oDotacaoSaldo->liquidado_acumulado;
 		}     
 
 	// 1.1.1.2 --	Aplicações Diretas Op. Intra 
 	
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '33191'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33191')){
        $aCredOrcPessoalEncargosAplicDirIntra[0] += $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredOrcPessoalEncargosAplicDirIntra[1] += $oDotacaoSaldo->liquidado_acumulado;
     }     
@@ -281,14 +281,14 @@ for($i=0;$i<pg_num_rows($rsDotacaoSaldo);$i++){
 	
 	// 1.1.2.1 --	Transf. a União
 	
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '33320'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33320')){
        $aCredOrcOutrasTransf[0]+= $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredOrcOutrasTransf[1]+= $oDotacaoSaldo->liquidado_acumulado;
     }     
 	
 	// 1.1.2.2 --	Aplicações Diretas 
 
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '33390'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33390')){
        //echo "ele: ".$oDotacaoSaldo->o58_elemento." dot_ini: ".$oDotacaoSaldo->dot_ini." suple: ".$oDotacaoSaldo->suplementado_acumulado."  reduz: ".$oDotacaoSaldo->reduzido_acumulado." <br>";
        $aCredOrcOutrasAplicDir[0]+= $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredOrcOutrasAplicDir[1]+= $oDotacaoSaldo->liquidado_acumulado;
@@ -297,7 +297,7 @@ for($i=0;$i<pg_num_rows($rsDotacaoSaldo);$i++){
 
 	// 1.1.2.3 --	Aplicações Diretas Op. Intra 
 
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '33391'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33391')){
        $aCredOrcOutrasAplicDirIntra[0]+= $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredOrcOutrasAplicDirIntra[1]+= $oDotacaoSaldo->liquidado_acumulado;
     }     
@@ -310,7 +310,7 @@ for($i=0;$i<pg_num_rows($rsDotacaoSaldo);$i++){
 
 	// 1.2.1.1 --	Aplicações Diretas 
 		
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '34490'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '34490')){
        $aCredOrcInvestAplicDir[0] += $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredOrcInvestAplicDir[1] += $oDotacaoSaldo->liquidado_acumulado;
     }     
@@ -319,14 +319,14 @@ for($i=0;$i<pg_num_rows($rsDotacaoSaldo);$i++){
 
 	// 1.2.2.1 --	Aplicações Diretas 
 		
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '34590'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '34590')){
        $aCredOrcInversAplicDir[0] += $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredOrcInversAplicDir[1] += $oDotacaoSaldo->liquidado_acumulado;
     }     
 	
 	// 1.2.2.2 --	Aplicações Diretas Op. Intra 
 
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '34591'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '34591')){
        $aCredOrcInversAplicDirIntra[0]+= $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredOrcInversAplicDirIntra[1]+= $oDotacaoSaldo->liquidado_acumulado;
     }     
@@ -343,14 +343,14 @@ for($i=0;$i<pg_num_rows($rsDotacaoSaldo);$i++){
 
 	// 2.1.1.1 --	Aplicações Diretas 
 		
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '33190'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33190')){
        $aCredEspPessoalEncargosAplicDir[0] += $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredEspPessoalEncargosAplicDir[1] += $oDotacaoSaldo->liquidado_acumulado;
     }     
 
 	// 2.1.1.2 --	Aplicações Diretas Op. Intra 
 	
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '33191'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33191')){
        $aCredEspPessoalEncargosAplicDirIntra[0] += $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredEspPessoalEncargosAplicDirIntra[1] += $oDotacaoSaldo->liquidado_acumulado;
     }     
@@ -359,14 +359,14 @@ for($i=0;$i<pg_num_rows($rsDotacaoSaldo);$i++){
 	
 	// 2.1.2.1 --	Transf. a União
 	
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '33320'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33320')){
        $aCredEspOutrasTransf[0]+= $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredEspOutrasTransf[1]+= $oDotacaoSaldo->liquidado_acumulado;
     }     
 	
 	// 2.1.2.2 --	Aplicações Diretas 
 
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '33390'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33390')){
       // echo "ele: ".$oDotacaoSaldo->o58_elemento." dot_ini: ".$oDotacaoSaldo->dot_ini." suple: ".$oDotacaoSaldo->suplementado_acumulado."  reduz: ".$oDotacaoSaldo->reduzido_acumulado." <br>";
 			 $aCredEspOutrasAplicDir[0]+= $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredEspOutrasAplicDir[1]+= $oDotacaoSaldo->liquidado_acumulado;
@@ -375,7 +375,7 @@ for($i=0;$i<pg_num_rows($rsDotacaoSaldo);$i++){
 
 	// 2.1.2.3 --	Aplicações Diretas Op. Intra 
 
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '33391'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '33391')){
        $aCredEspOutrasAplicDirIntra[0]+= $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredEspOutrasAplicDirIntra[1]+= $oDotacaoSaldo->liquidado_acumulado;
     }     
@@ -388,7 +388,7 @@ for($i=0;$i<pg_num_rows($rsDotacaoSaldo);$i++){
 
 	// 2.2.1.1 --	Aplicações Diretas 
 		
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '34490'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '34490')){
        $aCredEspInvestAplicDir[0] += $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredEspInvestAplicDir[1] += $oDotacaoSaldo->liquidado_acumulado;
     }     
@@ -397,14 +397,14 @@ for($i=0;$i<pg_num_rows($rsDotacaoSaldo);$i++){
 
 	// 2.2.2.1 --	Aplicações Diretas 
 		
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '34590'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '34590')){
        $aCredEspInversAplicDir[0] += $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredEspInversAplicDir[1] += $oDotacaoSaldo->liquidado_acumulado;
     }     
 	
 	// 2.2.2.2 --	Aplicações Diretas Op. Intra 
 
-		if (substr($oDotacaoSaldo->o58_elemento,0,5) == '34591'){
+		if (str_starts_with((string) $oDotacaoSaldo->o58_elemento, '34591')){
        $aCredEspInversAplicDirIntra[0]+= $oDotacaoSaldo->dot_ini + $oDotacaoSaldo->suplementado_acumulado - $oDotacaoSaldo->reduzido_acumulado;
        $aCredEspInversAplicDirIntra[1]+= $oDotacaoSaldo->liquidado_acumulado;
     }     

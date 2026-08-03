@@ -99,7 +99,7 @@ $clprocjur->rotulo->label();
 			  echo "   <td align='left' width='35%' >{$oDadosProcesso->login}	  	  				   </td> ";
 			  echo " </tr>																				 	 ";
 
-			  if (trim($oDadosProcesso->v62_sequencial) != "") {
+			  if (trim((string) $oDadosProcesso->v62_sequencial) != "") {
 			  	
 			    echo " <tr>																		 ";			  
 			    echo "   <th align='left' width='15%' >Cód. Processo Jurídico:	 		   </th> ";
@@ -116,7 +116,7 @@ $clprocjur->rotulo->label();
 			    
 			  }
 
-			  if (trim($oDadosProcesso->v64_sequencial) != "") {
+			  if (trim((string) $oDadosProcesso->v64_sequencial) != "") {
 			  	
 			    echo " <tr>																		 ";			  
 			    echo "   <th align='left' width='15%' >Cód. Proc. Administrativo:	 	   </th> ";

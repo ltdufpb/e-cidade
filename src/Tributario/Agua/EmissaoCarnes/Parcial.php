@@ -344,11 +344,11 @@ class Parcial {
     return sprintf(
       '%s %s %s %s %s %s %s',
       $oInformacoesContrato->entrega_tipo_logradouro,
-      trim($oInformacoesContrato->entrega_nome_logradouro) . ',',
+      trim((string) $oInformacoesContrato->entrega_nome_logradouro) . ',',
       'Nro ' . $oInformacoesContrato->entrega_numero,
-      trim($oInformacoesContrato->entrega_orientacao),
-      trim($oInformacoesContrato->entrega_complemento),
-      '- ' . trim($oInformacoesContrato->entrega_bairro),
+      trim((string) $oInformacoesContrato->entrega_orientacao),
+      trim((string) $oInformacoesContrato->entrega_complemento),
+      '- ' . trim((string) $oInformacoesContrato->entrega_bairro),
       '/ Bagé - RS'
     );
   }
@@ -373,9 +373,9 @@ class Parcial {
 
     return sprintf(
       'ENTREGA: %s - %s/%s',
-      str_pad($oInformacoesContrato->entrega_zona, 4, '0', STR_PAD_LEFT),
-      trim($oInformacoesContrato->denominacao),
-      trim($oInformacoesContrato->localizacao)
+      str_pad((string) $oInformacoesContrato->entrega_zona, 4, '0', STR_PAD_LEFT),
+      trim((string) $oInformacoesContrato->denominacao),
+      trim((string) $oInformacoesContrato->localizacao)
     );
   }
 
@@ -424,7 +424,7 @@ class Parcial {
 
     $oRegistro = $oInformacoesContrato;
     $oRegistro->codigo_hidrometro = $oHidrometro->getNumero();
-    $oRegistro->meses             = array();
+    $oRegistro->meses             = [];
     $oRegistro->has_debito_conta  = false;
 
     $oArrecadacao = $this->oAguaEmissao->getTipoArrecadacao(
@@ -439,14 +439,14 @@ class Parcial {
 
     for ($iMes = $this->iMesInicial; $iMes <= $this->iMesFinal; $iMes++) {
 
-      $oMes = (object) array(
+      $oMes = (object) [
         'mes'                        => $iMes,
         'referencia'                 => null,
         'vencimento'                 => null,
-        'recibo'                     => (object) array(),
+        'recibo'                     => (object) [],
         'codigo_cobranca'            => null,
-        'debitos'                    => array(),
-        'leituras'                   => array(),
+        'debitos'                    => [],
+        'leituras'                   => [],
         'leitura_atual'              => null,
         'leitura_anterior'           => null,
         'consumo'                    => 0,
@@ -463,7 +463,7 @@ class Parcial {
         'contador'                   => null,
         'data_leitura_atual'         => null,
         'data_leitura_anterior'      => null,
-      );
+      ];
 
       $oMes->contador = $this->getContadorFormatado();
       $this->iContador++;
@@ -633,11 +633,11 @@ class Parcial {
    */
   private function hasDebitoConta(AguaContrato $oContrato, $iEconomia = null) {
 
-    $aWhere = array(
+    $aWhere = [
       "d63_status = ". DebitoContaStatus::ATIVO,
       "d63_instit = {$this->iCodigoInstituicao}",
       "d66_arretipo = {$this->iCodigoTipoArrecadacao}",
-    );
+    ];
 
     if ($oContrato->isPagamentoEconomia()) {
       $aWhere[] = "d82_economia = {$iEconomia}";
@@ -762,7 +762,7 @@ class Parcial {
       /**
        * Debitos de Dívida Ativa
        */
-      if (in_array($aDebito['k03_tipo'], array(5, 18))) {
+      if (in_array($aDebito['k03_tipo'], [5, 18])) {
 
         if (!$sMensagem) {
           $sMensagem = 'Imóvel possui Dívida Ativa';
@@ -776,7 +776,7 @@ class Parcial {
       /**
        * Debitos de Parcelamento
        */
-      if (in_array($aDebito['k03_tipo'], array(6, 13))) {
+      if (in_array($aDebito['k03_tipo'], [6, 13])) {
 
         if (!$sMensagem) {
           $sMensagem = 'Imóvel possui Parcelamento em Atraso';
@@ -820,24 +820,24 @@ class Parcial {
    */
   private function getDebitosVencidos($sDataAtual) {
 
-    $sCampos = implode(',', array(
+    $sCampos = implode(',', [
       'arrecad.k00_tipo',
       'arretipo.k03_tipo',
       'count(distinct arrecad.k00_numpar) as total',
-    ));
+    ]);
 
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'inner join arretipo   on arretipo.k00_tipo  = arrecad.k00_tipo',
-    ));
+    ]);
 
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       "arrecad.k00_dtvenc < '{$sDataAtual}'",
-    ));
+    ]);
 
-    $sGroupBy = implode(', ', array(
+    $sGroupBy = implode(', ', [
       "arrecad.k00_tipo",
       "arretipo.k03_tipo",
-    ));
+    ]);
 
     $sSql = "select {$sCampos} from tmp_arrecad_emissao as arrecad {$sJoin} where {$sWhere} group by {$sGroupBy} order by total desc";
 

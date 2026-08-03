@@ -39,17 +39,15 @@ use \JSON;
  */
 class Post
 {
-    private $autenticacao;
     private $client;
     private $headers = [];
 
     /**
      * @throws \Exception
      */
-    public function __construct(Autenticacao $autenticacao)
+    public function __construct(private readonly Autenticacao $autenticacao)
     {
         $this->client = new Client();
-        $this->autenticacao = $autenticacao;
         $this->autenticacao->execute();
         $authorization = $this->autenticacao->getTokenType();
         $authorization .= ' ';
@@ -65,10 +63,10 @@ class Post
 
         $multipart = $this->prepareMultipart($file);
 
-        $arquivo = $this->client->post($this->autenticacao->url() . '/api/files', array(
+        $arquivo = $this->client->post($this->autenticacao->url() . '/api/files', [
             'headers' => $this->headers,
             'multipart' => $multipart
-        ));
+        ]);
 
         if ($arquivo->getStatusCode() != 201) {
             throw new \Exception($arquivo->getBody());
@@ -86,10 +84,10 @@ class Post
     public function change($id, FileStorage $file)
     {
         $multipart = $this->prepareMultipart($file);
-        $arquivo = $this->client->post($this->autenticacao->url() . '/api/files/' . $id . '/change', array(
+        $arquivo = $this->client->post($this->autenticacao->url() . '/api/files/' . $id . '/change', [
             'headers' => $this->headers,
             'multipart' => $multipart
-        ));
+        ]);
 
         if ($arquivo->getStatusCode() != 200) {
             throw new \Exception($arquivo->getBody());
@@ -108,26 +106,24 @@ class Post
     private function prepareMultipart(FileStorage $file)
     {
 
-        $multipart = array(
-            array(
+        $multipart = [
+            [
                 'name' => 'file',
                 'contents' => file_get_contents($file->realPath()),
                 'filename' => $file->clientOriginalName()
-            ),
-            array(
+            ],
+            [
                 "name" => 'visibility',
                 'contents' => $file->visibility()
-            ),
-        );
+            ],
+        ];
 
         $allowed = $file->allowed();
         if (!empty($allowed)) {
-            $allowed = array_map(function ($id) {
-                return array(
-                    "name" => 'allowed[]',
-                    'contents' => $id
-                );
-            }, $allowed);
+            $allowed = array_map(fn($id) => [
+                "name" => 'allowed[]',
+                'contents' => $id
+            ], $allowed);
 
             $multipart = array_merge($multipart, $allowed);
         }
@@ -136,54 +132,50 @@ class Post
         $signers_signed = $file->signersSigned();
 
         if (!empty($signers) || !empty($signers_signed)) {
-            $multipart = array_merge($multipart, array(
-                array(
+            $multipart = array_merge($multipart, [
+                [
                     "name" => 'sign_required',
                     "contents" => true
-                )
-            ));
+                ]
+            ]);
         }
 
         if (!empty($signers)) {
-            $signers = array_map(function ($signer) {
-                return array(
-                    "name" => 'signers[]',
-                    "contents" => JSON::create()->stringify($signer)
-                );
-            }, $signers);
+            $signers = array_map(fn($signer) => [
+                "name" => 'signers[]',
+                "contents" => JSON::create()->stringify($signer)
+            ], $signers);
 
             $multipart = array_merge($multipart, $signers);
         }
 
         if (!empty($signers_signed)) {
-            $signers_signed = array_map(function ($signer) {
-                return array(
-                    "name" => 'signers_signed[]',
-                    "contents" => JSON::create()->stringify($signer)
-                );
-            }, $signers_signed);
+            $signers_signed = array_map(fn($signer) => [
+                "name" => 'signers_signed[]',
+                "contents" => JSON::create()->stringify($signer)
+            ], $signers_signed);
 
             $multipart = array_merge($multipart, $signers_signed);
         }
 
         $file_father = $file->fileFather();
         if (!empty($file_father)) {
-            $multipart = array_merge($multipart, array(
-                array(
+            $multipart = array_merge($multipart, [
+                [
                     "name" => 'file_father',
                     "contents" => $file_father
-                )
-            ));
+                ]
+            ]);
         }
 
         $metadata = $file->metadata();
         if (!empty($metadata)) {
-            $multipart = array_merge($multipart, array(
-                array(
+            $multipart = array_merge($multipart, [
+                [
                     "name" => 'metadata',
                     "contents" => JSON::create()->stringify($metadata)
-                )
-            ));
+                ]
+            ]);
         }
 
         return $multipart;
@@ -193,9 +185,9 @@ class Post
     public function run($path = null, $multipart = [])
     {
 
-        $params = array(
+        $params = [
             'headers' => $this->headers,
-        );
+        ];
 
         if (!empty($multipart) && count($multipart) > 0) {
             $params['multipart'] = $multipart;

@@ -115,9 +115,7 @@ class MapeamentoPlanoReceitaService
     private function temMovimentacao($conta)
     {
         $balancete = $this->getBalancete();
-        $dadoBalancete = collect($balancete)->filter(function ($contaBalancete) use ($conta) {
-            return $contaBalancete->natureza === $conta->c60_estrut;
-        })->shift();
+        $dadoBalancete = collect($balancete)->filter(fn($contaBalancete) => $contaBalancete->natureza === $conta->c60_estrut)->shift();
 
         if (!is_null($dadoBalancete)) {
             $temSaldo = ($dadoBalancete->previsao_atualizada != 0 ||

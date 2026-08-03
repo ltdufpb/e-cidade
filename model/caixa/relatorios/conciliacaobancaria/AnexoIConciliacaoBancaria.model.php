@@ -32,11 +32,6 @@ require_once(modification('model/caixa/relatorios/conciliacaobancaria/IAnexoConc
 class AnexoIConciliacaoBancaria implements IAnexoConciliacaoBancaria {
 
   /**
-   * @type ContaBancaria
-   */
-  private $oContabancaria;
-
-  /**
    * @type DBCompetencia
    */
   private $oCompetencia;
@@ -63,12 +58,11 @@ class AnexoIConciliacaoBancaria implements IAnexoConciliacaoBancaria {
   const ANEXO = 1;
 
   /**
-   * @param ContaBancaria $oContaBancaria
+   * @param ContaBancaria $oContabancaria
    * @param DBCompetencia $oCompetencia
    */
-  public function __construct(ContaBancaria $oContaBancaria, DBCompetencia $oCompetencia) {
+  public function __construct(private readonly ContaBancaria $oContabancaria, DBCompetencia $oCompetencia) {
 
-    $this->oContabancaria = $oContaBancaria;
     $this->oCompetencia   = $oCompetencia;
   }
 
@@ -78,7 +72,7 @@ class AnexoIConciliacaoBancaria implements IAnexoConciliacaoBancaria {
    */
   public function getDados() {
 
-    $aRegistros         = array();
+    $aRegistros         = [];
     $iCodigoConta       = $this->oContabancaria->getSequencialContaBancaria();
     $sWhereConciliacao  = "     k89_concilia = (select max(k68_sequencial) ";
     $sWhereConciliacao .= "                       from concilia ";

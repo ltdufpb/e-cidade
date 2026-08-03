@@ -46,7 +46,7 @@ $claguacortematnumpre  = new cl_aguacortematnumpre;
 $claguacortetipodebito = new cl_aguacortetipodebito;
 $claguabasecar         = new cl_aguabasecar;
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 //echo "Corte: $x40_codcorte<br>";
 //echo "Sit1: $x43_codsituacao<br>";
@@ -121,7 +121,7 @@ if(empty($x40_codcorte)) {
 
       if($iNumRowsRecibo > 0) {
         db_fieldsmemory($rsReciboPaga, 0);
-        list($iAno, $iMes, $iDia) = split("-", $x99_dtoper);
+        [$iAno, $iMes, $iDia] = preg_split("#\\-#m", (string) $x99_dtoper);
         $dtOper = "{$iDia}/{$iMes}/{$iAno}";
 
         $sHist .= $sSep."RECIBO [Numpre: {$x99_numnov}  Vencimento: {$dtOper}] )";

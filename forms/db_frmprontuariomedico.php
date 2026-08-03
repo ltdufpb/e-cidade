@@ -110,7 +110,7 @@ $clrotulo->label("sd35_i_familia");
        selectCtrl.options[j].value = itemArray[i][1];
       }
       <?php if(isset($z01_i_familiamicroarea)&&$z01_i_familiamicroarea!=""){?>
-       if(<?=trim($z01_i_familiamicroarea)?>==itemArray[i][1]){
+       if(<?=trim((string) $z01_i_familiamicroarea)?>==itemArray[i][1]){
         indice = i;
        }
       <?php }?>

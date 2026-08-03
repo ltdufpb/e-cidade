@@ -148,7 +148,7 @@ class DocumentoAndamentoController extends Controller
         }
 
         $storageConfig = StorageHelper::getStorageConfig();
-        $allowed = array();
+        $allowed = [];
         if (isset($storageConfig->client_id_ouvidoria) && !empty($storageConfig->client_id_ouvidoria)) {
             $allowed[] = $storageConfig->client_id_ouvidoria;
         }

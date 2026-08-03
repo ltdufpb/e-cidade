@@ -40,7 +40,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 $iNumeroCasasDecimais = 2; 
-$aParametrosEmpenho   = db_stdClass::getParametro("empparametro", array(db_getsession("DB_anousu")));
+$aParametrosEmpenho   = db_stdClass::getParametro("empparametro", [db_getsession("DB_anousu")]);
 if (count($aParametrosEmpenho) > 0) {
   $iNumeroCasasDecimais = $aParametrosEmpenho[0]->e30_numdec;
 }

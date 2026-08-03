@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE ossoariojazigo
 class cl_ossoariojazigo {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $cm25_i_codigo = 0;
-   var $cm25_c_numero = null;
-   var $cm25_i_lotecemit = 0;
-   var $cm25_f_comprimento = 0;
-   var $cm25_f_largura = 0;
-   var $cm25_c_tipo = null;
+   public $cm25_i_codigo = 0;
+   public $cm25_c_numero = null;
+   public $cm25_i_lotecemit = 0;
+   public $cm25_f_comprimento = 0;
+   public $cm25_f_largura = 0;
+   public $cm25_c_tipo = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  cm25_i_codigo = int4 = Código Ossário/ Jazigo
                  cm25_c_numero = varchar(12) = Numero
                  cm25_i_lotecemit = int4 = Lote Cemiterio
@@ -58,10 +58,10 @@ class cl_ossoariojazigo {
                  cm25_c_tipo = char(1) = Tipo
                  ";
    //funcao construtor da classe
-   function cl_ossoariojazigo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ossoariojazigo");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -137,10 +137,10 @@ class cl_ossoariojazigo {
          $this->erro_status = "0";
          return false;
        }
-       $this->cm25_i_codigo = pg_result($result,0,0);
+       $this->cm25_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from ossoariojazigo_cm25_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cm25_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cm25_i_codigo)){
          $this->erro_sql = " Campo cm25_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -178,7 +178,7 @@ class cl_ossoariojazigo {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ossário Jazigo ($this->cm25_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ossário Jazigo já Cadastrado";
@@ -202,15 +202,15 @@ class cl_ossoariojazigo {
      $resaco = $this->sql_record($this->sql_query_file($this->cm25_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10354,'$this->cm25_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1792,10354,'','".AddSlashes(pg_result($resaco,0,'cm25_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1792,12080,'','".AddSlashes(pg_result($resaco,0,'cm25_c_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1792,10355,'','".AddSlashes(pg_result($resaco,0,'cm25_i_lotecemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1792,10356,'','".AddSlashes(pg_result($resaco,0,'cm25_f_comprimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1792,10357,'','".AddSlashes(pg_result($resaco,0,'cm25_f_largura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1792,10358,'','".AddSlashes(pg_result($resaco,0,'cm25_c_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1792,10354,'','".AddSlashes(pg_fetch_result($resaco,0,'cm25_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1792,12080,'','".AddSlashes(pg_fetch_result($resaco,0,'cm25_c_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1792,10355,'','".AddSlashes(pg_fetch_result($resaco,0,'cm25_i_lotecemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1792,10356,'','".AddSlashes(pg_fetch_result($resaco,0,'cm25_f_comprimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1792,10357,'','".AddSlashes(pg_fetch_result($resaco,0,'cm25_f_largura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1792,10358,'','".AddSlashes(pg_fetch_result($resaco,0,'cm25_c_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -219,10 +219,10 @@ class cl_ossoariojazigo {
       $this->atualizacampos();
      $sql = " update ossoariojazigo set ";
      $virgula = "";
-     if(trim($this->cm25_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_i_codigo"])){
+     if(trim((string) $this->cm25_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_i_codigo"])){
        $sql  .= $virgula." cm25_i_codigo = $this->cm25_i_codigo ";
        $virgula = ",";
-       if(trim($this->cm25_i_codigo) == null ){
+       if(trim((string) $this->cm25_i_codigo) == null ){
          $this->erro_sql = " Campo Código Ossário/ Jazigo nao Informado.";
          $this->erro_campo = "cm25_i_codigo";
          $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_ossoariojazigo {
          return false;
        }
      }
-     if(trim($this->cm25_c_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_c_numero"])){
+     if(trim((string) $this->cm25_c_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_c_numero"])){
        $sql  .= $virgula." cm25_c_numero = '$this->cm25_c_numero' ";
        $virgula = ",";
-       if(trim($this->cm25_c_numero) == null ){
+       if(trim((string) $this->cm25_c_numero) == null ){
          $this->erro_sql = " Campo Numero nao Informado.";
          $this->erro_campo = "cm25_c_numero";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_ossoariojazigo {
          return false;
        }
      }
-     if(trim($this->cm25_i_lotecemit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_i_lotecemit"])){
+     if(trim((string) $this->cm25_i_lotecemit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_i_lotecemit"])){
        $sql  .= $virgula." cm25_i_lotecemit = $this->cm25_i_lotecemit ";
        $virgula = ",";
-       if(trim($this->cm25_i_lotecemit) == null ){
+       if(trim((string) $this->cm25_i_lotecemit) == null ){
          $this->erro_sql = " Campo Lote Cemiterio nao Informado.";
          $this->erro_campo = "cm25_i_lotecemit";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_ossoariojazigo {
          return false;
        }
      }
-     if(trim($this->cm25_f_comprimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_f_comprimento"])){
+     if(trim((string) $this->cm25_f_comprimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_f_comprimento"])){
        $sql  .= $virgula." cm25_f_comprimento = $this->cm25_f_comprimento ";
        $virgula = ",";
-       if(trim($this->cm25_f_comprimento) == null ){
+       if(trim((string) $this->cm25_f_comprimento) == null ){
          $this->erro_sql = " Campo Comprimento nao Informado.";
          $this->erro_campo = "cm25_f_comprimento";
          $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_ossoariojazigo {
          return false;
        }
      }
-     if(trim($this->cm25_f_largura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_f_largura"])){
+     if(trim((string) $this->cm25_f_largura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_f_largura"])){
        $sql  .= $virgula." cm25_f_largura = $this->cm25_f_largura ";
        $virgula = ",";
-       if(trim($this->cm25_f_largura) == null ){
+       if(trim((string) $this->cm25_f_largura) == null ){
          $this->erro_sql = " Campo Largura nao Informado.";
          $this->erro_campo = "cm25_f_largura";
          $this->erro_banco = "";
@@ -284,7 +284,7 @@ class cl_ossoariojazigo {
          return false;
        }
      }
-     if(trim($this->cm25_c_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_c_tipo"])){
+     if(trim((string) $this->cm25_c_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm25_c_tipo"])){
        $sql  .= $virgula." cm25_c_tipo = '$this->cm25_c_tipo' ";
        $virgula = ",";
      }
@@ -296,21 +296,21 @@ class cl_ossoariojazigo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10354,'$this->cm25_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm25_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1792,10354,'".AddSlashes(pg_result($resaco,$conresaco,'cm25_i_codigo'))."','$this->cm25_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1792,10354,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm25_i_codigo'))."','$this->cm25_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm25_c_numero"]))
-           $resac = db_query("insert into db_acount values($acount,1792,12080,'".AddSlashes(pg_result($resaco,$conresaco,'cm25_c_numero'))."','$this->cm25_c_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1792,12080,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm25_c_numero'))."','$this->cm25_c_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm25_i_lotecemit"]))
-           $resac = db_query("insert into db_acount values($acount,1792,10355,'".AddSlashes(pg_result($resaco,$conresaco,'cm25_i_lotecemit'))."','$this->cm25_i_lotecemit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1792,10355,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm25_i_lotecemit'))."','$this->cm25_i_lotecemit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm25_f_comprimento"]))
-           $resac = db_query("insert into db_acount values($acount,1792,10356,'".AddSlashes(pg_result($resaco,$conresaco,'cm25_f_comprimento'))."','$this->cm25_f_comprimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1792,10356,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm25_f_comprimento'))."','$this->cm25_f_comprimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm25_f_largura"]))
-           $resac = db_query("insert into db_acount values($acount,1792,10357,'".AddSlashes(pg_result($resaco,$conresaco,'cm25_f_largura'))."','$this->cm25_f_largura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1792,10357,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm25_f_largura'))."','$this->cm25_f_largura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm25_c_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1792,10358,'".AddSlashes(pg_result($resaco,$conresaco,'cm25_c_tipo'))."','$this->cm25_c_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1792,10358,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm25_c_tipo'))."','$this->cm25_c_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -355,15 +355,15 @@ class cl_ossoariojazigo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10354,'$cm25_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1792,10354,'','".AddSlashes(pg_result($resaco,$iresaco,'cm25_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1792,12080,'','".AddSlashes(pg_result($resaco,$iresaco,'cm25_c_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1792,10355,'','".AddSlashes(pg_result($resaco,$iresaco,'cm25_i_lotecemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1792,10356,'','".AddSlashes(pg_result($resaco,$iresaco,'cm25_f_comprimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1792,10357,'','".AddSlashes(pg_result($resaco,$iresaco,'cm25_f_largura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1792,10358,'','".AddSlashes(pg_result($resaco,$iresaco,'cm25_c_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1792,10354,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm25_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1792,12080,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm25_c_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1792,10355,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm25_i_lotecemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1792,10356,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm25_f_comprimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1792,10357,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm25_f_largura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1792,10358,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm25_c_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from ossoariojazigo
@@ -423,7 +423,7 @@ class cl_ossoariojazigo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:ossoariojazigo";
@@ -437,7 +437,7 @@ class cl_ossoariojazigo {
    function sql_query ( $cm25_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,7 +473,7 @@ $sql .= "  left join protprocesso   on  protprocesso.p58_codproc           =  pr
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -485,7 +485,7 @@ $sql .= "  left join protprocesso   on  protprocesso.p58_codproc           =  pr
    function sql_query_file ( $cm25_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,7 +506,7 @@ $sql .= "  left join protprocesso   on  protprocesso.p58_codproc           =  pr
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

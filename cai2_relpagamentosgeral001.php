@@ -67,7 +67,7 @@ $aux1  = new cl_arquivo_auxiliar;
                   <td><b>Considerar Data:</b></td>
                   <td colspan="3">
                     <?php 
-                    $aSelect = array(1 => "Processamento", 2 => "Efetivo Pagamento");
+                    $aSelect = [1 => "Processamento", 2 => "Efetivo Pagamento"];
                     db_select("cboData", $aSelect, true, 1, 'style="width:100%;"');
                     ?>
                   </td>
@@ -104,7 +104,7 @@ $aux1  = new cl_arquivo_auxiliar;
                   <td><b>Agrupamento:</b></td>
                   <td colspan="3">
                     <?php 
-                    $aSelect = array(1 => "Tipo débito", 2 => "Receita", 3 => "Origem", 6 => "Estrutural Receita");
+                    $aSelect = [1 => "Tipo débito", 2 => "Receita", 3 => "Origem", 6 => "Estrutural Receita"];
                     db_select("cboAgrupamento", $aSelect, true, 1,  'onChange="js_validaOrdenacao();" style="width:100%;"');
                     ?>
                   </td>
@@ -113,7 +113,7 @@ $aux1  = new cl_arquivo_auxiliar;
                   <td><b>Origem:</b></td>
                   <td colspan="3">
                     <?php 
-                    $aSelect = array(2 => "Matrícula", 3 => "Inscrição", 4 => "Somente CGM");
+                    $aSelect = [2 => "Matrícula", 3 => "Inscrição", 4 => "Somente CGM"];
                     db_select("cboOrigem", $aSelect, true, 1, 'onChange="js_validaOrdenacao();" style="width:100%;"');
                     ?>
                   </td>
@@ -122,11 +122,11 @@ $aux1  = new cl_arquivo_auxiliar;
                   <td><b>Ordenação:</b></td>
                   <td colspan="3">
                     <?php 
-                    $aSelect = array(1 => "Tipo de Débito", 2 => "Valor");
+                    $aSelect = [1 => "Tipo de Débito", 2 => "Valor"];
                     db_select("cboOrdenacao", $aSelect, true, 1,  'onChange="js_cboOrdenacao();" style="width:100%;"');
                     ?>
                     <?php 
-                    $aSelect = array(1 => "Crescente", 2 => "Decrescente");
+                    $aSelect = [1 => "Crescente", 2 => "Decrescente"];
                     db_select("cboOrdenacaoValor", $aSelect, true, 1,  'style="width:30%;display:none;"');
                     ?>
                   </td>
@@ -135,7 +135,7 @@ $aux1  = new cl_arquivo_auxiliar;
                   <td><b>Demonstração:</b></td>
                   <td colspan="3">
                     <?php 
-                    $aSelect = array(1 => "Ambos", 2 => "Imposto/Taxa", 3 => "Juro e Multa");
+                    $aSelect = [1 => "Ambos", 2 => "Imposto/Taxa", 3 => "Juro e Multa"];
                     db_select("cboDemonstracao", $aSelect, true, 1, 'style="width:100%;"');
                     ?>
                   </td>
@@ -144,10 +144,10 @@ $aux1  = new cl_arquivo_auxiliar;
                   <td><b>Totalização:</b></td>
                   <td colspan="3">
                     <?php 
-                    $aSelect = array(
+                    $aSelect = [
                       1 => "Imprimir Dados e Totalizações", 2 => "Imprimir Somente Totalizações",
                       3 => "Imprimir Somente Dados"
-                    );
+                    ];
                     db_select("cboTotalizacao", $aSelect, true, 1, 'style="width:100%;"');
                     ?>
                   </td>

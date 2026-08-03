@@ -48,12 +48,10 @@ final class CadastroService
         $setorregimovelRepository = new SetorregimovelRepository();
         $aSetor = $setorregimovelRepository->get()->toArray();
 
-        return array_map(function ($aSetor) {
-            return (object) [
-                "codigo" => $aSetor["j69_sequencial"],
-                "descricao" => $aSetor["j69_descr"]
-            ];
-        }, $aSetor);
+        return array_map(fn($aSetor) => (object) [
+            "codigo" => $aSetor["j69_sequencial"],
+            "descricao" => $aSetor["j69_descr"]
+        ], $aSetor);
     }
 
     public function getLocalidadeRural()
@@ -61,12 +59,10 @@ final class CadastroService
         $localidaderuralRepository = new LocalidaderuralRepository();
         $aLocalidade = $localidaderuralRepository->getAll()->toArray();
 
-        return array_map(function ($aLocalidade) {
-            return [
-                "codigo" => $aLocalidade["j137_sequencial"],
-                "descricao" => $aLocalidade["j137_descricao"]
-            ];
-        }, $aLocalidade);
+        return array_map(fn($aLocalidade) => [
+            "codigo" => $aLocalidade["j137_sequencial"],
+            "descricao" => $aLocalidade["j137_descricao"]
+        ], $aLocalidade);
     }
 
     public function getBairros()

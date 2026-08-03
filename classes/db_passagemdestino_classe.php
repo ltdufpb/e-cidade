@@ -28,24 +28,24 @@
 //CLASSE DA ENTIDADE passagemdestino
 class cl_passagemdestino { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tf37_sequencial = 0; 
-   var $tf37_valor = 0; 
-   var $tf37_destino = 0; 
+   public $tf37_sequencial = 0; 
+   public $tf37_valor = 0; 
+   public $tf37_destino = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tf37_sequencial = int4 = Código 
                  tf37_valor = float8 = Valor da Passagem 
                  tf37_destino = int4 = Destino 
@@ -54,7 +54,7 @@ class cl_passagemdestino {
    function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("passagemdestino"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,10 +106,10 @@ class cl_passagemdestino {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tf37_sequencial = pg_result($result,0,0); 
+       $this->tf37_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from passagemdestino_tf37_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf37_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf37_sequencial)){
          $this->erro_sql = " Campo tf37_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -141,7 +141,7 @@ class cl_passagemdestino {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Passagem / Destino ($this->tf37_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Passagem / Destino já Cadastrado";
@@ -170,12 +170,12 @@ class cl_passagemdestino {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21849,'$this->tf37_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3934,21849,'','".AddSlashes(pg_result($resaco,0,'tf37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3934,21850,'','".AddSlashes(pg_result($resaco,0,'tf37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3934,21851,'','".AddSlashes(pg_result($resaco,0,'tf37_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3934,21849,'','".AddSlashes(pg_fetch_result($resaco,0,'tf37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3934,21850,'','".AddSlashes(pg_fetch_result($resaco,0,'tf37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3934,21851,'','".AddSlashes(pg_fetch_result($resaco,0,'tf37_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -185,10 +185,10 @@ class cl_passagemdestino {
       $this->atualizacampos();
      $sql = " update passagemdestino set ";
      $virgula = "";
-     if(trim($this->tf37_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf37_sequencial"])){ 
+     if(trim((string) $this->tf37_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf37_sequencial"])){ 
        $sql  .= $virgula." tf37_sequencial = $this->tf37_sequencial ";
        $virgula = ",";
-       if(trim($this->tf37_sequencial) == null ){ 
+       if(trim((string) $this->tf37_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "tf37_sequencial";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_passagemdestino {
          return false;
        }
      }
-     if(trim($this->tf37_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf37_valor"])){ 
+     if(trim((string) $this->tf37_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf37_valor"])){ 
        $sql  .= $virgula." tf37_valor = $this->tf37_valor ";
        $virgula = ",";
-       if(trim($this->tf37_valor) == null ){ 
+       if(trim((string) $this->tf37_valor) == null ){ 
          $this->erro_sql = " Campo Valor da Passagem não informado.";
          $this->erro_campo = "tf37_valor";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_passagemdestino {
          return false;
        }
      }
-     if(trim($this->tf37_destino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf37_destino"])){ 
+     if(trim((string) $this->tf37_destino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf37_destino"])){ 
        $sql  .= $virgula." tf37_destino = $this->tf37_destino ";
        $virgula = ",";
-       if(trim($this->tf37_destino) == null ){ 
+       if(trim((string) $this->tf37_destino) == null ){ 
          $this->erro_sql = " Campo Destino não informado.";
          $this->erro_campo = "tf37_destino";
          $this->erro_banco = "";
@@ -238,15 +238,15 @@ class cl_passagemdestino {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21849,'$this->tf37_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf37_sequencial"]) || $this->tf37_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3934,21849,'".AddSlashes(pg_result($resaco,$conresaco,'tf37_sequencial'))."','$this->tf37_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3934,21849,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf37_sequencial'))."','$this->tf37_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf37_valor"]) || $this->tf37_valor != "")
-             $resac = db_query("insert into db_acount values($acount,3934,21850,'".AddSlashes(pg_result($resaco,$conresaco,'tf37_valor'))."','$this->tf37_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3934,21850,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf37_valor'))."','$this->tf37_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["tf37_destino"]) || $this->tf37_destino != "")
-             $resac = db_query("insert into db_acount values($acount,3934,21851,'".AddSlashes(pg_result($resaco,$conresaco,'tf37_destino'))."','$this->tf37_destino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3934,21851,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf37_destino'))."','$this->tf37_destino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -300,12 +300,12 @@ class cl_passagemdestino {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21849,'$tf37_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3934,21849,'','".AddSlashes(pg_result($resaco,$iresaco,'tf37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3934,21850,'','".AddSlashes(pg_result($resaco,$iresaco,'tf37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3934,21851,'','".AddSlashes(pg_result($resaco,$iresaco,'tf37_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3934,21849,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3934,21850,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf37_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3934,21851,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf37_destino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

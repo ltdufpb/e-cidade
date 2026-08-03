@@ -36,8 +36,8 @@ require_once(modification("classes/db_acordomovimentacao_classe.php"));
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clacordomovimentacao = new cl_acordomovimentacao;
 $clacordomovimentacao->rotulo->label("ac10_acordo");
@@ -174,10 +174,10 @@ $sAnd   = "";
 
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_ac10_acordo)) {
-          $repassa = array("chave_ac10_acordo"=>$chave_ac10_acordo,
-                           "chave_ac10_acordo"=>$chave_ac10_acordo);
+          $repassa = ["chave_ac10_acordo"=>$chave_ac10_acordo,
+                           "chave_ac10_acordo"=>$chave_ac10_acordo];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

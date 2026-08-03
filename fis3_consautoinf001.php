@@ -45,7 +45,7 @@ $clrotulo->label("y50_codauto");
 $clrotulo->label("q07_databx");
 $clrotulo->label("p58_requer");
 $clrotulo->label("y50_numbloco");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>

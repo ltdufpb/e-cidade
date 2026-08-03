@@ -51,7 +51,7 @@ $clsuspensaofinaliza->rotulo->label();
         </td>
         <td>
           <?php 
-            $aStatusDebito = array("c"=>"Cancelar","r"=>"Reativar");
+            $aStatusDebito = ["c"=>"Cancelar","r"=>"Reativar"];
 			db_select("statusDebito",$aStatusDebito,true,1,""); 
           ?>
         </td>

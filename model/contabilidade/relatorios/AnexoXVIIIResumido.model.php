@@ -122,7 +122,7 @@ class AnexoXVIIIResumido extends RelatoriosLegaisBase {
   /**
    * @var array Lista de relatórios que devem ser emitidos
    */
-  private $aRelatoriosEmitir = array();
+  private $aRelatoriosEmitir = [];
 
     public function __construct($iAnoUsu, $iCodigoRelatorio, $iCodigoPeriodo)
     {
@@ -592,7 +592,7 @@ class AnexoXVIIIResumido extends RelatoriosLegaisBase {
 
     if ($this->iAnoUsu >= 2017 )  {
 
-      $aCodigoInstituicoes = explode(',', $this->sInstituicoes);
+      $aCodigoInstituicoes = explode(',', (string) $this->sInstituicoes);
 
       $oAnexoVII = new AnexoVII();
       $oAnexoVII->setAno($this->iAnoUsu);
@@ -647,7 +647,7 @@ class AnexoXVIIIResumido extends RelatoriosLegaisBase {
     $tot_restos_naopc_saldo_legal      = 0;
 
 
-    $aArrays = array($aTotInstit , $aTotInstitIntra);
+    $aArrays = [$aTotInstit , $aTotInstitIntra];
 
     foreach ($aArrays as $aArrayValor) {
 

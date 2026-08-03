@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -56,10 +56,10 @@ $clcriaabas = new cl_criaabas;
      <td>
      <?php 
      	// filtro = Motivo, data, cliente, técnico, procedimento, modulo
-       $clcriaabas->identifica = array("g1"=>"Motivo/Data/Cliente","g2"=>"Técnico/Modulo","g3"=>"Procedimento");
-       $clcriaabas->title = array("g1"=>"Selecionar Motivo/Data/Cliente","g2"=>"Selecionar Técnico/Modulo","g3"=>"Selecionar Procedimento");
-       $clcriaabas->src = array("g1"=>"ate2_confereatendaba1.php","g2"=>"ate2_confereatendaba2.php","g3"=>"ate2_confereatendaba3.php");
-       $clcriaabas->funcao_js = array("g1"=>"","g2"=>"","g3"=>"js_teste();");
+       $clcriaabas->identifica = ["g1"=>"Motivo/Data/Cliente","g2"=>"Técnico/Modulo","g3"=>"Procedimento"];
+       $clcriaabas->title = ["g1"=>"Selecionar Motivo/Data/Cliente","g2"=>"Selecionar Técnico/Modulo","g3"=>"Selecionar Procedimento"];
+       $clcriaabas->src = ["g1"=>"ate2_confereatendaba1.php","g2"=>"ate2_confereatendaba2.php","g3"=>"ate2_confereatendaba3.php"];
+       $clcriaabas->funcao_js = ["g1"=>"","g2"=>"","g3"=>"js_teste();"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

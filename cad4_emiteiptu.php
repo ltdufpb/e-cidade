@@ -68,7 +68,7 @@ $clrotulo = new rotulocampo();
 $cllote->rotulo->label();
 $clsetor->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (isset($geracarnes)) {
   $oPost = db_utils::postMemory($_POST);
@@ -158,7 +158,7 @@ if (isset($geracarnes)) {
              <strong>Quantidade de registros do select:</strong>
            </td>
            <td nowrap>
-             <input type='text' size="20px;" id='quantidade' name='quantidade' value=<?=(isset($quantidade)?$quantidade:1000)?>>
+             <input type='text' size="20px;" id='quantidade' name='quantidade' value=<?=($quantidade ?? 1000)?>>
            </td>
          </tr>
 
@@ -170,7 +170,7 @@ if (isset($geracarnes)) {
 
 
 
-             <input type='text' size="20px;" id='quantidade_registros_real' name='quantidade_registros_real' value=<?=(isset($quantidade_registros_real)?$quantidade_registros_real:"")?>>
+             <input type='text' size="20px;" id='quantidade_registros_real' name='quantidade_registros_real' value=<?=($quantidade_registros_real ?? "")?>>
            </td>
          </tr>
 
@@ -180,12 +180,12 @@ if (isset($geracarnes)) {
            </td>
            <td>
              <?php 
-               $aTipos = array (
+               $aTipos =  [
                  "txt"    => "TXT",
                  "pdf"    => "PDF",
                  "IGC702" => "IGC702",
                  "txtbsj" => "TXT BSJ"
-               );
+               ];
                db_select('tipo', $aTipos, true, 1,"onChange='js_mostracapa();js_mostraOpVenc();' style='width:165px;'");
              ?>
            </td>
@@ -196,7 +196,7 @@ if (isset($geracarnes)) {
            </td>
            <td>
              <?php 
-                $aOrdem = array ("endereco"        => "Cidade / Logradouro",
+                $aOrdem =  ["endereco"        => "Cidade / Logradouro",
                                  "bairroender"     => "Bairro / Logradouro",
                                  "alfabetica"      => "Alfabética / Nome",
                                  "zonaentrega"     => "Zona de entrega",
@@ -204,7 +204,7 @@ if (isset($geracarnes)) {
                                  "setorquadralote" => "Setor / Quadra / Lote",
                                  "bairroalfa"      => "Bairro / Alfabética",
                                  "cependereco"     => "CEP / Logradouro"
-                                );
+                                ];
                 db_select('ordem', $aOrdem, true, 2,"style='width:165px;'");
              ?>
            </td>
@@ -216,7 +216,7 @@ if (isset($geracarnes)) {
            </td>
            <td>
              <?php 
-                $aOpVenc = array ("0" => "Não", "1" => "Sim");
+                $aOpVenc =  ["0" => "Não", "1" => "Sim"];
                 db_select('opVenc', $aOpVenc, true, 2,"style='width:165px;'");
              ?>
            </td>
@@ -244,10 +244,10 @@ if (isset($geracarnes)) {
            </td>
            <td>
              <?php 
-               $aEspecie = array ("todos"       => "Todos",
+               $aEspecie =  ["todos"       => "Todos",
                                   "predial"     => "Somente Predial",
                                   "territorial" => "Somente Territorial"
-                                  );
+                                  ];
                db_select('especie', $aEspecie, true, 1);
              ?>
            </td>
@@ -272,9 +272,9 @@ if (isset($geracarnes)) {
              <strong>Valor Mínimo de:</strong>
            </td>
            <td>
-             <input type='text' id='vlrmin' size='10' name='vlrmin' value=<?=(isset($vlrmin)?$vlrmin:0)?>>
+             <input type='text' id='vlrmin' size='10' name='vlrmin' value=<?=($vlrmin ?? 0)?>>
              <strong>à</strong>
-             <input type='text' id='vlrmax' size='10' name='vlrmax' value=<?=(isset($vlrmax)?$vlrmax:999999999)?>>
+             <input type='text' id='vlrmax' size='10' name='vlrmax' value=<?=($vlrmax ?? 999999999)?>>
            </td>
          </tr>
 
@@ -283,13 +283,13 @@ if (isset($geracarnes)) {
              <strong>Valor de Intervalo para Parcelado:</strong>
            </td>
            <td>
-             <input type='text' id='vlrminunica' name='vlrminunica' size='10' value=<?=(isset($vlrminunica)?$vlrminunica:0)?>><strong> à </strong>
-             <input type='text' id='vlrmaxunica' name='vlrmaxunica' size='10' value=<?=(isset($vlrmaxunica)?$vlrmaxunica:999999999)?>>
+             <input type='text' id='vlrminunica' name='vlrminunica' size='10' value=<?=($vlrminunica ?? 0)?>><strong> à </strong>
+             <input type='text' id='vlrmaxunica' name='vlrmaxunica' size='10' value=<?=($vlrmaxunica ?? 999999999)?>>
              <?php 
-               $aIntervaloParcelamento = array ("desconsiderar" => "Desconsiderar intervalo",
+               $aIntervaloParcelamento =  ["desconsiderar" => "Desconsiderar intervalo",
                                                 "gerar"         => "Gerar para os que estiverem no intervalo",
                                                 "naogerar"      => "Nao gerar para os que estiverem no intervalo"
-                                               );
+                                               ];
                db_select('intervalo', $aIntervaloParcelamento, true, 1,"style='width:276px;'");
              ?>
            </td>
@@ -301,10 +301,10 @@ if (isset($geracarnes)) {
            </td>
            <td>
              <?php 
-               $aFiltroPrincipal = array ("normal"  => "Normal",
+               $aFiltroPrincipal =  ["normal"  => "Normal",
                                           "compgto" => "Somente sem parcelas em atraso",
                                           "sempgto" => "Somente os registros sem pagamentos"
-                                          );
+                                          ];
                db_select('filtroprinc', $aFiltroPrincipal, true, 1,"style='width:480px;'");
              ?>
            </td>
@@ -316,10 +316,10 @@ if (isset($geracarnes)) {
            </td>
            <td>
              <?php 
-               $aVinculoImobiliaria = array ( "todos" => "Imprimir todos os registros, independente do vinculo com imobiliaria",
+               $aVinculoImobiliaria =  [ "todos" => "Imprimir todos os registros, independente do vinculo com imobiliaria",
                                               "com"   => "Somente os que tenham vinculo com imobiliaria",
                                               "sem"   => "Somente os que nao tenham vinculo com imobiliaria"
-                                            );
+                                            ];
                db_select('imobiliaria', $aVinculoImobiliaria, true, 1,"style='width:480px;'");
              ?>
            </td>
@@ -330,10 +330,10 @@ if (isset($geracarnes)) {
            </td>
            <td>
              <?php 
-               $aVinculoLoteamentos = array ( "todos" => "Imprimir todos os registros, independente do vinculo com loteamento",
+               $aVinculoLoteamentos =  [ "todos" => "Imprimir todos os registros, independente do vinculo com loteamento",
                                               "com"   => "Somente os que tenham vinculo com loteamento",
                                               "sem"   => "Somente os que nao tenham vinculo com loteamento"
-                                            );
+                                            ];
                db_select('loteamento', $aVinculoLoteamentos, true, 1,"style='width:480px;'");
              ?>
            </td>
@@ -354,7 +354,7 @@ if (isset($geracarnes)) {
 
            <td>
              <?php 
-               $aTercDigBarraUnicas = array ("seis" => "6 (seis)", "sete" => "7 (sete)");
+               $aTercDigBarraUnicas =  ["seis" => "6 (seis)", "sete" => "7 (sete)"];
                db_select('barrasunica', $aTercDigBarraUnicas, true, 1,"style='width:165px;'");
              ?>
            </td>
@@ -367,7 +367,7 @@ if (isset($geracarnes)) {
 
            <td>
              <?php 
-               $aTercDigBarraParcelados = array ("seis" => "6 (seis)", "sete" => "7 (sete)");
+               $aTercDigBarraParcelados =  ["seis" => "6 (seis)", "sete" => "7 (sete)"];
                db_select('barrasparc', $aTercDigBarraParcelados, true, 1,"style='width:165px;'");
              ?>
            </td>
@@ -379,7 +379,7 @@ if (isset($geracarnes)) {
            </td>
            <td>
              <?php 
-               $aImpCapa = array ("n" => "Não", "s" => "Sim");
+               $aImpCapa =  ["n" => "Não", "s" => "Sim"];
                db_select('imprimecapa', $aImpCapa, true, 1,"style='width:165px;'");
              ?>
            </td>
@@ -391,7 +391,7 @@ if (isset($geracarnes)) {
            </td>
            <td>
              <?php 
-               $aMsgDebitosAnt = array ("n" => "Não", "s" => "Sim");
+               $aMsgDebitosAnt =  ["n" => "Não", "s" => "Sim"];
                db_select('mensagemanosanteriores', $aMsgDebitosAnt, true, 1,"style='width:165px;'");
              ?>
            </td>
@@ -402,7 +402,7 @@ if (isset($geracarnes)) {
              <strong>Considerar Movimento nos Anos:</strong>
            </td>
            <td nowrap>
-             <input type='text' size="20px;" name='processarmovimentacao' id='processarmovimentacao' value=<?=(isset($processarmovimentacao)?$processarmovimentacao:"")?>>
+             <input type='text' size="20px;" name='processarmovimentacao' id='processarmovimentacao' value=<?=($processarmovimentacao ?? "")?>>
            </td>
          </tr>
 
@@ -411,7 +411,7 @@ if (isset($geracarnes)) {
              <strong>Parcela Obrigatória em Aberto:</strong>
            </td>
            <td>
-             <input type='text' id='parcobrig' name='parcobrig' value=<?=(isset($parcobrig)?$parcobrig:"")?>>
+             <input type='text' id='parcobrig' name='parcobrig' value=<?=($parcobrig ?? "")?>>
            </td>
          </tr>
 
@@ -420,7 +420,7 @@ if (isset($geracarnes)) {
              <strong>Quantidade total de parcelas:</strong>
            </td>
            <td>
-             <input type='text' id='quantidadeparcelas' name='quantidadeparcelas' value=<?=(isset($quantidadeparcelas)?$quantidadeparcelas:"")?>>
+             <input type='text' id='quantidadeparcelas' name='quantidadeparcelas' value=<?=($quantidadeparcelas ?? "")?>>
            </td>
          </tr>
 
@@ -429,7 +429,7 @@ if (isset($geracarnes)) {
              <strong>Gerar Apenas para as Matrículas:</strong>
            </td>
            <td>
-             <input type='text' id='listamatrics' name='listamatrics' value=<?=(isset($listamatrics)?$listamatrics:"")?>>
+             <input type='text' id='listamatrics' name='listamatrics' value=<?=($listamatrics ?? "")?>>
            </td>
          </tr>
 
@@ -477,15 +477,15 @@ if (isset($geracarnes)) {
              <?php 
               $result = db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
 
-              if (pg_numrows($result) > 0) {
+              if (pg_num_rows($result) > 0) {
 
                 echo "<select id='anousu' name='anousu' onChange='document.form1.submit();' style='width:165px;'>";
 
                 if(!isset($anousu)) {
-                   $anousu = pg_result($result, 0, "j18_anousu");
+                   $anousu = pg_fetch_result($result, 0, "j18_anousu");
                 }
 
-                for ($i = 0; $i < pg_numrows($result); $i ++) {
+                for ($i = 0; $i < pg_num_rows($result); $i ++) {
                   db_fieldsmemory($result, $i);
 
                   echo "<option value='{$j18_anousu}' " ;
@@ -549,7 +549,7 @@ if (isset($geracarnes)) {
         </table>
       </fieldset>
      </fieldset>
-     <input name="totcheck" type="hidden" id="totcheck" value="<?=pg_numrows($result)?>" />
+     <input name="totcheck" type="hidden" id="totcheck" value="<?=pg_num_rows($result)?>" />
      <input name="geracarnes" type="submit" id="geracarnes" value="Gerar Carnes" onclick="js_getUnicas(); return js_mostra_processando();"/>
      <input type="hidden" value="" name="listaUnicas" id="listaUnicas" />
    </form>
@@ -1077,24 +1077,11 @@ if (isset($geracarnes)) {
 
     $oMunic =  db_utils::fieldsMemory(db_query("select munic from db_config where prefeitura is true"),0);
 
-    switch (strtoupper($oMunic->munic)) {
-
-        case 'ARAPIRACA_ABC' :
-
-          $sNomeFonte = "_arapiraca";
-          break;
-
-        case 'GUAIBA':
-
-          $sNomeFonte = "_guaiba";
-          break;
-
-
-        default:
-
-          $sNomeFonte = '';
-          break;
-    }
+    $sNomeFonte = match (strtoupper((string) $oMunic->munic)) {
+        'ARAPIRACA_ABC' => "_arapiraca",
+        'GUAIBA' => "_guaiba",
+        default => '',
+    };
 
     $querystring="proc=".@$proc."&entregavalido=".@$entregavalido."&zerado=$zerado&local=$local&cidadebranco=".@$cidadebranco."&parcobrig=$parcobrig&quantidadeparcelas=$quantidadeparcelas&listamatrics=$listamatrics&unica=$unica&anousu=$anousu&quantidade=$quantidade&quantidade_registros_real=$quantidade_registros_real&processarmovimentacao=$processarmovimentacao&mensagemanosanteriores=$mensagemanosanteriores&ordem=$ordem&especie=$especie&imobiliaria=$imobiliaria&loteamento=$loteamento&filtroprinc=$filtroprinc&barrasparc=$barrasparc&barrasunica=$barrasunica&totcheck=$totcheck&vlrminunica=$vlrminunica&intervalo=$intervalo&vlrmaxunica=$vlrmaxunica&vlrmin=$vlrmin&vlrmax=$vlrmax&tipo=$tipo&opVenc=$opVenc";
 
@@ -1124,12 +1111,12 @@ if (isset($geracarnes)) {
       // demais modelo 1
         $dtVencUnica = "";
         $vir         = "";
-        $dtudica     = split("U",$unica);
+        $dtudica     = preg_split("#U#m",(string) $unica);
         $tam         = (count($dtudica));
 
         for($t=0; $t < $tam; $t++){
-            $dtvenc = split("=",$dtudica[$t]);
-            if(trim($dtvenc[0])!=""){
+            $dtvenc = preg_split("#=#m",(string) $dtudica[$t]);
+            if(trim((string) $dtvenc[0])!=""){
               $dtVencUnica .= $vir.$dtvenc[0];
               $vir      =",";
             }

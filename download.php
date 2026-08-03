@@ -35,7 +35,7 @@ function db_parse_ini_file($file, $ProcessSections=false){
     return false;
   }
 
-  $return = Array();
+  $return = [];
   $inSect = false;
   foreach($lines as $line){
     $line = trim($line);
@@ -86,7 +86,7 @@ if( $file == "bkp-ecidade" ) {
 if (file_exists($file)) {
   header('Content-Description: File Transfer');
   header('Content-Type: '.$mime);
-  header('Content-Disposition: attachment; filename='.basename($file));
+  header('Content-Disposition: attachment; filename='.basename((string) $file));
   header('Content-Transfer-Encoding: binary');
   header('Expires: 0');
   header('Cache-Control: must-revalidate, post-check=0, pre-check=0');

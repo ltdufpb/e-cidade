@@ -46,8 +46,8 @@ include(modification("classes/db_orctiporec_classe.php"));
 
 
 require(modification("libs/db_liborcamento.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clorcdotacao = new cl_orcdotacao;
 $clorcdotacaocontr = new cl_orcdotacaocontr;
 $clorcelemento = new cl_orcelemento;
@@ -63,7 +63,7 @@ $db_opcao = 1;
 $db_botao = true;
 
 $orgao_ja_cadastrado = false;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   db_inicio_transacao();
   $erro_trans = false;
 
@@ -173,7 +173,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clorcdotacao->erro_status=="0"){
     $clorcdotacao->erro(true,false);
     $db_botao=true;

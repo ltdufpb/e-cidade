@@ -109,13 +109,13 @@ switch( $db_opcao ) {
           </td>
           <td>
             <?php
-            $x = array( 'DIURNO' => 'DIURNO', 'NOTURNO' => 'NOTURNO', 'DIURNO E NOTURNO' => 'DIURNO E NOTURNO' );
+            $x = [ 'DIURNO' => 'DIURNO', 'NOTURNO' => 'NOTURNO', 'DIURNO E NOTURNO' => 'DIURNO E NOTURNO' ];
             db_select( 'ed31_c_turno', $x, true, $db_opcao );
             ?>
           </td>
         </tr>
         <tr>
-          <td nowrap title="<?=@Ted31_i_regimemat?>">
+          <td nowrap title="<?=@\TED31_I_REGIMEMAT?>">
             <label for="ed31_i_regimemat">
               <?php
               db_ancora( $Led31_i_regimemat, "js_pesquisaed31_i_regimemat(true);", ( $db_opcao == 1 ? $db_opcao : 3 ) );
@@ -175,7 +175,7 @@ switch( $db_opcao ) {
           </td>
           <td>
             <?php
-            $x = array( 'P' => 'HORAS - AULA', 'D' => 'DIAS LETIVOS' );
+            $x = [ 'P' => 'HORAS - AULA', 'D' => 'DIAS LETIVOS' ];
             db_select( 'ed31_c_medfreq', $x, true, $db_opcao );
             ?>
           </td>
@@ -186,7 +186,7 @@ switch( $db_opcao ) {
           </td>
           <td>
             <?php
-            $x = array( 'I' => 'INDIVIDUAL ', 'G' => 'GLOBALIZADO' );
+            $x = [ 'I' => 'INDIVIDUAL ', 'G' => 'GLOBALIZADO' ];
             db_select( 'ed31_c_contrfreq', $x, true, $db_opcao );
             ?>
           </td>
@@ -197,7 +197,7 @@ switch( $db_opcao ) {
           </td>
           <td>
             <?php
-            $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
+            $x = [ 'N' => 'NÃO', 'S' => 'SIM' ];
             db_select( 'ed31_c_conclusao', $x, true, $db_opcao );
             ?>
           </td>
@@ -209,7 +209,7 @@ switch( $db_opcao ) {
           <td>
             <?php
             $ed31_c_ativo = $db_opcao == 1 ? "S" : $ed31_c_ativo;
-            $x = array( 'S' => 'SIM', 'N' => 'NÃO' );
+            $x = [ 'S' => 'SIM', 'N' => 'NÃO' ];
             db_select( 'ed31_c_ativo', $x, true, $db_opcao );
             ?>
           </td>
@@ -736,7 +736,7 @@ function js_preenchepesquisa( chave ) {
   db_iframe_base.hide();
   <?php
   if( $db_opcao != 1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

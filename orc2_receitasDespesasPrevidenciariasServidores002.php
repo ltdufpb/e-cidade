@@ -41,8 +41,8 @@ if (!isset($arqinclude)) {
   $classinatura = new cl_assinatura();
   $orcparamrel  = new cl_orcparamrel();
   $cldb_config  = new cl_db_config();
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
 }
 
@@ -76,7 +76,7 @@ $iLinhasInstit = $cldb_config->numrows;
 
 if ($iLinhasInstit > 0) {
 
-  $aListaInstit = array();
+  $aListaInstit = [];
 
   for ($iInd = 0; $iInd < $iLinhasInstit; $iInd++) {
     $oInstit        = db_utils::fieldsMemory($rsRppsInstit, $iInd);
@@ -116,7 +116,7 @@ $head4 = "ANEXO DE METAS FISCAIS";
 $head5 = $iAnoUsu;
 $head6 = "RECEITAS E DESPESAS PREVIDENCIÁRIAS DO REGIME PRÓPRIO DE PREVIDÊNCIA DOS SERVIDORES";
 // fechado ate a linha 360
-$aLinhasRelatorio              = array();
+$aLinhasRelatorio              = [];
 $aLinhasRelatorio[0]["label"]  = "RECEITAS PREVIDENCIÁRIAS - RPPS (EXCETO INTRA-ORÇAMENTÁRIAS)(I)";
 $aLinhasRelatorio[1]["label"]  = "	 RECEITAS CORRENTES";
 $aLinhasRelatorio[2]["label"]  = "    Receita de Contribuíções dos Segurados";
@@ -339,7 +339,7 @@ $db_filtro = "o58_instit in ({$sListaInstit})";
 
 for ($linha = 21; $linha <= 28; $linha++) {
 
-  $aListaFuncao = array();
+  $aListaFuncao = [];
   $sWhereFuncao = "";
 
   foreach ($m_despesa[$linha]["funcao1"] as $sRegistro) {
@@ -371,7 +371,7 @@ for ($linha = 21; $linha <= 28; $linha++) {
     $sEstrutural = substr($sEstrutural, 0, $sNivel);
     $sEstrutural = str_pad($sEstrutural, 15, "0", STR_PAD_RIGHT);
 
-    if (substr($oDespFuncaoAtual->o58_elemento, 3, 2) == "91") {
+    if (substr((string) $oDespFuncaoAtual->o58_elemento, 3, 2) == "91") {
       continue;
     }
 
@@ -380,7 +380,7 @@ for ($linha = 21; $linha <= 28; $linha++) {
     }
   }
 
-  $aListaFuncao = array();
+  $aListaFuncao = [];
   $sWhereFuncao = "";
 
   foreach ($m_despesa[$linha]["funcao2"] as $sRegistro) {
@@ -412,7 +412,7 @@ for ($linha = 21; $linha <= 28; $linha++) {
     $sEstrutural = substr($sEstrutural, 0, $sNivel);
     $sEstrutural = str_pad($sEstrutural, 15, "0", STR_PAD_RIGHT);
 
-    if (substr($oDespFuncaoAtual->o58_elemento, 3, 2) == "91") {
+    if (substr((string) $oDespFuncaoAtual->o58_elemento, 3, 2) == "91") {
       continue;
     }
 
@@ -421,7 +421,7 @@ for ($linha = 21; $linha <= 28; $linha++) {
     }
   }
 
-  $aListaFuncao = array();
+  $aListaFuncao = [];
   $sWhereFuncao = "";
 
   foreach ($m_despesa[$linha]["funcao3"] as $sRegistro) {
@@ -453,7 +453,7 @@ for ($linha = 21; $linha <= 28; $linha++) {
     $sEstrutural = substr($sEstrutural, 0, $sNivel);
     $sEstrutural = str_pad($sEstrutural, 15, "0", STR_PAD_RIGHT);
 
-    if (substr($oDespFuncaoAtual->o58_elemento, 3, 2) == "91") {
+    if (substr((string) $oDespFuncaoAtual->o58_elemento, 3, 2) == "91") {
       continue;
     }
 
@@ -482,7 +482,7 @@ $iLinhasDispAtual = pg_num_rows($rsDispAtual);
 for ($iInd = 0; $iInd < $iLinhasDispAtual; $iInd++) {
 
   $oDispAtual = db_utils::fieldsMemory($rsDispAtual, $iInd);
-  if (substr($oDispAtual->estrutural, 3, 2) == "91") {
+  if (substr((string) $oDispAtual->estrutural, 3, 2) == "91") {
     continue;
   }
   for ($linha = 29; $linha <= 34; $linha++) {
@@ -506,7 +506,7 @@ $iLinhasDispAtual = pg_num_rows($rsDispAtual);
 for ($iInd = 0; $iInd < $iLinhasDispAtual; $iInd++) {
 
   $oDispAtual = db_utils::fieldsMemory($rsDispAtual, $iInd);
-  if (substr($oDispAtual->estrutural, 3, 2) == "91") {
+  if (substr((string) $oDispAtual->estrutural, 3, 2) == "91") {
     continue;
   }
   for ($linha = 29; $linha <= 34; $linha++) {
@@ -530,7 +530,7 @@ $iLinhasDispAtual = pg_num_rows($rsDispAtual);
 for ($iInd = 0; $iInd < $iLinhasDispAtual; $iInd++) {
 
   $oDispAtual = db_utils::fieldsMemory($rsDispAtual, $iInd);
-  if (substr($oDispAtual->estrutural, 3, 2) == "91") {
+  if (substr((string) $oDispAtual->estrutural, 3, 2) == "91") {
     continue;
   }
   for ($linha = 29; $linha <= 34; $linha++) {
@@ -541,9 +541,9 @@ for ($iInd = 0; $iInd < $iLinhasDispAtual; $iInd++) {
   }
 }
 
-$pcol = array(
+$pcol = [
   1 => 'ano2', 2 => 'ano3', 3 => 'ano4'
-);
+];
 
 $ipcol = count($pcol);
 

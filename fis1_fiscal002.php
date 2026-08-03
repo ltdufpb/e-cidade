@@ -34,13 +34,13 @@ include(modification("classes/db_fiscalocal_classe.php"));
 include(modification("classes/db_fiscexec_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procfiscalnotificacao_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='fis1_fiscal005.php?db_opcao=2'</script>";
   exit;
 }
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clfiscal     = new cl_fiscal;
 $clfiscalocal = new cl_fiscalocal;
 $clfiscexec   = new cl_fiscexec;
@@ -56,7 +56,7 @@ echo "
   parent.document.formaba.artigos.disabled=true; 
 </script>
 ";
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $clfiscal->alterar($y30_codnoti);
@@ -192,7 +192,7 @@ $sqlprocfiscal = " select y110_procfiscal as procfiscal,z01_nome as nome
 js_setatabulacao();
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clfiscal->erro_status=="0"){
     $clfiscal->erro(true,false);
     $db_botao=true;

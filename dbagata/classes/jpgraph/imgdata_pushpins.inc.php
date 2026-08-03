@@ -9,17 +9,17 @@
 //========================================================================
 
 class ImgData_PushPins extends ImgData {
-    var $name = 'Push pins';
-    var $an = array(MARK_IMG_PUSHPIN => 'imgdata_small',
+    public $name = 'Push pins';
+    public $an = [MARK_IMG_PUSHPIN => 'imgdata_small',
 		    MARK_IMG_SPUSHPIN => 'imgdata_small',
-		    MARK_IMG_LPUSHPIN => 'imgdata_large');
+		    MARK_IMG_LPUSHPIN => 'imgdata_large'];
 
-    var $colors = array('blue','green','orange','pink','red');
-    var $index  = array('red' => 0, 'orange' => 1, 'pink' => 2, 'blue' => 3, 'green' => 4 ) ;
-    var $maxidx = 4 ;
-    var $imgdata_large, $imgdata_small ;
+    public $colors = ['blue','green','orange','pink','red'];
+    public $index  = ['red' => 0, 'orange' => 1, 'pink' => 2, 'blue' => 3, 'green' => 4 ] ;
+    public $maxidx = 4 ;
+    public $imgdata_large, $imgdata_small ;
 
-    function ImgData_PushPins() {
+    function __construct() {
 
 	// The anchor should be where the needle "hits" the paper
 	// (bottom left corner)

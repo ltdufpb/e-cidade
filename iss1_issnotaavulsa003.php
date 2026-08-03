@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("issnotaavulsa"=>"issnotaavulsa","issnotaavulsaservico"=>"issnotaavulsaservico"); 
-	 $clcriaabas->src = array("issnotaavulsa"=>"iss1_issnotaavulsa006.php");
-	 $clcriaabas->disabled   =  array("issnotaavulsaservico"=>"true"); 
+	 $clcriaabas->identifica = ["issnotaavulsa"=>"issnotaavulsa","issnotaavulsaservico"=>"issnotaavulsaservico"]; 
+	 $clcriaabas->src = ["issnotaavulsa"=>"iss1_issnotaavulsa006.php"];
+	 $clcriaabas->disabled   =  ["issnotaavulsaservico"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

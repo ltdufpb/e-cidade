@@ -58,20 +58,20 @@ $clcriaabas = new cl_criaabas;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <center>
         <?php   
-          $clcriaabas->identifica = array("processoforo" => "Processo Foro", 
-                                          "iniciais"     => "Iniciais");
+          $clcriaabas->identifica = ["processoforo" => "Processo Foro", 
+                                          "iniciais"     => "Iniciais"];
           
-          $clcriaabas->title      = array("processoforo" => "Processo Foro", 
-                                          "iniciais"     => "Iniciais");
+          $clcriaabas->title      = ["processoforo" => "Processo Foro", 
+                                          "iniciais"     => "Iniciais"];
           
-          $clcriaabas->src        = array("processoforo" => "jur1_inicialcodforo005.php",
-                                          "iniciais"     => "jur1_processoforoiniciais001.php");
+          $clcriaabas->src        = ["processoforo" => "jur1_inicialcodforo005.php",
+                                          "iniciais"     => "jur1_processoforoiniciais001.php"];
           
-          $clcriaabas->sizecampo  = array("processoforo" => "23",
-                                          "iniciais"     => "23");
+          $clcriaabas->sizecampo  = ["processoforo" => "23",
+                                          "iniciais"     => "23"];
         
-          $clcriaabas->disabled   = array("processoforo" => true,
-                                          "iniciais"     => true);
+          $clcriaabas->disabled   = ["processoforo" => true,
+                                          "iniciais"     => true];
           
           $clcriaabas->cria_abas();    
         ?>

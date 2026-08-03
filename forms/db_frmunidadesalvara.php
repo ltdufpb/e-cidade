@@ -62,7 +62,7 @@ $clunidades->rotulo->label();
   </td>
   <td>
    <?php 
-   $x = array(''=>'','1'=>'SES','2'=>'SMS');
+   $x = [''=>'','1'=>'SES','2'=>'SMS'];
    db_select('sd02_v_ind_orgexp',$x,true,$db_opcao,"");
    ?>
   </td>

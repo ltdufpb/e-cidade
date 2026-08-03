@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE iptufrac
 class cl_iptufrac { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j25_anousu = 0; 
-   var $j25_matric = 0; 
-   var $j25_idbql = 0; 
-   var $j25_fracao = 0; 
+   public $j25_anousu = 0; 
+   public $j25_matric = 0; 
+   public $j25_idbql = 0; 
+   public $j25_fracao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j25_anousu = int4 = Exercicio 
                  j25_matric = int4 = Matricula 
                  j25_idbql = int4 = Lote da Fracao 
                  j25_fracao = float8 = Fracao Ideal 
                  ";
    //funcao construtor da classe 
-   function cl_iptufrac() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptufrac"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,7 +134,7 @@ class cl_iptufrac {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->j25_anousu."-".$this->j25_matric) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -158,14 +158,14 @@ class cl_iptufrac {
      $resaco = $this->sql_record($this->sql_query_file($this->j25_anousu,$this->j25_matric));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,673,'$this->j25_anousu','I')");
        $resac = db_query("insert into db_acountkey values($acount,674,'$this->j25_matric','I')");
-       $resac = db_query("insert into db_acount values($acount,125,673,'','".AddSlashes(pg_result($resaco,0,'j25_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,125,674,'','".AddSlashes(pg_result($resaco,0,'j25_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,125,675,'','".AddSlashes(pg_result($resaco,0,'j25_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,125,676,'','".AddSlashes(pg_result($resaco,0,'j25_fracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,125,673,'','".AddSlashes(pg_fetch_result($resaco,0,'j25_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,125,674,'','".AddSlashes(pg_fetch_result($resaco,0,'j25_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,125,675,'','".AddSlashes(pg_fetch_result($resaco,0,'j25_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,125,676,'','".AddSlashes(pg_fetch_result($resaco,0,'j25_fracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -174,10 +174,10 @@ class cl_iptufrac {
       $this->atualizacampos();
      $sql = " update iptufrac set ";
      $virgula = "";
-     if(trim($this->j25_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j25_anousu"])){ 
+     if(trim((string) $this->j25_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j25_anousu"])){ 
        $sql  .= $virgula." j25_anousu = $this->j25_anousu ";
        $virgula = ",";
-       if(trim($this->j25_anousu) == null ){ 
+       if(trim((string) $this->j25_anousu) == null ){ 
          $this->erro_sql = " Campo Exercicio nao Informado.";
          $this->erro_campo = "j25_anousu";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_iptufrac {
          return false;
        }
      }
-     if(trim($this->j25_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j25_matric"])){ 
+     if(trim((string) $this->j25_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j25_matric"])){ 
        $sql  .= $virgula." j25_matric = $this->j25_matric ";
        $virgula = ",";
-       if(trim($this->j25_matric) == null ){ 
+       if(trim((string) $this->j25_matric) == null ){ 
          $this->erro_sql = " Campo Matricula nao Informado.";
          $this->erro_campo = "j25_matric";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_iptufrac {
          return false;
        }
      }
-     if(trim($this->j25_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j25_idbql"])){ 
+     if(trim((string) $this->j25_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j25_idbql"])){ 
        $sql  .= $virgula." j25_idbql = $this->j25_idbql ";
        $virgula = ",";
-       if(trim($this->j25_idbql) == null ){ 
+       if(trim((string) $this->j25_idbql) == null ){ 
          $this->erro_sql = " Campo Lote da Fracao nao Informado.";
          $this->erro_campo = "j25_idbql";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_iptufrac {
          return false;
        }
      }
-     if(trim($this->j25_fracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j25_fracao"])){ 
+     if(trim((string) $this->j25_fracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j25_fracao"])){ 
        $sql  .= $virgula." j25_fracao = $this->j25_fracao ";
        $virgula = ",";
-       if(trim($this->j25_fracao) == null ){ 
+       if(trim((string) $this->j25_fracao) == null ){ 
          $this->erro_sql = " Campo Fracao Ideal nao Informado.";
          $this->erro_campo = "j25_fracao";
          $this->erro_banco = "";
@@ -237,18 +237,18 @@ class cl_iptufrac {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,673,'$this->j25_anousu','A')");
          $resac = db_query("insert into db_acountkey values($acount,674,'$this->j25_matric','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j25_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,125,673,'".AddSlashes(pg_result($resaco,$conresaco,'j25_anousu'))."','$this->j25_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,125,673,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j25_anousu'))."','$this->j25_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j25_matric"]))
-           $resac = db_query("insert into db_acount values($acount,125,674,'".AddSlashes(pg_result($resaco,$conresaco,'j25_matric'))."','$this->j25_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,125,674,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j25_matric'))."','$this->j25_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j25_idbql"]))
-           $resac = db_query("insert into db_acount values($acount,125,675,'".AddSlashes(pg_result($resaco,$conresaco,'j25_idbql'))."','$this->j25_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,125,675,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j25_idbql'))."','$this->j25_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j25_fracao"]))
-           $resac = db_query("insert into db_acount values($acount,125,676,'".AddSlashes(pg_result($resaco,$conresaco,'j25_fracao'))."','$this->j25_fracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,125,676,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j25_fracao'))."','$this->j25_fracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -293,14 +293,14 @@ class cl_iptufrac {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,673,'$j25_anousu','E')");
          $resac = db_query("insert into db_acountkey values($acount,674,'$j25_matric','E')");
-         $resac = db_query("insert into db_acount values($acount,125,673,'','".AddSlashes(pg_result($resaco,$iresaco,'j25_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,125,674,'','".AddSlashes(pg_result($resaco,$iresaco,'j25_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,125,675,'','".AddSlashes(pg_result($resaco,$iresaco,'j25_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,125,676,'','".AddSlashes(pg_result($resaco,$iresaco,'j25_fracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,125,673,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j25_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,125,674,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j25_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,125,675,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j25_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,125,676,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j25_fracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptufrac
@@ -366,7 +366,7 @@ class cl_iptufrac {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptufrac";

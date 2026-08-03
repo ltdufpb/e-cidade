@@ -52,7 +52,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("q02_inscr");
 $clrotulo->label("y63_aliquota");
 $cllevantanotas->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 $mostraativ = 'f';
 
@@ -217,8 +217,8 @@ if (isset($mostraativ) && $mostraativ == 't') {
     $pdf->cell(47, $alt + 1, "Atividade Principal : ", 0, 0, "L", 0);
     $pdf->setfont('arial', '', 12);
 
-    if (strlen($q03_descr) > 40) {
-        $q03_descr = substr($q03_descr,0, 40) . '...';
+    if (strlen((string) $q03_descr) > 40) {
+        $q03_descr = substr((string) $q03_descr,0, 40) . '...';
     }
     
     $pdf->cell(110, $alt + 1, $q03_descr, 0, 1, "L", 0); //
@@ -256,11 +256,11 @@ $sqlparag = "select *
 		where db03_tipodoc = 1014 and db03_instit = " . db_getsession("DB_instit") . " order by db04_ordem ";
 $resparag = db_query($sqlparag);
 //db_criatabela($resparag);exit;
-if (pg_numrows($resparag) == 0) {
+if (pg_num_rows($resparag) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do Auto de lancamento !!! ');
     exit;
 }
-$numrows = pg_numrows($resparag);
+$numrows = pg_num_rows($resparag);
 //$pdf1->inicia     = $db02_inicia;
 for ($i = 0; $i < $numrows; $i++) {
     db_fieldsmemory($resparag, $i);
@@ -353,7 +353,7 @@ for ($x = 0; $x < $numrows01; $x++) {
         db_fieldsmemory($result66, 0);
 
         $dtoper = date("Y-m-d", db_getsession("DB_datausu"));
-        $aData = explode("-", $y63_dtvenc);
+        $aData = explode("-", (string) $y63_dtvenc);
         $dDtOperData = $aData[0] . "-" . $aData[1] . "-01";
 
         /**
@@ -373,7 +373,7 @@ for ($x = 0; $x < $numrows01; $x++) {
         if ($y32_tipodatavencimento == 2 && isset($y50_dtvenc)) {
            $dDataVencParam = $y50_dtvenc;
         }
-    
+
         if ( intval(str_replace('-', '', $y63_dtvenc)) < intval(str_replace('-', '', $dDataOperParam)) ) {
             $dDataVencParam = $dDataOperParam;
         }
@@ -382,7 +382,7 @@ for ($x = 0; $x < $numrows01; $x++) {
         db_fieldsmemory($result, 0);
 
         //dd($y50_dtvenc);
-        
+
         //dd('RECEITA1', $y32_receit,'RECEITAEXP', $y32_receitexp,'DATA LEVANTA',$y60_data,'OPERCAO:',$dDataOperParam, 'TIPOOPERACAO:', $y32_tipodataoperacao, 'VENCIMENTO',$dDataVencParam, 'TIPOVENC:', $y32_tipodatavencimento);
 
         $result = db_query("select fc_juros(" . ($y60_espontaneo == 't' ? $y32_receitexp : $y32_receit) . ",'" . $y63_dtvenc . "','" . $dtoper . "','" . $dDtOperData . "','f'," . db_getsession("DB_anousu") . ") as juro");

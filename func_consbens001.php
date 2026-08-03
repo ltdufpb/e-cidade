@@ -71,7 +71,7 @@ $clrotulo->label("t81_codapo");//código da apolice
 $clrotulo->label("t81_apolice");//descrição da apólice
 $clrotulo->label("z01_nome");  //fornecedor
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if((isset($t52_bem) && trim($t52_bem)!="")||(isset($t52_ident) && trim($t52_ident)!="")){
   if(isset($t52_bem)){
@@ -124,25 +124,25 @@ if((isset($t52_bem) && trim($t52_bem)!="")||(isset($t52_ident) && trim($t52_iden
 $result_estrutural = $clcfpatri->sql_record($clcfpatri->sql_query(null,"db77_estrut"));
 if($clcfpatri->numrows>0){
   db_fieldsmemory($result_estrutural,0);
-  $arr_estrut = split("\.","$db77_estrut");
-  $arr_detonaestrut = array();
-  $var = array();
-  $val = array();
+  $arr_estrut = preg_split("#\\.#m","$db77_estrut");
+  $arr_detonaestrut = [];
+  $var = [];
+  $val = [];
   $numcar = 0;
   for($i=0;$i<sizeof($arr_estrut);$i++){
-    $arr_detonaestrut[$i] = strlen($arr_estrut[$i]);
+    $arr_detonaestrut[$i] = strlen((string) $arr_estrut[$i]);
     $numcar += $arr_detonaestrut[$i];
   }
   $variavel = "";
   $pos = 0;
   for($i=0;$i<sizeof($arr_detonaestrut);$i++){
     $var[$i] = "cla$i";
-    $$var[$i]= substr($t64_class,$pos,$arr_detonaestrut[$i]);
-    $variavel .= $$var[$i];
+    ${$var}[$i]= substr($t64_class,$pos,$arr_detonaestrut[$i]);
+    $variavel .= ${$var}[$i];
     $pesqestrut = str_pad($variavel,$numcar,'0',STR_PAD_RIGHT);
 
     $val[$i] = "t64_class$i";
-    $$val[$i] = $pesqestrut;
+    ${$val}[$i] = $pesqestrut;
     $pos += $arr_detonaestrut[$i];
   }
 }
@@ -196,18 +196,18 @@ if($clcfpatri->numrows>0){
             $variavel = "";
             if(isset($arr_detonaestrut)){
               for($i=0;$i<sizeof($arr_detonaestrut);$i++){
-                $result_clabens = $clclabens->sql_record($clclabens->sql_query_file(null,"t64_descr as t64_class$i","","t64_class = '".$$val[$i]."'"));
+                $result_clabens = $clclabens->sql_record($clclabens->sql_query_file(null,"t64_descr as t64_class$i","","t64_class = '".${$val}[$i]."'"));
                 if($clclabens->numrows > 0){
                   db_fieldsmemory($result_clabens,0);
                 }else{
-                  $$val[$i] = "Classificação não encontrada.";
+                  ${$val}[$i] = "Classificação não encontrada.";
                 }
                 echo "
                 <tr>
-                  <td align='left'>".$variavel.$$var[$i]."</td>
-                  <td>".$$val[$i]."</td>
+                  <td align='left'>".$variavel.${$var}[$i]."</td>
+                  <td>".${$val}[$i]."</td>
                 </tr>";
-                    $variavel .= $$var[$i];
+                    $variavel .= ${$var}[$i];
               }
             }
             echo "
@@ -267,7 +267,7 @@ if($clcfpatri->numrows>0){
 	</tr>
 	
 		<?php 
-		   if (strlen(trim($t52_ident)) > 0){
+		   if (strlen(trim((string) $t52_ident)) > 0){
 		        if ($t07_confplaca == 4){
 		             $t52_ident = db_formatar($t52_ident,"s","0",$t07_digseqplaca,"e",0);
 		        }
@@ -279,7 +279,7 @@ if($clcfpatri->numrows>0){
 	  <td><strong>&nbsp;&nbsp;&nbsp;&nbsp;Valor:</strong></td>
 	  <td align="center"><?=(db_formatar($t52_valaqu,"f"))?></td>
 	  <td><strong>&nbsp;&nbsp;&nbsp;&nbsp;Placa ident:</strong></td>
-	  <td align="center"><?=(strlen(trim($t52_ident)) > 0?$t52_ident:"NÃO INFORMADA")?></td>
+	  <td align="center"><?=(strlen(trim((string) $t52_ident)) > 0?$t52_ident:"NÃO INFORMADA")?></td>
 	</tr>
 
 <?php 
@@ -367,7 +367,7 @@ if ($opcao_obs == "S"){
      }
 }
 
-if (trim(@$t55_obs) != ""){
+if (trim((string) @$t55_obs) != ""){
 ?>
         <tr>
 	   <td colspan="1" align="left"><?=$Lt55_obs?></td>
@@ -449,8 +449,8 @@ if($item_apolice == "S"){
             if (isset($t97_codtran)&&trim($t97_codtran)!=""){
                  $t56_historico = "TRANSFERÊNCIA CONFIRMADA... CÓD. ".$t97_codtran."<br>"; 
             }
-		        if(strlen($t56_histor)>15){
-          		  @$t56_historico .= substr($t56_histor,0,15);
+		        if(strlen((string) $t56_histor)>15){
+          		  @$t56_historico .= substr((string) $t56_histor,0,15);
         		}else{
           		  @$t56_historico .= $t56_histor;
         		}
@@ -543,7 +543,7 @@ if(isset($t52_bem) && trim($t52_bem) != ''){
          	db_fieldsmemory($result_bensplaca,$i);
           
           if ($t07_confplaca == 4){
-               if (strlen(trim(@$t41_placa)) > 0){
+               if (strlen(trim((string) @$t41_placa)) > 0){
                     $t41_placa = db_formatar($t41_placa,"s","0",$t07_digseqplaca,"e",0);
                }
 

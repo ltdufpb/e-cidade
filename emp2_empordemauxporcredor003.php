@@ -36,36 +36,36 @@ require_once(modification("classes/db_empageordemcgm_classe.php"));
 
 $clEmpAgeOrdemCgm = new cl_empageordemcgm();
 
-$oGet = db_utils::postMemory($HTTP_GET_VARS);
+$oGet = db_utils::postMemory($_GET);
 
 $sWhere = "";
-if(trim($oGet->e42_sequencial)!=''){
+if(trim((string) $oGet->e42_sequencial)!=''){
 	if($sWhere == ""){
 		$sWhere .= " e42_sequencial='".$oGet->e42_sequencial."' ";
 	}else{
 		$sWhere .= " and e42_sequencial='".$oGet->e42_sequencial."' ";
 	}
 }
-if(trim($oGet->z01_numcgm)!=''){
+if(trim((string) $oGet->z01_numcgm)!=''){
   if($sWhere == ""){
     $sWhere .= " z01_numcgm='".$oGet->z01_numcgm."' ";
   }else{
     $sWhere .= " and z01_numcgm='".$oGet->z01_numcgm."' ";
   }
 }
-if(trim($oGet->dtinicial)!='' && trim($oGet->dtfinal)!=''){
+if(trim((string) $oGet->dtinicial)!='' && trim((string) $oGet->dtfinal)!=''){
   if($sWhere == ""){
     $sWhere .= " e42_dtpagamento between  '".$oGet->dtinicial."' and '".$oGet->dtfinal."'";
   }else{
     $sWhere .= " and e42_dtpagamento between  '".$oGet->dtinicial."' and '".$oGet->dtfinal."'";
   }
-}else if(trim($oGet->dtinicial)!=''){
+}else if(trim((string) $oGet->dtinicial)!=''){
   if($sWhere == ""){
     $sWhere .= " e42_dtpagamento >= '".$oGet->dtinicial."'";
   }else{
     $sWhere .= " and e42_dtpagamento >= '".$oGet->dtinicial."'";
   }
-}else if(trim($oGet->dtfinal)!=''){
+}else if(trim((string) $oGet->dtfinal)!=''){
   if($sWhere == ""){
     $sWhere .= " e42_dtpagamento <= '".$oGet->dtfinal."'";
   }else{

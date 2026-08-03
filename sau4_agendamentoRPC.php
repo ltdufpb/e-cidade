@@ -46,9 +46,9 @@ switch ( $objParam->exec ){
 		$clprontproced      = db_utils::getDao("prontproced_ext");
 		$clprontprofatend   = db_utils::getDao("prontprofatend_ext");
 
-		$ano = substr ( $objParam->sd23_d_consulta, 6, 4 );
-		$mes = substr ( $objParam->sd23_d_consulta, 3, 2 );
-		$dia = substr ( $objParam->sd23_d_consulta, 0, 2 );
+		$ano = substr ( (string) $objParam->sd23_d_consulta, 6, 4 );
+		$mes = substr ( (string) $objParam->sd23_d_consulta, 3, 2 );
+		$dia = substr ( (string) $objParam->sd23_d_consulta, 0, 2 );
 
 		if (isset ( $objParam->codigos )) {
 			$objParam->codigos = " and sd23_i_codigo in ({$objParam->codigos})";
@@ -65,7 +65,7 @@ switch ( $objParam->exec ){
 		            							)
 								and sd27_i_codigo = {$objParam->sd27_i_codigo}" ) );
 		$obj_agendamento = db_utils::fieldsMemory ( $res_agendamento, 0 );
-		$arr_totalagenda = explode ( ",", $obj_agendamento->fc_totalagendado );
+		$arr_totalagenda = explode ( ",", (string) $obj_agendamento->fc_totalagendado );
 
 		$qtd = pg_num_rows($res_agendamento);
 		$intProfissional = $objParam->sd27_i_codigo;
@@ -117,8 +117,8 @@ switch ( $objParam->exec ){
 						//Gerar número prontuário automático
 						//gera numatend
 						$sql_fc = "select fc_numatend()";
-						$query_fc = db_query ( $sql_fc ) or die ( pg_errormessage () . "<br>$sql_fc  <br> $intQtd" );
-						$fc_numatend = explode ( ",", pg_result ( $query_fc, 0, 0 ) );
+						$query_fc = db_query ( $sql_fc ) or die ( pg_last_error () . "<br>$sql_fc  <br> $intQtd" );
+						$fc_numatend = explode ( ",", pg_fetch_result ( $query_fc, 0, 0 ) );
 
 						$clprontuarios->sd24_i_ano      				= trim ( $fc_numatend [0] );
 						$clprontuarios->sd24_i_mes      				= trim ( $fc_numatend [1] );

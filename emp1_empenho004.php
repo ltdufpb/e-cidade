@@ -36,7 +36,7 @@ include(modification("classes/db_emptipo_classe.php"));
 include(modification("classes/db_cflicita_classe.php"));
 include(modification("classes/db_pctipocompra_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clempautoriza = new cl_empautoriza;
 $clempauthist = new cl_empauthist;
 $clemphist = new cl_emphist;

@@ -34,8 +34,8 @@ include(modification("classes/db_empelemento_classe.php"));
 include(modification("classes/db_pagordemele_classe.php"));
 include(modification("classes/db_empnotaele_classe.php"));
 include(modification("classes/db_empnota_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clempelemento = new cl_empelemento;
 $clpagordemele = new cl_pagordemele;
 $clempnotaele = new cl_empnotaele;
@@ -206,8 +206,8 @@ $clrotulo->label("e64_vlrpag");
  <?php 
 function db_transf($campo,$cod,$valor){
     $e=$campo."_".$cod;
-    global $$e;
-    $$e = number_format($valor,"2",".","");		       
+    global ${$e};
+    ${$e} = number_format($valor,"2",".","");		       
 }
  
  if(isset($e60_numemp) && $e60_numemp!= ""){
@@ -317,7 +317,7 @@ function db_transf($campo,$cod,$valor){
 
 	    echo "<tr>	    
    	            <td	 class='bordas_corp' align='center'><small>$o56_elemento </small></td>
-	            <td	 class='bordas_corp' align='center' title='$o56_descr'><small>".ucfirst(strtolower(substr($o56_descr,0,8)))."...</small></td>
+	            <td	 class='bordas_corp' align='center' title='$o56_descr'><small>".ucfirst(strtolower(substr((string) $o56_descr,0,8)))."...</small></td>
 
        	            <td	 class='bordas_corp' align='center'><small>";db_input("e64_vlremp_$o56_codele",7,0,true,'text',3);echo "\n</small></td>
 	            <td	 class='bordas_corp' align='center'><small>";db_input("e64_vlrliq_$o56_codele",7,0,true,'text',3);echo "</small></td>

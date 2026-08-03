@@ -55,10 +55,10 @@ $db_opcao = 1;
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
    MsgAviso(db_getsession("DB_coddepto"),"escola");
-   $clcriaabas->identifica = array("a1"=>"Competência","a2"=>"Efetividade");
-   $clcriaabas->sizecampo  = array("a1"=>"20","a2"=>"20");
-   $clcriaabas->src        = array("a1"=>"edu1_efetividaderh002.php","a2"=>"","a3"=>"");
-   $clcriaabas->disabled   = array("a2"=>"true","a3"=>"true");
+   $clcriaabas->identifica = ["a1"=>"Competência","a2"=>"Efetividade"];
+   $clcriaabas->sizecampo  = ["a1"=>"20","a2"=>"20"];
+   $clcriaabas->src        = ["a1"=>"edu1_efetividaderh002.php","a2"=>"","a3"=>""];
+   $clcriaabas->disabled   = ["a2"=>"true","a3"=>"true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->iframe_height = "1000";
    $clcriaabas->cria_abas();

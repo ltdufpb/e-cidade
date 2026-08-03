@@ -88,12 +88,12 @@ class AreaComplementar
     /**
      * @var array
      */
-    private $tipoAreaComplementarDescricoes = array(
+    private $tipoAreaComplementarDescricoes = [
         self::TIPO_QUADRA => 'Quadra',
         self::TIPO_ESTACIONAMENTO_TERREO => 'Estacionamento Térreo',
         self::TIPO_PISCINA => 'Piscina',
         self::TIPO_AREA_POSTO_GASOLINA => 'Área Posto de Gasolina'
-    );
+    ];
 
     /**
      * @return int

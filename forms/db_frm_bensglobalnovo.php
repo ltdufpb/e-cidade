@@ -243,7 +243,7 @@ $lPossuiIntegracaoPatrimonial = ParametroIntegracaoPatrimonial::possuiIntegracao
 	          </td>
 	          <td id="c-divisao" style="display: none;">
 	            <?php 
-	              $x = array("0" => "Selecione");
+	              $x = ["0" => "Selecione"];
 	              db_select('divisao',$x,true,$db_opcao,"");
 	            ?>
 	          </td>

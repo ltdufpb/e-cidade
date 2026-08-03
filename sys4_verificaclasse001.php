@@ -29,7 +29,7 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(isset($verifica)){
 	$seq = 0;
@@ -44,7 +44,7 @@ if(isset($verifica)){
 			//echo "$funcao <br>";
 			$metodoEx .= $funcao;
 			//pegara função
-			$chaveabre= strstr($funcao, '{');
+			$chaveabre= strstr((string) $funcao, '{');
 			//echo "chaveabre= $chaveabre<br>";
 			if($chaveabre!=""){
 				if($chave==""){
@@ -54,7 +54,7 @@ if(isset($verifica)){
 				$chave = $chave + 1;
 				//echo "chave abre= $chave <br>";
 			}
-			$chavefecha= strstr($funcao, '}');
+			$chavefecha= strstr((string) $funcao, '}');
 			//echo "chavefecha= $chavefecha <br>";
 			if($chavefecha!=""){
 				$chave = $chave - 1;
@@ -99,7 +99,7 @@ if(isset($verifica)){
 			while ((($file = readdir($dh)) !== false) ){
 				$tipo = filetype($dir . $file);
 				if($tipo=='file'){
-					$arr = split("_", $file);
+					$arr = preg_split("#_#m", $file);
 					$count = count($arr);
 					//pega somente db_* _classe.php
 					if($arr[0]=="db" and $arr[$count-1]=="classe.php" and $count >= 3 ){
@@ -107,7 +107,7 @@ if(isset($verifica)){
 						// print "arquivo: $file - tipo: " . filetype($dir . $file) . " classe ".$arr[1]."<br>";
 						//print "$numero - $file <br><br> ";
 						//echo "<br><b>classe $numero : $file </b><br><br>";
-						$lines = file (dirname($_SERVER["SCRIPT_FILENAME"])."/classes/".$file);
+						$lines = file (dirname((string) $_SERVER["SCRIPT_FILENAME"])."/classes/".$file);
 						$chave = "";
 
 						foreach ($lines as $line_num => $line) {
@@ -116,7 +116,7 @@ if(isset($verifica)){
 							$funcao = strstr($linha, 'function');
 							if($funcao!=""){
 								//echo "$funcao <br>";
-								$arrfunc = split(" ", $funcao);
+								$arrfunc = preg_split("# #m", $funcao);
 								if(isset($arrfunc[1])){
 								// se não for incluir, alterar, excluir,sql_query,sql_query_file
 								if(    ($arrfunc[1]!="incluir")
@@ -158,29 +158,29 @@ if(isset($verifica)){
 													// para pegaro codigo da tabela
 													$sqltab = "select codarq from db_sysarquivo where nomearq = '$tabela'";
 													$resulttab = db_query($sqltab);
-													$linhatab = pg_numrows($resulttab);
+													$linhatab = pg_num_rows($resulttab);
 													if($linhatab>0){
-														
+
 														db_fieldsmemory($resulttab,0);
 														$codigo = $codarq;
-													
+
 														// para o metodo tenho que tirar o "(" das funções xxx(
 														$met="";
 														$pos = strpos($arrfunc[1], "(");
 														if ($pos == false) {
 															$met =$arrfunc[1];
-															
+
 														}else{
-															$metodo = split("\(", $arrfunc[1]);
+															$metodo = preg_split("#\\(#m", $arrfunc[1]);
 															$met = $metodo[0];
-															
+
 														}
-														
+
 														//print_r($metodo);
-	
+
 														// para ver se ja tem cadastrado no banco
 														$sql = "select * from db_sysclasses where codarq = $codigo and nomclasse = '$met'";
-	
+
 														// ver tabela db_sysclasses
 														$result = db_query($sql);
 														$linhasres = pg_num_rows($result);
@@ -193,14 +193,14 @@ if(isset($verifica)){
 															$operacao = "Incluir";
 															$codigoclass ="Não tem ";
 														}
-													
+
 													//$operacao
 													$fonteorig = "";
 													$codarq = $codigo;
 													$nomearq = $file;
 													//$metodo= $metodo[0];
 													$exibe = montaMetodoEx($lines,$line_num);
-													$exibe = addslashes($exibe);
+													$exibe = addslashes((string) $exibe);
 													$fontenovo = $exibe;
 													$fonteorig = addslashes($codigoclass);
 													$seq = $seq + 1;
@@ -211,7 +211,7 @@ if(isset($verifica)){
 													$sqlinc = "insert into temp_classeatualiza values(   $seq,
 																										 $codigo,
 																										 '".trim($nomearq)."',
-																										 '".trim($met)."',
+																										 '".trim((string) $met)."',
 																										 '".addslashes($fonteorig)."',
 																										 '".addslashes($fontenovo)."',
 																										 '$operacao')";
@@ -227,7 +227,7 @@ if(isset($verifica)){
 														fonte novo = $fontenovo<br>
 														fonte original = $fonteorig<br><br>
 														";*/
-														
+
 
 												}
 											}

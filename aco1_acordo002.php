@@ -55,28 +55,28 @@ $db_opcao    = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica    = array("acordo"           => "Acordo", 
+       $clcriaabas->identifica    = ["acordo"           => "Acordo", 
                                           "acordoitem"       => "Itens",
                                           "acordogarantia"   => "Garantias", 
                                           "acordopenalidade" => "Penalidades",
        																		"acordodocumento"  => "Documentos"
-                                         ); 
+                                         ]; 
                                          
-       $clcriaabas->src           = array("acordo"           => "aco1_acordo005.php");
+       $clcriaabas->src           = ["acordo"           => "aco1_acordo005.php"];
        
-       $clcriaabas->sizecampo     = array("acordo"           => "23",
+       $clcriaabas->sizecampo     = ["acordo"           => "23",
                                           "acordoitem"       => "23",
                                           "acordogarantia"   => "23",
                                           "acordopenalidade" => "23",
        																		"acordodocumento"  => "23"
-                                         );
+                                         ];
                                          
-       $clcriaabas->disabled      = array("acordo"           => "true",
+       $clcriaabas->disabled      = ["acordo"           => "true",
                                           "acordoitem"       => "true",
                                           "acordogarantia"   => "true",
                                           "acordopenalidade" => "true",
                                           "acordodocumento"  => "true"
-                                         ); 
+                                         ]; 
        $clcriaabas->cria_abas();  
      ?> 
     </td>

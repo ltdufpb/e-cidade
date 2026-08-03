@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE mensagemnotificacao
 class cl_mensagemnotificacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db134_sequencial = 0; 
-   var $db134_mensagemnotificacaotipo = 0; 
-   var $db134_enviada = 'f'; 
-   var $db134_telefone = null; 
-   var $db134_email = null; 
-   var $db134_assunto = null; 
-   var $db134_resumo = null; 
-   var $db134_mensagem = null; 
-   var $db134_mensagemretorno = null; 
+   public $db134_sequencial = 0; 
+   public $db134_mensagemnotificacaotipo = 0; 
+   public $db134_enviada = 'f'; 
+   public $db134_telefone = null; 
+   public $db134_email = null; 
+   public $db134_assunto = null; 
+   public $db134_resumo = null; 
+   public $db134_mensagem = null; 
+   public $db134_mensagemretorno = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db134_sequencial = int4 = Código Mensagem Notificação 
                  db134_mensagemnotificacaotipo = int4 = Mensagem Notificação Tipo 
                  db134_enviada = bool = Enviada 
@@ -64,10 +64,10 @@ class cl_mensagemnotificacao {
                  db134_mensagemretorno = varchar(150) = Mensagem de Retorno 
                  ";
    //funcao construtor da classe 
-   function cl_mensagemnotificacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("mensagemnotificacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -155,10 +155,10 @@ class cl_mensagemnotificacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db134_sequencial = pg_result($result,0,0); 
+       $this->db134_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from mensagemnotificacao_db134_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db134_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db134_sequencial)){
          $this->erro_sql = " Campo db134_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -202,7 +202,7 @@ class cl_mensagemnotificacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "mensagemnotificacao ($this->db134_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "mensagemnotificacao já Cadastrado";
@@ -226,18 +226,18 @@ class cl_mensagemnotificacao {
      $resaco = $this->sql_record($this->sql_query_file($this->db134_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19259,'$this->db134_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3424,19259,'','".AddSlashes(pg_result($resaco,0,'db134_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3424,19260,'','".AddSlashes(pg_result($resaco,0,'db134_mensagemnotificacaotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3424,19261,'','".AddSlashes(pg_result($resaco,0,'db134_enviada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3424,19262,'','".AddSlashes(pg_result($resaco,0,'db134_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3424,19263,'','".AddSlashes(pg_result($resaco,0,'db134_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3424,19264,'','".AddSlashes(pg_result($resaco,0,'db134_assunto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3424,19265,'','".AddSlashes(pg_result($resaco,0,'db134_resumo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3424,19266,'','".AddSlashes(pg_result($resaco,0,'db134_mensagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3424,19267,'','".AddSlashes(pg_result($resaco,0,'db134_mensagemretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3424,19259,'','".AddSlashes(pg_fetch_result($resaco,0,'db134_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3424,19260,'','".AddSlashes(pg_fetch_result($resaco,0,'db134_mensagemnotificacaotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3424,19261,'','".AddSlashes(pg_fetch_result($resaco,0,'db134_enviada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3424,19262,'','".AddSlashes(pg_fetch_result($resaco,0,'db134_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3424,19263,'','".AddSlashes(pg_fetch_result($resaco,0,'db134_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3424,19264,'','".AddSlashes(pg_fetch_result($resaco,0,'db134_assunto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3424,19265,'','".AddSlashes(pg_fetch_result($resaco,0,'db134_resumo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3424,19266,'','".AddSlashes(pg_fetch_result($resaco,0,'db134_mensagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3424,19267,'','".AddSlashes(pg_fetch_result($resaco,0,'db134_mensagemretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -246,10 +246,10 @@ class cl_mensagemnotificacao {
       $this->atualizacampos();
      $sql = " update mensagemnotificacao set ";
      $virgula = "";
-     if(trim($this->db134_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_sequencial"])){ 
+     if(trim((string) $this->db134_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_sequencial"])){ 
        $sql  .= $virgula." db134_sequencial = $this->db134_sequencial ";
        $virgula = ",";
-       if(trim($this->db134_sequencial) == null ){ 
+       if(trim((string) $this->db134_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Mensagem Notificação nao Informado.";
          $this->erro_campo = "db134_sequencial";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_mensagemnotificacao {
          return false;
        }
      }
-     if(trim($this->db134_mensagemnotificacaotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_mensagemnotificacaotipo"])){ 
+     if(trim((string) $this->db134_mensagemnotificacaotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_mensagemnotificacaotipo"])){ 
        $sql  .= $virgula." db134_mensagemnotificacaotipo = $this->db134_mensagemnotificacaotipo ";
        $virgula = ",";
-       if(trim($this->db134_mensagemnotificacaotipo) == null ){ 
+       if(trim((string) $this->db134_mensagemnotificacaotipo) == null ){ 
          $this->erro_sql = " Campo Mensagem Notificação Tipo nao Informado.";
          $this->erro_campo = "db134_mensagemnotificacaotipo";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_mensagemnotificacao {
          return false;
        }
      }
-     if(trim($this->db134_enviada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_enviada"])){ 
+     if(trim((string) $this->db134_enviada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_enviada"])){ 
        $sql  .= $virgula." db134_enviada = '$this->db134_enviada' ";
        $virgula = ",";
-       if(trim($this->db134_enviada) == null ){ 
+       if(trim((string) $this->db134_enviada) == null ){ 
          $this->erro_sql = " Campo Enviada nao Informado.";
          $this->erro_campo = "db134_enviada";
          $this->erro_banco = "";
@@ -285,18 +285,18 @@ class cl_mensagemnotificacao {
          return false;
        }
      }
-     if(trim($this->db134_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_telefone"])){ 
+     if(trim((string) $this->db134_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_telefone"])){ 
        $sql  .= $virgula." db134_telefone = '$this->db134_telefone' ";
        $virgula = ",";
      }
-     if(trim($this->db134_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_email"])){ 
+     if(trim((string) $this->db134_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_email"])){ 
        $sql  .= $virgula." db134_email = '$this->db134_email' ";
        $virgula = ",";
      }
-     if(trim($this->db134_assunto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_assunto"])){ 
+     if(trim((string) $this->db134_assunto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_assunto"])){ 
        $sql  .= $virgula." db134_assunto = '$this->db134_assunto' ";
        $virgula = ",";
-       if(trim($this->db134_assunto) == null ){ 
+       if(trim((string) $this->db134_assunto) == null ){ 
          $this->erro_sql = " Campo Assunto nao Informado.";
          $this->erro_campo = "db134_assunto";
          $this->erro_banco = "";
@@ -306,10 +306,10 @@ class cl_mensagemnotificacao {
          return false;
        }
      }
-     if(trim($this->db134_resumo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_resumo"])){ 
+     if(trim((string) $this->db134_resumo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_resumo"])){ 
        $sql  .= $virgula." db134_resumo = '$this->db134_resumo' ";
        $virgula = ",";
-       if(trim($this->db134_resumo) == null ){ 
+       if(trim((string) $this->db134_resumo) == null ){ 
          $this->erro_sql = " Campo Resumo nao Informado.";
          $this->erro_campo = "db134_resumo";
          $this->erro_banco = "";
@@ -319,10 +319,10 @@ class cl_mensagemnotificacao {
          return false;
        }
      }
-     if(trim($this->db134_mensagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_mensagem"])){ 
+     if(trim((string) $this->db134_mensagem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_mensagem"])){ 
        $sql  .= $virgula." db134_mensagem = '$this->db134_mensagem' ";
        $virgula = ",";
-       if(trim($this->db134_mensagem) == null ){ 
+       if(trim((string) $this->db134_mensagem) == null ){ 
          $this->erro_sql = " Campo Mensagem nao Informado.";
          $this->erro_campo = "db134_mensagem";
          $this->erro_banco = "";
@@ -332,7 +332,7 @@ class cl_mensagemnotificacao {
          return false;
        }
      }
-     if(trim($this->db134_mensagemretorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_mensagemretorno"])){ 
+     if(trim((string) $this->db134_mensagemretorno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db134_mensagemretorno"])){ 
        $sql  .= $virgula." db134_mensagemretorno = '$this->db134_mensagemretorno' ";
        $virgula = ",";
      }
@@ -344,27 +344,27 @@ class cl_mensagemnotificacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19259,'$this->db134_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db134_sequencial"]) || $this->db134_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3424,19259,'".AddSlashes(pg_result($resaco,$conresaco,'db134_sequencial'))."','$this->db134_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3424,19259,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db134_sequencial'))."','$this->db134_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db134_mensagemnotificacaotipo"]) || $this->db134_mensagemnotificacaotipo != "")
-           $resac = db_query("insert into db_acount values($acount,3424,19260,'".AddSlashes(pg_result($resaco,$conresaco,'db134_mensagemnotificacaotipo'))."','$this->db134_mensagemnotificacaotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3424,19260,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db134_mensagemnotificacaotipo'))."','$this->db134_mensagemnotificacaotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db134_enviada"]) || $this->db134_enviada != "")
-           $resac = db_query("insert into db_acount values($acount,3424,19261,'".AddSlashes(pg_result($resaco,$conresaco,'db134_enviada'))."','$this->db134_enviada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3424,19261,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db134_enviada'))."','$this->db134_enviada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db134_telefone"]) || $this->db134_telefone != "")
-           $resac = db_query("insert into db_acount values($acount,3424,19262,'".AddSlashes(pg_result($resaco,$conresaco,'db134_telefone'))."','$this->db134_telefone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3424,19262,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db134_telefone'))."','$this->db134_telefone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db134_email"]) || $this->db134_email != "")
-           $resac = db_query("insert into db_acount values($acount,3424,19263,'".AddSlashes(pg_result($resaco,$conresaco,'db134_email'))."','$this->db134_email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3424,19263,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db134_email'))."','$this->db134_email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db134_assunto"]) || $this->db134_assunto != "")
-           $resac = db_query("insert into db_acount values($acount,3424,19264,'".AddSlashes(pg_result($resaco,$conresaco,'db134_assunto'))."','$this->db134_assunto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3424,19264,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db134_assunto'))."','$this->db134_assunto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db134_resumo"]) || $this->db134_resumo != "")
-           $resac = db_query("insert into db_acount values($acount,3424,19265,'".AddSlashes(pg_result($resaco,$conresaco,'db134_resumo'))."','$this->db134_resumo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3424,19265,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db134_resumo'))."','$this->db134_resumo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db134_mensagem"]) || $this->db134_mensagem != "")
-           $resac = db_query("insert into db_acount values($acount,3424,19266,'".AddSlashes(pg_result($resaco,$conresaco,'db134_mensagem'))."','$this->db134_mensagem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3424,19266,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db134_mensagem'))."','$this->db134_mensagem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db134_mensagemretorno"]) || $this->db134_mensagemretorno != "")
-           $resac = db_query("insert into db_acount values($acount,3424,19267,'".AddSlashes(pg_result($resaco,$conresaco,'db134_mensagemretorno'))."','$this->db134_mensagemretorno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3424,19267,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db134_mensagemretorno'))."','$this->db134_mensagemretorno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -409,18 +409,18 @@ class cl_mensagemnotificacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19259,'$db134_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3424,19259,'','".AddSlashes(pg_result($resaco,$iresaco,'db134_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3424,19260,'','".AddSlashes(pg_result($resaco,$iresaco,'db134_mensagemnotificacaotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3424,19261,'','".AddSlashes(pg_result($resaco,$iresaco,'db134_enviada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3424,19262,'','".AddSlashes(pg_result($resaco,$iresaco,'db134_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3424,19263,'','".AddSlashes(pg_result($resaco,$iresaco,'db134_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3424,19264,'','".AddSlashes(pg_result($resaco,$iresaco,'db134_assunto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3424,19265,'','".AddSlashes(pg_result($resaco,$iresaco,'db134_resumo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3424,19266,'','".AddSlashes(pg_result($resaco,$iresaco,'db134_mensagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3424,19267,'','".AddSlashes(pg_result($resaco,$iresaco,'db134_mensagemretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3424,19259,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db134_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3424,19260,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db134_mensagemnotificacaotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3424,19261,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db134_enviada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3424,19262,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db134_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3424,19263,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db134_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3424,19264,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db134_assunto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3424,19265,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db134_resumo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3424,19266,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db134_mensagem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3424,19267,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db134_mensagemretorno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from mensagemnotificacao
@@ -480,7 +480,7 @@ class cl_mensagemnotificacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:mensagemnotificacao";
@@ -495,7 +495,7 @@ class cl_mensagemnotificacao {
    function sql_query ( $db134_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -517,7 +517,7 @@ class cl_mensagemnotificacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,7 +530,7 @@ class cl_mensagemnotificacao {
    function sql_query_file ( $db134_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -551,7 +551,7 @@ class cl_mensagemnotificacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

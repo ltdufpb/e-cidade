@@ -39,7 +39,7 @@ $oParam  = $oJson->decode(str_replace("\\","",$_POST["sJson"]));
 
 if ($oParam->exec == 'getCgmConta') {
   
-   $aCgm         = array("z01_numcgm" => "", "z01_nome" => ""); //Garantimos que ira ter uma string valida para retorno
+   $aCgm         = ["z01_numcgm" => "", "z01_nome" => ""]; //Garantimos que ira ter uma string valida para retorno
    $oDaoreduzCgm = db_utils::getDao("conplanoreduzcgm");
    $rsConta      = $oDaoreduzCgm->sql_record($oDaoreduzCgm->sql_query(null,"c22_numcgm,z01_nome",null,
                                              "c22_reduz={$oParam->iCodReduz} and c22_anousu = {$iAnoUsu}"
@@ -47,7 +47,7 @@ if ($oParam->exec == 'getCgmConta') {
    if ($oDaoreduzCgm->numrows > 0) {
 
       $oReduzCgm = db_utils::fieldsMemory($rsConta, 0);
-      $aCgm      = array("z01_numcgm" => $oReduzCgm->c22_numcgm, "z01_nome"=> $oReduzCgm->z01_nome);
+      $aCgm      = ["z01_numcgm" => $oReduzCgm->c22_numcgm, "z01_nome"=> $oReduzCgm->z01_nome];
 
    } else {
      
@@ -61,7 +61,7 @@ if ($oParam->exec == 'getCgmConta') {
       if ($oDaoConfig->numrows > 0) {
 
          $oConfig = db_utils::fieldsMemory($rsConfig, 0);
-         $aCgm    = array("z01_numcgm" => $oConfig->z01_numcgm, "z01_nome" => $oConfig->z01_nome);
+         $aCgm    = ["z01_numcgm" => $oConfig->z01_numcgm, "z01_nome" => $oConfig->z01_nome];
       }
    }
    echo $oJson->encode($aCgm);

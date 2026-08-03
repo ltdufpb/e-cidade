@@ -90,8 +90,8 @@ class IntegracaoComprasBrImportService
             'numero_edital'   => $data[1],
             'ano_edital'      => $data[2],
             'tipo_documento'  => ($data[3] == 1) ? 'cnpj' : 'cpf',
-            'documento'       => preg_replace('/\D/', '', $data[4]),
-            'razao_social'    => substr($data[5], 0, 40),
+            'documento'       => preg_replace('/\D/', '', (string) $data[4]),
+            'razao_social'    => substr((string) $data[5], 0, 40),
             'end_rua'         => $data[6],
             'end_numero'      => $data[7],
             'end_bairro'      => $data[8],
@@ -99,7 +99,7 @@ class IntegracaoComprasBrImportService
             'end_cidade'      => $data[10],
             'end_estado'      => $data[11],
             'end_cep'         => $data[12],
-            'contato'         => substr($data[13], 0, 40),
+            'contato'         => substr((string) $data[13], 0, 40),
             'telefone'        => $data[14],
             'celular'         => $data[15],
             'email'           => $data[16],
@@ -124,7 +124,7 @@ class IntegracaoComprasBrImportService
             'ano_edital'      => $data[2],
             'numero_lote'     => $data[3],
             'numero_item'     => $data[4],
-            'tipo_documento'  => preg_replace('/\D/', '', $data[5]),
+            'tipo_documento'  => preg_replace('/\D/', '', (string) $data[5]),
             'documento'       => $data[6],
             'preco'           => $data[7],
             'marca'           => $data[8],
@@ -371,7 +371,7 @@ class IntegracaoComprasBrImportService
         $orcamVal->pc23_vlrun = $item['preco'];
         $orcamVal->pc23_quant = $itemLicitacao->getItemSolicitacao()->getQuantidade();
         $orcamVal->pc23_valor = $orcamVal->pc23_vlrun * $orcamVal->pc23_quant;
-        $orcamVal->pc23_obs   = 'MARCA: ' . mb_strtoupper($item['marca']);
+        $orcamVal->pc23_obs   = 'MARCA: ' . mb_strtoupper((string) $item['marca']);
 
         $orcamVal->incluir(
             $orcamForne->getCodigo(),

@@ -31,12 +31,12 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 $clcriaabas      = new cl_criaabas;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 ?>
 <html>
@@ -61,28 +61,28 @@ $sizecp  = array();
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("conta"    => "Conta",
+    $clcriaabas->identifica = ["conta"    => "Conta",
                                     "reduzido" => "Reduzidos",
                                     "vinculo"  => "Vínculos",
-                                    "contacorrente" => "Conta Corrente");
+                                    "contacorrente" => "Conta Corrente"];
     
-    $clcriaabas->title      = array("conta"    => "Conta",
+    $clcriaabas->title      = ["conta"    => "Conta",
            							"reduzido" => "Reduzidos",
            							"vinculo"  => "Vínculos",
-                                    "contacorrente" => "Conta Corrente");
+                                    "contacorrente" => "Conta Corrente"];
     
-    $clcriaabas->src        = array("conta"    => "con1_planocontapcasp011.php?db_opcao=2",
+    $clcriaabas->src        = ["conta"    => "con1_planocontapcasp011.php?db_opcao=2",
                                     "reduzido" => "",
                                     "vinculo"  => "",
-                                    "contacorrente" => "con1_planocontapcasp006.php");
+                                    "contacorrente" => "con1_planocontapcasp006.php"];
     
-    $clcriaabas->sizecampo  = array("conta"    => "23",
+    $clcriaabas->sizecampo  = ["conta"    => "23",
      							    "reduzido" => "15",
-     							    "grupos"   => "15");
+     							    "grupos"   => "15"];
     
-    $clcriaabas->disabled   = array("reduzido" => "true",
+    $clcriaabas->disabled   = ["reduzido" => "true",
     							    "vinculo"  => "false",
-    							    "contacorrente"  => "false");
+    							    "contacorrente"  => "false"];
 
 
     $clcriaabas->cria_abas();

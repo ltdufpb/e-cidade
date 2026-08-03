@@ -90,7 +90,7 @@ $clrotulo->label("pc05_descr");
                 </td>
                 <td>
                     <?php
-                    $x = array('t' => 'Sim', 'f' => 'Não');
+                    $x = ['t' => 'Sim', 'f' => 'Não'];
                     db_select('pc04_ativo', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -101,7 +101,7 @@ $clrotulo->label("pc05_descr");
                 </td>
                 <td>
                     <?php
-                    $x = array('3' => 'Ambos', '1' => 'Cadastro de Materiais', '2' => 'Cadastro de Fornecedores');
+                    $x = ['3' => 'Ambos', '1' => 'Cadastro de Materiais', '2' => 'Cadastro de Fornecedores'];
                     db_select('pc04_tipoutil', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -172,7 +172,7 @@ $clrotulo->label("pc05_descr");
         db_iframe_pcsubgrupo.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

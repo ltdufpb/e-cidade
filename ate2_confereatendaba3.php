@@ -31,9 +31,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 	
 ?>
 <html>
@@ -81,7 +81,7 @@ db_postmemory($HTTP_POST_VARS);
 					 order by descrproced";
 		//die($sqlproced);
 		$resultproced=db_query($sqlproced);
-		db_multiploselect("codproced", "descrproced", "nsel5", "ssel5", $resultproced, array(), 8, 250);
+		db_multiploselect("codproced", "descrproced", "nsel5", "ssel5", $resultproced, [], 8, 250);
 		}else{
 			echo"<br>Não existe modulo selecionado.<br>";
 		}

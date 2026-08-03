@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE benslote
 class cl_benslote { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t43_codigo = 0; 
-   var $t43_codlote = 0; 
-   var $t43_bem = 0; 
+   public $t43_codigo = 0; 
+   public $t43_codlote = 0; 
+   public $t43_bem = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t43_codigo = int4 = Código 
                  t43_codlote = int4 = Código do lote 
                  t43_bem = int8 = Código do bem 
                  ";
    //funcao construtor da classe 
-   function cl_benslote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benslote"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_benslote {
          $this->erro_status = "0";
          return false; 
        }
-       $this->t43_codigo = pg_result($result,0,0); 
+       $this->t43_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from benslote_t43_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $t43_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $t43_codigo)){
          $this->erro_sql = " Campo t43_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_benslote {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Lote que foi incluido o bem. ($this->t43_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Lote que foi incluido o bem. já Cadastrado";
@@ -166,12 +166,12 @@ class cl_benslote {
      $resaco = $this->sql_record($this->sql_query_file($this->t43_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8917,'$this->t43_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1525,8917,'','".AddSlashes(pg_result($resaco,0,'t43_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1525,8918,'','".AddSlashes(pg_result($resaco,0,'t43_codlote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1525,8919,'','".AddSlashes(pg_result($resaco,0,'t43_bem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1525,8917,'','".AddSlashes(pg_fetch_result($resaco,0,'t43_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1525,8918,'','".AddSlashes(pg_fetch_result($resaco,0,'t43_codlote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1525,8919,'','".AddSlashes(pg_fetch_result($resaco,0,'t43_bem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_benslote {
       $this->atualizacampos();
      $sql = " update benslote set ";
      $virgula = "";
-     if(trim($this->t43_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t43_codigo"])){ 
+     if(trim((string) $this->t43_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t43_codigo"])){ 
        $sql  .= $virgula." t43_codigo = $this->t43_codigo ";
        $virgula = ",";
-       if(trim($this->t43_codigo) == null ){ 
+       if(trim((string) $this->t43_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "t43_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_benslote {
          return false;
        }
      }
-     if(trim($this->t43_codlote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t43_codlote"])){ 
+     if(trim((string) $this->t43_codlote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t43_codlote"])){ 
        $sql  .= $virgula." t43_codlote = $this->t43_codlote ";
        $virgula = ",";
-       if(trim($this->t43_codlote) == null ){ 
+       if(trim((string) $this->t43_codlote) == null ){ 
          $this->erro_sql = " Campo Código do lote nao Informado.";
          $this->erro_campo = "t43_codlote";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_benslote {
          return false;
        }
      }
-     if(trim($this->t43_bem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t43_bem"])){ 
+     if(trim((string) $this->t43_bem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t43_bem"])){ 
        $sql  .= $virgula." t43_bem = $this->t43_bem ";
        $virgula = ",";
-       if(trim($this->t43_bem) == null ){ 
+       if(trim((string) $this->t43_bem) == null ){ 
          $this->erro_sql = " Campo Código do bem nao Informado.";
          $this->erro_campo = "t43_bem";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_benslote {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8917,'$this->t43_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t43_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1525,8917,'".AddSlashes(pg_result($resaco,$conresaco,'t43_codigo'))."','$this->t43_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1525,8917,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t43_codigo'))."','$this->t43_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t43_codlote"]))
-           $resac = db_query("insert into db_acount values($acount,1525,8918,'".AddSlashes(pg_result($resaco,$conresaco,'t43_codlote'))."','$this->t43_codlote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1525,8918,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t43_codlote'))."','$this->t43_codlote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t43_bem"]))
-           $resac = db_query("insert into db_acount values($acount,1525,8919,'".AddSlashes(pg_result($resaco,$conresaco,'t43_bem'))."','$this->t43_bem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1525,8919,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t43_bem'))."','$this->t43_bem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_benslote {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8917,'$t43_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1525,8917,'','".AddSlashes(pg_result($resaco,$iresaco,'t43_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1525,8918,'','".AddSlashes(pg_result($resaco,$iresaco,'t43_codlote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1525,8919,'','".AddSlashes(pg_result($resaco,$iresaco,'t43_bem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1525,8917,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t43_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1525,8918,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t43_codlote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1525,8919,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t43_bem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from benslote
@@ -345,7 +345,7 @@ class cl_benslote {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:benslote";
@@ -386,7 +386,7 @@ class cl_benslote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_benslote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

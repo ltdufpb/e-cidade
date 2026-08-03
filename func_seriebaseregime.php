@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_serieregimemat_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clserieregimemat = new cl_serieregimemat;
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed11_i_codigo");
@@ -104,9 +104,9 @@ $clrotulo->label("ed11_c_descr");
     }else{
      $sql = $clserieregimemat->sql_query("",$campos,"ed219_i_ordenacao,ed223_i_ordenacao"," $condicao");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed223_i_codigo)){
-     $repassa = array("chave_ed11_i_codigo"=>$chave_ed11_i_codigo,"chave_ed11_c_descr"=>$chave_ed11_c_descr);
+     $repassa = ["chave_ed11_i_codigo"=>$chave_ed11_i_codigo,"chave_ed11_c_descr"=>$chave_ed11_c_descr];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

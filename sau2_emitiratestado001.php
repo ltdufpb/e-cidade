@@ -42,7 +42,7 @@ $lPossuiCNS = true;
 if( !empty( $iFaa ) ) {
 
   $oProntuario = new Prontuario( $iFaa );
-  $lPossuiCPF  = trim( $oProntuario->getCGS()->getCpf() ) != "";
+  $lPossuiCPF  = trim( (string) $oProntuario->getCGS()->getCpf() ) != "";
   $lPossuiCNS  = count( $oProntuario->getCGS()->getCartaoSus() ) > 0;
 }
 ?>

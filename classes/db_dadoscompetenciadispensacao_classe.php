@@ -3,42 +3,42 @@
 //CLASSE DA ENTIDADE dadoscompetenciadispensacao
 class cl_dadoscompetenciadispensacao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $fa61_sequencial = 0;
-   var $fa61_far_retiradaitens = 0;
-   var $fa61_integracaohorus = 0;
-   var $fa61_enviar = 'f';
-   var $fa61_validadohorus = 'f';
-   var $fa61_unidade = 0;
-   var $fa61_cnes = null;
-   var $fa61_catmat = null;
-   var $fa61_tipo = null;
-   var $fa61_valor = 0;
-   var $fa61_validade_dia = null;
-   var $fa61_validade_mes = null;
-   var $fa61_validade_ano = null;
-   var $fa61_validade = null;
-   var $fa61_lote = null;
-   var $fa61_quantidade = 0;
-   var $fa61_dispensacao_dia = null;
-   var $fa61_dispensacao_mes = null;
-   var $fa61_dispensacao_ano = null;
-   var $fa61_dispensacao = null;
-   var $fa61_cns = null;
+   public $fa61_sequencial = 0;
+   public $fa61_far_retiradaitens = 0;
+   public $fa61_integracaohorus = 0;
+   public $fa61_enviar = 'f';
+   public $fa61_validadohorus = 'f';
+   public $fa61_unidade = 0;
+   public $fa61_cnes = null;
+   public $fa61_catmat = null;
+   public $fa61_tipo = null;
+   public $fa61_valor = 0;
+   public $fa61_validade_dia = null;
+   public $fa61_validade_mes = null;
+   public $fa61_validade_ano = null;
+   public $fa61_validade = null;
+   public $fa61_lote = null;
+   public $fa61_quantidade = 0;
+   public $fa61_dispensacao_dia = null;
+   public $fa61_dispensacao_mes = null;
+   public $fa61_dispensacao_ano = null;
+   public $fa61_dispensacao = null;
+   public $fa61_cns = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  fa61_sequencial = int4 = Código
                  fa61_far_retiradaitens = int4 = Código Retirada
                  fa61_integracaohorus = int4 = Integração Hórus
@@ -56,10 +56,10 @@ class cl_dadoscompetenciadispensacao {
                  fa61_cns = varchar(15) = CNS
                  ";
    //funcao construtor da classe
-   function cl_dadoscompetenciadispensacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("dadoscompetenciadispensacao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -221,10 +221,10 @@ class cl_dadoscompetenciadispensacao {
          $this->erro_status = "0";
          return false;
        }
-       $this->fa61_sequencial = pg_result($result,0,0);
+       $this->fa61_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from dadoscompetenciadispensacao_fa61_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa61_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa61_sequencial)){
          $this->erro_sql = " Campo fa61_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -280,7 +280,7 @@ class cl_dadoscompetenciadispensacao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dados Dispensação ($this->fa61_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dados Dispensação já Cadastrado";
@@ -309,24 +309,24 @@ class cl_dadoscompetenciadispensacao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21520,'$this->fa61_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3867,21520,'','".AddSlashes(pg_result($resaco,0,'fa61_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21521,'','".AddSlashes(pg_result($resaco,0,'fa61_far_retiradaitens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21522,'','".AddSlashes(pg_result($resaco,0,'fa61_integracaohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21523,'','".AddSlashes(pg_result($resaco,0,'fa61_enviar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21524,'','".AddSlashes(pg_result($resaco,0,'fa61_validadohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21525,'','".AddSlashes(pg_result($resaco,0,'fa61_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21526,'','".AddSlashes(pg_result($resaco,0,'fa61_cnes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21527,'','".AddSlashes(pg_result($resaco,0,'fa61_catmat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21528,'','".AddSlashes(pg_result($resaco,0,'fa61_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21529,'','".AddSlashes(pg_result($resaco,0,'fa61_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21530,'','".AddSlashes(pg_result($resaco,0,'fa61_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21531,'','".AddSlashes(pg_result($resaco,0,'fa61_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21532,'','".AddSlashes(pg_result($resaco,0,'fa61_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21533,'','".AddSlashes(pg_result($resaco,0,'fa61_dispensacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3867,21534,'','".AddSlashes(pg_result($resaco,0,'fa61_cns'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21520,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21521,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_far_retiradaitens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21522,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_integracaohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21523,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_enviar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21524,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_validadohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21525,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21526,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_cnes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21527,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_catmat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21528,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21529,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21530,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21531,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21532,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21533,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_dispensacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3867,21534,'','".AddSlashes(pg_fetch_result($resaco,0,'fa61_cns'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -336,10 +336,10 @@ class cl_dadoscompetenciadispensacao {
       $this->atualizacampos();
      $sql = " update dadoscompetenciadispensacao set ";
      $virgula = "";
-     if(trim($this->fa61_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_sequencial"])){
+     if(trim((string) $this->fa61_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_sequencial"])){
        $sql  .= $virgula." fa61_sequencial = $this->fa61_sequencial ";
        $virgula = ",";
-       if(trim($this->fa61_sequencial) == null ){
+       if(trim((string) $this->fa61_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "fa61_sequencial";
          $this->erro_banco = "";
@@ -349,10 +349,10 @@ class cl_dadoscompetenciadispensacao {
          return false;
        }
      }
-     if(trim($this->fa61_far_retiradaitens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_far_retiradaitens"])){
+     if(trim((string) $this->fa61_far_retiradaitens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_far_retiradaitens"])){
        $sql  .= $virgula." fa61_far_retiradaitens = $this->fa61_far_retiradaitens ";
        $virgula = ",";
-       if(trim($this->fa61_far_retiradaitens) == null ){
+       if(trim((string) $this->fa61_far_retiradaitens) == null ){
          $this->erro_sql = " Campo Código Retirada não informado.";
          $this->erro_campo = "fa61_far_retiradaitens";
          $this->erro_banco = "";
@@ -362,10 +362,10 @@ class cl_dadoscompetenciadispensacao {
          return false;
        }
      }
-     if(trim($this->fa61_integracaohorus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_integracaohorus"])){
+     if(trim((string) $this->fa61_integracaohorus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_integracaohorus"])){
        $sql  .= $virgula." fa61_integracaohorus = $this->fa61_integracaohorus ";
        $virgula = ",";
-       if(trim($this->fa61_integracaohorus) == null ){
+       if(trim((string) $this->fa61_integracaohorus) == null ){
          $this->erro_sql = " Campo Integração Hórus não informado.";
          $this->erro_campo = "fa61_integracaohorus";
          $this->erro_banco = "";
@@ -375,10 +375,10 @@ class cl_dadoscompetenciadispensacao {
          return false;
        }
      }
-     if(trim($this->fa61_enviar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_enviar"])){
+     if(trim((string) $this->fa61_enviar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_enviar"])){
        $sql  .= $virgula." fa61_enviar = '$this->fa61_enviar' ";
        $virgula = ",";
-       if(trim($this->fa61_enviar) == null ){
+       if(trim((string) $this->fa61_enviar) == null ){
          $this->erro_sql = " Campo Enviar não informado.";
          $this->erro_campo = "fa61_enviar";
          $this->erro_banco = "";
@@ -388,10 +388,10 @@ class cl_dadoscompetenciadispensacao {
          return false;
        }
      }
-     if(trim($this->fa61_validadohorus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_validadohorus"])){
+     if(trim((string) $this->fa61_validadohorus)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_validadohorus"])){
        $sql  .= $virgula." fa61_validadohorus = '$this->fa61_validadohorus' ";
        $virgula = ",";
-       if(trim($this->fa61_validadohorus) == null ){
+       if(trim((string) $this->fa61_validadohorus) == null ){
          $this->erro_sql = " Campo Validado Hórus não informado.";
          $this->erro_campo = "fa61_validadohorus";
          $this->erro_banco = "";
@@ -401,10 +401,10 @@ class cl_dadoscompetenciadispensacao {
          return false;
        }
      }
-     if(trim($this->fa61_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_unidade"])){
+     if(trim((string) $this->fa61_unidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_unidade"])){
        $sql  .= $virgula." fa61_unidade = $this->fa61_unidade ";
        $virgula = ",";
-       if(trim($this->fa61_unidade) == null ){
+       if(trim((string) $this->fa61_unidade) == null ){
          $this->erro_sql = " Campo UPS não informado.";
          $this->erro_campo = "fa61_unidade";
          $this->erro_banco = "";
@@ -414,10 +414,10 @@ class cl_dadoscompetenciadispensacao {
          return false;
        }
      }
-     if(trim($this->fa61_cnes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_cnes"])){
+     if(trim((string) $this->fa61_cnes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_cnes"])){
        $sql  .= $virgula." fa61_cnes = '$this->fa61_cnes' ";
        $virgula = ",";
-       if(trim($this->fa61_cnes) == null ){
+       if(trim((string) $this->fa61_cnes) == null ){
          $this->erro_sql = " Campo CNES não informado.";
          $this->erro_campo = "fa61_cnes";
          $this->erro_banco = "";
@@ -427,10 +427,10 @@ class cl_dadoscompetenciadispensacao {
          return false;
        }
      }
-     if(trim($this->fa61_catmat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_catmat"])){
+     if(trim((string) $this->fa61_catmat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_catmat"])){
        $sql  .= $virgula." fa61_catmat = '$this->fa61_catmat' ";
        $virgula = ",";
-       if(trim($this->fa61_catmat) == null ){
+       if(trim((string) $this->fa61_catmat) == null ){
          $this->erro_sql = " Campo CATMAT não informado.";
          $this->erro_campo = "fa61_catmat";
          $this->erro_banco = "";
@@ -440,10 +440,10 @@ class cl_dadoscompetenciadispensacao {
          return false;
        }
      }
-     if(trim($this->fa61_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_tipo"])){
+     if(trim((string) $this->fa61_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_tipo"])){
        $sql  .= $virgula." fa61_tipo = '$this->fa61_tipo' ";
        $virgula = ",";
-       if(trim($this->fa61_tipo) == null ){
+       if(trim((string) $this->fa61_tipo) == null ){
          $this->erro_sql = " Campo Tipo não informado.";
          $this->erro_campo = "fa61_tipo";
          $this->erro_banco = "";
@@ -453,10 +453,10 @@ class cl_dadoscompetenciadispensacao {
          return false;
        }
      }
-     if(trim($this->fa61_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_valor"])){
+     if(trim((string) $this->fa61_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_valor"])){
        $sql  .= $virgula." fa61_valor = $this->fa61_valor ";
        $virgula = ",";
-       if(trim($this->fa61_valor) == null ){
+       if(trim((string) $this->fa61_valor) == null ){
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "fa61_valor";
          $this->erro_banco = "";
@@ -466,7 +466,7 @@ class cl_dadoscompetenciadispensacao {
          return false;
        }
      }
-     if(trim($this->fa61_validade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_validade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa61_validade_dia"] !="") ){
+     if(trim((string) $this->fa61_validade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_validade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa61_validade_dia"] !="") ){
        $sql  .= $virgula." fa61_validade = '$this->fa61_validade' ";
        $virgula = ",";
      }     else{
@@ -475,14 +475,14 @@ class cl_dadoscompetenciadispensacao {
          $virgula = ",";
        }
      }
-     if(trim($this->fa61_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_lote"])){
+     if(trim((string) $this->fa61_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_lote"])){
        $sql  .= $virgula." fa61_lote = '$this->fa61_lote' ";
        $virgula = ",";
      }
-     if(trim($this->fa61_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_quantidade"])){
+     if(trim((string) $this->fa61_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_quantidade"])){
        $sql  .= $virgula." fa61_quantidade = $this->fa61_quantidade ";
        $virgula = ",";
-       if(trim($this->fa61_quantidade) == null ){
+       if(trim((string) $this->fa61_quantidade) == null ){
          $this->erro_sql = " Campo Quantidade não informado.";
          $this->erro_campo = "fa61_quantidade";
          $this->erro_banco = "";
@@ -492,10 +492,10 @@ class cl_dadoscompetenciadispensacao {
          return false;
        }
      }
-     if(trim($this->fa61_dispensacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_dispensacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa61_dispensacao_dia"] !="") ){
+     if(trim((string) $this->fa61_dispensacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_dispensacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa61_dispensacao_dia"] !="") ){
        $sql  .= $virgula." fa61_dispensacao = '$this->fa61_dispensacao' ";
        $virgula = ",";
-       if(trim($this->fa61_dispensacao) == null ){
+       if(trim((string) $this->fa61_dispensacao) == null ){
          $this->erro_sql = " Campo Dispensação não informado.";
          $this->erro_campo = "fa61_dispensacao_dia";
          $this->erro_banco = "";
@@ -508,7 +508,7 @@ class cl_dadoscompetenciadispensacao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["fa61_dispensacao_dia"])){
          $sql  .= $virgula." fa61_dispensacao = null ";
          $virgula = ",";
-         if(trim($this->fa61_dispensacao) == null ){
+         if(trim((string) $this->fa61_dispensacao) == null ){
            $this->erro_sql = " Campo Dispensação não informado.";
            $this->erro_campo = "fa61_dispensacao_dia";
            $this->erro_banco = "";
@@ -519,7 +519,7 @@ class cl_dadoscompetenciadispensacao {
          }
        }
      }
-     if(trim($this->fa61_cns)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_cns"])){
+     if(trim((string) $this->fa61_cns)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa61_cns"])){
        $sql  .= $virgula." fa61_cns = '$this->fa61_cns' ";
        $virgula = ",";
      }
@@ -537,39 +537,39 @@ class cl_dadoscompetenciadispensacao {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21520,'$this->fa61_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_sequencial"]) || $this->fa61_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21520,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_sequencial'))."','$this->fa61_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21520,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_sequencial'))."','$this->fa61_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_far_retiradaitens"]) || $this->fa61_far_retiradaitens != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21521,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_far_retiradaitens'))."','$this->fa61_far_retiradaitens',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21521,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_far_retiradaitens'))."','$this->fa61_far_retiradaitens',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_integracaohorus"]) || $this->fa61_integracaohorus != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21522,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_integracaohorus'))."','$this->fa61_integracaohorus',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21522,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_integracaohorus'))."','$this->fa61_integracaohorus',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_enviar"]) || $this->fa61_enviar != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21523,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_enviar'))."','$this->fa61_enviar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21523,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_enviar'))."','$this->fa61_enviar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_validadohorus"]) || $this->fa61_validadohorus != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21524,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_validadohorus'))."','$this->fa61_validadohorus',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21524,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_validadohorus'))."','$this->fa61_validadohorus',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_unidade"]) || $this->fa61_unidade != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21525,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_unidade'))."','$this->fa61_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21525,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_unidade'))."','$this->fa61_unidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_cnes"]) || $this->fa61_cnes != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21526,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_cnes'))."','$this->fa61_cnes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21526,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_cnes'))."','$this->fa61_cnes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_catmat"]) || $this->fa61_catmat != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21527,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_catmat'))."','$this->fa61_catmat',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21527,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_catmat'))."','$this->fa61_catmat',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_tipo"]) || $this->fa61_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21528,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_tipo'))."','$this->fa61_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21528,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_tipo'))."','$this->fa61_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_valor"]) || $this->fa61_valor != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21529,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_valor'))."','$this->fa61_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21529,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_valor'))."','$this->fa61_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_validade"]) || $this->fa61_validade != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21530,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_validade'))."','$this->fa61_validade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21530,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_validade'))."','$this->fa61_validade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_lote"]) || $this->fa61_lote != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21531,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_lote'))."','$this->fa61_lote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21531,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_lote'))."','$this->fa61_lote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_quantidade"]) || $this->fa61_quantidade != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21532,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_quantidade'))."','$this->fa61_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21532,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_quantidade'))."','$this->fa61_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_dispensacao"]) || $this->fa61_dispensacao != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21533,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_dispensacao'))."','$this->fa61_dispensacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21533,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_dispensacao'))."','$this->fa61_dispensacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa61_cns"]) || $this->fa61_cns != "")
-             $resac = db_query("insert into db_acount values($acount,3867,21534,'".AddSlashes(pg_result($resaco,$conresaco,'fa61_cns'))."','$this->fa61_cns',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3867,21534,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa61_cns'))."','$this->fa61_cns',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -623,24 +623,24 @@ class cl_dadoscompetenciadispensacao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21520,'$fa61_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3867,21520,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21521,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_far_retiradaitens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21522,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_integracaohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21523,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_enviar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21524,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_validadohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21525,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21526,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_cnes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21527,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_catmat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21528,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21529,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21530,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21531,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21532,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21533,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_dispensacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3867,21534,'','".AddSlashes(pg_result($resaco,$iresaco,'fa61_cns'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21520,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21521,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_far_retiradaitens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21522,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_integracaohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21523,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_enviar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21524,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_validadohorus'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21525,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_unidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21526,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_cnes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21527,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_catmat'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21528,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21529,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21530,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21531,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21532,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21533,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_dispensacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3867,21534,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa61_cns'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

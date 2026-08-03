@@ -1211,7 +1211,7 @@ class AutorizacaoEmpenho
      * @return boolean
      *
      */
-    public static function verificaItemAutorizado($iCodigoItem, $iDotacao = null, $iSolicitacao)
+    public static function verificaItemAutorizado($iCodigoItem, $iDotacao = null, $iSolicitacao = null)
     {
         if (!isset($iDotacao) || empty($iDotacao)) {
             return false;
@@ -1227,7 +1227,7 @@ class AutorizacaoEmpenho
         $sSqlEmpAutItem = $oDaoSolicitem->sql_query_verificaItemAutorizado(null, "e55_autori", null, $sWhereSolicitem);
         $rsEmpAutItem = db_query($sSqlEmpAutItem);
 
-        if (pg_numrows($rsEmpAutItem) > 0) {
+        if (pg_num_rows($rsEmpAutItem) > 0) {
             return true;
         }
 
@@ -1240,7 +1240,7 @@ class AutorizacaoEmpenho
      * @return boolean
      *
      */
-    public static function quantidadeAutorizada($iCodigoItem, $iDotacao = null, $iSolicitacao)
+    public static function quantidadeAutorizada($iCodigoItem, $iDotacao = null, $iSolicitacao = null)
     {
         $iQuantidadeAutorizada = 0;
 
@@ -1265,7 +1265,7 @@ class AutorizacaoEmpenho
 
         $rsEmpAutItem = db_query($sSqlEmpAutItem);
 
-        if (pg_numrows($rsEmpAutItem) > 0) {
+        if (pg_num_rows($rsEmpAutItem) > 0) {
             $oQuantidade = db_utils::fieldsMemory($rsEmpAutItem, 0);
             $iQuantidadeAutorizada = $oQuantidade->quantidade;
         }
@@ -1324,7 +1324,7 @@ class AutorizacaoEmpenho
         $oOpcoes = new stdClass();
         $oOpcoes->codigo = "";
         $oOpcoes->descricao = "Selecione...";
-        $aLista = array($oOpcoes);
+        $aLista = [$oOpcoes];
 
         $oDao = new cl_emphist;
         $sql = $oDao->sql_query_file(null, "*", "e40_codhist");
@@ -1393,7 +1393,7 @@ class AutorizacaoEmpenho
                     } else {
                         $oItemLicitacao = new ItemLicitacao($item->liclicitem);
                         $pccoddot = new itemSolicitacao($oItemLicitacao->getItemSolicitacao()->getCodigoItemSolicitacao());
-                        $aReservas = itemSolicitacao::getReservasSaldoDotacao($pccoddot->getDotacoes()[0]->iCodigoDotacaoItem);
+                        $aReservas = (new itemSolicitacao())->getReservasSaldoDotacao($pccoddot->getDotacoes()[0]->iCodigoDotacaoItem);
                         for ($i = 0; $i < count($aReservas); $i++){
                             $oDaoOrcReservaSol->excluir("", "o82_codres = {$aReservas[$i]->codigoreserva}");
                             $oDaoOrcReserva->excluir($aReservas[$i]->codigoreserva);

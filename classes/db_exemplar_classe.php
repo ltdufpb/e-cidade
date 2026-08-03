@@ -73,7 +73,7 @@ class cl_exemplar
     public function __construct()
     {
         $this->rotulo = new rotulo("exemplar");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -177,10 +177,10 @@ class cl_exemplar
          $this->erro_status = "0";
          return false;
        }
-       $this->bi23_codigo = pg_result($result,0,0);
+       $this->bi23_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from exemplar_bi23_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $bi23_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $bi23_codigo)){
          $this->erro_sql = " Campo bi23_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -224,7 +224,7 @@ class cl_exemplar
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Exemplares dos Acervos ($this->bi23_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Exemplares dos Acervos já Cadastrado";
@@ -253,18 +253,18 @@ class cl_exemplar
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008942,'$this->bi23_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010151,1008942,'','".AddSlashes(pg_result($resaco,0,'bi23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010151,1008943,'','".AddSlashes(pg_result($resaco,0,'bi23_acervo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010151,1008951,'','".AddSlashes(pg_result($resaco,0,'bi23_codbarras'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010151,1008952,'','".AddSlashes(pg_result($resaco,0,'bi23_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010151,1008944,'','".AddSlashes(pg_result($resaco,0,'bi23_dataaquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010151,1008945,'','".AddSlashes(pg_result($resaco,0,'bi23_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010151,21640,'','".AddSlashes(pg_result($resaco,0,'bi23_exemplar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010151,1010409,'','".AddSlashes(pg_result($resaco,0,'bi23_edicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010151,1010408,'','".AddSlashes(pg_result($resaco,0,'bi23_anoedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010151,1008942,'','".AddSlashes(pg_fetch_result($resaco,0,'bi23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010151,1008943,'','".AddSlashes(pg_fetch_result($resaco,0,'bi23_acervo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010151,1008951,'','".AddSlashes(pg_fetch_result($resaco,0,'bi23_codbarras'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010151,1008952,'','".AddSlashes(pg_fetch_result($resaco,0,'bi23_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010151,1008944,'','".AddSlashes(pg_fetch_result($resaco,0,'bi23_dataaquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010151,1008945,'','".AddSlashes(pg_fetch_result($resaco,0,'bi23_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010151,21640,'','".AddSlashes(pg_fetch_result($resaco,0,'bi23_exemplar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010151,1010409,'','".AddSlashes(pg_fetch_result($resaco,0,'bi23_edicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010151,1010408,'','".AddSlashes(pg_fetch_result($resaco,0,'bi23_anoedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -275,10 +275,10 @@ class cl_exemplar
       $this->atualizacampos();
      $sql = " update exemplar set ";
      $virgula = "";
-     if(trim($this->bi23_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_codigo"])){
+     if(trim((string) $this->bi23_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_codigo"])){
        $sql  .= $virgula." bi23_codigo = $this->bi23_codigo ";
        $virgula = ",";
-       if(trim($this->bi23_codigo) == null ){
+       if(trim((string) $this->bi23_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "bi23_codigo";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_exemplar
          return false;
        }
      }
-     if(trim($this->bi23_acervo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_acervo"])){
+     if(trim((string) $this->bi23_acervo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_acervo"])){
        $sql  .= $virgula." bi23_acervo = $this->bi23_acervo ";
        $virgula = ",";
-       if(trim($this->bi23_acervo) == null ){
+       if(trim((string) $this->bi23_acervo) == null ){
          $this->erro_sql = " Campo Acervo não informado.";
          $this->erro_campo = "bi23_acervo";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_exemplar
          return false;
        }
      }
-     if(trim($this->bi23_codbarras)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_codbarras"])){
+     if(trim((string) $this->bi23_codbarras)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_codbarras"])){
        $sql  .= $virgula." bi23_codbarras = $this->bi23_codbarras ";
        $virgula = ",";
-       if(trim($this->bi23_codbarras) == null ){
+       if(trim((string) $this->bi23_codbarras) == null ){
          $this->erro_sql = " Campo Cód. Barras não informado.";
          $this->erro_campo = "bi23_codbarras";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_exemplar
          return false;
        }
      }
-     if(trim($this->bi23_aquisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_aquisicao"])){
+     if(trim((string) $this->bi23_aquisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_aquisicao"])){
        $sql  .= $virgula." bi23_aquisicao = $this->bi23_aquisicao ";
        $virgula = ",";
-       if(trim($this->bi23_aquisicao) == null ){
+       if(trim((string) $this->bi23_aquisicao) == null ){
          $this->erro_sql = " Campo Tipo de Aquisição não informado.";
          $this->erro_campo = "bi23_aquisicao";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_exemplar
          return false;
        }
      }
-     if(trim($this->bi23_dataaquisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_dataaquisicao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi23_dataaquisicao_dia"] !="") ){
+     if(trim((string) $this->bi23_dataaquisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_dataaquisicao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi23_dataaquisicao_dia"] !="") ){
        $sql  .= $virgula." bi23_dataaquisicao = '$this->bi23_dataaquisicao' ";
        $virgula = ",";
-       if(trim($this->bi23_dataaquisicao) == null ){
+       if(trim((string) $this->bi23_dataaquisicao) == null ){
          $this->erro_sql = " Campo Data de Aquisição não informado.";
          $this->erro_campo = "bi23_dataaquisicao_dia";
          $this->erro_banco = "";
@@ -343,7 +343,7 @@ class cl_exemplar
        if(isset($GLOBALS["HTTP_POST_VARS"]["bi23_dataaquisicao_dia"])){
          $sql  .= $virgula." bi23_dataaquisicao = null ";
          $virgula = ",";
-         if(trim($this->bi23_dataaquisicao) == null ){
+         if(trim((string) $this->bi23_dataaquisicao) == null ){
            $this->erro_sql = " Campo Data de Aquisição não informado.";
            $this->erro_campo = "bi23_dataaquisicao_dia";
            $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_exemplar
          }
        }
      }
-     if(trim($this->bi23_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_situacao"])){
+     if(trim((string) $this->bi23_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_situacao"])){
        $sql  .= $virgula." bi23_situacao = '$this->bi23_situacao' ";
        $virgula = ",";
-       if(trim($this->bi23_situacao) == null ){
+       if(trim((string) $this->bi23_situacao) == null ){
          $this->erro_sql = " Campo Situação não informado.";
          $this->erro_campo = "bi23_situacao";
          $this->erro_banco = "";
@@ -367,10 +367,10 @@ class cl_exemplar
          return false;
        }
      }
-     if(trim($this->bi23_exemplar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_exemplar"])){
+     if(trim((string) $this->bi23_exemplar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_exemplar"])){
        $sql  .= $virgula." bi23_exemplar = $this->bi23_exemplar ";
        $virgula = ",";
-       if(trim($this->bi23_exemplar) == null ){
+       if(trim((string) $this->bi23_exemplar) == null ){
          $this->erro_sql = " Campo Exemplar não informado.";
          $this->erro_campo = "bi23_exemplar";
          $this->erro_banco = "";
@@ -380,11 +380,11 @@ class cl_exemplar
          return false;
        }
      }
-     if(trim($this->bi23_edicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_edicao"])){
+     if(trim((string) $this->bi23_edicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_edicao"])){
        $sql  .= $virgula." bi23_edicao = '$this->bi23_edicao' ";
        $virgula = ",";
      }
-     if(trim($this->bi23_anoedicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_anoedicao"])){
+     if(trim((string) $this->bi23_anoedicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi23_anoedicao"])){
        $sql  .= $virgula." bi23_anoedicao = '$this->bi23_anoedicao' ";
        $virgula = ",";
      }
@@ -402,27 +402,27 @@ class cl_exemplar
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1008942,'$this->bi23_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi23_codigo"]) || $this->bi23_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010151,1008942,'".AddSlashes(pg_result($resaco,$conresaco,'bi23_codigo'))."','$this->bi23_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010151,1008942,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi23_codigo'))."','$this->bi23_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi23_acervo"]) || $this->bi23_acervo != "")
-             $resac = db_query("insert into db_acount values($acount,1010151,1008943,'".AddSlashes(pg_result($resaco,$conresaco,'bi23_acervo'))."','$this->bi23_acervo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010151,1008943,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi23_acervo'))."','$this->bi23_acervo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi23_codbarras"]) || $this->bi23_codbarras != "")
-             $resac = db_query("insert into db_acount values($acount,1010151,1008951,'".AddSlashes(pg_result($resaco,$conresaco,'bi23_codbarras'))."','$this->bi23_codbarras',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010151,1008951,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi23_codbarras'))."','$this->bi23_codbarras',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi23_aquisicao"]) || $this->bi23_aquisicao != "")
-             $resac = db_query("insert into db_acount values($acount,1010151,1008952,'".AddSlashes(pg_result($resaco,$conresaco,'bi23_aquisicao'))."','$this->bi23_aquisicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010151,1008952,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi23_aquisicao'))."','$this->bi23_aquisicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi23_dataaquisicao"]) || $this->bi23_dataaquisicao != "")
-             $resac = db_query("insert into db_acount values($acount,1010151,1008944,'".AddSlashes(pg_result($resaco,$conresaco,'bi23_dataaquisicao'))."','$this->bi23_dataaquisicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010151,1008944,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi23_dataaquisicao'))."','$this->bi23_dataaquisicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi23_situacao"]) || $this->bi23_situacao != "")
-             $resac = db_query("insert into db_acount values($acount,1010151,1008945,'".AddSlashes(pg_result($resaco,$conresaco,'bi23_situacao'))."','$this->bi23_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010151,1008945,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi23_situacao'))."','$this->bi23_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi23_exemplar"]) || $this->bi23_exemplar != "")
-             $resac = db_query("insert into db_acount values($acount,1010151,21640,'".AddSlashes(pg_result($resaco,$conresaco,'bi23_exemplar'))."','$this->bi23_exemplar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010151,21640,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi23_exemplar'))."','$this->bi23_exemplar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi23_edicao"]) || $this->bi23_edicao != "")
-             $resac = db_query("insert into db_acount values($acount,1010151,1010409,'".AddSlashes(pg_result($resaco,$conresaco,'bi23_edicao'))."','$this->bi23_edicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010151,1010409,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi23_edicao'))."','$this->bi23_edicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi23_anoedicao"]) || $this->bi23_anoedicao != "")
-             $resac = db_query("insert into db_acount values($acount,1010151,1010408,'".AddSlashes(pg_result($resaco,$conresaco,'bi23_anoedicao'))."','$this->bi23_anoedicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010151,1010408,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi23_anoedicao'))."','$this->bi23_anoedicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -476,18 +476,18 @@ class cl_exemplar
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1008942,'$bi23_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010151,1008942,'','".AddSlashes(pg_result($resaco,$iresaco,'bi23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010151,1008943,'','".AddSlashes(pg_result($resaco,$iresaco,'bi23_acervo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010151,1008951,'','".AddSlashes(pg_result($resaco,$iresaco,'bi23_codbarras'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010151,1008952,'','".AddSlashes(pg_result($resaco,$iresaco,'bi23_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010151,1008944,'','".AddSlashes(pg_result($resaco,$iresaco,'bi23_dataaquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010151,1008945,'','".AddSlashes(pg_result($resaco,$iresaco,'bi23_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010151,21640,'','".AddSlashes(pg_result($resaco,$iresaco,'bi23_exemplar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010151,1010409,'','".AddSlashes(pg_result($resaco,$iresaco,'bi23_edicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010151,1010408,'','".AddSlashes(pg_result($resaco,$iresaco,'bi23_anoedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010151,1008942,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010151,1008943,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi23_acervo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010151,1008951,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi23_codbarras'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010151,1008952,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi23_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010151,1008944,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi23_dataaquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010151,1008945,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi23_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010151,21640,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi23_exemplar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010151,1010409,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi23_edicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010151,1010408,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi23_anoedicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -612,7 +612,7 @@ class cl_exemplar
    function sql_query_etiq3 ( $bi23_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -642,7 +642,7 @@ class cl_exemplar
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

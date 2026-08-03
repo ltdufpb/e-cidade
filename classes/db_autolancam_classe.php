@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE autolancam
 class cl_autolancam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y88_codtermo = 0; 
-   var $y88_codlev = 0; 
-   var $y88_data_dia = null; 
-   var $y88_data_mes = null; 
-   var $y88_data_ano = null; 
-   var $y88_data = null; 
+   public $y88_codtermo = 0; 
+   public $y88_codlev = 0; 
+   public $y88_data_dia = null; 
+   public $y88_data_mes = null; 
+   public $y88_data_ano = null; 
+   public $y88_data = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y88_codtermo = int4 = Código Termo 
                  y88_codlev = int4 = Levantamento 
                  y88_data = date = Data do auto de lançamento 
                  ";
    //funcao construtor da classe 
-   function cl_autolancam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autolancam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -117,10 +117,10 @@ class cl_autolancam {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y88_codtermo = pg_result($result,0,0); 
+       $this->y88_codtermo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from autolancam_y88_codtermo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y88_codtermo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y88_codtermo)){
          $this->erro_sql = " Campo y88_codtermo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -152,7 +152,7 @@ class cl_autolancam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Auto de lancamento ($this->y88_codtermo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Auto de lancamento já Cadastrado";
@@ -176,12 +176,12 @@ class cl_autolancam {
      $resaco = $this->sql_record($this->sql_query_file($this->y88_codtermo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7338,'$this->y88_codtermo','I')");
-       $resac = db_query("insert into db_acount values($acount,1219,7338,'','".AddSlashes(pg_result($resaco,0,'y88_codtermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1219,7340,'','".AddSlashes(pg_result($resaco,0,'y88_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1219,7339,'','".AddSlashes(pg_result($resaco,0,'y88_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1219,7338,'','".AddSlashes(pg_fetch_result($resaco,0,'y88_codtermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1219,7340,'','".AddSlashes(pg_fetch_result($resaco,0,'y88_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1219,7339,'','".AddSlashes(pg_fetch_result($resaco,0,'y88_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -190,10 +190,10 @@ class cl_autolancam {
       $this->atualizacampos();
      $sql = " update autolancam set ";
      $virgula = "";
-     if(trim($this->y88_codtermo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y88_codtermo"])){ 
+     if(trim((string) $this->y88_codtermo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y88_codtermo"])){ 
        $sql  .= $virgula." y88_codtermo = $this->y88_codtermo ";
        $virgula = ",";
-       if(trim($this->y88_codtermo) == null ){ 
+       if(trim((string) $this->y88_codtermo) == null ){ 
          $this->erro_sql = " Campo Código Termo nao Informado.";
          $this->erro_campo = "y88_codtermo";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_autolancam {
          return false;
        }
      }
-     if(trim($this->y88_codlev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y88_codlev"])){ 
+     if(trim((string) $this->y88_codlev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y88_codlev"])){ 
        $sql  .= $virgula." y88_codlev = $this->y88_codlev ";
        $virgula = ",";
-       if(trim($this->y88_codlev) == null ){ 
+       if(trim((string) $this->y88_codlev) == null ){ 
          $this->erro_sql = " Campo Levantamento nao Informado.";
          $this->erro_campo = "y88_codlev";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_autolancam {
          return false;
        }
      }
-     if(trim($this->y88_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y88_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y88_data_dia"] !="") ){ 
+     if(trim((string) $this->y88_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y88_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y88_data_dia"] !="") ){ 
        $sql  .= $virgula." y88_data = '$this->y88_data' ";
        $virgula = ",";
-       if(trim($this->y88_data) == null ){ 
+       if(trim((string) $this->y88_data) == null ){ 
          $this->erro_sql = " Campo Data do auto de lançamento nao Informado.";
          $this->erro_campo = "y88_data_dia";
          $this->erro_banco = "";
@@ -232,7 +232,7 @@ class cl_autolancam {
        if(isset($GLOBALS["HTTP_POST_VARS"]["y88_data_dia"])){ 
          $sql  .= $virgula." y88_data = null ";
          $virgula = ",";
-         if(trim($this->y88_data) == null ){ 
+         if(trim((string) $this->y88_data) == null ){ 
            $this->erro_sql = " Campo Data do auto de lançamento nao Informado.";
            $this->erro_campo = "y88_data_dia";
            $this->erro_banco = "";
@@ -251,15 +251,15 @@ class cl_autolancam {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7338,'$this->y88_codtermo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y88_codtermo"]))
-           $resac = db_query("insert into db_acount values($acount,1219,7338,'".AddSlashes(pg_result($resaco,$conresaco,'y88_codtermo'))."','$this->y88_codtermo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1219,7338,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y88_codtermo'))."','$this->y88_codtermo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y88_codlev"]))
-           $resac = db_query("insert into db_acount values($acount,1219,7340,'".AddSlashes(pg_result($resaco,$conresaco,'y88_codlev'))."','$this->y88_codlev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1219,7340,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y88_codlev'))."','$this->y88_codlev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y88_data"]))
-           $resac = db_query("insert into db_acount values($acount,1219,7339,'".AddSlashes(pg_result($resaco,$conresaco,'y88_data'))."','$this->y88_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1219,7339,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y88_data'))."','$this->y88_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -304,12 +304,12 @@ class cl_autolancam {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7338,'$y88_codtermo','E')");
-         $resac = db_query("insert into db_acount values($acount,1219,7338,'','".AddSlashes(pg_result($resaco,$iresaco,'y88_codtermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1219,7340,'','".AddSlashes(pg_result($resaco,$iresaco,'y88_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1219,7339,'','".AddSlashes(pg_result($resaco,$iresaco,'y88_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1219,7338,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y88_codtermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1219,7340,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y88_codlev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1219,7339,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y88_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from autolancam
@@ -369,7 +369,7 @@ class cl_autolancam {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:autolancam";

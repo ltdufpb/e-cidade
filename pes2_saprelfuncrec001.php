@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -88,7 +88,7 @@ function js_emite(){
       </tr>
       <tr>
         <td >Tipo :</td>
-        <td ><?php $arr_tipo = array("a"=>"Analítico","s"=>"Sintético");
+        <td ><?php $arr_tipo = ["a"=>"Analítico","s"=>"Sintético"];
 	db_select("tipo_rel",$arr_tipo,true,"text",1);?> &nbsp;</td>
       </tr>
       <tr>

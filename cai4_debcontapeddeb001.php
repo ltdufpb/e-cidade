@@ -34,8 +34,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_debcontapedidotiponumpre_classe.php"));
 include(modification("classes/db_debcontapedidotipo_classe.php"));
 include(modification("classes/db_debcontapedidopref_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 //$cldebcontapedidonumpre = new cl_debcontapedidonumpre;
 $cldebcontapedidotiponumpre = new cl_debcontapedidotiponumpre;
 $cldebcontapedidotipo = new cl_debcontapedidotipo;
@@ -81,9 +81,9 @@ if (isset ($incluir) && $incluir == true) {
 
 		}
 	}
-	$arr_dados = split("#", $chaves);
+	$arr_dados = preg_split("#\\##m", $chaves);
 	for ($i = 0; $i < count($arr_dados); $i ++) {
-		$info = split("-", $arr_dados[$i]);
+		$info = preg_split("#\\-#m", (string) $arr_dados[$i]);
 		$numpre = $info[0];
 		$numpar = $info[1];
 		$tipo = $info[2];

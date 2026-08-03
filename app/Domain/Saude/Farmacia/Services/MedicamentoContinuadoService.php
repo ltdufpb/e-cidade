@@ -150,11 +150,9 @@ class MedicamentoContinuadoService
             return null;
         }
 
-        return \db_utils::makeCollectionFromRecord($rs, function ($retirada) {
-            return (object)[
-                'data' => new DateTime($retirada->fa04_d_data),
-                'quantidade' => $retirada->fa06_f_quant
-            ];
-        });
+        return \db_utils::makeCollectionFromRecord($rs, fn($retirada) => (object)[
+            'data' => new DateTime($retirada->fa04_d_data),
+            'quantidade' => $retirada->fa06_f_quant
+        ]);
     }
 }

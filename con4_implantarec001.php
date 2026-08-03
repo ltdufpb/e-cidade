@@ -39,7 +39,7 @@ include(modification("classes/db_conlancamdoc_classe.php"));
 include(modification("classes/db_db_config_classe.php"));
 include(modification("classes/db_conlancamimp_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcreceita   = new cl_orcreceita;
 $clorcreceitaval= new cl_orcreceitaval;
@@ -98,7 +98,7 @@ if (isset($processar)){
       //    db_inicio_transacao();
      for($x=0;$x < $clorcreceitaval->numrows;$x++){
        db_fieldsmemory($res,$x);
-       
+
        $data = $o71_anousu."-".$o71_mes."-"."01";
        //--
        $clconlancam->c70_data= $data;
@@ -109,7 +109,7 @@ if (isset($processar)){
            db_msgbox($clconlancam->erro_msg);
            break;
        }
-	
+
        $codlan = $clconlancam->c70_codlan;
        //---
        $clconlancamrec->c74_anousu= $o71_anousu;
@@ -120,7 +120,7 @@ if (isset($processar)){
            db_msgbox($clconlancamrec->erro_msg);
            break;
        }
-				       
+
        //--- 
        $clconlancamdoc->c71_data = $data;
        $clconlancamdoc->c71_coddoc = $o71_coddoc;
@@ -129,15 +129,15 @@ if (isset($processar)){
            db_msgbox($clconlancamdoc->erro_msg);
            break;
        }
-	
+
        $clconlancamimp->c88_codlan = $codlan;
        $clconlancamimp->incluir($codlan);
        if ($clconlancamimp->erro_status===0){
            db_msgbox($clconlancamimp->erro_msg);
            break;
        }
-	
-       
+
+
      } 
      // db_fim_transacao();     
   }  

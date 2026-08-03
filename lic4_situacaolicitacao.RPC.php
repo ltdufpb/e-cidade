@@ -96,7 +96,7 @@ try {
 
       $oDadoSituacao              = db_utils::fieldsMemory($rsBuscaSituacao, 0);
       $oLicitacao                 = new licitacao($oDadoSituacao->l11_liclicita);
-      $oRetorno->l11_obs          = urlencode($oDadoSituacao->l11_obs);
+      $oRetorno->l11_obs          = urlencode((string) $oDadoSituacao->l11_obs);
       $oRetorno->l11_sequencial   = $oDadoSituacao->l11_sequencial;
       $oRetorno->iCodigoEdital    = $oLicitacao->getEdital();
       $oRetorno->iCodigoLicitacao = $oDadoSituacao->l11_liclicita;

@@ -78,7 +78,7 @@ $clrotulo->label("tf04_i_codigo");
     </td>
     <td> 
       <?php 
-      $aX = array('1'=>'SIM', '2'=>'NÃO');
+      $aX = ['1'=>'SIM', '2'=>'NÃO'];
       db_select('tf05_i_ativo',$aX,true,$db_opcao,'');
       ?>
     </td>
@@ -93,12 +93,12 @@ $clrotulo->label("tf04_i_codigo");
 	  <tr>
 		  <td valign="top"><br>
         <?php 
-				$aChavepri = array ('tf05_i_codigo' => @$tf05_i_codigo,
+				$aChavepri =  ['tf05_i_codigo' => @$tf05_i_codigo,
                            'tf05_i_procedimento' => @$tf05_i_procedimento, 
                            'tf05_i_tipotratamento' => @$tf05_i_tipotratamento, 
                            'tf05_i_ativo' => @$tf05_i_ativo, 
                            'sd63_c_nome' => @$sd63_c_nome, 
-                           'sd63_c_procedimento' => @$sd63_c_procedimento);
+                           'sd63_c_procedimento' => @$sd63_c_procedimento];
 				$oIframeAE->chavepri = $aChavepri;
 
         $sCampos = 
@@ -139,7 +139,7 @@ $clrotulo->label("tf04_i_codigo");
 function js_cancelar() {
 
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tf05_i_tipotratamento=$tf05_i_tipotratamento&tf04_c_descr=$tf04_c_descr'";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tf05_i_tipotratamento=$tf05_i_tipotratamento&tf04_c_descr=$tf04_c_descr'";
   ?>
 
 }
@@ -202,7 +202,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tfd_tipotratamentoproced.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

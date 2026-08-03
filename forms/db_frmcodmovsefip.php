@@ -75,7 +75,7 @@ $clrotulo->label("z01_nome");
             <td> 
               <?php 
               $indrecfgts = 1;
-              $arr_indrecfgts = array("0"=>"Nenhum","1"=>"GFIP no prazo","2"=>"GFIP em atraso");
+              $arr_indrecfgts = ["0"=>"Nenhum","1"=>"GFIP no prazo","2"=>"GFIP em atraso"];
               db_select('indrecfgts',$arr_indrecfgts,true,1,"onchange='js_verindices(\"dtrecfgts\",this.value, false);'");
               ?>
             </td>
@@ -95,7 +95,7 @@ $clrotulo->label("z01_nome");
             <td> 
               <?php 
               $indrecinss = 1;
-              $arr_indrecinss = array("0"=>"Não gera GPS","1"=>"GPS no prazo","2"=>"GPS em atraso");
+              $arr_indrecinss = ["0"=>"Não gera GPS","1"=>"GPS no prazo","2"=>"GPS em atraso"];
               db_select('indrecinss',$arr_indrecinss,true,1,"onchange='js_verindices(\"dtrecinss\",this.value, true);'");
               ?>
             </td>
@@ -161,7 +161,7 @@ $clrotulo->label("z01_nome");
             <td> 
               <?php 
               $alteraender = "N";
-              $arr_alteraender = array("S"=>"Sim","N"=>"Não");
+              $arr_alteraender = ["S"=>"Sim","N"=>"Não"];
               db_select('alteraender',$arr_alteraender,true,1,"");
               ?>
             </td>
@@ -171,7 +171,7 @@ $clrotulo->label("z01_nome");
             <td> 
               <?php 
               $alteracnae = "P";
-              $arr_alteracnae = array("S"=>"Sim","N"=>"Não","A"=>"Alt. Preponderante","P"=>"Não Alt. Preponderante");
+              $arr_alteracnae = ["S"=>"Sim","N"=>"Não","A"=>"Alt. Preponderante","P"=>"Não Alt. Preponderante"];
               db_select('alteracnae',$arr_alteracnae,true,1,"");
               ?>
             </td>
@@ -385,7 +385,7 @@ function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_codmovsefip.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }
   ?>
 }

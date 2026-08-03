@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_clientes_classe.php"));
 include(modification("classes/db_tarefaclientes_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clclientes = new cl_clientes;
 $cltarefaclientes = new cl_tarefaclientes;
@@ -122,7 +122,7 @@ function js_marcadesmarca(){
     echo "</td>\n";
 
 
-    $aSelecionados = split("-", $clientes_selecionados);
+    $aSelecionados = preg_split("#\\-#m", $clientes_selecionados);
 
     for($i=0;$i<$clclientes->numrows;$i++){
       db_fieldsmemory($result,$i);

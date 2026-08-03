@@ -52,7 +52,7 @@ require_once modification("libs/JSON.php");
 $oPost       = db_utils::postMemory($_REQUEST);
 $oPost->json = str_replace("\\","",$oPost->json);
 $oParametro  = JSON::create()->parse($oPost->json);
-$oRetorno    = (object)array( 'erro' => false, 'mensagem'=> '');
+$oRetorno    = (object)[ 'erro' => false, 'mensagem'=> ''];
 
 $oDiaTrabalhoRepository = new DiaTrabalhoRepository();
 
@@ -88,7 +88,7 @@ try {
 
             $oLayoutArquivo = new \DBLayoutReader(Importacao::CODIGO_LAYOUT_ARQUIVO, $sNomeArquivo, true, false);
             $oLayoutArquivo->processarArquivo(0, true, true);
-            $aPisMatriculasProcessar = array();
+            $aPisMatriculasProcessar = [];
 
             $oDataInicioParametro = new DBDate($oParametro->periodo->dataInicio);
             $oDataFinalParametro  =  new DBDate($oParametro->periodo->dataFim);
@@ -98,8 +98,8 @@ try {
                 switch($oLinha->TIPO_REGISTRO) {
                     case Importacao::REGISTRO_CABECALHO:
 
-                        $oDataInicialArquivo = new DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", $oLinha->DATA_INICIAL));
-                        $oDataFinalArquivo   = new DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", $oLinha->DATA_FINAL));
+                        $oDataInicialArquivo = new DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", (string) $oLinha->DATA_INICIAL));
+                        $oDataFinalArquivo   = new DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", (string) $oLinha->DATA_FINAL));
 
                         if (   ($oDataInicioParametro->getTimeStamp() < $oDataInicialArquivo->getTimeStamp())
                             || ($oDataFinalParametro->getTimeStamp() > $oDataFinalArquivo->getTimeStamp()) ) {
@@ -166,7 +166,7 @@ try {
                 throw new ParameterException('Nenhuma matrícula informada.');
             }
 
-            $oRetorno->aDados = array();
+            $oRetorno->aDados = [];
             $dataInicio = new DBDate($oParametro->periodo->dataInicio);
             $dataInicio =  new \DateTime($dataInicio->getDate());
             foreach($oParametro->matriculas as $matricula) {
@@ -196,9 +196,9 @@ try {
             $oRetorno->label_log = null;
             $oRetorno->url       = null;
 
-            $aDatasProcessar     = array();
+            $aDatasProcessar     = [];
             $iCodigoData         = null;
-            $matriculasProcessar = array();
+            $matriculasProcessar = [];
 
             foreach ($oParametro->aDados as $oDados) {
                 if(empty($iCodigoData)) {
@@ -208,7 +208,7 @@ try {
                 $oServidor = ServidorRepository::getInstanciaByCodigo($oDados->matricula);
                 $aEscalas  = $oServidor->getEscalas();
 
-                list($dia, $mes, $ano)                   = explode("/", $oDados->data);
+                [$dia, $mes, $ano]                   = explode("/", (string) $oDados->data);
                 $sDatasProcessar                         = $ano .'-'. $mes .'-'. $dia;
                 $aDatasProcessar[]                       = $sDatasProcessar;
                 $matriculasProcessar[$oDados->matricula] = $oDados->matricula;
@@ -226,7 +226,7 @@ try {
 
                 ProcessamentoPontoEletronico::criarMarcacoesNasDatas(
                     $oServidor->getMatricula(),
-                    array((object)array('data' => $sDatasProcessar))
+                    [(object)['data' => $sDatasProcessar]]
                 );
 
                 $oDiaTrabalhoRepository = new DiaTrabalhoRepository();
@@ -256,10 +256,10 @@ try {
             Registry::get('app.container')->register('app.ponto_eletronico.debug', function() {
                 $idUsuario      = db_getsession('DB_id_usuario');
                 $usuarioSistema = UsuarioSistemaRepository::getPorCodigo($idUsuario);
-                $nomeUsuario    = strtolower($usuarioSistema->getNome());
+                $nomeUsuario    = strtolower((string) $usuarioSistema->getNome());
 
                 $debugPonto = false;
-                if(strpos($nomeUsuario, 'dbseller') !== false) {
+                if(str_contains($nomeUsuario, 'dbseller')) {
                     $debugPonto = true;
                 }
 
@@ -313,15 +313,15 @@ try {
             // data tem que ser uma propriedade data dentro de um array da propriedade datas
             $oData                        = new STDClass();
             $oData->data = $oParametro->datas[0];
-            $oServidorBase->datas         = array($oData);
-            $aErros                       = array();
+            $oServidorBase->datas         = [$oData];
+            $aErros                       = [];
 
             if(!empty($oParametro->selecao)) {
                 // Busca os servidores pela selecao
                 $aSelecao = ServidorRepository::getServidoresBySelecao(DBPessoal::getAnoFolha(), DBPessoal::getMesFolha(), $oParametro->selecao);
 
                 // cria a propriedade matriculas
-                $oParametro->matriculas = array();
+                $oParametro->matriculas = [];
 
                 foreach ($aSelecao as $oSelecao) {
                     $oParametro->matriculas[] = $oSelecao->getMatricula();
@@ -330,7 +330,7 @@ try {
 
             $lErroGeral                    = false;
             $oRetorno->lTemInconsistencias = false;
-            $oRetorno->matriculas          = array();
+            $oRetorno->matriculas          = [];
 
             foreach ($oParametro->matriculas as $iMatricula) {
                 try {
@@ -369,7 +369,7 @@ try {
                             $lErroGeral         = true;
                             break 2;
                     }
-                    $aErros[$eErro->getCode()]['matriculas'][] = array('matricula' => $iMatricula, 'nome' =>$oServidor->getCgm()->getNome());
+                    $aErros[$eErro->getCode()]['matriculas'][] = ['matricula' => $iMatricula, 'nome' =>$oServidor->getCgm()->getNome()];
                 }
             }
 
@@ -404,7 +404,7 @@ try {
                     $oParametro->selecao
                 );
 
-                $matriculasProcessar = array();
+                $matriculasProcessar = [];
                 foreach ($aServidoresPorSelecao as $servidorPorSelecao){
                     $matriculasProcessar[] = $servidorPorSelecao->getMatricula();
                 }
@@ -444,20 +444,20 @@ try {
                     $oEscalaServidor = $servidor->getEscalas($dataPeriodo);
                     if(empty($oEscalaServidor)){
                         $aErros[8]['titulo'] = "Não há escalas para o servidor no período\n(RH > Cadastros > Efetividade > Escala de Trabalho)";
-                        $aErros[8]['matriculas'][$matricula] = array('matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome());
+                        $aErros[8]['matriculas'][$matricula] = ['matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome()];
                         $lPersisteAssentamento = false;
                     }
 
                     $oLotacao = LotacaoRepository::getInstanceByCodigo($servidor->getCodigoLotacao());
                     if(empty($oLotacao)){
                         $aErros[9]['titulo'] = "Não há lotação configurada para o servidor \n(Pessoal > Cadastro > Servidores > aba Movimentações)";
-                        $aErros[9]['matriculas'][$matricula] = array('matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome());
+                        $aErros[9]['matriculas'][$matricula] = ['matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome()];
                         $lPersisteAssentamento = false;
                     } else {
                         $oConfiguracoesLotacao = ParametrosRepository::create()->getConfiguracoesLotacao($servidor->getCodigoLotacao());
                         if(empty($oConfiguracoesLotacao)){
                             $aErros[10]['titulo'] = "A lotação do servidor não está configurada \n(RH > Procedimentos > Ponto Eletrônico > Configurações > aba Lotação).";
-                            $aErros[10]['matriculas'][$matricula] = array('matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome());
+                            $aErros[10]['matriculas'][$matricula] = ['matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome()];
                             $lPersisteAssentamento = false;
                         }
                     }
@@ -473,12 +473,12 @@ try {
 
                 if(!empty($inconsistencias[$matricula]['justificativas'])) {
                     $aErros[6]['titulo'] = "Existe justificativa nesta(s) data(s): ". implode(', ', $inconsistencias[$matricula]['justificativas']). "\nRH > Procedimentos > Manutenção de Assentamentos > Assentamentos de Efetividade.";
-                    $aErros[6]['matriculas'][] = array('matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome());
+                    $aErros[6]['matriculas'][] = ['matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome()];
                 }
 
                 if(!empty($inconsistencias[$matricula]['afastamentos'])) {
                     $aErros[7]['titulo'] = "Existe afastamento do RH nesta(s) data(s): ". implode(', ', $inconsistencias[$matricula]['afastamentos']). "\nRH > Procedimentos > Manutenção de Assentamentos > Assentamentos de Efetividade.";
-                    $aErros[7]['matriculas'][] = array('matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome());
+                    $aErros[7]['matriculas'][] = ['matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome()];
                 }
 
                 if($lPersisteAssentamento){
@@ -512,7 +512,7 @@ try {
             $dataInicio          = new DBDate($oParametro->dataInicio);
             $dataFim             = new DBDate($oParametro->dataFim);
             $lErroGeral          = false;
-            $aErros              = array();
+            $aErros              = [];
             $datasPeriodo        = DBDate::getDatasNoIntervalo($dataInicio, $dataFim);
             $oRetorno->lTemInconsistencias = false;
 
@@ -527,7 +527,7 @@ try {
                     $oParametro->selecao
                 );
 
-                $matriculasProcessar = array();
+                $matriculasProcessar = [];
                 foreach ($aServidoresPorSelecao as $servidorPorSelecao){
                     $matriculasProcessar[] = $servidorPorSelecao->getMatricula();
                 }
@@ -559,20 +559,20 @@ try {
                     $oEscalaServidor = $servidor->getEscalas($dataPeriodo);
                     if(empty($oEscalaServidor)){
                         $aErros[8]['titulo'] = "Não há escalas para o servidor no período\n(RH > Cadastros > Efetividade > Escala de Trabalho)";
-                        $aErros[8]['matriculas'][$matricula] = array('matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome());
+                        $aErros[8]['matriculas'][$matricula] = ['matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome()];
                         $lPersisteAssentamento = false;
                     }
 
                     $oLotacao = LotacaoRepository::getInstanceByCodigo($servidor->getCodigoLotacao());
                     if(empty($oLotacao)){
                         $aErros[9]['titulo'] = "Não há lotação configurada para o servidor \n(Pessoal > Cadastro > Servidores > aba Movimentações)";
-                        $aErros[9]['matriculas'][$matricula] = array('matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome());
+                        $aErros[9]['matriculas'][$matricula] = ['matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome()];
                         $lPersisteAssentamento = false;
                     } else {
                         $oConfiguracoesLotacao = ParametrosRepository::create()->getConfiguracoesLotacao($servidor->getCodigoLotacao());
                         if(empty($oConfiguracoesLotacao)){
                             $aErros[10]['titulo'] = "A lotação do servidor não está configurada \n(RH > Procedimentos > Ponto Eletrônico > Configurações > aba Lotação).";
-                            $aErros[10]['matriculas'][$matricula] = array('matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome());
+                            $aErros[10]['matriculas'][$matricula] = ['matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome()];
                             $lPersisteAssentamento = false;
                         }
                     }
@@ -588,12 +588,12 @@ try {
 
                 if(!empty($inconsistencias[$matricula]['hora_extra_autorizada'])) {
                     $aErros[6]['titulo'] = "Existe autorização de hora extra nesta(s) data(s): ". implode(', ', $inconsistencias[$matricula]['hora_extra_autorizada']). "\nRH > Procedimentos > Manutenção de Assentamentos > Assentamentos de Efetividade.";
-                    $aErros[6]['matriculas'][] = array('matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome());
+                    $aErros[6]['matriculas'][] = ['matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome()];
                 }
 
                 if(!empty($inconsistencias[$matricula]['afastamentos'])) {
                     $aErros[7]['titulo'] = "Existe afastamento do RH nesta(s) data(s): ". implode(', ', $inconsistencias[$matricula]['afastamentos']). "\nRH > Procedimentos > Manutenção de Assentamentos > Assentamentos de Efetividade.";
-                    $aErros[7]['matriculas'][] = array('matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome());
+                    $aErros[7]['matriculas'][] = ['matricula' => $servidor->getMatricula(), 'nome' =>$servidor->getCgm()->getNome()];
                 }
 
                 if($lPersisteAssentamento){
@@ -637,7 +637,7 @@ try {
                 throw new ParameterException('Informe a hora final para verificar as horas justificadas.');
             }
 
-            list($diferenca, $mensagem) = AssentamentoAbonoFalta::getHorasDeAbono(
+            [$diferenca, $mensagem] = AssentamentoAbonoFalta::getHorasDeAbono(
                 ServidorRepository::getInstanciaByCodigo($oParametro->matricula),
                 new DBDate($oParametro->data),
                 $oParametro->horaInicio,
@@ -667,12 +667,12 @@ try {
                 // Busca os servidores pela selecao
                 $aSelecao = ServidorRepository::getServidoresBySelecao(DBPessoal::getAnoFolha(), DBPessoal::getMesFolha(), $oParametro->selecao);
                 // cria a propriedade matriculas
-                $oParametro->matriculas = array();
+                $oParametro->matriculas = [];
                 foreach ($aSelecao as $oSelecao) {
                     $oParametro->matriculas[] = $oSelecao->getMatricula();
                 }
             }
-            $matriculasInconsistentes = array();
+            $matriculasInconsistentes = [];
 
             $datasLancar = DBDate::getDatasNoIntervalo(new DBDate($dataInicio), new DBDate($dataFim));
 
@@ -754,11 +754,11 @@ try {
 
             $espelhosPontoServidores = EspelhoPontoCache::init()->getEspelhoPontoCacheValido($oParametro->matriculas, $dataInicio, $dataFim);
 
-            $oRetorno->servidores = array();
+            $oRetorno->servidores = [];
             foreach ($espelhosPontoServidores as $matricula => $espelhoPontoData) {
                 $servidor = new \stdClass();
                 $servidor->matricula = $matricula;
-                $servidor->aDados = array();
+                $servidor->aDados = [];
 
                 foreach ($espelhoPontoData as $espelhoPonto) {
                     $servidor->aDados[] = $espelhoPonto;
@@ -779,19 +779,19 @@ try {
             $periodo->setDataFim(new DBDate($oParametro->periodo->dataFim));
 
             $jornadas = JornadaRepository::getJornadasNoIntervalo($servidor, $periodo);
-            $oRetorno->jornadas = array();
+            $oRetorno->jornadas = [];
 
             if(!empty($jornadas)) {
                 do {
                     $jornadaNaData = current($jornadas);
                     $jornada       = $jornadaNaData['jornada'];
 
-                    $oRetorno->jornadas[] = (object)array(
+                    $oRetorno->jornadas[] = (object)[
                         'codigo'    => $jornada->getCodigo(),
                         'descricao' => $jornada->getDescricao(),
                         'data'      => $jornadaNaData['data']->getDate(DBDate::DATA_PTBR),
                         'horas'     => array_values($jornada->toArray())
-                    );
+                    ];
                 } while (next($jornadas));
             }
 
@@ -800,7 +800,7 @@ try {
             $usuario = UsuarioSistemaRepository::getUsuarioSessao();
             $instituicao = InstituicaoRepository::getInstituicaoSessao();
             $departamento = DBDepartamentoRepository::getDepartamentoSessao();
-            $codLotacoes = array();
+            $codLotacoes = [];
 
             $loteLancamentoRepository = new LoteLancamentoRepository();
 
@@ -830,7 +830,7 @@ try {
             $loteLancamentoRepository->scopeInstituicao($instituicao)
                   ->scopeDepartamento($departamento)->scopeSequenciais($sequenciais);
             }
-            $filtrosData = array();
+            $filtrosData = [];
             $dataInicial = $dataFinal = null;
 
             if (!empty($oParametro->dataInicial)) {
@@ -855,7 +855,7 @@ try {
             }
 
             $lotes = $loteLancamentoRepository->get();
-            $oRetorno->lotes = array();
+            $oRetorno->lotes = [];
             foreach ($lotes as $lote) {
                 $oRetorno->lotes[] = $lote->toArray();
             }
@@ -893,22 +893,22 @@ try {
             if (count($resultado->erros) > 0) {
                 $oRetorno->excluiuTodosAssentamentos = false;
                 $oRetorno->mensagem = "Não foi possível excluir alguns assentamentos do lote.\nDeseja visualizar o relatório de inconsistências?";
-                $erros = array();
+                $erros = [];
 
                 $pdf = new PDFTable();
                 $pdf->setPercentWidth(true);
-                $pdf->setHeaders(array('Matrícula', 'Data', 'Mensagem'));
-                $pdf->setColumnsAlign(array(PDFDocument::ALIGN_CENTER, PDFDocument::ALIGN_CENTER, PDFDocument::ALIGN_LEFT));
-                $pdf->setColumnsWidth(array('20', '20', '60'));
-                $pdf->setMulticellColumns(array(2));
+                $pdf->setHeaders(['Matrícula', 'Data', 'Mensagem']);
+                $pdf->setColumnsAlign([PDFDocument::ALIGN_CENTER, PDFDocument::ALIGN_CENTER, PDFDocument::ALIGN_LEFT]);
+                $pdf->setColumnsWidth(['20', '20', '60']);
+                $pdf->setMulticellColumns([2]);
 
                 foreach ($resultado->erros as $erro) {
                     $pdf->addLineInformation(
-                        array(
+                        [
                             $erro->assentamento->getMatricula(),
                             $resultado->loteLancamento->getData()->format('d/m/Y'),
                             $erro->mensagem
-                        )
+                        ]
                     );
                 }
 
@@ -918,7 +918,7 @@ try {
                 $pdfDocument->addHeaderDescription('Filtros utilizados:');
                 $pdfDocument->addHeaderDescription('Data inicial: '. ($dataInicial ? $dataInicial->format('d/m/Y'): 'N/A'));
                 $pdfDocument->addHeaderDescription('Data final: '. ($dataFinal ? $dataFinal->format('d/m/Y'): 'N/A'));
-                $pdfDocument->addHeaderDescription('Tipos de assentamento: '. ($tipoAssentamento ? $tipoAssentamento : 'Todos'));
+                $pdfDocument->addHeaderDescription('Tipos de assentamento: '. ($tipoAssentamento ?: 'Todos'));
                 $pdfDocument->SetFillColor(235);
                 $pdfDocument->setFontSize(9);
                 $pdfDocument->open();

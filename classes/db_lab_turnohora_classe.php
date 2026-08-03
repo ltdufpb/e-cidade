@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE lab_turnohora
 class cl_lab_turnohora { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $la07_i_codigo = 0; 
-   var $la07_i_laboratorio = 0; 
-   var $la07_i_turno = 0; 
-   var $la07_c_inicio = null; 
-   var $la07_c_fim = null; 
+   public $la07_i_codigo = 0; 
+   public $la07_i_laboratorio = 0; 
+   public $la07_i_turno = 0; 
+   public $la07_c_inicio = null; 
+   public $la07_c_fim = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  la07_i_codigo = int4 = Código 
                  la07_i_laboratorio = int4 = Laboratório 
                  la07_i_turno = int4 = Turno 
@@ -56,10 +56,10 @@ class cl_lab_turnohora {
                  la07_c_fim = char(5) = Fim 
                  ";
    //funcao construtor da classe 
-   function cl_lab_turnohora() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_turnohora"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_lab_turnohora {
          $this->erro_status = "0";
          return false; 
        }
-       $this->la07_i_codigo = pg_result($result,0,0); 
+       $this->la07_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from lab_turnohora_la07_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $la07_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $la07_i_codigo)){
          $this->erro_sql = " Campo la07_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_lab_turnohora {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "lab_turnohora ($this->la07_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "lab_turnohora já Cadastrado";
@@ -194,14 +194,14 @@ class cl_lab_turnohora {
      $resaco = $this->sql_record($this->sql_query_file($this->la07_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15732,'$this->la07_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2757,15732,'','".AddSlashes(pg_result($resaco,0,'la07_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2757,15733,'','".AddSlashes(pg_result($resaco,0,'la07_i_laboratorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2757,15734,'','".AddSlashes(pg_result($resaco,0,'la07_i_turno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2757,15735,'','".AddSlashes(pg_result($resaco,0,'la07_c_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2757,15736,'','".AddSlashes(pg_result($resaco,0,'la07_c_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2757,15732,'','".AddSlashes(pg_fetch_result($resaco,0,'la07_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2757,15733,'','".AddSlashes(pg_fetch_result($resaco,0,'la07_i_laboratorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2757,15734,'','".AddSlashes(pg_fetch_result($resaco,0,'la07_i_turno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2757,15735,'','".AddSlashes(pg_fetch_result($resaco,0,'la07_c_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2757,15736,'','".AddSlashes(pg_fetch_result($resaco,0,'la07_c_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_lab_turnohora {
       $this->atualizacampos();
      $sql = " update lab_turnohora set ";
      $virgula = "";
-     if(trim($this->la07_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la07_i_codigo"])){ 
+     if(trim((string) $this->la07_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la07_i_codigo"])){ 
        $sql  .= $virgula." la07_i_codigo = $this->la07_i_codigo ";
        $virgula = ",";
-       if(trim($this->la07_i_codigo) == null ){ 
+       if(trim((string) $this->la07_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "la07_i_codigo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_lab_turnohora {
          return false;
        }
      }
-     if(trim($this->la07_i_laboratorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la07_i_laboratorio"])){ 
+     if(trim((string) $this->la07_i_laboratorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la07_i_laboratorio"])){ 
        $sql  .= $virgula." la07_i_laboratorio = $this->la07_i_laboratorio ";
        $virgula = ",";
-       if(trim($this->la07_i_laboratorio) == null ){ 
+       if(trim((string) $this->la07_i_laboratorio) == null ){ 
          $this->erro_sql = " Campo Laboratório nao Informado.";
          $this->erro_campo = "la07_i_laboratorio";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_lab_turnohora {
          return false;
        }
      }
-     if(trim($this->la07_i_turno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la07_i_turno"])){ 
+     if(trim((string) $this->la07_i_turno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la07_i_turno"])){ 
        $sql  .= $virgula." la07_i_turno = $this->la07_i_turno ";
        $virgula = ",";
-       if(trim($this->la07_i_turno) == null ){ 
+       if(trim((string) $this->la07_i_turno) == null ){ 
          $this->erro_sql = " Campo Turno nao Informado.";
          $this->erro_campo = "la07_i_turno";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_lab_turnohora {
          return false;
        }
      }
-     if(trim($this->la07_c_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la07_c_inicio"])){ 
+     if(trim((string) $this->la07_c_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la07_c_inicio"])){ 
        $sql  .= $virgula." la07_c_inicio = '$this->la07_c_inicio' ";
        $virgula = ",";
-       if(trim($this->la07_c_inicio) == null ){ 
+       if(trim((string) $this->la07_c_inicio) == null ){ 
          $this->erro_sql = " Campo Início nao Informado.";
          $this->erro_campo = "la07_c_inicio";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_lab_turnohora {
          return false;
        }
      }
-     if(trim($this->la07_c_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la07_c_fim"])){ 
+     if(trim((string) $this->la07_c_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la07_c_fim"])){ 
        $sql  .= $virgula." la07_c_fim = '$this->la07_c_fim' ";
        $virgula = ",";
-       if(trim($this->la07_c_fim) == null ){ 
+       if(trim((string) $this->la07_c_fim) == null ){ 
          $this->erro_sql = " Campo Fim nao Informado.";
          $this->erro_campo = "la07_c_fim";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_lab_turnohora {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15732,'$this->la07_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la07_i_codigo"]) || $this->la07_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2757,15732,'".AddSlashes(pg_result($resaco,$conresaco,'la07_i_codigo'))."','$this->la07_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2757,15732,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la07_i_codigo'))."','$this->la07_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la07_i_laboratorio"]) || $this->la07_i_laboratorio != "")
-           $resac = db_query("insert into db_acount values($acount,2757,15733,'".AddSlashes(pg_result($resaco,$conresaco,'la07_i_laboratorio'))."','$this->la07_i_laboratorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2757,15733,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la07_i_laboratorio'))."','$this->la07_i_laboratorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la07_i_turno"]) || $this->la07_i_turno != "")
-           $resac = db_query("insert into db_acount values($acount,2757,15734,'".AddSlashes(pg_result($resaco,$conresaco,'la07_i_turno'))."','$this->la07_i_turno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2757,15734,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la07_i_turno'))."','$this->la07_i_turno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la07_c_inicio"]) || $this->la07_c_inicio != "")
-           $resac = db_query("insert into db_acount values($acount,2757,15735,'".AddSlashes(pg_result($resaco,$conresaco,'la07_c_inicio'))."','$this->la07_c_inicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2757,15735,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la07_c_inicio'))."','$this->la07_c_inicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la07_c_fim"]) || $this->la07_c_fim != "")
-           $resac = db_query("insert into db_acount values($acount,2757,15736,'".AddSlashes(pg_result($resaco,$conresaco,'la07_c_fim'))."','$this->la07_c_fim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2757,15736,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la07_c_fim'))."','$this->la07_c_fim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_lab_turnohora {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15732,'$la07_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2757,15732,'','".AddSlashes(pg_result($resaco,$iresaco,'la07_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2757,15733,'','".AddSlashes(pg_result($resaco,$iresaco,'la07_i_laboratorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2757,15734,'','".AddSlashes(pg_result($resaco,$iresaco,'la07_i_turno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2757,15735,'','".AddSlashes(pg_result($resaco,$iresaco,'la07_c_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2757,15736,'','".AddSlashes(pg_result($resaco,$iresaco,'la07_c_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2757,15732,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la07_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2757,15733,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la07_i_laboratorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2757,15734,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la07_i_turno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2757,15735,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la07_c_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2757,15736,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la07_c_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from lab_turnohora
@@ -407,7 +407,7 @@ class cl_lab_turnohora {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:lab_turnohora";
@@ -422,7 +422,7 @@ class cl_lab_turnohora {
    function sql_query ( $la07_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,7 +445,7 @@ class cl_lab_turnohora {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -458,7 +458,7 @@ class cl_lab_turnohora {
    function sql_query_file ( $la07_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -479,7 +479,7 @@ class cl_lab_turnohora {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

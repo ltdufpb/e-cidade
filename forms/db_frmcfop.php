@@ -67,7 +67,7 @@ db_input('e10_descricao',50,$Ie10_descricao,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Saída','2'=>'Entrada');
+$x = ['1'=>'Saída','2'=>'Entrada'];
 db_select('e10_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -85,7 +85,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cfop.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -47,7 +47,7 @@ class FluxoCaixaMCASP2020 extends FluxoCaixa2020
      */
     protected function linhasQuePrecisamCalcularDespesasExercicioAnterior()
     {
-        $linhasCalculo = array(23, 24, 25, 33, 34, 49, 50, 51, 52, 53, 84, 85, 86);
+        $linhasCalculo = [23, 24, 25, 33, 34, 49, 50, 51, 52, 53, 84, 85, 86];
         for ($linha = 55; $linha <= 82; $linha++) {
             $linhasCalculo[] = $linha;
         }

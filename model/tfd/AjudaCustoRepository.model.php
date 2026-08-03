@@ -33,7 +33,7 @@
  */
 class AjudaCustoRepository {
 	
-  private $aAjudaCusto = array();
+  private $aAjudaCusto = [];
   private static $oInstance;
   
   private function __construct() {}
@@ -59,11 +59,11 @@ class AjudaCustoRepository {
    */
   public static function getAjudaCustoByCodigo($iCodigo) {
   	
-    if (!array_key_exists($iCodigo, AjudaCustoRepository::getInstance()->aAjudaCusto)) {
-      AjudaCustoRepository::getInstance()->aAjudaCusto[$iCodigo] = new AjudaCusto($iCodigo);
+    if (!array_key_exists($iCodigo, $this->getInstance()->aAjudaCusto)) {
+      $this->getInstance()->aAjudaCusto[$iCodigo] = new AjudaCusto($iCodigo);
     }
 
-    return AjudaCustoRepository::getInstance()->aAjudaCusto[$iCodigo];
+    return $this->getInstance()->aAjudaCusto[$iCodigo];
   }
   
   /**
@@ -73,8 +73,8 @@ class AjudaCustoRepository {
    */
   public static function removerAjudaCusto(AjudaCusto $oAjudaCusto) {
   	
-    if ( array_key_exists($oAjudaCusto->getCodigo(), AjudaCustoRepository::getInstance()->aAjudaCusto) ) {
-    	unset(AjudaCustoRepository::getInstance()->aAjudaCusto[$oAjudaCusto->getCodigo()]);
+    if ( array_key_exists($oAjudaCusto->getCodigo(), $this->getInstance()->aAjudaCusto) ) {
+    	unset($this->getInstance()->aAjudaCusto[$oAjudaCusto->getCodigo()]);
     }
     return true;
   }
@@ -86,7 +86,7 @@ class AjudaCustoRepository {
    */
   public static function getAjudaCustoAutomatico() {
   	
-    $aAjudaCusto    = array();
+    $aAjudaCusto    = [];
     $sWhere         = " tf12_faturabpa is true ";
     $oDaoAjudaCusto = new cl_tfd_ajudacusto();
     $sSqlAjudaCusto = $oDaoAjudaCusto->sql_query_file(null, "tf12_i_codigo", null, $sWhere);

@@ -29,20 +29,18 @@ require_once modification("model/impressao.model.php");
 
 class modeloAutenticadoraElginXprint extends impressao  {
 
-  private $sStringAutenticacao = '';
-  
   /**
    * 
    */
-  function __construct($sStringAutenticacao,$sIp, $sPorta) {
+  function __construct(private $sStringAutenticacao,$sIp, $sPorta) {
     
   	$this->setIp($sIp);
   	$this->setPorta($sPorta);
-  	$this->sStringAutenticacao = $sStringAutenticacao;
   	
   }
   
-  function imprimir() {
+  #[\Override]
+  function imprimir($sImprimir = '') {
     
     $this->sStringAutenticacao = str_replace("  ", " ", $this->sStringAutenticacao);
     parent::imprimir(chr(27).chr(77)."{$this->sStringAutenticacao}".chr(10).chr(13));  	

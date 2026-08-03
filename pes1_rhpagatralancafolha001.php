@@ -34,8 +34,8 @@ include(modification("classes/db_rhpagocor_classe.php"));
 include(modification("classes/db_folha_classe.php"));
 include(modification("classes/db_rhpesjustica_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clfolha = new cl_folha;
 $clrhpagocor = new cl_rhpagocor;
 $clrhpesjustica = new cl_rhpesjustica;
@@ -43,7 +43,7 @@ $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
   $sqlerro = false;
-  if(trim($rh58_tipoocor) != ""){
+  if(trim((string) $rh58_tipoocor) != ""){
     $dbwherejustica = "";
     $data_pagamento = $rh58_data_ano."-".$rh58_data_mes."-".$rh58_data_dia;
     $dbwhere = " rh58_tipoocor = ".$rh58_tipoocor." and rh58_data = '".$data_pagamento."' ";

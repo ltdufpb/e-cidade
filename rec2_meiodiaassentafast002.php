@@ -27,7 +27,7 @@
 
 
 function meio_dia_assent_afast($matric,$datafim,$ordem,$tipo){
-   
+
    global $tipoasse,$cgm,$pessoal,$head3,$head5;
 
 
@@ -37,11 +37,11 @@ function meio_dia_assent_afast($matric,$datafim,$ordem,$tipo){
     $chave = true;
     $chave1 = true;
     $arquivo = "arq1";
-    $m_nome  = array();
-    $m_tipo  = array();
-    $tamanho = array();
-    $decimal = array();
-    
+    $m_nome  = [];
+    $m_tipo  = [];
+    $tamanho = [];
+    $decimal = [];
+
     $m_nome[1] = "datini";
     $m_nome[2] = "data";
     $m_nome[3] = "c_tipo";
@@ -71,38 +71,38 @@ function meio_dia_assent_afast($matric,$datafim,$ordem,$tipo){
     $decimal[6] = 0;
 
     db_criatemp($arquivo,$m_nome,$m_tipo,$tamanho,$decimal);
-    
+
     global $assmeio;
     if(db_selectmax("assmeio","select * from assmeio where h22_regist = " . db_sqlformat(db_str($matric,6)). " and h22_dtconc <= ". db_sqlformat($datafim))){
        for($Iassmeio=0;$Iassmeio< count($assmeio);$Iassmeio++){
           if(db_selectmax("tipoasse","select * from tipoasse where h12_codigo = " . db_sqlformat($assmeio[$Iassmeio]["h22_assent"]))){
 
-             if( strtolower($tipo) != "g"){
+             if( strtolower((string) $tipo) != "g"){
 
-                if (strtolower($tipo) == "a"){
+                if (strtolower((string) $tipo) == "a"){
 
-                   if(strtolower($tipoasse[0]["h12_tipo"]) == "s") {
+                   if(strtolower((string) $tipoasse[0]["h12_tipo"]) == "s") {
                       continue;
                    }
                 }else{
 
-                   if (strtolower($tipoasse[0]["h12_tipo"]) == "a") {
+                   if (strtolower((string) $tipoasse[0]["h12_tipo"]) == "a") {
                       continue;
                    }
                 }
              }
              $chave = true;
-             
-             $mar1 = array();
-             $mar2 = array();
-             
+
+             $mar1 = [];
+             $mar2 = [];
+
              $mar1[1] = "datini";
              $mar1[2] = "data";
              $mar1[3] = "c_tipo";
              $mar1[4] = "descr";
              $mar1[5] = "histor";
              $mar1[6] = "hist2";
-             
+
              $mar2[1] = $assmeio[$Iassmeio]["h22_dtconc"];
              $mar2[2] = $assmeio[$Iassmeio]["h22_dtlanc"];
              $mar2[3] = $assmeio[$Iassmeio]["h22_assent"];
@@ -114,7 +114,7 @@ function meio_dia_assent_afast($matric,$datafim,$ordem,$tipo){
           }
        }
     }
-    if( strtolower($ordem) == "d"){
+    if( strtolower((string) $ordem) == "d"){
        $ord_sql = " order by datini ";
     }else{
        $ord_sql = " order by c_tipo,datini";
@@ -125,7 +125,7 @@ function meio_dia_assent_afast($matric,$datafim,$ordem,$tipo){
 
       $head3 = "Assent/Afastamentos de Meio Dia por Funcionario ";
       $head5 = "Funcionario : ".$cgm[0]["z01_nome"];
-      
+
       $pdf = new PDF();
       $pdf->Open();
       $pdf->AliasNbPages();
@@ -152,7 +152,7 @@ function meio_dia_assent_afast($matric,$datafim,$ordem,$tipo){
       $pdf->setfont('arial','',8);
       $pdf->cell(17,$alt,db_formatar($work[$Iwork]["datini"], 'd'),1,0,"L",0);
       $pdf->cell(18,$alt,db_formatar($work[$Iwork]["data"], 'd'),1,0,"L",0);
-      $pdf->cell(70,$alt,trim($tipoasse[0]["h12_assent"])." - ".db_substr($tipoasse[0]["h12_descr"],1,30),1,0,"L",0);
+      $pdf->cell(70,$alt,trim((string) $tipoasse[0]["h12_assent"])." - ".db_substr($tipoasse[0]["h12_descr"],1,30),1,0,"L",0);
       $pdf->cell(85,$alt,db_substr($work[$Iwork]["histor"],1,59),1,1,"L",0);
    }else{
       $regenc = true;
@@ -177,7 +177,7 @@ function meio_dia_assent_afast($matric,$datafim,$ordem,$tipo){
          $pdf->setfont('arial','',8);
          $pdf->cell(17,$alt,db_formatar($work[$Iwork]["datini"], 'd'),1,0,"L",0);
          $pdf->cell(18,$alt,db_formatar($work[$Iwork]["data"], 'd'),1,0,"L",0);
-         $pdf->cell(70,$alt,trim($tipoasse[0]["h12_assent"])." - ".db_substr($tipoasse[0]["h12_descr"],1,30),1,0,"L",0);
+         $pdf->cell(70,$alt,trim((string) $tipoasse[0]["h12_assent"])." - ".db_substr($tipoasse[0]["h12_descr"],1,30),1,0,"L",0);
          $pdf->cell(85,$alt,db_substr($work[$Iwork]["histor"],1,59),1,1,"L",0);
       }
    }
@@ -186,14 +186,14 @@ function meio_dia_assent_afast($matric,$datafim,$ordem,$tipo){
         $pdf->cell(0,$alt, "Data Admissão: ".db_formatar($pessoal[0]["rh01_admiss"], 'd'),1,1,"L",1);
         //$pdf->cell(0,$alt, "Regime : ".db_str($pessoal[0]["r01_regime"],1)."-".regime_452($pessoal[0]["r01_regime"]),0,1,"L",1);
       }
-      
+
       $pdf->Output();
    }
 }
 
 
 function regime_452($regime){
-  
+
 if(      $regime = 1){
    $retorno = "Estatutario";
 }else if($regime == 2){
@@ -212,7 +212,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("libs/db_sql.php"));
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 $subpes = db_anofolha().'/'.db_mesfolha();
 

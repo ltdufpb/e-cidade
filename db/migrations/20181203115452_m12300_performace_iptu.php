@@ -23,7 +23,7 @@ class M12300PerformaceIptu extends PostgresMigration
     private function reciboUp() 
     {
         $sql = 
-<<<SQL
+<<<SQL_WRAP
 
 drop function fc_recibo(integer,date,date,integer);
 drop   type tp_recibo;
@@ -32,12 +32,12 @@ create type tp_recibo as ( rvMensagem varchar(100),
                            rlErro     boolean );
 
 create or replace function fc_recibo(integer,date,date,integer) returns tp_recibo  as
-$$
+\$\$
 DECLARE
-  NUMPRE                ALIAS FOR $1;
-  DTEMITE               ALIAS FOR $2;
-  DTVENC                ALIAS FOR $3;
-  ANOUSU                ALIAS FOR $4;
+  NUMPRE                ALIAS FOR \$1;
+  DTEMITE               ALIAS FOR \$2;
+  DTVENC                ALIAS FOR \$3;
+  ANOUSU                ALIAS FOR \$4;
 
   iFormaCorrecao        integer default 2;
   iInstit               integer;
@@ -425,9 +425,9 @@ BEGIN
             --   alterar o programa de emissao de recibo para selecionar
             --   a regra se o contribuinte for ou nao loteador
 
-            -- Verificar se a receita possui 'valores adicionais' (Jurídico > Procedimentos > Processo do Foro > Valores Adicionais) lançados a um processo.
+            -- Verificar se a receita possui 'valores adicionais' (Jur\xeddico > Procedimentos > Processo do Foro > Valores Adicionais) lan\xe7ados a um processo.
             -- Caso possua, deve-se desconsiderar descontos em cima dessa receita.
-            -- Obs.: Esse caso se aplica para débitos de inicial.
+            -- Obs.: Esse caso se aplica para d\xe9bitos de inicial.
 
             -- Nested Loop  (cost=0.86..16.99 rows=1 width=4)
             -- perform j150_receita
@@ -1017,9 +1017,9 @@ BEGIN
   END IF;
 
 END;
-$$ language 'plpgsql';
+\$\$ language 'plpgsql';
 
-SQL;
+SQL_WRAP;
 
         $this->execute($sql);
     }
@@ -1861,7 +1861,7 @@ SQL;
     private function reciboDown() 
     {
         $sql = 
-<<<SQL
+<<<SQL_WRAP
 
 drop function fc_recibo(integer,date,date,integer);
 drop   type tp_recibo;
@@ -1870,12 +1870,12 @@ create type tp_recibo as ( rvMensagem varchar(100),
                            rlErro     boolean );
 
 create or replace function fc_recibo(integer,date,date,integer) returns tp_recibo  as
-$$
+\$\$
 DECLARE
-  NUMPRE                ALIAS FOR $1;
-  DTEMITE               ALIAS FOR $2;
-  DTVENC                ALIAS FOR $3;
-  ANOUSU                ALIAS FOR $4;
+  NUMPRE                ALIAS FOR \$1;
+  DTEMITE               ALIAS FOR \$2;
+  DTVENC                ALIAS FOR \$3;
+  ANOUSU                ALIAS FOR \$4;
 
   iFormaCorrecao        integer default 2;
   iInstit               integer;
@@ -2049,7 +2049,7 @@ BEGIN
     rtp_recibo.rlErro        := true;
 
     if lRaise is true then
-      perform fc_debug('<recibo> Não encontrados registros do numpre na tabela db_reciboweb' , lRaise, false, false);
+      perform fc_debug('<recibo> N\xe3o encontrados registros do numpre na tabela db_reciboweb' , lRaise, false, false);
       perform fc_debug('<recibo> '                                                           , lRaise, false, false);
       perform fc_debug('<recibo> 2 - Fim do processamento - Retorno: '||rtp_recibo.rvMensagem, lRaise, false, false);
       perform fc_debug('<recibo> '                                                           , lRaise, false, true);
@@ -2354,9 +2354,9 @@ BEGIN
             --   alterar o programa de emissao de recibo para selecionar
             --   a regra se o contribuinte for ou nao loteador
 
-            -- Verificar se a receita possui 'valores adicionais' (Jurídico > Procedimentos > Processo do Foro > Valores Adicionais) lançados a um processo.
+            -- Verificar se a receita possui 'valores adicionais' (Jur\xeddico > Procedimentos > Processo do Foro > Valores Adicionais) lan\xe7ados a um processo.
             -- Caso possua, deve-se desconsiderar descontos em cima dessa receita.
-            -- Obs.: Esse caso se aplica para débitos de inicial.
+            -- Obs.: Esse caso se aplica para d\xe9bitos de inicial.
             perform j150_receita
                from processoforomulta
                     inner join processoforoinicial on j150_processoforo = v71_processoforo
@@ -3102,7 +3102,7 @@ BEGIN
     rtp_recibo.rlErro        := true;
 
     if lRaise is true then
-      perform fc_debug('<recibo> Não encontrados registros na tabela arrecad'                , lRaise, false, false);
+      perform fc_debug('<recibo> N\xe3o encontrados registros na tabela arrecad'                , lRaise, false, false);
       perform fc_debug('<recibo> '                                                           , lRaise, false, false);
       perform fc_debug('<recibo> 4 - Fim do processamento - Retorno: '||rtp_recibo.rvMensagem, lRaise, false, false);
       perform fc_debug('<recibo> '                                                           , lRaise, false, true);
@@ -3113,9 +3113,9 @@ BEGIN
   END IF;
 
 END;
-$$ language 'plpgsql';
+\$\$ language 'plpgsql';
 
-SQL;
+SQL_WRAP;
 
         $this->execute($sql);
     }

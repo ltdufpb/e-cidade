@@ -34,7 +34,7 @@
   
   $arqAux = new cl_arquivo_auxiliar;
   
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   
   $clrotulo = new rotulocampo;
   $clrotulo->label("x21_exerc");

@@ -38,7 +38,7 @@ include(modification("classes/db_db_sysfuncoescliente_classe.php"));
 $cldb_sysfuncoes = new cl_db_sysfuncoes;
 $cldb_sysfuncoescliente = new cl_db_sysfuncoescliente;
 /* $cldb_sysfuncoesparam = new cl_db_sysfuncoesparam;  */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){

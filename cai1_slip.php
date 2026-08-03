@@ -30,16 +30,16 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $db_erro = "";
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $instit = db_getsession("DB_instit");
 if(isset($confirma)){
   db_query("begin");
   $sql = "update numpref set k03_numsli = k03_numsli + 1 
           where k03_instit = $instit and k03_anousu = ".db_getsession('DB_anousu');
   db_query($sql);
-  $db_erro = pg_ErrorMessage($conn);  
+  $db_erro = pg_last_error($conn);  
   if($db_erro==""){
     $result = db_query("select k03_numsli from numpref 
                        where k03_instit = $instit and k03_anousu = ".db_getsession('DB_anousu'));
@@ -63,7 +63,7 @@ if(isset($confirma)){
      								  ".db_getsession("DB_instit") .
 								  ")";
     db_query($sql); 
-    $db_erro = pg_ErrorMessage($conn);  
+    $db_erro = pg_last_error($conn);  
     if($db_erro=="") {
 	   db_query('commit');
 	   $db_erro = "Código Incluído : ".$k03_numsli;
@@ -80,7 +80,7 @@ $result_conta1 = db_query("select 0 as c01_reduz,'Nenhuma...' as c01_descr,'' as
  	                      from plano 
 						  where c01_reduz <> 0 and c01_anousu = ".db_getsession('DB_anousu').
 						  "' order by c01_estrut");
-if(pg_numrows($result_conta1) == 0){
+if(pg_num_rows($result_conta1) == 0){
   echo "<script>parent.alert('Sem Contas Cadastradas no Plano de Contas.');</script>";
   exit;
 }

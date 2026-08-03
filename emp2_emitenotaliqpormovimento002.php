@@ -34,7 +34,7 @@ include(modification("classes/db_pagordemele_classe.php"));
 
 $oGet = db_utils::postMemory($_GET);
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clpagordem = new cl_pagordem;
 $clpagordemele = new cl_pagordemele;
 
@@ -47,7 +47,7 @@ $sSqlPrefeitura = "select * from db_config where codigo = {$iInstit} ";
 $rsPrefeitura = db_query($sSqlPrefeitura);
 db_fieldsmemory($rsPrefeitura, 0);
 
-$aWhere = array();
+$aWhere = [];
 
 if (isset($oGet->e50_codord) && !empty($oGet->e50_codord)) {
     $aWhere[] = "e50_codord in({$oGet->e50_codord})";
@@ -76,7 +76,7 @@ if ($clpagordem->numrows > 0) {
 
 $rsBuscaNVias = db_query("select * from empparametro where e39_anousu = {$iAnoUso} ");
 
-if (pg_numrows($rsBuscaNVias) > 0) {
+if (pg_num_rows($rsBuscaNVias) > 0) {
 
     db_fieldsmemory($rsBuscaNVias, 0);
     $pdf1->nvias = $e30_nroviaord;
@@ -170,7 +170,7 @@ for ($i = 0; $i < $clpagordem->numrows; $i++) {
     /**
      * coloquei a linha abaixo porque emitindo por data em charqueadas dava erro
      */
-    if (pg_numrows($rsDadosOrdem) == 0) {
+    if (pg_num_rows($rsDadosOrdem) == 0) {
         continue;
     }
 
@@ -233,7 +233,7 @@ for ($i = 0; $i < $clpagordem->numrows; $i++) {
     $sSqlPcFornecedor .= "  where pc63_numcgm = {$z01_numcgm}";
     $rsPcfornecon = db_query($sSqlPcFornecedor);
 
-    if (pg_numrows($rsPcfornecon) > 0) {
+    if (pg_num_rows($rsPcfornecon) > 0) {
         db_fieldsmemory($rsPcfornecon, 0);
     }
 
@@ -248,7 +248,7 @@ for ($i = 0; $i < $clpagordem->numrows; $i++) {
     }
     $pdf1->logo = $logo;
     $pdf1->prefeitura = $nomeinst;
-    $pdf1->enderpref = trim($ender) . "," . $numero;
+    $pdf1->enderpref = trim((string) $ender) . "," . $numero;
     $pdf1->municpref = $munic;
     $pdf1->cgcpref = $cgc;
     $pdf1->telefpref = $telef;
@@ -274,7 +274,7 @@ for ($i = 0; $i < $clpagordem->numrows; $i++) {
     $sSqlConta .= "         and c52_descrred = 'F' ";
     $rsConta = db_query(analiseQueryPlanoOrcamento($sSqlConta));
 
-    if ($rsConta != false && (pg_numrows($rsConta) == 1)) {
+    if ($rsConta != false && (pg_num_rows($rsConta) == 1)) {
 
         db_fieldsmemory($rsConta, 0);
         $sSqlConplanoConta
@@ -301,7 +301,7 @@ for ($i = 0; $i < $clpagordem->numrows; $i++) {
     $pdf1->outrasordens = $outrasordens;
     $pdf1->recorddositens = $rsItem;
     $pdf1->ano = $e60_anousu;
-    $pdf1->linhasdositens = pg_numrows($rsItem);
+    $pdf1->linhasdositens = pg_num_rows($rsItem);
     $pdf1->elementoitem = "o56_elemento";
     $pdf1->descr_elementoitem = "o56_descr";
     $pdf1->vlremp = "e53_valor";
@@ -310,7 +310,7 @@ for ($i = 0; $i < $clpagordem->numrows; $i++) {
     $pdf1->vlrsaldo = "saldo";
     $pdf1->saldo_final = "saldo_final";
     $pdf1->recordretencoes = $rsRetencoes;
-    $pdf1->linhasretencoes = pg_numrows($rsRetencoes);
+    $pdf1->linhasretencoes = pg_num_rows($rsRetencoes);
     $pdf1->receita = "e52_receit";
     $pdf1->dreceita = "k02_drecei";
     $pdf1->vlrrec = "e52_valor";
@@ -367,8 +367,8 @@ for ($i = 0; $i < $clpagordem->numrows; $i++) {
 
     if ($clpagordem->numrows == 1 && isset($valor_ordem)) {
 
-        if ($valor_ordem > pg_result($rsItem, 0, "saldo")) {
-            $valor_ordem = pg_result($rsItem, 0, "saldo");
+        if ($valor_ordem > pg_fetch_result($rsItem, 0, "saldo")) {
+            $valor_ordem = pg_fetch_result($rsItem, 0, "saldo");
         }
 
         $pdf1->valor_ordem = "$valor_ordem";

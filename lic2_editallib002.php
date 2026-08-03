@@ -32,7 +32,7 @@ $clliclicita = new cl_liclicita;
 $clliclicita->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label('l03_descr');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $where = "";
 $info1 = "Todas";

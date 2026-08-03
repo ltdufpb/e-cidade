@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE tipo_tempo
 class cl_tipo_tempo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tr04_id = 0; 
-   var $tr04_sigla = null; 
-   var $tr04_descr = null; 
+   public $tr04_id = 0; 
+   public $tr04_sigla = null; 
+   public $tr04_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tr04_id = int8 = Código do clima 
                  tr04_sigla = char(3) = Sigla Do Clima 
                  tr04_descr = varchar(35) = descrição do Clima 
                  ";
    //funcao construtor da classe 
-   function cl_tipo_tempo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipo_tempo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_tipo_tempo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tr04_id = pg_result($result,0,0); 
+       $this->tr04_id = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tipo_tempo_tr04_id_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tr04_id)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tr04_id)){
          $this->erro_sql = " Campo tr04_id maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_tipo_tempo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo de tempos ($this->tr04_id) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo de tempos já Cadastrado";
@@ -166,12 +166,12 @@ class cl_tipo_tempo {
      $resaco = $this->sql_record($this->sql_query_file($this->tr04_id));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5611,'$this->tr04_id','I')");
-       $resac = db_query("insert into db_acount values($acount,872,5611,'','".AddSlashes(pg_result($resaco,0,'tr04_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,872,5612,'','".AddSlashes(pg_result($resaco,0,'tr04_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,872,5610,'','".AddSlashes(pg_result($resaco,0,'tr04_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,872,5611,'','".AddSlashes(pg_fetch_result($resaco,0,'tr04_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,872,5612,'','".AddSlashes(pg_fetch_result($resaco,0,'tr04_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,872,5610,'','".AddSlashes(pg_fetch_result($resaco,0,'tr04_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_tipo_tempo {
       $this->atualizacampos();
      $sql = " update tipo_tempo set ";
      $virgula = "";
-     if(trim($this->tr04_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr04_id"])){ 
+     if(trim((string) $this->tr04_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr04_id"])){ 
        $sql  .= $virgula." tr04_id = $this->tr04_id ";
        $virgula = ",";
-       if(trim($this->tr04_id) == null ){ 
+       if(trim((string) $this->tr04_id) == null ){ 
          $this->erro_sql = " Campo Código do clima nao Informado.";
          $this->erro_campo = "tr04_id";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_tipo_tempo {
          return false;
        }
      }
-     if(trim($this->tr04_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr04_sigla"])){ 
+     if(trim((string) $this->tr04_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr04_sigla"])){ 
        $sql  .= $virgula." tr04_sigla = '$this->tr04_sigla' ";
        $virgula = ",";
-       if(trim($this->tr04_sigla) == null ){ 
+       if(trim((string) $this->tr04_sigla) == null ){ 
          $this->erro_sql = " Campo Sigla Do Clima nao Informado.";
          $this->erro_campo = "tr04_sigla";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_tipo_tempo {
          return false;
        }
      }
-     if(trim($this->tr04_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr04_descr"])){ 
+     if(trim((string) $this->tr04_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr04_descr"])){ 
        $sql  .= $virgula." tr04_descr = '$this->tr04_descr' ";
        $virgula = ",";
-       if(trim($this->tr04_descr) == null ){ 
+       if(trim((string) $this->tr04_descr) == null ){ 
          $this->erro_sql = " Campo descrição do Clima nao Informado.";
          $this->erro_campo = "tr04_descr";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_tipo_tempo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5611,'$this->tr04_id','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr04_id"]))
-           $resac = db_query("insert into db_acount values($acount,872,5611,'".AddSlashes(pg_result($resaco,$conresaco,'tr04_id'))."','$this->tr04_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,872,5611,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr04_id'))."','$this->tr04_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr04_sigla"]))
-           $resac = db_query("insert into db_acount values($acount,872,5612,'".AddSlashes(pg_result($resaco,$conresaco,'tr04_sigla'))."','$this->tr04_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,872,5612,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr04_sigla'))."','$this->tr04_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr04_descr"]))
-           $resac = db_query("insert into db_acount values($acount,872,5610,'".AddSlashes(pg_result($resaco,$conresaco,'tr04_descr'))."','$this->tr04_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,872,5610,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr04_descr'))."','$this->tr04_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_tipo_tempo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5611,'$tr04_id','E')");
-         $resac = db_query("insert into db_acount values($acount,872,5611,'','".AddSlashes(pg_result($resaco,$iresaco,'tr04_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,872,5612,'','".AddSlashes(pg_result($resaco,$iresaco,'tr04_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,872,5610,'','".AddSlashes(pg_result($resaco,$iresaco,'tr04_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,872,5611,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr04_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,872,5612,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr04_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,872,5610,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr04_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tipo_tempo
@@ -345,7 +345,7 @@ class cl_tipo_tempo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tipo_tempo";
@@ -359,7 +359,7 @@ class cl_tipo_tempo {
    function sql_query ( $tr04_id=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,7 +380,7 @@ class cl_tipo_tempo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_tipo_tempo {
    function sql_query_file ( $tr04_id=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_tipo_tempo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

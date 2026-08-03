@@ -30,8 +30,8 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("classes/db_rhfuncao_classe.php"));
 require_once(modification("classes/db_rhregime_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $clrhfuncao = new cl_rhfuncao;
 $clrhregime = new cl_rhregime;
@@ -129,7 +129,7 @@ $sql1 = "select $CamposLotacao funcao as rh37_funcao,
               order by funcao";	
 
 $result_funcoes=  db_query($sql1);
-if (pg_numrows($result_funcoes) == 0) {
+if (pg_num_rows($result_funcoes) == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum cargo encontrado");
 }
 
@@ -143,7 +143,7 @@ $colunas = "";
 $virgula = "";
 for($x = 0; $x < $clrhregime->numrows; $x ++) {
   db_fieldsmemory($result_regime, $x);
-  $colunas .= $virgula.strtolower($rh30_vinculo);
+  $colunas .= $virgula.strtolower((string) $rh30_vinculo);
   $virgula = ",";
 }
 
@@ -202,7 +202,7 @@ if(isset($formato_emissao) && $formato_emissao == "csv" && isset($sNomeArquivo))
 
 }
 
-for($x = 0; $x < pg_numrows($result_funcoes); $x ++) {
+for($x = 0; $x < pg_num_rows($result_funcoes); $x ++) {
 
   db_fieldsmemory($result_funcoes, $x);
   

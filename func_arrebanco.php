@@ -33,8 +33,8 @@ include_once(modification("libs/db_usuariosonline.php"));
 include_once(modification("dbforms/db_funcoes.php"));
 include_once(modification("classes/db_arrebanco_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clarrebanco = new cl_arrebanco;
 $clarrebanco->rotulo->label();

@@ -31,14 +31,6 @@ class TrocaAlunosTurmaService
      */
     private $matriculas;
     /**
-     * @var array
-     */
-    private $regencias;
-    /**
-     * @var array
-     */
-    private $procedimentos;
-    /**
      * @var DBDate
      */
     private $dataAlteracao;
@@ -50,10 +42,6 @@ class TrocaAlunosTurmaService
      * @var array
      */
     private $turnos;
-    /**
-     * @var string
-     */
-    private $importarAvaliacoes;
 
     /**
      * TrocaAlunosTurmaService constructor.
@@ -66,16 +54,19 @@ class TrocaAlunosTurmaService
      * @param $turnos
      * @param $importarAvaliacoes
      * @throws DBException
+     * @param mixed[] $regencias
+     * @param mixed[] $procedimentos
+     * @param string $importarAvaliacoes
      */
     public function __construct(
         $turmaDestino,
         $matriculas,
-        $regencias,
-        $procedimentos,
+        private $regencias,
+        private $procedimentos,
         $dataAlteracao,
         $etapaDestino,
         $turnos,
-        $importarAvaliacoes,
+        private $importarAvaliacoes,
         $turmaOrigem = null
     ) {
         $this->turmaDestino = TurmaRepository::getTurmaByCodigo($turmaDestino);
@@ -91,10 +82,7 @@ class TrocaAlunosTurmaService
                 ]
             );
         }
-        $this->regencias = $regencias;
-        $this->procedimentos = $procedimentos;
         $this->turnos = implode(',', $turnos);
-        $this->importarAvaliacoes = $importarAvaliacoes;
     }
 
     /**

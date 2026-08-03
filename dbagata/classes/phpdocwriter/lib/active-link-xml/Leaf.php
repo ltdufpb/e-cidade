@@ -34,7 +34,7 @@
 class Leaf {
 
 	// protected variables
-	var $value;
+	public $value;
 
 	/**
 	  *	Constructor for the object
@@ -42,7 +42,7 @@ class Leaf {
 	  *	@param		optional mixed value
 	  *	@returns	none
 	  */
-	function Leaf($value = "") {
+	function __construct($value = "") {
 		$this->setValue($value);
 	}
 

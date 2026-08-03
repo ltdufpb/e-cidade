@@ -54,25 +54,25 @@ switch ($oParam->exec) {
     }
 
     if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim == "") {
-      $sWhere .= " and e50_data = '".implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)))."'";
+      $sWhere .= " and e50_data = '".implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataIni)))."'";
     } else if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim != "") {
 
-      $dtDataIni = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)));
-      $dtDataFim = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+      $dtDataIni = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataIni)));
+      $dtDataFim = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataFim)));
       $sWhere .= " and e50_data between '{$dtDataIni}' and '{$dtDataFim}'";
 
     } else if ($oParam->params[0]->dtDataIni == "" && $oParam->params[0]->dtDataFim != "") {
 
-       $dtDataFim  = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+       $dtDataFim  = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataFim)));
        $sWhere    .= " and e50_data <= '{$dtDataFim}'";
     }
 
     //Filtro para Empenho
     if ($oParam->params[0]->iCodEmp!= '') {
 
-      if (strpos($oParam->params[0]->iCodEmp,"/")) {
+      if (strpos((string) $oParam->params[0]->iCodEmp,"/")) {
 
-        $aEmpenho = explode("/",$oParam->params[0]->iCodEmp);
+        $aEmpenho = explode("/",(string) $oParam->params[0]->iCodEmp);
         $sWhere .= " and e60_codemp = '{$aEmpenho[0]}' and e60_anousu={$aEmpenho[1]}";
 
       } else {

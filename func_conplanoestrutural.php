@@ -37,8 +37,8 @@ include_once(modification("libs/db_menu_estrutural.php")); // teste carlos
 
 // recebe variavel $conta com o reduzido do conplanoreduz
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clconplano     = new cl_conplano;
 

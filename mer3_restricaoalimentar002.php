@@ -71,10 +71,10 @@ $result = $clmatricula->sql_record($clmatricula->sql_query("",$campos,""," ed60_
    <tr class='cabec'>
     <td align='center' colspan='8'>
     <?php if($clmatricula->numrows>0){?>
-      Turma: <?=pg_result($result,0,"ed57_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
-      Etapa: <?=pg_result($result,0,"ed11_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
-      Calendário: <?=pg_result($result,0,"ed52_c_descr")?><br>
-      Ensino: <?=pg_result($result,0,"ed29_c_descr")?>      
+      Turma: <?=pg_fetch_result($result,0,"ed57_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
+      Etapa: <?=pg_fetch_result($result,0,"ed11_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
+      Calendário: <?=pg_fetch_result($result,0,"ed52_c_descr")?><br>
+      Ensino: <?=pg_fetch_result($result,0,"ed29_c_descr")?>      
     </td>
    </tr>
    <tr><td height='2' colspan='8' bgcolor='#444444'></td></tr>

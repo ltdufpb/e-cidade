@@ -43,18 +43,6 @@ abstract class ContaCorrenteRepositoryBase {
   protected $oContaCorrente;
 
   /**
-   * Data Inicial para o relatório
-   * @var string date
-   */
-  protected $dtInicial;
-
-  /**
-   * Data Final para o relatório
-   * @var string date
-   */
-  protected $dtFinal;
-
-  /**
    * Dia da data inicial que veio do filtro da tela
    * @var integer
    */
@@ -114,18 +102,26 @@ abstract class ContaCorrenteRepositoryBase {
 
   /**
    * Setamos os atributos da conta corrente em questao e setamos os atributos de data da classe
+   * @param string $dtInicial
+   * @param string $dtFinal
    */
-  public function __construct($iContaCorrente, $dtInicial, $dtFinal) {
+  public function __construct($iContaCorrente, /**
+   * Data Inicial para o relatório
+   * @var string date
+   */
+  protected $dtInicial, /**
+   * Data Final para o relatório
+   * @var string date
+   */
+  protected $dtFinal) {
 
     $this->oContaCorrente = ContaCorrenteRepository::getContaCorrenteByCodigo($iContaCorrente);
-    $this->dtInicial      = $dtInicial;
-    $this->dtFinal        = $dtFinal;
 
     /**
      * Quebramos a data para setar os atributos de dia mes e ano utilizados para filtrar os lançamentos
      */
-    list($this->iAnoInicial, $this->iMesInicial, $this->iDiaInicial) = explode("-", $this->dtInicial);
-    list($this->iAnoFinal,   $this->iMesFinal,   $this->iDiaFinal)   = explode("-", $this->dtFinal);
+    [$this->iAnoInicial, $this->iMesInicial, $this->iDiaInicial] = explode("-", $this->dtInicial);
+    [$this->iAnoFinal, $this->iMesFinal, $this->iDiaFinal]   = explode("-", $this->dtFinal);
   }
 
   /**
@@ -235,10 +231,10 @@ abstract class ContaCorrenteRepositoryBase {
   	/**
   	 * @todo: ver possibilidade de refatoração
   	 */
-  	$aCredores  = array(2,6,8);
-  	$aDevedores = array(1,5,7);
+  	$aCredores  = [2,6,8];
+  	$aDevedores = [1,5,7];
 
-  	$sSubstrEstrutural = substr($oMovimentacoes->iEstrutural, 0, 1);
+  	$sSubstrEstrutural = substr((string) $oMovimentacoes->iEstrutural, 0, 1);
 
   	if(in_array($sSubstrEstrutural, $aCredores)) {
   		$oMovimentacoes->iNaturezaConta = self::NATUREZA_CREDORA;
@@ -391,18 +387,11 @@ abstract class ContaCorrenteRepositoryBase {
 
   	$fSaldoAnterior = 0;
 
-  	switch ($iNaturezaConta) {
-
-  		case self::NATUREZA_CREDORA:
-
-  			$fSaldoAnterior = $iCreditoAnterior - $iDebitoAnterior;
-  			break;
-
-  		case self::NATUREZA_DEVEDORA:
-
-  			$fSaldoAnterior = $iDebitoAnterior - $iCreditoAnterior;
-  			break;
-  	}
+  	$fSaldoAnterior = match ($iNaturezaConta) {
+          self::NATUREZA_CREDORA => $iCreditoAnterior - $iDebitoAnterior,
+          self::NATUREZA_DEVEDORA => $iDebitoAnterior - $iCreditoAnterior,
+          default => $fSaldoAnterior,
+      };
 
     return $fSaldoAnterior;
   }

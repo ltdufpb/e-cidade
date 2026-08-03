@@ -4,7 +4,7 @@ $iAcervosEmprestados = count( $oDadosEmprestimos->aAcervos );
 $iAltura  = 150;
 $iAltura += ($iAcervosEmprestados * 4) * 2;
 
-$oPdf = new scpdf('P','mm', array(80, $iAltura) );
+$oPdf = new scpdf('P','mm', [80, $iAltura] );
 $oPdf->Open();
 $oPdf->SetAutoPageBreak( false, 1 );
 $oPdf->SetMargins( 5, 5 );
@@ -64,7 +64,7 @@ for ( $iContador = 0; $iContador < 2; $iContador++ ) {
   $oPdf->Ln(8);
 
   $oPdf->MultiCell(72, 4, $oDadosEmprestimos->aEmprestimos[0]->ov02_nome, 0, 'C' );
-  $sCodigoBarras = str_pad($oDadosEmprestimos->aEmprestimos[0]->ov02_sequencial, 8, 0, STR_PAD_LEFT);
+  $sCodigoBarras = str_pad((string) $oDadosEmprestimos->aEmprestimos[0]->ov02_sequencial, 8, 0, STR_PAD_LEFT);
 
   $oPdf->SetFillColor( 000 );
   $oPdf->int25(24, $oPdf->getY(), $sCodigoBarras, 10, 0.5);

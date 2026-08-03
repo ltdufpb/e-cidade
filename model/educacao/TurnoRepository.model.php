@@ -37,7 +37,7 @@ class TurnoRepository
      * Collection de Turno
      * @var Turno[]
      */
-    private $aTurno = array();
+    private $aTurno = [];
 
     /**
      * Instancia da classe

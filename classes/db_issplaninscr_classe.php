@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE issplaninscr
 class cl_issplaninscr { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q24_sequencial = 0; 
-   var $q24_planilha = 0; 
-   var $q24_inscr = 0; 
+   public $q24_sequencial = 0; 
+   public $q24_planilha = 0; 
+   public $q24_inscr = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q24_sequencial = int4 = sequencial 
                  q24_planilha = int4 = planilha 
                  q24_inscr = int4 = inscrição 
                  ";
    //funcao construtor da classe 
-   function cl_issplaninscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issplaninscr"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_issplaninscr {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q24_sequencial = pg_result($result,0,0); 
+       $this->q24_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from issplaninscr_q24_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q24_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q24_sequencial)){
          $this->erro_sql = " Campo q24_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_issplaninscr {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "issplaninscr ($this->q24_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "issplaninscr já Cadastrado";
@@ -166,12 +166,12 @@ class cl_issplaninscr {
      $resaco = $this->sql_record($this->sql_query_file($this->q24_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9193,'$this->q24_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1572,9193,'','".AddSlashes(pg_result($resaco,0,'q24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1572,9194,'','".AddSlashes(pg_result($resaco,0,'q24_planilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1572,9195,'','".AddSlashes(pg_result($resaco,0,'q24_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1572,9193,'','".AddSlashes(pg_fetch_result($resaco,0,'q24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1572,9194,'','".AddSlashes(pg_fetch_result($resaco,0,'q24_planilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1572,9195,'','".AddSlashes(pg_fetch_result($resaco,0,'q24_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_issplaninscr {
       $this->atualizacampos();
      $sql = " update issplaninscr set ";
      $virgula = "";
-     if(trim($this->q24_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q24_sequencial"])){ 
+     if(trim((string) $this->q24_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q24_sequencial"])){ 
        $sql  .= $virgula." q24_sequencial = $this->q24_sequencial ";
        $virgula = ",";
-       if(trim($this->q24_sequencial) == null ){ 
+       if(trim((string) $this->q24_sequencial) == null ){ 
          $this->erro_sql = " Campo sequencial nao Informado.";
          $this->erro_campo = "q24_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_issplaninscr {
          return false;
        }
      }
-     if(trim($this->q24_planilha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q24_planilha"])){ 
+     if(trim((string) $this->q24_planilha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q24_planilha"])){ 
        $sql  .= $virgula." q24_planilha = $this->q24_planilha ";
        $virgula = ",";
-       if(trim($this->q24_planilha) == null ){ 
+       if(trim((string) $this->q24_planilha) == null ){ 
          $this->erro_sql = " Campo planilha nao Informado.";
          $this->erro_campo = "q24_planilha";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_issplaninscr {
          return false;
        }
      }
-     if(trim($this->q24_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q24_inscr"])){ 
+     if(trim((string) $this->q24_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q24_inscr"])){ 
        $sql  .= $virgula." q24_inscr = $this->q24_inscr ";
        $virgula = ",";
-       if(trim($this->q24_inscr) == null ){ 
+       if(trim((string) $this->q24_inscr) == null ){ 
          $this->erro_sql = " Campo inscrição nao Informado.";
          $this->erro_campo = "q24_inscr";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_issplaninscr {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9193,'$this->q24_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q24_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1572,9193,'".AddSlashes(pg_result($resaco,$conresaco,'q24_sequencial'))."','$this->q24_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1572,9193,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q24_sequencial'))."','$this->q24_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q24_planilha"]))
-           $resac = db_query("insert into db_acount values($acount,1572,9194,'".AddSlashes(pg_result($resaco,$conresaco,'q24_planilha'))."','$this->q24_planilha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1572,9194,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q24_planilha'))."','$this->q24_planilha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q24_inscr"]))
-           $resac = db_query("insert into db_acount values($acount,1572,9195,'".AddSlashes(pg_result($resaco,$conresaco,'q24_inscr'))."','$this->q24_inscr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1572,9195,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q24_inscr'))."','$this->q24_inscr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_issplaninscr {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9193,'$q24_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1572,9193,'','".AddSlashes(pg_result($resaco,$iresaco,'q24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1572,9194,'','".AddSlashes(pg_result($resaco,$iresaco,'q24_planilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1572,9195,'','".AddSlashes(pg_result($resaco,$iresaco,'q24_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1572,9193,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1572,9194,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q24_planilha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1572,9195,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q24_inscr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from issplaninscr
@@ -345,7 +345,7 @@ class cl_issplaninscr {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:issplaninscr";
@@ -359,7 +359,7 @@ class cl_issplaninscr {
    function sql_query ( $q24_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_issplaninscr {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,7 +396,7 @@ class cl_issplaninscr {
    function sql_query_file ( $q24_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_issplaninscr {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

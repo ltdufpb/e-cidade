@@ -38,10 +38,10 @@ $oUnidadeGestora           = $oUnidadeGestoraRepository->getById($oGet->unidade_
 $oTipoRecolhimentoRepository = new \ECidade\Tributario\Grm\Repository\TipoRecolhimento();
 
 $oGuiaRecolhimentoRepository = new \ECidade\Tributario\Grm\Repository\Recibo();
-$aWhere       = array();
-$aTextoFiltro = array();
+$aWhere       = [];
+$aTextoFiltro = [];
 
-$aEspecieIngresso = array(1 => 'Receita', 2 => 'DDO', 3=> 'Estorno de Despesa');
+$aEspecieIngresso = [1 => 'Receita', 2 => 'DDO', 3=> 'Estorno de Despesa'];
 if (!empty($oGet->tipo_recolhimento)) {
 
   $aWhere[] = 'k174_tiporecolhimento = '.(int)$oGet->tipo_recolhimento;
@@ -79,7 +79,7 @@ if (count($aPagamentos) == 0) {
   exit;
 }
 
-$aDados = array();
+$aDados = [];
 foreach ($aPagamentos as $oPagamento) {
 
   $iCodigoRecolhimento = $oPagamento->getTipoRecolhimento()->getCodigo();
@@ -88,7 +88,7 @@ foreach ($aPagamentos as $oPagamento) {
     $oTipoRecolhimento         = new stdClass();
     $oTipoRecolhimento->codigo = $oPagamento->getTipoRecolhimento()->getCodigoRecolhimento();
     $oTipoRecolhimento->nome   = $oPagamento->getTipoRecolhimento()->getNome();
-    $oTipoRecolhimento->guias  = array();
+    $oTipoRecolhimento->guias  = [];
     $aDados[$iCodigoRecolhimento] = $oTipoRecolhimento;
   }
   $oTipoRecolhimento = $aDados[$iCodigoRecolhimento];
@@ -105,7 +105,7 @@ foreach ($aPagamentos as $oPagamento) {
 
     $oGuia->cgm = $cidadao->getCodigo();
     $oGuia->nome = $cidadao->getNome();
-    $oGuia->cpf_cnpj = strlen($cidadao->getCpfCnpj()) === 11 ? db_formatar($cidadao->getCpfCnpj(), 'CPF') : db_formatar($cidadao->getCpfCnpj(), 'cnpj');
+    $oGuia->cpf_cnpj = strlen((string) $cidadao->getCpfCnpj()) === 11 ? db_formatar($cidadao->getCpfCnpj(), 'CPF') : db_formatar($cidadao->getCpfCnpj(), 'cnpj');
   }
 
   $oGuia->data_pagamento      = $oPagamento->getDataPagamento()->getDate(DBDate::DATA_PTBR);
@@ -169,8 +169,8 @@ foreach ($aDados as $oTipoRecolhimento) {
     $pdf->Cell(25, $iAlturalinha, $oGuia->cpf_cnpj, 1, 0, 'L');
     $pdf->Cell(20, $iAlturalinha, $oGuia->data_pagamento, 1, 0, 'C');
 
-    if (strlen($oGuia->referencia) > 23) {
-        $oGuia->referencia = substr($oGuia->referencia, 0, 23) . "...";
+    if (strlen((string) $oGuia->referencia) > 23) {
+        $oGuia->referencia = substr((string) $oGuia->referencia, 0, 23) . "...";
     }
     $pdf->Cell(35, $iAlturalinha, $oGuia->referencia, 1, 0, 'L');
     $pdf->Cell(18, $iAlturalinha, $oGuia->competencia, 1, 0, 'C');
@@ -194,9 +194,9 @@ foreach ($aDados as $oTipoRecolhimento) {
     foreach ($oGuia->atributos as $atributo) {
 
       $pdf->setfont('arial', 'b', 7);
-      $pdf->Cell($iTamanhoCelula + 5, $iAlturalinha, substr($atributo->nome, 0, 40), "BR", 0, 'L');
+      $pdf->Cell($iTamanhoCelula + 5, $iAlturalinha, substr((string) $atributo->nome, 0, 40), "BR", 0, 'L');
       $pdf->setfont('arial', '', 7);
-      $pdf->Cell((272 - $iTamanhoCelula), $iAlturalinha, trim($atributo->valor), "B", 1, 'L');
+      $pdf->Cell((272 - $iTamanhoCelula), $iAlturalinha, trim((string) $atributo->valor), "B", 1, 'L');
     }
     $pdf->ln();
   }

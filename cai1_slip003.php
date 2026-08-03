@@ -5,7 +5,7 @@ require_once modification("classes/db_saltes_classe.php");
 
 $clsaltes = new cl_saltes;
 
-parse_str(base64_decode($_SERVER['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 $motivo = "";
 // Dados
@@ -114,7 +114,7 @@ try {
     $dados = db_query($sql);
     $sEvento = "";
 
-    if (pg_numrows($dados) > 0){
+    if (pg_num_rows($dados) > 0){
 
         $aMotivo = db_fieldsMemory($dados,0);
         $motivo  = $k18_motivo;
@@ -136,9 +136,9 @@ try {
          ";
     $recursos  = db_query($sql);
     // se houverem registros, monta um array
-    $array_recursos =  array();
-    if (pg_numrows($recursos)>0){
-        for($x=0;$x < pg_numrows($recursos);$x++){
+    $array_recursos =  [];
+    if (pg_num_rows($recursos)>0){
+        for($x=0;$x < pg_num_rows($recursos);$x++){
             db_fieldsmemory($recursos,$x);
             $array_recursos[] = "$k29_recurso#$o15_descr#$k29_valor";
         }
@@ -149,7 +149,7 @@ try {
     // print_r($array_recursos); exit;
 
 
-    if (pg_numrows($dados) == 0) {
+    if (pg_num_rows($dados) == 0) {
         throw new Exception('Documento de Slip não Cadastrado.');
     }
 
@@ -166,7 +166,7 @@ try {
 
     $sqlcai = "select * from caiparametro where k29_instit = ".db_getsession('DB_instit');
     $resultcai = db_query($sqlcai) or die($sqlcai);
-    if (pg_numrows($resultcai) == 0) {
+    if (pg_num_rows($resultcai) == 0) {
         $k29_modslipnormal = 36;
         $k29_modsliptransf = 36;
     } else {
@@ -257,7 +257,7 @@ try {
         throw new Exception($sMensagemErro);
     }
 
-    $tipoVinculoLimiteSaque  = array(500, 501, 502, 503);
+    $tipoVinculoLimiteSaque  = [500, 501, 502, 503];
 
     /**
      * Dados bancarios da conta padrao

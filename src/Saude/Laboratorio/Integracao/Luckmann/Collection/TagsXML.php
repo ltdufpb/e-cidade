@@ -38,7 +38,7 @@ class TagsXML
     /**
      * @var TagXML[]
      */
-    private $colecao = array();
+    private $colecao = [];
 
     /**
      * @param TagXML $tagXml

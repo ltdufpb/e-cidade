@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ?>
 <html>
@@ -55,19 +55,19 @@ function js_processamodulousu(codmod,usuario){
           where at01_codcli = $codcli";
     $result_cli = db_query($sql);
 
-    echo "<strong>Cliente:</strong> ".pg_result($result_cli,0,'at01_nomecli');
+    echo "<strong>Cliente:</strong> ".pg_fetch_result($result_cli,0,'at01_nomecli');
   }
   $sql = "select nome_modulo 
           from db_modulos
           where id_item = $codmod";
   $result_cli = db_query($sql);
-  echo "<strong> Módulo: </strong>".pg_result($result_cli,0,'nome_modulo');
+  echo "<strong> Módulo: </strong>".pg_fetch_result($result_cli,0,'nome_modulo');
 
   $sql = "select descricao 
           from db_itensmenu
           where id_item = $coditem";
   $result_cli = db_query($sql);
-  echo "<strong> Ítem: </strong>".pg_result($result_cli,0,'descricao');
+  echo "<strong> Ítem: </strong>".pg_fetch_result($result_cli,0,'descricao');
 
   if($codcli==0){
     $sql = "select at01_nomecli,at99_id_usuario,at10_login,at10_nome,count(*) as dl_acessos,at99_itemcodmod as db_at99_itemcodmod

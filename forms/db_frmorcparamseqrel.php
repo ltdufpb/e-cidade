@@ -31,7 +31,7 @@ $clrotulo->label("o42_descrrel");
 
 function espaco($estrutural=""){
     $espaco ="";
-    if(substr($estrutural,1,14)     == '00000000000000'){	$espaco="";    }elseif(substr($estrutural,2,13)== '0000000000000'){   	$espaco="&nbsp;&nbsp;";    }elseif(substr($estrutural,3,12)== '000000000000'){   	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr($estrutural,4,11) == '00000000000'){	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr($estrutural,5,10) == '0000000000'){    	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr($estrutural,7,8)  == '00000000'){    	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr($estrutural,9,6)  == '000000'){    	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr($estrutural,11,4) == '0000'){ 	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr($estrutural,12,3) == '000'){	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr($estrutural,13,2) == '00'){ 	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }
+    if(substr((string) $estrutural,1,14)     == '00000000000000'){	$espaco="";    }elseif(substr((string) $estrutural,2,13)== '0000000000000'){   	$espaco="&nbsp;&nbsp;";    }elseif(substr((string) $estrutural,3,12)== '000000000000'){   	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr((string) $estrutural,4,11) == '00000000000'){	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr((string) $estrutural,5,10) == '0000000000'){    	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr((string) $estrutural,7,8)  == '00000000'){    	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr((string) $estrutural,9,6)  == '000000'){    	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr((string) $estrutural,11,4) == '0000'){ 	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr((string) $estrutural,12,3) == '000'){	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }elseif(substr((string) $estrutural,13,2) == '00'){ 	$espaco="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";    }
     return $espaco;
 }
 
@@ -152,13 +152,13 @@ function js_select(tipo){
        ";           					                      
   $result=$clorcparamelemento->sql_record($sql);
   $numrows = $clorcparamelemento->numrows;
-  $a_codcon = $p_codcon = $r_codcon = $d_codcon = $o_codcon  = array();
-  $a_estrut = $p_estrut = $r_estrut = $d_estrut = $o_estrut  = array();
-  $a_descred= $p_descred= $r_descred= $d_descred= $o_descred = array();
-  $a_descr  = $p_descr  = $r_descr  = $d_descr  = $o_descr   = array();
-  $a_codele = $p_codele = $r_codele = $d_codele = $o_codele  = array();
-  $a_recurso= $p_recurso= $r_recurso= $d_recurso= $o_recurso = array();
-  $a_reduz  = $p_reduz  = $r_reduz  = $d_reduz  = $o_reduz   = array();
+  $a_codcon = $p_codcon = $r_codcon = $d_codcon = $o_codcon  = [];
+  $a_estrut = $p_estrut = $r_estrut = $d_estrut = $o_estrut  = [];
+  $a_descred= $p_descred= $r_descred= $d_descred= $o_descred = [];
+  $a_descr  = $p_descr  = $r_descr  = $d_descr  = $o_descr   = [];
+  $a_codele = $p_codele = $r_codele = $d_codele = $o_codele  = [];
+  $a_recurso= $p_recurso= $r_recurso= $d_recurso= $o_recurso = [];
+  $a_reduz  = $p_reduz  = $r_reduz  = $d_reduz  = $o_reduz   = [];
   $a = 0;
   $p = 0;
   $d = 0;
@@ -166,7 +166,7 @@ function js_select(tipo){
   $o = 0;
   for($i = 0;$i < $numrows;$i++) {
      db_fieldsmemory($result,$i); 
-     if (substr($c60_estrut,0,1) =='1' ){
+     if (str_starts_with((string) $c60_estrut, '1') ){
        $a_codcon  [$a] = $c60_codcon;
        $a_estrut  [$a] = $c60_estrut;
        $a_descred [$a] = $c52_descrred; // sistema da conta [F/P/C/O]
@@ -175,7 +175,7 @@ function js_select(tipo){
        $a_recurso [$a] = $recurso;
        $a_reduz   [$a] = $c61_reduz;
        $a++;
-     } elseif (substr($c60_estrut,0,1) =='2' ){
+     } elseif (str_starts_with((string) $c60_estrut, '2') ){
        $p_codcon  [$p] = $c60_codcon;
        $p_estrut  [$p] = $c60_estrut;
        $p_descred [$p] = $c52_descrred; // sistema da conta [F/P/C/O]
@@ -184,7 +184,7 @@ function js_select(tipo){
        $p_recurso [$p] = $recurso;
        $p_reduz   [$p] = $c61_reduz;
        $p++;
-     } elseif (substr($c60_estrut,0,1) =='3' ){
+     } elseif (str_starts_with((string) $c60_estrut, '3') ){
        $d_codcon  [$d] = $c60_codcon;
        $d_estrut  [$d] = $c60_estrut;
        $d_descred [$d] = $c52_descrred; // sistema da conta [F/P/C/O]
@@ -193,7 +193,7 @@ function js_select(tipo){
        $d_recurso [$d] = $recurso;
        $d_reduz   [$d] = $c61_reduz;
        $d++;
-     } elseif (substr($c60_estrut,0,1) =='4' ){
+     } elseif (str_starts_with((string) $c60_estrut, '4') ){
        $r_codcon  [$r] = $c60_codcon;
        $r_estrut  [$r] = $c60_estrut;
        $r_descred [$r] = $c52_descrred; // sistema da conta [F/P/C/O]

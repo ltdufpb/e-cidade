@@ -57,9 +57,9 @@ $lHorarioOcupado = false;
 function formataData($data,$tipo) {
 
   if($tipo == 'b'){
-    return implode('-',array_reverse(explode('/',$data)));
+    return implode('-',array_reverse(explode('/',(string) $data)));
   } else {
-    return implode('/',array_reverse(explode('-',$data)));
+    return implode('/',array_reverse(explode('-',(string) $data)));
   }
 }
 
@@ -70,7 +70,7 @@ if (isset($incluir)) {
   // Atualiza o telefone celular na base
   if ( !empty( $z01_i_cgsund ) ) {
 
-    $clcgs_und->z01_v_telcel = preg_replace("/[^0-9]/", "",$z01_v_telcel);
+    $clcgs_und->z01_v_telcel = preg_replace("/[^0-9]/", "",(string) $z01_v_telcel);
     $clcgs_und->alterar( $z01_i_cgsund );
   }
 
@@ -81,10 +81,10 @@ if (isset($incluir)) {
   //Alerta de paciente ja marcado para a mesma especialidade
   if( $objSau_Config->s103_i_validaagenda != null && $objSau_Config->s103_i_validaagenda >= 0 && $sd30_i_codigo != "" ) {
 
-    $sd27_i_codigo = pg_result(db_query("select sd30_i_undmed from undmedhorario where sd30_i_codigo=$sd30_i_codigo"), 0, 0);
+    $sd27_i_codigo = pg_fetch_result(db_query("select sd30_i_undmed from undmedhorario where sd30_i_codigo=$sd30_i_codigo"), 0, 0);
 
     //Verificar se o CGS ja tem consulta marcada para mesma especialidade
-    $vet          = explode("/",$sd23_d_consulta);
+    $vet          = explode("/",(string) $sd23_d_consulta);
     $margem       = date('d/m/Y',mktime(0,0,0,$vet[1],$vet[2]+$objSau_Config->s103_i_validaagenda,$vet[0]));
     $z01_i_cgsund = ( !isset( $z01_i_cgsund ) || trim( $z01_i_cgsund ) == '' ) ? 'NULL' : $z01_i_cgsund;
 
@@ -126,7 +126,7 @@ if (isset($incluir)) {
 
     if (pg_num_rows($result_cgs)>0) {
 
-      $data = pg_result($result_cgs,0,0);
+      $data = pg_fetch_result($result_cgs,0,0);
       db_msgbox("Por favor atualize os dados cadastrais do paciente($z01_i_cgsund). Última atualização[".formataData($data,"a")."]");
     }
   }
@@ -137,7 +137,7 @@ if (isset($incluir)) {
    * =====================================================
    */
   $iUpssolicitante = db_getsession("DB_coddepto");
-  $vet             = explode("/",$sd23_d_consulta);
+  $vet             = explode("/",(string) $sd23_d_consulta);
 
   if ($iUpssolicitante != $sd02_i_codigo) {
 

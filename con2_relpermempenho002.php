@@ -154,7 +154,7 @@ $pdf->addpage("P");
 $iAlt          = 4;
 $sDescricao    = "";
 $iPreencher    = true;
-$aDadosPermEmp = array();
+$aDadosPermEmp = [];
 $iTotalGeral   = 0;
 
 for ( $i = 0; $i < $iNumRows; $i++ ) {
@@ -203,12 +203,12 @@ foreach ( $aDadosPermEmp as $iInd => $aDados ) {
     	
     	$sDescrTipo = "Usuário: ";
     	$sDescricao = "Usuário: ".$aDadosPerm['iCodId']." - ".$aDadosPerm['sDescr'];
-      imprimeCabecalho($pdf,$iAlt,true,$sDescricao);
+      imprimeCabecalho($pdf,$iAlt);
     } else if (isset($aDadosPerm['iTipo']) && $aDadosPerm['iTipo'] == 2) {
     	
     	$sDescrTipo = "Departamento: ";
       $sDescricao = "Departamento: ".$aDadosPerm['iCodId']." - ".$aDadosPerm['sDescr'];
-      imprimeCabecalho($pdf,$iAlt,true,$sDescricao);
+      imprimeCabecalho($pdf,$iAlt);
     }
     
 	  if (isset($aDadosPerm['aDadosPermEmp'])) {     
@@ -217,7 +217,7 @@ foreach ( $aDadosPermEmp as $iInd => $aDados ) {
 	  	
 	    foreach ( $aDadosPerm['aDadosPermEmp'] as $iInd => $oDadosPermissaoEmpenho ) {
 	      
-	      imprimeCabecalho($pdf,$iAlt,false,$sDescricao);
+	      imprimeCabecalho($pdf,$iAlt);
 	      
 	      $pdf->SetFont('arial','',8);
 	      $pdf->cell(21,$iAlt,$oDadosPermissaoEmpenho->iCodOrgao                                          ,"TBR",0,"C",0);

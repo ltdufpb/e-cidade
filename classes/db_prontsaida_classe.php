@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE prontsaida
 class cl_prontsaida { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd27_i_codigo = 0; 
-   var $sd27_i_prontuario = 0; 
-   var $sd27_i_departamento = 0; 
-   var $sd27_i_material = 0; 
-   var $sd27_i_quantidade = 0; 
-   var $sd27_i_usuario = 0; 
-   var $sd27_d_data_dia = null; 
-   var $sd27_d_data_mes = null; 
-   var $sd27_d_data_ano = null; 
-   var $sd27_d_data = null; 
+   public $sd27_i_codigo = 0; 
+   public $sd27_i_prontuario = 0; 
+   public $sd27_i_departamento = 0; 
+   public $sd27_i_material = 0; 
+   public $sd27_i_quantidade = 0; 
+   public $sd27_i_usuario = 0; 
+   public $sd27_d_data_dia = null; 
+   public $sd27_d_data_mes = null; 
+   public $sd27_d_data_ano = null; 
+   public $sd27_d_data = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd27_i_codigo = int4 = Código 
                  sd27_i_prontuario = int4 = Prontuario 
                  sd27_i_departamento = int4 = Departamento 
@@ -63,10 +63,10 @@ class cl_prontsaida {
                  sd27_d_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_prontsaida() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontsaida"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_prontsaida {
          $this->erro_status = "0";
          return false; 
        }
-       $this->sd27_i_codigo = pg_result($result,0,0); 
+       $this->sd27_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from prontsaida_sd27_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $sd27_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $sd27_i_codigo)){
          $this->erro_sql = " Campo sd27_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_prontsaida {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Saida por Prontuarios ($this->sd27_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Saida por Prontuarios já Cadastrado";
@@ -232,16 +232,16 @@ class cl_prontsaida {
      $resaco = $this->sql_record($this->sql_query_file($this->sd27_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1006141,'$this->sd27_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1006015,1006141,'','".AddSlashes(pg_result($resaco,0,'sd27_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006015,1006131,'','".AddSlashes(pg_result($resaco,0,'sd27_i_prontuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006015,1006133,'','".AddSlashes(pg_result($resaco,0,'sd27_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006015,1006142,'','".AddSlashes(pg_result($resaco,0,'sd27_i_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006015,1006143,'','".AddSlashes(pg_result($resaco,0,'sd27_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006015,1006145,'','".AddSlashes(pg_result($resaco,0,'sd27_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1006015,1006144,'','".AddSlashes(pg_result($resaco,0,'sd27_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006015,1006141,'','".AddSlashes(pg_fetch_result($resaco,0,'sd27_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006015,1006131,'','".AddSlashes(pg_fetch_result($resaco,0,'sd27_i_prontuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006015,1006133,'','".AddSlashes(pg_fetch_result($resaco,0,'sd27_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006015,1006142,'','".AddSlashes(pg_fetch_result($resaco,0,'sd27_i_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006015,1006143,'','".AddSlashes(pg_fetch_result($resaco,0,'sd27_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006015,1006145,'','".AddSlashes(pg_fetch_result($resaco,0,'sd27_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1006015,1006144,'','".AddSlashes(pg_fetch_result($resaco,0,'sd27_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,10 +250,10 @@ class cl_prontsaida {
       $this->atualizacampos();
      $sql = " update prontsaida set ";
      $virgula = "";
-     if(trim($this->sd27_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_codigo"])){ 
+     if(trim((string) $this->sd27_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_codigo"])){ 
        $sql  .= $virgula." sd27_i_codigo = $this->sd27_i_codigo ";
        $virgula = ",";
-       if(trim($this->sd27_i_codigo) == null ){ 
+       if(trim((string) $this->sd27_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "sd27_i_codigo";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_prontsaida {
          return false;
        }
      }
-     if(trim($this->sd27_i_prontuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_prontuario"])){ 
+     if(trim((string) $this->sd27_i_prontuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_prontuario"])){ 
        $sql  .= $virgula." sd27_i_prontuario = $this->sd27_i_prontuario ";
        $virgula = ",";
-       if(trim($this->sd27_i_prontuario) == null ){ 
+       if(trim((string) $this->sd27_i_prontuario) == null ){ 
          $this->erro_sql = " Campo Prontuario nao Informado.";
          $this->erro_campo = "sd27_i_prontuario";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_prontsaida {
          return false;
        }
      }
-     if(trim($this->sd27_i_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_departamento"])){ 
+     if(trim((string) $this->sd27_i_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_departamento"])){ 
        $sql  .= $virgula." sd27_i_departamento = $this->sd27_i_departamento ";
        $virgula = ",";
-       if(trim($this->sd27_i_departamento) == null ){ 
+       if(trim((string) $this->sd27_i_departamento) == null ){ 
          $this->erro_sql = " Campo Departamento nao Informado.";
          $this->erro_campo = "sd27_i_departamento";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_prontsaida {
          return false;
        }
      }
-     if(trim($this->sd27_i_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_material"])){ 
+     if(trim((string) $this->sd27_i_material)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_material"])){ 
        $sql  .= $virgula." sd27_i_material = $this->sd27_i_material ";
        $virgula = ",";
-       if(trim($this->sd27_i_material) == null ){ 
+       if(trim((string) $this->sd27_i_material) == null ){ 
          $this->erro_sql = " Campo Material nao Informado.";
          $this->erro_campo = "sd27_i_material";
          $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_prontsaida {
          return false;
        }
      }
-     if(trim($this->sd27_i_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_quantidade"])){ 
+     if(trim((string) $this->sd27_i_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_quantidade"])){ 
        $sql  .= $virgula." sd27_i_quantidade = $this->sd27_i_quantidade ";
        $virgula = ",";
-       if(trim($this->sd27_i_quantidade) == null ){ 
+       if(trim((string) $this->sd27_i_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "sd27_i_quantidade";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_prontsaida {
          return false;
        }
      }
-     if(trim($this->sd27_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_usuario"])){ 
+     if(trim((string) $this->sd27_i_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_usuario"])){ 
        $sql  .= $virgula." sd27_i_usuario = $this->sd27_i_usuario ";
        $virgula = ",";
-       if(trim($this->sd27_i_usuario) == null ){ 
+       if(trim((string) $this->sd27_i_usuario) == null ){ 
          $this->erro_sql = " Campo Usuario nao Informado.";
          $this->erro_campo = "sd27_i_usuario";
          $this->erro_banco = "";
@@ -328,10 +328,10 @@ class cl_prontsaida {
          return false;
        }
      }
-     if(trim($this->sd27_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd27_d_data_dia"] !="") ){ 
+     if(trim((string) $this->sd27_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd27_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd27_d_data_dia"] !="") ){ 
        $sql  .= $virgula." sd27_d_data = '$this->sd27_d_data' ";
        $virgula = ",";
-       if(trim($this->sd27_d_data) == null ){ 
+       if(trim((string) $this->sd27_d_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "sd27_d_data_dia";
          $this->erro_banco = "";
@@ -344,7 +344,7 @@ class cl_prontsaida {
        if(isset($GLOBALS["HTTP_POST_VARS"]["sd27_d_data_dia"])){ 
          $sql  .= $virgula." sd27_d_data = null ";
          $virgula = ",";
-         if(trim($this->sd27_d_data) == null ){ 
+         if(trim((string) $this->sd27_d_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "sd27_d_data_dia";
            $this->erro_banco = "";
@@ -363,23 +363,23 @@ class cl_prontsaida {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1006141,'$this->sd27_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1006015,1006141,'".AddSlashes(pg_result($resaco,$conresaco,'sd27_i_codigo'))."','$this->sd27_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006015,1006141,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd27_i_codigo'))."','$this->sd27_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_prontuario"]))
-           $resac = db_query("insert into db_acount values($acount,1006015,1006131,'".AddSlashes(pg_result($resaco,$conresaco,'sd27_i_prontuario'))."','$this->sd27_i_prontuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006015,1006131,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd27_i_prontuario'))."','$this->sd27_i_prontuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_departamento"]))
-           $resac = db_query("insert into db_acount values($acount,1006015,1006133,'".AddSlashes(pg_result($resaco,$conresaco,'sd27_i_departamento'))."','$this->sd27_i_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006015,1006133,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd27_i_departamento'))."','$this->sd27_i_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_material"]))
-           $resac = db_query("insert into db_acount values($acount,1006015,1006142,'".AddSlashes(pg_result($resaco,$conresaco,'sd27_i_material'))."','$this->sd27_i_material',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006015,1006142,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd27_i_material'))."','$this->sd27_i_material',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_quantidade"]))
-           $resac = db_query("insert into db_acount values($acount,1006015,1006143,'".AddSlashes(pg_result($resaco,$conresaco,'sd27_i_quantidade'))."','$this->sd27_i_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006015,1006143,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd27_i_quantidade'))."','$this->sd27_i_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd27_i_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1006015,1006145,'".AddSlashes(pg_result($resaco,$conresaco,'sd27_i_usuario'))."','$this->sd27_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006015,1006145,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd27_i_usuario'))."','$this->sd27_i_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd27_d_data"]))
-           $resac = db_query("insert into db_acount values($acount,1006015,1006144,'".AddSlashes(pg_result($resaco,$conresaco,'sd27_d_data'))."','$this->sd27_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1006015,1006144,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd27_d_data'))."','$this->sd27_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,16 +424,16 @@ class cl_prontsaida {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1006141,'$sd27_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1006015,1006141,'','".AddSlashes(pg_result($resaco,$iresaco,'sd27_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006015,1006131,'','".AddSlashes(pg_result($resaco,$iresaco,'sd27_i_prontuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006015,1006133,'','".AddSlashes(pg_result($resaco,$iresaco,'sd27_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006015,1006142,'','".AddSlashes(pg_result($resaco,$iresaco,'sd27_i_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006015,1006143,'','".AddSlashes(pg_result($resaco,$iresaco,'sd27_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006015,1006145,'','".AddSlashes(pg_result($resaco,$iresaco,'sd27_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1006015,1006144,'','".AddSlashes(pg_result($resaco,$iresaco,'sd27_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006015,1006141,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd27_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006015,1006131,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd27_i_prontuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006015,1006133,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd27_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006015,1006142,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd27_i_material'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006015,1006143,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd27_i_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006015,1006145,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd27_i_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1006015,1006144,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd27_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from prontsaida
@@ -493,7 +493,7 @@ class cl_prontsaida {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:prontsaida";
@@ -507,7 +507,7 @@ class cl_prontsaida {
    function sql_query ( $sd27_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -539,7 +539,7 @@ class cl_prontsaida {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -551,7 +551,7 @@ class cl_prontsaida {
    function sql_query_file ( $sd27_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -572,7 +572,7 @@ class cl_prontsaida {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

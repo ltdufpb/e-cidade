@@ -54,7 +54,7 @@ class RegraLancamentoContaDepreciacao implements IRegraLancamentoContabil {
     }
     $aRegrasDoLancamento = $oLancamentoEventoContabil->getRegrasLancamento();
     $iConta              = $oLancamentoAuxiliar->getCodigoConta();
-    $aContasEncontradas  = array();
+    $aContasEncontradas  = [];
     $iTipoBem = $oLancamentoAuxiliar->getClassificacao()->getTipoBem();
 
     foreach ($aRegrasDoLancamento as $oRegraLancamentoContabil ) {

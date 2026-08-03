@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 define('MENSAGEM', 'tributario.issqn.db_frmissbaseparalisacao.');
 $clissbaseparalisacao = new cl_issbaseparalisacao;
 $oPost    = db_utils::postMemory($_POST);
-$incluir  = isset($oPost->incluir) ? $oPost->incluir : null;
+$incluir  = $oPost->incluir ?? null;
 $db_opcao = 1;
 $db_botao = true;
 

@@ -30,8 +30,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_censoetapa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcensoetapa = new cl_censoetapa;
 $clcensoetapa->rotulo->label("ed266_i_codigo");
 $clcensoetapa->rotulo->label("ed266_ano");
@@ -96,9 +96,9 @@ $clcensoetapa->rotulo->label("ed266_c_descr");
         }
 
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed266_i_codigo)){
-          $repassa = array("chave_ed266_i_codigo"=>$chave_ed266_i_codigo,"chave_ed266_c_descr"=>$chave_ed266_c_descr);
+          $repassa = ["chave_ed266_i_codigo"=>$chave_ed266_i_codigo,"chave_ed266_c_descr"=>$chave_ed266_c_descr];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

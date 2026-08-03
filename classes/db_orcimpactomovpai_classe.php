@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE orcimpactomovpai
 class cl_orcimpactomovpai { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o86_codimpmovpai = 0; 
-   var $o86_codimpmovfilho = 0; 
+   public $o86_codimpmovpai = 0; 
+   public $o86_codimpmovfilho = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o86_codimpmovpai = int8 = Código 
                  o86_codimpmovfilho = int8 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_orcimpactomovpai() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcimpactomovpai"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_orcimpactomovpai {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Movimentos pais ($this->o86_codimpmovpai."-".$this->o86_codimpmovfilho) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Movimentos pais já Cadastrado";
@@ -130,12 +130,12 @@ class cl_orcimpactomovpai {
      $resaco = $this->sql_record($this->sql_query_file($this->o86_codimpmovpai,$this->o86_codimpmovfilho));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6731,'$this->o86_codimpmovpai','I')");
        $resac = db_query("insert into db_acountkey values($acount,6732,'$this->o86_codimpmovfilho','I')");
-       $resac = db_query("insert into db_acount values($acount,1101,6731,'','".AddSlashes(pg_result($resaco,0,'o86_codimpmovpai'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1101,6732,'','".AddSlashes(pg_result($resaco,0,'o86_codimpmovfilho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1101,6731,'','".AddSlashes(pg_fetch_result($resaco,0,'o86_codimpmovpai'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1101,6732,'','".AddSlashes(pg_fetch_result($resaco,0,'o86_codimpmovfilho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_orcimpactomovpai {
       $this->atualizacampos();
      $sql = " update orcimpactomovpai set ";
      $virgula = "";
-     if(trim($this->o86_codimpmovpai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o86_codimpmovpai"])){ 
+     if(trim((string) $this->o86_codimpmovpai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o86_codimpmovpai"])){ 
        $sql  .= $virgula." o86_codimpmovpai = $this->o86_codimpmovpai ";
        $virgula = ",";
-       if(trim($this->o86_codimpmovpai) == null ){ 
+       if(trim((string) $this->o86_codimpmovpai) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "o86_codimpmovpai";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_orcimpactomovpai {
          return false;
        }
      }
-     if(trim($this->o86_codimpmovfilho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o86_codimpmovfilho"])){ 
+     if(trim((string) $this->o86_codimpmovfilho)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o86_codimpmovfilho"])){ 
        $sql  .= $virgula." o86_codimpmovfilho = $this->o86_codimpmovfilho ";
        $virgula = ",";
-       if(trim($this->o86_codimpmovfilho) == null ){ 
+       if(trim((string) $this->o86_codimpmovfilho) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "o86_codimpmovfilho";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_orcimpactomovpai {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6731,'$this->o86_codimpmovpai','A')");
          $resac = db_query("insert into db_acountkey values($acount,6732,'$this->o86_codimpmovfilho','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o86_codimpmovpai"]))
-           $resac = db_query("insert into db_acount values($acount,1101,6731,'".AddSlashes(pg_result($resaco,$conresaco,'o86_codimpmovpai'))."','$this->o86_codimpmovpai',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1101,6731,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o86_codimpmovpai'))."','$this->o86_codimpmovpai',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o86_codimpmovfilho"]))
-           $resac = db_query("insert into db_acount values($acount,1101,6732,'".AddSlashes(pg_result($resaco,$conresaco,'o86_codimpmovfilho'))."','$this->o86_codimpmovfilho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1101,6732,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o86_codimpmovfilho'))."','$this->o86_codimpmovfilho',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_orcimpactomovpai {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6731,'$o86_codimpmovpai','E')");
          $resac = db_query("insert into db_acountkey values($acount,6732,'$o86_codimpmovfilho','E')");
-         $resac = db_query("insert into db_acount values($acount,1101,6731,'','".AddSlashes(pg_result($resaco,$iresaco,'o86_codimpmovpai'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1101,6732,'','".AddSlashes(pg_result($resaco,$iresaco,'o86_codimpmovfilho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1101,6731,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o86_codimpmovpai'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1101,6732,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o86_codimpmovfilho'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcimpactomovpai
@@ -304,7 +304,7 @@ class cl_orcimpactomovpai {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcimpactomovpai";
@@ -318,7 +318,7 @@ class cl_orcimpactomovpai {
    function sql_query ( $o86_codimpmovpai=null,$o86_codimpmovfilho=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -357,7 +357,7 @@ class cl_orcimpactomovpai {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -369,7 +369,7 @@ class cl_orcimpactomovpai {
    function sql_query_file ( $o86_codimpmovpai=null,$o86_codimpmovfilho=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_orcimpactomovpai {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

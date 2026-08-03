@@ -85,7 +85,7 @@ db_input('percentual',4,0,true,'text',2,"")
     </td>
     <td> 
 <?php 
-$matr = array();
+$matr = [];
 $clorcorgao = new cl_orcorgao;
 $result = $clorcorgao->sql_record($clorcorgao->sql_query(null,null,"*","o40_orgao"," o40_anousu = ".db_getsession("DB_anousu")." and o40_instit = ".db_getsession("DB_instit")));
 for($i=0;$i<$clorcorgao->numrows;$i++){

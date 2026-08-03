@@ -33,8 +33,8 @@ require_once(modification("classes/db_db_usuarios_classe.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $cldb_usuarios = new cl_db_usuarios;
 $cldb_usuarios->rotulo->label();

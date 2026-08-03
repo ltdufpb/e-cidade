@@ -47,7 +47,7 @@ require_once(modification("std/DBLargeObject.php"));
 require_once(modification("classes/db_db_certidaoweb_classe.php"));
 require_once(modification("model/configuracao/InstituicaoRepository.model.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if (isset ($cadrecibo) && $cadrecibo == 't') {
 	require_once(modification('fpdf151/scpdf.php'));
@@ -104,7 +104,7 @@ function emitirCodigoCerticao($data, $hora, $sec)
     "select nextval('db_certidaoweb_codcert_seq')"
   ) or die("erro ao gerar sequencia");
 
-  $seq2    = pg_result($sequencia, 0, 0);
+  $seq2    = pg_fetch_result($sequencia, 0, 0);
   $tamanho = strlen($seq2);
   $seq     = "";
   
@@ -156,8 +156,8 @@ try{
   }
 
   if ($codproc != "") {
-  	if (strpos($codproc, "/") > 0) {
-  		$codproc = split("\/", $codproc);
+  	if (strpos((string) $codproc, "/") > 0) {
+  		$codproc = preg_split("#\\/#m", (string) $codproc);
   		$exercicio = $codproc[1];
   		$codproc = $codproc[0];
   	} else {
@@ -189,7 +189,7 @@ try{
 
     $iTipoCodigo = $k03_tipocodcert;
     $sTipoCertidao = $clcertidao->p50_tipo;
-    $codimpresso = pg_result(db_query("select fc_numerocertidao($iInstit,$iTipoCodigo,'{$sTipoCertidao}', false)"),0);
+    $codimpresso = pg_fetch_result(db_query("select fc_numerocertidao($iInstit,$iTipoCodigo,'{$sTipoCertidao}', false)"),0);
   }
 
   //busca o o tipo de certidao se é conjunta ou individualizada.
@@ -511,7 +511,7 @@ try{
   		     		inner join db_paragrafo on db04_idparag = db02_idparag
   			 where db03_tipodoc = 1017 and db03_instit = " . $iInstit." order by db04_ordem ";
     $resparag = db_query($sqlparag);
-  if ( pg_numrows($resparag) != 0 ) {
+  if ( pg_num_rows($resparag) != 0 ) {
 
     db_fieldsmemory( $resparag, 0 );
     $head1 = $db02_texto;
@@ -589,7 +589,7 @@ try{
     throw new DBException("Documento não configurado.");
   }
 
-  $logofundo = substr($logo,0,strpos($logo,"."));
+  $logofundo = substr((string) $logo,0,strpos((string) $logo,"."));
   /*   F U N D O   D O   D O C U M E N T O  */
 
   if (file_exists('imagens/files/Brasaocnd.jpg')){
@@ -613,7 +613,7 @@ try{
   	db_fieldsmemory($result_usu,0);
   }
     $data= date("Y-m-d",db_getsession("DB_datausu"));
-    $data=split('-',$data);
+    $data=preg_split('#\-#m',$data);
     $dia=$data[2];
     $mes=$data[1];
     $ano=$data[0];
@@ -682,7 +682,7 @@ try{
   	$alt = 4;
   	$b = 0;
   	$rsRecibo = db_query("select * from recibo inner join tabrec on k00_receit = k02_codigo where k00_numpre = $k03_numpre");
-  	$intNumrows = pg_numrows($rsRecibo);
+  	$intNumrows = pg_num_rows($rsRecibo);
   	if ($intNumrows == 0) {
   		throw new BusinessException("Recibo não cadastrado");
   	}
@@ -800,7 +800,7 @@ try{
   	$pdf->SetFont('Arial', 'B', $TamLetra);
   	$pdf->cell(40, $alt, "ENDEREÇO: ", $b, 0, "L", 0);
   	$pdf->SetFont('Arial', '', $TamLetra);
-  	$pdf->cell(70, $alt, trim(@ $z01_ender).", ".trim(@ $z01_numero)."  ".trim(@ $z01_compl), $b, 0, "L", 0);
+  	$pdf->cell(70, $alt, trim((string) @ $z01_ender).", ".trim((string) @ $z01_numero)."  ".trim((string) @ $z01_compl), $b, 0, "L", 0);
 
   	$pdf->SetFont('Arial', '', $TamLetra -1);
   	if (isset ($taxa1) && $taxa1 != "") {
@@ -814,7 +814,7 @@ try{
   	$pdf->SetFont('Arial', 'B', $TamLetra);
   	$pdf->cell(40, $alt, "MUNICIPIO:", $b, 0, "L", 0);
   	$pdf->SetFont('Arial', '', $TamLetra);
-  	$pdf->cell(70, $alt, @ $z01_munic."/".@ $z01_uf." - ".substr(@ $z01_cep, 0, 5)."-".substr(@ $z01_cep, $alt, 3), $b, 0, "L", 0);
+  	$pdf->cell(70, $alt, @ $z01_munic."/".@ $z01_uf." - ".substr((string) @ $z01_cep, 0, 5)."-".substr((string) @ $z01_cep, $alt, 3), $b, 0, "L", 0);
 
   	$pdf->SetFont('Arial', '', $TamLetra -1);
   	if (isset ($taxa2) && $taxa2 != "") {
@@ -1045,7 +1045,7 @@ try{
       $iInstit     = $iInstit;
       $iTipoCodigo = $k03_tipocodcert;
       $sTipoCertidao = $clcertidao->p50_tipo;
-      $codimpresso = pg_result(db_query("select fc_numerocertidao($iInstit,$iTipoCodigo,'{$sTipoCertidao}', false)"),0);
+      $codimpresso = pg_fetch_result(db_query("select fc_numerocertidao($iInstit,$iTipoCodigo,'{$sTipoCertidao}', false)"),0);
     }
 
     $certidaoModel->setSequencial($certidao);
@@ -1077,7 +1077,7 @@ try{
     $clcertidaoweb->cerip        = db_getsession('DB_ip');
     $clcertidaoweb->ceracesso    = $t1;
     $clcertidaoweb->cercertidao  = pg_lo_create();
-    $clcertidaoweb->cernomecontr = addslashes($z01_nome);
+    $clcertidaoweb->cernomecontr = addslashes((string) $z01_nome);
     $clcertidaoweb->cerhtml      = "x";
     $clcertidaoweb->cerweb       = 'true';
   

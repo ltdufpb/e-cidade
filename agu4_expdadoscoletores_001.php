@@ -220,7 +220,7 @@ function js_processar(){
 
         <td>
         <?php
-        $vAno = array ($x49_anousu => $x49_anousu, ($x49_anousu + 1) => ($x49_anousu + 1) );
+        $vAno =  [$x49_anousu => $x49_anousu, ($x49_anousu + 1) => ($x49_anousu + 1) ];
         db_select ( "x49_anousu", $vAno, true, 1, "style=\"width: 90px\";" );
         ?>
       </td>
@@ -231,7 +231,7 @@ function js_processar(){
 
         <td>
         <?php
-        $result = array ("1" => "Janeiro", "2" => "Fevereiro", "3" => "Março", "4" => "Abril", "5" => "Maio", "6" => "Junho", "7" => "Julho", "8" => "Agosto", "9" => "Setembro", "10" => "Outubro", "11" => "Novembro", "12" => "Dezembro" );
+        $result =  ["1" => "Janeiro", "2" => "Fevereiro", "3" => "Março", "4" => "Abril", "5" => "Maio", "6" => "Junho", "7" => "Julho", "8" => "Agosto", "9" => "Setembro", "10" => "Outubro", "11" => "Novembro", "12" => "Dezembro" ];
         db_select ( "x49_mesusu", $result, true, 1, "style=\"width: 90px\"" );
 
         ?>

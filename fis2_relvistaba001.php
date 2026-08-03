@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_sanitario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $sanitario = new cl_sanitario;
 $aux = new cl_arquivo_auxiliar; 
 //$clsanitario->rotulo->label();
@@ -130,7 +130,7 @@ $clrotulo->label("y11_codi");
 	 </td>
 	 <td>
 	    <?php 
-	    $tipo_ordem = array("v"=>"Vistoria","r"=>"Rua","b"=>"Bairro","n"=>"Nome","t"=>"Tipo");
+	    $tipo_ordem = ["v"=>"Vistoria","r"=>"Rua","b"=>"Bairro","n"=>"Nome","t"=>"Tipo"];
 	    db_select("ordem",$tipo_ordem,true,"text",4); 
 	    ?>
 	    

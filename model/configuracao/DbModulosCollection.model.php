@@ -37,7 +37,7 @@ class DbModulosCollection {
    * Array de instâncias de DbModulos
    * @var array
    */
-  protected static $aDbModulos = array();
+  protected static $aDbModulos = [];
 
   /**
    * Adiciona uma instância de DbModulos ao array

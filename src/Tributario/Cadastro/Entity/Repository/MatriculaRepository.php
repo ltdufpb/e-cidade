@@ -9,13 +9,9 @@ use ECidade\Tributario\Cadastro\Entity\Collection\MatriculaCollection;
 
 class MatriculaRepository extends DataBaseRepository
 {
-    private $iptubaseRepository;
-
-    public function __construct(DataBase $dataBase, IptubaseRepository $iptubaseRepository)
+    public function __construct(DataBase $dataBase, private readonly IptubaseRepository $iptubaseRepository)
     {
         parent::__construct($dataBase);
-
-        $this->iptubaseRepository = $iptubaseRepository;
     }
 
     public function findAll($sql)

@@ -30,10 +30,10 @@ class AlteracaoLancamento
     {
 
         $daoConlancamval = new cl_conlancamval();
-        $where = array(
+        $where = [
             'c02_instit = ' . db_getsession("DB_instit"),
             'c69_anousu = ' . db_getsession("DB_anousu")
-        );
+        ];
 
         if (!empty($parametros->documento)) {
             $where[] = "c71_coddoc = {$parametros->documento}";
@@ -59,7 +59,7 @@ class AlteracaoLancamento
             $where[] = "c69_credito = {$parametros->conta_credito}";
         }
 
-        $campos = array(
+        $campos = [
             'c69_codlan as codigo_lancamento',
             'c69_sequen  as sequen',
             'c71_coddoc  as documento',
@@ -72,7 +72,7 @@ class AlteracaoLancamento
             'planodebito.c60_descr as descricao_debito',
             'planodebito.c60_estrut as estrutural_debito'
 
-        );
+        ];
 
         $sqlLancamentos = $daoConlancamval->sql_query_lancamentos(
             implode(", ", $campos),
@@ -82,7 +82,7 @@ class AlteracaoLancamento
 
         $rsLancamentos = db_query($sqlLancamentos);
         if (pg_num_rows($rsLancamentos) == 0) {
-            return array();
+            return [];
         }
 
         if (pg_num_rows($rsLancamentos) >= 6000) {
@@ -98,17 +98,17 @@ class AlteracaoLancamento
                 if ($ultimoLancamento != $dados->codigo_lancamento) {
                     $ordem = 1;
                 }
-                $contaCredito = array(
+                $contaCredito = [
                     "reduzido" => $dados->reduz_credito,
                     "estrutural" => $dados->estrutural_credito,
                     "descricao" => $dados->descricao_credito,
-                );
+                ];
 
-                $contaDebito = array(
+                $contaDebito = [
                     "reduzido" => $dados->reduz_debito,
                     "estrutural" => $dados->estrutural_debito,
                     "descricao" => $dados->descricao_debito,
-                );
+                ];
                 $lancamento = new stdClass();
                 $lancamento->codigo_lancamento = $dados->codigo_lancamento;
                 $lancamento->sequen = $dados->sequen;
@@ -144,7 +144,7 @@ class AlteracaoLancamento
         }
 
         $daoConlancamval = new cl_conlancamval();
-        $where = array('c69_sequen in(' . $codigosLancamentos . ')');
+        $where = ['c69_sequen in(' . $codigosLancamentos . ')'];
 
         $sqlLancamentos = $daoConlancamval->sql_query_file(null, "*", null, implode('and ', $where));
         $rsLancamentos = db_query($sqlLancamentos);
@@ -159,7 +159,7 @@ class AlteracaoLancamento
             throw new Exception($sMensagem);
         }
 
-        $logs = array();
+        $logs = [];
         $totalLancamentosProcessados = 0;
         try {
             for ($i = 0; $i < $totalLinhas; $i++) {
@@ -298,6 +298,6 @@ class AlteracaoLancamento
         $data = new DBDate($lancamento->c69_data);
         $competencia = new DBCompetencia($data->getAno(), $data->getMes());
         $oProcessamento = new Processamento(InstituicaoRepository::getInstituicaoSessao(), $competencia);
-        $oProcessamento->processar(array($lancamento->c69_codlan));
+        $oProcessamento->processar([$lancamento->c69_codlan]);
     }
 }

@@ -45,7 +45,7 @@ final class PadArquivoSigapDecreto extends PadArquivoSigap
     {
 
         $this->sNomeArquivo = "Decreto";
-        $this->aDados = array();
+        $this->aDados = [];
     }
 
     /**
@@ -64,7 +64,7 @@ final class PadArquivoSigapDecreto extends PadArquivoSigap
             throw new Exception("Data final não informada!");
         }
 
-        list($iAno, $iMes, $iDia) = explode("-", $this->sDataFinal);
+        [$iAno, $iMes, $iDia] = explode("-", $this->sDataFinal);
 
         /**
          * Separamos a data do em ano, mes, dia
@@ -217,7 +217,7 @@ final class PadArquivoSigapDecreto extends PadArquivoSigap
             $oDecretoRetorno = new stdClass();
             $oDecretoRetorno->decCodigoEntidade = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
             $oDecretoRetorno->decMesAnoMovimento = $sDiaMesAno;
-            $oDecretoRetorno->decNumeroLei = substr($oDecreto->num_lei, 0, 20);
+            $oDecretoRetorno->decNumeroLei = substr((string) $oDecreto->num_lei, 0, 20);
             $oDecretoRetorno->decDataLei = $oDecreto->data_lei;
             $oDecretoRetorno->decNumeroDecreto = $oDecreto->num_decreto;
             $oDecretoRetorno->decDataDecreto = $oDecreto->data_decreto;
@@ -230,8 +230,8 @@ final class PadArquivoSigapDecreto extends PadArquivoSigap
              * @todo Verificar como pegar esses campos corretamente
              */
             $oDecretoRetorno->decSituacaoEntidade = "\n";
-            $oDecretoRetorno->decSinopse = substr($oDecreto->sinopse, 0, 255);
-            if (trim($oDecreto->sinopse) == "") {
+            $oDecretoRetorno->decSinopse = substr((string) $oDecreto->sinopse, 0, 255);
+            if (trim((string) $oDecreto->sinopse) == "") {
                 $oDecretoRetorno->decSinopse = "Sinopse do decreto sem conteudo";
 
             }
@@ -249,7 +249,7 @@ final class PadArquivoSigapDecreto extends PadArquivoSigap
     public function getNomeElementos()
     {
 
-        $aElementos = array(
+        $aElementos = [
             "decCodigoEntidade",
             "decMesAnoMovimento",
             "decNumeroLei",
@@ -263,7 +263,7 @@ final class PadArquivoSigapDecreto extends PadArquivoSigap
             "decSituacaoEntidade",
             "decOrigemRecurso",
             "decSinopse",
-        );
+        ];
         return $aElementos;
     }
 

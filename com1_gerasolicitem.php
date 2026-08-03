@@ -37,8 +37,8 @@ require_once(modification("classes/db_pcparam_classe.php"));
 require_once(modification("classes/db_pcorcamitemsol_classe.php"));
 require_once(modification("classes/db_solandam_classe.php"));
 require_once(modification("classes/db_solandpadraodepto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clsolicitem         = new cl_solicitem;
 $clsolicitemprot     = new cl_solicitemprot;
 $clsolicita          = new cl_solicita;
@@ -340,7 +340,7 @@ x.pc11_codigo,
 			where p64_codtran is null and p68_codproc is null and x.pc11_codigo = $pc11_codigo";
 
 			$result_tran=db_query($sqltran);
-			if(pg_numrows($result_tran)==0){
+			if(pg_num_rows($result_tran)==0){
       	        	$readonly = "disabled";
 			}
         	    }
@@ -387,7 +387,7 @@ x.pc11_codigo,
 			where p64_codtran is null and p68_codproc is null and x.pc11_codigo = $pc11_codigo";
 
       $result_tran=db_query($sqltran);
-			if(pg_numrows($result_tran)==0){
+			if(pg_num_rows($result_tran)==0){
 			$readonly="disabled";
 			}
 		}
@@ -429,7 +429,7 @@ x.pc11_codigo,
 			where p64_codtran is null and p68_codproc is null and x.pc11_codigo = $pc11_codigo";
 
 			$result_tran=db_query($sqltran);
-			if(pg_numrows($result_tran)==0){
+			if(pg_num_rows($result_tran)==0){
         	$readonly = " disabled ";
 			}
         }
@@ -440,14 +440,14 @@ x.pc11_codigo,
         echo "<tr class='trconteudotabela'>\n";
 	      echo "  <td nowrap class='checkbox tdconteudotabela'><input type='checkbox' $readonly  name='item_".$pc11_numero."_".$pc11_codigo."' onclick='js_retornocampo(this);'></td>\n";
         echo "  <td nowrap class='tdconteudotabela' align='center'>$pc11_seq</td>\n";
-      	echo "  <td class='tdconteudotabela' align='left'>  ".ucfirst(mb_strtolower($pc01_descrmater))."</td>\n";
+      	echo "  <td class='tdconteudotabela' align='left'>  ".ucfirst(mb_strtolower((string) $pc01_descrmater))."</td>\n";
       	echo "  <td nowrap class='tdconteudotabela' align='center'>" . (empty($m61_descr) ? "&nbsp;" : $m61_descr) . "</td>\n";
       	echo "  <td nowrap class='tdconteudotabela' align='center'>$pc11_quant</td>\n";
       	echo "  <td nowrap class='tdconteudotabela' align='right'>R$ ".db_formatar($pc11_vlrun, "f")."</td>\n";
       	echo "  <td nowrap class='tdconteudotabela' align='right'>R$ ".db_formatar(($pc11_vlrun*$pc11_quant),"f")."</td>\n";
 
         if((isset($pc01_servico) && (trim($pc01_servico)=="f" || trim($pc01_servico)=="")) || !isset($pc01_servico)){
-          $unid = trim(substr($m61_descr,0,10));
+          $unid = trim(substr((string) $m61_descr,0,10));
           if($m61_usaquant=="t"){
             $unid .= " <BR>($pc17_quant UNIDADES)";
           }
@@ -461,12 +461,12 @@ x.pc11_codigo,
         if(isset($pc11_resum) && trim($pc11_resum)==""){
           $pc11_resum="&nbsp;";
         }
-	echo "  <td class='tdconteudotabela' bgcolor='$bgcolor' align='left'>".substr(stripslashes($pc11_resum),0,40)."</td>\n";
+	echo "  <td class='tdconteudotabela' bgcolor='$bgcolor' align='left'>".substr(stripslashes((string) $pc11_resum),0,40)."</td>\n";
 	$result_orcamitemsol = $clpcorcamitemsol->sql_record($clpcorcamitemsol->sql_query_solicitem(null,null,"pc22_codorc,pc22_orcamitem",""," pc29_solicitem=$pc11_codigo order by pc22_codorc desc"));
 	if($clpcorcamitemsol->numrows>0){
 	  db_fieldsmemory($result_orcamitemsol,0);
 	  $orcamitemsol = "<input type='checkbox' name='imp_".$pc22_codorc."_".$pc11_codigo."_".$pc22_orcamitem."' checked onclick='js_setornosetimp(this.name,true);'>";
-	  if(trim($pc22_codorc)==""){
+	  if(trim((string) $pc22_codorc)==""){
 	    $orcamitemsol = "<strong>Não</strong>";
 	  }
 	}else{
@@ -474,7 +474,7 @@ x.pc11_codigo,
 	}
 	echo "  <td nowrap class='tdconteudotabela'>$orcamitemsol</td>\n";
         if($clpcorcamitemsol->numrows>0){
-	  if(trim($pc22_codorc)!=""){
+	  if(trim((string) $pc22_codorc)!=""){
 	    echo "<script>js_setornosetimp('imp_".$pc22_codorc."_".$pc11_codigo."_".$pc22_orcamitem."',false);</script>";
 	  }
 	}

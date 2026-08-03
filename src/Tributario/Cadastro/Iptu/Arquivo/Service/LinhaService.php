@@ -25,64 +25,8 @@ use ECidade\Tributario\Cadastro\Iptu\Arquivo\Entity\Exercicio;
 
 final class LinhaService extends Service
 {
-    private $linhaConverterService;
-
-    private $debitoRepository;
-
-    private $reciboCotaUnicaService;
-
-    private $reciboCarneService;
-
-    private $reciboParcelaService;
-
-    private $imovelRepository;
-
-    private $contribuinteRepository;
-
-    private $parcelaReciboCast;
-
-    private $imovelAnteriorRepository;
-
-    private $exercicioRepository;
-
-    private $parcelaInicioService;
-
-    private $taxaRepository;
-
-    private $taxaDescricaoRepository;
-
-    private $loteamentoRepository;
-
-    public function __construct(
-        LinhaConverterService $linhaConverterService,
-        DebitoRepository $debitoRepository,
-        ReciboCotaUnicaService $reciboCotaUnicaService,
-        ReciboCarneService $reciboCarneService,
-        ReciboParcelaService $reciboParcelaService,
-        ImovelRepository $imovelRepository,
-        ContribuinteRepository $contribuinteRepository,
-        ParcelaReciboCast $parcelaReciboCast,
-        ImovelAnteriorRepository $imovelAnteriorRepository,
-        ExercicioRepository $exercicioRepository,
-        ParcelaInicioService $parcelaInicioService,
-        TaxaRepository $taxaRepository,
-        TaxaDescricaoRepository $taxaDescricaoRepository,
-        LoteamentoRepository $loteamentoRepository
-    ) {
-        $this->linhaConverterService = $linhaConverterService;
-        $this->debitoRepository = $debitoRepository;
-        $this->reciboCotaUnicaService = $reciboCotaUnicaService;
-        $this->reciboCarneService = $reciboCarneService;
-        $this->reciboParcelaService = $reciboParcelaService;
-        $this->imovelRepository = $imovelRepository;
-        $this->contribuinteRepository = $contribuinteRepository;
-        $this->parcelaReciboCast = $parcelaReciboCast;
-        $this->imovelAnteriorRepository = $imovelAnteriorRepository;
-        $this->exercicioRepository = $exercicioRepository;
-        $this->parcelaInicioService = $parcelaInicioService;
-        $this->taxaRepository = $taxaRepository;
-        $this->taxaDescricaoRepository = $taxaDescricaoRepository;
-        $this->loteamentoRepository = $loteamentoRepository;
+    public function __construct(private readonly LinhaConverterService $linhaConverterService, private readonly DebitoRepository $debitoRepository, private readonly ReciboCotaUnicaService $reciboCotaUnicaService, private readonly ReciboCarneService $reciboCarneService, private readonly ReciboParcelaService $reciboParcelaService, private readonly ImovelRepository $imovelRepository, private readonly ContribuinteRepository $contribuinteRepository, private readonly ParcelaReciboCast $parcelaReciboCast, private readonly ImovelAnteriorRepository $imovelAnteriorRepository, private readonly ExercicioRepository $exercicioRepository, private readonly ParcelaInicioService $parcelaInicioService, private readonly TaxaRepository $taxaRepository, private readonly TaxaDescricaoRepository $taxaDescricaoRepository, private readonly LoteamentoRepository $loteamentoRepository)
+    {
     }
 
     public function execute($sequencial, Matricula $matricula, Filtro $filtro, \Instituicao $instituicao)
@@ -140,7 +84,7 @@ final class LinhaService extends Service
 
         $loteamento = $this->loteamentoRepository->find($matricula->getMatricula());
 
-        $s .= str_pad($sequencial, 10);
+        $s .= str_pad((string) $sequencial, 10);
         $s .= $this->linhaConverterService->build(
             $imovel,
             $contribuinte,

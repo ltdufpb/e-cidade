@@ -43,7 +43,7 @@ final class HorarioAulaMatriculaAlunoWebservice {
   /**
    * Regencias que possuem professor lecionando
    */
-  protected $aRegenciasComProfessor = array();
+  protected $aRegenciasComProfessor = [];
   
   /**
    * Instancia uma classe do servico
@@ -82,7 +82,7 @@ final class HorarioAulaMatriculaAlunoWebservice {
       $aTurnos[] = $oTurma->getTurnoAdicional() ;
     }
     $oGrade         = new stdClass();
-    $oGrade->turnos = array();
+    $oGrade->turnos = [];
     $aDiasDaSemana = $this->getDiasDaSemana();
     foreach ($aTurnos as $oTurno) {
       
@@ -91,8 +91,8 @@ final class HorarioAulaMatriculaAlunoWebservice {
       if ($oTurno->getCodigoTurno() == $oTurma->getTurno()->getCodigoTurno()) {
         $sNomeAdicional = '(Turno Principal)';
       }
-      $oTurnoGrade->nome        = utf8_encode($oTurno->getDescricao()." {$sNomeAdicional}");
-      $oTurnoGrade->dias_semana = array();
+      $oTurnoGrade->nome        = mb_convert_encoding($oTurno->getDescricao()." {$sNomeAdicional}", 'UTF-8', 'ISO-8859-1');
+      $oTurnoGrade->dias_semana = [];
       
       $oDaoPeriodoEscola = new cl_periodoescola();
       $sWherePeriodos    = "ed17_i_escola = {$oTurma->getEscola()->getCodigo()} ";
@@ -108,24 +108,24 @@ final class HorarioAulaMatriculaAlunoWebservice {
         foreach ($aDiasDaSemana as $oDiaSemana) {
           
           $oDiaSemanaGrade           = new stdClass();
-          $oDiaSemanaGrade->nome     = utf8_encode($oDiaSemana->ed32_c_descr);
-          $oDiaSemanaGrade->periodos = array();
+          $oDiaSemanaGrade->nome     = mb_convert_encoding($oDiaSemana->ed32_c_descr, 'UTF-8', 'ISO-8859-1');
+          $oDiaSemanaGrade->periodos = [];
           for ($iPeriodo = 0; $iPeriodo < $iTotalLinhas; $iPeriodo++) {
 
             $oDadosPeriodo = db_utils::fieldsMemory($rsPeriodos, $iPeriodo);
           
             $oPeriodo                  = new stdClass();
-            $oPeriodo->nome_periodo    = utf8_encode($oDadosPeriodo->ed08_c_descr);
-            $oPeriodo->inicio_periodo  = utf8_encode($oDadosPeriodo->ed17_h_inicio);
-            $oPeriodo->termino_periodo = utf8_encode($oDadosPeriodo->ed17_h_fim);
+            $oPeriodo->nome_periodo    = mb_convert_encoding($oDadosPeriodo->ed08_c_descr, 'UTF-8', 'ISO-8859-1');
+            $oPeriodo->inicio_periodo  = mb_convert_encoding($oDadosPeriodo->ed17_h_inicio, 'UTF-8', 'ISO-8859-1');
+            $oPeriodo->termino_periodo = mb_convert_encoding($oDadosPeriodo->ed17_h_fim, 'UTF-8', 'ISO-8859-1');
             $oPeriodo->disciplina      = '';
             $oPeriodo->professor       = '';
                  
             $oRegencia = $this->getRegenciaNoPeriodo($oDadosPeriodo->ed17_i_codigo, $oDiaSemana->ed32_i_codigo);
             if ($oRegencia) {
               
-              $oPeriodo->disciplina = utf8_encode($oRegencia->disciplina);
-              $oPeriodo->professor  = utf8_encode($oRegencia->professor);
+              $oPeriodo->disciplina = mb_convert_encoding($oRegencia->disciplina, 'UTF-8', 'ISO-8859-1');
+              $oPeriodo->professor  = mb_convert_encoding($oRegencia->professor, 'UTF-8', 'ISO-8859-1');
             }
             $oDiaSemanaGrade->periodos[] = $oPeriodo;;
           }
@@ -163,7 +163,7 @@ final class HorarioAulaMatriculaAlunoWebservice {
   protected function getDiasDaSemana() {
     
     $iCodigoEscola = $this->oMatricula->getTurma()->getEscola()->getCodigo();
-    $aDiasemana    = array();
+    $aDiasemana    = [];
     $oDaoDiaSemana = new cl_diasemana();
     $sSqlDiaSemana = $oDaoDiaSemana->sql_query_rh("", "*",
                                                   "ed32_i_codigo",

@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE proctransferintand
 class cl_proctransferintand { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p87_codtransferint = 0; 
-   var $p87_codandam = 0; 
+   public $p87_codtransferint = 0; 
+   public $p87_codandam = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p87_codtransferint = int8 = codigo 
                  p87_codandam = int8 = Código andamento 
                  ";
    //funcao construtor da classe 
-   function cl_proctransferintand() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("proctransferintand"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -104,7 +104,7 @@ class cl_proctransferintand {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "andamento da tranferencia do processo () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "andamento da tranferencia do processo já Cadastrado";
@@ -131,10 +131,10 @@ class cl_proctransferintand {
       $this->atualizacampos();
      $sql = " update proctransferintand set ";
      $virgula = "";
-     if(trim($this->p87_codtransferint)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p87_codtransferint"])){ 
+     if(trim((string) $this->p87_codtransferint)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p87_codtransferint"])){ 
        $sql  .= $virgula." p87_codtransferint = $this->p87_codtransferint ";
        $virgula = ",";
-       if(trim($this->p87_codtransferint) == null ){ 
+       if(trim((string) $this->p87_codtransferint) == null ){ 
          $this->erro_sql = " Campo codigo nao Informado.";
          $this->erro_campo = "p87_codtransferint";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_proctransferintand {
          return false;
        }
      }
-     if(trim($this->p87_codandam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p87_codandam"])){ 
+     if(trim((string) $this->p87_codandam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p87_codandam"])){ 
        $sql  .= $virgula." p87_codandam = $this->p87_codandam ";
        $virgula = ",";
-       if(trim($this->p87_codandam) == null ){ 
+       if(trim((string) $this->p87_codandam) == null ){ 
          $this->erro_sql = " Campo Código andamento nao Informado.";
          $this->erro_campo = "p87_codandam";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:proctransferintand";
@@ -279,7 +279,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -318,7 +318,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -348,7 +348,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

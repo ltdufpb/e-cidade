@@ -81,10 +81,10 @@ $oRotulo->label("pc20_codorc");
                         <td>
                             <?php
 
-                            $aOpcoes = array(
+                            $aOpcoes = [
                                 "S" => "Sim",
                                 "N" => "Não"
-                            );
+                            ];
 
                             db_select("justificativa", $aOpcoes, true, 4, "style='width:83px;'");
                             ?>

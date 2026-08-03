@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procfaixaetaria_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocfaixaetaria = new cl_procfaixaetaria;
 $clprocfaixaetaria->rotulo->label("sd16_i_codigo");
 $clprocfaixaetaria->rotulo->label("sd16_i_codigo");
@@ -98,9 +98,9 @@ $clprocfaixaetaria->rotulo->label("sd16_i_codigo");
         }else{
            $sql = $clprocfaixaetaria->sql_query("",$campos,"sd16_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd16_i_codigo)){
-          $repassa = array("chave_sd16_i_codigo"=>$chave_sd16_i_codigo,"chave_sd16_i_codigo"=>$chave_sd16_i_codigo);
+          $repassa = ["chave_sd16_i_codigo"=>$chave_sd16_i_codigo,"chave_sd16_i_codigo"=>$chave_sd16_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

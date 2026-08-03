@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE localizacao
 class cl_localizacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $bi09_codigo = 0; 
-   var $bi09_nome = null; 
-   var $bi09_biblioteca = 0; 
-   var $bi09_capacidade = 0; 
-   var $bi09_abrev = null; 
+   public $bi09_codigo = 0; 
+   public $bi09_nome = null; 
+   public $bi09_biblioteca = 0; 
+   public $bi09_capacidade = 0; 
+   public $bi09_abrev = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  bi09_codigo = int8 = Código 
                  bi09_nome = char(30) = Localização 
                  bi09_biblioteca = int8 = Biblioteca 
@@ -56,10 +56,10 @@ class cl_localizacao {
                  bi09_abrev = char(10) = Abreviatura 
                  ";
    //funcao construtor da classe 
-   function cl_localizacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("localizacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_localizacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->bi09_codigo = pg_result($result,0,0); 
+       $this->bi09_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from localizacao_bi09_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $bi09_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $bi09_codigo)){
          $this->erro_sql = " Campo bi09_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_localizacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Localização ($this->bi09_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Localização já Cadastrado";
@@ -194,14 +194,14 @@ class cl_localizacao {
      $resaco = $this->sql_record($this->sql_query_file($this->bi09_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1008137,'$this->bi09_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1008017,1008137,'','".AddSlashes(pg_result($resaco,0,'bi09_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008017,1008138,'','".AddSlashes(pg_result($resaco,0,'bi09_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008017,1008930,'','".AddSlashes(pg_result($resaco,0,'bi09_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008017,11714,'','".AddSlashes(pg_result($resaco,0,'bi09_capacidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1008017,11713,'','".AddSlashes(pg_result($resaco,0,'bi09_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008017,1008137,'','".AddSlashes(pg_fetch_result($resaco,0,'bi09_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008017,1008138,'','".AddSlashes(pg_fetch_result($resaco,0,'bi09_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008017,1008930,'','".AddSlashes(pg_fetch_result($resaco,0,'bi09_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008017,11714,'','".AddSlashes(pg_fetch_result($resaco,0,'bi09_capacidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1008017,11713,'','".AddSlashes(pg_fetch_result($resaco,0,'bi09_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_localizacao {
       $this->atualizacampos();
      $sql = " update localizacao set ";
      $virgula = "";
-     if(trim($this->bi09_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi09_codigo"])){ 
+     if(trim((string) $this->bi09_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi09_codigo"])){ 
        $sql  .= $virgula." bi09_codigo = $this->bi09_codigo ";
        $virgula = ",";
-       if(trim($this->bi09_codigo) == null ){ 
+       if(trim((string) $this->bi09_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "bi09_codigo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_localizacao {
          return false;
        }
      }
-     if(trim($this->bi09_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi09_nome"])){ 
+     if(trim((string) $this->bi09_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi09_nome"])){ 
        $sql  .= $virgula." bi09_nome = '$this->bi09_nome' ";
        $virgula = ",";
-       if(trim($this->bi09_nome) == null ){ 
+       if(trim((string) $this->bi09_nome) == null ){ 
          $this->erro_sql = " Campo Localização nao Informado.";
          $this->erro_campo = "bi09_nome";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_localizacao {
          return false;
        }
      }
-     if(trim($this->bi09_biblioteca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi09_biblioteca"])){ 
+     if(trim((string) $this->bi09_biblioteca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi09_biblioteca"])){ 
        $sql  .= $virgula." bi09_biblioteca = $this->bi09_biblioteca ";
        $virgula = ",";
-       if(trim($this->bi09_biblioteca) == null ){ 
+       if(trim((string) $this->bi09_biblioteca) == null ){ 
          $this->erro_sql = " Campo Biblioteca nao Informado.";
          $this->erro_campo = "bi09_biblioteca";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_localizacao {
          return false;
        }
      }
-     if(trim($this->bi09_capacidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi09_capacidade"])){ 
+     if(trim((string) $this->bi09_capacidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi09_capacidade"])){ 
        $sql  .= $virgula." bi09_capacidade = $this->bi09_capacidade ";
        $virgula = ",";
-       if(trim($this->bi09_capacidade) == null ){ 
+       if(trim((string) $this->bi09_capacidade) == null ){ 
          $this->erro_sql = " Campo Capacidade de exemplares nao Informado.";
          $this->erro_campo = "bi09_capacidade";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_localizacao {
          return false;
        }
      }
-     if(trim($this->bi09_abrev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi09_abrev"])){ 
+     if(trim((string) $this->bi09_abrev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi09_abrev"])){ 
        $sql  .= $virgula." bi09_abrev = '$this->bi09_abrev' ";
        $virgula = ",";
-       if(trim($this->bi09_abrev) == null ){ 
+       if(trim((string) $this->bi09_abrev) == null ){ 
          $this->erro_sql = " Campo Abreviatura nao Informado.";
          $this->erro_campo = "bi09_abrev";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_localizacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008137,'$this->bi09_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi09_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1008017,1008137,'".AddSlashes(pg_result($resaco,$conresaco,'bi09_codigo'))."','$this->bi09_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008017,1008137,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi09_codigo'))."','$this->bi09_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi09_nome"]))
-           $resac = db_query("insert into db_acount values($acount,1008017,1008138,'".AddSlashes(pg_result($resaco,$conresaco,'bi09_nome'))."','$this->bi09_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008017,1008138,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi09_nome'))."','$this->bi09_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi09_biblioteca"]))
-           $resac = db_query("insert into db_acount values($acount,1008017,1008930,'".AddSlashes(pg_result($resaco,$conresaco,'bi09_biblioteca'))."','$this->bi09_biblioteca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008017,1008930,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi09_biblioteca'))."','$this->bi09_biblioteca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi09_capacidade"]))
-           $resac = db_query("insert into db_acount values($acount,1008017,11714,'".AddSlashes(pg_result($resaco,$conresaco,'bi09_capacidade'))."','$this->bi09_capacidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008017,11714,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi09_capacidade'))."','$this->bi09_capacidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["bi09_abrev"]))
-           $resac = db_query("insert into db_acount values($acount,1008017,11713,'".AddSlashes(pg_result($resaco,$conresaco,'bi09_abrev'))."','$this->bi09_abrev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1008017,11713,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi09_abrev'))."','$this->bi09_abrev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_localizacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008137,'$bi09_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1008017,1008137,'','".AddSlashes(pg_result($resaco,$iresaco,'bi09_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008017,1008138,'','".AddSlashes(pg_result($resaco,$iresaco,'bi09_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008017,1008930,'','".AddSlashes(pg_result($resaco,$iresaco,'bi09_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008017,11714,'','".AddSlashes(pg_result($resaco,$iresaco,'bi09_capacidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008017,11713,'','".AddSlashes(pg_result($resaco,$iresaco,'bi09_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008017,1008137,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi09_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008017,1008138,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi09_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008017,1008930,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi09_biblioteca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008017,11714,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi09_capacidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008017,11713,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi09_abrev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from localizacao
@@ -407,7 +407,7 @@ class cl_localizacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:localizacao";
@@ -421,7 +421,7 @@ class cl_localizacao {
    function sql_query ( $bi09_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -444,7 +444,7 @@ class cl_localizacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -456,7 +456,7 @@ class cl_localizacao {
    function sql_query_file ( $bi09_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,7 +477,7 @@ class cl_localizacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoProcResultado = db_utils::getdao("procresultado"); 
 $db_opcao          = 1;
 $db_opcao1         = 1;
@@ -84,7 +84,7 @@ if (isset($incluir)) {
   if ($iLinhasUnion == 0) {
     $max = 0;
   } else {
-    $max = pg_result($rsUnion, $iLinhasUnion-1, "ed41_i_sequencia");
+    $max = pg_fetch_result($rsUnion, $iLinhasUnion-1, "ed41_i_sequencia");
   }
   
   $oDaoProcResultado->ed43_c_minimoaprov     = $minimoaprov;

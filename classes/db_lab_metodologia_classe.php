@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE lab_metodologia
 class cl_lab_metodologia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $la16_i_codigo = 0; 
-   var $la16_i_materialcoleta = 0; 
-   var $la16_c_descr = null; 
-   var $la16_t_preparo = null; 
+   public $la16_i_codigo = 0; 
+   public $la16_i_materialcoleta = 0; 
+   public $la16_c_descr = null; 
+   public $la16_t_preparo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  la16_i_codigo = int4 = Código 
                  la16_i_materialcoleta = int4 = Material Coleta 
                  la16_c_descr = char(50) = Descrição 
                  la16_t_preparo = text = Preparo 
                  ";
    //funcao construtor da classe 
-   function cl_lab_metodologia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lab_metodologia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_lab_metodologia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->la16_i_codigo = pg_result($result,0,0); 
+       $this->la16_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from lab_metodologia_la16_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $la16_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $la16_i_codigo)){
          $this->erro_sql = " Campo la16_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_lab_metodologia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "lab_metodologia ($this->la16_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "lab_metodologia já Cadastrado";
@@ -180,13 +180,13 @@ class cl_lab_metodologia {
      $resaco = $this->sql_record($this->sql_query_file($this->la16_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15764,'$this->la16_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2766,15764,'','".AddSlashes(pg_result($resaco,0,'la16_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2766,15765,'','".AddSlashes(pg_result($resaco,0,'la16_i_materialcoleta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2766,15766,'','".AddSlashes(pg_result($resaco,0,'la16_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2766,15767,'','".AddSlashes(pg_result($resaco,0,'la16_t_preparo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2766,15764,'','".AddSlashes(pg_fetch_result($resaco,0,'la16_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2766,15765,'','".AddSlashes(pg_fetch_result($resaco,0,'la16_i_materialcoleta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2766,15766,'','".AddSlashes(pg_fetch_result($resaco,0,'la16_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2766,15767,'','".AddSlashes(pg_fetch_result($resaco,0,'la16_t_preparo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_lab_metodologia {
       $this->atualizacampos();
      $sql = " update lab_metodologia set ";
      $virgula = "";
-     if(trim($this->la16_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la16_i_codigo"])){ 
+     if(trim((string) $this->la16_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la16_i_codigo"])){ 
        $sql  .= $virgula." la16_i_codigo = $this->la16_i_codigo ";
        $virgula = ",";
-       if(trim($this->la16_i_codigo) == null ){ 
+       if(trim((string) $this->la16_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "la16_i_codigo";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_lab_metodologia {
          return false;
        }
      }
-     if(trim($this->la16_i_materialcoleta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la16_i_materialcoleta"])){ 
+     if(trim((string) $this->la16_i_materialcoleta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la16_i_materialcoleta"])){ 
        $sql  .= $virgula." la16_i_materialcoleta = $this->la16_i_materialcoleta ";
        $virgula = ",";
-       if(trim($this->la16_i_materialcoleta) == null ){ 
+       if(trim((string) $this->la16_i_materialcoleta) == null ){ 
          $this->erro_sql = " Campo Material Coleta nao Informado.";
          $this->erro_campo = "la16_i_materialcoleta";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_lab_metodologia {
          return false;
        }
      }
-     if(trim($this->la16_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la16_c_descr"])){ 
+     if(trim((string) $this->la16_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la16_c_descr"])){ 
        $sql  .= $virgula." la16_c_descr = '$this->la16_c_descr' ";
        $virgula = ",";
-       if(trim($this->la16_c_descr) == null ){ 
+       if(trim((string) $this->la16_c_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "la16_c_descr";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_lab_metodologia {
          return false;
        }
      }
-     if(trim($this->la16_t_preparo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la16_t_preparo"])){ 
+     if(trim((string) $this->la16_t_preparo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la16_t_preparo"])){ 
        $sql  .= $virgula." la16_t_preparo = '$this->la16_t_preparo' ";
        $virgula = ",";
-       if(trim($this->la16_t_preparo) == null ){ 
+       if(trim((string) $this->la16_t_preparo) == null ){ 
          $this->erro_sql = " Campo Preparo nao Informado.";
          $this->erro_campo = "la16_t_preparo";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_lab_metodologia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15764,'$this->la16_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la16_i_codigo"]) || $this->la16_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2766,15764,'".AddSlashes(pg_result($resaco,$conresaco,'la16_i_codigo'))."','$this->la16_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2766,15764,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la16_i_codigo'))."','$this->la16_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la16_i_materialcoleta"]) || $this->la16_i_materialcoleta != "")
-           $resac = db_query("insert into db_acount values($acount,2766,15765,'".AddSlashes(pg_result($resaco,$conresaco,'la16_i_materialcoleta'))."','$this->la16_i_materialcoleta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2766,15765,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la16_i_materialcoleta'))."','$this->la16_i_materialcoleta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la16_c_descr"]) || $this->la16_c_descr != "")
-           $resac = db_query("insert into db_acount values($acount,2766,15766,'".AddSlashes(pg_result($resaco,$conresaco,'la16_c_descr'))."','$this->la16_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2766,15766,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la16_c_descr'))."','$this->la16_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["la16_t_preparo"]) || $this->la16_t_preparo != "")
-           $resac = db_query("insert into db_acount values($acount,2766,15767,'".AddSlashes(pg_result($resaco,$conresaco,'la16_t_preparo'))."','$this->la16_t_preparo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2766,15767,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la16_t_preparo'))."','$this->la16_t_preparo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_lab_metodologia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15764,'$la16_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2766,15764,'','".AddSlashes(pg_result($resaco,$iresaco,'la16_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2766,15765,'','".AddSlashes(pg_result($resaco,$iresaco,'la16_i_materialcoleta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2766,15766,'','".AddSlashes(pg_result($resaco,$iresaco,'la16_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2766,15767,'','".AddSlashes(pg_result($resaco,$iresaco,'la16_t_preparo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2766,15764,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la16_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2766,15765,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la16_i_materialcoleta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2766,15766,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la16_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2766,15767,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la16_t_preparo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from lab_metodologia
@@ -376,7 +376,7 @@ class cl_lab_metodologia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:lab_metodologia";
@@ -391,7 +391,7 @@ class cl_lab_metodologia {
    function sql_query ( $la16_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_lab_metodologia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_lab_metodologia {
    function sql_query_file ( $la16_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_lab_metodologia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

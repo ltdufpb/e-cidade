@@ -32,14 +32,14 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_fiscalusuario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_fandamusu_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clfiscalusuario = new cl_fiscalusuario;
 $clfandamusu     = new cl_fandamusu;
 $db_botao = false;
 $db_opcao = 33;
 global $y39_codandam;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $db_opcao = 3;
   $clfandamusu->excluir($y39_codandam,$y38_id_usuario);
@@ -78,7 +78,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 js_tabulacaoforms("form1","db_opcao",true,1,"db_opcao",true);
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clfiscalusuario->erro_status=="0"){
     $clfiscalusuario->erro(true,false);
     echo "<script>parent.iframe_fiscais.location.href='fis1_fiscalusuario001.php?y38_codnoti=$y38_codnoti&abas=1&y39_codandam=$y39_codandam'</script>";

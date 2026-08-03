@@ -37,8 +37,8 @@ include(modification("classes/db_conlancamdig_classe.php"));
 include(modification("classes/db_conplano_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clconplano     = new cl_conplano;
@@ -79,7 +79,7 @@ $campos="c69_data,c69_codlan,c69_sequen,c69_codhist,c50_descr,
                                    and c60_anousu=".db_getsession("DB_anousu")."
         ) as  DL_credito_descr
 	 ";
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Consultar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Consultar"){
      $db_opcao=2;
      //-- seleciona todos os lancamentos do lote informado e coloca num recordset
      if ($data_ini_ano !=""){   
@@ -96,7 +96,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Consult
      $sql = $sql."c69_codlan in (select c70_codlan from conlancam where c70_codlan=$codigo order by c70_codlan) and c69_anousu=$anousu";  
      $res_sql= $clconlancamval->sql_query("","$campos","c69_codlan,c69_sequen",$sql);
      //   db_msgbox($res_sql);
-   
+
      $result=$clconlancamval->sql_record($res_sql);
      if ($clconlancamval->numrows > 0 ){
          $tem_dados=true;

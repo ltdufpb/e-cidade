@@ -32,8 +32,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_prontuariomedico_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprontuariomedico = new cl_prontuariomedico;
 $clprontuariomedico->rotulo->label("sd32_i_codigo");
 $clprontuariomedico->rotulo->label("z01_v_nome");
@@ -104,9 +104,9 @@ $clrotulo->label("z01_v_nome");
         }else{
            //$sql = $clprontuariomedico->sql_query("",$campos,"sd32_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd32_i_codigo)){
-          $repassa = array("chave_sd32_i_codigo"=>$chave_sd32_i_codigo,"chave_sd32_i_codigo"=>$chave_sd32_i_codigo);
+          $repassa = ["chave_sd32_i_codigo"=>$chave_sd32_i_codigo,"chave_sd32_i_codigo"=>$chave_sd32_i_codigo];
         }
         
         db_lovrot(@$sql,15,"()","",$funcao_js,"","NoMe",$repassa);

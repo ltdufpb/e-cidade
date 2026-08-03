@@ -34,8 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_itbinomecgm_classe.php"));
 require_once(modification("classes/db_cgm_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 ?>
 <html>

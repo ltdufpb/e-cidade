@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE orcimpactoval
 class cl_orcimpactoval { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o91_codseqimp = 0; 
-   var $o91_codimp = 0; 
-   var $o91_exercicio = 0; 
-   var $o91_valor = 0; 
-   var $o91_proces = 0; 
+   public $o91_codseqimp = 0; 
+   public $o91_codimp = 0; 
+   public $o91_exercicio = 0; 
+   public $o91_valor = 0; 
+   public $o91_proces = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o91_codseqimp = int8 = Sequencial 
                  o91_codimp = int4 = Código 
                  o91_exercicio = int4 = Exercício 
@@ -56,10 +56,10 @@ class cl_orcimpactoval {
                  o91_proces = int4 = Processo 
                  ";
    //funcao construtor da classe 
-   function cl_orcimpactoval() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcimpactoval"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_orcimpactoval {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o91_codseqimp = pg_result($result,0,0); 
+       $this->o91_codseqimp = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from orcimpactoval_o91_codseqimp_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o91_codseqimp)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o91_codseqimp)){
          $this->erro_sql = " Campo o91_codseqimp maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_orcimpactoval {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Valores do impacto orçamentário ($this->o91_codseqimp) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Valores do impacto orçamentário já Cadastrado";
@@ -194,14 +194,14 @@ class cl_orcimpactoval {
      $resaco = $this->sql_record($this->sql_query_file($this->o91_codseqimp));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6641,'$this->o91_codseqimp','I')");
-       $resac = db_query("insert into db_acount values($acount,1089,6641,'','".AddSlashes(pg_result($resaco,0,'o91_codseqimp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1089,6642,'','".AddSlashes(pg_result($resaco,0,'o91_codimp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1089,6643,'','".AddSlashes(pg_result($resaco,0,'o91_exercicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1089,6644,'','".AddSlashes(pg_result($resaco,0,'o91_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1089,6646,'','".AddSlashes(pg_result($resaco,0,'o91_proces'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1089,6641,'','".AddSlashes(pg_fetch_result($resaco,0,'o91_codseqimp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1089,6642,'','".AddSlashes(pg_fetch_result($resaco,0,'o91_codimp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1089,6643,'','".AddSlashes(pg_fetch_result($resaco,0,'o91_exercicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1089,6644,'','".AddSlashes(pg_fetch_result($resaco,0,'o91_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1089,6646,'','".AddSlashes(pg_fetch_result($resaco,0,'o91_proces'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_orcimpactoval {
       $this->atualizacampos();
      $sql = " update orcimpactoval set ";
      $virgula = "";
-     if(trim($this->o91_codseqimp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o91_codseqimp"])){ 
+     if(trim((string) $this->o91_codseqimp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o91_codseqimp"])){ 
        $sql  .= $virgula." o91_codseqimp = $this->o91_codseqimp ";
        $virgula = ",";
-       if(trim($this->o91_codseqimp) == null ){ 
+       if(trim((string) $this->o91_codseqimp) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "o91_codseqimp";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_orcimpactoval {
          return false;
        }
      }
-     if(trim($this->o91_codimp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o91_codimp"])){ 
+     if(trim((string) $this->o91_codimp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o91_codimp"])){ 
        $sql  .= $virgula." o91_codimp = $this->o91_codimp ";
        $virgula = ",";
-       if(trim($this->o91_codimp) == null ){ 
+       if(trim((string) $this->o91_codimp) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "o91_codimp";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_orcimpactoval {
          return false;
        }
      }
-     if(trim($this->o91_exercicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o91_exercicio"])){ 
+     if(trim((string) $this->o91_exercicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o91_exercicio"])){ 
        $sql  .= $virgula." o91_exercicio = $this->o91_exercicio ";
        $virgula = ",";
-       if(trim($this->o91_exercicio) == null ){ 
+       if(trim((string) $this->o91_exercicio) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "o91_exercicio";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_orcimpactoval {
          return false;
        }
      }
-     if(trim($this->o91_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o91_valor"])){ 
+     if(trim((string) $this->o91_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o91_valor"])){ 
        $sql  .= $virgula." o91_valor = $this->o91_valor ";
        $virgula = ",";
-       if(trim($this->o91_valor) == null ){ 
+       if(trim((string) $this->o91_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "o91_valor";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_orcimpactoval {
          return false;
        }
      }
-     if(trim($this->o91_proces)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o91_proces"])){ 
+     if(trim((string) $this->o91_proces)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o91_proces"])){ 
        $sql  .= $virgula." o91_proces = $this->o91_proces ";
        $virgula = ",";
-       if(trim($this->o91_proces) == null ){ 
+       if(trim((string) $this->o91_proces) == null ){ 
          $this->erro_sql = " Campo Processo nao Informado.";
          $this->erro_campo = "o91_proces";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_orcimpactoval {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6641,'$this->o91_codseqimp','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o91_codseqimp"]))
-           $resac = db_query("insert into db_acount values($acount,1089,6641,'".AddSlashes(pg_result($resaco,$conresaco,'o91_codseqimp'))."','$this->o91_codseqimp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1089,6641,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o91_codseqimp'))."','$this->o91_codseqimp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o91_codimp"]))
-           $resac = db_query("insert into db_acount values($acount,1089,6642,'".AddSlashes(pg_result($resaco,$conresaco,'o91_codimp'))."','$this->o91_codimp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1089,6642,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o91_codimp'))."','$this->o91_codimp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o91_exercicio"]))
-           $resac = db_query("insert into db_acount values($acount,1089,6643,'".AddSlashes(pg_result($resaco,$conresaco,'o91_exercicio'))."','$this->o91_exercicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1089,6643,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o91_exercicio'))."','$this->o91_exercicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o91_valor"]))
-           $resac = db_query("insert into db_acount values($acount,1089,6644,'".AddSlashes(pg_result($resaco,$conresaco,'o91_valor'))."','$this->o91_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1089,6644,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o91_valor'))."','$this->o91_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o91_proces"]))
-           $resac = db_query("insert into db_acount values($acount,1089,6646,'".AddSlashes(pg_result($resaco,$conresaco,'o91_proces'))."','$this->o91_proces',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1089,6646,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o91_proces'))."','$this->o91_proces',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_orcimpactoval {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6641,'$o91_codseqimp','E')");
-         $resac = db_query("insert into db_acount values($acount,1089,6641,'','".AddSlashes(pg_result($resaco,$iresaco,'o91_codseqimp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1089,6642,'','".AddSlashes(pg_result($resaco,$iresaco,'o91_codimp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1089,6643,'','".AddSlashes(pg_result($resaco,$iresaco,'o91_exercicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1089,6644,'','".AddSlashes(pg_result($resaco,$iresaco,'o91_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1089,6646,'','".AddSlashes(pg_result($resaco,$iresaco,'o91_proces'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1089,6641,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o91_codseqimp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1089,6642,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o91_codimp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1089,6643,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o91_exercicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1089,6644,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o91_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1089,6646,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o91_proces'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcimpactoval
@@ -407,7 +407,7 @@ class cl_orcimpactoval {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcimpactoval";
@@ -421,7 +421,7 @@ class cl_orcimpactoval {
    function sql_query ( $o91_codseqimp=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_orcimpactoval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -464,7 +464,7 @@ class cl_orcimpactoval {
    function sql_query_file ( $o91_codseqimp=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -485,7 +485,7 @@ class cl_orcimpactoval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -498,7 +498,7 @@ class cl_orcimpactoval {
    function sql_query_dad ( $o91_codseqimp=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -524,7 +524,7 @@ class cl_orcimpactoval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

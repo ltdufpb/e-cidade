@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("bensguarda"=>"Guarda","bensguardaitem"=>"Itens"); 
-	 $clcriaabas->src = array("bensguarda"=>"pat1_bensguarda004.php");
-	 $clcriaabas->disabled   =  array("bensguardaitem"=>"true"); 
+	 $clcriaabas->identifica = ["bensguarda"=>"Guarda","bensguardaitem"=>"Itens"]; 
+	 $clcriaabas->src = ["bensguarda"=>"pat1_bensguarda004.php"];
+	 $clcriaabas->disabled   =  ["bensguardaitem"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

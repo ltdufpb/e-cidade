@@ -8,7 +8,7 @@ use \ECidade\V3\Error\Renderer;
 class Shutdown implements HandlerInterface {
 
   public static function register() {
-    return register_shutdown_function(array(__CLASS__, 'handle'));
+    return register_shutdown_function([self::class, 'handle']);
   }
 
   public static function handle() {
@@ -19,7 +19,7 @@ class Shutdown implements HandlerInterface {
       return;
     }
 
-    $entity = Error::handle($error['type'], $error['message'], $error['file'], $error['line'], array());
+    $entity = Error::handle($error['type'], $error['message'], $error['file'], $error['line'], []);
 
     Registry::get('app.eventManager')->trigger('app.shutdown');
 

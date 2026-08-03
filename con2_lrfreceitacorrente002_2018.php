@@ -52,8 +52,8 @@ if (!isset($arqinclude)) {
     $clorcparamrelnota = new cl_orcparamrelnota;
     $clorcparamelemento = new cl_orcparamelemento();
 
-    parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-    db_postmemory($HTTP_SERVER_VARS);
+    parse_str((string) $_SERVER['QUERY_STRING'], $result);
+    db_postmemory($_SERVER);
 
 }
 
@@ -62,9 +62,9 @@ $resultinst = db_query("select codigo,nomeinst,munic,nomeinstabrev, uf from db_c
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
-    if (strlen(trim($nomeinstabrev)) > 0) {
+    if (strlen(trim((string) $nomeinstabrev)) > 0) {
         $descr_inst .= $xvirg . $nomeinstabrev;
         $flag_abrev = true;
     } else {
@@ -115,8 +115,8 @@ if (!isset($arqinclude)) {
 
     // data final do período
 
-    $bimestre = substr($sSiglaPeriodo, 0, 1); // bimestre do exercicio atual
-    $bimestreEscrito = substr($sSiglaPeriodo, 0, 1); // bimestre do exercicio atual
+    $bimestre = substr((string) $sSiglaPeriodo, 0, 1); // bimestre do exercicio atual
+    $bimestreEscrito = substr((string) $sSiglaPeriodo, 0, 1); // bimestre do exercicio atual
 
 }
 // caso tenha datas manuais selecionada , sobrescrevo as variaveis acima
@@ -128,7 +128,7 @@ if ($dtini != '' && $dtfin != '') {
     $dt_ini = $dtini;
     $dt_fin = $dtfin;
 
-    $dt = explode("-", $dt_ini);
+    $dt = explode("-", (string) $dt_ini);
     $mes = $dt[1];
 
     // 1 Bimestre
@@ -146,15 +146,15 @@ if ($dtini != '' && $dtfin != '') {
         $bimestre = 6;
     }
 
-    $dt = explode('-', $dt_fin);
+    $dt = explode('-', (string) $dt_fin);
     $dt_ini_ant = $anousu_ant . '-' . $dt[1] . '-' . $dt[2];
-    $dt = explode('-', $dt_fin);
+    $dt = explode('-', (string) $dt_fin);
     $dt_fin_ant = $anousu_ant . '-' . $dt[1] . '-' . $dt[2];
 
 }
 
-$aDataInicial = explode("-", $dt[0]);
-$aDataFinal = explode("-", $dt[1]);
+$aDataInicial = explode("-", (string) $dt[0]);
+$aDataFinal = explode("-", (string) $dt[1]);
 $iMesInicialAtual = 1;
 $iMesFinalAtual = $aDataFinal[1];
 $iMesInicialAnterior = ($aDataFinal[1] + 1);
@@ -191,8 +191,8 @@ if (!isset($arqinclude)) {
     }
 
     if ($tipo_emissao != 'datas') {
-        $dtd1 = explode('-', $dt_ini);
-        $dtd2 = explode('-', $dt_fin);
+        $dtd1 = explode('-', (string) $dt_ini);
+        $dtd2 = explode('-', (string) $dt_fin);
         $dt1 = "$dtd1[2]/$dtd1[1]/$dtd1[0]";
         $dt2 = "$dtd2[2]/$dtd2[1]/$dtd2[0]";
         $txt = mb_strtoupper(db_mes('01'));
@@ -203,13 +203,13 @@ if (!isset($arqinclude)) {
         } else {
             $txt .= "  / " . $anousu;
         }
-        $dt = explode("-", $dt_fin);
+        $dt = explode("-", (string) $dt_fin);
         $txt .= " A " . mb_strtoupper(db_mes($dt[1]));
         $txt .= "  / " . $anousu;
 
     } else {
-        $dtd1 = explode('-', $dt_ini);
-        $dtd2 = explode('-', $dt_fin);
+        $dtd1 = explode('-', (string) $dt_ini);
+        $dtd2 = explode('-', (string) $dt_fin);
         $dt1 = "$dtd1[2]/$dtd1[1]/$dtd1[0]";
         $dt2 = "$dtd2[2]/$dtd2[1]/$dtd2[0]";
         $head5 = "EMISSÃO POR DATAS";
@@ -414,7 +414,7 @@ for ($i = 0; $i < $clreceita_saldo_mes->numrows; $i++) {
                         continue;
                     }
                     // Trec da linha 1 contem o total da dedução da receita corrente
-                    if (db_conplano_grupo($anousu - 1, substr($oReceita->o57_fonte, 0, 3) . "%", 9001) == true) {  // 497 e 917
+                    if (db_conplano_grupo($anousu - 1, substr((string) $oReceita->o57_fonte, 0, 3) . "%", 9001) == true) {  // 497 e 917
 
                         if (!isset($Trec[1][1])) $Trec[1][1] = ($oReceita->janeiro); else {
                             $Trec[1][1] += ($oReceita->janeiro);
@@ -592,7 +592,7 @@ for ($p = 1; $p <= $totalLinhasRelatorio; $p++) {
                         continue;
                     }
                     // Trec da linha 1 contem o total da dedução da receita corrente
-                    if (db_conplano_grupo($anousu, substr($oReceita->o57_fonte, 0, 3) . "%", 9001) == true) {  // 497 e 917
+                    if (db_conplano_grupo($anousu, substr((string) $oReceita->o57_fonte, 0, 3) . "%", 9001) == true) {  // 497 e 917
                         if (!isset($TrecB[1][1])) $TrecB[1][1] = ($oReceita->janeiro); else $TrecB[1][1] += ($oReceita->janeiro);
                         if (!isset($TrecB[1][2])) $TrecB[1][2] = ($oReceita->fevereiro); else $TrecB[1][2] += ($oReceita->fevereiro);
                         if (!isset($TrecB[1][3])) $TrecB[1][3] = ($oReceita->marco); else $TrecB[1][3] += ($oReceita->marco);
@@ -642,7 +642,7 @@ for ($p = 1; $p <= $totalLinhasRelatorio; $p++) {
 // -----------
 // ------------------------------
 // somadores avulsos
-$tot_rec_trib = array(); //zera matriz
+$tot_rec_trib = []; //zera matriz
 for ($x = 0; $x <= 13; $x++) {
     $tot_rec_trib[0][$x] = 0;
 }
@@ -672,7 +672,7 @@ for ($x = 1; $x <= 5; $x++) {
 }
 
 //
-$tot_transf = array(); //zera matriz
+$tot_transf = []; //zera matriz
 
 for ($x = 0; $x <= 13; $x++) {
     $tot_transf[0][$x] = 0;
@@ -703,7 +703,7 @@ for ($x = 12; $x < 20; $x++) {
     }
 }
 
-$tot_receita_patrimonial = array(); //zera matriz
+$tot_receita_patrimonial = []; //zera matriz
 
 for ($x = 0; $x <= 13; $x++) {
     $tot_receita_patrimonial[0][$x] = 0;

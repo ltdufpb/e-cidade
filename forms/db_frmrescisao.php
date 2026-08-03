@@ -110,7 +110,7 @@ $r59_mesusu = db_mesfolha();
 	    </td>
 	    <td colspan=2> 
 	      <?php
-	      $arr_SorN = Array('N'=>'Não','S'=>'Sim');
+	      $arr_SorN = ['N'=>'Não','S'=>'Sim'];
 	      db_select("r59_menos1",$arr_SorN,true,($db_opcao != 1?3:1));
 	      ?>
 	    </td>
@@ -165,7 +165,7 @@ $r59_mesusu = db_mesfolha();
 	    </td>
 	    <td> 
 	      <?php 
-	      $arr_SorN = Array('f'=>'Não','t'=>'Sim');
+	      $arr_SorN = ['f'=>'Não','t'=>'Sim'];
 	      db_select('r59_aviso',$arr_SorN,true,$db_opcao,"");
 	      ?>
 	    </td>
@@ -411,7 +411,7 @@ function js_preenchepesquisa(chave,chave1,chave2,chave3,chave4,chave5){
   db_iframe_rescisao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3+'&chavepesquisa4='+chave4+'&chavepesquisa5='+chave5";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3+'&chavepesquisa4='+chave4+'&chavepesquisa5='+chave5";
   }
   ?>
 }

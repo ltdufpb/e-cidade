@@ -33,7 +33,7 @@ class UsuarioSistemaRepository {
   /**
    * @var array
    */
-  private $aItens = array();
+  private $aItens = [];
 
   /**
    * @var UsuarioSistemaRepository
@@ -70,7 +70,7 @@ class UsuarioSistemaRepository {
    * @param  Instituicao|null $oInstituicao    
    * @return Array Toddas as Lotações ainda disponíveis para o usuário.
    */
-  public static function getLotacoesPermitidas(UsuarioSistema $oUsuarioSistema, Instituicao $oInstituicao = null) {
+  public static function getLotacoesPermitidas(UsuarioSistema $oUsuarioSistema, ?Instituicao $oInstituicao = null) {
 
     if (is_null($oInstituicao)) {
       $oInstituicao = InstituicaoRepository::getInstituicaoSessao();

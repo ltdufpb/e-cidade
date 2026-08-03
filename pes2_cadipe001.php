@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -93,7 +93,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-          $v = array("a"=>"Alfabetica", "n"=>"Registro", "v"=>"Valor","i"=>"Matric. Ipe");
+          $v = ["a"=>"Alfabetica", "n"=>"Registro", "v"=>"Valor","i"=>"Matric. Ipe"];
           db_select('ordem',$v,true,4,"");
           ?>
         </td>

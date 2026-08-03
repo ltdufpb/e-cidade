@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt34');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 

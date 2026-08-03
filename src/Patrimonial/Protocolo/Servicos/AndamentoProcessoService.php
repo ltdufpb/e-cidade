@@ -33,8 +33,6 @@ use ProcessoProtocoloNumeracao;
  */
 class AndamentoProcessoService
 {
-    private $parametros;
-
     private $repositorio;
 
     private $departamentos;
@@ -45,9 +43,8 @@ class AndamentoProcessoService
 
     private $repositorioProcessoDocumento;
 
-    public function __construct(stdClass $parametros)
+    public function __construct(private readonly stdClass $parametros)
     {
-        $this->parametros = $parametros;
         $this->repositorio = new ProcessoRepositorio();
         $this->repositorioAndamentoInterno = new AndamentoProcessoInternoRepository(new \cl_procandamint);
         $this->repositorioProcessoDocumento = new ProcessoDocumentoRepository(new \cl_protprocessodocumento);
@@ -57,7 +54,7 @@ class AndamentoProcessoService
     private function buscarInstituicoes()
     {
         $instituicoes = \InstituicaoRepository::getInstituicoes();
-        $rs = array();
+        $rs = [];
 
         foreach ($instituicoes as $instituicao) {
             try {
@@ -65,14 +62,14 @@ class AndamentoProcessoService
                     $instituicao->getCodigo(),
                     !empty($this->parametros->filtraDepartamentosPorDataLimite) ? true : false
                 );
-            } catch (Exception $e) {
+            } catch (Exception) {
             }
 
-            $rs[] = (object)array(
+            $rs[] = (object)[
                 'codigo' => $instituicao->getCodigo(),
                 'descricao' => $instituicao->getDescricao(),
                 'departamentos' => $departamento
-            );
+            ];
         }
 
         return $rs;
@@ -96,7 +93,7 @@ class AndamentoProcessoService
             throw new \Exception("Não foi possível buscar os departamentos da instituição.\Contate o suporte.");
         }
 
-        $departamentos = array();
+        $departamentos = [];
 
         while ($departamento = pg_fetch_object($rs)) {
             $departamentos[] = $departamento;
@@ -109,7 +106,7 @@ class AndamentoProcessoService
     {
         $dao = new \cl_procandamint();
 
-        $campos = array();
+        $campos = [];
         $campos[] = 'p78_sequencial as codigo';
         $campos[] = 'p78_codandam as codigoAndamento';
         $campos[] = 'TO_CHAR(p78_data, \'dd/mm/YYYY\') as data';
@@ -126,7 +123,7 @@ class AndamentoProcessoService
             );
         }
 
-        $despachos = array();
+        $despachos = [];
 
         while ($despacho = pg_fetch_object($rs)) {
             $despachos[] = $despacho;
@@ -144,7 +141,7 @@ class AndamentoProcessoService
         }
 
         $departamentos = $this->buscaDepartamentos();
-        $processos = $this->buscarProcessosAReceber(array("p62_codtran > {$this->parametros->ultimaTransferencia}"));
+        $processos = $this->buscarProcessosAReceber(["p62_codtran > {$this->parametros->ultimaTransferencia}"]);
 
         foreach ($processos as &$processo) {
             $this->preparaProcesso($processo, $departamentos);
@@ -171,7 +168,7 @@ class AndamentoProcessoService
                 "Não foi possível buscar os documentos do processo {$codigoProcesso}.\nContate o suporte."
             );
         }
-        $documentos = array();
+        $documentos = [];
 
         while ($documento = pg_fetch_object($rs)) {
             $documentos[] = $documento;
@@ -180,7 +177,7 @@ class AndamentoProcessoService
         return $documentos;
     }
 
-    private function buscarProcessosRecebidosInterno(array $where = null)
+    private function buscarProcessosRecebidosInterno(?array $where = null)
     {
         $codigoUsuario = db_getsession('DB_id_usuario');
         $ano = db_getsession('DB_anousu') - 1;
@@ -193,7 +190,7 @@ class AndamentoProcessoService
         $aux = "select count(p78_sequencial) from procandamint ";
         $aux .= " where p78_codandam = p58_codandam and p78_transint is false limit 1";
 
-        $campos = array();
+        $campos = [];
         $campos[] = "p58_codproc AS codigo";
         $campos[] = 'z01_nome as titular';
         $campos[] = 'p58_codandam as codigoAndamento';
@@ -267,7 +264,7 @@ class AndamentoProcessoService
             throw new \Exception("Não foi possível buscar os processos a receber.\nContate o suporte.");
         }
 
-        $processos = array();
+        $processos = [];
 
         while ($processo = pg_fetch_object($rs)) {
             $processos[] = $processo;
@@ -276,7 +273,7 @@ class AndamentoProcessoService
         return $processos;
     }
 
-    private function buscaProcessosRecebidos(array $where = null)
+    private function buscaProcessosRecebidos(?array $where = null)
     {
         $departamento = db_getsession('DB_coddepto');
         $codigoUsuario = db_getsession('DB_id_usuario');
@@ -284,7 +281,7 @@ class AndamentoProcessoService
 
         $aux = "select count(p78_codandam) from procandamint where p78_codandam = p58_codandam limit 1";
 
-        $campos = array();
+        $campos = [];
         $campos[] = 'p58_codproc as codigo';
         $campos[] = 'z01_nome as titular';
         $campos[] = 'p58_codandam as codigoAndamento';
@@ -365,7 +362,7 @@ class AndamentoProcessoService
             throw new \Exception("Não foi possível buscar os processos a receber.\nContate o suporte.");
         }
 
-        $processos = array();
+        $processos = [];
 
         while ($processo = pg_fetch_object($rs)) {
             $processos[] = $processo;
@@ -374,7 +371,7 @@ class AndamentoProcessoService
         return $processos;
     }
 
-    private function buscarProcessosAReceberInternos(array $where = null)
+    private function buscarProcessosAReceberInternos(?array $where = null)
     {
         $codigoUsuario = db_getsession('DB_id_usuario');
         $ano = db_getsession('DB_anousu') - 1;
@@ -385,7 +382,7 @@ class AndamentoProcessoService
             $whereRestringeVisualizarReceber = "";
         }
 
-        $campos = array();
+        $campos = [];
         $campos[] = "p58_codproc AS codigo";
         $campos[] = 'z01_nome as titular';
         $campos[] = 'p58_codandam as codigoAndamento';
@@ -458,7 +455,7 @@ class AndamentoProcessoService
             throw new \Exception("Não foi possível buscar os processos a receber.\nContate o suporte.");
         }
 
-        $processos = array();
+        $processos = [];
 
         while ($processo = pg_fetch_object($rs)) {
             $processos[] = $processo;
@@ -467,7 +464,7 @@ class AndamentoProcessoService
         return $processos;
     }
 
-    private function buscarProcessosAReceber(array $where = null)
+    private function buscarProcessosAReceber(?array $where = null)
     {
         $codigoUsuario = db_getsession('DB_id_usuario');
         $ano = db_getsession('DB_anousu') - 1;
@@ -476,7 +473,7 @@ class AndamentoProcessoService
         if ($departamento->getCodigoResponsavel() == $codigoUsuario) {
             $whereRestringeVisualizarReceber = "";
         }
-        $campos = array();
+        $campos = [];
         $campos[] = 'p58_codproc as codigo';
         $campos[] = 'z01_nome as titular';
         $campos[] = 'p58_codandam as codigoAndamento';
@@ -546,7 +543,7 @@ class AndamentoProcessoService
             throw new \Exception("Não foi possível buscar os processos a receber.\nContate o suporte.");
         }
 
-        $processos = array();
+        $processos = [];
 
         while ($processo = pg_fetch_object($rs)) {
             $processos[] = $processo;
@@ -557,8 +554,8 @@ class AndamentoProcessoService
 
     private function preparaProcesso(stdClass $processo, $instituicoes, $usuariosDepartamento = null)
     {
-        $processo->despachosAnteriores = array();
-        $processo->documentos = array();
+        $processo->despachosAnteriores = [];
+        $processo->documentos = [];
 
         if ($processo->codigostatus != AndamentoProcesso::STATUS_A_RECEBER) {
             $processo->despachosAnteriores = $this->buscaDespachoPorAndamento($processo->codigoandamento);
@@ -584,7 +581,7 @@ class AndamentoProcessoService
         $departamento = DBDepartamentoRepository::getPorCodigo(db_getsession("DB_coddepto"));
         $where = null;
         if ($this->parametros->filtros) {
-            $where = json_decode($this->parametros->filtros);
+            $where = json_decode((string) $this->parametros->filtros);
         }
 
         $processosAReceber = $this->buscarProcessosAReceber($where);
@@ -598,9 +595,7 @@ class AndamentoProcessoService
             $processosRecebidosInterno
         );
 
-        usort($processos, function ($item1, $item2) {
-            return $item1->transferencia < $item2->transferencia;
-        });
+        usort($processos, fn($item1, $item2) => $item1->transferencia < $item2->transferencia);
 
         foreach ($processos as &$processo) {
             $this->preparaProcesso($processo, $instituicoes, $departamento->getUsuariosParaSelect());
@@ -611,11 +606,11 @@ class AndamentoProcessoService
 
     public function validarStatusProcesso()
     {
-        $resposta = (object)array(
+        $resposta = (object)[
             'houveAlteracao' => false,
             'processo' => null,
             'mensagem' => null
-        );
+        ];
 
         $processos = $this->buscarProcessos();
 
@@ -678,7 +673,7 @@ class AndamentoProcessoService
                 );
             }
 
-            if (pg_numrows($rsProcesso) == 0) {
+            if (pg_num_rows($rsProcesso) == 0) {
                 throw new \Exception(
                     "Não foi possível buscar o andamento do processo {$codProcesso}.\nContate o suporte."
                 );
@@ -695,7 +690,7 @@ class AndamentoProcessoService
                 );
             }
 
-            if (pg_numrows($rsAndamento) == 0) {
+            if (pg_num_rows($rsAndamento) == 0) {
                 $textoDespacho = 'Tramite Inicial';
             } else {
                 $textoDespacho = $statusProcesso->p58_despacho;
@@ -738,7 +733,7 @@ class AndamentoProcessoService
 
     public function despachar()
     {
-        $despachoInterno = trim($this->parametros->despachoInterno);
+        $despachoInterno = trim((string) $this->parametros->despachoInterno);
 
         if (empty($despachoInterno)) {
             throw new \Exception("É necessário preencher o campo Despacho Interno.");
@@ -760,7 +755,7 @@ class AndamentoProcessoService
 
             $minimoCaracteresDespacho = $parametros->p90_minchardesp;
             $despachoObrigatorio = $parametros->p90_despachoob == "t";
-            $quantidadeCaracteresDespacho = strlen($this->parametros->despachoInterno);
+            $quantidadeCaracteresDespacho = strlen((string) $this->parametros->despachoInterno);
 
             if ($minimoCaracteresDespacho > 0) {
                 if ($despachoObrigatorio || (!$despachoObrigatorio && $quantidadeCaracteresDespacho > 0)) {
@@ -787,7 +782,7 @@ class AndamentoProcessoService
         $daoAndamento->p78_publico = ($this->parametros->despachoPublico ? 't' : 'false');
         $daoAndamento->p78_transint = 'false';
         $daoAndamento->p78_tipodespacho = 1;
-        $daoAndamento->p78_despacho = addslashes($this->parametros->despachoInterno);
+        $daoAndamento->p78_despacho = addslashes((string) $this->parametros->despachoInterno);
         $daoAndamento->incluir(null);
 
         if ($daoAndamento->erro_status == "0") {
@@ -818,7 +813,7 @@ class AndamentoProcessoService
 
         if (!empty($this->parametros->despachoAnexos)) {
             $this->ordem = processoDocumento::getLastOrdemProcesso($idProcesso) + 1;
-            $anexos = json_decode($this->parametros->despachoAnexos);
+            $anexos = json_decode((string) $this->parametros->despachoAnexos);
 
             foreach ($anexos as $anexo) {
                 $processoDocumento = new ProcessoDocumento(null);
@@ -834,7 +829,7 @@ class AndamentoProcessoService
 
 
                     $storageConfig = StorageHelper::getStorageConfig();
-                    $allowed = array();
+                    $allowed = [];
 
                     $metadata = new \stdClass();
                     $metadata->tipo_documento = "processo";
@@ -881,14 +876,14 @@ class AndamentoProcessoService
         }
 
         $this->notificar($processoAtual, 'despacho');
-        return (object)array(
+        return (object)[
             'codigo' => $daoAndamento->p78_sequencial,
             'codigoAndamento' => $daoAndamento->p78_codandam,
             'data' => date("d/m/Y", db_getsession("DB_datausu")),
             'tipo' => 'Despacho',
             'usuario' => $usuarioSistema->getNome(),
             'despacho' => $daoAndamento->p78_despacho
-        );
+        ];
     }
 
     public function transferir()
@@ -936,7 +931,7 @@ class AndamentoProcessoService
 
         try {
             $departamento = DBDepartamentoRepository::getPorCodigo($this->parametros->departamentoDestino);
-        } catch (Exception $e) {
+        } catch (Exception) {
             $departamento = null;
         }
 
@@ -948,7 +943,7 @@ class AndamentoProcessoService
             } elseif (!empty($departamento)) {
                 MensageriaProcesso::enviar($processo->getCodProcesso(), false, $departamento);
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             throw new \Exception("Não foi possível enviar a notificação ao Mensageria.\nContate o suporte.");
         }
 
@@ -971,7 +966,7 @@ class AndamentoProcessoService
 
         foreach ($this->parametros->campos as $campo) {
             $sequencial = 'sequencial_' . $campo;
-            $codigoCampo = preg_replace('/campo_(\d+)/', "$1", $campo);
+            $codigoCampo = preg_replace('/campo_(\d+)/', "$1", (string) $campo);
             $resposta = $this->parametros->{$campo};
             $codigo = !empty($this->parametros->{$sequencial}) ? $this->parametros->{$sequencial} : null;
 
@@ -1003,26 +998,26 @@ class AndamentoProcessoService
         }
 
         if (!empty($this->parametros->campos)) {
-            $this->parametros->campos = explode(",", $this->parametros->campos);
+            $this->parametros->campos = explode(",", (string) $this->parametros->campos);
 
             if (is_array($this->parametros->campos) && sizeof($this->parametros->campos) > 0) {
                 $this->salvarRespostaCamposDinamicos();
             }
         }
 
-        $retorno = (object)array(
+        $retorno = (object)[
             'recebido' => $this->receber(),
             'despachado' => $this->despachar(),
             'transferido' => $this->transferir(),
             'houveAlteracao' => false
-        );
+        ];
 
         return $retorno;
     }
 
     public function prepararDocumentos()
     {
-        $retorno = array();
+        $retorno = [];
 
         $arquivo = new Arquivo();
         $quantidadeArquivos = sizeof($this->parametros->anexos->name);
@@ -1037,7 +1032,7 @@ class AndamentoProcessoService
                 );
             }
 
-            $extensao = pathinfo($nomeArquivo, PATHINFO_EXTENSION);
+            $extensao = pathinfo((string) $nomeArquivo, PATHINFO_EXTENSION);
             $hash = md5(time() . $nomeArquivo);
             $nomeSemAcento = \DBString::removerCaracteresEspeciaisAcentos($nomeArquivo);
             $caminhoArquivo = "tmp/{$hash}-{$nomeSemAcento}.{$extensao}";
@@ -1047,11 +1042,11 @@ class AndamentoProcessoService
                 );
             }
 
-            $retorno[] = (object)array(
+            $retorno[] = (object)[
                 'codigo' => time() + $i,
                 'descricao' => $nomeSemAcento,
                 'caminho' => $caminhoArquivo
-            );
+            ];
         }
 
         return $retorno;
@@ -1073,7 +1068,7 @@ class AndamentoProcessoService
         require_once("pro2_despachointer002.php");
 
         $storageConfig = StorageHelper::getStorageConfig();
-        $allowed = array();
+        $allowed = [];
 
         if (isset($storageConfig->client_id_ouvidoria) && !empty($storageConfig->client_id_ouvidoria)) {
             $allowed[] = $storageConfig->client_id_ouvidoria;
@@ -1132,12 +1127,12 @@ class AndamentoProcessoService
     {
         $daoProcesso = new \cl_protprocesso();
         $processoProtocolo = new \processoProtocolo($this->parametros->codigoProcesso);
-        $opcaoDeMensagem = array(
-            "mensagemPrefeitura" => array("tipo_despacho" => 1003, "despacho" => "Mensagem criada pela Prefeitura."),
-            "mensagemCidadao" => array("tipo_despacho" => 1001, "Mensagem criada pelo Cidadão."),
-            "respostaCidadao" => array("tipo_despacho" => 1000, ""),
-            "respostaPrefeitura" => array("tipo_despacho" => 1002, ""),
-        );
+        $opcaoDeMensagem = [
+            "mensagemPrefeitura" => ["tipo_despacho" => 1003, "despacho" => "Mensagem criada pela Prefeitura."],
+            "mensagemCidadao" => ["tipo_despacho" => 1001, "Mensagem criada pelo Cidadão."],
+            "respostaCidadao" => ["tipo_despacho" => 1000, ""],
+            "respostaPrefeitura" => ["tipo_despacho" => 1002, ""],
+        ];
 
         $mensagemTipo = $opcaoDeMensagem[$this->parametros->acao];
         if (empty($mensagemTipo)) {
@@ -1207,7 +1202,7 @@ class AndamentoProcessoService
 
         $andamentoInterno = new AndamentoProcessoInterno();
         $andamentoInterno->setIdAndamento($idAndamento);
-        $andamentoInterno->setDespacho(addslashes($this->parametros->mensagem));
+        $andamentoInterno->setDespacho(addslashes((string) $this->parametros->mensagem));
         $andamentoInterno->setPublico(true);
         $andamentoInterno->setTransitoInterno(false);
         $andamentoInterno->setData(date('Y-m-d'));
@@ -1217,7 +1212,7 @@ class AndamentoProcessoService
 
         try {
             $andamentoInterno = $this->repositorioAndamentoInterno->save($andamentoInterno);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception('Erro ao cadastrar Andamento Interno.');
         }
 
@@ -1240,9 +1235,9 @@ class AndamentoProcessoService
             $this->salvarDespachoAnexos($processoProtocolo, $andamentoInterno);
         }
 
-        $retorno = (object)array(
+        $retorno = (object)[
             'mensagem' => false
-        );
+        ];
 
         return $retorno;
     }
@@ -1251,12 +1246,12 @@ class AndamentoProcessoService
         \processoProtocolo $processoProtocolo,
         AndamentoProcessoInterno $andamentoInterno
     ) {
-        $anexos = json_decode($this->parametros->despachoAnexos);
-        $anexosAux = array();
+        $anexos = json_decode((string) $this->parametros->despachoAnexos);
+        $anexosAux = [];
 
         foreach ($anexos as $anexo) {
                 $storageConfig = StorageHelper::getStorageConfig();
-                $allowed = array();
+                $allowed = [];
 
             if (isset($storageConfig->client_id_ouvidoria) && !empty($storageConfig->client_id_ouvidoria)) {
                 $allowed[] = $storageConfig->client_id_ouvidoria;
@@ -1271,7 +1266,7 @@ class AndamentoProcessoService
 
         try {
             $this->salvarDocumentos($anexosAux, $processoProtocolo->getCodProcesso(), $andamentoInterno);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception('Erro ao salvar Documentos vindos da Ouvidoria.');
         }
     }
@@ -1280,18 +1275,18 @@ class AndamentoProcessoService
         \processoProtocolo $processoProtocolo,
         AndamentoProcessoInterno $andamentoInterno
     ) {
-        $anexos = array();
+        $anexos = [];
         if (!is_array($this->parametros->anexos)) {
             $anexos[] = $this->parametros->anexos;
         } else {
             foreach ($this->parametros->anexos as $anexo) {
-                $anexos[] = json_decode($anexo);
+                $anexos[] = json_decode((string) $anexo);
             }
         }
 
         try {
             $this->salvarDocumentos($anexos, $processoProtocolo->getCodProcesso(), $andamentoInterno);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception('Erro ao salvar Documentos vindos da Ouvidoria.');
         }
     }
@@ -1327,7 +1322,7 @@ class AndamentoProcessoService
 
         $daoProcesso->p58_dtproc = date("Y-m-d");
         $daoProcesso->p58_id_usuario = db_getsession("DB_id_usuario");
-        $daoProcesso->p58_despacho = addslashes($despacho);
+        $daoProcesso->p58_despacho = addslashes((string) $despacho);
         $daoProcesso->p58_hora = date("H:i");
         $daoProcesso->p58_ano = db_getsession("DB_anousu");
         $daoProcesso->p58_publico = 't';

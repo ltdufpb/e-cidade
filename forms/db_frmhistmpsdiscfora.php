@@ -169,12 +169,12 @@ $clrotulo->label("ed99_i_periodoref");
                                 </td>
                                 <td>
                                     <?php
-                                    $x = array(
+                                    $x = [
                                         '' => '',
                                         'CONCLUÍDO' => 'CONCLUÍDO',
                                         'AMPARADO' => 'AMPARADO',
                                         'NÃO OPTANTE' => 'NÃO OPTANTE'
-                                    );
+                                    ];
 
                                     $sScript = " onchange='js_situacao(this,$iTotalLinhas);' style='width:100px;height:15px;font-size:10px;padding:0px;' " .
                                         ($ed100_i_codigo == "" ? "disabled" : "") . "";
@@ -210,11 +210,11 @@ $clrotulo->label("ed99_i_periodoref");
                                                     $sOnchange = 'onchange="js_alunoAprovado(this);"';
                                                 }
 
-                                                $r = array(
+                                                $r = [
                                                     '' => '',
                                                     'A' => 'APROVADO',
                                                     'R' => 'REPROVADO'
-                                                );
+                                                ];
                                                 $sScript = " style='width:100px;height:15px;font-size:10px;padding:0px;' " .
                                                     ($ed100_i_codigo == "" ? "disabled" : "") . " $sOnchange ";
                                                 db_select('ed100_c_resultadofinal', $r, true, $db_opcao, $sScript);

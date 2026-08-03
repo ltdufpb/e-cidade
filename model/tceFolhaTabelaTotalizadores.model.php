@@ -33,31 +33,17 @@ class tceFolhaTabelaTotalizadores extends tceEstruturaBasica {
   const  NOME_ARQUIVO   = 'TCE_4960.TXT';
   const  CODIGO_ARQUIVO = 37;
 
-  public  $iInstit       = "";
-  public  $sInstituicoes = "";
-  public  $sDataIni      = "";
-  public  $sDataFim      = "";
-  public  $sCodRemessa   = "";
-
-  protected $oDadosArquivo = null;
-
   private $oLeiaute = null;
   /**
    *
    */
-  function __construct($iInstit,$sCodRemessa,$sDataIni,$sDataFim,$oData, $oLeiaute = null, $sInstituicoes) {
+  function __construct(public $iInstit,public $sCodRemessa,public $sDataIni,public $sDataFim,protected $oDadosArquivo, $oLeiaute = null, public $sInstituicoes = null) {
 
     try {
       parent::__construct(self::CODIGO_ARQUIVO,self::NOME_ARQUIVO);
     } catch (Exception $e) {
     	throw new Exception($e->getMessage());
     }
-    $this->oDadosArquivo = $oData;
-    $this->iInstit       = $iInstit;
-    $this->sInstituicoes = $sInstituicoes;
-    $this->sDataIni      = $sDataIni;
-    $this->sDataFim      = $sDataFim;
-    $this->sCodRemessa   = $sCodRemessa;
     if ($oLeiaute != null) {
       $this->oLeiaute = $oLeiaute;
     }

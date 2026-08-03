@@ -58,7 +58,7 @@ if( isset( $cancelar ) ) {
 
   for( $x = 0; $x < $tam; $x++ ) {
 
-    $arrayaluno = explode( "#", $alunos[$x] );
+    $arrayaluno = explode( "#", (string) $alunos[$x] );
 
     $sql   = "UPDATE alunocurso                       ";
     $sql  .= "   SET ed56_c_situacao = 'ENCERRADO'    ";

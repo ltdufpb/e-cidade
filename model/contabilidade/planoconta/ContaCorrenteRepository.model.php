@@ -37,7 +37,7 @@
      * Collection de ContaCorrente
      * @var array
      */
-    private $aContaCorrente = array();
+    private $aContaCorrente = [];
 
     /**
      * Instancia da classe

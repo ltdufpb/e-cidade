@@ -43,8 +43,8 @@ include(modification("classes/db_orcparamnivel_classe.php"));
 include(modification("classes/db_orcparamfunc_classe.php"));
 include(modification("model/linhaRelatorioContabil.model.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clconrelinfo  = new cl_conrelinfo;
 $clconrelvalor = new cl_conrelvalor;
@@ -195,7 +195,7 @@ if ($filtrar_seq == "S" && strlen(trim(@$lista_seq)) > 0){
              <?php  db_input('o42_descrrel',60,$Io42_descrrel,true,'text',3,"")?></td>
          <td>&nbsp;&nbsp;
            <?php 
-              $matriz = array("C"=>"COM PARÂMETROS CONFIGURADOS","S"=>"SEM PARÂMETROS CONFIGURADOS","T"=>"TODAS AS SEQüÊNCIAS");
+              $matriz = ["C"=>"COM PARÂMETROS CONFIGURADOS","S"=>"SEM PARÂMETROS CONFIGURADOS","T"=>"TODAS AS SEQüÊNCIAS"];
               db_select("filtrar_seq",$matriz,true,4,"onChange='js_filtrarSeq();'");
            ?>
          </td>    
@@ -257,7 +257,7 @@ $record = $clorcparamseq->sql_record($clorcparamseq->sql_query($c83_codrel, null
                                                                                    o44_nivelexclusao as o69_nivelexclusao,
                                                                                    o69_libnivel","o69_codseq","$dbwhere"));
 if ($clorcparamseq->numrows > 0 )
- for ($x=0; $x< pg_numrows($record);$x++){
+ for ($x=0; $x< pg_num_rows($record);$x++){
      db_fieldsmemory($record,$x);
      // Permissao de menu para alterar parametro de relatorio, modulo 209 (Contabilidade)
      $flag_permissao = db_permissaomenu(db_getsession("DB_anousu"),209,228050);
@@ -271,7 +271,7 @@ if ($clorcparamseq->numrows > 0 )
      ?>
       <tr style='height:1em'>
         <td width=5%  class='linhagrid'style='text-align:right'><b><?=$o69_codseq?></b></td>
-        <td width=23% class='linhagrid'style='text-align:left'><b><?php  echo strtoupper($o69_descr) ?></b></td>
+        <td width=23% class='linhagrid'style='text-align:left'><b><?php  echo strtoupper((string) $o69_descr) ?></b></td>
         <td width=10% valign=top class='linhagrid' style='text-align:left'>
            <div style="cellpadding:0px"><?php  db_ancora($lb_texto,"js_editar_elemento($c83_codrel,$o69_codseq,'$o69_grupo');",1); ?></div>
            <?php 

@@ -82,7 +82,7 @@
         <td nowrap title="<?=@$Tk13_datvlr?>"> <?=@$Lk13_datvlr?> </td>
         <td><?php  
 	
-  	       @list($k13_datvlr_dia,$k13_datvlr_mes,$k13_datvlr_ano)= split("/",$k13_datvlr);
+  	       @[$k13_datvlr_dia, $k13_datvlr_mes, $k13_datvlr_ano]= preg_split("#\\/#m",(string) $k13_datvlr);
 	      db_inputdata('k13_datvlr',@$k13_datvlr_dia,@$k13_datvlr_mes,@$k13_datvlr_ano,true,'text',3,""); 
 	      
 	      ?>
@@ -102,7 +102,7 @@ function js_preenche(chave){
    db_iframe_saltes.hide();
    <?php 
 //   if($db_opcao!=1){
-     echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+     echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 //   }
    ?>
 }

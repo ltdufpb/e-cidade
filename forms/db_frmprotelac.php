@@ -30,7 +30,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("h12_assent");
 $clrotulo->label("h12_descr");
 $clprotelac->rotulo->label();
-$arr_operador = Array("+"=>"+", "-"=>"-", "*"=>"*", "/"=>"/");
+$arr_operador = ["+"=>"+", "-"=>"-", "*"=>"*", "/"=>"/"];
 ?>
 <form name="form1" method="post" action="">
 <center>
@@ -62,7 +62,7 @@ $arr_operador = Array("+"=>"+", "-"=>"-", "*"=>"*", "/"=>"/");
     </td>
     <td> 
       <?php 
-      $x = Array("G"=>"Gratificação", "A"=>"Avanço", "F"=>"Férias");
+      $x = ["G"=>"Gratificação", "A"=>"Avanço", "F"=>"Férias"];
       db_select('h19_tipo',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -90,12 +90,12 @@ $arr_operador = Array("+"=>"+", "-"=>"-", "*"=>"*", "/"=>"/");
                   $Ncampoop  = "h19_op".($i < 10 ? "0" . $i : $i);
                 ?>
                 <tr>
-                  <td nowrap title="<?=@$$Tcampodia?>">
-                    <?=@$$Lcampodia?>
+                  <td nowrap title="<?=@${$Tcampodia}?>">
+                    <?=@${$Lcampodia}?>
                   </td>
                   <td> 
                     <?php 
-                    db_input($Ncampodia,3,$$Icampodia,true,'text',$db_opcao,"")
+                    db_input($Ncampodia,3,${$Icampodia},true,'text',$db_opcao,"")
                     ?>
                   </td>
                   <td> 
@@ -105,7 +105,7 @@ $arr_operador = Array("+"=>"+", "-"=>"-", "*"=>"*", "/"=>"/");
                   </td>
                   <td> 
                     <?php 
-                    db_input($Ncampoper,5,$$Icampoper,true,'text',$db_opcao,"")
+                    db_input($Ncampoper,5,${$Icampoper},true,'text',$db_opcao,"")
                     ?>
                   </td>
                 </tr>
@@ -187,7 +187,7 @@ function js_preenchepesquisa(chave){
   db_iframe_protelac.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

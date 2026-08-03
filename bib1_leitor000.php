@@ -69,11 +69,11 @@ $clcriaabas = new cl_criaabas;
    }else{
     $arquivo = "bib1_leitor003.php$redireciona";
    }
-   $clcriaabas->identifica = array("acervo1"=>"Leitor","acervo2"=>"Carteira");
-   $clcriaabas->sizecampo  = array("acervo1"=>"20","acervo2"=>"20");
-   $clcriaabas->title      = array("acervo1"=>"Leitor","acervo2"=>"Carteira");
-   $clcriaabas->src        = array("acervo1"=>$arquivo,"acervo2"=>"");
-   $clcriaabas->disabled   = array("acervo2"=>"true");
+   $clcriaabas->identifica = ["acervo1"=>"Leitor","acervo2"=>"Carteira"];
+   $clcriaabas->sizecampo  = ["acervo1"=>"20","acervo2"=>"20"];
+   $clcriaabas->title      = ["acervo1"=>"Leitor","acervo2"=>"Carteira"];
+   $clcriaabas->src        = ["acervo1"=>$arquivo,"acervo2"=>""];
+   $clcriaabas->disabled   = ["acervo2"=>"true"];
    $clcriaabas->iframe_height = "1200";
    $clcriaabas->iframe_width = "100%";
    $clcriaabas->cria_abas();

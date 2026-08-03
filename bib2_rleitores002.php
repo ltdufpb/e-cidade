@@ -27,13 +27,13 @@
 require_once(modification("libs/db_utils.php"));
 require_once(modification("fpdf151/pdf.php"));
 
-parse_str(base64_decode($_GET['q']), $aGet);
+parse_str(base64_decode((string) $_GET['q']), $aGet);
 define('MSG_LEITORES', 'educacao.biblioteca.bib2_rleitores002.');
 
 $oLeitores             = new stdClass();
 $oLeitores->sOrdem     = 'NUMÉRICA';
 $oLeitores->sCategoria = '';
-$oLeitores->aLeitores  = array();
+$oLeitores->aLeitores  = [];
 
 try {
 
@@ -118,11 +118,11 @@ foreach ($oLeitores->aLeitores as $oLeitor) {
   $sSituacao = $oLeitor->bi16_valida == 'S' ? 'VÁLIDA' : 'VENCIDA';
 
   $iYAntes        = $oPdf->gety();
-  $aAlturaLinha   = array();
+  $aAlturaLinha   = [];
   $aAlturaLinha[] = $oPdf->NbLines(60, $oLeitor->ov02_nome);
   $aAlturaLinha[] = $oPdf->NbLines(55, $sEndereco);
   $aAlturaLinha[] = $oPdf->NbLines(25, $oLeitor->categoria);
-  $iLinhas        = array_reduce($aAlturaLinha, "DBNumber::maiorValor");
+  $iLinhas        = array_reduce($aAlturaLinha, DBNumber::maiorValor(...));
   $iAlturaLinha   = 4 * $iLinhas;
 
   if ( ($oPdf->gety() ) > ($oPdf->h - 15)) {

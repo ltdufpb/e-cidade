@@ -629,8 +629,8 @@ class EmissaoTXT
 
         $nTotalBomPagador = 0;
 
-        $aListaNossoNumeroUnica = array();
-        $aListaNossoNumero = array();
+        $aListaNossoNumeroUnica = [];
+        $aListaNossoNumero = [];
 
         $oRegraEmissao = new \regraEmissao(
             $tipoDebito,
@@ -714,16 +714,16 @@ class EmissaoTXT
         if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
             $this->oArquivoDados->fwrite(str_pad($iQuantidadeRegistros, 10));
             $this->oArquivoDados->fwrite(($j01_tipoimp == "Predial" ? "2" : "1"));
-            $this->oArquivoDados->fwrite(str_pad($j01_tipoimp, 11));
-            $this->oArquivoDados->fwrite(str_pad($oDadosMatricula->j23_matric, 10));
+            $this->oArquivoDados->fwrite(str_pad((string) $j01_tipoimp, 11));
+            $this->oArquivoDados->fwrite(str_pad((string) $oDadosMatricula->j23_matric, 10));
             $this->oArquivoDados->fwrite(str_pad($this->iAno, 4));
             $this->oArquivoDados->fwrite(str_pad(0, 10));
-            $this->oArquivoDados->fwrite(str_pad($oDadosMatricula->j86_iptucadzonaentrega, 5));
-            $this->oArquivoDados->fwrite(str_pad($j34_zona, 5));
-            $this->oArquivoDados->fwrite(str_pad($j91_codigo, 5));
-            $this->oArquivoDados->fwrite(str_pad($oDadosMatricula->j34_setor, 4));
-            $this->oArquivoDados->fwrite(str_pad($oDadosMatricula->j34_quadra, 4));
-            $this->oArquivoDados->fwrite(str_pad($oDadosMatricula->j34_lote, 4));
+            $this->oArquivoDados->fwrite(str_pad((string) $oDadosMatricula->j86_iptucadzonaentrega, 5));
+            $this->oArquivoDados->fwrite(str_pad((string) $j34_zona, 5));
+            $this->oArquivoDados->fwrite(str_pad((string) $j91_codigo, 5));
+            $this->oArquivoDados->fwrite(str_pad((string) $oDadosMatricula->j34_setor, 4));
+            $this->oArquivoDados->fwrite(str_pad((string) $oDadosMatricula->j34_quadra, 4));
+            $this->oArquivoDados->fwrite(str_pad((string) $oDadosMatricula->j34_lote, 4));
         }
 
         if ($lGerarLayout) {
@@ -765,12 +765,12 @@ class EmissaoTXT
             $j40_refant = "....";
         }
 
-        $sqlsub = split('\.', $j40_refant);
+        $sqlsub = preg_split('#\.#m', (string) $j40_refant);
 
         if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
             if (isset($sqlsub)) {
                 if (sizeof($sqlsub) >= 5) {
-                    $this->oArquivoDados->fwrite(substr(str_pad($sqlsub[4], 4), 0, 4));
+                    $this->oArquivoDados->fwrite(substr(str_pad((string) $sqlsub[4], 4), 0, 4));
                 } else {
                     $this->oArquivoDados->fwrite("    ");
                 }
@@ -789,10 +789,10 @@ class EmissaoTXT
 
         if ($z01_cgmpri <> $z01_numcgm) {
             if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
-                $this->oArquivoDados->fwrite(substr(str_pad($z01_nome, 40), 0, 40));
-                $this->oArquivoDados->fwrite(substr(str_pad($z01_nome, 40), 0, 40));
+                $this->oArquivoDados->fwrite(substr(str_pad((string) $z01_nome, 40), 0, 40));
+                $this->oArquivoDados->fwrite(substr(str_pad((string) $z01_nome, 40), 0, 40));
             } elseif ($this->sTipoGeracao == static::TIPO_EMISSAO_TXTBSJ) {
-                $linha10 .= substr(str_pad($z01_nome, 40, " ", STR_PAD_RIGHT), 0, 40);
+                $linha10 .= substr(str_pad((string) $z01_nome, 40, " ", STR_PAD_RIGHT), 0, 40);
             }
 
             if ($lGerarLayout) {
@@ -813,10 +813,10 @@ class EmissaoTXT
             }
         } else {
             if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
-                $this->oArquivoDados->fwrite(substr(str_pad($proprietario, 40), 0, 40));
+                $this->oArquivoDados->fwrite(substr(str_pad((string) $proprietario, 40), 0, 40));
                 $this->oArquivoDados->fwrite(str_pad(' ', 40));
             } elseif ($this->sTipoGeracao == static::TIPO_EMISSAO_TXTBSJ) {
-                $linha10 .= substr(str_pad($proprietario, 40, " ", STR_PAD_RIGHT), 0, 40);
+                $linha10 .= substr(str_pad((string) $proprietario, 40, " ", STR_PAD_RIGHT), 0, 40);
             }
 
             if ($lGerarLayout) {
@@ -838,38 +838,38 @@ class EmissaoTXT
         }
 
         if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
-            $this->oArquivoDados->fwrite(substr(str_pad($proprietario, 40), 0, 40));
+            $this->oArquivoDados->fwrite(substr(str_pad((string) $proprietario, 40), 0, 40));
 
-            $this->oArquivoDados->fwrite(substr(str_pad($z01_ender, 40), 0, 40));
-            $this->oArquivoDados->fwrite(str_pad($z01_numero, 10));
-            $this->oArquivoDados->fwrite(substr(str_pad($z01_compl, 20), 0, 20));
-            $this->oArquivoDados->fwrite(substr(str_pad($z01_munic, 20), 0, 20));
-            $this->oArquivoDados->fwrite(str_pad($z01_cep, 8));
-            $this->oArquivoDados->fwrite(str_pad($z01_uf, 2));
-            $this->oArquivoDados->fwrite(str_pad($z01_cgccpf, 20));
+            $this->oArquivoDados->fwrite(substr(str_pad((string) $z01_ender, 40), 0, 40));
+            $this->oArquivoDados->fwrite(str_pad((string) $z01_numero, 10));
+            $this->oArquivoDados->fwrite(substr(str_pad((string) $z01_compl, 20), 0, 20));
+            $this->oArquivoDados->fwrite(substr(str_pad((string) $z01_munic, 20), 0, 20));
+            $this->oArquivoDados->fwrite(str_pad((string) $z01_cep, 8));
+            $this->oArquivoDados->fwrite(str_pad((string) $z01_uf, 2));
+            $this->oArquivoDados->fwrite(str_pad((string) $z01_cgccpf, 20));
 
-            $this->oArquivoDados->fwrite(substr(str_pad($codpri, 6, "0", STR_PAD_LEFT), 0, 6));
-            $this->oArquivoDados->fwrite(str_pad($tipopri, 20));
-            $this->oArquivoDados->fwrite(str_pad($nomepri, 50));
-            $this->oArquivoDados->fwrite(str_pad($j39_numero, 10));
+            $this->oArquivoDados->fwrite(substr(str_pad((string) $codpri, 6, "0", STR_PAD_LEFT), 0, 6));
+            $this->oArquivoDados->fwrite(str_pad((string) $tipopri, 20));
+            $this->oArquivoDados->fwrite(str_pad((string) $nomepri, 50));
+            $this->oArquivoDados->fwrite(str_pad((string) $j39_numero, 10));
 
-            $j39_compl = substr($j39_compl, 0, 20);
+            $j39_compl = substr((string) $j39_compl, 0, 20);
             $this->oArquivoDados->fwrite(str_pad($j39_compl, 20));
-            $this->oArquivoDados->fwrite(str_pad($j13_descr, 40));
+            $this->oArquivoDados->fwrite(str_pad((string) $j13_descr, 40));
 
-            if (trim($j23_cxpostal) != "" && $j23_cxpostal > 0) {
+            if (trim((string) $j23_cxpostal) != "" && $j23_cxpostal > 0) {
                 $j23_ender = "CAIXA POSTAL: $j23_cxpostal";
             }
 
-            $this->oArquivoDados->fwrite(str_pad((trim($j23_ender) == "" ? $nomepri : $j23_ender), 50));
-            $this->oArquivoDados->fwrite(str_pad((trim($j23_ender) == "" ? $j39_numero : $j23_numero), 10));
-            $this->oArquivoDados->fwrite(str_pad((trim($j23_ender) == "" ? $j39_compl : $j23_compl), 20));
-            $this->oArquivoDados->fwrite(str_pad($j23_bairro, 40));
-            $this->oArquivoDados->fwrite(str_pad($j23_munic, 40));
-            $this->oArquivoDados->fwrite(str_pad($j23_uf, 2));
-            $this->oArquivoDados->fwrite(str_pad($j23_cep, 10));
-            $this->oArquivoDados->fwrite(str_pad($j23_cxpostal, 10));
-            $this->oArquivoDados->fwrite(str_pad($j23_dest, 40));
+            $this->oArquivoDados->fwrite(str_pad((trim((string) $j23_ender) == "" ? $nomepri : $j23_ender), 50));
+            $this->oArquivoDados->fwrite(str_pad((trim((string) $j23_ender) == "" ? $j39_numero : $j23_numero), 10));
+            $this->oArquivoDados->fwrite(str_pad((trim((string) $j23_ender) == "" ? $j39_compl : $j23_compl), 20));
+            $this->oArquivoDados->fwrite(str_pad((string) $j23_bairro, 40));
+            $this->oArquivoDados->fwrite(str_pad((string) $j23_munic, 40));
+            $this->oArquivoDados->fwrite(str_pad((string) $j23_uf, 2));
+            $this->oArquivoDados->fwrite(str_pad((string) $j23_cep, 10));
+            $this->oArquivoDados->fwrite(str_pad((string) $j23_cxpostal, 10));
+            $this->oArquivoDados->fwrite(str_pad((string) $j23_dest, 40));
 
             $this->oArquivoDados->fwrite(str_repeat(" ", 3));
             $this->oArquivoDados->fwrite(str_repeat(" ", 5));
@@ -877,27 +877,27 @@ class EmissaoTXT
                 $this->oArquivoDados->fwrite(str_repeat(" ", 40));
                 $this->oArquivoDados->fwrite(str_repeat(" ", 10));
             } else {
-                $this->oArquivoDados->fwrite(str_pad($j45_descr, 40));
+                $this->oArquivoDados->fwrite(str_pad((string) $j45_descr, 40));
                 $this->oArquivoDados->fwrite(\db_formatar($j46_dtinc, 'd'));
             }
         } elseif ($this->sTipoGeracao == static::TIPO_EMISSAO_TXTBSJ) {
-            if (trim($j23_cxpostal) != "" and $j23_cxpostal > 0) {
+            if (trim((string) $j23_cxpostal) != "" and $j23_cxpostal > 0) {
                 $linha10 .= str_pad("CAIXA POSTAL: $j23_cxpostal", 40, " ", STR_PAD_RIGHT);
             } else {
-                if (strlen(trim($j23_ender)) >= 40) {
-                    $j23_ender = substr($j23_ender, 0, 34);
+                if (strlen(trim((string) $j23_ender)) >= 40) {
+                    $j23_ender = substr((string) $j23_ender, 0, 34);
                 }
 
-                $numero = (strlen(trim($j23_numero)) > 0 ? ", " : "") . trim($j23_numero);
-                $complemento = (strlen(trim($j23_compl)) > 0 ? "/" : "") . trim($j23_compl);
-                $enderecoCompleto = substr(trim($j23_ender) . $numero . $complemento . "-" . $j23_bairro, 0, 40);
+                $numero = (strlen(trim((string) $j23_numero)) > 0 ? ", " : "") . trim((string) $j23_numero);
+                $complemento = (strlen(trim((string) $j23_compl)) > 0 ? "/" : "") . trim((string) $j23_compl);
+                $enderecoCompleto = substr(trim((string) $j23_ender) . $numero . $complemento . "-" . $j23_bairro, 0, 40);
                 $strpad = str_pad($enderecoCompleto, 40, " ", STR_PAD_RIGHT);
 
                 $linha10 .= substr($strpad, 0, 40);
             }
-            $linha10 .= substr(str_pad($j23_munic, 20, " ", STR_PAD_RIGHT), 0, 20);
-            $linha10 .= str_pad(substr($j23_cep, 0, 5), 5);
-            $linha10 .= str_pad($j23_uf, 2, " ", STR_PAD_RIGHT);
+            $linha10 .= substr(str_pad((string) $j23_munic, 20, " ", STR_PAD_RIGHT), 0, 20);
+            $linha10 .= str_pad(substr((string) $j23_cep, 0, 5), 5);
+            $linha10 .= str_pad((string) $j23_uf, 2, " ", STR_PAD_RIGHT);
             $linha10 .= str_repeat(" ", 17);
             $linha10 .= str_repeat(" ", 80);
             $linha10 .= str_pad($this->iAno, 4, "0", STR_PAD_LEFT) . " ";
@@ -908,8 +908,8 @@ class EmissaoTXT
             $linha10 .= str_repeat("0", 2);
             $linha10 .= ($mensagemdebitosanosanteriores == "" ? "N" : "S");
             $linha10 .= ($quantunica_linha10 == 0 ? "N" : "S");
-            $linha10 .= str_pad(substr($j23_cep, 0, 8), 8, "0", STR_PAD_LEFT);
-            $linha10 .= str_pad($parcelamaxima, 2, "0", STR_PAD_LEFT);
+            $linha10 .= str_pad(substr((string) $j23_cep, 0, 8), 8, "0", STR_PAD_LEFT);
+            $linha10 .= str_pad((string) $parcelamaxima, 2, "0", STR_PAD_LEFT);
             $linha10 .= str_repeat(" ", 37);
             $this->oArquivoDados->fwrite(static::dbContadorBsj($linha10, "", $contador, 288));
 
@@ -923,7 +923,7 @@ class EmissaoTXT
 
             $imp_linha31 = " ";
             $imp_linha31 .= $tipopri . " " . $nomepri . ", " . $j39_numero . "/" . $j39_compl;
-            if (trim($j23_cxpostal) != "" and $j23_cxpostal > 0) {
+            if (trim((string) $j23_cxpostal) != "" and $j23_cxpostal > 0) {
                 $imp_linha31 .= " - CX POSTAL: $j23_cxpostal";
             }
             $imp_linha31 .= " - ALIQ: $j23_aliq - TIPO: $j01_tipoimp";
@@ -1213,15 +1213,15 @@ class EmissaoTXT
         if (pg_num_rows($resultiptu) > 0) {
             for ($iptu = 0; $iptu < pg_num_rows($resultiptu); $iptu++) {
                 extract((array)\db_utils::fieldsMemory($resultiptu, $iptu));
-                $iptucor += (float)substr($fc_calcula, 14, 13);
-                $iptujuros += (float)substr($fc_calcula, 27, 13);
-                $iptumulta += (float)substr($fc_calcula, 40, 13);
-                $iptudesconto += (float)substr($fc_calcula, 53, 13);
-                $iptutotal += (float)substr($fc_calcula, 14, 13) + (float)substr(
-                    $fc_calcula,
+                $iptucor += (float)substr((string) $fc_calcula, 14, 13);
+                $iptujuros += (float)substr((string) $fc_calcula, 27, 13);
+                $iptumulta += (float)substr((string) $fc_calcula, 40, 13);
+                $iptudesconto += (float)substr((string) $fc_calcula, 53, 13);
+                $iptutotal += (float)substr((string) $fc_calcula, 14, 13) + (float)substr(
+                    (string) $fc_calcula,
                     27,
                     13
-                ) + (float)substr($fc_calcula, 40, 13) - (float)substr($fc_calcula, 53, 13);
+                ) + (float)substr((string) $fc_calcula, 40, 13) - (float)substr((string) $fc_calcula, 53, 13);
             }
         }
 
@@ -1295,16 +1295,16 @@ class EmissaoTXT
                            inner join testada on j49_face = j36_face and j49_idbql = j36_idbql
                            where j49_idbql = $j01_idbql";
             $resultvalorm2 = \db_query($sqlvalorm2);
-            if (pg_numrows($resultvalorm2) == 0) {
+            if (pg_num_rows($resultvalorm2) == 0) {
                 if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
-                    $this->oArquivoDados->fwrite(str_pad($j37_face, 10));
+                    $this->oArquivoDados->fwrite(str_pad((string) $j37_face, 10));
                     $this->oArquivoDados->fwrite(\db_formatar(0, 'f', ' ', 20));
                     $this->oArquivoDados->fwrite(\db_formatar(0, 'f', ' ', 20));
                 }
             } else {
                 extract((array)\db_utils::fieldsMemory($resultvalorm2, 0));
                 if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
-                    $this->oArquivoDados->fwrite(str_pad($j37_face, 10));
+                    $this->oArquivoDados->fwrite(str_pad((string) $j37_face, 10));
                     $this->oArquivoDados->fwrite(\db_formatar($j37_valor, 'f', ' ', 20));
                     $this->oArquivoDados->fwrite(\db_formatar($j37_vlcons, 'f', ' ', 20));
                 }
@@ -1312,7 +1312,7 @@ class EmissaoTXT
         } else {
             extract((array)\db_utils::fieldsMemory($resultvalorm2, 0));
             if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
-                $this->oArquivoDados->fwrite(str_pad($j37_face, 10));
+                $this->oArquivoDados->fwrite(str_pad((string) $j37_face, 10));
                 $this->oArquivoDados->fwrite(\db_formatar($j37_valor, 'f', ' ', 20));
                 $this->oArquivoDados->fwrite(\db_formatar($j37_vlcons, 'f', ' ', 20));
             }
@@ -1332,7 +1332,7 @@ class EmissaoTXT
             $this->oArquivoDados->fwrite(\db_formatar($j23_vlrter, 'f', ' ', 15));
             $this->oArquivoDados->fwrite(\db_formatar($j22_valor, 'f', ' ', 15));
             $this->oArquivoDados->fwrite(\db_formatar($j23_vlrter + $j22_valor, 'f', ' ', 15));
-            $this->oArquivoDados->fwrite(str_pad($j23_aliq, 6));
+            $this->oArquivoDados->fwrite(str_pad((string) $j23_aliq, 6));
         }
 
         if ($lGerarLayout) {
@@ -1372,7 +1372,7 @@ class EmissaoTXT
         /**
          * Parcelas Unicas
          */
-        $unicasTaxaExpediente = array();
+        $unicasTaxaExpediente = [];
 
         if (!empty($this->aParcelasUnicas)) {
             if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
@@ -1395,9 +1395,7 @@ class EmissaoTXT
             $aUnicasSelecionadasOrdenadas = [];
 
             foreach ($this->aParcelasUnicas as $oUnica) {
-                $aReciboUnica = array_filter($aRecibos["unicas"], function ($oUnicaFiltro) use ($oUnica) {
-                    return $oUnicaFiltro->getParcelaUnica() == $oUnica->getCodigo();
-                });
+                $aReciboUnica = array_filter($aRecibos["unicas"], fn($oUnicaFiltro) => $oUnicaFiltro->getParcelaUnica() == $oUnica->getCodigo());
 
                 if (count($aReciboUnica) > 0) {
                     $aUnicasSelecionadasOrdenadas[] = $oUnica;
@@ -1405,9 +1403,7 @@ class EmissaoTXT
             }
 
             foreach ($this->aParcelasUnicas as $oUnica) {
-                $aReciboUnica = array_filter($aRecibos["unicas"], function ($oUnicaFiltro) use ($oUnica) {
-                    return $oUnicaFiltro->getParcelaUnica() == $oUnica->getCodigo();
-                });
+                $aReciboUnica = array_filter($aRecibos["unicas"], fn($oUnicaFiltro) => $oUnicaFiltro->getParcelaUnica() == $oUnica->getCodigo());
 
                 if (count($aReciboUnica) == 0) {
                     $aUnicasSelecionadasOrdenadas[] = $oUnica;
@@ -1420,9 +1416,7 @@ class EmissaoTXT
             foreach ($aUnicasSelecionadasOrdenadas as $iIndiceUnica => $oUnica) {
                 $oReciboUnica = null;
 
-                $aReciboUnica = array_filter($aRecibos["unicas"], function ($oUnicaFiltro) use ($oUnica) {
-                    return $oUnicaFiltro->getParcelaUnica() == $oUnica->getCodigo();
-                });
+                $aReciboUnica = array_filter($aRecibos["unicas"], fn($oUnicaFiltro) => $oUnicaFiltro->getParcelaUnica() == $oUnica->getCodigo());
 
                 if (count($aReciboUnica) > 0) {
                     $oReciboUnica = array_values($aReciboUnica)[0];
@@ -1487,11 +1481,11 @@ class EmissaoTXT
                         $valorTaxaExpediente = 0;
                     }
 
-                    $uvlrhis = substr($fc_calcula, 1, 13);
-                    $uvlrcor = substr($fc_calcula, 14, 13);
-                    $uvlrjuros = substr($fc_calcula, 27, 13);
-                    $uvlrmulta = substr($fc_calcula, 40, 13);
-                    $uvlrdesconto = substr($fc_calcula, 53, 13);
+                    $uvlrhis = substr((string) $fc_calcula, 1, 13);
+                    $uvlrcor = substr((string) $fc_calcula, 14, 13);
+                    $uvlrjuros = substr((string) $fc_calcula, 27, 13);
+                    $uvlrmulta = substr((string) $fc_calcula, 40, 13);
+                    $uvlrdesconto = substr((string) $fc_calcula, 53, 13);
                     $utotal = $uvlrcor + $uvlrjuros + $uvlrmulta - $uvlrdesconto + $this->nTaxaBancaria;
                     $utotal += $valorTaxaExpediente;
 
@@ -1524,7 +1518,7 @@ class EmissaoTXT
                                     if ($recibobarpix) {
                                         $qrCodePix = $recibobarpix->k00_qrcode;
                                     }
-                                } catch (Exception $th) {
+                                } catch (Exception) {
 //                                dd($th->getMessage());
                                 }
                             }
@@ -1627,7 +1621,7 @@ class EmissaoTXT
                     if (!empty($oReciboUnica)) {
                         if ($this->oConvenio->getTipoConvenio() == Convenio::TIPO_CONVENIO_COMPENSACAO_SICOB
                           || $this->oConvenio->getTipoConvenio() == Convenio::TIPO_CONVENIO_COMPENSACAO_SIGCB) {
-                            $aNossoNumero = explode("-", $oDadosRecibo->k00_nossonumero);
+                            $aNossoNumero = explode("-", (string) $oDadosRecibo->k00_nossonumero);
                             $sNossoNumero = $aNossoNumero[0];
                             $sDigNossoNumero = $aNossoNumero[1];
                         } else {
@@ -1645,7 +1639,7 @@ class EmissaoTXT
 
                     if ($this->lConvenioCobranca) {
                         $fc_febraban = $oDadosRecibo->k00_linhadigitavel . "," . $oDadosRecibo->k00_codbar;
-                        $numpreunica = \db_numpre($oReciboUnica->getNumpre()) . str_pad(null, 3, "0", STR_PAD_LEFT);
+                        $numpreunica = \db_numpre($oReciboUnica->getNumpre()) . str_pad('', 3, "0", STR_PAD_LEFT);
 
                         if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
                             $this->oArquivoDados->fwrite($numpreunica);
@@ -1657,7 +1651,7 @@ class EmissaoTXT
                     } else {
                         if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
                             $this->oArquivoDados->fwrite(str_pad(
-                                $oReciboUnica->getNumpre(),
+                                (string) $oReciboUnica->getNumpre(),
                                 8,
                                 "0",
                                 STR_PAD_LEFT
@@ -1673,14 +1667,14 @@ class EmissaoTXT
                         $this->oArquivoDados->fwrite($fc_febraban);
                     } elseif ($this->sTipoGeracao == static::TIPO_EMISSAO_TXTBSJ) {
                         $sSqlValorIptuHistExec = "EXECUTE SqlValorIptuHist($this->iAno, $j23_matric)";
-                        $valor_iptu_his = pg_result($sSqlValorIptuHistExec, 0, 0);
+                        $valor_iptu_his = pg_fetch_result($sSqlValorIptuHistExec, 0, 0);
 
                         $sSqlValorTaxaHist = "EXECUTE sSqlValorTaxaHist($this->iAno, $j23_matric)";
-                        $valor_taxa_his = pg_result($sSqlValorTaxaHist, 0, 0);
+                        $valor_taxa_his = pg_fetch_result($sSqlValorTaxaHist, 0, 0);
 
-                        $linha20 .= str_pad($oConvenio->getNossoNumero(), 13, " ", STR_PAD_LEFT);
+                        $linha20 .= str_pad((string) $oConvenio->getNossoNumero(), 13, " ", STR_PAD_LEFT);
                         $linha20 .= "00";
-                        $linha20 .= substr($vencunica, 8, 2) . substr($vencunica, 5, 2) . substr($vencunica, 2, 2);
+                        $linha20 .= substr((string) $vencunica, 8, 2) . substr((string) $vencunica, 5, 2) . substr((string) $vencunica, 2, 2);
                         $linha20 .= str_replace(".", "", \db_formatar($utotal, 'p', '0', 16, "e"));
                         $linha20 .= str_repeat("0", 11);
                         $linha20 .= str_replace(".", "", \db_formatar($uvlrdesconto, 'p', '0', 12, "e"));
@@ -1833,7 +1827,7 @@ class EmissaoTXT
                     $this->oArquivoDados->fwrite(static::dbContadorBsj($linha50, "", $contador, 288));
 
                     $result_mesg = \db_query("select k00_msguni from arretipo where k00_tipo = {$k00_tipo}");
-                    $imp_linha50 = str_pad("BSJR50" . pg_result($result_mesg, 0, 0), 288, " ", STR_PAD_RIGHT);
+                    $imp_linha50 = str_pad("BSJR50" . pg_fetch_result($result_mesg, 0, 0), 288, " ", STR_PAD_RIGHT);
 
                     $this->oArquivoDados->fwrite(static::dbContadorBsj($imp_linha50, "", $contador, 288));
                 }
@@ -1895,10 +1889,10 @@ class EmissaoTXT
          */
         $gerarparcelado = true;
 
-        $aDadosParcelas = array();
+        $aDadosParcelas = [];
         $valorTaxaExpediente = 0;
-        $parcelasTaxaExpediente = array();
-        $valorParcela = array();
+        $parcelasTaxaExpediente = [];
+        $valorParcela = [];
 
         for ($iParcela = 1; $iParcela <= $parcelamaxima; $iParcela++) {
             $linha21 = "BSJR20";
@@ -1926,7 +1920,7 @@ class EmissaoTXT
             $k00_valor = 0;
 
             if (!empty($oReciboParcela)) {
-                $aNumpre = explode(',', trim($oDadosRecibo->numpres, '{}'));
+                $aNumpre = explode(',', trim((string) $oDadosRecibo->numpres, '{}'));
 
                 $data_calc = $this->oEmissao->getData()->getDate();
                 $sql_calcula = "select fc_calcula({$aNumpre[0]}";
@@ -1935,10 +1929,10 @@ class EmissaoTXT
 
                 if ($rsCalcula && pg_num_rows($rsCalcula) > 0) {
                     $oDadosCalculo = \db_utils::fieldsMemory($rsCalcula, 0);
-                    $k00_valor = (float)substr($oDadosCalculo->fc_calcula, 14, 13) +
-                      (float)substr($oDadosCalculo->fc_calcula, 27, 13) +
-                      (float)substr($oDadosCalculo->fc_calcula, 40, 13) -
-                      (float)substr($oDadosCalculo->fc_calcula, 53, 13);
+                    $k00_valor = (float)substr((string) $oDadosCalculo->fc_calcula, 14, 13) +
+                      (float)substr((string) $oDadosCalculo->fc_calcula, 27, 13) +
+                      (float)substr((string) $oDadosCalculo->fc_calcula, 40, 13) -
+                      (float)substr((string) $oDadosCalculo->fc_calcula, 53, 13);
                 }
 
                 $k00_numpre = $oReciboParcela->getNumpre();
@@ -2003,7 +1997,7 @@ class EmissaoTXT
                             if ($recibobarpix) {
                                 $qrCodePix = $recibobarpix->k00_qrcode;
                             }
-                        } catch (Exception $th) {
+                        } catch (Exception) {
     //                      dd($th->getMessage());
                         }
                     }
@@ -2054,7 +2048,7 @@ class EmissaoTXT
             if (!empty($oReciboParcela)) {
                 if ($this->oConvenio->getTipoConvenio() == Convenio::TIPO_CONVENIO_COMPENSACAO_SICOB
                   || $this->oConvenio->getTipoConvenio() == Convenio::TIPO_CONVENIO_COMPENSACAO_SIGCB) {
-                    $aNossoNumero = explode("-", $oDadosRecibo->k00_nossonumero);
+                    $aNossoNumero = explode("-", (string) $oDadosRecibo->k00_nossonumero);
                     $sNossoNumero = $aNossoNumero[0];
                     $sDigNossoNumero = $aNossoNumero[1];
                 } else {
@@ -2071,11 +2065,11 @@ class EmissaoTXT
 
             if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXTBSJ) {
                 $sSqlValorIptuHistReceitaExec = "EXECUTE sSqlValorIptuHistReceita($k00_numpre, $k00_numpar)";
-                $valor_iptu_his = pg_result($sSqlValorIptuHistReceitaExec, 0, 0);
+                $valor_iptu_his = pg_fetch_result($sSqlValorIptuHistReceitaExec, 0, 0);
 
 
                 $sSqlValorTaxaHistReceitaExec = "EXECUTE sSqlValorTaxaHistReceita($k00_numpre, $k00_numpar)";
-                $valor_taxa_his = pg_result($sSqlValorTaxaHistReceitaExec, 0, 0);
+                $valor_taxa_his = pg_fetch_result($sSqlValorTaxaHistReceitaExec, 0, 0);
             }
 
             if ($this->lConvenioCobranca) {
@@ -2099,9 +2093,9 @@ class EmissaoTXT
                 }
 
                 if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXTBSJ && !empty($oReciboParcela)) {
-                    $linha21 .= str_pad($oConvenio->getNossoNumero(), 13, " ", STR_PAD_LEFT);
+                    $linha21 .= str_pad((string) $oConvenio->getNossoNumero(), 13, " ", STR_PAD_LEFT);
                     $linha21 .= str_pad($k00_numpar, 2, "0", STR_PAD_LEFT);
-                    $linha21 .= substr($k00_dtvenc, 8, 2) . substr($k00_dtvenc, 5, 2) . substr($k00_dtvenc, 2, 2);
+                    $linha21 .= substr((string) $k00_dtvenc, 8, 2) . substr((string) $k00_dtvenc, 5, 2) . substr((string) $k00_dtvenc, 2, 2);
                     $linha21 .= str_replace(".", "", \db_formatar($k00_valor, 'p', '0', 16, "e"));
                     $linha21 .= str_repeat("0", 11);
                     $linha21 .= str_repeat("0", 11);
@@ -2128,7 +2122,7 @@ class EmissaoTXT
                 if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
                     if ($gerarparcelado == true && !empty($oReciboParcela)) {
                         $this->oArquivoDados->fwrite(\db_numpre($oReciboParcela->getNumpre()) . str_pad(
-                            null,
+                            '',
                             3,
                             "0",
                             STR_PAD_LEFT
@@ -2198,7 +2192,7 @@ class EmissaoTXT
 
                 $result_mesg = \db_query("select k00_msgparc from arretipo where k00_tipo = {$k00_tipo}");
 
-                $imp_linha50 = str_pad("BSJR50" . pg_result($result_mesg, 0, 0), 288, " ", STR_PAD_RIGHT);
+                $imp_linha50 = str_pad("BSJR50" . pg_fetch_result($result_mesg, 0, 0), 288, " ", STR_PAD_RIGHT);
 
                 $this->oArquivoDados->fwrite(static::dbContadorBsj($imp_linha50, "", $contador, 288));
             }
@@ -2220,7 +2214,7 @@ class EmissaoTXT
                 $k00_valor = 0;
             } else {
                 extract((array)\db_utils::fieldsMemory($resultpagas, 0));
-                if (strlen($dtpago) == 0) {
+                if (strlen((string) $dtpago) == 0) {
                     $dtpago = "          ";
                     $valorpago = 0;
                 } else {
@@ -2321,26 +2315,26 @@ class EmissaoTXT
                     $oDadosReceitas = \db_utils::fieldsMemory($resultcalc, $iIndice);
 
                     $this->oArquivoLayout->fwrite(static::dbContador("DESCRTAXA" . str_pad(
-                        $oDadosReceitas->j17_codhis,
+                        (string) $oDadosReceitas->j17_codhis,
                         3,
                         "0",
                         STR_PAD_LEFT
                     ), "DESCRICAO DA TAXA {$oDadosReceitas->j17_descr}", $contador, 40));
                     $this->oArquivoLayout->fwrite(static::dbContador("QUANTTAXA" . str_pad(
-                        $oDadosReceitas->j17_codhis,
+                        (string) $oDadosReceitas->j17_codhis,
                         3,
                         "0",
                         STR_PAD_LEFT
                     ), "QUANTIDADE DA TAXA {$oDadosReceitas->j17_descr}", $contador, 10));
                     $this->oArquivoLayout->fwrite(static::dbContador("VALTAXA" . str_pad(
-                        $oDadosReceitas->j17_codhis,
+                        (string) $oDadosReceitas->j17_codhis,
                         3,
                         "0",
                         STR_PAD_LEFT
                     ), "VALOR DA TAXA {$oDadosReceitas->j17_descr}", $contador, 18));
                     $this->oArquivoLayout->fwrite(static::dbContador(
                         "VALTAXAPARC" . str_pad(
-                            $oDadosReceitas->j17_codhis,
+                            (string) $oDadosReceitas->j17_codhis,
                             3,
                             "0",
                             STR_PAD_LEFT
@@ -2433,12 +2427,12 @@ class EmissaoTXT
 
                 if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
                     if ($oDadosReceitas->j21_valor == 0) {
-                        $this->oArquivoDados->fwrite(str_pad(null, 40));
+                        $this->oArquivoDados->fwrite(str_pad('', 40));
                         $this->oArquivoDados->fwrite(str_pad(\db_formatar(0, 'f', ' ', 10), "0", STR_PAD_LEFT));
                         $this->oArquivoDados->fwrite(str_pad("", 18, ' ', STR_PAD_LEFT));
                         $this->oArquivoDados->fwrite(str_pad("", 18, ' ', STR_PAD_LEFT));
                     } else {
-                        $this->oArquivoDados->fwrite(str_pad($oDadosReceitas->j17_descr, 40));
+                        $this->oArquivoDados->fwrite(str_pad((string) $oDadosReceitas->j17_descr, 40));
                         $this->oArquivoDados->fwrite(str_pad(
                             \db_formatar($oDadosReceitas->j21_quant, 'f', ' ', 10),
                             "0",
@@ -2494,10 +2488,10 @@ class EmissaoTXT
         }
 
         if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
-            $this->oArquivoDados->fwrite(str_pad($j36_testad, 20));
-            $this->oArquivoDados->fwrite(str_pad($j34_area, 20));
-            $this->oArquivoDados->fwrite(str_pad($j39_area, 20));
-            $this->oArquivoDados->fwrite(str_pad($j40_refant, 20));
+            $this->oArquivoDados->fwrite(str_pad((string) $j36_testad, 20));
+            $this->oArquivoDados->fwrite(str_pad((string) $j34_area, 20));
+            $this->oArquivoDados->fwrite(str_pad((string) $j39_area, 20));
+            $this->oArquivoDados->fwrite(str_pad((string) $j40_refant, 20));
             $this->oArquivoDados->fwrite(str_pad(\db_formatar($j23_arealo, 'f', ' ', 18), 18, ' ', STR_PAD_LEFT));
             $this->oArquivoDados->fwrite(str_pad(\db_formatar($j23_m2terr, 'f', ' ', 18), 18, ' ', STR_PAD_LEFT));
         }
@@ -2546,7 +2540,7 @@ class EmissaoTXT
                                 3,
                                 "0",
                                 STR_PAD_LEFT
-                            ) . str_pad($k00_receit, 3, "0", STR_PAD_LEFT),
+                            ) . str_pad((string) $k00_receit, 3, "0", STR_PAD_LEFT),
                             "PARCELA $unicont - RECEITA $k00_receit",
                             $contador,
                             3
@@ -2557,7 +2551,7 @@ class EmissaoTXT
                                 3,
                                 "0",
                                 STR_PAD_LEFT
-                            ) . str_pad($k00_receit, 3, "0", STR_PAD_LEFT),
+                            ) . str_pad((string) $k00_receit, 3, "0", STR_PAD_LEFT),
                             "RECEITA $k00_receit - PARCELA $unicont",
                             $contador,
                             3
@@ -2568,7 +2562,7 @@ class EmissaoTXT
                                 3,
                                 "0",
                                 STR_PAD_LEFT
-                            ) . str_pad($k00_receit, 3, "0", STR_PAD_LEFT),
+                            ) . str_pad((string) $k00_receit, 3, "0", STR_PAD_LEFT),
                             "VALOR DA PARCELA $unicont - RECEITA $k00_receit",
                             $contador,
                             15
@@ -2603,7 +2597,7 @@ class EmissaoTXT
 
                 if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
                     $this->oArquivoDados->fwrite(substr(str_pad($unicont, 3, "0", STR_PAD_LEFT), 0, 3));
-                    $this->oArquivoDados->fwrite(substr(str_pad($k00_receit, 3, "0", STR_PAD_LEFT), 0, 3));
+                    $this->oArquivoDados->fwrite(substr(str_pad((string) $k00_receit, 3, "0", STR_PAD_LEFT), 0, 3));
                 }
 
                 $sqlimposto = "select $k00_receit in ({$this->sListaReceitas}) as imposto";
@@ -2641,21 +2635,21 @@ class EmissaoTXT
 
         if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
             $this->oArquivoDados->fwrite(str_pad($j37_outros, 40, ' ', STR_PAD_LEFT));
-            $this->oArquivoDados->fwrite(str_pad($z01_cgmpri, 10));
-            $this->oArquivoDados->fwrite(substr(str_pad($j23_areafr, 10), 0, 10));
-            $this->oArquivoDados->fwrite(str_pad($this->oPrefeitura->getCep(), 8));
+            $this->oArquivoDados->fwrite(str_pad((string) $z01_cgmpri, 10));
+            $this->oArquivoDados->fwrite(substr(str_pad((string) $j23_areafr, 10), 0, 10));
+            $this->oArquivoDados->fwrite(str_pad((string) $this->oPrefeitura->getCep(), 8));
             $this->oArquivoDados->fwrite(str_pad(
-                strtoupper($this->oPrefeitura->getMunicipio()),
+                strtoupper((string) $this->oPrefeitura->getMunicipio()),
                 40,
                 ' ',
                 STR_PAD_RIGHT
             ));
-            $this->oArquivoDados->fwrite(str_pad($this->oPrefeitura->getUf(), 2));
+            $this->oArquivoDados->fwrite(str_pad((string) $this->oPrefeitura->getUf(), 2));
 
             $this->oArquivoDados->fwrite(str_pad($mensagemdebitosanosanteriores, 100, ' ', STR_PAD_RIGHT));
-            $this->oArquivoDados->fwrite(substr(str_pad($z01_bairro, 40), 0, 40));
-            $this->oArquivoDados->fwrite(substr(str_pad($j46_codigo, 10, "0", STR_PAD_LEFT), 0, 10));
-            $this->oArquivoDados->fwrite(substr(str_pad($j46_tipo, 5, "0", STR_PAD_LEFT), 0, 5));
+            $this->oArquivoDados->fwrite(substr(str_pad((string) $z01_bairro, 40), 0, 40));
+            $this->oArquivoDados->fwrite(substr(str_pad((string) $j46_codigo, 10, "0", STR_PAD_LEFT), 0, 10));
+            $this->oArquivoDados->fwrite(substr(str_pad((string) $j46_tipo, 5, "0", STR_PAD_LEFT), 0, 5));
         }
 
         if ($lGerarLayout) {
@@ -2743,26 +2737,26 @@ class EmissaoTXT
                     $oDadosTaxas = \db_utils::fieldsMemory($resultcalc, $iIndice);
 
                     $this->oArquivoLayout->fwrite(static::dbContador("DESCRTAXA" . str_pad(
-                        $oDadosTaxas->j17_codhis,
+                        (string) $oDadosTaxas->j17_codhis,
                         3,
                         "0",
                         STR_PAD_LEFT
                     ), "DESCRICAO DA TAXA {$oDadosTaxas->j17_descr}", $contador, 40));
                     $this->oArquivoLayout->fwrite(static::dbContador("QUANTTAXA" . str_pad(
-                        $oDadosTaxas->j17_codhis,
+                        (string) $oDadosTaxas->j17_codhis,
                         3,
                         "0",
                         STR_PAD_LEFT
                     ), "QUANTIDADE DA TAXA {$oDadosTaxas->j17_descr}", $contador, 10));
                     $this->oArquivoLayout->fwrite(static::dbContador("VALTAXA" . str_pad(
-                        $oDadosTaxas->j17_codhis,
+                        (string) $oDadosTaxas->j17_codhis,
                         3,
                         "0",
                         STR_PAD_LEFT
                     ), "VALOR DA TAXA {$oDadosTaxas->j17_descr}", $contador, 18));
                     $this->oArquivoLayout->fwrite(static::dbContador(
                         "VALTAXAPARC" . str_pad(
-                            $oDadosTaxas->j17_codhis,
+                            (string) $oDadosTaxas->j17_codhis,
                             3,
                             "0",
                             STR_PAD_LEFT
@@ -2852,8 +2846,8 @@ class EmissaoTXT
 
         $resultcalc = \db_query($sqlcalc) or die("erro: " . $sqlcalc);
 
-        $valorTaxaBomPgd = array(11 => 0, 12 => 0);
-        $valorTotalDesconto = array();
+        $valorTaxaBomPgd = [11 => 0, 12 => 0];
+        $valorTotalDesconto = [];
 
         if (pg_num_rows($resultcalc) > 0) {
             for ($iIndice = 0; $iIndice < pg_num_rows($resultcalc); $iIndice++) {
@@ -2861,12 +2855,12 @@ class EmissaoTXT
 
                 if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
                     if ($oDadosTaxas->j21_valor == 0) {
-                        $this->oArquivoDados->fwrite(str_pad(null, 40));
+                        $this->oArquivoDados->fwrite(str_pad('', 40));
                         $this->oArquivoDados->fwrite(str_pad(\db_formatar(0, 'f', ' ', 10), "0", STR_PAD_LEFT));
                         $this->oArquivoDados->fwrite(str_pad("", 18, ' ', STR_PAD_LEFT));
                         $this->oArquivoDados->fwrite(str_pad("", 18, ' ', STR_PAD_LEFT));
                     } else {
-                        $this->oArquivoDados->fwrite(str_pad($oDadosTaxas->j17_descr, 40));
+                        $this->oArquivoDados->fwrite(str_pad((string) $oDadosTaxas->j17_descr, 40));
                         $this->oArquivoDados->fwrite(str_pad(
                             \db_formatar($oDadosTaxas->j21_quant, 'f', ' ', 10),
                             "0",
@@ -2885,8 +2879,8 @@ class EmissaoTXT
                             18
                         ), 18, ' ', STR_PAD_LEFT));
 
-                        $valorTaxa = round($oDadosTaxas->j21_valor / pg_numrows($resultfin2), 2);
-                        $numeroTotalParcelas = pg_numrows($resultfin2);
+                        $valorTaxa = round($oDadosTaxas->j21_valor / pg_num_rows($resultfin2), 2);
+                        $numeroTotalParcelas = pg_num_rows($resultfin2);
 
                         if ($oDadosTaxas->j17_codhis == 11 || $oDadosTaxas->j17_codhis == 12) {
                             if ($oDadosTaxas->j17_codhis == 11) {
@@ -2931,12 +2925,12 @@ class EmissaoTXT
             $sCedente = str_pad($this->oConvenio->getCedente(), $iTamCedente, "0", STR_PAD_LEFT);
             $sDigCedente = str_pad($this->oConvenio->getDigitoCedente(), 1, " ", STR_PAD_LEFT);
             $sCarteira = str_pad($this->oConvenio->getCarteira(), $iTamCarteira, " ", STR_PAD_LEFT);
-            $sConvenio = str_pad($iConvenio, $iTamConvenio, " ", STR_PAD_LEFT);
+            $sConvenio = str_pad((string) $iConvenio, $iTamConvenio, " ", STR_PAD_LEFT);
 
             // Convênio BSJ,BDL
         } elseif (in_array(
             $this->oConvenio->getTipoConvenio(),
-            array(Convenio::TIPO_CONVENIO_COMPENSACAO_BDL, Convenio::TIPO_CONVENIO_COMPENSACAO_BSJ)
+            [Convenio::TIPO_CONVENIO_COMPENSACAO_BDL, Convenio::TIPO_CONVENIO_COMPENSACAO_BSJ]
         )) {
             $iTamCarteira = 6;
 
@@ -2974,7 +2968,7 @@ class EmissaoTXT
             $sCedente = str_pad($sCodigoCedente, $iTamCedente, " ", STR_PAD_LEFT);
             $sDigCedente = str_pad($this->oConvenio->getDigitoCedente(), 1, " ", STR_PAD_LEFT);
             $sCarteira = str_pad($aCarteira[0], $iTamCarteira, " ", STR_PAD_LEFT);
-            $sConvenio = str_pad($iConvenio, $iTamConvenio, " ", STR_PAD_LEFT);
+            $sConvenio = str_pad((string) $iConvenio, $iTamConvenio, " ", STR_PAD_LEFT);
 
             // Demais Convênios ARRECADAÇÃO, CAIXA PADRÃO etc.
         } else {
@@ -3007,10 +3001,10 @@ class EmissaoTXT
                 if (isset($aListaNossoNumeroUnica[$iUnica])) {
                     $oNossoNumero = $aListaNossoNumeroUnica[$iUnica];
                     $this->oArquivoDados->fwrite(
-                        str_pad($oNossoNumero->sNumero, $iTamNossoNumero, " ", STR_PAD_LEFT),
+                        str_pad((string) $oNossoNumero->sNumero, $iTamNossoNumero, " ", STR_PAD_LEFT),
                         $iTamNossoNumero
                     );
-                    $this->oArquivoDados->fwrite(str_pad($oNossoNumero->sDigito, 1, " ", STR_PAD_LEFT), 1);
+                    $this->oArquivoDados->fwrite(str_pad((string) $oNossoNumero->sDigito, 1, " ", STR_PAD_LEFT), 1);
                 } else {
                     $this->oArquivoDados->fwrite(str_pad("", $iTamNossoNumero, " ", STR_PAD_LEFT), $iTamNossoNumero);
                     $this->oArquivoDados->fwrite(str_pad("", 1, " ", STR_PAD_LEFT), 1);
@@ -3021,10 +3015,10 @@ class EmissaoTXT
                 if (isset($aListaNossoNumero[$iParcela])) {
                     $oNossoNumero = $aListaNossoNumero[$iParcela];
                     $this->oArquivoDados->fwrite(
-                        str_pad($oNossoNumero->sNumero, $iTamNossoNumero, " ", STR_PAD_LEFT),
+                        str_pad((string) $oNossoNumero->sNumero, $iTamNossoNumero, " ", STR_PAD_LEFT),
                         $iTamNossoNumero
                     );
-                    $this->oArquivoDados->fwrite(str_pad($oNossoNumero->sDigito, 1, " ", STR_PAD_LEFT), 1);
+                    $this->oArquivoDados->fwrite(str_pad((string) $oNossoNumero->sDigito, 1, " ", STR_PAD_LEFT), 1);
                 } else {
                     $this->oArquivoDados->fwrite(str_pad("", $iTamNossoNumero, " ", STR_PAD_LEFT), $iTamNossoNumero);
                     $this->oArquivoDados->fwrite(str_pad("", 1, " ", STR_PAD_LEFT), 1);
@@ -3051,7 +3045,7 @@ class EmissaoTXT
                         " ",
                         STR_PAD_LEFT
                     ), $iTamNossoNumeroVersao2);
-                    $this->oArquivoDados->fwrite(str_pad($oNossoNumero->sDigito, 1, " ", STR_PAD_LEFT), 1);
+                    $this->oArquivoDados->fwrite(str_pad((string) $oNossoNumero->sDigito, 1, " ", STR_PAD_LEFT), 1);
                 } else {
                     $this->oArquivoDados->fwrite(
                         str_pad("", $iTamNossoNumeroVersao2, " ", STR_PAD_LEFT),
@@ -3070,7 +3064,7 @@ class EmissaoTXT
                         " ",
                         STR_PAD_LEFT
                     ), $iTamNossoNumeroVersao2);
-                    $this->oArquivoDados->fwrite(str_pad($oNossoNumero->sDigito, 1, " ", STR_PAD_LEFT), 1);
+                    $this->oArquivoDados->fwrite(str_pad((string) $oNossoNumero->sDigito, 1, " ", STR_PAD_LEFT), 1);
                 } else {
                     $this->oArquivoDados->fwrite(
                         str_pad("", $iTamNossoNumeroVersao2, " ", STR_PAD_LEFT),
@@ -3183,11 +3177,11 @@ class EmissaoTXT
         }
 
         if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT) {
-            $this->oArquivoDados->fwrite(str_pad($j05_codigoproprio, 10));
-            $this->oArquivoDados->fwrite(str_pad($j06_setorloc, 10));
-            $this->oArquivoDados->fwrite(str_pad(substr($j05_descr, 0, 40), 40));
-            $this->oArquivoDados->fwrite(str_pad($j06_quadraloc, 10));
-            $this->oArquivoDados->fwrite(str_pad($j06_lote, 10));
+            $this->oArquivoDados->fwrite(str_pad((string) $j05_codigoproprio, 10));
+            $this->oArquivoDados->fwrite(str_pad((string) $j06_setorloc, 10));
+            $this->oArquivoDados->fwrite(str_pad(substr((string) $j05_descr, 0, 40), 40));
+            $this->oArquivoDados->fwrite(str_pad((string) $j06_quadraloc, 10));
+            $this->oArquivoDados->fwrite(str_pad((string) $j06_lote, 10));
         }
 
         if ($lGerarLayout) {
@@ -3223,14 +3217,14 @@ class EmissaoTXT
          */
         if ($this->lOpcaoVencimento) {
             if (count($this->aParcelasUnicas)) {
-                $aUnicasComparativo = array();
+                $aUnicasComparativo = [];
 
                 foreach ($this->aParcelasUnicas as $oParcelaUnica) {
                     $oUnicasComparativo = new \stdClass();
                     $oUnicasComparativo->vencimento = $oParcelaUnica->getDataVencimento()->getDate(\DBDate::DATA_PTBR);
                     $oUnicasComparativo->lancamento = $oParcelaUnica->getDataOperacao()->getDate(\DBDate::DATA_PTBR);
                     $oUnicasComparativo->percentual = $oParcelaUnica->getPercentual();
-                    $iIndiceComparativo = explode("/", $oUnicasComparativo->vencimento);
+                    $iIndiceComparativo = explode("/", (string) $oUnicasComparativo->vencimento);
                     $aUnicasComparativo[(int)$iIndiceComparativo[1]] = $oUnicasComparativo;
                 }
                 ///  totais de UNICAS
@@ -3255,7 +3249,7 @@ class EmissaoTXT
            * nao apareca a opcao do mes 2 e do 1
            */
 
-                    $iMesVencimento = explode("/", $oDadosUnica->vencimento);
+                    $iMesVencimento = explode("/", (string) $oDadosUnica->vencimento);
                     $aVencimento = $iMesVencimento;
                     $iProximoDiaUnica = $iMesVencimento[0];
                     $iMesVencimento = $iMesVencimento[1];
@@ -3286,7 +3280,7 @@ class EmissaoTXT
                             $sDataVencimentoUnica = $oTeste->vencimento;
                         }
 
-                        $dtVencimentoUnicaCorrecao = implode("-", array_reverse(explode("/", $sDataVencimentoUnica)));
+                        $dtVencimentoUnicaCorrecao = implode("-", array_reverse(explode("/", (string) $sDataVencimentoUnica)));
 
                         /*
                          * aplicamos debitos numpre para o valor corrigido da unica
@@ -3364,7 +3358,7 @@ class EmissaoTXT
             /// FOEREACH PARA TOTAL PARCELAS
             $sDataVencParcela = reset($aDadosParcelas)->k00_dtpaga;
             $iTotalParcelas = end($aRecibos['parcelas'])->getParcela();
-            $iMesPrimeiraParcela = explode("-", $sDataVencParcela);
+            $iMesPrimeiraParcela = explode("-", (string) $sDataVencParcela);
             $iMesPrimeiraParcela = $iMesPrimeiraParcela[1];
             $iContadorParcela = 0;
             for ($iMesParcela = 1; $iMesParcela <= $iTotalParcelas; $iMesParcela++) {
@@ -3374,7 +3368,7 @@ class EmissaoTXT
 
                 $iIndice = $iMesParcela - 1;
                 $oParcela = $aDadosParcelas[$iMesParcela];//dados das parcelas tipo, numpre, valor etc.
-                $iProximoMesParcela = explode("-", $oParcela->k00_dtpaga); // MES VENCIMENTO DA PARCELA
+                $iProximoMesParcela = explode("-", (string) $oParcela->k00_dtpaga); // MES VENCIMENTO DA PARCELA
                 $iProximoDiaParcela = $iProximoMesParcela[2];
                 $iProximoMesParcela = $iProximoMesParcela[1];
 
@@ -3401,7 +3395,7 @@ class EmissaoTXT
                     }
 
                     $sDataVencimentoParcela = "{$iDiaVenc}/" . str_pad(
-                        $iProximoMesParcela,
+                        (string) $iProximoMesParcela,
                         2,
                         "0",
                         STR_PAD_LEFT
@@ -3482,7 +3476,7 @@ class EmissaoTXT
 
                 $valor = trim(db_formatar($unicaTaxaExpediente, 'f'));
 
-                $this->oArquivoDados->fwrite(str_pad($this->receitaTaxaExpediente, $tamanhoReceita, '0', STR_PAD_LEFT));
+                $this->oArquivoDados->fwrite(str_pad((string) $this->receitaTaxaExpediente, $tamanhoReceita, '0', STR_PAD_LEFT));
                 $this->oArquivoDados->fwrite(str_pad($valor, $tamanhoValor, ' ', STR_PAD_LEFT));
             }
         }
@@ -3528,7 +3522,7 @@ class EmissaoTXT
                 $valor = trim(db_formatar($parcelaTaxa, 'f'));
 
                 $this->oArquivoDados->fwrite(str_pad($parcela, $tamanhoParcela, '0', STR_PAD_LEFT));
-                $this->oArquivoDados->fwrite(str_pad($this->receitaTaxaExpediente, $tamanhoReceita, '0', STR_PAD_LEFT));
+                $this->oArquivoDados->fwrite(str_pad((string) $this->receitaTaxaExpediente, $tamanhoReceita, '0', STR_PAD_LEFT));
                 $this->oArquivoDados->fwrite(str_pad($valor, $tamanhoValor, ' ', STR_PAD_LEFT));
             }
         }
@@ -3614,14 +3608,14 @@ class EmissaoTXT
 
         if ($this->sTipoGeracao == static::TIPO_EMISSAO_TXT && $this->gerarPix) {
             foreach ($aQrCodesPix as $oQrCodePix) {
-                $this->oArquivoDados->fwrite(str_pad($oQrCodePix->qrCode, 300));
+                $this->oArquivoDados->fwrite(str_pad((string) $oQrCodePix->qrCode, 300));
 
                 if ($oQrCodePix->isUnica) {
                     $apelido = "QRCODEPIXUNICA{$oQrCodePix->percentual}";
                     $expressao = "QRCODE DO PIX DA PARCELA UNICA DE {$oQrCodePix->percentual}%";
                 } else {
-                    $apelido = "QRCODEPIXPARCELA".str_pad($oQrCodePix->parcela, 2);
-                    $expressao = "QRCODE DO PIX DA PARCELA ".str_pad($oQrCodePix->parcela, 2);
+                    $apelido = "QRCODEPIXPARCELA".str_pad((string) $oQrCodePix->parcela, 2);
+                    $expressao = "QRCODE DO PIX DA PARCELA ".str_pad((string) $oQrCodePix->parcela, 2);
                 }
 
                 if ($lGerarLayout) {
@@ -3735,7 +3729,7 @@ class EmissaoTXT
          * Instancia os arquivos a serem gerados
          */
         $maximoParcelas = empty($oParametrosGeracao->maximo_parcelas_gerar) ? "" : "_quantparc_";
-        $padMaximoParcelas = str_pad($oParametrosGeracao->maximo_parcelas_gerar, 3, "0", STR_PAD_LEFT);
+        $padMaximoParcelas = str_pad((string) $oParametrosGeracao->maximo_parcelas_gerar, 3, "0", STR_PAD_LEFT);
 
         $sNomeArquivo = "tmp/dados_iptu_";
         $sNomeArquivo .= $oParametrosGeracao->filtro_principal;
@@ -3750,10 +3744,10 @@ class EmissaoTXT
         $this->oArquivoDados = new \SplFileObject($sNomeArquivo, "w+");
         $this->oArquivoLayout = new \SplFileObject($sNomeLayout, "w+");
 
-        $aArquivosRetorno = array(
+        $aArquivosRetorno = [
           new \File($this->oArquivoLayout->getPathname()),
           new \File($this->oArquivoDados->getPathname())
-        );
+        ];
 
         /**
          * Busca as receitas
@@ -3772,9 +3766,9 @@ class EmissaoTXT
         $this->sListaReceitas = "";
 
         if ($iLinhasRec > 0) {
-            $aRec = array();
+            $aRec = [];
             for ($indx = 0; $indx < $iLinhasRec; $indx++) {
-                $aRec[] = pg_result($rsReceitas, $indx, "j18_receit");
+                $aRec[] = pg_fetch_result($rsReceitas, $indx, "j18_receit");
             }
 
             $this->iReceitaMin = min($aRec);
@@ -3808,7 +3802,7 @@ class EmissaoTXT
             $linha00 .= "1035";
             $linha00 .= "    ";
             $linha00 .= "N";
-            $linha00 .= "IPTU" . substr($this->iAno, 2, 2);
+            $linha00 .= "IPTU" . substr((string) $this->iAno, 2, 2);
             $linha00 .= str_repeat(" ", 255);
 
             $this->oArquivoDados->fwrite(static::dbContadorBsj($linha00, "", $contador, 288));
@@ -3821,7 +3815,7 @@ class EmissaoTXT
         $iQuantidadeRegistros = 0;
 
         $iMatriculaAtual = null;
-        $aDadosMatricula = array();
+        $aDadosMatricula = [];
 
         $this->maximoUnicasPorLinha = (integer) $this->getQuantidadeMaximaUnicas($oEmissao);
 
@@ -3847,10 +3841,10 @@ class EmissaoTXT
 
                 $iMatriculaAtual = $oRegistro->getMatricula();
 
-                $aDadosMatricula = array(
-                  'unicas'   => array(),
-                  'parcelas' => array()
-                );
+                $aDadosMatricula = [
+                  'unicas'   => [],
+                  'parcelas' => []
+                ];
             }
 
             if ($oRegistro->getParcela() == 0) {
@@ -3925,10 +3919,10 @@ class EmissaoTXT
             $this->oArquivoLayout->fwrite("{$this->sQuebraLinha}");
         }
 
-        for ($naogeracgm = 0; $naogeracgm < pg_numrows($resultnaogeracgm); $naogeracgm++) {
+        for ($naogeracgm = 0; $naogeracgm < pg_num_rows($resultnaogeracgm); $naogeracgm++) {
             $oDadosCgmNaoGera = \db_utils::fieldsMemory($resultnaogeracgm, $naogeracgm);
             $this->oArquivoLayout->fwrite(str_pad(
-                $oDadosCgmNaoGera->j68_numcgm,
+                (string) $oDadosCgmNaoGera->j68_numcgm,
                 6,
                 "0",
                 STR_PAD_LEFT
@@ -4055,10 +4049,10 @@ class EmissaoTXT
         $contadorant = $contador + 1;
         $contador += $valor;
 
-        $linha = str_pad($contadorgeral++, 5);
-        $linha .= " | " . str_pad($apelido, 30);
-        $linha .= " | " . str_pad($expressao, 80);
-        $linha .= " | " . str_pad($valor, 4, "0", STR_PAD_LEFT);
+        $linha = str_pad((string) $contadorgeral++, 5);
+        $linha .= " | " . str_pad((string) $apelido, 30);
+        $linha .= " | " . str_pad((string) $expressao, 80);
+        $linha .= " | " . str_pad((string) $valor, 4, "0", STR_PAD_LEFT);
         $linha .= " | " . str_pad($contadorant, 4, "0", STR_PAD_LEFT);
         $linha .= " | " . str_pad($contador, 4, "0", STR_PAD_LEFT) . "{$sQuebraLinha}";
 
@@ -4073,7 +4067,7 @@ class EmissaoTXT
         $contadorant = $contador + 1;
         $contador += $valor;
 
-        return str_pad($apelido, 30) . "{$sQuebraLinha}";
+        return str_pad((string) $apelido, 30) . "{$sQuebraLinha}";
     }
 
     /*
@@ -4105,7 +4099,7 @@ class EmissaoTXT
     private static function getValorTaxaExpediente($numnov)
     {
         $repository = new RecibopagaRepository(DataBase::getInstance(), new \cl_recibopaga());
-        $where = array("k00_numnov = {$numnov}", "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO);
+        $where = ["k00_numnov = {$numnov}", "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO];
         $reciboPaga = $repository->findAll(implode(' AND ', $where))->get(0);
 
         return $reciboPaga->getValor();
@@ -4126,8 +4120,8 @@ class EmissaoTXT
         $this->buscarReceitaTaxaExpediente = true;
 
         $dao = new \cl_recibopaga();
-        $campos = array('tabdesc.k07_codigo as receita');
-        $where = array("recibopaga.k00_numnov = {$numnov}");
+        $campos = ['tabdesc.k07_codigo as receita'];
+        $where = ["recibopaga.k00_numnov = {$numnov}"];
 
         $sql = $dao->sqlTaxaEspecifica($campos, $where);
         $rs = db_query($sql);

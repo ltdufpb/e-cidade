@@ -35,8 +35,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_serie_classe.php"));
 include(modification("classes/db_ensino_classe.php"));
 include(modification("classes/db_regimemat_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clserie = new cl_serie;
 $clensino = new cl_ensino;
 $clregimemat = new cl_regimemat;
@@ -115,9 +115,9 @@ $clrotulo->label("ed11_i_ensino");
             $condicao
             ORDER BY ed11_i_ensino,ed11_i_sequencia
            ";
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed11_i_ensino)){
-     $repassa = array("chave_ed11_i_ensino"=>$chave_ed11_i_ensino);
+     $repassa = ["chave_ed11_i_ensino"=>$chave_ed11_i_ensino];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }

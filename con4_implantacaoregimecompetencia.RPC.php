@@ -53,7 +53,7 @@ try {
     
     case 'getAcordos':
     
-      $where = array("ac16_acordosituacao = 4", "ac16_instit  = {$iCodigoInstituicao}");
+      $where = ["ac16_acordosituacao = 4", "ac16_instit  = {$iCodigoInstituicao}"];
       if (!empty($oParam->acordo)) {
         $where[] = "ac16_sequencial = {$oParam->acordo}";
       }
@@ -75,7 +75,7 @@ try {
       }
       
       $aAcordos = AcordoRepository::getAcordosPorFiltro(implode(" and ", $where));
-      $oRetorno->acordos = array();
+      $oRetorno->acordos = [];
 
       foreach ($aAcordos as $oAcordo) {
         
@@ -158,7 +158,7 @@ try {
            */
           $nValorProgramado      = $nValorParcelasLancadas + $acordoImplantar->valor;
           $nValorProgramado      = floatval(trim($nValorProgramado));
-          $nValorAtualDoContrato = floatval(trim($nValorAtualDoContrato));
+          $nValorAtualDoContrato = floatval(trim((string) $nValorAtualDoContrato));
 
           if ($nValorProgramado > $nValorAtualDoContrato) {            
 

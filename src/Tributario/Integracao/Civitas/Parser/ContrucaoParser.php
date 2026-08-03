@@ -21,7 +21,7 @@ class ContrucaoParser
   public static function parser(array $aLinha)
   {
 
-      $aCaracteristicas = array(
+      $aCaracteristicas = [
           $aLinha[20], $aLinha[22],
           $aLinha[24], $aLinha[26],
           $aLinha[28], $aLinha[30],
@@ -31,7 +31,7 @@ class ContrucaoParser
           $aLinha[44], $aLinha[46],
           $aLinha[48], $aLinha[50],
           $aLinha[52]
-      );
+      ];
 
       $aCaracteristicas = array_filter($aCaracteristicas);
 
@@ -43,14 +43,14 @@ class ContrucaoParser
       $oConstrucao->setCaracteristicas($aCaracteristicas);
       $oConstrucao->setIdbql($aLinha[2]);
       $oConstrucao->setRua($aLinha[6]);
-      $oConstrucao->setComplemento(substr(trim($aLinha[15]), 0, 20));
+      $oConstrucao->setComplemento(substr(trim((string) $aLinha[15]), 0, 20));
 
       $iNumero = !empty($aLinha[7]) ? $aLinha[7] : 0;
 
       $oConstrucao->setNumero($iNumero);
 
       if (!empty($aLinha[14])) {
-          $aDataDemolicao = explode(' ', $aLinha[14]);
+          $aDataDemolicao = explode(' ', (string) $aLinha[14]);
           $oConstrucao->setDataDemolicao(new \DBDate($aDataDemolicao[0]));
       }
 

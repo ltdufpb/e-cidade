@@ -51,7 +51,7 @@ $sSqlUnid     = $oDaoUnidades->sql_query_file(null, "m61_codmatunid,substr(m61_d
                                                      m61_usaquant,m61_usadec", "m61_descr");
 $rsUnid             = $oDaoUnidades->sql_record($sSqlUnid);
 $aUnidades          = db_utils::getCollectionByRecord($rsUnid);
-$aParametrosCompras = db_stdClass::getParametro("pcparam",array(db_getsession("DB_anousu")));
+$aParametrosCompras = db_stdClass::getParametro("pcparam",[db_getsession("DB_anousu")]);
 $db_opcao           = 1;
 ?>
 <html>
@@ -148,7 +148,7 @@ db_app::load("widgets/windowAux.widget.js");
               </td>
               <td>
               <?php 
-                db_select('pc17_unid',array(), true, 1, "style='width:150px' onchange='js_usaQuantidade(this)'");
+                db_select('pc17_unid',[], true, 1, "style='width:150px' onchange='js_usaQuantidade(this)'");
                 db_input('pc17_quant', 5, 0, true, 'text', 1, "style='display:none'");
               ?>
               </td>

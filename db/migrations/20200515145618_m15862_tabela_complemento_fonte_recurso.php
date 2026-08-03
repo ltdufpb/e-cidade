@@ -36,7 +36,7 @@ SQL_UP
 );
 
         $row = $this->fetchRow("select uf from db_config order by codigo limit 1;");
-        if (strtoupper($row['uf']) === 'RS') {
+        if (strtoupper((string) $row['uf']) === 'RS') {
 
             $this->execute(<<<SQL_RS
 insert into orcamento.complementofonterecurso values (3140, 'Emendas Parlamentares Individuais - COVID 19', false);

@@ -102,13 +102,13 @@ require_once(modification("dbforms/db_funcoes.php"));
 		            <td>
 		              <?php 
 
-                  $aTipos = array("0"       => "Selecione o tipo",
+                  $aTipos = ["0"       => "Selecione o tipo",
                                   "varchar" => "Texto Livre",
                                   "int4"    => "Numero sem decimais",
                                   "float8"  => "Numero com decimais",
                                   "date"    => "Data",
                                   "bool"    => "Logico",
-                                  "select"    => "Select");
+                                  "select"    => "Select"];
                                  // "selectrecordmultiplo"    => "Select Record Multiplo");
                   db_select('tipoDado',$aTipos,true,1,"");
 		              ?>

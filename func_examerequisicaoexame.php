@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_examerequisicaoexame_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clexamerequisicaoexame = new cl_examerequisicaoexame;
 $clexamerequisicaoexame->rotulo->label("sd104_codigo");
 $clexamerequisicaoexame->rotulo->label("sd104_codigo");
@@ -52,9 +52,9 @@ $clexamerequisicaoexame->rotulo->label("sd104_codigo");
         }else{
            $sql = $clexamerequisicaoexame->sql_query("",$campos,"sd104_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd104_codigo)){
-          $repassa = array("chave_sd104_codigo"=>$chave_sd104_codigo,"chave_sd104_codigo"=>$chave_sd104_codigo);
+          $repassa = ["chave_sd104_codigo"=>$chave_sd104_codigo,"chave_sd104_codigo"=>$chave_sd104_codigo];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

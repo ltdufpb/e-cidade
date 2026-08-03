@@ -50,7 +50,7 @@ class GeracaoArquivoRetornoEConsig {
    * @param DBCompetencia $oCompetencia
    * @throws DBException
    */
-  public function __construct( Instituicao $oInstituicao, DBCompetencia $oCompetencia = null) {
+  public function __construct( Instituicao $oInstituicao, ?DBCompetencia $oCompetencia = null) {
 
     $this->oArquivoMovimentacao = ArquivoEConsigRepository::getUltimoArquivo($oInstituicao, $oCompetencia);
     $this->oArquivoMovimentacao->carregarRegistros();
@@ -89,7 +89,7 @@ class GeracaoArquivoRetornoEConsig {
   private function getRegistros() {
     
     $aRegistros = $this->oArquivoMovimentacao->getRegistros();
-    $aRetorno   = array();
+    $aRetorno   = [];
 
     $this->oArquivoMovimentacao->limparRegistros();
 

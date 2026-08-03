@@ -38,8 +38,8 @@ include(modification("classes/db_mer_subitem_classe.php"));
 require_once(modification('libs/db_stdlibwebseller.php'));
 require_once(modification('libs/db_utils.php'));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clrotulo            = new rotulocampo;
 $clmer_desper_und    = new cl_mer_desper_und;
@@ -205,14 +205,14 @@ for ($s=0; $s < $clmer_cardapiodia->numrows; $s++) {
 
   }
 
-  VerificaQuebra($s, $pdf, $lQuebraEscola);
+  VerificaQuebra($s, $pdf);
   $pdf->setfillcolor(235);
   $pdf->setfont('arial','',8);
   $pdf->cell(20,4,$me01_i_codigo,1,0,"C",1);
-  $pdf->cell(50,4,trim($me01_c_nome),1,0,"L",1);
+  $pdf->cell(50,4,trim((string) $me01_c_nome),1,0,"L",1);
   $pdf->cell(20,4,$me01_f_versao,1,0,"C",1);
-  $pdf->cell(40,4,trim($me03_c_tipo),1,0,"L",1);
-  $pdf->cell(40,4,trim($me27_c_nome),1,0,"L",1);
+  $pdf->cell(40,4,trim((string) $me03_c_tipo),1,0,"L",1);
+  $pdf->cell(40,4,trim((string) $me27_c_nome),1,0,"L",1);
   $pdf->cell(30,4,$qtde_alunos,1,0,"C",1);
   $pdf->cell(20,4,$qtde_repet,1,0,"C",1);  
   $pdf->cell(30,4,db_formatar($me12_d_data,'d'),1,0,"C",1);
@@ -244,7 +244,7 @@ for ($s=0; $s < $clmer_cardapiodia->numrows; $s++) {
     $pdf->setfont('arial','',8);
     $pdf->cell(20,4,"",0,0,"C",0);
     $pdf->cell(20,4,$me35_i_codigo,"L",0,"L",0);
-    $pdf->cell(70,4,substr($me35_c_nomealimento,0,30),0,0,"L",0);
+    $pdf->cell(70,4,substr((string) $me35_c_nomealimento,0,30),0,0,"L",0);
     $pdf->cell(170,4,$me07_f_quantidade,"R",1,"L",0);
     
   }
@@ -280,9 +280,9 @@ for ($s=0; $s < $clmer_cardapiodia->numrows; $s++) {
       $pdf->setfont('arial','',8);
       $pdf->cell(20,4,"",0,0,"C",0);
       $pdf->cell(20,4,$me29_i_alimentoorig,"L",0,"L",0);
-      $pdf->cell(70,4,substr($alimentoorig,0,30),0,0,"L",0);
+      $pdf->cell(70,4,substr((string) $alimentoorig,0,30),0,0,"L",0);
       $pdf->cell(20,4,$me29_i_alimentonovo,0,0,"L",0);
-      $pdf->cell(70,4,substr($alimentonovo,0,30),0,0,"L",0);
+      $pdf->cell(70,4,substr((string) $alimentonovo,0,30),0,0,"L",0);
       $pdf->cell(80,4,$me29_f_quantidade,"R",1,"L",0);
       
     }    
@@ -348,7 +348,7 @@ for ($s=0; $s < $clmer_cardapiodia->numrows; $s++) {
      $pdf->cell(20,4,"",0,0,"C",0);
      $pdf->cell(20,4,$ed47_i_codigo,"L",0,"L",0);
      $pdf->cell(120,4,$ed47_v_nome,0,0,"L",0);
-     $pdf->cell(120,4,trim($ed57_c_descr)." / ".trim($ed11_c_descr),"R",1,"L",0);
+     $pdf->cell(120,4,trim((string) $ed57_c_descr)." / ".trim((string) $ed11_c_descr),"R",1,"L",0);
      
    }   
   }  
@@ -380,7 +380,7 @@ for ($s=0; $s < $clmer_cardapiodia->numrows; $s++) {
      }
      $pdf->setfont('arial','',8);
      $pdf->cell(20,4,"",0,0,"C",0);
-     $pdf->cell(100,4,trim($ed57_c_descr)." / ".trim($ed11_c_descr),"L",0,"L",0);
+     $pdf->cell(100,4,trim((string) $ed57_c_descr)." / ".trim((string) $ed11_c_descr),"L",0,"L",0);
      $pdf->cell(80,4,$me39_i_quantidade,0,0,"L",0);
      $pdf->cell(80,4,$me39_i_repeticao,"R",1,"L",0);
      

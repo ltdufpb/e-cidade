@@ -55,10 +55,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	     $clcriaabas->identifica = array("pctipocertif"=>"Tipos de Certificado","pctipocertifdepartamento"=>"Departamentos");
-	     $clcriaabas->src        = array("pctipocertif"=>"com1_pctipocertif006.php");
-	     $clcriaabas->disabled   = array("pctipocertifdepartamento"=>"true");
-	     $clcriaabas->sizecampo  = array("pctipocertif"=>"20","pctipocertifdepartamento"=>"20");
+	     $clcriaabas->identifica = ["pctipocertif"=>"Tipos de Certificado","pctipocertifdepartamento"=>"Departamentos"];
+	     $clcriaabas->src        = ["pctipocertif"=>"com1_pctipocertif006.php"];
+	     $clcriaabas->disabled   = ["pctipocertifdepartamento"=>"true"];
+	     $clcriaabas->sizecampo  = ["pctipocertif"=>"20","pctipocertifdepartamento"=>"20"];
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>

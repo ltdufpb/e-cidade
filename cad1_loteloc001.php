@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_loteloc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clloteloc = new cl_loteloc;
 if(isset($j06_idbql) && $j06_idbql != ""){
  $result = $clloteloc->sql_record( $clloteloc->sql_query($j06_idbql) );

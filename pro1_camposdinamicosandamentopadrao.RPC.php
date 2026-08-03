@@ -36,7 +36,7 @@ require_once modification("libs/JSON.php");
 $get = (array)filter_input_array(INPUT_GET);
 $post = (array)filter_input_array(INPUT_POST);
 $parametros = (object)array_merge($get, $post);
-$retorno    = (object)array( 'erro' => false, 'mensagem'=> '');
+$retorno    = (object)[ 'erro' => false, 'mensagem'=> ''];
 
 try {
     db_inicio_transacao();
@@ -45,7 +45,7 @@ try {
         case 'salvarCampo':
 
             $retorno->campo = (object)[
-                'idCampoDinamico' => $parametros->idCampoDinamico ? $parametros->idCampoDinamico : substr(time(), -4),
+                'idCampoDinamico' => $parametros->idCampoDinamico ?: substr(time(), -4),
                 'idTipoProcesso'  => (int) $parametros->idTipoProcesso,
                 'codcam'          => (int) $parametros->codcam,
                 'nomecam'         => $parametros->nomecam,
@@ -74,7 +74,7 @@ try {
                 $nomecam = [];
 
                 for ($ii = 1; $ii <= 15; $ii++) {
-                    $nomecam[] = chr(rand(97, 122));
+                    $nomecam[] = chr(random_int(97, 122));
                 }
                 $nomecam = implode('', $nomecam);
                 
@@ -83,7 +83,7 @@ try {
                     'idTipoProcesso'  => (int) $parametros->idTipoProcesso,
                     'codcam'          => (int) $i + 49,
                     'nomecam'         => $nomecam,
-                    'obrigatorio'     => rand(0,1),
+                    'obrigatorio'     => random_int(0,1),
                 ];
     
                 $retorno->campos[] = $campo;

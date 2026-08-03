@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("classes/db_isstipoalvaradepto_classe.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 
 
@@ -58,7 +58,7 @@ if(isset($incluir) or isset($alterar)){
 		    $msgerro = $clisstipoalvaradepto->erro_msg;
 	}	
 	
-	$depto = split("#",$chaves); 
+	$depto = preg_split("#\\##m",$chaves); 
   for($w=0;$w<count($depto);$w++){
     if($erro==false){
     	

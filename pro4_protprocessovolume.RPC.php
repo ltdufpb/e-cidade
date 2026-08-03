@@ -63,7 +63,7 @@ try {
                     $clprotprocesso->set_volume();
                 }
 
-                $numeracaoProcessopai = (int) substr($numeroProcessopai, -8, 5);
+                $numeracaoProcessopai = (int) substr((string) $numeroProcessopai, -8, 5);
                 $numeracao = ProcessoProtocoloNumeracao::formataNumeracaoOrgao(
                     $numeracaoProcessopai,
                     $clprotprocesso->p58_orgao,
@@ -92,7 +92,7 @@ try {
             if (isset($oParam->docs) && $oParam->docs != "") {
                 $clprocprocessodoc = new cl_procprocessodoc();
                 if ($lSqlErro == false) {
-                    $chaves = split("#",$oParam->docs);
+                    $chaves = preg_split("#\\##m",(string) $oParam->docs);
                     $chave  = count($chaves);
                     for($x = 0; $x < $chave-1; $x++){
                         $clprocprocessodoc->p81_codproc = $clprotprocesso->p58_codproc;
@@ -110,11 +110,11 @@ try {
             if (isset($oParam->ndocs) && $oParam->ndocs != "") {
                 $clprocprocessodoc = new cl_procprocessodoc();
 
-                $chaves = split("#",$oParam->ndocs);
+                $chaves = preg_split("#\\##m",(string) $oParam->ndocs);
                 $chave  = count($chaves);
 
                 for( $i = 0; $i < $chave - 1; $i++){
-                    $HTTP_POST_VARS['p81_doc'] = 'f';
+                    $_POST['p81_doc'] = 'f';
                     $clprocprocessodoc->p81_codproc = $clprotprocesso->p58_codproc;
                     $clprocprocessodoc->p81_coddoc = $chaves[$i];
                     $clprocprocessodoc->p81_doc = 'f';
@@ -134,15 +134,15 @@ try {
                     $sSqlCam = "select nomecam,rotulo from db_syscampo where codcam = ".$ln["p54_codcam"];
                     $rsSqlCam = db_query($sSqlCam);
 
-                    if (pg_numrows($rsSqlCam) > 0) {
-                        $nomecam = trim(pg_result($rsSqlCam, 0, "nomecam"));
-                        $rotulo = trim(pg_result($rsSqlCam, 0, "rotulo"));
+                    if (pg_num_rows($rsSqlCam) > 0) {
+                        $nomecam = trim(pg_fetch_result($rsSqlCam, 0, "nomecam"));
+                        $rotulo = trim(pg_fetch_result($rsSqlCam, 0, "rotulo"));
 
                         $p55_codproc = $clprotprocesso->p58_codproc;
                         $p55_codvar = $ln["p54_codigo"];
                         $p55_codcam = $ln["p54_codcam"];
 
-                        $clproctipovar->p55_conteudo = $$nomecam;
+                        $clproctipovar->p55_conteudo = ${$nomecam};
                         $clproctipovar->incluir($p55_codproc, $p55_codvar, $p55_codcam);
 
                         if ($clproctipovar->erro_status == '0') {
@@ -348,7 +348,7 @@ try {
             ";
             
             $postgresObject = db_query($sql);
-            $volumes = array();
+            $volumes = [];
 
             while ($row = pg_fetch_assoc($postgresObject)) {
                 $volumes[] = $row;

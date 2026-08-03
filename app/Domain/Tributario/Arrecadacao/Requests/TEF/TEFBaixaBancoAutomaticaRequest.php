@@ -37,33 +37,33 @@ class TEFBaixaBancoAutomaticaRequest extends FormRequest
 
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     public function messages()
     {
         return [
-            "numpre.required"        => utf8_encode("Numpre do recibo não informado."),
-            "numpre.integer"         => utf8_encode("Numpre do recibo inválido."),
+            "numpre.required"        => mb_convert_encoding("Numpre do recibo não informado.", 'UTF-8', 'ISO-8859-1'),
+            "numpre.integer"         => mb_convert_encoding("Numpre do recibo inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "valor.required"         => utf8_encode("Valor do recibo não informado."),
-            "valor.numeric"           => utf8_encode("Valor do recibo inválido."),
+            "valor.required"         => mb_convert_encoding("Valor do recibo não informado.", 'UTF-8', 'ISO-8859-1'),
+            "valor.numeric"           => mb_convert_encoding("Valor do recibo inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "conta.required"         => utf8_encode("Conta do caixa não informado."),
-            "conta.integer"          => utf8_encode("Conta do caixa inválido."),
+            "conta.required"         => mb_convert_encoding("Conta do caixa não informado.", 'UTF-8', 'ISO-8859-1'),
+            "conta.integer"          => mb_convert_encoding("Conta do caixa inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_instit.required"     => utf8_encode("Código da instituição não informado."),
-            "DB_instit.integer"      => utf8_encode("Código da instituição inválido."),
+            "DB_instit.required"     => mb_convert_encoding("Código da instituição não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_instit.integer"      => mb_convert_encoding("Código da instituição inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_coddepto.required"   => utf8_encode("Código do departamentro não informado."),
-            "DB_coddepto.integer"    => utf8_encode("Código do departamentro inválido."),
+            "DB_coddepto.required"   => mb_convert_encoding("Código do departamentro não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_coddepto.integer"    => mb_convert_encoding("Código do departamentro inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_id_usuario.required" => utf8_encode("Código do usuário não informado."),
-            "DB_id_usuario.integer"  => utf8_encode("Código do usuário inválido."),
+            "DB_id_usuario.required" => mb_convert_encoding("Código do usuário não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_id_usuario.integer"  => mb_convert_encoding("Código do usuário inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_datausu.required"    => utf8_encode("Data do sistema não informada não informado."),
-            "DB_datausu.integer"     => utf8_encode("Data do sistema não informada inválido.")
+            "DB_datausu.required"    => mb_convert_encoding("Data do sistema não informada não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_datausu.integer"     => mb_convert_encoding("Data do sistema não informada inválido.", 'UTF-8', 'ISO-8859-1')
         ];
     }
 }

@@ -22,6 +22,7 @@ class ProcessoTributoTrabalhistaFormatter extends Formatter
      * @throws \BusinessException
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosProcessoTrabalhista = null;
@@ -34,7 +35,7 @@ class ProcessoTributoTrabalhistaFormatter extends Formatter
             $dadoProcesso->infoProcesso->origem = (int) $processoTrabalhista->getOrigem();
             $dadoProcesso->infoProcesso->nrProcTrab = $processoTrabalhista->getNumeroProcesso();
             $dadoProcesso->infoProcesso->obsProcTrab =
-                str_replace(array("\r\n", "\r", "\n"), "", $processoTrabalhista->getObservacaoProcesso());
+                str_replace(["\r\n", "\r", "\n"], "", $processoTrabalhista->getObservacaoProcesso());
             if ($dadoProcesso->infoProcesso->origem == 1) {
                 $dadoProcesso->infoProcesso->dadosCompl->infoProcJud->dtSent = $processoTrabalhista->getDataSentenca();
                 $dadoProcesso->infoProcesso->dadosCompl->infoProcJud->ufVara = $processoTrabalhista->getUfVara();

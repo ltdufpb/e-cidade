@@ -101,7 +101,7 @@ db_input('cc08_instit',10,$Icc08_instit,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('cc06_ativo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -120,7 +120,7 @@ db_select('cc06_ativo',$x,true,$db_opcao,"");
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("cc06_custocriteriorateio"=>@$cc06_custocriteriorateio);
+	 $chavepri= ["cc06_custocriteriorateio"=>@$cc06_custocriteriorateio];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clcustocriteriorateiobens->sql_query(null,"*","cc06_sequencial",
 	                                                                            "cc06_custocriteriorateio ={$cc06_custocriteriorateio}");

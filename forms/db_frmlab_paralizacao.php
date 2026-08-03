@@ -111,7 +111,7 @@ db_input('la02_c_descr',50,$Ila02_c_descr,true,'text',3,'')
                                 <td nowrap> 
                                   <?php 
                                   if(isset($la37_d_ini)&&($la37_d_ini!="")){
-                                       $vet=explode("/",$la37_d_ini);
+                                       $vet=explode("/",(string) $la37_d_ini);
                                        $la37_d_ini_dia=$vet[0];
                                        $la37_d_ini_mes=$vet[1];
                                        $la37_d_ini_ano=$vet[2];
@@ -127,7 +127,7 @@ db_input('la02_c_descr',50,$Ila02_c_descr,true,'text',3,'')
                                 <td nowrap> 
                                   <?php 
                                   if(isset($la37_d_fim)&&($la37_d_fim!="")){
-                                       $vet=explode("/",$la37_d_ini);
+                                       $vet=explode("/",(string) $la37_d_ini);
                                        $la37_d_fim_dia=$vet[0];
                                        $la37_d_fim_mes=$vet[1];
                                        $la37_d_fim_ano=$vet[2];
@@ -197,7 +197,7 @@ db_input('la02_c_descr',50,$Ila02_c_descr,true,'text',3,'')
 </form>
 <br>
 <?php
-$chavepri = array ("la37_i_codigo" => @$la37_i_codigo, 
+$chavepri =  ["la37_i_codigo" => @$la37_i_codigo, 
                    "la02_c_descr"=>@$la02_c_descr, 
                    "la37_i_laboratorio" => @$la37_i_laboratorio, 
                    "la37_d_ini" => @$la37_d_ini, 
@@ -205,7 +205,7 @@ $chavepri = array ("la37_i_codigo" => @$la37_i_codigo,
                    "la37_c_horaini" => @$la37_c_horaini, 
                    "la37_c_horafim" => @$la37_c_horafim,
                    "la37_i_motivo" => @$la37_i_motivo
-                  );
+                  ];
 $cliframe_alterar_excluir->chavepri = $chavepri;
 @$cliframe_alterar_excluir->sql = $cllab_paralizacao->sql_query ("", "*", "","la37_i_laboratorio= $la37_i_laboratorio" );			
 $cliframe_alterar_excluir->campos = "la37_i_codigo,la37_d_ini,la37_d_fim,la37_c_horaini,la37_c_horafim";		
@@ -349,7 +349,7 @@ function js_preenchepesquisa(chave){
   db_iframe_lab_paralizacao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

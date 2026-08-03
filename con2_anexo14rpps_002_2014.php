@@ -77,7 +77,7 @@ $pdf->cell(65, $iAltura, "PASSIVO", "TBL", 0, "C");
 $pdf->cell(30, $iAltura, "R$", "TBL", 1, "C");
 
 $iAlturaInicioRegistros    = $pdf->getY();
-$aLinhasComBordasEspeciais = array(21 => 'T',
+$aLinhasComBordasEspeciais = [21 => 'T',
                                    51 => 'T',
                                    33 => 'TB',
                                    58 => 'TB',
@@ -85,7 +85,7 @@ $aLinhasComBordasEspeciais = array(21 => 'T',
                                    63 => 'T',
                                    41 => 'TB',
                                    70 => 'TB'
-                                   );
+                                   ];
 
 $iAlturaInicioPassivoPermanente = 0;
 $iAlturaInicioPatrimonioLiquido = 0;

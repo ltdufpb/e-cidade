@@ -93,7 +93,7 @@ if ($oDaoParametro->numrows > 0) {
               </td>
               <td>
                 <?php 
-                  $aModelos = array("pdf" => "PDF", "csv" => "CSV");
+                  $aModelos = ["pdf" => "PDF", "csv" => "CSV"];
                   db_select("sModelo", $aModelos, true, 1, "onchange='js_alterarModelo();'");
                 ?>
               </td>
@@ -146,7 +146,7 @@ if ($oDaoParametro->numrows > 0) {
                 </td>
                 <td>
                   <?php 
-                    $aOrdem = array("asc" => "Crescente", "desc" => "Decrescente");
+                    $aOrdem = ["asc" => "Crescente", "desc" => "Decrescente"];
                     db_select("sOrdem", $aOrdem, true, 1);
                   ?>
                 </td>
@@ -157,7 +157,7 @@ if ($oDaoParametro->numrows > 0) {
                 </td>
                 <td>
                   <?php 
-                    $aQuebraPagina = array("t" => "Sim", "f" => "Não");
+                    $aQuebraPagina = ["t" => "Sim", "f" => "Não"];
                     db_select("sQuebraPagina", $aQuebraPagina, true, 1);
                   ?>
                 </td>

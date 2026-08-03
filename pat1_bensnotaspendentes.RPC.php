@@ -85,7 +85,7 @@ try {
       $sDataTeste = null;
 
       $nTotalNotas = 0;
-      $aNotas      = array();
+      $aNotas      = [];
       for ($iItem = 0; $iItem < $oDaoEmpNotaItem->numrows; $iItem++) {
 
         $oNota = db_utils::fieldsMemory($rsEmpNotaItem, $iItem);
@@ -110,8 +110,8 @@ try {
         $aNotas[]     = $oNota;
       }
 
-      $aBens            = array();
-      $aCodigosBens     = array();
+      $aBens            = [];
+      $aCodigosBens     = [];
       $nTotalBens       = 0;
       $lVariosBensNotas = false;
       foreach ($oParam->aBens as $oBemParametro) {
@@ -314,7 +314,7 @@ try {
           $aBens[0] = $calculoBem->getBem();
       }
 
-      $aPlacas         = array();
+      $aPlacas         = [];
       $iParametroPlaca = BensParametroPlaca::getCodigoParametro();
       foreach ($aBens as $oBem) {
 

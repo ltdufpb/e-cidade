@@ -78,7 +78,7 @@ $lFlagInstit    = false;
 for ($iInd = 0; $iInd < $iNumRowsDbConfig; $iInd++) {
   
   $oMunicipio = db_utils::fieldsMemory($rsSqlDbConfig, $iInd);  
-  if (strlen(trim($oMunicipio->nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $oMunicipio->nomeinstabrev)) > 0) {
 
     $sNomeInstAbrev .= $sVirgula.$oMunicipio->nomeinstabrev;
     $lFlagInstit     = true;
@@ -224,7 +224,7 @@ function imprimeInfoProxPagina($oPdf, $iAlturalinha, $lImprime) {
     } else {
       
       $oPdf->Cell(280, ($iAlturalinha*3), 'Continua na página '.($oPdf->PageNo()+1)."/{nb}", 'T', 1, "R", 0);
-      imprimirCabecalho($oPdf, $iAlturalinha, false,'');
+      imprimirCabecalho($oPdf, $iAlturalinha, false);
     }
   }
 }

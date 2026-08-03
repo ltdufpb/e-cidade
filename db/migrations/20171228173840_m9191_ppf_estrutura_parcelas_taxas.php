@@ -25,99 +25,99 @@ class M9191PpfEstruturaParcelasTaxas extends PostgresMigration
     /**
      * Cria tabelas
      */
-    $aColumns = array('codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform');
-    $aValues  = array(
-      array(1010251, 'termotaxaparc', 'Guarda o vinculo da parcela com o taxa que sera aplicada.', 'ar29', '2017-12-28', 'Vinculo de parcela com taxas e custas', 0, 'f', 'f', 'f', 'f'),
-    );
-    $table    = $this->table('db_sysarquivo', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform'];
+    $aValues  = [
+      [1010251, 'termotaxaparc', 'Guarda o vinculo da parcela com o taxa que sera aplicada.', 'ar29', '2017-12-28', 'Vinculo de parcela com taxas e custas', 0, 'f', 'f', 'f', 'f'],
+    ];
+    $table    = $this->table('db_sysarquivo', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // vincula modulo
-    $aColumns = array('codmod', 'codarq' );
-    $aValues  = array(
+    $aColumns = ['codmod', 'codarq' ];
+    $aValues  = [
       /**
       *lista de campos
       */
-      array(54,1010251)
-    );
-    $table    = $this->table('db_sysarqmod', array('schema' => 'configuracoes'));
+      [54,1010251]
+    ];
+    $table    = $this->table('db_sysarqmod', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     /**
      * Cria campos
      */
-    $aColumns = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-    $aValues  = array(
-        array(1009592,'ar29_sequencial','int4','Sequencial','0', 'Sequencial',10,'f','f','f',1,'text','Sequencial'),
-        array(1009593,'ar29_numpar','int4','Parcela','0', 'Parcela',4,'f','f','f',1,'text','Parcela'),
-        array(1009594,'ar29_taxa','int4','Taxa','0', 'Taxa',10,'f','f','f',1,'text','Taxa'),
-        array(1009595,'ar29_instit','int4','Instituição','0', 'Instituição',10,'f','f','f',1,'text','Instituição'),
-        array(1009597,'ar36_aplicajurosmulta','bool','Se a taxa aplica juros e multa','f', 'Aplica Juros e Multa',1,'f','f','f',5,'text','Aplica Juros e Multa')
-    );
-    $table    = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+    $aColumns = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+    $aValues  = [
+        [1009592,'ar29_sequencial','int4','Sequencial','0', 'Sequencial',10,'f','f','f',1,'text','Sequencial'],
+        [1009593,'ar29_numpar','int4','Parcela','0', 'Parcela',4,'f','f','f',1,'text','Parcela'],
+        [1009594,'ar29_taxa','int4','Taxa','0', 'Taxa',10,'f','f','f',1,'text','Taxa'],
+        [1009595,'ar29_instit','int4','Instituição','0', 'Instituição',10,'f','f','f',1,'text','Instituição'],
+        [1009597,'ar36_aplicajurosmulta','bool','Se a taxa aplica juros e multa','f', 'Aplica Juros e Multa',1,'f','f','f',5,'text','Aplica Juros e Multa']
+    ];
+    $table    = $this->table('db_syscampo', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     /**
      * db_sysarqcamp
      */
-    $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-    $aValues  = array(
-        array(1010251,1009592,1,0),
-        array(1010251,1009593,2,0),
-        array(1010251,1009594,3,0),
-        array(1010251,1009595,4,0),
-        array(3221, 1009597, 11,0)
-    );
-    $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+    $aValues  = [
+        [1010251,1009592,1,0],
+        [1010251,1009593,2,0],
+        [1010251,1009594,3,0],
+        [1010251,1009595,4,0],
+        [3221, 1009597, 11,0]
+    ];
+    $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
 
     // inclui a sequence
-    $aColumns = array('codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq');
-    $aValues  = array(
-      array(1000711, 'termotaxaparc_ar29_sequencial_seq', 1, 1, 9223372036854775807, 1, 1),
-    );
-    $table    = $this->table('db_syssequencia', array('schema' => 'configuracoes'));
+    $aColumns = ['codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq'];
+    $aValues  = [
+      [1000711, 'termotaxaparc_ar29_sequencial_seq', 1, 1, 9223372036854775807, 1, 1],
+    ];
+    $table    = $this->table('db_syssequencia', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui a chave primaria
-    $aColumns = array('codarq','codcam','sequen','camiden');
-    $aValues  = array(
-      array(1010251,1009592,1,1009592),
-    );
-    $table    = $this->table('db_sysprikey', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq','codcam','sequen','camiden'];
+    $aValues  = [
+      [1010251,1009592,1,1009592],
+    ];
+    $table    = $this->table('db_sysprikey', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui a chave estrangeira
-    $aColumns = array('codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel');
-    $aValues  = array(
-      array(1010251,1009594,1,3221,0)
-    );
-    $table    = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel'];
+    $aValues  = [
+      [1010251,1009594,1,3221,0]
+    ];
+    $table    = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui os indices
-    $aColumns = array('codind', 'nomeind', 'codarq', 'campounico');
-    $aValues  = array(
-      array(1008246,'termotaxaparc_taxa_in',1010251,'0')
-    );
-    $table    = $this->table('db_sysindices', array('schema' => 'configuracoes'));
+    $aColumns = ['codind', 'nomeind', 'codarq', 'campounico'];
+    $aValues  = [
+      [1008246,'termotaxaparc_taxa_in',1010251,'0']
+    ];
+    $table    = $this->table('db_sysindices', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // vincula os indices
-    $aColumns = array('codind', 'codcam', 'sequen');
-    $aValues  = array(
-      array(1008246,1009594,1)
-    );
-    $table    = $this->table('db_syscadind', array('schema' => 'configuracoes'));
+    $aColumns = ['codind', 'codcam', 'sequen'];
+    $aValues  = [
+      [1008246,1009594,1]
+    ];
+    $table    = $this->table('db_syscadind', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 

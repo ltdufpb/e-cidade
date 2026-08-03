@@ -56,7 +56,7 @@ try {
                 throw new \Exception('Erro ao buscar dados de produtor rural');
             }
 
-            $oRetorno->produtorrural = (pg_numrows($rs) > 0) ? 't' : 'f';
+            $oRetorno->produtorrural = (pg_num_rows($rs) > 0) ? 't' : 'f';
             break;
 
         case 'getLabels':

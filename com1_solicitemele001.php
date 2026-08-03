@@ -51,8 +51,8 @@ $clsolicitemele = new cl_solicitemele;
 $clsolicitem = new cl_solicitem;
 $clpcmater = new cl_pcmater;
 $clrotulo = new rotulocampo;
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $db_opcao = 22;
 if(isset($chavepesquisa)){
   $db_opcao = 2;

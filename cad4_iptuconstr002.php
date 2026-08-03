@@ -34,8 +34,8 @@ include(modification("classes/db_iptubase_classe.php"));
 include(modification("classes/db_iptuconstr_classe.php"));
 include(modification("classes/db_carconstr_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $db_botao=1;
 $db_opcaoid=1;
@@ -98,7 +98,7 @@ if(isset($j39_idcons)&&$j39_idcons=="nova"){
    }      
    
    $cliptuconstr->incluir($j39_matric,$j39_idcons);
-   $matriz= split("X",$caracteristica);
+   $matriz= preg_split("#X#m",(string) $caracteristica);
    for($i=0;$i<sizeof($matriz);$i++){
      $j48_caract = $matriz[$i];
      if($j48_caract!=""){
@@ -118,7 +118,7 @@ if(isset($j39_idcons)&&$j39_idcons=="nova"){
   $clcarconstr->j48_idcons=$j39_idcons;
   $clcarconstr->excluir();
   $cliptuconstr->alterar($j39_matric,$j39_idcons);
-  $matriz= split("X",$caracteristica);
+  $matriz= preg_split("#X#m",(string) $caracteristica);
   for($i=0;$i<sizeof($matriz);$i++){
     $j48_caract = $matriz[$i];
     if($j48_caract!=""){
@@ -397,9 +397,9 @@ db_input('j39_idaument',6,$Ij39_idaument,true,'text',$db_opcao,"")
           <td> 
 <?php 
 if(isset($num) && $num  > 0){
-  $x = array("f"=>"Construção Secundária","t"=>"Construção Principal");
+  $x = ["f"=>"Construção Secundária","t"=>"Construção Principal"];
 }else{
-  $x = array("t"=>"Construção Principal","f"=>"Construção Secundária");
+  $x = ["t"=>"Construção Principal","f"=>"Construção Secundária"];
 }  
 
 db_select('j39_idprinc',$x,true,$db_opcao,"");

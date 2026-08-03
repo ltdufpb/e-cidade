@@ -21,10 +21,10 @@ try {
 
     case "getDados":
 
-      $oDados = (object) array(
-        'cargo' => array(),
-        'funcao' => array(),
-      );
+      $oDados = (object) [
+        'cargo' => [],
+        'funcao' => [],
+      ];
       $clcargorhrubricas = new cl_cargorhrubricas();
       $clfuncaorhrubricas = new cl_funcaorhrubricas();
 
@@ -45,19 +45,19 @@ try {
 
           if (!isset($oDados->funcao[$oFuncaoRubrica->funcao_codigo])) {
 
-            $oDados->funcao[$oFuncaoRubrica->funcao_codigo] = array(
+            $oDados->funcao[$oFuncaoRubrica->funcao_codigo] = [
               'codigo' => $oFuncaoRubrica->funcao_codigo,
               'descricao' => $oFuncaoRubrica->funcao_descricao,
-              'rubricas' => array()
-            );
+              'rubricas' => []
+            ];
           }
 
-          $oDados->funcao[$oFuncaoRubrica->funcao_codigo]['rubricas'][$oFuncaoRubrica->rubrica_codigo] = array(
+          $oDados->funcao[$oFuncaoRubrica->funcao_codigo]['rubricas'][$oFuncaoRubrica->rubrica_codigo] = [
             'codigo' => $oFuncaoRubrica->rubrica_codigo,
             'descricao' => $oFuncaoRubrica->rubrica_descricao,
             'quantidade' => $oFuncaoRubrica->rubrica_quantidade,
             'valor' => $oFuncaoRubrica->rubrica_valor,
-          );
+          ];
         }
       }
 
@@ -78,19 +78,19 @@ try {
 
           if (!isset($oDados->cargo[$oCargoRubrica->cargo_codigo])) {
 
-            $oDados->cargo[$oCargoRubrica->cargo_codigo] = array(
+            $oDados->cargo[$oCargoRubrica->cargo_codigo] = [
               'codigo' => $oCargoRubrica->cargo_codigo,
               'descricao' => $oCargoRubrica->cargo_descricao,
-              'rubricas' => array()
-            );
+              'rubricas' => []
+            ];
           }
 
-          $oDados->cargo[$oCargoRubrica->cargo_codigo]['rubricas'][$oCargoRubrica->rubrica_codigo] = array(
+          $oDados->cargo[$oCargoRubrica->cargo_codigo]['rubricas'][$oCargoRubrica->rubrica_codigo] = [
             'codigo' => $oCargoRubrica->rubrica_codigo,
             'descricao' => $oCargoRubrica->rubrica_descricao,
             'quantidade' => $oCargoRubrica->rubrica_quantidade,
             'valor' => $oCargoRubrica->rubrica_valor,
-          );
+          ];
         }
       }
 

@@ -8,57 +8,57 @@ final class Banco extends Layout
 {
     public function __construct()
     {
-        $this->fields = array(
-            'TOTALBOMPAGADOR'  => array(
+        $this->fields = [
+            'TOTALBOMPAGADOR'  => [
                  'name'        => 'VALTOTALBOMPAGADOR'
                 ,'description' => 'VALOR TOTAL DO BOM PAGADOR'
                 ,'size'        => 18
-            ),
-            'AGENCIA'          => array(
+            ],
+            'AGENCIA'          => [
                  'name'        => 'AGENCIA'
                 ,'description' => 'AGENCIA DO CONVENIO'
                 ,'size'        => 5
-            ),
-            'DIGITOAGENCIA'    => array(
+            ],
+            'DIGITOAGENCIA'    => [
                  'name'        => 'DG_AGENCIA'
                 ,'description' => 'DIGITO DA AGENCIA'
                 ,'size'        => 1
-            ),
-            'OPERACAO'         => array(
+            ],
+            'OPERACAO'         => [
                  'name'        => 'OPERACAO'
                 ,'description' => 'OPERACAO DO CONVENIO'
                 ,'size'        => 3
-            ),
-            'CEDENTE'          => array(
+            ],
+            'CEDENTE'          => [
                  'name'        => 'CEDENTE'
                 ,'description' => 'CEDENTE DO CONVENIO'
                 ,'size'        => 6
-            ),
-            'DIGITOCEDENTE'    => array(
+            ],
+            'DIGITOCEDENTE'    => [
                  'name'        => 'DG_CEDENTE'
                 ,'description' => 'DIGITO DO CEDENTE'
                 ,'size'        => 1
-            ),
-            'CARTEIRA'         => array(
+            ],
+            'CARTEIRA'         => [
                  'name'        => 'CARTEIRA'
                 ,'description' => 'CARTEIRA DO CONVENIO'
                 ,'size'        => 6
-            ),
-            'CONVENIO'         => array(
+            ],
+            'CONVENIO'         => [
                  'name'        => 'CONVENIO'
                 ,'description' => 'CONVENIO'
                 ,'size'        => 4
-            ),
-            'DATAPROCESSAMENTO'=> array(
+            ],
+            'DATAPROCESSAMENTO'=> [
                  'name'        => 'DATA_PROCESSAMENTO'
                 ,'description' => 'DATA DO PROCESSAMENTO'
                 ,'size'        => 10
-            ),
-            'DESCRICAOCONVENIO'=> array(
+            ],
+            'DESCRICAOCONVENIO'=> [
                  'name'        => 'DESCRICAO_CONVENIO'
                 ,'description' => 'DESCRICAO DO CONVENIO'
                 ,'size'        => 50
-            ),
-        );
+            ],
+        ];
     }
 }

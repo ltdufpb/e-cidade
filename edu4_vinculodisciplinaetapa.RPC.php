@@ -57,7 +57,7 @@ try {
                 $sFiltraEscola = "";
             }
 
-            $aWhere = array();
+            $aWhere = [];
             if (!empty($sFiltraEscola)) {
                 $aWhere[] = $sFiltraEscola;
             }
@@ -93,15 +93,15 @@ try {
             }
 
             $iLinhas = pg_num_rows($rsSeries);
-            $oRetorno->aEtapas = array();
+            $oRetorno->aEtapas = [];
 
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oDado                = db_utils::fieldsMemory($rsSeries, $i);
                 $oSerie               = new stdClass();
                 $oSerie->iCodigo      = $oDado->ed11_i_codigo;
                 $oSerie->iEnsino      = $oDado->ed11_i_ensino;
-                $oSerie->sDescricao   = urlencode($oDado->ed11_c_descr);
-                $oSerie->sAbreviatura = urlencode($oDado->ed11_c_abrev);
+                $oSerie->sDescricao   = urlencode((string) $oDado->ed11_c_descr);
+                $oSerie->sAbreviatura = urlencode((string) $oDado->ed11_c_abrev);
                 $oSerie->iOrdem       = $oDado->ed11_i_sequencia;
                 $oSerie->iCodigoCenso = $oDado->ed11_i_codcenso;
 
@@ -112,13 +112,13 @@ try {
         case 'getEtapasTurma':
             $oTurma = TurmaRepository::getTurmaByCodigo($oParam->iTurma);
 
-            $oRetorno->aEtapas = array();
+            $oRetorno->aEtapas = [];
             foreach ($oTurma->getEtapas() as $oEtapaTurma) {
                 $oSerie               = new stdClass();
                 $oSerie->iCodigo      = $oEtapaTurma->getEtapa()->getCodigo();
                 $oSerie->iEnsino      = $oEtapaTurma->getEtapa()->getEnsino()->getCodigo();
-                $oSerie->sDescricao   = urlencode($oEtapaTurma->getEtapa()->getNome());
-                $oSerie->sAbreviatura = urlencode($oEtapaTurma->getEtapa()->getNomeAbreviado());
+                $oSerie->sDescricao   = urlencode((string) $oEtapaTurma->getEtapa()->getNome());
+                $oSerie->sAbreviatura = urlencode((string) $oEtapaTurma->getEtapa()->getNomeAbreviado());
                 $oSerie->iOrdem       = $oEtapaTurma->getEtapa()->getOrdem();
                 $oSerie->iCodigoCenso = $oEtapaTurma->getEtapa()->getEtapaCenso();
                 $oRetorno->aEtapas[]  = $oSerie;
@@ -147,7 +147,7 @@ try {
             $oRetorno->lTemDisciplinaGlobalizada = false;
 
             $iLinhas      = pg_num_rows($rsBaseMps);
-            $aDisciplinas = array();
+            $aDisciplinas = [];
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oDados      = db_utils::fieldsMemory($rsBaseMps, $i);
                 $oDisciplina = new stdClass();
@@ -160,7 +160,7 @@ try {
 
                 $oDisciplina->iCodigo = $oDados->ed34_i_codigo;
                 $oDisciplina->iDisicplina = $oDados->ed34_i_disciplina;
-                $oDisciplina->sDisciplina = urlencode($oDados->ed232_c_descr);
+                $oDisciplina->sDisciplina = urlencode((string) $oDados->ed232_c_descr);
                 $oDisciplina->iQtdPeriodo = $oDados->ed34_i_qtdperiodo;
                 $oDisciplina->lObrigatoria = $oDados->ed34_c_condicao == 'OB';
                 $oDisciplina->iOrdem = $oDados->ed34_i_ordenacao;
@@ -169,9 +169,9 @@ try {
                 $oDisciplina->lCaracterReprobatorio = $oDados->ed34_caracterreprobatorio   == 't';
                 $oDisciplina->lBaseComum = $oDados->ed34_basecomum              == 't';
                 $oDisciplina->codigoAreaConhecimento = $oDados->ed34_areaconhecimento;
-                $oDisciplina->descricaoAreaConhecimento = urlencode($oDados->ed293_descr);
-                $tipoBase['ed182_descricao'] = urlencode($tipoBase['ed182_descricao']);
-                $oDisciplina->iTipoBase = isset($tipoBase) ? $tipoBase : ['ed182_descricao' => urlencode('Não Cadastrado')];
+                $oDisciplina->descricaoAreaConhecimento = urlencode((string) $oDados->ed293_descr);
+                $tipoBase['ed182_descricao'] = urlencode((string) $tipoBase['ed182_descricao']);
+                $oDisciplina->iTipoBase = $tipoBase ?? ['ed182_descricao' => urlencode('Não Cadastrado')];
                 $oDisciplina->lEncerrada = false; //Variável para manter compatibilidade com os dados da regência
                 $oDisciplina->sTipoControleFrequencia = 'A';   //Variável para manter compatibilidade com os dados da regência
                 $aDisciplinas[] = $oDisciplina;
@@ -189,7 +189,7 @@ try {
             $oTurma = TurmaRepository::getTurmaByCodigo($oParam->iTurma);
             $oEtapa = EtapaRepository::getEtapaByCodigo($oParam->iEtapa);
 
-            $oRetorno->aDisciplinas = array();
+            $oRetorno->aDisciplinas = [];
 
             foreach ($oTurma->getDisciplinasPorEtapa($oEtapa) as $oRegencia)
             {
@@ -199,12 +199,12 @@ try {
                     $tipoBase = pg_fetch_assoc($resource);
                 }
 
-                $aTipoFrequenciaGlobal = array('F', 'FA');
+                $aTipoFrequenciaGlobal = ['F', 'FA'];
 
                 $oDisciplina = new stdClass();
                 $oDisciplina->iCodigo = $oRegencia->getCodigo();
                 $oDisciplina->iDisicplina = $oRegencia->getDisciplina()->getCodigoDisciplina();
-                $oDisciplina->sDisciplina = urlencode($oRegencia->getDisciplina()->getNomeDisciplina());
+                $oDisciplina->sDisciplina = urlencode((string) $oRegencia->getDisciplina()->getNomeDisciplina());
                 $oDisciplina->iQtdPeriodo = $oRegencia->getHorasAula();
                 $oDisciplina->lObrigatoria = $oRegencia->isObrigatoria();
                 $oDisciplina->iOrdem = $oRegencia->getOrdem();
@@ -215,15 +215,15 @@ try {
                 $oDisciplina->lEncerrada = $oRegencia->isEncerrada() || $oRegencia->parcialmenteEncerrada();
                 $oDisciplina->sTipoControleFrequencia = $oRegencia->getFrequenciaGlobal();
                 $oDisciplina->lTemDisciplinaGlobalizada = $oDisciplina->lGlobalizada;
-                $oDisciplina->sProcedimentoAvalicao = urlencode($oRegencia->getProcedimentoAvaliacao()->getDescricao());
-                $tipoBase['ed182_descricao'] = urlencode($tipoBase['ed182_descricao']);
-                $oDisciplina->iTipoBase = isset($tipoBase) ? $tipoBase : ['ed182_descricao' => urlencode('Não Cadastrado')];
+                $oDisciplina->sProcedimentoAvalicao = urlencode((string) $oRegencia->getProcedimentoAvaliacao()->getDescricao());
+                $tipoBase['ed182_descricao'] = urlencode((string) $tipoBase['ed182_descricao']);
+                $oDisciplina->iTipoBase = $tipoBase ?? ['ed182_descricao' => urlencode('Não Cadastrado')];
                 $areaConhecimento = $oRegencia->getAreaConhecimento();
 
                 $oDisciplina->codigoAreaConhecimento = '';
                 $oDisciplina->descricaoAreaConhecimento = '';
                 if (!is_null($areaConhecimento)) {
-                    $oDisciplina->descricaoAreaConhecimento = urlencode($areaConhecimento->getDescricao());
+                    $oDisciplina->descricaoAreaConhecimento = urlencode((string) $areaConhecimento->getDescricao());
                     $oDisciplina->codigoAreaConhecimento =  $areaConhecimento->getCodigo();
                 }
                 $oRetorno->aDisciplinas[] = $oDisciplina;
@@ -364,8 +364,8 @@ try {
            * Armazena os dados das disciplinas inclusas para base curricular
            */
             $iLinhas      = pg_num_rows($rsBaseMps);
-            $aDisciplinasBase   = array();
-            $aCodigoDisciplinas = array();
+            $aDisciplinasBase   = [];
+            $aCodigoDisciplinas = [];
             for ($i = 0; $i < $iLinhas; $i++) {
                 $aDisciplinasBase[]   = db_utils::fieldsMemory($rsBaseMps, $i);
                 $aCodigoDisciplinas[] = db_utils::fieldsMemory($rsBaseMps, $i)->ed34_i_disciplina;

@@ -34,8 +34,8 @@ include(modification("classes/db_proced_classe.php"));
 require_once(modification('libs/db_utils.php'));
 require_once(modification("libs/db_libpostgres.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $clpostgresqlutils = new PostgreSQLUtils;
 $clproced          = new cl_proced;
@@ -207,7 +207,7 @@ function js_analitico_sintetico(){
                $cor = '#E4F471';
              }                   
 
-             $exercicio = pg_result($rs,$x,"exerc");
+             $exercicio = pg_fetch_result($rs,$x,"exerc");
              if ($x % 3 == 0 && $x != 0) {
                echo "</tr><tr style='cursor: hand; height: 20px' bgcolor=$cor>";
              }
@@ -234,7 +234,7 @@ function js_analitico_sintetico(){
             </td>
             <td>
               <?php 
-                $arr = array("0"=>"Não","1"=>"Sim");
+                $arr = ["0"=>"Não","1"=>"Sim"];
                 db_select('considera_debitos',$arr,true,$db_opcao,"");
               ?>&nbsp;
             </td>
@@ -245,7 +245,7 @@ function js_analitico_sintetico(){
             </td>
             <td>
               <?php 
-                $arr = array("0"=>"Sintético","1"=>"Analítico");
+                $arr = ["0"=>"Sintético","1"=>"Analítico"];
                 db_select('analitico',$arr,true,$db_opcao,"onclick='js_analitico_sintetico()'");
               ?>
             </td>
@@ -271,7 +271,7 @@ function js_analitico_sintetico(){
             </td>
             <td>
               <?php 
-                $arr = array("numcgm"=>"Nome","matric"=>"Matrícula","inscr"=>"Inscrição");
+                $arr = ["numcgm"=>"Nome","matric"=>"Matrícula","inscr"=>"Inscrição"];
                 db_select('tipo',$arr,true,$db_opcao,"");
               ?>
             </td>
@@ -287,7 +287,7 @@ function js_analitico_sintetico(){
             </td>
             <td>
               <?php 
-                $arr1 = array("N"=>"Não","S"=>"Sim");
+                $arr1 = ["N"=>"Não","S"=>"Sim"];
                 db_select('agexerc',$arr1,true,$db_opcao,"");
               ?>
             </td>
@@ -298,7 +298,7 @@ function js_analitico_sintetico(){
             </td>
             <td>
               <?php 
-                $arr2 = array("N"=>"Não","S"=>"Sim");
+                $arr2 = ["N"=>"Não","S"=>"Sim"];
                 db_select('agproced',$arr2,true,$db_opcao,"");
               ?>
             </td>
@@ -351,7 +351,7 @@ function js_analitico_sintetico(){
         </td>
         <td>
           <?php 
-            $x = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
+            $x = ["S"=>"Somente Selecionados","N"=>"Menos os Selecionados"];
             db_select('sele',$x,true,$db_opcao);
           ?>
         </td>
@@ -434,7 +434,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 function js_pesquisanotitipo(mostra){

@@ -221,7 +221,7 @@ function ReceitaSaldo(
 //die($sql);
     db_query($sql);
     $result = db_query("select * from work_receita");
-    $receitas = array();
+    $receitas = [];
     db_utils::makeCollectionFromRecord($result, function ($dados) use (&$receitas) {
 
         $estrutural = new \ECidade\Financeiro\Contabilidade\PlanoDeContas\EstruturalReceita($dados->o57_fonte);
@@ -313,24 +313,24 @@ function ReceitaSaldo(
 
     $rsTabela = db_query($sqlTabelaWorkReceita);
     $insert = "insert into  work_receita values ";
-    $listaInserts = array();
+    $listaInserts = [];
 
     if (count($receitas) > 0) {
         foreach ($receitas as $receita) {
-            $campos = array(
+            $campos = [
                 $receita->estrutural,
                 $receita->nivel,
-                substr($receita->estrutural, 0, 1),
-                substr($receita->estrutural, 1, 1),
-                substr($receita->estrutural, 2, 1),
-                substr($receita->estrutural, 3, 1),
-                substr($receita->estrutural, 4, 1),
-                substr($receita->estrutural, 5, 2),
-                substr($receita->estrutural, 7, 1),
-                substr($receita->estrutural, 8, 1),
-                substr($receita->estrutural, 9, 2),
-                substr($receita->estrutural, 11, 2),
-                substr($receita->estrutural, 13, 2),
+                substr((string) $receita->estrutural, 0, 1),
+                substr((string) $receita->estrutural, 1, 1),
+                substr((string) $receita->estrutural, 2, 1),
+                substr((string) $receita->estrutural, 3, 1),
+                substr((string) $receita->estrutural, 4, 1),
+                substr((string) $receita->estrutural, 5, 2),
+                substr((string) $receita->estrutural, 7, 1),
+                substr((string) $receita->estrutural, 8, 1),
+                substr((string) $receita->estrutural, 9, 2),
+                substr((string) $receita->estrutural, 11, 2),
+                substr((string) $receita->estrutural, 13, 2),
                 $receita->codrec,
                 $receita->concarpeculiar,
                 $receita->recurso,
@@ -342,7 +342,7 @@ function ReceitaSaldo(
                 $receita->saldo_arrecadado,
                 $receita->saldo_a_arrecadar,
                 $receita->saldo_arrecadado_acumulado
-            );
+            ];
             $listaInserts[] = " ( " . implode(",", $campos) . " ) ";
         }
 
@@ -350,7 +350,7 @@ function ReceitaSaldo(
         db_query($insert);
     }
 
-    $where = array();
+    $where = [];
     switch ($tipo_nivel) {
         case 1:
             $where[] = "nivel <= {$nivel}";

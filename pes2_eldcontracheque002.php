@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $clrotulo = new rotulocampo;
 $clrharqbanco->rotulo->label();
@@ -60,7 +60,7 @@ if(isset($emite)){
 
 
 if (isset($emite) || isset($emite)){
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
 
   $folha = $arquivo;
   $ano   = $DBtxt23;
@@ -202,7 +202,7 @@ if (isset($emite) || isset($emite)){
   $quant_destinatarios = 0;
 
   $registroaux = 0;
-  for($x = 0;$x < pg_numrows($result);$x++){
+  for($x = 0;$x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
 
 
@@ -223,8 +223,8 @@ if (isset($emite) || isset($emite)){
       $imp .= db_formatar($contacorrente,'s','0',11,'e',0)      ; // 2.05 - n/11 - conta bb destinatario
 //      ?? str(folha->linhas + 6,2,0,'0')       && 2.06 - n/2  - qtd linhas do texto
       $imp .= db_formatar($linhas + 10,'s','0',2,'e',0)          ; // 2.06 - n/2  - qtd linhas do texto
-      $imp .= db_formatar(trim($nome),'s',' ',40,'d',0)          ; // 2.07 - a/40 - nome destinatario
-      $imp .= db_formatar(trim($cpf),'s',' ',11,'e',0)           ;  // 2.08 - n/11 - cpf destinatario
+      $imp .= db_formatar(trim((string) $nome),'s',' ',40,'d',0)          ; // 2.07 - a/40 - nome destinatario
+      $imp .= db_formatar(trim((string) $cpf),'s',' ',11,'e',0)           ;  // 2.08 - n/11 - cpf destinatario
       $imp .= str_repeat(" ", 9)                                 ;        // 2.09 - a/9  - brancos
 
       fputs($arquivo,$imp."\r\n");
@@ -298,7 +298,7 @@ if (isset($emite) || isset($emite)){
 /////ate aqui novo
 
       //
-      $texto = db_formatar( 'Folha de '.strtoupper($xarquivo).str_repeat(' ',4).'Periodo:'.db_formatar($mes,'s','0',2,'e',0).'/'.$ano,'s',' ',48,'d',0);
+      $texto = db_formatar( 'Folha de '.strtoupper((string) $xarquivo).str_repeat(' ',4).'Periodo:'.db_formatar($mes,'s','0',2,'e',0).'/'.$ano,'s',' ',48,'d',0);
       //1234 1234567890123456789012 999.99 999999.99  p '
 
       $sequencia++;     
@@ -327,7 +327,7 @@ if (isset($emite) || isset($emite)){
   }
 
 
-  $texto = $rubrica.' '.db_formatar(substr($descricao,0,22),'s',' ',22,'d',0).' '.db_formatar(trim(str_replace('.','',db_formatar($quantidade,'f'))),'s',' ',6,'e',0).' '.db_formatar(trim(str_replace('.','',db_formatar($valor,'f'))),'s',' ',9,'e',0);
+  $texto = $rubrica.' '.db_formatar(substr((string) $descricao,0,22),'s',' ',22,'d',0).' '.db_formatar(trim(str_replace('.','',db_formatar($quantidade,'f'))),'s',' ',6,'e',0).' '.db_formatar(trim(str_replace('.','',db_formatar($valor,'f'))),'s',' ',9,'e',0);
 
   if ($pd == 1){                     // PROVENTOS
      $prov  += $valor;
@@ -354,8 +354,8 @@ if (isset($emite) || isset($emite)){
 
   // se acabaram as rubricas deste funcionario precisa imprimir o rodape
 
-  echo "<br> registroaux --> $registroaux    pg_result --> ".pg_result($result,$x+1,'registro');
-  if ($registroaux != pg_result($result,$x+1,'registro')){
+  echo "<br> registroaux --> $registroaux    pg_result --> ".pg_fetch_result($result,$x+1,'registro');
+  if ($registroaux != pg_fetch_result($result,$x+1,'registro')){
 
      // imprime total de proventos 
      //1234 1234567890123456789012 999.99 999999.99  p '
@@ -607,7 +607,7 @@ function js_emite(){
     <td><b>Arquivo:</b</td>
     <td>
      <?php 
-       $x = array("r14"=>"Salário","r48"=>"Complementar","r35"=>"13o. Salário","r22"=>"Adiantamento");
+       $x = ["r14"=>"Salário","r48"=>"Complementar","r35"=>"13o. Salário","r22"=>"Adiantamento"];
        db_select('arquivo',$x,true,4,"onchange='document.form1.submit();'");
      ?>
     </td>

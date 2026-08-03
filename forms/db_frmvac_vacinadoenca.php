@@ -84,7 +84,7 @@ $clrotulo->label("sd70_c_nome");
 <br>
 
 <?php 
-  $chavepri                                = array("vc10_i_codigo"=>@$vc10_i_codigo);
+  $chavepri                                = ["vc10_i_codigo"=>@$vc10_i_codigo];
   $cliframe_alterar_excluir->chavepri      = $chavepri;
   if (isset($vc10_i_vacina) && $vc10_i_vacina != "") {
     $cliframe_alterar_excluir->sql         = $clvac_vacinadoenca->sql_query(null,
@@ -171,7 +171,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_vac_vacinadoenca.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

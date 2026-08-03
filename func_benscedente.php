@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benscedente_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbenscedente = new cl_benscedente;
 $clbenscedente->rotulo->label("t09_sequencial");
 $clbenscedente->rotulo->label("t09_benscadcedente");
@@ -98,9 +98,9 @@ $clbenscedente->rotulo->label("t09_benscadcedente");
         }else{
            $sql = $clbenscedente->sql_query("",$campos,"t09_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t09_benscadcedente)){
-          $repassa = array("chave_t09_sequencial"=>$chave_t09_sequencial,"chave_t09_benscadcedente"=>$chave_t09_benscadcedente);
+          $repassa = ["chave_t09_sequencial"=>$chave_t09_sequencial,"chave_t09_benscadcedente"=>$chave_t09_benscadcedente];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

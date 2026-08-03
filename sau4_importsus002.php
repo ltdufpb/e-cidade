@@ -37,7 +37,7 @@ require_once(modification("libs/db_utils.php"));
 *                           1 = chamada via Rotina importação cartão SUS Dbportal
 *                           2 = Chamada via REquisição Ajax no cadastro cartão sus
 */
-function atualiza_cadsus($termometro = 0, $conn, $cod_cgs = null ,$DB_SERVIDOR ,$DB_BASE ,$DB_PORTA ,$DB_USUARIO ,$DB_SENHA) {
+function atualiza_cadsus($termometro = 0, $conn = null, $cod_cgs = null ,$DB_SERVIDOR = null ,$DB_BASE = null ,$DB_PORTA = null ,$DB_USUARIO = null ,$DB_SENHA = null) {
 
   $user               = db_getsession ( "DB_id_usuario" );
 
@@ -68,7 +68,7 @@ function atualiza_cadsus($termometro = 0, $conn, $cod_cgs = null ,$DB_SERVIDOR ,
       $ip_con = $_SERVER['REMOTE_ADDR'];
     }
 
-    $obj1->s103_c_sgdb=stripslashes($obj1->s103_c_sgdb);
+    $obj1->s103_c_sgdb=stripslashes((string) $obj1->s103_c_sgdb);
     if($obj1->s103_i_tipodb == 1){
        $con_cadsus = ibase_connect ( $ip_con. ":" . $obj1->s103_c_sgdb, $obj1->s103_c_usuario, $obj1->s103_c_senha );
     }else{
@@ -98,7 +98,7 @@ function atualiza_cadsus($termometro = 0, $conn, $cod_cgs = null ,$DB_SERVIDOR ,
         $row    = ibase_fetch_object ( $result_versao );
         $versao = $row->VERSAO;
       }else{
-        $versao = pg_result($result_versao,0,0);
+        $versao = pg_fetch_result($result_versao,0,0);
       }
 
       $sWhere = '';
@@ -338,7 +338,7 @@ function atualiza_cadsus($termometro = 0, $conn, $cod_cgs = null ,$DB_SERVIDOR ,
         if ( ($row->provisorio != "") && ($row->provisorio != null) ) {
 
           $sql1     = "select * from cgs_cartaosus where s115_c_cartaosus = '" . $row->provisorio . "' ";
-          $result01 = db_query ($conn, $sql1 ) or die ( "Erro 01 - " . pg_errormessage () . " sql -> [$sql1] " );;
+          $result01 = db_query ($conn, $sql1 ) or die ( "Erro 01 - " . pg_last_error () . " sql -> [$sql1] " );;
         }
 
         /**
@@ -357,7 +357,7 @@ function atualiza_cadsus($termometro = 0, $conn, $cod_cgs = null ,$DB_SERVIDOR ,
             if ( ($row->definitivo != '') && ($row->definitivo != null) ) {
 
               $sql2     = "select * from cgs_cartaosus where s115_c_cartaosus = '$row->definitivo' ";
-              $result02 = db_query ($conn, $sql2 ) or die ( "Erro 02 - " . pg_errormessage () . " sql -> [$sql2] " );;
+              $result02 = db_query ($conn, $sql2 ) or die ( "Erro 02 - " . pg_last_error () . " sql -> [$sql2] " );;
             }
 
             /**
@@ -424,7 +424,7 @@ function atualiza_cadsus($termometro = 0, $conn, $cod_cgs = null ,$DB_SERVIDOR ,
            if ( ($row->definitivo != "") && ($row->definitivo != null) ) {
 
             $sql03    = "select * from cgs_cartaosus where s115_c_cartaosus='" . $row->definitivo . "' ";
-            $result03 = db_query ($conn, $sql03 ) or die ("Erro 03 - " . pg_errormessage () . " sql -> [$sql03] ");
+            $result03 = db_query ($conn, $sql03 ) or die ("Erro 03 - " . pg_last_error () . " sql -> [$sql03] ");
            }
 
           /**
@@ -463,7 +463,7 @@ function atualiza_cadsus($termometro = 0, $conn, $cod_cgs = null ,$DB_SERVIDOR ,
               $sql4 .= "  from cgs_und                                              ";
               $sql4 .= "       left join cgs_cartaosus on s115_i_cgs = z01_i_cgsund ";
               $sql4 .= " where z01_v_ident = '$row->ident'                          ";
-              $result04 = db_query ($conn, $sql4 ) or die ( "Erro 04 - " . pg_errormessage () . " sql -> [$sql4] " );
+              $result04 = db_query ($conn, $sql4 ) or die ( "Erro 04 - " . pg_last_error () . " sql -> [$sql4] " );
             }
 
             /**
@@ -568,7 +568,7 @@ function atualiza_cadsus($termometro = 0, $conn, $cod_cgs = null ,$DB_SERVIDOR ,
                             from cgs_und
                                  left join cgs_cartaosus on s115_i_cgs = z01_i_cgsund
                            where z01_v_nome like '" . nome40 ( $row->nome ) . "'";
-                  $result06 = db_query ($conn, $sql ) or die ( "Erro 06 - " . pg_errormessage () . " sql -> [$sql] " );
+                  $result06 = db_query ($conn, $sql ) or die ( "Erro 06 - " . pg_last_error () . " sql -> [$sql] " );
                 }
 
                 if ((isset ( $result06 )) && (pg_num_rows ( @$result06 ) > 0)) {
@@ -702,7 +702,7 @@ function atualiza_dados( $arq1, $row, $cgs, $op, $clcgs_und, $clcgs_cartaosus ) 
   }
 
   $clcgs_und->z01_v_ender = nome40( $row->endereco );
-  if ( trim($row->numero) != "S/N" && is_numeric($row->numero) ) {
+  if ( trim((string) $row->numero) != "S/N" && is_numeric($row->numero) ) {
     $clcgs_und->z01_i_numero = $row->numero;
   }
 
@@ -762,7 +762,7 @@ function atualiza_dados( $arq1, $row, $cgs, $op, $clcgs_und, $clcgs_cartaosus ) 
     $inc = false;
     if (($row->provisorio != null) && ($row->provisorio != "") && (($op == 1) || ($op == 3))) {
 
-     $erro = validaCNS($row->provisorio,'P');
+     $erro = validaCNS($row->provisorio);
 
      $clcgs_cartaosus->s115_i_codigo    = "";
      $clcgs_cartaosus->s115_c_cartaosus = $row->provisorio;
@@ -775,7 +775,7 @@ function atualiza_dados( $arq1, $row, $cgs, $op, $clcgs_und, $clcgs_cartaosus ) 
 
     if (($row->definitivo != null) && ($row->definitivo != "") && (($op == 1) || ($op == 2))) {
 
-      $erro = validaCNS($row->definitivo,'D');
+      $erro = validaCNS($row->definitivo);
 
       $clcgs_cartaosus->s115_i_codigo    = "";
       $clcgs_cartaosus->s115_c_cartaosus = $row->definitivo;
@@ -816,7 +816,7 @@ function atualiza_cartao( $arq1, $codigo, $cgs, $cartao, $tipo ) {
   db_inicio_transacao();
   $lErroTransacao = false;
 
-  $erro = validaCNS($cartao,'');
+  $erro = validaCNS($cartao);
 
   $clcgs_cartaosus                   = new cl_cgs_cartaosus ();
   $clcgs_cartaosus->s115_c_cartaosus = $cartao;
@@ -901,7 +901,7 @@ function novo_cgs($arq1, $row, $clcgs_cartaosus, $clcgs, $clcgs_und) {
   $clcgs_und->z01_v_ender = nome40 ( $row->endereco );
 
   $clcgs_und->z01_i_numero = "";
-  if ( trim($row->numero) != "S/N" && is_numeric($row->numero) ) {
+  if ( trim((string) $row->numero) != "S/N" && is_numeric($row->numero) ) {
     $clcgs_und->z01_i_numero = $row->numero;
   }
 
@@ -947,13 +947,13 @@ function novo_cgs($arq1, $row, $clcgs_cartaosus, $clcgs, $clcgs_und) {
 
         $lErroTransacao = true;
         $erro = " Inclusao Novo CGS \n";
-        $log  = "$erro Erro durante inclusao do cgs_und -> " . $row->nome . " \n " . $clcgs_und->erro_sql. " \n ".pg_errormessage();
+        $log  = "$erro Erro durante inclusao do cgs_und -> " . $row->nome . " \n " . $clcgs_und->erro_sql. " \n ".pg_last_error();
         log_erro ( $log, $arq1 );
      }
 
      if (($row->definitivo != null) && ($row->definitivo != "")) {
 
-        $erro = validaCNS($row->definitivo,'D');
+        $erro = validaCNS($row->definitivo);
         $clcgs_cartaosus->s115_i_codigo    = "";
         $clcgs_cartaosus->s115_c_cartaosus = $row->definitivo;
         $clcgs_cartaosus->s115_i_cgs       = $clcgs->z01_i_numcgs;
@@ -965,7 +965,7 @@ function novo_cgs($arq1, $row, $clcgs_cartaosus, $clcgs, $clcgs_und) {
 
      if (($row->provisorio != null) && ($row->provisorio != "")) {
 
-       $erro = validaCNS($row->provisorio,'P');
+       $erro = validaCNS($row->provisorio);
        $clcgs_cartaosus->s115_i_codigo    = "";
        $clcgs_cartaosus->s115_c_cartaosus = $row->provisorio;
        $clcgs_cartaosus->s115_i_cgs       = $clcgs->z01_i_numcgs;
@@ -1042,21 +1042,21 @@ function cruza_dados($row, $cgs, $conn) {
 
       $objCGS = db_utils::fieldsMemory($result,0);
 
-      $atualiza = ( trim( $objCGS->z01_v_nome )          != trim( $nome ) )                                                                  ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_v_mae )           != trim( $nomemae ) )                                                               ? true : $atualiza;
-      $atualiza = ( $objCGS->z01_d_nasc                  != substr( $row->nasc,0,10 ) && $row->nasc     != null )                            ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_v_nome )          != trim( (string) $nome ) )                                                                  ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_v_mae )           != trim( (string) $nomemae ) )                                                               ? true : $atualiza;
+      $atualiza = ( $objCGS->z01_d_nasc                  != substr( (string) $row->nasc,0,10 ) && $row->nasc     != null )                            ? true : $atualiza;
       $atualiza = ( $objCGS->z01_i_numero                != (int)$row->numero         && $row->numero   != null  && $row->numero   != "S/N") ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_v_ender )         != trim( $ende )             && $row->endereco != "S/N" && $row->endereco != null ) ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_v_bairro )        != trim( $bair )             && $bair          != null )                            ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_v_cep )           != trim( $row->cep )         && $row->cep      != null )                            ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_v_munic )         != trim( $muni )             && $muni          != null )                            ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_v_sexo )          != trim( $row->sexo )        && $row->sexo     != null )                            ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_c_certidaonum )   != str_replace ( "'", "", trim( $row->certidao ) ) && $row->certidao != null )      ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_c_certidaolivro ) != str_replace ( "'", "", trim( $row->livro )    ) && $row->livro    != null )      ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_c_certidaofolha ) != str_replace ( "'", "", trim( $row->folha )    ) && $row->folha    != null )      ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_v_ident )         != str_replace ( "'", "", trim( $row->ident )    ) && $row->ident    != null )      ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_v_cgccpf )        != trim( $row->cpf )                               && $row->cpf      != null )      ? true : $atualiza;
-      $atualiza = ( trim( $objCGS->z01_v_uf )            != trim( $row->uf )                                && $row->uf       != null )      ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_v_ender )         != trim( (string) $ende )             && $row->endereco != "S/N" && $row->endereco != null ) ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_v_bairro )        != trim( (string) $bair )             && $bair          != null )                            ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_v_cep )           != trim( (string) $row->cep )         && $row->cep      != null )                            ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_v_munic )         != trim( (string) $muni )             && $muni          != null )                            ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_v_sexo )          != trim( (string) $row->sexo )        && $row->sexo     != null )                            ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_c_certidaonum )   != str_replace ( "'", "", trim( (string) $row->certidao ) ) && $row->certidao != null )      ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_c_certidaolivro ) != str_replace ( "'", "", trim( (string) $row->livro )    ) && $row->livro    != null )      ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_c_certidaofolha ) != str_replace ( "'", "", trim( (string) $row->folha )    ) && $row->folha    != null )      ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_v_ident )         != str_replace ( "'", "", trim( (string) $row->ident )    ) && $row->ident    != null )      ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_v_cgccpf )        != trim( (string) $row->cpf )                               && $row->cpf      != null )      ? true : $atualiza;
+      $atualiza = ( trim( (string) $objCGS->z01_v_uf )            != trim( (string) $row->uf )                                && $row->uf       != null )      ? true : $atualiza;
 
     }
   }
@@ -1069,7 +1069,7 @@ function sql_query_ext( $oid = null, $campos = "sau_config.oid,*", $ordem = null
   $sql = "select ";
   if ($campos != "*") {
 
-    $campos_sql = split ( "#", $campos );
+    $campos_sql = preg_split ( "#\\##m", $campos );
     $virgula    = "";
 
     for($i = 0; $i < sizeof ( $campos_sql ); $i ++) {
@@ -1100,7 +1100,7 @@ function sql_query_ext( $oid = null, $campos = "sau_config.oid,*", $ordem = null
   if ($ordem != null) {
 
     $sql       .= " order by ";
-    $campos_sql = split ( "#", $ordem );
+    $campos_sql = preg_split ( "#\\##m", (string) $ordem );
     $virgula    = "";
 
     for($i = 0; $i < sizeof ( $campos_sql ); $i ++) {
@@ -1148,7 +1148,7 @@ function log_erro($log, $arq) {
   system ( "echo \"$log\" >> $arq" );
 }
 
-function log_erro_versao($versao) {
+function log_erro_versao($versao): never {
 
    db_msgbox ("Caro usuário sua versão do Cadsus não é compativel entre em contato com o administrador do sistema (versão:".$versao.")");
    exit ();
@@ -1178,21 +1178,21 @@ function convert_obj_interbase($row){
   return $obj;
 }
 
-function jogar_erro($msg){
+function jogar_erro($msg): never{
   throw new Exception($msg);
 }
 
 function validaCNS( $cns, $sTipoCartao=null, $arq1="" ) {
 
   $lErro = false;
-  if ((strlen(trim($cns))) != 15) {
+  if ((strlen(trim((string) $cns))) != 15) {
     $lErro = true;
   }
 
-  $iInicioNumero = substr(trim($cns),0,1);
+  $iInicioNumero = substr(trim((string) $cns),0,1);
   if ($iInicioNumero == 1 || $iInicioNumero == 2) {
 
-    $pis = substr($cns,0,11);
+    $pis = substr((string) $cns,0,11);
     $soma = (((substr($pis, 0,1)) * 15) +
             ((substr($pis, 1,1)) * 14) +
             ((substr($pis, 2,1)) * 13) +
@@ -1237,21 +1237,21 @@ function validaCNS( $cns, $sTipoCartao=null, $arq1="" ) {
 
   } else {
 
-    $soma = (((substr($cns,0,1)) * 15) +
-             ((substr($cns,1,1)) * 14) +
-             ((substr($cns,2,1)) * 13) +
-             ((substr($cns,3,1)) * 12) +
-             ((substr($cns,4,1)) * 11) +
-             ((substr($cns,5,1)) * 10) +
-             ((substr($cns,6,1)) * 9) +
-             ((substr($cns,7,1)) * 8) +
-             ((substr($cns,8,1)) * 7) +
-             ((substr($cns,9,1)) * 6) +
-             ((substr($cns,10,1)) * 5) +
-             ((substr($cns,11,1)) * 4) +
-             ((substr($cns,12,1)) * 3) +
-             ((substr($cns,13,1)) * 2) +
-             ((substr($cns,14,1)) * 1));
+    $soma = (((substr((string) $cns,0,1)) * 15) +
+             ((substr((string) $cns,1,1)) * 14) +
+             ((substr((string) $cns,2,1)) * 13) +
+             ((substr((string) $cns,3,1)) * 12) +
+             ((substr((string) $cns,4,1)) * 11) +
+             ((substr((string) $cns,5,1)) * 10) +
+             ((substr((string) $cns,6,1)) * 9) +
+             ((substr((string) $cns,7,1)) * 8) +
+             ((substr((string) $cns,8,1)) * 7) +
+             ((substr((string) $cns,9,1)) * 6) +
+             ((substr((string) $cns,10,1)) * 5) +
+             ((substr((string) $cns,11,1)) * 4) +
+             ((substr((string) $cns,12,1)) * 3) +
+             ((substr((string) $cns,13,1)) * 2) +
+             ((substr((string) $cns,14,1)) * 1));
     $resto = fmod($soma,11);
     if ($resto != 0) {
       $lErro = true;

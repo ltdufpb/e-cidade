@@ -34,8 +34,8 @@ require_once(modification("classes/db_orcprojativ_classe.php"));
 require_once(modification("classes/db_orcprojativunidaderesp_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clorcprojativ 			  = new cl_orcprojativ();
 $clorcprojativunidaderesp = new cl_orcprojativunidaderesp();
@@ -44,7 +44,7 @@ $db_opcao = 22;
 $db_botao = false;
 $lSqlErro = false;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 
   db_inicio_transacao();
   $db_opcao = 2;
@@ -70,7 +70,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
   	$clorcprojativunidaderesp->o13_orcprojativ	= $o55_projativ;
   	$clorcprojativunidaderesp->o13_unidaderesp	= $o13_unidaderesp;
 
-  	if ( trim($o13_sequencial) != "") {
+  	if ( trim((string) $o13_sequencial) != "") {
   	  $clorcprojativunidaderesp->alterar($o13_sequencial);
   	} else {
   	  $clorcprojativunidaderesp->incluir(null);
@@ -83,7 +83,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 
   } else {
 
-  	if ( trim($o13_sequencial) != "") {
+  	if ( trim((string) $o13_sequencial) != "") {
 
   	  $clorcprojativunidaderesp->excluir($o13_sequencial);
 
@@ -104,7 +104,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
    db_fieldsmemory($result,0);
    $db_botao = true;
 
-   $digito = ($o55_projativ{0}*1000);
+   $digito = ($o55_projativ[0]*1000);
 
 
 }
@@ -132,7 +132,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clorcprojativ->erro_status=="0"){
     $clorcprojativ->erro(true,false);
     $db_botao=true;

@@ -56,9 +56,7 @@ class IndiqueVeiculosService
             return [];
         }
 
-        return \db_utils::makeCollectionFromRecord($rs, function ($dados) {
-            return $dados->tf17_i_codigo;
-        });
+        return \db_utils::makeCollectionFromRecord($rs, fn($dados) => $dados->tf17_i_codigo);
     }
 
     /**

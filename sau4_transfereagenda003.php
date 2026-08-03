@@ -41,7 +41,7 @@ include(modification("classes/db_agendamentos_ext_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sd02_i_codigo = db_getsession("DB_coddepto");
 
@@ -51,7 +51,7 @@ $clundmedhorario = new cl_undmedhorario_ext;
 
 if( !session_is_registered("arr_transferidos") ){
 	session_register("arr_transferidos");
-	db_putsession("arr_transferidos", array(array( 6 )) );
+	db_putsession("arr_transferidos", [[ 6 ]] );
 }
 $data_dia = date("d",db_getsession("DB_datausu"));
 $data_mes = date("m",db_getsession("DB_datausu"));

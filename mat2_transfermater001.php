@@ -191,8 +191,8 @@ $aux = new cl_arquivo_auxiliar;
         </td>
         <td colspan=3>
           <?php 
-            $aAtendimento = array ( "1" => "Data da Transferência",
-                                    "2" => "Data do Recebimento" );
+            $aAtendimento =  [ "1" => "Data da Transferência",
+                                    "2" => "Data do Recebimento" ];
             db_select("tipo_periodo",$aAtendimento,true,1,"style='width:273px;'  ");
          ?>
         </td>

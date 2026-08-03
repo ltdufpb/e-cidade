@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_clientescontato_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clclientescontato = new cl_clientescontato;
 $clclientescontato->rotulo->label("at92_sequencial");
 $clclientescontato->rotulo->label("at92_nome");
@@ -98,9 +98,9 @@ $clclientescontato->rotulo->label("at92_nome");
         }else{
            $sql = $clclientescontato->sql_query("",$campos,"at92_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at92_nome)){
-          $repassa = array("chave_at92_sequencial"=>$chave_at92_sequencial,"chave_at92_nome"=>$chave_at92_nome);
+          $repassa = ["chave_at92_sequencial"=>$chave_at92_sequencial,"chave_at92_nome"=>$chave_at92_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

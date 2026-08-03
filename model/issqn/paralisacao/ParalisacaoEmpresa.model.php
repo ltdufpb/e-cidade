@@ -108,14 +108,14 @@ class ParalisacaoEmpresa {
      * Erro na consulta que realiza a busca da paralização
      */
     if ( !$rsIssBaseparalisacao ) {
-      throw new DBException(_M(ParalisacaoEmpresa::MENSAGEM . 'erro_buscar_paralisacao', (object) array('sErroBanco' => pg_last_error())));
+      throw new DBException(_M(ParalisacaoEmpresa::MENSAGEM . 'erro_buscar_paralisacao', (object) ['sErroBanco' => pg_last_error()]));
     }
 
     /**
      * Nenhuma PAralização encontrada para o código informado
      */
     if ( pg_num_rows($rsIssBaseparalisacao) == 0 ) {
-      throw new BusinessException(_M(ParalisacaoEmpresa::MENSAGEM . 'nenhuma_paralisacao', (object) array('iCodigo' => $iCodigo)));
+      throw new BusinessException(_M(ParalisacaoEmpresa::MENSAGEM . 'nenhuma_paralisacao', (object) ['iCodigo' => $iCodigo]));
     }
 
     $oDadosParalisacaoEmpresa = db_utils::fieldsMemory($rsIssBaseparalisacao, 0);
@@ -211,7 +211,7 @@ class ParalisacaoEmpresa {
    * Define a data do fim da paralização
    * @param DBDate $oDataFim
    */
-  public function setDataFim( DBDate $oDataFim = null) {
+  public function setDataFim( ?DBDate $oDataFim = null) {
     $this->oDataFim = $oDataFim;
   }
 
@@ -265,7 +265,7 @@ class ParalisacaoEmpresa {
 
     if ( !$rsMotivoparalisacao ) {
 
-      $oErroBanco = (object) array('sErroBanco' => pg_last_error());
+      $oErroBanco = (object) ['sErroBanco' => pg_last_error()];
       throw new DBException(_M(ParalisacaoEmpresa::MENSAGEM . 'erro_buscar_paralisacao', $oErroBanco));
     }
 
@@ -304,7 +304,7 @@ class ParalisacaoEmpresa {
     /**
      * Valida se a data inicial é maior que a data final quando é informado a data final.
      */
-    if( $this->oDataFim && (strtotime($this->oDataInicio->getDate()) > strtotime($this->oDataFim->getDate()))) {
+    if( $this->oDataFim && (strtotime((string) $this->oDataInicio->getDate()) > strtotime((string) $this->oDataFim->getDate()))) {
       throw new BusinessException(_M(ParalisacaoEmpresa::MENSAGEM . 'data_inicial_maior_data_final'));
     }
 
@@ -342,7 +342,7 @@ class ParalisacaoEmpresa {
        */
       if ( $oDaoIssBaseparalisacao->erro_status == "0" ) {
 
-        $oErroBanco = (object) array('sErroBanco' => $oDaoIssBaseparalisacao->erro_banco);
+        $oErroBanco = (object) ['sErroBanco' => $oDaoIssBaseparalisacao->erro_banco];
         throw new DBException(_M(ParalisacaoEmpresa::MENSAGEM . 'erro_incluir_paralisacao', $oErroBanco));
       }
     } else {
@@ -358,7 +358,7 @@ class ParalisacaoEmpresa {
        */
       if ( $oDaoIssBaseparalisacao->erro_status == "0" ) {
  
-        $oErroBanco = (object) array('sErroBanco' => $oDaoIssBaseparalisacao->erro_banco);
+        $oErroBanco = (object) ['sErroBanco' => $oDaoIssBaseparalisacao->erro_banco];
         throw new DBException(_M(ParalisacaoEmpresa::MENSAGEM . 'erro_alterar_paralisacao', $oErroBanco));
       } 
     }
@@ -400,7 +400,7 @@ class ParalisacaoEmpresa {
      */
     if ( $oDaoHistOcorrencia->erro_status = "0" ) {
 
-      $oErroBanco = (object) array('sErroBanco' => $oDaoHistOcorrencia->erro_sql);
+      $oErroBanco = (object) ['sErroBanco' => $oDaoHistOcorrencia->erro_sql];
       throw new DBException(_M(ParalisacaoEmpresa::MENSAGEM . 'erro_incluir_ocorrencia',$oErroBanco));
     }
 
@@ -419,7 +419,7 @@ class ParalisacaoEmpresa {
      */
     if ( $oDaoHistOcorrenciaInscr->erro_status = "0" ) {
 
-      $oErroBanco = (object) array('sErroBanco' => $oDaoHistOcorrenciaInscr->erro_banco);
+      $oErroBanco = (object) ['sErroBanco' => $oDaoHistOcorrenciaInscr->erro_banco];
       throw new DBException(_M(ParalisacaoEmpresa::MENSAGEM . 'erro_incluir_ocorrencia',$oErroBanco));
     }
     
@@ -463,7 +463,7 @@ class ParalisacaoEmpresa {
      */
     if ( !$rsIssBaseparalisacao ) {
 
-      $sErroBanco = (object) array("sErroBanco" => pg_last_error());
+      $sErroBanco = (object) ["sErroBanco" => pg_last_error()];
       throw new DBException(_M(ParalisacaoEmpresa::MENSAGEM . 'erro_verificar_paralisacao', $sErroBanco));
     }
 

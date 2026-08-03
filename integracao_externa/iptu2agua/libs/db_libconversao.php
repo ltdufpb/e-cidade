@@ -32,13 +32,13 @@ function db_endereco($endtrocar) {
   global $numero;
   global $ender;
   global $compl;
-  if(ereg($er,$texto,$matriz)) {
-    $numero = trim(substr($matriz[0],2,9));
-    $xender = split($matriz[0],$texto);
+  if(preg_match('#' . preg_quote($er, '#') . '#m',(string) $texto,$matriz)) {
+    $numero = trim(substr((string) $matriz[0],2,9));
+    $xender = preg_split($matriz[0],(string) $texto);
     $ender  = $xender[0];
-    $compl  = trim(substr($xender[1],1,20));
+    $compl  = trim(substr((string) $xender[1],1,20));
   } else {
-    $ender  = substr($arquivo[$i],135,40);
+    $ender  = substr((string) $arquivo[$i],135,40);
     $numero = 0;
     $compl  = "";
   }
@@ -51,9 +51,9 @@ function db_testaduplo($nome,$endereco,$numero,$cidade,$uf,$cpf){
 
   $_achou = false;
 
-  if (strlen(ltrim($nome)) == 0) return 0;
+  if (strlen(ltrim((string) $nome)) == 0) return 0;
 
-  if (strlen($cpf) > 0) {
+  if (strlen((string) $cpf) > 0) {
 
     $sql6 = "select z01_numcgm from cgm where z01_cgccpf = '$cpf'";
     $result6 = db_query($sql6);
@@ -63,7 +63,7 @@ function db_testaduplo($nome,$endereco,$numero,$cidade,$uf,$cpf){
     }
 
     if ($result6 != false) {
-      if (pg_numrows($result6) > 0) {
+      if (pg_num_rows($result6) > 0) {
 	 $_achou = true;
       }
     }
@@ -80,7 +80,7 @@ function db_testaduplo($nome,$endereco,$numero,$cidade,$uf,$cpf){
       return 9999999999;
     }
 //echo "nome: $nome - " . pg_numrows($result6) . "\n";
-    if (pg_numrows($result6) > 0) {
+    if (pg_num_rows($result6) > 0) {
        $_achou = true;
     }
 
@@ -89,7 +89,7 @@ function db_testaduplo($nome,$endereco,$numero,$cidade,$uf,$cpf){
   if ($_achou == false) {
     return 0;
   } else {
-    return pg_result($result6,0);
+    return pg_fetch_result($result6,0);
   }
 
 }
@@ -114,7 +114,7 @@ function db_busca_usuario( $conn1, $str_login ) {
 //         if ($str_login == "drmw")  	$str_login = 'sac';
 	 
          $str_sql = "select id_usuario from DB_USUARIOS
-                      where login = '" . trim($str_login) . "'";
+                      where login = '" . trim((string) $str_login) . "'";
          $res_db_usuarios = db_query( $conn1, $str_sql ) or die ( "FALHA: $str_sql \n" );
          $int_linhas = pg_num_rows( $res_db_usuarios );
          if( $int_linhas == 0 )
@@ -233,12 +233,12 @@ function db_numrows_table($pConexao, $sTabela, $sArquivoLog="") {
 
   $sSql = " select count(*) as total_linhas from {$sTabela} ";
 
-  return pg_result(db_query($pConexao, $sSql, $sArquivoLog), 0, "total_linhas");
+  return pg_fetch_result(db_query($pConexao, $sSql, $sArquivoLog), 0, "total_linhas");
 
 }
 
 function db_sqlformat($variavel=null) {
-  if ((is_string($variavel) && $variavel <> 'null') || trim($variavel) == '') {
+  if ((is_string($variavel) && $variavel <> 'null') || trim((string) $variavel) == '') {
     return "'".$variavel."'";
   } else if (is_bool($variavel)) {
     if ($variavel == true ) {
@@ -258,7 +258,7 @@ function db_sqlformat($variavel=null) {
 //
 //
 
-function db_converte_tabela($pConexaoOrigem, $pConexaoDestino, $sArquivoLog, $sTabela, $sFuncaoCallBack="", $aCamposPk=array(), $iForma=0, $aOpcoes=array()) {
+function db_converte_tabela($pConexaoOrigem, $pConexaoDestino, $sArquivoLog, $sTabela, $sFuncaoCallBack="", $aCamposPk=[], $iForma=0, $aOpcoes=[]) {
   //
 
   if(!is_resource($pConexaoOrigem)) {
@@ -295,7 +295,7 @@ function db_converte_tabela($pConexaoOrigem, $pConexaoDestino, $sArquivoLog, $sT
 
       $sNomeCampo  = pg_field_name($rsTabela, $iCont);
       $sTipoCampo  = pg_field_type($rsTabela, $iCont);
-      $sValorCampo = stripslashes(pg_result($rsTabela, $iCont));
+      $sValorCampo = stripslashes(pg_fetch_result($rsTabela, $iCont));
      
       $sSqlInsert .= $sVirgula . "\"{$sNomeCampo}\"";
 
@@ -325,10 +325,10 @@ function db_converte_tabela($pConexaoOrigem, $pConexaoDestino, $sArquivoLog, $sT
 }
 
 function db_empty($sValor) {
-  return (trim($sValor)=="" or $sValor==null);
+  return (trim((string) $sValor)=="" or $sValor==null);
 }
 
-function db_existe_relacao($pConexao, $sEsquema="public", $sRelacao, $sTipo="tabela") {
+function db_existe_relacao($pConexao, $sEsquema="public", $sRelacao = null, $sTipo="tabela") {
 
   // Mapeamento dos tipos de relações do PostgreSQL
   $aTiposRelacao["tabela"]    = "r"; // relkind r = ordinary table
@@ -358,13 +358,13 @@ function db_existe_relacao($pConexao, $sEsquema="public", $sRelacao, $sTipo="tab
 
 
 function db_cria_work_conversao($pConexao, $sEsquema, $sTabela, $sTabelaWork, $aCamposChave, $sArquivoLog) {
- 
+
   if(!is_resource($pConexao) or db_empty($sTabela)) {
     return false;
   }
   $sTabelaWork = db_empty($sTabelaWork)?"work_{$sTabela}":$sTabelaWork;
   $sEsquema    = db_empty($sEsquema)?"public":$sEsquema;
-  
+
   if(db_existe_relacao($pConexao, $sEsquema, $sTabelaWork, "tabela")) {
     db_log("Ja tem a tabela {$sTabelaWork}", $sArquivoLog, 0, true, true);
     $sDrop = "DROP TABLE {$sTabelaWork}";
@@ -387,7 +387,7 @@ function db_cria_work_conversao($pConexao, $sEsquema, $sTabela, $sTabelaWork, $a
     $sSqlFieldType .= "   AND column_name  = '{$aCamposChave[$iCont]}' ";
 
     $rsFieldType = db_query($pConexao, $sSqlFieldType, $sArquivoLog);
-    $oFieldType = db_utils::fieldsmemory($rsFieldType, 0);
+    $oFieldType = (new db_utils())->fieldsmemory($rsFieldType, 0);
 
     $sSqlCreateTable    .= $sVirgula."\"{$aCamposChave[$iCont]}_ori\" {$oFieldType->udt_name}";
     $sSqlCreateIndexOri .= $sVirgula."\"{$aCamposChave[$iCont]}_ori\""; 
@@ -399,7 +399,7 @@ function db_cria_work_conversao($pConexao, $sEsquema, $sTabela, $sTabelaWork, $a
   $sSqlCreateTable    .= ");";
   $sSqlCreateIndexOri .= ");";
   $sSqlCreateIndexDst .= ");";
-  
+
 
 
   db_log($sSqlCreateTable, $sArquivoLog, 0, true, true);
@@ -412,7 +412,7 @@ function db_cria_work_conversao($pConexao, $sEsquema, $sTabela, $sTabelaWork, $a
   */
 }
 
-function db_gera_work_conversao($pConexaoOri,$pConexaoDes, $sTabela, $sTabelaWork="", $aCamposChave, $iTipoforma=1,$iSomaOuSeq ,$iSeq) {
+function db_gera_work_conversao($pConexaoOri,$pConexaoDes, $sTabela, $sTabelaWork="", $aCamposChave = null, $iTipoforma=1,$iSomaOuSeq = null ,$iSeq = null) {
   /* 
   $pConexaoOri  - Conexão de Origem
   $pConexaoDes  - Conexão de destino
@@ -465,7 +465,7 @@ db_log("\n \n ", null, 1, false, false);
     for($iDados=0; $iDados<$iNumRowsDados; $iDados++) {
       $nPercentual = round((($iDados+1)/$iNumRowsDados) * 100, 2);
       db_log("\rProcessando {$sTabela} {$nPercentual}% .... registro ".($iDados+1)." de {$iNumRowsDados}             ", null, 1, false, false);
-      $oDados       = db_utils::fieldsmemory($rsDados,$iDados);
+      $oDados       = (new db_utils())->fieldsmemory($rsDados, $iDados);
       $sVirgula     = " ";
       $sDadosInclui = "";
       // for nos campos origem
@@ -484,7 +484,7 @@ db_log("\n \n ", null, 1, false, false);
             $rsSeq           = db_query($pConexaoDes, $sSqlSeq, $sArquivoLog);
             $iContaCamposSeq = pg_num_fields($rsSeq);
             $sNomeCampoSeq   = pg_field_name($rsSeq, 0);
-            $oSeq            = db_utils::fieldsmemory($rsSeq,$iCampo2);
+            $oSeq            = (new db_utils())->fieldsmemory($rsSeq, $iCampo2);
             $iSequencial     = $oSeq->$sNomeCampoSeq;
           }else{
             $iSequencial++;
@@ -493,7 +493,7 @@ db_log("\n \n ", null, 1, false, false);
           $sDadoDest       =  $iSequencial;
           $sDadosInclui .=$sVirgula.$sDadoOrig."\t".$sDadoDest;
           $sVirgula        = "\t";
-    
+
         }if($iTipoforma==3){
           //duplica
           $sDadoOrig     = $oDados->$sNomeCampoOri[$iCampo2] ;
@@ -502,8 +502,8 @@ db_log("\n \n ", null, 1, false, false);
           $sVirgula = "\t";
         }
         $sIncluiDados = $sDadosInclui."\n";
-      
-      
+
+
       }
      if(!pg_put_line($pConexaoOri, $sIncluiDados)) {
         db_log("erro linha {$iCont} copy =  {$sIncluiDados}", $sArquivoLog, 0, true, true);
@@ -555,7 +555,7 @@ function dbTrocaValores($pConexaoOrigem,$sValorCampo,$aParametrosCampo,$sArquivo
     exit;
   }
   
-  if ( stripslashes( $sValorCampo ) == "''" ){
+  if ( stripslashes( (string) $sValorCampo ) == "''" ){
 
     db_log( "ERRO : VALOR DO CAMPO ORIGEM NAO ENCONTRADO : TABELA WORK - {$aParametrosCampo[0]} CAMPO - {$aParametrosCampo[1]} VALOR - {$sValorCampo} \n",$sArquivoErros );
     exit;
@@ -574,7 +574,7 @@ function dbTrocaValores($pConexaoOrigem,$sValorCampo,$aParametrosCampo,$sArquivo
   
   }
   
-  $oTrocaValores    = db_utils::fieldsmemory($rsTrocaValores, 0);
+  $oTrocaValores    = (new db_utils())->fieldsmemory($rsTrocaValores, 0);
      
   $sValorCampo      = $oTrocaValores->$aParametrosCampo[2];
 
@@ -598,7 +598,7 @@ function dbTrocaValores($pConexaoOrigem,$sValorCampo,$aParametrosCampo,$sArquivo
 *
 */
 
-function dbConverteTabela( $pConexaoOrigem, $pConexaoDestino,  $sTabela, $aCamposTrocar=array(), $sFuncaoCallBack="",$sArquivoInfos='',$sArquivoErros='' ) {
+function dbConverteTabela( $pConexaoOrigem, $pConexaoDestino,  $sTabela, $aCamposTrocar=[], $sFuncaoCallBack="",$sArquivoInfos='',$sArquivoErros='' ) {
 
 	if (!is_resource($pConexaoOrigem)) {
 		db_log("ERRO : Conexao de Origem Invalida", $sArquivoErros);
@@ -632,7 +632,7 @@ function dbConverteTabela( $pConexaoOrigem, $pConexaoDestino,  $sTabela, $aCampo
   $iNumRowsTabela = db_numrows($rsTabela);
 
   if(db_numrows($rsTabela)==0) {
-    db_log("Nao encontrado registros para a tabela : ".strtoupper($sTabela));
+    db_log("Nao encontrado registros para a tabela : ".strtoupper((string) $sTabela));
     return false;
   }
 
@@ -651,7 +651,7 @@ function dbConverteTabela( $pConexaoOrigem, $pConexaoDestino,  $sTabela, $aCampo
 
   for ($iTabela = 0 ; $iTabela < $iNumRowsTabela ; $iTabela++) {
 
-    $sMsgProgresso = "\r ".str_pad("Processando tabela ".strtoupper($sTabela),50," ", STR_PAD_RIGHT ). str_pad( round( (( ($iTabela+1) /$iNumRowsTabela)*100),2),3," ",STR_PAD_RIGHT)."%"." -- Processando -- ".($iTabela+1)."  de -- $iNumRowsTabela " ;
+    $sMsgProgresso = "\r ".str_pad("Processando tabela ".strtoupper((string) $sTabela),50," ", STR_PAD_RIGHT ). str_pad( round( (( ($iTabela+1) /$iNumRowsTabela)*100),2),3," ",STR_PAD_RIGHT)."%"." -- Processando -- ".($iTabela+1)."  de -- $iNumRowsTabela " ;
     db_log($sMsgProgresso,null,1,false,false );
 
     $sSqlInsert = "";
@@ -666,14 +666,14 @@ function dbConverteTabela( $pConexaoOrigem, $pConexaoDestino,  $sTabela, $aCampo
 
       $sTipo = pg_field_type($rsTabela, $x);
 
-      if(in_array($sTipo, array("text", "bpchar", "varchar"))) {
+      if(in_array($sTipo, ["text", "bpchar", "varchar"])) {
         $aLinha[$x] = str_replace("\n", '\n', $aLinha[$x]);
         $aLinha[$x] = str_replace("\r", '\r', $aLinha[$x]);
         $aLinha[$x] = str_replace("\t", '\t', $aLinha[$x]);
         $aLinha[$x] = pg_escape_string($aLinha[$x]);
       }
 
-      if(is_null($aLinha[$x]) or (trim($aLinha[$x])=="" and in_array($sTipo, array("int2", "int4", "int8", "float4", "float8"))  )) {
+      if(is_null($aLinha[$x]) or (trim($aLinha[$x])=="" and in_array($sTipo, ["int2", "int4", "int8", "float4", "float8"])  )) {
         $aLinha[$x] = '\N';
       }
 
@@ -725,7 +725,7 @@ function db_ddl_tabela($pConexao, $sTabela, $sEsquema="public",$pConexaoPesquisa
   $sVirgula = "";
 
   for($iCont=0; $iCont < db_numrows($rsCampos); $iCont++) {
-    $oCampos = db_utils::fieldsmemory($rsCampos, $iCont);
+    $oCampos = (new db_utils())->fieldsmemory($rsCampos, $iCont);
 
     switch ($oCampos->udt_name) {
       // Trata campos tipo numeric
@@ -740,12 +740,12 @@ function db_ddl_tabela($pConexao, $sTabela, $sEsquema="public",$pConexaoPesquisa
       // Campos caracter
       case "char":
       case "varchar":
-        $sTipo = strtoupper($oCampos->udt_name) . "({$oCampos->character_maximum_length})";
+        $sTipo = strtoupper((string) $oCampos->udt_name) . "({$oCampos->character_maximum_length})";
         break;
 
       // Default
       default:
-        $sTipo = strtoupper($oCampos->udt_name);
+        $sTipo = strtoupper((string) $oCampos->udt_name);
         break;
     }
 
@@ -836,7 +836,7 @@ function dbPreparaConsulta($pConexao, $sTabelaWork, $sArquivoLog) {
 
     $sNomeCampo = trim(pg_field_name($rsTabelaWork, $iCont));
     
-    if ( substr($sNomeCampo,-4) == '_ori' ) {
+    if ( str_ends_with($sNomeCampo, '_ori') ) {
 
       $sSqlDeallocate = "DEALLOCATE prepare select_{$sTabelaWork}"; // tira a consulta da memoria
 
@@ -883,9 +883,9 @@ function dbPreparaInsert($pConexaoOrigem, $pConexaoDestino, $sTabela, $sArquivoL
 
   $iContaCampos = pg_num_fields($rsTabela);
 
-  $aCampos  = array();
-  $aTipos   = array();
-  $aValores = array();
+  $aCampos  = [];
+  $aTipos   = [];
+  $aValores = [];
 
   for($iCont=0; $iCont<$iContaCampos; $iCont++) {
 
@@ -896,7 +896,7 @@ function dbPreparaInsert($pConexaoOrigem, $pConexaoDestino, $sTabela, $sArquivoL
     $sSqlFieldType .= "    AND table_name   = '{$sTabela}'   ";
     $sSqlFieldType .= "    AND column_name  = '".trim(pg_field_name($rsTabela, $iCont))."' ";
     $rsFieldType    = db_query($pConexaoOrigem, $sSqlFieldType, $sArquivoLog);
-    $oFieldType     = db_utils::fieldsmemory($rsFieldType, 0);
+    $oFieldType     = (new db_utils())->fieldsmemory($rsFieldType, 0);
     
     array_push($aCampos,  $oFieldType->nome_campo);
     array_push($aTipos,   $oFieldType->tipo_campo);
@@ -953,8 +953,8 @@ function dbSelectTabela($pConexaoOrigem,$sTabela,$aCamposTrocar,$sArquivoInfos='
 
   $iContaCampos = pg_num_fields($rsTabela);
 
-  $aCampos = array();
-  $aJoins  = array();
+  $aCampos = [];
+  $aJoins  = [];
 
   $lTemWork = false;
 
@@ -967,7 +967,7 @@ function dbSelectTabela($pConexaoOrigem,$sTabela,$aCamposTrocar,$sArquivoInfos='
     $sSqlFieldType .= "    AND table_name   = '{$sTabela}'   ";
     $sSqlFieldType .= "    AND column_name  = '".trim(pg_field_name($rsTabela, $iCont))."' ";
     $rsFieldType    = db_query($pConexaoOrigem, $sSqlFieldType, $sArquivoLog);
-    $oFieldType     = db_utils::fieldsmemory($rsFieldType, 0);
+    $oFieldType     = (new db_utils())->fieldsmemory($rsFieldType, 0);
     
     $lTemWork       =  array_key_exists($oFieldType->nome_campo,$aCamposTrocar);
 
@@ -1018,13 +1018,13 @@ function validaCpfCnpj($sCpfCnpj="") {
 
   $lRetorno = true;
 
-  if ( trim($sCpfCnpj) == "" ) {
+  if ( trim((string) $sCpfCnpj) == "" ) {
 
     $lRetorno = false;
 
   } else {
 
-    $iLength = strlen(trim($sCpfCnpj));
+    $iLength = strlen(trim((string) $sCpfCnpj));
 
     if ( $iLength == '14') {
       if ( validaCnpj($sCpfCnpj) != 0 ) {
@@ -1185,10 +1185,10 @@ function validaCnpj($cnpj) {
 
 function dbValida($sValor, $sTipo) {
 
-  $aValorDefault = array ( 'int'   => "null", 
+  $aValorDefault =  [ 'int'   => "null", 
       'date'  => "null", 
-      'string'=> "''" );
-  if (trim($sValor) != '') {
+      'string'=> "''" ];
+  if (trim((string) $sValor) != '') {
     if ($sTipo == 'int') {
       return $sValor;
     } else {

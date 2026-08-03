@@ -79,7 +79,7 @@ $this->objpdf->text($xcol+141,$xlin+ 17,':  '.$this->orcvalidade);
 if(isset($this->Sdata) && trim($this->Sdata)!=""){
   $this->Sdata = db_formatar($this->Sdata,'d');
 }
-if(trim($this->labtipo)!=""){
+if(trim((string) $this->labtipo)!=""){
   $this->objpdf->text($xcol+125,$xlin+17,':  '.$this->Stipcom);
 }
 $this->objpdf->text($xcol+ 23,$xlin+17,':  '.$this->Sdata);
@@ -87,14 +87,14 @@ $this->objpdf->setxy($xcol+22,$xlin+18);
 $this->objpdf->cell(3,4,':  ',0,0,"L",0);
 $this->objpdf->setxy($xcol+24.5,$xlin+18);
 
-$Sresumo = trim($this->Sresumo);
-$vresumo = split("\n",$Sresumo);
+$Sresumo = trim((string) $this->Sresumo);
+$vresumo = preg_split("#\n#m",$Sresumo);
 
 if (count($vresumo) > 1){
   $Sresumo   = "";
   $separador = "";
   for ($i = 0; $i < count($vresumo); $i++){
-    if (trim($vresumo[$i]) != ""){
+    if (trim((string) $vresumo[$i]) != ""){
       $separador = ". ";
       $Sresumo  .= $vresumo[$i].$separador;
     }
@@ -121,7 +121,7 @@ $this->objpdf->Setfont('Arial','',6);
 $this->objpdf->text($xcol+2,$xlin+34,'Dados do Fornecedor');
 $this->objpdf->Setfont('Arial','B',8);
 $this->objpdf->text($xcol+109,$xlin+38,'Numcgm');
-$this->objpdf->text($xcol+150,$xlin+38,(strlen($this->cnpj) == 11?'CPF':'CNPJ'));
+$this->objpdf->text($xcol+150,$xlin+38,(strlen((string) $this->cnpj) == 11?'CPF':'CNPJ'));
 $this->objpdf->text($xcol+  2,$xlin+38,'Nome');
 $this->objpdf->text($xcol+  2,$xlin+42,'Endereço');
 $this->objpdf->text($xcol+102,$xlin+42,'Complemento');
@@ -134,15 +134,15 @@ $this->objpdf->Setfont('Arial','',8);
 // Imprime dados dos fornecedores
 $this->objpdf->text($xcol+ 18,$xlin+ 38,':  '.$this->nome);
 $this->objpdf->text($xcol+122,$xlin+38,':  '.$this->numcgm);
-$this->objpdf->text($xcol+163,$xlin+38,':  '.(trim($this->cnpj)!=""?(strlen($this->cnpj) == 11?db_formatar($this->cnpj,'cpf'):db_formatar($this->cnpj,'cnpj')):""));
+$this->objpdf->text($xcol+163,$xlin+38,':  '.(trim((string) $this->cnpj)!=""?(strlen((string) $this->cnpj) == 11?db_formatar($this->cnpj,'cpf'):db_formatar($this->cnpj,'cnpj')):""));
 $this->objpdf->text($xcol+ 18,$xlin+ 42,':  '.$this->ender);
-$this->objpdf->text($xcol+122,$xlin+42,':  '.substr($this->compl,0,15));
-$this->objpdf->text($xcol+ 18,$xlin+ 46,':  '.(trim($this->cnpj)!=""?($this->munic.'-'.$this->uf):""));
+$this->objpdf->text($xcol+122,$xlin+42,':  '.substr((string) $this->compl,0,15));
+$this->objpdf->text($xcol+ 18,$xlin+ 46,':  '.(trim((string) $this->cnpj)!=""?($this->munic.'-'.$this->uf):""));
 $this->objpdf->text($xcol+122,$xlin+46,':  '.$this->cep);
-if(trim($this->fax) != ""){
+if(trim((string) $this->fax) != ""){
   $this->fax = " / ".$this->fax;
 }
-$this->objpdf->text($xcol+163,$xlin+42,':  '.substr($this->contato,0,20));
+$this->objpdf->text($xcol+163,$xlin+42,':  '.substr((string) $this->contato,0,20));
 $this->objpdf->text($xcol+163,$xlin+46,':  '.$this->telefone.$this->fax);
 
 // Caixa com dados da entrega
@@ -195,14 +195,14 @@ if($this->linhasdosdepart>0){
   $this->objpdf->setx($xcol);
   $this->objpdf->setleftmargin(4);
   $this->objpdf->Setfont('Arial','',7);
-  $this->objpdf->SetAligns(array('C','C','L'));
-  $this->objpdf->SetWidths(array(30,30,142));
+  $this->objpdf->SetAligns(['C','C','L']);
+  $this->objpdf->SetWidths([30,30,142]);
   for($i=0;$i<$this->linhasdosdepart;$i++){
     db_fieldsmemory($this->recorddosdepart,$i);
-    $solicita  = trim(pg_result($this->recorddosdepart,$i,$this->Snumdepart));
-    $codigodep = trim(pg_result($this->recorddosdepart,$i,$this->Scoddepto));
-    $descrdep  = trim(pg_result($this->recorddosdepart,$i,$this->Sdescrdepto));
-    $this->objpdf->Row(array($solicita,$codigodep,$descrdep),4,false,4);
+    $solicita  = trim(pg_fetch_result($this->recorddosdepart,$i,$this->Snumdepart));
+    $codigodep = trim(pg_fetch_result($this->recorddosdepart,$i,$this->Scoddepto));
+    $descrdep  = trim(pg_fetch_result($this->recorddosdepart,$i,$this->Sdescrdepto));
+    $this->objpdf->Row([$solicita,$codigodep,$descrdep],4,false,4);
   }
   $getdoy = $this->objpdf->gety()+2-$xlin;
 }
@@ -290,8 +290,8 @@ $this->objpdf->text($xcol+ 167,$xlin+$getdoy+4,'VLR UNIT.');
 $this->objpdf->text($xcol+ 186,$xlin+$getdoy+4,'VLR TOT.');
 
 $maiscol = 0;
-$this->objpdf->SetWidths(array(12,15,19,70,26,23,19,19));
-$this->objpdf->SetAligns(array('C','C','C','J','J','J','R','R'));
+$this->objpdf->SetWidths([12,15,19,70,26,23,19,19]);
+$this->objpdf->SetAligns(['C','C','C','J','J','J','R','R']);
 
 $this->objpdf->setleftmargin(4);
 $this->objpdf->sety($xlin+$getdoy+7);
@@ -309,31 +309,31 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
      $pgto   = "";
      $resumo = "";
 
-     $descricaoitem = trim(pg_result($this->recorddositens,$ii,$this->descricaoitem));
+     $descricaoitem = trim(pg_fetch_result($this->recorddositens,$ii,$this->descricaoitem));
   
-     if(trim(pg_result($this->recorddositens,$ii,$this->sprazo))!=""){
-         $prazo = pg_result($this->recorddositens,$ii,$this->sprazo);
+     if(trim(pg_fetch_result($this->recorddositens,$ii,$this->sprazo))!=""){
+         $prazo = pg_fetch_result($this->recorddositens,$ii,$this->sprazo);
          $prazo = "PRAZO: ".trim(stripslashes($prazo));
      }
      
-     if(trim(pg_result($this->recorddositens,$ii,$this->spgto))!=""){
-         $pgto = pg_result($this->recorddositens,$ii,$this->spgto);
+     if(trim(pg_fetch_result($this->recorddositens,$ii,$this->spgto))!=""){
+         $pgto = pg_fetch_result($this->recorddositens,$ii,$this->spgto);
          $pgto = "CONDIÇÃO: ".trim(stripslashes($pgto));
      }
      
-     if(trim(pg_result($this->recorddositens,$ii,$this->sresum)!="")){
-         $resumo = "RESUMO: ".pg_result($this->recorddositens,$ii,$this->sresum);
+     if(trim(pg_fetch_result($this->recorddositens,$ii,$this->sresum)!="")){
+         $resumo = "RESUMO: ".pg_fetch_result($this->recorddositens,$ii,$this->sresum);
          if($descricaoitem == "" || $descricaoitem == null){
-             $descricaoitem = trim(pg_result($this->recorddositens,$ii,$this->sresum));
+             $descricaoitem = trim(pg_fetch_result($this->recorddositens,$ii,$this->sresum));
              $resumo="";
          }
      }
   
-     $unid			= pg_result($this->recorddositens,$ii,$this->sunidade);
-     $codunid   = pg_result($this->recorddositens,$ii,$this->scodunid);
-     $servico   = pg_result($this->recorddositens,$ii,$this->sservico);
-     $quantunid = pg_result($this->recorddositens,$ii,$this->squantunid);	  
-     $susaquant = pg_result($this->recorddositens,$ii,$this->susaquant);
+     $unid			= pg_fetch_result($this->recorddositens,$ii,$this->sunidade);
+     $codunid   = pg_fetch_result($this->recorddositens,$ii,$this->scodunid);
+     $servico   = pg_fetch_result($this->recorddositens,$ii,$this->sservico);
+     $quantunid = pg_fetch_result($this->recorddositens,$ii,$this->squantunid);	  
+     $susaquant = pg_fetch_result($this->recorddositens,$ii,$this->susaquant);
   
      $dist = 4;
      if(trim($codunid)!=""){
@@ -365,7 +365,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
 
 // Testa se esta imprimindo a ultima pagina e tem declaracao definida
          if ($pos >= $tot_itens){
-              if (strlen(trim($this->declaracao)) > 0) {
+              if (strlen(trim((string) $this->declaracao)) > 0) {
                    $linha = (265);
               } else {
                    $linha = (280);
@@ -452,13 +452,13 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
      $this->objpdf->Setfont('Arial','',7);
   
      if($volta_impressao == 0){
-         $this->objpdf->Row(array(pg_result($this->recorddositens,$ii,$this->item),
-                                  pg_result($this->recorddositens,$ii,$this->quantitem),
+         $this->objpdf->Row([pg_fetch_result($this->recorddositens,$ii,$this->item),
+                                  pg_fetch_result($this->recorddositens,$ii,$this->quantitem),
                                   $unid,
                                   stripslashes($descricaoitem)."\n\n",
                                   '',
                                   '',
-                                  ''),5,false,3);
+                                  ''],5,false,3);
      }else if($volta_impressao == 1){
          $resumo = $texto_impressao;
      }else if($volta_impressao == 2){
@@ -472,7 +472,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
 			// exit;
 			//  $resumo = str_replace(".","\n",$resumo);    
          $volta_impressao = 0;
-         $resumo = $this->objpdf->Row_multicell(array('','','',stripslashes($resumo),'',''),
+         $resumo = $this->objpdf->Row_multicell(['','','',stripslashes((string) $resumo),'',''],
                                                 $dist,false,5,0,true,true,3,($this->objpdf->h - 35));
          if($resumo != ""){
              $volta_impressao = 1;
@@ -483,7 +483,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
 
      if((isset($prazo) && $prazo!="" && $volta_impressao == 0) || $volta_impressao == 2){
          $volta_impressao = 0;
-         $prazo = $this->objpdf->Row_multicell(array('','','',stripslashes($prazo),'',''),
+         $prazo = $this->objpdf->Row_multicell(['','','',stripslashes((string) $prazo),'',''],
                                                $dist,false,5,0,true,true,3,($this->objpdf->h - 35));
          if($prazo != ""){
              $volta_impressao = 2;
@@ -494,7 +494,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
      
      if((isset($pgto) && $pgto!="" && $volta_impressao == 0) || $volta_impressao == 3){
          $volta_impressao = 0;
-         $pgto = $this->objpdf->Row_multicell(array('','','',stripslashes($pgto),'',''),
+         $pgto = $this->objpdf->Row_multicell(['','','',stripslashes((string) $pgto),'',''],
                                               $dist,false,5,0,true,true,3,($this->objpdf->h - 35));
          if($pgto != ""){
              $volta_impressao = 3;
@@ -513,7 +513,7 @@ for($ii = 0; $ii < $this->linhasdositens; $ii++){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // caixas para total e FIM do Relatorio
 
-if (strlen(trim($this->declaracao)) > 0) {
+if (strlen(trim((string) $this->declaracao)) > 0) {
      $linha = (265);
 } else {
      $linha = (280);
@@ -526,10 +526,10 @@ $this->objpdf->text($xcol+139,($linha+6),'T O T A L   G E R A L');
 $this->objpdf->rect($xcol+164,$linha, 19,10,2,'DF','34');
 $this->objpdf->rect($xcol+183,$linha, 19,10,2,'DF','34');
 
-if (strlen(trim($this->declaracao)) > 0) {
+if (strlen(trim((string) $this->declaracao)) > 0) {
 	$this->objpdf->Setfont('Arial','B',6);
   $this->objpdf->sety($linha+12);
-  $this->objpdf->multicell(200,3,trim($this->declaracao),0,"J");
+  $this->objpdf->multicell(200,3,trim((string) $this->declaracao),0,"J");
 }
 
 ?>

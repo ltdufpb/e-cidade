@@ -38,8 +38,8 @@ require_once(modification("classes/materialestoque.model.php"));
 
 $oGet = db_utils::postMemory($_GET);
 
-$aListaWhere         = array();
-$aListaWhereSaidas   = array();
+$aListaWhere         = [];
+$aListaWhereSaidas   = [];
 $sInformacaoMaterial = "";
 $oTotalEstoqueAnalitico = new stdClass();
 $oTotalEstoqueSintetico = new stdClass();
@@ -71,7 +71,7 @@ if (isset($oGet->listamaterial) && !empty($oGet->listamaterial)) {
 
 if (isset($oGet->data_inicial) && !empty($oGet->data_inicial)) {
 
-    $sDataInicial         = implode("-", array_reverse(explode("/", $oGet->data_inicial)));
+    $sDataInicial         = implode("-", array_reverse(explode("/", (string) $oGet->data_inicial)));
     $sDatas               = " m71_data >= '{$sDataInicial}' ";
     $aListaWhere[]        = $sDatas;
     $aListaWhereSaidas[]  = $sDatas;
@@ -79,7 +79,7 @@ if (isset($oGet->data_inicial) && !empty($oGet->data_inicial)) {
 
 if (isset($oGet->data_final) && !empty($oGet->data_final)) {
 
-    $sDataFinal          = implode("-", array_reverse(explode("/", $oGet->data_final)));
+    $sDataFinal          = implode("-", array_reverse(explode("/", (string) $oGet->data_final)));
     $sDatas              = " m71_data <= '{$sDataFinal}' ";
     $aListaWhere[]       = $sDatas;
     $aListaWhereSaidas[] = $sDatas;
@@ -157,10 +157,10 @@ $sCampos .= " dpartestoque.descrdepto as descricao_deposito, ";
 $sCampos .= " m71_valor, m77_dtvalidade, m76_nome as fabricante, m71_data as data_movimeto";
 $sSqlDadosEstoque = $oDaoMatEstoqueIniMei->sql_query_precomedio(null, $sCampos, $sOrdem, $sWhere);
 
-$aTiposMovimentoEntrada = array(1, 3, 12);
+$aTiposMovimentoEntrada = [1, 3, 12];
 
 $rsDadosEstoque         = $oDaoMatEstoqueIniMei->sql_record($sSqlDadosEstoque);
-$aItensEstoque          = array();
+$aItensEstoque          = [];
 $iTotalItensEstoque     = $oDaoMatEstoqueIniMei->numrows;
 
 //if ($iTotalItensEstoque > 25000) {
@@ -208,7 +208,7 @@ if ($iTotalItensEstoque > 0) {
         $oItemEstoque->sFabricante            = $oDadosItemEstoque->fabricante;
         $oItemEstoque->dtMovimento            = $oDadosItemEstoque->data_movimeto;
         $oItemEstoque->iCodigoMovimento       = 0;
-        $oItemEstoque->aMovimentacoes         = array();
+        $oItemEstoque->aMovimentacoes         = [];
 
         /**
          * Buscamos os Movimentos do material
@@ -238,7 +238,7 @@ if ($iTotalItensEstoque > 0) {
          * Busca o saldo anterio do item, se informado um período inicial
          */
         if (isset($oGet->data_inicial) && !empty($oGet->data_inicial)) {
-            $sDataInicial          = implode("-", array_reverse(explode("/", $oGet->data_inicial)));
+            $sDataInicial          = implode("-", array_reverse(explode("/", (string) $oGet->data_inicial)));
             $sCamposSaldoAnterior  = " sum(coalesce(case when m81_tipo = 1 then round(m82_quant,2) 														  ";
             $sCamposSaldoAnterior .= "                   when m81_tipo = 2 then round(m82_quant,2) *-1 end, 0)) as saldoinicial ";
             $sWhereSaldoAnterior   = " m82_matestoqueitem   = {$oDadosItemEstoque->m71_codlanc} ";
@@ -284,13 +284,13 @@ if ($iTotalItensEstoque > 0) {
     /**
      * Agrupamos os Itens Sinteticamente
      */
-    $aDepartamentos = array();
-    $aEstoques      = array();
+    $aDepartamentos = [];
+    $aEstoques      = [];
     foreach ($aItensEstoque as $oItemEstoque) {
 
         if (!isset($aEstoques[$oItemEstoque->iCodigoEstoque])) {
 
-            $aMovimetacoesEstoque                     = array();
+            $aMovimetacoesEstoque                     = [];
             $oEstoque                                 = new stdClass();
             $oEstoque->iCodigoItem                    = $oItemEstoque->iCodigoItem;
             $oEstoque->sDescricaoItem                 = $oItemEstoque->sDescricaoItem;
@@ -298,7 +298,7 @@ if ($iTotalItensEstoque > 0) {
             $oEstoque->sDescricaoAlmoxarifado         = $oItemEstoque->sDescricaoAlmoxarifado;
             $oEstoque->nQuantidadeEstoque             = 0;
             $oEstoque->nPrecoMedio                    = 0;
-            $oEstoque->aMovimentacoesEstoque          = array();
+            $oEstoque->aMovimentacoesEstoque          = [];
             $aEstoques[$oItemEstoque->iCodigoEstoque] = $oEstoque;
         }
         $nQuatidadeEstoque = $oItemEstoque->iQuantidadeEstoque - $oItemEstoque->iQuantidadeAtendida;
@@ -311,7 +311,7 @@ if ($iTotalItensEstoque > 0) {
          * Array dos Departamentos
          */
         if (!isset($aDepartamentos[$oItemEstoque->iCodigoDepartamento][$oItemEstoque->iCodigoItem])) {
-            $aMovimetacoesDepartamento             = array();
+            $aMovimetacoesDepartamento             = [];
             $oItem                                 = new stdClass();
             $oItem->iCodigoItem                    = $oItemEstoque->iCodigoItem;
             $oItem->sDescricaoItem                 = $oItemEstoque->sDescricaoItem;
@@ -617,14 +617,14 @@ function getDadosSintetico($oPdf, $oMovimentos, $oTotalEstoqueSintetico, $oGet, 
         $iBorda = "T";
     }
 
-    $iCodigoAlmoxarifado = str_pad($oMovimentos->iCodigoAlmoxarifado, 3, " ", STR_PAD_RIGHT);
+    $iCodigoAlmoxarifado = str_pad((string) $oMovimentos->iCodigoAlmoxarifado, 3, " ", STR_PAD_RIGHT);
     $sAlmoxarifado       = "{$iCodigoAlmoxarifado} - $oMovimentos->sDescricaoAlmoxarifado";
     $nValorEstoque = $oMovimentos->nQuantidadeEstoque * $oMovimentos->nPrecoMedio;
 
     $oTotalEstoqueSintetico->iTotalEstoque += $oMovimentos->nQuantidadeEstoque;
     $oTotalEstoqueSintetico->iTotal += $nValorEstoque;
 
-    $sDescricaoItem = substr($oMovimentos->sDescricaoItem, 0, 65);
+    $sDescricaoItem = substr((string) $oMovimentos->sDescricaoItem, 0, 65);
 
     $oPdf->cell(30, $iAlturaLinha, $oMovimentos->iCodigoItem, $iBorda, 0, "R", $iPreenche);
     $oPdf->cell(100, $iAlturaLinha, $sDescricaoItem, $iBorda, 0, "L", $iPreenche);
@@ -719,7 +719,7 @@ function getTotalizadorAnalitico ($oPdf, $oTotalEstoqueAnalitico, $oTotalEstoque
 
 function formataData($dtData, $sSearch = "-", $sReplace = "/") {
 
-    return implode("/", array_reverse(explode("-", $dtData)));
+    return implode("/", array_reverse(explode("-", (string) $dtData)));
 }
 
 $oPdf->Output();

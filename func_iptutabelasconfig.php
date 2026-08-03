@@ -33,8 +33,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_iptutabelasconfig_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -99,9 +99,9 @@ $cliptutabelasconfig->rotulo->label("j122_sequencial");
 	          $sql    = $cliptutabelasconfig->sql_query(null, $campos, "j122_sequencial", "");
 	        }
 	        
-	        $repassa = array();
+	        $repassa = [];
 	        if (isset($chave_j122_sequencial)) {
-	          $repassa = array("chave_j122_sequencial" => $chave_j122_sequencial);
+	          $repassa = ["chave_j122_sequencial" => $chave_j122_sequencial];
 	        }
 	        
 	        db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

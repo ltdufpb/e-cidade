@@ -1,154 +1,154 @@
 <?php
-return array(
-    'ideTrabSemVinculo' => array(
-        'properties' => array(
+return [
+    'ideTrabSemVinculo' => [
+        'properties' => [
             'cpfTrab',
             'nisTrab',
             'termino_ideTrabSemVinculo_codCateg' =>'codCateg'
-        )
-    ),
-    'infoTSVTermino' => array(
-        'properties' => array(
+        ]
+    ],
+    'infoTSVTermino' => [
+        'properties' => [
             'dtTerm',
             'mtvDesligTSV',
             'pensAlim',
             'percAliment',
             'vrAlim',
-        ),
-        'groups' => array(
-            'verbasResc' => array(
-                'groups'=> array(
-                    'dmDev' => array(
-                        'groups' => array(
-                            'ideEstabLot' => array(
-                                'properties' => array(
+        ],
+        'groups' => [
+            'verbasResc' => [
+                'groups'=> [
+                    'dmDev' => [
+                        'groups' => [
+                            'ideEstabLot' => [
+                                'properties' => [
                                     'termino_lotacao_tpInsc' => 'tpInsc',
                                     'nrInsc',
                                     'codLotacao'
-                                ),
-                                'groups' => array(
-                                    'detVerbas' => array(
+                                ],
+                                'groups' => [
+                                    'detVerbas' => [
                                         'type' => 'array',
-                                        'items' => array(
-                                            'properties' => array(
+                                        'items' => [
+                                            'properties' => [
                                                 'codRubr',
                                                 'ideTabRubr',
-                                                'qtdRubr' => array(
+                                                'qtdRubr' => [
                                                     'type' => 'float'
-                                                ),
+                                                ],
                                                 'fatorRubr',
-                                                'vrUnit' => array(
+                                                'vrUnit' => [
                                                     'type' => 'float'
-                                                ),
-                                                'vrRubr' => array(
+                                                ],
+                                                'vrRubr' => [
                                                     'type' => 'float'
-                                                )
-                                            )
-                                        )
-                                    ),
-                                    'infoSaudeColet' => array(
-                                        'groups' => array(
-                                            'detOper' => array(
+                                                ]
+                                            ]
+                                        ]
+                                    ],
+                                    'infoSaudeColet' => [
+                                        'groups' => [
+                                            'detOper' => [
                                                 'type' => 'array',
-                                                'items' => array(
-                                                    'properties' => array(
+                                                'items' => [
+                                                    'properties' => [
                                                         'cnpjOper',
                                                         'regANS',
-                                                        'vrPgTit' => array(
+                                                        'vrPgTit' => [
                                                             'type' => 'float'
-                                                        )
-                                                    ),
-                                                    'groups' => array(
-                                                        'detPlano' => array(
+                                                        ]
+                                                    ],
+                                                    'groups' => [
+                                                        'detPlano' => [
                                                             'type' => 'array',
-                                                            'items' => array(
-                                                                'properties' => array(
+                                                            'items' => [
+                                                                'properties' => [
                                                                     'tpDep',
                                                                     'cpfDep',
                                                                     'nmDep',
                                                                     'dtNascto',
-                                                                    'vlrPgDep' => array(
+                                                                    'vlrPgDep' => [
                                                                         'type' => 'float'
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                    'infoAgNocivo' => array(
-                                        'properties' => array(
-                                            'grauExp' => array(
+                                                                    ]
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ],
+                                    'infoAgNocivo' => [
+                                        'properties' => [
+                                            'grauExp' => [
                                                 'type' => 'int'
-                                            )
-                                        )
-                                    ),
-                                    'infoSimples' => array(
-                                        'properties' => array(
+                                            ]
+                                        ]
+                                    ],
+                                    'infoSimples' => [
+                                        'properties' => [
                                             'termino_indSimples' => 'indSimples'
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    'procJudTrab' => array(
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    'procJudTrab' => [
                         'type' => 'array',
-                        'items' => array(
-                            'properties' => array(
-                                'tpTrib' => array(
+                        'items' => [
+                            'properties' => [
+                                'tpTrib' => [
                                     'type' => 'int'
-                                ),
+                                ],
                                 'nrProcJud',
-                                'codSusp' => array(
+                                'codSusp' => [
                                     'type' => 'int'
-                                )
-                            )
-                        )
-                    ),
-                    'infoMV' => array(
-                        'properties' => array(
+                                ]
+                            ]
+                        ]
+                    ],
+                    'infoMV' => [
+                        'properties' => [
                             'indMV'
-                        ),
-                        'groups' => array(
-                            'remunOutrEmpr' => array (
+                        ],
+                        'groups' => [
+                            'remunOutrEmpr' =>  [
                                 'type' => 'array',
-                                'items' => array(
-                                    'properties' => array(
-                                        'tpInsc' => array(
+                                'items' => [
+                                    'properties' => [
+                                        'tpInsc' => [
                                             'type' => 'int'
-                                        ),
+                                        ],
                                         'nrInsc',
-                                        'codCateg' => array(
+                                        'codCateg' => [
                                             'type' => 'int'
-                                        ),
-                                        'vlrRemunOE' => array(
+                                        ],
+                                        'vlrRemunOE' => [
                                             'type' => 'float'
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            ),
-            'quarentena' => array(
-                'properties' => array(
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'quarentena' => [
+                'properties' => [
                     'dtFimQuar'
-                )
-            ),
-            'mudancaCPF' => array(
-                'properties' => array(
+                ]
+            ],
+            'mudancaCPF' => [
+                'properties' => [
                     'novoCPF'
-                )
-            )
-        )
-    ),
-    'termino_rubricas' => array(
-        'properties' => array(
+                ]
+            ]
+        ]
+    ],
+    'termino_rubricas' => [
+        'properties' => [
             'desligamento_rubricas_json'
-        )
-    )
-);
+        ]
+    ]
+];

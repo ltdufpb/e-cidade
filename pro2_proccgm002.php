@@ -41,7 +41,7 @@
  $aux    = new cl_protprocesso;
  $aux02  = new cl_protprocesso;
 
- db_postmemory($HTTP_POST_VARS); 
+ db_postmemory($_POST); 
  ///////////////////////////////////////////////////////////////////////
  $data1="";
  $data2="";
@@ -110,8 +110,8 @@
    $head5="QUEBRA POR CGM/PROCESSO/ANDAMENTOS";
  }  
  
-  list($a1,$m1,$d1) = split("-",$data1);
-  list($a2,$m2,$d2) = split("-",$data2);
+  [$a1, $m1, $d1] = preg_split("#\\-#m",$data1);
+  [$a2, $m2, $d2] = preg_split("#\\-#m",$data2);
  $head7 = "Periodo:  $d1/$m1/$a1   à   $d2/$m2/$a2 "; 
  $pdf->open();
  $pdf->addpage('P');
@@ -143,7 +143,7 @@
             }  
 	    $cor=0; 
             $pdf->setx(15); 
-            
+
             /**
              * Trata o numero do processo para quando o mesmo for do tipo OUVIDORIA
              */
@@ -151,10 +151,10 @@
             if ($p58_numero == "") {
               $sNumeroProcesso = "";
             }
-            
+
             $pdf->cell(30,4,$sNumeroProcesso,0,0,'R',$cor);
             $pdf->cell(20,4,"$p58_dtproc", 0,0,'C',$cor);
-            $pdf->cell(60,4,substr($p58_requer,0,40), 0,0,'L',$cor);
+            $pdf->cell(60,4,substr((string) $p58_requer,0,40), 0,0,'L',$cor);
             $pdf->cell(40,4,substr($p58_obs,0,32 ),   0,0,'L',$cor);
             // procura o sertor atual do processo
 	    $sql = "select descrdepto
@@ -169,7 +169,7 @@
             $r= $aux02->sql_record($sql);	
   	    if ($aux02->numrows > 0){
     	        db_fieldsmemory($r,0); 
-                $pdf->cell(30,4,substr($descrdepto,0,30),0,1,'L',$cor); // <br>
+                $pdf->cell(30,4,substr((string) $descrdepto,0,30),0,1,'L',$cor); // <br>
 	    } else {
 	        $pdf->cell(30,4,'sem andamento',0,1,'L',$cor); // <br>
             }
@@ -211,7 +211,7 @@
             $pdf->cell(20,4,'DATA','B',0,'C',0);
             $pdf->cell(70,4,'REQUERENTE','B',0,'L',0);
             $pdf->cell(65,4,'OBS','B',1,'L',0);
-	
+
 	    $cor=0; 
             $pdf->setx(15); 
 
@@ -224,7 +224,7 @@
             }
             $pdf->cell(30,4,$sNumeroProcesso,0,0,'R',$cor);
             $pdf->cell(20,4,"$p58_dtproc", 0,0,'C',$cor);
-            $pdf->cell(70,4,substr($p58_requer,0,50), 0,0,'L',$cor);
+            $pdf->cell(70,4,substr((string) $p58_requer,0,50), 0,0,'L',$cor);
             $pdf->cell(65,4,substr($p58_obs,0,40 ),   0,1,'L',$cor);
 	    // seleciona todos os andamentos do processo
             $sql = "select *  
@@ -245,8 +245,8 @@
 		    $pdf->setx(30); 	        
 		    $pdf->cell(20,4,"$p61_codandam",0,0,'R',$cor);
 		    $pdf->cell(20,4,"$p61_dtandam",0,0,'C',$cor);
-                    $pdf->cell(60,4,substr($descrdepto,0,40), 0,0,'L',$cor);
-                    $pdf->cell(60,4,substr($p61_despacho,0,40 ),0,1,'L',$cor);	
+                    $pdf->cell(60,4,substr((string) $descrdepto,0,40), 0,0,'L',$cor);
+                    $pdf->cell(60,4,substr((string) $p61_despacho,0,40 ),0,1,'L',$cor);	
                 } 
 	    }// end if ln(176)    
 	    // quebra pagina

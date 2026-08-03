@@ -36,8 +36,8 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("model/dbModeloEtiqueta.model.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clbensmodeloetiqueta       = new cl_bensmodeloetiqueta;
 $clbensmodeloetiquetapadrao = new cl_bensmodeloetiquetapadrao;

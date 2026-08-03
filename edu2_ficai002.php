@@ -17,16 +17,14 @@ try {
 
     $outrosDados = null;
     if (isset($_GET['dados'])) {
-        $outrosDados = JSON::create()->parse(base64_decode($_GET['dados']));
+        $outrosDados = JSON::create()->parse(base64_decode((string) $_GET['dados']));
     }
 
     $aluno = AlunoRepository::getAlunoByCodigo($_GET['aluno']);
     $matricula = MatriculaRepository::getUltimaMatriculaAluno($aluno);
     $escola = $matricula->getTurma()->getEscola();
 
-    $telefones = array_map(function ($telefone) {
-        return DBString::formatarTelefone($telefone->iDDD . $telefone->iNumero);
-    }, $escola->getTelefones());
+    $telefones = array_map(fn($telefone) => DBString::formatarTelefone($telefone->iDDD . $telefone->iNumero), $escola->getTelefones());
 
     $pdf = new FpdfMultiCellBorder();
     $pdf->exibeHeader(true);
@@ -133,9 +131,7 @@ try {
     estiloFonte($pdf, 'B');
     $pdf->Cell(20, 5, 'Telefone(s): ');
     estiloFonte($pdf);
-    $telefones = array_map(function ($telefone) {
-        return DBString::formatarTelefone($telefone);
-    }, array_filter([$aluno->getNumeroTelefone(), $aluno->getNumeroCelular()]));
+    $telefones = array_map(fn($telefone) => DBString::formatarTelefone($telefone), array_filter([$aluno->getNumeroTelefone(), $aluno->getNumeroCelular()]));
     $pdf->Cell(167, 5, implode(' e ', $telefones), 0, 1);
 
     $dadosAluno = AlunoRegistry::get($aluno->getCodigoAluno());
@@ -170,9 +166,7 @@ try {
     $pdf->Cell(11, 5, 'Turno: ');
     estiloFonte($pdf);
     $turno = $matricula->getTurma()->getTurno();
-    $turnosReferencia = array_map(function ($referencia) {
-        return Turno::getDescricaoTurno($referencia);
-    }, $turno->getTurnoReferente());
+    $turnosReferencia = array_map(fn($referencia) => Turno::getDescricaoTurno($referencia), $turno->getTurnoReferente());
 
     $pdf->Cell(50, 5, implode(' e ', $turnosReferencia), 0, 1);
 

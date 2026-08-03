@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_db_documento_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cldb_documento = new cl_db_documento;
 $cldb_documento->rotulo->label("db03_docum");
@@ -86,7 +86,7 @@ $cldb_documento->rotulo->label("db03_descr");
   <tr>
     <td align="center" valign="top">
         <?php 
-        $where = array();
+        $where = [];
 
         if (!empty($tipoDocumento)) {
             $where[] = "db03_tipodoc = {$tipoDocumento}";

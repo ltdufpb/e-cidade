@@ -36,7 +36,7 @@ class PeriodoRegistry
     /**
      * @var Periodo[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param int $key

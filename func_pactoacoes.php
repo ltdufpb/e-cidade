@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pactoacoes_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpactoacoes = new cl_pactoacoes;
 $clpactoacoes->rotulo->label("o79_sequencial");
 $clpactoacoes->rotulo->label("o79_descricao");
@@ -107,9 +107,9 @@ $clpactoacoes->rotulo->label("o79_descricao");
         }else{
            $sql = $clpactoacoes->sql_query("",$campos,"o79_sequencial","1=1 ".$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o79_descricao)){
-          $repassa = array("chave_o79_sequencial"=>$chave_o79_sequencial,"chave_o79_descricao"=>$chave_o79_descricao);
+          $repassa = ["chave_o79_sequencial"=>$chave_o79_sequencial,"chave_o79_descricao"=>$chave_o79_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

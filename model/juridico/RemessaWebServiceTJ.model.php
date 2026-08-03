@@ -78,6 +78,7 @@ class RemessaWebServiceTJ extends RemessaWebService {
   /**
    * Salva Remessa
    */
+  #[\Override]
   public function salvar(){
 
     parent::salvar();
@@ -101,6 +102,7 @@ class RemessaWebServiceTJ extends RemessaWebService {
   /**
    * Processa Remessa
    */
+  #[\Override]
   public function processar(){
 
     parent::processar();
@@ -134,7 +136,7 @@ class RemessaWebServiceTJ extends RemessaWebService {
       $oDadosPartilha                                          = db_utils::fieldsMemory($rsDadosPartilha,0);
       
       $oDaoPartilhaRemessaWebService->v89_sequencial           = $oDadosPartilha->v89_sequencial;
-      $oDaoPartilhaRemessaWebService->v89_resposta             = implode($aRetornoWebService, ", ");
+      $oDaoPartilhaRemessaWebService->v89_resposta             = implode(", ", $aRetornoWebService);
       $oDaoPartilhaRemessaWebService->alterar( $oDadosPartilha->v89_sequencial );
       
       if ( $oDaoPartilhaRemessaWebService->erro_status == "0" ) {
@@ -172,7 +174,7 @@ class RemessaWebServiceTJ extends RemessaWebService {
 
     $sSqlRemessas = $oDaoDBRemessaWebService->sql_query_file(null, "db127_sequencial \n", null, " \n db127_sistemaexterno = 2 \n{$sWhereProcessamento}");
     $rsRemessas   = db_query($sSqlRemessas);
-    $aRemessas    = array();
+    $aRemessas    = [];
 
     if ( !$rsRemessas ) {
       throw new DBException("Erro ao Retornar remessas!");

@@ -40,7 +40,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 
@@ -56,7 +56,7 @@ if( isset($s124_d_saida) && isset($s121_i_veiculo) ){
 																								"s124_d_saida = '$s124_d_saida' and
 																								 s121_i_veiculo = $s121_i_veiculo" ) );  
 	if( $clsau_agendatransporte->numrows > 0 ){																							
-		$s124_c_hora = pg_result($result,0,"s124_c_hora"); 	
+		$s124_c_hora = pg_fetch_result($result,0,"s124_c_hora"); 	
 	}
 }
 

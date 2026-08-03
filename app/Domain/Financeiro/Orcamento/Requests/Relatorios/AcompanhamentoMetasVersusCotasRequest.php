@@ -6,6 +6,7 @@ use Illuminate\Validation\Rule;
 
 class AcompanhamentoMetasVersusCotasRequest extends AcompanhamentoReceita
 {
+    #[\Override]
     public function rules()
     {
         return array_merge(

@@ -38,7 +38,7 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $head1 = "RELAÇÃO DE ASSINATURAS";
 $head2 = "CESTA BÁSICA - 1% BÁSICO";
@@ -136,7 +136,7 @@ if ($oGet->iTipoOrdem == 1) {
 
 $rsResult = db_query($sSql);
 
-if (pg_numrows($rsResult) == 0) {
+if (pg_num_rows($rsResult) == 0) {
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$iMes.' / '.$iAno);
 
 }
@@ -151,7 +151,7 @@ $iTroca             = 1;
 $iAltura            = 8;
 $iTotalFuncionarios = 0;
 
-for ($iContador = 0; $iContador < pg_numrows($rsResult); $iContador++) {
+for ($iContador = 0; $iContador < pg_num_rows($rsResult); $iContador++) {
 	
    $oCestaBasica = db_utils::fieldsMemory($rsResult, $iContador);
    

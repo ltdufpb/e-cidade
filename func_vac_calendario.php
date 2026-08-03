@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vac_calendario_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clvac_calendario = new cl_vac_calendario;
 $clvac_calendario->rotulo->label("vc05_i_codigo");
 $clvac_calendario->rotulo->label("vc05_c_descr");
@@ -97,9 +97,9 @@ $clvac_calendario->rotulo->label("vc05_c_descr");
         } else {
           $sql = $clvac_calendario->sql_query("",$campos,"vc05_i_idadeini asc","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_vc05_i_codigo)) {
-          $repassa = array("chave_vc05_i_codigo"=>$chave_vc05_i_codigo,"chave_vc05_c_descr"=>$chave_vc05_c_descr);
+          $repassa = ["chave_vc05_i_codigo"=>$chave_vc05_i_codigo,"chave_vc05_c_descr"=>$chave_vc05_c_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

@@ -102,7 +102,7 @@ if ( isset( $v13_certidini ) && $v13_certidini != "" and isset( $v13_certidfim )
 }
 
 if ( isset( $nomechave ) && $nomechave != "") {
-  $$nomechave = $valorchave;
+  ${$nomechave} = $valorchave;
 }
 
 if ( isset( $z01_numcgm) && $z01_numcgm != "" && $veinclu == false) {
@@ -352,7 +352,7 @@ $numrows = 0;
 if ($veinclu == false ) {
 
   $resulta = @db_query( $sSql );
-  $numrows = @pg_numrows( $resulta );
+  $numrows = @pg_num_rows( $resulta );
 
   if ( $numrows == 0 && $veinclu == false ) {
     db_redireciona("jur1_emiteinicial001.php?invalido=true");
@@ -469,7 +469,7 @@ if(isset($incluir)) {
       $perc = $perc + 0.2;
     }
 
-    if(isset($$x) && $$x != "") {
+    if(isset(${$x}) && ${$x} != "") {
 
       if ($nomechave == 'v13_certid') {
         $gera = true;
@@ -514,9 +514,9 @@ if(isset($incluir)) {
 
       if ($sqlerro == false) {
 
-        $clinicialcert->v51_certidao = $$x;
+        $clinicialcert->v51_certidao = ${$x};
         $clinicialcert->v51_inicial  = $inicial;
-        $clinicialcert->incluir($inicial,$$x);
+        $clinicialcert->incluir($inicial,${$x});
 
         if ($clinicialcert->erro_status == 0) {
 
@@ -546,7 +546,7 @@ if(isset($incluir)) {
                                left outer join arrenumcgm on arrenumcgm.k00_numpre = v01_numpre
                          where v50_inicial = $inicial 
                            and v50_instit = ".db_getsession('DB_instit')." 
-                           and v13_certid = " . $$x . "
+                           and v13_certid = " . ${$x} . "
                         union
                         select distinct k00_numcgm, k00_numpre
                           from inicial
@@ -559,10 +559,10 @@ if(isset($incluir)) {
                                left outer join arrenumcgm as x on x.k00_numpre = v07_numpre
                         where v50_inicial = $inicial 
                           and v50_instit = ".db_getsession('DB_instit')." 
-                          and v13_certid = " . $$x . "  ) as x";
+                          and v13_certid = " . ${$x} . "  ) as x";
 
         $result = db_query($sql);
-        $numso  = pg_numrows($result);
+        $numso  = pg_num_rows($result);
 
         for($xr = 0; $xr < $numso; $xr++) {
 

@@ -46,8 +46,8 @@ $cliptucalcpadrao = new cl_iptucalcpadrao;
 
 <?php
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 if ( isset($exec) && $exec != '' ) {
   $j23_anousu = $exec;

@@ -34,7 +34,7 @@ $oRetorno               = new stdClass();
 $oRetorno->iStatus      = 1;
 $oRetorno->sMessage     = '';
 
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 /**
  * Camada de Tentativas do RPC
  */
@@ -53,7 +53,7 @@ try {
         throw new Exception('Erro ao retornar dados da obra');
       }
       
-      $oRetorno->aObrasAlvara      = array();
+      $oRetorno->aObrasAlvara      = [];
       
       if ( pg_num_rows($rsObrasAlvara) ) {
 	      $oRetorno->aObrasAlvara    = db_utils::getCollectionByRecord($rsObrasAlvara, false, false,true );
@@ -83,7 +83,7 @@ try {
         throw new Exception("Nenhuma construção encontrada para a matricula {$oParam->iMatricula}!");
       }
       
-      $aRetornoConstrucoes = array();
+      $aRetornoConstrucoes = [];
       
       foreach ($aDadosConstrucoes as $oRegistro) {
         
@@ -99,10 +99,10 @@ try {
         $oConstrucao->iCodigoLogradouro       = $oRegistro->getCodigoRua();
         $oConstrucao->iNumeroLogradouro       = $oRegistro->getNumeroEndereco();
         $oConstrucao->sNomeLogradouro         = $oRegistro->getNomeRua();
-        $oConstrucao->sComplementoLogradouro  = urlEncode($oRegistro->getComplementoEndereco());
+        $oConstrucao->sComplementoLogradouro  = urlEncode((string) $oRegistro->getComplementoEndereco());
         
         $oConstrucao->iCodigoOrigemConstrucao  = $oRegistro->getCodigoOrigemConstrucao();
-        $oConstrucao->sObservacaoConstrucao    = urlEncode($oRegistro->getObservacaoConstrucao());
+        $oConstrucao->sObservacaoConstrucao    = urlEncode((string) $oRegistro->getObservacaoConstrucao());
         
         $aRetornoConstrucoes[] = $oConstrucao;
          
@@ -118,8 +118,8 @@ try {
       $sSqlCaracteristicas     = $oDaoCarConstr->sql_querySelecaoCaracteristicas($oParam->iMatricula, $oParam->iCodigoConstrucao);      
       $rsCaracteristicas       = db_query($sSqlCaracteristicas);
        
-      $oRetorno->aSelecionadas    = array();
-      $oRetorno->aCaracteristicas = array();
+      $oRetorno->aSelecionadas    = [];
+      $oRetorno->aCaracteristicas = [];
 
       if ( !$rsCaracteristicas ) {
         throw new Exception('Erro ao retornar caracteristicas da construcao\n'.pg_last_error());
@@ -178,12 +178,12 @@ try {
     	  	throw new Exception('Erro ao retornar caracteristicas da construcao\n'.pg_last_error());
     	  }
     	  
-    	  $oRetorno->aCaracteristicas  = array();
-        $aCaracteristicas = array();
+    	  $oRetorno->aCaracteristicas  = [];
+        $aCaracteristicas = [];
         
-    	  if ( pg_numrows($rsCaracteristicas) ) {
+    	  if ( pg_num_rows($rsCaracteristicas) ) {
 
-           for ( $iCarct = 0; $iCarct <  pg_numrows($rsCaracteristicas); $iCarct++ ) {
+           for ( $iCarct = 0; $iCarct <  pg_num_rows($rsCaracteristicas); $iCarct++ ) {
             
               $oDadosCaract = db_utils::fieldsMemory($rsCaracteristicas, $iCarct);
               $oDadosRetorno = new stdClass();

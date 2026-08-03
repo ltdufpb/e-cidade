@@ -81,7 +81,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed24_i_codigo"=>@$ed24_i_codigo,"ed24_horas"=>@$ed24_horas,"ed24_c_descr"=>@$ed24_c_descr);
+   $chavepri= ["ed24_i_codigo"=>@$ed24_i_codigo,"ed24_horas"=>@$ed24_horas,"ed24_c_descr"=>@$ed24_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clregimetrabalho->sql_query($ed24_i_codigo,"*","ed24_c_descr");
    $cliframe_alterar_excluir->campos  ="ed24_i_codigo,ed24_horas,ed24_c_descr";

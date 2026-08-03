@@ -36,8 +36,8 @@ require_once(modification("classes/db_autoultandam_classe.php"));
 require_once(modification("classes/db_fandam_classe.php"));
 require_once(modification("classes/db_fiscalprocrec_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clautotipo      = new cl_autotipo;
 $clautoandam     = new cl_autoandam;
@@ -47,14 +47,14 @@ $clfiscalprocrec = new cl_fiscalprocrec;
 $db_opcao = 22;
 $db_botao = false;
 global $y39_codandam;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 
   try {
 
     db_inicio_transacao();
     $db_opcao = 2;
     $clautotipo->excluir(null,"y59_codauto=$y59_codauto and y59_codtipo=$y59_codtipo_old");
-    if ( strpos(trim($y59_valor),',') != "" ){
+    if ( strpos(trim((string) $y59_valor),',') != "" ){
 
 	    $y59_valor=str_replace('.','',$y59_valor);
 	    $y59_valor=str_replace(',','.',$y59_valor);
@@ -95,7 +95,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clautotipo->erro_status=="0"){
     $clautotipo->erro(true,false);
     $db_botao=true;

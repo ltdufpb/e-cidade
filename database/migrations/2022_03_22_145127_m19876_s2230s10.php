@@ -555,7 +555,7 @@ SQL;
 					inner join esocial.grupomotivoafastamentoesocial on  eso10_db_cadattdinamico = 	db118_sequencial
 					inner JOIN esocial.motivoafastamentoesocial ON eso09_grupomotivoafastamentoesocial = eso10_sequencial
 
-                where db109_nome in (${campos})
+                where db109_nome in ({$campos})
             );
 
             delete from configuracoes.mapeamentoatributosesocial where db39_campoorigem in (
@@ -566,7 +566,7 @@ SQL;
 					INNER JOIN configuracoes.db_cadattdinamico ON db109_db_cadattdinamico = db118_sequencial
 					inner join esocial.grupomotivoafastamentoesocial on  eso10_db_cadattdinamico = 	db118_sequencial
 					inner JOIN esocial.motivoafastamentoesocial ON eso09_grupomotivoafastamentoesocial = eso10_sequencial
-                where db109_nome in (${campos})
+                where db109_nome in ({$campos})
             );
 
             delete from configuracoes.db_cadattdinamicoatributosvalor where db110_db_cadattdinamicoatributos in (
@@ -583,7 +583,7 @@ SQL;
                     db109_sequencial
                 FROM
 					configuracoes.db_cadattdinamicoatributos
-                where db109_nome in (${campos})
+                where db109_nome in ({$campos})
             );
 
             delete from configuracoes.db_cadattdinamicoatributos where db109_sequencial in (
@@ -591,7 +591,7 @@ SQL;
                     db109_sequencial
                 FROM
 					configuracoes.db_cadattdinamicoatributos
-                where db109_nome in (${campos})
+                where db109_nome in ({$campos})
             );
 SQL;
 
@@ -601,11 +601,11 @@ SQL;
     public function deletaGrupo($db102_sequencial)
     {
         $sql = <<<SQL
-            delete from habitacao.avaliacaogrupoperguntaresposta where db108_avaliacaoresposta in (select db106_sequencial from avaliacaoresposta where db106_avaliacaoperguntaopcao in(select db104_sequencial from avaliacaoperguntaopcao where db104_avaliacaopergunta in (select db103_sequencial from avaliacaopergunta where db103_avaliacaogrupopergunta = ${db102_sequencial})));
-            delete from habitacao.avaliacaoresposta where db106_avaliacaoperguntaopcao in(select db104_sequencial from avaliacaoperguntaopcao where db104_avaliacaopergunta in (select db103_sequencial from avaliacaopergunta where db103_avaliacaogrupopergunta = ${db102_sequencial}));
-            delete from habitacao.avaliacaoperguntaopcao where db104_avaliacaopergunta in (select db103_sequencial from avaliacaopergunta where db103_avaliacaogrupopergunta = ${db102_sequencial});
-            delete from habitacao.avaliacaopergunta where db103_avaliacaogrupopergunta = ${db102_sequencial};
-            delete from habitacao.avaliacaogrupopergunta where db102_sequencial = ${db102_sequencial};
+            delete from habitacao.avaliacaogrupoperguntaresposta where db108_avaliacaoresposta in (select db106_sequencial from avaliacaoresposta where db106_avaliacaoperguntaopcao in(select db104_sequencial from avaliacaoperguntaopcao where db104_avaliacaopergunta in (select db103_sequencial from avaliacaopergunta where db103_avaliacaogrupopergunta = {$db102_sequencial})));
+            delete from habitacao.avaliacaoresposta where db106_avaliacaoperguntaopcao in(select db104_sequencial from avaliacaoperguntaopcao where db104_avaliacaopergunta in (select db103_sequencial from avaliacaopergunta where db103_avaliacaogrupopergunta = {$db102_sequencial}));
+            delete from habitacao.avaliacaoperguntaopcao where db104_avaliacaopergunta in (select db103_sequencial from avaliacaopergunta where db103_avaliacaogrupopergunta = {$db102_sequencial});
+            delete from habitacao.avaliacaopergunta where db103_avaliacaogrupopergunta = {$db102_sequencial};
+            delete from habitacao.avaliacaogrupopergunta where db102_sequencial = {$db102_sequencial};
 SQL;
         DB::connection()->getPdo()->exec($sql);
     }

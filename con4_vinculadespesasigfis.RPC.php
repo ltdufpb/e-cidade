@@ -118,7 +118,7 @@ switch ($oParam->exec) {
     $oDomXML->load('config/sigfis/vinculodespesa.xml');
     $oNoDespesas         = $oDomXML->getElementsByTagName('despesas');
     $aDespesas           = $oDomXML->getElementsByTagName('despesa');
-    $aDespesasVinculadas = array();
+    $aDespesasVinculadas = [];
     
     $oDaoOrcElemento     = db_utils::getDao('orcelemento');
     
@@ -132,7 +132,7 @@ switch ($oParam->exec) {
     
       if ($oDaoOrcElemento->numrows == 1) {
     
-        $sDescricaoDespesa = urlencode(db_utils::fieldsMemory($rsDespesa, 0)->o56_descr);
+        $sDescricaoDespesa = urlencode((string) db_utils::fieldsMemory($rsDespesa, 0)->o56_descr);
     
         $oDespesaVinculada                = new stdClass();
         $oDespesaVinculada->descricao     = $sDescricaoDespesa;

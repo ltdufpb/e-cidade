@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 $clbairro = new cl_bairro;
 $db_opcao = 3;
 $db_botao = false;
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Excluir"){
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Excluir"){
    db_inicio_transacao();
    $clbairro->excluir($j13_codi);
    db_fim_transacao();

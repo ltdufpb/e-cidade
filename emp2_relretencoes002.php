@@ -32,8 +32,8 @@ $oGet    = db_utils::postMemory($_GET);
 if ($oGet->dataini == '' || $oGet->datafim  == '' ){
    db_redireciona('db_erros.php?fechar=true&db_erro=Parametros informados incorretos.');
 }else{
-  $datainip = explode("/", $oGet->dataini);
-  $datainif = explode("/", $oGet->datafim);
+  $datainip = explode("/", (string) $oGet->dataini);
+  $datainif = explode("/", (string) $oGet->datafim);
   $dataini  = "{$datainip[2]}-{$datainip[1]}-{$datainip[0]}";
   $datafim  = "{$datainif[2]}-{$datainif[1]}-{$datainif[0]}";
 }

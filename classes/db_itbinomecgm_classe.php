@@ -52,10 +52,10 @@ class cl_itbinomecgm {
                  it21_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   public function cl_itbinomecgm() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbinomecgm"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    public function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_itbinomecgm {
          $this->erro_status = "0";
          return false; 
        }
-       $this->it21_sequencial = pg_result($result,0,0); 
+       $this->it21_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from itbinomecgm_it21_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $it21_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $it21_sequencial)){
          $this->erro_sql = " Campo it21_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_itbinomecgm {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "itbinomecgm ($this->it21_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "itbinomecgm já Cadastrado";
@@ -166,12 +166,12 @@ class cl_itbinomecgm {
      $resaco = $this->sql_record($this->sql_query_file($this->it21_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8998,'$this->it21_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1539,8998,'','".AddSlashes(pg_result($resaco,0,'it21_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1539,8999,'','".AddSlashes(pg_result($resaco,0,'it21_itbinome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1539,9000,'','".AddSlashes(pg_result($resaco,0,'it21_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1539,8998,'','".AddSlashes(pg_fetch_result($resaco,0,'it21_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1539,8999,'','".AddSlashes(pg_fetch_result($resaco,0,'it21_itbinome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1539,9000,'','".AddSlashes(pg_fetch_result($resaco,0,'it21_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_itbinomecgm {
       $this->atualizacampos();
      $sql = " update itbinomecgm set ";
      $virgula = "";
-     if(trim($this->it21_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it21_sequencial"])){ 
+     if(trim((string) $this->it21_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it21_sequencial"])){ 
        $sql  .= $virgula." it21_sequencial = $this->it21_sequencial ";
        $virgula = ",";
-       if(trim($this->it21_sequencial) == null ){ 
+       if(trim((string) $this->it21_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "it21_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_itbinomecgm {
          return false;
        }
      }
-     if(trim($this->it21_itbinome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it21_itbinome"])){ 
+     if(trim((string) $this->it21_itbinome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it21_itbinome"])){ 
        $sql  .= $virgula." it21_itbinome = $this->it21_itbinome ";
        $virgula = ",";
-       if(trim($this->it21_itbinome) == null ){ 
+       if(trim((string) $this->it21_itbinome) == null ){ 
          $this->erro_sql = " Campo Sequencia nao Informado.";
          $this->erro_campo = "it21_itbinome";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_itbinomecgm {
          return false;
        }
      }
-     if(trim($this->it21_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it21_numcgm"])){ 
+     if(trim((string) $this->it21_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it21_numcgm"])){ 
        $sql  .= $virgula." it21_numcgm = $this->it21_numcgm ";
        $virgula = ",";
-       if(trim($this->it21_numcgm) == null ){ 
+       if(trim((string) $this->it21_numcgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "it21_numcgm";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_itbinomecgm {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8998,'$this->it21_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it21_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1539,8998,'".AddSlashes(pg_result($resaco,$conresaco,'it21_sequencial'))."','$this->it21_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1539,8998,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it21_sequencial'))."','$this->it21_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it21_itbinome"]))
-           $resac = db_query("insert into db_acount values($acount,1539,8999,'".AddSlashes(pg_result($resaco,$conresaco,'it21_itbinome'))."','$this->it21_itbinome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1539,8999,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it21_itbinome'))."','$this->it21_itbinome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it21_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,1539,9000,'".AddSlashes(pg_result($resaco,$conresaco,'it21_numcgm'))."','$this->it21_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1539,9000,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it21_numcgm'))."','$this->it21_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_itbinomecgm {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8998,'$it21_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1539,8998,'','".AddSlashes(pg_result($resaco,$iresaco,'it21_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1539,8999,'','".AddSlashes(pg_result($resaco,$iresaco,'it21_itbinome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1539,9000,'','".AddSlashes(pg_result($resaco,$iresaco,'it21_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1539,8998,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it21_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1539,8999,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it21_itbinome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1539,9000,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it21_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from itbinomecgm
@@ -345,7 +345,7 @@ class cl_itbinomecgm {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:itbinomecgm";
@@ -383,7 +383,7 @@ class cl_itbinomecgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_itbinomecgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

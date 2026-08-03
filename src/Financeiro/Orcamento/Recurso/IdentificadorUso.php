@@ -14,7 +14,7 @@ class IdentificadorUso
     public static function getAll()
     {
         $instituicao = \InstituicaoRepository::getInstituicaoSessao();
-        $estado = strtoupper($instituicao->getUf());
+        $estado = strtoupper((string) $instituicao->getUf());
         $dao = new \cl_recursoidentificador();
         $busca = $dao->sql_query_file(null, "*", 2, "upper(o202_estado) = '{$estado}'");
         $resBusca = db_query($busca);

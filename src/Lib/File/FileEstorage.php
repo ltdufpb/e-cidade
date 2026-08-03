@@ -42,7 +42,7 @@ class FileEstorage
         }
 
         if ($retornaBase64) {
-            $base64 = base64_encode($response);
+            $base64 = base64_encode((string) $response);
             $data["documento"] = "data:{$infoRequest['content_type']};base64,{$base64}";
             $data["content_type"] = $infoRequest['content_type'];
             return $data;
@@ -52,7 +52,7 @@ class FileEstorage
         $this->path .= '.';
         // file_put_contents('tmp/debug', print_r($infoRequest, true));
 
-        $infoRequest['content_type'] = trim($infoRequest['content_type']);
+        $infoRequest['content_type'] = trim((string) $infoRequest['content_type']);
         switch ($infoRequest['content_type']) {
             case 'application/x-abiword':
                 $extension = 'abw';

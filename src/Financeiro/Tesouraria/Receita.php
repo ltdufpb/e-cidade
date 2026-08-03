@@ -115,7 +115,7 @@ class Receita {
 
         $oReceitaMulta      = ReceitaRepository::getById($this->dadosReceita->k02_recmul);
         $this->receitaMulta = $oReceitaMulta;
-      } catch (\BusinessException $businessException) {
+      } catch (\BusinessException) {
         $this->dadosReceita->k02_recmul = null;
       }
     }
@@ -140,7 +140,7 @@ class Receita {
 
         $oReceitaJuros = ReceitaRepository::getById($this->dadosReceita->k02_recjur);
         $this->receitaJuros = $oReceitaJuros;
-      } catch (\BusinessException $businessException) {
+      } catch (\BusinessException) {
         $this->dadosReceita->k02_recjur = null;
       }
     }

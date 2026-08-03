@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_config_classe.php"));
 include(modification("classes/db_db_userinst_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cl_db_userinst = new cl_db_userinst;
 $cldb_config = new cl_db_config;
@@ -92,7 +92,7 @@ function js_marcatodos(){
 <table cellspacing="0" bgcolor="#CCCCCC" border="1" marginwidth="0">
    <?php 
    // selecina as instituições que o usuario tem liberadas
-   $vetor_instit = array();
+   $vetor_instit = [];
    $resit  = $cl_db_userinst->sql_record($cl_db_userinst->sql_query_file(null, null,"id_instit",null,"id_usuario=".db_getsession("DB_id_usuario")));
    if ($cl_db_userinst->numrows > 0) {
        for($x=0;$x<$cl_db_userinst->numrows;$x++){

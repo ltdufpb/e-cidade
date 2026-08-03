@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_formareclamacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clformareclamacao = new cl_formareclamacao;
 $clformareclamacao->rotulo->label("p42_sequencial");
 $clformareclamacao->rotulo->label("p42_sequencial");
@@ -98,9 +98,9 @@ $clformareclamacao->rotulo->label("p42_sequencial");
         }else{
            $sql = $clformareclamacao->sql_query("",$campos,"p42_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_p42_sequencial)){
-          $repassa = array("chave_p42_sequencial"=>$chave_p42_sequencial,"chave_p42_sequencial"=>$chave_p42_sequencial);
+          $repassa = ["chave_p42_sequencial"=>$chave_p42_sequencial,"chave_p42_sequencial"=>$chave_p42_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -62,7 +62,7 @@ db_postmemory($_POST);
                     <td align="left" nowrap title="Se tiver orçamentos, selecione o tipo"><b>Mostrar:</b></td>
                     <td align="left" nowrap>
                         <?php
-                        $arr_comorc = array("0" => "Somente valores dos itens", "s" => "Valores orçados por solicitação", "p" => "Valores orçados por PC");
+                        $arr_comorc = ["0" => "Somente valores dos itens", "s" => "Valores orçados por solicitação", "p" => "Valores orçados por PC"];
                         db_select("comorcam", $arr_comorc, true, 1);
                         ?>
                     </td>

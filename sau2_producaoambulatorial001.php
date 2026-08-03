@@ -123,7 +123,7 @@ $oRotulo->label("sd63_c_nome");
                               </td>
                               <td  nowrap>
                                 <?php 
-                                $aX = array('1'=>'UPS', '2'=>'SEM AGRUPAMENTO');
+                                $aX = ['1'=>'UPS', '2'=>'SEM AGRUPAMENTO'];
                                 db_select('agrupar', $aX, true, 1, "");
                                 ?>
                               </td>
@@ -164,7 +164,7 @@ $oRotulo->label("sd63_c_nome");
 							                </td>
 							                <td nowrap>
 							                  <?php 
-                                $aX = array("0"=>"");
+                                $aX = ["0"=>""];
                                 db_select("sd60_i_codigo", $aX, $Isd60_i_codigo, 1,
                                           "onchange='js_preencherSubgrupos();' style='width: 500px;'"
                                          );
@@ -180,7 +180,7 @@ $oRotulo->label("sd63_c_nome");
 							                </td>
 							                <td nowrap>
 							                  <?php 
-                                $aX = array("0"=>"");
+                                $aX = ["0"=>""];
                                 db_select("sd61_i_codigo", $aX, $Isd61_i_codigo, 1,
                                           "onchange='js_preencherFormaOrganizacao();'  style='width: 500px;'"
                                          );
@@ -196,7 +196,7 @@ $oRotulo->label("sd63_c_nome");
 							                </td>
 							                <td>
 							                  <?php 
-                                $aX = array("0"=>"");
+                                $aX = ["0"=>""];
                                 db_select("sd62_i_codigo", $aX, $Isd62_i_codigo, 1, " style='width: 500px;' ");
                                 ?>
 							                </td>

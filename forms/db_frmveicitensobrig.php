@@ -69,7 +69,7 @@ if (!isset($ve09_usuario)){
   <tr>
     <td nowrap colspan="3">
     <?php 
-	     $chavepri = array ("ve09_sequencial"=>@$ve09_sequencial);
+	     $chavepri =  ["ve09_sequencial"=>@$ve09_sequencial];
        $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->sql = $clveicitensobrig->sql_query_obrigatorio(null,"distinct on (ve08_descr) ve09_sequencial,ve09_veiccaditensobrig,ve08_descr,case when ve10_veicitensobrig is not null then 'BAIXADO' else 'NÃO BAIXADO' end as ve10_veicitensobrig",null,"ve09_veiculos = $ve09_veiculos");
        $cliframe_alterar_excluir->campos = "ve09_sequencial,ve09_veiccaditensobrig,ve08_descr,ve10_veicitensobrig";
@@ -118,7 +118,7 @@ function js_preenchepesquisa(chave){
   db_iframe_conplano.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }

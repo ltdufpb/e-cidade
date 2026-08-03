@@ -48,8 +48,8 @@ include(modification("classes/db_tesinterlote_classe.php"));
 include(modification("classes/db_testadanumero_classe.php"));
 include(modification("classes/db_iptubase_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $cllote = new cl_lote;
 $clloteloc = new cl_loteloc;
@@ -193,7 +193,7 @@ if (isset ($excluir)) {
 			if ($numrowst > 0) {
 				db_msgbox(" Impossível excluir. Existe matrícula cadastrada para este lote. ");
 				$erro_msg = $cllote->erro_msg;
-				break;
+				return;
 			} else {
 				$erro_msg = $cllote->erro_msg;
 				$sqlerro = true;

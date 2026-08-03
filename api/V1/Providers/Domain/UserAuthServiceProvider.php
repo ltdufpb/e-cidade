@@ -42,7 +42,7 @@ class UserAuthServiceProvider implements ServiceProviderInterface, BootableProvi
             try {
                 $usuario = new UsuarioSistema($idUsuario);
                 DefaultSession::getInstance()->atualizaDadosUsuario($usuario->getCodigo());
-            } catch (Exception $exception) {
+            } catch (Exception) {
                 throw new AccessDeniedException('Usuário informado não foi encontrado na base de dados.', 401);
             }
         });

@@ -39,8 +39,8 @@ $orcparamrel = new cl_orcparamrel;
 $clconrelinfo = new cl_conrelinfo;
 $clempresto = new cl_empresto;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 // db_postmemory($HTTP_POST_VARS,2); exit;
 
@@ -59,11 +59,11 @@ $rec["2"]["valor"] = 0;
 $rec["3"]["valor"] = 0;
 
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,uf from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   $descr_inst .= $xvirg.$nomeinst;
   $xvirg = ', ';
@@ -108,7 +108,7 @@ $db_filtro='';
 $result_receita = db_receitasaldo(11,1,3,true,$db_filtro,$anousu,$dataini,$datafin);
 @db_query("drop table work_receita");
 
-for ($i = 0; $i < pg_numrows($result_receita); $i ++) {
+for ($i = 0; $i < pg_num_rows($result_receita); $i ++) {
   db_fieldsmemory($result_receita, $i);
   $estrutural = $o57_fonte;
 
@@ -141,7 +141,7 @@ $rendimentos_mde_fundef = 0;
 // echo "<br>".$datafin;
 
 //db_criatabela($result_deducao);
-for ($x=0;$x < pg_numrows($result_deducao);$x++){
+for ($x=0;$x < pg_num_rows($result_deducao);$x++){
   db_fieldsmemory($result_deducao,$x);
   
 //  if ($o57_fonte == '417240100000000'){
@@ -288,9 +288,9 @@ $pdf->cell(130,$alt,"Especificação da Subfunção",0,0,"C",1);
 $pdf->cell(40,$alt,"Valor",0,1,"C",1);
 
 $soma_subfuncao_exe = 0;
-$array_subfuncao = array();
+$array_subfuncao = [];
 
-for ($x=0;$x < pg_numrows($result_despesa);$x++) {
+for ($x=0;$x < pg_num_rows($result_despesa);$x++) {
   db_fieldsmemory($result_despesa,$x);
   
   // se valor zerado continua na proxima
@@ -348,8 +348,8 @@ $pdf->cell(130,$alt,"Especificação da Subfunção",0,0,"C",1);
 $pdf->cell(40,$alt,"Valor",0,1,"C",1);
 
 $soma_subfuncao_rp = 0;
-$array_subfuncao = array();
-for ($x=0;$x < pg_numrows($resultado_rp);$x++) {
+$array_subfuncao = [];
+for ($x=0;$x < pg_num_rows($resultado_rp);$x++) {
   db_fieldsmemory($resultado_rp,$x);
   
   // se valor zerado continua na proxima
@@ -412,7 +412,7 @@ $pdf->cell(90,$alt,"Descrição",0,0,"C",1);
 $pdf->cell(40,$alt,"Valor",0,1,"C",1);
 
 $soma_patrimonial = 0;
-for ($x=0;$x < pg_numrows($result_plano);$x++){
+for ($x=0;$x < pg_num_rows($result_plano);$x++){
   db_fieldsmemory($result_plano,$x);
   
   if (in_array($estrutural,$m_contas)){

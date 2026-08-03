@@ -40,7 +40,7 @@ class TipoServicoNotaFiscalRepository extends \BaseClassRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param array|int $ids
@@ -66,7 +66,7 @@ class TipoServicoNotaFiscalRepository extends \BaseClassRepository
      * @param TipoServicoNotaFiscal|null $tipoServicoNotaFiscal
      * @throws Exception
      */
-    public function delete(TipoServicoNotaFiscal $tipoServicoNotaFiscal = null)
+    public function delete(?TipoServicoNotaFiscal $tipoServicoNotaFiscal = null)
     {
         $sequencial = $tipoServicoNotaFiscal instanceof TipoServicoNotaFiscal ? $tipoServicoNotaFiscal->getSequencial() : null;
 
@@ -84,7 +84,7 @@ class TipoServicoNotaFiscalRepository extends \BaseClassRepository
      * @return bool|TipoServicoNotaFiscal
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_tiposerviconotafiscal();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -108,13 +108,13 @@ class TipoServicoNotaFiscalRepository extends \BaseClassRepository
      * @return TipoServicoNotaFiscal[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $dao = new cl_tiposerviconotafiscal();
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $tiposServicosNotaFiscal = array();
+        $tiposServicosNotaFiscal = [];
 
         if (pg_num_rows($rs) === 0) {
             return $tiposServicosNotaFiscal;
@@ -177,7 +177,7 @@ class TipoServicoNotaFiscalRepository extends \BaseClassRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
         return $this;
     }
 
@@ -195,7 +195,7 @@ class TipoServicoNotaFiscalRepository extends \BaseClassRepository
             throw new Exception("Não foi possível buscar os tipos de serviços de nota fiscal.\nContate o suporte.");
         }
 
-        $tiposServicosNotaFiscal = array();
+        $tiposServicosNotaFiscal = [];
 
         if (pg_num_rows($rs) === 0) {
             return $tiposServicosNotaFiscal;

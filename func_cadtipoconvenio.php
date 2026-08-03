@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadtipoconvenio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcadtipoconvenio = new cl_cadtipoconvenio;
 $clcadtipoconvenio->rotulo->label("ar12_sequencial");
 $clcadtipoconvenio->rotulo->label("ar12_nome");
@@ -98,9 +98,9 @@ $clcadtipoconvenio->rotulo->label("ar12_nome");
         }else{
            $sql = $clcadtipoconvenio->sql_query("",$campos,"ar12_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ar12_nome)){
-          $repassa = array("chave_ar12_sequencial"=>$chave_ar12_sequencial,"chave_ar12_nome"=>$chave_ar12_nome);
+          $repassa = ["chave_ar12_sequencial"=>$chave_ar12_sequencial,"chave_ar12_nome"=>$chave_ar12_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

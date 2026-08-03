@@ -68,10 +68,10 @@ $db_opcao   = 1;
    
               MsgAviso(db_getsession("DB_coddepto"), "escola");
 
-              $clCriaAbas->identifica    = array("a1" => "Ato Legal", "a2" => "Anexar Documento");
-              $clCriaAbas->sizecampo     = array("a1" => "20", "a2" => "25");
-              $clCriaAbas->src           = array("a1" => "edu1_atolegal003.php", "a2" => "edu1_edu_anexoatolegal003.php");
-              $clCriaAbas->disabled      = array("a2" => "true");
+              $clCriaAbas->identifica    = ["a1" => "Ato Legal", "a2" => "Anexar Documento"];
+              $clCriaAbas->sizecampo     = ["a1" => "20", "a2" => "25"];
+              $clCriaAbas->src           = ["a1" => "edu1_atolegal003.php", "a2" => "edu1_edu_anexoatolegal003.php"];
+              $clCriaAbas->disabled      = ["a2" => "true"];
               $clCriaAbas->cordisabled   = "#9b9b9b";
               $clCriaAbas->iframe_height = "600";
               $clCriaAbas->cria_abas();

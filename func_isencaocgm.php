@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_isencaocgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clisencaocgm = new cl_isencaocgm;
 $clisencaocgm->rotulo->label("v12_sequencial");
 $clisencaocgm->rotulo->label("v12_numcgm");
@@ -98,9 +98,9 @@ $clisencaocgm->rotulo->label("v12_numcgm");
         }else{
            $sql = $clisencaocgm->sql_query("",$campos,"v12_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v12_numcgm)){
-          $repassa = array("chave_v12_sequencial"=>$chave_v12_sequencial,"chave_v12_numcgm"=>$chave_v12_numcgm);
+          $repassa = ["chave_v12_sequencial"=>$chave_v12_sequencial,"chave_v12_numcgm"=>$chave_v12_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -97,7 +97,7 @@ if(isset($opcao) && $opcao=="alterar"){
 }
 
 
-if (isset($db_opcao)&&trim($db_opcao)==4){
+if (isset($db_opcao)&&trim((string) $db_opcao)==4){
      $db_opcao = 3;
 }
 
@@ -122,7 +122,7 @@ if ( !empty($m41_codmatmater) && $db_opcao == 1 && !isset($incluir) ) {
 
 $deposito = \ECidade\Patrimonial\Material\Repositories\DepositoRepository::find($m40_almox);
 ?>
-<form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" >
+<form name="form1" method="post" action="<?=basename((string) $_SERVER['PHP_SELF'])?>" >
 <fieldset style="width: 90%" ><legend><b>Dados da requisição</b></legend>
 <table border="0" cellspacing="0" cellpadding="0"> <tr>
 <td nowrap title="<?=@$Tm40_codigo?>">
@@ -276,10 +276,10 @@ db_textarea('m41_obs',0,50,$Im41_obs,true,'text',$db_opcao,"")
         </td>
          <td>
          <?php 
-          $aObs = array(
+          $aObs = [
                         18 => "Resumida",
                         181 => "Completa",
-                       );
+                       ];
           db_select("tobserva",$aObs,true,1);
          ?>
          </td>
@@ -301,7 +301,7 @@ if(!isset($opcao) && isset($db_opcao) && $db_opcao==3){
 <tr>
 <td valign="top">
 <?php
-$chavepri= array("m40_codigo"=>@$m40_codigo,"m41_codigo"=>@$m41_codigo,"m41_obs"=>@$m41_obs,"m41_quant"=>@$m41_quant,"m41_codunid"=>@$m41_codunid,"m61_descr"=>@$m61_descr,"m41_codmatmater"=>@$m41_codmatmater,"m60_descr"=>@$m60_descr);
+$chavepri= ["m40_codigo"=>@$m40_codigo,"m41_codigo"=>@$m41_codigo,"m41_obs"=>@$m41_obs,"m41_quant"=>@$m41_quant,"m41_codunid"=>@$m41_codunid,"m61_descr"=>@$m61_descr,"m41_codmatmater"=>@$m41_codmatmater,"m60_descr"=>@$m60_descr];
 $cliframe_alterar_excluir->chavepri=$chavepri;
 if (isset($m40_codigo)&&@$m40_codigo!=""){
   $cliframe_alterar_excluir->sql = $clmatrequiitem->sql_query(null,'*',null,"m41_codmatrequi=$m40_codigo");

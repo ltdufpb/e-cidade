@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_avaliacaogruporespostaremuneracaorgps_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clavaliacaogruporespostaremuneracaorgps = new cl_avaliacaogruporespostaremuneracaorgps();
 $clavaliacaogruporespostaremuneracaorgps->rotulo->label('eso28_sequencial');
 $clavaliacaogruporespostaremuneracaorgps->rotulo->label('eso28_sequencial');
@@ -58,9 +58,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clavaliacaogruporespostaremuneracaorgps->sql_query("",$campos,"eso28_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_eso28_sequencial)){
-          $repassa = array("chave_eso28_sequencial"=>$chave_eso28_sequencial,"chave_eso28_sequencial"=>$chave_eso28_sequencial);
+          $repassa = ["chave_eso28_sequencial"=>$chave_eso28_sequencial,"chave_eso28_sequencial"=>$chave_eso28_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

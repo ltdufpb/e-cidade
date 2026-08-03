@@ -46,7 +46,7 @@ final class PadArquivoSigapPpa extends PadArquivoSigap
     {
 
         $this->sNomeArquivo = "Ppa";
-        $this->aDados = array();
+        $this->aDados = [];
         $this->iCodigoVersao = '';
     }
 
@@ -68,7 +68,7 @@ final class PadArquivoSigapPpa extends PadArquivoSigap
         /**.
          * Separamos a data do em ano, mes, dia
          */
-        list($iAno, $iMes, $iDia) = explode("-", $this->sDataFinal);
+        [$iAno, $iMes, $iDia] = explode("-", $this->sDataFinal);
         $oInstituicao = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
         $sListaInstit = db_getsession("DB_instit");
 
@@ -98,7 +98,7 @@ final class PadArquivoSigapPpa extends PadArquivoSigap
         $sSqlDespesaPPA .= "       o08_subfuncao, ";
         $sSqlDespesaPPA .= "       o08_ano ";
         $rsDadosPPA = db_query($sSqlDespesaPPA);
-        $aDadosDespesas = array();
+        $aDadosDespesas = [];
         for ($i = 0; $i < pg_num_rows($rsDadosPPA); $i++) {
 
             $oLinha = db_utils::fieldsMemory($rsDadosPPA, $i);
@@ -113,7 +113,7 @@ final class PadArquivoSigapPpa extends PadArquivoSigap
                 $oPrograma->subfuncao = $oLinha->o08_subfuncao;
                 $oPrograma->programa = $oLinha->o08_programa;
                 $oPrograma->projativ = $oLinha->o08_projativ;
-                $oPrograma->anos = array();
+                $oPrograma->anos = [];
                 $aDadosDespesas[$sHash] = $oPrograma;
             }
             $oAno = new stdClass();
@@ -134,13 +134,13 @@ final class PadArquivoSigapPpa extends PadArquivoSigap
             $oPPA = new stdClass();
             $oPPA->ppaCodigoEntidade = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
             $oPPA->ppaExercicio = str_pad($iAno, 4, "0", STR_PAD_LEFT);
-            $oPPA->ppaCodigoOrgao = str_pad($oDado->orgao, 2, "0", STR_PAD_LEFT);
-            $oPPA->ppaCodigoFuncao = str_pad($oDado->funcao, 2, '0', STR_PAD_LEFT);
-            $oPPA->ppaCodigoSubFuncao = str_pad($oDado->subfuncao, 3, '0', STR_PAD_LEFT);
+            $oPPA->ppaCodigoOrgao = str_pad((string) $oDado->orgao, 2, "0", STR_PAD_LEFT);
+            $oPPA->ppaCodigoFuncao = str_pad((string) $oDado->funcao, 2, '0', STR_PAD_LEFT);
+            $oPPA->ppaCodigoSubFuncao = str_pad((string) $oDado->subfuncao, 3, '0', STR_PAD_LEFT);
 
-            $oPPA->ppaCodigoPrograma = str_pad($oDado->programa, 4, "0", STR_PAD_LEFT);
-            $oPPA->ppaCodigoProjetoAtividade = str_pad($oDado->projativ, 4, "0", STR_PAD_LEFT);
-            $oPPA->ppaCodigoUnidadeOrcamentaria = str_pad($oDado->unidade, 2, "0", STR_PAD_LEFT);
+            $oPPA->ppaCodigoPrograma = str_pad((string) $oDado->programa, 4, "0", STR_PAD_LEFT);
+            $oPPA->ppaCodigoProjetoAtividade = str_pad((string) $oDado->projativ, 4, "0", STR_PAD_LEFT);
+            $oPPA->ppaCodigoUnidadeOrcamentaria = str_pad((string) $oDado->unidade, 2, "0", STR_PAD_LEFT);
             $oPPA->ppaMesAnoMovimento = $sDiaMesAno;
             $iInicio = 1;
             $nTotalMeta = 0;
@@ -178,7 +178,7 @@ final class PadArquivoSigapPpa extends PadArquivoSigap
     public function getNomeElementos()
     {
 
-        $aElementos = array(
+        $aElementos = [
             "ppaCodigoEntidade",
             "ppaCodigoOrgao",
             "ppaCodigoUnidadeOrcamentaria",
@@ -198,7 +198,7 @@ final class PadArquivoSigapPpa extends PadArquivoSigap
             "ppaMetaFisica3Ano",
             "ppaMetaFisica4Ano",
             "ppaMetaFisicaTotal"
-        );
+        ];
         return $aElementos;
     }
 

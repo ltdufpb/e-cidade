@@ -33,7 +33,7 @@ include(modification("classes/db_itinerario_classe.php"));
 include(modification("classes/db_itinerarioescolaproc_classe.php"));
 include(modification("classes/db_itinerarioescola_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clitinerario = new cl_itinerario;
 $clitinerarioescolaproc = new cl_itinerarioescolaproc;
 $clitinerarioescola = new cl_itinerarioescola;
@@ -96,7 +96,7 @@ if(isset($incluir)){
     }
   }else{
   $result = @db_query("select last_value from itinerario_ed218_i_codigo_seq");
-  $ultimo = pg_result($result,0,0);
+  $ultimo = pg_fetch_result($result,0,0);
   if($tipoescola=="F"){
    db_inicio_transacao();
    $clitinerarioescolaproc->ed222_i_itinerario=$ultimo;

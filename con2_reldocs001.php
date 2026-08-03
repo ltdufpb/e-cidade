@@ -34,8 +34,8 @@ include(modification("classes/db_empempenho_classe.php"));
 include(modification("classes/db_emphist_classe.php"));
 
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 //---- instancia classes
 $clempempenho = new cl_empempenho;

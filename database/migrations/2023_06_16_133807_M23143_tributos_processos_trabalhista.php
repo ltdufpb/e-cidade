@@ -102,7 +102,7 @@ class M23143TributosProcessosTrabalhista extends Migration
 
     //    $this->downEstruturaTabelaRhProcessoTributoContribuicao();
     //    $this->downDicionarioTabelaRhProcessoTributoContribuicao();
-        
+
     //    $this->downEstruturaTabelaRhprocessoTributoBase();
     //    $this->downDicionarioTabelaRhprocessoTributoBase();
 

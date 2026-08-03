@@ -35,7 +35,7 @@ class LogErro {
 
     $oMensagem                 = new \stdClass();
     $oMensagem->iIdentificador = $iIdentificador;
-    $oMensagem->sErro          = utf8_encode($MensagemLog);
+    $oMensagem->sErro          = mb_convert_encoding($MensagemLog, 'UTF-8', 'ISO-8859-1');
     self::getInstance()->oLog->log($oMensagem, \DBLog::LOG_ERROR);
   }
 
@@ -46,7 +46,7 @@ class LogErro {
   public static function logSituacao($MensagemLog, $iTipo = \DBLog::LOG_ERROR) {
 
     $oMensagem            = new \stdClass();
-    $oMensagem->sMensagem = utf8_encode($MensagemLog);
+    $oMensagem->sMensagem = mb_convert_encoding($MensagemLog, 'UTF-8', 'ISO-8859-1');
     self::getInstance()->oLog->log($oMensagem, $iTipo);
   }
 

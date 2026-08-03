@@ -40,7 +40,7 @@ class DiarioAreaRegistry
     /**
      * @var DiarioArea[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param DiarioArea $diarioArea

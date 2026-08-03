@@ -33,7 +33,7 @@ include_once(modification("classes/db_vac_boletim_classe.php"));
 include_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clvac_boletim = new cl_vac_boletim;
 if (!isset($db_opcao)) {
   $db_opcao = 1;

@@ -42,15 +42,15 @@ class MemComissaoLicitaCon extends ArquivoLicitaCon {
    */
   public function getDados() {
 
-    $aTiposComissao = array(
+    $aTiposComissao = [
         1 => 'P',
         2 => 'E',
         3 => 'G',
         4 => 'S',
         6 => 'C',
-      );
+      ];
 
-    $aTipoAtribuicao = array(
+    $aTipoAtribuicao = [
         'A' => 'A',
         'D' => 'D',
         'G' => 'G',
@@ -59,22 +59,22 @@ class MemComissaoLicitaCon extends ArquivoLicitaCon {
         'P' => 'P',
         'S' => 'S',
         'C' => 'C'
-      );
+      ];
 
-    $this->aAnexos = array();
-    $aMembros = array();
+    $this->aAnexos = [];
+    $aMembros = [];
 
     $oDaoLiccomissaoCgm = new cl_liccomissaocgm();
     $oDaoLiclicita      = new cl_liclicita();
 
-    $aCampos = array(
+    $aCampos = [
         "l30_data",
         "l30_portaria",
         "l30_tipo",
         "z01_numcgm",
         "l31_tipo",
         "l15_cadattdinamicovalorgrupo"
-      );
+      ];
 
     $aWhereLicitacao   = LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(), $this->oCabecalho->getDataGeracao());
     $aWhereLicitacao[] = "l20_liccomissao = l30_codigo";
@@ -91,12 +91,12 @@ class MemComissaoLicitaCon extends ArquivoLicitaCon {
         $oDataDesignacao = new DBDate($oRegistro->l30_data);
 
         $oMembro = new stdClass();
-        $oMembro->NR_COMISSAO = preg_replace('/[^0-9]/', '', $oRegistro->l30_portaria);
+        $oMembro->NR_COMISSAO = preg_replace('/[^0-9]/', '', (string) $oRegistro->l30_portaria);
         $oMembro->ANO_COMISSAO = $oDataDesignacao->getAno();
-        $oMembro->TP_COMISSAO = isset($aTiposComissao[$oRegistro->l30_tipo]) ? $aTiposComissao[$oRegistro->l30_tipo] : null;
+        $oMembro->TP_COMISSAO = $aTiposComissao[$oRegistro->l30_tipo] ?? null;
         $oMembro->TP_DOCUMENTO_MEMBRO = LicitanteLicitaCon::getTipoDocumentoPorCGM($oRegistro->z01_numcgm);
         $oMembro->NR_DOCUMENTO_MEMBRO = LicitanteLicitaCon::getDocumentoPorCGM($oRegistro->z01_numcgm);
-        $oMembro->TP_ATRIBUICAO = isset($aTipoAtribuicao[$oRegistro->l31_tipo]) ? $aTipoAtribuicao[$oRegistro->l31_tipo] : null;
+        $oMembro->TP_ATRIBUICAO = $aTipoAtribuicao[$oRegistro->l31_tipo] ?? null;
 
         $oMembro->DS_CARGO = null;
         $oMembro->TP_CARGO = null;

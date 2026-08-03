@@ -115,7 +115,7 @@ db_app::load("strings.js");
                </td>
                <td>
                  <?php 
-                   db_select("periodicidade",array(1 => "mensal", 2 => "Bimestral"), true, 1);
+                   db_select("periodicidade",[1 => "mensal", 2 => "Bimestral"], true, 1);
                  ?>
                </td>
              </tr>
@@ -125,7 +125,7 @@ db_app::load("strings.js");
                </td>
                <td>
                  <?php 
-                   db_select("forma",array(1 => "Por Recurso", 2 => "Totalizaçao Geral"), true, 1);
+                   db_select("forma",[1 => "Por Recurso", 2 => "Totalizaçao Geral"], true, 1);
                  ?>
                </td>
              </tr>

@@ -74,7 +74,7 @@ $clmatestoqueitemunid = new cl_matestoqueitemunid;
 $clempnota->rotulo->label();
 $clempnotaele->rotulo->label();
 $gravanota = false;
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 db_postmemory($_POST);
 db_postmemory($_GET);
 
@@ -128,7 +128,7 @@ if ($clmatordem->numrows > 0) {
 db_menu();
 
 if (isset($confirma)) {
-    if (strlen($erro_msg) > 0) {
+    if (strlen((string) $erro_msg) > 0) {
         db_msgbox($erro_msg);
     }
 

@@ -20,18 +20,18 @@ class M10560Progressao extends PostgresMigration
 
     public function upDDL()
     {
-        $this->table('padroes', array('schema'=>'pessoal'))
-             ->addColumn('r02_nivel',               'string',  array('null' => true, 'limit' => 250))
-             ->addColumn('r02_classe',              'string',  array('null' => true, 'limit' => 250))
-             ->addColumn('r02_padraopai_regime',    'integer', array('null' => true))
-             ->addColumn('r02_padraopai_codigo',    'string',  array('null' => true, 'limit' => 10))
-             ->addColumn('r02_padraopai_instit',    'integer', array('null' => true))
+        $this->table('padroes', ['schema'=>'pessoal'])
+             ->addColumn('r02_nivel',               'string',  ['null' => true, 'limit' => 250])
+             ->addColumn('r02_classe',              'string',  ['null' => true, 'limit' => 250])
+             ->addColumn('r02_padraopai_regime',    'integer', ['null' => true])
+             ->addColumn('r02_padraopai_codigo',    'string',  ['null' => true, 'limit' => 10])
+             ->addColumn('r02_padraopai_instit',    'integer', ['null' => true])
              ->save();
     }
 
     public function upDicionarioDados()
     {
-        $sqls   = array();
+        $sqls   = [];
         $sqls[] = "INSERT INTO db_syscampo VALUES (1009703,'r02_nivel','varchar(250)','Campo destinado para cadastrar o nível do padrão','', 'Nível',250,'f','t','f',0,'text','Nível');";
         $sqls[] = "INSERT INTO db_syscampo VALUES (1009704,'r02_classe','varchar(250)','Campo destinado para cadastrar a classe do padrão','', 'Classe',250,'f','t','f',0,'text','Classe');";
         $sqls[] = "INSERT INTO db_syscampo VALUES (1009705,'r02_padraopai','int4','Padrão ao qual está vinculado','0', 'Padrão vinculado',19,'t','f','f',1,'text','Padrão vinculado');";
@@ -90,7 +90,7 @@ class M10560Progressao extends PostgresMigration
 
     public function upFormulasSQL()
     {
-        $sqls   = array();
+        $sqls   = [];
         // Fórmula para retornar os dados do padrão atual
         $sqlInsertFormula  = "INSERT INTO db_formulas VALUES ( ";
         $sqlInsertFormula .= "     6677,  ";
@@ -208,7 +208,7 @@ class M10560Progressao extends PostgresMigration
 
     public function downFormulasSQL()
     {
-        $sqls   = array();
+        $sqls   = [];
         $sqls[] = "DELETE FROM db_formulas  WHERE db148_sequencial IN (6677, 6678); ";
 
         foreach ($sqls as $sql) {
@@ -218,7 +218,7 @@ class M10560Progressao extends PostgresMigration
 
     public function downDicionarioDados()
     {
-        $sqls   = array();
+        $sqls   = [];
         $sqls[] = "DELETE FROM db_sysforkey WHERE codarq = 567 AND codcam IN (1009705, 1009706, 1009707, 1009708,1009709);";
         $sqls[] = "DELETE FROM db_sysarqcamp WHERE codarq = 567 AND codcam IN (1009703, 1009704, 1009705, 1009706, 1009707, 1009708, 1009709);";
         $sqls[] = "DELETE FROM db_syscampo WHERE codcam IN (1009703, 1009704, 1009705, 1009706, 1009707, 1009708, 1009709, 1009710, 1009712);";
@@ -246,7 +246,7 @@ class M10560Progressao extends PostgresMigration
     
     public function downDDL()
     {
-        $this->table('padroes', array('schema'=>'pessoal'))
+        $this->table('padroes', ['schema'=>'pessoal'])
              ->removeColumn('r02_nivel')
              ->removeColumn('r02_classe')
              ->removeColumn('r02_padraopai_regime')

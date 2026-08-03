@@ -35,14 +35,10 @@ class ExportacaoArquivoConsignadoFactory {
 	 */
 	public static function getByBanco(Banco $oBanco, DBCompetencia $oCompetencia) {
 
-		switch ($oBanco->getCodigo()) {
-			case ExportacaoArquivoConsignado::EXPORTACAO_CONSIGNADO_CAIXA: // Caixa
-				return new \ExportacaoArquivoConsignadoCaixa($oBanco, $oCompetencia);
-				break;
-			
-			default:
-				return new \ExportacaoArquivoConsignado($oBanco, $oCompetencia);
-				break;
-		}
+		return match ($oBanco->getCodigo()) {
+            // Caixa
+            ExportacaoArquivoConsignado::EXPORTACAO_CONSIGNADO_CAIXA => new \ExportacaoArquivoConsignadoCaixa($oBanco, $oCompetencia),
+            default => new \ExportacaoArquivoConsignado($oBanco, $oCompetencia),
+        };
 	}
 }

@@ -34,7 +34,7 @@ include(modification("libs/db_libcontabilidade.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplanoexe_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clconplanoexe = new cl_conplanoexe;
 $clconplanoexen = new cl_conplanoexe;
@@ -45,12 +45,12 @@ $erro_msg = '';
 if(isset($processar)){   
   db_inicio_transacao();
   // verificar quais contas a serem migradas cfe o que veio do http_post
-  reset($HTTP_POST_VARS);
-  for($i=0;$i<count($HTTP_POST_VARS);$i++){
-    if(substr(key($HTTP_POST_VARS),0,9) == "importar_"){
-      $codcon = split("_",key($HTTP_POST_VARS));
+  reset($_POST);
+  for($i=0;$i<count($_POST);$i++){
+    if(str_starts_with((string) key($_POST), "importar_")){
+      $codcon = preg_split("#_#m",(string) key($_POST));
       $codcon = $codcon[1];
-      $reduz  = $HTTP_POST_VARS[key($HTTP_POST_VARS)];
+      $reduz  = $_POST[key($_POST)];
       $sql = "insert into conplano 
               select c60_codcon, ".db_getsession("DB_anousu").",c60_estrut,c60_descr,c60_finali,c60_codsis,c60_codcla
               from conplano where c60_anousu = ".(db_getsession("DB_anousu")-1)." and c60_codcon = $codcon";
@@ -97,7 +97,7 @@ if(isset($processar)){
       	  break;
         }      
       }         
-      next($HTTP_POST_VARS);
+      next($_POST);
     }
   }
   if($erro==false){

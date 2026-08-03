@@ -46,7 +46,7 @@ if(isset($get->q03_ativ)){
       }	
   }
 	$oJson  = new services_JSON();
-	$aItens = array("q03_ativ" => $get->q03_ativ);
+	$aItens = ["q03_ativ" => $get->q03_ativ];
 	echo  $oJson->encode($aItens);
 }
 ?>

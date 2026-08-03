@@ -44,7 +44,7 @@ $oRetorno               = new stdClass();
 $oRetorno->iStatus      = 1;
 $oRetorno->sMessage     = '';
 
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 try {
 	
   switch ($oParam->exec) {
@@ -54,7 +54,7 @@ try {
   		$iAnoUsu                 = db_getSession("DB_anousu");
   		$iInstit                 = db_getsession("DB_instit");
   		$sNovoEstrutural         = $oParam->sEstruturalNovo; // novo estrutural
-  		$iCaracterNovoEstrutural = strlen($sNovoEstrutural); // total de caracter do novo estrutural
+  		$iCaracterNovoEstrutural = strlen((string) $sNovoEstrutural); // total de caracter do novo estrutural
   		$aContasAlterar          = $oParam->aContasAlterar; // contas a serem alteradas
   		
   		db_inicio_transacao();
@@ -69,14 +69,14 @@ try {
         $estruturalAnterior      = $oDadoAlterar->c60_estrut;
   			
 	  		//pegamos a parte que sera substituida, baseada no total de caracter do novo estrutural
-  		  $sParteAlterada = substr($oDadoAlterar->c60_estrut, 0, $iCaracterNovoEstrutural);
+  		  $sParteAlterada = substr((string) $oDadoAlterar->c60_estrut, 0, $iCaracterNovoEstrutural);
   		  //montamos o novo estrutural com 15 digitos, os primeiros serao do NOVO e o Restante dele mesmo
-  			$sAlterarPara   = $sNovoEstrutural . substr($oDadoAlterar->c60_estrut, $iCaracterNovoEstrutural, 15);
+  			$sAlterarPara   = $sNovoEstrutural . substr((string) $oDadoAlterar->c60_estrut, $iCaracterNovoEstrutural, 15);
   			
   			$sConplanoOrcFontes = $sAlterarPara;
   			// cortamos para 13 digitos para a orcelemento
   			$sOrcElemento       = substr($sAlterarPara, 0, 13);
-        $estruturalDeReceita = in_array(substr($oDadoAlterar->c60_estrut,0,1), [4,9]) ;
+        $estruturalDeReceita = in_array(substr((string) $oDadoAlterar->c60_estrut,0,1), [4,9]) ;
   			
   			$oDaoConplanoOrcamento->c60_codcon = $oDadoAlterar->c60_codcon;
   			$oDaoConplanoOrcamento->c60_estrut = $sConplanoOrcFontes;
@@ -95,9 +95,7 @@ try {
   			  throw new DBException("Não foi possível buscar as informações dos planos orçamentários.");
         }
 
-        $aPlanoOrcamentario = db_utils::makeCollectionFromRecord($rsAnosOrcamento, function ($dado) {
-          return $dado->c60_anousu;
-        });
+        $aPlanoOrcamentario = db_utils::makeCollectionFromRecord($rsAnosOrcamento, fn($dado) => $dado->c60_anousu);
 
         $sSqlAnosOrcamentoCheck = $oDaoConplanoOrcamento->sql_query(null, null, "c60_anousu", null, "c60_estrut = '{$sConplanoOrcFontes}' AND c60_anousu = {$iAnoUsu}");
         $rsAnosOrcamentoCheck   = db_query($sSqlAnosOrcamentoCheck);
@@ -147,9 +145,7 @@ try {
           throw new DBException("Não foi possível buscar as informações dos planos orçamentários.");
         }
 
-        $aPlanoOrcamentario = db_utils::makeCollectionFromRecord($rsAnosFontes, function ($dado) {
-          return $dado->o57_anousu;
-        });
+        $aPlanoOrcamentario = db_utils::makeCollectionFromRecord($rsAnosFontes, fn($dado) => $dado->o57_anousu);
 
         foreach ($aPlanoOrcamentario as $o57_anousu) {
           $oDaoOrcFontes->o57_anousu = $o57_anousu;
@@ -167,9 +163,7 @@ try {
           throw new DBException("Não foi possível buscar as informações dos planos orçamentários.");
         }
 
-        $aPlanoOrcamentario = db_utils::makeCollectionFromRecord($rsAnosElemento, function ($dado) {
-          return $dado->o56_anousu;
-        });
+        $aPlanoOrcamentario = db_utils::makeCollectionFromRecord($rsAnosElemento, fn($dado) => $dado->o56_anousu);
 
         foreach ($aPlanoOrcamentario as $o56_anousu) {
           $oDaoOrcElemento->o56_anousu = $o56_anousu;
@@ -218,7 +212,7 @@ try {
         	$oDadosRetorno->iCodigo     = $oDadosContas->c60_codcon;
         	$oDadosRetorno->iReduzido   = $oDadosContas->c61_reduz;
         	$oDadosRetorno->sEstrutural = $oDadosContas->c60_estrut;
-        	$oDadosRetorno->sDescricao  = urlencode($oDadosContas->c60_descr);
+        	$oDadosRetorno->sDescricao  = urlencode((string) $oDadosContas->c60_descr);
         	
         	$aDadosRetorno[] = $oDadosRetorno;
         	
@@ -238,28 +232,7 @@ try {
   $oRetorno->sMessage = urlencode($oRetorno->sMessage);
   echo $oJson->encode($oRetorno);
   
-} catch (Exception $eErro){
-  
-  $oRetorno->iStatus  = 2;
-  $oRetorno->sMessage = urlencode($eErro->getMessage());
-  db_fim_transacao(true);
-  echo $oJson->encode($oRetorno);
-  
-}catch (DBException $eErro){
-  
-  $oRetorno->iStatus  = 2;
-  $oRetorno->sMessage = urlencode($eErro->getMessage());
-  db_fim_transacao(true);
-  echo $oJson->encode($oRetorno);
-  
-}catch (ParameterException $eErro){
-  
-  $oRetorno->iStatus  = 2;
-  $oRetorno->sMessage = urlencode($eErro->getMessage());
-  db_fim_transacao(true);
-  echo $oJson->encode($oRetorno);
-  
-}catch (BusinessException $eErro){
+} catch (Exception|DBException|ParameterException|BusinessException $eErro){
   
   $oRetorno->iStatus  = 2;
   $oRetorno->sMessage = urlencode($eErro->getMessage());

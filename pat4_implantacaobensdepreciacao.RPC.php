@@ -59,7 +59,7 @@ switch ($oParam->exec) {
   case 'getBensClassificacao':
 
     $oDaoClaBens       = db_utils::getDao('clabens');
-    $aClassificacaoBem = array();
+    $aClassificacaoBem = [];
     $sCamposBens       = " t64_class, t64_codcla, t64_descr, t52_descr, t52_bem, t52_ident, ";
     $sCamposBens      .= " t44_vidautil, t46_descricao, t46_sequencial ";
 
@@ -85,12 +85,12 @@ switch ($oParam->exec) {
           $oClassificacao                           = new stdClass();
           $oClassificacao->codigo                   = $oDadoBem->t64_codcla;
           $oClassificacao->classificacao            = $oDadoBem->t64_class;
-          $oClassificacao->descricao                = urlencode($oDadoBem->t64_descr);
-          $oClassificacao->itens                    = array();
+          $oClassificacao->descricao                = urlencode((string) $oDadoBem->t64_descr);
+          $oClassificacao->itens                    = [];
           $aClassificacaoBem[$oDadoBem->t64_codcla] = $oClassificacao;
         }
-        $oDadoBem->t52_descr                               = urlencode($oDadoBem->t52_descr);
-        $oDadoBem->t46_descricao                           = urlencode($oDadoBem->t46_descricao);
+        $oDadoBem->t52_descr                               = urlencode((string) $oDadoBem->t52_descr);
+        $oDadoBem->t46_descricao                           = urlencode((string) $oDadoBem->t46_descricao);
         $aClassificacaoBem[$oDadoBem->t64_codcla]->itens[] = $oDadoBem;
       }
       $oRetorno->aDados = $aClassificacaoBem;
@@ -114,7 +114,7 @@ switch ($oParam->exec) {
 
       $sCodigosBensProcessamentoRetroativo = "";
       $sVirgula                            = "";
-      $aDataDepreciacao                    = array();
+      $aDataDepreciacao                    = [];
 
       db_inicio_transacao();
 
@@ -164,8 +164,8 @@ switch ($oParam->exec) {
 
         $dtDataAquisicaoBem = db_utils::fieldsMemory($rsPrimeiraDataAquisicao, 0)->t52_dtaqu;
 
-        list($iAnoAquisicao, $iMesAquisicao, $iDiaAquisicao)       = explode("-", $dtDataAquisicaoBem);
-        list($iAnoImplantacao, $iMesImplantacao, $iDiaImplantacao) = explode("-", $dtDataImplantacao);
+        [$iAnoAquisicao, $iMesAquisicao, $iDiaAquisicao]       = explode("-", (string) $dtDataAquisicaoBem);
+        [$iAnoImplantacao, $iMesImplantacao, $iDiaImplantacao] = explode("-", $dtDataImplantacao);
 
         for ($iAno = $iAnoAquisicao; $iAno <= $iAnoImplantacao; $iAno++ ) {
         	

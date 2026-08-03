@@ -3,35 +3,35 @@
 //CLASSE DA ENTIDADE cronogramaperspectivaacompanhamento
 class cl_cronogramaperspectivaacompanhamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o151_sequencial = 0; 
-   var $o151_cronogramaperspectivaorigem = 0; 
-   var $o151_cronogramaperspectiva = 0; 
-   var $o151_mes = 0; 
+   public $o151_sequencial = 0; 
+   public $o151_cronogramaperspectivaorigem = 0; 
+   public $o151_cronogramaperspectiva = 0; 
+   public $o151_mes = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o151_sequencial = int4 = Código Sequencial 
                  o151_cronogramaperspectivaorigem = int4 = Perspesctiva Origem 
                  o151_cronogramaperspectiva = int4 = Perspesctiva 
                  o151_mes = int4 = Mês 
                  ";
    //funcao construtor da classe 
-   function cl_cronogramaperspectivaacompanhamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cronogramaperspectivaacompanhamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -93,10 +93,10 @@ class cl_cronogramaperspectivaacompanhamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o151_sequencial = pg_result($result,0,0); 
+       $this->o151_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cronogramaperspectivaacompanhamento_o151_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o151_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o151_sequencial)){
          $this->erro_sql = " Campo o151_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -130,7 +130,7 @@ class cl_cronogramaperspectivaacompanhamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Acompanhamento do Cronograma ($this->o151_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Acompanhamento do Cronograma já Cadastrado";
@@ -159,13 +159,13 @@ class cl_cronogramaperspectivaacompanhamento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21176,'$this->o151_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3814,21176,'','".AddSlashes(pg_result($resaco,0,'o151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3814,21177,'','".AddSlashes(pg_result($resaco,0,'o151_cronogramaperspectivaorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3814,21178,'','".AddSlashes(pg_result($resaco,0,'o151_cronogramaperspectiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3814,21179,'','".AddSlashes(pg_result($resaco,0,'o151_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3814,21176,'','".AddSlashes(pg_fetch_result($resaco,0,'o151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3814,21177,'','".AddSlashes(pg_fetch_result($resaco,0,'o151_cronogramaperspectivaorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3814,21178,'','".AddSlashes(pg_fetch_result($resaco,0,'o151_cronogramaperspectiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3814,21179,'','".AddSlashes(pg_fetch_result($resaco,0,'o151_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -175,10 +175,10 @@ class cl_cronogramaperspectivaacompanhamento {
       $this->atualizacampos();
      $sql = " update cronogramaperspectivaacompanhamento set ";
      $virgula = "";
-     if(trim($this->o151_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o151_sequencial"])){ 
+     if(trim((string) $this->o151_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o151_sequencial"])){ 
        $sql  .= $virgula." o151_sequencial = $this->o151_sequencial ";
        $virgula = ",";
-       if(trim($this->o151_sequencial) == null ){ 
+       if(trim((string) $this->o151_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "o151_sequencial";
          $this->erro_banco = "";
@@ -188,10 +188,10 @@ class cl_cronogramaperspectivaacompanhamento {
          return false;
        }
      }
-     if(trim($this->o151_cronogramaperspectivaorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o151_cronogramaperspectivaorigem"])){ 
+     if(trim((string) $this->o151_cronogramaperspectivaorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o151_cronogramaperspectivaorigem"])){ 
        $sql  .= $virgula." o151_cronogramaperspectivaorigem = $this->o151_cronogramaperspectivaorigem ";
        $virgula = ",";
-       if(trim($this->o151_cronogramaperspectivaorigem) == null ){ 
+       if(trim((string) $this->o151_cronogramaperspectivaorigem) == null ){ 
          $this->erro_sql = " Campo Perspesctiva Origem não informado.";
          $this->erro_campo = "o151_cronogramaperspectivaorigem";
          $this->erro_banco = "";
@@ -201,10 +201,10 @@ class cl_cronogramaperspectivaacompanhamento {
          return false;
        }
      }
-     if(trim($this->o151_cronogramaperspectiva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o151_cronogramaperspectiva"])){ 
+     if(trim((string) $this->o151_cronogramaperspectiva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o151_cronogramaperspectiva"])){ 
        $sql  .= $virgula." o151_cronogramaperspectiva = $this->o151_cronogramaperspectiva ";
        $virgula = ",";
-       if(trim($this->o151_cronogramaperspectiva) == null ){ 
+       if(trim((string) $this->o151_cronogramaperspectiva) == null ){ 
          $this->erro_sql = " Campo Perspesctiva não informado.";
          $this->erro_campo = "o151_cronogramaperspectiva";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_cronogramaperspectivaacompanhamento {
          return false;
        }
      }
-     if(trim($this->o151_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o151_mes"])){ 
+     if(trim((string) $this->o151_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o151_mes"])){ 
        $sql  .= $virgula." o151_mes = $this->o151_mes ";
        $virgula = ",";
-       if(trim($this->o151_mes) == null ){ 
+       if(trim((string) $this->o151_mes) == null ){ 
          $this->erro_sql = " Campo Mês não informado.";
          $this->erro_campo = "o151_mes";
          $this->erro_banco = "";
@@ -241,17 +241,17 @@ class cl_cronogramaperspectivaacompanhamento {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21176,'$this->o151_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o151_sequencial"]) || $this->o151_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3814,21176,'".AddSlashes(pg_result($resaco,$conresaco,'o151_sequencial'))."','$this->o151_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3814,21176,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o151_sequencial'))."','$this->o151_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o151_cronogramaperspectivaorigem"]) || $this->o151_cronogramaperspectivaorigem != "")
-             $resac = db_query("insert into db_acount values($acount,3814,21177,'".AddSlashes(pg_result($resaco,$conresaco,'o151_cronogramaperspectivaorigem'))."','$this->o151_cronogramaperspectivaorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3814,21177,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o151_cronogramaperspectivaorigem'))."','$this->o151_cronogramaperspectivaorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o151_cronogramaperspectiva"]) || $this->o151_cronogramaperspectiva != "")
-             $resac = db_query("insert into db_acount values($acount,3814,21178,'".AddSlashes(pg_result($resaco,$conresaco,'o151_cronogramaperspectiva'))."','$this->o151_cronogramaperspectiva',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3814,21178,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o151_cronogramaperspectiva'))."','$this->o151_cronogramaperspectiva',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o151_mes"]) || $this->o151_mes != "")
-             $resac = db_query("insert into db_acount values($acount,3814,21179,'".AddSlashes(pg_result($resaco,$conresaco,'o151_mes'))."','$this->o151_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3814,21179,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o151_mes'))."','$this->o151_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -305,13 +305,13 @@ class cl_cronogramaperspectivaacompanhamento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21176,'$o151_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3814,21176,'','".AddSlashes(pg_result($resaco,$iresaco,'o151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3814,21177,'','".AddSlashes(pg_result($resaco,$iresaco,'o151_cronogramaperspectivaorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3814,21178,'','".AddSlashes(pg_result($resaco,$iresaco,'o151_cronogramaperspectiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3814,21179,'','".AddSlashes(pg_result($resaco,$iresaco,'o151_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3814,21176,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3814,21177,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o151_cronogramaperspectivaorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3814,21178,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o151_cronogramaperspectiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3814,21179,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o151_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

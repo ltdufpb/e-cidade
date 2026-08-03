@@ -37,9 +37,7 @@ class OrigemComplementoRecursoRepository
      */
     public function scopeRecursosDespesa($recursos)
     {
-        $idsRecurso = $recursos->map(function (Recurso $recurso) {
-            return $recurso->getCodigo();
-        })->toArray();
+        $idsRecurso = $recursos->map(fn(Recurso $recurso) => $recurso->getCodigo())->toArray();
 
         $recursos = implode(', ', $idsRecurso);
 
@@ -166,9 +164,7 @@ class OrigemComplementoRecursoRepository
 
     public function scopeRecursosReceita($recursos)
     {
-        $idsRecurso = $recursos->map(function (Recurso $recurso) {
-            return $recurso->getCodigo();
-        })->toArray();
+        $idsRecurso = $recursos->map(fn(Recurso $recurso) => $recurso->getCodigo())->toArray();
 
         $recursos = implode(', ', $idsRecurso);
 

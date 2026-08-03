@@ -104,7 +104,7 @@ db_input('nomecam',40,$Inomecam,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("db96_codigo"=>@$db96_codigo);
+	 $chavepri= ["db96_codigo"=>@$db96_codigo];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_relatsoma->sql_query_file($db96_codigo);
 	 $cliframe_alterar_excluir->campos  ="db96_codigo,db96_codrel,db96_codcam";

@@ -7,16 +7,16 @@ use \DateTime;
 
 final class Banco extends Entity
 {
-    const TOTAL_BOM_PAGADOR  = 'TOTALBOMPAGADOR';
-    const AGENCIA            = 'AGENCIA';
-    const DIGITO_AGENCIA     = 'DIGITOAGENCIA';
-    const OPERACAO           = 'OPERACAO';
-    const CEDENTE            = 'CEDENTE';
-    const DIGITO_CEDENTE     = 'DIGITOCEDENTE';
-    const CARTEIRA           = 'CARTEIRA';
-    const CONVENIO           = 'CONVENIO';
-    const DATA_PROCESSAMENTO = 'DATAPROCESSAMENTO';
-    const DESCRICAO_CONVENIO = 'DESCRICAOCONVENIO';
+    const string TOTAL_BOM_PAGADOR  = 'TOTALBOMPAGADOR';
+    const string AGENCIA            = 'AGENCIA';
+    const string DIGITO_AGENCIA     = 'DIGITOAGENCIA';
+    const string OPERACAO           = 'OPERACAO';
+    const string CEDENTE            = 'CEDENTE';
+    const string DIGITO_CEDENTE     = 'DIGITOCEDENTE';
+    const string CARTEIRA           = 'CARTEIRA';
+    const string CONVENIO           = 'CONVENIO';
+    const string DATA_PROCESSAMENTO = 'DATAPROCESSAMENTO';
+    const string DESCRICAO_CONVENIO = 'DESCRICAOCONVENIO';
 
     /**
      * @var float|null VALOR TOTAL DO BOM PAGADOR 

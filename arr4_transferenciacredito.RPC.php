@@ -63,7 +63,7 @@ try {
 
     case "listaCreditos":
       
-      $aCreditos      = array();
+      $aCreditos      = [];
       
       $oDaoAbatimento = db_utils::getDao('abatimento');
       
@@ -132,7 +132,7 @@ try {
           
           $oCreditoTransferencia->setCgmDestino     (CgmFactory::getInstanceByCgm($oParametros->iCodigoCgmDestino));
           
-        } catch (Exception $oErro) {
+        } catch (Exception) {
           
           throw new Exception('CGM de destino não informado para a transferência dos créditos.');
           

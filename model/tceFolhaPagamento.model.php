@@ -30,34 +30,19 @@ require_once(modification('model/tceEstruturaBasica.php'));
 class tceFolhaPagamento extends tceEstruturaBasica
 {
     const  NOME_ARQUIVO = 'TCE_4810.TXT';
-
-    public $iInstit = "";
-    public $sInstituicoes = "";
-    public $sDataIni = "";
-    public $sDataFim = "";
-    public $sCodRemessa = "";
     public $iDiaPagamento = "";
 
-    private $oLeiaute = null;
-
-    function __construct($iInstit, $sCodRemessa, $sDataIni, $sDataFim, $oData, $oLeiaute = null, $sInstituicoes, $iCodigoArquivo = 31)
+    function __construct(public $iInstit, public $sCodRemessa, public $sDataIni, public $sDataFim, $oData, private $oLeiaute = null, public $sInstituicoes = null, $iCodigoArquivo = 31)
     {
         try {
             parent::__construct($iCodigoArquivo, self::NOME_ARQUIVO);
-        } catch (Exception $e) {
+        } catch (Exception) {
             //throw $e->getMessage();
         }
-
-        $this->oLeiaute = $oLeiaute;
-        $this->iInstit = $iInstit;
-        $this->sInstituicoes = $sInstituicoes;
-        $this->sDataIni = $sDataIni;
-        $this->sDataFim = $sDataFim;
-        $this->sCodRemessa = $sCodRemessa;
         $this->iDiaPagamento = $oData->diapagfolha;
 
-        if ($oLeiaute != null) {
-            $this->oLeiaute = $oLeiaute;
+        if ($this->oLeiaute != null) {
+            $this->oLeiaute = $this->oLeiaute;
         }
     }
 
@@ -106,11 +91,11 @@ class tceFolhaPagamento extends tceEstruturaBasica
             $this->oLeiaute->addLinha();
         }
 
-        $dataCompetencia = explode("-", $this->sDataIni);
+        $dataCompetencia = explode("-", (string) $this->sDataIni);
         $anoCompetencia = $dataCompetencia[0];
         $mesCompetencia = $dataCompetencia[1];
 
-        $dataFimCompetencia = explode("-", $this->sDataFim);
+        $dataFimCompetencia = explode("-", (string) $this->sDataFim);
         $mesFimCompetencia = $dataFimCompetencia[1];
 
         $daoVerificaDuplicidade = new cl_padpagamentoposterior();
@@ -119,8 +104,8 @@ class tceFolhaPagamento extends tceEstruturaBasica
         $daoVerificaDuplicidade->excluir(null, $where);
 
         $iQuant = 0;
-        $contadorIdentificadores = array();
-        $chaveControleDuplicidade = array();
+        $contadorIdentificadores = [];
+        $chaveControleDuplicidade = [];
 
         for ($i = 0; $i < $iNumRows; $i++) {
             $iNew = intval($i * 100 / $iNumRows);
@@ -167,7 +152,7 @@ class tceFolhaPagamento extends tceEstruturaBasica
 
             if ($oFolhaPagamento->pagamentoaposvigencia == 'S' ) {
                 if ($oFolhaPagamento->identificacaooperacao == 'V' || $oFolhaPagamento->identificacaooperacao == 'D') {
-                    if (strlen($oFolhaPagamento->codigoagencdepositofolhapagentidad) > 5) {
+                    if (strlen((string) $oFolhaPagamento->codigoagencdepositofolhapagentidad) > 5) {
                         $mensagem = "Erro ao gerar o arquivo. Tamanho do número da Agência + Dígito Verificador";
                         $mensagem .= " referente a conta vinculada ao recurso {$oFolhaPagamento->codigo_recurso} - {$oFolhaPagamento->descricao_recurso} ";
                         $mensagem .= "(DB:RECURSOSHUMANOS > Pessoal > Cadastros > Contas por Recurso), ";
@@ -215,8 +200,8 @@ class tceFolhaPagamento extends tceEstruturaBasica
 
     function sqlFolhaPagamento($iInstit, $sDataini, $sDatafim, $iDiaPagamento)
     {
-        list ($iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim) = explode("-", $sDatafim);
-        list ($iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni) = explode("-", $sDataini);
+        [$iAnoUsuFim, $iMesUsuFim, $iDiaUsuFim] = explode("-", (string) $sDatafim);
+        [$iAnoUsuIni, $iMesUsuIni, $iDiaUsuIni] = explode("-", (string) $sDataini);
 
         // Estrutura da versao nova do PADRS
 

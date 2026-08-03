@@ -56,11 +56,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica = array("pagordem"=>"Ordem de pagamento","pagordemrec"=>"Receitas"); 
-       $clcriaabas->sizecampo  = array("pagordem"=>"20"); 
-       $clcriaabas->title      =  array("pagordem"=>"Ordem de pagemento de empenho","pagordemrec"=>"Receitas"); 
-       $clcriaabas->src = array("pagordem"=>"emp1_pagordem005.php");
-       $clcriaabas->disabled   =  array("pagordemrec"=>"true"); 
+       $clcriaabas->identifica = ["pagordem"=>"Ordem de pagamento","pagordemrec"=>"Receitas"]; 
+       $clcriaabas->sizecampo  = ["pagordem"=>"20"]; 
+       $clcriaabas->title      =  ["pagordem"=>"Ordem de pagemento de empenho","pagordemrec"=>"Receitas"]; 
+       $clcriaabas->src = ["pagordem"=>"emp1_pagordem005.php"];
+       $clcriaabas->disabled   =  ["pagordemrec"=>"true"]; 
        $clcriaabas->cria_abas();    
      ?> 
      </td>

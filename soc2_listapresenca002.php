@@ -80,7 +80,7 @@ $oConfigRelatorio->iNumeroMaximoCellFalta  = 60;
  */
 
 
-$aPaginas     = array();
+$aPaginas     = [];
 $oCursosSocial = CursoSocialRepository::getCursoSocialByCodigo($oFiltros->iCurso);
 
 /**
@@ -138,7 +138,7 @@ foreach ($aPaginas as $iPagina => $aMesPagina) {
     $iAlunosImpressos ++;
     if ($lPrimeiraPagina || $oPdf->gety() > $oPdf->h - 20) {
 
-      adicionaHeader($oPdf, $oCursosSocial, $oConfigRelatorio, $aPaginas[$iPagina], $iPagina);
+      adicionaHeader($oPdf, $oCursosSocial, $oConfigRelatorio, $aPaginas[$iPagina]);
       $lPrimeiraPagina = false;
     }
 
@@ -171,9 +171,9 @@ foreach ($aPaginas as $iPagina => $aMesPagina) {
       
       $iAlunosImpressos = 0;
       if ($oFiltros->lImprimeAssinatura) {
-        imprimeAssinatura($oPdf, $oCursosSocial, $oConfigRelatorio);
+        imprimeAssinatura($oPdf);
       }
-      adicionaHeader($oPdf, $oCursosSocial, $oConfigRelatorio, $aPaginas[$iPagina], $iPagina);
+      adicionaHeader($oPdf, $oCursosSocial, $oConfigRelatorio, $aPaginas[$iPagina]);
     }
   }
   
@@ -199,7 +199,7 @@ foreach ($aPaginas as $iPagina => $aMesPagina) {
       $oPdf->ln();
     }
     if ($oFiltros->lImprimeAssinatura) {
-      imprimeAssinatura($oPdf, $oCursosSocial, $oConfigRelatorio);
+      imprimeAssinatura($oPdf);
     }  
   }
   
@@ -258,7 +258,7 @@ function adicionaHeader(FPDF $oPdf, CursoSocial $oCursosSocial, $oConfigRelatori
   foreach ($aMesesPagina as $oMes) {
     
     $iColunaMes = $oConfigRelatorio->aTamanhoColunas[$iPagina][$oMes->iMes]->iColunaMes; 
-    $sMesAbrev  = db_mesAbreviado(str_pad($oMes->iMes, 2, "0", STR_PAD_LEFT));
+    $sMesAbrev  = db_mesAbreviado(str_pad((string) $oMes->iMes, 2, "0", STR_PAD_LEFT));
     $oPdf->Cell($iColunaMes, $oConfigRelatorio->iAlturaLinha, "{$sMesAbrev}/{$oMes->iAno}", 1, 0, "C");
   }
   $oPdf->Ln();
@@ -288,13 +288,13 @@ function adicionaHeader(FPDF $oPdf, CursoSocial $oCursosSocial, $oConfigRelatori
  */
 function calculaTamanhoColunasFrequencia (CursoSocial $oCursosSocial, $oConfigRelatorio, $aPaginas) {
   
-  $aTamanhoColunas = array();
+  $aTamanhoColunas = [];
 
   foreach ($aPaginas as $iPagina => $aMes) {
     
     $iNumeroTotalAulasMesSelecionado = 0;
     
-    $aMeses                  = array();
+    $aMeses                  = [];
     foreach ($aMes as $oMes) {
 
       $iNumeroAulasMes                  = count($oCursosSocial->getDiasDeAulaPorMesAno($oMes->iMes, $oMes->iAno));

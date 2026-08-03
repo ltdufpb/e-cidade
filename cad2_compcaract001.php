@@ -52,7 +52,7 @@ $clrotulo->label("j14_nome");
 
 $db_opcao=1;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -131,7 +131,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 
@@ -256,7 +256,7 @@ function js_periodo(){
         <?php 
 		  $sqlGrupol  = "select j32_grupo,j32_descr from cargrup where j32_tipo = 'L' order by j32_grupo";
           $rsGrupol   = db_query($sqlGrupol);
-          $intNumrows =	pg_numrows($rsGrupol);
+          $intNumrows =	pg_num_rows($rsGrupol);
 		  for($i=0;$i<$intNumrows;$i++){
               db_fieldsmemory($rsGrupol,$i);
 		      $lote[$j32_grupo] = $j32_grupo." - ".$j32_descr; 
@@ -273,7 +273,7 @@ function js_periodo(){
      	<?php 
 		  $sqlGrupof   = "select j32_grupo,j32_descr from cargrup where j32_tipo = 'F' order by j32_grupo";
           $rsGrupof    = db_query($sqlGrupof);
-          $intNumrowsf = pg_numrows($rsGrupof);
+          $intNumrowsf = pg_num_rows($rsGrupof);
           if ($intNumrowsf == 0) {
              db_msgbox('Não existem características por faces de quadra!');
              exit;
@@ -294,7 +294,7 @@ function js_periodo(){
         </td>
         <td nowrap> 
 			  <?php 
-			  $ll = array ("t" => "Todas", "n" => "Não baixadas", "s" => "Baixadas");
+			  $ll =  ["t" => "Todas", "n" => "Não baixadas", "s" => "Baixadas"];
 			  db_select('baixadas', $ll, true, 2,"onchange='js_periodo();'" );
 			  ?>
 		  </td>

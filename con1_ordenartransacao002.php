@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 $oGet = db_utils::postMemory($_GET);
 
-if (trim($oGet->c53_coddoc) == "") {
+if (trim((string) $oGet->c53_coddoc) == "") {
 
   $sErro = "Não há documento informado para efetuar a pesquisa de transações.";
   db_redireciona("db_erros.php?db_erro={$sErro}");
@@ -86,7 +86,7 @@ $aTransacoes = db_utils::getCollectionByRecord($rsTransacoes, false, false, true
   							<?php
   							  foreach ($aTransacoes as $oTransacao) {
 
-  							  	$sDescricao = trim($oTransacao->c46_descricao) == "" ? $oTransacao->c46_ordem : urldecode($oTransacao->c46_descricao);
+  							  	$sDescricao = trim((string) $oTransacao->c46_descricao) == "" ? $oTransacao->c46_ordem : urldecode((string) $oTransacao->c46_descricao);
   							    echo "<option value='{$oTransacao->c46_seqtranslan}'>{$sDescricao}</option>";
   							  }
   							?>

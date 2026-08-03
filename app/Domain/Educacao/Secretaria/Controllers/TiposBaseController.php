@@ -45,7 +45,7 @@ class TiposBaseController extends Controller
             $service = new TipoBaseService();
             $service->salvar($request->all());
             return new DBJsonResponse('', 'Tipo de base salvo com sucesso!');
-        } catch (Exception $exception) {
+        } catch (Exception) {
             throw new Exception('Falha ao salvar tipo de base!');
         }
     }

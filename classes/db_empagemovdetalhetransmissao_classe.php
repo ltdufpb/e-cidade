@@ -3,36 +3,36 @@
 //CLASSE DA ENTIDADE empagemovdetalhetransmissao
 class cl_empagemovdetalhetransmissao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e74_sequencial = 0; 
-   var $e74_empagemov = 0; 
-   var $e74_codigodebarra = null; 
-   var $e74_valornominal = 0; 
-   var $e74_datavencimento_dia = null; 
-   var $e74_datavencimento_mes = null; 
-   var $e74_datavencimento_ano = null; 
-   var $e74_datavencimento = null; 
-   var $e74_valorjuros = 0; 
-   var $e74_valordesconto = 0; 
-   var $e74_tipofatura = 0; 
-   var $e74_linhadigitavel = null; 
-   var $e74_finalidade = null; 
-   var $e74_valorabatimento = 0; 
-   var $e74_valormulta = 0; 
+   public $e74_sequencial = 0; 
+   public $e74_empagemov = 0; 
+   public $e74_codigodebarra = null; 
+   public $e74_valornominal = 0; 
+   public $e74_datavencimento_dia = null; 
+   public $e74_datavencimento_mes = null; 
+   public $e74_datavencimento_ano = null; 
+   public $e74_datavencimento = null; 
+   public $e74_valorjuros = 0; 
+   public $e74_valordesconto = 0; 
+   public $e74_tipofatura = 0; 
+   public $e74_linhadigitavel = null; 
+   public $e74_finalidade = null; 
+   public $e74_valorabatimento = 0; 
+   public $e74_valormulta = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e74_sequencial = int4 = sequencial empagemovdetalhetransmissao 
                  e74_empagemov = int4 = Código do Movimento 
                  e74_codigodebarra = varchar(100) = Código de Barras 
@@ -47,10 +47,10 @@ class cl_empagemovdetalhetransmissao {
                  e74_valormulta = float4 = Multa 
                  ";
    //funcao construtor da classe 
-   function cl_empagemovdetalhetransmissao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empagemovdetalhetransmissao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -130,10 +130,10 @@ class cl_empagemovdetalhetransmissao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e74_sequencial = pg_result($result,0,0); 
+       $this->e74_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from empagemovdetalhetransmissao_e74_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e74_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e74_sequencial)){
          $this->erro_sql = " Campo e74_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -183,7 +183,7 @@ class cl_empagemovdetalhetransmissao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Detalhamentos de movimento com tipo de transmissão ($this->e74_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Detalhamentos de movimento com tipo de transmissão já Cadastrado";
@@ -212,21 +212,21 @@ class cl_empagemovdetalhetransmissao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20057,'$this->e74_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3595,20057,'','".AddSlashes(pg_result($resaco,0,'e74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3595,20058,'','".AddSlashes(pg_result($resaco,0,'e74_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3595,20059,'','".AddSlashes(pg_result($resaco,0,'e74_codigodebarra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3595,20060,'','".AddSlashes(pg_result($resaco,0,'e74_valornominal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3595,20061,'','".AddSlashes(pg_result($resaco,0,'e74_datavencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3595,20062,'','".AddSlashes(pg_result($resaco,0,'e74_valorjuros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3595,20063,'','".AddSlashes(pg_result($resaco,0,'e74_valordesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3595,20133,'','".AddSlashes(pg_result($resaco,0,'e74_tipofatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3595,21278,'','".AddSlashes(pg_result($resaco,0,'e74_linhadigitavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3595,1009339,'','".AddSlashes(pg_result($resaco,0,'e74_finalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3595,1009798,'','".AddSlashes(pg_result($resaco,0,'e74_valorabatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3595,1009799,'','".AddSlashes(pg_result($resaco,0,'e74_valormulta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,20057,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,20058,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,20059,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_codigodebarra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,20060,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_valornominal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,20061,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_datavencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,20062,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_valorjuros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,20063,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_valordesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,20133,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_tipofatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,21278,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_linhadigitavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,1009339,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_finalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,1009798,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_valorabatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3595,1009799,'','".AddSlashes(pg_fetch_result($resaco,0,'e74_valormulta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -236,10 +236,10 @@ class cl_empagemovdetalhetransmissao {
       $this->atualizacampos();
      $sql = " update empagemovdetalhetransmissao set ";
      $virgula = "";
-     if(trim($this->e74_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_sequencial"])){ 
+     if(trim((string) $this->e74_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_sequencial"])){ 
        $sql  .= $virgula." e74_sequencial = $this->e74_sequencial ";
        $virgula = ",";
-       if(trim($this->e74_sequencial) == null ){ 
+       if(trim((string) $this->e74_sequencial) == null ){ 
          $this->erro_sql = " Campo sequencial empagemovdetalhetransmissao não informado.";
          $this->erro_campo = "e74_sequencial";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_empagemovdetalhetransmissao {
          return false;
        }
      }
-     if(trim($this->e74_empagemov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_empagemov"])){ 
+     if(trim((string) $this->e74_empagemov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_empagemov"])){ 
        $sql  .= $virgula." e74_empagemov = $this->e74_empagemov ";
        $virgula = ",";
-       if(trim($this->e74_empagemov) == null ){ 
+       if(trim((string) $this->e74_empagemov) == null ){ 
          $this->erro_sql = " Campo Código do Movimento não informado.";
          $this->erro_campo = "e74_empagemov";
          $this->erro_banco = "";
@@ -262,18 +262,18 @@ class cl_empagemovdetalhetransmissao {
          return false;
        }
      }
-     if(trim($this->e74_codigodebarra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_codigodebarra"])){ 
+     if(trim((string) $this->e74_codigodebarra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_codigodebarra"])){ 
        $sql  .= $virgula." e74_codigodebarra = '$this->e74_codigodebarra' ";
        $virgula = ",";
      }
-     if(trim($this->e74_valornominal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_valornominal"])){ 
-        if(trim($this->e74_valornominal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_valornominal"])){ 
+     if(trim((string) $this->e74_valornominal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_valornominal"])){ 
+        if(trim((string) $this->e74_valornominal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_valornominal"])){ 
            $this->e74_valornominal = "0" ; 
         } 
        $sql  .= $virgula." e74_valornominal = $this->e74_valornominal ";
        $virgula = ",";
      }
-     if(trim($this->e74_datavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_datavencimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e74_datavencimento_dia"] !="") ){ 
+     if(trim((string) $this->e74_datavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_datavencimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e74_datavencimento_dia"] !="") ){ 
        $sql  .= $virgula." e74_datavencimento = '$this->e74_datavencimento' ";
        $virgula = ",";
      }     else{ 
@@ -282,44 +282,44 @@ class cl_empagemovdetalhetransmissao {
          $virgula = ",";
        }
      }
-     if(trim($this->e74_valorjuros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_valorjuros"])){ 
-        if(trim($this->e74_valorjuros)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_valorjuros"])){ 
+     if(trim((string) $this->e74_valorjuros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_valorjuros"])){ 
+        if(trim((string) $this->e74_valorjuros)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_valorjuros"])){ 
            $this->e74_valorjuros = "0" ; 
         } 
        $sql  .= $virgula." e74_valorjuros = $this->e74_valorjuros ";
        $virgula = ",";
      }
-     if(trim($this->e74_valordesconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_valordesconto"])){ 
-        if(trim($this->e74_valordesconto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_valordesconto"])){ 
+     if(trim((string) $this->e74_valordesconto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_valordesconto"])){ 
+        if(trim((string) $this->e74_valordesconto)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_valordesconto"])){ 
            $this->e74_valordesconto = "0" ; 
         } 
        $sql  .= $virgula." e74_valordesconto = $this->e74_valordesconto ";
        $virgula = ",";
      }
-     if(trim($this->e74_tipofatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_tipofatura"])){ 
-        if(trim($this->e74_tipofatura)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_tipofatura"])){ 
+     if(trim((string) $this->e74_tipofatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_tipofatura"])){ 
+        if(trim((string) $this->e74_tipofatura)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_tipofatura"])){ 
            $this->e74_tipofatura = "0" ; 
         } 
        $sql  .= $virgula." e74_tipofatura = $this->e74_tipofatura ";
        $virgula = ",";
      }
-     if(trim($this->e74_linhadigitavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_linhadigitavel"])){ 
+     if(trim((string) $this->e74_linhadigitavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_linhadigitavel"])){ 
        $sql  .= $virgula." e74_linhadigitavel = '$this->e74_linhadigitavel' ";
        $virgula = ",";
      }
-     if(trim($this->e74_finalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_finalidade"])){ 
+     if(trim((string) $this->e74_finalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_finalidade"])){ 
        $sql  .= $virgula." e74_finalidade = '$this->e74_finalidade' ";
        $virgula = ",";
      }
-     if(trim($this->e74_valorabatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_valorabatimento"])){ 
-        if(trim($this->e74_valorabatimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_valorabatimento"])){ 
+     if(trim((string) $this->e74_valorabatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_valorabatimento"])){ 
+        if(trim((string) $this->e74_valorabatimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_valorabatimento"])){ 
            $this->e74_valorabatimento = "0" ; 
         } 
        $sql  .= $virgula." e74_valorabatimento = $this->e74_valorabatimento ";
        $virgula = ",";
      }
-     if(trim($this->e74_valormulta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_valormulta"])){ 
-        if(trim($this->e74_valormulta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_valormulta"])){ 
+     if(trim((string) $this->e74_valormulta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e74_valormulta"])){ 
+        if(trim((string) $this->e74_valormulta)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e74_valormulta"])){ 
            $this->e74_valormulta = "0" ; 
         } 
        $sql  .= $virgula." e74_valormulta = $this->e74_valormulta ";
@@ -339,33 +339,33 @@ class cl_empagemovdetalhetransmissao {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20057,'$this->e74_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_sequencial"]) || $this->e74_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3595,20057,'".AddSlashes(pg_result($resaco,$conresaco,'e74_sequencial'))."','$this->e74_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,20057,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_sequencial'))."','$this->e74_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_empagemov"]) || $this->e74_empagemov != "")
-             $resac = db_query("insert into db_acount values($acount,3595,20058,'".AddSlashes(pg_result($resaco,$conresaco,'e74_empagemov'))."','$this->e74_empagemov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,20058,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_empagemov'))."','$this->e74_empagemov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_codigodebarra"]) || $this->e74_codigodebarra != "")
-             $resac = db_query("insert into db_acount values($acount,3595,20059,'".AddSlashes(pg_result($resaco,$conresaco,'e74_codigodebarra'))."','$this->e74_codigodebarra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,20059,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_codigodebarra'))."','$this->e74_codigodebarra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_valornominal"]) || $this->e74_valornominal != "")
-             $resac = db_query("insert into db_acount values($acount,3595,20060,'".AddSlashes(pg_result($resaco,$conresaco,'e74_valornominal'))."','$this->e74_valornominal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,20060,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_valornominal'))."','$this->e74_valornominal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_datavencimento"]) || $this->e74_datavencimento != "")
-             $resac = db_query("insert into db_acount values($acount,3595,20061,'".AddSlashes(pg_result($resaco,$conresaco,'e74_datavencimento'))."','$this->e74_datavencimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,20061,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_datavencimento'))."','$this->e74_datavencimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_valorjuros"]) || $this->e74_valorjuros != "")
-             $resac = db_query("insert into db_acount values($acount,3595,20062,'".AddSlashes(pg_result($resaco,$conresaco,'e74_valorjuros'))."','$this->e74_valorjuros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,20062,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_valorjuros'))."','$this->e74_valorjuros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_valordesconto"]) || $this->e74_valordesconto != "")
-             $resac = db_query("insert into db_acount values($acount,3595,20063,'".AddSlashes(pg_result($resaco,$conresaco,'e74_valordesconto'))."','$this->e74_valordesconto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,20063,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_valordesconto'))."','$this->e74_valordesconto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_tipofatura"]) || $this->e74_tipofatura != "")
-             $resac = db_query("insert into db_acount values($acount,3595,20133,'".AddSlashes(pg_result($resaco,$conresaco,'e74_tipofatura'))."','$this->e74_tipofatura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,20133,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_tipofatura'))."','$this->e74_tipofatura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_linhadigitavel"]) || $this->e74_linhadigitavel != "")
-             $resac = db_query("insert into db_acount values($acount,3595,21278,'".AddSlashes(pg_result($resaco,$conresaco,'e74_linhadigitavel'))."','$this->e74_linhadigitavel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,21278,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_linhadigitavel'))."','$this->e74_linhadigitavel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_finalidade"]) || $this->e74_finalidade != "")
-             $resac = db_query("insert into db_acount values($acount,3595,1009339,'".AddSlashes(pg_result($resaco,$conresaco,'e74_finalidade'))."','$this->e74_finalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,1009339,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_finalidade'))."','$this->e74_finalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_valorabatimento"]) || $this->e74_valorabatimento != "")
-             $resac = db_query("insert into db_acount values($acount,3595,1009798,'".AddSlashes(pg_result($resaco,$conresaco,'e74_valorabatimento'))."','$this->e74_valorabatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,1009798,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_valorabatimento'))."','$this->e74_valorabatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["e74_valormulta"]) || $this->e74_valormulta != "")
-             $resac = db_query("insert into db_acount values($acount,3595,1009799,'".AddSlashes(pg_result($resaco,$conresaco,'e74_valormulta'))."','$this->e74_valormulta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3595,1009799,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e74_valormulta'))."','$this->e74_valormulta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -419,21 +419,21 @@ class cl_empagemovdetalhetransmissao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20057,'$e74_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3595,20057,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3595,20058,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3595,20059,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_codigodebarra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3595,20060,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_valornominal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3595,20061,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_datavencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3595,20062,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_valorjuros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3595,20063,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_valordesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3595,20133,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_tipofatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3595,21278,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_linhadigitavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3595,1009339,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_finalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3595,1009798,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_valorabatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3595,1009799,'','".AddSlashes(pg_result($resaco,$iresaco,'e74_valormulta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,20057,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,20058,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_empagemov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,20059,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_codigodebarra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,20060,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_valornominal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,20061,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_datavencimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,20062,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_valorjuros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,20063,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_valordesconto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,20133,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_tipofatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,21278,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_linhadigitavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,1009339,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_finalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,1009798,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_valorabatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3595,1009799,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e74_valormulta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

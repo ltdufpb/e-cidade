@@ -33,14 +33,14 @@ DB_login=dbseller&DB_id_usuario=1&DB_porta=3055&DB_instit=1&DB_modulo=576
 &DB_nome_modulo=ipasem&DB_anousu=2003&DB_datausu=1061485231&codmed=251&nomemed=HERIBERT ADAM&especmed=9
 &COD_atendimento=5&w03_codigo=745&w01_regist=579 
 */
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 if(isset($exclenc)) {
-  $ex = split("#",$exclenc);
-  db_query("delete from encaminhamento where codate = ".$ex[0]." and codpaciente = '".str_pad($ex[1],6," ",STR_PAD_LEFT)."' and codespec = ".$ex[2]) or die("Erro(14) excluindo encaminhamentos");
+  $ex = preg_split("#\\##m",$exclenc);
+  db_query("delete from encaminhamento where codate = ".$ex[0]." and codpaciente = '".str_pad((string) $ex[1],6," ",STR_PAD_LEFT)."' and codespec = ".$ex[2]) or die("Erro(14) excluindo encaminhamentos");
 }
 
-if(isset($HTTP_POST_VARS["encaminhar"])) {
+if(isset($_POST["encaminhar"])) {
   $codate = db_getsession("COD_atendimento");
   if(db_getsession("w03_codigo") != "") {
     $depen = '1';
@@ -49,10 +49,10 @@ if(isset($HTTP_POST_VARS["encaminhar"])) {
     $depen = '0';
     $codpaciente = db_getsession("w01_regist");
   }
-  $codespec = $HTTP_POST_VARS["especial"];
+  $codespec = $_POST["especial"];
   $data = date("Y-m-d",db_getsession("DB_datausu"));	
   $codmed = db_getsession("codmed");
-  $motivo = $HTTP_POST_VARS["motivo"];
+  $motivo = $_POST["motivo"];
   db_query("insert into encaminhamento values($codate,'".str_pad(trim($codpaciente),6," ",STR_PAD_LEFT)."',$codespec,'$data','".str_pad(trim($codmed),6," ",STR_PAD_LEFT)."','$depen','$motivo')") or die("Erro(19) inserindo em encaminhamento");
 }
 ?>
@@ -162,7 +162,7 @@ input {
               <select style="font-size:9px" name="especial" size="10" id="especial">
                 <?php 
 			  $result = db_query("select w12_codigo,w12_descr from especial order by w12_descr");
-			  $numrows = pg_numrows($result);
+			  $numrows = pg_num_rows($result);
 			  for($i = 0;$i < $numrows;$i++) {
 			    db_fieldsmemory($result,$i);
 			    echo "<option value=\"".$w12_codigo."\">".$w12_descr."</option>\n";			  
@@ -199,7 +199,7 @@ input {
 							   on c.w01_numcgi = cg.j01_numero
 							   where trim(codpaciente) = trim($codpaciente)
 							   order by data desc");
-			$numrows = pg_numrows($result);
+			$numrows = pg_num_rows($result);
 			if($numrows > 0) {
 			  echo "<table border=\"0\" cellspacing=\"1\" cellpadding=\"2\">\n";
 			  echo "<tr bgcolor=\"#FDB393\">

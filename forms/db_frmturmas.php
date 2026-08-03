@@ -106,7 +106,7 @@ db_input('ed05_c_nome',40,$Ied05_c_nome,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Notas','2'=>'Conceito','3'=>'Parecer');
+$x = ['1'=>'Notas','2'=>'Conceito','3'=>'Parecer'];
 db_select('ed05_i_criterio',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -193,7 +193,7 @@ function js_preenchepesquisa(chave){
   db_iframe_turmas.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

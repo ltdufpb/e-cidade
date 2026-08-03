@@ -112,7 +112,7 @@ if (!empty($rsParametros)) {
         </td>
         <td>
           <?php
-            $aTipos = Array("0"=>"Selecione:::","1"=>"Alfanumérico","2"=>"Numérico");
+            $aTipos = ["0"=>"Selecione:::","1"=>"Alfanumérico","2"=>"Numérico"];
             db_select("iTipo",$aTipos,"",$db_opcao,"onchange=\"js_trocatipo(this.value);\"");
           ?>
         </td>
@@ -141,7 +141,7 @@ if (!empty($rsParametros)) {
                                                                                       la28_c_descr as descricao"
                                                                                      );
             $rResult = $cllab_valorreferenciasel->sql_record($sSqlValoresReferenciaSelecionaveis);
-            $aReferencialsel = array();
+            $aReferencialsel = [];
             for ($x = 0; $x < $cllab_valorreferenciasel->numrows; $x++) {
               $oValor = db_utils::fieldsMemory($rResult, $x);
               $aReferencialsel[$oValor->chave] = $oValor->descricao;
@@ -605,7 +605,7 @@ function js_preenchepesquisa(chave){
   //js_getValoresReferencioa(chave);
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

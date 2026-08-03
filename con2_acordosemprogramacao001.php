@@ -52,7 +52,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                     <tr>
                         <td class="field-size2" > <label for="contratos">Contratos:</label> </td>
                         <td  consplan="3">
-                            <?php db_select('contratos', array('1'=>'Vigentes', '2'=>'Todos', '3'=> 'Período'), true, 1); ?>
+                            <?php db_select('contratos', ['1'=>'Vigentes', '2'=>'Todos', '3'=> 'Período'], true, 1); ?>
                         </td>
 
                     </tr>

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE cadenderruaruastipo
 class cl_cadenderruaruastipo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db85_sequencial = 0; 
-   var $db85_cadenderrua = 0; 
-   var $db85_ruastipo = 0; 
+   public $db85_sequencial = 0; 
+   public $db85_cadenderrua = 0; 
+   public $db85_ruastipo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db85_sequencial = int4 = Sequencial 
                  db85_cadenderrua = int4 = Código da Rua 
                  db85_ruastipo = int4 = Código do Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_cadenderruaruastipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadenderruaruastipo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_cadenderruaruastipo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db85_sequencial = pg_result($result,0,0); 
+       $this->db85_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cadenderruaruastipo_db85_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db85_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db85_sequencial)){
          $this->erro_sql = " Campo db85_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_cadenderruaruastipo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ruas Tipo ($this->db85_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ruas Tipo já Cadastrado";
@@ -166,12 +166,12 @@ class cl_cadenderruaruastipo {
      $resaco = $this->sql_record($this->sql_query_file($this->db85_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16207,'$this->db85_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2843,16207,'','".AddSlashes(pg_result($resaco,0,'db85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2843,16208,'','".AddSlashes(pg_result($resaco,0,'db85_cadenderrua'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2843,16209,'','".AddSlashes(pg_result($resaco,0,'db85_ruastipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2843,16207,'','".AddSlashes(pg_fetch_result($resaco,0,'db85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2843,16208,'','".AddSlashes(pg_fetch_result($resaco,0,'db85_cadenderrua'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2843,16209,'','".AddSlashes(pg_fetch_result($resaco,0,'db85_ruastipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_cadenderruaruastipo {
       $this->atualizacampos();
      $sql = " update cadenderruaruastipo set ";
      $virgula = "";
-     if(trim($this->db85_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db85_sequencial"])){ 
+     if(trim((string) $this->db85_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db85_sequencial"])){ 
        $sql  .= $virgula." db85_sequencial = $this->db85_sequencial ";
        $virgula = ",";
-       if(trim($this->db85_sequencial) == null ){ 
+       if(trim((string) $this->db85_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db85_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_cadenderruaruastipo {
          return false;
        }
      }
-     if(trim($this->db85_cadenderrua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db85_cadenderrua"])){ 
+     if(trim((string) $this->db85_cadenderrua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db85_cadenderrua"])){ 
        $sql  .= $virgula." db85_cadenderrua = $this->db85_cadenderrua ";
        $virgula = ",";
-       if(trim($this->db85_cadenderrua) == null ){ 
+       if(trim((string) $this->db85_cadenderrua) == null ){ 
          $this->erro_sql = " Campo Código da Rua nao Informado.";
          $this->erro_campo = "db85_cadenderrua";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_cadenderruaruastipo {
          return false;
        }
      }
-     if(trim($this->db85_ruastipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db85_ruastipo"])){ 
+     if(trim((string) $this->db85_ruastipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db85_ruastipo"])){ 
        $sql  .= $virgula." db85_ruastipo = $this->db85_ruastipo ";
        $virgula = ",";
-       if(trim($this->db85_ruastipo) == null ){ 
+       if(trim((string) $this->db85_ruastipo) == null ){ 
          $this->erro_sql = " Campo Código do Tipo nao Informado.";
          $this->erro_campo = "db85_ruastipo";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_cadenderruaruastipo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16207,'$this->db85_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db85_sequencial"]) || $this->db85_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2843,16207,'".AddSlashes(pg_result($resaco,$conresaco,'db85_sequencial'))."','$this->db85_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2843,16207,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db85_sequencial'))."','$this->db85_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db85_cadenderrua"]) || $this->db85_cadenderrua != "")
-           $resac = db_query("insert into db_acount values($acount,2843,16208,'".AddSlashes(pg_result($resaco,$conresaco,'db85_cadenderrua'))."','$this->db85_cadenderrua',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2843,16208,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db85_cadenderrua'))."','$this->db85_cadenderrua',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db85_ruastipo"]) || $this->db85_ruastipo != "")
-           $resac = db_query("insert into db_acount values($acount,2843,16209,'".AddSlashes(pg_result($resaco,$conresaco,'db85_ruastipo'))."','$this->db85_ruastipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2843,16209,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db85_ruastipo'))."','$this->db85_ruastipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_cadenderruaruastipo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16207,'$db85_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2843,16207,'','".AddSlashes(pg_result($resaco,$iresaco,'db85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2843,16208,'','".AddSlashes(pg_result($resaco,$iresaco,'db85_cadenderrua'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2843,16209,'','".AddSlashes(pg_result($resaco,$iresaco,'db85_ruastipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2843,16207,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db85_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2843,16208,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db85_cadenderrua'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2843,16209,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db85_ruastipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cadenderruaruastipo
@@ -345,7 +345,7 @@ class cl_cadenderruaruastipo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cadenderruaruastipo";
@@ -384,7 +384,7 @@ class cl_cadenderruaruastipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_cadenderruaruastipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -10,6 +10,7 @@ class Sequencial extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -31,20 +32,21 @@ class Sequencial extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "id.required" => utf8_encode("Código do Tipo de Sessão da comissão não informado."),
-            "id.filled" => utf8_encode("Código inválido do tipo de sessão da comissão."),
-            "id.integer" => utf8_encode("Código inválido do tipo de sessão da comissão."),
-            "id.exists" => utf8_encode("Código não encontrado do tipo de sessão da comissão."),
+            "id.required" => mb_convert_encoding("Código do Tipo de Sessão da comissão não informado.", 'UTF-8', 'ISO-8859-1'),
+            "id.filled" => mb_convert_encoding("Código inválido do tipo de sessão da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "id.integer" => mb_convert_encoding("Código inválido do tipo de sessão da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "id.exists" => mb_convert_encoding("Código não encontrado do tipo de sessão da comissão.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

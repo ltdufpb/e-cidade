@@ -127,12 +127,12 @@ switch ($oParam->exec) {
     $oDadosXML = $oDomXml->getElementsByTagName('orgao');
     foreach ($oDadosXML as $oElemento){
     	if ($oElemento->getAttribute('codigoorgao') == $oParam->iCodigoOrgao) {
-    	  $oRetorno->dadosRecuperados = array(
+    	  $oRetorno->dadosRecuperados = [
     	                                  'iCpfResponsavel'     => $oElemento->getAttribute('cpfresponsavel'),
     	                                  'iTipoGestaoCreditos' => $oElemento->getAttribute('tipogestaocreditos'),
     	                                  'sDataInicioGestao'   => $oElemento->getAttribute('datainiciogestao'),
     	                                  'iTipoOrdenador'      => $oElemento->getAttribute('tipoordenador')
-    	                                );
+    	                                ];
     	  $oRetorno->status = 3;
     	  break;
     	}

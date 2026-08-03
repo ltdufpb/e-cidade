@@ -32,13 +32,13 @@ require_once modification("libs/db_conecta.php");
 require_once modification("libs/db_sessoes.php");
 require_once modification("dbforms/db_funcoes.php");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oPost      = db_utils::postMemory($_POST);
 $claguabase = new cl_aguabase;
 $lErro      = false;
-$aAnos      = array(
+$aAnos      = [
   db_getsession('DB_anousu') => db_getsession('DB_anousu')
-);
+];
 
 if (!empty($oPost->calcular)) {
   try {
@@ -77,8 +77,8 @@ if (!empty($oPost->calcular)) {
         throw new DBException($claguabase->erro_msg);
       }
 
-      if (pg_numrows($rsCalculo) > 0) {
-        $sRetornoCalculo = pg_result($rsCalculo, 0, 0);
+      if (pg_num_rows($rsCalculo) > 0) {
+        $sRetornoCalculo = pg_fetch_result($rsCalculo, 0, 0);
 
         if (substr($sRetornoCalculo, 0, 1) != 1) {
 

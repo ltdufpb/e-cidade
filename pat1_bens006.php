@@ -42,7 +42,7 @@ $clbensimoveis = new cl_bensimoveis;
 $clbensmater = new cl_bensmater;
 $clhistbemdiv = new cl_histbemdiv;
 $clbensdiv = new cl_bensdiv;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

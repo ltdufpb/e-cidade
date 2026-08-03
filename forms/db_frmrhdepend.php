@@ -110,7 +110,7 @@ if (!isset($Ip58_numero)) {
             </td>
             <td>
               <?php 
-                $sex = array ("M" => "Masculino", "F" => "Feminino" );
+                $sex =  ["M" => "Masculino", "F" => "Feminino" ];
                 db_select ( 'dp01_sexo', $sex, true, $db_opcao, 'style="width:125px;"' );
               ?>
             </td>
@@ -121,14 +121,14 @@ if (!isset($Ip58_numero)) {
             </td>
             <td id="tipo_parentesco">
               <?php 
-              $arr_gparen = array(
+              $arr_gparen = [
                                   'C'=>'Cônjuge',
                                   'F'=>'Filho',
                                   'P'=>'Pai',
                                   'M'=>'Mãe',
                                   'A'=>'Avó',
                                   'O'=>'Outros'
-                                 );
+                                 ];
               db_select("rh31_gparen",$arr_gparen,true,$db_opcao);
               ?>
             </td>
@@ -167,11 +167,11 @@ if (!isset($Ip58_numero)) {
                 $rh31_depend = "N";
               }
 
-              $arr_depend = array(
+              $arr_depend = [
                                   'C'=>'Cálculo',
                                   'S'=>'Sempre dependente',
                                   'N'=>'Não dependente'
-                                 );
+                                 ];
               db_select("rh31_depend",$arr_depend,true,$db_opcao);
               ?>
             </td>
@@ -184,7 +184,7 @@ if (!isset($Ip58_numero)) {
               <?php 
 
 
-              $arr_irf = array(
+              $arr_irf = [
                                '0' => 'Não Dependente',
                                '1' => 'Cônjuge,Companheiro(a)',
                                '2' => 'Filho(a)/Enteado(a), até 21 anos de idade',
@@ -194,7 +194,7 @@ if (!isset($Ip58_numero)) {
                                '6' => 'Pais, avós e bisavós',
                                '7' => 'Menor pobre até 21 anos, com a guarda judicial',
                                '8' => 'Pessoa absolutamente incapaz'
-                              );
+                              ];
               db_select("rh31_irf",$arr_irf,true,$db_opcao);
               ?>
             </td>
@@ -209,11 +209,11 @@ if (!isset($Ip58_numero)) {
                 $rh31_especi = "N";
               }
 
-              $arr_especi = array(
+              $arr_especi = [
                                   'N'=>'Não dependente',
                                   'C'=>'Cálculo',
                                   'S'=>'Sempre dependente'
-                                 );
+                                 ];
               db_select("rh31_especi",$arr_especi,true,$db_opcao);
               ?>
            </td>
@@ -224,10 +224,10 @@ if (!isset($Ip58_numero)) {
             </td>
             <td>
                 <?php
-                    db_select('rh31_fins_previdenciarios', array(
+                    db_select('rh31_fins_previdenciarios', [
                         'f' => 'Não',
                         't' => 'Sim'
-                    ), true, $db_opcao);
+                    ], true, $db_opcao);
                 ?>
            </td>
          </tr>
@@ -310,7 +310,7 @@ if(isset($opcao)){
                                         );
       $asopcoes = 1;
 
-      $chavepri= array("rh31_codigo"=>@$rh31_codigo);
+      $chavepri= ["rh31_codigo"=>@$rh31_codigo];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       $cliframe_alterar_excluir->sql = $sql;
       $cliframe_alterar_excluir->campos  ="rh31_nome,rh31_dtnasc,rh31_gparen,rh31_depend,rh31_irf,rh31_especi,rh31_fins_previdenciarios";
@@ -332,7 +332,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rhdepend.hide();
   <?php 
   if($db_opcao!=1){
-    echo "  location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo "  location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

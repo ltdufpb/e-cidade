@@ -111,7 +111,7 @@ db_input('j13_descr',40,$Ij13_descr,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("j16_codigo"=>@$j16_codigo,"j16_lograd"=>@$j16_lograd);
+	 $chavepri= ["j16_codigo"=>@$j16_codigo,"j16_lograd"=>@$j16_lograd];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clruasbairro->sql_query(null,"*",null,"j16_lograd=$j16_lograd");
 	 $cliframe_alterar_excluir->campos  ="j16_bairro,j13_descr";

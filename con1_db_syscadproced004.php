@@ -36,7 +36,7 @@ $cldb_syscadproced = new cl_db_syscadproced;
   /*
 $cldb_syscadproceditem = new cl_db_syscadproceditem;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){

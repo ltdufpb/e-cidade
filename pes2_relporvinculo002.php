@@ -31,8 +31,8 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('rh61_regist');
 $clrotulo->label('z01_nome');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_GET_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_GET);
 $orderby = " rh30_codreg, z01_nome ";
 $ordenacao = "Alfabética";
 if(isset($ordem) && $ordem == "n"){
@@ -56,7 +56,7 @@ if(isset($selec) && $selec != ''){
 
 if($sel != 0){
   $result_sel = db_query("select r44_where from selecao where r44_selec = {$sel} and r44_instit = " . db_getsession("DB_instit"));
-  if(pg_numrows($result_sel) > 0){
+  if(pg_num_rows($result_sel) > 0){
     db_fieldsmemory($result_sel, 0, 1);
     $where .= " and ".$r44_where;
   }
@@ -100,7 +100,7 @@ $sql = "select $campos
             $grupo
             order by ".$orderby;
 $resultado_sql  = db_query($sql);
-$qtd_linhas_sql = pg_numrows($resultado_sql);
+$qtd_linhas_sql = pg_num_rows($resultado_sql);
 if($qtd_linhas_sql == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários cadastrados no período.');
 }

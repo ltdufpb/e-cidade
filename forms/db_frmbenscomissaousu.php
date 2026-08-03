@@ -96,7 +96,7 @@ db_input('nome',40,$Inome,true,'text',3,"");
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("t61_codcom"=>@$t61_codcom,"t61_id_usuario"=>@$t61_id_usuario);
+	 $chavepri= ["t61_codcom"=>@$t61_codcom,"t61_id_usuario"=>@$t61_id_usuario];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->opcoes  = 3;
 	 $cliframe_alterar_excluir->sql     = $clbenscomissaousu->sql_query_file($t61_codcom);

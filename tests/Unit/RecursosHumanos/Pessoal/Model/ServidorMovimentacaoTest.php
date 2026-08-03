@@ -553,7 +553,7 @@ class ServidorMovimentacaoTest extends TestCase
         $permanenciaAbonada = $this->faker->boolean;
         $dataAbonoPermanencia = $this->faker->dateTime;
 
-        $state = array(
+        $state = [
             'rh02_seqpes' => $sequencial,
             'rh02_anousu' => $ano,
             'rh02_mesusu' => $mes,
@@ -588,7 +588,7 @@ class ServidorMovimentacaoTest extends TestCase
             'rh02_cedencia' => $cedencia,
             'rh02_regimejornadatrabalho' => $regimeJornadaTrabalho,
             'rh02_dataabonopermanencia' => $dataAbonoPermanencia->format('Y-m-d')
-        );
+        ];
 
         $servidorMovimentacao = ServidorMovimentacao::fromState($state);
 

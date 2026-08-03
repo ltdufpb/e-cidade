@@ -31,11 +31,11 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcprojativ_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $chave_o55_descr = isset($chave_o55_descr) ? stripslashes($chave_o55_descr) : '';
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcprojativ = new cl_orcprojativ;
 $clorcprojativ->rotulo->label("o55_anousu");
 $clorcprojativ->rotulo->label("o55_projativ");

@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_emissaogeralinscricao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clemissaogeralinscricao = new cl_emissaogeralinscricao;
 $clemissaogeralinscricao->rotulo->label("tr04_sequencial");
 $clemissaogeralinscricao->rotulo->label("tr04_inscr");
@@ -52,9 +52,9 @@ $clemissaogeralinscricao->rotulo->label("tr04_inscr");
         }else{
            $sql = $clemissaogeralinscricao->sql_query("",$campos,"tr04_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_tr04_inscr)){
-          $repassa = array("chave_tr04_sequencial"=>$chave_tr04_sequencial,"chave_tr04_inscr"=>$chave_tr04_inscr);
+          $repassa = ["chave_tr04_sequencial"=>$chave_tr04_sequencial,"chave_tr04_inscr"=>$chave_tr04_inscr];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

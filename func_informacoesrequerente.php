@@ -99,7 +99,7 @@ if ($oDadosAtendimento->ov05_sequencial == 2) {
 		$rsBuscaTelefones        = $oDaoBuscaCidadaoContato->sql_record($sSqlBuscaTelefones);
 		$iTotalTelefones         = $oDaoBuscaCidadaoContato->numrows;
 
-	  $aTelefones = array();
+	  $aTelefones = [];
 		if ($iTotalTelefones > 0) {
 		  $aTelefones = db_utils::getCollectionByRecord($rsBuscaTelefones);
 		}

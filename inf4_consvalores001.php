@@ -39,7 +39,7 @@ $rotulocampo->label("DBtxt6");
 $clinfla = new cl_infla;
 $clinflan= new cl_inflan;
 $opcao = 3;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(isset($atualiza)){
   // pesquisa inflator no infla para ver o i01_dm
@@ -56,7 +56,7 @@ if(isset($atualiza)){
        $vartemp = "i02_valor_".$qm."_".$im;
        $clinfla->i02_codigo = $i01_codigo;
        $clinfla->i02_data = $exercicio."-".db_formatar($qm,'s','0',2)."-".db_formatar($im,'s','0',2);
-       $clinfla->i02_valor = $$vartemp;
+       $clinfla->i02_valor = ${$vartemp};
        $clinfla->alterar($i01_codigo,$clinfla->i02_data);
     }
   }
@@ -101,7 +101,7 @@ function js_verifica() {
                 <?php 
 		$result = $clinflan->sql_record($clinflan->sql_query("","i01_codigo#i01_descr#i01_dm","i01_codigo"));
                 if(!isset($i01_codigo)){
-                  $i01_codigo = pg_result($result,0,1);
+                  $i01_codigo = pg_fetch_result($result,0,1);
                 }
                 $codigo = $i01_codigo;
                 for($i=0;$i<$clinflan->numrows;$i++){
@@ -122,14 +122,13 @@ function js_verifica() {
                 if (isset($i01_codigo)){
                   $i01_codigo=trim($i01_codigo);
   		          $result1 = $clinfla->sql_record($clinfla->sql_query("","","distinct substr(i02_data,1,4) as exerc ","exerc"," i02_codigo = '$i01_codigo'"));
- 		          $xexerc = array();
+ 		          $xexerc = [];
                    for ( $i = 0; $i < $clinfla->numrows;$i++){
                        db_fieldsmemory($result1,$i);
 		       $xexerc[$exerc] = $exerc;
                    }
                    if(!isset($exercicio)){
-                     reset($xexerc);
-                     $exercicio = key($xexerc) ;
+                     $exercicio = array_key_first($xexerc) ;
                    }
                    db_select('exercicio',$xexerc,true,2," onchange='document.form1.submit()'");
                 }

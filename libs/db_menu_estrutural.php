@@ -35,14 +35,14 @@
 
  class menu_estrutural extends cl_conplano  {
 
-    var $estrut_debito;
-    var $estrut_debito_descr;
-    var $estrut_credito;
-    var $estrut_credito_descr;
-    
-    var $mostra_conta = null;
+    public $estrut_debito;
+    public $estrut_debito_descr;
+    public $estrut_credito;
+    public $estrut_credito_descr;
 
-    function menu_estrutural(){
+    public $mostra_conta = null;
+
+    function __construct(){
      //-- constructor
     }  
     function monta_select(){
@@ -75,9 +75,9 @@
                <tr><td><strong>Estrutural</strong></td><td><strong>Descrição </strong></b></td></tr>     
                <tr><td colspan='2'><hr></td></tr>     
               ";
-         $matriz01=array();
-	 $matriz02=array();
-	 $matriz_descr=array();
+         $matriz01=[];
+	 $matriz02=[];
+	 $matriz_descr=[];
          $cont=0;
 	 $cont02=0;
 	 $f_estrut=$this->estrut_debito;
@@ -98,8 +98,8 @@
 	               if($nivel==1){
 	                    $testamae=true;
 	               }
-	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut; 
-	               $matriz_descr[$cont]= pg_result($result65,0,"descr");      // $this->descr;
+	               $matriz01[$cont]= pg_fetch_result($result65,0,"estrut");  //$this->estrut; 
+	               $matriz_descr[$cont]= pg_fetch_result($result65,0,"descr");      // $this->descr;
 	               $cont++;
 	          }else{
 	               $nivel=1;
@@ -141,7 +141,7 @@
 	      ";
     }
 
-    
+
     function show(){
 
         $this->monta_select(); 
@@ -151,9 +151,9 @@
 	       <tr><td colspan=2><b>Conta Débito             </td></tr>
                <tr><td>Estrutural</td><td>Descrição </b></td></tr>     
               ";
-         $matriz01=array();
-	 $matriz02=array();
-	 $matriz_descr=array();
+         $matriz01=[];
+	 $matriz02=[];
+	 $matriz_descr=[];
          $cont=0;
 	 $cont02=0;
 	 $f_estrut=$this->estrut_debito;
@@ -174,8 +174,8 @@
 	               if($nivel==1){
 	                    $testamae=true;
 	               }
-	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut; 
-	               $matriz_descr[$cont]= pg_result($result65,0,"descr");      // $this->descr;
+	               $matriz01[$cont]= pg_fetch_result($result65,0,"estrut");  //$this->estrut; 
+	               $matriz_descr[$cont]= pg_fetch_result($result65,0,"descr");      // $this->descr;
 	               $cont++;
 	          }else{
 	               $nivel=1;
@@ -219,9 +219,9 @@
 	 echo "<tr><td colspan=2><b> Conta Crédito            </td></tr>
                <tr><td>Estrutural</td><td>Descrição </b> </td></tr>     
               ";
-         $matriz01=array();
-	 $matriz02=array();
-	 $matriz_descr=array();
+         $matriz01=[];
+	 $matriz02=[];
+	 $matriz_descr=[];
          $cont=0;
 	 $cont02=0;
 	 $f_estrut=$this->estrut_credito;
@@ -242,8 +242,8 @@
 	               if($nivel==1){
 	                    $testamae=true;
 	               }
-	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut; 
-	               $matriz_descr[$cont]= pg_result($result65,0,"descr");      // $this->descr;
+	               $matriz01[$cont]= pg_fetch_result($result65,0,"estrut");  //$this->estrut; 
+	               $matriz_descr[$cont]= pg_fetch_result($result65,0,"descr");      // $this->descr;
 	               $cont++;
 	          }else{
 	               $nivel=1;
@@ -283,7 +283,7 @@
 	            <td nowrap> $espaco.$f_descr </td>
 	       </tr>	    	     
 	      ";
- 
+
 	 echo "</table>";
 	 echo "</div>";
          //------------------------------------------------------------
@@ -293,9 +293,9 @@
 	       <tr><td colspan=2><b> Conta Débito             </td></tr>
                <tr><td>Estrutural</td><td>Descrição </b></td></tr>     
               ";
-         $matriz01=array();
-	 $matriz02=array();
-	 $matriz_descr=array();
+         $matriz01=[];
+	 $matriz02=[];
+	 $matriz_descr=[];
          $cont=0;
 	 $cont02=0;
 	 $f_estrut=$this->estrut_debito;
@@ -318,8 +318,8 @@
 	               if($nivel==1){
 	                    $testamae=true;
 	               }
-	               $matriz01[$cont]= pg_result($result65,0,"estrut");  //$this->estrut; 
-	               $matriz_descr[$cont]= pg_result($result65,0,"descr");      // $this->descr;
+	               $matriz01[$cont]= pg_fetch_result($result65,0,"estrut");  //$this->estrut; 
+	               $matriz_descr[$cont]= pg_fetch_result($result65,0,"descr");      // $this->descr;
 	               $cont++;
 	          }else{
 	               $nivel=1;
@@ -363,9 +363,9 @@
 	 echo "<tr><td colspan=2><b>Conta Crédito            </td></tr>
                <tr><td>Estrutural</td><td>Descrição  </b></td></tr>     
               ";
-         $matriz01=array();
-	 $matriz02=array();
-	 $matriz_descr=array();
+         $matriz01=[];
+	 $matriz02=[];
+	 $matriz_descr=[];
          $cont=0;
 	 $cont02=0;
 	 $f_estrut=$this->estrut_credito;
@@ -386,8 +386,8 @@
 	               if($nivel==1){
 	                    $testamae=true;
 	               }
-	               $matriz01[$cont]= pg_result($result65,0,"estrut");    // $this->estrut; 
-	               $matriz_descr[$cont]= pg_result($result65,0,"descr"); // $this->descr;
+	               $matriz01[$cont]= pg_fetch_result($result65,0,"estrut");    // $this->estrut; 
+	               $matriz_descr[$cont]= pg_fetch_result($result65,0,"descr"); // $this->descr;
 	               $cont++;
 	          }else{
 	               $nivel=1;
@@ -427,41 +427,26 @@
 	            <td nowrap> $espaco$f_descr </td>
 	       </tr>	    	     
 	      ";
- 
+
 	 echo "</table>";
 	 echo "</div>";
-  
+
     }//- end função
 
    //------------------------
    function php_espaco($nivel){
       $espaco="";
-      switch($nivel){
- 	 case 1:
-		$espaco="";
-		break;
-	 case 2:
-		$espaco="&nbsp ";
-		break;
-	 case 3:
-		$espaco="&nbsp &nbsp ";
-		break;
-	 case 4:
-		$espaco="&nbsp &nbsp &nbsp ";
-     		break;
-	 case 5:
-		$espaco="&nbsp &nbsp &nbsp &nbsp ";       
-		break;
-	 case 6:
-	        $espaco="&nbsp &nbsp &nbsp &nbsp &nbsp ";
-		break;
-	 case 7:
-	        $espaco="&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp ";
-		break;
-	 case 8:
-	        $espaco="&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp ";
-		break;
-       }
+      $espaco = match ($nivel) {
+          1 => "",
+          2 => "&nbsp ",
+          3 => "&nbsp &nbsp ",
+          4 => "&nbsp &nbsp &nbsp ",
+          5 => "&nbsp &nbsp &nbsp &nbsp ",
+          6 => "&nbsp &nbsp &nbsp &nbsp &nbsp ",
+          7 => "&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp ",
+          8 => "&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp ",
+          default => $espaco,
+      };
        return $espaco;
    } // end php_espaco  
 

@@ -108,9 +108,9 @@ $clRotulo->label("z01_nome");
       	</td>
     		<td> 
       	  <?php 
-            $aSituacao = array('T'  => 'Todos',
+            $aSituacao = ['T'  => 'Todos',
                                'AT' => 'Ativo',
-                               'AN' => 'Anulado');
+                               'AN' => 'Anulado'];
             db_select('v70_anulado', $aSituacao, true, 1, "style='width:92px;'");
           ?>
     		</td>

@@ -32,22 +32,18 @@ class IdentifiersTablesFactory
 
     public static function getDao($tableName)
     {
-        switch ($tableName) {
-            case 'avaliacaogruporespostaprocesso':
-                return new \cl_avaliacaogruporespostaprocesso();
-            default:
-                throw new \Exception("Tabela '{$tableName}' não mapeada.");
-        }
+        return match ($tableName) {
+            'avaliacaogruporespostaprocesso' => new \cl_avaliacaogruporespostaprocesso(),
+            default => throw new \Exception("Tabela '{$tableName}' não mapeada."),
+        };
     }
 
     public static function getFieldForeignKeyFill($tableName)
     {
-        switch ($tableName) {
-            case 'avaliacaogruporespostaprocesso':
-                return 'eso05_avaliacaogruporesposta';
-            default:
-                throw new \Exception("Tabela '{$tableName}' não mapeada.");
-        }
+        return match ($tableName) {
+            'avaliacaogruporespostaprocesso' => 'eso05_avaliacaogruporesposta',
+            default => throw new \Exception("Tabela '{$tableName}' não mapeada."),
+        };
     }
 
     /**
@@ -58,11 +54,9 @@ class IdentifiersTablesFactory
      */
     public static function onlyOne($tableName)
     {
-        switch ($tableName) {
-            case 'avaliacaogruporespostaprocesso':
-                return true;
-            default:
-                return false;
-        }
+        return match ($tableName) {
+            'avaliacaogruporespostaprocesso' => true,
+            default => false,
+        };
     }
 }

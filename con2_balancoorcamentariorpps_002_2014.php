@@ -90,7 +90,7 @@ cabecalho($oPdf);
 
 $iPosicaoLinha = $oPdf->GetY();
 $lDireita = false;
-$aLinhasFinais = array(17, 18, 19, 50, 51, 52);
+$aLinhasFinais = [17, 18, 19, 50, 51, 52];
 
 foreach ($aDados as $iIndice => $oDados) {
 
@@ -104,7 +104,7 @@ foreach ($aDados as $iIndice => $oDados) {
 
   if (in_array($iIndice,$aLinhasFinais)) {
 
-    linha($oPdf, $oDados, true, true, $lDireita);
+    linha($oPdf, $oDados, true, true);
     continue;
   }
 
@@ -115,7 +115,7 @@ foreach ($aDados as $iIndice => $oDados) {
     $lDireita = true;
   }
 
-  linha($oPdf, $oDados, false, true, $lDireita);
+  linha($oPdf, $oDados, false, true);
 }
 
 
@@ -143,7 +143,7 @@ $oPdf->output();
  * @param  integer $iColuna 
  * @return void          
  */
-function linha(PDF $oPdf, StdClass $oDados = null, $lTotal = false, $lPreencher = false, $lDireita = false) {
+function linha(PDF $oPdf, ?StdClass $oDados = null, $lTotal = false, $lPreencher = false, $lDireita = false) {
 
   $oPdf->setfont('arial', '', 6);
   

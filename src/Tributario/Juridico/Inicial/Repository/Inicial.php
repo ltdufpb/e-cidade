@@ -61,7 +61,7 @@ class Inicial extends \BaseClassRepository
     /**
      * @var array
      */
-    private $joins = array();
+    private $joins = [];
 
     /**
      * Retorna uma inicial filtrando por codigo.
@@ -139,7 +139,7 @@ class Inicial extends \BaseClassRepository
             return null;
         }
 
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $this->make((object) $item);
         }
@@ -169,7 +169,7 @@ class Inicial extends \BaseClassRepository
             return null;
         }
 
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $this->make((object) $item);
         }
@@ -267,7 +267,7 @@ class Inicial extends \BaseClassRepository
         }
 
         if ($this->isPersistPropagation() && $inicial->getCertidoes()) {
-            $certidaoRepository = CertidaoRepository::getInstance();
+            $certidaoRepository = (new CertidaoRepository())->getInstance();
             $certidaoRepository->setPersistPropagation(true);
 
             $dao = new \cl_inicialcert();
@@ -283,7 +283,7 @@ class Inicial extends \BaseClassRepository
         }
 
         if ($this->isPersistPropagation() && $inicial->getInicialNomes()) {
-            $inicialNomeRepository = InicialNomeRepository::getInstance();
+            $inicialNomeRepository = (new InicialNomeRepository())->getInstance();
 
             foreach ($inicial->getInicialNomes() as $inicialNome) {
                 $inicialNomeRepository->persist($inicialNome, $inicial->getCodigo());
@@ -312,12 +312,12 @@ class Inicial extends \BaseClassRepository
             ->setSituacao($inicial->v50_situacao);
 
         if ($this->isReturnFullItem()) {
-            $certidaoRepository = CertidaoRepository::getInstance()
+            $certidaoRepository = (new CertidaoRepository())->getInstance()
                 ->setReturnFullItem(true);
 
             $entity->setCertidoes($certidaoRepository->getByInicial($inicial->v50_inicial));
 
-            $inicialNomeRepository = InicialNomeRepository::getInstance();
+            $inicialNomeRepository = (new InicialNomeRepository())->getInstance();
 
             $iniciaisNome = $inicialNomeRepository->getByInitial($inicial->v50_inicial);
 
@@ -351,14 +351,14 @@ class Inicial extends \BaseClassRepository
             throw new Exception("Não foi possível buscar os iniciais.");
         }
 
-        $iniciais = array();
+        $iniciais = [];
 
         while ($inicial = pg_fetch_array($rs)) {
             $iniciais[] = Entity::fromState($inicial);
         }
 
-        $this->scopes = array();
-        $this->joins = array();
+        $this->scopes = [];
+        $this->joins = [];
 
         return $iniciais;
     }
@@ -437,7 +437,7 @@ class Inicial extends \BaseClassRepository
      */
     public function atualizarObservacaoOrigemPorNumpreAoAnular(array $numpres, Termo $parcelamento)
     {
-        $dividaRepository = DividaRepository::getInstance();
+        $dividaRepository = (new DividaRepository())->getInstance();
         $diversosRepository = DiversosRepository::getInstance();
 
         // No final das contas, uma dívida inicial é ou um diversos ou uma dívida, então atualize ambos

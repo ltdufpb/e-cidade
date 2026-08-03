@@ -40,7 +40,7 @@ $oGet = db_utils::postMemory($_GET);
 
 try {
 
-  $aHeaders = array(
+  $aHeaders = [
     "Licença",
     "Empreendimento",
     "Nome do Empreendimento",
@@ -48,9 +48,9 @@ try {
     "Atividade",
     "Protocolo",
     "Data de Vencimento"
-  );
+  ];
 
-  $aWidth = array(
+  $aWidth = [
     15,
     25,
     65,
@@ -58,9 +58,9 @@ try {
     90,
     20,
     30
-  );
+  ];
 
-  $aAlign = array(
+  $aAlign = [
     PDFDocument::ALIGN_CENTER,
     PDFDocument::ALIGN_CENTER,
     PDFDocument::ALIGN_LEFT,
@@ -68,7 +68,7 @@ try {
     PDFDocument::ALIGN_LEFT,
     PDFDocument::ALIGN_CENTER,
     PDFDocument::ALIGN_CENTER
-  );
+  ];
 
   /**
    * Inserimos todos os tipos caso o campo for vazio(Todos)
@@ -132,23 +132,12 @@ try {
   $oPdfTable->addHeaderDescription("");
   $oPdfTable->addHeaderDescription("Filtro:");
 
-  switch ($oGet->TipoLicenca) {
-    case '1':
-      $sTipoLicenca = 'Prévia';
-      break;
-
-    case '2':
-      $sTipoLicenca = 'Instalação';
-      break;
-
-    case '3':
-      $sTipoLicenca = 'Operação';
-      break;
-
-    default:
-      $sTipoLicenca = 'Todos';
-      break;
-  }
+  $sTipoLicenca = match ($oGet->TipoLicenca) {
+      '1' => 'Prévia',
+      '2' => 'Instalação',
+      '3' => 'Operação',
+      default => 'Todos',
+  };
 
   $oPdfTable->addHeaderDescription("   Tipo de Licença: " . $sTipoLicenca);
 
@@ -167,15 +156,15 @@ try {
     $oVencimentos = db_utils::fieldsMemory($rsVencimentos, $iRow);
 
     $oPdfTable->addLineInformation(
-      array(
+      [
         $oVencimentos->am13_sequencial,
         $oVencimentos->am05_sequencial,
-        substr($oVencimentos->am05_nome, 0, 40),
+        substr((string) $oVencimentos->am05_nome, 0, 40),
         $oVencimentos->am05_cnpj,
-        substr($oVencimentos->am03_descricao, 0, 55),
+        substr((string) $oVencimentos->am03_descricao, 0, 55),
         $oVencimentos->am08_protprocesso,
-        date('d/m/Y', strtotime($oVencimentos->am08_datavencimento))
-      )
+        date('d/m/Y', strtotime((string) $oVencimentos->am08_datavencimento))
+      ]
     );
   }
 

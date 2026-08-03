@@ -208,7 +208,7 @@
             </td>
             <td>
               <?php  
-                $xy = array ("n" => "Não", "s" => "Sim");
+                $xy =  ["n" => "Não", "s" => "Sim"];
                 db_select('historico', $xy, true, 1);
               ?>      
             </td>
@@ -219,7 +219,7 @@
             </td>
   	        <td>
               <?php 	
-                $xy = array ("s" => "Sim", "n" => "Não");
+                $xy =  ["s" => "Sim", "n" => "Não"];
                 db_select('ultimohistorico', $xy, true, 1);
               ?>      
             </td>
@@ -230,7 +230,7 @@
             </td>
             <td>
               <?php  
-                $xy = array ("n" => "Não", "s" => "Sim");
+                $xy =  ["n" => "Não", "s" => "Sim"];
                 db_select('ultimaleitura', $xy, true, 1);
               ?>      
             </td>
@@ -241,7 +241,7 @@
             </td>
   	        <td>
               <?php 	
-                $xy = array ("t" => "Todos", "c" => "Com", "s" => "Sem");
+                $xy =  ["t" => "Todos", "c" => "Com", "s" => "Sem"];
                 db_select('hidrometros', $xy, true, 1);
               ?>      
             </td>
@@ -252,7 +252,7 @@
             </td>
   	        <td>
               <?php 	
-                $xy = array ("n" => "Não", "s" => "Sim");
+                $xy =  ["n" => "Não", "s" => "Sim"];
                 db_select('quebrarlograd', $xy, true, 1);
               ?>      
             </td>
@@ -263,7 +263,7 @@
             </td>
   	        <td>
               <?php 	
-                $xy = array ("n" => "Não", "s" => "Sim");
+                $xy =  ["n" => "Não", "s" => "Sim"];
                 db_select('quebrarentrega', $xy, true, 1);
               ?>      
             </td>

@@ -25,7 +25,7 @@ class OperacoesrealizadastefRepository
      */
     public function getAllConfirmadasAutorizadoraByNumnov($numnov, $campos = ["*"])
     {
-        return Operacoesrealizadastef::numnov($numnov)->confirmadoAutorizadora()->get($campos);
+        return (new Operacoesrealizadastef())->numnov($numnov)->confirmadoAutorizadora()->get($campos);
     }
 
     /**
@@ -39,12 +39,12 @@ class OperacoesrealizadastefRepository
      */
     public function getAllDesfeitasByNumnovGrupo($numnov, $grupo, $campos = ["*"])
     {
-        return Operacoesrealizadastef::numnov($numnov)->desfeito()->grupo($grupo)->orderBy("k198_nsu")->get($campos);
+        return (new Operacoesrealizadastef())->numnov($numnov)->desfeito()->grupo($grupo)->orderBy("k198_nsu")->get($campos);
     }
 
     public function getAllPendentes($dataInicio, $dataFim, $terminal)
     {
-        $query = Operacoesrealizadastef::confirmadoAutorizadora()->desfeito("f")->confirmadoAuttar("f");
+        $query = (new Operacoesrealizadastef())->confirmadoAutorizadora()->desfeito("f")->confirmadoAuttar("f");
 
         if (!empty($dataInicio) && !empty($dataFim)) {
             $query->beetwenDataOperacao($dataInicio, $dataFim);

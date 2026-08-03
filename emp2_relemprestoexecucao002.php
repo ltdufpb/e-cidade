@@ -32,8 +32,8 @@ include(modification("classes/db_cgm_classe.php"));
 include(modification("classes/db_orcelemento_classe.php"));
 include(modification("classes/db_orcprojativ_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clempresto    = new cl_empresto;
 $clrotulo      = new rotulocampo;
@@ -42,9 +42,9 @@ $clorcprojativ = new cl_orcprojativ;
 
 function retorna_desdob($elemento, $desdobramentos, $clorcelemento)
 {
-    $where = array(
+    $where = [
         "o56_elemento LIKE '{$elemento}%'"
-    );
+    ];
 
     $listaDesdobramentos = explode(',', $desdobramentos);
 
@@ -110,11 +110,11 @@ if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
 }
 
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-', ', ', $db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins ++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins ++) {
 	db_fieldsmemory($resultinst, $xins);
 	$descr_inst .= $xvirg.$nomeinst;
 	$xvirg = ', ';
@@ -383,7 +383,7 @@ $vprojativ="";
 for ($x = 0; $x < $rows; $x ++) {
      db_fieldsmemory($res, $x);
 
-cabecalho($pdf,$troca);
+cabecalho($pdf);
 $troca=0;
 
 //subtotal
@@ -721,7 +721,7 @@ $vnumcgmsub=$z01_numcgm;
 if ($tipo=="or" and $vorgao!=$o58_orgao){//orgão
  if (isset($quebradepagina) and $verifica==false){
    $troca=1;
-   cabecalho($pdf,$troca);
+   cabecalho($pdf);
     }
 
    $pdf->SetFont('Arial', 'B',8);
@@ -734,7 +734,7 @@ if ($tipo=="or" and $vorgao!=$o58_orgao){//orgão
 if ($tipo=="un" and  $vunidade!=$o58_unidade){//unidade
     if (isset($quebradepagina) and $verifica==false){
         $troca=1;
-        cabecalho($pdf,$troca);
+        cabecalho($pdf);
         }
 
     $pdf->SetFont('Arial', 'B',8);
@@ -748,7 +748,7 @@ if ($tipo=="un" and  $vunidade!=$o58_unidade){//unidade
 if ($tipo=="fu" and $vfuncao!=$o58_funcao){//função
       if (isset($quebradepagina) and $verifica==false){
           $troca=1;
-          cabecalho($pdf,$troca);
+          cabecalho($pdf);
           }
 
       $pdf->SetFont('Arial', 'B',8);
@@ -761,7 +761,7 @@ if ($tipo=="fu" and $vfuncao!=$o58_funcao){//função
 if ($tipo=="su" and  $vsubfuncao!=$o58_subfuncao){//subfuncao
        if (isset($quebradepagina) and $verifica==false){
            $troca=1;
-           cabecalho($pdf,$troca);
+           cabecalho($pdf);
            }
         $pdf->SetFont('Arial', 'B',8);
         $pdf->cell(0, 2,"", 0, 1, "", 0);
@@ -773,7 +773,7 @@ if ($tipo=="su" and  $vsubfuncao!=$o58_subfuncao){//subfuncao
 if ($tipo=="pr" and $vprograma!=$o58_programa){//programa
           if (isset($quebradepagina) and $verifica==false){
                    $troca=1;
-                   cabecalho($pdf,$troca);
+                   cabecalho($pdf);
              }
           $pdf->SetFont('Arial', 'B',8);
           $pdf->cell(0, 2,"", 0, 1, "", 0);
@@ -785,7 +785,7 @@ if ($tipo=="pr" and $vprograma!=$o58_programa){//programa
 if ($tipo=="pa" and $vprojativ!=$o58_projativ ){//projetto atividade
    if (isset($quebradepagina) and $verifica==false){
       $troca=1;
-      cabecalho($pdf,$troca);
+      cabecalho($pdf);
       }
     if ($vprojativ!=$o58_projativ or $o55anousu!=$e60_anousu){
 
@@ -803,9 +803,9 @@ if ($tipo=="pa" and $vprojativ!=$o58_projativ ){//projetto atividade
 if ($tipo=="el"  and $velemento!=$o56_elemento){//elemento
    if (isset($quebradepagina) and $verifica==false){
       $troca=1;
-      cabecalho($pdf,$troca);
+      cabecalho($pdf);
       }
-   $elemento = substr($o56_elemento, 0, 7);
+   $elemento = substr((string) $o56_elemento, 0, 7);
   $pdf->SetFont('Arial', 'B',8);
   $pdf->cell(0, 2,"", 0, 1, "", 0);
   $pdf->cell(0, 5,"Elemento: {$elemento} {$o56_descr}  ", 0, 1, "L", 0);
@@ -816,15 +816,15 @@ if ($tipo=="el"  and $velemento!=$o56_elemento){//elemento
 if ($tipo=="de" ){//desdobramento
 
 
-    $resdesdob = retorna_desdob(substr($o56_elemento, 0, 7), $desdobramentos, $clorcelemento);
-$numrows   = pg_numrows($resdesdob);
+    $resdesdob = retorna_desdob(substr((string) $o56_elemento, 0, 7), $desdobramentos, $clorcelemento);
+$numrows   = pg_num_rows($resdesdob);
 
 for ($i = 0; $i < $numrows; $i ++) {
     db_fieldsmemory($resdesdob,$i);
     if ($estrutural!=$estrutura){
         if (isset($quebradepagina) and $verifica==false){
              $troca=1;
-             cabecalho($pdf,$troca);
+             cabecalho($pdf);
             }
 
         $pdf->SetFont('Arial', 'B',8);
@@ -841,7 +841,7 @@ for ($i = 0; $i < $numrows; $i ++) {
 if ($tipo=="re" and $vrecurso!=$e91_recurso){//recurso
   if (isset($quebradepagina) and $verifica==false){
       $troca=1;
-      cabecalho($pdf,$troca);
+      cabecalho($pdf);
       }
   $pdf->SetFont('Arial', 'B',8);
   $pdf->cell(0, 2,"", 0, 1, "", 0);
@@ -853,7 +853,7 @@ if ($tipo=="re" and $vrecurso!=$e91_recurso){//recurso
 if ($tipo=="tr" and $vtiporesto!=$e91_codtipo ){//tipo resto
   if (isset($quebradepagina) and $verifica==false){
       $troca=1;
-      cabecalho($pdf,$troca);
+      cabecalho($pdf);
   }
    $pdf->SetFont('Arial', 'B',8);
    $pdf->cell(0, 2,"", 0, 1, "", 0);
@@ -867,11 +867,11 @@ if ($tipo=="tr" and $vtiporesto!=$e91_codtipo ){//tipo resto
 if ($tipo=="cr" and $vnumcgm!=$z01_numcgm){//credor
    if (isset($quebradepagina) and $verifica==false){
       $troca=1;
-      cabecalho($pdf,$troca);
+      cabecalho($pdf);
       }
    $pdf->SetFont('Arial', 'B',8);
    $pdf->cell(0, 2,"", 0, 1, "", 0);
-   $pdf->cell(0, 5,"Credor:".$z01_numcgm." ".substr($z01_nome,0,100), 0, 1, "L", 0);
+   $pdf->cell(0, 5,"Credor:".$z01_numcgm." ".substr((string) $z01_nome,0,100), 0, 1, "L", 0);
    $vnumcgm=$z01_numcgm;
    $verifica=false;
 
@@ -885,7 +885,7 @@ $tam="5";
 //dados cadastrais dos empenhos
     $pdf->Cell(15, $tam, ($e60_codemp. "/" .$e60_anousu),"TBR", 0,"R", 0);//empenho
     $pdf->Cell(15,$tam, db_formatar($e60_emiss, 'd'), 1, 0, "C", 0);//emissao
-    $pdf->Cell(70, $tam, substr($z01_nome, 0,38), 1, 0, "L", 0);//credor
+    $pdf->Cell(70, $tam, substr((string) $z01_nome, 0,38), 1, 0, "L", 0);//credor
 
 //saldos a pagar anteriores
     $pdf->Cell(20, $tam, db_formatar(abs($e91_vlremp - $e91_vlranu - $e91_vlrliq), 'f'), 1, 0, "R", 0);// rp nao proc

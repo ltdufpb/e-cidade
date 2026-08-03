@@ -41,13 +41,13 @@ $oParam = $oJson->decode(db_stdClass::db_stripTagsJson(str_replace("\\", "", $_P
 $oRetorno = new stdClass();
 $oRetorno->status = 1;
 $oRetorno->message = '';
-$oRetorno->itens = array();
+$oRetorno->itens = [];
 $dtDia = date("Y-m-d", db_getsession("DB_datausu"));
 $instituicaoSessao = db_getsession('DB_instit');
 
 function diff_data($inicial, $final, $format = "br")
 {
-    $format = strtolower($format);
+    $format = strtolower((string) $format);
     switch ($format) {
         case "br":
             $fmt = "%d/%m/%Y";
@@ -56,8 +56,8 @@ function diff_data($inicial, $final, $format = "br")
             $fmt = "%Y-%m-%d";
             break;
     }
-    $dtini = explode("/", $inicial);
-    $dtfim = explode("/", $final);
+    $dtini = explode("/", (string) $inicial);
+    $dtfim = explode("/", (string) $final);
     $inicial = $dtini[2] . "-" . $dtini[1] . "-" . $dtini[0];
     $final = $dtfim[2] . "-" . $dtfim[1] . "-" . $dtfim[0];
     $diastotal = (strtotime($final) - strtotime($inicial)) / 86400;

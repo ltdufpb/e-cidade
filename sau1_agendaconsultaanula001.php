@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 /*Require plugin SMSAgendamento - SMSAgendamentoConsulta - NÃO APAGAR*/
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoAgendaConsultaAnula = new cl_agendaconsultaanula();
 $oDaoagendamentos        = new cl_agendamentos();
@@ -65,7 +65,7 @@ if (isset($incluir)) {
     $oDaoAgendaConsultaAnula->s114_c_hora  = date('H:i');
     $oDaoAgendaConsultaAnula->s114_d_data  = date('Y-m-d');
     $oDaoAgendaConsultaAnula->incluir(null);
-    
+
     /*Inclusão código Plugin SMS Cancelamento de Consulta - NÃO APAGAR*/
     
   }

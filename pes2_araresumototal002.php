@@ -30,7 +30,7 @@ include(modification("libs/db_sql.php"));
 include(modification("classes/db_rhlocaltrab_classe.php"));
 $clrhlocaltrab = new cl_rhlocaltrab;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 $tipo = 't';
 $lotaini = 0;
@@ -67,7 +67,7 @@ if($xbanco == 'b' && $xconta == 'cc'){
 
 
 $where_local = '';
-if(trim($local) != ''){
+if(trim((string) $local) != ''){
    $where_local = " and rh56_localtrab in ($local)";
 }
 $where_dentista = " ";
@@ -200,7 +200,7 @@ $sql = "select
 //echo "Local --> $local  Tip_fol --> $tip_fol   ".$sql;exit;
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 //echo 'ENTROU 111';exit;
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos no período de '.$mes.' / '.$ano.$erroajuda.".");
@@ -237,10 +237,10 @@ if ($tipo == "l" || $tipo == "o" || $tipo == "s" || $tipo == "t"){
        $quebra = 0;
      }
    }  
-   $pdf->multicell(0,5,$lota." - ".strtoupper($r70_descr));
+   $pdf->multicell(0,5,$lota." - ".strtoupper((string) $r70_descr));
    $pdf->ln(4);
 }
-for($x = 0;$x < pg_numrows($result);$x++){
+for($x = 0;$x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if (($tipo == "l" || $tipo == "o" || $tipo == "s" || $tipo == "t") && $quebra != $lota){
       $pdf->cell(15,$alt,'',"T",0,"C",0);
@@ -382,7 +382,7 @@ for($x = 0;$x < pg_numrows($result);$x++){
       $pdf->cell(20,$alt,'PROVENTOS',1,0,"C",1);
       $pdf->cell(20,$alt,'DESCONTOS',1,1,"C",1);
       if($tipo == "l" || $tipo == "o" || $tipo == "s" || $tipo == "t" ){
-        $pdf->multicell(0,5,$lota." - ".strtoupper($r70_descr));
+        $pdf->multicell(0,5,$lota." - ".strtoupper((string) $r70_descr));
         $pdf->ln(4);
       }
    }

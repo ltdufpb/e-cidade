@@ -38,10 +38,10 @@ class TipoAusencia {
   private $sDescricao;
   private $iTipo;
 
-  static private $aTiposAusencia = array( 1 => "Nenhum",
+  static private $aTiposAusencia = [ 1 => "Nenhum",
                                           2 => "Licença",
                                           3 => "Falta Abonada",
-                                          4 => "Falta Não Justificada");
+                                          4 => "Falta Não Justificada"];
 
   public function __construct($iCodigo = null) {
 

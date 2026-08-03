@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_grupoexame_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clgrupoexame = new cl_grupoexame;
 $clgrupoexame->rotulo->label("age02_sequencial");
 $clgrupoexame->rotulo->label("age02_sequencial");
@@ -52,9 +52,9 @@ $clgrupoexame->rotulo->label("age02_sequencial");
         }else{
            $sql = $clgrupoexame->sql_query("",$campos,"age02_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_age02_sequencial)){
-          $repassa = array("chave_age02_sequencial"=>$chave_age02_sequencial,"chave_age02_sequencial"=>$chave_age02_sequencial);
+          $repassa = ["chave_age02_sequencial"=>$chave_age02_sequencial,"chave_age02_sequencial"=>$chave_age02_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

@@ -54,7 +54,7 @@ try {
       $oDaoTipoAssentamento = new cl_tipoasse();
       $sSqlTipoAssentamento = $oDaoTipoAssentamento->sql_query_file(null, '*', 'h12_codigo');
       $rsTipoAssentamento   = $oDaoTipoAssentamento->sql_record($sSqlTipoAssentamento);
-      $aTiposAssentamentos  = array();
+      $aTiposAssentamentos  = [];
 
       for ($iTipoAssentamento = 0; $iTipoAssentamento < pg_num_rows($rsTipoAssentamento); $iTipoAssentamento++) {
         

@@ -162,7 +162,7 @@ $oPdf->output();
  * @param  integer $iColuna 
  * @return void          
  */
-function linha(PDF $oPdf, StdClass $oDados = null, $lTotal = false, $lDireita = false) {
+function linha(PDF $oPdf, ?StdClass $oDados = null, $lTotal = false, $lDireita = false) {
 
   $oPdf->setfont('arial', '', 6);
   

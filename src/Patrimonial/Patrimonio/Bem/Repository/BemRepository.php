@@ -34,16 +34,13 @@ use ECidade\Patrimonial\Patrimonio\Bem\Model\BemPlaca;
 class BemRepository
 {
     /**
-     * @var Object
+     * @param object $dao
      */
-    private $dao;
-
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
-    public function busca($id, $colunas = array('*'))
+    public function busca($id, $colunas = ['*'])
     {
         $sql = $this->dao->sql_query_file($id, implode(', ', $colunas));
         $rs = db_query($sql);

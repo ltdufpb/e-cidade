@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE conciliaorigem
 class cl_conciliaorigem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k96_sequencial = 0; 
-   var $k96_descr = null; 
+   public $k96_sequencial = 0; 
+   public $k96_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k96_sequencial = int4 = Código 
                  k96_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_conciliaorigem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conciliaorigem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_conciliaorigem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k96_sequencial = pg_result($result,0,0); 
+       $this->k96_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from conciliaorigem_k96_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k96_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k96_sequencial)){
          $this->erro_sql = " Campo k96_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_conciliaorigem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "conciliaorigem ($this->k96_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "conciliaorigem já Cadastrado";
@@ -152,11 +152,11 @@ class cl_conciliaorigem {
      $resaco = $this->sql_record($this->sql_query_file($this->k96_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10150,'$this->k96_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1748,10150,'','".AddSlashes(pg_result($resaco,0,'k96_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1748,10151,'','".AddSlashes(pg_result($resaco,0,'k96_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1748,10150,'','".AddSlashes(pg_fetch_result($resaco,0,'k96_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1748,10151,'','".AddSlashes(pg_fetch_result($resaco,0,'k96_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_conciliaorigem {
       $this->atualizacampos();
      $sql = " update conciliaorigem set ";
      $virgula = "";
-     if(trim($this->k96_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k96_sequencial"])){ 
+     if(trim((string) $this->k96_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k96_sequencial"])){ 
        $sql  .= $virgula." k96_sequencial = $this->k96_sequencial ";
        $virgula = ",";
-       if(trim($this->k96_sequencial) == null ){ 
+       if(trim((string) $this->k96_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "k96_sequencial";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_conciliaorigem {
          return false;
        }
      }
-     if(trim($this->k96_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k96_descr"])){ 
+     if(trim((string) $this->k96_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k96_descr"])){ 
        $sql  .= $virgula." k96_descr = '$this->k96_descr' ";
        $virgula = ",";
-       if(trim($this->k96_descr) == null ){ 
+       if(trim((string) $this->k96_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "k96_descr";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_conciliaorigem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10150,'$this->k96_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k96_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1748,10150,'".AddSlashes(pg_result($resaco,$conresaco,'k96_sequencial'))."','$this->k96_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1748,10150,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k96_sequencial'))."','$this->k96_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k96_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1748,10151,'".AddSlashes(pg_result($resaco,$conresaco,'k96_descr'))."','$this->k96_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1748,10151,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k96_descr'))."','$this->k96_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_conciliaorigem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10150,'$k96_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1748,10150,'','".AddSlashes(pg_result($resaco,$iresaco,'k96_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1748,10151,'','".AddSlashes(pg_result($resaco,$iresaco,'k96_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1748,10150,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k96_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1748,10151,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k96_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from conciliaorigem
@@ -314,7 +314,7 @@ class cl_conciliaorigem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conciliaorigem";
@@ -328,7 +328,7 @@ class cl_conciliaorigem {
    function sql_query ( $k96_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -349,7 +349,7 @@ class cl_conciliaorigem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_conciliaorigem {
    function sql_query_file ( $k96_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_conciliaorigem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -3,26 +3,26 @@
 //CLASSE DA ENTIDADE errobanco
 class cl_errobanco { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e92_sequencia = 0; 
-   var $e92_coderro = null; 
-   var $e92_descrerro = null; 
-   var $e92_processa = 'f'; 
-   var $e92_empagetipotransmissao = 0; 
+   public $e92_sequencia = 0; 
+   public $e92_coderro = null; 
+   public $e92_descrerro = null; 
+   public $e92_processa = 'f'; 
+   public $e92_empagetipotransmissao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e92_sequencia = int4 = Sequencia 
                  e92_coderro = varchar(2) = Código 
                  e92_descrerro = varchar(120) = Descrição 
@@ -30,10 +30,10 @@ class cl_errobanco {
                  e92_empagetipotransmissao = int4 = Tipo de Transmissão 
                  ";
    //funcao construtor da classe 
-   function cl_errobanco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("errobanco"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,10 +105,10 @@ class cl_errobanco {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e92_sequencia = pg_result($result,0,0); 
+       $this->e92_sequencia = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from errobanco_e92_sequencia_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e92_sequencia)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e92_sequencia)){
          $this->erro_sql = " Campo e92_sequencia maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -144,7 +144,7 @@ class cl_errobanco {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "errobanco ($this->e92_sequencia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "errobanco já Cadastrado";
@@ -173,14 +173,14 @@ class cl_errobanco {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6254,'$this->e92_sequencia','I')");
-         $resac = db_query("insert into db_acount values($acount,1014,6254,'','".AddSlashes(pg_result($resaco,0,'e92_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1014,6253,'','".AddSlashes(pg_result($resaco,0,'e92_coderro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1014,6255,'','".AddSlashes(pg_result($resaco,0,'e92_descrerro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1014,7269,'','".AddSlashes(pg_result($resaco,0,'e92_processa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1014,20690,'','".AddSlashes(pg_result($resaco,0,'e92_empagetipotransmissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1014,6254,'','".AddSlashes(pg_fetch_result($resaco,0,'e92_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1014,6253,'','".AddSlashes(pg_fetch_result($resaco,0,'e92_coderro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1014,6255,'','".AddSlashes(pg_fetch_result($resaco,0,'e92_descrerro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1014,7269,'','".AddSlashes(pg_fetch_result($resaco,0,'e92_processa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1014,20690,'','".AddSlashes(pg_fetch_result($resaco,0,'e92_empagetipotransmissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -190,10 +190,10 @@ class cl_errobanco {
       $this->atualizacampos();
      $sql = " update errobanco set ";
      $virgula = "";
-     if(trim($this->e92_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e92_sequencia"])){ 
+     if(trim((string) $this->e92_sequencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e92_sequencia"])){ 
        $sql  .= $virgula." e92_sequencia = $this->e92_sequencia ";
        $virgula = ",";
-       if(trim($this->e92_sequencia) == null ){ 
+       if(trim((string) $this->e92_sequencia) == null ){ 
          $this->erro_sql = " Campo Sequencia não informado.";
          $this->erro_campo = "e92_sequencia";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_errobanco {
          return false;
        }
      }
-     if(trim($this->e92_coderro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e92_coderro"])){ 
+     if(trim((string) $this->e92_coderro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e92_coderro"])){ 
        $sql  .= $virgula." e92_coderro = '$this->e92_coderro' ";
        $virgula = ",";
-       if(trim($this->e92_coderro) == null ){ 
+       if(trim((string) $this->e92_coderro) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "e92_coderro";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_errobanco {
          return false;
        }
      }
-     if(trim($this->e92_descrerro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e92_descrerro"])){ 
+     if(trim((string) $this->e92_descrerro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e92_descrerro"])){ 
        $sql  .= $virgula." e92_descrerro = '$this->e92_descrerro' ";
        $virgula = ",";
-       if(trim($this->e92_descrerro) == null ){ 
+       if(trim((string) $this->e92_descrerro) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "e92_descrerro";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_errobanco {
          return false;
        }
      }
-     if(trim($this->e92_processa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e92_processa"])){ 
+     if(trim((string) $this->e92_processa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e92_processa"])){ 
        $sql  .= $virgula." e92_processa = '$this->e92_processa' ";
        $virgula = ",";
-       if(trim($this->e92_processa) == null ){ 
+       if(trim((string) $this->e92_processa) == null ){ 
          $this->erro_sql = " Campo Processado não informado.";
          $this->erro_campo = "e92_processa";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_errobanco {
          return false;
        }
      }
-     if(trim($this->e92_empagetipotransmissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e92_empagetipotransmissao"])){ 
+     if(trim((string) $this->e92_empagetipotransmissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e92_empagetipotransmissao"])){ 
        $sql  .= $virgula." e92_empagetipotransmissao = $this->e92_empagetipotransmissao ";
        $virgula = ",";
-       if(trim($this->e92_empagetipotransmissao) == null ){ 
+       if(trim((string) $this->e92_empagetipotransmissao) == null ){ 
          $this->erro_sql = " Campo Tipo de Transmissão não informado.";
          $this->erro_campo = "e92_empagetipotransmissao";
          $this->erro_banco = "";
@@ -269,19 +269,19 @@ class cl_errobanco {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,6254,'$this->e92_sequencia','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e92_sequencia"]) || $this->e92_sequencia != "")
-             $resac = db_query("insert into db_acount values($acount,1014,6254,'".AddSlashes(pg_result($resaco,$conresaco,'e92_sequencia'))."','$this->e92_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1014,6254,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e92_sequencia'))."','$this->e92_sequencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e92_coderro"]) || $this->e92_coderro != "")
-             $resac = db_query("insert into db_acount values($acount,1014,6253,'".AddSlashes(pg_result($resaco,$conresaco,'e92_coderro'))."','$this->e92_coderro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1014,6253,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e92_coderro'))."','$this->e92_coderro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e92_descrerro"]) || $this->e92_descrerro != "")
-             $resac = db_query("insert into db_acount values($acount,1014,6255,'".AddSlashes(pg_result($resaco,$conresaco,'e92_descrerro'))."','$this->e92_descrerro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1014,6255,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e92_descrerro'))."','$this->e92_descrerro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e92_processa"]) || $this->e92_processa != "")
-             $resac = db_query("insert into db_acount values($acount,1014,7269,'".AddSlashes(pg_result($resaco,$conresaco,'e92_processa'))."','$this->e92_processa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1014,7269,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e92_processa'))."','$this->e92_processa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["e92_empagetipotransmissao"]) || $this->e92_empagetipotransmissao != "")
-             $resac = db_query("insert into db_acount values($acount,1014,20690,'".AddSlashes(pg_result($resaco,$conresaco,'e92_empagetipotransmissao'))."','$this->e92_empagetipotransmissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1014,20690,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e92_empagetipotransmissao'))."','$this->e92_empagetipotransmissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -335,14 +335,14 @@ class cl_errobanco {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,6254,'$e92_sequencia','E')");
-           $resac  = db_query("insert into db_acount values($acount,1014,6254,'','".AddSlashes(pg_result($resaco,$iresaco,'e92_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1014,6253,'','".AddSlashes(pg_result($resaco,$iresaco,'e92_coderro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1014,6255,'','".AddSlashes(pg_result($resaco,$iresaco,'e92_descrerro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1014,7269,'','".AddSlashes(pg_result($resaco,$iresaco,'e92_processa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1014,20690,'','".AddSlashes(pg_result($resaco,$iresaco,'e92_empagetipotransmissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1014,6254,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e92_sequencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1014,6253,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e92_coderro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1014,6255,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e92_descrerro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1014,7269,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e92_processa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1014,20690,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e92_empagetipotransmissao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -403,7 +403,7 @@ class cl_errobanco {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:errobanco";
@@ -418,7 +418,7 @@ class cl_errobanco {
    function sql_query ( $e92_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -440,7 +440,7 @@ class cl_errobanco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,7 +453,7 @@ class cl_errobanco {
    function sql_query_file ( $e92_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_errobanco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,7 +486,7 @@ class cl_errobanco {
    function sql_query_banco ( $e92_sequencia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -508,7 +508,7 @@ class cl_errobanco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

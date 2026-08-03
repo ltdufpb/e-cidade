@@ -3,7 +3,7 @@
 ini_set('post_max_size','500M');
 ini_set('memory_limit', '-1');
 
-require(dirname(dirname(dirname(dirname(__DIR__)))) . '/definitions.php');
+require(dirname(__DIR__, 4) . '/definitions.php');
 
 define('URL_SERVICE', 'http://mensageria.dbseller.com.br/ecidade_error_colector/awsReceiver.php?DBSELLER=1');
 define('DIR_QUEUE', ECIDADE_EXTENSION_PACKAGE_PATH . "ErrorLog/queue/");
@@ -133,21 +133,21 @@ function _log($message) {
  */
 function sendFile($file) {
 
-  $data = array(
+  $data = [
     'filename' => basename($file),
     'rawData' => file_get_contents($file),
-  );
+  ];
 
   $context = stream_context_create(
-    array(
-      'http' => array(
+    [
+      'http' => [
         'method' => 'POST',
-        'header' => array(
+        'header' => [
           'Content-Type: application/x-www-form-urlencoded'
-        ),
+        ],
         'content' => http_build_query($data)
-      )
-    )
+      ]
+    ]
   );
 
   $output = file_get_contents(URL_SERVICE, false, $context);

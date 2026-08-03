@@ -34,68 +34,68 @@ final class Unica extends Layout
         $this->desconto   = $desconto;
         $this->vencimento = $vencimento;
 
-        $this->fields = array(
-            'OPERACAOUNICA' => array(
+        $this->fields = [
+            'OPERACAOUNICA' => [
                 'name'         => 'OPERUNICA{$desconto}'
                 ,'description' => 'OPERACAO/LANCAMENTO DA UNICA DE {$desconto}% DE DESCONTO COM VENCIMENTO EM {$vencimento}'
                 ,'size'        => 10
-            )
-            ,'VENCIMENTOUNICA' => array(
+            ]
+            ,'VENCIMENTOUNICA' => [
                 'name'         => 'VENCUNICA{$desconto}'
                 ,'description' => 'VENCIMENTO'
                 ,'size'        => 10
-            )
-            ,'PERCENTUALDESCONTOUNICA' => array(
+            ]
+            ,'PERCENTUALDESCONTOUNICA' => [
                 'name'         => 'PERCDESCUNICA{$desconto}'
                 ,'description' => 'PERCENTUAL DE DESCONTO'
                 ,'size'        => 15
-            )
-            ,'VALORHISTORICOUNICA' => array(
+            ]
+            ,'VALORHISTORICOUNICA' => [
                 'name'         => 'VLRHISTUNICA{$desconto}'
                 ,'description' => 'VALOR HISTORICO'
                 ,'size'        => 15
-            )
-            ,'VALORCORRIGIDOUNICA' => array(
+            ]
+            ,'VALORCORRIGIDOUNICA' => [
                 'name'         => 'VLRCORUNICA{$desconto}'
                 ,'description' => 'VALOR CORRIGIDO'
                 ,'size'        => 15
-            )
-            ,'JUROSUNICA' => array(
+            ]
+            ,'JUROSUNICA' => [
                 'name'         => 'JURUNICA{$desconto}'
                 ,'description' => 'JUROS'
                 ,'size'        => 15
-            )
-            ,'MULTAUNICA' => array(
+            ]
+            ,'MULTAUNICA' => [
                 'name'         => 'MULUNICA{$desconto}'
                 ,'description' => 'MULTA'
                 ,'size'        => 15
-            )
-            ,'DESCONTOUNICA' => array(
+            ]
+            ,'DESCONTOUNICA' => [
                 'name'         => 'DESCUNICA{$desconto}'
                 ,'description' => 'DESCONTO'
                 ,'size'        => 15
-            )
-            ,'TOTALUNICA' => array(
+            ]
+            ,'TOTALUNICA' => [
                 'name'         => 'TOTALUNICA{$desconto}'
                 ,'description' => 'TOTAL (VALOR CORRIGIDO + JUROS + MULTA)'
                 ,'size'        => 15
-            )
-            ,'TOTALLIQUIDOUNICA' => array(
+            ]
+            ,'TOTALLIQUIDOUNICA' => [
                 'name'         => 'TOTALLIQUNICA{$desconto}'
                 ,'description' => 'TOTAL - DESCONTO DE {$desconto}'
                 ,'size'        => 15
-            )
-            ,'CODIGOARRECADACAO' => array(
+            ]
+            ,'CODIGOARRECADACAO' => [
                 'name'         => 'CODARREC{$desconto}'
                 ,'description' => 'NUMERO DE ARRECADACAO'
                 ,'size'        => 11
-            )
-            ,'BARRASUNICA' => array(
+            ]
+            ,'BARRASUNICA' => [
                 'name'         => 'BARRASUNICA{$desconto}'
                 ,'description' => 'CODIGO DE BARRAS'
                 ,'size'        => 101
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -104,14 +104,15 @@ final class Unica extends Layout
      *
      * Retorna o layout
      */
+    #[\Override]
     public function get($counter)
     {
         if(empty($counter)) {
-            throw new BusinessException('Informe contador de inicio.'. get_class());
+            throw new BusinessException('Informe contador de inicio.'. self::class);
         }
         
         if($this->getStart() === null) {
-            throw new BusinessException('Informe o início dos blocos.'. get_class());
+            throw new BusinessException('Informe o início dos blocos.'. self::class);
         }
 
         $start = $this->getStart();

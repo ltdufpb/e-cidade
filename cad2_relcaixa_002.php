@@ -58,15 +58,15 @@
     $pdf->Cell(5,4,"Cod.Juros","LRBT",1,"C",0);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Arial','B',9);
 	for ($i=0;$i<$num;$i++) {
       $pdf->setX(5);
-      $pdf->Cell(30,4,pg_result($result,$i,"k02_codigo"),"B",0,"C",0);
-      $pdf->Cell(1,4,trim(pg_result($result,$i,"k02_tipo")),"B",0,"L",0);
-      $pdf->Cell(20,4,pg_result($result,$i,"k02_descr"),"B",1,"C",0);
-      $pdf->Cell(40,4,pg_result($result,$i,"k02_drecei"),"B",1,"C",0);
-      $pdf->Cell(5,4,pg_result($result,$i,"k02_codjm"),"B",1,"C",0);
+      $pdf->Cell(30,4,pg_fetch_result($result,$i,"k02_codigo"),"B",0,"C",0);
+      $pdf->Cell(1,4,trim(pg_fetch_result($result,$i,"k02_tipo")),"B",0,"L",0);
+      $pdf->Cell(20,4,pg_fetch_result($result,$i,"k02_descr"),"B",1,"C",0);
+      $pdf->Cell(40,4,pg_fetch_result($result,$i,"k02_drecei"),"B",1,"C",0);
+      $pdf->Cell(5,4,pg_fetch_result($result,$i,"k02_codjm"),"B",1,"C",0);
 	}
   ///////////////////////////////////////////////////////////////////////
   } else if ($opcaoRelatorio == "bairros"){
@@ -89,13 +89,13 @@
       $pdf->Cell(30,4,"Codigo","LRBT",0,"C",0);
       $pdf->Cell(30,4,"Codigo Anterior","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_numrows($result);
+      $num = pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
-        $pdf->Cell(140,4,trim(pg_result($result,$i,"j13_descr")),"B",0,"L",0);
-        $pdf->Cell(30,4,pg_result($result,$i,"j13_codi"),"B",0,"C",0);
-        $pdf->Cell(30,4,pg_result($result,$i,"j13_codant"),"B",1,"C",0);
+        $pdf->Cell(140,4,trim(pg_fetch_result($result,$i,"j13_descr")),"B",0,"L",0);
+        $pdf->Cell(30,4,pg_fetch_result($result,$i,"j13_codi"),"B",0,"C",0);
+        $pdf->Cell(30,4,pg_fetch_result($result,$i,"j13_codant"),"B",1,"C",0);
 	  }
 	} else if ($opcaoOrdem == "numerica") {
 	  $head6 = "Relatório de bairros em ordem numérica";
@@ -112,13 +112,13 @@
       $pdf->Cell(140,4,"Nome do bairro","LRBT",0,"C",0);
       $pdf->Cell(30,4,"Codigo Anterior","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_numrows($result);
+      $num = pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
-        $pdf->Cell(30,4,pg_result($result,$i,"j13_codi"),"B",0,"C",0);
-        $pdf->Cell(140,4,trim(pg_result($result,$i,"j13_descr")),"B",0,"L",0);
-        $pdf->Cell(30,4,pg_result($result,$i,"j13_codant"),"B",1,"C",0);
+        $pdf->Cell(30,4,pg_fetch_result($result,$i,"j13_codi"),"B",0,"C",0);
+        $pdf->Cell(140,4,trim(pg_fetch_result($result,$i,"j13_descr")),"B",0,"L",0);
+        $pdf->Cell(30,4,pg_fetch_result($result,$i,"j13_codant"),"B",1,"C",0);
 	  }
 	}
   ///////////////////////////////////////////////////////////////////////
@@ -143,14 +143,14 @@
       $pdf->Cell(20,4,"j30_alipre","LRBT",0,"C",0);
       $pdf->Cell(20,4,"j30_aliter","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_numrows($result);
+      $num = pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
-        $pdf->Cell(140,4,trim(pg_result($result,$i,"j30_descr")),"B",0,"L",0);
-        $pdf->Cell(20,4,pg_result($result,$i,"j30_codi"),"B",0,"C",0);
-        $pdf->Cell(20,4,pg_result($result,$i,"j30_alipre"),"B",0,"C",0);
-        $pdf->Cell(20,4,pg_result($result,$i,"j30_aliter"),"B",1,"C",0);
+        $pdf->Cell(140,4,trim(pg_fetch_result($result,$i,"j30_descr")),"B",0,"L",0);
+        $pdf->Cell(20,4,pg_fetch_result($result,$i,"j30_codi"),"B",0,"C",0);
+        $pdf->Cell(20,4,pg_fetch_result($result,$i,"j30_alipre"),"B",0,"C",0);
+        $pdf->Cell(20,4,pg_fetch_result($result,$i,"j30_aliter"),"B",1,"C",0);
 	  }
 	} else if ($opcaoOrdem == "numerica") {
 	  $head5 = "Relatório de setor em ordem numérica";
@@ -168,14 +168,14 @@
       $pdf->Cell(20,4,"j30_alipre","LRBT",0,"C",0);
       $pdf->Cell(20,4,"j30_aliter","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_numrows($result);
+      $num = pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
-        $pdf->Cell(20,4,pg_result($result,$i,"j30_codi"),"B",0,"C",0);
-        $pdf->Cell(140,4,trim(pg_result($result,$i,"j30_descr")),"B",0,"L",0);
-        $pdf->Cell(20,4,pg_result($result,$i,"j30_alipre"),"B",0,"C",0);
-        $pdf->Cell(20,4,pg_result($result,$i,"j30_aliter"),"B",1,"C",0);
+        $pdf->Cell(20,4,pg_fetch_result($result,$i,"j30_codi"),"B",0,"C",0);
+        $pdf->Cell(140,4,trim(pg_fetch_result($result,$i,"j30_descr")),"B",0,"L",0);
+        $pdf->Cell(20,4,pg_fetch_result($result,$i,"j30_alipre"),"B",0,"C",0);
+        $pdf->Cell(20,4,pg_fetch_result($result,$i,"j30_aliter"),"B",1,"C",0);
 	  }
 	}
   ///////////////////////////////////////////////////////////////////////
@@ -199,13 +199,13 @@
       $pdf->Cell(20,4,"Grupo","LRBT",0,"C",0);
       $pdf->Cell(20,4,"Tipo","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_numrows($result);
+      $num = pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
-        $pdf->Cell(140,4,trim(pg_result($result,$i,"j32_descr")),"B",0,"L",0);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j32_grupo")),"B",0,"C",0);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j32_tipo")),"B",1,"C",0);
+        $pdf->Cell(140,4,trim(pg_fetch_result($result,$i,"j32_descr")),"B",0,"L",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j32_grupo")),"B",0,"C",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j32_tipo")),"B",1,"C",0);
 	  }
 	} else if ($opcaoOrdem == "numerica") {
 	  $head5 = "Relatório de Grupo Característica em ordem numérica";
@@ -222,13 +222,13 @@
       $pdf->Cell(140,4,"Característica","LRBT",0,"C",0);
       $pdf->Cell(20,4,"Tipo","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_numrows($result);
+      $num = pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j32_grupo")),"B",0,"C",0);
-        $pdf->Cell(140,4,trim(pg_result($result,$i,"j32_descr")),"B",0,"L",0);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j32_tipo")),"B",1,"C",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j32_grupo")),"B",0,"C",0);
+        $pdf->Cell(140,4,trim(pg_fetch_result($result,$i,"j32_descr")),"B",0,"L",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j32_tipo")),"B",1,"C",0);
 	  }
 	}
   ///////////////////////////////////////////////////////////////////////
@@ -253,14 +253,14 @@
       $pdf->Cell(20,4,"Código","LRBT",0,"C",0);
       $pdf->Cell(20,4,"j31_pontos","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_numrows($result);
+      $num = pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
-        $pdf->Cell(120,4,trim(pg_result($result,$i,"j31_descr")),"B",0,"L",0);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j31_grupo")),"B",0,"C",0);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j31_codigo")),"B",0,"C",0);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j31_pontos")),"B",1,"C",0);
+        $pdf->Cell(120,4,trim(pg_fetch_result($result,$i,"j31_descr")),"B",0,"L",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j31_grupo")),"B",0,"C",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j31_codigo")),"B",0,"C",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j31_pontos")),"B",1,"C",0);
 	  }
 	} else if ($opcaoOrdem == "numerica") {
 	  $head5 = "Relatório de Característica em ordem numérica";
@@ -278,14 +278,14 @@
       $pdf->Cell(20,4,"Grupo","LRBT",0,"C",0);
       $pdf->Cell(20,4,"j31_pontos","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_numrows($result);
+      $num = pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j31_codigo")),"B",0,"C",0);
-        $pdf->Cell(120,4,trim(pg_result($result,$i,"j31_descr")),"B",0,"L",0);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j31_grupo")),"B",0,"C",0);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j31_pontos")),"B",1,"C",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j31_codigo")),"B",0,"C",0);
+        $pdf->Cell(120,4,trim(pg_fetch_result($result,$i,"j31_descr")),"B",0,"L",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j31_grupo")),"B",0,"C",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j31_pontos")),"B",1,"C",0);
 	  }
 	} else if ($opcaoOrdem == "grupo") {
 	  $head5 = "Relatório de Característica em ordem de grupo";
@@ -303,14 +303,14 @@
       $pdf->Cell(20,4,"Código","LRBT",0,"C",0);
       $pdf->Cell(20,4,"j31_pontos","LRBT",1,"C",0);
       $result = db_query($sql);
-      $num = pg_numrows($result);
+      $num = pg_num_rows($result);
       $pdf->SetFont('Arial','B',9);
 	  for ($i=0;$i<$num;$i++) {
         $pdf->setX(5);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j31_grupo")),"B",0,"C",0);
-        $pdf->Cell(120,4,trim(pg_result($result,$i,"j31_descr")),"B",0,"L",0);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j31_codigo")),"B",0,"C",0);
-        $pdf->Cell(20,4,trim(pg_result($result,$i,"j31_pontos")),"B",1,"C",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j31_grupo")),"B",0,"C",0);
+        $pdf->Cell(120,4,trim(pg_fetch_result($result,$i,"j31_descr")),"B",0,"L",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j31_codigo")),"B",0,"C",0);
+        $pdf->Cell(20,4,trim(pg_fetch_result($result,$i,"j31_pontos")),"B",1,"C",0);
 	  }
 	}
   }

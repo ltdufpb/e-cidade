@@ -915,7 +915,7 @@ class ppaVersao {
 
         $sErroMsg  = "Erro ao Incluir nova Dotação ({$oDaoOrcDotacao->o58_coddot}).\n";
         $iNumeroErro = 13;
-        if (strpos(strtolower(pg_last_error()),"orcdotacao_oufspae_in") != 0 ) {
+        if (!str_starts_with(strtolower(pg_last_error()), "orcdotacao_oufspae_in") ) {
           $iNumeroErro = 199;
         }
         $sErroMsg .= $oDaoOrcDotacao->erro_msg."\n";
@@ -1141,7 +1141,7 @@ class ppaVersao {
     //    $sSqlVerificaAnos .= "               where o121_ppaintegracao = o123_sequencial)";
     $rsAnosIntegrados = db_query($sSqlVerificaAnos);
     $iTotalAnos       = pg_num_rows($rsAnosIntegrados);
-    $aAnosIntegrados = array();
+    $aAnosIntegrados = [];
     for ($i = 0; $i < $iTotalAnos; $i++) {
       $aAnosIntegrados = db_utils::fieldsMemory($rsAnosIntegrados, $i)->o123_ano;
     }

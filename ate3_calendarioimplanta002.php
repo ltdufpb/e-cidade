@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_calend_classe.php"));
 include(modification("classes/db_clientes_classe.php"));
 
-echo($HTTP_SERVER_VARS["QUERY_STRING"]);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+echo($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cale                = new db_calendario;
 
@@ -45,4 +45,4 @@ $sql = db_getsession("segundoacesso")." is not null and codmod = $codmod and at6
 db_lovrot("$sql",15,'()');
 
 
-$cale->monta_fim_pagina(false);
+$cale->monta_fim_pagina();

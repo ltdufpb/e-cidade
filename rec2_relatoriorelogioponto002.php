@@ -37,7 +37,7 @@ use ECidade\RecursosHumanos\RH\PontoEletronico\Calculo\Model\ProcessamentoPontoE
 
 try {
     $oParametros = \db_utils::postMemory(array_merge($_GET, $_POST));
-    $aMatriculas = explode(',', $oParametros->aMatriculas);
+    $aMatriculas = explode(',', (string) $oParametros->aMatriculas);
     $iCodigoSelecao = !empty($oParametros->iCodigoSelecao) ? $oParametros->iCodigoSelecao : null;
 
     if (empty($oParametros->sDataInicio)) {
@@ -66,7 +66,7 @@ try {
     }
     $dataInicial = new \DBDate($oParametros->sDataInicio);
     $dataFinal = new \DBDate($oParametros->sDataFim);
-    $where = array("rh229_data between '{$dataInicial->getDate()}' and '{$dataFinal->getDate()}'");
+    $where = ["rh229_data between '{$dataInicial->getDate()}' and '{$dataFinal->getDate()}'"];
 
     if (!empty($oParametros->serial)) {
         $where[] = "serial = '{$oParametros->serial}'";
@@ -90,7 +90,7 @@ try {
     if (pg_num_rows($rsDadosRelatorio) == 0) {
         throw new BusinessException("Não há servidores para esta selecão.");
     }
-    $dadosRelatorio = array();
+    $dadosRelatorio = [];
     $totalLinhas = pg_num_rows($rsDadosRelatorio);
     for ($i = 0; $i < $totalLinhas; $i++) {
 
@@ -102,7 +102,7 @@ try {
             $dadosServidor->nome = $dados->nome;
             $dadosServidor->matricula = $dados->matricula;
             $dadosServidor->pis = $dados->pis;
-            $dadosServidor->batidas = array();
+            $dadosServidor->batidas = [];
             $dadosRelatorio[$dados->matricula] = $dadosServidor;
         }
         $dadosServidor = $dadosRelatorio[$dados->matricula];

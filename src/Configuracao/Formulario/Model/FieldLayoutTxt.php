@@ -36,14 +36,8 @@ namespace ECidade\Configuracao\Formulario\Model;
 class FieldLayoutTxt
 {
 
-    private $idCampo;
-
-    private $question;
-
-    public function __construct($idCampo, Pergunta $question)
+    public function __construct(private $idCampo, private readonly Pergunta $question)
     {
-        $this->idCampo = $idCampo;
-        $this->question = $question;
     }
 
     public function addOption(Opcao $option)

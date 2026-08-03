@@ -32,11 +32,6 @@ require_once(modification('model/caixa/relatorios/conciliacaobancaria/IAnexoConc
 class AnexoIIIConciliacaoBancaria implements IAnexoConciliacaoBancaria {
 
   /**
-   * @type ContaBancaria
-   */
-  private $oContabancaria;
-
-  /**
    * @type DBCompetencia
    */
   private $oCompetencia;
@@ -60,12 +55,11 @@ class AnexoIIIConciliacaoBancaria implements IAnexoConciliacaoBancaria {
   const ANEXO = 3;
 
   /**
-   * @param ContaBancaria $oContaBancaria
+   * @param ContaBancaria $oContabancaria
    * @param DBCompetencia $oCompetencia
    */
-  public function __construct(ContaBancaria $oContaBancaria, DBCompetencia $oCompetencia) {
+  public function __construct(private readonly ContaBancaria $oContabancaria, DBCompetencia $oCompetencia) {
 
-    $this->oContabancaria = $oContaBancaria;
     $this->oCompetencia   = $oCompetencia;
   }
 
@@ -75,7 +69,7 @@ class AnexoIIIConciliacaoBancaria implements IAnexoConciliacaoBancaria {
    */
   public function getDados() {
 
-    $aRegistros         = array();
+    $aRegistros         = [];
     $rsBuscaPendencias  = AnexoIIConciliacaoBancaria::getRecord($this);
 
     if (!$rsBuscaPendencias) {

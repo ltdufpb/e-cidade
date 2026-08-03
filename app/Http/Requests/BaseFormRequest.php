@@ -35,8 +35,8 @@ class BaseFormRequest extends FormRequest
     public function messages()
     {
         return [
-            "instituicao.required" => utf8_encode("Instituição obrigatória."),
-            "instituicao.integer"  => utf8_encode("Instituição precisa ser um número.")
+            "instituicao.required" => mb_convert_encoding("Instituição obrigatória.", 'UTF-8', 'ISO-8859-1'),
+            "instituicao.integer"  => mb_convert_encoding("Instituição precisa ser um número.", 'UTF-8', 'ISO-8859-1')
         ];
     }
 }

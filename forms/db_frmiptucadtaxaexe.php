@@ -251,10 +251,10 @@ if (isset($db_opcaoal)) {
             <tr>
                 <td valign="top" align="center">
                     <?php
-                    $chavepri = array(
+                    $chavepri = [
                         "j08_iptucadtaxa" => @$j08_iptucadtaxa,
                         "j08_iptucadtaxaexe" => @$j08_iptucadtaxaexe,
-                    );
+                    ];
 
                     $sql = $cliptucadtaxaexe->sql_query_file(
                         null,

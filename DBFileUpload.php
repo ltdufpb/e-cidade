@@ -64,7 +64,7 @@ try {
     $sNomeArquivo       = $_FILES[$sInputFile]["name"];
     $sArquivoTemporario = $_FILES[$sInputFile]["tmp_name"];
     $iCodigoErro        = $_FILES[$sInputFile]['error'];
-    $sExtensao          = pathinfo( $sNomeArquivo, PATHINFO_EXTENSION );
+    $sExtensao          = pathinfo( (string) $sNomeArquivo, PATHINFO_EXTENSION );
     $sCaminhoArquivo    = md5(time() . $sNomeArquivo);
     $sCaminhoArquivo    = "tmp/{$sCaminhoArquivo}.{$sExtensao}";
 
@@ -135,14 +135,14 @@ return viewRetornoAjax($sInputFile, $lSubmitFormulario, $sErro, $sCaminhoArquivo
 
 function viewRetornoAjax($sInputFile, $lSubmitFormulario, $sErro, $sCaminhoArquivo, $sNomeArquivo, $iIdComponente, $sExtensao) {
 
-  echo JSON::create()->stringify(array(
+  echo JSON::create()->stringify([
     "nomeobjeto"     => $sInputFile,
     "erro"           => !empty($sErro),
     "mensagem"       => $sErro,
     "nome_original"  => $sNomeArquivo,
     "caminho_upload" => $sCaminhoArquivo,
     "extensao"       => $sExtensao
-  ));
+  ]);
   return;
 }
 

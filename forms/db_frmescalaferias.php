@@ -206,7 +206,7 @@
           <fieldset  class="separator">
             <legend>Observações</legend>
              <?php 
-               $rh110_observacoes = utf8_decode($rh110_observacoes);
+               $rh110_observacoes = mb_convert_encoding($rh110_observacoes, 'ISO-8859-1');
              ?>
 
              <?php db_textarea("rh110_observacoes", 5, 60,  "", true, null, $db_opcao);?>
@@ -611,7 +611,7 @@
 
       db_iframe_periodo.hide();
       var nome_arquivo = '<?php $arquivos = explode('?',
-          basename($_SERVER["PHP_SELF"])); echo array_shift($arquivos); ?>';
+          basename((string) $_SERVER["PHP_SELF"])); echo array_shift($arquivos); ?>';
       location.href = nome_arquivo+'?codigo_periodo='+codigo_periodo+'&rh109_regist='+$F('rh109_regist')+'&codigo_ferias='+codigo_ferias;
     }
 

@@ -39,7 +39,7 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $head3 = "RELATÓRIO DOS ELEMENTOS DA DESPESA (ANEXO 4)";
@@ -71,24 +71,24 @@ $troca = 1;
 $alt = 4;
 $aux = 0;
 $col = 0;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);  
    $aux = $elemento;
-   if (substr($aux,1,12) == "000000000000")
+   if (substr((string) $aux,1,12) == "000000000000")
       continue;
-   elseif (substr($aux,1,11) == "00000000000")
+   elseif (substr((string) $aux,1,11) == "00000000000")
       $col = 1;
-   elseif (substr($aux,2,10) == "0000000000")
+   elseif (substr((string) $aux,2,10) == "0000000000")
       $col = 2;
-   elseif (substr($aux,3,9) == "000000000")
+   elseif (substr((string) $aux,3,9) == "000000000")
       $col = 3;
-   elseif (substr($aux,4,8) == "00000000")
+   elseif (substr((string) $aux,4,8) == "00000000")
       $col = 4;
-   elseif (substr($aux,6,6) == "000000")
+   elseif (substr((string) $aux,6,6) == "000000")
       $col = 5;
-   elseif (substr($aux,8,4) == "0000")
+   elseif (substr((string) $aux,8,4) == "0000")
       $col = 6;
-   elseif (substr($aux,10,2) == "00")
+   elseif (substr((string) $aux,10,2) == "00")
       $col = 7;
    else
       $col = 8;

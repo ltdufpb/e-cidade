@@ -74,7 +74,7 @@ if($db_opcao!= 1 and isset($j93_codigo)){
         </td>
         <td> 
           <?php 
-            $x = array('1'=>'Proprietario','2'=>'Promitente');
+            $x = ['1'=>'Proprietario','2'=>'Promitente'];
             db_select('j93_regra',$x,true,$opcaoAverba,"");
           ?>
         </td>
@@ -140,7 +140,7 @@ function js_preenchepesquisa(chave){
   db_iframe_averbatipo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

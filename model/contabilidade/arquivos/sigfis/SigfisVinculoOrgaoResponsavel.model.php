@@ -36,7 +36,7 @@ class SigfisVinculoOrgaoResponsavel {
 	
 	static $oInstance;
 	
-	protected $aListaOrgaos = array();
+	protected $aListaOrgaos = [];
 	
 	/**
 	 * método construtor

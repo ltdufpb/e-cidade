@@ -137,7 +137,7 @@ $clrotulo->label("j30_descr");
                  </td>
                  <td align="left" colspan="2">
 		              <?php 
-		                $aOrdemImp = array (
+		                $aOrdemImp =  [
 		                                  "cl"  => "Cidade/Logradouro",
 		                                  "bl"  => "Bairro/Logradouro",
 		                                  "an"  => "Alfabética/Nome",
@@ -145,7 +145,7 @@ $clrotulo->label("j30_descr");
 		                                  "ra"  => "Referência Anterior",
 		                                  "sql"  => "Setor/Quadra/Lote",
 		                                  "ba"  => "Bairro/Alfabética"
-		                );
+		                ];
 		                
 		                db_select('ordemimp', $aOrdemImp, true, 1, "style='width: 150;'");
 		              ?>                 
@@ -157,11 +157,11 @@ $clrotulo->label("j30_descr");
                  </td>
                  <td align="left" colspan="2">
 		              <?php 
-		                $aImprimir = array (
+		                $aImprimir =  [
 		                                    "amb"  => "Ambos",
 		                                    "sem"  => "Somente sem Endereço",
 		                                    "com"  => "Somente com Endereço"
-		                );
+		                ];
 		                
 		                db_select('imprimir', $aImprimir, true, 1, "style='width: 150;'");
 		              ?>                 
@@ -173,11 +173,11 @@ $clrotulo->label("j30_descr");
                  </td>
                  <td align="left" colspan="2">
 		              <?php 
-		                $aFiltro = array (
+		                $aFiltro =  [
 		                                  "t"  => "Todas",
 		                                  "b"  => "Baixadas",
 		                                  "nb" => "Não Baixadas"
-		                );
+		                ];
 		                
 		                db_select('filtro', $aFiltro, true, 1, "style='width: 150;'");
 		              ?>                 
@@ -189,10 +189,10 @@ $clrotulo->label("j30_descr");
                  </td>
                  <td align="left" colspan="2">
 	                <?php 
-	                  $aFormato = array (
+	                  $aFormato =  [
 	                    "pdf" => "PDF",
 	                    "csv" => "CSV",
-	                  );
+	                  ];
 	                
 	                  db_select('formato', $aFormato, true, 1, "");
 	                ?>                 

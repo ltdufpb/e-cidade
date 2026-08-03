@@ -32,26 +32,16 @@ class tceLeiame extends tceEstruturaBasica {
 	
 	const NOME_ARQUIVO = 'LEIAME.TXT';
   const CODIGO_ARQUIVO = 48;
-	
-  public  $iInstit     = "";
-  public  $sDataIni    = "";
-  public  $sDataFim    = "";
-  public  $sCodRemessa = "";
   
   private $oLeiaute   = null;
   
-  function __construct($iInstit, $sCodRemessa, $sDataIni, $sDataFim, $oData, $oLeiaute=null) {
+  function __construct(public $iInstit, public $sCodRemessa, public $sDataIni, public $sDataFim, $oData, $oLeiaute=null) {
 
     try {
       parent::__construct(self::CODIGO_ARQUIVO, self::NOME_ARQUIVO);
     } catch ( Exception $e ) {
       throw $e->getMessage();
     }
-    
-    $this->iInstit      = $iInstit;
-    $this->sDataIni     = $sDataIni;
-    $this->sDataFim     = $sDataFim;
-    $this->sCodRemessa  = $sCodRemessa;
     $this->oOutrosDados = $oData;
     if ($oLeiaute != null) {
       $this->oLeiaute =$oLeiaute;
@@ -70,7 +60,7 @@ class tceLeiame extends tceEstruturaBasica {
     $sSql           = $oContceArquivo->sql_query_file($this->oOutrosDados->codigoremessa,"c11_infleiame as observacoes");
     $rsObservacoes  = $oContceArquivo->sql_record($sSql);
     $oObservacoes   = db_utils::fieldsMemory($rsObservacoes,0);
-    $oObservacoes->observacoes = str_replace(array("\n", "\r"), " ", $oObservacoes->observacoes);
+    $oObservacoes->observacoes = str_replace(["\n", "\r"], " ", $oObservacoes->observacoes);
     $iInicioTextoObservacao = strpos($oObservacoes->observacoes, "#");
     $iFimTextoObservacao    = strpos($oObservacoes->observacoes, "#", $iInicioTextoObservacao + 1);
 

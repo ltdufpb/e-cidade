@@ -48,11 +48,6 @@ class CessaoExercicio extends ProcessamentoAbstract implements ProcessamentoInte
     /**
      * @var
      */
-    private $cgm;
-
-    /**
-     * @var
-     */
     private $ano;
 
 
@@ -71,9 +66,13 @@ class CessaoExercicio extends ProcessamentoAbstract implements ProcessamentoInte
      *
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $cgm
+    )
     {
-        $this->cgm = $cgm;
     }
 
     /**
@@ -139,7 +138,7 @@ class CessaoExercicio extends ProcessamentoAbstract implements ProcessamentoInte
                         $this->selecao,
                         $this->instituicao
                     );
-                } catch (Exception $e) {
+                } catch (Exception) {
                     throw new \DBException("Ocorrêu um erro ao buscar as informações da seleção informada.");
                 }
             } else {

@@ -40,9 +40,9 @@ $clorcparamrel = new cl_orcparamrel;
 $clorcparamseq = new cl_orcparamseq;
 $clorcparamelemento = new cl_orcparamelemento;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $anousu   = db_getsession("DB_anousu");
 
 $campos   = "*";
@@ -53,7 +53,7 @@ $sqlelem  = $clorcparamelemento->sql_query_estrutural ($anousu,$c69_codseq,null,
 $result1  = db_query($sqlrelat);
 $result2  = db_query($sqlelem);
 
-if(pg_numrows($result1)==0||pg_numrows($result2)==0) {
+if(pg_num_rows($result1)==0||pg_num_rows($result2)==0) {
 	db_msgbox("Não existem parâmetros cadastrados para este exercício!");
 	echo "<script>window.close()</script>";
 	exit(1);
@@ -87,7 +87,7 @@ $pdf->cell(25, $alt, "Sequencia", '', 0, "C", 0);
 $pdf->cell(150, $alt, " Descrição", '',1, "C", 0);
 $pdf->setfont('arial', '', 6);
 
-for($i=0;$i< pg_numrows($result2);$i++) {
+for($i=0;$i< pg_num_rows($result2);$i++) {
  db_fieldsmemory($result2,$i);
  if (!isset($seq) or ($seq != $o44_sequencia)){
  	$pdf->setfont('arial', 'b', 6);

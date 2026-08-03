@@ -73,7 +73,7 @@ $oDaoCfIptu = new cl_cfiptu();
 $rsCfIptu   = $oDaoCfIptu->sql_record($oDaoCfIptu->sql_query($oGet->iAnoCalculo, "j18_tipodebitorecalculo"));
 $oCfIptu    = db_utils::fieldsMemory($rsCfIptu, 0);
 
-$aDiversosIptu = array();
+$aDiversosIptu = [];
 
 if(!empty($oCfIptu->j18_tipodebitorecalculo)){
 
@@ -85,7 +85,7 @@ $oDaoIssCalc   = new cl_isscalc();
 $rsIssCalc     = $oDaoIssCalc->sql_record($oDaoIssCalc->sql_queryIssqnVistorias($oGet->iAnoCalculo));
 $aCalculoIssqn = db_utils::getCollectionByRecord($rsIssCalc);
 
-$aTotalDiversosComplementar = array();
+$aTotalDiversosComplementar = [];
 
 foreach ($aDiversosIptu as $oDiversosIptu){
   $aTotalDiversosComplementar[$oDiversosIptu->receita_codigo] = $oDiversosIptu->valor_calculado;
@@ -113,7 +113,7 @@ $oPdf->ln(6);
 /**
  * Escreve colunas de cabecalhos do IPTU
  */
-inserirLinha($oPdf, array('CodigoReceitaIPTU'    => 'Receita',
+inserirLinha($oPdf, ['CodigoReceitaIPTU'    => 'Receita',
                           'DescricaoReceitaIPTU' => 'Descrição',
                           'QuantidadeIPTU'       => 'Quantidade',
                           'ValorCalculado'       => 'Valor Calculado',
@@ -122,7 +122,7 @@ inserirLinha($oPdf, array('CodigoReceitaIPTU'    => 'Receita',
                           'ValorCompensado'      => 'Valor Compensado',
                           'ValorPago'            => 'Valor Pago/Bruto',
                           'ValorCancelado'       => 'Valor Cancelado',
-                          'ValorAPagar'          => 'Valor a Pagar'), false, true);
+                          'ValorAPagar'          => 'Valor a Pagar'], false, true);
 
 /**
  * linhas do IPTU
@@ -141,7 +141,7 @@ foreach ($aCalculoIptu as $oCalculoIptu) {
     $oCalculoIptu->valor_calculado -= $aTotalDiversosComplementar[$oCalculoIptu->codigo_receita];
   }
 
-  inserirLinha($oPdf, array('CodigoReceitaIPTU'    => $oCalculoIptu->codigo_receita,
+  inserirLinha($oPdf, ['CodigoReceitaIPTU'    => $oCalculoIptu->codigo_receita,
                             'DescricaoReceitaIPTU' => $oCalculoIptu->descricao_receita,
                             'QuantidadeIPTU'       => $oCalculoIptu->quantidade,
                             'ValorCalculado'       => $oCalculoIptu->valor_calculado,
@@ -150,7 +150,7 @@ foreach ($aCalculoIptu as $oCalculoIptu) {
                             'ValorCompensado'      => $oCalculoIptu->valor_compensado,
                             'ValorPago'            => $oCalculoIptu->valor_pago,
                             'ValorCancelado'       => $oCalculoIptu->valor_cancelado,
-                            'ValorAPagar'          => $oCalculoIptu->valor_a_pagar));
+                            'ValorAPagar'          => $oCalculoIptu->valor_a_pagar]);
 
   $nTotalCalculado  +=  $oCalculoIptu->valor_calculado;
   $nTotalIsento     +=  $oCalculoIptu->valor_isento;
@@ -161,7 +161,7 @@ foreach ($aCalculoIptu as $oCalculoIptu) {
   $nTotalCompensado +=  $oCalculoIptu->valor_compensado;
 }
 
-inserirLinha($oPdf, array('CodigoReceitaIPTU'    => '',
+inserirLinha($oPdf, ['CodigoReceitaIPTU'    => '',
                           'DescricaoReceitaIPTU' => '',
                           'QuantidadeIPTU'       => 'TOTAIS',
                           'ValorCalculado'       => $nTotalCalculado,
@@ -170,7 +170,7 @@ inserirLinha($oPdf, array('CodigoReceitaIPTU'    => '',
                           'ValorCompensado'      => $nTotalCompensado,
                           'ValorPago'            => $nTotalPago     ,
                           'ValorCancelado'       => $nTotalCancelado,
-                          'ValorAPagar'          => $nTotalaPagar), true);
+                          'ValorAPagar'          => $nTotalaPagar], true);
 
 $nTotalGeral += $nTotalaPagar;
 
@@ -191,25 +191,25 @@ if(!empty($aDiversosIptu)){
   $oPdf->cell( largura(0), 6, "IPTU Complementar {$oGet->iAnoCalculo}", 1, 0, 'L', 1);
   $oPdf->ln(6);
 
-  inserirLinha($oPdf, array('DivTipoDebito'      => 'Receita',
+  inserirLinha($oPdf, ['DivTipoDebito'      => 'Receita',
                             'DivDescricao'       => 'Descrição',
                             'DivQuantidade'      => 'Quantidade',
                             'DivValorCalculado'  => 'Valor Calculado',
                             'ValorCompensado'    => 'Valor Compensado',
                             'DivValorPago'       => 'Valor Pago',
                             'DivValorCancelado'  => 'Valor Cancelado',
-                            'DivValorAPagar'     => 'Valor a Pagar'), false, true);
+                            'DivValorAPagar'     => 'Valor a Pagar'], false, true);
 
   foreach($aDiversosIptu as $oDiversosIptu){
 
-    inserirLinha($oPdf, array('DivTipoDebito'      => $oDiversosIptu->receita_codigo,
+    inserirLinha($oPdf, ['DivTipoDebito'      => $oDiversosIptu->receita_codigo,
                               'DivDescricao'       => $oDiversosIptu->receita_descr,
                               'DivQuantidade'      => $oDiversosIptu->quantidade,
                               'DivValorCalculado'  => $oDiversosIptu->valor_calculado,
                               'ValorCompensado'    => $oDiversosIptu->valor_compensado,
                               'DivValorPago'       => $oDiversosIptu->valor_pago,
                               'DivValorCancelado'  => $oDiversosIptu->valor_cancelado,
-                              'DivValorAPagar'     => $oDiversosIptu->valor_a_pagar));
+                              'DivValorAPagar'     => $oDiversosIptu->valor_a_pagar]);
 
     $nTotalCalculado  +=  $oDiversosIptu->valor_calculado;
     $nTotalPago       +=  $oDiversosIptu->valor_pago;
@@ -218,14 +218,14 @@ if(!empty($aDiversosIptu)){
     $nTotalCompensado +=  $oDiversosIptu->valor_compensado;
   }
 
-  inserirLinha($oPdf, array('DivTipoDebito'     => '',
+  inserirLinha($oPdf, ['DivTipoDebito'     => '',
                             'DivDescricao'      => '',
                             'DivQuantidade'     => 'TOTAIS',
                             'DivValorCalculado' => $nTotalCalculado,
                             'ValorCompensado'   => $nTotalCompensado,
                             'DivValorPago'      => $nTotalPago     ,
                             'DivValorCancelado' => $nTotalCancelado,
-                            'DivValorAPagar'    => $nTotalaPagar), true);
+                            'DivValorAPagar'    => $nTotalaPagar], true);
 
   $nTotalGeral += $nTotalaPagar;
 
@@ -242,7 +242,7 @@ $oPdf->ln(6);
 /**
  * Escreve colunas de cabecalhos do ISSQN
  */
-inserirLinha($oPdf, array('TipoDebito'            => 'Tipo',
+inserirLinha($oPdf, ['TipoDebito'            => 'Tipo',
                           'CodigoReceitaISSQN'    => 'Receita',
                           'DescricaoReceitaISSQN' => 'Descrição',
                           'QuantidadeISSQN'       => 'Quantidade',
@@ -251,7 +251,7 @@ inserirLinha($oPdf, array('TipoDebito'            => 'Tipo',
                           'ValorCompensado'       => 'Valor Compensado',
                           'ValorPago'             => 'Valor Pago',
                           'ValorCancelado'        => 'Valor Cancelado',
-                          'ValorAPagar'           => 'Valor a Pagar'), false, true);
+                          'ValorAPagar'           => 'Valor a Pagar'], false, true);
 
 /**
  * Linhas do ISSQN
@@ -265,7 +265,7 @@ $nTotalCompensado = 0;
 
 foreach ($aCalculoIssqn as $oCalculoIssqn) {
 
-  inserirLinha($oPdf, array('TipoDebito'            => $oCalculoIssqn->tipodebito,
+  inserirLinha($oPdf, ['TipoDebito'            => $oCalculoIssqn->tipodebito,
                             'CodigoReceitaISSQN'    => $oCalculoIssqn->codigo_receita,
                             'DescricaoReceitaISSQN' => $oCalculoIssqn->receita,
                             'QuantidadeISSQN'       => $oCalculoIssqn->quantidade,
@@ -274,7 +274,7 @@ foreach ($aCalculoIssqn as $oCalculoIssqn) {
                             'ValorCompensado'       => $oCalculoIssqn->valor_compensado,
                             'ValorPago'             => $oCalculoIssqn->valor_pago,
                             'ValorCancelado'        => $oCalculoIssqn->valor_cancelado,
-                            'ValorAPagar'           => $oCalculoIssqn->valor_a_pagar));
+                            'ValorAPagar'           => $oCalculoIssqn->valor_a_pagar]);
 
   $nTotalCalculado  +=  $oCalculoIssqn->valor_calculado;
   $nTotalImportado  +=  $oCalculoIssqn->valor_importado;
@@ -284,7 +284,7 @@ foreach ($aCalculoIssqn as $oCalculoIssqn) {
   $nTotalCompensado +=  $oCalculoIssqn->valor_compensado;
 }
 
-inserirLinha($oPdf, array('TipoDebito'            => '',
+inserirLinha($oPdf, ['TipoDebito'            => '',
                           'CodigoReceitaISSQN'    => '',
                           'DescricaoReceitaISSQN' => '',
                           'QuantidadeISSQN'       => 'TOTAIS',
@@ -293,13 +293,13 @@ inserirLinha($oPdf, array('TipoDebito'            => '',
                           'ValorCompensado'       => $nTotalCompensado,
                           'ValorPago'             => $nTotalPago     ,
                           'ValorCancelado'        => $nTotalCancelado,
-                          'ValorAPagar'           => $nTotalaPagar), true);
+                          'ValorAPagar'           => $nTotalaPagar], true);
 
 $nTotalGeral += $nTotalaPagar;
 
 $oPdf->ln(10);
 
-inserirLinha($oPdf, array('TipoDebito'            => '',
+inserirLinha($oPdf, ['TipoDebito'            => '',
                           'CodigoReceitaISSQN'    => '',
                           'DescricaoReceitaISSQN' => '',
                           'QuantidadeISSQN'       => '',
@@ -308,7 +308,7 @@ inserirLinha($oPdf, array('TipoDebito'            => '',
                           'ValorCompensado'       => '',
                           'ValorPago'             => '',
                           'ValorCancelado'        => 'TOTAL GERAL',
-                          'ValorAPagar'           => $nTotalGeral), true);
+                          'ValorAPagar'           => $nTotalGeral], true);
 
 
 /**
@@ -348,7 +348,7 @@ function largura($nPorcentagem = 0) {
  */
 function inserirLinha($oPdf, $aLinha, $lTotal = false, $lCabecalho = false) {
 
-  $aLarguras = array('TipoDebito'            => 18,
+  $aLarguras = ['TipoDebito'            => 18,
                      'CodigoReceitaIPTU'     => 7,
                      'CodigoReceitaISSQN'    => 5,
                      'DescricaoReceitaIPTU'  => 18,
@@ -368,7 +368,7 @@ function inserirLinha($oPdf, $aLinha, $lTotal = false, $lCabecalho = false) {
                      'DivValorCalculado'     => 10,
                      'DivValorPago'          => 10,
                      'DivValorCancelado'     => 10,
-                     'DivValorAPagar'        => 10);
+                     'DivValorAPagar'        => 10];
 
   $oPdf->Setfont('Arial', $lCabecalho ? 'b' : '' , 8);
 
@@ -381,7 +381,7 @@ function inserirLinha($oPdf, $aLinha, $lTotal = false, $lCabecalho = false) {
 
     if (is_numeric($sLinha)) {
 
-      if (stripos($sChave, 'Valor') !== FALSE) {
+      if (stripos((string) $sChave, 'Valor') !== FALSE) {
         $sLinha       = db_formatar($sLinha, 'f');
       }
 

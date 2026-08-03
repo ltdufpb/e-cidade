@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_concadtce_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconcadtce = new cl_concadtce;
 $clconcadtce->rotulo->label("c10_sequencial");
 $clconcadtce->rotulo->label("c10_nome");
@@ -98,9 +98,9 @@ $clconcadtce->rotulo->label("c10_nome");
         }else{
            $sql = $clconcadtce->sql_query("",$campos,"c10_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c10_nome)){
-          $repassa = array("chave_c10_sequencial"=>$chave_c10_sequencial,"chave_c10_nome"=>$chave_c10_nome);
+          $repassa = ["chave_c10_sequencial"=>$chave_c10_sequencial,"chave_c10_nome"=>$chave_c10_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

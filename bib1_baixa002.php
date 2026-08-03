@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_exemplar_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clexemplar = new cl_exemplar;
 $result = $clexemplar->sql_record($clexemplar->sql_query("","bi23_codigo,bi06_titulo",""," bi23_codbarras = ".trim($bi23_codbarras)." AND bi23_situacao = 'S'"));
 if($clexemplar->numrows==0){

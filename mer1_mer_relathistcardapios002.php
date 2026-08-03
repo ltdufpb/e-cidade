@@ -29,8 +29,8 @@ include(modification("fpdf151/pdfwebseller.php"));
 include(modification("libs/db_sql.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_cardapioitem_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 $clrotulo           = new rotulocampo;
 $clmer_cardapioitem = new cl_mer_cardapioitem;
 $departamento       = db_getsession("DB_coddepto");
@@ -156,7 +156,7 @@ for ($s=0; $s < $clmer_cardapioitem->numrows; $s++) {
     $pdf->setfont('arial','',8);
 	$pdf->setfillcolor(240);
     $pdf->cell(35,4,"$me01_i_codigo",0,0,"L",1);
-    $pdf->cell(60,4,substr($me01_c_nome,0,40),0,0,"L",1);
+    $pdf->cell(60,4,substr((string) $me01_c_nome,0,40),0,0,"L",1);
     $pdf->cell(65,4,substr($departamento."-" .$descrdepto,0,80),0,0,"L",1);
     $pdf->cell(25,4,"$me01_f_versao",0,0,"L",1);
     $pdf->cell(35,4,db_formatar($me13_d_data,'d'),0,0,"L",1);
@@ -170,7 +170,7 @@ for ($s=0; $s < $clmer_cardapioitem->numrows; $s++) {
   $pdf->cell(5,5,"",0,0,"L",0);
   $pdf->cell(5,5,"",0,0,"L",0);
   $pdf->cell(40,6,"$me07_i_codigo",0,0,"L",0);
-  $pdf->cell(80,6,substr($m60_descr,0,40),0,0,"L",0);
+  $pdf->cell(80,6,substr((string) $m60_descr,0,40),0,0,"L",0);
   $pdf->cell(20,6,"$me07_f_quantidade",0,1,"L",0);
   $cont++;
   

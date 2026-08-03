@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE abatimentorecibo
 class cl_abatimentorecibo {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $k127_sequencial = 0;
-   var $k127_abatimento = 0;
-   var $k127_numprerecibo = 0;
-   var $k127_numpreoriginal = 0;
+   public $k127_sequencial = 0;
+   public $k127_abatimento = 0;
+   public $k127_numprerecibo = 0;
+   public $k127_numpreoriginal = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  k127_sequencial = int4 = Sequencial
                  k127_abatimento = int4 = Abatimento
                  k127_numprerecibo = int4 = Numpre do Recibo
                  k127_numpreoriginal = int4 = Numpre Original
                  ";
    //funcao construtor da classe
-   function cl_abatimentorecibo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentorecibo");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -113,10 +113,10 @@ class cl_abatimentorecibo {
          $this->erro_status = "0";
          return false;
        }
-       $this->k127_sequencial = pg_result($result,0,0);
+       $this->k127_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from abatimentorecibo_k127_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k127_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k127_sequencial)){
          $this->erro_sql = " Campo k127_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -150,7 +150,7 @@ class cl_abatimentorecibo {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Recibo do Abatimento ($this->k127_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Recibo do Abatimento já Cadastrado";
@@ -179,13 +179,13 @@ class cl_abatimentorecibo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18074,'$this->k127_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3194,18074,'','".AddSlashes(pg_result($resaco,0,'k127_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3194,18075,'','".AddSlashes(pg_result($resaco,0,'k127_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3194,18076,'','".AddSlashes(pg_result($resaco,0,'k127_numprerecibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3194,21261,'','".AddSlashes(pg_result($resaco,0,'k127_numpreoriginal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3194,18074,'','".AddSlashes(pg_fetch_result($resaco,0,'k127_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3194,18075,'','".AddSlashes(pg_fetch_result($resaco,0,'k127_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3194,18076,'','".AddSlashes(pg_fetch_result($resaco,0,'k127_numprerecibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3194,21261,'','".AddSlashes(pg_fetch_result($resaco,0,'k127_numpreoriginal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -195,10 +195,10 @@ class cl_abatimentorecibo {
       $this->atualizacampos();
      $sql = " update abatimentorecibo set ";
      $virgula = "";
-     if(trim($this->k127_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k127_sequencial"])){
+     if(trim((string) $this->k127_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k127_sequencial"])){
        $sql  .= $virgula." k127_sequencial = $this->k127_sequencial ";
        $virgula = ",";
-       if(trim($this->k127_sequencial) == null ){
+       if(trim((string) $this->k127_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "k127_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_abatimentorecibo {
          return false;
        }
      }
-     if(trim($this->k127_abatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k127_abatimento"])){
+     if(trim((string) $this->k127_abatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k127_abatimento"])){
        $sql  .= $virgula." k127_abatimento = $this->k127_abatimento ";
        $virgula = ",";
-       if(trim($this->k127_abatimento) == null ){
+       if(trim((string) $this->k127_abatimento) == null ){
          $this->erro_sql = " Campo Abatimento não informado.";
          $this->erro_campo = "k127_abatimento";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_abatimentorecibo {
          return false;
        }
      }
-     if(trim($this->k127_numprerecibo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k127_numprerecibo"])){
+     if(trim((string) $this->k127_numprerecibo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k127_numprerecibo"])){
        $sql  .= $virgula." k127_numprerecibo = $this->k127_numprerecibo ";
        $virgula = ",";
-       if(trim($this->k127_numprerecibo) == null ){
+       if(trim((string) $this->k127_numprerecibo) == null ){
          $this->erro_sql = " Campo Numpre do Recibo não informado.";
          $this->erro_campo = "k127_numprerecibo";
          $this->erro_banco = "";
@@ -234,8 +234,8 @@ class cl_abatimentorecibo {
          return false;
        }
      }
-     if(trim($this->k127_numpreoriginal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k127_numpreoriginal"])){
-        if(trim($this->k127_numpreoriginal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k127_numpreoriginal"])){
+     if(trim((string) $this->k127_numpreoriginal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k127_numpreoriginal"])){
+        if(trim((string) $this->k127_numpreoriginal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k127_numpreoriginal"])){
            $this->k127_numpreoriginal = "0" ;
         }
        $sql  .= $virgula." k127_numpreoriginal = $this->k127_numpreoriginal ";
@@ -255,17 +255,17 @@ class cl_abatimentorecibo {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,18074,'$this->k127_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k127_sequencial"]) || $this->k127_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3194,18074,'".AddSlashes(pg_result($resaco,$conresaco,'k127_sequencial'))."','$this->k127_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3194,18074,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k127_sequencial'))."','$this->k127_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k127_abatimento"]) || $this->k127_abatimento != "")
-             $resac = db_query("insert into db_acount values($acount,3194,18075,'".AddSlashes(pg_result($resaco,$conresaco,'k127_abatimento'))."','$this->k127_abatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3194,18075,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k127_abatimento'))."','$this->k127_abatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k127_numprerecibo"]) || $this->k127_numprerecibo != "")
-             $resac = db_query("insert into db_acount values($acount,3194,18076,'".AddSlashes(pg_result($resaco,$conresaco,'k127_numprerecibo'))."','$this->k127_numprerecibo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3194,18076,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k127_numprerecibo'))."','$this->k127_numprerecibo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k127_numpreoriginal"]) || $this->k127_numpreoriginal != "")
-             $resac = db_query("insert into db_acount values($acount,3194,21261,'".AddSlashes(pg_result($resaco,$conresaco,'k127_numpreoriginal'))."','$this->k127_numpreoriginal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3194,21261,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k127_numpreoriginal'))."','$this->k127_numpreoriginal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -319,13 +319,13 @@ class cl_abatimentorecibo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,18074,'$k127_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3194,18074,'','".AddSlashes(pg_result($resaco,$iresaco,'k127_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3194,18075,'','".AddSlashes(pg_result($resaco,$iresaco,'k127_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3194,18076,'','".AddSlashes(pg_result($resaco,$iresaco,'k127_numprerecibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3194,21261,'','".AddSlashes(pg_result($resaco,$iresaco,'k127_numpreoriginal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3194,18074,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k127_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3194,18075,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k127_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3194,18076,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k127_numprerecibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3194,21261,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k127_numpreoriginal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -426,7 +426,7 @@ class cl_abatimentorecibo {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_abatimentorecibo {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -466,7 +466,7 @@ class cl_abatimentorecibo {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -487,7 +487,7 @@ class cl_abatimentorecibo {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

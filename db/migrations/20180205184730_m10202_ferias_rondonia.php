@@ -19,31 +19,31 @@ class M10202FeriasRondonia extends PostgresMigration
 
     private function dicionarioUp()
     {
-        $tableDBSysCampo = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+        $tableDBSysCampo = $this->table('db_syscampo', ['schema' => 'configuracoes']);
         $tableDBSysCampo->insert(
-          array('codcam','nomecam','conteudo','descricao','valorinicial','rotulo','tamanho','nulo',  'maiusculo','autocompl','aceitatipo','tipoobj','rotulorel'),
-          array(
-            array(1009632,'rh110_diaspagar','int4','Número de dias a pagar referente ao período lançado.','0', 'Dias a Pagar',10,'f','f','f',1,'text','Dias a Pagar'),
-            array(1009635,'rh110_temdireitotercoabono','bool','Controla se para o período de férias, tem direito a 1/3 de abono, quando houverem dias abonados.','f', 'Direito a 1/3 de Abono',1,'f','f','f',5,'text','Direito a 1/3 de Abono')
-          )
+          ['codcam','nomecam','conteudo','descricao','valorinicial','rotulo','tamanho','nulo',  'maiusculo','autocompl','aceitatipo','tipoobj','rotulorel'],
+          [
+            [1009632,'rh110_diaspagar','int4','Número de dias a pagar referente ao período lançado.','0', 'Dias a Pagar',10,'f','f','f',1,'text','Dias a Pagar'],
+            [1009635,'rh110_temdireitotercoabono','bool','Controla se para o período de férias, tem direito a 1/3 de abono, quando houverem dias abonados.','f', 'Direito a 1/3 de Abono',1,'f','f','f',5,'text','Direito a 1/3 de Abono']
+          ]
         );
         $tableDBSysCampo->saveData();
 
-        $tableDBSysArqCamp = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+        $tableDBSysArqCamp = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
         $tableDBSysArqCamp->insert(
-          array('codarq', 'codcam', 'seqarq', 'codsequencia'),
-          array(
-            array(3374,1009632,15,0),
-            array(3374,1009635,16,0)
-          )
+          ['codarq', 'codcam', 'seqarq', 'codsequencia'],
+          [
+            [3374,1009632,15,0],
+            [3374,1009635,16,0]
+          ]
         );
     }
 
     private function ddlUp()
     {
-        $tableRhFeriasPeriodo = $this->table('rhferiasperiodo', array('schema' => 'pessoal'));
-        $tableRhFeriasPeriodo->addColumn('rh110_diaspagar', 'integer', array('null' => true));
-        $tableRhFeriasPeriodo->addColumn('rh110_temdireitotercoabono', 'boolean', array('default' => true));
+        $tableRhFeriasPeriodo = $this->table('rhferiasperiodo', ['schema' => 'pessoal']);
+        $tableRhFeriasPeriodo->addColumn('rh110_diaspagar', 'integer', ['null' => true]);
+        $tableRhFeriasPeriodo->addColumn('rh110_temdireitotercoabono', 'boolean', ['default' => true]);
         $tableRhFeriasPeriodo->save();
     }
 
@@ -55,7 +55,7 @@ class M10202FeriasRondonia extends PostgresMigration
 
     private function ddlDown()
     {
-        $tableRhFeriasPeriodo = $this->table('rhferiasperiodo', array('schema' => 'pessoal'));
+        $tableRhFeriasPeriodo = $this->table('rhferiasperiodo', ['schema' => 'pessoal']);
         $tableRhFeriasPeriodo->removeColumn('rh110_diaspagar');
         $tableRhFeriasPeriodo->removeColumn('rh110_temdireitotercoabono');
         $tableRhFeriasPeriodo->save();
@@ -67,8 +67,8 @@ class M10202FeriasRondonia extends PostgresMigration
     {
         $this->execute('update rhferiasperiodo set rh110_diaspagar = rh110_dias + rh110_diasabono');
 
-        $tableRhFeriasPeriodo = $this->table('rhferiasperiodo', array('schema' => 'pessoal'));
-        $tableRhFeriasPeriodo->changeColumn('rh110_diaspagar', 'integer', array('null' => false));
+        $tableRhFeriasPeriodo = $this->table('rhferiasperiodo', ['schema' => 'pessoal']);
+        $tableRhFeriasPeriodo->changeColumn('rh110_diaspagar', 'integer', ['null' => false]);
         $tableRhFeriasPeriodo->save();
     }
 }

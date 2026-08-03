@@ -70,9 +70,7 @@ class CalcularValoresSinteticosService
     private function recalcularValoresIniciativas(ProgramaEstrategico $programaEstrategico)
     {
         $programaEstrategico->iniciativas->map(function (Iniciativa $iniciativa) {
-            $valores = $iniciativa->detalhamentoDespesa->map(function (DetalhamentoDespesa $detalhamentoDespesa) {
-                return $this->valoresPorAno($detalhamentoDespesa->getValores());
-            });
+            $valores = $iniciativa->detalhamentoDespesa->map(fn(DetalhamentoDespesa $detalhamentoDespesa) => $this->valoresPorAno($detalhamentoDespesa->getValores()));
 
             $valoresPorAno = $this->totalizaValoresPorAno($valores);
 
@@ -106,9 +104,7 @@ class CalcularValoresSinteticosService
     {
         $programaEstrategico->objetivos->each(function (ObjetivoProgramaEstrategico $objetivo) {
             $valores = $this->totalizaValoresPorAno(
-                $objetivo->iniciativas->map(function (Iniciativa $iniciativa) {
-                    return $this->getValoresIniciativa($iniciativa);
-                })
+                $objetivo->iniciativas->map(fn(Iniciativa $iniciativa) => $this->getValoresIniciativa($iniciativa))
             );
 
             $this->salvarValores($objetivo->pl11_codigo, Valor::ORIGEM_OBJETIVOS, $valores);
@@ -123,9 +119,7 @@ class CalcularValoresSinteticosService
     private function recalcularPrograma(ProgramaEstrategico $programaEstrategico)
     {
         $valores = $this->totalizaValoresPorAno(
-            $programaEstrategico->iniciativas->map(function (Iniciativa $iniciativa) {
-                return $this->getValoresIniciativa($iniciativa);
-            })
+            $programaEstrategico->iniciativas->map(fn(Iniciativa $iniciativa) => $this->getValoresIniciativa($iniciativa))
         );
 
         $this->salvarValores($programaEstrategico->pl9_codigo, Valor::ORIGEM_PROGRAMA, $valores);
@@ -198,9 +192,7 @@ class CalcularValoresSinteticosService
      */
     private function getValoresIniciativa(Iniciativa $iniciativa)
     {
-        $valores = $iniciativa->metas->map(function (MetasIniciativa $meta) {
-            return $this->agrupa($meta->exercicio, $meta->meta_financeira, []);
-        });
+        $valores = $iniciativa->metas->map(fn(MetasIniciativa $meta) => $this->agrupa($meta->exercicio, $meta->meta_financeira, []));
 
         return $this->totalizaValoresPorAno($valores);
     }

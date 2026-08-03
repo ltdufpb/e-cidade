@@ -154,13 +154,13 @@ $iDepto   = db_getsession('DB_coddepto');
             </td>
             <td>
             <?php
-              $aParam = Array(
+              $aParam = [
                 "0" => "SELECIONE",
                 "1" => "PADRÂO COM ATRIBUTOS",
                 "2" => "PADRÂO SEM ATRIBUTOS",
                 "3" => "AGRUPADO POR PACIENTE",
                 "4" => "AGRUPADO POR EXAME",
-              );
+              ];
               db_select( 'atributos', $aParam, "", 1 );
             ?>
             </td>

@@ -33,7 +33,7 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbase = new cl_base;
 $clbase->rotulo->label("ed31_i_codigo");
 $clbase->rotulo->label("ed31_c_descr");
@@ -66,7 +66,7 @@ $clbase->rotulo->label("ed31_c_descr");
 
 <?php
 
-  $aWhere   = array();
+  $aWhere   = [];
   $aWhere[] = " ed77_i_escola = " . db_getsession("DB_coddepto");
 
   if( !empty($curso)) {
@@ -84,9 +84,9 @@ $clbase->rotulo->label("ed31_c_descr");
 
     $sWhere  = implode(" and ", $aWhere);
     $sql     = $clbase->sql_query_base("", $sCampos, "ed31_i_codigo", $sWhere);
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed31_i_codigo)){
-      $repassa = array("chave_ed31_i_codigo"=>$chave_ed31_i_codigo,"chave_ed31_c_descr"=>$chave_ed31_c_descr);
+      $repassa = ["chave_ed31_i_codigo"=>$chave_ed31_i_codigo,"chave_ed31_c_descr"=>$chave_ed31_c_descr];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

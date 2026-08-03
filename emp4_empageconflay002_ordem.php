@@ -48,7 +48,7 @@ $clempagepag  = new cl_empagepag;
 $clpcfornecon   = new cl_pcfornecon;
 
 //echo ($HTTP_SERVER_VARS["QUERY_STRING"]);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //db_postmemory($HTTP_POST_VARS);
 $db_opcao = 1;
 $db_botao = false;
@@ -201,7 +201,7 @@ function js_calcula(campo){
 		  if($c63_banco == ""){
 	              $disab03 = true;
 		    
-		  }else if(    (str_pad($e84_layout, 3, "0", STR_PAD_LEFT) != $c63_banco)   ){
+		  }else if(    (str_pad((string) $e84_layout, 3, "0", STR_PAD_LEFT) != $c63_banco)   ){
 //	              $disab02 = true;
 		  }
 
@@ -221,11 +221,11 @@ function js_calcula(campo){
           <td class='bordas' align='right'><small><?=number_format($e81_valor,"2",".","")?></small></td>
            <?php 
 	     $x= "valor_$e81_codmov";
-  	     $$x = $e81_valor;
+  	     ${$x} = $e81_valor;
              db_input("valor_$e81_codmov",10,'',true,'hidden',1);
 	     
 	     $x= "e83_codtipo_$e81_codmov";
-  	     $$x = $e83_codtipo;
+  	     ${$x} = $e83_codtipo;
              db_input("e83_codtipo_$e81_codmov",10,'',true,'hidden',1);
             ?>       
 	  

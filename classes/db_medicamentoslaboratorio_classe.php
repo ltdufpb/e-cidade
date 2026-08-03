@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE medicamentoslaboratorio
 class cl_medicamentoslaboratorio { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $la43_sequencial = 0; 
-   var $la43_nome = null; 
-   var $la43_abreviatura = null; 
+   public $la43_sequencial = 0; 
+   public $la43_nome = null; 
+   public $la43_abreviatura = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  la43_sequencial = int4 = Código 
                  la43_nome = varchar(50) = Nome 
                  la43_abreviatura = varchar(3) = Abreviatura 
                  ";
    //funcao construtor da classe 
-   function cl_medicamentoslaboratorio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("medicamentoslaboratorio"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_medicamentoslaboratorio {
          $this->erro_status = "0";
          return false; 
        }
-       $this->la43_sequencial = pg_result($result,0,0); 
+       $this->la43_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from medicamentoslaboratorio_la43_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $la43_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $la43_sequencial)){
          $this->erro_sql = " Campo la43_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_medicamentoslaboratorio {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Medicamentos do Laboratorio ($this->la43_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Medicamentos do Laboratorio já Cadastrado";
@@ -145,12 +145,12 @@ class cl_medicamentoslaboratorio {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21628,'$this->la43_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3885,21628,'','".AddSlashes(pg_result($resaco,0,'la43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3885,21629,'','".AddSlashes(pg_result($resaco,0,'la43_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3885,21630,'','".AddSlashes(pg_result($resaco,0,'la43_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3885,21628,'','".AddSlashes(pg_fetch_result($resaco,0,'la43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3885,21629,'','".AddSlashes(pg_fetch_result($resaco,0,'la43_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3885,21630,'','".AddSlashes(pg_fetch_result($resaco,0,'la43_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_medicamentoslaboratorio {
       $this->atualizacampos();
      $sql = " update medicamentoslaboratorio set ";
      $virgula = "";
-     if(trim($this->la43_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la43_sequencial"])){ 
+     if(trim((string) $this->la43_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la43_sequencial"])){ 
        $sql  .= $virgula." la43_sequencial = $this->la43_sequencial ";
        $virgula = ",";
-       if(trim($this->la43_sequencial) == null ){ 
+       if(trim((string) $this->la43_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "la43_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_medicamentoslaboratorio {
          return false;
        }
      }
-     if(trim($this->la43_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la43_nome"])){ 
+     if(trim((string) $this->la43_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la43_nome"])){ 
        $sql  .= $virgula." la43_nome = '$this->la43_nome' ";
        $virgula = ",";
-       if(trim($this->la43_nome) == null ){ 
+       if(trim((string) $this->la43_nome) == null ){ 
          $this->erro_sql = " Campo Nome não informado.";
          $this->erro_campo = "la43_nome";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_medicamentoslaboratorio {
          return false;
        }
      }
-     if(trim($this->la43_abreviatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la43_abreviatura"])){ 
+     if(trim((string) $this->la43_abreviatura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la43_abreviatura"])){ 
        $sql  .= $virgula." la43_abreviatura = '$this->la43_abreviatura' ";
        $virgula = ",";
-       if(trim($this->la43_abreviatura) == null ){ 
+       if(trim((string) $this->la43_abreviatura) == null ){ 
          $this->erro_sql = " Campo Abreviatura não informado.";
          $this->erro_campo = "la43_abreviatura";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_medicamentoslaboratorio {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21628,'$this->la43_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["la43_sequencial"]) || $this->la43_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3885,21628,'".AddSlashes(pg_result($resaco,$conresaco,'la43_sequencial'))."','$this->la43_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3885,21628,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la43_sequencial'))."','$this->la43_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["la43_nome"]) || $this->la43_nome != "")
-             $resac = db_query("insert into db_acount values($acount,3885,21629,'".AddSlashes(pg_result($resaco,$conresaco,'la43_nome'))."','$this->la43_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3885,21629,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la43_nome'))."','$this->la43_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["la43_abreviatura"]) || $this->la43_abreviatura != "")
-             $resac = db_query("insert into db_acount values($acount,3885,21630,'".AddSlashes(pg_result($resaco,$conresaco,'la43_abreviatura'))."','$this->la43_abreviatura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3885,21630,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la43_abreviatura'))."','$this->la43_abreviatura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_medicamentoslaboratorio {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21628,'$la43_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3885,21628,'','".AddSlashes(pg_result($resaco,$iresaco,'la43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3885,21629,'','".AddSlashes(pg_result($resaco,$iresaco,'la43_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3885,21630,'','".AddSlashes(pg_result($resaco,$iresaco,'la43_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3885,21628,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la43_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3885,21629,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la43_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3885,21630,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la43_abreviatura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

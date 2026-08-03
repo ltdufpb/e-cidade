@@ -29,7 +29,7 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 ?>
 <html>
 <head>
@@ -213,8 +213,8 @@ th {
 	$numpre_cor = "";
 	$numpre_par = "";
 	$qcor= $ConfCor1;
-    if(pg_numrows($dados)>0){
-      for($x=0;$x<pg_numrows($dados);$x++){
+    if(pg_num_rows($dados)>0){
+      for($x=0;$x<pg_num_rows($dados);$x++){
 	    db_fieldsmemory($dados,$x,"1");
         if($numpre_cor==""){
 		   $numpre_cor = $k00_numpre;

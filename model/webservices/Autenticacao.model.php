@@ -45,14 +45,14 @@ class Autenticacao {
    * @var array
    */
   private static $aMetodosProtegidos =
-    array(
+    [
       'geraDebitoIssContribribuinte', 'reemitirGuia', 'gerarGuiaPrestador', 'gerarGuiaTomador',
       'gerarPlanilhaRetencao', 'anularNotaPlanilhaRetencao', 'anularPlanilhaRetencao',
       'CancelamentoISSQNVariavel', 'lancarPlanilhaRetencao', 'processamentoArquivoDMS',
       'excluirCgm', 'EmpresaFotoPrincipal', 'gerarCgmExterno', 'tornarEscritorioContabil',
       'tornarGrafica', 'TransparenciaGerarDados', 'TransparenciaRemoverDados', 'TransparenciaSituacaoDados',
       'PreProcesso', 'OcorrenciaOuvidoria'
-    );
+    ];
 
   /**
    * Responsável por validar a conexão do webservice
@@ -101,7 +101,7 @@ class Autenticacao {
       }
 
       $oResultado = db_utils::fieldsMemory($rsResult, 0);
-      if (md5($oResultado->db46_id_usuario) != $_SERVER['PHP_AUTH_USER']) {
+      if (md5((string) $oResultado->db46_id_usuario) != $_SERVER['PHP_AUTH_USER']) {
         throw new Exception($sMensagem);
       }
 

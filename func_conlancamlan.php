@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conlancam_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 db_postmemory($_GET);
 $clconlancam = new cl_conlancam;
 $clconlancam->rotulo->label("c70_codlan");
@@ -80,7 +80,7 @@ $clconlancam->rotulo->label("c70_anousu");
     <tr>
         <td align="center" valign="top">
             <?php
-            $where = array();
+            $where = [];
             if (!empty($codigoDocumento)) {
                 $where[] = " c53_coddoc = {$codigoDocumento}";
             }

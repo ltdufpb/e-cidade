@@ -65,9 +65,9 @@ try {
     throw new Exception("A data inicial e final do Período devem estar dentro da mesma competência.");
   }
 
-  $aVeiculos = array();
+  $aVeiculos = [];
   if (isset($oParam->aVeiculos) && !empty($oParam->aVeiculos)) {
-    $aVeiculos = explode(",", $oParam->aVeiculos);
+    $aVeiculos = explode(",", (string) $oParam->aVeiculos);
   }
 
   $oRelatorio = new RelatorioControleHodometro($oDataInicial,

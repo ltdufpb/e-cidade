@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE assentamentofimcontrato
 class cl_assentamentofimcontrato { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h15_sequencial = 0; 
-   var $h15_instituicao = 0; 
-   var $h15_assentamento = 0; 
+   public $h15_sequencial = 0; 
+   public $h15_instituicao = 0; 
+   public $h15_assentamento = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h15_sequencial = int4 = Código 
                  h15_instituicao = int4 = Instituição 
                  h15_assentamento = int4 = Assentamento 
                  ";
    //funcao construtor da classe 
-   function cl_assentamentofimcontrato() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("assentamentofimcontrato"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_assentamentofimcontrato {
          $this->erro_status = "0";
          return false; 
        }
-       $this->h15_sequencial = pg_result($result,0,0); 
+       $this->h15_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from assentamentofimcontrato_h15_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $h15_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $h15_sequencial)){
          $this->erro_sql = " Campo h15_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_assentamentofimcontrato {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Assentamentos de Fim de Contrato ($this->h15_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Assentamentos de Fim de Contrato já Cadastrado";
@@ -145,12 +145,12 @@ class cl_assentamentofimcontrato {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21960,'$this->h15_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3953,21960,'','".AddSlashes(pg_result($resaco,0,'h15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3953,21961,'','".AddSlashes(pg_result($resaco,0,'h15_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3953,21962,'','".AddSlashes(pg_result($resaco,0,'h15_assentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3953,21960,'','".AddSlashes(pg_fetch_result($resaco,0,'h15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3953,21961,'','".AddSlashes(pg_fetch_result($resaco,0,'h15_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3953,21962,'','".AddSlashes(pg_fetch_result($resaco,0,'h15_assentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_assentamentofimcontrato {
       $this->atualizacampos();
      $sql = " update assentamentofimcontrato set ";
      $virgula = "";
-     if(trim($this->h15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h15_sequencial"])){ 
+     if(trim((string) $this->h15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h15_sequencial"])){ 
        $sql  .= $virgula." h15_sequencial = $this->h15_sequencial ";
        $virgula = ",";
-       if(trim($this->h15_sequencial) == null ){ 
+       if(trim((string) $this->h15_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "h15_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_assentamentofimcontrato {
          return false;
        }
      }
-     if(trim($this->h15_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h15_instituicao"])){ 
+     if(trim((string) $this->h15_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h15_instituicao"])){ 
        $sql  .= $virgula." h15_instituicao = $this->h15_instituicao ";
        $virgula = ",";
-       if(trim($this->h15_instituicao) == null ){ 
+       if(trim((string) $this->h15_instituicao) == null ){ 
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "h15_instituicao";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_assentamentofimcontrato {
          return false;
        }
      }
-     if(trim($this->h15_assentamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h15_assentamento"])){ 
+     if(trim((string) $this->h15_assentamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h15_assentamento"])){ 
        $sql  .= $virgula." h15_assentamento = $this->h15_assentamento ";
        $virgula = ",";
-       if(trim($this->h15_assentamento) == null ){ 
+       if(trim((string) $this->h15_assentamento) == null ){ 
          $this->erro_sql = " Campo Assentamento não informado.";
          $this->erro_campo = "h15_assentamento";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_assentamentofimcontrato {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21960,'$this->h15_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h15_sequencial"]) || $this->h15_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3953,21960,'".AddSlashes(pg_result($resaco,$conresaco,'h15_sequencial'))."','$this->h15_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3953,21960,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h15_sequencial'))."','$this->h15_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h15_instituicao"]) || $this->h15_instituicao != "")
-             $resac = db_query("insert into db_acount values($acount,3953,21961,'".AddSlashes(pg_result($resaco,$conresaco,'h15_instituicao'))."','$this->h15_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3953,21961,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h15_instituicao'))."','$this->h15_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h15_assentamento"]) || $this->h15_assentamento != "")
-             $resac = db_query("insert into db_acount values($acount,3953,21962,'".AddSlashes(pg_result($resaco,$conresaco,'h15_assentamento'))."','$this->h15_assentamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3953,21962,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h15_assentamento'))."','$this->h15_assentamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_assentamentofimcontrato {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21960,'$h15_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3953,21960,'','".AddSlashes(pg_result($resaco,$iresaco,'h15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3953,21961,'','".AddSlashes(pg_result($resaco,$iresaco,'h15_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3953,21962,'','".AddSlashes(pg_result($resaco,$iresaco,'h15_assentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3953,21960,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3953,21961,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h15_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3953,21962,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h15_assentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

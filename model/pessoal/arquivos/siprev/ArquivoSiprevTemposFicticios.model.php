@@ -30,7 +30,7 @@ class ArquivoSiprevTemposFicticios extends ArquivoSiprevBase {
   private   $aServidores = null;
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["14"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["14"] = [];
   }
   /**
    * Retona a parcela de servidores que será manipulada
@@ -135,13 +135,13 @@ class ArquivoSiprevTemposFicticios extends ArquivoSiprevBase {
       $servidor->dataFinal      = $dados->data_final;
       $servidor->descricao      = $dados->descricao;
       $servidor->justificativa  = $dados->justificativa;
-      $servidor->portaria       = (object)array(
+      $servidor->portaria       = (object)[
         "numero"       => $dados->numero,
         "ano"          => $dados->anousu,
         "data"         => $dados->data_portaria,
         "dataInicio"   => $dados->data_inicio,
         "assentamento" => $dados->assentamento,
-      );
+      ];
 
       return $servidor;
     });
@@ -156,7 +156,7 @@ class ArquivoSiprevTemposFicticios extends ArquivoSiprevBase {
       return false;
     }
 
-    $retorno = array();
+    $retorno = [];
 
     foreach ($servidores as $servidor) {
 
@@ -169,9 +169,9 @@ class ArquivoSiprevTemposFicticios extends ArquivoSiprevBase {
         continue;
       }
 
-      $retorno[] = (object)array(
+      $retorno[] = (object)[
         "tempoFicticio" => $this->valoresTempoFicticio($servidor)
-      );
+      ];
     }
     return $retorno;
   }
@@ -183,7 +183,7 @@ class ArquivoSiprevTemposFicticios extends ArquivoSiprevBase {
    */
   private function validarDados($servidor) {
 
-    $aErrosRegistro = array();
+    $aErrosRegistro = [];
     if(!DBString::isCPF($servidor->getCgm()->getCpf())) {
       $aErrosRegistro[] = $this->getErro($servidor, "CPF inválido.");
     }
@@ -200,12 +200,12 @@ class ArquivoSiprevTemposFicticios extends ArquivoSiprevBase {
    */
   private function getErro($oDadosRetorno, $sErro) {
 
-    return array(
+    return [
       $oDadosRetorno->portaria->assentamento,
       $oDadosRetorno->getInstituicao()->getDescricao(),
       $oDadosRetorno->getCgm()->getCodigo()  . " - " . $oDadosRetorno->getCgm()->getNome(),
       $sErro,
-    );
+    ];
 
   }
 
@@ -213,12 +213,12 @@ class ArquivoSiprevTemposFicticios extends ArquivoSiprevBase {
    * Retorna o "esqueleto" do arquivo xml
    */
   public function getElementos() {
-    return array($this->tagTempoFicticio());
+    return [$this->tagTempoFicticio()];
   }
 
   private function tagTempoFicticio() {
 
-    return self::makeTag("tempoFicticio", array(
+    return self::makeTag("tempoFicticio", [
       /**
        * atributos
        */
@@ -235,13 +235,13 @@ class ArquivoSiprevTemposFicticios extends ArquivoSiprevBase {
        */
       $this->tagVinculosFuncionaisRPPS(),
       $this->tagAtoLegal(),
-    ));
+    ]);
   }
 
   private function valoresTempoFicticio($servidor) {
 
 
-    return (object)array(
+    return (object)[
       "operacao"                => "I",
       "descricao"               => $servidor->descricao,
       "anteriorEC20"            => "N",
@@ -251,114 +251,114 @@ class ArquivoSiprevTemposFicticios extends ArquivoSiprevBase {
       "justificativa"           => $servidor->justificativa,
       "vinculosFuncionaisRpps"  => $this->valoresVinculosFuncionaisRpps($servidor),
       "atoLegal"                => $this->valoresAtoLegal($servidor)
-    );
+    ];
   }
 
   private function tagVinculosFuncionaisRPPS() {
 
-    return self::makeTag("vinculosFuncionaisRpps", array(
+    return self::makeTag("vinculosFuncionaisRpps", [
       "dataExercicioCargo",
       "regime",
       "tipoServidor",
       "tipoVinculo",
       $this->tagServidor(),
       $this->tagCargo(),
-    ));
+    ]);
   }
 
   private function valoresVinculosFuncionaisRpps(Servidor $servidor) {
 
-    return (object)array(
+    return (object)[
       "dataExercicioCargo"   => $servidor->getDataAdmissao()->getDate(),
       "regime"               => $servidor->getTabelaPrevidencia() == 2 ? 1 : 2, // - 1-RPPS, 2-RGPS
       "tipoServidor"         => 1,//Servidor CIVIL
       "tipoVinculo"          => $servidor->tipoVinculo,
       "servidor"             => $this->valoresServidor($servidor),
       "cargo"                => $this->valoresCargo($servidor),
-    );
+    ];
   }
 
   private function tagOrgao() {
-    return self::makeTag("orgao",array("nome", "poder"));
+    return self::makeTag("orgao",["nome", "poder"]);
   }
 
   private function valoresOrgao(Servidor $servidor) {
 
-    return (object)array(
+    return (object)[
       "nome"  => $servidor->getInstituicao()->getDescricao(),
       "poder" => $servidor->getInstituicao()->getTipo() > 6 ? 6 : $servidor->getInstituicao()->getTipo(),
-    );
+    ];
   }
 
   private function tagServidor() {
 
-    return self::makeTag("servidor", array(
+    return self::makeTag("servidor", [
       "nome",
       "numeroCPF",
       "numeroNIT",
       "numeroRG",
       "dataNascimento",
       "nomeMae",
-    ));
+    ]);
   }
 
   private function valoresServidor(Servidor $servidor) {
-    return (object)array(
+    return (object)[
       "nome"           => $servidor->getCgm()->getNome(),
       "numeroCPF"      => $servidor->getCgm()->getCpf(),
-    );
+    ];
   }
 
   private function tagCargo() {
 
-    return self::makeTag("cargo", array(
+    return self::makeTag("cargo", [
       "nome",
       $this->tagCarreira()
-    ));
+    ]);
   }
 
   private function valoresCargo(Servidor $servidor) {
-    return (object)array(
+    return (object)[
       "nome"     => $servidor->descricaoCargo,
       "carreira" => $this->valoresCarreira($servidor),
-    );
+    ];
   }
 
   private function tagCarreira() {
 
-    return self::makeTag("carreira", array(
+    return self::makeTag("carreira", [
       "nome",
       $this->tagOrgao(),
-    ));
+    ]);
   }
 
   private function valoresCarreira(Servidor $servidor) {
 
-    return (object)array(
+    return (object)[
       "nome" => "Servidor Público",
       "orgao" => $this->valoresOrgao($servidor),
-    );
+    ];
   }
 
   private function tagAtoLegal(){
-    return self::makeTag("atoLegal", array(
+    return self::makeTag("atoLegal", [
       "tipoAto",
       "numero",
       "ano",
       "dataPublicacao",
       "dataInicioVigencia",
-    ));
+    ]);
   }
 
   private function valoresAtoLegal($servidor) {
 
-    return (object)array(
+    return (object)[
       "tipoAto"             => "PORTARIA",
       "numero"              => $servidor->portaria->numero,
       "ano"                 => $servidor->portaria->ano,
       "dataPublicacao"      => $servidor->portaria->data,
       "dataInicioVigencia"  => $servidor->portaria->dataInicio,
-    );
+    ];
   }
 
 }

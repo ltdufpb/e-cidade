@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE tiafprazo
 class cl_tiafprazo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y96_codigo = 0; 
-   var $y96_codtiaf = 0; 
-   var $y96_prazo_dia = null; 
-   var $y96_prazo_mes = null; 
-   var $y96_prazo_ano = null; 
-   var $y96_prazo = null; 
+   public $y96_codigo = 0; 
+   public $y96_codtiaf = 0; 
+   public $y96_prazo_dia = null; 
+   public $y96_prazo_mes = null; 
+   public $y96_prazo_ano = null; 
+   public $y96_prazo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y96_codigo = int8 = Codigo do prazo 
                  y96_codtiaf = int4 = Código Tiaf 
                  y96_prazo = date = Data do prazo 
                  ";
    //funcao construtor da classe 
-   function cl_tiafprazo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tiafprazo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -117,10 +117,10 @@ class cl_tiafprazo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y96_codigo = pg_result($result,0,0); 
+       $this->y96_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tiafprazo_y96_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y96_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y96_codigo)){
          $this->erro_sql = " Campo y96_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -152,7 +152,7 @@ class cl_tiafprazo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Prazo do Tiaf ($this->y96_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Prazo do Tiaf já Cadastrado";
@@ -176,12 +176,12 @@ class cl_tiafprazo {
      $resaco = $this->sql_record($this->sql_query_file($this->y96_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7353,'$this->y96_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1225,7353,'','".AddSlashes(pg_result($resaco,0,'y96_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1225,7354,'','".AddSlashes(pg_result($resaco,0,'y96_codtiaf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1225,7355,'','".AddSlashes(pg_result($resaco,0,'y96_prazo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1225,7353,'','".AddSlashes(pg_fetch_result($resaco,0,'y96_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1225,7354,'','".AddSlashes(pg_fetch_result($resaco,0,'y96_codtiaf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1225,7355,'','".AddSlashes(pg_fetch_result($resaco,0,'y96_prazo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -190,10 +190,10 @@ class cl_tiafprazo {
       $this->atualizacampos();
      $sql = " update tiafprazo set ";
      $virgula = "";
-     if(trim($this->y96_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y96_codigo"])){ 
+     if(trim((string) $this->y96_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y96_codigo"])){ 
        $sql  .= $virgula." y96_codigo = $this->y96_codigo ";
        $virgula = ",";
-       if(trim($this->y96_codigo) == null ){ 
+       if(trim((string) $this->y96_codigo) == null ){ 
          $this->erro_sql = " Campo Codigo do prazo nao Informado.";
          $this->erro_campo = "y96_codigo";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_tiafprazo {
          return false;
        }
      }
-     if(trim($this->y96_codtiaf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y96_codtiaf"])){ 
+     if(trim((string) $this->y96_codtiaf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y96_codtiaf"])){ 
        $sql  .= $virgula." y96_codtiaf = $this->y96_codtiaf ";
        $virgula = ",";
-       if(trim($this->y96_codtiaf) == null ){ 
+       if(trim((string) $this->y96_codtiaf) == null ){ 
          $this->erro_sql = " Campo Código Tiaf nao Informado.";
          $this->erro_campo = "y96_codtiaf";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_tiafprazo {
          return false;
        }
      }
-     if(trim($this->y96_prazo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y96_prazo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y96_prazo_dia"] !="") ){ 
+     if(trim((string) $this->y96_prazo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y96_prazo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y96_prazo_dia"] !="") ){ 
        $sql  .= $virgula." y96_prazo = '$this->y96_prazo' ";
        $virgula = ",";
-       if(trim($this->y96_prazo) == null ){ 
+       if(trim((string) $this->y96_prazo) == null ){ 
          $this->erro_sql = " Campo Data do prazo nao Informado.";
          $this->erro_campo = "y96_prazo_dia";
          $this->erro_banco = "";
@@ -232,7 +232,7 @@ class cl_tiafprazo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["y96_prazo_dia"])){ 
          $sql  .= $virgula." y96_prazo = null ";
          $virgula = ",";
-         if(trim($this->y96_prazo) == null ){ 
+         if(trim((string) $this->y96_prazo) == null ){ 
            $this->erro_sql = " Campo Data do prazo nao Informado.";
            $this->erro_campo = "y96_prazo_dia";
            $this->erro_banco = "";
@@ -251,15 +251,15 @@ class cl_tiafprazo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7353,'$this->y96_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y96_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1225,7353,'".AddSlashes(pg_result($resaco,$conresaco,'y96_codigo'))."','$this->y96_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1225,7353,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y96_codigo'))."','$this->y96_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y96_codtiaf"]))
-           $resac = db_query("insert into db_acount values($acount,1225,7354,'".AddSlashes(pg_result($resaco,$conresaco,'y96_codtiaf'))."','$this->y96_codtiaf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1225,7354,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y96_codtiaf'))."','$this->y96_codtiaf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y96_prazo"]))
-           $resac = db_query("insert into db_acount values($acount,1225,7355,'".AddSlashes(pg_result($resaco,$conresaco,'y96_prazo'))."','$this->y96_prazo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1225,7355,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y96_prazo'))."','$this->y96_prazo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -304,12 +304,12 @@ class cl_tiafprazo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7353,'$y96_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1225,7353,'','".AddSlashes(pg_result($resaco,$iresaco,'y96_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1225,7354,'','".AddSlashes(pg_result($resaco,$iresaco,'y96_codtiaf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1225,7355,'','".AddSlashes(pg_result($resaco,$iresaco,'y96_prazo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1225,7353,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y96_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1225,7354,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y96_codtiaf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1225,7355,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y96_prazo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tiafprazo
@@ -369,7 +369,7 @@ class cl_tiafprazo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tiafprazo";
@@ -383,7 +383,7 @@ class cl_tiafprazo {
    function sql_query ( $y96_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,7 +405,7 @@ class cl_tiafprazo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_tiafprazo {
    function sql_query_file ( $y96_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_tiafprazo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_tiafprazo {
    function sql_queryproc ( $y96_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -473,7 +473,7 @@ class cl_tiafprazo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

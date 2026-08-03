@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_conhistdoc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconhistdoc = new cl_conhistdoc;
 $clconhistdoc->rotulo->label("c53_coddoc");
 $clconhistdoc->rotulo->label("c53_descr");
@@ -49,7 +49,7 @@ if (isset($lTipoReconhecimentoContabil)) {
 
 if(!USE_PCASP and false) {
   
-  $aDocumentosValidos   = array(100, 33, 3, 23, 5, 37, 35, 1, 101, 4, 24, 34, 6, 36, 38, 2, 31, 32, 58, 61); 
+  $aDocumentosValidos   = [100, 33, 3, 23, 5, 37, 35, 1, 101, 4, 24, 34, 6, 36, 38, 2, 31, 32, 58, 61]; 
   $sDocumentosValidos   = implode(",", $aDocumentosValidos);
   $sWhereTipoDocumento .= " and  c53_coddoc in ({$sDocumentosValidos})";
 }
@@ -59,7 +59,7 @@ if(!USE_PCASP and false) {
  */
 if ( isset($lDocumentosProcessadosOutraRotina) ) {
   
-  $aDocumentos = array(80, 81, 900, 901, 903, 904, 414, 415, 700, 701, 703, 508, 509, 510, 511, 513, 514);  
+  $aDocumentos = [80, 81, 900, 901, 903, 904, 414, 415, 700, 701, 703, 508, 509, 510, 511, 513, 514];  
   $sDocumentos = implode(',', $aDocumentos);
   $sWhereTipoDocumento .= " and c53_coddoc not in($sDocumentos)";
 } 

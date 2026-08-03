@@ -53,7 +53,7 @@ $clrotulo->label('k00_descr');
 $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $instit = db_getsession("DB_instit");
 if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
@@ -81,7 +81,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
     function js_fimprocessamento() {
 
      (window.CurrentWindow || parent.CurrentWindow).corpo.db_iframe_lista002.hide();
-     location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>';
+     location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>';
     }
 
     function js_sobe() {
@@ -486,12 +486,12 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                         $data_mes = '';
                         $data_dia = '';
 
-                        if (pg_numrows($result) > 0) {
+                        if (pg_num_rows($result) > 0) {
 
                           db_fieldsmemory($result, 0);
-                          $data_ano = substr($k22_data, 0, 4);
-                          $data_mes = substr($k22_data, 5, 2);
-                          $data_dia = substr($k22_data, 8, 2);
+                          $data_ano = substr((string) $k22_data, 0, 4);
+                          $data_mes = substr((string) $k22_data, 5, 2);
+                          $data_dia = substr((string) $k22_data, 8, 2);
                         }
 
                         db_inputdata('data', $data_dia, $data_mes, $data_ano, true, 'text', $db_opcao)
@@ -524,13 +524,13 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       </td>
                       <td>
                         <?php
-                        $x = array(
+                        $x = [
                           "N" => "Nome (  CGM Geral  )",
                           "C" => "Somente por CGM",
                           "M" => "Matrícula",
                           "I" => "Inscrição",
                           "A" => "Auto de Infração",
-                        );
+                        ];
                         db_select('k60_tipo',$x,true,$db_opcao,"onchange='js_montaFiltro();'");
                         ?>
                       </td>
@@ -551,7 +551,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       </td>
                       <td>
                         <?php
-                        $x = array ("N" => "NÃO", "S" => "SIM");
+                        $x =  ["N" => "NÃO", "S" => "SIM"];
                         db_select('loteamento', $x, true, $db_opcao, "");
                         ?>
                       </td>
@@ -569,7 +569,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 
                         db_inputdata('data1', $data1_dia, $data1_mes, $data1_ano, true, 'text', $db_opcao);
 
-                        $xx = array ("0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela");
+                        $xx =  ["0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela"];
                         db_select('notiftipo', $xx, true, $db_opcao, "");
                         ?>
                       </td>
@@ -688,7 +688,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                         </td>
                         <td class="field-size2">
                             <?php
-                            $x = array ("1" => "Não consistir", "2" => "Apenas válidos", "3" => "Inválidos");
+                            $x =  ["1" => "Não consistir", "2" => "Apenas válidos", "3" => "Inválidos"];
                             db_select('consistirCpfCnpj', $x, true, $db_opcao, "");
                             ?>
                         </td>
@@ -699,7 +699,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       </td>
                       <td class="field-size2">
                           <?php
-                          $x = array ("1" => "Não consistir", "2" => "Apenas válidos", "3" => "Inválidos");
+                          $x =  ["1" => "Não consistir", "2" => "Apenas válidos", "3" => "Inválidos"];
                           db_select('consistirEndereco', $x, true, $db_opcao, "");
                           ?>
                       </td>
@@ -710,7 +710,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                           </td>
                           <td class="field-size2">
                               <?php
-                              $x = array ("1" => "Não", "2" => "Sim");
+                              $x =  ["1" => "Não", "2" => "Sim"];
                               db_select('incluirDebitosAjuizados', $x, true, $db_opcao, "");
                               ?>
                           </td>
@@ -721,7 +721,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
                       </td>
                       <td class="field-size2">
                         <?php
-                        $x = array ("N" => "NÃO", "S" => "SIM");
+                        $x =  ["N" => "NÃO", "S" => "SIM"];
                         db_select('considerar', $x, true, $db_opcao, "");
                         ?>
                       </td>
@@ -1004,7 +1004,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
 
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 function js_montaFiltro(){

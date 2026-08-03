@@ -35,7 +35,7 @@ include(modification("classes/db_pensao_classe.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
 include(modification("classes/db_orctiporec_classe.php"));
 require_once modification("libs/db_utils.php");
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
 db_postmemory($_POST);
 
 
@@ -86,7 +86,7 @@ if($clrharqbanco->numrows>0){
     $contalote   = $rh34_conta;
 
     //// verificar como se dá o final do numero do convenio.
-    $conveniobanco = substr($rh34_convenio,0,12);
+    $conveniobanco = substr((string) $rh34_convenio,0,12);
 
     $descrarquivo = "FOLHA PAGAMENTO"; // Campo somente do layout 3
 
@@ -94,18 +94,18 @@ if($clrharqbanco->numrows>0){
     $dvagenciaheader = "0";
     $dvcontaheader   = "0";
     $dvagenciacontaheader = " ";
-    if(trim($rh34_dvagencia)!=""){
+    if(trim((string) $rh34_dvagencia)!=""){
       $dvagenciaheader = $rh34_dvagencia[0];
     }
-    if(trim($rh34_dvconta)!=""){
+    if(trim((string) $rh34_dvconta)!=""){
       $dvcontaheader  = $rh34_dvconta[0];
-      $digitos        = strlen($rh34_dvconta);
+      $digitos        = strlen((string) $rh34_dvconta);
       if($digitos>1){
         $dvagenciacontaheader = $rh34_dvconta[1];
       }
     }
-    $operacaoheader = substr($contaheader,0,3);
-    $contaheader2   = str_pad(trim(substr($contaheader,4,20)),8);
+    $operacaoheader = substr((string) $contaheader,0,3);
+    $contaheader2   = str_pad(trim(substr((string) $contaheader,4,20)),8);
     $dvagencialote = $dvagenciaheader;
     $dvcontalote   = $dvcontaheader;
     $dvagenciacontalote = $dvagenciacontaheader;
@@ -114,13 +114,13 @@ if($clrharqbanco->numrows>0){
     $horageracao = date("H:i:s");
 
     if(isset($datageracao) && $datageracao!=""){
-      $datag = split('-',$datageracao);
+      $datag = preg_split('#\-#m',(string) $datageracao);
       $datag_dia = $datag[2];
       $datag_mes = $datag[1];
       $datag_ano = $datag[0];
     }
     if(isset($datadeposit) && $datadeposit!=""){
-      $datad = split('-',$datadeposit);
+      $datad = preg_split('#\-#m',(string) $datadeposit);
       $datad_dia = $datad[2];
       $datad_mes = $datad[1];
       $datad_ano = $datad[0];
@@ -140,7 +140,7 @@ if($clrharqbanco->numrows>0){
     $db_layouttxt = new db_layouttxt($layoutimprime,"tmp/".$nomearquivo, $posicao);
 
     //// verificar como se dá o final do numero do convenio.
-    $conveniobanco = substr($rh34_convenio,0,12);
+    $conveniobanco = substr((string) $rh34_convenio,0,12);
 
     ////// DADOS SOMENTE CNAB240 CEF
 //    $parametrotransmiss = substr($rh34_convenio,10,2);

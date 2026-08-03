@@ -191,7 +191,7 @@ $this->objpdf->SetTextColor(0,0,0);
 
 //	     if  ($i >= 5) break;
 	     if  ($yyyatual >= 130) break;
-	     
+
 	   }
 
            $this->objpdf->roundedrect(42,$y,127,$linha-$y,2,'1234'); // descricao da atividade secundaria
@@ -227,7 +227,7 @@ $this->objpdf->SetTextColor(0,0,0);
 		     where db03_docum = 26 and db02_descr ilike '%Assinatura Alvara%' and db03_instit = " . db_getsession("DB_instit");
 	$resparag = db_query($sqlparag);
 
-	if ( pg_numrows($resparag) == 0 ) {
+	if ( pg_num_rows($resparag) == 0 ) {
 	  db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento 26 com os paragrafos do alvara!');
 	  exit; 
 	}

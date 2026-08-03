@@ -36,27 +36,27 @@ include(modification("classes/db_empresto_classe.php"));
 include(modification("classes/db_empempenho_classe.php"));
 include(modification("classes/db_conrelinfo_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $oDaoConrelInfo  = new cl_conrelinfo();
 $classinatura    = new cl_assinatura;
 $clempresto      = new cl_empresto;
 $descr_receita   = "DEDUÇÕES DA RECEITA CORRENTE";
-$xinstit         = split("-",$db_selinstit);
+$xinstit         = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst      = pg_exec("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst      = '';
 $xvirg           = '';
 $consolidado     = false;
 $flag_abrev      = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
   
   db_fieldsmemory($resultinst,$xins);
   if ($xvirg == ',') {
     $consolidado = true;
   }  
 
-  if (strlen(trim($nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $nomeinstabrev)) > 0) {
     
     $descr_inst .= $xvirg.$nomeinstabrev;
     $flag_abrev  = true;
@@ -97,13 +97,13 @@ $saldo_interferencia_ativa   = 0;
 $saldo_interferencia_passiva = 0;
 $where = " c61_instit in (".str_replace('-',', ',$db_selinstit).")  ";
 $result_balancete = db_planocontassaldo_matriz(db_getsession("DB_anousu"),$dataini,$datafin,false,$where);
-for($i=0;$i<pg_numrows($result_balancete);$i++){
+for($i=0;$i<pg_num_rows($result_balancete);$i++){
    db_fieldsmemory($result_balancete,$i);
-   if (substr($estrutural,0,7)=='5120000'){
+   if (str_starts_with((string) $estrutural, '5120000')){
        $saldo_interferencia_passiva += $saldo_final;
    }   
  
-   if (substr($estrutural,0,7)=='6120000'){
+   if (str_starts_with((string) $estrutural, '6120000')){
        $saldo_interferencia_ativa += $saldo_final;
    }   
    
@@ -159,7 +159,7 @@ $receita_outras_intra_orcamentarias[2] = 0;
 
 $lIndustrial = false;
 
-for ($i=0;$i<pg_numrows($result_rec);$i++){
+for ($i=0;$i<pg_num_rows($result_rec);$i++){
 	
     db_fieldsmemory($result_rec,$i);   
     
@@ -288,7 +288,7 @@ for ($i=0;$i<pg_numrows($result_rec);$i++){
       }
     } else {
 
-      $estrut = substr($o57_fonte,0,2)."0000000000000";
+      $estrut = substr((string) $o57_fonte,0,2)."0000000000000";
       if (db_conplano_grupo($anousu,$estrut,9001)==true){
         $flag_ok = true;
       }
@@ -300,8 +300,8 @@ for ($i=0;$i<pg_numrows($result_rec);$i++){
       //$estrut     = substr($o57_fonte,0,1)."00000000000000"; 
       $sql_estrut = "select o57_descr from orcfontes where cast(o57_fonte as bigint) in($estrut) limit 1";
       $result_estrut = @pg_query($sql_estrut);
-      if (@pg_numrows($result_estrut) > 0){
-        
+      if (@pg_num_rows($result_estrut) > 0){
+
         //$descr_receita = pg_result($result_estrut,0,"o57_descr");
       }
         $deducao[0] += $saldo_inicial;
@@ -344,7 +344,7 @@ $m_creditos_extra       [1]= 0;
 
 $reserva_contingencia = 0;
 //db_criatabela($result_desp);exit;
-for ($i=0;$i<pg_numrows($result_desp);$i++) {
+for ($i=0;$i<pg_num_rows($result_desp);$i++) {
 	
     db_fieldsmemory($result_desp,$i);   
 
@@ -358,7 +358,7 @@ for ($i=0;$i<pg_numrows($result_desp);$i++) {
 
 //    echo("$i - elemento: $o58_elemento - dotini: " . $dot_ini . " - creditos_especial_1: " . $m_creditos_especial[1] . " - emp: " . $empenhado_acumulado . " - anu: " . $anulado_acumulado . "<br>");
 
-    if (substr($o58_elemento,0,2)=='39' || substr($o58_elemento,0,2)=='37'){
+    if (str_starts_with((string) $o58_elemento, '39') || str_starts_with((string) $o58_elemento, '37')){
 
 	  $reserva_contingencia += $nValorDespesaInicial;     
                

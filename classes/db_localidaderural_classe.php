@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE localidaderural
 class cl_localidaderural { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j137_sequencial = 0; 
-   var $j137_descricao = null; 
-   var $j137_valorminimo = 0; 
-   var $j137_valormaximo = 0; 
+   public $j137_sequencial = 0; 
+   public $j137_descricao = null; 
+   public $j137_valorminimo = 0; 
+   public $j137_valormaximo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j137_sequencial = int4 = Codigo sequencial 
                  j137_descricao = varchar(100) = Localidade 
                  j137_valorminimo = float8 = Valor Mínimo 
                  j137_valormaximo = float8 = Valor Máximo 
                  ";
    //funcao construtor da classe 
-   function cl_localidaderural() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("localidaderural"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -137,10 +137,10 @@ class cl_localidaderural {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j137_sequencial = pg_result($result,0,0); 
+       $this->j137_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from localidaderural_j137_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j137_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j137_sequencial)){
          $this->erro_sql = " Campo j137_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -174,7 +174,7 @@ class cl_localidaderural {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de localidade rural ($this->j137_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cadastro de localidade rural já Cadastrado";
@@ -203,13 +203,13 @@ class cl_localidaderural {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20245,'$this->j137_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3637,20245,'','".AddSlashes(pg_result($resaco,0,'j137_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3637,20246,'','".AddSlashes(pg_result($resaco,0,'j137_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3637,20247,'','".AddSlashes(pg_result($resaco,0,'j137_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3637,20248,'','".AddSlashes(pg_result($resaco,0,'j137_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3637,20245,'','".AddSlashes(pg_fetch_result($resaco,0,'j137_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3637,20246,'','".AddSlashes(pg_fetch_result($resaco,0,'j137_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3637,20247,'','".AddSlashes(pg_fetch_result($resaco,0,'j137_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3637,20248,'','".AddSlashes(pg_fetch_result($resaco,0,'j137_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -219,10 +219,10 @@ class cl_localidaderural {
       $this->atualizacampos();
      $sql = " update localidaderural set ";
      $virgula = "";
-     if(trim($this->j137_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_sequencial"])){ 
+     if(trim((string) $this->j137_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_sequencial"])){ 
        $sql  .= $virgula." j137_sequencial = $this->j137_sequencial ";
        $virgula = ",";
-       if(trim($this->j137_sequencial) == null ){ 
+       if(trim((string) $this->j137_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial não informado.";
          $this->erro_campo = "j137_sequencial";
          $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_localidaderural {
          return false;
        }
      }
-     if(trim($this->j137_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_descricao"])){ 
+     if(trim((string) $this->j137_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_descricao"])){ 
        $sql  .= $virgula." j137_descricao = '$this->j137_descricao' ";
        $virgula = ",";
-       if(trim($this->j137_descricao) == null ){ 
+       if(trim((string) $this->j137_descricao) == null ){ 
          $this->erro_sql = " Campo Localidade não informado.";
          $this->erro_campo = "j137_descricao";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_localidaderural {
          return false;
        }
      }
-     if(trim($this->j137_valorminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_valorminimo"])){ 
+     if(trim((string) $this->j137_valorminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_valorminimo"])){ 
        $sql  .= $virgula." j137_valorminimo = $this->j137_valorminimo ";
        $virgula = ",";
-       if(trim($this->j137_valorminimo) == null ){ 
+       if(trim((string) $this->j137_valorminimo) == null ){ 
          $this->erro_sql = " Campo Valor Mínimo não informado.";
          $this->erro_campo = "j137_valorminimo";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_localidaderural {
        	return false;
        }
      }
-     if(trim($this->j137_valormaximo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_valormaximo"])){ 
+     if(trim((string) $this->j137_valormaximo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j137_valormaximo"])){ 
        $sql    .= $virgula." j137_valormaximo = $this->j137_valormaximo ";
        $virgula = ",";
-       if(trim($this->j137_valormaximo) == null ){ 
+       if(trim((string) $this->j137_valormaximo) == null ){ 
          $this->erro_sql    = " Campo Valor Máximo não informado.";
          $this->erro_campo  = "j137_valormaximo";
          $this->erro_banco  = "";
@@ -303,17 +303,17 @@ class cl_localidaderural {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20245,'$this->j137_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j137_sequencial"]) || $this->j137_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3637,20245,'".AddSlashes(pg_result($resaco,$conresaco,'j137_sequencial'))."','$this->j137_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3637,20245,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j137_sequencial'))."','$this->j137_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j137_descricao"]) || $this->j137_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3637,20246,'".AddSlashes(pg_result($resaco,$conresaco,'j137_descricao'))."','$this->j137_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3637,20246,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j137_descricao'))."','$this->j137_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j137_valorminimo"]) || $this->j137_valorminimo != "")
-             $resac = db_query("insert into db_acount values($acount,3637,20247,'".AddSlashes(pg_result($resaco,$conresaco,'j137_valorminimo'))."','$this->j137_valorminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3637,20247,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j137_valorminimo'))."','$this->j137_valorminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j137_valormaximo"]) || $this->j137_valormaximo != "")
-             $resac = db_query("insert into db_acount values($acount,3637,20248,'".AddSlashes(pg_result($resaco,$conresaco,'j137_valormaximo'))."','$this->j137_valormaximo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3637,20248,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j137_valormaximo'))."','$this->j137_valormaximo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -367,13 +367,13 @@ class cl_localidaderural {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20245,'$j137_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3637,20245,'','".AddSlashes(pg_result($resaco,$iresaco,'j137_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3637,20246,'','".AddSlashes(pg_result($resaco,$iresaco,'j137_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3637,20247,'','".AddSlashes(pg_result($resaco,$iresaco,'j137_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3637,20248,'','".AddSlashes(pg_result($resaco,$iresaco,'j137_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3637,20245,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j137_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3637,20246,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j137_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3637,20247,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j137_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3637,20248,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j137_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -434,7 +434,7 @@ class cl_localidaderural {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:localidaderural";
@@ -449,7 +449,7 @@ class cl_localidaderural {
    function sql_query ( $j137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -470,7 +470,7 @@ class cl_localidaderural {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -483,7 +483,7 @@ class cl_localidaderural {
    function sql_query_file ( $j137_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -504,7 +504,7 @@ class cl_localidaderural {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

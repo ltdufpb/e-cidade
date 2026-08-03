@@ -33,7 +33,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocedimento      = new cl_procedimento;
 $clperiodocalendario = new cl_periodocalendario;
 $clprocavaliacao     = new cl_procavaliacao;
@@ -85,7 +85,7 @@ $clprocedimento->rotulo->label("ed40_c_descr");
   <td align="center" valign="top">
    <?php
     $escola   = db_getsession("DB_coddepto");
-    $aWhere   = array();
+    $aWhere   = [];
     $aWhere[] = " ed86_i_escola = {$escola}";
     $aWhere[] = " ed40_desativado is false ";
 
@@ -112,7 +112,7 @@ $clprocedimento->rotulo->label("ed40_c_descr");
     $result = $clprocedimento->sql_record($sSqlProcedimentosCompativeis);
     $clprocedimento->numrows;
 
-    $aPeriodosCompativeis = array();
+    $aPeriodosCompativeis = [];
     if($clprocedimento->numrows>0) {
 
       for($z=0;$z<$clprocedimento->numrows;$z++){
@@ -122,7 +122,7 @@ $clprocedimento->rotulo->label("ed40_c_descr");
         for($y=0;$y<$clprocavaliacao->numrows;$y++) {
 
           db_fieldsmemory($result1, $y);
-          if(strstr($per_cal, $ed41_i_periodoavaliacao)) {
+          if(strstr($per_cal, (string) $ed41_i_periodoavaliacao)) {
             $aPeriodosCompativeis[$ed40_i_codigo] = $ed40_i_codigo;
           }
         }

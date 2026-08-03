@@ -36,7 +36,7 @@ include(modification("classes/db_conrelinfo_classe.php"));
 include(modification("classes/db_empresto_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $classinatura = new cl_assinatura;
 $orcparamrel  = new cl_orcparamrel;
@@ -51,7 +51,7 @@ if ($emite_rec_desp==1||$emite_proj==1){
   $sql         = "select codigo  from db_config where db21_tipoinstit in (5,6) ";
   $resultinst  = db_query($sql);
   $xvirg       = '';
-  for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+  for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
     $instit_rpps .= $xvirg.$codigo; // salva insituição
     $xvirg        = ', ';		  
@@ -125,7 +125,7 @@ if ($emite_balorc_rec==1){
   $db_filtro  = ' o70_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
       $result_rec = db_receitasaldo(4,1,3,true,$db_filtro,$anousu,$dt_ini,$dt_fin);
       @db_query("drop table work_receita");
-      for($i = 0;$i < pg_numrows($result_rec); $i++){
+      for($i = 0;$i < pg_num_rows($result_rec); $i++){
       db_fieldsmemory($result_rec,$i);
       $estrutural = $o57_fonte;
       if (in_array($estrutural,$m_impostos)){
@@ -386,7 +386,7 @@ if ($emite_balorc_rec==1){
       $db_filtro  = ' c61_instit in (' . str_replace('-',', ',$db_selinstit) . ' ) ';
       $result_bal = db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fin,false,$db_filtro);
       @db_query("drop table work_pl");
-      for($i = 0; $i < pg_numrows($result_bal); $i++){
+      for($i = 0; $i < pg_num_rows($result_bal); $i++){
         db_fieldsmemory($result_bal,$i);  
         if (in_array($estrutural,$m_saldo_anterior['estrut'])){
           $total_saldo_ant += $saldo_final;
@@ -415,13 +415,13 @@ if ($emite_balorc_rec==1){
 
       $sele_work   = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
       $result_desp = db_dotacaosaldo(7,1,4,true,$sele_work,$anousu,$dt_ini,$dt_fin);
-      for($i = 0; $i < pg_numrows($result_desp); $i++){
+      for($i = 0; $i < pg_num_rows($result_desp); $i++){
         db_fieldsmemory($result_desp,$i);
         $estrutural = $o58_elemento;
-        if (strlen($o58_elemento) < 15) {
+        if (strlen((string) $o58_elemento) < 15) {
           $estrutural .= "00";
         }
-        if (substr($estrutural,0,3)=='331') {
+        if (str_starts_with((string) $estrutural, '331')) {
           // if (in_array($estrutural,$desp_pessoal)){
           $total_inicial_desp += $dot_ini;
           $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -430,7 +430,7 @@ if ($emite_balorc_rec==1){
           $total_liq_nobim    += $liquidado;
           $total_liq_atebim   += $liquidado_acumulado;
         }
-        if (substr($estrutural,0,3)=='332') {
+        if (str_starts_with((string) $estrutural, '332')) {
           // if (in_array($estrutural,$desp_juros)){
           $total_inicial_desp += $dot_ini;
           $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -439,7 +439,7 @@ if ($emite_balorc_rec==1){
           $total_liq_nobim    += $liquidado;
           $total_liq_atebim   += $liquidado_acumulado;
         }
-        if (substr($estrutural,0,3)=='333') {
+        if (str_starts_with((string) $estrutural, '333')) {
           // if (in_array($estrutural,$desp_outras)){
           $total_inicial_desp += $dot_ini;
           $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -448,7 +448,7 @@ if ($emite_balorc_rec==1){
           $total_liq_nobim    += $liquidado;
           $total_liq_atebim   += $liquidado_acumulado;
         }
-        if (substr($estrutural,0,3)=='344') {
+        if (str_starts_with((string) $estrutural, '344')) {
           // if (in_array($estrutural,$desp_investimentos)){
           $total_inicial_desp += $dot_ini;
           $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -457,7 +457,7 @@ if ($emite_balorc_rec==1){
           $total_liq_nobim    += $liquidado;
           $total_liq_atebim   += $liquidado_acumulado;
         }
-        if (substr($estrutural,0,3)=='345') {
+        if (str_starts_with((string) $estrutural, '345')) {
           // if (in_array($estrutural,$desp_inversoes)){
           $total_inicial_desp += $dot_ini;
           $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -466,7 +466,7 @@ if ($emite_balorc_rec==1){
           $total_liq_nobim    += $liquidado;
           $total_liq_atebim   += $liquidado_acumulado;
         }
-        if (substr($estrutural,0,3)=='346') {
+        if (str_starts_with((string) $estrutural, '346')) {
           // if (in_array($estrutural,$desp_amortizacao)){
           $total_inicial_desp += $dot_ini;
           $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -475,7 +475,7 @@ if ($emite_balorc_rec==1){
           $total_liq_nobim    += $liquidado;
           $total_liq_atebim   += $liquidado_acumulado;
         }
-        if ((substr($estrutural,0,3)=='399') || (substr($estrutural,0,3)=='377'))  {
+        if ((str_starts_with((string) $estrutural, '399')) || (str_starts_with((string) $estrutural, '377')))  {
           // if (in_array($estrutural,$desp_reserva)){
           $total_inicial_desp += $dot_ini;
           $total_adicional    += $suplementado_acumulado - $reduzido_acumulado;
@@ -538,7 +538,7 @@ if ($emite_balorc_rec==1){
 
           $sele_work      = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
           $result_funcsub = db_dotacaosaldo(7,3,3,true,$sele_work,$anousu,$dt_ini,$dt_fin,8,0,false,1,false,2,3);
-          for($i = 0; $i < pg_numrows($result_funcsub); $i++){
+          for($i = 0; $i < pg_num_rows($result_funcsub); $i++){
             db_fieldsmemory($result_funcsub,$i);
             $total_emp_nobim  += $empenhado  - $anulado;
             $total_emp_atebim += $empenhado_acumulado  - $anulado_acumulado;
@@ -555,7 +555,7 @@ if ($emite_balorc_rec==1){
           @db_query("drop table work_pl_estrutmae");     
           @db_query("rollback"); 
           // se o ano atual é bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-          $dt = split('-',$dt_fin);  // mktime -- (mes,dia,ano)
+          $dt = preg_split('#\-#m',(string) $dt_fin);  // mktime -- (mes,dia,ano)
           $dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1],$dt[2]+1,$anousu_ant));
           $dt_fin_ant = $anousu_ant.'-12-31';  
 
@@ -693,7 +693,7 @@ if ($emite_balorc_rec==1){
               $a_pagar_processado     = 0;
               $a_pagar_nao_processado = 0;
 
-              for($i = 0; $i < pg_numrows($resultado_rp); $i++){
+              for($i = 0; $i < pg_num_rows($resultado_rp); $i++){
                 db_fieldsmemory($resultado_rp, $i);
 
                 $pago_processado = $vlrpag;     
@@ -818,7 +818,7 @@ if ($emite_balorc_rec==1){
 
               $sele_work      = 'o58_instit in ('.str_replace('-', ', ', $db_selinstit).')   ';
               $result_desp    = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
-              for($i = 0; $i < pg_numrows($result_oper); $i++){
+              for($i = 0; $i < pg_num_rows($result_oper); $i++){
               db_fieldsmemory($result_oper, $i);
               $estrutural = $o57_fonte;
               if (in_array($estrutural, $m_operacoes)){
@@ -827,10 +827,10 @@ if ($emite_balorc_rec==1){
               }
               }
 
-              for($i = 0; $i < pg_numrows($result_desp); $i++){
+              for($i = 0; $i < pg_num_rows($result_desp); $i++){
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento;
-              if (substr($estrutural,0,3)=='334'){
+              if (str_starts_with((string) $estrutural, '334')){
                 $total_despesa += $liquidado_acumulado;
                 $saldo_despesa += $liquidado_acumulado - $dot_ini;
               }
@@ -951,7 +951,7 @@ if ($emite_balorc_rec==1){
 
               // Exercicio Atual
               $result_despesa = db_dotacaosaldo(8,2,3,true,$db_filtro,$anousu,$dt_ini,$dt_fin);
-              for ($i=0; $i < pg_numrows($result_rec); $i++){
+              for ($i=0; $i < pg_num_rows($result_rec); $i++){
               db_fieldsmemory($result_rec,$i);
               $estrutural = $o57_fonte;
 
@@ -959,28 +959,28 @@ if ($emite_balorc_rec==1){
               if (in_array($estrutural,$m_receita[$linha]['estrut'])){
               $total_rec += $saldo_arrecadado;
               }
-              if (substr($estrutural,0,7)=="6121701"){
+              if (str_starts_with((string) $estrutural, "6121701")){
                 $total_rec_patronal += $saldo_arrecadado;
               }
               }
               }             
 
-              for ($i=0; $i < pg_numrows($result_res_rep); $i++) {
+              for ($i=0; $i < pg_num_rows($result_res_rep); $i++) {
                 db_fieldsmemory($result_res_rep,$i);
 
                 for ($linha=15;$linha<=28;$linha++){
-                  if (substr($estrutural,0,1)=="6"){ // RESULTADOS(6) 
+                  if (str_starts_with((string) $estrutural, "6")){ // RESULTADOS(6) 
                     if (in_array($estrutural,$m_receita[$linha]['estrut'])){
                       $total_rec += $saldo_final;
                     }
-                    if (substr($estrutural,0,6)=="612117"){
+                    if (str_starts_with((string) $estrutural, "612117")){
                       $total_rep_rpps += $saldo_final;
                     }
                   }
                 }
               }
 
-              for ($i = 0; $i < pg_numrows($result_despesa); $i ++) {
+              for ($i = 0; $i < pg_num_rows($result_despesa); $i ++) {
                 db_fieldsmemory($result_despesa, $i);
 
                 for ($linha=29;$linha<=39;$linha++){
@@ -1014,14 +1014,14 @@ if ($emite_balorc_rec==1){
               $result_rec    = db_receitasaldo(11,1,3,true,$sele_work,$anousu,$dt_ini,$dt_fin,false);
               @db_query("drop table work_receita");
 
-              for($i = 0; $i < pg_numrows($result_rec); $i++){
+              for($i = 0; $i < pg_num_rows($result_rec); $i++){
               db_fieldsmemory($result_rec, $i);
               $estrutural = $o57_fonte;
-              if (substr($estrutural,0,3)=="422"){
+              if (str_starts_with((string) $estrutural, "422")){
               $total_alien += $saldo_arrecadado_acumulado;
               $saldo_alien += $saldo_arrecadado_acumulado - $saldo_prevadic_acum;
               }
-              if (substr($estrutural,0,3)=="413"){
+              if (str_starts_with((string) $estrutural, "413")){
               $total_recurso += $saldo_arrecadado_acumulado;
               $saldo_recurso += $saldo_arrecadado_acumulado - $saldo_prevadic_acum;
               }
@@ -1066,15 +1066,15 @@ if ($emite_balorc_rec==1){
 
                 $sele_work      = 'o58_instit in ('.str_replace('-', ', ', $db_selinstit).')   ';
                 $result_despesa = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
-                for ($i = 0; $i < pg_numrows($result_despesa); $i++) {
+                for ($i = 0; $i < pg_num_rows($result_despesa); $i++) {
                   db_fieldsmemory($result_despesa, $i);
                   $estrutural = $o58_elemento;
 
-                  if (strlen($estrutural) < 15){
+                  if (strlen((string) $estrutural) < 15){
                     $estrutural .= "00";
                   }
 
-                  if (substr($estrutural,0,2) == "33"){
+                  if (str_starts_with((string) $estrutural, "33")){
                     $total_despesa += $liquidado_acumulado;
                   }
                 }
@@ -1082,14 +1082,14 @@ if ($emite_balorc_rec==1){
                 $perc_apurado = ($total_despesa/$total_rcl) * 100;
               }
               //////////////////////////////// Impressão do PDF /////////////////////////////////
-              $xinstit = split("-",$db_selinstit);
+              $xinstit = preg_split("#\\-#m",(string) $db_selinstit);
               $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
               $descr_inst = '';
               $xvirg = '';
               $flag_abrev = false;
-              for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+              for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
                 db_fieldsmemory($resultinst,$xins);
-                if (strlen(trim($nomeinstabrev)) > 0){
+                if (strlen(trim((string) $nomeinstabrev)) > 0){
                   $descr_inst .= $xvirg.$nomeinstabrev;
                   $flag_abrev  = true;
                 }else{
@@ -1108,9 +1108,9 @@ if ($emite_balorc_rec==1){
               $head2 = $descr_inst;
               $head3 = "DEMONSTRATIVO SIMPLIFICADO DO RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
               $head4 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
-              $mes   = split("-",$dt_ini); 
+              $mes   = preg_split("#\\-#m",(string) $dt_ini); 
               $txt   = strtoupper(db_mes($mes[1]));
-              $dt    = split("-",$dt_fin);
+              $dt    = preg_split("#\\-#m",(string) $dt_fin);
               $txt  .= " À ".strtoupper(db_mes($dt[1]))." $anousu ";;
               $head5 = "$txt";
 
@@ -1537,7 +1537,7 @@ if ($emite_balorc_rec==1){
 
               $pdf->ln(20);
 
-              assinaturas(&$pdf,&$classinatura,'LRF');
+              assinaturas($pdf,$classinatura,'LRF');
 
               $pdf->Output();
 ?>

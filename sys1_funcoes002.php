@@ -29,14 +29,14 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 if(!isset($gerar)) {
   $result = db_query("select corpofuncao from db_sysfuncoes where nomefuncao = '$funcao'");
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
      db_redireciona("sys1_funcoes001.php");
   }  
   db_fieldsmemory($result,0);
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   
   if(!($connx = pg_connect("host=".$maquina." dbname=".$base." port=".$porta." user=".$usuario." password=".$senha))) {
     echo "Erro(10) ao tentar conectar no servidor.";
@@ -45,7 +45,7 @@ if(!isset($gerar)) {
   @db_query($connx,"drop function ".$funcao);
   $result = @db_query($connx,"$corpofuncao");
   if($result==false){
-     echo "Erro ao criar a funcao: $funcao <br><br>".pg_errormessage();
+     echo "Erro ao criar a funcao: $funcao <br><br>".pg_last_error();
 	 exit;
   }
   pg_close($connx);

@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_fiscalprocrec_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clfiscalprocrec = new cl_fiscalprocrec;
 $db_opcao        = 1;
@@ -46,7 +46,7 @@ $aFiscalProcRec  = db_utils::getCollectionByRecord($rsFiscalProcRec);
 define("MENSAGENS", "tributario.fiscal.db_frmfiscalprocrec.");
 
 global $y45_codtipo;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   try {
 
@@ -111,7 +111,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   if($clfiscalprocrec->erro_status=="0"){
 

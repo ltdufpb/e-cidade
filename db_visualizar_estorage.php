@@ -7,7 +7,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 
-$id = trim($_GET['id']);
+$id = trim((string) $_GET['id']);
 if (empty($id)) {
     die('Arquivo não encontrado');
 }

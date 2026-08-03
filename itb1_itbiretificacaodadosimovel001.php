@@ -366,7 +366,7 @@ if (isset($oPost->incluir)) {
         if (count($aListaCaracUtil) > 1) {
           foreach ( $aListaCaracUtil as $aChave ) {
 
-            $aListaDadosCaracUtil = split("X", $aChave);
+            $aListaDadosCaracUtil = preg_split("#X#m", $aChave);
 
             // $aListaDadosCaracUtil[0] -- Código da Característica
             // $aListaDadosCaracUtil[1] -- Valor  da Característica
@@ -516,7 +516,7 @@ if (isset($oPost->incluir)) {
 
     foreach ( $aListaFormaPag as $aChave ) {
 
-      $aListaValorFormaPag = split("X", $aChave);
+      $aListaValorFormaPag = preg_split("#X#m", $aChave);
 
       // $aListaValorFormaPag[0]  -- Código da Forma de Pagamento da Transação
       // $aListaValorFormaPag[1]  -- Valor  da Forma de Pagamento da Transação
@@ -662,7 +662,7 @@ if (isset($oGet->chavepesquisa)){
         if (!$rIptuant) {
             throw new Exception("Erro ao buscar a referência anterior.\n\nErro: ".pg_last_error());
         }
-        if (pg_numrows($rIptuant) > 0 ) {
+        if (pg_num_rows($rIptuant) > 0 ) {
           db_postmemory(pg_fetch_assoc($rIptuant));
         }
     }

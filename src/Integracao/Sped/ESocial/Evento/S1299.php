@@ -21,11 +21,11 @@ class S1299 extends EventoAbstract
     public function buscarCodigoPreenchimento(stdClass $parametros)
     {
         $dao = new cl_avaliacaogruporespostaesocials1299();
-        $where = array(
+        $where = [
             "eso33_empregador = {$parametros->empregador}",
             "eso33_indicativoapuracao = {$parametros->indicativoPeriodo}",
             "eso33_periodo = '{$parametros->periodo}'"
-        );
+        ];
 
         $sql = $dao->sql_query_file(null, "*", 'eso33_sequencial DESC', implode(' AND ', $where));
         $rs = db_query($sql);
@@ -47,15 +47,15 @@ class S1299 extends EventoAbstract
      * @return int
      * @throws Exception
      */
-    public function persistir(Avaliacao $avaliacao, array $parametros = array())
+    public function persistir(Avaliacao $avaliacao, array $parametros = [])
     {
         $parametros = (object)$parametros;
         $dao = new cl_avaliacaogruporespostaesocials1299();
-        $where = array(
+        $where = [
             "eso33_empregador = {$parametros->empregador}",
             "eso33_indicativoapuracao = {$parametros->indicativoPeriodo}",
             "eso33_periodo = '{$parametros->periodo}'"
-        );
+        ];
         $sqlVerificacao = $dao->sql_query_file(null, 'eso33_sequencial', null, implode(' AND ', $where));
         $rsVerificacao = db_query($sqlVerificacao);
 

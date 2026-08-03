@@ -33,8 +33,8 @@ include(modification("classes/db_db_usuarios_classe.php"));
 include(modification("classes/db_db_depart_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $cldb_usuarios = new cl_db_usuarios;
 $cldb_depart = new cl_db_depart;
 $clrotulo = new rotulocampo;
@@ -134,15 +134,15 @@ $db_botao = true;
     <td nowrap align="right"><b>Situação dos Usuários:</b></td>  
     <td>
       <?php 
-         if (trim(@$tipo_usuario) == ""){
+         if (trim((string) @$tipo_usuario) == ""){
               $tipo_usuario = "1";
          }
-         $x = array(
+         $x = [
             "T" => "TODOS",
             "0" => "INATIVOS",
             "1" => "ATIVOS",
             "2" => "BLOQUEADOS",
-            "3" => "AGUARDANDO ATIVAÇÃO" ); 
+            "3" => "AGUARDANDO ATIVAÇÃO" ]; 
          db_select("tipo_usuario",$x,true,1);
       ?>
     </td>
@@ -184,7 +184,7 @@ $db_botao = true;
 	  </td>
 	  <td> 
 	    <?php 
-	    $arr_anousu = Array();
+	    $arr_anousu = [];
             $anousu = db_getsession("DB_anousu");
 	    for($i=($anousu + 1); $i>($anousu - 10); $i--){
 	      $arr_anousu[$i] = $i;
@@ -200,7 +200,7 @@ $db_botao = true;
 	  <td>
 	    <?php 
 	    $insquebra = "t";
-	    $arr_insquebra = Array("t"=>"Sim","f"=>"Não");
+	    $arr_insquebra = ["t"=>"Sim","f"=>"Não"];
             db_select("insquebra", $arr_insquebra, true, 1);
 	    ?>
 	  <td>
@@ -210,10 +210,10 @@ $db_botao = true;
     <td nowrap align="right"><b>Tipo:</b></td>  
     <td>
       <?php 
-         if (trim(@$tipo_principal) == ""){
+         if (trim((string) @$tipo_principal) == ""){
               $tipo_principal = "0";
          }
-         $x = array("0"=>"TODOS","1"=>"SOMENTE USUARIOS INTERNOS","2"=>"SOMENTE USUARIOS EXTERNOS","3"=>"SOMENTE PERFIS","4"=>"USUARIOS INTERNOS + PERFIS");
+         $x = ["0"=>"TODOS","1"=>"SOMENTE USUARIOS INTERNOS","2"=>"SOMENTE USUARIOS EXTERNOS","3"=>"SOMENTE PERFIS","4"=>"USUARIOS INTERNOS + PERFIS"];
          db_select("tipo_principal",$x,true,1);
       ?>
     </td>

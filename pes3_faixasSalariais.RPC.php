@@ -127,7 +127,7 @@ try {
 			/**
 			 * Array com os valores das faixas por tipo de folha
 			 */
-			$aDadosBanco = array();
+			$aDadosBanco = [];
 
 			/**
 			 * Percorre os tipos de folha e para cada tipo gera um resultado de faixas vindo do banco
@@ -148,10 +148,10 @@ try {
 			/**
 			 *  Criando array estruturado para a base dos relatórios
 			 */
-			$aDadosAgrupados = array(); // array com os dados das faixas separados por agrupamento
-			$aDadosRelatorio = array(); // array com o esqueleto basico do relatorio
-			$aTotalizadores  = array(); // array com os totalizadores do grupo
-			$aFaixas         = array();
+			$aDadosAgrupados = []; // array com os dados das faixas separados por agrupamento
+			$aDadosRelatorio = []; // array com o esqueleto basico do relatorio
+			$aTotalizadores  = []; // array com os totalizadores do grupo
+			$aFaixas         = [];
 
 			/**
 			 * Percorre os dados vindos do banco separando eles por agrupamemto e criando esqueleto basico
@@ -181,7 +181,7 @@ try {
 				$oDadosRelatorio->iTotalFuncionarios  = 0;
 				$oDadosRelatorio->sDescricaoAgrupador = $oDadosRegistro->descricao_agrupador;
 				$oDadosRelatorio->iCodigoAgrupador    = $oDadosRegistro->codigo_agrupador;
-				$oDadosRelatorio->aFaixas             = array();
+				$oDadosRelatorio->aFaixas             = [];
 
 				/**
 				 * Atributos das faixa com valores zerados
@@ -232,7 +232,7 @@ try {
 						$lValorDentroFaixa       = $lValorMaiorFaixaInicial && $lValorMenorFaixaFinal;
 
 						if ( !isset( $aTotalizadores[$iCodigoAgrupador]["aFaixas"][$iFaixa] ) ) {
-							$aTotalizadores[$iCodigoAgrupador]["aFaixas"][$iFaixa] = array();
+							$aTotalizadores[$iCodigoAgrupador]["aFaixas"][$iFaixa] = [];
 						}
 
 						/**
@@ -283,10 +283,10 @@ try {
 			}
 
 
-			$aAgrupador = array('geral'   => 'Geral',
+			$aAgrupador = ['geral'   => 'Geral',
 			                    'regime'  => 'Regime',
 			                    'lotacao' => 'Lotação',
-			                    'cargo'   => 'Cargo');
+			                    'cargo'   => 'Cargo'];
 
 			$sAgrupador = $aAgrupador[$oParametros->sQuebraRelatorio];
 			$sArquivo   = 'tmp/relatorio_faixa_salarial_'. date('Y-m-d_H:i') . '_' . db_getsession('DB_login');

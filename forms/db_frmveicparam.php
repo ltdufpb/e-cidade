@@ -97,7 +97,7 @@ db_input('ve30_descr',40,$Ive30_descr,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Sim','0'=>'Não');
+$x = ['1'=>'Sim','0'=>'Não'];
 db_select('ve50_integrapatri',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -108,7 +108,7 @@ db_select('ve50_integrapatri',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Sim','0'=>'Não','3'=>'Ambos');
+$x = ['1'=>'Sim','0'=>'Não','3'=>'Ambos'];
 db_select('ve50_postoproprio',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -117,7 +117,7 @@ db_select('ve50_postoproprio',$x,true,$db_opcao,"");
     <td nowrap title="<?=@$Tve50_integrapessoal?>"><?=@$Lve50_integrapessoal?></td>
     <td>
 <?php 
-$x = array("1"=>"integracao com funcionarios ativos","2"=>"integracao com CGM");
+$x = ["1"=>"integracao com funcionarios ativos","2"=>"integracao com CGM"];
 db_select("ve50_integrapessoal",$x,true,$db_opcao,"");
 ?>
     </td>
@@ -204,7 +204,7 @@ function js_preenchepesquisa(chave){
   db_iframe_veicparam.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

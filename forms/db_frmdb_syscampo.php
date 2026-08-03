@@ -107,7 +107,7 @@ db_input('tamanho',4,$Itamanho,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('nulo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -118,7 +118,7 @@ db_select('nulo',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('maiusculo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -129,7 +129,7 @@ db_select('maiusculo',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('autocompl',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -177,7 +177,7 @@ function js_preenchepesquisa(chave){
   db_iframe_db_syscampo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

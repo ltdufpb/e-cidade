@@ -41,7 +41,7 @@ require_once(modification("classes/db_orcsuplemretif_classe.php"));
 
 require_once(modification("dbforms/db_suplementacao.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcprojlan = new cl_orcprojlan;
 $clorcprojeto = new cl_orcprojeto;
@@ -66,7 +66,7 @@ if (isset ($Desprocessar)) {
 	$matriz = explode("#", $chaves);
 	if ($matriz[0] == "") {
 		unset ($matriz);
-		$matriz = array ();
+		$matriz =  [];
 	}
 	$res = $clorcprojlan->excluir($o39_codproj);
 	if ($clorcprojlan->erro_status == 0) {
@@ -96,7 +96,7 @@ if (isset ($Desprocessar)) {
 		                    from orcsuplemretif
 	        	            where o48_projeto = $proj";
 		$result = db_query($sql_retificador);
-		if (pg_numrows($result) > 0) {
+		if (pg_num_rows($result) > 0) {
 			db_fieldsmemory($result, 0);
 			/**
 			 *  busca as suplementações do projeto que foi retificado
@@ -105,8 +105,8 @@ if (isset ($Desprocessar)) {
 			             from orcsuplem
 			             where o46_codlei = $o48_retificado  ";
 			$res = db_query($sql);
-			if (pg_numrows($res) > 0) {
-				for ($x = 0; $x < pg_numrows($res); $x ++) {
+			if (pg_num_rows($res) > 0) {
+				for ($x = 0; $x < pg_num_rows($res); $x ++) {
 					db_fieldsmemory($res, $x);
 					$erro = desprocessa_suplementacao($codsup, db_getsession("DB_anousu"), true);
 					if ($erro==true) break;

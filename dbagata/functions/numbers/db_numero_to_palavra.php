@@ -7,7 +7,7 @@
  */
 function db_numero_to_palavra($iNumero, $array_row) {
   
-  $nValor = ereg_replace(",", "\.", $iNumero);
+  $nValor = preg_replace("#,#m", "\.", $iNumero);
 
   $zeros = '000.000.000,00';
   $nValor = number_format($nValor,2);
@@ -18,7 +18,7 @@ function db_numero_to_palavra($iNumero, $array_row) {
   $sMilhao .= ( (substr($nValor,0,3) > 1) ? 'milhões' : '' );
   $sMilhar  = transcreve_numero(substr($nValor,4,3));
 
-  if (trim($sMilhar) == "um") {
+  if (trim((string) $sMilhar) == "um") {
     $sMilhar = 'mil';
   } else {
     $sMilhar .= ( (substr($nValor,4,3) > 0) ? 'mil' : '' );
@@ -51,28 +51,28 @@ function db_numero_to_palavra($iNumero, $array_row) {
 
 function transcreve_numero($nValor) {
 
-  $aUnidade  = array('','um ','dois ','três ','quatro ','cinco ','seis ','sete ','oito ','nove ');
-  $aDezenas  = array('',' ','vinte','trinta','quarenta', 'cinquenta', 'sessenta', 'setenta','oitenta','noventa');
-  $aCentenas = array('','cento','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos');
-  $aExcessao = array('dez ', 'onze ', 'doze ', 'treze ', 'quatorze ', 'quinze ', 'desesseis ', 'desessete ', 'dezoito ', 'desenove ');
+  $aUnidade  = ['','um ','dois ','três ','quatro ','cinco ','seis ','sete ','oito ','nove '];
+  $aDezenas  = ['',' ','vinte','trinta','quarenta', 'cinquenta', 'sessenta', 'setenta','oitenta','noventa'];
+  $aCentenas = ['','cento','duzentos','trezentos','quatrocentos','quinhentos','seiscentos','setecentos','oitocentos','novecentos'];
+  $aExcessao = ['dez ', 'onze ', 'doze ', 'treze ', 'quatorze ', 'quinze ', 'desesseis ', 'desessete ', 'dezoito ', 'desenove '];
 
-  $nPosicao1 = substr($nValor,0,1);
-  $nPosicao2 = substr($nValor,1,1);
-  $nPosicao3 = substr($nValor,2,1);
+  $nPosicao1 = substr((string) $nValor,0,1);
+  $nPosicao2 = substr((string) $nValor,1,1);
+  $nPosicao3 = substr((string) $nValor,2,1);
 
   $sCentena  = $aCentenas[($nPosicao1)];
   $sDezena   = $aDezenas[($nPosicao2)];
   $sUnidade  = $aUnidade[($nPosicao3)];
 
-  if (substr($nValor,0,3) == '100')
+  if (str_starts_with((string) $nValor, '100'))
   { $sCentena = 'cem '; }
 
-  if (substr($nValor,1,1) == '1')
+  if (substr((string) $nValor,1,1) == '1')
   {  $sDezena = $aExcessao[$nPosicao3];
      $sUnidade = '';
   }
 
-  $aResultado = array();
+  $aResultado = [];
   if (!empty($sCentena)) {
     $aResultado[] = $sCentena;
   }

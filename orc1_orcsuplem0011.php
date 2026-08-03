@@ -38,13 +38,13 @@ include(modification("classes/db_orcsuplemtipo_classe.php"));
 $clcriaabas      = new cl_criaabas;
 $clorcsuplemtipo = new cl_orcsuplemtipo;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $o48_coddocsup ="";
 $o48_coddocred ="";
@@ -58,9 +58,9 @@ db_fieldsmemory($res,0);
  // 1 suplementaçao + redução
  // 2 suplementação + receita
  // 3 suplementação //casos em que só existe suplementação como superavit ou operações de credito
-if (($o48_coddocsup > 0 ) &&  ($o48_coddocred > 0 )){
+if ((0 > 0 ) &&  (0 > 0 )){
      $modelo = 1;
-} else if (($o48_coddocsup > 0 ) && ($o48_arrecadmaior > 0 )){
+} else if ((0 > 0 ) && (0 > 0 )){
      $modelo= 2;
 //} else if (($o48_coddocsup > 0 ) && ($o48_superavit == 't')){
 } else { 
@@ -91,42 +91,42 @@ if (($o48_coddocsup > 0 ) &&  ($o48_coddocred > 0 )){
      <?php 
       if (!isset($alteracao)){
 	if ($modelo == 1){
-           $clcriaabas->identifica = array("reduz"=>"Reduções","suplem"=>"Suplementação");
-	   $clcriaabas->title      = array("reduz"=>"Reduções","suplem"=>"Suplementação");
-           $clcriaabas->src  = array("suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup","reduz"=>"orc1_orcsuplemval001.php?o47_codsup=$codsup");
-	   $clcriaabas->sizecampo= array("suplem"=>"23","reduz"=>"23");
+           $clcriaabas->identifica = ["reduz"=>"Reduções","suplem"=>"Suplementação"];
+	   $clcriaabas->title      = ["reduz"=>"Reduções","suplem"=>"Suplementação"];
+           $clcriaabas->src  = ["suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup","reduz"=>"orc1_orcsuplemval001.php?o47_codsup=$codsup"];
+	   $clcriaabas->sizecampo= ["suplem"=>"23","reduz"=>"23"];
            $clcriaabas->cria_abas();    
 	} else if ($modelo == 2){
-           $clcriaabas->identifica = array("suplem"=>"Suplementação","receita"=>"Receitas");
-	   $clcriaabas->title      = array("suplem"=>"Suplementação","receita"=>"Receitas");
-           $clcriaabas->src  = array("suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup","receita"=>"orc1_orcsuplemrec007.php?o85_codsup=$codsup");
-	   $clcriaabas->sizecampo= array("suplem"=>"23","receita"=>"23");
+           $clcriaabas->identifica = ["suplem"=>"Suplementação","receita"=>"Receitas"];
+	   $clcriaabas->title      = ["suplem"=>"Suplementação","receita"=>"Receitas"];
+           $clcriaabas->src  = ["suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup","receita"=>"orc1_orcsuplemrec007.php?o85_codsup=$codsup"];
+	   $clcriaabas->sizecampo= ["suplem"=>"23","receita"=>"23"];
            $clcriaabas->cria_abas();    
 	} else {
-           $clcriaabas->identifica = array("suplem"=>"Suplementação");
-	   $clcriaabas->title      = array("suplem"=>"Suplementação");
-           $clcriaabas->src  = array("suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup");
-	   $clcriaabas->sizecampo= array("suplem"=>"23");
+           $clcriaabas->identifica = ["suplem"=>"Suplementação"];
+	   $clcriaabas->title      = ["suplem"=>"Suplementação"];
+           $clcriaabas->src  = ["suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup"];
+	   $clcriaabas->sizecampo= ["suplem"=>"23"];
            $clcriaabas->cria_abas();    
 	}  
      }  else  { // // se for alteração/exclusão
      	if ($modelo == 1){
-           $clcriaabas->identifica = array("dados"=>"Dados","reduz"=>"Reduções","suplem"=>"Suplementação");
-	   $clcriaabas->title      = array("dados"=>"Dados","reduz"=>"Reduções","suplem"=>"Suplementação");
-           $clcriaabas->src  = array("dados"=>"orc1_orcsuplem002.php?chavepesquisa=$codsup","suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup","reduz"=>"orc1_orcsuplemval001.php?o47_codsup=$codsup");
-	   $clcriaabas->sizecampo= array("dados"=>"23","suplem"=>"23","reduz"=>"23");
+           $clcriaabas->identifica = ["dados"=>"Dados","reduz"=>"Reduções","suplem"=>"Suplementação"];
+	   $clcriaabas->title      = ["dados"=>"Dados","reduz"=>"Reduções","suplem"=>"Suplementação"];
+           $clcriaabas->src  = ["dados"=>"orc1_orcsuplem002.php?chavepesquisa=$codsup","suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup","reduz"=>"orc1_orcsuplemval001.php?o47_codsup=$codsup"];
+	   $clcriaabas->sizecampo= ["dados"=>"23","suplem"=>"23","reduz"=>"23"];
            $clcriaabas->cria_abas();    
 	} else if ($modelo == 2){
-           $clcriaabas->identifica = array("dados"=>"Dados","suplem"=>"Suplementação","receita"=>"Receitas");
-	   $clcriaabas->title      = array("dados"=>"Dados","suplem"=>"Suplementação","receita"=>"Receitas");
-           $clcriaabas->src  = array("dados"=>"orc1_orcsuplem002.php?chavepesquisa=$codsup","suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup","receita"=>"orc1_orcsuplemrec007.php?o85_codsup=$codsup");
-	   $clcriaabas->sizecampo= array("dados"=>"23","suplem"=>"30","receita"=>"23");
+           $clcriaabas->identifica = ["dados"=>"Dados","suplem"=>"Suplementação","receita"=>"Receitas"];
+	   $clcriaabas->title      = ["dados"=>"Dados","suplem"=>"Suplementação","receita"=>"Receitas"];
+           $clcriaabas->src  = ["dados"=>"orc1_orcsuplem002.php?chavepesquisa=$codsup","suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup","receita"=>"orc1_orcsuplemrec007.php?o85_codsup=$codsup"];
+	   $clcriaabas->sizecampo= ["dados"=>"23","suplem"=>"30","receita"=>"23"];
            $clcriaabas->cria_abas();    
 	} else {
-           $clcriaabas->identifica = array("dados"=>"Dados","suplem"=>"Suplementação");
-	   $clcriaabas->title      = array("suplem"=>"Suplementação");
-           $clcriaabas->src  = array("dados"=>"orc1_orcsuplem002.php?chavepesquisa=$codsup","suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup");
-	   $clcriaabas->sizecampo= array("dados"=>"23","suplem"=>"23");
+           $clcriaabas->identifica = ["dados"=>"Dados","suplem"=>"Suplementação"];
+	   $clcriaabas->title      = ["suplem"=>"Suplementação"];
+           $clcriaabas->src  = ["dados"=>"orc1_orcsuplem002.php?chavepesquisa=$codsup","suplem"=>"orc1_orcsuplemval007.php?o47_codsup=$codsup"];
+	   $clcriaabas->sizecampo= ["dados"=>"23","suplem"=>"23"];
            $clcriaabas->cria_abas();    
 	}  
 

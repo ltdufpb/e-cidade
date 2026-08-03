@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_reconhecimentocontabiltipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clreconhecimentocontabiltipo = new cl_reconhecimentocontabiltipo;
 $clreconhecimentocontabiltipo->rotulo->label("c111_sequencial");
 $clreconhecimentocontabiltipo->rotulo->label("c111_descricao");
@@ -104,9 +104,9 @@ $sWere  = "     1 = 1";
         }else{
            $sql = $clreconhecimentocontabiltipo->sql_queryReconhecimento("",$campos,"c111_sequencial","{$sWere}");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c111_descricao)){
-          $repassa = array("chave_c111_sequencial"=>$chave_c111_sequencial,"chave_c111_descricao"=>$chave_c111_descricao);
+          $repassa = ["chave_c111_sequencial"=>$chave_c111_sequencial,"chave_c111_descricao"=>$chave_c111_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

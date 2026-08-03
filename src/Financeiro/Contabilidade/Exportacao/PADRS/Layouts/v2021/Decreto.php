@@ -107,6 +107,7 @@ class Decreto extends DecretoAlias
         return $this;
     }
 
+    #[\Override]
     public function toArray()
     {
         return [

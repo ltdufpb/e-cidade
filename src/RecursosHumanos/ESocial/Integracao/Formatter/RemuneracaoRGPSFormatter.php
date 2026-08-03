@@ -38,7 +38,7 @@ class RemuneracaoRGPSFormatter extends Formatter
 
     private $inscricaoEmpregador;
 
-    private $rubricas = array();
+    private $rubricas = [];
 
     private $anoCompetencia;
 
@@ -158,6 +158,7 @@ class RemuneracaoRGPSFormatter extends Formatter
      * @throws \BusinessException
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dados = (object) $dados;
@@ -203,7 +204,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         $dadoFormatado = new stdClass();
         $dadoFormatado->dmDev = [];
         $dadoFormatado->referencia = $cgm . $this->remuneracaoRGPSService->getAnoCompetencia()
-            . str_pad($this->remuneracaoRGPSService->getMesCompetencia(), 2, '0', STR_PAD_LEFT);
+            . str_pad((string) $this->remuneracaoRGPSService->getMesCompetencia(), 2, '0', STR_PAD_LEFT);
 
         if ($this->isDecimoTerceiro) {
             $dadoFormatado->referencia .= '2';
@@ -425,7 +426,7 @@ class RemuneracaoRGPSFormatter extends Formatter
     {
         $dadoFormatado->ideTrabalhador->infoMV = new stdClass();
         $dadoFormatado->ideTrabalhador->infoMV->indMV = null;
-        $dadoFormatado->ideTrabalhador->infoMV->remunOutrEmpr = array();
+        $dadoFormatado->ideTrabalhador->infoMV->remunOutrEmpr = [];
     }
 
     /**
@@ -528,7 +529,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                     ->itensRemun= $itensRemun;
                 if ($validaAgente) {
                     $agenteNocivo = (int) $this->remuneracaoRGPS->getServidor()->getTipoExposicaoAgentesNocivos();
-                    $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                    $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                     $dadoFormatado
                         ->dmDev[$indexDmDev]
@@ -561,7 +562,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                     ->itensRemun= $itensRemunDiferenca;
                     if (in_array($this->codigoCategoria, $categoriasAgentesNocivos)) {
                         $agenteNocivo = (int) $this->remuneracaoRGPS->getServidor()->getTipoExposicaoAgentesNocivos();
-                        $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                        $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                         $dadoFormatado
                             ->dmDev[$indexDmDev]
@@ -590,7 +591,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                     ->itensRemun = $itensRemun;
                 if ($validaAgente) {
                     $agenteNocivo = (int) $this->remuneracaoRGPS->getServidor()->getTipoExposicaoAgentesNocivos();
-                    $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                    $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                     $dadoFormatado->dmDev[$indexDmDev]
                         ->infoPerApur
@@ -679,7 +680,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                         ->itensRemun= $itensRemun;
                     if ($validaAgente) {
                         $agenteNocivo = (int) $this->remuneracaoRGPS->getServidor()->getTipoExposicaoAgentesNocivos();
-                        $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                        $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                         $dadoFormatado
                             ->dmDev[$indexDmDev]
@@ -713,7 +714,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                             $agenteNocivo = (int) $this->remuneracaoRGPS
                                 ->getServidor()
                                 ->getTipoExposicaoAgentesNocivos();
-                            $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                            $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                             $dadoFormatado
                                 ->dmDev[$indexDmDev]
@@ -744,7 +745,7 @@ class RemuneracaoRGPSFormatter extends Formatter
                     }
                     if ($validaAgente) {
                         $agenteNocivo = (int) $this->remuneracaoRGPS->getServidor()->getTipoExposicaoAgentesNocivos();
-                        $agenteNocivo = in_array($agenteNocivo, array(0, 1, 5)) ? 1 : $agenteNocivo;
+                        $agenteNocivo = in_array($agenteNocivo, [0, 1, 5]) ? 1 : $agenteNocivo;
 
                         $dadoFormatado
                             ->dmDev[$indexDmDev]
@@ -805,7 +806,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         $anoMesCompetencia[1] = '';
         $anoMesCompetencia[0] = '';
         if (!empty($idePeriodo->perRef)) {
-            $anoMesCompetencia = explode('-', $idePeriodo->perRef);
+            $anoMesCompetencia = explode('-', (string) $idePeriodo->perRef);
         }
         $grupoIdeEstabLot =  $this->remuneracaoRGPSService
             ->buscarEstabelicimentoLotacao($matriculaInfoPerAnt, $anoMesCompetencia[1], $anoMesCompetencia[0]);
@@ -901,7 +902,7 @@ class RemuneracaoRGPSFormatter extends Formatter
 
         foreach ($this->remuneracaoRGPS->getProcessosJudiciais() as $indice => $processoJudicial) {
             if ($indice == 0) {
-                $dadoFormatado->ideTrabalhador->procJudTrab = array();
+                $dadoFormatado->ideTrabalhador->procJudTrab = [];
             }
 
             $procJudTrab = new stdClass();
@@ -1161,6 +1162,7 @@ class RemuneracaoRGPSFormatter extends Formatter
         }
     }
 
+    #[\Override]
     public function truncar($valor)
     {
         $valor = abs(round($valor, 6));

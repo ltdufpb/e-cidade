@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_lista_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllista = new cl_lista;
 $instit = db_getsession("DB_instit");
 ?>
@@ -82,7 +82,7 @@ $instit = db_getsession("DB_instit");
         if(($pesquisa_chave!=null) && ($pesquisa_chave!="")){
           $sql ="select * from lista where k60_codigo =$pesquisa_chave and k60_instit = $instit";
           $result =db_query($sql);
-          $linha = pg_numrows($result);
+          $linha = pg_num_rows($result);
           if($linha > 0){
             db_fieldsmemory($result,0);
             echo "<script>".$funcao_js."('$k60_descr',false);</script>";

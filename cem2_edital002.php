@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_renovacoes_classe.php"));
 include(modification("classes/db_sepulta_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clrenovacoes = new cl_renovacoes;
 $clsepulta = new cl_sepulta;
 
@@ -84,7 +84,7 @@ $sql = "select distinct z01_nome,
           order by z01_nome,cm07_d_vencimento";       
 
 $result = db_query($sql);
-if(pg_numrows($result) == 0){
+if(pg_num_rows($result) == 0){
  echo "<table width='100%'>
        <tr>
         <td align='center'>
@@ -122,7 +122,7 @@ $head3 = "Periodo:".substr($data1,8,2)."/".substr($data1,5,2)."/".substr($data1,
   $pdf->cell(10,  4, "Quadra",      1, 0, "C", 1);
   $pdf->cell(8,   4, "Lote",        1, 1, "C", 1);
   
- for ($i = 0;$i < pg_numrows($result); $i++){
+ for ($i = 0;$i < pg_num_rows($result); $i++){
  db_fieldsmemory($result,$i);
     if (($pdf->gety() > $pdf->h -30)){
       
@@ -146,7 +146,7 @@ $head3 = "Periodo:".substr($data1,8,2)."/".substr($data1,5,2)."/".substr($data1,
   
   if($cm07_d_vencimento == '--'){
    
-   $data = explode("/", $cm01_d_falecimento);
+   $data = explode("/", (string) $cm01_d_falecimento);
    $cm07_d_vencimento = $data[0]."/".$data[1]."/".($data[2] + 5);
    
    $pdf->cell(18, 4, $cm07_d_vencimento  ,0, 0, "C", $p);
@@ -168,6 +168,6 @@ $head3 = "Periodo:".substr($data1,8,2)."/".substr($data1,5,2)."/".substr($data1,
    $p = 1;
   }
  }
- $pdf->cell(185, 4, "Total de Registros: ".pg_numrows($result), 1, 1, "L", 1);
+ $pdf->cell(185, 4, "Total de Registros: ".pg_num_rows($result), 1, 1, "L", 1);
  $pdf->Output();
 ?>

@@ -35,7 +35,7 @@ $clrotulo->label('z01_nome');
 
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 //db_postmemory($HTTP_POST_VARS,2);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 //if($parcelas == '')
 //   $parcelas = 0;
@@ -45,7 +45,7 @@ $head6 = '';
 
 $sql        = "select * from procdiver where dv09_procdiver = ".$procdiver;
 $result     = db_query($sql);
-$intNumrows = pg_numrows($result);
+$intNumrows = pg_num_rows($result);
 if( $intNumrows == 0 ){
   
   $sMsg = _M('tributario.diversos.dv02_loteamentos002.nao_existem_registros');
@@ -198,7 +198,7 @@ $matricula = $j01_matric;
 //echo pg_numrows($totvalor);
 //db_fieldsmemory($totvalor,0,true,true);exit;
 
-for ($x = 0 ; $x < pg_numrows($result);$x++){
+for ($x = 0 ; $x < pg_num_rows($result);$x++){
 //for ($x = 0 ; $x < 20;$x++){
   db_fieldsmemory($result,$x);
   if (($pdf->gety() > $pdf->h - 30) || $pag == 1){

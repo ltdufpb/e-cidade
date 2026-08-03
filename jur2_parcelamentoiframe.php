@@ -40,8 +40,8 @@ require_once(modification("classes/db_propri_classe.php"));
 require_once(modification("classes/db_jurpeticoes_classe.php"));
 require_once(modification("classes/db_parjuridico_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clinicial             = new cl_inicial;
 $clprocessoforoinicial = new cl_processoforoinicial;
@@ -66,7 +66,7 @@ $dadosini="";
 
 if(isset($iniciais)){
   
-  $matriz = split("x",$iniciais);
+  $matriz = preg_split("#x#m",$iniciais);
   for($s=0; $s < sizeof($matriz); $s++){
     $inicial=$matriz[$s];
     if($inicial!=""){
@@ -105,7 +105,7 @@ if(isset($iniciais)){
       where v59_inicial = $inicial";
       
       $result = db_query($sql);
-      if (pg_numrows($result)!=0){
+      if (pg_num_rows($result)!=0){
         db_fieldsmemory($result,0);
       }
       

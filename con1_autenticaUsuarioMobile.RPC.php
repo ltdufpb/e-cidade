@@ -26,9 +26,9 @@ switch ($oParam->exec) {
 
     try {
 
-      $aOptionsClient = array('location' => 'http://localhost:5300/dbportal_v3/webservices/DBAcessoSistema.webservice.php',
+      $aOptionsClient = ['location' => 'http://localhost:5300/dbportal_v3/webservices/DBAcessoSistema.webservice.php',
                               'uri'      => 'http://localhost:5300/dbportal_v3/webservices/',
-                              'trace'    => 1);
+                              'trace'    => 1];
 
       $oSoapClient = new SoapClient(null, $aOptionsClient);
       $rsExecuta   = $oSoapClient->autenticarUsuario($oParam->sLoginUsuario, $oParam->sSenhaUsuario);
@@ -112,7 +112,7 @@ switch ($oParam->exec) {
 
     $rsBuscaDepartamento = db_query($sSqlBuscaEscola);
 
-    $aDepartamentos           = array();
+    $aDepartamentos           = [];
     if (pg_num_rows($rsBuscaDepartamento) > 0) {
       $aDepartamentos = db_utils::getCollectionByRecord($rsBuscaDepartamento);
     }

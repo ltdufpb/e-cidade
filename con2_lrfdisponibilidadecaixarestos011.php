@@ -86,7 +86,7 @@ $anoSessao = db_getsession('DB_anousu');
                         $oRelatorio = new relatorioContabil($codigo);
 
                         $aPeriodos         = $oRelatorio->getPeriodos();
-                        $aListaPeriodos    = array();
+                        $aListaPeriodos    = [];
                         $aListaPeriodos[0] = "Selecione";
 
                         foreach ($aPeriodos as $oPeriodo) {

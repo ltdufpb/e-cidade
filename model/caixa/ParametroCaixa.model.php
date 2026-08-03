@@ -33,15 +33,15 @@
  */
 final class ParametroCaixa {
 
-  const TIPO_TRANSMISSAO_CNAB240 = 1;
-  const TIPO_TRANSMISSAO_OBN     = 2;
+  const int TIPO_TRANSMISSAO_CNAB240 = 1;
+  const int TIPO_TRANSMISSAO_OBN     = 2;
 
-  const NOME_CONFIGURACAO_TIPO_TRANSMISSAO = 'tipo_transmissao';
-  const NOME_CONFIGURACAO_CONVENIO_BANCO   = 'codigo_convenio_banco';
+  const string NOME_CONFIGURACAO_TIPO_TRANSMISSAO = 'tipo_transmissao';
+  const string NOME_CONFIGURACAO_CONVENIO_BANCO   = 'codigo_convenio_banco';
 
-  const CAMINHO_ARQUIVO = 'config/financeiro/agenda_pagamento.ini';
+  const string CAMINHO_ARQUIVO = 'config/financeiro/agenda_pagamento.ini';
 
-  private $aConfiguracoes = array();
+  private $aConfiguracoes = [];
 
   /**
    * Retorna o código do recurso configurado para FUNDEB configurado para a instituição informada na sessão. Caso a
@@ -141,10 +141,7 @@ final class ParametroCaixa {
   private function getConfiguracao($sNomeCampo) {
 
     $aConfiguracoes = $this->getConfiguracoes();
-    if (isset($aConfiguracoes[$sNomeCampo])) {
-      return $aConfiguracoes[$sNomeCampo];
-    }
-    return null;
+    return $aConfiguracoes[$sNomeCampo] ?? null;
   }
 
   /**

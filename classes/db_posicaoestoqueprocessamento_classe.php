@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE posicaoestoqueprocessamento
 class cl_posicaoestoqueprocessamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m05_sequencial = 0; 
-   var $m05_usuario = 0; 
-   var $m05_data_dia = null; 
-   var $m05_data_mes = null; 
-   var $m05_data_ano = null; 
-   var $m05_data = null; 
-   var $m05_instit = 0; 
+   public $m05_sequencial = 0; 
+   public $m05_usuario = 0; 
+   public $m05_data_dia = null; 
+   public $m05_data_mes = null; 
+   public $m05_data_ano = null; 
+   public $m05_data = null; 
+   public $m05_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m05_sequencial = int4 = Sequencial do Processamento 
                  m05_usuario = int4 = Código do Usuário 
                  m05_data = date = Data do Processamento 
                  m05_instit = int4 = Instituição 
                  ";
    //funcao construtor da classe 
-   function cl_posicaoestoqueprocessamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("posicaoestoqueprocessamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -129,10 +129,10 @@ class cl_posicaoestoqueprocessamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m05_sequencial = pg_result($result,0,0); 
+       $this->m05_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from posicaoestoqueprocessamento_m05_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m05_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m05_sequencial)){
          $this->erro_sql = " Campo m05_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_posicaoestoqueprocessamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "posicaoestoqueprocessamento ($this->m05_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "posicaoestoqueprocessamento já Cadastrado";
@@ -195,13 +195,13 @@ class cl_posicaoestoqueprocessamento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20397,'$this->m05_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3664,20397,'','".AddSlashes(pg_result($resaco,0,'m05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3664,20398,'','".AddSlashes(pg_result($resaco,0,'m05_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3664,20399,'','".AddSlashes(pg_result($resaco,0,'m05_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3664,20404,'','".AddSlashes(pg_result($resaco,0,'m05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3664,20397,'','".AddSlashes(pg_fetch_result($resaco,0,'m05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3664,20398,'','".AddSlashes(pg_fetch_result($resaco,0,'m05_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3664,20399,'','".AddSlashes(pg_fetch_result($resaco,0,'m05_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3664,20404,'','".AddSlashes(pg_fetch_result($resaco,0,'m05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -211,10 +211,10 @@ class cl_posicaoestoqueprocessamento {
       $this->atualizacampos();
      $sql = " update posicaoestoqueprocessamento set ";
      $virgula = "";
-     if(trim($this->m05_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m05_sequencial"])){ 
+     if(trim((string) $this->m05_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m05_sequencial"])){ 
        $sql  .= $virgula." m05_sequencial = $this->m05_sequencial ";
        $virgula = ",";
-       if(trim($this->m05_sequencial) == null ){ 
+       if(trim((string) $this->m05_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial do Processamento não informado.";
          $this->erro_campo = "m05_sequencial";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_posicaoestoqueprocessamento {
          return false;
        }
      }
-     if(trim($this->m05_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m05_usuario"])){ 
+     if(trim((string) $this->m05_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m05_usuario"])){ 
        $sql  .= $virgula." m05_usuario = $this->m05_usuario ";
        $virgula = ",";
-       if(trim($this->m05_usuario) == null ){ 
+       if(trim((string) $this->m05_usuario) == null ){ 
          $this->erro_sql = " Campo Código do Usuário não informado.";
          $this->erro_campo = "m05_usuario";
          $this->erro_banco = "";
@@ -237,10 +237,10 @@ class cl_posicaoestoqueprocessamento {
          return false;
        }
      }
-     if(trim($this->m05_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m05_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m05_data_dia"] !="") ){ 
+     if(trim((string) $this->m05_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m05_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m05_data_dia"] !="") ){ 
        $sql  .= $virgula." m05_data = '$this->m05_data' ";
        $virgula = ",";
-       if(trim($this->m05_data) == null ){ 
+       if(trim((string) $this->m05_data) == null ){ 
          $this->erro_sql = " Campo Data do Processamento não informado.";
          $this->erro_campo = "m05_data_dia";
          $this->erro_banco = "";
@@ -253,7 +253,7 @@ class cl_posicaoestoqueprocessamento {
        if(isset($GLOBALS["HTTP_POST_VARS"]["m05_data_dia"])){ 
          $sql  .= $virgula." m05_data = null ";
          $virgula = ",";
-         if(trim($this->m05_data) == null ){ 
+         if(trim((string) $this->m05_data) == null ){ 
            $this->erro_sql = " Campo Data do Processamento não informado.";
            $this->erro_campo = "m05_data_dia";
            $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_posicaoestoqueprocessamento {
          }
        }
      }
-     if(trim($this->m05_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m05_instit"])){ 
+     if(trim((string) $this->m05_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m05_instit"])){ 
        $sql  .= $virgula." m05_instit = $this->m05_instit ";
        $virgula = ",";
-       if(trim($this->m05_instit) == null ){ 
+       if(trim((string) $this->m05_instit) == null ){ 
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "m05_instit";
          $this->erro_banco = "";
@@ -291,17 +291,17 @@ class cl_posicaoestoqueprocessamento {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20397,'$this->m05_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["m05_sequencial"]) || $this->m05_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3664,20397,'".AddSlashes(pg_result($resaco,$conresaco,'m05_sequencial'))."','$this->m05_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3664,20397,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m05_sequencial'))."','$this->m05_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["m05_usuario"]) || $this->m05_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,3664,20398,'".AddSlashes(pg_result($resaco,$conresaco,'m05_usuario'))."','$this->m05_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3664,20398,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m05_usuario'))."','$this->m05_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["m05_data"]) || $this->m05_data != "")
-             $resac = db_query("insert into db_acount values($acount,3664,20399,'".AddSlashes(pg_result($resaco,$conresaco,'m05_data'))."','$this->m05_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3664,20399,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m05_data'))."','$this->m05_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["m05_instit"]) || $this->m05_instit != "")
-             $resac = db_query("insert into db_acount values($acount,3664,20404,'".AddSlashes(pg_result($resaco,$conresaco,'m05_instit'))."','$this->m05_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3664,20404,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m05_instit'))."','$this->m05_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -355,13 +355,13 @@ class cl_posicaoestoqueprocessamento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20397,'$m05_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3664,20397,'','".AddSlashes(pg_result($resaco,$iresaco,'m05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3664,20398,'','".AddSlashes(pg_result($resaco,$iresaco,'m05_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3664,20399,'','".AddSlashes(pg_result($resaco,$iresaco,'m05_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3664,20404,'','".AddSlashes(pg_result($resaco,$iresaco,'m05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3664,20397,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m05_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3664,20398,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m05_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3664,20399,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m05_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3664,20404,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m05_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -422,7 +422,7 @@ class cl_posicaoestoqueprocessamento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:posicaoestoqueprocessamento";
@@ -437,7 +437,7 @@ class cl_posicaoestoqueprocessamento {
    function sql_query ( $m05_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -462,7 +462,7 @@ class cl_posicaoestoqueprocessamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -475,7 +475,7 @@ class cl_posicaoestoqueprocessamento {
    function sql_query_file ( $m05_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -496,7 +496,7 @@ class cl_posicaoestoqueprocessamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_posicaoestoqueprocessamento {
   function sql_query_posicaoestoque ( $m05_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_posicaoestoqueprocessamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

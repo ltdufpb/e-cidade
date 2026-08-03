@@ -81,8 +81,8 @@ if (!empty($rh261_numcgm)) {
                                 </td>
                                 <td>
                                     <?php
-                                    if (isset($rh261_dtorigemadmissao) && $rh261_dtorigemadmissao != null && str_contains($rh261_dtorigemadmissao, '-')) {
-                                        $data = explode('-', $rh261_dtorigemadmissao);
+                                    if (isset($rh261_dtorigemadmissao) && $rh261_dtorigemadmissao != null && str_contains((string) $rh261_dtorigemadmissao, '-')) {
+                                        $data = explode('-', (string) $rh261_dtorigemadmissao);
                                         $rh261_dtorigemadmissao_ano = $data[0];
                                         $rh261_dtorigemadmissao_mes = $data[1];
                                         $rh261_dtorigemadmissao_dia = $data[2];
@@ -173,8 +173,8 @@ if (!empty($rh261_numcgm)) {
                                 </td>
                                 <td>
                                     <?php
-                                    if (isset($rh261_datamovimentacao) && $rh261_datamovimentacao != null && str_contains($rh261_datamovimentacao, '-')) {
-                                        $data = explode('-', $rh261_datamovimentacao);
+                                    if (isset($rh261_datamovimentacao) && $rh261_datamovimentacao != null && str_contains((string) $rh261_datamovimentacao, '-')) {
+                                        $data = explode('-', (string) $rh261_datamovimentacao);
                                         $rh261_datamovimentacao_ano = $data[0];
                                         $rh261_datamovimentacao_mes = $data[1];
                                         $rh261_datamovimentacao_dia = $data[2];
@@ -192,8 +192,8 @@ if (!empty($rh261_numcgm)) {
                 </td>
                 <td>
                     <?php
-                    if (isset($rh261_devolucao) && $rh261_devolucao != null && str_contains($rh261_devolucao, '-')) {
-                        $data = explode('-', $rh261_devolucao);
+                    if (isset($rh261_devolucao) && $rh261_devolucao != null && str_contains((string) $rh261_devolucao, '-')) {
+                        $data = explode('-', (string) $rh261_devolucao);
                         $rh261_devolucao_ano = $data[0];
                         $rh261_devolucao_mes = $data[1];
                         $rh261_devolucao_dia = $data[2];
@@ -320,7 +320,7 @@ if (!empty($rh261_numcgm)) {
 
                 $asopcoes = 1;
 
-                $chavepri = array("rh261_sequencial" => $rh261_sequencial);
+                $chavepri = ["rh261_sequencial" => $rh261_sequencial];
                 $cliframe_alterar_excluir->chavepri = $chavepri;
                 $cliframe_alterar_excluir->sql = $sql;
                 $cliframe_alterar_excluir->campos  = "rh261_datamovimentacao,rh261_devolucao,rh261_matorigemcedente,rh261_servidorcedido";
@@ -379,7 +379,7 @@ if (!empty($rh261_numcgm)) {
         db_iframe_rhdepend.hide();
         <?php 
         if ($db_opcao != 1) {
-            echo "  location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo "  location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

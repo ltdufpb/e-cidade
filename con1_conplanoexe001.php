@@ -31,12 +31,12 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_conplanoexe_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clconplanoexe = new cl_conplanoexe;
 $db_opcao = 1;
 $db_botao = true;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
     db_inicio_transacao();
     $clconplanoexe->incluir($c62_anousu,$c62_reduz);
     db_fim_transacao();
@@ -85,7 +85,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 if (!isset($c62_reduz)  || ($c62_reduz=="")){
   echo "<script> js_contas(); </script>"; 
 }
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clconplanoexe->erro_status=="0"){
     $clconplanoexe->erro(true,false);
     $db_botao=true;

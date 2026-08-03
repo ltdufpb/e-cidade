@@ -33,7 +33,7 @@ if (isset($_SESSION['DB_servidor']) &&
 /**
  * Nome do programa atual
  */
-$sProgramaAtual = basename($_SERVER["SCRIPT_NAME"]);
+$sProgramaAtual = basename((string) $_SERVER["SCRIPT_NAME"]);
 
 if (isset($_SESSION['DB_NBASE'])) {
     $DB_BASE = $_SESSION["DB_NBASE"];

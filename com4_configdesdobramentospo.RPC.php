@@ -40,7 +40,7 @@ $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 
 $oRetorno = new stdClass(); 
 $oRetorno->status  = 1;
-$oRetorno->aItens  = array();
+$oRetorno->aItens  = [];
 
 switch ($oParam->exec) {
 

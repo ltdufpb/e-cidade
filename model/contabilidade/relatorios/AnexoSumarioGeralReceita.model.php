@@ -59,7 +59,8 @@ class AnexoSumarioGeralReceita extends RelatoriosLegaisBase {
    *
    * @return array $aRetorno
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $oDaoPeriodo      = db_utils::getDao("periodo");
     $sSqlDadosPeriodo = $oDaoPeriodo->sql_query_file($this->iCodigoPeriodo);
@@ -94,7 +95,7 @@ class AnexoSumarioGeralReceita extends RelatoriosLegaisBase {
     $iTotalLinhasDespesa = pg_num_rows($rsDespesa);
     $iTotalLinhasPlano   = pg_num_rows($rsPlano);
     $aLinhasRelatorio    = $this->oRelatorioLegal->getLinhasCompleto();
-    $aFuncoes            = array();
+    $aFuncoes            = [];
     /*
      * Processa os dados das Funcoes
      */
@@ -162,13 +163,13 @@ class AnexoSumarioGeralReceita extends RelatoriosLegaisBase {
        
       $aLinhasRelatorio[$iLinha]->setPeriodo($this->iCodigoPeriodo);
       $aColunasRelatorio  = $aLinhasRelatorio[$iLinha]->getCols($this->iCodigoPeriodo);
-      $aColunaslinha      = array();
+      $aColunaslinha      = [];
       $oLinha             = new stdClass();
       $oLinha->totalizar  = $aLinhasRelatorio[$iLinha]->isTotalizador();
       $oLinha->descricao  = $aLinhasRelatorio[$iLinha]->getDescricaoLinha();
       $oLinha->colunas    = $aColunasRelatorio; 
       $oLinha->desdobrar  = false;
-      $oLinha->contas     = array();
+      $oLinha->contas     = [];
       $oLinha->nivellinha = $aLinhasRelatorio[$iLinha]->getNivel();
       if ($iLinha == 22) {
         $oLinha->funcoes = $aFuncoes;
@@ -276,7 +277,7 @@ class AnexoSumarioGeralReceita extends RelatoriosLegaisBase {
 
         foreach ($oLinha->colunas as $iColuna => $oColuna) {
            
-          if (trim($oColuna->o116_formula) != "") {
+          if (trim((string) $oColuna->o116_formula) != "") {
              
             $sFormulaOriginal = ($oColuna->o116_formula);
             $sFormula         = $this->oRelatorioLegal->parseFormula('aLinhas', $sFormulaOriginal, $iColuna, $aLinhas);
@@ -285,7 +286,7 @@ class AnexoSumarioGeralReceita extends RelatoriosLegaisBase {
             eval($evaluate);
             $sRetorno = ob_get_contents();
             ob_clean();
-            if (strpos(strtolower($sRetorno), "parse error") > 0 || strpos(strtolower($sRetorno), "undefined" > 0)) {
+            if (strpos(strtolower($sRetorno), "parse error") > 0 || strpos(strtolower($sRetorno), (string) (0 > 0))) {
               
               $sMsg =  "Linha {$iLinha} com erro no cadastro da formula<br>{$oColuna->o116_formula}";
               throw new Exception($sMsg);

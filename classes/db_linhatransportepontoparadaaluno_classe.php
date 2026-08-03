@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE linhatransportepontoparadaaluno
 class cl_linhatransportepontoparadaaluno { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tre12_sequencial = 0; 
-   var $tre12_linhatransportepontoparada = 0; 
-   var $tre12_linhatransportehorarioveiculo = 0; 
-   var $tre12_aluno = 0; 
-   var $tre12_observacao = null; 
+   public $tre12_sequencial = 0; 
+   public $tre12_linhatransportepontoparada = 0; 
+   public $tre12_linhatransportehorarioveiculo = 0; 
+   public $tre12_aluno = 0; 
+   public $tre12_observacao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tre12_sequencial = int4 = Sequencial 
                  tre12_linhatransportepontoparada = int4 = Sequencial 
                  tre12_linhatransportehorarioveiculo = int4 = Horario 
@@ -56,10 +56,10 @@ class cl_linhatransportepontoparadaaluno {
                  tre12_observacao = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_linhatransportepontoparadaaluno() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("linhatransportepontoparadaaluno"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -122,10 +122,10 @@ class cl_linhatransportepontoparadaaluno {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tre12_sequencial = pg_result($result,0,0); 
+       $this->tre12_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from linhatransportepontoparadaaluno_tre12_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tre12_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tre12_sequencial)){
          $this->erro_sql = " Campo tre12_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -161,7 +161,7 @@ class cl_linhatransportepontoparadaaluno {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Linha de Transporte Ponto de Parada Aluno ($this->tre12_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Linha de Transporte Ponto de Parada Aluno já Cadastrado";
@@ -190,14 +190,14 @@ class cl_linhatransportepontoparadaaluno {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20116,'$this->tre12_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3609,20116,'','".AddSlashes(pg_result($resaco,0,'tre12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3609,20118,'','".AddSlashes(pg_result($resaco,0,'tre12_linhatransportepontoparada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3609,20500,'','".AddSlashes(pg_result($resaco,0,'tre12_linhatransportehorarioveiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3609,20121,'','".AddSlashes(pg_result($resaco,0,'tre12_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3609,20122,'','".AddSlashes(pg_result($resaco,0,'tre12_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3609,20116,'','".AddSlashes(pg_fetch_result($resaco,0,'tre12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3609,20118,'','".AddSlashes(pg_fetch_result($resaco,0,'tre12_linhatransportepontoparada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3609,20500,'','".AddSlashes(pg_fetch_result($resaco,0,'tre12_linhatransportehorarioveiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3609,20121,'','".AddSlashes(pg_fetch_result($resaco,0,'tre12_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3609,20122,'','".AddSlashes(pg_fetch_result($resaco,0,'tre12_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -207,10 +207,10 @@ class cl_linhatransportepontoparadaaluno {
       $this->atualizacampos();
      $sql = " update linhatransportepontoparadaaluno set ";
      $virgula = "";
-     if(trim($this->tre12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre12_sequencial"])){ 
+     if(trim((string) $this->tre12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre12_sequencial"])){ 
        $sql  .= $virgula." tre12_sequencial = $this->tre12_sequencial ";
        $virgula = ",";
-       if(trim($this->tre12_sequencial) == null ){ 
+       if(trim((string) $this->tre12_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "tre12_sequencial";
          $this->erro_banco = "";
@@ -220,10 +220,10 @@ class cl_linhatransportepontoparadaaluno {
          return false;
        }
      }
-     if(trim($this->tre12_linhatransportepontoparada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre12_linhatransportepontoparada"])){ 
+     if(trim((string) $this->tre12_linhatransportepontoparada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre12_linhatransportepontoparada"])){ 
        $sql  .= $virgula." tre12_linhatransportepontoparada = $this->tre12_linhatransportepontoparada ";
        $virgula = ",";
-       if(trim($this->tre12_linhatransportepontoparada) == null ){ 
+       if(trim((string) $this->tre12_linhatransportepontoparada) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "tre12_linhatransportepontoparada";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_linhatransportepontoparadaaluno {
          return false;
        }
      }
-     if(trim($this->tre12_linhatransportehorarioveiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre12_linhatransportehorarioveiculo"])){ 
+     if(trim((string) $this->tre12_linhatransportehorarioveiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre12_linhatransportehorarioveiculo"])){ 
        $sql  .= $virgula." tre12_linhatransportehorarioveiculo = $this->tre12_linhatransportehorarioveiculo ";
        $virgula = ",";
-       if(trim($this->tre12_linhatransportehorarioveiculo) == null ){ 
+       if(trim((string) $this->tre12_linhatransportehorarioveiculo) == null ){ 
          $this->erro_sql = " Campo Horario não informado.";
          $this->erro_campo = "tre12_linhatransportehorarioveiculo";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_linhatransportepontoparadaaluno {
          return false;
        }
      }
-     if(trim($this->tre12_aluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre12_aluno"])){ 
+     if(trim((string) $this->tre12_aluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre12_aluno"])){ 
        $sql  .= $virgula." tre12_aluno = $this->tre12_aluno ";
        $virgula = ",";
-       if(trim($this->tre12_aluno) == null ){ 
+       if(trim((string) $this->tre12_aluno) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "tre12_aluno";
          $this->erro_banco = "";
@@ -259,7 +259,7 @@ class cl_linhatransportepontoparadaaluno {
          return false;
        }
      }
-     if(trim($this->tre12_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre12_observacao"])){ 
+     if(trim((string) $this->tre12_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre12_observacao"])){ 
        $sql  .= $virgula." tre12_observacao = '$this->tre12_observacao' ";
        $virgula = ",";
      }
@@ -277,19 +277,19 @@ class cl_linhatransportepontoparadaaluno {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20116,'$this->tre12_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre12_sequencial"]) || $this->tre12_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3609,20116,'".AddSlashes(pg_result($resaco,$conresaco,'tre12_sequencial'))."','$this->tre12_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3609,20116,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre12_sequencial'))."','$this->tre12_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre12_linhatransportepontoparada"]) || $this->tre12_linhatransportepontoparada != "")
-             $resac = db_query("insert into db_acount values($acount,3609,20118,'".AddSlashes(pg_result($resaco,$conresaco,'tre12_linhatransportepontoparada'))."','$this->tre12_linhatransportepontoparada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3609,20118,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre12_linhatransportepontoparada'))."','$this->tre12_linhatransportepontoparada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre12_linhatransportehorarioveiculo"]) || $this->tre12_linhatransportehorarioveiculo != "")
-             $resac = db_query("insert into db_acount values($acount,3609,20500,'".AddSlashes(pg_result($resaco,$conresaco,'tre12_linhatransportehorarioveiculo'))."','$this->tre12_linhatransportehorarioveiculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3609,20500,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre12_linhatransportehorarioveiculo'))."','$this->tre12_linhatransportehorarioveiculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre12_aluno"]) || $this->tre12_aluno != "")
-             $resac = db_query("insert into db_acount values($acount,3609,20121,'".AddSlashes(pg_result($resaco,$conresaco,'tre12_aluno'))."','$this->tre12_aluno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3609,20121,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre12_aluno'))."','$this->tre12_aluno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre12_observacao"]) || $this->tre12_observacao != "")
-             $resac = db_query("insert into db_acount values($acount,3609,20122,'".AddSlashes(pg_result($resaco,$conresaco,'tre12_observacao'))."','$this->tre12_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3609,20122,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre12_observacao'))."','$this->tre12_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -343,14 +343,14 @@ class cl_linhatransportepontoparadaaluno {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20116,'$tre12_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3609,20116,'','".AddSlashes(pg_result($resaco,$iresaco,'tre12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3609,20118,'','".AddSlashes(pg_result($resaco,$iresaco,'tre12_linhatransportepontoparada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3609,20500,'','".AddSlashes(pg_result($resaco,$iresaco,'tre12_linhatransportehorarioveiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3609,20121,'','".AddSlashes(pg_result($resaco,$iresaco,'tre12_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3609,20122,'','".AddSlashes(pg_result($resaco,$iresaco,'tre12_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3609,20116,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3609,20118,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre12_linhatransportepontoparada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3609,20500,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre12_linhatransportehorarioveiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3609,20121,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre12_aluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3609,20122,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre12_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -411,7 +411,7 @@ class cl_linhatransportepontoparadaaluno {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:linhatransportepontoparadaaluno";
@@ -426,7 +426,7 @@ class cl_linhatransportepontoparadaaluno {
    function sql_query ( $tre12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_linhatransportepontoparadaaluno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,7 +472,7 @@ class cl_linhatransportepontoparadaaluno {
    function sql_query_file ( $tre12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -493,7 +493,7 @@ class cl_linhatransportepontoparadaaluno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_linhatransportepontoparadaaluno {
 
     if( $campos != "*" ) {
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula    = "";
 
       for( $i = 0; $i < sizeof( $campos_sql ); $i++ ) {
@@ -539,7 +539,7 @@ class cl_linhatransportepontoparadaaluno {
     if( $ordem != null ) {
 
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula    = "";
 
       for( $i = 0; $i < sizeof( $campos_sql ); $i++ ) {

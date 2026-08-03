@@ -113,7 +113,7 @@ $clrotulo->label("cm04_c_descr");
       </td>
       <td>
         <?php
-          $x = array('0' => 'Branco', '1' => 'Pardo', '2' => 'Indio', '4' => 'Negro', '5' => 'Outra');
+          $x = ['0' => 'Branco', '1' => 'Pardo', '2' => 'Indio', '4' => 'Negro', '5' => 'Outra'];
           db_select('cm01_c_cor', $x, true, $db_opcao, "");
         ?>
       </td>
@@ -248,7 +248,7 @@ function js_preenchepesquisa(chave) {
   parent.document.formaba.a2.disabled = true;
   <?php
     if($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

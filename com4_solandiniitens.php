@@ -43,8 +43,8 @@ include(modification("classes/db_solandpadrao_classe.php"));
 include(modification("classes/db_solandpadraodepto_classe.php"));
 include(modification("classes/db_solandam_classe.php"));
 include(modification("classes/db_solandamand_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clpcproc = new cl_pcproc;
 $clsolicitem = new cl_solicitem;
@@ -84,14 +84,14 @@ if (isset ($chaves)) {
 	}
 	}
 	*/
-	$info = split('#', $chaves);
+	$info = preg_split('#\##m', $chaves);
 	if (trim($cods) != "") {
 		$vir = ",";
 	} else {
 		$vir = "";
 	}
 	for ($y = 0; $y < count($info); $y ++) {
-		if (trim($info[$y]) != "") {
+		if (trim((string) $info[$y]) != "") {
 			$cods .= $vir.$info[$y];
 			$vir = ",";
 		}
@@ -106,7 +106,7 @@ if (isset ($chaves)) {
 	if (isset ($incluir) && trim($incluir) != "") {
 		$sqlerro = false;
 		db_inicio_transacao();
-		$dados = split(',', $cods);
+		$dados = preg_split('#,#m', $cods);
 		if (count($dados)) {
 			$result_deptorec = $clpcandpadraodepto->sql_record($clpcandpadraodepto->sql_query(null, "*", null, "pc45_ordem = 2 and pc45_instit=".db_getsession("DB_instit")));
 			if ($clpcandpadraodepto->numrows > 0) {
@@ -130,7 +130,7 @@ if (isset ($chaves)) {
 			}
 		}
 		for ($w = 0; $w < count($dados); $w ++) {
-			if (trim($dados[$w]) != "") {
+			if (trim((string) $dados[$w]) != "") {
 				if ($sqlerro == false) {
 					$result_proc = $clsolicitemprot->sql_record($clsolicitemprot->sql_query_file($dados[$w]));
 					if ($clsolicitemprot->numrows > 0) {

@@ -28,7 +28,7 @@
 set_time_limit(0);
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
  $unidade = str_replace("X",",",$unidades);
  $data1   = str_replace("X","-",$data1);
  $data2   = str_replace("X","-",$data2);
@@ -86,13 +86,13 @@ $int_naocomp   = 0;
       $pdf->cell(190,4,$int_unidade." - ".$str_unidade,1,1,"L",1);
   }
  if( $int_medico == $Array[2] ){
-  if( trim($Array[4]) == "ATENDIDO" ){
+  if( trim((string) $Array[4]) == "ATENDIDO" ){
    $int_atendido  = $int_atendido + 1;
   }
-  if( trim($Array[4]) == "AGENDADO" && $Array[5] < date("Y-m-d")){
+  if( trim((string) $Array[4]) == "AGENDADO" && $Array[5] < date("Y-m-d")){
    $int_naocomp   = $int_naocomp+1;
   }
-  if( trim($Array[4]) == "CANCELADO"){
+  if( trim((string) $Array[4]) == "CANCELADO"){
    $int_cancelado = $int_cancelado+1;
   }
  }else if( $int_medico != $Array[2] || $i == ($Linhas-1)){

@@ -64,12 +64,12 @@
           </td>
           <td>
             <?php
-              $aOpcoes = array(
+              $aOpcoes = [
                 AguaTipoIsencao::TIPO_NORMAL   => 'Normal',
                 AguaTipoIsencao::TIPO_IMUNE    => 'Imune',
                 AguaTipoIsencao::TIPO_DESCONTO => 'Desconto',
                 AguaTipoIsencao::TIPO_IDADE    => 'Idade/Aposentados',
-              );
+              ];
               db_select('x29_tipo', $aOpcoes, true, $db_opcao, "");
             ?>
           </td>
@@ -108,7 +108,7 @@
       db_iframe_aguaisencaotipo.hide();
       <?php
         if ($db_opcao != 1) {
-          echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+          echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
         }
       ?>
     }

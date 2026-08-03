@@ -97,9 +97,9 @@ try {
       $oDadosParada->sAbreviatura           = urlencode($oPontoParada->getAbreviatura());
       $oDadosParada->iCodigoRuaBairro       = $oPontoParada->getCodigoRuaBairro();
       $oDadosParada->iCodigoBairro          = $oLogradouroBairro->getBairro()->getSequencial();
-      $oDadosParada->sNomeBairro            = urlencode($oLogradouroBairro->getBairro()->getDescricao());
+      $oDadosParada->sNomeBairro            = urlencode((string) $oLogradouroBairro->getBairro()->getDescricao());
       $oDadosParada->iCodigoRua             = $oLogradouroBairro->getLogradouro()->getSequencial();
-      $oDadosParada->sNomeRua               = urlencode($oLogradouroBairro->getLogradouro()->getDescricao());
+      $oDadosParada->sNomeRua               = urlencode((string) $oLogradouroBairro->getLogradouro()->getDescricao());
       $oDadosParada->sPontoRefencia         = urlencode($oPontoParada->getPontoReferencia());
       $oDadosParada->nLatitude              = $oPontoParada->getLatitude();
       $oDadosParada->nLongitude             = $oPontoParada->getLongitude();
@@ -112,14 +112,14 @@ try {
 
         $oDadosParada->iTipo                  = 1;
         $oDadosParada->iCodigoDepartamento    = $oDepartamento->getCodigo();
-        $oDadosParada->sDescricaoDepartamento = urlencode($oDepartamento->getNomeDepartamento());
+        $oDadosParada->sDescricaoDepartamento = urlencode((string) $oDepartamento->getNomeDepartamento());
       }
 
       if (!empty($oEscolaProcedencia)) {
 
         $oDadosParada->iTipo                  = 3;
         $oDadosParada->iCodigoDepartamento    = $oEscolaProcedencia->getCodigo();
-        $oDadosParada->sDescricaoDepartamento = urlencode($oEscolaProcedencia->getNome());
+        $oDadosParada->sDescricaoDepartamento = urlencode((string) $oEscolaProcedencia->getNome());
       }
 
       $oRetorno->dados = $oDadosParada;
@@ -156,7 +156,7 @@ try {
 
     case 'getAlunosVinculadosLinha':
 
-      $oRetorno->aAlunos = array();
+      $oRetorno->aAlunos = [];
 
 
       if (!empty($oParam->iLinha)) {
@@ -177,17 +177,17 @@ try {
                 $oTemporario->iCodigoLinhaTransportePontoParadaAluno = $oVinculoAluno->getCodigo();
                 $oTemporario->iCodigoItinerarioPontoParada           = $oItinerarioPontoParada->getCodigo();
                 $oTemporario->iCodigoAluno                           = $oAluno->getCodigoAluno();
-                $oTemporario->sNome                                  = urlencode($oAluno->getNome());
-                $oTemporario->sHoraSaida                             = urlencode($oVinculoAluno->getLinhaItinerarioHorario()->getHoraSaida());
-                $oTemporario->sHoraChegada                           = urlencode($oVinculoAluno->getLinhaItinerarioHorario()->getHoraChegada());
+                $oTemporario->sNome                                  = urlencode((string) $oAluno->getNome());
+                $oTemporario->sHoraSaida                             = urlencode((string) $oVinculoAluno->getLinhaItinerarioHorario()->getHoraSaida());
+                $oTemporario->sHoraChegada                           = urlencode((string) $oVinculoAluno->getLinhaItinerarioHorario()->getHoraChegada());
 
-                $sPontoParada = urlencode($oItinerarioPontoParada->getPontoParada()->getNome());
+                $sPontoParada = urlencode((string) $oItinerarioPontoParada->getPontoParada()->getNome());
                 $sEscola      = "" ;
 
                 foreach ($oAluno->getMatriculas() as $oMatricula) {
 
                   if (!$oMatricula->isConcluida() && $oMatricula->isAtiva() && $oMatricula->getSituacao() == 'MATRICULADO') {
-                    $sEscola  = urlencode($oMatricula->getTurma()->getEscola()->getNome());
+                    $sEscola  = urlencode((string) $oMatricula->getTurma()->getEscola()->getNome());
                   }
                 }
 
@@ -195,7 +195,7 @@ try {
 
                   $oEscolaProcedencia = $oAluno->getEscolaDeProcedencia();
                   if (!empty($oEscolaProcedencia)) {
-                    $sEscola = urlencode($oEscolaProcedencia->getNome());
+                    $sEscola = urlencode((string) $oEscolaProcedencia->getNome());
                   }
                 }
                 $oTemporario->sEmbarque     = $sPontoParada;
@@ -216,17 +216,15 @@ try {
           }
         }
 
-        usort( $oRetorno->aAlunos, function($oAlunoCorrente, $oProximoAluno) {
-          return strcasecmp( $oAlunoCorrente->sItinerario.$oAlunoCorrente->sNome,
-                             $oProximoAluno->sItinerario.$oProximoAluno->sNome );
-        });
+        usort( $oRetorno->aAlunos, fn($oAlunoCorrente, $oProximoAluno) => strcasecmp( $oAlunoCorrente->sItinerario.$oAlunoCorrente->sNome,
+                           $oProximoAluno->sItinerario.$oProximoAluno->sNome ));
       }
 
       break;
 
     case 'pesquisaEscola':
 
-      $aFiltros = array();
+      $aFiltros = [];
 
       if (isset($oParam->filtraModulo) && !empty($oParam->filtraModulo)) {
         $aFiltros[] = " ed18_i_codigo in ($iEscola) ";
@@ -274,13 +272,13 @@ try {
 
       $lSomenteAlunosForaRede = isset( $oParam->lSomenteAlunosForaRede ) ? true : false;
       $aEscolasProcedencia    = EscolaProcedenciaRepository::getTodasEscolasProcedencia( $lSomenteAlunosForaRede );
-      $oRetorno->dados        = array();
+      $oRetorno->dados        = [];
 
       foreach( $aEscolasProcedencia as $oEscolaProcedencia ) {
 
         $oDadosEscola                = new stdClass();
         $oDadosEscola->codigo_escola = $oEscolaProcedencia->getCodigo();
-        $oDadosEscola->nome_escola   = urlencode( $oEscolaProcedencia->getNome() );
+        $oDadosEscola->nome_escola   = urlencode( (string) $oEscolaProcedencia->getNome() );
 
         $oRetorno->dados[] = $oDadosEscola;
       }

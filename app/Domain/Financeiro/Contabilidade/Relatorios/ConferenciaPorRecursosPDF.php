@@ -12,13 +12,8 @@ class ConferenciaPorRecursosPDF extends \FpdfMultiCellBorder
      * @var string
      */
     private $assinaturaContador;
-    /**
-     * @var string
-     */
 
-    private $filtros ;
-
-    public function __construct(stdClass $filtros)
+    public function __construct(private readonly stdClass $filtros)
     {
         parent::__construct();
 
@@ -31,8 +26,6 @@ class ConferenciaPorRecursosPDF extends \FpdfMultiCellBorder
         $this->mostrarRodape(true);
         $this->mostrarEmissor(true);
         $this->mostrarTotalDePaginas(true);
-
-        $this->filtros = $filtros;
 
         global $head1, $head3;
 

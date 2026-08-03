@@ -48,9 +48,6 @@ class AguaLeitura {
   const REGRA_MEDIA_PENALIDADE      = 5;
 
   /** @var int */
-  private $iCodigo;
-
-  /** @var int */
   private $iMes;
 
   /** @var int */
@@ -107,14 +104,12 @@ class AguaLeitura {
    * @throws DBException
    * @throws ParameterException
    */
-  public function __construct($iCodigo = null) {
-
-    $this->iCodigo = $iCodigo;
+  public function __construct(private $iCodigo = null) {
 
     if ($this->iCodigo) {
 
       $oDaoAguaLeitura = new cl_agualeitura();
-      $sSqlAguaLeitura = $oDaoAguaLeitura->sql_query_file($iCodigo);
+      $sSqlAguaLeitura = $oDaoAguaLeitura->sql_query_file($this->iCodigo);
       $rsAguaLeitura   = $oDaoAguaLeitura->sql_record($sSqlAguaLeitura);
 
       if (!$rsAguaLeitura && $oDaoAguaLeitura->numrows == '0') {
@@ -146,7 +141,7 @@ class AguaLeitura {
         $this->oDataInclusao = new DBDate($oLeitura->x21_dtinc);
       }
 
-      $oStdSituacao = db_utils::getRowFromDao(new cl_aguasitleitura, array($this->iSituacao));
+      $oStdSituacao = db_utils::getRowFromDao(new cl_aguasitleitura, [$this->iSituacao]);
       if (!$oStdSituacao) {
         throw new \DBException('Situação de Leitura não foi encontrada.');
       }
@@ -418,11 +413,11 @@ class AguaLeitura {
    */
   public function setTipo($iTipo) {
 
-    $aTipos = array(
+    $aTipos = [
       self::TIPO_MANUAL,
       self::TIPO_EXPORTACAO,
       self::TIPO_IMPORTACAO
-    );
+    ];
 
     if (!in_array($iTipo, $aTipos)) {
       throw new ParameterException("O Tipo informado é inválido.");
@@ -444,11 +439,11 @@ class AguaLeitura {
    */
   public function setStatus($iStatus) {
 
-    $aStatus = array(
+    $aStatus = [
       self::STATUS_ATIVA,
       self::SITUACAO_INATIVA,
       self::STATUS_CANCELADA
-    );
+    ];
 
     if (!in_array($iStatus, $aStatus)) {
       throw new ParameterException("O Status informado é inválido.");
@@ -554,7 +549,7 @@ class AguaLeitura {
       throw new DBException("Não foi possível encontrar informações da importação da leitura.");
     }
 
-    return (boolean) pg_numrows($rsDadosExportados);
+    return (boolean) pg_num_rows($rsDadosExportados);
   }
 
   /**

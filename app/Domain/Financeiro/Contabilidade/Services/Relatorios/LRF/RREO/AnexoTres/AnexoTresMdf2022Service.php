@@ -52,6 +52,7 @@ class AnexoTresMdf2022Service extends AnexoTresMdfService
 
     protected $linhaRcl = 30;
 
+    #[\Override]
     protected function posTotalizarLinhas()
     {
         // realiza as subtraçoes
@@ -68,6 +69,7 @@ class AnexoTresMdf2022Service extends AnexoTresMdfService
     /**
      * @return \stdClass
      */
+    #[\Override]
     public function getLinhaEmendaIndividuais()
     {
         if (empty($this->linhas)) {

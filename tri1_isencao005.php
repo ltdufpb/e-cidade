@@ -38,8 +38,8 @@ $clisencaoproc = new cl_isencaoproc;
   /*
 $clisencaolanc = new cl_isencaolanc;
   */
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 //db_msgbox($origem);
 $db_opcao = 22;
 $db_botao = false;

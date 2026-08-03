@@ -112,7 +112,7 @@ abstract class Base
     public static function getRegrasEmissaoRelatorio($relatorio)
     {
 
-        $dePara = array(
+        $dePara = [
             1 => ["codigo" => 206, "filtro" => 'legal'],
             2 => ["codigo" => 207, "filtro" => 'despesa'],
             3 => ["codigo" => 208, "filtro" => 'despesa'],
@@ -134,7 +134,7 @@ abstract class Base
             14 => ["codigo" => 229, "filtro" => 'despesa'],
             15 => ["codigo" => 230, "filtro" => 'despesa'],
             16 => ["codigo" => 231, "filtro" => 'despesa'],
-        );
+        ];
         return $dePara[$relatorio];
     }
 

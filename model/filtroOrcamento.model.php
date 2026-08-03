@@ -31,14 +31,13 @@
  */
 class filtroOrcamento {
 
-  private $aInstituicoes = array();
   /**
    * Enter description here...
    *
    * @param array $aInstituicoes lista com as instituicoes
    */
-  function __construct($aInstituicoes = null) {
-    $this->aInstituicoes = $aInstituicoes ;
+  function __construct(private $aInstituicoes = null)
+  {
   }
 
   /**

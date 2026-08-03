@@ -41,13 +41,12 @@ class TraceLog {
   private $lShowFunctionName= false;
   private $lShowTime        = true;
   private $lShowBackTrace   = false;
-  private $sDiretorio       = ECIDADE_PATH;
 
   /**
    * Caminho do Arquivo do Tracelog
    */
   private $sFilePath = null;
-  private $aComandos = array();
+  private $aComandos = [];
 
   private static $oInstanciaTraceLog;
 
@@ -56,9 +55,7 @@ class TraceLog {
    * @access private
    * @param string $sDiretorio
    */
-  private function __construct($sDiretorio = ECIDADE_PATH) {
-
-  	$this->sDiretorio = $sDiretorio;
+  private function __construct(private $sDiretorio = ECIDADE_PATH) {
 
   	$this->sFilePath = "tmp/TRACELOG_FILE_DBSeller_".date('Ymd').".log";
     $this->persistSession();
@@ -115,7 +112,7 @@ class TraceLog {
   public function write( $sMessage ) {
 
     $rsFile    = fopen($this->sDiretorio.$this->sFilePath, 'a');
-    fputs($rsFile,$sMessage);
+    fputs($rsFile,(string) $sMessage);
     fclose($rsFile);
     return;
   }
@@ -186,12 +183,12 @@ class TraceLog {
     unset($aBackTraceData[count( $aBackTraceData ) - 1]);
 
     $oTracelog      = TraceLog::getInstance();
-    $aBackTrace     = array();
+    $aBackTrace     = [];
 
     foreach ( $aBackTraceData as $iIndice => $aRouteData ) {
 
       $sFunction    = $aBackTraceData[$iIndice]['function'];
-      $sFile        = explode("/",$aRouteData['file']);
+      $sFile        = explode("/",(string) $aRouteData['file']);
       $sFile        = $sFile[count($sFile) - 1];
       $sBackTrace   = $sFile . ":" . $aRouteData['line'];
       if ( $this->lShowFunctionName ) {
@@ -205,7 +202,7 @@ class TraceLog {
       return implode(" > ", $aBackTrace);
     }
 
-    return isset($aBackTrace[count($aBackTrace) - 1]) ? $aBackTrace[count($aBackTrace) - 1] : '';
+    return $aBackTrace[count($aBackTrace) - 1] ?? '';
   }
 
   /**
@@ -220,7 +217,7 @@ class TraceLog {
 
     if ( !$this->lShowAccount ) {
 
-      $aWordsBlock = array(
+      $aWordsBlock = [
         "db_acount",
         "db_syscampo",
         "db_sysarquivo",
@@ -228,11 +225,11 @@ class TraceLog {
         "db_usuariosonline",
         "db_itensmenu",
         "db_logsacessa"
-      );
+      ];
 
       foreach($aWordsBlock as $sWord) {
 
-        $mAchouString = strpos($sSql, $sWord);
+        $mAchouString = strpos((string) $sSql, $sWord);
 
         if ( $mAchouString ) {
           return;
@@ -248,21 +245,21 @@ class TraceLog {
 
       if( !$this->lShowDefault ) {
 
-        $aRegistrosPadrao = array( 'db_itensmenu', 'pg_backend_pid', 'ultimaversao', 'ultimarelease', 'pg_stat_activity', 'usapcasp' );
+        $aRegistrosPadrao = [ 'db_itensmenu', 'pg_backend_pid', 'ultimaversao', 'ultimarelease', 'pg_stat_activity', 'usapcasp' ];
         foreach( $aRegistrosPadrao as $sRegistro ) {
 
-          $mRegistro = strstr(strtolower($sSql), $sRegistro);
+          $mRegistro = strstr(strtolower((string) $sSql), $sRegistro);
           if( $mRegistro ) {
             return;
           }
         }
       }
 
-      $mComando = strstr(strtolower($sSql), $sComando);
+      $mComando = strstr(strtolower((string) $sSql), (string) $sComando);
 
       if (is_string($mComando)) {
 
-        $sInfo      = TraceLog::getFormatedBacktrace(debug_backtrace());
+        $sInfo      = $this->getFormatedBacktrace(debug_backtrace());
         $sFlag      = $lErro ? "ERRO" : "INFO";
         $sData      = date("d/m/Y - H:i:s");
         $sSql       = str_replace("\n", "", $sSql);

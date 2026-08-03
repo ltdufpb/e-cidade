@@ -35,7 +35,7 @@ include(modification("classes/db_calendario_classe.php"));
 include(modification("classes/db_periodocalendario_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_infaluno           = new cl_mer_infaluno;
 $clcalendario             = new cl_calendario;
 $clperiodocalendario      = new cl_periodocalendario;

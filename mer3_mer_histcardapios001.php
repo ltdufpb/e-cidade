@@ -39,8 +39,8 @@ include(modification("classes/db_mer_cardapiodata_classe.php"));
 include(modification("classes/db_mer_cardapioitem_classe.php"));
 include(modification("classes/db_mer_subitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clmer_desper_und    = new cl_mer_desper_und;
 $clmer_cardapioaluno = new cl_mer_cardapioaluno;
 $clmer_cardapioturma = new cl_mer_cardapioturma;
@@ -69,9 +69,9 @@ if (!isset($fim)) {
   $fim_mes     = substr($fim,5,2);
   $fim_ano     = substr($fim,0,4);
   $fim         = $fim_dia."/".$fim_mes."/".$fim_ano;
-  $inicio_dia  = substr($inicio,8,2);
-  $inicio_mes  = substr($inicio,5,2);
-  $inicio_ano  = substr($inicio,0,4);
+  $inicio_dia  = substr((string) $inicio,8,2);
+  $inicio_mes  = substr((string) $inicio,5,2);
+  $inicio_ano  = substr((string) $inicio,0,4);
   $inicio      = $inicio_dia."/".$inicio_mes."/".$inicio_ano;
   
 }
@@ -275,7 +275,7 @@ if ($nutricionista != "") {
          db_fieldsmemory($result1,$y);
          $texto_dados .= '<tr>';
          $texto_dados .= '<td>'.$me35_i_codigo.'</td>';
-         $texto_dados .= '<td>'.substr($me35_c_nomealimento,0,30).'</td>';
+         $texto_dados .= '<td>'.substr((string) $me35_c_nomealimento,0,30).'</td>';
          $texto_dados .= '<td>'.$me07_f_quantidade.'</td>';
          $texto_dados .= '<td>'.$m61_descr.'</td>';
          $texto_dados .= '<td>'.$me07_c_medida.'</td>';
@@ -308,9 +308,9 @@ if ($nutricionista != "") {
            db_fieldsmemory($result2,$y);
            $texto_dados .= '<tr>';
            $texto_dados .= '<td>'.$me29_i_alimentoorig.'</td>';
-           $texto_dados .= '<td>'.substr($alimentoorig,0,30).'</td>';
+           $texto_dados .= '<td>'.substr((string) $alimentoorig,0,30).'</td>';
            $texto_dados .= '<td>'.$me29_i_alimentonovo.'</td>';
-           $texto_dados .= '<td>'.substr($alimentonovo,0,30).'</td>';
+           $texto_dados .= '<td>'.substr((string) $alimentonovo,0,30).'</td>';
            $texto_dados .= '<td>'.$me29_f_quantidade.'</td>';
            $texto_dados .= '</tr>';
            
@@ -381,8 +381,8 @@ if ($nutricionista != "") {
            db_fieldsmemory($result4,$y);
            $texto_dados .= '<tr>';
            $texto_dados .= '<td>'.$ed47_i_codigo.'</td>';
-           $texto_dados .= '<td colspan="3">'.trim($ed47_v_nome).'</td>';
-           $texto_dados .= '<td>'.trim($ed57_c_descr).' / '.trim($ed11_c_descr).'</td>';
+           $texto_dados .= '<td colspan="3">'.trim((string) $ed47_v_nome).'</td>';
+           $texto_dados .= '<td>'.trim((string) $ed57_c_descr).' / '.trim((string) $ed11_c_descr).'</td>';
            $texto_dados .= '</tr>';
            
          }
@@ -406,7 +406,7 @@ if ($nutricionista != "") {
              db_fieldsmemory($result4,$y);
              $texto_dados .= '<tr>';
              $texto_dados .= '<td>'.$ed57_i_codigo.'</td>';
-             $texto_dados .= '<td>'.trim($ed57_c_descr).' / '.trim($ed11_c_descr).'</td>';
+             $texto_dados .= '<td>'.trim((string) $ed57_c_descr).' / '.trim((string) $ed11_c_descr).'</td>';
              $texto_dados .= '<td colspan="2">'.$me39_i_quantidade.'</td>';             
              $texto_dados .= '<td>'.$me39_i_repeticao.'</td>';
              $texto_dados .= '</tr>';
@@ -458,9 +458,9 @@ if ($nutricionista != "") {
         <td id="R<?=$x?>" onclick="js_texto('R<?=$x?>','<?=urlencode($texto_dados)?>')" >
          <table width="100%" border="0" cellpadding="0" cellspacing="0">
           <tr style="cursor:pointer">
-           <td width="25%">-> <?=trim($me03_c_tipo)?></td>
-           <td width="35%"><b><?=trim($me01_c_nome)?> - <?=trim($me01_f_versao)?></b></td>
-           <td width="30%"><?=trim($ed18_c_abrev)?></td>
+           <td width="25%">-> <?=trim((string) $me03_c_tipo)?></td>
+           <td width="35%"><b><?=trim((string) $me01_c_nome)?> - <?=trim((string) $me01_f_versao)?></b></td>
+           <td width="30%"><?=trim((string) $ed18_c_abrev)?></td>
            <td align="right"><b><?=$baixa?></b></td>
           </tr>
          </table>  

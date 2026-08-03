@@ -57,7 +57,7 @@ if (isset($oPost->incluir)) {
 	$iNumRowsIptuTabelasDepend = $cliptutabelasdepend->numrows;
 	if ($iNumRowsIptuTabelasDepend > 0) {
 		
-    $aTabelasDependentes = array();
+    $aTabelasDependentes = [];
 		for ($iInd = 0; $iInd < $iNumRowsIptuTabelasDepend; $iInd++) {
 			
 		  $oIptuTabelasDepend  = db_utils::fieldsMemory($rsSqlIptuTabelasDepend, $iInd);

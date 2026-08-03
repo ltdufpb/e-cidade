@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_operadorasaude_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $cgm = new cl_cgm();
 $cgm->rotulo->label('z01_nome');
@@ -16,7 +16,7 @@ $cgm->rotulo->label('z01_nome');
 $operadorasaude = new cl_operadorasaude();
 $operadorasaude->rotulo->label('rh221_sequencial');
 
-$where = array("rh221_ativo is TRUE");
+$where = ["rh221_ativo is TRUE"];
 ?>
 <!doctype html>
 <html lang="pt-BR">
@@ -50,12 +50,12 @@ $where = array("rh221_ativo is TRUE");
 <?php
 
 if (isset($campos) === false) {
-    $campos = array(
+    $campos = [
         'operadorasaude.rh221_sequencial',
         'cgm.z01_nome',
         'cgm.z01_cgccpf',
         'operadorasaude.rh221_ans :: INT'
-    );
+    ];
 
     $campos = implode(', ', $campos);
 }
@@ -67,7 +67,7 @@ if (isset($pesquisa_chave) === false) {
     }
     $sql = $operadorasaude->sql_query(null, $campos, 'rh221_sequencial', implode(' and ', $where));
 
-    $repassa = array();
+    $repassa = [];
 
     if (isset($chave_rh221_sequencial)) {
         $repassa['chave_rh221_sequencial'] = $chave_rh221_sequencial;

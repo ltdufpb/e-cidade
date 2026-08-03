@@ -28,7 +28,7 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 ?>
 <html>
 <head>
@@ -63,7 +63,7 @@ if(!empty($codcid))
 else
   $str = " upper(descr) like upper('%$descr%') ";
 $result = db_query("select codcid,descr from cid10 where $str");
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 if($numrows > 0) {
   for($i = 0;$i < $numrows;$i++) {
     db_fieldsmemory($result,$i);

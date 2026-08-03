@@ -35,7 +35,7 @@ try {
             $rsRHPessoal = db_query($sSqlRhPessoal);
             $iQtdLinhas = pg_num_rows($rsRHPessoal);
 
-            $aMatriculas = array();
+            $aMatriculas = [];
             for($i = 0; $i < $iQtdLinhas; $i++){
 
                 $aMatriculas[] = db_utils::fieldsMemory($rsRHPessoal, $i);

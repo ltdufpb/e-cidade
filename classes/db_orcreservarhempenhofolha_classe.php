@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE orcreservarhempenhofolha
 class cl_orcreservarhempenhofolha { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o120_sequencial = 0; 
-   var $o120_orcreserva = 0; 
-   var $o120_rhempenhofolha = 0; 
+   public $o120_sequencial = 0; 
+   public $o120_orcreserva = 0; 
+   public $o120_rhempenhofolha = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o120_sequencial = int4 = Código da Reserva 
                  o120_orcreserva = int8 = Código da Reserva 
                  o120_rhempenhofolha = int4 = Código Empenho 
                  ";
    //funcao construtor da classe 
-   function cl_orcreservarhempenhofolha() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcreservarhempenhofolha"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_orcreservarhempenhofolha {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o120_sequencial = pg_result($result,0,0); 
+       $this->o120_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from orcreservarhempenhofolha_o120_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o120_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o120_sequencial)){
          $this->erro_sql = " Campo o120_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_orcreservarhempenhofolha {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Reservas de saldo para folha ($this->o120_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Reservas de saldo para folha já Cadastrado";
@@ -166,12 +166,12 @@ class cl_orcreservarhempenhofolha {
      $resaco = $this->sql_record($this->sql_query_file($this->o120_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14390,'$this->o120_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2537,14390,'','".AddSlashes(pg_result($resaco,0,'o120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2537,14391,'','".AddSlashes(pg_result($resaco,0,'o120_orcreserva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2537,14392,'','".AddSlashes(pg_result($resaco,0,'o120_rhempenhofolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2537,14390,'','".AddSlashes(pg_fetch_result($resaco,0,'o120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2537,14391,'','".AddSlashes(pg_fetch_result($resaco,0,'o120_orcreserva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2537,14392,'','".AddSlashes(pg_fetch_result($resaco,0,'o120_rhempenhofolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_orcreservarhempenhofolha {
       $this->atualizacampos();
      $sql = " update orcreservarhempenhofolha set ";
      $virgula = "";
-     if(trim($this->o120_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o120_sequencial"])){ 
+     if(trim((string) $this->o120_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o120_sequencial"])){ 
        $sql  .= $virgula." o120_sequencial = $this->o120_sequencial ";
        $virgula = ",";
-       if(trim($this->o120_sequencial) == null ){ 
+       if(trim((string) $this->o120_sequencial) == null ){ 
          $this->erro_sql = " Campo Código da Reserva nao Informado.";
          $this->erro_campo = "o120_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_orcreservarhempenhofolha {
          return false;
        }
      }
-     if(trim($this->o120_orcreserva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o120_orcreserva"])){ 
+     if(trim((string) $this->o120_orcreserva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o120_orcreserva"])){ 
        $sql  .= $virgula." o120_orcreserva = $this->o120_orcreserva ";
        $virgula = ",";
-       if(trim($this->o120_orcreserva) == null ){ 
+       if(trim((string) $this->o120_orcreserva) == null ){ 
          $this->erro_sql = " Campo Código da Reserva nao Informado.";
          $this->erro_campo = "o120_orcreserva";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_orcreservarhempenhofolha {
          return false;
        }
      }
-     if(trim($this->o120_rhempenhofolha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o120_rhempenhofolha"])){ 
+     if(trim((string) $this->o120_rhempenhofolha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o120_rhempenhofolha"])){ 
        $sql  .= $virgula." o120_rhempenhofolha = $this->o120_rhempenhofolha ";
        $virgula = ",";
-       if(trim($this->o120_rhempenhofolha) == null ){ 
+       if(trim((string) $this->o120_rhempenhofolha) == null ){ 
          $this->erro_sql = " Campo Código Empenho nao Informado.";
          $this->erro_campo = "o120_rhempenhofolha";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_orcreservarhempenhofolha {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14390,'$this->o120_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o120_sequencial"]) || $this->o120_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2537,14390,'".AddSlashes(pg_result($resaco,$conresaco,'o120_sequencial'))."','$this->o120_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2537,14390,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o120_sequencial'))."','$this->o120_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o120_orcreserva"]) || $this->o120_orcreserva != "")
-           $resac = db_query("insert into db_acount values($acount,2537,14391,'".AddSlashes(pg_result($resaco,$conresaco,'o120_orcreserva'))."','$this->o120_orcreserva',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2537,14391,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o120_orcreserva'))."','$this->o120_orcreserva',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o120_rhempenhofolha"]) || $this->o120_rhempenhofolha != "")
-           $resac = db_query("insert into db_acount values($acount,2537,14392,'".AddSlashes(pg_result($resaco,$conresaco,'o120_rhempenhofolha'))."','$this->o120_rhempenhofolha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2537,14392,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o120_rhempenhofolha'))."','$this->o120_rhempenhofolha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_orcreservarhempenhofolha {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14390,'$o120_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2537,14390,'','".AddSlashes(pg_result($resaco,$iresaco,'o120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2537,14391,'','".AddSlashes(pg_result($resaco,$iresaco,'o120_orcreserva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2537,14392,'','".AddSlashes(pg_result($resaco,$iresaco,'o120_rhempenhofolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2537,14390,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o120_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2537,14391,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o120_orcreserva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2537,14392,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o120_rhempenhofolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcreservarhempenhofolha
@@ -345,7 +345,7 @@ class cl_orcreservarhempenhofolha {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcreservarhempenhofolha";
@@ -360,7 +360,7 @@ class cl_orcreservarhempenhofolha {
    function sql_query ( $o120_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,7 +389,7 @@ class cl_orcreservarhempenhofolha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_orcreservarhempenhofolha {
    function sql_query_file ( $o120_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -423,7 +423,7 @@ class cl_orcreservarhempenhofolha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

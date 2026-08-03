@@ -29,8 +29,8 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ?>
 <html>
@@ -55,32 +55,16 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
             <?php
                 $infoComplementar = new \cl_infocomplementarvalor();
 
-                switch ($siglaAtributo) {
-                    case 'PO':
-                        $sql = $infoComplementar->sql_query_consulta_POs();
-                        break;
-                    case 'FP':
-                        $sql = $infoComplementar->sql_query_consulta_FPs();
-                        break;
-                    case 'FR' :
-                        $sql = $infoComplementar->sql_query_consulta_FRs();
-                        break;
-                    case 'NR' :
-                        $sql = $infoComplementar->sql_query_consulta_NRs();
-                        break;
-                    case 'ND' :
-                        $sql = $infoComplementar->sql_query_consulta_NDs();
-                        break;
-                    case 'FS' :
-                        $sql = $infoComplementar->sql_query_consulta_FSs();
-                        break;
-                    case 'DC' :
-                        $sql = $infoComplementar->sql_query_consulta_DCs();
-                        break;
-                    default:
-                        $sql = '';
-                        break;
-                }
+                $sql = match ($siglaAtributo) {
+                    'PO' => $infoComplementar->sql_query_consulta_POs(),
+                    'FP' => $infoComplementar->sql_query_consulta_FPs(),
+                    'FR' => $infoComplementar->sql_query_consulta_FRs(),
+                    'NR' => $infoComplementar->sql_query_consulta_NRs(),
+                    'ND' => $infoComplementar->sql_query_consulta_NDs(),
+                    'FS' => $infoComplementar->sql_query_consulta_FSs(),
+                    'DC' => $infoComplementar->sql_query_consulta_DCs(),
+                    default => '',
+                };
 
                 if (!empty($sql)) {
                     \db_lovrot($sql, 15, "()", "", $funcao_js);

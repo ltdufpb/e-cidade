@@ -38,18 +38,18 @@ $db_opcao = 1;
 $db_botao = true;
 $anousu =  db_getsession("DB_anousu");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $codjmOK = true;
 if(isset($incluir)){
   db_inicio_transacao();
 
-  if(trim($k04_dtini_dia) != "" && trim($k04_dtini_mes) != "" && trim($k04_dtini_ano) != ""){
+  if(trim((string) $k04_dtini_dia) != "" && trim($k04_dtini_mes) != "" && trim((string) $k04_dtini_ano) != ""){
     $k04_dtini = $k04_dtini_ano. '-' .$k04_dtini_mes. '-' .$k04_dtini_dia;
   }
 
-  if(trim($k04_dtfim_dia) != "" && trim($k04_dtfim_mes) != "" && trim($k04_dtfim_ano) != ""){
+  if(trim((string) $k04_dtfim_dia) != "" && trim($k04_dtfim_mes) != "" && trim((string) $k04_dtfim_ano) != ""){
     $k04_dtfim = $k04_dtfim_ano. '-' .$k04_dtfim_mes. '-' .$k04_dtfim_dia;
   }
 
@@ -65,11 +65,11 @@ if(isset($incluir)){
 }else if(isset($alterar)){
   db_inicio_transacao();
 
-  if(trim($k04_dtini_dia) != "" && trim($k04_dtini_mes) != "" && trim($k04_dtini_ano) != ""){
+  if(trim((string) $k04_dtini_dia) != "" && trim($k04_dtini_mes) != "" && trim((string) $k04_dtini_ano) != ""){
     $k04_dtini = $k04_dtini_ano. '-' .$k04_dtini_mes. '-' .$k04_dtini_dia;
   }
 
-  if(trim($k04_dtfim_dia) != "" && trim($k04_dtfim_mes) != "" && trim($k04_dtfim_ano) != ""){
+  if(trim((string) $k04_dtfim_dia) != "" && trim($k04_dtfim_mes) != "" && trim((string) $k04_dtfim_ano) != ""){
     $k04_dtfim = $k04_dtfim_ano. '-' .$k04_dtfim_mes. '-' .$k04_dtfim_dia;
   }
 

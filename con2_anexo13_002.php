@@ -42,7 +42,7 @@ $classinatura  = new cl_assinatura;
 $clempresto    = new cl_empresto;
 $clorcparamseq = new cl_orcparamseq;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //echo $HTTP_SERVER_VARS["QUERY_STRING"]; exit;
 
 // db_postmemory($HTTP_SERVER_VARS,2);exit;
@@ -69,14 +69,14 @@ $m_vinculados = $orcparamrel->sql_parametro_instit('11','9',"f",$instituicao,db_
 $somador_receita = 0;
 $somador_despesa = 0;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $nomeinstabrev)) > 0) {
     $descr_inst .= $xvirg.$nomeinstabrev;
     $flag_abrev  = true;
   } else {
@@ -141,16 +141,16 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
     //-- receita orcamentaria
     //--
     $ma1_cont = 0;
-    $ma1_descr =  array();
-    $ma1_valor =  array();
+    $ma1_descr =  [];
+    $ma1_valor =  [];
     $mb1_cont = 0;
-    $mb1_descr =  array();
-    $mb1_valor =  array();
+    $mb1_descr =  [];
+    $mb1_valor =  [];
     $total_receitas = 0;
     $anousu = db_getsession("DB_anousu");
 
     ///////////////////////////////-------------------------------------------//
-    for ($i=0; $i<pg_numrows($result_receita); $i++) {
+    for ($i=0; $i<pg_num_rows($result_receita); $i++) {
     db_fieldsmemory($result_receita,$i);
     if ($o57_descr == '') {
       continue;
@@ -171,7 +171,7 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
     }
     }
     // -- preenche matriz com despesa orçamentaria
-    for ($i=0; $i<pg_numrows($result_despesa); $i++) {
+    for ($i=0; $i<pg_num_rows($result_despesa); $i++) {
       db_fieldsmemory($result_despesa,$i);
       //if ($o57_descr == '') {
       //  continue;
@@ -183,17 +183,17 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
     //------ interferencias ----------
     $cont_a=0;
     $cont_b=0;
-    $ma_interf_descr = array();
-    $ma_interf_valor = array();
-    $mb_interf_descr = array();
-    $mb_interf_valor = array();
+    $ma_interf_descr = [];
+    $ma_interf_valor = [];
+    $mb_interf_descr = [];
+    $mb_interf_valor = [];
 
-    for ($i=0; $i<pg_numrows($result_balancete); $i++) {
+    for ($i=0; $i<pg_num_rows($result_balancete); $i++) {
       db_fieldsmemory($result_balancete,$i);
 
       $estrutural  = $estrutural;
       $instit      = $c61_instit;
-      $v_elementos = array($estrutural,$instit);
+      $v_elementos = [$estrutural,$instit];
 
       $flag_contar = false;
       if ($instit != 0) {
@@ -240,17 +240,17 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
 
     //------------------------------------//-------------------------------
     $ma2_cont = 0;
-    $ma2_descr =  array();
-    $ma2_valor =  array();
+    $ma2_descr =  [];
+    $ma2_valor =  [];
     $mb2_cont = 0;
-    $mb2_descr =  array();
-    $mb2_valor =  array();
-    for ($i=0; $i<pg_numrows($result_balancete); $i++) {
+    $mb2_descr =  [];
+    $mb2_valor =  [];
+    for ($i=0; $i<pg_num_rows($result_balancete); $i++) {
       db_fieldsmemory($result_balancete,$i);
 
       $estrutural  = $estrutural;
       $instit      = $c61_instit;
-      $v_elementos = array($estrutural,$instit);
+      $v_elementos = [$estrutural,$instit];
 
       $flag_contar = false;
       if ($instit != 0) {
@@ -299,11 +299,11 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
     //#//
     //# modelo [p/c]: publicação/conferencia
     $ma3_cont = 0;
-    $ma3_descr =  array();
-    $ma3_valor =  array();
+    $ma3_descr =  [];
+    $ma3_valor =  [];
     $mb3_cont = 0;
-    $mb3_descr =  array();
-    $mb3_valor =  array();
+    $mb3_descr =  [];
+    $mb3_valor =  [];
     $ma3_vlr_rp=0;
     // restos a pagar
     $mb3_vlr_rp=0;
@@ -318,9 +318,9 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
     $mb3_vlr_op=0;
     if ($modelo=='p') {
       // receita extras e serviços da dívida
-      for ($i=0; $i<pg_numrows($result_receita_rp); $i++) {
+      for ($i=0; $i<pg_num_rows($result_receita_rp); $i++) {
         db_fieldsmemory($result_receita_rp,$i);
-        if (substr($o58_elemento,0,3)=='332'    ||    substr($o58_elemento,0,3)=='346'  ) {
+        if (str_starts_with((string) $o58_elemento, '332')    ||    str_starts_with((string) $o58_elemento, '346')  ) {
           $ma3_vlr_div+=$atual_a_pagar + $atual_a_pagar_liquidado;
           // serviços da dívida
         } else {
@@ -328,9 +328,9 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
         }
       }
       // despesas extras e serviços da dívida
-      for ($i=0; $i<pg_numrows($result_despesa_rp); $i++) {
+      for ($i=0; $i<pg_num_rows($result_despesa_rp); $i++) {
         db_fieldsmemory($result_despesa_rp,$i);
-        if (substr($o56_elemento,0,3)=='332'    ||    substr($o56_elemento,0,3)=='346'  ) {
+        if (str_starts_with((string) $o56_elemento, '332')    ||    str_starts_with((string) $o56_elemento, '346')  ) {
           $mb3_vlr_div+=$vlrpag +$vlranu;
           // serviços da dívida
         } else {
@@ -338,19 +338,19 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
           // restos a pagar
         }
       }
-      $aInstit    = explode("-",$db_selinstit);
+      $aInstit    = explode("-",(string) $db_selinstit);
       $iTotInstit = count($aInstit);
       for ($iInd = 0; $iInd < $iTotInstit; $iInd++) {
 
         @db_query("drop table work_pl");
         $rsOutros = db_planocontassaldo_matriz(db_getsession("DB_anousu"),$dataini,$datafin,false,"c61_instit={$aInstit[$iInd]}",'','true','false','',$aOrcParametro);
-        for ($i = 0; $i < pg_numrows($rsOutros); $i++) {
+        for ($i = 0; $i < pg_num_rows($rsOutros); $i++) {
 
           db_fieldsmemory($rsOutros,$i);
           
           $estrutural  = $estrutural;
           $instit      = $c61_instit;
-          $v_elementos = array($estrutural,$instit);
+          $v_elementos = [$estrutural,$instit];
 
           $flag_contar = false;
           if ($instit != 0) {
@@ -457,12 +457,12 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
       $somador_despesa +=   $mb3_vlr_rp+ $mb3_vlr_div+ $mb3_vlr_dep +$mb3_vlr_op;
     } else {
       // expande as contas de receta/despesa extra
-      for ($i=0; $i<pg_numrows($result_balancete); $i++) {
+      for ($i=0; $i<pg_num_rows($result_balancete); $i++) {
         db_fieldsmemory($result_balancete,$i);
 
         $estrutural  = $estrutural;
         $instit      = $c61_instit;
-        $v_elementos = array($estrutural,$instit);
+        $v_elementos = [$estrutural,$instit];
 
         $flag_contar = false;
         if ($instit != 0) {
@@ -507,12 +507,12 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
         }
       }
       // -- adiciona no final
-      for ($i=0; $i<pg_numrows($result_balancete); $i++) {
+      for ($i=0; $i<pg_num_rows($result_balancete); $i++) {
         db_fieldsmemory($result_balancete,$i);
 
         $estrutural  = $estrutural;
         $instit      = $c61_instit;
-        $v_elementos = array($estrutural,$instit);
+        $v_elementos = [$estrutural,$instit];
 
         $flag_contar = false;
         if ($instit != 0) {
@@ -560,11 +560,11 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
 
     //------------------------------------//-------------------------------
     $ma7_cont  = 0;
-    $ma7_descr = array();
-    $ma7_valor = array();
+    $ma7_descr = [];
+    $ma7_valor = [];
     $mb7_cont  = 0;
-    $mb7_descr = array();
-    $mb7_valor = array();
+    $mb7_descr = [];
+    $mb7_valor = [];
 
     $ma7_valor[$ma7_cont] = 0;
     $mb7_valor[$mb7_cont] = 0;
@@ -574,12 +574,12 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
       db_fieldsmemory($res_orcparamseq,0);
     }
 
-    for ($i=0; $i<pg_numrows($result_balancete); $i++) {
+    for ($i=0; $i<pg_num_rows($result_balancete); $i++) {
       db_fieldsmemory($result_balancete,$i);
 
       $estrutural  = $estrutural;
       $instit      = $c61_instit;
-      $v_elementos = array($estrutural,$instit);
+      $v_elementos = [$estrutural,$instit];
 
       $flag_contar = false;
       if ($instit != 0) {
@@ -633,11 +633,11 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
     }
     //------------------------------------//-------------------------------
     $ma6_cont  = 0;
-    $ma6_descr = array();
-    $ma6_valor = array();
+    $ma6_descr = [];
+    $ma6_valor = [];
     $mb6_cont  = 0;
-    $mb6_descr = array();
-    $mb6_valor = array();
+    $mb6_descr = [];
+    $mb6_valor = [];
 
     $ma6_valor[$ma6_cont] = 0;
     $mb6_valor[$mb6_cont] = 0;
@@ -647,12 +647,12 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
       db_fieldsmemory($res_orcparamseq,0);
     }
 
-    for ($i=0; $i<pg_numrows($result_balancete); $i++) {
+    for ($i=0; $i<pg_num_rows($result_balancete); $i++) {
       db_fieldsmemory($result_balancete,$i);
 
       $estrutural  = $estrutural;
       $instit      = $c61_instit;
-      $v_elementos = array($estrutural,$instit);
+      $v_elementos = [$estrutural,$instit];
 
       $flag_contar = false;
       if ($instit != 0) {
@@ -706,11 +706,11 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
     }
     //------------------------------------//-------------------------------
     $ma4_cont  = 0;
-    $ma4_descr = array();
-    $ma4_valor = array();
+    $ma4_descr = [];
+    $ma4_valor = [];
     $mb4_cont  = 0;
-    $mb4_descr = array();
-    $mb4_valor = array();
+    $mb4_descr = [];
+    $mb4_valor = [];
 
     $ma4_valor[$ma4_cont] = 0;
     $mb4_valor[$mb4_cont] = 0;
@@ -720,12 +720,12 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
       db_fieldsmemory($res_orcparamseq,0);
     }
 
-    for ($i=0; $i<pg_numrows($result_balancete); $i++) {
+    for ($i=0; $i<pg_num_rows($result_balancete); $i++) {
       db_fieldsmemory($result_balancete,$i);
 
       $estrutural  = $estrutural;
       $instit      = $c61_instit;
-      $v_elementos = array($estrutural,$instit);
+      $v_elementos = [$estrutural,$instit];
 
       $flag_contar = false;
       if ($instit != 0) {
@@ -775,11 +775,11 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
     //------------------------------------//-------------------------------
 
     $ma5_cont  = 0;
-    $ma5_descr = array();
-    $ma5_valor = array();
+    $ma5_descr = [];
+    $ma5_valor = [];
     $mb5_cont  = 0;
-    $mb5_descr = array();
-    $mb5_valor = array();
+    $mb5_descr = [];
+    $mb5_valor = [];
 
     $ma5_valor[$ma5_cont] = 0;
     $mb5_valor[$mb5_cont] = 0;
@@ -789,12 +789,12 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
       db_fieldsmemory($res_orcparamseq,0);
     }
 
-    for ($i=0; $i<pg_numrows($result_balancete); $i++) {
+    for ($i=0; $i<pg_num_rows($result_balancete); $i++) {
       db_fieldsmemory($result_balancete,$i);
 
       $estrutural  = $estrutural;
       $instit      = $c61_instit;
-      $v_elementos = array($estrutural,$instit);
+      $v_elementos = [$estrutural,$instit];
 
       $flag_contar = false;
       if ($instit != 0) {
@@ -1102,11 +1102,11 @@ $db_filtro = ' e60_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
 
 		$pdf->Ln(2);
 		$pdf->setfont('arial','',5);
-		notasExplicativas(&$pdf,$iCodRel,"2S",190);    
+		notasExplicativas($pdf,$iCodRel,"2S",190);    
 
     $pdf->Ln(25);
     $pdf->setfont('arial','',8);    
-    assinaturas(&$pdf,&$classinatura,'BG');
+    assinaturas($pdf,$classinatura,'BG');
 
     //include(modification("fpdf151/geraarquivo.php"));
 

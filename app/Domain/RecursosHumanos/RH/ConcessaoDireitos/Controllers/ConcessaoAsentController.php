@@ -45,7 +45,7 @@ class ConcessaoAsentController extends Controller
             }
             
             return new DBJsonResponse($result, 'Processado com Sucesso!', 200);
-        } catch (\Throwable $th) {
+        } catch (\Throwable) {
             return new DBJsonResponse('', 'Erro!', 400);
         }
     }
@@ -68,10 +68,10 @@ class ConcessaoAsentController extends Controller
             }
         }, $assentconcedeconfig);
         
-        $datainicial = explode('/', $datainicial);
+        $datainicial = explode('/', (string) $datainicial);
         $datainicial = $datainicial[2] . '-' . $datainicial[1] . '-' . $datainicial[0];
 
-        $datafinal = explode('/', $datafinal);
+        $datafinal = explode('/', (string) $datafinal);
         $datafinal = $datafinal[2] . '-' . $datafinal[1] . '-' . $datafinal[0];
 
         $concessao = ProvidersConcessaoCalculo::concessao(
@@ -165,7 +165,7 @@ class ConcessaoAsentController extends Controller
                                 eval('$c = ' . $calculo . ';');
                                 $dataassentamento = date(
                                     'd/m/Y',
-                                    strtotime('+' . $c . ' days', strtotime($dataportaria))
+                                    strtotime('+' . $c . ' days', strtotime((string) $dataportaria))
                                 );
                             } else { // + Meses
                                 $dias += $ass->h16_quant; // soma os dias
@@ -174,7 +174,7 @@ class ConcessaoAsentController extends Controller
                                 eval('$c = ' . $calculo . ';');
                                 $dataassentamento = date(
                                     'd/m/Y',
-                                    strtotime('+' . $c . ' days', strtotime($dataportaria))
+                                    strtotime('+' . $c . ' days', strtotime((string) $dataportaria))
                                 );
                             }
                         }
@@ -220,7 +220,7 @@ class ConcessaoAsentController extends Controller
                     ]);
                 }
                 $n++;
-            } catch (\Throwable $th) {
+            } catch (\Throwable) {
                 continue;
             }
         }

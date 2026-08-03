@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 require_once(modification('libs/db_utils.php'));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoSamClasseGravidade = db_utils::getdao ("sam_class_gravidade");
 $db_opcao = 1;
 $db_botao = true;

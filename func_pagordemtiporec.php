@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pagordemtiporec_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpagordemtiporec = new cl_pagordemtiporec;
 $clpagordemtiporec->rotulo->label("e59_sequen");
 $clpagordemtiporec->rotulo->label("e59_sequen");
@@ -98,9 +98,9 @@ $clpagordemtiporec->rotulo->label("e59_sequen");
         }else{
            $sql = $clpagordemtiporec->sql_query("",$campos,"e59_sequen","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e59_sequen)){
-          $repassa = array("chave_e59_sequen"=>$chave_e59_sequen,"chave_e59_sequen"=>$chave_e59_sequen);
+          $repassa = ["chave_e59_sequen"=>$chave_e59_sequen,"chave_e59_sequen"=>$chave_e59_sequen];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

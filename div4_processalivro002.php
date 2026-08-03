@@ -70,8 +70,8 @@ $clrotulo->label('v01_vlrhis');
 $clrotulo->label('v01_numpar');
 $clrotulo->label('v03_receit');
 
-parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS); //exit;
+parse_str((string) $_SERVER ['QUERY_STRING'], $result);
+db_postmemory($_POST); //exit;
 $valor = 0;
 $alt = "5";
 $pdf = new SCPDF();
@@ -133,11 +133,11 @@ if ( $numrows == 0 ) {
 db_fieldsmemory($result, 0);
 $pdf->AddPage("L");
 $dados = @ db_query("select nomeinst,ender,munic,uf,telef,email,url,logo from db_config where codigo = " . db_getsession("DB_instit"));
-if (pg_numrows($dados) > 0) {
+if (pg_num_rows($dados) > 0) {
   db_fieldsmemory($dados, 0);
 }
 $pdf->SetXY(150, 1);
-if (strlen($nomeinst) > 42)
+if (strlen((string) $nomeinst) > 42)
   $TamFonteNome = 8;
 else
   $TamFonteNome = 9;
@@ -169,7 +169,7 @@ $resultexec = db_query($sqldata);
 db_fieldsmemory($resultexec, 0);
 $datainscr = $v01_dtinsc;
 
-list ( $ano, $mes, $dia ) = split('-', $datainscr);
+[$ano, $mes, $dia] = preg_split('#\-#m', (string) $datainscr);
 $mes1 = db_mes($mes, 2);
 $datacompleta = "$munic, $dia de $mes1 de $ano";
 
@@ -202,7 +202,7 @@ $sSql = " select distinct v03_descr, v03_tributaria
                   inner join tipoproced on v07_sequencial = v03_tributaria";
                              
 $resultproc = db_query($sSql);
-$numr       = pg_numrows($resultproc);
+$numr       = pg_num_rows($resultproc);
 
 $tra = "";
 $descr = "";
@@ -251,7 +251,7 @@ $pdf->ln(7);
 $x = $pdf->getX();
 $par = $clpardiv->sql_record($clpardiv->sql_query_file());
 
-if (pg_numrows($par) > 0) {
+if (pg_num_rows($par) > 0) {
   db_fieldsmemory($par, 0);
   if (@$v04_docum != "") {
     
@@ -352,7 +352,7 @@ $cgms = "0";
 $cont = 0;
 $n_reg = 0;
 
-$total_proc = array ();
+$total_proc =  [];
 
 db_query("begin");
 
@@ -422,30 +422,30 @@ for($i = 0; $i < $numrows; $i ++) {
   }
 
   $result3 = $clproced->sql_record($clproced->sql_query_file(null, "v03_receit", '', " v03_codigo = $v01_proced and v03_instit = " . db_getsession('DB_instit')));
-  if (pg_numrows($result3) > 0) {
+  if (pg_num_rows($result3) > 0) {
     db_fieldsmemory($result3, 0);
   }
   $sql2 = "select fc_corre($v03_receit,'$v01_dtvenc',$v01_vlrhis,'$datacorr'," . db_getsession("DB_anousu") . ",'$v01_dtvenc') as vlrcor from divida where v01_coddiv = $v01_coddiv and v01_instit = " . db_getsession('DB_instit');
   $result2 = db_query($sql2);
-  if (pg_numrows($result2) > 0) {
+  if (pg_num_rows($result2) > 0) {
     db_fieldsmemory($result2, 0);
   }
   $sql2 = "select fc_juros($v03_receit,'$v01_dtvenc','$datacorr','$v01_dtoper',false," . db_getsession("DB_anousu") . ") as vlrjur from divida where v01_coddiv = $v01_coddiv and v01_instit = " . db_getsession('DB_instit');
   $result2 = db_query($sql2);
-  if (pg_numrows($result2) > 0) {
+  if (pg_num_rows($result2) > 0) {
     db_fieldsmemory($result2, 0);
   }
   $vlrjur = $vlrcor * $vlrjur;
   $sql2 = "select fc_multa($v03_receit,'$v01_dtvenc','$datacorr','$v01_dtoper'," . db_getsession("DB_anousu") . ") as vlrmul from divida where v01_coddiv = $v01_coddiv and v01_instit = " . db_getsession('DB_instit');
   $result2 = db_query($sql2);
-  if (pg_numrows($result2) > 0) {
+  if (pg_num_rows($result2) > 0) {
     db_fieldsmemory($result2, 0);
   }
   $vlrmul = $vlrcor * $vlrmul;
   if (($vlrcor + $vlrjur + $vlrmul) == 0) {
     continue;
   }
-  $z01_nome = (strlen($z01_nome) > 10 ? substr($z01_nome, 0, 38) : $z01_nome);
+  $z01_nome = (strlen((string) $z01_nome) > 10 ? substr((string) $z01_nome, 0, 38) : $z01_nome);
   $pdf->setfont('arial', 'b', 7);
   if ($tipo == "c") {
     $pdf->cell(13, $alt, $v01_coddiv, $bord, 0, "C", 0);
@@ -527,8 +527,8 @@ $pdf->cell(30, $alt, $inscrs, 0, 1, "R", 0);
 $pdf->cell(90, $alt, "Total de CGM's:", 0, 0, "L", 0);
 $pdf->cell(30, $alt, $cgms, 0, 1, "R", 0);
 //$result = db_query("select valor,v03_descr from (select distinct v01_proced,sum(v01_vlrhis) as valor from divida where v01_livro = $v01_livro group by v01_proced) as x inner join proced on v01_proced = v03_codigo");
-$numrows = pg_numrows($result);
-$matproc = array ();
+$numrows = pg_num_rows($result);
+$matproc =  [];
 if ($numrows > 0) {
   for($x = 0; $x < $numrows; $x ++) {
     db_fieldsmemory($result, $x);

@@ -62,8 +62,8 @@ class Smtp1 {
   function Auth() {
 
     $this->Put("AUTH LOGIN");
-    $this->Put(base64_encode($this->user));
-    $this->Put(base64_encode($this->pass));
+    $this->Put(base64_encode((string) $this->user));
+    $this->Put(base64_encode((string) $this->pass));
   }
   
   function Send($to, $from, $subject, $msg) {
@@ -92,7 +92,7 @@ class Smtp1 {
   
   function toHeader($to, $from, $subject) {
   	
-    $header  = "Message-Id: <". date('YmdHis').".". md5(microtime()).".". strtoupper($from) ."> \r\n";
+    $header  = "Message-Id: <". date('YmdHis').".". md5(microtime()).".". strtoupper((string) $from) ."> \r\n";
     $header .= "From: <" . $from . "> \r\n";
     $header .= "To: <".$to."> \r\n";
     $header .= "Subject: ".$subject." \r\n";

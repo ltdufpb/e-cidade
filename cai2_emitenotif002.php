@@ -49,12 +49,12 @@ $notifica = '';
 
 global $sCepCxPostal, $sMunicipio, $lValidaOrdemEnderecoEntrega;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 db_postmemory($_POST);
 db_postmemory($_GET);
 
-$aRegrasPorTipo = array();
+$aRegrasPorTipo = [];
 $lim1 = 0;
 $z01_bairro = null;
 $jtipos = '';
@@ -80,7 +80,7 @@ $sSqlCfiptu = " select j18_ordendent ";
 $sSqlCfiptu .= "   from cfiptu        ";
 $sSqlCfiptu .= "  where j18_anousu  = " . db_getsession("DB_anousu");
 $rsCfiptu = db_query($sSqlCfiptu);
-if (pg_numrows($rsCfiptu) == 0) {
+if (pg_num_rows($rsCfiptu) == 0) {
     $lValidaOrdemEnderecoEntrega = true;
 }
 
@@ -151,7 +151,7 @@ function recibodesconto(
     $sqlvenc = " select k00_dtvenc from arrecad where k00_numpre = $numpre and k00_numpar = $numpar";
     $resultvenc = db_query($sqlvenc) or die($sqlvenc);
 
-    if (pg_numrows($resultvenc) == 0) {
+    if (pg_num_rows($resultvenc) == 0) {
         return 0;
     }
 
@@ -169,7 +169,7 @@ function recibodesconto(
     $sSqlTipoParc .= "    and '$k00_dtvenc' <= k41_vencfim                               ";
 
     $rsTipoParc = db_query($sSqlTipoParc) or die($sSqlTipoParc);
-    $iLinhasTipoParc = pg_numrows($rsTipoParc);
+    $iLinhasTipoParc = pg_num_rows($rsTipoParc);
 
     if ($iLinhasTipoParc > 0) {
 
@@ -217,7 +217,7 @@ function recibodesconto(
 
         $rsTipoParc = db_query($sqltipoparc) or die($sqltipoparc);
 
-        if (pg_numrows($rsTipoParc) == 1) {
+        if (pg_num_rows($rsTipoParc) == 1) {
             db_fieldsmemory($rsTipoParc, 0);
         } else {
             $k40_todasmarc = false;
@@ -229,7 +229,7 @@ function recibodesconto(
 
     $passar = false;
 
-    if (pg_numrows($resulttipoparcdeb) == 0) {
+    if (pg_num_rows($resulttipoparcdeb) == 0) {
         $passar = true;
     } else {
 
@@ -243,13 +243,13 @@ function recibodesconto(
                           and '$k00_dtvenc' <= k41_vencfim ";
 
         $resulttipoparcdeb = db_query($sqltipoparcdeb) or die($sqltipoparcdeb);
-        if (pg_numrows($resulttipoparcdeb) > 0) {
+        if (pg_num_rows($resulttipoparcdeb) > 0) {
             $passar = true;
         }
     }
 
     $desconto = $k40_codigo;
-    if (pg_numrows($rsTipoParc) == 0 || ($k40_todasmarc == 't' ? $totalregistrospassados <> $totregistros : false) || $passar == false) {
+    if (pg_num_rows($rsTipoParc) == 0 || ($k40_todasmarc == 't' ? $totalregistrospassados <> $totregistros : false) || $passar == false) {
         $desconto = 0;
     }
 
@@ -274,7 +274,7 @@ $sqlparag .= "order by db04_ordem                                             ";
 $resparag = db_query($sqlparag);
 
 $head1 = 'SECRETARIA DE FINANÇAS';
-if (pg_numrows($resparag) != 0) {
+if (pg_num_rows($resparag) != 0) {
 
     db_fieldsmemory($resparag, 0);
     $head1 = $db02_texto;
@@ -288,7 +288,7 @@ if ($datavenc == "--") {
     db_fieldsmemory($resultvenc, 0);
 }
 
-$sSqlDatasDebitos = "select distinct k115_data from datadebitos where k115_data = '" . substr($db_datausu, 0, 10) . "'";
+$sSqlDatasDebitos = "select distinct k115_data from datadebitos where k115_data = '" . substr((string) $db_datausu, 0, 10) . "'";
 $rsDatasDebitos = db_query($sSqlDatasDebitos);
 
 $lDataDebitoGerado = false;
@@ -297,7 +297,7 @@ if (pg_num_rows($rsDatasDebitos) > 0) {
     $lDataDebitoGerado = true;
 }
 
-$DB_DATACALC = mktime(0, 0, 0, substr($db_datausu, 5, 2), substr($db_datausu, 8, 2), substr($db_datausu, 0, 4));
+$DB_DATACALC = mktime(0, 0, 0, substr((string) $db_datausu, 5, 2), substr((string) $db_datausu, 8, 2), substr((string) $db_datausu, 0, 4));
 $somenteparc = true;
 $somenteiptu = true;
 
@@ -318,7 +318,7 @@ if (!isset($notifparc)) {
     db_fieldsmemory($result, 0);
 
     $sqlMaxDataDebitos = 'select max(k22_data) as max_datadeb from debitos';
-    $rsMaxDataDeb = db_query(max_datadeb);
+    $rsMaxDataDeb = db_query(\MAX_DATADEB);
     db_fieldsmemory($rsMaxDataDeb,0);
 
     if (empty($k60_datadeb) ) {
@@ -342,11 +342,11 @@ if (!isset($notifparc)) {
 
     global $z01_ender, $z01_numero, $z01_compl, $z01_munic, $z01_uf, $z01_cep, $z01_cxpostal, $z01_destinatario;
 
-    for ($iContador = 0; $iContador < pg_numrows($resultlistatipo); $iContador++) {
+    for ($iContador = 0; $iContador < pg_num_rows($resultlistatipo); $iContador++) {
 
         db_fieldsmemory($resultlistatipo, $iContador);
         $tipos .= $virgula . $k62_tipodeb;
-        $descrtipo .= $virgula . trim($k03_descr);
+        $descrtipo .= $virgula . trim((string) $k03_descr);
         $virgula = ' , ';
     }
 
@@ -360,7 +360,7 @@ if (!isset($notifparc)) {
         exit;
     }
 
-    if (pg_numrows($resultlistadoc) == 0) {
+    if (pg_num_rows($resultlistadoc) == 0) {
 
         $sMsg = _M('tributario.notificacoes.cai2_emitenotif002.documento_nao_encontrado');
         db_redireciona("db_erros.php?fechar=true&db_erro={$sMsg}");
@@ -532,7 +532,7 @@ if (!isset($notifparc)) {
 
     $result = db_query($sSql) or die($sSql);
 
-    if (pg_numrows($result) == 0) {
+    if (pg_num_rows($result) == 0) {
 
         $oParms = new stdClass();
         $oParms->sLista = $lista;
@@ -549,14 +549,14 @@ if (!isset($notifparc)) {
         }
 
         $lim2 = $fim;
-        if ($fim > pg_numrows($result)) {
-            $lim2 = pg_numrows($result);
+        if ($fim > pg_num_rows($result)) {
+            $lim2 = pg_num_rows($result);
         }
 
     } else {
 
         $lim1 = 0;
-        $lim2 = pg_numrows($result);
+        $lim2 = pg_num_rows($result);
     }
 
 } else {
@@ -638,7 +638,7 @@ $pdf = new Pdf;
 $S = $pdf->lMargin;
 
 $iQtdNotificoesGeradas = 0;
-$aListaNotifica = array();
+$aListaNotifica = [];
 
 //$pdf->Open();
 $pdf->AliasNbPages();
@@ -741,7 +741,7 @@ if ($tiporel == 1 || $tiporel == 11) {
             }
         }
 
-        if (pg_numrows($resultjapagou) == 0) {
+        if (pg_num_rows($resultjapagou) == 0) {
             continue;
         }
 
@@ -770,7 +770,7 @@ if ($tiporel == 1 || $tiporel == 11) {
         $numcgm = @$j01_numcgm;
         $matric = @$j01_matric;
         $inscr = @$q02_inscr;
-        @$j01_matric = !empty($j01_matric) ? substr(@$j01_matric, 0, -1) . "-" . substr(@$j01_matric, -1, 1) : '';
+        @$j01_matric = !empty($j01_matric) ? substr((string) @$j01_matric, 0, -1) . "-" . substr((string) @$j01_matric, -1, 1) : '';
 
         if ($matric != '') {
 
@@ -812,7 +812,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                    group by k22_tipo,k00_descr";
 
             $result2 = db_query($sql2);
-            $num2 = pg_numrows($result2);
+            $num2 = pg_num_rows($result2);
         }
 
         $sSqlproced = " select distinct proced.v03_codigo,   proced.v03_dcomp        ";
@@ -827,7 +827,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
         global $procedencias;
         $procedencias = '';
-        for ($i = 0; $i < pg_numrows($resultaproced); $i++) {
+        for ($i = 0; $i < pg_num_rows($resultaproced); $i++) {
 
             db_fieldsmemory($resultaproced, $i);
             $procedencias .= $virgula . $v03_dcomp;
@@ -880,11 +880,11 @@ if ($tiporel == 1 || $tiporel == 11) {
                      where j01_matric = $matric";
 
             $resultpropri = db_query($sqlpropri);
-            if (pg_numrows($resultpropri) > 0) {
+            if (pg_num_rows($resultpropri) > 0) {
 
                 db_fieldsmemory($resultpropri, 0);
-                $nomepri = ucwords(strtolower($nomepri));
-                $j13_descr = ucwords(strtolower($j13_descr));
+                $nomepri = ucwords(strtolower((string) $nomepri));
+                $j13_descr = ucwords(strtolower((string) $j13_descr));
                 $z01_numcgm = $z01_cgmpri;
             }
 
@@ -896,7 +896,7 @@ if ($tiporel == 1 || $tiporel == 11) {
             $resultender = db_query($sqlender);
             db_fieldsmemory($resultender, 0);
 
-            $endereco = explode("#", $fc_iptuender);
+            $endereco = explode("#", (string) $fc_iptuender);
 
             if (sizeof($endereco) < 7) {
 
@@ -944,7 +944,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                       where q02_inscr = $q02_inscr";
 
             $resultempresa = db_query($sqlempresa);
-            if (pg_numrows($resultempresa) > 0) {
+            if (pg_num_rows($resultempresa) > 0) {
                 db_fieldsmemory($resultempresa, 0);
             }
 
@@ -1059,19 +1059,19 @@ if ($tiporel == 1 || $tiporel == 11) {
 
         foreach ($aDocumentoParagrafo as $iChave => $oDocumentoParagrafo) {
 
-            if (strtoupper($oDocumentoParagrafo->db02_descr) == 'NAOEXIBIRDESCONTO') {
+            if (strtoupper((string) $oDocumentoParagrafo->db02_descr) == 'NAOEXIBIRDESCONTO') {
 
                 $lDesconto = false;
                 continue;
             }
 
-            if (strtoupper($oDocumentoParagrafo->db02_descr) == 'TOTALPORANOCOMDESCONTO') {
+            if (strtoupper((string) $oDocumentoParagrafo->db02_descr) == 'TOTALPORANOCOMDESCONTO') {
 
                 $lTotalComDesconto = true;
                 continue;
             }
 
-            if (strtoupper($oDocumentoParagrafo->db02_descr) == 'SEEDRESUMIDO') {
+            if (strtoupper((string) $oDocumentoParagrafo->db02_descr) == 'SEEDRESUMIDO') {
                 $lSeedResumido = true;
             }
         }
@@ -1096,11 +1096,11 @@ if ($tiporel == 1 || $tiporel == 11) {
         /**
          * For dos paragrafos da notificação
          */
-        for ($doc = 0; $doc < pg_numrows($resultdocparagr); $doc++) {
+        for ($doc = 0; $doc < pg_num_rows($resultdocparagr); $doc++) {
 
             db_fieldsmemory($resultdocparagr, $doc, "", false, false);
             $texto = db_geratexto($db02_texto);
-            
+
             $sInnerArrecad = "";
             if ($oParam->k102_tipoemissao == 2) {
 
@@ -1170,7 +1170,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
             if (pg_num_rows($resultanos) > 0) {
 
-                for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                     db_fieldsmemory($resultanos, $totano);
                     $totvlrhis1 += $k22_vlrhis;
@@ -1182,7 +1182,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                 }
             }
 
-            if (strtoupper($db02_descr) == "TOTALPORANO" && $somenteparc == false) {
+            if (strtoupper((string) $db02_descr) == "TOTALPORANO" && $somenteparc == false) {
 
                 if (isset($notifparc)) {
 
@@ -1259,7 +1259,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                     $tottotal = 0;
                     $totdesconto = 0;
 
-                    for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                    for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                         db_fieldsmemory($resultanos, $totano);
                         $pdf->cell(2, 05, "", 0, 0, "C", 0);
@@ -1299,7 +1299,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                     $pdf->setfillcolor(255, 255, 255);
                 }
 
-            } elseif (strtoupper($db02_descr) == "MSGOUTROSDEBITOS" && !isset($notifparc)) {
+            } elseif (strtoupper((string) $db02_descr) == "MSGOUTROSDEBITOS" && !isset($notifparc)) {
 
                 /**
                  * processando variavel $listaoutrosdebitos que contem a lista dos outros debitos separados por virgula,
@@ -1321,10 +1321,10 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                 $listaoutrosdebitos = "";
 
-                for ($outrosdeb = 0; $outrosdeb < pg_numrows($result_outros); $outrosdeb++) {
+                for ($outrosdeb = 0; $outrosdeb < pg_num_rows($result_outros); $outrosdeb++) {
 
                     db_fieldsmemory($result_outros, $outrosdeb);
-                    $listaoutrosdebitos .= $k00_descr . ($outrosdeb < pg_numrows($result_outros) - 1 ? ", " : "");
+                    $listaoutrosdebitos .= $k00_descr . ($outrosdeb < pg_num_rows($result_outros) - 1 ? ", " : "");
                 }
 
                 if (strlen(trim($listaoutrosdebitos)) > 0) {
@@ -1335,7 +1335,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                 }
 
             } else {
-                if (strtoupper($db02_descr) == "DADOS_DEVEDORES") {
+                if (strtoupper((string) $db02_descr) == "DADOS_DEVEDORES") {
 
                     if ($pdf->gety() > ($pdf->h - 10)) {
                         $pdf->addPage();
@@ -1365,7 +1365,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                     if ($linhasPossuidor > 0) {
 
                         db_fieldsmemory($resultPossuidor, 0);
-                        if (trim($j18_textoprom) != "") {
+                        if (trim((string) $j18_textoprom) != "") {
                             $possuidor = $j18_textoprom;
                         }
                     }
@@ -1439,26 +1439,26 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol, 0);
 
                             $sNome = $oDadosEnvol->z01_nome;
-                            if (trim($oDadosEnvol->z01_dtfalecimento) != '' && strlen($oDadosEnvol->z01_cgccpf) == 11 && $oDadosEnvol != '00000000000') {
+                            if (trim((string) $oDadosEnvol->z01_dtfalecimento) != '' && strlen((string) $oDadosEnvol->z01_cgccpf) == 11 && $oDadosEnvol != '00000000000') {
                                 $sNome = $sExpressaoFalecimento . " " . $oDadosEnvol->z01_nome;
                             }
 
                             $sEndereco = "";
                             $sEndereco = $oDadosEnvol->z01_ender;
 
-                            if (trim($oDadosEnvol->z01_numero) != "0" && trim($oDadosEnvol->z01_numero) != "") {
+                            if (trim((string) $oDadosEnvol->z01_numero) != "0" && trim((string) $oDadosEnvol->z01_numero) != "") {
                                 $sEndereco .= ",{$oDadosEnvol->z01_numero} ";
                             }
-                            if (trim($oDadosEnvol->z01_compl) != "0" && trim($oDadosEnvol->z01_compl) != "") {
+                            if (trim((string) $oDadosEnvol->z01_compl) != "0" && trim((string) $oDadosEnvol->z01_compl) != "") {
                                 $sEndereco .= ",{$oDadosEnvol->z01_compl} ";
                             }
-                            if (trim($oDadosEnvol->z01_bairro) != "0" && trim($oDadosEnvol->z01_bairro) != "") {
+                            if (trim((string) $oDadosEnvol->z01_bairro) != "0" && trim((string) $oDadosEnvol->z01_bairro) != "") {
                                 $sEndereco .= ",{$oDadosEnvol->z01_bairro} ";
                             }
-                            if (trim($oDadosEnvol->z01_munic) != "0" && trim($oDadosEnvol->z01_munic) != "") {
+                            if (trim((string) $oDadosEnvol->z01_munic) != "0" && trim((string) $oDadosEnvol->z01_munic) != "") {
                                 $sEndereco .= ",{$oDadosEnvol->z01_munic}/{$oDadosEnvol->z01_uf} ";
                             }
-                            if (trim($oDadosEnvol->z01_cep) != "0" && trim($oDadosEnvol->z01_cep) != "") {
+                            if (trim((string) $oDadosEnvol->z01_cep) != "0" && trim((string) $oDadosEnvol->z01_cep) != "") {
                                 $sEndereco .= "- CEP {$oDadosEnvol->z01_cep} .";
                             }
 
@@ -1470,7 +1470,7 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                             $pdf->cell(50, 5, $sTipoProp, 0, 0, "L", 0);
                             $pdf->Cell(100, 5, $sNome, 0, 0, "L", 0);
-                            $tam = strlen($oDadosEnvol->z01_cgccpf);
+                            $tam = strlen((string) $oDadosEnvol->z01_cgccpf);
 
                             if ($tam == 14) {
                                 $sCgcCpf = db_formatar($oDadosEnvol->z01_cgccpf, "cnpj");
@@ -1487,7 +1487,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                     }
 
                 } else {
-                    if (strtoupper($db02_descr) == "TOTALPORANOCORRIGIDO" && $somenteparc == false) {
+                    if (strtoupper((string) $db02_descr) == "TOTALPORANOCORRIGIDO" && $somenteparc == false) {
 
                         $totvlrhis1 = 0;
                         $totvlrcor1 = 0;
@@ -1520,7 +1520,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->cell(30, 05, "VLR TOTAL", 1, 1, "C", 1);
                             $pdf->setfillcolor(255, 255, 255);
 
-                            for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                            for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                                 db_fieldsmemory($resultanos, $totano);
 
@@ -1564,7 +1564,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                         }
 
                     } else {
-                        if (strtoupper($db02_descr) == "TOTALPORANOPARCELARECEITA") {
+                        if (strtoupper((string) $db02_descr) == "TOTALPORANOPARCELARECEITA") {
 
                             $pdf->SetFont('Arial', '', 6);
 
@@ -1681,14 +1681,14 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                 $pdf->cell(06, 04, $oReg->k22_ano, 1, 0, "C", 0);
 
-                                $pdf->cell(03, 04, trim($oReg->k00_numpar), 1, 0, "C", 0); // P
-                                $pdf->cell(03, 04, trim($oReg->k00_numtot), 1, 0, "C", 0); // T
-                                $pdf->cell(12, 04, db_formatar(trim($oReg->k00_dtoper), "d"), 1, 0, "C", 0);  // OPER
-                                $pdf->cell(12, 04, db_formatar(trim($oReg->k00_dtvenc), "d"), 1, 0, "C", 0);  // VENC
+                                $pdf->cell(03, 04, trim((string) $oReg->k00_numpar), 1, 0, "C", 0); // P
+                                $pdf->cell(03, 04, trim((string) $oReg->k00_numtot), 1, 0, "C", 0); // T
+                                $pdf->cell(12, 04, db_formatar(trim((string) $oReg->k00_dtoper), "d"), 1, 0, "C", 0);  // OPER
+                                $pdf->cell(12, 04, db_formatar(trim((string) $oReg->k00_dtvenc), "d"), 1, 0, "C", 0);  // VENC
                                 $pdf->cell(16, 04, $ori, 1, 0, "L", 0); // ORIGEM
 
-                                $pdf->cell(07, 04, trim($oReg->k00_receit), 1, 0, "C", 0);
-                                $pdf->cell(50, 04, trim($oReg->k02_drecei), 1, 0, "L", 0);
+                                $pdf->cell(07, 04, trim((string) $oReg->k00_receit), 1, 0, "C", 0);
+                                $pdf->cell(50, 04, trim((string) $oReg->k02_drecei), 1, 0, "L", 0);
 
                                 $pdf->cell(12, 04, trim(db_formatar($oReg->k22_vlrhis, 'f')), 1, 0, "R", 0);
                                 $pdf->cell(12, 04, trim(db_formatar($oReg->k22_vlrcor, 'f')), 1, 0, "R", 0);
@@ -1736,7 +1736,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->cell(02, 03, "", 0, 1, "C", 1);
                             $pdf->SetFont('Arial', '', 10);
 
-                        } elseif (strtoupper($db02_descr) == "NOTIFICACAO ASSINA") {
+                        } elseif (strtoupper((string) $db02_descr) == "NOTIFICACAO ASSINA") {
 
                             if (isset($passou_por_aqui) && $passou_por_aqui == true) {
                                 $ass_notifica = $texto;
@@ -1745,11 +1745,11 @@ if ($tiporel == 1 || $tiporel == 11) {
                                   $db02_inicia + 0);
                             }
 
-                        } elseif (strtoupper($db02_descr) == "TOTALPORANOCOMDESCONTO") {
+                        } elseif (strtoupper((string) $db02_descr) == "TOTALPORANOCOMDESCONTO") {
 
                             $passou_por_aqui = true;
 
-                        } elseif (strtoupper($db02_descr) == "TOTALPORANOCOMRECIBO") {
+                        } elseif (strtoupper((string) $db02_descr) == "TOTALPORANOCOMRECIBO") {
 
                             $tottotal = 0;
 
@@ -1816,7 +1816,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $descranos = "";
                                 $descricao = "";
 
-                                for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                                for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                                     db_fieldsmemory($resultanos, $totano);
                                     if ($descricao != $k00_descr) {
@@ -1824,7 +1824,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                         $descricao = $k00_descr;
                                     }
 
-                                    $descranos .= $k22_ano . ($totano != pg_numrows($resultanos) - 1 ? "," : ".");
+                                    $descranos .= $k22_ano . ($totano != pg_num_rows($resultanos) - 1 ? "," : ".");
 
                                     $totvlrcor += $k22_vlrcor;
 
@@ -1890,7 +1890,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $relanos = 0;
                                 $hifen = "";
 
-                                for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                                for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                                     db_fieldsmemory($resultanos, $totano);
 
@@ -1972,7 +1972,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $parcel = 0;
                                 $hifen = "";
 
-                                for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+                                for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
 
                                     db_fieldsmemory($resultanos, $totano);
 
@@ -2108,7 +2108,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     $sqlloteador .= "   where j120_cgm = {$z01_numcgm}                                           ";
                                     $resultloteador = db_query($sqlloteador) or die($sqlloteador);
 
-                                    if (pg_numrows($resultloteador) > 0) {
+                                    if (pg_num_rows($resultloteador) > 0) {
 
                                         $lProcessaLoteador = true;
                                         $loteador = true;
@@ -2133,7 +2133,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                               $sWhereLoteador ";
 
                                 $resulttipoparc = db_query($sqltipoparc);
-                                if (pg_numrows($resulttipoparc) > 0) {
+                                if (pg_num_rows($resulttipoparc) > 0) {
                                     db_fieldsmemory($resulttipoparc, 0);
                                 } else {
                                     $k40_todasmarc = false;
@@ -2143,7 +2143,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $resulttipoparcdeb = db_query($sqltipoparcdeb);
                                 $passar = false;
 
-                                if (pg_numrows($resulttipoparcdeb) == 0) {
+                                if (pg_num_rows($resulttipoparcdeb) == 0) {
                                     $passar = true;
                                 } else {
 
@@ -2153,7 +2153,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                   and k41_arretipo = $tipo_debito ";
                                     $resulttipoparcdeb = db_query($sqltipoparcdeb);
 
-                                    if (pg_numrows($resulttipoparcdeb) > 0) {
+                                    if (pg_num_rows($resulttipoparcdeb) > 0) {
                                         $passar = true;
                                     }
                                 }
@@ -2290,15 +2290,15 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                 $resultcompara2 = db_query($sqlanostipos) or die($sqlanostipos);
 
-                                if (pg_numrows($resulttipoparc) == 0 ||
+                                if (pg_num_rows($resulttipoparc) == 0 ||
                                   $passar == false ||
-                                  ($k40_todasmarc == 't' ? pg_numrows($resultcompara1) <> pg_numrows($resultcompara2) : false)) {
+                                  ($k40_todasmarc == 't' ? pg_num_rows($resultcompara1) <> pg_num_rows($resultcompara2) : false)) {
                                     $desconto = 0;
                                 } else {
 
                                     $desconto = $k40_codigo;
                                     $rsDesconto = db_query(" select coalesce(descmul,1), coalesce(descjur,1) from tipoparc where cadtipoparc = $desconto and maxparc = 1");
-                                    if (pg_numrows($rsDesconto) > 0) {
+                                    if (pg_num_rows($rsDesconto) > 0) {
                                         db_fieldsmemory($rsDesconto, 0);
                                     }
                                 }
@@ -2310,7 +2310,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $tipo_arrecadacao = 0;
                             $tipo_cobranca = 0;
 
-                            $dt_venc = substr($db_datausu, 0, 10);
+                            $dt_venc = substr((string) $db_datausu, 0, 10);
                             $tot_desc = 0;
 
                             $lProcessaLoteador = false;
@@ -2325,7 +2325,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $sqlloteador .= "   where j120_cgm = {$z01_numcgm}                                           ";
 
                                 $resultloteador = db_query($sqlloteador) or die($sqlloteador);
-                                if (pg_numrows($resultloteador) > 0) {
+                                if (pg_num_rows($resultloteador) > 0) {
 
                                     $lProcessaLoteador = true;
                                     $loteador = true;
@@ -2347,19 +2347,19 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 exit;
                             }
 
-                            for ($regrecibo = 0; $regrecibo < pg_numrows($resultrecibo); $regrecibo++) {
+                            for ($regrecibo = 0; $regrecibo < pg_num_rows($resultrecibo); $regrecibo++) {
 
                                 db_fieldsmemory($resultrecibo, $regrecibo);
 
                                 if (isset($passou_por_aqui) && $passou_por_aqui == true) {
 
                                     $desconto = recibodesconto($k53_numpre, $k53_numpar, $k22_tipo, $k22_tipo,
-                                      $sWhereLoteador, pg_numrows($resultrecibo), pg_numrows($resultrecibo), $dt_venc,
+                                      $sWhereLoteador, pg_num_rows($resultrecibo), pg_num_rows($resultrecibo), $dt_venc,
                                       $k60_tipo);
                                     if ($desconto != 0) {
 
                                         $result_desc = db_query("select * from tipoparc where cadtipoparc = $desconto and maxparc = 1");
-                                        $numrows_desc = pg_numrows($result_desc);
+                                        $numrows_desc = pg_num_rows($result_desc);
 
                                         if ($numrows_desc > 0) {
 
@@ -2367,11 +2367,11 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                             if (isset($descmul) && isset($descjur)) {
 
-                                                $juros = substr($fc_calcula, 28, 13);
-                                                $multa = substr($fc_calcula, 41, 13);
+                                                $juros = substr((string) $fc_calcula, 28, 13);
+                                                $multa = substr((string) $fc_calcula, 41, 13);
                                                 if ($lProcessaLoteador) {
 
-                                                    $corrigido = substr($fc_calcula, 15, 13);
+                                                    $corrigido = substr((string) $fc_calcula, 15, 13);
                                                     $tot_desc += round((($corrigido / 100.00) * $descvlr), 2);
                                                 }
 
@@ -2468,10 +2468,10 @@ if ($tiporel == 1 || $tiporel == 11) {
                             /**
                              * Efetua um somatorio do valor
                              */
-                            $datavencimento = pg_result($DadosPagamento, 0, "k00_dtoper");
+                            $datavencimento = pg_fetch_result($DadosPagamento, 0, "k00_dtoper");
                             $total_recibo = 0;
-                            for ($i = 0; $i < pg_numrows($DadosPagamento); $i++) {
-                                $total_recibo += pg_result($DadosPagamento, $i, "valor");
+                            for ($i = 0; $i < pg_num_rows($DadosPagamento); $i++) {
+                                $total_recibo += pg_fetch_result($DadosPagamento, $i, "valor");
                             }
 
                             $valordesconto = $tottotal;
@@ -2533,8 +2533,8 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                 $Identificacao = db_query($sqlIdentificacao) or die($sqlIdentificacao);
                                 db_fieldsmemory($Identificacao, 0);
-                                $nomepri = ucwords(strtolower($nomepri));
-                                $j13_descr = ucwords(strtolower($j13_descr));
+                                $nomepri = ucwords(strtolower((string) $nomepri));
+                                $j13_descr = ucwords(strtolower((string) $j13_descr));
                                 $ident_tipo_ii = 'Imóvel';
 
                             } elseif ($k60_tipo == 'I') {
@@ -2600,13 +2600,13 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                 $resulthist = db_query($sqlhist);
 
-                                if (pg_numrows($resulthist) != false) {
+                                if (pg_num_rows($resulthist) != false) {
 
                                     $histparcela .= " - Parcela: ";
                                     $virgula = "";
-                                    for ($xy = 0; $xy < pg_numrows($resulthist); $xy++) {
+                                    for ($xy = 0; $xy < pg_num_rows($resulthist); $xy++) {
 
-                                        $histparcela .= $virgula . "" . pg_result($resulthist, $xy, 1);
+                                        $histparcela .= $virgula . "" . pg_fetch_result($resulthist, $xy, 1);
                                         $virgula = ",";
                                     }
                                 }
@@ -2743,14 +2743,14 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->cgcpref = $db_cgc;
                             $pdf->telefpref = $db_telef;
                             $pdf->emailpref = @$db_email;
-                            $pdf->nome = trim(pg_result($Identificacao, 0, "z01_nome"));
-                            $pdf->cgm = trim(pg_result($Identificacao, 0, "z01_numcgm"));
-                            $pdf->ender = trim(pg_result($Identificacao, 0,
-                                "z01_ender")) . ', ' . pg_result($Identificacao, 0,
-                                "z01_numero") . ' ' . trim(pg_result($Identificacao, 0, "z01_compl"));
-                            $pdf->munic = trim(pg_result($Identificacao, 0, "z01_munic"));
-                            $pdf->cep = trim(pg_result($Identificacao, 0, "z01_cep"));
-                            $pdf->cgccpf = trim(@pg_result($Identificacao, 0, "z01_cgccpf"));
+                            $pdf->nome = trim(pg_fetch_result($Identificacao, 0, "z01_nome"));
+                            $pdf->cgm = trim(pg_fetch_result($Identificacao, 0, "z01_numcgm"));
+                            $pdf->ender = trim(pg_fetch_result($Identificacao, 0,
+                                "z01_ender")) . ', ' . pg_fetch_result($Identificacao, 0,
+                                "z01_numero") . ' ' . trim(pg_fetch_result($Identificacao, 0, "z01_compl"));
+                            $pdf->munic = trim(pg_fetch_result($Identificacao, 0, "z01_munic"));
+                            $pdf->cep = trim(pg_fetch_result($Identificacao, 0, "z01_cep"));
+                            $pdf->cgccpf = trim(@pg_fetch_result($Identificacao, 0, "z01_cgccpf"));
                             $pdf->tipoinscr = $tipoidentificacao;
                             $pdf->nrinscr = $numero;
                             $pdf->ip = db_getsession("DB_ip");
@@ -2765,7 +2765,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->datacalc = date('d-m-Y', $DB_DATACALC);
                             $pdf->taxabanc = db_formatar($taxabancaria, 'f');
                             $pdf->recorddadospagto = $DadosPagamento;
-                            $pdf->linhasdadospagto = pg_numrows($DadosPagamento);
+                            $pdf->linhasdadospagto = pg_num_rows($DadosPagamento);
                             $pdf->receita = 'k00_receit';
                             $pdf->receitared = 'codreduz';
                             $pdf->dreceita = 'k02_descr';
@@ -2784,14 +2784,14 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->linhadigitavel = $linhadigitavel;
                             $pdf->codigobarras = $codigobarras;
                             $pdf->texto = db_getsession('DB_login') . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
-                            $pdf->descr3_1 = trim(pg_result($Identificacao, 0, "z01_nome")); // contribuinte
-                            $pdf->descr3_2 = trim(pg_result($Identificacao, 0,
-                                "z01_ender")) . ', ' . pg_result($Identificacao, 0,
-                                "z01_numero") . ' ' . trim(pg_result($Identificacao, 0, "z01_compl"));// endereco
+                            $pdf->descr3_1 = trim(pg_fetch_result($Identificacao, 0, "z01_nome")); // contribuinte
+                            $pdf->descr3_2 = trim(pg_fetch_result($Identificacao, 0,
+                                "z01_ender")) . ', ' . pg_fetch_result($Identificacao, 0,
+                                "z01_numero") . ' ' . trim(pg_fetch_result($Identificacao, 0, "z01_compl"));// endereco
                             $pdf->bairropri = $j13_descr;    // municipio
-                            $pdf->munic = trim(pg_result($Identificacao, 0, "z01_munic"));    // bairro
-                            $pdf->cep = trim(pg_result($Identificacao, 0, "z01_cep"));
-                            $pdf->cgccpf = trim(@pg_result($Identificacao, 0, "z01_cgccpf"));
+                            $pdf->munic = trim(pg_fetch_result($Identificacao, 0, "z01_munic"));    // bairro
+                            $pdf->cep = trim(pg_fetch_result($Identificacao, 0, "z01_cep"));
+                            $pdf->cgccpf = trim(@pg_fetch_result($Identificacao, 0, "z01_cgccpf"));
                             $pdf->titulo5 = "";                 // titulo parcela
                             $pdf->descr5 = "";                 // descr parcela
                             $pdf->titulo8 = $tipoidentificacao;  // tipo de identificacao;
@@ -2821,10 +2821,10 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                 $pdf->agencia_cedente = $oConvenio->getAgenciaCedente();
                                 $pdf->carteira = $oConvenio->getCarteira();
-                                $pdf->descr11_1 = trim(pg_result($Identificacao, 0,
-                                    "z01_numcgm")) . "-" . trim(pg_result($Identificacao, 0, "z01_nome"));
-                                $pdf->descr11_2 = strtoupper($z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . '  ' . $z01_compl);
-                                $pdf->descr11_3 = trim(pg_result($Identificacao, 0, "z01_munic"));
+                                $pdf->descr11_1 = trim(pg_fetch_result($Identificacao, 0,
+                                    "z01_numcgm")) . "-" . trim(pg_fetch_result($Identificacao, 0, "z01_nome"));
+                                $pdf->descr11_2 = strtoupper((string) $z01_ender) . ($z01_numero == "" ? "" : ', ' . $z01_numero . '  ' . $z01_compl);
+                                $pdf->descr11_3 = trim(pg_fetch_result($Identificacao, 0, "z01_munic"));
                                 $pdf->tipo_exerc = $notifica;
                                 $pdf->data_processamento = date('d/m/Y', db_getsession('DB_datausu'));
                                 $pdf->dtparapag = $datavencimento;
@@ -2844,7 +2844,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 /**
                                  * Emissão do recibo
                                  */
-                                if (strpos($db02_texto, "imprimirdesconto") >= 0 && gettype(strpos($db02_texto,
+                                if (strpos((string) $db02_texto, "imprimirdesconto") >= 0 && gettype(strpos((string) $db02_texto,
                                     "imprimirdesconto")) != "boolean") {
 
                                     $pdf->ln();
@@ -3088,7 +3088,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     }
 
                                     if (empty($pdf->numbanco)) {
-                                        $pdf->numbanco = substr($pdf->linha_digitavel, 0, 3);
+                                        $pdf->numbanco = substr((string) $pdf->linha_digitavel, 0, 3);
                                     }
 
                                     switch ($pdf->numbanco) {
@@ -3098,7 +3098,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                             try {
                                                 $sCaminhoLogo = cl_db_bancos::exportarLogoPorCodigoBanco($pdf->numbanco);
                                                 $pdf->Image($sCaminhoLogo, $x + 10, $y + 1, 30, 7);
-                                            } catch (Exception $e) {
+                                            } catch (Exception) {
                                             }
                                             $pdf->numbanco = "{$pdf->numbanco}-0";
 
@@ -3116,7 +3116,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                             try {
                                                 $sCaminhoLogo = cl_db_bancos::exportarLogoPorCodigoBanco($pdf->numbanco);
                                                 $pdf->Image($sCaminhoLogo, $x + 10, $y + 1, 30, 7);
-                                            } catch (Exception $e) {
+                                            } catch (Exception) {
                                             }
                                             $pdf->numbanco = "{$pdf->numbanco}-0";
                                             break;
@@ -3197,7 +3197,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     $pdf->Text($x + 12, $y + 37,
                                       date('d/m/Y'));                            // data do documento
                                     $pdf->Text($x + 36, $y + 37,
-                                      @substr($pdf->numpre, 0, -4));              // numero do documento
+                                      @substr((string) $pdf->numpre, 0, -4));              // numero do documento
                                     $pdf->Text($x + 75, $y + 37,
                                       @$pdf->especie_doc);                        // especie do documento
                                     $pdf->Text($x + 101, $y + 37, @$pdf->aceite);                             // aceite
@@ -3205,9 +3205,9 @@ if ($tiporel == 1 || $tiporel == 11) {
                                       @$pdf->data_processamento);                 // data de opercao   data do processamento
                                     $pdf->SetFont('Arial', '', 6);
                                     $pdf->Text($x + 138, $y + 30,
-                                      str_pad(@$pdf->descr9, 17, "0", STR_PAD_LEFT));// nosso numero
+                                      str_pad((string) @$pdf->descr9, 17, "0", STR_PAD_LEFT));// nosso numero
                                     $pdf->Text($x + 12, $y - 7,
-                                      str_pad(@$pdf->descr9, 17, "0", STR_PAD_LEFT));  // nosso numero
+                                      str_pad((string) @$pdf->descr9, 17, "0", STR_PAD_LEFT));  // nosso numero
                                     $pdf->SetFont('Arial', '', 10);
                                     // $pdf->Text($x+12,  $y+44,@$pdf->tipo_exerc);                        // codigo do cedente //
                                     $pdf->Text($x + 12, $y + 44, '');                        // codigo do cedente //
@@ -3217,7 +3217,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     $pdf->Text($x + 110, $y + 44, @$pdf->valorhis);            // valor
 
                                     $pdf->Text($x + 138, $y + 37,
-                                      @trim($pdf->valtotal));                         // valor do documento
+                                      @trim((string) $pdf->valtotal));                         // valor do documento
 
                                     $pdf->sety($y + 42);
                                     $pdf->SetFont('Arial', '', 8);
@@ -3235,18 +3235,18 @@ if ($tiporel == 1 || $tiporel == 11) {
                                     $pdf->SetFont('Arial', '', 6);
                                     $pdf->text($x + 90, $y + 78, 'CPF/CNPJ:');
                                     $pdf->text($x + 102, $y + 78,
-                                      db_formatar(@$pdf->cgccpf, (strlen(@$pdf->cgccpf) < 12 ? 'cpf' : 'cnpj')));
+                                      db_formatar(@$pdf->cgccpf, (strlen((string) @$pdf->cgccpf) < 12 ? 'cpf' : 'cnpj')));
                                     $pdf->Text($x + 12, $y + 78,
                                       @$pdf->descr11_1);            // $pdf->nome);    // sacado 1
                                     $pdf->Text($x + 12, $y + 80,
                                       @$pdf->descr11_2);            // $pdf->ender);    // sacado 2
                                     $pdf->Text($x + 12, $y + 82,
-                                      trim(@$pdf->munic) . " / RS / CEP-" . $pdf->cep); // $pdf->munic);    // sacado 3
+                                      trim((string) @$pdf->munic) . " / RS / CEP-" . $pdf->cep); // $pdf->munic);    // sacado 3
                                     $pdf->SetLineWidth(0.2);
                                 }
                             }
 
-                        } elseif (strtoupper($db02_descr) == "TOTALPORANO" && $somenteparc == true) {
+                        } elseif (strtoupper((string) $db02_descr) == "TOTALPORANO" && $somenteparc == true) {
 
                             if (isset($notifparc)) {
 
@@ -3345,7 +3345,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $pdf->cell(25, 05, trim(db_formatar($k22_total, 'f')), 1, 1, "R", 0);
                             }
 
-                        } elseif (strtoupper($db02_descr) == "TOTALGERALPORANO" && $somenteparc == false) {
+                        } elseif (strtoupper((string) $db02_descr) == "TOTALGERALPORANO" && $somenteparc == false) {
 
                             if (isset($notifparc)) {
 
@@ -3419,7 +3419,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $totdesconto = 0;
                             $tottotal = 0;
 
-                            for ($totano = 0; $totano < pg_numrows($resultanostipos); $totano++) {
+                            for ($totano = 0; $totano < pg_num_rows($resultanostipos); $totano++) {
 
                                 db_fieldsmemory($resultanostipos, $totano);
                                 $pdf->cell(10, 05, "", 0, 0, "C", 0);
@@ -3454,7 +3454,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->cell(45, 05, trim(db_formatar($tottotal, 'f')), 1, 1, "R", 1);
                             $pdf->setfillcolor(255, 255, 255);
 
-                        } elseif (strtoupper($db02_descr) == "TOTALGERALPORANO" && $somenteparc == true) {
+                        } elseif (strtoupper((string) $db02_descr) == "TOTALGERALPORANO" && $somenteparc == true) {
 
                             if (isset($notifparc)) {
 
@@ -3556,7 +3556,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $pdf->cell(25, 05, trim(db_formatar($k22_total, 'f')), 1, 1, "R", 0);
                             }
 
-                        } elseif (strtoupper($db02_descr) == "TOTALPORANOEPROCEDENCIA") {
+                        } elseif (strtoupper((string) $db02_descr) == "TOTALPORANOEPROCEDENCIA") {
 
                             if (isset($notifparc)) {
 
@@ -3723,7 +3723,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->cell(25, 05, trim(db_formatar($tottotal, 'f')), 1, 1, "R", 1);
                             $pdf->setfillcolor(255, 255, 255);
 
-                        } elseif (strtoupper($db02_descr) == "TOTALPORANOETIPO") {
+                        } elseif (strtoupper((string) $db02_descr) == "TOTALPORANOETIPO") {
 
                             if (isset($notifparc)) {
 
@@ -3802,7 +3802,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $totdesconto = 0;
                             $tottotal = 0;
 
-                            for ($totano = 0; $totano < pg_numrows($resultanostiposdeb); $totano++) {
+                            for ($totano = 0; $totano < pg_num_rows($resultanostiposdeb); $totano++) {
 
                                 db_fieldsmemory($resultanostiposdeb, $totano);
                                 $pdf->cell(15, 05, $k22_ano, 1, 0, "C", 0);
@@ -3839,7 +3839,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->cell(25, 05, trim(db_formatar($tottotal, 'f')), 1, 1, "R", 1);
                             $pdf->setfillcolor(255, 255, 255);
 
-                        } elseif (strtoupper($db02_descr) == "TOTALPORANOEHISTORICO") {
+                        } elseif (strtoupper((string) $db02_descr) == "TOTALPORANOEHISTORICO") {
 
                             if (isset($notifparc)) {
 
@@ -3920,7 +3920,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $totdesconto = 0;
                             $tottotal = 0;
 
-                            for ($totano = 0; $totano < pg_numrows($resultanoshistdeb); $totano++) {
+                            for ($totano = 0; $totano < pg_num_rows($resultanoshistdeb); $totano++) {
 
                                 db_fieldsmemory($resultanoshistdeb, $totano);
                                 $pdf->cell(15, 05, $k22_ano, 1, 0, "C", 0);
@@ -3955,7 +3955,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->cell(25, 05, trim(db_formatar($tottotal, 'f')), 1, 1, "R", 1);
                             $pdf->setfillcolor(255, 255, 255);
 
-                        } elseif (strtoupper($db02_descr) == "DATA") {
+                        } elseif (strtoupper((string) $db02_descr) == "DATA") {
 
                             $sqltexto = "select munic, cgc from db_config where codigo = " . db_getsession("DB_instit");
                             $resulttexto = db_query($sqltexto);
@@ -3963,7 +3963,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $iDiaAtual = date("d");
                             $sMesAtual = db_mes(date("m"));
                             $iAnoAtual = date("Y");
-                            $texto = trim($munic) . ', ' . $iDiaAtual . ' de ' . $sMesAtual . ' de ' . $iAnoAtual . '.';
+                            $texto = trim((string) $munic) . ', ' . $iDiaAtual . ' de ' . $sMesAtual . ' de ' . $iAnoAtual . '.';
                             $pdf->MultiCell(0, 4 + $db02_espaca, $texto, "0", "R", 0, $db02_inicia + 0);
                             $pdf->Ln(1);
 
@@ -3987,7 +3987,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->sety($posicao_assinatura + 43);
                             $pdf->MultiCell(170, 5, $texto, 0, "R", 0);
 
-                        } elseif (strtoupper($db02_descr) == "SEEDPORMATRICULA" && !$lSeedResumido) {
+                        } elseif (strtoupper((string) $db02_descr) == "SEEDPORMATRICULA" && !$lSeedResumido) {
 
                             $pdf->sety(190 + 35);
                             $pdf->SetFont('Arial', '', 12);
@@ -4004,7 +4004,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->SetFont('Arial', '', 12);
                             $pdf->cell(40, 5, "ENDEREÇO: ", 0, 0, "L", 0);
                             $pdf->SetFont('Arial', 'B', 12);
-                            $pdf->cell(50, 5, trim($nomepri) . ", " . trim($j39_numero) . "  " . trim(@$z39_compl), 0,
+                            $pdf->cell(50, 5, trim((string) $nomepri) . ", " . trim((string) $j39_numero) . "  " . trim((string) @$z39_compl), 0,
                               1, "L", 0);
                             $pdf->SetFont('Arial', '', 12);
                             $pdf->cell(40, 5, ($j13_descr == "" ? "" : "BAIRRO: "), 0, 0, "L", 0);
@@ -4014,7 +4014,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->cell(40, 5, "MUNICÍPIO:", 0, 0, "L", 0);
                             $pdf->SetFont('Arial', 'B', 12);
                             $pdf->cell(50, 5,
-                              trim($munic) . "/" . $uf . " - " . substr($cep, 0, 5) . "-" . substr($cep, 5, 3), 0, 1,
+                              trim((string) $munic) . "/" . $uf . " - " . substr((string) $cep, 0, 5) . "-" . substr((string) $cep, 5, 3), 0, 1,
                               "L", 0);
                             $pdf->SetFont('Arial', '', 12);
                             $pdf->cell(40, 5, "NOTIFICAÇÃO: ", 0, 0, "L", 0);
@@ -4026,20 +4026,20 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                 $pdf->cell(30, 5, "CGM:", 0, 0, "L", 0);
                                 $pdf->SetFont('Arial', 'B', 12);
-                                $pdf->cell(20, 5, $$xcodigo1, 0, 1, "L", 0);
+                                $pdf->cell(20, 5, ${$xcodigo1}, 0, 1, "L", 0);
                             } elseif ($xcodigo == "k22_matric") {
 
                                 $pdf->cell(30, 5, "MATRÍCULA:", 0, 0, "L", 0);
                                 $pdf->SetFont('Arial', 'B', 12);
-                                $pdf->cell(20, 5, $$xcodigo1, 0, 1, "L", 0);
+                                $pdf->cell(20, 5, ${$xcodigo1}, 0, 1, "L", 0);
                             } elseif ($xcodigo == "k22_inscr") {
 
                                 $pdf->cell(30, 5, "INSCRIÇÃO:", 0, 0, "L", 0);
                                 $pdf->SetFont('Arial', 'B', 12);
-                                $pdf->cell(20, 5, $$xcodigo1, 0, 1, "L", 0);
+                                $pdf->cell(20, 5, ${$xcodigo1}, 0, 1, "L", 0);
                             }
 
-                        } elseif (strtoupper($db02_descr) == "SEEDRESUMIDO") {
+                        } elseif (strtoupper((string) $db02_descr) == "SEEDRESUMIDO") {
 
                             $iAltura = 220;
 
@@ -4056,7 +4056,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $pdf->SetFont('Arial', '', 12);
                                 $pdf->cell(40, 5, "ENDEREÇO: ", 0, 0, "L", 0);
                                 $pdf->SetFont('Arial', 'B', 12);
-                                $pdf->cell(50, 5, trim($z01_ender) . ", " . trim($z01_numero) . "  " . trim($z01_compl),
+                                $pdf->cell(50, 5, trim((string) $z01_ender) . ", " . trim((string) $z01_numero) . "  " . trim((string) $z01_compl),
                                   0, 1, "L", 0);
                                 $pdf->SetFont('Arial', '', 12);
                                 $pdf->cell(40, 5, ($z01_bairro == "" ? "" : "BAIRRO: "), 0, 0, "L", 0);
@@ -4065,11 +4065,11 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 $pdf->SetFont('Arial', '', 12);
                                 $pdf->cell(40, 5, "MUNICÍPIO:", 0, 0, "L", 0);
                                 $pdf->SetFont('Arial', 'B', 12);
-                                $pdf->cell(50, 5, trim($z01_munic) . "/" . $z01_uf, 0, 1, "L", 0);
+                                $pdf->cell(50, 5, trim((string) $z01_munic) . "/" . $z01_uf, 0, 1, "L", 0);
                                 $pdf->SetFont('Arial', '', 12);
                                 $pdf->cell(40, 5, "CEP :", 0, 0, "L", 0);
                                 $pdf->SetFont('Arial', 'B', 12);
-                                $pdf->cell(50, 5, substr($z01_cep, 0, 5) . "-" . substr($z01_cep, 5,
+                                $pdf->cell(50, 5, substr((string) $z01_cep, 0, 5) . "-" . substr((string) $z01_cep, 5,
                                     3) . " / Caixa Postal : " . $z01_cxpostal, 0, 1, "L", 0);
                                 $pdf->SetFont('Arial', '', 12);
 
@@ -4082,22 +4082,22 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                     $pdf->cell(30, 5, "CGM:", 0, 0, "L", 0);
                                     $pdf->SetFont('Arial', 'B', 12);
-                                    $pdf->cell(20, 5, $$xcodigo1, 0, 1, "L", 0);
+                                    $pdf->cell(20, 5, ${$xcodigo1}, 0, 1, "L", 0);
                                 } elseif ($xcodigo == "k22_matric") {
 
                                     $pdf->cell(30, 5, "MATRÍCULA:", 0, 0, "L", 0);
                                     $pdf->SetFont('Arial', 'B', 12);
-                                    $pdf->cell(20, 5, $$xcodigo1, 0, 1, "L", 0);
+                                    $pdf->cell(20, 5, ${$xcodigo1}, 0, 1, "L", 0);
                                 } elseif ($xcodigo == "k22_inscr") {
 
                                     $pdf->cell(30, 5, "INSCRIÇÃO:", 0, 0, "L", 0);
                                     $pdf->SetFont('Arial', 'B', 12);
-                                    $pdf->cell(20, 5, $$xcodigo1, 0, 1, "L", 0);
+                                    $pdf->cell(20, 5, ${$xcodigo1}, 0, 1, "L", 0);
                                 }
                                 $iAltura = $iAltura + 33;
                             }
 
-                        } elseif (strtoupper($db02_descr) == "SEED" && !$lSeedResumido) {
+                        } elseif (strtoupper((string) $db02_descr) == "SEED" && !$lSeedResumido) {
 
                             $pdf->sety(190 + 35);
                             $pdf->SetFont('Arial', '', 12);
@@ -4114,7 +4114,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->SetFont('Arial', '', 12);
                             $pdf->cell(40, 5, "ENDEREÇO: ", 0, 0, "L", 0);
                             $pdf->SetFont('Arial', 'B', 12);
-                            $pdf->cell(50, 5, trim($z01_ender) . ", " . trim($z01_numero) . "  " . trim($z01_compl), 0,
+                            $pdf->cell(50, 5, trim((string) $z01_ender) . ", " . trim((string) $z01_numero) . "  " . trim((string) $z01_compl), 0,
                               1, "L", 0);
                             $pdf->SetFont('Arial', '', 12);
                             $pdf->cell(40, 5, ($z01_bairro == "" ? "" : "BAIRRO: "), 0, 0, "L", 0);
@@ -4123,11 +4123,11 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->SetFont('Arial', '', 12);
                             $pdf->cell(40, 5, "MUNICÍPIO:", 0, 0, "L", 0);
                             $pdf->SetFont('Arial', 'B', 12);
-                            $pdf->cell(50, 5, trim($z01_munic) . "/" . $z01_uf, 0, 1, "L", 0);
+                            $pdf->cell(50, 5, trim((string) $z01_munic) . "/" . $z01_uf, 0, 1, "L", 0);
                             $pdf->SetFont('Arial', '', 12);
                             $pdf->cell(40, 5, "CEP :", 0, 0, "L", 0);
                             $pdf->SetFont('Arial', 'B', 12);
-                            $pdf->cell(50, 5, substr($z01_cep, 0, 5) . "-" . substr($z01_cep, 5,
+                            $pdf->cell(50, 5, substr((string) $z01_cep, 0, 5) . "-" . substr((string) $z01_cep, 5,
                                 3) . " / Caixa Postal : " . $z01_cxpostal, 0, 1, "L", 0);
                             $pdf->SetFont('Arial', '', 12);
 
@@ -4140,17 +4140,17 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                 $pdf->cell(30, 5, "CGM:", 0, 0, "L", 0);
                                 $pdf->SetFont('Arial', 'B', 12);
-                                $pdf->cell(20, 5, $$xcodigo1, 0, 1, "L", 0);
+                                $pdf->cell(20, 5, ${$xcodigo1}, 0, 1, "L", 0);
                             } elseif ($xcodigo == "k22_matric") {
 
                                 $pdf->cell(30, 5, "MATRÍCULA:", 0, 0, "L", 0);
                                 $pdf->SetFont('Arial', 'B', 12);
-                                $pdf->cell(20, 5, $$xcodigo1, 0, 1, "L", 0);
+                                $pdf->cell(20, 5, ${$xcodigo1}, 0, 1, "L", 0);
                             } elseif ($xcodigo == "k22_inscr") {
 
                                 $pdf->cell(30, 5, "INSCRIÇÃO:", 0, 0, "L", 0);
                                 $pdf->SetFont('Arial', 'B', 12);
-                                $pdf->cell(20, 5, $$xcodigo1, 0, 1, "L", 0);
+                                $pdf->cell(20, 5, ${$xcodigo1}, 0, 1, "L", 0);
                             }
 
                             $pdf->RoundedRect(150, 190 + 35, 55, 67, 0, '', '1234');
@@ -4203,7 +4203,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->cell(15, 7, "Matrícula : _____________", 0, 0, "L", 0);
                             $pdf->RoundedRect(55, 220 + 35, 95, 37, 0, 'D', '1234');
 
-                        } elseif (strtoupper($db02_descr) == "AR") {
+                        } elseif (strtoupper((string) $db02_descr) == "AR") {
 
                             $iAltAR = 210;
                             $iFontAR = 3;
@@ -4242,31 +4242,31 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                             $pdf->SetY($iAltAR + 12);
 
-                            $sEnder = trim($z01_ender);
+                            $sEnder = trim((string) $z01_ender);
 
                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                            $pdf->Cell(75, 3, " " . trim($z01_nome), 0, 1, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim((string) $z01_nome), 0, 1, "L", 0);
                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                            $pdf->Cell(75, 3, " " . trim($z01_ender), 0, 1, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim((string) $z01_ender), 0, 1, "L", 0);
                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                            $pdf->Cell(75, 3, " " . trim($z01_bairro), 0, 1, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim((string) $z01_bairro), 0, 1, "L", 0);
                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                            $pdf->Cell(75, 3, " " . trim($z01_munic) . " - " . trim($z01_uf), 0, 1, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim((string) $z01_munic) . " - " . trim((string) $z01_uf), 0, 1, "L", 0);
                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                            $pdf->Cell(75, 3, " " . trim($z01_cep) . " - " . trim($z01_cxpostal), 0, 1, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim((string) $z01_cep) . " - " . trim((string) $z01_cxpostal), 0, 1, "L", 0);
 
                             $pdf->Text(17, $iAltAR + 44, "ENDEREÇO PARA DEVOLUÇÃO DO AR :");
 
                             $pdf->SetY($iAltAR + 47);
                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                            $pdf->Cell(75, 3, " " . trim($nomeinst), 0, 1, "L", 0);
+                            $pdf->Cell(75, 3, " " . trim((string) $nomeinst), 0, 1, "L", 0);
                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
                             $pdf->Cell(75, 3, " CNPJ: " . db_formatar($cgc, "cnpj"), 0, 1, "L", 0);
                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                            $pdf->Cell(75, 3, " " . trim($ender) . ", " . trim($numero) . " - " . trim($bairro), 0, 1,
+                            $pdf->Cell(75, 3, " " . trim((string) $ender) . ", " . trim((string) $numero) . " - " . trim((string) $bairro), 0, 1,
                               "L", 0);
                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                            $pdf->Cell(75, 3, " " . trim($cep) . " - " . trim($munic) . " - " . trim($uf), 0, 1, "L",
+                            $pdf->Cell(75, 3, " " . trim((string) $cep) . " - " . trim((string) $munic) . " - " . trim((string) $uf), 0, 1, "L",
                               0);
 
                             $pdf->Text(93, $iAltAR + 10, "TENTATIVAS DE ENTREGA");
@@ -4325,11 +4325,11 @@ if ($tiporel == 1 || $tiporel == 11) {
                             $pdf->Text(163, $iAltAR + 5, "ESPAÇO RESERVADO A MENÇÃO MP");
 
                         } else {
-                            if (strtoupper($db02_descr) == "VERSO") {
+                            if (strtoupper((string) $db02_descr) == "VERSO") {
 
                                 $pdf->AddPage();
                                 $iQtdNotificoesGeradas++;
-                                $opcoesverso = explode("\n", $db02_texto);
+                                $opcoesverso = explode("\n", (string) $db02_texto);
 
                                 $remetente_parte1 = 0;
                                 $remetente_parte3 = 0;
@@ -4392,11 +4392,11 @@ if ($tiporel == 1 || $tiporel == 11) {
                                where j01_matric = $matric";
 
                                                 $resultpropri = db_query($sqlpropri);
-                                                if (pg_numrows($resultpropri) > 0) {
+                                                if (pg_num_rows($resultpropri) > 0) {
 
                                                     db_fieldsmemory($resultpropri, 0);
-                                                    $nomepri = ucwords(strtolower($nomepri));
-                                                    $j13_descr = ucwords(strtolower($j13_descr));
+                                                    $nomepri = ucwords(strtolower((string) $nomepri));
+                                                    $j13_descr = ucwords(strtolower((string) $j13_descr));
                                                 }
 
                                                 if ($tratamento == 0) {
@@ -4439,7 +4439,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 where q02_inscr = $q02_inscr";
                                                 $resultempresa = db_query($sqlempresa);
 
-                                                if (pg_numrows($resultempresa) > 0) {
+                                                if (pg_num_rows($resultempresa) > 0) {
                                                     db_fieldsmemory($resultempresa, 0);
                                                 }
                                                 $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
@@ -4490,18 +4490,18 @@ if ($tiporel == 1 || $tiporel == 11) {
                                                 $S = 10;
                                                 global $variavel;
                                                 $variavel = "";
-    
+
                                                 if (($imprimirtimbre == 1) || ($imprimirtimbre == 3)) {
                                                     $pdf = CabecNotif($pdf, 1, $variavel);
                                                 } else {
                                                     $pdf->ln(135);
                                                 }
-    
+
                                                 $z01_ender = "";
                                                 $z01_munic = "";
-    
+
                                                 if ($k60_tipo == 'M') {
-    
+
                                                     $sqlpropri = "select z01_nome,
                                          codpri,
                                          nomepri,
@@ -4521,17 +4521,17 @@ if ($tiporel == 1 || $tiporel == 11) {
                                          proprietario.pql_localizacao
                                     from proprietario
                                    where j01_matric = $matric";
-    
+
                                                     $resultpropri = db_query($sqlpropri);
-                                                    if (pg_numrows($resultpropri) > 0) {
-    
+                                                    if (pg_num_rows($resultpropri) > 0) {
+
                                                         db_fieldsmemory($resultpropri, 0);
-                                                        $nomepri = ucwords(strtolower($nomepri));
-                                                        $j13_descr = ucwords(strtolower($j13_descr));
+                                                        $nomepri = ucwords(strtolower((string) $nomepri));
+                                                        $j13_descr = ucwords(strtolower((string) $j13_descr));
                                                     }
-    
+
                                                     if ($tratamento == 0) {
-    
+
                                                         $imprimedestinatario = $z01_nome;
                                                         $sqlender = "select z01_ender,
                                           z01_numero,
@@ -4547,15 +4547,15 @@ if ($tiporel == 1 || $tiporel == 11) {
                                                         db_fieldsmemory($resultender, 0, true);
                                                         $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
                                                         $z01_munic = $z01_cep ."-" . trim($z01_munic) . "/" . $z01_uf . "  " . $z01_cxpostal;
-    
+
                                                     } else {
-    
+
                                                         EnderecoNotif($tratamento, $matric, $z01_nome, $cgm);
                                                         $imprimedestinatario = $z01_destinatario;
                                                     }
-    
+
                                                 } elseif ($k60_tipo == 'I') {
-    
+
                                                     $imprimedestinatario = $z01_nome;
                                                     $sqlempresa = "select z01_ender,
                                           z01_numero,
@@ -4569,15 +4569,15 @@ if ($tiporel == 1 || $tiporel == 11) {
                                           inner join cgm on z01_numcgm = q02_numcgm
                                     where q02_inscr = $q02_inscr";
                                                     $resultempresa = db_query($sqlempresa);
-    
-                                                    if (pg_numrows($resultempresa) > 0) {
+
+                                                    if (pg_num_rows($resultempresa) > 0) {
                                                         db_fieldsmemory($resultempresa, 0);
                                                     }
                                                     $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
                                                     $z01_munic = $z01_cep ."-" . trim($z01_munic) . "/" . $z01_uf . "  " . $z01_cxpostal;
-    
+
                                                 } elseif ($k60_tipo == 'N' || $k60_tipo == 'C') {
-    
+
                                                     $imprimedestinatario = $z01_nome;
                                                     $sqlender = "select z01_ender,
                                         z01_numero,
@@ -4594,10 +4594,10 @@ if ($tiporel == 1 || $tiporel == 11) {
                                                     $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
                                                     $z01_munic = $z01_cep ."-" . trim($z01_munic) . "/" . $z01_uf . "  " . $z01_cxpostal;
                                                 }
-    
+
                                                 $oLibDocumento = new libdocumento(1702, null);
                                                 if ($oLibDocumento->lErro) {
-    
+
                                                     $oParms = new stdClass();
                                                     $oParms->sErro = $oLibDocumento->sMsgErro;
                                                     $sMsg = _M('tributario.notificacoes.cai2_emitenotif002.sem_documento_cadastrado',
@@ -4605,12 +4605,12 @@ if ($tiporel == 1 || $tiporel == 11) {
                                                     db_redireciona("db_erros.php?fechar=true&db_erro={$sMsg}");
                                                     exit;
                                                 }
-    
+
                                                 $aParagrafos = $oLibDocumento->getDocParagrafos();
                                                 foreach ($aParagrafos as $oParag) {
                                                     eval($oParag->oParag->db02_texto);
                                                 }
-    
+
                                                 if (file_exists('imagens/files/correios.jpg')) {
                                                     $pdf->Image('imagens/files/correios.jpg', 162, 110, 38);
                                                 }
@@ -4656,11 +4656,11 @@ if ($tiporel == 1 || $tiporel == 11) {
                                where j01_matric = $matric";
 
                                                 $resultpropri = db_query($sqlpropri);
-                                                if (pg_numrows($resultpropri) > 0) {
+                                                if (pg_num_rows($resultpropri) > 0) {
 
                                                     db_fieldsmemory($resultpropri, 0);
-                                                    $nomepri = ucwords(strtolower($nomepri));
-                                                    $z01_bairro = ucwords(strtolower($z01_bairro));
+                                                    $nomepri = ucwords(strtolower((string) $nomepri));
+                                                    $z01_bairro = ucwords(strtolower((string) $z01_bairro));
                                                 }
 
                                                 if ($tratamento == 0) {
@@ -4697,7 +4697,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                    where j01_matric = $matric limit 1";
 
                                                         $rsEnder = db_query($sSqlEnder);
-                                                        if (pg_numrows($rsEnder) > 0) {
+                                                        if (pg_num_rows($rsEnder) > 0) {
 
                                                             db_fieldsmemory($rsEnder, 0);
                                                             $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
@@ -4726,7 +4726,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                    where j01_matric = $matric limit 1";
 
                                                             $rsEnder = db_query($sSqlEnder) or die($sSqlEnderl);
-                                                            if (pg_numrows($rsEnder) > 0) {
+                                                            if (pg_num_rows($rsEnder) > 0) {
 
                                                                 db_fieldsmemory($rsEnder, 0);
                                                                 $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
@@ -4759,7 +4759,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                       inner join cgm on z01_numcgm = q02_numcgm
                                 where q02_inscr = $q02_inscr";
                                                 $resultempresa = db_query($sqlempresa);
-                                                if (pg_numrows($resultempresa) > 0) {
+                                                if (pg_num_rows($resultempresa) > 0) {
                                                     db_fieldsmemory($resultempresa, 0);
                                                 }
                                                 $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
@@ -4853,31 +4853,31 @@ if ($tiporel == 1 || $tiporel == 11) {
                                             $pdf->SetY($iAltAR + 12);
 
                                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                                            $pdf->Cell(75, 3, " " . trim($z01_nome), 0, 1, "L", 0);
+                                            $pdf->Cell(75, 3, " " . trim((string) $z01_nome), 0, 1, "L", 0);
                                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                                            $pdf->Cell(75, 3, " " . trim($z01_ender), 0, 1, "L", 0);
+                                            $pdf->Cell(75, 3, " " . trim((string) $z01_ender), 0, 1, "L", 0);
                                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                                            $pdf->Cell(75, 3, " " . trim($z01_bairro), 0, 1, "L", 0);
+                                            $pdf->Cell(75, 3, " " . trim((string) $z01_bairro), 0, 1, "L", 0);
                                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                                            $pdf->Cell(75, 3, " " . trim($z01_munic) . " - " . trim($z01_uf), 0, 1, "L",
+                                            $pdf->Cell(75, 3, " " . trim((string) $z01_munic) . " - " . trim((string) $z01_uf), 0, 1, "L",
                                               0);
                                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                                            $pdf->Cell(75, 3, " " . trim($z01_cep), 0, 1, "L", 0);
+                                            $pdf->Cell(75, 3, " " . trim((string) $z01_cep), 0, 1, "L", 0);
 
                                             $pdf->Text(17, $iAltAR + 44, "ENDEREÇO PARA DEVOLUÇÃO DO AR :");
 
                                             $pdf->SetY($iAltAR + 47);
                                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
-                                            $pdf->Cell(75, 3, " " . trim($nomeinst), 0, 1, "L", 0);
+                                            $pdf->Cell(75, 3, " " . trim((string) $nomeinst), 0, 1, "L", 0);
                                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
                                             $pdf->Cell(75, 3, " CNPJ: " . db_formatar($cgc, "cnpj"), 0, 1, "L", 0);
                                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
                                             $pdf->Cell(75, 3,
-                                              " " . trim($ender) . ", " . trim($numero) . " - " . trim($bairro), 0, 1,
+                                              " " . trim((string) $ender) . ", " . trim((string) $numero) . " - " . trim((string) $bairro), 0, 1,
                                               "L", 0);
                                             $pdf->Cell(5, 3, " ", 0, 0, "L", 0);
                                             $pdf->Cell(75, 3,
-                                              " " . trim($cep) . " - " . trim($munic) . " - " . trim($uf), 0, 1, "L",
+                                              " " . trim((string) $cep) . " - " . trim((string) $munic) . " - " . trim((string) $uf), 0, 1, "L",
                                               0);
 
                                             $pdf->Text(93, $iAltAR + 10, "TENTATIVAS DE ENTREGA");
@@ -4972,7 +4972,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                             $pdf->SetFont('Arial', 'B', 10);
 
                                             if (!isset($ender) || empty($ender)) {
-                                                $pdf->cell(50, 4, strtoupper(trim($z01_ender)) . ", " . $z01_numero, 0,
+                                                $pdf->cell(50, 4, strtoupper(trim((string) $z01_ender)) . ", " . $z01_numero, 0,
                                                     1, "L", 0);
                                             } else {
                                                 $pdf->cell(50, 4, strtoupper(trim(@$ender . ", " . $ender_numero)), 0,
@@ -4990,7 +4990,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                             $pdf->cell(30, 4, "MUNICIPIO:", 0, 0, "L", 0);
                                             $pdf->SetFont('Arial', 'B', 10);
                                             $pdf->cell(50, 4,
-                                                trim($munic) . "/" . $uf . " - " . substr($cep, 0, 5) . "-" . substr($cep,
+                                                trim((string) $munic) . "/" . $uf . " - " . substr((string) $cep, 0, 5) . "-" . substr((string) $cep,
                                                 5, 3), 0, 1, "L", 0);
 
                                             $pdf->SetFont('Arial', '', 10);
@@ -5004,17 +5004,17 @@ if ($tiporel == 1 || $tiporel == 11) {
 
                                                 $pdf->cell(30, 4, "CGM:", 0, 0, "L", 0);
                                                 $pdf->SetFont('Arial', 'B', 10);
-                                                $pdf->cell(20, 4, $$xcodigo1, 0, 1, "L", 0);
+                                                $pdf->cell(20, 4, ${$xcodigo1}, 0, 1, "L", 0);
                                             } elseif ($xcodigo == "k22_matric") {
 
                                                 $pdf->cell(45, 4, "INSCRIÇÃO IMOBILIÁRIA:", 0, 0, "L", 0);
                                                 $pdf->SetFont('Arial', 'B', 10);
-                                                $pdf->cell(20, 4, $$xcodigo1, 0, 1, "L", 0);
+                                                $pdf->cell(20, 4, ${$xcodigo1}, 0, 1, "L", 0);
                                             } elseif ($xcodigo == "k22_inscr") {
 
                                                 $pdf->cell(30, 4, "INSCRIÇÃO:", 0, 0, "L", 0);
                                                 $pdf->SetFont('Arial', 'B', 10);
-                                                $pdf->cell(20, 4, $$xcodigo1, 0, 1, "L", 0);
+                                                $pdf->cell(20, 4, ${$xcodigo1}, 0, 1, "L", 0);
                                             }
 
                                             $pdf->RoundedRect(148, 225 - $diminui, 47, 62, 0, '', '1234');
@@ -5088,7 +5088,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 }
 
                             } else {
-                                if (strtoupper($db02_descr) == "ENDER_ENTREGA") {
+                                if (strtoupper((string) $db02_descr) == "ENDER_ENTREGA") {
 
                                     $pdf->AddPage();
                                     $iQtdNotificoesGeradas++;
@@ -5127,11 +5127,11 @@ if ($tiporel == 1 || $tiporel == 11) {
                          where j01_matric = $matric";
 
                                         $resultpropri = db_query($sqlpropri);
-                                        if (pg_numrows($resultpropri) > 0) {
+                                        if (pg_num_rows($resultpropri) > 0) {
 
                                             db_fieldsmemory($resultpropri, 0);
-                                            $nomepri = ucwords(strtolower($nomepri));
-                                            $j13_descr = ucwords(strtolower($j13_descr));
+                                            $nomepri = ucwords(strtolower((string) $nomepri));
+                                            $j13_descr = ucwords(strtolower((string) $j13_descr));
                                         }
 
                                         if ($tratamento == 0) {
@@ -5151,7 +5151,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                             $resultender = db_query($sqlender);
                                             db_fieldsmemory($resultender, 0, true);
 
-                                            if ($z01_cxpostal == 0 || trim($z01_cxpostal) == '') {
+                                            if ($z01_cxpostal == 0 || trim((string) $z01_cxpostal) == '') {
                                                 $sCepCxPostal = $z01_cep;
                                             } else {
                                                 $sCepCxPostal = $z01_cep . " CAIXA POSTAL : " . $z01_cxpostal;
@@ -5182,11 +5182,11 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 inner join cgm on z01_numcgm = q02_numcgm
                           where q02_inscr = $q02_inscr";
                                         $resultempresa = db_query($sqlempresa);
-                                        if (pg_numrows($resultempresa) > 0) {
+                                        if (pg_num_rows($resultempresa) > 0) {
                                             db_fieldsmemory($resultempresa, 0);
                                         }
 
-                                        if ($z01_cxpostal == 0 || trim($z01_cxpostal) == '') {
+                                        if ($z01_cxpostal == 0 || trim((string) $z01_cxpostal) == '') {
                                             $sCepCxPostal = $z01_cep;
                                         } else {
                                             $sCepCxPostal = $z01_cep . " CAIXA POSTAL : " . $z01_cxpostal;
@@ -5211,7 +5211,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                         $resultender = db_query($sqlender);
                                         db_fieldsmemory($resultender, 0, true);
 
-                                        if ($z01_cxpostal == 0 || trim($z01_cxpostal) == '') {
+                                        if ($z01_cxpostal == 0 || trim((string) $z01_cxpostal) == '') {
                                             $sCepCxPostal = $z01_cep;
                                         } else {
                                             $sCepCxPostal = $z01_cep . " CAIXA POSTAL : " . $z01_cxpostal;
@@ -5245,7 +5245,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                                 } else {
 
                                     $imprimir = explode("#\n", $texto);
-                                    if (strtoupper($db02_descr) == "PARAGRAFO 1") {
+                                    if (strtoupper((string) $db02_descr) == "PARAGRAFO 1") {
 
                                         $pdf->WriteText($texto);
                                         $pdf->ln();
@@ -5295,7 +5295,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                 $pdf->setfont('arial', '', 8);
             }
             $pdf->cell(15, 05, $notifica, 0, 0, "R", 0);
-            $pdf->cell(15, 5, $$xcodigo1, 0, 0, "R", 0);
+            $pdf->cell(15, 5, ${$xcodigo1}, 0, 0, "R", 0);
             $pdf->cell(15, 5, $z01_numcgm, 0, 0, "R", 0);
             $pdf->cell(80, 5, $z01_nome, 0, 1, "L", 0);
             $total += 1;
@@ -5367,7 +5367,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                 $result10 = db_query($sql10);
                 $xxtipos = '';
                 $virgula = '';
-                for ($i = 0; $i < pg_numrows($result10); $i++) {
+                for ($i = 0; $i < pg_num_rows($result10); $i++) {
 
                     db_fieldsmemory($result10, $i);
                     $xxtipos .= $virgula . $k00_descr;
@@ -5377,15 +5377,15 @@ if ($tiporel == 1 || $tiporel == 11) {
                 if (isset($notifparc)) {
                     $dDataDebito = date("Y-m-d", db_getsession("DB_datausu"));
                 } else {
-                    $dDataDebito = strtotime($k60_datadeb);
+                    $dDataDebito = strtotime((string) $k60_datadeb);
                 }
 
                 $pdf->multicell(0, 4,
-                  trim($munic) . "," . date('d', strtotime($dDataDebito)) . " de " . db_mes(date('m',
+                  trim((string) $munic) . "," . date('d', strtotime($dDataDebito)) . " de " . db_mes(date('m',
                     strtotime($dDataDebito))) . " de " . date('Y', strtotime($dDataDebito)) . ".", 0, "R", 0, 0);
                 $pdf->ln(10);
 
-                for ($ip = 0; $ip < pg_numrows($resparag); $ip++) {
+                for ($ip = 0; $ip < pg_num_rows($resparag); $ip++) {
 
                     db_fieldsmemory($resparag, $ip);
                     if ($db02_alinha != 0) {
@@ -5417,7 +5417,7 @@ if ($tiporel == 1 || $tiporel == 11) {
                       from iptuender
                      where j43_matric = " . $matric;
                     $result3 = db_query($sql3);
-                    if (pg_numrows($result3) > 0) {
+                    if (pg_num_rows($result3) > 0) {
 
                         db_fieldsmemory($result3, 0);
                         $sql3 = "select z01_nome from cgm where z01_numcgm = " . $cgm;
@@ -5435,20 +5435,20 @@ if ($tiporel == 1 || $tiporel == 11) {
                     $result3 = db_query($sql3);
                 }
 
-                if (pg_numrows($result3) > 0) {
+                if (pg_num_rows($result3) > 0) {
 
                     db_fieldsmemory($result3, 0);
                     $pdf->text(10, 248, "Contribuinte: ");
                     $pdf->SetFont('Arial', '', 10);
-                    $pdf->text(10, 254, strtoupper($xtipo) . ' - ' . $$xcodigo1);
+                    $pdf->text(10, 254, strtoupper((string) $xtipo) . ' - ' . ${$xcodigo1});
                     $pdf->text(10, 259, $z01_nome);
                     if ($z01_cxpostal == "") {
                         $pdf->text(10, 264, $z01_ender . ", " . $z01_numero . " " . $z01_compl);
                     } else {
                         $pdf->text(10, 264, $z01_cxpostal);
                     }
-                    $pdf->text(10, 269, trim($z01_munic) . " - " . $z01_uf);
-                    $pdf->text(10, 274, substr($z01_cep, 0, 5) . "-" . substr($z01_cep, 5, 3));
+                    $pdf->text(10, 269, trim((string) $z01_munic) . " - " . $z01_uf);
+                    $pdf->text(10, 274, substr((string) $z01_cep, 0, 5) . "-" . substr((string) $z01_cep, 5, 3));
                 }
             }
         }
@@ -5591,20 +5591,20 @@ function EnderecoNotif($tratamento, $matric, $z01_nome, $z01_numcgm = null)
 
         db_fieldsmemory($resultender, 0);
 
-        if (EnderecoNotifValid(trim($z01_ender), trim($z01_munic), trim($z01_cep), trim($z01_numero),
-          trim($z01_compl))) {
+        if (EnderecoNotifValid(trim((string) $z01_ender), trim((string) $z01_munic), trim((string) $z01_cep), trim((string) $z01_numero),
+          trim((string) $z01_compl))) {
             return false;
         }
 
-        if ($z01_cxpostal == 0 || trim($z01_cxpostal) == '') {
+        if ($z01_cxpostal == 0 || trim((string) $z01_cxpostal) == '') {
             $sCepCxPostal = $z01_cep;
         } else {
             $sCepCxPostal = $z01_cep . " CAIXA POSTAL : " . $z01_cxpostal;
         }
 
-        $sMunicipio = trim($z01_munic) . " / " . $z01_uf;
+        $sMunicipio = trim((string) $z01_munic) . " / " . $z01_uf;
         $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
-        $z01_munic = trim($z01_munic) . "/" . $z01_uf . " - " . $z01_cep . "  " . $z01_cxpostal;
+        $z01_munic = trim((string) $z01_munic) . "/" . $z01_uf . " - " . $z01_cep . "  " . $z01_cxpostal;
         $z01_destinatario = $z01_nome;
 
         return true;
@@ -5625,24 +5625,24 @@ function EnderecoNotif($tratamento, $matric, $z01_nome, $z01_numcgm = null)
 
     db_fieldsmemory($resultendereco, 0);
 
-    if (EnderecoNotifValid(trim($z01_ender), trim($z01_munic), trim($z01_cep), trim($z01_numero), trim($z01_compl))) {
+    if (EnderecoNotifValid(trim((string) $z01_ender), trim((string) $z01_munic), trim((string) $z01_cep), trim((string) $z01_numero), trim((string) $z01_compl))) {
         return false;
     }
 
-    $z01_ender = pg_result($resultendereco, 0, 0);
+    $z01_ender = pg_fetch_result($resultendereco, 0, 0);
 
     $z01_ender = trim($z01_ender);
 
-    if (pg_numrows($resultendereco) > 0 && !empty($z01_ender)) {
+    if (pg_num_rows($resultendereco) > 0 && !empty($z01_ender)) {
 
         $sCepCxPostal = $z01_cep . " CAIXA POSTAL : " . $z01_cxpostal;
-        if ($z01_cxpostal == 0 || trim($z01_cxpostal) == '') {
+        if ($z01_cxpostal == 0 || trim((string) $z01_cxpostal) == '') {
             $sCepCxPostal = $z01_cep;
         }
 
-        $sMunicipio = trim($z01_munic) . " / " . $z01_uf;
+        $sMunicipio = trim((string) $z01_munic) . " / " . $z01_uf;
         $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
-        $z01_munic = trim($z01_munic) . " / " . $z01_uf . " - " . $sCepCxPostal;
+        $z01_munic = trim((string) $z01_munic) . " / " . $z01_uf . " - " . $sCepCxPostal;
 
         if ($z01_destinatario == "") {
             $z01_destinatario = $z01_nome;
@@ -5666,23 +5666,23 @@ function EnderecoNotif($tratamento, $matric, $z01_nome, $z01_numcgm = null)
 
         $resultpropri = db_query($sqlpropri);
 
-        if (pg_numrows($resultpropri) > 0) {
+        if (pg_num_rows($resultpropri) > 0) {
 
             db_fieldsmemory($resultpropri, 0);
 
-            if (EnderecoNotifValid(trim($z01_ender), trim($z01_munic), trim($z01_cep), trim($z01_numero),
-              trim($z01_compl))) {
+            if (EnderecoNotifValid(trim($z01_ender), trim((string) $z01_munic), trim((string) $z01_cep), trim((string) $z01_numero),
+              trim((string) $z01_compl))) {
                 return false;
             }
 
             $sCepCxPostal = $z01_cep . " CAIXA POSTAL : " . $z01_cxpostal;
-            if ($z01_cxpostal == 0 || trim($z01_cxpostal) == '') {
+            if ($z01_cxpostal == 0 || trim((string) $z01_cxpostal) == '') {
                 $sCepCxPostal = $z01_cep;
             }
 
-            $sMunicipio = trim($z01_munic) . " / " . $z01_uf;
+            $sMunicipio = trim((string) $z01_munic) . " / " . $z01_uf;
             $z01_ender = $z01_ender . ", " . $z01_numero . " - " . $z01_compl;
-            $z01_munic = trim($z01_munic) . "/" . $z01_uf . " - " . $sCepCxPostal;
+            $z01_munic = trim((string) $z01_munic) . "/" . $z01_uf . " - " . $sCepCxPostal;
 
             if ($z01_destinatario == "") {
                 $z01_destinatario = $z01_nome;

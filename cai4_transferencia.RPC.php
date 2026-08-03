@@ -59,7 +59,7 @@ case "getDadosSlip" :
         $oRetorno->nValor                 = $oSlip->getValor();
         $oRetorno->iHistorico             = $oSlip->getHistorico();
         $oRetorno->sHistorico             = "";
-        $oRetorno->sObservacao            = urlencode($oSlip->getObservacao());
+        $oRetorno->sObservacao            = urlencode((string) $oSlip->getObservacao());
         $oRetorno->iTipoPagamento         = $oSlip->getTipoPagamento();
         $oRetorno->iSituacao              = $oSlip->getSituacao();
         $oRetorno->dtData                 = $oSlip->getData();
@@ -93,7 +93,7 @@ case "getDadosSlip" :
          */
         $oCgm                 = CgmFactory::getInstanceByCgm($oSlip->getCodigoCgm());
         $oRetorno->iCodigoCgm = $oSlip->getCodigoCgm();
-        $oRetorno->sNomeCgm   = urlencode($oCgm->getNome());
+        $oRetorno->sNomeCgm   = urlencode((string) $oCgm->getNome());
         if (method_exists($oCgm, "getCnpj")) {
             $oRetorno->sCNPJ = db_formatar($oCgm->getCnpj(), "cnpj");
         } else {
@@ -109,7 +109,7 @@ case "getDadosSlip" :
         if ($oDaoSlipProcesso->numrows > 0) {
 
             $oDadosSlipProcesso = db_utils::fieldsMemory($rsSlipProcesso, 0);
-            $oRetorno->k145_numeroprocesso = urlencode($oDadosSlipProcesso->k145_numeroprocesso);
+            $oRetorno->k145_numeroprocesso = urlencode((string) $oDadosSlipProcesso->k145_numeroprocesso);
         }
 
 
@@ -132,7 +132,7 @@ case "getDadosSlip" :
             $sSqlConHist = $oDaoConHist->sql_query($oRetorno->iHistorico);
             $rsConHist   = $oDaoConHist->sql_record($sSqlConHist);
         if ($oDaoConHist->numrows > 0) {
-                $oRetorno->sHistorico = urlencode(db_utils::fieldsMemory($rsConHist, 0)->c50_descr);
+                $oRetorno->sHistorico = urlencode((string) db_utils::fieldsMemory($rsConHist, 0)->c50_descr);
         }
 
     } catch (Exception $eErro) {
@@ -233,7 +233,7 @@ case "salvarSlip":
         $oRetorno->slipAutomatico = "";
         if (slip::getParametroSlipAutomatico()) {
             
-            $aTiposPagamentos = array(7, 11);
+            $aTiposPagamentos = [7, 11];
 
             if (in_array($oParam->iCodigoTipoOperacao, $aTiposPagamentos) ) {
 
@@ -442,7 +442,7 @@ case "receberSlip":
         $oTransferencia->setContaCredito($oParam->k17_credito);
         $oTransferencia->setCaracteristicaPeculiarCredito($oParam->sCaracteristicaPeculiarCredito);
         $oTransferencia->setHistorico($oParam->k17_hist);
-        $oTransferencia->setValor(str_replace(",", ".", trim($oParam->k17_valor)));
+        $oTransferencia->setValor(str_replace(",", ".", trim((string) $oParam->k17_valor)));
         $oTransferencia->setObservacao(db_stdClass::normalizeStringJsonEscapeString($oParam->k17_texto));
         $oTransferencia->setData(date("Y-m-d", db_getsession("DB_datausu")));
         $oTransferencia->setProcessoAdministrativo(db_stdClass::normalizeStringJsonEscapeString($oParam->k145_numeroprocesso));
@@ -559,7 +559,7 @@ case "getDadosTransferencia" :
         $oRetorno->iContaCredito          = $oTransferencia->getContaCredito();
         $oRetorno->nValor                 = $oTransferencia->getValor();
         $oRetorno->iHistorico             = $oTransferencia->getHistorico();
-        $oRetorno->sObservacao            = urlencode($oTransferencia->getObservacao());
+        $oRetorno->sObservacao            = urlencode((string) $oTransferencia->getObservacao());
         $oRetorno->iTipoPagamento         = $oTransferencia->getTipoPagamento();
         $oRetorno->iSituacao              = $oTransferencia->getSituacao();
         $oRetorno->dtData                 = $oTransferencia->getData();
@@ -589,7 +589,7 @@ case "getDadosTransferencia" :
         if ($oDaoSlipProcesso->numrows > 0) {
 
             $oDadosSlipProcesso = db_utils::fieldsMemory($rsSlipProcesso, 0);
-            $oRetorno->k145_numeroprocesso = urlencode($oDadosSlipProcesso->k145_numeroprocesso);
+            $oRetorno->k145_numeroprocesso = urlencode((string) $oDadosSlipProcesso->k145_numeroprocesso);
         }
 
         /**
@@ -597,7 +597,7 @@ case "getDadosTransferencia" :
          */
         $oCgm                 = CgmFactory::getInstanceByCgm($oTransferencia->getCodigoCgm());
         $oRetorno->iCodigoCgm = $oTransferencia->getCodigoCgm();
-        $oRetorno->sNomeCgm   = urlencode($oCgm->getNome());
+        $oRetorno->sNomeCgm   = urlencode((string) $oCgm->getNome());
         if (method_exists($oCgm, "getCnpj")) {
             $oRetorno->sCNPJ = db_formatar($oCgm->getCnpj(), "cnpj");
         } else {
@@ -606,12 +606,12 @@ case "getDadosTransferencia" :
 
         $daoRecursoConta = new cl_sliprecursocontas();
         $campos = implode(
-            ',', array(
+            ',', [
             'recursodebito.o15_codigo as codigo_recurso_debito',
             'recursodebito.o15_descr as descricao_recurso_debito',
             'recursocredito.o15_codigo as codigo_recurso_credito',
             'recursocredito.o15_descr as descricao_recurso_credito',
-            )
+            ]
         );
         $buscaRecurso = $daoRecursoConta->sql_query(null, $campos, null, "k181_slip = {$oTransferencia->getCodigoSlip()}");
         $buscaRecurso = db_query($buscaRecurso);
@@ -654,7 +654,7 @@ case "getContasSaltes":
 
     try{
 
-        $aContasCredito = array();
+        $aContasCredito = [];
         $oDaoSaltes     = new cl_saltes;
         $sCamposSaltes  = "k13_reduz as reduzido, k13_descr as descricao";
         $sSqlSaltes     = $oDaoSaltes->sql_query(null, $sCamposSaltes, "k13_reduz");
@@ -692,7 +692,7 @@ case 'getDadosInstituicaoOrigem':
     $oRetorno->sInstituicaoOrigem       =  urlencode($oInstituicao->getDescricao());
     $oRetorno->iCodigoInstituicaoOrigem =  $oInstituicao->getSequencial();
     $oRetorno->iCodigoCgm               = $oInstituicao->getCgm()->getCodigo();
-    $oRetorno->sNomeCgm                 = urlencode($oInstituicao->getCgm()->getNome());
+    $oRetorno->sNomeCgm                 = urlencode((string) $oInstituicao->getCgm()->getNome());
     $oRetorno->sCNPJ                    = db_formatar($oInstituicao->getCgm()->getCnpj(), "cnpj");
     break;
 
@@ -720,7 +720,7 @@ case 'pesquisaTranferenciasRecebimento':
             throw new Exception("Nenhuma transferência para a instituição.");
         }
 
-        $aTransferenciasRecebimento = array();
+        $aTransferenciasRecebimento = [];
         for ($iRowTransferencia = 0; $iRowTransferencia < $oDaoTransferenciaFinanceira->numrows; $iRowTransferencia++) {
 
             $oDadoTransferencia          = db_utils::fieldsMemory($rsBuscaTransferencia, $iRowTransferencia);
@@ -731,7 +731,7 @@ case 'pesquisaTranferenciasRecebimento':
                 throw new Exception("Não foi possível localizar o histórico.");
             }
 
-            $oDadoTransferencia->c50_compl = urlencode(db_utils::fieldsMemory($rsBuscaHistorico, 0)->c50_descr);
+            $oDadoTransferencia->c50_compl = urlencode((string) db_utils::fieldsMemory($rsBuscaHistorico, 0)->c50_descr);
 
             $oInstituicaoOrigem = new Instituicao($oDadoTransferencia->k17_instit);
             $oDadoTransferencia->sInstituicaoOrigem = urlencode($oInstituicaoOrigem->getDescricao());
@@ -776,7 +776,7 @@ case 'pesquisaEstornoRecebimento':
         }
 
 
-        $oRetorno->aTransferenciasRecebimento = array();
+        $oRetorno->aTransferenciasRecebimento = [];
 
         for ($i = 0; $i < $oDaoRecebimento->numrows; $i++) {
 
@@ -801,7 +801,7 @@ case 'pesquisaEstornoRecebimento':
             $oDaoInstituicao     = new cl_db_config;
             $sSqlInstituicao     = $oDaoInstituicao->sql_query(null, "nomeinst", null, "codigo = {$iInstitOrigem}");
             $rsInstit            = $oDaoInstituicao->sql_record($sSqlInstituicao);
-            $sInstituicaoOrigem  = urlencode(db_utils::fieldsMemory($rsInstit, 0)->nomeinst);
+            $sInstituicaoOrigem  = urlencode((string) db_utils::fieldsMemory($rsInstit, 0)->nomeinst);
             unset($oDaoInstituicao);
 
             $oTransferencia->sInstituicaoOrigem = $sInstituicaoOrigem;
@@ -847,7 +847,7 @@ case "getContaEventoContabil":
             $sMetodoConta = 'getContaCredito';
         }
 
-        $aContasEvento   = array();
+        $aContasEvento   = [];
         $oEventoContabil = new EventoContabil(getDocumentoPorTipoInclusao($oParam->iTipoTransferencia), $iAnoSessao);
         $aLancamentos    = $oEventoContabil->getEventoContabilLancamento();
         foreach ($aLancamentos as $oLancamento) {
@@ -914,14 +914,14 @@ case "getContaFavorecido":
     $oConta->reduzido          = $oDadosLancamentoInscricao->conta_credito_reduzido;
     $oConta->descricao         = $oDadosLancamentoInscricao->descricao;
     $oRetorno->iFavorecido     = $oDadosLancamentoInscricao->cgm_favorecido;
-    $oRetorno->aContas         = array();
+    $oRetorno->aContas         = [];
     $oRetorno->aContas[]       = $oConta;
 
     /**
      * Busca os dados do CGM favorecido/concessor
      */
     $oCgm                  = CgmFactory::getInstanceByCgm($oRetorno->iFavorecido);
-    $oRetorno->sFavorecido = urlencode($oCgm->getNome());
+    $oRetorno->sFavorecido = urlencode((string) $oCgm->getNome());
 
     /**
      * Resgata o valor total da inscrição
@@ -945,7 +945,7 @@ case "getDadosInscricao":
     $oRetorno->nValorTotalInscricao = $oInscricao->getValorTotalInscricao();;
 
     $oRetorno->iCgmFavorecido       = $oInscricao->getFavorecido()->getCodigo();
-    $oRetorno->sNomeFavorecido      = urlencode($oInscricao->getFavorecido()->getNomeCompleto());
+    $oRetorno->sNomeFavorecido      = urlencode((string) $oInscricao->getFavorecido()->getNomeCompleto());
 
     $oDAOInscricaoPassivo     = new cl_inscricaopassivo;
     $sCampos                  = "c69_credito as conta_debito, ";
@@ -961,7 +961,7 @@ case "getDadosInscricao":
     if ($rsLancamentoInscricao && $oDAOInscricaoPassivo->numrows > 0) {
 
         $oLancamentoInscricao   = db_utils::fieldsMemory($rsLancamentoInscricao, 0);
-        $sDescricaoContaDebito  = urlencode($oLancamentoInscricao->c60_descr);
+        $sDescricaoContaDebito  = urlencode((string) $oLancamentoInscricao->c60_descr);
         $iContaContaDebito      = $oLancamentoInscricao->conta_debito;
     }
 
@@ -998,7 +998,7 @@ case "getAutenticacoesSlip":
     $oDaoCorLanc = new cl_corlanc;
     $sSqlBuscaAutenticacao = $oDaoCorLanc->sql_query_slip(null, null, null, $sCampos, null, $sWhere);
     $rsBuscaAutenticacao   = $oDaoCorLanc->sql_record($sSqlBuscaAutenticacao);
-    $aDadosRetorno         = array();
+    $aDadosRetorno         = [];
     if ($oDaoCorLanc->numrows > 0) {
         $aDadosRetorno = db_utils::getCollectionByRecord($rsBuscaAutenticacao);
     }
@@ -1016,7 +1016,7 @@ case "getFinalidadePagamentoTransferencia":
 
         $oRetorno->oFinalidadePagamentoFundeb                 = new stdClass();
         $oRetorno->oFinalidadePagamentoFundeb->e151_codigo    = $oFinalidadePagamento->getCodigo();
-        $oRetorno->oFinalidadePagamentoFundeb->e151_descricao = urlencode($oFinalidadePagamento->getDescricao());
+        $oRetorno->oFinalidadePagamentoFundeb->e151_descricao = urlencode((string) $oFinalidadePagamento->getDescricao());
         $oRetorno->lPossuiFinalidadePagamento = true;
     }
 
@@ -1060,53 +1060,16 @@ function getDocumentoPorTipoInclusao($iTipoOperacao)
 {
 
     $iCodigoDocumento = 0;
-    switch ($iTipoOperacao) {
-
-    /**
-     * Transferencia Financeira
-     */
-    case 1:
-    case 2:
-        $iCodigoDocumento = 120;
-        break;
-    case 3:
-    case 4:
-        $iCodigoDocumento = 130;
-        break;
-
-        /**
-         * Transferencia Bancaria
-         */
-    case 5:
-    case 6:
-        $iCodigoDocumento = 140;
-        break;
-
-    /**
-     * Caução
-     */
-    case 7:
-    case 8:
-        $iCodigoDocumento = 150;
-        break;
-    case 9:
-    case 10:
-        $iCodigoDocumento = 151;
-        break;
-
-      /**
-       * Depósito de Diversas Origens
-       */
-    case 11:
-    case 12:
-        $iCodigoDocumento = 160;
-        break;
-
-    case 13:
-    case 14:
-        $iCodigoDocumento = 161;
-        break;
-    }
+    $iCodigoDocumento = match ($iTipoOperacao) {
+        1, 2 => 120,
+        3, 4 => 130,
+        5, 6 => 140,
+        7, 8 => 150,
+        9, 10 => 151,
+        11, 12 => 160,
+        13, 14 => 161,
+        default => $iCodigoDocumento,
+    };
 
     return $iCodigoDocumento;
 }

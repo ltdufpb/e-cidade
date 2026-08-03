@@ -39,7 +39,7 @@ $Dadosporte = str_replace("XX",",",$Dadosporte);
 $Dadosclasse = str_replace("XX",",",$Dadosclasse);
 $Dadosativ = str_replace("XX",",",$Dadosativ);
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $pdf = new pdf();
 $pdf->Open();
@@ -83,7 +83,7 @@ $p = "0";
           q45_codporte
 	";
    $result = db_query($sql);
-   $numrows = pg_numrows($result);
+   $numrows = pg_num_rows($result);
    if($numrows == 0){
     echo " <div align=\"center\">Nenhum registro cadastrado <br> <input type=\"button\" value=\"Fechar\" onclick=\"window.close()\"></div>";
     exit;

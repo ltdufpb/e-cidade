@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcorgao_classe.php"));
 include(modification("classes/db_matestoquetipo_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cliframe_seleciona     = new cl_iframe_seleciona;
 $clorcorgao             = new cl_orcorgao;
 $clmatestoquetipo       = new cl_matestoquetipo;

@@ -126,7 +126,7 @@ class Comissao extends Model
     public function servidores()
     {
         return $this->hasMany(
-            'App\Domain\RecursosHumanos\Pessoal\Model\Jetom\ComissaoServidor',
+            \App\Domain\RecursosHumanos\Pessoal\Model\Jetom\ComissaoServidor::class,
             'rh245_comissao'
         )->select(['z01_nome', 'jetomcomissaoservidor.*'])
             ->join('pessoal.rhpessoal', 'rh245_matricula', '=', 'rh01_regist')
@@ -137,7 +137,7 @@ class Comissao extends Model
     public function tipoSessao()
     {
         return $this->hasMany(
-            'App\Domain\RecursosHumanos\Pessoal\Model\Jetom\ComissaoTipoSessao',
+            \App\Domain\RecursosHumanos\Pessoal\Model\Jetom\ComissaoTipoSessao::class,
             'rh249_comissao'
         );
     }
@@ -145,7 +145,7 @@ class Comissao extends Model
     public function sessao()
     {
         return $this->hasMany(
-            'App\Domain\RecursosHumanos\Pessoal\Model\Jetom\Sessao',
+            \App\Domain\RecursosHumanos\Pessoal\Model\Jetom\Sessao::class,
             'rh247_comissao'
         );
     }

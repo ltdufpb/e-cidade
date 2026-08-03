@@ -42,8 +42,6 @@ class CotaUnica {
    */
   const MENSAGENS = "tributario.arrecadacao.CotaUnica.";
 
-  private $iCodigo;
-
   private $iCgm;
 
   private $iMatricula;
@@ -62,8 +60,8 @@ class CotaUnica {
 
   private $sObservacao;
 
-  public function __construct($iCodigo = null){
-    $this->iCodigo = $iCodigo;
+  public function __construct(private $iCodigo = null)
+  {
   }
 
   /**
@@ -94,7 +92,7 @@ class CotaUnica {
   public function getUnicaParcial(){
 
     $sInnerJoin = null;
-    $aParametrosWhere = array();
+    $aParametrosWhere = [];
 
     /**
      * Validamos a origem para definir o Inner
@@ -231,7 +229,7 @@ class CotaUnica {
    * @param  array $aUnicaCodigo
    * @return boolean
    */
-  public function excluirUnicaParcial($aUnicaCodigo = array()){
+  public function excluirUnicaParcial($aUnicaCodigo = []){
 
     $iUsuarioCodigo = db_getsession("DB_id_usuario");
     $aUnicaCodigo   = implode(", ", $aUnicaCodigo);

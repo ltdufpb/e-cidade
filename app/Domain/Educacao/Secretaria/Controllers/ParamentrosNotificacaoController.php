@@ -26,7 +26,7 @@ class ParamentrosNotificacaoController extends Controller
         $codigo = $request->get('codigo');
         try {
             $parametros = ParametrosNotificacao::findOrFail($codigo);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             throw new Exception("Erro ao buscar parametros (Código: {$codigo})");
         }
         $parametros->ed177_notificar_escolas = $request->get('notificar-escolas');

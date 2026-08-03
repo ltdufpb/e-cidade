@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vtffunc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clvtffunc = new cl_vtffunc;
 $clvtffunc->rotulo->label("r17_anousu");
 $clvtffunc->rotulo->label("r17_mesusu");
@@ -132,9 +132,9 @@ $clvtffunc->rotulo->label("r17_regist");
         }else{
            $sql = $clvtffunc->sql_query(db_getsession('DB_anousu'),"","","","",$campos,"r17_anousu#r17_mesusu#r17_regist#r17_codigo#r17_difere","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_r17_regist)){
-          $repassa = array("chave_r17_anousu"=>$chave_r17_anousu,"chave_r17_regist"=>$chave_r17_regist);
+          $repassa = ["chave_r17_anousu"=>$chave_r17_anousu,"chave_r17_regist"=>$chave_r17_regist];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

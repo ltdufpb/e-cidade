@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_padsigapsubsidiosvereadores_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpadsigapsubsidiosvereadores = new cl_padsigapsubsidiosvereadores;
 $clpadsigapsubsidiosvereadores->rotulo->label("c16_sequencial");
 $clpadsigapsubsidiosvereadores->rotulo->label("c16_numcgm");
@@ -98,9 +98,9 @@ $clpadsigapsubsidiosvereadores->rotulo->label("c16_numcgm");
         }else{
            $sql = $clpadsigapsubsidiosvereadores->sql_query("",$campos,"c16_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c16_numcgm)){
-          $repassa = array("chave_c16_sequencial"=>$chave_c16_sequencial,"chave_c16_numcgm"=>$chave_c16_numcgm);
+          $repassa = ["chave_c16_sequencial"=>$chave_c16_sequencial,"chave_c16_numcgm"=>$chave_c16_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

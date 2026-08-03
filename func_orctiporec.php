@@ -45,7 +45,7 @@ require_once(modification("src/Financeiro/Orcamento/Recurso/IdentificadorUso.php
 require_once(modification("src/Financeiro/Orcamento/Recurso/Grupo.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $chave_o15_descr = isset($chave_o15_descr) ? stripslashes($chave_o15_descr) : '';
 $dataSessao = date('Y-m-d', db_getsession('DB_datausu'));
@@ -111,7 +111,7 @@ if (isset($pesquisa_conta)) {
                         </td>
                         <td>
                             <?php
-                            $identificadorUso = array("" => 'Selecione');
+                            $identificadorUso = ["" => 'Selecione'];
                             foreach (IdentificadorUso::getAll() as $indice => $valor) {
                                 $identificadorUso[$indice] = $valor;
                             }
@@ -132,7 +132,7 @@ if (isset($pesquisa_conta)) {
                         </td>
                         <td>
                             <?php
-                            $tipoDetalhamento = array("" => 'Selecione');
+                            $tipoDetalhamento = ["" => 'Selecione'];
                             foreach (TipoDetalhamento::getAll() as $indice => $valor) {
                                 $tipoDetalhamento[$indice] = $valor;
                             }
@@ -155,7 +155,7 @@ if (isset($pesquisa_conta)) {
                         <td>
 
                             <?php
-                            $grupoFonteRecurso = array("" => 'Selecione');
+                            $grupoFonteRecurso = ["" => 'Selecione'];
                             foreach (Grupo::getAll() as $indice => $valor) {
                                 $grupoFonteRecurso[$indice] = $valor;
                             }
@@ -178,7 +178,7 @@ if (isset($pesquisa_conta)) {
                     </td>
                     <td>
                         <?php
-                        $especificacaoFonte = array("" => 'Selecione');
+                        $especificacaoFonte = ["" => 'Selecione'];
                         foreach (Especificacao::getAll() as $indice => $valor) {
                             $especificacaoFonte[$indice] = $valor;
                         }
@@ -200,7 +200,7 @@ if (isset($pesquisa_conta)) {
                     </td>
                     <td>
                         <?php
-                        $complementoRecurso = array("" => 'Selecione');
+                        $complementoRecurso = ["" => 'Selecione'];
                         foreach (\ECidade\Financeiro\Orcamento\Recurso\Complemento::getAll() as $indice => $valor) {
                             $complementoRecurso[$indice] = $valor;
                         }
@@ -223,7 +223,7 @@ if (isset($pesquisa_conta)) {
 
 <?php
 
-$chave_o15_descr = addslashes($chave_o15_descr);
+$chave_o15_descr = addslashes((string) $chave_o15_descr);
 
 $where = [];
 $dbwhere = "";

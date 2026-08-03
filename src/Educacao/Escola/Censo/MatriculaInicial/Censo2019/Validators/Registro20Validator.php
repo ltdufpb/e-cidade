@@ -58,12 +58,12 @@ class Registro20Validator
     /**
      * @var Registro50[]
      */
-    private $registros50 = array();
+    private $registros50 = [];
 
     /**
      * @var Registro60[]
      */
-    private $registros60 = array();
+    private $registros60 = [];
 
     public function setRegistro(Registro20 $registro)
     {
@@ -317,7 +317,7 @@ class Registro20Validator
             return;
         }
 
-        if (strlen($codigo) > 20) {
+        if (strlen((string) $codigo) > 20) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
     }
@@ -353,7 +353,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($mediacao, array(1, 2, 3))) {
+        if (!in_array($mediacao, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -478,7 +478,7 @@ class Registro20Validator
 
     private function validarDiasSemana()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getDomingo();
         $campos[] = $this->registro->getSegundaFeira();
         $campos[] = $this->registro->getTercaFeira();
@@ -488,7 +488,7 @@ class Registro20Validator
         $campos[] = $this->registro->getSabado();
 
         // Remover campos nulos...
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
 
         // Se pelo menos um dos campos está preenchido e nenhum deles for 1...
         if (count($campos) > 0 && !in_array(1, $campos)) {
@@ -517,7 +517,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($domingo, array(0, 1))) {
+        if (!in_array($domingo, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -541,7 +541,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($segunda, array(0, 1))) {
+        if (!in_array($segunda, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -565,7 +565,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($terca, array(0, 1))) {
+        if (!in_array($terca, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -589,7 +589,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($quarta, array(0, 1))) {
+        if (!in_array($quarta, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -613,7 +613,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($quinta, array(0, 1))) {
+        if (!in_array($quinta, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -637,7 +637,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($sexta, array(0, 1))) {
+        if (!in_array($sexta, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -661,14 +661,14 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($sabado, array(0, 1))) {
+        if (!in_array($sabado, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
 
     private function validarTiposAtendimento()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getEscolarizacao();
         $campos[] = $this->registro->getAtividadeComplementar();
         $campos[] = $this->registro->getAtendimentoAEE();
@@ -691,7 +691,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($escolarizacao, array(0, 1))) {
+        if (!in_array($escolarizacao, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -720,7 +720,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($atividadeComplementar, array(0, 1))) {
+        if (!in_array($atividadeComplementar, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -757,7 +757,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($aee, array(0, 1))) {
+        if (!in_array($aee, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -777,7 +777,7 @@ class Registro20Validator
     {
         $atividadeComplementar = $this->registro->getAtividadeComplementar();
 
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getCodigo1();
         $campos[] = $this->registro->getCodigo2();
         $campos[] = $this->registro->getCodigo3();
@@ -786,7 +786,7 @@ class Registro20Validator
         $campos[] = $this->registro->getCodigo6();
 
         // Remover códigos que não foram preenchidos...
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
 
         if ($atividadeComplementar == 1 && count($campos) < 1) {
             $this->log('O campo "Atividade complementar" foi preenchido com "Sim", ' .
@@ -884,12 +884,12 @@ class Registro20Validator
         $unidadePrisional = $this->registro10->getUnidadePrisional();
         $campo = 'Local de funcionamento diferenciado da turma';
 
-        if (in_array($mediacao, array(1, 2)) && !$this->isPreenchido($localDiferenciado)) {
+        if (in_array($mediacao, [1, 2]) && !$this->isPreenchido($localDiferenciado)) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
 
-        if (!in_array($mediacao, array(1, 2)) && $this->isPreenchido($localDiferenciado)) {
+        if (!in_array($mediacao, [1, 2]) && $this->isPreenchido($localDiferenciado)) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -904,7 +904,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($localDiferenciado, array(0, 1, 2, 3))) {
+        if (!in_array($localDiferenciado, [0, 1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -957,11 +957,11 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($modalidade, array(1, 2, 3, 4))) {
+        if (!in_array($modalidade, [1, 2, 3, 4])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if ($mediacao == 2 && !in_array($modalidade, array(2, 3))) {
+        if ($mediacao == 2 && !in_array($modalidade, [2, 3])) {
             $this->log(
                 sprintf(
                     'O campo "%s" deve ser preenchido com "Educação especial" ou ' .
@@ -971,7 +971,7 @@ class Registro20Validator
             );
         }
 
-        if ($mediacao == 3 && !in_array($modalidade, array(1, 3, 4))) {
+        if ($mediacao == 3 && !in_array($modalidade, [1, 3, 4])) {
             $this->log(
                 sprintf('O campo "%s" deve ser preenchido com "Ensino regular", "EJA" ou "Educação profissional" ' .
                     'quando o campo "Mediação didático-pedagógica" for preenchido com "Educação a distância".', $campo)
@@ -1002,31 +1002,22 @@ class Registro20Validator
             return;
         }
 
-        switch ($modalidade) {
-            case 1:
-                $etapasValidas = array(1, 2, 3, 14, 15, 16, 17, 18, 19, 20,21, 22, 23, 25, 26, 27, 28, 29, 35, 36, 37,
-                    38, 41, 56);
-                break;
-            case 2:
-                $etapasValidas = array(1, 2, 3, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31,
-                    32, 33, 34, 35, 36, 37, 38, 41, 56, 39, 40, 69, 70, 71, 72, 73, 74, 64, 67, 68);
-                break;
-            case 3:
-                $etapasValidas = array(69, 70, 71, 72);
-                break;
-            case 4:
-                $etapasValidas = array(30, 31, 32, 33, 34, 39, 40, 73, 74, 64, 67, 68);
-                break;
-            default:
-                $etapasValidas = array();
-        }
+        $etapasValidas = match ($modalidade) {
+            1 => [1, 2, 3, 14, 15, 16, 17, 18, 19, 20,21, 22, 23, 25, 26, 27, 28, 29, 35, 36, 37,
+                38, 41, 56],
+            2 => [1, 2, 3, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29, 30, 31,
+                32, 33, 34, 35, 36, 37, 38, 41, 56, 39, 40, 69, 70, 71, 72, 73, 74, 64, 67, 68],
+            3 => [69, 70, 71, 72],
+            4 => [30, 31, 32, 33, 34, 39, 40, 73, 74, 64, 67, 68],
+            default => [],
+        };
         if (!empty($etapasValidas)) {
-            $modalidades = array(
+            $modalidades = [
                 1 => 'Ensino regular',
                 2 => 'Educação especial',
                 3 => 'EJA',
                 4 => 'Educação profissional'
-            );
+            ];
 
             if (!in_array($etapa, $etapasValidas)) {
                 $this->log(sprintf('O campo "%s" deve ser preenchido com %s quando o campo "Modalidade" for ' .
@@ -1034,32 +1025,26 @@ class Registro20Validator
             }
         }
 
-        switch ($mediacao) {
-            case 2:
-                $etapasValidas = array(69, 70, 71, 72);
-                break;
-            case 3:
-                $etapasValidas = array(30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 70, 71, 73, 74, 64, 67, 68);
-                break;
-            default:
-                $etapasValidas = array();
-        }
+        $etapasValidas = match ($mediacao) {
+            2 => [69, 70, 71, 72],
+            3 => [30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 70, 71, 73, 74, 64, 67, 68],
+            default => [],
+        };
         if (!empty($etapasValidas)) {
-            $mediacoes = array(
+            $mediacoes = [
                 2 => 'Semipresencial',
                 3 => 'Educação a distância'
-            );
+            ];
 
             if (!in_array($etapa, $etapasValidas)) {
                 $this->log(
                     sprintf('O campo "%s" deve ser preenchido com %s quando o campo "mediação ' .
-                    'didático-pedagógica" for preenchido com "%s".', $campo, join(", ", $etapasValidas)),
-                    $mediacoes[$mediacao]
+                    'didático-pedagógica" for preenchido com "%s".', $campo, join(", ", $etapasValidas))
                 );
             }
         }
 
-        if (in_array($local, array(2, 3)) && in_array($etapa, array(1, 2, 3, 56))) {
+        if (in_array($local, [2, 3]) && in_array($etapa, [1, 2, 3, 56])) {
             $this->log(
                 sprintf('O campo "%s" não pode ser preenchido com educação infantil quando o campo ' .
                     '"Tipo de Atendimento" for preenchido com "Unidade de internação socioeducativa" ou ' .
@@ -1072,7 +1057,7 @@ class Registro20Validator
         }
 
         if ($atividadeComplementar == 1 &&
-            in_array($etapa, array(1, 2, 3, 39, 40, 56, 64, 67, 68, 69, 70, 71, 72, 73, 74))) {
+            in_array($etapa, [1, 2, 3, 39, 40, 56, 64, 67, 68, 69, 70, 71, 72, 73, 74])) {
             $this->log(
                 sprintf(
                     'O campo "%s" não pode ser preenchido com 1, 2, 3, 39, 40, 56, 64, 67, 68, 69, 70, 71, ' .
@@ -1089,11 +1074,11 @@ class Registro20Validator
         $etapa = $this->registro->getEtapaCenso();
         $campo = 'Código Curso';
 
-        if (!$this->isPreenchido($curso) && in_array($etapa, array(30, 31, 32, 33, 34, 39, 40, 64, 74))) {
+        if (!$this->isPreenchido($curso) && in_array($etapa, [30, 31, 32, 33, 34, 39, 40, 64, 74])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($curso) && !in_array($etapa, array(30, 31, 32, 33, 34, 39, 40, 64, 74))) {
+        if ($this->isPreenchido($curso) && !in_array($etapa, [30, 31, 32, 33, 34, 39, 40, 64, 74])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
     }
@@ -1106,7 +1091,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 1. Química';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1115,7 +1100,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1123,7 +1108,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1142,7 +1127,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 2. Física';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1151,7 +1136,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1159,7 +1144,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1178,7 +1163,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 3. Matemática';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1187,7 +1172,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1195,7 +1180,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1214,7 +1199,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 4. Biologia';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1223,7 +1208,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1231,7 +1216,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1250,7 +1235,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 5. Ciências';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1259,7 +1244,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1267,7 +1252,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1286,7 +1271,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 6. Língua/Literatura Portuguesa';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1295,7 +1280,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1303,7 +1288,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1322,7 +1307,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 7. Língua/Literatura Estrangeira - Inglês';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1331,7 +1316,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1339,7 +1324,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1358,7 +1343,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 8. Língua/Literatura Estrangeira - Espanhol';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1367,7 +1352,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1375,7 +1360,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1394,7 +1379,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 9. Língua/Literatura Estrangeira - outra';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1403,7 +1388,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1411,7 +1396,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1431,7 +1416,7 @@ class Registro20Validator
         $campo = 'Áreas do conhecimento/componentes curriculares - 10. Arte (Educação Artística, Teatro, Dança, ' .
             'Música, Artes Plásticas e outras)';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1440,7 +1425,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1448,7 +1433,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1467,7 +1452,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 11. Educação Física';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1476,7 +1461,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1484,7 +1469,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1503,7 +1488,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 12. História';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1512,7 +1497,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1520,7 +1505,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1539,7 +1524,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 13. Geografia';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1548,7 +1533,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1556,7 +1541,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1575,7 +1560,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 14. Filosofia';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1584,7 +1569,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1592,7 +1577,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1611,7 +1596,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 16. Informática/ Computação';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1620,7 +1605,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1628,7 +1613,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1647,7 +1632,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 17. Disciplinas dos Cursos Técnicos Profissionais';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1656,7 +1641,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1664,7 +1649,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1683,7 +1668,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 23. Libras';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1692,7 +1677,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1700,7 +1685,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1719,7 +1704,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 25. Disciplinas Pedagógicas';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1728,7 +1713,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1736,7 +1721,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1755,7 +1740,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 26. Ensino Religioso';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1764,7 +1749,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1772,7 +1757,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1791,7 +1776,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 27. Língua Indígena';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1800,7 +1785,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1808,7 +1793,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1827,7 +1812,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 28. Estudos Sociais';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1836,7 +1821,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1844,7 +1829,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1863,7 +1848,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 29. Sociologia';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1872,7 +1857,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1880,7 +1865,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1899,7 +1884,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 30. Língua/Literatura Estrangeira - Francês';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1908,7 +1893,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1916,7 +1901,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1935,7 +1920,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 31. Língua Portuguesa como Segunda Língua';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1944,7 +1929,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1952,7 +1937,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1971,7 +1956,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 32. Estágio Curricular Supervisionado';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -1980,7 +1965,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -1988,7 +1973,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2007,7 +1992,7 @@ class Registro20Validator
         $mediacao = $this->registro->getTipoMediacaoDidaticoPedagogica();
         $campo = 'Áreas do conhecimento/componentes curriculares - 99. Outras disciplinas';
 
-        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($materia) && $escolarizacao == 1 && !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
@@ -2016,7 +2001,7 @@ class Registro20Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($materia) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($materia) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -2024,7 +2009,7 @@ class Registro20Validator
             return;
         }
 
-        if (!in_array($materia, array(0, 1, 2))) {
+        if (!in_array($materia, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -2051,9 +2036,7 @@ class Registro20Validator
         $registro20 = $this->registro;
         $turmaPossuiProfissional = array_filter(
             $this->registros50,
-            function (Registro50 $registro50) use ($registro20) {
-                return $registro50->getCodigoTurma() == $registro20->getCodigoTurma();
-            }
+            fn(Registro50 $registro50) => $registro50->getCodigoTurma() == $registro20->getCodigoTurma()
         );
 
         $mensagem = "Regras gerais:";
@@ -2066,9 +2049,7 @@ class Registro20Validator
             );
         }
 
-        $turmaPossuiAluno = array_filter($this->registros60, function (Registro60 $registro60) use ($registro20) {
-            return $registro60->getCodigoTurma() == $registro20->getCodigoTurma();
-        });
+        $turmaPossuiAluno = array_filter($this->registros60, fn(Registro60 $registro60) => $registro60->getCodigoTurma() == $registro20->getCodigoTurma());
 
         if (count($turmaPossuiAluno) === 0) {
             $this->log(sprintf('"%s" Turma informada sem aluno(a) vinculado a ela.', $mensagem));

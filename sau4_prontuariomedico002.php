@@ -31,8 +31,8 @@ include(modification("libs/db_sql.php"));
 include(modification("classes/db_prontuariomedico_classe.php"));
 include(modification("classes/db_cgs_und_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 set_time_limit(0);
 
@@ -68,21 +68,21 @@ $head5 = "Micro Área:".$sd34_v_descricao;
 //$head3 = "Periodo:".substr($data1,8,2)."/".substr($data1,5,2)."/".substr($data1,0,4)." A ".substr($data2,8,2)."/".substr($data2,5,2)."/".substr($data2,0,4);
 $pri = true;
 
-$ec = array("1"=>"Solteiro",
+$ec = ["1"=>"Solteiro",
            "2"=>"Casado",
            "3"=>"Viúvo",
            "4"=>"Separado Judicialmente",
            "5"=>"União Consensual",
-           "9"=>"Ignorado");
+           "9"=>"Ignorado"];
            
-$sexo= array("F"=>"Feminino",
-          "M"=>"Masculino");
+$sexo= ["F"=>"Feminino",
+          "M"=>"Masculino"];
 
 for($x=0; $x < $linhas; $x++){
      db_fieldsmemory($query,$x);
 
-     $z01_d_nasc = substr($z01_d_nasc,8,2)."/".substr($z01_d_nasc,5,2)."/".substr($z01_d_nasc,0,4);
-     $sd32_d_atendimento = substr($sd32_d_atendimento,8,2)."/".substr($sd32_d_atendimento,5,2)."/".substr($sd32_d_atendimento,0,4);
+     $z01_d_nasc = substr((string) $z01_d_nasc,8,2)."/".substr((string) $z01_d_nasc,5,2)."/".substr((string) $z01_d_nasc,0,4);
+     $sd32_d_atendimento = substr((string) $sd32_d_atendimento,8,2)."/".substr((string) $sd32_d_atendimento,5,2)."/".substr((string) $sd32_d_atendimento,0,4);
 
      if (  ($pdf->gety() > $pdf->h -30) || $pri){
           $pdf->addpage();
@@ -118,10 +118,10 @@ for($x=0; $x < $linhas; $x++){
      }
 
      $pdf->setfont('arial','',7);
-     $pdf->SetWidths(array(20,20,90,45,17));
-     $pdf->SetAligns(array("C","C","L","L","L"));
+     $pdf->SetWidths([20,20,90,45,17]);
+     $pdf->SetAligns(["C","C","L","L","L"]);
      $nbx="";
-     $pdf->Row(array("$sd32_d_atendimento","$sd32_c_horaatend","$sd32_t_descricao","$z01_nome", "$nbx"), 4);
+     $pdf->Row(["$sd32_d_atendimento","$sd32_c_horaatend","$sd32_t_descricao","$z01_nome", "$nbx"], 4);
 }
 
 

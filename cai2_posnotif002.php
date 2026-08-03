@@ -30,13 +30,13 @@ include(modification("libs/db_sql.php"));
 include(modification("fpdf151/pdf.php"));
 include(modification("classes/db_notificacao_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $head2 = 'Posição das Notificões ';
 $clnotificacao = new cl_notificacao;
 
-$aOpcoesSituacao  = explode("|",$situacao);
+$aOpcoesSituacao  = explode("|",(string) $situacao);
 
 foreach($aOpcoesSituacao as $i => $sOpcao ) {
 	switch ($sOpcao) {
@@ -133,7 +133,7 @@ $pdf->setfillcolor(235);
 
 db_fieldsmemory($rsNotiDebitos, 0);
 
-$totalportipo = array();
+$totalportipo = [];
 $lista 				= $k60_codigo;
 $impcab 			= true;
 
@@ -188,7 +188,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 														where arrecad > 0 and arrepaga > 0";
 			$result_parcialpago = db_query($sql_parcialpago) or die($sql_parcialpago);
 			
-		 if ( pg_numrows($result_parcialpago) > 0 ) {
+		 if ( pg_num_rows($result_parcialpago) > 0 ) {
 			 $tipo = "PARCIALMENTE PAGO";
 		 }
 
@@ -203,7 +203,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 															where k53_notifica = $k53_notifica) as x
 															where arrecad > 0 and arrepaga = 0 and arrecant = 0";
 		 $result_total_devendo = db_query($sql_totaldevendo) or die($sql_totaldevendo);
-		 if (pg_numrows($result_total_devendo) > 0) {
+		 if (pg_num_rows($result_total_devendo) > 0) {
 			 $tipo = "TOTALMENTE EM DÉBITO";
 			 $ltotalmente_debito;
 		 }
@@ -219,7 +219,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 													where k53_notifica = $k53_notifica) as x
 												where arrecad = 0 and arrepaga > 0";
 		 $result_totalpago = db_query($sql_totalpago) or die($sql_totalpago);
-		 if (pg_numrows($result_totalpago) > 0) {
+		 if (pg_num_rows($result_totalpago) > 0) {
 			 $tipo = "TOTALMENTE PAGO";
 			 $ltotalmente_pago;
 		 }
@@ -237,7 +237,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 																where arrecant > 0 and arrepaga = 0 and arrecad > 0
 																";
 		 $result_parcialcancelado = db_query($sql_parcialcancelado) or die($sql_parcialcancelado);
-		 if (pg_numrows($result_parcialcancelado) > 0) {
+		 if (pg_num_rows($result_parcialcancelado) > 0) {
 			 $tipo = "PARCIALMENTE CANCELADO";
 		 	 $lparcialmente_cancelado;
 		 }
@@ -254,7 +254,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 															where k53_notifica = $k53_notifica) as x
 															where arrecant > 0 and arrepaga = 0 and arrecad = 0";
 		 $result_totalcancelado = db_query($sql_totalcancelado) or die($sql_totalcancelado);
-		 if (pg_numrows($result_totalcancelado) > 0) {
+		 if (pg_num_rows($result_totalcancelado) > 0) {
 			 $tipo = "TOTALMENTE CANCELADO";
 		 $ltotalmente_cancelado;
 		 }
@@ -276,7 +276,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 														where k53_notifica = $k53_notifica) as x
 													where arrepaga = 0 and arrecad > 0 and arrecant = 0";
 		 $result_reparcelado = db_query($sql_reparcelado) or die($sql_reparcelado);
-		 if (pg_numrows($result_reparcelado) > 0) {
+		 if (pg_num_rows($result_reparcelado) > 0) {
 			$lreparc_totalmente_debito; 
 		 	$tipo = "REPARCELADO E TOTALMENTE EM DÉBITO";
 		 }
@@ -299,7 +299,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 														) as x
 													where arrepaga > 0 and arrecad > 0";
 		 $result_reparcelado = db_query($sql_reparcelado) or die($sql_reparcelado);
-		 if (pg_numrows($result_reparcelado) > 0) {
+		 if (pg_num_rows($result_reparcelado) > 0) {
 			$lreparc_parcialmente_pago;
 		 	$tipo = "REPARCELADO E PARCIALMENTE PAGO";
 		 }
@@ -320,7 +320,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 														where k53_notifica = $k53_notifica) as x
 													where arrecad = 0 and arrepaga > 0";
 		 $result_reparcelado = db_query($sql_reparcelado) or die($sql_reparcelado);
-		 if (pg_numrows($result_reparcelado) > 0) {
+		 if (pg_num_rows($result_reparcelado) > 0) {
 			$lreparc_totalmente_pago; 
 		 	$tipo = "REPARCELADO E TOTALMENTE PAGO";
 		 }
@@ -344,7 +344,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 														where k53_notifica = $k53_notifica) as x
 													where arrepaga = 0 and arrecad > 0 and arrecant = 0";
 		 $result_reparcelado = db_query($sql_reparcelado) or die($sql_reparcelado);
-		 if (pg_numrows($result_reparcelado) > 0) {
+		 if (pg_num_rows($result_reparcelado) > 0) {
 			$lreparc_totalmente_debito; 
 		 	$tipo = "REPARCELADO E TOTALMENTE EM DÉBITO";
 		 }
@@ -363,7 +363,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 														where k53_notifica = $k53_notifica) as x
 													where arrepaga > 0 and arrecad > 0";
 		 $result_reparcelado = db_query($sql_reparcelado) or die($sql_reparcelado);
-		 if (pg_numrows($result_reparcelado) > 0) {
+		 if (pg_num_rows($result_reparcelado) > 0) {
 			 $tipo = "REPARCELADO E PARCIALMENTE PAGO";
 			 $lreparc_parcialmente_pago;
 		 }
@@ -382,7 +382,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 														where k53_notifica = $k53_notifica) as x
 													where arrecad = 0 and arrepaga > 0";
 		 $result_reparcelado = db_query($sql_reparcelado) or die($sql_reparcelado);
-		 if (pg_numrows($result_reparcelado) > 0) {
+		 if (pg_num_rows($result_reparcelado) > 0) {
 			 $tipo = "REPARCELADO E TOTALMENTE PAGO";
 		 	 $lreparc_totalmente_pago;
 		 }
@@ -399,7 +399,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 														inner join termo             on termo.v07_numpre    = notidebitos.k53_numpre
 														where k53_notifica = $k53_notifica and termo.v07_situacao = 2";
 		 $result_reparcelado = db_query($sql_reparcelado) or die($sql_reparcelado);
-		 if (pg_numrows($result_reparcelado) > 0) {
+		 if (pg_num_rows($result_reparcelado) > 0) {
 			 $tipo = "PARCELAMENTO ANULADO";
 		 	 $lparcelamento_anulado;
 		 }
@@ -420,7 +420,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 															where k53_notifica = $k53_notifica and termo.v07_situacao = 1) as x
 														where arrepaga = 0 and arrecant = 0 and arrecad > 0";
 		 $result_parcelado_sit = db_query($sql_parcelado_sit) or die($sql_parcelado_sit);
-		 if (pg_numrows($result_parcelado_sit) > 0) {
+		 if (pg_num_rows($result_parcelado_sit) > 0) {
 			 $tipo = "PARCELADO E TOTALMENTE EM DÉBITO";
 		 	 $lparc_totalmente_debito;
 		 }
@@ -439,7 +439,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 															where k53_notifica = $k53_notifica and termo.v07_situacao = 1) as x
 														where arrepaga > 0 and arrecad > 0";
 		 $result_parcelado_sit = db_query($sql_parcelado_sit) or die($sql_parcelado_sit);
-		 if (pg_numrows($result_parcelado_sit) > 0) {
+		 if (pg_num_rows($result_parcelado_sit) > 0) {
 			 $tipo = "PARCELADO E PARCIALMENTE PAGO";
 		 	$lparc_parcialmente_pago;
 		 }
@@ -458,7 +458,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 															where k53_notifica = $k53_notifica and termo.v07_situacao = 1) as x
 														where arrecad = 0 and arrepaga > 0";
 		 $result_parcelado_sit = db_query($sql_parcelado_sit) or die($sql_parcelado_sit);
-		 if (pg_numrows($result_parcelado_sit) > 0) {
+		 if (pg_num_rows($result_parcelado_sit) > 0) {
 			 $tipo = "PARCELADO E TOTALMENTE PAGO";
 		 	 $lparc_totalmente_pago;
 		 }
@@ -476,7 +476,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 															where k53_notifica = $k53_notifica) as x
 														where inicial = 0";
 		 $result_cdasemajuizado_sit = db_query($sql_cdasemajuizado_sit) or die($sql_cdasemajuizado_sit);
-		 if (pg_numrows($result_cdasemajuizado_sit) > 0) {
+		 if (pg_num_rows($result_cdasemajuizado_sit) > 0) {
 			 $tipo = "CDA EMITIDA SEM INICIAL";
 		 	 $lcda_sem_inicial;
 		 }
@@ -496,7 +496,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 																			where k53_notifica = $k53_notifica) as x
 																		where arrecad > 0 and arrecant = 0";
 		 $result_cdasemajuizado_sit = db_query($sql_cdasemajuizado_sit) or die($sql_cdasemajuizado_sit);
-		 if (pg_numrows($result_cdasemajuizado_sit) > 0) {
+		 if (pg_num_rows($result_cdasemajuizado_sit) > 0) {
 			 $tipo = "DÉBITO AJUIZADO E TOTALMENTE EM DÉBITO";
 		 	 $laju_totalmente_debito;
 		 }
@@ -517,7 +517,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 																			where k53_notifica = $k53_notifica) as x
 																		where arrecad > 0 and arrecant > 0 and arrepaga > 0";
 		 $result_cdasemajuizado_sit = db_query($sql_cdasemajuizado_sit) or die($sql_cdasemajuizado_sit);
-		 if (pg_numrows($result_cdasemajuizado_sit) > 0) {
+		 if (pg_num_rows($result_cdasemajuizado_sit) > 0) {
 			 $tipo = "DÉBITO AJUIZADO E PARCIALMENTE PAGO";
 		 	 $laju_parcialmente_pago;
 		 }
@@ -538,7 +538,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 																			where k53_notifica = $k53_notifica) as x
 																		where arrecad = 0 and arrecant > 0 and arrepaga > 0";
 		 $result_cdasemajuizado_sit = db_query($sql_cdasemajuizado_sit) or die($sql_cdasemajuizado_sit);
-		 if (pg_numrows($result_cdasemajuizado_sit) > 0) {
+		 if (pg_num_rows($result_cdasemajuizado_sit) > 0) {
 			 $tipo = "DÉBITO AJUIZADO E TOTALMENTE PAGO";
 		 	 $laju_totalmente_pago;
 		 }
@@ -558,7 +558,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 																			where k53_notifica = $k53_notifica) as x
 																		where termoini > 0";
 		 $result_cdasemajuizado_sit = db_query($sql_cdasemajuizado_sit) or die($sql_cdasemajuizado_sit);
-		 if (pg_numrows($result_cdasemajuizado_sit) > 0) {
+		 if (pg_num_rows($result_cdasemajuizado_sit) > 0) {
 			 $tipo = "DÉBITO AJUIZADO E PARCELADO";
 		 	 $laju_parcelado_debito;
 		 }
@@ -587,7 +587,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 	}
 
 	if ($x < $linhasNotiDebitos - 1) {
-		$k60_codigo_next = pg_result($rsNotiDebitos, $x + 1, "k60_codigo");
+		$k60_codigo_next = pg_fetch_result($rsNotiDebitos, $x + 1, "k60_codigo");
 	}else{
 	  $k60_codigo_next ="";
 	}
@@ -611,7 +611,7 @@ if(($pdf->gety() > $pdf->h - 30) or $impcab == true) {
 		if ($lista != $k60_codigo_next) {
 			$impcab = true;
 			$lista = $k60_codigo_next;
-			$totalportipo = array();
+			$totalportipo = [];
 		}
 
 	}

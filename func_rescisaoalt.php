@@ -34,13 +34,13 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_rescisao_classe.php');
 require_once modification('classes/db_rhregime_classe.php');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrescisao = new cl_rescisao;
 $clrhregime = new cl_rhregime;

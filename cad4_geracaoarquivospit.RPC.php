@@ -51,8 +51,8 @@ try{
       $aPeriodos                 = $oParametros->aSemestre;
       $aArquivos                 = $oParametros->aArquivos;
       $iAno                      = $oParametros->sExercicio;
-      $aCaminhosArquivos         = array();
-      $aArquivosInconsistencias  = array();
+      $aCaminhosArquivos         = [];
+      $aArquivosInconsistencias  = [];
       $iPeriodo  				         = $aPeriodos[0];
 
       /**
@@ -72,7 +72,7 @@ try{
         /**
          * Inicializa o array de Erros
          */
-        $aErros = array();
+        $aErros = [];
 
         /**
          * Se for IPTU ou Logradouros, executa apenas uma vez a geração de arquivos,

@@ -142,9 +142,9 @@ $iOpcao = 1;
                     <td><b>Natureza de Saldo:</b></td>
                     <td>
                         <?php
-                        $aNaturezaSaldo = array(1 => "Saldo Devedor",
+                        $aNaturezaSaldo = [1 => "Saldo Devedor",
                             2 => "Saldo Credor",
-                            3 => "Ambos");
+                            3 => "Ambos"];
                         db_select("iNaturezaSaldo", $aNaturezaSaldo, true, $db_opcao);
                         ?>
                     </td>
@@ -153,10 +153,10 @@ $iOpcao = 1;
                     <td><b>Transfere Saldo:</b></td>
                     <td>
                         <?php
-                        $aTipoSaldo = array(
+                        $aTipoSaldo = [
                             'f' => "Não",
                             't' => "Sim",
-                            );
+                            ];
                         db_select("bSaldoContinuo", $aTipoSaldo, true, $db_opcao);
                         ?>
                     </td>
@@ -165,7 +165,7 @@ $iOpcao = 1;
                     <td><b>Tipo de Conta:</b></td>
                     <td>
                         <?php
-                        $aTipoConta = array(0 => "Sintética", 1 => "Analítica");
+                        $aTipoConta = [0 => "Sintética", 1 => "Analítica"];
                         db_select("iTipoConta", $aTipoConta, true, $db_opcao);
                         ?>
                     </td>
@@ -189,7 +189,7 @@ $iOpcao = 1;
                          * Organiza um array com os valores padrão cadastrado no dicionário de dados
                          */
                         $aIndicadorSuperavit = getValoresPadroesCampo("c60_identificadorfinanceiro");
-                        $aRecordSuperavit    = array();
+                        $aRecordSuperavit    = [];
                         foreach ($aIndicadorSuperavit as $sSigla => $sDescricao) {
                             $aRecordSuperavit[$sSigla] = "{$sSigla} - {$sDescricao}";
                         }

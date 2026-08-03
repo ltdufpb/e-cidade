@@ -87,14 +87,14 @@ function formataData($dData, $iTipo = 1) {
 
   if ($iTipo == 1) {
 
-    $dData = explode('/', $dData);
+    $dData = explode('/', (string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
 
     return $dData;
   
   }
  
- $dData = explode('-', $dData);
+ $dData = explode('-', (string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
 
  return $dData;
@@ -104,7 +104,7 @@ function formataData($dData, $iTipo = 1) {
 $oDaoAgendaConsultaAnula = db_utils::getdao('agendaconsultaanula');
 
 $aDatas                  = explode(',', $sDatas);
-$aDatas2                 = array(formataData($aDatas[0]), formataData($aDatas[1]));
+$aDatas2                 = [formataData($aDatas[0]), formataData($aDatas[1])];
                          
 $sCampos                 = ' agendamentos.*, agendaconsultaanula.*, coddepto, descrdepto,';
 $sCampos                .= ' sd23_i_numcgs, z01_v_nome, sd101_c_descr, s102_i_prontuario, login, ';
@@ -170,10 +170,9 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
     $iTotal   = 0;
 
   }
-  novaLinha($oPdf, formataData($oDados->sd23_d_consulta, 2), substr($oDados->sd101_c_descr, 0, 15), 
+  novaLinha($oPdf, formataData($oDados->sd23_d_consulta, 2), substr((string) $oDados->sd101_c_descr, 0, 15), 
             $oDados->sd23_i_codigo, $oDados->sd23_c_hora, $oDados->sd23_i_numcgs, 
-            substr($oDados->z01_v_nome, 0, 27), formataData($oDados->s114_d_data, 2),
-            substr($oDados->situacao, 0, 20), substr($oDados->s114_v_motivo, 0, 45), $oDados->login
+            substr((string) $oDados->z01_v_nome, 0, 27)
            );
   $iTotal++;
 

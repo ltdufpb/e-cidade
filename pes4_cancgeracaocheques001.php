@@ -163,8 +163,8 @@ if ( isset($oPost->cancelar) ) {
               <td>
                 <?php 
                 
-                  $aTipoFiltro = array( "s"=>"Selecionado",
-                                        "i"=>"Intervalo" ); 
+                  $aTipoFiltro = [ "s"=>"Selecionado",
+                                        "i"=>"Intervalo" ]; 
                   
                   db_select("tipoFiltro",$aTipoFiltro,true,1,"onChange='document.form1.submit();'");
                 ?>  

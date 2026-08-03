@@ -33,14 +33,14 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_matparam_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatparam = new cl_matparam;
 $clmatparam->rotulo->label();
 
 
 function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
 {
-  $data = explode("/", $data);
+  $data = explode("/", (string) $data);
   $novadata = date("d/m/Y", mktime(0, 0, 0, $data[1] - $meses,   $data[0] - $dias, $data[2] - $ano));
   return $novadata;
 }
@@ -163,7 +163,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
         </td>
         <td align='left'>
           <?php 
-						$x = array('1'=>'Departamento/&Iacute;tem','2'=>'Departamento');
+						$x = ['1'=>'Departamento/&Iacute;tem','2'=>'Departamento'];
 						db_select('quebra',$x,true,1,"style='width:200px;' onchange=\"js_modificaOrdenacaoQuebra(this.value);\"");
 					?>
         </td>
@@ -175,7 +175,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
         </td>
         <td align='left'>
           <?php 
-						$x = array('1'=>'Todos','2'=>'Vencidos','3'=>'&Agrave; Vencer', '4'=>'No Prazo');
+						$x = ['1'=>'Todos','2'=>'Vencidos','3'=>'&Agrave; Vencer', '4'=>'No Prazo'];
 						db_select('situacao',$x,true,1,"style='width:200px;' onchange=\"js_modificaOrdenacaoSituacao(this.value);\"");
 					?>
         </td>
@@ -187,7 +187,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
         </td>
         <td align='left'>
           <?php 
-						$x = array('1'=>'Data de Validade','2'=>'Situa&ccedil;&atilde;o','3'=>'Lote');
+						$x = ['1'=>'Data de Validade','2'=>'Situa&ccedil;&atilde;o','3'=>'Lote'];
 						db_select('ordenacao',$x,true,1,"style='width:200px;'");
 					?>
         </td>
@@ -199,7 +199,7 @@ function calcula_data($data, $dias= 0, $meses = 0, $ano = 0)
         </td>
         <td align='left'>
           <?php 
-						$x = array('1'=>'N&atilde;o','2'=>'Sim');
+						$x = ['1'=>'N&atilde;o','2'=>'Sim'];
 						db_select('zerado',$x,true,1,"style='width:200px;'");
 					?>
         </td>

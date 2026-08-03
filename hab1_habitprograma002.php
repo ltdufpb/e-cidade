@@ -48,17 +48,17 @@ $db_opcao    = 1;
     <td> 
      <?php 
      
-       $clcriaabas->identifica = array( "habitprograma"           =>"Dados Programa",
+       $clcriaabas->identifica = [ "habitprograma"           =>"Dados Programa",
 //                                        "habitprogramalote"       =>"Lotes Programa",
-                                        "habitprogramalistacompra"=>"Lista de Compras");
+                                        "habitprogramalistacompra"=>"Lista de Compras"];
         
-       $clcriaabas->src        = array( "habitprograma"           =>"hab1_habitprograma005.php");
+       $clcriaabas->src        = [ "habitprograma"           =>"hab1_habitprograma005.php"];
        
-       $clcriaabas->sizecampo  = array( "habitprograma"           =>"23",
+       $clcriaabas->sizecampo  = [ "habitprograma"           =>"23",
 //                                        "habitprogramalote"       =>"23",
-                                        "habitprogramalistacompra"=>"23");
+                                        "habitprogramalistacompra"=>"23"];
        
-       $clcriaabas->disabled   = array( "habitprogramalistacompra"=>"true");
+       $clcriaabas->disabled   = [ "habitprogramalistacompra"=>"true"];
         
        $clcriaabas->cria_abas(); 
      ?> 

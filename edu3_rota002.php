@@ -37,7 +37,7 @@ include(modification("classes/db_rotaaluno_classe.php"));
 include(modification("classes/db_veicretirada_classe.php"));
 include(modification("classes/db_rotamov_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $claluno = new cl_aluno;
 $cllinha = new cl_linha;
 $clitinerario = new cl_itinerario;

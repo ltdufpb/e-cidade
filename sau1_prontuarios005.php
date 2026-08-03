@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_prontuarios_classe.php"));
 include(modification("classes/db_agendamentos_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clprontuarios = new cl_prontuarios;
 $clagendamentos = new cl_agendamentos;
 $db_opcao = 1;

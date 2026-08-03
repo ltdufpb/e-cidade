@@ -32,7 +32,7 @@ $oDaoTfdPedidoTfd   = db_utils::getdao('tfd_pedidotfd');
 
 function formataData($dData) {
  
-  $dData = explode('-',$dData);
+  $dData = explode('-',(string) $dData);
   $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
   return $dData;
 
@@ -157,7 +157,7 @@ if ($saida == 2) {
 }
 $head3    = "Saída...: ".$sSaida;
 $head4    = "Destino.: ".($destino != '' ? $destino : 'GERAL');
-$aCidades = array();
+$aCidades = [];
 novaPagina($oPdf);
 impCabecalho($oPdf); 
 for ($iI = 0; $iI < $oDaoTfdPedidoTfd->numrows; $iI++) {

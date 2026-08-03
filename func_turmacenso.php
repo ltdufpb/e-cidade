@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_turmacenso_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clturmacenso = new cl_turmacenso;
 $clturmacenso->rotulo->label("ed342_sequencial");
 $clturmacenso->rotulo->label("ed342_nome");
@@ -72,9 +72,9 @@ $clturmacenso->rotulo->label("ed342_nome");
         }else{
            $sql = $clturmacenso->sql_query("",$campos,"ed342_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed342_nome)){
-          $repassa = array("chave_ed342_sequencial"=>$chave_ed342_sequencial,"chave_ed342_nome"=>$chave_ed342_nome);
+          $repassa = ["chave_ed342_sequencial"=>$chave_ed342_sequencial,"chave_ed342_nome"=>$chave_ed342_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

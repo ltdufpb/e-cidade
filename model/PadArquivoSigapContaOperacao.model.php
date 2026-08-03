@@ -40,7 +40,7 @@ final class PadArquivoSigapContaOperacao extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "ContaOperacao";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -61,7 +61,7 @@ final class PadArquivoSigapContaOperacao extends PadArquivoSigap {
      * Separamos a data do em ano, mes, dia
      */
     $sWhereInstit = db_getsession("DB_instit");
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     
     $iTotalLinhas = 0; 
@@ -76,7 +76,7 @@ final class PadArquivoSigapContaOperacao extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "opeCodigoEntidade",
                         "opeMesAnoMovimento",
                         "opeCodigoOperacao",
@@ -91,7 +91,7 @@ final class PadArquivoSigapContaOperacao extends PadArquivoSigap {
                         "opeCodigoUnidadeBalanceteVerificaca",
                         "opeCodigoContaBalanceteVerificacao",
                         "opeCodigoOrgaoUnidadeOrcamentariaBalVer"
-                       );
+                       ];
                        
     return $aElementos;  
   }

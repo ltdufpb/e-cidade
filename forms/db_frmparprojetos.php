@@ -31,8 +31,8 @@
     $sLabelButton  = $db_opcao == 1     ? "Incluir"  : ($db_opcao == 2 || $db_opcao == 22 ? "Alterar" : "Excluir");
     $sStateButton  = $db_botao == false ? "disabled" : "";
     $ob21_anousu   = db_getsession('DB_anousu');
-    $aTipoCarta    = array("0" => "Padrão do Sistema", "1"=> "Modelo do OpenOffice");
-    $aTipoHabiteSe = array('1'=>'Manual', '2'=>'Contador por Exercício');
+    $aTipoCarta    = ["0" => "Padrão do Sistema", "1"=> "Modelo do OpenOffice"];
+    $aTipoHabiteSe = ['1'=>'Manual', '2'=>'Contador por Exercício'];
 ?>
 <form class="container" name="form1" method="post" action="" enctype="multipart/form-data">
     <fieldset>
@@ -179,7 +179,7 @@
                                 <td colspan="2">
                                 <?php  
                                     $certificadopfx = $oParProjetos->ob21_localcertificadoa1;
-                                    $certificadopfx = basename($certificadopfx);
+                                    $certificadopfx = basename((string) $certificadopfx);
                                     db_input('certificadopfx', 85, $Iob21_localcertificadoa1, true,'text', 3);
                                 ?>
                                 </td>

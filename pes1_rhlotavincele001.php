@@ -39,8 +39,8 @@ include(modification("classes/db_orcprojativ_classe.php"));
 include(modification("classes/db_orctiporec_classe.php"));
 include(modification("classes/db_orcelemento_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clrhlota = new cl_rhlota;
 $clrhlotavinc = new cl_rhlotavinc;
@@ -82,7 +82,7 @@ if(isset($incluir)){
   if($clrhlotavincele->erro_status==0){
     $sqlerro=true;
   }
-  if($sqlerro==false && trim($rh39_projativ)!=""){
+  if($sqlerro==false && trim((string) $rh39_projativ)!=""){
     $clrhlotavincativ->rh39_anousu    = $rh39_anousu;
     $clrhlotavincativ->rh39_projativ  = $rh39_projativ;
 
@@ -102,7 +102,7 @@ if(isset($incluir)){
       $sqlerro=true;
     }
   }
-  if($sqlerro==false && trim($rh43_recurso)!=""){
+  if($sqlerro==false && trim((string) $rh43_recurso)!=""){
     $clrhlotavincrec->rh43_recurso = $rh43_recurso;
     $clrhlotavincrec->incluir($rh25_codlotavinc,$rh28_codelenov);
     if($clrhlotavincrec->erro_status==0){
@@ -292,7 +292,7 @@ if(isset($alterar) || isset($excluir) || isset($incluir)){
 }
 if(isset($opcao)){
   echo "<script> (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhlotavinc.document.form1.opcaoiframe.value = '$opcao'; </script>";
-  if($opcao=="alterar" && trim($default)==""){
+  if($opcao=="alterar" && trim((string) $default)==""){
     echo "<script> (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhlotavinc.document.form1.defaultifra.value = '$rh28_codeledef'; </script>";
   }
 }else{

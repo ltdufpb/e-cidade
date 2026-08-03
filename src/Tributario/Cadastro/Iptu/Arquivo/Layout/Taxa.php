@@ -36,28 +36,28 @@ final class Taxa extends Layout
         $this->codigoReceita    = $codigoReceita;
         $this->descricaoReceita = $descricaoReceita;
         
-        $this->fields = array(
-            'VENCIMENTOPARCELA' => array(
+        $this->fields = [
+            'VENCIMENTOPARCELA' => [
                 'name'           => 'DESCR{$descricaoReceita}{$codigoReceita}'
                 ,'description'   => 'DESCRICAO {$descricaoReceita}'
                 ,'size'           => 40
-            )
-            ,'VALORPARCELA' => array(
+            ]
+            ,'VALORPARCELA' => [
                 'name'           => 'QUANT{$descricaoReceita}{$codigoReceita}'
                 ,'description'   => 'QUANTIDADE {$descricaoReceita}'
                 ,'size'           => 10
-            )
-            ,'VALORJUROPARCELA' => array(
+            ]
+            ,'VALORJUROPARCELA' => [
                 'name'           => 'VAL{$descricaoReceita}{$codigoReceita}'
                 ,'description'   => 'VALOR {$descricaoReceita}'
                 ,'size'           => 18
-            )
-            ,'VALORMULTAPARCELA' => array(
+            ]
+            ,'VALORMULTAPARCELA' => [
                 'name'           => 'VALPARC{$descricaoReceita}{$codigoReceita}'
                 ,'description'   => 'VALOR {$descricaoReceita} PARA CADA PARCELA'
                 ,'size'           => 18
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -66,14 +66,15 @@ final class Taxa extends Layout
      *
      * Retorna o layout
      */
+    #[\Override]
     public function get($counter)
     {
         if(empty($counter)) {
-            throw new BusinessException('Informe contador de inicio.'. get_class());
+            throw new BusinessException('Informe contador de inicio.'. self::class);
         }
         
         if($this->getStart() === null) {
-            throw new BusinessException('Informe o início dos blocos.'. get_class());
+            throw new BusinessException('Informe o início dos blocos.'. self::class);
         }
 
         $start = $this->getStart();
@@ -87,7 +88,7 @@ final class Taxa extends Layout
 
             switch($item) {
                 case ('{$codigoReceita}'):
-                    return str_pad($codigoReceita, 3, '0', STR_PAD_LEFT);
+                    return str_pad((string) $codigoReceita, 3, '0', STR_PAD_LEFT);
                 case ('{$descricaoReceita}'):
                     return $descricaoReceita;
             }

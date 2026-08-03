@@ -33,7 +33,7 @@ include_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_matparam_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoVacDevolucao     = db_utils::getdao('vac_devolucao');
 $oDaoVacSala          = db_utils::getdao('vac_sala');
 $db_opcao             = 1;
@@ -56,7 +56,7 @@ if (isset($confirma)) {
   $oDaoVacFechamento       = db_utils::getdao('vac_fechamento');
   $dHoje                   = date("Y-m-d",db_getsession("DB_datausu"));
   db_inicio_transacao();
-    $aFechamentos      = explode(",",$codretirada);
+    $aFechamentos      = explode(",",(string) $codretirada);
     $aMotivos        = explode("##",$motivos);
     $iTamFechamentos = count($aFechamentos);
     $sErro = "";

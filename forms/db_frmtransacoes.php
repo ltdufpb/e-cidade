@@ -82,7 +82,7 @@
             @db_fieldsmemory($result2,0);
 
             if(@$cm07_d_vencimento == ""){
-             $cm07_d_vencimento = (substr($cm24_d_entrada,0,4)+5)."/".substr($cm24_d_entrada,5,2)."/".substr($cm24_d_entrada,8,2);
+             $cm07_d_vencimento = (substr((string) $cm24_d_entrada,0,4)+5)."/".substr((string) $cm24_d_entrada,5,2)."/".substr((string) $cm24_d_entrada,8,2);
             }
 
                 $db_botao = false;

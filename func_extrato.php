@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_extrato_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clextrato = new cl_extrato;
 $clextrato->rotulo->label("k85_sequencial");
 $clextrato->rotulo->label("k85_nomearq");
@@ -98,9 +98,9 @@ $clextrato->rotulo->label("k85_nomearq");
         }else{
            $sql = $clextrato->sql_query("",$campos,"k85_sequencial"," k85_tipoinclusao = 2 ");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k85_nomearq)){
-          $repassa = array("chave_k85_sequencial"=>$chave_k85_sequencial,"chave_k85_nomearq"=>$chave_k85_nomearq);
+          $repassa = ["chave_k85_sequencial"=>$chave_k85_sequencial,"chave_k85_nomearq"=>$chave_k85_nomearq];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

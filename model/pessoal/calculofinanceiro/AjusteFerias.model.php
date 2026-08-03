@@ -114,8 +114,8 @@ abstract class AjusteFerias {
                   $tot_prov += $pessoal[$Ipessoal]["r01_arredn"];
                   $gerou_rubrica_calculo = true;
 
-                  $matriz1 = array();
-                  $matriz2 = array();
+                  $matriz1 = [];
+                  $matriz2 = [];
 
                   $matriz1[1]  = "r14_regist";
                   $matriz1[2]  = "r14_rubric";

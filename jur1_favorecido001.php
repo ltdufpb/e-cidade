@@ -55,11 +55,11 @@ $oAbas = new cl_criaabas();
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php  
-			$oAbas->identifica = array("favorecido" => "Dados do Favorecido"   , "favorecidotaxas" => "Tarifas Vinculadas");
-			$oAbas->title      = array("favorecido" => "Dados do Favorecido"   , "favorecidotaxas" => "Tarifas Vinculadas");
-			$oAbas->src        = array("favorecido" => "jur1_favorecido004.php", "favorecidotaxas" => "jur1_favorecidotaxa001.php");
-			$oAbas->sizecampo  = array("favorecido" => "23"                    , "favorecidotaxas" => "23" );
-			$oAbas->disabled   = array("favorecido" => false, 			         "favorecidotaxas" => true );
+			$oAbas->identifica = ["favorecido" => "Dados do Favorecido"   , "favorecidotaxas" => "Tarifas Vinculadas"];
+			$oAbas->title      = ["favorecido" => "Dados do Favorecido"   , "favorecidotaxas" => "Tarifas Vinculadas"];
+			$oAbas->src        = ["favorecido" => "jur1_favorecido004.php", "favorecidotaxas" => "jur1_favorecidotaxa001.php"];
+			$oAbas->sizecampo  = ["favorecido" => "23"                    , "favorecidotaxas" => "23" ];
+			$oAbas->disabled   = ["favorecido" => false, 			         "favorecidotaxas" => true ];
 			$oAbas->cria_abas(); 
     ?>   
     </center>

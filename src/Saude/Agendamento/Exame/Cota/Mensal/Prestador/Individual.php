@@ -55,7 +55,7 @@ class Individual extends Mensal
    */
   public function getPrestadorExameArray()
   {
-    return array($this->iPrestadorExame);
+    return [$this->iPrestadorExame];
   }
 
   /**

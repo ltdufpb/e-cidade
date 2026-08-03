@@ -35,7 +35,7 @@ include(modification("classes/db_relac_classe.php"));
 include(modification("classes/db_rhpessoal_classe.php"));
 include(modification("classes/db_pontofs_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmovrel = new cl_movrel;
 $clconvenio = new cl_convenio;
 $clrelac = new cl_relac;
@@ -60,8 +60,8 @@ if(isset($incluir) || isset($confirma)){
   if($clconvenio->numrows > 0){
     db_fieldsmemory($result_dados_posicoes,0);
     db_inicio_transacao();
-    $pos_ano01 = ((int)substr($r56_posano,0,3))-1; // 3 caracteres da primeira posição do ano
-    $pos_ano02 = ((int)substr($r56_posano,3,3))-1; // 3 caracteres da posição limite do ano
+    $pos_ano01 = ((int)substr((string) $r56_posano,0,3))-1; // 3 caracteres da primeira posição do ano
+    $pos_ano02 = ((int)substr((string) $r56_posano,3,3))-1; // 3 caracteres da posição limite do ano
     $cas_ano12 = 0;                                // Quantos caracteres
     // Busca quantidade de caracteres para usar no SUBSTR
     if($pos_ano01 > -1){
@@ -80,8 +80,8 @@ if(isset($incluir) || isset($confirma)){
       }
     }
 
-    $pos_reg01 = ((int)substr($r56_posreg,0,3))-1; // 3 caracteres da primeira posição do registro
-    $pos_reg02 = ((int)substr($r56_posreg,3,3))-1; // 3 caracteres da posição limite do registro
+    $pos_reg01 = ((int)substr((string) $r56_posreg,0,3))-1; // 3 caracteres da primeira posição do registro
+    $pos_reg02 = ((int)substr((string) $r56_posreg,3,3))-1; // 3 caracteres da posição limite do registro
     $cas_reg12 = 0;                                // Quantos caracteres
     // Busca quantidade de caracteres para usar no SUBSTR
     if($pos_reg01 > -1){
@@ -90,8 +90,8 @@ if(isset($incluir) || isset($confirma)){
       }
     }
 
-    $pos_eve01 = ((int)substr($r56_poseve,0,3))-1; // 3 caracteres da primeira posição do relacionamento
-    $pos_eve02 = ((int)substr($r56_poseve,3,3))-1; // 3 caracteres da posição limite do relacionamento
+    $pos_eve01 = ((int)substr((string) $r56_poseve,0,3))-1; // 3 caracteres da primeira posição do relacionamento
+    $pos_eve02 = ((int)substr((string) $r56_poseve,3,3))-1; // 3 caracteres da posição limite do relacionamento
     $cas_eve12 = 0;                                // Quantos caracteres
     // Busca quantidade de caracteres para usar no SUBSTR
     if($pos_eve01 > -1){
@@ -100,8 +100,8 @@ if(isset($incluir) || isset($confirma)){
       }
     }
 
-    $pos_q0101 = ((int)substr($r56_posq01,0,3))-1; // 3 caracteres da primeira posição do valor/quantidade 01
-    $pos_q0102 = ((int)substr($r56_posq01,3,3))-1; // 3 caracteres da posição limite do valor/quantidade 01
+    $pos_q0101 = ((int)substr((string) $r56_posq01,0,3))-1; // 3 caracteres da primeira posição do valor/quantidade 01
+    $pos_q0102 = ((int)substr((string) $r56_posq01,3,3))-1; // 3 caracteres da posição limite do valor/quantidade 01
     $cas_q0112 = 0;                                // Quantos caracteres
     // Busca quantidade de caracteres para usar no SUBSTR
     if($pos_q0101 > -1){
@@ -110,8 +110,8 @@ if(isset($incluir) || isset($confirma)){
       }
     }
 
-    $pos_q0201 = ((int)substr($r56_posq02,0,3))-1; // 3 caracteres da primeira posição do valor/quantidade 02
-    $pos_q0202 = ((int)substr($r56_posq02,3,3))-1; // 3 caracteres da posição limite do valor/quantidade 02
+    $pos_q0201 = ((int)substr((string) $r56_posq02,0,3))-1; // 3 caracteres da primeira posição do valor/quantidade 02
+    $pos_q0202 = ((int)substr((string) $r56_posq02,3,3))-1; // 3 caracteres da posição limite do valor/quantidade 02
     $cas_q0212 = 0;                                // Quantos caracteres
     // Busca quantidade de caracteres para usar no SUBSTR
     if($pos_q0201 > -1){
@@ -120,8 +120,8 @@ if(isset($incluir) || isset($confirma)){
       }
     }
 
-    $pos_q0301 = ((int)substr($r56_posq03,0,3))-1; // 3 caracteres da primeira posição do valor/quantidade 03
-    $pos_q0302 = ((int)substr($r56_posq03,3,3))-1; // 3 caracteres da posição limite do valor/quantidade 03
+    $pos_q0301 = ((int)substr((string) $r56_posq03,0,3))-1; // 3 caracteres da primeira posição do valor/quantidade 03
+    $pos_q0302 = ((int)substr((string) $r56_posq03,3,3))-1; // 3 caracteres da posição limite do valor/quantidade 03
     $cas_q0312 = 0;                                // Quantos caracteres
     // Busca quantidade de caracteres para usar no SUBSTR
     if($pos_q0301 > -1){
@@ -165,7 +165,7 @@ if(isset($incluir) || isset($confirma)){
       $reg = trim(substr($poslinha,$pos_reg01,$cas_reg12));
       $eve = trim(substr($poslinha,$pos_eve01,$cas_eve12));
 
-      if(trim($eve) != trim($r54_codeve) && trim($eve) != ""){
+      if(trim($eve) != trim((string) $r54_codeve) && trim($eve) != ""){
       	continue;
       }
 
@@ -181,7 +181,7 @@ if(isset($incluir) || isset($confirma)){
       }
 
       $where_exclui = "";
-      if(trim($r54_codeve) != ""){
+      if(trim((string) $r54_codeve) != ""){
         $where_exclui = " and r54_codeve = '".$r54_codeve."'";
       }
 

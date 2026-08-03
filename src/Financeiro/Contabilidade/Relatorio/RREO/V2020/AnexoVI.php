@@ -18,13 +18,14 @@ class AnexoVI extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2019\Ane
      * @throws \ParameterException
      * @throws \Exception
      */
+    #[\Override]
     public function getDados($trazerConfiguracaoPadrao = true)
     {
         $this->carregarDadosRelatorio();
         $this->processarRestosAPagar();
         $this->processarLinhasComIndicadorDeSuperavit();
         $this->processarTotalizadoresCalculoResultadoNominal();
-        foreach (array(56, 60, 77, 78) as $linha) {
+        foreach ([56, 60, 77, 78] as $linha) {
             $this->processarFormulaDaLinha($linha);
         }
         return $this->aLinhasConsistencia;

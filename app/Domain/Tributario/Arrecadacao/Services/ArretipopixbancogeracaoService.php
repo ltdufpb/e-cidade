@@ -97,20 +97,16 @@ class ArretipopixbancogeracaoService
                                                        "k213_ordem_processamento"
                                                    ])->toArray();
 
-        $bankProcessingList = array_filter($arretipopixbancogeracaoList, function ($arretipopixbancogeracao) {
-            return $arretipopixbancogeracao["k213_processando"];
-        });
+        $bankProcessingList = array_filter($arretipopixbancogeracaoList, fn($arretipopixbancogeracao) => $arretipopixbancogeracao["k213_processando"]);
 
         if (count($bankProcessingList) > 0) {
             $bankProcessing = array_values($bankProcessingList)[0];
 
             $nextBankToProcessList = array_filter(
                 $arretipopixbancogeracaoList,
-                function ($arretipopixbancogeracao) use ($bankProcessing) {
-                    return $arretipopixbancogeracao["k213_ordem_processamento"]
-                                >
-                            $bankProcessing["k213_ordem_processamento"];
-                }
+                fn($arretipopixbancogeracao) => $arretipopixbancogeracao["k213_ordem_processamento"]
+                            >
+                        $bankProcessing["k213_ordem_processamento"]
             );
 
             if (count($nextBankToProcessList) > 0) {

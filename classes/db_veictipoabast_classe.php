@@ -30,35 +30,35 @@
 class cl_veictipoabast
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $ve07_sequencial = 0;
-    var $ve07_descr = null;
-    var $ve07_sigla = null;
+    public $ve07_sequencial = 0;
+    public $ve07_descr = null;
+    public $ve07_sigla = null;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  ve07_sequencial = int4 = Cód. Sequencial 
                  ve07_descr = varchar(40) = Descrição 
                  ve07_sigla = varchar(3) = Sigla 
                  ";
 
     //funcao construtor da classe
-    function cl_veictipoabast()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("veictipoabast");
-        $this->pagina_retorno = basename($_SERVER["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $_SERVER["PHP_SELF"]);
     }
 
     //funcao erro
@@ -88,7 +88,7 @@ class cl_veictipoabast
     function incluir($ve07_sequencial)
     {
         $this->atualizacampos();
-        if (trim($this->ve07_descr) == null) {
+        if (trim((string) $this->ve07_descr) == null) {
             $this->erro_sql = " Campo Descrição nao Informado.";
             $this->erro_campo = "ve07_descr";
             $this->erro_banco = "";
@@ -99,7 +99,7 @@ class cl_veictipoabast
 
             return false;
         }
-        if (trim($this->ve07_sigla) == null) {
+        if (trim((string) $this->ve07_sigla) == null) {
             $this->erro_sql = " Campo Sigla nao Informado.";
             $this->erro_campo = "ve07_sigla";
             $this->erro_banco = "";
@@ -122,10 +122,10 @@ class cl_veictipoabast
 
                 return false;
             }
-            $this->ve07_sequencial = pg_result($result, 0, 0);
+            $this->ve07_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from veictipoabast_ve07_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $ve07_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $ve07_sequencial)) {
                 $this->erro_sql = " Campo ve07_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -161,7 +161,7 @@ class cl_veictipoabast
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Tipo de abastecimento do veiculo ($this->ve07_sequencial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Tipo de abastecimento do veiculo já Cadastrado";
@@ -189,14 +189,14 @@ class cl_veictipoabast
         $resaco = $this->sql_record($this->sql_query_file($this->ve07_sequencial));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,11077,'$this->ve07_sequencial','I')");
-            $resac = db_query("insert into db_acount values($acount,1908,11077,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1908,11077,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've07_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1908,11078,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1908,11078,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've07_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,1908,11079,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,1908,11079,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 've07_sigla')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -209,10 +209,10 @@ class cl_veictipoabast
         $this->atualizacampos();
         $sql = " update veictipoabast set ";
         $virgula = "";
-        if (trim($this->ve07_sequencial) != "" || isset($_POST["ve07_sequencial"])) {
+        if (trim((string) $this->ve07_sequencial) != "" || isset($_POST["ve07_sequencial"])) {
             $sql .= $virgula . " ve07_sequencial = $this->ve07_sequencial ";
             $virgula = ",";
-            if (trim($this->ve07_sequencial) == null) {
+            if (trim((string) $this->ve07_sequencial) == null) {
                 $this->erro_sql = " Campo Cód. Sequencial nao Informado.";
                 $this->erro_campo = "ve07_sequencial";
                 $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_veictipoabast
                 return false;
             }
         }
-        if (trim($this->ve07_descr) != "" || isset($_POST["ve07_descr"])) {
+        if (trim((string) $this->ve07_descr) != "" || isset($_POST["ve07_descr"])) {
             $sql .= $virgula . " ve07_descr = '$this->ve07_descr' ";
             $virgula = ",";
-            if (trim($this->ve07_descr) == null) {
+            if (trim((string) $this->ve07_descr) == null) {
                 $this->erro_sql = " Campo Descrição nao Informado.";
                 $this->erro_campo = "ve07_descr";
                 $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_veictipoabast
                 return false;
             }
         }
-        if (trim($this->ve07_sigla) != "" || isset($_POST["ve07_sigla"])) {
+        if (trim((string) $this->ve07_sigla) != "" || isset($_POST["ve07_sigla"])) {
             $sql .= $virgula . " ve07_sigla = '$this->ve07_sigla' ";
             $virgula = ",";
-            if (trim($this->ve07_sigla) == null) {
+            if (trim((string) $this->ve07_sigla) == null) {
                 $this->erro_sql = " Campo Sigla nao Informado.";
                 $this->erro_campo = "ve07_sigla";
                 $this->erro_banco = "";
@@ -262,21 +262,21 @@ class cl_veictipoabast
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,11077,'$this->ve07_sequencial','A')");
                 if (isset($_POST["ve07_sequencial"])) {
-                    $resac = db_query("insert into db_acount values($acount,1908,11077,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1908,11077,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've07_sequencial')) . "','$this->ve07_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($_POST["ve07_descr"])) {
-                    $resac = db_query("insert into db_acount values($acount,1908,11078,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1908,11078,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've07_descr')) . "','$this->ve07_descr'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($_POST["ve07_sigla"])) {
-                    $resac = db_query("insert into db_acount values($acount,1908,11079,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1908,11079,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         've07_sigla')) . "','$this->ve07_sigla'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -332,16 +332,16 @@ class cl_veictipoabast
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,11077,'$ve07_sequencial','E')");
-                $resac = db_query("insert into db_acount values($acount,1908,11077,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1908,11077,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've07_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1908,11078,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1908,11078,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've07_descr')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1908,11079,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1908,11079,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     've07_sigla')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -413,7 +413,7 @@ class cl_veictipoabast
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:veictipoabast";
@@ -455,7 +455,7 @@ class cl_veictipoabast
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -493,7 +493,7 @@ class cl_veictipoabast
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

@@ -27,11 +27,9 @@ class PlanoContasPcaspFactory
 
     private static function layoutUniao($exercicio)
     {
-        switch ($exercicio) {
-            case 2022:
-            default:
-                return new UniaoMapper();
-        }
+        return match ($exercicio) {
+            default => new UniaoMapper(),
+        };
     }
 
     private static function layoutUF($uf, $exercicio)
@@ -48,28 +46,22 @@ class PlanoContasPcaspFactory
 
     private static function layoutRS($exercicio)
     {
-        switch ($exercicio) {
-            case 2022:
-            default:
-                return new RsMapper();
-        }
+        return match ($exercicio) {
+            default => new RsMapper(),
+        };
     }
 
     private static function layoutRJ($exercicio)
     {
-        switch ($exercicio) {
-            case 2022:
-            default:
-                return new RjMapper();
-        }
+        return match ($exercicio) {
+            default => new RjMapper(),
+        };
     }
 
     private static function layoutRO($exercicio)
     {
-        switch ($exercicio) {
-            case 2022:
-            default:
-                return new RoMapper();
-        }
+        return match ($exercicio) {
+            default => new RoMapper(),
+        };
     }
 }

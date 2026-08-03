@@ -40,7 +40,7 @@ $clrotulo->label('j34_lote');
 $clrotulo->label('j34_quadra');
 $clrotulo->label('z01_nome');
 $cliptubase->rotulo->label();
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
@@ -71,7 +71,7 @@ $sql= "select * from
 
 $result = db_query($sql); 
 
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 
 }
@@ -88,7 +88,7 @@ $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 4;$total = 0;
 $p=0;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage();

@@ -44,11 +44,6 @@ class GuiaDeRecolhimento {
   private $pdf;
 
   /**
-   * @var Recibo
-   */
-  private $reciboGRM;
-
-  /**
    * @var \Instituicao
    */
   private $instituicao;
@@ -67,12 +62,11 @@ class GuiaDeRecolhimento {
 
   /**
    * GuiaDeRecolhimento constructor.
-   * @param Recibo $recibo
+   * @param Recibo $reciboGRM
    * @param \Instituicao $instituicao
    */
-  public function __construct(Recibo $recibo, \Instituicao $instituicao) {
+  public function __construct(private readonly Recibo $reciboGRM, \Instituicao $instituicao) {
 
-    $this->reciboGRM   = $recibo;
     $this->instituicao = $instituicao;
     $this->construirPdf();
   }
@@ -132,9 +126,9 @@ class GuiaDeRecolhimento {
     $this->pdf->cell(195, 4, 'OUTRAS INFORMAÇÕES:', 0, 1);
     $this->pdf->setBold(false);
     $this->pdf->SetFontSize(self::FONT_SIZE_INFO);
-    $descricao = implode(' - ', array(
+    $descricao = implode(' - ', [
       "Código de Arrecadação: {$this->reciboGRM->getCodigoArrecadacao()}",
-    ));
+    ]);
 
     $this->pdf->cell(190, 3, $descricao, 0, 1);
     $atributos = $this->reciboGRM->getAtributos();
@@ -145,7 +139,7 @@ class GuiaDeRecolhimento {
       }
 
       if ($dadosAtributos->valor != 'Não') {
-        $dadosAtributos->valor = utf8_decode($dadosAtributos->valor);
+        $dadosAtributos->valor = mb_convert_encoding($dadosAtributos->valor, 'ISO-8859-1');
       }
 
       $this->pdf->cell(190, 3, "{$dadosAtributos->nome}: {$dadosAtributos->valor}", 0, 1);
@@ -260,7 +254,7 @@ class GuiaDeRecolhimento {
       $nomeContribuinte = $cidadao->getNome();
       $documento        = $cidadao->getCpfCnpj();
       $formatacao       = 'cnpj';
-      if (strlen($documento) === 11) {
+      if (strlen((string) $documento) === 11) {
         $formatacao = 'CPF';
       }
     }
@@ -271,7 +265,7 @@ class GuiaDeRecolhimento {
     $this->pdf->cell(54, 4, 'CNPJ/CPF DO CONTRIBUINTE/RECOLHEDOR:', "RTL", 1);
     $this->pdf->setBold(false);
     $this->pdf->SetFontSize(self::FONT_SIZE_INFO);
-    $this->pdf->cell($widthPrimeiraColuna, 4, mb_strtoupper($nomeContribuinte), "BRL", 0);
+    $this->pdf->cell($widthPrimeiraColuna, 4, mb_strtoupper((string) $nomeContribuinte), "BRL", 0);
     $this->pdf->cell(54, 4, db_formatar($documento, $formatacao), "BRL", 1);
     $this->pdf->SetFontSize(self::FONT_SIZE_TITLE);
   }

@@ -36,7 +36,7 @@ $clatendcadarea = new cl_atendcadarea;
   /*
 $clatendcadareamod = new cl_atendcadareamod;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //if(isset($_FILES["at25_figura"]["name"])){
 //  echo ($_FILES["at25_figura"]["name"]);die();
 //}

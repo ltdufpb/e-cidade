@@ -38,7 +38,7 @@ $clrotulo->label('q02_inscr');
 $clrotulo->label('z01_nome');
 $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -179,7 +179,7 @@ function js_emite(){
 	</td>
         <td>
          <?php 
-         $x = array("c"=>"Competência","p"=>"Pagamento");
+         $x = ["c"=>"Competência","p"=>"Pagamento"];
          ?>
          <?=db_select('tipo',$x,'text',2)?>
 	</td>
@@ -191,11 +191,11 @@ function js_emite(){
 	</td>
         <td>
          <?php 
-         $x = array("i"=>"Inscrição","n"=>"Nome","t"=>"Total");
+         $x = ["i"=>"Inscrição","n"=>"Nome","t"=>"Total"];
          ?>
          <?=db_select('ordem',$x,'text',2)?>
          <?php 
-         $x = array("a"=>"Ascendente","d"=>"Descendente");
+         $x = ["a"=>"Ascendente","d"=>"Descendente"];
          ?>
          <?=db_select('tipoordem',$x,'text',2)?>
 	</td>
@@ -315,7 +315,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 <?php 

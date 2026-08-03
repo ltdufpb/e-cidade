@@ -98,11 +98,11 @@ $clrotulo->label('DBtxt22');
                     </td>
                     <td colspan="3">
                         <?php
-                        $aOpcoesSituacao = array(
+                        $aOpcoesSituacao = [
                           ''  => 'Todos',
                           VeiculoManutencao::SITUACAO_PENDENTE  => 'Pendente',
                           VeiculoManutencao::SITUACAO_REALIZADO => 'Realizado',
-                        );
+                        ];
                         db_select("situacao", $aOpcoesSituacao, true, 2, 'style="width: 20%;"');
                         ?>
                     </td>

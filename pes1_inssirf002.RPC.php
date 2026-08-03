@@ -69,9 +69,7 @@ try {
             if (empty($parametros->tipoAfastamento)) {
                 throw new Exception('É necessário informar o código do afastamento.');
             }
-            $retorno->rubricas = array_map(function (Rubrica $rubrica) {
-                return $rubrica->toArray();
-            }, $service->buscaRubricasProporcionalizaveis(
+            $retorno->rubricas = array_map(fn(Rubrica $rubrica) => $rubrica->toArray(), $service->buscaRubricasProporcionalizaveis(
                 new cl_rhrubricas(),
                 $instituicao,
                 $parametros->codigoTabela,
@@ -80,9 +78,7 @@ try {
                 $mesFolha
             ));
 
-            $retorno->rubricasSelecionadas = array_map(function (ControleAfastamento $controleAfastamento) {
-                return $controleAfastamento->toArray();
-            }, $service->filtraRubricasPorAfastamentos(
+            $retorno->rubricasSelecionadas = array_map(fn(ControleAfastamento $controleAfastamento) => $controleAfastamento->toArray(), $service->filtraRubricasPorAfastamentos(
                 $instituicao,
                 $parametros->tipoAfastamento,
                 $parametros->codigoTabela,

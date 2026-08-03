@@ -33,20 +33,13 @@ class GeracaoArquivoPitITBIUrbano {
 	 */
 	const MENSAGENS = 'arrecadacao.cadastro.GeracaoArquivoPitITBIUrbano.';
 
-  private $iAno;
-
-  private $iPeriodo;
-
   private $oDom;
 
-  private $erros = array();
+  private $erros = [];
 
   private $sNome;
 
-  function __construct($iAno, $iPeriodo) {
-
-    $this->iAno = $iAno;
-    $this->iPeriodo = $iPeriodo;
+  function __construct(private $iAno, private $iPeriodo) {
 
     $this->oDom = new DOMDocument("1.0", "ISO-8859-1");
     $this->oDom->xmlStandalone = true;
@@ -245,7 +238,7 @@ class GeracaoArquivoPitITBIUrbano {
     }
 
     if (pg_num_rows($rsImoveis) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::getCollectionByRecord($rsImoveis);
@@ -281,7 +274,7 @@ class GeracaoArquivoPitITBIUrbano {
 
       if ($lTransmitenteValido) {
         $oTransmitente = $this->oDom->createElement("transmitente");
-        $oTransmitente->setAttribute("nome",    utf8_encode($oDadoTransmitente->nome));
+        $oTransmitente->setAttribute("nome",    mb_convert_encoding($oDadoTransmitente->nome, 'UTF-8', 'ISO-8859-1'));
         $oTransmitente->setAttribute("cpf_cnpj", $oDadoTransmitente->cpfcnpj);
 
         $oTransmitentes->appendChild($oTransmitente);
@@ -316,7 +309,7 @@ class GeracaoArquivoPitITBIUrbano {
     }
 
     if (pg_num_rows($rsTransmitentes) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::getCollectionByRecord($rsTransmitentes);
@@ -352,7 +345,7 @@ class GeracaoArquivoPitITBIUrbano {
 
       if ($lAdquirenteValido) {
         $oAdquirente = $this->oDom->createElement("adquirente");
-        $oAdquirente->setAttribute("nome",     utf8_encode($oDadosAdquirente->nome));
+        $oAdquirente->setAttribute("nome",     mb_convert_encoding($oDadosAdquirente->nome, 'UTF-8', 'ISO-8859-1'));
         $oAdquirente->setAttribute("cpf_cnpj", $oDadosAdquirente->cpfcnpj);
 
         $oAdquirentes->appendChild($oAdquirente);
@@ -387,7 +380,7 @@ class GeracaoArquivoPitITBIUrbano {
     }
 
     if (pg_num_rows($rsAdquirentes) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::getCollectionByRecord($rsAdquirentes);
@@ -438,11 +431,11 @@ class GeracaoArquivoPitITBIUrbano {
     if ($lLogradouroValido) {
       $oLogradouro = $this->oDom->createElement("logradouro");
       $oLogradouro->setAttribute("tipo"   , $oDadosLogradouro->tipo);
-      $oLogradouro->setAttribute("nome"   , utf8_encode($oDadosLogradouro->nome));
+      $oLogradouro->setAttribute("nome"   , mb_convert_encoding($oDadosLogradouro->nome, 'UTF-8', 'ISO-8859-1'));
       $oLogradouro->setAttribute("nro"    , $oDadosLogradouro->nro);
-      $oLogradouro->setAttribute("compl"  , utf8_encode($oDadosLogradouro->complemento));
+      $oLogradouro->setAttribute("compl"  , mb_convert_encoding($oDadosLogradouro->complemento, 'UTF-8', 'ISO-8859-1'));
       $oLogradouro->setAttribute("lote"   , $oDadosLogradouro->lote);
-      $oLogradouro->setAttribute("bairro" , utf8_encode($oDadosLogradouro->bairro));
+      $oLogradouro->setAttribute("bairro" , mb_convert_encoding($oDadosLogradouro->bairro, 'UTF-8', 'ISO-8859-1'));
       $oLogradouro->setAttribute("vila"   , $oDadosLogradouro->vila);
       $oLogradouro->setAttribute("quadra" , $oDadosLogradouro->quadra);
       $oLogradouro->setAttribute("setor"  , $oDadosLogradouro->setor);
@@ -489,7 +482,7 @@ class GeracaoArquivoPitITBIUrbano {
     }
 
     if (pg_num_rows($rsLogradouro) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::fieldsMemory($rsLogradouro, 0);
@@ -541,7 +534,7 @@ class GeracaoArquivoPitITBIUrbano {
       $this->registraErro("GUIA: $iGuia - TERRENO - Data da Avaliação é obrigatório.");
       $lTerrenoValido = false;
     } else {
-      $oDadosTerreno->data_avaliacao = implode("/", array_reverse( explode("-", $oDadosTerreno->data_avaliacao) ) );
+      $oDadosTerreno->data_avaliacao = implode("/", array_reverse( explode("-", (string) $oDadosTerreno->data_avaliacao) ) );
     }
 
     if ($lTerrenoValido) {
@@ -595,7 +588,7 @@ class GeracaoArquivoPitITBIUrbano {
     }
 
     if (pg_num_rows($rsTerreno) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::fieldsMemory($rsTerreno, 0);
@@ -671,7 +664,7 @@ class GeracaoArquivoPitITBIUrbano {
       }
 
       if (!empty($oDadoEdificacao->data_avaliacao)) {
-        $oDadoEdificacao->data_avaliacao = implode("/", array_reverse( explode("-", $oDadoEdificacao->data_avaliacao) ));
+        $oDadoEdificacao->data_avaliacao = implode("/", array_reverse( explode("-", (string) $oDadoEdificacao->data_avaliacao) ));
       }
 
       if ($lEdificacaoValido) {
@@ -685,7 +678,7 @@ class GeracaoArquivoPitITBIUrbano {
         $oEdificacao->setAttribute("valor_declarado"          , number_format($oDadoEdificacao->valor_declarado, 2,",",""));
         $oEdificacao->setAttribute("valor_avaliado"           , number_format($oDadoEdificacao->valor_avaliado,2,",",""));
         $oEdificacao->setAttribute("data_avaliacao"           , $oDadoEdificacao->data_avaliacao);
-        $oEdificacao->setAttribute("Tipo_utilizacao"          , utf8_encode($oDadoEdificacao->tipo_utilizacao));
+        $oEdificacao->setAttribute("Tipo_utilizacao"          , mb_convert_encoding($oDadoEdificacao->tipo_utilizacao, 'UTF-8', 'ISO-8859-1'));
       
         $oBenfeitorias->appendChild($oEdificacao);
       }
@@ -758,7 +751,7 @@ class GeracaoArquivoPitITBIUrbano {
     }
 
     if (pg_num_rows($rsEdificacoes) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::getCollectionByRecord($rsEdificacoes);

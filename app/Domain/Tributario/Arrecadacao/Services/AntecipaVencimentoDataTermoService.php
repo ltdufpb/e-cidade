@@ -113,7 +113,7 @@ class AntecipaVencimentoDataTermoService implements AcaoControleParcelamento
             $repository = new Arrecad(DataBase::getInstance(), new \cl_arrecad);
             $model = $repository->make($parcela);
         
-            if (!RegistroOriginalService::salvar($model, $dataTermo->v07_dtlanc, $agendamento->ar49_id, $dataProc)) {
+            if (!RegistroOriginalService::salvar($model, $dataTermo->v07_dtlanc, $agendamento->ar49_id)) {
                 continue;
             }
 

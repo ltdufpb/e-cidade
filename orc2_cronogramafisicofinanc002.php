@@ -42,7 +42,7 @@ include(modification("libs/db_libtxt.php"));
 include(modification("dbforms/db_funcoes.php"));
 $oGet = db_utils::postMemory($_GET);
 
-$aMes = array( 1 => "janeiro",
+$aMes = [ 1 => "janeiro",
                2 => "fevereiro", 
                3 => "marco", 
                4 => "abril", 
@@ -55,7 +55,7 @@ $aMes = array( 1 => "janeiro",
               11 => "novembro", 
               12 => "dezembro", 
 
-             );
+             ];
 $pdf = new PDF("L"); 
 $pdf->Open(); 
 $pdf->AliasNbPages(); 
@@ -105,7 +105,7 @@ $oTotal->dezembro  = 0;
 $oTotal->total     = 0; 
 for ($iProg = 0; $iProg < $iTotalProgramas; $iProg++) {
 
-  $aProgramas[$iProg]->aProjetos = array();  
+  $aProgramas[$iProg]->aProjetos = [];  
   $sSqlProjetos    = "select distinct o55_descr,";
   $sSqlProjetos   .= "       o87_orcprojativativprojeto ";
   $sSqlProjetos   .= "  from pactovalor ";
@@ -131,7 +131,7 @@ for ($iProg = 0; $iProg < $iTotalProgramas; $iProg++) {
   $aProgramas[$iProg]->total     = 0; 
   for ($iProj = 0; $iProj < $iTotalProjetos; $iProj++) {
     
-    $aProjetos[$iProj]->aSubProjetos = array();
+    $aProjetos[$iProj]->aSubProjetos = [];
     $sSqlSubProjetos    = "select distinct o104_descricao,";
     $sSqlSubProjetos   .= "       o87_pactoatividade, ";
     /**
@@ -244,7 +244,7 @@ foreach ($aProgramas as $oLinhaRel) {
       
       
       $pdf->setfont('arial','',6);  
-      $pdf->cell(40, $alt, substr($oSubProjeto->o104_descricao,0,29),"RT",0,"L");
+      $pdf->cell(40, $alt, substr((string) $oSubProjeto->o104_descricao,0,29),"RT",0,"L");
       $pdf->setfont('arial','',6);
       $pdf->cell(7,  $alt, "R$" ,"LTB",0,"C");
       $pdf->cell(18, $alt, db_formatar($oSubProjeto->planejado_total,"f") ,"LTB",0,"R");
@@ -262,7 +262,7 @@ foreach ($aProgramas as $oLinhaRel) {
       $pdf->cell(18, $alt, db_formatar($oSubProjeto->planejado_dezembro,"f"),"LTB",1,"R");
       
       $pdf->setfont('arial','',6); 
-      $pdf->cell(40, $alt, substr($oSubProjeto->o104_descricao,29,60),"RB",0,"L");
+      $pdf->cell(40, $alt, substr((string) $oSubProjeto->o104_descricao,29,60),"RB",0,"L");
       $pdf->cell(7,  $alt, "U" ,"LTB",0,"C");
       $pdf->cell(18, $alt, "" ,"LTB",0,"R");
       $pdf->cell(18, $alt, "","LTB",0,"R");

@@ -45,7 +45,7 @@ class cl_rhpessoalprocessoperiodo
     public function __construct()
     {
         $this->rotulo = new rotulo("rhpessoalprocessoperiodo"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -123,10 +123,10 @@ class cl_rhpessoalprocessoperiodo
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh282_sequencial = pg_result($result,0,0); 
+       $this->rh282_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhpessoalprocessoperiodo_rh282_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh282_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh282_sequencial)){
          $this->erro_sql = " Campo rh282_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -174,7 +174,7 @@ class cl_rhpessoalprocessoperiodo
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Identificação do período ($this->rh282_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Identificação do período já Cadastrado";
@@ -203,20 +203,20 @@ class cl_rhpessoalprocessoperiodo
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1014898,'$this->rh282_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1011050,1014898,'','".AddSlashes(pg_result($resaco,0,'rh282_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1011050,1014899,'','".AddSlashes(pg_result($resaco,0,'rh282_sequencialprocessocontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1011050,1014900,'','".AddSlashes(pg_result($resaco,0,'rh282_perref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1011050,1014902,'','".AddSlashes(pg_result($resaco,0,'rh282_vrbccp13'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1011050,1014901,'','".AddSlashes(pg_result($resaco,0,'rh282_vrbccpmensal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1011050,1014905,'','".AddSlashes(pg_result($resaco,0,'rh282_grauexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1011050,1014909,'','".AddSlashes(pg_result($resaco,0,'rh282_codcateg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1011050,1014910,'','".AddSlashes(pg_result($resaco,0,'rh282_vrbccprev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1011050,1015368,'','".AddSlashes(pg_result($resaco,0,'rh282_vrbcfgtsdecant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1011050,1015367,'','".AddSlashes(pg_result($resaco,0,'rh282_vrbcfgtssefip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1011050,1015366,'','".AddSlashes(pg_result($resaco,0,'rh282_vrbcfgtsproctrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1011050,1014898,'','".AddSlashes(pg_fetch_result($resaco,0,'rh282_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1011050,1014899,'','".AddSlashes(pg_fetch_result($resaco,0,'rh282_sequencialprocessocontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1011050,1014900,'','".AddSlashes(pg_fetch_result($resaco,0,'rh282_perref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1011050,1014902,'','".AddSlashes(pg_fetch_result($resaco,0,'rh282_vrbccp13'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1011050,1014901,'','".AddSlashes(pg_fetch_result($resaco,0,'rh282_vrbccpmensal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1011050,1014905,'','".AddSlashes(pg_fetch_result($resaco,0,'rh282_grauexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1011050,1014909,'','".AddSlashes(pg_fetch_result($resaco,0,'rh282_codcateg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1011050,1014910,'','".AddSlashes(pg_fetch_result($resaco,0,'rh282_vrbccprev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1011050,1015368,'','".AddSlashes(pg_fetch_result($resaco,0,'rh282_vrbcfgtsdecant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1011050,1015367,'','".AddSlashes(pg_fetch_result($resaco,0,'rh282_vrbcfgtssefip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1011050,1015366,'','".AddSlashes(pg_fetch_result($resaco,0,'rh282_vrbcfgtsproctrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -227,10 +227,10 @@ class cl_rhpessoalprocessoperiodo
       $this->atualizacampos();
      $sql = " update rhpessoalprocessoperiodo set ";
      $virgula = "";
-     if(trim($this->rh282_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_sequencial"])){ 
+     if(trim((string) $this->rh282_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_sequencial"])){ 
        $sql  .= $virgula." rh282_sequencial = $this->rh282_sequencial ";
        $virgula = ",";
-       if(trim($this->rh282_sequencial) == null ){ 
+       if(trim((string) $this->rh282_sequencial) == null ){ 
          $this->erro_sql = " Campo Número Sequencial não informado.";
          $this->erro_campo = "rh282_sequencial";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_rhpessoalprocessoperiodo
          return false;
        }
      }
-     if(trim($this->rh282_sequencialprocessocontrato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_sequencialprocessocontrato"])){ 
+     if(trim((string) $this->rh282_sequencialprocessocontrato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_sequencialprocessocontrato"])){ 
        $sql  .= $virgula." rh282_sequencialprocessocontrato = $this->rh282_sequencialprocessocontrato ";
        $virgula = ",";
-       if(trim($this->rh282_sequencialprocessocontrato) == null ){ 
+       if(trim((string) $this->rh282_sequencialprocessocontrato) == null ){ 
          $this->erro_sql = " Campo Processo contrato não informado.";
          $this->erro_campo = "rh282_sequencialprocessocontrato";
          $this->erro_banco = "";
@@ -253,61 +253,61 @@ class cl_rhpessoalprocessoperiodo
          return false;
        }
      }
-     if(trim($this->rh282_perref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_perref"])){ 
+     if(trim((string) $this->rh282_perref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_perref"])){ 
        $sql  .= $virgula." rh282_perref = '$this->rh282_perref' ";
        $virgula = ",";
      }
-     if(trim($this->rh282_vrbccp13)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccp13"])){ 
-        if(trim($this->rh282_vrbccp13)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccp13"])){ 
+     if(trim((string) $this->rh282_vrbccp13)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccp13"])){ 
+        if(trim((string) $this->rh282_vrbccp13)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccp13"])){ 
            $this->rh282_vrbccp13 = "0" ; 
         } 
        $sql  .= $virgula." rh282_vrbccp13 = $this->rh282_vrbccp13 ";
        $virgula = ",";
      }
-     if(trim($this->rh282_vrbccpmensal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccpmensal"])){ 
-        if(trim($this->rh282_vrbccpmensal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccpmensal"])){ 
+     if(trim((string) $this->rh282_vrbccpmensal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccpmensal"])){ 
+        if(trim((string) $this->rh282_vrbccpmensal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccpmensal"])){ 
            $this->rh282_vrbccpmensal = "0" ; 
         } 
        $sql  .= $virgula." rh282_vrbccpmensal = $this->rh282_vrbccpmensal ";
        $virgula = ",";
      }
-     if(trim($this->rh282_grauexp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_grauexp"])){ 
-        if(trim($this->rh282_grauexp)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_grauexp"])){ 
+     if(trim((string) $this->rh282_grauexp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_grauexp"])){ 
+        if(trim((string) $this->rh282_grauexp)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_grauexp"])){ 
            $this->rh282_grauexp = "0" ; 
         } 
        $sql  .= $virgula." rh282_grauexp = $this->rh282_grauexp ";
        $virgula = ",";
      }
-     if(trim($this->rh282_codcateg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_codcateg"])){ 
-        if(trim($this->rh282_codcateg)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_codcateg"])){ 
+     if(trim((string) $this->rh282_codcateg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_codcateg"])){ 
+        if(trim((string) $this->rh282_codcateg)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_codcateg"])){ 
            $this->rh282_codcateg = "0" ; 
         } 
        $sql  .= $virgula." rh282_codcateg = $this->rh282_codcateg ";
        $virgula = ",";
      }
-     if(trim($this->rh282_vrbccprev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccprev"])){ 
-        if(trim($this->rh282_vrbccprev)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccprev"])){ 
+     if(trim((string) $this->rh282_vrbccprev)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccprev"])){ 
+        if(trim((string) $this->rh282_vrbccprev)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccprev"])){ 
            $this->rh282_vrbccprev = "0" ; 
         } 
        $sql  .= $virgula." rh282_vrbccprev = $this->rh282_vrbccprev ";
        $virgula = ",";
      }
-     if(trim($this->rh282_vrbcfgtsdecant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtsdecant"])){ 
-        if(trim($this->rh282_vrbcfgtsdecant)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtsdecant"])){ 
+     if(trim((string) $this->rh282_vrbcfgtsdecant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtsdecant"])){ 
+        if(trim((string) $this->rh282_vrbcfgtsdecant)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtsdecant"])){ 
            $this->rh282_vrbcfgtsdecant = "0" ; 
         } 
        $sql  .= $virgula." rh282_vrbcfgtsdecant = $this->rh282_vrbcfgtsdecant ";
        $virgula = ",";
      }
-     if(trim($this->rh282_vrbcfgtssefip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtssefip"])){ 
-        if(trim($this->rh282_vrbcfgtssefip)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtssefip"])){ 
+     if(trim((string) $this->rh282_vrbcfgtssefip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtssefip"])){ 
+        if(trim((string) $this->rh282_vrbcfgtssefip)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtssefip"])){ 
            $this->rh282_vrbcfgtssefip = "0" ; 
         } 
        $sql  .= $virgula." rh282_vrbcfgtssefip = $this->rh282_vrbcfgtssefip ";
        $virgula = ",";
      }
-     if(trim($this->rh282_vrbcfgtsproctrab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtsproctrab"])){ 
-        if(trim($this->rh282_vrbcfgtsproctrab)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtsproctrab"])){ 
+     if(trim((string) $this->rh282_vrbcfgtsproctrab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtsproctrab"])){ 
+        if(trim((string) $this->rh282_vrbcfgtsproctrab)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtsproctrab"])){ 
            $this->rh282_vrbcfgtsproctrab = "0" ; 
         } 
        $sql  .= $virgula." rh282_vrbcfgtsproctrab = $this->rh282_vrbcfgtsproctrab ";
@@ -327,31 +327,31 @@ class cl_rhpessoalprocessoperiodo
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1014898,'$this->rh282_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh282_sequencial"]) || $this->rh282_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1011050,1014898,'".AddSlashes(pg_result($resaco,$conresaco,'rh282_sequencial'))."','$this->rh282_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1011050,1014898,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh282_sequencial'))."','$this->rh282_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh282_sequencialprocessocontrato"]) || $this->rh282_sequencialprocessocontrato != "")
-             $resac = db_query("insert into db_acount values($acount,1011050,1014899,'".AddSlashes(pg_result($resaco,$conresaco,'rh282_sequencialprocessocontrato'))."','$this->rh282_sequencialprocessocontrato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1011050,1014899,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh282_sequencialprocessocontrato'))."','$this->rh282_sequencialprocessocontrato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh282_perref"]) || $this->rh282_perref != "")
-             $resac = db_query("insert into db_acount values($acount,1011050,1014900,'".AddSlashes(pg_result($resaco,$conresaco,'rh282_perref'))."','$this->rh282_perref',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1011050,1014900,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh282_perref'))."','$this->rh282_perref',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccp13"]) || $this->rh282_vrbccp13 != "")
-             $resac = db_query("insert into db_acount values($acount,1011050,1014902,'".AddSlashes(pg_result($resaco,$conresaco,'rh282_vrbccp13'))."','$this->rh282_vrbccp13',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1011050,1014902,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh282_vrbccp13'))."','$this->rh282_vrbccp13',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccpmensal"]) || $this->rh282_vrbccpmensal != "")
-             $resac = db_query("insert into db_acount values($acount,1011050,1014901,'".AddSlashes(pg_result($resaco,$conresaco,'rh282_vrbccpmensal'))."','$this->rh282_vrbccpmensal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1011050,1014901,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh282_vrbccpmensal'))."','$this->rh282_vrbccpmensal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh282_grauexp"]) || $this->rh282_grauexp != "")
-             $resac = db_query("insert into db_acount values($acount,1011050,1014905,'".AddSlashes(pg_result($resaco,$conresaco,'rh282_grauexp'))."','$this->rh282_grauexp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1011050,1014905,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh282_grauexp'))."','$this->rh282_grauexp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh282_codcateg"]) || $this->rh282_codcateg != "")
-             $resac = db_query("insert into db_acount values($acount,1011050,1014909,'".AddSlashes(pg_result($resaco,$conresaco,'rh282_codcateg'))."','$this->rh282_codcateg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1011050,1014909,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh282_codcateg'))."','$this->rh282_codcateg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbccprev"]) || $this->rh282_vrbccprev != "")
-             $resac = db_query("insert into db_acount values($acount,1011050,1014910,'".AddSlashes(pg_result($resaco,$conresaco,'rh282_vrbccprev'))."','$this->rh282_vrbccprev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1011050,1014910,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh282_vrbccprev'))."','$this->rh282_vrbccprev',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtsdecant"]) || $this->rh282_vrbcfgtsdecant != "")
-             $resac = db_query("insert into db_acount values($acount,1011050,1015368,'".AddSlashes(pg_result($resaco,$conresaco,'rh282_vrbcfgtsdecant'))."','$this->rh282_vrbcfgtsdecant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1011050,1015368,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh282_vrbcfgtsdecant'))."','$this->rh282_vrbcfgtsdecant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtssefip"]) || $this->rh282_vrbcfgtssefip != "")
-             $resac = db_query("insert into db_acount values($acount,1011050,1015367,'".AddSlashes(pg_result($resaco,$conresaco,'rh282_vrbcfgtssefip'))."','$this->rh282_vrbcfgtssefip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1011050,1015367,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh282_vrbcfgtssefip'))."','$this->rh282_vrbcfgtssefip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh282_vrbcfgtsproctrab"]) || $this->rh282_vrbcfgtsproctrab != "")
-             $resac = db_query("insert into db_acount values($acount,1011050,1015366,'".AddSlashes(pg_result($resaco,$conresaco,'rh282_vrbcfgtsproctrab'))."','$this->rh282_vrbcfgtsproctrab',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1011050,1015366,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh282_vrbcfgtsproctrab'))."','$this->rh282_vrbcfgtsproctrab',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -405,20 +405,20 @@ class cl_rhpessoalprocessoperiodo
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1014898,'$rh282_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1011050,1014898,'','".AddSlashes(pg_result($resaco,$iresaco,'rh282_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1011050,1014899,'','".AddSlashes(pg_result($resaco,$iresaco,'rh282_sequencialprocessocontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1011050,1014900,'','".AddSlashes(pg_result($resaco,$iresaco,'rh282_perref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1011050,1014902,'','".AddSlashes(pg_result($resaco,$iresaco,'rh282_vrbccp13'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1011050,1014901,'','".AddSlashes(pg_result($resaco,$iresaco,'rh282_vrbccpmensal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1011050,1014905,'','".AddSlashes(pg_result($resaco,$iresaco,'rh282_grauexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1011050,1014909,'','".AddSlashes(pg_result($resaco,$iresaco,'rh282_codcateg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1011050,1014910,'','".AddSlashes(pg_result($resaco,$iresaco,'rh282_vrbccprev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1011050,1015368,'','".AddSlashes(pg_result($resaco,$iresaco,'rh282_vrbcfgtsdecant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1011050,1015367,'','".AddSlashes(pg_result($resaco,$iresaco,'rh282_vrbcfgtssefip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1011050,1015366,'','".AddSlashes(pg_result($resaco,$iresaco,'rh282_vrbcfgtsproctrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1011050,1014898,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh282_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1011050,1014899,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh282_sequencialprocessocontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1011050,1014900,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh282_perref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1011050,1014902,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh282_vrbccp13'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1011050,1014901,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh282_vrbccpmensal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1011050,1014905,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh282_grauexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1011050,1014909,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh282_codcateg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1011050,1014910,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh282_vrbccprev'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1011050,1015368,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh282_vrbcfgtsdecant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1011050,1015367,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh282_vrbcfgtssefip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1011050,1015366,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh282_vrbcfgtsproctrab'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

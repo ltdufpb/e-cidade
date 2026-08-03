@@ -216,7 +216,7 @@ class NotaPlanilhaRetencaoWebService extends NotaPlanilhaRetencao{
        * Seta os dados necessários para salvar a Nota
        */
       $this->setCodigoPlanilha  ( $this->iCodPlanilha );
-      $this->setNome            ( utf8_decode($this->sNome) );
+      $this->setNome            ( mb_convert_encoding($this->sNome, 'ISO-8859-1') );
       $this->setDataOperacao    ( $this->oDataNf );
       $this->setTipoLancamento  ( $this->getTipoLancamento() );
       $this->setRetido          ( $this->isRetido() );
@@ -231,7 +231,7 @@ class NotaPlanilhaRetencaoWebService extends NotaPlanilhaRetencao{
       $this->setValorDeducao    ( $this->nValorDeducao );
       $this->setValorBase       ( $this->nValorBaseCalculo );
       $this->setValorImposto    ( $this->nValorImpostoRetido );
-      $this->setDescricaoServico( utf8_decode($this->sServicoPrestado) );
+      $this->setDescricaoServico( mb_convert_encoding($this->sServicoPrestado, 'ISO-8859-1') );
 
       /**
        * Salva os dados da nota

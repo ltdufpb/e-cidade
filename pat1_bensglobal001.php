@@ -91,8 +91,8 @@ $clrotulo = new rotulocampo;
 $clsituabens->rotulo->label();
 $clrotulo->label("t56_situac");
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -147,40 +147,40 @@ if (isset($incluir)) {
     $erro_msg = "Campos: $campos_nao_informados nao informados!";
   }
 
-  
+
   $iPlacaInicial = $t52_ident;
   $iPlacaFinal   = $t52_ident;
-  
+
   if (!empty($qtd)) {
     $iPlacaFinal = $iPlacaInicial + ($qtd - 1);
   }
-  
+
   $sWhere  = " t41_placaseq BETWEEN {$iPlacaInicial} and $iPlacaFinal";
   $sWhere .= " and t52_instit = " . db_getsession("DB_instit");
-  
+
   $sSqlVerificaIntervaloPlaca = $clbensplaca->sql_query_placa_bem(null, "t41_codigo", null, $sWhere);
-  
+
   $rsVerificaIntervaloPlaca   = $clbensplaca->sql_record($sSqlVerificaIntervaloPlaca);
-  
+
   if ($clbensplaca->numrows > 0) {
-    
+
     $erro_msg = "Já existe uma placa cadastrada no intervalo de: {$iPlacaInicial} e {$iPlacaFinal} ";
     $sqlerro  = true;
-    
+
   }
-  
+
   $contador = 0;
   db_inicio_transacao();
 
   if ($sqlerro == false) {
 
     $result = $clcfpatriplaca->sql_record($clcfpatriplaca->sql_query_file(db_getsession("DB_instit")));
-    
+
     if ($clcfpatriplaca->numrows > 0) {
       db_fieldsmemory($result,0);
     }
 
-    if (trim(@$t52_ident) == "0" or @$t52_ident == "" or @$t52_ident == null){
+    if (trim((string) @$t52_ident) == "0" or @$t52_ident == "" or @$t52_ident == null){
       $clbens->erro_campo = "t52_ident";
       $sqlerro            = true;
       $erro_msg           = "Bem não incluido. Inclusão Abortada.\\n\\nUsuário: Placa de identificação não pode ser zero.\\n\\n Administrador.";
@@ -199,24 +199,24 @@ if (isset($incluir)) {
     }
 
     // Se campo t07_obrigplaca == true, obriga digitacao da placa
-    if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim($t52_ident)) > 0) && $sqlerro == false) {
-      
-      if ($t07_obrigplaca == "t" && strlen(trim(@$t52_ident)) == 0 && !isset($tipo_inclui)){
+    if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim((string) $t52_ident)) > 0) && $sqlerro == false) {
+
+      if ($t07_obrigplaca == "t" && strlen(trim((string) @$t52_ident)) == 0 && !isset($tipo_inclui)){
         $clbens->erro_campo = "t52_ident";
         $sqlerro            = true;
         $erro_msg           = "Bem não incluido. Inclusão Abortada.\\n\\nUsuário: Placa de identificação não informada.\\n\\n Administrador.";
       } else {
-        
+
         if ($sqlerro == false){
           $ident = $t52_ident.@$t52_ident_seq;
-          
+
           if (strlen(trim(@$ident)) > 0){
             if ($t07_confplaca==4) {
-              
+
               $ident = str_pad($ident,$t07_digseqplaca,'0',STR_PAD_LEFT);
-              
+
             }
-            
+
             $result_t52_ident = $clbens->sql_record($clbens->sql_query_file(null,"t52_ident",null,"t52_ident = '".str_replace(".","",$ident)."' and t52_instit = $t52_instit"));
             if ($clbens->numrows>0) {
               $clbens->erro_campo = "t52_ident";
@@ -227,7 +227,7 @@ if (isset($incluir)) {
         }
       }
     }
-    
+
 
 
     if ($sqlerro == false) {
@@ -237,22 +237,22 @@ if (isset($incluir)) {
         $result_t64_codcla = $clclabens->sql_record($clclabens->sql_query_file(null,"t64_codcla as t52_codcla",null,"t64_class = '$t64_class' and t64_instit = ".db_getsession("DB_instit")));
         if ($clclabens->numrows>0) {
           db_fieldsmemory($result_t64_codcla,0);
-          
+
         } else {
           $sqlerro=true;
           $erro_msg = "Usuário: \\n\\n Inclusão não concluída, Classificação Informada nao Existe \\n\\n Administrador.";
           $clbens->erro_campo = 't64_class';
         }
       }
-      
+
 
       if (!isset($qtd)) {
         $qtd_cont=1;
       } else {
-        
+
         $qtd_cont=$qtd;
         if ($sqlerro == false) {
-          
+
           $clbenscadlote->t42_usuario=db_getsession("DB_id_usuario");
           $clbenscadlote->t42_hora=db_hora();
           $clbenscadlote->t42_data=date('Y-m-d',db_getsession("DB_datausu"));
@@ -271,9 +271,9 @@ if (isset($incluir)) {
       $placas_geradas = "";
 
       for ($i=0; $i<$qtd_cont; $i++) {
-        
+
         if ($sqlerro == false) {
-          
+
           $classif = $t64_class;
           $clbens->t52_codcla = $t52_codcla;
           $clbens->t52_numcgm = $t52_numcgm;
@@ -283,20 +283,20 @@ if (isset($incluir)) {
           $result_t52_bem = $clbens->sql_record("select nextval('bens_t52_bem_seq') as t52_bem");
           db_fieldsmemory($result_t52_bem, 0);
           $placa="";
-          
+
           if ($t07_confplaca == 1) {
             $placa = $t07_sequencial;
-            
+
           } else if ($t07_confplaca == 2) {
-            
+
             $placa = $t64_class;
             $result_ultseq = $clbensplaca->sql_record($clbensplaca->sql_query_file(null,"max(t41_placaseq)as max_seq",null," t41_placa = '$classif' "));
-            
+
             if ($clbensplaca->numrows > 0) {
 
               db_fieldsmemory($result_ultseq,0);
               if ($max_seq!="") {
-                
+
                 $seq = $max_seq;
                 $seq = $seq + 1;
               } else {
@@ -309,15 +309,15 @@ if (isset($incluir)) {
             $seq      = db_formatar($seq,'f','0',$t07_digseqplaca,'e',0);
             $placaseq = $seq;
             $placa    = $placa.$placaseq;
-            
+
           } else if ($t07_confplaca == 3 ) {
             $t52_ident_seq = db_formatar($t52_ident_seq,'f','0',$t07_digseqplaca,'e',0);
             $placa         = $t52_ident.$t52_ident_seq;
           } else if ($t07_confplaca == 4) {
-            
-            if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim($t52_ident)) > 0)) {
+
+            if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim((string) $t52_ident)) > 0)) {
               $placa=$t52_ident;
-              $placa    = str_pad($placa,$t07_digseqplaca,'0',STR_PAD_LEFT);
+              $placa    = str_pad((string) $placa,$t07_digseqplaca,'0',STR_PAD_LEFT);
 
               if ($sqlerro == false && strlen(trim(@$placa)) > 0) {
                 $sqlbensplaca = $clbensplaca->sql_query(null,"t41_bem as codbem,t52_ident as identificacao", 
@@ -325,7 +325,7 @@ if (isset($incluir)) {
                 $res_t52_ident = $clbensplaca->sql_record($sqlbensplaca);
 
                 if ($clbensplaca->numrows > 0) {
-                  
+
                   $clbens->erro_campo = "t52_ident";
                   $sqlerro=true;
                   $erro_msg = "Usuário: \\n\\n Inclusão não concluída, placa de identificação já cadastrada para outro bem\\n\\n Administrador.";
@@ -346,7 +346,7 @@ if (isset($incluir)) {
           $clbens->t52_bensmarca  = $t65_sequencial;      
           $clbens->t52_bensmedida = $t67_sequencial;
           $clbens->t52_bensmodelo = $t66_sequencial;
-         
+
           $clbens->incluir($t52_bem);
 
           $t52_instit = $clbens->t52_instit;
@@ -359,7 +359,7 @@ if (isset($incluir)) {
 
           if ($sqlerro == false) {
             if ($i == 0) {
-              if (strlen(trim($placa)) > 0){
+              if (strlen(trim((string) $placa)) > 0){
                 $placas_geradas = db_formatar($placa,"s","0",$t07_digseqplaca,"e",0)." a ";
               }
             }
@@ -369,7 +369,7 @@ if (isset($incluir)) {
               $xx++;
 
               if ($xx == $qtd_cont) {
-                if (strlen(trim($placa)) > 0){
+                if (strlen(trim((string) $placa)) > 0){
                   $placas_geradas .= db_formatar($placa,"s","0",$t07_digseqplaca,"e",0);
                 }
               }
@@ -378,11 +378,11 @@ if (isset($incluir)) {
             $placa = "";
             $seq   = "0";
             if ($t07_confplaca==1) {
-              
+
               $placaseq        = $t07_sequencial;
               $t07_sequencial += 1;
             } else if ($t07_confplaca==2) {
-              
+
               $placa=$t64_class;
               $result_ultseq = $clbensplaca->sql_record($clbensplaca->sql_query_file(null,"max(t41_placaseq)as max_seq",null," t41_placa = '$classif' "));
               if ($clbensplaca->numrows>0) {
@@ -404,7 +404,7 @@ if (isset($incluir)) {
               $placaseq      = $t52_ident_seq;
               $t52_ident_seq = $t52_ident_seq+1;
             } else if ($t07_confplaca==4) {
-              if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim($t52_ident)) > 0)) {
+              if ($t07_obrigplaca == "t" || ($t07_obrigplaca == "f" && strlen(trim((string) $t52_ident)) > 0)) {
                 $placaseq  = $t52_ident;
                 $t52_ident = $t52_ident+1;
               }
@@ -414,11 +414,11 @@ if (isset($incluir)) {
             //echo $t07_obrigplaca." => |".$placaseq."|<br>";
 
             $t41_obs = "";
-            if (strlen(trim($t52_ident)) == 0){
+            if (strlen(trim((string) $t52_ident)) == 0){
               $placaseq = 0;
               $t41_obs  = "PLACA NÃO INFORMADA";
             }
- 
+
             $clbensplaca->t41_bem      = $t52_bem;
             $clbensplaca->t41_placa    = $placa;
             $clbensplaca->t41_placaseq = str_replace(".","",$placaseq);
@@ -426,7 +426,7 @@ if (isset($incluir)) {
             $clbensplaca->t41_data     = date('Y-m-d',db_getsession("DB_datausu"));
             $clbensplaca->t41_usuario  = db_getsession("DB_id_usuario");
             $clbensplaca->incluir(null);
-            
+
             if ($clbensplaca->erro_status == 0) {
               $sqlerro  = true;
               $erro_msg = $clbensplaca->erro_msg;
@@ -468,7 +468,7 @@ if (isset($incluir)) {
           $clhistbem->t56_histor = 'Inclusão do bem';
           $clhistbem->incluir(null);
           $erro_msg = $clhistbem->erro_msg;
-          
+
           if ($clhistbem->erro_status==0) {
             $sqlerro=true;
             //db_msgbox("8 -> ".$erro_msg);
@@ -476,7 +476,7 @@ if (isset($incluir)) {
           }
         }
         if ($sqlerro == false) {
-          
+
           if ($t33_divisao!="") {
             if ($sqlerro == false) {
               $clhistbemdiv->t32_histbem=$clhistbem->t56_histbem;
@@ -503,38 +503,38 @@ if (isset($incluir)) {
         }
 
         if ($sqlerro == false && $t04_sequencial != "") {
-          
+
           $clbenscedente->t09_bem = $t52_bem;
           $clbenscedente->t09_benscadcedente  = $t04_sequencial;
           $clbenscedente->incluir(null);
           db_msgbox($clbenscedente->erro_status);
           $erro_msg = $clbenscedente->erro_msg;
-          
+
           if ($clbenscedente->erro_status==0) {
-            
+
             $sqlerro=true;
             break;
           }
         }
 
         if ( isset($t54_idbql) || isset($t53_ntfisc) ) {
-          
+
           if ( isset($t54_idbql) && trim($t54_idbql) != '' ) {
-            
+
             $clbensimoveis->t54_codbem = $t52_bem;
             $clbensimoveis->t54_idbql  = $t54_idbql;
             $clbensimoveis->t54_obs    = $t54_obs;
             $clbensimoveis->incluir($t52_bem,$t54_idbql);
-            
+
             $erro_msg = $clbensimoveis->erro_msg;
-           
+
             if ($clbensimoveis->erro_status == 0){
-              
+
               $sqlerro = true;
               break;
             }
           } else if ( isset($t53_ntfisc) && trim($t53_ntfisc) != '' ) {
-            
+
             $clbensmater->t53_codbem = $t52_bem;
             $clbensmater->t53_ntfisc = $t53_ntfisc;
             $clbensmater->t53_empen  = $t53_empen;
@@ -545,13 +545,13 @@ if (isset($incluir)) {
             $erro_msg = $clbensmater->erro_msg;
 
             if ($clbensmater->erro_status == 0) {
-              
+
               $sqlerro = true;
               break;
             }
           }
         }
-        
+
         if ($sqlerro==false) {
           $contador++;
         }
@@ -569,7 +569,7 @@ if (isset($incluir)) {
   db_fim_transacao($sqlerro);
   $incluir = "incluir";
 
-  
+
   if ($contador>1 && $sqlerro==false) {
     if (strlen(trim($placas_geradas)) > 0){
       db_msgbox("Usuário: \\n\\n $qtd registros incluídos com sucesso\\n\\n Placas geradas $placas_geradas\\n\\n Administrador.");
@@ -614,7 +614,7 @@ if (isset($incluir)) {
 <?php 
 if(isset($incluir)){
 
-  if (trim(@$erro_msg)!=""){
+  if (trim((string) @$erro_msg)!=""){
        db_msgbox($erro_msg);
   }
   if($sqlerro==true){

@@ -148,11 +148,11 @@ abstract class AjusteIRRF {
      */
     if (count($pessoal_) > 1) {
 
-      $matrizr      = array(); // Rubricas Utilizadas para cálculo
+      $matrizr      = []; // Rubricas Utilizadas para cálculo
 
-      $matrizb      = array(); // Valores das Rubricas
-      $matrizd      = array(); // Valores de desconto do IRRF
-      $matrizp      = array(); // Quantidade do Pecentual de desconto do IRRF
+      $matrizb      = []; // Valores das Rubricas
+      $matrizd      = []; // Valores de desconto do IRRF
+      $matrizp      = []; // Quantidade do Pecentual de desconto do IRRF
 
       $matrizr[1]   = "R981"; // R981 BASE I.R.F. BASE
       $matrizr[2]   = "R982"; // R982 BASE IRF 13O SAL (BRUTA) BASE
@@ -210,7 +210,7 @@ abstract class AjusteIRRF {
 
           if ( $opcao_geral != PONTO_RESCISAO ) {
 
-            $aFolhas = array(PONTO_SALARIO, PONTO_COMPLEMENTAR);
+            $aFolhas = [PONTO_SALARIO, PONTO_COMPLEMENTAR];
 
           if ( $sRubricaDesconto == "R981" && !in_array($opcao_geral, $aFolhas) ) {
               LogCalculoFolha::write("Nao calcula R981 fora do Ponto de Salário ou Complementar");
@@ -226,7 +226,7 @@ abstract class AjusteIRRF {
           /**
            * Valida se o pagamento sera efetuado como férias(F) ou como salário(S)
            */
-          $lPagamentoComoFerias             = strtolower($cfpess[0]["r11_fersal"]) == "f";
+          $lPagamentoComoFerias             = strtolower((string) $cfpess[0]["r11_fersal"]) == "f";
           $lRecalculaTercoFeriasPeriodoGozo = $cfpess[0]["r11_recalc"] == 't';
           $lRubricaIRFFerias                = $matrizr[$x] == "R983";
           $lFolhaFerias                     = $opcao_geral == PONTO_FERIAS;
@@ -267,8 +267,8 @@ abstract class AjusteIRRF {
                   $condicaoaux  = " and r31_regist = ".db_sqlformat($registrop );
                   $condicaoaux .= " and r31_rubric = 'R983'";
 
-                  $matriz1 = array();
-                  $matriz2 = array();
+                  $matriz1 = [];
+                  $matriz2 = [];
                   $matriz1[1] = "r31_valor";
                   $matriz2[1] = $matrizb[$x];
 
@@ -362,7 +362,7 @@ abstract class AjusteIRRF {
 
         if ( $opcao_geral != PONTO_RESCISAO ) {
 
-          $aFolhas = array(PONTO_SALARIO, PONTO_COMPLEMENTAR);
+          $aFolhas = [PONTO_SALARIO, PONTO_COMPLEMENTAR];
           if ( $sRubricaTransacao == "R981" && !in_array($opcao_geral, $aFolhas) ) {
             LogCalculoFolha::write("Nao calcula R981 fora do Ponto de Salário");
             continue; // R981 BASE I.R.F. BASE
@@ -404,7 +404,7 @@ abstract class AjusteIRRF {
         $sRubricaTransacao = $matrizr[$nosx];
 
         if ( $opcao_geral != PONTO_RESCISAO ) {
-          $aFolhas = array(PONTO_SALARIO, PONTO_COMPLEMENTAR);
+          $aFolhas = [PONTO_SALARIO, PONTO_COMPLEMENTAR];
           if ( $sRubricaTransacao == "R981" && !in_array($opcao_geral, $aFolhas) ) {
             LogCalculoFolha::write("Nao calcula R981 fora do Ponto de Salário");
             continue; // R981 BASE I.R.F. BASE
@@ -418,8 +418,8 @@ abstract class AjusteIRRF {
         }
 
         if (!db_empty($matrizb[$nosx])) {
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1] = "r61_numcgm";
           $matriz1[2] = "r61_regist";
@@ -451,7 +451,7 @@ abstract class AjusteIRRF {
           $matriz2[10] = round(( $nosx == 2 ?  $valor_r999: $valor_r997 ),2);
           $matriz2[11] = round(( $nosx == 1 ? $valor_r988: ($nosx==2?$valor_r989:$valor_r979)),2);
           $matriz2[12] = $nDescontoPrevidencia;
-          $matriz2[13] = (round($matrizd[$nosx],2)) ? round($matrizd[$nosx],2) : 0;
+          $matriz2[13] = round($matrizd[$nosx],2) ?: 0;
           $matriz2[14] = $matrizp[$nosx];
           $matriz2[15] = 't';
           $matriz2[16] = $anousu ;
@@ -497,7 +497,7 @@ abstract class AjusteIRRF {
               $oCamposHistoricoCalculoServidorNaoParticipa = db_utils::fieldsMemory($rsHistoricoCalculoServidorNaoParticipa, 0);
               $matriz2[8]  = 'f';
               $matriz2[15] = 'f';
-              $matriz2[13] = ($oCamposHistoricoCalculoServidorNaoParticipa->rh143_valor) ? $oCamposHistoricoCalculoServidorNaoParticipa->rh143_valor : 0;
+              $matriz2[13] = $oCamposHistoricoCalculoServidorNaoParticipa->rh143_valor ?: 0;
             }
           }
           /**
@@ -600,36 +600,27 @@ abstract class AjusteIRRF {
 
       eval($quais_diversos);
 
-      $aRubricasPrevidencia = array(
+      $aRubricasPrevidencia = [
           "R981" => "R985", //SALARIO
           "R982" => "R986", // 13º
           "R983" => "R987"  // FERIAS
-      );
-      $aRubricasDesconto = array(
+      ];
+      $aRubricasDesconto = [
           "R981" => "R913", //SALARIO
           "R982" => "R914", // 13º
           "R983" => "R915"  // FERIAS
-      );
+      ];
       /**
        * Validando Qual tipo de folha resgata
        */
-      switch ($opcao_geral) {
-          case PONTO_COMPLEMENTAR:
-              $sAjusteCalculo = "C";
-              break;
-          case PONTO_RESCISAO:
-              $sAjusteCalculo = AjusteIRRF::AJUSTE_RESCISAO;
-              break;
-          case PONTO_SALARIO:
-          case PONTO_13_SALARIO:
-          case PONTO_FERIAS:
-          default:
-              $sAjusteCalculo = $sequencia == 1 ? "S" : ($sequencia == 2 ? "3" : "F");
-              break;
-      }
+      $sAjusteCalculo = match ($opcao_geral) {
+          PONTO_COMPLEMENTAR => "C",
+          PONTO_RESCISAO => AjusteIRRF::AJUSTE_RESCISAO,
+          default => $sequencia == 1 ? "S" : ($sequencia == 2 ? "3" : "F"),
+      };
       LogCalculoFolha::write("Tipo de Ajuste: $sAjusteCalculo");
-      $matriz1 = array();
-      $matriz2 = array();
+      $matriz1 = [];
+      $matriz2 = [];
       $matriz1[1] = "r61_ajuste";
       $matriz2[1] = 'f';
       $sWhereAjusteIRRF = bb_condicaosubpes("r61");
@@ -809,7 +800,7 @@ abstract class AjusteIRRF {
                   /**
                    * Verifica se está percorrendo a linha do ajuste de salário, 13o ou Rescisão e não está no cálculo de complementar
                    */
-                  if (in_array($ajusteir[$Iajuste]["r61_folha"], array('S', '3', 'R', 'C'))) {
+                  if (in_array($ajusteir[$Iajuste]["r61_folha"], ['S', '3', 'R', 'C'])) {
                       // if(in_array($ajusteir[$Iajuste]["r61_folha"], array('S','3','R')) && $sigla_ajuste != "r48_") {
 
                       /**
@@ -819,7 +810,7 @@ abstract class AjusteIRRF {
                       LogCalculoFolha::write('  - Montando objeto servidor para verificar se precisa proporcionalizar a parcela de isenção.');
                       LogCalculoFolha::write('  -- Servidor matrícula: ' . $ajusteir[$Iajuste]["r61_regist"]);
 
-                      $aMatriculasServidorInativo = array($ajusteir[$Iajuste]["r61_regist"]);
+                      $aMatriculasServidorInativo = [$ajusteir[$Iajuste]["r61_regist"]];
                       $oServidorAtual = ServidorRepository::getInstanciaByCodigo($ajusteir[$Iajuste]["r61_regist"]);
                       $lVinculoServidorAtualInativo = $oServidorAtual->getVinculo()->getTipo() == VinculoServidor::VINCULO_INATIVO;
                       $lVinculoServidorAtualPensionista = $oServidorAtual->getVinculo()->getTipo() == VinculoServidor::VINCULO_PENSIONISTA;
@@ -916,8 +907,8 @@ abstract class AjusteIRRF {
 
                                               db_update(
                                                   $sCalculoTipo,
-                                                  array(1 => $sigla_ajuste . 'valor'),
-                                                  array(1 => $nValorIsencao),
+                                                  [1 => $sigla_ajuste . 'valor'],
+                                                  [1 => $nValorIsencao],
                                                   $sWhereParcelaIsencao
                                               );
 
@@ -1055,8 +1046,8 @@ abstract class AjusteIRRF {
 
                       $novop = ($inssirf[0]["r33_codtab"] != "1" ? 0 : $perc_inss);
 
-                      $matriz1 = array();
-                      $matriz2 = array();
+                      $matriz1 = [];
+                      $matriz2 = [];
 
                       $matriz1[1] = "r61_novod";
                       $matriz1[2] = "r61_novop";
@@ -1065,7 +1056,7 @@ abstract class AjusteIRRF {
                       $matriz2[2] = round($novop, 2);
 
                       $registroa = $ajusteir_[$Iajusteir_]["r61_regist"];
-                      $qual_folha = strtoupper($ajusteir_[$Iajusteir_]["r61_folha"]);
+                      $qual_folha = strtoupper((string) $ajusteir_[$Iajusteir_]["r61_folha"]);
 
                       $condicaoaux = " and r61_numcgm = " . db_sqlformat($pessoal_1[0]["r01_numcgm"]);
                       $condicaoaux .= " and r61_rubric = " . db_sqlformat($rubrica_base);
@@ -1087,8 +1078,8 @@ abstract class AjusteIRRF {
                               db_delete($arquivo, bb_condicaosubpes($sigla_ajuste) . $condicaoaux);
                           } else {
 
-                              $matriz1 = array();
-                              $matriz2 = array();
+                              $matriz1 = [];
+                              $matriz2 = [];
                               $matriz1[1] = $sigla_ajuste . "valor";
                               $matriz1[2] = $sigla_ajuste . "quant";
                               $matriz2[1] = round($novo_desconto, 2);
@@ -1102,8 +1093,8 @@ abstract class AjusteIRRF {
 
                       } else {
 
-                          $matriz1 = array();
-                          $matriz2 = array();
+                          $matriz1 = [];
+                          $matriz2 = [];
 
                           $matriz1[1] = $sigla_ajuste . "regist";
                           $matriz1[2] = $sigla_ajuste . "rubric";
@@ -1150,11 +1141,11 @@ abstract class AjusteIRRF {
                       $salfamilia = 0;
                       $tot_liq = 0;
                       $salario_esposa = 0;
-                      global $$arquivo;
+                      global ${$arquivo};
                       $condicaoaux = " and " . $sigla_ajuste . "regist = " . db_sqlformat($ajusteir_[$Iajusteir_]["r61_regist"]);
 
                       db_selectmax($arquivo, "select * from " . $arquivo . " " . bb_condicaosubpes($sigla_ajuste) . $condicaoaux);
-                      $arq_ = $$arquivo;
+                      $arq_ = ${$arquivo};
 
                       for ($Iarquivo = 0; $Iarquivo < count($arq_); $Iarquivo++) {
 
@@ -1162,7 +1153,7 @@ abstract class AjusteIRRF {
                           // reis
                           if (substr("#" . $arq_[$Iarquivo][$sigla_ajuste . "rubric"], 1, 1) != "R") {
                               // caso especial para salario_esposa;
-                              if (trim($db21_codcli) == "999999999" && $arq_[$Iarquivo][$sigla_ajuste . "rubric"] == "0045") {
+                              if (trim((string) $db21_codcli) == "999999999" && $arq_[$Iarquivo][$sigla_ajuste . "rubric"] == "0045") {
                                   $salario_esposa += $arq_[$Iarquivo][$sigla_ajuste . "valor"];
                               } else {
                                   if ($arq_[$Iarquivo][$sigla_ajuste . "pd"] == 1) {
@@ -1202,7 +1193,7 @@ abstract class AjusteIRRF {
                               }
                           }
                       }
-                      if (trim($db21_codcli) == "999999999" || trim($db21_codcli) == "18") {
+                      if (trim((string) $db21_codcli) == "999999999" || trim((string) $db21_codcli) == "18") {
                           $salario_familia = 0;
                       }
                       if (!db_empty($tot_prov) || !db_empty($tot_desc)) {
@@ -1223,8 +1214,8 @@ abstract class AjusteIRRF {
 
                           LogCalculoFolha::write("Valor que será adicionado a tabela de Cálculo: {$arredn}");
                           if ($arredn > 0 && $arquivo != "gerfres") {
-                              $matriz1 = array();
-                              $matriz2 = array();
+                              $matriz1 = [];
+                              $matriz2 = [];
                               $matriz1[1] = $sigla_ajuste . "regist";
                               $matriz1[2] = $sigla_ajuste . "rubric";
                               $matriz1[3] = $sigla_ajuste . "lotac";
@@ -1284,7 +1275,7 @@ abstract class AjusteIRRF {
     $oValoresRetorno->nValorBaseIrrf = 0.0;
     $oValoresRetorno->nValorDeducao  = 0.0;
 
-    $aEventosFinanceirosServidor = $oCalCuloServidor->getEventosFinanceiros(null, array($sRubricaBaseIrrf, $sRubricaDeducao));
+    $aEventosFinanceirosServidor = $oCalCuloServidor->getEventosFinanceiros(null, [$sRubricaBaseIrrf, $sRubricaDeducao]);
 
     if (!empty($aEventosFinanceirosServidor)) {
 

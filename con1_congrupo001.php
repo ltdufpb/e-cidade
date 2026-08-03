@@ -33,12 +33,12 @@ include(modification("dbforms/db_classesgenericas.php"));
 
 $clcriaabas = new cl_criaabas;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 ?>
 <html>
 <head>
@@ -62,11 +62,11 @@ $sizecp  = array();
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
 	<?php 
-    $clcriaabas->identifica = array("grupo"=>"Grupo","conta"=>"Contas");
-    $clcriaabas->title      = array("grupo"=>"Grupo","conta"=>"Contas");
-    $clcriaabas->src        = array("grupo"=>"con1_congrupo011.php","conta"=>"con1_conplanogrupoconta004.php");
-    $clcriaabas->sizecampo  = array("grupo"=>"15","conta"=>"15");
-    $clcriaabas->disabled   = array("conta"=>"false");   
+    $clcriaabas->identifica = ["grupo"=>"Grupo","conta"=>"Contas"];
+    $clcriaabas->title      = ["grupo"=>"Grupo","conta"=>"Contas"];
+    $clcriaabas->src        = ["grupo"=>"con1_congrupo011.php","conta"=>"con1_conplanogrupoconta004.php"];
+    $clcriaabas->sizecampo  = ["grupo"=>"15","conta"=>"15"];
+    $clcriaabas->disabled   = ["conta"=>"false"];   
     $clcriaabas->cria_abas();   
 	?>
     </center>

@@ -54,13 +54,13 @@ $iOpcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $oDaoAbas->identifica = array("congrupoorcamento"=>"Grupo","conplanogrupoorcamento"=>"Contas");
-       $oDaoAbas->sizecampo  = array("congrupoorcamento" => "30", "conplanogrupoorcamento" => "30", "conhistdocregra" => "30"); 
-       $oDaoAbas->src        = array("congrupoorcamento"=>"con1_congrupoorcamento011.php?iOpcao={$iOpcao}", 
-                                     "conplanogrupoorcamento" => "con1_congrupoorcamento012.php?iOpcao={$iOpcao}");
+       $oDaoAbas->identifica = ["congrupoorcamento"=>"Grupo","conplanogrupoorcamento"=>"Contas"];
+       $oDaoAbas->sizecampo  = ["congrupoorcamento" => "30", "conplanogrupoorcamento" => "30", "conhistdocregra" => "30"]; 
+       $oDaoAbas->src        = ["congrupoorcamento"=>"con1_congrupoorcamento011.php?iOpcao={$iOpcao}", 
+                                     "conplanogrupoorcamento" => "con1_congrupoorcamento012.php?iOpcao={$iOpcao}"];
                                      
        if ($iOpcao == 2) {
-         $oDaoAbas->disabled   = array("conplanogrupoorcamento"=>"false"); 
+         $oDaoAbas->disabled   = ["conplanogrupoorcamento"=>"false"]; 
        }
        $oDaoAbas->cria_abas(); 
        ?> 

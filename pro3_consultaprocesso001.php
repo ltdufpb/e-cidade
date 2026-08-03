@@ -36,7 +36,7 @@ require_once(modification("classes/db_proctransand_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 $db_opcao = 1;
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 db_postmemory($_POST);
 $clprocandam    = new cl_procandam;
 $clproctransfer = new cl_proctransfer;
@@ -246,7 +246,7 @@ function js_pesquisa() {
 function js_preenchepesquisa(chave) {
   
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 function js_pesquisap58_numcgm(mostra) {

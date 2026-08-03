@@ -39,20 +39,20 @@ class Manutencao extends ConexaoCurl
     const URL_AUTH_PRODUCAO = "https://oauth.bb.com.br/oauth/token";
     const LOCATION_REQUEST_PRODUCAO = "https://cobranca.bb.com.br:7101/registrarBoleto";
 
-    const CLIENT_ID_HOMOLOGACAO = array(
+    const CLIENT_ID_HOMOLOGACAO = [
         "eyJpZCI6IjgwNDNiNTMtZjQ5Mi00",
         "YyIsImNvZGlnb1B1YmxpY2Fkb3IiOj",
         "EwOSwiY29kaWdvU29mdHdhcmUiOjE",
         "sInNlcXVlbmNpYWxJbnN0YWxhY2FvIjoxfQ"
-    );
+    ];
 
-    const CLIENT_SECRET_HOMOLOGACAO = array(
+    const CLIENT_SECRET_HOMOLOGACAO = [
         "eyJpZCI6IjBjZDFlMGQtN2UyNC00MGQ",
         "yLWI0YSIsImNvZGlnb1B1YmxpY2Fkb3IiO",
         "jEwOSwiY29kaWdvU29mdHdhcmUiOjEs",
         "InNlcXVlbmNpYWxJbnN0YWxhY2FvIjox",
         "LCJzZXF1ZW5jaWFsQ3JlZGVuY2lhbCI6MX0"
-    );
+    ];
 
     /**
      * Código do banco que utiliza este webservice
@@ -71,9 +71,9 @@ class Manutencao extends ConexaoCurl
         $sAuth = self::URL_AUTH_PRODUCAO;
         $sLocation = self::LOCATION_REQUEST_PRODUCAO;
 
-        if (trim($oRegistro->clientId) == implode("", self::CLIENT_ID_HOMOLOGACAO)
+        if (trim((string) $oRegistro->clientId) == implode("", self::CLIENT_ID_HOMOLOGACAO)
             and
-            trim($oRegistro->clientSecret) == implode("", self::CLIENT_SECRET_HOMOLOGACAO)
+            trim((string) $oRegistro->clientSecret) == implode("", self::CLIENT_SECRET_HOMOLOGACAO)
         ) {
             $sAuth = self::URL_AUTH_HOMOLOGACAO;
             $sLocation = self::LOCATION_REQUEST_HOMOLOGACAO;
@@ -90,6 +90,7 @@ class Manutencao extends ConexaoCurl
      *
      * @return \stdClass
      */
+    #[\Override]
     public function processarRequisicao()
     {
         parent::processarRequisicao();

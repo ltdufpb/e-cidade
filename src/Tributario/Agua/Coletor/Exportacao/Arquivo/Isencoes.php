@@ -54,14 +54,14 @@ class Isencoes extends Arquivo {
     }
 
     $aTiposIsencao = pg_fetch_all($rsTiposIsencao);
-    $aIsencoes = array();
+    $aIsencoes = [];
     foreach ($aTiposIsencao as $aTipoIsencao) {
 
-      $aIsencoes[] = (object) array(
+      $aIsencoes[] = (object) [
         'codigo'       => $aTipoIsencao['x29_codisencaotipo'],
         'descricao'    => $aTipoIsencao['x29_descr'],
         'tipo_isencao' => $aTipoIsencao['x29_tipo'],
-      );
+      ];
     }
 
     return $aIsencoes;

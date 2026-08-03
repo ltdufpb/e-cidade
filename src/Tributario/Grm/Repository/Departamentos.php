@@ -50,7 +50,7 @@ class Departamentos
         }
 
         $totalRegistros = pg_num_rows($consultaDepartamento);
-        $itensRetorno = array();
+        $itensRetorno = [];
         for ($rowDepart = 0; $rowDepart < $totalRegistros; $rowDepart++) {
 
             $codigoDepartamento = \db_utils::fieldsMemory($consultaDepartamento, $rowDepart)->k180_depart;

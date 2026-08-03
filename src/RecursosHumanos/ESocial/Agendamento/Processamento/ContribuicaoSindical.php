@@ -35,15 +35,12 @@ use ECidade\RecursosHumanos\ESocial\Repository\ContribuicaoSindical\PeriodoRepos
 
 class ContribuicaoSindical extends ProcessamentoAbstract implements ProcessamentoInterface
 {
-    private $cgm;
-
     /**
      * ProcessamentoInterface constructor.
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(private $cgm)
     {
-        $this->cgm = $cgm;
     }
 
     /**
@@ -72,7 +69,7 @@ class ContribuicaoSindical extends ProcessamentoAbstract implements Processament
         $periodoRepository = new PeriodoRepository();
         $periodos = $periodoRepository->scopeEmpregador($this->cgm)->get();
 
-        $periodosProcessar = array();
+        $periodosProcessar = [];
         foreach ($periodos as $periodo) {
             $contribuicaoRepository = new ContribuicaoRepository();
             $contribuicoes = $contribuicaoRepository->scopePeriodo($periodo->getSequencial())->get();
@@ -91,29 +88,29 @@ class ContribuicaoSindical extends ProcessamentoAbstract implements Processament
      */
     private function formatar(array $periodosProcessar)
     {
-        $dadosFormatados = array();
+        $dadosFormatados = [];
 
         foreach ($periodosProcessar as $periodo) {
 
-            $periodoFormatado = (object)array(
+            $periodoFormatado = (object)[
                 'inscricao_empregador' => $periodo->getEmpregador()->getCnpj(),
                 'referencia' => (int)$periodo->getSequencial(),
-                'ideEmpregador' => (object)array(
+                'ideEmpregador' => (object)[
                     'indApuracao' => (int)$periodo->getIndicativoPeriodo(),
                     'perApur' => $periodo->getPeriodo(),
                     'tpInsc' => (int)1,
-                    'nrInsc' => str_replace(array('.', '/', '-'), '', $periodo->getEmpregador()->getCnpj()),
-                ),
-                'contribSind' => array()
-            );
+                    'nrInsc' => str_replace(['.', '/', '-'], '', $periodo->getEmpregador()->getCnpj()),
+                ],
+                'contribSind' => []
+            ];
 
             foreach ($periodo->getContribuicoesSindicais() as $contribuicoesSindical) {
-                $contribSind = (object)array(
-                    'cnpjSindic' => str_replace(array('.', '/', '-'), '',
+                $contribSind = (object)[
+                    'cnpjSindic' => str_replace(['.', '/', '-'], '',
                         $contribuicoesSindical->getSindicato()->getCnpj()),
                     'tpContribSind' => (int)$contribuicoesSindical->getTipoContribuicao(),
                     'vlrContribSind' => (float)$contribuicoesSindical->getValor()
-                );
+                ];
 
                 $periodoFormatado->contribSind[] = $contribSind;
             }

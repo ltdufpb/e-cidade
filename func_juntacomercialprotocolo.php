@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_juntacomercialprotocolo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cljuntacomercialprotocolo = new cl_juntacomercialprotocolo;
 $cljuntacomercialprotocolo->rotulo->label("q147_sequencial");
 $cljuntacomercialprotocolo->rotulo->label("q147_sequencial");
@@ -52,9 +52,9 @@ $cljuntacomercialprotocolo->rotulo->label("q147_sequencial");
         }else{
            $sql = $cljuntacomercialprotocolo->sql_query("",$campos,"q147_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q147_sequencial)){
-          $repassa = array("chave_q147_sequencial"=>$chave_q147_sequencial,"chave_q147_sequencial"=>$chave_q147_sequencial);
+          $repassa = ["chave_q147_sequencial"=>$chave_q147_sequencial,"chave_q147_sequencial"=>$chave_q147_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

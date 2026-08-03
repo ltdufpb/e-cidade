@@ -49,7 +49,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
   $this->objpdf->text($xcol+2,$xlin+34,'Recurso');
   
   $this->objpdf->Setfont('Arial','',8);
-  $this->objpdf->text($xcol+17,$xlin+7,':  '.db_formatar($this->orgao,'orgao').' - '.substr($this->descr_orgao,0,46));
+  $this->objpdf->text($xcol+17,$xlin+7,':  '.db_formatar($this->orgao,'orgao').' - '.substr((string) $this->descr_orgao,0,46));
   $this->objpdf->text($xcol+17,$xlin+11,':  '.db_formatar($this->unidade,'unidade').' - '.$this->descr_unidade);
   $this->objpdf->text($xcol+17,$xlin+15,':  '.db_formatar($this->funcao,'funcao').' - '.$this->descr_funcao);
   
@@ -71,7 +71,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
   $this->objpdf->text($xcol+108,$xlin+4,'Dados do Credor:');
   $this->objpdf->Setfont('Arial','B',8);
   $this->objpdf->text($xcol+107,$xlin+7,'Nº Credor');
-  $this->objpdf->text($xcol+150,$xlin+7,(strlen($this->cnpj) == 11?'CPF':'CNPJ'));
+  $this->objpdf->text($xcol+150,$xlin+7,(strlen((string) $this->cnpj) == 11?'CPF':'CNPJ'));
   $this->objpdf->text($xcol+107,$xlin+11,'Nome');
   $this->objpdf->text($xcol+107,$xlin+15,'Endereço');
   $this->objpdf->text($xcol+107,$xlin+19,'Município');
@@ -88,10 +88,10 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
     
     $agenciadv = "";
     $contadv   = "";
-    if (trim($this->agenciadv)!="") {
+    if (trim((string) $this->agenciadv)!="") {
       $agenciadv = "-".$this->agenciadv;
     }
-    if (trim($this->contadv)!="") {
+    if (trim((string) $this->contadv)!="") {
       $contadv = "-".$this->contadv;
     }
     $this->objpdf->text($xcol+131,$xlin+23,': '.$this->banco.' / '.$this->agencia.$agenciadv.' / '.$this->conta.$contadv);
@@ -143,8 +143,8 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
   $maiscol = 0;
   
   // monta os dados dos elementos da ordem de compra
-  $this->objpdf->SetWidths(array(20,80,25,25,25,25));
-  $this->objpdf->SetAligns(array('L','L','R','R','R','R'));
+  $this->objpdf->SetWidths([20,80,25,25,25,25]);
+  $this->objpdf->SetAligns(['L','L','R','R','R','R']);
   $this->objpdf->setleftmargin(4);
   $this->objpdf->sety($xlin+48);
   $this->objpdf->cell(20,4,'ELEMENTO',0,0,"L");
@@ -165,33 +165,33 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
     db_fieldsmemory($this->recorddositens,$ii);
     
     $this->objpdf->Setfont('Arial','',7);
-    $this->objpdf->Row(array( (pg_result($this->recorddositens,$ii,$this->elementoitem) ),   
-	                                           (pg_result($this->recorddositens,$ii,$this->descr_elementoitem)),
-                                               db_formatar(pg_result($this->recorddositens,$ii,$this->vlremp),'f'),
-                                               db_formatar(pg_result($this->recorddositens,$ii,$this->vlranu),'f'),
-                                               db_formatar(pg_result($this->recorddositens,$ii,$this->vlrpag),'f'),
-                                               db_formatar(pg_result($this->recorddositens,$ii,$this->saldo_final),'f')),3,false,3);
-    $total_emp  += pg_result($this->recorddositens,$ii,$this->vlremp);
-    $total_anu  += pg_result($this->recorddositens,$ii,$this->vlranu);
-    $total_pag  += pg_result($this->recorddositens,$ii,$this->vlrpag);
-    $total_sal  += pg_result($this->recorddositens,$ii,$this->vlrsaldo);
-    $total_saldo_final += pg_result($this->recorddositens,$ii,$this->saldo_final);
+    $this->objpdf->Row([ (pg_fetch_result($this->recorddositens,$ii,$this->elementoitem) ),   
+	                                           (pg_fetch_result($this->recorddositens,$ii,$this->descr_elementoitem)),
+                                               db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->vlremp),'f'),
+                                               db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->vlranu),'f'),
+                                               db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->vlrpag),'f'),
+                                               db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->saldo_final),'f')],3,false,3);
+    $total_emp  += pg_fetch_result($this->recorddositens,$ii,$this->vlremp);
+    $total_anu  += pg_fetch_result($this->recorddositens,$ii,$this->vlranu);
+    $total_pag  += pg_fetch_result($this->recorddositens,$ii,$this->vlrpag);
+    $total_sal  += pg_fetch_result($this->recorddositens,$ii,$this->vlrsaldo);
+    $total_saldo_final += pg_fetch_result($this->recorddositens,$ii,$this->saldo_final);
   }
   
   $rsNotas = db_query("select e69_numero, e69_dtnota 
     	     						        from empnota 
  									                 inner join pagordemnota on e71_codnota = e69_codnota and e71_anulado = 'f' 
 									      where e71_codord = ".$this->ordpag);
-  if ( pg_numrows($rsNotas) > 0 ) {
+  if ( pg_num_rows($rsNotas) > 0 ) {
      
-    $this->numeronota  = pg_result($rsNotas,0,0);									  
-    $this->datanota    = pg_result($rsNotas,0,1);
+    $this->numeronota  = pg_fetch_result($rsNotas,0,0);									  
+    $this->datanota    = pg_fetch_result($rsNotas,0,1);
     $this->objpdf->cell(102,4,"Ref. Nota Fiscal nº: ".$this->numeronota.", de ".db_formatar($this->datanota,'d'),0,1,"L");
   }
   
   // monta os dados das retenções da ordem de compra
-  $this->objpdf->SetWidths(array(12,65,23));
-  $this->objpdf->SetAligns(array('C','L','R'));
+  $this->objpdf->SetWidths([12,65,23]);
+  $this->objpdf->SetAligns(['C','L','R']);
   $this->objpdf->setleftmargin(4);
   $this->objpdf->setxy($xcol+102,$xlin+134);
   $this->objpdf->Setfont('Arial','B',10);
@@ -201,7 +201,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
   
   // Particular para CARAZINHO
   $this->objpdf->Setfont('Arial','b',7);
-  if (strtoupper($this->municpref) != "CARAZINHO") {
+  if (strtoupper((string) $this->municpref) != "CARAZINHO") {
     
     $this->objpdf->cell(10,0,'REC.',0,0,"L");
     $this->objpdf->cell(62,0,'DESCRIÇÃO',0,0,"L");
@@ -224,10 +224,10 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
     		
          $this->objpdf->setx($xcol+102);
          $this->objpdf->Setfont('Arial','',7);
-         $this->objpdf->Row(array($this->aRetencoes[$ii]->k02_codigo,
-                                  substr($this->aRetencoes[$ii]->k02_drecei,0,40),
+         $this->objpdf->Row([$this->aRetencoes[$ii]->k02_codigo,
+                                  substr((string) $this->aRetencoes[$ii]->k02_drecei,0,40),
                                   db_formatar($this->aRetencoes[$ii]->e23_valorretencao,'f')
-                                  )
+                                  ]
                             ,6,
                             false,
                             3);
@@ -285,7 +285,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
 	// descrição da observação
 	$this->objpdf->setxy($xcol,$xlin+85);
   $this->objpdf->Setfont('Arial','',7);
-  $this->objpdf->multicell(200,4,substr($this->obs,0,1338));   
+  $this->objpdf->multicell(200,4,substr((string) $this->obs,0,1338));   
 	
 	
   // total das retenções
@@ -327,7 +327,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
   $sqlparag .= "       inner join db_paragrafo on db04_idparag = db02_idparag ";
   $sqlparag .= " where db03_tipodoc = 1500 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";
   $resparag  = @db_query($sqlparag);
-  if (@pg_numrows($resparag) > 0) {
+  if (@pg_num_rows($resparag) > 0) {
     
     db_fieldsmemory($resparag,0);
     eval($db02_texto);
@@ -340,7 +340,7 @@ for ($xxx = 0; $xxx < $this->nvias; $xxx++) {
     $sqlparagpadrao .= " where db60_tipodoc = 1500 and db60_instit = " . db_getsession("DB_instit")." order by db62_ordem";
     
     $resparagpadrao = @db_query($sqlparagpadrao);
-    if (@pg_numrows($resparagpadrao) > 0) {
+    if (@pg_num_rows($resparagpadrao) > 0) {
       db_fieldsmemory($resparagpadrao,0);
       
       eval($db61_texto);

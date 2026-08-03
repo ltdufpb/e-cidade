@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE habitprogramalistacompraitem
 class cl_habitprogramalistacompraitem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ht18_sequencial = 0; 
-   var $ht18_habitprogramalistacompra = 0; 
-   var $ht18_matunid = 0; 
-   var $ht18_pcmater = 0; 
-   var $ht18_quantidade = 0; 
+   public $ht18_sequencial = 0; 
+   public $ht18_habitprogramalistacompra = 0; 
+   public $ht18_matunid = 0; 
+   public $ht18_pcmater = 0; 
+   public $ht18_quantidade = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ht18_sequencial = int4 = Sequencial 
                  ht18_habitprogramalistacompra = int4 = Lista de Compras 
                  ht18_matunid = int4 = Unidade de Material 
@@ -56,10 +56,10 @@ class cl_habitprogramalistacompraitem {
                  ht18_quantidade = float4 = Quantidade 
                  ";
    //funcao construtor da classe 
-   function cl_habitprogramalistacompraitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("habitprogramalistacompraitem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_habitprogramalistacompraitem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ht18_sequencial = pg_result($result,0,0); 
+       $this->ht18_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from habitprogramalistacompraitem_ht18_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ht18_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ht18_sequencial)){
          $this->erro_sql = " Campo ht18_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_habitprogramalistacompraitem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Item da Lista de Compras do Programa da Habitação ($this->ht18_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Item da Lista de Compras do Programa da Habitação já Cadastrado";
@@ -194,14 +194,14 @@ class cl_habitprogramalistacompraitem {
      $resaco = $this->sql_record($this->sql_query_file($this->ht18_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17025,'$this->ht18_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3006,17025,'','".AddSlashes(pg_result($resaco,0,'ht18_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3006,17028,'','".AddSlashes(pg_result($resaco,0,'ht18_habitprogramalistacompra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3006,17026,'','".AddSlashes(pg_result($resaco,0,'ht18_matunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3006,17027,'','".AddSlashes(pg_result($resaco,0,'ht18_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3006,17029,'','".AddSlashes(pg_result($resaco,0,'ht18_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3006,17025,'','".AddSlashes(pg_fetch_result($resaco,0,'ht18_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3006,17028,'','".AddSlashes(pg_fetch_result($resaco,0,'ht18_habitprogramalistacompra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3006,17026,'','".AddSlashes(pg_fetch_result($resaco,0,'ht18_matunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3006,17027,'','".AddSlashes(pg_fetch_result($resaco,0,'ht18_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3006,17029,'','".AddSlashes(pg_fetch_result($resaco,0,'ht18_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_habitprogramalistacompraitem {
       $this->atualizacampos();
      $sql = " update habitprogramalistacompraitem set ";
      $virgula = "";
-     if(trim($this->ht18_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_sequencial"])){ 
+     if(trim((string) $this->ht18_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_sequencial"])){ 
        $sql  .= $virgula." ht18_sequencial = $this->ht18_sequencial ";
        $virgula = ",";
-       if(trim($this->ht18_sequencial) == null ){ 
+       if(trim((string) $this->ht18_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ht18_sequencial";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_habitprogramalistacompraitem {
          return false;
        }
      }
-     if(trim($this->ht18_habitprogramalistacompra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_habitprogramalistacompra"])){ 
+     if(trim((string) $this->ht18_habitprogramalistacompra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_habitprogramalistacompra"])){ 
        $sql  .= $virgula." ht18_habitprogramalistacompra = $this->ht18_habitprogramalistacompra ";
        $virgula = ",";
-       if(trim($this->ht18_habitprogramalistacompra) == null ){ 
+       if(trim((string) $this->ht18_habitprogramalistacompra) == null ){ 
          $this->erro_sql = " Campo Lista de Compras nao Informado.";
          $this->erro_campo = "ht18_habitprogramalistacompra";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_habitprogramalistacompraitem {
          return false;
        }
      }
-     if(trim($this->ht18_matunid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_matunid"])){ 
+     if(trim((string) $this->ht18_matunid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_matunid"])){ 
        $sql  .= $virgula." ht18_matunid = $this->ht18_matunid ";
        $virgula = ",";
-       if(trim($this->ht18_matunid) == null ){ 
+       if(trim((string) $this->ht18_matunid) == null ){ 
          $this->erro_sql = " Campo Unidade de Material nao Informado.";
          $this->erro_campo = "ht18_matunid";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_habitprogramalistacompraitem {
          return false;
        }
      }
-     if(trim($this->ht18_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_pcmater"])){ 
+     if(trim((string) $this->ht18_pcmater)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_pcmater"])){ 
        $sql  .= $virgula." ht18_pcmater = $this->ht18_pcmater ";
        $virgula = ",";
-       if(trim($this->ht18_pcmater) == null ){ 
+       if(trim((string) $this->ht18_pcmater) == null ){ 
          $this->erro_sql = " Campo Material nao Informado.";
          $this->erro_campo = "ht18_pcmater";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_habitprogramalistacompraitem {
          return false;
        }
      }
-     if(trim($this->ht18_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_quantidade"])){ 
+     if(trim((string) $this->ht18_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht18_quantidade"])){ 
        $sql  .= $virgula." ht18_quantidade = $this->ht18_quantidade ";
        $virgula = ",";
-       if(trim($this->ht18_quantidade) == null ){ 
+       if(trim((string) $this->ht18_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "ht18_quantidade";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_habitprogramalistacompraitem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17025,'$this->ht18_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht18_sequencial"]) || $this->ht18_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3006,17025,'".AddSlashes(pg_result($resaco,$conresaco,'ht18_sequencial'))."','$this->ht18_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3006,17025,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht18_sequencial'))."','$this->ht18_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht18_habitprogramalistacompra"]) || $this->ht18_habitprogramalistacompra != "")
-           $resac = db_query("insert into db_acount values($acount,3006,17028,'".AddSlashes(pg_result($resaco,$conresaco,'ht18_habitprogramalistacompra'))."','$this->ht18_habitprogramalistacompra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3006,17028,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht18_habitprogramalistacompra'))."','$this->ht18_habitprogramalistacompra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht18_matunid"]) || $this->ht18_matunid != "")
-           $resac = db_query("insert into db_acount values($acount,3006,17026,'".AddSlashes(pg_result($resaco,$conresaco,'ht18_matunid'))."','$this->ht18_matunid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3006,17026,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht18_matunid'))."','$this->ht18_matunid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht18_pcmater"]) || $this->ht18_pcmater != "")
-           $resac = db_query("insert into db_acount values($acount,3006,17027,'".AddSlashes(pg_result($resaco,$conresaco,'ht18_pcmater'))."','$this->ht18_pcmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3006,17027,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht18_pcmater'))."','$this->ht18_pcmater',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht18_quantidade"]) || $this->ht18_quantidade != "")
-           $resac = db_query("insert into db_acount values($acount,3006,17029,'".AddSlashes(pg_result($resaco,$conresaco,'ht18_quantidade'))."','$this->ht18_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3006,17029,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht18_quantidade'))."','$this->ht18_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_habitprogramalistacompraitem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17025,'$ht18_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3006,17025,'','".AddSlashes(pg_result($resaco,$iresaco,'ht18_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3006,17028,'','".AddSlashes(pg_result($resaco,$iresaco,'ht18_habitprogramalistacompra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3006,17026,'','".AddSlashes(pg_result($resaco,$iresaco,'ht18_matunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3006,17027,'','".AddSlashes(pg_result($resaco,$iresaco,'ht18_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3006,17029,'','".AddSlashes(pg_result($resaco,$iresaco,'ht18_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3006,17025,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht18_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3006,17028,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht18_habitprogramalistacompra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3006,17026,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht18_matunid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3006,17027,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht18_pcmater'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3006,17029,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht18_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from habitprogramalistacompraitem
@@ -407,7 +407,7 @@ class cl_habitprogramalistacompraitem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:habitprogramalistacompraitem";
@@ -422,7 +422,7 @@ class cl_habitprogramalistacompraitem {
    function sql_query ( $ht18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_habitprogramalistacompraitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_habitprogramalistacompraitem {
    function sql_query_file ( $ht18_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -480,7 +480,7 @@ class cl_habitprogramalistacompraitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

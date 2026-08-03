@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE ccustob
 class cl_ccustob { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t02_unidad = null; 
-   var $t02_respon = null; 
+   public $t02_unidad = null; 
+   public $t02_respon = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t02_unidad = char(    40) = Descricao da Unidade 
                  t02_respon = char(    40) = Nome do Responsavel p/ C Custo 
                  ";
    //funcao construtor da classe 
-   function cl_ccustob() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ccustob"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -104,7 +104,7 @@ class cl_ccustob {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Centro de Custos do Bens -  Localizaca () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Centro de Custos do Bens -  Localizaca já Cadastrado";
@@ -131,10 +131,10 @@ class cl_ccustob {
       $this->atualizacampos();
      $sql = " update ccustob set ";
      $virgula = "";
-     if(trim($this->t02_unidad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t02_unidad"])){ 
+     if(trim((string) $this->t02_unidad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t02_unidad"])){ 
        $sql  .= $virgula." t02_unidad = '$this->t02_unidad' ";
        $virgula = ",";
-       if(trim($this->t02_unidad) == null ){ 
+       if(trim((string) $this->t02_unidad) == null ){ 
          $this->erro_sql = " Campo Descricao da Unidade nao Informado.";
          $this->erro_campo = "t02_unidad";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_ccustob {
          return false;
        }
      }
-     if(trim($this->t02_respon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t02_respon"])){ 
+     if(trim((string) $this->t02_respon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t02_respon"])){ 
        $sql  .= $virgula." t02_respon = '$this->t02_respon' ";
        $virgula = ",";
-       if(trim($this->t02_respon) == null ){ 
+       if(trim((string) $this->t02_respon) == null ){ 
          $this->erro_sql = " Campo Nome do Responsavel p/ C Custo nao Informado.";
          $this->erro_campo = "t02_respon";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:ccustob";

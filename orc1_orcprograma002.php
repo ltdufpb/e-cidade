@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
 
@@ -59,29 +59,29 @@ $clcriaabas = new cl_criaabas;
      <?php 
 
 
-       $clcriaabas->identifica = array("g1" => "Dados Programa",
+       $clcriaabas->identifica = ["g1" => "Dados Programa",
                                        "g5" => "Objetivos",
                                        "g4" => "Indicadores",
                                        "g2" => "Orgão",
 								                       "g3" => "Unidade"
-								                       );
+								                       ];
 
-       $clcriaabas->title      = array("g1" => "Dados Programa",
+       $clcriaabas->title      = ["g1" => "Dados Programa",
                                        "g5" => "Objetivos",
                                        "g4" => "Indicadores",
                                        "g2" => "Orgão",
 								                       "g3" => "Unidade"
-								                       );
+								                       ];
 
 
-       $clcriaabas->src        = array("g1" => "orc1_orcprograma012.php",
+       $clcriaabas->src        = ["g1" => "orc1_orcprograma012.php",
                                        "g5" => "orc1_orcobjetivovinculo001.php",
                                        "g4" => "orc1_orcindicaprograma001.php",
                                        "g2" => "orc1_orcprogramaorgao001.php",
        									               "g3" => "orc1_orcprogramaunidade001.php"
-                                     );
+                                     ];
 
-       $clcriaabas->funcao_js  = array("g5" => "iframe_g5.js_buscaObjetivosVinculados();");
+       $clcriaabas->funcao_js  = ["g5" => "iframe_g5.js_buscaObjetivosVinculados();"];
 
        $clcriaabas->cria_abas();
 ?>

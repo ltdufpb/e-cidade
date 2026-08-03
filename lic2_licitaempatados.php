@@ -63,7 +63,7 @@ if ($clpcorcamitem->numrows > 0) {
 }
 $head1      = "Itens empatados/MicroEmpresas";
 $head3      = "Orçamento: ".$oLicita->pc22_codorc;
-$head5      = "Licitacao: {$oLicita->l20_numero}/".substr($oLicita->l20_datacria,0,4);
+$head5      = "Licitacao: {$oLicita->l20_numero}/".substr((string) $oLicita->l20_datacria,0,4);
 $iOrcamento = @$oLicita->pc22_codorc;
 
 /*
@@ -87,7 +87,7 @@ $iNumRowsItemFornec = $clpcorcamitem->numrows;
  * Percorremos o valor de cada item orçado pelo fornecedor
  * e verificamos quais deles estaocom o mesmo valor
  */
-$aItensIguais = array();
+$aItensIguais = [];
 for ($iItens = 0; $iItens < $iNumRowsItemFornec; $iItens++) {
   
   $oItem         = db_utils::fieldsMemory($rsItensCabec, $iItens);  
@@ -220,8 +220,8 @@ for ($x = 0; $x < $iNumRowsFornec;$x++) {
   
   $iAlt = 4;
   $pdf->setfont('arial','',7);
-  $pdf->cell(60, $iAlt, substr($oFornec->z01_nome,0,35),0,0,"L");
-  $pdf->cell(20, $iAlt, substr($oFornec->l32_descricao,0,40),0,0,"L");
+  $pdf->cell(60, $iAlt, substr((string) $oFornec->z01_nome,0,35),0,0,"L");
+  $pdf->cell(20, $iAlt, substr((string) $oFornec->l32_descricao,0,40),0,0,"L");
   $iBordaCelula = 0;
   $iQuantItens  = 0;
   
@@ -250,7 +250,7 @@ for ($x = 0; $x < $iNumRowsFornec;$x++) {
   	$iQuantItens++;
   }
   if ($x == $iNumRowsFornec -1 && $lMax== true) {
-	  
+
 	//echo $iQuantItens;
 	$iQuantImp           += $iQuantItens;
 	$x                    = -1;

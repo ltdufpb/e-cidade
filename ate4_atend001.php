@@ -43,7 +43,7 @@ include(modification("classes/db_atendimentosituacao_classe.php"));
 include(modification("classes/db_db_usuarios_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_tipoatend_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltipoatend         = new cl_tipoatend;
 $clatendimento_top   = new cl_atendimento_top;
 $clatendimentoorigem = new cl_atendimentoorigem;
@@ -85,7 +85,7 @@ if (isset($incluir)&&$incluir!=""){
 		$rs_cliente = $clclientes->sql_record($clclientes->sql_query($cliente,"at01_nomecli","at01_codcli",""));
 		if($clclientes->numrows>0) {
 			db_fieldsmemory($rs_cliente,0);
-			if(strcmp(trim(strtoupper($at01_nomecli)),"DBSELLER") == 0) {
+			if(strcmp(trim(strtoupper((string) $at01_nomecli)),"DBSELLER") == 0) {
 				$flag_grava = false;
 			}
 		}

@@ -91,7 +91,7 @@ function numerosemana($data,$ano = "0") {
 	
   if ($ano=="0") {
   	
-    $data      = explode("/",$data);
+    $data      = explode("/",(string) $data);
     $timestamp = mktime(0, 0, 0, $data[1], $data[0], $data[2]);
     
   } else {
@@ -106,7 +106,7 @@ function numerosemana($data,$ano = "0") {
 
 function somardata($data, $dias= 0, $meses = 0, $ano = 0) {
 	
-  $data     = explode("/", $data);
+  $data     = explode("/", (string) $data);
   $novadata = date("d/m/Y", mktime(0, 0, 0, $data[1] + $meses,   $data[0] + $dias, $data[2] + $ano) );
   return $novadata;
   
@@ -122,7 +122,7 @@ function montasemana($dData, $iSemana = null, $iAno = null) {
   */
   if ($iSemana == null) { 
   	
-    $dData      = explode('/', $dData);
+    $dData      = explode('/', (string) $dData);
     // Pego o número do dia da semana. (0 => Domingo, 6 => Sábado)
     $iDiaSemana = date('w', mktime(0, 0, 0, $dData[1], $dData[0], $dData[2]));
     for ($iCont = 0; $iCont < 7; $iCont++) {
@@ -226,8 +226,8 @@ for($rrr=0; $rrr < $linhascardapioescola; $rrr++){
   
   }
   $head1 = "RELATÓRIOS DE CARDÁPIOS";
-  $head2 = "Ano Cardápio: ".pg_result($result,0,'me27_i_ano');
-  $head3 = "Cardápio: ".pg_result($result,0,'me27_c_nome');
+  $head2 = "Ano Cardápio: ".pg_fetch_result($result,0,'me27_i_ano');
+  $head3 = "Cardápio: ".pg_fetch_result($result,0,'me27_c_nome');
   $head4 = "Semana: $xsemana[0] à $xsemana[6]";
   $head5 = "Escola: $ed18_c_nome";
   $pdf->ln(5);
@@ -250,7 +250,7 @@ for($rrr=0; $rrr < $linhascardapioescola; $rrr++){
       $quebra = 1;
     }
     $ind     = $ed32_i_codigo-1;
-    $dia_mes = substr($xsemana[$ind],0,5);
+    $dia_mes = substr((string) $xsemana[$ind],0,5);
     $pdf->cell(48,25,"$ed32_c_descr - $dia_mes", 1, $quebra, "C", 1);
   
   }
@@ -268,7 +268,7 @@ for($rrr=0; $rrr < $linhascardapioescola; $rrr++){
   	$aSemana = montasemana("",$semana,$calendario);
   }
   
-  $vet          = array ("", "", "", "", "", "" );
+  $vet          =  ["", "", "", "", "", "" ];
   $altura       = 2.8;
   $borda        = true;
   $espaco       = 2;
@@ -283,7 +283,7 @@ for($rrr=0; $rrr < $linhascardapioescola; $rrr++){
     $vet [0] = "\n \n $me03_c_tipo \n \n $me03_c_inicio/$me03_c_fim \n \n ";
     for($i = 1; $i < 6; $i ++) { 
 
-      $dat        = substr($aSemana [$i], 6, 4) . "-" . substr($aSemana[$i],3,2) . "-" . substr($aSemana[$i],0,2);
+      $dat        = substr((string) $aSemana [$i], 6, 4) . "-" . substr((string) $aSemana[$i],3,2) . "-" . substr((string) $aSemana[$i],0,2);
       $campos        = " me12_i_codigo,me01_i_codigo,me01_c_nome,me01_f_versao,me03_c_fim ";
       $sWhere        = " me12_d_data = '$dat' AND me12_i_tprefeicao = $me03_i_codigo ";
       $sWhere       .= " AND me01_i_tipocardapio = $cardapio $condicao2 $condicao4";
@@ -312,7 +312,7 @@ for($rrr=0; $rrr < $linhascardapioescola; $rrr++){
         if ($clferiado->numrows > 0) {
         	
           db_fieldsmemory($resultferiado,0);
-          $nome = substr($ed96_c_descr,0,20)." - ".substr($ed54_c_descr,0,20);
+          $nome = substr((string) $ed96_c_descr,0,20)." - ".substr((string) $ed54_c_descr,0,20);
           
         } else {
           $nome = "";
@@ -321,8 +321,8 @@ for($rrr=0; $rrr < $linhascardapioescola; $rrr++){
       }
       $pdf->setfillcolor(235);
     }
-    $pdf->SetWidths(array(40, 48, 48, 48, 48, 48));  
-    $pdf->SetAligns(array("L", "C", "C", "C", "C", "C"));
+    $pdf->SetWidths([40, 48, 48, 48, 48, 48]);  
+    $pdf->SetAligns(["L", "C", "C", "C", "C", "C"]);
     $pdf->setfont('arial','',9);
     $set_altura_row = $pdf->h - 32;
     $pdf->Row_multicell($vet,
@@ -339,9 +339,9 @@ for($rrr=0; $rrr < $linhascardapioescola; $rrr++){
    
   }//for cardapio tipo
   unset($vet);
-  $vet     = explode("/",$aSemana[0]);
+  $vet     = explode("/",(string) $aSemana[0]);
   $inicio  = $vet[2]."-".$vet[1]."-".$vet[0];
-  $vet     = explode("/",$aSemana[6]);
+  $vet     = explode("/",(string) $aSemana[6]);
   $fim     = $vet[2]."-".$vet[1]."-".$vet[0];
   $sqlt    = " select me29_i_refeicao, ";
   $sqlt   .= "             me29_i_alimentonovo, ";
@@ -418,7 +418,7 @@ for($rrr=0; $rrr < $linhascardapioescola; $rrr++){
   	$pdf->cell(200,4,"Nutricionista: ",0,0,"R",0);
     $pdf->cell(50,4,$z01_nome,0,1,"R",0);
     $pdf->cell(200,4,"CRN: ",0,0,"R",0);    
-    $pdf->cell(12,4,trim($me02_c_crn),0,1,"R",0);
+    $pdf->cell(12,4,trim((string) $me02_c_crn),0,1,"R",0);
     $pdf->cell(200,10,"",0,1,"R",0); 
   }
  } else { 	

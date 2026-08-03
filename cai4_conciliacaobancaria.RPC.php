@@ -44,7 +44,7 @@ $iEscola           = db_getsession("DB_coddepto");
 $oJson             = new Services_JSON();
 $oParam            = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 $oRetorno          = new stdClass();
-$oRetorno->dados   = array();
+$oRetorno->dados   = [];
 $oRetorno->status  = 1;
 $oRetorno->message = '';
 $sCaminhoMensagens = 'financeiro.caixa.cai4_conciliacaobancaria';
@@ -54,9 +54,9 @@ try {
 
     case 'GetDadosExtrato':
 
-      $oRetorno->aLinhasExtrato = array();
+      $oRetorno->aLinhasExtrato = [];
 
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = " not exists(select 1 from conciliaextrato where k87_extratolinha = k86_sequencial) ";
       $aWhere[] = " not exists(select 1 from conciliapendextrato where k88_extratolinha = k86_sequencial) ";
 
@@ -113,7 +113,7 @@ try {
         throw new BusinessException(_M("{$sCaminhoMensagens}.sem_linhas_para_exclusao"));
       }
       $iTotalLinhasExtrato = $oDaoExtratoLinha->numrows;
-      $aContasBancarias    = array();
+      $aContasBancarias    = [];
       for ($iLinha = 0; $iLinha < $iTotalLinhasExtrato; $iLinha++) {
 
         $oDadosLinha = db_utils::fieldsMemory($rsLinhasExtrato, $iLinha, false, false, true);
@@ -136,7 +136,7 @@ try {
 
       db_inicio_transacao();
       $oDaoExtratoLinha        = new cl_extratolinha();
-      $aLinhasAgrupadasPorData = array();
+      $aLinhasAgrupadasPorData = [];
 
       /**
        * Excluimos as linhas selecionadas pelo usuario.
@@ -148,13 +148,13 @@ try {
         $rsLinhasExtrato = $oDaoExtratoLinha->sql_record($sSqlDadosLinha);
         if ($oDaoExtratoLinha->numrows == 0) {
 
-          $oParametroErro = (object) array("codigo_linha" => $iLinhaExtrato);
+          $oParametroErro = (object) ["codigo_linha" => $iLinhaExtrato];
           throw new BusinessException(_M("{$sCaminhoMensagens}.linha_nao_encontrada", $oParametroErro));
         }
 
         $oDadosLinha = db_utils::fieldsMemory($rsLinhasExtrato, 0);
         if (!isset($aLinhasAgrupadasPorData[$oDadosLinha->k86_contabancaria])) {
-          $aLinhasAgrupadasPorData[$oDadosLinha->k86_contabancaria] = array();
+          $aLinhasAgrupadasPorData[$oDadosLinha->k86_contabancaria] = [];
         }
 
         if (!in_array($oDadosLinha->k86_data, $aLinhasAgrupadasPorData[$oDadosLinha->k86_contabancaria])) {
@@ -182,7 +182,7 @@ try {
       $sSqlSaldo        = "select * From extratosaldo where k97_extrato=1813";
       $rsSaldo          = db_query($sSqlSaldo);
       foreach ($aLinhasAgrupadasPorData as $iCodigoConta => &$aDatasConta) {
-        usort($aLinhasAgrupadasPorData[$iCodigoConta], "ordernarDatasContas");
+        usort($aLinhasAgrupadasPorData[$iCodigoConta], ordernarDatasContas(...));
       }
 
       foreach ($aLinhasAgrupadasPorData as $iCodigoConta => $aDatasConta) {
@@ -198,12 +198,7 @@ try {
       break;
   }
 
-} catch (ParameterException $oErro) {
-
-    db_fim_transacao(true);
-    $oRetorno->status  = 2;
-    $oRetorno->message = urlencode($oErro->getMessage());
-} catch (BusinessException $oErro) {
+} catch (ParameterException|BusinessException $oErro) {
 
     db_fim_transacao(true);
     $oRetorno->status  = 2;

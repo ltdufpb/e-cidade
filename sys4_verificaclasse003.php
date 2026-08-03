@@ -37,9 +37,9 @@
 	db_postmemory($_POST);
 	$usu= db_getsession("DB_id_usuario");
 
-	$arr = split("\|", $classes);
+	$arr = preg_split("#\\|#m", $classes);
 	$count = count($arr);
-  
+
   $lErro = false;
 	db_inicio_transacao();
 	$sqltab ="select * from pg_tables where tablename = 'temp_classeatualiza'";
@@ -60,26 +60,26 @@
 			$cldb_sysclassesatualizareg->codarq        = $codarq;
 			$cldb_sysclassesatualizareg->nomearq       = $nomearq;
 			$cldb_sysclassesatualizareg->metodo        = $metodo;
-			$cldb_sysclassesatualizareg->fontenovo     = addslashes($fontenovo);
-			$cldb_sysclassesatualizareg->fonteoriginal = addslashes($fonteorig);
+			$cldb_sysclassesatualizareg->fontenovo     = addslashes((string) $fontenovo);
+			$cldb_sysclassesatualizareg->fonteoriginal = addslashes((string) $fonteorig);
 			$cldb_sysclassesatualizareg->incluir(null);
       if ($cldb_sysclassesatualizareg->erro_status == 0) {
         $sErroMsg = $cldb_sysclassesatualizareg->erro_msg. " Classe : $nomearq Método : $metodo";
         $lErro    = true;        
         break;
       }
-			
+
 			$cldb_sysclasses ->excluir ($codarq,$metodo);
       if ($cldb_sysclasses->erro_status == 0) {
          $sErroMsg = $cldb_sysclasses->erro_msg;
          $lErro    = true;
          break;
       }
-			 
+
 			$cldb_sysclasses->codarq      = $codarq;
 			$cldb_sysclasses->nomclasse   = $metodo;
 			$cldb_sysclasses->descrclasse = 'Atualizado pelo sistema';
-			$cldb_sysclasses->codigoclass = addslashes($fontenovo);
+			$cldb_sysclasses->codigoclass = addslashes((string) $fontenovo);
 			$cldb_sysclasses->incluir($codarq,$metodo);
       if ($cldb_sysclasses->erro_status == 0) {
          $sErroMsg = $cldb_sysclasses->erro_msg;
@@ -89,7 +89,7 @@
 
 		}
 	}
-  
+
   db_fim_transacao($lErro);
   if ($lErro) {
     db_msgbox($sErroMsg);

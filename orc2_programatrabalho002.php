@@ -30,7 +30,7 @@ require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if ($unidade == '') {
     $unidade = 0;
@@ -39,7 +39,7 @@ if ($orgao == '') {
     $orgao = 0;
 }
 
-$aWhere = array();
+$aWhere = [];
 $aWhere[] = " o41_anousu  = {$ano}";
 if (!empty($orgao)) {
     $aWhere[] = " o41_orgao = {$orgao}";
@@ -92,7 +92,7 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial', 'b', 7);
 $troca = 1;
 
-for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
+for ($o = 0; $o < pg_num_rows($res_orgao); $o++) {
     db_fieldsmemory($res_orgao, $o);
     /////inicio funcao
     $imprimirTotal = false;
@@ -122,15 +122,15 @@ for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
     $troca = 1;
 
     $alt = 6;
-    for ($x1 = 0; $x1 < pg_numrows($result_funcao); $x1++) {
+    for ($x1 = 0; $x1 < pg_num_rows($result_funcao); $x1++) {
         db_fieldsmemory($result_funcao, $x1);
         $imprimirTotal = true;
         if ($pdf->getY() > $pdf->getH() - 35 || $troca != 0) {
             $pdf->AddPage("L");
             $alt = 4;
             $pdf->setfont('arial', 'b', 9);
-            $pdf->cell(50, $alt, str_pad($o40_orgao, 2, '0', STR_PAD_LEFT).".00 - $o40_descr", 0, 1, "L", 0);
-            $pdf->cell(50, $alt, str_pad($o40_orgao, 2, '0', STR_PAD_LEFT).".".str_pad($o41_unidade, 2, '0', STR_PAD_LEFT)." - $o41_descr ", 0, 1, "L", 0);
+            $pdf->cell(50, $alt, str_pad((string) $o40_orgao, 2, '0', STR_PAD_LEFT).".00 - $o40_descr", 0, 1, "L", 0);
+            $pdf->cell(50, $alt, str_pad((string) $o40_orgao, 2, '0', STR_PAD_LEFT).".".str_pad((string) $o41_unidade, 2, '0', STR_PAD_LEFT)." - $o41_descr ", 0, 1, "L", 0);
             $pdf->cell(0, 1, "", "B", 1);
             $pdf->ln(2);
             $borda = "LRT";
@@ -176,7 +176,7 @@ for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
         }
 
         $pdf->setfont('arial', 'b', 7);
-        $pdf->cell(97, $alt, str_pad($o58_funcao, 2, '0', STR_PAD_LEFT)." - ".$o52_descr, 'LR', 0, "L", 0);
+        $pdf->cell(97, $alt, str_pad((string) $o58_funcao, 2, '0', STR_PAD_LEFT)." - ".$o52_descr, 'LR', 0, "L", 0);
         $pdf->cell(8, $alt, "", 'LR', 0, "C", 0);
         $pdf->cell(11, $alt, "", 'LR', 0, "C", 0);
         $pdf->cell(23, $alt, db_formatar($total_por_funcao, 'f'), 'LR', 0, "R", 0);
@@ -213,16 +213,16 @@ for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
         order by o58_subfuncao, o53_descr       
         ";
         $result_subfuncao = pg_exec($sql_subfuncao);
-        $xxnum1 = pg_numrows($result_subfuncao);
+        $xxnum1 = pg_num_rows($result_subfuncao);
         
-        for ($x2 = 0; $x2 < pg_numrows($result_subfuncao); $x2++) {
+        for ($x2 = 0; $x2 < pg_num_rows($result_subfuncao); $x2++) {
             db_fieldsmemory($result_subfuncao, $x2);
             if ($pdf->getY() > $pdf->getH() - 35 || $troca != 0) {
                 $pdf->AddPage("L");
                 $alt = 4;
                 $pdf->setfont('arial', 'b', 9);
-                $pdf->cell(50, $alt, str_pad($o40_orgao, 2, '0', STR_PAD_LEFT).".00 - $o40_descr", 0, 1, "L", 0);
-                $pdf->cell(50, $alt, str_pad($o40_orgao, 2, '0', STR_PAD_LEFT).".".str_pad($o41_unidade, 2, '0', STR_PAD_LEFT)." - $o41_descr ", 0, 1, "L", 0);
+                $pdf->cell(50, $alt, str_pad((string) $o40_orgao, 2, '0', STR_PAD_LEFT).".00 - $o40_descr", 0, 1, "L", 0);
+                $pdf->cell(50, $alt, str_pad((string) $o40_orgao, 2, '0', STR_PAD_LEFT).".".str_pad((string) $o41_unidade, 2, '0', STR_PAD_LEFT)." - $o41_descr ", 0, 1, "L", 0);
                 $pdf->cell(0, 1, "", "B", 1);
                 $pdf->ln(2);
                 $borda = "LRT";
@@ -269,7 +269,7 @@ for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
             }
 
             $pdf->setfont('arial', 'b', 7);
-            $pdf->cell(97, $alt, "   ".str_pad($o58_subfuncao, 3, '0', STR_PAD_LEFT)." - ".$o53_descr, 'LR', 0, "L", 0);
+            $pdf->cell(97, $alt, "   ".str_pad((string) $o58_subfuncao, 3, '0', STR_PAD_LEFT)." - ".$o53_descr, 'LR', 0, "L", 0);
             $pdf->cell(8, $alt, "", 'LR', 0, "C", 0);
             $pdf->cell(11, $alt, "", 'LR', 0, "C", 0);
             $pdf->cell(23, $alt, db_formatar($total_por_subfuncao, 'f'), 0, 0, "R", 0);
@@ -311,16 +311,16 @@ for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
             order by o58_programa, o54_descr, o54_finali
             ";
             $result_programa = pg_exec($sql_programa);
-            $xxnum2 = pg_numrows($result_programa);
+            $xxnum2 = pg_num_rows($result_programa);
           
-            for ($x3 = 0; $x3 < pg_numrows($result_programa); $x3++) {
+            for ($x3 = 0; $x3 < pg_num_rows($result_programa); $x3++) {
                 db_fieldsmemory($result_programa, $x3);
                 if ($pdf->getY() > $pdf->getH() - 35 || $troca != 0) {
                     $pdf->AddPage("L");
                     $alt = 4;
                     $pdf->setfont('arial', 'b', 9);
-                    $pdf->cell(50, $alt, str_pad($o40_orgao, 2, '0', STR_PAD_LEFT).".00 - $o40_descr", 0, 1, "L", 0);
-                    $pdf->cell(50, $alt, str_pad($o40_orgao, 2, '0', STR_PAD_LEFT).".".str_pad($o41_unidade, 2, '0', STR_PAD_LEFT)." - $o41_descr ", 0, 1, "L", 0);
+                    $pdf->cell(50, $alt, str_pad((string) $o40_orgao, 2, '0', STR_PAD_LEFT).".00 - $o40_descr", 0, 1, "L", 0);
+                    $pdf->cell(50, $alt, str_pad((string) $o40_orgao, 2, '0', STR_PAD_LEFT).".".str_pad((string) $o41_unidade, 2, '0', STR_PAD_LEFT)." - $o41_descr ", 0, 1, "L", 0);
                     $pdf->cell(0, 1, "", "B", 1);
                     $pdf->ln(2);
                     $borda = "LRT";
@@ -367,7 +367,7 @@ for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
                 }
   
                 $pdf->setfont('arial', 'b', 7);
-                $pdf->cell(97, $alt, '      '.str_pad($o58_programa, 3, '0', STR_PAD_LEFT)." - ".$o54_descr, 'LR', 0, "L", 0);
+                $pdf->cell(97, $alt, '      '.str_pad((string) $o58_programa, 3, '0', STR_PAD_LEFT)." - ".$o54_descr, 'LR', 0, "L", 0);
                 $pdf->cell(8, $alt, "", 'LR', 0, "C", 0);
                 $pdf->cell(11, $alt, "", 'LR', 0, "C", 0);
                 $pdf->setfont('arial', '', 7);
@@ -414,16 +414,16 @@ for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
                 order by o58_projativ, o55_descr, o55_finali
                 ";
                 $result_projativ = pg_exec($sql_projativ);
-                $xxnum3 = pg_numrows($result_projativ);
+                $xxnum3 = pg_num_rows($result_projativ);
             
-                for ($x4 = 0; $x4 < pg_numrows($result_projativ); $x4++) {
+                for ($x4 = 0; $x4 < pg_num_rows($result_projativ); $x4++) {
                     db_fieldsmemory($result_projativ, $x4);
                     if ($pdf->getY() > $pdf->getH() - 35 || $troca != 0) {
                         $pdf->AddPage("L");
                         $alt = 4;
                         $pdf->setfont('arial', 'b', 9);
-                        $pdf->cell(50, $alt, str_pad($o40_orgao, 2, '0', STR_PAD_LEFT).".00 - $o40_descr", 0, 1, "L", 0);
-                        $pdf->cell(50, $alt, str_pad($o40_orgao, 2, '0', STR_PAD_LEFT).".".str_pad($o41_unidade, 2, '0', STR_PAD_LEFT)." - $o41_descr ", 0, 1, "L", 0);
+                        $pdf->cell(50, $alt, str_pad((string) $o40_orgao, 2, '0', STR_PAD_LEFT).".00 - $o40_descr", 0, 1, "L", 0);
+                        $pdf->cell(50, $alt, str_pad((string) $o40_orgao, 2, '0', STR_PAD_LEFT).".".str_pad((string) $o41_unidade, 2, '0', STR_PAD_LEFT)." - $o41_descr ", 0, 1, "L", 0);
                         $pdf->cell(0, 1, "", "B", 1);
                         $pdf->ln(2);
                         $alt = 3;
@@ -472,7 +472,7 @@ for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
 
                     $iPosX = $pdf->getX()+97;
                     $iPosY = $pdf->getY();
-                    $sDescricaoProjAtiv = '         '.str_pad($o58_funcao, 2, '0', STR_PAD_LEFT).".".str_pad($o58_subfuncao, 2, '0', STR_PAD_LEFT).".".str_pad($o58_programa, 3, '0', STR_PAD_LEFT).".".str_pad($o58_projativ, 3, '0', STR_PAD_LEFT)." - ".$o55_descr;
+                    $sDescricaoProjAtiv = '         '.str_pad((string) $o58_funcao, 2, '0', STR_PAD_LEFT).".".str_pad((string) $o58_subfuncao, 2, '0', STR_PAD_LEFT).".".str_pad((string) $o58_programa, 3, '0', STR_PAD_LEFT).".".str_pad((string) $o58_projativ, 3, '0', STR_PAD_LEFT)." - ".$o55_descr;
                     $pdf->multicell(97, 4, $sDescricaoProjAtiv, 'LR', "L", 0);
                     $pdf->cell(1, 4, "", 'L', 0, "C", 1);
                     $pdf->setY($iPosY);
@@ -525,16 +525,16 @@ for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
                     order by o58_esferaorcamentaria, o15_recurso 
                     ";
                     $result_recurso = pg_exec($sql_recurso);
-                    $xxnum4 = pg_numrows($result_recurso);
+                    $xxnum4 = pg_num_rows($result_recurso);
                
-                    for ($x5 = 0; $x5 < pg_numrows($result_recurso); $x5++) {
+                    for ($x5 = 0; $x5 < pg_num_rows($result_recurso); $x5++) {
                         db_fieldsmemory($result_recurso, $x5);
                         if ($pdf->getY() > $pdf->getH() - 35 || $troca != 0) {
                               $pdf->AddPage("L");
                               $alt = 4;
                               $pdf->setfont('arial', 'b', 9);
-                              $pdf->cell(50, $alt, str_pad($o40_orgao, 2, '0', STR_PAD_LEFT).".00 - $o40_descr", 0, 1, "L", 0);
-                              $pdf->cell(50, $alt, str_pad($o40_orgao, 2, '0', STR_PAD_LEFT).".".str_pad($o41_unidade, 2, '0', STR_PAD_LEFT)." - $o41_descr ", 0, 1, "L", 0);
+                              $pdf->cell(50, $alt, str_pad((string) $o40_orgao, 2, '0', STR_PAD_LEFT).".00 - $o40_descr", 0, 1, "L", 0);
+                              $pdf->cell(50, $alt, str_pad((string) $o40_orgao, 2, '0', STR_PAD_LEFT).".".str_pad((string) $o41_unidade, 2, '0', STR_PAD_LEFT)." - $o41_descr ", 0, 1, "L", 0);
                               $pdf->cell(0, 1, "", "B", 1);
                               $pdf->ln(2);
                               $alt = 3;
@@ -583,7 +583,7 @@ for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
                          $pdf->cell(97, $alt, '', 'LR', 0, "L", 0);
                          $pdf->cell(8, $alt, $o58_esferaorcamentaria, 'LR', 0, "C", 0);
                          //$pdf->setfont('arial', 'b', 6);
-                         $pdf->cell(11, $alt, str_pad($o15_recurso, 3, '0', STR_PAD_LEFT), 'LR', 0, "C", 0);
+                         $pdf->cell(11, $alt, str_pad((string) $o15_recurso, 3, '0', STR_PAD_LEFT), 'LR', 0, "C", 0);
                          $pdf->setfont('arial', '', 7);
                          $pdf->cell(23, $alt, db_formatar($total_por_recurso, 'f'), 'LR', 0, "R", 1);
                          $pdf->cell(23, $alt, db_formatar($total_recurso_pessoal, 'f'), 'LR', 0, "R", 1);
@@ -640,9 +640,9 @@ for ($o = 0; $o < pg_numrows($res_orgao); $o++) {
         ";
         
         $result_recurso1 = pg_exec($sql_recurso1);
-        $xxnum5 = pg_numrows($result_recurso1);
+        $xxnum5 = pg_num_rows($result_recurso1);
             
-        for ($x6 = 0; $x6 < pg_numrows($result_recurso1); $x6++) {
+        for ($x6 = 0; $x6 < pg_num_rows($result_recurso1); $x6++) {
             db_fieldsmemory($result_recurso1, $x6);
             $pdf->setfont('arial', 'b', 8);
             $pdf->cell(97, $alt, $o58_esferaorcamentaria1, 'LR', 0, "L", 0);

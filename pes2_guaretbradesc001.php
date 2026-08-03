@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_movrel_classe.php"));
 include(modification("classes/db_convenio_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmovrel = new cl_movrel;
 $clconvenio = new cl_convenio;
 $db_opcao = 1;
@@ -53,7 +53,7 @@ if(isset($gerar)){
   if($clconvenio->numrows > 0){
     db_fieldsmemory($result_dados, 0);
 
-    if(trim($r55_rubr01) != ""){
+    if(trim((string) $r55_rubr01) != ""){
 
       include(modification("dbforms/db_layouttxt.php"));
 
@@ -79,7 +79,7 @@ if(isset($gerar)){
       $tot_rejeitados = 0;
       while(!feof($ponteiro)){
         $poslinha = fgets($ponteiro,4096);
-				if($poslinha=="" || substr($poslinha, 0, 6) == "999999"){
+				if($poslinha=="" || str_starts_with($poslinha, "999999")){
 				  continue;
 				}
 				$linhacorrente ++;
@@ -93,7 +93,7 @@ if(isset($gerar)){
 
           $total = 0;
 
-          $result_testa_folha = $clmovrel->sql_record($clmovrel->sql_query_gerfsal(null," distinct gerfsal.* ",""," r54_anomes = '".$r54_anousu.$r54_mesusu."' and trim(r54_codrel) = '".trim($r54_codrel)."' and r54_regist = ".$matricula,$r54_anousu,$r54_mesusu,$r55_rubr01));
+          $result_testa_folha = $clmovrel->sql_record($clmovrel->sql_query_gerfsal(null," distinct gerfsal.* ",""," r54_anomes = '".$r54_anousu.$r54_mesusu."' and trim(r54_codrel) = '".trim((string) $r54_codrel)."' and r54_regist = ".$matricula,$r54_anousu,$r54_mesusu,$r55_rubr01));
           for($i=0; $i<$clmovrel->numrows; $i++){
             db_fieldsmemory($result_testa_folha, $i);
             $total += $r14_valor;

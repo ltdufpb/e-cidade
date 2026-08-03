@@ -217,7 +217,7 @@ function dias_gozo_no_mes_inicial($ini_gozo,$fim_gozo,$mtipo,$nsaldo){
      } else if( $ndias == 30  ) { 
        $nsalar = db_datedif($ini_gozo,db_substr($ini_gozo,1,8)."01") ;
      } else {
-	     if ( ( strtolower($cfpess[0]["r11_fersal"]) == "s" && !db_boolean($cfpess[0]["r11_recalc"]) && db_year($ini_gozo) == 1) && $mtipo == "09" ){
+	     if ( ( strtolower((string) $cfpess[0]["r11_fersal"]) == "s" && !db_boolean($cfpess[0]["r11_recalc"]) && db_year($ini_gozo) == 1) && $mtipo == "09" ){
 		      $nsalar = 0;
 	     } else {
           $nsalar = 30 - ( $ndias-db_day($ini_gozo)+1 );
@@ -236,7 +236,7 @@ function levanta_ponto(){
   global $max,$subpes,$indano,$indmes,$subpes_ant,$r30_peraf,$r30_peraf;
   global $m_rubr, $m_tipo, $m_media, $m_valor, $m_quant,$qten, $vlrn, $m_media, $m_valor, $m_quant;
   global $qten , $vlrn,$subpes_ofi;
-  
+
       $meses_avaliados = 0;
       while(1==1){
          $subpes = db_str($indano,4) . "/" . db_str($indmes,2,0,"0");
@@ -285,7 +285,7 @@ function levanta_ponto(){
                     // ver este caso
             		    $ind = db_ascan($m_rubr,$gerfsal[$Igerfsal]["r14_rubric"]);
               	    if( db_empty($ind)){
-		      
+
                         $max += 1;
                         $ind = $max;
                         $m_rubr[$ind] = $gerfsal[$Igerfsal]["r14_rubric"];
@@ -489,13 +489,13 @@ function horasextrasguaiba(){
  global $subpes,$subpes_ofi, $rubricas,$pessoal,$Ipessoal,$d08_carnes, $debug;
  global $m_rubr,$qten,$vlrn,$m_media,$quants ,$quantd,$m_valor,$m_quant;
  global $max,$m_tipo;
-  $m_rubr = array();
-  $m_quant= array();
-  $m_valor= array();
-  $m_media= array();
-  $m_tipo = array();
-  $qten   = array();
-  $vlrn   = array();
+  $m_rubr = [];
+  $m_quant= [];
+  $m_valor= [];
+  $m_media= [];
+  $m_tipo = [];
+  $qten   = [];
+  $vlrn   = [];
   $max    = 0 ;
     $Ipessoal = 0;
     $subpes_antesguaiba = $subpes_ofi;
@@ -517,7 +517,7 @@ function horasextrasguaiba(){
 	  $condicaoaux = " and r14_regist = ".db_sqlformat( $pessoal[$Ipessoal]["r01_regist"] );
 	  global $gerfsal;      
 	  if( db_selectmax( "gerfsal", "select * from gerfsal ".bb_condicaosubpes( "r14_" ).$condicaoaux )){
-	  	
+
 	      for($Igerfsal=0;$Igerfsal<count($gerfsal);$Igerfsal++){
           $condicaoaux = " where rh27_instit = ".db_getsession("DB_instit")."  and rh27_rubric = ".db_sqlformat( $gerfsal[$Igerfsal]["r14_rubric"] );
           //echo "<BR r14_rubric --> ".$gerfsal[$Igerfsal]["r14_rubric"];
@@ -527,9 +527,9 @@ function horasextrasguaiba(){
 		       ){
    		     $tiporub = db_str($rubricas[0]["rh27_calc1"],1);
            //echo "<BR> tiporubrica --> $tiporub";		     
-  		     
+
    		     $ind = db_ascan($m_rubr,$gerfsal[$Igerfsal]["r14_rubric"]);
-  		     
+
 	  	     if( db_empty($ind)){
 		           $max += 1;
 	             $ind = $max;
@@ -588,7 +588,7 @@ function horasextrasguaiba(){
          }   
        } 
     }
-       
+
 	  $condicaoaux = " and r48_regist = ".db_sqlformat($pessoal[$Ipessoal]["r01_regist"] );
 	  global $gerfcom;
 	  if( db_selectmax( "gerfcom", "select * from gerfcom ".bb_condicaosubpes( "r48_" ).$condicaoaux )){
@@ -655,17 +655,17 @@ function horasextrasguaiba(){
 	        }
        }
     }
-       
+
 // Incluir aqui
 //    if( !$iencontrei ){
        $condicaoaux  = " and r31_regist = ".db_sqlformat($pessoal[0]["r01_regist"] );
 	     global $gerffer;
        if( db_selectmax( "gerffer", "select * from gerffer ".bb_condicaosubpes( "r31_" ).$condicaoaux )){
-       	   
+
           for($Igerffer=0;$Igerffer<count($gerffer);$Igerffer++){
-          	
+
        	     $gerffer[$Igerffer]["r31_rubric"] = str_pad(($gerffer[$Igerffer]["r31_rubric"]-2000),4,'0',STR_PAD_LEFT);
-       	     
+
              $condicaoaux = " where rh27_instit = ".db_getsession("DB_instit")."  and rh27_rubric = ".db_sqlformat($gerffer[$Igerffer]["r31_rubric"]);
              if( db_selectmax( "rubricas", "select * from rhrubricas ".$condicaoaux )
                        && $rubricas[0]["rh27_calc1"] != 0 
@@ -678,7 +678,7 @@ function horasextrasguaiba(){
 
           			// ver depois
                 $ind = db_ascan($m_rubr,$gerffer[$Igerffer]["r31_rubric"]);
-                
+
                 if( db_empty($ind)){
                    $max += 1;
                    $ind = $max;
@@ -686,7 +686,7 @@ function horasextrasguaiba(){
                    $m_tipo[$ind] = $tiporub;
                    zeraarray($ind);
                 }
-                
+
                 if( $tiporub == "9"){
                    if( $tem_no_mes_tipo9 == false){
                        $m_valor[$ind] = $gerffer[$Igerffer]["r31_valor"];
@@ -698,10 +698,10 @@ function horasextrasguaiba(){
                 }else{
                    if( db_at($tiporub , "3-4-7" )>0 ){
                       if( ($gerffer[$Igerffer]["r31_quant"] >= (($rubricas[0]["rh27_quant"]>999?$pessoal[0]["r01_hrsmen"]:$rubricas[0]["rh27_quant"]) /2))){
-                      	
+
              	           $iencontrei = true;
              	           $aRubricasEncontrei[$gerffer[$Igerffer]["r31_rubric"]] = true; 
-             	           
+
                          $m_media[$ind] += 1;
                          //echo "<BR> 3 - subpes   --> $subpes  m_rubr --> ".$m_rubr[$ind]." m_media -->".$m_media[$ind]. " ".$gerfsal[$Igerfsal]["r14_quant"]." >= ".$rubricas[0]["rh27_quant"]/2;
                          $quant_restomenos = ($rubricas[0]["rh27_quant"]>999?$pessoal[0]["r01_hrsmen"]:$rubricas[0]["rh27_quant"]) ;
@@ -720,9 +720,9 @@ function horasextrasguaiba(){
                             $m_media[$ind] += 1;
                          }
                       }else{
-                      	
+
             		         $iencontrei = false;
-            		         
+
                          //echo "<BR> 1.1 - subpes   --> $subpes  tiporub --> $tiporub m_rubr --> ".$m_rubr[$ind]." m_media -->".$m_media[$ind]. " ".$gerfsal[$Igerfsal]["r14_quant"]." >= ".$rubricas[0]["rh27_quant"]/2;
                       }
                    }   
@@ -739,19 +739,19 @@ function horasextrasguaiba(){
 //    }
 
     //if( !$iencontrei ){
-    
-       
+
+
         $condicaoaux = " and r90_regist = ".db_sqlformat( $pessoal[0]["r01_regist"] );
         global $pontofx;
         db_selectmax( "pontofx", "select * from pontofx ".bb_condicaosubpes( "r90_" ).$condicaoaux );
-        
+
         for($Ipontofx=0;$Ipontofx<count($pontofx);$Ipontofx++){
 
         	if (array_key_exists(db_sqlformat( $pontofx[$Ipontofx]["r90_rubric"]),$aRubricasEncontrei)){
         		continue;
         	}
-        	
-        	
+
+
            $condicaoaux = " where rh27_instit = ".db_getsession("DB_instit")."  and rh27_rubric = ".db_sqlformat( $pontofx[$Ipontofx]["r90_rubric"] );
            if( db_selectmax( "rubricas", "select * from rhrubricas ".$condicaoaux ) 
                      && $rubricas[0]["rh27_calc1"] != 0 
@@ -1124,8 +1124,8 @@ function avalia_ponto($qmeses)
         }
       }
     }
-    $matriz1 = array();
-    $matriz2 = array();
+    $matriz1 = [];
+    $matriz2 = [];
     $matriz1[1] = "r29_regist";
     $matriz1[2] = "r29_rubric";
     $matriz1[3] = "r29_valor";
@@ -1231,8 +1231,8 @@ function gera_ponto_salario($diferenca_ferias=null){
      echo '$nsalar:'.$nsalar.'<br>'; 
    }  
    
-  $matriz1 = array();
-  $matriz2 = array();
+  $matriz1 = [];
+  $matriz2 = [];
   $matriz1[1] = "r29_regist";
   $matriz1[2] = "r29_rubric";
   $matriz1[3] = "r29_valor";
@@ -1293,7 +1293,7 @@ function gera_ponto_salario($diferenca_ferias=null){
   $nsalar_ant = $nsalar;
   if( $mpsal == true ){
    //echo "<BR> PAGA_13 --> $paga_13";
-     if( $paga_13 == 't' && ($subpes_pagamento == $subpes) && strtolower($cfpess[0]["r11_fersal"]) == "s" ){
+     if( $paga_13 == 't' && ($subpes_pagamento == $subpes) && strtolower((string) $cfpess[0]["r11_fersal"]) == "s" ){
 	     $nsalar = 30;
      }
   }
@@ -1457,8 +1457,8 @@ function gera_ponto_salario($diferenca_ferias=null){
 		           }
 		        }
 		        
-		        $matriz1ps = array();
-		        $matriz2ps = array();
+		        $matriz1ps = [];
+		        $matriz2ps = [];
 		        $matriz1ps[1] = "r10_regist";
 		        $matriz1ps[2] = "r10_rubric";
 		        $matriz1ps[3] = "r10_valor";

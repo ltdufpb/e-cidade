@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vac_dose_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clvac_dose = new cl_vac_dose;
 $clvac_dose->rotulo->label("vc03_i_codigo");
 $clvac_dose->rotulo->label("vc03_c_descr");
@@ -96,9 +96,9 @@ $clvac_dose->rotulo->label("vc03_c_descr");
         } else {
           $sql = $clvac_dose->sql_query("",$campos,"vc03_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_vc03_i_codigo)) {
-          $repassa = array("chave_vc03_i_codigo"=>$chave_vc03_i_codigo,"chave_vc03_i_codigo"=>$chave_vc03_i_codigo);
+          $repassa = ["chave_vc03_i_codigo"=>$chave_vc03_i_codigo,"chave_vc03_i_codigo"=>$chave_vc03_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

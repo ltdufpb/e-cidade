@@ -49,8 +49,8 @@ $oDaoCgsUnd->rotulo->label();
     $rsResult = $oDaoCgsUnd->sql_record($sSql);
     db_fieldsmemory($rsResult,0);
 
-    $dataAlt = explode('-', $z01_d_ultalt);
-    $dataCad = explode('-', $z01_d_cadast);
+    $dataAlt = explode('-', (string) $z01_d_ultalt);
+    $dataCad = explode('-', (string) $z01_d_cadast);
 
     $oCgsAuditoria = CgsAuditoriaRepository::getUltimoRegistroByCgs($z01_i_cgsund);
     

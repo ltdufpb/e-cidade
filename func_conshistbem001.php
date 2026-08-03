@@ -63,7 +63,7 @@ $clrotulo->label("t81_codapo");//código da apolice
 $clrotulo->label("t81_apolice");//descrição da apólice
 $clrotulo->label("o40_descr");
 $clrotulo->label("o41_descr");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(isset($t52_bem) && $t52_bem!=""){
   $result = $clbens->sql_record($clbens->sql_query($t52_bem));
@@ -126,7 +126,7 @@ if(isset($t52_bem) && $t52_bem!=""){
      $result_bens = $clbens->sql_record($clbens->sql_query_file($t52_bem,'t52_descr,t52_depart,t52_dtaqu'));
      if($clbens->numrows>0){
        db_fieldsmemory($result_bens,0);
-       
+
        $result_descrdepart = $cldb_depart->sql_record($cldb_depart->sql_query_file($t52_depart,'descrdepto'));
        db_fieldsmemory($result_descrdepart,0);
        $t52_dtaqu=db_formatar($t52_dtaqu,"d");
@@ -218,7 +218,7 @@ if(isset($t52_bem) && $t52_bem!=""){
               </tr>
 <?php 	      
 if ($opcao_obs == "S"){
-     if (trim(@$t52_obs) != ""){
+     if (trim((string) @$t52_obs) != ""){
 ?>
   <tr>
     <td width="200" colspan="1" align="left" title="Características adicionais do bem"><b>Características adicionais do bem:</b></td>
@@ -232,7 +232,7 @@ if ($opcao_obs == "S"){
      }
 }
 
-   if (trim(@$t55_obs) != ""){
+   if (trim((string) @$t55_obs) != ""){
 ?>
               <tr>  
                 <td nowrap valign="top" align="right" title='<?=$Tt55_obs?>'><?=$Lt55_obs?></td>

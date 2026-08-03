@@ -160,7 +160,7 @@ db_textarea('d01_descr',5,40,$Id01_descr,true,'text',$db_opcao,"")
  </td>
  <td valign="top">
       <?php 
-      if(isset($chavepesquisa) || isset($HTTP_POST_VARS["db_opcao"]) || $db_opcao=="1"){
+      if(isset($chavepesquisa) || isset($_POST["db_opcao"]) || $db_opcao=="1"){
       ?>  
       <fieldset><Legend><b>Listas-<a  title='Inverte Marcação' href='' onclick='return js_marca(this);return false;'<?=($db_opcao==3?'disabled':'')?> >M</a></b></legend>
       <table id="id_tabela" align="right">
@@ -168,7 +168,7 @@ db_textarea('d01_descr',5,40,$Id01_descr,true,'text',$db_opcao,"")
         if($db_opcao!=1){
           $sql="select  d10_codigo from  editalproj where d10_codedi=$d01_codedi";
            $result=db_query($sql);
-           $num=pg_numrows($result);
+           $num=pg_num_rows($result);
      	   for($x=0; $x<$num; $x++){
        	     db_fieldsmemory($result,$x);
 	     $ck = ($d10_codigo!=""?"checked":"");
@@ -180,7 +180,7 @@ db_textarea('d01_descr',5,40,$Id01_descr,true,'text',$db_opcao,"")
  	    	(select d40_codigo, d10_codigo from projmelhorias left join editalproj on d40_codigo=d10_codigo)
   	       	as x  where d10_codigo is null";
         $result=db_query($sql);
-        $num=pg_numrows($result);
+        $num=pg_num_rows($result);
 	for($x=0; $x<$num; $x++){
      	  db_fieldsmemory($result,$x);
 	  $ck = ($d10_codigo!=""?"checked":"");
@@ -255,7 +255,7 @@ function js_preenchepesquisa(chave){
   <?php 
     if($db_opcao!=1){
   ?>  
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
   <?php 
     }
   ?>

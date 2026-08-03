@@ -35,7 +35,7 @@ require_once(modification("classes/db_cgmcorreto_classe.php"));
 require_once(modification("classes/db_cgmerrado_classe.php"));
 require_once(modification("classes/db_cgm_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 ?>
 <html>
@@ -66,7 +66,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
       if ($clcgmcorreto->erro_status == '1') {
 
-        $sec = split("XX",$segundo);
+        $sec = preg_split("#XX#m",(string) $segundo);
         for ($i = 0; $i < sizeof($sec); $i++) {
 
           if ($sec[$i] == $principal) {

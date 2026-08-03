@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -107,12 +107,12 @@ db_postmemory($HTTP_POST_VARS);
             </td>
             <td align="left">
               <?php
-                $regime = array( 
+                $regime = [ 
                   "0" => "Todos",
                   "1" => "Estatutário",
                   "2" => "CLT", 
                   "3" => "Extra Quadro"
-                );
+                ];
                 db_select('regime', $regime, true, 1);
               ?>
             </td>
@@ -125,13 +125,13 @@ db_postmemory($HTTP_POST_VARS);
             </td>
             <td align="left">
               <?php 
-                $tipo_relatorio = array(
+                $tipo_relatorio = [
                                         "geral"          => "Geral",
                                         "lotacao"        => "Lotação",
                                         "orgao"          => "Órgão", 
                                         "matricula"      => "Matrícula", 
                                         "locaistrabalho" => "Locais de Trabalho"
-                                       );
+                                       ];
                 db_select('tiporelatorio',$tipo_relatorio ,true,1, "onChange='js_tiporelatorio()'");                
               ?>
             </td>
@@ -144,10 +144,10 @@ db_postmemory($HTTP_POST_VARS);
             </td>
             <td align="left">
               <?php 
-                $tipo_filtro = array(
+                $tipo_filtro = [
                                      "intervalo"=>"Intervalo",
                                      "selecionado"=>"Selecionado"
-                                    );
+                                    ];
                 db_select('tipofiltro',$tipo_filtro ,true,1, "onChange='js_filtros()'");                
               ?>
             </td>
@@ -183,8 +183,8 @@ db_postmemory($HTTP_POST_VARS);
             </td>
             <td align="left">
               <?php 
-                $tipo_ordem = array("numerica"=>"Numérica",
-                                    "alfabetica"=>"Alfabética");
+                $tipo_ordem = ["numerica"=>"Numérica",
+                                    "alfabetica"=>"Alfabética"];
                 db_select('tipoordem',$tipo_ordem ,true,1);               
               ?>
             </td>
@@ -197,7 +197,7 @@ db_postmemory($HTTP_POST_VARS);
             </td>
             <td align="left">
               <?php 
-                $imprime_afastados = array("false" => "Não", "true" => "Sim");
+                $imprime_afastados = ["false" => "Não", "true" => "Sim"];
                 db_select('imprimeafastados',$imprime_afastados ,true,1);               
               ?>
             </td>

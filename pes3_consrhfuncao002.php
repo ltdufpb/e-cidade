@@ -34,8 +34,8 @@ require_once(modification("classes/db_rhfuncao_classe.php"));
 require_once(modification("classes/db_rhregime_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clrhfuncao = new cl_rhfuncao;
 $clrhregime = new cl_rhregime;
@@ -307,13 +307,13 @@ function mostraArquivoCsv(oAjax){
                rh37_vagas
 		";	
 		 $result_funcao = db_query($sql1);
-        if(pg_numrows($result_funcao) == 0){
+        if(pg_num_rows($result_funcao) == 0){
       	  db_msgbox("Cargo não encontrado");
       	  echo "<script>location.href = 'pes3_consrhfuncao001.php'</script>";
         }else{
           db_fieldsmemory($result_funcao,0);
           $ocup = 0;
-          for($i=0;$i<pg_numrows($result_funcao);$i++){
+          for($i=0;$i<pg_num_rows($result_funcao);$i++){
             db_fieldsmemory($result_funcao,$i);
             $ocup += $ocupados;
           }
@@ -343,7 +343,7 @@ function mostraArquivoCsv(oAjax){
    $virgula = "";
    for($x = 0; $x < $clrhregime->numrows; $x ++) {
      db_fieldsmemory($result_regime, $x);
-     $colunas .= $virgula.strtolower($rh30_vinculo);
+     $colunas .= $virgula.strtolower((string) $rh30_vinculo);
      $virgula = ",";
    }
 	?>
@@ -497,10 +497,10 @@ function mostraArquivoCsv(oAjax){
               &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
               <label><b>Tipo da geração</b></label>
               <?php 
-              $aOpcoesFiltro = array(
+              $aOpcoesFiltro = [
                 'pdf' => 'PDF',
                 'csv' => 'CSV',
-              );              
+              ];              
               ?>
               <?php db_select("tipoimpressao", $aOpcoesFiltro, true, 1); ?> 
 	            &nbsp;&nbsp;

@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaocgs_und = db_utils::getdao('cgs_und');
 $clrotulo = new rotulocampo;
@@ -137,12 +137,12 @@ $oDaocgs_und->rotulo->label("z01_v_ident");
                                                                 $sPacientesAnulados);
   	}
 
-		$repassa = array();
+		$repassa = [];
 		if(isset($chave_z01_i_cgsund)) {
 
-			$repassa = array('chave_z01_i_cgsund'=>@$chave_z01_i_cgsund, 
+			$repassa = ['chave_z01_i_cgsund'=>@$chave_z01_i_cgsund, 
 							         'chave_z01_v_nome'=>@$chave_z01_v_nome,
-							         'chave_z01_v_ident'=>@$chave_z01_v_ident);
+							         'chave_z01_v_ident'=>@$chave_z01_v_ident];
 
 		}
 

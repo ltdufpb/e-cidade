@@ -43,14 +43,14 @@ if (isset($oGet->codproc) && !empty($oGet->codproc)) {
     $codproc = $oGet->codproc;
 }
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sTipoDespacho = "Despacho";
 $result_procandamint = $clprocandamint->sql_record($clprocandamint->sql_query_sim($codprocandamint));
 
 if ($clprocandamint->numrows > 0) {
     $oProcAndamInt = db_utils::fieldsMemory($result_procandamint, 0);
-    $despacho = html_entity_decode($oProcAndamInt->p78_despacho);
+    $despacho = html_entity_decode((string) $oProcAndamInt->p78_despacho);
     $sTipoDespacho = $oProcAndamInt->p100_descricao;
 }
 
@@ -74,7 +74,7 @@ if ($clprotprocesso->numrows > 0) {
 }
 
 $head2 = "PROCESSO N° $sNumeroProcesso";
-$head3 = "IMPRESSÃO DE " . mb_strtoupper($sTipoDespacho);
+$head3 = "IMPRESSÃO DE " . mb_strtoupper((string) $sTipoDespacho);
 $head4 = "Data: " . db_formatar($oProcAndamInt->p78_data, 'd');
 $head5 = "Hora: " . $oProcAndamInt->p78_hora;
 $head6 = "Usuário: " . $oProcAndamInt->nome;

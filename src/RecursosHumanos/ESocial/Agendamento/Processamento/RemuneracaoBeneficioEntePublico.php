@@ -43,8 +43,6 @@ use ParametrosPessoalRepository;
  */
 class RemuneracaoBeneficioEntePublico extends ProcessamentoAbstract implements ProcessamentoInterface
 {
-    private $cgm;
-
     private $mes;
     private $ano;
 
@@ -69,9 +67,8 @@ class RemuneracaoBeneficioEntePublico extends ProcessamentoAbstract implements P
         }
     }
 
-    public function __construct($cgm)
+    public function __construct(private $cgm)
     {
-        $this->cgm = $cgm;
     }
 
     /**

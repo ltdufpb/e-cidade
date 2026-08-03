@@ -31,7 +31,7 @@ include(modification("libs/db_sql.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 /*
  data
@@ -97,7 +97,7 @@ $head5 = "Ordem $ordem";
 
 $result = db_query($sql);
 
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem ordens cadastradas para filtros selecionados.');
 }
 $pdf = new PDF(); 
@@ -111,19 +111,19 @@ $alt = 4;
 $total = 0;
 $p=0;
  
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x,true);
 
    $sqlmod = "	select nome_modulo from db_ordemmod 
    		inner join db_modulos on db_ordemmod.id_item = db_modulos.id_item
    		where codordem = $codordem limit 1";
    $resultmod = db_query($sqlmod);
-   if (pg_numrows($resultmod) == 0) {
+   if (pg_num_rows($resultmod) == 0) {
      $nome_modulo = "";
    } else {
      db_fieldsmemory($resultmod,0);
    }
-   
+
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage('L');
       $pdf->setfont('arial','b',8);
@@ -132,7 +132,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
       $pdf->cell(40,$alt,"Destinatario",1,0,"L",1);
       $pdf->cell(40,$alt,"Solicitante",1,0,"L",1);       
       $pdf->cell(170,$alt,"Descrição",1,1,"L",1);
-      
+
       /*Ordem          
         Prev        
         Solicitante 
@@ -145,12 +145,12 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $pdf->cell(10,$alt,$codordem,0,0,"C",$p);
    $pdf->cell(20,$alt,$dataprev,0,0,"C",$p);
 //   $pdf->cell(40,$alt,strtoUpper(substr($destino,0,20)),0,0,"L",$p);
-   $pdf->cell(40,$alt,strtoUpper(substr($nome_modulo,0,20)),0,0,"L",$p);
-   $pdf->cell(40,$alt,strToUpper(substr($nome,0,20)),0,0,"L",0,$p);   
+   $pdf->cell(40,$alt,strtoUpper(substr((string) $nome_modulo,0,20)),0,0,"L",$p);
+   $pdf->cell(40,$alt,strToUpper(substr((string) $nome,0,20)),0,0,"L",0,$p);   
    $pdf->multicell(170,$alt,$descricao,0,"L",$p);
    $pdf->cell(280,$alt,"","T",1,"C",$p);
    $total++;
-     
+
    /*
    $codordem      
    $dataprev

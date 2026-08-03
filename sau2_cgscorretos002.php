@@ -57,7 +57,7 @@ $pdf->cell ( 20, 05, "Processado", 1, 1, "c", 1 );
 
 $pdf->setfont ( 'arial', '', 8 );
 $total = 0;
-for($x = 0; $x < pg_numrows ( $result ); $x ++) {
+for($x = 0; $x < pg_num_rows ( $result ); $x ++) {
 	db_fieldsmemory ( $result, $x );
 	if ($pdf->gety () > $pdf->h - 35) {
 		$pdf->addpage ();
@@ -84,8 +84,8 @@ for($x = 0; $x < pg_numrows ( $result ); $x ++) {
 	$sql .= " where s128_i_codigo = $s127_i_codigo";
 	//die($sql);
 	$res = db_query ( $sql );
-	if (pg_numrows ( $res ) > 0) {
-		for($y = 0; $y < pg_numrows ( $res ); $y ++) {
+	if (pg_num_rows ( $res ) > 0) {
+		for($y = 0; $y < pg_num_rows ( $res ); $y ++) {
 			db_fieldsmemory ( $res, $y );
 			$pdf->setX ( 25 );
 			$pdf->cell ( 15, 05, $s128_i_numcgs, 1, 0, "C", 1 );

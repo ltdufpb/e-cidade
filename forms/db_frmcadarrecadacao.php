@@ -65,14 +65,14 @@
 	    </td>
 	    <td> 
 		  <?php 
-		    $aSegmento = array( "1"=>"1-Prefeituras",
+		    $aSegmento = [ "1"=>"1-Prefeituras",
 		    				    "2"=>"2-Saneamento",
 		    					"3"=>"3-Energia Elétrica e Gás",
 		    					"4"=>"4-Telecomunicações",
 		    					"5"=>"5-Órgãos Governamentais",
 		    					"6"=>"6-Carnes e Assemelhados ou demais Empresas",
 		    					"7"=>"7-Multas de trânsito",
-		    					"9"=>"9-Uso exclusivo do banco");
+		    					"9"=>"9-Uso exclusivo do banco"];
 		    
 		    db_select("ar16_segmento",$aSegmento,true,$db_opcao,"");
 		  ?>
@@ -84,7 +84,7 @@
 	    </td>
 	    <td>
 		 <?php 
- 	       $aFormVenc = array("1"=>"1-aaaa/mm/dd","2"=>"2-dd/mm/aa");
+ 	       $aFormVenc = ["1"=>"1-aaaa/mm/dd","2"=>"2-dd/mm/aa"];
  	       db_select("ar16_formatovenc",$aFormVenc,true,$db_opcao,"");
 		 ?>
 	    </td>
@@ -125,7 +125,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cadarrecadacao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

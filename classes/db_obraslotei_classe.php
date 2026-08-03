@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE obraslotei
 class cl_obraslotei { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ob06_codobra = 0; 
-   var $ob06_setor = null; 
-   var $ob06_quadra = null; 
-   var $ob06_lote = null; 
+   public $ob06_codobra = 0; 
+   public $ob06_setor = null; 
+   public $ob06_quadra = null; 
+   public $ob06_lote = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ob06_codobra = int4 = Código da obra 
                  ob06_setor = varchar(4) = Setor 
                  ob06_quadra = varchar(4) = Quadra 
                  ob06_lote = varchar(4) = Lote 
                  ";
    //funcao construtor da classe 
-   function cl_obraslotei() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obraslotei"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -133,7 +133,7 @@ class cl_obraslotei {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "lotes da obra fora do cadastro ($this->ob06_codobra) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "lotes da obra fora do cadastro já Cadastrado";
@@ -157,13 +157,13 @@ class cl_obraslotei {
      $resaco = $this->sql_record($this->sql_query_file($this->ob06_codobra));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5922,'$this->ob06_codobra','I')");
-       $resac = db_query("insert into db_acount values($acount,951,5922,'','".AddSlashes(pg_result($resaco,0,'ob06_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,951,5923,'','".AddSlashes(pg_result($resaco,0,'ob06_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,951,5924,'','".AddSlashes(pg_result($resaco,0,'ob06_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,951,5925,'','".AddSlashes(pg_result($resaco,0,'ob06_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,951,5922,'','".AddSlashes(pg_fetch_result($resaco,0,'ob06_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,951,5923,'','".AddSlashes(pg_fetch_result($resaco,0,'ob06_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,951,5924,'','".AddSlashes(pg_fetch_result($resaco,0,'ob06_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,951,5925,'','".AddSlashes(pg_fetch_result($resaco,0,'ob06_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -172,10 +172,10 @@ class cl_obraslotei {
       $this->atualizacampos();
      $sql = " update obraslotei set ";
      $virgula = "";
-     if(trim($this->ob06_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob06_codobra"])){ 
+     if(trim((string) $this->ob06_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob06_codobra"])){ 
        $sql  .= $virgula." ob06_codobra = $this->ob06_codobra ";
        $virgula = ",";
-       if(trim($this->ob06_codobra) == null ){ 
+       if(trim((string) $this->ob06_codobra) == null ){ 
          $this->erro_sql = " Campo Código da obra nao Informado.";
          $this->erro_campo = "ob06_codobra";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_obraslotei {
          return false;
        }
      }
-     if(trim($this->ob06_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob06_setor"])){ 
+     if(trim((string) $this->ob06_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob06_setor"])){ 
        $sql  .= $virgula." ob06_setor = '$this->ob06_setor' ";
        $virgula = ",";
-       if(trim($this->ob06_setor) == null ){ 
+       if(trim((string) $this->ob06_setor) == null ){ 
          $this->erro_sql = " Campo Setor nao Informado.";
          $this->erro_campo = "ob06_setor";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_obraslotei {
          return false;
        }
      }
-     if(trim($this->ob06_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob06_quadra"])){ 
+     if(trim((string) $this->ob06_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob06_quadra"])){ 
        $sql  .= $virgula." ob06_quadra = '$this->ob06_quadra' ";
        $virgula = ",";
-       if(trim($this->ob06_quadra) == null ){ 
+       if(trim((string) $this->ob06_quadra) == null ){ 
          $this->erro_sql = " Campo Quadra nao Informado.";
          $this->erro_campo = "ob06_quadra";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_obraslotei {
          return false;
        }
      }
-     if(trim($this->ob06_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob06_lote"])){ 
+     if(trim((string) $this->ob06_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob06_lote"])){ 
        $sql  .= $virgula." ob06_lote = '$this->ob06_lote' ";
        $virgula = ",";
-       if(trim($this->ob06_lote) == null ){ 
+       if(trim((string) $this->ob06_lote) == null ){ 
          $this->erro_sql = " Campo Lote nao Informado.";
          $this->erro_campo = "ob06_lote";
          $this->erro_banco = "";
@@ -232,17 +232,17 @@ class cl_obraslotei {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5922,'$this->ob06_codobra','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ob06_codobra"]))
-           $resac = db_query("insert into db_acount values($acount,951,5922,'".AddSlashes(pg_result($resaco,$conresaco,'ob06_codobra'))."','$this->ob06_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,951,5922,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob06_codobra'))."','$this->ob06_codobra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ob06_setor"]))
-           $resac = db_query("insert into db_acount values($acount,951,5923,'".AddSlashes(pg_result($resaco,$conresaco,'ob06_setor'))."','$this->ob06_setor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,951,5923,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob06_setor'))."','$this->ob06_setor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ob06_quadra"]))
-           $resac = db_query("insert into db_acount values($acount,951,5924,'".AddSlashes(pg_result($resaco,$conresaco,'ob06_quadra'))."','$this->ob06_quadra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,951,5924,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob06_quadra'))."','$this->ob06_quadra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ob06_lote"]))
-           $resac = db_query("insert into db_acount values($acount,951,5925,'".AddSlashes(pg_result($resaco,$conresaco,'ob06_lote'))."','$this->ob06_lote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,951,5925,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob06_lote'))."','$this->ob06_lote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -287,13 +287,13 @@ class cl_obraslotei {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5922,'$ob06_codobra','E')");
-         $resac = db_query("insert into db_acount values($acount,951,5922,'','".AddSlashes(pg_result($resaco,$iresaco,'ob06_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,951,5923,'','".AddSlashes(pg_result($resaco,$iresaco,'ob06_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,951,5924,'','".AddSlashes(pg_result($resaco,$iresaco,'ob06_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,951,5925,'','".AddSlashes(pg_result($resaco,$iresaco,'ob06_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,951,5922,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob06_codobra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,951,5923,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob06_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,951,5924,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob06_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,951,5925,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob06_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from obraslotei
@@ -353,7 +353,7 @@ class cl_obraslotei {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:obraslotei";
@@ -367,7 +367,7 @@ class cl_obraslotei {
    function sql_query ( $ob06_codobra=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ class cl_obraslotei {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_obraslotei {
    function sql_query_file ( $ob06_codobra=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -423,7 +423,7 @@ class cl_obraslotei {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

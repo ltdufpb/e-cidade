@@ -64,7 +64,7 @@ $sDisabled  = ($db_botao==false?"disabled":"");
           </td>
           <td> 
             <?php
-              $opcoesSelect = array('L'=>'Lote','F'=>'Face','C'=>'Construção','I'=>'Itbi','O'=>'Obras','A'=>'Água');
+              $opcoesSelect = ['L'=>'Lote','F'=>'Face','C'=>'Construção','I'=>'Itbi','O'=>'Obras','A'=>'Água'];
               db_select('j32_tipo', $opcoesSelect, true, $db_opcao, "");
             ?>
           </td>
@@ -87,7 +87,7 @@ function js_preenchepesquisa(chave) {
 
   <?php
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }

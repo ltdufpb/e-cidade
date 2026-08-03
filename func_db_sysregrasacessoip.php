@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_sysregrasacessoip_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_sysregrasacessoip = new cl_db_sysregrasacessoip;
 $cldb_sysregrasacessoip->rotulo->label("db48_idacesso");
 $cldb_sysregrasacessoip->rotulo->label("db48_ip");
@@ -98,9 +98,9 @@ $cldb_sysregrasacessoip->rotulo->label("db48_ip");
         }else{
            $sql = $cldb_sysregrasacessoip->sql_query("",$campos,"db48_idacesso","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db48_ip)){
-          $repassa = array("chave_db48_idacesso"=>$chave_db48_idacesso,"chave_db48_ip"=>$chave_db48_ip);
+          $repassa = ["chave_db48_idacesso"=>$chave_db48_idacesso,"chave_db48_ip"=>$chave_db48_ip];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

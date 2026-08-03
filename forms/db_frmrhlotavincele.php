@@ -184,7 +184,7 @@ db_input('o56_descr',50,$Io56_descr,true,'text',3,"","o56_descrnov");
 	 if(isset($default) && trim($default)!=""){
 	   $where .= " and rh28_codeledef <> $default ";
 	 }
-	 $chavepri= array("rh28_codlotavinc"=>@$rh28_codlotavinc,"rh28_codeledef"=>@$rh28_codeledef);
+	 $chavepri= ["rh28_codlotavinc"=>@$rh28_codlotavinc,"rh28_codeledef"=>@$rh28_codeledef];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $sCampos  = " DISTINCT rh28_codlotavinc, rh28_codeledef, orcelemento.o56_descr, rh28_codelenov, a.o56_descr";
 	 $sCampos .= " ,rh43_recurso, o15_codigo, o15_descr, o55_projativ, o55_descr, o55_anousu";

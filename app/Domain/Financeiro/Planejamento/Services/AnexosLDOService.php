@@ -266,9 +266,7 @@ abstract class AnexosLDOService
      */
     protected function getRCLAno($ano)
     {
-        $valor = $this->rclPlanejamento->filter(function ($valor) use ($ano) {
-            return $valor->exercicio === $ano;
-        })->first();
+        $valor = $this->rclPlanejamento->filter(fn($valor) => $valor->exercicio === $ano)->first();
 
         return (float)$valor->valor;
     }
@@ -296,9 +294,7 @@ abstract class AnexosLDOService
     protected function getFatoresReceita(EstimativaReceita $estimativaReceita)
     {
         return $this->fatorCorrecaoReceita->filter(
-            function (FatorCorrecaoReceita $fatorCorrecaoReceita) use ($estimativaReceita) {
-                return $estimativaReceita->orcfontes_id === $fatorCorrecaoReceita->orcfontes_id;
-            }
+            fn(FatorCorrecaoReceita $fatorCorrecaoReceita) => $estimativaReceita->orcfontes_id === $fatorCorrecaoReceita->orcfontes_id
         );
     }
 
@@ -310,9 +306,7 @@ abstract class AnexosLDOService
      */
     protected function filtraFatorReceitaUtilizadoNoAno(Collection $fatores, $ano)
     {
-        return $fatores->filter(function (FatorCorrecaoReceita $fator) use ($ano) {
-            return $fator->exercicio === $ano;
-        })->first();
+        return $fatores->filter(fn(FatorCorrecaoReceita $fator) => $fator->exercicio === $ano)->first();
     }
 
     /**
@@ -333,9 +327,7 @@ abstract class AnexosLDOService
     protected function getFatoresDespesa(DetalhamentoDespesa $detalhamentoDespesa)
     {
         return $this->fatorCorrecaoDespesa->filter(
-            function (FatorCorrecaoDespesa $fatorCorrecaoDespesa) use ($detalhamentoDespesa) {
-                return $fatorCorrecaoDespesa->pl7_orcelemento === $detalhamentoDespesa->pl20_orcelemento;
-            }
+            fn(FatorCorrecaoDespesa $fatorCorrecaoDespesa) => $fatorCorrecaoDespesa->pl7_orcelemento === $detalhamentoDespesa->pl20_orcelemento
         );
     }
 
@@ -347,9 +339,7 @@ abstract class AnexosLDOService
      */
     protected function filtraFatorDespesaUtilizadoNoAno(Collection $fatores, $ano)
     {
-        return $fatores->filter(function (FatorCorrecaoDespesa $fator) use ($ano) {
-            return $fator->pl7_exercicio === $ano;
-        })->first();
+        return $fatores->filter(fn(FatorCorrecaoDespesa $fator) => $fator->pl7_exercicio === $ano)->first();
     }
     /**
      * Retorna as estimativas do Planejamento compativeis com as contas configuradas na linha do relatorio legal
@@ -377,7 +367,7 @@ abstract class AnexosLDOService
     protected function getEstruturalAteNivel($natureza)
     {
         $estrutural = new EstruturalReceita($natureza);
-        if ((strpos($natureza, '3') === 0) || (strpos($natureza, '1') === 0)) {
+        if ((str_starts_with((string) $natureza, '3')) || (str_starts_with((string) $natureza, '1'))) {
             $estrutural = new Estrutural($natureza);
         }
 
@@ -395,9 +385,7 @@ abstract class AnexosLDOService
         $ateNivel = $this->getEstruturalAteNivel($conta->estrutural);
 
         return $this->buscarProjecaoReceita()->filter(
-            function (EstimativaReceita $estimativa) use ($ateNivel) {
-                return strpos($this->getNatureza($estimativa), $ateNivel, 0) === 0;
-            }
+            fn(EstimativaReceita $estimativa) => str_starts_with((string) $this->getNatureza($estimativa), $ateNivel)
         );
     }
 
@@ -427,9 +415,7 @@ abstract class AnexosLDOService
         foreach ($contas as $conta) {
             if ($conta->exclusao) {
                 $ateNivel = $this->getEstruturalAteNivel($conta->estrutural);
-                $estimativas = $estimativas->reject(function (EstimativaReceita $estimativa) use ($ateNivel) {
-                    return strpos($this->getNatureza($estimativa), $ateNivel, 0) === 0;
-                });
+                $estimativas = $estimativas->reject(fn(EstimativaReceita $estimativa) => str_starts_with((string) $this->getNatureza($estimativa), $ateNivel));
             }
         }
 
@@ -449,7 +435,7 @@ abstract class AnexosLDOService
         return $this->buscarProjecaoDespesa()->filter(
             function (DetalhamentoDespesa $detalhamentoDespesa) use ($ateNivel) {
                 $natureza = $detalhamentoDespesa->getNaturezaDespesa();
-                return strpos($natureza->o56_elemento, $ateNivel, 0) === 0;
+                return str_starts_with((string) $natureza->o56_elemento, $ateNivel);
             }
         );
     }
@@ -487,7 +473,7 @@ abstract class AnexosLDOService
                 $ateNivel = $this->getEstruturalAteNivel($conta->estrutural);
                 $estimativas = $estimativas->reject(function (DetalhamentoDespesa $detalhamento) use ($ateNivel) {
                     $natureza = $detalhamento->getNaturezaDespesa();
-                    return strpos($natureza->o56_elemento, $ateNivel, 0) === 0;
+                    return str_starts_with((string) $natureza->o56_elemento, $ateNivel);
                 });
             }
         }
@@ -501,9 +487,7 @@ abstract class AnexosLDOService
      */
     protected function getPibAno($ano)
     {
-        $valor = $this->plano->getPIB()->filter(function (Valor $valor) use ($ano) {
-            return $valor->pl10_ano === $ano;
-        })->first();
+        $valor = $this->plano->getPIB()->filter(fn(Valor $valor) => $valor->pl10_ano === $ano)->first();
 
         if (is_null($valor)) {
             $msg = sprintf(
@@ -547,9 +531,7 @@ abstract class AnexosLDOService
     protected function estimativasCompativeisConta($conta, $estimativas)
     {
         $ateNivel = $this->getEstruturalAteNivel($conta->estrutural);
-        return collect($estimativas)->filter(function ($estimativa) use ($ateNivel) {
-            return strpos($estimativa->natureza, $ateNivel, 0) === 0;
-        });
+        return collect($estimativas)->filter(fn($estimativa) => str_starts_with((string) $estimativa->natureza, $ateNivel));
     }
 
     /**
@@ -562,9 +544,7 @@ abstract class AnexosLDOService
         foreach ($contas as $conta) {
             if ($conta->exclusao) {
                 $ateNivel = $this->getEstruturalAteNivel($conta->estrutural);
-                $estimativas = $estimativas->reject(function ($estimativa) use ($ateNivel) {
-                    return strpos($estimativa->natureza, $ateNivel, 0) === 0;
-                });
+                $estimativas = $estimativas->reject(fn($estimativa) => str_starts_with((string) $estimativa->natureza, $ateNivel));
             }
         }
         return $estimativas;

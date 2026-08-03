@@ -101,7 +101,7 @@ if(isset($opcao)){
 	            db_input("db_opcaoal",10,"",true,"hidden",3);
 					    }
 						 
-    $chavepri= array("y61_codlev"=>$y61_codlev,"y61_id_usuario"=>@$y61_id_usuario);
+    $chavepri= ["y61_codlev"=>$y61_codlev,"y61_id_usuario"=>@$y61_id_usuario];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->sql     = $cllevusu->sql_query($y61_codlev,"","y61_codlev,y61_id_usuario,nome,y61_obs");
     $cliframe_alterar_excluir->campos  ="y61_id_usuario,nome,y61_obs";

@@ -31,7 +31,7 @@ include("libs/db_sessoes.php");
 include("libs/db_usuariosonline.php");
 include("classes/db_legista_classe.php");
 include("dbforms/db_funcoes.php");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cllegista = new cl_legista;
 $db_opcao = 1;
 $db_botao = true;

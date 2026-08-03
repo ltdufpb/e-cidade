@@ -34,7 +34,7 @@ include(modification("classes/db_cgs_classe.php"));
 include(modification("classes/db_cgs_und_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_stdlibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcgs = new cl_cgs;
 $clcgs_und = new cl_cgs_und;
 $db_opcao = 1;
@@ -134,12 +134,12 @@ db_fieldsmemory($query,0);
         </td>
          <td nowrap title="<?=$Tz01_i_estciv?>">
           <?php 
-          $x = array("1"=>"Solteiro","2"=>"Casado","3"=>"Vi�vo","4"=>"Divorciado");
+          $x = ["1"=>"Solteiro","2"=>"Casado","3"=>"Vi�vo","4"=>"Divorciado"];
           db_select('z01_i_estciv',$x,true,3);
           ?>
           <?=$Lz01_v_sexo?>
           <?php 
-          $sex = array("M"=>"Masculino","F"=>"Feminino");
+          $sex = ["M"=>"Masculino","F"=>"Feminino"];
           db_select('z01_v_sexo',$sex,true,3);
           ?>
          </td>
@@ -300,7 +300,7 @@ db_fieldsmemory($query,0);
  }
  function js_preenchepesquisa(chave){
   db_iframe_aluno.hide();
-  <?php echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
+  <?php echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
  }
  function js_novo(){
   parent.location="edu1_alunoabas001.php";

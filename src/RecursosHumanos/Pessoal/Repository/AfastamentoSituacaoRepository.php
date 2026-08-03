@@ -45,7 +45,7 @@ class AfastamentoSituacaoRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     public function scopeSequencial($sequencial, $operator = '=')
     {
@@ -63,7 +63,7 @@ class AfastamentoSituacaoRepository
 
     private function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
     }
 
     /**
@@ -79,7 +79,7 @@ class AfastamentoSituacaoRepository
             throw new Exception("Não foi possível os tipos de afastamento.");
         }
 
-        $tiposAfastamento = array();
+        $tiposAfastamento = [];
 
         if (pg_num_rows($rs) === 0) {
             return $tiposAfastamento;
@@ -100,7 +100,7 @@ class AfastamentoSituacaoRepository
      * @return bool|AfastamentoSituacao
      * @throws Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query($id, implode(', ', $columns));
         $rs = db_query($sql);
@@ -123,12 +123,12 @@ class AfastamentoSituacaoRepository
      * @return AfastamentoSituacao[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $sql = $this->dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $results = array();
+        $results = [];
 
         if (pg_num_rows($rs) === 0) {
             return $results;

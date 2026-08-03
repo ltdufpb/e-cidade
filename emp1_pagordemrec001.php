@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_pagordemrec_classe.php"));
 include(modification("classes/db_pagordemele_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clpagordemrec = new cl_pagordemrec;
 $clpagordemele = new cl_pagordemele;
     //rotina que traz o valor da ordem 

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhteutri_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhteutri = new cl_rhteutri;
 $clrhteutri->rotulo->label("rh67_sequencial");
 $clrhteutri->rotulo->label("rh67_regist");
@@ -98,9 +98,9 @@ $clrhteutri->rotulo->label("rh67_regist");
         }else{
            $sql = $clrhteutri->sql_query("",$campos,"rh67_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh67_regist)){
-          $repassa = array("chave_rh67_sequencial"=>$chave_rh67_sequencial,"chave_rh67_regist"=>$chave_rh67_regist);
+          $repassa = ["chave_rh67_sequencial"=>$chave_rh67_sequencial,"chave_rh67_regist"=>$chave_rh67_regist];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -46,7 +46,7 @@ ini_set('memory_limit', '2048M');
 $estruturais = [];
 
 if (!empty($_GET["estrut_inicial"])) {
-    $estruturais = explode("," , $_GET["estrut_inicial"]);
+    $estruturais = explode("," , (string) $_GET["estrut_inicial"]);
 }
 
 

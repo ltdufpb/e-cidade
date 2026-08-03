@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE conlancaminscricaopassivo
 class cl_conlancaminscricaopassivo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c37_sequencial = 0; 
-   var $c37_inscricaopassivo = 0; 
-   var $c37_conlancam = 0; 
-   var $c37_instit = 0; 
-   var $c37_data_dia = null; 
-   var $c37_data_mes = null; 
-   var $c37_data_ano = null; 
-   var $c37_data = null; 
+   public $c37_sequencial = 0; 
+   public $c37_inscricaopassivo = 0; 
+   public $c37_conlancam = 0; 
+   public $c37_instit = 0; 
+   public $c37_data_dia = null; 
+   public $c37_data_mes = null; 
+   public $c37_data_ano = null; 
+   public $c37_data = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c37_sequencial = int4 = Sequência 
                  c37_inscricaopassivo = int4 = Inscrição Passiva 
                  c37_conlancam = int4 = Lançamento 
@@ -59,10 +59,10 @@ class cl_conlancaminscricaopassivo {
                  c37_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_conlancaminscricaopassivo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conlancaminscricaopassivo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_conlancaminscricaopassivo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c37_sequencial = pg_result($result,0,0); 
+       $this->c37_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from conlancaminscricaopassivo_c37_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c37_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c37_sequencial)){
          $this->erro_sql = " Campo c37_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_conlancaminscricaopassivo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "vinculo com o lançamento contabil  ($this->c37_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "vinculo com o lançamento contabil  já Cadastrado";
@@ -204,14 +204,14 @@ class cl_conlancaminscricaopassivo {
      $resaco = $this->sql_record($this->sql_query_file($this->c37_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18987,'$this->c37_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3377,18987,'','".AddSlashes(pg_result($resaco,0,'c37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3377,18988,'','".AddSlashes(pg_result($resaco,0,'c37_inscricaopassivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3377,19048,'','".AddSlashes(pg_result($resaco,0,'c37_conlancam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3377,18990,'','".AddSlashes(pg_result($resaco,0,'c37_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3377,18989,'','".AddSlashes(pg_result($resaco,0,'c37_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3377,18987,'','".AddSlashes(pg_fetch_result($resaco,0,'c37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3377,18988,'','".AddSlashes(pg_fetch_result($resaco,0,'c37_inscricaopassivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3377,19048,'','".AddSlashes(pg_fetch_result($resaco,0,'c37_conlancam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3377,18990,'','".AddSlashes(pg_fetch_result($resaco,0,'c37_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3377,18989,'','".AddSlashes(pg_fetch_result($resaco,0,'c37_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_conlancaminscricaopassivo {
       $this->atualizacampos();
      $sql = " update conlancaminscricaopassivo set ";
      $virgula = "";
-     if(trim($this->c37_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c37_sequencial"])){ 
+     if(trim((string) $this->c37_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c37_sequencial"])){ 
        $sql  .= $virgula." c37_sequencial = $this->c37_sequencial ";
        $virgula = ",";
-       if(trim($this->c37_sequencial) == null ){ 
+       if(trim((string) $this->c37_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "c37_sequencial";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_conlancaminscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c37_inscricaopassivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c37_inscricaopassivo"])){ 
+     if(trim((string) $this->c37_inscricaopassivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c37_inscricaopassivo"])){ 
        $sql  .= $virgula." c37_inscricaopassivo = $this->c37_inscricaopassivo ";
        $virgula = ",";
-       if(trim($this->c37_inscricaopassivo) == null ){ 
+       if(trim((string) $this->c37_inscricaopassivo) == null ){ 
          $this->erro_sql = " Campo Inscrição Passiva nao Informado.";
          $this->erro_campo = "c37_inscricaopassivo";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_conlancaminscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c37_conlancam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c37_conlancam"])){ 
+     if(trim((string) $this->c37_conlancam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c37_conlancam"])){ 
        $sql  .= $virgula." c37_conlancam = $this->c37_conlancam ";
        $virgula = ",";
-       if(trim($this->c37_conlancam) == null ){ 
+       if(trim((string) $this->c37_conlancam) == null ){ 
          $this->erro_sql = " Campo Lançamento nao Informado.";
          $this->erro_campo = "c37_conlancam";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_conlancaminscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c37_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c37_instit"])){ 
+     if(trim((string) $this->c37_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c37_instit"])){ 
        $sql  .= $virgula." c37_instit = $this->c37_instit ";
        $virgula = ",";
-       if(trim($this->c37_instit) == null ){ 
+       if(trim((string) $this->c37_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "c37_instit";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_conlancaminscricaopassivo {
          return false;
        }
      }
-     if(trim($this->c37_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c37_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c37_data_dia"] !="") ){ 
+     if(trim((string) $this->c37_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c37_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c37_data_dia"] !="") ){ 
        $sql  .= $virgula." c37_data = '$this->c37_data' ";
        $virgula = ",";
-       if(trim($this->c37_data) == null ){ 
+       if(trim((string) $this->c37_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "c37_data_dia";
          $this->erro_banco = "";
@@ -288,7 +288,7 @@ class cl_conlancaminscricaopassivo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["c37_data_dia"])){ 
          $sql  .= $virgula." c37_data = null ";
          $virgula = ",";
-         if(trim($this->c37_data) == null ){ 
+         if(trim((string) $this->c37_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "c37_data_dia";
            $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_conlancaminscricaopassivo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18987,'$this->c37_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c37_sequencial"]) || $this->c37_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3377,18987,'".AddSlashes(pg_result($resaco,$conresaco,'c37_sequencial'))."','$this->c37_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3377,18987,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c37_sequencial'))."','$this->c37_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c37_inscricaopassivo"]) || $this->c37_inscricaopassivo != "")
-           $resac = db_query("insert into db_acount values($acount,3377,18988,'".AddSlashes(pg_result($resaco,$conresaco,'c37_inscricaopassivo'))."','$this->c37_inscricaopassivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3377,18988,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c37_inscricaopassivo'))."','$this->c37_inscricaopassivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c37_conlancam"]) || $this->c37_conlancam != "")
-           $resac = db_query("insert into db_acount values($acount,3377,19048,'".AddSlashes(pg_result($resaco,$conresaco,'c37_conlancam'))."','$this->c37_conlancam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3377,19048,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c37_conlancam'))."','$this->c37_conlancam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c37_instit"]) || $this->c37_instit != "")
-           $resac = db_query("insert into db_acount values($acount,3377,18990,'".AddSlashes(pg_result($resaco,$conresaco,'c37_instit'))."','$this->c37_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3377,18990,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c37_instit'))."','$this->c37_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c37_data"]) || $this->c37_data != "")
-           $resac = db_query("insert into db_acount values($acount,3377,18989,'".AddSlashes(pg_result($resaco,$conresaco,'c37_data'))."','$this->c37_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3377,18989,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c37_data'))."','$this->c37_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_conlancaminscricaopassivo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18987,'$c37_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3377,18987,'','".AddSlashes(pg_result($resaco,$iresaco,'c37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3377,18988,'','".AddSlashes(pg_result($resaco,$iresaco,'c37_inscricaopassivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3377,19048,'','".AddSlashes(pg_result($resaco,$iresaco,'c37_conlancam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3377,18990,'','".AddSlashes(pg_result($resaco,$iresaco,'c37_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3377,18989,'','".AddSlashes(pg_result($resaco,$iresaco,'c37_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3377,18987,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3377,18988,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c37_inscricaopassivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3377,19048,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c37_conlancam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3377,18990,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c37_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3377,18989,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c37_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from conlancaminscricaopassivo
@@ -431,7 +431,7 @@ class cl_conlancaminscricaopassivo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conlancaminscricaopassivo";
@@ -446,7 +446,7 @@ class cl_conlancaminscricaopassivo {
    function sql_query ( $c37_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,7 +476,7 @@ class cl_conlancaminscricaopassivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,7 +489,7 @@ class cl_conlancaminscricaopassivo {
    function sql_query_file ( $c37_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,7 +510,7 @@ class cl_conlancaminscricaopassivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -522,7 +522,7 @@ class cl_conlancaminscricaopassivo {
   function sql_query_dadoslancamento ( $c37_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
   	$sql = "select ";
   	if($campos != "*" ){
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = preg_split("#\\##m",$campos);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -552,7 +552,7 @@ class cl_conlancaminscricaopassivo {
   	$sql .= $sql2;
   	if($ordem != null ){
   	  $sql .= " order by ";
-  		$campos_sql = split("#",$ordem);
+  		$campos_sql = preg_split("#\\##m",(string) $ordem);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   		$sql .= $virgula.$campos_sql[$i];

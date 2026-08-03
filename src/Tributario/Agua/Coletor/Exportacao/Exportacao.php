@@ -64,12 +64,12 @@ class Exportacao {
   /**
    * @var array
    */
-  private $aRotas = array();
+  private $aRotas = [];
 
   /**
    * @var array
    */
-  private $aRuas = array();
+  private $aRuas = [];
 
   /**
    * @var integer
@@ -318,7 +318,7 @@ class Exportacao {
     $iAno    = $this->getAno();
     $sRotas  = implode(', ', $this->getRotas());
     $sRuas   = implode(', ', $this->getRuas());
-    $sCampos = implode(', ', array(
+    $sCampos = implode(', ', [
       'x54_sequencial                     as codigo_contrato',
       'x07_codrota                        as codigo_rota',
       'x01_matric                         as codigo_matricula',
@@ -354,9 +354,9 @@ class Exportacao {
           bairro.j13_descr
        end as bairro',
        'x54_aguatipocontrato as tipo_contrato',
-    ));
+    ]);
 
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'inner join aguacontrato                   on x54_aguabase         = x01_matric',
       'inner join cgm                            on z01_numcgm           = x54_cgm',
       'left  join aguarotarua                    on x07_codrua           = x01_codrua',
@@ -370,9 +370,9 @@ class Exportacao {
       'left  join ruastipo                       on ruastipo.j88_codigo  = ruas.j14_tipo',
       'left  join aguabasebaixa                  on x08_matric           = x01_matric',
       'left  join aguacategoriaconsumo           on x13_sequencial       = x54_aguacategoriaconsumo',
-    ));
+    ]);
 
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       "x07_codrota IN ({$sRotas})",
       "x07_codrotarua IN ({$sRuas})",
       "x01_numero between x07_nroini and x07_nrofim",
@@ -381,15 +381,15 @@ class Exportacao {
       "x54_datainicial < now()",
       "(x54_datafinal > now() or x54_datafinal is null)",
       "x13_exercicio = {$iAno}",
-    ));
+    ]);
 
-    $sOrderBy = implode(', ', array(
+    $sOrderBy = implode(', ', [
       'x07_codrota',
       'x07_ordem',
       'x01_codrua',
       'x01_orientacao',
       'x01_numero',
-    ));
+    ]);
 
     $sSqlContrato = "select {$sCampos} from aguabase {$sJoin} where {$sWhere} order by {$sOrderBy}";
     $rsContratos  = db_query($sSqlContrato);
@@ -701,10 +701,10 @@ class Exportacao {
       throw new \BusinessException('Tipo de Débito não configurado.');
     }
 
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       "inner join arreinstit ON arreinstit.k00_numpre = arrematric.k00_numpre AND arreinstit.k00_instit = {$this->getCodigoInstituicao()}",
       "inner join arrenumcgm ON arrenumcgm.k00_numpre = arrematric.k00_numpre AND arrenumcgm.k00_numcgm = {$iCodigoResponsavel}"
-    ));
+    ]);
 
     $sSqlDebitosMatricula = "(
       select distinct arrematric.k00_numpre from arrematric {$sJoin} where arrematric.k00_matric = {$iCodigoMatricula}
@@ -718,16 +718,16 @@ class Exportacao {
       throw new \DBException('Não foi possível obter informações dos Débitos para a Exportação.');
     }
 
-    $aDebitos = array();
+    $aDebitos = [];
     while($oDebito = pg_fetch_object($rsDebitos)) {
-      $aDebitos[] = array(
+      $aDebitos[] = [
         'codigo_cobranca' => $oDebito->k00_numpre,
         'codigo_receita'  => $oDebito->k00_receit,
         'descricao'       => $oDebito->k02_descr,
         'parcela'         => $oDebito->k00_numpar,
         'total_parcelas'  => $oDebito->k00_numtot,
         'valor'           => $oDebito->k00_valor,
-      );
+      ];
     }
 
     return $aDebitos;

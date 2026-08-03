@@ -170,8 +170,6 @@ class Registro50Repository extends Repository
             throw new Exception("Erro ao buscar professores da turma.");
         }
 
-        return db_utils::makeCollectionFromRecord($rs, function ($disciplina) {
-            return CensoDisciplinaRegistry::get($disciplina->censo_disciplina);
-        });
+        return db_utils::makeCollectionFromRecord($rs, fn($disciplina) => CensoDisciplinaRegistry::get($disciplina->censo_disciplina));
     }
 }

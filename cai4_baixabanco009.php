@@ -56,7 +56,7 @@ $sql    .= "      and discla.instit = $iInstit                                  
 $sql    .= "order by disrec.k00_receit                                                              \n";
 $result  = db_query($sql);
 
-$num = pg_numrows($result);
+$num = pg_num_rows($result);
 
 $pdf = new PDF();
 $pdf->Open();
@@ -70,20 +70,20 @@ $pre = 0;
 $total = 0;
 $valor = 0;
 $pagina = 0;
-$receita = pg_result($result,0,"k00_receit");
-$dreceita = pg_result($result,0,"k02_drecei");
+$receita = pg_fetch_result($result,0,"k00_receit");
+$dreceita = pg_fetch_result($result,0,"k02_drecei");
 $totrec = 0 ;
 $totval = 0 ;
 
 $pdf->SetFont('Arial','B',10);
-$pdf->MultiCell(0,12,"CLASSIFICAÇÃO - ".pg_result($result,0,"codcla"),0,"C",0);
+$pdf->MultiCell(0,12,"CLASSIFICAÇÃO - ".pg_fetch_result($result,0,"codcla"),0,"C",0);
 $pdf->SetFont('Arial','B',7);
-$pdf->Cell(15, 3, "CÓD.RETORNO:"       . pg_result( $result,0,"codret" )              ,          0, 1, "L", 0);
-$pdf->Cell(15, 3, "DATA CLASSIF:"      . db_formatar(pg_result($result,0,"dtcla"),'d'),          0, 1, "L",0);
-$pdf->Cell(15, 3, "ARQUIVO:"           . trim( pg_result($result,0,"arqret") ) . "  DATA RETORNO: ".db_formatar(pg_result($result,0,"dtretorno"),"d")."  DATA ARQUIVO: ".db_formatar(pg_result($result,0,"dtarquivo"),"d") ,0,1,"L",0);
-$pdf->Cell(15, 3, "CONTA:"             . pg_result($result,0,"k00_conta")." - ".strtoupper(pg_result($result,0,"k13_descr")),0,1,"L",0);
-$pdf->Cell(15, 3, "DATAS DE CRÉDITO:"  . pg_result($result, 0, "dtcredito" ), 0, 1, "L", 0);
-$pdf->Cell(15, 3, "DATAS DE PAGAMENTO:". pg_result($result, 0, "dtpago")    , 0, 1, "L", 0);
+$pdf->Cell(15, 3, "CÓD.RETORNO:"       . pg_fetch_result( $result,0,"codret" )              ,          0, 1, "L", 0);
+$pdf->Cell(15, 3, "DATA CLASSIF:"      . db_formatar(pg_fetch_result($result,0,"dtcla"),'d'),          0, 1, "L",0);
+$pdf->Cell(15, 3, "ARQUIVO:"           . trim( pg_fetch_result($result,0,"arqret") ) . "  DATA RETORNO: ".db_formatar(pg_fetch_result($result,0,"dtretorno"),"d")."  DATA ARQUIVO: ".db_formatar(pg_fetch_result($result,0,"dtarquivo"),"d") ,0,1,"L",0);
+$pdf->Cell(15, 3, "CONTA:"             . pg_fetch_result($result,0,"k00_conta")." - ".strtoupper(pg_fetch_result($result,0,"k13_descr")),0,1,"L",0);
+$pdf->Cell(15, 3, "DATAS DE CRÉDITO:"  . pg_fetch_result($result, 0, "dtcredito" ), 0, 1, "L", 0);
+$pdf->Cell(15, 3, "DATAS DE PAGAMENTO:". pg_fetch_result($result, 0, "dtpago")    , 0, 1, "L", 0);
 $pdf->Ln(2);
 $pdf->Cell(30, 6, "AUTENTICAÇÃO"         ,1, 0, "C", 1);
 $pdf->Cell(20, 6, "RECEITA"              ,1, 0, "C", 1);
@@ -95,11 +95,11 @@ for($i=0;$i<$num;$i++) {
         $pdf->Text($pdf->w-20,$pdf->h-5, $pdf->PageNo());
         $pdf->AddPage();
         $pdf->SetFont('Arial','B',10);
-        $pdf->MultiCell(0,12,"CLASSIFICAÇÃO - ".pg_result($result,0,"codcla"),0,"C",0);
+        $pdf->MultiCell(0,12,"CLASSIFICAÇÃO - ".pg_fetch_result($result,0,"codcla"),0,"C",0);
         $pdf->SetFont('Arial','B',7);
-        $pdf->Cell(15,3,"CÓD.RETORNO ".pg_result($result,0,"codret"),0,1,"L",0);
-        $pdf->Cell(15,3,"DATA : ".db_formatar(pg_result($result,0,"dtcla"),'d'),0,1,"L",0);
-        $pdf->Cell(15,3,"CONTA : ".pg_result($result,0,"k00_conta")." - ".strtoupper(pg_result($result,0,"k13_descr")),0,1,"L",0);
+        $pdf->Cell(15,3,"CÓD.RETORNO ".pg_fetch_result($result,0,"codret"),0,1,"L",0);
+        $pdf->Cell(15,3,"DATA : ".db_formatar(pg_fetch_result($result,0,"dtcla"),'d'),0,1,"L",0);
+        $pdf->Cell(15,3,"CONTA : ".pg_fetch_result($result,0,"k00_conta")." - ".strtoupper(pg_fetch_result($result,0,"k13_descr")),0,1,"L",0);
         $pdf->Ln(2);
         $pdf->Cell(30,6,"AUTENTICAÇÃO.",1,0,"C",1);
         $pdf->Cell(20,6,"RECEITA",1,0,"C",1);

@@ -28,8 +28,8 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_rhpessoal_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $clrhpessoal = new cl_rhpessoal;
 
@@ -72,7 +72,7 @@ elseif ($opcao == 'temfixo' || $opcao == 'fixo') {
 	$descrpon = "PONTO FIXO";
 }
 
-if (trim($opcao) != '') {
+if (trim((string) $opcao) != '') {
 	$sql = "
 	          select distinct
                    rh27_rubric,
@@ -97,7 +97,7 @@ if (trim($opcao) != '') {
 }
 $result = db_query($sql);
 
-$numrows = pg_numrows($result); 
+$numrows = pg_num_rows($result); 
 if($numrows == 0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado");
 }

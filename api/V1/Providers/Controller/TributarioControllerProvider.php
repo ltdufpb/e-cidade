@@ -19,9 +19,7 @@ class TributarioControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app["recibo.controller"] = function () use ($app) {
-            return new Recibo($app['request_stack']->getCurrentRequest());
-        };
+        $app["recibo.controller"] = (fn() => new Recibo($app['request_stack']->getCurrentRequest()));
 
         /**
          * creates a new controller based on the default route

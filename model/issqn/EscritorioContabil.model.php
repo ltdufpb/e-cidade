@@ -110,7 +110,7 @@ class EscritorioContabil extends CgmBase {
     $sSqlEscrito = $oEscrito->sql_query_file(null, '*', null, $sWhere);
     $rsEscrito   = $oEscrito->sql_record($sSqlEscrito);
     
-    if (pg_numrows($rsEscrito) == 0) {
+    if (pg_num_rows($rsEscrito) == 0) {
       return false;
     }
     

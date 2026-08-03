@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_prontuarios_classe.php"));
 include(modification("classes/db_prontprofatend_ext_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprontuarios = new cl_prontuarios;
 $clprontuarios->rotulo->label();
 
@@ -59,7 +59,7 @@ $todos="";
                   inner join unidades on unidades.sd02_i_codigo= unidademedicos.sd04_i_unidade		               
                   where sd02_i_codigo = $unidade and db_usuacgm.id_usuario= $usuario                                
                   ";
- $query1 = db_query($sql1) or die(pg_errormessage());
+ $query1 = db_query($sql1) or die(pg_last_error());
  $linhas1 = pg_num_rows($query1);
 if($linhas1>0){
 db_fieldsmemory($query1,0);
@@ -144,7 +144,7 @@ db_fieldsmemory($query1,0);
            $campos = "prontuarios.*";
            }
         }
-        $repassa = array();
+        $repassa = [];
         
         
         if(isset($todos2) && $todos2!=""){
@@ -181,7 +181,7 @@ db_fieldsmemory($query1,0);
                   inner join cgm as cgm1 on cgm1.z01_numcgm = sd03_i_cgm ) as prontprofatend on prontprofatend.s104_i_prontuario = prontuarios.sd24_i_codigo
                   where prontuarios.sd24_c_digitada = 'N' ";
 
-          $repassa = array("todos2"=>$todos2);
+          $repassa = ["todos2"=>$todos2];
           //db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
        }else{
            if(isset($sd03_i_codigo) && (trim($sd03_i_codigo)!="") && (@$chave_sd24_i_codigo=="") && (@$chave_z01_v_nome=="")){
@@ -203,10 +203,10 @@ db_fieldsmemory($query1,0);
                      left join db_depart on db_depart.coddepto = unidades.sd02_i_codigo
                       where medicos.sd29_i_profissional = sd24_i_profissional
                       order by  sd04_i_unidade, rh70_estrutural";
-             $repassa = array("sd04_i_cbo"=>$sd04_i_cbo);
+             $repassa = ["sd04_i_cbo"=>$sd04_i_cbo];
            }else if(isset($chave_z01_v_nome) && (trim($chave_z01_v_nome)!="") ){
                  $sql = $clprontuarios->sql_query("",$campos,"cgs_und.z01_v_nome, sd24_i_codigo","cgs_und.z01_v_nome like '$chave_z01_v_nome%' ");
-                 $repassa = array("chave_z01_v_nome"=>$chave_z01_v_nome);                 
+                 $repassa = ["chave_z01_v_nome"=>$chave_z01_v_nome];                 
            }else if(isset($chave_sd24_i_codigo) && (trim($chave_sd24_i_codigo)!="") ){
                  $sql = $clprontuarios->sql_query($chave_sd24_i_codigo,$campos,"sd24_i_codigo");
            }

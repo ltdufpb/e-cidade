@@ -55,10 +55,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	     $clcriaabas->identifica = array("documento"=>"Dados do Documento","documentoatributo"=>"Atributos"); 
-	     $clcriaabas->src = array("documento"=>"con1_caddocumento005.php");
-	     $clcriaabas->disabled   =  array("documentoatributo"=>"true"); 
-	     $clcriaabas->sizecampo = array("documento"=>"25", "documentoatributo"=>"25");
+	     $clcriaabas->identifica = ["documento"=>"Dados do Documento","documentoatributo"=>"Atributos"]; 
+	     $clcriaabas->src = ["documento"=>"con1_caddocumento005.php"];
+	     $clcriaabas->disabled   =  ["documentoatributo"=>"true"]; 
+	     $clcriaabas->sizecampo = ["documento"=>"25", "documentoatributo"=>"25"];
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>

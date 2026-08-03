@@ -29,7 +29,7 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 ?>
 
@@ -94,7 +94,7 @@ input {
 <?php 
 
 ?>  <center><iframe src="ipa4_atenmed003.php?codage=<?=$codage?>&dataini=<?=$dataini?>" width="700" height="300"></iframe>
-   <input name="atualiza" type="button" onclick="location.href='ipa4_atenmed002.php?<?=$HTTP_SERVER_VARS['QUERY_STRING']?>'" value="Atualiza Agenda">
+   <input name="atualiza" type="button" onclick="location.href='ipa4_atenmed002.php?<?=$_SERVER['QUERY_STRING']?>'" value="Atualiza Agenda">
 </center> 
 	</td>
   </tr>

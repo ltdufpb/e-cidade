@@ -6,14 +6,14 @@ class M10055CivitasAjustesProcessamento extends PostgresMigration
 {
     function up()
     {
-        $this->table('atualizacaoiptuschemamotivorejeicao', array('schema'=>'cadastro', 'id'=>false, 'primary_key'=>array('j146_atualizacaoiptuschemamatricula'), 'constraint'=>'atualizacaoiptuschemamotivorejeicao_pk'))
+        $this->table('atualizacaoiptuschemamotivorejeicao', ['schema'=>'cadastro', 'id'=>false, 'primary_key'=>['j146_atualizacaoiptuschemamatricula'], 'constraint'=>'atualizacaoiptuschemamotivorejeicao_pk'])
           ->addColumn('j146_atualizacaoiptuschemamatricula', 'integer')
           ->addColumn('j146_motivo_rejeicao',                'string')
-          ->addForeignKey('j146_atualizacaoiptuschemamatricula', 'cadastro.atualizacaoiptuschemamatricula ',   'j144_sequencial', array('constraint'=>'atualizacaoiptuschemamotivorejeicao_fk'))
+          ->addForeignKey('j146_atualizacaoiptuschemamatricula', 'cadastro.atualizacaoiptuschemamatricula ',   'j144_sequencial', ['constraint'=>'atualizacaoiptuschemamotivorejeicao_fk'])
           ->save();
         
-        $this->table('atualizacaoiptuschemamatricula', array('schema'=>'cadastro'))
-          ->addColumn('j144_processado',                'boolean', array('default'=>'false'))
+        $this->table('atualizacaoiptuschemamatricula', ['schema'=>'cadastro'])
+          ->addColumn('j144_processado',                'boolean', ['default'=>'false'])
           ->save();
 
         $sql = <<<SQL
@@ -39,8 +39,8 @@ SQL;
 
     function down()
     {
-        $this->table('atualizacaoiptuschemamotivorejeicao', array('schema'=>'cadastro'))->drop();
-        $this->table('atualizacaoiptuschemamatricula', array('schema'=>'cadastro'))->removeColumn('j144_processado')->save();
+        $this->table('atualizacaoiptuschemamotivorejeicao', ['schema'=>'cadastro'])->drop();
+        $this->table('atualizacaoiptuschemamatricula', ['schema'=>'cadastro'])->removeColumn('j144_processado')->save();
         
         $sql = <<<SQL
         DELETE FROM db_sysarqcamp where codcam = 1009605;

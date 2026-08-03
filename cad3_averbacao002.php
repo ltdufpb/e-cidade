@@ -60,7 +60,7 @@ $cliptubase                  = new cl_iptubase;
 $clpropri                    = new cl_propri;
 $clpromitente                = new cl_promitente;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $claverbaformalpartilha->rotulo->label();
 $claverbaescritura->rotulo->label();

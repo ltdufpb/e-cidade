@@ -34,8 +34,8 @@ include(modification("classes/db_cgmcorreto_classe.php"));
 require_once(modification('libs/db_utils.php'));
 $oGet = db_utils::postMemory($_GET);
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcgmduplo = new rotulocampo();
 $clcgmduplo->label("z10_codigo");
 $clcgmduplo->label("z10_numcgm");
@@ -105,7 +105,7 @@ $clcgmcorreto = new cl_cgmcorreto();
 	      	
 	      	  if ( ( isset($dtinivlrg) && !empty($dtinivlrg)) && ( isset($dtfimvlrg) && empty($dtfimvlrg)) ){
             
-            $sDtini    = implode("-", array_reverse(explode("/",$dtinivlrg)));
+            $sDtini    = implode("-", array_reverse(explode("/",(string) $dtinivlrg)));
 
             $sWhere .= "{$sAnd} z10_data >= '$sDtini' ";
             $sAnd = " and ";
@@ -119,7 +119,7 @@ $clcgmcorreto = new cl_cgmcorreto();
           
             if ( ( isset($dtinivlrg) && empty($dtinivlrg)) && ( isset($dtfimvlrg) && !empty($dtfimvlrg)) ){
             
-            $sDtfim    = implode("-", array_reverse(explode("/",$dtfimvlrg)));
+            $sDtfim    = implode("-", array_reverse(explode("/",(string) $dtfimvlrg)));
 
             $sWhere .= "{$sAnd} z10_data <= '$sDtfim' ";
             $sAnd = " and ";
@@ -132,8 +132,8 @@ $clcgmcorreto = new cl_cgmcorreto();
 	      	
 	      	if ( ( isset($dtinivlrg) && !empty($dtinivlrg)) && ( isset($dtfimvlrg) && !empty($dtfimvlrg)) ){
 	      		
-	      		$sDtini    = implode("-", array_reverse(explode("/",$dtinivlrg)));
-	      		$sDtfim    = implode("-", array_reverse(explode("/",$dtfimvlrg)));
+	      		$sDtini    = implode("-", array_reverse(explode("/",(string) $dtinivlrg)));
+	      		$sDtfim    = implode("-", array_reverse(explode("/",(string) $dtfimvlrg)));
 	      		
 	      		$sWhere .= "{$sAnd} z10_data between '$sDtini' and '$sDtfim' ";
             $sAnd = " and ";

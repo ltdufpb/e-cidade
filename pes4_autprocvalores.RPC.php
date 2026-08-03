@@ -66,7 +66,7 @@ try {
  		 }
  		
  		$iAnoUsu = $oParam->iAnoUsu;
- 		$iMesUsu = str_pad($oParam->iMesUsu,2,'0',STR_PAD_LEFT); 
+ 		$iMesUsu = str_pad((string) $oParam->iMesUsu,2,'0',STR_PAD_LEFT); 
 
     // Verifica se já existe sefip gerado para a competência informada
     $sWhereVerificaSefip  = "        rh90_ativa is true       ";
@@ -93,7 +93,7 @@ try {
 	   $iFev = 28;
 	  }
 	
-	  $aUltimoDia = array("01"=>"31",
+	  $aUltimoDia = ["01"=>"31",
 	                      "02"=>$iFev,
 	                      "03"=>"31",
 	                      "04"=>"30",
@@ -104,7 +104,7 @@ try {
 	                      "09"=>"30",
 	                      "10"=>"31",
 	                      "11"=>"30",
-	                      "12"=>"31");
+	                      "12"=>"31"];
  		
  		$sDataCompFim = "{$iAnoUsu}-{$iMesUsu}-".$aUltimoDia[$iMesUsu];
  		

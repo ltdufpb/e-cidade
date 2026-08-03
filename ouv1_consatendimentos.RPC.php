@@ -53,25 +53,25 @@ switch ($oParam->acao) {
     $sCampos .= " ov01_dataatend                                      ";
     
   	$sWhereBuscaAtendimentos = "";
-  	if (trim($oParam->data_inicial) != "") {
+  	if (trim((string) $oParam->data_inicial) != "") {
   		$sWhereBuscaAtendimentos .=  " AND ov01_dataatend >= '{$oParam->data_inicial}' ";
   	}
-  	if (trim($oParam->data_final) != "") {
+  	if (trim((string) $oParam->data_final) != "") {
       $sWhereBuscaAtendimentos .=  " AND ov01_dataatend <= '{$oParam->data_final}' ";
     }
-    if (trim($oParam->tipoProcesso) != "") {
+    if (trim((string) $oParam->tipoProcesso) != "") {
     	$sWhereBuscaAtendimentos .= " AND ov01_tipoprocesso = {$oParam->tipoProcesso} ";
     }
     $iAno = db_getsession("DB_anousu");
-    if (trim($oParam->anoAtendimento) != "" && !empty($oParam->anoAtendimento)) {
+    if (trim((string) $oParam->anoAtendimento) != "" && !empty($oParam->anoAtendimento)) {
       $iAno = $oParam->anoAtendimento;
     }
-    if (trim($oParam->numeroAtendimento) != "") {
+    if (trim((string) $oParam->numeroAtendimento) != "") {
       
       $sWhereBuscaAtendimentos .= " AND ov01_numero = {$oParam->numeroAtendimento} ";
       $sWhereBuscaAtendimentos .= "AND ov01_anousu = {$iAno}";
     }
-    if (trim($oParam->numeroProcesso) != "") {
+    if (trim((string) $oParam->numeroProcesso) != "") {
     	$sWhereBuscaAtendimentos .= " AND ov09_protprocesso = {$oParam->numeroProcesso} ";
     }
   
@@ -89,7 +89,7 @@ switch ($oParam->acao) {
     } else {
     	
     	$oRetorno->status  = 0;
-    	$oRetorno->message = utf8_encode('Não houve retorno na consulta.');
+    	$oRetorno->message = mb_convert_encoding('Não houve retorno na consulta.', 'UTF-8', 'ISO-8859-1');
     }
     
     $oRetorno->resultados = db_utils::getCollectionByRecord($rsBuscaAtendimentos, false, false, true);

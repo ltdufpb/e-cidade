@@ -93,7 +93,7 @@ if(isset($opcao) && $opcao=="alterar"){
   </td>
   <td>
    <?php 
-   $x = array('S'=>'SIM','N'=>'NÃO');
+   $x = ['S'=>'SIM','N'=>'NÃO'];
    db_select('ed129_c_ativo',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -105,7 +105,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed129_i_codigo"=>@$ed129_i_codigo,"ed129_i_escola"=>@$ed129_i_escola,"ed18_c_nome"=>@$ed18_c_nome,"ed129_i_numinicio"=>@$ed129_i_numinicio,"ed129_i_numfinal"=>@$ed129_i_numfinal);
+   $chavepri= ["ed129_i_codigo"=>@$ed129_i_codigo,"ed129_i_escola"=>@$ed129_i_escola,"ed18_c_nome"=>@$ed18_c_nome,"ed129_i_numinicio"=>@$ed129_i_numinicio,"ed129_i_numfinal"=>@$ed129_i_numfinal];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clescola_sequencias->sql_query($ed129_i_codigo,"*","ed129_i_numinicio");
    $cliframe_alterar_excluir->campos  ="ed129_i_codigo,ed129_i_escola,ed18_c_nome,ed129_i_numinicio,ed129_i_numfinal,ed129_c_ativo";

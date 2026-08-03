@@ -60,8 +60,8 @@ $clempageconfgera = new cl_empageconfgera;
 $clempagemod      = new cl_empagemod;
 $cldb_bancos      = new cl_db_bancos;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = false;
@@ -79,7 +79,7 @@ if(isset($mostra)){
   
   db_inicio_transacao();
   $sqlerro = false;
-  $arr_movimentos = split(",",$movimentos);  
+  $arr_movimentos = preg_split("#,#m",$movimentos);  
   for($i=0; $i < sizeof($arr_movimentos); $i++) {
   	
     $movimento = $arr_movimentos[$i];
@@ -167,7 +167,7 @@ if(isset($mostra)){
 	 ";
 //	 die($sql);
     $result  =  @db_query($sql);
-    $numrows =  @pg_numrows($result);
+    $numrows =  @pg_num_rows($result);
     if($numrows==0){
       $sqlerro =true;
       $erro_msg = "Erro. Contate suporte";
@@ -181,8 +181,8 @@ if(isset($mostra)){
 
 
       if($sqlerro == false){
-	$arr_data  = split("-",$e87_data);
-	$arr_datap = split("-",$e87_dataproc);
+	$arr_data  = preg_split("#\\-#m",(string) $e87_data);
+	$arr_datap = preg_split("#\\-#m",(string) $e87_dataproc);
 	$data    =  $arr_data[2].$arr_data[1].$arr_data[0];
 	$dat_cred = $arr_datap[2].$arr_datap[1].$arr_datap[0];
 	/// criar campo de sequencia do arquivo no empagetipo.
@@ -199,7 +199,7 @@ if(isset($mostra)){
 	}
 	
 	if($sqlerro == false){
-	
+
 	  if($banco == '001'){
 	    $dbanco = db_formatar('BANCO DO BRASIL','s',' ',30,'d',0);
 	  }else{
@@ -211,15 +211,15 @@ if(isset($mostra)){
 	  $dvconta_pre   = "0";
 	  $dvagconta_pre = "0";
 
-	  if(trim($c63_dvconta)!=""){
-	    $digitos = strlen($c63_dvconta);
+	  if(trim((string) $c63_dvconta)!=""){
+	    $digitos = strlen((string) $c63_dvconta);
 	    $dvconta_pre   = $c63_dvconta[0];
 	    if($digitos>1){
 	      $dvagconta_pre = $c63_dvconta[1];
 	    }
 	  }
-	  if(trim($c63_dvagencia)!=""){
-	    $digitos1 = strlen($c63_dvagencia);
+	  if(trim((string) $c63_dvagencia)!=""){
+	    $digitos1 = strlen((string) $c63_dvagencia);
 	    $dvagencia_pre   = $c63_dvagencia[0];
 	    if(isset($digitos) && $digitos==1){
 	      $dvagconta_pre = $c63_dvagencia[0];
@@ -231,7 +231,7 @@ if(isset($mostra)){
 
 	  $numero_dia = 2;
 	  $seq_arq = 1; 
-	  
+
 	  ///// HEADER DO ARQUIVO
 	  if($banco=="041"){
 	    $conta_pre   = db_formatar(str_replace('.','',str_replace('-','',$c63_conta.$dvconta_pre)),'s','0',10,'e',0);
@@ -241,14 +241,14 @@ if(isset($mostra)){
 	    $cllayout_BBBS->BSheaderA_009_017 = str_repeat(' ',9);
 	    $cllayout_BBBS->BSheaderA_018_018 = "2";	  
 	    $cllayout_BBBS->BSheaderA_019_032 = $cgc;
-	    $cllayout_BBBS->BSheaderA_033_037 = db_formatar(substr($convenio,0,5),'s',' ',5,'e',0);
+	    $cllayout_BBBS->BSheaderA_033_037 = db_formatar(substr((string) $convenio,0,5),'s',' ',5,'e',0);
 	    $cllayout_BBBS->BSheaderA_038_052 = str_repeat(' ',15);
 	    $cllayout_BBBS->BSheaderA_053_057 = $agencia_pre;
 	    $cllayout_BBBS->BSheaderA_058_058 = "0";
 	    $cllayout_BBBS->BSheaderA_059_061 = str_repeat('0',3);
 	    $cllayout_BBBS->BSheaderA_062_071 = $conta_pre;
 	    $cllayout_BBBS->BSheaderA_072_072 = "0";
-	    $cllayout_BBBS->BSheaderA_073_102 = db_formatar(substr(strtoupper($nomeinst),0,30),'s',' ',30,'e',0);
+	    $cllayout_BBBS->BSheaderA_073_102 = db_formatar(substr(strtoupper((string) $nomeinst),0,30),'s',' ',30,'e',0);
 	    $cllayout_BBBS->BSheaderA_103_132 = $dbanco;
 	    $cllayout_BBBS->BSheaderA_133_142 = str_repeat(' ',10);
 	    $cllayout_BBBS->BSheaderA_143_143 = "1";
@@ -262,7 +262,7 @@ if(isset($mostra)){
 	    $cllayout_BBBS->BSheaderA_212_240 = str_repeat(' ',29);
 	    $cllayout_BBBS->geraHEADERArqBS();
 	  }else if($banco=="001"){
-	    $conveniobb  = db_formatar(trim($convenio),'s','0',9,'e',0);
+	    $conveniobb  = db_formatar(trim((string) $convenio),'s','0',9,'e',0);
         $conveniobb .= '0126';
 	    $conta_pre   = db_formatar(str_replace('.','',str_replace('-','',$c63_conta)),'s','0',12,'e',0);
 	    $cllayout_BBBS->BBheaderA_001_003 = $banco;
@@ -277,7 +277,7 @@ if(isset($mostra)){
 	    $cllayout_BBBS->BBheaderA_059_070 = $conta_pre;
 	    $cllayout_BBBS->BBheaderA_071_071 = $dvconta_pre;
 	    $cllayout_BBBS->BBheaderA_072_072 = ' ';
-	    $cllayout_BBBS->BBheaderA_073_102 = db_formatar(substr(strtoupper($nomeinst),0,30),'s',' ',30,'e',0);
+	    $cllayout_BBBS->BBheaderA_073_102 = db_formatar(substr(strtoupper((string) $nomeinst),0,30),'s',' ',30,'e',0);
 	    $cllayout_BBBS->BBheaderA_103_132 = $dbanco;
 	    $cllayout_BBBS->BBheaderA_133_142 = str_repeat(' ',10);
 	    $cllayout_BBBS->BBheaderA_143_143 = "1";
@@ -296,7 +296,7 @@ if(isset($mostra)){
 	    $cllayout_BBBS->geraHEADERArqBB();
 	  }  
 	  ///// FINAL HEADER DO ARQUIVO
-	  
+
 	  $seq_header   = 0;
 	  $xconta       = '';
 	  $registro     = 1;
@@ -326,7 +326,7 @@ if(isset($mostra)){
 		}
 		$tipopag = "03";
 	      }
-	      
+
 	      if($seq_header != 0){
 		///// TRAILLER DO LOTE
 		$cllayout_BBBS->BBBStraillerL_001_003 = $banco; 
@@ -353,15 +353,15 @@ if(isset($mostra)){
 	      $dvconta_pre   = "0";
 	      $dvagconta_pre = "0";
 
-	      if(trim($c63_dvconta)!=""){
-		$digitos = strlen($c63_dvconta);
+	      if(trim((string) $c63_dvconta)!=""){
+		$digitos = strlen((string) $c63_dvconta);
 		$dvconta_pre   = $c63_dvconta[0];
 		if($digitos>1){
 		  $dvagconta_pre = $c63_dvconta[1];
 		}
 	      }
-	      if(trim($c63_dvagencia)!=""){
-		$digitos1 = strlen($c63_dvagencia);
+	      if(trim((string) $c63_dvagencia)!=""){
+		$digitos1 = strlen((string) $c63_dvagencia);
 		$dvagencia_pre   = $c63_dvagencia[0];
 		if(isset($digitos) && $digitos==1){
 		  $dvagconta_pre = $c63_dvagencia[0];
@@ -370,7 +370,7 @@ if(isset($mostra)){
 		  }
 		}
 	      }
-	      
+
 	      // HEADER DO LOTE
 	      if($banco=="041"){
 		$conta_pre   = db_formatar(str_replace('.','',str_replace('-','',$c63_conta.$dvconta_pre)),'s','0',10,'e',0);
@@ -384,18 +384,18 @@ if(isset($mostra)){
 		$cllayout_BBBS->BSheaderL_017_017 = ' ';
 		$cllayout_BBBS->BSheaderL_018_018 = '2'; 
 		$cllayout_BBBS->BSheaderL_019_032 = $cgc;
-		$cllayout_BBBS->BSheaderL_033_037 = db_formatar(substr($convenio,0,5),'s',' ',5,'e',0);
+		$cllayout_BBBS->BSheaderL_033_037 = db_formatar(substr((string) $convenio,0,5),'s',' ',5,'e',0);
 		$cllayout_BBBS->BSheaderL_038_052 = str_repeat(' ',15);
 		$cllayout_BBBS->BSheaderL_053_057 = $agencia_pre;
 		$cllayout_BBBS->BSheaderL_058_061 = str_repeat('0',4);
 		$cllayout_BBBS->BSheaderL_062_071 = $conta_pre;
 		$cllayout_BBBS->BSheaderL_072_072 = " ";
-		$cllayout_BBBS->BSheaderL_073_102 = substr(strtoupper($nomeinst),0,30);
+		$cllayout_BBBS->BSheaderL_073_102 = substr(strtoupper((string) $nomeinst),0,30);
 		$cllayout_BBBS->BSheaderL_103_142 = str_repeat(' ',40);
-		$cllayout_BBBS->BSheaderL_143_172 = db_formatar(strtoupper($ender),'s',' ',30,'d',0);
+		$cllayout_BBBS->BSheaderL_143_172 = db_formatar(strtoupper((string) $ender),'s',' ',30,'d',0);
 		$cllayout_BBBS->BSheaderL_173_177 = db_formatar($numero,'s',' ',5,'e',0);
 		$cllayout_BBBS->BSheaderL_178_192 = str_repeat(' ',15); 
-		$cllayout_BBBS->BSheaderL_193_212 = db_formatar(strtoupper($munic),'s',' ',20,'d',0);
+		$cllayout_BBBS->BSheaderL_193_212 = db_formatar(strtoupper((string) $munic),'s',' ',20,'d',0);
 		$cllayout_BBBS->BSheaderL_213_220 = db_formatar($cep,'s',' ',8,'e',0);
 		$cllayout_BBBS->BSheaderL_221_222 = $uf;
 		$cllayout_BBBS->BSheaderL_223_224 = str_repeat(' ',2);
@@ -408,7 +408,7 @@ if(isset($mostra)){
 		  $com = db_formatar(substr($cep,5,$tamanho),'s',' ',3,'d',0);
 		  $cep = substr($cep,0,5);
 		}
-        $conveniobb  = db_formatar(trim($convenio),'s','0',9,'e',0);
+        $conveniobb  = db_formatar(trim((string) $convenio),'s','0',9,'e',0);
         $conveniobb .= '0126';
 		$cllayout_BBBS->BBheaderL_001_003 = $banco;
 		$cllayout_BBBS->BBheaderL_004_007 = db_formatar($seq_header,'s','0',4,'e',0);
@@ -426,12 +426,12 @@ if(isset($mostra)){
 		$cllayout_BBBS->BBheaderL_059_070 = $conta_pre;
 		$cllayout_BBBS->BBheaderL_071_071 = $dvconta_pre;
 		$cllayout_BBBS->BBheaderL_072_072 = ' ';
-		$cllayout_BBBS->BBheaderL_073_102 = substr(strtoupper($nomeinst),0,30);
+		$cllayout_BBBS->BBheaderL_073_102 = substr(strtoupper((string) $nomeinst),0,30);
 		$cllayout_BBBS->BBheaderL_103_142 = str_repeat(' ',40);
-		$cllayout_BBBS->BBheaderL_143_172 = db_formatar(strtoupper($ender),'s',' ',30,'d',0);
+		$cllayout_BBBS->BBheaderL_143_172 = db_formatar(strtoupper((string) $ender),'s',' ',30,'d',0);
 		$cllayout_BBBS->BBheaderL_173_177 = db_formatar($numero,'s',' ',5,'e',0);
 		$cllayout_BBBS->BBheaderL_178_192 = str_repeat(' ',15); 
-		$cllayout_BBBS->BBheaderL_193_212 = db_formatar(strtoupper(trim($munic)),'s',' ',20,'d',0);	      
+		$cllayout_BBBS->BBheaderL_193_212 = db_formatar(strtoupper(trim((string) $munic)),'s',' ',20,'d',0);	      
 		$cllayout_BBBS->BBheaderL_213_217 = db_formatar($cep,'s',' ',5,'e',0);
 		$cllayout_BBBS->BBheaderL_218_220 = $com;
 		$cllayout_BBBS->BBheaderL_221_222 = $uf;
@@ -441,16 +441,16 @@ if(isset($mostra)){
 	      }
 	      // FINAL HEADER DO LOTE
 	    }
-	    
+
 	    $seq_detalhe += 1;
 	    $tot_valor    = 0;
 	    $numero_lote  = 1;
-	    
-	    $tama =  strlen($pc63_conta);
+
+	    $tama =  strlen((string) $pc63_conta);
 	    if($tama>11){
-	      $pc63_conta = substr($pc63_conta,($tama-11));
+	      $pc63_conta = substr((string) $pc63_conta,($tama-11));
 	    }
-	    
+
 	    if($tam == 14){
 	      $conf = 2;
 	      $cgccpf = $z01_cgccpf;
@@ -461,7 +461,7 @@ if(isset($mostra)){
 	      $conf = 3;
 	      $cgccpf= str_repeat('0',14);
 	    }
-	    
+
 	    $registro += 1;
 	    $compensacao = "   ";
 	    if($pc63_banco == $banco || $valorori<5000){
@@ -477,21 +477,21 @@ if(isset($mostra)){
 	    }
 
 	    $agencia_fav = $pc63_agencia;
-	    $conta_fav   = db_formatar(str_replace('.','',str_replace('-','',trim($pc63_conta))),'s','0',12,'e',0);
-	    
+	    $conta_fav   = db_formatar(str_replace('.','',str_replace('-','',trim((string) $pc63_conta))),'s','0',12,'e',0);
+
 	    $dvagencia_fav = "0";
 	    $dvconta_fav   = "0";
 	    $dvagconta_fav = "0";
 
-	    if(trim($pc63_conta_dig)!=""){
-	      $digitos2 = strlen($pc63_conta_dig);
+	    if(trim((string) $pc63_conta_dig)!=""){
+	      $digitos2 = strlen((string) $pc63_conta_dig);
 	      $dvconta_fav   = $pc63_conta_dig[0];
 	      if($digitos2>1){
 		$dvagconta_fav = $pc63_conta_dig[1];
 	      }
 	    }
-	    if(trim($pc63_agencia_dig)!=""){
-	      $digitos3 = strlen($pc63_agencia_dig);
+	    if(trim((string) $pc63_agencia_dig)!=""){
+	      $digitos3 = strlen((string) $pc63_agencia_dig);
 	      $dvagencia_fav   = $pc63_agencia_dig[0];
 	      if(isset($digitos2) && $digitos2==1){
 		$dvagconta_fav = $pc63_agencia_dig[0];
@@ -504,7 +504,7 @@ if(isset($mostra)){
 	    if($banco == '001' && $pc63_banco == '001'){
 	      $dvagconta_fav = '0';
 	    }
-	     
+
 	    // REGISTROS 
 	    if($banco=="041"){
 	      $cllayout_BBBS->BSregist_001_003 = $banco; 
@@ -520,7 +520,7 @@ if(isset($mostra)){
 	      $cllayout_BBBS->BSregist_029_029 = "0"; 
 	      $cllayout_BBBS->BSregist_030_042 = $conta_fav.$dvconta_fav;
 	      $cllayout_BBBS->BSregist_043_043 = " "; 
-	      $cllayout_BBBS->BSregist_044_073 = db_formatar(str_replace("-",'',substr($z01_nome,0,30)),'s',' ',30,'d',0);
+	      $cllayout_BBBS->BSregist_044_073 = db_formatar(str_replace("-",'',substr((string) $z01_nome,0,30)),'s',' ',30,'d',0);
 	      $cllayout_BBBS->BSregist_074_088 = db_formatar($e90_codmov,'s','0',15,'d',0);
 	      $cllayout_BBBS->BSregist_089_093 = "00005";
 	      $cllayout_BBBS->BSregist_094_101 = $dat_cred;
@@ -557,7 +557,7 @@ if(isset($mostra)){
 	      $cllayout_BBBS->BBregistA_030_041 = $conta_fav;
 	      $cllayout_BBBS->BBregistA_042_042 = $dvconta_fav; 
 	      $cllayout_BBBS->BBregistA_043_043 = $dvagconta_fav;
-	      $cllayout_BBBS->BBregistA_044_073 = db_formatar(str_replace("-",'',substr($z01_nome,0,30)),'s',' ',30,'d',0);
+	      $cllayout_BBBS->BBregistA_044_073 = db_formatar(str_replace("-",'',substr((string) $z01_nome,0,30)),'s',' ',30,'d',0);
 	      $cllayout_BBBS->BBregistA_074_093 = db_formatar($e90_codmov,'s','0',20,'d',0);
 	      $cllayout_BBBS->BBregistA_094_101 = $dat_cred;
 	      $cllayout_BBBS->BBregistA_102_104 = "BRL"; 
@@ -584,11 +584,11 @@ if(isset($mostra)){
 	      $cllayout_BBBS->BBregistB_015_017 = str_repeat(' ',3);
 	      $cllayout_BBBS->BBregistB_018_018 = $conf;
 	      $cllayout_BBBS->BBregistB_019_032 = $cgccpf;
-	      $cllayout_BBBS->BBregistB_033_062 = db_formatar(substr($z01_ender,0,30),'s',' ',30,'d',0);
+	      $cllayout_BBBS->BBregistB_033_062 = db_formatar(substr((string) $z01_ender,0,30),'s',' ',30,'d',0);
 	      $cllayout_BBBS->BBregistB_063_067 = db_formatar($z01_numero,'s','0',5,'e',0);
-	      $cllayout_BBBS->BBregistB_068_082 = db_formatar(substr($z01_compl,0,30),'s',' ',15,'d',0);
-	      $cllayout_BBBS->BBregistB_083_097 = db_formatar(substr($z01_bairro,0,30),'s',' ',15,'d',0);
-	      $cllayout_BBBS->BBregistB_098_117 = db_formatar(substr($z01_munic,0,20),'s',' ',20,'d',0); 
+	      $cllayout_BBBS->BBregistB_068_082 = db_formatar(substr((string) $z01_compl,0,30),'s',' ',15,'d',0);
+	      $cllayout_BBBS->BBregistB_083_097 = db_formatar(substr((string) $z01_bairro,0,30),'s',' ',15,'d',0);
+	      $cllayout_BBBS->BBregistB_098_117 = db_formatar(substr((string) $z01_munic,0,20),'s',' ',20,'d',0); 
 	      $cllayout_BBBS->BBregistB_118_122 = substr($z01_cep,0,5);
 	      $cllayout_BBBS->BBregistB_123_125 = substr($z01_cep,5,3);
 	      $cllayout_BBBS->BBregistB_126_127 = db_formatar($z01_uf,'s',' ',2,'d',0);
@@ -606,8 +606,8 @@ if(isset($mostra)){
 	    $valor_header += $valor;
 	    // FINAL REGISTROS 
 	  }
-	  
-	    
+
+
 	  ///// TRAILLER DO LOTE
 	  $cllayout_BBBS->BBBStraillerL_001_003 = $banco; 
 	  $cllayout_BBBS->BBBStraillerL_004_007 = db_formatar($seq_header,'s','0',4,'e',0);
@@ -622,7 +622,7 @@ if(isset($mostra)){
 	  $valor_header = 0;
 	  $registro += 1;
 	  ///// FINAL DO TRAILLER DO LOTE
-	  
+
 
 	  ////  TRAILLER DO ARQUIVO
 	  $registro += 1;

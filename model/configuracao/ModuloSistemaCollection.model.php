@@ -37,7 +37,7 @@ class ModuloSistemaCollection {
    * Array de instâncias de ModuloSistema
    * @var array
    */
-  protected static $aModuloSistema = array();
+  protected static $aModuloSistema = [];
 
   /**
    * Adiciona uma instância de ModuloSistema ao array

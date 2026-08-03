@@ -68,7 +68,7 @@
                <td>
                  <?php
                    if(DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
-                     $aTiposFolha = array(0=>'Selecione');
+                     $aTiposFolha = [0=>'Selecione'];
                      if(FolhaPagamentoSalario::hasFolhaAberta()) {
                        $aTiposFolha[FolhaPagamento::TIPO_FOLHA_SALARIO]      ='Salário';
                      } elseif(FolhaPagamentoSuplementar::hasFolhaAberta()){
@@ -90,7 +90,7 @@
                </td>
                <td>
                  <?php
-                   $aComportamento = array('S'=>'Somar', 'T'=>'Substituir');
+                   $aComportamento = ['S'=>'Somar', 'T'=>'Substituir'];
                    db_select('comportamento', $aComportamento, '', 1, "", "", "");
                  ?>
                </td>

@@ -40,13 +40,6 @@ class cdaLivro {
   protected $iNumeroLivro    = null;
   
   /**
-   * Codigo da instituicao
-   *
-   * @var integer
-   */
-  protected $iInstituicao    = null;
-  
-  /**
    * codigo sequencial do livro
    *
    * @var integer
@@ -77,14 +70,16 @@ class cdaLivro {
   /**
    * Livros de Certidoes de divida ativa
    *
-   * @param instituicao $iInstit código da instituicao
+   * @param instituicao $iInstituicao código da instituicao
    * @param integer $numeroLivro numero do livro
    */
-  public function __construct($iInstit, $numeroLivro) {
+  public function __construct(/**
+   * Codigo da instituicao
+   */
+  protected $iInstituicao, $numeroLivro) {
 
      require_once(modification("classes/db_certidlivro_classe.php"));
      $this->oDaoCertidLivro = new cl_certidlivro;
-     $this->iInstituicao    = $iInstit;
      
      /**
       * Verificamos se o livro existe para a instituição.
@@ -261,10 +256,10 @@ class cdaLivro {
    if (isset($oParams->datainicial) && $oParams->datainicial != "") {
       
       $sWhere .= $sWhere != ""?" and ":"";
-      $oParams->datainicial = implode("-",array_reverse(explode("/", $oParams->datainicial)));
+      $oParams->datainicial = implode("-",array_reverse(explode("/", (string) $oParams->datainicial)));
       if (isset($oParams->datafinal) && $oParams->datafinal != "") {
         
-        $oParams->datafinal = implode("-",array_reverse(explode("/", $oParams->datafinal)));
+        $oParams->datafinal = implode("-",array_reverse(explode("/", (string) $oParams->datafinal)));
         $sWhere  .= " v13_dtemis between '{$oParams->datainicial}' and '{$oParams->datafinal}'";
       } else {
         $sWhere  .= " v13_dtemis =  '{$oParams->datainicial}'";
@@ -377,13 +372,13 @@ class cdaLivro {
    $sSqlDadosLivro .= "          nome ";
    $sSqlDadosLivro .= " order by v26_numerofolha, v13_certid";
    $rsDadosLivro    = $this->oDaoCertidLivro->sql_record($sSqlDadosLivro);
-   $aDadosLivro     = array();
+   $aDadosLivro     = [];
    if ($this->oDaoCertidLivro->numrows > 0) {
 
       for ($i = 0; $i < $this->oDaoCertidLivro->numrows; $i++) {
 
         $oDadosCda = db_utils::fieldsMemory($rsDadosLivro, $i);
-        $aOrigem   = explode("|", $oDadosCda->nome);
+        $aOrigem   = explode("|", (string) $oDadosCda->nome);
         if ($aOrigem[2] != 0) {
           
           $oDadosCda->origemdebito     = "Matrícula {$aOrigem[2]}";     
@@ -415,7 +410,7 @@ class cdaLivro {
    */
   public function detalhaCDA ($iCda) {
     
-    $aItensCDa     = array();
+    $aItensCDa     = [];
     $sSqlDadosCda  = "    SELECT v13_certid, ";
     $sSqlDadosCda .= "           v13_dtemis, ";
     $sSqlDadosCda .= "           v01_proced, ";

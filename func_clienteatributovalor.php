@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_clienteatributovalor_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clclienteatributovalor = new cl_clienteatributovalor;
 $clclienteatributovalor->rotulo->label("at94_sequencial");
 $clclienteatributovalor->rotulo->label("at94_valor");
@@ -98,9 +98,9 @@ $clclienteatributovalor->rotulo->label("at94_valor");
         }else{
            $sql = $clclienteatributovalor->sql_query("",$campos,"at94_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at94_valor)){
-          $repassa = array("chave_at94_sequencial"=>$chave_at94_sequencial,"chave_at94_valor"=>$chave_at94_valor);
+          $repassa = ["chave_at94_sequencial"=>$chave_at94_sequencial,"chave_at94_valor"=>$chave_at94_valor];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

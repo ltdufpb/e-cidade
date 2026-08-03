@@ -23,11 +23,11 @@ class M8644AutorizacaoHorasExtras extends PostgresMigration
 
   public function adicionarCampoPontoEletronicoConfiguracoes() {
 
-    $tabela = $this->table('pontoeletronicoconfiguracoesgerais', array('schema' => 'recursoshumanos'));
+    $tabela = $this->table('pontoeletronicoconfiguracoesgerais', ['schema' => 'recursoshumanos']);
 
     if(!$tabela->hasColumn('rh200_autorizahoraextra')) {
 
-      $tabela->addColumn('rh200_autorizahoraextra', 'boolean', array('default' => true))
+      $tabela->addColumn('rh200_autorizahoraextra', 'boolean', ['default' => true])
         ->save();
     }
 
@@ -35,7 +35,7 @@ class M8644AutorizacaoHorasExtras extends PostgresMigration
 
   public function removerCampoPontoEletronicoConfiguracoes() {
 
-    $tabela = $this->table('pontoeletronicoconfiguracoesgerais', array('schema' => 'recursoshumanos'));
+    $tabela = $this->table('pontoeletronicoconfiguracoesgerais', ['schema' => 'recursoshumanos']);
 
     if($tabela->hasColumn('rh200_autorizahoraextra')) {
 
@@ -52,9 +52,9 @@ class M8644AutorizacaoHorasExtras extends PostgresMigration
 
     if(empty($naturezasTipoAssentamentos)) {
 
-      $this->table('naturezatipoassentamento', array('schema'=>'pessoal'))
-        ->insert(array('rh159_sequencial', 'rh159_descricao'), array(array(7, 'Autorização H.E.')
-        ))->saveData();
+      $this->table('naturezatipoassentamento', ['schema'=>'pessoal'])
+        ->insert(['rh159_sequencial', 'rh159_descricao'], [[7, 'Autorização H.E.']
+        ])->saveData();
     }
 
     $this->execute("SELECT setval('naturezatipoassentamento_rh159_sequencial_seq', (SELECT max (rh159_sequencial) FROM naturezatipoassentamento))");

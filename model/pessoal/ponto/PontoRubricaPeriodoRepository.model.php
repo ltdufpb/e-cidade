@@ -103,11 +103,9 @@ class PontoRubricaPeriodoRepository extends BaseClassRepository {
       throw new DBException("Ocorreu um erro ao buscar as rubricas por servidor.");
     }
 
-    $aRubricas = array();
+    $aRubricas = [];
 
-    $aRubricas = db_utils::makeCollectionFromRecord($rsPontoSalarioDataLimite, function ($oDados) use ($oRepository) {
-      return $oRepository->make($oDados->rh183_sequencial);
-    });
+    $aRubricas = db_utils::makeCollectionFromRecord($rsPontoSalarioDataLimite, fn($oDados) => $oRepository->make($oDados->rh183_sequencial));
 
     return $aRubricas;
   }
@@ -122,10 +120,10 @@ class PontoRubricaPeriodoRepository extends BaseClassRepository {
 
     $oRepository = PontoRubricaPeriodoRepository::getInstance();
 
-    $aWhere = array(
+    $aWhere = [
       "rh183_matricula = {$oServidor->getMatricula()}",
       "rh183_rubrica   = '{$oRubrica->getCodigo()}'",
-    );
+    ];
     $sWhere = implode(" and ", $aWhere);
     $oDaoPontoSalarioDataLimite = new cl_pontosalariodatalimite();
 
@@ -142,9 +140,7 @@ class PontoRubricaPeriodoRepository extends BaseClassRepository {
       return null;
     }
     $oRubricas = null;
-    $oRubricas = db_utils::makeFromRecord($rsPontoSalarioDataLimite, function ($oDados) use ($oRepository) {
-      return $oRepository->make($oDados->rh183_sequencial);
-    }, 0);
+    $oRubricas = db_utils::makeFromRecord($rsPontoSalarioDataLimite, fn($oDados) => $oRepository->make($oDados->rh183_sequencial), 0);
 
     return $oRubricas;
   }

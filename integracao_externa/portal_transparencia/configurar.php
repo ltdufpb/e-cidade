@@ -58,22 +58,22 @@
 
     $aIniFile = parse_ini_file('libs/db_config.ini');
 
-    $conf = array(
-      'Origem'     => array(
+    $conf = [
+      'Origem'     => [
         'host'     => $aIniFile['ConPrefeitura_host'],
         'port'     => $aIniFile['ConPrefeitura_port'],
         'database' => $aIniFile['ConPrefeitura_dbname'],
         'login'    => $aIniFile['ConPrefeitura_user'],
         'password' => $aIniFile['ConPrefeitura_password']
-      ),
-      'Destino' => array(
+      ],
+      'Destino' => [
         'host'     => $aIniFile['ConDestino_host'],
         'port'     => $aIniFile['ConDestino_port'],
         'database' => $aIniFile['ConDestino_dbname'],
         'login'    => $aIniFile['ConDestino_user'],
         'password' => $aIniFile['ConDestino_password']
-      )
-    );
+      ]
+    ];
 
     /**
      * libs/config.ini

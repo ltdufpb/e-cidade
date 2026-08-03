@@ -64,12 +64,12 @@ $clcfautent = new cl_cfautent;
 $cldb_bancos = new cl_db_bancos;
 $clcaiparametro = new cl_caiparametro;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao  = 1;
 $db_botao  = false;
 $lLiberado = true;
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
 
 // 
 $verifica_cheques_duplicados = false; // permite duplicação de cheques, sem verificação de duplicidade
@@ -88,7 +88,7 @@ db_fieldsmemory($result00, 0);
 $resu = $clcfautent->sql_record($clcfautent->sql_query_file(null, "k11_tipoimpcheque,k11_portaimpcheque,k11_tesoureiro as tesoureiro","","k11_ipterm='".db_getsession("DB_ip")."' and k11_instit=".db_getsession("DB_instit")));
 if($clcfautent->numrows > 0) {
   db_fieldsmemory($resu, 0);
-  if(trim($tesoureiro) == ""){
+  if(trim((string) $tesoureiro) == ""){
     $mensagem_mostra = "Preencha o Nome/cargo no cadastro de autenticadoras.";
     $lLiberado = false;
   }
@@ -98,7 +98,7 @@ if($clcfautent->numrows > 0) {
 }
 
 $iTipoControleRetencaoMesAnterior = 0;
-$aParametrosEmpenho = db_stdClass::getParametro("empparametro",array(db_getsession("DB_anousu")));
+$aParametrosEmpenho = db_stdClass::getParametro("empparametro",[db_getsession("DB_anousu")]);
 if (count($aParametrosEmpenho) > 0) {
   $iTipoControleRetencaoMesAnterior = $aParametrosEmpenho[0]->e30_retencaomesanterior;
 }

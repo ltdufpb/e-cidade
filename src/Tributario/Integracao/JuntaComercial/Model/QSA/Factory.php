@@ -31,15 +31,9 @@ abstract class Factory
 {
   public static function getInstance($tipoRelacionamento, $parametros)
   {
-    switch ($tipoRelacionamento) {
-      
-      case Contador::TIPO_RELACIONAMENTO:
-        return new Contador($parametros['cgm'], $tipoRelacionamento);
-        break;
-
-      default :
-        return new Socio($parametros['cgm'], $tipoRelacionamento, $parametros['valor_capital']);
-        break;
-    }
+    return match ($tipoRelacionamento) {
+        Contador::TIPO_RELACIONAMENTO => new Contador($parametros['cgm'], $tipoRelacionamento),
+        default => new Socio($parametros['cgm'], $tipoRelacionamento, $parametros['valor_capital']),
+    };
   }
 }

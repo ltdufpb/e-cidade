@@ -40,7 +40,7 @@ $db_opcao = 1;
 $db_botao = true;
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 ?>
 <html>

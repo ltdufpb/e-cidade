@@ -41,19 +41,13 @@ class EstatisticaAlunosMatriculados {
   protected $oCalendario;
 
   /**
-   * Código das Etapas Selecionadas
-   * @var array
-   */
-  private $aEtapa;
-
-  /**
    * Array todas as informações para montar a tela.
    * Contém um array contendo os Ensinos.
    * Contém um array contendo os dados da turma.
    * Contém um array com os resultado dos cálculos feito por turma.
    * @var array
    */
-  protected $aEnsino = array();
+  protected $aEnsino = [];
 
 
   /**
@@ -69,10 +63,12 @@ class EstatisticaAlunosMatriculados {
    * @param array      $aEtapa
    * @param Escola     $oEscola
    */
-    protected function __construct( Calendario $oCalendario, $aEtapa, Escola $oEscola ) {
+    protected function __construct( Calendario $oCalendario, /**
+     * Código das Etapas Selecionadas
+     */
+    private $aEtapa, Escola $oEscola ) {
 
     $this->oCalendario = $oCalendario;
-    $this->aEtapa      = $aEtapa;
     $this->oEscola     = $oEscola;
   }
 
@@ -84,7 +80,7 @@ class EstatisticaAlunosMatriculados {
   private function getTurmas(Etapa $oEtapa) {
 
     $aTurmaCalendarioEscola = TurmaRepository::getTurmaPorCalendarioEscola($this->oEscola, $this->oCalendario);
-    $aTurmasSelecionadas    = array();
+    $aTurmasSelecionadas    = [];
 
     foreach ( $aTurmaCalendarioEscola as $oTurma ) {
 
@@ -127,7 +123,7 @@ class EstatisticaAlunosMatriculados {
 /* FHSYS Capacidade da Turma (Sala) */
     $sSqlCapac = "select ed16_i_capacidade from turma inner join sala on ed57_i_sala = ed16_i_codigo where ed57_i_codigo = ".$oTurma->getCodigo();
     $rSqlCapac = db_query($sSqlCapac);
-    $capac     = pg_result($rSqlCapac,0,0);
+    $capac     = pg_fetch_result($rSqlCapac,0,0);
 /* FHSYS Capacidade da Turma (Sala) */
 
     $oEtapa       = EtapaRepository::getEtapaByCodigo($iCodigoEtapa);
@@ -168,7 +164,7 @@ $oRetorno->message = '';
      */
     if ($oEtapa->getEnsino()->isInfantil() && $oTurma->getTurno()->isIntegral() ) {
 
-      $aTurnoReferente = array();
+      $aTurnoReferente = [];
 
       foreach ($aVagas as $iReferencia => $iVagas) {
 
@@ -280,7 +276,7 @@ $oRetorno->message = '';
    */
   protected function getEstatisticaAlunosMatriculados() {
 
-    $aTurmasPercorridas = array();
+    $aTurmasPercorridas = [];
 
     foreach ($this->aEtapa as $iEtapa ) {
 
@@ -293,7 +289,7 @@ $oRetorno->message = '';
         $oEnsino                         = new stdClass();
         $oEnsino->iCodigo                = $oEtapa->getEnsino()->getCodigo();;
         $oEnsino->sNome                  = $oEtapa->getEnsino()->getNome();
-        $oEnsino->aEtapa                 = array();
+        $oEnsino->aEtapa                 = [];
         $oEnsino->iTotalMatriculaInicial = 0;
         $oEnsino->iTotalEvadidos         = 0;
         $oEnsino->iTotalCancelados       = 0;
@@ -312,7 +308,7 @@ $oRetorno->message = '';
       $oEtapaDados                         = new stdClass();
       $oEtapaDados->iCodigo                = $oEtapa->getCodigo();
       $oEtapaDados->sNome                  = $oEtapa->getNome();
-      $oEtapaDados->aTurmas                = array();
+      $oEtapaDados->aTurmas                = [];
       $oEtapaDados->iTotalMatriculaInicial = 0;
       $oEtapaDados->iTotalEvadidos         = 0;
       $oEtapaDados->iTotalCancelados       = 0;

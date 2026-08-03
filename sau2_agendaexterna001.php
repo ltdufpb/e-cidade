@@ -29,14 +29,14 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("libs/db_utils.php"));
 include(modification("classes/db_sau_agendaexterna_ext_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 set_time_limit(0);
 $clsau_agendaexterna = new cl_sau_agendaexterna_ext;
 $clsau_agendaexterna->rotulo->label();
 
-$ano           = substr( $pdia, 6, 4 );
-$mes           = substr( $pdia, 3, 2 );
-$dia           = substr( $pdia, 0, 2 );
+$ano           = substr( (string) $pdia, 6, 4 );
+$mes           = substr( (string) $pdia, 3, 2 );
+$dia           = substr( (string) $pdia, 0, 2 );
 $data = $ano."-".$mes."-".$dia;
 $tipoagenda= $s118_c_tipoagenda;
 if($tipoagenda=="C"){

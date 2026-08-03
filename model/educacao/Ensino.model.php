@@ -80,7 +80,7 @@ class Ensino {
    * Etapas do ensino
    * @var Etapas[]
    */
-  protected $aEtapas = array();
+  protected $aEtapas = [];
 
     /**
      * @var TipoEnsinoEnum
@@ -288,7 +288,7 @@ class Ensino {
       throw new DBException( _M( MENSAGEM_ENSINO . 'erro_buscar_termos', $oErro ) );
     }
 
-    $aTermos = array();
+    $aTermos = [];
     if ( $rsTermos && pg_num_rows($rsTermos) > 0 ) {
 
       $iLinhas = pg_num_rows($rsTermos);
@@ -304,8 +304,8 @@ class Ensino {
   /**
    * Retorna o Tipo de Ensino
    * @return integer
-   * @deprecated
    */
+  #[\Deprecated]
   public function getCodigoTipoEnsino() {
     return $this->iCodigoTipoEnsino;
   }
@@ -313,8 +313,8 @@ class Ensino {
   /**
    * Define o Tipo de Ensino
    * @param integer $iCodigoTipoEnsino
-   * @deprecated
    */
+  #[\Deprecated]
   public function setCodigoTipoEnsino( $iCodigoTipoEnsino ) {
     $this->iCodigoTipoEnsino = $iCodigoTipoEnsino;
   }
@@ -370,10 +370,10 @@ class Ensino {
      */
     public function toArray() {
 
-        return array(
+        return [
           "codigo" =>$this->iCodigo,
           "descricao" =>$this->sNome,
-        );
+        ];
     }
 
     /**

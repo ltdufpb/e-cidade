@@ -67,7 +67,7 @@ class AtributoDinamico extends \BaseClassRepository
         $rs = db_query($sql);
 
         $grupoAtributos = db_utils::getCollectionByRecord($rs);
-        $retorno = array();
+        $retorno = [];
 
         foreach ($grupoAtributos as $atributo) {
             $retorno[$atributo->atributo] = $atributo->valor;

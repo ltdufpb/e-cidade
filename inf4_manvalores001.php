@@ -36,7 +36,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 // dd(date('Y-m-d', db_getsession('DB_datausu')));
 $tod = 'f';
 $subsequentes = 'f';
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 db_postmemory($_SERVER);
 db_postmemory($_POST);

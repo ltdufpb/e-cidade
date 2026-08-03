@@ -72,10 +72,10 @@ db_input('o103_anousu',10,$Io103_anousu,true,'text',$db_opcao,"")
     </td>
     <td> 
     <?php 
-    $aTipos = array(
+    $aTipos = [
                      1 => "Planejamento",
                      3 => "CP 100% Reconhecida",
-                   );
+                   ];
     db_select('o103_pactovalorsaldotipo', $aTipos,true, $db_opcao);
     ?>
     </td>
@@ -159,7 +159,7 @@ function js_preenchepesquisa(chave){
   db_iframe_pactovalorsaldo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

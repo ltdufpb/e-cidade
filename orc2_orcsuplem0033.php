@@ -36,7 +36,7 @@ require(modification("classes/db_orcsuplem_classe.php"));  // declaração da clas
 $clorcsuplem = new cl_orcsuplem ; // instancia classe orcsuplem
 $clorcsuplem->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao=1;
 ?>
 

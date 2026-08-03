@@ -38,7 +38,7 @@ include(modification("classes/db_sepulturas_classe.php"));
 include(modification("classes/db_sepultamentos_classe.php"));
 include(modification("classes/db_sepulthist_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clossoario = new cl_ossoario;
 $clossoariopart = new cl_ossoariopart;
 $clsepulturas = new cl_sepulturas;

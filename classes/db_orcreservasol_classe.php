@@ -30,25 +30,25 @@
 class cl_orcreservasol
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $o82_sequencial = 0;
-    var $o82_codres = 0;
-    var $o82_solicitem = 0;
-    var $o82_pcdotac = 0;
+    public $o82_sequencial = 0;
+    public $o82_codres = 0;
+    public $o82_solicitem = 0;
+    public $o82_pcdotac = 0;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  o82_sequencial = int4 = Código Sequencial
                  o82_codres = int8 = Código
                  o82_solicitem = int4 = Item da solicitação
@@ -56,11 +56,11 @@ class cl_orcreservasol
                  ";
 
     //funcao construtor da classe
-    function cl_orcreservasol()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("orcreservasol");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -128,10 +128,10 @@ class cl_orcreservasol
                 $this->erro_status = "0";
                 return false;
             }
-            $this->o82_sequencial = pg_result($result, 0, 0);
+            $this->o82_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from orcreservasol_o82_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $o82_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $o82_sequencial)) {
                 $this->erro_sql = " Campo o82_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -165,7 +165,7 @@ class cl_orcreservasol
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Reservas de Solicitação ($this->o82_sequencial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Reservas de Solicitação já Cadastrado";
@@ -189,13 +189,13 @@ class cl_orcreservasol
         $resaco = $this->sql_record($this->sql_query_file($this->o82_sequencial));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,11965,'$this->o82_sequencial','I')");
-            $resac = db_query("insert into db_acount values($acount,781,11965,'','" . AddSlashes(pg_result($resaco, 0, 'o82_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,781,5368,'','" . AddSlashes(pg_result($resaco, 0, 'o82_codres')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,781,5369,'','" . AddSlashes(pg_result($resaco, 0, 'o82_solicitem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,781,11964,'','" . AddSlashes(pg_result($resaco, 0, 'o82_pcdotac')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,781,11965,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o82_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,781,5368,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o82_codres')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,781,5369,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o82_solicitem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+            $resac = db_query("insert into db_acount values($acount,781,11964,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o82_pcdotac')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
         return true;
     }
@@ -206,10 +206,10 @@ class cl_orcreservasol
         $this->atualizacampos();
         $sql = " update orcreservasol set ";
         $virgula = "";
-        if (trim($this->o82_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o82_sequencial"])) {
+        if (trim((string) $this->o82_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o82_sequencial"])) {
             $sql .= $virgula . " o82_sequencial = $this->o82_sequencial ";
             $virgula = ",";
-            if (trim($this->o82_sequencial) == null) {
+            if (trim((string) $this->o82_sequencial) == null) {
                 $this->erro_sql = " Campo Código Sequencial nao Informado.";
                 $this->erro_campo = "o82_sequencial";
                 $this->erro_banco = "";
@@ -219,10 +219,10 @@ class cl_orcreservasol
                 return false;
             }
         }
-        if (trim($this->o82_codres) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o82_codres"])) {
+        if (trim((string) $this->o82_codres) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o82_codres"])) {
             $sql .= $virgula . " o82_codres = $this->o82_codres ";
             $virgula = ",";
-            if (trim($this->o82_codres) == null) {
+            if (trim((string) $this->o82_codres) == null) {
                 $this->erro_sql = " Campo Código nao Informado.";
                 $this->erro_campo = "o82_codres";
                 $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_orcreservasol
                 return false;
             }
         }
-        if (trim($this->o82_solicitem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o82_solicitem"])) {
+        if (trim((string) $this->o82_solicitem) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o82_solicitem"])) {
             $sql .= $virgula . " o82_solicitem = $this->o82_solicitem ";
             $virgula = ",";
-            if (trim($this->o82_solicitem) == null) {
+            if (trim((string) $this->o82_solicitem) == null) {
                 $this->erro_sql = " Campo Item da solicitação nao Informado.";
                 $this->erro_campo = "o82_solicitem";
                 $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_orcreservasol
                 return false;
             }
         }
-        if (trim($this->o82_pcdotac) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o82_pcdotac"])) {
+        if (trim((string) $this->o82_pcdotac) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o82_pcdotac"])) {
             $sql .= $virgula . " o82_pcdotac = $this->o82_pcdotac ";
             $virgula = ",";
-            if (trim($this->o82_pcdotac) == null) {
+            if (trim((string) $this->o82_pcdotac) == null) {
                 $this->erro_sql = " Campo Código da Solicitação nao Informado.";
                 $this->erro_campo = "o82_pcdotac";
                 $this->erro_banco = "";
@@ -266,17 +266,17 @@ class cl_orcreservasol
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,11965,'$this->o82_sequencial','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o82_sequencial"]))
-                    $resac = db_query("insert into db_acount values($acount,781,11965,'" . AddSlashes(pg_result($resaco, $conresaco, 'o82_sequencial')) . "','$this->o82_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,781,11965,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o82_sequencial')) . "','$this->o82_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o82_codres"]))
-                    $resac = db_query("insert into db_acount values($acount,781,5368,'" . AddSlashes(pg_result($resaco, $conresaco, 'o82_codres')) . "','$this->o82_codres'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,781,5368,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o82_codres')) . "','$this->o82_codres'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o82_solicitem"]))
-                    $resac = db_query("insert into db_acount values($acount,781,5369,'" . AddSlashes(pg_result($resaco, $conresaco, 'o82_solicitem')) . "','$this->o82_solicitem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,781,5369,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o82_solicitem')) . "','$this->o82_solicitem'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["o82_pcdotac"]))
-                    $resac = db_query("insert into db_acount values($acount,781,11964,'" . AddSlashes(pg_result($resaco, $conresaco, 'o82_pcdotac')) . "','$this->o82_pcdotac'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,781,11964,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o82_pcdotac')) . "','$this->o82_pcdotac'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         $result = db_query($sql);
@@ -323,13 +323,13 @@ class cl_orcreservasol
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,11965,'$o82_sequencial','E')");
-                $resac = db_query("insert into db_acount values($acount,781,11965,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o82_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,781,5368,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o82_codres')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,781,5369,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o82_solicitem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,781,11964,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o82_pcdotac')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,781,11965,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o82_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,781,5368,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o82_codres')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,781,5369,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o82_solicitem')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,781,11964,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o82_pcdotac')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         $sql = " delete from orcreservasol
@@ -391,7 +391,7 @@ class cl_orcreservasol
             $this->erro_status = "0";
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:orcreservasol";
@@ -434,7 +434,7 @@ class cl_orcreservasol
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -469,7 +469,7 @@ class cl_orcreservasol
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -514,7 +514,7 @@ class cl_orcreservasol
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -561,7 +561,7 @@ class cl_orcreservasol
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

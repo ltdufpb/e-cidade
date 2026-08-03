@@ -90,7 +90,7 @@ $pdf->cell(30, $alt,"R$", "TBL", 1, "C");
 $iAlturaCabecalho   = $pdf->getY();
 $iAlturaInicioExtra = 0;
 
-$aLinhasComBordasEspeciais = array(
+$aLinhasComBordasEspeciais = [
                                     7 => 'T',
                                    16 => 'T',
                                    10 => 'TB',
@@ -99,7 +99,7 @@ $aLinhasComBordasEspeciais = array(
                                    19 => 'TB',
                                    20 => 'TB',
                                    21 => 'TB',
-                                  );
+                                  ];
 
 foreach ($aLinhas as $iLinha =>  $oLinha) {
 

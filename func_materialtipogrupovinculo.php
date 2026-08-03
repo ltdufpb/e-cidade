@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_materialtipogrupovinculo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmaterialtipogrupovinculo = new cl_materialtipogrupovinculo;
 $clmaterialtipogrupovinculo->rotulo->label("m04_sequencial");
 $clmaterialtipogrupovinculo->rotulo->label("m04_materialtipogrupo");
@@ -98,9 +98,9 @@ $clmaterialtipogrupovinculo->rotulo->label("m04_materialtipogrupo");
         }else{
            $sql = $clmaterialtipogrupovinculo->sql_query("",$campos,"m04_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m04_materialtipogrupo)){
-          $repassa = array("chave_m04_sequencial"=>$chave_m04_sequencial,"chave_m04_materialtipogrupo"=>$chave_m04_materialtipogrupo);
+          $repassa = ["chave_m04_sequencial"=>$chave_m04_sequencial,"chave_m04_materialtipogrupo"=>$chave_m04_materialtipogrupo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

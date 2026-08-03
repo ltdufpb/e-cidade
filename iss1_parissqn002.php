@@ -39,7 +39,7 @@ require_once(modification("classes/db_db_documentotemplate_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 db_postmemory($_POST);
 
 $clparissqn             = new cl_parissqn();
@@ -59,7 +59,7 @@ if (isset($alterar)) {
 
   db_inicio_transacao();
 
-  if (trim($q60_templatebaixaalvaranormal) == '') {
+  if (trim((string) $q60_templatebaixaalvaranormal) == '') {
 
     $sMsgErro                = "Usuário:\\n\\n Campo Template Baixa Normal não informado.\\n\\nAdministrador: \\n\\n ";
     $clparissqn->erro_msg    = "usuário:\\n\\n Campo Template Baixa Normal não informado.\\n\\nAdministrador: \\n\\n ";
@@ -69,7 +69,7 @@ if (isset($alterar)) {
 
   if ($q60_modalvara == 9) {
 
-    if (trim($q60_templatealvara) == '') {
+    if (trim((string) $q60_templatealvara) == '') {
 
       $sMsgErro                = "Usuário:\\n\\n Campo Documento Alvará não informado.\\n\\nAdministrador: \\n\\n ";
       $clparissqn->erro_msg    = "usuário:\\n\\n Campo Documento Alvará não informado.\\n\\nAdministrador: \\n\\n ";
@@ -118,7 +118,7 @@ if (isset($alterar)) {
     
       if ($clMeiImporta->numrows > 0) {
 
-        if ($oParIssqn->q60_dataimpmei != implode("-", array_reverse(explode("/", $q60_dataimpmei)))) {
+        if ($oParIssqn->q60_dataimpmei != implode("-", array_reverse(explode("/", (string) $q60_dataimpmei)))) {
 
           $sql_erro  = true;
           $sMsgErro  = "Não é possível alterar a data de implantação do MEI";

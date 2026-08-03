@@ -63,7 +63,7 @@ if ($iLinhasArquivo == 0 ) {
 
 										  
 $head2 = " Valores Processados por Competência ";										  
-$head3 = " Competência : ".str_pad($oGet->iMesCompetencia,2,'0',STR_PAD_LEFT)."/{$oGet->iAnoCompetencia}";
+$head3 = " Competência : ".str_pad((string) $oGet->iMesCompetencia,2,'0',STR_PAD_LEFT)."/{$oGet->iAnoCompetencia}";
 
 $oPdf = new PDF();
 $oPdf->Open();

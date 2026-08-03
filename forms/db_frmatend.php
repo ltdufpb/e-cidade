@@ -81,10 +81,10 @@ if($clatendimento->numrows>0) {
 $sql4   = "select distinct at10_codcli, at10_nome, at10_usuario from db_usuclientes
            where at10_codcli = $clientes order by at10_nome";
 $result_usucliente = db_query($sql4);
-$numlinha = pg_numrows($result_usucliente);
+$numlinha = pg_num_rows($result_usucliente);
 for ($z = 0; $z < $numlinha; $z ++) {
 	if(isset($at10_usuario)||$at10_usuario!="") {
-		if($at10_usuario == Pg_result($result_usucliente, $z, "at10_usuario")) {
+		if($at10_usuario == pg_fetch_result($result_usucliente, $z, "at10_usuario")) {
 			$selected = "SELECTED";
 		}
 		else {
@@ -94,9 +94,9 @@ for ($z = 0; $z < $numlinha; $z ++) {
 	else {
 		$selected = "";
 	}
-	$usucliente_codigo = pg_result($result_usucliente, $z, "at10_codcli");
-	$usucliente_nome = pg_result($result_usucliente, $z, "at10_nome");
-	$usucliente_usuario = Pg_result($result_usucliente, $z, "at10_usuario");
+	$usucliente_codigo = pg_fetch_result($result_usucliente, $z, "at10_codcli");
+	$usucliente_nome = pg_fetch_result($result_usucliente, $z, "at10_nome");
+	$usucliente_usuario = pg_fetch_result($result_usucliente, $z, "at10_usuario");
 	echo "<option value=$usucliente_usuario $selected>$usucliente_nome</option>";
 }
 ?>
@@ -131,7 +131,7 @@ db_textarea('at05_feito', 10, 50, $Iat05_feito, true, 'text', $db_opcao, "")
     <td> 
 <?php 
 //db_input('at05_perc',10,$Iat05_perc,true,'text',$db_opcao,"")
-  $matriz = array("0"=>"0%",
+  $matriz = ["0"=>"0%",
                   "10"=>"10%", 
                   "20"=>"20%",
                   "30"=>"30%",
@@ -141,7 +141,7 @@ db_textarea('at05_feito', 10, 50, $Iat05_feito, true, 'text', $db_opcao, "")
                   "70"=>"70%",
                   "80"=>"80%",
                   "90"=>"90%",
-                  "100"=>"100%");             
+                  "100"=>"100%"];             
   db_select("at05_perc", $matriz,true,$db_opcao); 
 ?>
     </td>
@@ -156,11 +156,11 @@ echo $at08_modulo;
 $sqlmod = "select id_item, nome_modulo from db_modulos order by nome_modulo";
 echo "<option value=''>Selecione o modulo</option>";
 $result_modulo = db_query($sqlmod);
-$numlinha = pg_numrows($result_modulo);
+$numlinha = pg_num_rows($result_modulo);
 echo ($sqlmod);
 for ($a = 0; $a < $numlinha; $a ++) {
-	$modulo_iditem = pg_result($result_modulo, $a, "id_item");
-	$modulo_nome = pg_result($result_modulo, $a, "nome_modulo");
+	$modulo_iditem = pg_fetch_result($result_modulo, $a, "id_item");
+	$modulo_nome = pg_fetch_result($result_modulo, $a, "nome_modulo");
 	
 	if(isset($at08_modulo)&&$at08_modulo!="") {
 		if($modulo_iditem == $at08_modulo) {
@@ -235,7 +235,7 @@ function js_preenchepesquisa(chave){
   <?php 
   if($db_opcao!=1||$db_opcao!=2) {
 	  echo " db_iframe_atend.hide();";
-	  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&opcao=".$opcao."'";
+	  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&opcao=".$opcao."'";
   }
 ?>
 }

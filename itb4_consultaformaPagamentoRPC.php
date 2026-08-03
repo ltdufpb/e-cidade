@@ -59,7 +59,7 @@ $clitbi					 = new cl_itbi();
     } else {
       $sMensagem 	    = "Nenhuma forma de pagamento cadastrada!";
       $iStatus   	    = 2;
-      $aRetornaCampos = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+      $aRetornaCampos = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
     } 
     
   } else if ($oPost->tipoPesquisa == "formasCadastradas") {
@@ -71,7 +71,7 @@ $clitbi					 = new cl_itbi();
   	} else {
       $sMensagem 	    = "Nenhuma forma de pagamento cadastrada!";
       $iStatus   	    = 2;
-      $aRetornaCampos = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));  		
+      $aRetornaCampos = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];  		
   	}
   	
   } else if ($oPost->tipoPesquisa == "validaLiberacao") {
@@ -95,7 +95,7 @@ $clitbi					 = new cl_itbi();
       $lValidacao = false;
     }
     
-    $aRetornaCampos = array("lValidacao"=>$lValidacao, "sMensagem"=>urlencode($sMensagem));
+    $aRetornaCampos = ["lValidacao"=>$lValidacao, "sMensagem"=>urlencode($sMensagem)];
     
   }
 

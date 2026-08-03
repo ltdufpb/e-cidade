@@ -39,17 +39,12 @@ use UsuarioSistema;
 class ColetaItemRepository
 {
     /**
-     * @var Object
-     */
-    private $dao;
-
-    /**
      * ItemRequisicaoRepository constructor.
      * @param $dao \cl_lab_coletaitem
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     /**

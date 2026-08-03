@@ -31,23 +31,23 @@ include modification('libs/db_sql.php');
 include modification('libs/db_liborcamento.php');
 include modification('dbforms/db_funcoes.php');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $classinatura = new cl_assinatura();
 
-$xinstit = split('-', $db_selinstit);
+$xinstit = preg_split('#\-#m', (string) $db_selinstit);
 $sSql = 'select codigo,nomeinstabrev from db_config where codigo in ('.str_replace('-', ', ', $db_selinstit).') ';
 $resultinst = db_query($sSql);
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); ++$xins) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); ++$xins) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg.$nomeinstabrev;
     $xvirg = ', ';
 }
 
-  $nivela = substr($nivel, 0, 1);
+  $nivela = substr((string) $nivel, 0, 1);
   $sele_work = ' w.o58_instit in ('.str_replace('-', ', ', $db_selinstit).') ';
   if ($nivela >= 1) {
       $sele_work .= ' and exists (select 1 from t where t.o58_orgao = w.o58_orgao) ';
@@ -84,12 +84,12 @@ for ($xins = 0; $xins < pg_numrows($resultinst); ++$xins) {
                                 o58_elemento varchar(255),
                                 o58_codigo int8)');
 
-  $xcampos = split('-', $orgaos);
+  $xcampos = preg_split('#\-#m', $orgaos);
 
   for ($i = 0; $i < sizeof($xcampos); ++$i) {
       $where = '';
       $virgula = '';
-      $xxcampos = split('_', $xcampos[$i]);
+      $xxcampos = preg_split('#_#m', (string) $xcampos[$i]);
       for ($ii = 0; $ii < sizeof($xxcampos); ++$ii) {
           if ($ii > 0) {
               $where .= $virgula.$xxcampos[$ii];
@@ -168,7 +168,7 @@ if ($origem == 'O') {
     if ($opcao == 3) {
         $head7 = 'PERÍODO : '.db_formatar($perini, 'd').' A '.db_formatar($perfin, 'd');
     } else {
-        $head7 = 'PERÍODO : '.strtoupper(db_mes(substr($perini, 5, 2))).' A '.strtoupper(db_mes(substr($perfin, 5, 2)));
+        $head7 = 'PERÍODO : '.strtoupper(db_mes(substr((string) $perini, 5, 2))).' A '.strtoupper(db_mes(substr((string) $perfin, 5, 2)));
     }
 }
 
@@ -277,7 +277,7 @@ $totativo = 0;
 $totproju = 0;
 $totativu = 0;
 $pagina = 1;
-for ($i = 0; $i < pg_numrows($result); ++$i) {
+for ($i = 0; $i < pg_num_rows($result); ++$i) {
     db_fieldsmemory($result, $i);
 
     if (empty($o58_funcao)) {

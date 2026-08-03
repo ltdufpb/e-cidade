@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
 <html>
@@ -45,9 +45,9 @@ $clcriaabas = new cl_criaabas;
 </head>
 <body class="abas">
  <?php
-   $clcriaabas->identifica = array("fiscalproc"=>"Procedências","fiscalprocrec"=>"Receitas");
-   $clcriaabas->title      = array("fiscalproc"=>"Procêdencias","fiscalprocrec"=>"Receitas");
-   $clcriaabas->src        = array("fiscalproc"=>"fis1_fiscalproc001.php?abas=1","fiscalprocrec"=>"fis1_fiscalprocrec001.php?primeira=1");
+   $clcriaabas->identifica = ["fiscalproc"=>"Procedências","fiscalprocrec"=>"Receitas"];
+   $clcriaabas->title      = ["fiscalproc"=>"Procêdencias","fiscalprocrec"=>"Receitas"];
+   $clcriaabas->src        = ["fiscalproc"=>"fis1_fiscalproc001.php?abas=1","fiscalprocrec"=>"fis1_fiscalprocrec001.php?primeira=1"];
    $clcriaabas->cria_abas();
 
    db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));

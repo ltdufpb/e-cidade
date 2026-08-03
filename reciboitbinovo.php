@@ -42,7 +42,7 @@ include(modification("classes/db_numpref_classe.php"));
 include(modification("classes/db_itbiconstrespecie_classe.php"));
 include(modification("classes/db_itbiconstrtipo_classe.php"));
 include(modification("classes/db_parreciboitbi_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 $clitbiavalia = new cl_itbiavalia;
 $clitbi = new cl_itbi;
@@ -83,10 +83,10 @@ $result = $clitbinome->sql_record($clitbinome->sql_query($itbi,""," it03_nome as
 if($clitbinome->numrows  > 0){
   $traco = '';
   $proprietarios .= "\n".'ADQUIRENTES : ';
-  $num = pg_numrows($result);
+  $num = pg_num_rows($result);
   for ($p = 0;$p < $num;$p++){
     db_fieldsmemory($result,$p);
-    $proprietarios .= $traco.trim($nomecomp);
+    $proprietarios .= $traco.trim((string) $nomecomp);
     $traco = ' - ';
   }
 }
@@ -98,10 +98,10 @@ if($clitbicgm->numrows  > 0){
   }else{
     $proprietarios .= " - ";
   }
-  $num = pg_numrows($result);
+  $num = pg_num_rows($result);
   for ($p = 0;$p < $num;$p++){
     db_fieldsmemory($result,$p);
-    $proprietarios .= $traco.trim($nomecomp);
+    $proprietarios .= $traco.trim((string) $nomecomp);
     $traco = ' - ';
   }
 }
@@ -112,7 +112,7 @@ if($proprietarios == ""){
 }
 $resultcons = $clitbiconstr->sql_record($clitbiconstr->sql_query("","*",""," it08_guia = $itbi"));
 if($clitbiconstr->numrows  > 0){
-  $num = pg_numrows($resultcons);
+  $num = pg_num_rows($resultcons);
   $areatotal = 0;
   $areatrans = 0;
   for ($p = 0;$p < $num;$p++){
@@ -193,7 +193,7 @@ if ($formvencfebraban == 1) {
 
 $inibar="8" . $segmento . "6";
 $resultcod = db_query("select fc_febraban('$inibar'||'$vlrbar'||'".$numbanco."'||'".$vencbar."'||'$numpre')");
-$fc_febraban = pg_result($resultcod,0,0);
+$fc_febraban = pg_fetch_result($resultcod,0,0);
 
   if ($fc_febraban == "") {
     db_msgbox("Erro ao gerar codigo de barras (3)!");
@@ -203,7 +203,7 @@ $fc_febraban = pg_result($resultcod,0,0);
 
 $codigo_barras   = substr($fc_febraban,0,strpos($fc_febraban,','));
 $linha_digitavel = substr($fc_febraban,strpos($fc_febraban,',')+1);
-$matriz= split('\.',$j40_refant);
+$matriz= preg_split('#\.#m',(string) $j40_refant);
 $pdf = new scpdf();
 $pdf->Open();
 $pdf->settopmargin(5);
@@ -373,8 +373,8 @@ $pdf->SetFillColor(235);
    }
    $yy = $pdf->gety();
    $pdf->SetXY(100,$y);
-   if(@pg_numrows($resultcons) > 0){
-     for ($n = 0;$n < pg_numrows($resultcons) ; $n++){
+   if(@pg_num_rows($resultcons) > 0){
+     for ($n = 0;$n < pg_num_rows($resultcons) ; $n++){
 	 db_fieldsmemory($resultcons,$n);
 	 $resultt = $clitbiconstrespecie->sql_record($clitbiconstrespecie->sql_query($it08_codigo));
 	 db_fieldsmemory($resultt,0);
@@ -418,7 +418,7 @@ $pdf->SetFillColor(235);
    $pdf->setfont('Arial','B',11);
    $pdf->ln(3);
 //   $pdf->multicell(180,4,$munic.', '.date('d').' de '.db_mes(date('m')).' de '.date('Y').'.',0,"R",0);
-   $pdf->multicell(180,4,$munic.', '.substr($it01_data,8,2).' de '.db_mes(substr($it01_data,5,2)).' de '.substr($it01_data,0,4).'.',0,"R",0);
+   $pdf->multicell(180,4,$munic.', '.substr((string) $it01_data,8,2).' de '.db_mes(substr((string) $it01_data,5,2)).' de '.substr((string) $it01_data,0,4).'.',0,"R",0);
    $pdf->Ln(4);
    $pdf->setfont('Arial','',11);
    $pos = $pdf->gety();

@@ -157,7 +157,7 @@ $dataPagamentoOriginal = $dataPagamento;
               if(!isset($rh05_taviso)){
               	$rh05_taviso = 3;
               }
-              $x = array("1"=>"Trabalhado","2"=>"Aviso indenizado","3"=>"Sem aviso");
+              $x = ["1"=>"Trabalhado","2"=>"Aviso indenizado","3"=>"Sem aviso"];
               db_select('rh05_taviso',$x,true,$db_opcao,"onchange='js_disabdata(this.value);'");
               ?>
             </td>

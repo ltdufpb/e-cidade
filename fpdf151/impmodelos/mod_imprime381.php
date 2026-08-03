@@ -26,23 +26,23 @@ $this->objpdf->text(40, $xlin -7, $this->munic);
 $this->objpdf->text(40, $xlin -4, $this->telef);
 $this->objpdf->text(40, $xlin -1, $this->email);
 $this->objpdf->Setfont('Arial', 'B', 16);
-$this->objpdf->text(165, $xlin -8, 'SLIP: ' .  db_formatar(pg_result($this->dados, 0, "k17_codigo"), 's', '0', 6, 'e'));
+$this->objpdf->text(165, $xlin -8, 'SLIP: ' .  db_formatar(pg_fetch_result($this->dados, 0, "k17_codigo"), 's', '0', 6, 'e'));
 
 
 /// retângulo dos dados da transferência
 $this->objpdf->rect($xcol, $xlin +2, $xcol +198, 55, 10, 'DF', '1234'); //alt 55
 $this->objpdf->Setfont('Arial', 'B', 9);
 $this->objpdf->text($xcol +2, $xlin +7, 'DATA');
-$this->objpdf->text($xcol +6, $xlin +11,  db_formatar(pg_result($this->dados, 0, "k17_data"), 'd'));
+$this->objpdf->text($xcol +6, $xlin +11,  db_formatar(pg_fetch_result($this->dados, 0, "k17_data"), 'd'));
 $this->objpdf->text($xcol +164, $xlin +7, 'VALOR');
 $this->objpdf->text($xcol +168, $xlin +11, 'R$');
-$this->objpdf->text($xcol +172, $xlin +11, db_formatar(pg_result($this->dados, 0, "k17_valor"), 'f'));
+$this->objpdf->text($xcol +172, $xlin +11, db_formatar(pg_fetch_result($this->dados, 0, "k17_valor"), 'f'));
 $this->objpdf->text($xcol +2, $xlin +20, 'CGM');
-$this->objpdf->text($xcol +6, $xlin +24,  pg_result($this->dados, 0, "z01_numcgm"). '-'. pg_result($this->dados, 0, "z01_nome"));
+$this->objpdf->text($xcol +6, $xlin +24,  pg_fetch_result($this->dados, 0, "z01_numcgm"). '-'. pg_fetch_result($this->dados, 0, "z01_nome"));
 $this->objpdf->text($xcol +2, $xlin +33, 'DÉBITO');
-$this->objpdf->text($xcol +6, $xlin +37, pg_result($this->dados, 0, "k17_debito").'   -   '.pg_result($this->dados, 0, "descr_debito"));
+$this->objpdf->text($xcol +6, $xlin +37, pg_fetch_result($this->dados, 0, "k17_debito").'   -   '.pg_fetch_result($this->dados, 0, "descr_debito"));
 $this->objpdf->text($xcol +2, $xlin +46, 'CRÉDITO');
-$this->objpdf->text($xcol +6, $xlin +50, pg_result($this->dados, 0, "k17_credito").'   -   '.pg_result($this->dados, 0, "descr_credito"));
+$this->objpdf->text($xcol +6, $xlin +50, pg_fetch_result($this->dados, 0, "k17_credito").'   -   '.pg_fetch_result($this->dados, 0, "descr_credito"));
 
 
 /// retângulo do histórico
@@ -51,9 +51,9 @@ $this->objpdf->rect($xcol, $xlin +60, $xcol +198, 25, 10, 'DF', '1234');
 $this->objpdf->Setfont('Arial', 'B', 9);
 $this->objpdf->text($xcol +2, $xlin +65, 'HISTÓRICO'); // altura correta
 $this->objpdf->Setfont('Arial', '', 9);
-$this->objpdf->text($xcol +6, $xlin +70, pg_result($this->dados, 0, "k17_hist").'  -  '.pg_result($this->dados,0, "descr_hist"));
+$this->objpdf->text($xcol +6, $xlin +70, pg_fetch_result($this->dados, 0, "k17_hist").'  -  '.pg_fetch_result($this->dados,0, "descr_hist"));
 $this->objpdf->setxy($xcol +6, $xlin +75);
-$this->objpdf->multicell(190, 3, pg_result($this->dados, 0, "k17_texto"), 0, "L");
+$this->objpdf->multicell(190, 3, pg_fetch_result($this->dados, 0, "k17_texto"), 0, "L");
 
 
 // retangulo dos recursos
@@ -66,7 +66,7 @@ $this->objpdf->text($xcol +2, $xlin +95, 'RECURSOS');
   $listagem = $this->recursos;
   foreach($listagem as  $chave=>$recurso){   
        $altura_topo += 5;
-       $sp = split('#',$recurso);
+       $sp = preg_split('#\##m',(string) $recurso);
        $this->objpdf->Setfont('Arial','', 9);     
        $this->objpdf->setXY($xcol + 6,$altura_topo);
 

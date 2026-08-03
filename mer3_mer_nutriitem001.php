@@ -33,8 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_mer_desperdicio_classe.php"));
 include(modification("classes/db_mer_cardapioitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clmer_desperdicio  = new cl_mer_desperdicio;
 $clmer_cardapioitem = new cl_mer_cardapioitem;
 $clmer_cardapioitem->rotulo->label();
@@ -83,7 +83,7 @@ $escola = db_getsession("DB_coddepto");
         for ($x=0; $x<$linhas; $x++) {
         	
       	  db_fieldsmemory($result,$x);
-          echo "<option value=\"$me35_i_codigo\">".substr($me35_c_nomealimento,0,40)."</option>";
+          echo "<option value=\"$me35_i_codigo\">".substr((string) $me35_c_nomealimento,0,40)."</option>";
          
         }
 	?>
@@ -100,7 +100,7 @@ $escola = db_getsession("DB_coddepto");
         for ($x=0; $x<$linhas; $x++) {
             
           db_fieldsmemory($result,$x);
-          echo "<option value=\"$me30_i_codigo\">".substr($me30_c_descricao,0,40)."</option>";
+          echo "<option value=\"$me30_i_codigo\">".substr((string) $me30_c_descricao,0,40)."</option>";
          
         }
     ?>

@@ -32,7 +32,7 @@ class Configuracao
     const INDEX_UTILIZA_INCORPORACAO = 'utiliza_incorporacao';
     const INDEX_DATA_IMPLANTACAO = 'data_implantacao';
 
-    private $dadosArquivo = array();
+    private $dadosArquivo = [];
 
     public function __construct()
     {

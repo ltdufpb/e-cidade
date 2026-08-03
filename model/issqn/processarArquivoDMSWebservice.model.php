@@ -70,58 +70,58 @@ class processarArquivoDMSWebservice {
   public function processar() {
   
     try {
-  
+
       $sNomeArquivo = 'tmp/' . date('Ymd_His');
-      $oAquivo      = file_put_contents($sNomeArquivo, base64_decode($this->sArquivoBase64));
+      $oAquivo      = file_put_contents($sNomeArquivo, base64_decode((string) $this->sArquivoBase64));
       $oLayout      = new DBLayoutReader(213, $sNomeArquivo, true);
-  
+
       db_inicio_transacao(); // DB Begin
-  
+
       // Varre as linhas do arquivo
       foreach ($oLayout->getLines() as $oLinha) {
-  
+
         // Processa os dados conforme o tipo de dado da linha
         switch ($oLinha->identificador_linha) {
-  
+
           case '01': // Contadores
-  
+
             $oDadosContador                              = self::preparaDadosContador($oLinha);
             $iContador                                   = $oDadosContador->iInscricaoMunicipal;
-  
+
             // Incrementa o array de retorno com os dados do contador
             $aRetorno['contadores'][$iContador]['dados'] = $oDadosContador;
             break;
-  
+
           case '02': // Contribuintes
-  
+
             // Recria o array de planilhas
-            $aPlanilhaRetencao  = array();
-  
+            $aPlanilhaRetencao  = [];
+
             $oDadosContribuinte = self::preparaDadosContribuinte($oLinha, $oDadosContador);
             $iContribuinte      = $oDadosContribuinte->iInscricaoMunicipal;
-  
+
             // Incrementa o array de retorno com os dados do contribuinte e a planilha
             $aRetorno['contadores'][$iContador]['contribuintes'][$iContribuinte]['dados']    = $oDadosContribuinte;
             break;
-  
+
           case '03': // Notas
-  
+
             $oDadosNota = self::preparaDadosNota($oLinha, $oDadosContribuinte);
-            
+
             // Cria planilha de retencao (issplan)
             if (!isset($aPlanilhaRetencao[$oDadosNota->sOperacao])) {
-              
+
               $oParam->iCgmEmpresa                       = $oDadosContribuinte->iCgmEmpresa;
               $oParam->iAnoCompetencia                   = $oDadosContribuinte->iAnoCompetencia;
               $oParam->iMesCompetencia                   = $oDadosContribuinte->iMesCompetencia;
               $oParam->iInscricaoMunicipal               = $oDadosContribuinte->iInscricaoMunicipal;
-              
+
               $aPlanilhaRetencao[$oDadosNota->sOperacao] = self::gerarPlanilhaRetencao($oParam);
             }
-            
+
             // Recupera o código da planilha
             $iCodigoPlanilhaRetencao = $aPlanilhaRetencao[$oDadosNota->sOperacao]->getCodigoPlanilha();
-            
+
             // Insere as notas na planilha de retenção (issplanit)
             $oNotaRetencao = new NotaPlanilhaRetencao();
             $oNotaRetencao->setCodigoPlanilha  ($iCodigoPlanilhaRetencao);
@@ -129,12 +129,12 @@ class processarArquivoDMSWebservice {
             $oNotaRetencao->setHoraOperacao    ($oDadosNota->sHora);
             $oNotaRetencao->setNome            ($oDadosNota->sNomeRazaoSocial);
             $oNotaRetencao->setCNPJ            ($oDadosNota->iCpfCnpjTomador);
-            
+
             // Inverte os dados para saida e entrada
             if ($oDadosNota->iTipoServico == NotaPlanilhaRetencao::SERVICO_TOMADO) {
               $oNotaRetencao->setCNPJ = $oDadosContribuinte->iCpfCnpj;
             }
-            
+
             $oNotaRetencao->setTipoLancamento  ($oDadosNota->iTipoServico);
             $oNotaRetencao->setRetido          ((bool)$oDadosNota->bRetido);
             $oNotaRetencao->setStatus          ($oDadosNota->iStatus);
@@ -150,29 +150,29 @@ class processarArquivoDMSWebservice {
             $oNotaRetencao->setValorImposto    ($oDadosNota->fValorIssqn);
             $oNotaRetencao->setDescricaoServico($oDadosNota->sDescricaoServico);
             $oNotaRetencao->setObservacoes     ('Importado via arquivo no eCidadeOnline2');
-            
+
             // Adiciona a nota na planilha de retenção
             $oDadosNota->iCodigoNota = $aPlanilhaRetencao[$oDadosNota->sOperacao]->adicionarNota($oNotaRetencao);
-            
+
             // Indice para o array de retorno
             $sIndiceNota = "{$oDadosNota->iCodigoTipoNota}.{$oDadosNota->sNumeroNota}.{$oDadosNota->sSerie}";
-            
+
             // Incrementa o array de retorno com os dados da nota
             $aRetorno['contadores'][$iContador]['contribuintes'][$iContribuinte]['notas'][$oDadosNota->sOperacao]
                      [$sIndiceNota] = $oDadosNota;
-            
+
             // Incrementa o array de retorno com os dados da planilha
             $aRetorno['contadores'][$iContador]['contribuintes'][$iContribuinte]['planilha'] = $aPlanilhaRetencao;
-             
+
             break;
         }
       }
-      
+
       // Configura o retorno
       $oRetorno->bStatus   = true;
-      $oRetorno->sMensagem = utf8_encode('Arquivo importado com sucesso');
+      $oRetorno->sMensagem = mb_convert_encoding('Arquivo importado com sucesso', 'UTF-8', 'ISO-8859-1');
       $oRetorno->aDados    = $aRetorno;
-      
+
       db_fim_transacao(false); // DB Commit
     } catch(Exception $oErro) {
       
@@ -180,7 +180,7 @@ class processarArquivoDMSWebservice {
       
       // Configura o retorno
       $oRetorno->bStatus   = false;
-      $oRetorno->sMensagem = utf8_encode('<b>O arquivo possui inconsistências:</b><br>' . trim($oErro->getMessage()));
+      $oRetorno->sMensagem = mb_convert_encoding('<b>O arquivo possui inconsistências:</b><br>' . trim($oErro->getMessage()), 'UTF-8', 'ISO-8859-1');
       $oRetorno->oDados    = null;
     }
   
@@ -202,11 +202,11 @@ class processarArquivoDMSWebservice {
     $sSql     = $oDaoEmpresaPretServico->sql_queryAtividadeServico($oContribuinte->iInscricaoMunicipal);
     $rsResult = db_query($sSql);
     
-    if (strtoupper(trim($oLinha->operacao)) == 'S' && (pg_numrows($rsResult) == 0)) {
+    if (strtoupper(trim($oLinha->operacao)) == 'S' && (pg_num_rows($rsResult) == 0)) {
       throw new Exception('O Contribuinte não é prestador de serviço');
     }
     
-    if (!in_array(trim(strtoupper($oLinha->situacao_nota)), array('T', 'R', 'C', 'E', 'IS', 'IM', 'N', 'S'))) {
+    if (!in_array(trim(strtoupper($oLinha->situacao_nota)), ['T', 'R', 'C', 'E', 'IS', 'IM', 'N', 'S'])) {
       throw new Exception('Situação da Nota inválida');
     }
     
@@ -226,7 +226,7 @@ class processarArquivoDMSWebservice {
       $sSqlCgm  = $oDaoCgm->sql_query_file(null, '1', null, "z01_cgccpf = '{$oLinha->cpf_cnpj_tomador}'");
       $rsRecord = $oDaoCgm->sql_record($sSqlCgm);
       
-      if (pg_numrows($rsRecord) == 0) { 
+      if (pg_num_rows($rsRecord) == 0) { 
         throw new Exception("Tomador ({$oLinha->nome_razao_social_tomador}) não cadastrado na prefeitura");
       }
       
@@ -245,7 +245,7 @@ class processarArquivoDMSWebservice {
       $sSqlNotas = $oDaoTipoNota->sql_query_file($oLinha->tipo_nota);
       $rsNota    = pg_query($sSqlNotas);
 
-      if (pg_numrows($rsNota) == 0) {
+      if (pg_num_rows($rsNota) == 0) {
         throw new Exception("Tipo de Nota Código \"{$oLinha->tipo_nota}\" não encontrado.");
       }
     }
@@ -303,19 +303,11 @@ class processarArquivoDMSWebservice {
     // Valida o tipo de operacao do documento (E=Entrada | S=Saída)
     $oDadosNota->sOperacao = trim(strtolower($oLinha->operacao));
     
-    switch($oDadosNota->sOperacao) {
-      
-      case 'e': 
-        $oDadosNota->iTipoServico = NotaPlanilhaRetencao::SERVICO_TOMADO;
-        break;
-        
-      case 's': 
-        $oDadosNota->iTipoServico = NotaPlanilhaRetencao::SERVICO_PRESTADO;
-        break;
-        
-      default : 
-        throw new Exception('O Tipo de Operação do documento é inválido.');
-    }
+    $oDadosNota->iTipoServico = match ($oDadosNota->sOperacao) {
+        'e' => NotaPlanilhaRetencao::SERVICO_TOMADO,
+        's' => NotaPlanilhaRetencao::SERVICO_PRESTADO,
+        default => throw new Exception('O Tipo de Operação do documento é inválido.'),
+    };
     
     // Formatação das datas
     $iDiaEmissao                             = substr($oLinha->data_emissao,    6,  8);
@@ -431,7 +423,7 @@ class processarArquivoDMSWebservice {
     $sSqlValidaDados .= " limit 1                                          ";
     $rsValidaDados    = db_query($sSqlValidaDados);
     
-    if (pg_numrows($rsValidaDados) == 0) {
+    if (pg_num_rows($rsValidaDados) == 0) {
       throw new Exception('Nenhuma Inscrição Municipal foi encontrada para o CNPJ/CPF.');
     }
     
@@ -469,7 +461,7 @@ class processarArquivoDMSWebservice {
         $lVinculado = EscritorioContabil::getInscricaoVinculadaEscritorio($oContador->iNumeroCgm, 
                                                                           $oLinha->inscricao_municipal);
         
-        if (!lVinculado) {
+        if (!\LVINCULADO) {
           throw new Exception("O Contribuinte com inscrição \"{$oLinha->inscricao_municipal}\" não está vinculado ao escritório.");
         }
       } else { 

@@ -35,8 +35,8 @@ require_once(modification("classes/db_sanitario_classe.php"));
 require_once(modification("classes/db_sanibaixa_classe.php"));
 require_once(modification("classes/db_sanibaixaproc_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clsaniatividade    = new cl_saniatividade;
 $clsanibaixa        = new cl_sanibaixa;
@@ -59,11 +59,11 @@ $clrotulo->label("p58_numero");
 
 $sqlerro = false;
 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Baixar"){
+if(isset($_POST["db_opcao"]) && $db_opcao == "Baixar"){
 
   if(isset($chaves) && $chaves != ""){
     db_inicio_transacao();
-    $chaves = split("#",$chaves);
+    $chaves = preg_split("#\\##m",$chaves);
     $db_opcao = 2;
     $sqlqtativ = "select * from saniatividade
 					where y83_codsani = $y83_codsani and y83_dtfim is null";
@@ -150,8 +150,8 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Baixar"){
 
     if($sqlerro == false){
       for($i=0;$i<sizeof($chaves);$i++){
-        $seq = str_replace("-","",strstr($chaves[$i],"-"));
-         
+        $seq = str_replace("-","",strstr((string) $chaves[$i],"-"));
+
         if ($sqlerro==false){
           $clsaniatividade->y83_databx = $y83_dtfim_ano."-".$y83_dtfim_mes."-".$y83_dtfim_dia;
           $clsaniatividade->y83_seq = $seq;
@@ -310,7 +310,7 @@ if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Baixar"){
         </td>
         <td valign="top">
           <?php 
-            $xe = array("f"=>"NORMAL","t"=>"OFÌCIO");
+            $xe = ["f"=>"NORMAL","t"=>"OFÌCIO"];
             db_select('y81_oficio',$xe,true,1);
           ?>
         </td>

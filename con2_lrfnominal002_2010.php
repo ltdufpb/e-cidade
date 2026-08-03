@@ -44,8 +44,8 @@ if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
   $orcparamrel = new cl_orcparamrel;
   $clconrelinfo = new cl_conrelinfo;
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
   //-----------------------------------
   $tipo_emissao='periodo';
@@ -68,7 +68,7 @@ if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
 
 }   // end !include
 // verifica periodo anterior ( bimestre anterior )
-$per = substr($periodo,0,1);
+$per = substr((string) $periodo,0,1);
 if ($per >1 ){
   $periodo_ant= ($per -1).'B';
 } else {
@@ -101,7 +101,7 @@ $oPrefeitura = InstituicaoRepository::getInstituicaoPrefeitura();
 $resultinst = db_query("select codigo,munic,db21_tipoinstit from db_config");
 $descr_inst = '';
 $xvirgi     = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   $oInstituicao = db_utils::fieldsMemory($resultinst,$xins);
 
   if($oInstituicao->db21_tipoinstit != 5 && $oInstituicao->db21_tipoinstit != 6 ){
@@ -181,10 +181,10 @@ if (!isset($arqinclude)){
   $head5  = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
   $dados  = data_periodo($anousu,$periodo);
-  $perini = split("-",$dados[0]);
-  $perfin = split("-",$dados[1]);
+  $perini = preg_split("#\\-#m",(string) $dados[0]);
+  $perfin = preg_split("#\\-#m",(string) $dados[1]);
 
-  $txtper = strtoupper($dados["periodo"]);
+  $txtper = strtoupper((string) $dados["periodo"]);
   $mesini = strtoupper(db_mes($perini[1]));
   $mesfin = strtoupper(db_mes($perfin[1]));
 
@@ -213,7 +213,7 @@ db_query("drop table if exists work_pl_estrut");
 db_query("drop table if exists work_pl_estrut");
 db_query("drop table if exists work_pl_estrutmae");
 //////////////////////////
-for ($i = 0; $i < pg_numrows($result);$i++) {
+for ($i = 0; $i < pg_num_rows($result);$i++) {
 
   $oResultado      = db_utils::fieldsmemory($result,$i);
   for ($iLinha = 1; $iLinha <= 7; $iLinha++) {
@@ -243,7 +243,7 @@ for ($i = 0; $i < pg_numrows($result);$i++) {
 }
 if (!isset($lInResumido)) {
 
-  for ($i = 0; $i < pg_numrows($result);$i++) {
+  for ($i = 0; $i < pg_num_rows($result);$i++) {
 
     $oResultado      = db_utils::fieldsmemory($result_peranterior, $i);
     for ($iLinha = 1; $iLinha <= 7; $iLinha++) {
@@ -288,11 +288,11 @@ if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
   $pdf->cell(120,($alt),"SALDO",'TB',1,"C",0);      // br
   $pdf->setX(80);
   $pdf->cell(40,$alt,"Em 31/Dez/".($anousu_ant-1)." (a)",'1',0,"C",0);
-  $dt = split("-",$dt_fin_ant);
+  $dt = preg_split("#\\-#m",(string) $dt_fin_ant);
   $dt = $dt[2]."/".db_mes($dt[1])."/".$dt[0];
   $pdf->cell(40,$alt,"Em $dt (b)",'1',0,"C",0);
 
-  $dt = split("-",$dt_fin);
+  $dt = preg_split("#\\-#m",(string) $dt_fin);
   $dt = $dt[2]."/".db_mes($dt[1])."/".$dt[0];
   $pdf->cell(40,$alt,"Em $dt (c)",'TB',0,"C",0);
   $pdf->Ln();
@@ -524,7 +524,7 @@ $sql    = "select codigo  from db_config where db21_tipoinstit in (5,6) ";
 $resultinst = db_query($sql);
 $instit ='0';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
 
   $oInstituicao = db_utils::fieldsMemory($resultinst,$xins);
   $instit      .= $xvirg.$oInstituicao->codigo; // salva insituio
@@ -545,7 +545,7 @@ if (!isset($lInResumido)) {
   db_query("drop table if exists work_pl_estrut");
   db_query("drop table if exists work_pl_estrutmae");
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
-  for ($i = 0; $i < pg_numrows($result);$i++) {
+  for ($i = 0; $i < pg_num_rows($result);$i++) {
 
     $oResultado      = db_utils::fieldsmemory($result,$i);
     for ($iLinha = 8; $iLinha <= 14; $iLinha++) {
@@ -572,7 +572,7 @@ if (!isset($lInResumido)) {
   }
   if (!isset($lInResumido)) {
 
-    for ($i = 0; $i < pg_numrows($result);$i++) {
+    for ($i = 0; $i < pg_num_rows($result);$i++) {
 
       $oResultado      = db_utils::fieldsmemory($result_peranterior, $i);
       for ($iLinha = 8; $iLinha <= 14; $iLinha++) {
@@ -603,11 +603,11 @@ if (!isset($arqinclude)){
   $pdf->cell(120,($alt),"SALDO",'TB',1,"C",0);      // br
   $pdf->setX(80);
   $pdf->cell(40,$alt,"Em 31/Dez/".($anousu_ant-1)." (a)",'1',0,"C",0);
-  $dt = split("-",$dt_fin_ant);
+  $dt = preg_split("#\\-#m",(string) $dt_fin_ant);
   $dt = $dt[2]."/".db_mes($dt[1])."/".$dt[0];
   $pdf->cell(40,$alt,"Em $dt (b)",'1',0,"C",0);
 
-  $dt = split("-",$dt_fin);
+  $dt = preg_split("#\\-#m",(string) $dt_fin);
   $dt = $dt[2]."/".db_mes($dt[1])."/".$dt[0];
   $pdf->cell(40,$alt,"Em $dt (c)",'TB',0,"C",0);
   $pdf->Ln();

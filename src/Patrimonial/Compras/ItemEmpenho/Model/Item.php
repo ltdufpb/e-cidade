@@ -328,7 +328,7 @@ class Item
 
     public function toArray()
     {
-        return array(
+        return [
             'pc01_codmater' => $this->getCodigoItem(),
             'pc01_descrmater' => $this->getDescricaoItem(),
             'pc01_complmater' => $this->getComplemento(),
@@ -343,7 +343,7 @@ class Item
             'pc01_obrigatorio' => $this->isObrigatorio(),
             'pc01_fraciona' => $this->isFraciona(),
             'pc01_liberaresumo' => $this->isLiberaResumo()
-        );
+        ];
     }
 
     public static function fromState(array $state)

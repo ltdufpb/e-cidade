@@ -125,7 +125,7 @@ if (isset($db_opcaoal)) {
 						    </td>
 						    <td> 
 						      <?php 
-						        $aObrigatorio = array("t"=>"SIM","f"=>"NÃO");
+						        $aObrigatorio = ["t"=>"SIM","f"=>"NÃO"];
 						        db_select('ht09_obrigatorio',$aObrigatorio,true,$db_opcao,"");
 						      ?>
 						    </td>
@@ -162,7 +162,7 @@ if (isset($db_opcaoal)) {
     <tr>
       <td valign="top"  align="center">  
         <?php 
-          $chavepri= array("ht09_sequencial"=>@$ht09_sequencial);
+          $chavepri= ["ht09_sequencial"=>@$ht09_sequencial];
           
           $sWhere                       = "ht09_habittipogrupoprograma = ".@$ht02_sequencial;
           $sSqlTipoGrupoProgramaProcDoc = $clhabittipogrupoprogramaprocdoc->sql_query(null, "*", 

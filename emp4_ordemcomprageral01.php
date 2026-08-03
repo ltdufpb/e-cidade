@@ -35,7 +35,7 @@ require_once(modification("classes/db_empparametro_classe.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("std/db_stdClass.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clmatparam = new cl_matparam;
 $clrotulo= new rotulocampo;
@@ -48,7 +48,7 @@ $clrotulo->label("e60_numcgm");
 /*
  * SELECT para controle do campo "Trazer apenas empenhos Liberados"
  */
-$aParam = db_stdClass::getParametro("empparametro", array(db_getsession('DB_anousu')));
+$aParam = db_stdClass::getParametro("empparametro", [db_getsession('DB_anousu')]);
 $oParam = $aParam[0];
 
 $lShowSelect = $oParam->e30_liberaempenho == 't'?true:false;
@@ -120,7 +120,7 @@ $lShowSelect = $oParam->e30_liberaempenho == 't'?true:false;
                             <td>
                                 <?php 
                                 $emp_liberado = 'f';
-                                $x = array("f"=>"NAO","t"=>"SIM");
+                                $x = ["f"=>"NAO","t"=>"SIM"];
                                 db_select('emp_liberado',$x,true,"","");
                                 ?>
                             </td>

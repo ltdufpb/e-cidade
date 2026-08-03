@@ -31,7 +31,7 @@ $clregraponto->rotulo->tlabel();
 $clrotulo = new rotulocampo;
 $clrotulo->label("r44_descr");
 
-$aComportamento  = array('1' => 'Aviso', '2' => 'Bloqueio');
+$aComportamento  = ['1' => 'Aviso', '2' => 'Bloqueio'];
 $sLabelProcessar = '';
 $sDisabled       = '';
 $iInstituicao    = db_getsession('DB_instit');
@@ -293,7 +293,7 @@ if ( !$db_botao ) {
     }
 
     alert(sMensagem);
-    location.href = '<?php echo basename($_SERVER['PHP_SELF']); ?>';
+    location.href = '<?php echo basename((string) $_SERVER['PHP_SELF']); ?>';
   }
 
   /**
@@ -426,7 +426,7 @@ if ( !$db_botao ) {
     db_iframe_regraponto.hide();
     <?php
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
     ?>
   }

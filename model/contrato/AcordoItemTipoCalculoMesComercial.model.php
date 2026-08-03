@@ -68,7 +68,7 @@ class AcordoItemTipoCalculoMesComercial implements IAcordoItemTipoCalculo {
    * Coleção de períodos de um item
    * @var array
    */
-  protected $aPeriodosItem = array();
+  protected $aPeriodosItem = [];
 
   /**
    * Construtor
@@ -122,8 +122,8 @@ class AcordoItemTipoCalculoMesComercial implements IAcordoItemTipoCalculo {
     /**
      * @todo refatorar em outro momento, retirar datas da classe e passar para a assinatura do método calcular
      */
-    list($iDiaInicial, $iMesInicial, $iAnoInicial) = explode("/", $this->dtDataInicial);
-    list($iDiaFinal,   $iMesFinal,   $iAnoFinal)   = explode("/", $this->dtDataFinal);
+    [$iDiaInicial, $iMesInicial, $iAnoInicial] = explode("/", $this->dtDataInicial);
+    [$iDiaFinal, $iMesFinal, $iAnoFinal]   = explode("/", $this->dtDataFinal);
     
     
      /*

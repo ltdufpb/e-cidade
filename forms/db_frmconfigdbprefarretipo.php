@@ -146,7 +146,7 @@ if(isset($db_opcaoal)){
 	    <td valign="top"  align="center">  
 	      <?php 
 	                    
-		 	$chavepri= array("w17_sequencial"=>@$w17_sequencial);
+		 	$chavepri= ["w17_sequencial"=>@$w17_sequencial];
 		 	$cliframe_alterar_excluir->chavepri=$chavepri;
 		 	$cliframe_alterar_excluir->sql     = $clconfigdbprefarretipo->sql_query(null,'*',"w17_sequencial", "w17_instit=".$w17_instit);
 		 	//$cliframe_alterar_excluir->sql     = $clconfigdbprefagua->sql_query();
@@ -215,7 +215,7 @@ function js_preenchepesquisa(chave){
   db_iframe_configdbprefarretipo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

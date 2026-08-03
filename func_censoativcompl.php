@@ -45,17 +45,17 @@ if ( $rsAnoCalendario && pg_num_rows($rsAnoCalendario) > 0 ) {
   $iAno = db_utils::fieldsMemory($rsAnoCalendario, 0)->ed52_i_ano;
 }
 
-$aFiltroAtividades = array();
+$aFiltroAtividades = [];
 
 if ( $iAno == 2015 ) {
   $aFiltroAtividades = DadosCenso::getAtividadesComplementaresExcluidasCenso2015();
 }
-$aWhere = array();
+$aWhere = [];
 if ( count($aFiltroAtividades) > 0) {
   $aWhere[] = " ed133_i_codigo not in (" . implode(", ", $aFiltroAtividades) . ") ";
 }
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcensoativcompl = new cl_censoativcompl;
 $clcensoativcompl->rotulo->label("ed133_i_codigo");
 $clcensoativcompl->rotulo->label("ed133_c_descr");
@@ -94,7 +94,7 @@ $clcensoativcompl->rotulo->label("ed133_i_tipo");
      </td>
      <td width="96%" align="left" nowrap>
       <?php 
-      $x = array(  ''  => ''
+      $x = [  ''  => ''
                  ,'31' => 'ACOMPANHAMENTO PEDAGÓGICO (REFORÇO ESCOLAR)'
                  ,'14' => 'ARTES CÊNICAS'
                  ,'12' => 'ARTES PLÁSTICAS'
@@ -117,7 +117,7 @@ $clcensoativcompl->rotulo->label("ed133_i_tipo");
                  ,'21' => 'RECREAÇÃO/LAZER'
                  ,'71' => 'SAÚDE, ALIMENTAÇÃO E  PREVENÇÃO'
                  ,'91' => 'PROGRAMAS INTERSETORIAIS'
-                );
+                ];
       db_select('chave_ed133_i_tipo',$x,true, 1 ,"");
       ?>
      </td>
@@ -158,9 +158,9 @@ $clcensoativcompl->rotulo->label("ed133_i_tipo");
       $sWhere = implode(" and ", $aWhere );
       $sql    = $clcensoativcompl->sql_query("",$campos,"ed133_c_descr", $sWhere);
 
-      $repassa = array();
+      $repassa = [];
       if(isset($chave_ed133_i_codigo)){
-       $repassa = array("chave_ed133_i_codigo"=>$chave_ed133_i_codigo,"chave_ed133_c_descr"=>$chave_ed133_c_descr,"chave_ed133_i_tipo"=>$chave_ed133_i_tipo);
+       $repassa = ["chave_ed133_i_codigo"=>$chave_ed133_i_codigo,"chave_ed133_c_descr"=>$chave_ed133_c_descr,"chave_ed133_i_tipo"=>$chave_ed133_i_tipo];
       }
       db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
     } else {

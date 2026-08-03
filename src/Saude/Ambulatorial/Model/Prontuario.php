@@ -902,7 +902,7 @@ class Prontuario
     {
         $cgs = $this->getCgs();
 
-        $retorno = array(
+        $retorno = [
             'sd24_i_codigo' => $this->getCodigo(),
             'sd24_i_ano'  => $this->getAno(),
             'sd24_i_mes' => $this->getMes(),
@@ -926,8 +926,8 @@ class Prontuario
             'sd24_setorambulatorial' => $this->getSetorAmbulatorial(),
             'sd24_idadegestacional' => $this->getIdadeGestacional(),
             'sd24_dum' => $this->getDum(),
-            'cgs' => !is_null($cgs) ? $cgs : null
-        );
+            'cgs' => $cgs ?? null
+        ];
 
         return $retorno;
     }

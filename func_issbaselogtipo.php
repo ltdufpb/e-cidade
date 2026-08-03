@@ -33,8 +33,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_issbaselogtipo_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -132,9 +132,9 @@ $sAnd     = "";
            $sql     = $clissbaselogtipo->sql_query("",$campos,"q103_sequencial",$sWhere);
         }
         
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_q103_sequencial)) {
-          $repassa = array("chave_q103_sequencial" => $chave_q103_sequencial);
+          $repassa = ["chave_q103_sequencial" => $chave_q103_sequencial];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

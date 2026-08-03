@@ -47,7 +47,7 @@ class PeriodoRepositorio extends Repositorio
             throw new Exception("Não foi possível buscar os períodos.\nContate o suporte.");
         }
 
-        $periodos = array();
+        $periodos = [];
         if (pg_num_rows($rs) === 0) {
             return $periodos;
         }

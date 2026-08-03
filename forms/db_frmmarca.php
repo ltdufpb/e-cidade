@@ -49,7 +49,7 @@ $clrotulo->label("ma04_c_descr");
      if($ma01_o_imagem!=0){
       $arquivo = "tmp/".$ma01_c_nomeimagem;
       db_query("begin");
-      pg_loexport($ma01_o_imagem,$arquivo);
+      pg_lo_export($ma01_o_imagem,$arquivo);
       db_query("end");
      }else{
       $arquivo = "imagens/semmarca.jpg";
@@ -214,7 +214,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
  db_iframe_marca.hide();
  <?php if($db_opcao!=1){
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
  }?>
 }
 </script>

@@ -93,7 +93,7 @@ if(isset($opcao) && $opcao=="alterar"){
   <td valign="top">
   <?php 
    $escola = db_getsession("DB_coddepto");
-   $chavepri= array("sd48_i_codigo"=>@$sd48_i_codigo,"sd48_i_unidade"=>@$sd48_i_unidade,"descrdepto"=>@$descrdepto,"sd48_i_atendprestado"=>@$sd48_i_atendprestado,"sd46_v_descricao"=>@$sd46_v_descricao,"sd48_i_convenio"=>@$sd48_i_convenio,"sd49_v_descricao"=>@$sd49_v_descricao);
+   $chavepri= ["sd48_i_codigo"=>@$sd48_i_codigo,"sd48_i_unidade"=>@$sd48_i_unidade,"descrdepto"=>@$descrdepto,"sd48_i_atendprestado"=>@$sd48_i_atendprestado,"sd46_v_descricao"=>@$sd46_v_descricao,"sd48_i_convenio"=>@$sd48_i_convenio,"sd49_v_descricao"=>@$sd49_v_descricao];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clsau_atendprestund->sql_query("","*",""," sd48_i_unidade = $sd48_i_unidade");
    $cliframe_alterar_excluir->campos  ="sd48_i_codigo,sd46_v_descricao,sd49_v_descricao";

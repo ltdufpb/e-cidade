@@ -29,7 +29,7 @@ class cl_slippagordem
     public function __construct()
     {
         $this->rotulo = new rotulo("slippagordem"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -84,10 +84,10 @@ class cl_slippagordem
          $this->erro_status = "0";
          return false; 
        }
-       $this->k209_sequencial = pg_result($result,0,0); 
+       $this->k209_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from slippagordem_k209_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k209_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k209_sequencial)){
          $this->erro_sql = " Campo k209_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -119,7 +119,7 @@ class cl_slippagordem
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "slippagordem ($this->k209_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "slippagordem já Cadastrado";
@@ -148,12 +148,12 @@ class cl_slippagordem
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1014121,'$this->k209_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010921,1014121,'','".AddSlashes(pg_result($resaco,0,'k209_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010921,1014122,'','".AddSlashes(pg_result($resaco,0,'k209_pagordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010921,1014123,'','".AddSlashes(pg_result($resaco,0,'k209_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010921,1014121,'','".AddSlashes(pg_fetch_result($resaco,0,'k209_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010921,1014122,'','".AddSlashes(pg_fetch_result($resaco,0,'k209_pagordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010921,1014123,'','".AddSlashes(pg_fetch_result($resaco,0,'k209_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -164,10 +164,10 @@ class cl_slippagordem
       $this->atualizacampos();
      $sql = " update slippagordem set ";
      $virgula = "";
-     if(trim($this->k209_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k209_sequencial"])){ 
+     if(trim((string) $this->k209_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k209_sequencial"])){ 
        $sql  .= $virgula." k209_sequencial = $this->k209_sequencial ";
        $virgula = ",";
-       if(trim($this->k209_sequencial) == null ){ 
+       if(trim((string) $this->k209_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial Slip Ordem de Pagamento não informado.";
          $this->erro_campo = "k209_sequencial";
          $this->erro_banco = "";
@@ -177,10 +177,10 @@ class cl_slippagordem
          return false;
        }
      }
-     if(trim($this->k209_pagordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k209_pagordem"])){ 
+     if(trim((string) $this->k209_pagordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k209_pagordem"])){ 
        $sql  .= $virgula." k209_pagordem = $this->k209_pagordem ";
        $virgula = ",";
-       if(trim($this->k209_pagordem) == null ){ 
+       if(trim((string) $this->k209_pagordem) == null ){ 
          $this->erro_sql = " Campo Codigo da OP não informado.";
          $this->erro_campo = "k209_pagordem";
          $this->erro_banco = "";
@@ -190,10 +190,10 @@ class cl_slippagordem
          return false;
        }
      }
-     if(trim($this->k209_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k209_slip"])){ 
+     if(trim((string) $this->k209_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k209_slip"])){ 
        $sql  .= $virgula." k209_slip = $this->k209_slip ";
        $virgula = ",";
-       if(trim($this->k209_slip) == null ){ 
+       if(trim((string) $this->k209_slip) == null ){ 
          $this->erro_sql = " Campo Codigo do Slip da OP não informado.";
          $this->erro_campo = "k209_slip";
          $this->erro_banco = "";
@@ -217,15 +217,15 @@ class cl_slippagordem
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1014121,'$this->k209_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k209_sequencial"]) || $this->k209_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010921,1014121,'".AddSlashes(pg_result($resaco,$conresaco,'k209_sequencial'))."','$this->k209_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010921,1014121,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k209_sequencial'))."','$this->k209_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k209_pagordem"]) || $this->k209_pagordem != "")
-             $resac = db_query("insert into db_acount values($acount,1010921,1014122,'".AddSlashes(pg_result($resaco,$conresaco,'k209_pagordem'))."','$this->k209_pagordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010921,1014122,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k209_pagordem'))."','$this->k209_pagordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k209_slip"]) || $this->k209_slip != "")
-             $resac = db_query("insert into db_acount values($acount,1010921,1014123,'".AddSlashes(pg_result($resaco,$conresaco,'k209_slip'))."','$this->k209_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010921,1014123,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k209_slip'))."','$this->k209_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -279,12 +279,12 @@ class cl_slippagordem
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1014121,'$k209_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010921,1014121,'','".AddSlashes(pg_result($resaco,$iresaco,'k209_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010921,1014122,'','".AddSlashes(pg_result($resaco,$iresaco,'k209_pagordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010921,1014123,'','".AddSlashes(pg_result($resaco,$iresaco,'k209_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010921,1014121,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k209_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010921,1014122,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k209_pagordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010921,1014123,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k209_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

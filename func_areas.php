@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_areas_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clareas = new cl_areas;
 $clareas->rotulo->label("h05_codigo");
 $clareas->rotulo->label("h05_descr");
@@ -98,9 +98,9 @@ $clareas->rotulo->label("h05_descr");
         }else{
            $sql = $clareas->sql_query("",$campos,"h05_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h05_descr)){
-          $repassa = array("chave_h05_codigo"=>$chave_h05_codigo,"chave_h05_descr"=>$chave_h05_descr);
+          $repassa = ["chave_h05_codigo"=>$chave_h05_codigo,"chave_h05_descr"=>$chave_h05_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

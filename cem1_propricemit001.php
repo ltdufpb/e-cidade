@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clpropricemit = new cl_propricemit;
 $cllotecemit = new cl_lotecemit;
 if( isset( $db_opcao ) ){
@@ -79,7 +79,7 @@ if(isset($incluir)){
     }
   }else{
     db_msgbox($clpropricemit->erro_sql);
-    if( substr($cm25_c_tipo,0,1) == "O" ){
+    if( str_starts_with((string) $cm25_c_tipo, "O") ){
          echo "<script>";
          echo " parent.document.formaba.a3.disabled=false; ";
          echo " (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_a3.location.href='cem1_itenserv111.php?cm28_i_ossoariojazigo=$cm28_i_ossoariojazigo&cm28_i_proprietario=$cm28_i_proprietario&z01_nome=$z01_nome';";

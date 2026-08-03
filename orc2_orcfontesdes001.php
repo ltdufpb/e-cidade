@@ -74,7 +74,7 @@ $db_opcao=1;
     </td>
     <td> 
 <?php 
-$anos=array();
+$anos=[];
 // $anoatual=date("Y",db_getsession("DB_datausu"));
 $anoatual = db_getsession("DB_anousu");
 for($i=$anoatual; $i>($anoatual-10); $i--){

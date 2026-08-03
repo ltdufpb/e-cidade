@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcdotacao_classe.php"));
 include(modification("libs/db_liborcamento.php"));      // funções do orçamento
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcreserva = new cl_orcreserva;
 $clorcdotacao = new cl_orcdotacao;  //instancia dotação
@@ -63,7 +63,7 @@ $db_botao = true;
     }
 
 // ==
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   /*
     -- as datas devem ser maiores ou iguais a data atual
     -- o valor da reserva não pode ultrapassaro saldo da dotação  
@@ -161,7 +161,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clorcreserva->erro_status=="0"){
     $clorcreserva->erro(true,false);
     $db_botao=true;

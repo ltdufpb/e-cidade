@@ -55,10 +55,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("extrato"=>"Dados do extrato","extratolinha"=>"Movimentos"); 
-	 $clcriaabas->sizecampo  = array("extrato"=>"40","extratolinha"=>"40"); 
-	 $clcriaabas->src = array("extrato"=>"cai1_extrato004.php");
-	 $clcriaabas->disabled   =  array("extratolinha"=>"true"); 
+	 $clcriaabas->identifica = ["extrato"=>"Dados do extrato","extratolinha"=>"Movimentos"]; 
+	 $clcriaabas->sizecampo  = ["extrato"=>"40","extratolinha"=>"40"]; 
+	 $clcriaabas->src = ["extrato"=>"cai1_extrato004.php"];
+	 $clcriaabas->disabled   =  ["extratolinha"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

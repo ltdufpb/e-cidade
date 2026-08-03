@@ -35,8 +35,8 @@ include(modification("classes/db_serie_classe.php"));
 include(modification("classes/db_baseserie_classe.php"));
 include(modification("classes/db_basemps_classe.php"));
 include(modification("classes/db_base_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clserie      = new cl_serie;
 $clbaseserie  = new cl_baseserie;
@@ -106,7 +106,7 @@ if (isset($ordenacao)) {
         }
         for($i=0;$i<$linhas;$i++){
           $dados1 = pg_fetch_array($query1);
-          echo "<option value=\"".$dados1["ed34_i_codigo"]."\">".trim($dados1["ed232_c_descr"])."</option>\n";
+          echo "<option value=\"".$dados1["ed34_i_codigo"]."\">".trim((string) $dados1["ed232_c_descr"])."</option>\n";
         }
      ?>
     </select>

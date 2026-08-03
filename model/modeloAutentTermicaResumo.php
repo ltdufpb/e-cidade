@@ -40,7 +40,8 @@ class modeloAutentTermicaResumo extends modeloAutentTermicaBasica {
     parent::__construct($sIp,$sPorta);
   }
   
-  function imprimir() {
+  #[\Override]
+  function imprimir($sStringCorpo) {
     
     $this->sBuffer .= "\n";
     $this->sBuffer .= "\n<b>".str_pad("Contribuinte:",15," ",STR_PAD_RIGHT)." </b>" ;

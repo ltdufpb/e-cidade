@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_progfalta_classe.php"));
 include(modification("classes/db_progconfig_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clprogfalta = new cl_progfalta;
 $clprogconfig = new cl_progconfig;
 $db_opcao = 1;

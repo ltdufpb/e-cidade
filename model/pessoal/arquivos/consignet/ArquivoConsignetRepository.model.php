@@ -43,7 +43,7 @@ abstract class ArquivoConsignetRepository {
   *
   * @var ArquvivoConsignet[]
   */
- private static $aArquivos = array();
+ private static $aArquivos = [];
 
  /**
   * Adiciona uma instancia do objeto na memória
@@ -288,7 +288,7 @@ abstract class ArquivoConsignetRepository {
         throw new DBException(_M('recursoshumanos.pessoal.ProcessamentoPonto.nenhum_dado_encontrado'));
       }
 
-      $aArquivos = array();
+      $aArquivos = [];
 
       for ($iIndice = 0; $iIndice < pg_num_rows($rsArquivos); $iIndice++) {
 

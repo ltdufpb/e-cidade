@@ -41,7 +41,7 @@ $anousu  = db_getsession("DB_anousu");
 //} 
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -66,11 +66,11 @@ db_postmemory($HTTP_POST_VARS);
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("relatorio"=>"Relatorio","titulo"=>"Títulos");
-    $clcriaabas->title      = array("relatorio"=>"Relatorio","titulo"=>"Títulos");
-    $clcriaabas->src  = array("relatorio"=>"con2_anexo16_011.php",
-                              "titulo"=>"con2_anexo16_003.php");
-    $clcriaabas->sizecampo= array("relatorio"=>"23","titulo"=>"23");
+    $clcriaabas->identifica = ["relatorio"=>"Relatorio","titulo"=>"Títulos"];
+    $clcriaabas->title      = ["relatorio"=>"Relatorio","titulo"=>"Títulos"];
+    $clcriaabas->src  = ["relatorio"=>"con2_anexo16_011.php",
+                              "titulo"=>"con2_anexo16_003.php"];
+    $clcriaabas->sizecampo= ["relatorio"=>"23","titulo"=>"23"];
     $clcriaabas->cria_abas();    
     ?>
     </center>

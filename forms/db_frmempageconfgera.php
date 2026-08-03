@@ -40,11 +40,11 @@ $clrotulo->label("z01_nome");
 $clrotulo->label("e60_emiss");
 $clrotulo->label("e87_descgera");
 
-$aParametrosEmpenho = array();
+$aParametrosEmpenho = [];
 $dados="ordem";
 require_once(modification("std/db_stdClass.php"));
 $iTipoControleRetencaoMesAnterior = 0;
-$aParametrosEmpenho = db_stdClass::getParametro("empparametro",array(db_getsession("DB_anousu")));
+$aParametrosEmpenho = db_stdClass::getParametro("empparametro",[db_getsession("DB_anousu")]);
 if (count($aParametrosEmpenho) > 0) {
   $iTipoControleRetencaoMesAnterior = $aParametrosEmpenho[0]->e30_retencaomesanterior;
 }
@@ -387,7 +387,7 @@ if (empty($_POST['filtroTipoTransmissao'])) {
           <td><strong>Banco:</strong></td>
           <td>
             <?php
-            $arr_bancos      = array();
+            $arr_bancos      = [];
             $sSqlBuscaBancos = $cldb_bancos->sql_query_empage(null,
                                                               "distinct db90_codban,
                                                                db90_descr",
@@ -448,7 +448,7 @@ if (empty($_POST['filtroTipoTransmissao'])) {
             $oDaoTipoTransmissao = new cl_empagetipotransmissao();
             $sSqlBuscaTipos      = $oDaoTipoTransmissao->sql_query_file(null, "*", 'e57_sequencial');
             $rsBuscaTipos        = $oDaoTipoTransmissao->sql_record($sSqlBuscaTipos);
-            $aFiltroTipoTransmissao = array();
+            $aFiltroTipoTransmissao = [];
             for ($iRowTipo = 0; $iRowTipo < $oDaoTipoTransmissao->numrows; $iRowTipo++) {
 
               $oStdTipo = db_utils::fieldsMemory($rsBuscaTipos, $iRowTipo);
@@ -596,6 +596,6 @@ if (empty($_POST['filtroTipoTransmissao'])) {
     location.href = 'cai2_geratxt001.php';
   }
 
-  js_pesquisaCNPJBanco('<?php echo isset($_POST["comboboxCNPJ"])?$_POST["comboboxCNPJ"]:0;?>');
+  js_pesquisaCNPJBanco('<?php echo $_POST["comboboxCNPJ"] ?? 0;?>');
 
 </script>

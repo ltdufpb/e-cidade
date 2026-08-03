@@ -58,8 +58,8 @@ include(modification("classes/db_proctransand_classe.php"));
 include(modification("classes/db_procandam_classe.php"));
 include(modification("classes/db_protprocesso_classe.php"));
 include(modification("classes/db_solordemtransf_classe.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clproctransfer = new cl_proctransfer;
 $clproctransferproc = new cl_proctransferproc;
 $clproctransand = new cl_proctransand;
@@ -101,24 +101,24 @@ $db_botao = true;
 $gerautori = "";
 if (isset ($incluir)) {
 	$gerautori = "";
-	$valor = split(",", $valores);
+	$valor = preg_split("#,#m", $valores);
 	// arrays para dados do empautoriza
-	$arr_vals = Array ();
-	$arr_cgms = Array ();
-	$arr_help = Array ();
+	$arr_vals =  [];
+	$arr_cgms =  [];
+	$arr_help =  [];
 	$indexaut = 0;
 
 	// arrays para dados do empautitem
-	$arr_proc = Array ();
-	$arr_hell = Array ();
+	$arr_proc =  [];
+	$arr_hell =  [];
 	$indexitm = 0;
 	$vir = "";
 
 	db_inicio_transacao();
 	$clpcdotac->sql_record("update empparametro set e39_anousu = e39_anousu where e39_anousu =".db_getsession("DB_anousu"));
 
-	$diferenca = Array ();
-	$difindex = Array ();
+	$diferenca =  [];
+	$difindex =  [];
 	$iindexdif = 0;
 	for ($i = 0; $i < sizeof($valor); $i ++) {
 		$sqlerro = false;
@@ -127,7 +127,7 @@ if (isset ($incluir)) {
 		$e54_emiss = date("Y-m-d", db_getsession("DB_datausu"));
 		$e54_instit = db_getsession("DB_instit");
 
-		$splitei = split("_", $valor[$i]);
+		$splitei = preg_split("#_#m", (string) $valor[$i]);
 		$pc81_codprocitem = $splitei[2];
 		$pc22_orcamitem = $splitei[3];
 		$pc23_orcamforne = $splitei[4];
@@ -244,9 +244,9 @@ if (isset ($incluir)) {
 				break;
 			}
 			if ($sqlerro == false) {
-				$arr_item = split(",", $arr_proc[$arr_help[$i]]);
+				$arr_item = preg_split("#,#m", $arr_proc[$arr_help[$i]]);
 				for ($iii = 0; $iii < sizeof($arr_item); $iii ++) {
-					$arr_daditem = split("_", $arr_item[$iii]);
+					$arr_daditem = preg_split("#_#m", (string) $arr_item[$iii]);
 					$e55_sequen = $arr_daditem[0];
 					$e55_quant = $arr_daditem[1];
 					$e55_vltot = $arr_daditem[2];
@@ -279,7 +279,7 @@ if (isset ($incluir)) {
 						$clempautitem->e55_vlrun = $valorunitarioautitem;
 
 						if ((isset ($pc01_servico) && (trim($pc01_servico) == "f" || trim($pc01_servico) == "")) || !isset ($pc01_servico)) {
-							$unid = trim(substr($m61_descr, 0, 10));
+							$unid = trim(substr((string) $m61_descr, 0, 10));
 							if ($m61_usaquant == "t") {
 								$unid .= " ($pc17_quant UNIDADES)";
 							}
@@ -676,8 +676,8 @@ if ($numrows_itens == 0) {
 	$contador = 1;
 	$testatot = 0;
 
-	$saldodotacoes = Array ();
-	$indexdotacoes = Array ();
+	$saldodotacoes =  [];
+	$indexdotacoes =  [];
 	$indexsaldodotacoes = 0;
 	$itenssemdotac = "";
 	$vircodprocitem = "";
@@ -687,7 +687,7 @@ if ($numrows_itens == 0) {
 		$passa = true;
 		$e54_autori = 0;
 
-		if (trim($pc13_coddot) == "")
+		if (trim((string) $pc13_coddot) == "")
 			continue;
 
 		$result_empautitem = $clempautitem->sql_record($clempautitem->sql_query_file(null, $pc81_codprocitem));
@@ -711,8 +711,8 @@ if ($numrows_itens == 0) {
 			continue;
 
 		if ($i < $numrows_itens -1) {
-			$proxitem = pg_result($result_itens, $i +1, "pc81_codprocitem");
-			$proxdotac = pg_result($result_itens, $i +1, "pc13_coddot");
+			$proxitem = pg_fetch_result($result_itens, $i +1, "pc81_codprocitem");
+			$proxdotac = pg_fetch_result($result_itens, $i +1, "pc13_coddot");
 			if ($proxitem == $pc81_codprocitem and $proxdotac == $pc13_coddot)
 				continue;
 		}
@@ -731,7 +731,7 @@ if ($numrows_itens == 0) {
 	for ($i = 0; $i < $numrows_itens; $i ++) {
 		db_fieldsmemory($result_itens, $i);
 
-		if (trim($pc13_coddot) == "")
+		if (trim((string) $pc13_coddot) == "")
 			continue;
 
 		$passa = true;
@@ -777,8 +777,8 @@ if ($numrows_itens == 0) {
 			continue;
 
 		if ($i < $numrows_itens -1) {
-			$proxitem = pg_result($result_itens, $i +1, "pc81_codprocitem");
-			$proxdotac = pg_result($result_itens, $i +1, "pc13_coddot");
+			$proxitem = pg_fetch_result($result_itens, $i +1, "pc81_codprocitem");
+			$proxdotac = pg_fetch_result($result_itens, $i +1, "pc13_coddot");
 			if ($proxitem == $pc81_codprocitem and $proxdotac == $pc13_coddot)
 				continue;
 		}
@@ -790,8 +790,8 @@ if ($numrows_itens == 0) {
 		db_fieldsmemory($result, 0);
 
 		$valdisp = 'valdisp_'.$contador;
-		$$valdisp = (0 + $atual_menos_reservado) + $saldodotacoes[$pc13_coddot];
-		$valtesta = $$valdisp;
+		${$valdisp} = (0 + $atual_menos_reservado) + $saldodotacoes[$pc13_coddot];
+		$valtesta = ${$valdisp};
 		if ($dot_ant != $pc13_coddot) {
 			$testatot = 0;
 		}
@@ -801,7 +801,7 @@ if ($numrows_itens == 0) {
 				echo "  <td nowrap colspan='12'align='left'><strong>&nbsp;</strong></td>\n";
 				echo "<tr>\n";
 			}
-			$$valdisp = db_formatar($$valdisp, "v");
+			${$valdisp} = db_formatar(${$valdisp}, "v");
 			echo "</tr>\n";
 			echo "  <td nowrap colspan='1' class='bordas' align='center' title='Marcar apenas itens da $contador&ordf; autorização'><strong>";
 			db_ancora("A", "js_marcaautoriza('". ($contador)."');", 1);
@@ -811,8 +811,8 @@ if ($numrows_itens == 0) {
 			db_input('valdisp_'.$contador, 12, 0, true, 'text', 3);
 			echo "</td>\n";
 			echo "</tr>\n";
-			$$valdisp = str_replace(".", "", $$valdisp);
-			$$valdisp = str_replace(",", ".", $$valdisp);
+			${$valdisp} = str_replace(".", "", ${$valdisp});
+			${$valdisp} = str_replace(",", ".", ${$valdisp});
 			$dot_ant = $pc13_coddot;
 			$forn_ant = $z01_numcgm;
 			$codele_ant = $pc18_codele;
@@ -883,7 +883,7 @@ if ($numrows_itens == 0) {
 		echo "  <td nowrap class='$bordas' align='center' ><input type='checkbox' name='aut_". ($contador -1)."_".$pc81_codprocitem."_".$pc22_orcamitem."_".$pc23_orcamforne."_".$pc13_coddot."' value='aut_". ($contador -1)."_".$pc81_codprocitem."_".$pc22_orcamitem."_".$pc23_orcamforne."_".$pc13_coddot."' $simnaod></td>\n";
 		echo "  <td nowrap class='$bordas' align='center' >$pc81_codprocitem</td>\n";
 		if ((isset ($pc01_servico) && (trim($pc01_servico) == "f" || trim($pc01_servico) == "")) || !isset ($pc01_servico)) {
-			$unid = trim(substr($m61_descr, 0, 10));
+			$unid = trim(substr((string) $m61_descr, 0, 10));
 			if ($m61_usaquant == "t") {
 				$unid .= " <BR>($pc17_quant UNIDADES)";
 			}
@@ -892,7 +892,7 @@ if ($numrows_itens == 0) {
 		}
 		echo "  <td nowrap class='$bordas' align='center' >$unid</td>\n";
 		echo "  <td nowrap class='$bordas' align='center' >$pc01_codmater</td>\n";
-		echo "  <td class='$bordas' align='left' >".ucfirst(strtolower($pc01_descrmater))."</td>\n";
+		echo "  <td class='$bordas' align='left' >".ucfirst(strtolower((string) $pc01_descrmater))."</td>\n";
 		echo "  <td class='$bordas' align='left' >".ucfirst(strtolower($pc23_obs))."&nbsp;</td>\n";
 		echo "  <td class='$bordas' align='left' >$z01_nome</td>\n";
 		echo "  <td nowrap class='$bordas' align='center' >$pc13_coddot</td>\n";

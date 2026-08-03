@@ -149,9 +149,9 @@
                 <tr>
                   <td>
 
-                    <?php if(pg_numrows($rsInstituicoes) == 1 and !$tem_atualizacoes): ?>
+                    <?php if(pg_num_rows($rsInstituicoes) == 1 and !$tem_atualizacoes): ?>
 
-                      <input type="hidden" name="instit" value="<?php echo pg_result($rsInstituicoes, 0, "codigo"); ?>">
+                      <input type="hidden" name="instit" value="<?php echo pg_fetch_result($rsInstituicoes, 0, "codigo"); ?>">
                       <script>document.form1.submit()</script>
 
                     <?php else: ?>
@@ -163,11 +163,11 @@
                               <tr>
 
                               <?php
-                                for($i = 0;$i < pg_numrows($rsInstituicoes);$i++) {
+                                for($i = 0;$i < pg_num_rows($rsInstituicoes);$i++) {
                                   echo "<td>
                                         <table width=\"160px\" height=\"125px\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
-                                        <tr><td align=\"center\" valign=\"middle\"><a href=\"corpo.php?".base64_encode("instit=".pg_result($rsInstituicoes,$i,"codigo"))."\"><img src=\"imagens/files/".pg_result($rsInstituicoes,$i,"figura")."\" alt=\"".str_replace(" ", "_", pg_result($rsInstituicoes,$i,"nomeinst"))."\" onmouseover=\"js_msg_status(this.alt)\" onmouseout=\"js_lmp_status()\" border=\"0\" width=\"160\" height=\"125\"></a></td></tr>
-                                        <tr><td align=\"center\" valign=\"middle\"><a href=\"corpo.php?".base64_encode("instit=".pg_result($rsInstituicoes,$i,"codigo"))."\" title=\"".pg_result($rsInstituicoes,$i,"nomeinst")."\"  onmouseover=\"js_msg_status(this.title)\" onmouseout=\"js_lmp_status()\">".pg_result($rsInstituicoes,$i,"nomeinst")."</a></td></tr>    
+                                        <tr><td align=\"center\" valign=\"middle\"><a href=\"corpo.php?".base64_encode("instit=".pg_fetch_result($rsInstituicoes,$i,"codigo"))."\"><img src=\"imagens/files/".pg_fetch_result($rsInstituicoes,$i,"figura")."\" alt=\"".str_replace(" ", "_", pg_fetch_result($rsInstituicoes,$i,"nomeinst"))."\" onmouseover=\"js_msg_status(this.alt)\" onmouseout=\"js_lmp_status()\" border=\"0\" width=\"160\" height=\"125\"></a></td></tr>
+                                        <tr><td align=\"center\" valign=\"middle\"><a href=\"corpo.php?".base64_encode("instit=".pg_fetch_result($rsInstituicoes,$i,"codigo"))."\" title=\"".pg_fetch_result($rsInstituicoes,$i,"nomeinst")."\"  onmouseover=\"js_msg_status(this.title)\" onmouseout=\"js_lmp_status()\">".pg_fetch_result($rsInstituicoes,$i,"nomeinst")."</a></td></tr>    
                                         </table>
                                         </td>\n";
                                   if(($i % 3) == 0 && $i > 1)

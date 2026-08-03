@@ -43,12 +43,12 @@ class GenericController
         $this->request = $request;
 
         $filters = $this->request->query->get("filter");
-        $filters = empty($filters) ? array() : $filters;
+        $filters = empty($filters) ? [] : $filters;
 
         $this->filters = new ParameterBag($filters);
 
         $fields = $this->request->query->get("fields");
-        $fields = empty($fields) ? array() : array_map('trim', explode(',', $fields));
+        $fields = empty($fields) ? [] : array_map(trim(...), explode(',', $fields));
         $this->fields = new ParameterBag($fields);
 
         $page = $this->request->query->get("page");
@@ -82,12 +82,12 @@ class GenericController
      * @param int $statusCode
      * @return JsonResponse
      */
-    protected function response($message = '', $body = array(), $success = true, $statusCode = 200)
+    protected function response($message = '', $body = [], $success = true, $statusCode = 200)
     {
-        return new JsonResponse(array(
+        return new JsonResponse([
             'success' => $success,
-            'message' => utf8_encode($message),
+            'message' => mb_convert_encoding($message, 'UTF-8', 'ISO-8859-1'),
             'body' => $body
-        ), $statusCode);
+        ], $statusCode);
     }
 }

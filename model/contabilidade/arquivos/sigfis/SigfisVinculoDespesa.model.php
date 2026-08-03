@@ -36,7 +36,7 @@ class SigfisVinculoDespesa {
 
   static $oInstance;
    
-  protected $aListaDespesa = array();
+  protected $aListaDespesa = [];
   
   /**
    * método construtor
@@ -44,7 +44,7 @@ class SigfisVinculoDespesa {
   protected function __construct() {
 
     $oDomXml   = new DOMDocument();
-    $aDespesas = array();
+    $aDespesas = [];
     if (file_exists('config/sigfis/vinculodespesa.xml')) {
       
       $oDomXml->load('config/sigfis/vinculodespesa.xml');

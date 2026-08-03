@@ -55,14 +55,14 @@ class ControleVacinasService
 
             if (!array_key_exists($vacina->psf21_estrategia, $imuno->estrategias)) {
                 $imuno->estrategias[$vacina->psf21_estrategia] = (object)[
-                    'descricao' => (new EstrategiaVacinacaoEnum($vacina->psf21_estrategia))->name(),
+                    'descricao' => new EstrategiaVacinacaoEnum($vacina->psf21_estrategia)->name(),
                     'total' => 0,
                     'doses' => []
                 ];
             }
 
             $imuno->estrategias[$vacina->psf21_estrategia]->doses[] = (object)[
-                'descricao' => (new DoseEnum($vacina->psf21_dose))->name(),
+                'descricao' => new DoseEnum($vacina->psf21_dose)->name(),
                 'quantidade' => $vacina->quantidade
             ];
 
@@ -131,12 +131,6 @@ class ControleVacinasService
      */
     private function ordenarEstrategia(&$dados)
     {
-        array_map(function ($unidade) {
-            return array_map(function ($vacina) {
-                return usort($vacina->estrategias, function ($a, $b) {
-                    return strcmp($a->descricao, $b->descricao);
-                });
-            }, $unidade->vacinas);
-        }, $dados);
+        array_map(fn($unidade) => array_map(fn($vacina) => usort($vacina->estrategias, fn($a, $b) => strcmp((string) $a->descricao, (string) $b->descricao)), $unidade->vacinas), $dados);
     }
 }

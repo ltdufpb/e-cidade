@@ -73,7 +73,7 @@ if(isset($atualizar)){
  if($estrutural  ==  ""){
        $tot='0';
  }else{
-   $matriz=split('\.',$estrutural); 
+   $matriz=preg_split('#\.#m',(string) $estrutural); 
    $tot=count($matriz);
  }
  
@@ -495,9 +495,9 @@ function js_novo(){
          parent.document.formaba.orcimpactoval.disabled=true;
   <?php 
   if(isset($o90_codimp)){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chave_nova=$o90_codimp';";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chave_nova=$o90_codimp';";
   }else{
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."';";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."';";
 
   }  
   ?>  
@@ -681,7 +681,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
     db_iframe_orcimpacto.hide();
     <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     ?>
 }
 </script>

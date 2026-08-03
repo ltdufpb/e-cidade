@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE cartorio
 class cl_cartorio {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $v82_sequencial = 0;
-   var $v82_descricao = null;
-   var $v82_numcgm = 0;
-   var $v82_obs = null;
-   var $v82_extrajudicial = 'f';
+   public $v82_sequencial = 0;
+   public $v82_descricao = null;
+   public $v82_numcgm = 0;
+   public $v82_obs = null;
+   public $v82_extrajudicial = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  v82_sequencial = int4 = Sequencial
                  v82_descricao = varchar(50) = Descrição
                  v82_numcgm = int4 = Cgm
@@ -56,10 +56,10 @@ class cl_cartorio {
                  v82_extrajudicial = bool = Extrajudicial
                  ";
    //funcao construtor da classe
-   function cl_cartorio() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cartorio");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -116,10 +116,10 @@ class cl_cartorio {
          $this->erro_status = "0";
          return false;
        }
-       $this->v82_sequencial = pg_result($result,0,0);
+       $this->v82_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from cartorio_v82_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v82_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v82_sequencial)){
          $this->erro_sql = " Campo v82_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -155,7 +155,7 @@ class cl_cartorio {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cartorio ($this->v82_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cartorio já Cadastrado";
@@ -184,14 +184,14 @@ class cl_cartorio {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18151,'$this->v82_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3207,18151,'','".AddSlashes(pg_result($resaco,0,'v82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3207,18153,'','".AddSlashes(pg_result($resaco,0,'v82_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3207,18152,'','".AddSlashes(pg_result($resaco,0,'v82_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3207,18154,'','".AddSlashes(pg_result($resaco,0,'v82_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3207,21216,'','".AddSlashes(pg_result($resaco,0,'v82_extrajudicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3207,18151,'','".AddSlashes(pg_fetch_result($resaco,0,'v82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3207,18153,'','".AddSlashes(pg_fetch_result($resaco,0,'v82_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3207,18152,'','".AddSlashes(pg_fetch_result($resaco,0,'v82_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3207,18154,'','".AddSlashes(pg_fetch_result($resaco,0,'v82_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3207,21216,'','".AddSlashes(pg_fetch_result($resaco,0,'v82_extrajudicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -201,10 +201,10 @@ class cl_cartorio {
       $this->atualizacampos();
      $sql = " update cartorio set ";
      $virgula = "";
-     if(trim($this->v82_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v82_sequencial"])){
+     if(trim((string) $this->v82_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v82_sequencial"])){
        $sql  .= $virgula." v82_sequencial = $this->v82_sequencial ";
        $virgula = ",";
-       if(trim($this->v82_sequencial) == null ){
+       if(trim((string) $this->v82_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "v82_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_cartorio {
          return false;
        }
      }
-     if(trim($this->v82_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v82_descricao"])){
+     if(trim((string) $this->v82_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v82_descricao"])){
        $sql  .= $virgula." v82_descricao = '$this->v82_descricao' ";
        $virgula = ",";
-       if(trim($this->v82_descricao) == null ){
+       if(trim((string) $this->v82_descricao) == null ){
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "v82_descricao";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_cartorio {
          return false;
        }
      }
-     if(trim($this->v82_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v82_numcgm"])){
+     if(trim((string) $this->v82_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v82_numcgm"])){
        $sql  .= $virgula." v82_numcgm = $this->v82_numcgm ";
        $virgula = ",";
-       if(trim($this->v82_numcgm) == null ){
+       if(trim((string) $this->v82_numcgm) == null ){
          $this->erro_sql = " Campo Cgm não informado.";
          $this->erro_campo = "v82_numcgm";
          $this->erro_banco = "";
@@ -240,11 +240,11 @@ class cl_cartorio {
          return false;
        }
      }
-     if(trim($this->v82_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v82_obs"])){
+     if(trim((string) $this->v82_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v82_obs"])){
        $sql  .= $virgula." v82_obs = '$this->v82_obs' ";
        $virgula = ",";
      }
-     if(trim($this->v82_extrajudicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v82_extrajudicial"])){
+     if(trim((string) $this->v82_extrajudicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v82_extrajudicial"])){
        $sql  .= $virgula." v82_extrajudicial = '$this->v82_extrajudicial' ";
        $virgula = ",";
      }
@@ -262,19 +262,19 @@ class cl_cartorio {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,18151,'$this->v82_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v82_sequencial"]) || $this->v82_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3207,18151,'".AddSlashes(pg_result($resaco,$conresaco,'v82_sequencial'))."','$this->v82_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3207,18151,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v82_sequencial'))."','$this->v82_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v82_descricao"]) || $this->v82_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3207,18153,'".AddSlashes(pg_result($resaco,$conresaco,'v82_descricao'))."','$this->v82_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3207,18153,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v82_descricao'))."','$this->v82_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v82_numcgm"]) || $this->v82_numcgm != "")
-             $resac = db_query("insert into db_acount values($acount,3207,18152,'".AddSlashes(pg_result($resaco,$conresaco,'v82_numcgm'))."','$this->v82_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3207,18152,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v82_numcgm'))."','$this->v82_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v82_obs"]) || $this->v82_obs != "")
-             $resac = db_query("insert into db_acount values($acount,3207,18154,'".AddSlashes(pg_result($resaco,$conresaco,'v82_obs'))."','$this->v82_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3207,18154,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v82_obs'))."','$this->v82_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["v82_extrajudicial"]) || $this->v82_extrajudicial != "")
-             $resac = db_query("insert into db_acount values($acount,3207,21216,'".AddSlashes(pg_result($resaco,$conresaco,'v82_extrajudicial'))."','$this->v82_extrajudicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3207,21216,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v82_extrajudicial'))."','$this->v82_extrajudicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -328,14 +328,14 @@ class cl_cartorio {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,18151,'$v82_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3207,18151,'','".AddSlashes(pg_result($resaco,$iresaco,'v82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3207,18153,'','".AddSlashes(pg_result($resaco,$iresaco,'v82_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3207,18152,'','".AddSlashes(pg_result($resaco,$iresaco,'v82_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3207,18154,'','".AddSlashes(pg_result($resaco,$iresaco,'v82_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3207,21216,'','".AddSlashes(pg_result($resaco,$iresaco,'v82_extrajudicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3207,18151,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3207,18153,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v82_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3207,18152,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v82_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3207,18154,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v82_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3207,21216,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v82_extrajudicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

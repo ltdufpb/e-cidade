@@ -34,7 +34,7 @@ class Atendimento extends Model
     public $timestamps = false;
 
     protected $cidadao = null;
-    protected $appends = array('cidadao');
+    protected $appends = ['cidadao'];
     // protected $with = ['situacaoOuvidoriaAtendimento'];
 
     /**

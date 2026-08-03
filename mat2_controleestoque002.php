@@ -39,8 +39,8 @@ define('MARGEM_NOVA_PAGINA', 30);
 try {
     $oGet                  = db_utils::postMemory($_GET);
     $iInstituicao          = db_getsession('DB_instit');
-    $aCodigosDepartamento = array();
-    $aCodigosMateriais     = array();
+    $aCodigosDepartamento = [];
+    $aCodigosMateriais     = [];
     $oPeriodoInicial       = null;
     $lMaterialImpresso     = false;
     $iAlmoxarifadoAnterior = null;
@@ -65,7 +65,7 @@ try {
     $sTipoImpressao           = $oGet->tipoImpressao;
 
     if (!empty($oGet->sDepositos)) {
-        $aCodigosDepositos = explode(',', $oGet->sDepositos);
+        $aCodigosDepositos = explode(',', (string) $oGet->sDepositos);
         $sqlDepositos = $daoDepositos->sql_query_file(null, 'm91_depto', null, " m91_codigo in ({$oGet->sDepositos})");
         $rs = db_query($sqlDepositos);
         if (!$rs) {
@@ -77,7 +77,7 @@ try {
     }
 
     if (!empty($oGet->sMateriais)) {
-        $aCodigosMateriais = explode(',', $oGet->sMateriais);
+        $aCodigosMateriais = explode(',', (string) $oGet->sMateriais);
     }
 
   /**
@@ -155,10 +155,10 @@ try {
     }
 
     $aMovimentacoes = $oControleEstoque->getMovimentacaoEstoqueSintetica();
-    $aDadosMovimentacoes    = array();
-    $aOrdenacaoCodigo       = array();
-    $aOrdenacaoNome         = array();
-    $aOrdenacaoAlmoxarifado = array();
+    $aDadosMovimentacoes    = [];
+    $aOrdenacaoCodigo       = [];
+    $aOrdenacaoNome         = [];
+    $aOrdenacaoAlmoxarifado = [];
 
     foreach ($aMovimentacoes as $oMovimentacao) {
         $aDadosMovimentacoes[]    = $oMovimentacao;
@@ -195,7 +195,7 @@ try {
       /**
        * Agrupa movimentacoes por material para somalos
        */
-        $aMovimentacoesPorMaterial = array();
+        $aMovimentacoesPorMaterial = [];
 
       /**
        * Agrupa movimentacoes pelo codigo do material
@@ -239,8 +239,8 @@ try {
         throw new Exception(_M('patrimonial.material.mat2_controleestoque002.nenhuma_movimentacao_encontrada'));
     }
 
-    $aDescricaoOrdem         = array();
-    $aDescricaoTipoImpressao = array();
+    $aDescricaoOrdem         = [];
+    $aDescricaoTipoImpressao = [];
 
     $aDescricaoOrdem['alfabetica']   = 'Alfabética';
     $aDescricaoOrdem['codigo']       = 'Código';
@@ -413,8 +413,8 @@ function linhaSintetico(stdClass $oDados)
 
     $sMaterial = $oDados->sMaterial;
 
-    if (strlen($sMaterial) > 37) {
-        $sMaterial = substr($oDados->sMaterial, 0, 37) . '...';
+    if (strlen((string) $sMaterial) > 37) {
+        $sMaterial = substr((string) $oDados->sMaterial, 0, 37) . '...';
     }
 
     linha(8, $oDados->iMaterial, "TRB", "C");
@@ -504,7 +504,7 @@ function linhaConferencia(stdClass $oDados)
     $sAlmoxarifado = $oDados->iAlmoxarifado . ' - ' . $oDados->sAlmoxarifado;
 
     if (strlen($sMaterial) > 57) {
-        $sMaterial = substr($oDados->sMaterial, 0, 57) . '...';
+        $sMaterial = substr((string) $oDados->sMaterial, 0, 57) . '...';
     }
 
     if ($oDados->lQuebraPorDeposito) {

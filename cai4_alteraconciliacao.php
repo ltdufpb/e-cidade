@@ -35,8 +35,8 @@ include(modification("classes/db_corrente_classe.php"));
 
 $clsaltes   = new cl_saltes;
 $clcorrente = new cl_corrente;
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $db_opcao = 1;
 $db_botao = true;
 

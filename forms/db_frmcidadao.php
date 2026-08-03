@@ -68,7 +68,7 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
             </td>
             <td>
               <?php
-                $aResponsavelFamilia = array(0=>'Selecione', 1=>'Sim',2=>'Não');
+                $aResponsavelFamilia = [0=>'Selecione', 1=>'Sim',2=>'Não'];
                 db_select('sResponsavelFamilia', $aResponsavelFamilia, true, $db_opcao, 'onchange="js_selecionaResponsavelFamilia(this.value)"');
               ?>
             </td>
@@ -136,7 +136,7 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
   			  </td>
   			  <td nowrap title="<?=@$Tov02_sexo?>"><?=@$Lov02_sexo?>
   			    <?php
-  			      $aSexo = array('M' => 'Masculino', 'F' => 'Feminino');
+  			      $aSexo = ['M' => 'Masculino', 'F' => 'Feminino'];
   			      db_select("ov02_sexo", $aSexo, true, $db_opcao);
   			    ?>
   			  </td>
@@ -233,7 +233,7 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
 						db_input('ov08_email',60,$Iov08_email,true,'text',$db_opcao,"onkeyUp='js_email_lower(this.value);'");
 
 						echo "&nbsp;".@$Lov08_principal;
-						$xx = array('t'=>'Sim','f'=>'Não');
+						$xx = ['t'=>'Sim','f'=>'Não'];
 						db_select('ov08_principal',$xx,true,$db_opcao);
 						?>
 						<span id="btnEmail">
@@ -263,7 +263,7 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
 						<?php
 						$rsTipoTelefone = $cltelefonetipo->sql_record($cltelefonetipo->sql_query_file());
 
-            $x = array();
+            $x = [];
 						if($cltelefonetipo->numrows > 0){
 							for($i=0; $i < $cltelefonetipo->numrows; $i++){
 								db_fieldsmemory($rsTipoTelefone,$i);
@@ -277,7 +277,7 @@ $lTelaSocial   = isset($oGet->lTelaSocial) && $oGet->lTelaSocial     == 'true' ?
 			    <td nowrap title="<?=@$Tov07_principal?>" align="right"><?=@$Lov07_principal?></td>
 			    <td>
 			    <?php 
-			    	$xxx = array('t'=>'Sim','f'=>'Não');
+			    	$xxx = ['t'=>'Sim','f'=>'Não'];
 						db_select('ov07_principal',$xxx,true,$db_opcao);
 					?>
 			    </td>
@@ -780,7 +780,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_cidadao.hide();
   <?php 
   if($db_opcao!=1){
-   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+   echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

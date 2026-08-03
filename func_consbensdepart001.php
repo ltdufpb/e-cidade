@@ -40,8 +40,8 @@ $cldb_estrut = new cl_db_estrut;
 $clbens->rotulo->label("t52_bem");
 $clbens->rotulo->label("t52_descr");
 $clclabens->rotulo->label("t64_class");
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 ?>
 <html>
 <head>

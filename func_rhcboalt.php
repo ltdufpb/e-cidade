@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhcbo_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhcbo = new cl_rhcbo;
 $clrhcbo->rotulo->label("rh70_sequencial");
@@ -150,7 +150,7 @@ $clrhcbo->rotulo->label("rh70_descr");
 	          <td ><strong>Mostrar:</strong></td>
 	          <td align="left" >
 	          <?php 
-		        $arraymostra = array("A" => "Somente analítico ","T" => "Todos");
+		        $arraymostra = ["A" => "Somente analítico ","T" => "Todos"];
 		        db_select("mostra",$arraymostra,1,1,"onchange='document.form1.submit();'");
 		        ?>
 	          </td>
@@ -188,10 +188,10 @@ $clrhcbo->rotulo->label("rh70_descr");
           }
 
           $sql     = $clrhcbo->sql_query("",$campos,"rh70_estrutural",$where);
-          $repassa = array();
+          $repassa = [];
 
           if(isset($chave_rh70_sequencial)){
-            $repassa = array("chave_rh70_sequencial"=>$chave_rh70_sequencial,"chave_rh70_sequencial"=>$chave_rh70_sequencial);
+            $repassa = ["chave_rh70_sequencial"=>$chave_rh70_sequencial,"chave_rh70_sequencial"=>$chave_rh70_sequencial];
           }
 
           db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

@@ -58,15 +58,10 @@ class Resultado
     /**
      * @var array
      */
-    private $situacoesValidas = array(
+    private $situacoesValidas = [
       RequisicaoExame::COLETADO,
       RequisicaoExame::LANCADO
-    );
-
-    /**
-     * @var ImportacaoInconsistencia
-     */
-    private $importacaoInconsistencia;
+    ];
 
     /**
      * @var boolean
@@ -79,7 +74,7 @@ class Resultado
      * @param ImportacaoInconsistencia $importacaoInconsistencia
      * @throws Exception
      */
-    public function __construct($xml, ImportacaoInconsistencia $importacaoInconsistencia)
+    public function __construct($xml, private readonly ImportacaoInconsistencia $importacaoInconsistencia)
     {
         if (empty($xml)) {
             throw new Exception('XML não informado.');
@@ -91,8 +86,6 @@ class Resultado
         if (!$this->xml = simplexml_load_file($pastaResultados . '/' . $xml)) {
             throw new Exception('XML inválido.');
         }
-
-        $this->importacaoInconsistencia = $importacaoInconsistencia;
     }
 
     /**
@@ -189,7 +182,7 @@ class Resultado
     private function resultadosAtributosXml($exameAtual)
     {
         $totalResultados = count($exameAtual->Secao);
-        $atributosValores = array();
+        $atributosValores = [];
 
         for ($contador = 0; $contador < $totalResultados; $contador++) {
             $secaoAtual = $exameAtual->Secao[$contador];
@@ -211,7 +204,7 @@ class Resultado
         $atributos = $requisicaoExame->getExame()->getAtributos();
         $resultado = $requisicaoExame->getResultado();
         $resultadosAtributos = $resultado->getResultadoDosAtributos();
-        $resultadosAtributosAtualizar = array();
+        $resultadosAtributosAtualizar = [];
 
         foreach ($resultadosAtributos as $resultadoAtributo) {
             if (array_key_exists($resultadoAtributo->getAtributo()->getSigla(), $atributosValores)) {
@@ -222,7 +215,7 @@ class Resultado
         foreach ($atributos as $atributoExame) {
             $atributoValorReferencia = $atributoExame->getValoresDeReferenciaParaExame($requisicaoExame);
             $siglaExame = $atributoExame->getSigla();
-            $valor = isset($atributosValores[$siglaExame]) ? $atributosValores[$siglaExame] : '';
+            $valor = $atributosValores[$siglaExame] ?? '';
             
             if ($atributoExame->getTipo() == 2) {
                 if (($valor == "" && $atributoExame->preenchimentoObrigatorio()) ||

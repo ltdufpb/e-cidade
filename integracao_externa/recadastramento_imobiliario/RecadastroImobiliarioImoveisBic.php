@@ -63,7 +63,7 @@ class RecadastroImobiliarioImoveisBic {
     db_putsession('DB_anousu', date('Y'));
     db_putsession('DB_instit', 1);
     db_putsession('DB_id_usuario', 1);
-    db_putsession('DB_datausu', time(date('Y-m-d')));
+    db_putsession('DB_datausu', time());
     db_putsession('DB_modulo', 578);
     db_putsession('DB_itemmenu_acessado', 1721);
 
@@ -149,27 +149,27 @@ class RecadastroImobiliarioImoveisBic {
 
     $iAlt                      = 4;
 
-    $aDadosImovel              = array();
-    $aDadosCaractLote          = array();
-    $aDadosTestadaLote         = array();
-    $aDadosTestadaInterna      = array();
-    $aDadosCaractFace          = array();
-    $aDadosProprietario        = array();
-    $aDadosOutrosProprietarios = array();
-    $aDadosPromitentes         = array();
-    $aDadosOutrosPromitentes   = array();
-    $aDadosImobiliaria         = array();
-    $aDadosEnderecoEntrega     = array();
-    $aDadosEdificacoes         = array();
-    $aDadosRegistroImovel      = array();
-    $aDadosIsencoes            = array();
-    $aDadosAverbacoes          = array();
-    $aDadosCalculos            = array();
-    $aDadosOutrosDados         = array();
+    $aDadosImovel              = [];
+    $aDadosCaractLote          = [];
+    $aDadosTestadaLote         = [];
+    $aDadosTestadaInterna      = [];
+    $aDadosCaractFace          = [];
+    $aDadosProprietario        = [];
+    $aDadosOutrosProprietarios = [];
+    $aDadosPromitentes         = [];
+    $aDadosOutrosPromitentes   = [];
+    $aDadosImobiliaria         = [];
+    $aDadosEnderecoEntrega     = [];
+    $aDadosEdificacoes         = [];
+    $aDadosRegistroImovel      = [];
+    $aDadosIsencoes            = [];
+    $aDadosAverbacoes          = [];
+    $aDadosCalculos            = [];
+    $aDadosOutrosDados         = [];
 
     for ( $iInd = 0; $iInd  < $iNumRows; $iInd++ ) {
 
-      $oDados = db_utils::fieldsMemory($rsSqlConsulta, $iInd);
+      $oDados = (new db_utils())->fieldsMemory($rsSqlConsulta, $iInd);
 
       /**
        * Dados Imovel
@@ -216,7 +216,7 @@ class RecadastroImobiliarioImoveisBic {
         $nAreaRealLote = '0';
         if ($iNumRowsAreaTotal > 0) {
 
-          $oAreaRealLote = db_utils::fieldsMemory($rsSqlAreaTotal, 0);
+          $oAreaRealLote = (new db_utils())->fieldsMemory($rsSqlAreaTotal, 0);
           $nAreaRealLote = $oAreaRealLote->areatotal;
         }
 
@@ -274,7 +274,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndCaractLote = 0; $xIndCaractLote  < $iNumRowsCaractLote; $xIndCaractLote++ ) {
 
-            $oDadosCarLote = db_utils::fieldsMemory($rsSqlCaractLote, $xIndCaractLote);
+            $oDadosCarLote = (new db_utils())->fieldsMemory($rsSqlCaractLote, $xIndCaractLote);
 
             $oDadosCaractLote                       = new stdClass();
             $oDadosCaractLote->iCodigo              = $oDadosCarLote->j31_codigo;
@@ -313,7 +313,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndCaractFace = 0; $xIndCaractFace  < $iNumRowsCaractFace; $xIndCaractFace++ ) {
 
-            $oDadoCaractFace = db_utils::fieldsMemory($rsSqlCaractFace, $xIndCaractFace);
+            $oDadoCaractFace = (new db_utils())->fieldsMemory($rsSqlCaractFace, $xIndCaractFace);
 
             $oDadosCaractFace = new stdClass();
             $oDadosCaractFace->iCodigo              = $oDadoCaractFace->j31_codigo;
@@ -346,14 +346,14 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndTestadaLote = 0; $xIndTestadaLote  < $iNumRowsDadosTestadaLote; $xIndTestadaLote++ ) {
 
-            $oDadoTestadaLote = db_utils::fieldsMemory($rsSqlDadosTestadaLote, $xIndTestadaLote);
+            $oDadoTestadaLote = (new db_utils())->fieldsMemory($rsSqlDadosTestadaLote, $xIndTestadaLote);
 
             $oDadosTestadaLote               = new stdClass();
             $oDadosTestadaLote->iCodigoMI    = $oDadoTestadaLote->j36_testad;
             $oDadosTestadaLote->iMedida      = $oDadoTestadaLote->j36_testle;
             $oDadosTestadaLote->iTipo        = $oDadoTestadaLote->j14_tipo;
             $oDadosTestadaLote->iCodigoLogr  = $oDadoTestadaLote->j14_codigo;
-            $oDadosTestadaLote->sDescrLogr   = substr($oDadoTestadaLote->j14_nome,0 ,20);
+            $oDadosTestadaLote->sDescrLogr   = substr((string) $oDadoTestadaLote->j14_nome,0 ,20);
             $oDadosTestadaLote->iNumero      = $oDadoTestadaLote->j15_numero;
             $oDadosTestadaLote->sComplemento = $oDadoTestadaLote->j15_compl;
 
@@ -393,7 +393,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndTestadaInterna = 0; $xIndTestadaInterna  < $iNumRowsDadosTestadaInterna; $xIndTestadaInterna++ ) {
 
-            $oDadoTestadaInterna  = db_utils::fieldsMemory($rsSqlDadosTestadaInterna, $xIndTestadaInterna);
+            $oDadoTestadaInterna  = (new db_utils())->fieldsMemory($rsSqlDadosTestadaInterna, $xIndTestadaInterna);
 
             $oDadosTestadaInterna = new stdClass();
             $oDadosTestadaInterna->iCodigoLote = $oDadoTestadaInterna->j34_lote;
@@ -437,7 +437,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndProprietario = 0; $xIndProprietario  < $iNumRowsDadosProprietario; $xIndProprietario++ ) {
 
-            $oDadoProprietario = db_utils::fieldsMemory($rsSqlDadosProprietario, $xIndProprietario);
+            $oDadoProprietario = (new db_utils())->fieldsMemory($rsSqlDadosProprietario, $xIndProprietario);
 
             $oDadosProprietario = new stdClass();
             $oDadosProprietario->iCgm                  = $oDadoProprietario->numcgm;
@@ -478,7 +478,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndOutrosProprietarios = 0; $xIndOutrosProprietarios  < $iNumRowsOutrosProprietarios; $xIndOutrosProprietarios++ ) {
 
-            $oDadoOutrosProprietarios = db_utils::fieldsMemory($rsSqlOutrosProprietarios, $xIndOutrosProprietarios);
+            $oDadoOutrosProprietarios = (new db_utils())->fieldsMemory($rsSqlOutrosProprietarios, $xIndOutrosProprietarios);
 
             $oDadosOutrosProprietarios = new stdClass();
             $oDadosOutrosProprietarios->iCgm         = $oDadoOutrosProprietarios->z01_numcgm;
@@ -520,7 +520,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndPromitentes = 0; $xIndPromitentes  < $iNumRowsPromitentes; $xIndPromitentes++ ) {
 
-            $oDadoPromitentes = db_utils::fieldsMemory($rsSqlPromitentes, $xIndPromitentes);
+            $oDadoPromitentes = (new db_utils())->fieldsMemory($rsSqlPromitentes, $xIndPromitentes);
 
             $oDadosPromitentes = new stdClass();
             $oDadosPromitentes->iCgm         = $oDadoPromitentes->z01_numcgm;
@@ -563,7 +563,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndOutrosPromitentes = 0; $xIndOutrosPromitentes  < $iNumRowsOutrosPromitentes; $xIndOutrosPromitentes++ ) {
 
-            $oDadoOutrosPromitentes = db_utils::fieldsMemory($rsSqlOutrosPromitentes, $xIndOutrosPromitentes);
+            $oDadoOutrosPromitentes = (new db_utils())->fieldsMemory($rsSqlOutrosPromitentes, $xIndOutrosPromitentes);
 
             $oDadosOutrosPromitentes = new stdClass();
             $oDadosOutrosPromitentes->iCgm         = $oDadoOutrosPromitentes->z01_numcgm;
@@ -599,7 +599,7 @@ class RecadastroImobiliarioImoveisBic {
 
         if ($clcadimobil->numrows > 0) {
 
-          $oDadoImobiliaria                  = db_utils::fieldsMemory($rsSqlImobiliaria, 0);
+          $oDadoImobiliaria                  = (new db_utils())->fieldsMemory($rsSqlImobiliaria, 0);
 
           $oDadosImobiliaria                 = new stdClass();
           $oDadosImobiliaria->iCgm           = $oDadoImobiliaria->z01_numcgm;
@@ -638,7 +638,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndEnderecoEntrega = 0; $xIndEnderecoEntrega  < $iNumRowsEnderecoEntrega; $xIndEnderecoEntrega++ ) {
 
-            $oDadoEnderecoEntrega = db_utils::fieldsMemory($rsSqlEnderecoEntrega, $xIndEnderecoEntrega);
+            $oDadoEnderecoEntrega = (new db_utils())->fieldsMemory($rsSqlEnderecoEntrega, $xIndEnderecoEntrega);
 
             $oDadosEnderecoEntrega = new stdClass();
             $oDadosEnderecoEntrega->sLogradouro      = $oDadoEnderecoEntrega->j43_ender;
@@ -680,7 +680,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndEdificacoes = 0; $xIndEdificacoes  < $iNumRowsEdificacoes; $xIndEdificacoes++ ) {
 
-            $oDadoEdificacoes = db_utils::fieldsMemory($rsSqlEdificacoes, $xIndEdificacoes);
+            $oDadoEdificacoes = (new db_utils())->fieldsMemory($rsSqlEdificacoes, $xIndEdificacoes);
 
             $oDadosEdificacoes = new stdClass();
             $oDadosEdificacoes->iCodConstrucao = $oDadoEdificacoes->j39_idcons;
@@ -737,7 +737,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndRegistroImoveis = 0; $xIndRegistroImoveis  < $iNumRowsRegistroImoveis; $xIndRegistroImoveis++ ) {
 
-            $oDadoRegistroImoveis = db_utils::fieldsMemory($rsSqlRegistroImoveis, $xIndRegistroImoveis);
+            $oDadoRegistroImoveis = (new db_utils())->fieldsMemory($rsSqlRegistroImoveis, $xIndRegistroImoveis);
 
             $oDadosRegistroImoveis = new stdClass();
             $oDadosRegistroImoveis->iCodRegistro              = $oDadoRegistroImoveis->j69_sequencial;
@@ -773,7 +773,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndIsencoes = 0; $xIndIsencoes  < $iNumRowsIsencoes; $xIndIsencoes++ ) {
 
-            $oDadoIsencoes = db_utils::fieldsMemory($rsSqlIsencoes, $xIndIsencoes);
+            $oDadoIsencoes = (new db_utils())->fieldsMemory($rsSqlIsencoes, $xIndIsencoes);
 
             $oDadosIsencoes = new stdClass();
             $oDadosIsencoes->iCodIsencao    = $oDadoIsencoes->j46_codigo;
@@ -783,7 +783,7 @@ class RecadastroImobiliarioImoveisBic {
             $oDadosIsencoes->dtFinal        = ( empty($oDadoIsencoes->j46_dtfim) ? "null" : $oDadoAverbacoes->j46_dtfim );
             $oDadosIsencoes->nPercentual    = $oDadoIsencoes->j46_perc;
             $oDadosIsencoes->sObservacao    = $oDadoIsencoes->j46_hist;
-            $oDadosIsencoes->aTaxas         = array();
+            $oDadosIsencoes->aTaxas         = [];
 
             $sSqlTaxas  = " select j56_perc,                                                                                   ";
             $sSqlTaxas .= "        k02_codigo,                                                                                 ";
@@ -802,7 +802,7 @@ class RecadastroImobiliarioImoveisBic {
 
               for ( $yInd = 0; $yInd  < $iNumRowsTaxas; $yInd++ ) {
 
-                $oDadoTaxas = db_utils::fieldsMemory($rsSqlTaxas, $yInd);
+                $oDadoTaxas = (new db_utils())->fieldsMemory($rsSqlTaxas, $yInd);
 
                 $oDadosTaxa = new stdClass();
                 $oDadosTaxa->nPercentual   = $oDadoIsencoes->j46_perc;
@@ -837,7 +837,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndAverbacoes = 0; $xIndAverbacoes  < $iNumRowsAverbacoes; $xIndAverbacoes++ ) {
 
-            $oDadoAverbacoes  = db_utils::fieldsMemory($rsSqlAverbacoes, $xIndAverbacoes);
+            $oDadoAverbacoes  = (new db_utils())->fieldsMemory($rsSqlAverbacoes, $xIndAverbacoes);
 
             $oDadosAverbacoes = new stdClass();
             $oDadosAverbacoes->iCodigo     = $oDadoAverbacoes->j75_codigo;
@@ -905,7 +905,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndIptuCalc = 0; $xIndIptuCalc  < $iNumRowsIptuCalc; $xIndIptuCalc++ ) {
 
-            $oDadoCalculo   = db_utils::fieldsMemory($rsSqlIptuCalc, $xIndIptuCalc);
+            $oDadoCalculo   = (new db_utils())->fieldsMemory($rsSqlIptuCalc, $xIndIptuCalc);
 
             $oDadosCalculos = new stdClass();
             $oDadosCalculos->iAnoCalculo             = $oDadoCalculo->j23_anousu;
@@ -925,8 +925,8 @@ class RecadastroImobiliarioImoveisBic {
             $oDadosCalculos->nValorVenalTotal        = ( $oDadoCalculo->valorvenalconstr
                 + $oDadoCalculo->j23_vlrter );
 
-            $oDadosCalculos->aConstrucoes            = array();
-            $oDadosCalculos->aValorlancado           = array();
+            $oDadosCalculos->aConstrucoes            = [];
+            $oDadosCalculos->aValorlancado           = [];
 
             $sWhere  = " iptucale.j22_matric = {$oDadoCalculo->j23_matric} ";
             $sWhere .= " and iptucale.j22_anousu = {$oDadoCalculo->j23_anousu} ";
@@ -937,7 +937,7 @@ class RecadastroImobiliarioImoveisBic {
 
               for ( $yInd = 0; $yInd  < $cliptucale->numrows; $yInd++ ) {
 
-                $oDadoConstrucao   = db_utils::fieldsMemory($rsSqlIptucale, $yInd);
+                $oDadoConstrucao   = (new db_utils())->fieldsMemory($rsSqlIptucale, $yInd);
 
                 $oDadosConstrucao = new stdClass();
                 $oDadosConstrucao->iCodConstrucao = $oDadoConstrucao->j22_idcons;
@@ -956,9 +956,9 @@ class RecadastroImobiliarioImoveisBic {
 
             $sSqlCfiptu  = $clcfiptu->sql_query_file($oDadoCalculo->j23_anousu, "j18_iptuhistisen", null, '');
             $rsSqlCfiptu = $clcfiptu->sql_record($sSqlCfiptu);
-            $oDadoCfiptu = (object)array("j18_iptuhistisen" => 0);
+            $oDadoCfiptu = (object)["j18_iptuhistisen" => 0];
             if ($clcfiptu->numrows > 0) {
-              $oDadoCfiptu = db_utils::fieldsMemory($rsSqlCfiptu, 0);
+              $oDadoCfiptu = (new db_utils())->fieldsMemory($rsSqlCfiptu, 0);
             }
 
             $sSqlValoresLancados  = "  select k02_codigo,                                                                                                                            ";
@@ -1020,7 +1020,7 @@ class RecadastroImobiliarioImoveisBic {
 
               for ( $zInd = 0; $zInd  < $iNumRowsValoresLancados; $zInd++ ) {
 
-                $oDadoValorLancado     = db_utils::fieldsMemory($rsSqlValoresLancados, $zInd);
+                $oDadoValorLancado     = (new db_utils())->fieldsMemory($rsSqlValoresLancados, $zInd);
 
                 $oDadosValoresLancados = new stdClass();
                 $oDadosValoresLancados->iCodRec          = $oDadoValorLancado->k02_codigo;
@@ -1055,7 +1055,7 @@ class RecadastroImobiliarioImoveisBic {
 
           for ( $xIndOutrosDados = 0; $xIndOutrosDados  < $iNumRowsOutrosDados; $xIndOutrosDados++ ) {
 
-            $oDadoOutrosDados  = db_utils::fieldsMemory($rsSqlOutrosDados, $xIndOutrosDados);
+            $oDadoOutrosDados  = (new db_utils())->fieldsMemory($rsSqlOutrosDados, $xIndOutrosDados);
 
             $oDadosOutrosDados = new stdClass();
             $oDadosOutrosDados->sObservacao = $oDadoOutrosDados->j26_obs;
@@ -1192,9 +1192,9 @@ class RecadastroImobiliarioImoveisBic {
 
               $pdf->setfont('arial','',$iFontDados);
               $pdf->cell(20, $iAlt, $oDadoCaractLote->iCodigo                                           ,0,0,"L",0);
-              $pdf->cell(20, $iAlt, substr($oDadoCaractLote->sDescricao, 0, 20)                         ,0,0,"L",0);
+              $pdf->cell(20, $iAlt, substr((string) $oDadoCaractLote->sDescricao, 0, 20)                         ,0,0,"L",0);
               $pdf->cell(20, $iAlt, $oDadoCaractLote->iCodGrupo                                         ,0,0,"L",0);
-              $pdf->cell(20, $iAlt, substr($oDadoCaractLote->sGrupoDescr, 0, 20)                        ,0,0,"L",0);
+              $pdf->cell(20, $iAlt, substr((string) $oDadoCaractLote->sGrupoDescr, 0, 20)                        ,0,0,"L",0);
               $pdf->cell(20, $iAlt, $oDadoCaractLote->iPonto                                            ,0,1,"L",0);
 
             } else if ($iTotalCaracteristicaLote <= 10) {
@@ -1213,9 +1213,9 @@ class RecadastroImobiliarioImoveisBic {
               $pdf->SetX(110);
               $pdf->setfont('arial','',$iFontDados);
               $pdf->cell(20, $iAlt, $oDadoCaractLote->iCodigo                                           ,0,0,"L",0);
-              $pdf->cell(20, $iAlt, substr($oDadoCaractLote->sDescricao, 0, 20)                         ,0,0,"L",0);
+              $pdf->cell(20, $iAlt, substr((string) $oDadoCaractLote->sDescricao, 0, 20)                         ,0,0,"L",0);
               $pdf->cell(20, $iAlt, $oDadoCaractLote->iCodGrupo                                         ,0,0,"L",0);
-              $pdf->cell(20, $iAlt, substr($oDadoCaractLote->sGrupoDescr, 0, 20)                        ,0,0,"L",0);
+              $pdf->cell(20, $iAlt, substr((string) $oDadoCaractLote->sGrupoDescr, 0, 20)                        ,0,0,"L",0);
               $pdf->cell(20, $iAlt, $oDadoCaractLote->iPonto                                            ,0,1,"L",0);
 
             }
@@ -1339,9 +1339,9 @@ class RecadastroImobiliarioImoveisBic {
             if ($iTotalCaracteristicaFace <= 5) {
 
               $pdf->cell(10, $iAlt, $oDadoCaracterFace->iCodigo                                         ,0,0,"L",0);
-              $pdf->cell(30, $iAlt, substr($oDadoCaracterFace->sDescricao, 0, 20)                       ,0,0,"L",0);
+              $pdf->cell(30, $iAlt, substr((string) $oDadoCaracterFace->sDescricao, 0, 20)                       ,0,0,"L",0);
               $pdf->cell(20, $iAlt, $oDadoCaracterFace->iCodGrupo                                       ,0,0,"L",0);
-              $pdf->cell(20, $iAlt, substr($oDadoCaracterFace->sGrupoDescr, 0, 20)                      ,0,0,"L",0);
+              $pdf->cell(20, $iAlt, substr((string) $oDadoCaracterFace->sGrupoDescr, 0, 20)                      ,0,0,"L",0);
               $pdf->cell(20, $iAlt, $oDadoCaracterFace->iPonto                                          ,0,1,"L",0);
 
             } else if ($iTotalCaracteristicaFace <= 10) {
@@ -1359,9 +1359,9 @@ class RecadastroImobiliarioImoveisBic {
               }
               $pdf->SetX(110);
               $pdf->cell(10, $iAlt, $oDadoCaracterFace->iCodigo                                         ,0,0,"L",0);
-              $pdf->cell(30, $iAlt, substr($oDadoCaracterFace->sDescricao, 0, 20)                       ,0,0,"L",0);
+              $pdf->cell(30, $iAlt, substr((string) $oDadoCaracterFace->sDescricao, 0, 20)                       ,0,0,"L",0);
               $pdf->cell(20, $iAlt, $oDadoCaracterFace->iCodGrupo                                       ,0,0,"L",0);
-              $pdf->cell(20, $iAlt, substr($oDadoCaracterFace->sGrupoDescr, 0, 20)                      ,0,0,"L",0);
+              $pdf->cell(20, $iAlt, substr((string) $oDadoCaracterFace->sGrupoDescr, 0, 20)                      ,0,0,"L",0);
               $pdf->cell(20, $iAlt, $oDadoCaracterFace->iPonto                                          ,0,1,"L",0);
 
             }
@@ -1398,12 +1398,12 @@ class RecadastroImobiliarioImoveisBic {
           $pdf->setfont('arial','',$iFontBic);
           $pdf->cell(25, $iAlt, $oDadoPropri->iCgm                                                    ,0,0,"L",0);
           $pdf->cell(25, $iAlt, $oDadoPropri->sTipo                                                   ,0,0,"L",0);
-          $pdf->cell(95, $iAlt, substr($oDadoPropri->sNome, 0, 40)                                    ,0,0,"L",0);
+          $pdf->cell(95, $iAlt, substr((string) $oDadoPropri->sNome, 0, 40)                                    ,0,0,"L",0);
 
           $sCgcCpf = '';
-          if (strlen($oDadoPropri->iCgcCpf) == 11) {
+          if (strlen((string) $oDadoPropri->iCgcCpf) == 11) {
             $sCgcCpf = db_formatar($oDadoPropri->iCgcCpf, 'cpf');
-          } else if (strlen($oDadoPropri->iCgcCpf) == 14) {
+          } else if (strlen((string) $oDadoPropri->iCgcCpf) == 14) {
             $sCgcCpf = db_formatar($oDadoPropri->iCgcCpf, 'cnpj');
           }
 
@@ -1418,9 +1418,9 @@ class RecadastroImobiliarioImoveisBic {
           $pdf->cell(40, $iAlt, 'Caixa Postal'                                                        ,0,1,"L",0);
 
           $pdf->setfont('arial','',$iFontBic);
-          $pdf->cell(60, $iAlt, substr($oDadoPropri->sLogradouro, 0, 40)                              ,0,0,"L",0);
+          $pdf->cell(60, $iAlt, substr((string) $oDadoPropri->sLogradouro, 0, 40)                              ,0,0,"L",0);
           $pdf->cell(25, $iAlt, $oDadoPropri->iNumero                                                 ,0,0,"L",0);
-          $pdf->cell(60, $iAlt, substr($oDadoPropri->sComplemento, 0, 40)                             ,0,0,"L",0);
+          $pdf->cell(60, $iAlt, substr((string) $oDadoPropri->sComplemento, 0, 40)                             ,0,0,"L",0);
           $pdf->cell(40, $iAlt, $oDadoPropri->iCaixaPostal                                            ,0,1,"L",0);
 
           $pdf->cell(193, 1, ''                                                                       ,0,1,"L",0);
@@ -1482,12 +1482,12 @@ class RecadastroImobiliarioImoveisBic {
             $pdf->setfont('arial','',$iFontBic);
             $pdf->cell(25, $iAlt, $oOutrosPropri->iCgm                                                ,0,0,"L",0);
             $pdf->cell(25, $iAlt, $oOutrosPropri->sTipo                                               ,0,0,"L",0);
-            $pdf->cell(80, $iAlt, substr($oOutrosPropri->sNome, 0, 30)                                ,0,0,"L",0);
+            $pdf->cell(80, $iAlt, substr((string) $oOutrosPropri->sNome, 0, 30)                                ,0,0,"L",0);
 
             $sCgcCpf = '';
-            if (strlen($oOutrosPropri->iCgcCpf) == 11) {
+            if (strlen((string) $oOutrosPropri->iCgcCpf) == 11) {
               $sCgcCpf = db_formatar($oOutrosPropri->iCgcCpf, 'cpf');
-            } else if (strlen($oOutrosPropri->iCgcCpf) == 14) {
+            } else if (strlen((string) $oOutrosPropri->iCgcCpf) == 14) {
               $sCgcCpf = db_formatar($oOutrosPropri->iCgcCpf, 'cnpj');
             }
 
@@ -1502,9 +1502,9 @@ class RecadastroImobiliarioImoveisBic {
             $pdf->cell(40, $iAlt, 'Caixa Postal'                                                      ,0,1,"L",0);
 
             $pdf->setfont('arial','',$iFontBic);
-            $pdf->cell(60, $iAlt, substr($oOutrosPropri->sLogradouro, 0, 40)                          ,0,0,"L",0);
+            $pdf->cell(60, $iAlt, substr((string) $oOutrosPropri->sLogradouro, 0, 40)                          ,0,0,"L",0);
             $pdf->cell(25, $iAlt, $oOutrosPropri->iNumero                                             ,0,0,"L",0);
-            $pdf->cell(60, $iAlt, substr($oOutrosPropri->sComplemento, 0, 30)                         ,0,0,"L",0);
+            $pdf->cell(60, $iAlt, substr((string) $oOutrosPropri->sComplemento, 0, 30)                         ,0,0,"L",0);
             $pdf->cell(40, $iAlt, $oOutrosPropri->iCaixaPostal                                        ,0,1,"L",0);
 
             $pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
@@ -1570,17 +1570,17 @@ class RecadastroImobiliarioImoveisBic {
             $pdf->setfont('arial','',$iFontBic);
             $pdf->cell(15, $iAlt, $oPromitentes->iCgm                                                 ,0,0,"L",0);
             $pdf->cell(10, $iAlt, $oPromitentes->sTipo                                                ,0,0,"L",0);
-            $pdf->cell(70, $iAlt, substr($oPromitentes->sNome, 0, 30)                                 ,0,0,"L",0);
+            $pdf->cell(70, $iAlt, substr((string) $oPromitentes->sNome, 0, 30)                                 ,0,0,"L",0);
 
             $sCgcCpf = '';
-            if (strlen($oPromitentes->iCgcCpf) == 11) {
+            if (strlen((string) $oPromitentes->iCgcCpf) == 11) {
               $sCgcCpf = db_formatar($oPromitentes->iCgcCpf, 'cpf');
-            } else if (strlen($oPromitentes->iCgcCpf) == 14) {
+            } else if (strlen((string) $oPromitentes->iCgcCpf) == 14) {
               $sCgcCpf = db_formatar($oPromitentes->iCgcCpf, 'cnpj');
             }
 
             $pdf->cell(38, $iAlt, $sCgcCpf                                                            ,0,0,"L",0);
-            $pdf->cell(62, $iAlt, substr($oPromitentes->sContato, 0, 30)                              ,0,1,"L",0);
+            $pdf->cell(62, $iAlt, substr((string) $oPromitentes->sContato, 0, 30)                              ,0,1,"L",0);
 
             $pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
 
@@ -1591,9 +1591,9 @@ class RecadastroImobiliarioImoveisBic {
             $pdf->cell(40, $iAlt, 'Caixa Postal'                                                      ,0,1,"L",0);
 
             $pdf->setfont('arial','',$iFontBic);
-            $pdf->cell(60, $iAlt, substr($oPromitentes->sLogradouro, 0, 40)                           ,0,0,"L",0);
+            $pdf->cell(60, $iAlt, substr((string) $oPromitentes->sLogradouro, 0, 40)                           ,0,0,"L",0);
             $pdf->cell(25, $iAlt, $oPromitentes->iNumero                                              ,0,0,"L",0);
-            $pdf->cell(60, $iAlt, substr($oPromitentes->sComplemento, 0, 30)                          ,0,0,"L",0);
+            $pdf->cell(60, $iAlt, substr((string) $oPromitentes->sComplemento, 0, 30)                          ,0,0,"L",0);
             $pdf->cell(40, $iAlt, $oPromitentes->iCaixaPostal                                         ,0,1,"L",0);
 
             $pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
@@ -1658,17 +1658,17 @@ class RecadastroImobiliarioImoveisBic {
             $pdf->setfont('arial','',$iFontBic);
             $pdf->cell(15, $iAlt, $oOutrosPromitentes->iCgm                                           ,0,0,"L",0);
             $pdf->cell(10, $iAlt, $oOutrosPromitentes->sTipo                                          ,0,0,"L",0);
-            $pdf->cell(70, $iAlt, substr($oOutrosPromitentes->sNome, 0, 30)                           ,0,0,"L",0);
+            $pdf->cell(70, $iAlt, substr((string) $oOutrosPromitentes->sNome, 0, 30)                           ,0,0,"L",0);
 
             $sCgcCpf = '';
-            if (strlen($oOutrosPromitentes->iCgcCpf) == 11) {
+            if (strlen((string) $oOutrosPromitentes->iCgcCpf) == 11) {
               $sCgcCpf = db_formatar($oOutrosPromitentes->iCgcCpf, 'cpf');
-            } else if (strlen($oOutrosPromitentes->iCgcCpf) == 14) {
+            } else if (strlen((string) $oOutrosPromitentes->iCgcCpf) == 14) {
               $sCgcCpf = db_formatar($oOutrosPromitentes->iCgcCpf, 'cnpj');
             }
 
             $pdf->cell(38, $iAlt, $sCgcCpf                                                            ,0,0,"L",0);
-            $pdf->cell(62, $iAlt, substr($oOutrosPromitentes->sContato, 0, 30)                        ,0,1,"L",0);
+            $pdf->cell(62, $iAlt, substr((string) $oOutrosPromitentes->sContato, 0, 30)                        ,0,1,"L",0);
 
             $pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
 
@@ -1679,9 +1679,9 @@ class RecadastroImobiliarioImoveisBic {
             $pdf->cell(40, $iAlt, 'Caixa Postal'                                                      ,0,1,"L",0);
 
             $pdf->setfont('arial','',$iFontBic);
-            $pdf->cell(60, $iAlt, substr($oOutrosPromitentes->sLogradouro, 0, 40)                     ,0,0,"L",0);
+            $pdf->cell(60, $iAlt, substr((string) $oOutrosPromitentes->sLogradouro, 0, 40)                     ,0,0,"L",0);
             $pdf->cell(25, $iAlt, $oOutrosPromitentes->iNumero                                        ,0,0,"L",0);
-            $pdf->cell(60, $iAlt, substr($oOutrosPromitentes->sComplemento, 0, 30)                    ,0,0,"L",0);
+            $pdf->cell(60, $iAlt, substr((string) $oOutrosPromitentes->sComplemento, 0, 30)                    ,0,0,"L",0);
             $pdf->cell(40, $iAlt, $oOutrosPromitentes->iCaixaPostal                                   ,0,1,"L",0);
 
             $pdf->cell(193, 1, ''                                                                     ,0,1,"L",0);
@@ -1742,12 +1742,12 @@ class RecadastroImobiliarioImoveisBic {
 
           $pdf->setfont('arial','',$iFontBic);
           $pdf->cell(25, $iAlt, $oDadoImobiliaria->iCgm                                               ,0,0,"L",0);
-          $pdf->cell(100, $iAlt, substr($oDadoImobiliaria->sNome, 0, 40)                              ,0,0,"L",0);
+          $pdf->cell(100, $iAlt, substr((string) $oDadoImobiliaria->sNome, 0, 40)                              ,0,0,"L",0);
 
           $sCgcCpf = '';
-          if (strlen($oDadoImobiliaria->iCgcCpf) == 11) {
+          if (strlen((string) $oDadoImobiliaria->iCgcCpf) == 11) {
             $sCgcCpf = db_formatar($oDadoImobiliaria->iCgcCpf, 'cpf');
-          } else if (strlen($oDadoImobiliaria->iCgcCpf) == 14) {
+          } else if (strlen((string) $oDadoImobiliaria->iCgcCpf) == 14) {
             $sCgcCpf = db_formatar($oDadoImobiliaria->iCgcCpf, 'cnpj');
           }
 
@@ -1762,9 +1762,9 @@ class RecadastroImobiliarioImoveisBic {
           $pdf->cell(30, $iAlt, 'Caixa Postal'                                                        ,0,1,"L",0);
 
           $pdf->setfont('arial','',$iFontBic);
-          $pdf->cell(90, $iAlt, substr($oDadoImobiliaria->sLogradouro, 0, 40)                         ,0,0,"L",0);
+          $pdf->cell(90, $iAlt, substr((string) $oDadoImobiliaria->sLogradouro, 0, 40)                         ,0,0,"L",0);
           $pdf->cell(15, $iAlt, $oDadoImobiliaria->iNumero                                            ,0,0,"L",0);
-          $pdf->cell(50, $iAlt, substr($oDadoImobiliaria->sComplemento, 0, 30)                        ,0,0,"L",0);
+          $pdf->cell(50, $iAlt, substr((string) $oDadoImobiliaria->sComplemento, 0, 30)                        ,0,0,"L",0);
           $pdf->cell(30, $iAlt, $oDadoImobiliaria->iCaixaPostal                                       ,0,1,"L",0);
 
           $pdf->cell(193, 1, ''                                                                       ,0,1,"L",0);
@@ -1824,9 +1824,9 @@ class RecadastroImobiliarioImoveisBic {
           $pdf->cell(30, $iAlt, 'Caixa Postal'                                                        ,0,1,"L",0);
 
           $pdf->setfont('arial','',$iFontBic);
-          $pdf->cell(70, $iAlt, substr($oEnderecoEntrega->sLogradouro, 0, 40)                         ,0,0,"L",0);
+          $pdf->cell(70, $iAlt, substr((string) $oEnderecoEntrega->sLogradouro, 0, 40)                         ,0,0,"L",0);
           $pdf->cell(20, $iAlt, $oEnderecoEntrega->iNumero                                            ,0,0,"L",0);
-          $pdf->cell(70, $iAlt, substr($oEnderecoEntrega->sComplemento, 0, 30)                        ,0,0,"L",0);
+          $pdf->cell(70, $iAlt, substr((string) $oEnderecoEntrega->sComplemento, 0, 30)                        ,0,0,"L",0);
           $pdf->cell(30, $iAlt, $oEnderecoEntrega->iCaixaPostal                                       ,0,1,"L",0);
 
           $pdf->cell(193, 1, ''                                                                       ,0,1,"L",0);

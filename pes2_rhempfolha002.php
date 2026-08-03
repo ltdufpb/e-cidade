@@ -53,7 +53,7 @@ $clorcorgao = new cl_orcorgao;
 $clorcunidade = new cl_orcunidade;
 $clorcprojativ = new cl_orcprojativ;
 $clorctiporec = new cl_orctiporec;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $passa = false;
 
@@ -426,7 +426,7 @@ $sql2 = "select rh40_recurso,
 
 $result2 = db_query($sql2);
 
-$numrows2 = pg_numrows($result2);
+$numrows2 = pg_num_rows($result2);
 
 $tot_rec = 0;
 

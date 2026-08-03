@@ -31,7 +31,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $cllab_labsetor = new cl_lab_labsetor;
 $cllab_setor    = new cl_lab_setor;
@@ -137,9 +137,9 @@ $cllab_labsetor->rotulo->label("la24_i_setor");
               $sep     = " and ";
             }
 
-            $repassa = array();
+            $repassa = [];
             if( isset( $chave_la24_i_codigo ) ) {
-              $repassa = array( "chave_la24_i_codigo" => $chave_la24_i_codigo, "chave_la23_c_descr" => $chave_la23_c_descr );
+              $repassa = [ "chave_la24_i_codigo" => $chave_la24_i_codigo, "chave_la23_c_descr" => $chave_la23_c_descr ];
             }
 
             $sql = $cllab_labsetor->$sQuery( "", $campos, "la24_i_codigo", $sWhere );

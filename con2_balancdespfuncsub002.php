@@ -30,19 +30,19 @@ include(modification("libs/db_liborcamento.php"));
 include(modification("libs/db_sql.php"));
 
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $head1 = "BALANCETE DA DESPESA";
 $head3 = "EXERCÍCIO: ".db_getsession("DB_anousu");
 $head5 = "PERÍODO: ".db_formatar($dataini,'d')." A ".db_formatar($datafin,'d');
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev; 
        $flag_abrev  = true;
   } else {
@@ -141,19 +141,19 @@ $totgeralliquidado_acumulado    = 0;
 $totgeralpago_acumulado         = 0;
 $totgeralatual_a_pagar_liquidado= 0;      
 
-for($i=0;$i<pg_numrows($res);$i++){
+for($i=0;$i<pg_num_rows($res);$i++){
 
   db_fieldsmemory($res,$i);
-  
+
   $codigo = db_formatar($o58_subfuncao,'subfuncao');
   $descr  = $o53_descr;
-  
+
   if($pdf->gety() > $pdf->h-40 || $pagina == 1){
     $pagina = 0;
 
     $pdf->addpage();
     $pdf->setfont('arial','b',7);
-    
+
     $pdf->ln(2);
     $pdf->cell(40,$alt,"",0,0,"C",0);
     $pdf->cell(30,$alt,"SALDO INICIAL",0,0,"R",0);
@@ -174,8 +174,8 @@ for($i=0;$i<pg_numrows($res);$i++){
     $pdf->cell(30,$alt,"PAGO NO ANO",0,0,"R",0);
     $pdf->cell(30,$alt,"A PAGAR LIQUIDO",0,1,"R",0);
     $pdf->cell(0,$alt,'',"T",1,"C",0);
-  
-    
+
+
   }
   if ($funcao != $o58_funcao){
     if($funcao != ''){
@@ -187,14 +187,14 @@ for($i=0;$i<pg_numrows($res);$i++){
     $pdf->cell(30,$alt,db_formatar($totfuncareduzido_acumulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncadot_ini + $totfuncasuplementado_acumulado - $totfuncareduzido_acumulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaatual,'f'),0,1,"R",0);
-    
+
     $pdf->cell(40,$alt,"",0,0,"L",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaempenhado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaanulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaliquidado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncapago,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaatual_a_pagar,'f'),0,1,"R",0);
-    
+
     $pdf->cell(40,$alt,"",0,0,"L",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaempenhado_acumulado,'f'),0,0,"R",0);
     $pdf->cell(30,$alt,db_formatar($totfuncaanulado_acumulado,'f'),0,0,"R",0);

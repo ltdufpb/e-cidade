@@ -782,7 +782,7 @@ function js_consultar(iMatricula){
                 r70_descr,". $sigla."quant as r90_quant,".  $sigla."valor as r90_valor";
       $orderby= $sigla."regist,". $sigla."rubric";
 
-      $chavepri = array ("r90_anousu" => @ $r90_anousu, "r90_mesusu" => @ $r90_mesusu, "r90_regist" => @ $r90_regist, "r90_rubric" => @ $r90_rubric);
+      $chavepri =  ["r90_anousu" => @ $r90_anousu, "r90_mesusu" => @ $r90_mesusu, "r90_regist" => @ $r90_regist, "r90_rubric" => @ $r90_rubric];
 
       // Seta TPP como chave primária.
       if($ponto == "fe" || $ponto == "fr"){

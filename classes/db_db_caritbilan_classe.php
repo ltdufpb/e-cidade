@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE db_caritbilan
 class cl_db_caritbilan { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $id_itbi = 0; 
-   var $codcaritbi = 0; 
-   var $area = 0; 
+   public $id_itbi = 0; 
+   public $codcaritbi = 0; 
+   public $area = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  id_itbi = int4 = Guia 
                  codcaritbi = int8 = Código Característica 
                  area = float8 = Área 
                  ";
    //funcao construtor da classe 
-   function cl_db_caritbilan() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_caritbilan"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -120,7 +120,7 @@ class cl_db_caritbilan {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Características digitadas ($this->id_itbi."-".$this->codcaritbi) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Características digitadas já Cadastrado";
@@ -144,13 +144,13 @@ class cl_db_caritbilan {
      $resaco = $this->sql_record($this->sql_query_file($this->id_itbi,$this->codcaritbi));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1032,'$this->id_itbi','I')");
        $resac = db_query("insert into db_acountkey values($acount,2427,'$this->codcaritbi','I')");
-       $resac = db_query("insert into db_acount values($acount,182,1032,'','".AddSlashes(pg_result($resaco,0,'id_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,182,2427,'','".AddSlashes(pg_result($resaco,0,'codcaritbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,182,1033,'','".AddSlashes(pg_result($resaco,0,'area'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,182,1032,'','".AddSlashes(pg_fetch_result($resaco,0,'id_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,182,2427,'','".AddSlashes(pg_fetch_result($resaco,0,'codcaritbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,182,1033,'','".AddSlashes(pg_fetch_result($resaco,0,'area'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -159,10 +159,10 @@ class cl_db_caritbilan {
       $this->atualizacampos();
      $sql = " update db_caritbilan set ";
      $virgula = "";
-     if(trim($this->id_itbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_itbi"])){ 
+     if(trim((string) $this->id_itbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_itbi"])){ 
        $sql  .= $virgula." id_itbi = $this->id_itbi ";
        $virgula = ",";
-       if(trim($this->id_itbi) == null ){ 
+       if(trim((string) $this->id_itbi) == null ){ 
          $this->erro_sql = " Campo Guia nao Informado.";
          $this->erro_campo = "id_itbi";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_db_caritbilan {
          return false;
        }
      }
-     if(trim($this->codcaritbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcaritbi"])){ 
+     if(trim((string) $this->codcaritbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcaritbi"])){ 
        $sql  .= $virgula." codcaritbi = $this->codcaritbi ";
        $virgula = ",";
-       if(trim($this->codcaritbi) == null ){ 
+       if(trim((string) $this->codcaritbi) == null ){ 
          $this->erro_sql = " Campo Código Característica nao Informado.";
          $this->erro_campo = "codcaritbi";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_db_caritbilan {
          return false;
        }
      }
-     if(trim($this->area)!="" || isset($GLOBALS["HTTP_POST_VARS"]["area"])){ 
+     if(trim((string) $this->area)!="" || isset($GLOBALS["HTTP_POST_VARS"]["area"])){ 
        $sql  .= $virgula." area = $this->area ";
        $virgula = ",";
-       if(trim($this->area) == null ){ 
+       if(trim((string) $this->area) == null ){ 
          $this->erro_sql = " Campo Área nao Informado.";
          $this->erro_campo = "area";
          $this->erro_banco = "";
@@ -209,16 +209,16 @@ class cl_db_caritbilan {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1032,'$this->id_itbi','A')");
          $resac = db_query("insert into db_acountkey values($acount,2427,'$this->codcaritbi','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["id_itbi"]))
-           $resac = db_query("insert into db_acount values($acount,182,1032,'".AddSlashes(pg_result($resaco,$conresaco,'id_itbi'))."','$this->id_itbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,182,1032,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'id_itbi'))."','$this->id_itbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codcaritbi"]))
-           $resac = db_query("insert into db_acount values($acount,182,2427,'".AddSlashes(pg_result($resaco,$conresaco,'codcaritbi'))."','$this->codcaritbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,182,2427,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codcaritbi'))."','$this->codcaritbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["area"]))
-           $resac = db_query("insert into db_acount values($acount,182,1033,'".AddSlashes(pg_result($resaco,$conresaco,'area'))."','$this->area',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,182,1033,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'area'))."','$this->area',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -263,13 +263,13 @@ class cl_db_caritbilan {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1032,'$id_itbi','E')");
          $resac = db_query("insert into db_acountkey values($acount,2427,'$codcaritbi','E')");
-         $resac = db_query("insert into db_acount values($acount,182,1032,'','".AddSlashes(pg_result($resaco,$iresaco,'id_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,182,2427,'','".AddSlashes(pg_result($resaco,$iresaco,'codcaritbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,182,1033,'','".AddSlashes(pg_result($resaco,$iresaco,'area'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,182,1032,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,182,2427,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codcaritbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,182,1033,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'area'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_caritbilan
@@ -335,7 +335,7 @@ class cl_db_caritbilan {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_caritbilan";

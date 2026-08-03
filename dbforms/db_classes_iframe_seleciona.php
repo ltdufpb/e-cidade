@@ -29,10 +29,10 @@
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 $clrotulo = new rotulocampo;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-if(file_exists(base64_decode($arquivo))){
-  include(modification(base64_decode($arquivo)));
+if(file_exists(base64_decode((string) $arquivo))){
+  include(modification(base64_decode((string) $arquivo)));
 }else{
   echo "
 
@@ -111,9 +111,9 @@ function js_marca(obj){
   <center>
 <?php 
 if(isset($sql) && $sql!=""){
-  $sql=base64_decode($sql);
+  $sql=base64_decode((string) $sql);
   $campos=base64_decode($campos);
-  $msg_vazio=base64_decode($msg_vazio);
+  $msg_vazio=base64_decode((string) $msg_vazio);
 }
 
 if(!isset($mostra_totalizador)||trim($mostra_totalizador)==""||$mostra_totalizador==null){
@@ -130,7 +130,7 @@ if($mostra_totalizador=="S"){
     if($posicao_totalizador=="A"){
         if(isset($sql) && $sql!=""){
             $result  = db_query($sql);
-            $numrows = pg_numrows($result);
+            $numrows = pg_num_rows($result);
             if($numrows > 0){
                 $matriz_campos = explode(",", $campos);
                 $numcolunas    = sizeof($matriz_campos);
@@ -149,12 +149,12 @@ if($mostra_totalizador=="S"){
       <table border='1' width="100%" bgcolor="#cccccc" id="tabela_seleciona">
 <?php 
 if(isset($sql_disabled) && $sql_disabled!=""){
-  $sql_disabled=base64_decode($sql_disabled);
+  $sql_disabled=base64_decode((string) $sql_disabled);
   $result03=db_query($sql_disabled);
   $numrows03=pg_num_rows($result03);
 }
 if(isset($sql_marca) && $sql_marca!=""){
-  $sql_marca=base64_decode($sql_marca);
+  $sql_marca=base64_decode((string) $sql_marca);
   $result02=db_query($sql_marca);
   $numrows02=pg_num_rows($result02);
 }
@@ -162,8 +162,8 @@ if(isset($sql_marca) && $sql_marca!=""){
 
 if(isset($sql) && $sql!=""){
        $result=db_query($sql);
-       $numrows=pg_numrows($result);
-       $numcols=pg_numfields($result);
+       $numrows=pg_num_rows($result);
+       $numcols=pg_num_fields($result);
        if($db_opcao=="Incluir"){
        }
        if($db_opcao=="Incluir"){
@@ -192,7 +192,7 @@ if(isset($sql) && $sql!=""){
 	    $Tlabel="T$campo";
 	    $Llabel="L$campo";
 
-	    if(substr($campo,0,3) == "db_"){
+	    if(str_starts_with($campo, "db_")){
 	      $nomcampo = ucfirst(substr($campo,3));
 	      ${$Tlabel}   = ucfirst(substr($campo,3));
 	    }else{
@@ -216,7 +216,7 @@ if(isset($sql) && $sql!=""){
            if(isset($sql_marca) && $sql_marca!=""){
              for($s=0;$s<$numrows02;$s++){
                for($w=0; $w<sizeof($matriz02); $w++){
-                 $campo=pg_result($result02,$s,$matriz02[$w]);
+                 $campo=pg_fetch_result($result02,$s,$matriz02[$w]);
                  if($campo==${$matriz02[$w]}){
                    $checa=" checked ";
                    $s=$numrows02;
@@ -240,7 +240,7 @@ if(isset($sql) && $sql!=""){
            if(isset($sql_disabled) && $sql_disabled!=""){
              for($s=0;$s<$numrows03;$s++){
                for($w=0; $w<sizeof($matriz02); $w++){
-                 $campo=pg_result($result03,$s,$matriz02[$w]);
+                 $campo=pg_fetch_result($result03,$s,$matriz02[$w]);
                  if($campo==${$matriz02[$w]}){
                    $pode = " disabled   ";
 	           $cr= " style=\"background-color:#DEB887\"";
@@ -284,7 +284,7 @@ if(isset($sql) && $sql!=""){
 	     @$Tlabel="T$campo";
   	     $Llabel="L$campo";
 
-	    if(substr($campo,0,3) == "db_"){
+	    if(str_starts_with($campo, "db_")){
 	      $nomcampo = ucfirst(substr($campo,3));
 	    }else{
 	      $nomcampo = ${$Llabel};
@@ -299,9 +299,9 @@ if(isset($sql) && $sql!=""){
                 ${$campo}="Não";
 	     }
 
-	     echo "   <td $cr id='".$campo."_".$li."' title='".@${$Tlabel}."' ".($corponowrap=="true"?"nowrap":"")." class='corpo'>".stripslashes(${$campo})."&nbsp;</td>";
+	     echo "   <td $cr id='".$campo."_".$li."' title='".@${$Tlabel}."' ".($corponowrap=="true"?"nowrap":"")." class='corpo'>".stripslashes((string) ${$campo})."&nbsp;</td>";
 	    if(isset($input_hidden) && $input_hidden==true){
-             echo "   <input id='in_".$campo."_".$li."' name='in_".$campo."_".$li."' type='hidden'  value='".stripslashes(${$campo})."'>";
+             echo "   <input id='in_".$campo."_".$li."' name='in_".$campo."_".$li."' type='hidden'  value='".stripslashes((string) ${$campo})."'>";
 	    }
 	     if($w+1==$numcolunas){
 	       if($db_opcao==33){
@@ -320,7 +320,7 @@ if($mostra_totalizador=="S"){
     if($posicao_totalizador=="B"){
         if(isset($sql) && $sql!=""){
             $result  = db_query($sql);
-            $numrows = pg_numrows($result);
+            $numrows = pg_num_rows($result);
             if($numrows > 0){
                 $matriz_campos = explode(",", $campos);
                 $numcolunas    = sizeof($matriz_campos);
@@ -340,7 +340,7 @@ if($mostra_totalizador=="S"){
 </body>
 </html>
 <?php 
- $retorno = @unlink(base64_decode($arquivo));
+ $retorno = @unlink(base64_decode((string) $arquivo));
  if($retorno==false){
    echo "<blink>Carregando...</blink>";
  }

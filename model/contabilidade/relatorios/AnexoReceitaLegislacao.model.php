@@ -45,7 +45,8 @@ class AnexoReceitaLegislacao extends RelatoriosLegaisBase {
      *
      * @return stdClass[]
      */
-    public function getDados() {
+    #[\Override]
+    public function getDados($trazerConfiguracaoPadrao = \true) {
 
         $sDataInicial     = "{$this->iAnoUsu}-01-01";
         $sDataFinal       = "{$this->iAnoUsu}-12-31";
@@ -79,7 +80,7 @@ class AnexoReceitaLegislacao extends RelatoriosLegaisBase {
         $rsReceita = db_query($sSQlReceitaLegislacao. ' order by o57_fonte ');
         $aReceita  = db_utils::getCollectionByRecord($rsReceita);
 
-        $aReceitaRetorno = array();
+        $aReceitaRetorno = [];
 
         /**
          * Popula o Array de retorno com as variáveis necessárias

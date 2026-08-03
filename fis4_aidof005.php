@@ -35,8 +35,8 @@ require_once(modification("classes/db_aidofproc_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("model/fiscal/Aidof.model.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $oGet  = db_utils::postMemory($_GET);
 $oPost = db_utils::postMemory($_POST);

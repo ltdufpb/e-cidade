@@ -55,10 +55,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("db_usuarios"=>"Usuários","db_depusu"=>"Departamentos","permmenu"=>"Liberar Perfis","permemp"=>"Permissões de Empenho", "lotacoes"=>"Lotações"); 
-	 $clcriaabas->src = array("db_usuarios"=>"con1_db_usuarios004.php");
-	 $clcriaabas->sizecampo  = array("db_depusu"=>"12","permemp"=>"25","permmenu"=>"25");	 
-	 $clcriaabas->disabled   =  array("db_depusu"=>"true","permemp"=>"true","permmenu"=>"true","lotacoes"=>"true"); 
+	 $clcriaabas->identifica = ["db_usuarios"=>"Usuários","db_depusu"=>"Departamentos","permmenu"=>"Liberar Perfis","permemp"=>"Permissões de Empenho", "lotacoes"=>"Lotações"]; 
+	 $clcriaabas->src = ["db_usuarios"=>"con1_db_usuarios004.php"];
+	 $clcriaabas->sizecampo  = ["db_depusu"=>"12","permemp"=>"25","permmenu"=>"25"];	 
+	 $clcriaabas->disabled   =  ["db_depusu"=>"true","permemp"=>"true","permmenu"=>"true","lotacoes"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

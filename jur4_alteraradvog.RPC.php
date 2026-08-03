@@ -67,7 +67,7 @@ switch ($oParam->sExec) {
                     $retorno = $inicial->persist($oInicial);
                 }	
                 
-                $oRetorno->sMessage = utf8_encode(_M('tributario.juridico.jur4_alteraradvog.alteracao_concluida'));			 
+                $oRetorno->sMessage = mb_convert_encoding(_M('tributario.juridico.jur4_alteraradvog.alteracao_concluida'), 'UTF-8', 'ISO-8859-1');			 
             
             } else {
                 $oRetorno->sMessage = 'Não encontrada iniciais para essa lista';			 

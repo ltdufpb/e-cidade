@@ -30,23 +30,23 @@ class ArquivoSiprevEscritorXML  extends ArquivoSiprevEscritor {
    * Arquivos que utilizarão o elemento padrão que imprime a propriedade operacao separado
    * @var array
    */
-  private $aArquivosRegistroOperacaoUnico = array(
+  private $aArquivosRegistroOperacaoUnico = [
     "servidores",
     "dependentes",
     "orgaos",
     "carreiras",
     "cargos",
     "pensionistas"
-  );
+  ];
   /**
    * Quantidade de Dados que serão utilizados para emissão do XML
    * @var array
    */
-  private $aArquivosQuebraRegistros = array(
+  private $aArquivosQuebraRegistros = [
     "historicosFinanceiros"  => 1000,
     "vinculosFuncionaisRgps" => 1000,
     "vinculosFuncionaisRpps" => 1000,
-  );
+  ];
 
   public function __construct() {}
 
@@ -62,7 +62,7 @@ class ArquivoSiprevEscritorXML  extends ArquivoSiprevEscritor {
     $fFinalizarArquivo = function($iNumeroArquivo, $oXmlWriter, $oArquivo) {
       $sNomeArquivo = 'tmp/'.$oArquivo->getNomeArquivo().'-'.$iNumeroArquivo.'.xml';
       $rsArquivoXML = fopen($sNomeArquivo, "w");
-      fputs($rsArquivoXML, $oXmlWriter->outputMemory());
+      fputs($rsArquivoXML, (string) $oXmlWriter->outputMemory());
       fclose($rsArquivoXML);
       unset($oXmlWriter);
       return $sNomeArquivo;
@@ -77,16 +77,16 @@ class ArquivoSiprevEscritorXML  extends ArquivoSiprevEscritor {
       $xml = $this->escreverArquivo($oArquivo, null, null);
 
       if (!$xml) {
-        return array();
+        return [];
       }
 
 
-      return array(
+      return [
         $fFinalizarArquivo(++$iNumeroArquivo, $xml, $oArquivo)
-      );
+      ];
     }
 
-    $arquivos = array();
+    $arquivos = [];
 
     $iQuantidade = $this->aArquivosQuebraRegistros[$oArquivo->getRegistro()];
     $iPassagem   = 0;
@@ -151,9 +151,9 @@ class ArquivoSiprevEscritorXML  extends ArquivoSiprevEscritor {
 
       foreach($linha as $oDados) {
 
-        $dadosManipulados = (object)array(
+        $dadosManipulados = (object)[
           $oElemento["nome"] => $oDados
-        );
+        ];
         $this->escreveElemento($dadosManipulados, $oXmlWriter, $oElemento, $sNome = '');
       }
 
@@ -173,7 +173,7 @@ class ArquivoSiprevEscritorXML  extends ArquivoSiprevEscritor {
         }
 
         if ($sValor !== null) {
-          $oXmlWriter->writeAttribute($sPropriedade, utf8_encode($sValor));
+          $oXmlWriter->writeAttribute($sPropriedade, mb_convert_encoding($sValor, 'UTF-8', 'ISO-8859-1'));
         }
       } else {
         $this->escreveElemento($oLinha->$oElemento["nome"], $oXmlWriter, $sPropriedade);

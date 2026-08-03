@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE materialestoquegrupo
 class cl_materialestoquegrupo {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $m65_sequencial = 0;
-   var $m65_db_estruturavalor = 0;
-   var $m65_ativo = 'f';
+   public $m65_sequencial = 0;
+   public $m65_db_estruturavalor = 0;
+   public $m65_ativo = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  m65_sequencial = int4 = Código Sequencial
                  m65_db_estruturavalor = int4 = Código da Estrutura
                  m65_ativo = bool = Grupo Ativo
                  ";
    //funcao construtor da classe
-   function cl_materialestoquegrupo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("materialestoquegrupo");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -101,10 +101,10 @@ class cl_materialestoquegrupo {
          $this->erro_status = "0";
          return false;
        }
-       $this->m65_sequencial = pg_result($result,0,0);
+       $this->m65_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from materialestoquegrupo_m65_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m65_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m65_sequencial)){
          $this->erro_sql = " Campo m65_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -136,7 +136,7 @@ class cl_materialestoquegrupo {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "grupos de Materiais ($this->m65_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "grupos de Materiais já Cadastrado";
@@ -160,12 +160,12 @@ class cl_materialestoquegrupo {
      $resaco = $this->sql_record($this->sql_query_file($this->m65_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17969,'$this->m65_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3174,17969,'','".AddSlashes(pg_result($resaco,0,'m65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3174,17970,'','".AddSlashes(pg_result($resaco,0,'m65_db_estruturavalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3174,17971,'','".AddSlashes(pg_result($resaco,0,'m65_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3174,17969,'','".AddSlashes(pg_fetch_result($resaco,0,'m65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3174,17970,'','".AddSlashes(pg_fetch_result($resaco,0,'m65_db_estruturavalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3174,17971,'','".AddSlashes(pg_fetch_result($resaco,0,'m65_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -174,10 +174,10 @@ class cl_materialestoquegrupo {
       $this->atualizacampos();
      $sql = " update materialestoquegrupo set ";
      $virgula = "";
-     if(trim($this->m65_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m65_sequencial"])){
+     if(trim((string) $this->m65_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m65_sequencial"])){
        $sql  .= $virgula." m65_sequencial = $this->m65_sequencial ";
        $virgula = ",";
-       if(trim($this->m65_sequencial) == null ){
+       if(trim((string) $this->m65_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "m65_sequencial";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_materialestoquegrupo {
          return false;
        }
      }
-     if(trim($this->m65_db_estruturavalor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m65_db_estruturavalor"])){
+     if(trim((string) $this->m65_db_estruturavalor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m65_db_estruturavalor"])){
        $sql  .= $virgula." m65_db_estruturavalor = $this->m65_db_estruturavalor ";
        $virgula = ",";
-       if(trim($this->m65_db_estruturavalor) == null ){
+       if(trim((string) $this->m65_db_estruturavalor) == null ){
          $this->erro_sql = " Campo Código da Estrutura nao Informado.";
          $this->erro_campo = "m65_db_estruturavalor";
          $this->erro_banco = "";
@@ -200,7 +200,7 @@ class cl_materialestoquegrupo {
          return false;
        }
      }
-     if(trim($this->m65_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m65_ativo"])){
+     if(trim((string) $this->m65_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m65_ativo"])){
        $sql  .= $virgula." m65_ativo = '$this->m65_ativo' ";
        $virgula = ",";
      }
@@ -212,15 +212,15 @@ class cl_materialestoquegrupo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17969,'$this->m65_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m65_sequencial"]) || $this->m65_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3174,17969,'".AddSlashes(pg_result($resaco,$conresaco,'m65_sequencial'))."','$this->m65_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3174,17969,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m65_sequencial'))."','$this->m65_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m65_db_estruturavalor"]) || $this->m65_db_estruturavalor != "")
-           $resac = db_query("insert into db_acount values($acount,3174,17970,'".AddSlashes(pg_result($resaco,$conresaco,'m65_db_estruturavalor'))."','$this->m65_db_estruturavalor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3174,17970,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m65_db_estruturavalor'))."','$this->m65_db_estruturavalor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m65_ativo"]) || $this->m65_ativo != "")
-           $resac = db_query("insert into db_acount values($acount,3174,17971,'".AddSlashes(pg_result($resaco,$conresaco,'m65_ativo'))."','$this->m65_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3174,17971,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m65_ativo'))."','$this->m65_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -265,12 +265,12 @@ class cl_materialestoquegrupo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17969,'$m65_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3174,17969,'','".AddSlashes(pg_result($resaco,$iresaco,'m65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3174,17970,'','".AddSlashes(pg_result($resaco,$iresaco,'m65_db_estruturavalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3174,17971,'','".AddSlashes(pg_result($resaco,$iresaco,'m65_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3174,17969,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3174,17970,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m65_db_estruturavalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3174,17971,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m65_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from materialestoquegrupo
@@ -330,7 +330,7 @@ class cl_materialestoquegrupo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:materialestoquegrupo";
@@ -345,7 +345,7 @@ class cl_materialestoquegrupo {
    function sql_query ( $m65_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -368,7 +368,7 @@ class cl_materialestoquegrupo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,7 +381,7 @@ class cl_materialestoquegrupo {
    function sql_query_file ( $m65_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_materialestoquegrupo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,7 +442,7 @@ class cl_materialestoquegrupo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -457,7 +457,7 @@ class cl_materialestoquegrupo {
   function sql_query_contaVPD ( $m65_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
   	$sql = "select ";
   	if($campos != "*" ){
-  		$campos_sql = split("#",$campos);
+  		$campos_sql = preg_split("#\\##m",$campos);
   		$virgula = "";
   		for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -488,7 +488,7 @@ class cl_materialestoquegrupo {
   		$sql .= $sql2;
   		if($ordem != null ){
   		$sql .= " order by ";
-  			$campos_sql = split("#",$ordem);
+  			$campos_sql = preg_split("#\\##m",(string) $ordem);
   			$virgula = "";
   			for($i=0;$i<sizeof($campos_sql);$i++){
   			$sql .= $virgula.$campos_sql[$i];
@@ -520,7 +520,7 @@ class cl_materialestoquegrupo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -556,7 +556,7 @@ class cl_materialestoquegrupo {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

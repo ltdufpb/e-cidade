@@ -51,7 +51,7 @@ try {
         throw new Exception('Instituição não informada.');
     }
 
-    $instituicoes = implode(',', explode('-', $_GET['db_selinstit']));
+    $instituicoes = implode(',', explode('-', (string) $_GET['db_selinstit']));
     if (!empty($_GET['lQuadroPrincipal']) && $_GET['lQuadroPrincipal'] === 'true') {
         $aQuadros[] = FluxoCaixaService::QUADRO_PRINCIPAL;
     }

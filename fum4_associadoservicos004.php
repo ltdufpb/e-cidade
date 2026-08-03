@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoAssociadoservicos = new cl_associadoservicos;
 $oDaoAssociadoValorServico = new cl_associadovalorservico;
@@ -77,7 +77,7 @@ if (isset($chavepesquisa) && intval($chavepesquisa) > 0) {
    $sql = $oDaoAssociadoservicos->sql_query(intval($chavepesquisa), $sCampos);
    $result = $oDaoAssociadoservicos->sql_record($sql);
 
-   if (pg_numrows($result) > 0) {
+   if (pg_num_rows($result) > 0) {
        db_fieldsmemory($result, 0);
        if (!isset($bt_excluir)) {
           $db_opcao = 2;
@@ -219,9 +219,9 @@ if (isset($incluir)) {
       db_iframe_associadoservicos.hide();
       <?php
         if ($db_opcao == 2) {
-          echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?db_opcao=1&chavepesquisa=' + sChave;";
+          echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?db_opcao=1&chavepesquisa=' + sChave;";
         } else if ($db_opcao == 3) {
-          echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?bt_excluir=true&chavepesquisa=' + sChave;";
+          echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?bt_excluir=true&chavepesquisa=' + sChave;";
         }
       ?>
    }

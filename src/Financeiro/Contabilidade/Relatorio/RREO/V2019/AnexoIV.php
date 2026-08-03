@@ -37,9 +37,10 @@ class AnexoIV extends Layout2018
      */
     const CODIGO_RELATORIO = 196;
 
-    const LINHAS_IGNORAR_DESPESA = array(52);
-    const LINHAS_IGNORAR_RECEITA = array(51);
+    const LINHAS_IGNORAR_DESPESA = [52];
+    const LINHAS_IGNORAR_RECEITA = [51];
 
+    #[\Override]
     public function getDados($trazerConfiguracaoPadrao = true)
     {
         if (empty($this->aLinhasConsistencia)) {
@@ -51,6 +52,7 @@ class AnexoIV extends Layout2018
     /**
      * Executa o cálculo entre receita e despesa
      */
+    #[\Override]
     protected function totalizarResultadosPrevidenciarios()
     {
 
@@ -79,6 +81,7 @@ class AnexoIV extends Layout2018
      * Retorna os dados do relatórios simplificado
      * @return \stdClass
      */
+    #[\Override]
     public function getDadosSimplificado()
     {
         $this->getDados();

@@ -42,9 +42,9 @@
              * Atribui o valor a variaval 'sCampo' de acordo com o
              * tipo de resumo selecionado(Lotação, Matricula, Cargo)
              */
-            $aTiposResumo = array( 2 => "r70_codigo", 
+            $aTiposResumo = [ 2 => "r70_codigo", 
                                    3 => "rh01_regist", 
-                                   5 => "rh02_funcao");
+                                   5 => "rh02_funcao"];
 
             $sCampo = $aTiposResumo[$oParam->sTipoResumo];
 

@@ -261,7 +261,7 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
             if ($pc30_valoraproximadoautomatico == "t") {
               if ($pc11_vlrun == "" && !empty($pc16_codmater)) {
                 $pc11_vlrun = itemSolicitacao::calculaMediaPrecoOrcamentos(itemSolicitacao::getUltimosOrcamentos($pc16_codmater,
-                                                                                                                 array($pc17_unid)));
+                                                                                                                 [$pc17_unid]));
               }
             }
           }
@@ -319,8 +319,8 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
             $pc11_quant = 1;
           }
           db_input('pc01_descrmater', 65, $Ipc01_descrmater, true, 'text', 3, '');
-          $result_unidade = array();
-          $desabilita_qtd = array();
+          $result_unidade = [];
+          $desabilita_qtd = [];
           if (isset ($verificado)) {
             $result_sql_unid = $clmatunid->sql_record($clmatunid->sql_query_file(null,
                                                                                  "m61_codmatunid,substr(m61_descr,1,20) as m61_descr,m61_usaquant,m61_usadec",
@@ -537,7 +537,7 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
                                                                            null,
                                                                            "o56_codele,o56_descr,o56_elemento",
                                                                            "o56_descr"));
-          $dad_select = array();
+          $dad_select = [];
           for ($i = 0; $i < $clpcmaterele->numrows; $i++) {
             db_fieldsmemory($sql_record, $i);
             $dad_select[$o56_codele] = $o56_codele . " - " . $o56_elemento . " - " . $o56_descr;
@@ -577,7 +577,7 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
         <td><strong>Serviço Controlado por Quantidades: </strong></td>
         <td>
           <?php
-          $aOpcoes = array("false" => "NÃO", "true" => "SIM");
+          $aOpcoes = ["false" => "NÃO", "true" => "SIM"];
           db_select('pc11_servicoquantidade',
                     $aOpcoes,
                     true,
@@ -713,9 +713,9 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
                                                                 "pc11_numero,pc11_codigo",
                                                                 "pc11_numero = $pc11_numero");
 
-          $chavepri                                   = array(
+          $chavepri                                   = [
             "pc11_numero" => $pc11_numero, "pc11_codigo" => @$pc11_codigo
-          );
+          ];
           $cliframe_alterar_excluir->chavepri         = $chavepri;
           $sCampos                                    = "pc11_seq,
                                 pc11_codigo,
@@ -806,10 +806,10 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
   if (!isset ($pc11_resum) || (isset ($pc11_resum) && $pc11_resum == "")) {
     $digitouresumo = "false";
   }
-  @$pc11_pgto = stripslashes($pc11_pgto);
-  @$pc11_just = stripslashes($pc11_just);
-  @$pc11_resum = stripslashes($pc11_resum);
-  @$pc11_prazo = stripslashes($pc11_prazo);
+  @$pc11_pgto = stripslashes((string) $pc11_pgto);
+  @$pc11_just = stripslashes((string) $pc11_just);
+  @$pc11_resum = stripslashes((string) $pc11_resum);
+  @$pc11_prazo = stripslashes((string) $pc11_prazo);
   $pc11_resum = addslashes($pc11_resum);
   db_input('pc11_liberado', 1, $Ipc11_liberado, true, 'hidden', 3);
   db_input('pc11_pgto', 40, $Ipc11_pgto, true, 'hidden', 3);
@@ -1107,7 +1107,7 @@ if (isset($pc11_codigo) && $pc11_codigo != '') {
     db_iframe_solicitem.hide();
     <?php
     if ($db_opcao != 1) {
-      echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+      echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
     }
     ?>
   }

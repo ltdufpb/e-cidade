@@ -29,7 +29,7 @@ require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("classes/db_pcsubgrupo_classe.php"));
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clpcsubgrupo   = new cl_pcsubgrupo();
 $clCgmEstrangeiro = new cl_cgmestrangeiro();
@@ -131,7 +131,7 @@ for ($i = 0; $i < $numrows; $i++) {
           $pdf->cell(30,  $alt, "CRC",  1, 0, "C", 1);
           $pdf->cell(20,  $alt, "Data", 1, 1, "C", 1);
 
-          if (trim($descr_subgrupo) == "") {
+          if (trim((string) $descr_subgrupo) == "") {
                $pdf->cell(255, $alt, "Subgrupo", 1, 1, "C", 1);
           }
 
@@ -162,7 +162,7 @@ for ($i = 0; $i < $numrows; $i++) {
           $imp_crc = 0;
      }
 
-     $formatoRegistro = strlen($cnpj) > 11 ? "cnpj" : "cpf";
+     $formatoRegistro = strlen((string) $cnpj) > 11 ? "cnpj" : "cpf";
      $numeroDoDocumento = db_formatar($cnpj, $formatoRegistro);
 
      $query = $clCgmEstrangeiro->sql_query_file('', '*', '', "z09_numcgm = {$cgm}");
@@ -211,7 +211,7 @@ for ($i = 0; $i < $numrows; $i++) {
           $p = 1;
      }
 
-     if (trim($descr_subgrupo) == "") {
+     if (trim((string) $descr_subgrupo) == "") {
           $pdf->cell(255, $alt, $subgrupo, $borda, 1, "L", $p);
      }
 
@@ -230,7 +230,7 @@ for ($i = 0; $i < $numrows; $i++) {
           $pdf->cell(30,  $alt, "CRC",  1, 0, "C", 1);
           $pdf->cell(20,  $alt, "Data", 1, 1, "C", 1);
 
-          if (trim($descr_subgrupo) == "") {
+          if (trim((string) $descr_subgrupo) == "") {
                $pdf->cell(255, $alt, "Subgrupo", 1, 1, "C", 1);
           }
 

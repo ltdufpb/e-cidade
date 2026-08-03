@@ -56,26 +56,26 @@ unset($_SESSION["oCandidatoHabitacao"]);
   </tr>
 <?php 
       $clcriaabas  = new cl_criaabas;
-      $clcriaabas->identifica  = array("grupoprograma"      => "Grupo/Programa",
+      $clcriaabas->identifica  = ["grupoprograma"      => "Grupo/Programa",
                                        "composicaofamiliar" => "Composição Familiar",
-                                       "cadsocioeconomico"  => "Cadastro Sócio-Econômico");
+                                       "cadsocioeconomico"  => "Cadastro Sócio-Econômico"];
        
-      $clcriaabas->title       = array("grupoprograma"      => "Grupo/Programa",
+      $clcriaabas->title       = ["grupoprograma"      => "Grupo/Programa",
                                        "composicaofamiliar" => "Composição Familiar",
-                                       "cadsocioeconomico"  => "Cadastro Sócio-Econômico");
+                                       "cadsocioeconomico"  => "Cadastro Sócio-Econômico"];
         
-       $clcriaabas->src        = array("grupoprograma"      => "hab1_cadastrosocioeconomico004.php?alteracao=1",
+       $clcriaabas->src        = ["grupoprograma"      => "hab1_cadastrosocioeconomico004.php?alteracao=1",
                                        "composicaofamiliar" => "hab1_composicaofamiliar001.php",
                                        "cadsocioeconomico"  => "hab1_cadastroavaliacao001.php"
-                                      );
+                                      ];
        
-       $clcriaabas->sizecampo  = array("grupoprograma"      => "30",
+       $clcriaabas->sizecampo  = ["grupoprograma"      => "30",
                                        "composicaofamiliar" => "30",
-                                       "cadsocioeconomico"  => "30");
+                                       "cadsocioeconomico"  => "30"];
        
-       $clcriaabas->disabled   = array(
+       $clcriaabas->disabled   = [
                                        "composicaofamiliar" => "true",
-                                       "cadsocioeconomico"  => "true");
+                                       "cadsocioeconomico"  => "true"];
         
        $clcriaabas->cria_abas(); 
  ?>

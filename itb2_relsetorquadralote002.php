@@ -83,17 +83,17 @@ if ( isset($oGet->sLogradouro) ) {
 }
 
 if ( isset($oGet->sSetor) && $oGet->sSetor != "") {
-  $sWhere  .= " {$sAnd} j34_setor = '" . str_pad($oGet->sSetor,4,"0",STR_PAD_LEFT)."'";
+  $sWhere  .= " {$sAnd} j34_setor = '" . str_pad((string) $oGet->sSetor,4,"0",STR_PAD_LEFT)."'";
   $sAnd     = " and ";
 }
 
 if ( isset($oGet->sQuadra) && $oGet->sQuadra != "" ) {
-  $sWhere  .= " {$sAnd} j34_quadra = '" . str_pad($oGet->sQuadra,4,"0",STR_PAD_LEFT)."'";
+  $sWhere  .= " {$sAnd} j34_quadra = '" . str_pad((string) $oGet->sQuadra,4,"0",STR_PAD_LEFT)."'";
   $sAnd     = " and ";
 }
 
 if ( isset($oGet->sLote) && $oGet->sLote != "" ) {
-  $sWhere  .= " {$sAnd} j34_lote = '" . str_pad($oGet->sLote,4,"0",STR_PAD_LEFT)."'";
+  $sWhere  .= " {$sAnd} j34_lote = '" . str_pad((string) $oGet->sLote,4,"0",STR_PAD_LEFT)."'";
   $sAnd     = " and ";
 }
 
@@ -103,12 +103,12 @@ if ( isset($oGet->sSetorLoc) && $oGet->sSetorLoc != "") {
 }
 
 if ( isset($oGet->sQuadraLoc) && $oGet->sQuadraLoc != "" ) {
-  $sWhere  .= " {$sAnd} j06_quadraloc = '" . str_pad($oGet->sQuadraLoc,4,"0",STR_PAD_LEFT)."'";
+  $sWhere  .= " {$sAnd} j06_quadraloc = '" . str_pad((string) $oGet->sQuadraLoc,4,"0",STR_PAD_LEFT)."'";
   $sAnd     = " and ";
 }
 
 if ( isset($oGet->sLoteLoc) && $oGet->sLoteLoc != "" ) {
-  $sWhere  .= " {$sAnd} j06_lote = '" . str_pad($oGet->sLoteLoc,4,"0",STR_PAD_LEFT)."'";
+  $sWhere  .= " {$sAnd} j06_lote = '" . str_pad((string) $oGet->sLoteLoc,4,"0",STR_PAD_LEFT)."'";
   $sAnd     = " and ";
 }
 
@@ -260,14 +260,14 @@ $aRetorno  = db_utils::getCollectionByRecord($rsSql);
 /**
  * Cria vetor para comparação
  */
-$aCompara  = array();
+$aCompara  = [];
 foreach ($aRetorno as $oDadosFiltro){
   $aCompara[$oDadosFiltro->it01_guia][$oDadosFiltro->it03_tipo][] = $oDadosFiltro;
 }
 $oGuiaPaga          = null;
 $oGuiaAberto        = null;
 $oGuiaSemIncidencia = null;
-$aDados             = array();
+$aDados             = [];
 /**
  * Filtra os dados de guias repetidas validando a situação de cada uma 
  * 
@@ -310,7 +310,7 @@ foreach ($aCompara as $aGuias){
   }
 }
 $aRetorno = $aDados;
-$aFiltro  = array();
+$aFiltro  = [];
 /**
  * Filtra conforme seleção no formulário
  */
@@ -342,7 +342,7 @@ $pdf->SetFillColor(235);
 $iTotal = 0;
 $iTroca = 1;
 $iAlt   = 4;
-$aGuias = array();  
+$aGuias = [];  
 foreach ($aRetorno as $i => $oRetorno) {
     
     if ($pdf->gety() > $pdf->h - 30 || $iTroca != 0 ){

@@ -33,17 +33,17 @@ require_once(modification("classes/db_sepultamentos_classe.php"));
 require_once(modification("classes/db_renovacoes_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clsepultamentos = new cl_sepultamentos;
 $clrenovacoes 	 = new cl_renovacoes;
 $lErro           = false;
 
-$sAuxCm01_c_nomemedico    = (isset($cm32_nome) ? $cm32_nome : null);
-$sAuxCm01_c_nomehospital  = (isset($nome_hospital) ? $nome_hospital : null);
-$sAuxCm01_c_nomefuneraria = (isset($nome_funeraria) ? $nome_funeraria : null);
+$sAuxCm01_c_nomemedico    = ($cm32_nome ?? null);
+$sAuxCm01_c_nomehospital  = ($nome_hospital ?? null);
+$sAuxCm01_c_nomefuneraria = ($nome_funeraria ?? null);
 
 if (isset($chavepesquisa)) {
 

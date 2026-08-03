@@ -38,12 +38,10 @@ abstract class QSA
    * @var \CgmBase
    */
   private $cgm;
-  private $tipoRelacionamento;
 
-  public function __construct(\CgmBase $cgm, $tipoRelacionamento)
+  public function __construct(\CgmBase $cgm, private $tipoRelacionamento)
   {
     $this->cgm = $cgm;
-    $this->tipoRelacionamento = $tipoRelacionamento;
   }
 
   /**

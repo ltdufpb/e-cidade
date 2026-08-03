@@ -51,7 +51,7 @@ try {
         throw new Exception('Exames não informados.');
     }
 
-    $exames = explode(',', $get->sLista);
+    $exames = explode(',', (string) $get->sLista);
 
     $requisicaoLaboratorial = new RequisicaoLaboratorial($get->requisicao);
     $pdf = new scpdf('l', 'mm', fpdf::FORMAT_ETIQUETA_60x25);

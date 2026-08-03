@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoasse_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cltipoasse = new cl_tipoasse;
 $cltipoasse->rotulo->label("h12_codigo");
@@ -227,9 +227,9 @@ if (isset($chave_h12_natureza)) {
         }else{
            $sql = $cltipoasse->sql_query(null,$campos,"h12_codigo",$dbwhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h12_assent)){
-          $repassa = array("chave_h12_codigo"=>$chave_h12_codigo,"chave_h12_assent"=>$chave_h12_assent);
+          $repassa = ["chave_h12_codigo"=>$chave_h12_codigo,"chave_h12_assent"=>$chave_h12_assent];
         }
 
         

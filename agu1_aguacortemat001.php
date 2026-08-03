@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("aguacortemat"=>"Matricula","aguacortematmov"=>"Historico","aguacortematnumpre"=>"Debitos");
-	 $clcriaabas->src = array("aguacortemat"=>"agu1_aguacortemat004.php");
-	 $clcriaabas->disabled   =  array("aguacortematmov"=>"true","aguacortematnumpre"=>"true"); 
+	 $clcriaabas->identifica = ["aguacortemat"=>"Matricula","aguacortematmov"=>"Historico","aguacortematnumpre"=>"Debitos"];
+	 $clcriaabas->src = ["aguacortemat"=>"agu1_aguacortemat004.php"];
+	 $clcriaabas->disabled   =  ["aguacortematmov"=>"true","aguacortematnumpre"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

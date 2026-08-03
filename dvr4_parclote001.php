@@ -36,7 +36,7 @@ $clrotulo->label('DBtxt16');
 $clrotulo->label('DBtxt17');
 $clrotulo->label('DBtxt18');
 $clrotulo->label('procdiver');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 

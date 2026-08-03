@@ -56,22 +56,22 @@ $db_opcao   = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	     $clcriaabas->identifica = array("acordogrupo"=>"Grupo",
+	     $clcriaabas->identifica = ["acordogrupo"=>"Grupo",
 	                                     "acordogrupodocumento"=>"Documentos",
-	                                     "acordogruponumeracao"=>"Numeração");
+	                                     "acordogruponumeracao"=>"Numeração"];
 
-       $clcriaabas->title      = array("acordogrupo"=>"Grupo",
+       $clcriaabas->title      = ["acordogrupo"=>"Grupo",
                                        "acordogrupodocumento"=>"Documentos",
-                                       "acordogruponumeracao"=>"Numeração");
+                                       "acordogruponumeracao"=>"Numeração"];
 	     
-	     $clcriaabas->src        = array("acordogrupo"=>"aco1_acordogrupo004.php");
+	     $clcriaabas->src        = ["acordogrupo"=>"aco1_acordogrupo004.php"];
 	     
-	     $clcriaabas->disabled   = array("acordogrupodocumento"=>"true",
-	                                     "acordogruponumeracao"=>"true"); 
+	     $clcriaabas->disabled   = ["acordogrupodocumento"=>"true",
+	                                     "acordogruponumeracao"=>"true"]; 
 	     
-	     $clcriaabas->sizecampo  = array("acordogrupo"=>"23",
+	     $clcriaabas->sizecampo  = ["acordogrupo"=>"23",
 	                                     "acordogrupodocumento"=>"23",
-	                                     "acordogruponumeracao"=>"23");
+	                                     "acordogruponumeracao"=>"23"];
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>

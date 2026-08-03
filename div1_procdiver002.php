@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("procdiver"=>"Procedencia do diverso","recparprocdiver"=>"Receita para o parcelamento de diverso"); 
-	 $clcriaabas->src = array("procdiver"=>"div1_procdiver005.php");
-	 $clcriaabas->disabled   =  array("recparprocdiver"=>"true"); 
+	 $clcriaabas->identifica = ["procdiver"=>"Procedencia do diverso","recparprocdiver"=>"Receita para o parcelamento de diverso"]; 
+	 $clcriaabas->src = ["procdiver"=>"div1_procdiver005.php"];
+	 $clcriaabas->disabled   =  ["recparprocdiver"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

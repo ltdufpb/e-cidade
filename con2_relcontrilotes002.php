@@ -35,7 +35,7 @@ $clcontlotv = new cl_contlotv;
 $cleditalserv = new cl_editalserv;
 $cleditalrua = new cl_editalrua;
 $clprojmelhoriasmatric = new cl_projmelhoriasmatric;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 $sSqlServico = $cleditalserv->sql_query($contri,"","d04_quant,d04_vlrobra,d04_vlrcal,d04_vlrval,d03_descr");
@@ -61,7 +61,7 @@ select sum(d41_testada + d41_eixo) as total_testada
 $rsTotalTestada = db_query($sSqlTotalTestada);
 
 $total_testada = 0;
-if (  pg_numrows($rsTotalTestada) > 0 ) {
+if (  pg_num_rows($rsTotalTestada) > 0 ) {
 
     
   $total_testada = db_utils::fieldsMemory($rsTotalTestada, 0)->total_testada;
@@ -129,7 +129,7 @@ SELECT DISTINCT
 
 $result = $clcontlot->sql_record($sSql);
 
-if (  pg_numrows( $result ) <= 0  ) {
+if (  pg_num_rows( $result ) <= 0  ) {
 
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum Registro Encontrado.");
   exit;
@@ -157,11 +157,11 @@ $iAlturalinha = 4;
 $iFonte       = 6;
 
 
-if (  pg_numrows( $result ) > 0  ) {
+if (  pg_num_rows( $result ) > 0  ) {
 
-  $aDados = array();
+  $aDados = [];
 
-  for ( $iRegistro = 0; $iRegistro < pg_numrows( $result ); $iRegistro++  ) {
+  for ( $iRegistro = 0; $iRegistro < pg_num_rows( $result ); $iRegistro++  ) {
 
     $oDadosRegistro = db_utils::fieldsMemory($result, $iRegistro );
 

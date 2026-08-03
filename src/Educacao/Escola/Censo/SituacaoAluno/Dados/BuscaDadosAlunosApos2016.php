@@ -26,7 +26,7 @@ class BuscaDadosAlunosApos2016 extends BuscaDadosAlunos2016
     public function __construct(Censo $censo, Escola $escola, $aAlunosAntesCenso)
     {
 
-        $aCondicoes = array();
+        $aCondicoes = [];
         $aCondicoes[] = " matricula.ed60_d_datamatricula > '" . $censo->getDataCenso()->getDate() . "'";
         $aCondicoes[] = " matricula.ed60_i_aluno not in (" . implode(', ', $aAlunosAntesCenso) . ") ";
 

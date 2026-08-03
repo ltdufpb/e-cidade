@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 ?>
 <html>
 <head>
@@ -86,15 +86,15 @@ $sql = "select distinct d.*,c.nomecam, u.nome
 
 $result = db_query($sql);
 
-if ( pg_numrows($result) > 0 ) {
-  $id_acount_ant = pg_result($result,0,"id_acount");
+if ( pg_num_rows($result) > 0 ) {
+  $id_acount_ant = pg_fetch_result($result,0,"id_acount");
   $cor="#CCCCCC";
 }
 
-for($x=0;$x<pg_numrows($result);$x++){
+for($x=0;$x<pg_num_rows($result);$x++){
 
-    if ( pg_result($result,$x,"id_acount") != $id_acount_ant ) {
-      $id_acount_ant = pg_result($result,$x,"id_acount");
+    if ( pg_fetch_result($result,$x,"id_acount") != $id_acount_ant ) {
+      $id_acount_ant = pg_fetch_result($result,$x,"id_acount");
       if ( $cor=="#7F7F7F" ) {
         $cor="#CCCCCC";
       } else {
@@ -110,7 +110,7 @@ for($x=0;$x<pg_numrows($result);$x++){
                     where id_acount = $id_acount";
    $res = db_query($sql);
    if($res!=false){
-      for($ii=0;$ii<pg_numrows($res);$ii++){  
+      for($ii=0;$ii<pg_num_rows($res);$ii++){  
          db_fieldsmemory($res,$ii);
          $chavetitle .= $nomecamkey."->".$keychave."\n";
       }
@@ -125,7 +125,7 @@ for($x=0;$x<pg_numrows($result);$x++){
       echo "<tr>\n"; 
       echo "  <td bgcolor=$cor  title=\"".$chavetitle."\">".date("d/m/Y",$datahr)."</td>\n";
       echo "  <td bgcolor=$cor  title=\"".$chavetitle."\">".date("H:i",$datahr)."</td>\n";
-      echo "  <td bgcolor=$cor  nowrap title=\"".$chavetitle."\">(".$id_usuario.")".substr($nome,0,20)."</td>\n";
+      echo "  <td bgcolor=$cor  nowrap title=\"".$chavetitle."\">(".$id_usuario.")".substr((string) $nome,0,20)."</td>\n";
       echo "  <td bgcolor=$cor  title=\"".$chavetitle."\">".$nomecam."</td>\n";
       echo "  <td bgcolor=$cor  title=\"".$chavetitle."\">".$chavetitle."</td>\n";
       echo "  <td bgcolor=$cor  title=\"".$chavetitle."\">".$actipo."</td>\n";

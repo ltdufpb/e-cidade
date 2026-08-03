@@ -15,31 +15,31 @@ class M9194EmentarioDaReceitaImportacao extends PostgresMigration
         $this->dicionarioDadosUP();
 
 
-        $tabela = $this->table('planocontadetalheconplanoorcamento', array('id'=> 'c97_sequencial', 'primary_key' => 'c97_sequencial'));
+        $tabela = $this->table('planocontadetalheconplanoorcamento', ['id'=> 'c97_sequencial', 'primary_key' => 'c97_sequencial']);
         $tabela->addColumn('c97_planocontadetalhe', 'integer');
         $tabela->addColumn('c97_conplanoorcamento', 'integer');
         $tabela->addForeignKey('c97_planocontadetalhe', 'planocontadetalhe', 'c95_sequencial');
         $tabela->save();
 
-        $tabela = $this->table('orcamentoreceita', array('id' => 'c98_sequencial'));
+        $tabela = $this->table('orcamentoreceita', ['id' => 'c98_sequencial']);
         $tabela->addColumn('c98_codcon', 'integer');
         $tabela->addColumn('c98_anousu', 'integer');
-        $tabela->addColumn('c98_estrutural', 'string', array('limit' => 15));
-        $tabela->addColumn('c98_descricao', 'string', array('limit' => 50));
-        $tabela->addColumn('c98_finalidade', 'text', array('null' => true));
+        $tabela->addColumn('c98_estrutural', 'string', ['limit' => 15]);
+        $tabela->addColumn('c98_descricao', 'string', ['limit' => 50]);
+        $tabela->addColumn('c98_finalidade', 'text', ['null' => true]);
         $tabela->addColumn('c98_codsis', 'integer');
         $tabela->addColumn('c98_codcla', 'integer');
         $tabela->addColumn('c98_consistemaconta', 'integer');
-        $tabela->addColumn('c98_identificadorfinanceiro', 'char', array('limit' => 1));
+        $tabela->addColumn('c98_identificadorfinanceiro', 'char', ['limit' => 1]);
         $tabela->addColumn('c98_naturezasaldo', 'integer');
-        $tabela->addColumn('c98_funcao', 'text', array('null' => true));
-        $tabela->addColumn('c98_codrec', 'integer', array('null' => true));
-        $tabela->addColumn('c98_recurso', 'integer', array('null' => true));
-        $tabela->addColumn('c98_valor', 'float', array('null' => true));
-        $tabela->addColumn('c98_receitalancada', 'boolean', array('null' => true));
-        $tabela->addColumn('c98_instit', 'integer', array('null' => true));
-        $tabela->addColumn('c98_concarpeculiar', 'string', array('limit' => 3, 'null' => true));
-        $tabela->addColumn('c98_datacriacao', 'date', array('null' => true));
+        $tabela->addColumn('c98_funcao', 'text', ['null' => true]);
+        $tabela->addColumn('c98_codrec', 'integer', ['null' => true]);
+        $tabela->addColumn('c98_recurso', 'integer', ['null' => true]);
+        $tabela->addColumn('c98_valor', 'float', ['null' => true]);
+        $tabela->addColumn('c98_receitalancada', 'boolean', ['null' => true]);
+        $tabela->addColumn('c98_instit', 'integer', ['null' => true]);
+        $tabela->addColumn('c98_concarpeculiar', 'string', ['limit' => 3, 'null' => true]);
+        $tabela->addColumn('c98_datacriacao', 'date', ['null' => true]);
         $tabela->save();
 
         $this->execute('alter table orcamentoreceita alter column c98_valor type numeric;');

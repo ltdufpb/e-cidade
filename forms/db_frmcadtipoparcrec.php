@@ -102,7 +102,7 @@ db_input('c60_descr',50,$Ic60_descr,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">
     <?php 
-     $chavepri= array("k180_cadtipoparc"=>@$k180_cadtipoparc,"k180_estorc"=>@$k180_estorc);
+     $chavepri= ["k180_cadtipoparc"=>@$k180_cadtipoparc,"k180_estorc"=>@$k180_estorc];
      $cliframe_alterar_excluir->chavepri=$chavepri;
      $cliframe_alterar_excluir->sql     = $clcadtipoparcrec->sql_query($k180_cadtipoparc);
      $cliframe_alterar_excluir->campos  ="k180_cadtipoparc,k40_descr,k180_estorc,c60_descr";

@@ -6,6 +6,7 @@ use Illuminate\Validation\Rule;
 
 class AcompanhamentoReceita extends AcompanhamentoCronogramaRequest
 {
+    #[\Override]
     public function rules()
     {
         return array_merge(
@@ -14,6 +15,7 @@ class AcompanhamentoReceita extends AcompanhamentoCronogramaRequest
         );
     }
 
+    #[\Override]
     public function messages()
     {
         return array_merge(

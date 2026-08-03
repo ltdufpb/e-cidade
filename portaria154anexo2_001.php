@@ -61,10 +61,10 @@ $rotulocampo->label("rh01_regist");
                                         <td><strong>UNIDADE GESTORA:</strong></td>
                                         <td>
                                             <?php
-                                            $aUnidadeGestora = array (
+                                            $aUnidadeGestora =  [
                                                 '1' => 'RPPS', 
                                                 '2' => 'RGPS'
-                                            );
+                                            ];
                                             db_select('iUnidadeGestora', $aUnidadeGestora, true, 1,"style='width:125px'");
                                             ?>
                                         </td>

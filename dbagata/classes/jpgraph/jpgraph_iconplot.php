@@ -15,22 +15,20 @@
 // to the graph
 //===================================================
 class IconPlot {
-    var $iHorAnchor='left',$iVertAnchor='top';
-    var $iX=0,$iY=0;
-    var $iFile='';
-    var $iScale=1.0,$iMix=100;
-    var $iAnchors = array('left','right','top','bottom','center');
-    var $iCountryFlag='',$iCountryStdSize=3;
-    var $iScalePosY=null,$iScalePosX=null;
-    var $iImgString='';
+    public $iHorAnchor='left',$iVertAnchor='top';
+    public $iX=0,$iY=0;
+    public $iScale=1.0,$iMix=100;
+    public $iAnchors = ['left','right','top','bottom','center'];
+    public $iCountryFlag='',$iCountryStdSize=3;
+    public $iScalePosY=null,$iScalePosX=null;
+    public $iImgString='';
 
-    function IconPlot($aFile="",$aX=0,$aY=0,$aScale=1.0,$aMix=100) {
-	$this->iFile = $aFile;
+    function __construct(public $iFile="",$aX=0,$aY=0,$aScale=1.0,$aMix=100) {
 	$this->iX=$aX;
 	$this->iY=$aY;
 	$this->iScale= $aScale;
 	if( $aMix < 0 || $aMix > 100 ) {
-	    JpGraphError::RaiseL(8001); //('Mix value for icon must be between 0 and 100.');
+	    (new JpGraphError())->RaiseL(8001); //('Mix value for icon must be between 0 and 100.');
 	}
 	$this->iMix = $aMix ;
     }
@@ -45,7 +43,7 @@ class IconPlot {
 	$this->iY=$aY;
 	$this->iScale= $aScale;
 	if( $aMix < 0 || $aMix > 100 ) {
-	    JpGraphError::RaiseL(8001);//'Mix value for icon must be between 0 and 100.');
+	    (new JpGraphError())->RaiseL(8001);//'Mix value for icon must be between 0 and 100.');
 	}
 	$this->iMix = $aMix;
 	$this->iCountryStdSize = $aStdSize;
@@ -67,7 +65,7 @@ class IconPlot {
 
     function SetMix($aMix) {
 	if( $aMix < 0 || $aMix > 100 ) {
-	    JpGraphError::RaiseL(8001);//('Mix value for icon must be between 0 and 100.');
+	    (new JpGraphError())->RaiseL(8001);//('Mix value for icon must be between 0 and 100.');
 	}
 	$this->iMix = $aMix ;
     }
@@ -75,7 +73,7 @@ class IconPlot {
     function SetAnchor($aXAnchor='left',$aYAnchor='center') {
 	if( !in_array($aXAnchor,$this->iAnchors) ||
 	    !in_array($aYAnchor,$this->iAnchors) ) {
-	    JpGraphError::RaiseL(8002);//("Anchor position for icons must be one of 'top', 'bottom', 'left', 'right' or 'center'");
+	    (new JpGraphError())->RaiseL(8002);//("Anchor position for icons must be one of 'top', 'bottom', 'left', 'right' or 'center'");
 	}
 	$this->iHorAnchor=$aXAnchor;
 	$this->iVertAnchor=$aYAnchor;
@@ -90,7 +88,7 @@ class IconPlot {
     }
 
     function Max() {
-	return array(false,false);
+	return [false,false];
     }
 
 
@@ -104,7 +102,7 @@ class IconPlot {
 
 
     function Min() {
-	return array(false,false);
+	return [false,false];
     }
 
     function StrokeMargin(&$aImg) {
@@ -134,7 +132,7 @@ class IconPlot {
 
     function _Stroke(&$aImg,$x=null,$y=null,$aReturnWidthHeight=false) {
 	if( $this->iFile != '' && $this->iCountryFlag != '' ) {
-	    JpGraphError::RaiseL(8003);//('It is not possible to specify both an image file and a country flag for the same icon.');	
+	    (new JpGraphError())->RaiseL(8003);//('It is not possible to specify both an image file and a country flag for the same icon.');	
 	}
 	if( $this->iFile != '' ) {
 	    $gdimg = Graph::LoadBkgImage('',$this->iFile);
@@ -144,7 +142,7 @@ class IconPlot {
 	}
 	else {
 	    if( ! class_exists('FlagImages') ) {
-		JpGraphError::RaiseL(8004);//('In order to use Country flags as icons you must include the "jpgraph_flags.php" file.');
+		(new JpGraphError())->RaiseL(8004);//('In order to use Country flags as icons you must include the "jpgraph_flags.php" file.');
 	    }
 	    $fobj = new FlagImages($this->iCountryStdSize);
 	    $dummy='';
@@ -155,7 +153,7 @@ class IconPlot {
 	$iconh = imagesy($gdimg);
 	
 	if( $aReturnWidthHeight ) {
-	    return array(round($iconw*$this->iScale),round($iconh*$this->iScale));
+	    return [round($iconw*$this->iScale),round($iconh*$this->iScale)];
 	}
 
 	if( $x !== null && $y !== null ) {

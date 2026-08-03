@@ -57,7 +57,7 @@ $db_opcao   = 1;
         <?php
         MsgAviso(db_getsession("DB_coddepto"),"escola");
 
-        $aIdentifica = array(
+        $aIdentifica = [
           "a1" => "Turma",
           "a2" => "Disciplinas",
           "a3" => "Horários",
@@ -65,12 +65,12 @@ $db_opcao   = 1;
           "a5" => "Pareceres",
           "a6" => "Outros Profissionais",
           "a7" => "Atividades Complementares"
-        );
+        ];
 
         $clcriaabas->identifica = $aIdentifica;
-        $clcriaabas->sizecampo  = array( "a1" => "20", "a2" => "20", "a3" => "20", "a4" => "20", "a5" => "20", "a6" => "20", "a7" => "20" );
-        $clcriaabas->src        = array( "a1" => "edu1_turma002.php", "a2" => "", "a3" => "", "a4" => "", "a5" => "", "a6" => "", "a7" => "");
-        $clcriaabas->disabled   = array( "a2" => "true", "a3" => "true", "a4" => "true", "a5" => "true", "a6" => "true", "a7" => "true" );
+        $clcriaabas->sizecampo  = [ "a1" => "20", "a2" => "20", "a3" => "20", "a4" => "20", "a5" => "20", "a6" => "20", "a7" => "20" ];
+        $clcriaabas->src        = [ "a1" => "edu1_turma002.php", "a2" => "", "a3" => "", "a4" => "", "a5" => "", "a6" => "", "a7" => ""];
+        $clcriaabas->disabled   = [ "a2" => "true", "a3" => "true", "a4" => "true", "a5" => "true", "a6" => "true", "a7" => "true" ];
         $clcriaabas->cordisabled = "#9b9b9b";
         $clcriaabas->iframe_width = '100%';
         $clcriaabas->iframe_height = 800;

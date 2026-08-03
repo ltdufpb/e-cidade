@@ -32,7 +32,7 @@ if (!isset($SAJAX_INCLUDED)) {
 	 *
 	 */ 
 	$sajax_debug_mode = 0;
-	$sajax_export_list = array();
+	$sajax_export_list = [];
 	$sajax_request_type = "GET";
 	$sajax_remote_uri = "";
 	
@@ -76,14 +76,14 @@ if (!isset($SAJAX_INCLUDED)) {
 			if (! empty($_GET["rsargs"])) 
 				$args = $_GET["rsargs"];
 			else
-				$args = array();
+				$args = [];
 		}
 		else {
 			$func_name = $_POST["rs"];
 			if (! empty($_POST["rsargs"])) 
 				$args = $_POST["rsargs"];
 			else
-				$args = array();
+				$args = [];
 		}
 		
 		if (! in_array($func_name, $sajax_export_list))
@@ -101,7 +101,7 @@ if (!isset($SAJAX_INCLUDED)) {
 		global $sajax_request_type;
 		global $sajax_remote_uri;
 		
-		$t = strtoupper($sajax_request_type);
+		$t = strtoupper((string) $sajax_request_type);
 		if ($t != "GET" && $t != "POST") 
 			return "// Invalid type: $t.. \n\n";
 		

@@ -58,7 +58,7 @@ if (isset($oPost->btncadastrar)) {
     $iTotalLinhas   = $oDaoControleAcessoAlunoRegistro->numrows;
     if ($iTotalLinhas > 0) {
       
-      $aLeituras = array();
+      $aLeituras = [];
       for ($i = 0; $i < $iTotalLinhas; $i++) {
         
         $oDadosLeitura = db_utils::fieldsMemory($rsRegistros, $i);
@@ -193,7 +193,7 @@ if (isset($oPost->btncadastrar)) {
                </td>
                <td>
                  <?php 
-                   db_select("entrada", array("t" => "Entrada", "f" => "Saída"), true, 1);
+                   db_select("entrada", ["t" => "Entrada", "f" => "Saída"], true, 1);
                  ?>
                </td>
             </tr>

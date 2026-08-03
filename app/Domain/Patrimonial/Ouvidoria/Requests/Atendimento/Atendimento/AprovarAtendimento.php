@@ -10,6 +10,7 @@ class AprovarAtendimento extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -35,41 +36,42 @@ class AprovarAtendimento extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            DefaultSession::DB_INSTIT + ".required" => utf8_encode(
-                "Código da instituicao não informado."
-            ),DefaultSession::DB_INSTIT + ".filled" => utf8_encode(
-                "O código da instituicao informado está vazio."
-            ),DefaultSession::DB_INSTIT + ".integer" => utf8_encode(
-                "Código inválido da instituicao."
-            ),DefaultSession::DB_CODDEPTO + ".required" => utf8_encode(
-                "Código do departamento não informado."
-            ),DefaultSession::DB_CODDEPTO + ".filled" => utf8_encode(
-                "O código do departamento informado está vazio."
-            ),DefaultSession::DB_CODDEPTO + ".integer" => utf8_encode(
-                "Código inválido do departamento."
-            ),DefaultSession::DB_ID_USUARIO + ".required" => utf8_encode(
-                "Código do usuario não informado."
-            ),DefaultSession::DB_ID_USUARIO + ".filled" => utf8_encode(
-                "O código do usuario informado está vazio."
-            ),DefaultSession::DB_ID_USUARIO + ".integer" => utf8_encode(
-                "Código inválido do usuario."
+            DefaultSession::DB_INSTIT + ".required" => mb_convert_encoding(
+                "Código da instituicao não informado.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_INSTIT + ".filled" => mb_convert_encoding(
+                "O código da instituicao informado está vazio.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_INSTIT + ".integer" => mb_convert_encoding(
+                "Código inválido da instituicao.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_CODDEPTO + ".required" => mb_convert_encoding(
+                "Código do departamento não informado.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_CODDEPTO + ".filled" => mb_convert_encoding(
+                "O código do departamento informado está vazio.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_CODDEPTO + ".integer" => mb_convert_encoding(
+                "Código inválido do departamento.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_ID_USUARIO + ".required" => mb_convert_encoding(
+                "Código do usuario não informado.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_ID_USUARIO + ".filled" => mb_convert_encoding(
+                "O código do usuario informado está vazio.", 'UTF-8', 'ISO-8859-1'
+            ),DefaultSession::DB_ID_USUARIO + ".integer" => mb_convert_encoding(
+                "Código inválido do usuario.", 'UTF-8', 'ISO-8859-1'
             ),
-            "numeroProcesso.required" => utf8_encode("Código da Numero de Processo não informado."),
-            "numeroProcesso.filled" => utf8_encode("O código da Numero de Processo informado está vazio."),
-            "numeroProcesso.integer" => utf8_encode("Código inválido da Numero de Processo."),
-            "anoProcesso.required" => utf8_encode("Código do anoProcesso não informado."),
-            "anoProcesso.filled" => utf8_encode("O código do anoProcesso informado está vazio."),
-            "anoProcesso.integer" => utf8_encode("Código inválido do anoProcesso."),
+            "numeroProcesso.required" => mb_convert_encoding("Código da Numero de Processo não informado.", 'UTF-8', 'ISO-8859-1'),
+            "numeroProcesso.filled" => mb_convert_encoding("O código da Numero de Processo informado está vazio.", 'UTF-8', 'ISO-8859-1'),
+            "numeroProcesso.integer" => mb_convert_encoding("Código inválido da Numero de Processo.", 'UTF-8', 'ISO-8859-1'),
+            "anoProcesso.required" => mb_convert_encoding("Código do anoProcesso não informado.", 'UTF-8', 'ISO-8859-1'),
+            "anoProcesso.filled" => mb_convert_encoding("O código do anoProcesso informado está vazio.", 'UTF-8', 'ISO-8859-1'),
+            "anoProcesso.integer" => mb_convert_encoding("Código inválido do anoProcesso.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

@@ -41,8 +41,8 @@ $clrotulo->label('k50_notifica');
 $clrotulo->label('k51_procede');
 $clrotulo->label('k51_descr');
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $instit = db_getsession("DB_instit");
 
@@ -129,7 +129,7 @@ function js_emite(tiporel){
 		        </td>
 		        <td>
 		          <?php
-		          	$aOrdem = array("a"=>"Alfabética","n"=>"Numérica",'t'=>'Notificação');
+		          	$aOrdem = ["a"=>"Alfabética","n"=>"Numérica",'t'=>'Notificação'];
 					      db_select('selOrdem',$aOrdem,true,4,"style='width:250;'");
 		          ?>
 		        </td>
@@ -140,7 +140,7 @@ function js_emite(tiporel){
 		        </td>
 		        <td>
 		          <?php
-		          	$aCgmVazio= array("n"=>"Não","s"=>'Sim');
+		          	$aCgmVazio= ["n"=>"Não","s"=>'Sim'];
 		          	db_select('selCgmVazio',$aCgmVazio,true,4,"style='width:250;'");
 		          ?>
 		        </td>
@@ -151,7 +151,7 @@ function js_emite(tiporel){
 		        </td>
 		        <td>
 		          <?php
-		          	$aImpTimbre = array("1"=>"Emitir Ambos","2"=>"Somente Interno","3"=>"Somente Externo","4"=>"Sem Timbre");
+		          	$aImpTimbre = ["1"=>"Emitir Ambos","2"=>"Somente Interno","3"=>"Somente Externo","4"=>"Sem Timbre"];
 		          	db_select('selImpTimbre',$aImpTimbre,true,4,"style='width:250;'");
 		          ?>
 		        </td>
@@ -213,7 +213,7 @@ function js_emite(tiporel){
 		        </td>
 				<td>
 		          <?php
-		          	$aRotateRemetente= array("n"=>"Não","s"=>'Sim');
+		          	$aRotateRemetente= ["n"=>"Não","s"=>'Sim'];
 		          	db_select('selRotateRemetente',$aRotateRemetente,false,4,"style='width:250;'");
 		          ?>
 		        </td>

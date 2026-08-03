@@ -62,7 +62,7 @@ try {
         throw new Exception(_M(MENSAGENS."campo_obrigatorio_cnpj_cpf"));
       }
 
-      if(strlen($oParametros->iCnpjCpf) != 11 and strlen($oParametros->iCnpjCpf) != 14){
+      if(strlen((string) $oParametros->iCnpjCpf) != 11 and strlen((string) $oParametros->iCnpjCpf) != 14){
         throw new Exception(_M(MENSAGENS."campo_cnpj_cpf_irregular"));
       }
 

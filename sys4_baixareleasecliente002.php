@@ -60,14 +60,14 @@ $psql="$DB_CMD_PSQL";
 
 $sql    = "select db30_codversao,db30_codrelease from db_versao order by db30_codver desc limit 1";
 $result = db_query($sql);
-$numrows= pg_numrows($result);
+$numrows= pg_num_rows($result);
 
-$db30_codversao = pg_result($result,0,0);
-$db30_codrelease= pg_result($result,0,1);
+$db30_codversao = pg_fetch_result($result,0,0);
+$db30_codrelease= pg_fetch_result($result,0,1);
 
 $releaseatual="2.".$db30_codversao.".".$db30_codrelease."";
 
-$db30_codrelease= pg_result($result,0,1)+1;
+$db30_codrelease= pg_fetch_result($result,0,1)+1;
 $release_nova="2.$db30_codversao.$db30_codrelease";
 $release="dbportal-2.".$db30_codversao.".".$db30_codrelease."-linux.tar.bz2";
 
@@ -92,7 +92,7 @@ db_atutermometro(4,100,'termometro');
 db_atutermometro(6,100,'termometro');
      $sql    = "select db21_codcli from db_config where prefeitura=true";
      $result = db_query($sql);
-     $numrows= pg_numrows($result);
+     $numrows= pg_num_rows($result);
      if ($numrows==0){
           #db_msgbox("Verificar registro na tabela db_config.");
           $aborta=2;
@@ -100,7 +100,7 @@ db_atutermometro(6,100,'termometro');
         }
      if ($aborta<>2){
            db_atutermometro(10,100,'termometro');
-           $db21_codcli = pg_result($result,0,0);
+           $db21_codcli = pg_fetch_result($result,0,0);
            $sql    = "update db_config set db21_ativo=3 where prefeitura=true and db21_codcli=$db21_codcli";
            $result = db_query($sql);
 
@@ -110,11 +110,11 @@ db_atutermometro(6,100,'termometro');
             $releasenova="$diretorio/dbportal-2.".$db30_codversao.".".$db30_codrelease."";
 
             $dir_origem=getcwd();
-            
+
            #limpa diretorio tmp do dbportal
             $tmp=getcwd()."/tmp";
             $executa=`cd $tmp;find . -name "rp*.pdf" -exec rm -f {} \;`;       
-           
+
   #echo "\n Atualizando release $release_nova ! \n \n";
     if (file_exists($release)){
         #echo"removendo diretorio dbportal-2.".$db30_codversao.".".$db30_codrelease."";
@@ -220,7 +220,7 @@ if ($aborta<>7){
 if ($aborta<>8){  
 db_atutermometro(70,100,'termometro');  
  $fd = fopen("$diretorio/logs/atualiza_dbportal-2.".$db30_codversao.".".$db30_codrelease.".txt","a");
- fputs($fd,$versaoant );
+ fputs($fd,(string) $versaoant );
  fclose($fd);
 
 #executa funcoes
@@ -248,7 +248,7 @@ if ($aborta<>9){
  if (trim($fd)<>''){
  #    echo"Existe sql para rodar no banco de dados";
      $fd = fopen("$diretorio/logs/atualiza_dbportal-2.".$db30_codversao.".".$db30_codrelease.".txt","a");
-     fputs($fd,$sql );
+     fputs($fd,(string) $sql );
      fclose($fd);
     }
 
@@ -328,7 +328,7 @@ $verificadbpref=`cd $dbpref; cd .. ; find . -name dbpref`;
   if (trim($erro)<>''){
        db_msgbox("Atenção.Não foi possível atualizar os fontes no diretório do dbpref.Entre em contato com a DBseller.") ;
      }
-                    
+
 }
 
 #echo"\n ALTERANDO ARQUIVO DB_ACESSA \n";

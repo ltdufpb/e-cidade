@@ -16,11 +16,6 @@ class MovimentacaoService
     private $oInstituicao;
 
     /**
-     * @var $oProcessoEletronico
-     */
-    private $oProcessoEletronico;
-
-    /**
      * @var CODIGO_VARA integer
      */
     const CODIGO_VARA = 36389;
@@ -30,10 +25,9 @@ class MovimentacaoService
      * @param \Instituicao $oInstituicao
      * @param \ECidade\Tributario\Juridico\ProcessoEletronico\ProcessoEletronico $oProcessoEletronico
      */
-    public function __construct(\Instituicao $oInstituicao, \ECidade\Tributario\Juridico\ProcessoEletronico\ProcessoEletronico $oProcessoEletronico)
+    public function __construct(\Instituicao $oInstituicao, private readonly \ECidade\Tributario\Juridico\ProcessoEletronico\ProcessoEletronico $oProcessoEletronico)
     {
         $this->oInstituicao = $oInstituicao;
-        $this->oProcessoEletronico = $oProcessoEletronico;
     }
 
     /**
@@ -108,7 +102,7 @@ class MovimentacaoService
         $this->oProcessoEletronico->setSituacao(\ECidade\Tributario\Juridico\ProcessoEletronico\Integracao::SITUACAO_RETORNO_ERRO);
 
         if ($oRetornoRemessa->getStatus() == true) {
-            $this->oProcessoEletronico->setRecibo(base64_encode($oRetornoRemessa->getRecibo()));
+            $this->oProcessoEletronico->setRecibo(base64_encode((string) $oRetornoRemessa->getRecibo()));
             $this->oProcessoEletronico->setSituacao(\ECidade\Tributario\Juridico\ProcessoEletronico\Integracao::SITUACAO_COM_RECIBO);
             $codigo_foro = $this->persistProcessoForo($oRetornoRemessa);
             $this->persistProcessoInicial($codigo_foro, $inicial, $oRetornoRemessa->getDataOperacao());

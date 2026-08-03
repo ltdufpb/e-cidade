@@ -25,7 +25,7 @@ final class CarfatorRepository extends Repository
 
     private function makeCollection($array)
     {
-        $collection = array();
+        $collection = [];
 
         if (empty($array)) {
             return $collection;

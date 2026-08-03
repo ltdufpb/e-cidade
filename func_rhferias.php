@@ -35,8 +35,8 @@ require_once(modification("classes/db_rhferias_classe.php"));
 require_once(modification("std/DBDate.php"));
 
 $oGet = db_utils::postMemory($_GET);
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhferias = new cl_rhferias();
 $clrhferias->rotulo->label("rh109_sequencial");
@@ -115,9 +115,9 @@ if (isset($chave_rh109_sequencial) && !DBNumber::isInteger($chave_rh109_sequenci
            $sql = $clrhferias->sql_query("",$campos,"rh109_sequencial",$sWhere);
         }
         
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh109_sequencial)){
-          $repassa = array("chave_rh109_sequencial"=>$chave_rh109_sequencial,"chave_rh109_sequencial"=>$chave_rh109_sequencial);
+          $repassa = ["chave_rh109_sequencial"=>$chave_rh109_sequencial,"chave_rh109_sequencial"=>$chave_rh109_sequencial];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

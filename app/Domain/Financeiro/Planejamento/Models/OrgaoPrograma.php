@@ -90,7 +90,7 @@ class OrgaoPrograma extends Model
     {
         $orgao = parent::toArray();
         $orgaoOrcamento = $this->getOrgaoOrcamento();
-        $orgao['orgao'] = str_pad($orgaoOrcamento->o40_orgao, 2, '0', STR_PAD_LEFT);
+        $orgao['orgao'] = str_pad((string) $orgaoOrcamento->o40_orgao, 2, '0', STR_PAD_LEFT);
         $orgao['descricao'] = $orgaoOrcamento->o40_descr;
         return $orgao;
     }

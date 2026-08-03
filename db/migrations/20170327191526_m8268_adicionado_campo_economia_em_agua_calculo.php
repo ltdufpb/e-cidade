@@ -6,8 +6,8 @@ class M8268AdicionadoCampoEconomiaEmAguaCalculo extends PostgresMigration
 {
   public function up() {
 
-    $oSysCampoTable = $this->table('db_syscampo', array('schema' => 'configuracoes'));
-    $aSysCampoData = array(
+    $oSysCampoTable = $this->table('db_syscampo', ['schema' => 'configuracoes']);
+    $aSysCampoData = [
       'codcam'       => 22423,
       'nomecam'      => 'x22_aguacontratoeconomia',
       'conteudo'     => 'int4',
@@ -21,41 +21,41 @@ class M8268AdicionadoCampoEconomiaEmAguaCalculo extends PostgresMigration
       'aceitatipo'   => 1,
       'tipoobj'      => 'text',
       'rotulorel'     => 'Economia',
-    );
-    $oSysCampoTable->insert(array_keys($aSysCampoData), array(array_values($aSysCampoData)));
+    ];
+    $oSysCampoTable->insert(array_keys($aSysCampoData), [array_values($aSysCampoData)]);
     $oSysCampoTable->save();
 
-    $oSysArqCampTable = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
-    $aSysArqCampData = array(
+    $oSysArqCampTable = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
+    $aSysArqCampData = [
       'codarq'       => 1443,
       'codcam'       => 22423,
       'seqarq'       => 14,
       'codsequencia' => 0,
-    );
-    $oSysArqCampTable->insert(array_keys($aSysArqCampData), array(array_values($aSysArqCampData)));
+    ];
+    $oSysArqCampTable->insert(array_keys($aSysArqCampData), [array_values($aSysArqCampData)]);
     $oSysArqCampTable->save();
 
-    $oSysForKey = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
-    $aSysForKey = array(
+    $oSysForKey = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
+    $aSysForKey = [
       'codarq'     => 1443,
       'codcam'     => 22423,
       'sequen'     => 1,
       'referen'    => 3983,
       'tipoobjrel' => 0,
-    );
-    $oSysForKey->insert(array_keys($aSysForKey), array(array_values($aSysForKey)));
+    ];
+    $oSysForKey->insert(array_keys($aSysForKey), [array_values($aSysForKey)]);
     $oSysForKey->save();
 
-    $oAguaCalculo = $this->table('aguacalc', array('schema' => 'agua'));
-    $oAguaCalculo->addColumn('x22_aguacontratoeconomia', 'integer', array(
+    $oAguaCalculo = $this->table('aguacalc', ['schema' => 'agua']);
+    $oAguaCalculo->addColumn('x22_aguacontratoeconomia', 'integer', [
       'null'    => true,
       'default' => null,
-    ));
-    $oAguaCalculo->addForeignKey('x22_aguacontratoeconomia', 'agua.aguacontratoeconomia', 'x38_sequencial', array(
+    ]);
+    $oAguaCalculo->addForeignKey('x22_aguacontratoeconomia', 'agua.aguacontratoeconomia', 'x38_sequencial', [
       'delete'     => 'NO_ACTION',
       'update'     => 'NO_ACTION',
       'constraint' => 'aguacalc_aguacontratoeconomia_fk'
-    ));
+    ]);
     $oAguaCalculo->save();
   }
 
@@ -65,7 +65,7 @@ class M8268AdicionadoCampoEconomiaEmAguaCalculo extends PostgresMigration
     $this->execute('delete from configuracoes.db_sysarqcamp where codarq = 1443 and codcam = 22423');
     $this->execute('delete from configuracoes.db_syscampo where codcam = 22423');
 
-    $oAguaCalculo = $this->table('aguacalc', array('schema' => 'agua'));
+    $oAguaCalculo = $this->table('aguacalc', ['schema' => 'agua']);
     $oAguaCalculo->removeColumn('x22_aguacontratoeconomia');
     $oAguaCalculo->save();
   }

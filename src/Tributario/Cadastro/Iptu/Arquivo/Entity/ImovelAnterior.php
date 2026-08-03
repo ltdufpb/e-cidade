@@ -6,12 +6,12 @@ use ECidade\Tributario\Library\Entity;
 
 final class ImovelAnterior extends Entity
 {
-    const TESTADA_LOTE          = 'TESTADALOTE';
-    const AREA_LOTE             = 'AREALOTE';
-    const AREA_TOTAL_CONSTRUIDA = 'AREATOTALCONSTRUIDA';
-    const REFERENCIA_ANTERIOR   = 'REFERENCIAANTERIOR';
-    const AREA_LOTE_CALCULO     = 'AREALOTECALCULO';
-    const VALOR_M2_CALCULO      = 'VALORM2CALCULO';
+    const string TESTADA_LOTE          = 'TESTADALOTE';
+    const string AREA_LOTE             = 'AREALOTE';
+    const string AREA_TOTAL_CONSTRUIDA = 'AREATOTALCONSTRUIDA';
+    const string REFERENCIA_ANTERIOR   = 'REFERENCIAANTERIOR';
+    const string AREA_LOTE_CALCULO     = 'AREALOTECALCULO';
+    const string VALOR_M2_CALCULO      = 'VALORM2CALCULO';
 
     /**
      * @var double|null

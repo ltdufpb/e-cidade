@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoidentificacaocredor_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltipoidentificacaocredor = new cl_tipoidentificacaocredor;
 $cltipoidentificacaocredor->rotulo->label("c24_sequencial");
 $cltipoidentificacaocredor->rotulo->label("c24_descricao");
@@ -106,9 +106,9 @@ $cltipoidentificacaocredor->rotulo->label("c24_descricao");
         }else{
            $sql = $cltipoidentificacaocredor->sql_query("",$campos,"c24_sequencial", str_replace("and", "", $sWhereCadastroGenerico));
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c24_descricao)){
-          $repassa = array("chave_c24_sequencial"=>$chave_c24_sequencial,"chave_c24_descricao"=>$chave_c24_descricao);
+          $repassa = ["chave_c24_sequencial"=>$chave_c24_sequencial,"chave_c24_descricao"=>$chave_c24_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

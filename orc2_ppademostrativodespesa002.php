@@ -41,7 +41,7 @@ $oPPAVersao     = new ppaVersao($oGet->ppaversao);
  * Carregamos o quadro da estimativa da despesa, trazendo os valores agrupados pelo nivel
  * escolhido pelo usário.
  */
-$aNiveis = array(
+$aNiveis = [
   1 => "Orgão",
   2 => "Unidade",
   3 => "Função",
@@ -50,7 +50,7 @@ $aNiveis = array(
   6 => "Projeto/Atividade",
   7 => "Elemento",
   8 => "Recurso",
-);
+];
 try {
 
   if ($oGet->anofin > 2012) {
@@ -67,10 +67,10 @@ try {
   die( $eException->getMessage());
 }
 
-$aAno                  = array();
-$aValorTotalBase       = array();
-$aValorTotalEstimativa = array();
-$aAnoBase              = array();
+$aAno                  = [];
+$aValorTotalBase       = [];
+$aValorTotalEstimativa = [];
+$aAnoBase              = [];
 $iAnoInicio            = $oGet->anoini - ppa::ANOS_PREVISAO_CALCULO;
 $nValorTotalMedia      = 0;
 
@@ -93,7 +93,7 @@ $pdf->Open();
 $pdf->AliasNbPages();
 $pdf->SetAutoPageBreak(false,1);
 $pdf->setfillcolor(235);
-cabecalho($pdf, $aAnoBase, $aNiveis[$oGet->nivel], $aAno);
+cabecalho($pdf);
 
 $alt      = 5;
 $iTamanhoCelulaCodigo = 15;
@@ -114,12 +114,12 @@ foreach ($aDespesas as $oDespesa) {
     continue;
   }
   if ($pdf->GetY() > $pdf->h - 30) {
-    cabecalho($pdf, $aAnoBase, $aNiveis[$oGet->nivel], $aAno);
+    cabecalho($pdf);
   }
   $pdf->setfont('arial','',7);
 
   $pdf->cell($iTamanhoCelulaCodigo , $alt, $oDespesa->iCodigo." - " , "TB", 0, "R", 0);
-  $pdf->cell($iTamanhoCelulaDescr, $alt, substr($oDespesa->iEstrutural, 0, 60), "TB", 0, "L", 0);
+  $pdf->cell($iTamanhoCelulaDescr, $alt, substr((string) $oDespesa->iEstrutural, 0, 60), "TB", 0, "L", 0);
   foreach ($oDespesa->aBaseCalculo as $iAno => $nValorBase) {
 
     $pdf->cell(20 , $alt, db_formatar($nValorBase, "f"), "TBL", 0, "R", 0);

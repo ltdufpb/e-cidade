@@ -35,8 +35,8 @@ $cldb_paragrafopadrao = new cl_db_paragrafopadrao;
 $cldb_paragrafopadrao->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("db04_idparag");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 if (isset ($atualizar)&&$atualizar!="") {
 	db_inicio_transacao();
 	$result03 = $cldb_docparagpadrao->sql_record($cldb_docparagpadrao->sql_query_file(null,null, "*", null, "db62_coddoc=$db62_coddoc"));
@@ -49,13 +49,13 @@ if (isset ($atualizar)&&$atualizar!="") {
 		}
 	}
 	$sqlerro = false;
-	$vt = $HTTP_POST_VARS;
+	$vt = $_POST;
 	$ta = sizeof($vt);
 	reset($vt);
 	for ($i = 0; $i < $ta; $i ++) {
 		$chave = key($vt);
-		if (substr($chave, 0, 5) == "CHECK") {
-			$dados = split("_", $chave);
+		if (str_starts_with((string) $chave, "CHECK")) {
+			$dados = preg_split("#_#m", (string) $chave);
 			$result_ord = $cldb_docparagpadrao->sql_record($cldb_docparagpadrao->sql_query_file($db62_coddoc, null, "max(db62_ordem)as ordem"));
 			if ($cldb_docparagpadrao->numrows > 0) {
 				db_fieldsmemory($result_ord, 0);

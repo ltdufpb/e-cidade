@@ -41,8 +41,8 @@ if (!isset($arqinclude)){
   include(modification("classes/db_orcparamrel_classe.php"));
   include(modification("classes/db_empresto_classe.php"));
   
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
   
   $classinatura    = new cl_assinatura;
   $orcparamrel     = new cl_orcparamrel;
@@ -127,7 +127,7 @@ $m_aplicacao_fundeb["estrut"] = $orcparamrel->sql_parametro("31","55");
 $m_aplicacao_fundeb["valor"]  = 0;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Tela do relatorio
-$receita = array();
+$receita = [];
 
 $receita[1]["txt"]  = "1 - RECEITAS DE IMPOSTOS";
 $receita[2]["txt"]  = "    1.1 - Receita Resultante do Imposto sobre a Propriedade Predial e Territorial Urbana - IPTU";
@@ -193,7 +193,7 @@ $db_filtro = ' o70_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
 $result    = db_receitasaldo(11,1,3,true,$db_filtro,$anousu,$dt_ini,$dt_fin);
 //db_criatabela($result); exit;
 
-for ($i = 0; $i < pg_numrows($result); $i++){
+for ($i = 0; $i < pg_num_rows($result); $i++){
   db_fieldsmemory($result,$i);
   $estrutural = $o57_fonte;
   $v_recurso  = $o70_codigo;
@@ -224,7 +224,7 @@ for ($i = 0; $i < pg_numrows($result); $i++){
 }
 
 for ($col = 1; $col <= 4; $col++){
-  $pcol =array(1=>"inicial",2=>"atualizada",3=>"bimestre",4=>"exercicio");
+  $pcol =[1=>"inicial",2=>"atualizada",3=>"bimestre",4=>"exercicio"];
 
   // Imposto IPTU                             
   $receita[3][$pcol[$col]] = $m_receita[1][$pcol[$col]];
@@ -347,7 +347,7 @@ for ($col = 1; $col <= 4; $col++){
 }
 
 // DESPESAS
-$despesa = array();
+$despesa = [];
 
 $despesa[1]["txt"]  = "12 - PAGAMENTO DOS PROFISSIONAIS DO MAGISTÉRIO";
 $despesa[2]["txt"]  = "     12.1 - Com Educação Infantil";
@@ -385,7 +385,7 @@ for($linha = 1; $linha <= 19; $linha++){
 $sele_work = 'o58_instit in ('.str_replace('-', ', ', $db_selinstit).')   ';
 $result_despesa = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
 
-for ($i = 0; $i < pg_numrows($result_despesa); $i++) {
+for ($i = 0; $i < pg_num_rows($result_despesa); $i++) {
   db_fieldsmemory($result_despesa, $i);
   
   for ($linha = 38; $linha <= 52; $linha++) {
@@ -419,7 +419,7 @@ for ($i = 0; $i < pg_numrows($result_despesa); $i++) {
 
 for ($col = 1; $col <= 5; $col++){
 
-  $pcol = array(1=>"inicial",2=>"atualizada",3=>"bimestre",4=>"exercicio",5=>"inscritas");
+  $pcol = [1=>"inicial",2=>"atualizada",3=>"bimestre",4=>"exercicio",5=>"inscritas"];
   
   // 12.1 PGTO PROFISSIONAIS - Educacao Infantil
   $despesa[2][$pcol[$col]] = $m_despesa[38][$pcol[$col]];
@@ -519,11 +519,11 @@ $sqlperiodo = " select e91_recurso,o15_descr,e60_anousu,sum(vlranu) as vlranu, s
 	          		order by e91_recurso,e60_anousu";
 
 $result_restos_mde1  = @db_query($sqlperiodo);
-$numrows_restos_mde1 = @pg_numrows($result_restos_mde1);
+$numrows_restos_mde1 = @pg_num_rows($result_restos_mde1);
 
 $cancelado = 0;
 $saldo     = 0;
-for($i = 0; $i < pg_numrows($result_restos_mde1); $i++){
+for($i = 0; $i < pg_num_rows($result_restos_mde1); $i++){
   db_fieldsmemory($result_restos_mde1,$i);
 
   $saldo += (($e91_vlremp-$e91_vlranu-$vlranu)-($e91_vlrpag+$vlrpag));
@@ -542,7 +542,7 @@ $result_restos_mde2 = db_rpsaldo($anousu,
                                  " and c53_coddoc = 32 ");
 
 //db_criatabela($result_restos_mde); exit;
-for($i = 0; $i < pg_numrows($result_restos_mde2); $i++){
+for($i = 0; $i < pg_num_rows($result_restos_mde2); $i++){
   db_fieldsmemory($result_restos_mde2,$i);
 
   $cancelado += $vlranu;
@@ -566,7 +566,7 @@ $result_bal_ver = db_planocontassaldo_matriz($anousu,$dt_ini2,$dt_fin,false,$db_
 
 //db_criatabela($result_bal_ver); exit;
 //print_r($m_fluxo_fundeb); exit;
-for($i = 0; $i < pg_numrows($result_bal_ver); $i++){
+for($i = 0; $i < pg_num_rows($result_bal_ver); $i++){
   db_fieldsmemory($result_bal_ver,$i);
 
   if (in_array($estrutural,$m_fluxo_fundeb["estrut"])){
@@ -578,12 +578,12 @@ for($i = 0; $i < pg_numrows($result_bal_ver); $i++){
 }
 // FIM FLUXO FINANCEIRO
 
-$fluxo = array();
+$fluxo = [];
 
 $fluxo[1]["txt"] = "38 - SALDO FINANCEIRO DO FUNDEB EM 31 DE DEZEMBRO DE ".($anousu-1);
-$fluxo[2]["txt"] = "     38.1 - (+) INGRESSO DE RECURSOS DO FUNDEB ATÉ O ".strtoupper($periodo);
-$fluxo[3]["txt"] = "     38.2 - (-) PAGAMENTOS EFETUADOS ATÉ O ".strtoupper($periodo);
-$fluxo[4]["txt"] = "     38.3 - (+) RECEITA DE APLICAÇÃO FINANCEIRA DOS RECURSOS DO FUNDEB ATÉ O ".strtoupper($periodo);
+$fluxo[2]["txt"] = "     38.1 - (+) INGRESSO DE RECURSOS DO FUNDEB ATÉ O ".strtoupper((string) $periodo);
+$fluxo[3]["txt"] = "     38.2 - (-) PAGAMENTOS EFETUADOS ATÉ O ".strtoupper((string) $periodo);
+$fluxo[4]["txt"] = "     38.3 - (+) RECEITA DE APLICAÇÃO FINANCEIRA DOS RECURSOS DO FUNDEB ATÉ O ".strtoupper((string) $periodo);
 $fluxo[5]["txt"] = "39 - (=) SALDO FINANCEIRO DO FUNDEB NO EXERCÍCIO ATUAL";   
 
 for($linha = 1; $linha <= 5; $linha++){
@@ -597,11 +597,11 @@ $fluxo[5]["valor"] = $m_fluxo_fundeb["valor_atual"];
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if (!isset($arqinclude)){
-  $xinstit    = split("-",$db_selinstit);
+  $xinstit    = preg_split("#\\-#m",(string) $db_selinstit);
   $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
   db_fieldsmemory($resultinst,0);
 
-  $descr_inst = strtoupper($munic);
+  $descr_inst = strtoupper((string) $munic);
     
   $head1 = "MUNICÍPIO DE ".$descr_inst;
   $head2 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
@@ -609,10 +609,10 @@ if (!isset($arqinclude)){
   $head4 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
   $dados  = data_periodo($anousu,$periodo_selecionado);
-  $perini = split("-",$dados[0]);
-  $perfin = split("-",$dados[1]);
+  $perini = preg_split("#\\-#m",(string) $dados[0]);
+  $perfin = preg_split("#\\-#m",(string) $dados[1]);
 
-  $txtper = strtoupper($dados["periodo"]);
+  $txtper = strtoupper((string) $dados["periodo"]);
   $mesini = db_mes($perini[1],1);
   $mesfin = db_mes($perfin[1],1);
 
@@ -1101,7 +1101,7 @@ if ($periodo_selecionado=='6B' || $periodo_selecionado=='2S'){
   $pdf->cell(40,$alt,db_formatar($m_restos_mde["cancelado"],"f"),"TB",1,"R",0);
 // Fim dos RESTOS A PAGAR
 
-  $pdf->cell(150,$alt,"29 - RECEITA DE APLICAÇÃO FINANCEIRA DOS RECURSOS DO FUNDEB ATÉ O ".strtoupper($periodo)." = (38.3)","TBR",0,"L",0);
+  $pdf->cell(150,$alt,"29 - RECEITA DE APLICAÇÃO FINANCEIRA DOS RECURSOS DO FUNDEB ATÉ O ".strtoupper((string) $periodo)." = (38.3)","TBR",0,"L",0);
   $pdf->cell(40,$alt,db_formatar($m_aplicacao_fundeb["valor"],"f"),"TB",1,"R",0);
 
   $fluxo[4]["valor"] = $m_aplicacao_fundeb["valor"];
@@ -1279,7 +1279,7 @@ if ($periodo_selecionado=='6B' || $periodo_selecionado=='2S'){
   $pdf->setfont('arial','',6);
 
   $pdf->cell(90,($alt*2),"RESTOS A PAGAR INSCRITOS COM DISP. FINANC. DE REC. DE IMP. VINC. AO ENSINO","TBR",0,"C",0);
-  $pdf->cell(40,($alt*2),"SALDO ATÉ O ".strtoupper($periodo),"TBR",0,"C",0);
+  $pdf->cell(40,($alt*2),"SALDO ATÉ O ".strtoupper((string) $periodo),"TBR",0,"C",0);
   $pdf->cell(60,($alt*2),"CANCELADO EM ".$anousu,"TB",0,"C",0);
   $pdf->ln();
 
@@ -1313,12 +1313,12 @@ if ($periodo_selecionado=='6B' || $periodo_selecionado=='2S'){
 // Rodape  
   $pdf->Ln();
 
-  notasExplicativas(&$pdf,31,"{$periodo_selecionado}",190);
+  notasExplicativas($pdf,31,"{$periodo_selecionado}",190);
 
 // Assinaturas
   $pdf->Ln(30);
 
-  assinaturas(&$pdf,&$classinatura,'LRF');
+  assinaturas($pdf,$classinatura,'LRF');
     
   $pdf->Output();
 }

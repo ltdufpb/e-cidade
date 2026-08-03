@@ -11,7 +11,7 @@ class M11291 extends PostgresMigration
 
     public function up()
     {
-        $aSql = array();
+        $aSql = [];
 
         $title = ("Aviso de Férias");
 
@@ -45,7 +45,7 @@ retornar ao trabalho em #dataVoltarTrabalho#.
 
     public function down()
     {
-        $aSql = array();
+        $aSql = [];
 
         $aSql [] = "DELETE FROM db_docparag   WHERE   db04_docum    ={$this->documento}  AND db04_idparag = {$this->paragrafo};";
         $aSql [] = "DELETE FROM db_tipodoc    WHERE   db08_codigo    = 92000;";

@@ -33,8 +33,8 @@ include(modification("classes/db_orcdotacao_classe.php"));
 include(modification("classes/db_orcorgao_classe.php"));
 include(modification("classes/db_empemphist_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clempempenho = new cl_empempenho;
 $clcgm = new cl_cgm;
@@ -274,18 +274,18 @@ if ($quebra=="g" and $tipo=="a"){
     	    {
                  $pdf->Ln();
 	         $pdf->SetFont('Arial','B',7);	 
-	         $pdf->Cell(20,$tam,strtoupper($RLe60_numemp),1,0,"C",1);
-	         $pdf->Cell(20,$tam,strtoupper($RLe60_codemp),1,0,"C",1);	 
+	         $pdf->Cell(20,$tam,strtoupper((string) $RLe60_numemp),1,0,"C",1);
+	         $pdf->Cell(20,$tam,strtoupper((string) $RLe60_codemp),1,0,"C",1);	 
                  $pdf->Cell(20,$tam,strtoupper($RLe60_emiss),1,0,"C",1);
-                 $pdf->Cell(80,$tam,strtoupper($RLo15_codigo)   ,1,0,"C",1); // recurso
-                 $pdf->Cell(100,$tam,strtoupper($RLDBtxt_estrutural),1,1,"L",1); // cod+estrut dotatao // quebra linha
+                 $pdf->Cell(80,$tam,strtoupper((string) $RLo15_codigo)   ,1,0,"C",1); // recurso
+                 $pdf->Cell(100,$tam,strtoupper((string) $RLDBtxt_estrutural),1,1,"L",1); // cod+estrut dotatao // quebra linha
 		 // 
-		 $pdf->Cell(20,$tam,strtoupper($RLe60_numcgm),1,0,"C",1);
-                 $pdf->Cell(120,$tam,strtoupper($RLDBtxt_credor),1,0,"C",1);
-		 $pdf->Cell(20,$tam,strtoupper($RLe60_vlremp),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlranu),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrliq),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrpag),1,0,"C",1);
+		 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_numcgm),1,0,"C",1);
+                 $pdf->Cell(120,$tam,strtoupper((string) $RLDBtxt_credor),1,0,"C",1);
+		 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlremp),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlranu),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrliq),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrpag),1,0,"C",1);
                  $pdf->Cell(20,$tam,"TOTAL A PAGAR",1,1,"C",1);   //quebra linha
 	         $pdf->SetFont('Arial','',7);	
 		 $imprime_header=false;
@@ -322,7 +322,7 @@ if ($quebra=="g" and $tipo=="a"){
             $pdf->Cell(20,$tam,"$e60_emiss",0,0,"C",0);
             $pdf->Cell(80,$tam,db_formatar($o15_codigo,'recurso')." - $o15_descr",0,0,"L",0); // recurso
 	    $pdf->Cell(100,$tam,"$o58_coddot - $dl_estrutural",0,1,"L",0); //quebra linha
-	    
+
 	    // $pdf->setX(150);
 	    $pdf->Cell(20,$tam, "$e60_numcgm",'B',0,"R",0);
 	    $pdf->Cell(120,$tam,"$z01_nome  ",'B',0,"L",0);
@@ -384,12 +384,12 @@ if ($quebra=="g" and $tipo=="s"){
     	    {
                  $pdf->Ln();
 	         $pdf->SetFont('Arial','B',7);	 
-		 $pdf->Cell(20,$tam,strtoupper($RLo15_codigo),1,0,"C",1);
- 		 $pdf->Cell(100,$tam,strtoupper($RLo15_descr),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlremp),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlranu),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrliq),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrpag),1,0,"C",1);
+		 $pdf->Cell(20,$tam,strtoupper((string) $RLo15_codigo),1,0,"C",1);
+ 		 $pdf->Cell(100,$tam,strtoupper((string) $RLo15_descr),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlremp),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlranu),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrliq),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrpag),1,0,"C",1);
                  $pdf->Cell(20,$tam,"TOTAL A PAGAR",1,1,"C",1);   //quebra linha
 		 $pdf->Ln();
 	         $pdf->SetFont('Arial','',7);	
@@ -410,7 +410,7 @@ if ($quebra=="g" and $tipo=="s"){
             $t_anu  += $e60_vlranu;
             $t_pag  += $e60_vlrpag;
             $t_total+= $total;
-	
+
             if ($x == ($rows -1)) {
 		 $pdf->Ln();
 		 $pdf->setX(110);
@@ -443,18 +443,18 @@ if ($quebra=="o" and $tipo=="a"){
     	    {
                  $pdf->Ln();
 	         $pdf->SetFont('Arial','B',7);	 
-	         $pdf->Cell(20,$tam,strtoupper($RLe60_numemp),1,0,"C",1);
-	         $pdf->Cell(20,$tam,strtoupper($RLe60_codemp),1,0,"C",1);
+	         $pdf->Cell(20,$tam,strtoupper((string) $RLe60_numemp),1,0,"C",1);
+	         $pdf->Cell(20,$tam,strtoupper((string) $RLe60_codemp),1,0,"C",1);
                  $pdf->Cell(20,$tam,strtoupper($RLe60_emiss),1,0,"C",1);
-                 $pdf->Cell(80,$tam,strtoupper($RLo15_codigo),1,0,"C",1);  //
-                 $pdf->Cell(100,$tam,strtoupper($RLDBtxt_estrutural),1,1,"C",1); //quebra linha
+                 $pdf->Cell(80,$tam,strtoupper((string) $RLo15_codigo),1,0,"C",1);  //
+                 $pdf->Cell(100,$tam,strtoupper((string) $RLDBtxt_estrutural),1,1,"C",1); //quebra linha
 		 
-		 $pdf->Cell(20,$tam,strtoupper($RLe60_numcgm)   ,1,0,"C",1);
- 	         $pdf->Cell(120,$tam,strtoupper($RLDBtxt_credor),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlremp),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlranu),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrliq),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrpag),1,0,"C",1);
+		 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_numcgm)   ,1,0,"C",1);
+ 	         $pdf->Cell(120,$tam,strtoupper((string) $RLDBtxt_credor),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlremp),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlranu),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrliq),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrpag),1,0,"C",1);
                  $pdf->Cell(20,$tam,"TOTAL A PAGAR",1,1,"C",1);   //quebra linha
 	         $pdf->SetFont('Arial','',7);	
 		 $imprime_header=false;
@@ -612,18 +612,18 @@ if ($quebra=="o" and $tipo=="s"){
             if ($pdf->gety() > $pdf->h - 40){
  	        $pdg->addpage("L"); 
 	    }
-	
-	    
+
+
             if ($imprime_header==true)
     	    {
                  $pdf->Ln();
 	         $pdf->SetFont('Arial','B',7);	 
-  	         $pdf->Cell(20,$tam,strtoupper($RLo40_orgao ),1,0,"C",1);
- 		 $pdf->Cell(100,$tam,strtoupper($RLo40_descr),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlremp),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlranu),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrliq),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrpag),1,0,"C",1);
+  	         $pdf->Cell(20,$tam,strtoupper((string) $RLo40_orgao ),1,0,"C",1);
+ 		 $pdf->Cell(100,$tam,strtoupper((string) $RLo40_descr),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlremp),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlranu),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrliq),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrpag),1,0,"C",1);
                  $pdf->Cell(20,$tam,"TOTAL A PAGAR",1,1,"C",1);   //quebra linha
 		 $pdf->Ln();
 	         $pdf->SetFont('Arial','',7);	
@@ -658,7 +658,7 @@ if ($quebra=="o" and $tipo=="s"){
  	         $pdf->Cell(100,$tam,$o15_descr,0,1,"L",0); //quebra linha
                  $pdf->SetFont('Arial','',7);	 
 	    }
-       
+
             $pdf->Cell(20,$tam,$o40_orgao,0,0,"R",0);
             $pdf->Cell(100,$tam,$o40_descr,0,0,"L",0);
             $pdf->Cell(20,$tam,$e60_vlremp,0,0,"R",0);
@@ -725,18 +725,18 @@ if ($quebra=="u" and $tipo=="a"){
     	    {
                  $pdf->Ln();
 	         $pdf->SetFont('Arial','B',7);	 
-	         $pdf->Cell(20,$tam,strtoupper($RLe60_numemp),1,0,"C",1);
-	         $pdf->Cell(20,$tam,strtoupper($RLe60_codemp),1,0,"C",1);
+	         $pdf->Cell(20,$tam,strtoupper((string) $RLe60_numemp),1,0,"C",1);
+	         $pdf->Cell(20,$tam,strtoupper((string) $RLe60_codemp),1,0,"C",1);
                  $pdf->Cell(20,$tam,strtoupper($RLe60_emiss),1,0,"C",1);
-                 $pdf->Cell(80,$tam,strtoupper($RLo15_codigo),1,0,"C",1);  //
-                 $pdf->Cell(100,$tam,strtoupper($RLDBtxt_estrutural) ,1,1,"C",1); //quebra linha
+                 $pdf->Cell(80,$tam,strtoupper((string) $RLo15_codigo),1,0,"C",1);  //
+                 $pdf->Cell(100,$tam,strtoupper((string) $RLDBtxt_estrutural) ,1,1,"C",1); //quebra linha
 		 
-		 $pdf->Cell(20,$tam,strtoupper($RLe60_numcgm)   ,1,0,"C",1);
- 	         $pdf->Cell(120,$tam,strtoupper($RLDBtxt_credor),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlremp),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlranu),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrliq),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrpag),1,0,"C",1);
+		 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_numcgm)   ,1,0,"C",1);
+ 	         $pdf->Cell(120,$tam,strtoupper((string) $RLDBtxt_credor),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlremp),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlranu),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrliq),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrpag),1,0,"C",1);
                  $pdf->Cell(20,$tam,"TOTAL A PAGAR",1,1,"C",1);   //quebra linha
 	         $pdf->SetFont('Arial','',7);	
 		 $imprime_header=false;
@@ -893,12 +893,12 @@ if ($quebra=="u" and $tipo=="s"){
     	    {
                  $pdf->Ln();
 	         $pdf->SetFont('Arial','B',7);	 
-  	         $pdf->Cell(20,$tam,strtoupper($RLo41_unidade),1,0,"C",1);
- 		 $pdf->Cell(100,$tam,strtoupper($RLo41_descr ),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlremp),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlranu),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrliq),1,0,"C",1);
-                 $pdf->Cell(20,$tam,strtoupper($RLe60_vlrpag),1,0,"C",1);
+  	         $pdf->Cell(20,$tam,strtoupper((string) $RLo41_unidade),1,0,"C",1);
+ 		 $pdf->Cell(100,$tam,strtoupper((string) $RLo41_descr ),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlremp),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlranu),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrliq),1,0,"C",1);
+                 $pdf->Cell(20,$tam,strtoupper((string) $RLe60_vlrpag),1,0,"C",1);
                  $pdf->Cell(20,$tam,"TOTAL A PAGAR",1,1,"C",1);   //quebra linha
 		 $pdf->Ln();
 	         $pdf->SetFont('Arial','',7);	

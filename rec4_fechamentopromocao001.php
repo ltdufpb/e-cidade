@@ -49,7 +49,7 @@ db_app::load('estilos.css');
 
 $iCodigoPromocao = null;
 
-$oGet	  = db_utils::postmemory($HTTP_GET_VARS);
+$oGet	  = db_utils::postmemory($_GET);
 
 ?>
 <style>

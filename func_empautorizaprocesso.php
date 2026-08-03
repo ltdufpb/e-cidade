@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empautorizaprocesso_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempautorizaprocesso = new cl_empautorizaprocesso;
 $clempautorizaprocesso->rotulo->label("e150_sequencial");
 $clempautorizaprocesso->rotulo->label("e150_numeroprocesso");
@@ -98,9 +98,9 @@ $clempautorizaprocesso->rotulo->label("e150_numeroprocesso");
         }else{
            $sql = $clempautorizaprocesso->sql_query("",$campos,"e150_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e150_numeroprocesso)){
-          $repassa = array("chave_e150_sequencial"=>$chave_e150_sequencial,"chave_e150_numeroprocesso"=>$chave_e150_numeroprocesso);
+          $repassa = ["chave_e150_sequencial"=>$chave_e150_sequencial,"chave_e150_numeroprocesso"=>$chave_e150_numeroprocesso];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

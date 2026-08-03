@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empageordemcgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempageordemcgm = new cl_empageordemcgm;
 $clempageordemcgm->rotulo->label("e94_sequencial");
 $clempageordemcgm->rotulo->label("e94_empageordem");
@@ -98,9 +98,9 @@ $clempageordemcgm->rotulo->label("e94_empageordem");
         }else{
            $sql = $clempageordemcgm->sql_query("",$campos,"e94_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e94_empageordem)){
-          $repassa = array("chave_e94_sequencial"=>$chave_e94_sequencial,"chave_e94_empageordem"=>$chave_e94_empageordem);
+          $repassa = ["chave_e94_sequencial"=>$chave_e94_sequencial,"chave_e94_empageordem"=>$chave_e94_empageordem];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

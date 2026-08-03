@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veicmanutitempcmater_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveicmanutitempcmater = new cl_veicmanutitempcmater;
 $clveicmanutitempcmater->rotulo->label("ve64_codigo");
 $clveicmanutitempcmater->rotulo->label("ve64_codigo");
@@ -98,9 +98,9 @@ $clveicmanutitempcmater->rotulo->label("ve64_codigo");
         }else{
            $sql = $clveicmanutitempcmater->sql_query("",$campos,"ve64_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve64_codigo)){
-          $repassa = array("chave_ve64_codigo"=>$chave_ve64_codigo,"chave_ve64_codigo"=>$chave_ve64_codigo);
+          $repassa = ["chave_ve64_codigo"=>$chave_ve64_codigo,"chave_ve64_codigo"=>$chave_ve64_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -67,7 +67,7 @@ if (!USE_PCASP) {
 
 }
 
-$aTables = array("cornump",
+$aTables = ["cornump",
                  "corrente",
                  "corcla",
                  "corplacaixa",
@@ -87,7 +87,7 @@ $aTables = array("cornump",
                  "conlancaminstit",
                  "contacorrentedetalheconlancamval",
                  "conlancamconcarpeculiar"
-       );
+       ];
 if (isset($_POST["processar"])) {
 
   foreach ($aTables as $sTabela) {

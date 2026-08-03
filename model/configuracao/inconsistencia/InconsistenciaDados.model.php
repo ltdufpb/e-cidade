@@ -48,7 +48,7 @@ class InconsistenciaDados {
    * Tabelas permitidas para manutencao de registros duplos.
    * @var array
    */
-  static private $aTabelasPermitidas = array();
+  static private $aTabelasPermitidas = [];
   /**
    * Data de cadastro da inconsistencia 
    * 
@@ -438,7 +438,7 @@ class InconsistenciaDados {
 
   static public function getTabelasPermitidas() {
 
-    $aPermitidos = array (   
+    $aPermitidos =  [   
       'cadenderruacep'            =>  2846,
       'cadenderpais'              =>  2779,
       'cadendermunicipiosistema'  =>  3292,
@@ -452,7 +452,7 @@ class InconsistenciaDados {
       'cadenderruaruas'           =>  2934,
       'cadenderbairrocadenderrua' =>  2910,
       'db_depart'                 =>  154
-    );
+    ];
     return $aPermitidos;
   }
 }

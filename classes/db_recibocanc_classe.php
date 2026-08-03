@@ -29,41 +29,41 @@
 //CLASSE DA ENTIDADE recibocanc
 class cl_recibocanc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p99_numcgm = 0; 
-   var $p99_dtoper_dia = null; 
-   var $p99_dtoper_mes = null; 
-   var $p99_dtoper_ano = null; 
-   var $p99_dtoper = null; 
-   var $p99_receit = 0; 
-   var $p99_hist = 0; 
-   var $p99_valor = 0; 
-   var $p99_dtvenc_dia = null; 
-   var $p99_dtvenc_mes = null; 
-   var $p99_dtvenc_ano = null; 
-   var $p99_dtvenc = null; 
-   var $p99_numpre = 0; 
-   var $p99_numpar = 0; 
-   var $p99_numtot = 0; 
-   var $p99_numdig = 0; 
-   var $p99_tipo = 0; 
-   var $p99_tipojm = 0; 
-   var $p99_numnov = 0; 
-   var $p99_codsubrec = 0; 
+   public $p99_numcgm = 0; 
+   public $p99_dtoper_dia = null; 
+   public $p99_dtoper_mes = null; 
+   public $p99_dtoper_ano = null; 
+   public $p99_dtoper = null; 
+   public $p99_receit = 0; 
+   public $p99_hist = 0; 
+   public $p99_valor = 0; 
+   public $p99_dtvenc_dia = null; 
+   public $p99_dtvenc_mes = null; 
+   public $p99_dtvenc_ano = null; 
+   public $p99_dtvenc = null; 
+   public $p99_numpre = 0; 
+   public $p99_numpar = 0; 
+   public $p99_numtot = 0; 
+   public $p99_numdig = 0; 
+   public $p99_tipo = 0; 
+   public $p99_tipojm = 0; 
+   public $p99_numnov = 0; 
+   public $p99_codsubrec = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p99_numcgm = int4 = Numcgm 
                  p99_dtoper = date = Data 
                  p99_receit = int4 = Receita 
@@ -80,10 +80,10 @@ class cl_recibocanc {
                  p99_codsubrec = int4 = codsubrec 
                  ";
    //funcao construtor da classe 
-   function cl_recibocanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recibocanc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -292,7 +292,7 @@ class cl_recibocanc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cancela recibo () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cancela recibo já Cadastrado";
@@ -319,10 +319,10 @@ class cl_recibocanc {
       $this->atualizacampos();
      $sql = " update recibocanc set ";
      $virgula = "";
-     if(trim($this->p99_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numcgm"])){ 
+     if(trim((string) $this->p99_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numcgm"])){ 
        $sql  .= $virgula." p99_numcgm = $this->p99_numcgm ";
        $virgula = ",";
-       if(trim($this->p99_numcgm) == null ){ 
+       if(trim((string) $this->p99_numcgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "p99_numcgm";
          $this->erro_banco = "";
@@ -332,10 +332,10 @@ class cl_recibocanc {
          return false;
        }
      }
-     if(trim($this->p99_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["p99_dtoper_dia"] !="") ){ 
+     if(trim((string) $this->p99_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["p99_dtoper_dia"] !="") ){ 
        $sql  .= $virgula." p99_dtoper = '$this->p99_dtoper' ";
        $virgula = ",";
-       if(trim($this->p99_dtoper) == null ){ 
+       if(trim((string) $this->p99_dtoper) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "p99_dtoper_dia";
          $this->erro_banco = "";
@@ -348,7 +348,7 @@ class cl_recibocanc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["p99_dtoper_dia"])){ 
          $sql  .= $virgula." p99_dtoper = null ";
          $virgula = ",";
-         if(trim($this->p99_dtoper) == null ){ 
+         if(trim((string) $this->p99_dtoper) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "p99_dtoper_dia";
            $this->erro_banco = "";
@@ -359,10 +359,10 @@ class cl_recibocanc {
          }
        }
      }
-     if(trim($this->p99_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_receit"])){ 
+     if(trim((string) $this->p99_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_receit"])){ 
        $sql  .= $virgula." p99_receit = $this->p99_receit ";
        $virgula = ",";
-       if(trim($this->p99_receit) == null ){ 
+       if(trim((string) $this->p99_receit) == null ){ 
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "p99_receit";
          $this->erro_banco = "";
@@ -372,10 +372,10 @@ class cl_recibocanc {
          return false;
        }
      }
-     if(trim($this->p99_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_hist"])){ 
+     if(trim((string) $this->p99_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_hist"])){ 
        $sql  .= $virgula." p99_hist = $this->p99_hist ";
        $virgula = ",";
-       if(trim($this->p99_hist) == null ){ 
+       if(trim((string) $this->p99_hist) == null ){ 
          $this->erro_sql = " Campo Historico nao Informado.";
          $this->erro_campo = "p99_hist";
          $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_recibocanc {
          return false;
        }
      }
-     if(trim($this->p99_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_valor"])){ 
+     if(trim((string) $this->p99_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_valor"])){ 
        $sql  .= $virgula." p99_valor = $this->p99_valor ";
        $virgula = ",";
-       if(trim($this->p99_valor) == null ){ 
+       if(trim((string) $this->p99_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "p99_valor";
          $this->erro_banco = "";
@@ -398,10 +398,10 @@ class cl_recibocanc {
          return false;
        }
      }
-     if(trim($this->p99_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["p99_dtvenc_dia"] !="") ){ 
+     if(trim((string) $this->p99_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["p99_dtvenc_dia"] !="") ){ 
        $sql  .= $virgula." p99_dtvenc = '$this->p99_dtvenc' ";
        $virgula = ",";
-       if(trim($this->p99_dtvenc) == null ){ 
+       if(trim((string) $this->p99_dtvenc) == null ){ 
          $this->erro_sql = " Campo Vencimento nao Informado.";
          $this->erro_campo = "p99_dtvenc_dia";
          $this->erro_banco = "";
@@ -414,7 +414,7 @@ class cl_recibocanc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["p99_dtvenc_dia"])){ 
          $sql  .= $virgula." p99_dtvenc = null ";
          $virgula = ",";
-         if(trim($this->p99_dtvenc) == null ){ 
+         if(trim((string) $this->p99_dtvenc) == null ){ 
            $this->erro_sql = " Campo Vencimento nao Informado.";
            $this->erro_campo = "p99_dtvenc_dia";
            $this->erro_banco = "";
@@ -425,10 +425,10 @@ class cl_recibocanc {
          }
        }
      }
-     if(trim($this->p99_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numpre"])){ 
+     if(trim((string) $this->p99_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numpre"])){ 
        $sql  .= $virgula." p99_numpre = $this->p99_numpre ";
        $virgula = ",";
-       if(trim($this->p99_numpre) == null ){ 
+       if(trim((string) $this->p99_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "p99_numpre";
          $this->erro_banco = "";
@@ -438,10 +438,10 @@ class cl_recibocanc {
          return false;
        }
      }
-     if(trim($this->p99_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numpar"])){ 
+     if(trim((string) $this->p99_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numpar"])){ 
        $sql  .= $virgula." p99_numpar = $this->p99_numpar ";
        $virgula = ",";
-       if(trim($this->p99_numpar) == null ){ 
+       if(trim((string) $this->p99_numpar) == null ){ 
          $this->erro_sql = " Campo Parcela nao Informado.";
          $this->erro_campo = "p99_numpar";
          $this->erro_banco = "";
@@ -451,10 +451,10 @@ class cl_recibocanc {
          return false;
        }
      }
-     if(trim($this->p99_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numtot"])){ 
+     if(trim((string) $this->p99_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numtot"])){ 
        $sql  .= $virgula." p99_numtot = $this->p99_numtot ";
        $virgula = ",";
-       if(trim($this->p99_numtot) == null ){ 
+       if(trim((string) $this->p99_numtot) == null ){ 
          $this->erro_sql = " Campo Total nao Informado.";
          $this->erro_campo = "p99_numtot";
          $this->erro_banco = "";
@@ -464,10 +464,10 @@ class cl_recibocanc {
          return false;
        }
      }
-     if(trim($this->p99_numdig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numdig"])){ 
+     if(trim((string) $this->p99_numdig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numdig"])){ 
        $sql  .= $virgula." p99_numdig = $this->p99_numdig ";
        $virgula = ",";
-       if(trim($this->p99_numdig) == null ){ 
+       if(trim((string) $this->p99_numdig) == null ){ 
          $this->erro_sql = " Campo Numdig nao Informado.";
          $this->erro_campo = "p99_numdig";
          $this->erro_banco = "";
@@ -477,10 +477,10 @@ class cl_recibocanc {
          return false;
        }
      }
-     if(trim($this->p99_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_tipo"])){ 
+     if(trim((string) $this->p99_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_tipo"])){ 
        $sql  .= $virgula." p99_tipo = $this->p99_tipo ";
        $virgula = ",";
-       if(trim($this->p99_tipo) == null ){ 
+       if(trim((string) $this->p99_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "p99_tipo";
          $this->erro_banco = "";
@@ -490,10 +490,10 @@ class cl_recibocanc {
          return false;
        }
      }
-     if(trim($this->p99_tipojm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_tipojm"])){ 
+     if(trim((string) $this->p99_tipojm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_tipojm"])){ 
        $sql  .= $virgula." p99_tipojm = $this->p99_tipojm ";
        $virgula = ",";
-       if(trim($this->p99_tipojm) == null ){ 
+       if(trim((string) $this->p99_tipojm) == null ){ 
          $this->erro_sql = " Campo Tipojm nao Informado.";
          $this->erro_campo = "p99_tipojm";
          $this->erro_banco = "";
@@ -503,10 +503,10 @@ class cl_recibocanc {
          return false;
        }
      }
-     if(trim($this->p99_numnov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numnov"])){ 
+     if(trim((string) $this->p99_numnov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_numnov"])){ 
        $sql  .= $virgula." p99_numnov = $this->p99_numnov ";
        $virgula = ",";
-       if(trim($this->p99_numnov) == null ){ 
+       if(trim((string) $this->p99_numnov) == null ){ 
          $this->erro_sql = " Campo Numnov nao Informado.";
          $this->erro_campo = "p99_numnov";
          $this->erro_banco = "";
@@ -516,10 +516,10 @@ class cl_recibocanc {
          return false;
        }
      }
-     if(trim($this->p99_codsubrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_codsubrec"])){ 
+     if(trim((string) $this->p99_codsubrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p99_codsubrec"])){ 
        $sql  .= $virgula." p99_codsubrec = $this->p99_codsubrec ";
        $virgula = ",";
-       if(trim($this->p99_codsubrec) == null ){ 
+       if(trim((string) $this->p99_codsubrec) == null ){ 
          $this->erro_sql = " Campo codsubrec nao Informado.";
          $this->erro_campo = "p99_codsubrec";
          $this->erro_banco = "";
@@ -608,7 +608,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:recibocanc";
@@ -622,7 +622,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="recibocanc.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -643,7 +643,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -655,7 +655,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -673,7 +673,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

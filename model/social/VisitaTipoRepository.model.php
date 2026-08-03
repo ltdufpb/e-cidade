@@ -36,7 +36,7 @@ class VisitaTipoRepository {
    * Collection de VisitaTipo 
    * @var array
    */    
-  private $aVisitaTipo = array();
+  private $aVisitaTipo = [];
   
   /**
    * Instancia da classe 

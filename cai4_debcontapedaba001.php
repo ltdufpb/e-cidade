@@ -69,11 +69,11 @@ $db_opcao = 1;
        	$codtipo=$q02_inscr;
        	$tipo="INSCR";
        }
-	   $clcriaabas->identifica = array("pedido"=>"Pedido","debito"=>"Débitos");
-	   $clcriaabas->sizecampo  = array("pedido"=>"20","debito"=>"20");
-	   $clcriaabas->title      = array("pedido"=>"Pedido","debito"=>"Débitos");
-	   $clcriaabas->src        = array("pedido"=>"cai1_debcontapedido001.php?tipo=$tipo&codtipo=$codtipo","debito"=>"");
-	   $clcriaabas->disabled   =  array("debito"=>"true"); 
+	   $clcriaabas->identifica = ["pedido"=>"Pedido","debito"=>"Débitos"];
+	   $clcriaabas->sizecampo  = ["pedido"=>"20","debito"=>"20"];
+	   $clcriaabas->title      = ["pedido"=>"Pedido","debito"=>"Débitos"];
+	   $clcriaabas->src        = ["pedido"=>"cai1_debcontapedido001.php?tipo=$tipo&codtipo=$codtipo","debito"=>""];
+	   $clcriaabas->disabled   =  ["debito"=>"true"]; 
 	   $clcriaabas->cria_abas(); 
 	 ?> 
 	 </td>

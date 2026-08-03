@@ -35,7 +35,7 @@ include(modification("classes/db_matestoqueini_classe.php"));
 include(modification("classes/db_matestoqueinimei_classe.php"));
 include(modification("classes/db_db_depart_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatestoque = new cl_matestoque;
 $clmatestoqueitem = new cl_matestoqueitem;
 $clmatestoqueini = new cl_matestoqueini;
@@ -74,7 +74,7 @@ $db_botao = true;
       <tr>
        <td>Saída por:
        <?php 
-        $x = array("0"=>"Selecione","cgm"=>"Cgm","prontuario"=>"Prontuario");
+        $x = ["0"=>"Selecione","cgm"=>"Cgm","prontuario"=>"Prontuario"];
         db_select("tipo",$x,true,1,"onChange=\"submit()\"");
        ?>
        </td>

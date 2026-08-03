@@ -65,7 +65,7 @@ class TarifaArrecadacao
   /**
    * @var \stdClass[]
    */
-  protected $arquivos = array();
+  protected $arquivos = [];
 
   /**
    * TarifaArrecadacao constructor.
@@ -141,7 +141,7 @@ class TarifaArrecadacao
   {
     $this->pdf->setBold(true);
     $this->pdf->cell(137, 4, $descricao, 'BTR', 0, 'R', 1);
-    $this->pdf->cell(30, 4, trim($quantidade), 'TBR', 0, 'R', 1);
+    $this->pdf->cell(30, 4, trim((string) $quantidade), 'TBR', 0, 'R', 1);
     $this->pdf->cell(30, 4, trim(db_formatar(round($valorTarifa, 2), 'f')), 'TBR', 0, 'R', 1);
     $this->pdf->cell(40, 4, trim(db_formatar(round($valorArrecadado, 2), 'f')), 'TBR', 0, 'R', 1);
     $this->pdf->cell(40, 4, trim(db_formatar(round($valorLiquido, 2), 'f')), 'TB', 1, 'R', 1);
@@ -184,7 +184,7 @@ class TarifaArrecadacao
     $heightDescricao = $this->pdf->getMultiCellHeight(120, 4, $linha->descricao);
     $this->pdf->MultiCell(107, 4, $linha->descricao, 'B', 'L');
     $this->pdf->cell(30, $heightDescricao, trim(db_formatar(round($linha->valor_tarifa, 2), 'f')), 'B', 0, 'R');
-    $this->pdf->cell(30, $heightDescricao, trim($linha->quantidade), 'B', 0, 'R');
+    $this->pdf->cell(30, $heightDescricao, trim((string) $linha->quantidade), 'B', 0, 'R');
     $this->pdf->cell(30, $heightDescricao, trim(db_formatar(round($linha->total_tarifa, 2), 'f')), 'B', 0, 'R');
     $this->pdf->cell(40, $heightDescricao, trim(db_formatar(round($linha->total_arrecadado, 2), 'f')), 'B', 0, 'R');
     $this->pdf->cell(40, $heightDescricao, trim(db_formatar(round($linha->total_liquido, 2), 'f')), 'B', 1, 'R');
@@ -207,7 +207,7 @@ class TarifaArrecadacao
 
         $this->arquivos[$stdTarifas->codigo_arquivo] = new \stdClass();
         $this->arquivos[$stdTarifas->codigo_arquivo]->nome_arquivo = $stdTarifas->nome_arquivo;
-        $this->arquivos[$stdTarifas->codigo_arquivo]->linhas = array();
+        $this->arquivos[$stdTarifas->codigo_arquivo]->linhas = [];
       }
       $linha = new \stdClass();
       $linha->descricao        = $stdTarifas->forma_arrecadacao;

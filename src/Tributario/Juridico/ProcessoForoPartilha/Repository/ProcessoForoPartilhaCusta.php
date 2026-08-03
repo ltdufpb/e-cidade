@@ -119,11 +119,11 @@ class ProcessoForoPartilhaCusta extends \BaseClassRepository
      */
     private function makeCollection($rsResult)
     {
-        $aCollection = array();
+        $aCollection = [];
         $aResult = pg_fetch_all($rsResult);
 
         if (empty($aResult)) {
-            return array();
+            return [];
         }
 
         foreach ($aResult as $oResult) {
@@ -189,7 +189,7 @@ class ProcessoForoPartilhaCusta extends \BaseClassRepository
         }
 
         if (pg_num_rows($rs) == 0) {
-            return array();
+            return [];
         }
 
         return $this->makeCollection($rs);

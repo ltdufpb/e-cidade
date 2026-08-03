@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcunidade_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcunidade = new cl_orcunidade;
 $clorcunidade->rotulo->label("o41_anousu");
 $clorcunidade->rotulo->label("o41_orgao");

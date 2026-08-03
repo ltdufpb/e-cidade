@@ -82,7 +82,7 @@ if(isset($oPost->incluir)){
     }
     if (!$lSqlErro){
      
-      $dataInformada                = implode(array_reverse($dataAux));
+      $dataInformada                = implode('', array_reverse($dataAux));
       $clportaria->h31_portariatipo = $oTipoPortaria->h30_sequencial;
       $clportaria->h31_amparolegal  = $oTipoPortaria->h30_amparolegal;
       $clportaria->h31_anousu       = $dataAux[2];
@@ -177,7 +177,7 @@ if (isset($oGet->chavepesquisa)){
      $h65_pontos          = $oResultado->pontos;
      if ($oResultado->h65_sequencial != null){
 
-         $datap          = explode("-",$oResultado->h65_data);
+         $datap          = explode("-",(string) $oResultado->h65_data);
          $h65_sequencial = $oResultado->h65_sequencial;
          $h65_data_dia   = $datap[2];
          $h65_data_mes   = $datap[1];

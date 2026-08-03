@@ -14,16 +14,6 @@ class Recalculo {
   private $oContrato;
 
   /**
-   * @var integer
-   */
-  private $iMes;
-
-  /**
-   * @var integer
-   */
-  private $iAno;
-
-  /**
    * @var array
    */
   private $aDebitos;
@@ -38,11 +28,9 @@ class Recalculo {
    * @param integer $iMes
    * @param integer $iAno
    */
-  public function __construct(AguaContrato $oContrato, $iMes, $iAno) {
+  public function __construct(AguaContrato $oContrato, private $iMes, private $iAno) {
 
     $this->oContrato = $oContrato;
-    $this->iMes = $iMes;
-    $this->iAno = $iAno;
   }
 
   /**
@@ -55,7 +43,7 @@ class Recalculo {
       return pg_fetch_all_columns($rsResultado);
     }
 
-    return array();
+    return [];
   }
 
   /**
@@ -68,12 +56,12 @@ class Recalculo {
 
     if (!$this->aDebitos) {
 
-      $sWhere = implode(' and ', array(
+      $sWhere = implode(' and ', [
         "x22_aguacontrato = {$this->oContrato->getCodigo()}",
         "x22_exerc = {$this->iAno}",
         "x22_mes = {$this->iMes}",
         "x22_numpre is not null",
-      ));
+      ]);
 
       $sSql = "select x22_numpre from aguacalc where {$sWhere}";
       $rsResultado = db_query($sSql);
@@ -112,10 +100,10 @@ class Recalculo {
     }
 
     $sDebitos = implode(', ', $this->getDebitos());
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'inner join cancdebitosreg on k21_codigo = k20_codigo',
       'inner join cancdebitosprocreg on k24_cancdebitosreg = k21_sequencia',
-    ));
+    ]);
 
     $sSql = "select distinct k21_numpre from cancdebitos {$sJoin} where k21_numpre in ({$sDebitos})";
     $rsResultado = db_query($sSql);
@@ -163,16 +151,16 @@ class Recalculo {
     }
 
     $sDebitos = implode(', ', $this->getDebitos());
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'inner join abatimentoarreckey on k128_arreckey = k00_sequencial',
       'inner join abatimento on k128_abatimento = k125_sequencial',
       'inner join tipoabatimento on k126_sequencial = k125_tipoabatimento',
-    ));
+    ]);
 
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       'tipoabatimento.k126_sequencial = ' . Abatimento::TIPO_PAGAMENTO_PARCIAL,
       "arreckey.k00_numpre in ({$sDebitos})",
-    ));
+    ]);
 
     $sSql = "select distinct arreckey.k00_numpre from arreckey {$sJoin} where {$sWhere}";
     $rsResultado = db_query($sSql);
@@ -197,15 +185,15 @@ class Recalculo {
     }
 
     $sDebitos = implode(',', $this->getDebitos());
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'inner join suspensao on arresusp.k00_suspensao = suspensao.ar18_sequencial',
       'left join suspensaofinaliza on ar19_suspensao = ar18_sequencial',
-    ));
+    ]);
 
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       "k00_numpre in ({$sDebitos})",
       "suspensaofinaliza.ar19_sequencial is null",
-    ));
+    ]);
 
     $sSql = "select distinct k00_numpre as debito_suspenso from arresusp {$sJoin} where {$sWhere}";
     $rsResultado = db_query($sSql);
@@ -227,12 +215,12 @@ class Recalculo {
 
     if (!$this->aDebitosDetalhados) {
 
-      $sWhere = implode(' and ', array(
+      $sWhere = implode(' and ', [
         "x22_aguacontrato = {$this->oContrato->getCodigo()}",
         "x22_exerc = {$this->iAno}",
         "x22_mes = {$this->iMes}",
         'x22_numpre is not null',
-      ));
+      ]);
 
       $sJoin = "inner join arrecad on arrecad.k00_numpre = aguacalc.x22_numpre";
 
@@ -263,16 +251,16 @@ class Recalculo {
     }
 
     $sDebitos = implode(', ', $this->getDebitos());
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       'tipoabatimento.k126_sequencial = ' . Abatimento::TIPO_DESCONTO,
       "arreckey.k00_numpre in ({$sDebitos})",
-    ));
+    ]);
 
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'inner join abatimentoarreckey on k128_arreckey = k00_sequencial',
       'inner join abatimento on k128_abatimento = k125_sequencial',
       'inner join tipoabatimento on k126_sequencial = k125_tipoabatimento',
-    ));
+    ]);
 
     $sSql = "select distinct arreckey.k00_numpre from arreckey {$sJoin} where {$sWhere}";
     $rsResultado = db_query($sSql);
@@ -298,16 +286,16 @@ class Recalculo {
 
     $sDebitos = implode(', ', $this->getDebitos());
 
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'inner join abatimentoarreckey on k128_arreckey = k00_sequencial',
       'inner join abatimento on k128_abatimento = k125_sequencial',
       'inner join tipoabatimento on k126_sequencial = k125_tipoabatimento',
-    ));
+    ]);
 
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       'tipoabatimento.k126_sequencial = ' . Abatimento::TIPO_COMPENSACAO,
       "arreckey.k00_numpre in ({$sDebitos})",
-    ));
+    ]);
 
     $sSql = "select distinct arreckey.k00_numpre from arreckey {$sJoin} where {$sWhere}";
     $rsResultado = db_query($sSql);

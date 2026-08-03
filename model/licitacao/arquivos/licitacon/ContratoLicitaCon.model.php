@@ -42,7 +42,7 @@ class ContratoLicitaCon extends ArquivoLicitaCon
     /**
      * @var array
      */
-    protected $aRemoveQuebraLinhas = array("DS_OBJETO");
+    protected $aRemoveQuebraLinhas = ["DS_OBJETO"];
 
     /**
      * ContratoLicitaCon constructor.
@@ -69,14 +69,14 @@ class ContratoLicitaCon extends ArquivoLicitaCon
             $this->oCabecalho->getInstituicao()
         );
         $iTotalContratos = pg_num_rows($rsContratos);
-        $aContratos = array();
+        $aContratos = [];
 
         for ($iContrato = 0; $iContrato < $iTotalContratos; $iContrato++) {
             $oDadosContrato = db_utils::fieldsMemory($rsContratos, $iContrato);
             $oContrato = $this->obterNullObject();
             $suspensoes = $this->getDiasPrazo($oDadosContrato);
 
-            $aNumeroContrato = explode("/", $oDadosContrato->ac16_numeroprocesso);
+            $aNumeroContrato = explode("/", (string) $oDadosContrato->ac16_numeroprocesso);
             $iNumeroProcesso = $aNumeroContrato[0];
             $iAnoProcesso = $oDadosContrato->ac16_anousu;
 
@@ -143,7 +143,7 @@ class ContratoLicitaCon extends ArquivoLicitaCon
                 $oDados = db_utils::fieldsMemory($rsAcordoPosicao, 0);
 
                 //Aditamento de Renovação
-                if (in_array($oDados->ac26_acordoposicaotipo, array(2, 4, 5, 6, 8))) {
+                if (in_array($oDados->ac26_acordoposicaotipo, [2, 4, 5, 6, 8])) {
                     //Verifica se há ordem de início de contrato
                     if ($oDadosContrato->ac16_dependeordeminicio == 't') {
                         $oDataVigencia = $this->oRegra->getDataVigencia(
@@ -187,7 +187,7 @@ class ContratoLicitaCon extends ArquivoLicitaCon
             $oContrato->BL_GERA_DESPESA = $oDadosLicitacao->gera_despesa;
             $oContrato->DS_OBSERVACAO = null;
             $oContrato->DS_JUSTIFICATIVA = $this->oRegra->getJustificativaTrocaFornecedor($oDadosContrato->ac16_sequencial);
-            $oContrato->DS_OBJETO = substr($oDadosContrato->ac16_objeto, 0, 500);
+            $oContrato->DS_OBJETO = substr((string) $oDadosContrato->ac16_objeto, 0, 500);
             $oContrato->CNPJ_CONSORCIO = null;
 
             $aContratos[] = $oContrato;
@@ -204,7 +204,7 @@ class ContratoLicitaCon extends ArquivoLicitaCon
      */
     private function getDiasPrazo($oStdAcordo)
     {
-        $oStdAcordo->posicoes = array();
+        $oStdAcordo->posicoes = [];
         $soma = 0;
         $posicoes = $this->getPosicoes($oStdAcordo->ac16_sequencial);
         $iTotalEventos = pg_num_rows($posicoes);
@@ -227,14 +227,14 @@ class ContratoLicitaCon extends ArquivoLicitaCon
 
     private function getPosicoes($seqAcordo)
     {
-        $aCamposPosicao = array(
+        $aCamposPosicao = [
             'ac26_sequencial AS codigo_posicao',
             'ac55_sequencial AS codigo_evento',
             'ac26_acordoposicaotipo AS tipo_aditamento',
             'ac26_tipooperacao AS tipo_operacao',
-        );
+        ];
 
-        $aWhere = array(
+        $aWhere = [
             "ac26_acordo = {$seqAcordo} AND ac55_sequencial IS NOT NULL
             GROUP BY
                 ac26_sequencial,
@@ -242,7 +242,7 @@ class ContratoLicitaCon extends ArquivoLicitaCon
                 ac26_tipooperacao,
                 ac55_sequencial
             ORDER BY ac26_sequencial"
-        );
+        ];
         $oDaoAcordoPosicao = new cl_acordoposicao;
         $sSqlBuscaPosicao = $oDaoAcordoPosicao->sql_query_posicoes_licitacon(
             implode(', ', $aCamposPosicao),

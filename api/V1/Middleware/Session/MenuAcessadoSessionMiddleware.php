@@ -33,11 +33,11 @@ class MenuAcessadoSessionMiddleware implements RequestMiddlewareInterface
         $menu = $menuAcessado->getMenu();
         $modulo = $menuAcessado->getModulo();
 
-        $sessaoMenu = array(
+        $sessaoMenu = [
             DefaultSession::DB_MODULO => $modulo->getId(),
             DefaultSession::DB_NOME_MODULO => $modulo->getNome(),
             DefaultSession::DB_ACESSADO => $menu->getId()
-        );
+        ];
 
         DefaultSession::getInstance()->add($sessaoMenu);
     }

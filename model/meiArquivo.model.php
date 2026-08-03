@@ -56,7 +56,7 @@ class MeiArquivo {
 	 *
 	 * @var array
 	 */
-	private $aDadosMEI     = array();
+	private $aDadosMEI     = [];
 
 	/**
 	 * Cláusula where com filtro dos dados a serem exibidos
@@ -119,7 +119,7 @@ class MeiArquivo {
 		  	 *  Caso tenha registro na tabela meiimportareg referente a empresa será adicionado uma empresa
 		  	 *  com o método addEmpresa
 		  	 */
-        if ( trim($oDadosImporta->q111_meiimportameiregempresa) != '' ) {
+        if ( trim((string) $oDadosImporta->q111_meiimportameiregempresa) != '' ) {
 
 		      $sSqlEmpresa     = $oMeiImportaMeiRegEmpresa->sql_query_file($oDadosImporta->q111_meiimportameiregempresa);
 		      $rsDadosEmpresa  = $oMeiImportaMeiRegEmpresa->sql_record($sSqlEmpresa);
@@ -135,7 +135,7 @@ class MeiArquivo {
          *  Caso tenha registro na tabela meiimportareg referente ao responsável será adicionado um responsável
          *  com o método addResponsavel
          */
-        } else if (trim($oDadosImporta->q111_meiimportameiregresponsavel) != '') {
+        } else if (trim((string) $oDadosImporta->q111_meiimportameiregresponsavel) != '') {
 
           $sSqlResponsavel     = $oMeiImportaMeiRegResponsavel->sql_query_file($oDadosImporta->q111_meiimportameiregresponsavel);
           $rsDadosResponsavel  = $oMeiImportaMeiRegResponsavel->sql_record($sSqlResponsavel);
@@ -152,7 +152,7 @@ class MeiArquivo {
          *  Caso tenha registro na tabela meiimportareg referente ao contador será adicionado um contador
          *  com o método addContador
          */
-       	} else if (trim($oDadosImporta->q111_meiimportameiregcontador) != '') {
+       	} else if (trim((string) $oDadosImporta->q111_meiimportameiregcontador) != '') {
 
           $sSqlContador     = $oMeiImportaMeiRegContador->sql_query_file($oDadosImporta->q111_meiimportameiregcontador);
           $rsDadosContador  = $oMeiImportaMeiRegContador->sql_record($sSqlContador);
@@ -169,7 +169,7 @@ class MeiArquivo {
          *  Caso tenha registro na tabela meiimportareg referente a atividade será adicionado uma atividade
          *  com o método addAtividade
          */
-     		} else if (trim($oDadosImporta->q111_meiimportameiregatividade) != '') {
+     		} else if (trim((string) $oDadosImporta->q111_meiimportameiregatividade) != '') {
 
           $sSqlAtividade     = $oMeiImportaMeiRegAtividade->sql_query_file($oDadosImporta->q111_meiimportameiregatividade);
           $rsDadosAtividade  = $oMeiImportaMeiRegAtividade->sql_record($sSqlAtividade);
@@ -261,8 +261,8 @@ class MeiArquivo {
      *
      */
 
-    $aDadosArquivo    = array();
-    $aCodSIAFI        = array();
+    $aDadosArquivo    = [];
+    $aCodSIAFI        = [];
     $lValidaData      = true;
     $iNumeroRegistros = 0;
     foreach ( $aLinhasArquivo as $iIndLinha => $oLinha ) {
@@ -277,13 +277,13 @@ class MeiArquivo {
 		    $dtDataUsu    = date('Y-m-d', db_getsession('DB_datausu'));
 		    $sDataArquivo = $oLinha->dt_evento1;
 
-		    if ( strlen(trim($sDataArquivo)) != 8 ) {
+		    if ( strlen(trim((string) $sDataArquivo)) != 8 ) {
 		      $sMsgErro .= "Data inválida do arquivo!";
 		      throw new Exception($sMsgErro);
 		    }
 
-		    $iAnoArquivo = substr($sDataArquivo,0,4);
-		    $iMesArquivo = substr($sDataArquivo,4,2);
+		    $iAnoArquivo = substr((string) $sDataArquivo,0,4);
+		    $iMesArquivo = substr((string) $sDataArquivo,4,2);
 
 		    $sWhereImporta  = " q104_nomearq = '{$sNomeArquivo}'";
 		    $sSqlImporta    = $oMeiImporta->sql_query_file(null,"*",null,$sWhereImporta);
@@ -303,7 +303,7 @@ class MeiArquivo {
 		    	throw new Exception($eException->getMessage());
 		    }
 
-	      list($iAnoDataImpMei,$iMesDataImpMei,$iDiaDataImpMei) = explode("-",$dtDataImpMei);
+	      [$iAnoDataImpMei, $iMesDataImpMei, $iDiaDataImpMei] = explode("-",(string) $dtDataImpMei);
 
 	      if ( $iAnoArquivo < $iAnoDataImpMei || ( $iMesArquivo < $iMesDataImpMei && $iAnoArquivo == $iAnoDataImpMei) ) {
 
@@ -340,7 +340,7 @@ class MeiArquivo {
       	 *  Caso o convênio esteja em branco ou não esteja no array de códigos válidos,
       	 *  deve pular para o próximo registro,
       	 */
-        if (trim($sCodEvento) == '' || !in_array($sCodEvento, $aCodigoValidos) ) {
+        if (trim((string) $sCodEvento) == '' || !in_array($sCodEvento, $aCodigoValidos) ) {
           continue;
         } else {
 
@@ -409,7 +409,7 @@ class MeiArquivo {
           	if ( trim($oLinha->nm_empresarial_01) != '' ||
           	     trim($oLinha->nm_logradouro) != '' ||
           	     ((int)$sCodEvento >= 500 && (int)$sCodEvento <= 599) ||
-          	      in_array($sCodEvento,array('101','221'))
+          	      in_array($sCodEvento,['101','221'])
           	   ) {
 
 
@@ -435,8 +435,8 @@ class MeiArquivo {
 	          	$oMeiEmpresa->q107_nomefantasia      = addslashes($oLinha->nm_fantasia);
 	          	$oMeiEmpresa->q107_tipologradouro    = addslashes($oLinha->co_tipo_logradouro);
 	          	$oMeiEmpresa->q107_logradouro        = addslashes(strtoupper($oLinha->nm_logradouro));
-	          	$oMeiEmpresa->q107_numero            = addslashes($sNumeroEnd);
-	          	$oMeiEmpresa->q107_complemento       = addslashes(substr($sComplEnd,0,20));
+	          	$oMeiEmpresa->q107_numero            = addslashes((string) $sNumeroEnd);
+	          	$oMeiEmpresa->q107_complemento       = addslashes(substr((string) $sComplEnd,0,20));
 	          	$oMeiEmpresa->q107_bairro            = addslashes(substr(strtoupper($oLinha->nm_bairro),0,40));
 	          	$oMeiEmpresa->q107_municipio         = addslashes((trim(strtoupper($oLinha->co_municipio)) != ''?$oLinha->co_municipio:0));
 	          	$oMeiEmpresa->q107_uf                = addslashes($oLinha->nm_uf);
@@ -477,8 +477,8 @@ class MeiArquivo {
 	          	$oMeiResponsavel->q108_cpf            = addslashes($oLinha->nu_cpf_responsavel);
 	            $oMeiResponsavel->q108_tipologradouro = addslashes($oLinha->co_tipo_logradouro_responsavel);
 	            $oMeiResponsavel->q108_logradouro     = addslashes(strtoupper($oLinha->nm_logradouro_responsavel));
-	            $oMeiResponsavel->q108_numero         = addslashes($sNumeroEnd);
-	            $oMeiResponsavel->q108_complemento    = addslashes(substr($sComplEnd,0,20));
+	            $oMeiResponsavel->q108_numero         = addslashes((string) $sNumeroEnd);
+	            $oMeiResponsavel->q108_complemento    = addslashes(substr((string) $sComplEnd,0,20));
 	            $oMeiResponsavel->q108_bairro         = addslashes(substr(strtoupper($oLinha->nm_bairro_responsavel),0,40));
 	            $oMeiResponsavel->q108_municipio      = addslashes(strtoupper($oLinha->co_municipio_responsavel));
 	            $oMeiResponsavel->q108_uf             = addslashes($oLinha->co_uf_responsavel);
@@ -519,8 +519,8 @@ class MeiArquivo {
 	            $oMeiContador->q109_nome           = addslashes(substr($oLinha->nm_contador_pf,0,40));
 	            $oMeiContador->q109_tipologradouro = addslashes($oLinha->co_tipo_logradouro_contador_pf);
 	            $oMeiContador->q109_logradouro     = addslashes(strtoupper($oLinha->nm_logradouro_contador_pf));
-	            $oMeiContador->q109_numero         = addslashes($sNumeroEnd);
-	            $oMeiContador->q109_complemento    = addslashes(substr($sComplEnd,0,20));
+	            $oMeiContador->q109_numero         = addslashes((string) $sNumeroEnd);
+	            $oMeiContador->q109_complemento    = addslashes(substr((string) $sComplEnd,0,20));
 	            $oMeiContador->q109_bairro         = addslashes(substr(strtoupper($oLinha->nm_bairro_contador_pf),0,40));
 	            $oMeiContador->q109_municipio      = addslashes(strtoupper($oLinha->co_municipio_contador_pf));
 	            $oMeiContador->q109_uf             = addslashes($oLinha->nm_uf_contador_pf);
@@ -555,8 +555,8 @@ class MeiArquivo {
               $oMeiContador->q109_nome           = addslashes(substr($oLinha->nm_empresa_contabil,0,40));
               $oMeiContador->q109_tipologradouro = addslashes($oLinha->co_tipo_logradouro_empresa_contabil_complementar);
               $oMeiContador->q109_logradouro     = addslashes(strtoupper($oLinha->nm_logradouro_empresa_contabil_complementar));
-              $oMeiContador->q109_numero         = addslashes($sNumeroEnd);
-              $oMeiContador->q109_complemento    = addslashes(substr($sComplEnd,0,20));
+              $oMeiContador->q109_numero         = addslashes((string) $sNumeroEnd);
+              $oMeiContador->q109_complemento    = addslashes(substr((string) $sComplEnd,0,20));
               $oMeiContador->q109_bairro         = addslashes(substr(strtoupper($oLinha->nm_bairro_empresa_contabil_complementar),0,40));
               $oMeiContador->q109_municipio      = addslashes(strtoupper($oLinha->co_municipio_empresa_contabil_complementar));
               $oMeiContador->q109_uf             = addslashes($oLinha->co_uf_empresa_contabil_complementar);
@@ -593,7 +593,7 @@ class MeiArquivo {
 		            $lPrincipal = 'false';
 		          }
 
-		          if ( trim($sCnae) == '' ) {
+		          if ( trim((string) $sCnae) == '' ) {
 		            continue;
 		          }
 
@@ -602,13 +602,13 @@ class MeiArquivo {
 
               if ( $oDaoCnae->numrows > 0 ) {
                 $oCnae           = db_utils::fieldsMemory($rsDescrCnae,0);
-                $sDescrAtividade = substr($oCnae->q71_descr,0,70);
+                $sDescrAtividade = substr((string) $oCnae->q71_descr,0,70);
               } else {
                 throw new Exception("{$sMsgErro}CNAE:{$sCnae} não cadastrado!");
               }
 
 		          $oMeiAtividade = new stdClass();
-		          $oMeiAtividade->q106_cnae      = addslashes($sCnae);
+		          $oMeiAtividade->q106_cnae      = addslashes((string) $sCnae);
 		          $oMeiAtividade->q106_descricao = addslashes($sDescrAtividade);
 		          $oMeiAtividade->q106_principal = $lPrincipal;
 
@@ -634,7 +634,7 @@ class MeiArquivo {
      *  Cria um array contendo todas as descrições dos municipios SIAFI
      *  utilizado no arquivo txt, pois nele é apenas informado o código
      */
-    $aDescrSIAFI = array();
+    $aDescrSIAFI = [];
 
     if ( count($aCodSIAFI) > 0 ) {
 
@@ -742,7 +742,7 @@ class MeiArquivo {
 				  $oMeiImportaMeiRegEmpresa->q107_email             = $oEmpresa->q107_email;
 				  $oMeiImportaMeiRegEmpresa->q107_caixapostal       = $oEmpresa->q107_caixapostal;
 
-				  if ( trim($oEmpresa->q107_inscrmei) == 'S' ) {
+				  if ( trim((string) $oEmpresa->q107_inscrmei) == 'S' ) {
 				    $oMeiImportaMeiRegEmpresa->q107_inscrmei = 'true';
 				  } else {
 				  	$oMeiImportaMeiRegEmpresa->q107_inscrmei = 'false';
@@ -898,7 +898,7 @@ class MeiArquivo {
    * @param string  $sEvento
    * @param object  $oMeiEmpresa
    */
-  function addEmpresa( $iCnpj='', $sEvento='', $oMeiEmpresa ){
+  function addEmpresa( $iCnpj='', $sEvento='', $oMeiEmpresa = null ){
 
     $sMsgErro = 'Falha ao adicionar empresa';
 
@@ -929,7 +929,7 @@ class MeiArquivo {
    * @param string  $sEvento
    * @param string  $oMeiContador
    */
-  function addContador( $iCnpj='', $sEvento='', $oMeiContador){
+  function addContador( $iCnpj='', $sEvento='', $oMeiContador = null){
 
     $sMsgErro = 'Falha ao adicionar empresa contábil';
 
@@ -958,7 +958,7 @@ class MeiArquivo {
    * @param string $sEvento
    * @param object $oMeiResponsavel
    */
-  function addResponsavel( $iCnpj='', $sEvento='', $oMeiResponsavel){
+  function addResponsavel( $iCnpj='', $sEvento='', $oMeiResponsavel = null){
 
   	$sMsgErro = 'Falha ao adicionar responsável';
 
@@ -990,7 +990,7 @@ class MeiArquivo {
    * @param string  $sEvento
    * @param string  $oMeiAtividade
    */
-  function addAtividade( $iCnpj='', $sEvento='', $oMeiAtividade){
+  function addAtividade( $iCnpj='', $sEvento='', $oMeiAtividade = null){
 
   	$sMsgErro = 'Falha ao adicionar atividade';
 
@@ -1088,7 +1088,7 @@ class MeiArquivo {
       throw new Exception("{$sMsgErro}\n{$eException->getMessage()}");
     }
 
-    $aMsg = array();
+    $aMsg = [];
 
     if ( $sCodEvento == '101' || $sCodEvento == '209' ) {
 
@@ -1101,7 +1101,7 @@ class MeiArquivo {
 
    		$iCodCgmEmpresa = $this->getCgmByCpfCnpj($oDadosEmpresa->q107_cnpj);
 
-   		if ( trim($iCodCgmEmpresa) != '' ) {
+   		if ( trim((string) $iCodCgmEmpresa) != '' ) {
 
      		$sWhereIssBase  = "     q02_numcgm = {$iCodCgmEmpresa} ";
 
@@ -1114,13 +1114,13 @@ class MeiArquivo {
         }
    		}
 
-      if ( trim($iCodCgmEmpresa) != '' ) {
+      if ( trim((string) $iCodCgmEmpresa) != '' ) {
          $this->setEmpresaCadastrada($iCnpj, $sCodEvento);
       }
-    	if ( trim($oDadosEmpresa->iCodRua) != '' ) {
+    	if ( trim((string) $oDadosEmpresa->iCodRua) != '' ) {
     		$sWhereRuas    = " j14_codigo = {$oDadosEmpresa->iCodRua}";
     	} else {
-         $sWhereRuas    = " trim(j14_nome) = '".trim($oDadosEmpresa->q107_logradouro)."'";
+         $sWhereRuas    = " trim(j14_nome) = '".trim((string) $oDadosEmpresa->q107_logradouro)."'";
     	}
 
       $sSqlConsultaRua = $oDaoRuas->sql_query_file(null,"j14_codigo",null,$sWhereRuas);
@@ -1135,7 +1135,7 @@ class MeiArquivo {
          $this->setCodRuaMEI($iCnpj, $sCodEvento, $oDadosRua->j14_codigo);
       }
 
-      if ( trim($oDadosEmpresa->iCodBairro) != '' ) {
+      if ( trim((string) $oDadosEmpresa->iCodBairro) != '' ) {
          $sWhereBairro  = " j13_codi = {$oDadosEmpresa->iCodBairro}";
       } else {
   	     $sWhereBairro  = " trim(j13_descr) = '".trim(pg_escape_string($oDadosEmpresa->q107_bairro))."'";
@@ -1156,7 +1156,7 @@ class MeiArquivo {
    		$oDadosResponsavel = $aDadosMEI['aEventos'][$sCodEvento]['oResponsavel'];
 
       $iCodCgmResponsavel = $this->getCgmByCpfCnpj($oDadosResponsavel->q108_cpf);
-      if ( trim($iCodCgmResponsavel) != '' ) {
+      if ( trim((string) $iCodCgmResponsavel) != '' ) {
           $this->setResponsavelCadastrado($iCnpj, $sCodEvento);
       }
 
@@ -1166,7 +1166,7 @@ class MeiArquivo {
 
         foreach ( $aDadosAtividade as $iInd => $oDadosAtividade ) {
           $dtDataUsu = date('Y-m-d',db_getsession('DB_datausu'));
-        	if ( trim($oDadosAtividade->iCodAtividade) != '' ) {
+        	if ( trim((string) $oDadosAtividade->iCodAtividade) != '' ) {
             $sWhere = " (q03_limite is null or q03_limite >= '".$dtDataUsu."'::date) ";
             $sSqlConsultaAtividade = $oDaoAtivid->sql_query_cnae($oDadosAtividade->iCodAtividade, null, null, $sWhere);
             $rsAtividade           = $oDaoAtivid->sql_record($sSqlConsultaAtividade);
@@ -1197,7 +1197,7 @@ class MeiArquivo {
 
       $iCodCgmEmpresa = $this->getCgmByCpfCnpj($iCnpj);
 
-      if ( trim($iCodCgmEmpresa) == '' ) {
+      if ( trim((string) $iCodCgmEmpresa) == '' ) {
       	$aMsg[]['5'] = "Empresa não cadastrada!";
       } else {
 
@@ -1244,7 +1244,7 @@ class MeiArquivo {
       $oDaoMeiCgm = db_utils::getDao('meicgm');
       $iCodCgmEmpresa = $this->getCgmByCpfCnpj($iCnpj);
 
-      if ( trim($iCodCgmEmpresa) == '' ) {
+      if ( trim((string) $iCodCgmEmpresa) == '' ) {
       	$aMsg[]['5'] = "CGM não encontrado";
       } else {
 
@@ -1268,7 +1268,7 @@ class MeiArquivo {
       $oDaoIssBase    = db_utils::getDao('issbase');
       $iCodCgmEmpresa = $this->getCgmByCpfCnpj($iCnpj);
 
-      if ( trim($iCodCgmEmpresa) == '' ) {
+      if ( trim((string) $iCodCgmEmpresa) == '' ) {
 
         $aMsg[]['7'] = "Empresa não cadastrada!";
 
@@ -1295,7 +1295,7 @@ class MeiArquivo {
      *  OBS: O array informado abaixo contém todos evento que existentes, porém sem nenhum tipo de validação,
      *  se não encontrar nenhum registro então o evento informado não está configurado no sistema.
      */
-    } else if ( !in_array($sCodEvento,array('211','220','221','232','244','203')) ) {
+    } else if ( !in_array($sCodEvento,['211','220','221','232','244','203']) ) {
 
   	  $aMsg[]['9']  = "Evento {$sCodEvento} não configurado para o sistema!";
 
@@ -1310,11 +1310,11 @@ class MeiArquivo {
 
   	$sMsgErro = 'Consulta de detalhes das inconsistências abortada!\n';
 
-    if ( trim($sCodEvento) == '' ) {
+    if ( trim((string) $sCodEvento) == '' ) {
       throw new Exception("{$sMsgErro}Código do evento não informado!");
     }
 
-    if ( trim($iCnpj) == '' ) {
+    if ( trim((string) $iCnpj) == '' ) {
       throw new Exception("{$sMsgErro}CNPJ do MEI não informado!");
     }
 
@@ -1333,7 +1333,7 @@ class MeiArquivo {
   	}
 
   	$sTela = "";
-  	$aCnaeProcessado = array();
+  	$aCnaeProcessado = [];
 
 
   	foreach ( $aDadosInconsistencias as $iIndInconsistencia => $aListaInconsistencias ) {
@@ -1342,7 +1342,7 @@ class MeiArquivo {
 	    	$sTela .= "<tr>  ";
 	    	$sTela .= "  <td>";
 
-	    	if (  in_array($iCodInconsistencia,array(2,3)) ) {
+	    	if (  in_array($iCodInconsistencia,[2,3]) ) {
 
 	    		if ( $iCodInconsistencia == 2 ) {
 		    		$sCampo = "logradouro";
@@ -1500,11 +1500,11 @@ class MeiArquivo {
 
   	$sMsgErro = 'Consulta dos detalhes do Evento abortado';
 
-    if ( trim($sCodEvento) == '' ) {
+    if ( trim((string) $sCodEvento) == '' ) {
       throw new Exception("{$sMsgErro}, código do evento não informado!");
     }
 
-    if ( trim($iCnpj) == '' ) {
+    if ( trim((string) $iCnpj) == '' ) {
       throw new Exception("{$sMsgErro}, CNPJ do MEI não informado!");
     }
 
@@ -1663,17 +1663,11 @@ class MeiArquivo {
 
         foreach ( $aPropriedadesContador as $sCampoContador => $sValorContador ) {
 
-          switch ($sCampoContador) {
-            case 'iCodRua':
-              $oRotulo->label("j14_codigo");
-              break;
-            case 'iCodBairro':
-              $oRotulo->label("j13_codi");
-              break;
-            default:
-              $oRotulo->label($sCampoContador);
-              break;
-          }
+          match ($sCampoContador) {
+              'iCodRua' => $oRotulo->label("j14_codigo"),
+              'iCodBairro' => $oRotulo->label("j13_codi"),
+              default => $oRotulo->label($sCampoContador),
+          };
 
           if (empty($oRotulo->titulo)) {
              $oRotulo->titulo = $sCampoContador;
@@ -2069,7 +2063,7 @@ class MeiArquivo {
 
   function getDadosMEI( $iCnpj='' ){
 
-  	if ( trim($iCnpj) != '' ) {
+  	if ( trim((string) $iCnpj) != '' ) {
       return $this->aDadosMEI[$iCnpj];
   	} else {
 	  	return $this->aDadosMEI;
@@ -2086,7 +2080,7 @@ class MeiArquivo {
       throw new Exception("{$sMsgErro}nenhuma transação encontrada!");
     }
 
-    if ( trim($iCnpj) == '' ) {
+    if ( trim((string) $iCnpj) == '' ) {
       throw new Exception("{$sMsgErro}, CNPJ do MEI não informado!");
     }
 
@@ -2096,7 +2090,7 @@ class MeiArquivo {
     $oDaoMeiProcessa    = db_utils::getDao('meiprocessa');
     $oDaoMeiProcessaReg = db_utils::getDao('meiprocessareg');
 
-    if ( trim($iCodProcessa) == '' ) {
+    if ( trim((string) $iCodProcessa) == '' ) {
 
       $oDaoMeiProcessa->q113_id_usuario  = db_getsession('DB_id_usuario');
       $oDaoMeiProcessa->q113_data        = date('Y-m-d',db_getsession('DB_datausu'));
@@ -2113,7 +2107,7 @@ class MeiArquivo {
     $sWhereImporta  = $this->sWhereImporta;
     $sWhereImporta .= " and q105_cnpj = '{$iCnpj}' ";
 
-    if ( trim($sCodEvento) != '' ) {
+    if ( trim((string) $sCodEvento) != '' ) {
     	$sWhereImporta .= " and q101_codigo = '{$sCodEvento}' ";
     }
 
@@ -2121,7 +2115,7 @@ class MeiArquivo {
     $rsMeiImporta   = $oDaoMeiImporta->sql_record($sSqlImporta);
     $iRowsImporta   = pg_num_rows($rsMeiImporta);
 
-    $aRegProcessa = array();
+    $aRegProcessa = [];
 
     if ( $iRowsImporta > 0 ) {
 
@@ -2149,7 +2143,7 @@ class MeiArquivo {
 
    	foreach ( $aDadosMEI['aEventos'] as $sEvento => $oDadosEvento ) {
 
-   		if ( trim($sCodEvento) != '' && $sEvento != $sCodEvento ) {
+   		if ( trim((string) $sCodEvento) != '' && $sEvento != $sCodEvento ) {
    			continue;
    		}
 
@@ -2198,7 +2192,7 @@ class MeiArquivo {
 
             $oCgmEmpresa = CgmFactory::getInstanceByType(2);
 
-            if ( trim($oDadosEmpresa->iCodRua) != '' ) {
+            if ( trim((string) $oDadosEmpresa->iCodRua) != '' ) {
               $rsLogradouro = $oDaoRuas->sql_record($oDaoRuas->sql_query_file($oDadosEmpresa->iCodRua));
 
               if ( $oDaoRuas->numrows > 0 ) {
@@ -2210,7 +2204,7 @@ class MeiArquivo {
               $sLogradouro = $oDadosEmpresa->q107_logradouro;
             }
 
-            if ( trim($oDadosEmpresa->iCodBairro) != '' ) {
+            if ( trim((string) $oDadosEmpresa->iCodBairro) != '' ) {
               $rsBairro = $oDaoBairro->sql_record($oDaoBairro->sql_query_file($oDadosEmpresa->iCodBairro));
 
               if ( $oDaoBairro->numrows > 0 ) {
@@ -2235,7 +2229,7 @@ class MeiArquivo {
             $oCgmEmpresa->setTelefone          ($oDadosEmpresa->q107_telefone);
             $oCgmEmpresa->setTelefoneComercial ($oDadosEmpresa->q107_telefonecomercial);
             $oCgmEmpresa->setFax               ($oDadosEmpresa->q107_fax);
-            $oCgmEmpresa->setEmail             (strtolower($oDadosEmpresa->q107_email));
+            $oCgmEmpresa->setEmail             (strtolower((string) $oDadosEmpresa->q107_email));
             $oCgmEmpresa->setCaixaPostal       ($oDadosEmpresa->q107_caixapostal);
             $oCgmEmpresa->setNomeCompleto      ($oDadosEmpresa->q107_nome);
 
@@ -2339,7 +2333,7 @@ class MeiArquivo {
              $iCodBairro       = db_utils::fieldsMemory($rsRuasBairro,0)->j13_codi;
           }
 
-          if ( trim($iCodBairro) != '' ) {
+          if ( trim((string) $iCodBairro) != '' ) {
 
             $oDaoIssBairro->q13_inscr  = $iCodInscricao;
             $oDaoIssBairro->q13_bairro = $iCodBairro;
@@ -2351,7 +2345,7 @@ class MeiArquivo {
 
           }
 
-          if ( trim($iCodRua) != '' ) {
+          if ( trim((string) $iCodRua) != '' ) {
 
             $oDaoIssRuas->q02_inscr  = $iCodInscricao;
             $oDaoIssRuas->j14_codigo = $iCodRua;
@@ -2374,11 +2368,11 @@ class MeiArquivo {
     			$oDadosResponsavel  = $oDadosEvento['oResponsavel'];
     			$iCodCgmResponsavel = '';
 
-		      if ( trim($oDadosResponsavel->q108_cpf) != '' ) {
+		      if ( trim((string) $oDadosResponsavel->q108_cpf) != '' ) {
 		      	$iCodCgmResponsavel = $this->getCgmByCpfCnpj($oDadosResponsavel->q108_cpf);
 		      }
 
-		      if ( trim($iCodCgmResponsavel) == '' ) {
+		      if ( trim((string) $iCodCgmResponsavel) == '' ) {
 
 	    			try {
 
@@ -2395,7 +2389,7 @@ class MeiArquivo {
 		          $oCgmResponsavel->setCep         ($oDadosResponsavel->q108_cep);
 		          $oCgmResponsavel->setTelefone    ($oDadosResponsavel->q108_telefone);
 		          $oCgmResponsavel->setFax         ($oDadosResponsavel->q108_fax);
-		          $oCgmResponsavel->setEmail       (strtolower($oDadosResponsavel->q108_email));
+		          $oCgmResponsavel->setEmail       (strtolower((string) $oDadosResponsavel->q108_email));
               $oCgmResponsavel->setNomeCompleto($oDadosResponsavel->q108_nome);
 
 	            $oCgmResponsavel->save();
@@ -2434,15 +2428,15 @@ class MeiArquivo {
    				$oDadosContador  = $oDadosEvento['oContador'];
           $iCodCgmContador = '';
 
-   			  if ( trim($oDadosContador->q109_cnpjcpf) != ''  ) {
+   			  if ( trim((string) $oDadosContador->q109_cnpjcpf) != ''  ) {
             $iCodCgmContador = $this->getCgmByCpfCnpj($oDadosContador->q109_cnpjcpf);
           }
 
-          if ( trim($iCodCgmContador) == '' ) {
+          if ( trim((string) $iCodCgmContador) == '' ) {
 
 	   				try {
 
-		   				if ( strlen(trim($oDadosContador->q109_cnpjcpf)) == '14' ) {
+		   				if ( strlen(trim((string) $oDadosContador->q109_cnpjcpf)) == '14' ) {
 		    				$oCgmContador = CgmFactory::getInstanceByType(2);
 		            $oCgmContador->setCnpj($oDadosContador->q109_cnpjcpf);
 		   				} else {
@@ -2460,7 +2454,7 @@ class MeiArquivo {
 		          $oCgmContador->setCep         ($oDadosContador->q109_cep);
 		          $oCgmContador->setTelefone    ($oDadosContador->q109_telefone);
 		          $oCgmContador->setFax         ($oDadosContador->q109_fax);
-		          $oCgmContador->setEmail       (strtolower($oDadosContador->q109_email));
+		          $oCgmContador->setEmail       (strtolower((string) $oDadosContador->q109_email));
 
 		   				$oCgmContador->save();
 
@@ -2498,7 +2492,7 @@ class MeiArquivo {
 
    			$iSeqAtiv = 0;
 
-        $aAtividades = array();
+        $aAtividades = [];
 
         $iAtividadePrincipal = 0;
 
@@ -2506,7 +2500,7 @@ class MeiArquivo {
 
         foreach ( $oDadosEvento['aAtividades'] as $iIndAtiv => $oAtividade ) {
 
-   				if ( trim($oAtividade->iCodAtividade) != '' ) {
+   				if ( trim((string) $oAtividade->iCodAtividade) != '' ) {
 
    					$iCodAtividade = $oAtividade->iCodAtividade;
 
@@ -2548,21 +2542,21 @@ class MeiArquivo {
 	            $rsUltimoAtiv  = $oDaoAtivid->sql_record($oDaoAtivid->sql_query_file(null,"max(q03_ativ) as maxativ"));
 	            $iCodAtividade = ( db_utils::fieldsMemory($rsUltimoAtiv,0)->maxativ + 1 );
 
-	            if ( trim($oAtividade->q106_descricao) == '' ) {
+	            if ( trim((string) $oAtividade->q106_descricao) == '' ) {
 
 	              $sWhereDescrCnae = " q71_estrutural like '%{$oAtividade->q106_cnae}'";
 	              $rsDescrCnae     = $oDaoCnae->sql_record($oDaoCnae->sql_query_file(null,"q71_descr",null,$sWhereDescrCnae));
 
 	              if ( $oDaoCnae->numrows > 0 ) {
 	                $oCnae = db_utils::fieldsMemory($rsDescrCnae,0);
-	                $sDescrAtividade = substr($oCnae->q71_descr,0,40);
+	                $sDescrAtividade = substr((string) $oCnae->q71_descr,0,40);
 	                $sObsAtiv        = $oCnae->q71_descr;
 	              } else {
 	                throw new Exception("{$sMsgErro}\nCNAE:{$oAtividade->q106_cnae} não cadastrado!");
 	              }
 
 	            } else {
-	              $sDescrAtividade = substr($oAtividade->q106_descricao,0,40);
+	              $sDescrAtividade = substr((string) $oAtividade->q106_descricao,0,40);
 	              $sObsAtiv        = '';
 	            }
 
@@ -2695,7 +2689,7 @@ class MeiArquivo {
            $iRowsAtiv      = pg_num_rows($rsAtivCalculo);
 
            //if ($iFormula > 1) {
-              $aListaAtivCalc = array();
+              $aListaAtivCalc = [];
 
               if ($iRowsAtiv > 0) {
                  for ($iIndC = 0; $iIndC < $iRowsAtiv; $iIndC++) {
@@ -2726,7 +2720,7 @@ class MeiArquivo {
               }
               $sResultado  = db_utils::fieldsMemory($rsCalculo, 0)->resultado_calculo;
 
-              if (substr($sResultado, 0, 2) != "01") {
+              if (!str_starts_with((string) $sResultado, "01")) {
                  throw new BusinessException("Erro ao Processar Cálculo : \n\n{$sResultado}");
               }
            }
@@ -2737,7 +2731,7 @@ class MeiArquivo {
 
         $iCodCgm = $this->getCgmByCpfCnpj($iCnpj);
 
-        if ( trim($iCodCgm) == ''   ) {
+        if ( trim((string) $iCodCgm) == ''   ) {
           throw new Exception("{$sMsgErro}\nCGM não encontrado para o CNPJ :{$iCnpj}");
         }
 
@@ -2761,7 +2755,7 @@ class MeiArquivo {
 
         $iCodCgm = $this->getCgmByCpfCnpj($iCnpj);
 
-        if ( trim($iCodCgm) == ''   ) {
+        if ( trim((string) $iCodCgm) == ''   ) {
           throw new Exception("{$sMsgErro}\nCGM não encontrado para o CNPJ :{$iCnpj}");
         }
 
@@ -2779,7 +2773,7 @@ class MeiArquivo {
           $oCgmEmpresa->setTelefone          ($oDadosEmpresa->q107_telefone);
           $oCgmEmpresa->setTelefoneComercial ($oDadosEmpresa->q107_telefonecomercial);
           $oCgmEmpresa->setFax               ($oDadosEmpresa->q107_fax);
-          $oCgmEmpresa->setEmail             (strtolower($oDadosEmpresa->q107_email));
+          $oCgmEmpresa->setEmail             (strtolower((string) $oDadosEmpresa->q107_email));
           $oCgmEmpresa->setCaixaPostal       ($oDadosEmpresa->q107_caixapostal);
 
           $oCgmEmpresa->save();
@@ -2797,7 +2791,7 @@ class MeiArquivo {
 
         $iCodCgm = $this->getCgmByCpfCnpj($iCnpj);
 
-        if ( trim($iCodCgm) == ''   ) {
+        if ( trim((string) $iCodCgm) == ''   ) {
           throw new Exception("{$sMsgErro}\nCGM não encontrado!");
         }
 
@@ -2818,7 +2812,7 @@ class MeiArquivo {
 
       	$iCodCgm = $this->getCgmByCpfCnpj($iCnpj);
 
-        if ( trim($iCodCgm) == ''   ) {
+        if ( trim((string) $iCodCgm) == ''   ) {
           throw new Exception("{$sMsgErro}\nCGM não encontrado!");
         }
 
@@ -2845,11 +2839,11 @@ class MeiArquivo {
 
         $iCodCgmContador = $this->getCgmByCpfCnpj($oDadosContador->q109_cnpjcpf);
 
-        if ( trim($iCodCgmContador) == '' ) {
+        if ( trim((string) $iCodCgmContador) == '' ) {
 
 	        try {
 
-	          if ( strlen(trim($oDadosContador->q109_cnpjcpf)) == '14' ) {
+	          if ( strlen(trim((string) $oDadosContador->q109_cnpjcpf)) == '14' ) {
 	            $oCgmContador = CgmFactory::getInstanceByType(2);
 	            $oCgmContador->setCnpj($oDadosContador->q109_cnpjcpf);
 	          } else {
@@ -2867,7 +2861,7 @@ class MeiArquivo {
 	          $oCgmContador->setCep         ($oDadosContador->q109_cep);
 	          $oCgmContador->setTelefone    ($oDadosContador->q109_telefone);
 	          $oCgmContador->setFax         ($oDadosContador->q109_fax);
-	          $oCgmContador->setEmail       (strtolower($oDadosContador->q109_email));
+	          $oCgmContador->setEmail       (strtolower((string) $oDadosContador->q109_email));
 
 	          $oCgmContador->save();
 
@@ -2997,7 +2991,7 @@ class MeiArquivo {
             $iCodAtividade = ( db_utils::fieldsMemory($rsUltimoAtiv,0)->maxativ + 1 );
 
             $oDaoAtivid->q03_ativ  = $iCodAtividade;
-            $oDaoAtivid->q03_descr = substr($oAtividade->q106_descricao,0,40);
+            $oDaoAtivid->q03_descr = substr((string) $oAtividade->q106_descricao,0,40);
             $oDaoAtivid->incluir($iCodAtividade);
 
             if ( $oDaoAtivid->erro_status == 0 ) {
@@ -3149,7 +3143,7 @@ class MeiArquivo {
 
         if ( $iRowsTabAtiv > 0 ) {
 
-          $aListaAtividades = array();
+          $aListaAtividades = [];
           for ( $iIndTabAtiv=0; $iIndTabAtiv < $iRowsTabAtiv; $iIndTabAtiv++ ) {
 
             $oTabAtiv = db_utils::fieldsMemory($rsTabAtiv,$iIndTabAtiv);
@@ -3196,7 +3190,7 @@ class MeiArquivo {
 	            throw new Exception("{$sMsgErro},{$oDaoTabAtiv->erro_msg}");
 	          }
 
-	          if ( trim($oTabAtiv->q88_inscr) != '' ) {
+	          if ( trim((string) $oTabAtiv->q88_inscr) != '' ) {
 
 	            $oDaoAtivPrinc->q88_inscr = $iCodInscricao;
 	            $oDaoAtivPrinc->q88_seq   = $oTabAtiv->q07_seq;
@@ -3265,7 +3259,7 @@ class MeiArquivo {
            $rsAtivCalculo  = db_query($sSqlAtivCalc);
            $iRowsAtiv      = pg_num_rows($rsAtivCalculo);
 
-           $aListaAtivCalc = array();
+           $aListaAtivCalc = [];
 
            if ($iRowsAtiv > 0) {
               for ($iIndC = 0; $iIndC < $iRowsAtiv; $iIndC++) {
@@ -3300,7 +3294,7 @@ class MeiArquivo {
 
               $sResultado  = db_utils::fieldsMemory($rsCalculo, 0)->resultado_calculo;
 
-              if (substr($sResultado, 0, 2) != "01") {
+              if (!str_starts_with((string) $sResultado, "01")) {
                   throw new BusinessException("Erro ao Processar Cálculo da Baixa : \n\n{$sResultado}");
               }
            }
@@ -3494,7 +3488,7 @@ class MeiArquivo {
       throw new Exception("{$sMsgErro}nenhuma transação encontrada!");
     }
 
-    if ( trim($iCnpj) == '' ) {
+    if ( trim((string) $iCnpj) == '' ) {
       throw new Exception("{$sMsgErro}CNPJ do MEI não informado!");
     }
 
@@ -3502,7 +3496,7 @@ class MeiArquivo {
     $oDaoMeiProcessa    = db_utils::getDao('meiprocessa');
     $oDaoMeiProcessaReg = db_utils::getDao('meiprocessareg');
 
-    if ( trim($iCodProcessa) == '' ) {
+    if ( trim((string) $iCodProcessa) == '' ) {
 
       $oDaoMeiProcessa->q113_id_usuario  = db_getsession('DB_id_usuario');
       $oDaoMeiProcessa->q113_data        = date('Y-m-d',db_getsession('DB_datausu'));
@@ -3520,7 +3514,7 @@ class MeiArquivo {
     $sWhereImporta  = $this->sWhereImporta;
     $sWhereImporta .= " and q105_cnpj = '{$iCnpj}' ";
 
-    if ( trim($sCodEvento) != '' ) {
+    if ( trim((string) $sCodEvento) != '' ) {
       $sWhereImporta .= " and q101_codigo = '{$sCodEvento}' ";
     }
 
@@ -3548,7 +3542,7 @@ class MeiArquivo {
   }
 
 
-  function processaMeiArquivoLote( $aListaProcessa=array() ){
+  function processaMeiArquivoLote( $aListaProcessa=[] ){
 
     $sMsgErro = 'Processamento em lote do arquivo do MEI abortado,\n';
 
@@ -3627,11 +3621,11 @@ class MeiArquivo {
       throw new Exception("{$sMsgErro}Nenhuma transação encontrada!");
     }
 
-    if ( trim($iCnpj) == '' ) {
+    if ( trim((string) $iCnpj) == '' ) {
       throw new Exception("{$sMsgErro}CNPJ do MEI não informado!");
     }
 
-    if ( trim($sCodEvento) == '' ) {
+    if ( trim((string) $sCodEvento) == '' ) {
       throw new Exception("{$sMsgErro}Evento não informado!");
     }
 
@@ -3722,15 +3716,15 @@ class MeiArquivo {
 
   function setCodRuaMEI($iCnpj='',$sCodEvento='',$iCodRua=''){
 
-  	if ( trim($iCnpj) == '') {
+  	if ( trim((string) $iCnpj) == '') {
       throw new Exception('CNPJ não informado!');
   	}
 
-    if ( trim($sCodEvento) == '') {
+    if ( trim((string) $sCodEvento) == '') {
       throw new Exception('Evento não informado!');
     }
 
-    if ( trim($iCodRua) == '') {
+    if ( trim((string) $iCodRua) == '') {
       throw new Exception('Rua não informada!');
     }
 
@@ -3741,11 +3735,11 @@ class MeiArquivo {
 
   function setCodBairroMEI($iCnpj='',$sCodEvento='',$iCodBairro=''){
 
-    if ( trim($iCnpj) == '') {
+    if ( trim((string) $iCnpj) == '') {
       throw new Exception('CNPJ não informado!');
     }
 
-    if ( trim($sCodEvento) == '') {
+    if ( trim((string) $sCodEvento) == '') {
       throw new Exception('Evento não informado!');
     }
 
@@ -3756,12 +3750,12 @@ class MeiArquivo {
 
   function setEmpresaCadastrada($iCnpj='',$sCodEvento=''){
 
-    if ( trim($iCnpj) == '') {
+    if ( trim((string) $iCnpj) == '') {
       throw new Exception('CNPJ não informado!');
 
     }
 
-    if ( trim($sCodEvento) == '') {
+    if ( trim((string) $sCodEvento) == '') {
       throw new Exception('Evento não informado!');
     }
 
@@ -3770,11 +3764,11 @@ class MeiArquivo {
 
   function setResponsavelCadastrado($iCnpj='',$sCodEvento=''){
 
-    if ( trim($iCnpj) == '') {
+    if ( trim((string) $iCnpj) == '') {
       throw new Exception('CNPJ não informado!');
     }
 
-    if ( trim($sCodEvento) == '') {
+    if ( trim((string) $sCodEvento) == '') {
       throw new Exception('Evento não informado!');
     }
 
@@ -3784,15 +3778,15 @@ class MeiArquivo {
 
   function setCodAtividade($iCnpj='',$sCodEvento='',$sCnae='',$iCodAtividade=''){
 
-    if ( trim($iCnpj) == '') {
+    if ( trim((string) $iCnpj) == '') {
       throw new Exception('CNPJ não informado!');
     }
 
-    if ( trim($sCodEvento) == '') {
+    if ( trim((string) $sCodEvento) == '') {
       throw new Exception('Evento não informado!');
     }
 
-    if ( trim($sCnae) == '') {
+    if ( trim((string) $sCnae) == '') {
       throw new Exception('Cnae não informado!');
     }
 
@@ -3809,7 +3803,7 @@ class MeiArquivo {
 
   function validaNumeroEndereco($sNumero=''){
 
-  	$aNumero = split("[^0-9]",trim($sNumero));
+  	$aNumero = preg_split("#[^0-9]#m",trim((string) $sNumero));
   	if ( count($aNumero) > 1 ){
   	  return false;
   	} else {
@@ -3823,7 +3817,7 @@ class MeiArquivo {
 
   	$clMeiImporta = db_utils::getDao('meiimporta');
 
-  	if ( trim($dtDataini) == '' ) {
+  	if ( trim((string) $dtDataini) == '' ) {
 
       try {
         $dtDataImpMei = $this->getDataImpMEI();

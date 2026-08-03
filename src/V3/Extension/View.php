@@ -8,15 +8,13 @@ use \ECidade\V3\Extension\Document;
 
 class View {
 
-  private $controller;
   public $document;
 
-  public function __construct(Controller $controller, Document $document) {
+  public function __construct(private readonly Controller $controller, Document $document) {
 
-    $this->controller = $controller;
     $this->document = $document;
-    $this->request = $controller->getRequest();
-    $this->response = $controller->getResponse();
+    $this->request = $this->controller->getRequest();
+    $this->response = $this->controller->getResponse();
 
     $this->document->setCharset($this->response->getCharset());
 
@@ -26,7 +24,7 @@ class View {
   
   }
 
-  public function render($pathView = null, $params = array()) {
+  public function render($pathView = null, $params = []) {
 
     if (empty($pathView)) {
       $pathView = basename(str_replace("\\", '/', $this->request->getController())) . '/' . $this->request->getAction();

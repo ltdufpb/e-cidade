@@ -45,8 +45,8 @@ if (!isset($arqinclude)){
   include(modification("classes/db_orcparamrel_classe.php"));
   include(modification("classes/db_empresto_classe.php"));
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
   $classinatura    = new cl_assinatura;
   $orcparamrel     = new cl_orcparamrel;
@@ -203,7 +203,7 @@ $m_aplicacao_fundeb["fundef"]["valor"]  = 0;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Tela do relatorio
 
-$aReceitas = array();
+$aReceitas = [];
 $aReceitas[1]["label"]  = "1 - RECEITAS DE IMPOSTOS";
 /*
  * Dados para informação de IPTU
@@ -330,7 +330,7 @@ $db_filtro = " o70_instit in ({$iPrefeitura})";
 $result    = db_receitasaldo(11,1,3,true,$db_filtro,$anousu,$dt_ini,$dt_fin);
 //db_criatabela($result); exit;
 
-for ($i = 0; $i < pg_numrows($result); $i++){
+for ($i = 0; $i < pg_num_rows($result); $i++){
 
   $oReceita   =  db_utils::fieldsmemory($result,$i);
   for ($linha = 1; $linha <= 50; $linha++) {
@@ -400,7 +400,7 @@ for ($i = 0; $i < pg_numrows($result); $i++){
 }
 
 for ($col = 1; $col <= 4; $col++){
-  $pcol =array(1=>"inicial",2=>"atualizada",3=>"bimestre",4=>"exercicio");
+  $pcol =[1=>"inicial",2=>"atualizada",3=>"bimestre",4=>"exercicio"];
 
   /**
    * IPTU
@@ -587,7 +587,7 @@ for ($col = 1; $col <= 4; $col++){
 }
 
 // DESPESAS
-$aDespesas = array();
+$aDespesas = [];
 
 $aDespesas[1]["label"]  = "13 - PAGAMENTO DOS PROFISSIONAIS DO MAGISTÉRIO";
 $aDespesas[2]["label"]  = "     13.1-Com Educação Infantil";
@@ -626,7 +626,7 @@ for($linha = 1; $linha <= 20; $linha++){
 $sele_work = "o58_instit in ({$iPrefeitura})";
 $result_despesa = db_dotacaosaldo(8,2,3,true,$sele_work,$anousu,$dt_ini,$dt_fin);
 
-for ($i = 0; $i < pg_numrows($result_despesa); $i++) {
+for ($i = 0; $i < pg_num_rows($result_despesa); $i++) {
 
   $oDespesa = db_utils::fieldsmemory($result_despesa, $i);
 
@@ -671,7 +671,7 @@ for ($i = 0; $i < pg_numrows($result_despesa); $i++) {
 //exit;
 for ($col = 1; $col <= 5; $col++){
 
-  $pcol = array(1=>"inicial",2=>"atualizada",3=>"bimestre",4=>"exercicio",5=>"inscritas");
+  $pcol = [1=>"inicial",2=>"atualizada",3=>"bimestre",4=>"exercicio",5=>"inscritas"];
 
   // 12.1 PGTO PROFISSIONAIS - Educacao Infantil
   $aDespesas[2][$pcol[$col]] += $aValoresDespesas[51][$pcol[$col]];
@@ -757,11 +757,11 @@ $sqlperiodo = " select e91_recurso,o15_descr,e60_anousu,sum(vlranu) as vlranu, s
                 group by e91_recurso,o15_descr,e60_anousu
 	          		order by e91_recurso,e60_anousu";
 $result_restos_mde1  = db_query($sqlperiodo);
-$numrows_restos_mde1 = @pg_numrows($result_restos_mde1);
+$numrows_restos_mde1 = @pg_num_rows($result_restos_mde1);
 
 $cancelado = $m_restos_mde["cancelado"];
 $saldo     = $m_restos_mde["saldo"];
-for($i = 0; $i < pg_numrows($result_restos_mde1); $i++){
+for($i = 0; $i < pg_num_rows($result_restos_mde1); $i++){
   db_fieldsmemory($result_restos_mde1,$i);
 
   $saldo += (($e91_vlremp-$e91_vlranu-$vlranu)-($e91_vlrpag+$vlrpag));
@@ -806,7 +806,7 @@ $result_restos_mde2 = db_rpsaldo($anousu,
 
 $sWhere = "";
 //db_criatabela($result_restos_mde); exit;
-for($i = 0; $i < pg_numrows($result_restos_mde2); $i++){
+for($i = 0; $i < pg_num_rows($result_restos_mde2); $i++){
   db_fieldsmemory($result_restos_mde2,$i);
 
   $cancelado += $vlranu;
@@ -823,12 +823,12 @@ $m_restos_mde["cancelado"] = $cancelado;
 
 // FIM FLUXO FINANCEIRO
 
-$fluxo = array();
+$fluxo = [];
 
 $fluxo[1]["label"] = "47 - SALDO FINANCEIRO EM 31 DE DEZEMBRO DE ".($anousu-1);
-$fluxo[2]["label"] = "48 - (+) INGRESSO DE RECURSOS ATÉ O ".strtoupper($periodo);
-$fluxo[3]["label"] = "49 - (-) PAGAMENTOS EFETUADOS ATÉ O ".strtoupper($periodo);
-$fluxo[4]["label"] = "50 - (+) RECEITA DE APLICAÇÃO FINANCEIRA DOS RECURSOS ATÉ O ".strtoupper($periodo);
+$fluxo[2]["label"] = "48 - (+) INGRESSO DE RECURSOS ATÉ O ".strtoupper((string) $periodo);
+$fluxo[3]["label"] = "49 - (-) PAGAMENTOS EFETUADOS ATÉ O ".strtoupper((string) $periodo);
+$fluxo[4]["label"] = "50 - (+) RECEITA DE APLICAÇÃO FINANCEIRA DOS RECURSOS ATÉ O ".strtoupper((string) $periodo);
 $fluxo[5]["label"] = "51 - (=) SALDO FINANCEIRO NO EXERCÍCIO ATUAL";
 
 $fluxo[1]["campo"] = "saldo_anterior";
@@ -858,7 +858,7 @@ $m_fluxo_fundeb["valor_aplicacao"] = 0;
 $dt_ini2        = $anousu."-01-01";
 $db_filtro      = " c61_instit in ({$iPrefeitura}) ";
 $result_bal_ver = db_planocontassaldo_matriz($anousu,$dt_ini2,$dt_fin,false,$db_filtro);
-for ($i = 0; $i < pg_numrows($result_bal_ver); $i++) {
+for ($i = 0; $i < pg_num_rows($result_bal_ver); $i++) {
 
   $oResultado = db_utils::fieldsmemory($result_bal_ver,$i);
   for ($iLinha =1; $iLinha <= 5; $iLinha++) {
@@ -978,7 +978,7 @@ if (!isset($arqinclude)){
   $resultinst = db_query("select munic from db_config where codigo in ({$iPrefeitura})");
   db_fieldsmemory($resultinst,0);
 
-  $descr_inst = strtoupper($munic);
+  $descr_inst = strtoupper((string) $munic);
 
   $head1 = "MUNICÍPIO DE ".$descr_inst;
   $head2 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
@@ -986,10 +986,10 @@ if (!isset($arqinclude)){
   $head4 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
   $dados  = data_periodo($anousu,$periodo_selecionado);
-  $perini = split("-",$dados[0]);
-  $perfin = split("-",$dados[1]);
+  $perini = preg_split("#\\-#m",(string) $dados[0]);
+  $perfin = preg_split("#\\-#m",(string) $dados[1]);
 
-  $txtper = strtoupper($dados["periodo"]);
+  $txtper = strtoupper((string) $dados["periodo"]);
   $mesini = db_mes($perini[1],1);
   $mesfin = db_mes($perfin[1],1);
 
@@ -1656,7 +1656,7 @@ if ($periodo_selecionado=='6B' || $periodo_selecionado=='2S'){
   $pdf->setfont('arial','',6);
 
   $pdf->cell(90,($alt*2),"RESTOS A PAGAR INSCRITOS COM DISP. FINANC. DE REC. DE IMP. VINC. AO ENSINO","TBR",0,"C",0);
-  $pdf->cell(40,($alt*2),"SALDO ATÉ O ".strtoupper($periodo),"TBR",0,"C",0);
+  $pdf->cell(40,($alt*2),"SALDO ATÉ O ".strtoupper((string) $periodo),"TBR",0,"C",0);
   $pdf->cell(60,($alt*2),"CANCELADO EM {$anousu} (g)","TB",0,"C",0);
   $pdf->ln();
 

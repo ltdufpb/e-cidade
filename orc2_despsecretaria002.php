@@ -32,7 +32,7 @@ require_once(modification("libs/db_sql.php"));
 
 $clselorcdotacao = new cl_selorcdotacao();
 $opcao = 2;
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $anousu = db_getsession('DB_anousu');
@@ -42,7 +42,7 @@ $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo 
 $descr_inst = '';
 $xvirg = '';
 
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinstabrev;
     $xvirg = ',';
@@ -62,7 +62,7 @@ $head5 = "INSTITUIÇÕES : " . $descr_inst;
 
 // funcao para gerar work
 
-$nivel = substr($nivelele, 0, 1);
+$nivel = substr((string) $nivelele, 0, 1);
 
 $tipo_rel = 2;
 $tipoagrupar = 1;
@@ -373,9 +373,9 @@ for ($mes = 1; $mes < 13; $mes++) {
         }
 
         if ($tipo_agrupa == 1) {
-            $sql = "update work set vlr$mes = vlr$mes+$valor where work.campo = '" . $$qcampo . "' and work.orgao = " . $o58_orgao;
+            $sql = "update work set vlr$mes = vlr$mes+$valor where work.campo = '" . ${$qcampo} . "' and work.orgao = " . $o58_orgao;
         } else {
-            $sql = "update work set vlr$mes = vlr$mes+$valor where work.campo = '" . $$qcampo . "' and work.orgao = " . $o58_orgao . " and work.unidade = " . $o58_unidade;
+            $sql = "update work set vlr$mes = vlr$mes+$valor where work.campo = '" . ${$qcampo} . "' and work.orgao = " . $o58_orgao . " and work.unidade = " . $o58_unidade;
         }
         $result = db_query($sql);
     }
@@ -416,8 +416,8 @@ if ($tipo_rel == 2) {
     } else {
         $sql = "select * from work order by orgao,unidade,campo";
         $result = db_query($sql);
-        $qorgao = pg_result($result, 0, 'orgao');
-        $qunidade = pg_result($result, 0, 'unidade');
+        $qorgao = pg_fetch_result($result, 0, 'orgao');
+        $qunidade = pg_fetch_result($result, 0, 'unidade');
     }
 } else {
     $sCampos = 'campo, descr';
@@ -577,7 +577,7 @@ if ($tipo_rel == 2) {
 
         $pdf->setfont('arial', '', 6);
         $pdf->cell(20, $alt, $campo, 0, 0, "R", 0);
-        $pdf->cell(55, $alt, substr($descr, 0, 40), 0, 0, "L", 0);
+        $pdf->cell(55, $alt, substr((string) $descr, 0, 40), 0, 0, "L", 0);
         $pdf->cell(15, $alt, db_formatar($vlr1, 'f'), 0, 0, "R", 0);
         $pdf->cell(15, $alt, db_formatar($vlr2, 'f'), 0, 0, "R", 0);
         $pdf->cell(15, $alt, db_formatar($vlr3, 'f'), 0, 0, "R", 0);
@@ -637,7 +637,7 @@ if ($tipo_rel == 2) {
 } else {
     $troca_secretaria = false;
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         db_fieldsmemory($result, $i);
         if ($nivelele == 8) {
             $recurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($campo);
@@ -672,7 +672,7 @@ if ($tipo_rel == 2) {
         }
         $pdf->setfont('arial', 'b', 6);
         $pdf->cell(20, $alt, $campo, 0, 0, "L", 0);
-        $pdf->cell(55, $alt, substr($descr, 0, 40), 0, 0, "L", 0);
+        $pdf->cell(55, $alt, substr((string) $descr, 0, 40), 0, 0, "L", 0);
         $pdf->setfont('arial', '', 6);
         $pdf->cell(15, $alt, db_formatar($vlr1, 'f'), 0, 0, "R", 0);
         $pdf->cell(15, $alt, db_formatar($vlr2, 'f'), 0, 0, "R", 0);

@@ -50,7 +50,7 @@ class LancamentoRRARepository {
    *
    * @var $aLancamentoRRA;
    */
-  private static $aLancamentoRRA = array();
+  private static $aLancamentoRRA = [];
 
 
   /**
@@ -116,7 +116,7 @@ class LancamentoRRARepository {
 			throw new DBException(_M(self::MENSAGEM."nenhum_lancamento_encontrado"));
 		}
 
-    $aLancamentoRRA = array();
+    $aLancamentoRRA = [];
 
     if($iQtdeLancamentos > 0) {
 
@@ -211,11 +211,11 @@ class LancamentoRRARepository {
 
     } catch (Exception $oErro) {
 
-      if(strpos($oErro->getMessage(), 'nenhum lan') === false) {
+      if(!str_contains($oErro->getMessage(), 'nenhum lan')) {
         throw new BusinessException($oErro->getMessage());
       }
 
-      return array();
+      return [];
     }
   }
 

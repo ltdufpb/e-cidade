@@ -32,14 +32,14 @@ require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 
 $oParam   = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
-$oRetorno = (object) array(
+$oRetorno = (object) [
   "message" => '',
   "erro" => false
-);
+];
 
 function retornoEconomia(AguaContratoEconomia $oEconomia) {
 
-  return (object) array(
+  return (object) [
     'iCodigo'               => $oEconomia->getCodigo(),
     'iCgmCodigo'            => $oEconomia->getCodigoCgm(),
     'sCgmDescricao'         => $oEconomia->getCgm()->getNome(),
@@ -49,7 +49,7 @@ function retornoEconomia(AguaContratoEconomia $oEconomia) {
     'sNis'                  => $oEconomia->getNis(),
     'sComplemento'          => $oEconomia->getComplemento(),
     'sObservacoes'          => $oEconomia->getObservacoes(),
-  );
+  ];
 }
 
 try {
@@ -108,9 +108,9 @@ try {
       $oContrato->salvar();
 
       $oRetorno->message = "Contrato salvo com sucesso.";
-      $oRetorno->contrato = (object) array(
+      $oRetorno->contrato = (object) [
         'iCodigo' => $oContrato->getCodigo()
-      );
+      ];
 
       break;
 
@@ -125,7 +125,7 @@ try {
     case "carregarContrato":
 
       $oContrato = new AguaContrato((integer) $oParam->iCodigo);
-      $oRetorno->contrato = (object) array(
+      $oRetorno->contrato = (object) [
         "iCodigo"                => $oContrato->getCodigo(),
         "iCgm"                   => $oContrato->getCgm()->getCodigo(),
         "sDataInicial"           => $oContrato->getDataInicial()->getDate(DBDate::DATA_PTBR),
@@ -144,7 +144,7 @@ try {
         "sTipoContratoDescricao" => null,
         "iCategoriaConsumo"      => null,
         "sCategoriaDescricao"    => null,
-      );
+      ];
 
       if ($oContrato->getCodigoCategoriaConsumo()) {
 
@@ -241,7 +241,7 @@ try {
         throw new ParameterException('Código do contrato não informado.');
       }
 
-      $aEconomias = array();
+      $aEconomias = [];
       $oAguaContrato = new AguaContrato($iCodigo);
       foreach ($oAguaContrato->getEconomias() as $oEconomia) {
         $aEconomias[] = retornoEconomia($oEconomia);

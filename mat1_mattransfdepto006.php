@@ -34,7 +34,7 @@ include(modification("classes/db_apolice_classe.php"));
 include(modification("classes/db_apolitem_classe.php"));
 $clapolice = new cl_apolice;
 $clapolitem = new cl_apolitem;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 

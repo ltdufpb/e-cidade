@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_modcarneexcessao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmodcarneexcessao = new cl_modcarneexcessao;
 $clmodcarneexcessao->rotulo->label("k36_sequencial");
 $clmodcarneexcessao->rotulo->label("k36_ip");
@@ -98,9 +98,9 @@ $clmodcarneexcessao->rotulo->label("k36_ip");
         }else{
            $sql = $clmodcarneexcessao->sql_query("",$campos,"k36_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k36_ip)){
-          $repassa = array("chave_k36_sequencial"=>$chave_k36_sequencial,"chave_k36_ip"=>$chave_k36_ip);
+          $repassa = ["chave_k36_sequencial"=>$chave_k36_sequencial,"chave_k36_ip"=>$chave_k36_ip];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -90,7 +90,7 @@ db_input('o119_versao',10,$Io119_versao,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('o119_finalizada',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -121,7 +121,7 @@ db_inputdata('o119_datatermino',@$o119_datatermino_dia,@$o119_datatermino_mes,@$
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('o119_versaofinal',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -185,7 +185,7 @@ function js_preenchepesquisa(chave){
   db_iframe_ppaversao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

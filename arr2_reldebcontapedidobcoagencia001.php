@@ -41,14 +41,14 @@ $clrotulo->label('k15_codage');
 <html>
 <head>
   <?php
-    db_app::load(array(
+    db_app::load([
       "estilos.css",
       "prototype.js",
       "scripts.js",
       "strings.js",
       "DBLookUp.widget.js",
       "EmissaoRelatorio.js"
-    ));
+    ]);
   ?>
 </head>
 <body class="body-default">

@@ -143,7 +143,7 @@ if( isset($cm31_i_sepultamento) ){
          $sWhere     = " (cm11_d_datalimite >= cast('{$dtAtual}' as date) or cm11_d_datalimite is null) ";
          $rsTaxaServ = $cltaxaserv->sql_record($cltaxaserv->sql_query(null,"*",null,$sWhere));
 
-         $tx      = array();
+         $tx      = [];
          $tx[0]   = "Selecione";
 
          for ( $q = 0; $q < $cltaxaserv->numrows; $q++ ) {
@@ -452,7 +452,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_itenserv.hide();
   <?php 
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

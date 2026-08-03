@@ -70,7 +70,7 @@ try {
       
       $oRetorno->lRubricas = false;
       
-      if (pg_numrows($rsFundamentacao) > 0) {
+      if (pg_num_rows($rsFundamentacao) > 0) {
         
         $oRetorno->message   = urlencode(_M(MENSAGENS . "confirma_excluir_fundamentacao"));
         $oRetorno->lRubricas = true;

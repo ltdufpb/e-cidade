@@ -57,43 +57,43 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         /**
          * Array associativo onde o indice é o código da linha e os valores em 'inclusao' e 'exclusao' são os documentos
          */
-        $aLinhasOrcamento = array(
-            110 => array(
-                'inclusao' => array(5),
-                'exclusao' => array(6)
-            ),
-            121 => array(
-                'inclusao' => array(5),
-                'exclusao' => array(6)
-            ),
-            111 => array(
-                'inclusao' => array(35, 37),
-                'exclusao' => array(36, 38)
-            ),
+        $aLinhasOrcamento = [
+            110 => [
+                'inclusao' => [5],
+                'exclusao' => [6]
+            ],
+            121 => [
+                'inclusao' => [5],
+                'exclusao' => [6]
+            ],
+            111 => [
+                'inclusao' => [35, 37],
+                'exclusao' => [36, 38]
+            ],
 
-            115 => array(
-                'inclusao' => array(130, 150, 160),
-                'exclusao' => array(131, 152, 162)
-            ),
+            115 => [
+                'inclusao' => [130, 150, 160],
+                'exclusao' => [131, 152, 162]
+            ],
 
-            126 => array(
-                'inclusao' => array(130, 150, 160),
-                'exclusao' => array(131, 152, 162)
-            ),
+            126 => [
+                'inclusao' => [130, 150, 160],
+                'exclusao' => [131, 152, 162]
+            ],
 
-            122 => array(
-                'inclusao' => array(35, 37),
-                'exclusao' => array(36, 38)
-            ),
-            108 => array(
-                'inclusao' => array(130, 150, 100),
-                'exclusao' => array(131, 152, 101)
-            ),
-            119 => array(
-                'inclusao' => array(130, 150, 100),
-                'exclusao' => array(131, 152, 101)
-            ),
-        );
+            122 => [
+                'inclusao' => [35, 37],
+                'exclusao' => [36, 38]
+            ],
+            108 => [
+                'inclusao' => [130, 150, 100],
+                'exclusao' => [131, 152, 101]
+            ],
+            119 => [
+                'inclusao' => [130, 150, 100],
+                'exclusao' => [131, 152, 101]
+            ],
+        ];
 
         // Caso ultimo bimestre, sao alteradas algumas colunas de formulas
         if ($this->verificaUltimoBimestre()) {
@@ -103,7 +103,7 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
             $this->aLinhasConsistencia[68]->colunas[0]->o116_formula = "((L[53]->empenhado_atebim-(L[61]->valor+L[64]->valor))/L[48]->recatebim)*100";
             $this->aLinhasConsistencia[69]->colunas[0]->o116_formula = "((L[56]->empenhado_atebim-(L[62]->valor+L[65]->valor))/L[48]->recatebim)*100";
 
-            $this->processarFormasDasLinhas(array(96, 67, 68, 69));
+            $this->processarFormasDasLinhas([96, 67, 68, 69]);
         }
 
         foreach ($aLinhasOrcamento as $linha => $aConfiguracao) {
@@ -113,7 +113,7 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         $this->aLinhasConsistencia[108]->valor -= $this->aLinhasConsistencia[112]->valor;
         $this->aLinhasConsistencia[119]->valor -= $this->aLinhasConsistencia[123]->valor;
 
-        $aLinhasProcessar = array(52, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 109, 113, 114, 117, 120, 124, 125, 128);
+        $aLinhasProcessar = [52, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 109, 113, 114, 117, 120, 124, 125, 128];
         $this->processarFormasDasLinhas($aLinhasProcessar);
 
         $this->arredondarValores();
@@ -131,7 +131,7 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
 
         $sInclusao = implode(",", $aConfiguracao['inclusao']);
         $sDocumentos = implode(",", array_merge($aConfiguracao['inclusao'], $aConfiguracao['exclusao']));
-        $aContas = array();
+        $aContas = [];
 
 
         foreach ($this->aLinhasConsistencia[$iLinha]->parametros->contas as $oStdConta) {
@@ -142,11 +142,11 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
 
         $sCampos = "sum(case when c71_coddoc in(" . $sInclusao . ") then c70_valor else c70_valor * -1 end) as valor";
 
-        $aWhere = array(
+        $aWhere = [
             "c70_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'",
             "c71_coddoc in (" . $sDocumentos . ")",
             "c60_estrut ilike '11111%'"
-        );
+        ];
         // Caso exista recurso, adiciona na busca o recurso configurado
         if (!empty($iCodigoRecurso)) {
             $aWhere[] = "c61_codigo = {$iCodigoRecurso}";
@@ -176,9 +176,9 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         }
 
 
-        if (in_array($iLinha, array(110, 121))) {
+        if (in_array($iLinha, [110, 121])) {
 
-            $aWhere = array();
+            $aWhere = [];
             $aWhere[] = "c70_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'";
             $aWhere[] = "c71_coddoc in (140,141)";
             $aWhere[] = "c60_estrut ilike '11111%'";

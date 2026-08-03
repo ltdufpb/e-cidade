@@ -34,8 +34,8 @@ include(modification("classes/db_issbase_classe.php"));
 include(modification("classes/db_iptubase_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 include(modification("classes/db_certid_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $db_botao=1;
 $db_opcao=1;
 

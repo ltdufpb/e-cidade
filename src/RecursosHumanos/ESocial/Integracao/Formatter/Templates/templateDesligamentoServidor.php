@@ -3,16 +3,16 @@
  * S-2299
  * Desligamento do Servidor
  */
-return array(
-    'ideVinculo' => array(
-        'properties' => array(
+return [
+    'ideVinculo' => [
+        'properties' => [
             'cpfTrab',
             'nisTrab',
             'matricula'
-        )
-    ),
-    'infoDeslig' => array(
-        'properties' => array(
+        ]
+    ],
+    'infoDeslig' => [
+        'properties' => [
             'mtvDeslig',
             'dtDeslig',
             'indPagtoAPI',
@@ -24,73 +24,73 @@ return array(
             'nrProcTrab',
             'indCumprParc',
             'qtdDiasInterm'
-        ),
-        'groups' => array(
-            'observacoes' => array(
+        ],
+        'groups' => [
+            'observacoes' => [
                 'type' => 'array',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'observacao'
-                    )
-                )
-            ),
-            'sucessaoVinc' => array(
-                'properties' => array(
+                    ]
+                ]
+            ],
+            'sucessaoVinc' => [
+                'properties' => [
                     'tpInscSuc',
                     'cnpjSucessora'
-                )
-            ),
-            'transfTit' => array(
-                'properties' => array(
+                ]
+            ],
+            'transfTit' => [
+                'properties' => [
                     'cpfSubstituto',
                     'dtNascto_transfTit' => 'dtNascto'
-                )
-            ),
-            'mudancaCPF' => array(
-                'properties' => array(
+                ]
+            ],
+            'mudancaCPF' => [
+                'properties' => [
                     'novoCPF'
-                )
-            ),
-            'verbasResc' => array(
-                'groups' => array(
-                    'dmDev' => array(
-                        'groups' => array(
-                            'infoPerApur' => array(
-                                'groups' => array(
-                                    'ideEstabLot' => array(
-                                        'properties' => array(
+                ]
+            ],
+            'verbasResc' => [
+                'groups' => [
+                    'dmDev' => [
+                        'groups' => [
+                            'infoPerApur' => [
+                                'groups' => [
+                                    'ideEstabLot' => [
+                                        'properties' => [
                                             'infoPerApur_tpInsc' => 'tpInsc',
                                             'infoPerApur_nrInsc' => 'nrInsc',
                                             'infoPerApur_codLotacao' => 'codLotacao',
-                                        ),
-                                        'groups' => array(
-                                            'detVerbas' => array(
-                                                'properties' => array(
+                                        ],
+                                        'groups' => [
+                                            'detVerbas' => [
+                                                'properties' => [
                                                     'detVerbas_codRubr'    => 'codRubr',
                                                     'detVerbas_ideTabRubr' => 'ideTabRubr',
                                                     'detVerbas_qtdRubr'    => 'qtdRubr',
                                                     'detVerbas_fatorRubr'  => 'fatorRubr',
                                                     'detVerbas_vrUnit'     => 'vrUnit',
                                                     'detVerbas_vrRubr'     => 'vrRubr',
-                                                )
-                                            ),
-                                            'infoSaudeColet' => array(
-                                                'groups' => array(
-                                                    'detOper' => array(
-                                                        'properties' => array(
+                                                ]
+                                            ],
+                                            'infoSaudeColet' => [
+                                                'groups' => [
+                                                    'detOper' => [
+                                                        'properties' => [
                                                             'detOper_1_cnpjOper',
                                                             'detOper_1_regANS'  ,
                                                             'detOper_1_vrPgTit' ,
                                                             'detOper_2_cnpjOper',
                                                             'detOper_2_regANS'  ,
                                                             'detOper_2_vrPgTit' ,
-                                                        ),
-                                                        'groups' => array(
-                                                            'dependente_1' => array(
+                                                        ],
+                                                        'groups' => [
+                                                            'dependente_1' => [
                                                                 'type' => 'array',
                                                                 'nome_api' => 'detPlano',
-                                                                'items' => array(
-                                                                    'properties' => array(
+                                                                'items' => [
+                                                                    'properties' => [
                                                                         'detPlano1_tpDep'    => 'tpDep',
                                                                         'detPlano1_cpfDep'   => 'cpfDep',
                                                                         'detPlano1_nmDep'    => 'nmDep',
@@ -99,14 +99,14 @@ return array(
                                                                         'detPlano1_vlrPgDep_operadora2',
                                                                         'detPlano1_cnpj_operadora1',
                                                                         'detPlano1_cnpj_operadora2',
-                                                                    )
-                                                                )
-                                                            ),
-                                                            'dependente_2' => array(
+                                                                    ]
+                                                                ]
+                                                            ],
+                                                            'dependente_2' => [
                                                                 'type' => 'array',
                                                                 'nome_api' => 'detPlano',
-                                                                'items' => array(
-                                                                    'properties' => array(
+                                                                'items' => [
+                                                                    'properties' => [
                                                                         'detPlano2_tpDep'    => 'tpDep',
                                                                         'detPlano2_cpfDep'   => 'cpfDep',
                                                                         'detPlano2_nmDep'    => 'nmDep',
@@ -115,14 +115,14 @@ return array(
                                                                         'detPlano2_vlrPgDep_operadora2',
                                                                         'detPlano2_cnpj_operadora1',
                                                                         'detPlano2_cnpj_operadora2',
-                                                                    )
-                                                                )
-                                                            ),
-                                                            'dependente_3' => array(
+                                                                    ]
+                                                                ]
+                                                            ],
+                                                            'dependente_3' => [
                                                                 'type' => 'array',
                                                                 'nome_api' => 'detPlano',
-                                                                'items' => array(
-                                                                    'properties' => array(
+                                                                'items' => [
+                                                                    'properties' => [
                                                                         'detPlano3_tpDep'    => 'tpDep',
                                                                         'detPlano3_cpfDep'   => 'cpfDep',
                                                                         'detPlano3_nmDep'    => 'nmDep',
@@ -131,14 +131,14 @@ return array(
                                                                         'detPlano3_vlrPgDep_operadora2',
                                                                         'detPlano3_cnpj_operadora1',
                                                                         'detPlano3_cnpj_operadora2',
-                                                                    )
-                                                                )
-                                                            ),
-                                                            'dependente_4' => array(
+                                                                    ]
+                                                                ]
+                                                            ],
+                                                            'dependente_4' => [
                                                                 'type' => 'array',
                                                                 'nome_api' => 'detPlano',
-                                                                'items' => array(
-                                                                    'properties' => array(
+                                                                'items' => [
+                                                                    'properties' => [
                                                                         'detPlano4_tpDep'    => 'tpDep',
                                                                         'detPlano4_cpfDep'   => 'cpfDep',
                                                                         'detPlano4_nmDep'    => 'nmDep',
@@ -147,14 +147,14 @@ return array(
                                                                         'detPlano4_vlrPgDep_operadora2',
                                                                         'detPlano4_cnpj_operadora1',
                                                                         'detPlano4_cnpj_operadora2',
-                                                                    )
-                                                                )
-                                                            ),
-                                                            'dependente_5' => array(
+                                                                    ]
+                                                                ]
+                                                            ],
+                                                            'dependente_5' => [
                                                                 'type' => 'array',
                                                                 'nome_api' => 'detPlano',
-                                                                'items' => array(
-                                                                    'properties' => array(
+                                                                'items' => [
+                                                                    'properties' => [
                                                                         'detPlano5_tpDep'    => 'tpDep',
                                                                         'detPlano5_cpfDep'   => 'cpfDep',
                                                                         'detPlano5_nmDep'    => 'nmDep',
@@ -163,14 +163,14 @@ return array(
                                                                         'detPlano5_vlrPgDep_operadora2',
                                                                         'detPlano5_cnpj_operadora1',
                                                                         'detPlano5_cnpj_operadora2',
-                                                                    )
-                                                                )
-                                                            ),
-                                                            'dependente_6' => array(
+                                                                    ]
+                                                                ]
+                                                            ],
+                                                            'dependente_6' => [
                                                                 'type' => 'array',
                                                                 'nome_api' => 'detPlano',
-                                                                'items' => array(
-                                                                    'properties' => array(
+                                                                'items' => [
+                                                                    'properties' => [
                                                                         'detPlano6_tpDep'    => 'tpDep',
                                                                         'detPlano6_cpfDep'   => 'cpfDep',
                                                                         'detPlano6_nmDep'    => 'nmDep',
@@ -179,14 +179,14 @@ return array(
                                                                         'detPlano6_vlrPgDep_operadora2',
                                                                         'detPlano6_cnpj_operadora1',
                                                                         'detPlano6_cnpj_operadora2',
-                                                                    )
-                                                                )
-                                                            ),
-                                                            'dependente_7' => array(
+                                                                    ]
+                                                                ]
+                                                            ],
+                                                            'dependente_7' => [
                                                                 'type' => 'array',
                                                                 'nome_api' => 'detPlano',
-                                                                'items' => array(
-                                                                    'properties' => array(
+                                                                'items' => [
+                                                                    'properties' => [
                                                                         'detPlano7_tpDep'    => 'tpDep',
                                                                         'detPlano7_cpfDep'   => 'cpfDep',
                                                                         'detPlano7_nmDep'    => 'nmDep',
@@ -195,14 +195,14 @@ return array(
                                                                         'detPlano7_vlrPgDep_operadora2',
                                                                         'detPlano7_cnpj_operadora1',
                                                                         'detPlano7_cnpj_operadora2',
-                                                                    )
-                                                                )
-                                                            ),
-                                                            'dependente_8' => array(
+                                                                    ]
+                                                                ]
+                                                            ],
+                                                            'dependente_8' => [
                                                                 'type' => 'array',
                                                                 'nome_api' => 'detPlano',
-                                                                'items' => array(
-                                                                    'properties' => array(
+                                                                'items' => [
+                                                                    'properties' => [
                                                                         'detPlano8_tpDep'    => 'tpDep',
                                                                         'detPlano8_cpfDep'   => 'cpfDep',
                                                                         'detPlano8_nmDep'    => 'nmDep',
@@ -211,14 +211,14 @@ return array(
                                                                         'detPlano8_vlrPgDep_operadora2',
                                                                         'detPlano8_cnpj_operadora1',
                                                                         'detPlano8_cnpj_operadora2',
-                                                                    )
-                                                                )
-                                                            ),
-                                                            'dependente_9' => array(
+                                                                    ]
+                                                                ]
+                                                            ],
+                                                            'dependente_9' => [
                                                                 'type' => 'array',
                                                                 'nome_api' => 'detPlano',
-                                                                'items' => array(
-                                                                    'properties' => array(
+                                                                'items' => [
+                                                                    'properties' => [
                                                                         'detPlano9_tpDep'    => 'tpDep',
                                                                         'detPlano9_cpfDep'   => 'cpfDep',
                                                                         'detPlano9_nmDep'    => 'nmDep',
@@ -227,14 +227,14 @@ return array(
                                                                         'detPlano9_vlrPgDep_operadora2',
                                                                         'detPlano9_cnpj_operadora1',
                                                                         'detPlano9_cnpj_operadora2',
-                                                                    )
-                                                                )
-                                                            ),
-                                                            'dependente_10' => array(
+                                                                    ]
+                                                                ]
+                                                            ],
+                                                            'dependente_10' => [
                                                                 'type' => 'array',
                                                                 'nome_api' => 'detPlano',
-                                                                'items' => array(
-                                                                    'properties' => array(
+                                                                'items' => [
+                                                                    'properties' => [
                                                                         'detPlano10_tpDep'    => 'tpDep',
                                                                         'detPlano10_cpfDep'   => 'cpfDep',
                                                                         'detPlano10_nmDep'    => 'nmDep',
@@ -243,122 +243,122 @@ return array(
                                                                         'detPlano10_vlrPgDep_operadora2',
                                                                         'detPlano10_cnpj_operadora1',
                                                                         'detPlano10_cnpj_operadora2',
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            'infoPerApur_infoAgNocivo' => array(
+                                                                    ]
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ],
+                                            'infoPerApur_infoAgNocivo' => [
                                                 'nome_api' => 'infoAgNocivo',
-                                                'properties' => array(
+                                                'properties' => [
                                                     'infoPerApur_grauExp' => 'grauExp',
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            'infoPerAnt' => array(
-                                'groups' => array(
-                                    'ideADC' => array(
-                                        'properties' => array(
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            'infoPerAnt' => [
+                                'groups' => [
+                                    'ideADC' => [
+                                        'properties' => [
                                             'dtAcConv',
                                             'tpAcConv',
                                             'compAcConv',
                                             'dtEfAcConv',
                                             'dsc',
-                                        ),
-                                        'groups' => array(
-                                            'idePeriodo' => array(
-                                                'properties' => array(
+                                        ],
+                                        'groups' => [
+                                            'idePeriodo' => [
+                                                'properties' => [
                                                     'perRef'
-                                                ),
-                                                'groups' => array(
-                                                    'ideEstabLot' => array(
-                                                        'properties' => array(
+                                                ],
+                                                'groups' => [
+                                                    'ideEstabLot' => [
+                                                        'properties' => [
                                                             'infoPerAnt_tpInsc' => 'tpInsc',
                                                             'infoPerAnt_nrInsc' => 'nrInsc',
                                                             'infoPerAnt_codLotacao' => 'codLotacao',
-                                                        ),
-                                                        'groups' => array(
-                                                            'detVerbas' => array(
-                                                                'properties' => array(
+                                                        ],
+                                                        'groups' => [
+                                                            'detVerbas' => [
+                                                                'properties' => [
                                                                     'detVerbas_codRubr'    => 'codRubr',
                                                                     'detVerbas_ideTabRubr' => 'ideTabRubr',
                                                                     'detVerbas_qtdRubr'    => 'qtdRubr',
                                                                     'detVerbas_fatorRubr'  => 'fatorRubr',
                                                                     'detVerbas_vrUnit'     => 'vrUnit',
                                                                     'detVerbas_vrRubr'     => 'vrRubr',
-                                                                )
-                                                            ),
-                                                            'infoPerAnt_infoAgNocivo' => array(
+                                                                ]
+                                                            ],
+                                                            'infoPerAnt_infoAgNocivo' => [
                                                                 'nome_api' => 'infoAgNocivo',
-                                                                'properties' => array(
+                                                                'properties' => [
                                                                     'infoPerAnt_grauExp' => 'grauExp'
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            'infoTrabInterm' => array(
-                                'properties' => array(
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            'infoTrabInterm' => [
+                                'properties' => [
                                     'codConv'
-                                )
-                            ),
-                        )
-                    ),
-                    'procJudTrab' => array(
-                        'properties' => array(
+                                ]
+                            ],
+                        ]
+                    ],
+                    'procJudTrab' => [
+                        'properties' => [
                             'tpTrib',
                             'procJudTrab_nrProcJud' => 'nrProcJud',
                             'codSusp',
-                        ),
-                    ),
-                    'infoMV' => array(
-                        'properties' => array(
+                        ],
+                    ],
+                    'infoMV' => [
+                        'properties' => [
                             'indMV',
-                        ),
-                        'groups' => array(
-                            'remunOutrEmpr' => array(
-                                'properties' => array(
+                        ],
+                        'groups' => [
+                            'remunOutrEmpr' => [
+                                'properties' => [
                                     'remunOutrEmpr_tpInsc' => 'tpInsc',
                                     'remunOutrEmpr_nrInsc' => 'nrInsc',
                                     'codCateg',
                                     'vlrRemunOE',
-                                )
-                            )
-                        )
-                    ),
-                    'procCS' => array(
-                        'properties' => array(
+                                ]
+                            ]
+                        ]
+                    ],
+                    'procCS' => [
+                        'properties' => [
                            'procCS_nrProcJud' => 'nrProcJud'
-                        )
-                    )
-                )
-            ),
-            'quarentena' => array(
-                'properties' => array(
+                        ]
+                    ]
+                ]
+            ],
+            'quarentena' => [
+                'properties' => [
                     'dtFimQuar'
-                )
-            ),
-            'consigFGTS' => array(
-                'properties' => array(
+                ]
+            ],
+            'consigFGTS' => [
+                'properties' => [
                     'insConsig',
                     'nrContr'
-                )
-            )
-        )
-    ),
-    'desligamento_rubricas' => array(
-        'properties' => array(
+                ]
+            ]
+        ]
+    ],
+    'desligamento_rubricas' => [
+        'properties' => [
             'desligamento_rubricas_json'
-        )
-    )
-);
+        ]
+    ]
+];

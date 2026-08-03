@@ -56,7 +56,7 @@ class CampanhaPublicitaria
     public function __construct($codigo = null)
     {
         if ($codigo) {
-            $campanhapublicitaria = CampanhaPublicitariaRepository::find(sequencial);
+            $campanhapublicitaria = CampanhaPublicitariaRepository::find(\SEQUENCIAL);
 
             $this->codigo = $campanhapublicitaria->getCodigo();
             $this->cgm = $campanhapublicitaria->getCgm();

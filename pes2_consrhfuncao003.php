@@ -31,8 +31,8 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("classes/db_rhfuncao_classe.php"));
 require_once(modification("classes/db_rhregime_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 $clrhfuncao = new cl_rhfuncao;
 $clrhregime = new cl_rhregime;
 
@@ -106,14 +106,14 @@ if(isset($funcao) && trim($funcao)!=""){
   
   $result_funcao = db_query($sql1);
   
-  if(pg_numrows($result_funcao) == 0){
+  if(pg_num_rows($result_funcao) == 0){
     db_redireciona("db_erros.php?fechar=true&db_erro=Cargo não encontrado");
   }
   
   db_fieldsmemory($result_funcao,0);
   $ocup = 0;
   $saldo = 0;
-  for($i=0;$i<pg_numrows($result_funcao);$i++){
+  for($i=0;$i<pg_num_rows($result_funcao);$i++){
     db_fieldsmemory($result_funcao,$i);                                  
     $ocup += $ocupados;
   }
@@ -188,7 +188,7 @@ if(isset($selecao) && !empty($selecao)) {
 
   $result_funcionarios = db_query($sql1);
 
-$numrows = pg_numrows($result_funcionarios);
+$numrows = pg_num_rows($result_funcionarios);
 if($numrows == 0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado");
 }
@@ -198,7 +198,7 @@ $colunas = "";
 $virgula = "";
 for($x = 0; $x < $clrhregime->numrows; $x ++) {
   db_fieldsmemory($result_regime, $x);
-  $colunas .= $virgula.strtolower($rh30_vinculo);
+  $colunas .= $virgula.strtolower((string) $rh30_vinculo);
   $virgula = ",";
 }
 

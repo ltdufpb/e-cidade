@@ -75,7 +75,7 @@ class ContaReduzida extends \BaseClassRepository
                 $informacaoComplementar = new \stdClass();
                 $informacaoComplementar->codigo = $infoComplementar->c121_sequencial;
                 $informacaoComplementar->sigla = $infoComplementar->c121_sigla;
-                $informacaoComplementar->descricao = urlencode($infoComplementar->c121_descricao);
+                $informacaoComplementar->descricao = urlencode((string) $infoComplementar->c121_descricao);
 
                 return $informacaoComplementar;
             });
@@ -126,7 +126,7 @@ class ContaReduzida extends \BaseClassRepository
         );
         $rsConlancamInfo = \db_query($sqlConlancamInfo);
 
-        $aInfoComplementar = array();
+        $aInfoComplementar = [];
         for ($i = 0; $i < pg_num_rows($rsConlancamInfo); $i++) {
             $infoComplementar = \db_utils::fieldsMemory($rsConlancamInfo, $i);
 

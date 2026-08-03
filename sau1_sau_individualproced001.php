@@ -43,7 +43,7 @@ include(modification("classes/db_cgs_und_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $sd24_i_unidade = db_getsession("DB_coddepto");
 
 $clprontuarios     = new cl_prontuarios;
@@ -59,7 +59,7 @@ $clrotulo->label("z01_i_cgsund");
 $db_opcao     = 1;
 $db_botao     = true;
 $db_botao1    = false;
-$db_processar = isset($db_processar)?$db_processar:false;
+$db_processar ??= false;
 
 $sd29_i_usuario = DB_getsession("DB_id_usuario");
 $login          = DB_getsession("DB_login");
@@ -68,9 +68,9 @@ $login          = DB_getsession("DB_login");
 $result = $clprontagendamento->sql_record($clprontagendamento->sql_query(null,"*",null,"s102_i_prontuario = $sd24_i_codigo"));
 if( $clprontagendamento->numrows > 0 ){
   db_fieldsmemory($result,0);
-  $sd29_d_data_dia = substr($sd23_d_consulta,8,2);
-  $sd29_d_data_mes = substr($sd23_d_consulta,5,2);
-  $sd29_d_data_ano = substr($sd23_d_consulta,0,4);
+  $sd29_d_data_dia = substr((string) $sd23_d_consulta,8,2);
+  $sd29_d_data_mes = substr((string) $sd23_d_consulta,5,2);
+  $sd29_d_data_ano = substr((string) $sd23_d_consulta,0,4);
   $sd29_c_hora     = $sd23_c_hora;
 }else{
   $sd29_d_data_dia = date("d",db_getsession("DB_datausu"));

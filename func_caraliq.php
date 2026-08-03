@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_caraliq_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcaraliq = new cl_caraliq;
 $clcaraliq->rotulo->label("j73_anousu");
@@ -105,10 +105,10 @@ $clcaraliq->rotulo->label("j73_aliq");
           $sql = $clcaraliq->sql_query(db_getsession('DB_anousu'),"",$campos,"j73_anousu#j73_caract","");
         }
         
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j73_aliq)){
-          $repassa = array("chave_j73_anousu" => $chave_j73_anousu,
-                           "chave_j73_aliq"   => $chave_j73_aliq);
+          $repassa = ["chave_j73_anousu" => $chave_j73_anousu,
+                           "chave_j73_aliq"   => $chave_j73_aliq];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

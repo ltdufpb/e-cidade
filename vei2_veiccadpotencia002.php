@@ -32,7 +32,7 @@ $clveiccadpotencia = new cl_veiccadpotencia;
 $clveiccadpotencia->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label('');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if($ordem == "a") {
 	$desc_ordem = "Alfabética";
 	$order_by = "ve31_descr";

@@ -38,7 +38,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/JSON.php"));
 db_app::import("orcamento.suplementacao.*");
 db_app::import("Dotacao");
-$aParametros         = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+$aParametros         = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
 $oParametroOrcamento = $aParametros[0];
 
 $instituicaoSessao = db_getsession('DB_instit');
@@ -49,7 +49,7 @@ $oParam            = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno          = new stdClass;
 $oRetorno->status  = 1;
 $oRetorno->message = "";
-$oRetorno->itens   = array();
+$oRetorno->itens   = [];
 switch ($oParam->exec) {
 
   case "getDadosDotacaoPPA":
@@ -106,7 +106,7 @@ switch ($oParam->exec) {
                                                               );
 
       $rsSuplementacoes = $oDaoSuplementacao->sql_record($sSqlSuplementacoes);
-      $oRetorno->itens  = array();
+      $oRetorno->itens  = [];
       if ($oDaoSuplementacao->numrows > 0) {
 
         for ($i = 0; $i < $oDaoSuplementacao->numrows; $i++) {
@@ -136,7 +136,7 @@ switch ($oParam->exec) {
         db_inicio_transacao();
 
         foreach ($oParam->aSuplementacoes as $iSuplementacao) {
-            $dDataProcessamento = implode("-", array_reverse(explode("/", $oParam->dataprocessamento)));
+            $dDataProcessamento = implode("-", array_reverse(explode("/", (string) $oParam->dataprocessamento)));
             $oSuplementacao = new Suplementacao($iSuplementacao);
             $oSuplementacao->processar($dDataProcessamento);
         }

@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -214,7 +214,7 @@ if (isset($gera) || isset($gera1) || isset($gera2)){
   }
 // echo "<br><br><br><br><br>".$sql;
   $result = pg_query($sql);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  for($x = 0;$x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
     fputs($arquivo,'00'.
                  db_formatar($nome ,'s',' ',45,'d',0).
@@ -331,7 +331,7 @@ if (isset($gera) || isset($gera1) || isset($gera2)){
     $desc      = 0;
     $margem_c  = 0;
     $res_ger = pg_query($sql_ger);
-    for($g = 0;$g < pg_numrows($res_ger);$g++){
+    for($g = 0;$g < pg_num_rows($res_ger);$g++){
       db_fieldsmemory($res_ger,$g);
       if($tipo == 'v'){
 	if($perc == 'p'){
@@ -378,11 +378,11 @@ if (isset($gera) || isset($gera1) || isset($gera2)){
 	}
       }
     }
-    fputs($arquivo,'MS'.str_pad($mensagem1,64,' ',STR_PAD_RIGHT).str_repeat('PMG',61).'P'."\r\n");
-    fputs($arquivo,'MS'.str_pad($mensagem2,64,' ',STR_PAD_RIGHT).str_repeat('PMG',61).'P'."\r\n");
-    fputs($arquivo,'MS'.str_pad($mensagem3,64,' ',STR_PAD_RIGHT).str_repeat('PMG',61).'P'."\r\n");
-    fputs($arquivo,'MS'.str_pad($mensagem4,64,' ',STR_PAD_RIGHT).str_repeat('PMG',61).'P'."\r\n");
-    fputs($arquivo,'MS'.str_pad($mensagem5,64,' ',STR_PAD_RIGHT).str_repeat('PMG',61).'P'."\r\n");
+    fputs($arquivo,'MS'.str_pad((string) $mensagem1,64,' ',STR_PAD_RIGHT).str_repeat('PMG',61).'P'."\r\n");
+    fputs($arquivo,'MS'.str_pad((string) $mensagem2,64,' ',STR_PAD_RIGHT).str_repeat('PMG',61).'P'."\r\n");
+    fputs($arquivo,'MS'.str_pad((string) $mensagem3,64,' ',STR_PAD_RIGHT).str_repeat('PMG',61).'P'."\r\n");
+    fputs($arquivo,'MS'.str_pad((string) $mensagem4,64,' ',STR_PAD_RIGHT).str_repeat('PMG',61).'P'."\r\n");
+    fputs($arquivo,'MS'.str_pad((string) $mensagem5,64,' ',STR_PAD_RIGHT).str_repeat('PMG',61).'P'."\r\n");
     fputs($arquivo,'TT'.
  	   db_formatar(str_replace(',','',str_replace('.','',trim(db_formatar($bruto,'f')))),'s','0',9 ,'e',0).
  	   db_formatar(str_replace(',','',str_replace('.','',trim(db_formatar($desc,'f')))),'s','0',9 ,'e',0).

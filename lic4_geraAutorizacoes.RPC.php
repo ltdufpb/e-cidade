@@ -84,7 +84,7 @@ switch ($oParam->exec) {
             if ($oProcesso->processo) {
                 $oRetorno->pc90_numeroprocesso = $oProcesso->processo;
             }
-            $oRetorno->pc90_numeroprocesso = urlencode($oRetorno->pc90_numeroprocesso);
+            $oRetorno->pc90_numeroprocesso = urlencode((string) $oRetorno->pc90_numeroprocesso);
             $oRetorno->numeroLicitacao = $oProcesso->l20_numero;
             $oRetorno->anoLicitacao = $oProcesso->l20_anousu;
             $oRetorno->instituicaoLicitacao = $oProcesso->l20_instit;
@@ -112,8 +112,8 @@ switch ($oParam->exec) {
                 $oStdLicitacao->anoLicitacao         = $dadosAutorizacaoEmpenho->getAno();
                 $oStdLicitacao->iModalidadeLicitacao = $oStdDados->pc50_codcom;
                 $oStdLicitacao->instituicaoLicitacao = $oStdDados->l20_instit;
-                $oStdLicitacao->sModalidadeLicitacao = utf8_encode($oStdDados->pc50_codcom);
-                $oStdLicitacao->sModalidadeLicitacao = utf8_encode($oStdDados->pc50_codcom);
+                $oStdLicitacao->sModalidadeLicitacao = mb_convert_encoding($oStdDados->pc50_codcom, 'UTF-8', 'ISO-8859-1');
+                $oStdLicitacao->sModalidadeLicitacao = mb_convert_encoding($oStdDados->pc50_codcom, 'UTF-8', 'ISO-8859-1');
                 $oRetorno->dados[] = $oStdLicitacao;
             }
         } else {
@@ -133,7 +133,7 @@ switch ($oParam->exec) {
                 $oStdLicitacao->anoLicitacao         = $oStdDados->l20_anousu;
                 $oStdLicitacao->instituicaoLicitacao = $oStdDados->l20_instit;
                 $oStdLicitacao->iModalidadeLicitacao = $oStdDados->pc50_codcom;
-                $oStdLicitacao->sModalidadeLicitacao = utf8_encode($oStdDados->pc50_codcom);
+                $oStdLicitacao->sModalidadeLicitacao = mb_convert_encoding($oStdDados->pc50_codcom, 'UTF-8', 'ISO-8859-1');
                 $oRetorno->dados[] = $oStdLicitacao;
             }
         }
@@ -142,15 +142,15 @@ switch ($oParam->exec) {
 
     case "getTipoLicitacao":
 
-        $aWhere = array(
+        $aWhere = [
             "l03_instit = " . db_getsession("DB_instit"),
             "l03_codcom = {$oParam->iTipoCompra}"
-        );
+        ];
 
         $oDaoCfgLiclicita = new cl_cflicita();
         $sSqlTipoLicitacao = $oDaoCfgLiclicita->sql_query_file(null, "l03_tipo, l03_descr", 'l03_tipo', implode(' and ', $aWhere));
         $rsTipoLicitacao = $oDaoCfgLiclicita->sql_record($sSqlTipoLicitacao);
-        $oRetorno->aTiposLicitacao = array();
+        $oRetorno->aTiposLicitacao = [];
 
         if ($oDaoCfgLiclicita->numrows > 0) {
             for ($iTipoLicitacao = 0; $iTipoLicitacao < $oDaoCfgLiclicita->numrows; $iTipoLicitacao++) {
@@ -198,7 +198,7 @@ switch ($oParam->exec) {
 
         if ($rsResumo && pg_num_rows($rsResumo) > 0) {
             $oResumo = db_utils::fieldsMemory($rsResumo, 0, false, false, false);
-            $oRetorno->sResumo = utf8_encode($oResumo->pc10_resumo);
+            $oRetorno->sResumo = mb_convert_encoding($oResumo->pc10_resumo, 'UTF-8', 'ISO-8859-1');
         }
         /*
          * Busca os Tipos de Compra
@@ -210,7 +210,7 @@ switch ($oParam->exec) {
             'pc50_ativo is true'
         );
         $rsExecPcTipoCompra = $oDaoPcTipoCompra->sql_record($sSqlPcTipoCompra);
-        $aPcTipoCompra = array();
+        $aPcTipoCompra = [];
 
         if ($oDaoPcTipoCompra->numrows > 0) {
             for ($iRow = 0; $iRow < $oDaoPcTipoCompra->numrows; $iRow++) {
@@ -232,7 +232,7 @@ switch ($oParam->exec) {
          */
         $sSqlTipoEmpenho = $oDaoEmpTipo->sql_query_file();
         $rsExecTipoEmpenho = $oDaoEmpTipo->sql_record($sSqlTipoEmpenho);
-        $aTipoEmpenho = array();
+        $aTipoEmpenho = [];
 
         if ($oDaoEmpTipo->numrows > 0) {
             for ($iRow = 0; $iRow < $oDaoEmpTipo->numrows; $iRow++) {
@@ -254,7 +254,7 @@ switch ($oParam->exec) {
         $oLicitacao = new licitacao($oParam->iCodigo);
         $aItensAutorizacao = $oLicitacao->getItensParaAutorizacao();
         $oRetorno->listaMetaHistoricos = AutorizacaoEmpenho::getListaCompletaMetasHistoricos();
-        $oRetorno->aItens = array();
+        $oRetorno->aItens = [];
         $oRetorno->complementos = [];
         foreach ($aItensAutorizacao as $item) {
             $dotacao = DotacaoRepository::getDotacaoPorCodigoAno($item->codigodotacao, DB_getsession('DB_anousu'));

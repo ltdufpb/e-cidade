@@ -187,7 +187,7 @@ if(isset($z01_numcgm) && $z01_numcgm>0 && empty($q02_inscr)){
 	  <?=db_input('z01_numcgm',10,$Iz01_numcgm,true,'text',3)?>
          <?=@$Lz01_nome?><?php 
          $result_nome=db_query(" select z01_nome from cgm where z01_numcgm = $z01_numcgm ");
-         if (pg_numrows($result_nome)>0){
+         if (pg_num_rows($result_nome)>0){
          	db_fieldsmemory($result_nome,0);
          }
          db_input('z01_nome',50,@$Iz01_nome,true,'text',3)?>
@@ -219,7 +219,7 @@ if(isset($z01_numcgm) && $z01_numcgm>0 && empty($q02_inscr)){
 	  </td>
 	  <td>
 <?php 
-$anos=array();
+$anos=[];
 $anoatual=date("Y",db_getsession("DB_datausu"));
 for($i=$anoatual; $i>($anoatual-15); $i--){
   $anos[$i] = $i;
@@ -244,8 +244,7 @@ if (isset($q05_ano) && $q05_ano != ""){
 db_select("q05_ano",$anos,true,$db_opcao,"onChange='js_controla();'","","","","");
 
 if (!isset($q05_ano)){
-  reset($anos);
-  $q05_ano=key($anos);
+  $q05_ano=array_key_first($anos);
 }
 
 ?>
@@ -258,7 +257,7 @@ if (!isset($q05_ano)){
 <td>
 <?php 
 
-$result=array("1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+$result=["1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
 
 if (isset($q05_mes) && $q05_mes != ""){
   if(isset($mesant) && $mesant != ""){
@@ -303,7 +302,7 @@ if ((isset($q05_ano)&&$q05_ano!=""&&is_numeric($q05_ano))&&(isset($q05_mes)&&$q0
 	  <td>
 <?php 
 if(isset($numrows33)){
-  $array=array();
+  $array=[];
   for($g=0; $g<$numrows33; $g++){
     db_fieldsmemory($result33,0);
     $array[$q81_valexe]=$q81_valexe;
@@ -396,7 +395,7 @@ db_textarea('q05_histor',5,30,$Iq05_histor,true,'text',$db_opcao,"")
 	<td colspan="2">
          <?php 
 //           echo $sql_codigo;
-      	   $cliframe_alterar_excluir_html->colunas       = array("q06_nota"=>$Lq06_nota,"q06_valor"=>$Lq06_valor."(R$)");
+      	   $cliframe_alterar_excluir_html->colunas       = ["q06_nota"=>$Lq06_nota,"q06_valor"=>$Lq06_valor."(R$)"];
            $cliframe_alterar_excluir_html->iframe_width  = "290";
       	   $cliframe_alterar_excluir_html->iframe_nome   = "criatabela";
       	   $cliframe_alterar_excluir_html->iframe_height = "185";

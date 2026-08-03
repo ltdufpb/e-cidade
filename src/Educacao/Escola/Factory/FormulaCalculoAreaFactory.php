@@ -25,19 +25,13 @@ class FormulaCalculoAreaFactory
      */
     public static function get(FormaObtencaoEnum $formaObtencao)
     {
-        switch ($formaObtencao->value()) {
-            case FormaObtencaoEnum::ATRIBUIDO:
-                return new Atribuido();
-            case FormaObtencaoEnum::SOMA:
-                return new Soma();
-            case FormaObtencaoEnum::MEDIA_ARITMETICA:
-                return new MediaAritmetica();
-            case FormaObtencaoEnum::MAIOR_NIVEL:
-                return new MaiorNivel();
-            case FormaObtencaoEnum::APROVACAO_PERIODOS:
-                return new AprovacaoTodosPeriodos();
-            default:
-                throw new Exception("Fórmula de cálculo da área de conhecimento não implementada.");
-        }
+        return match ($formaObtencao->value()) {
+            FormaObtencaoEnum::ATRIBUIDO => new Atribuido(),
+            FormaObtencaoEnum::SOMA => new Soma(),
+            FormaObtencaoEnum::MEDIA_ARITMETICA => new MediaAritmetica(),
+            FormaObtencaoEnum::MAIOR_NIVEL => new MaiorNivel(),
+            FormaObtencaoEnum::APROVACAO_PERIODOS => new AprovacaoTodosPeriodos(),
+            default => throw new Exception("Fórmula de cálculo da área de conhecimento não implementada."),
+        };
     }
 }

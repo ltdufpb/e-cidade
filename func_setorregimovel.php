@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_setorregimovel_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsetorregimovel = new cl_setorregimovel;
 $clsetorregimovel->rotulo->label("j69_sequencial");
 $clsetorregimovel->rotulo->label("j69_descr");
@@ -99,9 +99,9 @@ $clsetorregimovel->rotulo->label("j69_descr");
         }else{
            $sql = $clsetorregimovel->sql_query("",$campos,"j69_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j69_descr)){
-          $repassa = array("chave_j69_sequencial"=>$chave_j69_sequencial,"chave_j69_descr"=>$chave_j69_descr);
+          $repassa = ["chave_j69_sequencial"=>$chave_j69_sequencial,"chave_j69_descr"=>$chave_j69_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

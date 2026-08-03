@@ -46,7 +46,7 @@ $oRotulo->label("s103_c_agendaprog");
           </td>
           <td nowrap >
             <?php
-            $x = array( 'I' => 'Habilitado', 'L' => 'Desabilitado' );
+            $x = [ 'I' => 'Habilitado', 'L' => 'Desabilitado' ];
             db_select( 's103_c_lancafaa', $x, true, $db_opcao, "" );
             ?>
           </td>
@@ -67,7 +67,7 @@ $oRotulo->label("s103_c_agendaprog");
           </td>
           <td nowrap >
             <?php
-            $x = array( 'S' => 'SIM', 'N' => 'NÃO' );
+            $x = [ 'S' => 'SIM', 'N' => 'NÃO' ];
             db_select( 's103_c_agendaproc', $x, true, $db_opcao, "" );
             ?>
           </td>
@@ -78,7 +78,7 @@ $oRotulo->label("s103_c_agendaprog");
           </td>
           <td nowrap >
             <?php
-            $x = array( 'S' => 'SIM', 'N' => 'NÃO' );
+            $x = [ 'S' => 'SIM', 'N' => 'NÃO' ];
             db_select( 's103_c_emitircomprovante', $x, true, $db_opcao, "" );
             ?>
           </td>
@@ -99,7 +99,7 @@ $oRotulo->label("s103_c_agendaprog");
           </td>
           <td nowrap >
            <?php
-           $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
+           $x = [ 'N' => 'NÃO', 'S' => 'SIM' ];
            db_select( 's103_c_agendaprog', $x, true, $db_opcao, "" );
            ?>
           </td>
@@ -110,7 +110,7 @@ $oRotulo->label("s103_c_agendaprog");
           </td>
           <td nowrap >
            <?php
-           $x = array( 'N' => 'NÃO', 'S' => 'SIM' );
+           $x = [ 'N' => 'NÃO', 'S' => 'SIM' ];
            db_select( 's103_procsemcbo', $x, true, $db_opcao, "" );
            ?>
           </td>

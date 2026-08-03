@@ -37,7 +37,7 @@ class ContribuicaoRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param array|int $ids
@@ -63,7 +63,7 @@ class ContribuicaoRepository
      * @param Contribuicao|null $contribuicao
      * @throws Exception
      */
-    public function delete(Contribuicao $contribuicao = null)
+    public function delete(?Contribuicao $contribuicao = null)
     {
         $id = $contribuicao instanceof Contribuicao ? $contribuicao->getSequencial() : null;
 
@@ -81,7 +81,7 @@ class ContribuicaoRepository
      * @return bool|Contribuicao
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_contribuicaosindicalperiodosidicatos;
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -105,13 +105,13 @@ class ContribuicaoRepository
      * @return Contribuicao[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $dao = new cl_contribuicaosindicalperiodosidicatos;
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $contribuicao = array();
+        $contribuicao = [];
 
         if (pg_num_rows($rs) === 0) {
             return $contribuicao;
@@ -138,7 +138,7 @@ class ContribuicaoRepository
             throw new Exception("Não foi possível buscar o período da contribuicao sindical");
         }
 
-        $contribuicao = array();
+        $contribuicao = [];
 
         if (pg_num_rows($rs) === 0) {
             return $contribuicao;
@@ -242,7 +242,7 @@ class ContribuicaoRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
         return $this;
     }
 

@@ -63,7 +63,7 @@ if ($iCidadaoSemAvaliacao > 0) {
  * -> Sómente menores de 18 anos
  * -> Possuir ao menos um benefício ativo
  */
-$aSituacoesValidas = array('EM PAGAMENTO', 'LIBERADO', 'CONCEDIDO');
+$aSituacoesValidas = ['EM PAGAMENTO', 'LIBERADO', 'CONCEDIDO'];
 $iDataAtual        = Date("Y-m-d", db_getsession("DB_datausu")); 
 
 $sWhere  = "extract (year from AGE('{$iDataAtual}', ov02_datanascimento)) < 18 ";
@@ -79,7 +79,7 @@ $sSqlCidadaoCadUnico = $oDaoCidadaoCadUnico->sql_query(null, "as02_sequencial", 
 $rsCidadaoCadUnico   = $oDaoCidadaoCadUnico->sql_record($sSqlCidadaoCadUnico);
 $iLinhas             = $oDaoCidadaoCadUnico->numrows;
 
-$aCadastroUnico = array();
+$aCadastroUnico = [];
 
 if ($iLinhas > 0) {
   
@@ -122,7 +122,7 @@ foreach ($aCadastroUnico as $iPosicao => $oCadastroUnico) {
   /**
    * Buscamos os Beneficios
    */
-  $aListaBeneficios = array();
+  $aListaBeneficios = [];
   foreach ($oCadastroUnico->getBeneficios() as $oBeneficio) {
     
     if (in_array($oBeneficio->getSituacao(), $aSituacoesValidas)) {

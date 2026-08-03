@@ -44,7 +44,7 @@ $lErro = false;
 $sMensagem = "";
 
 $oDadosCsv = new RelatorioFolhaSinteticoAnalitico();
-$aRubricas = array();
+$aRubricas = [];
 $iTipoFolha = "";
 $iAgrupador = "";
 $aSelecionados = "";
@@ -55,7 +55,7 @@ try {
 
         case 'gerarCsv':
 
-            $aRubricasFamilia = array(
+            $aRubricasFamilia = [
                 '0014',
                 'R918',
                 'R920',
@@ -71,31 +71,31 @@ try {
                 '0143',
                 'R919',
                 'R918'
-            );
+            ];
 
-            $aRubricaPrevidencia = array(
+            $aRubricaPrevidencia = [
                 "R993"
-            );
-            $aRubricasIrrf = array(
+            ];
+            $aRubricasIrrf = [
                 "R913",
                 "R914",
                 "R915"
-            );
+            ];
 
             $sCampos = "distinct rhpessoal.* ";
 
             if ($oParam->sFaixareg != "") {
 
-                $oDadosCsv->setFiltroAgrupador(explode(",", $oParam->sFaixareg));
+                $oDadosCsv->setFiltroAgrupador(explode(",", (string) $oParam->sFaixareg));
             } elseif ($oParam->sFaixalot != "") {
 
-                $oDadosCsv->setFiltroAgrupador(explode(",", $oParam->sFaixalot));
+                $oDadosCsv->setFiltroAgrupador(explode(",", (string) $oParam->sFaixalot));
             } elseif ($oParam->sFaixaloc != "") {
 
-                $oDadosCsv->setFiltroAgrupador(explode(",", $oParam->sFaixaloc));
+                $oDadosCsv->setFiltroAgrupador(explode(",", (string) $oParam->sFaixaloc));
             } elseif ($oParam->sFaixaorg != "") {
 
-                $oDadosCsv->setFiltroAgrupador(explode(",", $oParam->sFaixaorg));
+                $oDadosCsv->setFiltroAgrupador(explode(",", (string) $oParam->sFaixaorg));
             } elseif (! empty($oParam->iRegini) && ! (empty($oParam->iRegfim))) {
 
                 $oDadosCsv->setFiltroAgrupador($oParam->iRegini, $oParam->iRegfim);
@@ -181,7 +181,7 @@ try {
             if ($oParam->sSel != '') {
                 $sql_selecao = "select r44_descr from selecao where r44_selec = " . $oParam->sSel . " and r44_instit = " . db_getsession('DB_instit');
                 $res_selecao = pg_query($sql_selecao);
-                if (pg_numrows($res_selecao) > 0) {
+                if (pg_num_rows($res_selecao) > 0) {
                     $tem_selecao = 'Sim';
                     db_fieldsmemory($res_selecao, 0);
                 }
@@ -255,7 +255,7 @@ try {
                 $aDadosRelatorio["sMotivoAfastamento"] = "Motivo Afastamento";
             }
 
-            fputcsv($fArquivo, $aDadosRelatorio, ";");
+            fputcsv($fArquivo, $aDadosRelatorio, ";", escape: '\\');
 
             /**
              * Percorre os dados referentes ao servidor
@@ -387,7 +387,7 @@ try {
                  * se o provento nao for zero acrescentamos ao arquivo, caso contrario nao é necessario apresenta-lo;
                  */
                 if ((float) $aDadosRelatorio["nProventoSintetico"] > 0) {
-                    fputcsv($fArquivo, $aDadosRelatorio, ";");
+                    fputcsv($fArquivo, $aDadosRelatorio, ";", escape: '\\');
                     unset($aDadosRelatorio);
                 }
             }
@@ -396,26 +396,26 @@ try {
              * CRiando legendas para o relatório analitico
              */
             if ($oParam->sAnsin == 'a') {
-                $aLegenda = array();
-                $aLegenda[] = array(
+                $aLegenda = [];
+                $aLegenda[] = [
                     " ",
                     " "
-                );
-                $aLegenda[] = array(
+                ];
+                $aLegenda[] = [
                     "Rubrica",
                     "Descrição"
-                );
+                ];
                 foreach ($aDadosRubricas as $oRubrica) {
-                    $aLegenda[] = array(
+                    $aLegenda[] = [
                         $oRubrica->rubrica,
                         $oRubrica->descr_rubrica
-                    );
+                    ];
                 }
             }
 
             if ($oParam->sAnsin == 'a') {
                 foreach ($aLegenda as $aCSVLegenda) {
-                    fputcsv($fArquivo, $aCSVLegenda, ";");
+                    fputcsv($fArquivo, $aCSVLegenda, ";", escape: '\\');
                 }
             }
 

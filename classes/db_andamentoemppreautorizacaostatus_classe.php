@@ -29,7 +29,7 @@ class cl_andamentoemppreautorizacaostatus
     public function __construct()
     {
         $this->rotulo = new rotulo("andamentoemppreautorizacaostatus");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -96,7 +96,7 @@ class cl_andamentoemppreautorizacaostatus
         $result = db_query($sql);
         if ($result==false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql   = " ($this->id) não Incluído. Inclusão Abortada.";
                 $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
                 $this->erro_banco = " já Cadastrado";
@@ -123,12 +123,12 @@ class cl_andamentoemppreautorizacaostatus
             $resaco = $this->sql_record($this->sql_query_file($this->id));
             if (($resaco!=false)||($this->numrows!=0)) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
                 $resac = db_query("insert into db_acountkey values($acount,1011345,'$this->id','I')");
-                $resac = db_query("insert into db_acount values($acount,1010193,1011345,'','".AddSlashes(pg_result($resaco, 0, 'id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("insert into db_acount values($acount,1010193,7856,'','".AddSlashes(pg_result($resaco, 0, 'status'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                $resac = db_query("insert into db_acount values($acount,1010193,750,'','".AddSlashes(pg_result($resaco, 0, 'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,1010193,1011345,'','".AddSlashes(pg_fetch_result($resaco, 0, 'id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,1010193,7856,'','".AddSlashes(pg_fetch_result($resaco, 0, 'status'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                $resac = db_query("insert into db_acount values($acount,1010193,750,'','".AddSlashes(pg_fetch_result($resaco, 0, 'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
             }
         }
         return true;
@@ -139,10 +139,10 @@ class cl_andamentoemppreautorizacaostatus
         $this->atualizacampos();
         $sql = " update andamentoemppreautorizacaostatus set ";
         $virgula = "";
-        if (trim($this->id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id"])) {
+        if (trim((string) $this->id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id"])) {
             $sql  .= $virgula." id = $this->id ";
             $virgula = ",";
-            if (trim($this->id) == null) {
+            if (trim((string) $this->id) == null) {
                 $this->erro_sql = " Campo id não informado.";
                 $this->erro_campo = "id";
                 $this->erro_banco = "";
@@ -152,10 +152,10 @@ class cl_andamentoemppreautorizacaostatus
                 return false;
             }
         }
-        if (trim($this->status)!="" || isset($GLOBALS["HTTP_POST_VARS"]["status"])) {
+        if (trim((string) $this->status)!="" || isset($GLOBALS["HTTP_POST_VARS"]["status"])) {
             $sql  .= $virgula." status = $this->status ";
             $virgula = ",";
-            if (trim($this->status) == null) {
+            if (trim((string) $this->status) == null) {
                 $this->erro_sql = " Campo Status não informado.";
                 $this->erro_campo = "status";
                 $this->erro_banco = "";
@@ -165,10 +165,10 @@ class cl_andamentoemppreautorizacaostatus
                 return false;
             }
         }
-        if (trim($this->descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descricao"])) {
+        if (trim((string) $this->descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descricao"])) {
             $sql  .= $virgula." descricao = '$this->descricao' ";
             $virgula = ",";
-            if (trim($this->descricao) == null) {
+            if (trim((string) $this->descricao) == null) {
                 $this->erro_sql = " Campo Descrição não informado.";
                 $this->erro_campo = "descricao";
                 $this->erro_banco = "";
@@ -189,17 +189,17 @@ class cl_andamentoemppreautorizacaostatus
             if ($this->numrows > 0) {
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                      $acount = pg_result($resac, 0, 0);
+                      $acount = pg_fetch_result($resac, 0, 0);
                       $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
                       $resac = db_query("insert into db_acountkey values($acount,1011345,'$this->id','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["id"]) || $this->id != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010193,1011345,'".AddSlashes(pg_result($resaco, $conresaco, 'id'))."','$this->id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                        $resac = db_query("insert into db_acount values($acount,1010193,1011345,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'id'))."','$this->id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["status"]) || $this->status != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010193,7856,'".AddSlashes(pg_result($resaco, $conresaco, 'status'))."','$this->status',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                        $resac = db_query("insert into db_acount values($acount,1010193,7856,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'status'))."','$this->status',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["descricao"]) || $this->descricao != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010193,750,'".AddSlashes(pg_result($resaco, $conresaco, 'descricao'))."','$this->descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                        $resac = db_query("insert into db_acount values($acount,1010193,750,'".AddSlashes(pg_fetch_result($resaco, $conresaco, 'descricao'))."','$this->descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                     }
                 }
             }
@@ -250,12 +250,12 @@ class cl_andamentoemppreautorizacaostatus
             if (($resaco != false) || ($this->numrows!=0)) {
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                     $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
                     $resac  = db_query("insert into db_acountkey values($acount,1011345,'$id','E')");
-                    $resac  = db_query("insert into db_acount values($acount,1010193,1011345,'','".AddSlashes(pg_result($resaco, $iresaco, 'id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,1010193,7856,'','".AddSlashes(pg_result($resaco, $iresaco, 'status'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-                    $resac  = db_query("insert into db_acount values($acount,1010193,750,'','".AddSlashes(pg_result($resaco, $iresaco, 'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac  = db_query("insert into db_acount values($acount,1010193,1011345,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac  = db_query("insert into db_acount values($acount,1010193,7856,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'status'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+                    $resac  = db_query("insert into db_acount values($acount,1010193,750,'','".AddSlashes(pg_fetch_result($resaco, $iresaco, 'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
                 }
             }
         }

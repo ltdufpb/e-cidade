@@ -94,16 +94,16 @@ if (!isset($mesfolha) || (isset($mesfolha) && trim($mesfolha) == "")) {
                     <?php
                     db_input("folhaselecion", 3, 0, true, 'hidden', 3);
 
-                    $arr_pontosgerfs_inicial = array();
-                    $arr_pontosgerfs_final = array();
-                    $arr_pontos = array(
+                    $arr_pontosgerfs_inicial = [];
+                    $arr_pontosgerfs_final = [];
+                    $arr_pontos = [
                         "0" =>"Salário",
                         "1" =>"Adiantamento",
                         "3" =>"Rescisão",
                         "4" =>"Saldo do 13o",
                         "5" =>"Complementar",
                         "6" =>"Suplementar"
-                    );
+                    ];
                     try {
                         $oCompetencia = new DBCompetencia($anofolha, $mesfolha);
 
@@ -203,7 +203,7 @@ if (!isset($mesfolha) || (isset($mesfolha) && trim($mesfolha) == "")) {
                         </td>
                     <td nowrap align="left">
                         <?php
-                        $arr_todos = array(0=>"0",1=>"Todos ...");
+                        $arr_todos = [0=>"0",1=>"Todos ..."];
                         $complementares = 0;
                         db_selectrecord("complementares", $result_gerfcom, true, $db_opcao, "", "", "", $arr_todos, "", 1);
                         ?>
@@ -249,7 +249,7 @@ if (!isset($mesfolha) || (isset($mesfolha) && trim($mesfolha) == "")) {
                         </td>
                         <td nowrap align="left">
                             <?php
-                            $arr_todos = array(0=>"0", 1=>"Todos ...");
+                            $arr_todos = [0=>"0", 1=>"Todos ..."];
                             $complementares = 0;
                             db_selectrecord(
                                 "suplementares",
@@ -305,7 +305,7 @@ if (!isset($mesfolha) || (isset($mesfolha) && trim($mesfolha) == "")) {
                 <td nowrap align="left">
                     <?php
                     $pagtosaldo = "f";
-                    $arr_truefalse = array('f'=>'Não', 't'=>'Sim');
+                    $arr_truefalse = ['f'=>'Não', 't'=>'Sim'];
                     db_select("pagtosaldo", $arr_truefalse, true, 1, "onchange='js_verificacampos(this.name);'");
                     echo str_repeat("&nbsp;", 10);
                     ?>
@@ -416,7 +416,7 @@ function js_preenchepesquisa(chave) {
     db_iframe_folha.hide();
     <?php
     if ($db_opcao != 1) {
-        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+        echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
     ?>
 }

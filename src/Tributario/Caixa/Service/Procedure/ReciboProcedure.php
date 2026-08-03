@@ -9,13 +9,9 @@ use ECidade\Tributario\Caixa\Entity\Recibo;
 
 final class ReciboProcedure extends Procedure
 {
-    private $session;
-
-    public function __construct(DataBase $dataBase, Session $session)
+    public function __construct(DataBase $dataBase, private readonly Session $session)
     {
         parent::__construct($dataBase);
-
-        $this->session = $session;
     }
 
     public function execute(Recibo $recibo)

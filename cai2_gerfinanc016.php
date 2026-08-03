@@ -33,7 +33,7 @@ $clcgm    = new cl_cgm;
 $clrotulo = new rotulocampo;
 $clrotulo->label("t64_class"); //classificação
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sqlCondCgm = "";
 
@@ -132,7 +132,7 @@ if(!isset($numcgm) && !isset($matric) && !isset($inscr) && !isset($numpre)) {
 
 
 $result  = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 if($numrows == 0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado");

@@ -82,7 +82,7 @@ $clrotulo = new rotulocampo;
   db_fieldsmemory($result,$x);
   ?>
   <tr>
-   <td align="center"><?=str_pad($ed09_i_codigo,7,0,str_pad_left)?></td>
+   <td align="center"><?=str_pad((string) $ed09_i_codigo,7,0,\STR_PAD_LEFT)?></td>
    <td>&nbsp;<?=$z01_nome?></td>
    <?php for($x=1;$x<=15;$x++){?>
    <td width="5%" align="center"><input type="checkbox" name="presente" value="<?=$ed09_i_codigo?>"></td>

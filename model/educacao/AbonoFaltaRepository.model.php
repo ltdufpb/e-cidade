@@ -45,7 +45,7 @@ class AbonoFaltaRepository {
    * Array com os Abonos de Faltas
    * @var array
    */
-  private $aAbonoFalta = array();
+  private $aAbonoFalta = [];
 
   /**
    * Instância da classe

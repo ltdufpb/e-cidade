@@ -148,7 +148,7 @@ $clclabens->rotulo->label();
         </td>
         <td colspan="4">
           <?php 
-            $aTipoImpressao = array("S"=>"Sintético","A"=>"Análitico"); 
+            $aTipoImpressao = ["S"=>"Sintético","A"=>"Análitico"]; 
             db_select("impressao", $aTipoImpressao, true, 1);
           ?>
         </td>

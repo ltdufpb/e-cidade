@@ -96,7 +96,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("bi07_codigo"=>@$bi07_codigo,"bi07_nome"=>@$bi07_nome,"bi07_qtdlivros"=>@$bi07_qtdlivros,"bi07_tempo"=>@$bi07_tempo);
+   $chavepri= ["bi07_codigo"=>@$bi07_codigo,"bi07_nome"=>@$bi07_nome,"bi07_qtdlivros"=>@$bi07_qtdlivros,"bi07_tempo"=>@$bi07_tempo];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clleitorcategoria->sql_query("","*","bi07_nome"," bi07_biblioteca = $bi07_biblioteca");
    $cliframe_alterar_excluir->campos  ="bi07_codigo,bi07_nome,bi07_qtdlivros,bi07_tempo";

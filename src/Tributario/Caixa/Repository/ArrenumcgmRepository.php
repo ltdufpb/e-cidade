@@ -35,6 +35,7 @@ final class ArrenumcgmRepository extends ArrebaseRepository
     /**
      * Método sobrescrito pois a order dos parâmetros do sql_query_file é diferente
      */
+    #[\Override]
     public function find($numcgm, $numpre)
     {
         $sql = $this->dao->sql_query_file($numcgm, $numpre);

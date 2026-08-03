@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE itbirural
 class cl_itbirural { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $it18_guia = 0; 
-   var $it18_frente = 0; 
-   var $it18_fundos = 0; 
-   var $it18_prof = 0; 
-   var $it18_localimovel = null; 
-   var $it18_distcidade = 0; 
-   var $it18_nomelograd = null; 
-   var $it18_area = 0; 
-   var $it18_coordenadas = null; 
+   public $it18_guia = 0; 
+   public $it18_frente = 0; 
+   public $it18_fundos = 0; 
+   public $it18_prof = 0; 
+   public $it18_localimovel = null; 
+   public $it18_distcidade = 0; 
+   public $it18_nomelograd = null; 
+   public $it18_area = 0; 
+   public $it18_coordenadas = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  it18_guia = int8 = Número da guia de ITBI 
                  it18_frente = float8 = Frente 
                  it18_fundos = float8 = Fundos 
@@ -64,10 +64,10 @@ class cl_itbirural {
                  it18_coordenadas = varchar(50) = Longitude/Latitude 
                  ";
    //funcao construtor da classe 
-   function cl_itbirural() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbirural"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -161,7 +161,7 @@ class cl_itbirural {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cadastro de itbi rural ($this->it18_guia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cadastro de itbi rural já Cadastrado";
@@ -185,18 +185,18 @@ class cl_itbirural {
      $resaco = $this->sql_record($this->sql_query_file($this->it18_guia));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5840,'$this->it18_guia','I')");
-       $resac = db_query("insert into db_acount values($acount,935,5840,'','".AddSlashes(pg_result($resaco,0,'it18_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,935,5843,'','".AddSlashes(pg_result($resaco,0,'it18_frente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,935,5844,'','".AddSlashes(pg_result($resaco,0,'it18_fundos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,935,5845,'','".AddSlashes(pg_result($resaco,0,'it18_prof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,935,13526,'','".AddSlashes(pg_result($resaco,0,'it18_localimovel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,935,13527,'','".AddSlashes(pg_result($resaco,0,'it18_distcidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,935,13528,'','".AddSlashes(pg_result($resaco,0,'it18_nomelograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,935,13529,'','".AddSlashes(pg_result($resaco,0,'it18_area'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,935,15481,'','".AddSlashes(pg_result($resaco,0,'it18_coordenadas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,935,5840,'','".AddSlashes(pg_fetch_result($resaco,0,'it18_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,935,5843,'','".AddSlashes(pg_fetch_result($resaco,0,'it18_frente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,935,5844,'','".AddSlashes(pg_fetch_result($resaco,0,'it18_fundos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,935,5845,'','".AddSlashes(pg_fetch_result($resaco,0,'it18_prof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,935,13526,'','".AddSlashes(pg_fetch_result($resaco,0,'it18_localimovel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,935,13527,'','".AddSlashes(pg_fetch_result($resaco,0,'it18_distcidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,935,13528,'','".AddSlashes(pg_fetch_result($resaco,0,'it18_nomelograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,935,13529,'','".AddSlashes(pg_fetch_result($resaco,0,'it18_area'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,935,15481,'','".AddSlashes(pg_fetch_result($resaco,0,'it18_coordenadas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -205,10 +205,10 @@ class cl_itbirural {
       $this->atualizacampos();
      $sql = " update itbirural set ";
      $virgula = "";
-     if(trim($this->it18_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_guia"])){ 
+     if(trim((string) $this->it18_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_guia"])){ 
        $sql  .= $virgula." it18_guia = $this->it18_guia ";
        $virgula = ",";
-       if(trim($this->it18_guia) == null ){ 
+       if(trim((string) $this->it18_guia) == null ){ 
          $this->erro_sql = " Campo Número da guia de ITBI nao Informado.";
          $this->erro_campo = "it18_guia";
          $this->erro_banco = "";
@@ -218,31 +218,31 @@ class cl_itbirural {
          return false;
        }
      }
-     if(trim($this->it18_frente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_frente"])){ 
-        if(trim($this->it18_frente)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it18_frente"])){ 
+     if(trim((string) $this->it18_frente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_frente"])){ 
+        if(trim((string) $this->it18_frente)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it18_frente"])){ 
            $this->it18_frente = "0" ; 
         } 
        $sql  .= $virgula." it18_frente = $this->it18_frente ";
        $virgula = ",";
      }
-     if(trim($this->it18_fundos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_fundos"])){ 
-        if(trim($this->it18_fundos)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it18_fundos"])){ 
+     if(trim((string) $this->it18_fundos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_fundos"])){ 
+        if(trim((string) $this->it18_fundos)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it18_fundos"])){ 
            $this->it18_fundos = "0" ; 
         } 
        $sql  .= $virgula." it18_fundos = $this->it18_fundos ";
        $virgula = ",";
      }
-     if(trim($this->it18_prof)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_prof"])){ 
-        if(trim($this->it18_prof)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it18_prof"])){ 
+     if(trim((string) $this->it18_prof)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_prof"])){ 
+        if(trim((string) $this->it18_prof)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it18_prof"])){ 
            $this->it18_prof = "0" ; 
         } 
        $sql  .= $virgula." it18_prof = $this->it18_prof ";
        $virgula = ",";
      }
-     if(trim($this->it18_localimovel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_localimovel"])){ 
+     if(trim((string) $this->it18_localimovel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_localimovel"])){ 
        $sql  .= $virgula." it18_localimovel = '$this->it18_localimovel' ";
        $virgula = ",";
-       if(trim($this->it18_localimovel) == null ){ 
+       if(trim((string) $this->it18_localimovel) == null ){ 
          $this->erro_sql = " Campo Localização do Imóvel nao Informado.";
          $this->erro_campo = "it18_localimovel";
          $this->erro_banco = "";
@@ -252,21 +252,21 @@ class cl_itbirural {
          return false;
        }
      }
-     if(trim($this->it18_distcidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_distcidade"])){ 
-        if(trim($this->it18_distcidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it18_distcidade"])){ 
+     if(trim((string) $this->it18_distcidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_distcidade"])){ 
+        if(trim((string) $this->it18_distcidade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it18_distcidade"])){ 
            $this->it18_distcidade = "0" ; 
         } 
        $sql  .= $virgula." it18_distcidade = $this->it18_distcidade ";
        $virgula = ",";
      }
-     if(trim($this->it18_nomelograd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_nomelograd"])){ 
+     if(trim((string) $this->it18_nomelograd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_nomelograd"])){ 
        $sql  .= $virgula." it18_nomelograd = '$this->it18_nomelograd' ";
        $virgula = ",";
      }
-     if(trim($this->it18_area)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_area"])){ 
+     if(trim((string) $this->it18_area)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_area"])){ 
        $sql  .= $virgula." it18_area = $this->it18_area ";
        $virgula = ",";
-       if(trim($this->it18_area) == null ){ 
+       if(trim((string) $this->it18_area) == null ){ 
          $this->erro_sql = " Campo Área Total nao Informado.";
          $this->erro_campo = "it18_area";
          $this->erro_banco = "";
@@ -276,7 +276,7 @@ class cl_itbirural {
          return false;
        }
      }
-     if(trim($this->it18_coordenadas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_coordenadas"])){ 
+     if(trim((string) $this->it18_coordenadas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it18_coordenadas"])){ 
        $sql  .= $virgula." it18_coordenadas = '$this->it18_coordenadas' ";
        $virgula = ",";
      }
@@ -288,27 +288,27 @@ class cl_itbirural {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5840,'$this->it18_guia','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it18_guia"]) || $this->it18_guia != "")
-           $resac = db_query("insert into db_acount values($acount,935,5840,'".AddSlashes(pg_result($resaco,$conresaco,'it18_guia'))."','$this->it18_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,935,5840,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it18_guia'))."','$this->it18_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it18_frente"]) || $this->it18_frente != "")
-           $resac = db_query("insert into db_acount values($acount,935,5843,'".AddSlashes(pg_result($resaco,$conresaco,'it18_frente'))."','$this->it18_frente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,935,5843,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it18_frente'))."','$this->it18_frente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it18_fundos"]) || $this->it18_fundos != "")
-           $resac = db_query("insert into db_acount values($acount,935,5844,'".AddSlashes(pg_result($resaco,$conresaco,'it18_fundos'))."','$this->it18_fundos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,935,5844,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it18_fundos'))."','$this->it18_fundos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it18_prof"]) || $this->it18_prof != "")
-           $resac = db_query("insert into db_acount values($acount,935,5845,'".AddSlashes(pg_result($resaco,$conresaco,'it18_prof'))."','$this->it18_prof',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,935,5845,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it18_prof'))."','$this->it18_prof',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it18_localimovel"]) || $this->it18_localimovel != "")
-           $resac = db_query("insert into db_acount values($acount,935,13526,'".AddSlashes(pg_result($resaco,$conresaco,'it18_localimovel'))."','$this->it18_localimovel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,935,13526,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it18_localimovel'))."','$this->it18_localimovel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it18_distcidade"]) || $this->it18_distcidade != "")
-           $resac = db_query("insert into db_acount values($acount,935,13527,'".AddSlashes(pg_result($resaco,$conresaco,'it18_distcidade'))."','$this->it18_distcidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,935,13527,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it18_distcidade'))."','$this->it18_distcidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it18_nomelograd"]) || $this->it18_nomelograd != "")
-           $resac = db_query("insert into db_acount values($acount,935,13528,'".AddSlashes(pg_result($resaco,$conresaco,'it18_nomelograd'))."','$this->it18_nomelograd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,935,13528,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it18_nomelograd'))."','$this->it18_nomelograd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it18_area"]) || $this->it18_area != "")
-           $resac = db_query("insert into db_acount values($acount,935,13529,'".AddSlashes(pg_result($resaco,$conresaco,'it18_area'))."','$this->it18_area',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,935,13529,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it18_area'))."','$this->it18_area',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it18_coordenadas"]) || $this->it18_coordenadas != "")
-           $resac = db_query("insert into db_acount values($acount,935,15481,'".AddSlashes(pg_result($resaco,$conresaco,'it18_coordenadas'))."','$this->it18_coordenadas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,935,15481,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it18_coordenadas'))."','$this->it18_coordenadas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -353,18 +353,18 @@ class cl_itbirural {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5840,'$it18_guia','E')");
-         $resac = db_query("insert into db_acount values($acount,935,5840,'','".AddSlashes(pg_result($resaco,$iresaco,'it18_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,935,5843,'','".AddSlashes(pg_result($resaco,$iresaco,'it18_frente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,935,5844,'','".AddSlashes(pg_result($resaco,$iresaco,'it18_fundos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,935,5845,'','".AddSlashes(pg_result($resaco,$iresaco,'it18_prof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,935,13526,'','".AddSlashes(pg_result($resaco,$iresaco,'it18_localimovel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,935,13527,'','".AddSlashes(pg_result($resaco,$iresaco,'it18_distcidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,935,13528,'','".AddSlashes(pg_result($resaco,$iresaco,'it18_nomelograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,935,13529,'','".AddSlashes(pg_result($resaco,$iresaco,'it18_area'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,935,15481,'','".AddSlashes(pg_result($resaco,$iresaco,'it18_coordenadas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,935,5840,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it18_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,935,5843,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it18_frente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,935,5844,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it18_fundos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,935,5845,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it18_prof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,935,13526,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it18_localimovel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,935,13527,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it18_distcidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,935,13528,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it18_nomelograd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,935,13529,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it18_area'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,935,15481,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it18_coordenadas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from itbirural
@@ -424,7 +424,7 @@ class cl_itbirural {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:itbirural";
@@ -439,7 +439,7 @@ class cl_itbirural {
    function sql_query ( $it18_guia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -464,7 +464,7 @@ class cl_itbirural {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,7 +477,7 @@ class cl_itbirural {
    function sql_query_file ( $it18_guia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -498,7 +498,7 @@ class cl_itbirural {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_itbirural {
    function sql_query_dados( $it18_guia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -534,7 +534,7 @@ class cl_itbirural {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

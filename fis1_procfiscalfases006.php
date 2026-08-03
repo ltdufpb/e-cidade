@@ -35,7 +35,7 @@ include(modification("classes/db_procfiscalfasesdoc_classe.php"));
 $clprocfiscalfases = new cl_procfiscalfases;
 $clprocfiscalfasesdoc = new cl_procfiscalfasesdoc;
  
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

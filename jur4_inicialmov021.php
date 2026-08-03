@@ -34,8 +34,8 @@ include(modification("classes/db_iptubase_classe.php"));
 include(modification("classes/db_inicial_classe.php"));
 include(modification("classes/db_inicialmov_classe.php"));
 include(modification("classes/db_situacao_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $db_botao=1;
 $botao=1;
 $db_opcao=1;
@@ -123,7 +123,7 @@ function js_gerar(){
     </td>  
     <td valign="top" width="30%" valign="top" align="left">
           <?php  
-            $matriz=split("#",$chave);
+            $matriz=preg_split("#\\##m",(string) $chave);
        	    for($y=0;$y<sizeof($matriz);$y++){
        	      if($matriz[$y]!=""){
    	        echo "<small>";

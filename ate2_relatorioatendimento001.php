@@ -24,12 +24,12 @@
  *  Copia da licenca no diretorio licenca/licenca_en.txt 
  *                                licenca/licenca_pt.txt 
  */
- 
+
 
 require(modification('fpdf151/pdf.php'));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 db_fieldsmemory($result, 0);
 
@@ -48,7 +48,7 @@ if($cliente != ""){
 
 if ($tecnico != ""){
 	$sql .= " and at03_id_usuario = $tecnico";
-	
+
 }
 
 $dataini= $at02_dataini_ano."-".$at02_dataini_mes."-".$at02_dataini_dia;
@@ -70,12 +70,12 @@ if ($datafim != "--"){
 
 $result = db_query($sql);
 
-if($result==false || pg_numrows($result)==0){
+if($result==false || pg_num_rows($result)==0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem atendimentos cadastrados!');
    exit;
 }
 
- 
+
 //db_criatabela($result);exit;
 
 
@@ -108,7 +108,7 @@ if(isset($tecnico)&& $tecnico != ""){
     }else{
     $head4 = "ATENDIMENTOS DE TODOS OS TÉCNICOS";	
 }
- 
+
  $pdf->open(); // inicia a geração do documento
  $total_geral = 0; // criação de uma variável para somar o total de registros
  $pdf->settextcolor(0,0,0); // seta a cor do texto como preta
@@ -118,7 +118,7 @@ if(isset($tecnico)&& $tecnico != ""){
 
 $ultatend = 0;
 $tamanho = 4;
-$numlinha = pg_numrows($result);
+$numlinha = pg_num_rows($result);
 
 for($x=0; $x< $numlinha;$x++){
  db_fieldsmemory($result,$x);
@@ -146,42 +146,42 @@ for($x=0; $x< $numlinha;$x++){
     $pdf->cell(25,$tamanho,db_formatar($at02_datafim, 'd'),1,0,"C",0);
     $pdf->cell(25,$tamanho,$at02_horafim,1,1,"C",0);
     $pdf->Ln();
-  
-  
-  if(trim($at02_solicitado) != ""){
+
+
+  if(trim((string) $at02_solicitado) != ""){
   	$pdf->multiCell(0,$tamanho,"SOLICITADO", 0, "J", 0, 30);
     $pdf->MultiCell(0,$tamanho,''.$at02_solicitado, 0, "J", 0, 30);
     $pdf->Ln();
-    
+
   } 
-  
-  if(trim($at02_feito) != ""){ 
+
+  if(trim((string) $at02_feito) != ""){ 
   	$pdf->MultiCell(0,$tamanho,"REALIZADO", 0, "J", 0, 30);
   	$pdf->MultiCell(0,$tamanho,''.$at02_feito, 0, "J", 0, 30);
   	$pdf->Ln();
-    
+
   }
-  
- 
-  if (trim($at02_observacao) != ""){
+
+
+  if (trim((string) $at02_observacao) != ""){
   	$pdf->MultiCell(0,$tamanho,''.$at02_observacao, 0, "J", 0, 30);
     $pdf->Ln();
-    
+
   } 
-   
-      
+
+
   }else{
     $pdf->cell(140,$tamanho,"Outros Técnicos:",1,0,"C",0);
     $pdf->cell(40,$tamanho,$login,1,1,"C",0);
     $pdf->Ln();
-    
+
   }
 
 $ultatend = $at02_codatend;      
-        
+
 } 
 
-    
+
 $pdf->Output(); // saída do relatório direto para o browser
 
 

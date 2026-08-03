@@ -55,22 +55,11 @@ class ExtraEvento
 
         $evento = null;
 
-        switch ($tipoEvento) {
-            case ExtraEventoAbstract::HORA_EVENTO:
-                $evento = new HoraEvento($diaTrabalho);
-
-                break;
-
-            case ExtraEventoAbstract::HORA_TRABALHADA:
-                $evento = new HoraTrabalhada($diaTrabalho);
-
-                break;
-
-            default:
-                throw new BusinessException('Tipo de evento não encontrado.');
-
-                break;
-        }
+        $evento = match ($tipoEvento) {
+            ExtraEventoAbstract::HORA_EVENTO => new HoraEvento($diaTrabalho),
+            ExtraEventoAbstract::HORA_TRABALHADA => new HoraTrabalhada($diaTrabalho),
+            default => throw new BusinessException('Tipo de evento não encontrado.'),
+        };
 
         return $evento;
     }

@@ -20,7 +20,7 @@ class DBJsonResponse extends JsonResponse
     public function __construct($data = null, $message = '', $status = 200, $encode = true, $headers = [], $options = 0)
     {
         if ($encode) {
-            $message = utf8_encode($message);
+            $message = mb_convert_encoding($message, 'UTF-8', 'ISO-8859-1');
             $data = self::convertFromLatin1ToUTF8Recursively($data);
         }
 
@@ -63,8 +63,8 @@ class DBJsonResponse extends JsonResponse
 
             return $data;
         } else {
-            if (!mb_detect_encoding($data, 'utf-8', true)) {
-                return utf8_encode($data);
+            if (!mb_detect_encoding((string) $data, 'utf-8', true)) {
+                return mb_convert_encoding($data, 'UTF-8', 'ISO-8859-1');
             }
         }
 

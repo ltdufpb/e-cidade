@@ -30,12 +30,10 @@ class AtributoValorReferenciaAlfaNumerico {
 
   private $iTamanho = 0;
 
-  private $iCodigo = null;
+  protected $aItensSelecionaveis = [];
 
-  protected $aItensSelecionaveis = array();
-
-  public function __construct($iCodigo = '') {
-    $this->iCodigo = $iCodigo;
+  public function __construct(private $iCodigo = '')
+  {
   }
 
   /**

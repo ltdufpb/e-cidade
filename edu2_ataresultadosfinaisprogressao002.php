@@ -35,9 +35,9 @@ define ('MSG_ATARESULTADOSFINAISPROGRESSAO002', "educacao.escola.edu2_ataresulta
 $oGet                         = db_utils::postmemory($_GET);
 $oGet->aTurmas                = str_replace('\\', "", $oGet->aTurmas);
 $oGet->aTurmas                = JSON::create()->parse($oGet->aTurmas);
-$oGet->sDiretor               = base64_decode($oGet->sDiretor);
-$oGet->sSecretario            = base64_decode($oGet->sSecretario);
-$oGet->sAssinaturaAdicicional = base64_decode($oGet->sAssinaturaAdicicional);
+$oGet->sDiretor               = base64_decode((string) $oGet->sDiretor);
+$oGet->sSecretario            = base64_decode((string) $oGet->sSecretario);
+$oGet->sAssinaturaAdicicional = base64_decode((string) $oGet->sAssinaturaAdicicional);
 
 $oConfig                         = new stdClass();
 $oConfig->sDiretor               = $oGet->sDiretor;
@@ -65,7 +65,7 @@ $oConfig->iColunaFrequencia      = 8;  // largura coluna frequencia
 $oConfig->iColunaRF              = 9;  // largura coluna resultado final
 
 
-$aDadosRelatorio = array();
+$aDadosRelatorio = [];
 
 try {
 
@@ -107,11 +107,11 @@ try {
     $oDadosTurma->sEtapa             = $oEtapa->getNome();
     $oDadosTurma->sTipoEnsino        = $oEnsino->getNome();
     $oDadosTurma->iAno               = $iAno;
-    $oDadosTurma->aRegenciasPagina   = array(); // controle das regencias que serão impressas por pagina
-    $oDadosTurma->aRegencias         = array();
+    $oDadosTurma->aRegenciasPagina   = []; // controle das regencias que serão impressas por pagina
+    $oDadosTurma->aRegencias         = [];
     $oDadosTurma->aTermoEncerramento = $aTermos;
 
-    $aAlunosTurma = array();
+    $aAlunosTurma = [];
     $aRegencias   = $oTurma->getDisciplinasPorEtapa($oEtapa);
 
     $iPagina   = 1;
@@ -176,7 +176,7 @@ try {
 
     }
 
-    uasort($aAlunosTurma, 'ordenaAlunoNome');
+    uasort($aAlunosTurma, ordenaAlunoNome(...));
     $oDadosTurma->aAlunosTurma = $aAlunosTurma;
     $aDadosRelatorio[]         = $oDadosTurma;
   }
@@ -229,7 +229,7 @@ foreach ($aDadosRelatorio as $oDadosRelatorio) {
 
   foreach ($oDadosRelatorio->aRegenciasPagina as $aListaRegencias) {
 
-    imprimirCabecalho($oPdf, $oConfig, $oDadosRelatorio, $aListaRegencias);
+    imprimirCabecalho($oPdf, $oConfig, $oDadosRelatorio);
     imprimirAluno($oPdf, $oConfig, $oDadosRelatorio, $aListaRegencias);
     imprimirRodape($oPdf, $oConfig, $oDadosRelatorio->aTermoEncerramento);
   }
@@ -329,7 +329,7 @@ function imprimirAluno($oPdf, $oConfig, $oDadosRelatorio, $aListaRegencias) {
 
   $iImprimirEmBranco = $oConfig->iLimiteRegenciaPagina - count($aListaRegencias);
   $iNumero           = 1;
-  $aNumerosImpressos = array();
+  $aNumerosImpressos = [];
 
   $oPdf->SetFont('Arial', '', 7);
   foreach ($oDadosRelatorio->aAlunosTurma as $aAlunoDisciplina) {
@@ -381,7 +381,7 @@ function imprimirAluno($oPdf, $oConfig, $oDadosRelatorio, $aListaRegencias) {
       if ( $oPdf->getY() >= $oConfig->iAlturaLimiteAlunos) {
 
         imprimirRodape($oPdf, $oConfig, $oDadosRelatorio->aTermoEncerramento);
-        imprimirCabecalho($oPdf, $oConfig, $oDadosRelatorio, $aListaRegencias);
+        imprimirCabecalho($oPdf, $oConfig, $oDadosRelatorio);
       }
       $aNumerosImpressos[] = $iNumero;
     }
@@ -459,14 +459,14 @@ function imprimirRodape($oPdf, $oConfig, $aTermoEncerramento) {
 
   $oPdf->ln(16);
 
-  $aNomeDiretor = array();
+  $aNomeDiretor = [];
   if ( !empty($oConfig->sDiretor) ) {
     $aNomeDiretor[] = $oConfig->sDiretor;
   }
   $aNomeDiretor[]  = "Diretor";
   $sNomeDiretor    = implode("\n", $aNomeDiretor);
 
-  $aNomeSecretario = array();
+  $aNomeSecretario = [];
   if ( !empty( $oConfig->sSecretario ) ) {
     $aNomeSecretario[] = $oConfig->sSecretario;
   }
@@ -509,5 +509,5 @@ function imprimirRodape($oPdf, $oConfig, $aTermoEncerramento) {
 $oPdf->output();
 
 function ordenaAlunoNome($aArrayAtual, $aProximoArray) {
-  return strcasecmp($aArrayAtual[0]->sNome, $aProximoArray[0]->sNome);
+  return strcasecmp((string) $aArrayAtual[0]->sNome, (string) $aProximoArray[0]->sNome);
 }

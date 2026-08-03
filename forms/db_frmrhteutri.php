@@ -133,7 +133,7 @@ db_input('rh67_vales',6,$Irh67_vales,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("t"=>"SIM","f"=>"NAO");
+$x = ["t"=>"SIM","f"=>"NAO"];
 db_select('rh67_ativo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -234,7 +234,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rhteutri.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcprojeto_classe.php"));
 $iSituacao = 1;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcprojeto = new cl_orcprojeto;
 $clorcprojeto->rotulo->label("o39_codproj");
 $clorcprojeto->rotulo->label("o39_numero");
@@ -68,9 +68,9 @@ $anousu = db_getsession("DB_anousu");
             <td width="4%" align="right" nowrap><b>Situação:</b></td>
             <td width="96%" align="left" nowrap>
               <?php 
-                $aSituacao = array('1' => 'Todos',
+                $aSituacao = ['1' => 'Todos',
                                    '2' => 'Aberto',
-                                   '3' => 'Fechado');
+                                   '3' => 'Fechado'];
                 db_select('iSituacao', $aSituacao, true, 2);
               ?>
             </td>

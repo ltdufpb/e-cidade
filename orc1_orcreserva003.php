@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_orcdotacao_classe.php"));
 require_once(modification("libs/db_liborcamento.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clorcreserva    = new cl_orcreserva;
@@ -47,7 +47,7 @@ $db_botao = false;
 $db_opcao = 33;
 $op = 3;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $db_opcao = 3;
 	$clorcreservaacordoitemdotacao->excluir(null, 'o84_orcreserva = ' . $o80_codres);
@@ -110,7 +110,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clorcreserva->erro_status=="0"){
     $clorcreserva->erro(true,false);
   }else{

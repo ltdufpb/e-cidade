@@ -40,14 +40,14 @@ require_once(modification("classes/db_fiscalcgm_classe.php"));
 require_once(modification("classes/db_procfiscalnotificacao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if (!isset($abas)) {
 	
   echo "<script>location.href='fis1_fiscal005.php?como=$como'</script>";
   exit;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clfiscal                = new cl_fiscal;
 $clfiscalocal            = new cl_fiscalocal;
@@ -61,7 +61,7 @@ $clprocfiscalnotificacao = new cl_procfiscalnotificacao;
 
 $db_opcao = 1;
 $db_botao = true;
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir") {
 	
 	$sqlerro  = false;
 	
@@ -224,7 +224,7 @@ if (!isset($pri)) {
 js_setatabulacao();
 </script>
 <?php 
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir") {
 	
 	db_msgbox($erro);
 	

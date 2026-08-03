@@ -67,7 +67,7 @@ db_input('rh59_descr',40,$Irh59_descr,true,'text',$db_opcao,"")
     </td>
     <td>
       <?php 
-      $arr_tipoocor = Array("S"=>"Somar","D"=>"Descontar");
+      $arr_tipoocor = ["S"=>"Somar","D"=>"Descontar"];
       db_select("rh59_tipo", $arr_tipoocor, true, $db_opcao);
       ?>
    </td>
@@ -85,7 +85,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rhpagtipoocor.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

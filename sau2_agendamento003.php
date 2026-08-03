@@ -29,12 +29,12 @@ require_once(modification('fpdf151/pdf.php'));
 require_once(modification('libs/db_stdlibwebseller.php'));
 require_once(modification('libs/db_utils.php'));
 
-parse_str( $_SERVER['QUERY_STRING'] );
+parse_str( (string) $_SERVER['QUERY_STRING'], $result );
 set_time_limit(0);
 
-$iAno = substr($sd23_d_consulta, 6, 4);
-$iMes = substr($sd23_d_consulta, 3, 2);
-$iDia = substr($sd23_d_consulta, 0, 2);
+$iAno = substr((string) $sd23_d_consulta, 6, 4);
+$iMes = substr((string) $sd23_d_consulta, 3, 2);
+$iDia = substr((string) $sd23_d_consulta, 0, 2);
 
 $sDataConsulta = "{$iAno}-{$iMes}-{$iDia}";
 
@@ -67,7 +67,7 @@ $sOrderBy        = 'sd30_i_codigo, sd30_c_horaini, sd23_i_ficha';
 $sSqlAgendamento = $oDaoAgendamentos->sql_query_ext('', '*', $sOrderBy, $sWhere);
 $rsAgendamento   = $oDaoAgendamentos->sql_record($sSqlAgendamento);
 
-$aAgendas = array();
+$aAgendas = [];
 $iLinhas  = pg_num_rows($rsAgendamento);
 for ($i = 0; $i < $iLinhas; $i++ ) {
 
@@ -83,7 +83,7 @@ for ($i = 0; $i < $iLinhas; $i++ ) {
     $oAgenda->iFichas     = $oDados->sd30_i_fichas;
     $oAgenda->iReservas   = $oDados->sd30_i_reservas;
     $oAgenda->iTurno      = $oDados->sd30_i_turno;
-    $oAgenda->aPacientes  = array();
+    $oAgenda->aPacientes  = [];
 
     $aAgendas[$oDados->sd30_i_codigo] = $oAgenda;
   }
@@ -94,8 +94,8 @@ for ($i = 0; $i < $iLinhas; $i++ ) {
 $oPdf = new PDF('L');
 $oPdf->Open();
 $oPdf->AliasNbPages();
-$oPdf->SetWidths( array( 7, 10, 15, 101, 20, 20, 15, 91) );
-$oPdf->SetAligns( array( "C", "C", "C", "C", "C", "C", "C", "C"));
+$oPdf->SetWidths( [ 7, 10, 15, 101, 20, 20, 15, 91] );
+$oPdf->SetAligns( [ "C", "C", "C", "C", "C", "C", "C", "C"]);
 
 $iAlturaRow = $oPdf->h - 32;
 $iAltura        = 4;
@@ -118,14 +118,14 @@ $lPrimeiraPagina = true;
 
 foreach ($aAgendas as $oAgenda ) {
 
-  imprimeCabecalho($oPdf, $oAgenda, $lPrimeiraPagina);
+  imprimeCabecalho($oPdf, $oAgenda);
   $lPrimeiraPagina = false;
 
   $lPinta = true;
   foreach ($oAgenda->aPacientes as $oPaciente) {
 
     if ( $oPdf->GetY() > ($oPdf->h - 20) ) {
-      imprimeCabecalho($oPdf, $oAgenda, true);
+      imprimeCabecalho($oPdf, $oAgenda);
     }
 
     $sPresenca = 'NÃO';
@@ -136,7 +136,7 @@ foreach ($aAgendas as $oAgenda ) {
 
     $sNomePaciente = $oPaciente->z01_v_nome;
 
-    $aDados   = array();
+    $aDados   = [];
     $aDados[] = $oPaciente->sd23_i_ficha;
     $aDados[] = $oPaciente->sd23_c_hora;
     $aDados[] = $oPaciente->sd23_i_numcgs;
@@ -144,7 +144,7 @@ foreach ($aAgendas as $oAgenda ) {
     $aDados[] = $oPaciente->z01_v_telef;
     $aDados[] = $oPaciente->z01_v_telcel;
     $aDados[] = $sPresenca;
-    $aDados[] = substr($oPaciente->sd23_t_obs, 0, 80);
+    $aDados[] = substr((string) $oPaciente->sd23_t_obs, 0, 80);
 
     $iLines = 0;
 

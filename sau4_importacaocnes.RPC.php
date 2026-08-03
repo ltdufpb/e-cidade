@@ -62,13 +62,13 @@ try {
         throw new ParameterException( _M( MENSAGENS_SAU4_IMPORTACAOCNES_RPC . 'caminho_nao_informado' ) );
       }
 
-      if( strtolower( pathinfo( $oParam->sCaminhoArquivo, PATHINFO_EXTENSION ) ) != 'xml' ) {
+      if( strtolower( pathinfo( (string) $oParam->sCaminhoArquivo, PATHINFO_EXTENSION ) ) != 'xml' ) {
         throw new ParameterException( _M( MENSAGENS_SAU4_IMPORTACAOCNES_RPC . 'arquivo_invalido' ) );
       }
 
       db_inicio_transacao();
 
-      $oRetorno->aCNES    = array();
+      $oRetorno->aCNES    = [];
       $oLogInconsistencia = new DBLog( 'JSON', 'tmp/log_inconsistencia_cnes' );
       $oImportacaoCNES    = new ImportacaoCNES( $oParam->sCaminhoArquivo, $oLogInconsistencia );
       $oImportacaoCNES->processar();
@@ -86,18 +86,18 @@ try {
         break;
       }
 
-      $aCNESSemVinculo = array();
+      $aCNESSemVinculo = [];
 
       foreach( $oImportacaoCNES->getUnidadesSemVinculo() as $iCNES => $oCNES ) {
 
         $oDadosCNES             = new stdClass();
         $oDadosCNES->iCodigo    = $iCNES;
-        $oDadosCNES->sDescricao = urlencode( $oCNES->sNomeDepartamento );
+        $oDadosCNES->sDescricao = urlencode( (string) $oCNES->sNomeDepartamento );
         $oRetorno->aCNES[]      = $oDadosCNES;
       }
 
       $aCNESSemVinculo          = $oImportacaoCNES->getCNESVinculados();
-      $oRetorno->aDepartamentos = array();
+      $oRetorno->aDepartamentos = [];
       $oDaoDBDepart             = new cl_db_depart();
       $sCamposDBDepart          = "coddepto, descrdepto, sd02_i_codigo, sd02_v_cnes";
       $sWhereDBDepart           = "     instit = {$iInstituicao}";
@@ -125,13 +125,13 @@ try {
 
         $oDadosDepartamentos = db_utils::fieldsMemory( $rsDBDepart, $iContador );
 
-        if( trim( $oDadosDepartamentos->sd02_v_cnes ) != '' && in_array( $oDadosDepartamentos->sd02_v_cnes, $aCNESSemVinculo ) ) {
+        if( trim( (string) $oDadosDepartamentos->sd02_v_cnes ) != '' && in_array( $oDadosDepartamentos->sd02_v_cnes, $aCNESSemVinculo ) ) {
           continue;
         }
 
         $oDepartamentoRetorno             = new stdClass();
         $oDepartamentoRetorno->iCodigo    = $oDadosDepartamentos->coddepto;
-        $oDepartamentoRetorno->sDescricao = urlencode( $oDadosDepartamentos->descrdepto );
+        $oDepartamentoRetorno->sDescricao = urlencode( (string) $oDadosDepartamentos->descrdepto );
 
         $oRetorno->aDepartamentos[] = $oDepartamentoRetorno;
       }
@@ -147,13 +147,13 @@ try {
         throw new ParameterException( _M( MENSAGENS_SAU4_IMPORTACAOCNES_RPC . 'caminho_nao_informado' ) );
       }
 
-      if( strtolower( pathinfo( $oParam->sCaminhoArquivo, PATHINFO_EXTENSION ) ) != 'xml' ) {
+      if( strtolower( pathinfo( (string) $oParam->sCaminhoArquivo, PATHINFO_EXTENSION ) ) != 'xml' ) {
         throw new ParameterException( _M( MENSAGENS_SAU4_IMPORTACAOCNES_RPC . 'arquivo_invalido' ) );
       }
 
       db_inicio_transacao();
 
-      $oRetorno->aCNES    = array();
+      $oRetorno->aCNES    = [];
       $oLogInconsistencia = new DBLog( 'JSON', 'tmp/log_inconsistencia_cnes_novos' );
       $oImportacaoCNES    = new ImportacaoCNES( $oParam->sCaminhoArquivo, $oLogInconsistencia );
       $oImportacaoCNES->processarNovosVinculos( $oParam->aVinculos );

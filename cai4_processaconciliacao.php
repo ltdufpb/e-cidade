@@ -56,7 +56,7 @@ $lJustificativaCaixa = false;
 $strJSONExtrato = '';
 $strJSONAutent  = '';
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if ( !empty($strJSONExtrato) ) {
   $strJSONExtrato = str_replace("\\","",$strJSONExtrato);
@@ -161,7 +161,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
   }
   if (isset($strJSONExtrato) && $strJSONExtrato != ''){
     // inserindo os itens do extrato
-    $arrayObjExtrato = $objJSON->decode(utf8_encode($strJSONExtrato));
+    $arrayObjExtrato = $objJSON->decode(mb_convert_encoding($strJSONExtrato, 'UTF-8', 'ISO-8859-1'));
     foreach ($arrayObjExtrato as $i => $objExtrato){
       if (is_object($objExtrato)){
 
@@ -239,7 +239,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
 //    $strJSONAutent = urldecode($strJSONAutent);
 //    echo($strJSONAutent);
 
-    $arrayObjAutent = $objJSON->decode(utf8_encode($strJSONAutent));
+    $arrayObjAutent = $objJSON->decode(mb_convert_encoding($strJSONAutent, 'UTF-8', 'ISO-8859-1'));
 
     foreach ( $arrayObjAutent as $i => $objAutent ){
       if (is_object($objAutent)){
@@ -371,7 +371,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
                                from conciliapendcorrente
                               where k89_concilia = {$concilia}
                                 and k89_id = {$objAutent->caixa}
-                                and k89_data = '".substr($objAutent->data,6,4)."-".substr($objAutent->data,3,2)."-".substr($objAutent->data,0,2)."'
+                                and k89_data = '".substr((string) $objAutent->data,6,4)."-".substr((string) $objAutent->data,3,2)."-".substr((string) $objAutent->data,0,2)."'
                                 and k89_autent = {$objAutent->autent}";
           $rsCadastrado   = db_query($sSqlCadastrado);
           if (pg_num_rows($rsCadastrado) > 0) {
@@ -424,7 +424,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
 
   db_inicio_transacao();
 //  $erromsg .= "inicio 111 ||||";
-  $arrayItens = array();
+  $arrayItens = [];
   if ($strJSONExtrato != ''){
     $arrayObjExtrato = $objJSON->decode($strJSONExtrato);
     foreach ($arrayObjExtrato as $i => $objExtrato){
@@ -555,7 +555,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
                                                         from concilia
                                                        where k68_sequencial = $concilia)
                              and k68_data >= (select k68_data from concilia where k68_sequencial = $concilia);");
-  $intNumrows = pg_numrows($rsConcilia); //$clconcilia->numrows;
+  $intNumrows = pg_num_rows($rsConcilia); //$clconcilia->numrows;
 
   for($x= 0; $x < $intNumrows; $x++){
     db_fieldsmemory($rsConcilia,$x);
@@ -651,6 +651,6 @@ if ($solicitacao == 'gravarJustificativaPendente') {
 
 function corrigeCodificacaoCaracteres($sString) {
 
-  return db_stdclass::db_stripTagsJson(utf8_decode(rawurldecode($sString)));
+  return db_stdclass::db_stripTagsJson(mb_convert_encoding(rawurldecode((string) $sString), 'ISO-8859-1'));
 }
 ?>

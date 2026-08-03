@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vac_campanha_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clvac_campanha = new cl_vac_campanha;
 $clvac_campanha->rotulo->label("vc11_i_codigo");
 $clvac_campanha->rotulo->label("vc11_c_nome");
@@ -97,9 +97,9 @@ $clvac_campanha->rotulo->label("vc11_c_nome");
         } else {
           $sql = $clvac_campanha->sql_query("",$campos,"vc11_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_vc11_i_codigo)) {
-          $repassa = array("chave_vc11_i_codigo"=>$chave_vc11_i_codigo,"chave_vc11_c_nome"=>$chave_vc11_c_nome);
+          $repassa = ["chave_vc11_i_codigo"=>$chave_vc11_i_codigo,"chave_vc11_c_nome"=>$chave_vc11_c_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

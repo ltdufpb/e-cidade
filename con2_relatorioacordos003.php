@@ -72,7 +72,7 @@ $sDepartamento = $oDepartamento->getNomeDepartamento();
 $oDaoAcordoClassificacao = new cl_acordoclassificacao();
 $sSqlClassificacoes = $oDaoAcordoClassificacao->sql_query_file();
 $rsClassificacoes = $oDaoAcordoClassificacao->sql_record($sSqlClassificacoes); 
-$aClassificacoes = array();
+$aClassificacoes = [];
 
 if ($oDaoAcordoClassificacao->numrows > 0) {
 
@@ -187,7 +187,7 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
               </td>
               <td colspan="3">  
                 <?php
-                  $aSituacao    = array();
+                  $aSituacao    = [];
                   $aSituacao[0] = "Todas";
                   $oDaoAcordoSituacao = db_utils::getDao("acordosituacao");
                   $sSql  = $oDaoAcordoSituacao->sql_query_file(null, "ac17_sequencial,ac17_descricao", null, '');
@@ -210,7 +210,7 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
               </td>
               <td colspan="3">  
                 <?php
-                  $aOrigem    = array();
+                  $aOrigem    = [];
                   $aOrigem[0] = "Todas";
                   $oDaoAcordoOrigem = db_utils::getDao("acordoorigem");
                   $sSql  = $oDaoAcordoOrigem->sql_query_file(null, "ac28_sequencial,ac28_descricao", null, '');
@@ -233,7 +233,7 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
               </td>
               <td colspan="3">  
                 <?PHP
-                  $aTipoAcordo    = array();
+                  $aTipoAcordo    = [];
                   $aTipoAcordo[0] = "Todos";
                   $oDaoAcordoTipo = db_utils::getDao("acordotipo");
                   $sSql  = $oDaoAcordoTipo->sql_query_file(null, "ac04_sequencial,ac04_descricao", null, '');
@@ -256,8 +256,8 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
               </td>
               <td colspan="3">  
                 <?php
-                  $aListarItens = array('N'=>'Não',
-                                        'S'=>'Sim');
+                  $aListarItens = ['N'=>'Não',
+                                        'S'=>'Sim'];
                   db_select('listaitens', $aListarItens, true, 1, "style='width: 100%;'");              
                 ?>
               </td>
@@ -268,8 +268,8 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
               </td>
               <td colspan="3">  
                 <?php
-                  $aListarMovimentacao = array('N'=>'Não',
-                                               'S'=>'Sim');
+                  $aListarMovimentacao = ['N'=>'Não',
+                                               'S'=>'Sim'];
                   db_select('listamovimentacao', $aListarMovimentacao, true, 1, "style='width: 100%;'");              
                 ?>
               </td>
@@ -280,8 +280,8 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
               </td>
               <td colspan="3">  
                 <?php
-                  $aListarEmpenho = array('N'=>'Não',
-                                          'S'=>'Sim');
+                  $aListarEmpenho = ['N'=>'Não',
+                                          'S'=>'Sim'];
                   db_select('listaautorizacao', $aListarEmpenho, true, 1, "style='width: 100%;'");              
                 ?>
               </td>
@@ -292,10 +292,10 @@ if ($oDaoAcordoClassificacao->numrows > 0) {
               </td>
               <td colspan="3">  
                 <?php 
-                  $aOrdem = array(1=>'Data da Criação',
+                  $aOrdem = [1=>'Data da Criação',
                                   2=>'Contratado',
                                   3=>'Número do Contrato',
-                                  4=>'Vigência');
+                                  4=>'Vigência'];
                   db_select('ordem', $aOrdem, true, 1, "style='width: 100%;'");              
                 ?>
               </td>

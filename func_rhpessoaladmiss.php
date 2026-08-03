@@ -38,7 +38,7 @@ require_once(modification("classes/db_pontocom_classe.php"));
 
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhpessoal = new cl_rhpessoal;
 $clrhpessoalmov = new cl_rhpessoalmov;
@@ -205,7 +205,7 @@ if(!isset($pesquisa_chave)){
         $clgersubsql->subsqlano = "anousu";
         $clgersubsql->subsqlmes = "mesusu";
         $clgersubsql->subsqlreg = "rh01_regist";
-        $repassa = array("chave_z01_nome"=>@$chave_z01_nome,"chave_rh01_regist"=>@$chave_rh01_regist,"chave_rh01_numcgm"=>@$chave_rh01_numcgm,"rh01_instit"=>@$instit);
+        $repassa = ["chave_z01_nome"=>@$chave_z01_nome,"chave_rh01_regist"=>@$chave_rh01_regist,"chave_rh01_numcgm"=>@$chave_rh01_numcgm,"rh01_instit"=>@$instit];
         if(isset($chave_rh01_regist) && (trim($chave_rh01_regist)!="") ){
 	         $sql = $clrhpessoal->sql_query_ferias(null,$campos1,"rh01_regist,r30_perai desc"," rh01_regist = $chave_rh01_regist $dbwhere");
         }else if(isset($chave_rh01_numcgm) && (trim($chave_rh01_numcgm)!="") ){

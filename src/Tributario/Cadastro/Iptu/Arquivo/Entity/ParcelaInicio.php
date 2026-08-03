@@ -7,10 +7,10 @@ use Ecidade\Tributario\Cadastro\Iptu\Arquivo\Entity\ParcelaReceita;
 
 final class ParcelaInicio extends Entity
 {
-    const TOTAL_PARCELAS                  = 'TOTALPARCELAS';
-    const EXPRESAO_PARCELADOS             = 'EXPRESAOPARCELADOS';
-    const PERCENTUAL_MES_JURO_ATRASO      = 'PERCENTUALMESJUROATRASO';
-    const PERCENTUAL_GERAL_MULTA_ATRASO   = 'PERCENTUALGERALMULTAATRASO';
+    const string TOTAL_PARCELAS                  = 'TOTALPARCELAS';
+    const string EXPRESAO_PARCELADOS             = 'EXPRESAOPARCELADOS';
+    const string PERCENTUAL_MES_JURO_ATRASO      = 'PERCENTUALMESJUROATRASO';
+    const string PERCENTUAL_GERAL_MULTA_ATRASO   = 'PERCENTUALGERALMULTAATRASO';
 
     /**
      * @var integer|null

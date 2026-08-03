@@ -56,21 +56,21 @@ $clrotulo->label("pc18_solicitem");
 $clrotulo->label("pc18_codele");
 $clrotulo->label("pc81_codprocitem");
 $clrotulo->label("o56_elemento");
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 //db_postmemory($HTTP_POST_VARS,2);db_postmemory($HTTP_GET_VARS,2);
 $db_opcao = 1;
 $db_botao = false;
 
 if(isset($incluir)){
   $sqlerro = false;
-  $qualelemento = split(",",$valores);
+  $qualelemento = preg_split("#,#m",$valores);
   for($i=0;$i<sizeof($qualelemento);$i++){
     if($sqlerro==false){
       $subelemento = $qualelemento[$i];
-      $solicitem = split("_",$subelemento);
+      $solicitem = preg_split("#_#m",(string) $subelemento);
       $pc18_solicitem = $solicitem[1];
-      $clsolicitemele->incluir($pc18_solicitem,$$subelemento);
+      $clsolicitemele->incluir($pc18_solicitem,${$subelemento});
       $erro_msg = $clsolicitemele->erro_msg;
       if($clsolicitemele->erro_status==0){
 	$sqlerro=true;
@@ -167,7 +167,7 @@ if(isset($pc80_codproc)){
 		  echo "    <td nowrap class='bordas' title='Código do item no processo de compras'            align='center'><strong>$pc81_codprocitem</strong></td>\n";
 		  echo "    <td nowrap class='bordas' title='Código do tipo de material'                       align='center'><strong>$pc01_codmater</strong></td>\n";
 		  echo "    <td class='bordas' title='Descrição do tipo de material'><strong>$pc01_descrmater</strong></td>\n";
-		  if(trim($pc17_codigo)!=""){
+		  if(trim((string) $pc17_codigo)!=""){
 		    echo "    <td nowrap class='bordas' align='center' title='Referência do item. Ex: Caixa, unidade, ...'>\n";
 		    echo "      <strong>\n";
 		    echo "        $m61_descr ";
@@ -194,10 +194,10 @@ if(isset($pc80_codproc)){
 		    $nomeelemento = "ele_".$pc11_codigo;
 		    $result_orcelemento = $clorcelemento->sql_record($clorcelemento->sql_query_pcmater(null,"o56_codele as $nomeelemento,o56_elemento,o56_descr","o56_codele"," o56_anousu = ".db_getsession("DB_anousu")." and o56_elemento like '".$elemento."%' and pc01_codmater=$pc01_codmater"));
 		    $numrows_elementos = $clorcelemento->numrows;
-		    $arr_elementos = Array();
+		    $arr_elementos = [];
 		    for($ii=0;$ii<$numrows_elementos;$ii++){
 		      db_fieldsmemory($result_orcelemento,$ii);
-		      $arr_elementos[$$nomeelemento] = $o56_elemento.' - '.$o56_descr;
+		      $arr_elementos[${$nomeelemento}] = $o56_elemento.' - '.$o56_descr;
 		    }
 		    if(sizeof($arr_elementos)>0){
 		      echo "  <tr>\n";

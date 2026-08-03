@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_rhcadcalend_classe.php"));
 include(modification("classes/db_calendf_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhcadcalend = new cl_rhcadcalend;
 $clcalendf = new cl_calendf;
 $db_opcao = 1;

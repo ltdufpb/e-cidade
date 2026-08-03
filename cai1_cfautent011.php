@@ -33,7 +33,7 @@ include(modification("classes/db_cfautent_classe.php"));
 include(modification("classes/db_cfautentdocasschq_classe.php"));
 include(modification("classes/db_cfautentconta_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcfautent = new cl_cfautent;
 $clcfautentconta = new cl_cfautentconta;
 $clcfautentdocasschq = new cl_cfautentdocasschq;

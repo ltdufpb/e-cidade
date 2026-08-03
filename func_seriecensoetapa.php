@@ -37,7 +37,7 @@ db_postmemory($_POST);
 $oDaoCensoEtapa = new cl_censoetapa();
 $oDaoSerie      = new cl_serie();
 
-$aFiltroTiposEnsino    = array();
+$aFiltroTiposEnsino    = [];
 $aFiltroTiposEnsino[1] = " ed131_regular      = 'S' ";
 $aFiltroTiposEnsino[2] = " ed131_especial     = 'S' ";
 $aFiltroTiposEnsino[3] = " ed131_eja          = 'S' ";
@@ -62,7 +62,7 @@ if ( !$rsEnsino || pg_num_rows($rsEnsino) == 0) {
 /**
  * Define os filtros e campos retornados da etapas do censo
  */
-$aWhereEtapas   = array();
+$aWhereEtapas   = [];
 $oDados         = db_utils::fieldsMemory($rsEnsino, 0);
 $aWhereEtapas[] = " ed131_mediacaodidaticopedagogica = {$oDados->ed10_mediacaodidaticopedagogica} ";
 $aWhereEtapas[] = $aFiltroTiposEnsino[$oDados->ed10_i_tipoensino];
@@ -110,20 +110,20 @@ $oRotulo->label('ed131_ano');
 
   if ( !isset ($oGet->pesquisa_chave) ) {
 
-    if( !empty( $chave_ed266_i_codigo ) && trim($chave_ed266_i_codigo) != ''  ) {
+    if( !empty( $chave_ed266_i_codigo ) && trim((string) $chave_ed266_i_codigo) != ''  ) {
 
       $aWhereEtapas[] = " ed266_i_codigo = {$chave_ed266_i_codigo} ";
-    } else if( !empty( $chave_ed266_c_descr ) && trim($chave_ed266_c_descr) != '' ){
+    } else if( !empty( $chave_ed266_c_descr ) && trim((string) $chave_ed266_c_descr) != '' ){
       $aWhereEtapas[] = " ed266_c_descr ilike '{$chave_ed266_c_descr}%' ";
-    } else if ( !empty($chave_ed131_ano) && trim($chave_ed131_ano ) != '') {
+    } else if ( !empty($chave_ed131_ano) && trim((string) $chave_ed131_ano ) != '') {
       $aWhereEtapas[] = " ed131_ano = $chave_ed131_ano";
     }
 
     $sWhere  = implode(" and ", $aWhereEtapas);
     $sSql    = $oDaoCensoEtapa->sql_query_mediacao(null, null, $sCampos, $sOrdem , $sWhere );
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed133_codigo)){
-      $repassa = array("chave_ed266_i_codigo"=>$chave_ed266_i_codigo,"chave_ed266_c_descr"=>$chave_ed266_c_descr);
+      $repassa = ["chave_ed266_i_codigo"=>$chave_ed266_i_codigo,"chave_ed266_c_descr"=>$chave_ed266_c_descr];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

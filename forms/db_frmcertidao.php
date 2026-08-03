@@ -114,7 +114,7 @@ db_textarea('p50_hist',0,0,$Ip50_hist,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('p50_web',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -155,7 +155,7 @@ function js_preenchepesquisa(chave){
   db_iframe_certidao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

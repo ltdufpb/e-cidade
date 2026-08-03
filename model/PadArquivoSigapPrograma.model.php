@@ -36,7 +36,7 @@ final class PadArquivoSigapPrograma extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "Programa";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   public function gerarDados() {
@@ -52,7 +52,7 @@ final class PadArquivoSigapPrograma extends PadArquivoSigap {
      * Separamos a data do em ano, mes, dia
      */
     $iCodigoInstit  = db_getsession("DB_instit");
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     
     $sSqlProgramas  = "select distinct ";
     $sSqlProgramas .= "       o54_anousu as anousu,";
@@ -74,7 +74,7 @@ final class PadArquivoSigapPrograma extends PadArquivoSigap {
       $oProgramaRetorno->proCodigoEntidade  = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oProgramaRetorno->proMesAnoMovimento = $sDiaMesAno;
       $oProgramaRetorno->proExercicio       = $oPrograma->anousu;
-      $oProgramaRetorno->proCodigoPrograma  = str_pad($oPrograma->codigo, 3, "0", STR_PAD_LEFT);
+      $oProgramaRetorno->proCodigoPrograma  = str_pad((string) $oPrograma->codigo, 3, "0", STR_PAD_LEFT);
       $oProgramaRetorno->proNomePrograma    = $oPrograma->nome;
       array_push($this->aDados, $oProgramaRetorno);
       
@@ -83,13 +83,13 @@ final class PadArquivoSigapPrograma extends PadArquivoSigap {
   
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "proCodigoEntidade",
                         "proMesAnoMovimento",
                         "proExercicio",
                         "proCodigoPrograma",
                         "proNomePrograma"
-                       );
+                       ];
     return $aElementos;  
   }
   

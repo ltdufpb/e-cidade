@@ -36,7 +36,7 @@ require_once(modification("classes/db_ouvidoriacadlocalgeral_classe.php"));
 require_once(modification("classes/db_ouvidoriacadlocalender_classe.php"));
 require_once(modification("classes/db_ouvidoriacadlocaldepart_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clouvidoriacadlocal       = new cl_ouvidoriacadlocal();
 $clouvidoriacadlocalender  = new cl_ouvidoriacadlocalender();

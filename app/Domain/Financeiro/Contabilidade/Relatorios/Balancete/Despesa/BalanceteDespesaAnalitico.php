@@ -79,12 +79,12 @@ class BalanceteDespesaAnalitico extends BalanceteDespesa
 
     private function criaHashs($dado)
     {
-        $dado->hashOrgao = str_pad($dado->orgao, 2, '0', STR_PAD_LEFT);
-        $dado->hashUnidade = sprintf('%s.%s', $dado->hashOrgao, str_pad($dado->unidade, 2, '0', STR_PAD_LEFT));
-        $dado->hashFuncao = sprintf('%s.%s', $dado->hashUnidade, str_pad($dado->funcao, 2, '0', STR_PAD_LEFT));
-        $dado->hashSubfuncao = sprintf('%s.%s', $dado->hashFuncao, str_pad($dado->subfuncao, 3, '0', STR_PAD_LEFT));
-        $dado->hashPrograma = sprintf('%s.%s', $dado->hashSubfuncao, str_pad($dado->programa, 4, '0', STR_PAD_LEFT));
-        $dado->hashProjeto = sprintf('%s.%s', $dado->hashPrograma, str_pad($dado->projeto, 4, '0', STR_PAD_LEFT));
+        $dado->hashOrgao = str_pad((string) $dado->orgao, 2, '0', STR_PAD_LEFT);
+        $dado->hashUnidade = sprintf('%s.%s', $dado->hashOrgao, str_pad((string) $dado->unidade, 2, '0', STR_PAD_LEFT));
+        $dado->hashFuncao = sprintf('%s.%s', $dado->hashUnidade, str_pad((string) $dado->funcao, 2, '0', STR_PAD_LEFT));
+        $dado->hashSubfuncao = sprintf('%s.%s', $dado->hashFuncao, str_pad((string) $dado->subfuncao, 3, '0', STR_PAD_LEFT));
+        $dado->hashPrograma = sprintf('%s.%s', $dado->hashSubfuncao, str_pad((string) $dado->programa, 4, '0', STR_PAD_LEFT));
+        $dado->hashProjeto = sprintf('%s.%s', $dado->hashPrograma, str_pad((string) $dado->projeto, 4, '0', STR_PAD_LEFT));
         $dado->hashElemento = sprintf('%s.%s.%s', $dado->hashProjeto, $dado->elemento, $dado->reduzido);
     }
 

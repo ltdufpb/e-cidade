@@ -70,19 +70,19 @@ if ($clparitbi->numrows > 0) {
   <tr>
      <td>
      <?php 
-       $clcriaabas->identifica = array("datas"   =>"Datas",
+       $clcriaabas->identifica = ["datas"   =>"Datas",
                                        "dados"   =>"Dados do imovel",
                                        "transm"  =>"Transmitentes",
                                        "compnome"=>"Adquirentes",
-                                       "constr"  =>"Benfeitorias");
+                                       "constr"  =>"Benfeitorias"];
 
-       $clcriaabas->title      = array("datas"   =>"Datas",
+       $clcriaabas->title      = ["datas"   =>"Datas",
                                        "dados"   =>"Dados do imovel",
                                        "transm"  =>"Transmitentes",
                                        "compnome"=>"Adquirentes",
-                                       "constr"  =>"Benfeitorias");
+                                       "constr"  =>"Benfeitorias"];
 
-       $aUrl = array();
+       $aUrl = [];
 
        $aUrl[0] = "itb1_itbilib002.php?alteraguialib={$oParItbi->it24_alteraguialib}";
 //       $aUrl[0] = "itb1_itbilib002.php?chavepesquisa=19292";
@@ -92,34 +92,34 @@ if ($clparitbi->numrows > 0) {
        $aUrl[3] = "itb1_itbinomecomp001.php?tiponome=c";
        $aUrl[4] = "itb1_itbiconstr001.php";
 
-       $clcriaabas->src        = array("datas"    => $aUrl[0],
+       $clcriaabas->src        = ["datas"    => $aUrl[0],
                                        "dados"    => $aUrl[1],
                                        "transm"   => $aUrl[2],
                                        "compnome" => $aUrl[3],
-                                       "constr"   => $aUrl[4]);
+                                       "constr"   => $aUrl[4]];
 
        if (isset($oParItbi->it24_alteraguialib) && $oParItbi->it24_alteraguialib == 1) {
 
-	       $clcriaabas->disabled   = array("datas"    => "false",
+	       $clcriaabas->disabled   = ["datas"    => "false",
 	                                       "dados"    => "true",
 	                                       "transm"   => "true",
 	                                       "compnome" => "true",
-	                                       "constr"   => "true");
+	                                       "constr"   => "true"];
        } else if (isset($oParItbi->it24_alteraguialib) && $oParItbi->it24_alteraguialib == 2) {
 
-         $clcriaabas->disabled   = array("datas"=>"true",
+         $clcriaabas->disabled   = ["datas"=>"true",
                                          "dados"=>"false",
                                          "transm"=>"true",
                                          "compnome"=>"true",
-                                         "constr"=>"true");
+                                         "constr"=>"true"];
 
        } else if (isset($oParItbi->it24_alteraguialib) && $oParItbi->it24_alteraguialib == 3) {
 
-         $clcriaabas->disabled   = array("datas"=>"false",
+         $clcriaabas->disabled   = ["datas"=>"false",
                                          "dados"=>"false",
                                          "transm"=>"true",
                                          "compnome"=>"true",
-                                         "constr"=>"true");
+                                         "constr"=>"true"];
        }
 
        $clcriaabas->cria_abas();

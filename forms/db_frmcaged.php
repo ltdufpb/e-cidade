@@ -75,11 +75,11 @@ $clrotulo->label("z01_nome");
         <td>
           <?php
           $alteracao     = 1;
-          $arr_alteracao = array(
+          $arr_alteracao = [
             1 => "Nada a alterar",
             2 => "Alterar dados cadastrais",
             3 => "Encerramento de atividades"
-          );
+          ];
 
           db_select('alteracao', $arr_alteracao, true, 1, '');
           ?>
@@ -92,10 +92,10 @@ $clrotulo->label("z01_nome");
         <td>
           <?php
           $primeiradeclaracao     = 2;
-          $arr_primeiradeclaracao = array(
+          $arr_primeiradeclaracao = [
             1 => "Primeira declaração",
             2 => "Já informou"
-          );
+          ];
 
           db_select('primeiradeclaracao', $arr_primeiradeclaracao, true, 1, '');
           ?>

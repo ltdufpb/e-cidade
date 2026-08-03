@@ -322,8 +322,8 @@ class LancamentoAuxiliarContaCorrente extends LancamentoAuxiliarBase implements 
       $this->sCaracteristicaPeculiar = db_utils::fieldsMemory($rsBuscaCP, 0)->k131_concarpeculiar;
     }
 
-    $aDocumentosContasCredito = array(120, 140, 151, 161, 163);
-    $aDocumentosContasDebito  = array(130, 141, 150, 160, 162);
+    $aDocumentosContasCredito = [120, 140, 151, 161, 163];
+    $aDocumentosContasDebito  = [130, 141, 150, 160, 162];
     $iCodigoDocumento = $this->oDocumentoEventoContabil->getCodigo();
 
     if (!in_array($iCodigoDocumento, $aDocumentosContasCredito) && !in_array($iCodigoDocumento, $aDocumentosContasDebito)) {
@@ -335,7 +335,7 @@ class LancamentoAuxiliarContaCorrente extends LancamentoAuxiliarBase implements 
     }
 
     $sCamposConplanoreduz  = "distinct c61_codigo as recurso";
-    $aWhereConplanoreduz   = array();
+    $aWhereConplanoreduz   = [];
     $aWhereConplanoreduz[] = "c69_sequen = {$iCodigoLancamentoValor}";
     $aWhereConplanoreduz[] = "c69_anousu = c61_anousu";
 
@@ -378,7 +378,8 @@ class LancamentoAuxiliarContaCorrente extends LancamentoAuxiliarBase implements 
 	 * Retorna o Número do Empenho
 	 * @return integer
 	 */
-	public function getNumeroEmpenho() {
+	#[\Override]
+    public function getNumeroEmpenho() {
 		return $this->iNumeroEmpenho;
 	}
 
@@ -402,7 +403,8 @@ class LancamentoAuxiliarContaCorrente extends LancamentoAuxiliarBase implements 
 	 * Retorna o Código do Favorecido
 	 * @return integer
 	 */
-	public function getFavorecido() {
+	#[\Override]
+    public function getFavorecido() {
 		return $this->iCgm;
 	}
 
@@ -443,7 +445,8 @@ class LancamentoAuxiliarContaCorrente extends LancamentoAuxiliarBase implements 
 	 * Retorna o complemento do lancamento contabil
 	 * @see ILancamentoAuxiliar::getObservacaoHistorico()
 	 */
-	public function getObservacaoHistorico() {
+	#[\Override]
+    public function getObservacaoHistorico() {
 		return $this->sObservacao;
 	}
 
@@ -451,7 +454,8 @@ class LancamentoAuxiliarContaCorrente extends LancamentoAuxiliarBase implements 
 	 * Seta o complemento do lancamento contabil
 	 * @see ILancamentoAuxiliar::setObservacaoHistorico()
 	 */
-	public function setObservacaoHistorico($sObservacao) {
+	#[\Override]
+    public function setObservacaoHistorico($sObservacao) {
 		$this->sObservacao = $sObservacao;
 	}
 

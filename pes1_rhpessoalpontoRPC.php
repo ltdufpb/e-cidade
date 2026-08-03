@@ -76,120 +76,120 @@ if ( $oPost->sMethod == 'consultaRubricas') {
 									  	                                  $oPost->iAnoUsu,
 									  	                                  $oPost->iMesUsu,
 									  	                                  db_getsession('DB_instit'));
-  	
+
   } catch (Exception $eException) {
     $sMsgErro = $eException->getMessage();
     $lErro    = true;  	
   }
-	
+
   if ( $lErro ) {
-  	$aRetorno = array("lErro"=>true,
-  	                   "sMsg"=>urlencode($sMsgErro));
+  	$aRetorno = ["lErro"=>true,
+  	                   "sMsg"=>urlencode($sMsgErro)];
   } else {
-	  $aRetorno = array("lErro"     =>false,
-	                    "aRubricas" =>$aRetornoRubricas);
+	  $aRetorno = ["lErro"     =>false,
+	                    "aRubricas" =>$aRetornoRubricas];
   }
 
   echo $oJson->encode($aRetorno);
 
-  
+
 
 //*********************************************************************************************//  
 // Verifica se já existe registro nas tabelas de acordo com o Tipo de Ponto informado 
 //*********************************************************************************************//
 
 } else if ( $oPost->sMethod == 'validarRubricas' ){
-	
-  $aReplace       = array("\\","(",")");
+
+  $aReplace       = ["\\","(",")"];
   $oDadosRubrica  = $oJson->decode(str_replace($aReplace,"",$oPost->oDadosRubrica));
-  $aDadosRubricas = array($oDadosRubrica);	
-	
+  $aDadosRubricas = [$oDadosRubrica];	
+
   try {
     $lExiste  = $oPontoFolha->verificaRubrica($oPost->sTipoPonto,$aDadosRubricas);
   } catch ( Exception $eException ){
     $lErro    = true;
     $sMsgErro = $eException->getMessage();
   }
-  
-  
+
+
   if ( $lErro ) {
-    $aRetorno = array("lErro"=>true,
-                      "sMsg"=>urlencode($sMsgErro));
+    $aRetorno = ["lErro"=>true,
+                      "sMsg"=>urlencode($sMsgErro)];
   } else {
-    $aRetorno = array("lErro"  =>false,
-                      "lExiste"=>$lExiste);
+    $aRetorno = ["lErro"  =>false,
+                      "lExiste"=>$lExiste];
   }
 
   echo $oJson->encode($aRetorno); 
 
-  
-  
+
+
 //*********************************************************************************************//  
 //  Inclusão de Rubricas 
 //*********************************************************************************************//
 
 } else if ( $oPost->sMethod == 'incluirRubricas' ){
-  
-  $aReplace       = array("\\","(",")");
+
+  $aReplace       = ["\\","(",")"];
   $oDadosRubrica  = $oJson->decode(str_replace($aReplace,"",$oPost->oDadosRubrica));
-  $aDadosRubricas = array($oDadosRubrica);	
-	
-  
+  $aDadosRubricas = [$oDadosRubrica];	
+
+
   db_inicio_transacao();
-  
+
 	try {
 		$oPontoFolha->incluiRubricaPonto($oPost->sTipoPonto,$aDadosRubricas);
 	} catch ( Exception $eException ){
 		$lErro    = true;
 		$sMsgErro = $eException->getMessage();
 	}
-  
+
 	db_fim_transacao($lErro);
-	
-  $aRetorno = array("lErro"=>$lErro,
-                    "sMsg" =>urlencode($sMsgErro));
+
+  $aRetorno = ["lErro"=>$lErro,
+                    "sMsg" =>urlencode($sMsgErro)];
 
   echo $oJson->encode($aRetorno);  
 
-  
-  
+
+
 //*********************************************************************************************//  
 //  Alteração de Rubricas 
 //*********************************************************************************************//
 
 } else if ( $oPost->sMethod == 'alterarRubricas' ){
-  
-  $aReplace       = array("\\","(",")");
+
+  $aReplace       = ["\\","(",")"];
   $oDadosRubrica  = $oJson->decode(str_replace($aReplace,"",$oPost->oDadosRubrica));
-  $aDadosRubricas = array($oDadosRubrica);  
-  
+  $aDadosRubricas = [$oDadosRubrica];  
+
   db_inicio_transacao();
-  
+
   try {
-  	
+
   	if ($oPost->lSoma == 'true') {
   		$lSoma = true;
   	} else {
   		$lSoma = false;
   	}
-  	
+
     $oPontoFolha->alteraRubricaPonto($oPost->sTipoPonto,$aDadosRubricas,$lSoma);
-    
+
   } catch ( Exception $eException ){
     $lErro    = true;
     $sMsgErro = $eException->getMessage();
   }
-  
+
   db_fim_transacao($lErro);
-  
+
   if ( $oPost->sTipoPonto  == 'fx' || $oPost->sTipoPonto  == 'fs' ) {
-    
+
     if ( $oPost->sTipoPonto  == 'fx' ) {
       $sValorTipoPonto = 'fs';
     } else {
       $sValorTipoPonto = 'fx';
     }
-    
+
     try {
       $lExisteValRepasse  = $oPontoFolha->verificaRubrica($sValorTipoPonto,$aDadosRubricas);
     } catch ( Exception $eException ){
@@ -200,27 +200,27 @@ if ( $oPost->sMethod == 'consultaRubricas') {
     $lExisteValRepasse = false; 
   }  
 
-  
-  $aRetorno = array("lErro"            =>$lErro,
+
+  $aRetorno = ["lErro"            =>$lErro,
                     "lExisteValRepasse"=>$lExisteValRepasse,
-                    "sMsg"             =>urlencode($sMsgErro));  
-  
+                    "sMsg"             =>urlencode($sMsgErro)];  
+
   echo $oJson->encode($aRetorno);  
-  
-  
-  
+
+
+
 //*********************************************************************************************//  
 //  Exclusão de Rubricas 
 //*********************************************************************************************//
 
 } else if ( $oPost->sMethod == 'excluirRubricas' ){
-  
-  $aReplace       = array("\\","(",")");
+
+  $aReplace       = ["\\","(",")"];
   $oDadosRubrica  = $oJson->decode(str_replace($aReplace,"",$oPost->oDadosRubrica));
-  $aDadosRubricas = array($oDadosRubrica);  
-  
+  $aDadosRubricas = [$oDadosRubrica];  
+
   db_inicio_transacao();
-  
+
   try {
     $oPontoFolha->excluiRubricaPonto($oPost->sTipoPonto,$aDadosRubricas);
   } catch ( Exception $eException ){
@@ -229,115 +229,115 @@ if ( $oPost->sMethod == 'consultaRubricas') {
   }
 
   db_fim_transacao($lErro);
-  
+
   if ( $oPost->sTipoPonto  == 'fx' || $oPost->sTipoPonto  == 'fs' ) {
-    
+
     if ( $oPost->sTipoPonto  == 'fx' ) {
       $sValorTipoPonto = 'fs';
     } else {
       $sValorTipoPonto = 'fx';
     }
-    
+
     try {
       $lExisteValRepasse  = $oPontoFolha->verificaRubrica($sValorTipoPonto,$aDadosRubricas);
     } catch ( Exception $eException ){
       $lErro    = true;
       $sMsgErro = $eException->getMessage();
     }
-    
+
   } else {
     $lExisteValRepasse = false; 
   }  
-  
-  
-  $aRetorno = array("lErro"            =>$lErro,
+
+
+  $aRetorno = ["lErro"            =>$lErro,
                     "lExisteValRepasse"=>$lExisteValRepasse,
-                    "sMsg"             =>urlencode($sMsgErro));  
+                    "sMsg"             =>urlencode($sMsgErro)];  
 
   echo $oJson->encode($aRetorno);  
 
-  
-  
-  
+
+
+
 //*********************************************************************************************//  
 //  Repassar Valores 
 //*********************************************************************************************//
 
 } else if ( $oPost->sMethod == 'repassarValores' ){
-  
-  $aReplace       = array("\\","(",")");
+
+  $aReplace       = ["\\","(",")"];
   $oDadosRubrica  = $oJson->decode(str_replace($aReplace,"",$oPost->oDadosRubrica));
-  $aDadosRubricas = array($oDadosRubrica);  
-  
+  $aDadosRubricas = [$oDadosRubrica];  
+
   db_inicio_transacao();
-  
+
   try {
   	$oPontoFolha->repassarValoresFixoSalario($oPost->sTipoPonto,$aDadosRubricas,$oPost->dtDataAdm);
   } catch ( Exception $eException ){
     $lErro    = true;
     $sMsgErro = $eException->getMessage();
   }
-  
+
   db_fim_transacao($lErro);
 
-  $aRetorno = array("lErro"=>$lErro,
-                    "sMsg"=>urlencode($sMsgErro));
+  $aRetorno = ["lErro"=>$lErro,
+                    "sMsg"=>urlencode($sMsgErro)];
 
 
   echo $oJson->encode($aRetorno);
 
-  
-  
+
+
 //*********************************************************************************************//  
 //  Rubricas Automáricas 
 //*********************************************************************************************//
 
 } else if ( $oPost->sMethod == 'rubricasAutomaticas' ){
-  
+
   try {
     $aListaRubricas = $oPontoFolha->getRubricasAutomaticas($oPost->iMatric);
   } catch ( Exception $eException ){
     $lErro    = true;
     $sMsgErro = $eException->getMessage();
   }
-  
+
   if ( !$lErro ) {
 	  if ( empty($aListaRubricas) ) {
 	  	$lErro    = true;
 	  	$sMsgErro = 'Nenhuma rubrica encontrada!';
 	  }
-	
+
 	  try {
 	    $aListaRubricasCadastradas = $oPontoFolha->getRubricasPonto( $oPost->sTipoPonto,
 						                                                       $oPost->iMatric,
 						                                                       $oPost->iAnoUsu,
 						                                                       $oPost->iMesUsu );
-	    
+
 	  } catch (Exception $eException) {
 	    $sMsgErro = $eException->getMessage();
 	    $lErro    = true;   
 	  }  
   }
-  
+
   if ( $lErro ) {
-    $aRetorno = array("lErro"     =>true,
-                       "sMsg"     =>urlencode($sMsgErro));
+    $aRetorno = ["lErro"     =>true,
+                       "sMsg"     =>urlencode($sMsgErro)];
   } else {
-    $aRetorno = array("lErro"                =>false,
+    $aRetorno = ["lErro"                =>false,
                       "aRubricasCadastradas" =>$aListaRubricasCadastradas,
-                      "aRubricas"            =>$aListaRubricas);
+                      "aRubricas"            =>$aListaRubricas];
   }  
 
   echo $oJson->encode($aRetorno);
 
-  
+
 //*********************************************************************************************//  
 //  Inclusão de Rubricas Automáticas 
 //*********************************************************************************************//
 
 } else if ( $oPost->sMethod == 'incluirRubricasAutomaticas' ){
   
-  $aReplace              = array("\\","(",")");
+  $aReplace              = ["\\","(",")"];
   $aObjListaRubrica      = $oJson->decode(str_replace($aReplace,"",$oPost->aObjListaRubricas));
 
   if ($oPost->lRepasse == 'true') {
@@ -366,8 +366,8 @@ if ( $oPost->sMethod == 'consultaRubricas') {
 
   db_fim_transacao($lErro);
   
-  $aRetorno = array("lErro"=>$lErro,
-                    "sMsg" =>urlencode($sMsgErro));
+  $aRetorno = ["lErro"=>$lErro,
+                    "sMsg" =>urlencode($sMsgErro)];
 
   echo $oJson->encode($aRetorno);  
 

@@ -89,7 +89,7 @@ $clrotulo->label("db90_descr");
               if (!isset($rh34_ativo)) {
       	        $rh34_ativo = "t";
               }
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('rh34_ativo',$x,true,$db_opcao,"style='width: 80px;'");
             ?>
           </td>
@@ -302,7 +302,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rharqbanco.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

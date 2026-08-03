@@ -31,8 +31,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $aux = new cl_arquivo_auxiliar;
 $cliframe_seleciona = new cl_iframe_seleciona;
 
@@ -57,7 +57,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
         </td>
         <td>
           <?php 
-            $aVer= array("com"=>"Com as Situações Selecionadas","sem"=>"Sem as Situações Selecionadas");
+            $aVer= ["com"=>"Com as Situações Selecionadas","sem"=>"Sem as Situações Selecionadas"];
             db_select("ver",$aVer,true,1,"");
           ?>
         </td>
@@ -68,7 +68,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
         </td>
         <td>     
           <?php 
-            $aSelecao= array("final"=>"Somente a movimentação atual","qualquer"=>"Em qualquer movimentação");
+            $aSelecao= ["final"=>"Somente a movimentação atual","qualquer"=>"Em qualquer movimentação"];
             db_select("selecao",$aSelecao,true,1,"");
           ?>
         </td>
@@ -79,7 +79,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
         </td>
         <td>
           <?php 
-            $aTipo = array("todos"=>"Todos","foro"=>"Processos do Foro","semforo"=>"Processos sem Foro");
+            $aTipo = ["todos"=>"Todos","foro"=>"Processos do Foro","semforo"=>"Processos sem Foro"];
             db_select("tipo",$aTipo,true,1,"");
           ?>
         </td>
@@ -90,7 +90,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
         </td>
         <td>
           <?php 
-            $aSituacao = array("0"=>"Todas","1"=>"Ativa","2"=>"Anulada");
+            $aSituacao = ["0"=>"Todas","1"=>"Ativa","2"=>"Anulada"];
             db_select("selSituacao",$aSituacao,true,1,"");
           ?>
         </td>
@@ -101,7 +101,7 @@ $cliframe_seleciona = new cl_iframe_seleciona;
         </td>
         <td>
           <?php 
-            $aOrdem = array("i"=>"Inicial","d"=>"Data","f"=>"Foro");
+            $aOrdem = ["i"=>"Inicial","d"=>"Data","f"=>"Foro"];
             db_select("selOrdem",$aOrdem,true,1,"");
           ?>
         </td>

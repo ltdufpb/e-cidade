@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE rhcadastroferiaslote
 class cl_rhcadastroferiaslote { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh93_sequencial = 0; 
-   var $rh93_mesusu = 0; 
-   var $rh93_anousu = 0; 
-   var $rh93_regist = 0; 
-   var $rh93_processado = 'f'; 
+   public $rh93_sequencial = 0; 
+   public $rh93_mesusu = 0; 
+   public $rh93_anousu = 0; 
+   public $rh93_regist = 0; 
+   public $rh93_processado = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh93_sequencial = int4 = Código Sequencial 
                  rh93_mesusu = int4 = Mes 
                  rh93_anousu = int4 = Ano 
@@ -56,10 +56,10 @@ class cl_rhcadastroferiaslote {
                  rh93_processado = bool = Ferias Processadas 
                  ";
    //funcao construtor da classe 
-   function cl_rhcadastroferiaslote() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhcadastroferiaslote"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -125,10 +125,10 @@ class cl_rhcadastroferiaslote {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh93_sequencial = pg_result($result,0,0); 
+       $this->rh93_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhcadastroferiaslote_rh93_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh93_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh93_sequencial)){
          $this->erro_sql = " Campo rh93_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -164,7 +164,7 @@ class cl_rhcadastroferiaslote {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Lote de ferias cadastradas ($this->rh93_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Lote de ferias cadastradas já Cadastrado";
@@ -188,14 +188,14 @@ class cl_rhcadastroferiaslote {
      $resaco = $this->sql_record($this->sql_query_file($this->rh93_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17561,'$this->rh93_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3101,17561,'','".AddSlashes(pg_result($resaco,0,'rh93_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3101,17562,'','".AddSlashes(pg_result($resaco,0,'rh93_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3101,17563,'','".AddSlashes(pg_result($resaco,0,'rh93_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3101,17564,'','".AddSlashes(pg_result($resaco,0,'rh93_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3101,17565,'','".AddSlashes(pg_result($resaco,0,'rh93_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3101,17561,'','".AddSlashes(pg_fetch_result($resaco,0,'rh93_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3101,17562,'','".AddSlashes(pg_fetch_result($resaco,0,'rh93_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3101,17563,'','".AddSlashes(pg_fetch_result($resaco,0,'rh93_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3101,17564,'','".AddSlashes(pg_fetch_result($resaco,0,'rh93_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3101,17565,'','".AddSlashes(pg_fetch_result($resaco,0,'rh93_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -204,10 +204,10 @@ class cl_rhcadastroferiaslote {
       $this->atualizacampos();
      $sql = " update rhcadastroferiaslote set ";
      $virgula = "";
-     if(trim($this->rh93_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh93_sequencial"])){ 
+     if(trim((string) $this->rh93_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh93_sequencial"])){ 
        $sql  .= $virgula." rh93_sequencial = $this->rh93_sequencial ";
        $virgula = ",";
-       if(trim($this->rh93_sequencial) == null ){ 
+       if(trim((string) $this->rh93_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "rh93_sequencial";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_rhcadastroferiaslote {
          return false;
        }
      }
-     if(trim($this->rh93_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh93_mesusu"])){ 
+     if(trim((string) $this->rh93_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh93_mesusu"])){ 
        $sql  .= $virgula." rh93_mesusu = $this->rh93_mesusu ";
        $virgula = ",";
-       if(trim($this->rh93_mesusu) == null ){ 
+       if(trim((string) $this->rh93_mesusu) == null ){ 
          $this->erro_sql = " Campo Mes nao Informado.";
          $this->erro_campo = "rh93_mesusu";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_rhcadastroferiaslote {
          return false;
        }
      }
-     if(trim($this->rh93_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh93_anousu"])){ 
+     if(trim((string) $this->rh93_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh93_anousu"])){ 
        $sql  .= $virgula." rh93_anousu = $this->rh93_anousu ";
        $virgula = ",";
-       if(trim($this->rh93_anousu) == null ){ 
+       if(trim((string) $this->rh93_anousu) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "rh93_anousu";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_rhcadastroferiaslote {
          return false;
        }
      }
-     if(trim($this->rh93_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh93_regist"])){ 
+     if(trim((string) $this->rh93_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh93_regist"])){ 
        $sql  .= $virgula." rh93_regist = $this->rh93_regist ";
        $virgula = ",";
-       if(trim($this->rh93_regist) == null ){ 
+       if(trim((string) $this->rh93_regist) == null ){ 
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "rh93_regist";
          $this->erro_banco = "";
@@ -256,7 +256,7 @@ class cl_rhcadastroferiaslote {
          return false;
        }
      }
-     if(trim($this->rh93_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh93_processado"])){ 
+     if(trim((string) $this->rh93_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh93_processado"])){ 
        $sql  .= $virgula." rh93_processado = '$this->rh93_processado' ";
        $virgula = ",";
      }
@@ -268,19 +268,19 @@ class cl_rhcadastroferiaslote {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17561,'$this->rh93_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh93_sequencial"]) || $this->rh93_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3101,17561,'".AddSlashes(pg_result($resaco,$conresaco,'rh93_sequencial'))."','$this->rh93_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3101,17561,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh93_sequencial'))."','$this->rh93_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh93_mesusu"]) || $this->rh93_mesusu != "")
-           $resac = db_query("insert into db_acount values($acount,3101,17562,'".AddSlashes(pg_result($resaco,$conresaco,'rh93_mesusu'))."','$this->rh93_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3101,17562,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh93_mesusu'))."','$this->rh93_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh93_anousu"]) || $this->rh93_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,3101,17563,'".AddSlashes(pg_result($resaco,$conresaco,'rh93_anousu'))."','$this->rh93_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3101,17563,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh93_anousu'))."','$this->rh93_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh93_regist"]) || $this->rh93_regist != "")
-           $resac = db_query("insert into db_acount values($acount,3101,17564,'".AddSlashes(pg_result($resaco,$conresaco,'rh93_regist'))."','$this->rh93_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3101,17564,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh93_regist'))."','$this->rh93_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh93_processado"]) || $this->rh93_processado != "")
-           $resac = db_query("insert into db_acount values($acount,3101,17565,'".AddSlashes(pg_result($resaco,$conresaco,'rh93_processado'))."','$this->rh93_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3101,17565,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh93_processado'))."','$this->rh93_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -325,14 +325,14 @@ class cl_rhcadastroferiaslote {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17561,'$rh93_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3101,17561,'','".AddSlashes(pg_result($resaco,$iresaco,'rh93_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3101,17562,'','".AddSlashes(pg_result($resaco,$iresaco,'rh93_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3101,17563,'','".AddSlashes(pg_result($resaco,$iresaco,'rh93_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3101,17564,'','".AddSlashes(pg_result($resaco,$iresaco,'rh93_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3101,17565,'','".AddSlashes(pg_result($resaco,$iresaco,'rh93_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3101,17561,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh93_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3101,17562,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh93_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3101,17563,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh93_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3101,17564,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh93_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3101,17565,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh93_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhcadastroferiaslote
@@ -392,7 +392,7 @@ class cl_rhcadastroferiaslote {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhcadastroferiaslote";
@@ -407,7 +407,7 @@ class cl_rhcadastroferiaslote {
    function sql_query ( $rh93_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -435,7 +435,7 @@ class cl_rhcadastroferiaslote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -448,7 +448,7 @@ class cl_rhcadastroferiaslote {
    function sql_query_file ( $rh93_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,7 +469,7 @@ class cl_rhcadastroferiaslote {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

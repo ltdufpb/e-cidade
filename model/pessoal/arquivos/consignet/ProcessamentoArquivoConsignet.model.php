@@ -62,18 +62,6 @@ class ProcessamentoArquivoConsignet {
   private $oCompetencia;
 
   /**
-   * Instituicao do arquivo
-   * @var Instituicao
-   */
-  private $oInstituicao;
-
-  /**
-   * Caminho do arquivo a ser importado
-   * @var String $sCaminhoArqwuivo
-   */
-  private $sCaminhoArquivo;
-
-  /**
    * Objeto do arquivo consignet
    * @var ArquivoConsignet
    */
@@ -105,15 +93,20 @@ class ProcessamentoArquivoConsignet {
 
   /**
    * Construtor da classe
-   * 
+   *
    * @param String        $sCaminhoArquvo    Arquivo com os dados para importação
    * @param DBCompetencia $oCompetencia Competência a ser importada
+   * @param string $sCaminhoArquivo
    */
-  public function __construct($sCaminhoArquivo, DBCompetencia $oCompetencia, Instituicao $oInstituicao) {
+  public function __construct(/**
+   * Caminho do arquivo a ser importado
+   */
+  private $sCaminhoArquivo, DBCompetencia $oCompetencia, /**
+   * Instituicao do arquivo
+   */
+  private readonly Instituicao $oInstituicao) {
 
-    $this->oInstituicao    = $oInstituicao;
-    $this->sCaminhoArquivo = $sCaminhoArquivo;
-    $this->rArquivo        = fopen($sCaminhoArquivo, 'r');
+    $this->rArquivo        = fopen($this->sCaminhoArquivo, 'r');
     $this->oCompetencia    = $oCompetencia;
     $this->validarArquivo();
   }
@@ -218,7 +211,7 @@ class ProcessamentoArquivoConsignet {
    */
   private function validarNome(){
 
-    $sNomeArquivo = basename($this->sCaminhoArquivo);
+    $sNomeArquivo = basename((string) $this->sCaminhoArquivo);
 
     if (!preg_match('/.*\.txt$/i', $sNomeArquivo)) {
       throw new Exception( _M(self::MENSAGEM . 'extensao_invalida') );
@@ -261,16 +254,12 @@ class ProcessamentoArquivoConsignet {
         $oRegistro->iMotivo = ArquivoConsignet::MOTIVO_SERVIDOR_INVALIDO;
       }
 
-      if ($oServidor && trim(DBString::removerAcentuacao($oServidor->getCgm()->getNome())) != trim($oRegistro->sNome))  {
+      if ($oServidor && trim(DBString::removerAcentuacao($oServidor->getCgm()->getNome())) != trim((string) $oRegistro->sNome))  {
 
         $this->log($oRegistro->iLinha, $oRegistro->iMatricula, $oRegistro->sNome, _M(self::MENSAGEM  . 'nome_servidor_invalido'));
         $oRegistro->iMotivo = ArquivoConsignet::MOTIVO_SERVIDOR_INVALIDO;
       }
-    } catch( BusinessException $eErro ) {
-
-      $this->log($oRegistro->iLinha, $oRegistro->iMatricula, $oRegistro->sNome, $eErro->getMessage());
-      $oRegistro->iMotivo = ArquivoConsignet::MOTIVO_SERVIDOR_INVALIDO;
-    } catch ( Exception $eErro ) {
+    } catch ( BusinessException|Exception $eErro ) {
 
       $this->log($oRegistro->iLinha, $oRegistro->iMatricula, $oRegistro->sNome, $eErro->getMessage());
       $oRegistro->iMotivo = ArquivoConsignet::MOTIVO_SERVIDOR_INVALIDO;
@@ -286,7 +275,7 @@ class ProcessamentoArquivoConsignet {
       $this->log($oRegistro->iLinha, $oRegistro->iMatricula, $oRegistro->sNome, $eErro->getMessage());
     }
 
-    if ( !is_numeric($oRegistro->fValorParcela) || strpos($oRegistro->fValorParcela, ".") === false) {
+    if ( !is_numeric($oRegistro->fValorParcela) || !str_contains($oRegistro->fValorParcela, ".")) {
       $oRegistro->iMotivo = ArquivoConsignet::MOTIVO_OUTROS_MOTIVOS;
     }
   }
@@ -355,7 +344,7 @@ class ProcessamentoArquivoConsignet {
 
     try { 
       $oRubrica = RubricaRepository::getInstanciaByCodigo( $oRegistro->sRubrica, $this->oInstituicao->getSequencial());
-    } catch ( BusinessException $eException ) {
+    } catch ( BusinessException ) {
 
       $oRubrica = new Rubrica();
       $oRubrica->setCodigo( $oRegistro->sRubrica );
@@ -383,7 +372,7 @@ class ProcessamentoArquivoConsignet {
 
     $this->oArquivoConsignet->setCompetencia($this->oCompetencia);
     $this->oArquivoConsignet->setInstituicao($this->oInstituicao);
-    $this->oArquivoConsignet->setNome(basename($this->sCaminhoArquivo));
+    $this->oArquivoConsignet->setNome(basename((string) $this->sCaminhoArquivo));
 
     /**
      * Layout do arquivo de importação
@@ -391,9 +380,9 @@ class ProcessamentoArquivoConsignet {
      */
     $oLayoutArquivo      = new DBLayoutReader(self::I_CODIGO_LAYOUT, $this->sCaminhoArquivo);
 
-    $aArquivoNovo        = array();
-    $aArquivoAnterior    = array();
-    $aRegistrosRemovidos = array();
+    $aArquivoNovo        = [];
+    $aArquivoAnterior    = [];
+    $aRegistrosRemovidos = [];
     $iTamanhoLinha       = null;
 
     while (!feof($this->rArquivo)) {
@@ -490,8 +479,8 @@ class ProcessamentoArquivoConsignet {
 
     $oMensagem             = new stdClass();
     $oMensagem->iMatricula = (int)$iMatricula;
-    $oMensagem->sNome      = utf8_encode($sNome);
-    $oMensagem->sMotivo    = utf8_encode($sMotivo);
+    $oMensagem->sNome      = mb_convert_encoding($sNome, 'UTF-8', 'ISO-8859-1');
+    $oMensagem->sMotivo    = mb_convert_encoding($sMotivo, 'UTF-8', 'ISO-8859-1');
     $oMensagem->iLinha     = $iLinha;
     $this->oLog->escreverLog($oMensagem,  DBLog::LOG_ERROR);
     return;
@@ -507,8 +496,8 @@ class ProcessamentoArquivoConsignet {
 
     $oMensagemModificacao             = new stdClass();
     $oMensagemModificacao->iMatricula = (int)$iMatricula;
-    $oMensagemModificacao->sNome      = utf8_encode($sNome);
-    $oMensagemModificacao->sDescricao = utf8_encode($sDescricao);
+    $oMensagemModificacao->sNome      = mb_convert_encoding($sNome, 'UTF-8', 'ISO-8859-1');
+    $oMensagemModificacao->sDescricao = mb_convert_encoding($sDescricao, 'UTF-8', 'ISO-8859-1');
     $oMensagemModificacao->iLinha     = $iLinha;
     $this->oLogModificacoes->escreverLog($oMensagemModificacao,  DBLog::LOG_ERROR);
     return;
@@ -567,7 +556,7 @@ class ProcessamentoArquivoConsignet {
         $lBackground = !$lBackground;     
         $oPdf->Cell(20, 4, $oMatricula->iMatricula           , true, 0, 'C', $lBackground);
         $oPdf->Cell(75, 4, $oMatricula->sNome                , true, 0, 'L', $lBackground);
-        $oPdf->Cell(76, 4, utf8_decode($oMatricula->sMotivo) , true, 0, 'L', $lBackground);
+        $oPdf->Cell(76, 4, mb_convert_encoding($oMatricula->sMotivo, 'ISO-8859-1') , true, 0, 'L', $lBackground);
         $oPdf->Cell(22, 4, $oMatricula->iLinha               , true, 1, 'C', $lBackground);
       }
 
@@ -590,7 +579,7 @@ class ProcessamentoArquivoConsignet {
         $lBackground = !$lBackground;     
         $oPdf->Cell(20, 4, $oMatriculaModificada->iMatricula              , true, 0, 'C', $lBackground);
         $oPdf->Cell(75, 4, $oMatriculaModificada->sNome                   , true, 0, 'L', $lBackground);
-        $oPdf->Cell(76, 4, utf8_decode($oMatriculaModificada->sDescricao) , true, 0, 'L', $lBackground);
+        $oPdf->Cell(76, 4, mb_convert_encoding($oMatriculaModificada->sDescricao, 'ISO-8859-1') , true, 0, 'L', $lBackground);
         $oPdf->Cell(22, 4, $oMatriculaModificada->iLinha                  , true, 1, 'C', $lBackground);
       }
     }
@@ -752,7 +741,7 @@ class ProcessamentoArquivoConsignet {
         return false;
       }
 
-      if (strpos($sStringFormatada, ".") == false){
+      if (!str_contains($sStringFormatada, ".")){
 
         if (strlen($sStringFormatada) <= ($iTamanhoMaximo-3)) {
           $sStringFormatada .= ".00";

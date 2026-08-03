@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lab_entrega_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_entrega = new cl_lab_entrega;
 $cllab_entrega->rotulo->label("la31_i_codigo");
 $cllab_entrega->rotulo->label("la31_i_codigo");
@@ -72,9 +72,9 @@ $cllab_entrega->rotulo->label("la31_i_codigo");
         }else{
            $sql = $cllab_entrega->sql_query("",$campos,"la31_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la31_i_codigo)){
-          $repassa = array("chave_la31_i_codigo"=>$chave_la31_i_codigo,"chave_la31_i_codigo"=>$chave_la31_i_codigo);
+          $repassa = ["chave_la31_i_codigo"=>$chave_la31_i_codigo,"chave_la31_i_codigo"=>$chave_la31_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

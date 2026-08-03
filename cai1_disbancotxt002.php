@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("disbancotxt"=>"disbancotxt","disbanco"=>"disbanco"); 
-	 $clcriaabas->src = array("disbancotxt"=>"cai1_disbancotxt005.php");
-	 $clcriaabas->disabled   =  array("disbanco"=>"true"); 
+	 $clcriaabas->identifica = ["disbancotxt"=>"disbancotxt","disbanco"=>"disbanco"]; 
+	 $clcriaabas->src = ["disbancotxt"=>"cai1_disbancotxt005.php"];
+	 $clcriaabas->disabled   =  ["disbanco"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

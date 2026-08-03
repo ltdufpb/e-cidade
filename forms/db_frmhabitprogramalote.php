@@ -89,7 +89,7 @@ if(isset($db_opcaoal)){
 	  <tr>
 	    <td valign="top"  align="center">  
 		    <?php 
-					$chavepri= array("ht05_sequencial"=>@$ht05_sequencial);
+					$chavepri= ["ht05_sequencial"=>@$ht05_sequencial];
 					
 					$sSqlLote = $clhabitprogramalote->sql_query(null,"*",null,"ht05_habitprograma = ".@$ht05_habitprograma);
 					

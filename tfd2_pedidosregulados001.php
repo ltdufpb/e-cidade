@@ -78,20 +78,20 @@ function formataData($dData, $iTipo = 1) {
 
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
 
   }
 
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
  return $dData;
 
 }
 
-$dDataIni = substr($dataini, 6, 4).'-'.substr($dataini, 3, 2).'-'.substr($dataini, 0, 2);
-$dDataFim = substr($datafim, 6, 4).'-'.substr($datafim, 3, 2).'-'.substr($datafim, 0, 2);
+$dDataIni = substr((string) $dataini, 6, 4).'-'.substr((string) $dataini, 3, 2).'-'.substr((string) $dataini, 0, 2);
+$dDataFim = substr((string) $datafim, 6, 4).'-'.substr((string) $datafim, 3, 2).'-'.substr((string) $datafim, 0, 2);
 $sWhere   = " tf01_d_datapedido between '$dDataIni' and '$dDataFim'";
 $sWhere  .= $iTipo == 1 ? ' and tf34_i_login is not null ' : 'and tf34_i_login is null';
 
@@ -147,7 +147,7 @@ for($iCont = 0; $iCont < $iLinhas; $iCont++) {
 
   novoPedido($oPdf, $oDados->tf01_i_codigo, formataData($oDados->tf01_d_datapedido, 2),
              $oDados->emergencia, formataData($oDados->tf01_d_datapreferencia, 2),
-             $oDados->z01_i_cgsund, $oDados->z01_v_nome
+             $oDados->z01_i_cgsund
             );
 
   if ($oPdf->getY() > $oPdf->h - 30) {

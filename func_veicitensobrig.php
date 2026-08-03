@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veicitensobrig_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveicitensobrig = new cl_veicitensobrig;
 $clrotulo         = new rotulocampo;
@@ -103,9 +103,9 @@ $clrotulo->label("ve01_placa");
            $sql = $clveicitensobrig->sql_query_naobaixados("","$campos","ve09_veiculos","ve10_veicitensobrig is null");
           
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve09_veiculos)){
-          $repassa = array("chave_ve09_sequencial"=>$chave_ve09_sequencial,"chave_ve01_placa"=>$chave_ve01_placa);
+          $repassa = ["chave_ve09_sequencial"=>$chave_ve09_sequencial,"chave_ve01_placa"=>$chave_ve01_placa];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

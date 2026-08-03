@@ -78,7 +78,7 @@ class RelatorioProjecaoReceitaService extends ReceitaService
         $this->processarFiltros();
 
         if (!empty($this->filtros['natureza'])) {
-            $fonte = str_pad($this->filtros['natureza'], 15, '0', STR_PAD_RIGHT);
+            $fonte = str_pad((string) $this->filtros['natureza'], 15, '0', STR_PAD_RIGHT);
             $estrutural = new EstruturalReceita($fonte);
             $this->nivel = $estrutural->getNivel();
         }
@@ -152,6 +152,7 @@ class RelatorioProjecaoReceitaService extends ReceitaService
     /**
      * @param array $dados
      */
+    #[\Override]
     protected function organizaDados(array $dados)
     {
         parent::organizaDados($dados);

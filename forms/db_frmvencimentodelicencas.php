@@ -31,16 +31,16 @@ $db_opcao = 1;
 
 $oTipoLicenca  = new TipoLicenca( );
 $oTipoLicencas = $oTipoLicenca->getTiposDescricoes();
-$aTipoLicencas = array(''  => 'Todos');
+$aTipoLicencas = [''  => 'Todos'];
 foreach ($oTipoLicencas as $aTipoLicenca) {
   $aTipoLicencas[$aTipoLicenca->am09_sequencial] = $aTipoLicenca->am09_descricao;
 }
 
-$aCondicoes = array('' => 'Selecione', 'vencidas' => 'Vencidas', 'vencer' => 'A vencer');
+$aCondicoes = ['' => 'Selecione', 'vencidas' => 'Vencidas', 'vencer' => 'A vencer'];
 
-$aOrdem     = array('7' => 'Data de Vencimento',
+$aOrdem     = ['7' => 'Data de Vencimento',
                     '2' => 'Código do Empreendimento',
-                    '1' => 'Número da Licença');
+                    '1' => 'Número da Licença'];
 ?>
 <form name="formVencimentoLicencas" id="formVencimentoLicencas" method="post" action="">
 

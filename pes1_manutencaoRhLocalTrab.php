@@ -37,7 +37,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhlocaltrab_classe.php"));
 require_once(modification("classes/db_rhlocaltrabcustoplano_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrhlocaltrab                    = new cl_rhlocaltrab();
 $clrhlocaltrabagentesnocivos      = new cl_rhlocaltrabagentesnocivos();
@@ -55,10 +55,10 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("rh86_criteriorateio");
 $clrotulo->label("cc08_descricao");
 
-$aParamKeys  = array(
+$aParamKeys  = [
     "cc09_anousu" => db_getsession("DB_anousu"),
     "cc09_instit" => db_getsession("DB_instit"),
-);
+];
 $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
 $iTipoControleCustos = 0;
 
@@ -198,7 +198,7 @@ if (!isset($db_opcao)) {
                     <td width="520px;">Tipo de local de Trabalho</td>
                     <td>
                       <?php
-                        $aTiposLocaisTrabalho = array("0"=>"","1"=>"1 - Urbano","2"=>"2 - Rural");
+                        $aTiposLocaisTrabalho = ["0"=>"","1"=>"1 - Urbano","2"=>"2 - Rural"];
                         db_select("rh55_tipolocal", $aTiposLocaisTrabalho, true, $db_opcao);
                       ?>
                     </td>
@@ -215,7 +215,7 @@ if (!isset($db_opcao)) {
                     <td>Tipo de Estabelecimento</td>
                     <td>
                      <?php
-                       $aTiposEstabelecimentos = array("0"=>"","1"=>"1 - Estabelecimento do próprio empregador","2"=>"2 - Estabelecimento de Terceiros");
+                       $aTiposEstabelecimentos = ["0"=>"","1"=>"1 - Estabelecimento do próprio empregador","2"=>"2 - Estabelecimento de Terceiros"];
                        db_select("rh55_tipoestabelecimento", $aTiposEstabelecimentos, true, $db_opcao);
                      ?>
                     </td>
@@ -224,7 +224,7 @@ if (!isset($db_opcao)) {
                     <td>Código correspondente o tipo de inscrição</td>
                     <td>
                      <?php
-                       $aCodigosInscricao = array("0"=>"","1"=>"1 - CNPJ","3"=>"3 - CAEPF","4"=>"4 - CNO");
+                       $aCodigosInscricao = ["0"=>"","1"=>"1 - CNPJ","3"=>"3 - CAEPF","4"=>"4 - CNO"];
                        db_select("rh55_tipoinscricao", $aCodigosInscricao, true, $db_opcao);
                      ?>                    
                     </td>
@@ -271,7 +271,7 @@ if (!isset($db_opcao)) {
                             <td>Tipo de Avaliação do Agente Nocivo:</td>
                             <td>
                               <?php
-                                $aTiposAvaliacoesAgentesNocivos = array("0"=>"","1"=>"1 - Critério quantitativo","2"=>"2 - Critério qualitativo");
+                                $aTiposAvaliacoesAgentesNocivos = ["0"=>"","1"=>"1 - Critério quantitativo","2"=>"2 - Critério qualitativo"];
                                 db_select("rh256_tipoavaliacao", $aTiposAvaliacoesAgentesNocivos, true, $db_opcao);
                               ?>
                             </td>                    
@@ -332,7 +332,7 @@ if (!isset($db_opcao)) {
                                          </td>
                                          <td valign="bottom">
                                            <?php
-                                             $aOpcoes = array("0"=>"Não se aplica", "1"=>"Não implementa", "2"=>"Implementada");
+                                             $aOpcoes = ["0"=>"Não se aplica", "1"=>"Não implementa", "2"=>"Implementada"];
                                              db_select("rh257_utilizaepc", $aOpcoes, true, $db_opcao);
                                            ?>                    
                                          </td>
@@ -341,7 +341,7 @@ if (!isset($db_opcao)) {
                                          <td>Os EPCs são eficazes na neutralização do risco ao trabalhador?</td>
                                          <td valign="bottom">
                                            <?php
-                                             $aOpcoes = array("0"=>"","S"=>"Sim", "N"=>"Não");
+                                             $aOpcoes = ["0"=>"","S"=>"Sim", "N"=>"Não"];
                                              db_select("rh257_eficaciaepc", $aOpcoes, true, $db_opcao);
                                            ?>                    
                                          </td>
@@ -350,7 +350,7 @@ if (!isset($db_opcao)) {
                                          <td>Utilização de EPI:</td>
                                          <td valign="bottom">
                                            <?php
-                                             $aOpcoes = array("0"=>"Não se aplica", "1"=>"Não utilizado", "2"=>"Utilizado");
+                                             $aOpcoes = ["0"=>"Não se aplica", "1"=>"Não utilizado", "2"=>"Utilizado"];
                                              db_select("rh257_utilizaepi", $aOpcoes, true, $db_opcao, "onchange='mostraFormCadastroEPI()'");
                                            ?>                    
                                          </td>
@@ -359,7 +359,7 @@ if (!isset($db_opcao)) {
                                          <td>Os EPIs são eficazes na neutralização do risco ao trabalhador?</td>
                                          <td valign="bottom">
                                            <?php
-                                             $aOpcoes = array("0"=>"","S"=>"Sim", "N"=>"Não");
+                                             $aOpcoes = ["0"=>"","S"=>"Sim", "N"=>"Não"];
                                              db_select("rh257_eficaciaepi", $aOpcoes, true, $db_opcao);
                                            ?>                    
                                          </td>
@@ -371,7 +371,7 @@ if (!isset($db_opcao)) {
                                          </td>
                                          <td valign="bottom">
                                            <?php
-                                             $aOpcoes = array("0"=>"","S"=>"Sim", "N"=>"Não");
+                                             $aOpcoes = ["0"=>"","S"=>"Sim", "N"=>"Não"];
                                              db_select("rh257_medidaprotecaoepi", $aOpcoes, true, $db_opcao);
                                            ?>                    
                                          </td>
@@ -383,7 +383,7 @@ if (!isset($db_opcao)) {
                                          </td>
                                          <td valign="bottom">
                                            <?php
-                                             $aOpcoes = array("0"=>"","S"=>"Sim", "N"=>"Não");
+                                             $aOpcoes = ["0"=>"","S"=>"Sim", "N"=>"Não"];
                                              db_select("rh257_funcionamentoepi", $aOpcoes, true, $db_opcao);
                                            ?>                    
                                          </td>
@@ -395,7 +395,7 @@ if (!isset($db_opcao)) {
                                          </td>
                                          <td valign="bottom">
                                            <?php
-                                             $aOpcoes = array("0"=>"","S"=>"Sim", "N"=>"Não");
+                                             $aOpcoes = ["0"=>"","S"=>"Sim", "N"=>"Não"];
                                              db_select("rh257_usoininterruptoepi", $aOpcoes, true, $db_opcao);
                                            ?>                    
                                          </td>
@@ -406,7 +406,7 @@ if (!isset($db_opcao)) {
                                          </td>
                                          <td valign="bottom">
                                            <?php
-                                             $aOpcoes = array("0"=>"","S"=>"Sim", "N"=>"Não");
+                                             $aOpcoes = ["0"=>"","S"=>"Sim", "N"=>"Não"];
                                              db_select("rh257_validadeepi", $aOpcoes, true, $db_opcao);
                                            ?>                    
                                          </td>
@@ -418,7 +418,7 @@ if (!isset($db_opcao)) {
                                          </td>
                                          <td valign="bottom">
                                            <?php
-                                             $aOpcoes = array("0"=>"","S"=>"Sim", "N"=>"Não");
+                                             $aOpcoes = ["0"=>"","S"=>"Sim", "N"=>"Não"];
                                              db_select("rh257_periodicidadeepi", $aOpcoes, true, $db_opcao);
                                            ?>                    
                                          </td>
@@ -429,7 +429,7 @@ if (!isset($db_opcao)) {
                                          </td>
                                          <td valign="bottom">
                                            <?php
-                                             $aOpcoes = array("0"=>"","S"=>"Sim", "N"=>"Não");
+                                             $aOpcoes = ["0"=>"","S"=>"Sim", "N"=>"Não"];
                                              db_select("rh257_higienizacaoepi", $aOpcoes, true, $db_opcao);
                                            ?>                    
                                          </td>
@@ -550,7 +550,7 @@ if (!isset($db_opcao)) {
                             <td>Órgão de classe vinculado ao responsável: </td>
                             <td>
                               <?php
-                                $aOpcoesOrgaoClasse = array("0"=>"");
+                                $aOpcoesOrgaoClasse = ["0"=>""];
                                 $aOpcoesOrgaoClasse[1] = "1 - Conselho Regional de Medicina - CRM";                
                                 $aOpcoesOrgaoClasse[4] = "4 - Conselho Regional de Engenharia e Agronomia - CREA"; 
                                 $aOpcoesOrgaoClasse[9] = "9 - Outros";

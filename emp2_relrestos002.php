@@ -35,8 +35,8 @@ include(modification("classes/db_cgm_classe.php"));
 // informada, podendo ser acumulado por empenho, tipo de rp ou recurso
 
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clempresto = new cl_empresto;
 $clrotulo = new rotulocampo;
@@ -68,11 +68,11 @@ $pago_n_proc = 0;
 $pago_proc = 0;
 $aliquidadonp = 0;
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-', ', ', $db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins ++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins ++) {
 	db_fieldsmemory($resultinst, $xins);
 	$descr_inst .= $xvirg.$nomeinst;
 	$xvirg = ', ';
@@ -367,10 +367,10 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			$pdf->Cell(5, $tam, "", 0, 0, "C", 0);
 			$pdf->Cell(40, $tam, "Pagos no Período", 1, 1, "C", 1);
 
-			$pdf->Cell(15, $tam, strtoupper($RLe60_numemp), 1, 0, "L", 1);
-			$pdf->Cell(15, $tam, strtoupper($RLe60_codemp), 1, 0, "L", 1);
+			$pdf->Cell(15, $tam, strtoupper((string) $RLe60_numemp), 1, 0, "L", 1);
+			$pdf->Cell(15, $tam, strtoupper((string) $RLe60_codemp), 1, 0, "L", 1);
 			$pdf->Cell(20, $tam, strtoupper($RLe60_emiss), 1, 0, "C", 1);
-			$pdf->Cell(50, $tam, strtoupper($RLz01_nome), 1, 0, "L", 1);
+			$pdf->Cell(50, $tam, strtoupper((string) $RLz01_nome), 1, 0, "L", 1);
 
 			$pdf->Cell(20, $tam, "A Liquidar", 1, 0, "C", 1);
 			$pdf->Cell(20, $tam, "Liquidado", 1, 0, "C", 1);
@@ -388,7 +388,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 		$pdf->Cell(15, $tam, $e60_numemp, 1, 0, "L", 0);
 		$pdf->Cell(15, $tam, $e60_codemp, 1, 0, "L", 0);
 		$pdf->Cell(20, $tam, db_formatar($e60_emiss, 'd'), 1, 0, "C", 0);
-		$pdf->Cell(50, $tam, substr($z01_nome, 0, 30), 1, 0, "L", 0);
+		$pdf->Cell(50, $tam, substr((string) $z01_nome, 0, 30), 1, 0, "L", 0);
 		$pdf->Cell(20, $tam, db_formatar($e91_vlremp - $e91_vlranu - $e91_vlrliq, 'f'), 1, 0, "R", 0);
 		$pdf->Cell(20, $tam, db_formatar($e91_vlrliq - $e91_vlrpag, 'f'), 1, 0, "R", 0);
 		$pdf->Cell(20, $tam, db_formatar($vlranu, 'f'), 1, 0, "R", 0);
@@ -509,7 +509,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			$pdf->Cell(5, $tam, "", 0, 0, "C", 0);
 			$pdf->Cell(40, $tam, "Pagos no Período", 1, 1, "C", 1);
 
-			$pdf->Cell(15, $tam, strtoupper($RLe60_anousu), 1, 0, "C", 1);
+			$pdf->Cell(15, $tam, strtoupper((string) $RLe60_anousu), 1, 0, "C", 1);
 
 			$pdf->Cell(20, $tam, "A Liquidar", 1, 0, "C", 1);
 			$pdf->Cell(20, $tam, "Liquidado", 1, 0, "C", 1);
@@ -664,10 +664,10 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			$pdf->Cell(5, $tam, "", 0, 0, "C", 0);
 			$pdf->Cell(40, $tam, "Pagos no Período", 1, 1, "C", 1);
 
-			$pdf->Cell(15, $tam, strtoupper($RLe60_numemp), 1, 0, "L", 1);
-			$pdf->Cell(15, $tam, strtoupper($RLe60_codemp), 1, 0, "L", 1);
+			$pdf->Cell(15, $tam, strtoupper((string) $RLe60_numemp), 1, 0, "L", 1);
+			$pdf->Cell(15, $tam, strtoupper((string) $RLe60_codemp), 1, 0, "L", 1);
 			$pdf->Cell(20, $tam, strtoupper($RLe60_emiss), 1, 0, "C", 1);
-			$pdf->Cell(50, $tam, strtoupper($RLz01_nome), 1, 0, "L", 1);
+			$pdf->Cell(50, $tam, strtoupper((string) $RLz01_nome), 1, 0, "L", 1);
 
 			$pdf->Cell(20, $tam, "A Liquidar", 1, 0, "C", 1);
 			$pdf->Cell(20, $tam, "Liquidado", 1, 0, "C", 1);
@@ -688,7 +688,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
                	$pdf->Cell(15, $tam, $e60_numemp, 1, 0, "L", 0);
 		$pdf->Cell(15, $tam, $e60_codemp, 1, 0, "L", 0);
 		$pdf->Cell(20, $tam, db_formatar($e60_emiss, 'd'), 1, 0, "C", 0);
-		$pdf->Cell(50, $tam, substr($z01_nome, 0, 30), 1, 0, "L", 0);
+		$pdf->Cell(50, $tam, substr((string) $z01_nome, 0, 30), 1, 0, "L", 0);
 		$pdf->Cell(20, $tam, db_formatar($e91_vlremp - $e91_vlranu - $e91_vlrliq, 'f'), 1, 0, "R", 0);
 		$pdf->Cell(20, $tam, db_formatar($e91_vlrliq - $e91_vlrpag, 'f'), 1, 0, "R", 0);
 		$pdf->Cell(20, $tam, db_formatar($vlranu, 'f'), 1, 0, "R", 0);
@@ -843,10 +843,10 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			$pdf->Cell(5, $tam, "", 0, 0, "C", 0);
 			$pdf->Cell(40, $tam, "Pagos no Período", 1, 1, "C", 1);
 
-			$pdf->Cell(15, $tam, strtoupper($RLe60_numemp), 1, 0, "L", 1);
-			$pdf->Cell(15, $tam, strtoupper($RLe60_codemp), 1, 0, "L", 1);
+			$pdf->Cell(15, $tam, strtoupper((string) $RLe60_numemp), 1, 0, "L", 1);
+			$pdf->Cell(15, $tam, strtoupper((string) $RLe60_codemp), 1, 0, "L", 1);
 			$pdf->Cell(20, $tam, strtoupper($RLe60_emiss), 1, 0, "C", 1);
-			$pdf->Cell(50, $tam, strtoupper($RLz01_nome), 1, 0, "L", 1);
+			$pdf->Cell(50, $tam, strtoupper((string) $RLz01_nome), 1, 0, "L", 1);
 
 			$pdf->Cell(20, $tam, "A Liquidar", 1, 0, "C", 1);
 			$pdf->Cell(20, $tam, "Liquidado", 1, 0, "C", 1);
@@ -867,7 +867,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
                	$pdf->Cell(15, $tam, $e60_numemp, 1, 0, "L", 0);
 		$pdf->Cell(15, $tam, $e60_codemp, 1, 0, "L", 0);
 		$pdf->Cell(20, $tam, db_formatar($e60_emiss, 'd'), 1, 0, "C", 0);
-		$pdf->Cell(50, $tam, substr($z01_nome, 0, 30), 1, 0, "L", 0);
+		$pdf->Cell(50, $tam, substr((string) $z01_nome, 0, 30), 1, 0, "L", 0);
 		$pdf->Cell(20, $tam, db_formatar($e91_vlremp - $e91_vlranu - $e91_vlrliq, 'f'), 1, 0, "R", 0);
 		$pdf->Cell(20, $tam, db_formatar($e91_vlrliq - $e91_vlrpag, 'f'), 1, 0, "R", 0);
 		$pdf->Cell(20, $tam, db_formatar($vlranu, 'f'), 1, 0, "R", 0);
@@ -1000,7 +1000,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			$pdf->Cell(5, $tam, "", 0, 0, "C", 0);
 			$pdf->Cell(40, $tam, "Pagos no Período", 1, 1, "C", 1);
 
-			$pdf->Cell(15, $tam, strtoupper($RLe60_anousu), 1, 0, "C", 1);
+			$pdf->Cell(15, $tam, strtoupper((string) $RLe60_anousu), 1, 0, "C", 1);
 
 			$pdf->Cell(20, $tam, "A Liquidar", 1, 0, "C", 1);
 			$pdf->Cell(20, $tam, "Liquidado", 1, 0, "C", 1);
@@ -1136,7 +1136,7 @@ if ($tipo == "e" || $tipo == "t" || $tipo == "o" || $tipo == "d" || $tipo == "c"
 			$pdf->Cell(5, $tam, "", 0, 0, "C", 0);
 			$pdf->Cell(40, $tam, "Pagos no Período", 1, 1, "C", 1);
 
-			$pdf->Cell(15, $tam, strtoupper($RLe60_anousu), 1, 0, "C", 1);
+			$pdf->Cell(15, $tam, strtoupper((string) $RLe60_anousu), 1, 0, "C", 1);
 
 			$pdf->Cell(20, $tam, "A Liquidar", 1, 0, "C", 1);
 			$pdf->Cell(20, $tam, "Liquidado", 1, 0, "C", 1);

@@ -12,8 +12,8 @@ class M8542LaboratorioResultadoExames extends PostgresMigration
 
     private function estrutura()
     {
-        $table = $this->table('lab_resultadoitem', array('schema'=>'laboratorio'));
-        $table->addColumn('la39_titulacao', 'text',  array('null'=> true ))
+        $table = $this->table('lab_resultadoitem', ['schema'=>'laboratorio']);
+        $table->addColumn('la39_titulacao', 'text',  ['null'=> true ])
               ->update();
     }
 
@@ -22,20 +22,20 @@ class M8542LaboratorioResultadoExames extends PostgresMigration
         $this->execute("update db_syscampo set maiusculo = 'f' where codcam = 16493;");
 
         // campo
-        $aColumns = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-        $aValues  = array(
-            array(1009270,'la39_titulacao','text','Titulação lançada no atributo do exame.','', 'Titulação',1,'t','f','f',0,'text','Titulação'),
-        );
-        $table    = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+        $aColumns = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+        $aValues  = [
+            [1009270,'la39_titulacao','text','Titulação lançada no atributo do exame.','', 'Titulação',1,'t','f','f',0,'text','Titulação'],
+        ];
+        $table    = $this->table('db_syscampo', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // vincula o campo a tabela
-        $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-        $aValues  = array(
-            array(2897, 1009270, 4, 0)
-        );
-        $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+        $aValues  = [
+            [2897, 1009270, 4, 0]
+        ];
+        $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
     }
@@ -46,7 +46,7 @@ class M8542LaboratorioResultadoExames extends PostgresMigration
         $this->execute('delete from configuracoes.db_syscampo   where codcam in (1009270) ');
         $this->execute("update db_syscampo set maiusculo = 't' where codcam = 16493;");
 
-        $table = $this->table('lab_resultadoitem', array('schema'=>'laboratorio'));
+        $table = $this->table('lab_resultadoitem', ['schema'=>'laboratorio']);
         $table->removeColumn('la39_titulacao')
               ->save();
     }

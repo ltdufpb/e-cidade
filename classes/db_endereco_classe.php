@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE endereco
 class cl_endereco { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db76_sequencial = 0; 
-   var $db76_cadenderlocal = 0; 
-   var $db76_complemento = null; 
-   var $db76_caixapostal = null; 
-   var $db76_loteamento = null; 
-   var $db76_condominio = null; 
-   var $db76_pontoref = null; 
-   var $db76_cep = null; 
+   public $db76_sequencial = 0; 
+   public $db76_cadenderlocal = 0; 
+   public $db76_complemento = null; 
+   public $db76_caixapostal = null; 
+   public $db76_loteamento = null; 
+   public $db76_condominio = null; 
+   public $db76_pontoref = null; 
+   public $db76_cep = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db76_sequencial = int4 = Código do Endereço 
                  db76_cadenderlocal = int4 = Código do Local 
                  db76_complemento = varchar(100) = Complemento 
@@ -62,10 +62,10 @@ class cl_endereco {
                  db76_cep = char(8) = Cep 
                  ";
    //funcao construtor da classe 
-   function cl_endereco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("endereco"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -113,10 +113,10 @@ class cl_endereco {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db76_sequencial = pg_result($result,0,0); 
+       $this->db76_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from endereco_db76_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db76_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db76_sequencial)){
          $this->erro_sql = " Campo db76_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -158,7 +158,7 @@ class cl_endereco {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Endereços ($this->db76_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Endereços já Cadastrado";
@@ -182,17 +182,17 @@ class cl_endereco {
      $resaco = $this->sql_record($this->sql_query_file($this->db76_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15869,'$this->db76_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2786,15869,'','".AddSlashes(pg_result($resaco,0,'db76_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2786,15870,'','".AddSlashes(pg_result($resaco,0,'db76_cadenderlocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2786,15871,'','".AddSlashes(pg_result($resaco,0,'db76_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2786,15872,'','".AddSlashes(pg_result($resaco,0,'db76_caixapostal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2786,15873,'','".AddSlashes(pg_result($resaco,0,'db76_loteamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2786,15874,'','".AddSlashes(pg_result($resaco,0,'db76_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2786,15875,'','".AddSlashes(pg_result($resaco,0,'db76_pontoref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2786,16110,'','".AddSlashes(pg_result($resaco,0,'db76_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2786,15869,'','".AddSlashes(pg_fetch_result($resaco,0,'db76_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2786,15870,'','".AddSlashes(pg_fetch_result($resaco,0,'db76_cadenderlocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2786,15871,'','".AddSlashes(pg_fetch_result($resaco,0,'db76_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2786,15872,'','".AddSlashes(pg_fetch_result($resaco,0,'db76_caixapostal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2786,15873,'','".AddSlashes(pg_fetch_result($resaco,0,'db76_loteamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2786,15874,'','".AddSlashes(pg_fetch_result($resaco,0,'db76_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2786,15875,'','".AddSlashes(pg_fetch_result($resaco,0,'db76_pontoref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2786,16110,'','".AddSlashes(pg_fetch_result($resaco,0,'db76_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -201,10 +201,10 @@ class cl_endereco {
       $this->atualizacampos();
      $sql = " update endereco set ";
      $virgula = "";
-     if(trim($this->db76_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_sequencial"])){ 
+     if(trim((string) $this->db76_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_sequencial"])){ 
        $sql  .= $virgula." db76_sequencial = $this->db76_sequencial ";
        $virgula = ",";
-       if(trim($this->db76_sequencial) == null ){ 
+       if(trim((string) $this->db76_sequencial) == null ){ 
          $this->erro_sql = " Campo Código do Endereço nao Informado.";
          $this->erro_campo = "db76_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_endereco {
          return false;
        }
      }
-     if(trim($this->db76_cadenderlocal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_cadenderlocal"])){ 
+     if(trim((string) $this->db76_cadenderlocal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_cadenderlocal"])){ 
        $sql  .= $virgula." db76_cadenderlocal = $this->db76_cadenderlocal ";
        $virgula = ",";
-       if(trim($this->db76_cadenderlocal) == null ){ 
+       if(trim((string) $this->db76_cadenderlocal) == null ){ 
          $this->erro_sql = " Campo Código do Local nao Informado.";
          $this->erro_campo = "db76_cadenderlocal";
          $this->erro_banco = "";
@@ -227,27 +227,27 @@ class cl_endereco {
          return false;
        }
      }
-     if(trim($this->db76_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_complemento"])){ 
+     if(trim((string) $this->db76_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_complemento"])){ 
        $sql  .= $virgula." db76_complemento = '$this->db76_complemento' ";
        $virgula = ",";
      }
-     if(trim($this->db76_caixapostal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_caixapostal"])){ 
+     if(trim((string) $this->db76_caixapostal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_caixapostal"])){ 
        $sql  .= $virgula." db76_caixapostal = '$this->db76_caixapostal' ";
        $virgula = ",";
      }
-     if(trim($this->db76_loteamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_loteamento"])){ 
+     if(trim((string) $this->db76_loteamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_loteamento"])){ 
        $sql  .= $virgula." db76_loteamento = '$this->db76_loteamento' ";
        $virgula = ",";
      }
-     if(trim($this->db76_condominio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_condominio"])){ 
+     if(trim((string) $this->db76_condominio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_condominio"])){ 
        $sql  .= $virgula." db76_condominio = '$this->db76_condominio' ";
        $virgula = ",";
      }
-     if(trim($this->db76_pontoref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_pontoref"])){ 
+     if(trim((string) $this->db76_pontoref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_pontoref"])){ 
        $sql  .= $virgula." db76_pontoref = '$this->db76_pontoref' ";
        $virgula = ",";
      }
-     if(trim($this->db76_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_cep"])){ 
+     if(trim((string) $this->db76_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db76_cep"])){ 
        $sql  .= $virgula." db76_cep = '$this->db76_cep' ";
        $virgula = ",";
      }
@@ -259,25 +259,25 @@ class cl_endereco {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15869,'$this->db76_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db76_sequencial"]) || $this->db76_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2786,15869,'".AddSlashes(pg_result($resaco,$conresaco,'db76_sequencial'))."','$this->db76_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2786,15869,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db76_sequencial'))."','$this->db76_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db76_cadenderlocal"]) || $this->db76_cadenderlocal != "")
-           $resac = db_query("insert into db_acount values($acount,2786,15870,'".AddSlashes(pg_result($resaco,$conresaco,'db76_cadenderlocal'))."','$this->db76_cadenderlocal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2786,15870,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db76_cadenderlocal'))."','$this->db76_cadenderlocal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db76_complemento"]) || $this->db76_complemento != "")
-           $resac = db_query("insert into db_acount values($acount,2786,15871,'".AddSlashes(pg_result($resaco,$conresaco,'db76_complemento'))."','$this->db76_complemento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2786,15871,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db76_complemento'))."','$this->db76_complemento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db76_caixapostal"]) || $this->db76_caixapostal != "")
-           $resac = db_query("insert into db_acount values($acount,2786,15872,'".AddSlashes(pg_result($resaco,$conresaco,'db76_caixapostal'))."','$this->db76_caixapostal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2786,15872,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db76_caixapostal'))."','$this->db76_caixapostal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db76_loteamento"]) || $this->db76_loteamento != "")
-           $resac = db_query("insert into db_acount values($acount,2786,15873,'".AddSlashes(pg_result($resaco,$conresaco,'db76_loteamento'))."','$this->db76_loteamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2786,15873,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db76_loteamento'))."','$this->db76_loteamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db76_condominio"]) || $this->db76_condominio != "")
-           $resac = db_query("insert into db_acount values($acount,2786,15874,'".AddSlashes(pg_result($resaco,$conresaco,'db76_condominio'))."','$this->db76_condominio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2786,15874,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db76_condominio'))."','$this->db76_condominio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db76_pontoref"]) || $this->db76_pontoref != "")
-           $resac = db_query("insert into db_acount values($acount,2786,15875,'".AddSlashes(pg_result($resaco,$conresaco,'db76_pontoref'))."','$this->db76_pontoref',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2786,15875,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db76_pontoref'))."','$this->db76_pontoref',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db76_cep"]) || $this->db76_cep != "")
-           $resac = db_query("insert into db_acount values($acount,2786,16110,'".AddSlashes(pg_result($resaco,$conresaco,'db76_cep'))."','$this->db76_cep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2786,16110,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db76_cep'))."','$this->db76_cep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -322,17 +322,17 @@ class cl_endereco {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15869,'$db76_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2786,15869,'','".AddSlashes(pg_result($resaco,$iresaco,'db76_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2786,15870,'','".AddSlashes(pg_result($resaco,$iresaco,'db76_cadenderlocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2786,15871,'','".AddSlashes(pg_result($resaco,$iresaco,'db76_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2786,15872,'','".AddSlashes(pg_result($resaco,$iresaco,'db76_caixapostal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2786,15873,'','".AddSlashes(pg_result($resaco,$iresaco,'db76_loteamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2786,15874,'','".AddSlashes(pg_result($resaco,$iresaco,'db76_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2786,15875,'','".AddSlashes(pg_result($resaco,$iresaco,'db76_pontoref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2786,16110,'','".AddSlashes(pg_result($resaco,$iresaco,'db76_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2786,15869,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db76_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2786,15870,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db76_cadenderlocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2786,15871,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db76_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2786,15872,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db76_caixapostal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2786,15873,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db76_loteamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2786,15874,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db76_condominio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2786,15875,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db76_pontoref'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2786,16110,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db76_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from endereco
@@ -392,7 +392,7 @@ class cl_endereco {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:endereco";
@@ -407,7 +407,7 @@ class cl_endereco {
    function sql_query ( $db76_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,7 +430,7 @@ class cl_endereco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -443,7 +443,7 @@ class cl_endereco {
    function sql_query_file ( $db76_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -464,7 +464,7 @@ class cl_endereco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

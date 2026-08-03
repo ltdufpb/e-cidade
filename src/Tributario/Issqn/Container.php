@@ -8,7 +8,7 @@ final class Container extends ContainerAbstract
 {
     public function charge()
     {
-        $this->content = array(
+        $this->content = [
             'CadvencRepository' => function ($container) {
 
                 $dataBase = $container->get('DataBase');
@@ -30,18 +30,12 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Issqn\Repository\IssbaseRepository($dataBase, $dao);
             },
-            'Inscricao\Atividades\Repository\Atividades' => function ($container) {
-
-                return new \ECidade\Tributario\Issqn\Inscricao\Atividades\Repository\Atividades(
-                    $container->get('DataBase')
-                );
-            },
-            'Inscricao\Atividades\Collection\Atividades' => function ($container) {
-
-                return new \ECidade\Tributario\Issqn\Inscricao\Atividades\Collection\Atividades(
-                    $container->get('DataBase')
-                );
-            },
+            'Inscricao\Atividades\Repository\Atividades' => fn($container) => new \ECidade\Tributario\Issqn\Inscricao\Atividades\Repository\Atividades(
+                $container->get('DataBase')
+            ),
+            'Inscricao\Atividades\Collection\Atividades' => fn($container) => new \ECidade\Tributario\Issqn\Inscricao\Atividades\Collection\Atividades(
+                $container->get('DataBase')
+            ),
             'Inscricao\Service\AlvaraOnline' => function ($container) {
                 $containerPatrimonial = \ECidade\V3\Extension\Registry::get('app.container')
                     ->get('patrimonial.container');
@@ -98,11 +92,9 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Issqn\ParametrosProcessoEletronicoBag($repository, $entidade);
             },
-            'ProcessoEletronicoGrauRiscoRepository' => function ($container) {
-                return \ECidade\Tributario\Issqn\Repository\ProcessoEletronicoGrauRiscoRepository::getInstance(
-                    new \cl_processoeletronicograurisco()
-                );
-            },
+            'ProcessoEletronicoGrauRiscoRepository' => fn($container) => \ECidade\Tributario\Issqn\Repository\ProcessoEletronicoGrauRiscoRepository::getInstance(
+                new \cl_processoeletronicograurisco()
+            ),
             'IssvarRepository' => function ($container) {
                 $database = $container->get('DataBase');
                 $dao = new \cl_issvar();
@@ -112,6 +104,6 @@ final class Container extends ContainerAbstract
                     $dao
                 );
             }
-        );
+        ];
     }
 }

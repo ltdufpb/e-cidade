@@ -45,7 +45,7 @@ $clmatparaminstit->rotulo->label();
           </td>
           <td> 
             <?php 
-            $x = array('1'=>'Ativado','2'=>'Desativado');
+            $x = ['1'=>'Ativado','2'=>'Desativado'];
             db_select('m10_controlapit',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -65,7 +65,7 @@ function js_preenchepesquisa(chave){
   db_iframe_matparaminstit.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

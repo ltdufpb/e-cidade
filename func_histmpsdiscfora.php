@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_histmpsdiscfora_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhistmpsdiscfora = new cl_histmpsdiscfora;
 $clhistmpsdiscfora->rotulo->label("ed100_i_codigo");
 $clhistmpsdiscfora->rotulo->label("ed100_i_codigo");
@@ -98,9 +98,9 @@ $clhistmpsdiscfora->rotulo->label("ed100_i_codigo");
         }else{
            $sql = $clhistmpsdiscfora->sql_query("",$campos,"ed100_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed100_i_codigo)){
-          $repassa = array("chave_ed100_i_codigo"=>$chave_ed100_i_codigo,"chave_ed100_i_codigo"=>$chave_ed100_i_codigo);
+          $repassa = ["chave_ed100_i_codigo"=>$chave_ed100_i_codigo,"chave_ed100_i_codigo"=>$chave_ed100_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

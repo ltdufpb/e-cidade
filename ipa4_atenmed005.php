@@ -28,7 +28,7 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 ?>
 <html>
 <head>
@@ -64,17 +64,17 @@ input {
 				   on aa01_codig = ag40_medico
 				   inner join especial
 				   on w12_codigo = ag40_espec
-	   			   where ".(trim($dependente)!="0"?"ag30_depend = '$dependente'":"ag30_regist = '$funcionario'")."
+	   			   where ".(trim((string) $dependente)!="0"?"ag30_depend = '$dependente'":"ag30_regist = '$funcionario'")."
 				   and atendmed.ag40_codigo != $codigo
                    order by atendmed.ag40_data desc";				   
   
-  if(!isset($HTTP_POST_VARS["antprox"])) {
+  if(!isset($_POST["antprox"])) {
     $result = db_query("select count(*) from ($sql) as pedro");
-	$totreg = pg_result($result,0,0);
+	$totreg = pg_fetch_result($result,0,0);
   }
-  $sql .= " limit 1 offset ".(!isset($HTTP_POST_VARS["antprox"])?"0":$HTTP_POST_VARS["antprox"]);
+  $sql .= " limit 1 offset ".(!isset($_POST["antprox"])?"0":$_POST["antprox"]);
   $result = db_query($conn,$sql);
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
   if($numrows == 0) {
     echo "<br><BR><Br><center><h3>Sem consultas.</h3></center>";
   } else {
@@ -126,8 +126,8 @@ input {
         &nbsp; 
         <input name="doencas" onClick="parent.js_abrir(this.form.doenR,0)" type="button" id="doencas" value="Doen&ccedil;as">
         <input name="doenR" type="hidden" id="doenR" value="do R">
-		<input type="hidden" name="antprox" value="<?php  echo isset($HTTP_POST_VARS["antprox"])?$HTTP_POST_VARS["antprox"]:"0" ?>">
-		<input type="hidden" name="totreg" value="<?php  echo isset($HTTP_POST_VARS["totreg"])?$HTTP_POST_VARS["totreg"]:$totreg ?>">
+		<input type="hidden" name="antprox" value="<?php  echo $_POST["antprox"] ?? "0" ?>">
+		<input type="hidden" name="totreg" value="<?php  echo $_POST["totreg"] ?? $totreg ?>">
       </form>
 	  <script>
 	  if(document.form1.antprox.value != (document.form1.totreg.value - 1))

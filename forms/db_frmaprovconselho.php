@@ -94,7 +94,7 @@ if($cldiariofinal->numrows>0){
   $oDaoAprovConselhoTipo = db_utils::getDao("aprovconselhotipo");
   $sSqlAprovTipo         = $oDaoAprovConselhoTipo->sql_query_file(null, "*", "ed122_sequencial");
   $rsAprovConselhoTipo   = $oDaoAprovConselhoTipo->sql_record($sSqlAprovTipo);
-  $aTipos = array();
+  $aTipos = [];
 
   for ($i = 0; $i < $oDaoAprovConselhoTipo->numrows; $i++) {
 

@@ -77,7 +77,7 @@ for ($iRowLancamento = 0; $iRowLancamento < $oDaoContrans->numrows; $iRowLancame
 /**
  * Monta os dados para impressão
  */
-$aDadosImprimir = array();
+$aDadosImprimir = [];
 foreach ($aLancamentosEvento as $iIndiceLancamento => $oDados) {
 
   /*
@@ -90,7 +90,7 @@ foreach ($aLancamentosEvento as $iIndiceLancamento => $oDados) {
   $oStdClassLancamento->iCodigoLancamento    = $oDados->oLancamento->getSequencialLancamento();
   $oStdClassLancamento->iOrdem               = $oDados->oLancamento->getOrdem();
   $oStdClassLancamento->sDescricaoLancamento = $oDados->oLancamento->getDescricao();
-  $oStdClassLancamento->aRegrasLancamento    = array();
+  $oStdClassLancamento->aRegrasLancamento    = [];
   $aRegrasLancamento                         = $oDados->oLancamento->getRegrasLancamento();
   foreach ($aRegrasLancamento as $iIndiceRegra => $oRegra) {
 
@@ -105,10 +105,10 @@ foreach ($aLancamentosEvento as $iIndiceLancamento => $oDados) {
     $iReduzidoDebito  = $oRegra->getContaDebito();
     $iReduzidoCredito = $oRegra->getContaCredito();
     $oStdClassRegra                           = new stdClass();
-    $oStdClassRegra->iReduzidoDebito          = $iReduzidoDebito ? $iReduzidoDebito : '0';
+    $oStdClassRegra->iReduzidoDebito          = $iReduzidoDebito ?: '0';
     $oStdClassRegra->sEstruturalDebito        = $oReduzidoDebito ? $oReduzidoDebito->sEstrutural : '';
     $oStdClassRegra->sDescricaoDebito         = $oReduzidoDebito ? $oReduzidoDebito->sDescricao : '';
-    $oStdClassRegra->iReduzidoCredito         = $iReduzidoCredito ? $iReduzidoCredito : '0';
+    $oStdClassRegra->iReduzidoCredito         = $iReduzidoCredito ?: '0';
     $oStdClassRegra->sEstruturalCredito       = $oReduzidoCredito ? $oReduzidoCredito->sEstrutural : '';
     $oStdClassRegra->sDescricaoCredito        = $oReduzidoCredito ? $oReduzidoCredito->sDescricao : '';
     $oStdClassLancamento->aRegrasLancamento[] = $oStdClassRegra;
@@ -129,7 +129,7 @@ $oPdf->SetAutoPageBreak(false);
 $iAltura = 4;
 $head2    = "Relatório de Eventos Contábeis";
 $head3    = "Ano: {$oGet->iAno}";
-$aDocumentos = explode(',', $oGet->iCodigosDocumentos);
+$aDocumentos = explode(',', (string) $oGet->iCodigosDocumentos);
 if (!empty($oGet->iCodigosDocumentos) && count($aDocumentos) === 1) {
 
   $oDaoConhistdoc     = new cl_conhistdoc;

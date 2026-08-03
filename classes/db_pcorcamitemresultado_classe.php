@@ -27,7 +27,7 @@ class cl_pcorcamitemresultado
     public function __construct()
     {
         $this->rotulo = new rotulo("pcorcamitemresultado"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -82,7 +82,7 @@ class cl_pcorcamitemresultado
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Resultado do item ($this->pc220_orcamitem) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Resultado do item já Cadastrado";
@@ -111,11 +111,11 @@ class cl_pcorcamitemresultado
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1013452,'$this->pc220_orcamitem','I')");
-         $resac = db_query("insert into db_acount values($acount,1010830,1013452,'','".AddSlashes(pg_result($resaco,0,'pc220_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010830,1013453,'','".AddSlashes(pg_result($resaco,0,'pc220_resultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010830,1013452,'','".AddSlashes(pg_fetch_result($resaco,0,'pc220_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010830,1013453,'','".AddSlashes(pg_fetch_result($resaco,0,'pc220_resultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -126,10 +126,10 @@ class cl_pcorcamitemresultado
       $this->atualizacampos();
      $sql = " update pcorcamitemresultado set ";
      $virgula = "";
-     if(trim($this->pc220_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc220_orcamitem"])){ 
+     if(trim((string) $this->pc220_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc220_orcamitem"])){ 
        $sql  .= $virgula." pc220_orcamitem = $this->pc220_orcamitem ";
        $virgula = ",";
-       if(trim($this->pc220_orcamitem) == null ){ 
+       if(trim((string) $this->pc220_orcamitem) == null ){ 
          $this->erro_sql = " Campo Item Proposta não informado.";
          $this->erro_campo = "pc220_orcamitem";
          $this->erro_banco = "";
@@ -139,10 +139,10 @@ class cl_pcorcamitemresultado
          return false;
        }
      }
-     if(trim($this->pc220_resultado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc220_resultado"])){ 
+     if(trim((string) $this->pc220_resultado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc220_resultado"])){ 
        $sql  .= $virgula." pc220_resultado = '$this->pc220_resultado' ";
        $virgula = ",";
-       if(trim($this->pc220_resultado) == null ){ 
+       if(trim((string) $this->pc220_resultado) == null ){ 
          $this->erro_sql = " Campo Resultado não informado.";
          $this->erro_campo = "pc220_resultado";
          $this->erro_banco = "";
@@ -166,13 +166,13 @@ class cl_pcorcamitemresultado
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1013452,'$this->pc220_orcamitem','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc220_orcamitem"]) || $this->pc220_orcamitem != "")
-             $resac = db_query("insert into db_acount values($acount,1010830,1013452,'".AddSlashes(pg_result($resaco,$conresaco,'pc220_orcamitem'))."','$this->pc220_orcamitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010830,1013452,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc220_orcamitem'))."','$this->pc220_orcamitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc220_resultado"]) || $this->pc220_resultado != "")
-             $resac = db_query("insert into db_acount values($acount,1010830,1013453,'".AddSlashes(pg_result($resaco,$conresaco,'pc220_resultado'))."','$this->pc220_resultado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010830,1013453,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc220_resultado'))."','$this->pc220_resultado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -226,11 +226,11 @@ class cl_pcorcamitemresultado
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1013452,'$pc220_orcamitem','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010830,1013452,'','".AddSlashes(pg_result($resaco,$iresaco,'pc220_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010830,1013453,'','".AddSlashes(pg_result($resaco,$iresaco,'pc220_resultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010830,1013452,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc220_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010830,1013453,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc220_resultado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

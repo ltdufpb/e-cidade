@@ -101,17 +101,17 @@ class Anexo12 extends Base implements In22
      */
     private function processarDados()
     {
-        $dadosImpressao = array();
+        $dadosImpressao = [];
         foreach ($this->linhas as $linha) {
             if ($linha->ordem == 14) {
                 continue;
             }
-            $dadosImpressao[] = (object)array(
+            $dadosImpressao[] = (object)[
                 'descricao' => $linha->descricao,
                 'mes' => $this->formataValor($linha->mes),
                 'ano' => $this->formataValor($linha->ano),
                 'percentual' => $linha->valor,
-            );
+            ];
         }
         return $dadosImpressao;
     }
@@ -122,11 +122,11 @@ class Anexo12 extends Base implements In22
      */
     private function processarTotalizador()
     {
-        return array((object)array(
+        return [(object)[
             'descricao' => $this->linhas[14]->descricao,
             'mes' => $this->formataValor($this->linhas[14]->mes),
             'ano' => $this->formataValor($this->linhas[14]->ano),
             'percentual' => $this->linhas[14]->valor,
-        ));
+        ]];
     }
 }

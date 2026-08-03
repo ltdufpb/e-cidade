@@ -37,8 +37,8 @@ $clempage      = new cl_empage;
 $clempageconf  = new cl_empageconf;
 $clerrobanco   = new cl_errobanco;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = false;
 
@@ -169,9 +169,9 @@ function js_marca(obj){
     $result_arq  = $clempage->sql_record($sSqlArquivoRetorno);
     
     $numrows_arq = $clempage->numrows;
-    $arr_valorcontas = Array();
-    $arr_valorproces = Array();
-    $arr_valoragenda = Array();
+    $arr_valorcontas = [];
+    $arr_valorproces = [];
+    $arr_valoragenda = [];
     if($numrows_arq>0){
       for($i = 0;$i<$numrows_arq;$i++){
 	db_fieldsmemory($result_arq,$i);
@@ -188,7 +188,7 @@ function js_marca(obj){
 	if(!isset($arr_valorproces[$e83_codtipo])){
 	  $arr_valorproces[$e83_codtipo] = 0;
 	}
-	
+
 	if($e92_processa=='f' && $e92_sequencia!=35){
 	  $totalmovs++;	  
 	  $arr_valorproces[$e83_codtipo] += $e81_valor - $e76_valorefet;
@@ -245,7 +245,7 @@ function js_marca(obj){
       $disab02 = false;
 
       $result_errobanco = $clerrobanco->sql_record($clerrobanco->sql_query_file($e02_errobanco,"e92_sequencia,e92_descrerro,e92_processa"));
-      
+
       if($clerrobanco->numrows>0){
         db_fieldsmemory($result_errobanco,0);
       }
@@ -257,7 +257,7 @@ function js_marca(obj){
       $disab01 = false;
       $check = " checked ";
       if($e92_processa=='t' || $e92_sequencia==35){
-        
+
       	$class = "01";
       	$disab = " disabled ";
       	$disab01 = true;
@@ -284,8 +284,8 @@ function js_marca(obj){
       echo "
       <tr>
         <td class='bordas$class' nowrap>
-        
-        
+
+
 	  <input $disab $check value='$e81_codmov' name='CHECK_$e81_codmov' type='checkbox'>
         </td>
 	<td class='bordas$class'><small>$e60_codemp</small></td>

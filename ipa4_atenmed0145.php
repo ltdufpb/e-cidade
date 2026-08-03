@@ -36,17 +36,17 @@ $pdf->SetTextColor(0,0,0);
 $pdf->SetFillColor(235);
 $pdf->Ln(3);
 $pdf->SetFont($Letra,'',9);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if($codigo != "")
-  $result = db_query("select w03_nome as nome from depen where w03_codigo = '".str_pad(trim($codigo),6," ",STR_PAD_LEFT)."'");
+  $result = db_query("select w03_nome as nome from depen where w03_codigo = '".str_pad(trim((string) $codigo),6," ",STR_PAD_LEFT)."'");
 else {
   $result = db_query("select c.j01_nome as  nome
                      from cgipa c
   			 inner join cadastro cad
 				 on cad.w01_numcgi = c.j01_numero
-					 where cad.w01_regist = '".str_pad(trim($regist),6," ",STR_PAD_LEFT)."'");
+					 where cad.w01_regist = '".str_pad(trim((string) $regist),6," ",STR_PAD_LEFT)."'");
 }
-if(pg_numrows($result) > 0)
+if(pg_num_rows($result) > 0)
   db_fieldsmemory($result,0);
 $pdf->MultiCell(0,6,'Nome:'.@$nome,0,"J",0,30);
 $pdf->Ln(10);
@@ -56,17 +56,17 @@ $result = db_query("select e.descr
 	           inner join atendmedexa a
 	    	   on a.codexa = e.codexa
  		   where a.codate = $codate");
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 if($numrows > 0) {
   for($i = 0;$i < $numrows;$i++) {
-    $pdf->MultiCell(0,6,pg_result($result,$i,0),0,"J",0,30);
+    $pdf->MultiCell(0,6,pg_fetch_result($result,$i,0),0,"J",0,30);
   }
 }
 $pdf->Ln(50);
 $result = db_query("select aa01_nome,aa01_creme from medicos where aa01_codlog = ".db_getsession("DB_id_usuario"));
-$cremers = @pg_result($result,0,1);
-$nomemed = @pg_result($result,0,0);
-$mes = array(1 => "janeiro",2 => "fevereiro",3 => "março",4 => "abril",5 => "maio",6 => "junho",7 => "julho",8 => "agosto",9 => "setembro",10 => "outubro",11 => "novembro",12 => "dezembro");
+$cremers = @pg_fetch_result($result,0,1);
+$nomemed = @pg_fetch_result($result,0,0);
+$mes = [1 => "janeiro",2 => "fevereiro",3 => "março",4 => "abril",5 => "maio",6 => "junho",7 => "julho",8 => "agosto",9 => "setembro",10 => "outubro",11 => "novembro",12 => "dezembro"];
 $pdf->Text(20,170,'Campo Bom, '.date("d").' de '.$mes[date("n")].' de '.date("Y"));
 $pdf->Text(20,175,$nomemed);
 $pdf->Text(20,180,'Cremers: '.$cremers);

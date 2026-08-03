@@ -52,7 +52,7 @@ $clrotulo->label("z01_v_cgccpf");
 $db_opcao = 1;
 $db_botao = true;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $nome = str_replace('|','%',$z01_nome);
 //echo "nome = $nome";
@@ -132,7 +132,7 @@ function js_desab(cod) {
 		        <td style='border-style:outset' align='center'><b>$RLz01_v_munic</b></td>
 	       </tr>";
 
-    for($i=0;$i<pg_numrows($result);$i++) {
+    for($i=0;$i<pg_num_rows($result);$i++) {
 
 	    db_fieldsmemory($result,$i);
 	    echo "<tr>

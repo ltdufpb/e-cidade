@@ -236,35 +236,15 @@ class empenhoFolha
         $this->tipoempenho = $oDadosEmpenho->rh72_tipoempenho;
         $this->caracteristica = $oDadosEmpenho->rh72_concarpeculiar;
 
-        switch ($oDadosEmpenho->rh72_siglaarq) {
-            case 'r14':
-                $this->tipofolha = 'Salário';
-                break;
-
-            case 'r20':
-                $this->tipofolha = 'Rescisão';
-                break;
-
-            case 'r22':
-                $this->tipofolha = 'Adiantamento';
-                break;
-
-            case 'r31':
-                $this->tipofolha = 'Férias';
-                break;
-
-            case 'r35':
-                $this->tipofolha = '13° Salário';
-                break;
-
-            case 'r48':
-                $this->tipofolha = 'Complementar';
-                break;
-
-            default:
-                $this->tipofolha = '';
-                break;
-        }
+        $this->tipofolha = match ($oDadosEmpenho->rh72_siglaarq) {
+            'r14' => 'Salário',
+            'r20' => 'Rescisão',
+            'r22' => 'Adiantamento',
+            'r31' => 'Férias',
+            'r35' => '13° Salário',
+            'r48' => 'Complementar',
+            default => '',
+        };
         /**
          * Verificamos se existe Reserva de Saldo para esse empenho
          */
@@ -726,9 +706,9 @@ class empenhoFolha
                                                     $iCodigoDocumento, 00.00) as retorno";
             $rsSaldo = db_query($sSqlSaldo);
             $sRetorno = db_utils::fieldsMemory($rsSaldo, 0)->retorno;
-            if (substr($sRetorno, 0, 2) > 0) {
+            if (substr((string) $sRetorno, 0, 2) > 0) {
                 $sErroMsg = "Não foi possivel gerar empenho para empenho da folha ({$this->empenhofolha})\n";
-                $sErroMsg .= substr($sRetorno, 3);
+                $sErroMsg .= substr((string) $sRetorno, 3);
                 throw new DBException($sErroMsg);
             }
             /**
@@ -902,9 +882,9 @@ class empenhoFolha
             $sSqlFCDotacao .= "                         '{$this->valorempenho}') as dotacao";
             $rsRetornoFCDotacao = db_query($sSqlFCDotacao);
             $sRetornoFCDotacao = db_utils::fieldsMemory($rsRetornoFCDotacao, 0)->dotacao;
-            if (substr($sRetornoFCDotacao, 0, 1) == 0) {
+            if (substr((string) $sRetornoFCDotacao, 0, 1) == 0) {
                 $sErroMsg = "Não foi possivel gerar empenho para empenho da folha ({$this->empenhofolha})\n";
-                $sErroMsg .= "Erro na atualização do orçamento \n " . substr($sRetornoFCDotacao, 1);
+                $sErroMsg .= "Erro na atualização do orçamento \n " . substr((string) $sRetornoFCDotacao, 1);
                 throw new DBException($sErroMsg);
             }
 
@@ -978,7 +958,7 @@ class empenhoFolha
             if ($oRetornoLiquidacao->erro == 2) {
                 $sErroMsg = "Não foi possivel liquidar empenho para empenho da folha ({$this->empenhofolha})\n";
                 $sErroMsg .= "Número do elemento ({$this->elemento})\n";
-                $sErroMsg .= urldecode($oRetornoLiquidacao->mensagem);
+                $sErroMsg .= urldecode((string) $oRetornoLiquidacao->mensagem);
                 throw new DBException($sErroMsg);
             }
 
@@ -1011,7 +991,7 @@ class empenhoFolha
                     $oRetencao->nValorNota = $this->valorempenho;
                     $oRetencao->nValorbase = $this->valorempenho;
                     $oRetencao->nAliquota = 1;
-                    $oRetencao->aMovimentos = array();
+                    $oRetencao->aMovimentos = [];
                     try {
                         $oRetencaoNota->addRetencao($oRetencao);
                     } catch (ParameterException $eRetencao) {
@@ -1111,7 +1091,7 @@ class empenhoFolha
             require_once(modification("classes/db_pagordemele_classe.php"));
             $oJson = new Services_JSON();
             foreach ($aNotas as $oNota) {
-                $sRetorno = $oEmpenho->estornarLiquidacaoAJAX($this->numeroempenho, array($oNota->e69_codnota), null, false);
+                $sRetorno = $oEmpenho->estornarLiquidacaoAJAX($this->numeroempenho, [$oNota->e69_codnota], null, false);
                 $oRetornoEstornoNota = $oJson->decode($sRetorno);
                 if ($oRetornoEstornoNota->erro == 2) {
                     $sMsg = "Não foi possível estornar liquidacao dp Empenho da Folha ({$this->empenhofolha}).\n";
@@ -1126,7 +1106,7 @@ class empenhoFolha
             $rsItensEmpenho = $oEmpenho->getItensSaldo();
             $aItensEmpenho = db_utils::getCollectionByRecord($rsItensEmpenho);
             $nValorTotalEmpenhos = 0;
-            $aItensEmpenhoAnular = array();
+            $aItensEmpenhoAnular = [];
             foreach ($aItensEmpenho as $oItem) {
                 $oItemAnular = new stdClass();
                 $oItemAnular->e62_sequencial = $oItem->e62_sequencial;
@@ -1347,9 +1327,9 @@ class empenhoFolha
             $oDaoRhEmpenhoFolha->rh72_orgao = $iOrgao;
             $oDaoRhEmpenhoFolha->rh72_unidade = $iUnidade;
             $oDaoRhEmpenhoFolha->rh72_projativ = $iProjAtiv;
-            $oDaoRhEmpenhoFolha->rh72_programa = ($iPrograma ? $iPrograma : "null");
-            $oDaoRhEmpenhoFolha->rh72_funcao = ($iFuncao ? $iFuncao : "null");
-            $oDaoRhEmpenhoFolha->rh72_subfuncao = ($iSubFuncao ? $iSubFuncao : "null");
+            $oDaoRhEmpenhoFolha->rh72_programa = ($iPrograma ?: "null");
+            $oDaoRhEmpenhoFolha->rh72_funcao = ($iFuncao ?: "null");
+            $oDaoRhEmpenhoFolha->rh72_subfuncao = ($iSubFuncao ?: "null");
             $oDaoRhEmpenhoFolha->rh72_codele = $iElemento;
             $oDaoRhEmpenhoFolha->rh72_recurso = $iRecurso;
             $oDaoRhEmpenhoFolha->rh72_coddot = $iDotacao;

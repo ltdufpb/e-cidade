@@ -52,19 +52,9 @@ class Importacao {
   private $oLayoutArquivo;
 
   /**
-   * @var string
-   */
-  private $sArquivo;
-
-  /**
    * @var integer
    */
   private $iCodigoArquivo;
-
-  /**
-   * @var \StdClass[]
-   */
-  private $oPeriodoEfetividade;
 
   /**
    * @var bool
@@ -74,13 +64,15 @@ class Importacao {
   /**
    * Importacao constructor.
    * @param $sArquivo
+   * @param string $sArquivo
    */
-  public function __construct($sArquivo, Periodo $oPeriodo) {
+  public function __construct(private $sArquivo, /**
+   * @var \StdClass[]
+   */
+  private readonly Periodo $oPeriodoEfetividade) {
 
-    $this->sArquivo       = $sArquivo;
-    $this->oLayoutArquivo = new \DBLayoutReader(Importacao::CODIGO_LAYOUT_ARQUIVO, $sArquivo, true, false);
+    $this->oLayoutArquivo = new \DBLayoutReader(Importacao::CODIGO_LAYOUT_ARQUIVO, $this->sArquivo, true, false);
     $this->oLayoutArquivo->processarArquivo(0, true, true);
-    $this->oPeriodoEfetividade = $oPeriodo;
   }
 
   /**
@@ -109,8 +101,8 @@ class Importacao {
     }
 
     $oCabecalhoRegistro      = null;
-    $aInconsistencias        = array();
-    $aControlePISDataRemover = array();
+    $aInconsistencias        = [];
+    $aControlePISDataRemover = [];
 
     foreach($this->oLayoutArquivo->getLines() as $oLinha) {
 
@@ -141,16 +133,16 @@ class Importacao {
          */
         case self::REGISTRO_MARCACAO_PONTO:
           
-          $sHora = preg_replace("/(\d{2})(\d{2})/", "$1:$2", $oLinha->HORARIO_MARCACAO);
-          $oData = new \DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", $oLinha->DATA_MARCACAO));
-          $sPIS  = substr($oLinha->PIS_EMPREGADO, 1);
+          $sHora = preg_replace("/(\d{2})(\d{2})/", "$1:$2", (string) $oLinha->HORARIO_MARCACAO);
+          $oData = new \DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", (string) $oLinha->DATA_MARCACAO));
+          $sPIS  = substr((string) $oLinha->PIS_EMPREGADO, 1);
 
           if(!$this->validaPeriodo($oData)) {
-            continue;
+            break;
           }
 
           if(empty($oCabecalhoRegistro)) {
-            continue;
+            break;
           }
 
           if($this->lSobrescreverMarcacao === true) {
@@ -163,7 +155,7 @@ class Importacao {
           if($this->lSobrescreverMarcacao === false && $this->verificarMarcacaoNoDia($oData, $sPIS)) {
 
             if ((!array_key_exists($sPIS, $aControlePISDataRemover) || $aControlePISDataRemover[$sPIS] != $oData->getDate())) {
-              continue;
+              break;
             }
           }
 

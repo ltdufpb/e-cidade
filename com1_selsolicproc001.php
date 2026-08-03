@@ -37,7 +37,7 @@ $clpcorcamitemproc = new cl_pcorcamitemproc;
 $clrotulo          = new rotulocampo;
 $clpcproc->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $action = "com1_processo004.php";
 

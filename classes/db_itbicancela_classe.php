@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE itbicancela
 class cl_itbicancela { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $it16_guia = 0; 
-   var $it16_data_dia = null; 
-   var $it16_data_mes = null; 
-   var $it16_data_ano = null; 
-   var $it16_data = null; 
-   var $it16_obs = null; 
-   var $it16_id_usuario = 0; 
+   public $it16_guia = 0; 
+   public $it16_data_dia = null; 
+   public $it16_data_mes = null; 
+   public $it16_data_ano = null; 
+   public $it16_data = null; 
+   public $it16_obs = null; 
+   public $it16_id_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  it16_guia = int8 = Número da guia de ITBI 
                  it16_data = date = Data do cancelamento 
                  it16_obs = text = Observações 
                  it16_id_usuario = int4 = Identificador do Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_itbicancela() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbicancela"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,7 +134,7 @@ class cl_itbicancela {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tabela de ITBI's canceladas ($this->it16_guia) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tabela de ITBI's canceladas já Cadastrado";
@@ -163,13 +163,13 @@ class cl_itbicancela {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5725,'$this->it16_guia','I')");
-         $resac = db_query("insert into db_acount values($acount,906,5725,'','".AddSlashes(pg_result($resaco,0,'it16_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,906,5726,'','".AddSlashes(pg_result($resaco,0,'it16_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,906,5727,'','".AddSlashes(pg_result($resaco,0,'it16_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,906,20666,'','".AddSlashes(pg_result($resaco,0,'it16_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,906,5725,'','".AddSlashes(pg_fetch_result($resaco,0,'it16_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,906,5726,'','".AddSlashes(pg_fetch_result($resaco,0,'it16_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,906,5727,'','".AddSlashes(pg_fetch_result($resaco,0,'it16_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,906,20666,'','".AddSlashes(pg_fetch_result($resaco,0,'it16_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -179,10 +179,10 @@ class cl_itbicancela {
       $this->atualizacampos();
      $sql = " update itbicancela set ";
      $virgula = "";
-     if(trim($this->it16_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it16_guia"])){ 
+     if(trim((string) $this->it16_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it16_guia"])){ 
        $sql  .= $virgula." it16_guia = $this->it16_guia ";
        $virgula = ",";
-       if(trim($this->it16_guia) == null ){ 
+       if(trim((string) $this->it16_guia) == null ){ 
          $this->erro_sql = " Campo Número da guia de ITBI não informado.";
          $this->erro_campo = "it16_guia";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_itbicancela {
          return false;
        }
      }
-     if(trim($this->it16_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it16_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["it16_data_dia"] !="") ){ 
+     if(trim((string) $this->it16_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it16_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["it16_data_dia"] !="") ){ 
        $sql  .= $virgula." it16_data = '$this->it16_data' ";
        $virgula = ",";
-       if(trim($this->it16_data) == null ){ 
+       if(trim((string) $this->it16_data) == null ){ 
          $this->erro_sql = " Campo Data do cancelamento não informado.";
          $this->erro_campo = "it16_data_dia";
          $this->erro_banco = "";
@@ -208,7 +208,7 @@ class cl_itbicancela {
        if(isset($GLOBALS["HTTP_POST_VARS"]["it16_data_dia"])){ 
          $sql  .= $virgula." it16_data = null ";
          $virgula = ",";
-         if(trim($this->it16_data) == null ){ 
+         if(trim((string) $this->it16_data) == null ){ 
            $this->erro_sql = " Campo Data do cancelamento não informado.";
            $this->erro_campo = "it16_data_dia";
            $this->erro_banco = "";
@@ -219,14 +219,14 @@ class cl_itbicancela {
          }
        }
      }
-     if(trim($this->it16_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it16_obs"])){ 
+     if(trim((string) $this->it16_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it16_obs"])){ 
        $sql  .= $virgula." it16_obs = '$this->it16_obs' ";
        $virgula = ",";
      }
-     if(trim($this->it16_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it16_id_usuario"])){ 
+     if(trim((string) $this->it16_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it16_id_usuario"])){ 
        $sql  .= $virgula." it16_id_usuario = $this->it16_id_usuario ";
        $virgula = ",";
-       if(trim($this->it16_id_usuario) == null ){ 
+       if(trim((string) $this->it16_id_usuario) == null ){ 
          $this->erro_sql = " Campo Identificador do Usuário não informado.";
          $this->erro_campo = "it16_id_usuario";
          $this->erro_banco = "";
@@ -250,17 +250,17 @@ class cl_itbicancela {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,5725,'$this->it16_guia','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it16_guia"]))
-             $resac = db_query("insert into db_acount values($acount,906,5725,'".AddSlashes(pg_result($resaco,$conresaco,'it16_guia'))."','$this->it16_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,906,5725,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it16_guia'))."','$this->it16_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it16_data"]))
-             $resac = db_query("insert into db_acount values($acount,906,5726,'".AddSlashes(pg_result($resaco,$conresaco,'it16_data'))."','$this->it16_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,906,5726,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it16_data'))."','$this->it16_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it16_obs"]))
-             $resac = db_query("insert into db_acount values($acount,906,5727,'".AddSlashes(pg_result($resaco,$conresaco,'it16_obs'))."','$this->it16_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,906,5727,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it16_obs'))."','$this->it16_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["it16_id_usuario"]) || $this->it16_id_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,906,20666,'".AddSlashes(pg_result($resaco,$conresaco,'it16_id_usuario'))."','$this->it16_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,906,20666,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it16_id_usuario'))."','$this->it16_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -314,13 +314,13 @@ class cl_itbicancela {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,5725,'$it16_guia','E')");
-           $resac  = db_query("insert into db_acount values($acount,906,5725,'','".AddSlashes(pg_result($resaco,$iresaco,'it16_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,906,5726,'','".AddSlashes(pg_result($resaco,$iresaco,'it16_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,906,5727,'','".AddSlashes(pg_result($resaco,$iresaco,'it16_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,906,20666,'','".AddSlashes(pg_result($resaco,$iresaco,'it16_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,906,5725,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it16_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,906,5726,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it16_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,906,5727,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it16_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,906,20666,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it16_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -381,7 +381,7 @@ class cl_itbicancela {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:itbicancela";
@@ -396,7 +396,7 @@ class cl_itbicancela {
    function sql_query ( $it16_guia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_itbicancela {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,7 +434,7 @@ class cl_itbicancela {
    function sql_query_file ( $it16_guia=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,7 +455,7 @@ class cl_itbicancela {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

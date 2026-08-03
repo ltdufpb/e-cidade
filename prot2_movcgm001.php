@@ -38,7 +38,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("id_usuario");
 $clrotulo->label("nome");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 ?>

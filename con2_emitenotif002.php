@@ -33,8 +33,8 @@ include(modification("classes/db_notificacao_classe.php"));
 include(modification("classes/db_db_config_classe.php"));
 $cldb_config     = new cl_db_config;
 $clnotificacao   = new cl_notificacao;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if ( $contribuicao == '' ) {
    db_redireciona('db_erros.php?fechar=true&db_erro=Contribuição não encontrada!');
    exit; 
@@ -86,7 +86,7 @@ proprietario.z01_numcgm
 
 
 
-$sData = ucwords(strtolower($munic)).", ".date('d',db_getsession("DB_datausu"))." de ".db_mes(date('m',db_getsession("DB_datausu")))." de ".date('Y',db_getsession("DB_datausu")).".";
+$sData = ucwords(strtolower((string) $munic)).", ".date('d',db_getsession("DB_datausu"))." de ".db_mes(date('m',db_getsession("DB_datausu")))." de ".date('Y',db_getsession("DB_datausu")).".";
 
 $sCampos = "
        
@@ -195,7 +195,7 @@ if ( $tiporel == 1 ) {
       $rsTipoCorrecao            = db_query($sSqlTtipoCorrecao);
       
       $oDocumento->d01_numero    = $oNotif->d01_numero;
-      $oDocumento->j14_nome      = $oNotif->xtipo." ".trim($oNotif->j14_nome);
+      $oDocumento->j14_nome      = $oNotif->xtipo." ".trim((string) $oNotif->j14_nome);
       $oDocumento->d08_matric    = $oNotif->d08_matric;
       $oDocumento->d07_valor     = trim(db_formatar($oNotif->d07_valor,'f'));
       $oDocumento->valor_extenso = trim(db_extenso($oNotif->d07_valor));
@@ -203,7 +203,7 @@ if ( $tiporel == 1 ) {
       $oDocumento->d01_numtot    = $oNotif->d01_numtot;
       $oDocumento->d01_privenc   = db_Formatar($oNotif->d01_privenc,"d");
       $oDocumento->strcorrecao   = db_utils::fieldsMemory($rsTipoCorrecao,0)->k02_corr;
-      $oDocumento->descrcorrecao = ucwords(strtolower(db_utils::fieldsMemory($rsTipoCorrecao,0)->i01_descr));
+      $oDocumento->descrcorrecao = ucwords(strtolower((string) db_utils::fieldsMemory($rsTipoCorrecao,0)->i01_descr));
       $oDocumento->ender         = $ender;
       $oDocumento->bairro        = $bairro;
       $oDocumento->munic         = $munic;

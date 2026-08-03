@@ -45,9 +45,9 @@ final class TMP implements DeparaInterface
      */
     public function __construct()
     {
-        $this->aFundamentacoes = array(
+        $this->aFundamentacoes = [
          'OUT'
-        );
+        ];
     }
 
     /**

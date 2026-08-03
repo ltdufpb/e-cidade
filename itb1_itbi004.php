@@ -26,8 +26,8 @@
  */
 
 require_once(modification("libs/db_conecta.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $db_botao=1;
 $db_opcao=1;
@@ -63,7 +63,7 @@ input {
       <form name="form1" method="post" action=""  onSubmit="return js_verifica_campos_digitados();" >
         <fieldset>
           <legend>
-            <strong>I.T.B.I. <?php echo strtoupper($tipo); ?></strong>
+            <strong>I.T.B.I. <?php echo strtoupper((string) $tipo); ?></strong>
           </legend>
        		<table>
          	  <tr>

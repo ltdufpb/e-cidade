@@ -52,7 +52,7 @@ class HonorarioParcelamentoRepository
     /**
      * @var array
      */
-    protected $colecao = array();
+    protected $colecao = [];
 
     /**
      * Retorna uma HonorarioParcelamento filtrando por código.
@@ -99,7 +99,7 @@ class HonorarioParcelamentoRepository
         $taxaRepository = Taxa::getInstance();
 
         if (!empty($item->ar43_processoforo)) {
-            $processoForoRepository = ProcessoForoRepository::getInstance();
+            $processoForoRepository = (new ProcessoForoRepository())->getInstance();
             $processoForo = $processoForoRepository->getByCodigo($item->ar43_processoforo);
             $entity->setProcessoForo($processoForo);
 
@@ -111,7 +111,7 @@ class HonorarioParcelamentoRepository
         }
 
         if (!empty($item->ar43_inicial)) {
-            $inicialRepository = Inicial::getInstance();
+            $inicialRepository = (new Inicial())->getInstance();
             $inicial = $inicialRepository->getByCode($item->ar43_inicial);
             $entity->setInicial($inicial);
 

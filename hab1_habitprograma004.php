@@ -56,7 +56,7 @@ if (isset($incluir)) {
   $sErroMsg        = $clHabitPrograma->erro_msg;
   $ht01_sequencial = $clHabitPrograma->ht01_sequencial;
 
-  if ( trim($ht19_numcgm) != '' ) {
+  if ( trim((string) $ht19_numcgm) != '' ) {
 
   	$clHabitProgramaConcedente->ht19_habitprograma = $clHabitPrograma->ht01_sequencial;
   	$clHabitProgramaConcedente->ht19_numcgm        = $ht19_numcgm;

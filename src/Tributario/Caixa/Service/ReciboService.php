@@ -20,44 +20,8 @@ use ECidade\Tributario\Library\Session;
 
 final class ReciboService extends Service
 {
-    private $session;
-
-    private $reciboProcedure;
-
-    private $regraEmissaoService;
-
-    private $convenioService;
-
-    private $numpreSequenceRepository;
-
-    private $dbrecibowebRepository;
-
-    private $recibopagaboletoRepository;
-
-    private $reciboFillService;
-
-    private $cobrancaRegistradaService;
-
-    public function __construct(
-        Session $session,
-        ReciboProcedure $reciboProcedure,
-        RegraEmissaoService $regraEmissaoService,
-        ConvenioService $convenioService,
-        NumpreSequenceRepository $numpreSequenceRepository,
-        DbrecibowebRepository $dbrecibowebRepository,
-        RecibopagaboletoRepository $recibopagaboletoRepository,
-        ReciboFillService $reciboFillService,
-        CobrancaRegistradaService $cobrancaRegistradaService
-    ) {
-        $this->session = $session;
-        $this->reciboProcedure = $reciboProcedure;
-        $this->regraEmissaoService = $regraEmissaoService;
-        $this->convenioService = $convenioService;
-        $this->numpreSequenceRepository = $numpreSequenceRepository;
-        $this->dbrecibowebRepository = $dbrecibowebRepository;
-        $this->recibopagaboletoRepository = $recibopagaboletoRepository;
-        $this->reciboFillService = $reciboFillService;
-        $this->cobrancaRegistradaService = $cobrancaRegistradaService;
+    public function __construct(private readonly Session $session, private readonly ReciboProcedure $reciboProcedure, private readonly RegraEmissaoService $regraEmissaoService, private readonly ConvenioService $convenioService, private readonly NumpreSequenceRepository $numpreSequenceRepository, private readonly DbrecibowebRepository $dbrecibowebRepository, private readonly RecibopagaboletoRepository $recibopagaboletoRepository, private readonly ReciboFillService $reciboFillService, private readonly CobrancaRegistradaService $cobrancaRegistradaService)
+    {
     }
 
     public function execute(Recibo $recibo)

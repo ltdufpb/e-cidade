@@ -37,7 +37,7 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 $clrotulo = new rotulocampo;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $anousu=db_getsession("DB_anousu");
 if ($anousu<=2008){
    $fonte="con2_lrfnominal002.php"; 

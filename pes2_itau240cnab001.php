@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rharqbanco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $clrotulo = new rotulocampo;
 $clrharqbanco->rotulo->label();
@@ -61,7 +61,7 @@ $oDaoLotavinc = db_utils::getDao('rhlotavinc');
 $iAnoFolha    = db_getsession("DB_anousu");
 $sSqlLotaVinc = $oDaoLotavinc->sql_query ('', 'o15_codigo, o15_descr', null, "rh25_anousu = $iAnoFolha");    
 $rsLotainc    = $oDaoLotavinc->sql_record($sSqlLotaVinc);
-$aLotaVinc    = array();
+$aLotaVinc    = [];
 $aLotaVinc[0] = "Todos";
 
 for ($i=0; $i < $oDaoLotavinc->numrows; $i++) {
@@ -243,10 +243,10 @@ function js_controlarodape(mostra){
 			    </td>
 			    <td>
 			      <?php 
-			      $arr_layout = Array(
+			      $arr_layout = [
 			                          "9"=>"CNAB240",
 			                          "3"=>"CEF"
-			                         );
+			                         ];
 			      db_select("layout", $arr_layout, true, 1, "");
 			      ?>
 			    </td>
@@ -268,10 +268,10 @@ function js_controlarodape(mostra){
 			    </td>
 			    <td colspan="3" rel="ignore-css">
 			      <?php 
-			      $arr_tiparq = Array(
+			      $arr_tiparq = [
 						                    "1"=>"1 - Pensao Judicial",
 						                    "0"=>"0 - Todos"
-			                         );
+			                         ];
 			      db_select("tiparq", $arr_tiparq, true, 1, "class='field-size4' onchange='js_habilita(this.value);'");
 			      ?>
 			    </td>
@@ -283,12 +283,12 @@ function js_controlarodape(mostra){
 			    <td colspan="3" rel="ignore-css">
 			      <?php
             
-			      $arr_qfolha = Array(
+			      $arr_qfolha = [
                           "1"=>"Salário",
 	                        "2"=>"Complementar",
                           "3"=>"13º. Salário",
 			                    "4"=>"Rescisão"
-                         );
+                         ];
             
             if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
               $arr_qfolha["5"] = "Suplementar"; 

@@ -6,8 +6,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptucalcconfrec_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptucalcconfrec = new cl_iptucalcconfrec;
 $cliptucalcconfrec->rotulo->label("j23_sequencial");
 $cliptucalcconfrec->rotulo->label("j23_matric");
@@ -53,9 +53,9 @@ $cliptucalcconfrec->rotulo->label("j23_matric");
         }else{
            $sql = $cliptucalcconfrec->sql_query("",$campos,"j23_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j23_matric)){
-          $repassa = array("chave_j23_sequencial"=>$chave_j23_sequencial,"chave_j23_matric"=>$chave_j23_matric);
+          $repassa = ["chave_j23_sequencial"=>$chave_j23_sequencial,"chave_j23_matric"=>$chave_j23_matric];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

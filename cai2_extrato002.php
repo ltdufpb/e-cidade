@@ -27,7 +27,7 @@
 
 include(modification("fpdf151/pdf.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 
 $head2 = "EXTRATO BANCÁRIO";
@@ -113,7 +113,7 @@ exit;
 db_query($sql1) or die ("Erro gerando tabela temporaria");
 db_query($sql2) or die ("Erro incluindo registros na tabela temporaria");
 $resultcontasmovimento = db_query($sql3);
-if(pg_numrows($resultcontasmovimento) == 0){
+if(pg_num_rows($resultcontasmovimento) == 0){
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dados neste periodo.');
 }
 
@@ -157,7 +157,7 @@ $pre           = 0;
 $alt = 5 ; //altura da celula
 $numero_pagina=0; // o contador de hp do pdf começa em 1
 
-$numrows = pg_numrows($resultcontasmovimento);
+$numrows = pg_num_rows($resultcontasmovimento);
 for($linha=0;$linha<$numrows;$linha++){
     db_fieldsmemory($resultcontasmovimento,$linha);   
  
@@ -629,8 +629,8 @@ $sql .= "
     $saldo_dia_debito  = 0;
     $saldo_dia_credito = 0;
     
-    if (pg_numrows($resmovimentacao)>0){         
-         for  ($i=0;$i < pg_numrows($resmovimentacao);$i++){ 
+    if (pg_num_rows($resmovimentacao)>0){         
+         for  ($i=0;$i < pg_num_rows($resmovimentacao);$i++){ 
 	      db_fieldsmemory($resmovimentacao,$i);
 
 	      // controla quebra de saldo por dia 
@@ -684,7 +684,7 @@ $sql .= "
 	               ";
 		 $res_rec = db_query($sql);
 		 $c61_reduz ="";
-		 if (pg_numrows($res_rec)>0){
+		 if (pg_num_rows($res_rec)>0){
 		     db_fieldsmemory($res_rec,0);
                  } 
                  $pdf->Cell(20,$alt,"Rec $receita($c61_reduz)",0,0,"L",0);

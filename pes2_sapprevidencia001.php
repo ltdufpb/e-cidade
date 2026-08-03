@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -90,7 +90,7 @@ function js_emite(){
         <td align="right"><strong>Previdência :&nbsp;&nbsp;</strong></td>
         <td align="left">
          <?php 
-           $x = array("2"=>"FAPS","1"=>"INSS","3"=>"CONSELHEIROS");
+           $x = ["2"=>"FAPS","1"=>"INSS","3"=>"CONSELHEIROS"];
            db_select('prev',$x,true,4,"");
          ?>
 	
@@ -100,7 +100,7 @@ function js_emite(){
         <td align="right"><strong>Ponto :&nbsp;&nbsp;</strong></td>
         <td align="left">
          <?php 
-           $xy = array("s"=>"SALARIO","d"=>"13o. SALARIO");
+           $xy = ["s"=>"SALARIO","d"=>"13o. SALARIO"];
            db_select('tipo',$xy,true,4,"");
          ?>
 	
@@ -110,7 +110,7 @@ function js_emite(){
         <td align="right"><strong>Emite Funcionários :&nbsp;&nbsp;</strong></td>
         <td align="left">
          <?php 
-           $x = array("s"=>"SIM","n"=>"NÃO");
+           $x = ["s"=>"SIM","n"=>"NÃO"];
            db_select('func',$x,true,4,"");
          ?>
 	

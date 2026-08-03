@@ -50,10 +50,10 @@ db_postmemory($_GET);
 $db_where = " v50_instit = ".db_getsession('DB_instit');
 $db_ordem = "";
 $and = "";
-$aTotValOrigem = array();
-$aIniciais     = array();
+$aTotValOrigem = [];
+$aIniciais     = [];
 
-$aOrigens = explode("|",$origem);
+$aOrigens = explode("|",(string) $origem);
 if (isset($nvalminacao) && $nvalminacao != ""){
   $nValorMinAcao = $nvalminacao;
 }
@@ -473,7 +473,7 @@ if($linhasvalor > 0){
       $pdf->cell(20,$alt,@$v50_inicial			    ,0,0,"C",$p);
       $pdf->cell(20,$alt,db_formatar(@$v50_data,'d'),0,0,"C",$p);
       $pdf->cell(30,$alt,@$v70_codforo			    ,0,0,"C",$p);
-      $pdf->cell(20,$alt,substr(@$v53_descr, 0, 12)				,0,0,"L",$p);
+      $pdf->cell(20,$alt,substr((string) @$v53_descr, 0, 12)				,0,0,"L",$p);
       $pdf->cell(70,$alt,@$nome_exec				,0,0,"L",$p);
       $pdf->cell(40,$alt,@$v52_descr				,0,0,"L",$p);
       $pdf->cell(30,$alt,$sDescrOrigem2      ,0,0,"L",$p);

@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE db_sysparam
 class cl_db_sysparam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db23_codigo = 0; 
-   var $db23_modulo = 0; 
-   var $db23_instit = 0; 
-   var $db23_tipo = 0; 
-   var $db23_anousu = 0; 
-   var $db23_nome = null; 
-   var $db23_valor = null; 
-   var $db23_funcpesquisa = null; 
+   public $db23_codigo = 0; 
+   public $db23_modulo = 0; 
+   public $db23_instit = 0; 
+   public $db23_tipo = 0; 
+   public $db23_anousu = 0; 
+   public $db23_nome = null; 
+   public $db23_valor = null; 
+   public $db23_funcpesquisa = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db23_codigo = int4 = Parâmetro 
                  db23_modulo = int4 = Módulo 
                  db23_instit = int4 = Instituição 
@@ -62,10 +62,10 @@ class cl_db_sysparam {
                  db23_funcpesquisa = varchar(100) = Função Pesquisa 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysparam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysparam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -158,10 +158,10 @@ class cl_db_sysparam {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db23_codigo = pg_result($result,0,0); 
+       $this->db23_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_sysparam_db23_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db23_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db23_codigo)){
          $this->erro_sql = " Campo db23_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -203,7 +203,7 @@ class cl_db_sysparam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Parâmetros ($this->db23_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Parâmetros já Cadastrado";
@@ -227,17 +227,17 @@ class cl_db_sysparam {
      $resaco = $this->sql_record($this->sql_query_file($this->db23_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9533,'$this->db23_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1636,9533,'','".AddSlashes(pg_result($resaco,0,'db23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1636,9534,'','".AddSlashes(pg_result($resaco,0,'db23_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1636,9535,'','".AddSlashes(pg_result($resaco,0,'db23_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1636,9536,'','".AddSlashes(pg_result($resaco,0,'db23_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1636,9537,'','".AddSlashes(pg_result($resaco,0,'db23_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1636,9538,'','".AddSlashes(pg_result($resaco,0,'db23_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1636,9539,'','".AddSlashes(pg_result($resaco,0,'db23_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1636,9540,'','".AddSlashes(pg_result($resaco,0,'db23_funcpesquisa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1636,9533,'','".AddSlashes(pg_fetch_result($resaco,0,'db23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1636,9534,'','".AddSlashes(pg_fetch_result($resaco,0,'db23_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1636,9535,'','".AddSlashes(pg_fetch_result($resaco,0,'db23_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1636,9536,'','".AddSlashes(pg_fetch_result($resaco,0,'db23_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1636,9537,'','".AddSlashes(pg_fetch_result($resaco,0,'db23_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1636,9538,'','".AddSlashes(pg_fetch_result($resaco,0,'db23_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1636,9539,'','".AddSlashes(pg_fetch_result($resaco,0,'db23_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1636,9540,'','".AddSlashes(pg_fetch_result($resaco,0,'db23_funcpesquisa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -246,10 +246,10 @@ class cl_db_sysparam {
       $this->atualizacampos();
      $sql = " update db_sysparam set ";
      $virgula = "";
-     if(trim($this->db23_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_codigo"])){ 
+     if(trim((string) $this->db23_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_codigo"])){ 
        $sql  .= $virgula." db23_codigo = $this->db23_codigo ";
        $virgula = ",";
-       if(trim($this->db23_codigo) == null ){ 
+       if(trim((string) $this->db23_codigo) == null ){ 
          $this->erro_sql = " Campo Parâmetro nao Informado.";
          $this->erro_campo = "db23_codigo";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_db_sysparam {
          return false;
        }
      }
-     if(trim($this->db23_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_modulo"])){ 
+     if(trim((string) $this->db23_modulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_modulo"])){ 
        $sql  .= $virgula." db23_modulo = $this->db23_modulo ";
        $virgula = ",";
-       if(trim($this->db23_modulo) == null ){ 
+       if(trim((string) $this->db23_modulo) == null ){ 
          $this->erro_sql = " Campo Módulo nao Informado.";
          $this->erro_campo = "db23_modulo";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_db_sysparam {
          return false;
        }
      }
-     if(trim($this->db23_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_instit"])){ 
+     if(trim((string) $this->db23_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_instit"])){ 
        $sql  .= $virgula." db23_instit = $this->db23_instit ";
        $virgula = ",";
-       if(trim($this->db23_instit) == null ){ 
+       if(trim((string) $this->db23_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "db23_instit";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_db_sysparam {
          return false;
        }
      }
-     if(trim($this->db23_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_tipo"])){ 
+     if(trim((string) $this->db23_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_tipo"])){ 
        $sql  .= $virgula." db23_tipo = $this->db23_tipo ";
        $virgula = ",";
-       if(trim($this->db23_tipo) == null ){ 
+       if(trim((string) $this->db23_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "db23_tipo";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_db_sysparam {
          return false;
        }
      }
-     if(trim($this->db23_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_anousu"])){ 
+     if(trim((string) $this->db23_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_anousu"])){ 
        $sql  .= $virgula." db23_anousu = $this->db23_anousu ";
        $virgula = ",";
-       if(trim($this->db23_anousu) == null ){ 
+       if(trim((string) $this->db23_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "db23_anousu";
          $this->erro_banco = "";
@@ -311,10 +311,10 @@ class cl_db_sysparam {
          return false;
        }
      }
-     if(trim($this->db23_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_nome"])){ 
+     if(trim((string) $this->db23_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_nome"])){ 
        $sql  .= $virgula." db23_nome = '$this->db23_nome' ";
        $virgula = ",";
-       if(trim($this->db23_nome) == null ){ 
+       if(trim((string) $this->db23_nome) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "db23_nome";
          $this->erro_banco = "";
@@ -324,14 +324,14 @@ class cl_db_sysparam {
          return false;
        }
      }
-     if(trim($this->db23_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_valor"])){ 
+     if(trim((string) $this->db23_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_valor"])){ 
        $sql  .= $virgula." db23_valor = '$this->db23_valor' ";
        $virgula = ",";
      }
-     if(trim($this->db23_funcpesquisa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_funcpesquisa"])){ 
+     if(trim((string) $this->db23_funcpesquisa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db23_funcpesquisa"])){ 
        $sql  .= $virgula." db23_funcpesquisa = '$this->db23_funcpesquisa' ";
        $virgula = ",";
-       if(trim($this->db23_funcpesquisa) == null ){ 
+       if(trim((string) $this->db23_funcpesquisa) == null ){ 
          $this->erro_sql = " Campo Função Pesquisa nao Informado.";
          $this->erro_campo = "db23_funcpesquisa";
          $this->erro_banco = "";
@@ -349,25 +349,25 @@ class cl_db_sysparam {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9533,'$this->db23_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db23_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1636,9533,'".AddSlashes(pg_result($resaco,$conresaco,'db23_codigo'))."','$this->db23_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1636,9533,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db23_codigo'))."','$this->db23_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db23_modulo"]))
-           $resac = db_query("insert into db_acount values($acount,1636,9534,'".AddSlashes(pg_result($resaco,$conresaco,'db23_modulo'))."','$this->db23_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1636,9534,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db23_modulo'))."','$this->db23_modulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db23_instit"]))
-           $resac = db_query("insert into db_acount values($acount,1636,9535,'".AddSlashes(pg_result($resaco,$conresaco,'db23_instit'))."','$this->db23_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1636,9535,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db23_instit'))."','$this->db23_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db23_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1636,9536,'".AddSlashes(pg_result($resaco,$conresaco,'db23_tipo'))."','$this->db23_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1636,9536,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db23_tipo'))."','$this->db23_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db23_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,1636,9537,'".AddSlashes(pg_result($resaco,$conresaco,'db23_anousu'))."','$this->db23_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1636,9537,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db23_anousu'))."','$this->db23_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db23_nome"]))
-           $resac = db_query("insert into db_acount values($acount,1636,9538,'".AddSlashes(pg_result($resaco,$conresaco,'db23_nome'))."','$this->db23_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1636,9538,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db23_nome'))."','$this->db23_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db23_valor"]))
-           $resac = db_query("insert into db_acount values($acount,1636,9539,'".AddSlashes(pg_result($resaco,$conresaco,'db23_valor'))."','$this->db23_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1636,9539,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db23_valor'))."','$this->db23_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db23_funcpesquisa"]))
-           $resac = db_query("insert into db_acount values($acount,1636,9540,'".AddSlashes(pg_result($resaco,$conresaco,'db23_funcpesquisa'))."','$this->db23_funcpesquisa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1636,9540,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db23_funcpesquisa'))."','$this->db23_funcpesquisa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -412,17 +412,17 @@ class cl_db_sysparam {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9533,'$db23_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1636,9533,'','".AddSlashes(pg_result($resaco,$iresaco,'db23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1636,9534,'','".AddSlashes(pg_result($resaco,$iresaco,'db23_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1636,9535,'','".AddSlashes(pg_result($resaco,$iresaco,'db23_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1636,9536,'','".AddSlashes(pg_result($resaco,$iresaco,'db23_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1636,9537,'','".AddSlashes(pg_result($resaco,$iresaco,'db23_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1636,9538,'','".AddSlashes(pg_result($resaco,$iresaco,'db23_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1636,9539,'','".AddSlashes(pg_result($resaco,$iresaco,'db23_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1636,9540,'','".AddSlashes(pg_result($resaco,$iresaco,'db23_funcpesquisa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1636,9533,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1636,9534,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db23_modulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1636,9535,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db23_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1636,9536,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db23_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1636,9537,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db23_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1636,9538,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db23_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1636,9539,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db23_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1636,9540,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db23_funcpesquisa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_sysparam
@@ -482,7 +482,7 @@ class cl_db_sysparam {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_sysparam";

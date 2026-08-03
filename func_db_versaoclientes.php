@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_versaoclientes_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_versaoclientes = new cl_db_versaoclientes;
 $cldb_versaoclientes->rotulo->label("db19_sequen");
 $cldb_versaoclientes->rotulo->label("db19_codver");
@@ -98,9 +98,9 @@ $cldb_versaoclientes->rotulo->label("db19_codver");
         }else{
            $sql = $cldb_versaoclientes->sql_query("",$campos,"db19_sequen","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db19_codver)){
-          $repassa = array("chave_db19_sequen"=>$chave_db19_sequen,"chave_db19_codver"=>$chave_db19_codver);
+          $repassa = ["chave_db19_sequen"=>$chave_db19_sequen,"chave_db19_codver"=>$chave_db19_codver];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

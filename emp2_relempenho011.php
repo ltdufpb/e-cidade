@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("classes/db_empempenho_classe.php"));
 
 //---  parser POST/GET
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 //---- instancia classes
@@ -152,7 +152,7 @@ $anousu = db_getsession("DB_anousu");
           <td><b>Processar:</b></td>
           <td colspan="3">
             <?php
-            $aProcessar = array("a"=>"Posição atual","e"=>"Período de Lançamentos");
+            $aProcessar = ["a"=>"Posição atual","e"=>"Período de Lançamentos"];
             db_select('processar', $aProcessar, true, 1, "onchange='js_testadata(this.value);'");
             ?>
             <span id="dataespec">
@@ -175,7 +175,7 @@ $anousu = db_getsession("DB_anousu");
           <td><b>Filtro de Listagem:</b></td>
           <td colspan="3">
             <?php
-            $aFiltroListagem = array("todos"       => "Todos",
+            $aFiltroListagem = ["todos"       => "Todos",
                                      "somemp"      => "Somente Empenhado",
                                      "saldo"       => "Com Saldo a Pagar Geral",
                                      "saldoliq"    => "Com Saldo a Pagar Liquidados",
@@ -188,7 +188,7 @@ $anousu = db_getsession("DB_anousu");
                                      "liqparc"     => "Parcialmente Liquidados",
                                      "liqparc"     => "Sem Liquidação",
                                      "pagtot"      => "Totalmente Pagos",
-                                     "pagparc"     => "Parcialmente Pagos");
+                                     "pagparc"     => "Parcialmente Pagos"];
             db_select("tipoemp", $aFiltroListagem, true, 1);
             ?>
           </td>
@@ -197,20 +197,20 @@ $anousu = db_getsession("DB_anousu");
           <td><b>Agrupar Por:</b></td>
           <td>
             <?php
-            $aAgruparPor = array("oo"    => "Não Agrupar",
+            $aAgruparPor = ["oo"    => "Não Agrupar",
                                  "a"     => "Fornecedor",
                                  "orgao" => "Orgão",
                                  "r"     => "Recurso",
-                                 "d"     => "Desdobramento");
+                                 "d"     => "Desdobramento"];
             db_select("agrupar", $aAgruparPor, true, 1);
             ?>
           </td>
           <td><b>Mostrar:</b></td>
           <td>
             <?php
-            $aMostrar = array("r" => "Recurso",
+            $aMostrar = ["r" => "Recurso",
                               "t" => "Tipo de Compra",
-                              "f" => "Fornecedor");
+                              "f" => "Fornecedor"];
             db_select("mostrar", $aMostrar, true, 1);
             ?>
           </td>
@@ -219,14 +219,14 @@ $anousu = db_getsession("DB_anousu");
           <td><b>Trazer Valor Em Ordem:</b></td>
           <td>
             <?php
-            $aValorEmOrdem = array("0" => "Selecione", "E" => "Empenhado", "L" => "Liquidado", "P" => "Pago");
+            $aValorEmOrdem = ["0" => "Selecione", "E" => "Empenhado", "L" => "Liquidado", "P" => "Pago"];
             db_select("chk_ordem",$aValorEmOrdem,true,2);
             ?>
           </td>
           <td><b>Mostrar Empenho:</b></td>
           <td>
             <?php
-            $aMostrarEmpenho = array("n" => "Sim", "s" => "Não");
+            $aMostrarEmpenho = ["n" => "Sim", "s" => "Não"];
             db_select("sememp",$aMostrarEmpenho,true,2);
             ?>
           </td>
@@ -251,7 +251,7 @@ $anousu = db_getsession("DB_anousu");
             $oDaoEmpTipo    = new cl_emptipo();
             $sSqlBuscaTipos = $oDaoEmpTipo->sql_query_file();
             $rsBuscaTipos   = $oDaoEmpTipo->sql_record($sSqlBuscaTipos);
-            $aTiposEmpenhos = array();
+            $aTiposEmpenhos = [];
             for ($iRowTipo = 0; $iRowTipo < $oDaoEmpTipo->numrows; $iRowTipo++) {
 
               $oStdDadosTipo = db_utils::fieldsMemory($rsBuscaTipos, $iRowTipo);

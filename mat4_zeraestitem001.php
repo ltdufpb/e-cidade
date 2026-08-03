@@ -67,8 +67,8 @@ require_once(modification("classes/db_matrequiitemcriteriocustorateio_classe.php
 require_once(modification("classes/db_custoapropria_classe.php"));
 require_once(modification("classes/db_bensdispensatombamento_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clmatestoque = new cl_matestoque;
 $clmatestoqueitem = new cl_matestoqueitem;
@@ -189,7 +189,7 @@ if (isset ($excluir)) {
       }
     }
   }
-  $info = split(",",$cod);
+  $info = preg_split("#,#m",$cod);
   for ($w = 0; $w < count($info); $w++) {
 
     if ($sqlerro == false) {
@@ -269,7 +269,7 @@ if (isset ($excluir)) {
       }
     }
   }
-  $info=split(",",$cod);
+  $info=preg_split("#,#m",$cod);
   for($w=0;$w<count($info);$w++){
     if ($info[$w]!=""){
       $result_atenditem = $clatendrequiitem->sql_record($clatendrequiitem->sql_query_file(null, "*", null, "m43_codatendrequi=".$info[$w]));
@@ -302,7 +302,7 @@ if (isset ($excluir)) {
     $vir=",";
   }
 
-  $info = split(",", $cod);
+  $info = preg_split("#,#m", $cod);
 
 
   if ($sqlerro == false) {
@@ -367,7 +367,7 @@ if (isset ($excluir)) {
       db_msgbox("Erro!!MATREQUIITEM!!");
     }
   }
-  $info=split(",",$cod);
+  $info=preg_split("#,#m",$cod);
   for($w=0;$w<count($info);$w++){
     if ($info[$w] != "") {
       $result_matrequiitem = $clmatrequiitem->sql_record($clmatrequiitem->sql_query_file(null,"*",null,"m41_codmatrequi=".$info[$w]));
@@ -462,7 +462,7 @@ if (isset ($excluir)) {
       }
     }
   }
-  $info=split(",",$cod);
+  $info=preg_split("#,#m",$cod);
   $vir="";
   $codini="";
   for($w=0;$w<count($info);$w++){

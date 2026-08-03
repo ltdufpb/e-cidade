@@ -125,7 +125,7 @@ $oVeiculo         = db_utils::fieldsMemory($rsBuscaVeiculo, false);
           <?=@$Lve02_numcgm?>
         </td>
         <td class="valores">
-          <?= (isset($oVeiculo->z01_nome)) ? $oVeiculo->z01_nome : 'NENHUM'?>
+          <?= $oVeiculo->z01_nome ?? 'NENHUM'?>
         </td>  
             
       </tr>

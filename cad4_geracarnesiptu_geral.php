@@ -35,8 +35,8 @@ use ECidade\Tributario\Arrecadacao\Model\TaxaEspecifica as TaxaEspecificaModel;
 use ECidade\Tributario\Caixa\Repository\RecibopagaRepository;
 use ECidade\Tributario\Library\DataBase;
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oGet = db_utils::postMemory($_GET);
 
@@ -51,7 +51,7 @@ $sJoinTipoDebito = "
 
 $sWhereVlrTer = " and  j23_vlrter > 0 ";
 
-$aDebitos = explode(",", $oGet->debito);
+$aDebitos = explode(",", (string) $oGet->debito);
 
 $sqlTaxa  = " SELECT j08_iptucadtaxaexe FROM cadastro.iptucadtaxaexe INNER JOIN cadastro.iptucadtaxa ";
 $sqlTaxa .= "     ON j07_iptucadtaxa = j08_iptucadtaxa where j08_anousu = {$anousu};";
@@ -96,7 +96,7 @@ $clmassamat = new cl_massamat;
 $cliptubase = new cl_iptubase;
 $cldb_bancos = new cl_db_bancos;
 
-$aParcelasSemInflatores = array();
+$aParcelasSemInflatores = [];
 
 $histinf = "";
 $unica = 2;//$oGet->unica;//2;
@@ -232,32 +232,16 @@ if (!empty($j34_setor)) {
 }
 
 $sOrder = null;
-switch ($ordem) {
-    case "endereco":
-        $sOrder = "j23_munic, j23_uf, j23_ender, j23_numero, j23_compl";
-        break;
-    case "bairroender":
-        $sOrder = "j23_bairro, j23_ender, j23_numero, j23_compl";
-        break;
-    case "alfabetica":
-        $sOrder = "z01_nome";
-        break;
-    case "zonaentrega":
-        $sOrder = "j86_iptucadzonaentrega";
-        break;
-    case "setorquadralote":
-        $sOrder = "j34_setor, j34_quadra, j34_lote";
-        break;
-    case "refant":
-        $sOrder = "j40_refant";
-        break;
-    case "bairroalfa":
-        $sOrder = "j23_bairro, z01_nome";
-        break;
-    default :
-        $sOrder = "z01_nome";
-        break;
-}
+$sOrder = match ($ordem) {
+    "endereco" => "j23_munic, j23_uf, j23_ender, j23_numero, j23_compl",
+    "bairroender" => "j23_bairro, j23_ender, j23_numero, j23_compl",
+    "alfabetica" => "z01_nome",
+    "zonaentrega" => "j86_iptucadzonaentrega",
+    "setorquadralote" => "j34_setor, j34_quadra, j34_lote",
+    "refant" => "j40_refant",
+    "bairroalfa" => "j23_bairro, z01_nome",
+    default => "z01_nome",
+};
 
 if (isset($quantidade) and $quantidade != 0 and $quantidade != "") {
     $quantidade = " limit $quantidade";
@@ -580,7 +564,7 @@ if ($linhasIptunump > 0) {
         }
 
         $resultmat = $cliptubase->proprietario_record($cliptubase->proprietario_query($j23_matric));
-        if (pg_numrows($resultmat) == 0) {
+        if (pg_num_rows($resultmat) == 0) {
             continue;
         }
         db_fieldsmemory($resultmat, 0);
@@ -602,7 +586,7 @@ if ($linhasIptunump > 0) {
         limit 1";
             $resultfinparcobrig = db_query($sqlparcobrig) or die($sqlparcobrig);
 
-            if (pg_numrows($resultfinparcobrig) == 0) {
+            if (pg_num_rows($resultfinparcobrig) == 0) {
                 $passar = false;
             }
         }
@@ -615,7 +599,7 @@ if ($linhasIptunump > 0) {
         a.k00_dtvenc < '" . date("Y-m-d", db_getsession("DB_datausu")) . "'";
             $resultfinpripaga = db_query($sqlfinpripaga) or die($sqlfinpripaga);
 
-            if (pg_numrows($resultfinpripaga) > 0) {
+            if (pg_num_rows($resultfinpripaga) > 0) {
                 $passar = false;
             }
         } elseif ($filtroprinc == "sempgto") {
@@ -627,7 +611,7 @@ if ($linhasIptunump > 0) {
         limit 1";
             $resultfinpripaga = db_query($sqlfinpripaga) or die($sqlfinpripaga);
 
-            if (pg_numrows($resultfinpripaga) == 1) {
+            if (pg_num_rows($resultfinpripaga) == 1) {
                 $passar = false;
             }
         }
@@ -639,7 +623,7 @@ if ($linhasIptunump > 0) {
         $whereDatasUnicas = "";
 
         if ($txtNumpreUnicaSelecionados != "") {
-            $aUnicasCalculo = array();
+            $aUnicasCalculo = [];
             $aListaUnicas = explode("U", $txtNumpreUnicaSelecionados);
 
             foreach ($aListaUnicas as $aUnicasMarcadas) {
@@ -695,7 +679,7 @@ if ($linhasIptunump > 0) {
         $pdf1->prefeitura = $nomeinst;
 
         // coloquei esse sql la em cima fora do for
-        if (pg_numrows($resparag) == 0) {
+        if (pg_num_rows($resparag) == 0) {
             $pdf1->secretaria = 'SECRETARIA DE FINANÇAS';
         } else {
             db_fieldsmemory($resparag, 0);
@@ -724,7 +708,7 @@ if ($linhasIptunump > 0) {
         }
 
         db_query("BEGIN");
-        db_postmemory($HTTP_POST_VARS);
+        db_postmemory($_POST);
 
         //
         // Aqui a string com o numpre e as parcelas tem que estar pronta
@@ -748,12 +732,12 @@ if ($linhasIptunump > 0) {
 
         for ($i = 0; $i < $tam; $i++) {
             if (db_indexOf(key($vt), "CHECK") > 0) {
-                $registros = split("N", $vt[key($vt)]);
+                $registros = preg_split("#N#m", (string) $vt[key($vt)]);
                 for ($reg = 0; $reg < sizeof($registros); $reg++) {
                     if ($registros[$reg] == "") {
                         continue;
                     }
-                    $registro = split("R", $registros[$reg]);
+                    $registro = preg_split("#R#m", (string) $registros[$reg]);
                     if (gettype(strpos($numpres, "N" . $registro[0])) == "boolean") {
                         $numpres .= "N" . $registro[0];
                     }
@@ -764,7 +748,7 @@ if ($linhasIptunump > 0) {
 
         $sounica = $numpres;
 
-        $numpres = split("N", $numpres);
+        $numpres = preg_split("#N#m", $numpres);
         if ($debugar == true) {
             echo "<br>NUMPRES<br>
         <pre>";
@@ -781,7 +765,7 @@ if ($linhasIptunump > 0) {
         $ultimoNumpreProcessado = 0;
 
         /**************************   F O R   Q   M O N T A   O S   C A R N E S  ************************************/
-        $aParcelasSemInflatores = array();
+        $aParcelasSemInflatores = [];
         if ($debugar == true) {
             echo "<br> UNICA = $unica ( SE FOR 1 IMPRIME A UNICA... SE FOR 2 IMPRIME AS PARCELAS)";
         }
@@ -795,7 +779,7 @@ if ($linhasIptunump > 0) {
                     continue;
                 }
 
-                $aNumpre = split('P', $numpres[$volta]);
+                $aNumpre = preg_split('#P#m', (string) $numpres[$volta]);
 
                 $k00_numpre = $aNumpre[0];
                 $k00_numpar = $aNumpre[1];
@@ -828,7 +812,7 @@ if ($linhasIptunump > 0) {
                 continue;
             }
 
-            $k00_numpre = substr($numpres[$volta], 0, strpos($numpres[$volta], 'P'));
+            $k00_numpre = substr((string) $numpres[$volta], 0, strpos((string) $numpres[$volta], 'P'));
 
             $proprietario = '';
             $xender = '';
@@ -866,7 +850,7 @@ if ($linhasIptunump > 0) {
                 echo "<br>SQL6 - ORIGEM <br>$sqlorigem <br>";
             }
 
-            if (pg_numrows($rsOrigem) > 0) {
+            if (pg_num_rows($rsOrigem) > 0) {
                 db_fieldsmemory($rsOrigem, 0);
             } else {
                 db_msgbox("Nao encontrou registros do numpre: $k00_numpre!");
@@ -878,7 +862,7 @@ if ($linhasIptunump > 0) {
                 }
                 $Identificacao = db_query("select * from proprietario where j01_matric = $origem limit 1");
 
-                if (pg_numrows($Identificacao) == 0) {
+                if (pg_num_rows($Identificacao) == 0) {
 
                     db_msgbox("Problemas no Cadastro da Matricula  $origem");
                     echo "<script>  parent.db_iframe_carne.hide(); </script> ";
@@ -893,7 +877,7 @@ if ($linhasIptunump > 0) {
 
                 // trocado porque bage pediu
                 if ($oRegraEmissao->isCobranca()) {
-                    $xender = strtoupper($j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);
+                    $xender = strtoupper((string) $j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);
                 } else {
                     $xender = $nomepri . ', ' . $j39_numero . '  ' . $j39_compl;
                 }
@@ -925,7 +909,7 @@ if ($linhasIptunump > 0) {
             from cgm
             where z01_numcgm = $origem");
 
-                if (pg_numrows($Identificacao) == 0) {
+                if (pg_num_rows($Identificacao) == 0) {
 
                     db_msgbox("Problemas no Cadastro do CGM $origem");
                     echo "<script>  parent.db_iframe_carne.hide(); </script> ";
@@ -972,12 +956,12 @@ if ($linhasIptunump > 0) {
                 $pdfcapa->prefeitura = $nomeinst;
                 $pdfcapa->titulo1 = "Matricula";
                 $pdfcapa->descr1 = $j23_matric;//$numero;    // Matrícula
-                $pdfcapa->endcapa = strtoupper($j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);
-                $pdfcapa->cidufcapa = strtoupper($j23_munic) . ($j23_uf == "" ? "" : " - " . $j23_uf);
-                $pdfcapa->bairrocapa = strtoupper($j23_bairro);
+                $pdfcapa->endcapa = strtoupper((string) $j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);
+                $pdfcapa->cidufcapa = strtoupper((string) $j23_munic) . ($j23_uf == "" ? "" : " - " . $j23_uf);
+                $pdfcapa->bairrocapa = strtoupper((string) $j23_bairro);
                 $pdfcapa->cepcapa = "CEP: " . $z01_cep;
                 $pdfcapa->titulo4 = "Dados";
-                $pdfcapa->dados1 = "LOGRADOURO: " . strtoupper($nomepri) . ($j39_numero == "" ? "" : ', ' . $j39_numero) . ($j39_compl == "" ? "" : ' / ' . $j39_compl);
+                $pdfcapa->dados1 = "LOGRADOURO: " . strtoupper((string) $nomepri) . ($j39_numero == "" ? "" : ', ' . $j39_numero) . ($j39_compl == "" ? "" : ' / ' . $j39_compl);
                 $pdfcapa->dados2 = "NATUREZA: " . $j01_tipoimp;
                 $pdfcapa->dados3 = "ALIQUOTA: $j23_aliq %";
                 $pdfcapa->dados4 = "ÁREA DO LOTE: " . trim(db_formatar($j23_arealo, "f")) . "m2";
@@ -1049,7 +1033,7 @@ if ($linhasIptunump > 0) {
                 $resultfin = db_query($sql) or die($sql);
 
                 if ($resultfin != false) {
-                    for ($unicont = 0; $unicont < pg_numrows($resultfin); $unicont++) {
+                    for ($unicont = 0; $unicont < pg_num_rows($resultfin); $unicont++) {
                         db_fieldsmemory($resultfin, $unicont);
 
                         $vlrhis = db_formatar($uvlrhis, 'f');
@@ -1087,13 +1071,13 @@ if ($linhasIptunump > 0) {
                         $datavencimento = $dtvencunic;
 
                         if (isset ($emiscarneiframe) && $emiscarneiframe == 'n') {
-                            if (substr($datavencimento, 0, 4) > db_getsession('DB_anousu')) {
+                            if (substr((string) $datavencimento, 0, 4) > db_getsession('DB_anousu')) {
                                 continue;
                             }
                         }
 
                         if ($oRegraEmissao->isCobranca()) {
-                            if (substr($datavencimento, 0,
+                            if (substr((string) $datavencimento, 0,
                                 4) > db_getsession('DB_anousu') && $k00_valor > 0 && ($ninfla_ant != "" && $ninfla_ant != "REAL")) {
                                 $k00_valor = 0;
                                 $especie = $ninfla;
@@ -1134,10 +1118,10 @@ if ($linhasIptunump > 0) {
                             $novo_numpre = $oRecibo->getNumpreRecibo();
 
                             $repository = new RecibopagaRepository(DataBase::getInstance(), new cl_recibopaga());
-                            $where = array(
+                            $where = [
                               "k00_numnov = {$novo_numpre}",
                               "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO
-                            );
+                            ];
                             $reciboPaga = $repository->findAll(implode(' AND ', $where))->get(0);
                             $valorTaxaExpediente = !empty($reciboPaga->getValor()) ? (float)$reciboPaga->getValor() : 0;
                         } catch (Exception $eException) {
@@ -1192,7 +1176,7 @@ if ($linhasIptunump > 0) {
                         $pdf1->descr9 = db_numpre($novo_numpre, 0) . '000';
                         $pdf1->predescr9 = db_numpre($novo_numpre, 0) . '000';
                         $pdf1->descr10 = 'UNICA';
-                        $pdf1->tipo_exerc = "$k00_tipo / " . substr($dtvencunic, 0, 4);
+                        $pdf1->tipo_exerc = "$k00_tipo / " . substr((string) $dtvencunic, 0, 4);
 
                         if ($debugar == true) {
                             echo "<br>else matricula que passa o endereço  <br> ";
@@ -1203,17 +1187,17 @@ if ($linhasIptunump > 0) {
                         $pdf1->tipobairro = 'Bairro:';
                         $pdf1->bairropri = $z01_bairro;
                         $pdf1->descr11_1 = $z01_numcgm . " - " . $nome_contri;
-                        $pdf1->descr11_2 = strtoupper($j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl) . " - " . $j23_bairro;
+                        $pdf1->descr11_2 = strtoupper((string) $j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl) . " - " . $j23_bairro;
                         $pdf1->descr11_3 = $xbairro;
-                        $pdf1->descr17 = $j23_munic . "/" . $j23_uf . (trim($j23_cep) != "" ? " - CEP: " . $j23_cep : "");
+                        $pdf1->descr17 = $j23_munic . "/" . $j23_uf . (trim((string) $j23_cep) != "" ? " - CEP: " . $j23_cep : "");
                         $pdf1->bairrocontri = $j23_bairro;
                         $pdf1->munic = $j23_munic;
                         $pdf1->premunic = $j23_munic;
                         $pdf1->uf = $j23_uf;
                         $pdf1->descr3_1 = $z01_numcgm . " - " . $nome_contri;
-                        $pdf1->descr3_2 = strtoupper($j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);//. " - " . $j23_bairro ;
+                        $pdf1->descr3_2 = strtoupper((string) $j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);//. " - " . $j23_bairro ;
                         $pdf1->predescr3_1 = $z01_numcgm . " - " . $nome_contri;
-                        $pdf1->predescr3_2 = strtoupper($j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);
+                        $pdf1->predescr3_2 = strtoupper((string) $j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);
                         $pdf1->descr3_3 = $j23_bairro;
                         $pdf1->tipoinscr = 'Cgm';
                         $pdf1->nrinscr = $z01_numcgm;
@@ -1305,13 +1289,13 @@ if ($linhasIptunump > 0) {
 
                         ///////// PEGA A MSG DE PAGAMENTO E AS INSTRUÇÕES DA TABELA NUMPREF
                         $rsmsgcarne = db_query("select k03_msgcarne, k03_msgbanco from numpref where k03_anousu = " . db_getsession("DB_anousu"));
-                        if (pg_numrows($rsmsgcarne) > 0) {
+                        if (pg_num_rows($rsmsgcarne) > 0) {
                             db_fieldsmemory($rsmsgcarne, 0);
                         }
                         /* busca as mensagens da arretipo */
                         $sqlMsgCarne = " select k00_msguni2 from arretipo where k00_tipo = $k00_tipo ";
                         $rsMsgCarneUnica = db_query($sqlMsgCarne);
-                        $intNumrowsMsgCarne = pg_numrows($rsMsgCarneUnica);
+                        $intNumrowsMsgCarne = pg_num_rows($rsMsgCarneUnica);
                         if ($intNumrowsMsgCarne > 0) {
                             db_fieldsmemory($rsMsgCarneUnica, 0);
                         }
@@ -1327,7 +1311,7 @@ if ($linhasIptunump > 0) {
                             if ($k03_tipo == 3) {
                                 $sqlaliq = "select q05_aliq,q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
                                 $rsIssvarano = db_query($sqlaliq);
-                                $intNumrows = pg_numrows($rsIssvarano);
+                                $intNumrows = pg_num_rows($rsIssvarano);
                                 if ($intNumrows == 0) {
                                     db_msgbox("Ano não encontrado na tabela issvar. Contate o suporte");
                                     echo "<script>  parent.db_iframe_carne.hide(); </script> ";
@@ -1451,9 +1435,9 @@ if ($linhasIptunump > 0) {
                     exit;
                 }
 
-                $valores = split("P", $numpres[$volta]);
+                $valores = preg_split("#P#m", (string) $numpres[$volta]);
                 $k00_numpre = $valores[0];
-                $k00_numpar = split("R", $valores[1]);
+                $k00_numpar = preg_split("#R#m", (string) $valores[1]);
                 $k00_numpar = $k00_numpar[0];
                 $k03_anousu = $H_ANOUSU;
 
@@ -1613,10 +1597,10 @@ if ($linhasIptunump > 0) {
                     }
 
                     $repository = new RecibopagaRepository(DataBase::getInstance(), new cl_recibopaga());
-                    $where = array(
+                    $where = [
                       "k00_numnov = {$novo_numpre}",
                       "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO
-                    );
+                    ];
                     $reciboPaga = $repository->findAll(implode(' AND ', $where))->get(0);
                     $valorTaxaExpediente = !empty($reciboPaga->getValor()) ? (float)$reciboPaga->getValor() : 0;
                 } catch (Exception $eException) {
@@ -1644,8 +1628,8 @@ if ($linhasIptunump > 0) {
 
                 if ($oRegraEmissao->isCobranca()) {
                     if (strlen(trim($oConvenio->getConvenioCobranca())) == 7) {
-                        $pdf1->nosso_numero = trim($oConvenio->getConvenioCobranca()) . str_pad($k00_numpre, 8, "0",
-                            STR_PAD_LEFT) . str_pad($k00_numpar, 2, "0", STR_PAD_LEFT);
+                        $pdf1->nosso_numero = trim($oConvenio->getConvenioCobranca()) . str_pad((string) $k00_numpre, 8, "0",
+                            STR_PAD_LEFT) . str_pad((string) $k00_numpar, 2, "0", STR_PAD_LEFT);
                     } else {
                         $pdf1->nosso_numero = $oConvenio->getNossoNumero();
                     }
@@ -1658,7 +1642,7 @@ if ($linhasIptunump > 0) {
                 $pdf1->descr1 = $j23_matric;// $numero;
                 $pdf1->descr1_matricula = $j23_matric;
                 $pdf1->descr2 = db_numpre($novo_numpre, 0) . db_formatar(0, 's', "0", 3, "e");
-                $pdf1->tipo_exerc = "$k00_tipo / " . substr($k00_dtoper, 0, 4);
+                $pdf1->tipo_exerc = "$k00_tipo / " . substr((string) $k00_dtoper, 0, 4);
 
                 /************  P E G A   A S   R E C E I T A S   C O M   O S   V A L O R E S  *****************/
 
@@ -1683,7 +1667,7 @@ if ($linhasIptunump > 0) {
                     $sqlReceitas = " select k00_tipo as codtipo
             from arrecad where k00_numpre = $k00_numpre";
                     $rsReceitas = db_query($sqlReceitas);
-                    if (pg_numrows($rsReceitas) == 0) {
+                    if (pg_num_rows($rsReceitas) == 0) {
                         db_msgbox("Não encontrado arrecad ($k00_numpre).");
                         exit;
                     }
@@ -1714,7 +1698,7 @@ if ($linhasIptunump > 0) {
                     $pdf1->arraydescrreceitas[$x] = $descrreceita;
 
                     if ($recibopaga == false) {
-                        $pdf1->arrayvalreceitas[$x] = (float)substr($fc_calcula, 14, 13);
+                        $pdf1->arrayvalreceitas[$x] = (float)substr((string) $fc_calcula, 14, 13);
                     } else {
                         $pdf1->arrayvalreceitas[$x] = $fc_calcula; //$valreceita;
                     }
@@ -1764,14 +1748,14 @@ if ($linhasIptunump > 0) {
 
                 }
                 $pdf1->descr11_1 = $z01_numcgm . " - " . $nome_contri;
-                $pdf1->descr11_2 = strtoupper($j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);//. " - " . $j23_bairro;
+                $pdf1->descr11_2 = strtoupper((string) $j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);//. " - " . $j23_bairro;
                 $pdf1->descr11_3 = $j23_bairro;
-                $pdf1->descr17 = $j23_munic . "/" . $j23_uf . (trim($j23_cep) != "" ? " - CEP: " . $j23_cep : "");
+                $pdf1->descr17 = $j23_munic . "/" . $j23_uf . (trim((string) $j23_cep) != "" ? " - CEP: " . $j23_cep : "");
                 $pdf1->descr3_1 = $z01_numcgm . " - " . $nome_contri;
                 //$pdf1->descr3_2      = strtoupper($j23_ender). ($j23_numero == "" ? "" : ', '.$j23_numero.'  '.$j23_compl) . " - " . $j23_bairro;  // Contribuinte/Ender
-                $pdf1->descr3_2 = strtoupper($j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);
+                $pdf1->descr3_2 = strtoupper((string) $j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);
                 $pdf1->predescr3_1 = $z01_numcgm . " - " . $nome_contri;
-                $pdf1->predescr3_2 = strtoupper($j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);
+                $pdf1->predescr3_2 = strtoupper((string) $j23_ender) . ($j23_numero == "" ? "" : ', ' . $j23_numero . '  ' . $j23_compl);
                 $pdf1->descr3_3 = $j23_bairro;
                 $pdf1->bairrocontri = $j23_bairro;
                 $pdf1->prebairropri = $j23_bairro;
@@ -1810,7 +1794,7 @@ if ($linhasIptunump > 0) {
                 }
                 $pdf1->descr5 = $k00_numpar . ' / ' . $k00_numtot;
 
-                $tmpdta = split("/", $k00_dtvenc);
+                $tmpdta = preg_split("#\\/#m", $k00_dtvenc);
                 $tmpdtvenc = $tmpdta[2] . "-" . $tmpdta[1] . "-" . $tmpdta[0];
                 if ($db_datausu > $tmpdtvenc) {
                     $pdf1->dtparapag = db_formatar($db_datausu, 'd');
@@ -1850,7 +1834,7 @@ if ($linhasIptunump > 0) {
                     if ($k03_tipo == 3) {
                         $sqlaliq = "select q05_aliq,q05_ano from issvar where q05_numpre = $k00_numpre and q05_numpar = $k00_numpar";
                         $rsIssvarano = db_query($sqlaliq);
-                        $intNumrows = pg_numrows($rsIssvarano);
+                        $intNumrows = pg_num_rows($rsIssvarano);
                         if ($intNumrows == 0) {
                             db_msgbox("Ano não encontrado na tabela issvar. Contate o suporte");
                             echo "<script>  parent.db_iframe_carne.hide(); </script> ";
@@ -1898,7 +1882,7 @@ if ($linhasIptunump > 0) {
                 }
 
                 $rsmsgcarne = db_query("select k03_msgcarne, k03_msgbanco from numpref where k03_anousu = " . db_getsession("DB_anousu"));
-                if (pg_numrows($rsmsgcarne) > 0) {
+                if (pg_num_rows($rsmsgcarne) > 0) {
                     db_fieldsmemory($rsmsgcarne, 0);
                 }
 
@@ -1943,21 +1927,21 @@ if ($linhasIptunump > 0) {
                 if (isset ($datavencimento) && (str_replace('-', '', $datavencimento) < date("Ymd",
                       db_getsession("DB_datausu")))) {
                     if (isset ($k00_msgparcvenc) && $k00_msgparcvenc != "") {
-                        if (strlen($k00_msgparcvenc) > 50) {
-                            $part1 = substr(substr($k00_msgparcvenc, 0, 50), 0,
-                              strrpos(substr($k00_msgparcvenc, 0, 50), ' '));
+                        if (strlen((string) $k00_msgparcvenc) > 50) {
+                            $part1 = substr(substr((string) $k00_msgparcvenc, 0, 50), 0,
+                              strrpos(substr((string) $k00_msgparcvenc, 0, 50), ' '));
                         } else {
-                            $part1 = substr(substr($k00_msgparcvenc, 0, 50), 0, strlen($k00_msgparcvenc));
+                            $part1 = substr(substr((string) $k00_msgparcvenc, 0, 50), 0, strlen((string) $k00_msgparcvenc));
                         }
-                        if (strlen($k00_msgparcvencvenc) > 100) {
-                            $part2 = substr(substr($k00_msgparcvenc, strlen($part1), 50), 0,
-                              strrpos(substr($k00_msgparcvenc, strlen($part1), strlen($k00_msgparcvenc)), ' '));
+                        if (strlen((string) $k00_msgparcvencvenc) > 100) {
+                            $part2 = substr(substr((string) $k00_msgparcvenc, strlen($part1), 50), 0,
+                              strrpos(substr((string) $k00_msgparcvenc, strlen($part1), strlen((string) $k00_msgparcvenc)), ' '));
                         } else {
-                            $part2 = substr(substr($k00_msgparcvenc, strlen($part1) + 1, 50), 0,
-                              strlen($k00_msgparcvenc));
+                            $part2 = substr(substr((string) $k00_msgparcvenc, strlen($part1) + 1, 50), 0,
+                              strlen((string) $k00_msgparcvenc));
                         }
-                        if (strlen($k00_msgparcvenc) > 105) {
-                            $part3 = substr(substr($k00_msgparcvenc, strlen($part2), 50), 0, strlen($k00_msgparcvenc));
+                        if (strlen((string) $k00_msgparcvenc) > 105) {
+                            $part3 = substr(substr((string) $k00_msgparcvenc, strlen($part2), 50), 0, strlen((string) $k00_msgparcvenc));
                         }
                         $pdf1->descr16_1 = $part1;
                         $pdf1->descr16_2 = $part2;
@@ -1967,33 +1951,33 @@ if ($linhasIptunump > 0) {
                         $pdf1->predescr16_3 = $part3;
                     }
                 } elseif (isset ($k00_msgparc) && $k00_msgparc != "") {
-                    $pdf1->descr16_1 = substr($k00_msgparc, 0, 50);
-                    $pdf1->descr16_2 = substr($k00_msgparc, 50, 50);
-                    $pdf1->descr16_3 = substr($k00_msgparc, 100, 50);
-                    $pdf1->predescr16_1 = substr($k00_msgparc, 0, 50);
-                    $pdf1->predescr16_2 = substr($k00_msgparc, 50, 50);
-                    $pdf1->predescr16_3 = substr($k00_msgparc, 100, 50);
+                    $pdf1->descr16_1 = substr((string) $k00_msgparc, 0, 50);
+                    $pdf1->descr16_2 = substr((string) $k00_msgparc, 50, 50);
+                    $pdf1->descr16_3 = substr((string) $k00_msgparc, 100, 50);
+                    $pdf1->predescr16_1 = substr((string) $k00_msgparc, 0, 50);
+                    $pdf1->predescr16_2 = substr((string) $k00_msgparc, 50, 50);
+                    $pdf1->predescr16_3 = substr((string) $k00_msgparc, 100, 50);
                 } else {
                     if (isset ($k03_msgcarne) && $k03_msgcarne != "") {
-                        $pdf1->descr16_1 = substr($k03_msgcarne, 0, 50);
-                        $pdf1->descr16_2 = substr($k03_msgcarne, 50, 50);
-                        $pdf1->descr16_3 = substr($k03_msgcarne, 100, 50);
-                        $pdf1->predescr16_1 = substr($k03_msgcarne, 0, 50);
-                        $pdf1->predescr16_2 = substr($k03_msgcarne, 50, 50);
-                        $pdf1->predescr16_3 = substr($k03_msgcarne, 100, 50);
+                        $pdf1->descr16_1 = substr((string) $k03_msgcarne, 0, 50);
+                        $pdf1->descr16_2 = substr((string) $k03_msgcarne, 50, 50);
+                        $pdf1->descr16_3 = substr((string) $k03_msgcarne, 100, 50);
+                        $pdf1->predescr16_1 = substr((string) $k03_msgcarne, 0, 50);
+                        $pdf1->predescr16_2 = substr((string) $k03_msgcarne, 50, 50);
+                        $pdf1->predescr16_3 = substr((string) $k03_msgcarne, 100, 50);
                     } else {
-                        if (pg_numrows($resparag) == 0) {
+                        if (pg_num_rows($resparag) == 0) {
                             $db02_texto = "";
                         } else {
                             db_fieldsmemory($resparag, 0);
                         }
                         $pdf1->descr16_1 = "  ";
-                        $pdf1->descr16_1 = substr($db02_texto, 0, 55);
-                        $pdf1->descr16_2 = substr($db02_texto, 55, 55);
-                        $pdf1->descr16_3 = substr($db02_texto, 110, 55);
-                        $pdf1->predescr16_1 = substr($db02_texto, 0, 55);
-                        $pdf1->predescr16_2 = substr($db02_texto, 55, 55);
-                        $pdf1->predescr16_3 = substr($db02_texto, 110, 55);
+                        $pdf1->descr16_1 = substr((string) $db02_texto, 0, 55);
+                        $pdf1->descr16_2 = substr((string) $db02_texto, 55, 55);
+                        $pdf1->descr16_3 = substr((string) $db02_texto, 110, 55);
+                        $pdf1->predescr16_1 = substr((string) $db02_texto, 0, 55);
+                        $pdf1->predescr16_2 = substr((string) $db02_texto, 55, 55);
+                        $pdf1->predescr16_3 = substr((string) $db02_texto, 110, 55);
                     }
                 }
                 $pdf1->texto = db_getsession('DB_login') . ' - ' . date("d-m-Y - H-i") . '   ' . db_base_ativa();
@@ -2002,7 +1986,7 @@ if ($linhasIptunump > 0) {
           inner join cadtipoparc on k40_codigo = v07_desconto
           where v07_numpre = $k00_numpre";
                 $resulttermo = db_query($sqltermo) or die($sqltermo);
-                if (pg_numrows($resulttermo) > 0) {
+                if (pg_num_rows($resulttermo) > 0) {
                     db_fieldsmemory($resulttermo, 0);
                     if ($k40_forma == 2 and $k00_numpar == $k00_numtot) {
                         $imprimircodbar = false;

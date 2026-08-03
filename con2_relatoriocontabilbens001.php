@@ -87,7 +87,7 @@ $clrotulo->label("t64_descr");
 								</td>
 								<td>
 									<?php
-										$aOpcoes = array(1 => "Anterior à primeira reavaliação", 2 => "Após a Última Reavaliação");
+										$aOpcoes = [1 => "Anterior à primeira reavaliação", 2 => "Após a Última Reavaliação"];
 										db_select("valorContabil", $aOpcoes, false, 1);
 									?>
 								</td>
@@ -98,7 +98,7 @@ $clrotulo->label("t64_descr");
 								</td>
 								<td>
 									<?php
-										$aOpcoes = array(1 => "Analítico", 2 => "Sintético");
+										$aOpcoes = [1 => "Analítico", 2 => "Sintético"];
 										db_select("modeloRelatorio", $aOpcoes, false, 1,"style='width:231px'");
 									?>
 								</td>

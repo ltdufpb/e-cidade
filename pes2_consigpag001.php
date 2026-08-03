@@ -40,7 +40,7 @@ require_once modification("classes/db_gerfcom_classe.php");
 require_once modification("classes/db_gerffx_classe.php");
 require_once modification("dbforms/db_funcoes.php");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clfolha = new cl_folha;
 $clselecao = new cl_selecao;
@@ -100,7 +100,7 @@ $db_botao = true;
                                                 </td>
                                                 <td>
                                                     <?php
-                                                    $arr_tipo = array("s" => "Sim", "n" => "Não");
+                                                    $arr_tipo = ["s" => "Sim", "n" => "Não"];
                                                     db_select('totaliza', $arr_tipo, true, 4, '', 'totaliza');
                                                     ?>
                                                 </td>
@@ -110,7 +110,7 @@ $db_botao = true;
                                                 </td>
                                                 <td>
                                                     <?php
-                                                    $arr_consig = array("0" => "Todas", "1" => "Somente Empenhadas", "2" => "Somente Extra");
+                                                    $arr_consig = ["0" => "Todas", "1" => "Somente Empenhadas", "2" => "Somente Extra"];
                                                     db_select('consig', $arr_consig, true, 4);
                                                     ?>
                                                 </td>
@@ -119,11 +119,11 @@ $db_botao = true;
                                                 <td colspan="2" align="center">
 
                                                     <?php
-                                                    $aPontos = array("r14" => "Salário",
+                                                    $aPontos = ["r14" => "Salário",
                                                         "r22" => "Adiantamento",
                                                         "r20" => "Rescisão",
                                                         "r35" => "13o. Salário",
-                                                        "r48" => "Complementar");
+                                                        "r48" => "Complementar"];
 
                                                     db_multiploselect("valor", "descr", "", "", $aPontos, null, 6, 250, '', '', 'false', 'js_validaTipoPonto();');
                                                     ?>

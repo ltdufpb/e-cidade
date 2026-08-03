@@ -213,9 +213,7 @@ if (isset($oPost->incluir)) {
 
           $clavaliacaoperguntaopcao->db104_avaliacaopergunta = $clavaliacaopergunta->db103_sequencial;
 
-          $aOpcoesPergunta = db_utils::makeCollectionFromRecord($rsOpcaoPergunta, function ($oOpcaoPergunta) {
-            return $oOpcaoPergunta;
-          });
+          $aOpcoesPergunta = db_utils::makeCollectionFromRecord($rsOpcaoPergunta, fn($oOpcaoPergunta) => $oOpcaoPergunta);
 
           $clavaliacaoperguntaopcao->excluir(null,$sWherePerguntaOpcao);
           if ($clavaliacaoperguntaopcao->erro_status == 0) {

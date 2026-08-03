@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE autolevanta
 class cl_autolevanta {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $y117_sequencial = 0;
-   var $y117_auto = 0;
-   var $y117_levanta = 0;
+   public $y117_sequencial = 0;
+   public $y117_auto = 0;
+   public $y117_levanta = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  y117_sequencial = int4 = Auto/Levanta
                  y117_auto = int4 = Auto de Infração
                  y117_levanta = int4 = Levantamento
                  ";
    //funcao construtor da classe
-   function cl_autolevanta() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("autolevanta");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -107,10 +107,10 @@ class cl_autolevanta {
          $this->erro_status = "0";
          return false;
        }
-       $this->y117_sequencial = pg_result($result,0,0);
+       $this->y117_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from autolevanta_y117_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y117_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y117_sequencial)){
          $this->erro_sql = " Campo y117_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_autolevanta {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Auto/Levanta ($this->y117_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Auto/Levanta já Cadastrado";
@@ -171,12 +171,12 @@ class cl_autolevanta {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20815,'$this->y117_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3746,20815,'','".AddSlashes(pg_result($resaco,0,'y117_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3746,20813,'','".AddSlashes(pg_result($resaco,0,'y117_auto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3746,20814,'','".AddSlashes(pg_result($resaco,0,'y117_levanta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3746,20815,'','".AddSlashes(pg_fetch_result($resaco,0,'y117_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3746,20813,'','".AddSlashes(pg_fetch_result($resaco,0,'y117_auto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3746,20814,'','".AddSlashes(pg_fetch_result($resaco,0,'y117_levanta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_autolevanta {
       $this->atualizacampos();
      $sql = " update autolevanta set ";
      $virgula = "";
-     if(trim($this->y117_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y117_sequencial"])){
+     if(trim((string) $this->y117_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y117_sequencial"])){
        $sql  .= $virgula." y117_sequencial = $this->y117_sequencial ";
        $virgula = ",";
-       if(trim($this->y117_sequencial) == null ){
+       if(trim((string) $this->y117_sequencial) == null ){
          $this->erro_sql = " Campo Auto/Levanta não informado.";
          $this->erro_campo = "y117_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_autolevanta {
          return false;
        }
      }
-     if(trim($this->y117_auto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y117_auto"])){
+     if(trim((string) $this->y117_auto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y117_auto"])){
        $sql  .= $virgula." y117_auto = $this->y117_auto ";
        $virgula = ",";
-       if(trim($this->y117_auto) == null ){
+       if(trim((string) $this->y117_auto) == null ){
          $this->erro_sql = " Campo Auto de Infração não informado.";
          $this->erro_campo = "y117_auto";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_autolevanta {
          return false;
        }
      }
-     if(trim($this->y117_levanta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y117_levanta"])){
+     if(trim((string) $this->y117_levanta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y117_levanta"])){
        $sql  .= $virgula." y117_levanta = $this->y117_levanta ";
        $virgula = ",";
-       if(trim($this->y117_levanta) == null ){
+       if(trim((string) $this->y117_levanta) == null ){
          $this->erro_sql = " Campo Levantamento não informado.";
          $this->erro_campo = "y117_levanta";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_autolevanta {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20815,'$this->y117_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y117_sequencial"]) || $this->y117_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3746,20815,'".AddSlashes(pg_result($resaco,$conresaco,'y117_sequencial'))."','$this->y117_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3746,20815,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y117_sequencial'))."','$this->y117_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y117_auto"]) || $this->y117_auto != "")
-             $resac = db_query("insert into db_acount values($acount,3746,20813,'".AddSlashes(pg_result($resaco,$conresaco,'y117_auto'))."','$this->y117_auto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3746,20813,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y117_auto'))."','$this->y117_auto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y117_levanta"]) || $this->y117_levanta != "")
-             $resac = db_query("insert into db_acount values($acount,3746,20814,'".AddSlashes(pg_result($resaco,$conresaco,'y117_levanta'))."','$this->y117_levanta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3746,20814,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y117_levanta'))."','$this->y117_levanta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_autolevanta {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20815,'$y117_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3746,20815,'','".AddSlashes(pg_result($resaco,$iresaco,'y117_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3746,20813,'','".AddSlashes(pg_result($resaco,$iresaco,'y117_auto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3746,20814,'','".AddSlashes(pg_result($resaco,$iresaco,'y117_levanta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3746,20815,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y117_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3746,20813,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y117_auto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3746,20814,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y117_levanta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

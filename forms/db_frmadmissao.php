@@ -32,7 +32,7 @@ $clrotulo->label("z01_nome");
 $clrotulo->label("rh37_funcao");
 $clrotulo->label("rh37_descr");
 $clrotulo->label("h04_descr");
-$arr_SouN = array("f" => "NAO", "t" => "SIM");
+$arr_SouN = ["f" => "NAO", "t" => "SIM"];
 $clrotulo->label("h25_nrdispositivo");
 $clrotulo->label("h25_nomeacao");
 $clrotulo->label("h25_irfonte");
@@ -99,7 +99,7 @@ $simNao = ["f" => "Não", "t" => "Sim"];
                             </td>
                             <td >
                                 <?php
-                                $arr_tipadm = Array(
+                                $arr_tipadm = [
                                     '' => 'Não Informado.',
                                     '01' => '01 - Por concurso público', #01
                                     '02' => '02 - Por prazo determinado', #02
@@ -124,7 +124,7 @@ $simNao = ["f" => "Não", "t" => "Sim"];
 
                                     /** Fim Código para extensão  */
 
-                                    );
+                                    ];
                                     db_select('h07_tipadm', $arr_tipadm, true, $db_opcao, "style='width: 200'");
                                 ?>
                             </td>
@@ -293,7 +293,7 @@ $simNao = ["f" => "Não", "t" => "Sim"];
                             <td>
                                 <?php
                                 echo "<script> const exibeFonte = " . $h25_irfonte . ";</script>";
-                                $array = array("1"=>"Sim", "0"=>"Não");
+                                $array = ["1"=>"Sim", "0"=>"Não"];
                                 db_select("h25_irfonte", $array, true, $db_opcao, "onChange=jsChangeReferencia(this.id,this.value)");
                                 ?>
                             </td>
@@ -449,7 +449,7 @@ $simNao = ["f" => "Não", "t" => "Sim"];
                             <td>
                                 <?php
                                 if (isset($h25_dataexoneracao) && $h25_dataexoneracao != null) {
-                                   $data = explode('-', $h25_dataexoneracao);
+                                   $data = explode('-', (string) $h25_dataexoneracao);
                                    $h25_dataexoneracao_ano = $data[0];
                                    $h25_dataexoneracao_mes = $data[1];
                                    $h25_dataexoneracao_dia = $data[2];
@@ -463,7 +463,7 @@ $simNao = ["f" => "Não", "t" => "Sim"];
                             <td>
                                 <?php
                                 if (isset($h25_contarexoneracao) && $h25_contarexoneracao != null) {
-                                   $data = explode('-', $h25_contarexoneracao);
+                                   $data = explode('-', (string) $h25_contarexoneracao);
                                    $h25_contarexoneracao_ano = $data[0];
                                    $h25_contarexoneracao_mes = $data[1];
                                    $h25_contarexoneracao_dia = $data[2];
@@ -701,7 +701,7 @@ $simNao = ["f" => "Não", "t" => "Sim"];
                                 <td>
                                 <?php
                                     if (isset($rh260_dataterminoestagio) && $rh260_dataterminoestagio != null) {
-                                        $data = explode('-', $rh260_dataterminoestagio);
+                                        $data = explode('-', (string) $rh260_dataterminoestagio);
                                         $rh260_dataterminoestagio_ano = $data[0];
                                         $rh260_dataterminoestagio_mes = $data[1];
                                         $rh260_dataterminoestagio_dia = $data[2];
@@ -902,7 +902,7 @@ if (db_getsession('DB_nome_modulo') == 'Pessoal') {
             }else{
                 document.form1.z01_nome.value = '';
                 <?php 
-                echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
+                echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
                 ?>
             }
         }
@@ -933,7 +933,7 @@ if (db_getsession('DB_nome_modulo') == 'Pessoal') {
         db_iframe_admissao.hide();
         <?php 
         if($db_opcao != 1 && db_getsession('DB_nome_modulo') != 'Pessoal'){
-            echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+            echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
         }
         ?>
     }

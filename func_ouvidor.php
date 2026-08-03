@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ouvidor_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clouvidor = new cl_ouvidor;
 $clouvidor->rotulo->label("ov21_sequencial");
 $clouvidor->rotulo->label("ov21_db_usuario");
@@ -98,9 +98,9 @@ $clouvidor->rotulo->label("ov21_db_usuario");
         }else{
            $sql = $clouvidor->sql_query("",$campos,"ov21_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov21_db_usuario)){
-          $repassa = array("chave_ov21_sequencial"=>$chave_ov21_sequencial,"chave_ov21_db_usuario"=>$chave_ov21_db_usuario);
+          $repassa = ["chave_ov21_sequencial"=>$chave_ov21_sequencial,"chave_ov21_db_usuario"=>$chave_ov21_db_usuario];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE db_syscampodef
 class cl_db_syscampodef {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $codcam = 0;
-   var $defcampo = null;
-   var $defdescr = null;
+   public $codcam = 0;
+   public $defcampo = null;
+   public $defdescr = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  codcam = int4 = Código
                  defcampo = varchar(50) = Valor default
                  defdescr = varchar(200) = Descrição Valor
                  ";
    //funcao construtor da classe
-   function cl_db_syscampodef() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_syscampodef");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -120,7 +120,7 @@ class cl_db_syscampodef {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Default dos campos quando select ($this->codcam."-".$this->defcampo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Default dos campos quando select já Cadastrado";
@@ -144,13 +144,13 @@ class cl_db_syscampodef {
      $resaco = $this->sql_record($this->sql_query_file($this->codcam,$this->defcampo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,752,'$this->codcam','I')");
        $resac = db_query("insert into db_acountkey values($acount,4785,'$this->defcampo','I')");
-       $resac = db_query("insert into db_acount values($acount,643,752,'','".AddSlashes(pg_result($resaco,0,'codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,643,4785,'','".AddSlashes(pg_result($resaco,0,'defcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,643,4786,'','".AddSlashes(pg_result($resaco,0,'defdescr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,643,752,'','".AddSlashes(pg_fetch_result($resaco,0,'codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,643,4785,'','".AddSlashes(pg_fetch_result($resaco,0,'defcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,643,4786,'','".AddSlashes(pg_fetch_result($resaco,0,'defdescr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -159,10 +159,10 @@ class cl_db_syscampodef {
       $this->atualizacampos();
      $sql = " update db_syscampodef set ";
      $virgula = "";
-     if(trim($this->codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcam"])){
+     if(trim((string) $this->codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcam"])){
        $sql  .= $virgula." codcam = $this->codcam ";
        $virgula = ",";
-       if(trim($this->codcam) == null ){
+       if(trim((string) $this->codcam) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "codcam";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_db_syscampodef {
          return false;
        }
      }
-     if(trim($this->defcampo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["defcampo"])){
+     if(trim((string) $this->defcampo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["defcampo"])){
        $sql  .= $virgula." defcampo = '$this->defcampo' ";
        $virgula = ",";
-       if(trim($this->defcampo) == null ){
+       if(trim((string) $this->defcampo) == null ){
          $this->erro_sql = " Campo Valor default nao Informado.";
          $this->erro_campo = "defcampo";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_db_syscampodef {
          return false;
        }
      }
-     if(trim($this->defdescr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["defdescr"])){
+     if(trim((string) $this->defdescr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["defdescr"])){
        $sql  .= $virgula." defdescr = '$this->defdescr' ";
        $virgula = ",";
-       if(trim($this->defdescr) == null ){
+       if(trim((string) $this->defdescr) == null ){
          $this->erro_sql = " Campo Descrição Valor nao Informado.";
          $this->erro_campo = "defdescr";
          $this->erro_banco = "";
@@ -209,16 +209,16 @@ class cl_db_syscampodef {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,752,'$this->codcam','A')");
          $resac = db_query("insert into db_acountkey values($acount,4785,'$this->defcampo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codcam"]))
-           $resac = db_query("insert into db_acount values($acount,643,752,'".AddSlashes(pg_result($resaco,$conresaco,'codcam'))."','$this->codcam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,643,752,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codcam'))."','$this->codcam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["defcampo"]))
-           $resac = db_query("insert into db_acount values($acount,643,4785,'".AddSlashes(pg_result($resaco,$conresaco,'defcampo'))."','$this->defcampo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,643,4785,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'defcampo'))."','$this->defcampo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["defdescr"]))
-           $resac = db_query("insert into db_acount values($acount,643,4786,'".AddSlashes(pg_result($resaco,$conresaco,'defdescr'))."','$this->defdescr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,643,4786,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'defdescr'))."','$this->defdescr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -263,13 +263,13 @@ class cl_db_syscampodef {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,752,'$codcam','E')");
          $resac = db_query("insert into db_acountkey values($acount,4785,'$defcampo','E')");
-         $resac = db_query("insert into db_acount values($acount,643,752,'','".AddSlashes(pg_result($resaco,$iresaco,'codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,643,4785,'','".AddSlashes(pg_result($resaco,$iresaco,'defcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,643,4786,'','".AddSlashes(pg_result($resaco,$iresaco,'defdescr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,643,752,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,643,4785,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'defcampo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,643,4786,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'defdescr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_syscampodef
@@ -335,7 +335,7 @@ class cl_db_syscampodef {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_syscampodef";
@@ -350,7 +350,7 @@ class cl_db_syscampodef {
    function sql_query ( $codcam=null,$defcampo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,7 +380,7 @@ class cl_db_syscampodef {
    $sql .= $sql2;
    if($ordem != null ){
    $sql .= " order by ";
-   $campos_sql = split("#",$ordem);
+   $campos_sql = preg_split("#\\##m",(string) $ordem);
      $virgula = "";
          for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,7 +393,7 @@ class cl_db_syscampodef {
    function sql_query_file ( $codcam=null,$defcampo=null,$campos="*",$ordem=null,$dbwhere=""){
    $sql = "select ";
    if($campos != "*" ){
-   $campos_sql = split("#",$campos);
+   $campos_sql = preg_split("#\\##m",$campos);
    $virgula = "";
    for($i=0;$i<sizeof($campos_sql);$i++){
    $sql .= $virgula.$campos_sql[$i];
@@ -422,7 +422,7 @@ class cl_db_syscampodef {
    $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
        $sql .= $virgula.$campos_sql[$i];

@@ -64,12 +64,12 @@ try {
 			/**
 			 * Array com os dados do header do arquivo
 			 */
-			$aDadosLayoutHeader   = array();
+			$aDadosLayoutHeader   = [];
 
 			/**
 			 * Array com os dados dos detalhes do arquivo
 			 */
-			$aDadosLayoutDetalhes = array();
+			$aDadosLayoutDetalhes = [];
 
 
 			$sSqlDadosLayout = $oDaoCadban->sql_query($oParametros->iCodigoBanco);
@@ -134,14 +134,14 @@ try {
 			foreach ($aDadosLayoutHeader as $oHeader) {
 
 				$sNomeCampo      = $oHeader->nomeCampo;
-				$oHeader->campo  = urlEncode($oHeader->campo);
+				$oHeader->campo  = urlEncode((string) $oHeader->campo);
 				$sPosicaoInicial = null;
 				$sTamanho        = null;
 
-				if ( strlen($oDadosLayout->$sNomeCampo) == 6 ) {
+				if ( strlen((string) $oDadosLayout->$sNomeCampo) == 6 ) {
 
-					$sPosicaoInicial = substr($oDadosLayout->$sNomeCampo, 0, -3);
-					$sTamanho        = substr($oDadosLayout->$sNomeCampo, 3);
+					$sPosicaoInicial = substr((string) $oDadosLayout->$sNomeCampo, 0, -3);
+					$sTamanho        = substr((string) $oDadosLayout->$sNomeCampo, 3);
 				}
 
 				$oHeader->posicaoInicial = $sPosicaoInicial;
@@ -324,17 +324,17 @@ try {
 			foreach ($aDadosLayoutDetalhes as $oDetalhes) {
 
 				$sNomeCampo        = $oDetalhes->nomeCampo;
-				$oDetalhes->campo  = urlEncode($oDetalhes->campo);
+				$oDetalhes->campo  = urlEncode((string) $oDetalhes->campo);
 				$sPosicaoInicial   = '000';
 				$sTamanho          = '000';
 
 				/**
 				 * Verifica se a quantidade de caracteres for igual a 6 pega os dados, senão usa valor '000'
 				 */
-				if ( strlen($oDadosLayout->$sNomeCampo) == 6 ) {
+				if ( strlen((string) $oDadosLayout->$sNomeCampo) == 6 ) {
 
-					$sPosicaoInicial = substr($oDadosLayout->$sNomeCampo, 0, -3);
-					$sTamanho        = substr($oDadosLayout->$sNomeCampo, 3);
+					$sPosicaoInicial = substr((string) $oDadosLayout->$sNomeCampo, 0, -3);
+					$sTamanho        = substr((string) $oDadosLayout->$sNomeCampo, 3);
 				}
 
 				$oDetalhes->posicaoInicial = $sPosicaoInicial;
@@ -364,14 +364,14 @@ try {
 			 * Define o valor dos campos do header que serão alterados
 			 */
 			foreach ($oParametros->oDadosHeader as $sCampo => $sValor) {
-				$oDaoCadban->$sCampo = substr($sValor, 0, 6);
+				$oDaoCadban->$sCampo = substr((string) $sValor, 0, 6);
 			}
 
 			/**
 			 * Define o valor dos campos de detalhes que serao alterados
 			 */
 			foreach ($oParametros->oDadosDetalhes as $sCampo => $sValor) {
-				$oDaoCadban->$sCampo = substr($sValor, 0, 6);
+				$oDaoCadban->$sCampo = substr((string) $sValor, 0, 6);
 			}
 
 			if (isset($oParametros->iTamanhoRegistro)) {
@@ -398,7 +398,7 @@ try {
     break;
   }
 
-  $oRetorno->sMensagem = urlencode($oRetorno->sMensagem);
+  $oRetorno->sMensagem = urlencode((string) $oRetorno->sMensagem);
   echo $oJson->encode($oRetorno);
 
 } catch (DBException $eErro){

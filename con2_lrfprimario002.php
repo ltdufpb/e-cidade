@@ -35,8 +35,8 @@ if (!isset($arqinclude)){ // se este arquivo não esta incluido por outro
  include(modification("libs/db_liborcamento.php"));
  include(modification("classes/db_conrelinfo_classe.php"));
  
- parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
- db_postmemory($HTTP_SERVER_VARS);
+ parse_str((string) $_SERVER['QUERY_STRING'], $result);
+ db_postmemory($_SERVER);
 
  $clconrelinfo = new cl_conrelinfo;
 
@@ -64,9 +64,9 @@ if (!isset($arqinclude)){ // se este arquivo não esta incluido por outro
    $dt_ini = $dtini;
    $dt_fin = $dtfin;
  
-   $dt = split('-',$dt_ini);
+   $dt = preg_split('#\-#m',(string) $dt_ini);
    $dt_ini_ant = (db_getsession("DB_anousu")-1).'-'.$dt[1].'-'.$dt[2];
-   $dt = split('-',$dt_fin);
+   $dt = preg_split('#\-#m',(string) $dt_fin);
    $dt_fin_ant = (db_getsession("DB_anousu")-1).'-'.$dt[1].'-'.$dt[2];
 
  }  
@@ -101,74 +101,74 @@ if (!isset($arqinclude)){
 $sele_work = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
 $result_desp = db_dotacaosaldo(7,1,4,true,$sele_work,$anousu,$dt_ini,$dt_fin);
 
-$m_desp=array();
+$m_desp=[];
 for($x=1;$x<=10;$x++){
    $m_desp[$x][1] = 0 ; 
    $m_desp[$x][2] = 0 ; 
    $m_desp[$x][3] = 0 ; 
    $m_desp[$x][4] = 0 ;         
 }
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   $estrutural = $o58_elemento;
-  if (substr($estrutural,0,3)=='331') {
+  if (str_starts_with((string) $estrutural, '331')) {
       $m_desp[1][1] += $dot_ini + $suplementado_acumulado - $reduzido_acumulado;
       $m_desp[1][2] += $liquidado;
       $m_desp[1][3] += $liquidado_acumulado;
       $m_desp[1][4] += 0 ;
   }
-  if (substr($estrutural,0,3)=='332') {
+  if (str_starts_with((string) $estrutural, '332')) {
       $m_desp[2][1] += $dot_ini + $suplementado_acumulado - $reduzido_acumulado;
       $m_desp[2][2] += $liquidado;
       $m_desp[2][3] += $liquidado_acumulado;
       $m_desp[2][4] += 0 ;
   }
-  if (substr($estrutural,0,3)=='333') {
+  if (str_starts_with((string) $estrutural, '333')) {
       $m_desp[3][1] += $dot_ini + $suplementado_acumulado - $reduzido_acumulado;
       $m_desp[3][2] += $liquidado;
       $m_desp[3][3] += $liquidado_acumulado;
       $m_desp[3][4] += 0 ;
   }
-  if (substr($estrutural,0,3)=='344') {
+  if (str_starts_with((string) $estrutural, '344')) {
       $m_desp[4][1] += $dot_ini + $suplementado_acumulado - $reduzido_acumulado;
       $m_desp[4][2] += $liquidado;
       $m_desp[4][3] += $liquidado_acumulado;
       $m_desp[4][4] += 0 ;
   }
   // inversoes financeiras : Concessao de emprestimos
-  if (substr($estrutural,0,7)=='3459066') {
+  if (str_starts_with((string) $estrutural, '3459066')) {
       $m_desp[5][1] += $dot_ini + $suplementado_acumulado - $reduzido_acumulado;
       $m_desp[5][2] += $liquidado;
       $m_desp[5][3] += $liquidado_acumulado;
       $m_desp[5][4] += 0 ;
   }
-  if (substr($estrutural,0,7)=='3459064') {
+  if (str_starts_with((string) $estrutural, '3459064')) {
       $m_desp[6][1] += $dot_ini + $suplementado_acumulado - $reduzido_acumulado;
       $m_desp[6][2] += $liquidado;
       $m_desp[6][3] += $liquidado_acumulado;
       $m_desp[6][4] += 0 ;
   }
-  if ( substr($estrutural,0,3)=='345' && substr($estrutural,0,7)!='3459064' &&  substr($estrutural,0,7)!='3459066') {
+  if ( str_starts_with((string) $estrutural, '345') && !str_starts_with((string) $estrutural, '3459064') &&  !str_starts_with((string) $estrutural, '3459066')) {
       $m_desp[7][1] += $dot_ini + $suplementado_acumulado - $reduzido_acumulado;
       $m_desp[7][2] += $liquidado;
       $m_desp[7][3] += $liquidado_acumulado;
       $m_desp[7][4] += 0 ;
   } 
   // amortização da divida
-  if (substr($estrutural,0,3)=='346') {
+  if (str_starts_with((string) $estrutural, '346')) {
       $m_desp[8][1] += $dot_ini + $suplementado_acumulado - $reduzido_acumulado;
       $m_desp[8][2] += $liquidado;
       $m_desp[8][3] += $liquidado_acumulado;
       $m_desp[8][4] += 0 ;
   }
   // reserva
-  if (substr($estrutural,0,3)=='399') {
+  if (str_starts_with((string) $estrutural, '399')) {
       $m_desp[9][1] += $dot_ini + $suplementado_acumulado - $reduzido_acumulado;
       $m_desp[9][2] += $liquidado;
       $m_desp[9][3] += $liquidado_acumulado;
       $m_desp[9][4] += 0 ;
   }
-  if (substr($estrutural,0,3)=='377') {
+  if (str_starts_with((string) $estrutural, '377')) {
       $m_desp[10][1] += $dot_ini + $suplementado_acumulado - $reduzido_acumulado;
       $m_desp[10][2] += $liquidado;
       $m_desp[10][3] += $liquidado_acumulado;
@@ -179,35 +179,35 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
 $sele_work = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
 $result_desp = db_dotacaosaldo(7,1,4,true,$sele_work,($anousu-1),$dt_ini_ant,$dt_fin_ant);
 
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   $estrutural = $o58_elemento;
-  if (substr($estrutural,0,3)=='331') {
+  if (str_starts_with((string) $estrutural, '331')) {
       $m_desp[1][4] += $liquidado_acumulado;
   }
-  if (substr($estrutural,0,3)=='332') {
+  if (str_starts_with((string) $estrutural, '332')) {
       $m_desp[2][4] += $liquidado_acumulado;
   }
-  if (substr($estrutural,0,3)=='333') {
+  if (str_starts_with((string) $estrutural, '333')) {
       $m_desp[3][4] += $liquidado_acumulado;
   }
-  if (substr($estrutural,0,3)=='344') {
+  if (str_starts_with((string) $estrutural, '344')) {
       $m_desp[4][4] += $liquidado_acumulado;
   }
   // inversoes financeiras : Concessao de emprestimos
-  if (substr($estrutural,0,4)=='3459') {
+  if (str_starts_with((string) $estrutural, '3459')) {
       $m_desp[5][4] += $liquidado_acumulado;
   }
   
   // amortização da divida
-  if (substr($estrutural,0,3)=='346') {
+  if (str_starts_with((string) $estrutural, '346')) {
       $m_desp[8][4] += $liquidado_acumulado;
   }
   // reserva
-  if (substr($estrutural,0,3)=='399') {
+  if (str_starts_with((string) $estrutural, '399')) {
       $m_desp[9][4] += $liquidado_acumulado;
   }
-  if (substr($estrutural,0,3)=='377') {
+  if (str_starts_with((string) $estrutural, '377')) {
       $m_desp[10][4] += $liquidado_acumulado;
   } 
 }  
@@ -217,8 +217,8 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
 $instituicao = str_replace("-",",",$db_selinstit);
 
 // carrega matriz c/ parametros
-$m_rec     = array();
-$m_rec_ant = array();  // vetor de receitas de exercicio anterior devido as deducoes mudarem de 497(2007) p/ 917(2008)
+$m_rec     = [];
+$m_rec_ant = [];  // vetor de receitas de exercicio anterior devido as deducoes mudarem de 497(2007) p/ 917(2008)
 for($x=1;$x<=21;$x++){
     $m_rec[$x][0]     = $orcparamrel->sql_parametro('17',$x,"f",$instituicao,db_getsession("DB_anousu"));   
   
@@ -241,7 +241,7 @@ $db_filtro  = ' o70_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
 $result_rec = db_receitasaldo(11,1,3,true,$db_filtro,$anousu,$dt_ini,$dt_fin,false);
 @db_query("drop table work_receita");
 
-for($x=0;$x< pg_numrows($result_rec);$x++){
+for($x=0;$x< pg_num_rows($result_rec);$x++){
     db_fieldsmemory($result_rec,$x);
     $elemento = $o57_fonte;
     for ($aa=1;$aa<=21;$aa++){
@@ -258,7 +258,7 @@ for($x=0;$x< pg_numrows($result_rec);$x++){
 $db_filtro  = ' o70_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
 $result_rec = db_receitasaldo(11,1,3,true,$db_filtro,$anousu_ant,$dt_ini_ant,$dt_fin_ant,false);
 @db_query("drop table work_receita"); 
-for($x=0;$x< pg_numrows($result_rec);$x++){
+for($x=0;$x< pg_num_rows($result_rec);$x++){
     db_fieldsmemory($result_rec,$x);
     $elemento = $o57_fonte;
     for ($aa=1;$aa<=21;$aa++){
@@ -267,7 +267,7 @@ for($x=0;$x< pg_numrows($result_rec);$x++){
       }  
 
 // Deducoes do exercicio anterior
-      if (db_conplano_grupo($anousu_ant,substr($elemento,0,3)."%",9001) == true){
+      if (db_conplano_grupo($anousu_ant,substr((string) $elemento,0,3)."%",9001) == true){
         if (in_array($elemento,$m_rec_ant[$aa][0])){
           $m_rec[$aa][4] -= abs($saldo_arrecadado_acumulado);
         }
@@ -282,7 +282,7 @@ for($x=0;$x< pg_numrows($result_rec);$x++){
 
 if (!isset($arqinclude)){ 
 
- $xinstit = split("-",$db_selinstit);
+ $xinstit = preg_split("#\\-#m",(string) $db_selinstit);
  $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
  db_fieldsmemory($resultinst,0);
  $descr_inst = $munic;
@@ -293,10 +293,10 @@ if (!isset($arqinclude)){
  $head5 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
  $dados  = data_periodo($anousu,$periodo);
- $perini = split("-",$dados[0]);
- $perfin = split("-",$dados[1]);
+ $perini = preg_split("#\\-#m",(string) $dados[0]);
+ $perfin = preg_split("#\\-#m",(string) $dados[1]);
 
- $txtper = strtoupper($dados["periodo"]);
+ $txtper = strtoupper((string) $dados["periodo"]);
  $mesini = strtoupper(db_mes($perini[1]));
  $mesfin = strtoupper(db_mes($perfin[1]));
 
@@ -335,7 +335,7 @@ for($x=1;$x<=15;$x++){
       continue;
       // temos que subtrair a linha 9
   }
-   
+
   $receita_primaria_total[1] += $m_rec[$x][1]; // previsão atualizada
   $receita_primaria_total[2] += $m_rec[$x][2]; // arrecadado no bimestre
   $receita_primaria_total[3] += $m_rec[$x][3]; // arrecadado ate o bimestre
@@ -786,11 +786,11 @@ if (!isset($arqinclude)){
 
   $pdf->Ln();
 
-  notasExplicativas(&$pdf,17,"{$periodo}",190);
+  notasExplicativas($pdf,17,"{$periodo}",190);
 
   $pdf->Ln(14);
 
-  assinaturas(&$pdf,&$classinatura,'LRF');
+  assinaturas($pdf,$classinatura,'LRF');
 
   $pdf->Output();
 

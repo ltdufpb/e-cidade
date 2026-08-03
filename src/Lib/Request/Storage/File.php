@@ -45,7 +45,7 @@ class File
         return $this->visibility;
     }
 
-    public function allowed(Array $allowed = null)
+    public function allowed(?Array $allowed = null)
     {
         if (!empty($allowed)) {
             $this->allowed = $allowed;

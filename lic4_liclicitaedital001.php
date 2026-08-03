@@ -33,8 +33,8 @@ require_once(modification("classes/db_liclicita_classe.php"));
 require_once(modification("classes/db_liclicitaedital_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clliclicita       = new cl_liclicita;
 $clliclicitaedital = new cl_liclicitaedital;
@@ -51,7 +51,7 @@ if (isset($incluir)) {
 
     try {
       $nomearq = File::cutName($_FILES["arquivoedital"]["name"], 50);
-    } catch (Exception $oErro) {
+    } catch (Exception) {
 
       $sqlerro = true;
       $erro_msg = 'O arquivo selecionado tem uma extensão inválida.';
@@ -64,7 +64,7 @@ if (isset($incluir)) {
       if ($sqlerro == false) {
 
         $clliclicitaedital->l27_arquivo   = $oidgrava;
-        $clliclicitaedital->l27_arqnome   = trim($nomearq);
+        $clliclicitaedital->l27_arqnome   = trim((string) $nomearq);
         $clliclicitaedital->l27_liclicita = $l20_codigo;
         $clliclicitaedital->incluir(null);
 
@@ -96,7 +96,7 @@ if (isset($incluir)) {
 
       try {
         $nomearq = File::cutName($_FILES["arquivoedital"]["name"], 50);
-      } catch (Exception $oErro) {
+      } catch (Exception) {
 
         $sqlerro = true;
         $erro_msg = 'O arquivo selecionado tem uma extensão inválida.';
@@ -109,7 +109,7 @@ if (isset($incluir)) {
         if ($sqlerro == false) {
 
           $clliclicitaedital->l27_arquivo   = $oidgrava;
-          $clliclicitaedital->l27_arqnome   = trim($nomearq);
+          $clliclicitaedital->l27_arqnome   = trim((string) $nomearq);
           $clliclicitaedital->l27_liclicita = $l20_codigo;
           $clliclicitaedital->incluir(null);
 

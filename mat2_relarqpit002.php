@@ -274,7 +274,7 @@ if($iNumRows > 0){
 $pdf->Output();
 
 function totaldoArquivo($pdf,$alt,$oTotal){
-	
+
 	$pdf->ln(2);
 	$pdf->setfont('arial','B',7);
 	$pdf->cell(199,$alt  ,'Totais do arquivo'                                  ,'TB' ,0,'R',1);

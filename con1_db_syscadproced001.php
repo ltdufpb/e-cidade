@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("db_syscadproced"=>"Procedimento","db_syscadproceditem"=>"Menus"); 
-	 $clcriaabas->src = array("db_syscadproced"=>"con1_db_syscadproced004.php");
-	 $clcriaabas->disabled   =  array("db_syscadproceditem"=>"true"); 
+	 $clcriaabas->identifica = ["db_syscadproced"=>"Procedimento","db_syscadproceditem"=>"Menus"]; 
+	 $clcriaabas->src = ["db_syscadproced"=>"con1_db_syscadproced004.php"];
+	 $clcriaabas->disabled   =  ["db_syscadproceditem"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

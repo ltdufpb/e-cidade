@@ -38,7 +38,7 @@ require_once(modification("classes/db_matmaterunisai_classe.php"));
 require_once(modification("classes/db_matmatermaterialestoquegrupo_classe.php"));
 require_once(modification("classes/db_db_almox_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clmatmater       = new cl_matmater;
 $cltransmater     = new cl_transmater;

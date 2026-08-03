@@ -34,7 +34,7 @@ class Cidadao extends Model
     protected $primaryKey = 'ov02_sequencial';
     public $timestamps = false;
     
-    protected $fillable = array(
+    protected $fillable = [
         'ov02_nome',
         'ov02_ident',
         'ov02_cnpjcpf',
@@ -50,7 +50,7 @@ class Cidadao extends Model
         'ov02_data',
         'ov02_datanascimento',
         'ov02_sexo',
-    );
+    ];
 
     /**
      * @param int $ov02_sequencial

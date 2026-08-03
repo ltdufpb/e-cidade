@@ -22,18 +22,18 @@ DEFINE("GRAD_LEFT_REFLECTION",8);
 DEFINE("GRAD_RIGHT_REFLECTION",9);
 DEFINE("GRAD_RAISED_PANEL",10);
 DEFINE("GRAD_DIAGONAL",11);
-  
+
 //===================================================
 // CLASS Gradient
 // Description: Handles gradient fills. This is to be
 // considered a "friend" class of Class Image.
 //===================================================
 class Gradient {
-    var $img=null;
-    var $numcolors=100;
+    public $img=null;
+    public $numcolors=100;
 //---------------
 // CONSTRUCTOR
-    function Gradient(&$img) {
+    function __construct(&$img) {
 	$this->img = &$img;
     }
 
@@ -129,7 +129,7 @@ class Gradient {
 		    $this->img->Line($x,$yb,$x,$yt);
 		    $x += $delta;
 		}
-		
+
 		for($j=0; $j < $steps; ++$j, --$i) {
 		    $this->img->current_color = $colors[$i];				
 		    $this->img->Line($x,$yb,$x,$yt);	
@@ -168,8 +168,8 @@ class Gradient {
 		$from_color = $this->img->rgb->Color($from_color);
 		$adj = 1.4;
 		$m = ($adj-1.0)*(255-min(255,min($from_color[0],min($from_color[1],$from_color[2]))));
-		$from_color2 = array(min(255,$from_color[0]+$m), 
-				    min(255,$from_color[1]+$m), min(255,$from_color[2]+$m));		
+		$from_color2 = [min(255,$from_color[0]+$m), 
+				    min(255,$from_color[1]+$m), min(255,$from_color[2]+$m)];		
 
 		$this->GetColArray($from_color2,$to_color,$steps1,$colors,$this->numcolors);
 		$n = count($colors);
@@ -215,8 +215,8 @@ class Gradient {
 		$from_color = $this->img->rgb->Color($from_color);
 		$adj = 1.4;
 		$m = ($adj-1.0)*(255-min(255,min($from_color[0],min($from_color[1],$from_color[2]))));
-		$from_color = array(min(255,$from_color[0]+$m), 
-				    min(255,$from_color[1]+$m), min(255,$from_color[2]+$m));		
+		$from_color = [min(255,$from_color[0]+$m), 
+				    min(255,$from_color[1]+$m), min(255,$from_color[2]+$m)];		
 
 		$steps = abs($xr-$xl)-$steps1-$steps2;
 		$this->GetColArray($to_color,$from_color,$steps,$colors,$this->numcolors);   
@@ -241,7 +241,7 @@ class Gradient {
 		}
 		$this->img->Line($x,$y,$x2,$y2);
 		break;
-		
+
 	    case GRAD_RAISED_PANEL:
 		// right to left 
 		$steps1 = $xr-$xl; 
@@ -253,7 +253,7 @@ class Gradient {
 		    $this->img->Line($x,$yb,$x,$yt); 
 		    $x += $delta; 
 		} 
-		
+
 		// left to right 
 		$xr -= 3; 
 		$xl += 3; 
@@ -298,7 +298,7 @@ class Gradient {
 		    $delta = $yb>=$yt ? 1 : -1;
 		    $this->GetColArray($from_color,$to_color,$steps*2,$colors,$this->numcolors);
 		    $n = count($colors);
-		    
+
 		    for($y=$yt, $i=0; $i < $steps && $i < $n; ++$i) {
 			$this->img->current_color = $colors[$i];
 			$x = $xl+($i/$steps)*($xr-$xl)*$delta;
@@ -317,7 +317,7 @@ class Gradient {
 		break;
 
 	    default:
-		JpGraphError::RaiseL(7001,$style);
+		(new JpGraphError())->RaiseL(7001, $style);
 //("Unknown gradient style (=$style).");
 		break;
 	}
@@ -330,7 +330,7 @@ class Gradient {
     // of a mountain)
     function FilledFlatPolygon($pts,$from_color,$to_color) {
 	if( count($pts) == 0 ) return;
-	
+
 	$maxy=$pts[1];
 	$miny=$pts[1];		
 	$n = count($pts) ;
@@ -340,8 +340,8 @@ class Gradient {
 	    $miny = min($miny,$y);
 	    $maxy = max($maxy,$y);
 	}
-	    
-	$colors = array();
+
+	$colors = [];
 	$this->GetColArray($from_color,$to_color,abs($maxy-$miny)+1,$colors,$this->numcolors);
 	for($i=$miny, $idx=0; $i <= $maxy; ++$i ) {
 	    $colmap[$i] = $colors[$idx++]; 
@@ -350,16 +350,16 @@ class Gradient {
 	$n = count($pts)/2 ;
 	$idx = 0 ;
 	while( $idx < $n-1 ) {
-	    $p1 = array(round($pts[$idx*2]),round($pts[$idx*2+1]));
-	    $p2 = array(round($pts[++$idx*2]),round($pts[$idx*2+1]));
-		
+	    $p1 = [round($pts[$idx*2]),round($pts[$idx*2+1])];
+	    $p2 = [round($pts[++$idx*2]),round($pts[$idx*2+1])];
+
 	    // Find the largest rectangle we can fill
 	    $y = max($p1[1],$p2[1]) ;
 	    for($yy=$maxy; $yy > $y; --$yy) {
 		$this->img->current_color = $colmap[$yy];
 		$this->img->Line($p1[0],$yy,$p2[0]-1,$yy);
 	    }
-	    
+
 	    if( $p1[1] == $p2[1] ) continue; 
 
 	    // Fill the rest using lines (slow...)
@@ -395,7 +395,7 @@ class Gradient {
 	// If color is given as text get it's corresponding r,g,b values
 	$from_color = $this->img->rgb->Color($from_color);
 	$to_color = $this->img->rgb->Color($to_color);
-		
+
 	$rdelta=($to_color[0]-$from_color[0])/$numcols;
 	$gdelta=($to_color[1]-$from_color[1])/$numcols;
 	$bdelta=($to_color[2]-$from_color[2])/$numcols;

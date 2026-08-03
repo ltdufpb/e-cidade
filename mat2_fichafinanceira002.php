@@ -38,8 +38,8 @@ $oGet = db_utils::postMemory($_GET);
 $dtInicial          = $oGet->dtInicial    ;
 $dtFinal            = $oGet->dtFinal      ;
 $iMaterial          = $oGet->iMaterial    ;
-$aAlmoxarifado      = explode(",", $oGet->aAlmoxarifado);
-$aListaAlmoxarifado = array();
+$aAlmoxarifado      = explode(",", (string) $oGet->aAlmoxarifado);
+$aListaAlmoxarifado = [];
 
 if ( isset($dtInicial) && empty($dtInicial) ) {
   $dtInicial = "1950-01-01";
@@ -62,7 +62,7 @@ if ( isset($oGet->aAlmoxarifado) && !empty($oGet->aAlmoxarifado)) {
 
 try {
   
-  $aDados           = array();
+  $aDados           = [];
   $oItem            = new Item($iMaterial);
   $oDataInicial     = new DBDate($dtInicial);
   $oDataFinal       = new DBDate($dtFinal);
@@ -436,9 +436,9 @@ function getQueryMovimento ($iMaterial, $iDepartamento, $dtInicial, $dtFinal){
  */
 function getMovimentosItem( $iMaterial, $iDepartamento, $dtInicial, $dtFinal, $nSaldoAnterior){
 
-  $aDadosMovimentacao = array();
+  $aDadosMovimentacao = [];
   $oDadosRetorno = new stdClass();
-  $oDadosRetorno->aDadosMovimentacao = array() ;
+  $oDadosRetorno->aDadosMovimentacao = [] ;
   $oDadosRetorno->oTotalPeriodo      = null;
   
   $sSqlMovimento  = getQueryMovimento($iMaterial, $iDepartamento, $dtInicial, $dtFinal);

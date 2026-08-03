@@ -49,7 +49,7 @@ $db_botao = true;
 $lLimpa = false;
 $codigo = null;
 
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Incluir") {
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Incluir") {
     $rsParProjetos = $clparprojetos->sql_record($clparprojetos->sql_query_file(db_getsession('DB_anousu')));
 
     if ($clparprojetos->numrows > 0) {

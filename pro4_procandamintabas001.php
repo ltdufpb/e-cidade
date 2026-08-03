@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -59,19 +59,19 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1" => "Despacho Atual",
+       $clcriaabas->identifica = ["g1" => "Despacho Atual",
                                        "g2" => "Despacho Anterior", 
-                                       "g3" => "Anexar Documentos");
+                                       "g3" => "Anexar Documentos"];
 
-       $clcriaabas->title = array("g1" => "Incluir Despacho interno",
+       $clcriaabas->title = ["g1" => "Incluir Despacho interno",
                                   "g2" => "Ver Despachos Anteriores",
-                                  "g3" => "Anexar Documentos");
+                                  "g3" => "Anexar Documentos"];
 
-       $clcriaabas->src = array("g1" => "pro4_procandamint011.php?p58_codproc=".$p58_codproc ,
+       $clcriaabas->src = ["g1" => "pro4_procandamint011.php?p58_codproc=".$p58_codproc ,
                                 "g2" => "pro4_procandamintant001.php?p58_codproc=".$p58_codproc,
-                                "g3" => "prot4_processodocumento001.php?iCodigoProcesso=".$p58_codproc);
+                                "g3" => "prot4_processodocumento001.php?iCodigoProcesso=".$p58_codproc];
        
-       $clcriaabas->disabled = array("g3" => "true");
+       $clcriaabas->disabled = ["g3" => "true"];
       
        $clcriaabas->cria_abas();    
      ?> 

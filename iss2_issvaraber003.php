@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $aux = new cl_arquivo_auxiliar;
 $clrotulo = new rotulocampo;
 $clrotulo->label("q05_ano");
@@ -96,7 +96,7 @@ $clrotulo->label("q05_ano");
       <td>
       <b>De: </b> 
       <?php 
-      $meses = array();
+      $meses = [];
       for($w=1;$w<=12;$w++){
       	$mes=db_mes($w);      	
       	$meses[$w]= $mes;
@@ -123,7 +123,7 @@ $clrotulo->label("q05_ano");
         <td colspan="2" align = "center">
         <b>Mostrar:</b>
         <?php 
-        $arr_mostra = array("t"=>"Todos","z"=>"Somente com valor zerado","l"=>"Somente com valor lançado");
+        $arr_mostra = ["t"=>"Todos","z"=>"Somente com valor zerado","l"=>"Somente com valor lançado"];
         db_select("mostra",$arr_mostra,true,"text",1);
         ?>
       </td>

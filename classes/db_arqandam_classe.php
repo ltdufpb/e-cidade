@@ -29,24 +29,24 @@
 //CLASSE DA ENTIDADE arqandam
 class cl_arqandam {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $p69_codarquiv = 0;
-   var $p69_codandam = 0;
-   var $p69_arquivado = 'f';
+   public $p69_codarquiv = 0;
+   public $p69_codandam = 0;
+   public $p69_arquivado = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  p69_codarquiv = int4 = Código  do Arquivamento
                  p69_codandam = int8 = Código andamento
                  p69_arquivado = bool = Processo Arquivado
@@ -55,7 +55,7 @@ class cl_arqandam {
    function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arqandam");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -118,7 +118,7 @@ class cl_arqandam {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "andamento do arquivamento () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "andamento do arquivamento já Cadastrado";
@@ -145,10 +145,10 @@ class cl_arqandam {
       $this->atualizacampos();
      $sql = " update arqandam set ";
      $virgula = "";
-     if(trim($this->p69_codarquiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p69_codarquiv"])){
+     if(trim((string) $this->p69_codarquiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p69_codarquiv"])){
        $sql  .= $virgula." p69_codarquiv = $this->p69_codarquiv ";
        $virgula = ",";
-       if(trim($this->p69_codarquiv) == null ){
+       if(trim((string) $this->p69_codarquiv) == null ){
          $this->erro_sql = " Campo Código  do Arquivamento nao Informado.";
          $this->erro_campo = "p69_codarquiv";
          $this->erro_banco = "";
@@ -158,10 +158,10 @@ class cl_arqandam {
          return false;
        }
      }
-     if(trim($this->p69_codandam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p69_codandam"])){
+     if(trim((string) $this->p69_codandam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p69_codandam"])){
        $sql  .= $virgula." p69_codandam = $this->p69_codandam ";
        $virgula = ",";
-       if(trim($this->p69_codandam) == null ){
+       if(trim((string) $this->p69_codandam) == null ){
          $this->erro_sql = " Campo Código andamento nao Informado.";
          $this->erro_campo = "p69_codandam";
          $this->erro_banco = "";
@@ -171,10 +171,10 @@ class cl_arqandam {
          return false;
        }
      }
-     if(trim($this->p69_arquivado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p69_arquivado"])){
+     if(trim((string) $this->p69_arquivado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p69_arquivado"])){
        $sql  .= $virgula." p69_arquivado = '$this->p69_arquivado' ";
        $virgula = ",";
-       if(trim($this->p69_arquivado) == null ){
+       if(trim((string) $this->p69_arquivado) == null ){
          $this->erro_sql = " Campo Processo Arquivado nao Informado.";
          $this->erro_campo = "p69_arquivado";
          $this->erro_banco = "";
@@ -265,7 +265,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:arqandam";
@@ -279,7 +279,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="arqandam.oid,*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -305,7 +305,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -317,7 +317,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -335,7 +335,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

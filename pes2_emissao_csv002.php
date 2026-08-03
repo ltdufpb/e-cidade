@@ -33,12 +33,12 @@ $fArquivo     = fopen($sArquivo, 'w');
 /**
  * Array contendo as Colunas para cada grupo
  */
-$aColunas = array();
+$aColunas = [];
 
 /**
  * Array com as colunas do total geral
  */
-$aTotalGeral = array();
+$aTotalGeral = [];
 $aTotalGeral[] = "TOTAL GERAL: ";
 
 /**
@@ -73,7 +73,7 @@ $aColunas[] = "TOTAL";
 /**
  * Insere ao CSV as colunas necessárias para cada Grupo
  */
-$lEscritaArquivo = fputcsv($fArquivo, $aColunas, ";");
+$lEscritaArquivo = fputcsv($fArquivo, $aColunas, ";", escape: '\\');
 
 
 $iTotalGeral = 0.0; 
@@ -90,16 +90,16 @@ foreach ( $aServidores as $sGrupo => $aDadosServidores ) {
     $sNomeGrupo = '1 - Geral';
   }
 
-  $aTotalRubricaGrupo  = array();
+  $aTotalRubricaGrupo  = [];
   $iTotalGrupoRubricas = 0;
 
   /**
    * Escreve o nome do grupoi quando for para exibir somente totais
    */
   if ($oParametros->sSomenteTotais == EXIBIR_SOMENTE_TOTAIS) {
-    $aColunasServidores   = array();
+    $aColunasServidores   = [];
     $aColunasServidores[] = $sNomeGrupo;
-    $lEscritaArquivo      = fputcsv($fArquivo, $aColunasServidores, ";");
+    $lEscritaArquivo      = fputcsv($fArquivo, $aColunasServidores, ";", escape: '\\');
   }
 
   /**
@@ -110,7 +110,7 @@ foreach ( $aServidores as $sGrupo => $aDadosServidores ) {
     /**
      * Recebe os dados dos servidores
      */
-    $aColunasServidores = array();
+    $aColunasServidores = [];
     $sValorTotal   = $aValorRubricas[$iMatricula]["TOTAL"];
     $sNomeServidor = $oServidor->getCgm()->getNome();
 
@@ -183,7 +183,7 @@ foreach ( $aServidores as $sGrupo => $aDadosServidores ) {
       /**
        * Insere ao CSV as colunas com os dados de cada servidor
        */
-      $lEscritaArquivo = fputcsv($fArquivo, $aColunasServidores, ";");
+      $lEscritaArquivo = fputcsv($fArquivo, $aColunasServidores, ";", escape: '\\');
     }
 
     $iTotalGeral += $aValorRubricas[$iMatricula]["TOTAL"];
@@ -194,7 +194,7 @@ foreach ( $aServidores as $sGrupo => $aDadosServidores ) {
   /**
    * Monta os totais para o Grupo
    */
-  $aColunasTotalGrupos   = array();
+  $aColunasTotalGrupos   = [];
   $aColunasTotalGrupos[] = "Total: ";
 
   /**
@@ -217,9 +217,9 @@ foreach ( $aServidores as $sGrupo => $aDadosServidores ) {
 
   $aColunasTotalGrupos[] = db_formatar($iTotalGrupoRubricas, 'f');
 
-  $lEscritaArquivo = fputcsv($fArquivo, $aColunasTotalGrupos, ";");
-  $ColunaQuebra = array();
-  $lEscritaArquivo = fputcsv($fArquivo, $ColunaQuebra, ";");
+  $lEscritaArquivo = fputcsv($fArquivo, $aColunasTotalGrupos, ";", escape: '\\');
+  $ColunaQuebra = [];
+  $lEscritaArquivo = fputcsv($fArquivo, $ColunaQuebra, ";", escape: '\\');
 }
 
 /*
@@ -241,28 +241,28 @@ $aTotalGeral[] = db_formatar($iTotalGeral, 'f');
 /**
  * Insere ao CSV as colunas com o Total
  */
-$lEscritaArquivo = fputcsv($fArquivo, $aTotalGeral, ";");
+$lEscritaArquivo = fputcsv($fArquivo, $aTotalGeral, ";", escape: '\\');
 
-$aColunasLegenda = array();
-$lEscritaArquivo = fputcsv($fArquivo, $aColunasLegenda, ";");
+$aColunasLegenda = [];
+$lEscritaArquivo = fputcsv($fArquivo, $aColunasLegenda, ";", escape: '\\');
 
-$aColunasLegenda = array();
+$aColunasLegenda = [];
 $aColunasLegenda[] = 'LEGENDA';
-$lEscritaArquivo = fputcsv($fArquivo, $aColunasLegenda, ";");
+$lEscritaArquivo = fputcsv($fArquivo, $aColunasLegenda, ";", escape: '\\');
 /**
  * Escrevendo a Legenda
  */
-$aColunasLegenda = array();
+$aColunasLegenda = [];
 $aColunasLegenda[] = 'Variável';
 $aColunasLegenda[] = 'Rubrica';
 $aColunasLegenda[] = 'Descrição da Rubrica';
 $aColunasLegenda[] = 'Tipo';
 
-$lEscritaArquivo = fputcsv($fArquivo, $aColunasLegenda, ";");
+$lEscritaArquivo = fputcsv($fArquivo, $aColunasLegenda, ";", escape: '\\');
 
 foreach ( $aOrdemFormula as $sDescricao => $sCodigoRubrica ) {
 
-  $aColunasLegenda = array();  
+  $aColunasLegenda = [];  
   $oRubrica        = RubricaRepository::getInstanciaByCodigo($sCodigoRubrica);
   $sTipo           = $oRubrica->getTipo() == Rubrica::TIPO_PROVENTO ? "Provento" : "Desconto";
 
@@ -270,7 +270,7 @@ foreach ( $aOrdemFormula as $sDescricao => $sCodigoRubrica ) {
   $aColunasLegenda[] = $sCodigoRubrica;
   $aColunasLegenda[] = $oRubrica->getDescricao();
   $aColunasLegenda[] = $sTipo;
-  $lEscritaArquivo = fputcsv($fArquivo, $aColunasLegenda, ";");
+  $lEscritaArquivo = fputcsv($fArquivo, $aColunasLegenda, ";", escape: '\\');
 }
 
 if (!$lEscritaArquivo) {

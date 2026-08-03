@@ -25,7 +25,7 @@ try {
         case 'importarArquivo' :
 
             $oFiles = db_utils::postMemory($_FILES);
-            if (strtolower(substr($oFiles->arquivo['name'], -4)) != '.csv') {
+            if (strtolower(substr((string) $oFiles->arquivo['name'], -4)) != '.csv') {
                 throw new BusinessException("Arquivo importado com formato inválido! Arquivo deve ser do formato CSV.");
             }
 
@@ -62,7 +62,7 @@ try {
     db_fim_transacao(true);
     $oRetorno->iStatus  = 2;
     $oRetorno->erro = true;
-    $oRetorno->message = utf8_encode($eErro->getMessage());
+    $oRetorno->message = mb_convert_encoding($eErro->getMessage(), 'UTF-8', 'ISO-8859-1');
 }
 
 $oRetorno->erro = $oRetorno->status;

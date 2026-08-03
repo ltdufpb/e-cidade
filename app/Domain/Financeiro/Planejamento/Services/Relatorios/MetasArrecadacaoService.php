@@ -63,6 +63,7 @@ class MetasArrecadacaoService extends BaseRelatoriosCronograma
         return $this->dados;
     }
 
+    #[\Override]
     protected function processaFiltros(array $filtros)
     {
         parent::processaFiltros($filtros);
@@ -139,6 +140,7 @@ class MetasArrecadacaoService extends BaseRelatoriosCronograma
     /**
      * Organiza os filtros de emissão
      */
+    #[\Override]
     protected function organizaFiltrosEmissao()
     {
         parent::organizaFiltrosEmissao();
@@ -172,9 +174,7 @@ class MetasArrecadacaoService extends BaseRelatoriosCronograma
     private function getCronograma(EstimativaReceita $estimativaReceita)
     {
         return $estimativaReceita->cronogramaDesembolso->filter(
-            function (CronogramaDesembolsoReceita $cronograma) {
-                return $cronograma->exercicio === $this->exercicio;
-            }
+            fn(CronogramaDesembolsoReceita $cronograma) => $cronograma->exercicio === $this->exercicio
         )->shift();
     }
 
@@ -184,9 +184,7 @@ class MetasArrecadacaoService extends BaseRelatoriosCronograma
      */
     private function getValorBase(EstimativaReceita $estimativaReceita)
     {
-        return $estimativaReceita->getValores()->filter(function (Valor $valor) {
-            return $valor->pl10_ano === $this->exercicio;
-        })->shift();
+        return $estimativaReceita->getValores()->filter(fn(Valor $valor) => $valor->pl10_ano === $this->exercicio)->shift();
     }
 
     /**

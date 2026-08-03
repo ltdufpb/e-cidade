@@ -108,7 +108,7 @@ $oPdf->setAutoNewLineMulticell(false);
 $iAltura = 4;
 $lFill   = true;
 
-$aWidth   = array( 20, 20, 20, 25, 30, 70 );
+$aWidth   = [ 20, 20, 20, 25, 30, 70 ];
 $aWidth[] = $oPdf->getAvailWidth() - array_sum($aWidth);
 
 /*

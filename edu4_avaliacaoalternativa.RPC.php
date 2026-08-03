@@ -66,7 +66,7 @@ try {
 
       $oProcedimentoAvaliacao = $oTurma->getProcedimentoDeAvaliacaoDaEtapa( $oEtapa );
 
-      $aPeriodosAvaliacao = array();
+      $aPeriodosAvaliacao = [];
 
       foreach ( $oProcedimentoAvaliacao->getResultados() as $oResultado ) {
 
@@ -89,7 +89,7 @@ try {
 
           $oElemento                               = $oAvaliacaoComposicao->getElementoAvaliacao();
           $oStdPeriodo                             = new stdClass();
-          $oStdPeriodo->sDescricaoPeriodoAbreviado = urlencode( $oElemento->getPeriodoAvaliacao()->getDescricaoAbreviada() );
+          $oStdPeriodo->sDescricaoPeriodoAbreviado = urlencode( (string) $oElemento->getPeriodoAvaliacao()->getDescricaoAbreviada() );
           $oStdPeriodo->iOrdemPeriodo              = $oAvaliacaoComposicao->getOrdem();
           $oStdPeriodo->iCodigo                    = $oElemento->getCodigo();
 
@@ -116,7 +116,7 @@ try {
       $oEtapa = EducacaoSessionManager::carregarEtapa($oParam->iEtapa);
 
       $oProcedimentoAvaliacao = $oTurma->getProcedimentoDeAvaliacaoDaEtapa($oEtapa);
-      $aAvaliacoes            = array();
+      $aAvaliacoes            = [];
       foreach ( $oProcedimentoAvaliacao->getResultados() as $oResultado ) {
 
         foreach ( $oResultado->getAvaliacoesAlternativas() as $oAvaliacaoAlternativa) {
@@ -125,11 +125,11 @@ try {
           $oDadosAvaliacao->iCodigo          = $oAvaliacaoAlternativa->getCodigo();
           $oDadosAvaliacao->iAlternativa     = $oAvaliacaoAlternativa->getAlternativa();
           $oDadosAvaliacao->iCodigoResultado = $oResultado->getCodigo();
-          $oDadosAvaliacao->aConfiguracao    = array();
+          $oDadosAvaliacao->aConfiguracao    = [];
           foreach ($oAvaliacaoAlternativa->getConfiguracao() as $oConfiguracao) {
 
-            $oConfiguracao->sPeriodo          = urlencode($oConfiguracao->sPeriodo);
-            $oConfiguracao->sFormaAvaliacao   = urlencode($oConfiguracao->sFormaAvaliacao);
+            $oConfiguracao->sPeriodo          = urlencode((string) $oConfiguracao->sPeriodo);
+            $oConfiguracao->sFormaAvaliacao   = urlencode((string) $oConfiguracao->sFormaAvaliacao);
             $oDadosAvaliacao->aConfiguracao[] = $oConfiguracao;
           }
           $aAvaliacoes[] = $oDadosAvaliacao;
@@ -163,7 +163,7 @@ try {
         $iCodigoAvaliacaoAlternativa = $oAvaliacaoAlternativa->getCodigo();
       }
 
-      $aAproveitamentos = array();
+      $aAproveitamentos = [];
       /**
        * Verifica períodos e disciplina que o aluno possui avaliações lançadas
        */
@@ -200,8 +200,8 @@ try {
             if ( !array_key_exists($iDiario, $aAproveitamentos) ) {
 
               $oStdDiario                 = new stdClass();
-              $oStdDiario->sDisciplina    = urlencode($oDiarioDisciplina->getDisciplina()->getNomeDisciplina());
-              $oStdDiario->aPeriodos      = array();
+              $oStdDiario->sDisciplina    = urlencode((string) $oDiarioDisciplina->getDisciplina()->getNomeDisciplina());
+              $oStdDiario->aPeriodos      = [];
               $aAproveitamentos[$iDiario] = $oStdDiario;
             }
 

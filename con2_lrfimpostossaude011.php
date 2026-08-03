@@ -35,7 +35,7 @@ require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("model/relatorioContabil.model.php"));
 require_once(modification("model/linhaRelatorioContabil.model.php"));
 $oGet = db_utils::postMemory($_GET);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
@@ -115,18 +115,18 @@ function js_emite(anousu){
 			        <?php 
                 if ($anousu < 2010 ) {
               
-                      $aListaPeriodos = array(
+                      $aListaPeriodos = [
                                         "1B" => "1 º Bimestre",
                                         "2B" => "2 º Bimestre",
                                         "3B" => "3 º Bimestre",
                                         "4B" => "4 º Bimestre",
                                         "5B" => "5 º Bimestre",
                                         "6B" => "6 º Bimestre",
-                                        );
+                                        ];
                     } else {
         
                       $aPeriodos = $oRelatorio->getPeriodos();
-                      $aListaPeriodos = array();
+                      $aListaPeriodos = [];
                       $aListaPeriodos[0] = "Selecione";
                       foreach ($aPeriodos as $oPeriodo) {
                         $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;

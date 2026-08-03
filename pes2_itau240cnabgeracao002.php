@@ -39,8 +39,8 @@ require_once(modification("classes/db_rhgeracaofolhaarquivo_classe.php"));
 require_once(modification("classes/db_rhgeracaofolhaarquivoreg_classe.php"));
 require_once(modification("libs/db_utils.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 $oGet = db_utils::postMemory($_GET);
 $cllayouts_bb               = new LayoutBB;
 $cllayouts_itau             = new cl_layouts_itau;
@@ -83,25 +83,25 @@ if($clrharqbanco->numrows>0){
     $contaheader = $rh34_conta;
     $contalote   = $rh34_conta;
 
-    $conveniobanco = trim($rh34_convenio); 
+    $conveniobanco = trim((string) $rh34_convenio); 
     
     $descrarquivo = "FOLHA PAGAMENTO"; // Campo somente do layout 3
 
     $dvagenciaheader = "0";
     $dvcontaheader   = "0";
     $dvagenciacontaheader = " ";
-    if(trim($rh34_dvagencia)!=""){
+    if(trim((string) $rh34_dvagencia)!=""){
       $dvagenciaheader = $rh34_dvagencia[0];
     }
-    if(trim($rh34_dvconta)!=""){
+    if(trim((string) $rh34_dvconta)!=""){
       $dvcontaheader  = $rh34_dvconta[0];
-      $digitos        = strlen($rh34_dvconta);
+      $digitos        = strlen((string) $rh34_dvconta);
       if($digitos>1){
         $dvagenciacontaheader = $rh34_dvconta[1];
       }
     }
-    $operacaoheader = substr($contaheader,0,3);
-    $contaheader2   = str_pad(trim(substr($contaheader,4,20)),8);
+    $operacaoheader = substr((string) $contaheader,0,3);
+    $contaheader2   = str_pad(trim(substr((string) $contaheader,4,20)),8);
     $dac            = $dvagenciaheader;
     $dvcontalote    = $dvcontaheader;
     $dvagenciacontalote = $dvagenciacontaheader;
@@ -110,13 +110,13 @@ if($clrharqbanco->numrows>0){
     $horageracao = date("H").date("i").date("s");
  
     if(isset($datageracao) && $datageracao!=""){
-      $datag = split('-',$datageracao);
+      $datag = preg_split('#\-#m',(string) $datageracao);
       $datag_dia = $datag[2];
       $datag_mes = $datag[1];
       $datag_ano = $datag[0];
     }
     if(isset($datadeposit) && $datadeposit!=""){
-      $datad = split('-',$datadeposit);
+      $datad = preg_split('#\-#m',(string) $datadeposit);
       $datad_dia = $datad[2];
       $datad_mes = $datad[1];
       $datad_ano = $datad[0];
@@ -136,16 +136,16 @@ if($clrharqbanco->numrows>0){
     $db_layouttxt = new db_layouttxt($layoutimprime,"tmp/".$nomearquivo, $posicao);
 
     if($db90_codban == "104"){
-			if(trim($rh34_convenio) == '003881'){
-        $conveniobanco = substr($rh34_convenio,0,6)."060003        ";
+			if(trim((string) $rh34_convenio) == '003881'){
+        $conveniobanco = substr((string) $rh34_convenio,0,6)."060003        ";
 		  }else{
-        $conveniobanco = substr($rh34_convenio,0,6)."060001        ";
+        $conveniobanco = substr((string) $rh34_convenio,0,6)."060001        ";
 			}
     }else{
-      $conveniobanco = trim($rh34_convenio); 
+      $conveniobanco = trim((string) $rh34_convenio); 
     }
     ////// DADOS SOMENTE CNAB240 CEF
-    $parametrotransmiss = substr($rh34_convenio,10,2);
+    $parametrotransmiss = substr((string) $rh34_convenio,10,2);
     $indicaambcaixa   = "P";
     $indicaambcliente = "P";
     $densidadearquivo = "01600";
@@ -261,7 +261,7 @@ if($sqlerro == false){
 
     $loteservic = 1;
     $finalidadedoc = "00";
-    $codigocompromisso = substr($rh34_convenio,6,4);
+    $codigocompromisso = substr((string) $rh34_convenio,6,4);
     $tipocompromisso = "02";
     $agencialote = $agenciaheader;
 
@@ -436,7 +436,7 @@ $erro = false;
 $clrhgeracaofolhaarquivo->rh105_dtgeracao      = date("Y-m-d", db_getsession('DB_datausu'));
 $clrhgeracaofolhaarquivo->rh105_dtdeposito     = $oGet->datadeposit;
 $clrhgeracaofolhaarquivo->rh105_codarq         = $oGet->rh34_codarq;
-$clrhgeracaofolhaarquivo->rh105_codbcofebraban = str_pad($oGet->codban,3,"0",STR_PAD_RIGHT);
+$clrhgeracaofolhaarquivo->rh105_codbcofebraban = str_pad((string) $oGet->codban,3,"0",STR_PAD_RIGHT);
 $clrhgeracaofolhaarquivo->rh105_tipoarq        = $oGet->tiparq;
 $clrhgeracaofolhaarquivo->rh105_folha          = $oGet->qfolha;
 $clrhgeracaofolhaarquivo->rh105_arquivotxt     = $clrhgeracaofolhaarquivo->salvaArquivoTXT('tmp/'.$nomearquivo);

@@ -91,7 +91,7 @@ if (isParaiba()) {
                 ?>
             </td>
             <td align='left' class="valor">
-                <?php echo $sProcessoProtocolo ? $sProcessoProtocolo : $oLicitatacao->l20_procadmin ?>
+                <?php echo $sProcessoProtocolo ?: $oLicitatacao->l20_procadmin ?>
             </td>
         </tr>
         <tr>
@@ -127,7 +127,7 @@ if (isParaiba()) {
                 <b><?= @$Ll20_datacria ?></b>
             </td>
             <td nowrap="nowrap" class="valor" style="text-align: left;">
-                <?php echo implode("/", array_reverse(explode("-", $oLicitatacao->l20_datacria))); ?>
+                <?php echo implode("/", array_reverse(explode("-", (string) $oLicitatacao->l20_datacria))); ?>
             </td>
             <td nowrap="nowrap" title="<?= @$Tl20_horacria ?>">
                 <b><?= @$Ll20_horacria ?></b>
@@ -141,7 +141,7 @@ if (isParaiba()) {
                 <b><?= @$Ll20_dataaber ?></b>
             </td>
             <td nowrap="nowrap" class="valor" style="text-align: left;">
-                <?php echo implode("/", array_reverse(explode("-", $oLicitatacao->l20_dataaber))); ?>
+                <?php echo implode("/", array_reverse(explode("-", (string) $oLicitatacao->l20_dataaber))); ?>
             </td>
             <td nowrap="nowrap" title="<?= @$Tl20_horaaber ?>">
                 <b><?= @$Ll20_horaaber ?></b>
@@ -161,7 +161,7 @@ if (isParaiba()) {
                 <b><?= @$Ll20_dtpublic ?></b>
             </td>
             <td nowrap="nowrap" class="valor" style="text-align: left;">
-                <?php echo implode("/", array_reverse(explode("-", $oLicitatacao->l20_dtpublic))); ?>
+                <?php echo implode("/", array_reverse(explode("-", (string) $oLicitatacao->l20_dtpublic))); ?>
             </td>
         </tr>
         <tr>

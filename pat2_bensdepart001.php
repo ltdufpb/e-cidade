@@ -52,7 +52,7 @@ $oDptoDivisao   = new cl_arquivo_auxiliar;
 $cldb_depart->rotulo->label();
 $clbens->rotulo->label();
 $clclabens->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $result = $clcfpatri->sql_record($clcfpatri->sql_query_file());
 db_fieldsmemory($result,0);
 ?>
@@ -297,7 +297,7 @@ function js_mostraFieldset(oLegend){
             db_input('lista_divdepartamento', 10, true, 3, 'hidden', 3);
             
             
-            $aTipos = array(0 => 'Sem as divisões selecionadas', 1 => 'Com as divisões selecionadas'); 
+            $aTipos = [0 => 'Sem as divisões selecionadas', 1 => 'Com as divisões selecionadas']; 
             db_select('usardivisao', $aTipos, true, 1);          
             
             $oDptoDivisao->cabecalho      = "<strong>Divisão de Departamento</strong>";
@@ -443,10 +443,10 @@ function js_mostraFieldset(oLegend){
 			<td align="right" nowrap title="Tipo de Agrupamento do Valor"><strong>Convênios
 			:&nbsp;&nbsp;</strong></td>
 			<td><?php  
-			$aConvenios = array (1 => "Ambos",
+			$aConvenios =  [1 => "Ambos",
 			2 => "Apenas vinculado a convênios",
 			3 => "Apenas não vinculado a convênios"
-			);
+			];
 			db_select("vinculoconvenio", $aConvenios, true, 2, "onchange='js_showCedentes()'");
 			?></td>
 		</tr>
@@ -490,7 +490,7 @@ function js_mostraFieldset(oLegend){
 			<td nowrap align="right" title="Características adicionais do bem"><b>Características
 			adicionais do bem:</b></td>
 			<td nowrap title=""><?php 
-			$matriz = array("N"=>"NÃO","S"=>"SIM"); 
+			$matriz = ["N"=>"NÃO","S"=>"SIM"]; 
 			db_select("opcao_obs",$matriz,true,1);
 			?></td>
 		</tr>
@@ -498,28 +498,28 @@ function js_mostraFieldset(oLegend){
 			<td nowrap align="right" title="Imprimir valor de aquisição"><b>Imprimir
 			valor de aquisição:</b></td>
 			<td nowrap title=""><?php 
-			$matriz = array("N"=>"NÃO","S"=>"SIM");
+			$matriz = ["N"=>"NÃO","S"=>"SIM"];
 			db_select("imp_valor",$matriz,true,1);
 			?></td>
 		</tr>
 		<tr>
 			<td nowrap align="right" title="Bens a serem listados"><b>Listar:</b></td>
 			<td nowrap title=""><?php 
-			$matriz_baix = array("t"=>"Todos","n"=>"Não Baixados", "b"=>"Baixados"); 
+			$matriz_baix = ["t"=>"Todos","n"=>"Não Baixados", "b"=>"Baixados"]; 
 			db_select("opcao_baixados",$matriz_baix,true,1);
 			?></td>
 		</tr>
 		<tr>
 			<td nowrap align="right" title="Ordem"><b>Ordem:</b></td>
 			<td nowrap title=""><?php 
-			$matriz_ordem = array(1=>"Placa",2=>"Código", 3=>"Descrição"); 
+			$matriz_ordem = [1=>"Placa",2=>"Código", 3=>"Descrição"]; 
 			db_select("ordem",$matriz_ordem,true,1);
 			?></td>
 		</tr>
 		<tr>
 			<td nowrap align="right" title="quebradepagina"><b>Quebra de Página:</b></td>
 			<td nowrap title=""><?php 
-			$matriz_quebra = array(1=>"Não",2=>"Departamento / Divisão"); 
+			$matriz_quebra = [1=>"Não",2=>"Departamento / Divisão"]; 
 			db_select("quebra",$matriz_quebra,true,1);
 			?></td>
 		</tr>

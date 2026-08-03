@@ -113,8 +113,8 @@ require_once(modification("dbforms/verticalTab.widget.php"));
 	              <td>
 	                <?php 
 	                  
-	                  if ( trim($ov01_dataatend) != '' ) {
-		                  $aDataAtend= explode('-',$ov01_dataatend);
+	                  if ( trim((string) $ov01_dataatend) != '' ) {
+		                  $aDataAtend= explode('-',(string) $ov01_dataatend);
 		                  $iDia = $aDataAtend[2];
 		                  $iMes = $aDataAtend[1];
 		                  $iAno = $aDataAtend[0];

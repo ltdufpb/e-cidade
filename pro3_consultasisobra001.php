@@ -51,10 +51,10 @@ require_once(modification("dbforms/db_funcoes.php"));
             <td>
                 <?php
                     $aTipoDocumento = [];
-                    $aTipoDocumento = array(
+                    $aTipoDocumento = [
                         1=>'Alvará',
                         2=>'Habite-se'
-                    );
+                    ];
                     db_select("tipoDocumento", $aTipoDocumento, true, 1);
                 ?>
             </td>      

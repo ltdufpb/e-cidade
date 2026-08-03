@@ -80,7 +80,7 @@ function js_gerarelatorio() {
 ?>
 </body>
 <?php 
-if(isset($HTTP_POST_VARS["gerar"])) {
+if(isset($_POST["gerar"])) {
   include(modification("gerarelatorio.php"));
 }
 ?>

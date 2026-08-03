@@ -38,8 +38,8 @@ include(modification("classes/db_procespecialidades_classe.php"));
 include(modification("classes/db_procvalores_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clprocservicos = new cl_procservicos;
 $clproctipoa = new cl_proctipoa;
 $clprocgrupoa = new cl_procgrupoa;

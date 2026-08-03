@@ -21,24 +21,13 @@ class ImportaPlanilhaHabilidadeFactory
      */
     public static function porTipo($tipo)
     {
-        switch ($tipo) {
-            case EnsinoEnum::ENSINO_INFANTIL:
-                return new PlanilhaHabilidadeEnsinoInfantilService();
-                break;
-            case EnsinoEnum::ENSINO_FUNDAMENTAL:
-                return new PlanilhaHabilidadeEnsinoFundamentalService();
-                break;
-            case 'EF_REFERENCIAL_GAUCHO':
-                return new PlanilhaHabilidadeReferencialGuacho(EnsinoEnum::ENSINO_FUNDAMENTAL);
-                break;
-            case 'EI_REFERENCIAL_GAUCHO':
-                return new PlanilhaHabilidadeReferencialGuacho(EnsinoEnum::ENSINO_INFANTIL);
-                break;
-            case 'EM_REFERENCIAL_GAUCHO':
-                return new PlanilhaHabilidadeReferencialGuacho(EnsinoEnum::ENSINO_MEDIO);
-                break;
-        }
-
-        throw new Exception('Tipo não implementado.');
+        return match ($tipo) {
+            EnsinoEnum::ENSINO_INFANTIL => new PlanilhaHabilidadeEnsinoInfantilService(),
+            EnsinoEnum::ENSINO_FUNDAMENTAL => new PlanilhaHabilidadeEnsinoFundamentalService(),
+            'EF_REFERENCIAL_GAUCHO' => new PlanilhaHabilidadeReferencialGuacho(EnsinoEnum::ENSINO_FUNDAMENTAL),
+            'EI_REFERENCIAL_GAUCHO' => new PlanilhaHabilidadeReferencialGuacho(EnsinoEnum::ENSINO_INFANTIL),
+            'EM_REFERENCIAL_GAUCHO' => new PlanilhaHabilidadeReferencialGuacho(EnsinoEnum::ENSINO_MEDIO),
+            default => throw new Exception('Tipo não implementado.'),
+        };
     }
 }

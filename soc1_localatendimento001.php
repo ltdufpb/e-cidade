@@ -79,7 +79,7 @@ $oRotulo->label("as16_identificadorunico");
                 </td>
                 <td>
                   <?php
-                    $aLocal = array(1 => "1 - CRAS", 2 => "2 - CREAS"); 
+                    $aLocal = [1 => "1 - CRAS", 2 => "2 - CREAS"]; 
                     db_select('localAtendimento', $aLocal, true, 1);
                   ?>
                 </td>

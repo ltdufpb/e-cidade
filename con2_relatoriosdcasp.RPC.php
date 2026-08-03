@@ -77,39 +77,39 @@ try {
         $oPdf->setPercentWidth(true);
 
         $oPdf->setHeaders(
-          array(
+          [
             "Código do Recurso",
             "Fonte de Recurso",
             "Descrição"
-          )
+          ]
         );
 
         $oPdf->setColumnsAlign(
-          array(
+          [
             PDFDocument::ALIGN_CENTER,
             PDFDocument::ALIGN_CENTER,
             PDFDocument::ALIGN_LEFT
-          )
+          ]
         );
 
         $oPdf->setColumnsWidth(
-          array(
+          [
             "20",
             "20",
             "60"
-          )
+          ]
         );
 
-        $oPdf->setMulticellColumns(array(1));
+        $oPdf->setMulticellColumns([1]);
 
         foreach ($aRecursosPendentes as $oRecurso) {
 
           $oPdf->addLineInformation(
-            array(
+            [
               $oRecurso->getCodigo(),
               $oRecurso->getFonteDeRecurso(),
               $oRecurso->getDescricao()
-            )
+            ]
           );
         }
 
@@ -155,29 +155,29 @@ try {
               $oRetorno->lEmiteLista = true;
               $oPdf = new PDFTable();
               $oPdf->setPercentWidth(true);
-              $oPdf->setHeaders(array(
+              $oPdf->setHeaders([
                       "Código do Recurso",
                       "Descrição"
-                  ));
+                  ]);
 
-              $oPdf->setColumnsAlign(array(
+              $oPdf->setColumnsAlign([
                       PDFDocument::ALIGN_CENTER,
                       PDFDocument::ALIGN_LEFT
-                  ));
+                  ]);
 
-              $oPdf->setColumnsWidth(array(
+              $oPdf->setColumnsWidth([
                       "20",
                       "80"
-                  ));
+                  ]);
 
-              $oPdf->setMulticellColumns(array(1));
+              $oPdf->setMulticellColumns([1]);
 
               foreach ($aRecursosPendentes as $oRecurso) {
 
-                  $oPdf->addLineInformation(array(
+                  $oPdf->addLineInformation([
                           $oRecurso->getCodigo(),
                           $oRecurso->getDescricao()
-                      ));
+                      ]);
               }
 
               $oPdfDocument = new PDFDocument();

@@ -121,7 +121,7 @@ if (FONTE_RECURSO_UNIAO) {
                     </td>
                     <td>
                         <?php
-                        $x = array('N' => 'NÃO', 'S' => 'SIM');
+                        $x = ['N' => 'NÃO', 'S' => 'SIM'];
                         db_select('quebra_orgao', $x, true, 2, "");
                         ?>
                     </td>
@@ -131,7 +131,7 @@ if (FONTE_RECURSO_UNIAO) {
                     </td>
                     <td>
                         <?php
-                        $xx = array('N' => 'NÃO', 'S' => 'SIM');
+                        $xx = ['N' => 'NÃO', 'S' => 'SIM'];
                         db_select('quebra_unidade', $xx, true, 2, "");
                         ?>
                     </td>
@@ -140,7 +140,7 @@ if (FONTE_RECURSO_UNIAO) {
                     <?php
                     $sql = "select o50_subelem from orcparametro where o50_anousu = " . db_getsession("DB_anousu");
                     $result1 = db_query($sql);
-                    $o50_subelem = pg_result($result1, 0, 0);
+                    $o50_subelem = pg_fetch_result($result1, 0, 0);
                     if ($o50_subelem == 'f') {
                         ?>
 
@@ -148,7 +148,7 @@ if (FONTE_RECURSO_UNIAO) {
                         </td>
                         <td>
                             <?php
-                            $xx = array('N' => 'NÃO', 'S' => 'SIM');
+                            $xx = ['N' => 'NÃO', 'S' => 'SIM'];
                             db_select('lista_subeleme', $xx, true, 2, "");
                             ?>
                         </td>
@@ -176,11 +176,11 @@ if (FONTE_RECURSO_UNIAO) {
                     $dataini = $anousu . "-" . $dataini;
                     $datafin = $anousu . "-" . $datafin;
 
-                    $dt = split('-', $dataini);
+                    $dt = preg_split('#\-#m', $dataini);
                     $data_ini_dia = $dt[2];
                     $data_ini_mes = $dt[1];
                     $data_ini_ano = $dt[0];
-                    $dt = split('-', $datafin);
+                    $dt = preg_split('#\-#m', $datafin);
                     $data_fin_dia = $dt[2];
                     $data_fin_mes = $dt[1];
                     $data_fin_ano = $dt[0];

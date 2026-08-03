@@ -50,20 +50,20 @@ closedir($dir);
 if($verifica_execucao)
   exit;
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 if(isset($retorno)) {
   $result = db_query("select id_lei,numerolei,to_char(datalei,'DD') as datalei_dia,to_char(datalei,'MM') as datalei_mes,to_char(datalei,'YYYY') as datalei_ano,ementa from db_leis where id_lei = $retorno");
   db_fieldsmemory($result,0);  
 }
 
-if(isset($HTTP_POST_VARS["incluir"])) {
+if(isset($_POST["incluir"])) {
   db_postmemory($_FILES["arq"]);
   if($size == 0) {
     echo "O arquivo $name não foi encontrado ou ele está vazio. Verifique o seu caminho e o seu tamanho e tente novamente.<Br>";
 	echo "<a href=\"pre1_leis001.php\">Voltar para cadastro de leis</a>\n";
 	exit;
   }
-  $ext = strtolower(substr($name,(strlen($name) - 4),strlen($name)));
+  $ext = strtolower(substr((string) $name,(strlen((string) $name) - 4),strlen((string) $name)));
   $ahtml = $tmp_name.".html";
   $atxt = $tmp_name.".txt";
   switch($ext) {
@@ -112,8 +112,8 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   $atxtB = str_replace('"','\"',$atxtB);
   */
   //ajusta acentos...
-  $acentosfonte = array("Âº","Ã•","Ãµ",'"',"'","Ã£","Ã".chr(-125),"Ã¡","Ã".chr(-127),"Ã©","Ã".chr(-119),"Ã­","Ã".chr(-115),"Ã³","Ã".chr(-109),"Ãº","Ã".chr(-102),"Ã§","Ã".chr(-121),"Ã¢","Ã".chr(-126),"Ãª","Ã".chr(-118),"Ã®","Ã".chr(-114),"Ã´","Ã".chr(-108),"Ã»","Ã".chr(-101),"Ã".chr(-96),"Ã".chr(-128),"Ã¼","Ã".chr(-100));
-  $acentostradu = array("º","Õ","õ",'\"',"\'","ã", "Ã","á","Á","é","É","í","Í","ó","Ó","ú","Ú","ç","Ç","â","Â","ê","Ê","î","Î","ô","Ô","û","Û","à","À","ü","Ü");
+  $acentosfonte = ["Âº","Ã•","Ãµ",'"',"'","Ã£","Ã".chr(-125),"Ã¡","Ã".chr(-127),"Ã©","Ã".chr(-119),"Ã­","Ã".chr(-115),"Ã³","Ã".chr(-109),"Ãº","Ã".chr(-102),"Ã§","Ã".chr(-121),"Ã¢","Ã".chr(-126),"Ãª","Ã".chr(-118),"Ã®","Ã".chr(-114),"Ã´","Ã".chr(-108),"Ã»","Ã".chr(-101),"Ã".chr(-96),"Ã".chr(-128),"Ã¼","Ã".chr(-100)];
+  $acentostradu = ["º","Õ","õ",'\"',"\'","ã", "Ã","á","Á","é","É","í","Í","ó","Ó","ú","Ú","ç","Ç","â","Â","ê","Ê","î","Î","ô","Ô","û","Û","à","À","ü","Ü"];
 //  echo "<br><br><Br>TAM1 ".sizeof($acentosfonte);
 //  echo "TAM2 ".sizeof($acentostradu);
 //  exit;
@@ -123,25 +123,25 @@ if(isset($HTTP_POST_VARS["incluir"])) {
     $atxtB = str_replace($acentosfonte[$i],$acentostradu[$i],$atxtB);  	
   }  
   system("rm -f $ahtml");
-  db_postmemory($HTTP_POST_VARS);  
+  db_postmemory($_POST);  
   $result = db_query("SELECT max(id_lei) + 1 FROM db_leis");
-  $id_lei = pg_result($result,0,0)==""?"1":pg_result($result,0,0);   
+  $id_lei = pg_fetch_result($result,0,0)==""?"1":pg_fetch_result($result,0,0);   
   $result = db_query("INSERT INTO db_leis VALUES($id_lei,
                                                 '$numerolei',
   											    '$datalei_ano-$datalei_mes-$datalei_dia',
   												'$ementa',
   												'$atxtB',
-												'$ahtmlB')") or die("Erro(56) inserindo em db_leis: ".pg_errormessage());
+												'$ahtmlB')") or die("Erro(56) inserindo em db_leis: ".pg_last_error());
  db_redireciona();
-} else if(isset($HTTP_POST_VARS["alterar"])) {
+} else if(isset($_POST["alterar"])) {
   db_postmemory($_FILES["arq"]);
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   if($name == "") {
     db_query("update db_leis set
 	           numerolei = '$numerolei',
 			   datalei = '$datalei_ano-$datalei_mes-$datalei_dia',
 			   ementa = '$ementa'
-			 where id_lei = $id_lei") or die("Erro(81) atualizando db_leis: ".pg_errormessage());
+			 where id_lei = $id_lei") or die("Erro(81) atualizando db_leis: ".pg_last_error());
     db_redireciona();
   } else {
     if($size == 0) {
@@ -149,7 +149,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 	echo "<a href=\"cadastroleis.php\">Voltar para cadastro de leis</a>\n";
 	exit;
   }
-  $ext = strtolower(substr($name,(strlen($name) - 4),strlen($name)));
+  $ext = strtolower(substr((string) $name,(strlen((string) $name) - 4),strlen((string) $name)));
   $ahtml = $tmp_name.".html";
   $atxt = $tmp_name.".txt";
   switch($ext) {
@@ -196,7 +196,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   $atxtB = str_replace("'","\'",$atxtB);
   $atxtB = str_replace('"','\"',$atxtB);
   system("rm -f $ahtml");  
-  db_postmemory($HTTP_POST_VARS);  
+  db_postmemory($_POST);  
   }
   db_query("update db_leis set
 	           numerolei = '$numerolei',
@@ -204,10 +204,10 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 			   ementa = '$ementa',
 			   texto = '$atxtB',
 			   documento = '$ahtmlB'
-		   where id_lei = $id_lei") or die("Erro(139) atualizando db_leis: ".pg_errormessage());  
+		   where id_lei = $id_lei") or die("Erro(139) atualizando db_leis: ".pg_last_error());  
   db_redireciona();
-} else if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("delete from db_leis where id_lei = ".$HTTP_POST_VARS["id_lei"]) or die("Erro(141) excluindo db_leis: ".pg_errormessage());
+} else if(isset($_POST["excluir"])) {
+  db_query("delete from db_leis where id_lei = ".$_POST["id_lei"]) or die("Erro(141) excluindo db_leis: ".pg_last_error());
   db_redireciona();
 }
 ?>

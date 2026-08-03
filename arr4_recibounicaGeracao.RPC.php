@@ -44,14 +44,14 @@ $oRetorno               = new stdClass();
 $oRetorno->status       = 1;
 $oRetorno->message      = '';
 
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 
 try {
 	switch ($oParam->exec) {
 
 		case "processaDados":
 
-	  		$aNumpres = array();
+	  		$aNumpres = [];
 	  		$aUnicas = $oParam->oDados->aUnicas;
 
 		  	if($oParam->oDados->sChavePesquisa == null) {		  		
@@ -75,12 +75,12 @@ try {
 	                       	
             	foreach ($aUnicas as $unica) {
             		
-		      		$aNumpres = array();
+		      		$aNumpres = [];
             		$unica = $oJson->decode(str_replace("\\","", $unica));
             		$debito = $unica->debito;
 				  	$percentual = $unica->desconto;
-            		$dtLancamento = implode("-",array_reverse(explode("/",$unica->lancamento)));
-				  	$dtVencimento = implode("-",array_reverse(explode("/",$unica->vencimento)));
+            		$dtLancamento = implode("-",array_reverse(explode("/",(string) $unica->lancamento)));
+				  	$dtVencimento = implode("-",array_reverse(explode("/",(string) $unica->vencimento)));
 		      		$sObservacao = addslashes(db_stdClass::normalizeStringJsonEscapeString($unica->observacoes));	      		
 
             		if(!$habilitaTaxas || $oParam->oDados->iCadTipoDebito != 1 || $debito == 'IPTU'){
@@ -178,12 +178,12 @@ try {
 
 			  		$unica = $oJson->decode(str_replace("\\","", $unica));
 
-				  	$dtLancamento = implode("-",array_reverse(explode("/",$unica->lancamento)));
-				  	$dtVencimento = implode("-",array_reverse(explode("/",$unica->vencimento)));
+				  	$dtLancamento = implode("-",array_reverse(explode("/",(string) $unica->lancamento)));
+				  	$dtVencimento = implode("-",array_reverse(explode("/",(string) $unica->vencimento)));
 				  	$percentual   = $unica->desconto;
 				  	$iNumpre	  = $unica->debito;
 
-		      		$sObservacao = addslashes(base64_decode($unica->observacoes));         
+		      		$sObservacao = addslashes(base64_decode((string) $unica->observacoes));         
 
 		 		  	db_inicio_transacao();
 				  	try {
@@ -233,8 +233,8 @@ try {
 		case "prorrogar":
 
 			$iCodGeracao           = $oParam->iCodGeracao;
-			$dtVencimento          = implode("-", array_reverse(explode("/",$oParam->dtVencimento)));
-			$dtLancamento          = implode("-", array_reverse(explode("/",$oParam->dtLancamento)));
+			$dtVencimento          = implode("-", array_reverse(explode("/",(string) $oParam->dtVencimento)));
+			$dtLancamento          = implode("-", array_reverse(explode("/",(string) $oParam->dtLancamento)));
 			$iPercDesconto         = $oParam->iPercDesconto;
 			$sObs                  = $oParam->sObs;
 
@@ -285,7 +285,7 @@ try {
 	$oRetorno->msg    = $eErro->getMessage();
 }
 
-$oRetorno->msg    = urlencode($oRetorno->msg);
+$oRetorno->msg    = urlencode((string) $oRetorno->msg);
 $oRetorno->aDados = $aDadosRetorno;
 
 echo $oJson->encode($oRetorno);

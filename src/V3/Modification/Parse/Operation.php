@@ -138,7 +138,7 @@ class Operation
 
         $ignore = new Ignore();
 
-        $ignore->regex(mb_strtolower($node->getAttribute('regex')) == 'true');
+        $ignore->regex(mb_strtolower((string) $node->getAttribute('regex')) == 'true');
         $ignore->flag($node->getAttribute('flag'));
         $ignore->type($node->getAttribute('type'));
         $ignore->content($this->convertEncoding($node->textContent));
@@ -203,7 +203,7 @@ class Operation
             $flag = $this->search->flag;
             $this->replaceCallbackLimitCounter = 0;
             $this->replaceCallbackOffsetCounter = 0;
-            return preg_replace_callback("/$search/$flag", array($this, 'replaceCallback'), $content);
+            return preg_replace_callback("/$search/$flag", $this->replaceCallback(...), (string) $content);
         }
 
         switch ($this->add()->position) {
@@ -235,19 +235,19 @@ class Operation
         $replace = Encode::bin2hex($replace);
         $content = Encode::bin2hex($content);
 
-        $searchLength = mb_strlen($search);
-        $replaceLength = mb_strlen($replace);
+        $searchLength = mb_strlen((string) $search);
+        $replaceLength = mb_strlen((string) $replace);
 
         $pos = -1;
         $currentMatch = 0;
-        $matches = array();
+        $matches = [];
 
         // Guarda ocorrencias da busca, tag <search>
-        while (($pos = strpos($content, $search, $pos + 1)) !== false) {
+        while (($pos = strpos((string) $content, (string) $search, $pos + 1)) !== false) {
 
             // ignore
             if ( $this->ignore && $this->ignore->type() != 'global'
-                && $this->ignore->match( Encode::hex2bin(substr($content, $pos, $searchLength)) ) ) {
+                && $this->ignore->match( Encode::hex2bin(substr((string) $content, $pos, $searchLength)) ) ) {
                 continue;
             }
 
@@ -310,6 +310,6 @@ class Operation
         }
 
         //@todo - preg_replace does not support named backreferences.
-        return preg_replace("/$search/$flag", $replace, $matches[0]);
+        return preg_replace("/$search/$flag", (string) $replace, (string) $matches[0]);
     }
 }

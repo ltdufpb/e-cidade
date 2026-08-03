@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE benscorlanc
 class cl_benscorlanc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t62_codcor = 0; 
-   var $t62_data_dia = null; 
-   var $t62_data_mes = null; 
-   var $t62_data_ano = null; 
-   var $t62_data = null; 
-   var $t62_obs = null; 
-   var $t62_codcom = 0; 
+   public $t62_codcor = 0; 
+   public $t62_data_dia = null; 
+   public $t62_data_mes = null; 
+   public $t62_data_ano = null; 
+   public $t62_data = null; 
+   public $t62_obs = null; 
+   public $t62_codcom = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t62_codcor = int8 = Correção 
                  t62_data = date = Data da correção 
                  t62_obs = text = Observações 
                  t62_codcom = int8 = Código da comissão 
                  ";
    //funcao construtor da classe 
-   function cl_benscorlanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("benscorlanc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -120,10 +120,10 @@ class cl_benscorlanc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->t62_codcor = pg_result($result,0,0); 
+       $this->t62_codcor = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from benscorlanc_t62_codcor_seq");
-       if(($result != false) && (pg_result($result,0,0) < $t62_codcor)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $t62_codcor)){
          $this->erro_sql = " Campo t62_codcor maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -157,7 +157,7 @@ class cl_benscorlanc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Lançamentos de correção de bens ($this->t62_codcor) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Lançamentos de correção de bens já Cadastrado";
@@ -181,13 +181,13 @@ class cl_benscorlanc {
      $resaco = $this->sql_record($this->sql_query_file($this->t62_codcor));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5801,'$this->t62_codcor','I')");
-       $resac = db_query("insert into db_acount values($acount,922,5801,'','".AddSlashes(pg_result($resaco,0,'t62_codcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,922,5802,'','".AddSlashes(pg_result($resaco,0,'t62_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,922,5803,'','".AddSlashes(pg_result($resaco,0,'t62_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,922,5804,'','".AddSlashes(pg_result($resaco,0,'t62_codcom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,922,5801,'','".AddSlashes(pg_fetch_result($resaco,0,'t62_codcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,922,5802,'','".AddSlashes(pg_fetch_result($resaco,0,'t62_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,922,5803,'','".AddSlashes(pg_fetch_result($resaco,0,'t62_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,922,5804,'','".AddSlashes(pg_fetch_result($resaco,0,'t62_codcom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -196,10 +196,10 @@ class cl_benscorlanc {
       $this->atualizacampos();
      $sql = " update benscorlanc set ";
      $virgula = "";
-     if(trim($this->t62_codcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t62_codcor"])){ 
+     if(trim((string) $this->t62_codcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t62_codcor"])){ 
        $sql  .= $virgula." t62_codcor = $this->t62_codcor ";
        $virgula = ",";
-       if(trim($this->t62_codcor) == null ){ 
+       if(trim((string) $this->t62_codcor) == null ){ 
          $this->erro_sql = " Campo Correção nao Informado.";
          $this->erro_campo = "t62_codcor";
          $this->erro_banco = "";
@@ -209,10 +209,10 @@ class cl_benscorlanc {
          return false;
        }
      }
-     if(trim($this->t62_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t62_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t62_data_dia"] !="") ){ 
+     if(trim((string) $this->t62_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t62_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t62_data_dia"] !="") ){ 
        $sql  .= $virgula." t62_data = '$this->t62_data' ";
        $virgula = ",";
-       if(trim($this->t62_data) == null ){ 
+       if(trim((string) $this->t62_data) == null ){ 
          $this->erro_sql = " Campo Data da correção nao Informado.";
          $this->erro_campo = "t62_data_dia";
          $this->erro_banco = "";
@@ -225,7 +225,7 @@ class cl_benscorlanc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["t62_data_dia"])){ 
          $sql  .= $virgula." t62_data = null ";
          $virgula = ",";
-         if(trim($this->t62_data) == null ){ 
+         if(trim((string) $this->t62_data) == null ){ 
            $this->erro_sql = " Campo Data da correção nao Informado.";
            $this->erro_campo = "t62_data_dia";
            $this->erro_banco = "";
@@ -236,14 +236,14 @@ class cl_benscorlanc {
          }
        }
      }
-     if(trim($this->t62_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t62_obs"])){ 
+     if(trim((string) $this->t62_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t62_obs"])){ 
        $sql  .= $virgula." t62_obs = '$this->t62_obs' ";
        $virgula = ",";
      }
-     if(trim($this->t62_codcom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t62_codcom"])){ 
+     if(trim((string) $this->t62_codcom)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t62_codcom"])){ 
        $sql  .= $virgula." t62_codcom = $this->t62_codcom ";
        $virgula = ",";
-       if(trim($this->t62_codcom) == null ){ 
+       if(trim((string) $this->t62_codcom) == null ){ 
          $this->erro_sql = " Campo Código da comissão nao Informado.";
          $this->erro_campo = "t62_codcom";
          $this->erro_banco = "";
@@ -261,17 +261,17 @@ class cl_benscorlanc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5801,'$this->t62_codcor','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t62_codcor"]) || $this->t62_codcor != "")
-           $resac = db_query("insert into db_acount values($acount,922,5801,'".AddSlashes(pg_result($resaco,$conresaco,'t62_codcor'))."','$this->t62_codcor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,922,5801,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t62_codcor'))."','$this->t62_codcor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t62_data"]) || $this->t62_data != "")
-           $resac = db_query("insert into db_acount values($acount,922,5802,'".AddSlashes(pg_result($resaco,$conresaco,'t62_data'))."','$this->t62_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,922,5802,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t62_data'))."','$this->t62_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t62_obs"]) || $this->t62_obs != "")
-           $resac = db_query("insert into db_acount values($acount,922,5803,'".AddSlashes(pg_result($resaco,$conresaco,'t62_obs'))."','$this->t62_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,922,5803,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t62_obs'))."','$this->t62_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t62_codcom"]) || $this->t62_codcom != "")
-           $resac = db_query("insert into db_acount values($acount,922,5804,'".AddSlashes(pg_result($resaco,$conresaco,'t62_codcom'))."','$this->t62_codcom',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,922,5804,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t62_codcom'))."','$this->t62_codcom',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -316,13 +316,13 @@ class cl_benscorlanc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5801,'$t62_codcor','E')");
-         $resac = db_query("insert into db_acount values($acount,922,5801,'','".AddSlashes(pg_result($resaco,$iresaco,'t62_codcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,922,5802,'','".AddSlashes(pg_result($resaco,$iresaco,'t62_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,922,5803,'','".AddSlashes(pg_result($resaco,$iresaco,'t62_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,922,5804,'','".AddSlashes(pg_result($resaco,$iresaco,'t62_codcom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,922,5801,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t62_codcor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,922,5802,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t62_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,922,5803,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t62_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,922,5804,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t62_codcom'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from benscorlanc
@@ -382,7 +382,7 @@ class cl_benscorlanc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:benscorlanc";
@@ -397,7 +397,7 @@ class cl_benscorlanc {
    function sql_query ( $t62_codcor=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_benscorlanc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -434,7 +434,7 @@ class cl_benscorlanc {
    function sql_query_file ( $t62_codcor=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,7 +455,7 @@ class cl_benscorlanc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

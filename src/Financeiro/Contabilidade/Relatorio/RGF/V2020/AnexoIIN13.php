@@ -61,6 +61,7 @@ class AnexoIIN13 extends AnexoI
      * @return \stdClass[]
      * @throws Exception
      */
+    #[\Override]
     public function getDados($trazerConfiguracaoPadrao = true)
     {
         parent::getDados($trazerConfiguracaoPadrao);
@@ -74,6 +75,7 @@ class AnexoIIN13 extends AnexoI
         return $this->aLinhasConsistencia;
     }
 
+    #[\Override]
     protected function processarCalculoPorMeses()
     {
         parent::processarCalculoPorMeses();
@@ -179,6 +181,7 @@ class AnexoIIN13 extends AnexoI
         return $meses;
     }
 
+    #[\Override]
     protected function agruparValoresNasLinhas()
     {
         parent::agruparValoresNasLinhas();

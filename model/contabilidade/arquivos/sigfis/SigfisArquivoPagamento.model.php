@@ -40,7 +40,7 @@ class SigfisArquivoPagamento extends SigfisArquivoBase implements iPadArquivoTXT
 
     protected $iCodigoLayout     = 206;
     protected $sNomeArquivo      = 'PagEmp';
-    protected $aMovimentoContabil = array();
+    protected $aMovimentoContabil = [];
 
 
     /**
@@ -176,7 +176,7 @@ class SigfisArquivoPagamento extends SigfisArquivoBase implements iPadArquivoTXT
                 $rsretencao    = db_query($sSqlTotalRetencao);
                 if(pg_num_rows($rsretencao) > 0){
 //    $vlrretencao = $rsretencao;
-                    $vlrretencao = round(pg_result($rsretencao,0),2);
+                    $vlrretencao = round(pg_fetch_result($rsretencao,0),2);
                 } else {
                     $vlrretencao = 0.00;
                 }
@@ -194,12 +194,12 @@ class SigfisArquivoPagamento extends SigfisArquivoBase implements iPadArquivoTXT
 //        if ($oVinculo = SigfisVinculoConta::getVinculoConta($oDadosQuery->c61_codcon)) {
 
                 $oDados                = new stdClass();
-                $sUnidadeOrcamentaria = str_pad($oDadosQuery->o58_unidade,4, ' ', STR_PAD_LEFT);
+                $sUnidadeOrcamentaria = str_pad((string) $oDadosQuery->o58_unidade,4, ' ', STR_PAD_LEFT);
                 $dtPagamento           = $this->formataData($oDadosQuery->c70_data);
 
-                $oDados->cd_Unidade             = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
+                $oDados->cd_Unidade             = str_pad((string) $this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
                 $oDados->cd_UnidadeOrcamentaria = str_pad($sUnidadeOrcamentaria,     4, ' ', STR_PAD_LEFT);
-                $oDados->nu_Empenho             = str_pad($oDadosQuery->e60_codemp, 10, ' ', STR_PAD_RIGHT);
+                $oDados->nu_Empenho             = str_pad((string) $oDadosQuery->e60_codemp, 10, ' ', STR_PAD_RIGHT);
                 $oDados->dt_PagamentoEmpenho    = $dtPagamento;
                 $oDados->dt_Ano                 = $oDadosQuery->e60_anousu;
                 $oDados->vl_Pagamento           = str_pad($vlrpag_liquido * 100 , 16, ' ', STR_PAD_LEFT);
@@ -212,9 +212,9 @@ class SigfisArquivoPagamento extends SigfisArquivoBase implements iPadArquivoTXT
 
                 $vlrpag_liquido = $oDadosQuery->valor_pago - $vlrretencao;
 
-                $aContas = array_unique((explode(',',$oDadosQuery->c60_estrut)));
+                $aContas = array_unique((explode(',',(string) $oDadosQuery->c60_estrut)));
 
-                $aContasNovas = array();
+                $aContasNovas = [];
                 foreach ($aContas as $a) {
                     if (!empty($a)) {
                         $contaS = explode('-',$a);
@@ -225,9 +225,9 @@ class SigfisArquivoPagamento extends SigfisArquivoBase implements iPadArquivoTXT
                 }
                 $aContas = $aContasNovas;
 
-                $aContasCodcon = array_unique((explode(',',$oDadosQuery->c61_reduz)));
+                $aContasCodcon = array_unique((explode(',',(string) $oDadosQuery->c61_reduz)));
 
-                $aContasCodconNovas = array();
+                $aContasCodconNovas = [];
                 foreach ($aContasCodcon as $a) {
                     if (!empty($a)) {
                         $contaJ = explode('-',$a);
@@ -254,7 +254,7 @@ class SigfisArquivoPagamento extends SigfisArquivoBase implements iPadArquivoTXT
 
 
                 $oDados->dt_AnoMes              = $oDadosQuery->competencia;
-                $oDados->cd_Orgao               = str_pad($oDadosQuery->o58_orgao,   4, ' ', STR_PAD_LEFT);
+                $oDados->cd_Orgao               = str_pad((string) $oDadosQuery->o58_orgao,   4, ' ', STR_PAD_LEFT);
                 $oDados->nu_EmpenhoSup          = str_pad(str_repeat(' ', 10), 10, ' ', STR_PAD_LEFT);
                 $oDados->Reservado_tce          = str_repeat(' ', 41);
 
@@ -262,9 +262,9 @@ class SigfisArquivoPagamento extends SigfisArquivoBase implements iPadArquivoTXT
                     $oDados->codigolinha            = 416;
                 }else{
                     $oDados->Reservado_tce1         = str_repeat(' ', 10);
-                    $oDados->Cd_ContaCorrente1      = str_pad($aContasCodcon[0],  30, ' ', STR_PAD_RIGHT);
-                    $oDados->Cd_ContaCorrente2      = str_pad($aContasCodcon[1],  30, ' ', STR_PAD_RIGHT);
-                    $oDados->Cd_ContaCorrente3      = str_pad($aContasCodcon[2],  30, ' ', STR_PAD_RIGHT);
+                    $oDados->Cd_ContaCorrente1      = str_pad((string) $aContasCodcon[0],  30, ' ', STR_PAD_RIGHT);
+                    $oDados->Cd_ContaCorrente2      = str_pad((string) $aContasCodcon[1],  30, ' ', STR_PAD_RIGHT);
+                    $oDados->Cd_ContaCorrente3      = str_pad((string) $aContasCodcon[2],  30, ' ', STR_PAD_RIGHT);
                     $oDados->codigolinha            = 671;
                 }
 

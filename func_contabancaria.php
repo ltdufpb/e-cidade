@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clcontabancaria = new cl_contabancaria;
 $clcontabancaria->rotulo->label("db83_sequencial");
@@ -100,10 +100,10 @@ if(!isset($pesquisa_chave)){
   } else {
     $sql = $clcontabancaria->sql_query("",$campos,"db83_sequencial",$sWhere);
   }
-  $repassa = array();
+  $repassa = [];
 
   if(isset($chave_db83_descricao)){
-    $repassa = array("chave_db83_sequencial"=>$chave_db83_sequencial,"chave_db83_descricao"=>$chave_db83_descricao);
+    $repassa = ["chave_db83_sequencial"=>$chave_db83_sequencial,"chave_db83_descricao"=>$chave_db83_descricao];
   }
 
   echo "<div class='container'>";

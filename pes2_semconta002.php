@@ -42,7 +42,7 @@
   $sOrdem   = "";
   $sCampo   = "";
   
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
   
   $head2 = "RELATÓRIO DE FUNCIONÁRIOS SEM CONTA";
   $head3 = "PERÍODO : " . $mes . " / " . $ano;
@@ -222,7 +222,7 @@
     
     $aDadosRelatorio = db_utils::getCollectionByRecord($rsResult, true );
     
-    $aLinhas    = array();
+    $aLinhas    = [];
     $oCabecalho = new stdClass();
     
     $sArquivo   = $sNomeArquivo.'.csv';
@@ -254,7 +254,7 @@
     
     foreach ($aLinhas as $oLinha) {
       
-      fputcsv($fArquivo, (array)$oLinha, ";");
+      fputcsv($fArquivo, (array)$oLinha, ";", escape: '\\');
     }
     
     fclose($fArquivo);

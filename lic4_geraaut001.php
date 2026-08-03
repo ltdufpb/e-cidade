@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoParam = db_utils::getDao("licitaparam");
 $lSelecionaPc = 'f';
 $rsParam = $oDaoParam->sql_record($oDaoParam->sql_query_file(db_getsession("DB_instit")));
@@ -81,7 +81,7 @@ $clrotulo->label("l20_codigo");
                     <td>Escolher Processo de Compras:</td>
                     <td>
                         <?php
-                        $aValores = array('t' => "Sim", 'f' => "Não");
+                        $aValores = ['t' => "Sim", 'f' => "Não"];
                         db_select("lSelecionaPc", $aValores, true, 1);
                         ?>
                     </td>

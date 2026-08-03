@@ -41,10 +41,10 @@ $head9 = "";
 include(modification("fpdf151/pdf.php"));
 require(modification("libs/db_sql.php"));
 require(modification("libs/db_utils.php"));
-db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_SERVER);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-$DB_DATACALC = mktime(0,0,0,substr($db_datausu,5,2),substr($db_datausu,8,2),substr($db_datausu,0,4));
+$DB_DATACALC = mktime(0,0,0,substr((string) $db_datausu,5,2),substr((string) $db_datausu,8,2),substr((string) $db_datausu,0,4));
 
 if (isset($desconto)) {
   if ($desconto == 0) {
@@ -58,8 +58,8 @@ if (isset($desconto)) {
 }
 
 $sTiposDebitos = $tipos;
-$tipos = split(",",$tipos);
-$tipostodos = split(",",$tipostodos);
+$tipos = preg_split("#,#m",$tipos);
+$tipostodos = preg_split("#,#m",$tipostodos);
 
 $head6 = "Débitos Calculados até: ".db_formatar($db_datausu,'d');
 $where = "";
@@ -112,13 +112,13 @@ if (!empty($numcgm)) {
   $result = $clcgm->sql_record($clcgm->sql_query_file($numcgm,"z01_nome"));
   db_fieldsmemory($result,0);  
   $result_teste = debitos_numcgm($numcgm,0,0,$DB_DATACALC,$DB_anousu,'','k00_origem,k00_tipo,k00_numpre,k00_numpar,k00_receit'); 
-   
+
   $result = debitos_numcgm($numcgm,0,0,$DB_DATACALC,$DB_anousu,'','k00_origem,k00_tipo,k00_numpre,k00_numpar,k00_receit', $where);  
   $outros = '';
   $z01_numcgm = $numcgm;
 } else if (!empty($matric)) {
 	$result_teste = debitos_matricula($matric,0,0,$DB_DATACALC,$DB_anousu,'','k00_tipo,k00_numpre,k00_numpar,k00_receit');
-	
+
   $result = debitos_matricula($matric,0,0,$DB_DATACALC,$DB_anousu,'','k00_tipo,k00_numpre,k00_numpar,k00_receit', $where);
   $outros = "Matrícula: ".$matric.
   $cliptubase = new cl_iptubase;
@@ -135,7 +135,7 @@ if (!empty($numcgm)) {
   $outros = "Inscrição: ".$inscr;
   $clissbase = new cl_issbase; 
   $result_inf = db_query("select * from empresa where q02_inscr = $inscr");
-  if (pg_numrows($result_inf)!=0) {
+  if (pg_num_rows($result_inf)!=0) {
     db_fieldsmemory($result_inf,0);
     $z01_numcgm = $q02_numcgm;
   } else {
@@ -144,7 +144,7 @@ if (!empty($numcgm)) {
 	$result_teste = debitos_numpre($numpre,0,0,$DB_DATACALC,$DB_anousu,0,'','k00_tipo,k00_numpre,k00_numpar,k00_receit');  
   $outros = "Código Arrecadação: ".$numpre;
   $result = debitos_numpre($numpre,0,0,$DB_DATACALC,$DB_anousu,0,'','k00_tipo,k00_numpre,k00_numpar,k00_receit');
-  $z01_numcgm = pg_result($result,0,"k00_numcgm");
+  $z01_numcgm = pg_fetch_result($result,0,"k00_numcgm");
   $clcgm = new cl_cgm;
   $result = $clcgm->sql_record($clcgm->sql_query_file($z01_numcgm,"z01_nome"));
   db_fieldsmemory($result,0);
@@ -165,7 +165,7 @@ $dados = db_query("select z01_numcgm,z01_nome,z01_ender,z01_munic,z01_uf,z01_cgc
 from cgm where z01_numcgm = $z01_numcgm");
 
 //DEBITOS
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 $TamMatric = 10;
 $TamNumpar = 4;
 $TamNumtot = 4;
@@ -196,11 +196,11 @@ $totmultap = 0;
 $totdescontop = 0;
 $tottotalp= 0;
 
-$xnumpre = pg_result($result,0,"k00_numpre");
-$xnumtot = pg_result($result,0,"k00_tipo");
+$xnumpre = pg_fetch_result($result,0,"k00_numpre");
+$xnumtot = pg_fetch_result($result,0,"k00_tipo");
 
 if(!empty($numcgm)) {
-  $xorigem = pg_result($result,0,"k00_origem");
+  $xorigem = pg_fetch_result($result,0,"k00_origem");
 }
 $nTotHisOrig      = 0;
 $nTotCorOrig      = 0;
@@ -243,20 +243,20 @@ for ($i = 0; $i < $numrows; $i++) {
       $pdf->Text($X,$Y + 16,"Município:");
       $pdf->Text($X + 55,$Y + 16,"UF:");
       $pdf->SetFont('Arial','I',8);
-      $pdf->Text($X + 18,     $Y     ,pg_result($dados,0,"z01_numcgm"));
-      $pdf->Text($X + 18,     $Y + 4 ,pg_result($dados,0,"z01_nome"));
-      $pdf->Text($X + 18,     $Y + 8 ,db_cgccpf(pg_result($dados,0,"z01_cgccpf")));
-      $pdf->Text($X + 18 + 45,$Y + 8 ,pg_result($dados,0,"z01_ident"));
-      $pdf->Text($X + 18,     $Y + 12,pg_result($dados,0,"z01_ender"));
-      $pdf->Text($X + 130,    $Y + 12,pg_result($dados,0,"z01_numero"));
-      $pdf->Text($X + 180,    $Y + 12,pg_result($dados,0,"z01_compl"));
-      $pdf->Text($X + 18,     $Y + 16,pg_result($dados,0,"z01_munic"));
-      $pdf->Text($X + 18 + 45,$Y + 16,pg_result($dados,0,"z01_uf"));
+      $pdf->Text($X + 18,     $Y     ,pg_fetch_result($dados,0,"z01_numcgm"));
+      $pdf->Text($X + 18,     $Y + 4 ,pg_fetch_result($dados,0,"z01_nome"));
+      $pdf->Text($X + 18,     $Y + 8 ,db_cgccpf(pg_fetch_result($dados,0,"z01_cgccpf")));
+      $pdf->Text($X + 18 + 45,$Y + 8 ,pg_fetch_result($dados,0,"z01_ident"));
+      $pdf->Text($X + 18,     $Y + 12,pg_fetch_result($dados,0,"z01_ender"));
+      $pdf->Text($X + 130,    $Y + 12,pg_fetch_result($dados,0,"z01_numero"));
+      $pdf->Text($X + 180,    $Y + 12,pg_fetch_result($dados,0,"z01_compl"));
+      $pdf->Text($X + 18,     $Y + 16,pg_fetch_result($dados,0,"z01_munic"));
+      $pdf->Text($X + 18 + 45,$Y + 16,pg_fetch_result($dados,0,"z01_uf"));
       $pdf->SetXY(5,60);
       $cabec = true;
     }
     $pdf->SetFont('arial','B',6);
-    
+
     $pdf->Cell(2,5," ",0,0,"C",0);
     $pdf->Cell($TamNumpar,5,"P",1,0,"C",0);
     $pdf->Cell($TamNumtot,5,"T",1,0,"C",0);
@@ -275,25 +275,25 @@ for ($i = 0; $i < $numrows; $i++) {
     $pdf->SetFont('arial','',6);
 
   }
-  $numpre = pg_result($result,$i,"k00_numpre");  
+  $numpre = pg_fetch_result($result,$i,"k00_numpre");  
   $sqlparcel = "select * from termo where v07_numpre = $xnumpre ";
   $resultparcel = db_query($sqlparcel);
   $linhasparcel = pg_num_rows($resultparcel);
   if ($linhasparcel>0) {
     $temparcel  = true;
-    $v07_parcel = pg_result($resultparcel, 0, "v07_parcel");   
+    $v07_parcel = pg_fetch_result($resultparcel, 0, "v07_parcel");   
   } else {
     $temparcel  = false;
     $v07_parcel = "nao em parcel";
   }    
- 
+
   $sql_tipo_debito = "";
   $sql_tipo_debito .= " select arretipo.k00_tipo, k03_tipo from caixa.arrecad ";
   $sql_tipo_debito .= " inner join caixa.arretipo on arrecad.k00_tipo = arretipo.k00_tipo ";
   $sql_tipo_debito .= " where k00_numpre = $xnumpre limit 1";
   $result_tipo_debito = db_query($sql_tipo_debito) or die($sql_tipo_debito);
-  $tipo_debito = pg_result($result_tipo_debito,0,"k00_tipo");
-  $k03_tipo    = pg_result($result_tipo_debito,0,"k03_tipo");
+  $tipo_debito = pg_fetch_result($result_tipo_debito,0,"k00_tipo");
+  $k03_tipo    = pg_fetch_result($result_tipo_debito,0,"k03_tipo");
 
   $cProcessoForo = "";
   if ( $k03_tipo == 18 ) {
@@ -304,8 +304,8 @@ for ($i = 0; $i < $numrows; $i++) {
     $sql_processoforo .= " inner join juridico.inicialcodforo on inicialcodforo.v55_inicial = inicial.v50_inicial ";
     $sql_processoforo .= " where inicialnumpre.v59_numpre = $xnumpre ";
     $result_processoforo = db_query($sql_processoforo) or die($sql_processoforo);
-    if ( pg_numrows($result_processoforo) > 0 ) {
-      $cProcessoForo = " - PROCESSO FORO: " . pg_result($result_processoforo,0,0);
+    if ( pg_num_rows($result_processoforo) > 0 ) {
+      $cProcessoForo = " - PROCESSO FORO: " . pg_fetch_result($result_processoforo,0,0);
     }
   }
 
@@ -325,18 +325,18 @@ for ($i = 0; $i < $numrows; $i++) {
 
   $exercicios="";
 
-  for ($exerc=0; $exerc < pg_numrows($resultdivida); $exerc++) {
+  for ($exerc=0; $exerc < pg_num_rows($resultdivida); $exerc++) {
     db_fieldsmemory($resultdivida,$exerc);
-    if ( strlen($v01_exerc) == 4 ) {
-      $v01_exerc = substr($v01_exerc,2,2);
+    if ( strlen((string) $v01_exerc) == 4 ) {
+      $v01_exerc = substr((string) $v01_exerc,2,2);
     }
-    $exercicios.=$v01_exerc.($exerc != pg_numrows($resultdivida) -1?",":"");
+    $exercicios.=$v01_exerc.($exerc != pg_num_rows($resultdivida) -1?",":"");
   }
 
-  if (($xnumpre != pg_result($result,$i,"k00_numpre")) && ( in_array($xnumtot,$tipos) == true )) {
+  if (($xnumpre != pg_fetch_result($result,$i,"k00_numpre")) && ( in_array($xnumtot,$tipos) == true )) {
     $pdf->setx(5);
     $pdf->SetFont('arial','B',6);
-    $pdf->Cell(2+$TamNumpar+$TamNumtot+13+13+13+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO NUMPRE (1) ".$xnumpre .($temparcel==true?" - PARCELAMENTO: " . $v07_parcel . " (" . (strlen($exercicios) != ""?$exercicios:"").")":(strlen($exercicios) != ""?" - EXERCICIO: " . $exercicios:"")) . $cProcessoForo,"T",0,"L",1);
+    $pdf->Cell(2+$TamNumpar+$TamNumtot+13+13+13+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO NUMPRE (1) ".$xnumpre .($temparcel==true?" - PARCELAMENTO: " . $v07_parcel . " (" . (strlen($exercicios) != 0?$exercicios:"").")":(strlen($exercicios) != 0?" - EXERCICIO: " . $exercicios:"")) . $cProcessoForo,"T",0,"L",1);
     $pdf->Cell($TamVlrhis + 6,5,db_formatar($tothisp,'f'),1,0,"R",1);
     $pdf->Cell($TamVlrcor + 6,5,db_formatar($totcorp,'f'),1,0,"R",1);
     $pdf->Cell($TamVlrjuros + 6,5,db_formatar($totjurosp,'f'),1,0,"R",1);
@@ -352,11 +352,11 @@ for ($i = 0; $i < $numrows; $i++) {
     $tottotalp = 0;
   }
 
-  if (( $xnumtot != pg_result($result,$i,"k00_tipo")) && ( in_array($xnumtot,$tipos) == true )) {
+  if (( $xnumtot != pg_fetch_result($result,$i,"k00_tipo")) && ( in_array($xnumtot,$tipos) == true )) {
     $sql1 = " select k00_descr from arretipo where k00_tipo = $xnumtot and k00_instit = ".db_getsession('DB_instit') ;
     $pdf->setx(5);
     $pdf->SetFont('arial','B',6);
-    $pdf->Cell(2+$TamNumpar+$TamNumtot+13+13+13+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO TIPO : ".$xnumtot." - ".pg_result(db_query($sql1),0,"k00_descr"),"T",0,"L",1);
+    $pdf->Cell(2+$TamNumpar+$TamNumtot+13+13+13+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO TIPO : ".$xnumtot." - ".pg_fetch_result(db_query($sql1),0,"k00_descr"),"T",0,"L",1);
     $pdf->Cell($TamVlrhis + 6,5,db_formatar($tothis,'f'),1,0,"R",1);
     $pdf->Cell($TamVlrcor + 6,5,db_formatar($totcor,'f'),1,0,"R",1);
     $pdf->Cell($TamVlrjuros + 6,5,db_formatar($totjuros,'f'),1,0,"R",1);
@@ -372,9 +372,9 @@ for ($i = 0; $i < $numrows; $i++) {
     $totdesconto = 0;
     $tottotal = 0;
   }
-  
+
   if (!empty($numcgm)) {
-    if (($xorigem != pg_result($result,$i,"k00_origem")) && ( in_array($xnumtot,$tipos) == true )) {
+    if (($xorigem != pg_fetch_result($result,$i,"k00_origem")) && ( in_array($xnumtot,$tipos) == true )) {
     	if($xorigem=='M-87'){
     	 echo "<br>Matricula - $xorigem - xnumtot = $xnumtot - tipos = $tipos<br>";
     	 echo " ".db_formatar($nTotHisOrig,'f');
@@ -383,9 +383,9 @@ for ($i = 0; $i < $numrows; $i++) {
 	     echo " ".db_formatar($nTotMultaOrig,'f');
 	     echo " ".db_formatar($nTotDescontoOrig,'f');
 	     echo " ".db_formatar($nTotTotalOrig,'f');
-      
+
     	}
-    	
+
       $pdf->setx(5);
       $pdf->SetFont('arial','B',6);
       $pdf->Cell(2+$TamNumpar+$TamNumtot+13+13+13+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DA ORIGEM ".$xorigem ,"T",0,"L",1);
@@ -405,8 +405,8 @@ for ($i = 0; $i < $numrows; $i++) {
       $nTotTotalOrig    = 0;
     }
   }
-  
-  if (in_array(pg_result($result,$i,"k00_tipo"),$tipos) != null ) {
+
+  if (in_array(pg_fetch_result($result,$i,"k00_tipo"),$tipos) != null ) {
     if(empty($numcgm)) {
       $matinsc = '';
       $sql1 = "select distinct 
@@ -421,16 +421,16 @@ for ($i = 0; $i < $numrows; $i++) {
                      								  and arreinstit.k00_instit = ".db_getsession('DB_instit')." 
             left join arrematric b on a.k00_numpre = b.k00_numpre
             left join arreinscr  c on a.k00_numpre = c.k00_numpre
-                where a.k00_numpre = ".pg_result($result,$i,"k00_numpre")." limit 1";
+                where a.k00_numpre = ".pg_fetch_result($result,$i,"k00_numpre")." limit 1";
       $result1 = db_query($sql1);
-      $matinsc = pg_result($result1,0,"matinsc");
+      $matinsc = pg_fetch_result($result1,0,"matinsc");
     } else {
-      $matinsc = pg_result($result,$i,"k00_origem");
+      $matinsc = pg_fetch_result($result,$i,"k00_origem");
     }
     $pdf->setx(5);
     $pdf->SetFont('arial','',6);
-    
-    $dtvenc = pg_result($result,$i,"k00_dtvenc");
+
+    $dtvenc = pg_fetch_result($result,$i,"k00_dtvenc");
     $dtvenc = mktime(0,0,0,substr($dtvenc,5,2),substr($dtvenc,8,2),substr($dtvenc,0,4));
     if ($dtvenc < $DB_DATACALC) {
       // se vencimento menos que data de hj
@@ -442,73 +442,73 @@ for ($i = 0; $i < $numrows; $i++) {
       $sinal = "";
     }
     // defina sinal em branco
-    
+
     $pdf->SetFont('zapfdingbats','',6);
     $pdf->Cell(2,4,$sinal,"",0,"C",0);
     $pdf->SetFont('arial','',6);
-    $pdf->Cell($TamNumpar,4,pg_result($result,$i,"k00_numpar"),"LR",0,"C",0);
-    $pdf->Cell($TamNumtot,4,pg_result($result,$i,"k00_numtot"),"R",0,"C",0);
-    $dtoper = pg_result($result,$i,"k00_dtoper");
+    $pdf->Cell($TamNumpar,4,pg_fetch_result($result,$i,"k00_numpar"),"LR",0,"C",0);
+    $pdf->Cell($TamNumtot,4,pg_fetch_result($result,$i,"k00_numtot"),"R",0,"C",0);
+    $dtoper = pg_fetch_result($result,$i,"k00_dtoper");
     $dtoper = mktime(0,0,0,substr($dtoper,5,2),substr($dtoper,8,2),substr($dtoper,0,4));
     $pdf->Cell(13,4,date("d-m-Y",$dtoper),"R",0,"C",0);
-    
+
     $pdf->Cell(13,4,date("d-m-Y",$dtvenc),"R",0,"C",0);
     $pdf->cell(13,4,$matinsc,"R",0,"L",0);
-    $pdf->Cell($TamK01_descr,4,substr(trim(pg_result($result,$i,"k01_descr")),0,20),"R",0,"L",0);
-    $pdf->Cell($TamReceit,4,pg_result($result,$i,"k00_receit"),"R",0,"C",0);
-    $pdf->Cell($TamK02_descr,4,substr(trim(pg_result($result,$i,"k02_descr")),0,15),"R",0,"L",0);
+    $pdf->Cell($TamK01_descr,4,substr(trim(pg_fetch_result($result,$i,"k01_descr")),0,20),"R",0,"L",0);
+    $pdf->Cell($TamReceit,4,pg_fetch_result($result,$i,"k00_receit"),"R",0,"C",0);
+    $pdf->Cell($TamK02_descr,4,substr(trim(pg_fetch_result($result,$i,"k02_descr")),0,15),"R",0,"L",0);
     $pdf->SetFont('arial','',6);
-    $pdf->Cell($TamVlrhis + 6,4,db_formatar(pg_result($result,$i,"vlrhis"),'f'),"R",0,"R",0);
-    $pdf->Cell($TamVlrcor + 6,4,db_formatar(pg_result($result,$i,"vlrcor"),'f'),"R",0,"R",0);
-    $pdf->Cell($TamVlrjuros + 6,4,db_formatar(pg_result($result,$i,"vlrjuros"),'f'),"R",0,"R",0);
-    $pdf->Cell($TamVlrmulta + 6,4,db_formatar(pg_result($result,$i,"vlrmulta"),'f'),"R",0,"R",0);
-    $pdf->Cell($TamVlrdesconto + 6,4,db_formatar(pg_result($result,$i,"vlrdesconto"),'f'),"R",0,"R",0);
-    $pdf->Cell($TamTotal + 6,4,db_formatar(pg_result($result,$i,"total"),'f'),"R",0,"R",0);
+    $pdf->Cell($TamVlrhis + 6,4,db_formatar(pg_fetch_result($result,$i,"vlrhis"),'f'),"R",0,"R",0);
+    $pdf->Cell($TamVlrcor + 6,4,db_formatar(pg_fetch_result($result,$i,"vlrcor"),'f'),"R",0,"R",0);
+    $pdf->Cell($TamVlrjuros + 6,4,db_formatar(pg_fetch_result($result,$i,"vlrjuros"),'f'),"R",0,"R",0);
+    $pdf->Cell($TamVlrmulta + 6,4,db_formatar(pg_fetch_result($result,$i,"vlrmulta"),'f'),"R",0,"R",0);
+    $pdf->Cell($TamVlrdesconto + 6,4,db_formatar(pg_fetch_result($result,$i,"vlrdesconto"),'f'),"R",0,"R",0);
+    $pdf->Cell($TamTotal + 6,4,db_formatar(pg_fetch_result($result,$i,"total"),'f'),"R",0,"R",0);
     $pdf->Cell(1,4,"",0,1,0,0);
-    
-    $tothisp      += pg_result($result,$i,"vlrhis");
-    $totcorp      += pg_result($result,$i,"vlrcor");
-    $totjurosp    += pg_result($result,$i,"vlrjuros");
-    $totmultap    += pg_result($result,$i,"vlrmulta");
-    $totdescontop += pg_result($result,$i,"vlrdesconto");
-    $tottotalp    += pg_result($result,$i,"total");
-    
-    $tothis      += pg_result($result,$i,"vlrhis");
-    $totcor      += pg_result($result,$i,"vlrcor");
-    $totjuros    += pg_result($result,$i,"vlrjuros");
-    $totmulta    += pg_result($result,$i,"vlrmulta");
-    $totdesconto += pg_result($result,$i,"vlrdesconto");
-    $tottotal    += pg_result($result,$i,"total");
-    
-    if (($xorigem != pg_result($result,$i,"k00_origem"))) {
-    	
+
+    $tothisp      += pg_fetch_result($result,$i,"vlrhis");
+    $totcorp      += pg_fetch_result($result,$i,"vlrcor");
+    $totjurosp    += pg_fetch_result($result,$i,"vlrjuros");
+    $totmultap    += pg_fetch_result($result,$i,"vlrmulta");
+    $totdescontop += pg_fetch_result($result,$i,"vlrdesconto");
+    $tottotalp    += pg_fetch_result($result,$i,"total");
+
+    $tothis      += pg_fetch_result($result,$i,"vlrhis");
+    $totcor      += pg_fetch_result($result,$i,"vlrcor");
+    $totjuros    += pg_fetch_result($result,$i,"vlrjuros");
+    $totmulta    += pg_fetch_result($result,$i,"vlrmulta");
+    $totdesconto += pg_fetch_result($result,$i,"vlrdesconto");
+    $tottotal    += pg_fetch_result($result,$i,"total");
+
+    if (($xorigem != pg_fetch_result($result,$i,"k00_origem"))) {
+
     	$nTotHisOrig      = 0;
       $nTotCorOrig      = 0;
       $nTotJurosOrig    = 0;
       $nTotMultaOrig    = 0;
       $nTotDescontoOrig = 0;
       $nTotTotalOrig    = 0;
-   
+
     }
-	    $nTotHisOrig      += pg_result($result,$i,"vlrhis");
-	    $nTotCorOrig      += pg_result($result,$i,"vlrcor");
-	    $nTotJurosOrig    += pg_result($result,$i,"vlrjuros");
-	    $nTotMultaOrig    += pg_result($result,$i,"vlrmulta");
-	    $nTotDescontoOrig += pg_result($result,$i,"vlrdesconto");
-	    $nTotTotalOrig    += pg_result($result,$i,"total");
-   
-    
-    $valhis      += pg_result($result,$i,"vlrhis");
-    $valcor      += pg_result($result,$i,"vlrcor");
-    $valjuros    += pg_result($result,$i,"vlrjuros");
-    $valmulta    += pg_result($result,$i,"vlrmulta");
-    $valdesconto += pg_result($result,$i,"vlrdesconto");
-    $valtotal    += pg_result($result,$i,"total");
+	    $nTotHisOrig      += pg_fetch_result($result,$i,"vlrhis");
+	    $nTotCorOrig      += pg_fetch_result($result,$i,"vlrcor");
+	    $nTotJurosOrig    += pg_fetch_result($result,$i,"vlrjuros");
+	    $nTotMultaOrig    += pg_fetch_result($result,$i,"vlrmulta");
+	    $nTotDescontoOrig += pg_fetch_result($result,$i,"vlrdesconto");
+	    $nTotTotalOrig    += pg_fetch_result($result,$i,"total");
+
+
+    $valhis      += pg_fetch_result($result,$i,"vlrhis");
+    $valcor      += pg_fetch_result($result,$i,"vlrcor");
+    $valjuros    += pg_fetch_result($result,$i,"vlrjuros");
+    $valmulta    += pg_fetch_result($result,$i,"vlrmulta");
+    $valdesconto += pg_fetch_result($result,$i,"vlrdesconto");
+    $valtotal    += pg_fetch_result($result,$i,"total");
   }
-  $xnumpre = pg_result($result,$i,"k00_numpre");
-  $xnumtot = pg_result($result,$i,"k00_tipo");
+  $xnumpre = pg_fetch_result($result,$i,"k00_numpre");
+  $xnumtot = pg_fetch_result($result,$i,"k00_tipo");
   if (!empty($numcgm)) {
-    $xorigem = pg_result($result,$i,"k00_origem");
+    $xorigem = pg_fetch_result($result,$i,"k00_origem");
   }
 }
 
@@ -517,7 +517,7 @@ $resultparcel = db_query($sqlparcel);
 $linhasparcel = pg_num_rows($resultparcel);
 if ($linhasparcel>0) {
   $temparcel  = true;
-  $v07_parcel = pg_result($resultparcel, 0, "v07_parcel");
+  $v07_parcel = pg_fetch_result($resultparcel, 0, "v07_parcel");
 } else {
   $temparcel  = false;
   $v07_parcel = "nao em parcel";
@@ -528,8 +528,8 @@ $sql_tipo_debito .= " select arretipo.k00_tipo, k03_tipo from caixa.arrecad ";
 $sql_tipo_debito .= " inner join caixa.arretipo on arrecad.k00_tipo = arretipo.k00_tipo ";
 $sql_tipo_debito .= " where k00_numpre = $xnumpre limit 1";
 $result_tipo_debito = db_query($sql_tipo_debito) or die($sql_tipo_debito);
-$tipo_debito = pg_result($result_tipo_debito,0,"k00_tipo");
-$k03_tipo    = pg_result($result_tipo_debito,0,"k03_tipo");
+$tipo_debito = pg_fetch_result($result_tipo_debito,0,"k00_tipo");
+$k03_tipo    = pg_fetch_result($result_tipo_debito,0,"k03_tipo");
 
 $cProcessoForo = "";
 if ( $k03_tipo == 18 ) {
@@ -540,8 +540,8 @@ if ( $k03_tipo == 18 ) {
   $sql_processoforo .= " inner join juridico.inicialcodforo on inicialcodforo.v55_inicial = inicial.v50_inicial ";
   $sql_processoforo .= " where inicialnumpre.v59_numpre = $xnumpre ";
   $result_processoforo = db_query($sql_processoforo) or die($sql_processoforo);
-  if ( pg_numrows($result_processoforo) > 0 ) {
-    $cProcessoForo = " - PROCESSO FORO: " . pg_result($result_processoforo,0,0);
+  if ( pg_num_rows($result_processoforo) > 0 ) {
+    $cProcessoForo = " - PROCESSO FORO: " . pg_fetch_result($result_processoforo,0,0);
   }
 }
 
@@ -560,29 +560,29 @@ if ( $k03_tipo == 13 ) {
 $resultdivida = db_query($sqldivida) or die($sqldivida);
 
 $exercicios="";
-for ($exerc=0; $exerc < pg_numrows($resultdivida); $exerc++) {
+for ($exerc=0; $exerc < pg_num_rows($resultdivida); $exerc++) {
   db_fieldsmemory($resultdivida,$exerc);
-  if ( strlen($v01_exerc) == 4 ) {
-    $v01_exerc = substr($v01_exerc,2,2);
+  if ( strlen((string) $v01_exerc) == 4 ) {
+    $v01_exerc = substr((string) $v01_exerc,2,2);
   }
-  $exercicios.=$v01_exerc.($exerc != pg_numrows($resultdivida) -1?",":"");
+  $exercicios.=$v01_exerc.($exerc != pg_num_rows($resultdivida) -1?",":"");
 }
-  
+
 if (in_array($xnumtot,$tipos) == true ) {
   $pdf->setx(5);
   $pdf->SetFont('arial','B',6);
-  $pdf->Cell(2+$TamNumpar+$TamNumtot+13+13+13+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO NUMPRE (2) ".$xnumpre . ($temparcel==true?" - PARCELAMENTO: " . $v07_parcel . " (" . (strlen($exercicios) != ""?$exercicios:"").")":(strlen($exercicios) != ""?" - EXERCICIO: " . $exercicios:"")) . $cProcessoForo,"T",0,"L",1);
+  $pdf->Cell(2+$TamNumpar+$TamNumtot+13+13+13+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO NUMPRE (2) ".$xnumpre . ($temparcel==true?" - PARCELAMENTO: " . $v07_parcel . " (" . (strlen($exercicios) != 0?$exercicios:"").")":(strlen($exercicios) != 0?" - EXERCICIO: " . $exercicios:"")) . $cProcessoForo,"T",0,"L",1);
   $pdf->Cell($TamVlrhis + 6,5,db_formatar($tothisp,'f'),1,0,"R",1);
   $pdf->Cell($TamVlrcor + 6,5,db_formatar($totcorp,'f'),1,0,"R",1);
   $pdf->Cell($TamVlrjuros + 6,5,db_formatar($totjurosp,'f'),1,0,"R",1);
   $pdf->Cell($TamVlrmulta + 6,5,db_formatar($totmultap,'f'),1,0,"R",1);
   $pdf->Cell($TamVlrdesconto + 6,5,db_formatar($totdescontop,'f'),1,0,"R",1);
   $pdf->Cell($TamTotal + 6,5,db_formatar($tottotalp,'f'),1,1,"R",1);
-  
+
   $pdf->setx(5);
   $pdf->SetFont('arial','B',6);
   $sql1 = " select k00_descr from arretipo where k00_tipo = $xnumtot and k00_instit = ".db_getsession('DB_instit') ;
-  $pdf->Cell(2+$TamNumpar+$TamNumtot+13+13+13+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO TIPO : ".$xnumtot." - ".pg_result(db_query($sql1),0,"k00_descr"),"T",0,"L",1);
+  $pdf->Cell(2+$TamNumpar+$TamNumtot+13+13+13+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO TIPO : ".$xnumtot." - ".pg_fetch_result(db_query($sql1),0,"k00_descr"),"T",0,"L",1);
   $pdf->Cell($TamVlrhis + 6,5,db_formatar($tothis,'f'),1,0,"R",1);
   $pdf->Cell($TamVlrcor + 6,5,db_formatar($totcor,'f'),1,0,"R",1);
   $pdf->Cell($TamVlrjuros + 6,5,db_formatar($totjuros,'f'),1,0,"R",1);
@@ -630,7 +630,7 @@ if ($tipostodos != $tipos) {
   $pdf->setx(7);
   $pdf->Cell(195,5,"*** EXISTEM MAIS TIPOS DE DÉBITOS LANÇADOS QUE NÃO FORAM LISTADOS NESTE RELATÓRIO ***",0,1,"L",1);
 }
-if (pg_numrows($result_teste)>pg_numrows($result)) {
+if (pg_num_rows($result_teste)>pg_num_rows($result)) {
 	$pdf->SetFont('arial', 'B', 11);
 	$pdf->setx(7);
 	$pdf->Cell(195, 5, "*** EXISTEM MAIS DÉBITOS LANÇADOS QUE NÃO FORAM LISTADOS NESTE RELATÓRIO ***", 0, 1, "L", 1);
@@ -649,23 +649,23 @@ if (isset ($matric)) {
   $sSqlInnerTabela  = " inner join arreinscr  on arreinscr.k00_numpre = arresusp.k00_numpre ";
   $sSqlInnerTabela .= " left  join arrematric on arrematric.k00_numpre = arresusp.k00_numpre ";
   $sSqlWhereTabela  = " arreinscr.k00_inscr  = $inscr ";
-    
+
 } else if (isset ($numcgm)) {
 
   $sSqlInnerTabela  = " inner join arrenumcgm on arrenumcgm.k00_numpre = arresusp.k00_numpre ";
   $sSqlInnerTabela .= " left  join arrematric on arrematric.k00_numpre = arresusp.k00_numpre ";
   $sSqlInnerTabela .= " left  join arreinscr  on arreinscr.k00_numpre  = arresusp.k00_numpre ";
   $sSqlWhereTabela  = " arrenumcgm.k00_numcgm = $numcgm ";
-    
+
 } else if (isset ($numpre)) {
 
   $sSqlInnerTabela  = " left join arreinscr  on arreinscr.k00_numpre  = arresusp.k00_numpre ";
   $sSqlInnerTabela .= " left join arrematric on arrematric.k00_numpre = arresusp.k00_numpre ";
   $sSqlWhereTabela  = " arresusp.k00_numpre   = $numpre ";
-    
+
 }   
- 
- 
+
+
 $sSqlSuspensao  = " select arresusp.*,		  								 	    ";
 $sSqlSuspensao .= " 		  arretipo.k00_descr,	  							 	    ";
 $sSqlSuspensao .= " 		  tabrec.k02_descr,		  							 	    ";
@@ -680,7 +680,7 @@ $sSqlSuspensao .= " 	 inner join tabrec   on tabrec.k02_codigo = arresusp.k00_re
 $sSqlSuspensao .= " 	 {$sSqlInnerTabela}		 								 	    ";
 $sSqlSuspensao .= " 	 where {$sSqlWhereTabela} 							 	 	    ";
 $sSqlSuspensao .= " 	   and suspensao.ar18_situacao = 1 							    ";
-if (trim($parReceit) != ""){
+if (trim((string) $parReceit) != ""){
   $sSqlSuspensao .= "   and arresusp.k00_receit in ({$parReceit})			 	  	";   	
 }      
 $sSqlSuspensao .= " 	   and arresusp.k00_tipo   in ({$sTiposDebitos})			 	";
@@ -692,32 +692,32 @@ $sSqlSuspensao .= " 			  arresusp.k00_receit 									";
 
 $rsSuspensao      = db_query($sSqlSuspensao);
 $iLinhasSuspensao = pg_num_rows($rsSuspensao);
-$aSuspensao		 = array();
+$aSuspensao		 = [];
 
 
 if ( $iLinhasSuspensao > 0 ) {
-  
+
  $nTotNumprehis  = 0;
  $nTotNumprecor  = 0;
  $nTotNumprejur  = 0;
  $nTotNumpremul  = 0;
  $nTotNumpredes  = 0;
  $nTotNumpretot  = 0;
-      
+
  $nTotTipohis  	 = 0;
  $nTotTipocor    = 0;
  $nTotTipojur    = 0;
  $nTotTipomul    = 0;
  $nTotTipodes    = 0;
  $nTotTipotot    = 0;
-   
+
  $nTotSusphis  	 = 0;
  $nTotSuspcor    = 0;
  $nTotSuspjur    = 0;
  $nTotSuspmul    = 0;
  $nTotSuspdes    = 0;
  $nTotSusptot    = 0;	 
- 
+
    $pdf->SetFont('Arial', 'BI', 12);
    $pdf->Cell(0,5,'Débitos Suspensos',0,1,"C",0);
    $pdf->Ln();
@@ -738,27 +738,27 @@ if ( $iLinhasSuspensao > 0 ) {
    $pdf->Cell(15,5,"MULTA"		,1,0,"C",0);
    $pdf->Cell(15,5,"DESCONTO"		,1,0,"C",0);
    $pdf->Cell(15 ,5,"TOTAL"		,1,1,"C",0);     
-      
+
    $iNumpre = null;
    $iTipo   = null;
-   
+
    for ($i=0; $i < $iLinhasSuspensao; $i++) {
-    
+
      $oSuspensao = db_utils::fieldsMemory($rsSuspensao,$i);
-   
+
      $pdf->setx(5);
      $pdf->SetFont('arial','',6);
      $nTotal = ( $oSuspensao->k00_vlrcor + $oSuspensao->k00_vlrjur + $oSuspensao->k00_vlrmul ) - $oSuspensao->k00_vlrdes;
-     
+
      $pdf->Cell(2 ,4," "								 		,   0,0,"C",0);
      $pdf->Cell(4 ,4,$oSuspensao->k00_numpar 					,"LR",0,"C",0);
    $pdf->Cell(4 ,4,$oSuspensao->k00_numtot 					, "R",0,"C",0);
    $pdf->Cell(13,4,$oSuspensao->k00_dtoper 					, "R",0,"C",0);
    $pdf->Cell(13,4,$oSuspensao->k00_dtvenc 					, "R",0,"C",0);
    $pdf->cell(13,4,$oSuspensao->matinscr   					, "R",0,"L",0);
-   $pdf->Cell(30,4,substr(trim($oSuspensao->k00_descr),0,20), "R",0,"L",0);
+   $pdf->Cell(30,4,substr(trim((string) $oSuspensao->k00_descr),0,20), "R",0,"L",0);
    $pdf->Cell(6 ,4,$oSuspensao->k00_receit					, "R",0,"C",0);
-   $pdf->Cell(23,4,substr(trim($oSuspensao->k02_descr),0,15), "R",0,"L",0);
+   $pdf->Cell(23,4,substr(trim((string) $oSuspensao->k02_descr),0,15), "R",0,"L",0);
    $pdf->Cell(15,4,db_formatar($oSuspensao->k00_valor,'f')	, "R",0,"R",0);
    $pdf->Cell(15,4,db_formatar($oSuspensao->k00_vlrcor,'f')	, "R",0,"R",0);
    $pdf->Cell(15,4,db_formatar($oSuspensao->k00_vlrjur,'f')	, "R",0,"R",0);
@@ -766,36 +766,36 @@ if ( $iLinhasSuspensao > 0 ) {
    $pdf->Cell(15,4,db_formatar($oSuspensao->k00_vlrdes,'f') , "R",0,"R",0);
    $pdf->Cell(15,4,db_formatar($nTotal,'f')					, "R",0,"R",0);
    $pdf->Cell(1,4,"",0,1,0,0);
-   
+
    $nTotNumprehis  += $oSuspensao->k00_valor;
    $nTotNumprecor  += $oSuspensao->k00_vlrcor;
    $nTotNumprejur  += $oSuspensao->k00_vlrjur;
    $nTotNumpremul  += $oSuspensao->k00_vlrmul;
    $nTotNumpredes  += $oSuspensao->k00_vlrdes;
    $nTotNumpretot  += $nTotal;
-   
+
    $nTotTipohis    += $oSuspensao->k00_valor;
    $nTotTipocor    += $oSuspensao->k00_vlrcor;
    $nTotTipojur    += $oSuspensao->k00_vlrjur;
    $nTotTipomul    += $oSuspensao->k00_vlrmul;
    $nTotTipodes    += $oSuspensao->k00_vlrdes;
    $nTotTipotot    += $nTotal;
-   
+
    $nTotSusphis    += $oSuspensao->k00_valor;
    $nTotSuspcor    += $oSuspensao->k00_vlrcor;
    $nTotSuspjur    += $oSuspensao->k00_vlrjur;
    $nTotSuspmul    += $oSuspensao->k00_vlrmul;
    $nTotSuspdes    += $oSuspensao->k00_vlrdes;
    $nTotSusptot    += $nTotal;	   
-   
+
    if ( $oSuspensao->k00_numpre != $iNumpre ) {
-     
+
      if ( $i == 0 ) { 
        $iNumpre = $oSuspensao->k00_numpre;
        $iTipo   = $oSuspensao->k00_tipo;
        continue;
      } 
-     
+
      $pdf->setx(7);
      $pdf->SetFont('arial','B',6);
      $pdf->Cell(106,5,"TOTAL DO NUMPRE ".$oSuspensao->k00_numpre,"T",0,"L",1);
@@ -806,7 +806,7 @@ if ( $iLinhasSuspensao > 0 ) {
      $pdf->Cell(15 ,5,db_formatar($nTotNumpredes,'f'),1,0,"R",1);
      $pdf->Cell(15 ,5,db_formatar($nTotNumpretot,'f'),1,1,"R",1);
      $pdf->SetFont('arial','',6);
-     
+
    $nTotNumprehis  = 0;
      $nTotNumprecor  = 0;
      $nTotNumprejur  = 0;
@@ -818,7 +818,7 @@ if ( $iLinhasSuspensao > 0 ) {
    }
 
    if ( $oSuspensao->k00_tipo != $iTipo ) {
-     
+
      $pdf->setx(7);
      $pdf->SetFont('arial','B',6);
      $pdf->Cell(106,5,"TOTAL DO TIPO ".$oSuspensao->k00_tipo,"T",0,"L",1);
@@ -829,7 +829,7 @@ if ( $iLinhasSuspensao > 0 ) {
      $pdf->Cell(15 ,5,db_formatar($nTotTipodes,'f'),1,0,"R",1);
      $pdf->Cell(15 ,5,db_formatar($nTotTipotot,'f'),1,1,"R",1);
      $pdf->SetFont('arial','',6);
-     
+
    $nTotTipohis  = 0;
      $nTotTipocor  = 0;
      $nTotTipojur  = 0;
@@ -839,11 +839,11 @@ if ( $iLinhasSuspensao > 0 ) {
 
      $iTipo   	   = $oSuspensao->k00_tipo;
    }
-   
-   
+
+
    }
    $pdf->SetFont('arial','B',6);
-   
+
    $pdf->setx(7);
    $pdf->Cell(106,5,"TOTAL DO NUMPRE ".$oSuspensao->k00_numpre,"T",0,"L",1);
    $pdf->Cell(15 ,5,db_formatar($nTotNumprehis,'f'),1,0,"R",1);
@@ -852,7 +852,7 @@ if ( $iLinhasSuspensao > 0 ) {
    $pdf->Cell(15 ,5,db_formatar($nTotNumpremul,'f'),1,0,"R",1);
    $pdf->Cell(15 ,5,db_formatar($nTotNumpredes,'f'),1,0,"R",1);
    $pdf->Cell(15 ,5,db_formatar($nTotNumpretot,'f'),1,1,"R",1);
-   
+
    $pdf->setx(7);
  $pdf->Cell(106,5,"TOTAL DO TIPO ".$oSuspensao->k00_tipo,"T",0,"L",1);
  $pdf->Cell(15 ,5,db_formatar($nTotTipohis,'f'),1,0,"R",1);
@@ -863,7 +863,7 @@ if ( $iLinhasSuspensao > 0 ) {
  $pdf->Cell(15 ,5,db_formatar($nTotTipotot,'f'),1,1,"R",1);
 
  $pdf->Ln(3);
- 
+
    $pdf->setx(7);
  $pdf->Cell(106,5,"TOTAL GERAL :"			 ,"T",0,"L",1);
  $pdf->Cell(15 ,5,db_formatar($nTotSusphis,'f'),1,0,"R",1);
@@ -872,7 +872,7 @@ if ( $iLinhasSuspensao > 0 ) {
  $pdf->Cell(15 ,5,db_formatar($nTotSuspmul,'f'),1,0,"R",1);
  $pdf->Cell(15 ,5,db_formatar($nTotSuspdes,'f'),1,0,"R",1);
  $pdf->Cell(15 ,5,db_formatar($nTotSusptot,'f'),1,1,"R",1);
-   
+
 }
 
 

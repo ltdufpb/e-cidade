@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE partilhaarquivoreg
 class cl_partilhaarquivoreg { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v79_sequencial = 0; 
-   var $v79_partilhaarquivo = 0; 
-   var $v79_processoforopartilhacusta = 0; 
+   public $v79_sequencial = 0; 
+   public $v79_partilhaarquivo = 0; 
+   public $v79_processoforopartilhacusta = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v79_sequencial = int4 = Sequencial 
                  v79_partilhaarquivo = int4 = Arquivo de Remessa 
                  v79_processoforopartilhacusta = int4 = Custa da partilha do processo 
                  ";
    //funcao construtor da classe 
-   function cl_partilhaarquivoreg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("partilhaarquivoreg"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_partilhaarquivoreg {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v79_sequencial = pg_result($result,0,0); 
+       $this->v79_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from partilhaarquivoreg_v79_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v79_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v79_sequencial)){
          $this->erro_sql = " Campo v79_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_partilhaarquivoreg {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Custas enviadas no arquivo da partilha ($this->v79_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Custas enviadas no arquivo da partilha já Cadastrado";
@@ -166,12 +166,12 @@ class cl_partilhaarquivoreg {
      $resaco = $this->sql_record($this->sql_query_file($this->v79_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18258,'$this->v79_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3232,18258,'','".AddSlashes(pg_result($resaco,0,'v79_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3232,18270,'','".AddSlashes(pg_result($resaco,0,'v79_partilhaarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3232,18271,'','".AddSlashes(pg_result($resaco,0,'v79_processoforopartilhacusta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3232,18258,'','".AddSlashes(pg_fetch_result($resaco,0,'v79_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3232,18270,'','".AddSlashes(pg_fetch_result($resaco,0,'v79_partilhaarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3232,18271,'','".AddSlashes(pg_fetch_result($resaco,0,'v79_processoforopartilhacusta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_partilhaarquivoreg {
       $this->atualizacampos();
      $sql = " update partilhaarquivoreg set ";
      $virgula = "";
-     if(trim($this->v79_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v79_sequencial"])){ 
+     if(trim((string) $this->v79_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v79_sequencial"])){ 
        $sql  .= $virgula." v79_sequencial = $this->v79_sequencial ";
        $virgula = ",";
-       if(trim($this->v79_sequencial) == null ){ 
+       if(trim((string) $this->v79_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "v79_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_partilhaarquivoreg {
          return false;
        }
      }
-     if(trim($this->v79_partilhaarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v79_partilhaarquivo"])){ 
+     if(trim((string) $this->v79_partilhaarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v79_partilhaarquivo"])){ 
        $sql  .= $virgula." v79_partilhaarquivo = $this->v79_partilhaarquivo ";
        $virgula = ",";
-       if(trim($this->v79_partilhaarquivo) == null ){ 
+       if(trim((string) $this->v79_partilhaarquivo) == null ){ 
          $this->erro_sql = " Campo Arquivo de Remessa nao Informado.";
          $this->erro_campo = "v79_partilhaarquivo";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_partilhaarquivoreg {
          return false;
        }
      }
-     if(trim($this->v79_processoforopartilhacusta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v79_processoforopartilhacusta"])){ 
+     if(trim((string) $this->v79_processoforopartilhacusta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v79_processoforopartilhacusta"])){ 
        $sql  .= $virgula." v79_processoforopartilhacusta = $this->v79_processoforopartilhacusta ";
        $virgula = ",";
-       if(trim($this->v79_processoforopartilhacusta) == null ){ 
+       if(trim((string) $this->v79_processoforopartilhacusta) == null ){ 
          $this->erro_sql = " Campo Custa da partilha do processo nao Informado.";
          $this->erro_campo = "v79_processoforopartilhacusta";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_partilhaarquivoreg {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18258,'$this->v79_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v79_sequencial"]) || $this->v79_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3232,18258,'".AddSlashes(pg_result($resaco,$conresaco,'v79_sequencial'))."','$this->v79_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3232,18258,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v79_sequencial'))."','$this->v79_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v79_partilhaarquivo"]) || $this->v79_partilhaarquivo != "")
-           $resac = db_query("insert into db_acount values($acount,3232,18270,'".AddSlashes(pg_result($resaco,$conresaco,'v79_partilhaarquivo'))."','$this->v79_partilhaarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3232,18270,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v79_partilhaarquivo'))."','$this->v79_partilhaarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v79_processoforopartilhacusta"]) || $this->v79_processoforopartilhacusta != "")
-           $resac = db_query("insert into db_acount values($acount,3232,18271,'".AddSlashes(pg_result($resaco,$conresaco,'v79_processoforopartilhacusta'))."','$this->v79_processoforopartilhacusta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3232,18271,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v79_processoforopartilhacusta'))."','$this->v79_processoforopartilhacusta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_partilhaarquivoreg {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18258,'$v79_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3232,18258,'','".AddSlashes(pg_result($resaco,$iresaco,'v79_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3232,18270,'','".AddSlashes(pg_result($resaco,$iresaco,'v79_partilhaarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3232,18271,'','".AddSlashes(pg_result($resaco,$iresaco,'v79_processoforopartilhacusta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3232,18258,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v79_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3232,18270,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v79_partilhaarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3232,18271,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v79_processoforopartilhacusta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from partilhaarquivoreg
@@ -345,7 +345,7 @@ class cl_partilhaarquivoreg {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:partilhaarquivoreg";
@@ -360,7 +360,7 @@ class cl_partilhaarquivoreg {
    function sql_query ( $v79_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_partilhaarquivoreg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_partilhaarquivoreg {
    function sql_query_file ( $v79_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_partilhaarquivoreg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -29,44 +29,44 @@
 //CLASSE DA ENTIDADE jazigos
 class cl_jazigos { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cm03_i_codigo = 0; 
-   var $cm03_i_proprietario = 0; 
-   var $cm03_c_termo = null; 
-   var $cm03_d_datatermo_dia = null; 
-   var $cm03_d_datatermo_mes = null; 
-   var $cm03_d_datatermo_ano = null; 
-   var $cm03_d_datatermo = null; 
-   var $cm03_c_carta = null; 
-   var $cm03_d_datacarta_dia = null; 
-   var $cm03_d_datacarta_mes = null; 
-   var $cm03_d_datacarta_ano = null; 
-   var $cm03_d_datacarta = null; 
-   var $cm03_d_aquisicao_dia = null; 
-   var $cm03_d_aquisicao_mes = null; 
-   var $cm03_d_aquisicao_ano = null; 
-   var $cm03_d_aquisicao = null; 
-   var $cm03_c_base = null; 
-   var $cm03_c_estrutura = null; 
-   var $cm03_c_pronto = null; 
-   var $cm03_c_quadra = null; 
-   var $cm03_i_lote = 0; 
-   var $cm03_f_metragem1 = 0; 
-   var $cm03_f_metragem2 = 0; 
+   public $cm03_i_codigo = 0; 
+   public $cm03_i_proprietario = 0; 
+   public $cm03_c_termo = null; 
+   public $cm03_d_datatermo_dia = null; 
+   public $cm03_d_datatermo_mes = null; 
+   public $cm03_d_datatermo_ano = null; 
+   public $cm03_d_datatermo = null; 
+   public $cm03_c_carta = null; 
+   public $cm03_d_datacarta_dia = null; 
+   public $cm03_d_datacarta_mes = null; 
+   public $cm03_d_datacarta_ano = null; 
+   public $cm03_d_datacarta = null; 
+   public $cm03_d_aquisicao_dia = null; 
+   public $cm03_d_aquisicao_mes = null; 
+   public $cm03_d_aquisicao_ano = null; 
+   public $cm03_d_aquisicao = null; 
+   public $cm03_c_base = null; 
+   public $cm03_c_estrutura = null; 
+   public $cm03_c_pronto = null; 
+   public $cm03_c_quadra = null; 
+   public $cm03_i_lote = 0; 
+   public $cm03_f_metragem1 = 0; 
+   public $cm03_f_metragem2 = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cm03_i_codigo = int4 = Código 
                  cm03_i_proprietario = int4 = Proprietário 
                  cm03_c_termo = char(10) = Termo 
@@ -83,10 +83,10 @@ class cl_jazigos {
                  cm03_f_metragem2 = float8 = Metragem 2 
                  ";
    //funcao construtor da classe 
-   function cl_jazigos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("jazigos"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -269,10 +269,10 @@ class cl_jazigos {
          $this->erro_status = "0";
          return false; 
        }
-       $this->cm03_i_codigo = pg_result($result,0,0); 
+       $this->cm03_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from jazigos_cm03_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cm03_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cm03_i_codigo)){
          $this->erro_sql = " Campo cm03_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -326,7 +326,7 @@ class cl_jazigos {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Jazigos ($this->cm03_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Jazigos já Cadastrado";
@@ -350,23 +350,23 @@ class cl_jazigos {
      $resaco = $this->sql_record($this->sql_query_file($this->cm03_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10330,'$this->cm03_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1789,10330,'','".AddSlashes(pg_result($resaco,0,'cm03_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10331,'','".AddSlashes(pg_result($resaco,0,'cm03_i_proprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10332,'','".AddSlashes(pg_result($resaco,0,'cm03_c_termo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10333,'','".AddSlashes(pg_result($resaco,0,'cm03_d_datatermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10334,'','".AddSlashes(pg_result($resaco,0,'cm03_c_carta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10335,'','".AddSlashes(pg_result($resaco,0,'cm03_d_datacarta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10336,'','".AddSlashes(pg_result($resaco,0,'cm03_d_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10337,'','".AddSlashes(pg_result($resaco,0,'cm03_c_base'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10338,'','".AddSlashes(pg_result($resaco,0,'cm03_c_estrutura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10339,'','".AddSlashes(pg_result($resaco,0,'cm03_c_pronto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10340,'','".AddSlashes(pg_result($resaco,0,'cm03_c_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10341,'','".AddSlashes(pg_result($resaco,0,'cm03_i_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10342,'','".AddSlashes(pg_result($resaco,0,'cm03_f_metragem1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1789,10343,'','".AddSlashes(pg_result($resaco,0,'cm03_f_metragem2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10330,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10331,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_i_proprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10332,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_c_termo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10333,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_d_datatermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10334,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_c_carta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10335,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_d_datacarta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10336,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_d_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10337,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_c_base'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10338,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_c_estrutura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10339,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_c_pronto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10340,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_c_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10341,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_i_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10342,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_f_metragem1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1789,10343,'','".AddSlashes(pg_fetch_result($resaco,0,'cm03_f_metragem2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -375,10 +375,10 @@ class cl_jazigos {
       $this->atualizacampos();
      $sql = " update jazigos set ";
      $virgula = "";
-     if(trim($this->cm03_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_codigo"])){ 
+     if(trim((string) $this->cm03_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_codigo"])){ 
        $sql  .= $virgula." cm03_i_codigo = $this->cm03_i_codigo ";
        $virgula = ",";
-       if(trim($this->cm03_i_codigo) == null ){ 
+       if(trim((string) $this->cm03_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "cm03_i_codigo";
          $this->erro_banco = "";
@@ -388,10 +388,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_i_proprietario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_proprietario"])){ 
+     if(trim((string) $this->cm03_i_proprietario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_proprietario"])){ 
        $sql  .= $virgula." cm03_i_proprietario = $this->cm03_i_proprietario ";
        $virgula = ",";
-       if(trim($this->cm03_i_proprietario) == null ){ 
+       if(trim((string) $this->cm03_i_proprietario) == null ){ 
          $this->erro_sql = " Campo Proprietário nao Informado.";
          $this->erro_campo = "cm03_i_proprietario";
          $this->erro_banco = "";
@@ -401,10 +401,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_c_termo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_termo"])){ 
+     if(trim((string) $this->cm03_c_termo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_termo"])){ 
        $sql  .= $virgula." cm03_c_termo = '$this->cm03_c_termo' ";
        $virgula = ",";
-       if(trim($this->cm03_c_termo) == null ){ 
+       if(trim((string) $this->cm03_c_termo) == null ){ 
          $this->erro_sql = " Campo Termo nao Informado.";
          $this->erro_campo = "cm03_c_termo";
          $this->erro_banco = "";
@@ -414,10 +414,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_d_datatermo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo_dia"] !="") ){ 
+     if(trim((string) $this->cm03_d_datatermo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo_dia"] !="") ){ 
        $sql  .= $virgula." cm03_d_datatermo = '$this->cm03_d_datatermo' ";
        $virgula = ",";
-       if(trim($this->cm03_d_datatermo) == null ){ 
+       if(trim((string) $this->cm03_d_datatermo) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "cm03_d_datatermo_dia";
          $this->erro_banco = "";
@@ -430,7 +430,7 @@ class cl_jazigos {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo_dia"])){ 
          $sql  .= $virgula." cm03_d_datatermo = null ";
          $virgula = ",";
-         if(trim($this->cm03_d_datatermo) == null ){ 
+         if(trim((string) $this->cm03_d_datatermo) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "cm03_d_datatermo_dia";
            $this->erro_banco = "";
@@ -441,10 +441,10 @@ class cl_jazigos {
          }
        }
      }
-     if(trim($this->cm03_c_carta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_carta"])){ 
+     if(trim((string) $this->cm03_c_carta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_carta"])){ 
        $sql  .= $virgula." cm03_c_carta = '$this->cm03_c_carta' ";
        $virgula = ",";
-       if(trim($this->cm03_c_carta) == null ){ 
+       if(trim((string) $this->cm03_c_carta) == null ){ 
          $this->erro_sql = " Campo Carta nao Informado.";
          $this->erro_campo = "cm03_c_carta";
          $this->erro_banco = "";
@@ -454,10 +454,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_d_datacarta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta_dia"] !="") ){ 
+     if(trim((string) $this->cm03_d_datacarta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta_dia"] !="") ){ 
        $sql  .= $virgula." cm03_d_datacarta = '$this->cm03_d_datacarta' ";
        $virgula = ",";
-       if(trim($this->cm03_d_datacarta) == null ){ 
+       if(trim((string) $this->cm03_d_datacarta) == null ){ 
          $this->erro_sql = " Campo Data Carta nao Informado.";
          $this->erro_campo = "cm03_d_datacarta_dia";
          $this->erro_banco = "";
@@ -470,7 +470,7 @@ class cl_jazigos {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta_dia"])){ 
          $sql  .= $virgula." cm03_d_datacarta = null ";
          $virgula = ",";
-         if(trim($this->cm03_d_datacarta) == null ){ 
+         if(trim((string) $this->cm03_d_datacarta) == null ){ 
            $this->erro_sql = " Campo Data Carta nao Informado.";
            $this->erro_campo = "cm03_d_datacarta_dia";
            $this->erro_banco = "";
@@ -481,10 +481,10 @@ class cl_jazigos {
          }
        }
      }
-     if(trim($this->cm03_d_aquisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao_dia"] !="") ){ 
+     if(trim((string) $this->cm03_d_aquisicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao_dia"] !="") ){ 
        $sql  .= $virgula." cm03_d_aquisicao = '$this->cm03_d_aquisicao' ";
        $virgula = ",";
-       if(trim($this->cm03_d_aquisicao) == null ){ 
+       if(trim((string) $this->cm03_d_aquisicao) == null ){ 
          $this->erro_sql = " Campo Aquisição nao Informado.";
          $this->erro_campo = "cm03_d_aquisicao_dia";
          $this->erro_banco = "";
@@ -497,7 +497,7 @@ class cl_jazigos {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao_dia"])){ 
          $sql  .= $virgula." cm03_d_aquisicao = null ";
          $virgula = ",";
-         if(trim($this->cm03_d_aquisicao) == null ){ 
+         if(trim((string) $this->cm03_d_aquisicao) == null ){ 
            $this->erro_sql = " Campo Aquisição nao Informado.";
            $this->erro_campo = "cm03_d_aquisicao_dia";
            $this->erro_banco = "";
@@ -508,10 +508,10 @@ class cl_jazigos {
          }
        }
      }
-     if(trim($this->cm03_c_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_base"])){ 
+     if(trim((string) $this->cm03_c_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_base"])){ 
        $sql  .= $virgula." cm03_c_base = '$this->cm03_c_base' ";
        $virgula = ",";
-       if(trim($this->cm03_c_base) == null ){ 
+       if(trim((string) $this->cm03_c_base) == null ){ 
          $this->erro_sql = " Campo Base nao Informado.";
          $this->erro_campo = "cm03_c_base";
          $this->erro_banco = "";
@@ -521,10 +521,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_c_estrutura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_estrutura"])){ 
+     if(trim((string) $this->cm03_c_estrutura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_estrutura"])){ 
        $sql  .= $virgula." cm03_c_estrutura = '$this->cm03_c_estrutura' ";
        $virgula = ",";
-       if(trim($this->cm03_c_estrutura) == null ){ 
+       if(trim((string) $this->cm03_c_estrutura) == null ){ 
          $this->erro_sql = " Campo Estrutura nao Informado.";
          $this->erro_campo = "cm03_c_estrutura";
          $this->erro_banco = "";
@@ -534,10 +534,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_c_pronto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_pronto"])){ 
+     if(trim((string) $this->cm03_c_pronto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_pronto"])){ 
        $sql  .= $virgula." cm03_c_pronto = '$this->cm03_c_pronto' ";
        $virgula = ",";
-       if(trim($this->cm03_c_pronto) == null ){ 
+       if(trim((string) $this->cm03_c_pronto) == null ){ 
          $this->erro_sql = " Campo Pronto nao Informado.";
          $this->erro_campo = "cm03_c_pronto";
          $this->erro_banco = "";
@@ -547,10 +547,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_c_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_quadra"])){ 
+     if(trim((string) $this->cm03_c_quadra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_quadra"])){ 
        $sql  .= $virgula." cm03_c_quadra = '$this->cm03_c_quadra' ";
        $virgula = ",";
-       if(trim($this->cm03_c_quadra) == null ){ 
+       if(trim((string) $this->cm03_c_quadra) == null ){ 
          $this->erro_sql = " Campo Quadra nao Informado.";
          $this->erro_campo = "cm03_c_quadra";
          $this->erro_banco = "";
@@ -560,10 +560,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_i_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_lote"])){ 
+     if(trim((string) $this->cm03_i_lote)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_lote"])){ 
        $sql  .= $virgula." cm03_i_lote = $this->cm03_i_lote ";
        $virgula = ",";
-       if(trim($this->cm03_i_lote) == null ){ 
+       if(trim((string) $this->cm03_i_lote) == null ){ 
          $this->erro_sql = " Campo Lote nao Informado.";
          $this->erro_campo = "cm03_i_lote";
          $this->erro_banco = "";
@@ -573,10 +573,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_f_metragem1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_f_metragem1"])){ 
+     if(trim((string) $this->cm03_f_metragem1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_f_metragem1"])){ 
        $sql  .= $virgula." cm03_f_metragem1 = $this->cm03_f_metragem1 ";
        $virgula = ",";
-       if(trim($this->cm03_f_metragem1) == null ){ 
+       if(trim((string) $this->cm03_f_metragem1) == null ){ 
          $this->erro_sql = " Campo Metragem nao Informado.";
          $this->erro_campo = "cm03_f_metragem1";
          $this->erro_banco = "";
@@ -586,10 +586,10 @@ class cl_jazigos {
          return false;
        }
      }
-     if(trim($this->cm03_f_metragem2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_f_metragem2"])){ 
+     if(trim((string) $this->cm03_f_metragem2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm03_f_metragem2"])){ 
        $sql  .= $virgula." cm03_f_metragem2 = $this->cm03_f_metragem2 ";
        $virgula = ",";
-       if(trim($this->cm03_f_metragem2) == null ){ 
+       if(trim((string) $this->cm03_f_metragem2) == null ){ 
          $this->erro_sql = " Campo Metragem 2 nao Informado.";
          $this->erro_campo = "cm03_f_metragem2";
          $this->erro_banco = "";
@@ -607,37 +607,37 @@ class cl_jazigos {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10330,'$this->cm03_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10330,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_i_codigo'))."','$this->cm03_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10330,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_i_codigo'))."','$this->cm03_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_proprietario"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10331,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_i_proprietario'))."','$this->cm03_i_proprietario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10331,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_i_proprietario'))."','$this->cm03_i_proprietario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_termo"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10332,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_c_termo'))."','$this->cm03_c_termo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10332,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_c_termo'))."','$this->cm03_c_termo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datatermo"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10333,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_d_datatermo'))."','$this->cm03_d_datatermo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10333,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_d_datatermo'))."','$this->cm03_d_datatermo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_carta"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10334,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_c_carta'))."','$this->cm03_c_carta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10334,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_c_carta'))."','$this->cm03_c_carta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_datacarta"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10335,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_d_datacarta'))."','$this->cm03_d_datacarta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10335,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_d_datacarta'))."','$this->cm03_d_datacarta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_d_aquisicao"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10336,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_d_aquisicao'))."','$this->cm03_d_aquisicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10336,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_d_aquisicao'))."','$this->cm03_d_aquisicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_base"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10337,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_c_base'))."','$this->cm03_c_base',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10337,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_c_base'))."','$this->cm03_c_base',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_estrutura"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10338,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_c_estrutura'))."','$this->cm03_c_estrutura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10338,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_c_estrutura'))."','$this->cm03_c_estrutura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_pronto"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10339,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_c_pronto'))."','$this->cm03_c_pronto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10339,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_c_pronto'))."','$this->cm03_c_pronto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_c_quadra"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10340,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_c_quadra'))."','$this->cm03_c_quadra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10340,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_c_quadra'))."','$this->cm03_c_quadra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_i_lote"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10341,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_i_lote'))."','$this->cm03_i_lote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10341,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_i_lote'))."','$this->cm03_i_lote',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_f_metragem1"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10342,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_f_metragem1'))."','$this->cm03_f_metragem1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10342,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_f_metragem1'))."','$this->cm03_f_metragem1',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm03_f_metragem2"]))
-           $resac = db_query("insert into db_acount values($acount,1789,10343,'".AddSlashes(pg_result($resaco,$conresaco,'cm03_f_metragem2'))."','$this->cm03_f_metragem2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1789,10343,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm03_f_metragem2'))."','$this->cm03_f_metragem2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -682,23 +682,23 @@ class cl_jazigos {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10330,'$cm03_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1789,10330,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10331,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_i_proprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10332,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_c_termo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10333,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_d_datatermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10334,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_c_carta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10335,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_d_datacarta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10336,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_d_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10337,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_c_base'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10338,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_c_estrutura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10339,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_c_pronto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10340,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_c_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10341,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_i_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10342,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_f_metragem1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1789,10343,'','".AddSlashes(pg_result($resaco,$iresaco,'cm03_f_metragem2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10330,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10331,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_i_proprietario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10332,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_c_termo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10333,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_d_datatermo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10334,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_c_carta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10335,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_d_datacarta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10336,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_d_aquisicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10337,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_c_base'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10338,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_c_estrutura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10339,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_c_pronto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10340,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_c_quadra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10341,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_i_lote'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10342,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_f_metragem1'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1789,10343,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm03_f_metragem2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from jazigos
@@ -758,7 +758,7 @@ class cl_jazigos {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:jazigos";
@@ -772,7 +772,7 @@ class cl_jazigos {
    function sql_query ( $cm03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -794,7 +794,7 @@ class cl_jazigos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -806,7 +806,7 @@ class cl_jazigos {
    function sql_query_file ( $cm03_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -827,7 +827,7 @@ class cl_jazigos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

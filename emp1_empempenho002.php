@@ -56,11 +56,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica = array("empempenho"=>"Empenho","empempitem"=>"Itens","empempdot"=>"Dotação","empprazos"=>"Prazos","empempret"=>"Retenções"); 
+       $clcriaabas->identifica = ["empempenho"=>"Empenho","empempitem"=>"Itens","empempdot"=>"Dotação","empprazos"=>"Prazos","empempret"=>"Retenções"]; 
         // $clcriaabas->sizecampo =  array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos"); 
-       $clcriaabas->title      =  array("empempenho"=>"Empenho","empempitem"=>"Itens","empempdot"=>"Dotação","empprazos"=>"Prazos","empempret"=>"Retenções"); 
-       $clcriaabas->src = array("empempenho"=>"emp1_empempenho005.php");
-       $clcriaabas->disabled   =  array("empempitem"=>true,"empempdot"=>"true","empprazos"=>"true","empempdot"=>"true"); 
+       $clcriaabas->title      =  ["empempenho"=>"Empenho","empempitem"=>"Itens","empempdot"=>"Dotação","empprazos"=>"Prazos","empempret"=>"Retenções"]; 
+       $clcriaabas->src = ["empempenho"=>"emp1_empempenho005.php"];
+       $clcriaabas->disabled   =  ["empempitem"=>true,"empempdot"=>"true","empprazos"=>"true","empempdot"=>"true"]; 
        $clcriaabas->cria_abas();    
      ?> 
      </td>

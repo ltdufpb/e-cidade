@@ -78,7 +78,7 @@ if ( isset($_SESSION['objetoXML']) ) {
 	      
   $rsRelatorioTemp   = fopen($sCaminhoRelatorio,"w");
 	        
-  fputs($rsRelatorioTemp ,$oXML->getBufferAgt());
+  fputs($rsRelatorioTemp ,(string) $oXML->getBufferAgt());
   fclose($rsRelatorioTemp);
 
 	$clagata = new cl_dbagata();
@@ -90,7 +90,7 @@ if ( isset($_SESSION['objetoXML']) ) {
 	$xml = $api->getReport();
 	
 	$sNomeRelatorio  = $xml["Report"]["Properties"]["Title"];
-	$api->setParameter('$head1',utf8_decode($sNomeRelatorio));
+	$api->setParameter('$head1',mb_convert_encoding($sNomeRelatorio, 'ISO-8859-1'));
 	
 	$aOrdem = $oXML->getOrdem();
 	
@@ -137,7 +137,7 @@ if ( isset($_SESSION['objetoXML']) ) {
  	  	  if ( $oVariavel->sNome == $oXmlVariavel->getNome()) {
 	                $api->setParameter('$head'.$iLinha++, $oXmlVariavel->getLabel().":".$oVariavel->sValor );
  	  	  	if ( $oXmlVariavel->getTipoDado() == 'date') {
- 	  	  		$sValor = implode('-',array_reverse(explode('/',$oVariavel->sValor)));
+ 	  	  		$sValor = implode('-',array_reverse(explode('/',(string) $oVariavel->sValor)));
  	  	  	} else {
  	  	  		$sValor = $oVariavel->sValor;
  	  	  	}

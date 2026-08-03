@@ -80,8 +80,8 @@ class RegraLancamentoDevolucaoAdiantamento implements IRegraLancamentoContabil {
     /**
      * Documentos de estorno que são tratados por esse programa
      */
-    $aDocumentosEstorno    = array(91, 413, 415, 417);
-    $aDocumentosExecutados = array(412, 414);
+    $aDocumentosEstorno    = [91, 413, 415, 417];
+    $aDocumentosExecutados = [412, 414];
 
     for ($iRowTransacao = 0; $iRowTransacao < $oDaoTransacao->numrows; $iRowTransacao++) {
 

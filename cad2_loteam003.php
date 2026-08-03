@@ -34,8 +34,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 require_once(modification('libs/db_utils.php'));
 require_once(modification("libs/db_libpostgres.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clpostgresqlutils  = new PostgreSQLUtils;
 $cllote             = new cl_lote;
@@ -76,8 +76,8 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
     <td align="center">
       <strong>Opções:</strong>
       <?php 
-        $aTipos = array("t" => "Com os tipos de débitos abaixo",
-                        "f" => "Sem os tipos de débitos abaixo");
+        $aTipos = ["t" => "Com os tipos de débitos abaixo",
+                        "f" => "Sem os tipos de débitos abaixo"];
         db_select("tipos", $aTipos, true, $db_opcao);
       ?>
     </td>
@@ -167,9 +167,9 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <strong>Ordem: </strong>
       </legend>
       <?php 
-        $aOrdem = array("matric"  => "Matrícula",
+        $aOrdem = ["matric"  => "Matrícula",
                         "nome"    => "Nome",
-                        "tipodeb" => "Tipo de Débito");
+                        "tipodeb" => "Tipo de Débito"];
         db_select("ordem", $aOrdem, true, $db_opcao);
       ?>
       </fieldset>
@@ -180,8 +180,8 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <strong>Tipo: </strong>
       </legend>
       <?php 
-        $aResumido = array("f" => "Completo",
-                           "t" => "Resumido");
+        $aResumido = ["f" => "Completo",
+                           "t" => "Resumido"];
         db_select("resumido", $aResumido, true, $db_opcao);
       ?>
       </fieldset>
@@ -192,8 +192,8 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <strong>Modo:</strong>
       </legend>
       <?php 
-        $aOrder = array("asc"  => "Ascendente",
-                        "desc" => "Descendente");
+        $aOrder = ["asc"  => "Ascendente",
+                        "desc" => "Descendente"];
         db_select("order", $aOrder, true, $db_opcao);
       ?>
       </fieldset>
@@ -204,10 +204,10 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <strong>Débitos:</strong>
       </legend>
       <?php 
-        $aDebito = array("td"  => "Todos os Débitos",
+        $aDebito = ["td"  => "Todos os Débitos",
                          "dv"  => "Somente Débitos Vencidos",
                          "nv"  => "Somente Débitos Não Vencidos",
-                         "sd"  => "Somente Sem Débitos");
+                         "sd"  => "Somente Sem Débitos"];
         db_select("com_deb", $aDebito, true, $db_opcao);
       ?>
       </fieldset>

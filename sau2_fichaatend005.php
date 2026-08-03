@@ -40,8 +40,8 @@ include_once(modification("classes/db_prontprofatend_ext_classe.php"));
 
 include_once(modification("dbforms/db_funcoes.php"));
 
-parse_str ( $HTTP_SERVER_VARS ["QUERY_STRING"] );
-db_postmemory ( $HTTP_POST_VARS );
+parse_str ( (string) $_SERVER ["QUERY_STRING"], $result );
+db_postmemory ( $_POST );
 
 set_time_limit ( 0 );
 
@@ -84,7 +84,7 @@ body {
 <table width="100%"  border="0">
 
 <?php 
-$aChaveProntuarios = explode(",",$chave_sd29_i_prontuario);
+$aChaveProntuarios = explode(",",(string) $chave_sd29_i_prontuario);
 $iTam              = count($aChaveProntuarios);
 for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
 
@@ -220,7 +220,7 @@ for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
       <?php  for( $x=0; $x<17; $x++){ ?>
       <tr>
         <td width="10%" height="25" class="style37"><?=@$objRetorno->prontprocedExa[$x]->sd29_d_data ?></td>
-        <td width="90%" height="25" class="style37" colspan="3" nowrap="nowrap"><?=@substr( $objRetorno->prontprocedExa[$x]->sd63_c_nome, 0, 40 ) ?></td>
+        <td width="90%" height="25" class="style37" colspan="3" nowrap="nowrap"><?=@substr( (string) $objRetorno->prontprocedExa[$x]->sd63_c_nome, 0, 40 ) ?></td>
       </tr>
       <?php } ?>
     </table>

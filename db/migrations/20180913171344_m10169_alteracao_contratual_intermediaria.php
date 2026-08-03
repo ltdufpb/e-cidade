@@ -21,99 +21,99 @@ class M10169AlteracaoContratualIntermediaria extends PostgresMigration
     /**
      * Cria tabelas
      */
-    $aColumns = array('codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform');
-    $aValues  = array(
-      array(1010315, 'avaliacaogruporespostaaltercontratual', 'Guarda os dos de alteração contratual', 'eso20', '2018-09-13', 'avaliacaogruporespostaaltercontratual', 0, 'f', 'f', 'f', 'f'),
-    );
-    $table    = $this->table('db_sysarquivo', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform'];
+    $aValues  = [
+      [1010315, 'avaliacaogruporespostaaltercontratual', 'Guarda os dos de alteração contratual', 'eso20', '2018-09-13', 'avaliacaogruporespostaaltercontratual', 0, 'f', 'f', 'f', 'f'],
+    ];
+    $table    = $this->table('db_sysarquivo', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // vincula modulo
-    $aColumns = array('codmod', 'codarq' );
-    $aValues  = array(
+    $aColumns = ['codmod', 'codarq' ];
+    $aValues  = [
       /**
       *lista de campos
       */
-      array(81,1010315)
-    );
-    $table    = $this->table('db_sysarqmod', array('schema' => 'configuracoes'));
+      [81,1010315]
+    ];
+    $table    = $this->table('db_sysarqmod', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     /**
      * Cria campos
      */
-    $aColumns = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-    $aValues  = array(
-        array(1009941,'eso20_sequencial','int4','Sequencial','0', 'Sequencial',15,'f','f','f',1,'text','Sequencial'),
-        array(1009942,'eso20_avaliacaogruporesposta','int4','Resposta','0', 'Resposta',15,'f','f','f',1,'text','Resposta'),
-        array(1009943,'eso20_cgm','int4','CGM','0', 'CGM',15,'f','f','f',1,'text','CGM'),
-        array(1009944,'eso20_rhpessoal','int4','Pessoal','0', 'Pessoal',15,'f','f','f',1,'text','Pessoal')
-    );
-    $table    = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+    $aColumns = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+    $aValues  = [
+        [1009941,'eso20_sequencial','int4','Sequencial','0', 'Sequencial',15,'f','f','f',1,'text','Sequencial'],
+        [1009942,'eso20_avaliacaogruporesposta','int4','Resposta','0', 'Resposta',15,'f','f','f',1,'text','Resposta'],
+        [1009943,'eso20_cgm','int4','CGM','0', 'CGM',15,'f','f','f',1,'text','CGM'],
+        [1009944,'eso20_rhpessoal','int4','Pessoal','0', 'Pessoal',15,'f','f','f',1,'text','Pessoal']
+    ];
+    $table    = $this->table('db_syscampo', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     /**
      * db_sysarqcamp
      */
-    $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-    $aValues  = array(
-        array(1010315,1009941,1,0),
-        array(1010315,1009942,2,0),
-        array(1010315,1009943,3,0),
-        array(1010315,1009944,4,0),
-    );
-    $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+    $aValues  = [
+        [1010315,1009941,1,0],
+        [1010315,1009942,2,0],
+        [1010315,1009943,3,0],
+        [1010315,1009944,4,0],
+    ];
+    $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
 
     // inclui a sequence
-    $aColumns = array('codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq');
-    $aValues  = array(
-      array(1000764, 'avaliacaogruporespostaaltercontratual_eso20_sequencial_seq', 1, 1, 9223372036854775807, 1, 1),
-    );
-    $table    = $this->table('db_syssequencia', array('schema' => 'configuracoes'));
+    $aColumns = ['codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq'];
+    $aValues  = [
+      [1000764, 'avaliacaogruporespostaaltercontratual_eso20_sequencial_seq', 1, 1, 9223372036854775807, 1, 1],
+    ];
+    $table    = $this->table('db_syssequencia', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui a chave primaria
-    $aColumns = array('codarq','codcam','sequen','camiden');
-    $aValues  = array(
-      array(1010315,1009941,1,1009944),
-    );
-    $table    = $this->table('db_sysprikey', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq','codcam','sequen','camiden'];
+    $aValues  = [
+      [1010315,1009941,1,1009944],
+    ];
+    $table    = $this->table('db_sysprikey', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui a chave estrangeira
-    $aColumns = array('codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel');
-    $aValues  = array(
-      array(1010315,1009943,1,42,0),
-      array(1010315,1009944,1,1153,0),
-      array(1010315,1009942,1,2987,0),
-    );
-    $table    = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel'];
+    $aValues  = [
+      [1010315,1009943,1,42,0],
+      [1010315,1009944,1,1153,0],
+      [1010315,1009942,1,2987,0],
+    ];
+    $table    = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui os indices
-    $aColumns = array('codind', 'nomeind', 'codarq', 'campounico');
-    $aValues  = array(
-      array(1008323,'avaliacaogruporespostaaltercontratual_eso20_sequencial_in',1010315,'0'),
-    );
-    $table    = $this->table('db_sysindices', array('schema' => 'configuracoes'));
+    $aColumns = ['codind', 'nomeind', 'codarq', 'campounico'];
+    $aValues  = [
+      [1008323,'avaliacaogruporespostaaltercontratual_eso20_sequencial_in',1010315,'0'],
+    ];
+    $table    = $this->table('db_sysindices', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // vincula os indices
-    $aColumns = array('codind', 'codcam', 'sequen');
-    $aValues  = array(
-      array(1008323,1009941,1),
-    );
-    $table    = $this->table('db_syscadind', array('schema' => 'configuracoes'));
+    $aColumns = ['codind', 'codcam', 'sequen'];
+    $aValues  = [
+      [1008323,1009941,1],
+    ];
+    $table    = $this->table('db_syscadind', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 

@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_aguaestruturatarifaria_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claguaestruturatarifaria = new cl_aguaestruturatarifaria;
 $claguaestruturatarifaria->rotulo->label("x37_sequencial");
 $claguaestruturatarifaria->rotulo->label("x37_sequencial");
@@ -75,9 +75,9 @@ $claguaestruturatarifaria->rotulo->label("x37_sequencial");
         }else{
            $sql = $claguaestruturatarifaria->sql_query("",$campos,"x37_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_x37_sequencial)){
-          $repassa = array("chave_x37_sequencial"=>$chave_x37_sequencial,"chave_x37_sequencial"=>$chave_x37_sequencial);
+          $repassa = ["chave_x37_sequencial"=>$chave_x37_sequencial,"chave_x37_sequencial"=>$chave_x37_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

@@ -65,8 +65,8 @@ $clbensmarca		= new cl_bensmarca;
 $clbensmedida		= new cl_bensmedida;
 $clbensmodelo		= new cl_bensmodelo;
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 if (isset($db_atualizar) || isset($alterar)) {
   $db_opcao = 2;
@@ -83,7 +83,7 @@ if (isset($alterar)) {
     db_fieldsmemory($result,0);
   }
 
-  if (trim(@$t52_ident) == "0"){
+  if (trim((string) @$t52_ident) == "0"){
     $clbens->erro_campo = "t52_ident";
     $sqlerro            = true;
     $erro_msg           = "Bens não Alterado. Alteração Abortada. \\n\\nUsuário: \\n\\n Placa de identificação não pode ser zero.\\n\\n Administrador.";
@@ -115,7 +115,7 @@ if (isset($alterar)) {
   if ($sqlerro==false) {
     db_inicio_transacao();
 
-    if ($t07_obrigplaca == "t" && strlen(trim($t52_ident)) == 0) {
+    if ($t07_obrigplaca == "t" && strlen(trim((string) $t52_ident)) == 0) {
       $sqlerro = true;
       $clbens->erro_campo = "t52_ident";
       $erro_msg = "Bens não Alterado. Alteração Abortada. \\n\\nUsuário: \\n\\n Placa de identificação não cadastrada\\n\\n Administrador.";
@@ -224,8 +224,7 @@ if (isset($alterar)) {
 	          $erro_msg = $clbenscedente->erro_msg;
 	          if ($clbenscedente->erro_status==0) {
 	            $sqlerro=true;
-	            //db_msgbox("9 -> ".$erro_msg);
-	            break;
+	            return;
 	          }
     		}
       }

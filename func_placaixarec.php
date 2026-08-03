@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_placaixarec_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clplacaixarec = new cl_placaixarec;
 $clplacaixarec->rotulo->label("k81_seqpla");
 $clplacaixarec->rotulo->label("k81_valor");
@@ -98,9 +98,9 @@ $clplacaixarec->rotulo->label("k81_valor");
         }else{
            $sql = $clplacaixarec->sql_query("",$campos,"k81_seqpla","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k81_valor)){
-          $repassa = array("chave_k81_seqpla"=>$chave_k81_seqpla,"chave_k81_valor"=>$chave_k81_valor);
+          $repassa = ["chave_k81_seqpla"=>$chave_k81_seqpla,"chave_k81_valor"=>$chave_k81_valor];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

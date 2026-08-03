@@ -42,7 +42,7 @@ final class PadArquivoSigapSubsidioVereadores extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "SubsidioVereadores";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -62,7 +62,7 @@ final class PadArquivoSigapSubsidioVereadores extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit = db_getsession("DB_instit");
     $sSqlSubsidio  = "select c16_mes,  ";
@@ -88,10 +88,10 @@ final class PadArquivoSigapSubsidioVereadores extends PadArquivoSigap {
       $oRetorno->subCodigoEntidade   = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oRetorno->subMesAnoMovimento  = $sDiaMesAno;
       $iUltimoDiaMes                 =  cal_days_in_month(CAL_GREGORIAN, $oSubSidio->c16_mes, $oSubSidio->c16_ano); 
-      $oRetorno->subMesAnoReferencia = $oSubSidio->c16_ano."-".str_pad($oSubSidio->c16_mes, 2, "0", STR_PAD_LEFT)."-".
+      $oRetorno->subMesAnoReferencia = $oSubSidio->c16_ano."-".str_pad((string) $oSubSidio->c16_mes, 2, "0", STR_PAD_LEFT)."-".
                                        str_pad($iUltimoDiaMes, 2, "0", STR_PAD_LEFT);
-      $oRetorno->subNomeVereador     = substr($oSubSidio->z01_nome, 0, 80);                                       
-      $oRetorno->subCPF              = str_pad($oSubSidio->z01_cgccpf, 11, "0", STR_PAD_LEFT);                                       
+      $oRetorno->subNomeVereador     = substr((string) $oSubSidio->z01_nome, 0, 80);                                       
+      $oRetorno->subCPF              = str_pad((string) $oSubSidio->z01_cgccpf, 11, "0", STR_PAD_LEFT);                                       
       $oRetorno->subMensal           = $this->corrigeValor($oSubSidio->c16_subsidiomensal, 13);                                       
       $oRetorno->subExtraordinario   = $this->corrigeValor($oSubSidio->c16_subsidioextraordinario, 13);                                       
       $oRetorno->subTotal            = $this->corrigeValor(($oSubSidio->c16_subsidioextraordinario+
@@ -109,7 +109,7 @@ final class PadArquivoSigapSubsidioVereadores extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "subCodigoEntidade",
                         "subMesAnoMovimento",
                         "subMesAnoReferencia",
@@ -118,7 +118,7 @@ final class PadArquivoSigapSubsidioVereadores extends PadArquivoSigap {
                         "subMensal",
                         "subExtraordinario",
                         "subTotal",
-                       );
+                       ];
     return $aElementos;  
   }
   private function corrigeValor ($valor, $quant) {

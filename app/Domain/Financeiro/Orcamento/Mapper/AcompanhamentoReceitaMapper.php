@@ -24,6 +24,7 @@ class AcompanhamentoReceitaMapper extends ReceitaMapper
     /**
      * @return mixed
      */
+    #[\Override]
     public function toArray()
     {
         $x = [

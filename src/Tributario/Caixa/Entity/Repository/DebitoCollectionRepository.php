@@ -85,7 +85,7 @@ class DebitoCollectionRepository extends DataBaseRepository
     protected function getInicialNumpre($iniciais)
     {
         $inicialRepository = new InicialNumpreRepository();
-        $where = array();
+        $where = [];
         if (is_array($iniciais)) {
             $where[] = 'v59_inicial';
             $where[] = ' in ';
@@ -101,7 +101,7 @@ class DebitoCollectionRepository extends DataBaseRepository
 
     protected function convertInicialNumpreToNumpre($inicialNumpres)
     {
-        $numpres = array();
+        $numpres = [];
         foreach ($inicialNumpres as $inicialNumpre) {
             $numpres[] = $inicialNumpre->getNumpre();
         }

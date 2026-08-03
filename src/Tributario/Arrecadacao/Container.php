@@ -13,7 +13,7 @@ final class Container extends ContainerAbstract
 {
     public function charge()
     {
-        $this->content = array(
+        $this->content = [
             'AbatimentoRepository' => function ($container) {
                 $dataBase = $container->get('DataBase');
 
@@ -21,10 +21,7 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Arrecadacao\Repository\AbatimentoRepository($dataBase, $dao);
             },
-            'Arquivo\Service\ArquivoTxtService' => function ($container) {
-
-                return $container->get('FileService');
-            },
+            'Arquivo\Service\ArquivoTxtService' => fn($container) => $container->get('FileService'),
             'Arquivo\Autoatendimento\RCB80R\Service\ArquivoTxtService' => function ($container) {
 
                 $file = $container->get('File');
@@ -199,6 +196,6 @@ final class Container extends ContainerAbstract
             // abatimentorecibo
             // abatimentoutilizacao
             // abatimentoutilizacaodestino
-        );
+        ];
     }
 }

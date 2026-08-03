@@ -242,10 +242,10 @@ if(isset($oPost->opcao) && $oPost->opcao == "alterar") {
           <tr>
             <td valign="top"  align="center">
               <?php
-              $aChavePri = array(
+              $aChavePri = [
                 "o25_sequencial" => @$o25_sequencial,
                 "o25_orcindica"  => @$o25_orcindica
-              );
+              ];
 
               $sWhere  = " o25_orcindica = ".@$o25_orcindica;
 

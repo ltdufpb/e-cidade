@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_progsuspdisc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprogsuspdisc = new cl_progsuspdisc;
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
@@ -89,9 +89,9 @@ $clrotulo->label("ed113_i_ano");
     }else{
      $sql = $clprogsuspdisc->sql_query("",$campos,"z01_nome,ed119_d_data desc","");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_z01_nome)){
-     $repassa = array("chave_z01_nome"=>$chave_z01_nome,"chave_ed113_i_ano"=>$chave_ed113_i_ano);
+     $repassa = ["chave_z01_nome"=>$chave_z01_nome,"chave_ed113_i_ano"=>$chave_ed113_i_ano];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

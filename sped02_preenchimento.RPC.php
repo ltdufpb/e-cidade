@@ -69,16 +69,16 @@ try {
             }
 
             if ($parametros->integracao == Tipo::ESOCIAL) {
-                $where = array(
+                $where = [
                   "r70_ativo IS TRUE",
                   "r70_instit = {$instituicaoSessao->getCodigo()}"
-                );
+                ];
 
-                $campos = array(
+                $campos = [
                   "z01_numcgm AS cgm",
                   "z01_cgccpf AS cnpj",
                   "z01_nome AS nome",
-                );
+                ];
 
                 $dao = new cl_rhlota();
                 $sql = $dao->sql_query_lota_cgm(
@@ -166,12 +166,12 @@ try {
                 $sugestaoPreenchimento->setParametros($parametros);
                 $sugestao = $sugestaoPreenchimento->porTipo($parametros->formularioTipo);
 
-                $sugestaoParametros = array();
+                $sugestaoParametros = [];
                 if (isset($parametros->sugestao)) {
                     $sugestaoParametros = (array) JSON::create()->parse($parametros->sugestao);
                 }
 
-                $sugestaoEstrutura = array();
+                $sugestaoEstrutura = [];
                 if ($sugestao instanceof Sugestao) {
                     $sugestaoEstrutura = $sugestao->parse();
                 }

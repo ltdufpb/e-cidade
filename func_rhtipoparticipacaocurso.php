@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhtipoparticipacaocurso_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhtipoparticipacaocurso = new cl_rhtipoparticipacaocurso;
 $clrhtipoparticipacaocurso->rotulo->label("h67_descricao");
 $clrhtipoparticipacaocurso->rotulo->label("h67_sequencial");
@@ -98,9 +98,9 @@ $clrhtipoparticipacaocurso->rotulo->label("h67_sequencial");
         }else{
            $sql = $clrhtipoparticipacaocurso->sql_query("",$campos,"h67_descricao","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h67_sequencial)){
-          $repassa = array("chave_h67_descricao"=>$chave_h67_descricao,"chave_h67_sequencial"=>$chave_h67_sequencial);
+          $repassa = ["chave_h67_descricao"=>$chave_h67_descricao,"chave_h67_sequencial"=>$chave_h67_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -58,7 +58,7 @@ require_once(modification("dbforms/db_funcoes.php"));
                 $dao = new cl_situacaoafastamento();
                 $repository = new AfastamentoSituacaoRepository($dao);
                 $repository->scopeSequencial('NOT IN (2, 4, 7)', '');
-                $situacoes = array();
+                $situacoes = [];
 
                 foreach ($repository->get() as $situacao) {
                     $situacoes[$situacao->getSequencial()] = "{$situacao->getSequencial()} - {$situacao->getDescricao()}";

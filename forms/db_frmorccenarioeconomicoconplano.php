@@ -54,8 +54,8 @@
               <td><b>Tipo de Cálculo</b></td>
               <td colspan="100%">
               <?php
-                $aTipoCalculo = array("1" => "Pela média histórica",
-                                      "2" => "Pela reestimativa exercício atual");
+                $aTipoCalculo = ["1" => "Pela média histórica",
+                                      "2" => "Pela reestimativa exercício atual"];
 
                 db_select("tipocalculo", $aTipoCalculo, true, 1,"style=width:100%");
               ?>

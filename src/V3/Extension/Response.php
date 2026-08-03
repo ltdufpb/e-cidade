@@ -8,7 +8,7 @@ class Response {
   /**
    * @var array
    */
-	protected $headers = array();
+	protected $headers = [];
 
   /**
    * @var string
@@ -38,7 +38,7 @@ class Response {
   /**
    * @var array
    */
-  protected $codes = array(
+  protected $codes = [
     100 => 'Continue',
     101 => 'Switching Protocols',
     200 => 'OK',
@@ -80,12 +80,12 @@ class Response {
     503 => 'Service Unavailable',
     504 => 'Gateway Timeout',
     505 => 'HTTP Version Not Supported'
-  );
+  ];
 
   /**
    * @var array
    */
-  protected $contentTypes = array(
+  protected $contentTypes = [
 
     'txt' => 'text/plain',
     'htm' => 'text/html',
@@ -143,7 +143,7 @@ class Response {
     'csv' => 'text/csv',
 
     'default' => 'application/octet-stream'
-  );
+  ];
 
   /**
    * @return bool
@@ -180,7 +180,7 @@ class Response {
     /**
      * alias
      */
-    if (strpos($contentType, '/') === false) {
+    if (!str_contains((string) $contentType, '/')) {
 
       $contentTypeKey = isset($this->contentTypes[$contentType]) ? $contentType : 'default';
       $this->contentType = $this->contentTypes[$contentTypeKey];
@@ -208,10 +208,10 @@ class Response {
    * @param integer $status
    * @return void
    */
-	public function redirect($url, $status = 302) {
+	public function redirect($url, $status = 302): never {
 
 		header('Status: ' . $status, true);
-		header('Location: ' . str_replace(array('&amp;', "\n", "\r"), array('&', '', ''), $url));
+		header('Location: ' . str_replace(['&amp;', "\n", "\r"], ['&', '', ''], $url));
 		exit();
 	}
 
@@ -238,7 +238,7 @@ class Response {
     $this->addHeader('Last-Modified', $modified);
     $this->addHeader('Cache-Control', 'public');
 
-    if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $filemtime) {
+    if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime((string) $_SERVER['HTTP_IF_MODIFIED_SINCE']) == $filemtime) {
       $this->setCode(304);
     }
 	}
@@ -315,7 +315,7 @@ class Response {
     }
 
     // http response code
-    $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1');
+    $protocol = ($_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.1');
     header($protocol . ' ' . $this->code . ' ' . $this->codes[$this->code], true);
 
     if (!empty($this->contentType)) {

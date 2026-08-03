@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE cemiteriorural
 class cl_cemiteriorural { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cm16_i_cemiterio = 0; 
-   var $cm16_c_nome = null; 
-   var $cm16_c_endereco = null; 
-   var $cm16_c_cidade = null; 
-   var $cm16_c_bairro = null; 
-   var $cm16_c_cep = null; 
-   var $cm16_c_telefone = null; 
+   public $cm16_i_cemiterio = 0; 
+   public $cm16_c_nome = null; 
+   public $cm16_c_endereco = null; 
+   public $cm16_c_cidade = null; 
+   public $cm16_c_bairro = null; 
+   public $cm16_c_cep = null; 
+   public $cm16_c_telefone = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cm16_i_cemiterio = int4 = Código 
                  cm16_c_nome = char(100) = Nome 
                  cm16_c_endereco = char(80) = Endereço 
@@ -60,10 +60,10 @@ class cl_cemiteriorural {
                  cm16_c_telefone = char(14) = Telefone 
                  ";
    //funcao construtor da classe 
-   function cl_cemiteriorural() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cemiteriorural"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -148,7 +148,7 @@ class cl_cemiteriorural {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cemitérios fora da cidade ($this->cm16_i_cemiterio) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cemitérios fora da cidade já Cadastrado";
@@ -172,16 +172,16 @@ class cl_cemiteriorural {
      $resaco = $this->sql_record($this->sql_query_file($this->cm16_i_cemiterio));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10295,'$this->cm16_i_cemiterio','I')");
-       $resac = db_query("insert into db_acount values($acount,1782,10295,'','".AddSlashes(pg_result($resaco,0,'cm16_i_cemiterio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1782,10296,'','".AddSlashes(pg_result($resaco,0,'cm16_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1782,10297,'','".AddSlashes(pg_result($resaco,0,'cm16_c_endereco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1782,10299,'','".AddSlashes(pg_result($resaco,0,'cm16_c_cidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1782,10300,'','".AddSlashes(pg_result($resaco,0,'cm16_c_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1782,10298,'','".AddSlashes(pg_result($resaco,0,'cm16_c_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1782,10301,'','".AddSlashes(pg_result($resaco,0,'cm16_c_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1782,10295,'','".AddSlashes(pg_fetch_result($resaco,0,'cm16_i_cemiterio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1782,10296,'','".AddSlashes(pg_fetch_result($resaco,0,'cm16_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1782,10297,'','".AddSlashes(pg_fetch_result($resaco,0,'cm16_c_endereco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1782,10299,'','".AddSlashes(pg_fetch_result($resaco,0,'cm16_c_cidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1782,10300,'','".AddSlashes(pg_fetch_result($resaco,0,'cm16_c_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1782,10298,'','".AddSlashes(pg_fetch_result($resaco,0,'cm16_c_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1782,10301,'','".AddSlashes(pg_fetch_result($resaco,0,'cm16_c_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -190,10 +190,10 @@ class cl_cemiteriorural {
       $this->atualizacampos();
      $sql = " update cemiteriorural set ";
      $virgula = "";
-     if(trim($this->cm16_i_cemiterio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_i_cemiterio"])){ 
+     if(trim((string) $this->cm16_i_cemiterio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_i_cemiterio"])){ 
        $sql  .= $virgula." cm16_i_cemiterio = $this->cm16_i_cemiterio ";
        $virgula = ",";
-       if(trim($this->cm16_i_cemiterio) == null ){ 
+       if(trim((string) $this->cm16_i_cemiterio) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "cm16_i_cemiterio";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_cemiteriorural {
          return false;
        }
      }
-     if(trim($this->cm16_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_nome"])){ 
+     if(trim((string) $this->cm16_c_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_nome"])){ 
        $sql  .= $virgula." cm16_c_nome = '$this->cm16_c_nome' ";
        $virgula = ",";
-       if(trim($this->cm16_c_nome) == null ){ 
+       if(trim((string) $this->cm16_c_nome) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "cm16_c_nome";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_cemiteriorural {
          return false;
        }
      }
-     if(trim($this->cm16_c_endereco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_endereco"])){ 
+     if(trim((string) $this->cm16_c_endereco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_endereco"])){ 
        $sql  .= $virgula." cm16_c_endereco = '$this->cm16_c_endereco' ";
        $virgula = ",";
-       if(trim($this->cm16_c_endereco) == null ){ 
+       if(trim((string) $this->cm16_c_endereco) == null ){ 
          $this->erro_sql = " Campo Endereço nao Informado.";
          $this->erro_campo = "cm16_c_endereco";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_cemiteriorural {
          return false;
        }
      }
-     if(trim($this->cm16_c_cidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_cidade"])){ 
+     if(trim((string) $this->cm16_c_cidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_cidade"])){ 
        $sql  .= $virgula." cm16_c_cidade = '$this->cm16_c_cidade' ";
        $virgula = ",";
-       if(trim($this->cm16_c_cidade) == null ){ 
+       if(trim((string) $this->cm16_c_cidade) == null ){ 
          $this->erro_sql = " Campo CIdade nao Informado.";
          $this->erro_campo = "cm16_c_cidade";
          $this->erro_banco = "";
@@ -242,15 +242,15 @@ class cl_cemiteriorural {
          return false;
        }
      }
-     if(trim($this->cm16_c_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_bairro"])){ 
+     if(trim((string) $this->cm16_c_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_bairro"])){ 
        $sql  .= $virgula." cm16_c_bairro = '$this->cm16_c_bairro' ";
        $virgula = ",";
      }
-     if(trim($this->cm16_c_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_cep"])){ 
+     if(trim((string) $this->cm16_c_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_cep"])){ 
        $sql  .= $virgula." cm16_c_cep = '$this->cm16_c_cep' ";
        $virgula = ",";
      }
-     if(trim($this->cm16_c_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_telefone"])){ 
+     if(trim((string) $this->cm16_c_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_telefone"])){ 
        $sql  .= $virgula." cm16_c_telefone = '$this->cm16_c_telefone' ";
        $virgula = ",";
      }
@@ -262,23 +262,23 @@ class cl_cemiteriorural {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10295,'$this->cm16_i_cemiterio','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm16_i_cemiterio"]))
-           $resac = db_query("insert into db_acount values($acount,1782,10295,'".AddSlashes(pg_result($resaco,$conresaco,'cm16_i_cemiterio'))."','$this->cm16_i_cemiterio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1782,10295,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm16_i_cemiterio'))."','$this->cm16_i_cemiterio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_nome"]))
-           $resac = db_query("insert into db_acount values($acount,1782,10296,'".AddSlashes(pg_result($resaco,$conresaco,'cm16_c_nome'))."','$this->cm16_c_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1782,10296,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm16_c_nome'))."','$this->cm16_c_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_endereco"]))
-           $resac = db_query("insert into db_acount values($acount,1782,10297,'".AddSlashes(pg_result($resaco,$conresaco,'cm16_c_endereco'))."','$this->cm16_c_endereco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1782,10297,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm16_c_endereco'))."','$this->cm16_c_endereco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_cidade"]))
-           $resac = db_query("insert into db_acount values($acount,1782,10299,'".AddSlashes(pg_result($resaco,$conresaco,'cm16_c_cidade'))."','$this->cm16_c_cidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1782,10299,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm16_c_cidade'))."','$this->cm16_c_cidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_bairro"]))
-           $resac = db_query("insert into db_acount values($acount,1782,10300,'".AddSlashes(pg_result($resaco,$conresaco,'cm16_c_bairro'))."','$this->cm16_c_bairro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1782,10300,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm16_c_bairro'))."','$this->cm16_c_bairro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_cep"]))
-           $resac = db_query("insert into db_acount values($acount,1782,10298,'".AddSlashes(pg_result($resaco,$conresaco,'cm16_c_cep'))."','$this->cm16_c_cep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1782,10298,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm16_c_cep'))."','$this->cm16_c_cep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm16_c_telefone"]))
-           $resac = db_query("insert into db_acount values($acount,1782,10301,'".AddSlashes(pg_result($resaco,$conresaco,'cm16_c_telefone'))."','$this->cm16_c_telefone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1782,10301,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm16_c_telefone'))."','$this->cm16_c_telefone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -323,16 +323,16 @@ class cl_cemiteriorural {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10295,'$cm16_i_cemiterio','E')");
-         $resac = db_query("insert into db_acount values($acount,1782,10295,'','".AddSlashes(pg_result($resaco,$iresaco,'cm16_i_cemiterio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1782,10296,'','".AddSlashes(pg_result($resaco,$iresaco,'cm16_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1782,10297,'','".AddSlashes(pg_result($resaco,$iresaco,'cm16_c_endereco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1782,10299,'','".AddSlashes(pg_result($resaco,$iresaco,'cm16_c_cidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1782,10300,'','".AddSlashes(pg_result($resaco,$iresaco,'cm16_c_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1782,10298,'','".AddSlashes(pg_result($resaco,$iresaco,'cm16_c_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1782,10301,'','".AddSlashes(pg_result($resaco,$iresaco,'cm16_c_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1782,10295,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm16_i_cemiterio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1782,10296,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm16_c_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1782,10297,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm16_c_endereco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1782,10299,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm16_c_cidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1782,10300,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm16_c_bairro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1782,10298,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm16_c_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1782,10301,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm16_c_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cemiteriorural
@@ -392,7 +392,7 @@ class cl_cemiteriorural {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cemiteriorural";
@@ -406,7 +406,7 @@ class cl_cemiteriorural {
    function sql_query ( $cm16_i_cemiterio=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,7 +428,7 @@ class cl_cemiteriorural {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -440,7 +440,7 @@ class cl_cemiteriorural {
    function sql_query_file ( $cm16_i_cemiterio=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,7 +461,7 @@ class cl_cemiteriorural {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

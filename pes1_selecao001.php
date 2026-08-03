@@ -33,7 +33,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_selecao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clselecao = new cl_selecao;
 $db_opcao = 1;
@@ -44,7 +44,7 @@ $iInstituicao = db_getsession('DB_instit');
 if( isset($incluir)) {
 
   db_inicio_transacao();
-  $clselecao->r44_where = pg_escape_string(str_replace(array("\r\n", "\\"), array("\n", ""), $r44_where));
+  $clselecao->r44_where = pg_escape_string(str_replace(["\r\n", "\\"], ["\n", ""], $r44_where));
   $clselecao->incluir($r44_selec, $iInstituicao);
   db_fim_transacao();
 }

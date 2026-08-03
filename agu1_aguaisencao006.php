@@ -35,7 +35,7 @@ include(modification("classes/db_aguaisencaorec_classe.php"));
 $claguaisencao = new cl_aguaisencao;
 $claguaisencaorec = new cl_aguaisencaorec;
   
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

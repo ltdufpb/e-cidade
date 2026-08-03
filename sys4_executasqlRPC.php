@@ -40,7 +40,7 @@ $oJson = new services_json();
 /**
  * Alteração realizada por motivos de sql injection detectado pelo firewall do cliente
  */
-$oPost->sql = base64_decode($oPost->sql);
+$oPost->sql = base64_decode((string) $oPost->sql);
 
 $lErro = false;
 
@@ -50,7 +50,7 @@ if (isset($oPost->sql) && trim($oPost->sql) != '') {
     db_inicio_transacao();
 
 
-    $sSql = str_replace("\\", "", utf8_decode($oPost->sql));
+    $sSql = str_replace("\\", "", mb_convert_encoding($oPost->sql, 'ISO-8859-1'));
 
     if (DBSqlValidador::sqlAlteraDadosOuEstrutura($sSql)) {
         $lErro = true;
@@ -92,12 +92,12 @@ if (isset($oPost->sql) && trim($oPost->sql) != '') {
 
 
 if (!$lErro) {
-    $aRetorno = array("erro" => false);
+    $aRetorno = ["erro" => false];
 } else {
-    $aRetorno = array(
-      "msg" => urlencode($sMsgErro),
+    $aRetorno = [
+      "msg" => urlencode((string) $sMsgErro),
       "erro" => true
-    );
+    ];
 }
 
 echo $oJson->encode($aRetorno);

@@ -51,7 +51,7 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
   	  $this->setCodigoLayout(192);
     }
 
-    $aCompetencia = explode('-',$this->dtDataFinal);
+    $aCompetencia = explode('-',(string) $this->dtDataFinal);
     $sCompetencia = $aCompetencia[0].$aCompetencia[1];
     $iAnoUsu      = $aCompetencia[0];
     $sSqlContasConciliacao = "select distinct on (k68_contabancaria)
@@ -135,14 +135,14 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
           continue;
         }
 
-        list($iAno, $iMes, $iDia)                                     = explode("-", $oStdPendenciaCaixa->data_conciliacao);
-        list($iAnoSequencial, $iMesSequencial, $iDiaSequencial)       = explode("-", $oStdPendenciaCaixa->k89_data);
-        list($iCodigoTabelaConciliacao, $sDescricaoTabelaConciliacao) = $this->getDadosTabelaConciliacao(true, $oStdPendenciaCaixa->tipomovimentacao);
+        [$iAno, $iMes, $iDia]                                     = explode("-", (string) $oStdPendenciaCaixa->data_conciliacao);
+        [$iAnoSequencial, $iMesSequencial, $iDiaSequencial]       = explode("-", (string) $oStdPendenciaCaixa->k89_data);
+        [$iCodigoTabelaConciliacao, $sDescricaoTabelaConciliacao] = $this->getDadosTabelaConciliacao(true, $oStdPendenciaCaixa->tipomovimentacao);
 
 
         $oStdLinhaArquivo = new stdClass();
         $oStdLinhaArquivo->dt_anocriacao            = $iAno;
-        $oStdLinhaArquivo->cd_unidade               = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT); 
+        $oStdLinhaArquivo->cd_unidade               = str_pad((string) $this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT); 
         $oStdLinhaArquivo->cd_contacontabil         = $oStdContaConciliacao->c60_estrut;
         $oStdLinhaArquivo->dt_anomesconc            = "{$iAno}{$iMes}";
         $oStdLinhaArquivo->rv_tce                   = "0";
@@ -160,7 +160,7 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
 
         if ($sDataRegularizacao) {
 
-          list($iAno, $iMes, $iDia) = explode("-", $sDataRegularizacao);
+          [$iAno, $iMes, $iDia] = explode("-", (string) $sDataRegularizacao);
           $oStdLinhaArquivo->dt_regularizacao = "{$iDia}{$iMes}{$iAno}";
           $oStdLinhaArquivo->dt_anomes        = "{$iAno}{$iMes}";
           $oStdLinhaArquivo->vl_regularizacao  = number_format(round($oStdPendenciaCaixa->vl_movconciliado,2), 2, '', '');// str_replace(".", "", round($oStdPendenciaCaixa->vl_movconciliado, 2));
@@ -210,14 +210,13 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
           continue;
         }
 
-        list($iAno, $iMes, $iDia) = explode("-", $oStdPendenciaExtrato->data_conciliacao);
-        list($iCodigoTabelaConciliacao,
-             $sDescricaoTabelaConciliacao) = $this->getDadosTabelaConciliacao(false,
+        [$iAno, $iMes, $iDia] = explode("-", (string) $oStdPendenciaExtrato->data_conciliacao);
+        [$iCodigoTabelaConciliacao, $sDescricaoTabelaConciliacao] = $this->getDadosTabelaConciliacao(false,
                                                                               $oStdPendenciaExtrato->tipomovimentacao);
 
         $oStdLinhaArquivo = new stdClass();
         $oStdLinhaArquivo->dt_anocriacao            = $iAno;
-        $oStdLinhaArquivo->cd_unidade               = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
+        $oStdLinhaArquivo->cd_unidade               = str_pad((string) $this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
         $oStdLinhaArquivo->cd_contacontabil         = $oStdContaConciliacao->c60_estrut;
         $oStdLinhaArquivo->dt_anomesconc            = "{$iAno}{$iMes}";
         $oStdLinhaArquivo->rv_tce                   = "0";
@@ -234,7 +233,7 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
 
         if ($sDataRegularizacao) {
 
-          list($iAno, $iMes, $iDia) = explode("-", $sDataRegularizacao);
+          [$iAno, $iMes, $iDia] = explode("-", (string) $sDataRegularizacao);
           $oStdLinhaArquivo->dt_regularizacao = "{$iDia}{$iMes}{$iAno}";
           $oStdLinhaArquivo->dt_anomes        = "{$iAno}{$iMes}";
           $oStdLinhaArquivo->vl_regularizacao = number_format(round($oStdPendenciaExtrato->vl_movconciliado,2), 2, '', '');//str_replace(".", "", round($oStdPendenciaExtrato->vl_movconciliado, 2));
@@ -303,11 +302,11 @@ class SigfisArquivoRegulariza extends SigfisArquivoBase implements iPadArquivoTX
     $aHashTipoMovimentacao[false]["C"] = "4";
     $aHashTipoMovimentacao[false]["D"] = "5";
 
-    $aTiposMovimentacoes = array( "1" => array("1", "Entrada não considerada pelo banco"),
-                                  "2" => array("2", "Entrada não considerada pela contabilidade"),
-                                  "3" => array("3", "Saldo conforme extrato bancário"),
-                                  "4" => array("4", "Saida não considerada pelo banco"),
-                                  "5" => array("5", "Saída não considerada pela contabilidade") );
+    $aTiposMovimentacoes = [ "1" => ["1", "Entrada não considerada pelo banco"],
+                                  "2" => ["2", "Entrada não considerada pela contabilidade"],
+                                  "3" => ["3", "Saldo conforme extrato bancário"],
+                                  "4" => ["4", "Saida não considerada pelo banco"],
+                                  "5" => ["5", "Saída não considerada pela contabilidade"] ];
 
     return $aTiposMovimentacoes[$aHashTipoMovimentacao[$lCaixa][$sTipoMovimentacao]];
 

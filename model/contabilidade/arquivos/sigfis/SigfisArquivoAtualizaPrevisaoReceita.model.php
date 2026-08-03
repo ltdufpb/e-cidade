@@ -91,7 +91,7 @@ class SigfisArquivoAtualizaPrevisaoReceita extends SigfisArquivoBase implements 
                 /**
                  * Testando os dados de vinculo de receita no arquivo XML de vinculação
                  */
-                $aReceitaSoma = array();
+                $aReceitaSoma = [];
                 if ($oDaoOrcfontes->numrows == 1) {
 
                     $iCodigoConta = db_utils::fieldsMemory($rsOrcFontes, 0)->o57_codfon;
@@ -107,10 +107,10 @@ class SigfisArquivoAtualizaPrevisaoReceita extends SigfisArquivoBase implements 
 
                     $sEstrut = db_utils::fieldsMemory($rsOrcFontes, 0)->o57_fonte;
 //                    $sEstrut = $oVinculo->receitatce;
-                    if(substr($sEstrut, 0,  1) == '9' ) {
-                        $sEstrut = '9' . substr($sEstrut, 2, 12);
+                    if(str_starts_with((string) $sEstrut, '9') ) {
+                        $sEstrut = '9' . substr((string) $sEstrut, 2, 12);
                     }else {
-                        $sEstrut = substr($sEstrut, 1, 13);
+                        $sEstrut = substr((string) $sEstrut, 1, 13);
                     }
 
                     if (!isset( $aReceitaSoma[$sEstrut] )) {
@@ -131,12 +131,12 @@ class SigfisArquivoAtualizaPrevisaoReceita extends SigfisArquivoBase implements 
                         /**
                          * recuperando ano e mes
                          */
-                        $aDadosData     = explode('-', $oAtualizacao->o49_data);
+                        $aDadosData     = explode('-', (string) $oAtualizacao->o49_data);
                         $sDataFormatada = $aDadosData[0].$aDadosData[1];
 
                         $oDadosLinha = new stdClass();
                         $oDadosLinha->dt_Ano           = $oAtualizacao->o70_anousu;
-                        $oDadosLinha->cd_Unidade       = str_pad($this->sCodigoTribunal,             4, ' ', STR_PAD_LEFT);
+                        $oDadosLinha->cd_Unidade       = str_pad((string) $this->sCodigoTribunal,             4, ' ', STR_PAD_LEFT);
                         $oDadosLinha->cd_ItemReceita   = str_pad(substr($sFonte, 0, 13), 13, ' ', STR_PAD_RIGHT);
                         $oDadosLinha->tp_Atual_Receita = 1;
                         $oDadosLinha->vl_Receita       = str_pad(number_format($nValor, 2, '', ''), 16, ' ', STR_PAD_LEFT);

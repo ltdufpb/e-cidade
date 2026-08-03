@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("classes/db_orcfontes_classe.php"));
 include(modification("classes/db_orcfontesdes_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if(!isset($codfon)){
   echo "<script> parent.alert('Fonte nao informada. Verifique!')</script>";
@@ -64,7 +64,7 @@ $sql = "select * from orcfontes inner join orcfontesdes on o57_codfon = o60_codf
         where o57_fonte like '$mae%' and o57_anousu = $anousu";
 
 $result = db_query($sql);
-if(pg_numrows($result)==0){
+if(pg_num_rows($result)==0){
   echo "<script> parent.alert('Verifique as fontes da receita!')</script>";
   exit;
 }
@@ -90,7 +90,7 @@ if(pg_numrows($result)==0){
   global $vlrperc;
   $vlrtot = $valor;
   $vlrsoma = 0;
-  for($i=0;$i<pg_numrows($result);$i++){
+  for($i=0;$i<pg_num_rows($result);$i++){
     db_fieldsmemory($result,$i);
     
     $vlrperc = $vlrtot * ( $o60_perc / 100 );

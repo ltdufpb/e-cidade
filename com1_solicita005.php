@@ -51,8 +51,8 @@ require_once(modification("classes/db_solicitaprotprocesso_classe.php"));
 
 $liberaaba = true;
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 define('TIPO_SOLICITACAO_NORMAL', 1);
 define('TIPO_SOLICITACAO_PACTO', 2);
@@ -95,7 +95,7 @@ $iOpcaoTipoSolicitacao = $db_botao;
 
 $db_opcaoBtnRegistroPreco = 1;
 
-$aParametrosOrcamento = db_stdClass::getParametro("orcparametro",array(db_getsession("DB_anousu")));
+$aParametrosOrcamento = db_stdClass::getParametro("orcparametro",[db_getsession("DB_anousu")]);
 $lUtilizaPacto        = false;
 if (count($aParametrosOrcamento) > 0) {
 
@@ -188,7 +188,7 @@ if (isset($alterar) || isset($chavepesquisa)) {
 
     $sqlerro = false;
     db_inicio_transacao();
-    $clsolicita->pc10_resumo = addslashes(stripslashes(chop($pc10_resumo)));
+    $clsolicita->pc10_resumo = addslashes(stripslashes(chop((string) $pc10_resumo)));
     $clsolicita->pc10_instit = db_getsession("DB_instit");
     $clsolicita->alterar($pc10_numero);
     $pc10_numero = $clsolicita->pc10_numero;

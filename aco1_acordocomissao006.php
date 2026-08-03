@@ -35,7 +35,7 @@ include(modification("classes/db_acordocomissaomembro_classe.php"));
 $clacordocomissao = new cl_acordocomissao;
 $clacordocomissaomembro = new cl_acordocomissaomembro;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

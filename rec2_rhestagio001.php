@@ -37,7 +37,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -83,11 +83,11 @@ db_postmemory($HTTP_POST_VARS);
    </td>
    <td>
    <?php 
-    $opcoes = array(
+    $opcoes = [
                     "t" => "Todas",
                     "n" => "Não Aplicadas",
                     "a" => "Aplicadas"
-                   );
+                   ];
 
    db_select('avaliacao',$opcoes,true,1,"");
    ?>
@@ -99,10 +99,10 @@ db_postmemory($HTTP_POST_VARS);
    </td>
    <td>
    <?php 
-    $opcoes = array(
+    $opcoes = [
                     "questionario" => "Lista questionário",
                     "avaliacoes"   => "Lista Funcionários",
-                   );
+                   ];
    if (!isset($mostra)){
       $mostra = "avaliacoes";
    }
@@ -168,13 +168,13 @@ db_postmemory($HTTP_POST_VARS);
 
   $geraform->tipofol = false;                      // MOSTRAR DO CAMPO PARA TIPO DE FOLHA
 
-  $geraform->arr_tipofol = array(
+  $geraform->arr_tipofol = [
                                  "r14"=>"Salário",
                                  "r48"=>"Complementar",
                                  "r20"=>"Rescisão",
                                  "r35"=>"13o. Salário",
                                  "r22"=>"Adiantamento"
-                                );
+                                ];
   $geraform->campo_auxilio_regi = "faixa_regis";  // NOME DO DAS MATRÍCULAS SELECIONADAS
   $geraform->campo_auxilio_lota = "faixa_lotac";  // NOME DO DAS LOTAÇÕES SELECIONADAS
   $geraform->campo_auxilio_orga = "faixa_orgao";  // NOME DO DOS ÓRGÃOS SELECIONADOS

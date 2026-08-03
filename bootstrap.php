@@ -147,9 +147,7 @@ if (!getenv('TEST')) {
 
 Registry::set('app.eventManager', new EventManager());
 
-Registry::get('app.container')->register('app.configData', function() {
-  return ConfigData::restore();
-});
+Registry::get('app.container')->register('app.configData', fn() => ConfigData::restore());
 
 //
 // END EVENT SETUP
@@ -161,17 +159,11 @@ Registry::get('app.container')->register('app.configData', function() {
 // START OF APPLICATION BUSINESS CONTENT
 //
 
-Registry::get('app.container')->register('tributario.container', function($applicationContainer) {
-  return new ECidade\Tributario\Container($applicationContainer);
-});
+Registry::get('app.container')->register('tributario.container', fn($applicationContainer) => new ECidade\Tributario\Container($applicationContainer));
 
-Registry::get('app.container')->register('patrimonial.container', function($applicationContainer) {
-  return new ECidade\Patrimonial\Container($applicationContainer);
-});
+Registry::get('app.container')->register('patrimonial.container', fn($applicationContainer) => new ECidade\Patrimonial\Container($applicationContainer));
 
-Registry::get('app.container')->register('configuracao.container', function($applicationContainer) {
-  return new ECidade\Configuracao\Container($applicationContainer);
-});
+Registry::get('app.container')->register('configuracao.container', fn($applicationContainer) => new ECidade\Configuracao\Container($applicationContainer));
 //
 // END OF APPLICATION BUSINESS CONTENT
 //

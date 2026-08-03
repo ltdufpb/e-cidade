@@ -51,7 +51,7 @@ $oPost = db_utils::postMemory($_POST);
 <tr height=25><td>&nbsp;</td></tr>
 </table>
 <?php 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 db_criatermometro('termometro','Concluido...','blue',1);
 flush();
 $wh               = '';

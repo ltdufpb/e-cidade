@@ -34,8 +34,8 @@
   include(modification("classes/db_iptuconstrdemo_classe.php"));
   include(modification("classes/db_iptuconstr_classe.php"));
   $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
-  db_postmemory($HTTP_POST_VARS);
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+  db_postmemory($_POST);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
   $clrotulo = new rotulocampo;
   $cliptuconstrdemo = new cl_iptuconstrdemo;
@@ -66,7 +66,7 @@ if(isset($opcao) && $opcao=="alterar"){
     }
 }else{  
     $db_opcao = 1;
-    $matriz01=split("-",$data);
+    $matriz01=preg_split("#\\-#m",$data);
     $j60_datademo_ano=$matriz01[0];
     $j60_datademo_mes=$matriz01[1];
     $j60_datademo_dia=$matriz01[2];
@@ -272,7 +272,7 @@ if(isset($incluir) || isset($alterar) || isset($excluir)){
 		 
 <?php 		
 if(isset($j39_idcons)){
-    $chavepri= array("j60_idcons"=>$j39_idcons,"j60_seq"=>@$j60_seq);
+    $chavepri= ["j60_idcons"=>$j39_idcons,"j60_seq"=>@$j60_seq];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->sql     =$cliptuconstrdemo->sql_query($j39_matric,$j39_idcons,"","j60_idcons,j60_seq,j60_area,j60_codproc,j60_datademo,j60_hora,j60_data");
     $cliframe_alterar_excluir->campos  ="j60_codproc,j60_area,j60_datademo,j60_hora,j60_data";

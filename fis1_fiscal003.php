@@ -47,13 +47,13 @@ include(modification("classes/db_fandamusu_classe.php"));
 include(modification("classes/db_fisctestem_classe.php"));
 include(modification("classes/db_fiscarquivos_classe.php"));
 include(modification("classes/db_fiscalvistorias_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='fis1_fiscal005.php?db_opcao=3'</script>";
   exit;
 }
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clfiscal          = new cl_fiscal;
 $clfiscalvistorias = new cl_fiscalvistorias;
 $clfisctestem      = new cl_fisctestem;
@@ -73,7 +73,7 @@ $clfiscaltipo      = new cl_fiscaltipo;
 $clfandamusu       = new cl_fandamusu;
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $db_opcao = 3;
   $clfiscalocal->excluir($y30_codnoti);
@@ -183,7 +183,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clfiscal->erro_status=="0"){
     $clfiscal->erro(true,false);
   }else{

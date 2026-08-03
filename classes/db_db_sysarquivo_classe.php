@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE db_sysarquivo
 class cl_db_sysarquivo {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $codarq = 0;
-   var $nomearq = null;
-   var $descricao = null;
-   var $sigla = null;
-   var $dataincl_dia = null;
-   var $dataincl_mes = null;
-   var $dataincl_ano = null;
-   var $dataincl = null;
-   var $tipotabela = 0;
-   var $naolibclass = 'f';
-   var $naolibfunc = 'f';
-   var $naolibprog = 'f';
-   var $naolibform = 'f';
+   public $codarq = 0;
+   public $nomearq = null;
+   public $descricao = null;
+   public $sigla = null;
+   public $dataincl_dia = null;
+   public $dataincl_mes = null;
+   public $dataincl_ano = null;
+   public $dataincl = null;
+   public $tipotabela = 0;
+   public $naolibclass = 'f';
+   public $naolibfunc = 'f';
+   public $naolibprog = 'f';
+   public $naolibform = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  codarq = int4 = Codigo Arquivo
                  nomearq = char(40) = Nome do Arquivo
                  descricao = text = Descrição
@@ -70,10 +70,10 @@ class cl_db_sysarquivo {
                  naolibform = bool = Não Lib.. Form
                  ";
    //funcao construtor da classe
-   function cl_db_sysarquivo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysarquivo");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -203,10 +203,10 @@ class cl_db_sysarquivo {
          $this->erro_status = "0";
          return false;
        }
-       $this->codarq = pg_result($result,0,0);
+       $this->codarq = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_sysarquivo_codarq_seq");
-       if(($result != false) && (pg_result($result,0,0) < $codarq)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $codarq)){
          $this->erro_sql = " Campo codarq maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -254,7 +254,7 @@ class cl_db_sysarquivo {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela de Dados ($this->codarq) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela de Dados já Cadastrado";
@@ -278,20 +278,20 @@ class cl_db_sysarquivo {
      $resaco = $this->sql_record($this->sql_query_file($this->codarq));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,759,'$this->codarq','I')");
-       $resac = db_query("insert into db_acount values($acount,140,759,'','".AddSlashes(pg_result($resaco,0,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,140,760,'','".AddSlashes(pg_result($resaco,0,'nomearq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,140,750,'','".AddSlashes(pg_result($resaco,0,'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,140,761,'','".AddSlashes(pg_result($resaco,0,'sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,140,751,'','".AddSlashes(pg_result($resaco,0,'dataincl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,140,756,'','".AddSlashes(pg_result($resaco,0,'rotulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,140,8924,'','".AddSlashes(pg_result($resaco,0,'tipotabela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,140,8925,'','".AddSlashes(pg_result($resaco,0,'naolibclass'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,140,8926,'','".AddSlashes(pg_result($resaco,0,'naolibfunc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,140,8927,'','".AddSlashes(pg_result($resaco,0,'naolibprog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,140,8928,'','".AddSlashes(pg_result($resaco,0,'naolibform'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,140,759,'','".AddSlashes(pg_fetch_result($resaco,0,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,140,760,'','".AddSlashes(pg_fetch_result($resaco,0,'nomearq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,140,750,'','".AddSlashes(pg_fetch_result($resaco,0,'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,140,761,'','".AddSlashes(pg_fetch_result($resaco,0,'sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,140,751,'','".AddSlashes(pg_fetch_result($resaco,0,'dataincl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,140,756,'','".AddSlashes(pg_fetch_result($resaco,0,'rotulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,140,8924,'','".AddSlashes(pg_fetch_result($resaco,0,'tipotabela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,140,8925,'','".AddSlashes(pg_fetch_result($resaco,0,'naolibclass'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,140,8926,'','".AddSlashes(pg_fetch_result($resaco,0,'naolibfunc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,140,8927,'','".AddSlashes(pg_fetch_result($resaco,0,'naolibprog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,140,8928,'','".AddSlashes(pg_fetch_result($resaco,0,'naolibform'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -300,13 +300,13 @@ class cl_db_sysarquivo {
       $this->atualizacampos();
      $sql = " update db_sysarquivo set ";
      $virgula = "";
-     if(trim($this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){
-        if(trim($this->codarq)=="" && isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){
+     if(trim((string) $this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){
+        if(trim((string) $this->codarq)=="" && isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){
            $this->codarq = "0" ;
         }
        $sql  .= $virgula." codarq = $this->codarq ";
        $virgula = ",";
-       if(trim($this->codarq) == null ){
+       if(trim((string) $this->codarq) == null ){
          $this->erro_sql = " Campo Codigo Arquivo nao Informado.";
          $this->erro_campo = "codarq";
          $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_db_sysarquivo {
          return false;
        }
      }
-     if(trim($this->nomearq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomearq"])){
+     if(trim((string) $this->nomearq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomearq"])){
        $sql  .= $virgula." nomearq = '$this->nomearq' ";
        $virgula = ",";
-       if(trim($this->nomearq) == null ){
+       if(trim((string) $this->nomearq) == null ){
          $this->erro_sql = " Campo Nome do Arquivo nao Informado.";
          $this->erro_campo = "nomearq";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_db_sysarquivo {
          return false;
        }
      }
-     if(trim($this->descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descricao"])){
+     if(trim((string) $this->descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["descricao"])){
        $sql  .= $virgula." descricao = '$this->descricao' ";
        $virgula = ",";
-       if(trim($this->descricao) == null ){
+       if(trim((string) $this->descricao) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "descricao";
          $this->erro_banco = "";
@@ -342,14 +342,14 @@ class cl_db_sysarquivo {
          return false;
        }
      }
-     if(trim($this->sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sigla"])){
+     if(trim((string) $this->sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sigla"])){
        $sql  .= $virgula." sigla = '$this->sigla' ";
        $virgula = ",";
      }
-     if(trim($this->dataincl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dataincl_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dataincl_dia"] !="") ){
+     if(trim((string) $this->dataincl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dataincl_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dataincl_dia"] !="") ){
        $sql  .= $virgula." dataincl = '$this->dataincl' ";
        $virgula = ",";
-       if(trim($this->dataincl) == null ){
+       if(trim((string) $this->dataincl) == null ){
          $this->erro_sql = " Campo Data Inclusão nao Informado.";
          $this->erro_campo = "dataincl_dia";
          $this->erro_banco = "";
@@ -362,7 +362,7 @@ class cl_db_sysarquivo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["dataincl_dia"])){
          $sql  .= $virgula." dataincl = null ";
          $virgula = ",";
-         if(trim($this->dataincl) == null ){
+         if(trim((string) $this->dataincl) == null ){
            $this->erro_sql = " Campo Data Inclusão nao Informado.";
            $this->erro_campo = "dataincl_dia";
            $this->erro_banco = "";
@@ -373,10 +373,10 @@ class cl_db_sysarquivo {
          }
        }
      }
-     if(trim($this->rotulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rotulo"])){
+     if(trim((string) $this->rotulo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rotulo"])){
        $sql  .= $virgula." rotulo = '$this->rotulo' ";
        $virgula = ",";
-       if(trim($this->rotulo) == null ){
+       if(trim((string) $this->rotulo) == null ){
          $this->erro_sql = " Campo Rótulo nao Informado.";
          $this->erro_campo = "rotulo";
          $this->erro_banco = "";
@@ -386,10 +386,10 @@ class cl_db_sysarquivo {
          return false;
        }
      }
-     if(trim($this->tipotabela)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tipotabela"])){
+     if(trim((string) $this->tipotabela)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tipotabela"])){
        $sql  .= $virgula." tipotabela = $this->tipotabela ";
        $virgula = ",";
-       if(trim($this->tipotabela) == null ){
+       if(trim((string) $this->tipotabela) == null ){
          $this->erro_sql = " Campo Tipo Tabela nao Informado.";
          $this->erro_campo = "tipotabela";
          $this->erro_banco = "";
@@ -399,10 +399,10 @@ class cl_db_sysarquivo {
          return false;
        }
      }
-     if(trim($this->naolibclass)!="" || isset($GLOBALS["HTTP_POST_VARS"]["naolibclass"])){
+     if(trim((string) $this->naolibclass)!="" || isset($GLOBALS["HTTP_POST_VARS"]["naolibclass"])){
        $sql  .= $virgula." naolibclass = '$this->naolibclass' ";
        $virgula = ",";
-       if(trim($this->naolibclass) == null ){
+       if(trim((string) $this->naolibclass) == null ){
          $this->erro_sql = " Campo Não Lib. Classe nao Informado.";
          $this->erro_campo = "naolibclass";
          $this->erro_banco = "";
@@ -412,10 +412,10 @@ class cl_db_sysarquivo {
          return false;
        }
      }
-     if(trim($this->naolibfunc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["naolibfunc"])){
+     if(trim((string) $this->naolibfunc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["naolibfunc"])){
        $sql  .= $virgula." naolibfunc = '$this->naolibfunc' ";
        $virgula = ",";
-       if(trim($this->naolibfunc) == null ){
+       if(trim((string) $this->naolibfunc) == null ){
          $this->erro_sql = " Campo Não Lib. Função nao Informado.";
          $this->erro_campo = "naolibfunc";
          $this->erro_banco = "";
@@ -425,10 +425,10 @@ class cl_db_sysarquivo {
          return false;
        }
      }
-     if(trim($this->naolibprog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["naolibprog"])){
+     if(trim((string) $this->naolibprog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["naolibprog"])){
        $sql  .= $virgula." naolibprog = '$this->naolibprog' ";
        $virgula = ",";
-       if(trim($this->naolibprog) == null ){
+       if(trim((string) $this->naolibprog) == null ){
          $this->erro_sql = " Campo Não Lib. Prog. nao Informado.";
          $this->erro_campo = "naolibprog";
          $this->erro_banco = "";
@@ -438,10 +438,10 @@ class cl_db_sysarquivo {
          return false;
        }
      }
-     if(trim($this->naolibform)!="" || isset($GLOBALS["HTTP_POST_VARS"]["naolibform"])){
+     if(trim((string) $this->naolibform)!="" || isset($GLOBALS["HTTP_POST_VARS"]["naolibform"])){
        $sql  .= $virgula." naolibform = '$this->naolibform' ";
        $virgula = ",";
-       if(trim($this->naolibform) == null ){
+       if(trim((string) $this->naolibform) == null ){
          $this->erro_sql = " Campo Não Lib.. Form nao Informado.";
          $this->erro_campo = "naolibform";
          $this->erro_banco = "";
@@ -459,31 +459,31 @@ class cl_db_sysarquivo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,759,'$this->codarq','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codarq"]))
-           $resac = db_query("insert into db_acount values($acount,140,759,'".AddSlashes(pg_result($resaco,$conresaco,'codarq'))."','$this->codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,140,759,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codarq'))."','$this->codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["nomearq"]))
-           $resac = db_query("insert into db_acount values($acount,140,760,'".AddSlashes(pg_result($resaco,$conresaco,'nomearq'))."','$this->nomearq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,140,760,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'nomearq'))."','$this->nomearq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["descricao"]))
-           $resac = db_query("insert into db_acount values($acount,140,750,'".AddSlashes(pg_result($resaco,$conresaco,'descricao'))."','$this->descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,140,750,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'descricao'))."','$this->descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sigla"]))
-           $resac = db_query("insert into db_acount values($acount,140,761,'".AddSlashes(pg_result($resaco,$conresaco,'sigla'))."','$this->sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,140,761,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sigla'))."','$this->sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dataincl"]))
-           $resac = db_query("insert into db_acount values($acount,140,751,'".AddSlashes(pg_result($resaco,$conresaco,'dataincl'))."','$this->dataincl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,140,751,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dataincl'))."','$this->dataincl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rotulo"]))
-           $resac = db_query("insert into db_acount values($acount,140,756,'".AddSlashes(pg_result($resaco,$conresaco,'rotulo'))."','$this->rotulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,140,756,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rotulo'))."','$this->rotulo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tipotabela"]))
-           $resac = db_query("insert into db_acount values($acount,140,8924,'".AddSlashes(pg_result($resaco,$conresaco,'tipotabela'))."','$this->tipotabela',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,140,8924,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tipotabela'))."','$this->tipotabela',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["naolibclass"]))
-           $resac = db_query("insert into db_acount values($acount,140,8925,'".AddSlashes(pg_result($resaco,$conresaco,'naolibclass'))."','$this->naolibclass',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,140,8925,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'naolibclass'))."','$this->naolibclass',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["naolibfunc"]))
-           $resac = db_query("insert into db_acount values($acount,140,8926,'".AddSlashes(pg_result($resaco,$conresaco,'naolibfunc'))."','$this->naolibfunc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,140,8926,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'naolibfunc'))."','$this->naolibfunc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["naolibprog"]))
-           $resac = db_query("insert into db_acount values($acount,140,8927,'".AddSlashes(pg_result($resaco,$conresaco,'naolibprog'))."','$this->naolibprog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,140,8927,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'naolibprog'))."','$this->naolibprog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["naolibform"]))
-           $resac = db_query("insert into db_acount values($acount,140,8928,'".AddSlashes(pg_result($resaco,$conresaco,'naolibform'))."','$this->naolibform',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,140,8928,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'naolibform'))."','$this->naolibform',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -528,20 +528,20 @@ class cl_db_sysarquivo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,759,'$codarq','E')");
-         $resac = db_query("insert into db_acount values($acount,140,759,'','".AddSlashes(pg_result($resaco,$iresaco,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,140,760,'','".AddSlashes(pg_result($resaco,$iresaco,'nomearq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,140,750,'','".AddSlashes(pg_result($resaco,$iresaco,'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,140,761,'','".AddSlashes(pg_result($resaco,$iresaco,'sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,140,751,'','".AddSlashes(pg_result($resaco,$iresaco,'dataincl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,140,756,'','".AddSlashes(pg_result($resaco,$iresaco,'rotulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,140,8924,'','".AddSlashes(pg_result($resaco,$iresaco,'tipotabela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,140,8925,'','".AddSlashes(pg_result($resaco,$iresaco,'naolibclass'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,140,8926,'','".AddSlashes(pg_result($resaco,$iresaco,'naolibfunc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,140,8927,'','".AddSlashes(pg_result($resaco,$iresaco,'naolibprog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,140,8928,'','".AddSlashes(pg_result($resaco,$iresaco,'naolibform'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,140,759,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,140,760,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'nomearq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,140,750,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,140,761,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,140,751,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dataincl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,140,756,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rotulo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,140,8924,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tipotabela'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,140,8925,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'naolibclass'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,140,8926,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'naolibfunc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,140,8927,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'naolibprog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,140,8928,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'naolibform'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_sysarquivo
@@ -601,7 +601,7 @@ class cl_db_sysarquivo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_sysarquivo";
@@ -636,7 +636,7 @@ class cl_db_sysarquivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -671,7 +671,7 @@ class cl_db_sysarquivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -704,7 +704,7 @@ class cl_db_sysarquivo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-         $campos_sql = explode("#", $ordem);
+         $campos_sql = explode("#", (string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

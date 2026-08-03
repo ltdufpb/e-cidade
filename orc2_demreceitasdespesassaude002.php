@@ -56,8 +56,8 @@ $iAnoCorrente = db_getsession("DB_anousu");
 
 $aDadosReceita    = $oPPaReceita->getQuadroEstimativas();
 $aDadosDespesa    = $oPPaDespesa->getQuadroEstimativas();
-$aValoresReceita  = array();
-$aValoresDespesa  = array();
+$aValoresReceita  = [];
+$aValoresDespesa  = [];
 foreach ($aDadosReceita as $oPrevisao) {
   
   $aValoresReceita[$oPrevisao->iEstrutural] = 0; 
@@ -65,7 +65,7 @@ foreach ($aDadosReceita as $oPrevisao) {
      $aValoresReceita[$oPrevisao->iEstrutural] = $oPrevisao->aEstimativas[$iAnoRef];
   }
 }
-$aSubFuncoes      = array();
+$aSubFuncoes      = [];
 $aLinhasRelatorio = $oRelataorioContabil->getLinhas();
 $iLinhasTotal     = count($aLinhasRelatorio);
 /*

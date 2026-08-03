@@ -55,12 +55,12 @@ $db_opcao = 22;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array (
+	 $clcriaabas->identifica =  [
                                            "rhbases"       => "Bases",
                                            "rhrubricas"     => "Rubricas"
-                                         ); 
-	 $clcriaabas->src        = array("rhbases"=>"pes1_rhbases006.php");
-	 $clcriaabas->disabled   = array("rhrubricas"    => "true");
+                                         ]; 
+	 $clcriaabas->src        = ["rhbases"=>"pes1_rhbases006.php"];
+	 $clcriaabas->disabled   = ["rhrubricas"    => "true"];
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

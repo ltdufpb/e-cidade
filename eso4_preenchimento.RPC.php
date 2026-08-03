@@ -137,9 +137,7 @@ try {
                 return $oStdMatricula;
             }, $aMatriculas);
 
-            usort($oRetorno->matriculas, function ($oMatricula, $oProximaMatricula) {
-                return ($oMatricula->matricula > $oProximaMatricula->matricula);
-            });
+            usort($oRetorno->matriculas, fn($oMatricula, $oProximaMatricula) => $oMatricula->matricula > $oProximaMatricula->matricula);
             break;
 
         case 'limparRespostas':
@@ -162,9 +160,7 @@ try {
                 break;
             }
 
-            $respostasApagar = db_utils::makeCollectionFromRecord($rsAvaliacaoResposta, function ($retorno) {
-                return $retorno->respostas;
-            });
+            $respostasApagar = db_utils::makeCollectionFromRecord($rsAvaliacaoResposta, fn($retorno) => $retorno->respostas);
 
             $oDaoAvaliacaoGrupoPerguntaResposta = new cl_avaliacaogrupoperguntaresposta();
 

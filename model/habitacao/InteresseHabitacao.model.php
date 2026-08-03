@@ -54,7 +54,7 @@ class InteresseHabitacao {
         $this->setGrupoPrograma($oDadosInteresse->ht20_habitgrupoprograma);
         $this->lAtivo          = $oDadosInteresse->ht20_ativo;
         
-        if (trim($oDadosInteresse->ht13_sequencial) != '') {
+        if (trim((string) $oDadosInteresse->ht13_sequencial) != '') {
           $this->oInteressePrograma = new InteresseProgramaHabitacao($oDadosInteresse->ht13_sequencial);
         }
         
@@ -120,7 +120,7 @@ class InteresseHabitacao {
   
   public function cancelar($sHistArquivamento=''){
     
-  	if (trim($sHistArquivamento) == '' ) {
+  	if (trim((string) $sHistArquivamento) == '' ) {
   	  $sHistArquivamento = 'Cancelamento de Interesse';	
   	}
   	

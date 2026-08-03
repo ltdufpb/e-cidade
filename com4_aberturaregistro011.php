@@ -58,7 +58,7 @@ require_once(modification("classes/db_pactovalormovsolicitem_classe.php"));
 require_once(modification("classes/db_orctiporecconveniosolicita_classe.php"));
 
 $oGet = db_utils::postmemory($_GET);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clsolicita                  = new cl_solicita;
 $clsolicitem                 = new cl_solicitem;

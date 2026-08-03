@@ -72,16 +72,16 @@ switch (true) {
 // verifica se somente o mês inicial foi preenchido
 if (isset($perini) || isset($perfim)){
 
- if ( trim($perini) != "" && trim($perfim) == "" ) {
-   $where_matrequi .= " and m40_data >= '".implode('-',array_reverse(explode('/',$perini)))."'";
+ if ( trim((string) $perini) != "" && trim((string) $perfim) == "" ) {
+   $where_matrequi .= " and m40_data >= '".implode('-',array_reverse(explode('/',(string) $perini)))."'";
 
  // verifica se somente o mês final foi preenchido
- } else if ( trim($perfim) != "" && trim($perini) == "" ) {
-   $where_matrequi .= " and  m40_data <= '".implode('-',array_reverse(explode('/',$perfim)))."'";
+ } else if ( trim((string) $perfim) != "" && trim((string) $perini) == "" ) {
+   $where_matrequi .= " and  m40_data <= '".implode('-',array_reverse(explode('/',(string) $perfim)))."'";
 
  // se todos períodos foram preenchidos
- } else if ( trim($perini) != "" && trim($perfim) != "" ) {
-   $where_matrequi .= " and m40_data between '".implode('-',array_reverse(explode('/',$perini)))."' and '".implode('-',array_reverse(explode('/',$perfim)))."'";
+ } else if ( trim((string) $perini) != "" && trim((string) $perfim) != "" ) {
+   $where_matrequi .= " and m40_data between '".implode('-',array_reverse(explode('/',(string) $perini)))."' and '".implode('-',array_reverse(explode('/',(string) $perfim)))."'";
  }
 
 }

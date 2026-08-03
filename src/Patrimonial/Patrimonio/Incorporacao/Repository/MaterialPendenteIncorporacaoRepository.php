@@ -79,15 +79,13 @@ class MaterialPendenteIncorporacaoRepository
      */
     public function getBensPorEmpenho($codigoEmpenho)
     {
-        $rs = $this->montaQueryBuscarDados(array("e60_numemp = {$codigoEmpenho}"));
+        $rs = $this->montaQueryBuscarDados(["e60_numemp = {$codigoEmpenho}"]);
         if (pg_num_rows($rs) == 0) {
-            return array();
+            return [];
         }
 
         $classe = $this;
-        $this->materiaisPendenteIncorporacao = db_utils::makeCollectionFromRecord($rs, function ($dado) use ($classe) {
-            return $classe->make($dado);
-        });
+        $this->materiaisPendenteIncorporacao = db_utils::makeCollectionFromRecord($rs, fn($dado) => $classe->make($dado));
 
         return $this->materiaisPendenteIncorporacao;
     }
@@ -100,9 +98,7 @@ class MaterialPendenteIncorporacaoRepository
     public function toJson(array $materiaisPendenteIncorporacao)
     {
 
-        $bens = array_map(function ($data) {
-            return $data->jsonSerialize();
-        }, $materiaisPendenteIncorporacao);
+        $bens = array_map(fn($data) => $data->jsonSerialize(), $materiaisPendenteIncorporacao);
 
         return $bens;
     }
@@ -114,9 +110,9 @@ class MaterialPendenteIncorporacaoRepository
      */
     public function getById($codigo)
     {
-        $rs = $this->montaQueryBuscarDados(array("t12_sequencial = {$codigo}"));
+        $rs = $this->montaQueryBuscarDados(["t12_sequencial = {$codigo}"]);
         if (pg_num_rows($rs) == 0) {
-            return array();
+            return [];
         }
 
         $bemPendente = $this->make(db_utils::fieldsMemory($rs, 0));

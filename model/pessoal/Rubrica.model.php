@@ -872,22 +872,16 @@ class Rubrica
 
         $iTipoGrupoRentencaoReceita = db_utils::fieldsMemory($rsRubricasRetencao, 0)->e21_retencaotiporecgrupo;
 
-        switch ($iTipoGrupoRentencaoReceita) {
-
-            case 1: //| Fornecedor
-            default:      // Não retencao da Folha de Pagamento
-                $this->sTipoEmpenho = "";
-                break;
-            case 2: //| Folha de Pagamento
-                $this->sTipoEmpenho = "r";
-                break;
-            case 3: //| Pagamento-Extra
-                $this->sTipoEmpenho = "p";
-                break;
-            case 4: //| Devolução
-                $this->sTipoEmpenho = "d";
-                break;
-        }
+        $this->sTipoEmpenho = match ($iTipoGrupoRentencaoReceita) {
+            //| Folha de Pagamento
+            2 => "r",
+            //| Pagamento-Extra
+            3 => "p",
+            //| Devolução
+            4 => "d",
+            // Não retencao da Folha de Pagamento
+            default => "",
+        };
         return $this->sTipoEmpenho;
     }
 
@@ -926,11 +920,11 @@ class Rubrica
                 break;
         }
 
-        return array(
+        return [
             'codigo' => $this->getCodigo(),
             'descricao' => $this->getDescricao(),
             'tipo' => $this->getTipo(),
             'tipoDescricao' => $tipoDescricao
-        );
+        ];
     }
 }

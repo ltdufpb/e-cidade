@@ -30,7 +30,7 @@ require_once(modification("fpdf151/scpdf.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_exemplar_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $lista = db_getsession('sListaImpressao');
 
@@ -72,7 +72,7 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
   $pdf->setfont('arial', '', 7);
   $pdf->SetFillColor(000);//fundo codbarras
   $pdf->int25($codx, $cody, @$bi23_codbarras, 12, 0.341);//codbarras
-  $pdf->text($acerx, $acery, @$bi23_codigo." - ".substr($bi06_titulo, 0, 25));//numero codigo de barras
+  $pdf->text($acerx, $acery, @$bi23_codigo." - ".substr((string) $bi06_titulo, 0, 25));//numero codigo de barras
   
   $rectx += $largura_ret+1;
   $acerx += $largura_ret+1;

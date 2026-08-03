@@ -332,7 +332,7 @@ class ReciboAvulsoPortalDoacoes {
       $iInstituicao = db_getsession('DB_instit');
       $rsInstituicao = db_query($sSql);
 
-      if (pg_numrows($rsInstituicao)>0){
+      if (pg_num_rows($rsInstituicao)>0){
         $iInstituicao = db_utils:: fieldsMemory($rsInstituicao,0)->c61_instit;
       }
 
@@ -490,15 +490,15 @@ class ReciboAvulsoPortalDoacoes {
         $oPdf->uf_config     = $oInstituicao->getUf();
       }
 
-      $sLogradouro  = utf8_decode($oIdentificacao->getLogradouro());
-      $sComplemento = utf8_decode($oIdentificacao->getComplemento());
+      $sLogradouro  = mb_convert_encoding($oIdentificacao->getLogradouro(), 'ISO-8859-1');
+      $sComplemento = mb_convert_encoding($oIdentificacao->getComplemento(), 'ISO-8859-1');
       $sNumCgm      = $oIdentificacao->getCodigo();
       $sNumInscr    = $oIdentificacao->getInscricaoEstadual();
       $sNumero      = $oIdentificacao->getNumero();
-      $sMunicipio   = utf8_decode($oIdentificacao->getMunicipio());
-      $sBairro      = utf8_decode($oIdentificacao->getBairro());
+      $sMunicipio   = mb_convert_encoding($oIdentificacao->getMunicipio(), 'ISO-8859-1');
+      $sBairro      = mb_convert_encoding($oIdentificacao->getBairro(), 'ISO-8859-1');
       $sCep         = $oIdentificacao->getCep();
-      $sNome        = utf8_decode($oIdentificacao->getNome());
+      $sNome        = mb_convert_encoding($oIdentificacao->getNome(), 'ISO-8859-1');
       $sCnpjCpf     = $this->getCnpjCpf();
 
 
@@ -532,7 +532,7 @@ class ReciboAvulsoPortalDoacoes {
       // Identificações recibo
       $oPdf->datacalc           = date('d-m-Y',$dDataUsu);
       $oPdf->predatacalc        = date('d-m-Y',$dDataUsu);
-      $oPdf->linhasdadospagto   = pg_numrows($rsDadosPagamento);
+      $oPdf->linhasdadospagto   = pg_num_rows($rsDadosPagamento);
       $oPdf->recorddadospagto   = $rsDadosPagamento;
       $oPdf->receita            = 'k00_receit';
       $oPdf->receitared         = 'codreduz';
@@ -557,9 +557,9 @@ class ReciboAvulsoPortalDoacoes {
   $datavencimento = db_formatar($oRecibo->getDataVencimentoRecibo(),"d");
 
 
-  if(strlen($oConvenio->getConvenioCobranca()) == 7) {
+  if(strlen((string) $oConvenio->getConvenioCobranca()) == 7) {
 
-    $oPdf->nosso_numero = trim($oConvenio->getConvenioCobranca()) . str_pad($oRecibo->getNumpreRecibo(),8,"0",STR_PAD_LEFT) . "00";
+    $oPdf->nosso_numero = trim((string) $oConvenio->getConvenioCobranca()) . str_pad((string) $oRecibo->getNumpreRecibo(),8,"0",STR_PAD_LEFT) . "00";
   } else {
 
     $oPdf->nosso_numero = $oConvenio->getNossoNumero();
@@ -682,11 +682,11 @@ $oPdf->ufcgm               = $oIdentificacao->sUF;
       throw new Exception(print_r($eErro->getMessage(), true));
     }
 
-    $resultado = array(
+    $resultado = [
       'numpre'         => $oRecibo->getNumpreRecibo(),
       'codarrecadacao' => $iNumpreFormatado,
       'pdf'            => $sBoletoGerado
-    );
+    ];
 
     return $resultado;
   }

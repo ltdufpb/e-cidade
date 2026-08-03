@@ -46,8 +46,8 @@ require_once(modification("libs/db_libcontabilidade.php"));
 
 $c63_codigooperacao = "";
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clestrutura_sistema      = new cl_estrutura_sistema;
 $clconparametro           = new cl_conparametro;
@@ -231,13 +231,13 @@ if (isset ($alterar)) {
   	}
   	//rotina que verifica quando é para incluir no orcelemento ou no orcfontes
   	if ($sqlerro == false) {
-  		$arr_tipo = array ("orcelemento" => "3", "orcfontes" => array("4","9"));
+  		$arr_tipo =  ["orcelemento" => "3", "orcfontes" => ["4","9"]];
 
-  		if (substr($codigo, 0, 1) == $arr_tipo["orcelemento"] || substr($codigo, 0, 3) == '512') {
+  		if (substr((string) $codigo, 0, 1) == $arr_tipo["orcelemento"] || str_starts_with((string) $codigo, '512')) {
 
   			$clorcelemento->o56_codele   = $c60_codcon;
   			$clorcelemento->o56_anousu   = $iAno;
-  			$clorcelemento->o56_elemento = substr($codigo, 0, 13);
+  			$clorcelemento->o56_elemento = substr((string) $codigo, 0, 13);
   			$clorcelemento->o56_descr    = $c60_descr;
   			$clorcelemento->o56_finali   = $c60_finali;
   			$clorcelemento->o56_orcado   = 'true';
@@ -255,13 +255,13 @@ if (isset ($alterar)) {
   				$sqlerro = true;
   			}
   		} else {
-  			if (in_array(substr($codigo, 0, 1),$arr_tipo["orcfontes"]) || substr($codigo, 0, 3) == '612') {
+  			if (in_array(substr((string) $codigo, 0, 1),$arr_tipo["orcfontes"]) || str_starts_with((string) $codigo, '612')) {
 
   				$clorcfontes->o57_codfon = $c60_codcon;
   				$clorcfontes->o57_anousu = $iAno;
   				$clorcfontes->o57_fonte  = $codigo;
   				$clorcfontes->o57_descr  = $c60_descr;
-          $clorcfontes->o57_finali = (trim($c60_finali)==""?' ':$c60_finali);
+          $clorcfontes->o57_finali = (trim((string) $c60_finali)==""?' ':$c60_finali);
   				$clorcfontes->sql_record($clorcfontes->sql_query_file($c60_codcon, $iAno));
   				if ($clorcfontes->numrows > 0) {
   					$clorcfontes->alterar($c60_codcon, $iAno);

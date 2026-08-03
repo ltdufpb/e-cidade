@@ -55,32 +55,16 @@ class pontoFolha
     public function buscaSiglaPorTipo($tipoPonto)
     {
         $sigla = "";
-        switch ($tipoPonto) {
-            case 'fx':
-                $sigla = 'r90';
-                break;
-            case 'fs':
-                $sigla = 'r10';
-                break;
-            case 'fa':
-                $sigla = 'r21';
-                break;
-            case 'fe':
-                $sigla = 'r29';
-                break;
-            case 'fr':
-                $sigla = 'r19';
-                break;
-            case 'f13':
-                $sigla = 'r34';
-                break;
-            case 'com':
-                $sigla = 'r47';
-                break;
-            default:
-                throw new Exception("Sigla não encontrada para o tipo {$tipoPonto}.");
-                break;
-        }
+        $sigla = match ($tipoPonto) {
+            'fx' => 'r90',
+            'fs' => 'r10',
+            'fa' => 'r21',
+            'fe' => 'r29',
+            'fr' => 'r19',
+            'f13' => 'r34',
+            'com' => 'r47',
+            default => throw new Exception("Sigla não encontrada para o tipo {$tipoPonto}."),
+        };
 
         return $sigla;
     }
@@ -101,7 +85,7 @@ class pontoFolha
 
         $oDaoRhrubricas = db_utils::getDao("rhrubricas");
 
-        $aRetornoObj = array();
+        $aRetornoObj = [];
 
         foreach ($aObjDadosPonto as $iInd => $oDadosPonto) {
 
@@ -132,7 +116,7 @@ class pontoFolha
                 }
             } else if ($oRubricaFormula->limdata == "f") {
                 $oDadosPonto->r90_datlim = "";
-            } else if (trim($oRubricaFormula->formula) != "") {
+            } else if (trim((string) $oRubricaFormula->formula) != "") {
                 if ($oDadosPonto->r90_quant == 0) {
                     throw new Exception("Quantidade não informada");
                 }
@@ -821,7 +805,7 @@ class pontoFolha
         $oDaoPontoF13 = db_utils::getDao("pontof13");
         $oDaoPontoCom = db_utils::getDao("pontocom");
 
-        $aListaRubricas = array();
+        $aListaRubricas = [];
 
         if ($sTipoPonto == "fx") {
             $sSigla = "r90_";
@@ -1035,7 +1019,7 @@ class pontoFolha
         foreach ($aObjPonto as $iInd => $oDadosPonto) {
 
             try {
-                $aDadosPonto = array($oDadosPonto);
+                $aDadosPonto = [$oDadosPonto];
                 $lExiteValores = $this->verificaRubrica($sTipoPontoDestino, $aDadosPonto);
             } catch (Exception $eException) {
                 throw new Exception($eException->getMessage());
@@ -1094,7 +1078,7 @@ class pontoFolha
                             throw new Exception("Repasse abortado, Data de Admissão não informada!");
                         }
 
-                        list($iAnoAdm, $iMesAdm, $iDiaAdm) = split("-", $dtDataAdmissao);
+                        [$iAnoAdm, $iMesAdm, $iDiaAdm] = preg_split("#\\-#m", $dtDataAdmissao);
                         --$iDiaAdm;
 
                         if ($iMesAdm == db_mesfolha() && $iAnoAdm == db_anofolha()) {
@@ -1104,12 +1088,12 @@ class pontoFolha
                             $iDiaRecebeMens = 30;
                             $iDiasPagar = $iDiaRecebeMens - $iDiaAdm;
 
-                            if (trim($oDadosPonto->r90_quant) != '') {
+                            if (trim((string) $oDadosPonto->r90_quant) != '') {
                                 $oDadosPonto->r90_quant = ($oDadosPonto->r90_quant / 30) * $iDiasPagar;
                             } else {
                                 $oDadosPonto->r90_quant = 0;
                             }
-                            if (trim($oDadosPonto->r90_valor) != '') {
+                            if (trim((string) $oDadosPonto->r90_valor) != '') {
                                 $oDadosPonto->r90_valor = ($oDadosPonto->r90_valor / 30) * $iDiasPagar;
                             } else {
                                 $oDadosPonto->r90_valor = 0;
@@ -1159,14 +1143,14 @@ class pontoFolha
             throw new Exception("Consulta de rubricas de automáticas abortada,nenhuma matrícula informada!");
         }
 
-        if (trim($iInstit) == '') {
+        if (trim((string) $iInstit) == '') {
             $iInstit = db_getsession('DB_instit');
         }
 
         $oDaoSelecaoPonto = db_utils::getDao("selecaoponto");
         $oDaoSelecaoPontoRubricas = db_utils::getDao("selecaopontorubricas");
 
-        $aListaRubricas = array();
+        $aListaRubricas = [];
 
         $sWhereSelecoes = "r44_instit = {$iInstit}";
         $sSqlSelecoes = $oDaoSelecaoPonto->sql_query(null, "r72_sequencial,r44_where", null, $sWhereSelecoes);
@@ -1202,7 +1186,7 @@ class pontoFolha
                     $sSqlVerificaSelecao .= "        left join rhpespadrao      on rh03_seqpes = rh02_seqpes    ";
                     $sSqlVerificaSelecao .= "  where rh01_regist = {$iMatric}                                   ";
 
-                    if (trim($oSelecao->r44_where) != '') {
+                    if (trim((string) $oSelecao->r44_where) != '') {
                         $sSqlVerificaSelecao .= "  and {$oSelecao->r44_where}                                     ";
                     }
 
@@ -1295,7 +1279,7 @@ class pontoFolha
         }
 
         $oDaoRHPessoalMov = db_utils::getDao("rhpessoalmov");
-        $aListaRubricas = array();
+        $aListaRubricas = [];
 
         foreach ($aDadosSelecaoPonto as $iInd => $oRubricaAutomatica) {
 
@@ -1350,7 +1334,7 @@ class pontoFolha
                 $oDadosRubrica->r90_datlim = '';
             }
 
-            $aDadosRubrica = array($oDadosRubrica);
+            $aDadosRubrica = [$oDadosRubrica];
 
             try {
                 $lExisteValores = $this->verificaRubrica($sTipoPonto, $aDadosRubrica);

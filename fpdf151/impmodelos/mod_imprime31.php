@@ -106,9 +106,9 @@ if(!empty($this->endereco_imovel)) {
 }
 
 
-$impcontador  = "L" . str_pad($this->contador_logradouro, 5, "0", STR_PAD_LEFT);
+$impcontador  = "L" . str_pad((string) $this->contador_logradouro, 5, "0", STR_PAD_LEFT);
 $impcontador .= "/";
-$impcontador .= "G" . str_pad($this->contador, 5, "0", STR_PAD_LEFT);
+$impcontador .= "G" . str_pad((string) $this->contador, 5, "0", STR_PAD_LEFT);
 
 $this->objpdf->Setfont('Arial','B',8);
 $this->objpdf->text($xcol+120, $xlin+41, $impcontador);
@@ -146,10 +146,10 @@ $this->objpdf->text($xcol+100, $xlin+$xb3+89, $this->media_dia);
 
 $this->objpdf->Setfont('Arial','',6);
 $inc_linha = 76;
-for($i = 0;$i < pg_numrows($this->resultLeitura);$i++){
+for($i = 0;$i < pg_num_rows($this->resultLeitura);$i++){
 
-	$exerc = pg_result($this->resultLeitura, $i, $this->campo_ano);
-	$parc  = pg_result($this->resultLeitura, $i, $this->campo_mes);
+	$exerc = pg_fetch_result($this->resultLeitura, $i, $this->campo_ano);
+	$parc  = pg_fetch_result($this->resultLeitura, $i, $this->campo_mes);
 
 	if($exerc == $this->ano && $parc == $this->mes) {
 		$this->objpdf->Setfont('Arial','B',6);
@@ -158,11 +158,11 @@ for($i = 0;$i < pg_numrows($this->resultLeitura);$i++){
 	}
 
 	$this->objpdf->text($xcol+1,  $xlin+$inc_linha, substr(db_mes($parc,2),0,3));
-	$this->objpdf->text($xcol+7,  $xlin+$inc_linha, substr(pg_result($this->resultLeitura,$i,$this->campo_situacao),0,19));
-	$this->objpdf->text($xcol+29, $xlin+$inc_linha, pg_result($this->resultLeitura,$i,$this->campo_leitura));
-	$this->objpdf->text($xcol+43, $xlin+$inc_linha, pg_result($this->resultLeitura,$i,$this->campo_consumo));
-	$this->objpdf->text($xcol+59, $xlin+$inc_linha, pg_result($this->resultLeitura,$i,$this->campo_excesso));
-	$this->objpdf->text($xcol+72, $xlin+$inc_linha, pg_result($this->resultLeitura,$i,$this->campo_dias));
+	$this->objpdf->text($xcol+7,  $xlin+$inc_linha, substr(pg_fetch_result($this->resultLeitura,$i,$this->campo_situacao),0,19));
+	$this->objpdf->text($xcol+29, $xlin+$inc_linha, pg_fetch_result($this->resultLeitura,$i,$this->campo_leitura));
+	$this->objpdf->text($xcol+43, $xlin+$inc_linha, pg_fetch_result($this->resultLeitura,$i,$this->campo_consumo));
+	$this->objpdf->text($xcol+59, $xlin+$inc_linha, pg_fetch_result($this->resultLeitura,$i,$this->campo_excesso));
+	$this->objpdf->text($xcol+72, $xlin+$inc_linha, pg_fetch_result($this->resultLeitura,$i,$this->campo_dias));
 	$inc_linha += 3;
 }
 $this->objpdf->Setfont('Arial','',8);
@@ -183,7 +183,7 @@ $xb4 = 5; // Eixo X do Bloco 4 do carne
 $inc_linha = 107;
 $xcol2 = 0;
 $this->valor_total = 0;
-for($i = 0;$i < pg_numrows($this->resultArrecad);$i++){
+for($i = 0;$i < pg_num_rows($this->resultArrecad);$i++){
 
 	if($inc_linha == 107) {
 		$this->objpdf->Setfont('Arial','B',7);
@@ -194,24 +194,24 @@ for($i = 0;$i < pg_numrows($this->resultArrecad);$i++){
 		$this->objpdf->text($xcol2+$xcol+59,$xlin+$xb4+99,"Numpre");
 		$this->objpdf->Setfont('Arial','',7);
 	}
-	
-	$this->objpdf->text($xcol2+$xcol+2,$xlin+$inc_linha,  pg_result($this->resultArrecad,$i,$this->campo_receit)  );
-	$this->objpdf->text($xcol2+$xcol+9,$xlin+$inc_linha, pg_result($this->resultArrecad,$i,$this->campo_recdescr) );
 
-	$parcela = str_pad(pg_result($this->resultArrecad,$i,$this->campo_numpar),3,"0",STR_PAD_LEFT) . "/" .
-	           str_pad(pg_result($this->resultArrecad,$i,$this->campo_numtot),3,"0",STR_PAD_LEFT) ;
+	$this->objpdf->text($xcol2+$xcol+2,$xlin+$inc_linha,  pg_fetch_result($this->resultArrecad,$i,$this->campo_receit)  );
+	$this->objpdf->text($xcol2+$xcol+9,$xlin+$inc_linha, pg_fetch_result($this->resultArrecad,$i,$this->campo_recdescr) );
+
+	$parcela = str_pad(pg_fetch_result($this->resultArrecad,$i,$this->campo_numpar),3,"0",STR_PAD_LEFT) . "/" .
+	           str_pad(pg_fetch_result($this->resultArrecad,$i,$this->campo_numtot),3,"0",STR_PAD_LEFT) ;
 
 	$this->objpdf->text($xcol2+$xcol+33,$xlin+$inc_linha,$parcela);
 
-	$valor = str_pad(trim(db_formatar(pg_result($this->resultArrecad,$i,$this->campo_valor),"f")), 10, "*", STR_PAD_LEFT);
-	
+	$valor = str_pad(trim(db_formatar(pg_fetch_result($this->resultArrecad,$i,$this->campo_valor),"f")), 10, "*", STR_PAD_LEFT);
+
 	$this->objpdf->text($xcol2+$xcol+45,$xlin+$inc_linha, $valor);
 
-	$this->valor_total += pg_result($this->resultArrecad,$i,$this->campo_valor);
+	$this->valor_total += pg_fetch_result($this->resultArrecad,$i,$this->campo_valor);
 
-	$numpre = str_pad(pg_result($this->resultArrecad,$i,$this->campo_numpre), 8, "0", STR_PAD_LEFT);
+	$numpre = str_pad(pg_fetch_result($this->resultArrecad,$i,$this->campo_numpre), 8, "0", STR_PAD_LEFT);
 	$this->objpdf->text($xcol2+$xcol+59,$xlin+$inc_linha, $numpre);
-	
+
 	$inc_linha += 3;
 
 	if($inc_linha > 119) {
@@ -298,7 +298,7 @@ if(empty($this->msg_debconta01)) {
 	$this->objpdf->Text($xcol+10,$xlin+$xb6+181,$this->msg_debconta01);
 	$this->objpdf->Text($xcol+10,$xlin+$xb6+186,$this->msg_debconta02);
 }
-		
+
 
 
 //////////////////////

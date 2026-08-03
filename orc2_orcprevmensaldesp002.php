@@ -132,7 +132,7 @@ $head5 = 'Quebra :  ' . $quebra;
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in ($instits)");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinst;
     $xvirg = ', ';
@@ -142,7 +142,7 @@ $sele_work = $clselorcdotacao->getDados() . " and w.o58_instit in ($instits) ";
 
 
 $completo = false;
-$nivela = substr($nivel, 0, 1);
+$nivela = substr((string) $nivel, 0, 1);
 if ($nivela == "9") {
     $completo = true;
     $nivela = "8";
@@ -296,7 +296,7 @@ $t12 = 0;
 
 $tt = 0;
 
-for ($i = 0; $i < pg_numrows($result); $i++) {
+for ($i = 0; $i < pg_num_rows($result); $i++) {
     db_fieldsmemory($result, $i);
 
     if ($nivel == 8) {
@@ -377,10 +377,10 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
     } else {
         if ($nivel == 7) { //Elemento
             $pdf->cell(20, $alt, $codigo, 0, 0, "R", $pre);
-            $pdf->cell(48, $alt, substr($descr, 0, 36), 0, 0, "L", $pre);
+            $pdf->cell(48, $alt, substr((string) $descr, 0, 36), 0, 0, "L", $pre);
         } else {
             $pdf->cell(7, $alt, $codigo, 0, 0, "R", $pre);
-            $pdf->cell(61, $alt, substr($descr, 0, 47), 0, 0, "L", $pre);
+            $pdf->cell(61, $alt, substr((string) $descr, 0, 47), 0, 0, "L", $pre);
         }
 
         $pdf->cell(16, $alt, db_formatar($jan, 'f'), 0, 0, "R", $pre);

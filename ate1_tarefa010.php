@@ -64,9 +64,9 @@ $cl_tarefasyscadproced = new cl_tarefasyscadproced;
 $cltarefaitem 	  	= new cl_tarefaitem;
 $cltarefaanexos     = new cl_tarefaanexos;
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
-$ip = $HTTP_SERVER_VARS["REMOTE_ADDR"];
+db_postmemory($_POST);
+db_postmemory($_GET);
+$ip = $_SERVER["REMOTE_ADDR"];
 $usuario = db_getsession("DB_id_usuario");
 //echo "tarefa = $tarefa <br> ip = $ip... usu= $usuario";
 

@@ -48,7 +48,7 @@ db_app::import("exceptions.*");
 $oJson              = new Services_JSON();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno           = new stdClass();
-$oRetorno->dados    = array();
+$oRetorno->dados    = [];
 $oRetorno->status   = 1;
 
 
@@ -79,7 +79,7 @@ switch ($oParam->exec) {
    */
   case 'buscaTipoFamiliar':
 
-    $oRetorno->tipoFamiliar = array();
+    $oRetorno->tipoFamiliar = [];
     $oDaoTipoFamiliar       = db_utils::getDao('tipofamiliar');
     $sOrderTipoFamliar      = "z14_sequencial";
     $sSqlTipoFamiliar       = $oDaoTipoFamiliar->sql_query_file(null, "*", $sOrderTipoFamliar);
@@ -93,7 +93,7 @@ switch ($oParam->exec) {
         $oDadosTipoFamilar         = db_utils::fieldsMemory($rsTipoFamiliar, $iContador);
         $oTipoFamiliar             = new stdClass();
         $oTipoFamiliar->iCodigo    = $oDadosTipoFamilar->z14_sequencial;
-        $oTipoFamiliar->sDescricao = urlencode($oDadosTipoFamilar->z14_descricao);
+        $oTipoFamiliar->sDescricao = urlencode((string) $oDadosTipoFamilar->z14_descricao);
         $oRetorno->tipoFamiliar[]  = $oTipoFamiliar;
       }
     }
@@ -102,7 +102,7 @@ switch ($oParam->exec) {
 
     $oPergunta            = new AvaliacaoPergunta(3000104);
     $aRespostasDaPergunta = $oPergunta->getRespostas();
-    $aRespostas           = array();
+    $aRespostas           = [];
     foreach ($aRespostasDaPergunta as $oRespostaPergunta) {
 
       $oResposta = new stdClass();
@@ -117,7 +117,7 @@ switch ($oParam->exec) {
 
     $oPergunta            = new AvaliacaoPergunta(3000113);
     $aRespostasDaPergunta = $oPergunta->getRespostas();
-    $aRespostas           = array();
+    $aRespostas           = [];
     foreach ($aRespostasDaPergunta as $oRespostaPergunta) {
 
       if ($oRespostaPergunta->codigoresposta == 3000368 ||
@@ -138,7 +138,7 @@ switch ($oParam->exec) {
 
     $oPergunta            = new AvaliacaoPergunta(3000073);
     $aRespostasDaPergunta = $oPergunta->getRespostas();
-    $aRespostas           = array();
+    $aRespostas           = [];
     foreach ($aRespostasDaPergunta as $oRespostaPergunta) {
 
       $oResposta = new stdClass();
@@ -153,7 +153,7 @@ switch ($oParam->exec) {
 
     $oPergunta            = new AvaliacaoPergunta(3000121);
     $aRespostasDaPergunta = $oPergunta->getRespostas();
-    $aRespostas           = array();
+    $aRespostas           = [];
     foreach ($aRespostasDaPergunta as $oRespostaPergunta) {
 
       $oResposta = new stdClass();
@@ -172,7 +172,7 @@ switch ($oParam->exec) {
     $rsAvaliacao   = $oDaoAvaliacao->sql_record($sSqlAvaliacao);
     $iRegistros    = $oDaoAvaliacao->numrows;
 
-    $oRetorno->aAes = array();
+    $oRetorno->aAes = [];
 
     if ($iRegistros == 0 ) {
 
@@ -199,7 +199,7 @@ switch ($oParam->exec) {
     $rsAvaliacao   = $oDaoAvaliacao->sql_record($sSqlAvaliacao);
     $iRegistros    = $oDaoAvaliacao->numrows;
 
-    $oRetorno->aCras = array();
+    $oRetorno->aCras = [];
 
     if ($iRegistros == 0 ) {
 

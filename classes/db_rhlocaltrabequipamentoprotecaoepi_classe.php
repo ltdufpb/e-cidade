@@ -31,7 +31,7 @@ class cl_rhlocaltrabequipamentoprotecaoepi
     public function __construct()
     {
         $this->rotulo = new rotulo("rhlocaltrabequipamentoprotecaoepi"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -78,10 +78,10 @@ class cl_rhlocaltrabequipamentoprotecaoepi
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh259_sequencial = pg_result($result,0,0); 
+       $this->rh259_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhlocaltrabequipamentoprotecaoepi_rh259_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh259_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh259_sequencial)){
          $this->erro_sql = " Campo rh259_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -115,7 +115,7 @@ class cl_rhlocaltrabequipamentoprotecaoepi
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "EPI do Local de Trabalho ($this->rh259_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "EPI do Local de Trabalho já Cadastrado";
@@ -144,13 +144,13 @@ class cl_rhlocaltrabequipamentoprotecaoepi
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1013702,'$this->rh259_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010861,1013702,'','".AddSlashes(pg_result($resaco,0,'rh259_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010861,1013703,'','".AddSlashes(pg_result($resaco,0,'rh259_rhlocaltrabequipamentoprotecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010861,1013704,'','".AddSlashes(pg_result($resaco,0,'rh259_documentoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010861,1013705,'','".AddSlashes(pg_result($resaco,0,'rh259_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010861,1013702,'','".AddSlashes(pg_fetch_result($resaco,0,'rh259_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010861,1013703,'','".AddSlashes(pg_fetch_result($resaco,0,'rh259_rhlocaltrabequipamentoprotecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010861,1013704,'','".AddSlashes(pg_fetch_result($resaco,0,'rh259_documentoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010861,1013705,'','".AddSlashes(pg_fetch_result($resaco,0,'rh259_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -161,10 +161,10 @@ class cl_rhlocaltrabequipamentoprotecaoepi
       $this->atualizacampos();
      $sql = " update rhlocaltrabequipamentoprotecaoepi set ";
      $virgula = "";
-     if(trim($this->rh259_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh259_sequencial"])){ 
+     if(trim((string) $this->rh259_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh259_sequencial"])){ 
        $sql  .= $virgula." rh259_sequencial = $this->rh259_sequencial ";
        $virgula = ",";
-       if(trim($this->rh259_sequencial) == null ){ 
+       if(trim((string) $this->rh259_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "rh259_sequencial";
          $this->erro_banco = "";
@@ -174,10 +174,10 @@ class cl_rhlocaltrabequipamentoprotecaoepi
          return false;
        }
      }
-     if(trim($this->rh259_rhlocaltrabequipamentoprotecao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh259_rhlocaltrabequipamentoprotecao"])){ 
+     if(trim((string) $this->rh259_rhlocaltrabequipamentoprotecao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh259_rhlocaltrabequipamentoprotecao"])){ 
        $sql  .= $virgula." rh259_rhlocaltrabequipamentoprotecao = $this->rh259_rhlocaltrabequipamentoprotecao ";
        $virgula = ",";
-       if(trim($this->rh259_rhlocaltrabequipamentoprotecao) == null ){ 
+       if(trim((string) $this->rh259_rhlocaltrabequipamentoprotecao) == null ){ 
          $this->erro_sql = " Campo Sequencial equipamento proteção não informado.";
          $this->erro_campo = "rh259_rhlocaltrabequipamentoprotecao";
          $this->erro_banco = "";
@@ -187,11 +187,11 @@ class cl_rhlocaltrabequipamentoprotecaoepi
          return false;
        }
      }
-     if(trim($this->rh259_documentoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh259_documentoavaliacao"])){ 
+     if(trim((string) $this->rh259_documentoavaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh259_documentoavaliacao"])){ 
        $sql  .= $virgula." rh259_documentoavaliacao = '$this->rh259_documentoavaliacao' ";
        $virgula = ",";
      }
-     if(trim($this->rh259_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh259_descricao"])){ 
+     if(trim((string) $this->rh259_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh259_descricao"])){ 
        $sql  .= $virgula." rh259_descricao = '$this->rh259_descricao' ";
        $virgula = ",";
      }
@@ -209,17 +209,17 @@ class cl_rhlocaltrabequipamentoprotecaoepi
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1013702,'$this->rh259_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh259_sequencial"]) || $this->rh259_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010861,1013702,'".AddSlashes(pg_result($resaco,$conresaco,'rh259_sequencial'))."','$this->rh259_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010861,1013702,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh259_sequencial'))."','$this->rh259_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh259_rhlocaltrabequipamentoprotecao"]) || $this->rh259_rhlocaltrabequipamentoprotecao != "")
-             $resac = db_query("insert into db_acount values($acount,1010861,1013703,'".AddSlashes(pg_result($resaco,$conresaco,'rh259_rhlocaltrabequipamentoprotecao'))."','$this->rh259_rhlocaltrabequipamentoprotecao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010861,1013703,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh259_rhlocaltrabequipamentoprotecao'))."','$this->rh259_rhlocaltrabequipamentoprotecao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh259_documentoavaliacao"]) || $this->rh259_documentoavaliacao != "")
-             $resac = db_query("insert into db_acount values($acount,1010861,1013704,'".AddSlashes(pg_result($resaco,$conresaco,'rh259_documentoavaliacao'))."','$this->rh259_documentoavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010861,1013704,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh259_documentoavaliacao'))."','$this->rh259_documentoavaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh259_descricao"]) || $this->rh259_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,1010861,1013705,'".AddSlashes(pg_result($resaco,$conresaco,'rh259_descricao'))."','$this->rh259_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010861,1013705,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh259_descricao'))."','$this->rh259_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -273,13 +273,13 @@ class cl_rhlocaltrabequipamentoprotecaoepi
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1013702,'$rh259_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010861,1013702,'','".AddSlashes(pg_result($resaco,$iresaco,'rh259_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010861,1013703,'','".AddSlashes(pg_result($resaco,$iresaco,'rh259_rhlocaltrabequipamentoprotecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010861,1013704,'','".AddSlashes(pg_result($resaco,$iresaco,'rh259_documentoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010861,1013705,'','".AddSlashes(pg_result($resaco,$iresaco,'rh259_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010861,1013702,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh259_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010861,1013703,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh259_rhlocaltrabequipamentoprotecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010861,1013704,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh259_documentoavaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010861,1013705,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh259_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

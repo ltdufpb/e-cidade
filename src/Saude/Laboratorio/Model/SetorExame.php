@@ -198,12 +198,12 @@ class SetorExame
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'la09_i_codigo' => $this->getCodigo(),
             'la09_i_labsetor' => $this->getLaboratorioSetor(),
             'la09_i_exame' => $this->getExame(),
             'la09_i_ativo' => $this->getAtivo(),
-        );
+        ];
 
         return $retorno;
     }

@@ -57,8 +57,8 @@ $clrotulo->label('k51_descr');
 $clrotulo->label('v83_nomearq');
 $clrotulo->label('v84_nomearq');
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 db_app::load("scripts.js");
 db_app::load("prototype.js");
 db_app::load("strings.js");

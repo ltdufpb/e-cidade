@@ -49,7 +49,7 @@ $clrotulo->label("z01_nome");
 $clrotulo->label("e82_codord");
 $clrotulo->label("e60_codemp");
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $dbwhere  = " e80_instit = " . db_getsession("DB_instit") . " and e75_codret = ".$retorno;
 $dbwhere .= " and e75_ativo is true and e90_cancelado = false ";
@@ -156,9 +156,9 @@ $p = 1;
 $alt = 4;
 $pagadora = "";
 
-$arr_valconta = Array();
-$arr_valretencao = Array();
-$arr_valmovis = Array();
+$arr_valconta = [];
+$arr_valretencao = [];
+$arr_valmovis = [];
 $arr_valtconta = 0;
 $arr_valtretencao = 0;
 $arr_valtmovis = 0;

@@ -28,7 +28,7 @@
 require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 $pdf = new PDF('L');
@@ -78,7 +78,7 @@ $sql = "SELECT *, (SELECT arqret from disarq where codret = codretatual) as nome
 
 //echo $sql; exit;
 $result = db_query($sql) or die("Erro realizando consulta : ".$sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos o período de '.db_formatar($iDatai, 'd').' a '.db_formatar($iDataf, 'd'));
 }
@@ -100,14 +100,14 @@ INNER JOIN disarq ON disbanco.codret = disarq.codret
 WHERE disbanco.codret = $codret";
 
 $resultPag = db_query($sqlPag) or die("Erro realizando consulta : ".$sqlPag);
-$xxnumPag = pg_numrows($resultPag);
+$xxnumPag = pg_num_rows($resultPag);
 
 $head2 = "RELATÓRIO DE CADASTRO EM CONTA";
 $head3 = "POR ARQUIVO PROCESSADO";
-$head4 = "Banco: ".pg_result($resultArquivo,0,0)." - Agência: ".pg_result($resultArquivo,0,1);
+$head4 = "Banco: ".pg_fetch_result($resultArquivo,0,0)." - Agência: ".pg_fetch_result($resultArquivo,0,1);
 $head5 = "Código do Arquivo: ".$codret;
-$head6 = "Nome do Arquivo: ".pg_result($resultArquivo,0,2);
-$head7 = "Usuário: ".pg_result($resultArquivo,0,3);
+$head6 = "Nome do Arquivo: ".pg_fetch_result($resultArquivo,0,2);
+$head7 = "Usuário: ".pg_fetch_result($resultArquivo,0,3);
 
 $pdf->ln(2);
 $pdf->AddPage();
@@ -177,10 +177,10 @@ for ($i = 0; $i < $xxnum; $i ++) {
   $pdf->Cell(16, 6, db_formatar($d63_datalancatual, 'd'), 1, 0, "C", 0);
   $pdf->Cell(10, 6, $statusatual                        , 1, 0, "L", 0);
   $pdf->Cell(10, 6, $acaoatual                          , 1, 0, "L", 0);
-  $pdf->Cell(14, 6, trim($d63_agenciaatual)             , 1, 0, "R", 0);
-  $pdf->Cell(16, 6, trim($d63_contaatual)               , 1, 0, "R", 0);
+  $pdf->Cell(14, 6, trim((string) $d63_agenciaatual)             , 1, 0, "R", 0);
+  $pdf->Cell(16, 6, trim((string) $d63_contaatual)               , 1, 0, "R", 0);
 
-  $arr_ant = explode("||", $anterior);
+  $arr_ant = explode("||", (string) $anterior);
 
     if($arr_ant[1] == 1) {
       $statusant = "PEND";

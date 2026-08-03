@@ -55,7 +55,7 @@ $iRegime           = 0;
 /**
  * Data do perido das ferias 
  */
-$sDataPesquisa = implode("-", array_reverse(explode("/",$oGet->periodo))); 
+$sDataPesquisa = implode("-", array_reverse(explode("/",(string) $oGet->periodo))); 
 
 /**
  * Intervalo inicial 
@@ -366,7 +366,7 @@ if ( pg_num_rows($rsFuncionarios) == 0 ) {
  * teremos um array com a seguinte estrutura:
  * Agrupador -> Funcionarios -> Dados das Férias abertas
  */
-$aAgrupador         = array();
+$aAgrupador         = [];
 $iTotalFuncionarios = pg_num_rows($rsFuncionarios); 
 
 for ($i = 0; $i < $iTotalFuncionarios; $i++) {
@@ -377,7 +377,7 @@ for ($i = 0; $i < $iTotalFuncionarios; $i++) {
     
     $aAgrupador[$oDados->agrupador_codigo] = new stdClass();
     $aAgrupador[$oDados->agrupador_codigo]->sAgrupadorDescricao = $oDados->agrupador_descricao;
-    $aAgrupador[$oDados->agrupador_codigo]->funcionarios        = array();   
+    $aAgrupador[$oDados->agrupador_codigo]->funcionarios        = [];   
   }
 
   $oFuncionario                       = new stdClass();
@@ -388,7 +388,7 @@ for ($i = 0; $i < $iTotalFuncionarios; $i++) {
   $oFuncionario->periodogozadofinal   = '';
   $oFuncionario->periodoaquisitivoini = '';
   $oFuncionario->periodoaquisitivofim = '';
-  $oFuncionario->periodosvencidos     = array();
+  $oFuncionario->periodosvencidos     = [];
   
   /**
    * Último período de férias gozados pelo funcionário
@@ -477,7 +477,7 @@ for ($i = 0; $i < $iTotalFuncionarios; $i++) {
         $oPeriodo->datainicial = $oDadosFerias->r30_perai; 
         $oPeriodo->datafinal   = $oDadosFerias->r30_peraf; 
         $oPeriodo->diasabono   = $oDadosFerias->r30_abono; 
-        $aDataFinal  = explode("-", $oPeriodo->datafinal);
+        $aDataFinal  = explode("-", (string) $oPeriodo->datafinal);
         $sDataLimite = date("Y-m-d", mktime(0, 0, 0, $aDataFinal[1], $aDataFinal[2]-30, $aDataFinal[0]+1)); 
         $oPeriodo->limite      = $sDataLimite; 
         $oFuncionario->periodosvencidos[] = $oPeriodo;
@@ -487,7 +487,7 @@ for ($i = 0; $i < $iTotalFuncionarios; $i++) {
 
   if ($oFuncionario->periodoaquisitivofim != "") {
 
-    $aDataFinal  = explode("-", $oFuncionario->periodoaquisitivofim);
+    $aDataFinal  = explode("-", (string) $oFuncionario->periodoaquisitivofim);
     $sDataLimite = date("Y-m-d", mktime(0, 0, 0, $aDataFinal[1], $aDataFinal[2]+1, $aDataFinal[0])); 
     $sDataInicial = $oFuncionario->periodoaquisitivofim;     
   }
@@ -503,7 +503,7 @@ for ($i = 0; $i < $iTotalFuncionarios; $i++) {
     $oPeriodo->diasgozo    = 30;
     $oPeriodo->diasgozados = '';
     $oPeriodo->datainicial  = $sDataInicial;
-    $aDataInicial   = explode("-", $sDataInicial);
+    $aDataInicial   = explode("-", (string) $sDataInicial);
     $sUltimaData    = date("Y-m-d", mktime(0, 0, 0, $aDataInicial[1]+12, $aDataInicial[2]-1, $aDataInicial[0]));
     $oPeriodo->datafinal   = $sUltimaData;
     $aDataFinal   = explode("-", $oPeriodo->datafinal);
@@ -525,7 +525,7 @@ for ($i = 0; $i < $iTotalFuncionarios; $i++) {
 /**
  * Array com as descricoes usadas no header do pdf7
  */
-$aDescricoes = array(
+$aDescricoes = [
   'numerica'       => 'Numérica',
   'alfabetica'     => 'Alfabética',
   'selecionado'    => 'Selecionado',
@@ -535,7 +535,7 @@ $aDescricoes = array(
   'lotacao'        => 'Lotação',
   'matricula'      => 'Matrícula',
   'locaistrabalho' => 'Locais de Trabalho'
-);
+];
 
 /**
  * Monta PDF 

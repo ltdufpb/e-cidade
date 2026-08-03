@@ -1,16 +1,16 @@
 <?php
 
-return array(
-    'ideRespInf' => array(
-        'properties' => array(
+return [
+    'ideRespInf' => [
+        'properties' => [
             'nmResp',
             'cpfResp',
             'telefone',
             'email'
-        ),
-    ),
-    'infoFech' => array(
-        'properties' => array(
+        ],
+    ],
+    'infoFech' => [
+        'properties' => [
             'evtServTm',
             'evtServPr',
             'evtAssDespRec',
@@ -19,6 +19,6 @@ return array(
             'evtCPRB',
             'evtPgtos',
             'compSemMovto'
-        ),
-    )
-);
+        ],
+    ]
+];

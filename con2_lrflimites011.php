@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $anousu = db_getsession("DB_anousu");
 ?>
 
@@ -134,7 +134,7 @@ $anousu = db_getsession("DB_anousu");
 
                     $oRelatorio = new relatorioContabil(93, false);
                     $aPeriodos = $oRelatorio->getPeriodos();
-                    $aListaPeriodos = array();
+                    $aListaPeriodos = [];
                     foreach ($aPeriodos as $oPeriodo) {
                       $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;
                     }

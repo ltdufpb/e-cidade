@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_documentopadrao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_documentopadrao = new cl_db_documentopadrao;
 $cldb_documentopadrao->rotulo->label("db60_coddoc");
 $cldb_documentopadrao->rotulo->label("db60_descr");
@@ -105,9 +105,9 @@ $cldb_documentopadrao->rotulo->label("db60_descr");
           $sql = $cldb_documentopadrao->sql_query("",$campos,"db60_coddoc","");
         }
 				
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_db60_coddoc)) {
-          $repassa = array("chave_db60_coddoc"=>$chave_db60_coddoc,"chave_db60_coddoc"=>$chave_db60_coddoc);
+          $repassa = ["chave_db60_coddoc"=>$chave_db60_coddoc,"chave_db60_coddoc"=>$chave_db60_coddoc];
         }
   
 	      db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

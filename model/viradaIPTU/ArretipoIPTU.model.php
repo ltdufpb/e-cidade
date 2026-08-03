@@ -67,13 +67,13 @@ class ArretipoIPTU implements iViradaIPTU {
    * Campos chave configurados na tabela iptutabelasconfigcampochave
    * @var array
    */
-  private $aCampoChave    = array();
+  private $aCampoChave    = [];
 
   /**
    * Campos correcao configurados na tabela iptutabelasconfigcampocorrecao
    * @var array
    */
-  private $aCampoCorrecao = array();
+  private $aCampoCorrecao = [];
 
   /**
    * @return $this->iAnoAtual
@@ -341,17 +341,17 @@ class ArretipoIPTU implements iViradaIPTU {
 	          $oDaoArretipo->$sNomeCampoArretipo = "{$nSomaPercentual}";
 	        } else {
 
-		        if (trim($sNomeCampoArretipo) == 'k00_descr') {
+		        if (trim((string) $sNomeCampoArretipo) == 'k00_descr') {
 	            $oDaoArretipo->$sNomeCampoArretipo = "IPTU {$this->getAnoNovo()}";
-            } elseif( trim($sNomeCampoArretipo) == 'k00_agnum' || trim($sNomeCampoArretipo) == 'k00_agpar' ||
-                      trim($sNomeCampoArretipo) == 'k00_emrec' || trim($sNomeCampoArretipo) == 'k00_impval' ) {
+            } elseif( trim((string) $sNomeCampoArretipo) == 'k00_agnum' || trim((string) $sNomeCampoArretipo) == 'k00_agpar' ||
+                      trim((string) $sNomeCampoArretipo) == 'k00_emrec' || trim((string) $sNomeCampoArretipo) == 'k00_impval' ) {
 
               $oDaoArretipo->$sNomeCampoArretipo = "false";
               if( $oDadosArretipo->$sNomeCampoArretipo == 't' ){
                 $oDaoArretipo->$sNomeCampoArretipo = "true";
               }
 
-            } elseif( trim($sNomeCampoArretipo) == 'k00_taxaespecifica' && $oDaoArretipo->$sNomeCampoArretipo == null ){
+            } elseif( trim((string) $sNomeCampoArretipo) == 'k00_taxaespecifica' && $oDaoArretipo->$sNomeCampoArretipo == null ){
 
               $oDaoArretipo->$sNomeCampoArretipo = "null";             
             } else {

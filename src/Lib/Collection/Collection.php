@@ -8,7 +8,7 @@ abstract class Collection implements \Countable, \Iterator, \ArrayAccess
 
     protected $position;
 
-    protected $itens = array();
+    protected $itens = [];
 
     public function __construct()
     {

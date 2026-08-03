@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE iptucalclogmat
 class cl_iptucalclogmat { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j28_codigo = 0; 
-   var $j28_matric = 0; 
-   var $j28_tipologcalc = 0; 
-   var $j28_obs = null; 
+   public $j28_codigo = 0; 
+   public $j28_matric = 0; 
+   public $j28_tipologcalc = 0; 
+   public $j28_obs = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j28_codigo = int4 = Sequencial 
                  j28_matric = int4 = Matrícula do Imóvel 
                  j28_tipologcalc = int4 = Codigo 
                  j28_obs = text = Observacoes 
                  ";
    //funcao construtor da classe 
-   function cl_iptucalclogmat() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucalclogmat"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,7 +134,7 @@ class cl_iptucalclogmat {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Matriculas do log do calculo do iptu ($this->j28_codigo."-".$this->j28_matric) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Matriculas do log do calculo do iptu já Cadastrado";
@@ -158,14 +158,14 @@ class cl_iptucalclogmat {
      $resaco = $this->sql_record($this->sql_query_file($this->j28_codigo,$this->j28_matric));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7888,'$this->j28_codigo','I')");
        $resac = db_query("insert into db_acountkey values($acount,7889,'$this->j28_matric','I')");
-       $resac = db_query("insert into db_acount values($acount,1321,7888,'','".AddSlashes(pg_result($resaco,0,'j28_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1321,7889,'','".AddSlashes(pg_result($resaco,0,'j28_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1321,7893,'','".AddSlashes(pg_result($resaco,0,'j28_tipologcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1321,9739,'','".AddSlashes(pg_result($resaco,0,'j28_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1321,7888,'','".AddSlashes(pg_fetch_result($resaco,0,'j28_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1321,7889,'','".AddSlashes(pg_fetch_result($resaco,0,'j28_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1321,7893,'','".AddSlashes(pg_fetch_result($resaco,0,'j28_tipologcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1321,9739,'','".AddSlashes(pg_fetch_result($resaco,0,'j28_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -174,10 +174,10 @@ class cl_iptucalclogmat {
       $this->atualizacampos();
      $sql = " update iptucalclogmat set ";
      $virgula = "";
-     if(trim($this->j28_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j28_codigo"])){ 
+     if(trim((string) $this->j28_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j28_codigo"])){ 
        $sql  .= $virgula." j28_codigo = $this->j28_codigo ";
        $virgula = ",";
-       if(trim($this->j28_codigo) == null ){ 
+       if(trim((string) $this->j28_codigo) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j28_codigo";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_iptucalclogmat {
          return false;
        }
      }
-     if(trim($this->j28_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j28_matric"])){ 
+     if(trim((string) $this->j28_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j28_matric"])){ 
        $sql  .= $virgula." j28_matric = $this->j28_matric ";
        $virgula = ",";
-       if(trim($this->j28_matric) == null ){ 
+       if(trim((string) $this->j28_matric) == null ){ 
          $this->erro_sql = " Campo Matrícula do Imóvel nao Informado.";
          $this->erro_campo = "j28_matric";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_iptucalclogmat {
          return false;
        }
      }
-     if(trim($this->j28_tipologcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j28_tipologcalc"])){ 
+     if(trim((string) $this->j28_tipologcalc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j28_tipologcalc"])){ 
        $sql  .= $virgula." j28_tipologcalc = $this->j28_tipologcalc ";
        $virgula = ",";
-       if(trim($this->j28_tipologcalc) == null ){ 
+       if(trim((string) $this->j28_tipologcalc) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "j28_tipologcalc";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_iptucalclogmat {
          return false;
        }
      }
-     if(trim($this->j28_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j28_obs"])){ 
+     if(trim((string) $this->j28_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j28_obs"])){ 
        $sql  .= $virgula." j28_obs = '$this->j28_obs' ";
        $virgula = ",";
-       if(trim($this->j28_obs) == null ){ 
+       if(trim((string) $this->j28_obs) == null ){ 
          $this->erro_sql = " Campo Observacoes nao Informado.";
          $this->erro_campo = "j28_obs";
          $this->erro_banco = "";
@@ -237,18 +237,18 @@ class cl_iptucalclogmat {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7888,'$this->j28_codigo','A')");
          $resac = db_query("insert into db_acountkey values($acount,7889,'$this->j28_matric','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j28_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1321,7888,'".AddSlashes(pg_result($resaco,$conresaco,'j28_codigo'))."','$this->j28_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1321,7888,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j28_codigo'))."','$this->j28_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j28_matric"]))
-           $resac = db_query("insert into db_acount values($acount,1321,7889,'".AddSlashes(pg_result($resaco,$conresaco,'j28_matric'))."','$this->j28_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1321,7889,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j28_matric'))."','$this->j28_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j28_tipologcalc"]))
-           $resac = db_query("insert into db_acount values($acount,1321,7893,'".AddSlashes(pg_result($resaco,$conresaco,'j28_tipologcalc'))."','$this->j28_tipologcalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1321,7893,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j28_tipologcalc'))."','$this->j28_tipologcalc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j28_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1321,9739,'".AddSlashes(pg_result($resaco,$conresaco,'j28_obs'))."','$this->j28_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1321,9739,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j28_obs'))."','$this->j28_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -293,14 +293,14 @@ class cl_iptucalclogmat {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7888,'$j28_codigo','E')");
          $resac = db_query("insert into db_acountkey values($acount,7889,'$j28_matric','E')");
-         $resac = db_query("insert into db_acount values($acount,1321,7888,'','".AddSlashes(pg_result($resaco,$iresaco,'j28_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1321,7889,'','".AddSlashes(pg_result($resaco,$iresaco,'j28_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1321,7893,'','".AddSlashes(pg_result($resaco,$iresaco,'j28_tipologcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1321,9739,'','".AddSlashes(pg_result($resaco,$iresaco,'j28_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1321,7888,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j28_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1321,7889,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j28_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1321,7893,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j28_tipologcalc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1321,9739,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j28_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptucalclogmat
@@ -366,7 +366,7 @@ class cl_iptucalclogmat {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptucalclogmat";
@@ -380,7 +380,7 @@ class cl_iptucalclogmat {
    function sql_query ( $j28_codigo=null,$j28_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_iptucalclogmat {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,7 +427,7 @@ class cl_iptucalclogmat {
    function sql_query_file ( $j28_codigo=null,$j28_matric=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -456,7 +456,7 @@ class cl_iptucalclogmat {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

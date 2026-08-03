@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE debcontaarquivoregcad
 class cl_debcontaarquivoregcad { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $d74_sequencial = 0; 
-   var $d74_codigo = 0; 
-   var $d74_tipomov = 0; 
-   var $d74_data_dia = null; 
-   var $d74_data_mes = null; 
-   var $d74_data_ano = null; 
-   var $d74_data = null; 
+   public $d74_sequencial = 0; 
+   public $d74_codigo = 0; 
+   public $d74_tipomov = 0; 
+   public $d74_data_dia = null; 
+   public $d74_data_mes = null; 
+   public $d74_data_ano = null; 
+   public $d74_data = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  d74_sequencial = int4 = Sequencial 
                  d74_codigo = int4 = Codigo sequencial 
                  d74_tipomov = int4 = Tipo de movimento 
                  d74_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_debcontaarquivoregcad() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontaarquivoregcad"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -129,10 +129,10 @@ class cl_debcontaarquivoregcad {
          $this->erro_status = "0";
          return false; 
        }
-       $this->d74_sequencial = pg_result($result,0,0); 
+       $this->d74_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from debcontaarquivoregcad_d74_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $d74_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $d74_sequencial)){
          $this->erro_sql = " Campo d74_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_debcontaarquivoregcad {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "debcontaarquivoregcad ($this->d74_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "debcontaarquivoregcad já Cadastrado";
@@ -190,13 +190,13 @@ class cl_debcontaarquivoregcad {
      $resaco = $this->sql_record($this->sql_query_file($this->d74_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7984,'$this->d74_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1341,7984,'','".AddSlashes(pg_result($resaco,0,'d74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1341,7985,'','".AddSlashes(pg_result($resaco,0,'d74_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1341,7986,'','".AddSlashes(pg_result($resaco,0,'d74_tipomov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1341,7987,'','".AddSlashes(pg_result($resaco,0,'d74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1341,7984,'','".AddSlashes(pg_fetch_result($resaco,0,'d74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1341,7985,'','".AddSlashes(pg_fetch_result($resaco,0,'d74_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1341,7986,'','".AddSlashes(pg_fetch_result($resaco,0,'d74_tipomov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1341,7987,'','".AddSlashes(pg_fetch_result($resaco,0,'d74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -205,10 +205,10 @@ class cl_debcontaarquivoregcad {
       $this->atualizacampos();
      $sql = " update debcontaarquivoregcad set ";
      $virgula = "";
-     if(trim($this->d74_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d74_sequencial"])){ 
+     if(trim((string) $this->d74_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d74_sequencial"])){ 
        $sql  .= $virgula." d74_sequencial = $this->d74_sequencial ";
        $virgula = ",";
-       if(trim($this->d74_sequencial) == null ){ 
+       if(trim((string) $this->d74_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "d74_sequencial";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_debcontaarquivoregcad {
          return false;
        }
      }
-     if(trim($this->d74_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d74_codigo"])){ 
+     if(trim((string) $this->d74_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d74_codigo"])){ 
        $sql  .= $virgula." d74_codigo = $this->d74_codigo ";
        $virgula = ",";
-       if(trim($this->d74_codigo) == null ){ 
+       if(trim((string) $this->d74_codigo) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "d74_codigo";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_debcontaarquivoregcad {
          return false;
        }
      }
-     if(trim($this->d74_tipomov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d74_tipomov"])){ 
+     if(trim((string) $this->d74_tipomov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d74_tipomov"])){ 
        $sql  .= $virgula." d74_tipomov = $this->d74_tipomov ";
        $virgula = ",";
-       if(trim($this->d74_tipomov) == null ){ 
+       if(trim((string) $this->d74_tipomov) == null ){ 
          $this->erro_sql = " Campo Tipo de movimento nao Informado.";
          $this->erro_campo = "d74_tipomov";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_debcontaarquivoregcad {
          return false;
        }
      }
-     if(trim($this->d74_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d74_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["d74_data_dia"] !="") ){ 
+     if(trim((string) $this->d74_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d74_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["d74_data_dia"] !="") ){ 
        $sql  .= $virgula." d74_data = '$this->d74_data' ";
        $virgula = ",";
-       if(trim($this->d74_data) == null ){ 
+       if(trim((string) $this->d74_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "d74_data_dia";
          $this->erro_banco = "";
@@ -260,7 +260,7 @@ class cl_debcontaarquivoregcad {
        if(isset($GLOBALS["HTTP_POST_VARS"]["d74_data_dia"])){ 
          $sql  .= $virgula." d74_data = null ";
          $virgula = ",";
-         if(trim($this->d74_data) == null ){ 
+         if(trim((string) $this->d74_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "d74_data_dia";
            $this->erro_banco = "";
@@ -279,17 +279,17 @@ class cl_debcontaarquivoregcad {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7984,'$this->d74_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d74_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1341,7984,'".AddSlashes(pg_result($resaco,$conresaco,'d74_sequencial'))."','$this->d74_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1341,7984,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d74_sequencial'))."','$this->d74_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d74_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1341,7985,'".AddSlashes(pg_result($resaco,$conresaco,'d74_codigo'))."','$this->d74_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1341,7985,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d74_codigo'))."','$this->d74_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d74_tipomov"]))
-           $resac = db_query("insert into db_acount values($acount,1341,7986,'".AddSlashes(pg_result($resaco,$conresaco,'d74_tipomov'))."','$this->d74_tipomov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1341,7986,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d74_tipomov'))."','$this->d74_tipomov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d74_data"]))
-           $resac = db_query("insert into db_acount values($acount,1341,7987,'".AddSlashes(pg_result($resaco,$conresaco,'d74_data'))."','$this->d74_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1341,7987,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d74_data'))."','$this->d74_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -334,13 +334,13 @@ class cl_debcontaarquivoregcad {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7984,'$d74_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1341,7984,'','".AddSlashes(pg_result($resaco,$iresaco,'d74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1341,7985,'','".AddSlashes(pg_result($resaco,$iresaco,'d74_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1341,7986,'','".AddSlashes(pg_result($resaco,$iresaco,'d74_tipomov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1341,7987,'','".AddSlashes(pg_result($resaco,$iresaco,'d74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1341,7984,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d74_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1341,7985,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d74_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1341,7986,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d74_tipomov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1341,7987,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d74_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from debcontaarquivoregcad
@@ -400,7 +400,7 @@ class cl_debcontaarquivoregcad {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:debcontaarquivoregcad";
@@ -414,7 +414,7 @@ class cl_debcontaarquivoregcad {
    function sql_query ( $d74_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,7 +437,7 @@ class cl_debcontaarquivoregcad {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,7 +449,7 @@ class cl_debcontaarquivoregcad {
    function sql_query_file ( $d74_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -470,7 +470,7 @@ class cl_debcontaarquivoregcad {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

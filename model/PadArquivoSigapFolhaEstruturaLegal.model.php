@@ -42,7 +42,7 @@ final class PadArquivoSigapFolhaEstruturaLegal extends PadArquivoSigap
     public function __construct()
     {
         $this->sNomeArquivo = "EstruturaLegal";
-        $this->aDados = array();
+        $this->aDados = [];
     }
 
     /**
@@ -63,7 +63,7 @@ final class PadArquivoSigapFolhaEstruturaLegal extends PadArquivoSigap
         /**
          * Separamos a data do em ano, mes, dia
          */
-        list($this->iAno, $this->iMes, $this->iDia) = explode("-", $this->sDataFinal);
+        [$this->iAno, $this->iMes, $this->iDia] = explode("-", $this->sDataFinal);
 
         $this->sListaInstit = db_getsession("DB_instit");
         $dataMovimento = "{$this->iAno}-" . str_pad($this->iMes, 2, "0", STR_PAD_LEFT)

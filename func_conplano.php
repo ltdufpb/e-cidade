@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconplano = new cl_conplano;
 $clconplano->rotulo->label("c60_codcon");
 $clconplano->rotulo->label("c60_descr");
@@ -134,7 +134,7 @@ $clrotulo->label("c61_reduz");
                     }
                 }
 
-                if (isset($chave_c60_codcon) && (trim($chave_c61_reduz) != "")) {
+                if (isset($chave_c60_codcon) && (trim((string) $chave_c61_reduz) != "")) {
                     $where[] = "c61_reduz = {$chave_c61_reduz}";
                 }
                 if (isset($chave_c60_codcon) && (trim($chave_c60_codcon) != "")) {

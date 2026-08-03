@@ -205,15 +205,13 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do arquivo Agrupamento da Folha.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'             => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
-                'codigo'                        => str_pad($oResultado->mescomp
-                    . dePara($oResultado->codigo), 10, 0, STR_PAD_LEFT),
-                'descricao'                     => str_pad($oResultado->r70_descr, 80, ' '),
-                'reservado'                     => sprintf('%06d', ''),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'             => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
+            'codigo'                        => str_pad($oResultado->mescomp
+                . dePara($oResultado->codigo), 10, 0, STR_PAD_LEFT),
+            'descricao'                     => str_pad((string) $oResultado->r70_descr, 80, ' '),
+            'reservado'                     => sprintf('%06d', ''),
+        ]);
     }
 
     public static function getServidores($params)
@@ -271,19 +269,17 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações dos servidores.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'   => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
-                'cpf'                 => str_pad($oResultado->cpf, 11, 0, STR_PAD_LEFT),
-                'rg'                  => str_pad(str_replace('.', '', $oResultado->rg), 15, 0, STR_PAD_LEFT),
-                'orgaoEmissor'        => str_pad($oResultado->orgaoemissor, 15, ' '),
-                'nome'                => str_pad($oResultado->nome, 60, ' '),
-                'dataNascimento'      => str_pad($oResultado->datanascimento, 8, 0),
-                'sexo'                => str_pad($oResultado->sexo, 1, 0),
-                'possuiDeficiencia'   => str_pad($oResultado->possuideficiencia, 1, 0),
-                'reservado'           => sprintf('%06d', ''),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'   => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
+            'cpf'                 => str_pad((string) $oResultado->cpf, 11, 0, STR_PAD_LEFT),
+            'rg'                  => str_pad(str_replace('.', '', $oResultado->rg), 15, 0, STR_PAD_LEFT),
+            'orgaoEmissor'        => str_pad((string) $oResultado->orgaoemissor, 15, ' '),
+            'nome'                => str_pad((string) $oResultado->nome, 60, ' '),
+            'dataNascimento'      => str_pad((string) $oResultado->datanascimento, 8, 0),
+            'sexo'                => str_pad((string) $oResultado->sexo, 1, 0),
+            'possuiDeficiencia'   => str_pad((string) $oResultado->possuideficiencia, 1, 0),
+            'reservado'           => sprintf('%06d', ''),
+        ]);
     }
 
     public static function getMatricula($params)
@@ -342,17 +338,14 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do arquivo Matriculas.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-
-            return array(
-                'codUnidadeGestora'   => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
-                'cpfServidor'         => str_pad($oResultado->cpf, 11, 0, STR_PAD_LEFT),
-                'codCargo'            => str_pad($oResultado->codcargo, 8, 0, STR_PAD_LEFT),
-                'numero'              => str_pad($oResultado->numero, 15, 0, STR_PAD_LEFT),
-                'dataAdmissao'        => str_pad($oResultado->dataadmissao, 8, ' '),
-                'reservado'           => sprintf('%06d', ''),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'   => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
+            'cpfServidor'         => str_pad((string) $oResultado->cpf, 11, 0, STR_PAD_LEFT),
+            'codCargo'            => str_pad((string) $oResultado->codcargo, 8, 0, STR_PAD_LEFT),
+            'numero'              => str_pad((string) $oResultado->numero, 15, 0, STR_PAD_LEFT),
+            'dataAdmissao'        => str_pad((string) $oResultado->dataadmissao, 8, ' '),
+            'reservado'           => sprintf('%06d', ''),
+        ]);
     }
 
     public static function getCargos($params)
@@ -392,17 +385,15 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do arquivo Cargos.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'   => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
-                'codigo'              => str_pad($oResultado->codcargo, 8, 0, STR_PAD_LEFT),
-                'descricao'           => str_pad($oResultado->descricao, 50, ' '),
-                'tipo'                => str_pad($oResultado->tipocargo, 1, 0, STR_PAD_LEFT),
-                'escolaridadeMinima'  => str_pad($oResultado->escolaridade, 1, 0),
-                'cbo'                 => str_pad($oResultado->cbo, 6, 0, STR_PAD_LEFT),
-                'reservado'           => sprintf('%06d', ''),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'   => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
+            'codigo'              => str_pad((string) $oResultado->codcargo, 8, 0, STR_PAD_LEFT),
+            'descricao'           => str_pad((string) $oResultado->descricao, 50, ' '),
+            'tipo'                => str_pad((string) $oResultado->tipocargo, 1, 0, STR_PAD_LEFT),
+            'escolaridadeMinima'  => str_pad((string) $oResultado->escolaridade, 1, 0),
+            'cbo'                 => str_pad((string) $oResultado->cbo, 6, 0, STR_PAD_LEFT),
+            'reservado'           => sprintf('%06d', ''),
+        ]);
     }
 
     public static function getHistoricoFuncionalSagres($params)
@@ -620,23 +611,21 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações do arquivo Histórico Funcional.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'          => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
-                'cpfServidor'                => str_pad($oResultado->cpf, 11, 0, STR_PAD_LEFT),
-                'codCargo'                   => str_pad($oResultado->codcargo, 8, 0, STR_PAD_LEFT),
-                'dataMovimentacao'           => str_pad($oResultado->datamov, 8, 0, STR_PAD_LEFT),
-                'numMatricula'               => str_pad($oResultado->matricula, 15, 0, STR_PAD_LEFT),
-                'mesAno'                     => str_pad($oResultado->mesano, 6, 0, STR_PAD_LEFT),
-                'cpfSegurado'                => str_pad($oResultado->cpfsegurado, 11, 0, STR_PAD_LEFT),
-                'tipoAto'                    => str_pad($oResultado->tipoato, 2, 0, STR_PAD_LEFT),
-                'situacao'                   => str_pad($oResultado->situacao, 1, 0, STR_PAD_RIGHT),
-                'tipoRegimePrevidenciario'   => str_pad($oResultado->regprev, 1, 0, STR_PAD_RIGHT),
-                'tipoRegimeTrabalho'         => str_pad($oResultado->regtrab, 1, 0, STR_PAD_RIGHT),
-                'codUnidadeOrcamentaria'     => str_pad($oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_RIGHT),
-                'reservado'                  => sprintf('%06d', ''),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'          => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
+            'cpfServidor'                => str_pad((string) $oResultado->cpf, 11, 0, STR_PAD_LEFT),
+            'codCargo'                   => str_pad((string) $oResultado->codcargo, 8, 0, STR_PAD_LEFT),
+            'dataMovimentacao'           => str_pad((string) $oResultado->datamov, 8, 0, STR_PAD_LEFT),
+            'numMatricula'               => str_pad((string) $oResultado->matricula, 15, 0, STR_PAD_LEFT),
+            'mesAno'                     => str_pad((string) $oResultado->mesano, 6, 0, STR_PAD_LEFT),
+            'cpfSegurado'                => str_pad((string) $oResultado->cpfsegurado, 11, 0, STR_PAD_LEFT),
+            'tipoAto'                    => str_pad((string) $oResultado->tipoato, 2, 0, STR_PAD_LEFT),
+            'situacao'                   => str_pad((string) $oResultado->situacao, 1, 0, STR_PAD_RIGHT),
+            'tipoRegimePrevidenciario'   => str_pad((string) $oResultado->regprev, 1, 0, STR_PAD_RIGHT),
+            'tipoRegimeTrabalho'         => str_pad((string) $oResultado->regtrab, 1, 0, STR_PAD_RIGHT),
+            'codUnidadeOrcamentaria'     => str_pad((string) $oResultado->codunidadeorcamentaria, 5, 0, STR_PAD_RIGHT),
+            'reservado'                  => sprintf('%06d', ''),
+        ]);
     }
 
     public static function getCodigoVantagensDescontos($params)
@@ -682,16 +671,14 @@ class SagresRepository
             throw new Exception("Erro ao buscar as informações dos servidores.");
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'             => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
-                'tipoLancamento'                => str_pad($oResultado->tipolancamento, 1, 0),
-                'codigo'                        => str_pad($oResultado->codigo, 6, 0, STR_PAD_LEFT),
-                'descricao'                     => str_pad(substr($oResultado->descricao, 0, 40), 40, ' '),
-                'tipo'                          => str_pad($oResultado->tipocontabilizacao, 1, ' '),
-                'baseCalculoPrevidenciario'     => str_pad($oResultado->regprev, 1, ' '),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'             => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_RIGHT),
+            'tipoLancamento'                => str_pad((string) $oResultado->tipolancamento, 1, 0),
+            'codigo'                        => str_pad((string) $oResultado->codigo, 6, 0, STR_PAD_LEFT),
+            'descricao'                     => str_pad(substr((string) $oResultado->descricao, 0, 40), 40, ' '),
+            'tipo'                          => str_pad((string) $oResultado->tipocontabilizacao, 1, ' '),
+            'baseCalculoPrevidenciario'     => str_pad((string) $oResultado->regprev, 1, ' '),
+        ]);
     }
 
     public static function getFolhaPagamento($params)
@@ -1025,27 +1012,25 @@ class SagresRepository
         // $oResultado->codunidadegestora
         // Deixando unidade gestora mocada
 
-        return db_utils::makeCollectionFromRecord($result, function ($oResultado) {
-            return array(
-                'codUnidadeGestora'             => str_pad($oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
-                'cpfServidor'                   => str_pad($oResultado->cpf, 11, 0, STR_PAD_LEFT),
-                'codCargo'                      => str_pad($oResultado->codcargo, 8, 0, STR_PAD_LEFT),
-                'numMatricula'                  => str_pad($oResultado->numero, 15, 0, STR_PAD_LEFT),
-                'mesAno'                        => str_pad($oResultado->mesano, 6, 0, STR_PAD_LEFT),
-                'codOperacao'                   => str_pad($oResultado->vantdesc, 1, 0),
-                'codVantagemDesconto'           => str_pad($oResultado->rubrica, 6, 0, STR_PAD_LEFT),
-                'tipo'                          => str_pad($oResultado->tipo, 1, 0),
-                'valor'                         => str_pad(str_replace(
-                    '.',
-                    ',',
-                    str_contains($oResultado->valor, '.')
-                    ? $oResultado->valor : $oResultado->valor . '.00'
-                ), 16, 0, STR_PAD_LEFT),
-                'codAgrupamento'                => str_pad($oResultado->mescomp .
-                    dePara($oResultado->codagrup), 10, 0, STR_PAD_LEFT),
-                'reservado'                     => sprintf('%06d', ''),
-            );
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oResultado) => [
+            'codUnidadeGestora'             => str_pad((string) $oResultado->codunidadegestora, 6, 0, STR_PAD_LEFT),
+            'cpfServidor'                   => str_pad((string) $oResultado->cpf, 11, 0, STR_PAD_LEFT),
+            'codCargo'                      => str_pad((string) $oResultado->codcargo, 8, 0, STR_PAD_LEFT),
+            'numMatricula'                  => str_pad((string) $oResultado->numero, 15, 0, STR_PAD_LEFT),
+            'mesAno'                        => str_pad((string) $oResultado->mesano, 6, 0, STR_PAD_LEFT),
+            'codOperacao'                   => str_pad((string) $oResultado->vantdesc, 1, 0),
+            'codVantagemDesconto'           => str_pad((string) $oResultado->rubrica, 6, 0, STR_PAD_LEFT),
+            'tipo'                          => str_pad((string) $oResultado->tipo, 1, 0),
+            'valor'                         => str_pad(str_replace(
+                '.',
+                ',',
+                str_contains((string) $oResultado->valor, '.')
+                ? $oResultado->valor : $oResultado->valor . '.00'
+            ), 16, 0, STR_PAD_LEFT),
+            'codAgrupamento'                => str_pad($oResultado->mescomp .
+                dePara($oResultado->codagrup), 10, 0, STR_PAD_LEFT),
+            'reservado'                     => sprintf('%06d', ''),
+        ]);
     }
 }
 

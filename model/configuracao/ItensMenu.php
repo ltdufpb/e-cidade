@@ -36,10 +36,6 @@ require_once(modification('libs/JSON.php'));
  */
 class ItensMenu {
   
-  private $iModulo;
-
-  private $iUsuario;
-
   private $sNomeArquivo;
 
   const CAMINHO_ARQUIVO = 'cache/menus/';
@@ -49,10 +45,8 @@ class ItensMenu {
    * @param integer $iModulo  
    * @param integer $iUsuario 
    */
-  function __construct($iModulo, $iUsuario) {
+  function __construct(private $iModulo, private $iUsuario) {
 
-    $this->iModulo      = $iModulo;
-    $this->iUsuario     = $iUsuario;
     $this->sNomeArquivo = $this->iModulo. '_'. $this->iUsuario . '.json';
   }
 
@@ -104,11 +98,11 @@ class ItensMenu {
       db_putsession("DB_menus", $sMenus);
     }
 
-    $aRetorno = array();
+    $aRetorno = [];
 
     foreach ($oMenus as $oMenu) {
 
-      if (stripos($oMenu->caminho, $sConteudo) !== false) {
+      if (stripos((string) $oMenu->caminho, $sConteudo) !== false) {
 
         $oItem = new stdClass();
         $oItem->label = $oMenu->caminho;
@@ -139,7 +133,7 @@ class ItensMenu {
    */
   private function montaArvoreMenus(){
 
-    $aMenus   = array();
+    $aMenus   = [];
 
     monta_menu($this->iModulo, $this->iModulo,$this->iModulo, $aMenus, $this->iUsuario);
     
@@ -147,8 +141,8 @@ class ItensMenu {
     
     for ($iIndice = 0; $iIndice < sizeof($aItensMenu); $iIndice++) {
       
-      $aItens   = explode('-', $aItensMenu[$iIndice]);
-      $aCaminho = array();
+      $aItens   = explode('-', (string) $aItensMenu[$iIndice]);
+      $aCaminho = [];
       for ($iItem = 0; $iItem < sizeof($aItens); $iItem++) {
 
         if ($aItens[$iItem] == $this->iModulo) {
@@ -161,7 +155,7 @@ class ItensMenu {
           $aCaminho[] = $oItemMenu->descricao;
           if ($oItemMenu->funcao) {
 
-            $aMenus[$iIndice]['caminho'] = utf8_encode(implode(' > ', $aCaminho));
+            $aMenus[$iIndice]['caminho'] = mb_convert_encoding(implode(' > ', $aCaminho), 'UTF-8', 'ISO-8859-1');
             $aMenus[$iIndice]['funcao']  = $oItemMenu->funcao;
           }
         }

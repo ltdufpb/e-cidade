@@ -41,7 +41,7 @@ $k00_inscr     = "&nbsp;";
 $v01_exerc     = "&nbsp;";
 $v03_descr     = "&nbsp;";
 $certid        = "&nbsp;";
-$aProcessoForo = array();
+$aProcessoForo = [];
 
 // 6 - PARCELAMENTO DIVIDA ATIVA
 $sSqlParcelamentoDividaAtiva  = " select termo.v07_parcel                  ,                   ";
@@ -64,7 +64,7 @@ $sSqlParcelamentoDividaAtiva .= "       and termo.v07_instit   = {$iInstituicao}
 
 $rsParcelamentoDividaAtiva = db_query($sSqlParcelamentoDividaAtiva) or die($sSqlParcelamentoDividaAtiva);
 
-if (pg_numrows($rsParcelamentoDividaAtiva) == 0) {
+if (pg_num_rows($rsParcelamentoDividaAtiva) == 0) {
   echo "Código de Arrecadação não cadastrado.";
   exit;
 } else {
@@ -73,14 +73,14 @@ if (pg_numrows($rsParcelamentoDividaAtiva) == 0) {
   
   if ($parcel > 0) {
 
-    $v07_hist .= ($v07_hist != "" ? "<br>" : "") . "Inicia" . (pg_numrows($rsParcelamentoDividaAtiva) == 1 ? "l" : "is") . ":";
+    $v07_hist .= ($v07_hist != "" ? "<br>" : "") . "Inicia" . (pg_num_rows($rsParcelamentoDividaAtiva) == 1 ? "l" : "is") . ":";
     
-    $aProcessoForo = array();
+    $aProcessoForo = [];
 
-    for ($termoini = 0; $termoini < pg_numrows($rsParcelamentoDividaAtiva); $termoini++) {
+    for ($termoini = 0; $termoini < pg_num_rows($rsParcelamentoDividaAtiva); $termoini++) {
       
       db_fieldsmemory($rsParcelamentoDividaAtiva, $termoini);
-      $v07_hist .= $inicial . ($termoini == pg_numrows($rsParcelamentoDividaAtiva) - 1 ? "" : ",");
+      $v07_hist .= $inicial . ($termoini == pg_num_rows($rsParcelamentoDividaAtiva) - 1 ? "" : ",");
     
       $sSqlProcessoForo  = " select distinct v70_codforo ";
       $sSqlProcessoForo .= " from processoforo                                                                                    ";
@@ -126,7 +126,7 @@ if (pg_numrows($rsParcelamentoDividaAtiva) == 0) {
     
     $rsOrigem = db_query($sSqlOrigem) or die($sSqlOrigem);
     
-    if (pg_numrows($rsOrigem) > 0) {
+    if (pg_num_rows($rsOrigem) > 0) {
       
       db_fieldsmemory($rsOrigem, 0);
       
@@ -134,7 +134,7 @@ if (pg_numrows($rsParcelamentoDividaAtiva) == 0) {
       $exercicios = "";
       $iCertidao  = "";
       
-      for ($origem = 0; $origem < pg_numrows($rsOrigem); $origem++) {
+      for ($origem = 0; $origem < pg_num_rows($rsOrigem); $origem++) {
         db_fieldsmemory($rsOrigem, $origem);
       
         if ($v51_certidao != $iCertidao) {
@@ -170,7 +170,7 @@ if (pg_numrows($rsParcelamentoDividaAtiva) == 0) {
     
     $rsResult = db_query($sSql);
     
-    if (pg_numrows($rsResult) > 0) {
+    if (pg_num_rows($rsResult) > 0) {
       db_fieldsmemory($rsResult, 0, true);
     } else {
     	
@@ -184,7 +184,7 @@ if (pg_numrows($rsParcelamentoDividaAtiva) == 0) {
       
       $rsResult = db_query($sSql);
       
-      if (pg_numrows($rsResult) > 0) {
+      if (pg_num_rows($rsResult) > 0) {
         db_fieldsmemory($rsResult, 0, true);
       } else {
         
@@ -237,7 +237,7 @@ if ($k03_tipo == 13) {
   
   $rsParcelamentoInicialDividaAtiva = db_query($sSqlParcelamentoInicialDividaAtiva);
   
-  if (pg_numrows($rsParcelamentoInicialDividaAtiva) > 0) {
+  if (pg_num_rows($rsParcelamentoInicialDividaAtiva) > 0) {
     db_fieldsmemory($rsParcelamentoInicialDividaAtiva, 0, true);
   } else {
     
@@ -375,8 +375,8 @@ if ($k03_tipo != 16) {
     <td>Matr&iacute;cula Im&oacute;vel:</td>
     <td> 
     <?php
-      if (pg_numrows($rsResult) != 0) {
-      	for ($i = 0; $i < pg_numrows($rsResult); $i++) {
+      if (pg_num_rows($rsResult) != 0) {
+      	for ($i = 0; $i < pg_num_rows($rsResult); $i++) {
       		db_fieldsmemory($rsResult, $i, '1');
       		if ($k03_tipo == 13) {
       			echo $certid."<br>";
@@ -393,8 +393,8 @@ if ($k03_tipo != 16) {
     <td>Inscri&ccedil;&atilde;o Alvar&aacute;:</td>
     <td> 
     <?php
-      if (pg_numrows($rsResult) != 0) {
-      	for ($i = 0; $i < pg_numrows($rsResult); $i++) {
+      if (pg_num_rows($rsResult) != 0) {
+      	for ($i = 0; $i < pg_num_rows($rsResult); $i++) {
       		db_fieldsmemory($rsResult, $i, '1');
       		if ($k00_inscr != "") {
       			echo $k00_inscr."-".$v01_exerc."-".$v01_proced."<br>";
@@ -431,7 +431,7 @@ if ($k03_tipo == 16) {
 	
 	$rsParcelamentoDiverso = db_query($sSqlParcelamentoDiverso);
 	
-	if (pg_numrows($rsParcelamentoDiverso) == 0) {
+	if (pg_num_rows($rsParcelamentoDiverso) == 0) {
 		echo "Parcelamento não cadastrado no diversos."; 
 		exit;
 	} else {

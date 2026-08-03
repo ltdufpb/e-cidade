@@ -59,11 +59,11 @@ class Registro20Repository extends Repository
     public function getTurmasMultietapaEnsinoDiferente(Escola $escola, DBDate $data)
     {
         $campos = "ed342_sequencial, ed134_censoetapa, ed343_turma, ed343_principal, ed342_nome";
-        $where = array(
+        $where = [
             "ed57_i_escola = {$escola->getCodigo()}",
             "ed134_ano = {$data->getAno()}",
             "ed52_i_ano = {$data->getAno()}",
-        );
+        ];
         $dao = new cl_turmacenso();
         $sql = $dao->sql_censo(null, $campos, null, implode(' and ', $where));
         $rs = db_query($sql);
@@ -73,7 +73,7 @@ class Registro20Repository extends Repository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
 
@@ -85,7 +85,7 @@ class Registro20Repository extends Repository
      * @return TurmaCensoVo[]
      * @throws Exception
      */
-    public function getTurmasRegulares($campos = array('*'))
+    public function getTurmasRegulares($campos = ['*'])
     {
         $dao = new cl_turma();
         $where = implode(' and ', $this->scopes);
@@ -97,10 +97,10 @@ class Registro20Repository extends Repository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        $turmas = array();
+        $turmas = [];
         while ($state = pg_fetch_array($rs)) {
             $turmas[] = TurmaCensoVo::fromState($state);
         }
@@ -112,7 +112,7 @@ class Registro20Repository extends Repository
      * @return TurmaCensoVo[]
      * @throws Exception
      */
-    public function getTurmasEspeciais($campos = array('*'))
+    public function getTurmasEspeciais($campos = ['*'])
     {
         $dao = new cl_turmaac();
         $sql = $dao->sql_query(null, implode(', ', $campos), null, implode(' and ', $this->scopes));
@@ -123,10 +123,10 @@ class Registro20Repository extends Repository
         }
 
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
-        $turmas = array();
+        $turmas = [];
         while ($state = pg_fetch_array($rs)) {
             $turmas[] = TurmaCensoVo::fromState($state);
         }
@@ -199,7 +199,7 @@ class Registro20Repository extends Repository
      */
     public function getDisciplinasCensoTurma($codigoTurma, DBDate $data)
     {
-        $campos = array(
+        $campos = [
             "distinct ed294_censodisciplina",
             "ed59_tipobase",
             "exists(
@@ -213,7 +213,7 @@ class Registro20Repository extends Repository
                        or ('{$data->getDate()}' between ed321_inicio and ed321_final)
                      )
                 )) as oferece"
-        );
+        ];
         $where = "ed59_i_turma = {$codigoTurma}";
         $dao = new cl_regencia();
         $sql = $dao->sql_query_disciplina_censo(null, implode(', ', $campos), null, $where);
@@ -306,11 +306,11 @@ class Registro20Repository extends Repository
      */
     public function hasAlunosMatriculadosNaEscola(TurmaCensoVo $turma, Censo $censo)
     {
-        $where = array(
+        $where = [
             "ed269_i_turmaac = {$turma->getCodigoTurma()}",
             "ed52_i_ano = {$censo->getAno()}",
             "ed268_i_escola = {$turma->getEscola()->getCodigo()}",
-        );
+        ];
         $where[] = "
         exists (
             select 1

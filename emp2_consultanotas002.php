@@ -96,14 +96,14 @@ if (isset($oGet->e69_codnota)) {
 
         if (isParaiba()){
             if(!empty($oNotas->e69_outrosdados)) {
-                $outrosDados = json_decode($oNotas->e69_outrosdados);
-                $tipo = (new TiposNotasParaiba())->getTipoByID($outrosDados->tipo_nota);
+                $outrosDados = json_decode((string) $oNotas->e69_outrosdados);
+                $tipo = new TiposNotasParaiba()->getTipoByID($outrosDados->tipo_nota);
                 $tipoNota = sprintf('%s - %s', $tipo['id'], $tipo['label']);
                 $numeroSerie = $outrosDados->serie_nota;
                 $chave = $outrosDados->chave_nota;
             }
             if(!empty($oNotas->e172_dados)) {
-                $outrosDadosPagOrdem = json_decode($oNotas->e172_dados);
+                $outrosDadosPagOrdem = json_decode((string) $oNotas->e172_dados);
                 $codigoAgrupamento = $outrosDadosPagOrdem->codigo_agrupamento;
             }
         }

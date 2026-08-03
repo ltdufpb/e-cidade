@@ -7,6 +7,7 @@ use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Servicies\BalanceteRubrica
 
 class BalanceteRubricaAnteriorService2022 extends BalanceteRubricaAnteriorService
 {
+    #[\Override]
     protected function getBuilder()
     {
         return new BalanceteRubricaAnteriorBuilder2022();

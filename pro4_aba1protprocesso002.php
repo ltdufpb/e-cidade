@@ -41,8 +41,8 @@ require_once(modification("classes/db_db_depusu_classe.php"));
 require_once(modification("classes/db_db_syscampo_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST,0);
 $oGet  = db_utils::postMemory($_GET,0);
@@ -68,18 +68,18 @@ if (isset($oGet->p58_codigo) && $oGet->p58_codigo != "") {
 
 if(isset($btnalterar) && $btnalterar == 2){
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $db_opcao        = 2;
   $sqlerro         =  false;
-  $aPartesNumero   = explode("/", $p58_numero);
+  $aPartesNumero   = explode("/", (string) $p58_numero);
   $p58_numero     = 0;
   if (count($aPartesNumero) == 2) {
     $p58_numero = $aPartesNumero[0];
   }
   $clprotprocesso->p58_numero = $p58_numero;
   $clprotprocesso->alterar($p58_codproc);
-  $chaves = split("#",$docs);
+  $chaves = preg_split("#\\##m",$docs);
   $clprocprocessodoc->excluir($p58_codproc);
   //$clprocprocessodoc->erro(true,false);
   for($i=0;$i<sizeof($chaves);$i++){
@@ -89,9 +89,9 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
     $clprocprocessodoc->incluir($p58_codproc,$chaves[$i]);
     //$clprocprocessodoc->erro(true,false);
   }
-  $chaves = split("#",$ndocs);
+  $chaves = preg_split("#\\##m",$ndocs);
   for($i=0;$i<sizeof($chaves);$i++){
-    $HTTP_POST_VARS['p81_doc'] = 'f';
+    $_POST['p81_doc'] = 'f';
     $clprocprocessodoc->p81_codproc = $p58_codproc;
     $clprocprocessodoc->p81_coddoc = $chaves[$i];
     $clprocprocessodoc->p81_doc = 'f';
@@ -111,22 +111,22 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
     while ($ln = pg_fetch_array($rs)){
       $sql2 = "select nomecam from db_syscampo where codcam = ".$ln["p54_codcam"];
       $rscam = db_query($sql2) or die($sql2);
-      $nomecam = trim(pg_result($rscam,0,"nomecam"));
+      $nomecam = trim(pg_fetch_result($rscam,0,"nomecam"));
 
       global $p55_codproc, $p55_codvar, $p55_codcam, $p55_conteudo;
       $GLOBALS["HTTP_POST_VARS"]["p55_codproc"] = $clprotprocesso->p58_codproc;
       $GLOBALS["HTTP_POST_VARS"]["p55_codvar"] = $ln["p54_codigo"];
       $GLOBALS["HTTP_POST_VARS"]["p55_codcam"] = $ln["p54_codcam"];
-      $GLOBALS["HTTP_POST_VARS"]["p55_conteudo"] = $$nomecam;
+      $GLOBALS["HTTP_POST_VARS"]["p55_conteudo"] = ${$nomecam};
 
-      if($$nomecam == ""){
+      if(${$nomecam} == ""){
       	continue;
       }
 
       $clproctipovar->p55_codproc = $clprotprocesso->p58_codproc;
       $clproctipovar->p55_codvar = $ln["p54_codigo"];
       $clproctipovar->p55_codcam = $ln["p54_codcam"];
-      $clproctipovar->p55_conteudo = $$nomecam;
+      $clproctipovar->p55_conteudo = ${$nomecam};
       $clproctipovar->incluir($clprotprocesso->p58_codproc,$ln["p54_codigo"],$ln["p54_codcam"]);
       if ($clproctipovar->erro_status == "0"){
         $sqlerro = true;
@@ -200,7 +200,7 @@ if (isset($oGet->alt) && $oGet->alt == 1) {
 </body>
 </html>
 <?php 
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alterar") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
   echo "<script> window.open('pro4_capaprocesso.php?codproc=".$clprotprocesso->p58_codproc."','','location=0'); </script>";
   $result_param = $clprotparam->sql_record($clprotparam->sql_query_file());
   if ($clprotparam->numrows>0) {

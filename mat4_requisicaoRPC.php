@@ -81,13 +81,13 @@ if ($oParam->exec == "getDados"){
       echo $oJson->encode($oRetorno);
 
     } else {
-      echo $oJson->encode(array("status" => 2, "message"=> urlencode("Não Foi possivel consultar itens.")));
+      echo $oJson->encode(["status" => 2, "message"=> urlencode("Não Foi possivel consultar itens.")]);
     }
   }
   catch (Exception  $eExeption) {
 
     $sError = $eExeption->getMessage();
-    echo $oJson->encode(array("status" => 2, "message"=>  urlencode($sError)));
+    echo $oJson->encode(["status" => 2, "message"=>  urlencode($sError)]);
   }
 } else if ($oParam->exec == "getLotes") {
 
@@ -103,13 +103,13 @@ if ($oParam->exec == "getDados"){
 
       echo $oJson->encode($oRetorno);
     } else {
-      echo $oJson->encode(array("status" => 2, "message"=> urlencode("Não Foi possivel consultar itens.")));
+      echo $oJson->encode(["status" => 2, "message"=> urlencode("Não Foi possivel consultar itens.")]);
     }
   }
   catch (Exception $eException) {
 
     $sError = $eException->getMessage();
-    echo $oJson->encode(array("status" => 2, "message"=>  urlencode($sError)));
+    echo $oJson->encode(["status" => 2, "message"=>  urlencode($sError)]);
 
   }
 
@@ -117,13 +117,13 @@ if ($oParam->exec == "getDados"){
 
   $oMaterialEstoque = new materialEstoque($oParam->params[0]->iCodMater);
   $oMaterialEstoque->saveLoteSession($oParam->params[0]->aItens);
-  echo $oJson->encode(array("status" => 1, "message"=> ""));
+  echo $oJson->encode(["status" => 1, "message"=> ""]);
 
 }else if ($oParam->exec == "cancelarLote") {
 
   $oMaterialEstoque = new materialEstoque($oParam->params[0]->iCodMater);
   $oMaterialEstoque->cancelarLoteSession();
-  echo $oJson->encode(array("status" => 1, "message"=> ""));
+  echo $oJson->encode(["status" => 1, "message"=> ""]);
 
 } else if ($oParam->exec == "atenderRequisicao") {
   try {
@@ -134,12 +134,12 @@ if ($oParam->exec == "getDados"){
     $oRequisicao->atenderRequisicao($oParam->params[0]->iTipo, $oParam->params[0]->aItens, $oParam->params[0]->iCodEstoque);
 
     db_fim_transacao(false);
-    echo $oJson->encode(array("status" => 1, "message"=> urlencode("Atendimento Efetuado com Sucesso")));
+    echo $oJson->encode(["status" => 1, "message"=> urlencode("Atendimento Efetuado com Sucesso")]);
   }
   catch (Exception $eErro) {
 
     db_fim_transacao(true);
-    echo $oJson->encode(array("status" => 2, "message"=> urlencode(str_replace("\\n","\n", $eErro->getMessage()))));
+    echo $oJson->encode(["status" => 2, "message"=> urlencode(str_replace("\\n","\n", $eErro->getMessage()))]);
   }
 
 } else if ($oParam->exec == "saidaMaterial") {
@@ -164,12 +164,12 @@ if ($oParam->exec == "getDados"){
       db_fim_transacao(false);
 
     }
-    echo $oJson->encode(array("status" => 1, "message"=> urlencode("Saída Efetuada com Sucesso")));
+    echo $oJson->encode(["status" => 1, "message"=> urlencode("Saída Efetuada com Sucesso")]);
   }
   catch (Exception $eErro) {
     $oMaterialEstoque->cancelarLoteSession();
     db_fim_transacao(true);
-    echo $oJson->encode(array("status" => 2, "message"=> urlencode($eErro->getMessage())));
+    echo $oJson->encode(["status" => 2, "message"=> urlencode($eErro->getMessage())]);
   }
 } else if ($oParam->exec == "saidaDeposito"){
     try {
@@ -216,7 +216,7 @@ if ($oParam->exec == "getDados"){
             MaterialEstoque::bloqueioMovimentacaoItem($dadosMaterial->m70_codmatmater, $dadosMaterial->m70_coddepto);
             try {
                 $oMaterialEstoque->saidaMaterial($dadosMaterial->m70_quant, $oParam->observacao);
-            } catch (Exception $e) {
+            } catch (Exception) {
                 db_fim_transacao(true);
                $erros[] = $dadosMaterial;
             }
@@ -239,7 +239,7 @@ if ($oParam->exec == "getDados"){
             ]);
     } catch (Exception $eErro) {
         db_fim_transacao(true);
-        echo $oJson->encode(array("status" => 2, "message"=> urlencode($eErro->getMessage())));
+        echo $oJson->encode(["status" => 2, "message"=> urlencode($eErro->getMessage())]);
     }
 } else if ($oParam->exec == "cancelarSaidaMaterial") {
 
@@ -255,13 +255,13 @@ if ($oParam->exec == "getDados"){
 
     }
     db_fim_transacao(false);
-    echo $oJson->encode(array("status" => 1, "message"=> urlencode("Cancelamento Efetuado com Sucesso")));
+    echo $oJson->encode(["status" => 1, "message"=> urlencode("Cancelamento Efetuado com Sucesso")]);
   }
   catch (Exception $eErro) {
 
     $oMaterialEstoque->cancelarLoteSession();
     db_fim_transacao(true);
-    echo $oJson->encode(array("status" => 2, "message"=> urlencode($eErro->getMessage())));
+    echo $oJson->encode(["status" => 2, "message"=> urlencode($eErro->getMessage())]);
   }
 }else if ($oParam->exec == "getDadosPedidoRequisicao"){ ///traz os dados do atendimento requisicao para atende-la
   try {
@@ -285,13 +285,13 @@ if ($oParam->exec == "getDados"){
       echo $oJson->encode($oRetorno);
 
     } else {
-      echo $oJson->encode(array("status" => 2, "message"=> urlencode("Não Foi possivel consultar itens.")));
+      echo $oJson->encode(["status" => 2, "message"=> urlencode("Não Foi possivel consultar itens.")]);
     }
     }
   } catch (Exception  $oExeption) {
 
     $sError = $oExeption->getMessage();
-    echo $oJson->encode(array("status" => 2, "message"=>  urlencode($sError)));
+    echo $oJson->encode(["status" => 2, "message"=>  urlencode($sError)]);
   }
 }else if ($oParam->exec == "anularRequisicao") {  ///função que faz a anulação dos itens da requisição
  	 db_inicio_transacao();
@@ -313,6 +313,6 @@ if ($oParam->exec == "getDados"){
 	    db_fim_transacao(true);
 
 	  }
-	  echo $oJson->encode(array("status" => 1, "message"=> "Inclusão efetuada com Sucesso"));
+	  echo $oJson->encode(["status" => 1, "message"=> "Inclusão efetuada com Sucesso"]);
 }
 ?>

@@ -40,7 +40,7 @@ $clrotulo->label("sd04_i_codigo");
     </td>
     <td> 
 <?php 
-$x = array(''=>'');
+$x = [''=>''];
 db_select('sd27_i_codigo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -53,7 +53,7 @@ db_select('sd27_i_codigo',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array(''=>'');
+$x = [''=>''];
 db_select('sd27_i_rhcbo',$x,true,$db_opcao," onchange='js_pesquisasd27_i_rhcbo(false);'");
 ?>
     </td>
@@ -66,7 +66,7 @@ db_select('sd27_i_rhcbo',$x,true,$db_opcao," onchange='js_pesquisasd27_i_rhcbo(f
     </td>
     <td> 
 <?php 
-$x = array(''=>'');
+$x = [''=>''];
 db_select('sd27_i_undmed',$x,true,$db_opcao," onchange='js_pesquisasd27_i_undmed(false);'");
 ?>
     </td>
@@ -77,7 +77,7 @@ db_select('sd27_i_undmed',$x,true,$db_opcao," onchange='js_pesquisasd27_i_undmed
     </td>
     <td> 
 <?php 
-$x = array(''=>'');
+$x = [''=>''];
 db_select('sd27_b_principal',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -141,7 +141,7 @@ function js_preenchepesquisa(chave){
   db_iframe_especmedico.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -35,7 +35,7 @@ $cliptucalcpadrao    = new cl_iptucalcpadrao;
 $cliptucalcpadraolog = new cl_iptucalcpadraolog;
 $j10_matric = @$j01_matric;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 /*
  * verifica se ja tem dados incluidos para esta matricula e ano
  * se tiver passa para o mode de alteração... fonte 5

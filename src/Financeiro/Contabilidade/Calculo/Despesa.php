@@ -50,12 +50,12 @@ class Despesa {
   /**
    * @var \Instituicao[]
    */
-  private $instituicoes = array();
+  private $instituicoes = [];
 
   /**
    * @var array
    */
-  private $codigoInstituicoes = array();
+  private $codigoInstituicoes = [];
 
   /**
    * @param array   $instituicoes
@@ -88,13 +88,13 @@ class Despesa {
    * @return Valor
    * @throws \ParameterException
    */
-  public function getValorLiquidadoPorElementoDoOrcamento(Estrutural $estrutural, array $documentos = array()) {
+  public function getValorLiquidadoPorElementoDoOrcamento(Estrutural $estrutural, array $documentos = []) {
 
     $filtroCombinado = array_merge(
       $this->processarFiltroDeElemento($estrutural),
       $this->processarFiltroDeDocumento($documentos)
     );
-    return $this->processar(array(TipoDocumento::LIQUIDACAO, TipoDocumento::ESTORNO_LIQUIDACAO), $filtroCombinado);
+    return $this->processar([TipoDocumento::LIQUIDACAO, TipoDocumento::ESTORNO_LIQUIDACAO], $filtroCombinado);
   }
 
   /**
@@ -104,13 +104,13 @@ class Despesa {
    * @param array $documentos
    * @return Valor
    */
-  public function getValorAnuladoPorElementoDoOrcamento(Estrutural $estrutural, array $documentos = array()) {
+  public function getValorAnuladoPorElementoDoOrcamento(Estrutural $estrutural, array $documentos = []) {
 
     $filtrosCombinados = array_merge(
       $this->processarFiltroDeElemento($estrutural),
       $this->processarFiltroDeDocumento($documentos)
     );
-    return $this->processar(array(TipoDocumento::EMPENHO, TipoDocumento::ESTORNO_EMPENHO), $filtrosCombinados);
+    return $this->processar([TipoDocumento::EMPENHO, TipoDocumento::ESTORNO_EMPENHO], $filtrosCombinados);
   }
 
 
@@ -120,14 +120,14 @@ class Despesa {
    * @param array $documentos
    * @return Valor
    */
-  public function getValorInscritoEmRestosAPagarNaoProcessados(Estrutural $estrutural, array $documentos = array()) {
+  public function getValorInscritoEmRestosAPagarNaoProcessados(Estrutural $estrutural, array $documentos = []) {
 
     $filtrosCombinados = array_merge(
       $this->processarFiltroDeElemento($estrutural),
       $this->processarFiltroDeDocumento($documentos)
     );
 
-    return $this->processar(array(TipoDocumento::ENCERRAMENTO_EXERCICIO), $filtrosCombinados);
+    return $this->processar([TipoDocumento::ENCERRAMENTO_EXERCICIO], $filtrosCombinados);
 
   }
 
@@ -139,10 +139,10 @@ class Despesa {
   private function processarFiltroDeElemento(Estrutural $estrutural) {
 
     $totalCaracteres = strlen($estrutural->getEstruturalAteNivel());
-    $filtroCombinado = array(
+    $filtroCombinado = [
       "(substr(orcelemento.o56_elemento, 1, {$totalCaracteres}) = '{$estrutural->getEstruturalAteNivel()}'",
       "substr(orcelemento.o56_elemento, 1, {$totalCaracteres}) >= '{$estrutural->getEstruturalAteNivel()}')",
-    );
+    ];
     return $filtroCombinado;
   }
 
@@ -154,7 +154,7 @@ class Despesa {
    */
   private function processarFiltroDeDocumento(array $documentos) {
 
-    $filtroCombinado = array();
+    $filtroCombinado = [];
     if (!empty($documentos)) {
 
       if (empty($documentos['not in']) && empty($documentos['in'])) {
@@ -182,7 +182,7 @@ class Despesa {
    * @return Valor
    * @throws \DBException|\ParameterException
    */
-  private function processar(array $tipoDocumentos, array $filtros = array()) {
+  private function processar(array $tipoDocumentos, array $filtros = []) {
 
     if (empty($tipoDocumentos)) {
       throw new \ParameterException( _M(self::MENSAGEM . "parametro_documentos_nao_informado") );
@@ -207,10 +207,10 @@ class Despesa {
     }
 
     /* prepara o where de acordo coms filtros desejados */
-    $where = array(
+    $where = [
       "conlancam.c70_data between cast('{$this->dataInicial->getDate()}' as date) and cast('{$this->dataFinal->getDate()}' as date)",
       "conlancaminstit.c02_instit in (" . implode(',', $this->codigoInstituicoes) . ")"
-    );
+    ];
 
     $whereDocumentos = "conhistdoc.c53_tipo in ({$documentoInclusao}, {$documentoExclusao})";
     if (empty($documentoExclusao)) {

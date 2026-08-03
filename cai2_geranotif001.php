@@ -42,8 +42,8 @@ include(modification("classes/db_listanotifica_classe.php"));
 require_once(modification('libs/db_utils.php'));
 require_once(modification("libs/db_libpostgres.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt10');
@@ -236,7 +236,7 @@ function js_emite(){
         </td>
         <td>
          <?php 
-           $x = array("2"=>"Somente Selecionados","3"=>"Menos os Selecionados");
+           $x = ["2"=>"Somente Selecionados","3"=>"Menos os Selecionados"];
            db_select('tipo',$x,true,$db_opcao);
          ?>
         </td>
@@ -271,8 +271,8 @@ function js_emite(){
                          			where k61_codigo = 3 and matric = $codigo
                          			group by matric,numcgm,z01_nome";
 	         				$resulta = db_query($sql);
-		 					if(pg_numrows($resulta)!=0){
-                      		  $numrows = pg_numrows($resulta);
+		 					if(pg_num_rows($resulta)!=0){
+                      		  $numrows = pg_num_rows($resulta);
 		    					for($i = 0;$i < $numrows;$i++) {
 		      					  db_fieldsmemory($resulta,$i);
                       			  echo "<option value=\"$codigo \">$descr</option>";
@@ -355,7 +355,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 function js_pesquisanotitipo(mostra){
@@ -409,7 +409,7 @@ function js_mostralista1(chave1,chave2){
 
 <?php 
 
-if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir" ) {
+if ( (isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir" ) {
 
 	$xcampo = '';
 
@@ -491,7 +491,7 @@ if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Inclu
 
 
     $resultmatric = db_query($sqlmatricula) or die($sqlmatricula);
-    if (pg_numrows($resultmatric) == 0){
+    if (pg_num_rows($resultmatric) == 0){
 
       $sMsg = _M('tributario.notificacoes.cai2_geranotif001.nao_existem_contribuintes_nao_notificados');
       db_redireciona("db_erros.php?fechar=true&db_erro={$sMsg}");
@@ -503,7 +503,7 @@ if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Inclu
 
     db_inicio_transacao();
 
-    $totalreg = pg_numrows($resultmatric);
+    $totalreg = pg_num_rows($resultmatric);
 
     for($xx = 0;$xx < $totalreg;$xx++) {
 

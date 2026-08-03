@@ -67,7 +67,7 @@ try {
 
     //echo $sql;
     db_fieldsmemory($result,0);
-    $db12_extenso = pg_result($result,0,"db12_extenso");
+    $db12_extenso = pg_fetch_result($result,0,"db12_extenso");
     /// seta a margem esquerda que veio do relatorio
     $S = $pdf->lMargin;
     $pdf->SetLeftMargin(10);
@@ -145,7 +145,7 @@ try {
     $pdf->setX($poscol);
     $dia = 1;
 
-    $matriz_dia = array("Dom" ,"Seg","Ter" ,"Qua","Qui","Sex","Sab");
+    $matriz_dia = ["Dom" ,"Seg","Ter" ,"Qua","Qui","Sex","Sab"];
 
     for($y=0;$y<=$xlinha;$y++) {
 

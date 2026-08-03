@@ -37,7 +37,7 @@ $clrotulo->label('r13_descro');
 $clrotulo->label('r70_estrut');
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sWhere = '';
 $sTipo = 'Todos';
@@ -83,7 +83,7 @@ $pdf->setfont('arial','b',8);
 
 $troca = 1;
 $alt   = 4;
-$aDados= array();
+$aDados= [];
 
 foreach (db_utils::getCollectionByRecord($rsRhLota) as $oDados) {
 
@@ -195,11 +195,11 @@ foreach ($aDados as $oDadosLotacao) {
      	
      	foreach ($oDadosLotacao->aElementosSecundarios as $oElementos) {
      		
-		     $pdf->cell(30,$alt,strtoupper($oElementos->rh28_codeledef)                                  ,0,0,"L",$pre);
+		     $pdf->cell(30,$alt,strtoupper((string) $oElementos->rh28_codeledef)                                  ,0,0,"L",$pre);
 		     $pdf->cell(85,$alt,strtoupper($oElementos->o56_codele_novo . " - ". $oElementos->o56_descr) ,0,0,"L",$pre);
 		     $pdf->cell(70,$alt,strtoupper($oElementos->o15_codigo . " - " . $oElementos->o15_descr)     ,0,0,"L",$pre);
 		     $pdf->cell(75,$alt,strtoupper($oElementos->o55_projativ . " - "  . $oElementos->o55_descr)  ,0,0,"L",$pre);
-		     $pdf->cell(15,$alt,strtoupper($oElementos->o55_anousu)                                      ,0,1,"L",$pre);
+		     $pdf->cell(15,$alt,strtoupper((string) $oElementos->o55_anousu)                                      ,0,1,"L",$pre);
      	}
      	
      }

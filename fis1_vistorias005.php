@@ -32,11 +32,11 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_sanitario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $calculopage = "";
-$arr = array("vistorias"=>"Vistorias","fiscais"=>"Fiscais","testem"=>"Testemunhas"); 
+$arr = ["vistorias"=>"Vistorias","fiscais"=>"Fiscais","testem"=>"Testemunhas"]; 
 $src = "";
 $junto = "";
 if(isset($cgm)){
@@ -45,15 +45,15 @@ if(isset($cgm)){
   $junto = "matric=1";
 }elseif(isset($inscr)){
   $junto = "inscr=1";
-  $arr = array("vistorias"=>"Vistorias","fiscais"=>"Fiscais","testem"=>"Testemunhas","calculo"=>"Cálculo"); 
-  $src = array("vistorias"=>"fis1_vistorias001.php?abas=1&$junto","fiscais"=>"fis1_vistusuario001.php","testem"=>"fis1_vistestem001.php","calculo"=>"fis1_calculo001.php");  
+  $arr = ["vistorias"=>"Vistorias","fiscais"=>"Fiscais","testem"=>"Testemunhas","calculo"=>"Cálculo"]; 
+  $src = ["vistorias"=>"fis1_vistorias001.php?abas=1&$junto","fiscais"=>"fis1_vistusuario001.php","testem"=>"fis1_vistestem001.php","calculo"=>"fis1_calculo001.php"];  
 }elseif(isset($sani)){
   $junto = "sani=1";
-  $arr = array("vistorias"=>"Vistorias","fiscais"=>"Fiscais","testem"=>"Testemunhas","calculo"=>"Cálculo"); 
-  $src = array("vistorias"=>"fis1_vistorias001.php?abas=1&$junto","fiscais"=>"fis1_vistusuario001.php","testem"=>"fis1_vistestem001.php","calculo"=>"fis1_calculo001.php");  
+  $arr = ["vistorias"=>"Vistorias","fiscais"=>"Fiscais","testem"=>"Testemunhas","calculo"=>"Cálculo"]; 
+  $src = ["vistorias"=>"fis1_vistorias001.php?abas=1&$junto","fiscais"=>"fis1_vistusuario001.php","testem"=>"fis1_vistestem001.php","calculo"=>"fis1_calculo001.php"];  
 }
 if($src == ""){
-  $src = array("vistorias"=>"fis1_vistorias001.php?abas=1&$junto","fiscais"=>"fis1_vistusuario001.php","testem"=>"fis1_vistestem001.php");  
+  $src = ["vistorias"=>"fis1_vistorias001.php?abas=1&$junto","fiscais"=>"fis1_vistusuario001.php","testem"=>"fis1_vistestem001.php"];  
 }
 ?>
   <html>

@@ -35,12 +35,12 @@ class TipoUnidadePagamento implements TabelasInterface
      * valor é o código do eSocial
      * @var array
      */
-    protected $tipo = array(
+    protected $tipo = [
         'M' => 5,
         'Q' => 4,
         'D' => 2,
         'H' => 1,
-    );
+    ];
 
 
     /**
@@ -50,10 +50,6 @@ class TipoUnidadePagamento implements TabelasInterface
      */
     public function getValue($valor)
     {
-        if (isset($this->tipo[mb_strtoupper($valor)])) {
-            return $this->tipo[mb_strtoupper($valor)];
-	}
-
-        return null;
+        return $this->tipo[mb_strtoupper((string) $valor)] ?? null;
     }
 }

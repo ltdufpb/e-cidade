@@ -17,11 +17,11 @@ namespace ECidade\Core\Mappers;
  */
 abstract class ParseArray
 {
-    protected $dePara = array();
+    protected $dePara = [];
 
     public function parse(array $dadosRegistro)
     {
-        $dados = array();
+        $dados = [];
         foreach ($this->dePara as $item) {
             $dados[] = $dadosRegistro[$item];
         }

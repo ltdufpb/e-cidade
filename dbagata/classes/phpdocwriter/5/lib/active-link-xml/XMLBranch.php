@@ -41,7 +41,7 @@ import("active-link-xml.XML");
 class XMLBranch extends XML
 {
 
-	var $parentXML;
+	public $parentXML;
 
 	/**
 	  *	Gets parent object of the XML branch
@@ -62,7 +62,7 @@ class XMLBranch extends XML
 	function setParentXML(&$xml)
        	{
 		$success = false;
-		if(get_class($xml) == "XML" || get_class($xml) == "XMLBranch") {
+		if($xml::class == "XML" || $xml::class == "XMLBranch") {
 			$this->parentXML = &$xml;
 			$success = true;
 		}

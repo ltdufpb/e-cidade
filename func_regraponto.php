@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_regraponto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clregraponto = new cl_regraponto;
 $clregraponto->rotulo->label("rh123_sequencial");
 $clregraponto->rotulo->label("rh123_descricao");
@@ -98,9 +98,9 @@ $clregraponto->rotulo->label("rh123_descricao");
         }else{
            $sql = $clregraponto->sql_query("",$campos,"rh123_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh123_descricao)){
-          $repassa = array("chave_rh123_sequencial"=>$chave_rh123_sequencial,"chave_rh123_descricao"=>$chave_rh123_descricao);
+          $repassa = ["chave_rh123_sequencial"=>$chave_rh123_sequencial,"chave_rh123_descricao"=>$chave_rh123_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

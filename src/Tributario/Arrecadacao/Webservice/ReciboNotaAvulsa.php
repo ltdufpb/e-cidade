@@ -155,8 +155,8 @@ class ReciboNotaAvulsa extends \EmissaoBoleto
             $issvarModel->setNumpre($iNumpre);
             $issvarModel->setNumpar(1);
             $issvarModel->setValor($this->valor);
-            $issvarModel->setAno(date("Y", strtotime($sDataRecibo)));
-            $issvarModel->setMes(date("m", strtotime($sDataRecibo)));
+            $issvarModel->setAno(date("Y", strtotime((string) $sDataRecibo)));
+            $issvarModel->setMes(date("m", strtotime((string) $sDataRecibo)));
             $issvarModel->setHistor("Recibo referente a nota com código de Verificação: {$this->numeroNota}");
             $issvarModel->setAliq("0");
             $issvarModel->setBruto("0");

@@ -32,20 +32,6 @@ class tceArrecadacaoMunicipal extends tceEstruturaBasica {
   
   const NOME_ARQUIVO = 'TCE_4010.TXT';
   const CODIGO_ARQUIVO = 36;
-  /**
-   * Codigo da instituicao
-   *
-   * @var integer
-   */
-  public $iInstit = "";
-  /**
-   * Data do periodo inicial de geracao do arquivo
-   *
-   * @var string  string no formato do banco (AAAA-MM-DD) com a data inicial do periodo a ser gerado o arquivo
-   */
-  public $sDataIni = "";
-  public $sDataFim = "";
-  public $sCodRemessa = "";
   
   private $oLeiaute   = null;
   /**
@@ -57,18 +43,19 @@ class tceArrecadacaoMunicipal extends tceEstruturaBasica {
    * @param string            $sDataFim
    * @param db_utils/stdClass $oData
    */ 
-  function __construct($iInstit, $sCodRemessa, $sDataIni, $sDataFim, $oData, $oLeiaute=null) {
+  function __construct(/**
+   * Codigo da instituicao
+   */
+  public $iInstit, public $sCodRemessa, /**
+   * Data do periodo inicial de geracao do arquivo
+   */
+  public $sDataIni, public $sDataFim, $oData, $oLeiaute=null) {
 
     try {
       parent::__construct(self::CODIGO_ARQUIVO, self::NOME_ARQUIVO);
     } catch ( Exception $e ) {
       throw $e->getMessage();
     }
-    
-    $this->iInstit = $iInstit;
-    $this->sDataIni = $sDataIni;
-    $this->sDataFim = $sDataFim;
-    $this->sCodRemessa = $sCodRemessa;
     if ($oLeiaute != null) {
       $this->oLeiaute =$oLeiaute;
     }
@@ -140,7 +127,7 @@ class tceArrecadacaoMunicipal extends tceEstruturaBasica {
 
       $oArrecadacao->numeroincricaoestadual += 0;
       
-      $oArrecadacao->codigoidentificador = $oArrecadacao->ano_codigoidentificador.str_pad($oArrecadacao->codigoidentificador,26,"0",STR_PAD_LEFT);
+      $oArrecadacao->codigoidentificador = $oArrecadacao->ano_codigoidentificador.str_pad((string) $oArrecadacao->codigoidentificador,26,"0",STR_PAD_LEFT);
 
       switch ($oArrecadacao->tipooperacao) {
         
@@ -160,7 +147,7 @@ class tceArrecadacaoMunicipal extends tceEstruturaBasica {
         	$oArrecadacao->dataregistrocontabilidade = $this->getDataBoletim( $oArrecadacao->k00_numpre, $oArrecadacao->k00_numpar, $oArrecadacao->k00_receit );
         	
           //Se o tipo de operação for 2 e o estrutural da receita iniciar com 4, retiramos o 4 do estrutural da receita.	
-          if(substr($oArrecadacao->estruturareceita,0,1) == "4") {
+          if(str_starts_with($oArrecadacao->estruturareceita, "4")) {
         	$oArrecadacao->estruturareceita = substr($oArrecadacao->estruturareceita,1);
           }	
           $oArrecadacao->codigocontabalanceteverificacaosg = $this->getEstruturalBalancete($oArrecadacao->codigocontapagadora);

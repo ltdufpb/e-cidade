@@ -49,7 +49,7 @@
           <td class="bold">Itinerário:</td>
           <td>
             <?php
-              $aItinerario = array(1 => 'Ida', 2 => 'Retorno');
+              $aItinerario = [1 => 'Ida', 2 => 'Retorno'];
               db_select('iItinerario', $aItinerario, true, $db_opcao, 'onchange="js_limpaHorario()"');
             ?>
           </td>

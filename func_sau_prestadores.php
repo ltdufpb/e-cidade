@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clsau_prestadores = new cl_sau_prestadores;
 
@@ -107,9 +107,9 @@ $oRotulo->label("z01_nome");
             $sql = $clsau_prestadores->sql_query( "", $campos, "s110_i_codigo", "" );
           }
 
-          $repassa = array();
+          $repassa = [];
           if( isset( $chave_s110_i_codigo ) ) {
-            $repassa = array( "chave_s110_i_codigo" => $chave_s110_i_codigo );
+            $repassa = [ "chave_s110_i_codigo" => $chave_s110_i_codigo ];
           }
 
           db_lovrot( $sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa );

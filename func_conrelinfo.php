@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conrelinfo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconrelinfo = new cl_conrelinfo;
 $clconrelinfo->rotulo->label("c83_codigo");
 ?>
@@ -89,9 +89,9 @@ $clconrelinfo->rotulo->label("c83_codigo");
         }else{
            $sql = $clconrelinfo->sql_query("",db_getsession("DB_instit"),$campos,"c83_codigo");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c83_codigo)){
-          $repassa = array("chave_c83_codigo"=>$chave_c83_codigo,"chave_c83_codigo"=>$chave_c83_codigo);
+          $repassa = ["chave_c83_codigo"=>$chave_c83_codigo,"chave_c83_codigo"=>$chave_c83_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_aguabase_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $claguabase = new cl_aguabase;
 $claguabase->rotulo->label();
 $clrotulo = new rotulocampo;
@@ -104,11 +104,11 @@ function js_verificacalculo(){
             <td height="25">
               <?php 
 	            $result=db_query("select " . db_getsession("DB_anousu") . "as j18_anousu");
-	            if(pg_numrows($result) > 0){
+	            if(pg_num_rows($result) > 0){
 		          ?>
 		          <select name="anousu">
 		          <?php 
-  	          for($i=0;$i<pg_numrows($result);$i++){
+  	          for($i=0;$i<pg_num_rows($result);$i++){
 		            db_fieldsmemory($result,$i);
 	              ?>
 	              <option value='<?=$j18_anousu?>'><?=$j18_anousu?></option>
@@ -131,7 +131,7 @@ function js_verificacalculo(){
           if(!isset($mesini)){
             $mesini = db_subdata(db_getsession("DB_datausu"),"m","t");
           }
-					$result=array("1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+					$result=["1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
 					db_select("mesini",$result,true,1,"","","","","");
           ?>
           </td>
@@ -146,7 +146,7 @@ function js_verificacalculo(){
           if(!isset($mesfim)){
             $mesfim = db_subdata(db_getsession("DB_datausu"),"m","t");
           }
-					$result=array("1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+					$result=["1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
 					db_select("mesfim",$result,true,1,"","","","","");
           ?>
           </td>
@@ -159,7 +159,7 @@ function js_verificacalculo(){
   	      <td>
 			   <?php 	
            //$xy = array ("pdf" => "PDF - Pré-impresso", "txt" => "TXT - Arquivo Gráfica");
-           $xy = array ("txt" => "TXT - Arquivo Gráfica");
+           $xy =  ["txt" => "TXT - Arquivo Gráfica"];
            db_select('tipo_emissao', $xy, true, 1);
          ?>      
 	       </td>

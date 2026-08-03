@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 if(!isset($abas)){
   echo "<script>location.href='pro1_cgmcorreto004.php?db_opcao=2'</script>";
   exit;
@@ -36,12 +36,12 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_cgmcorreto_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clcgmcorreto = new cl_cgmcorreto;
 $db_opcao = 22;
 $db_botao = false;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $clcgmcorreto->alterar($z10_codigo);
@@ -81,7 +81,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </table>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clcgmcorreto->erro_status=="0"){
     $clcgmcorreto->erro(true,false);
     $db_botao=true;

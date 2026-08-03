@@ -41,16 +41,17 @@ class Importador
     const ARQUIVO_LOTES = 1;
     const ARQUIVO_EDIFICACOES = 2;
     const ARQUIVO_TESTADAS = 3;
+
     /**
-     * Array de arquivos a serem importados
-     * @var array
+     * @param mixed[] $aArquivos
      */
-    private $aArquivos;
-
-    public function __construct($aArquivos = array())
+    public function __construct(
+        /**
+         * Array de arquivos a serem importados
+         */
+        private $aArquivos = []
+    )
     {
-
-        $this->aArquivos = $aArquivos;
     }
 
 
@@ -74,7 +75,7 @@ class Importador
         $sDataNomeSchema = $oDataArquivo->getDia() . $oDataArquivo->getMes() . $oDataArquivo->getAno();
         $sNomeSchema     = "importacao_" . $sDataNomeSchema;
 
-        $aDescricaoArquivoImportado = array();
+        $aDescricaoArquivoImportado = [];
         $oCivitas       = new Civitas($sNomeSchema, false);
         $oProcessamento = new Processamento($sNomeSchema, false);
 

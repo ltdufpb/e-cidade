@@ -29,7 +29,7 @@ include(modification("libs/db_sql.php"));
 include(modification("libs/db_utils.php"));
 require(modification("fpdf151/pdf.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $oGet    = db_utils::postMemory($_GET);
 
@@ -78,7 +78,7 @@ $p       = 0;
 	                           inner join cgm on q86_numcgm = z01_numcgm 
        	               where q86_numcgm in ({$Dados}) order by z01_nome";
    $result = db_query($sSqlCadEscrito);
-   $numrows = pg_numrows($result);
+   $numrows = pg_num_rows($result);
     
    for($x=0; $x< $numrows; $x++) {
      db_fieldsmemory($result,$x);
@@ -123,7 +123,7 @@ $p       = 0;
                     order by z01_nome ";
 
      $result2  = db_query($sSqlEscrito);
-     $numrows2 = pg_numrows($result2);
+     $numrows2 = pg_num_rows($result2);
      
      //não ha registros
      if ($numrows2 == 0) {

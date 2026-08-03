@@ -38,12 +38,6 @@ class RelatorioLevantamentoPatrimonial {
   private $oPdf;
 
   /**
-   * Departamento do levantamento patrimonial.
-   * @var DBDepartamento
-   */
-  private $oDepartamento;
-
-  /**
    * Situação selecionada para filtro de quadros.
    * @var integer
    */
@@ -53,31 +47,31 @@ class RelatorioLevantamentoPatrimonial {
    * Coleção dos dados dos bens encontrados no departamento do levantamento mas não encontrados no levantamento.
    * @var stdClass[]
    */
-  private $aNaoEncontradoTxt = array();
+  private $aNaoEncontradoTxt = [];
 
   /**
    * Coleção dos dados dos bens (placas) encontrados no levantamento mas não cadastrados no sistema.
    * @var stdClass[]
    */
-  private $aNaoCadastrado = array();
+  private $aNaoCadastrado = [];
 
   /**
    * Coleção de dados dos bens encontrados em departamentos diferentes do levantamento.
    * @var stdClass[]
    */
-  private $aInconsistente = array();
+  private $aInconsistente = [];
 
   /**
    * Coleção de dados dos bens encontrados no departamento conforme levantamento.
    * @var stdClass[]
    */
-  private $aConsistente = array();
+  private $aConsistente = [];
 
   /**
    * Coleção de dados dos bens encontrados no txt e baixados no sistema.
    * @var stdClass[]
    */
-  private $aBaixadoTxt  = array();
+  private $aBaixadoTxt  = [];
 
   /**
    * Largura total da página do relatório.
@@ -101,12 +95,14 @@ class RelatorioLevantamentoPatrimonial {
   /**
    * @param DBDepartamento $oDepartamento
    */
-  public function __construct(DBDepartamento $oDepartamento) {
+  public function __construct(/**
+   * Departamento do levantamento patrimonial.
+   */
+  private readonly DBDepartamento $oDepartamento) {
 
     $this->oPdf          = new PDFDocument(PDFDocument::PRINT_LANDSCAPE);
     $this->iLargura      = $this->oPdf->getAvailWidth() - 10;
     $this->iAltura       = 4;
-    $this->oDepartamento = $oDepartamento;
   }
 
   /**
@@ -189,14 +185,14 @@ class RelatorioLevantamentoPatrimonial {
       throw new Exception("Não há Levantamento Patrimonial para o departamento informado.");
     }
 
-    $aPlacasTxt      = array();
-    $aLevantamento   = array();
+    $aPlacasTxt      = [];
+    $aLevantamento   = [];
     $sDataImportacao = "";
     for ($iLevantamento = 0; $iLevantamento < $oDaoLevantamento->numrows; $iLevantamento++) {
 
       $oLevantamento = db_utils::fieldsMemory($rsLevantamento, $iLevantamento);
       $oLevantamento->nenhum_registro = false;
-      $oLevantamento->placa           = ltrim($oLevantamento->placa, '0');
+      $oLevantamento->placa           = ltrim((string) $oLevantamento->placa, '0');
       $sPlaca          = db_stdClass::normalizeStringJsonEscapeString($oLevantamento->placa);
       $aPlacasTxt[]    = "'{$sPlaca}'";
       $sDataImportacao = $oLevantamento->data;
@@ -213,7 +209,7 @@ class RelatorioLevantamentoPatrimonial {
     $sSqlBens     = $oDaoBens->sql_querybensdepto(null, $sCamposBens, $sOrderBens, $sWhereBens);
     $rsBens       = $oDaoBens->sql_record($sSqlBens);
 
-    $aBens = array();
+    $aBens = [];
     if ($rsBens != false && $oDaoBens->numrows > 0) {
 
       for ($iBem = 0; $iBem < $oDaoBens->numrows; $iBem++) {
@@ -357,7 +353,7 @@ class RelatorioLevantamentoPatrimonial {
       if ($this->oPdf->getAvailHeight() < $this->iAltura) {
 
         $this->adicionarPagina();
-        $this->escreverQuadro($oQuadro, array(), $lDepartamento);
+        $this->escreverQuadro($oQuadro, [], $lDepartamento);
       }
 
       if ($oLinha->nenhum_registro) {

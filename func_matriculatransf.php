@@ -34,7 +34,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_matricula_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatricula = new cl_matricula;
 $clmatricula->rotulo->label("ed60_i_codigo");
 $clrotulo = new rotulocampo;
@@ -135,13 +135,13 @@ $clrotulo->label("ed60_matricula");
                 } else {
                     //$sql = $clmatricula->sql_query("",$campos,"ed47_v_nome"," ed60_c_situacao = 'MATRICULADO'".$where);
                 }
-                $repassa = array();
+                $repassa = [];
                 if (isset($chave_ed60_i_codigo)) {
-                    $repassa = array("chave_ed60_i_codigo" => $chave_ed60_i_codigo,
+                    $repassa = ["chave_ed60_i_codigo" => $chave_ed60_i_codigo,
                         "chave_ed47_v_nome" => $chave_ed47_v_nome,
                         "chave_ed47_i_codigo" => $chave_ed47_i_codigo,
                         "chave_ed57_c_descr" => $chave_ed57_c_descr,
-                        "chave_ed60_matricula" => $chave_ed60_matricula);
+                        "chave_ed60_matricula" => $chave_ed60_matricula];
                 }
 
                 db_lovrot(@$sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

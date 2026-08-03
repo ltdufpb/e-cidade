@@ -397,7 +397,7 @@ class Laboratorio
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'la02_i_codigo' => $this->getCodigo(),
             'la02_i_tipo'  => $this->getTipo(),
             'la02_c_descr' => $this->getDescricao(),
@@ -408,7 +408,7 @@ class Laboratorio
             'la02_c_numero' => $this->getNumero(),
             'la02_i_turnoatend' => $this->getTurnoAtendimento(),
             'la02_interfaceado' => $this->getInterfaceado()
-        );
+        ];
 
         return $retorno;
     }

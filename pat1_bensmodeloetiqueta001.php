@@ -34,7 +34,7 @@ require_once(modification("classes/db_bensmodeloetiquetapadrao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clbensmodeloetiqueta       = new cl_bensmodeloetiqueta;
 $clbensmodeloetiquetapadrao = new cl_bensmodeloetiquetapadrao;
@@ -46,14 +46,14 @@ if(isset($incluir)){
 	$sql_erro = false;
 	
 	if(isset($_FILES["fileXml"]["name"]) && $_FILES["fileXml"]["name"] != "" ){
-		
+
 			$path = "tmp/tmpXML.xml";
 			$lArquivo = move_uploaded_file($_FILES["fileXml"]["tmp_name"],$path);
-			
+
 			if($lArquivo){
-				
+
 			 $sXml = file_get_contents($path);
-			 			 
+
 			 $sDescr = $t71_descr;
 			 if($sXml==false){
 			 	$sql_erro = true;
@@ -87,7 +87,7 @@ if(isset($incluir)){
 
   if(!$sql_erro){
     $clbensmodeloetiqueta->t71_descr  = $sDescr;
-    $clbensmodeloetiqueta->t71_strxml = addslashes($sXml);
+    $clbensmodeloetiqueta->t71_strxml = addslashes((string) $sXml);
     $clbensmodeloetiqueta->incluir($t71_sequencial);
     if($clbensmodeloetiqueta->erro_status == "0"){
     	$sql_erro = true;

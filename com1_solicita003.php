@@ -59,41 +59,41 @@ if ($clpcparam->numrows > 0) {
         <td>
             <?php
             if (isset($pc30_sugforn) && $pc30_sugforn == 't') {
-                $clcriaabas->identifica = array(
+                $clcriaabas->identifica = [
                     "solicita" => "Solicitação",
                     "solicitem" => "Itens/Dotações",
                     "sugforn" => "Fornecedor sugerido"
-                );
-                $clcriaabas->src = array("solicita" => "com1_solicita006.php");
-                $clcriaabas->title = array(
+                ];
+                $clcriaabas->src = ["solicita" => "com1_solicita006.php"];
+                $clcriaabas->title = [
                     "solicita" => "Cadastro de solicitação de compras",
                     "solicitem" => "Cadastro de Itens e Dotações",
                     "sugforn" => "Cadastro de fornecedores sugeridos"
-                );
-                $clcriaabas->sizecampo = array(
+                ];
+                $clcriaabas->sizecampo = [
                     "solicita" => "20",
                     "solicitem" => "20",
                     "sugforn" => "25"
-                );
-                $clcriaabas->disabled = array(
+                ];
+                $clcriaabas->disabled = [
                     "solicitem" => "true",
                     "sugforn" => "true"
-                );
+                ];
             } else {
-                $clcriaabas->identifica = array(
+                $clcriaabas->identifica = [
                     "solicita" => "Solicitação",
                     "solicitem" => "Itens/Dotações"
-                );
-                $clcriaabas->src = array("solicita" => "com1_solicita006.php");
-                $clcriaabas->title = array(
+                ];
+                $clcriaabas->src = ["solicita" => "com1_solicita006.php"];
+                $clcriaabas->title = [
                     "solicita" => "Cadastro de solicitação de compras",
                     "solicitem" => "Cadastro de Itens e Dotações"
-                );
-                $clcriaabas->sizecampo = array(
+                ];
+                $clcriaabas->sizecampo = [
                     "solicita" => "20",
                     "solicitem" => "20"
-                );
-                $clcriaabas->disabled = array("solicitem" => "true");
+                ];
+                $clcriaabas->disabled = ["solicitem" => "true"];
             }
             $clcriaabas->cria_abas();
             ?>

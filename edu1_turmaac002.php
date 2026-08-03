@@ -39,8 +39,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 require_once(modification("model/educacao/Escola.model.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clturmaac          = new cl_turmaac;
 $clturmaacmatricula = new cl_turmaacmatricula;
@@ -164,7 +164,7 @@ if (isset($alterar)) {
   $clturmaac->ed268_programamaiseducacao = $ed268_programamaiseducacao;
   $clturmaac->ed268_c_aee                = $ed268_c_aee;
   $clturmaac->ed268_i_numvagas           = $ed268_i_numvagas;
-  $clturmaac->ed268_c_descr              = trim($ed268_c_descr);
+  $clturmaac->ed268_c_descr              = trim((string) $ed268_c_descr);
   $clturmaac->alterar($ed268_i_codigo);
   db_fim_transacao();
   $db_botao = true;

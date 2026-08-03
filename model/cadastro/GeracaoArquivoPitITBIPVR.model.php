@@ -37,12 +37,6 @@ class GeracaoArquivoPitITBIPVR {
 	 * Caminho do JSON com as mensagens
 	 */
 	const MENSAGENS = 'arrecadacao.cadastro.GeracaoArquivoPitITBIPVR.';
-	
-  /**
-   * Ano que deve ser usado para a geração do arquivo.
-   * @var Integer
-   */
-  private $iAno;
 
   /**
    * Semestre que deve ser usado para a geração do arquivo
@@ -66,16 +60,18 @@ class GeracaoArquivoPitITBIPVR {
    * Array com as inconsistencias
    * @var array
    */
-  private $aErros = array();
+  private $aErros = [];
 
   /**
    * Função construtora para geração de arquivo ITBI-PVR
    * @param integer $iAno      Ano que deve ser usado para a geração de Arquivo
    * @param integer $iSemestre Semestre que deve ser usado para a geração do Arquivo
    */
-  function __construct( $iAno, $iSemestre ){
+  function __construct( /**
+   * Ano que deve ser usado para a geração do arquivo.
+   */
+  private $iAno, $iSemestre ){
     
-    $this->iAno         = $iAno;
     $this->iSemestre     = $iSemestre;
     $this->iInstit      = db_getsession('DB_instit');
     
@@ -183,11 +179,11 @@ class GeracaoArquivoPitITBIPVR {
 
     $oLocal = $this->oDomDocument->createElement('local');
     $oLocal->setAttribute('distrito',        $oLocalidades->distrito );
-    $oLocal->setAttribute('localidade',      utf8_encode( $oLocalidades->localidade ) );
+    $oLocal->setAttribute('localidade',      mb_convert_encoding( $oLocalidades->localidade, 'UTF-8', 'ISO-8859-1' ) );
     $oLocal->setAttribute('valor_minimo_ha', number_format( $oLocalidades->valor_minimo_ha, 5, ',', '') );
     $oLocal->setAttribute('valor_maximo_ha', number_format( $oLocalidades->valor_maximo_ha, 5, ',', '') );
-    $oLocal->setAttribute('Tipo_utilizacao', utf8_encode( $oLocalidades->tipo_utilizacao ) );
-    $oLocal->setAttribute('topografia',      utf8_encode( $oLocalidades->topografia ) );
+    $oLocal->setAttribute('Tipo_utilizacao', mb_convert_encoding( $oLocalidades->tipo_utilizacao, 'UTF-8', 'ISO-8859-1' ) );
+    $oLocal->setAttribute('topografia',      mb_convert_encoding( $oLocalidades->topografia, 'UTF-8', 'ISO-8859-1' ) );
     return $oLocal;
   }
     

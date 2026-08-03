@@ -29,14 +29,14 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("libs/db_libcontabilidade.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $db_selinstit = "1";
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",$db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
    db_fieldsmemory($resultinst,$xins);
    $descr_inst .= $xvirg.$nomeinst ;
    $xvirg = ', ';

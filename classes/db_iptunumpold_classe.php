@@ -60,7 +60,7 @@ class cl_iptunumpold {
     {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptunumpold");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
    }
 
     //funcao erro
@@ -138,10 +138,10 @@ class cl_iptunumpold {
          $this->erro_status = "0";
          return false;
        }
-       $this->j130_sequencial = pg_result($result,0,0);
+       $this->j130_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from iptunumpold_j130_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j130_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j130_sequencial)){
          $this->erro_sql = " Campo j130_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -177,7 +177,7 @@ class cl_iptunumpold {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "iptunumpold ($this->j130_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "iptunumpold já Cadastrado";
@@ -206,14 +206,14 @@ class cl_iptunumpold {
      if(($resaco!=false)||($this->numrows!=0)){
 
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17979,'$this->j130_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3177,17979,'','".AddSlashes(pg_result($resaco,0,'j130_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3177,17980,'','".AddSlashes(pg_result($resaco,0,'j130_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3177,17981,'','".AddSlashes(pg_result($resaco,0,'j130_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3177,17982,'','".AddSlashes(pg_result($resaco,0,'j130_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3177,1014379,'','".AddSlashes(pg_result($resaco,0,'j130_iptucalclog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3177,17979,'','".AddSlashes(pg_fetch_result($resaco,0,'j130_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3177,17980,'','".AddSlashes(pg_fetch_result($resaco,0,'j130_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3177,17981,'','".AddSlashes(pg_fetch_result($resaco,0,'j130_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3177,17982,'','".AddSlashes(pg_fetch_result($resaco,0,'j130_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3177,1014379,'','".AddSlashes(pg_fetch_result($resaco,0,'j130_iptucalclog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -225,10 +225,10 @@ class cl_iptunumpold {
       $this->atualizacampos();
      $sql = " update iptunumpold set ";
      $virgula = "";
-     if(trim($this->j130_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j130_sequencial"])){
+     if(trim((string) $this->j130_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j130_sequencial"])){
        $sql  .= $virgula." j130_sequencial = $this->j130_sequencial ";
        $virgula = ",";
-       if(trim($this->j130_sequencial) == null ){
+       if(trim((string) $this->j130_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "j130_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_iptunumpold {
          return false;
        }
      }
-     if(trim($this->j130_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j130_anousu"])){
+     if(trim((string) $this->j130_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j130_anousu"])){
        $sql  .= $virgula." j130_anousu = $this->j130_anousu ";
        $virgula = ",";
-       if(trim($this->j130_anousu) == null ){
+       if(trim((string) $this->j130_anousu) == null ){
          $this->erro_sql = " Campo Exercício não informado.";
          $this->erro_campo = "j130_anousu";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_iptunumpold {
          return false;
        }
      }
-     if(trim($this->j130_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j130_matric"])){
+     if(trim((string) $this->j130_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j130_matric"])){
        $sql  .= $virgula." j130_matric = $this->j130_matric ";
        $virgula = ",";
-       if(trim($this->j130_matric) == null ){
+       if(trim((string) $this->j130_matric) == null ){
          $this->erro_sql = " Campo Matrícula não informado.";
          $this->erro_campo = "j130_matric";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_iptunumpold {
          return false;
        }
      }
-     if(trim($this->j130_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j130_numpre"])){
+     if(trim((string) $this->j130_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j130_numpre"])){
        $sql  .= $virgula." j130_numpre = $this->j130_numpre ";
        $virgula = ",";
-       if(trim($this->j130_numpre) == null ){
+       if(trim((string) $this->j130_numpre) == null ){
          $this->erro_sql = " Campo Numpre não informado.";
          $this->erro_campo = "j130_numpre";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_iptunumpold {
        }
      }
 
-     if(trim($this->j130_iptucalclog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j130_iptucalclog"])){ 
+     if(trim((string) $this->j130_iptucalclog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j130_iptucalclog"])){ 
        $sql  .= $virgula." j130_iptucalclog = $this->j130_iptucalclog ";
        $virgula = ",";
-       if(trim($this->j130_iptucalclog) == null ){ 
+       if(trim((string) $this->j130_iptucalclog) == null ){ 
          $this->erro_sql = " Campo Iptucalclogmat não informado.";
          $this->erro_campo = "j130_iptucalclog";
          $this->erro_banco = "";
@@ -305,19 +305,19 @@ class cl_iptunumpold {
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17979,'$this->j130_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j130_sequencial"]) || $this->j130_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3177,17979,'".AddSlashes(pg_result($resaco,$conresaco,'j130_sequencial'))."','$this->j130_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3177,17979,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j130_sequencial'))."','$this->j130_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j130_anousu"]) || $this->j130_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,3177,17980,'".AddSlashes(pg_result($resaco,$conresaco,'j130_anousu'))."','$this->j130_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3177,17980,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j130_anousu'))."','$this->j130_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j130_matric"]) || $this->j130_matric != "")
-           $resac = db_query("insert into db_acount values($acount,3177,17981,'".AddSlashes(pg_result($resaco,$conresaco,'j130_matric'))."','$this->j130_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3177,17981,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j130_matric'))."','$this->j130_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j130_numpre"]) || $this->j130_numpre != "")
-           $resac = db_query("insert into db_acount values($acount,3177,17982,'".AddSlashes(pg_result($resaco,$conresaco,'j130_numpre'))."','$this->j130_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3177,17982,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j130_numpre'))."','$this->j130_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if (isset($GLOBALS["HTTP_POST_VARS"]["j130_iptucalclog"]) || $this->j130_iptucalclog != "")
-           $resac = db_query("insert into db_acount values($acount,3177,1014379,'".AddSlashes(pg_result($resaco,$conresaco,'j130_iptucalclog'))."','$this->j130_iptucalclog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3177,1014379,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j130_iptucalclog'))."','$this->j130_iptucalclog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      }
@@ -372,14 +372,14 @@ class cl_iptunumpold {
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17979,'$j130_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3177,17979,'','".AddSlashes(pg_result($resaco,$iresaco,'j130_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3177,17980,'','".AddSlashes(pg_result($resaco,$iresaco,'j130_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3177,17981,'','".AddSlashes(pg_result($resaco,$iresaco,'j130_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3177,17982,'','".AddSlashes(pg_result($resaco,$iresaco,'j130_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3177,1014379,'','".AddSlashes(pg_result($resaco,$iresaco,'j130_iptucalclog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3177,17979,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j130_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3177,17980,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j130_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3177,17981,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j130_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3177,17982,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j130_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3177,1014379,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j130_iptucalclog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -458,7 +458,7 @@ class cl_iptunumpold {
    public function sql_query ( $j130_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -483,7 +483,7 @@ class cl_iptunumpold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -496,7 +496,7 @@ class cl_iptunumpold {
    public function sql_query_file ( $j130_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -517,7 +517,7 @@ class cl_iptunumpold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -568,7 +568,7 @@ class cl_iptunumpold {
       if (!$rsIptunump) {
           throw new DBException("Não foi possivel buscar dados do cálculo(numpre) (".pg_last_error().")");
       }
-      if (pg_numrows($rsIptunump) > 0) {
+      if (pg_num_rows($rsIptunump) > 0) {
          global $j20_anousu;
          global $j20_matric;
          global $j20_numpre;

@@ -82,7 +82,7 @@ class ProcessamentoArquivoDMSWebservice {
     try {
 
       $sNomeArquivo = 'tmp/' . date('Ymd_His');
-      $oAquivo      = file_put_contents($sNomeArquivo, base64_decode($this->sArquivoBase64));
+      $oAquivo      = file_put_contents($sNomeArquivo, base64_decode((string) $this->sArquivoBase64));
       $oLayout      = new DBLayoutReader(213, $sNomeArquivo, true);
 
       if (!db_utils::inTransaction()) {
@@ -107,7 +107,7 @@ class ProcessamentoArquivoDMSWebservice {
           case '02': // Contribuintes
 
             // Recria o array de planilhas
-            $aPlanilhaRetencao  = array();
+            $aPlanilhaRetencao  = [];
 
             $oDadosContribuinte = self::preparaDadosContribuinte($oLinha, $oDadosContador);
             $iContribuinte      = $oDadosContribuinte->iInscricaoMunicipal;
@@ -152,14 +152,14 @@ class ProcessamentoArquivoDMSWebservice {
 
       // Configura o retorno
       $oRetorno->bStatus   = true;
-      $oRetorno->sMensagem = utf8_encode('Arquivo importado com sucesso');
+      $oRetorno->sMensagem = mb_convert_encoding('Arquivo importado com sucesso', 'UTF-8', 'ISO-8859-1');
       $oRetorno->aDados    = $aRetorno;
 
     } catch(Exception $oErro) {
 
       // Configura o retorno
       $oRetorno->bStatus   = false;
-      $oRetorno->sMensagem = utf8_encode('<b>O arquivo possui inconsistências:</b><br>' . trim($oErro->getMessage()));
+      $oRetorno->sMensagem = mb_convert_encoding('<b>O arquivo possui inconsistências:</b><br>' . trim($oErro->getMessage()), 'UTF-8', 'ISO-8859-1');
       $oRetorno->oDados    = null;
     }
 
@@ -180,11 +180,11 @@ class ProcessamentoArquivoDMSWebservice {
     $sSql     = $oDaoEmpresaPretServico->sql_queryAtividadeServico($oContribuinte->iInscricaoMunicipal);
     $rsResult = db_query($sSql);
 
-    if (strtoupper(trim($oLinha->operacao)) == 'S' && (pg_numrows($rsResult) == 0)) {
+    if (strtoupper(trim($oLinha->operacao)) == 'S' && (pg_num_rows($rsResult) == 0)) {
       throw new Exception('O Contribuinte não é prestador de serviço');
     }
 
-    if (!in_array(trim(strtoupper($oLinha->situacao_nota)), array('T', 'R', 'C', 'E', 'IS', 'IM', 'N', 'S'))) {
+    if (!in_array(trim(strtoupper($oLinha->situacao_nota)), ['T', 'R', 'C', 'E', 'IS', 'IM', 'N', 'S'])) {
       throw new Exception('Situação da Nota inválida');
     }
 
@@ -204,7 +204,7 @@ class ProcessamentoArquivoDMSWebservice {
       $sSqlCgm  = $oDaoCgm->sql_query_file(null, '1', null, "z01_cgccpf = '{$oLinha->cpf_cnpj_tomador}'");
       $rsRecord = $oDaoCgm->sql_record($sSqlCgm);
 
-      if (pg_numrows($rsRecord) == 0) {
+      if (pg_num_rows($rsRecord) == 0) {
         throw new Exception("Tomador ({$oLinha->nome_razao_social_tomador}) não cadastrado na prefeitura");
       }
 
@@ -229,7 +229,7 @@ class ProcessamentoArquivoDMSWebservice {
       $sSqlNotas    = $oDaoTipoNota->sql_query_file($oLinha->tipo_nota);
       $rsNota       = pg_query($sSqlNotas);
 
-      if (pg_numrows($rsNota) == 0) {
+      if (pg_num_rows($rsNota) == 0) {
 
         $sMensagemErro = "Tipo de Documento \"{$oLinha->tipo_nota}\" é inválido no ";
         $sMensagemErro.= "documento nº \"{$oLinha->numero_nota}\".";
@@ -312,19 +312,11 @@ class ProcessamentoArquivoDMSWebservice {
     // Valida o tipo de operacao do documento (E=Entrada | S=Saída)
     $oDadosNota->sOperacao = trim(strtolower($oLinha->operacao));
 
-    switch ($oDadosNota->sOperacao) {
-
-      case 'e':
-        $oDadosNota->iTipoServico = NotaPlanilhaRetencao::SERVICO_TOMADO;
-        break;
-
-      case 's':
-        $oDadosNota->iTipoServico = NotaPlanilhaRetencao::SERVICO_PRESTADO;
-        break;
-
-      default :
-        throw new Exception('O Tipo de Operação do documento é inválido.');
-    }
+    $oDadosNota->iTipoServico = match ($oDadosNota->sOperacao) {
+        'e' => NotaPlanilhaRetencao::SERVICO_TOMADO,
+        's' => NotaPlanilhaRetencao::SERVICO_PRESTADO,
+        default => throw new Exception('O Tipo de Operação do documento é inválido.'),
+    };
 
     // Formatação das datas
     $iDiaEmissao                  = substr($oLinha->data_emissao,    6,  8);
@@ -472,7 +464,7 @@ class ProcessamentoArquivoDMSWebservice {
     $sSqlValidaDados .= ' limit 1                                          ';
     $rsValidaDados    = db_query($sSqlValidaDados);
 
-    if (pg_numrows($rsValidaDados) == 0) {
+    if (pg_num_rows($rsValidaDados) == 0) {
       throw new Exception('Nenhuma Inscrição Municipal foi encontrada para o CNPJ/CPF.');
     }
 
@@ -598,25 +590,25 @@ class ProcessamentoArquivoDMSWebservice {
         case 'DD-MM-AAAA':
         case 'DD/MM/AAAA':
 
-          list($sDia, $sMes, $sAno) = preg_split('/[-./ ]/', $sData);
+          [$sDia, $sMes, $sAno] = preg_split('/[-./ ]/', $sData);
           break;
 
         case 'AAAA/MM/DD':
         case 'AAAA-MM-DD':
 
-          list($sAno, $sMes, $sDia) = preg_split('/[-./ ]/', $sData);
+          [$sAno, $sMes, $sDia] = preg_split('/[-./ ]/', $sData);
           break;
 
         case 'AAAA/DD/MM':
         case 'AAAA-DD-MM':
 
-          list($sAno, $sDia, $sMes) = preg_split('/[-./ ]/', $sData);
+          [$sAno, $sDia, $sMes] = preg_split('/[-./ ]/', $sData);
           break;
 
         case 'MM-DD-AAAA':
         case 'MM/DD/AAAA':
 
-          list($sMes, $sDia, $sAno) = preg_split('/[-./ ]/', $sData);
+          [$sMes, $sDia, $sAno] = preg_split('/[-./ ]/', $sData);
           break;
 
         case 'AAAAMMDD':

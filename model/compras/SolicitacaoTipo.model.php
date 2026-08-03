@@ -34,41 +34,41 @@ final class SolicitacaoTipo {
   /**
    * @tipo integer
    */
-  const NORMAL = 1;
+  const int NORMAL = 1;
 
   /**
    * @tipo integer
    */
-  const PACTO = 2;
+  const int PACTO = 2;
 
   /**
    * @tipo integer
    */
-  const ABERTURA_REGISTRO_PRECO = 3;
+  const int ABERTURA_REGISTRO_PRECO = 3;
 
   /**
    * @tipo integer
    */
-  const ESTIMATIVA_REGISTRO_PRECO = 4;
+  const int ESTIMATIVA_REGISTRO_PRECO = 4;
 
   /**
    * @tipo integer
    */
-  const PROCESSAMENTO_REGISTRO_PRECO = 5;
+  const int PROCESSAMENTO_REGISTRO_PRECO = 5;
 
   /**
    * @tipo integer
    */
-  const COMPILACAO_REGISTRO_PRECO = 6;
+  const int COMPILACAO_REGISTRO_PRECO = 6;
 
   /**
    * @tipo integer
    */
-  const CONTRATO = 7;
+  const int CONTRATO = 7;
 
   /**
    * Usado em solicitação de compras para licitações de Concessão
    * @tipo integer
    */
-  const AUTOMATICO = 8;
+  const int AUTOMATICO = 8;
 }

@@ -33,8 +33,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_processoforoinicial_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -113,9 +113,9 @@ if (!isset($funcao_js)) {
           $sql = $clprocessoforoinicial->sql_query(null,$campos,"v71_sequencial","");
         }
         
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_v71_sequencial)) {
-          $repassa = array("chave_v71_sequencial" => $chave_v71_sequencial);
+          $repassa = ["chave_v71_sequencial" => $chave_v71_sequencial];
         }
         
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa, false);

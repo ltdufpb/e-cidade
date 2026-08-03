@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_placaixaprocesso_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clplacaixaprocesso = new cl_placaixaprocesso;
 $clplacaixaprocesso->rotulo->label("k144_sequencial");
 $clplacaixaprocesso->rotulo->label("k144_sequencial");
@@ -72,9 +72,9 @@ $clplacaixaprocesso->rotulo->label("k144_sequencial");
         }else{
            $sql = $clplacaixaprocesso->sql_query("",$campos,"k144_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k144_sequencial)){
-          $repassa = array("chave_k144_sequencial"=>$chave_k144_sequencial,"chave_k144_sequencial"=>$chave_k144_sequencial);
+          $repassa = ["chave_k144_sequencial"=>$chave_k144_sequencial,"chave_k144_sequencial"=>$chave_k144_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

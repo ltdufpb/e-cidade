@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_assmeio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $classmeio = new cl_assmeio;
 $classmeio->rotulo->label("h22_codigo");
 $classmeio->rotulo->label("h22_regist");
@@ -102,9 +102,9 @@ $classmeio->rotulo->label("h22_regist");
         }else{
            $sql = $classmeio->sql_query(null,$campos,"h22_codigo",$dbwhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h22_regist)){
-          $repassa = array("chave_h22_codigo"=>$chave_h22_codigo,"chave_h22_regist"=>$chave_h22_regist);
+          $repassa = ["chave_h22_codigo"=>$chave_h22_codigo,"chave_h22_regist"=>$chave_h22_regist];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa, false);
       }else{

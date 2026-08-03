@@ -56,14 +56,14 @@ $oPdf->SetFontSize(8);
 
 foreach ($aInconsistencias as $inconsistencia) {
 
-  imprimeCabecalho($oPdf, $filtros, $inconsistencia->titulo);
+  imprimeCabecalho($oPdf, $filtros);
 
   foreach($inconsistencia->matriculas as $servidor) {
 
     if($oPdf->GetY() > $filtros->limiteAlturaPagina) {
 
       $oPdf->AddPage();
-      imprimeCabecalho($oPdf, $filtros, $inconsistencia->titulo);
+      imprimeCabecalho($oPdf, $filtros);
     }
 
     $oPdf->Cell($filtros->colunaMatricula, 4, $servidor->matricula, 1, 0, 'R');

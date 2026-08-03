@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cursoedu_classe.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clturma        = new cl_turma;
 $clcalendario   = new cl_calendario;
@@ -90,7 +90,7 @@ $escola = db_getsession("DB_coddepto");
 
                 if ( $clsala->numrows == 0 ) {
 
-                 $x = array(''=>'NENHUM REGISTRO');
+                 $x = [''=>'NENHUM REGISTRO'];
                  db_select('ed57_i_sala',$x,true,1,"");
                 } else {
                 db_selectrecord("ed57_i_sala",$result_sala,"","","","chave_ed57_i_sala","","  ","",1);
@@ -115,7 +115,7 @@ $escola = db_getsession("DB_coddepto");
 
                 if ( $linhas_tur == 0 ) {
 
-                  $x = array(''=>'NENHUM REGISTRO');
+                  $x = [''=>'NENHUM REGISTRO'];
                   db_select('ed57_i_turno',$x,true,1,"");
                 } else {
                   db_selectrecord("ed57_i_turno",$result_tur,"","","","chave_ed57_i_turno","","  ","",1);
@@ -129,7 +129,7 @@ $escola = db_getsession("DB_coddepto");
 
                 if ( $clcalendario->numrows == 0 ) {
 
-                 $x = array(''=>'NENHUM REGISTRO');
+                 $x = [''=>'NENHUM REGISTRO'];
                  db_select('ed57_i_calendario',$x,true,1,"");
                 } else {
                  db_selectrecord("ed57_i_calendario",$result_cal,"","","","chave_ed57_i_calendario","","  ","",1);
@@ -143,7 +143,7 @@ $escola = db_getsession("DB_coddepto");
 
                 if ( $clprocedimento->numrows == 0 ) {
 
-                 $x = array(''=>'NENHUM REGISTRO');
+                 $x = [''=>'NENHUM REGISTRO'];
                  db_select('ed57_i_procedimento',$x,true,1,"");
                 } else {
                  db_selectrecord("ed220_i_procedimento",$result_proc,"","","","chave_ed220_i_procedimento","","  ","",1);

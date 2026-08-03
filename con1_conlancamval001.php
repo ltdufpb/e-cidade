@@ -45,7 +45,7 @@ require_once(modification("classes/db_conlancamdig_classe.php"));
 require_once(modification("classes/db_conlancamdoc_classe.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clconplano = new cl_conplano;
 $clconlancamval = new cl_conlancamval;
@@ -173,7 +173,7 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
             $atributosDebito = JSON::create()->parse(str_replace("\\", "", $_POST['atributosDebito']));
             $atributosCredito = JSON::create()->parse(str_replace("\\", "", $_POST['atributosCredito']));
 
-            $atributos = array($atributosDebito, $atributosCredito);
+            $atributos = [$atributosDebito, $atributosCredito];
 
             foreach ($atributos as $indice => $atributo) {
                 $atributoDebito = $indice === 0;
@@ -186,7 +186,7 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
                             if (empty($dadosContaCorrente)) {
                                 continue;
                             }
-                            $atributosDebitoIndexado = array();
+                            $atributosDebitoIndexado = [];
                             foreach ($dadosContaCorrente->atributos as $dadosAtributos) {
                                 $atributosDebitoIndexado[$dadosAtributos->sigla] = $dadosAtributos->valor;
                                 if ($dadosAtributos->sigla === "FR") {
@@ -260,7 +260,7 @@ if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
 <?php
 db_menu();
 
-if ((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if ((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     if ($clconlancamval->erro_status == "0") {
         $clconlancamval->erro(true, false);
         $db_botao = true;

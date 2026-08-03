@@ -51,7 +51,7 @@ if($parcel!=""){
 	$processo = ($processo=="")?"null":$processo;
 	$sql = "select fc_excluiparcelamento($parcel,$usu,'".$motivo."',$processo) as retorno";
   	$result = db_query($sql);
-  	if (trim(substr(pg_result($result,0),0,1)) == "1") {
+  	if (trim(substr(pg_fetch_result($result,0),0,1)) == "1") {
 		db_query("commit");
 		db_msgbox("Parcelamento anulado com sucesso.");
 		echo "<script>parent.db_iframe_anulaparc1.hide();
@@ -63,7 +63,7 @@ if($parcel!=""){
   	} else {
     	db_query('rollback');
     	//echo "<script>alert('Erro durante a exclusao do parcelamento!');</script>";
-    	db_msgbox("Erro durante a exclusao do parcelamento! " . pg_result($result,0));
+    	db_msgbox("Erro durante a exclusao do parcelamento! " . pg_fetch_result($result,0));
   	}
 }else{
 	echo "<script>alert('Não tem parcelamento');</script>";

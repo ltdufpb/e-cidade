@@ -32,12 +32,12 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sliprecurso_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clsliprecurso = new cl_sliprecurso;
 if(isset($valores)){
-  $arr_valores = split(",", $valores);
+  $arr_valores = preg_split("#,#m", $valores);
   $sqlerro = false;
   db_inicio_transacao();
   $clsliprecurso->excluir(null, " k29_slip = $numslip ");
@@ -51,7 +51,7 @@ if(isset($valores)){
       $valor = "val_" . $recurso;
       $clsliprecurso->k29_slip = $numslip;
       $clsliprecurso->k29_recurso = $recurso;
-      $clsliprecurso->k29_valor = $$valor;
+      $clsliprecurso->k29_valor = ${$valor};
       $clsliprecurso->incluir(null);
       $erro_msg = $clsliprecurso->erro_msg;
       if($clsliprecurso->erro_status == 0){
@@ -102,7 +102,7 @@ if(isset($valores)){
           <td align=right>
           <?php 
           $campovalor = "val_".$k29_recurso;
-          $$campovalor = $k29_valor;
+          ${$campovalor} = $k29_valor;
           db_input($campovalor, 8, 0, true, "text", ($k29_recurso == 1 ? 3 : 1), "onchange='js_AtualizaDeletaRow(null, \"val_$k29_recurso\", false)'");
           ?>
           </td>

@@ -40,8 +40,8 @@ $clempautitem = new cl_empautitem();
 $clpcorcamjulg = new cl_pcorcamjulg();
 $clrotulo = new rotulocampo();
 $clrotulo->label('');
-parse_str($HTTP_SERVER_VARS ['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER ['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 $where = "";
 $and = "";
 if (($data != "--") && ($data1 != "--")) {
@@ -160,7 +160,7 @@ for($i = 0; $i < $numrows; $i ++) {
   $pdf->setfont('arial', 'b', 8);
   $pdf->cell(30, $alt, 'Objeto :', 0, 0, "R", 0);
   $pdf->setfont('arial', '', 7);
-  $pdf->multicell(150, $alt, htmlspecialchars_decode($l20_objeto), 0, "L", 0);
+  $pdf->multicell(150, $alt, htmlspecialchars_decode((string) $l20_objeto), 0, "L", 0);
   $result_sec = $clliclicitem->sql_record($clliclicitem->sql_query_orc(null, "distinct o40_descr", null, "l21_codliclicita = $l20_codigo"));
   if ($clliclicitem->numrows > 0) {
     $pdf->setfont('arial', 'b', 8);

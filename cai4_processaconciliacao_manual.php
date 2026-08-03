@@ -73,12 +73,12 @@ if ($solicitacao == 'gravarJustificativaPendente') {
 
             $oDataConciliacao = new DBDate($sDataConciliacao);
             $sData = $oDataConciliacao->convertTo(DBDate::DATA_EN);
-            
+
             $oDataAutenticacao = new DBDate($sDataAutenticacao);
             $sDataAutenticacao = $oDataAutenticacao->convertTo(DBDate::DATA_EN);
-            
+
             $_POST["k89_justificativa"] = corrigeCodificacaoCaracteres($sJustificativa);
-            
+
             $oDaoConciliaPendenteCorrente = new cl_conciliapendcorrente();
 
             $sSqlCodigo = $oDaoConciliaPendenteCorrente->sql_query_file(null, 
@@ -91,7 +91,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
             $rsCodigo = $oDaoConciliaPendenteCorrente->sql_record($sSqlCodigo);
 
             if ($oDaoConciliaPendenteCorrente->erro_status == "0") {
-                
+
                 //caso não exista registro de pendencia realizamos a inclusão para gravar a justificativa
                 $clconciliapendcorrente->k89_concilia = $iCodigoConciliacao;
                 $clconciliapendcorrente->k89_id = $iCodigoCaixaLinha;
@@ -103,11 +103,11 @@ if ($solicitacao == 'gravarJustificativaPendente') {
                 if ($clconciliapendcorrente->erro_status == "0") {
                     throw new Exception("Erro ao incluir registro como pendência.\n$clconciliapendcorrente->erro_msg");
                 }
-                
+
             } else {
-            
+
               $iSequencialCorrentePendente = db_utils::fieldsMemory($rsCodigo, 0)->k89_sequencial;
-              
+
               $oDaoConciliaPendenteCorrente->k89_justificativa = $sJustificativa;
               $oDaoConciliaPendenteCorrente->k89_sequencial = $iSequencialCorrentePendente;
               $oDaoConciliaPendenteCorrente->alterar($iSequencialCorrentePendente);
@@ -165,7 +165,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
     }
     if (isset($strJSONExtrato) && $strJSONExtrato != '') {
         // inserindo os itens do extrato
-        $arrayObjExtrato = $objJSON->decode(utf8_encode($strJSONExtrato));
+        $arrayObjExtrato = $objJSON->decode(mb_convert_encoding($strJSONExtrato, 'UTF-8', 'ISO-8859-1'));
         foreach ($arrayObjExtrato as $i => $objExtrato) {
             if (is_object($objExtrato)) {
 
@@ -237,7 +237,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
     // $arrayObjAutent = $objJSON->decode($strJSONAutent);
     if (isset($strJSONAutent) && $strJSONAutent != "") {
 
-        $arrayObjAutent = $objJSON->decode(utf8_encode($strJSONAutent));
+        $arrayObjAutent = $objJSON->decode(mb_convert_encoding($strJSONAutent, 'UTF-8', 'ISO-8859-1'));
 
         foreach ($arrayObjAutent as $i => $objAutent) {
             if (is_object($objAutent)) {
@@ -368,7 +368,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
                                          from conciliapendcorrente 
                                         where k89_concilia = {$concilia} 
                                           and k89_id = {$objAutent->caixa}
-                                          and k89_data = '" . substr($objAutent->data, 6, 4) . "-" . substr($objAutent->data, 3, 2) . "-" . substr($objAutent->data, 0, 2) . "'
+                                          and k89_data = '" . substr((string) $objAutent->data, 6, 4) . "-" . substr((string) $objAutent->data, 3, 2) . "-" . substr((string) $objAutent->data, 0, 2) . "'
                                           and k89_autent = {$objAutent->autent}";
                     $rsCadastrado = db_query($sSqlCadastrado);
                     if (pg_num_rows($rsCadastrado) > 0) {
@@ -420,7 +420,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
 
     db_inicio_transacao();
     // $erromsg .= "inicio 111 ||||";
-    $arrayItens = array();
+    $arrayItens = [];
     if ($strJSONExtrato != '') {
         $arrayObjExtrato = $objJSON->decode($strJSONExtrato);
         foreach ($arrayObjExtrato as $i => $objExtrato) {
@@ -552,7 +552,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
                                          where k68_sequencial = $concilia) 
                and k68_data >= (select k68_data from concilia where k68_sequencial = $concilia)";
     $rsConcilia = db_query($sql);
-    $intNumrows = pg_numrows($rsConcilia); 
+    $intNumrows = pg_num_rows($rsConcilia); 
 
     for ($x = 0; $x < $intNumrows; $x ++) {
         db_fieldsmemory($rsConcilia, $x);
@@ -650,7 +650,7 @@ if ($solicitacao == 'gravarJustificativaPendente') {
 
 function corrigeCodificacaoCaracteres($sString)
 {
-    return db_stdclass::db_stripTagsJson(utf8_decode(rawurldecode($sString)));
+    return db_stdclass::db_stripTagsJson(mb_convert_encoding(rawurldecode((string) $sString), 'ISO-8859-1'));
 }
 
 ?>

@@ -32,15 +32,15 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_vistusuario_classe.php"));
 include(modification("classes/db_fandamusu_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clvistusuario = new cl_vistusuario;
 $clfandamusu   = new cl_fandamusu;
 $db_opcao = 1;
 $db_botao = true;
 global $y75_codvist;
 global $y39_codandam;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 	
 	db_inicio_transacao();
 	
@@ -88,7 +88,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
   js_tabulacaoforms("form1","y75_id_usuario",true,1,"y75_id_usuario",true);
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clvistusuario->erro_status=="0"){
     $clvistusuario->erro(true,false);
     $db_botao=true;

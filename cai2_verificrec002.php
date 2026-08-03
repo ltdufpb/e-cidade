@@ -32,7 +32,7 @@ $clrotulo->label('k02_codigo');
 $clrotulo->label('k02_tipo');
 $clrotulo->label('k02_descr');
 $clrotulo->label('k02_drecei');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $sql = "";
 $info = "Todas Receitas";
 
@@ -129,7 +129,7 @@ $head3 = "Verifica Receitas Tesouraria";
 $head5 = "Listar: $info";
 
 $result = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 if ($numrows == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 }

@@ -34,7 +34,7 @@ class cl_percposserural extends DAOBasica {
     parent::__construct('cadastro.percposserural');
   }
 
-  public function sql_outros_propri($matricula="*", $where) {
+  public function sql_outros_propri($matricula="*", $where = null) {
     $sql = "SELECT
                 {$matricula}
             FROM

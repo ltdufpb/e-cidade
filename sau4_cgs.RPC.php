@@ -173,7 +173,7 @@ try {
 
       $oCgs = CgsRepository::getByCodigo( $oParam->iCgs );
 
-      $aExames = array();
+      $aExames = [];
       foreach ($oCgs->getRequisicoesExame() as $oRequisicao) {
 
         foreach ($oRequisicao->getRequisicoesDeExames() as $oExamesRequisicao) {
@@ -181,8 +181,8 @@ try {
           $oDados               = new stdClass();
           $oDados->iRequisicao  = $oRequisicao->getCodigo();
           $oDados->iItem        = $oExamesRequisicao->getCodigo();
-          $oDados->sExame       = urlencode($oExamesRequisicao->getExame()->getNome());
-          $oDados->sSituacao    = urlencode($oExamesRequisicao->getDescricaoSituacao());
+          $oDados->sExame       = urlencode((string) $oExamesRequisicao->getExame()->getNome());
+          $oDados->sSituacao    = urlencode((string) $oExamesRequisicao->getDescricaoSituacao());
           $oDados->dtRequisicao = $oRequisicao->getData()->getDate();
           $aExames[] = $oDados;
         }
@@ -253,13 +253,13 @@ try {
         throw new DBException("Não foi possivel recuperar os dados do CGS informado({$oParam->cgs})");
       }
 
-      $oRetorno->informacoesCGS   = (object)array(
+      $oRetorno->informacoesCGS   = (object)[
         "dados_pessoais" => getDadosPessoais($resultadoQuery),
         "contato"        => getDadosContato($resultadoQuery),
         "biometria"      => getDadosBiometricos($resultadoQuery),
         "outros_dados"   => getOutrosDados($resultadoQuery),
         "dados_sistema"  => getDadosSistema($oCgsAud),
-      );
+      ];
     case 'getDadosCadastroNovo':
 
       $oRetorno->informacoesPadrao = getDadosPadrao();
@@ -327,33 +327,33 @@ function getDadosPessoais($rsResultaoCGS) {
     $oRetorno   = new stdClass();
     $oResultado = DBString::utf8_encode_all($oResultado);
 
-    $oRetorno->codigo_cartao_sus      = trim($oResultado->s115_i_codigo);
+    $oRetorno->codigo_cartao_sus      = trim((string) $oResultado->s115_i_codigo);
     $oRetorno->cadastroInativo        = $oResultado->z01_b_inativo;
-    $oRetorno->cns                    = trim($oResultado->s115_c_cartaosus);
-    $oRetorno->nome                   = trim($oResultado->z01_v_nome);
-    $oRetorno->nome_social            = trim($oResultado->z01_nome_social);
-    $oRetorno->nome_mae               = trim($oResultado->z01_v_mae);
-    $oRetorno->nome_pai               = trim($oResultado->z01_v_pai);
-    $oRetorno->sexo                   = trim($oResultado->z01_v_sexo);
-    $oRetorno->raca                   = trim($oResultado->z01_c_raca);
-    $oRetorno->codigo_etnia           = trim($oResultado->s201_etnia);
-    $oRetorno->label_etnia            = trim($oResultado->s200_descricao);
-    $oRetorno->fator_rh               = trim($oResultado->z01_i_fatorrh);
-    $oRetorno->tipo_sanguineo         = trim($oResultado->z01_i_tiposangue);
-    $oRetorno->data_nascimento        = trim($oResultado->z01_d_nasc);
-    $oRetorno->nacionalidade          = trim($oResultado->z01_i_nacion);
-    $oRetorno->paisOrigem             = trim($oResultado->z01_i_paisorigem);
+    $oRetorno->cns                    = trim((string) $oResultado->s115_c_cartaosus);
+    $oRetorno->nome                   = trim((string) $oResultado->z01_v_nome);
+    $oRetorno->nome_social            = trim((string) $oResultado->z01_nome_social);
+    $oRetorno->nome_mae               = trim((string) $oResultado->z01_v_mae);
+    $oRetorno->nome_pai               = trim((string) $oResultado->z01_v_pai);
+    $oRetorno->sexo                   = trim((string) $oResultado->z01_v_sexo);
+    $oRetorno->raca                   = trim((string) $oResultado->z01_c_raca);
+    $oRetorno->codigo_etnia           = trim((string) $oResultado->s201_etnia);
+    $oRetorno->label_etnia            = trim((string) $oResultado->s200_descricao);
+    $oRetorno->fator_rh               = trim((string) $oResultado->z01_i_fatorrh);
+    $oRetorno->tipo_sanguineo         = trim((string) $oResultado->z01_i_tiposangue);
+    $oRetorno->data_nascimento        = trim((string) $oResultado->z01_d_nasc);
+    $oRetorno->nacionalidade          = trim((string) $oResultado->z01_i_nacion);
+    $oRetorno->paisOrigem             = trim((string) $oResultado->z01_i_paisorigem);
     $oRetorno->cgsMunicipio           = $oResultado->z01_registromunicipio;
 
-    $oRetorno->municipio_nascimento   = trim($oResultado->z01_v_municnasc);
-    $oRetorno->uf_nascimento          = trim($oResultado->z01_v_ufnasc);
+    $oRetorno->municipio_nascimento   = trim((string) $oResultado->z01_v_municnasc);
+    $oRetorno->uf_nascimento          = trim((string) $oResultado->z01_v_ufnasc);
     $oRetorno->codigo_ibge_nascimento = $oResultado->z01_codigoibgenasc;
     $oRetorno->cpf                    = $oResultado->z01_v_cgccpf;
 
-    $oRetorno->data_obito             = trim($oResultado->z01_d_falecimento);
+    $oRetorno->data_obito             = trim((string) $oResultado->z01_d_falecimento);
 
-    $oRetorno->data_cadastro          = trim($oResultado->z01_d_cadast);
-    $oRetorno->data_alteracao         = trim($oResultado->z01_d_ultalt);
+    $oRetorno->data_cadastro          = trim((string) $oResultado->z01_d_cadast);
+    $oRetorno->data_alteracao         = trim((string) $oResultado->z01_d_ultalt);
 
     return $oRetorno;
   }, 0);
@@ -364,10 +364,10 @@ function getDadosContato($rsResultaoCGS) {
   return db_utils::makeFromRecord($rsResultaoCGS, function($oResultado) {
 
     $oRetorno = new stdClass();
-    $oRetorno->email                  = trim($oResultado->z01_v_email);
-    $oRetorno->telefone_fixo          = trim($oResultado->z01_v_telef);
-    $oRetorno->telefone_celular       = trim($oResultado->z01_v_telcel);
-    $oRetorno->fax                    = trim($oResultado->z01_v_fax);
+    $oRetorno->email                  = trim((string) $oResultado->z01_v_email);
+    $oRetorno->telefone_fixo          = trim((string) $oResultado->z01_v_telef);
+    $oRetorno->telefone_celular       = trim((string) $oResultado->z01_v_telcel);
+    $oRetorno->fax                    = trim((string) $oResultado->z01_v_fax);
     $oRetorno->endereco               = $oResultado->db76_sequencial;
     return $oRetorno;
   }, 0);
@@ -378,8 +378,8 @@ function getDadosBiometricos($rsResultaoCGS) {
   return db_utils::makeFromRecord($rsResultaoCGS, function($oResultado) {
 
     $oRetorno = new stdClass();
-    $oRetorno->foto_oid               = trim($oResultado->z01_o_oid);
-    $oRetorno->foto_caminho           = trim($oResultado->z01_c_foto);
+    $oRetorno->foto_oid               = trim((string) $oResultado->z01_o_oid);
+    $oRetorno->foto_caminho           = trim((string) $oResultado->z01_c_foto);
     return $oRetorno;
   }, 0);
 }
@@ -389,21 +389,21 @@ function getOutrosDados($rsResultaoCGS) {
   return db_utils::makeFromRecord($rsResultaoCGS, function($oResultado) {
 
     $oRetorno = new stdClass();
-    $oRetorno->codigo_cgm      = trim($oResultado->z01_numcgm);
-    $oRetorno->label_cgm       = urlencode(trim($oResultado->z01_nome));
-    $oRetorno->codigo_aluno    = trim($oResultado->ed47_i_codigo);
-    $oRetorno->label_aluno     = urlencode(trim($oResultado->ed47_v_nome));
-    $oRetorno->codigo_cidadao  = trim($oResultado->ov02_sequencial);
-    $oRetorno->label_cidadao   = urlencode(trim($oResultado->ov02_nome));
-    $oRetorno->codigo_ocupacao = trim($oResultado->rh70_sequencial);
-    $oRetorno->label_ocupacao  = urlencode(trim($oResultado->rh70_descr));
-    $oRetorno->estado_civil    = trim($oResultado->z01_i_estciv);
-    $oRetorno->microarea       = trim($oResultado->sd35_i_microarea);
-    $oRetorno->familia         = trim($oResultado->sd35_i_codigo);
-    $oRetorno->responsavel     = trim($oResultado->z01_c_nomeresp);
-    $oRetorno->observacoes     = trim($oResultado->z01_t_obs);
-    $oRetorno->escolaridade    = trim($oResultado->z01_i_escolaridade);
-    $oRetorno->bolsa_familia   = trim($oResultado->z01_c_bolsafamilia);
+    $oRetorno->codigo_cgm      = trim((string) $oResultado->z01_numcgm);
+    $oRetorno->label_cgm       = urlencode(trim((string) $oResultado->z01_nome));
+    $oRetorno->codigo_aluno    = trim((string) $oResultado->ed47_i_codigo);
+    $oRetorno->label_aluno     = urlencode(trim((string) $oResultado->ed47_v_nome));
+    $oRetorno->codigo_cidadao  = trim((string) $oResultado->ov02_sequencial);
+    $oRetorno->label_cidadao   = urlencode(trim((string) $oResultado->ov02_nome));
+    $oRetorno->codigo_ocupacao = trim((string) $oResultado->rh70_sequencial);
+    $oRetorno->label_ocupacao  = urlencode(trim((string) $oResultado->rh70_descr));
+    $oRetorno->estado_civil    = trim((string) $oResultado->z01_i_estciv);
+    $oRetorno->microarea       = trim((string) $oResultado->sd35_i_microarea);
+    $oRetorno->familia         = trim((string) $oResultado->sd35_i_codigo);
+    $oRetorno->responsavel     = trim((string) $oResultado->z01_c_nomeresp);
+    $oRetorno->observacoes     = trim((string) $oResultado->z01_t_obs);
+    $oRetorno->escolaridade    = trim((string) $oResultado->z01_i_escolaridade);
+    $oRetorno->bolsa_familia   = trim((string) $oResultado->z01_c_bolsafamilia);
     //plugin ESF operation#2 - adicionando novo atributo equipe ao objeto via plugin ESF
     return $oRetorno;
   }, 0);
@@ -418,21 +418,21 @@ function getDadosSistema($oCgsAud) {
     return $oRetorno;
   }
 
-  $oRetorno->usuario      = trim($oCgsAud->getUsuario());
+  $oRetorno->usuario      = trim((string) $oCgsAud->getUsuario());
   return $oRetorno;
 
 }
 
 function getDocumentos($iCodigoCGS) {
 
-  $aDocumentos           = array();
+  $aDocumentos           = [];
   $oCgs                  = CgsRepository::getByCodigo($iCodigoCGS);
 
   foreach( $oCgs->getDocumentos() as $oDocumentoBase ) {
 
     $oDadosDocumento                  = new stdClass();
     $oDadosDocumento->codigoDocumento = $oDocumentoBase->getCodigo();
-    $oDadosDocumento->documento       = utf8_encode($oDocumentoBase->getDescricao());
+    $oDadosDocumento->documento       = mb_convert_encoding($oDocumentoBase->getDescricao(), 'UTF-8', 'ISO-8859-1');
     $oDadosDocumento->documentoValor  = $oDocumentoBase->getDocumento();
 
     $aDocumentos[] = $oDadosDocumento;
@@ -454,24 +454,24 @@ function getDadosPadrao() {
     throw new DBException(_M(MSG_SAU4_CGSRPC.'erro_buscar_dados_familia'));
   }
 
-  $aMicroAreas = array();
-  $aFamilias   = array();
+  $aMicroAreas = [];
+  $aFamilias   = [];
 
   /**
    * Separa a familia da microarea
    */
   db_utils::makeCollectionFromRecord($rsDadosFamilias, function($oDados) use (&$aMicroAreas, &$aFamilias) {
 
-    $aMicroAreas[$oDados->sd34_i_codigo] = array(
+    $aMicroAreas[$oDados->sd34_i_codigo] = [
       "codigo_microarea" => $oDados->sd34_i_codigo,
-      "label_microarea"  => utf8_encode($oDados->sd34_v_descricao)
-    );
+      "label_microarea"  => mb_convert_encoding($oDados->sd34_v_descricao, 'UTF-8', 'ISO-8859-1')
+    ];
 
-    $aFamilias[$oDados->sd35_i_codigo]   = array(
+    $aFamilias[$oDados->sd35_i_codigo]   = [
       "codigo_microarea" => $oDados->sd34_i_codigo,
-      "codigo_familia"   => trim($oDados->sd35_i_codigo),
-      "label_familia"    => urlencode($oDados->sd33_v_descricao),
-    );
+      "codigo_familia"   => trim((string) $oDados->sd35_i_codigo),
+      "label_familia"    => urlencode((string) $oDados->sd33_v_descricao),
+    ];
   });
 
   foreach ($aFamilias as $oFamilia) {
@@ -494,7 +494,7 @@ function getDadosPadrao() {
 
     $oRetorno              = new stdClass();
     $oRetorno->codigo_pais = $oResultado->ed228_i_codigo;
-    $oRetorno->label_pais  = trim( $oResultado->ed228_c_descr );
+    $oRetorno->label_pais  = trim( (string) $oResultado->ed228_c_descr );
 
     return $oRetorno;
   });
@@ -502,8 +502,8 @@ function getDadosPadrao() {
   sort($aMicroAreas);
   sort($aFamilias);
 
-  return (object)array(
+  return (object)[
     "microareas" => $aMicroAreas,
     "paisOrigem" => $aPaises,
-  );
+  ];
 }

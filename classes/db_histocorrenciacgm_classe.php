@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE histocorrenciacgm
 class cl_histocorrenciacgm { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ar24_sequencial = 0; 
-   var $ar24_numcgm = 0; 
-   var $ar24_histocorrencia = 0; 
+   public $ar24_sequencial = 0; 
+   public $ar24_numcgm = 0; 
+   public $ar24_histocorrencia = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ar24_sequencial = int4 = Código Histórico 
                  ar24_numcgm = int4 = Numcgm 
                  ar24_histocorrencia = int4 = Código Histórico 
                  ";
    //funcao construtor da classe 
-   function cl_histocorrenciacgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("histocorrenciacgm"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_histocorrenciacgm {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ar24_sequencial = pg_result($result,0,0); 
+       $this->ar24_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from histocorrenciacgm_ar24_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ar24_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ar24_sequencial)){
          $this->erro_sql = " Campo ar24_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_histocorrenciacgm {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "histocorrenciacgm ($this->ar24_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "histocorrenciacgm já Cadastrado";
@@ -166,12 +166,12 @@ class cl_histocorrenciacgm {
      $resaco = $this->sql_record($this->sql_query_file($this->ar24_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15072,'$this->ar24_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2650,15072,'','".AddSlashes(pg_result($resaco,0,'ar24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2650,15073,'','".AddSlashes(pg_result($resaco,0,'ar24_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2650,15102,'','".AddSlashes(pg_result($resaco,0,'ar24_histocorrencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2650,15072,'','".AddSlashes(pg_fetch_result($resaco,0,'ar24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2650,15073,'','".AddSlashes(pg_fetch_result($resaco,0,'ar24_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2650,15102,'','".AddSlashes(pg_fetch_result($resaco,0,'ar24_histocorrencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_histocorrenciacgm {
       $this->atualizacampos();
      $sql = " update histocorrenciacgm set ";
      $virgula = "";
-     if(trim($this->ar24_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar24_sequencial"])){ 
+     if(trim((string) $this->ar24_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar24_sequencial"])){ 
        $sql  .= $virgula." ar24_sequencial = $this->ar24_sequencial ";
        $virgula = ",";
-       if(trim($this->ar24_sequencial) == null ){ 
+       if(trim((string) $this->ar24_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Histórico nao Informado.";
          $this->erro_campo = "ar24_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_histocorrenciacgm {
          return false;
        }
      }
-     if(trim($this->ar24_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar24_numcgm"])){ 
+     if(trim((string) $this->ar24_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar24_numcgm"])){ 
        $sql  .= $virgula." ar24_numcgm = $this->ar24_numcgm ";
        $virgula = ",";
-       if(trim($this->ar24_numcgm) == null ){ 
+       if(trim((string) $this->ar24_numcgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "ar24_numcgm";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_histocorrenciacgm {
          return false;
        }
      }
-     if(trim($this->ar24_histocorrencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar24_histocorrencia"])){ 
+     if(trim((string) $this->ar24_histocorrencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar24_histocorrencia"])){ 
        $sql  .= $virgula." ar24_histocorrencia = $this->ar24_histocorrencia ";
        $virgula = ",";
-       if(trim($this->ar24_histocorrencia) == null ){ 
+       if(trim((string) $this->ar24_histocorrencia) == null ){ 
          $this->erro_sql = " Campo Código Histórico nao Informado.";
          $this->erro_campo = "ar24_histocorrencia";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_histocorrenciacgm {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15072,'$this->ar24_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar24_sequencial"]) || $this->ar24_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2650,15072,'".AddSlashes(pg_result($resaco,$conresaco,'ar24_sequencial'))."','$this->ar24_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2650,15072,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar24_sequencial'))."','$this->ar24_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar24_numcgm"]) || $this->ar24_numcgm != "")
-           $resac = db_query("insert into db_acount values($acount,2650,15073,'".AddSlashes(pg_result($resaco,$conresaco,'ar24_numcgm'))."','$this->ar24_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2650,15073,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar24_numcgm'))."','$this->ar24_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar24_histocorrencia"]) || $this->ar24_histocorrencia != "")
-           $resac = db_query("insert into db_acount values($acount,2650,15102,'".AddSlashes(pg_result($resaco,$conresaco,'ar24_histocorrencia'))."','$this->ar24_histocorrencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2650,15102,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar24_histocorrencia'))."','$this->ar24_histocorrencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_histocorrenciacgm {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15072,'$ar24_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2650,15072,'','".AddSlashes(pg_result($resaco,$iresaco,'ar24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2650,15073,'','".AddSlashes(pg_result($resaco,$iresaco,'ar24_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2650,15102,'','".AddSlashes(pg_result($resaco,$iresaco,'ar24_histocorrencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2650,15072,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2650,15073,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar24_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2650,15102,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar24_histocorrencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from histocorrenciacgm
@@ -345,7 +345,7 @@ class cl_histocorrenciacgm {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:histocorrenciacgm";
@@ -360,7 +360,7 @@ class cl_histocorrenciacgm {
    function sql_query ( $ar24_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -387,7 +387,7 @@ class cl_histocorrenciacgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -400,7 +400,7 @@ class cl_histocorrenciacgm {
    function sql_query_file ( $ar24_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_histocorrenciacgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

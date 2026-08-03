@@ -63,7 +63,7 @@ class Pedido
   /**
    * @var TipoDebito[]
    */
-  private $aTipoDebito = array();
+  private $aTipoDebito = [];
 
   public function getCodigo() {
     return $this->iCodigo;

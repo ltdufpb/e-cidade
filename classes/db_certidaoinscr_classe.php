@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE certidaoinscr
 class cl_certidaoinscr { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p48_sequencial = 0; 
-   var $p48_inscr = 0; 
+   public $p48_sequencial = 0; 
+   public $p48_inscr = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p48_sequencial = int8 = Codigo 
                  p48_inscr = int4 = Inscrição Municipal 
                  ";
    //funcao construtor da classe 
-   function cl_certidaoinscr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certidaoinscr"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -104,7 +104,7 @@ class cl_certidaoinscr {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "certidaoinscr () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "certidaoinscr já Cadastrado";
@@ -131,10 +131,10 @@ class cl_certidaoinscr {
       $this->atualizacampos();
      $sql = " update certidaoinscr set ";
      $virgula = "";
-     if(trim($this->p48_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p48_sequencial"])){ 
+     if(trim((string) $this->p48_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p48_sequencial"])){ 
        $sql  .= $virgula." p48_sequencial = $this->p48_sequencial ";
        $virgula = ",";
-       if(trim($this->p48_sequencial) == null ){ 
+       if(trim((string) $this->p48_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "p48_sequencial";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_certidaoinscr {
          return false;
        }
      }
-     if(trim($this->p48_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p48_inscr"])){ 
+     if(trim((string) $this->p48_inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p48_inscr"])){ 
        $sql  .= $virgula." p48_inscr = $this->p48_inscr ";
        $virgula = ",";
-       if(trim($this->p48_inscr) == null ){ 
+       if(trim((string) $this->p48_inscr) == null ){ 
          $this->erro_sql = " Campo Inscrição Municipal nao Informado.";
          $this->erro_campo = "p48_inscr";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:certidaoinscr";
@@ -252,7 +252,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="certidaoinscr.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -277,7 +277,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -289,7 +289,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -307,7 +307,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -36,7 +36,7 @@ require_once(modification("model/ppa.model.php"));
 require_once(modification("libs/JSON.php"));
 require_once(modification('model/ppaVersao.model.php'));
 
-$aParametros         = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+$aParametros         = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
 $oParametroOrcamento = $aParametros[0];
 
 $oGet                = db_utils::postMemory($_GET);
@@ -45,7 +45,7 @@ $oParam              = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno            = new stdClass;
 $oRetorno->status    = 1;
 $oRetorno->message   = "";
-$oRetorno->itens     = array();
+$oRetorno->itens     = [];
 
 $sNomeTabelaParametroMacroEconomico = 'orccenarioeconomicoconplano';
 
@@ -55,8 +55,8 @@ if (USE_PCASP) {
 if ($oParam->exec == "getParametros") {
 
 
-  $aTipoCalculo = array("1" => "Pela média histórica",
-                        "2" => "Pela reestimativa exercício atual");
+  $aTipoCalculo = ["1" => "Pela média histórica",
+                        "2" => "Pela reestimativa exercício atual"];
 
   if ($oParam->params->fonte != "") {
 
@@ -78,18 +78,15 @@ if ($oParam->exec == "getParametros") {
 
     if ($rsParametros && $iNumeroParametros > 0) {
 
-      $aColecaoParametros = array();
+      $aColecaoParametros = [];
       for ($iParametro = 0; $iParametro < $iNumeroParametros; $iParametro++ ) {
 
         $oParametro               = db_utils::fieldsMemory($rsParametros, $iParametro, false, false, true);
 
-        switch ($oParametro->o04_tipocalculo) {
-          case 2: $sTipoCalculo = $aTipoCalculo[2];
-          break;
-
-          default:$sTipoCalculo = $aTipoCalculo[1];
-          break;
-        }
+        $sTipoCalculo = match ($oParametro->o04_tipocalculo) {
+            2 => $aTipoCalculo[2],
+            default => $aTipoCalculo[1],
+        };
 
         $oParametro->sTipoCalculo = urlencode($sTipoCalculo);
         $aColecaoParametros[]     = $oParametro;
@@ -388,7 +385,7 @@ if ($oParam->exec == "getParametros") {
 
     db_inicio_transacao();
     $oPPA          = new ppa($oParam->iCodigoLei, $oParam->iTipo, $oParam->iCodigoVersao);
-    $aRetornoItens = array();
+    $aRetornoItens = [];
     foreach ($oParam->aAnos as $iAno) {
 
       $aDesdobramentos      = $oPPA->getDesdobramentos($oPPA->criaContaMae($oParam->iEstrutural),$iAno);

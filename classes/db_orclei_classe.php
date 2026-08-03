@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE orclei
 class cl_orclei { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o45_codlei = 0; 
-   var $o45_numlei = null; 
-   var $o45_descr = null; 
-   var $o45_datafim_dia = null; 
-   var $o45_datafim_mes = null; 
-   var $o45_datafim_ano = null; 
-   var $o45_datafim = null; 
-   var $o45_dataini_dia = null; 
-   var $o45_dataini_mes = null; 
-   var $o45_dataini_ano = null; 
-   var $o45_dataini = null; 
-   var $o45_tipolei = 0; 
+   public $o45_codlei = 0; 
+   public $o45_numlei = null; 
+   public $o45_descr = null; 
+   public $o45_datafim_dia = null; 
+   public $o45_datafim_mes = null; 
+   public $o45_datafim_ano = null; 
+   public $o45_datafim = null; 
+   public $o45_dataini_dia = null; 
+   public $o45_dataini_mes = null; 
+   public $o45_dataini_ano = null; 
+   public $o45_dataini = null; 
+   public $o45_tipolei = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o45_codlei = int4 = Código Lei 
                  o45_numlei = varchar(30) = Número Lei 
                  o45_descr = text = Descrição 
@@ -64,10 +64,10 @@ class cl_orclei {
                  o45_tipolei = int4 = Tipo da Lei 
                  ";
    //funcao construtor da classe 
-   function cl_orclei() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orclei"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -157,10 +157,10 @@ class cl_orclei {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o45_codlei = pg_result($result,0,0); 
+       $this->o45_codlei = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from orclei_o45_codlei_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o45_codlei)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o45_codlei)){
          $this->erro_sql = " Campo o45_codlei maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -198,7 +198,7 @@ class cl_orclei {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro das leis do orçamento ($this->o45_codlei) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro das leis do orçamento já Cadastrado";
@@ -222,15 +222,15 @@ class cl_orclei {
      $resaco = $this->sql_record($this->sql_query_file($this->o45_codlei));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5318,'$this->o45_codlei','I')");
-       $resac = db_query("insert into db_acount values($acount,770,5318,'','".AddSlashes(pg_result($resaco,0,'o45_codlei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,770,5314,'','".AddSlashes(pg_result($resaco,0,'o45_numlei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,770,5315,'','".AddSlashes(pg_result($resaco,0,'o45_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,770,5317,'','".AddSlashes(pg_result($resaco,0,'o45_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,770,5316,'','".AddSlashes(pg_result($resaco,0,'o45_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,770,17704,'','".AddSlashes(pg_result($resaco,0,'o45_tipolei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,770,5318,'','".AddSlashes(pg_fetch_result($resaco,0,'o45_codlei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,770,5314,'','".AddSlashes(pg_fetch_result($resaco,0,'o45_numlei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,770,5315,'','".AddSlashes(pg_fetch_result($resaco,0,'o45_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,770,5317,'','".AddSlashes(pg_fetch_result($resaco,0,'o45_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,770,5316,'','".AddSlashes(pg_fetch_result($resaco,0,'o45_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,770,17704,'','".AddSlashes(pg_fetch_result($resaco,0,'o45_tipolei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -239,10 +239,10 @@ class cl_orclei {
       $this->atualizacampos();
      $sql = " update orclei set ";
      $virgula = "";
-     if(trim($this->o45_codlei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_codlei"])){ 
+     if(trim((string) $this->o45_codlei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_codlei"])){ 
        $sql  .= $virgula." o45_codlei = $this->o45_codlei ";
        $virgula = ",";
-       if(trim($this->o45_codlei) == null ){ 
+       if(trim((string) $this->o45_codlei) == null ){ 
          $this->erro_sql = " Campo Código Lei nao Informado.";
          $this->erro_campo = "o45_codlei";
          $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_orclei {
          return false;
        }
      }
-     if(trim($this->o45_numlei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_numlei"])){ 
+     if(trim((string) $this->o45_numlei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_numlei"])){ 
        $sql  .= $virgula." o45_numlei = '$this->o45_numlei' ";
        $virgula = ",";
-       if(trim($this->o45_numlei) == null ){ 
+       if(trim((string) $this->o45_numlei) == null ){ 
          $this->erro_sql = " Campo Número Lei nao Informado.";
          $this->erro_campo = "o45_numlei";
          $this->erro_banco = "";
@@ -265,10 +265,10 @@ class cl_orclei {
          return false;
        }
      }
-     if(trim($this->o45_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_descr"])){ 
+     if(trim((string) $this->o45_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_descr"])){ 
        $sql  .= $virgula." o45_descr = '$this->o45_descr' ";
        $virgula = ",";
-       if(trim($this->o45_descr) == null ){ 
+       if(trim((string) $this->o45_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "o45_descr";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_orclei {
          return false;
        }
      }
-     if(trim($this->o45_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["o45_datafim_dia"] !="") ){ 
+     if(trim((string) $this->o45_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["o45_datafim_dia"] !="") ){ 
        $sql  .= $virgula." o45_datafim = '$this->o45_datafim' ";
        $virgula = ",";
-       if(trim($this->o45_datafim) == null ){ 
+       if(trim((string) $this->o45_datafim) == null ){ 
          $this->erro_sql = " Campo Data Final nao Informado.";
          $this->erro_campo = "o45_datafim_dia";
          $this->erro_banco = "";
@@ -294,7 +294,7 @@ class cl_orclei {
        if(isset($GLOBALS["HTTP_POST_VARS"]["o45_datafim_dia"])){ 
          $sql  .= $virgula." o45_datafim = null ";
          $virgula = ",";
-         if(trim($this->o45_datafim) == null ){ 
+         if(trim((string) $this->o45_datafim) == null ){ 
            $this->erro_sql = " Campo Data Final nao Informado.";
            $this->erro_campo = "o45_datafim_dia";
            $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_orclei {
          }
        }
      }
-     if(trim($this->o45_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["o45_dataini_dia"] !="") ){ 
+     if(trim((string) $this->o45_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["o45_dataini_dia"] !="") ){ 
        $sql  .= $virgula." o45_dataini = '$this->o45_dataini' ";
        $virgula = ",";
-       if(trim($this->o45_dataini) == null ){ 
+       if(trim((string) $this->o45_dataini) == null ){ 
          $this->erro_sql = " Campo Data Inicial nao Informado.";
          $this->erro_campo = "o45_dataini_dia";
          $this->erro_banco = "";
@@ -321,7 +321,7 @@ class cl_orclei {
        if(isset($GLOBALS["HTTP_POST_VARS"]["o45_dataini_dia"])){ 
          $sql  .= $virgula." o45_dataini = null ";
          $virgula = ",";
-         if(trim($this->o45_dataini) == null ){ 
+         if(trim((string) $this->o45_dataini) == null ){ 
            $this->erro_sql = " Campo Data Inicial nao Informado.";
            $this->erro_campo = "o45_dataini_dia";
            $this->erro_banco = "";
@@ -332,8 +332,8 @@ class cl_orclei {
          }
        }
      }
-     if(trim($this->o45_tipolei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_tipolei"])){ 
-        if(trim($this->o45_tipolei)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o45_tipolei"])){ 
+     if(trim((string) $this->o45_tipolei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o45_tipolei"])){ 
+        if(trim((string) $this->o45_tipolei)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o45_tipolei"])){ 
            $this->o45_tipolei = "0" ; 
         } 
        $sql  .= $virgula." o45_tipolei = $this->o45_tipolei ";
@@ -347,21 +347,21 @@ class cl_orclei {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5318,'$this->o45_codlei','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o45_codlei"]) || $this->o45_codlei != "")
-           $resac = db_query("insert into db_acount values($acount,770,5318,'".AddSlashes(pg_result($resaco,$conresaco,'o45_codlei'))."','$this->o45_codlei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,770,5318,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o45_codlei'))."','$this->o45_codlei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o45_numlei"]) || $this->o45_numlei != "")
-           $resac = db_query("insert into db_acount values($acount,770,5314,'".AddSlashes(pg_result($resaco,$conresaco,'o45_numlei'))."','$this->o45_numlei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,770,5314,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o45_numlei'))."','$this->o45_numlei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o45_descr"]) || $this->o45_descr != "")
-           $resac = db_query("insert into db_acount values($acount,770,5315,'".AddSlashes(pg_result($resaco,$conresaco,'o45_descr'))."','$this->o45_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,770,5315,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o45_descr'))."','$this->o45_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o45_datafim"]) || $this->o45_datafim != "")
-           $resac = db_query("insert into db_acount values($acount,770,5317,'".AddSlashes(pg_result($resaco,$conresaco,'o45_datafim'))."','$this->o45_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,770,5317,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o45_datafim'))."','$this->o45_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o45_dataini"]) || $this->o45_dataini != "")
-           $resac = db_query("insert into db_acount values($acount,770,5316,'".AddSlashes(pg_result($resaco,$conresaco,'o45_dataini'))."','$this->o45_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,770,5316,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o45_dataini'))."','$this->o45_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o45_tipolei"]) || $this->o45_tipolei != "")
-           $resac = db_query("insert into db_acount values($acount,770,17704,'".AddSlashes(pg_result($resaco,$conresaco,'o45_tipolei'))."','$this->o45_tipolei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,770,17704,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o45_tipolei'))."','$this->o45_tipolei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -406,15 +406,15 @@ class cl_orclei {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5318,'$o45_codlei','E')");
-         $resac = db_query("insert into db_acount values($acount,770,5318,'','".AddSlashes(pg_result($resaco,$iresaco,'o45_codlei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,770,5314,'','".AddSlashes(pg_result($resaco,$iresaco,'o45_numlei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,770,5315,'','".AddSlashes(pg_result($resaco,$iresaco,'o45_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,770,5317,'','".AddSlashes(pg_result($resaco,$iresaco,'o45_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,770,5316,'','".AddSlashes(pg_result($resaco,$iresaco,'o45_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,770,17704,'','".AddSlashes(pg_result($resaco,$iresaco,'o45_tipolei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,770,5318,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o45_codlei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,770,5314,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o45_numlei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,770,5315,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o45_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,770,5317,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o45_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,770,5316,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o45_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,770,17704,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o45_tipolei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orclei
@@ -474,7 +474,7 @@ class cl_orclei {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orclei";
@@ -489,7 +489,7 @@ class cl_orclei {
    function sql_query ( $o45_codlei=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,7 +510,7 @@ class cl_orclei {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,7 +523,7 @@ class cl_orclei {
    function sql_query_file ( $o45_codlei=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -544,7 +544,7 @@ class cl_orclei {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -113,7 +113,7 @@ function js_relatorio(){
         	    </td>
          	    <td>
 							  <?php 	
-		  					$arrayDtfiltrar = array ("arq" => "Data do Arquivo", "pag" => "Data do Pagamento");
+		  					$arrayDtfiltrar =  ["arq" => "Data do Arquivo", "pag" => "Data do Pagamento"];
 	  						db_select('dtfiltrar', $arrayDtfiltrar, true, 1);
    						  ?>      
               </td>
@@ -144,7 +144,7 @@ function js_relatorio(){
         	    </td>
          	    <td>
 							  <?php 	
-		  					$xy = array ("sim" => "Sim", "nao" => "Nao");
+		  					$xy =  ["sim" => "Sim", "nao" => "Nao"];
 	  						db_select('imprimirsemdif', $xy, true, 1);
    						  ?>      
               </td>
@@ -155,7 +155,7 @@ function js_relatorio(){
         	    </td>
          	    <td>
            			<?php 
-								$xy = array ("sim" => "Sim", "nao" => "Nao");
+								$xy =  ["sim" => "Sim", "nao" => "Nao"];
                 db_select('parcunica', $xy, true, 1);
                 ?>      
         	    </td>
@@ -166,7 +166,7 @@ function js_relatorio(){
         	    </td>
          	    <td>
            			<?php 
-								$xy = array ("sim" => "Sim", "nao" => "Nao");
+								$xy =  ["sim" => "Sim", "nao" => "Nao"];
                 db_select('totarquivo', $xy, true, 1);
                 ?>      
         	    </td>
@@ -177,7 +177,7 @@ function js_relatorio(){
         	    </td>
          	    <td>
            			<?php 
-								$xy = array ("d" => "Diferença", "a" => "Nome", "n" => "Numpre/parcela");
+								$xy =  ["d" => "Diferença", "a" => "Nome", "n" => "Numpre/parcela"];
                 db_select('ordem', $xy, true, 1);
                 ?>      
         	    </td>
@@ -188,7 +188,7 @@ function js_relatorio(){
         	    </td>
          	    <td>
 							  <?php 	
-		  					$xy = array ("nao" => "Nao", "sim" => "Sim");
+		  					$xy =  ["nao" => "Nao", "sim" => "Sim"];
 	  						db_select('quebrarpagina', $xy, true, 1);
    						  ?>      
               </td>
@@ -233,7 +233,7 @@ function js_relatorio(){
                   $sWhereConta .= " and cadban.k15_codbco = {$k15_codbco}     ";
                   $sSqlConta    = $clcadban->sql_query_disarq("",$sCamposConta,"cadban.k15_conta",$sWhereConta);
                   $rsConta      = $clcadban->sql_record($sSqlConta); 
-                  db_selectrecord("k15_conta",$rsConta,true,2,"","","",array("0","Todos"),"",1);
+                  db_selectrecord("k15_conta",$rsConta,true,2,"","","",["0","Todos"],"",1);
                   
                 ?>
               </td>
@@ -247,8 +247,8 @@ function js_relatorio(){
               </td>
               <td nowrap>
                 <?php 
-                  $aNumpreOrigem = array("n"=>"Não",
-                                         "s"=>"Sim");
+                  $aNumpreOrigem = ["n"=>"Não",
+                                         "s"=>"Sim"];
       
                   db_select('imprime_origem',$aNumpreOrigem,true,1,'');
                 ?>

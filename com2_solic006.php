@@ -36,7 +36,7 @@ $clpcdotac = new cl_pcdotac;
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clrotulo = new rotulocampo;
 $clpcdotac->rotulo->label();
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 ?>
 <html>
@@ -97,7 +97,7 @@ db_postmemory($_POST);
                                         <td align="right"> <strong>Opção de Seleção :<strong></td>
                                         <td align="left">&nbsp;&nbsp;&nbsp;
                                             <?php
-                                            $xxx = array("S" => "Somente Selecionados", "N" => "Menos os Selecionados");
+                                            $xxx = ["S" => "Somente Selecionados", "N" => "Menos os Selecionados"];
                                             db_select('param_dotac', $xxx, true, 2);
                                             ?>
                                         </td>

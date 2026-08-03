@@ -97,7 +97,7 @@ db_input('k47_orientacao',10,$Ik47_orientacao,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Arrecadação','2'=>'Cobrança');
+$x = ['1'=>'Arrecadação','2'=>'Cobrança'];
 db_select('k47_tipoconvenio',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -115,7 +115,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cadmodcarne.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

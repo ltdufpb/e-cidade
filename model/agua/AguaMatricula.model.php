@@ -30,11 +30,6 @@ class AguaMatricula {
   /**
    * @var integer
    */
-  private $iMatricula;
-
-  /**
-   * @var integer
-   */
   private $iCodigoRua;
 
   /**
@@ -131,9 +126,7 @@ class AguaMatricula {
    * @param integer $iMatricula
    * @throws DBException
    */
-  public function __construct($iMatricula = null) {
-
-    $this->iMatricula = $iMatricula;
+  public function __construct(private $iMatricula = null) {
 
     if ($this->iMatricula) {
       $oDaoAguaBase = new cl_aguabase;

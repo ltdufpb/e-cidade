@@ -87,7 +87,7 @@ if (isset($lista)) {
 $txt_where = $txt_where . " and c73_data between '$data1' and '$data2' ";
 
 if ($listarec != "") {
-    $recursos = "'" . implode("', '", explode(',', $listarec)) . "'";
+    $recursos = "'" . implode("', '", explode(',', (string) $listarec)) . "'";
     if (isset($verrec) and $verrec == "com") {
         $txt_where = $txt_where . " and orctiporec.o15_recurso in ($recursos)";
     } else {
@@ -206,14 +206,14 @@ if ($quebra == "g" and $tipo == "a") {
         if ($imprime_header == true) {
             /* header  */
             if ($x > 1) {
-                $pdf->Cell(20, $tam, strtoupper($RLc69_codlan), 'TB', 0, "C", 1);
-                $pdf->Cell(20, $tam, strtoupper($RLc69_sequen), 'TB', 0, "C", 1);
-                $pdf->Cell(20, $tam, strtoupper($RLc69_data), 'TB', 0, "C", 1);
-                $pdf->Cell(20, $tam, strtoupper($RLc69_debito), 'TB', 0, "C", 1); // recurso
-                $pdf->Cell(35, $tam, strtoupper($RLc60_descr), 'TB', 0, "L", 1); // recurso
-                $pdf->Cell(20, $tam, strtoupper($RLc69_credito), 'TB', 0, "C", 1); // recurso
-                $pdf->Cell(35, $tam, strtoupper($RLc60_descr), 'TB', 0, "L", 1); // recurso
-                $pdf->Cell(20, $tam, strtoupper($RLc69_valor), 'TB', 1, "R", 1); // cod+estrut dotatao // quebra linha
+                $pdf->Cell(20, $tam, strtoupper((string) $RLc69_codlan), 'TB', 0, "C", 1);
+                $pdf->Cell(20, $tam, strtoupper((string) $RLc69_sequen), 'TB', 0, "C", 1);
+                $pdf->Cell(20, $tam, strtoupper((string) $RLc69_data), 'TB', 0, "C", 1);
+                $pdf->Cell(20, $tam, strtoupper((string) $RLc69_debito), 'TB', 0, "C", 1); // recurso
+                $pdf->Cell(35, $tam, strtoupper((string) $RLc60_descr), 'TB', 0, "L", 1); // recurso
+                $pdf->Cell(20, $tam, strtoupper((string) $RLc69_credito), 'TB', 0, "C", 1); // recurso
+                $pdf->Cell(35, $tam, strtoupper((string) $RLc60_descr), 'TB', 0, "L", 1); // recurso
+                $pdf->Cell(20, $tam, strtoupper((string) $RLc69_valor), 'TB', 1, "R", 1); // cod+estrut dotatao // quebra linha
             }
             $imprime_header = false;
 
@@ -240,8 +240,8 @@ if ($quebra == "g" and $tipo == "a") {
                 $rr = $clconlancamval->sql_record($sql_resumido);
                 $pdf->SetFont('Arial', 'B', 7);
                 $pdf->setX(80);
-                $pdf->Cell(20, $tam, strtoupper($RLc53_coddoc), 'B', 0, "C", 0); // recurso
-                $pdf->Cell(80, $tam, strtoupper($RLc53_descr), 'B', 0, "L", 0); // recurso
+                $pdf->Cell(20, $tam, strtoupper((string) $RLc53_coddoc), 'B', 0, "C", 0); // recurso
+                $pdf->Cell(80, $tam, strtoupper((string) $RLc53_descr), 'B', 0, "L", 0); // recurso
                 $pdf->Cell(20, $tam, "SOMATORIO", 'B', 1, "R", 0);  // cod+estrut dotatao // quebra linha
                 $pdf->Ln(1);
                 for ($i = 0; $i < $clconlancamval->numrows; $i++) {
@@ -260,23 +260,23 @@ if ($quebra == "g" and $tipo == "a") {
             $pdf->Cell(150, $tam, "$o56_elemento" . " - " . $o56_descr, 0, 1, "L", 0);
             $pdf->SetFont('Arial', '', 7);
             /* header  */
-            $pdf->Cell(20, $tam, strtoupper($RLc69_codlan), 'TB', 0, "C", 1);
-            $pdf->Cell(20, $tam, strtoupper($RLc69_sequen), 'TB', 0, "C", 1);
-            $pdf->Cell(20, $tam, strtoupper($RLc69_data), 'TB', 0, "C", 1);
-            $pdf->Cell(20, $tam, strtoupper($RLc69_debito), 'TB', 0, "C", 1); // recurso
-            $pdf->Cell(35, $tam, strtoupper($RLc60_descr), 'TB', 0, "L", 1); // recurso
-            $pdf->Cell(20, $tam, strtoupper($RLc69_credito), 'TB', 0, "C", 1); // recurso
-            $pdf->Cell(35, $tam, strtoupper($RLc60_descr), 'TB', 0, "L", 1); // recurso
-            $pdf->Cell(20, $tam, strtoupper($RLc69_valor), 'TB', 1, "R", 1); // cod+estrut dotatao // quebra linha
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc69_codlan), 'TB', 0, "C", 1);
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc69_sequen), 'TB', 0, "C", 1);
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc69_data), 'TB', 0, "C", 1);
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc69_debito), 'TB', 0, "C", 1); // recurso
+            $pdf->Cell(35, $tam, strtoupper((string) $RLc60_descr), 'TB', 0, "L", 1); // recurso
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc69_credito), 'TB', 0, "C", 1); // recurso
+            $pdf->Cell(35, $tam, strtoupper((string) $RLc60_descr), 'TB', 0, "L", 1); // recurso
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc69_valor), 'TB', 1, "R", 1); // cod+estrut dotatao // quebra linha
         }
         /* detalhe */
         $pdf->Cell(20, $tam, $c69_codlan, 0, 0, "C", 0);
         $pdf->Cell(20, $tam, $c69_sequen, 0, 0, "C", 0);
         $pdf->Cell(20, $tam, $c69_data, 0, 0, "C", 0);
         $pdf->Cell(20, $tam, $c69_debito, 0, 0, "C", 0); // recurso
-        $pdf->Cell(35, $tam, substr($debito_descr, 0, 25), 0, 0, "L", 0); // recurso
+        $pdf->Cell(35, $tam, substr((string) $debito_descr, 0, 25), 0, 0, "L", 0); // recurso
         $pdf->Cell(20, $tam, $c69_credito, '0', 0, "C", 0);
-        $pdf->Cell(35, $tam, substr($credito_descr, 0, 25), '0', 0, "L", 0);
+        $pdf->Cell(35, $tam, substr((string) $credito_descr, 0, 25), '0', 0, "L", 0);
         $pdf->Cell(20, $tam, db_formatar($c69_valor, 'f'), '0', 1, "R", 0); // cod+estrut dotatao // quebra linha
         // outros dados
         $pdf->Cell(35, $tam, "REC: $c74_codrec", '0', 0, "C", 0);
@@ -312,8 +312,8 @@ if ($quebra == "g" and $tipo == "a") {
             $rr = $clconlancamval->sql_record($sql_resumido);
             $pdf->SetFont('Arial', 'B', 7);
             $pdf->setX(80);
-            $pdf->Cell(20, $tam, strtoupper($RLc53_coddoc), 'B', 0, "C", 0); // recurso
-            $pdf->Cell(80, $tam, strtoupper($RLc53_descr), 'B', 0, "L", 0); // recurso
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc53_coddoc), 'B', 0, "C", 0); // recurso
+            $pdf->Cell(80, $tam, strtoupper((string) $RLc53_descr), 'B', 0, "L", 0); // recurso
             $pdf->Cell(20, $tam, "SOMATORIO", 'B', 1, "R", 0);  // cod+estrut dotatao // quebra linha
             $pdf->Ln(1);
             for ($i = 0; $i < $clconlancamval->numrows; $i++) {
@@ -344,8 +344,8 @@ if ($quebra == "g" and $tipo == "a") {
             // $pdf->setX(80);
             $pdf->Cell(20, $tam, "TOTAL", 'B', 0, "C", 0); // recurso
             $pdf->Cell(50, $tam, " ", 'B', 0, "C", 0); // recurso
-            $pdf->Cell(20, $tam, strtoupper($RLc53_coddoc), 'B', 0, "C", 0); // recurso
-            $pdf->Cell(80, $tam, strtoupper($RLc53_descr), 'B', 0, "L", 0); // recurso
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc53_coddoc), 'B', 0, "C", 0); // recurso
+            $pdf->Cell(80, $tam, strtoupper((string) $RLc53_descr), 'B', 0, "L", 0); // recurso
             $pdf->Cell(20, $tam, "SOMATORIO", 'B', 1, "R", 0);  // cod+estrut dotatao // quebra linha
             $pdf->Ln(1);
             for ($i = 0; $i < $clconlancamval->numrows; $i++) {
@@ -372,11 +372,11 @@ if ($quebra == "g" and $tipo == "s") {
         if ($imprime_header == true) {
             $pdf->Ln();
             $pdf->SetFont('Arial', 'B', 7);
-            $pdf->Cell(20, $tam, strtoupper($RLc69_codlan), 1, 0, "C", 1);
-            $pdf->Cell(20, $tam, strtoupper($RLc69_data), 1, 0, "C", 1);
-            $pdf->Cell(20, $tam, strtoupper($RLc53_coddoc), 1, 0, "C", 1); // recurso
-            $pdf->Cell(100, $tam, strtoupper($RLc53_descr), 1, 0, "L", 1); // recurso
-            $pdf->Cell(20, $tam, strtoupper($RLc69_valor), 1, 1, "C", 1);  // cod+estrut dotatao // quebra linha
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc69_codlan), 1, 0, "C", 1);
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc69_data), 1, 0, "C", 1);
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc53_coddoc), 1, 0, "C", 1); // recurso
+            $pdf->Cell(100, $tam, strtoupper((string) $RLc53_descr), 1, 0, "L", 1); // recurso
+            $pdf->Cell(20, $tam, strtoupper((string) $RLc69_valor), 1, 1, "C", 1);  // cod+estrut dotatao // quebra linha
             $pdf->Ln();
             $pdf->SetFont('Arial', '', 7);
             $imprime_header = false;

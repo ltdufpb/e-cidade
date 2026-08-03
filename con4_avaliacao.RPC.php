@@ -41,7 +41,7 @@ $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno = new stdClass();
 $oRetorno->status  = 1;
 $oRetorno->message = 1;
-$oRetorno->itens   = array();
+$oRetorno->itens   = [];
 try {
 
   switch($oParam->exec) {
@@ -54,7 +54,7 @@ try {
       $oRetorno->avaliacao             = new stdClass();
       $oRetorno->avaliacao->descricao  = urlencode($oAvaliacao->getDescricao());
       $oRetorno->avaliacao->observacao = urlencode($oAvaliacao->getObservacao());
-      $oRetorno->avaliacao->grupos     = array();
+      $oRetorno->avaliacao->grupos     = [];
       $oAvaliacao->setAvaliacaoGrupo($oParam->iGrupoResposta);
       $oRetorno->avaliacao->gruporespostas = $oAvaliacao->getAvaliacaoGrupo();
       $aGrupos = $oAvaliacao->getGruposPerguntas();
@@ -62,7 +62,7 @@ try {
 
         $oGrupo = new stdClass();
         $oGrupo->codigo    = $oGrupoTemp->getGrupo();
-        $oGrupo->descricao = urlencode($oGrupoTemp->getDescricao());
+        $oGrupo->descricao = urlencode((string) $oGrupoTemp->getDescricao());
 
         $oRetorno->avaliacao->grupos[] = $oGrupo;
       }
@@ -71,19 +71,19 @@ try {
     case "getPerguntasPorGrupo":
 
       $oAvaliacao          = $_SESSION["oAvaliacao_{$oParam->iAvaliacao}"];
-      $oRetorno->perguntas = array();
+      $oRetorno->perguntas = [];
       foreach ($oAvaliacao->getPerguntas($oParam->iGrupo) as $oPerguntaTemp) {
 
          $oPergunta                = new stdClass();
          $oPergunta->codigo        = $oPerguntaTemp->getCodigo();
-         $oPergunta->descricao     = urlencode($oPerguntaTemp->getDescricao());
+         $oPergunta->descricao     = urlencode((string) $oPerguntaTemp->getDescricao());
          $oPergunta->obrigatoria   = $oPerguntaTemp->isObrigatoria();
          $oPergunta->tipo          = $oPerguntaTemp->getTipo();
-         $oPergunta->respostas     = array();
+         $oPergunta->respostas     = [];
           foreach ($oPerguntaTemp->getRespostas() as $oOpcaoResposta) {
 
             $oTmpOpcaoResposta                    = clone($oOpcaoResposta);
-            $oTmpOpcaoResposta->descricaoresposta = urlencode($oOpcaoResposta->descricaoresposta);
+            $oTmpOpcaoResposta->descricaoresposta = urlencode((string) $oOpcaoResposta->descricaoresposta);
             $oPergunta->respostas[]               = $oTmpOpcaoResposta;
           }
          $oPergunta->identificador = $oPerguntaTemp->getIdentificador();

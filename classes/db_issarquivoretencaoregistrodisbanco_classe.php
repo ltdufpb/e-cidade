@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE issarquivoretencaoregistrodisbanco
 class cl_issarquivoretencaoregistrodisbanco {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $q94_sequencial = 0;
-   var $q94_issarquivoretencaoregistro = 0;
-   var $q94_disbanco = 0;
+   public $q94_sequencial = 0;
+   public $q94_issarquivoretencaoregistro = 0;
+   public $q94_disbanco = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  q94_sequencial = int4 = Sequencial
                  q94_issarquivoretencaoregistro = int4 = Código Registro Retencão
                  q94_disbanco = int4 = Código Disbanco
                  ";
    //funcao construtor da classe
-   function cl_issarquivoretencaoregistrodisbanco() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issarquivoretencaoregistrodisbanco");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -107,10 +107,10 @@ class cl_issarquivoretencaoregistrodisbanco {
          $this->erro_status = "0";
          return false;
        }
-       $this->q94_sequencial = pg_result($result,0,0);
+       $this->q94_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from issarquivoretencaoregistrodisbanco_q94_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q94_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q94_sequencial)){
          $this->erro_sql = " Campo q94_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_issarquivoretencaoregistrodisbanco {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Arquivo de Retenção Disbanco ($this->q94_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Arquivo de Retenção Disbanco já Cadastrado";
@@ -171,12 +171,12 @@ class cl_issarquivoretencaoregistrodisbanco {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21108,'$this->q94_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3799,21108,'','".AddSlashes(pg_result($resaco,0,'q94_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3799,21109,'','".AddSlashes(pg_result($resaco,0,'q94_issarquivoretencaoregistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3799,21110,'','".AddSlashes(pg_result($resaco,0,'q94_disbanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3799,21108,'','".AddSlashes(pg_fetch_result($resaco,0,'q94_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3799,21109,'','".AddSlashes(pg_fetch_result($resaco,0,'q94_issarquivoretencaoregistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3799,21110,'','".AddSlashes(pg_fetch_result($resaco,0,'q94_disbanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_issarquivoretencaoregistrodisbanco {
       $this->atualizacampos();
      $sql = " update issarquivoretencaoregistrodisbanco set ";
      $virgula = "";
-     if(trim($this->q94_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q94_sequencial"])){
+     if(trim((string) $this->q94_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q94_sequencial"])){
        $sql  .= $virgula." q94_sequencial = $this->q94_sequencial ";
        $virgula = ",";
-       if(trim($this->q94_sequencial) == null ){
+       if(trim((string) $this->q94_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "q94_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_issarquivoretencaoregistrodisbanco {
          return false;
        }
      }
-     if(trim($this->q94_issarquivoretencaoregistro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q94_issarquivoretencaoregistro"])){
+     if(trim((string) $this->q94_issarquivoretencaoregistro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q94_issarquivoretencaoregistro"])){
        $sql  .= $virgula." q94_issarquivoretencaoregistro = $this->q94_issarquivoretencaoregistro ";
        $virgula = ",";
-       if(trim($this->q94_issarquivoretencaoregistro) == null ){
+       if(trim((string) $this->q94_issarquivoretencaoregistro) == null ){
          $this->erro_sql = " Campo Código Registro Retencão não informado.";
          $this->erro_campo = "q94_issarquivoretencaoregistro";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_issarquivoretencaoregistrodisbanco {
          return false;
        }
      }
-     if(trim($this->q94_disbanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q94_disbanco"])){
+     if(trim((string) $this->q94_disbanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q94_disbanco"])){
        $sql  .= $virgula." q94_disbanco = $this->q94_disbanco ";
        $virgula = ",";
-       if(trim($this->q94_disbanco) == null ){
+       if(trim((string) $this->q94_disbanco) == null ){
          $this->erro_sql = " Campo Código Disbanco não informado.";
          $this->erro_campo = "q94_disbanco";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_issarquivoretencaoregistrodisbanco {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21108,'$this->q94_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q94_sequencial"]) || $this->q94_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3799,21108,'".AddSlashes(pg_result($resaco,$conresaco,'q94_sequencial'))."','$this->q94_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3799,21108,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q94_sequencial'))."','$this->q94_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q94_issarquivoretencaoregistro"]) || $this->q94_issarquivoretencaoregistro != "")
-             $resac = db_query("insert into db_acount values($acount,3799,21109,'".AddSlashes(pg_result($resaco,$conresaco,'q94_issarquivoretencaoregistro'))."','$this->q94_issarquivoretencaoregistro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3799,21109,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q94_issarquivoretencaoregistro'))."','$this->q94_issarquivoretencaoregistro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q94_disbanco"]) || $this->q94_disbanco != "")
-             $resac = db_query("insert into db_acount values($acount,3799,21110,'".AddSlashes(pg_result($resaco,$conresaco,'q94_disbanco'))."','$this->q94_disbanco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3799,21110,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q94_disbanco'))."','$this->q94_disbanco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_issarquivoretencaoregistrodisbanco {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21108,'$q94_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3799,21108,'','".AddSlashes(pg_result($resaco,$iresaco,'q94_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3799,21109,'','".AddSlashes(pg_result($resaco,$iresaco,'q94_issarquivoretencaoregistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3799,21110,'','".AddSlashes(pg_result($resaco,$iresaco,'q94_disbanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3799,21108,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q94_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3799,21109,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q94_issarquivoretencaoregistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3799,21110,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q94_disbanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

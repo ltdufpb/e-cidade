@@ -95,7 +95,7 @@ class Alteracao extends BaseAbstract
      *
      * @return \stdClass
      */
-    public function getValores(\stdClass $oPosicaoAtual, \stdClass $oPosicaoAnterior = null)
+    public function getValores(\stdClass $oPosicaoAtual, ?\stdClass $oPosicaoAnterior = null)
     {
         $oValores = new \stdClass();
         $oValores->valor_acrescimo = null;
@@ -117,26 +117,26 @@ class Alteracao extends BaseAbstract
             $oPosicaoAtual->tipo_operacao
         );
 
-        $aAditamentosAcrescimo = array(
+        $aAditamentosAcrescimo = [
           self::TIPO_OPERACAO_ACRESCIMO_QUANTITATIVO,
           self::TIPO_OPERACAO_ACRESCIMO_ITENS,
           self::TIPO_OPERACAO_REEQUILIBRIO,
           self::TIPO_OPERACAO_REAJUSTE,
           self::TIPO_OPERACAO_RENOVACAO
-        );
+        ];
 
-        $aAditamentosPc = array(
+        $aAditamentosPc = [
           self::TIPO_OPERACAO_REAJUSTE,
           self::TIPO_OPERACAO_RENOVACAO
-        );
+        ];
 
-        $aAditamentosReducao = array(
+        $aAditamentosReducao = [
           self::TIPO_OPERACAO_REEQUILIBRIO,
           self::TIPO_OPERACAO_REDUCAO_ITENS,
           self::TIPO_OPERACAO_REDUCAO_QUANTITATIVO,
           self::TIPO_OPERACAO_REAJUSTE,
           self::TIPO_OPERACAO_RENOVACAO
-        );
+        ];
 
         $lSemAcrescimoValor = $oPosicaoAtual->valores->valor_total == $oPosicaoAnterior->valores->valor_total;
 
@@ -217,40 +217,23 @@ class Alteracao extends BaseAbstract
      */
     public function getTipoOperacao($iTipoAditamento, $iTipoOperacao)
     {
-        $aTipoOperacao = array(
+        $aTipoOperacao = [
           1 => self::TIPO_OPERACAO_ACRESCIMO_QUANTITATIVO,
           2 => self::TIPO_OPERACAO_ACRESCIMO_ITENS,
           3 => self::TIPO_OPERACAO_REAJUSTE,
           4 => self::TIPO_OPERACAO_REDUCAO_ITENS,
           5 => self::TIPO_OPERACAO_REDUCAO_QUANTITATIVO,
-        );
+        ];
         $sTipoOperacao = '';
-        switch ($iTipoAditamento) {
-            case \AcordoPosicao::TIPO_ADITAMENTO:
-            case \AcordoPosicao::TIPO_SUPRESSAO:
-            case \AcordoPosicao::TIPO_APOSTILAMENTO:
-                $sTipoOperacao = $aTipoOperacao[$iTipoOperacao];
-                break;
-
-            case \AcordoPosicao::TIPO_REEQUILIBRIO:
-                $sTipoOperacao = self::TIPO_OPERACAO_REEQUILIBRIO;
-                break;
-
-            case \AcordoPosicao::TIPO_ALTERACAO_DOTACAO:
-                $sTipoOperacao = self::TIPO_OPERACAO_ALTERACAO_DOTACAO;
-                break;
-
-            case \AcordoPosicao::TIPO_VIGENCIA:
-                $sTipoOperacao = self::TIPO_OPERACAO_PRORROGACAO;
-                break;
-
-            case \AcordoPosicao::TIPO_RENOVACAO:
-                $sTipoOperacao = self::TIPO_OPERACAO_RENOVACAO;
-                break;
-            case \AcordoPosicao::TIPO_ALTERACAO_CESSAO_CONTRATADO:
-                $sTipoOperacao = self::TIPO_OPERACAO_ALTERACAO_CESSAO_CONTRATADO;
-                break;
-        }
+        $sTipoOperacao = match ($iTipoAditamento) {
+            \AcordoPosicao::TIPO_ADITAMENTO, \AcordoPosicao::TIPO_SUPRESSAO, \AcordoPosicao::TIPO_APOSTILAMENTO => $aTipoOperacao[$iTipoOperacao],
+            \AcordoPosicao::TIPO_REEQUILIBRIO => self::TIPO_OPERACAO_REEQUILIBRIO,
+            \AcordoPosicao::TIPO_ALTERACAO_DOTACAO => self::TIPO_OPERACAO_ALTERACAO_DOTACAO,
+            \AcordoPosicao::TIPO_VIGENCIA => self::TIPO_OPERACAO_PRORROGACAO,
+            \AcordoPosicao::TIPO_RENOVACAO => self::TIPO_OPERACAO_RENOVACAO,
+            \AcordoPosicao::TIPO_ALTERACAO_CESSAO_CONTRATADO => self::TIPO_OPERACAO_ALTERACAO_CESSAO_CONTRATADO,
+            default => $sTipoOperacao,
+        };
 
         return $sTipoOperacao;
     }
@@ -262,7 +245,7 @@ class Alteracao extends BaseAbstract
      *
      * @return int|mixed
      */
-    public function getDiasPrazo(\AcordoPosicao $oAcordoPosicao = null, $lTemAnterior, \stdClass $oStdAcordo = null)
+    public function getDiasPrazo(?\AcordoPosicao $oAcordoPosicao = null, $lTemAnterior = null, ?\stdClass $oStdAcordo = null)
     {
         $iDiasPrazo = null;
         $oAcordoPosicao->getTipo();
@@ -272,7 +255,7 @@ class Alteracao extends BaseAbstract
             $oAcordoPosicao->getTipoOperacao()
         );
 
-        $aPrazo = array(self::TIPO_OPERACAO_RENOVACAO, self::TIPO_OPERACAO_PRORROGACAO);
+        $aPrazo = [self::TIPO_OPERACAO_RENOVACAO, self::TIPO_OPERACAO_PRORROGACAO];
         /**
          * Descobre a diferença de prazo
          */

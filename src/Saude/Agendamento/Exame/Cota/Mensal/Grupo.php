@@ -35,7 +35,7 @@ class Grupo extends Mensal implements CotaMensalInterface
   /**
    * Array com os exames por prestador
    */
-  protected $aPrestadorExames = array();
+  protected $aPrestadorExames = [];
 
   /**
    * Busca o nome do exame

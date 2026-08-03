@@ -73,10 +73,10 @@ $dtFinal_ano = date("Y", db_getsession("DB_datausu"));
         <td><b>Tipo:</b></td>
         <td>
           <?php
-            $aTiposMoveis = array( 0 => "TODOS"
+            $aTiposMoveis = [ 0 => "TODOS"
                                   ,1 => "MÓVEIS"
                                   ,2 => "IMÓVEIS"
-                                  ,3 => "SEMOVENTES");
+                                  ,3 => "SEMOVENTES"];
 
 
             db_select("iTipoBem", $aTiposMoveis, true, 1);

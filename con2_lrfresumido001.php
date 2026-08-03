@@ -40,12 +40,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $codrel = 18; // relatorio de simplificado
 
@@ -72,12 +72,12 @@ $codrel = 18; // relatorio de simplificado
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas","variaveis"=>"Variáveis");
-    $clcriaabas->title      = array("relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas","variaveis"=>"Variáveis");
-    $clcriaabas->src        = array("relatorio"=>"con2_lrfresumido011.php",
+    $clcriaabas->identifica = ["relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas","variaveis"=>"Variáveis"];
+    $clcriaabas->title      = ["relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas","variaveis"=>"Variáveis"];
+    $clcriaabas->src        = ["relatorio"=>"con2_lrfresumido011.php",
                                     "notas"=>"con2_conrelnotas.php?c83_codrel=$codrel",
-                                    "variaveis"=>"con2_conrelinfo001.php?c83_codrel=$codrel");
-    $clcriaabas->sizecampo  = array("relatorio"=>"23","notas"=>"23","variaveis"=>"23");
+                                    "variaveis"=>"con2_conrelinfo001.php?c83_codrel=$codrel"];
+    $clcriaabas->sizecampo  = ["relatorio"=>"23","notas"=>"23","variaveis"=>"23"];
     $clcriaabas->cria_abas();    
     ?>
     </center>

@@ -31,10 +31,11 @@ require(modification("classes/db_sau_config_classe.php"));
 
 class cl_sau_config_ext extends cl_sau_config { 
    // funcao do sql 
+   #[\Override]
    function sql_query_ext ( $oid = null,$campos="sau_config.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -56,7 +57,7 @@ class cl_sau_config_ext extends cl_sau_config {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

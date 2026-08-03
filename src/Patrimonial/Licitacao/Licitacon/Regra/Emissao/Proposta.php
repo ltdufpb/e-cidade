@@ -83,7 +83,7 @@ class Proposta extends BaseAbstract
      * Modalidades que não são permitidas nos arquivos
      * @var array
      */
-    private static $aModalidadesNaoPermitidas = array('CPC', 'RPO', 'PRD', 'PRI', 'MAI');
+    private static $aModalidadesNaoPermitidas = ['CPC', 'RPO', 'PRD', 'PRI', 'MAI'];
 
     /**
      * @return int
@@ -145,7 +145,7 @@ class Proposta extends BaseAbstract
             return $sTipoResultado;
         }
 
-        $sTipoResultado = $this->getSiglaResultado($oOrcamentoFornecedor);
+        $sTipoResultado = self::getSiglaResultado($oOrcamentoFornecedor);
         if ((float)$this->oConfiguracao->getVersao() >= 1.3
           && $lSituacaoJulgada
           && (!$this->oLicitacao->getDataAjudicacao() || !$this->oLicitacao->getDataHomologacao())) {
@@ -173,13 +173,13 @@ class Proposta extends BaseAbstract
      * @return mixed
      * @throws \Exception
      */
-    private static function getSiglaResultado(\OrcamentoFornecedor $oFornecedor, \ItemOrcamento $oItem = null)
+    private static function getSiglaResultado(\OrcamentoFornecedor $oFornecedor, ?\ItemOrcamento $oItem = null)
     {
         if ($oFornecedor->getCodigo() == "") {
             return self::RESULTADO_DESCLASSIFICADO;
         }
 
-        $aWhere = array("pcorcamforne.pc21_orcamforne = {$oFornecedor->getCodigo()}");
+        $aWhere = ["pcorcamforne.pc21_orcamforne = {$oFornecedor->getCodigo()}"];
         if (!empty($oItem)) {
             $aWhere[] = "pcorcamitem.pc22_orcamitem = {$oItem->getCodigo()}";
         }

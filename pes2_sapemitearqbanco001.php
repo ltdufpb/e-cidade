@@ -33,7 +33,7 @@ include_once(modification("dbforms/db_funcoes.php"));
 include_once(modification("classes/db_rharqbanco_classe.php"));
 include_once(modification("classes/db_rhcontasrec_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrhcontasrec = new cl_rhcontasrec;
 $clrharqbanco  = new cl_rharqbanco;
@@ -240,7 +240,7 @@ function js_controlarodape(mostra){
 
           $sql_rec = $clrhcontasrec->sql_query_contas("","","","","*","rh41_codigo"," rh41_codigo = $rh41_codigo and rh41_instit = ".db_getsession('DB_instit'));
           $res_rec = db_query($sql_rec);
-          if( pg_numrows($res_rec) > 0 ){
+          if( pg_num_rows($res_rec) > 0 ){
 
             db_fieldsmemory($res_rec,0);
             $rh34_agencia   = $c63_agencia;
@@ -295,10 +295,10 @@ function js_controlarodape(mostra){
     </td>
     <td>
       <?php 
-        $arr_layout = array(
+        $arr_layout = [
                              "18"=>"SIACC",
                              "3"=>"SICOV"
-                           );
+                           ];
         db_select("layout", $arr_layout, true, 1, "");
       ?>
     </td>

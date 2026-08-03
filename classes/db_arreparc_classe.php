@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE arreparc
 class cl_arreparc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k26_numpre = 0; 
-   var $k26_receit = 0; 
-   var $k26_perc = 0; 
+   public $k26_numpre = 0; 
+   public $k26_receit = 0; 
+   public $k26_perc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k26_numpre = int4 = Numpre 
                  k26_receit = int4 = codigo da receita 
                  k26_perc = float8 = Percentual da receita 
                  ";
    //funcao construtor da classe 
-   function cl_arreparc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arreparc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -120,7 +120,7 @@ class cl_arreparc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Percentual da receita em relação ao numpre ($this->k26_numpre."-".$this->k26_receit) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Percentual da receita em relação ao numpre já Cadastrado";
@@ -144,13 +144,13 @@ class cl_arreparc {
      $resaco = $this->sql_record($this->sql_query_file($this->k26_numpre,$this->k26_receit));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5190,'$this->k26_numpre','I')");
        $resac = db_query("insert into db_acountkey values($acount,5191,'$this->k26_receit','I')");
-       $resac = db_query("insert into db_acount values($acount,747,5190,'','".AddSlashes(pg_result($resaco,0,'k26_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,747,5191,'','".AddSlashes(pg_result($resaco,0,'k26_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,747,5192,'','".AddSlashes(pg_result($resaco,0,'k26_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,747,5190,'','".AddSlashes(pg_fetch_result($resaco,0,'k26_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,747,5191,'','".AddSlashes(pg_fetch_result($resaco,0,'k26_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,747,5192,'','".AddSlashes(pg_fetch_result($resaco,0,'k26_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -159,10 +159,10 @@ class cl_arreparc {
       $this->atualizacampos();
      $sql = " update arreparc set ";
      $virgula = "";
-     if(trim($this->k26_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k26_numpre"])){ 
+     if(trim((string) $this->k26_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k26_numpre"])){ 
        $sql  .= $virgula." k26_numpre = $this->k26_numpre ";
        $virgula = ",";
-       if(trim($this->k26_numpre) == null ){ 
+       if(trim((string) $this->k26_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "k26_numpre";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_arreparc {
          return false;
        }
      }
-     if(trim($this->k26_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k26_receit"])){ 
+     if(trim((string) $this->k26_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k26_receit"])){ 
        $sql  .= $virgula." k26_receit = $this->k26_receit ";
        $virgula = ",";
-       if(trim($this->k26_receit) == null ){ 
+       if(trim((string) $this->k26_receit) == null ){ 
          $this->erro_sql = " Campo codigo da receita nao Informado.";
          $this->erro_campo = "k26_receit";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_arreparc {
          return false;
        }
      }
-     if(trim($this->k26_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k26_perc"])){ 
+     if(trim((string) $this->k26_perc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k26_perc"])){ 
        $sql  .= $virgula." k26_perc = $this->k26_perc ";
        $virgula = ",";
-       if(trim($this->k26_perc) == null ){ 
+       if(trim((string) $this->k26_perc) == null ){ 
          $this->erro_sql = " Campo Percentual da receita nao Informado.";
          $this->erro_campo = "k26_perc";
          $this->erro_banco = "";
@@ -209,16 +209,16 @@ class cl_arreparc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5190,'$this->k26_numpre','A')");
          $resac = db_query("insert into db_acountkey values($acount,5191,'$this->k26_receit','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k26_numpre"]))
-           $resac = db_query("insert into db_acount values($acount,747,5190,'".AddSlashes(pg_result($resaco,$conresaco,'k26_numpre'))."','$this->k26_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,747,5190,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k26_numpre'))."','$this->k26_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k26_receit"]))
-           $resac = db_query("insert into db_acount values($acount,747,5191,'".AddSlashes(pg_result($resaco,$conresaco,'k26_receit'))."','$this->k26_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,747,5191,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k26_receit'))."','$this->k26_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k26_perc"]))
-           $resac = db_query("insert into db_acount values($acount,747,5192,'".AddSlashes(pg_result($resaco,$conresaco,'k26_perc'))."','$this->k26_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,747,5192,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k26_perc'))."','$this->k26_perc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -263,13 +263,13 @@ class cl_arreparc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5190,'$k26_numpre','E')");
          $resac = db_query("insert into db_acountkey values($acount,5191,'$k26_receit','E')");
-         $resac = db_query("insert into db_acount values($acount,747,5190,'','".AddSlashes(pg_result($resaco,$iresaco,'k26_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,747,5191,'','".AddSlashes(pg_result($resaco,$iresaco,'k26_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,747,5192,'','".AddSlashes(pg_result($resaco,$iresaco,'k26_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,747,5190,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k26_numpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,747,5191,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k26_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,747,5192,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k26_perc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from arreparc
@@ -335,7 +335,7 @@ class cl_arreparc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:arreparc";

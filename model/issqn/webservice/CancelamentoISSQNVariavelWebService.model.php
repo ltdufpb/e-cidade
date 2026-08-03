@@ -33,6 +33,7 @@ class CancelamentoISSQNVariavelWebService extends CancelamentoISSQNVariavel {
     parent::setObservacao('Cancelado pelo NFSE');
   }
 
+  #[\Override]
   public function setEmpresa($iInscricaoMunicipal) {
     parent::setEmpresa(new Empresa($iInscricaoMunicipal));
   }

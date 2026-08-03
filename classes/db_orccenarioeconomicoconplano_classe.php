@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE orccenarioeconomicoconplano
 class cl_orccenarioeconomicoconplano {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $o04_sequencial = 0;
-   var $o04_orccenarioeconomicoparam = 0;
-   var $o04_conplano = 0;
-   var $o04_anousu = 0;
-   var $o04_tipocalculo = 0;
+   public $o04_sequencial = 0;
+   public $o04_orccenarioeconomicoparam = 0;
+   public $o04_conplano = 0;
+   public $o04_anousu = 0;
+   public $o04_tipocalculo = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  o04_sequencial = int4 = Código Sequencial
                  o04_orccenarioeconomicoparam = int4 = Parametro Macroeconomico
                  o04_conplano = int4 = Conta
@@ -56,10 +56,10 @@ class cl_orccenarioeconomicoconplano {
                  o04_tipocalculo = int4 = Tipo de Cálculo
                  ";
    //funcao construtor da classe
-   function cl_orccenarioeconomicoconplano() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orccenarioeconomicoconplano");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -125,10 +125,10 @@ class cl_orccenarioeconomicoconplano {
          $this->erro_status = "0";
          return false;
        }
-       $this->o04_sequencial = pg_result($result,0,0);
+       $this->o04_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from orccenarioeconomicoconplano_o04_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o04_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o04_sequencial)){
          $this->erro_sql = " Campo o04_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -164,7 +164,7 @@ class cl_orccenarioeconomicoconplano {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "desdepas/receitas  vinculadas  ($this->o04_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "desdepas/receitas  vinculadas  já Cadastrado";
@@ -192,10 +192,10 @@ class cl_orccenarioeconomicoconplano {
       $this->atualizacampos();
      $sql = " update orccenarioeconomicoconplano set ";
      $virgula = "";
-     if(trim($this->o04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o04_sequencial"])){
+     if(trim((string) $this->o04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o04_sequencial"])){
        $sql  .= $virgula." o04_sequencial = $this->o04_sequencial ";
        $virgula = ",";
-       if(trim($this->o04_sequencial) == null ){
+       if(trim((string) $this->o04_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o04_sequencial";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_orccenarioeconomicoconplano {
          return false;
        }
      }
-     if(trim($this->o04_orccenarioeconomicoparam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o04_orccenarioeconomicoparam"])){
+     if(trim((string) $this->o04_orccenarioeconomicoparam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o04_orccenarioeconomicoparam"])){
        $sql  .= $virgula." o04_orccenarioeconomicoparam = $this->o04_orccenarioeconomicoparam ";
        $virgula = ",";
-       if(trim($this->o04_orccenarioeconomicoparam) == null ){
+       if(trim((string) $this->o04_orccenarioeconomicoparam) == null ){
          $this->erro_sql = " Campo Parametro Macroeconomico nao Informado.";
          $this->erro_campo = "o04_orccenarioeconomicoparam";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_orccenarioeconomicoconplano {
          return false;
        }
      }
-     if(trim($this->o04_conplano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o04_conplano"])){
+     if(trim((string) $this->o04_conplano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o04_conplano"])){
        $sql  .= $virgula." o04_conplano = $this->o04_conplano ";
        $virgula = ",";
-       if(trim($this->o04_conplano) == null ){
+       if(trim((string) $this->o04_conplano) == null ){
          $this->erro_sql = " Campo Conta nao Informado.";
          $this->erro_campo = "o04_conplano";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_orccenarioeconomicoconplano {
          return false;
        }
      }
-     if(trim($this->o04_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o04_anousu"])){
+     if(trim((string) $this->o04_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o04_anousu"])){
        $sql  .= $virgula." o04_anousu = $this->o04_anousu ";
        $virgula = ",";
-       if(trim($this->o04_anousu) == null ){
+       if(trim((string) $this->o04_anousu) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "o04_anousu";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_orccenarioeconomicoconplano {
          return false;
        }
      }
-     if(trim($this->o04_tipocalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o04_tipocalculo"])){
+     if(trim((string) $this->o04_tipocalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o04_tipocalculo"])){
        $sql  .= $virgula." o04_tipocalculo = $this->o04_tipocalculo ";
        $virgula = ",";
-       if(trim($this->o04_tipocalculo) == null ){
+       if(trim((string) $this->o04_tipocalculo) == null ){
          $this->erro_sql = " Campo Tipo de Cálculo nao Informado.";
          $this->erro_campo = "o04_tipocalculo";
          $this->erro_banco = "";
@@ -353,7 +353,7 @@ class cl_orccenarioeconomicoconplano {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orccenarioeconomicoconplano";
@@ -368,7 +368,7 @@ class cl_orccenarioeconomicoconplano {
    function sql_query ( $o04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_orccenarioeconomicoconplano {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -407,7 +407,7 @@ class cl_orccenarioeconomicoconplano {
    function sql_query_file ( $o04_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -428,7 +428,7 @@ class cl_orccenarioeconomicoconplano {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

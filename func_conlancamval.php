@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conlancamval_classe.php"));
 include(modification("classes/db_conlancamdig_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clconlancamval = new cl_conlancamval;
 $clconlancamval->rotulo->label("c69_sequen");
@@ -117,7 +117,7 @@ $anousu = db_getsession("DB_anousu");
       $sCampos      = "*";
       $iChave       = null;
       $sOrder       = null;
-      $aWhere       = array();
+      $aWhere       = [];
       $itemMenuSessao = (int)db_getsession('DB_itemmenu_acessado');
 
       $aWhere[] = " c02_instit = {$iInstituicao} ";

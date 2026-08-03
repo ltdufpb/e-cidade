@@ -35,7 +35,7 @@ include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_app.utils.php"));
 require(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clvac_vacinalote = new cl_vac_vacinalote;
 $clvac_sala       = new cl_vac_sala;
 $db_opcao         = 1;

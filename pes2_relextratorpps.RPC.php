@@ -36,7 +36,7 @@ $oPost       = db_utils::postMemory($_REQUEST);
 
 $oPost->json = str_replace("\\","",$oPost->json);
 $oParam      = JSON::create()->parse($oPost->json);
-$oRetorno    = (object)array( 'erro' => false, 'mensagem'=> '');
+$oRetorno    = (object)[ 'erro' => false, 'mensagem'=> ''];
 
 try {
 
@@ -64,12 +64,10 @@ try {
       		throw new DBException("Ocorreu um erro ao consultar as tabelas de previdência.");
       	}
 
-      	$oRetorno->aTabelasPrevidencia = array();
+      	$oRetorno->aTabelasPrevidencia = [];
       	if(pg_num_rows($rsPrevidencia) > 0) {
 
-      		$oRetorno->aTabelasPrevidencia = db_utils::makeCollectionFromRecord($rsPrevidencia, function ($oTabelaPrevidencia) {
-      			return $oTabelaPrevidencia;
-      		});
+      		$oRetorno->aTabelasPrevidencia = db_utils::makeCollectionFromRecord($rsPrevidencia, fn($oTabelaPrevidencia) => $oTabelaPrevidencia);
       	}
 
       break;

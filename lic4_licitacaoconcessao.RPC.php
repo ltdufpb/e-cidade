@@ -62,7 +62,7 @@ try {
       $oRetorno->iLicitacao   = $oParam->iLicitacao;
       $oRetorno->iProcesso    = null;
       $oRetorno->iSolicitacao = null;
-      $oRetorno->aItens       = array();
+      $oRetorno->aItens       = [];
       foreach ($aItens as $oItemLicitacao) {
 
         $oItemSolicitacao = $oItemLicitacao->getItemSolicitacao();
@@ -73,9 +73,9 @@ try {
         $oStdItem                   = new \stdClass();
         $oStdItem->iId              = $oItemSolicitacao->getOrdem() . '#' . $oItemSolicitacao->getCodigoMaterial();
         $oStdItem->iMaterial        = $oItemSolicitacao->getCodigoMaterial();
-        $oStdItem->sMaterial        = urldecode($oItemSolicitacao->getDescricaoMaterial());
+        $oStdItem->sMaterial        = urldecode((string) $oItemSolicitacao->getDescricaoMaterial());
         $oStdItem->iQuantidade      = $oItemSolicitacao->getQuantidade();
-        $oStdItem->sResumo          = urldecode($oItemSolicitacao->getResumo());
+        $oStdItem->sResumo          = urldecode((string) $oItemSolicitacao->getResumo());
         $oStdItem->iUnidade         = $oItemSolicitacao->getUnidade();
         $oStdItem->iQtdUnidade      = $oItemSolicitacao->getQuantidadeUnidade();
         $oStdItem->iItemProcesso    = $oItemLicitacao->getItemProcessoCompras();
@@ -150,7 +150,7 @@ try {
       }
 
       $iSequencia  = 1;
-      $aItensNovos = array();
+      $aItensNovos = [];
       foreach ($oParam->aItens as $oDadosItem) {
 
         $oItem = new \itemSolicitacao($oDadosItem->iItemSolicitacao);
@@ -194,7 +194,7 @@ try {
         }
       }
 
-      if ( in_array($oParam->iTipoJulgamento, array(licitacao::TIPO_JULGAMENTO_POR_ITEM, licitacao::TIPO_JULGAMENTO_GLOBAL)) ) {
+      if ( in_array($oParam->iTipoJulgamento, [licitacao::TIPO_JULGAMENTO_POR_ITEM, licitacao::TIPO_JULGAMENTO_GLOBAL]) ) {
 
         $oLicitacao = new \licitacao($oParam->iLicitacao);
         $aItens     = $oLicitacao->getItens();

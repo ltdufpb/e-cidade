@@ -32,7 +32,7 @@ include(modification("classes/db_rhpessoal_classe.php"));
   
 $oGet            = db_utils::postMemory($_GET);
 $cl_rhpessoal    = new cl_rhpessoal();
-$aTipoFolha      = array();
+$aTipoFolha      = [];
 $sFiltro         = $oGet->sFiltro == 'diferentes' ? "Valores Diferentes": "Todos";
 $sFiltroRubricas = $oGet->sFiltroRubrica == 'selecionadas' ? $oGet->rubricas_selecionadas_text : "Proventos";
 $sRubricas       = $oGet->rubricas_selecionadas_text;
@@ -235,7 +235,7 @@ foreach ($aTipoFolha as $aTipo) {
 			  } else {
 			    $nVlrDiferenca = $oTipoFolha->vlr_compara - $oTipoFolha->vlr_base;
 			  }
-			  $sData = implode("/",explode("-",$oTipoFolha->rh01_admiss));
+			  $sData = implode("/",explode("-",(string) $oTipoFolha->rh01_admiss));
 			  $pdf->Cell(15, 5, $oTipoFolha->rh02_regist,1,0,'C',0,"","");
 			  $pdf->Cell(82, 5, $oTipoFolha->z01_nome,   1,0,'L',0,"","");
 			  $pdf->Cell(20, 5, $sData,1,0,'C',0,"","");

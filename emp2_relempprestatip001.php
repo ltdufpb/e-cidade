@@ -137,7 +137,7 @@ function js_emite(){
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
           <?php 
-            $xx = array("l"=>"Liquidado","e"=>"Empenhado","p"=>"Pago");
+            $xx = ["l"=>"Liquidado","e"=>"Empenhado","p"=>"Pago"];
             db_select('tipoemp',$xx,true,4,"");
 	  ?>
 	</td>

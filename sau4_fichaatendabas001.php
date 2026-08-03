@@ -98,8 +98,8 @@ if( isset( $incluir ) ) {
     // Prontuário
     //gera numatend
     $sql_fc      = "select fc_numatend()";
-    $query_fc    = db_query($sql_fc) or die(pg_errormessage().$sql_fc);
-    $fc_numatend = explode(",",pg_result($query_fc,0,0));
+    $query_fc    = db_query($sql_fc) or die(pg_last_error().$sql_fc);
+    $fc_numatend = explode(",",pg_fetch_result($query_fc,0,0));
   }
 
   db_inicio_transacao();
@@ -135,9 +135,9 @@ if( isset( $incluir ) ) {
 
     // Prontuário
     //gera numatend
-    $clprontuarios->sd24_i_ano              = trim($fc_numatend[0]);
-    $clprontuarios->sd24_i_mes              = trim($fc_numatend[1]);
-    $clprontuarios->sd24_i_seq              = trim($fc_numatend[2]);
+    $clprontuarios->sd24_i_ano              = trim((string) $fc_numatend[0]);
+    $clprontuarios->sd24_i_mes              = trim((string) $fc_numatend[1]);
+    $clprontuarios->sd24_i_seq              = trim((string) $fc_numatend[2]);
     $clprontuarios->sd24_i_unidade          = $sd24_i_unidade;
     $clprontuarios->sd24_i_numcgs           = $z01_i_cgsund;
     $clprontuarios->sd24_d_cadastro         = date("Y-m-d",db_getsession("DB_datausu"));

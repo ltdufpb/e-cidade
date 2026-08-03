@@ -44,14 +44,10 @@ abstract class AnexoIII
      */
     public static function getInstance($ano, Periodo $periodo)
     {
-        switch ($ano) {
-            case 2018:
-            case 2019:
-                return new Anexo2018($ano, $periodo);
-            case 2020:
-                return new Anexo2020($ano, $periodo);
-            default:
-                return new Anexo2020($ano, $periodo);
-        }
+        return match ($ano) {
+            2018, 2019 => new Anexo2018($ano, $periodo),
+            2020 => new Anexo2020($ano, $periodo),
+            default => new Anexo2020($ano, $periodo),
+        };
     }
 }

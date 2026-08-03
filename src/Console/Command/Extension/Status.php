@@ -85,9 +85,9 @@ class Status extends Command
 
     private function get_modifications($id)
     {
-        $data = array();
-        $modifications = array();
-        $files = array();
+        $data = [];
+        $modifications = [];
+        $files = [];
         $path = ECIDADE_EXTENSION_PACKAGE_PATH . $id;
         $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
         foreach ($iterator as $file) {
@@ -117,11 +117,11 @@ class Status extends Command
 
     private function modifications_instaled($modications)
     {
-        $data = array(
-            'global' => array(),
-            'user' => array(),
-            'parse_error' => array(),
-        );
+        $data = [
+            'global' => [],
+            'user' => [],
+            'parse_error' => [],
+        ];
 
         foreach ($modications as $path) {
 
@@ -141,18 +141,18 @@ class Status extends Command
 
                 if ($modification->isUserType()) {
                     foreach ($modification->getUsersStatus() as $user => $status) {
-                        $data['user'][$modification->getId()][$user] = array(
+                        $data['user'][$modification->getId()][$user] = [
                             'status' => $modification->isEnabled($user),
                             'errors' => $errors,
-                        );
+                        ];
                     }
                     continue;
                 }
 
-                $data['global'][$modification->getId()] = array(
+                $data['global'][$modification->getId()] = [
                     'status' => $modification->isEnabled(),
                     'errors' => $errors,
-                );
+                ];
 
             } catch (\Exception $e) {
                 $data['parse_error'][$path] = $e->getMessage();
@@ -165,10 +165,10 @@ class Status extends Command
 
     private function modification_extract_errros($modification)
     {
-        $data = array(
+        $data = [
             'error' => 0,
             'warning' => 0,
-        );
+        ];
         foreach($modification->getFilesErrors() as $file => $errors) {
             foreach($errors as $error) {
                 if ($error['type'] === ModificationOperation::ERROR_ABORT) {

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_relatorio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_relatorio = new cl_db_relatorio;
 $cldb_relatorio->rotulo->label("db63_sequencial");
 $cldb_relatorio->rotulo->label("db63_db_gruporelatorio");
@@ -109,9 +109,9 @@ $cldb_relatorio->rotulo->label("db63_db_gruporelatorio");
         }else{
            $sql = $cldb_relatorio->sql_query(null,$campos,"db63_sequencial",$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db63_db_gruporelatorio)){
-          $repassa = array("chave_db63_sequencial"=>$chave_db63_sequencial,"chave_db63_db_gruporelatorio"=>$chave_db63_db_gruporelatorio);
+          $repassa = ["chave_db63_sequencial"=>$chave_db63_sequencial,"chave_db63_db_gruporelatorio"=>$chave_db63_db_gruporelatorio];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_selecao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -53,7 +53,7 @@ if (isset($gera) || isset($gera1)){
   }
 
   $where = " ";
-  if(trim($selecao) != ""){
+  if(trim((string) $selecao) != ""){
     $result_selecao = $clselecao->sql_record($clselecao->sql_query_file($selecao,db_getsession("DB_instit"),"*"));
     if($clselecao->numrows > 0){
       db_fieldsmemory($result_selecao, 0);
@@ -157,7 +157,7 @@ if (isset($gera) || isset($gera1)){
 	 ";
 // echo "<br><br><br><br><br>".$sql;exit;
   $result = db_query($sql);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  for($x = 0;$x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
     $dados_pessoais = 
                       db_formatar(db_mes($mesfolha,2).'/'.$anofolha,'s',' ', 20 ,'d',0).
@@ -214,7 +214,7 @@ if (isset($gera) || isset($gera1)){
     $desc      = 0;
     $res_ger = db_query($sql_ger);
     $dados_financeiros = ''; 
-    for($g = 0;$g < pg_numrows($res_ger);$g++){
+    for($g = 0;$g < pg_num_rows($res_ger);$g++){
       db_fieldsmemory($res_ger,$g);
       if($tipo == 3){
         continue;
@@ -223,7 +223,7 @@ if (isset($gera) || isset($gera1)){
                             $rubric.
 		                        db_formatar($descr,'s',' ',48,'d',0).
                             $pd.
-                            db_formatar(trim(substr($quant,0,5)),'s','0',5,'e',0).
+                            db_formatar(trim(substr((string) $quant,0,5)),'s','0',5,'e',0).
                             ' '.
 		                        db_formatar($valor,'s','0',15,'e',0);
  

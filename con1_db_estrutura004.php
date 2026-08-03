@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_db_estrutura_classe.php"));
 include(modification("classes/db_db_estruturanivel_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_estrutura = new cl_db_estrutura;
 $cldb_estruturanivel = new cl_db_estruturanivel;
 $db_opcao = 1;
@@ -54,11 +54,11 @@ if(isset($incluir)){
   //final
 
   //rotina pra incluir na tabela db_estruturanivel
-    $matriz = split("\.",$db77_estrut);
+    $matriz = preg_split("#\\.#m",(string) $db77_estrut);
     $tam = sizeof($matriz);
     $ini=0;
     for($i=0; $i<$tam; $i++){
-       $tamanho = strlen($matriz[$i]); 
+       $tamanho = strlen((string) $matriz[$i]); 
        $cldb_estruturanivel->db78_codestrut = $db77_codestrut;
        $cldb_estruturanivel->db78_tamanho   = $tamanho;
        $cldb_estruturanivel->db78_inicio    = "$ini";

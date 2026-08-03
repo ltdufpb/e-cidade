@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE cidadaocomposicaofamiliar
 class cl_cidadaocomposicaofamiliar { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $as03_sequencial = 0; 
-   var $as03_cidadao = 0; 
-   var $as03_cidadao_seq = 0; 
-   var $as03_tipofamiliar = 0; 
-   var $as03_cidadaofamilia = 0; 
+   public $as03_sequencial = 0; 
+   public $as03_cidadao = 0; 
+   public $as03_cidadao_seq = 0; 
+   public $as03_tipofamiliar = 0; 
+   public $as03_cidadaofamilia = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  as03_sequencial = int4 = Código 
                  as03_cidadao = int4 = Cidadão 
                  as03_cidadao_seq = int4 = Código Cidadão 
@@ -56,10 +56,10 @@ class cl_cidadaocomposicaofamiliar {
                  as03_cidadaofamilia = int4 = Código Família 
                  ";
    //funcao construtor da classe 
-   function cl_cidadaocomposicaofamiliar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cidadaocomposicaofamiliar"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_cidadaocomposicaofamiliar {
          $this->erro_status = "0";
          return false; 
        }
-       $this->as03_sequencial = pg_result($result,0,0); 
+       $this->as03_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cidadaocomposicaofamiliar_as03_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $as03_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $as03_sequencial)){
          $this->erro_sql = " Campo as03_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_cidadaocomposicaofamiliar {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cidadaocomposicaofamiliar ($this->as03_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cidadaocomposicaofamiliar já Cadastrado";
@@ -196,14 +196,14 @@ class cl_cidadaocomposicaofamiliar {
        $resaco = $this->sql_record($this->sql_query_file($this->as03_sequencial));
        if(($resaco!=false)||($this->numrows!=0)){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19076,'$this->as03_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3393,19076,'','".AddSlashes(pg_result($resaco,0,'as03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3393,19077,'','".AddSlashes(pg_result($resaco,0,'as03_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3393,19095,'','".AddSlashes(pg_result($resaco,0,'as03_cidadao_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3393,19078,'','".AddSlashes(pg_result($resaco,0,'as03_tipofamiliar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3393,19080,'','".AddSlashes(pg_result($resaco,0,'as03_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3393,19076,'','".AddSlashes(pg_fetch_result($resaco,0,'as03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3393,19077,'','".AddSlashes(pg_fetch_result($resaco,0,'as03_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3393,19095,'','".AddSlashes(pg_fetch_result($resaco,0,'as03_cidadao_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3393,19078,'','".AddSlashes(pg_fetch_result($resaco,0,'as03_tipofamiliar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3393,19080,'','".AddSlashes(pg_fetch_result($resaco,0,'as03_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -213,10 +213,10 @@ class cl_cidadaocomposicaofamiliar {
       $this->atualizacampos();
      $sql = " update cidadaocomposicaofamiliar set ";
      $virgula = "";
-     if(trim($this->as03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as03_sequencial"])){ 
+     if(trim((string) $this->as03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as03_sequencial"])){ 
        $sql  .= $virgula." as03_sequencial = $this->as03_sequencial ";
        $virgula = ",";
-       if(trim($this->as03_sequencial) == null ){ 
+       if(trim((string) $this->as03_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "as03_sequencial";
          $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_cidadaocomposicaofamiliar {
          return false;
        }
      }
-     if(trim($this->as03_cidadao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as03_cidadao"])){ 
+     if(trim((string) $this->as03_cidadao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as03_cidadao"])){ 
        $sql  .= $virgula." as03_cidadao = $this->as03_cidadao ";
        $virgula = ",";
-       if(trim($this->as03_cidadao) == null ){ 
+       if(trim((string) $this->as03_cidadao) == null ){ 
          $this->erro_sql = " Campo Cidadão nao Informado.";
          $this->erro_campo = "as03_cidadao";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_cidadaocomposicaofamiliar {
          return false;
        }
      }
-     if(trim($this->as03_cidadao_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as03_cidadao_seq"])){ 
+     if(trim((string) $this->as03_cidadao_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as03_cidadao_seq"])){ 
        $sql  .= $virgula." as03_cidadao_seq = $this->as03_cidadao_seq ";
        $virgula = ",";
-       if(trim($this->as03_cidadao_seq) == null ){ 
+       if(trim((string) $this->as03_cidadao_seq) == null ){ 
          $this->erro_sql = " Campo Código Cidadão nao Informado.";
          $this->erro_campo = "as03_cidadao_seq";
          $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_cidadaocomposicaofamiliar {
          return false;
        }
      }
-     if(trim($this->as03_tipofamiliar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as03_tipofamiliar"])){ 
+     if(trim((string) $this->as03_tipofamiliar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as03_tipofamiliar"])){ 
        $sql  .= $virgula." as03_tipofamiliar = $this->as03_tipofamiliar ";
        $virgula = ",";
-       if(trim($this->as03_tipofamiliar) == null ){ 
+       if(trim((string) $this->as03_tipofamiliar) == null ){ 
          $this->erro_sql = " Campo Tipo Familiar nao Informado.";
          $this->erro_campo = "as03_tipofamiliar";
          $this->erro_banco = "";
@@ -265,10 +265,10 @@ class cl_cidadaocomposicaofamiliar {
          return false;
        }
      }
-     if(trim($this->as03_cidadaofamilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as03_cidadaofamilia"])){ 
+     if(trim((string) $this->as03_cidadaofamilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as03_cidadaofamilia"])){ 
        $sql  .= $virgula." as03_cidadaofamilia = $this->as03_cidadaofamilia ";
        $virgula = ",";
-       if(trim($this->as03_cidadaofamilia) == null ){ 
+       if(trim((string) $this->as03_cidadaofamilia) == null ){ 
          $this->erro_sql = " Campo Código Família nao Informado.";
          $this->erro_campo = "as03_cidadaofamilia";
          $this->erro_banco = "";
@@ -288,19 +288,19 @@ class cl_cidadaocomposicaofamiliar {
        if($this->numrows>0){
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19076,'$this->as03_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as03_sequencial"]) || $this->as03_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3393,19076,'".AddSlashes(pg_result($resaco,$conresaco,'as03_sequencial'))."','$this->as03_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3393,19076,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as03_sequencial'))."','$this->as03_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as03_cidadao"]) || $this->as03_cidadao != "")
-             $resac = db_query("insert into db_acount values($acount,3393,19077,'".AddSlashes(pg_result($resaco,$conresaco,'as03_cidadao'))."','$this->as03_cidadao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3393,19077,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as03_cidadao'))."','$this->as03_cidadao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as03_cidadao_seq"]) || $this->as03_cidadao_seq != "")
-             $resac = db_query("insert into db_acount values($acount,3393,19095,'".AddSlashes(pg_result($resaco,$conresaco,'as03_cidadao_seq'))."','$this->as03_cidadao_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3393,19095,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as03_cidadao_seq'))."','$this->as03_cidadao_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as03_tipofamiliar"]) || $this->as03_tipofamiliar != "")
-             $resac = db_query("insert into db_acount values($acount,3393,19078,'".AddSlashes(pg_result($resaco,$conresaco,'as03_tipofamiliar'))."','$this->as03_tipofamiliar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3393,19078,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as03_tipofamiliar'))."','$this->as03_tipofamiliar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as03_cidadaofamilia"]) || $this->as03_cidadaofamilia != "")
-             $resac = db_query("insert into db_acount values($acount,3393,19080,'".AddSlashes(pg_result($resaco,$conresaco,'as03_cidadaofamilia'))."','$this->as03_cidadaofamilia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3393,19080,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as03_cidadaofamilia'))."','$this->as03_cidadaofamilia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -349,14 +349,14 @@ class cl_cidadaocomposicaofamiliar {
        if(($resaco!=false)||($this->numrows!=0)){
          for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19076,'$as03_sequencial','E')");
-           $resac = db_query("insert into db_acount values($acount,3393,19076,'','".AddSlashes(pg_result($resaco,$iresaco,'as03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3393,19077,'','".AddSlashes(pg_result($resaco,$iresaco,'as03_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3393,19095,'','".AddSlashes(pg_result($resaco,$iresaco,'as03_cidadao_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3393,19078,'','".AddSlashes(pg_result($resaco,$iresaco,'as03_tipofamiliar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,3393,19080,'','".AddSlashes(pg_result($resaco,$iresaco,'as03_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3393,19076,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3393,19077,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as03_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3393,19095,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as03_cidadao_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3393,19078,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as03_tipofamiliar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3393,19080,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as03_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -417,7 +417,7 @@ class cl_cidadaocomposicaofamiliar {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cidadaocomposicaofamiliar";
@@ -432,7 +432,7 @@ class cl_cidadaocomposicaofamiliar {
    function sql_query ( $as03_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -457,7 +457,7 @@ class cl_cidadaocomposicaofamiliar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -470,7 +470,7 @@ class cl_cidadaocomposicaofamiliar {
    function sql_query_file ( $as03_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -491,7 +491,7 @@ class cl_cidadaocomposicaofamiliar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -503,7 +503,7 @@ class cl_cidadaocomposicaofamiliar {
    function sql_query_cadunico ( $as03_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -529,7 +529,7 @@ class cl_cidadaocomposicaofamiliar {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -543,7 +543,7 @@ class cl_cidadaocomposicaofamiliar {
    
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -567,7 +567,7 @@ class cl_cidadaocomposicaofamiliar {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

@@ -44,7 +44,7 @@ $clconhistdoc = new cl_conhistdoc;
 
 $anousu    = db_getsession("DB_anousu");
 $instit = db_getsession("DB_instit");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

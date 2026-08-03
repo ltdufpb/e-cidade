@@ -77,7 +77,7 @@ if (isset($valor)) {
   $sSqlAcervoAutor .= "   order by bi06_titulo, bi06_subtitulo                           ";
 
   $rsAcervoAutor = db_query($sSqlAcervoAutor);
-  $iLinhas       = pg_numrows($rsAcervoAutor);
+  $iLinhas       = pg_num_rows($rsAcervoAutor);
 
  ?>
 
@@ -136,7 +136,7 @@ if (isset($valor)) {
                      WHERE bi23_acervo = $bi06_seq
                      ORDER BY bi23_codigo";
          $rsAcervoAutor_emp = db_query($sql_emp);
-         $iLinhas_emp = pg_numrows($rsAcervoAutor_emp);
+         $iLinhas_emp = pg_num_rows($rsAcervoAutor_emp);
      ?>
        <tr bgcolor="<?=$cor?>">
         <td></td>
@@ -226,7 +226,7 @@ if (isset($valor)) {
 <br><br>
 <script>
 function js_vertodos(){
- <?php $pagina = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?valor=".@$valor;?>
+ <?php $pagina = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?valor=".@$valor;?>
  location.href = "<?=$pagina?>&todos="+document.form2.todos.value;
 }
 </script>

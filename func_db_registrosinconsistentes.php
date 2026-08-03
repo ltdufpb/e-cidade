@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_registrosinconsistentes_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_registrosinconsistentes = new cl_db_registrosinconsistentes;
 $cldb_registrosinconsistentes->rotulo->label("db136_sequencial");
 $cldb_registrosinconsistentes->rotulo->label("db136_tabela");
@@ -115,10 +115,10 @@ $oRotulo->label('nomearq');
           $sql     = $cldb_registrosinconsistentes->sql_query("", $campos, "db136_sequencial", $sWhere);
         }
 
-        $repassa = array();
+        $repassa = [];
 
         if(isset($chave_db136_tabela)){
-          $repassa = array("chave_db136_sequencial"=>$chave_db136_sequencial,"chave_db136_tabela"=>$chave_db136_tabela);
+          $repassa = ["chave_db136_sequencial"=>$chave_db136_sequencial,"chave_db136_tabela"=>$chave_db136_tabela];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

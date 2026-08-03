@@ -73,7 +73,7 @@ class Processamento {
    */
   public function processar() {
 
-    $aArquivosProcessados = array();
+    $aArquivosProcessados = [];
     $oDataExportacao      = new \DateTime();
     foreach ($this->aArquivos as $oArquivo) {
       try {
@@ -85,7 +85,7 @@ class Processamento {
         $oArquivo->setNomeArquivo($sNomeArquivo);
         $aArquivosProcessados[] = $oArquivo->gerar();
 
-      } catch (\Exception $oErro) {
+      } catch (\Exception) {
         throw new \BusinessException("Ocorreu um erro ao processar o arquivo de {$oArquivo->getNomeArquivo()}");
       }
     }
@@ -98,8 +98,8 @@ class Processamento {
    * @return int
    * @throws \DBException
    * @throws \ParameterException
-   * @deprecated
    */
+  #[\Deprecated]
   public function getQuantidadeEconomias($iCodigoContrato) {
 
     $oContrato = new \AguaContrato();
@@ -166,11 +166,11 @@ class Processamento {
     }
 
     $oDaoAguaIsencaoCgm = new \cl_aguaisencaocgm();
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       'x56_datainicial < now()',
       '(x56_datafinal > now() or x56_datafinal is null)',
       "x56_cgm = {$iCodigoResponsavel}"
-    ));
+    ]);
 
     $sSqlAguaIsencaoCgm = $oDaoAguaIsencaoCgm->sql_query_file(null, 'x56_sequencial', null, $sWhere . ' limit 1');
     $rsAguaIsencaoCgm = db_query($sSqlAguaIsencaoCgm);

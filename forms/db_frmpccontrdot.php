@@ -32,8 +32,8 @@ $clrotulo->label("p71_datalanc");
 $clrotulo->label("o58_orgao");
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_dotacao.location.href='com1_pccontrdot002.php?chavepesquisa=$p73_codcontr&chavepesquisa1=$p73_coddot'</script>";
 }
@@ -100,7 +100,7 @@ db_input('p73_valor',20,$Ip73_valor,true,'text',$db_opcao,"")
   <tr>
     <td align="top" colspan="2">
    <?php 
-    $chavepri= array("p73_codcontr"=>@$p73_codcontr,"p73_coddot"=>@$p73_coddot);
+    $chavepri= ["p73_codcontr"=>@$p73_codcontr,"p73_coddot"=>@$p73_coddot];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="p73_codcontr,p73_coddot";
     $cliframe_alterar_excluir->sql=$clpccontrdot->sql_query_file("","","*",""," p73_codcontr = ".@$p73_codcontr."");

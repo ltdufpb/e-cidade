@@ -53,7 +53,7 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 $sTitulo = $oRelatorio->getDescricao();
 $aPeriodos = $oRelatorio->getPeriodos();
-$aListaPeriodos = array();
+$aListaPeriodos = [];
 $aListaPeriodos[0] = 'Selecione';
 
 foreach ($aPeriodos as $oPeriodo) {
@@ -145,7 +145,7 @@ if ($iAnoUsu >= 2020) {
                             $modelo = (!empty($_SESSION['modelo_dcasp']) ? $_SESSION['modelo_dcasp'] : 1);
                         ?>
 
-                        <td style="width: 180px"><?php db_select("modelo", array(1 => "MCASP" ,2 => "IPC 8"), true, 2 ); ?></td>
+                        <td style="width: 180px"><?php db_select("modelo", [1 => "MCASP" ,2 => "IPC 8"], true, 2 ); ?></td>
                     </tr>
                     <tr>
                         <td><label for="o116_periodo"><b>Período:</b></label></td>
@@ -153,7 +153,7 @@ if ($iAnoUsu >= 2020) {
                     </tr>
                     <tr id="spanValoresExercicio">
                         <td nowrap><label for="imprimirValorExercicioAnterior"><b>Imprimir Valores do Exercício Anterior:</b></label></td>
-                        <td><?php db_select('imprimirValorExercicioAnterior', array(true => 'Sim', false => 'Não'), true, 1); ?></td>
+                        <td><?php db_select('imprimirValorExercicioAnterior', [true => 'Sim', false => 'Não'], true, 1); ?></td>
                     </tr>
                 </table>
             </fieldset>

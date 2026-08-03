@@ -31,13 +31,13 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_receita_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clreceita = new cl_receita;
 $db_opcao = 2;
 $db_botao = false;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
-  $HTTP_POST_VARS["o08_anousu"] = db_getsession("DB_anousu");
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
+  $_POST["o08_anousu"] = db_getsession("DB_anousu");
   db_inicio_transacao();
   $clreceita->alterar(db_getsession("DB_anousu"),$o08_reduz);
   db_fim_transacao();

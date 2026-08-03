@@ -37,27 +37,19 @@ use ECidade\Tributario\Arrecadacao\CobrancaRegistrada\CobrancaRegistrada;
  */
 class Parcelamento implements Custas\Interfaces\Service
 {
-    /** @var integer */
-    private $tipoDebito;
-
-    /** @var integer */
-    private $cadTipo;
-
-    /** @var array */
-    private $debitos;
-
     /** @var \DBDate */
     private $dataUsuario;
 
-    public function __construct($tipoDebito, $cadTipo, $iniciais)
+    /**
+     * @param int $tipoDebito
+     * @param int $cadTipo
+     * @param mixed[] $iniciais
+     */
+    public function __construct(private $tipoDebito, private $cadTipo, private $debitos)
     {
         if (!\db_utils::inTransaction()) {
             throw new \Exception('Transação nao iniciada');
         }
-
-        $this->tipoDebito = $tipoDebito;
-        $this->cadTipo = $cadTipo;
-        $this->debitos = $iniciais;
         $this->dataUsuario = \DBDate::createFromTimestamp(db_getsession("DB_datausu"));
     }
 
@@ -71,13 +63,13 @@ class Parcelamento implements Custas\Interfaces\Service
     {
         $regraEmissao = new \regraEmissao($this->tipoDebito, 19, db_getsession('DB_instit'), $this->dataUsuario->getDate(), db_getsession('DB_ip'), true, false);
 
-        $numpres = array();
+        $numpres = [];
 
         foreach ($this->debitos as $debito) {
             $numpres[$debito->numpre]['numpares'][$debito->numpar] = $debito;
         }
 
-        $recibos = array();
+        $recibos = [];
 
         foreach ($numpres as $debito) {
             $recibo = $this->processarCustas($debito["numpares"], $regraEmissao);
@@ -127,7 +119,7 @@ class Parcelamento implements Custas\Interfaces\Service
         $recibo->setNumBco($regraEmissao->getCodConvenioCobranca());
         $recibo->setDataRecibo($dataVencimento->getDate());
         $recibo->setDataVencimentoRecibo($dataVencimento->getDate());
-        $recibo->setExercicioRecibo(substr($dataVencimento->getDate(), 0, 4));
+        $recibo->setExercicioRecibo(substr((string) $dataVencimento->getDate(), 0, 4));
         $lConvenioCobrancaValido = CobrancaRegistrada::validaConvenioCobranca($regraEmissao->getConvenio());
         $recibo->emiteRecibo($lConvenioCobrancaValido, true, $regraEmissao->getConvenio());
 

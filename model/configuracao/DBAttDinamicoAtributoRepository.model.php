@@ -31,7 +31,7 @@ class DBAttDinamicoAtributoRepository {
    * Collection de DBAttDinamicoAtributo
    * @var DBAttDinamicoAtributo[]
    */
-  private $aDBAttDinamicoAtributo = array();
+  private $aDBAttDinamicoAtributo = [];
 
   /**
    * Instancia da classe

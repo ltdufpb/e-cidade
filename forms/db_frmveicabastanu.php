@@ -141,7 +141,7 @@ function js_pesquisa_abast(){
 function js_preenchepesquisa_abast(chave){
   db_iframe_veicabast.hide();
   <?php 
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?abast='+chave";  
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?abast='+chave";  
   ?>
 }
 function js_pesquisa(){
@@ -151,7 +151,7 @@ function js_preenchepesquisa(chave){
   db_iframe_veicabastanu.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_devolucaoacervo_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldevolucaoacervo = new cl_devolucaoacervo;
 $depto             = db_getsession("DB_coddepto");
 
@@ -111,11 +111,11 @@ if ($linhas != 0) {
              ?>
              <tr bgcolor="#f3f3f3">
                <td><?=$bi23_codigo?><input type="hidden" name="bi06_seq" id="bi06_seq" value="<?=$bi06_seq?>"></td>
-               <td><?=strlen($bi06_titulo)<16?$bi06_titulo:substr($bi06_titulo,0,15)."..."?></td>
+               <td><?=strlen((string) $bi06_titulo)<16?$bi06_titulo:substr((string) $bi06_titulo,0,15)."..."?></td>
                <td><?=db_formatar($bi18_retirada,'d')?></td>
                <td><?=db_formatar($bi18_devolucao,'d')?></td>
                <td><a href="bib1_leitor000.php?opcao=2&chavepesquisa=<?=$bi16_leitor?>" 
-                      title="Ver dados do leitor"><?=strlen($ov02_nome) < 33 ? $ov02_nome:substr($ov02_nome, 0, 32)."..."?></a>
+                      title="Ver dados do leitor"><?=strlen((string) $ov02_nome) < 33 ? $ov02_nome:substr((string) $ov02_nome, 0, 32)."..."?></a>
                </td>
                <td>
                  <input name="devolver" 

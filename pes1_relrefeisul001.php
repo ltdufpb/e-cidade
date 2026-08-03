@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_db_config_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cldbconfig = new cl_db_config();
 
@@ -44,7 +44,7 @@ $sDataBaseUso         = trim(db_getsession('DB_base'));
 $sSqlConfigPrefeitura = $cldbconfig->sql_query_file (null, 'munic', null, 'prefeitura = true');
 $rsConfigPrefeitura   = $cldbconfig->sql_record($sSqlConfigPrefeitura);
 $oConfigPrefeitura    = db_utils::fieldsMemory($rsConfigPrefeitura, 0);
-$sPrefeituraProducao  = trim(strtolower($oConfigPrefeitura->munic));
+$sPrefeituraProducao  = trim(strtolower((string) $oConfigPrefeitura->munic));
 ?>
 <html>
 <head>
@@ -76,7 +76,7 @@ $sPrefeituraProducao  = trim(strtolower($oConfigPrefeitura->munic));
           <td><b>Base:</b></td>
           <td>
             <?php 
-              $sSqlDataBases = "select datname,datname from pg_database where substr(datname, 1, 6) != 'templa' and " . (substr(db_getsession('DB_base'),0,5) == "ontem"?"true":" datname != '".db_getsession('DB_base') . "'") . " order by datname;";
+              $sSqlDataBases = "select datname,datname from pg_database where substr(datname, 1, 6) != 'templa' and " . (str_starts_with(db_getsession('DB_base'), "ontem")?"true":" datname != '".db_getsession('DB_base') . "'") . " order by datname;";
               $rsDatabases   = db_query($sSqlDataBases);
               db_selectrecord('datname', $rsDatabases, true, 1, "style: width:100%;", '', '', '', '', 1);
             ?>

@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clrotulo = new rotulocampo;
 $clcriaabas     = new cl_criaabas;
 ?>
@@ -56,11 +56,11 @@ $clcriaabas     = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("dadosgerais"=>"Dados Gerais","tipodebito"=>"Tipo de Débito");//nome do iframe e o label    
-       $clcriaabas->title      = array("dadosgerais"=>"Descrição dos vencimentos","tipodebito"=>"Datas do vencimento");//nome do iframe e o label    
-       $clcriaabas->src = array("dadosgerais"=>"Cai1_recreparcori004.php");  //nome do iframe e SRC  
-       $clcriaabas->sizecampo= array("dadosgerais"=>"10");    
-       $clcriaabas->disabled= array("tipodebito"=>"true");    
+       $clcriaabas->identifica = ["dadosgerais"=>"Dados Gerais","tipodebito"=>"Tipo de Débito"];//nome do iframe e o label    
+       $clcriaabas->title      = ["dadosgerais"=>"Descrição dos vencimentos","tipodebito"=>"Datas do vencimento"];//nome do iframe e o label    
+       $clcriaabas->src = ["dadosgerais"=>"Cai1_recreparcori004.php"];  //nome do iframe e SRC  
+       $clcriaabas->sizecampo= ["dadosgerais"=>"10"];    
+       $clcriaabas->disabled= ["tipodebito"=>"true"];    
        $clcriaabas->cria_abas();    
      ?> 
      </td>

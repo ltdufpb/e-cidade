@@ -47,7 +47,7 @@ class ImportacaoRelatorioLegal
      */
     const CAMINHO_MENSAGENS = "financeiro/contabilidade/ImportacaoRelatorioLegal.";
 
-    public function __construct($iCodigoRelatorio = null, $sCaminhoArquivo)
+    public function __construct($iCodigoRelatorio = null, $sCaminhoArquivo = null)
     {
 
         // se instanciar a classe sem o caminho do arquivo lançamos exceção
@@ -162,9 +162,9 @@ class ImportacaoRelatorioLegal
         $oDaoRelatorio = new cl_orcparamrel();
 
         $oDaoRelatorio->o42_codparrel = $oRelatorio->o42_codparrel;
-        $oDaoRelatorio->o42_descrrel = addslashes(urldecode($oRelatorio->o42_descrrel));
+        $oDaoRelatorio->o42_descrrel = addslashes(urldecode((string) $oRelatorio->o42_descrrel));
         $oDaoRelatorio->o42_orcparamrelgrupo = $oRelatorio->o42_orcparamrelgrupo;
-        $oDaoRelatorio->o42_notapadrao = addslashes(urldecode($oRelatorio->o42_notapadrao));
+        $oDaoRelatorio->o42_notapadrao = addslashes(urldecode((string) $oRelatorio->o42_notapadrao));
 
         if (!empty($oRelatorio->o42_codparrel)) {
             $sSqlRelatorio = $oDaoRelatorio->sql_query_file($oRelatorio->o42_codparrel);
@@ -228,17 +228,17 @@ class ImportacaoRelatorioLegal
 
             $oDaoLinha->o69_codparamrel = $this->getCodigoRelatorio();
             $oDaoLinha->o69_codseq = $oDadosLinha->codigo;
-            $oDaoLinha->o69_descr = addslashes(urldecode($oDadosLinha->descricao));
+            $oDaoLinha->o69_descr = addslashes(urldecode((string) $oDadosLinha->descricao));
             $oDaoLinha->o69_grupo = $oDadosLinha->grupo;
             $oDaoLinha->o69_grupoexclusao = $oDadosLinha->grupo_exclusao;
             $oDaoLinha->o69_nivel = $oDadosLinha->nivel;
             $oDaoLinha->o69_verificaano = $oDadosLinha->verifica_ano;
-            $oDaoLinha->o69_labelrel = addslashes(urldecode($oDadosLinha->label));
+            $oDaoLinha->o69_labelrel = addslashes(urldecode((string) $oDadosLinha->label));
             $oDaoLinha->o69_manual = $oDadosLinha->digital_manual;
             $oDaoLinha->o69_totalizador = $oDadosLinha->totalizadora;
             $oDaoLinha->o69_ordem = $oDadosLinha->ordem;
             $oDaoLinha->o69_nivellinha = $oDadosLinha->nivel_linha;
-            $oDaoLinha->o69_observacao = addslashes(urldecode($oDadosLinha->observacao));
+            $oDaoLinha->o69_observacao = addslashes(urldecode((string) $oDadosLinha->observacao));
             $oDaoLinha->o69_desdobrarlinha = $oDadosLinha->desdobrar;
             $oDaoLinha->o69_origem = $oDadosLinha->origem;
             $oDaoLinha->o69_libnivel = $oDadosLinha->libera_nivel;
@@ -282,7 +282,7 @@ class ImportacaoRelatorioLegal
                 $oDaoColuna->o116_orcparamseqcoluna = $oDadosColuna->coluna;
                 $oDaoColuna->o116_ordem = $oDadosColuna->ordem;
                 $oDaoColuna->o116_periodo = $oDadosColuna->periodo;
-                $oDaoColuna->o116_formula = addslashes($oDadosColuna->formula);
+                $oDaoColuna->o116_formula = addslashes((string) $oDadosColuna->formula);
                 $oDaoColuna->incluir(null);
 
                 if ($oDaoColuna->erro_status == '0') {
@@ -312,7 +312,7 @@ class ImportacaoRelatorioLegal
                 $oDaoFiltro->o132_orcparamrel = $this->getCodigoRelatorio();
                 $oDaoFiltro->o132_orcparamseq = $iLinhaSeq;
                 $oDaoFiltro->o132_anousu = $oDadosFiltro->ano;
-                $oDaoFiltro->o132_filtro = urldecode($oDadosFiltro->filtro);
+                $oDaoFiltro->o132_filtro = urldecode((string) $oDadosFiltro->filtro);
 
                 $oDaoFiltro->incluir(null);
 
@@ -334,7 +334,7 @@ class ImportacaoRelatorioLegal
 
         $aAnosConfigurados = $this->getAnoConfiguracaoUsuario($anoUsu);
         if (!empty($aAnosConfigurados)) {
-            $oMensagem = (object)array('anos' => implode(',', $aAnosConfigurados));
+            $oMensagem = (object)['anos' => implode(',', $aAnosConfigurados)];
             throw new BusinessException(_M(self::CAMINHO_MENSAGENS . 'configuracao_usuario', $oMensagem));
         }
 
@@ -373,7 +373,7 @@ class ImportacaoRelatorioLegal
             throw new Exception("Ocorreu um erro ao verificar as configurações do usuário.");
         }
 
-        $aAnos = array();
+        $aAnos = [];
         for ($iRowAno = 0; $iRowAno < pg_num_rows($rsBuscaParametro); $iRowAno++) {
             array_push($aAnos, db_utils::fieldsMemory($rsBuscaParametro, $iRowAno)->o133_anousu);
         }
@@ -400,7 +400,7 @@ class ImportacaoRelatorioLegal
             throw new Exception("Ocorreu um erro ao verificar as configurações do usuário.");
         }
 
-        $orcParamSeq = array();
+        $orcParamSeq = [];
         for ($iRowParamSeq = 0; $iRowParamSeq < pg_num_rows($rsBuscaParametro); $iRowParamSeq++) {
             array_push($orcParamSeq, db_utils::fieldsMemory($rsBuscaParametro, $iRowParamSeq)->o133_orcparamseq);
         }

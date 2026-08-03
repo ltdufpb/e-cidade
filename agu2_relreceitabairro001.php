@@ -131,7 +131,7 @@ function js_emite(){
 								<tr>
 								<td><strong>M&ecirc;s:</strong></td>
 								<td>
-								<?php   $meses = array( "1"=>"Janeiro",
+								<?php   $meses = [ "1"=>"Janeiro",
 										            "2"=>"Feveireiro",
 										            "3"=>"Março",
 										            "4"=>"Abril",
@@ -142,7 +142,7 @@ function js_emite(){
 										            "9"=>"Setembro",
 										            "10"=>"Outubro",
 										            "11"=>"Novembro",
-										            "12"=>"Dezembro");								    
+										            "12"=>"Dezembro"];								    
 								    db_select("mes",$meses,true,$db_opcao,"","","","","");
 								?>																
 								</td>

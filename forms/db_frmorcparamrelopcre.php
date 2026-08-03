@@ -127,9 +127,9 @@ $clrotulo->label("o69_codparamrel");
         <input name="novo" type="submit" id="Novo" value="Novo">
       
       <?php 
-       $aChavesPri                         = array(
+       $aChavesPri                         = [
                                                    "o98_sequencial"=>'',
-                                                  );
+                                                  ];
        $cliframe_alterar_excluir->chavepri = $aChavesPri;
        $sWhere                             = " o98_anousu     = ".db_getsession("DB_anousu");
        $sWhere                            .= " and o98_instit = ".db_getsession("DB_instit");                 
@@ -245,7 +245,7 @@ $clrotulo->label("o69_codparamrel");
           db_iframe_orcparamrelopcre.hide();
           <?php 
           if($db_opcao!=1){
-            echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+            echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
           }
           ?>
         }

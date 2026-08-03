@@ -66,16 +66,16 @@ $resultiptucalcpadrao    = db_query($sqliptucalcpadrao);
 $linhasiptucalcpadrao    = pg_num_rows($resultiptucalcpadrao);
 
 if($linhasiptucalcpadrao > 0 ){
-  
+
   if($excluir== 'true'){
   //######################### EXCLUI OS DADOS ########################
   db_fieldsmemory($resultiptucalcpadrao,0);
-  
+
   // ################## CONSTRUÇÕES #########################
   $sqliptucalcpadraoconstr = "select j11_sequencial 
                                 from iptucalcpadraoconstr 
                                where j11_iptucalcpadrao = $j10_sequencial";
-  
+
   $resultiptucalcpadraoconstr = db_query($sqliptucalcpadraoconstr);
   $linhasiptucalcpadraoconstr = pg_num_rows($resultiptucalcpadraoconstr);
   if($linhasiptucalcpadraoconstr>0){
@@ -97,11 +97,11 @@ if($linhasiptucalcpadrao > 0 ){
                                where j09_matric = $matric ";
   $resultiptutaxamatric    = db_query($sqliptutaxamatric);
   $linhasiptutaxamatric    = pg_num_rows($resultiptutaxamatric); 
-  
+
   if($linhasiptutaxamatric>0){
-    
+
     for($t=0;$t<$linhasiptutaxamatric;$t++){
-      
+
       db_fieldsmemory($resultiptutaxamatric,$t);
       //exclui as taxas
       $cliptutaxamatric->j09_iptutaxamatric = $j09_iptutaxamatric;
@@ -120,16 +120,16 @@ if($linhasiptucalcpadrao > 0 ){
                                  and j27_iptucalcpadrao = $j10_sequencial";
   $resultiptucalcpadraoorigem    = db_query($sqliptucalcpadraoorigem);
   $linhasiptucalcpadraoorigem    = pg_num_rows($resultiptucalcpadraoorigem); 
-  
+
   if($linhasiptucalcpadraoorigem>0){
-    
+
     for($o=0;$o<$linhasiptucalcpadraoorigem;$o++){
-      
+
       db_fieldsmemory($resultiptucalcpadraoorigem,$o);
       //exclui as origem
       $cliptucalcpadraoorigem->j27_sequencial = $j27_sequencial;
       $cliptucalcpadraoorigem->excluir($j27_sequencial);
-      
+
       if($cliptucalcpadraoorigem->erro_status==0){        
         $sqlerro=true;
         $erro_msg = $cliptucalcpadraoorigem->erro_msg; 
@@ -137,7 +137,7 @@ if($linhasiptucalcpadrao > 0 ){
       }
     }
   }
-  
+
   // ################## LOG #########################
   $sqliptucalcpadraolog    = "select j19_sequencial 
                                 from iptucalcpadraolog 
@@ -172,14 +172,14 @@ if($linhasiptucalcpadrao > 0 ){
                       from iptucalc 
                      where j23_matric = $matric 
                        and j23_anousu = $exec ";
-                       
+
     $resultiptucalc = db_query($sqliptucalc);
     $linhasiptucalc = pg_num_rows($resultiptucalc);
     if($linhasiptucalc>0){
       db_fieldsmemory($resultiptucalc,0);
-      
+
       // INCLUIR NA IPTUCALCPADRAO  IPTUCALCPADRAOORIGEM IPTUCALCPADRAOLOG
-      
+
       //
       // Se nao tiver escolhido percentual para importacao nao corrige valores
       //
@@ -189,7 +189,7 @@ if($linhasiptucalcpadrao > 0 ){
       } else {
         $valorcorrigido = $j23_vlrter;      
       }
-      
+
       $cliptucalcpadrao->j10_anousu    = db_getsession("DB_anousu");
       $cliptucalcpadrao->j10_matric    = $matric;
       $cliptucalcpadrao->j10_vlrter    = $valorcorrigido;
@@ -202,7 +202,7 @@ if($linhasiptucalcpadrao > 0 ){
         db_msgbox($erro_msg);
       }
       if($sqlerro==false){
-             
+
         $cliptucalcpadraoorigem->j27_iptucalcpadrao = $cliptucalcpadrao->j10_sequencial;
         $cliptucalcpadraoorigem->j27_matric         = $matric;
         $cliptucalcpadraoorigem->j27_anousu         = $exec;
@@ -212,7 +212,7 @@ if($linhasiptucalcpadrao > 0 ){
           $erro_msg = $cliptucalcpadraoorigem->erro_msg; 
           db_msgbox($erro_msg);
         }
-      
+
         $cliptucalcpadraolog->j19_iptucalcpadrao = $cliptucalcpadrao->j10_sequencial;
         $cliptucalcpadraolog->j19_usuario        = db_getsession("DB_id_usuario") ;
         $cliptucalcpadraolog->j19_data           = date("Y-m-d",db_getsession("DB_datausu"));
@@ -223,8 +223,8 @@ if($linhasiptucalcpadrao > 0 ){
           $erro_msg = $cliptucalcpadraolog->erro_msg; 
           db_msgbox($erro_msg);
         }
-       
-        
+
+
      }//false
      // ########### inclui construções ###################
      $sqliptuconstr = "select j39_matric,j39_idcons,j22_valor 
@@ -237,7 +237,7 @@ if($linhasiptucalcpadrao > 0 ){
      if($linhasiptuconstr>0){
        for($ic=0;$ic<$linhasiptuconstr;$ic++){         
          db_fieldsmemory($resultiptuconstr,$ic);
-         
+
          if (isset($perc) && $perc <> 0 && $perc != "") {
            $correcaoconst       = ($j22_valor * $perc)/100;
            $valorcorrigidoconst = round($correcaoconst +$j22_valor,2); 
@@ -254,12 +254,12 @@ if($linhasiptucalcpadrao > 0 ){
            $erro_msg = $cliptucalcpadraoconstr->erro_msg; 
            db_msgbox($erro_msg);
          }
-         
+
        }
      }
-     
+
      //############### inclui as taxas #################
-     
+
      $sqliptucadtaxa  = "select ( select j08_iptucadtaxaexe 
                         						from iptucalv 
                                          inner join iptucadtaxaexe on j08_tabrec = j21_receit 
@@ -273,16 +273,16 @@ if($linhasiptucalcpadrao > 0 ){
 				                                                 and j08_anousu = j21_anousu
              						  where j21_matric = $matric 
                             and j21_anousu = $exec ";
-     
+
      $resultiptucadtaxa = db_query($sqliptucadtaxa);
      $linhasiptucadtaxa = pg_num_rows($resultiptucadtaxa);
      if($linhasiptucadtaxa>0){
        for($it=0;$it<$linhasiptucadtaxa;$it++){
          db_fieldsmemory($resultiptucadtaxa,$it);
-         
+
          $correcaotaxa       = ($j21_valor * $perc)/100;
          $valorcorrigidotaxa = round($j21_valor + $correcaotaxa,2);
-         
+
          $cliptutaxamatric->j09_iptucadtaxaexe = $j08_iptucadtaxaexe;
          $cliptutaxamatric->j09_matric         = $matric;
          $cliptutaxamatric->j09_valor          = $valorcorrigidotaxa;
@@ -294,11 +294,11 @@ if($linhasiptucalcpadrao > 0 ){
          }
        }
      }
-     
+
    }
- 
+
   }//false
-   
+
 
 
 db_fim_transacao($sqlerro);
@@ -314,11 +314,11 @@ if($sqlerro==false){
     $linhaspadrao = pg_num_rows($resultpadrao);
     if($linhaspadrao>0){
       db_fieldsmemory($resultpadrao,0);
-      
+
     }
-    
+
     db_msgbox("Inclusão efetuada com sucesso.");
-    
+
     // sleep(10); 
 
     echo "<script>                      
@@ -331,7 +331,7 @@ if($sqlerro==false){
                     parent.iframe_iptucalcpadrao.document.form1.chavepesquisa.value = $j10_sequencial;
                     parent.iframe_iptucalcpadrao.js_db_libera();
           </script>";  
-  
+
 }
 /*
 $sql = "select j23_vlrter, j23_aliq from iptucalc where j23_matric=$j01_matric and j23_anousu =$exec ";

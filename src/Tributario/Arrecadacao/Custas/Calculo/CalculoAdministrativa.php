@@ -32,14 +32,8 @@ use ECidade\Tributario\Juridico\Inicial\Inicial;
 
 final class CalculoAdministrativa extends Calculo implements Interfaces\Calculo
 {
-    private $inicial;
-
-    private $numnov;
-
-    public function __construct(Inicial $inicial, $numnov)
+    public function __construct(private readonly Inicial $inicial, private $numnov)
     {
-        $this->inicial = $inicial;
-        $this->numnov = $numnov;
     }
 
     public function calcular()

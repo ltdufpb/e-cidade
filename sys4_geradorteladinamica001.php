@@ -120,12 +120,12 @@ foreach ($oGeradorRelatorio->aVariaveis as $oVariavel) {
       db_input(str_replace('$','',$oVariavel->getNome()),50,"0",true,"text",1,"");
       break;
     case 'bool':
-      $aTipos = array("t" => "Sim",
-                      "f" => "Não" );
+      $aTipos = ["t" => "Sim",
+                      "f" => "Não" ];
       db_select(str_replace('$','',$oVariavel->getNome()),$aTipos,true,1,"");
       break;
     case 'select':
-          if( substr( strtolower(trim($oVariavel->getSql())) ,0,6)  == "select" ){
+          if( str_starts_with(strtolower(trim((string) $oVariavel->getSql())), "select") ){
 	     $res_sql = pg_query($oVariavel->getSql());
 	     db_selectrecord(str_replace('$','',$oVariavel->getNome()), $res_sql, true, 2);
 	  }

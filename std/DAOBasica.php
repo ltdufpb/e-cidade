@@ -27,7 +27,7 @@ abstract class DAOBasica {
 
   private static $tables;
 
-  private $aDados   = array ();
+  private $aDados   =  [];
 
   protected $primaryKeyField = null;
   /**
@@ -55,8 +55,8 @@ abstract class DAOBasica {
    * Valores para comparação com base no tipo de um campo
    * @var array
    */
-  static private $aTipos = array(
-    'insert' => array( 'boolean' => null,
+  static private $aTipos = [
+    'insert' => [ 'boolean' => null,
                        'bool'    => null,
                        'char'    => "",
                        'varchar' => "",
@@ -68,8 +68,8 @@ abstract class DAOBasica {
                        'int4'    => null,
                        'int8'    => null,
                        'oid'     => null
-    ),
-    'padrao' => array( 'boolean' => 'f',
+    ],
+    'padrao' => [ 'boolean' => 'f',
                        'bool'    => 'f',
                        'char'    => null,
                        'varchar' => null,
@@ -81,8 +81,8 @@ abstract class DAOBasica {
                        'int4'    => 0,
                        'int8'    => 0,
                        'oid'     => 0
-    ),
-    'tipo' => array( 'boolean' => "f",
+    ],
+    'tipo' => [ 'boolean' => "f",
                      'bool'    => "f",
                      'char'    => "",
                      'varchar' => "",
@@ -94,15 +94,15 @@ abstract class DAOBasica {
                      'int4'    => "",
                      'int8'    => "",
                      'oid'     => ""
-    )
-  );
+    ]
+  ];
 
   public function __construct($sTableName) {
 
     $this->rotulo   = new rotulo ( $sTableName );
     $this->DDTabela = DDXMLFactory::getInstance ( $sTableName );
 
-    $aTabela = explode('.', $sTableName);
+    $aTabela = explode('.', (string) $sTableName);
     if (trim(strtolower($aTabela[0])) == 'plugins' || count($aTabela) == 1) {
       $this->lSalvarAccount = false;
     }
@@ -122,7 +122,7 @@ abstract class DAOBasica {
         $this->{$oCampo->name} = $oCampo->inivalue;
       }
     }
-    $this->pagina_retorno = basename ( $_SERVER ["PHP_SELF"] );
+    $this->pagina_retorno = basename ( (string) $_SERVER ["PHP_SELF"] );
   }
 
   public function __isset($sName) {
@@ -135,11 +135,8 @@ abstract class DAOBasica {
   }
 
   public function __get($sName) {
-    if (isset ( $this->aDados [$sName] )) {
-      return $this->aDados [$sName];
-    }
     // @todo verificar qual o melhor retorno
-    return null;
+    return $this->aDados [$sName] ?? null;
   }
 
   public function setSalvarAccount($lSalvarAccount) {
@@ -150,7 +147,7 @@ abstract class DAOBasica {
    * Carrega os dados de $_POST vindos de um formulário, caso houver
    * @param array $aCamposVerificar
    */
-  public function loadPost($aCamposVerificar = Array()) {
+  public function loadPost($aCamposVerificar = []) {
 
     foreach ( $this->DDTabela->aCampos as $oCampo ) {
 
@@ -177,7 +174,7 @@ abstract class DAOBasica {
 
   private function getValorComparacao($sTipo, $sOperacao) {
 
-    $sChave = strtolower ( trim ( substr ( $sTipo, 0, (strpos ( $sTipo, "(" ) ? strpos ( $sTipo, "(" ) : strlen ( $sTipo )) ) ) );
+    $sChave = strtolower ( trim ( substr ( (string) $sTipo, 0, (strpos ( (string) $sTipo, "(" ) ?: strlen ( (string) $sTipo )) ) ) );
     if ( !array_key_exists($sOperacao, self::$aTipos) ) {
       throw new ParameterException("Operação \"{$sOperacao}\" não informada.");
     }
@@ -198,7 +195,7 @@ abstract class DAOBasica {
       // $this->ht09_sequencial = ($this->ht09_sequencial == "" ? @$GLOBALS ["HTTP_POST_VARS"] ["ht09_sequencial"] : $this->ht09_sequencial);
       // @todo retirar campo fixo e ler do dicionario chave primaria
 
-      $aCampos = array ();
+      $aCampos =  [];
       foreach ( $this->DDTabela->getFieldsPk () as $oCampoChave ) {
         $aCampos [] = $oCampoChave->name;
       }
@@ -219,9 +216,9 @@ abstract class DAOBasica {
     }
   }
 
-  public function getParametros($aParametros = array(), $iOperacao) {
+  public function getParametros($aParametros = [], $iOperacao = null) {
 
-    $aRetorno = array ();
+    $aRetorno =  [];
     $iIndice  = 0;
 
     foreach ( $this->DDTabela->getFieldsPk() as $oCampo ) {
@@ -312,7 +309,7 @@ abstract class DAOBasica {
 
       if ($oCampo->name == $sNomeCampo) {
 
-        $sChave = strtolower ( trim ( substr ( $oCampo->conteudo, 0, (strpos ( $oCampo->conteudo, "(" ) ? strpos ( $oCampo->conteudo, "(" ) : strlen ( $oCampo->conteudo )) ) ) );
+        $sChave = strtolower ( trim ( substr ( (string) $oCampo->conteudo, 0, (strpos ( (string) $oCampo->conteudo, "(" ) ?: strlen ( (string) $oCampo->conteudo )) ) ) );
         return $aValoresFormatados [$sChave];
       }
     }
@@ -327,7 +324,7 @@ abstract class DAOBasica {
    */
   public function getValoresInsert() {
 
-    $aDados         = array ();
+    $aDados         =  [];
     foreach ( $this->aDados as $sKey => $sValue ) {
       $aDados [$sKey] = $this->formatarAtributo ( $sKey, $sValue );
     }
@@ -404,7 +401,7 @@ abstract class DAOBasica {
       $this->erro_msg  = "Usuário: \n\n " . DBString::utf8_decode_all($this->erro_sql) . " \n\n";
       $this->erro_msg .= str_replace ( '"', "", str_replace ( "'", "", "Administrador: \n\n " . $this->erro_banco . " \n" ) );
 
-      if (strpos(strtolower($this->erro_banco), "duplicate key" ) != 0) {
+      if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
 
         $this->erro_sql   = "{$this->description} ({$sCampos}) nao Incluído. Inclusao Abortada.";
         $this->erro_msg   = "Usuário: \n\n " . DBString::utf8_decode_all($this->erro_sql) . " \n\n";
@@ -626,7 +623,7 @@ abstract class DAOBasica {
     $sOrderBy      = "";
     $sGroupBy      = "";
     $sWhereStr     = "WHERE";
-    $aParametrosPk = array();
+    $aParametrosPk = [];
 
     if ($aParametros ['sWhere'] == null || $aParametros ['sWhere'] == "") {
 
@@ -663,7 +660,7 @@ abstract class DAOBasica {
     $sOrderBy      = "";
     $sGroupBy      = "";
     $sWhereStr     = "WHERE";
-    $aParametrosPk = array();
+    $aParametrosPk = [];
 
     if ($aParametros ['sWhere'] == null || $aParametros ['sWhere'] == "") {
 
@@ -796,9 +793,9 @@ abstract class DAOBasica {
 
     $iSequenceAcount = db_utils::fieldsMemory(db_query("select nextval('db_acount_id_acount_seq') as seq"),0)->seq;
 
-    $aAccount           = array();
-    $aAccountPrimaryKey = array();
-    $aAccountCampos     = array();
+    $aAccount           = [];
+    $aAccountPrimaryKey = [];
+    $aAccountCampos     = [];
 
     $aAccount[] = "insert into db_acountacesso values({$iSequenceAcount}, ".db_getsession("DB_acessado").")";
 
@@ -822,7 +819,7 @@ abstract class DAOBasica {
   private function validarCampoNulo(DDCampoXML $oCampo) {
 
     $this->limparPropriedadesErro();
-    $aTiposDeDadosIgnorar = array('float4','float8','numeric','int4','int8');
+    $aTiposDeDadosIgnorar = ['float4','float8','numeric','int4','int8'];
     if ( $this->{$oCampo->name} === $this->getValorComparacao($oCampo->conteudo, self::VALOR_INSERT)
       || ( !in_array($oCampo->conteudo, $aTiposDeDadosIgnorar)
         && $this->{$oCampo->name} == $this->getValorComparacao($oCampo->conteudo, self::VALOR_INSERT)) )
@@ -945,7 +942,7 @@ abstract class DAOBasica {
 
         $fields = '';
 
-        self::$tables = array();
+        self::$tables = [];
 
         if ((isset($param['campos']) && is_array($param['campos'])) ||
          (isset($param['fields']) && is_array($param['fields'])) ) {
@@ -955,17 +952,17 @@ abstract class DAOBasica {
            }
         } else if (is_string($param['fields']) || is_string($param['fields'])) {
 
-            $fields = ($param['fields'] ? $param['fields'] : $param['campos']);
+            $fields = ($param['fields'] ?: $param['campos']);
         } else {
 
             $fields = '*';
         }
 
-        $tabela = isset($param['tabela']) ? $param['tabela'] : $this->DDTabela->name;
-        $alias  = isset($param['alias'])  ? $param['alias'] : '';
+        $tabela = $param['tabela'] ?? $this->DDTabela->name;
+        $alias  = $param['alias'] ?? '';
         $where  = '';
 
-        self::$tables[] = $tabela ? $tabela : $alias ;
+        self::$tables[] = $tabela ?: $alias ;
 
         $sql = sprintf("SELECT %s FROM  %s ", $fields, $tabela);
 
@@ -1006,12 +1003,12 @@ abstract class DAOBasica {
         }
 
         if (isset($param['ordem']) || isset($param['order'])) {
-            $order = ($param['ordem'] ? $param['ordem'] : $param['order']);
+            $order = ($param['ordem'] ?: $param['order']);
             $sql = $sql . ' ORDER BY '. $order;
         }
 
         if (isset($param['limite']) || isset($param['limit'])) {
-            $limit = ($param['limite'] ? $param['limite'] : $param['limit']);
+            $limit = ($param['limite'] ?: $param['limit']);
             $sql  .= ' LIMIT '. $limit;
         }
 
@@ -1032,15 +1029,15 @@ abstract class DAOBasica {
         } else {
 
             while ($row = pg_fetch_assoc($resource)) {
-               $tmp = array();
-               $tmp2 = array();
+               $tmp = [];
+               $tmp2 = [];
                foreach ($row as $key => $value) {
-                   $tmp =   explode('_', $key);
+                   $tmp =   explode('_', (string) $key);
 
                    $tmp2[$tmp[0]][$key] = $value;
                }
 
-               $ret = array();
+               $ret = [];
                $i = 0;
                foreach ($tmp2 as $key => $value) {
                   $ret[self::$tables[$i]] = $value;
@@ -1097,12 +1094,12 @@ abstract class DAOBasica {
                     if (is_array($value)) {
                         if (!isset($value['on']) && !isset($value['type']) && !isset($value['tabela'])
                           && !isset($value['sql']) && $value) {
-                            $value = array('on' => $value);
+                            $value = ['on' => $value];
                         }
-                        $joinType = (isset($value['type'])) ? strtoupper($value['type']) : 'LEFT';
+                        $joinType = (isset($value['type'])) ? strtoupper((string) $value['type']) : 'LEFT';
                         self::$tables[] = $key;
                         $joinAlias = $key;
-                        $joinTable = (isset($value['tabela'])) ? $value['tabela'] : $key;
+                        $joinTable = $value['tabela'] ?? $key;
 
                         if (isset($value['on'])) {
                             $joinOn = ' ON ';
@@ -1111,7 +1108,7 @@ abstract class DAOBasica {
                                     $joinOn .= is_int($vkey) ? "{$vvalue} AND " : "{$vkey} = {$vvalue} AND ";
                                 }
                                 $joinOn = substr($joinOn, 0, -5);
-                            } elseif (strtolower(substr($value['on'], 0, 5)) == 'using') {
+                            } elseif (strtolower(substr((string) $value['on'], 0, 5)) == 'using') {
                                 $joinOn = $value['on'];
                             } else {
                                 $joinOn .= $value['on'];
@@ -1128,12 +1125,12 @@ abstract class DAOBasica {
 
                         $sqlJoin .= "\n$joinType JOIN $joinTable AS $joinAlias $joinOn";
                     } elseif ($value !== false) {
-                        $joinAlias = ucfirst($value);
+                        $joinAlias = ucfirst((string) $value);
                         $sqlJoin .= "\nLEFT JOIN " . $joinTable . " AS " . $joinAlias . " USING (".$this->primaryKeyField.")";
                     }
                 }
             } else {
-                if (strtolower(substr($join, 0, 4)) == 'left' || strtolower(substr($join, 0, 5)) == 'right' || strtolower(substr($join, 0, 5)) == 'inner') {
+                if (strtolower(substr((string) $join, 0, 4)) == 'left' || strtolower(substr((string) $join, 0, 5)) == 'right' || strtolower(substr((string) $join, 0, 5)) == 'inner') {
                     $sqlJoin = $join;
                 } else {
                     $sqlJoin = "\nLEFT JOIN $join";

@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_liclicitemlote_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clliclicitemlote        = new cl_liclicitemlote;
 $cliframe_seleciona_lote = new cl_iframe_seleciona;
@@ -44,7 +44,7 @@ $clliclicitemlote->rotulo->label();
 $erro_msg = "";
 
 if (isset($excluir)&&trim($excluir)!=""){
-     $vetor_lotes = split(",",$l04_descricao);
+     $vetor_lotes = preg_split("#,#m",(string) $l04_descricao);
      $sqlerro     = false;
 
 
@@ -52,7 +52,7 @@ if (isset($excluir)&&trim($excluir)!=""){
 
      for($i = 0; $i < sizeof($vetor_lotes); $i++){
           $itens = "select l21_codigo from liclicitem where l21_codliclicita = $licitacao";
-          $where = "l04_liclicitem in (". $itens . ")  and  l04_descricao = '".trim($vetor_lotes[$i])."'";
+          $where = "l04_liclicitem in (". $itens . ")  and  l04_descricao = '".trim((string) $vetor_lotes[$i])."'";
           $clliclicitemlote->excluir(null, $where);
           if ($clliclicitemlote->erro_status == 0){
                $erro_msg = $clliclicitemlote->erro_msg;
@@ -154,14 +154,14 @@ if (isset($licitacao)&&trim($licitacao)!=""){
 <?php 
 }
 
-if ($numrows == 0&&trim(@$excluir)==""){
+if ($numrows == 0&&trim((string) @$excluir)==""){
       $erro_msg = "Nenhum lote cadastrado ou foram excluídos desta licitação.";
       echo "<script>
                document.form2.excluir.disabled = true;
             </script>";          
 }
 
-if ($numrows == 0&&trim(@$excluir)!=""){
+if ($numrows == 0&&trim((string) @$excluir)!=""){
       $erro_msg = "Todos os lotes desta licitação foram excluídos.";
       echo "<script>
                document.form2.excluir.disabled = true;

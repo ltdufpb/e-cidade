@@ -144,8 +144,8 @@ function js_marca(obj){
 		        group by m.codmod,m.nomemod
    	                order by nomemod");
       echo  "<select  name='modulos' size='20' onchange=\"mo_camada(document.form1.modulos.value);\">";
-     for ($i = 0;$i < pg_numrows($rsmod); $i++) {
-          echo "<option value='".trim(pg_result($rsmod,$i,"codmod"))."'>".trim(pg_result($rsmod,$i,"nomemod"))."</option>\n";  
+     for ($i = 0;$i < pg_num_rows($rsmod); $i++) {
+          echo "<option value='".trim(pg_fetch_result($rsmod,$i,"codmod"))."'>".trim(pg_fetch_result($rsmod,$i,"nomemod"))."</option>\n";  
       }
  ?>
   </select></td></tr>
@@ -155,7 +155,7 @@ function js_marca(obj){
    $modulo = "";
   //define quantos checkboxes iram ficar por linha da tabela.
    $quebratab = 1;
-   while ($j < pg_numrows($rstab)){
+   while ($j < pg_num_rows($rstab)){
       db_fieldsmemory($rstab,$j); 
       if ($modulo == $nomemod){
 	if ($quebratab == 4){

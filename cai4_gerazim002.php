@@ -69,7 +69,7 @@ if($cgc!="87366159000102"){
   group by k12_conta,o08_reduz,k12_receit
   ");
 
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
   set_time_limit(0);
   $clabre_arquivo =  new cl_abre_arquivo("/prg/opt/zim/".str_replace("-","",$datai));
 
@@ -77,10 +77,10 @@ if($cgc!="87366159000102"){
     if($numrows!=false){
       for($i=0;$i<$numrows;$i++){
 	     db_fieldsmemory($result,$i);
-	 fputs($clabre_arquivo->arquivo,str_pad($k12_conta,8)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($o08_reduz,8)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($arrec,20)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($estorno,20)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $k12_conta,8)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $o08_reduz,8)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $arrec,20)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $estorno,20)."|");
 	 fputs($clabre_arquivo->arquivo,str_pad(str_replace("-","",$datai),10)."|");
 	 fputs($clabre_arquivo->arquivo,"O"."\n");
       }
@@ -110,14 +110,14 @@ if($cgc!="87366159000102"){
 
   ");
 
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
     if($numrows!=false){
       for($i=0;$i<$numrows;$i++){
 	     db_fieldsmemory($result,$i);
-	 fputs($clabre_arquivo->arquivo,str_pad($k12_conta,8)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($c01_reduz,8)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($arrec,20)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($estorno,20)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $k12_conta,8)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $c01_reduz,8)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $arrec,20)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $estorno,20)."|");
 	 fputs($clabre_arquivo->arquivo,str_pad(str_replace("-","",$datai),10)."|");
 	 fputs($clabre_arquivo->arquivo,"E"."\n");
       }
@@ -157,18 +157,18 @@ if($cgc!="87366159000102"){
   group by k12_conta,o08_reduz,k12_receit,k00_histtxt
   ");
 
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
 
     if($numrows!=false){
       for($i=0;$i<$numrows;$i++){
 	     db_fieldsmemory($result,$i);
-	 fputs($clabre_arquivo->arquivo,str_pad($k12_conta,8)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($o08_reduz,8)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($arrec,20)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($estorno,20)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $k12_conta,8)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $o08_reduz,8)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $arrec,20)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $estorno,20)."|");
 	 fputs($clabre_arquivo->arquivo,str_pad(str_replace("-","",$datai),10)."|");
 	 fputs($clabre_arquivo->arquivo,"O|");
-	 fputs($clabre_arquivo->arquivo,str_replace(chr(13),"",str_pad($k00_histtxt,200))."\n");
+	 fputs($clabre_arquivo->arquivo,str_replace(chr(13),"",str_pad((string) $k00_histtxt,200))."\n");
       }
     }
 
@@ -204,7 +204,7 @@ if($cgc!="87366159000102"){
   group by k12_conta,k02_estorc,k12_receit
   ");
 
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
   set_time_limit(0);
   $clabre_arquivo =  new cl_abre_arquivo("/tmp/".str_replace("-","",$datai));
 
@@ -212,11 +212,11 @@ if($cgc!="87366159000102"){
     if($numrows!=false){
       for($i=0;$i<$numrows;$i++){
 	     db_fieldsmemory($result,$i);
-	 fputs($clabre_arquivo->arquivo,str_pad($k12_conta,8)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($k12_receit,3)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($k02_estorc,15)."|");
-	 fputs($clabre_arquivo->arquivo,str_pad($arrec  ,20,'0',STR_PAD_LEFT)."|");
-         fputs($clabre_arquivo->arquivo,str_pad($estorno,20,'0',STR_PAD_LEFT)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $k12_conta,8)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $k12_receit,3)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $k02_estorc,15)."|");
+	 fputs($clabre_arquivo->arquivo,str_pad((string) $arrec  ,20,'0',STR_PAD_LEFT)."|");
+         fputs($clabre_arquivo->arquivo,str_pad((string) $estorno,20,'0',STR_PAD_LEFT)."|");
 	 fputs($clabre_arquivo->arquivo,str_pad(str_replace("-","",$datai),10)."|");
 	 fputs($clabre_arquivo->arquivo,"O"."\n");
       }

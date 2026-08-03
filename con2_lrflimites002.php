@@ -42,8 +42,8 @@ $classinatura = new cl_assinatura;
 $orcparamrel = new cl_orcparamrel;
 $cldb_config  = new cl_db_config;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $v_despesa_pessoal = "s";
 $v_receita_rcl     = "s";
@@ -57,15 +57,15 @@ $anousu_ant = (db_getsession("DB_anousu")-1);
 
 $orcparamrel = new cl_orcparamrel;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
 
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
   }else{
@@ -81,8 +81,8 @@ for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
 //$head5 = "ORCAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
 $dt     = data_periodo($anousu,$periodo);
-$dt_ini = split("-",$dt[0]);
-$dt_fin = split("-",$dt[1]);
+$dt_ini = preg_split("#\\-#m",(string) $dt[0]);
+$dt_fin = preg_split("#\\-#m",(string) $dt[1]);
 
 $descr_periodo = "PERIODO: ".$dt["texto"];
 
@@ -97,7 +97,7 @@ if ($bimestre == 1){
 */
 
 $arqinclude = true;
-$quadrimestre = substr($periodo,0,1);
+$quadrimestre = substr((string) $periodo,0,1);
 $bimestre     = $quadrimestre;
 $dtini = "";
 $dtfin = "";
@@ -122,8 +122,8 @@ if ($quadrimestre == 1) {
 //////////////////////////////////////////////////////////////////////////
 
 // data apresentada na tela 
-$dtd1 = split('-',$dt_ini);
-$dtd2 = split('-',$dt_fin);
+$dtd1 = preg_split('#\-#m',$dt_ini);
+$dtd2 = preg_split('#\-#m',$dt_fin);
 
 if ($v_receita_rcl=="s") {
   include(modification("con2_lrfreceitacorrente002.php"));
@@ -319,7 +319,7 @@ $pdf->setfont('arial','',6);
 
 // assinaturas
 
-assinaturas(&$pdf,&$classinatura,'GF');
+assinaturas($pdf,$classinatura,'GF');
 
 $pdf->Output();
 

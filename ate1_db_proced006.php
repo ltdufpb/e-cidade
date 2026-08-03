@@ -38,7 +38,7 @@ $cldb_proced        = new cl_db_proced;
 $cldb_procedgrupos  = new cl_db_procedgrupos;
 $cldb_procedusu     = new cl_db_procedusu;
 $cldb_procedcliente = new cl_db_procedcliente;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

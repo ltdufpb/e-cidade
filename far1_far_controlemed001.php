@@ -33,7 +33,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoFarControlemed      = new cl_far_controlemed;
 $oDaoFarControle         = new cl_far_controle;

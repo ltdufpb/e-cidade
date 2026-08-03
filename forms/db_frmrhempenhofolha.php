@@ -69,13 +69,13 @@ $clrotulo->label('DBtxt25');
 			    <td>
 			     <?php
            
-			        $aSigla = array( "r14"=>"Salário",
+			        $aSigla = [ "r14"=>"Salário",
 					                     "r48"=>"Complementar",
 					                     "r35"=>"13o. Salário",
 					                     "r20"=>"Rescisão",
 					                     "r22"=>"Adiantamento",
                                "sup"=>"Suplementar"
-                             );
+                             ];
 
               if (!DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
                 unset($aSigla['sup']);

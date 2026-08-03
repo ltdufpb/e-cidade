@@ -46,6 +46,7 @@ class MediaAritmetica extends FormulaAvaliacao
      * @return AvaliacaoPorAreaConhecimento
      * @throws Exception
      */
+    #[\Override]
     public function calcularAvaliacoes(AreaProcedimentoAvaliacao $areaProcedimentoAvaliacao)
     {
 
@@ -101,6 +102,7 @@ class MediaAritmetica extends FormulaAvaliacao
      * @return ResultadoPorAreaConhecimento
      * @throws Exception
      */
+    #[\Override]
     public function calcularResultado(AreaProcedimentoResultado $areaProcedimentoResultado)
     {
         $resultado = new ResultadoPorAreaConhecimento();

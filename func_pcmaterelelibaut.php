@@ -35,8 +35,8 @@ require_once(modification("classes/db_pcmaterele_classe.php"));
 require_once(modification("classes/db_pcparam_classe.php"));
 require_once(modification("model/empenho/AutorizacaoEmpenho.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpcmaterele = new cl_pcmaterele;
 $clpcparam = new cl_pcparam;
 $clpcmaterele->rotulo->label("pc07_codmater");
@@ -58,7 +58,7 @@ $lFiltroElemento = false;
 $oDBConfig = db_utils::getDao("db_config");
 $rsCodCli  = $oDBConfig->sql_record($oDBConfig->sql_query_file(db_getsession("DB_instit"),"db21_codcli"));
 $iCodCli   = db_utils::fieldsMemory($rsCodCli, 0)->db21_codcli;
-if (!empty($oGet->iCodigoAutorizacao) && in_array($iCodCli, array(1,20,123))  ) {
+if (!empty($oGet->iCodigoAutorizacao) && in_array($iCodCli, [1,20,123])  ) {
 
   $oAutorizacaoEmpenho = new AutorizacaoEmpenho($oGet->iCodigoAutorizacao);
   $lPessoaFisica       = $oAutorizacaoEmpenho->getFornecedor()->isFisico();
@@ -116,7 +116,7 @@ if (!empty($oGet->iCodigoAutorizacao) && in_array($iCodCli, array(1,20,123))  ) 
               if(!isset($opcao_bloq)){
       	        $opcao_bloq = 1;
               }
-              $arr_opcao = array("i"=>"Todos","f"=>"Ativos","t"=>"Inativos");
+              $arr_opcao = ["i"=>"Todos","f"=>"Ativos","t"=>"Inativos"];
               db_select('opcao',$arr_opcao,true,$opcao_bloq,"onchange='js_reload();'");
               ?>
             </td>
@@ -146,7 +146,7 @@ if (!empty($oGet->iCodigoAutorizacao) && in_array($iCodCli, array(1,20,123))  ) 
           $where_libaut = "pc01_libaut = 't'";
         }
       }
-      $repassa = array();
+      $repassa = [];
       $where_ativo = "";
       if (isset($chave_pc07_codele)) {
         $where_ativo .= " and pc07_codele=$chave_pc07_codele ";

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE cfveic
 class cl_cfveic { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $u08_codvei = 0; 
-   var $u08_nmanut = 0; 
-   var $u08_abast = 0; 
+   public $u08_codvei = 0; 
+   public $u08_nmanut = 0; 
+   public $u08_abast = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  u08_codvei = int4 = Parametro sequencial para o ca 
                  u08_nmanut = int4 = Numero da Manutencao 
                  u08_abast = int4 = Numero da Ordem de Abastecim 
                  ";
    //funcao construtor da classe 
-   function cl_cfveic() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cfveic"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -118,7 +118,7 @@ class cl_cfveic {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Arquivo de configuracoes de parametros             () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Arquivo de configuracoes de parametros             já Cadastrado";
@@ -145,10 +145,10 @@ class cl_cfveic {
       $this->atualizacampos();
      $sql = " update cfveic set ";
      $virgula = "";
-     if(trim($this->u08_codvei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u08_codvei"])){ 
+     if(trim((string) $this->u08_codvei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u08_codvei"])){ 
        $sql  .= $virgula." u08_codvei = $this->u08_codvei ";
        $virgula = ",";
-       if(trim($this->u08_codvei) == null ){ 
+       if(trim((string) $this->u08_codvei) == null ){ 
          $this->erro_sql = " Campo Parametro sequencial para o ca nao Informado.";
          $this->erro_campo = "u08_codvei";
          $this->erro_banco = "";
@@ -158,10 +158,10 @@ class cl_cfveic {
          return false;
        }
      }
-     if(trim($this->u08_nmanut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u08_nmanut"])){ 
+     if(trim((string) $this->u08_nmanut)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u08_nmanut"])){ 
        $sql  .= $virgula." u08_nmanut = $this->u08_nmanut ";
        $virgula = ",";
-       if(trim($this->u08_nmanut) == null ){ 
+       if(trim((string) $this->u08_nmanut) == null ){ 
          $this->erro_sql = " Campo Numero da Manutencao nao Informado.";
          $this->erro_campo = "u08_nmanut";
          $this->erro_banco = "";
@@ -171,10 +171,10 @@ class cl_cfveic {
          return false;
        }
      }
-     if(trim($this->u08_abast)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u08_abast"])){ 
+     if(trim((string) $this->u08_abast)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u08_abast"])){ 
        $sql  .= $virgula." u08_abast = $this->u08_abast ";
        $virgula = ",";
-       if(trim($this->u08_abast) == null ){ 
+       if(trim((string) $this->u08_abast) == null ){ 
          $this->erro_sql = " Campo Numero da Ordem de Abastecim nao Informado.";
          $this->erro_campo = "u08_abast";
          $this->erro_banco = "";
@@ -265,7 +265,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cfveic";

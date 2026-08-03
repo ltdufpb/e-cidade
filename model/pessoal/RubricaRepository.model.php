@@ -47,7 +47,7 @@ abstract class RubricaRepository
      * @var Array
      * @access public
      */
-    static $aInstanciasRubricas = array();
+    static $aInstanciasRubricas = [];
 
     /**
      * Adiciona uma rubrica ao array de rubricas
@@ -119,7 +119,7 @@ abstract class RubricaRepository
         }
 
         $aRubricasEncontradas = db_utils::getCollectionByRecord($rsRubricasBase);
-        $aRubricas = array();
+        $aRubricas = [];
 
         foreach ($aRubricasEncontradas as $oRubrica) {
             $aRubricas[] = RubricaRepository::getInstanciaByCodigo($oRubrica->r09_rubric, $oBase->getInstituicao()->getCodigo());
@@ -150,7 +150,7 @@ abstract class RubricaRepository
         }
 
         $aRubricasEncontradas = db_utils::getCollectionByRecord($rsBaseServidor);
-        $aRubricas = array();
+        $aRubricas = [];
 
         foreach ($aRubricasEncontradas as $oRubrica) {
             $aRubricas[] = RubricaRepository::getInstanciaByCodigo($oRubrica->rh54_rubric, $oBase->getInstituicao()->getCodigo());
@@ -166,7 +166,7 @@ abstract class RubricaRepository
      */
     public static function buscaRubricasPontoServidor(Servidor $servidor)
     {
-        $rubricas = array();
+        $rubricas = [];
 
         /**
          * @var cl_rhrubricas $daoRubricas

@@ -23,7 +23,7 @@ class M16497AjusteOrcTipoRec extends PostgresMigration
 
     public function up()
     {
-        $this->tableOrctiporec = $this->table('orctiporec', array('schema'=>'orcamento'));
+        $this->tableOrctiporec = $this->table('orctiporec', ['schema'=>'orcamento']);
         $this->ajustaLancamentoComplemento();
         $this->removeRecursosDuplicados();
     }

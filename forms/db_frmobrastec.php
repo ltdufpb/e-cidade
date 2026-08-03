@@ -66,7 +66,7 @@ $clrotulo->label("z01_nome");
 				</td>
 				<td> 
 					<?php 
-						$aTipo = array("1"=>"Obra","2"=>"Prefeitura");
+						$aTipo = ["1"=>"Obra","2"=>"Prefeitura"];
 						db_select('ob15_tipo',$aTipo,true,$db_opcao,"");
 					?>
 				</td>
@@ -77,7 +77,7 @@ $clrotulo->label("z01_nome");
 				</td>
 				<td> 
 					<?php 
-						$aProfissao = array("1"=>"Arquiteto","2"=>"Engenheiro");
+						$aProfissao = ["1"=>"Arquiteto","2"=>"Engenheiro"];
 						db_select('ob15_profissao',$aProfissao,true,$db_opcao,"");
 					?>
 				</td>
@@ -129,7 +129,7 @@ function js_preenchepesquisa(chave){
   db_iframe_obrastec.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

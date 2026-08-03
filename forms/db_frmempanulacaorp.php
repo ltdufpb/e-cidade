@@ -309,31 +309,31 @@ if (empty ($e60_numemp)) {
 	               $result_saldo = $clempempenho->sql_record($clempempenho->sql_query_saldo($e60_numemp,$e64_codele));
 	               //db_criatabela($result);  
     			   if ($clempempenho->numrows>0){
-    			   	
+
   	    			 		db_fieldsmemory($result_saldo,0);
-	  	    
+
     				    	// = $vlr_proc;
         					// = $vlr_nproc;        					
     			   }	                
 	
 	               $p="elemento_".$e64_codele."_processado";
-                   $$p = number_format($vlr_proc,"2",".","");
+                   ${$p} = number_format($vlr_proc,"2",".","");
 	               
 	               $np="elemento_".$e64_codele."_nao_processado";
-                   $$np = number_format($vlr_nproc,"2",".","");
+                   ${$np} = number_format($vlr_nproc,"2",".","");
 		
 	               
 	               ?>
 	               <tr >
 	               <td><?=$e64_codele ?></td>
 	               <td><?=$o56_elemento ?>  </td>
-	               <td title="<?=$o56_descr ?>"><?=  substr($o56_descr,0,20) ?>  </td>
+	               <td title="<?=$o56_descr ?>"><?=  substr((string) $o56_descr,0,20) ?>  </td>
 	               <td align=right><?=db_formatar($e64_vlremp,'f'); ?>  </td>
 	               <td align=right><?=db_formatar($e64_vlranu,'f') ?>  </td>
 	               <td align=right><?=db_formatar($e64_vlrliq,'f') ?>  </td>
 	               <td align=right><?=db_formatar($e64_vlrpag,'f') ?>  </td>
-	               <td align=right bgcolor=white><?php  db_input('elemento_'.$e64_codele.'_processado', 15, 4, true, 'text', 1," onchange=js_verifica_valor(".$$p.",this);","",""," text-align:right"); ?></td>
-	               <td align=right bgcolor=white><?php  db_input('elemento_'.$e64_codele.'_nao_processado', 15, 4, true, 'text', 1,"onchange=js_verifica_valor(".$$np.",this);  ","",""," text-align:right"); ?></td>	               
+	               <td align=right bgcolor=white><?php  db_input('elemento_'.$e64_codele.'_processado', 15, 4, true, 'text', 1," onchange=js_verifica_valor(".${$p}.",this);","",""," text-align:right"); ?></td>
+	               <td align=right bgcolor=white><?php  db_input('elemento_'.$e64_codele.'_nao_processado', 15, 4, true, 'text', 1,"onchange=js_verifica_valor(".${$np}.",this);  ","",""," text-align:right"); ?></td>	               
 	               </tr>               
 	               <?php               
 	           }
@@ -392,7 +392,7 @@ function js_pesquisa(){
 
 function js_preenchepesquisa(chave){
    db_iframe_empempenho.hide();
-   <?php  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?e60_numemp='+chave"; ?>
+   <?php  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?e60_numemp='+chave"; ?>
 }
 
 </script>

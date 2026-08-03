@@ -53,7 +53,7 @@ switch ($oGet->avaliacao){
    break;   
 }
 if (isset($oGet->dataInicial) && $oGet->dataInicial != null){
-   $dataIniAux  = explode ("/",$oGet->dataInicial);
+   $dataIniAux  = explode ("/",(string) $oGet->dataInicial);
    $dataFimAux  = explode ("/",$oGet->dataFinal);
    $timeInicial = mktime(0,0,0,(int)$dataIniAux[1],(int)$dataIniAux[0],(int)$dataIniAux[2]);
    $timeFinal   = mktime(0,0,0,(int)$dataFimAux[1],(int)$dataFimAux[0],(int)$dataFimAux[2]);

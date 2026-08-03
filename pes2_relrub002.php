@@ -31,7 +31,7 @@ include(modification("libs/db_utils.php"));
 include(modification("classes/db_relrubmov_classe.php"));
 include(modification("classes/db_selecao_classe.php"));
 include(modification("classes/db_rhrubricas_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clrelrubmov  = new cl_relrubmov;
 $clselecao  = new cl_selecao;
 $clrhrubricas  = new cl_rhrubricas;
@@ -78,7 +78,7 @@ if(!isset($mes) || (isset($mes) && trim($mes) == "")){
   $mes = db_mesfolha();
 }
 
-$arr_siglas = Array(
+$arr_siglas = [
                     "00"=>"r14",
                     "01"=>"r22",
                     "02"=>"r31",
@@ -90,8 +90,8 @@ $arr_siglas = Array(
                     "08"=>"r47",
                     "09"=>"r19",
                     "10"=>"r34"
-                   );
-$arr_pontos = Array(
+                   ];
+$arr_pontos = [
                     "00"=>"Salário",
                     "01"=>"Adiantamento",
                     "02"=>"Férias",
@@ -103,7 +103,7 @@ $arr_pontos = Array(
                     "08"=>"Ponto Complementar",
                     "09"=>"Ponto Rescisão",
                     "10"=>"Ponto 13o"
-                   );
+                   ];
 $rubrleg = "";
 $virgleg = "";
 $group= "";
@@ -113,8 +113,8 @@ $camp1= "";
 $case = "";
 $virg = "";
 $or   = "";
-$arr_rubricas = Array();
-$arr_quantval = Array();
+$arr_rubricas = [];
+$arr_quantval = [];
 $subformulado = $formulado;
 for($i=0; $i<$numrows_rubricas; $i++){
   db_fieldsmemory($result_rubricas, $i);
@@ -134,8 +134,8 @@ for($i=0; $i<$numrows_rubricas; $i++){
   $group.= $virg."rub".($i+1);
   $virg = ", ";
   $or  = " or ";
-  if(trim($formulado) != ""){
-    $subformulado = str_replace("RUB".($i+1),"sum(rub".($i+1).")",strtoupper($subformulado));
+  if(trim((string) $formulado) != ""){
+    $subformulado = str_replace("RUB".($i+1),"sum(rub".($i+1).")",strtoupper((string) $subformulado));
   }else{
     $subformulado.= "+sum(rub".($i+1).")";
   }
@@ -152,7 +152,7 @@ $imprime_selecao  = "";
 $union = "";
 $virg  = "";
 
-$arr_selecionados = split(",",$selecionados);
+$arr_selecionados = preg_split("#,#m",$selecionados);
 for($i=0; $i<count($arr_selecionados); $i++){
   $indice_siglas = $arr_selecionados[$i];
   $clgeradorsql->inicio_rh= false;
@@ -403,8 +403,8 @@ if($tipoarq == 'pdf') {
 	         $pdf->cell(15,$alt,$totalreg,"TB",0,"C",$corT);
 	         for($ii=0; $ii<count($arr_rubricas); $ii++){
 	           $qualtot = 'totalrub'.($ii+1);
-	           $pdf->cell(18,$alt,db_formatar($$qualtot,"f"),"TB",0,"R",$corT);
-	           $$qualtot = 0;
+	           $pdf->cell(18,$alt,db_formatar(${$qualtot},"f"),"TB",0,"R",$corT);
+	           ${$qualtot} = 0;
 	         }
 	         $pdf->cell(18,$alt,db_formatar($totalform,"f"),"RTB",1,"R",$corT);
 	         $totalform = 0;
@@ -430,7 +430,7 @@ if($tipoarq == 'pdf') {
 	         $pdf->cell(15,$alt,$RLrh01_regist,1,0,"C",1);
 	         $pdf->cell(60,$alt,$RLz01_nome,1,0,"C",1);
 	       }else if(isset($testar)){
-	         $pdf->cell((93+(18 * count($arr_rubricas))),$alt,$$testar,1,1,"L",1);
+	         $pdf->cell((93+(18 * count($arr_rubricas))),$alt,${$testar},1,1,"L",1);
 	         $pdf->cell(75,$alt,"TOTAL DE REGISTROS",1,0,"C",1);
 	       }else{
 	         $pdf->cell(75,$alt,"TOTAL DE REGISTROS",1,0,"C",1);
@@ -448,7 +448,7 @@ if($tipoarq == 'pdf') {
 	         $mudapag = true;
 	       }
 	       if($mudapag == true && !isset($sototais)){
-	         $pdf->cell((93+(18 * count($arr_rubricas))),$alt,$$testar,1,1,"L",1);
+	         $pdf->cell((93+(18 * count($arr_rubricas))),$alt,${$testar},1,1,"L",1);
 	       }
 	     }
 	     $cor = 1;
@@ -475,11 +475,11 @@ if($tipoarq == 'pdf') {
 	     $rubrica = $arr_rubricas[$index]." ".$arr_quantval[$index];
 	     $qualrub = 'rub'.($ii+1);
 	     $qualtot = 'totalrub'.($ii+1);
-	     $$qualtot+= $$qualrub;
+	     ${$qualtot}+= ${$qualrub};
 	     $qualtotg = 'totalgrub'.($ii+1);
-	     $$qualtotg+= $$qualrub;
+	     ${$qualtotg}+= ${$qualrub};
 	     if(!isset($sototais)){
-	       $pdf->cell(18,$alt,db_formatar($$qualrub,"f"),0,0,"R",$cor);
+	       $pdf->cell(18,$alt,db_formatar(${$qualrub},"f"),0,0,"R",$cor);
 	     }
 	     next($arr_rubricas);
 	   }
@@ -505,7 +505,7 @@ if($tipoarq == 'pdf') {
 	$pdf->cell(15,$alt,$totalreg,"TB",0,"C",$corT);
 	for($ii=0; $ii<count($arr_rubricas); $ii++){
 	  $qualtot = 'totalrub'.($ii+1);
-	  $pdf->cell(18,$alt,db_formatar($$qualtot,"f"),"TB",0,"R",$corT);
+	  $pdf->cell(18,$alt,db_formatar(${$qualtot},"f"),"TB",0,"R",$corT);
 	}
 	$pdf->cell(18,$alt,db_formatar($totalform,"f"),"RTB",1,"R",$corT);
 	
@@ -515,7 +515,7 @@ if($tipoarq == 'pdf') {
 	$pdf->cell(15,$alt,$totalgreg,"TB",0,"C",1);
 	for($ii=0; $ii<count($arr_rubricas); $ii++){
 	  $qualtotg = 'totalgrub'.($ii+1);
-	  $pdf->cell(18,$alt,db_formatar($$qualtotg,"f"),"TB",0,"R",1);
+	  $pdf->cell(18,$alt,db_formatar(${$qualtotg},"f"),"TB",0,"R",1);
 	}
 	$pdf->cell(18,$alt,db_formatar($totalgform,"f"),"RTB",1,"R",1);
 	
@@ -578,11 +578,11 @@ if($tipoarq == 'pdf') {
 	
 	for ($i = 0; $i < $clrhrubricas->numrows; $i++) {
 		$oRubricas = db_utils::fieldsMemory($result_rubricas, $i);
-		fputs($rFile, $oRubricas->rh27_rubric);
+		fputs($rFile, (string) $oRubricas->rh27_rubric);
 		fputs($rFile, ';');
-		fputs($rFile, $oRubricas->rh27_descr);
+		fputs($rFile, (string) $oRubricas->rh27_descr);
 		fputs($rFile, ';');
-		fputs($rFile, $oRubricas->rh27_pd);
+		fputs($rFile, (string) $oRubricas->rh27_pd);
 		fputs($rFile, "\n");
 	}
 	
@@ -664,27 +664,27 @@ if($tipoarq == 'pdf') {
 				
       	if(!isset($sototais)){
       		
-	        fputs($rFile, $RLrh01_regist);
+	        fputs($rFile, (string) $RLrh01_regist);
 	        fputs($rFile, ";");
-	        fputs($rFile, $RLz01_nome);
+	        fputs($rFile, (string) $RLz01_nome);
 	        fputs($rFile, ";");
 	        
-	        fputs($rFile, $RLr70_estrut);
+	        fputs($rFile, (string) $RLr70_estrut);
 	        fputs($rFile, ";");
-	        fputs($rFile, $RLr70_descr);
+	        fputs($rFile, (string) $RLr70_descr);
 	        fputs($rFile, ";");
 	        fputs($rFile, $RLrh01_admiss);
 	        fputs($rFile, ";");
-	        fputs($rFile, $RLrh30_descr);
+	        fputs($rFile, (string) $RLrh30_descr);
 	        fputs($rFile, ";");
-	        fputs($rFile, $RLrh37_descr);
+	        fputs($rFile, (string) $RLrh37_descr);
 	        fputs($rFile, ";");
 	        
 	        
 	        
       	}else if(isset($testar)){
 
-	        fputs($rFile, $$testar);
+	        fputs($rFile, (string) ${$testar});
 	        fputs($rFile, "\n");
 	        fputs($rFile, "TOTAL DE REGISTROS");
 	        
@@ -716,7 +716,7 @@ if($tipoarq == 'pdf') {
       	}
       	if($mudapag == true && !isset($sototais)){
 					//$pdf->cell((93+(18 * count($arr_rubricas))),$alt,$$testar,1,1,"L",1);
-					fputs($rFile, $$testar);
+					fputs($rFile, (string) ${$testar});
 					fputs($rFile, "\n");
       	}
     	}
@@ -731,19 +731,19 @@ if($tipoarq == 'pdf') {
   	}
   	
 		if(!isset($sototais)){
-    	fputs($rFile, $regist);
+    	fputs($rFile, (string) $regist);
     	fputs($rFile, ";");
-    	fputs($rFile, $nome);
+    	fputs($rFile, (string) $nome);
     	fputs($rFile, ";");
-			fputs($rFile, $oSql->r70_estrut);
+			fputs($rFile, (string) $oSql->r70_estrut);
 			fputs($rFile, ";");
-			fputs($rFile, $oSql->r70_descr);
+			fputs($rFile, (string) $oSql->r70_descr);
 			fputs($rFile, ";");
-			fputs($rFile, $oSql->rh01_admiss);
+			fputs($rFile, (string) $oSql->rh01_admiss);
 			fputs($rFile, ";");
-			fputs($rFile, $oSql->rh30_descr);
+			fputs($rFile, (string) $oSql->rh30_descr);
 			fputs($rFile, ";");
-			fputs($rFile, $oSql->rh37_descr);
+			fputs($rFile, (string) $oSql->rh37_descr);
 			fputs($rFile, ";");    	
     	
 		}
@@ -754,11 +754,11 @@ if($tipoarq == 'pdf') {
 			$rubrica   = $arr_rubricas[$index]." ".$arr_quantval[$index];
 			$qualrub   = 'rub'.($ii+1);
 			$qualtot   = 'totalrub'.($ii+1);
-			$$qualtot += $$qualrub;
+			${$qualtot} += ${$qualrub};
 			$qualtotg  = 'totalgrub'.($ii+1);
-			$$qualtotg+= $$qualrub;
+			${$qualtotg}+= ${$qualrub};
 			if(!isset($sototais)){
-				fputs($rFile, trim(db_formatar($$qualrub,"f")));
+				fputs($rFile, trim(db_formatar(${$qualrub},"f")));
 				fputs($rFile, ";");
 			}
 			next($arr_rubricas);

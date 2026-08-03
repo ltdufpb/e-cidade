@@ -84,7 +84,7 @@ switch ($oParam->exec) {
         $oAberturaRegPreco = new aberturaRegistroPreco($iSolicitaVinculoPai);
         $aEstimativas = $oAberturaRegPreco->getEstimativas();
 
-        $aRetornoEstimativa = array();
+        $aRetornoEstimativa = [];
 
         /**
          * Percorre o array de estimativas e resgata os dados utilizando os métodos do model 'estimativaRegistroPreco'
@@ -97,7 +97,7 @@ switch ($oParam->exec) {
                 $oDadoEstimativa->iDepartamento = $oEstimativa->getCodigoDepartamento();
                 if ($oDadoEstimativa->iDepartamento != db_getsession("DB_coddepto")) {
 
-                    $oDadoEstimativa->sDescrDepartamento = urlencode($oEstimativa->getDescricaoDepartamento());
+                    $oDadoEstimativa->sDescrDepartamento = urlencode((string) $oEstimativa->getDescricaoDepartamento());
                     $oDadoEstimativa->iEstimativa = $oEstimativa->getCodigoSolicitacao();
                     $aRetornoEstimativa[] = $oDadoEstimativa;
                 } else {
@@ -120,7 +120,7 @@ switch ($oParam->exec) {
         $aItensEstimativa = $oEstimativaRP->getItens();
         $aberturaRegistroPreco = new aberturaRegistroPreco($oEstimativaRP->getCodigoAbertura());
 
-        $aItensRetorno = array();
+        $aItensRetorno = [];
 
         $oDaoSolicitem = db_utils::getDao("solicitem");
         foreach ($aItensEstimativa as $oItem) {

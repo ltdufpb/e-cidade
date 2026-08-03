@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $imprimir = false;
 
@@ -191,7 +191,7 @@ if ( isset($incluir) ) {
 
       if(is_array($aListaInformacoesExternas)){
 
-        $aTiposAssentamentoConfigurados = array();
+        $aTiposAssentamentoConfigurados = [];
         foreach ($aListaInformacoesExternas as $oInformacoesExternas) {
           $aTiposAssentamentoConfigurados[] = $oInformacoesExternas->getTipoAssentamento()->getCodigo();
         }

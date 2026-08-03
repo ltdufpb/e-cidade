@@ -31,12 +31,12 @@ $modoBuscaCGM = !empty($ver_numcgm) ? "C-{$ver_numcgm}" : '';
 
 $codigosParcelamentos = $parc[0];
 
-$campos = implode(',', array(
+$campos = implode(',', [
     "arrecad.k00_numpar as parcela",
     "arrecad.k00_receit",
     "to_char(arrecad.k00_dtvenc, 'DD/MM/YYYY')  as data_vencimento",
     "sum(arrecad.k00_valor) as valor_parcela",
-));
+]);
 
 $sqlParcelamento = "
     select x.parcela, x.data_vencimento, sum(x.valor_parcela) as valor_parcela from (
@@ -62,8 +62,8 @@ try {
     die($e->getMessage());
 }
 
-$agrupamentoCustas = array();
-$agrupamentoHonorarios = array();
+$agrupamentoCustas = [];
+$agrupamentoHonorarios = [];
 
 foreach ($custas as $custa) {
     if (empty($agrupamentoCustas[$custa->iParcela])) {
@@ -242,7 +242,7 @@ function buscarCustas($codigoTermo)
     $termo = $termoRepository->getByCode($codigoTermo);
 
     if (empty($termo)) {
-        return array();
+        return [];
     }
 
     $ultimaParcela = $termo->getTotalParcelas();
@@ -252,7 +252,7 @@ function buscarCustas($codigoTermo)
 
     $termoTaxasParcela = TermoTaxaParcelaRepository::getInstance()->getByInstituicao();
 
-    $custas = array();
+    $custas = [];
 
     foreach ($inicialPartilhas as $key => $inicialPartilha) {
         foreach ($inicialPartilha->getCustas() as $custa) {
@@ -314,22 +314,22 @@ function buscarCustas($codigoTermo)
                         $valor = $custas[$parcela . $codigoTaxa]->fValor;
                     }
 
-                    $custas[$parcela . $codigoTaxa . $codigo] = (object) array(
+                    $custas[$parcela . $codigoTaxa . $codigo] = (object) [
                         "iParcela"   => $parcela,
                         "sDescricao" => $custa->getTaxa()->getDescricao(),
                         "fValor"     => $valor + round($valorCusta / $model->getParcelasHonorarios(),2),
                         "sStatus"    => 'A pagar',
                         "lHonorario" => $custa->getTaxa()->isAplicaHonorario()
-                    );
+                    ];
                 }
             } else {
-                $custas[$parcela . $codigoTaxa . $codigo] = (object) array(
+                $custas[$parcela . $codigoTaxa . $codigo] = (object) [
                     "iParcela"   => $parcela,
                     "sDescricao" => $custa->getTaxa()->getDescricao(),
                     "fValor"     => $valorCusta,
                     "sStatus"    => 'A pagar',
                     "lHonorario" => $custa->getTaxa()->isAplicaHonorario()
-                );
+                ];
             }
         }
     }
@@ -339,7 +339,7 @@ function buscarCustas($codigoTermo)
 
 function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
 {
-    $iFormaCorrecao = pg_result(db_query("select k03_separajurmulparc
+    $iFormaCorrecao = pg_fetch_result(db_query("select k03_separajurmulparc
         from numpref
         where k03_instit = " . db_getsession("DB_instit") . "
         and k03_anousu = " . db_getsession("DB_anousu")), 0, 0);
@@ -348,7 +348,7 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
 
     $result_reparc = db_query($sql) or die($sql);
 
-    if (pg_numrows($result_reparc) > 0) {
+    if (pg_num_rows($result_reparc) > 0) {
         $reparcelamento = true;
 
         // select que tras os reparcelamentos corrigindo os valores com fc_calculaold
@@ -570,16 +570,16 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
 
         $sql = $sql2;
     } else {
-        if (pg_numrows($result) > 0) {
+        if (pg_num_rows($result) > 0) {
             // se for reparcelamento ou diversos...
-            if (pg_result($result, 0, 'matric') > 0) {
-                $numero = 'Matr. : ' . pg_result($result, 0, 'matric');
-            } elseif (pg_result($result, 0, 'inscr') > 0) {
-                $numero = 'Inscr.: ' . pg_result($result, 0, 'inscr');
+            if (pg_fetch_result($result, 0, 'matric') > 0) {
+                $numero = 'Matr. : ' . pg_fetch_result($result, 0, 'matric');
+            } elseif (pg_fetch_result($result, 0, 'inscr') > 0) {
+                $numero = 'Inscr.: ' . pg_fetch_result($result, 0, 'inscr');
             } else {
-                $numero = 'Cgm : ' . pg_result($result, 0, 'v07_numcgm');
+                $numero = 'Cgm : ' . pg_fetch_result($result, 0, 'v07_numcgm');
             }
-            $xnumpre = pg_result($result, 0, 'v07_numpre');
+            $xnumpre = pg_fetch_result($result, 0, 'v07_numpre');
 
             $sql = "select a.*, ";
             $sql .= "       a.k00_dtvenc as v01_dtvenc, ";
@@ -600,9 +600,9 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
             $sql .= "      left outer join arrematric b  on b.k00_numpre = a.k00_numpre ";
             $sql .= "      left outer join arreinscr  c   on c.k00_numpre = a.k00_numpre ";
             $sql .= " where a.k00_numpre = $xnumpre ";
-            $k00_descr = pg_result(db_query($sql), 0, "k00_descr");
-            $xtipo = pg_result(db_query($sql), 0, "k00_tipo");
-            $k03_tipo = pg_result(db_query($sql), 0, "k03_tipo");
+            $k00_descr = pg_fetch_result(db_query($sql), 0, "k00_descr");
+            $xtipo = pg_fetch_result(db_query($sql), 0, "k00_tipo");
+            $k03_tipo = pg_fetch_result(db_query($sql), 0, "k03_tipo");
 
             if ($k03_tipo == 4) {
                 $sql1 = " select b.* ";
@@ -615,12 +615,12 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
             } else {
                 if ($k03_tipo == 7) {
                     $tipo = 28;
-                    $sql1 = "select z01_nome from cgm where z01_numcgm = " . pg_result(db_query($sql), 0, 'k00_numcgm');
-                    $z01_nome = pg_result(db_query($sql1), 0, "z01_nome");
+                    $sql1 = "select z01_nome from cgm where z01_numcgm = " . pg_fetch_result(db_query($sql), 0, 'k00_numcgm');
+                    $z01_nome = pg_fetch_result(db_query($sql1), 0, "z01_nome");
                 } else {
                     $tipo = 21;
-                    $sql1 = "select z01_nome from cgm where z01_numcgm = " . pg_result(db_query($sql), 0, 'k00_numcgm');
-                    $z01_nome = pg_result(db_query($sql1), 0, "z01_nome");
+                    $sql1 = "select z01_nome from cgm where z01_numcgm = " . pg_fetch_result(db_query($sql), 0, 'k00_numcgm');
+                    $z01_nome = pg_fetch_result(db_query($sql1), 0, "z01_nome");
                 }
             }
         } else {
@@ -656,9 +656,9 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
             $sql .= "     where v07_parcel = $parcelamento and v07_instit = " . db_getsession('DB_instit');
             $sql .= " ) as x order by ordem limit 1  ";
             $resarrecad = db_query($sql);
-            if (pg_numrows($resarrecad) > 0) {
-                $tipo = pg_result($resarrecad, 0, 'k00_tipo');
-                $k03_tipo = pg_result($resarrecad, 0, 'k03_tipo');
+            if (pg_num_rows($resarrecad) > 0) {
+                $tipo = pg_fetch_result($resarrecad, 0, 'k00_tipo');
+                $k03_tipo = pg_fetch_result($resarrecad, 0, 'k03_tipo');
             } else {
                 db_redireciona('db_erros.php?fechar=true&db_erro=Parcelas em aberto e/ou pagas não encontradas.');
                 exit;
@@ -834,12 +834,12 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
 
 
                 $tipo = 0;
-                if (pg_result(db_query($sql), 0, 'matric') > 0) {
-                    $numero = 'Matr. : ' . pg_result(db_query($sql), 0, 'matric');
-                } elseif (pg_result(db_query($sql), 0, 'inscr') > 0) {
-                    $numero = 'Inscr. : ' . pg_result(db_query($sql), 0, 'inscr');
+                if (pg_fetch_result(db_query($sql), 0, 'matric') > 0) {
+                    $numero = 'Matr. : ' . pg_fetch_result(db_query($sql), 0, 'matric');
+                } elseif (pg_fetch_result(db_query($sql), 0, 'inscr') > 0) {
+                    $numero = 'Inscr. : ' . pg_fetch_result(db_query($sql), 0, 'inscr');
                 } else {
-                    $numero = 'Cgm : ' . pg_result(db_query($sql), 0, 'v01_numcgm');
+                    $numero = 'Cgm : ' . pg_fetch_result(db_query($sql), 0, 'v01_numcgm');
                 }
             }
         }
@@ -877,7 +877,7 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
     $np = 0;
     $npa = 0;
     $primeiro = true;
-    $arrTipo = array();
+    $arrTipo = [];
     $V = '';
     $arrTotHis = 0;
     $arrTotVar = 0;
@@ -944,7 +944,7 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
             $rsTotalInicial = db_query($sqlTotal);
 
             if ($rsTotalInicial != false) {
-                $intNumrows = pg_numrows($rsTotalInicial);
+                $intNumrows = pg_num_rows($rsTotalInicial);
 
                 if ($rsTotalInicial != false && $intNumrows > 0) {
                     $totalInicial = pg_fetch_object($rsTotalInicial, 0);
@@ -983,7 +983,7 @@ function quadro_debitos_origem(PDFDocument $pdf, $parcelamento)
         $pdf->cell(33, 4, $debitoObj->v70_codforo, 1, 0, 'C');
         $pdf->cell(10, 4, $debitoObj->v01_exerc, 1, 0, 'C');
         $pdf->cell(20, 4, db_formatar($debitoObj->v01_dtvenc, 'd'), 1, 0, 'C');
-        $pdf->cell(33, 4, ($debitoObj->v03_descr == '' ? "Parcelamento: " . (pg_numrows($result_reparc) > 0 ? $debitoObj->v08_parcelorigem : $parcelamento) : $debitoObj->v03_descr), 1, 0, 'L');
+        $pdf->cell(33, 4, ($debitoObj->v03_descr == '' ? "Parcelamento: " . (pg_num_rows($result_reparc) > 0 ? $debitoObj->v08_parcelorigem : $parcelamento) : $debitoObj->v03_descr), 1, 0, 'L');
         $total = $vlrcor + $multa + $juros;
         if ($total > 999999) {
             $pdf->SetFontSize(5.7);

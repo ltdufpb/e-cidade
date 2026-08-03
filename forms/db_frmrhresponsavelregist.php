@@ -103,9 +103,9 @@ if (isset($db_opcaoal)) {
 	    </td>
 	    <td colspan="2"> 
 	      <?php 
-	        $aStatus = array("s" => "Selecione",
+	        $aStatus = ["s" => "Selecione",
 	                         "t" => "Ativo", 
-	                         "f" => "Inativo");             
+	                         "f" => "Inativo"];             
 	        db_select("rh108_status", $aStatus, true, $db_opcao, "onchange='js_desabilitaSelecionar();' style='width:100%;'"); 
 	      ?>
 	    </td>
@@ -143,7 +143,7 @@ if (isset($db_opcaoal)) {
                                                                        $sCamposRhresponsavelRegist, 
                                                                        $sOrderByRhresponsavelRegist, 
                                                                        $sWhereRhresponsavelRegist);
-      $aChavePrimaria                          = array("rh108_sequencial" => @$rh108_sequencial);
+      $aChavePrimaria                          = ["rh108_sequencial" => @$rh108_sequencial];
       $cliframe_alterar_excluir->chavepri      = $aChavePrimaria;
       $cliframe_alterar_excluir->sql           = $sSqlRhresponsavelRegist;
       $cliframe_alterar_excluir->campos        = "rh108_sequencial,rh108_regist,z01_nome,rh108_status";

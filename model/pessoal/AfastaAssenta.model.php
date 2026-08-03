@@ -48,7 +48,7 @@ class AfastaAssenta {
    * @param Assentamento $oAssentamento
    * @param Afastamento  $oAfastamento
    */
-  public function __construct(Assentamento $oAssentamento = null, Afastamento $oAfastamento = null) {
+  public function __construct(?Assentamento $oAssentamento = null, ?Afastamento $oAfastamento = null) {
 
     if(!empty($oAssentamento) && !empty($oAfastamento)) {
 

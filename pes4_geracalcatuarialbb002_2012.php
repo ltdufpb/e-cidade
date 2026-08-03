@@ -47,7 +47,7 @@ include(modification("classes/db_selecao_classe.php"));
 <tr height=25><td>&nbsp;</td></tr>
 </table>
 <?php 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 db_criatermometro('termometro','Concluido...','blue',1);
 flush();
 $wh = '';
@@ -164,13 +164,13 @@ if ($_POST["vinculo"] == "A"){
 ";
 // echo $sql;exit;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
 		db_atutermometro($x,$num,'termometro');
 	  flush();
 
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
     ////  verifica se tem conjuge
   /*  
@@ -235,7 +235,7 @@ if ($_POST["vinculo"] == "A"){
       $tipoinstit = 1;
     }
 		*/
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");
   }
   fclose($arquivo);
 
@@ -311,12 +311,12 @@ $sql = "
   
   //echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
 		db_atutermometro($x,$num,'termometro');
 	  flush();
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     /*
     ////  verifica se tem conjuge
     
@@ -378,7 +378,7 @@ $sql = "
 		$tempo_contrib = "000";
 		$tempo_total_contrib = "000";
 	*/	
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");    
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");    
   }
   fclose($arquivo);
 
@@ -446,12 +446,12 @@ $sql = "
   
 //  echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
   	db_atutermometro($x,$num,'termometro');
 	  flush();
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
    /* 
     ////  verifica se tem conjuge
     
@@ -506,7 +506,7 @@ $sql = "
       $cacula = '0000';
     }
   */
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");
   }
   fclose($arquivo);
 
@@ -524,12 +524,12 @@ $sql = "
   
 //  echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
   	db_atutermometro($x,$num,'termometro');
 	  flush();
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");
   }
   fclose($arquivo);
 
@@ -546,12 +546,12 @@ $sql = "
   
 //  echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
   	db_atutermometro($x,$num,'termometro');
 	  flush();
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");
   }
   fclose($arquivo);
 }else if ($_POST["vinculo"] == "TV"){ /// Tab.Vinculo
@@ -567,12 +567,12 @@ $sql = "
   
 //  echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
   	db_atutermometro($x,$num,'termometro');
 	  flush();
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");
   }
   fclose($arquivo);
 }else if ($_POST["vinculo"] == "TA"){ /// Tab.Carreira
@@ -588,12 +588,12 @@ $sql = "
   
 //  echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
   	db_atutermometro($x,$num,'termometro');
 	  flush();
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");
   }
   fclose($arquivo);
 }else if ($_POST["vinculo"] == "TC"){ /// Tab.Cargos
@@ -609,12 +609,12 @@ $sql = "
   
 //  echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
   	db_atutermometro($x,$num,'termometro');
 	  flush();
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");
   }
   fclose($arquivo);
 }else if ($_POST["vinculo"] == "TP"){ /// Tab.Parentesco

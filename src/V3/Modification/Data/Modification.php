@@ -18,17 +18,17 @@ class Modification extends PackageMetadata
     /**
      * @var array
      */
-    private $operations = array();
+    private $operations = [];
 
     /**
      * @var array
      */
-    private $filesOperations = array();
+    private $filesOperations = [];
 
     /**
      * @var array
      */
-    private $filesErrors = array();
+    private $filesErrors = [];
 
     /**
      * @var string $path
@@ -62,7 +62,7 @@ class Modification extends PackageMetadata
     public function getOperationsFile($path)
     {
 
-        $operations = array();
+        $operations = [];
         if (isset($this->filesOperations[$path])) {
             foreach ($this->filesOperations[$path] as $operationPath) {
                 $operations = array_merge($operations, $this->getOperation($operationPath));
@@ -100,7 +100,7 @@ class Modification extends PackageMetadata
     public function getFilesOperations($path = null)
     {
 
-        $filesOperations = array();
+        $filesOperations = [];
 
         if ($path === null) {
             $filesOperations = $this->filesOperations;
@@ -122,7 +122,7 @@ class Modification extends PackageMetadata
     {
 
         if (!isset($this->filesErrors[$file])) {
-            $this->filesErrors[$file] = array();
+            $this->filesErrors[$file] = [];
         }
 
         $this->filesErrors[$file][] = $error;
@@ -144,7 +144,7 @@ class Modification extends PackageMetadata
      */
     public function getFileErrors($path)
     {
-        return isset($this->filesErrors[$path]) ? $this->filesErrors[$path] : array();
+        return $this->filesErrors[$path] ?? [];
     }
 
     /**

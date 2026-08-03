@@ -41,7 +41,7 @@ include(modification("classes/db_db_ordemimagens_classe.php"));
 include(modification("classes/db_db_ordemorigem_classe.php"));
 include(modification("classes/db_clientes_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_ordem = new cl_db_ordem;
 $cldb_ordemmod = new cl_db_ordemmod;
 $cldb_depart = new cl_db_depart;
@@ -122,7 +122,7 @@ if(isset($incluir)){
 	
 	// loop para insercao dos arquivos anexados na tabela db_ordemimagens
 	$numarq = sizeof($arquivos);
-	$matriz=split("-",$descrimg);
+	$matriz=preg_split("#\\-#m",(string) $descrimg);
 	for ($i=0;$i<$numarq;$i++) {
 	  $nomearquivo = $arquivos[$i].".dbordem";
 	  $oid = pg_lo_import($nomearquivo) or die($nomearquivo." Erro(39). Gravando imagem na tabela.");

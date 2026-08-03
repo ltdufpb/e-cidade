@@ -39,8 +39,8 @@ include(modification("classes/db_orcparamseq_classe.php"));
 include(modification("classes/db_orcparamelemento_classe.php"));
 include(modification("classes/db_orcparamrecurso_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clconrelinfo = new cl_conrelinfo;
@@ -120,7 +120,7 @@ if (isset($chaves))  {
    <td>Linha/Parâmetro : </td>
    <td> <?php  
          $record = $clorcparamseq->sql_record($clorcparamseq->sql_query($c83_codrel, $sequen, "o69_codseq,o69_descr"));
-         $matriz = array ();
+         $matriz =  [];
          if ($clorcparamseq->numrows > 0) {
     	    for ($x = 0; $x < $clorcparamseq->numrows; $x ++) {
 		db_fieldsmemory($record, $x);

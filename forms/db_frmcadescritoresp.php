@@ -107,7 +107,7 @@ if(isset($db_opcaoal)){
   <tr>
     <td valign="top"  align="center">  
     <?php     
-	 $chavepri= array("q84_cadescrito"=>@$q84_cadescrito);
+	 $chavepri= ["q84_cadescrito"=>@$q84_cadescrito];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql = $clcadescritoresp->sql_query_mod(null, '*',null,"q84_cadescrito = $q84_cadescrito");	 
 	 $cliframe_alterar_excluir->campos  = "q84_numcgm, z01_nome";

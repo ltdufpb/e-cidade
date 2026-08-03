@@ -56,12 +56,12 @@ class AvaliacaoPergunta
      * Stdclass com as opções de respostas e informação se foi respondida
      * @var stdClass[]
      */
-    protected $aOpcoesResposta = array();
+    protected $aOpcoesResposta = [];
 
     /**
      * @var array
      */
-    protected $aResposta = array();
+    protected $aResposta = [];
 
     /**
      * @var bool
@@ -158,7 +158,7 @@ class AvaliacaoPergunta
      * Opções de resposta da pergunta ()
      * @var AvaliacaoPerguntaOpcao[]
      */
-    private $aOpcoes = array();
+    private $aOpcoes = [];
 
     /**
      * @var bool
@@ -338,9 +338,9 @@ class AvaliacaoPergunta
      * @throws BusinessException
      * @throws DBException
      */
-    public static function getAvaliacacoesComResposta($iCodigo, array $aRespostasDissertativas = null)
+    public static function getAvaliacacoesComResposta($iCodigo, ?array $aRespostasDissertativas = null)
     {
-        $aAvaliacoes = array();
+        $aAvaliacoes = [];
         $sWhere = "db106_avaliacaoperguntaopcao={$iCodigo}";
         if (!empty($aRespostasDissertativas) && count($aRespostasDissertativas) > 0) {
             $sRespostas = implode("','", $aRespostasDissertativas);
@@ -549,9 +549,9 @@ class AvaliacaoPergunta
      * Define o codigo do preenchimento(resposta)
      * tabela: avaliacaogruporesposta
      * @param integer $iAvaliacao
-     * @deprecated
      * @see self::setPreenchimento
      */
+    #[\Deprecated]
     public function setAvaliacao($iAvaliacao)
     {
         $this->setPreenchimento($iAvaliacao);
@@ -666,7 +666,7 @@ class AvaliacaoPergunta
 
         foreach ($this->aResposta as $oResposta) {
             $oDaoAvaliacaoResposta->db106_avaliacaoperguntaopcao = $oResposta->codigoresposta;
-            $oDaoAvaliacaoResposta->db106_resposta = "" . addslashes(utf8_decode(db_stdClass::db_stripTagsJson($oResposta->textoresposta))) . "";
+            $oDaoAvaliacaoResposta->db106_resposta = "" . addslashes(mb_convert_encoding(db_stdClass::db_stripTagsJson($oResposta->textoresposta), 'ISO-8859-1')) . "";
             $oDaoAvaliacaoResposta->incluir(null);
 
             if ($oDaoAvaliacaoResposta->erro_status == 0) {
@@ -716,7 +716,7 @@ class AvaliacaoPergunta
     public function setRespostasPorLayout(DBLayoutLinha $oLinhaLayout, $iAno = null)
     {
         $aVinculos = $this->getVinculosComLayout($iAno);
-        $aRespostas = array();
+        $aRespostas = [];
 
         foreach ($aVinculos as $oVinculo) {
             $sTextoResposta = '';
@@ -977,9 +977,7 @@ class AvaliacaoPergunta
             $instancia = $this;
             if (pg_num_rows($rs) > 0) {
 
-                $this->aOpcoes = db_utils::makeCollectionFromRecord($rs, function ($oDado) use ($instancia) {
-                    return AvaliacaoPerguntaOpcao::make($oDado, $instancia);
-                });
+                $this->aOpcoes = db_utils::makeCollectionFromRecord($rs, fn($oDado) => AvaliacaoPerguntaOpcao::make($oDado, $instancia));
             }
         }
 

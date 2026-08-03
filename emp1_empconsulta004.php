@@ -38,26 +38,26 @@ require_once(modification("classes/db_pagordem_classe.php"));
 $clempempenho = new cl_empempenho;
 $clpagordem   = new cl_pagordem;
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $oGet = db_utils::postMemory($_GET);
 
 if (!empty($oGet->dt1)) {
     $data1 = $oGet->dt1;
-    $dta1 = explode("-", $oGet->dt1);
+    $dta1 = explode("-", (string) $oGet->dt1);
     $head5 =  "De  : $dta1[2]/$dta1[1]/$dta1[0] ";
 }
 
 if (!empty($oGet->dt2)) {
     $data2 = $oGet->dt2;
-    $dta2 = explode("-", $oGet->dt2);
+    $dta2 = explode("-", (string) $oGet->dt2);
     $head5 =  "Ate : $dta2[2]/$dta2[1]/$dta2[0] ";
 }
 
 
-if (strlen($data1) < 3) {
+if (strlen((string) $data1) < 3) {
 	unset ($data1);
 }
-if (strlen($data2) < 3) {
+if (strlen((string) $data2) < 3) {
 	unset ($data2);
 }
 
@@ -72,7 +72,7 @@ if (isset ($e60_numemp) and ($e60_numemp != "")) {
 }
 
 if (isset($e60_codemp) and $e60_codemp != "" ) {
-	  $arr = split("/",$e60_codemp);
+	  $arr = preg_split("#\\/#m",(string) $e60_codemp);
 	  if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
 	  	$where_sql .= " e60_codemp =  '".$arr[0]."' and e60_anousu = ".$arr[1]." and ";
 	  }else{
@@ -105,7 +105,7 @@ if (isset($pc01_codmater) and $pc01_codmater !=""){
 }
 
 if (isset ($o50_estrutdespesa) && ($o50_estrutdespesa != "")) {
-	$matriz = split('\.', $o50_estrutdespesa);
+	$matriz = preg_split('#\.#m', (string) $o50_estrutdespesa);
 	for ($i = 0; $i < count($matriz); $i ++) {
 		switch ($i) {
 			case 0 : //orgao
@@ -245,13 +245,13 @@ $pdf->cell(15, $alt, "Valor Anu.", 'TRB', 0, "C", 0);
 $pdf->cell(15, $alt, "Saldo liq.", 'TRB', 0, "C", 0);
 $pdf->cell(15, $alt, "Saldo", 'TB', 1, "C", 0);
 $pdf->setfont('arial', '', 6);
-for($i=0;$i< pg_numrows($result);$i++) {
+for($i=0;$i< pg_num_rows($result);$i++) {
 	db_fieldsmemory($result,$i);
 	$pdf->cell(15, $alt,$e60_numemp, 'R', 0, "R", 0);
 	$pdf->cell(15, $alt,$e60_codemp, 'R', 0, "R", 0);
 	$pdf->cell(15, $alt,db_formatar($e60_emiss,"d"), 'R', 0, "C", 0);
 	$pdf->cell(15, $alt,db_formatar($e60_vencim,"d"), 'R', 0, "C", 0);
-	$pdf->cell(43, $alt,substr($z01_nome,0,30), 'R', 0, "L", 0);
+	$pdf->cell(43, $alt,substr((string) $z01_nome,0,30), 'R', 0, "L", 0);
 	$pdf->cell(15, $alt,db_formatar($e60_vlremp,'f'), 'R', 0, "R", 0);
 	$pdf->cell(15, $alt,db_formatar($e60_vlrliq,'f'), 'R', 0, "R", 0);
 	$pdf->cell(15, $alt,db_formatar($e60_vlrpag,'f'), 'R', 0, "R", 0);

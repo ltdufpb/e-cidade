@@ -97,7 +97,7 @@ function js_mandadados(){
         db_fieldsmemory($result_proctransferint, 0);
       }
     }
-    $arr    = array();
+    $arr    = [];
     $sSqlTransfValidas  = $clproctransferint->sql_query_file(null, 
                                                              "p88_codigo as codtran ",
                                                              "p88_codigo desc",

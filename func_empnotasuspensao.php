@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empnotasuspensao_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempnotasuspensao = new cl_empnotasuspensao;
 $clempnotasuspensao->rotulo->label("cc36_sequencial");
 $clempnotasuspensao->rotulo->label("cc36_sequencial");
@@ -81,11 +81,11 @@ if (!isset($pesquisa_chave)) {
   } else {
     $sql = $clempnotasuspensao->sql_query("", $campos, "cc36_sequencial", "");
   }
-  $repassa = array();
+  $repassa = [];
   if (isset($chave_cc36_sequencial)) {
-    $repassa = array(
+    $repassa = [
       "chave_cc36_sequencial" => $chave_cc36_sequencial, "chave_cc36_sequencial" => $chave_cc36_sequencial
-    );
+    ];
   }
   echo '<div class="container">';
   echo '  <fieldset>';

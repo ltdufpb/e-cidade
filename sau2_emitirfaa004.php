@@ -30,7 +30,7 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
 require_once(modification('libs/db_utils.php'));
 
-parse_str( $_SERVER["QUERY_STRING"]);
+parse_str( (string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory( $_POST );
 
 set_time_limit(0);
@@ -50,10 +50,10 @@ if ($oDaoSauConfig->numrows > 0) {
 }
 
 //Quebra e verifica se a chave do prontuario for multipla para imprimir varios
-$aChaveProntuarios = explode( ",", $chave_sd29_i_prontuario );
+$aChaveProntuarios = explode( ",", (string) $chave_sd29_i_prontuario );
 $iTam              = count($aChaveProntuarios);
-$result            = array();
-$linhas            = array();
+$result            = [];
+$linhas            = [];
 
 for( $iX = 0; $iX < $iTam; $iX++ ) {
 
@@ -147,7 +147,7 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
 
     $pdf->setfont( 'arial', 'b', 7 );
     $pdf->text( $pdf->getX() + 63, $pdf->getY() + 5, "ATENDIMENTO Nro :   " . $sd24_i_codigo );
-    $t1 = str_pad( $sd24_i_codigo, 10, 0, STR_PAD_LEFT ); //numero codigo barras
+    $t1 = str_pad( (string) $sd24_i_codigo, 10, 0, STR_PAD_LEFT ); //numero codigo barras
 
     $pdf->setfont( 'arial', 'b', 8 );
     $pdf->SetFillColor(000); //fundo codbarras
@@ -180,19 +180,19 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
     $pdf->text( $pdf->getX() + 2, $alt + 24, "NOME DA UNIDADE: " );
 
     $pdf->setfont( 'arial', 'b', 6 );
-    $pdf->text( $pdf->getX() + 2, $alt + 27, substr( $descrdepto, 0, 40 ) );
+    $pdf->text( $pdf->getX() + 2, $alt + 27, substr( (string) $descrdepto, 0, 40 ) );
 
     $pdf->setfont( 'arial', 'b', 7 );
     $pdf->text( $pdf->getX() + 2, $alt + 34, "ENDEREÇO: " );
 
     $pdf->setfont( 'arial', 'b', 6 );
-    $pdf->text( $pdf->getX() + 2, $alt + 37, substr( $est_ender, 0, 40 ) );
+    $pdf->text( $pdf->getX() + 2, $alt + 37, substr( (string) $est_ender, 0, 40 ) );
 
     $pdf->setfont( 'arial', 'b', 7 );
     $pdf->text( $pdf->getX() + 2, $alt + 42, "MUNICÍPIO: " );
 
     $pdf->setfont( 'arial', 'b', 6 );
-    $pdf->text( $pdf->getX() + 2, $alt + 44, substr( $est_munic, 0, 40 ) );
+    $pdf->text( $pdf->getX() + 2, $alt + 44, substr( (string) $est_munic, 0, 40 ) );
 
     $pdf->setfont( 'arial', 'b', 6 );
     $pdf->text( $pdf->getX() + 2, $alt + 50, "UF:" . $est_uf );
@@ -279,7 +279,7 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
 
     if( isset( $s152_n_temperatura ) && !empty( $s152_n_temperatura ) ) {
 
-      $aTmp         = explode( '.', $s152_n_temperatura );
+      $aTmp         = explode( '.', (string) $s152_n_temperatura );
       $sTemperatura = $aTmp[0] . ',' . $aTmp[1][0];
     } else {
       $sTemperatura = $sd24_f_temperatura;
@@ -287,7 +287,7 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
 
     if( isset( $s152_n_peso ) && !empty( $s152_n_peso ) ) {
 
-      $aTmp  = explode( '.', $s152_n_peso );
+      $aTmp  = explode( '.', (string) $s152_n_peso );
       $sPeso = $aTmp[0] . ',' . $aTmp[1][0];
     } else {
       $sPeso = $sd24_f_peso;
@@ -299,13 +299,13 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
       $sImc = '';
     } else {
 
-      $aIm2  = explode( '.', $aImc[0] );
+      $aIm2  = explode( '.', (string) $aImc[0] );
 
       if( count( $aIm2 ) == 2 ) {
         $aImc[0] = $aIm2[0] . ',' . substr( $aIm2[1], 0, 2 );
       }
 
-      $detalheImc = ucfirst(strtolower($aImc[1]));
+      $detalheImc = ucfirst(strtolower((string) $aImc[1]));
       $sImc = "{$aImc[0]} - {$detalheImc}";
     }
 
@@ -315,12 +315,12 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
     $pdf->setX( $iXTmp + 58 );
     $pdf->setY( $iYTmp + 24.6 );
 
-    $pdf->SetWidths( array( 48, 19, 38, 20, 62, 24 ) );
-    $pdf->SetAligns( array( "C", "C", "C", "L", "L", "L" ) );
+    $pdf->SetWidths( [ 48, 19, 38, 20, 62, 24 ] );
+    $pdf->SetAligns( [ "C", "C", "C", "L", "L", "L" ] );
 
-    $pdf->Row(array('', '', '', $proftriagemavulsa, 
+    $pdf->Row(['', '', '', $proftriagemavulsa, 
                     "PA.: $sPressao   TEMP.: $sTemperatura   FR.: $frequenciaRespiratoria  FC.: $frequenciaCardiaca  SaO2.: $saturacao  GLICEMIA: $glicemia  PESO: $sPeso   IMC: $sImc ", ''
-                   ), 3, false, 3 );
+                   ], 3, false, 3 );
     $pdf->setX( $iXTmp );
     $pdf->line( $pdf->getX() + 58,  $pdf->getY(), $pdf->getX() + 58 + 19,  $pdf->getY() );
     $pdf->line( $pdf->getX() + 79,  $pdf->getY(), $pdf->getX() + 74 + 30,  $pdf->getY() );
@@ -337,10 +337,10 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
       $oDados = db_utils::fieldsmemory( $rsAgenda[$iX], $iCont );
 
       $pdf->setfont( 'arial', '', 7 );
-      $pdf->SetWidths( array( 19, 38, 20, 53, 24 ) );
-      $pdf->SetAligns( array( 'C', 'C', 'L', 'J', 'L' ) );
+      $pdf->SetWidths( [ 19, 38, 20, 53, 24 ] );
+      $pdf->SetAligns( [ 'C', 'C', 'L', 'J', 'L' ] );
 
-      $pdf->Row( array( $oDados->rh70_estrutural, '', $oDados->z01_nome, '', '' ), 3, false, 3 );
+      $pdf->Row( [ $oDados->rh70_estrutural, '', $oDados->z01_nome, '', '' ], 3, false, 3 );
       $pdf->line( $lar + 58,  $pdf->getY(), $lar + 77,  $pdf->getY() );
       $pdf->line( $lar + 79,  $pdf->getY(), $lar + 114, $pdf->getY() );
       $pdf->line( $lar + 106, $pdf->getY(), $lar + 210, $pdf->getY() );
@@ -361,11 +361,11 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
       db_fieldsmemory( $result_prof, 0 );
 
       $pdf->setfont( 'arial', '', 7 );
-      $pdf->SetWidths( array( 19, 28, 20, 53, 24 ) );
-      $pdf->SetAligns( array( "C", "C", "L", "J", "L" ) );
+      $pdf->SetWidths( [ 19, 28, 20, 53, 24 ] );
+      $pdf->SetAligns( [ "C", "C", "L", "J", "L" ] );
 
       $nbx = "";
-      $pdf->Row( array( $rh70_estrutural, $sd63_c_procedimento, $profissional, $sd63_c_nome, $nbx ), 3, false, 3 );
+      $pdf->Row( [ $rh70_estrutural, $sd63_c_procedimento, $profissional, $sd63_c_nome, $nbx ], 3, false, 3 );
       $pdf->line( $lar + 58,  $pdf->getY(), $lar + 58 + 19,  $pdf->getY() );
       $pdf->line( $lar + 79,  $pdf->getY(), $lar + 74 + 40,  $pdf->getY() );
       $pdf->line( $lar + 106, $pdf->getY(), $lar + 116 + 94, $pdf->getY() );
@@ -377,10 +377,10 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
     //Linha 3 - 1ª Retangulo Unidade prestadora
     db_fieldsmemory( $result_cgs, 0 );
 
-    $sexo  = array( '' => '', "F" => "Feminino", "M" => "Masculino" );
-    $dia   = substr( $z01_d_nasc, 8, 2 );
-    $mes   = substr( $z01_d_nasc, 5, 2 );
-    $ano   = substr( $z01_d_nasc, 0, 4 );
+    $sexo  = [ '' => '', "F" => "Feminino", "M" => "Masculino" ];
+    $dia   = substr( (string) $z01_d_nasc, 8, 2 );
+    $mes   = substr( (string) $z01_d_nasc, 5, 2 );
+    $ano   = substr( (string) $z01_d_nasc, 0, 4 );
     $idade = calcage( $dia, $mes, $ano, date("d"), date("m"), date("Y") );
 
     $pdf->rect( $pdf->getX(), $pdf->getY()+68, 56, 61, "D");
@@ -403,11 +403,11 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
     $alt = $pdf->getY() + 50 + 5;
     $pdf->setfont( 'arial', 'b', 5.5 );
     $complemento = $z01_v_compl ? "Compl.: ".$z01_v_compl: "";
-    $pdf->text( $pdf->getX() + 1, $alt + 37, "Endereço: " . substr($z01_v_ender,0,28));
+    $pdf->text( $pdf->getX() + 1, $alt + 37, "Endereço: " . substr((string) $z01_v_ender,0,28));
     $pdf->text( $pdf->getX() + 1, $alt + 40, "Número: ".$z01_i_numero);
     $pdf->text( $pdf->getX() + 16, $alt + 40, substr($complemento, 0, 30));
-    $pdf->text( $pdf->getX() + 1, $alt + 43, "Bairro: ".substr($z01_v_bairro, 0, 35));
-    $pdf->text( $pdf->getX() + 1, $alt + 46, "Município: ".substr($z01_v_munic,0,40));
+    $pdf->text( $pdf->getX() + 1, $alt + 43, "Bairro: ".substr((string) $z01_v_bairro, 0, 35));
+    $pdf->text( $pdf->getX() + 1, $alt + 46, "Município: ".substr((string) $z01_v_munic,0,40));
     $pdf->text( $pdf->getX() + 1, $alt + 49, "UF: ".$est_uf);
     $pdf->setfont( 'arial', 'b', 8 );
     $pdf->text( $pdf->getX() + 1, $alt + 52, "Sexo: ".$sexo[$z01_v_sexo]);
@@ -431,7 +431,7 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
 
     $pdf->setY( $alt + 120 );
     $pdf->setX( $lar + 76 );
-    $pdf->MultiCell( $lar + 110, $alt + 3, substr($sd24_t_diagnostico, 0, 120));
+    $pdf->MultiCell( $lar + 110, $alt + 3, substr((string) $sd24_t_diagnostico, 0, 120));
 
     $pdf->setY( $alt );
     $pdf->setX( $lar );
@@ -446,7 +446,7 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
     $pdf->rect( $pdf->getX(), $pdf->getY() + 131, 27, 10, "D" );
     $pdf->text( $pdf->getX(), $pdf->getY() + 134, "DATA DO ATENDIMENTO:" );
     $pdf->setfont( 'arial', 'b', 7 );
-    $sd24_d_cadastro2 = substr( $sd24_d_cadastro, 8, 2 ) ."/" . substr( $sd24_d_cadastro, 5, 2 ) ."/" . substr( $sd24_d_cadastro, 0, 4 );
+    $sd24_d_cadastro2 = substr( (string) $sd24_d_cadastro, 8, 2 ) ."/" . substr( (string) $sd24_d_cadastro, 5, 2 ) ."/" . substr( (string) $sd24_d_cadastro, 0, 4 );
 
     /* DATA E HORA DA EMISSÃO */
     if ($oDadosConfig->s103_i_datahorafaa == 2) {
@@ -476,7 +476,7 @@ for( $iX = 0; $iX < $iTam; $iX++ ) {
     $pdf->setfont( 'arial', '', 5.8 );
     $fTamFolha = 210.0; //tamanho da folha
     $sRodape = "Usuário: $login - $nome    Data: ".db_formatar($sd24_d_cadastro, 'd').
-               '    Hora: '.substr($sd24_c_cadastro,0,8).'    Base: '.db_base_ativa();
+               '    Hora: '.substr((string) $sd24_c_cadastro,0,8).'    Base: '.db_base_ativa();
     $fTamString = $pdf->getStringWidth($sRodape);
     $fXRodape   = ($fTamFolha - $fTamString) / 2.0;
     $pdf->text( $fXRodape, $pdf->getY() + 143.6,$sRodape );

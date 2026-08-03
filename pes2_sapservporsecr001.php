@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $rotulocampo = new rotulocampo;
 $rotulocampo->label("DBtxt23");
 $rotulocampo->label("DBtxt25");
@@ -89,7 +89,7 @@ function js_emite(){
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
           <?php 
-          $xx = array(
+          $xx = [
 	              "00"=>"TODAS",
 		      "01"=>"GABINETE", 
 	              "02"=>"ADMINISTRAÇÃO",
@@ -103,7 +103,7 @@ function js_emite(){
 		      "10"=>"INDÚSTRIA E COMÉRCIO",
 		      "11"=>"AGRICULTURA",
 		      "12"=>"CULTURA E TURISMO"
-		     );
+		     ];
   	  db_select('secretaria',$xx,true,4,"");
 	  ?>
 	</td>
@@ -113,10 +113,10 @@ function js_emite(){
         </td>
         <td align="left">&nbsp;&nbsp;&nbsp;
           <?php 
-          $xxy = array(
+          $xxy = [
 	              "s"=>"Sim",
 		      "n"=>"Nao" 
-		     );
+		     ];
   	  db_select('quebrar',$xxy,true,4,"");
 	  ?>
 	</td>

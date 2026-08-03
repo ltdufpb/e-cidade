@@ -402,7 +402,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                             throw new DBException('Erro ao buscar os dados da tabela rhreajusteparidade.');
                                                         }
 
-                                                        $aTipoReajuste = array('0' => '');
+                                                        $aTipoReajuste = ['0' => ''];
                                                         $aReajusteParidade = db_utils::getCollectionByRecord(
                                                             $rsReajusteParidade,
                                                             false,
@@ -415,7 +415,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                         }
                                                     } catch (Exception $e) {
                                                         db_msgbox($e->getMessage());
-                                                        $aTipoReajuste = array('0' => '');
+                                                        $aTipoReajuste = ['0' => ''];
                                                     }
 
                                                     db_select('rh01_reajusteparidade', $aTipoReajuste, true, $db_opcao);
@@ -558,7 +558,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                 <td nowrap colspan="3">
                                                     <?php
 
-                                                    $arr_vincrais = array(
+                                                    $arr_vincrais = [
                                                         '00' => '   - Nenhum',
                                                         '10' => '10 - Trab urbano vinc a empr pessoa juridica - CLT p/tempo indeterminado',
                                                         '15' => '15 - Trab urbano vinc a empr pessoa fisica  - CLT p/tempo indeterminado',
@@ -580,7 +580,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                         '95' => '95 - Contrato de Trabalho por Tempo Determinado, reg pela Lei no. 8.745 e 9.849',
                                                         '96' => '96 - Contrato de Trabalho por Prazo Determinado, regido por Lei Estadual',
                                                         '97' => '97 - Contrato de Trabalho por Prazo Determinado, regido por Lei Municipal'
-                                                    );
+                                                    ];
 
                                                     db_select("rh02_vincrais", $arr_vincrais, true, $db_opcao);
 
@@ -594,12 +594,12 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                 <td nowrap>
                                                     <?php
 
-                                                    $arr_tipsal = array(
+                                                    $arr_tipsal = [
                                                         'M' => 'Mensal',
                                                         'Q' => 'Quinzenal',
                                                         'D' => 'Diário',
                                                         'H' => 'Hora'
-                                                    );
+                                                    ];
                                                     db_select("rh02_tipsal", $arr_tipsal, true, $db_opcao);
 
                                                     ?>
@@ -630,12 +630,12 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                 <td nowrap>
                                                     <?php
 
-                                                    $arr_folha = array(
+                                                    $arr_folha = [
                                                         'M' => 'Mensal',
                                                         'S' => 'Semanal',
                                                         'Q' => 'Quinzenal',
                                                         'D' => 'Diário'
-                                                    );
+                                                    ];
                                                     db_select("rh02_folha", $arr_folha, true, $db_opcao);
 
                                                     ?>
@@ -646,12 +646,12 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                 <td nowrap>
                                                     <?php
 
-                                                    $arr_fpagto = array(
+                                                    $arr_fpagto = [
                                                         '3' => 'Crédito em conta',
                                                         '1' => 'Dinheiro',
                                                         '2' => 'Cheque',
                                                         '4' => 'Cheque/Pagamento Administrativo'
-                                                    );
+                                                    ];
                                                     db_select("rh02_fpagto", $arr_fpagto, true, $db_opcao);
 
                                                     ?>
@@ -750,14 +750,14 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                 <td nowrap colspan="3">
                                                     <?php
 
-                                                    $arr_ocorre = array(
+                                                    $arr_ocorre = [
                                                         '' => 'Nunca esteve exposta',
                                                         '01' => '01 - Não exposto no momento, mas já esteve',
                                                         '02' => '02 - Exposta (aposentadoria esp. 15 anos)',
                                                         '03' => '03 - Exposta (aposentadoria esp. 20 anos)',
                                                         '04' => '04 - Exposta (aposentadoria esp. 25 anos)',
                                                         '05' => '05 - Mais de um vínculo (ou fonte pagadora) - Não exposição a agente nocivo'
-                                                    );
+                                                    ];
                                                     db_select("rh02_ocorre", $arr_ocorre, true, $db_opcao);
 
                                                     ?>
@@ -771,7 +771,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                     <?php
 
                                                     $clrotulo->label("rh02_deficientefisico");
-                                                    $aDeficiente = array('f' => 'Não', 't' => 'Sim');
+                                                    $aDeficiente = ['f' => 'Não', 't' => 'Sim'];
                                                     db_select(
                                                         "rh02_deficientefisico",
                                                         $aDeficiente,
@@ -827,7 +827,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                     <?php
 
                                                     $clrotulo->label("rh02_portadormolestia ");
-                                                    $aMolestia = array('f' => 'Não', 't' => 'Sim');
+                                                    $aMolestia = ['f' => 'Não', 't' => 'Sim'];
                                                     db_select('rh02_portadormolestia', $aMolestia, true, $db_opcao);
 
                                                     ?>
@@ -922,7 +922,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                 </td>
                                                 <td>
                                                     <?php
-                                                    $determinacaoJudicial = array('f' => 'Não', 't' => 'Sim');
+                                                    $determinacaoJudicial = ['f' => 'Não', 't' => 'Sim'];
                                                     db_select(
                                                         'rh02_sitpagbeneficio',
                                                         $determinacaoJudicial,
@@ -938,7 +938,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                 </td>
                                                 <td>
                                                     <?php
-                                                    $aAbonoPermanencia = array('f' => 'Não', 't' => 'Sim');
+                                                    $aAbonoPermanencia = ['f' => 'Não', 't' => 'Sim'];
                                                     db_select(
                                                         'rh02_abonopermanencia',
                                                         $aAbonoPermanencia,
@@ -1066,11 +1066,11 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                             $rh05_taviso = 3;
                                                         }
 
-                                                        $x = array(
+                                                        $x = [
                                                             "1" => "Trabalhado",
                                                             "2" => "Aviso indenizado",
                                                             "3" => "Sem aviso"
-                                                        );
+                                                        ];
                                                         db_select(
                                                             'rh05_taviso',
                                                             $x,
@@ -1109,7 +1109,7 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                         <?php
                                                         db_select(
                                                             'rh05_empenhado',
-                                                            array("f" => "Não", "t" => "Sim"),
+                                                            ["f" => "Não", "t" => "Sim"],
                                                             1,
                                                             1
                                                         );
@@ -1185,10 +1185,10 @@ use ECidade\RecursosHumanos\Pessoal\Repository\ServidorMovimentacaoRepository;
                                                 <td>
                                                     <input type="text" id="codigoTomador" name="codigoTomador"
                                                            data="z01_numcgm"
-                                                           value="<?php echo isset($codigoTomador) ? $codigoTomador : "" ?>">
+                                                           value="<?php echo $codigoTomador ?? "" ?>">
                                                     <input type="text" id="nomeTomador" name="nomeTomador"
                                                            data="z01_nome"
-                                                           value="<?php echo isset($nomeTomador) ? $nomeTomador : "" ?>">
+                                                           value="<?php echo $nomeTomador ?? "" ?>">
                                                 </td>
                                             </tr>
                                         </table>

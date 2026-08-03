@@ -40,12 +40,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $codrel = 7;
 $anousu = db_getsession("DB_anousu");
@@ -85,29 +85,29 @@ if ($anousu >= 2018 ) {
     <center>
     <?php 
     if ($anousu <= 2007){
-      $clcriaabas->identifica = array("relatorio"=>"Relatorio","variaveis"=>"Variáveis","parametro"=>"Parametros");
-      $clcriaabas->title      = array("relatorio"=>"Relatorio","variaveis"=>"Variáveis","parametro"=>"Parametros");
-      $clcriaabas->src        = array("relatorio"=>"con2_lrfgarantias011.php",
+      $clcriaabas->identifica = ["relatorio"=>"Relatorio","variaveis"=>"Variáveis","parametro"=>"Parametros"];
+      $clcriaabas->title      = ["relatorio"=>"Relatorio","variaveis"=>"Variáveis","parametro"=>"Parametros"];
+      $clcriaabas->src        = ["relatorio"=>"con2_lrfgarantias011.php",
                                       "variaveis"=>"con2_conrelinfo001.php?c83_codrel=$codrel",
-                          			      "parametro"=>"con2_conrelparametros.php?c83_codrel=$codrel");
-      $clcriaabas->sizecampo  = array("relatorio"=>"23","variaveis"=>"23","parametro"=>"23");
+                          			      "parametro"=>"con2_conrelparametros.php?c83_codrel=$codrel"];
+      $clcriaabas->sizecampo  = ["relatorio"=>"23","variaveis"=>"23","parametro"=>"23"];
     } else {
 
-      $clcriaabas->identifica = array("relatorio" => "Relatório",
+      $clcriaabas->identifica = ["relatorio" => "Relatório",
                                       "notas"     => "Fonte/Notas Explicativas",
-                                      "parametro" => "Parâmetros");
+                                      "parametro" => "Parâmetros"];
 
-      $clcriaabas->title      = array("relatorio" => "Relatório",
+      $clcriaabas->title      = ["relatorio" => "Relatório",
                                       "notas"     => "Fonte/Notas Explicativas",
-                                      "parametro" => "Parâmetros");
+                                      "parametro" => "Parâmetros"];
 
-      $clcriaabas->src        = array("relatorio" => "con2_lrfgarantias011.php?c83_codrel={$codrel}",
+      $clcriaabas->src        = ["relatorio" => "con2_lrfgarantias011.php?c83_codrel={$codrel}",
                                       "notas"     => "con2_conrelnotas.php?c83_codrel=$codrel",
-                          			      "parametro" => "{$sProgramaParametros}?c83_codrel=$codrel");
+                          			      "parametro" => "{$sProgramaParametros}?c83_codrel=$codrel"];
 
-      $clcriaabas->sizecampo  = array("relatorio" => "23",
+      $clcriaabas->sizecampo  = ["relatorio" => "23",
                                       "notas"     => "23",
-                                      "parametro" => "23");
+                                      "parametro" => "23"];
     }
 
     $clcriaabas->cria_abas();

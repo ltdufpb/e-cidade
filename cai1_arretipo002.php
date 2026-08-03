@@ -39,8 +39,8 @@ use App\Domain\Tributario\Arrecadacao\Models\Configuracoesteftipodebito;
 use App\Domain\Tributario\Arrecadacao\Models\Operacoesteftipodebito;
 use App\Domain\Tributario\Arrecadacao\Repositories\OperacoesteftipodebitoRepository;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clarretipo = new cl_arretipo;
 
@@ -115,7 +115,7 @@ if (isset($alterar)) {
 
     db_fieldsmemory($result, 0);
 
-    $receitacreditodescr = isset($k02_descr) ? $k02_descr : '';
+    $receitacreditodescr = $k02_descr ?? '';
     $tipodescr           = $k00_descr;
 
     $oConfiguracoesteftipodebito = $configuracoesteftipodebitoRepository->getByTipo($chavepesquisa);
@@ -125,9 +125,7 @@ if (isset($alterar)) {
     if ($oConfiguracoesteftipodebito->k196_sequencial) {
         $aOperacoes = $operacoesteftipodebitoRepository->getByConfig($oConfiguracoesteftipodebito->k196_sequencial);
 
-        $aOperacoesSalvas = array_map(function ($oOperacao) {
-            return $oOperacao->k197_operacoestef;
-        }, $aOperacoes);
+        $aOperacoesSalvas = array_map(fn($oOperacao) => $oOperacao->k197_operacoestef, $aOperacoes);
     }
 }
 ?>

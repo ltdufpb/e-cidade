@@ -49,7 +49,7 @@ if (isset($oPost->cancelar)) {
 
     foreach ($aItensIssVarSemMov as $sItemIssVarSemMov) {
 
-      list($iNumpre, $iNumpar) = explode('-', $sItemIssVarSemMov);
+      [$iNumpre, $iNumpar] = explode('-', $sItemIssVarSemMov);
 
       $oCancelamentoISSQNVariavel->addDebito($iNumpre, $iNumpar);
     }

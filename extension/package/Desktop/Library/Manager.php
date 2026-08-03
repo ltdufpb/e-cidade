@@ -19,7 +19,7 @@ class Manager extends AbstractManager {
 
     $modificationManager = new ModificationManager();
     $modificationManager->setLogger($this->container->get('logger'));
-    $this->unpackModifications($modificationManager, array('desktop.xml'));
+    $this->unpackModifications($modificationManager, ['desktop.xml']);
   }
 
   /**
@@ -34,7 +34,7 @@ class Manager extends AbstractManager {
     $modificationDesktopData = ModificationDataModification::restore('dbportal-v3-desktop');
 
     if (!$modificationDesktopData->exists()) {
-      $this->unpackModifications($modificationManager, array('desktop.xml'));
+      $this->unpackModifications($modificationManager, ['desktop.xml']);
       $modificationDesktopData = ModificationDataModification::restore('dbportal-v3-desktop');
     }
 
@@ -104,7 +104,7 @@ class Manager extends AbstractManager {
   private function unpackModifications($modificationManager, array $files) {
 
     $force = true;
-    $modifications = array();
+    $modifications = [];
     $rootPath = ECIDADE_EXTENSION_PACKAGE_PATH . 'Desktop/modifications/';
 
     foreach ($files as $path) {

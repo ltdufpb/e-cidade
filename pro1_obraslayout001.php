@@ -43,7 +43,7 @@ include(modification("classes/db_obrasconstr_classe.php"));
 include(modification("classes/db_db_config_classe.php"));
 include(modification("classes/db_obras_classe.php"));
 include(modification("classes/db_db_cepmunic_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clobraslayout = new cl_obraslayout;
 $clobras = new cl_obras;
 $clobrasresp = new cl_obrasresp;
@@ -62,16 +62,16 @@ $db_botao = true;
 $ob01_codobra = @$ob14_codobra;
 $espaco = ",";
 if(isset($imprimir)){
-  $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
+  $root = substr((string) $_SERVER['SCRIPT_FILENAME'],0,strrpos((string) $_SERVER['SCRIPT_FILENAME'],"/"));
   umask(74);
   $tmpfile = tempnam("tmp",'obras').'.zip';
   $fd = fopen($tmpfile,"w");
   $result = $cldb_config->sql_record($cldb_config->sql_query("","cgc,nomeinst,munic,db_cepmunic.db10_codibge","","trim(munic) like trim(db_cepmunic.db10_munic)"));
   db_fieldsmemory($result,0);
   $depart =  str_pad("SECRETARIA DE PLANEJAMENTO E URBANISMO",55," ",STR_PAD_RIGHT);
-  $nomeinst = str_pad($nomeinst,55," ",STR_PAD_RIGHT);
-  $munic = str_pad($munic,30," ",STR_PAD_RIGHT);
-  $linha1 = "1".substr($db10_codibge,0,5).date("Ymd").date("His").date("Ym")."1".$cgc."44".substr($nomeinst,0,55).substr($depart,0,55).$munic."\n";
+  $nomeinst = str_pad((string) $nomeinst,55," ",STR_PAD_RIGHT);
+  $munic = str_pad((string) $munic,30," ",STR_PAD_RIGHT);
+  $linha1 = "1".substr((string) $db10_codibge,0,5).date("Ymd").date("His").date("Ym")."1".$cgc."44".substr($nomeinst,0,55).substr($depart,0,55).$munic."\n";
   fputs($fd,$linha1);
   $resob = $clobrashabite->sql_record($clobrashabite->sql_query("","*",""," ob01_codobra = $ob01_codobra"));
   $numrows = $clobrashabite->numrows;
@@ -83,7 +83,7 @@ if(isset($imprimir)){
       if($clobraspropri->numrows > 0){
 	db_fieldsmemory($result,0);
       }
-      $z01_cgccpf = trim($z01_cgccpf);
+      $z01_cgccpf = trim((string) $z01_cgccpf);
       if(strlen($z01_cgccpf) == 11){
 	$tipoi = "3";
       }elseif(strlen($z01_cgccpf) == 14){
@@ -92,11 +92,11 @@ if(isset($imprimir)){
 	$tipoi = "2";
 	$z01_cgccpf = $z01_ident;
       }
-      $z01_cgccpf = str_pad($z01_cgccpf,14," ",STR_PAD_RIGHT);
-      $z01_nome = str_pad($z01_nome,55," ",STR_PAD_RIGHT);
-      $z01_ender = str_pad($z01_ender,55," ",STR_PAD_RIGHT);
-      $z01_bairro = str_pad($z01_bairro,20," ",STR_PAD_RIGHT);
-      $z01_cep = str_pad($z01_cep,8," ",STR_PAD_RIGHT);
+      $z01_cgccpf = str_pad((string) $z01_cgccpf,14," ",STR_PAD_RIGHT);
+      $z01_nome = str_pad((string) $z01_nome,55," ",STR_PAD_RIGHT);
+      $z01_ender = str_pad((string) $z01_ender,55," ",STR_PAD_RIGHT);
+      $z01_bairro = str_pad((string) $z01_bairro,20," ",STR_PAD_RIGHT);
+      $z01_cep = str_pad((string) $z01_cep,8," ",STR_PAD_RIGHT);
       $result = $cldb_cepmunic->sql_record($cldb_cepmunic->sql_query("","*",""," trim(db10_munic) = trim('$z01_munic')"));
       if($cldb_cepmunic->numrows > 0){
 	db_fieldsmemory($result,0);
@@ -107,14 +107,14 @@ if(isset($imprimir)){
 	      </script>";
 	exit;
       }
-      $z01_telef = str_pad($z01_telef,12," ",STR_PAD_RIGHT);
+      $z01_telef = str_pad((string) $z01_telef,12," ",STR_PAD_RIGHT);
       $ddd = ""; 
       for($j=0;$j<4;$j++){
 	$ddd .= $espaco;
       }
       $ddd = str_replace(","," ",$ddd);
-      $z01_email = str_pad($z01_email,60," ",STR_PAD_RIGHT);
-      $ob02_cod = str_pad($ob02_cod,2," ",STR_PAD_RIGHT);
+      $z01_email = str_pad((string) $z01_email,60," ",STR_PAD_RIGHT);
+      $ob02_cod = str_pad((string) $ob02_cod,2," ",STR_PAD_RIGHT);
       $ender_bairro_cep_cod = '';
       for($j=0;$j<89;$j++){
 	$ender_bairro_cep_cod .= $espaco;
@@ -124,7 +124,7 @@ if(isset($imprimir)){
       if($clobrasresp->numrows > 0){
 	db_fieldsmemory($result,0);
       }
-      $cgccpf = trim($cgccpf);
+      $cgccpf = trim((string) $cgccpf);
       if(strlen($cgccpf) == 11){
 	$tpi = "3";
       }elseif(strlen($cgccpf) == 14){
@@ -133,12 +133,12 @@ if(isset($imprimir)){
 	$tpi = "2";
 	$cgccpf = $ident;
       }
-      $cgccpf = str_pad($cgccpf,14," ",STR_PAD_RIGHT);
-      $nome = str_pad($nome,55," ",STR_PAD_RIGHT);
-      $ender = str_pad($ender,55," ",STR_PAD_RIGHT);
-      $bairro = str_pad($bairro,20," ",STR_PAD_RIGHT);
-      $cep = str_pad($cep,8," ",STR_PAD_RIGHT);
-      $uf = str_pad($uf,2," ",STR_PAD_RIGHT);
+      $cgccpf = str_pad((string) $cgccpf,14," ",STR_PAD_RIGHT);
+      $nome = str_pad((string) $nome,55," ",STR_PAD_RIGHT);
+      $ender = str_pad((string) $ender,55," ",STR_PAD_RIGHT);
+      $bairro = str_pad((string) $bairro,20," ",STR_PAD_RIGHT);
+      $cep = str_pad((string) $cep,8," ",STR_PAD_RIGHT);
+      $uf = str_pad((string) $uf,2," ",STR_PAD_RIGHT);
       $result = $cldb_cepmunic->sql_record($cldb_cepmunic->sql_query("","db10_codibge as codibge",""," trim(db10_munic) = trim('$munic')"));
       if($cldb_cepmunic->numrows > 0){
 	db_fieldsmemory($result,0);
@@ -164,16 +164,16 @@ if(isset($imprimir)){
       $result = $clobrasender->sql_record($clobrasender->sql_query("","*",""," ob01_codobra = $ob01_codobra and ob07_codconstr = $ob09_codconstr"));
       if($clobrasender->numrows > 0){
 	db_fieldsmemory($result,0);
-	$j14_nome =  str_pad($j14_nome,55," ",STR_PAD_LEFT);
-	$j13_descr =  str_pad($j13_descr,20," ",STR_PAD_LEFT);
+	$j14_nome =  str_pad((string) $j14_nome,55," ",STR_PAD_LEFT);
+	$j13_descr =  str_pad((string) $j13_descr,20," ",STR_PAD_LEFT);
 	$ob07_inicio = str_pad(str_replace("-","",$ob07_inicio),8," ",STR_PAD_LEFT);
 	$ob07_fim =    str_pad(str_replace("-","",$ob07_fim),8," ",STR_PAD_LEFT);
 	$ob08_area =  str_pad(str_replace(" ","",db_formatar($ob08_area,'f')),10," ",STR_PAD_LEFT);
 	$ob07_unidades =  str_pad($ob07_unidades,5," ",STR_PAD_LEFT);
 	$ob07_pavimentos =  str_pad($ob07_pavimentos,5," ",STR_PAD_LEFT);
       }
-      $ob04_alvara =  str_pad($ob04_alvara,15," ",STR_PAD_LEFT);
-      $ob01_nomeobra = str_pad($ob01_nomeobra,55," ",STR_PAD_LEFT);
+      $ob04_alvara =  str_pad((string) $ob04_alvara,15," ",STR_PAD_LEFT);
+      $ob01_nomeobra = str_pad((string) $ob01_nomeobra,55," ",STR_PAD_LEFT);
       $ob04_data = str_replace("-","",$ob04_data);
       $linha2 = $linha2.$ob04_alvara.$ob04_data.$ob01_nomeobra.$j14_nome.$j13_descr.$cep.$z01_uf.$codibge.$ddd.$ddd.$ddd.$ddd.$ddd.$ddd.$ddd.$ddd.$ob07_inicio.$ob07_fim.$ob08_ocupacao.$ob08_tipoconstr.$ob08_area.$ob07_unidades.$ob07_pavimentos;
       if($ob09_parcial == "t"){
@@ -181,13 +181,13 @@ if(isset($imprimir)){
       }else{
 	$hab = 'T';
       }
-      $ob09_habite =  str_pad($ob09_habite,15," ",STR_PAD_LEFT);
+      $ob09_habite =  str_pad((string) $ob09_habite,15," ",STR_PAD_LEFT);
       $ob09_area =  str_pad(str_replace(" ","",db_formatar($ob09_area,'f')),10," ",STR_PAD_LEFT);
       $linha3 = "\n3".$ob09_habite.str_replace("-","",$ob09_data).$ob09_area.$hab;  
       fputs($fd,$linha2);
       fputs($fd,$linha3);
     }
-      $ob09_habite =  str_pad($ob09_habite,15," ",STR_PAD_LEFT);
+      $ob09_habite =  str_pad((string) $ob09_habite,15," ",STR_PAD_LEFT);
     $linha4 = "\n4".str_pad($i,6," ",STR_PAD_LEFT);  
     fputs($fd,$linha4);
     fclose($fd);

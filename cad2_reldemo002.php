@@ -29,7 +29,7 @@ include(modification("libs/db_sql.php"));
 require(modification("fpdf151/pdf.php"));
 include(modification("classes/db_iptuconstr_classe.php"));
 include(modification("classes/db_iptuconstrdemo_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $where = " where ";
@@ -160,7 +160,7 @@ for($i = 0; $i < $numrows;$i++){
    
    $pdf->SetFillColor($corfundo);
    $pdf->cell(15,$alt,$j01_matric,$borda,0,"C",1);
-   $pdf->cell(70,$alt,(strlen($z01_nome) > 38?substr($z01_nome,0,38)."...":$z01_nome),$borda,0,"L",1);
+   $pdf->cell(70,$alt,(strlen((string) $z01_nome) > 38?substr((string) $z01_nome,0,38)."...":$z01_nome),$borda,0,"L",1);
    $pdf->cell(20,$alt,(isset($j60_codproc)&&$j60_codproc!=0?$j60_codproc:"Sem proc."),$borda,0,"C",1);
    $pdf->cell(20,$alt,$j39_idcons,$borda,0,"C",1);
    $pdf->cell(20,$alt,($tipo=='Total'?db_formatar($j39_area,'f'):db_formatar($j60_area,'f')),$borda,0,"C",1);
@@ -169,7 +169,7 @@ for($i = 0; $i < $numrows;$i++){
    		$pdf->cell(20,$alt,$tipo,$borda,0,"C",1);
    }
    $pdf->cell(20,$alt,db_formatar($j39_dtdemo,'d'),$borda,0,"C",1);
-   $pdf->cell(75,$alt,(strlen($j14_nome) > 25?substr($j14_nome,0,25)."... ":$j14_nome).(isset($j39_numero)&&$j39_numero!=""?", ".$j39_numero:"").(isset($j39_compl)&&$j39_compl!=""?"/".$j39_compl:""),$borda,1,"L",1);
+   $pdf->cell(75,$alt,(strlen((string) $j14_nome) > 25?substr((string) $j14_nome,0,25)."... ":$j14_nome).(isset($j39_numero)&&$j39_numero!=""?", ".$j39_numero:"").(isset($j39_compl)&&$j39_compl!=""?"/".$j39_compl:""),$borda,1,"L",1);
    $total ++;
 }
 $pdf->setfont('arial','b',8);

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadconveniomodalidade_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcadconveniomodalidade = new cl_cadconveniomodalidade;
 $clcadconveniomodalidade->rotulo->label("ar15_sequencial");
 $clcadconveniomodalidade->rotulo->label("ar15_nome");
@@ -98,9 +98,9 @@ $clcadconveniomodalidade->rotulo->label("ar15_nome");
         }else{
            $sql = $clcadconveniomodalidade->sql_query("",$campos,"ar15_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ar15_nome)){
-          $repassa = array("chave_ar15_sequencial"=>$chave_ar15_sequencial,"chave_ar15_nome"=>$chave_ar15_nome);
+          $repassa = ["chave_ar15_sequencial"=>$chave_ar15_sequencial,"chave_ar15_nome"=>$chave_ar15_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -34,7 +34,7 @@ include(modification( "classes/db_amparo_classe.php" ));
 include(modification( "classes/db_regencia_classe.php" ));
 include(modification( "classes/db_diarioavaliacao_classe.php" ));
 include(modification( "dbforms/db_funcoes.php" ));
-db_postmemory ($HTTP_POST_VARS);
+db_postmemory ($_POST);
 $clamparo = new cl_amparo;
 $clregencia = new cl_regencia;
 $cldiarioavaliacao = new cl_diarioavaliacao;

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,9 +55,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("fiscal"=>"Notificação","fiscaltipo"=>"Procedência","receitas"=>"Receitas","fiscais"=>"Fiscais","test"=>"Testemunhas","artigos"=>"Artigos","venc"=>"Vencimento"); 
-       $clcriaabas->title = array("fiscal"=>"Notificação","fiscaltipo"=>"Procedência","receitas"=>"Receitas","fiscais"=>"Fiscais","test"=>"Testemunhas","artigos"=>"Artigos","venc"=>"Vencimento");    
-       $clcriaabas->src = array("fiscal"=>"fis1_fiscal001.php?abas=1&como=".@$como."","fiscaltipo"=>"fis1_fiscaltipo001.php","receitas"=>"fis1_fiscalrec001.php","fiscais"=>"fis1_fiscalusuario001.php","test"=>"fis1_fisctestem001.php","artigos"=>"fis1_fiscarquivos001.php","venc"=>"fis1_vencimento001.php");  
+       $clcriaabas->identifica = ["fiscal"=>"Notificação","fiscaltipo"=>"Procedência","receitas"=>"Receitas","fiscais"=>"Fiscais","test"=>"Testemunhas","artigos"=>"Artigos","venc"=>"Vencimento"]; 
+       $clcriaabas->title = ["fiscal"=>"Notificação","fiscaltipo"=>"Procedência","receitas"=>"Receitas","fiscais"=>"Fiscais","test"=>"Testemunhas","artigos"=>"Artigos","venc"=>"Vencimento"];    
+       $clcriaabas->src = ["fiscal"=>"fis1_fiscal001.php?abas=1&como=".@$como."","fiscaltipo"=>"fis1_fiscaltipo001.php","receitas"=>"fis1_fiscalrec001.php","fiscais"=>"fis1_fiscalusuario001.php","test"=>"fis1_fisctestem001.php","artigos"=>"fis1_fiscarquivos001.php","venc"=>"fis1_vencimento001.php"];  
        $clcriaabas->cria_abas();    
      ?> 
      </td>

@@ -39,11 +39,11 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-db_postmemory($HTTP_POST_VARS);
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+db_postmemory($_POST);
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $anousu = db_getsession("DB_anousu");
 $codrel = 53;
@@ -71,11 +71,11 @@ $codrel = 53;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas");
-    $clcriaabas->title      = array("relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas");
-    $clcriaabas->src  = array("relatorio"=>"con2_anexo12rpps_003.php",
-                              "notas"    =>"con2_anexo12rpps_004.php?c83_codrel=".$codrel);
-    $clcriaabas->sizecampo= array("relatorio"=>"53","notas"=>"53");
+    $clcriaabas->identifica = ["relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas"];
+    $clcriaabas->title      = ["relatorio"=>"Relatorio","notas"=>"Fonte/Notas Explicativas"];
+    $clcriaabas->src  = ["relatorio"=>"con2_anexo12rpps_003.php",
+                              "notas"    =>"con2_anexo12rpps_004.php?c83_codrel=".$codrel];
+    $clcriaabas->sizecampo= ["relatorio"=>"53","notas"=>"53"];
     $clcriaabas->cria_abas();    
     ?>
     </center>

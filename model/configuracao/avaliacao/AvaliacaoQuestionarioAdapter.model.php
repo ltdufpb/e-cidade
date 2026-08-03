@@ -72,9 +72,10 @@ class AvaliacaoQuestionarioAdapter Extends AvaliacaoAdapter {
 	}
 	
 
-	protected function getPerguntas(\AvaliacaoGrupo $avaliacaoGrupo) {
+	#[\Override]
+    protected function getPerguntas(\AvaliacaoGrupo $avaliacaoGrupo) {
 
-		$aPerguntas = array();
+		$aPerguntas = [];
 
     foreach ($avaliacaoGrupo->getPerguntas() as $pergunta) {
 
@@ -110,7 +111,7 @@ class AvaliacaoQuestionarioAdapter Extends AvaliacaoAdapter {
 		$sSqlRespostas = $this->getConsultaParaAsRespostasDaPergunta($oPergunta);
 	  $rsRespostas   = db_query($sSqlRespostas);
 
-		$aResposta = array();
+		$aResposta = [];
 	  if(!$rsRespostas) {
 	  	throw new DBException("Ocorreu um erro ao consultar as respostas da pergunta: \n".$oPergunta->getDescricao());
 	  }
@@ -140,7 +141,7 @@ class AvaliacaoQuestionarioAdapter Extends AvaliacaoAdapter {
 	 */
 	private function getSugestaoRespostaDaPergunta(AvaliacaoPergunta $oPergunta) {
 
-		$aRespostas  = array();
+		$aRespostas  = [];
 
     $sSqlFormulaPergunta = $oPergunta->getFormulaVinculada();
 		if (empty($sSqlFormulaPergunta)) {

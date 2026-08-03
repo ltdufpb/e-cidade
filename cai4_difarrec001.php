@@ -29,7 +29,7 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 //------------------------------------------------------
 //   Arquivos que verificam se o boletim já foi liberado ou naum
@@ -40,8 +40,8 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 $erro = "";
 $pesquisar = false;
 if(isset($pesquisa)){
-   $np = substr($HTTP_POST_VARS["numpre"],0,8);
-   $pa = substr($HTTP_POST_VARS["numpre"],8,3);
+   $np = substr((string) $_POST["numpre"],0,8);
+   $pa = substr((string) $_POST["numpre"],8,3);
    if($np=="")
       $erro = "Numpre Inválido.";
    else
@@ -57,7 +57,7 @@ if(isset($pesquisa)){
 				      and k00_receit = k02_codigo 
 		        group by k00_receit,k02_drecei,k00_dtoper,z01_nome";
         $result = db_query($sql);
-        if(pg_numrows($result)==0){
+        if(pg_num_rows($result)==0){
           $erro = "Código de Arrecadação não Pago.";
         }else{
           $pesquisar = true;
@@ -65,8 +65,8 @@ if(isset($pesquisa)){
 	  }
 }else{
   if(isset($autenticar)){
-    $np = substr($HTTP_POST_VARS["numpre"],0,8);
-    $pa = substr($HTTP_POST_VARS["numpre"],8,3);
+    $np = substr((string) $_POST["numpre"],0,8);
+    $pa = substr((string) $_POST["numpre"],8,3);
     if($np=="")
        $erro = "Numpre Inválido.";
     else
@@ -77,9 +77,9 @@ if(isset($pesquisa)){
 	            from arrepaga
 				     left outer join cgm on k00_numcgm = z01_numcgm
                 where k00_numpre = $np and k00_numpar = $pa
-				      and k00_receit = ".$HTTP_POST_VARS["receitas"];
+				      and k00_receit = ".$_POST["receitas"];
         $result = db_query($sql);
-        if(pg_numrows($result)==0){
+        if(pg_num_rows($result)==0){
           $erro = "Código de Arrecadação não Pago.";
         }else{
            
@@ -94,7 +94,7 @@ $result_conta = db_query(
 				      inner join conplanoreduz on c61_reduz = k13_conta and c61_anousu=c62_anousu
 				      inner join conplano on c60_codcon = c61_codcon and c60_anousu=c61_anousu 
 				 order by k13_conta");
-if(pg_numrows($result_conta) == 0){
+if(pg_num_rows($result_conta) == 0){
   echo "<script>parent.alert('Sem Contas Cadastradas.');</script>";
   exit;
 }
@@ -175,9 +175,9 @@ function js_atualizaconta(qual) {
                   <td align="right">Conta:</td>
                   <td><select onChange="js_atualizaconta(this.name)" name="reduz" id="reduz">
                       <?php 
-		for($i=0;$i<pg_numrows($result_conta);$i++){
+		for($i=0;$i<pg_num_rows($result_conta);$i++){
 		  db_fieldsmemory($result_conta,$i);
-  	      echo "<option value=\"$c01_reduz\" ".(isset($HTTP_POST_VARS["reduz"])?($HTTP_POST_VARS["reduz"]==$c01_reduz?"selected":""):"").">$c01_reduz</option>";
+  	      echo "<option value=\"$c01_reduz\" ".(isset($_POST["reduz"])?($_POST["reduz"]==$c01_reduz?"selected":""):"").">$c01_reduz</option>";
 		}
 	
 		?>
@@ -185,9 +185,9 @@ function js_atualizaconta(qual) {
                     &nbsp;&nbsp;
                     <select onChange="js_atualizaconta(this.name)" name="descrconta" id="descrconta">
                       <?php 
-		for($i=0;$i<pg_numrows($result_conta);$i++){
+		for($i=0;$i<pg_num_rows($result_conta);$i++){
 		  db_fieldsmemory($result_conta,$i);
-  	      echo "<option value=\"$c01_reduz\" ".(isset($HTTP_POST_VARS["descr"])?($HTTP_POST_VARS["descrconta"]==$c01_reduz?"selected":""):"").">$c01_descr</option>";
+  	      echo "<option value=\"$c01_reduz\" ".(isset($_POST["descr"])?($_POST["descrconta"]==$c01_reduz?"selected":""):"").">$c01_descr</option>";
 		}
 		?>
                     </select></td>
@@ -203,7 +203,7 @@ function js_atualizaconta(qual) {
                     <?php 
 					}else{
 					?>
-                    <input name="numpre" type="text" id="numpre2" readonly size="30" maxlength="100" value="<?=$HTTP_POST_VARS["numpre"]?>"> 
+                    <input name="numpre" type="text" id="numpre2" readonly size="30" maxlength="100" value="<?=$_POST["numpre"]?>"> 
                     <?php 
 					}
 					?>
@@ -232,7 +232,7 @@ function js_atualizaconta(qual) {
                       <?php 
 					  $vlrtot = "";
                     if($pesquisar == true){
-					  for($x=0;$x < pg_numrows($result);$x++){
+					  for($x=0;$x < pg_num_rows($result);$x++){
 					    db_fieldsmemory($result,$x);
 					    $vlrtot = $vlrtot + $k00_valor;
 					    echo "<option value=\"$k00_receit\">".$k00_receit."</option>";
@@ -244,7 +244,7 @@ function js_atualizaconta(qual) {
 					<select onChange="js_atualizarec(this.name)" name="descr" id="descr">
                       <?php 
                     if($pesquisar == true){
-					  for($x=0;$x < pg_numrows($result);$x++){
+					  for($x=0;$x < pg_num_rows($result);$x++){
 					    db_fieldsmemory($result,$x);
 					    echo "<option value=\"$k02_drecei\">".$k02_drecei."</option>";
 					  }

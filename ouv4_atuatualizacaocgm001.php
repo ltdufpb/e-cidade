@@ -36,7 +36,7 @@ include(modification("classes/db_db_depart_classe.php"));
 $clouvidor 				= new cl_ouvidor();
 $cldepartamento 	= new cl_db_depart();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;

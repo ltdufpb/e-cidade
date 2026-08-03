@@ -39,7 +39,7 @@ $aux1		        = new cl_arquivo_auxiliar;
 $aux2         	= new cl_arquivo_auxiliar;
 $aux3         	= new cl_arquivo_auxiliar;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -209,7 +209,7 @@ db_app::load('estilos.css');
     <td>Etiquetas:</td>
     <td>
     <?php 
-      $imp_forn = array("T"=>"Todas","I"=>"Impressas","R"=>"Reimpressas");
+      $imp_forn = ["T"=>"Todas","I"=>"Impressas","R"=>"Reimpressas"];
       db_select("etiqueta",$imp_forn,true,1);
     ?>
     </td>
@@ -218,7 +218,7 @@ db_app::load('estilos.css');
     <td>Tipo:</td>
     <td>
     <?php 
-      $imp_forn = array("T"=>"Todas","L"=>"Lote","I"=>"Individual");
+      $imp_forn = ["T"=>"Todas","L"=>"Lote","I"=>"Individual"];
       db_select("tipo",$imp_forn,true,1);
     ?>
     </td>
@@ -227,7 +227,7 @@ db_app::load('estilos.css');
     <td nowrap align="right"><b>Ordenar por:</b></td>
     <td nowrap>
     <?php 
-      $ordenar = array("1"=>"Bem","2"=>"Placa","3"=>"Data");
+      $ordenar = ["1"=>"Bem","2"=>"Placa","3"=>"Data"];
       db_select("ordenar",$ordenar,true,1);
     ?>
     </td>

@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_pcforne_classe.php"));
 require_once(modification("classes/db_cgm_classe.php"));
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpcforne = new cl_pcforne;
 $clcgm = new cl_cgm;
 $clpcforne->rotulo->label("pc60_numcgm");

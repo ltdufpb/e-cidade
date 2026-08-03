@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE tfd_passageiroveiculo
 class cl_tfd_passageiroveiculo {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $tf19_i_codigo = 0;
-   var $tf19_i_cgsund = 0;
-   var $tf19_i_veiculodestino = 0;
-   var $tf19_i_pedidotfd = 0;
-   var $tf19_i_valido = 0;
-   var $tf19_i_tipopassageiro = 0;
-   var $tf19_i_fica = 0;
-   var $tf19_i_colo = 0;
+   public $tf19_i_codigo = 0;
+   public $tf19_i_cgsund = 0;
+   public $tf19_i_veiculodestino = 0;
+   public $tf19_i_pedidotfd = 0;
+   public $tf19_i_valido = 0;
+   public $tf19_i_tipopassageiro = 0;
+   public $tf19_i_fica = 0;
+   public $tf19_i_colo = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  tf19_i_codigo = int4 = Código
                  tf19_i_cgsund = int4 = CGS
                  tf19_i_veiculodestino = int4 = Veículo Destino
@@ -62,10 +62,10 @@ class cl_tfd_passageiroveiculo {
                  tf19_i_colo = int4 = Colo
                  ";
    //funcao construtor da classe
-   function cl_tfd_passageiroveiculo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_passageiroveiculo");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -167,10 +167,10 @@ class cl_tfd_passageiroveiculo {
          $this->erro_status = "0";
          return false;
        }
-       $this->tf19_i_codigo = pg_result($result,0,0);
+       $this->tf19_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from tfd_passageiroveiculo_tf19_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf19_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf19_i_codigo)){
          $this->erro_sql = " Campo tf19_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -212,7 +212,7 @@ class cl_tfd_passageiroveiculo {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tfd_passageiroveiculo ($this->tf19_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tfd_passageiroveiculo já Cadastrado";
@@ -236,17 +236,17 @@ class cl_tfd_passageiroveiculo {
      $resaco = $this->sql_record($this->sql_query_file($this->tf19_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16418,'$this->tf19_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2875,16418,'','".AddSlashes(pg_result($resaco,0,'tf19_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2875,16420,'','".AddSlashes(pg_result($resaco,0,'tf19_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2875,16421,'','".AddSlashes(pg_result($resaco,0,'tf19_i_veiculodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2875,16419,'','".AddSlashes(pg_result($resaco,0,'tf19_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2875,16422,'','".AddSlashes(pg_result($resaco,0,'tf19_i_valido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2875,16705,'','".AddSlashes(pg_result($resaco,0,'tf19_i_tipopassageiro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2875,17301,'','".AddSlashes(pg_result($resaco,0,'tf19_i_fica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2875,17302,'','".AddSlashes(pg_result($resaco,0,'tf19_i_colo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2875,16418,'','".AddSlashes(pg_fetch_result($resaco,0,'tf19_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2875,16420,'','".AddSlashes(pg_fetch_result($resaco,0,'tf19_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2875,16421,'','".AddSlashes(pg_fetch_result($resaco,0,'tf19_i_veiculodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2875,16419,'','".AddSlashes(pg_fetch_result($resaco,0,'tf19_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2875,16422,'','".AddSlashes(pg_fetch_result($resaco,0,'tf19_i_valido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2875,16705,'','".AddSlashes(pg_fetch_result($resaco,0,'tf19_i_tipopassageiro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2875,17301,'','".AddSlashes(pg_fetch_result($resaco,0,'tf19_i_fica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2875,17302,'','".AddSlashes(pg_fetch_result($resaco,0,'tf19_i_colo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -255,10 +255,10 @@ class cl_tfd_passageiroveiculo {
       $this->atualizacampos();
      $sql = " update tfd_passageiroveiculo set ";
      $virgula = "";
-     if(trim($this->tf19_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_codigo"])){
+     if(trim((string) $this->tf19_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_codigo"])){
        $sql  .= $virgula." tf19_i_codigo = $this->tf19_i_codigo ";
        $virgula = ",";
-       if(trim($this->tf19_i_codigo) == null ){
+       if(trim((string) $this->tf19_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "tf19_i_codigo";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_tfd_passageiroveiculo {
          return false;
        }
      }
-     if(trim($this->tf19_i_cgsund)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_cgsund"])){
+     if(trim((string) $this->tf19_i_cgsund)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_cgsund"])){
        $sql  .= $virgula." tf19_i_cgsund = $this->tf19_i_cgsund ";
        $virgula = ",";
-       if(trim($this->tf19_i_cgsund) == null ){
+       if(trim((string) $this->tf19_i_cgsund) == null ){
          $this->erro_sql = " Campo CGS nao Informado.";
          $this->erro_campo = "tf19_i_cgsund";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_tfd_passageiroveiculo {
          return false;
        }
      }
-     if(trim($this->tf19_i_veiculodestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_veiculodestino"])){
+     if(trim((string) $this->tf19_i_veiculodestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_veiculodestino"])){
        $sql  .= $virgula." tf19_i_veiculodestino = $this->tf19_i_veiculodestino ";
        $virgula = ",";
-       if(trim($this->tf19_i_veiculodestino) == null ){
+       if(trim((string) $this->tf19_i_veiculodestino) == null ){
          $this->erro_sql = " Campo Veículo Destino nao Informado.";
          $this->erro_campo = "tf19_i_veiculodestino";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_tfd_passageiroveiculo {
          return false;
        }
      }
-     if(trim($this->tf19_i_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_pedidotfd"])){
+     if(trim((string) $this->tf19_i_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_pedidotfd"])){
        $sql  .= $virgula." tf19_i_pedidotfd = $this->tf19_i_pedidotfd ";
        $virgula = ",";
-       if(trim($this->tf19_i_pedidotfd) == null ){
+       if(trim((string) $this->tf19_i_pedidotfd) == null ){
          $this->erro_sql = " Campo Pedido nao Informado.";
          $this->erro_campo = "tf19_i_pedidotfd";
          $this->erro_banco = "";
@@ -307,10 +307,10 @@ class cl_tfd_passageiroveiculo {
          return false;
        }
      }
-     if(trim($this->tf19_i_valido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_valido"])){
+     if(trim((string) $this->tf19_i_valido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_valido"])){
        $sql  .= $virgula." tf19_i_valido = $this->tf19_i_valido ";
        $virgula = ",";
-       if(trim($this->tf19_i_valido) == null ){
+       if(trim((string) $this->tf19_i_valido) == null ){
          $this->erro_sql = " Campo Válido nao Informado.";
          $this->erro_campo = "tf19_i_valido";
          $this->erro_banco = "";
@@ -320,10 +320,10 @@ class cl_tfd_passageiroveiculo {
          return false;
        }
      }
-     if(trim($this->tf19_i_tipopassageiro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_tipopassageiro"])){
+     if(trim((string) $this->tf19_i_tipopassageiro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_tipopassageiro"])){
        $sql  .= $virgula." tf19_i_tipopassageiro = $this->tf19_i_tipopassageiro ";
        $virgula = ",";
-       if(trim($this->tf19_i_tipopassageiro) == null ){
+       if(trim((string) $this->tf19_i_tipopassageiro) == null ){
          $this->erro_sql = " Campo Tipo passgeiro nao Informado.";
          $this->erro_campo = "tf19_i_tipopassageiro";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_tfd_passageiroveiculo {
          return false;
        }
      }
-     if(trim($this->tf19_i_fica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_fica"])){
+     if(trim((string) $this->tf19_i_fica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_fica"])){
        $sql  .= $virgula." tf19_i_fica = $this->tf19_i_fica ";
        $virgula = ",";
-       if(trim($this->tf19_i_fica) == null ){
+       if(trim((string) $this->tf19_i_fica) == null ){
          $this->erro_sql = " Campo Fica nao Informado.";
          $this->erro_campo = "tf19_i_fica";
          $this->erro_banco = "";
@@ -346,10 +346,10 @@ class cl_tfd_passageiroveiculo {
          return false;
        }
      }
-     if(trim($this->tf19_i_colo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_colo"])){
+     if(trim((string) $this->tf19_i_colo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_colo"])){
        $sql  .= $virgula." tf19_i_colo = $this->tf19_i_colo ";
        $virgula = ",";
-       if(trim($this->tf19_i_colo) == null ){
+       if(trim((string) $this->tf19_i_colo) == null ){
          $this->erro_sql = " Campo Colo nao Informado.";
          $this->erro_campo = "tf19_i_colo";
          $this->erro_banco = "";
@@ -367,25 +367,25 @@ class cl_tfd_passageiroveiculo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16418,'$this->tf19_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_codigo"]) || $this->tf19_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2875,16418,'".AddSlashes(pg_result($resaco,$conresaco,'tf19_i_codigo'))."','$this->tf19_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2875,16418,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf19_i_codigo'))."','$this->tf19_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_cgsund"]) || $this->tf19_i_cgsund != "")
-           $resac = db_query("insert into db_acount values($acount,2875,16420,'".AddSlashes(pg_result($resaco,$conresaco,'tf19_i_cgsund'))."','$this->tf19_i_cgsund',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2875,16420,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf19_i_cgsund'))."','$this->tf19_i_cgsund',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_veiculodestino"]) || $this->tf19_i_veiculodestino != "")
-           $resac = db_query("insert into db_acount values($acount,2875,16421,'".AddSlashes(pg_result($resaco,$conresaco,'tf19_i_veiculodestino'))."','$this->tf19_i_veiculodestino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2875,16421,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf19_i_veiculodestino'))."','$this->tf19_i_veiculodestino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_pedidotfd"]) || $this->tf19_i_pedidotfd != "")
-           $resac = db_query("insert into db_acount values($acount,2875,16419,'".AddSlashes(pg_result($resaco,$conresaco,'tf19_i_pedidotfd'))."','$this->tf19_i_pedidotfd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2875,16419,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf19_i_pedidotfd'))."','$this->tf19_i_pedidotfd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_valido"]) || $this->tf19_i_valido != "")
-           $resac = db_query("insert into db_acount values($acount,2875,16422,'".AddSlashes(pg_result($resaco,$conresaco,'tf19_i_valido'))."','$this->tf19_i_valido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2875,16422,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf19_i_valido'))."','$this->tf19_i_valido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_tipopassageiro"]) || $this->tf19_i_tipopassageiro != "")
-           $resac = db_query("insert into db_acount values($acount,2875,16705,'".AddSlashes(pg_result($resaco,$conresaco,'tf19_i_tipopassageiro'))."','$this->tf19_i_tipopassageiro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2875,16705,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf19_i_tipopassageiro'))."','$this->tf19_i_tipopassageiro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_fica"]) || $this->tf19_i_fica != "")
-           $resac = db_query("insert into db_acount values($acount,2875,17301,'".AddSlashes(pg_result($resaco,$conresaco,'tf19_i_fica'))."','$this->tf19_i_fica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2875,17301,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf19_i_fica'))."','$this->tf19_i_fica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf19_i_colo"]) || $this->tf19_i_colo != "")
-           $resac = db_query("insert into db_acount values($acount,2875,17302,'".AddSlashes(pg_result($resaco,$conresaco,'tf19_i_colo'))."','$this->tf19_i_colo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2875,17302,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf19_i_colo'))."','$this->tf19_i_colo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -430,17 +430,17 @@ class cl_tfd_passageiroveiculo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16418,'$tf19_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2875,16418,'','".AddSlashes(pg_result($resaco,$iresaco,'tf19_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2875,16420,'','".AddSlashes(pg_result($resaco,$iresaco,'tf19_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2875,16421,'','".AddSlashes(pg_result($resaco,$iresaco,'tf19_i_veiculodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2875,16419,'','".AddSlashes(pg_result($resaco,$iresaco,'tf19_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2875,16422,'','".AddSlashes(pg_result($resaco,$iresaco,'tf19_i_valido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2875,16705,'','".AddSlashes(pg_result($resaco,$iresaco,'tf19_i_tipopassageiro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2875,17301,'','".AddSlashes(pg_result($resaco,$iresaco,'tf19_i_fica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2875,17302,'','".AddSlashes(pg_result($resaco,$iresaco,'tf19_i_colo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2875,16418,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf19_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2875,16420,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf19_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2875,16421,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf19_i_veiculodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2875,16419,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf19_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2875,16422,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf19_i_valido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2875,16705,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf19_i_tipopassageiro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2875,17301,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf19_i_fica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2875,17302,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf19_i_colo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tfd_passageiroveiculo
@@ -500,7 +500,7 @@ class cl_tfd_passageiroveiculo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tfd_passageiroveiculo";
@@ -515,7 +515,7 @@ class cl_tfd_passageiroveiculo {
    function sql_query ( $tf19_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -551,7 +551,7 @@ class cl_tfd_passageiroveiculo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -564,7 +564,7 @@ class cl_tfd_passageiroveiculo {
    function sql_query_file ( $tf19_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -585,7 +585,7 @@ class cl_tfd_passageiroveiculo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

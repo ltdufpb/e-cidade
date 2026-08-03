@@ -40,12 +40,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $codrel = 19; // relatorio de gastos com MDE
 
@@ -72,12 +72,12 @@ $codrel = 19; // relatorio de gastos com MDE
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("relatorio"=>"Relatorio","variaveis"=>"Variáveis","parametro"=>"Parametros");
-    $clcriaabas->title      = array("relatorio"=>"Relatorio","variaveis"=>"Variáveis","parametro"=>"Parametros");
-    $clcriaabas->src  = array("relatorio"=>"con2_confmde0011.php",
+    $clcriaabas->identifica = ["relatorio"=>"Relatorio","variaveis"=>"Variáveis","parametro"=>"Parametros"];
+    $clcriaabas->title      = ["relatorio"=>"Relatorio","variaveis"=>"Variáveis","parametro"=>"Parametros"];
+    $clcriaabas->src  = ["relatorio"=>"con2_confmde0011.php",
                                                "variaveis"=>"con2_conrelinfo001.php?c83_codrel=$codrel",
-			                                   "parametro"=>"con2_conrelparametros.php?c83_codrel=$codrel");
-    $clcriaabas->sizecampo= array("relatorio"=>"23","variaveis"=>"23","parametro"=>"23");
+			                                   "parametro"=>"con2_conrelparametros.php?c83_codrel=$codrel"];
+    $clcriaabas->sizecampo= ["relatorio"=>"23","variaveis"=>"23","parametro"=>"23"];
     $clcriaabas->cria_abas();    
     ?>
     </center>

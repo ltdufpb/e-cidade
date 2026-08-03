@@ -19,14 +19,10 @@ class TraceTeste extends \PHPUnit_Framework_TestCase
         }
 
         $trace = new Trace($exception);
-        $data = $trace->filter(function ($obj) {
-            return $obj;
-        });
+        $data = $trace->filter(fn($obj) => $obj);
 
         $traceWithoutExcpetion = new Trace();
-        $dataWithoutExcpetion = $traceWithoutExcpetion->filter(function ($obj) {
-            return $obj;
-        });
+        $dataWithoutExcpetion = $traceWithoutExcpetion->filter(fn($obj) => $obj);
 
 
         $this->assertSame($expected, $data);

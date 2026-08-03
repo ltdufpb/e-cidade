@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conlancamordem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconlancamordem = new cl_conlancamordem;
 $clconlancamordem->rotulo->label("c03_sequencial");
 $clconlancamordem->rotulo->label("c03_codlan");
@@ -52,9 +52,9 @@ $clconlancamordem->rotulo->label("c03_codlan");
         }else{
            $sql = $clconlancamordem->sql_query("",$campos,"c03_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c03_codlan)){
-          $repassa = array("chave_c03_sequencial"=>$chave_c03_sequencial,"chave_c03_codlan"=>$chave_c03_codlan);
+          $repassa = ["chave_c03_sequencial"=>$chave_c03_sequencial,"chave_c03_codlan"=>$chave_c03_codlan];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

@@ -44,12 +44,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 /*
  * Definimos alguns paramentros para o relatório, conforme o ano.
@@ -106,51 +106,51 @@ if ($iAnoAtual >= 2019 && false) {
                     <center>
                         <?php
                         if (db_getsession("DB_anousu") <= 2009) {
-                            $clcriaabas->identifica = array(
+                            $clcriaabas->identifica = [
                                 "relatorio" => "Relatorio",
                                 "variaveis" => "Variáveis",
                                 "parametro" => $sTituloParametro,
                                 "notas"     => "Notas Explicativas"
-                            );
-                            $clcriaabas->title= array(
+                            ];
+                            $clcriaabas->title= [
                                 "relatorio" => "Relatorio",
                                 "variaveis" => "Variáveis",
                                 "parametro" => $sTituloParametro,
                                 "notas"     => "Notas Explicativas"
-                            );
-                            $clcriaabas->src = array(
+                            ];
+                            $clcriaabas->src = [
                                 "relatorio" => "con2_opercredito011.php",
                                 "variaveis" => "con2_conrelinfo001.php?c83_codrel=$iCodRel",
                                 "parametro" => "{$sFonteParametros}?c83_codrel=$iCodRel",
                                 "notas"     => "con2_conrelnotas.php?c83_codrel=$iCodRel",
-                            );
-                            $clcriaabas->sizecampo  = array(
+                            ];
+                            $clcriaabas->sizecampo  = [
                                 "relatorio" => "23",
                                 "variaveis" => "23",
                                 "parametro" => "23",
                                 "notas"     => 23
-                            );
+                            ];
                         } else {
-                            $clcriaabas->identifica = array(
+                            $clcriaabas->identifica = [
                                 "relatorio" => "Relatório",
                                 "parametro" => $sTituloParametro,
                                 "notas"     => "Notas Explicativas"
-                            );
-                            $clcriaabas->title = array(
+                            ];
+                            $clcriaabas->title = [
                                 "relatorio" => "Relatório",
                                 "parametro" => $sTituloParametro,
                                 "notas"     => "Notas Explicativas"
-                            );
-                            $clcriaabas->src = array(
+                            ];
+                            $clcriaabas->src = [
                                 "relatorio" => "con2_opercredito011.php?c83_codrel=$iCodRel",
                                 "parametro" => "{$sFonteParametros}",
                                 "notas"     => "con2_conrelnotas.php?c83_codrel=$iCodRel",
-                            );
-                            $clcriaabas->sizecampo = array(
+                            ];
+                            $clcriaabas->sizecampo = [
                                 "relatorio" => "23",
                                 "parametro" => "23",
                                 "notas"     => 23
-                            );
+                            ];
                         }
                         $clcriaabas->cria_abas();
                         ?>

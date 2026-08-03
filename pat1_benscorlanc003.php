@@ -55,11 +55,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("benscorlanc"=>"Lançamento da correção","benscorr"=>"Valores"); 
- 	 $clcriaabas->sizecampo  = array("benscorlanc"=>"24");
- 	 $clcriaabas->title      = array("benscorlanc"=>"Cadastrar lançamento","benscorr"=>"Valores");
-	 $clcriaabas->src = array("benscorlanc"=>"pat1_benscorlanc006.php");
-	 $clcriaabas->disabled   =  array("benscorr"=>"true"); 
+	 $clcriaabas->identifica = ["benscorlanc"=>"Lançamento da correção","benscorr"=>"Valores"]; 
+ 	 $clcriaabas->sizecampo  = ["benscorlanc"=>"24"];
+ 	 $clcriaabas->title      = ["benscorlanc"=>"Cadastrar lançamento","benscorr"=>"Valores"];
+	 $clcriaabas->src = ["benscorlanc"=>"pat1_benscorlanc006.php"];
+	 $clcriaabas->disabled   =  ["benscorr"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

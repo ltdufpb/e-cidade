@@ -99,7 +99,7 @@ try {
         throw new Exception("Integração com financeiro não habilitadada.");
       }
 
-      $aDadosRetorno        = array();
+      $aDadosRetorno        = [];
 			$oBemDepreciacao      = new BemDepreciacao($oParam->iAno, $oParam->iMes, $oParam->iInstituicao);
 			$oParam->sObservacao .= " da competência {$oParam->iMes}/{$oParam->iAno}";
 
@@ -113,7 +113,7 @@ try {
 		case 'estornar' :
 
 		  db_inicio_transacao();
-			$aDadosRetorno        = array();
+			$aDadosRetorno        = [];
 			$oBemDepreciacao      = new BemDepreciacao($oParam->iAno, $oParam->iMes, $oParam->iInstituicao);
 			$oParam->sObservacao .= " da competência {$oParam->iMes}/{$oParam->iAno}";
 
@@ -129,7 +129,7 @@ try {
 
 		case "getDadosSintetico":
 
-			$aDadosRetorno   = array();
+			$aDadosRetorno   = [];
 			$oBemDepreciacao = new BemDepreciacao($oParam->iAno, $oParam->iMes, db_getsession('DB_instit'));
 			$aDadosSintetico = $oBemDepreciacao->getDadosSintetico();
 
@@ -142,7 +142,7 @@ try {
 
 				$oStdDadosRetorno = new stdClass();
 				$oStdDadosRetorno->iCodigoConta    = $oStdSintetico->iPlanoConta;
-				$oStdDadosRetorno->sDescricaoConta = urlencode($oStdSintetico->sDescricaoConta);
+				$oStdDadosRetorno->sDescricaoConta = urlencode((string) $oStdSintetico->sDescricaoConta);
 				$oStdDadosRetorno->nValorTotal     = db_formatar($oStdSintetico->nValorDepreciacao, 'f');
 				$oStdDadosRetorno->sDocumento      = $sDocumentoExecutar;
                 $oStdDadosRetorno->iClassificacao = $oStdSintetico->iClassificacao;
@@ -170,15 +170,7 @@ try {
 
   }
 
-} catch (Exception $eErro){
-
-	$oRetorno->iStatus   = 2;
-	$oRetorno->message = urlencode($eErro->getMessage());
-} catch (BusinessException $eErro) {
-
-  $oRetorno->iStatus   = 2;
-  $oRetorno->message = urlencode($eErro->getMessage());
-} catch (ParameterException $eErro) {
+} catch (Exception|BusinessException|ParameterException $eErro) {
 
   $oRetorno->iStatus   = 2;
   $oRetorno->message = urlencode($eErro->getMessage());

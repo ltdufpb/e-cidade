@@ -73,10 +73,10 @@ if ($oParam->exec == "addRetencao") {
   }
   catch (Exception $eErro) {
     echo $oJson->encode(
-      array(
+      [
         "status" => 2,
         "message"=> urlencode($eErro->getMessage())
-      )
+      ]
     );
   }
 } else if ($oParam->exec == 'apagarRetencao') {
@@ -96,7 +96,7 @@ if ($oParam->exec == "addRetencao") {
   catch (Exception $eErro) {
 
     db_fim_transacao(true);
-    echo $oJson->encode(array("status" => 2, "message"=> urlencode($eErro->getMessage())));
+    echo $oJson->encode(["status" => 2, "message"=> urlencode($eErro->getMessage())]);
 
   }
 
@@ -116,7 +116,7 @@ if ($oParam->exec == "addRetencao") {
         $iMesUsu = '';
 
         if ($oParam->params[0]->dtCalculo != '') {
-            $aData = explode('/', $oParam->params[0]->dtCalculo);
+            $aData = explode('/', (string) $oParam->params[0]->dtCalculo);
             $iMesUsu = $aData[1];
             $iAnoUsu = $aData[2];
         }
@@ -175,7 +175,7 @@ if ($oParam->exec == "addRetencao") {
 
     } catch (Exception $eErro) {
         db_fim_transacao(true);
-        echo $oJson->encode(array("status" => 2, "message" => urlencode($eErro->getMessage())));
+        echo $oJson->encode(["status" => 2, "message" => urlencode($eErro->getMessage())]);
     }
 } else if ($oParam->exec == "calculaRetencao") {
 
@@ -300,7 +300,7 @@ if ($oParam->exec == "addRetencao") {
 
   $oRetorno           = new stdClass;
   $oRetorno->status   = 1;
-  $oRetorno->aRecibos = array();
+  $oRetorno->aRecibos = [];
 
   $sSqlRecibos  = "SELECT e21_descricao,";
   $sSqlRecibos .= "       e21_retencaotipocalc , ";
@@ -379,20 +379,20 @@ if ($oParam->exec == "addRetencao") {
         $mensagemRetorno =  "As retenções foram apropriadas com sucesso.";
     }
 
-    echo $oJson->encode(array("status" => 1,
+    echo $oJson->encode(["status" => 1,
                               "message"=> urlencode($mensagemRetorno),
-                              "sSlipsGeradoAutomatico" => $sSlipsGeradoAutomatico ));
+                              "sSlipsGeradoAutomatico" => $sSlipsGeradoAutomatico ]);
   }
 
   catch (Exception $eErro) {
 
     db_fim_transacao(true);
-    echo $oJson->encode(array("status" => 2, "message"=> urlencode($eErro->getMessage())));
+    echo $oJson->encode(["status" => 2, "message"=> urlencode($eErro->getMessage())]);
 
   }
 } else if ($oParam->exec == "getTipoServicos") {
   $oRetorno->status   = 1;
-  $oRetorno->tiposServicosNotaFiscal = array();
+  $oRetorno->tiposServicosNotaFiscal = [];
   try {
 
     db_inicio_transacao();
@@ -401,9 +401,7 @@ if ($oParam->exec == "addRetencao") {
     $tiposServicoNotaFiscal = $tiposServicoNotaFiscalRepository->all();
 
     db_fim_transacao(false);
-    $oRetorno->tiposServicosNotaFiscal = array_map(function(TipoServicoNotaFiscal $tipoServicoNotaFiscal) {
-      return $tipoServicoNotaFiscal->toArray();
-    }, $tiposServicoNotaFiscal);
+    $oRetorno->tiposServicosNotaFiscal = array_map(fn(TipoServicoNotaFiscal $tipoServicoNotaFiscal) => $tipoServicoNotaFiscal->toArray(), $tiposServicoNotaFiscal);
     $oRetorno->message = "Consulta realizada com sucesso!";
     $oRetorno->erro = false;
     echo JSON::create()->stringify($oRetorno);
@@ -412,7 +410,7 @@ if ($oParam->exec == "addRetencao") {
   catch (Exception $eErro) {
 
     db_fim_transacao(true);
-    echo $oJson->encode(array("status" => 2, "message"=> urlencode($eErro->getMessage())));
+    echo $oJson->encode(["status" => 2, "message"=> urlencode($eErro->getMessage())]);
 
   }
 }

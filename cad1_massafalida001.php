@@ -32,17 +32,17 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_massafalida_classe.php"));
 include(modification("classes/db_massamat_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clmassafalida = new cl_massafalida;
 $clmassamat = new cl_massamat;
 $db_opcao = 1;
 $db_botao = true;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   db_inicio_transacao();
   $clmassafalida->incluir($j58_codigo);
   $j58_codigo=$clmassafalida->j58_codigo;
-  $matriz=split("#",$matriculas);
+  $matriz=preg_split("#\\##m",$matriculas);
 
   for($i=0;$i<sizeof($matriz);$i++){
     

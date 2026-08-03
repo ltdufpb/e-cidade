@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 /** Extensao : Inicio [integracao-icad] */
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 /** Extensao : Fim [integracao-icad] */
 
 $clrotulo = new rotulocampo;

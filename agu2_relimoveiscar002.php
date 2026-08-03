@@ -69,7 +69,7 @@ $sSql = "
 
 $result = db_query($sSql);
 
-if(pg_numrows($result) == 0) {
+if(pg_num_rows($result) == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
   exit;
 }
@@ -87,7 +87,7 @@ $sSql2   = "select j31_descr from caracter where j31_codigo in ($oGet->lista)";
 $result2 = db_query($sSql2);
 
 $head2 = "";
-for($h = 0; $h < pg_numrows($result2); $h++) {
+for($h = 0; $h < pg_num_rows($result2); $h++) {
   if($h > 7) {
     continue;
   }
@@ -104,7 +104,7 @@ $troca = 1;
 $alt   = 4;
 $total = 0;
 
-for($i = 0; $i < pg_numrows($result); $i++) {
+for($i = 0; $i < pg_num_rows($result); $i++) {
   $objResult = db_utils::fieldsMemory($result, $i);
   
   if ($oPdf->gety() > $oPdf->h - 30 || $troca != 0 ){
@@ -121,7 +121,7 @@ for($i = 0; $i < pg_numrows($result); $i++) {
    }
    $oPdf->setfont('arial','',7);
    $oPdf->cell(20, $alt, $objResult->x01_matric, 0, 0, "C", $p);
-   $oPdf->cell(45, $alt, substr($objResult->j31_descr, 0, 24) , 0, 0, "C", $p);
+   $oPdf->cell(45, $alt, substr((string) $objResult->j31_descr, 0, 24) , 0, 0, "C", $p);
    $oPdf->cell(65, $alt, $objResult->z01_nome  , 0, 0, "L", $p);
    $oPdf->cell(65, $alt, $objResult->x01_promit, 0, 0, "L", $p);
    $oPdf->cell(68, $alt, $objResult->j14_nome  , 0, 0, "L", $p);

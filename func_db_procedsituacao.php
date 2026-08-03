@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_procedsituacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_procedsituacao = new cl_db_procedsituacao;
 $cldb_procedsituacao->rotulo->label("at32_codigo");
 $cldb_procedsituacao->rotulo->label("at32_descr");
@@ -98,9 +98,9 @@ $cldb_procedsituacao->rotulo->label("at32_descr");
         }else{
            $sql = $cldb_procedsituacao->sql_query("",$campos,"at32_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at32_descr)){
-          $repassa = array("chave_at32_codigo"=>$chave_at32_codigo,"chave_at32_descr"=>$chave_at32_descr);
+          $repassa = ["chave_at32_codigo"=>$chave_at32_codigo,"chave_at32_descr"=>$chave_at32_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -51,7 +51,7 @@ switch($oParam->exec) {
 
     try {
 
-      $oRetorno->dados      = array();
+      $oRetorno->dados      = [];
       $sSqlRhArquivossiprev = $oRhArquivossiprev->sql_query("","*","rh94_sequencial ASC","");
       $rsRhArquivossiprev   = $oRhArquivossiprev->sql_record($sSqlRhArquivossiprev);
 
@@ -150,9 +150,7 @@ switch($oParam->exec) {
       fclose($otxtLogger);
 
       $oRetorno->dados  = $aClasses;
-      $aInconsistencias = array_filter(ArquivoSiprevBase::$aErrosProcessamento, function($erros) {
-        return $erros;
-      });
+      $aInconsistencias = array_filter(ArquivoSiprevBase::$aErrosProcessamento, fn($erros) => $erros);
 
       $oRetorno->lTemInconsistencias = false;
 

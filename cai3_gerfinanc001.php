@@ -44,7 +44,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("classes/db_cfiptu_classe.php"));
 use App\Domain\Tributario\ISSQN\Services\WebIss\ConsultaSituacaoContribuinteService;
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $dotenv = new \Dotenv\Dotenv('./');
 $dotenv->load();
@@ -744,7 +744,7 @@ $cod_filtro = "";
 ////////////////////////////////////////////////
 
 
-if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscricao)) {
+if (isset($_POST ["pesquisar"]) || isset($matricula) || isset($inscricao)) {
 
 ?>
 
@@ -756,33 +756,33 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
 
     //aqui é pra se clicar no link da matricula em cai3_gerfinanc002.php
     if (isset($inscricao) && !empty($inscricao)) {
-        $HTTP_POST_VARS ["q02_inscr"] = $inscricao;
+        $_POST ["q02_inscr"] = $inscricao;
     }
     if (isset($matricula) && !empty($matricula)) {
-        $HTTP_POST_VARS ["j01_matric"] = $matricula;
+        $_POST ["j01_matric"] = $matricula;
     }
 
-    if (!empty($HTTP_POST_VARS ["k50_notifica"])) {
+    if (!empty($_POST ["k50_notifica"])) {
         $resultnotifica = db_query("select k57_numcgm,k56_inscr,k55_matric
                                   from notificacao
                                        left join notinumcgm on notificacao.k50_notifica = k57_notifica
                                        left join notiinscr on notiinscr.k56_notifica = notificacao.k50_notifica
                                        left join notimatric on k55_notifica = notificacao.k50_notifica
-                                 where notificacao.k50_notifica = " . $HTTP_POST_VARS ["k50_notifica"]);
-        if (pg_numrows($resultnotifica) == 0) {
-            db_msgbox("Erro(175) não foi encontrada notificação " . $HTTP_POST_VARS ["k50_notifica"]);
+                                 where notificacao.k50_notifica = " . $_POST ["k50_notifica"]);
+        if (pg_num_rows($resultnotifica) == 0) {
+            db_msgbox("Erro(175) não foi encontrada notificação " . $_POST ["k50_notifica"]);
             echo "<script>location.href='cai3_gerfinanc001.php';</script>";
             exit();
-        } elseif (pg_numrows($resultnotifica) > 0) {
+        } elseif (pg_num_rows($resultnotifica) > 0) {
             db_fieldsmemory($resultnotifica, 0);
             if ($k57_numcgm != "") {
-                $HTTP_POST_VARS ["z01_numcgm"] = $k57_numcgm;
+                $_POST ["z01_numcgm"] = $k57_numcgm;
                 $z01_numcgm = $k57_numcgm;
             } else if ($k56_inscr != "") {
-                $HTTP_POST_VARS ["q02_inscr"] = $k56_inscr;
+                $_POST ["q02_inscr"] = $k56_inscr;
                 $inscricao = $k56_inscr;
             } else if ($k55_matric != "") {
-                $HTTP_POST_VARS ["j01_matric"] = $k55_matric;
+                $_POST ["j01_matric"] = $k55_matric;
                 $matricula = $k55_matric;
             }
         }
@@ -790,18 +790,18 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
 
     $mensagemcorte = "";
 
-    if (!empty($HTTP_POST_VARS ["z01_numcgm"])) {
+    if (!empty($_POST ["z01_numcgm"])) {
 
         //---------- Tipo de Filtro usado para consulta e Cod. do mesmo --------
 
         $tipo_filtro = "CGM";
-        $cod_filtro = $HTTP_POST_VARS ["z01_numcgm"];
+        $cod_filtro = $_POST ["z01_numcgm"];
 
         ///////// VERIFICA SE O NUMCGM POSSUI INSCRICOES
         $clsqlinscricoes = new cl_issbase();
-        $sqlinscr = $clsqlinscricoes->sqlinscricoes_nome($HTTP_POST_VARS ["z01_numcgm"]);
+        $sqlinscr = $clsqlinscricoes->sqlinscricoes_nome($_POST ["z01_numcgm"]);
         $resultinscr = db_query($sqlinscr);
-        if (pg_numrows($resultinscr) != 0) {
+        if (pg_num_rows($resultinscr) != 0) {
             $outrasinscricoes = true;
         } else {
             $outrasinscricoes = false;
@@ -809,82 +809,82 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
         //////////////////////////////////////////////////////////////////
 
 
-        $result = db_query("select z01_numcgm as k00_numcgm, z01_nome from cgm where z01_numcgm = " . $HTTP_POST_VARS ["z01_numcgm"]);
-        if (pg_numrows($result) == 0) {
+        $result = db_query("select z01_numcgm as k00_numcgm, z01_nome from cgm where z01_numcgm = " . $_POST ["z01_numcgm"]);
+        if (pg_num_rows($result) == 0) {
             db_msgbox("Numcgm inexistente");
             db_redireciona();
             exit();
         } else {
             db_fieldsmemory($result, 0);
             $resultaux = $result;
-            if (!($result = debitos_tipos_numcgm($HTTP_POST_VARS ["z01_numcgm"]))) {
+            if (!($result = debitos_tipos_numcgm($_POST ["z01_numcgm"]))) {
                 //db_msgbox('Sem débitos a pagar');
                 $mensagem_semdebitos = true;
                 $result = $resultaux;
                 unset($resultaux);
             }
 
-            $arg = "numcgm=" . $HTTP_POST_VARS ["z01_numcgm"];
+            $arg = "numcgm=" . $_POST ["z01_numcgm"];
         }
-    } else if (!empty($HTTP_POST_VARS ["z01_numcgm"])) {
+    } else if (!empty($_POST ["z01_numcgm"])) {
 
         //----------Tipo de Filtro usado para consulta e Cod. do mesmo-----------
 
 
         $tipo_filtro = "CGM";
-        $cod_filtro = $HTTP_POST_VARS ["z01_numcgm"];
+        $cod_filtro = $_POST ["z01_numcgm"];
 
         ////////////////////////////////////////////////////////////////////
 
 
-        $result = db_query("select z01_numcgm as k00_numcgm, z01_nome from cgm where z01_numcgm = " . $HTTP_POST_VARS ["db_numcgm"]);
-        if (pg_numrows($result) == 0) {
+        $result = db_query("select z01_numcgm as k00_numcgm, z01_nome from cgm where z01_numcgm = " . $_POST ["db_numcgm"]);
+        if (pg_num_rows($result) == 0) {
             db_msgbox("Numcgm inexistente");
             db_redireciona();
             exit();
         } else {
             db_fieldsmemory($result, 0);
             $resultaux = $result;
-            if (!($result = debitos_tipos_numcgm($HTTP_POST_VARS ["db_numcgm"]))) {
+            if (!($result = debitos_tipos_numcgm($_POST ["db_numcgm"]))) {
                 //db_msgbox('Sem débitos a pagar');
                 $mensagem_semdebitos = true;
                 $result = $resultaux;
                 unset($resultaux);
             }
-            $arg = "numcgm=" . $HTTP_POST_VARS ["db_numcgm"];
+            $arg = "numcgm=" . $_POST ["db_numcgm"];
         }
 
-    } else if (!empty($HTTP_POST_VARS ["j01_matric"])) {
+    } else if (!empty($_POST ["j01_matric"])) {
         //----------Tipo de Filtro usado para consulta e Cod. do mesmo-----------
 
 
         $tipo_filtro = "MATRICULA";
-        $cod_filtro = $HTTP_POST_VARS ["j01_matric"];
+        $cod_filtro = $_POST ["j01_matric"];
 
         ////////////////////////////////////////////////
 
 
         $result = db_query("select j01_matric,j01_numcgm as k00_numcgm
     from iptubase
-    where j01_matric = " . $HTTP_POST_VARS ["j01_matric"]);
-        if (pg_numrows($result) == 0) {
+    where j01_matric = " . $_POST ["j01_matric"]);
+        if (pg_num_rows($result) == 0) {
             db_msgbox("Matrícula inexistente");
             db_redireciona();
             exit();
         } else {
             $resultaux = $result;
-            if (!($result = debitos_tipos_matricula($HTTP_POST_VARS ["j01_matric"]))) {
+            if (!($result = debitos_tipos_matricula($_POST ["j01_matric"]))) {
                 //db_msgbox('Sem débitos a pagar');
                 $mensagem_semdebitos = true;
                 $result = $resultaux;
                 unset($resultaux);
             }
-            $arg = "matric=" . $HTTP_POST_VARS ["j01_matric"];
+            $arg = "matric=" . $_POST ["j01_matric"];
         }
 
         ///////// VERIFICA SE A MATRÍCULA POSSUI OUTROS PROPRIETÁRIOS
-        $resultpropri = db_query("select * from propri where j42_matric = " . $HTTP_POST_VARS ["j01_matric"]);
-        if (pg_numrows($resultpropri) != 0) {
+        $resultpropri = db_query("select * from propri where j42_matric = " . $_POST ["j01_matric"]);
+        if (pg_num_rows($resultpropri) != 0) {
             $proprietario = true;
         } else {
             $proprietario = false;
@@ -892,8 +892,8 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
 
         ///////// VERIFICAD SE A MATRÍCULA POSSUI PROMITENTES
         $resultpromi = db_query("select * from promitente
-    where j41_matric = " . $HTTP_POST_VARS ["j01_matric"]);
-        if (pg_numrows($resultpromi) != 0) {
+    where j41_matric = " . $_POST ["j01_matric"]);
+        if (pg_num_rows($resultpromi) != 0) {
             $promitente = true;
         } else {
             $promitente = false;
@@ -903,56 +903,56 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
 
         //$resultprinc = db_query("select z01_cgmpri as z01_numcgm, z01_nome from proprietario_nome
         //where j01_matric = ".$HTTP_POST_VARS["j01_matric"]);
-        $sqlenvol = "select rinumcgm as z01_numcgm, rvnome as z01_nome from fc_busca_envolvidos(true, {$db21_regracgmiptu}, 'M', {$HTTP_POST_VARS["j01_matric"]})";
+        $sqlenvol = "select rinumcgm as z01_numcgm, rvnome as z01_nome from fc_busca_envolvidos(true, {$db21_regracgmiptu}, 'M', {$_POST["j01_matric"]})";
         $resultprinc = db_query($sqlenvol);
         db_fieldsmemory($resultprinc, 0);
 
         if ($db21_usasisagua == true) {
             require_once(modification("agu3_conscadastro_002_classe.php"));
-            $Consulta = new ConsultaAguaBase($HTTP_POST_VARS ["j01_matric"]);
+            $Consulta = new ConsultaAguaBase($_POST ["j01_matric"]);
             $sqlcorte = $Consulta->GetAguaCorteMatMovSQL();
             $resultcorte = db_query($sqlcorte) or die($sqlcorte);
-            if (pg_numrows($resultcorte) > 0) {
-                $mensagemcorte = pg_result($resultcorte, 0, "x43_descr");
+            if (pg_num_rows($resultcorte) > 0) {
+                $mensagemcorte = pg_fetch_result($resultcorte, 0, "x43_descr");
             }
         }
 
-    } else if (!empty($HTTP_POST_VARS ["q02_inscr"])) {
+    } else if (!empty($_POST ["q02_inscr"])) {
 
         //----------Tipo de Filtro usado para consulta e Cod. do mesmo-----------
 
 
         $tipo_filtro = "INSCRICAO";
-        $cod_filtro = $HTTP_POST_VARS ["q02_inscr"];
+        $cod_filtro = $_POST ["q02_inscr"];
 
         ////////////////////////////////////////////////
-        $result = db_query("select q02_inscr, q02_inscmu, z01_numcgm, z01_nome from issbase inner join cgm on z01_numcgm = q02_numcgm where q02_inscr = " . $HTTP_POST_VARS ["q02_inscr"]);
+        $result = db_query("select q02_inscr, q02_inscmu, z01_numcgm, z01_nome from issbase inner join cgm on z01_numcgm = q02_numcgm where q02_inscr = " . $_POST ["q02_inscr"]);
 
-        if (pg_numrows($result) == 0) {
+        if (pg_num_rows($result) == 0) {
             db_msgbox("Inscrição inexistente");
             db_redireciona();
             exit();
         } else {
             
             db_fieldsmemory($result, 0);
-            $sqlenvol = "select riinscr as q02_inscr, rinumcgm as z01_numcgm, rvnome as z01_nome from fc_busca_envolvidos(true, {$db21_regracgmiss}, 'I', {$HTTP_POST_VARS["q02_inscr"]})";
+            $sqlenvol = "select riinscr as q02_inscr, rinumcgm as z01_numcgm, rvnome as z01_nome from fc_busca_envolvidos(true, {$db21_regracgmiss}, 'I', {$_POST["q02_inscr"]})";
             $result = db_query($sqlenvol) or die($sqlenvol);
 
             db_fieldsmemory($result, 0);
             $resultaux = $result;
-            if (!($result = debitos_tipos_inscricao($HTTP_POST_VARS ["q02_inscr"]))) {
+            if (!($result = debitos_tipos_inscricao($_POST ["q02_inscr"]))) {
                 //db_msgbox('Sem débitos a pagar');
                 $mensagem_semdebitos = true;
                 $result = $resultaux;
                 unset($resultaux);
             }
-            $arg = "inscr=" . $HTTP_POST_VARS ["q02_inscr"];
+            $arg = "inscr=" . $_POST ["q02_inscr"];
         }
 
-    } else if (!empty($HTTP_POST_VARS ["k00_numpre"])) {
+    } else if (!empty($_POST ["k00_numpre"])) {
 
         $tipo_filtro = "NUMPRE";
-        $cod_filtro = $HTTP_POST_VARS ["k00_numpre"];
+        $cod_filtro = $_POST ["k00_numpre"];
 
         //    echo '<form name="form1" method="post">';
         echo '<table border=1>';
@@ -962,21 +962,21 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                    inner join arrenumcgm on arrenumcgm.k00_numpre = k99_numpre
                    left  join arrematric on arrematric.k00_numpre = k99_numpre
                    left  join arreinscr  on arreinscr.k00_numpre  = k99_numpre
-             where k99_numpre_n = " . $HTTP_POST_VARS ["k00_numpre"];
+             where k99_numpre_n = " . $_POST ["k00_numpre"];
         $sql .= " union ";
         $sql .= "select arrenumcgm.k00_numcgm, k00_matric, k00_inscr, 'RECIBO AVULSO' as tipo
                from recibo
                     inner join arrenumcgm on arrenumcgm.k00_numpre = recibo.k00_numpre
                     left  join arrematric on arrematric.k00_numpre = recibo.k00_numpre
                     left  join arreinscr  on arreinscr.k00_numpre  = recibo.k00_numpre
-              where recibo.k00_numpre = " . $HTTP_POST_VARS ["k00_numpre"];
+              where recibo.k00_numpre = " . $_POST ["k00_numpre"];
         $result = db_query($sql) or die($sql);
         //db_criatabela($result);exit;
 
 
-        $matriz = array();
+        $matriz = [];
 
-        for ($reg = 0; $reg < pg_numrows($result); $reg++) {
+        for ($reg = 0; $reg < pg_num_rows($result); $reg++) {
             db_fieldsmemory($result, $reg);
 
             if (( int )$k00_numcgm > 0) {
@@ -1019,7 +1019,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
     from db_reciboweb
     inner join recibopaga on db_reciboweb.k99_numpre_n = recibopaga.k00_numnov
     inner join arrenumcgm on arrenumcgm.k00_numpre = k99_numpre
-    where k00_hist not in (400,401,918) and k99_numpre_n = " . $HTTP_POST_VARS ["k00_numpre"];
+    where k00_hist not in (400,401,918) and k99_numpre_n = " . $_POST ["k00_numpre"];
 
         $sql .= " union ";
         $sql .= "select distinct recibo.k00_numpre as k99_numpre, recibo.k00_numpar as k99_numpar, recibo.k00_receit as k00_receit, ";
@@ -1033,7 +1033,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
         $sql .= "'RECIBO AVULSO' as tipo ";
         $sql .= " from recibo
     inner join arrenumcgm on arrenumcgm.k00_numpre = recibo.k00_numpre
-    where recibo.k00_numpre = " . $HTTP_POST_VARS ["k00_numpre"];
+    where recibo.k00_numpre = " . $_POST ["k00_numpre"];
 
         $sql .= " union ";
         $sql .= "select distinct divida.v01_numpre as k99_numpre, divida.v01_numpar as k00_numpar, proced.v03_receit as k00_receit, ";
@@ -1048,17 +1048,17 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
         $sql .= " from divida
                    inner join arrenumcgm on arrenumcgm.k00_numpre = divida.v01_numpre
                    inner join proced     on proced.v03_codigo     = divida.v01_proced
-             where divida.v01_numpre = " . $HTTP_POST_VARS ["k00_numpre"] . ") as x
-             where not exists (select k00_numpre from arrecad where k00_numpre = " . $HTTP_POST_VARS ["k00_numpre"] . " limit 1 )
-               and not exists (select k00_numpre from arrecant where k00_numpre = " . $HTTP_POST_VARS ["k00_numpre"] . " limit 1 )";
+             where divida.v01_numpre = " . $_POST ["k00_numpre"] . ") as x
+             where not exists (select k00_numpre from arrecad where k00_numpre = " . $_POST ["k00_numpre"] . " limit 1 )
+               and not exists (select k00_numpre from arrecant where k00_numpre = " . $_POST ["k00_numpre"] . " limit 1 )";
 
         $result = db_query($sql) or die($sql);
 
-        if (pg_numrows($result) > 0) {
+        if (pg_num_rows($result) > 0) {
 
             echo "<tr>
             <b>
-            NUMPRE ORIGINAL: " . $HTTP_POST_VARS ["k00_numpre"] . " - RECIBO DOS SEGUINTES NUMPRES:
+            NUMPRE ORIGINAL: " . $_POST ["k00_numpre"] . " - RECIBO DOS SEGUINTES NUMPRES:
             </b>
             </tr>";
 
@@ -1071,7 +1071,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
             echo "<td><b>ORIGEM</b></td>";
             echo "</tr>";
 
-            for ($registroavulso = 0; $registroavulso < pg_numrows($result); $registroavulso++) {
+            for ($registroavulso = 0; $registroavulso < pg_num_rows($result); $registroavulso++) {
                 db_fieldsmemory($result, $registroavulso);
 
                 $sql_origem = "select distinct k00_numcgm, k00_matric, k00_inscr
@@ -1080,13 +1080,13 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                                    and arreinstit.k00_instit = " . db_getsession('DB_instit') . "
                               left join arrematric on arrematric.k00_numpre = arrenumcgm.k00_numpre
                               left join arreinscr  on arreinscr.k00_numpre  = arrenumcgm.k00_numpre
-                        where arrenumcgm.k00_numpre = " . pg_result($result, $registroavulso, 0);
+                        where arrenumcgm.k00_numpre = " . pg_fetch_result($result, $registroavulso, 0);
                 $result_origem = db_query($sql_origem) or die($sql_origem);
 
-                $matriz_numpre = array();
+                $matriz_numpre = [];
                 $expr_orig = "";
 
-                for ($reg = 0; $reg < pg_numrows($result_origem); $reg++) {
+                for ($reg = 0; $reg < pg_num_rows($result_origem); $reg++) {
                     db_fieldsmemory($result_origem, $reg);
 
                     if (( int )$k00_numcgm > 0) {
@@ -1114,11 +1114,11 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                     }
 
                     for ($reg2 = 0; $reg2 < sizeof($matriz_numpre); $reg2++) {
-                        if (substr($matriz_numpre [$reg2], 0, 1) == "C") {
+                        if (str_starts_with($matriz_numpre [$reg2], "C")) {
                             $expr_orig .= "CGM";
-                        } elseif (substr($matriz_numpre [$reg2], 0, 1) == "M") {
+                        } elseif (str_starts_with($matriz_numpre [$reg2], "M")) {
                             $expr_orig .= "MATRÍCULA";
-                        } elseif (substr($matriz_numpre [$reg2], 0, 1) == "I") {
+                        } elseif (str_starts_with($matriz_numpre [$reg2], "I")) {
                             $expr_orig .= "INSCRIÇÃO";
                         }
                         $expr_orig .= ": " . substr($matriz_numpre [$reg2], 1, strlen($matriz_numpre [$reg2])) . " - ";
@@ -1129,34 +1129,34 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                 $k00_dtpaga = db_formatar($k00_dtpaga, 'd');
 
                 echo "<tr>";
-                echo "<td>" . pg_result($result, $registroavulso, "k99_numpre") . "</td>";
-                echo "<td>" . pg_result($result, $registroavulso, "k99_numpar") . "</td>";
-                echo "<td>" . pg_result($result, $registroavulso, "k00_receit") . "</td>";
+                echo "<td>" . pg_fetch_result($result, $registroavulso, "k99_numpre") . "</td>";
+                echo "<td>" . pg_fetch_result($result, $registroavulso, "k99_numpar") . "</td>";
+                echo "<td>" . pg_fetch_result($result, $registroavulso, "k00_receit") . "</td>";
 
                 $situacao_numpre = "";
 
-                if (pg_result($result, $registroavulso, "k00_dtpaga") != "") {
+                if (pg_fetch_result($result, $registroavulso, "k00_dtpaga") != "") {
                     $situacao_numpre = "PAGO EM $k00_dtpaga";
-                } elseif (pg_result($result, $registroavulso, "k00_numpre_arrecad") > 0) {
+                } elseif (pg_fetch_result($result, $registroavulso, "k00_numpre_arrecad") > 0) {
                     $situacao_numpre = "ABERTO";
-                } elseif (pg_result($result, $registroavulso, "k00_numpre_arrecant") > 0) {
+                } elseif (pg_fetch_result($result, $registroavulso, "k00_numpre_arrecant") > 0) {
                     $situacao_numpre = "CANCELADO";
-                } elseif (pg_result($result, $registroavulso, "k10_coddiv") > 0) {
+                } elseif (pg_fetch_result($result, $registroavulso, "k10_coddiv") > 0) {
                     $sqlcoddiv = "select v01_numpre, v01_numpar from divida where v01_coddiv = $k10_coddiv";
                     $resultcoddiv = db_query($sqlcoddiv) or die($sqlcoddiv);
-                    if (pg_numrows($resultcoddiv) > 0) {
+                    if (pg_num_rows($resultcoddiv) > 0) {
                         db_fieldsmemory($resultcoddiv, 0);
                     }
                     $situacao_numpre = "IMPORTADO - CODDIV: $k10_coddiv - NUMPRE NOVO: $v01_numpre - PARCELA: $v01_numpar";
-                } elseif (pg_result($result, $registroavulso, "v07_parcel") > 0) {
+                } elseif (pg_fetch_result($result, $registroavulso, "v07_parcel") > 0) {
                     $situacao_numpre = "REPARCELAMENTO $v07_parcel";
-                } elseif (pg_result($result, $registroavulso, "v07_parcel_parcelado") != 0) {
+                } elseif (pg_fetch_result($result, $registroavulso, "v07_parcel_parcelado") != 0) {
                     $situacao_numpre = "PARCELAMENTO $v07_parcel_parcelado";
                 } else {
                     $situacao_numpre = "ABERTO";
                 }
                 echo "<td>" . $situacao_numpre . "</td>";
-                echo "<td>" . pg_result($result, $registroavulso, "tipo") . "</td>";
+                echo "<td>" . pg_fetch_result($result, $registroavulso, "tipo") . "</td>";
                 echo "<td>" . $expr_orig . "</td>";
                 echo "</tr>";
 
@@ -1164,11 +1164,11 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
 
             for ($reg = 0; $reg < sizeof($matriz); $reg++) {
 
-                if (substr($matriz [$reg], 0, 1) == "C") {
+                if (str_starts_with($matriz [$reg], "C")) {
                     $expr_orig = "CGM";
-                } elseif (substr($matriz [$reg], 0, 1) == "M") {
+                } elseif (str_starts_with($matriz [$reg], "M")) {
                     $expr_orig = "MATRÍCULA";
-                } elseif (substr($matriz [$reg], 0, 1) == "I") {
+                } elseif (str_starts_with($matriz [$reg], "I")) {
                     $expr_orig = "INSCRIÇÃO";
                 }
             }
@@ -1187,20 +1187,20 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                           inner join arreinstit on arreinstit.k00_numpre = arrenumcgm.k00_numpre
                                                and arreinstit.k00_instit = " . db_getsession('DB_instit') . "
                           inner join cgm on z01_numcgm = k00_numcgm
-                    where arrenumcgm.k00_numpre = " . $HTTP_POST_VARS ["k00_numpre"];
+                    where arrenumcgm.k00_numpre = " . $_POST ["k00_numpre"];
         $sql_result .= " union ";
         $sql_result .= "select recibopaga.k00_numcgm as z01_numcgm, z01_nome
                       from recibopaga
                            inner join arreinstit on arreinstit.k00_numpre = recibopaga.k00_numpre
                                                 and arreinstit.k00_instit = " . db_getsession('DB_instit') . "
                            inner join cgm on z01_numcgm = recibopaga.k00_numcgm
-                     where recibopaga.k00_numnov = " . $HTTP_POST_VARS ["k00_numpre"];
+                     where recibopaga.k00_numnov = " . $_POST ["k00_numpre"];
         $result = db_query($sql_result) or die($sql_result);
-        if (pg_numrows($result) > 0) {
+        if (pg_num_rows($result) > 0) {
             db_fieldsmemory($result, 0);
         }
 
-        $result = debitos_tipos_numpre($HTTP_POST_VARS ["k00_numpre"]);
+        $result = debitos_tipos_numpre($_POST ["k00_numpre"]);
 
         if ($result == false) {
             $sql = "select case
@@ -1210,12 +1210,12 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
             from arreinstit
                left join arrecant  on arrecant.k00_numpre = arreinstit.k00_numpre
                  left join arrepaga  on arrepaga.k00_numpre = arreinstit.k00_numpre
-           where arreinstit.k00_numpre = " . $HTTP_POST_VARS ["k00_numpre"] . "
+           where arreinstit.k00_numpre = " . $_POST ["k00_numpre"] . "
              and arreinstit.k00_instit = " . db_getsession('DB_instit') . " limit 1 ";
 
             $result = db_query($sql);
 
-            if (pg_numrows($result) > 0) {
+            if (pg_num_rows($result) > 0) {
                 $com_debitos = false;
             } else {
                 $result = false;
@@ -1232,18 +1232,18 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
             exit;
         }
 
-        $arg = "numpre=" . $HTTP_POST_VARS ["k00_numpre"];
+        $arg = "numpre=" . $_POST ["k00_numpre"];
 
         echo ' </table>';
         echo '</form>';
 
-    } else if (!empty($HTTP_POST_VARS ["v07_parcel"])) {
+    } else if (!empty($_POST ["v07_parcel"])) {
         $tipo_filtro = "PARCEL";
-        $cod_filtro = $HTTP_POST_VARS ["v07_parcel"];
+        $cod_filtro = $_POST ["v07_parcel"];
 
         $sqlNumpreParcelamento = " select v07_numpre ";
         $sqlNumpreParcelamento .= "   from termo      ";
-        $sqlNumpreParcelamento .= "  where v07_parcel = " . $HTTP_POST_VARS ["v07_parcel"] . "  ";
+        $sqlNumpreParcelamento .= "  where v07_parcel = " . $_POST ["v07_parcel"] . "  ";
         $sqlNumpreParcelamento .= "    and v07_instit = " . db_getsession('DB_instit') . "  ";
         $sqlNumpreParcelamento .= "    and (   exists ( select arrecant.k00_numpre  ";
         $sqlNumpreParcelamento .= "                       from arrecant  ";
@@ -1256,21 +1256,21 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
         $sqlNumpreParcelamento .= "                      where arreold.k00_numpre = termo.v07_numpre limit 1 ) )";
 
         $Rec = db_query($sqlNumpreParcelamento) or die($sqlNumpreParcelamento);
-        if (pg_numrows($Rec) == 0) {
-            db_erro("Erro(175) não foi encontrado numpre pelo codigo do parcelamento " . $HTTP_POST_VARS ["v07_parcel"]);
+        if (pg_num_rows($Rec) == 0) {
+            db_erro("Erro(175) não foi encontrado numpre pelo codigo do parcelamento " . $_POST ["v07_parcel"]);
         }
 
         db_fieldsmemory($Rec, 0);
 
-        if (!($result = debitos_tipos_numpre(pg_result($Rec, 0, 0)))) {
+        if (!($result = debitos_tipos_numpre(pg_fetch_result($Rec, 0, 0)))) {
             $mensagem_semdebitos = true;
         }
 
-        $k00_numpre = pg_result($Rec, 0, "v07_numpre");
+        $k00_numpre = pg_fetch_result($Rec, 0, "v07_numpre");
         $resultaux = 1;
-        $arg = "Parcelamento=" . $HTTP_POST_VARS ["v07_parcel"];
-        $Parcelamento = $HTTP_POST_VARS ["v07_parcel"];
-        pg_freeresult($Rec);
+        $arg = "Parcelamento=" . $_POST ["v07_parcel"];
+        $Parcelamento = $_POST ["v07_parcel"];
+        pg_free_result($Rec);
 
         $sqlcgm = "select k00_numcgm as z01_numcgm, z01_nome
                  from arrenumcgm
@@ -1289,7 +1289,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
     $clsqlamatriculas = new cl_iptubase();
     $sqlmatric = $clsqlamatriculas->sqlmatriculas_nome($z01_numcgm);
     $resultmatric = db_query($sqlmatric);
-    if (pg_numrows($resultmatric) != 0) {
+    if (pg_num_rows($resultmatric) != 0) {
         $outrasmatriculas = true;
     } else {
         $outrasmatriculas = false;
@@ -1299,7 +1299,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
     $clsqlinscricoes = new cl_issbase();
     $sqlsocios = $clsqlinscricoes->sqlinscricoes_socios(0, $z01_numcgm, "cgmsocio.z01_nome");
     $resultsocios = db_query($sqlsocios);
-    if (pg_numrows($resultsocios) != 0) {
+    if (pg_num_rows($resultsocios) != 0) {
         $socios = true;
     } else {
         $socios = false;
@@ -1326,40 +1326,40 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
     /*==================== VERIFICA SE EXISTE DEBITOS PRESCRITOS =========================*/
     $innerjoin = "";
     $where = " where k30_anulado is false ";
-    if (isset($HTTP_POST_VARS ["k00_numpre"]) && $HTTP_POST_VARS ["k00_numpre"] != "") {
+    if (isset($_POST ["k00_numpre"]) && $_POST ["k00_numpre"] != "") {
 
         $tipo_filtro = "NUMPRE";
-        $cod_filtro = $HTTP_POST_VARS ["k00_numpre"];
+        $cod_filtro = $_POST ["k00_numpre"];
         $innerjoin = " inner join arreinstit on arreinstit.k00_numpre = k30_numpre ";
         $innerjoin .= "                      and arreinstit.k00_instit = " . db_getsession('DB_instit');
-        $where = "and k30_numpre = " . $HTTP_POST_VARS ["k00_numpre"];
-    } else if (isset($HTTP_POST_VARS ["j01_matric"]) && $HTTP_POST_VARS ["j01_matric"] != "") {
+        $where = "and k30_numpre = " . $_POST ["k00_numpre"];
+    } else if (isset($_POST ["j01_matric"]) && $_POST ["j01_matric"] != "") {
         $tipo_filtro = "MATRICULA";
-        $cod_filtro = $HTTP_POST_VARS ["j01_matric"];
+        $cod_filtro = $_POST ["j01_matric"];
         $innerjoin = " inner join arrematric on k30_numpre = arrematric.k00_numpre";
         $innerjoin .= " inner join arreinstit on arreinstit.k00_numpre = arrematric.k00_numpre ";
         $innerjoin .= "                      and arreinstit.k00_instit = " . db_getsession('DB_instit');
 
-        $where = "and k00_matric = " . $HTTP_POST_VARS ["j01_matric"];
-    } else if (isset($HTTP_POST_VARS ["q02_inscr"]) && $HTTP_POST_VARS ["q02_inscr"] != "") {
+        $where = "and k00_matric = " . $_POST ["j01_matric"];
+    } else if (isset($_POST ["q02_inscr"]) && $_POST ["q02_inscr"] != "") {
 
         $tipo_filtro = "INSCRICAO";
-        $cod_filtro = $HTTP_POST_VARS ["q02_inscr"];
+        $cod_filtro = $_POST ["q02_inscr"];
         $innerjoin = " inner join arreinscr on k30_numpre = arreinscr.k00_numpre";
         $innerjoin .= " inner join arreinstit on arreinstit.k00_numpre = arreinscr.k00_numpre ";
         $innerjoin .= "                      and arreinstit.k00_instit = " . db_getsession('DB_instit');
-        $where = "and k00_inscr = " . $HTTP_POST_VARS ["q02_inscr"];
-    } else if (isset($HTTP_POST_VARS ["v07_parcel"]) && $HTTP_POST_VARS ["v07_parcel"] != "") {
+        $where = "and k00_inscr = " . $_POST ["q02_inscr"];
+    } else if (isset($_POST ["v07_parcel"]) && $_POST ["v07_parcel"] != "") {
 
         $tipo_filtro = "PARCEL";
-        $cod_filtro = $HTTP_POST_VARS ["v07_parcel"];
+        $cod_filtro = $_POST ["v07_parcel"];
         $innerjoin = " inner join termo on v07_numpre = k30_numpre ";
-        $where = " and v07_parcel = " . $HTTP_POST_VARS ["v07_parcel"];
+        $where = " and v07_parcel = " . $_POST ["v07_parcel"];
 
     } else {
 
         $tipo_filtro = "CGM";
-        $cod_filtro = $HTTP_POST_VARS ["z01_numcgm"];
+        $cod_filtro = $_POST ["z01_numcgm"];
         $innerjoin = " inner join arrenumcgm on k30_numpre = arrenumcgm.k00_numpre";
         $innerjoin .= " inner join arreinstit on arreinstit.k00_numpre = arrenumcgm.k00_numpre ";
         $innerjoin .= "                      and arreinstit.k00_instit = " . db_getsession('DB_instit');
@@ -1378,49 +1378,49 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
     }
     /*====================================================================================*/
     ////////////////////////////// VERIFICA SE TEM DEBITO JUSTIFICADO //////////////////////////////////
-    if (isset($HTTP_POST_VARS ["k00_numpre"]) && $HTTP_POST_VARS ["k00_numpre"] != "") {
+    if (isset($_POST ["k00_numpre"]) && $_POST ["k00_numpre"] != "") {
 
         $tipo_filtro = "NUMPRE";
-        $cod_filtro = $HTTP_POST_VARS ["k00_numpre"];
+        $cod_filtro = $_POST ["k00_numpre"];
         $sqlarrejustreg = "select *                                                                               ";
         $sqlarrejustreg .= "  from arrejustreg                                                                     ";
         $sqlarrejustreg .= "         inner join arreinstit on arreinstit.k00_numpre = arrejustreg.k28_numpre       ";
         $sqlarrejustreg .= "                              and arreinstit.k00_instit = " . db_getsession('DB_instit');
-        $sqlarrejustreg .= " where k28_numpre = " . $HTTP_POST_VARS ["k00_numpre"];
-    } else if (isset($HTTP_POST_VARS ["j01_matric"]) && $HTTP_POST_VARS ["j01_matric"] != "") {
+        $sqlarrejustreg .= " where k28_numpre = " . $_POST ["k00_numpre"];
+    } else if (isset($_POST ["j01_matric"]) && $_POST ["j01_matric"] != "") {
         $tipo_filtro = "MATRICULA";
-        $cod_filtro = $HTTP_POST_VARS ["j01_matric"];
+        $cod_filtro = $_POST ["j01_matric"];
         $sqlarrejustreg = "select *                                                                               ";
         $sqlarrejustreg .= "  from arrejustreg                                                                     ";
         $sqlarrejustreg .= "       inner join arrematric on k28_numpre = arrematric.k00_numpre                     ";
         $sqlarrejustreg .= "       inner join arreinstit on arreinstit.k00_numpre = arrematric.k00_numpre          ";
         $sqlarrejustreg .= "                              and arreinstit.k00_instit = " . db_getsession('DB_instit');
-        $sqlarrejustreg .= " where k00_matric = " . $HTTP_POST_VARS ["j01_matric"];
-    } else if (isset($HTTP_POST_VARS ["q02_inscr"]) && $HTTP_POST_VARS ["q02_inscr"] != "") {
+        $sqlarrejustreg .= " where k00_matric = " . $_POST ["j01_matric"];
+    } else if (isset($_POST ["q02_inscr"]) && $_POST ["q02_inscr"] != "") {
 
         $tipo_filtro = "INSCRICAO";
-        $cod_filtro = $HTTP_POST_VARS ["q02_inscr"];
+        $cod_filtro = $_POST ["q02_inscr"];
         $sqlarrejustreg = "select *                                                                           ";
         $sqlarrejustreg .= "  from arrejustreg                                                                 ";
         $sqlarrejustreg .= "       inner join arreinscr on k28_numpre = arreinscr.k00_numpre                   ";
         $sqlarrejustreg .= "       inner join arreinstit on arreinstit.k00_numpre = arreinscr.k00_numpre       ";
         $sqlarrejustreg .= "                          and arreinstit.k00_instit = " . db_getsession('DB_instit');
-        $sqlarrejustreg .= " where k00_inscr = " . $HTTP_POST_VARS ["q02_inscr"];
-    } else if (isset($HTTP_POST_VARS ["v07_parcel"]) && $HTTP_POST_VARS ["v07_parcel"] != "") {
+        $sqlarrejustreg .= " where k00_inscr = " . $_POST ["q02_inscr"];
+    } else if (isset($_POST ["v07_parcel"]) && $_POST ["v07_parcel"] != "") {
 
         $tipo_filtro = "PARCEL";
-        $cod_filtro = $HTTP_POST_VARS ["v07_parcel"];
+        $cod_filtro = $_POST ["v07_parcel"];
         $sqlarrejustreg = "select *                                                                             ";
         $sqlarrejustreg .= "  from arrejustreg                                                                   ";
         $sqlarrejustreg .= "       inner join termo      on termo.v07_numpre      = arrejustreg.k28_numpre       ";
         $sqlarrejustreg .= "       inner join arreinstit on arreinstit.k00_numpre = termo.v07_numpre             ";
         $sqlarrejustreg .= "                            and arreinstit.k00_instit = " . db_getsession('DB_instit');
-        $sqlarrejustreg .= " where v07_parcel = " . $HTTP_POST_VARS ["v07_parcel"];
+        $sqlarrejustreg .= " where v07_parcel = " . $_POST ["v07_parcel"];
 
     } else {
 
         $tipo_filtro = "CGM";
-        $cod_filtro = $HTTP_POST_VARS ["z01_numcgm"];
+        $cod_filtro = $_POST ["z01_numcgm"];
         $sqlarrejustreg = "select *                                                                             ";
         $sqlarrejustreg .= "from arrejustreg 							                                     	   ";
         $sqlarrejustreg .= "     inner join arrenumcgm on k28_numpre            = arrenumcgm.k00_numpre          ";
@@ -1477,11 +1477,11 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
 
 
                                         $resultloteador = db_query($sqlloteador) or die($sqlloteador);
-                                        if (pg_numrows($resultloteador) > 0) {
+                                        if (pg_num_rows($resultloteador) > 0) {
                                             echo "<b> <font color=red> - LOTEAMENTO - </b>";
                                         }
 
-                                        parse_str($arg);
+                                        parse_str((string) $arg, $result);
                                         if (isset($matric)) {
                                             $sTipoChavePesquisa = "matricula";
                                             if (!$bloqueiaLinkCTM) {
@@ -1516,27 +1516,27 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                             echo "<b> <font color=red><blink> - $mensagemcorte</b>";
                                         }
 
-                                        if (isset($HTTP_POST_VARS ["j01_matric"]) && !empty($HTTP_POST_VARS ["j01_matric"])) {
+                                        if (isset($_POST ["j01_matric"]) && !empty($_POST ["j01_matric"])) {
                                             if (!$db21_usasisagua) {
 
-                                                $sqlbaixada = "select j01_baixa from iptubase where j01_matric = " . $HTTP_POST_VARS ["j01_matric"] . " and j01_baixa is not null";
+                                                $sqlbaixada = "select j01_baixa from iptubase where j01_matric = " . $_POST ["j01_matric"] . " and j01_baixa is not null";
                                                 $resultbaixada = db_query($sqlbaixada) or die($sqlbaixada);
                                             } else {
 
-                                                $sqlbaixada = "select x08_data as j01_baixa from aguabasebaixa where x08_matric = " . $HTTP_POST_VARS ["j01_matric"];
+                                                $sqlbaixada = "select x08_data as j01_baixa from aguabasebaixa where x08_matric = " . $_POST ["j01_matric"];
                                                 $resultbaixada = db_query($sqlbaixada) or die($sqlbaixada);
                                             }
-                                            if (pg_numrows($resultbaixada) > 0) {
-                                                echo "<b><font color=red><blink> - MATRÍCULA BAIXADA EM " . db_formatar(pg_result($resultbaixada, 0, "j01_baixa"), "d") . "</b>";
+                                            if (pg_num_rows($resultbaixada) > 0) {
+                                                echo "<b><font color=red><blink> - MATRÍCULA BAIXADA EM " . db_formatar(pg_fetch_result($resultbaixada, 0, "j01_baixa"), "d") . "</b>";
                                             }
                                         }
 
-                                        if (isset($HTTP_POST_VARS ["q02_inscr"]) && !empty($HTTP_POST_VARS ["q02_inscr"])) {
+                                        if (isset($_POST ["q02_inscr"]) && !empty($_POST ["q02_inscr"])) {
 
-                                            $sqlbaixada = "select q02_dtbaix from issbase where q02_inscr = " . $HTTP_POST_VARS ["q02_inscr"] . " and q02_dtbaix is not null";
+                                            $sqlbaixada = "select q02_dtbaix from issbase where q02_inscr = " . $_POST ["q02_inscr"] . " and q02_dtbaix is not null";
                                             $resultbaixada = db_query($sqlbaixada) or die($sqlbaixada);
-                                            if (pg_numrows($resultbaixada) > 0) {
-                                                echo "<b> <font color=red><blink> - INSCRIÇÃO BAIXADA EM " . db_formatar(pg_result($resultbaixada, 0, "q02_dtbaix"), "d") . "</b>";
+                                            if (pg_num_rows($resultbaixada) > 0) {
+                                                echo "<b> <font color=red><blink> - INSCRIÇÃO BAIXADA EM " . db_formatar(pg_fetch_result($resultbaixada, 0, "q02_dtbaix"), "d") . "</b>";
                                             } else {
                                                 
                                                 $sqlparalisada = "select 
@@ -1546,13 +1546,13 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                                             issbaseparalisacao 
                                                            inner join issmotivoparalisacao on
                                                             q141_sequencial = q140_issmotivoparalisacao
-                                                           where q140_issbase = " . $HTTP_POST_VARS ["q02_inscr"]
+                                                           where q140_issbase = " . $_POST ["q02_inscr"]
                                                                 . " and (q140_datafim > current_date OR q140_datafim is null)";
                                                 $resultparalisada = db_query($sqlparalisada) or die($sqlparalisada);
-                                                if (pg_numrows($resultparalisada) > 0) {
+                                                if (pg_num_rows($resultparalisada) > 0) {
                                                     echo "<b> <font color=red><blink> - INSCRIÇÃO PARALISADA EM " 
-                                                        . db_formatar(pg_result($resultparalisada, 0, "q140_datainicio"), "d") 
-                                                        . " - " . pg_result($resultparalisada, 0, "q141_descricao") . "</b>";
+                                                        . db_formatar(pg_fetch_result($resultparalisada, 0, "q140_datainicio"), "d") 
+                                                        . " - " . pg_fetch_result($resultparalisada, 0, "q141_descricao") . "</b>";
                                                 }
                                             }
                                         }
@@ -1589,33 +1589,33 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                     <tr>
                                         <td height="21" colspan="2" nowrap class="tabcols">
                                             <?php 
-                                            if (isset($HTTP_POST_VARS ["j01_matric"]) && !empty($HTTP_POST_VARS ["j01_matric"])) {
-                                                echo "<input type=\"hidden\" name=\"j01_matric\"  value=\"" . $HTTP_POST_VARS ["j01_matric"] . "\">";
+                                            if (isset($_POST ["j01_matric"]) && !empty($_POST ["j01_matric"])) {
+                                                echo "<input type=\"hidden\" name=\"j01_matric\"  value=\"" . $_POST ["j01_matric"] . "\">";
                                                 $innerJoinOutros = " arrematric on arrematric.k00_numpre = arreinstit.k00_numpre ";
-                                                $whereOutras = " arrematric.k00_matric = " . $HTTP_POST_VARS ["j01_matric"];
+                                                $whereOutras = " arrematric.k00_matric = " . $_POST ["j01_matric"];
                                             }
-                                            if (isset($HTTP_POST_VARS ["q02_inscr"]) && !empty($HTTP_POST_VARS ["q02_inscr"])) {
+                                            if (isset($_POST ["q02_inscr"]) && !empty($_POST ["q02_inscr"])) {
 
-                                                echo "<input type=\"hidden\" name=\"q02_inscr\"  value=\"" . $HTTP_POST_VARS ["q02_inscr"] . "\">";
+                                                echo "<input type=\"hidden\" name=\"q02_inscr\"  value=\"" . $_POST ["q02_inscr"] . "\">";
                                                 $innerJoinOutros = "arreinscr on arreinscr.k00_numpre = arreinstit.k00_numpre ";
-                                                $whereOutras = "arreinscr.k00_inscr = " . $HTTP_POST_VARS ["q02_inscr"];
+                                                $whereOutras = "arreinscr.k00_inscr = " . $_POST ["q02_inscr"];
                                             }
-                                            if (isset($HTTP_POST_VARS ["z01_numcgm"]) && !empty($HTTP_POST_VARS ["z01_numcgm"])) {
+                                            if (isset($_POST ["z01_numcgm"]) && !empty($_POST ["z01_numcgm"])) {
 
-                                                echo "<input type=\"hidden\" name=\"z01_numcgm\"  value=\"" . $HTTP_POST_VARS ["z01_numcgm"] . "\">";
+                                                echo "<input type=\"hidden\" name=\"z01_numcgm\"  value=\"" . $_POST ["z01_numcgm"] . "\">";
                                                 $innerJoinOutros = "arrenumcgm on arrenumcgm.k00_numpre = arreinstit.k00_numpre ";
-                                                $whereOutras = "arrenumcgm.k00_numcgm = " . $HTTP_POST_VARS ["z01_numcgm"];
+                                                $whereOutras = "arrenumcgm.k00_numcgm = " . $_POST ["z01_numcgm"];
                                             }
-                                            if (isset($HTTP_POST_VARS ["v07_parcel"]) && !empty($HTTP_POST_VARS ["v07_parcel"])) {
+                                            if (isset($_POST ["v07_parcel"]) && !empty($_POST ["v07_parcel"])) {
 
-                                                echo "<input type=\"hidden\" name=\"v07_parcel\"  value=\"" . $HTTP_POST_VARS ["v07_parcel"] . "\">";
+                                                echo "<input type=\"hidden\" name=\"v07_parcel\"  value=\"" . $_POST ["v07_parcel"] . "\">";
                                                 $innerJoinOutros = "termo on termo.v07_numpre = arreinstit.k00_numpre ";
-                                                $whereOutras = "termo.v07_parcel = " . $HTTP_POST_VARS ["v07_parcel"];
+                                                $whereOutras = "termo.v07_parcel = " . $_POST ["v07_parcel"];
                                             }
-                                            if (isset($HTTP_POST_VARS ["k00_numpre"]) && !empty($HTTP_POST_VARS ["k00_numpre"])) {
+                                            if (isset($_POST ["k00_numpre"]) && !empty($_POST ["k00_numpre"])) {
 
-                                                echo "<input type=\"hidden\" name=\"k00_numpre\"  value=\"" . $HTTP_POST_VARS ["k00_numpre"] . "\">";
-                                                $whereOutras = "arreinstit.k00_numpre = " . $HTTP_POST_VARS ["k00_numpre"];
+                                                echo "<input type=\"hidden\" name=\"k00_numpre\"  value=\"" . $_POST ["k00_numpre"] . "\">";
+                                                $whereOutras = "arreinstit.k00_numpre = " . $_POST ["k00_numpre"];
                                                 $innerJoinOutros = "arrenumcgm on arrenumcgm.k00_numpre = arreinstit.k00_numpre ";
                                             }
                                             ?>
@@ -1636,7 +1636,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
 
                                             //este select é pra ver se o cgm esta no ruas e tb tem CPF/CNPJ para deixar preenchido o responsavel pelo parcelamento
                                             $re_cgm = db_query("select * from cgm c left join db_cgmruas r on r.z01_numcgm = c.z01_numcgm where c.z01_numcgm = $z01_numcgm and trim(c.z01_cgccpf) <> ''");
-                                            if (pg_numrows($re_cgm) > 0) {
+                                            if (pg_num_rows($re_cgm) > 0) {
                                                 $id_resp_parc = $z01_numcgm;
                                                 $resp_parc = $z01_nome;
                                             }
@@ -1677,7 +1677,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                             $sqlDebitosOutrasinstit .= "                      where arrecad.k00_numpre = arreinstit.k00_numpre)) as a; ";
 
                             $rsDebitosOutrasInstit = db_query($sqlDebitosOutrasinstit);
-                            if (pg_numrows($rsDebitosOutrasInstit) > 0) {
+                            if (pg_num_rows($rsDebitosOutrasInstit) > 0) {
                                 db_fieldsmemory($rsDebitosOutrasInstit, 0);
 
                                 if ($k00_diasvenc > 0) {
@@ -1696,7 +1696,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
 
 
                             if ($result) {
-                                $numrows = pg_numrows($result);
+                                $numrows = pg_num_rows($result);
                             } else {
                                 $numrows = 0;
                             }
@@ -1710,7 +1710,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                             echo "<table border=\"1\" cellspacing=\"0\" cellpadding=\"0\">\n<tr class=\"links\">\n<td valign=\"top\" style=\"font-size:11px\"> <form name=\"form2\" method=\"post\" target=\"debitos\">\n";
 
                             $iPerfilProcuradoria = 1;
-                            if (isset($db21_codcli) && in_array($db21_codcli, array(19985, 7107))) {
+                            if (isset($db21_codcli) && in_array($db21_codcli, [19985, 7107])) {
 
                                 if ($db21_codcli == 19985) {
                                     $sPerfilProcuradoria = "SELECT db_permherda.id_usuario from configuracoes.db_permherda where db_permherda.id_usuario = " . db_getsession('DB_id_usuario') . " and db_permherda.id_perfil in (334, 338) union select db_usuarios.id_usuario from configuracoes.db_usuarios where db_usuarios.id_usuario = " . db_getsession('DB_id_usuario') . " and administrador = 1";
@@ -1718,7 +1718,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                     $sPerfilProcuradoria = "SELECT db_permherda.id_usuario from configuracoes.db_permherda where db_permherda.id_usuario = " . db_getsession('DB_id_usuario') . " and db_permherda.id_perfil = 3685 union select db_usuarios.id_usuario from configuracoes.db_usuarios where db_usuarios.id_usuario = " . db_getsession('DB_id_usuario') . " and administrador = 1";
                                 }
                                 $rsPerfilProcuradoria = db_query($sPerfilProcuradoria) or die($sPerfilProcuradoria);
-                                if (pg_numrows($rsPerfilProcuradoria) > 0) {
+                                if (pg_num_rows($rsPerfilProcuradoria) > 0) {
                                     $iPerfilProcuradoria = 1;
                                 } else {
                                     $iPerfilProcuradoria = 0;
@@ -1732,7 +1732,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                     $sql_k03_tipo = "select k03_tipo
                                                        from arretipo
                                                       where k00_instit = " . db_getsession('DB_instit') . "
-                                                        and k00_tipo = " . pg_result($result, $i, "k00_tipo");
+                                                        and k00_tipo = " . pg_fetch_result($result, $i, "k00_tipo");
                                     $result_k03_tipo = db_query($sql_k03_tipo);
                                     db_fieldsmemory($result_k03_tipo, 0);
 
@@ -1745,7 +1745,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                     }
                                     if ($k03_tipo == $v04_tipoinicial) {
                                         $nome_arquivo = 'cai3_gerfinanc050.php';
-                                    } else if (pg_result($result, $i, "k00_tipo") == $v04_tipocertidao) {
+                                    } else if (pg_fetch_result($result, $i, "k00_tipo") == $v04_tipocertidao) {
                                         $nome_arquivo = 'cai3_gerfinanc040.php';
                                     } else {
                                         $nome_arquivo = 'cai3_gerfinanc002.php';
@@ -1757,7 +1757,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
     <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <tr>
     <td valign=\"center\" class=\"links\" id=\"tipodeb$i\">
-      <a title=\"" . pg_result($result, $i, "k00_tipo") . "\" class=\"links\" href=\"\" id=\"tipodeb$i\" onClick=\"js_ajustaBotaoTef(" . pg_result($result, $i, "k00_tipo") . "); js_MudaLink('tipodeb$i');js_envia('$nome_arquivo?" . $arg . "&tipo=" . pg_result($result, $i, "k00_tipo") . "&emrec=" . pg_result($result, $i, "k00_emrec") . "&agnum=" . pg_result($result, $i, "k00_agnum") . "&agpar=" . pg_result($result, $i, "k00_agpar") . "&certidao=$certidao&k03_tipo=$k03_tipo&perfil_procuradoria=$iPerfilProcuradoria&k00_tipo=" . pg_result($result, $i, "k00_tipo") . "&db_datausu=');return false;\" target=\"debitos\">" . pg_result($result, $i, "k00_descr") . "&nbsp;</a>
+      <a title=\"" . pg_fetch_result($result, $i, "k00_tipo") . "\" class=\"links\" href=\"\" id=\"tipodeb$i\" onClick=\"js_ajustaBotaoTef(" . pg_fetch_result($result, $i, "k00_tipo") . "); js_MudaLink('tipodeb$i');js_envia('$nome_arquivo?" . $arg . "&tipo=" . pg_fetch_result($result, $i, "k00_tipo") . "&emrec=" . pg_fetch_result($result, $i, "k00_emrec") . "&agnum=" . pg_fetch_result($result, $i, "k00_agnum") . "&agpar=" . pg_fetch_result($result, $i, "k00_agpar") . "&certidao=$certidao&k03_tipo=$k03_tipo&perfil_procuradoria=$iPerfilProcuradoria&k00_tipo=" . pg_fetch_result($result, $i, "k00_tipo") . "&db_datausu=');return false;\" target=\"debitos\">" . pg_fetch_result($result, $i, "k00_descr") . "&nbsp;</a>
     </td>
     </tr>
     </table>\n";
@@ -1788,7 +1788,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                     $sql_lev = $cllevanta->sql_query_inf(null, "levanta.*", null, " y60_importado is false " . $where_lev);
                                 }
                                 $dados_lev = db_query($sql_lev);
-                                if (pg_numrows($dados_lev) > 0) {
+                                if (pg_num_rows($dados_lev) > 0) {
                                     echo "
     <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <tr>
@@ -1804,7 +1804,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                 $permissao = db_permissaomenu(db_getsession("DB_anousu"), 1985522, 5604);
 
                                 //colocado aqui
-                                $tipo_pesq = explode("=", $arg);
+                                $tipo_pesq = explode("=", (string) $arg);
                                 if ($tipo_pesq [0] != "numpre") {
                                     $tipo = "c";
                                     $whereissvar = ($k03_certissvar == 't' ? " k00_valor <> 0 " : "");
@@ -1872,8 +1872,8 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                                                 and arrecad.k00_dtvenc < current_date;";
 
                                          $rsCGMsCPFCNPJ = db_query($sSqlCGMsCPFCNPJ) or die($sSqlCGMsCPFCNPJ);
-                                         $totLin = pg_numrows($rsCGMsCPFCNPJ);
-                                         
+                                         $totLin = pg_num_rows($rsCGMsCPFCNPJ);
+
                                          if ($totLin > 0) {
                                             for ($idx = 0; $idx < $totLin; $idx++) {
                                                 db_fieldsmemory($rsCGMsCPFCNPJ, $idx);
@@ -1885,7 +1885,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                                     break;
                                                 }                                                  
                                             }
-                                        
+
                                          } else {
                                             $sql = "select * from fc_tipocertidao({$tipo_pesq[1]}, '{$tipo}', '{$database}', '{$whereissvar}', {$sTipo})";    
                                             $dados = db_query($sql) or die($sql);
@@ -1898,14 +1898,14 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                       }
                                       $certidao = $fc_tipocertidao;
                                       try {
-                                        
+
                                           $oConsultaWebiss  = new ConsultaSituacaoContribuinteService();
                                           $dadosServico  = ""; 
                                           $k00_mensagem  = "";
                                           switch ($certidao) {
-                                            
+
                                             case 'positiva':
-                                              
+
                                               $idtipo    = "tiposemdeb3";  
                                               $tipocert  = "1"; 
                                               $descricao = "CERTIDÃO POSITIVA{$link}"; 
@@ -1914,16 +1914,16 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                                 $oResultado = $oConsultaWebiss->getValidacaoContribuinte($z01_cgccpf, empty($q02_inscmu)?$q02_inscr:$q02_inscmu);
                                                 $sResultado = $oResultado->resultado;
                                                 if ($sResultado == ConsultaSituacaoContribuinteService::POSITIVA || $sResultado == ConsultaSituacaoContribuinteService::POSITIVA_EFEITO_NEGATIVA) {
-                                                
+
                                                   $k00_mensagem = "EXISTEM DÉBITOS EM SISTEMA EXTERNO";
                                                   echo "<table> <tr> <td class=\"links2\" colspan='3' align='center'><p style='color: #FF0000'>{$k00_mensagem}</p></td> </tr> </table>";
-                                            
+
                                                 }
                                               }
                                             break;
-                                            
+
                                             case 'regular':
-                                                
+
                                                 $idtipo    = "tiposemdeb4";
                                                 $descricao = "CERTIDÃO REGULAR{$link}";
                                                 $tipocert  = "0";
@@ -1932,7 +1932,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                                   $oResultado = $oConsultaWebiss->getValidacaoContribuinte($z01_cgccpf, empty($q02_inscmu)?$q02_inscr:$q02_inscmu);
                                                   $sResultado = $oResultado->resultado;
                                                   if($sResultado == ConsultaSituacaoContribuinteService::POSITIVA) {
-                                                  
+
                                                     $idtipo       = "tiposemdeb3";
                                                     $tipocert     = "1";
                                                     $descricao    = "CERTIDÃO POSITIVA{$link}"; 
@@ -1942,9 +1942,9 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                                   }
                                                 }
                                             break;
-                                          
+
                                             default:
-                                              
+
                                               $idtipo    = "tiposemdeb5";
                                               $tipocert  = "2";
                                               $descricao = "CERTIDÃO NEGATIVA{$link}";
@@ -1953,34 +1953,34 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                                 $oResultado = $oConsultaWebiss->getValidacaoContribuinte($z01_cgccpf, empty($q02_inscmu)?$q02_inscr:$q02_inscmu);
                                                 $sResultado = $oResultado->resultado;
                                                 switch ($sResultado) {
-                                                
+
                                                 case ConsultaSituacaoContribuinteService::POSITIVA:
-                                                
+
                                                   $idtipo       = "tiposemdeb3";
                                                   $tipocert     = "1";  
                                                   $descricao    = "CERTIDÃO POSITIVA{$link}";
                                                   $dadosServico ="&nomeservico=".ConsultaSituacaoContribuinteService::NOME_SERVICO."&resultado={$oResultado->resultado}&dataconsulta={$oResultado->data}";  
                                                   $k00_mensagem = "EXISTEM DÉBITOS EM SISTEMA EXTERNO";
                                                   echo "<table> <tr> <td class=\"links2\" colspan='3' align='center'><p style='color: #FF0000'>{$k00_mensagem}</p></td> </tr> </table>";
-                                                
+
                                                 break;
-                                                    
+
                                                 case ConsultaSituacaoContribuinteService::POSITIVA_EFEITO_NEGATIVA:
-                                                    
+
                                                   $idtipo    = "tiposemdeb4";
                                                   $tipocert  = "0";
                                                   $descricao = "CERTIDÃO REGULAR{$link}"; 
                                                   $dadosServico="&resultado={$oResultado->resultado}&dataconsulta={$oResultado->data}"; 
                                                   $k00_mensagem = "EXISTEM DÉBITOS EM SISTEMA EXTERNO";
                                                   echo " <table> <tr> <td class=\"links2\" colspan='3' align='center'> <p style='color: #FF0000'>{$k00_mensagem}</p> </td> </tr> </table>";
-                                            
+
                                                 break;
-                                                
+
                                                 }
                                               }
                                             break;
                                           }
-                                        
+
                                         if ($bBloqueioCertidao) {
                                            continue; 
                                         }
@@ -1991,17 +1991,17 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                                                               base64_encode("indconjunta=" . 
                                                               $tipoindconj . "&tipo_cert={$tipocert}&" . $arg . $dadosServico) . 
                                                               "\" target=\"debitos\">{$descricao}</a>";
-                                          
+
                                           if ($permissao == "false") {
 
                                             $descricao = str_replace($link, "", $descricao);
                                             $nomeLink = "<b>$descricao</b>";
                                           }
                                         } catch (Exception $oErro) {
-                                            
+
                                             $nomeLink = "<a title='".$oErro->getMessage()."'>CERTIDÃO INDISPONÍVEL</a>";  
                                         }
-                                         
+
 
                                           echo "
                                                   <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
@@ -2205,7 +2205,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
 
                             $dados = db_query($sql);
 
-                            if (pg_numrows($dados) > 0) {
+                            if (pg_num_rows($dados) > 0) {
                                 echo "
     <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <tr>
@@ -2454,7 +2454,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                             $sql = $sql . " and p.k00_numpre is null and arreprescr.k30_numpre is null limit 1";
                             $dados = db_query($sql);
 
-                            if (pg_numrows($dados) > 0) {
+                            if (pg_num_rows($dados) > 0) {
                                 echo "
     <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <tr>
@@ -2489,7 +2489,7 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                             }
                             $sql = $sql . " limit 1";
                             $dados = db_query($sql);
-                            if (pg_numrows($dados) > 0) {
+                            if (pg_num_rows($dados) > 0) {
                                 echo "
     <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
     <tr>
@@ -2637,10 +2637,10 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
                 <?php 
                 /*************************************************************************************************************************************/
                 echo "<b> Parcelas de outros exercicios : </b>";
-                $x = array(
+                $x = [
                     "i" => "Imprimir todas mas com qtd. de Inflator para exercicios posteriores",
                     "n" => "Não imprimir parcelas de exercicios posteriores"
-                );
+                ];
                 db_select('emisscarne', $x, true, "", " disabled onchange=''");
                 /*************************************************************************************************************************************/
                 ?>
@@ -2764,8 +2764,8 @@ if (isset($HTTP_POST_VARS ["pesquisar"]) || isset($matricula) || isset($inscrica
         <span id="impvalores" style="display: none;">
           <strong>Imprimir com Valores : </strong>
           <?php 
-          $aFormEmissao = array("1" => "Com valores originais",
-              "2" => "Com valores atualizados");
+          $aFormEmissao = ["1" => "Com valores originais",
+              "2" => "Com valores atualizados"];
           db_select('formemissao', $aFormEmissao, true, 2, " onchange='js_mudaFormEmissao();' ");
           ?>
         </span>

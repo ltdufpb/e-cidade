@@ -1,51 +1,51 @@
 <?php
-return array(
-    'ideEstab' => array(
+return [
+    'ideEstab' => [
         'nome_api' => 'ideEstab',
-        'properties' => array(
+        'properties' => [
             'iniValid' => 'iniValid',
             'fimValid' => 'fimValid'
-        )
-    ),
-    'idePeriodo' => array(
+        ]
+    ],
+    'idePeriodo' => [
         'label' => 'Identificação do periodo',
-        'properties' => array(
-            'iniValid' => array(
+        'properties' => [
+            'iniValid' => [
                 'type' => 'string',
                 'label' => 'Data inicial',
-            ),
-            'fimValid' => array(
+            ],
+            'fimValid' => [
                 'type' => 'string',
                 'label' => 'Data final',
-            ),
-        ),
-    ),
-    'infoCadastro' => array(
-        'properties' => array(
+            ],
+        ],
+    ],
+    'infoCadastro' => [
+        'properties' => [
             'classTrib',
-            'indCoop' => array(
+            'indCoop' => [
                 'type' => 'int'
-            ),
-            'indConstr' => array(
+            ],
+            'indConstr' => [
                 'type' => 'int'
-            ),
-            'indDesFolha' => array(
+            ],
+            'indDesFolha' => [
                 'type' => 'int'
-            ),
-            'indOpcCP' => array(
+            ],
+            'indOpcCP' => [
                 'type' => 'int'
-            ),
+            ],
             'indPorte',
-            'indOptRegEletron' => array(
+            'indOptRegEletron' => [
                 'type' => 'int'
-            ),
+            ],
             'cnpjEFR' => 'cnpjEFR',
             'iniValid1000',
             'fimValid1000'
-        )
-    ),
-    'dadosIsencao' => array(
-        'properties' => array(
+        ]
+    ],
+    'dadosIsencao' => [
+        'properties' => [
             'ideMinLei' => 'ideMinLei',
             'nrCertif' => 'nrCertif',
             'dtEmisCertif' => 'dtEmisCertif',
@@ -53,18 +53,18 @@ return array(
             'nrProtRenov' => 'nrProtRenov',
             'dtProtRenov' => 'dtProtRenov',
             'dtDou' => 'dtDou',
-            'pagDou' => array(
+            'pagDou' => [
                 'nome_api' => 'pagDou',
                 'type' => 'int'
-            )
-        )
-    ),
-    'infoOrgInternacional' => array(
-        'properties' => array(
-            'indAcordoIsenMulta' => array(
+            ]
+        ]
+    ],
+    'infoOrgInternacional' => [
+        'properties' => [
+            'indAcordoIsenMulta' => [
                 'nome_api' => 'indAcordoIsenMulta',
                 'type' => 'int'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

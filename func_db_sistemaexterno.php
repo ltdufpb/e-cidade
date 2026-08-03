@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_sistemaexterno_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_sistemaexterno = new cl_db_sistemaexterno;
 $cldb_sistemaexterno->rotulo->label("db124_sequencial");
 $cldb_sistemaexterno->rotulo->label("db124_descricao");
@@ -98,9 +98,9 @@ $cldb_sistemaexterno->rotulo->label("db124_descricao");
         }else{
            $sql = $cldb_sistemaexterno->sql_query("",$campos,"db124_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db124_descricao)){
-          $repassa = array("chave_db124_sequencial"=>$chave_db124_sequencial,"chave_db124_descricao"=>$chave_db124_descricao);
+          $repassa = ["chave_db124_sequencial"=>$chave_db124_sequencial,"chave_db124_descricao"=>$chave_db124_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

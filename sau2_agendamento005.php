@@ -34,7 +34,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("model/dbModeloArquivoTexto.model.php"));
 require_once(modification("model/dbVisualizadorImpressaoTexto.model.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
   <head>
@@ -58,9 +58,9 @@ try {
 
 }
 $oAgendamentos = db_utils::getdao('agendamentos');
-$ad23_i_codigo = explode(",",$sd23_i_codigo);
+$ad23_i_codigo = explode(",",(string) $sd23_i_codigo);
 $iTam          = count($ad23_i_codigo);
-$aArquivos     = array();
+$aArquivos     = [];
 for ($iInd = 0; $iInd < $iTam; $iInd++) {
 
   $sCampos  = " (select munic from db_config where codigo = $iInstitui) as municipio, ";

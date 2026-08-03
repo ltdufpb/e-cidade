@@ -41,7 +41,7 @@ final class PadArquivoSigapRGFgarantiaContraGarantia extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "RGFGarantiaContraGarantia";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -61,7 +61,7 @@ final class PadArquivoSigapRGFgarantiaContraGarantia extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao  = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit  = db_getsession("DB_instit");
 
@@ -78,7 +78,7 @@ final class PadArquivoSigapRGFgarantiaContraGarantia extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                          "gacCodigoEntidade",
                          "gacMesAnoMovimento",
                          "gacSinal",
@@ -88,7 +88,7 @@ final class PadArquivoSigapRGFgarantiaContraGarantia extends PadArquivoSigap {
                          "gacContaLRF",
                          "gacDescricaoContaLRF",
                          "gacConta"
-                       );
+                       ];
     return $aElementos;  
   }
   

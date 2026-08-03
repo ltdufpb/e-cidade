@@ -37,20 +37,17 @@ use DOMDocument;
 class IncluiBoleto implements RequisicaoInterface
 {
     private $oXml;
-    private $oRegistro;
 
     /**
      * Criamos o objeto da classe com as informações necessárias para a sua existência
      *
      * @param stdClass $oRegistro
      */
-    public function __construct(\stdClass $oRegistro)
+    public function __construct(private readonly \stdClass $oRegistro)
     {
         $this->oXml = new DOMDocument("1.0", "utf-8");
         $this->oXml->preserveWhiteSpace = false;
         $this->oXml->formatOutput = true;
-
-        $this->oRegistro = $oRegistro;
     }
 
     /**
@@ -112,145 +109,145 @@ class IncluiBoleto implements RequisicaoInterface
 
         $oNumeroConvenio = $this->oXml->createElement(
             "sch:numeroConvenio",
-            trim($this->oRegistro->numeroConvenio)
+            trim((string) $this->oRegistro->numeroConvenio)
         );
         $oRequisicao->appendChild($oNumeroConvenio);
 
         $oNumeroCarteira = $this->oXml->createElement(
             "sch:numeroCarteira",
-            trim($this->oRegistro->numeroCarteira)
+            trim((string) $this->oRegistro->numeroCarteira)
         );
         $oRequisicao->appendChild($oNumeroCarteira);
 
         $oNumeroVariacaoCarteira = $this->oXml->createElement(
             "sch:numeroVariacaoCarteira",
-            trim($this->oRegistro->numeroVariacaoCarteira)
+            trim((string) $this->oRegistro->numeroVariacaoCarteira)
         );
         $oRequisicao->appendChild($oNumeroVariacaoCarteira);
 
         $oCodigoModalidadeTitulo = $this->oXml->createElement(
             "sch:codigoModalidadeTitulo",
-            trim($this->oRegistro->codigoModalidadeTitulo)
+            trim((string) $this->oRegistro->codigoModalidadeTitulo)
         );
         $oRequisicao->appendChild($oCodigoModalidadeTitulo);
 
         $oDataEmissaoTitulo = $this->oXml->createElement(
             "sch:dataEmissaoTitulo",
-            trim($this->oRegistro->dataEmissaoTitulo)
+            trim((string) $this->oRegistro->dataEmissaoTitulo)
         );
         $oRequisicao->appendChild($oDataEmissaoTitulo);
 
         $oDataVencimentoTitulo = $this->oXml->createElement(
             "sch:dataVencimentoTitulo",
-            trim($this->oRegistro->dataVencimentoTitulo)
+            trim((string) $this->oRegistro->dataVencimentoTitulo)
         );
         $oRequisicao->appendChild($oDataVencimentoTitulo);
 
         $oValorOriginalTitulo = $this->oXml->createElement(
             "sch:valorOriginalTitulo",
-            trim($this->oRegistro->valorOriginalTitulo)
+            trim((string) $this->oRegistro->valorOriginalTitulo)
         );
         $oRequisicao->appendChild($oValorOriginalTitulo);
 
         $oCodigoTipoDesconto = $this->oXml->createElement(
             "sch:codigoTipoDesconto",
-            trim($this->oRegistro->codigoTipoDesconto)
+            trim((string) $this->oRegistro->codigoTipoDesconto)
         );
         $oRequisicao->appendChild($oCodigoTipoDesconto);
 
         $oCodigoTipoJuroMora = $this->oXml->createElement(
             "sch:codigoTipoJuroMora",
-            trim($this->oRegistro->codigoTipoJuroMora)
+            trim((string) $this->oRegistro->codigoTipoJuroMora)
         );
         $oRequisicao->appendChild($oCodigoTipoJuroMora);
 
         $oCodigoTipoMulta = $this->oXml->createElement(
             "sch:codigoTipoMulta",
-            trim($this->oRegistro->codigoTipoMulta)
+            trim((string) $this->oRegistro->codigoTipoMulta)
         );
         $oRequisicao->appendChild($oCodigoTipoMulta);
 
         $oCodigoAceiteTitulo = $this->oXml->createElement(
             "sch:codigoAceiteTitulo",
-            trim($this->oRegistro->codigoAceiteTitulo)
+            trim((string) $this->oRegistro->codigoAceiteTitulo)
         );
         $oRequisicao->appendChild($oCodigoAceiteTitulo);
 
         $oCodigoTipoTitulo = $this->oXml->createElement(
             "sch:codigoTipoTitulo",
-            trim($this->oRegistro->codigoTipoTitulo)
+            trim((string) $this->oRegistro->codigoTipoTitulo)
         );
         $oRequisicao->appendChild($oCodigoTipoTitulo);
 
         $oIndicadorPermissaoRecebimentoParcial = $this->oXml->createElement(
             "sch:indicadorPermissaoRecebimentoParcial",
-            trim($this->oRegistro->indicadorPermissaoRecebimentoParcial)
+            trim((string) $this->oRegistro->indicadorPermissaoRecebimentoParcial)
         );
         $oRequisicao->appendChild($oIndicadorPermissaoRecebimentoParcial);
 
         $oTextoNumeroTituloCliente = $this->oXml->createElement(
             "sch:textoNumeroTituloCliente",
-            trim($this->oRegistro->textoNumeroTituloCliente)
+            trim((string) $this->oRegistro->textoNumeroTituloCliente)
         );
         $oRequisicao->appendChild($oTextoNumeroTituloCliente);
 
         $oCodigoTipoInscricaoPagador = $this->oXml->createElement(
             "sch:codigoTipoInscricaoPagador",
-            trim($this->oRegistro->codigoTipoInscricaoPagador)
+            trim((string) $this->oRegistro->codigoTipoInscricaoPagador)
         );
         $oRequisicao->appendChild($oCodigoTipoInscricaoPagador);
 
         $oNumeroInscricaoPagador = $this->oXml->createElement(
             "sch:numeroInscricaoPagador",
-            trim($this->oRegistro->numeroInscricaoPagador)
+            trim((string) $this->oRegistro->numeroInscricaoPagador)
         );
         $oRequisicao->appendChild($oNumeroInscricaoPagador);
 
         $oNomePagador = $this->oXml->createElement(
             "sch:nomePagador",
-            trim($this->oRegistro->nomePagador)
+            trim((string) $this->oRegistro->nomePagador)
         );
         $oRequisicao->appendChild($oNomePagador);
 
         $oTextoEnderecoPagador = $this->oXml->createElement(
             "sch:textoEnderecoPagador",
-            trim($this->oRegistro->textoEnderecoPagador)
+            trim((string) $this->oRegistro->textoEnderecoPagador)
         );
         $oRequisicao->appendChild($oTextoEnderecoPagador);
 
         $oNumeroCepPagador = $this->oXml->createElement(
             "sch:numeroCepPagador",
-            trim($this->oRegistro->numeroCepPagador)
+            trim((string) $this->oRegistro->numeroCepPagador)
         );
         $oRequisicao->appendChild($oNumeroCepPagador);
 
         $oNomeMunicipioPagador = $this->oXml->createElement(
             "sch:nomeMunicipioPagador",
-            trim($this->oRegistro->nomeMunicipioPagador)
+            trim((string) $this->oRegistro->nomeMunicipioPagador)
         );
         $oRequisicao->appendChild($oNomeMunicipioPagador);
 
         $oNomeBairroPagador = $this->oXml->createElement(
             "sch:nomeBairroPagador",
-            trim($this->oRegistro->nomeBairroPagador)
+            trim((string) $this->oRegistro->nomeBairroPagador)
         );
         $oRequisicao->appendChild($oNomeBairroPagador);
 
         $oSiglaUfPagador = $this->oXml->createElement(
             "sch:siglaUfPagador",
-            trim($this->oRegistro->siglaUfPagador)
+            trim((string) $this->oRegistro->siglaUfPagador)
         );
         $oRequisicao->appendChild($oSiglaUfPagador);
 
         $oCodigoChaveUsuario = $this->oXml->createElement(
             "sch:codigoChaveUsuario",
-            trim($this->oRegistro->codigoChaveUsuario)
+            trim((string) $this->oRegistro->codigoChaveUsuario)
         );
         $oRequisicao->appendChild($oCodigoChaveUsuario);
 
         $oCodigoTipoCanalSolicitacao = $this->oXml->createElement(
             "sch:codigoTipoCanalSolicitacao",
-            trim($this->oRegistro->codigoTipoCanalSolicitacao)
+            trim((string) $this->oRegistro->codigoTipoCanalSolicitacao)
         );
         $oRequisicao->appendChild($oCodigoTipoCanalSolicitacao);
 

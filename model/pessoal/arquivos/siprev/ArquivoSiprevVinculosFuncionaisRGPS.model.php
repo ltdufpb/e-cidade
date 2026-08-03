@@ -31,7 +31,7 @@ class ArquivoSiprevVinculosFuncionaisRGPS extends ArquivoSiprevBase {
   protected $sRegistro    = "vinculosFuncionaisRgps";
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["08.1"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["08.1"] = [];
   }
 
   /**
@@ -131,7 +131,7 @@ class ArquivoSiprevVinculosFuncionaisRGPS extends ArquivoSiprevBase {
       return false;
     }
 
-    $retorno = array();
+    $retorno = [];
 
     foreach ($servidores as $servidor) {
 
@@ -144,9 +144,9 @@ class ArquivoSiprevVinculosFuncionaisRGPS extends ArquivoSiprevBase {
         continue;
       }
 
-      $retorno[] = (object)array(
+      $retorno[] = (object)[
         "vinculosFuncionaisRgps" => $this->valoresVinculosFuncionaisRgps($servidor)
-      );
+      ];
     }
     return $retorno;
   }
@@ -156,7 +156,7 @@ class ArquivoSiprevVinculosFuncionaisRGPS extends ArquivoSiprevBase {
    */
   private function validarDados($servidor) {
 
-    $aErrosRegistro = array();
+    $aErrosRegistro = [];
     if(!DBString::isCPF($servidor->getCgm()->getCpf())) {
       $aErrosRegistro[] = $this->getErro($servidor, "CPF '{$servidor->getCgm()->getCpf()}' é inválido.");
     }
@@ -169,24 +169,24 @@ class ArquivoSiprevVinculosFuncionaisRGPS extends ArquivoSiprevBase {
    */
   private function getErro($oDadosRetorno, $sErro) {
 
-    return array(
+    return [
       $oDadosRetorno->getInstituicao()->getDescricao(),
       "{$oDadosRetorno->getCgm()->getCodigo()} - {$oDadosRetorno->getCgm()->getNome()}",
       $sErro,
-    );
+    ];
   }
 
   /**
    * Retorna o "esqueleto" do arquivo xml
    */
   public function getElementos() {
-    return array($this->tagVinculosFuncionaisRgps());
+    return [$this->tagVinculosFuncionaisRgps()];
   }
 
 
   private function tagVinculosFuncionaisRgps() {
 
-    return self::makeTag("vinculosFuncionaisRgps", array(
+    return self::makeTag("vinculosFuncionaisRgps", [
       /**
        * atributos
        */
@@ -204,12 +204,12 @@ class ArquivoSiprevVinculosFuncionaisRGPS extends ArquivoSiprevBase {
       $this->tagServidor(),
       $this->tagMovimentacoesFuncionaisRgps(),
 
-    ));
+    ]);
   }
 
   private function valoresVinculosFuncionaisRgps($servidor) {
 
-    return (object)array(
+    return (object)[
       "operacao"             => "I",
       "dataInicioFuncao"     => $servidor->getDataAdmissao()->getDate(),
       "descricaoFuncao"      => $servidor->descricaoCargo,
@@ -219,88 +219,88 @@ class ArquivoSiprevVinculosFuncionaisRGPS extends ArquivoSiprevBase {
       "servidor"             => $this->valoresServidor($servidor),
       "orgao"                => $this->valoresOrgao($servidor),
       "movimentacoesFuncionaisRgps" => $this->valoresMovimentacoesFuncionaisRgps($servidor),
-    );
+    ];
   }
 
   private function tagMovimentacoesFuncionaisRgps() {
-    return self::makeTag("movimentacoesFuncionaisRgps", array(
+    return self::makeTag("movimentacoesFuncionaisRgps", [
       /**
        * atributos
        */
       "operacao",
       "descricaoFuncao",
       "dataMovimentacao",
-    ));
+    ]);
   }
 
   private function valoresMovimentacoesFuncionaisRgps($servidor) {
 
-    return (object)array(
+    return (object)[
       "operacao" => "I",
       "descricaoFuncao" => $servidor->descricaoCargo,
       "dataMovimentacao" => $servidor->getAnoCompetencia() . "-" . $servidor->getMesCompetencia() . '-01',
-    );
+    ];
   }
 
   private function tagOrgao() {
-    return self::makeTag("orgao",array("nome", "poder"));
+    return self::makeTag("orgao",["nome", "poder"]);
   }
 
   private function valoresOrgao(Servidor $servidor) {
 
-    return (object)array(
+    return (object)[
       "nome"  => $servidor->getInstituicao()->getDescricao(),
       "poder" => $servidor->getInstituicao()->getTipo() > 6 ? 6 : $servidor->getInstituicao()->getTipo(),
-    );
+    ];
   }
 
   private function tagServidor() {
 
-    return self::makeTag("servidor", array(
+    return self::makeTag("servidor", [
       "nome",
       "numeroCPF",
       "numeroNIT",
       "numeroRG",
       "dataNascimento",
       "nomeMae",
-    ));
+    ]);
   }
 
   private function valoresServidor(Servidor $servidor) {
-    return (object)array(
+    return (object)[
       "nome"           => $servidor->getCgm()->getNome(),
       "numeroCPF"      => $servidor->getCgm()->getCpf(),
-    );
+    ];
   }
 
   private function tagCargo() {
 
-    return self::makeTag("cargo", array(
+    return self::makeTag("cargo", [
       "nome",
       $this->tagCarreira()
-    ));
+    ]);
   }
 
   private function valoresCargo(Servidor $servidor) {
-    return (object)array(
+    return (object)[
       "nome"     => $servidor->descricaoCargo,
       "carreira" => $this->valoresCarreira($servidor),
-    );
+    ];
   }
 
   private function tagCarreira() {
 
-    return self::makeTag("carreira", array(
+    return self::makeTag("carreira", [
       "nome",
       $this->tagOrgao(),
-    ));
+    ]);
   }
 
   private function valoresCarreira(Servidor $servidor) {
 
-    return (object)array(
+    return (object)[
       "nome" => "Servidor Público",
       "orgao" => $this->valoresOrgao($servidor),
-    );
+    ];
   }
 }

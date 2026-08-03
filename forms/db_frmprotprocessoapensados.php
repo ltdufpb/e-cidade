@@ -91,7 +91,7 @@ $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
                                 where p30_procprincipal = {$p58_codproc}
                                 order by p30_procprincipal ";
     //die($sSqlProcessoApensados);
-    $chavepri= array("p30_procapensado"=>@$p58_codproc);
+    $chavepri= ["p30_procapensado"=>@$p58_codproc];
     $cliframe_alterar_excluir->chavepri      = $chavepri;
     $cliframe_alterar_excluir->campos        = "p30_procprincipal,p30_procapensado,p58_requer";
     $cliframe_alterar_excluir->sql           = $sSqlProcessoApensados;

@@ -80,7 +80,7 @@ $ed71_i_escola = db_getsession("DB_coddepto");
   </td>
   <td>
    <?php 
-   $x = array(''=>'','S'=>'SIM','N'=>'NÃO');
+   $x = [''=>'','S'=>'SIM','N'=>'NÃO'];
    db_select('ed71_c_situacao',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -91,7 +91,7 @@ $ed71_i_escola = db_getsession("DB_coddepto");
   </td>
   <td>
    <?php 
-   $x = array(''=>'','N'=>'NÃO','S'=>'SIM');
+   $x = [''=>'','N'=>'NÃO','S'=>'SIM'];
    db_select('ed71_c_turmasala',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -104,14 +104,14 @@ $ed71_i_escola = db_getsession("DB_coddepto");
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed71_i_codigo"=>@$ed71_i_codigo,
+   $chavepri= ["ed71_i_codigo"=>@$ed71_i_codigo,
                     "ed71_i_escola"=>@$ed71_i_escola,
                     "ed18_c_nome"=>@$ed18_c_nome,
                     "ed71_i_curso"=>@$ed71_i_curso,
                     "ed29_c_descr"=>@$ed29_c_descr,
                     "ed71_c_situacao"=>@$ed71_c_situacao,
                     "ed71_c_turmasala"=>@$ed71_c_turmasala
-                    );
+                    ];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clcursoescola->sql_query("","*","ed18_c_nome"," ed71_i_curso = $ed71_i_curso AND ed71_i_escola = $escola");
    $cliframe_alterar_excluir->campos  ="ed18_c_nome,ed71_c_situacao,ed71_c_turmasala";

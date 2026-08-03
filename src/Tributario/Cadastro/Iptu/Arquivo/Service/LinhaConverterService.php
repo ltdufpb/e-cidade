@@ -37,54 +37,29 @@ use ECidade\Tributario\Caixa\Entity\Collection\DebitoCollection;
 
 final class LinhaConverterService extends Service
 {
-    private $imovelConverter;
-    
-    private $contribuinteConverter;
-
     private $parcelaConverter;
-
-    private $exercicioConverter;
 
     private $parcelaPagaConverter;
 
-    private $parcelaReciboConverter;
-
-    private $taxaConverter;
-
-    private $unicaConverter;
-
-    private $loteamentoBlock;
-
     public function __construct(
-        ImovelConverter $imovelConverter,
-        ContribuinteConverter $contribuinteConverter,
-        ExercicioConverter $exercicioConverter,
-        UnicaConverter $unicaConverter,
+        private readonly ImovelConverter $imovelConverter,
+        private readonly ContribuinteConverter $contribuinteConverter,
+        private readonly ExercicioConverter $exercicioConverter,
+        private readonly UnicaConverter $unicaConverter,
         ParcelaInicioConverter $parcelaInicioConverter,
-        ParcelaReciboConverter $parcelaReciboConverter,
+        private readonly ParcelaReciboConverter $parcelaReciboConverter,
         // ParcelaPagaConverter $parcelaPagaConverter,
         ImovelAnteriorConverter $imovelAnteriorConverter,
-        TaxaConverter $taxaConverter,
+        private readonly TaxaConverter $taxaConverter,
         // ParcelaConverter $parcelaConverter <--------------------
         // FaceConverter $faceConverter,
         // BancoConverter $bancoConverter,
         // LocalizacaoConverter $localizacaoConverter
-        LoteamentoBlock $loteamentoBlock
+        private readonly LoteamentoBlock $loteamentoBlock
     ) {
-        $this->imovelConverter         = $imovelConverter;
-        $this->contribuinteConverter   = $contribuinteConverter;
-        $this->exercicioConverter      = $exercicioConverter;
-        $this->unicaConverter          = $unicaConverter;
         $this->parcelaInicioConverter  = $parcelaInicioConverter;
-        $this->parcelaReciboConverter  = $parcelaReciboConverter;
         // $this->parcelaPagaConverter    = $parcelaPagaConverter;
         $this->imovelAnteriorConverter = $imovelAnteriorConverter;
-        $this->taxaConverter = $taxaConverter;
-        // $this->parcelaConverter        = $parcelaConverter;
-        // $this->faceConverter           = $faceConverter;
-        // $this->bancoConverter          = $bancoConverter;
-        // $this->localizacaoConverter    = $localizacaoConverter;
-        $this->loteamentoBlock = $loteamentoBlock;
     }
 
     public function build(

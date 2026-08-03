@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,9 +55,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Ocupação","g2"=>"Tipo de Construção","g3"=>"Tipo de Lançamento","g4"=>"Rua","g5"=>"Bairro");
-       $clcriaabas->title = array("g1"=>"Selecionar  Ocupação","g2"=>"Selecionar tipo de construção","g3"=>"Selecionar tipo de lançamento","g4"=>"Selecionar rua","g5"=>"Selecionar bairro ");
-       $clcriaabas->src = array("g1"=>"pro2_constrocu001.php","g2"=>"pro2_constrtipocon001.php","g3"=>"pro2_constrtipolan001.php","g4"=>"pro2_constrrua001.php","g5"=>"pro2_constrbairro001.php");
+       $clcriaabas->identifica = ["g1"=>"Ocupação","g2"=>"Tipo de Construção","g3"=>"Tipo de Lançamento","g4"=>"Rua","g5"=>"Bairro"];
+       $clcriaabas->title = ["g1"=>"Selecionar  Ocupação","g2"=>"Selecionar tipo de construção","g3"=>"Selecionar tipo de lançamento","g4"=>"Selecionar rua","g5"=>"Selecionar bairro "];
+       $clcriaabas->src = ["g1"=>"pro2_constrocu001.php","g2"=>"pro2_constrtipocon001.php","g3"=>"pro2_constrtipolan001.php","g4"=>"pro2_constrrua001.php","g5"=>"pro2_constrbairro001.php"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

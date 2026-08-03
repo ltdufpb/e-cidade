@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE cflicitavalores
 class cl_cflicitavalores { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l40_sequencial = 0; 
-   var $l40_codfclicita = 0; 
-   var $l40_valorminimo = 0; 
-   var $l40_valormaximo = 0; 
-   var $l40_datainicial_dia = null; 
-   var $l40_datainicial_mes = null; 
-   var $l40_datainicial_ano = null; 
-   var $l40_datainicial = null; 
-   var $l40_datafinal_dia = null; 
-   var $l40_datafinal_mes = null; 
-   var $l40_datafinal_ano = null; 
-   var $l40_datafinal = null; 
+   public $l40_sequencial = 0; 
+   public $l40_codfclicita = 0; 
+   public $l40_valorminimo = 0; 
+   public $l40_valormaximo = 0; 
+   public $l40_datainicial_dia = null; 
+   public $l40_datainicial_mes = null; 
+   public $l40_datainicial_ano = null; 
+   public $l40_datainicial = null; 
+   public $l40_datafinal_dia = null; 
+   public $l40_datafinal_mes = null; 
+   public $l40_datafinal_ano = null; 
+   public $l40_datafinal = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l40_sequencial = int4 = Sequencial 
                  l40_codfclicita = int4 = Código da Licitação 
                  l40_valorminimo = float8 = Valor Minímo 
@@ -64,10 +64,10 @@ class cl_cflicitavalores {
                  l40_datafinal = date = Data Final 
                  ";
    //funcao construtor da classe 
-   function cl_cflicitavalores() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cflicitavalores"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -163,10 +163,10 @@ class cl_cflicitavalores {
          $this->erro_status = "0";
          return false; 
        }
-       $this->l40_sequencial = pg_result($result,0,0); 
+       $this->l40_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cflicitavalores_l40_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l40_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l40_sequencial)){
          $this->erro_sql = " Campo l40_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -204,7 +204,7 @@ class cl_cflicitavalores {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Faixa de Valores da Licitação ($this->l40_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Faixa de Valores da Licitação já Cadastrado";
@@ -228,15 +228,15 @@ class cl_cflicitavalores {
      $resaco = $this->sql_record($this->sql_query_file($this->l40_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16672,'$this->l40_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2932,16672,'','".AddSlashes(pg_result($resaco,0,'l40_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2932,16673,'','".AddSlashes(pg_result($resaco,0,'l40_codfclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2932,16674,'','".AddSlashes(pg_result($resaco,0,'l40_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2932,16675,'','".AddSlashes(pg_result($resaco,0,'l40_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2932,16676,'','".AddSlashes(pg_result($resaco,0,'l40_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2932,16677,'','".AddSlashes(pg_result($resaco,0,'l40_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2932,16672,'','".AddSlashes(pg_fetch_result($resaco,0,'l40_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2932,16673,'','".AddSlashes(pg_fetch_result($resaco,0,'l40_codfclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2932,16674,'','".AddSlashes(pg_fetch_result($resaco,0,'l40_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2932,16675,'','".AddSlashes(pg_fetch_result($resaco,0,'l40_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2932,16676,'','".AddSlashes(pg_fetch_result($resaco,0,'l40_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2932,16677,'','".AddSlashes(pg_fetch_result($resaco,0,'l40_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -245,10 +245,10 @@ class cl_cflicitavalores {
       $this->atualizacampos();
      $sql = " update cflicitavalores set ";
      $virgula = "";
-     if(trim($this->l40_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_sequencial"])){ 
+     if(trim((string) $this->l40_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_sequencial"])){ 
        $sql  .= $virgula." l40_sequencial = $this->l40_sequencial ";
        $virgula = ",";
-       if(trim($this->l40_sequencial) == null ){ 
+       if(trim((string) $this->l40_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "l40_sequencial";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_cflicitavalores {
          return false;
        }
      }
-     if(trim($this->l40_codfclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_codfclicita"])){ 
+     if(trim((string) $this->l40_codfclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_codfclicita"])){ 
        $sql  .= $virgula." l40_codfclicita = $this->l40_codfclicita ";
        $virgula = ",";
-       if(trim($this->l40_codfclicita) == null ){ 
+       if(trim((string) $this->l40_codfclicita) == null ){ 
          $this->erro_sql = " Campo Código da Licitação nao Informado.";
          $this->erro_campo = "l40_codfclicita";
          $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_cflicitavalores {
          return false;
        }
      }
-     if(trim($this->l40_valorminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_valorminimo"])){ 
+     if(trim((string) $this->l40_valorminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_valorminimo"])){ 
        $sql  .= $virgula." l40_valorminimo = $this->l40_valorminimo ";
        $virgula = ",";
-       if(trim($this->l40_valorminimo) == null ){ 
+       if(trim((string) $this->l40_valorminimo) == null ){ 
          $this->erro_sql = " Campo Valor Minímo nao Informado.";
          $this->erro_campo = "l40_valorminimo";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_cflicitavalores {
          return false;
        }
      }
-     if(trim($this->l40_valormaximo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_valormaximo"])){ 
+     if(trim((string) $this->l40_valormaximo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_valormaximo"])){ 
        $sql  .= $virgula." l40_valormaximo = $this->l40_valormaximo ";
        $virgula = ",";
-       if(trim($this->l40_valormaximo) == null ){ 
+       if(trim((string) $this->l40_valormaximo) == null ){ 
          $this->erro_sql = " Campo Valor Máximo nao Informado.";
          $this->erro_campo = "l40_valormaximo";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_cflicitavalores {
          return false;
        }
      }
-     if(trim($this->l40_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l40_datainicial_dia"] !="") ){ 
+     if(trim((string) $this->l40_datainicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_datainicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l40_datainicial_dia"] !="") ){ 
        $sql  .= $virgula." l40_datainicial = '$this->l40_datainicial' ";
        $virgula = ",";
-       if(trim($this->l40_datainicial) == null ){ 
+       if(trim((string) $this->l40_datainicial) == null ){ 
          $this->erro_sql = " Campo Data Inicial nao Informado.";
          $this->erro_campo = "l40_datainicial_dia";
          $this->erro_banco = "";
@@ -313,7 +313,7 @@ class cl_cflicitavalores {
        if(isset($GLOBALS["HTTP_POST_VARS"]["l40_datainicial_dia"])){ 
          $sql  .= $virgula." l40_datainicial = null ";
          $virgula = ",";
-         if(trim($this->l40_datainicial) == null ){ 
+         if(trim((string) $this->l40_datainicial) == null ){ 
            $this->erro_sql = " Campo Data Inicial nao Informado.";
            $this->erro_campo = "l40_datainicial_dia";
            $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_cflicitavalores {
          }
        }
      }
-     if(trim($this->l40_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l40_datafinal_dia"] !="") ){ 
+     if(trim((string) $this->l40_datafinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l40_datafinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l40_datafinal_dia"] !="") ){ 
        $sql  .= $virgula." l40_datafinal = '$this->l40_datafinal' ";
        $virgula = ",";
-       if(trim($this->l40_datafinal) == null ){ 
+       if(trim((string) $this->l40_datafinal) == null ){ 
          $this->erro_sql = " Campo Data Final nao Informado.";
          $this->erro_campo = "l40_datafinal_dia";
          $this->erro_banco = "";
@@ -340,7 +340,7 @@ class cl_cflicitavalores {
        if(isset($GLOBALS["HTTP_POST_VARS"]["l40_datafinal_dia"])){ 
          $sql  .= $virgula." l40_datafinal = null ";
          $virgula = ",";
-         if(trim($this->l40_datafinal) == null ){ 
+         if(trim((string) $this->l40_datafinal) == null ){ 
            $this->erro_sql = " Campo Data Final nao Informado.";
            $this->erro_campo = "l40_datafinal_dia";
            $this->erro_banco = "";
@@ -359,21 +359,21 @@ class cl_cflicitavalores {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16672,'$this->l40_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l40_sequencial"]) || $this->l40_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2932,16672,'".AddSlashes(pg_result($resaco,$conresaco,'l40_sequencial'))."','$this->l40_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2932,16672,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l40_sequencial'))."','$this->l40_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l40_codfclicita"]) || $this->l40_codfclicita != "")
-           $resac = db_query("insert into db_acount values($acount,2932,16673,'".AddSlashes(pg_result($resaco,$conresaco,'l40_codfclicita'))."','$this->l40_codfclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2932,16673,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l40_codfclicita'))."','$this->l40_codfclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l40_valorminimo"]) || $this->l40_valorminimo != "")
-           $resac = db_query("insert into db_acount values($acount,2932,16674,'".AddSlashes(pg_result($resaco,$conresaco,'l40_valorminimo'))."','$this->l40_valorminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2932,16674,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l40_valorminimo'))."','$this->l40_valorminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l40_valormaximo"]) || $this->l40_valormaximo != "")
-           $resac = db_query("insert into db_acount values($acount,2932,16675,'".AddSlashes(pg_result($resaco,$conresaco,'l40_valormaximo'))."','$this->l40_valormaximo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2932,16675,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l40_valormaximo'))."','$this->l40_valormaximo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l40_datainicial"]) || $this->l40_datainicial != "")
-           $resac = db_query("insert into db_acount values($acount,2932,16676,'".AddSlashes(pg_result($resaco,$conresaco,'l40_datainicial'))."','$this->l40_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2932,16676,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l40_datainicial'))."','$this->l40_datainicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l40_datafinal"]) || $this->l40_datafinal != "")
-           $resac = db_query("insert into db_acount values($acount,2932,16677,'".AddSlashes(pg_result($resaco,$conresaco,'l40_datafinal'))."','$this->l40_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2932,16677,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l40_datafinal'))."','$this->l40_datafinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -418,15 +418,15 @@ class cl_cflicitavalores {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16672,'$l40_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2932,16672,'','".AddSlashes(pg_result($resaco,$iresaco,'l40_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2932,16673,'','".AddSlashes(pg_result($resaco,$iresaco,'l40_codfclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2932,16674,'','".AddSlashes(pg_result($resaco,$iresaco,'l40_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2932,16675,'','".AddSlashes(pg_result($resaco,$iresaco,'l40_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2932,16676,'','".AddSlashes(pg_result($resaco,$iresaco,'l40_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2932,16677,'','".AddSlashes(pg_result($resaco,$iresaco,'l40_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2932,16672,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l40_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2932,16673,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l40_codfclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2932,16674,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l40_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2932,16675,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l40_valormaximo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2932,16676,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l40_datainicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2932,16677,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l40_datafinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cflicitavalores
@@ -486,7 +486,7 @@ class cl_cflicitavalores {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cflicitavalores";
@@ -501,7 +501,7 @@ class cl_cflicitavalores {
    function sql_query ( $l40_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -525,7 +525,7 @@ class cl_cflicitavalores {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -538,7 +538,7 @@ class cl_cflicitavalores {
    function sql_query_file ( $l40_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -559,7 +559,7 @@ class cl_cflicitavalores {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

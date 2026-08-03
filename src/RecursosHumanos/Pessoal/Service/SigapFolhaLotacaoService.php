@@ -37,38 +37,24 @@ class SigapFolhaLotacaoService
 
     public static function rawQueryLotacao($iCodigoTCE)
     {
-        switch ($iCodigoTCE) {
-            case self::SEMUSA:
-                $sWhere  = " and rhpessoalmov.rh02_lota in (
+        $sWhere = match ($iCodigoTCE) {
+            self::SEMUSA => " and rhpessoalmov.rh02_lota in (
                     9,27,60,65,66,71,93,115,123,158,160,162,163,
                     164,165,224,0302,320,420,426,427, 421, 384
-                )";
-                break;
-
-            case self::SEMED:
-                $sWhere  = " and rhpessoalmov.rh02_lota in (
+                )",
+            self::SEMED => " and rhpessoalmov.rh02_lota in (
                     21,62,217,266,267,268,269,270,271,272,
                     273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,
                     291,292,293,294,295,296,297,298,299,300,301,319,419,424,108,334
-                )";
-                break;
-
-            case self::FUNCULTURAL:
-                $sWhere = " and rhpessoalmov.rh02_lota in (75, 88, 161)";
-                break;
-
-            case self::AGENCIA:
-                $sWhere = " ";
-                break;
-            
-            default:
-                $sWhere = " and rhpessoalmov.rh02_lota NOT IN  (
+                )",
+            self::FUNCULTURAL => " and rhpessoalmov.rh02_lota in (75, 88, 161)",
+            self::AGENCIA => " ",
+            default => " and rhpessoalmov.rh02_lota NOT IN  (
                     9,27,60,65,66,71,93,115,123,158,159,160,165,162,163,164,224,416,420,421,21,62,217,266,267,268,269,
                     270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,
                     294,295,296,297,298,299,300,301,0302,320,384,419,426, 424, 425, 427, 75,88,161, 319,108,334
-                )";
-                break;
-        }//switch
+                )",
+        };//switch
 
         return $sWhere;
     }

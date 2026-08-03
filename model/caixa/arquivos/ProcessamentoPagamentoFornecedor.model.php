@@ -37,12 +37,6 @@ class ProcessamentoPagamentoFornecedor
     const TAMANHO_HEADER_PAGFOR = 500;
 
     /**
-     * Caminho em que o arquivo se encontra armazenado
-     * @var string
-     */
-    protected $sCaminhoArquivo;
-
-    /**
      * Codigo do banco que se refere o arquivo
      * @var integer
      */
@@ -66,16 +60,18 @@ class ProcessamentoPagamentoFornecedor
      * sido processados em outro momento
      * @var array
      */
-    protected $aMovimentosDescartados = array();
+    protected $aMovimentosDescartados = [];
 
     /**
      * Construtor do objeto
-     * @param string $sArquivo [caminho do arquivo que foi feito upload]
+     * @param string $sCaminhoArquivo [caminho do arquivo que foi feito upload]
      */
-    public function __construct($sArquivo)
+    public function __construct(/**
+     * Caminho em que o arquivo se encontra armazenado
+     */
+    protected $sCaminhoArquivo)
     {
 
-        $this->sCaminhoArquivo = $sArquivo;
         $this->validarArquivo();
 
         $oPagamentoFornecedor = PagamentoFornecedorFactory::getInstance($this->iCodigoBancoProcessar);
@@ -91,8 +87,8 @@ class ProcessamentoPagamentoFornecedor
     public function possuiRetornoProcessado()
     {
 
-        $aRetornosParaProcessar = array();
-        $aRetornosProcessados = array(5, 2, 104, 105, 106);
+        $aRetornosParaProcessar = [];
+        $aRetornosProcessados = [5, 2, 104, 105, 106];
         foreach ($this->oRegistroArquivo->registros as $oRegistro) {
             $oRegistro->codigo_movimento = (int)$oRegistro->codigo_movimento;
             $sWhereCodigoGeracao = "     empagedadosret.e75_codgera   = empageconfgera.e90_codgera ";
@@ -150,7 +146,7 @@ class ProcessamentoPagamentoFornecedor
             return false;
         }
 
-        if (substr($sLinhaHeader, 142, 1) != '2' && substr($sLinhaHeader, 0, 3) != '000') {
+        if (substr($sLinhaHeader, 142, 1) != '2' && !str_starts_with($sLinhaHeader, '000')) {
             return false;
         }
 
@@ -170,7 +166,7 @@ class ProcessamentoPagamentoFornecedor
             return false;
         }
 
-        if (substr($sLinhaHeader, 142, 1) != '2' && substr($sLinhaHeader, 0, 3) != '000') {
+        if (substr($sLinhaHeader, 142, 1) != '2' && !str_starts_with($sLinhaHeader, '000')) {
             return false;
         }
 
@@ -259,7 +255,7 @@ class ProcessamentoPagamentoFornecedor
     protected function getCodigoArquivoPorMovimento($aMovimentos)
     {
 
-        $aCodigoArquivo = array();
+        $aCodigoArquivo = [];
         $oDaoEmpagecConfGera = new cl_empageconfgera();
         $sListaMovimentos = implode(",", $aMovimentos);
 
@@ -294,14 +290,14 @@ class ProcessamentoPagamentoFornecedor
     protected function getMovimentosPorGeracao($aCodigosGeracao)
     {
 
-        $aRetornoMovimentos = array();
+        $aRetornoMovimentos = [];
         foreach ($aCodigosGeracao as $iCodigoGeracao) {
 
             $oDaoEmpAgeConfGera = new cl_empageconfgera();
             $sSqlBuscaMovimentosGeracao = $oDaoEmpAgeConfGera->sql_query_movimentacoes_banco(null, $iCodigoGeracao, 'e90_codmov');
             $rsBuscaMovimentosGeracao = $oDaoEmpAgeConfGera->sql_record($sSqlBuscaMovimentosGeracao);
             $iTotalMovimentos = $oDaoEmpAgeConfGera->numrows;
-            $aMovimentos = array();
+            $aMovimentos = [];
             if ($iTotalMovimentos > 0) {
 
                 for ($iRowMovimento = 0; $iRowMovimento < $iTotalMovimentos; $iRowMovimento++) {
@@ -427,9 +423,9 @@ class ProcessamentoPagamentoFornecedor
         /*
          * Criamos um array com os códigos de movimentos retornados pelo banco
          */
-        $aMovimentosArquivo = array();
-        $aMovimentosCancelados = array();
-        $aRegistrosConfigurados = array();
+        $aMovimentosArquivo = [];
+        $aMovimentosCancelados = [];
+        $aRegistrosConfigurados = [];
 
         if (count($this->oRegistroArquivo->registros) == 0) {
             $sMsgArquivoProcessado = "Arquivo já processado.\n\n";
@@ -460,7 +456,7 @@ class ProcessamentoPagamentoFornecedor
         /*
          * criamos um array com todos os movimentos enviados para o banco
          */
-        $aMovimentoEnviados = array();
+        $aMovimentoEnviados = [];
         foreach ($aMovimentosPorGeracao as $iCodigoGeracao => $aMovimentosGeracao) {
             foreach ($aMovimentosGeracao as $iCodigoMovimento) {
                 $aMovimentoEnviados[] = $iCodigoMovimento;
@@ -480,7 +476,7 @@ class ProcessamentoPagamentoFornecedor
         /*
          * Criamos um codigo de retorno para cada codigo de geracao
          */
-        $aArquivosGerados = array();
+        $aArquivosGerados = [];
         foreach ($aCodigoArquivo as $iCodigoGeracao) {
 
             $oDaoEmpAgeDadosRet                  = new cl_empagedadosret();
@@ -507,7 +503,7 @@ class ProcessamentoPagamentoFornecedor
         /*
          * Caso tenha movimentos não retornados pelo banco, salvamos os dados como ocorrencia 114 (errobanco)
          */
-        $aMovimentosNaoProcessados = array();
+        $aMovimentosNaoProcessados = [];
 
         /* [Inicio plugin GeracaoArquivoOBN - processamento arquivo - parte2] */
 
@@ -565,7 +561,7 @@ class ProcessamentoPagamentoFornecedor
              */
             $oDaoConfGera = new cl_empageconfgera();
             $sWhereRetornoVinculado = "     e90_codmov = {$iCodigoMovimento} ";
-            $sWhereRetornoVinculado .= " and e75_codret in (" . implode($aArquivosGerados, ",") . ")";
+            $sWhereRetornoVinculado .= " and e75_codret in (" . implode(",", $aArquivosGerados) . ")";
             $sSqlBuscaCodigoRetornoVinculado = $oDaoConfGera->sql_query_buscacodretempagedadosretmov(null,
                 null,
                 'e75_codret',

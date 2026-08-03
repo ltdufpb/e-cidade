@@ -34,7 +34,7 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clrotulo = new rotulocampo;
 $clrotulo->label("v01_exerc");
 
@@ -321,14 +321,14 @@ if(isset($matric)){
   $sql = "select termo.v07_numpre as numpre 
  		    from termo 
 		   where termo.v07_parcel = ".$Parcelamento;
-  $numpre = pg_result(db_query($sql),0,0);	
+  $numpre = pg_fetch_result(db_query($sql),0,0);	
   $result = debitos_tipos_numpre($numpre);  
   $chave = $Parcelamento;
 }else{
   $chave = 0;
 }
 if($chave !=0){
-  if($result!=false && pg_numrows($result)>0){
+  if($result!=false && pg_num_rows($result)>0){
     
     $cor = "#EFE029";
     $ttvlrhis       = 0;
@@ -348,7 +348,7 @@ if($chave !=0){
     $ttvlrmultamarcado    = 0;
     $ttvlrdescontomarcado = 0;
     
-    for($x=0;$x<pg_numrows($result);$x++){
+    for($x=0;$x<pg_num_rows($result);$x++){
 	  db_fieldsmemory($result,$x,true);
 
       if(isset($matric)){
@@ -367,7 +367,7 @@ if($chave !=0){
       if ($debitos==false||$debitos==1){
       	continue;
       }
-      if(pg_numrows($debitos)>0){
+      if(pg_num_rows($debitos)>0){
         $tvlrhis=0;
         $tvlrcor=0;
         $tvlrjuros=0;
@@ -386,7 +386,7 @@ if($chave !=0){
         }
 
 		
-        for($xx=0;$xx<pg_numrows($debitos);$xx++){
+        for($xx=0;$xx<pg_num_rows($debitos);$xx++){
         
 		   db_fieldsmemory($debitos,$xx);
            $tvlrhis+=$vlrhis;
@@ -412,9 +412,9 @@ if($chave !=0){
              <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>"><?=db_formatar($vlrdesconto,'f')?></td>
              <td align="right" style="font-size:12px" nowrap bgcolor="<?=$cor?>"><?=db_formatar($total,'f')?></td>
              <td align="right" style="font-size:11px"  id="coluna$i" nowrap bgcolor="<?=$cor?>">
-						 <input type='checkbox' id="chkrec-<?=(isset($k00_tipo) ? $k00_tipo : 'totalizador');?>-<?=$k00_receit;?>"  checked class='creceit' onclick='js_marcaPai(this)'
+						 <input type='checkbox' id="chkrec-<?=($k00_tipo ?? 'totalizador');?>-<?=$k00_receit;?>"  checked class='creceit' onclick='js_marcaPai(this)'
 						  name="chkrec<?=$k00_receit;?>" value="<?=$k00_receit;?>"></td>
-						 <script>document.getElementById('chkrec-<?=(isset($k00_tipo) ? $k00_tipo : 'totalizador');?>-<?=$k00_receit;?>').tipo=<?=$k00_tipo;?>;</script>
+						 <script>document.getElementById('chkrec-<?=($k00_tipo ?? 'totalizador');?>-<?=$k00_receit;?>').tipo=<?=$k00_tipo;?>;</script>
              </tr>
 		   <?php 
            }

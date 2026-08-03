@@ -29,8 +29,8 @@ include(modification("fpdf151/pdf.php"));
 include(modification("classes/db_db_versao_classe.php"));
 include(modification("classes/db_db_versaoant_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cldb_versao = new cl_db_versao;
 $cldb_versaoant = new cl_db_versaoant;
@@ -89,7 +89,7 @@ $sql .= "
 
 $res = db_query($sql);
 
-$numrows = pg_numrows($res);
+$numrows = pg_num_rows($res);
 
 for($i=0;$i<$numrows;$i++){
     
@@ -117,11 +117,11 @@ for($i=0;$i<$numrows;$i++){
 
   $result = db_query($sql);
 
-  if(pg_numrows($result)>0){
+  if(pg_num_rows($result)>0){
         
     $pdf->Cell(60,4,'Modulo: '.$nome_modulo,0,1,"L");
 
-    for($m=0;$m<pg_numrows($result);$m++){
+    for($m=0;$m<pg_num_rows($result);$m++){
       db_fieldsmemory($result,$m);
       $pdf->Cell(60,4,'  '.$descrproced,0,1,"L");
       $sql = "select distinct db30_codversao,db30_codrelease,trim(db32_obs) as db32_obs
@@ -142,7 +142,7 @@ for($i=0;$i<$numrows;$i++){
               ) ";
 
       $resitem = db_query($sql);
-      for($mi=0;$mi<pg_numrows($resitem);$mi++){
+      for($mi=0;$mi<pg_num_rows($resitem);$mi++){
         db_fieldsmemory($resitem,$mi);
         $pdf->Cell(5,4,"");
         $pdf->Cell(15,4,"2.$db30_codversao.$db30_codrelease");

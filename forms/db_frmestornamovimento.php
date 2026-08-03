@@ -650,7 +650,7 @@ $displayEmpenhos = $apenasRetencoes ? "display: none" : '';
     <?php 
 
 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?e60_numemp='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?e60_numemp='+chave";
   ?>
   }
 

@@ -33,7 +33,7 @@ $clprotprocesso= new cl_protprocesso;
 $clrotulo->label('p61_coddepto'); //metodo que pega o label do campo da tabela indicado
 $clrotulo->label('descrdepto');
 $clrotulo->label('p58_codproc');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 $head3 = "RELATÓRIO DE PROCESSOS POR DEPARTAMENTO";
 $periodo ='';
@@ -120,7 +120,7 @@ for($x = 0; $x < $xxnum;$x++){
        $pdf->cell(60,$alt,"",0,0,"C",0);         
    }
    if($x < ($xxnum -1)){
-     $p61_coddeptoprox = pg_result($result,$x+1,"p61_coddepto");
+     $p61_coddeptoprox = pg_fetch_result($result,$x+1,"p61_coddepto");
    } else {
      $p61_coddeptoprox = 0;
    }

@@ -139,7 +139,7 @@ db_inputdata('at43_diafim',@$at43_diafim_dia,@$at43_diafim_mes,@$at43_diafim_ano
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('at43_problema',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -150,7 +150,7 @@ db_select('at43_problema',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('0'=>'Ninguém','1'=>'Envolvidos no projeto','2'=>'Envolvidos na tarefa','3'=>'Todos');
+$x = ['0'=>'Ninguém','1'=>'Envolvidos no projeto','2'=>'Envolvidos na tarefa','3'=>'Todos'];
 if($db_opcao==1||$db_opcao==11) {
 	$at43_avisar = 3;
 }
@@ -188,7 +188,7 @@ db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_ver
     </td>
     <td> 
 <?php 
-  $matriz = array("0"=>"0%",
+  $matriz = ["0"=>"0%",
                   "10"=>"10%", 
                   "20"=>"20%",
                   "30"=>"30%",
@@ -198,7 +198,7 @@ db_input('at43_horafim',5,$Iat43_horafim,true,'text',$db_opcao,"onchange='js_ver
                   "70"=>"70%",
                   "80"=>"80%",
                   "90"=>"90%",
-                  "100"=>"100%");             
+                  "100"=>"100%"];             
   db_select("at43_progresso", $matriz,true,$db_opcao); 
 ?>
     </td>
@@ -223,7 +223,7 @@ if(isset($at43_progresso)&&$at43_progresso!="") {
 db_selectrecord('at48_situacao',($cltarefacadsituacao->sql_record($cltarefacadsituacao->sql_query(($db_opcao==2?null:@$at48_situacao),"*","at46_codigo",null))),true,$db_opcao,"");
 function envia_email($lista_email,$assunto,$texto) {
 	$headers = "Content-Type:text/html;";
-	$mail=mail($lista_email,$assunto,$texto,$headers);
+	$mail=mail((string) $lista_email,(string) $assunto,(string) $texto,$headers);
 	if($mail==true){
 	    db_msgbox("E-mail enviado com sucesso!!");
 	}
@@ -364,7 +364,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tarefalog.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

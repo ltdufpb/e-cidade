@@ -34,7 +34,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 $clcriaabas = new cl_criaabas;
 $db_opcao   = 2;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ?>
 <html>
@@ -64,14 +64,14 @@ if(!isset($menu)){
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("tarefa"=>"Tarefa","tarefaobs"=>"Observações","tarefaclientes"=>"Clientes","tarefausu"=>"Usuários Iniciais","tarefaenvol"=>"Usuários Envolvidos","tarefalog"=>"Registros","agenda"=>"Agendamento","tarefaanexos"=>"Anexos"); 
+	 $clcriaabas->identifica = ["tarefa"=>"Tarefa","tarefaobs"=>"Observações","tarefaclientes"=>"Clientes","tarefausu"=>"Usuários Iniciais","tarefaenvol"=>"Usuários Envolvidos","tarefalog"=>"Registros","agenda"=>"Agendamento","tarefaanexos"=>"Anexos"]; 
 
      if(isset($menu))
-	   $clcriaabas->src = array("tarefa"=>"ate1_tarefa008.php?menu=true&chavepesquisa=".$chavepesquisa);
+	   $clcriaabas->src = ["tarefa"=>"ate1_tarefa008.php?menu=true&chavepesquisa=".$chavepesquisa];
 	 else
-	   $clcriaabas->src = array("tarefa"=>"ate1_tarefa008.php");
+	   $clcriaabas->src = ["tarefa"=>"ate1_tarefa008.php"];
 
-	 $clcriaabas->disabled   =  array("tarefaclientes"=>"true","tarefaobs"=>"true","tarefausu"=>"true","tarefaenvol"=>"true","tarefalog"=>"true", "agenda"=>"true","tarefaanexos"=>"true"); 
+	 $clcriaabas->disabled   =  ["tarefaclientes"=>"true","tarefaobs"=>"true","tarefausu"=>"true","tarefaenvol"=>"true","tarefalog"=>"true", "agenda"=>"true","tarefaanexos"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

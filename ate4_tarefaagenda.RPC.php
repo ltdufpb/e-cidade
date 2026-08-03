@@ -57,7 +57,7 @@ if ( $oParam->exec == "removerLembrete" ){
     $iStatus = 1;
   }
   
-  $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem),"iLembrete"=>$oParam->iLembrete);
+  $aRegistros = ["iStatus"=>$iStatus, "sMensagem"=>urlencode((string) $sMensagem),"iLembrete"=>$oParam->iLembrete];
   
   echo $oJson->encode($aRegistros);
 
@@ -76,7 +76,7 @@ if ( $oParam->exec == "removerLembrete" ){
     $oLembrete = db_utils::fieldsMemory($rsLembrete,0);
   }
   
-  $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem),"oLembrete"=>$oLembrete); 
+  $aRegistros = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem),"oLembrete"=>$oLembrete]; 
   echo $oJson->encode($aRegistros);
 
 
@@ -99,7 +99,7 @@ if ( $oParam->exec == "removerLembrete" ){
     $oDaoTarefaagenda->at77_usuenvolvido = $oLembrete->at77_usuenvolvido;
     $oDaoTarefaagenda->at77_datainclusao = date('Y-m-d',db_getsession('DB_datausu'));
     $oDaoTarefaagenda->at77_datavalidade = "null";
-    $oDaoTarefaagenda->at77_dataagenda   = implode('-',array_reverse(explode('/',$oParam->sData)));
+    $oDaoTarefaagenda->at77_dataagenda   = implode('-',array_reverse(explode('/',(string) $oParam->sData)));
     $oDaoTarefaagenda->at77_observacao   = $oParam->sObs;
     $oDaoTarefaagenda->at77_hora         = $oParam->sHora;
     $oDaoTarefaagenda->at77_cliente      = $oLembrete->at77_cliente;
@@ -116,7 +116,7 @@ if ( $oParam->exec == "removerLembrete" ){
     }
   }
 
-  $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)); 
+  $aRegistros = ["iStatus"=>$iStatus, "sMensagem"=>urlencode((string) $sMensagem)]; 
   echo $oJson->encode($aRegistros);
 
 }else if ( $oParam->exec == "getFiltrosConsulta" ){
@@ -155,7 +155,7 @@ if ( $oParam->exec == "removerLembrete" ){
   $rsDepartamentosAgenda = $oDaoTarefaagenda->sql_record($sSqlDepartamentosAgenda);
   $aDepartamentosAgenda  = db_utils::getCollectionByRecord($rsDepartamentosAgenda,false,false,true);
   
-  $aRegistros = array("iStatus"=>$iStatus, "aUsuarios"=>$aUsuariosAgenda,"aClientes"=>$aClientesAgenda, "aDepartamentos"=>$aDepartamentosAgenda);
+  $aRegistros = ["iStatus"=>$iStatus, "aUsuarios"=>$aUsuariosAgenda,"aClientes"=>$aClientesAgenda, "aDepartamentos"=>$aDepartamentosAgenda];
 
   echo $oJson->encode($aRegistros);
   
@@ -165,12 +165,12 @@ if ( $oParam->exec == "removerLembrete" ){
   $oDaoTarefaagenda = db_utils::getDao('tarefaagenda');
   $where = "where true";
   if ($oParam->sDataIni != "") {
-    $sDataIni = implode('-',array_reverse(explode('/',$oParam->sDataIni)));
+    $sDataIni = implode('-',array_reverse(explode('/',(string) $oParam->sDataIni)));
     $where   .= " and at77_datainclusao >= '{$sDataIni}'";
   }
 
   if ($oParam->sDataFim != "") {
-    $sDataFim = implode('-',array_reverse(explode('/',$oParam->sDataFim)));
+    $sDataFim = implode('-',array_reverse(explode('/',(string) $oParam->sDataFim)));
     $where   .= " and at77_datainclusao <= '{$sDataFim}'";
   }
 
@@ -201,7 +201,7 @@ if ( $oParam->exec == "removerLembrete" ){
 
   $rsConsulta     = $oDaoTarefaagenda->sql_record($sSqlConsulta);
   $aDadosConsulta = db_utils::getCollectionByRecord($rsConsulta,false,false,true);
-  $aRegistros = array("iStatus"=>$iStatus, "aRegistros"=>$aDadosConsulta);
+  $aRegistros = ["iStatus"=>$iStatus, "aRegistros"=>$aDadosConsulta];
 
   echo $oJson->encode($aRegistros);
 

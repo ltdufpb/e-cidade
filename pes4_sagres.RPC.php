@@ -98,7 +98,7 @@ switch ($oParam->exec) {
             $oRetorno->mensagem = "Arquivo gerado com sucesso!";
         } catch (Exception $e) {
             $oRetorno->erro   = true;
-            $oRetorno->message = utf8_encode($e->getMessage());
+            $oRetorno->message = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
         }
         
         break;
@@ -113,19 +113,19 @@ function convertDate($data, $format)
         break;
       
         case 'Y-m-d':
-            $ano= substr($data, 6);
-            $mes= substr($data, 3, -5);
-            $dia= substr($data, 0, -8);
+            $ano= substr((string) $data, 6);
+            $mes= substr((string) $data, 3, -5);
+            $dia= substr((string) $data, 0, -8);
             return $ano."-".$mes."-".$dia;
         break;
       
         case 'dmY':
-            $timestamp = strtotime($data);
+            $timestamp = strtotime((string) $data);
             return date("dmY", $timestamp);
         break;
 
         case 'Y':
-            $timestamp = strtotime($data);
+            $timestamp = strtotime((string) $data);
             return date("Y", $timestamp);
         break;
     }

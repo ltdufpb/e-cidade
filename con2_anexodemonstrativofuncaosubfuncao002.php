@@ -57,7 +57,7 @@ if ($oGet->sPeriodo == 'Mensal') {
 
 $dtAnousu     = db_getsession("DB_anousu");
 $sInstituicao = db_getsession("DB_instit");
-$xinstit      = split("-", $oGet->sOrigem);
+$xinstit      = preg_split("#\\-#m", (string) $oGet->sOrigem);
 
 $rsInstituicao = db_query("select munic from db_config where codigo in (" . str_replace('-', ', ', $oGet->sOrigem)
                           . ") ");
@@ -66,7 +66,7 @@ $oTeste = db_utils::fieldsmemory($rsInstituicao, 0);
 
 $sDescricaoInstituicao = "MUNICÍPIO DE " . $oTeste->munic;
 $oAssinatura           = new cl_assinatura;
-$sNivela               = substr(@$nivel, 0, 1);
+$sNivela               = substr((string) @$nivel, 0, 1);
 $sele_work             = ' o58_instit in (' . str_replace('-', ', ', $oGet->sOrigem) . ')';
 
 $sSqlOrgaos = "select distinct o41_orgao                                                                         ";
@@ -76,7 +76,7 @@ $sSqlOrgaos .= "                         o41_orgao = o40_orgao and o40_anousu = 
 $sSqlOrgaos .= "     where o41_anousu = {$dtAnousu} and o41_instit  in (" . str_replace('-', ',', $oGet->sOrigem) . ")";
 
 $res_orgaos    = @db_query($sSqlOrgaos);
-$iNumeroLinhas = @pg_numrows($res_orgaos);
+$iNumeroLinhas = @pg_num_rows($res_orgaos);
 $sOrgao        = "";
 $sSeparador    = "";
 
@@ -92,13 +92,13 @@ if ($iNumeroLinhas != false) {
 db_query("begin");
 db_query("create temp table t(o58_orgao int8,o58_unidade int8,o58_funcao int8,o58_subfuncao int8,o58_programa int8,o58_projativ int8,o58_elemento int8,o58_codigo int8)");
 
-$sCampos = split("-", $sOrgao);
+$sCampos = preg_split("#\\-#m", $sOrgao);
 
 for ($i = 0; $i < sizeof($sCampos); $i++) {
 
   $sConcatenaWhere = '';
   $sVirgula        = '';
-  $sCamposSplit    = split("_", $sCampos[$i]);
+  $sCamposSplit    = preg_split("#_#m", (string) $sCampos[$i]);
 
   for ($j = 0; $j < sizeof($sCamposSplit); $j++) {
 
@@ -173,9 +173,9 @@ $sSiglaPeriodo = db_utils::fieldsMemory($oDaoPeriodo->sql_record($sSqlPeriodo), 
 $sData         = $sSiglaPeriodo;
 $sDadosPeriodo = data_periodo($dtAnousu, $sData);
 
-$sPeriodoImpressao       = strtoupper($sDadosPeriodo["periodo"]);
-$sPeriodoInicioImpressao = split("-", $sDadosPeriodo[0]);
-$sPeriodoFimImpressao    = split("-", $sDadosPeriodo[1]);
+$sPeriodoImpressao       = strtoupper((string) $sDadosPeriodo["periodo"]);
+$sPeriodoInicioImpressao = preg_split("#\\-#m", (string) $sDadosPeriodo[0]);
+$sPeriodoFimImpressao    = preg_split("#\\-#m", (string) $sDadosPeriodo[1]);
 
 $sMesInicial = strtoupper(db_mes($sPeriodoInicioImpressao[1]));
 $sMesFim     = strtoupper(db_mes($sPeriodoFimImpressao[1]));
@@ -257,7 +257,7 @@ function contabilizarDespesa($oTipoDespesa,
   if (!isset($oTipoDespesa)) {
 
     $oTipoDespesa           = clone $oStdSubfuncao;
-    $oTipoDespesa->aFuncoes = array();
+    $oTipoDespesa->aFuncoes = [];
 
   } else {
 
@@ -283,7 +283,7 @@ function contabilizarDespesa($oTipoDespesa,
 
     $oTipoDespesa->aFuncoes[$sFuncao]              = clone $oStdSubfuncao;
     $oTipoDespesa->aFuncoes[$sFuncao]->sDescricao  = $sDescricaoFuncao;
-    $oTipoDespesa->aFuncoes[$sFuncao]->aSubfuncoes = array();
+    $oTipoDespesa->aFuncoes[$sFuncao]->aSubfuncoes = [];
 
   } else {
 
@@ -387,7 +387,7 @@ function construirArraysDespesas($sSql, $lDiferenciaTipo = true) {
     $oStdSubfuncao->nTotalLiquidar = ($oStdSubfuncao->nTotalDotacaoAtualizada
                                       - $oStdSubfuncao->nTotalDespesasLiquidadasPeriodo);
 
-    $sTipo = substr($oDespesa->o58_elemento, 0, 2);
+    $sTipo = substr((string) $oDespesa->o58_elemento, 0, 2);
 
     /**
      * Validacao do tipo de instituicao. caso a dotacao esteja vinculada ao tipo 5/6 é RPPS, o que altera
@@ -645,7 +645,7 @@ function imprimirCabecalhoPaginasInternas(&$oPdf, $sTipoPeriodo, $sPeriodo, $iAl
     $oPdf->cell(1, $iAlturaLinha, 'RREO - Anexo II (LRF, Art. 52, inciso II, alínea "c")', "B", 0, "L", 0);
     $oPdf->cell(190, $iAlturaLinha, 'R$ 1,00', "B", 1, "R", 0);
 
-    imprimirCabecalho($oPdf, $sTipoPeriodo, $sPeriodo, $iAlturaLinha, $sTipoFonte);
+    imprimirCabecalho($oPdf, $sTipoPeriodo, $sPeriodo);
     $oPdf->setfont('arial', $sTipoFonte, 5);
   }
 }
@@ -852,7 +852,7 @@ $oPdf->AddPage();
 $oPdf->SetFont('arial', 'b', 5);
 $oPdf->cell(1, $iAlturaLinha, 'RREO - Anexo II (LRF, Art. 52, inciso II, alínea "c")', "B", 0, "L", 0);
 $oPdf->cell(190, $iAlturaLinha, 'R$ 1,00', "B", 1, "R", 0);
-imprimirCabecalho($oPdf, $sTipoPeriodo, $sPeriodo, $iAlturaLinha);
+imprimirCabecalho($oPdf, $sTipoPeriodo, $sPeriodo);
 
 //Imprime Despesas Exceto Intra-Orçamentarias, que não sejam RPPS e de Contingência
 $oDespesas = $oDespesasExtra;
@@ -966,7 +966,7 @@ imprimeLinha($oPdf, $oDespesas, $sPeriodo, $sTipoPeriodo, $iAlturaLinha, $sDescr
 //Totas as Despesas que não sejam Reserva RPPS e Contingência
 $oDespesas = $oDespesas->oOutras;
 $oPdf->SetFont('arial', 'b', 5);
-imprimeGrupoDespesas($oPdf, $oDespesas, $sPeriodo, $sTipoPeriodo, $iAlturaLinha, null, 'b');
+imprimeGrupoDespesas($oPdf, $oDespesas, $sPeriodo, $sTipoPeriodo, $iAlturaLinha);
 
 
 $nTotalDotacaoInicial            = $oDespesasExtra->nTotalDotacaoInicial + $oDespesasIntra->nTotalDotacaoInicial;

@@ -157,7 +157,7 @@ if( isset($oRequest->opcao) ) {
             $sWhereNaoVisualiza = " and rh125_sequencial <> ".$oRequest->rh125_sequencial;
           }
 
-			    $chavepri= array("rh109_sequencial" => "");
+			    $chavepri= ["rh109_sequencial" => ""];
 			    
 			    $cliframe_alterar_excluir                = new cl_iframe_alterar_excluir;
 			    
@@ -167,7 +167,7 @@ if( isset($oRequest->opcao) ) {
 			 	  $sCampos                                .= "rh125_diasdesconto                          ";
           $sWhere                                  = "rh125_rhcadregime = {$oRequest->rh52_regime}";
           $sWhere                                 .= $sWhereNaoVisualiza;
-          $sChavePrimaria                          = array("rh125_sequencial"=> $oRequest->rh52_regime);
+          $sChavePrimaria                          = ["rh125_sequencial"=> $oRequest->rh52_regime];
           $sSql                                    = $clrhcadregimefaltasperiodoaquisitivo->sql_query_file (null, $sCampos, 'rh125_sequencial', $sWhere);
 
 			    $cliframe_alterar_excluir->chavepri      = $sChavePrimaria;

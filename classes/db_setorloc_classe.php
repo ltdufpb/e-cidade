@@ -52,10 +52,10 @@ class cl_setorloc {
                  j05_codigoproprio = varchar(10) = Código Próprio
                  ";
    //funcao construtor da classe
-   public function cl_setorloc() {
+   public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("setorloc");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    public function erro($mostra,$retorna) {
@@ -119,7 +119,7 @@ class cl_setorloc {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "setorloc ($this->j05_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "setorloc já Cadastrado";
@@ -143,12 +143,12 @@ class cl_setorloc {
      $resaco = $this->sql_record($this->sql_query_file($this->j05_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8758,'$this->j05_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1495,8758,'','".AddSlashes(pg_result($resaco,0,'j05_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1495,8759,'','".AddSlashes(pg_result($resaco,0,'j05_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1495,18276,'','".AddSlashes(pg_result($resaco,0,'j05_codigoproprio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1495,8758,'','".AddSlashes(pg_fetch_result($resaco,0,'j05_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1495,8759,'','".AddSlashes(pg_fetch_result($resaco,0,'j05_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1495,18276,'','".AddSlashes(pg_fetch_result($resaco,0,'j05_codigoproprio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -157,10 +157,10 @@ class cl_setorloc {
       $this->atualizacampos();
      $sql = " update setorloc set ";
      $virgula = "";
-     if(trim($this->j05_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j05_codigo"])){
+     if(trim((string) $this->j05_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j05_codigo"])){
        $sql  .= $virgula." j05_codigo = $this->j05_codigo ";
        $virgula = ",";
-       if(trim($this->j05_codigo) == null ){
+       if(trim((string) $this->j05_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "j05_codigo";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_setorloc {
          return false;
        }
      }
-     if(trim($this->j05_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j05_descr"])){
+     if(trim((string) $this->j05_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j05_descr"])){
        $sql  .= $virgula." j05_descr = '$this->j05_descr' ";
        $virgula = ",";
-       if(trim($this->j05_descr) == null ){
+       if(trim((string) $this->j05_descr) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "j05_descr";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_setorloc {
          return false;
        }
      }
-     if(trim($this->j05_codigoproprio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j05_codigoproprio"])){
+     if(trim((string) $this->j05_codigoproprio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j05_codigoproprio"])){
        $sql  .= $virgula." j05_codigoproprio = '$this->j05_codigoproprio' ";
        $virgula = ",";
-       if(trim($this->j05_codigoproprio) == null ){
+       if(trim((string) $this->j05_codigoproprio) == null ){
          $this->erro_sql = " Campo Código Próprio nao Informado.";
          $this->erro_campo = "j05_codigoproprio";
          $this->erro_banco = "";
@@ -204,15 +204,15 @@ class cl_setorloc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8758,'$this->j05_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j05_codigo"]) || $this->j05_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,1495,8758,'".AddSlashes(pg_result($resaco,$conresaco,'j05_codigo'))."','$this->j05_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1495,8758,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j05_codigo'))."','$this->j05_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j05_descr"]) || $this->j05_descr != "")
-           $resac = db_query("insert into db_acount values($acount,1495,8759,'".AddSlashes(pg_result($resaco,$conresaco,'j05_descr'))."','$this->j05_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1495,8759,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j05_descr'))."','$this->j05_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j05_codigoproprio"]) || $this->j05_codigoproprio != "")
-           $resac = db_query("insert into db_acount values($acount,1495,18276,'".AddSlashes(pg_result($resaco,$conresaco,'j05_codigoproprio'))."','$this->j05_codigoproprio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1495,18276,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j05_codigoproprio'))."','$this->j05_codigoproprio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -257,12 +257,12 @@ class cl_setorloc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8758,'$j05_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1495,8758,'','".AddSlashes(pg_result($resaco,$iresaco,'j05_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1495,8759,'','".AddSlashes(pg_result($resaco,$iresaco,'j05_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1495,18276,'','".AddSlashes(pg_result($resaco,$iresaco,'j05_codigoproprio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1495,8758,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j05_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1495,8759,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j05_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1495,18276,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j05_codigoproprio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from setorloc
@@ -322,7 +322,7 @@ class cl_setorloc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:setorloc";
@@ -358,7 +358,7 @@ class cl_setorloc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_setorloc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

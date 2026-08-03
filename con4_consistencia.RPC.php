@@ -92,8 +92,8 @@ try {
             if (empty($registros)) {
                 throw new DBException("Não foram encontrados registros inconsistentes para correção.");
             }
-            $arquivoCsv = array();
-            $primeiraLinha = array();
+            $arquivoCsv = [];
+            $primeiraLinha = [];
             foreach ($colunas as $coluna) {
                 $primeiraLinha[] = $coluna->nome;
             }
@@ -101,7 +101,7 @@ try {
             $arquivoCsv[] = implode($delimitador, $primeiraLinha);
             foreach ($registros as $stdRegistro) {
 
-                $linhaRegistro = array();
+                $linhaRegistro = [];
                 foreach ($colunas as $coluna) {
                     $linhaRegistro[] = $stdRegistro->{$coluna->propriedade};
                 }

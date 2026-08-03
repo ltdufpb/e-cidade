@@ -5,7 +5,7 @@
 */
 class ReajusteSalarial{
 
-  private $aServidores = array();
+  private $aServidores = [];
 
   private $iPercentual;
 

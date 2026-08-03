@@ -40,13 +40,13 @@ if (!isset($DB_PORTA_ALT)){
   $DB_PORTA_ALT = db_getsession('DB_porta');
 }
 
-$aRetorno                 = array();
-$aRetornoBases            = array();
+$aRetorno                 = [];
+$aRetornoBases            = [];
 $aRetorno['lErro']        = true;
 $aRetorno['aBases']       = null;
 $aRetorno["lErroConexao"] = false;
 
-$vetor_ip = split(":",$oParam->iIp);
+$vetor_ip = preg_split("#:#m",(string) $oParam->iIp);
 if (count($vetor_ip) == 1){
   $aRetorno['iIpAnterior']  = $oParam->iIp;
 }else{

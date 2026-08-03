@@ -30,7 +30,7 @@ require_once modification('libs/db_conecta.php');
 require_once modification('classes/db_db_versao_classe.php');
 require_once modification('model/configuracao/SkinService.service.php');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;

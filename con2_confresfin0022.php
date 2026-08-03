@@ -42,7 +42,7 @@ $clorctiporec = new cl_orctiporec;
 $clempresto   = new cl_empresto;
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -50,11 +50,11 @@ $anousu = db_getsession("DB_anousu");
 $anousu_ant = $anousu-1;
 $data_ini = $anousu."-01-01";
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-', ', ', $db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins ++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins ++) {
 	db_fieldsmemory($resultinst, $xins);
 	$descr_inst .= $xvirg.$nomeinst;
 	$xvirg = ', ';
@@ -116,11 +116,11 @@ $sql = "
               
   ";
 $result = db_query($sql);
-for ($x = 0; $x < pg_numrows($result); $x ++) {	
+for ($x = 0; $x < pg_num_rows($result); $x ++) {	
 	  db_fieldsmemory($result, $x);
 	  $sql = "select * from work_rel where recurso = $o15_codigo";
 	  $rr = db_query($sql);
-	  if (pg_numrows($rr) > 0) {
+	  if (pg_num_rows($rr) > 0) {
 			$sql = " update work_rel
 						            set rp_anterior = coalesce(".$rp_anterior.",0)  , 
 										  rp_atual     = coalesce(".$rp_atual.",0)
@@ -129,7 +129,7 @@ for ($x = 0; $x < pg_numrows($result); $x ++) {
 			db_query($sql);
 	  } else {
 			$sql = " insert into work_rel  (recurso, recurso_descr, rp_anterior,rp_atual)
-						 values ($o15_codigo, '".substr($o15_descr,0,30)."',".round($rp_anterior,2)." , ".round($rp_atual,2) ." ) 
+						 values ($o15_codigo, '".substr((string) $o15_descr,0,30)."',".round($rp_anterior,2)." , ".round($rp_atual,2) ." ) 
 					   ";
 			db_query($sql);
 	  }
@@ -152,13 +152,13 @@ $sql_baldesp = "select o58_codigo as o15_codigo,
                          having o58_codigo > 0 
                           ";
 $result_baldesp = db_query($sql_baldesp);
-if (pg_numrows($result_baldesp) > 0) {
-	for ($x = 0; $x < pg_numrows($result_baldesp); $x ++) {
+if (pg_num_rows($result_baldesp) > 0) {
+	for ($x = 0; $x < pg_num_rows($result_baldesp); $x ++) {
 	 	 db_fieldsmemory($result_baldesp, $x);
 
          $sql = "select * from work_rel where recurso = $o15_codigo";
 	     $rr = db_query($sql);
-	     if (pg_numrows($rr) > 0) {
+	     if (pg_num_rows($rr) > 0) {
 			$sql = " update work_rel
 						 set liquidado         = coalesce(".$liquidado.",0)  , 
 							  nao_liquidado  = coalesce(".($empenhado - $liquidado).",0)
@@ -167,7 +167,7 @@ if (pg_numrows($result_baldesp) > 0) {
 		 	db_query($sql);
 	     } else {
 		  	$sql = " insert into work_rel  (recurso, recurso_descr, liquidado, nao_liquidado)
-						 values ($o15_codigo, '".substr($o15_descr,0,30)."',".round($liquidado,2)." , ".round(($empenhado-$liquidado),2) ." ) 
+						 values ($o15_codigo, '".substr((string) $o15_descr,0,30)."',".round($liquidado,2)." , ".round(($empenhado-$liquidado),2) ." ) 
 					   ";
 			db_query($sql);
 	     }
@@ -210,13 +210,13 @@ $sql="select
                  group by c61_codigo,c60_codsis,o15_descr		                      
 		 ";
 $result_contas = db_query($sql);
-$nrows = pg_numrows($result_contas);
-if (pg_numrows($result_contas) > 0) {
-	for ($x = 0; $x < pg_numrows($result_contas); $x ++) {
+$nrows = pg_num_rows($result_contas);
+if (pg_num_rows($result_contas) > 0) {
+	for ($x = 0; $x < pg_num_rows($result_contas); $x ++) {
 		db_fieldsmemory($result_contas, $x);
 		$sql = "select * from work_rel where recurso = $c61_codigo";
 		$rr = db_query($sql);
-		if (pg_numrows($rr) > 0) {
+		if (pg_num_rows($rr) > 0) {
 			if ($c60_codsis == 5)
 				$sql = "update work_rel 
 				            set caixa = ".$final." , 
@@ -231,10 +231,10 @@ if (pg_numrows($result_contas) > 0) {
 		} else {
 			if ($c60_codsis == 5)
 				$sql = " insert into work_rel  (recurso, recurso_descr, caixa)  
-							 values ($c61_codigo, '".substr($o15_descr,0,35)."', $final )  ";
+							 values ($c61_codigo, '".substr((string) $o15_descr,0,35)."', $final )  ";
 			else
 				$sql = " insert into work_rel  (recurso, recurso_descr, banco )
-							 values ($c61_codigo, '".substr($o15_descr,0,30)."', $final  )  ";
+							 values ($c61_codigo, '".substr((string) $o15_descr,0,30)."', $final  )  ";
 			db_query($sql);
 		}
 	}
@@ -260,13 +260,13 @@ $sql_bver = "select
 				    group by c61_codigo
 				   ";				   
 $result_bver = db_query($sql_bver);
-if (pg_numrows($result_bver) > 0) {
-	for ($x = 0; $x < pg_numrows($result_bver); $x ++) {
+if (pg_num_rows($result_bver) > 0) {
+	for ($x = 0; $x < pg_num_rows($result_bver); $x ++) {
 	 	 db_fieldsmemory($result_bver, $x);
 
          $sql = "select * from work_rel where recurso = $c61_codigo";
 	     $rr = db_query($sql);
-	     if (pg_numrows($rr) > 0) {
+	     if (pg_num_rows($rr) > 0) {
 			$sql = " update work_rel
 						 set receita     = coalesce(".($saldo_anterior_credito).",0)  , 
 							  despesa  = coalesce(".($saldo_anterior_debito).",0)
@@ -275,7 +275,7 @@ if (pg_numrows($result_bver) > 0) {
 		 	db_query($sql);
 	     } else {
 		  	$sql = " insert into work_rel  (recurso, recurso_descr, receita, despesa)
-						 values ($o15_codigo, '".substr($o15_descr,0,30)."',".round($saldo_anterior_credito,2)." , ".round($saldo_anterior_debito,2) ." ) 
+						 values ($o15_codigo, '".substr((string) $o15_descr,0,30)."',".round($saldo_anterior_credito,2)." , ".round($saldo_anterior_debito,2) ." ) 
 					   ";
 			db_query($sql);
 	     }	    
@@ -287,8 +287,8 @@ if (pg_numrows($result_bver) > 0) {
 $res = db_query("select *  from work_rel order by recurso");
 // db_criatabela($res);exit;
 
-$rows = pg_numrows($res);
-$cols = pg_numfields($res);
+$rows = pg_num_rows($res);
+$cols = pg_num_fields($res);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -298,7 +298,7 @@ if ($recurso == 0) {
 $head2 = "RESULTADOS FINANCEIROS POR RECURSO";
 $head3 = "RECURSO : ".$recurso." : ".$o15_descr;
 $head5 = "INSTITUIÇÕES : ".$descr_inst;
-$dt = split('-', $data_limite);
+$dt = preg_split('#\-#m', (string) $data_limite);
 $head7 = 'DATA LIMITE :'."$dt[2]/$dt[1]/$dt[0]";
 
 $pdf = new PDF();

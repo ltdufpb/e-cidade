@@ -80,7 +80,7 @@ $objJson          = $json->decode(str_replace("\\", "", $_POST["json"]));
 $method           = $objJson->method;
 $oAgendaPagamento = new agendaPagamento();
 $item             = 0; //se deve trazer as notas, ou os itens do empenho.
-$aCompetencias    = array();
+$aCompetencias    = [];
 $isPB = isParaiba();
 $objEmpenho->setEmpenho($objJson->iEmpenho);
 $objEmpenho->setEncode(true);
@@ -115,7 +115,7 @@ switch ($objJson->method) {
         $sSqlBuscaNotas   = $oDaoEmpNota->sql_query_elemento_patrimonio(null, "empnota.* ", null, $sWhereBuscaNotas);
         $rsBuscaNotas     = $oDaoEmpNota->sql_record($sSqlBuscaNotas);
         $aBuscaNotas      = db_utils::getCollectionByRecord($rsBuscaNotas);
-        $aNotasEmpenho    = array();
+        $aNotasEmpenho    = [];
         $oGrupoElemento   = new stdClass();
 
         $oDataAtual   = new DBDate(date("Y-m-d", db_getsession("DB_datausu")));
@@ -189,7 +189,7 @@ switch ($objJson->method) {
                  * do mesmo atraves da rotina de liquidacao sem ordem de compra
                  */
                 if ($iGrupo != "") {
-                    if (in_array($iGrupo, array(7, 8, 9)) &&  !UTILIZA_INCORPORACAO_BEM) {
+                    if (in_array($iGrupo, [7, 8, 9]) &&  !UTILIZA_INCORPORACAO_BEM) {
                         $sDataImplantacaoDepreciacao = BemDepreciacao::retornaDataImplantacaoDepreciacao(db_getsession('DB_instit'));
                         $oDataImplantacaoDepreciacao = $sDataImplantacaoDepreciacao ? new DBDate($sDataImplantacaoDepreciacao) : null;
                         $oDataEmissaoEmpenho         = new DBDate($oEmpenhoFinanceiro->getDataEmissao());
@@ -203,7 +203,7 @@ switch ($objJson->method) {
                         }
 
                         $oGrupoElemento->iGrupo   = $iGrupo;
-                        $oGrupoElemento->sGrupo   = urlencode($sDescricao);
+                        $oGrupoElemento->sGrupo   = urlencode((string) $sDescricao);
                         $oEmpenho->oGrupoElemento = $oGrupoElemento;
                         $oEmpenho->lPossuiIntegracaoPatrimonial = $lPossuiIntegracaoPatrimonial;
                         $oEmpenho->contratoPossuiRegimeCompetencia = $lMostrarCompetencia;
@@ -271,7 +271,7 @@ switch ($objJson->method) {
                     $sProcessoAdministrativo = addslashes(db_stdClass::normalizeStringJson($objJson->e03_numeroprocesso));
 
                     if (!empty($sProcessoAdministrativo)) {
-                        $aOrdensGeradas = explode(",", $oDadosRetorno->sOrdensGeradas);
+                        $aOrdensGeradas = explode(",", (string) $oDadosRetorno->sOrdensGeradas);
 
                         foreach ($aOrdensGeradas as $iIndOrdensGeradas => $iOrdem) {
                             $oDaoPagordemProcesso                     = new cl_pagordemprocesso();
@@ -295,7 +295,7 @@ switch ($objJson->method) {
                 throw new Exception($objEmpenho->sMsgErro);
             }
         } catch (Exception $eErro) {
-            $oRetorno = $json->encode(array("sMensagem" =>urlencode($eErro->getMessage()), "lErro" => true));
+            $oRetorno = $json->encode(["sMensagem" =>urlencode($eErro->getMessage()), "lErro" => true]);
             echo $oRetorno;
         }
 
@@ -371,7 +371,7 @@ switch ($objJson->method) {
 
             if ($oRetorno !== false) {
                 //caso procedimento com sucesso  vincula o processo administrativo
-                $sProcessoAdministrativo = addslashes(stripslashes(utf8_decode($objJson->e03_numeroprocesso)));
+                $sProcessoAdministrativo = addslashes(stripslashes(mb_convert_encoding($objJson->e03_numeroprocesso, 'ISO-8859-1')));
                 $oDadosRetorno           = $json->decode(str_replace("\\", "", $oRetorno));
 
                 if ($oDadosRetorno->erro != 2) {
@@ -393,13 +393,13 @@ switch ($objJson->method) {
                 if ($isPB) {
                     $oEmpenhoFinanceiro = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorNumero($objJson->iEmpenho);
                     $desdobramento = $oEmpenhoFinanceiro->getDesdobramento();
-                    $isEmpenhoFolha = substr($desdobramento->o56_elemento, 2, 1) == 1 &&
+                    $isEmpenhoFolha = substr((string) $desdobramento->o56_elemento, 2, 1) == 1 &&
                         (in_array(
-                            substr($desdobramento->o56_elemento, 5, 2),
+                            substr((string) $desdobramento->o56_elemento, 5, 2),
                             ['01','03','04','05','11','16','34']
                         ) ||
-                        (substr($desdobramento->o56_elemento, 5, 2) == '08' &&
-                            substr($desdobramento->o56_elemento, 7, 1)) == '0');
+                        (substr((string) $desdobramento->o56_elemento, 5, 2) == '08' &&
+                            substr((string) $desdobramento->o56_elemento, 7, 1)) == '0');
                     if ($isEmpenhoFolha) {
                         $oDaoOutrosDados = new cl_pagordemoutrosdados();
                         $oDaoOutrosDados->e172_dados = $objJson->outrosDados;
@@ -418,16 +418,16 @@ switch ($objJson->method) {
                 db_fim_transacao();
                 echo $oRetorno;
             } else {
-                $retorno = array("erro" => 2, "mensagem" => urlencode($objEmpenho->sMsgErro), "e50_codord" => null);
+                $retorno = ["erro" => 2, "mensagem" => urlencode($objEmpenho->sMsgErro), "e50_codord" => null];
                 echo $json->encode($retorno);
             }
         } catch (Exception $oErro) {
             db_fim_transacao(true);
-            $retorno = array(
+            $retorno = [
                 'erro'       => 2,
                 'mensagem'   => urlencode($oErro->getMessage()),
                 'e50_codord' => null
-            );
+            ];
             echo $json->encode($retorno);
             break;
         }
@@ -449,7 +449,7 @@ switch ($objJson->method) {
             $nMensagem = '';
             $iStatus   = 1;
         }
-        echo $json->encode(array("mensagem" => $nMensagem, "status" => $iStatus));
+        echo $json->encode(["mensagem" => $nMensagem, "status" => $iStatus]);
         break;
 
     case "getDadosRP":
@@ -486,7 +486,7 @@ switch ($objJson->method) {
         if ($objEmpenho->getDadosRP($objJson->iTipoRP)) {
             echo $json->encode($objEmpenho->dadosEmpenho);
         } else {
-            echo $json->encode(array("status" => 2 ,"sMensagem" => urlencode($objEmpenho->sErroMsg)));
+            echo $json->encode(["status" => 2 ,"sMensagem" => urlencode($objEmpenho->sErroMsg)]);
         }
         break;
 
@@ -509,7 +509,7 @@ switch ($objJson->method) {
             $sMensagem = urlencode($e->getMessage());
             db_fim_transacao(true);
         }
-        echo $json->encode(array("sMensagem" => $sMensagem, "iStatus" => $iStatus));
+        echo $json->encode(["sMensagem" => $sMensagem, "iStatus" => $iStatus]);
         break;
 
     case "getDadosRP":
@@ -574,7 +574,7 @@ switch ($objJson->method) {
 
             echo $json->encode($objEmpenho->dadosEmpenho);
         } else {
-            echo $json->encode(array("status" => 2 ,"sMensagem" => urlencode($objEmpenho->sErroMsg)));
+            echo $json->encode(["status" => 2 ,"sMensagem" => urlencode($objEmpenho->sErroMsg)]);
         }
         break;
 
@@ -718,12 +718,12 @@ switch ($objJson->method) {
             if ($oDaoEmpNota->numrows > 0) {
 
                 $status = 1;
-                $aEmpenhos = array();
+                $aEmpenhos = [];
                 foreach (db_utils::getCollectionByRecord($rsEmpNota) as $oEmpNota) {
                    $aEmpenhos[] =$oEmpNota->numero_empenho;
                 }
             }
-            echo $json->encode(array("status" => $status, "sEmpenho" => $aEmpenhos));
+            echo $json->encode(["status" => $status, "sEmpenho" => $aEmpenhos]);
 
         break;
 

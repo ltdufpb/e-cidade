@@ -36,7 +36,7 @@ include(modification("classes/db_tabrec_classe.php"));
 include(modification("fpdf151/pdf.php"));
 $clinfcab = new cl_infcab;
 $clinfcor = new cl_infcor;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 if ( $i03_codigo == null ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Código da lista nao preenchido!');
 }
@@ -51,7 +51,7 @@ $pdf->AddPage();
 $result = $clinfcor->sql_record($clinfcor->sql_query($i03_codigo,"","*","",""));
 
 db_fieldsmemory($result,0);
-if ( pg_numrows($result) == 0 ) {
+if ( pg_num_rows($result) == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado com o codigo' . $i03_codigo . '!');
 }
 

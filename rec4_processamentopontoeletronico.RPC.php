@@ -42,7 +42,7 @@ require_once modification("libs/JSON.php");
 $oPost       = db_utils::postMemory($_REQUEST);
 $oPost->json = str_replace("\\","",$oPost->json);
 $oParametro  = \JSON::create()->parse($oPost->json);
-$oRetorno    = (object)array( 'erro' => false, 'mensagem'=> '');
+$oRetorno    = (object)[ 'erro' => false, 'mensagem'=> ''];
 
 $timeStamp          = time();
 $filename           = 'tmp/log_importacao_arquivo_ponto_erros'. $timeStamp .'.log';
@@ -69,7 +69,7 @@ try {
       file_put_contents('tmp/marcacoes_ajustadas.txt', '');
       file_put_contents('tmp/marcacoes_nao_ajustadas.txt', '');
 
-      $aMatriculasProcessar = array();
+      $aMatriculasProcessar = [];
 
       if(!empty($oParametro->matriculasEnviar)) {
         $aMatriculasProcessar = $oParametro->matriculasEnviar;
@@ -101,9 +101,9 @@ try {
 
       $oParametro->inicializarMarcacoes = (bool) $oParametro->inicializarMarcacoes;
 
-      $oRetorno->servidores = array();
-      $aServidoresSucesso = array();
-      $aServidoresErro = array();
+      $oRetorno->servidores = [];
+      $aServidoresSucesso = [];
+      $aServidoresErro = [];
       $oPeriodoRepository   = new PeriodoRepository(null, null, true);
       $aPeriodos            = $oPeriodoRepository->getPeriodosEntreDatas($oDataInicioParametro, $oDataFinalParametro);
 
@@ -125,12 +125,12 @@ try {
         db_inicio_transacao();
         file_put_contents('tmp/log_importacao_arquivo_ponto.log', "Periodo: {$oPeriodo->getDataInicio()} ate {$oPeriodo->getDataFim()}" .PHP_EOL, FILE_APPEND);
 
-        $aDatasProcessar                 = array();
-        $aDatasProcessarCriacaoMarcacoes = array();
+        $aDatasProcessar                 = [];
+        $aDatasProcessarCriacaoMarcacoes = [];
 
         foreach (\DBDate::getDatasNoIntervalo($oPeriodo->getDataInicio(), $oPeriodo->getDataFim()) as $oDataProcessar) {
           $aDatasProcessar[]                 = $oDataProcessar->getDate();
-          $aDatasProcessarCriacaoMarcacoes[] = (object)array('data' => $oDataProcessar->getDate());
+          $aDatasProcessarCriacaoMarcacoes[] = (object)['data' => $oDataProcessar->getDate()];
         }
         db_fim_transacao(false);
 
@@ -141,7 +141,7 @@ try {
           try{
           
             $servidor   = ServidorRepository::getInstanciaByCodigo($iMatricula);            
-            $parametros = array(
+            $parametros = [
               'servidor'                        => $servidor, 
               'aDatasProcessarCriacaoMarcacoes' => $aDatasProcessarCriacaoMarcacoes,
               'iMatricula'                      => $iMatricula,
@@ -151,7 +151,7 @@ try {
               'inicializarMarcacoes'            => $oParametro->inicializarMarcacoes,
               'sessao'                          => $_SESSION,
               'arquivo'                         => $filename
-            );
+            ];
 
             $processoSegundoPlano = new ProcessamentoPontoSegundoPlano();
             $processoSegundoPlano->setParametros($parametros);
@@ -187,12 +187,12 @@ try {
           $msg   .= $error['file']    . PHP_EOL;
           $msg   .= $error['line']    . PHP_EOL;
           
-          $retornoProcesso = (object)array(
+          $retornoProcesso = (object)[
             'matricula' => $processoExecutadoSegundoPlano->getParametros('iMatricula'),
             'nome'      => $processoExecutadoSegundoPlano->getParametros('sNome'),
             'status'    => 'Erro',
             'erro'      => $msg
-          );
+          ];
         } else {
             if ($retornoProcesso->status == 'Erro') {
                 $aServidoresErro[$processoExecutadoSegundoPlano->getParametros('sNome')] = $retornoProcesso;

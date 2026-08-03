@@ -94,7 +94,7 @@ db_app::load("widgets/windowAux.widget.js");
               </td>
               <td colspan="2">
                 <?php 
-                $aOrigem = array();
+                $aOrigem = [];
                 $aOrigem[0] = "Todas";
                 $oDaoAcordoOrigem = db_utils::getDao("acordoorigem");
                 $sSql  = $oDaoAcordoOrigem->sql_query_file(null, "ac28_sequencial,ac28_descricao", null, '');

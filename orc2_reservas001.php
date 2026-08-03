@@ -35,13 +35,13 @@ include(modification("dbforms/db_classesgenericas.php"));
 $clcriaabas      = new cl_criaabas;
 $clcriaabas->scrolling="yes";
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 ?>
 <html>
@@ -66,11 +66,11 @@ $sizecp  = array();
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
     <center>
     <?php 
-    $clcriaabas->identifica = array("g1"=>"Relatório","filtro"=>"Filtro");
-    $clcriaabas->title      = array("g1"=>"Relatório","filtro"=>"Filtros");
-    $clcriaabas->src        = array("g1"=>"orc2_reservas011.php","filtro"=>"func_selorcdotacao_aba.php");
-    $clcriaabas->funcao_js  = array("g1"=>"","filtro"=>"js_atualizar_instit();");
-    $clcriaabas->sizecampo  = array("g1"=>"23","filtro"=>"15");
+    $clcriaabas->identifica = ["g1"=>"Relatório","filtro"=>"Filtro"];
+    $clcriaabas->title      = ["g1"=>"Relatório","filtro"=>"Filtros"];
+    $clcriaabas->src        = ["g1"=>"orc2_reservas011.php","filtro"=>"func_selorcdotacao_aba.php"];
+    $clcriaabas->funcao_js  = ["g1"=>"","filtro"=>"js_atualizar_instit();"];
+    $clcriaabas->sizecampo  = ["g1"=>"23","filtro"=>"15"];
     $clcriaabas->cria_abas();
     ?>
     </center>

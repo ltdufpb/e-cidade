@@ -29,7 +29,7 @@
 function  db_dotacao_elemento_recurso ($anousu,$dataini,$datafim,$condicao="",$subelemento="nao" ) {
 	if ($condicao!="")
 	   $condicao = " and $condicao";
-	   
+
    $tipo_saldo=2;
    $sql = " /*create temp table work_dotacao as  */
              select 

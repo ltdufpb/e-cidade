@@ -17,7 +17,7 @@ class Error extends Controller {
     $htmlMessage = str_replace("\n", '<br />', $message);    
 
     if ($this->request->accept('application/json')) {
-      return $this->response->setBody(array('message' => $entity->getMessage()));
+      return $this->response->setBody(['message' => $entity->getMessage()]);
     }
 
     // erro nao eh excesao e debug desativado 

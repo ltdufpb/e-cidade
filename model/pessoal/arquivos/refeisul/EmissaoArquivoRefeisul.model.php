@@ -36,12 +36,6 @@ class EmissaoArquivoRefeisul {
 	private $oCompetencia;
 	
 	/**
-	 * Instituição
-	 * @var Instituicao
-	 */
-	private $oInstituicao;
-	
-	/**
 	 * Arquivo de geração do arquivo em formato XML
 	 * @var PHPExcel
 	 */
@@ -66,10 +60,12 @@ class EmissaoArquivoRefeisul {
 	 * @param DBCompetencia $oCompetencia
 	 * @param Instituicao   $oInstituicao
 	 */
-	public function __construct(DBCompetencia $oCompetencia, Instituicao $oInstituicao) {
+	public function __construct(DBCompetencia $oCompetencia, /**
+     * Instituição
+     */
+    private readonly Instituicao $oInstituicao) {
 		
 		$this->oCompetencia = $oCompetencia;
-		$this->oInstituicao = $oInstituicao;
 		
 	}
 	
@@ -144,7 +140,7 @@ class EmissaoArquivoRefeisul {
 			throw new BusinessException("Erro ao pesquisar dados para geração do refeisul.");
 		}
 		
-		$aServidores  = array();
+		$aServidores  = [];
 		$iTotalLinhas = pg_num_rows($rsDadosRefeisul);
 		if ($iTotalLinhas == 0) {
 			
@@ -219,8 +215,8 @@ class EmissaoArquivoRefeisul {
 	private function adicionarLinha($oDadosServidor, PHPExcel_Worksheet $oPlanilha) {
 		
 		$iLinhaInicio = $this->iTotalLinhaEscritas;
-		$sCpfFormatado = str_pad($oDadosServidor->cpf, 11, "0", STR_PAD_LEFT);
-		$oPlanilha->setCellValue('A'.$iLinhaInicio, utf8_encode($oDadosServidor->nome));
+		$sCpfFormatado = str_pad((string) $oDadosServidor->cpf, 11, "0", STR_PAD_LEFT);
+		$oPlanilha->setCellValue('A'.$iLinhaInicio, mb_convert_encoding($oDadosServidor->nome, 'UTF-8', 'ISO-8859-1'));
 		$oPlanilha->setCellValue('B'.$iLinhaInicio, $oDadosServidor->matricula);
 		$oPlanilha->setCellValueExplicit('C'.$iLinhaInicio, $sCpfFormatado, PHPExcel_Cell_DataType::TYPE_STRING);
 		$oPlanilha->setCellValue('D'.$iLinhaInicio, '0');

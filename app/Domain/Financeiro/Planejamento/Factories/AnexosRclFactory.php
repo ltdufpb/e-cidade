@@ -44,12 +44,10 @@ class AnexosRclFactory
      */
     public static function getPrograma($exercicio)
     {
-        switch ($exercicio) {
-            case 2022:
-                return self::getDadosViewOutrosAnexos($exercicio);
-            default:
-                throw new Exception('Relatório não encontrado.');
-        }
+        return match ($exercicio) {
+            2022 => self::getDadosViewOutrosAnexos($exercicio),
+            default => throw new Exception('Relatório não encontrado.'),
+        };
     }
     
     /**

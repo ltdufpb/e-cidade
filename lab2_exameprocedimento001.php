@@ -57,7 +57,7 @@ require_once(modification('libs/db_utils.php'));
                       <b>Ordem:</b>
                     </td>
                     <td align="left">
-                      <?php $aX = array(1=>'EXAME',2=>'PROCEDIMENTO');
+                      <?php $aX = [1=>'EXAME',2=>'PROCEDIMENTO'];
                       db_select('tipo',$aX,true,1,"");?>
                     </td>
                   </tr>

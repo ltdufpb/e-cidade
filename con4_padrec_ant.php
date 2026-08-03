@@ -30,13 +30,13 @@ use ECidade\Financeiro\Orcamento\Repository\RecursoRepository as RecursoReposito
 
 class rec_ant
 {
-    var $arq = null;
+    public $arq = null;
 
-    function rec_ant($header)
+    function __construct($header)
     {
         umask(74);
         $this->arq = fopen("tmp/REC_ANT.TXT", 'w+');
-        fputs($this->arq, $header);
+        fputs($this->arq, (string) $header);
         fputs($this->arq, "\r\n");
     }
 
@@ -44,9 +44,9 @@ class rec_ant
     {
         if ($valor < 0) {
             $valor *= -1;
-            $valor = "-" . formatar($valor, $quant - 1, 'v');
+            $valor = "-" . formatar($valor, $quant - 1);
         } else {
-            $valor = formatar($valor, $quant, 'v');
+            $valor = formatar($valor, $quant);
         }
         return $valor;
     }
@@ -84,7 +84,7 @@ class rec_ant
             fputs($this->arq, str_replace("\n\r", "", $sArquivo));
             fputs($this->arq, "\r\n");
 
-            $contador = count(explode("\n", $sArquivo));
+            $contador = count(explode("\n", (string) $sArquivo));
 
 
         } else {
@@ -106,20 +106,20 @@ class rec_ant
                 // pesquisa orgaotrib
                 $orgaotrib = $instituicoes[$o70_instit];
 
-                $line = formatar(substr($o57_fonte, 1, 14), 20, 'n'); // recompisoção
+                $line = formatar(substr((string) $o57_fonte, 1, 14), 20); // recompisoção
 
                 if ($anousu > 2007) {
-                    if (db_conplano_grupo(@$o70_anousu, substr($o57_fonte, 0, 1) . "%", 9000) == false) {
-                        $line = formatar(substr($o57_fonte, 1, 14), 20, 'n'); // recompisoção
+                    if (db_conplano_grupo(@$o70_anousu, substr((string) $o57_fonte, 0, 1) . "%", 9000) == false) {
+                        $line = formatar(substr((string) $o57_fonte, 1, 14), 20); // recompisoção
                     } else {
-                        $line = formatar(substr($o57_fonte, 0, 15), 20, 'n'); // recompisoção
+                        $line = formatar(substr((string) $o57_fonte, 0, 15), 20); // recompisoção
                     }
                 } else {
-                    $line = formatar(substr($o57_fonte, 1, 14), 20, 'n'); // recompisoção
+                    $line = formatar(substr((string) $o57_fonte, 1, 14), 20); // recompisoção
                 }
 
 
-                $line .= formatar($orgaotrib, 4, 'n');
+                $line .= formatar($orgaotrib, 4);
 
                 $line .= $this->acerta_valor($janeiro, 13);
                 $line .= $this->acerta_valor($fevereiro, 13);
@@ -152,10 +152,10 @@ class rec_ant
                     $codigoRecurso = "0000";
                     $concarpeculiar = "000";
                     $complementoFonteRecurso = "0";
-                    if (pg_numrows($res_orcreceita) != 0) {
+                    if (pg_num_rows($res_orcreceita) != 0) {
 
                         $dadosReceita = db_utils::fieldsMemory($res_orcreceita, 0);
-                        $concarpeculiar = formatar($dadosReceita->o70_concarpeculiar, 3, "n");
+                        $concarpeculiar = formatar($dadosReceita->o70_concarpeculiar, 3);
                         $oRecurso = RecursoRepositoryAlias::getByCodigo($dadosReceita->o70_codigo);
                         $codigoRecurso = $oRecurso->getFonteDeRecurso();
                         if ($oRecurso->getComplementoRecursoVinculado()->isTribunal()) {
@@ -176,7 +176,7 @@ class rec_ant
 
                     //$line .= str_pad($complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
                     //complemento vindo da receita_saldo_mes_complemento
-                    $line .= str_pad($complemento_lancamento, 4, '0', STR_PAD_LEFT);
+                    $line .= str_pad((string) $complemento_lancamento, 4, '0', STR_PAD_LEFT);
                 }
 
 
@@ -192,7 +192,7 @@ class rec_ant
         }
 
         //  trailer
-        $contador = espaco(10 - (strlen($contador)), '0') . $contador;
+        $contador = espaco(10 - (strlen($contador))) . $contador;
         $line = "FINALIZADOR" . $contador;
         fputs($this->arq, $line);
         fputs($this->arq, "\r\n");

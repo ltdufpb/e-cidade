@@ -162,7 +162,7 @@ foreach ($aDadosRelatorio as $iInd => $oFuncoes) {
   
   $oPdf->setfont('arial', "B",6);
   $oPdf->cell(25,  $iAlt, $sEstrutural,                                   "R",  0, "L");
-  $oPdf->cell(133, $iAlt, substr($oFuncoes->descr, 0, 100),               "LR", 0, "L");
+  $oPdf->cell(133, $iAlt, substr((string) $oFuncoes->descr, 0, 100),               "LR", 0, "L");
   $oPdf->cell(30,  $iAlt, db_formatar($oFuncoes->nProjeto,'f'),           "LR", 0, "R");
   $oPdf->cell(30,  $iAlt, db_formatar($oFuncoes->nAtividade,'f'),         "LR", 0, "R");
   $oPdf->cell(30,  $iAlt, db_formatar($oFuncoes->nOperacaoEspecial,'f'),  "LR", 0, "R");
@@ -188,7 +188,7 @@ foreach ($aDadosRelatorio as $iInd => $oFuncoes) {
     $sEstrutural = $oFuncoes->codigoFuncao.".".$oSubFuncao->codigoSubFuncao;
     $oPdf->setfont('arial', "B",6);
     $oPdf->cell(25,  $iAlt, $sEstrutural,                                    "R",  0, "L");
-    $oPdf->cell(133, $iAlt, "   ".substr($oSubFuncao->descr, 0, 100),        "LR", 0, "L");
+    $oPdf->cell(133, $iAlt, "   ".substr((string) $oSubFuncao->descr, 0, 100),        "LR", 0, "L");
     $oPdf->cell(30,  $iAlt, db_formatar($oSubFuncao->nProjeto,'f'),          "LR", 0, "R");
     $oPdf->cell(30,  $iAlt, db_formatar($oSubFuncao->nAtividade,'f'),        "LR", 0, "R");
     $oPdf->cell(30,  $iAlt, db_formatar($oSubFuncao->nOperacaoEspecial,'f'), "LR", 0, "R");
@@ -205,11 +205,11 @@ foreach ($aDadosRelatorio as $iInd => $oFuncoes) {
         /**
          * Imprime Projetos
          */
-        $iEstruturaProjeto = str_pad($oProjeto->codigoProjeto, 4, "0", STR_PAD_LEFT);
+        $iEstruturaProjeto = str_pad((string) $oProjeto->codigoProjeto, 4, "0", STR_PAD_LEFT);
         $sEstrutural       = $oFuncoes->codigoFuncao.".".$oSubFuncao->codigoSubFuncao.".".$iEstruturaProjeto;
         $oPdf->setfont('arial', "",6);
         $oPdf->cell(25,  $iAlt, $sEstrutural,                                  "R", 0, "L");
-        $oPdf->cell(133, $iAlt, "      ".substr($oProjeto->descr, 0, 100),     "LR", 0, "L");
+        $oPdf->cell(133, $iAlt, "      ".substr((string) $oProjeto->descr, 0, 100),     "LR", 0, "L");
         $oPdf->cell(30,  $iAlt, db_formatar($oProjeto->nProjeto,'f'),          "LR", 0, "R");
         $oPdf->cell(30,  $iAlt, db_formatar($oProjeto->nAtividade,'f'),        "LR", 0, "R");
         $oPdf->cell(30,  $iAlt, db_formatar($oProjeto->nOperacaoEspecial,'f'), "LR", 0, "R");

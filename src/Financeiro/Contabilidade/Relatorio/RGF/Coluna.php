@@ -72,7 +72,7 @@ class Coluna {
   /**
    * @var array
    */
-  private $aBordasAceitas = array(0, 1, 'TBR', 'TBL', 'TB', 'BT', 'L', 'R', 'RL', 'LR' );
+  private $aBordasAceitas = [0, 1, 'TBR', 'TBL', 'TB', 'BT', 'L', 'R', 'RL', 'LR' ];
 
 
   /**

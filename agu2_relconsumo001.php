@@ -285,12 +285,12 @@ function js_processa() {
     <td align="center"><br/>
       <strong>Ordenar por:</strong>
       <?php 
-        $aOrdenar = array('matricula'          => 'Matr&iacute;cula'             , 
+        $aOrdenar = ['matricula'          => 'Matr&iacute;cula'             , 
                           'nome'               => 'Nome'                         , 
                           'logradouro, numero' => 'Logradouro'                   , 
                           'datainstalacao'     => 'Data Instala&ccedil;&atilde;o', 
                           'consumomedio'       => 'Consumo M&eacute;dio'         , 
-                          'consumototal'       => 'Consumo Total'                );
+                          'consumototal'       => 'Consumo Total'                ];
         
         db_select('ordenar', $aOrdenar, true, 1);
       ?>

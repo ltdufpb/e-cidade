@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefasemana_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltarefasemana = new cl_tarefasemana;
 $cltarefasemana->rotulo->label("at19_sequencial");
 $cltarefasemana->rotulo->label("at19_descr");
@@ -98,9 +98,9 @@ $cltarefasemana->rotulo->label("at19_descr");
         }else{
            $sql = $cltarefasemana->sql_query("",$campos,"at19_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at19_descr)){
-          $repassa = array("chave_at19_sequencial"=>$chave_at19_sequencial,"chave_at19_descr"=>$chave_at19_descr);
+          $repassa = ["chave_at19_sequencial"=>$chave_at19_sequencial,"chave_at19_descr"=>$chave_at19_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

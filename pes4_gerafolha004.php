@@ -67,8 +67,8 @@ function calculos_especificos_18($opcao_geral,$r110_regist, $r110_lotac) {
           $valor_514 = $valor_514 * 0.1;
           $tot_desc += $valor_514;
           if ($db_debug == true) { echo "[calculos_especificos_18] total de desconto: $tot_desc<br>"; }
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1]  = "r14_regist";
           $matriz1[2]  = "r14_rubric";
@@ -110,8 +110,8 @@ function calculos_especificos_18($opcao_geral,$r110_regist, $r110_lotac) {
           //  alterado de 5% para 10% em nov/2000;
           $valor_514   = $valor_514 * 0.10;
           $tot_desc   += $valor_514;
-          $matriz1     = array();
-          $matriz2     = array();
+          $matriz1     = [];
+          $matriz2     = [];
 
           $matriz1[1]  = "r48_regist";
           $matriz1[2]  = "r48_rubric";
@@ -200,8 +200,8 @@ function calculos_especificos_17($opcao_geral,$r110_regist, $r110_lotac) {
             //echo "<BR> r31_quant --> ".$gerffer[0]["r31_quant"]."   r31_valor --> ".$gerffer[0]["r31_valor"];
             /////  insere no pontofs
 
-            $matriz1 = array();
-            $matriz2 = array();
+            $matriz1 = [];
+            $matriz2 = [];
 
             $matriz1[1] = "r10_regist";
             $matriz1[2] = "r10_rubric";
@@ -235,8 +235,8 @@ function calculos_especificos_17($opcao_geral,$r110_regist, $r110_lotac) {
 
             /////  insere no gerfsal
 
-            $matriz3 = array();
-            $matriz4 = array();
+            $matriz3 = [];
+            $matriz4 = [];
 
             $matriz3[1] = "r14_regist";
             $matriz3[2] = "r14_rubric";
@@ -271,8 +271,8 @@ function calculos_especificos_17($opcao_geral,$r110_regist, $r110_lotac) {
           }elseif($opcao_geral == 8 && $ponto_pag_17 == 'C'){
             /////  insere no pontofs
             //echo "<br><br> opcao_geral --> $opcao_geral";
-            $matriz1 = array();
-            $matriz2 = array();
+            $matriz1 = [];
+            $matriz2 = [];
 
             $matriz1[1] = "r47_regist";
             $matriz1[2] = "r47_rubric";
@@ -304,8 +304,8 @@ function calculos_especificos_17($opcao_geral,$r110_regist, $r110_lotac) {
 
             /////  insere no gerfcom
 
-            $matriz3 = array();
-            $matriz4 = array();
+            $matriz3 = [];
+            $matriz4 = [];
 
             $matriz3[1] = "r48_regist";
             $matriz3[2] = "r48_rubric";
@@ -465,9 +465,9 @@ function calculos_especificos_17_ajuste($registro_, $lotac_){
       $rubrica_varia = substr("#". $pontofs_[$Ipontofs_]["r10_rubric"],2,3 );
 
       $valor_liquido = "valor_liquido".$rubrica_varia;
-      $$valor_liquido = $pontofs_[$Ipontofs_]["r10_valor"];
+      ${$valor_liquido} = $pontofs_[$Ipontofs_]["r10_valor"];
       $calcula_valor = "calcula_valor_".$rubrica_varia;
-      $$calcula_valor = true;
+      ${$calcula_valor} = true;
 
       if( !db_empty($pontofs_[$Ipontofs_]["r10_valor"])){
         if( !db_empty($valor_proventos_base)){
@@ -478,20 +478,20 @@ function calculos_especificos_17_ajuste($registro_, $lotac_){
               // diferenca entre o lancado e o limite de 20%;
               $valor = $pontofs_[$Ipontofs_]["r10_valor"] - $limite_desconto;
               if( $valor > $saldo_rateio){
-                $$valor_liquido -= $saldo_rateio;
+                ${$valor_liquido} -= $saldo_rateio;
                 $saldo_rateio = 0;
               }else{
-                $$valor_liquido = $limite_desconto;
+                ${$valor_liquido} = $limite_desconto;
                 $saldo_rateio -= $valor                       ;
               }
             }else{
               // lanca o restante do valor a descontar (saldo final);
-              $$valor_liquido = $pontofs_[$Ipontofs_]["r10_valor"];
+              ${$valor_liquido} = $pontofs_[$Ipontofs_]["r10_valor"];
             }
           }else{
-            $$valor_liquido = $pontofs_[$Ipontofs_]["r10_valor"];
+            ${$valor_liquido} = $pontofs_[$Ipontofs_]["r10_valor"];
           }
-          $tot_valor_liquido += $$valor_liquido;
+          $tot_valor_liquido += ${$valor_liquido};
 
         }
       }
@@ -507,8 +507,8 @@ function calculos_especificos_17_ajuste($registro_, $lotac_){
     $rateio = 0;
   }
 
-  $matriz1 = array();
-  $matriz2 = array();
+  $matriz1 = [];
+  $matriz2 = [];
 
   $matriz1[1] = "r14_regist";
   $matriz1[2] = "r14_rubric";
@@ -528,13 +528,13 @@ function calculos_especificos_17_ajuste($registro_, $lotac_){
     $calcula_valor = "calcula_valor_".$rubrica_varia;
     $valor_liquido = "valor_liquido".$rubrica_varia;
 
-    if( $$calcula_valor ){
-      if(  $$valor_liquido > 0){
+    if( ${$calcula_valor} ){
+      if(  ${$valor_liquido} > 0){
         $proporcao = 0;
         if( $rateio > 0){
-          $proporcao = ( $rateio * ( ( $$valor_liquido*100 )/ $tot_valor_liquido) )/100;
+          $proporcao = ( $rateio * ( ( ${$valor_liquido}*100 )/ $tot_valor_liquido) )/100;
         }
-        $valor_a_gravar = ( $$valor_liquido - $proporcao );
+        $valor_a_gravar = ( ${$valor_liquido} - $proporcao );
         if( $valor_a_gravar < 0 ){
           $valor_a_gravar = 0;
         }
@@ -631,9 +631,9 @@ function funcionario_inicio_ferias(){
 
 /**
  * No  mais utilizada
- * @deprecated
  * @see DescontoConsignado
  */
+#[\Deprecated]
 function calculos_especificos_15($opcao_geral){
 
   Global $r110_regist, $transacao, $transacao1, $tot_prov, $tot_desc, $pessoal, $Ipessoal,$matriz1,$matriz2;
@@ -694,8 +694,8 @@ function calculos_especificos_15($opcao_geral){
           db_delete("gerfsal", bb_condicaosubpes("r14_").$condicaoaux) ;
         }
 
-        $rub_cod = array();
-        $rub_vlr = array();
+        $rub_cod = [];
+        $rub_vlr = [];
 
         /**
          * A ordem de Descontos das rubricas :
@@ -789,8 +789,8 @@ function calculos_especificos_15($opcao_geral){
 
             if ($db_debug == true) { echo "[calculos_especificos] 4 - tot_desc: $tot_desc<br>"; }
 
-            $matriz1 = array();
-            $matriz2 = array();
+            $matriz1 = [];
+            $matriz2 = [];
             $matriz1[1] = "r14_valor";
             $matriz2[1] = ($saldo - $minimo);
             db_update( "gerfsal", $matriz1, $matriz2, bb_condicaosubpes("r14_").$condicaoaux );
@@ -920,7 +920,7 @@ function le_adi_fer($rubrica, $area1, $sigla2,$nro_registro){
   if( $rubrica_contem == "+" || $rubrica_contem == "-"){
     $formula = "valor_zerado";
   }else{
-    $formula = substr("#".$rubrica_contem,2,strlen($rubrica_contem)-1);
+    $formula = substr("#".$rubrica_contem,2,strlen((string) $rubrica_contem)-1);
     if(db_at("B",$formula) != 0){
       if( $area1 == "gerffer"){
         //echo "<BR> 1 area1 --> $area1";
@@ -944,7 +944,7 @@ function calculos_desconto_liquido_generico_ajuste($registro_, $lotac_){
   global $cfpess,$rubricas_in,$pontofs_,$gerfsal_,$subpes;
   global $anousu, $mesusu, $DB_instit;
 
-  $rubricas_ = trim( $cfpess[0]["r11_desliq"] );
+  $rubricas_ = trim( (string) $cfpess[0]["r11_desliq"] );
 
   $condicaoaux  = " and r10_regist  = ".db_sqlformat( $registro_ );
   $condicaoaux .= " and r10_rubric in ".$rubricas_in;
@@ -956,8 +956,8 @@ function calculos_desconto_liquido_generico_ajuste($registro_, $lotac_){
 
       $rubrica_ = $pontofs_[$Ipontofs_]["r10_rubric"] ;
       $calcula_valor = "calcula_valor_".$rubrica_;
-      global $$calcula_valor;
-      $$calcula_valor = true;
+      global ${$calcula_valor};
+      ${$calcula_valor} = true;
     }
   }else{
     return;
@@ -997,8 +997,8 @@ function calculos_desconto_liquido_generico_ajuste($registro_, $lotac_){
     return;
   }
 
-  $matriz1 = array();
-  $matriz2 = array();
+  $matriz1 = [];
+  $matriz2 = [];
 
   $matriz1[1] = "r14_regist";
   $matriz1[2] = "r14_rubric";
@@ -1016,8 +1016,8 @@ function calculos_desconto_liquido_generico_ajuste($registro_, $lotac_){
   for($I=0;$I < strlen($rubricas_);$I+=4){
     $rubrica_varia = substr("#". $rubricas_,$I,4 );
     $verifica_calcula_valor = "calcula_valor_".$rubrica_varia;
-    global $$verifica_calcula_valor;
-    if( ( $$verifica_calcula_valor )){
+    global ${$verifica_calcula_valor};
+    if( ( ${$verifica_calcula_valor} )){
       $condicaoaux  = " and rh27_instit = $DB_instit and rh27_rubric = ".db_sqlformat( $rubrica_varia );
       global $rubr_;
       db_selectmax( "rubr_", "select rh27_pd from rhrubricas ".$condicaoaux );
@@ -1148,22 +1148,11 @@ function le_rubricas_condicao($qual_parametro=null){
 
   if ( func_num_args() == 1 ) {
 
-    switch ($qual_parametro) {
-
-    case 'pontofx' :
-
-      $qual_ponto_decisao = true;
-      break;
-
-    case 'gerfprovfer':
-
-      $qual_ponto_decisao = true;
-      break;
-    default:
-
-      $qual_ponto_decisao = false;
-      break;
-    }
+    $qual_ponto_decisao = match ($qual_parametro) {
+        'pontofx' => true,
+        'gerfprovfer' => true,
+        default => false,
+    };
   }
 
   global $rubricas1,$Ipessoal,$pessoal,$carregarubricas,$carregarubricas_geral,$chamada_geral_arquivo,$db_debug;
@@ -1196,7 +1185,7 @@ function le_rubricas_condicao($qual_parametro=null){
 
     $r10_pd = ( $carregarubricas[$Icarregar]["rh27_pd"] != 2 );
     $formula = $carregarubricas[$Icarregar]["rh27_form"];
-    $cond = trim($carregarubricas[$Icarregar]["rh27_cond2"]);
+    $cond = trim((string) $carregarubricas[$Icarregar]["rh27_cond2"]);
     $cond = str_replace('$ipessoal','$Ipessoal',$cond);
     if( !db_empty($cond) ){
       $cond = '$condicao = '.$cond.";";
@@ -1210,7 +1199,7 @@ function le_rubricas_condicao($qual_parametro=null){
         $formula =  $carregarubricas[$Icarregar]["rh27_form2"];
       }
     }
-    $cond = trim($carregarubricas[$Icarregar]["rh27_cond3"]);
+    $cond = trim((string) $carregarubricas[$Icarregar]["rh27_cond3"]);
     $cond = str_replace('$ipessoal','$Ipessoal',$cond);
     if( !db_empty($cond) ){
       $cond = '$condicao = '.$cond.';';
@@ -1224,7 +1213,7 @@ function le_rubricas_condicao($qual_parametro=null){
         $formula =  $carregarubricas[$Icarregar]["rh27_form3"];
       }
     }
-    $r10_form = '('.trim($formula).')';
+    $r10_form = '('.trim((string) $formula).')';
     if( !$r10_pd){
       $r10_form = "-".$r10_form;
     }else{
@@ -1402,8 +1391,8 @@ function gerfadi($opcao_geral=null,$opcao_tipo=1){
 
   $contador_registros = 1;
 
-  $matriz1 = array();
-  $matriz2 = array();
+  $matriz1 = [];
+  $matriz2 = [];
 
   $matriz1[1] = "r22_regist";
   $matriz1[2] = "r22_rubric";
@@ -1434,13 +1423,13 @@ function gerfadi($opcao_geral=null,$opcao_tipo=1){
       continue;
     }
     $situacao_funcionario  = situacao_funcionario($pessoal[$Ipessoal]["r01_regist"]);
-    $SituacoesFuncionario  = array(1);
+    $SituacoesFuncionario  = [1];
     $oServidor             = ServidorRepository::getInstanciaByCodigo($pessoal[$Ipessoal]["r01_regist"]);
     $aAfastamentosServidor = $oServidor->getAfastamentosNoPeriodo();
     if (count($aAfastamentosServidor) > 0) {
 
       $dias_pagamento = 30;
-      $SituacoesFuncionario = array();
+      $SituacoesFuncionario = [];
       foreach ($aAfastamentosServidor as $oAfastamento) {
 
         $SituacoesFuncionario[] = $oAfastamento->r45_situac;
@@ -1484,7 +1473,7 @@ function gerfadi($opcao_geral=null,$opcao_tipo=1){
 
       $r07_form = "base_zerada";
       if ($proc_ler_var_bxxx) {
-        $r07_form = le_adi_fer(trim($pontofa[$Ipontofa]["r21_rubric"]),"gerfadi","r22",0);
+        $r07_form = le_adi_fer(trim((string) $pontofa[$Ipontofa]["r21_rubric"]),"gerfadi","r22",0);
       }
 
       // primeiro if alterado para que seja possivel incluir um adiantamento ;
@@ -1510,7 +1499,7 @@ function gerfadi($opcao_geral=null,$opcao_tipo=1){
 
       // proporcionaliza valores dos inativos conforme cadastro e rubricas;
       // r01_propi --> Perc.Inativo
-      if( strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0 && $pessoal[$Ipessoal]["r01_propi"] < 100
+      if( strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0 && $pessoal[$Ipessoal]["r01_propi"] < 100
         && ('t' == $rub_[0]["rh27_propi"] ) ) {
         $r22_valor = round( $r22_valor * ( $pessoal[$Ipessoal]["r01_propi"] / 100 ),2 ) ;
       }
@@ -1520,8 +1509,8 @@ function gerfadi($opcao_geral=null,$opcao_tipo=1){
       //echo "<BR> r22_valor  2 --> $r22_valor";
       //echo "<BR> r22_valor  3 --> ".round($r22_valor,2);
       if( $r22_valor > 0){
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $matriz1[1] = "r22_regist";
         $matriz1[2] = "r22_rubric";
         $matriz1[3] = "r22_lotac";
@@ -1646,10 +1635,10 @@ function gerffer($opcao_geral=null,$opcao_tipo=1){
       $condicaoaux = db_condicaoaux($opcao_filtro,$opcao_gml,$siglag,$r110_regisi,$r110_regisf,$r110_lotaci,
         $r110_lotacf,$faixa_regis,$faixa_lotac);
 
-      global $$chamada_geral_arquivo;
+      global ${$chamada_geral_arquivo};
       if ( db_selectmax( $chamada_geral_arquivo, "select * from ".$chamada_geral_arquivo." ".bb_condicaosubpes( $siglag ).$condicaoaux )) {
 
-        $arquivo      = $$chamada_geral_arquivo;
+        $arquivo      = ${$chamada_geral_arquivo};
         $iTotalLinhas = count($arquivo);
         for ($Iarquivo = 0; $Iarquivo < $iTotalLinhas; $Iarquivo++) {
 
@@ -1688,13 +1677,13 @@ function gerffer($opcao_geral=null,$opcao_tipo=1){
      * Colocar aqui as outras situacoes do usurio
      */
     $situacao_funcionario  = situacao_funcionario( $pessoal[$Ipessoal]["r01_regist"] );
-    $aSituacoesFuncionario  = array(1);
+    $aSituacoesFuncionario  = [1];
     $oServidor             = ServidorRepository::getInstanciaByCodigo($pessoal[$Ipessoal]["r01_regist"]);
     $aAfastamentosServidor = $oServidor->getAfastamentosNoPeriodo();
     if (count($aAfastamentosServidor) > 0) {
 
       $dias_pagamento = 30;
-      $aSituacoesFuncionario = array();
+      $aSituacoesFuncionario = [];
       foreach ($aAfastamentosServidor as $oAfastamento) {
 
         $aSituacoesFuncionario[] = $oAfastamento->r45_situac;
@@ -1855,7 +1844,7 @@ function gerffer($opcao_geral=null,$opcao_tipo=1){
       db_selectmax( "pontofs", "select * from pontofs ".bb_condicaosubpes( "r10_" ).$condicaoaux );
 
       if( db_empty( $r14_valor )){
-        $r07_form = le_adi_fer(trim($pontofe[$Ipontofe]["r29_rubric"]),"gerffer","r31",0);
+        $r07_form = le_adi_fer(trim((string) $pontofe[$Ipontofe]["r29_rubric"]),"gerffer","r31",0);
       }else{
         $r07_form = "valor_zerado";
       }
@@ -1897,8 +1886,8 @@ function gerffer($opcao_geral=null,$opcao_tipo=1){
           }
         }
 
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
 
         $matriz1[1] = "r31_regist";
         $matriz1[2] = "r31_rubric";
@@ -1953,8 +1942,8 @@ function gerffer($opcao_geral=null,$opcao_tipo=1){
     carrega_r9xx("pontofe","r29","r31",$recno_111,$opcao_tipo);
 
 
-    $matriz1 = array();
-    $matriz2 = array();
+    $matriz1 = [];
+    $matriz2 = [];
     $matriz1[1] = "r31_regist";
     $matriz1[2] = "r31_rubric";
     $matriz1[3] = "r31_lotac";
@@ -2001,9 +1990,9 @@ function gerffer($opcao_geral=null,$opcao_tipo=1){
     // gravado para o ajuste de previdencia e ir
     // F019 - Numero de dias a pagar no mes
     global $pes_prev;
-    $pes_prev = array();
+    $pes_prev = [];
     grava_ajuste_previdencia();
-    AjusteIRRF::gravarModificacoes($pessoal[$Ipessoal]["r01_numcgm"],$r110_regist,strtolower($pessoal[$Ipessoal]["r01_tpvinc"]));
+    AjusteIRRF::gravarModificacoes($pessoal[$Ipessoal]["r01_numcgm"],$r110_regist,strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]));
 
     /**
      * Quando  utilizado a estrutura da suplementar  realizado o metodo AjusteFeriasComplementar no clculo
@@ -2063,7 +2052,7 @@ function gerfprovfer($opcao_geral=null,$opcao_tipo=1){
 
   $condicao = $r110_lotaci . db_str($r110_regisi,6);
   $situacao_funcionario = 1;  // Normal
-  $SituacoesFuncionario = array(1);
+  $SituacoesFuncionario = [1];
 
   /**
    * Utilizamos o registry para evitar o reprocessamento desses dados
@@ -2089,8 +2078,8 @@ function gerfprovfer($opcao_geral=null,$opcao_tipo=1){
 
   $contador_registros = 1;
 
-  $matriz1 = array();
-  $matriz1 = array();
+  $matriz1 = [];
+  $matriz1 = [];
 
   $matriz1[1] = "r93_regist";
   $matriz1[2] = "r93_rubric";
@@ -2251,7 +2240,7 @@ function gerfprovfer($opcao_geral=null,$opcao_tipo=1){
 
       // proporcionaliza valores dos inativos conforme cadastro e rubricas
       // r01_propi --> Perc.Inativo
-      if( strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0
+      if( strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0
         && $pessoal[$Ipessoal]["r01_propi"] < 100
         && ('t' == $rub_[0]["rh27_ propi"]) ){
         $r93_valor = round( $r93_valor * ( $pessoal[$Ipessoal]["r01_propi"] / 100 ),2 ) ;
@@ -2278,8 +2267,8 @@ function gerfprovfer($opcao_geral=null,$opcao_tipo=1){
 
         }
 
-        $matriz1 = array();
-        $matriz1 = array();
+        $matriz1 = [];
+        $matriz1 = [];
 
         $matriz1[1] = "r93_regist";
         $matriz1[2] = "r93_rubric";
@@ -2314,8 +2303,8 @@ function gerfprovfer($opcao_geral=null,$opcao_tipo=1){
     if ($db_debug == true) { echo "[gerfprovfer] 11 - r14_valor = $r14_valor  <br>"; }
     carrega_r9xx("pontoprovfe","r91","r93",$recno_110,$opcao_tipo);
     //echo "<BR> 22220 passou aqui !!!";
-    $matriz1 = array();
-    $matriz2 = array();
+    $matriz1 = [];
+    $matriz2 = [];
 
     $matriz1[1] = "r93_regist";
     $matriz1[2] = "r93_rubric";
@@ -2396,7 +2385,7 @@ function gerfres($opcao_geral=null,$opcao_tipo=1){
 
   $condicao = $r110_lotaci . db_str($r110_regisi,6);
   $situacao_funcionario = 1;  // Normal
-  $SituacoesFuncionario = array(1);
+  $SituacoesFuncionario = [1];
   /**
    * Utilizamos o registry para evitar o reprocessamento desses dados
    */
@@ -2452,11 +2441,11 @@ function gerfres($opcao_geral=null,$opcao_tipo=1){
 
       $condicaoaux = db_condicaoaux($opcao_filtro,$opcao_gml,$siglag,$r110_regisi,$r110_regisf,$r110_lotaci,
         $r110_lotacf,$faixa_regis,$faixa_lotac);
-      global $$chamada_geral_arquivo;
+      global ${$chamada_geral_arquivo};
 
       if (db_selectmax( $chamada_geral_arquivo, "select * from ".$chamada_geral_arquivo." ".bb_condicaosubpes( $siglag ).$condicaoaux )){
 
-        $arquivo = $$chamada_geral_arquivo;
+        $arquivo = ${$chamada_geral_arquivo};
 
         for($Iarquivo=0;$Iarquivo< count($arquivo);$Iarquivo++){
 
@@ -2494,8 +2483,8 @@ function gerfres($opcao_geral=null,$opcao_tipo=1){
 
   $contador_registros = 1;
 
-  $matriz1 = array();
-  $matriz1 = array();
+  $matriz1 = [];
+  $matriz1 = [];
 
   $matriz1[1] = "r20_regist";
   $matriz1[2] = "r20_rubric";
@@ -2538,13 +2527,13 @@ function gerfres($opcao_geral=null,$opcao_tipo=1){
     }
 
     $situacao_funcionario = situacao_funcionario( $pessoal[$Ipessoal]["r01_regist"] );
-    $SituacoesFuncionario   = array(1);
+    $SituacoesFuncionario   = [1];
     $oServidor             = ServidorRepository::getInstanciaByCodigo($pessoal[$Ipessoal]["r01_regist"]);
     $aAfastamentosServidor = $oServidor->getAfastamentosNoPeriodo();
     if (count($aAfastamentosServidor) > 0) {
 
       $dias_pagamento = 30;
-      $SituacoesFuncionario = array();
+      $SituacoesFuncionario = [];
       foreach ($aAfastamentosServidor as $oAfastamento) {
 
         $SituacoesFuncionario[] = $oAfastamento->r45_situac;
@@ -2577,7 +2566,7 @@ function gerfres($opcao_geral=null,$opcao_tipo=1){
     db_selectmax( "rescisao", "select * from rescisao ".bb_condicaosubpes( "r59_" ).$condicaoaux );
 
 
-    if( strtolower($chamada_geral) == "p"  ){
+    if( strtolower((string) $chamada_geral) == "p"  ){
       $condicaoaux = " and r52_regist = ".db_sqlformat( $pessoal[$Ipessoal]["r01_regist"] );
       if( !db_selectmax( "pensao", "select r52_regist from pensao ".bb_condicaosubpes( "r52_" ).$condicaoaux )){
         continue;
@@ -2653,7 +2642,7 @@ function gerfres($opcao_geral=null,$opcao_tipo=1){
 
       // proporcionaliza valores dos inativos conforme cadastro e rubricas
       // r01_propi --> Perc.Inativo
-      if( strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0
+      if( strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0
         && $pessoal[$Ipessoal]["r01_propi"] < 100
         && ('t' == $rub_[0]["rh27_ propi"]) ){
         $r20_valor = round( $r20_valor * ( $pessoal[$Ipessoal]["r01_propi"] / 100 ),2 ) ;
@@ -2675,8 +2664,8 @@ function gerfres($opcao_geral=null,$opcao_tipo=1){
 
         }
 
-        $matriz1 = array();
-        $matriz1 = array();
+        $matriz1 = [];
+        $matriz1 = [];
 
         $matriz1[1] = "r20_regist";
         $matriz1[2] = "r20_rubric";
@@ -2711,8 +2700,8 @@ function gerfres($opcao_geral=null,$opcao_tipo=1){
     if ($db_debug == true) { echo "[gerfres] 12 - r14_valor = $r14_valor  <br>"; }
     carrega_r9xx("pontofr","r19","r20",$recno_110,$opcao_tipo);
     //echo "<BR> 22220 passou aqui !!!";
-    $matriz1 = array();
-    $matriz2 = array();
+    $matriz1 = [];
+    $matriz2 = [];
 
     $matriz1[1] = "r20_regist";
     $matriz1[2] = "r20_rubric";
@@ -2770,12 +2759,12 @@ function gerfres($opcao_geral=null,$opcao_tipo=1){
 
       }
     }
-    $pes_prev = array();
+    $pes_prev = [];
     LogCalculoFolha::write("Chamando Funo grava_ajuste_previdencia");
     grava_ajuste_previdencia();
 
     LogCalculoFolha::write("Chamando Funo AjusteIRRF::gravarModificacoes");
-    AjusteIRRF::gravarModificacoes($pessoal[$Ipessoal]["r01_numcgm"],$r110_regist,strtolower($pessoal[$Ipessoal]["r01_tpvinc"]));
+    AjusteIRRF::gravarModificacoes($pessoal[$Ipessoal]["r01_numcgm"],$r110_regist,strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]));
   }
   //echo "<BR> 22231 passou aqui !!!";
 
@@ -2896,8 +2885,8 @@ function gerffx($opcao_geral=null,$opcao_tipo=1){
 
   $contador_registros = 1;
 
-  $matriz1 = array();
-  $matriz2 = array();
+  $matriz1 = [];
+  $matriz2 = [];
   $matriz1[1] = "r53_regist";
   $matriz1[2] = "r53_rubric";
   $matriz1[3] = "r53_lotac";
@@ -2936,13 +2925,13 @@ function gerffx($opcao_geral=null,$opcao_tipo=1){
 
     $datafim = db_ctod(db_str(ndias(db_substr($subpes,-2)."/".db_substr($subpes,1,4)),2,0,"0")."/".db_substr($subpes,-2)."/".db_substr($subpes,1,4));
     $situacao_funcionario  = situacao_funcionario($pessoal[$Ipessoal]["r01_regist"],$datafim);
-    $SituacoesFuncionario  = array(1);
+    $SituacoesFuncionario  = [1];
     $oServidor             = ServidorRepository::getInstanciaByCodigo($pessoal[$Ipessoal]["r01_regist"]);
     $aAfastamentosServidor = $oServidor->getAfastamentosNoPeriodo();
     if (count($aAfastamentosServidor) > 0) {
 
       $dias_pagamento       = 30;
-      $SituacoesFuncionario = array();
+      $SituacoesFuncionario = [];
       foreach ($aAfastamentosServidor as $oAfastamento) {
 
         $SituacoesFuncionario[] = $oAfastamento->r45_situac;
@@ -2995,7 +2984,7 @@ function gerffx($opcao_geral=null,$opcao_tipo=1){
 
       // para rio grande, nao calcular estas rubricas pois sao avaliadas em  fontes
 
-      if( trim( $db21_codcli ) == "999999999" && db_at($pontofx[$Ipontofx]["r90_rubric"], "0603-0604-")> 0 ){
+      if( trim( (string) $db21_codcli ) == "999999999" && db_at($pontofx[$Ipontofx]["r90_rubric"], "0603-0604-")> 0 ){
         continue;
       }
       $recno_112   = $Ipontofx;
@@ -3036,8 +3025,8 @@ function gerffx($opcao_geral=null,$opcao_tipo=1){
 
       if ( $r53_valor > 0){
 
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
 
         $matriz1[1] = "r53_regist";
         $matriz1[2] = "r53_rubric";
@@ -3078,7 +3067,7 @@ function gerffx($opcao_geral=null,$opcao_tipo=1){
 
       for($Ipontofs=0;$Ipontofs<count($pontofs);$Ipontofs++) {
 
-        if( trim( $db21_codcli ) == "999999999" && db_at($pontofs[$Ipontofs]["r10_rubric"],"0603-0604-") > 0){
+        if( trim( (string) $db21_codcli ) == "999999999" && db_at($pontofs[$Ipontofs]["r10_rubric"],"0603-0604-") > 0){
           continue;
         }
 
@@ -3144,8 +3133,8 @@ function gerffx($opcao_geral=null,$opcao_tipo=1){
 
             if( $r53_valor > 0){
 
-              $matriz1 = array();
-              $matriz1 = array();
+              $matriz1 = [];
+              $matriz1 = [];
 
               $matriz1[1] = "r53_regist";
               $matriz1[2] = "r53_rubric";
@@ -3271,8 +3260,8 @@ function gerfprovs13($opcao_geral=null,$opcao_tipo=1){
 
   }
 
-  $matriz1 = array();
-  $matriz2 = array();
+  $matriz1 = [];
+  $matriz2 = [];
 
   $matriz1[1] = "r94_regist";
   $matriz1[2] = "r94_rubric";
@@ -3323,13 +3312,13 @@ function gerfprovs13($opcao_geral=null,$opcao_tipo=1){
     le_rubricas_condicao();
 
     $situacao_funcionario = situacao_funcionario($pessoal[$Ipessoal]["r01_regist"]);
-    $SituacoesFuncionario   = array(1);
+    $SituacoesFuncionario   = [1];
     $oServidor             = ServidorRepository::getInstanciaByCodigo($pessoal[$Ipessoal]["r01_regist"]);
     $aAfastamentosServidor = $oServidor->getAfastamentosNoPeriodo();
     if (count($aAfastamentosServidor) > 0) {
 
       $dias_pagamento = 30;
-      $SituacoesFuncionario = array();
+      $SituacoesFuncionario = [];
       foreach ($aAfastamentosServidor as $oAfastamento) {
 
         $SituacoesFuncionario[] = $oAfastamento->r45_situac;
@@ -3380,7 +3369,7 @@ function gerfprovs13($opcao_geral=null,$opcao_tipo=1){
 
       // proporcionaliza valores dos inativos conforme cadastro e rubricas
       // r01_propi --> Perc.Inativo
-      if( strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0
+      if( strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0
         && $pessoal[$Ipessoal]["r01_propi"] < 100
         && ('t' == $rub_[0]["rh27_propi"])) {
         $r94_valor = round( $r94_valor * ( $pessoal[$Ipessoal]["r01_propi"] / 100 ),2 ) ;
@@ -3415,8 +3404,8 @@ function gerfprovs13($opcao_geral=null,$opcao_tipo=1){
           $val_rubr = db_val(substr("#".$pontoprovf13[$Ipontoprovf13]["r92_rubric"],2,3));
         }
 
-        $matriz1 = array();
-        $matriz1 = array();
+        $matriz1 = [];
+        $matriz1 = [];
 
         $matriz1[1] = "r94_regist";
         $matriz1[2] = "r94_rubric";
@@ -3547,10 +3536,10 @@ function gerfs13($opcao_geral=null,$opcao_tipo=1) {
 
       $condicaoaux = db_condicaoaux($opcao_filtro,$opcao_gml,$siglag,$r110_regisi,$r110_regisf,$r110_lotaci,
         $r110_lotacf,$faixa_regis,$faixa_lotac);
-      global $$chamada_geral_arquivo;
+      global ${$chamada_geral_arquivo};
       if( db_selectmax( $chamada_geral_arquivo, "select * from ".$chamada_geral_arquivo." ".bb_condicaosubpes( $siglag ).$condicaoaux )){
 
-        $arquivo = $$chamada_geral_arquivo;
+        $arquivo = ${$chamada_geral_arquivo};
 
         for ($Iarquivo=0;$Iarquivo< count($arquivo);$Iarquivo++) {
 
@@ -3566,8 +3555,8 @@ function gerfs13($opcao_geral=null,$opcao_tipo=1) {
   }
 
 
-  $matriz1 = array();
-  $matriz2 = array();
+  $matriz1 = [];
+  $matriz2 = [];
 
   $matriz1[1] = "r35_regist";
   $matriz1[2] = "r35_rubric";
@@ -3634,13 +3623,13 @@ function gerfs13($opcao_geral=null,$opcao_tipo=1) {
     le_rubricas_condicao();
 
     $situacao_funcionario = situacao_funcionario($pessoal[$Ipessoal]["r01_regist"]);
-    $SituacoesFuncionario   = array(1);
+    $SituacoesFuncionario   = [1];
     $oServidor             = ServidorRepository::getInstanciaByCodigo($pessoal[$Ipessoal]["r01_regist"]);
     $aAfastamentosServidor = $oServidor->getAfastamentosNoPeriodo();
     if (count($aAfastamentosServidor) > 0) {
 
       $dias_pagamento = 30;
-      $SituacoesFuncionario = array();
+      $SituacoesFuncionario = [];
       foreach ($aAfastamentosServidor as $oAfastamento) {
 
         $SituacoesFuncionario[] = $oAfastamento->r45_situac;
@@ -3661,7 +3650,7 @@ function gerfs13($opcao_geral=null,$opcao_tipo=1) {
 
     for($Ipontof13=0;$Ipontof13< count($pontof13);$Ipontof13++){
       $calcula_valor_275 = false;
-      if( trim($db21_codcli) == "999999999"){
+      if( trim((string) $db21_codcli) == "999999999"){
         if( $pontof13[$Ipontof13]["r34_rubric"] == "4275" && $pontof13[$Ipontof13]["r34_valor"] == 0){
           $calcula_valor_275 = true;
           continue;
@@ -3700,7 +3689,7 @@ function gerfs13($opcao_geral=null,$opcao_tipo=1) {
 
       // proporcionaliza valores dos inativos conforme cadastro e rubricas
       // r01_propi --> Perc.Inativo
-      if( strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0
+      if( strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0
         && $pessoal[$Ipessoal]["r01_propi"] < 100
         && ('t' == $rub_[0]["rh27_propi"])) {
         $r14_valor = round( $r14_valor * ( $pessoal[$Ipessoal]["r01_propi"] / 100 ),2 ) ;
@@ -3733,8 +3722,8 @@ function gerfs13($opcao_geral=null,$opcao_tipo=1) {
           $val_rubr = db_val(substr("#".$pontof13[$Ipontof13]["r34_rubric"],2,3));
         }
 
-        $matriz1 = array();
-        $matriz1 = array();
+        $matriz1 = [];
+        $matriz1 = [];
 
         $matriz1[1] = "r35_regist";
         $matriz1[2] = "r35_rubric";
@@ -3834,9 +3823,9 @@ function gerfs13($opcao_geral=null,$opcao_tipo=1) {
     if ($ajusta ) {
 
       global $pes_prev;
-      $pes_prev = array();
+      $pes_prev = [];
       grava_ajuste_previdencia();
-      AjusteIRRF::gravarModificacoes($pessoal[$Ipessoal]["r01_numcgm"],$r110_regist,strtolower($pessoal[$Ipessoal]["r01_tpvinc"]));
+      AjusteIRRF::gravarModificacoes($pessoal[$Ipessoal]["r01_numcgm"],$r110_regist,strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]));
     }
 
   }
@@ -3915,13 +3904,13 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
 
   $rubricas_calc_integral = "";
 
-  $verifica_vazio = trim($cfpess[0]["r11_rubpgintegral"]);
+  $verifica_vazio = trim((string) $cfpess[0]["r11_rubpgintegral"]);
   //  echo "<BR><BR>verifica_vazio = ================  $verifica_vazio";
   if (!db_empty($verifica_vazio )) {
 
     $rubricas_calc_integral = "";
-    for ($icalc=0; $icalc < strlen(trim($cfpess[0]["r11_rubpgintegral"])); $icalc+=4) {
-      $rubricas_calc_integral .= ",'".substr("#". trim($cfpess[0]["r11_rubpgintegral"]), $icalc+1, 4 )."'";
+    for ($icalc=0; $icalc < strlen(trim((string) $cfpess[0]["r11_rubpgintegral"])); $icalc+=4) {
+      $rubricas_calc_integral .= ",'".substr("#". trim((string) $cfpess[0]["r11_rubpgintegral"]), $icalc+1, 4 )."'";
     }
   }
 
@@ -4015,7 +4004,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
         $r110_lotacf,$faixa_regis,$faixa_lotac);
 
 
-      global $$chamada_geral_arquivo;
+      global ${$chamada_geral_arquivo};
 
       if ($opcao_geral == 1 ) {
 
@@ -4044,7 +4033,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
       } else {
 
          if (db_selectmax($chamada_geral_arquivo, "select * from ".$chamada_geral_arquivo." ".bb_condicaosubpes($siglag ).$condicaoaux )) {
-            $arq_ = $$chamada_geral_arquivo;
+            $arq_ = ${$chamada_geral_arquivo};
     
             /**
              * Aqui remove os registyro da tabela de salario
@@ -4082,7 +4071,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
           $r110_lotacf,$faixa_regis,$faixa_lotac);
         $condicaoaux .= " and ( r10_rubric in  " . $stringferias;
 
-        if (strtolower($db21_codcli) == "999999999") {
+        if (strtolower((string) $db21_codcli) == "999999999") {
           $condicaoaux .= " or r10_rubric in ('0270') ";
         }
         $condicaoaux .= "  or r10_rubric between '2000' and '3999' )";
@@ -4094,7 +4083,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
         $condicaoaux = db_condicaoaux($opcao_filtro,$opcao_gml,"r47_",$r110_regisi,$r110_regisf,$r110_lotaci,
           $r110_lotacf,$faixa_regis,$faixa_lotac);
         $condicaoaux .= " and ( r47_rubric in ".$stringferias;
-        if (strtolower($db21_codcli) == "999999999") {
+        if (strtolower((string) $db21_codcli) == "999999999") {
           $condicaoaux .= " or r47_rubric in ('0270') ";
         }
         $condicaoaux .= " or r47_rubric between '2000' and '3999' )";
@@ -4126,7 +4115,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
 
     $tot_prov = 0;
     $tot_desc = 0;
-    $aRubricasComFormulaNaQuantidade = array();
+    $aRubricasComFormulaNaQuantidade = [];
     if ($chamada_geral == "p"  ) {
 
       $condicaoaux = " and r52_regist = ".db_sqlformat($pessoal[$Ipessoal]["r01_regist"] );
@@ -4140,7 +4129,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
           $condicaoaux = " and r14_regist = ".db_sqlformat($pessoal[$Ipessoal]["r01_regist"] );
           $retornar    = db_delete("gerfsal", bb_condicaosubpes("r14_" ).$condicaoaux );
           $condicaoaux = " and r10_rubric in  " . $stringferias;
-          if (strtolower($db21_codcli ) == "999999999") {
+          if (strtolower((string) $db21_codcli ) == "999999999") {
             $condicaoaux .= " or r10_rubric in ('0270') ";
           }
           $condicaoaux .= "  or r10_rubric = ".db_sqlformat($pessoal[$Ipessoal]["r01_regist"] );
@@ -4152,7 +4141,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
           $condicaoaux = " and r48_regist = ".db_sqlformat($pessoal[$Ipessoal]["r01_regist"] );
           $retornar    = db_delete("gerfcom", bb_condicaosubpes("r48_" ).$condicaoaux );
           $condicaoaux = " and r47_rubric in  " . $stringferias;
-          if (strtolower($db21_codcli ) == "999999999") {
+          if (strtolower((string) $db21_codcli ) == "999999999") {
             $condicaoaux .= " or r47_rubric in ('0270') ";
           }
           $condicaoaux .= "  or r47_rubric = ".db_sqlformat($pessoal[$Ipessoal]["r01_regist"] );
@@ -4176,10 +4165,10 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
       DBRegistry::add($iIndice, $inssirf_);
     }
 
-    $rubrica_maternidade_prorrogacao   = trim($inssirf_[0]["r33_rubprorrogacaomaternidade"]);
-    $rubrica_maternidade   = trim($inssirf_[0]["r33_rubmat"]);
-    $rubrica_licenca_saude = trim($inssirf_[0]["r33_rubsau"]);
-    $rubrica_acidente      = trim($inssirf_[0]["r33_rubaci"]);
+    $rubrica_maternidade_prorrogacao   = trim((string) $inssirf_[0]["r33_rubprorrogacaomaternidade"]);
+    $rubrica_maternidade   = trim((string) $inssirf_[0]["r33_rubmat"]);
+    $rubrica_licenca_saude = trim((string) $inssirf_[0]["r33_rubsau"]);
+    $rubrica_acidente      = trim((string) $inssirf_[0]["r33_rubaci"]);
     $inssirf_base_ferias   = "B002";
     if (!db_empty($inssirf_[0]["r33_basfer"] )) {
       $inssirf_base_ferias = $inssirf_[0]["r33_basfer"];
@@ -4193,8 +4182,8 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
     AjusteFerias::lancarRegistrosPonto($pessoal[$Ipessoal]["r01_regist"], $Ipessoal, true);
     $dias_pagamento        = 30;
     $situacao_afastado     = false;
-    $aAfastamentosServidor = array();
-    $SituacoesFuncionario  = array(1);
+    $aAfastamentosServidor = [];
+    $SituacoesFuncionario  = [1];
     if ($opcao_geral == 1) {
 
       $situacao_funcionario  = situacao_funcionario($pessoal[$Ipessoal]["r01_regist"]);
@@ -4203,7 +4192,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
       $aAfastamentosServidor = $oServidor->getAfastamentosNoPeriodo();
       if (count($aAfastamentosServidor) > 0) {
 
-        $SituacoesFuncionario = array();
+        $SituacoesFuncionario = [];
         $iTotalDiasAfastado = 0;
         foreach ($aAfastamentosServidor as $oAfastamento) {
 
@@ -4266,7 +4255,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
 
     $rubricas_calculos_especiais = "";
 
-    $verifica_vazio = trim($cfpess[0]["r11_desliq"]);
+    $verifica_vazio = trim((string) $cfpess[0]["r11_desliq"]);
     //  echo "<BR><BR>verifica_vazio = ================  $verifica_vazio";
     if (!db_empty($verifica_vazio )) {
 
@@ -4275,14 +4264,14 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
       $rubricas_calculos_especiais = "(";
       //echo"<BR> tamanho formula especial ".$cfpess[0]["r11_desliq"];
       //echo"<BR><BR>-------------".strlen(trim($cfpess[0]["r11_desliq"]))." -------------<BR><BR>";
-      for ($icalc=0; $icalc < strlen(trim($cfpess[0]["r11_desliq"])); $icalc+=4) {
+      for ($icalc=0; $icalc < strlen(trim((string) $cfpess[0]["r11_desliq"])); $icalc+=4) {
 
-        $rubrica_desconto = substr("#". trim($cfpess[0]["r11_desliq"]), $icalc+1, 4 ) ;
+        $rubrica_desconto = substr("#". trim((string) $cfpess[0]["r11_desliq"]), $icalc+1, 4 ) ;
         //private calcula_valor_&rubrica_desconto            ;
         //public calcula_xvalor_&rubrica_desconto;
         $calcula_yvalor = "calcula_xvalor_".$rubrica_desconto;
-        global $$calcula_yvalor;
-        $$calcula_yvalor = false;
+        global ${$calcula_yvalor};
+        ${$calcula_yvalor} = false;
 
         $rubricas_calculos_especiais .= "'".$rubrica_desconto."',";
       }
@@ -4326,8 +4315,8 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
           $tot_prov += $pessoal[$Ipessoal]["r01_arredn"];
           $gerou_rubrica_calculo = true;
 
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1] = "r14_regist";
           $matriz1[2] = "r14_rubric";
@@ -4428,7 +4417,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
           }
         }
       }
-      if (strtolower($db21_codcli) == "18") {
+      if (strtolower((string) $db21_codcli) == "18") {
 
         if ($opcao_geral == 1) {
           if ($pontofs[$Iponto]["r10_rubric"] == "0514" && !db_empty($pessoal[$Ipessoal]["r01_cc"])) {
@@ -4444,7 +4433,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
             continue;
           }
         }
-      } else if (strtolower($db21_codcli) == "17"  ) {
+      } else if (strtolower((string) $db21_codcli) == "17"  ) {
 
         if ($opcao_geral == 1) {
           if ($pontofs[$Iponto]["r10_rubric"] == "0053") {
@@ -4461,7 +4450,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
           }
         }
 
-      } else if (strtolower($db21_codcli) == "amparo") {
+      } else if (strtolower((string) $db21_codcli) == "amparo") {
 
         if ($opcao_geral == 1) {
           if ($pontofs[$Iponto]["r10_rubric"] == "0514" && $pontofs[$Iponto]["r10_quant"] > 0 && $pontofs[$Iponto]["r10_valor"] == 0 ) {
@@ -4483,8 +4472,8 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
         if (db_at($pontofs[$Iponto]["r10_rubric"],$rubricas_calculos_especiais) > 0 && $pontofs[$Iponto]["r10_valor"] <= 0 ) {
           $rub = $pontofs[$Iponto]["r10_rubric"] ;
           $calcula_xvalor = "calcula_xvalor_".$rub;
-          global $$calcula_xvalor;
-          $$calcula_xvalor = true;
+          global ${$calcula_xvalor};
+          ${$calcula_xvalor} = true;
           LogCalculoFolha::write("Saiu achou Rubrica 0514... continue");
           continue;
         }
@@ -4595,7 +4584,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
 
           }
           // r01_propi --> Perc.Inativo
-          if (strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0 // r01_propi --> Perc.Inativo
+          if (strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0 // r01_propi --> Perc.Inativo
             && $pessoal[$Ipessoal]["r01_propi"] < 100
             && ('t' == $pontofs[$Iponto]["rh27_propi"]) ) {
             $r14_valor = round($r14_valor * ( $pessoal[$Ipessoal]["r01_propi"] / 100 ),2 ) ;
@@ -4615,7 +4604,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
           // Inicio --> Calcula conforme a formula da quantidade da rubrica, se tiver formula na quantidade
 
           $quant_formq = " ";
-          $verifica = trim($pontofs[$Iponto]["rh27_formq"]);
+          $verifica = trim((string) $pontofs[$Iponto]["rh27_formq"]);
           if (!db_empty($verifica )) {
 
             if($db_debug == true){ echo "[gerfsal] 14 - chamando a funcao calc_rubrica() <br>"; }
@@ -4624,7 +4613,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
             $cod_erro_  = 0;
             $elem_erro_ =  " ";
             $r14_quant = 0;
-            if (trim($quant_formq) != '') {
+            if (trim((string) $quant_formq) != '') {
 
               $quant_formq = '$quant_formqc = '.$quant_formq.";";
               ob_start();
@@ -4640,8 +4629,8 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
 
           $gerou_rubrica_calculo = true;
 
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1] = "r14_regist";
           $matriz1[2] = "r14_rubric";
@@ -4727,7 +4716,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
           $r14_quant = $pontocom[$Iponto]["r47_quant"];
         }
         // r01_propi --> Perc.Inativo
-        if (strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0 // r01_propi --> Perc.Inativo
+        if (strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) != 'a' && $pessoal[$Ipessoal]["r01_propi"] > 0 // r01_propi --> Perc.Inativo
           && $pessoal[$Ipessoal]["r01_propi"] < 100
           && ('t' == $pontocom[$Iponto]["rh27_propi"]) ) {
           $r14_valor = round($r14_valor * ( $pessoal[$Ipessoal]["r01_propi"] / 100 ),2 ) ;
@@ -4755,8 +4744,8 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
             $aRubricasComFormulaNaQuantidade[$pontofs[$Iponto]["r10_rubric"]] = $r14_quant;
           }
 
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1] = "r48_regist";
           $matriz1[2] = "r48_rubric";
@@ -4800,9 +4789,9 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
      * Aqui Agrupamos todas as rubricas que so de afastamentos do ponto.
      * Sera realizado um ajuste na ultima rubrica lanada, caso tenha divergncia entre os valores de ajuste.
      */
-    $aValoresDeRubricasAfastamentos = array();
+    $aValoresDeRubricasAfastamentos = [];
 
-    $aValoresDeRubricasComValorProporcional = array();
+    $aValoresDeRubricasComValorProporcional = [];
 
     $nValorAjustadoDeAfastamento = 0;
     // Agrega as rubricas que entram no calculo do salario maternidade
@@ -4812,7 +4801,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
     /*Verifica aqui afastamento*/
     //
     $valor_salario_maternidade     = 0;
-    $aRubricasComValorSemProporcao = array();
+    $aRubricasComValorSemProporcao = [];
 
     /*Verifica aqui afastamento*/
     // Inicio --> Proporcionaliza o Ponto conforme os dias trabalhados (licenca saude ou acidente), ha so entra no ponto
@@ -4827,7 +4816,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
 
     if (isset($SituacoesFuncionario)) {
 
-      $aAfastamentoValidos = array(
+      $aAfastamentoValidos = [
         Afastamento::AFASTADO_DOENCA_MAIS_15_DIAS,
         Afastamento::AFASTADO_DOENCA_MAIS_30_DIAS,
         Afastamento::AFASTADO_ACIDENTE_TRABALHO_MAIS_15_DIAS,
@@ -4835,7 +4824,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
         Afastamento::AFASTADO_SERVICO_MILITAR,
         Afastamento::AFASTADO_PRORROGACAO_MATERNIDADE,
         Afastamento::AFASTADO_LICENCA_GESTANTE,
-      );
+      ];
       $condicaoaux               = " and rh27_calcp = 't' and r14_regist = " . db_sqlformat($r110_regist);
       $condicaoaux1              = " and rh27_calcp = 't' and r53_regist = " . db_sqlformat($r110_regist);
       if ($pessoal[$Ipessoal]["r01_tbprev"] != $cfpess[0]["r11_tbprev"]) {
@@ -4855,16 +4844,16 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
        * Executado no primeiro loop, para criar a propriedade controleAfastamento no registry
        */
       if (empty($controleAfastamento)) {
-          $controleAfastamento = array();
+          $controleAfastamento = [];
       }
 
       if (empty($controleAfastamento[$DB_instit])) {
-          $controleAfastamento[$DB_instit] = array();
+          $controleAfastamento[$DB_instit] = [];
       }
 
       if (empty($controleAfastamento[$DB_instit][$tabela])) {
 
-          $controleAfastamento[$DB_instit][$tabela] = array();
+          $controleAfastamento[$DB_instit][$tabela] = [];
 
           /**
            * @var ControleAfastamento[] $controleAfastamentosPorTabela
@@ -4889,7 +4878,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
         $xvalor_salario            = 0;
         $xvalor_ferias             = 0;
         $valor                     = 0;
-        $aAfastamentosLicencaSaude = array(Afastamento::AFASTADO_DOENCA_MAIS_30_DIAS, Afastamento::AFASTADO_DOENCA_MAIS_15_DIAS);
+        $aAfastamentosLicencaSaude = [Afastamento::AFASTADO_DOENCA_MAIS_30_DIAS, Afastamento::AFASTADO_DOENCA_MAIS_15_DIAS];
         $nValorAfastamento = 0;
         $iTotalLinhasFolhaSalario = count($aValoresFolhaSalario);
         if ($iTotalLinhasFolhaSalario > 0) {
@@ -5019,8 +5008,8 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
                       if ((30 - (30 - $dias_pagamento) - $iDiasFerias) > 0) {
 
                           $valor   = $aValoresFolhaSalario[$Itransacao]["r53_valor"] - $xvalor_salario - $xvalor_ferias;
-                          $matriz1 = array();
-                          $matriz2 = array();
+                          $matriz1 = [];
+                          $matriz2 = [];
                           $matriz1[1] = "r14_valor";
                           $matriz2[1] = round($valor, 2);
                           $aValoresDeRubricasComValorProporcional[$sRubrica] = round($valor , 2);
@@ -5057,8 +5046,8 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
 
           $sRubricaDoAfastamento = $aRubricaDeCadaTipo[$oAfastamento->r45_situac];
 
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1] = "r14_regist";
           $matriz1[2] = "r14_rubric";
@@ -5121,8 +5110,8 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
         $aRubricaRecebeAjuste  = end($aValoresDeRubricasAfastamentos);
         $aRubricaRecebeAjuste += $nValorDiferenca;
         $sRubricaComAjuste = key($aValoresDeRubricasAfastamentos);
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
 
         $matriz1[1] = "r14_valor";
         $matriz2[1] = round($aRubricaRecebeAjuste, 2);
@@ -5141,7 +5130,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
       }
 
       $vlr_sal_saude_ou_acidente = 0;
-      $aRubricasAcidenteSaude = array($rubrica_acidente, $rubrica_licenca_saude);
+      $aRubricasAcidenteSaude = [$rubrica_acidente, $rubrica_licenca_saude];
       foreach($aRubricasAcidenteSaude as $sRubrica) {
         if (isset($aValoresDeRubricasAfastamentos[$sRubrica])) {
           $vlr_sal_saude_ou_acidente += $aValoresDeRubricasAfastamentos[$sRubrica];
@@ -5177,8 +5166,8 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
           if ($db_debug == true) { echo "[gerfsal] 16 - tot_desc: $tot_desc<br>"; }
           $gerou_rubrica_calculo = true;
 
-          $matriz1 = array();
-          $matriz2 = array();
+          $matriz1 = [];
+          $matriz2 = [];
 
           $matriz1[1] = "r14_regist";
           $matriz1[2] = "r14_rubric";
@@ -5244,8 +5233,8 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
 
             $tot_desc += $gerfadi[$Igerfadi]["r22_valor"];
             $gerou_rubrica_calculo = true;
-            $matriz1 = array();
-            $matriz2 = array();
+            $matriz1 = [];
+            $matriz2 = [];
 
             $matriz1[1] = "r14_regist";
             $matriz1[2] = "r14_rubric";
@@ -5301,9 +5290,9 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
         );
 
         calcula_r928($pessoal[$Ipessoal]["r01_regist"],$pessoal[$Ipessoal]["r01_lotac"],$opcao_geral);
-      } else if (strtolower($db21_codcli) == "18") {
+      } else if (strtolower((string) $db21_codcli) == "18") {
         calculos_especificos_18($opcao_geral,$pessoal[$Ipessoal]["r01_regist"],$pessoal[$Ipessoal]["r01_lotac"]);
-      } else if (strtolower($db21_codcli) == "17") {
+      } else if (strtolower((string) $db21_codcli) == "17") {
         calculos_especificos_17($opcao_geral,$pessoal[$Ipessoal]["r01_regist"],$pessoal[$Ipessoal]["r01_lotac"]);
       } else {
         calcula_r928($pessoal[$Ipessoal]["r01_regist"],$pessoal[$Ipessoal]["r01_lotac"],$opcao_geral);
@@ -5368,13 +5357,13 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
       if ( !DBPessoal::verificarUtilizacaoEstruturaSuplementar() ) { /// No verificado tipo de folha pois a funcao  GERFSAL ;)~
 
         global $pes_prev;
-        $pes_prev = array();
+        $pes_prev = [];
         LogCalculoFolha::write("Calculando Ajuste de Previdncia");
         grava_ajuste_previdencia();
 
       }
       LogCalculoFolha::write("Calculando Ajuste de IRRF(Imposto de Renda Retido na Fonte)");
-      grava_ajuste_irrf($pessoal[$Ipessoal]["r01_numcgm"],$r110_regist,strtolower($pessoal[$Ipessoal]["r01_tpvinc"]));
+      grava_ajuste_irrf($pessoal[$Ipessoal]["r01_numcgm"],$r110_regist,strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]));
     }
 
       if ($vlr_sal_saude_ou_acidente > 0) {
@@ -5390,7 +5379,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
               throw new Exception('No foi possvel excluir o salrio.');
           }
 
-          $campos = array(
+          $campos = [
               'r14_anousu',
               'r14_mesusu',
               'r14_regist',
@@ -5401,9 +5390,9 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
               'r14_lotac',
               'r14_semest',
               'r14_instit'
-          );
+          ];
 
-          $valores = array(
+          $valores = [
               $anousu,
               $mesusu,
               $pessoal[$Ipessoal]['r01_regist'],
@@ -5414,7 +5403,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
               $r110_lotac,
               0,
               $DB_instit
-          );
+          ];
 
           $sqlInsertGerfsal = "
               INSERT INTO gerfsal (" . implode(',', $campos) . " )
@@ -5430,7 +5419,7 @@ function gerfsal( $opcao_geral=null, $opcao_tipo = TIPO_CALCULO_PARCIAL ) {
 /// ajusta_previdencia ///
 function deleta_ajustes_calculogeral($tipo){
 
-  $aTipoFolha = array(AjusteIRRF::AJUSTE_SALARIO,AjusteIRRF::AJUSTE_COMPLEMENTAR);
+  $aTipoFolha = [AjusteIRRF::AJUSTE_SALARIO,AjusteIRRF::AJUSTE_COMPLEMENTAR];
   $sComplementoSQL = "";
 
   if ( in_array($tipo, $aTipoFolha) && DBPessoal::verificarUtilizacaoEstruturaSuplementar() ) {
@@ -5477,8 +5466,8 @@ function ajusta_previdencia($arquivo, $rubrica_base, $sequencia, $sigla_ajuste) 
 
 function deleta_para_ajustes($vrubrica, $registro_, $tipo) {
 
-  $aRubricasIRRF        = array("R981", "R982", "R983");
-  $aRubricasPrevidencia = array("R985", "R986", "R987");
+  $aRubricasIRRF        = ["R981", "R982", "R983"];
+  $aRubricasPrevidencia = ["R985", "R986", "R987"];
 
   $sRubricasPrevidencia = "'" . implode("','", $aRubricasPrevidencia) . "'";
   $sRubricasIRRF        = "'" . implode("','", $aRubricasIRRF) . "'";
@@ -5508,7 +5497,7 @@ function deleta_para_ajustes($vrubrica, $registro_, $tipo) {
     //  $condicaoaux .= " and r60_tbprev = ".db_sqlformat( $pessoal_del[0]["r01_tbprev"] );
     //    $condicaoaux .= " and r60_rubric in ({$sRubricasPrevidencia}) ";//= ".db_sqlformat( $vrubrica );
     //   $condicaoaux .= " and r60_regist = ".db_sqlformat( $pessoal_del[0]["r01_regist"] );
-    $condicaoaux .= " and upper(r60_folha) = ".db_sqlformat( strtoupper($tipo) );
+    $condicaoaux .= " and upper(r60_folha) = ".db_sqlformat( strtoupper((string) $tipo) );
     db_delete( "previden", bb_condicaosubpes("r60_").$condicaoaux );
     LogCalculoFolha::write("Rubrica '{$vrubrica}' removida do ajuste de Previdncia");
   }
@@ -5527,7 +5516,7 @@ function deleta_para_ajustes($vrubrica, $registro_, $tipo) {
     $condicaoaux  = " and r61_numcgm = ".db_sqlformat( $pessoal_del[0]["r01_numcgm"] );
     // $condicaoaux .= " and r61_rubric in ({$sRubricasIRRF})";//= ".db_sqlformat( $vrubrica );
     //  $condicaoaux .= " and r61_regist = ".db_sqlformat( $pessoal_del[0]["r01_regist"] );
-    $condicaoaux .= " and upper(r61_folha) = ".db_sqlformat( strtoupper($tipo) );
+    $condicaoaux .= " and upper(r61_folha) = ".db_sqlformat( strtoupper((string) $tipo) );
     db_delete( "ajusteir", bb_condicaosubpes("r61_").$condicaoaux );
     LogCalculoFolha::write("Rubrica '{$vrubrica}' removida do ajuste de IRRF");
   }
@@ -5621,7 +5610,7 @@ db_selectmax("pessoal_", "select ".$campos_pessoal_." from rhpessoalmov
   and rhregime.rh30_instit = rhpessoalmov.rh02_instit
   ".bb_condicaosubpes("rh02_" ).$condicaoaux );
 
-  $oServidor  = ServidorRepository::getInstanciaByCodigo(trim($codigo));
+  $oServidor  = ServidorRepository::getInstanciaByCodigo(trim((string) $codigo));
 
 $F031 = DBPessoal::getVariaveisCalculo($oServidor, 'f031');
 $F032 = DBPessoal::getVariaveisCalculo($oServidor, 'f032');
@@ -5641,7 +5630,7 @@ if( count($pessoal_) > 0){
     $F002 = $pessoal_[0]["r01_hrssem"];
   }else{
     $condicaoaux  = " and r02_regime = ".db_sqlformat($pessoal_[0]["r01_regime"] );
-    $condicaoaux .= " and trim(upper(r02_codigo)) = ".db_sqlformat(trim(strtoupper($pessoal_[0]["r01_padrao"])) );
+    $condicaoaux .= " and trim(upper(r02_codigo)) = ".db_sqlformat(trim(strtoupper((string) $pessoal_[0]["r01_padrao"])) );
     if( db_selectmax( "padroes", "select * from padroes ".bb_condicaosubpes( "r02_" ).$condicaoaux )){
       $F002 = $padroes[0]["r02_hrssem"];
     }
@@ -5651,7 +5640,7 @@ if( count($pessoal_) > 0){
     $F008 = $pessoal_[0]["r01_hrsmen"];
   }else{
     $condicaoaux  = " and r02_regime = ".db_sqlformat($pessoal_[0]["r01_regime"] );
-    $condicaoaux .= " and trim(upper(r02_codigo)) = ".db_sqlformat(trim(strtoupper($pessoal_[0]["r01_padrao"])) );
+    $condicaoaux .= " and trim(upper(r02_codigo)) = ".db_sqlformat(trim(strtoupper((string) $pessoal_[0]["r01_padrao"])) );
     if( db_selectmax("padroes","select * from padroes ".bb_condicaosubpes( "r02_" ).$condicaoaux )){
       $F008 = $padroes[0]["r02_hrsmen"];
     }
@@ -5664,17 +5653,17 @@ if( count($pessoal_) > 0){
     $F002 = $F008/5;
   }
   $F026 = $pessoal_[0]["r01_padrao"];
-  if( ( $cfuncao == "gerfres" && strtolower($pessoal_[0]["r01_tpvinc"]) == "a" )
-    || ( !db_empty( $pessoal_[0]["r01_recis"] ) && strtolower($pessoal_[0]["r01_tpvinc"]) == "a" ) ){
+  if( ( $cfuncao == "gerfres" && strtolower((string) $pessoal_[0]["r01_tpvinc"]) == "a" )
+    || ( !db_empty( $pessoal_[0]["r01_recis"] ) && strtolower((string) $pessoal_[0]["r01_tpvinc"]) == "a" ) ){
     $data_base = $pessoal_[0]["r01_recis"];
   }else{
-    $data_base = (strtolower($pessoal_[0]["r01_tpvinc"])=="a"?$cfpess[0]["r11_dataf"]:$pessoal_[0]["r01_admiss"]);
+    $data_base = (strtolower((string) $pessoal_[0]["r01_tpvinc"])=="a"?$cfpess[0]["r11_dataf"]:$pessoal_[0]["r01_admiss"]);
   }
   $data_progr = (db_empty($pessoal_[0]["r01_anter"])?$pessoal_[0]["r01_admiss"]:$pessoal_[0]["r01_anter"]);
   $data_trien = (db_empty($pessoal_[0]["r01_trien"])?$pessoal_[0]["r01_admiss"]:$pessoal_[0]["r01_trien"]);
   if( $db21_codcli == "999999999"
-    || trim($db21_codcli) == "999999999"
-    || trim($db21_codcli) == "999999999" ){
+    || trim((string) $db21_codcli) == "999999999"
+    || trim((string) $db21_codcli) == "999999999" ){
     $diadomes = ndias( substr("#". db_dtoc( $data_base ),4,7 ) ) ;
     $diadomes_q = $diadomes;
     $diadomes_t = $diadomes;
@@ -5684,12 +5673,12 @@ if( count($pessoal_) > 0){
     if( db_day( $data_progr ) < $diadomes){
       $diadomes_t = db_day( $data_progr );
     }
-    $data_ref_q = ( strtolower($pessoal_[0]["r01_tpvinc"]) == "a" ?
+    $data_ref_q = ( strtolower((string) $pessoal_[0]["r01_tpvinc"]) == "a" ?
       db_ctod( db_str($diadomes_q,2,0,"0")."/"
       . db_str( db_month($data_base),2,0,"0")."/"
       . db_str( db_year($data_base),4,0) )
       : $data_base );
-    $data_ref_t = ( strtolower($pessoal_[0]["r01_tpvinc"]) == "a"
+    $data_ref_t = ( strtolower((string) $pessoal_[0]["r01_tpvinc"]) == "a"
       ? db_ctod( db_str($diadomes_t,2,0,"0")."/"
       . db_str( db_month($data_base),2,0,"0")."/"
       . db_str( db_year($data_base),4,0) )
@@ -5730,8 +5719,8 @@ if( count($pessoal_) > 0){
         if( db_selectmax( "pad", "select fc_idade(to_date('".db_dtoc($pessoal_[0]["r01_admiss"])."','dd-mm-YYYY'),to_date('".db_dtoc($data_base)."','dd-mm-YYYY'))") ){
           $F012 = $pad[0]["fc_idade"];
         }
-      }else if( db_at(trim($pessoal_[0]["r01_clas1"]) , "1-9-2") > 0 && strtolower(substr("#".$pessoal_[0]["r01_padrao"],1,2)) == 'pf'){
-        if( trim($pessoal_[0]["r01_clas1"]) == '2'){
+      }else if( db_at(trim((string) $pessoal_[0]["r01_clas1"]) , "1-9-2") > 0 && strtolower(substr("#".$pessoal_[0]["r01_padrao"],1,2)) == 'pf'){
+        if( trim((string) $pessoal_[0]["r01_clas1"]) == '2'){
           if( db_empty($pessoal_[0]["r01_clas2"]) ){
             if( db_mktime($pessoal_[0]["r01_admiss"]) < db_mktime(db_ctod("31/10/1997"))){
               if( db_selectmax( "tri", "select fc_idade(to_date('".db_dtoc($pessoal_[0]["r01_admiss"])."','dd-mm-YYYY'),to_date('31-10-1997','dd-mm-YYYY'))") ){
@@ -5768,7 +5757,7 @@ if( count($pessoal_) > 0){
             $xdata_ant = $xdata;
 
 
-            $aMatriculaAnuenio = array(1011, 398, 1144, 1255, 2007, 2152 );
+            $aMatriculaAnuenio = [1011, 398, 1144, 1255, 2007, 2152 ];
 
             if ( in_array ( $pessoal_[0]["r01_regist"] , $aMatriculaAnuenio ) ) {
               $xdata = $pessoal_[0]["r01_admiss"];
@@ -5809,7 +5798,7 @@ if( count($pessoal_) > 0){
               $F012 = $pad[0]["fc_idade"];
             }
           }
-        }else if( trim($pessoal_[0]["r01_clas1"]) == '9'){
+        }else if( trim((string) $pessoal_[0]["r01_clas1"]) == '9'){
           if( db_selectmax("tri", "select fc_idade(to_date('".db_dtoc($pessoal_[0]["r01_admiss"])."','dd-mm-YYYY'),to_date('31-10-1997','dd-mm-YYYY'))") ){
             $F013 = $tri[0]["fc_idade"]/3;
             $F013 = (int)$F013;
@@ -5939,7 +5928,7 @@ if( count($pessoal_) > 0){
 
   $F022 = bcdiv($F022,1825,0);
 
-  if( strtolower($pessoal_[0]["r01_progr"]) == "s"){
+  if( strtolower((string) $pessoal_[0]["r01_progr"]) == "s"){
     $condicaoaux  = " and r24_regime = ".db_sqlformat( $pessoal_[0]["r01_regime"] );
     $condicaoaux .= " and r24_padrao = ".db_sqlformat( $pessoal_[0]["r01_padrao"] );
     $condicaoaux .= " and r24_meses <= $F024 order by r24_meses";
@@ -5949,7 +5938,7 @@ if( count($pessoal_) > 0){
       $F015 = 0;
       for($Iprogress=0;$Iprogress < count($progress) ;$Iprogress++){
         $F014 += 1 ;
-        $F026 = trim($progress[$Iprogress]["r24_descr"]);
+        $F026 = trim((string) $progress[$Iprogress]["r24_descr"]);
         $F015 = $progress[$Iprogress]["r24_perc"];
       }
     }
@@ -6059,7 +6048,7 @@ function carrega_r9xx($area, $sigla, $sigla2, $nro_do_registro,$opcao_tipo) {
 
   if ($chamada_geral_arquivo == "gerffer"
     && ($cadferia[0][$r30_proc] == $subpes )
-    && ( ( strtolower($cfpess[0]["r11_fersal"]) == "f" && ('t' == $cadferia[0]["r30_paga13"]) )
+    && ( ( strtolower((string) $cfpess[0]["r11_fersal"]) == "f" && ('t' == $cadferia[0]["r30_paga13"]) )
     || 'f' == $cadferia[0]["r30_paga13"]
   )
   ) {
@@ -6144,7 +6133,7 @@ function carrega_r9xx($area, $sigla, $sigla2, $nro_do_registro,$opcao_tipo) {
 
     // Ferias
 
-    if ($n == 3 && (  ( strtolower($cfpess[0]["r11_fersal"]) == "f" && ('t' == $cadferia[0]["r30_paga13"]) ) || 'f' == $cadferia[0]["r30_paga13"])) {
+    if ($n == 3 && (  ( strtolower((string) $cfpess[0]["r11_fersal"]) == "f" && ('t' == $cadferia[0]["r30_paga13"]) ) || 'f' == $cadferia[0]["r30_paga13"])) {
       // ir calculado ferias
       if (($F019+$F023) > 0) {
         $condicaoaux  = " and r31_regist = ".db_sqlformat($pessoal[$Ipessoal]["r01_regist"] );
@@ -6153,14 +6142,14 @@ function carrega_r9xx($area, $sigla, $sigla2, $nro_do_registro,$opcao_tipo) {
         global $gerffer;
         if (db_selectmax("gerffer", "select * from gerffer ".bb_condicaosubpes("R31_" ).$condicaoaux )
           && (  ( $opcao_geral == 1
-                    && strtolower($cadferia[0]["r30_ponto"]) == "s"
+                    && strtolower((string) $cadferia[0]["r30_ponto"]) == "s"
                   )
                   || ( $opcao_geral == 8
-                        && strtolower($cadferia[0]["r30_ponto"]) =="c"
+                        && strtolower((string) $cadferia[0]["r30_ponto"]) =="c"
                         && 'f' == $cadferia[0]["r30_paga13"]
                       )
                 || ( $opcao_geral == 1
-                        && strtolower($cadferia[0]["r30_ponto"]) == "c"
+                        && strtolower((string) $cadferia[0]["r30_ponto"]) == "c"
                         && ( $cadferia[0][$r30_proc] < $subpes
                               || ( $cadferia[0][$r30_proc] == $subpes
                               && 't' == $cadferia[0]["r30_paga13"]
@@ -6293,7 +6282,7 @@ function carrega_r9xx($area, $sigla, $sigla2, $nro_do_registro,$opcao_tipo) {
 
         $lTemRubrica = db_selectmax("rubrica_vale", "select * from rhrubricas where rh27_rubric = 'R802' and rh27_instit = $DB_instit" );
         $rubrica_vale_802['consultado'] = true;
-        $rubrica_vale_802['dados']      = array();
+        $rubrica_vale_802['dados']      = [];
         if ($lTemRubrica) {
           $rubrica_vale_802['dados'] = $rubrica_vale;
         }
@@ -6500,9 +6489,7 @@ function carrega_r9xx($area, $sigla, $sigla2, $nro_do_registro,$opcao_tipo) {
 
           $sSqlMatriculas = "select rh01_regist from rhpessoal where rh01_numcgm = {$iNumeroCGM}";
           $rsMatriculas   = db_query($sSqlMatriculas);
-          $aMatriculas    = db_utils::makeCollectionFromRecord($rsMatriculas, function ($dados) {
-            return  $dados->rh01_regist;
-          });
+          $aMatriculas    = db_utils::makeCollectionFromRecord($rsMatriculas, fn($dados) => $dados->rh01_regist);
           $sMatriculasServidor = implode(", ", $aMatriculas);
           DBRegistry::add("matriculas_servidor_{$iNumeroCGM}", $sMatriculasServidor);
         }
@@ -6717,7 +6704,7 @@ function carrega_r9xx($area, $sigla, $sigla2, $nro_do_registro,$opcao_tipo) {
   $r07_valor = calc_rubrica("R991",$area,$sigla,$sigla2,$nro_do_registro,true);
   // R991 BASE F.G.T.S.
   if (( ($pessoal[$Ipessoal]["r01_regime"] == 2) || ($pessoal[$Ipessoal]["r01_regime"] == 4)  )
-    && strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) == "a" ) {
+    && strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) == "a" ) {
     $r14_valor = round($r07_valor,2);
     if ($db_debug == true) { echo "[carrega_r9xx] 57 - r14_valor = $r14_valor  <br>"; }
     $r20_rubr = "R991";
@@ -6768,7 +6755,7 @@ function carrega_r9xx($area, $sigla, $sigla2, $nro_do_registro,$opcao_tipo) {
 
 function calc_rubrica($rubrica, $area0, $sigla, $sigla2, $nro_do_registro, $operacao,$formq=null,$valor_=0,$recursivo=0) {
 
-  global $carregarubricas_geral,$rubricas,$r110_lotac,$$area0,$r110_regist;
+  global $carregarubricas_geral,$rubricas,$r110_lotac,${$area0},$r110_regist;
   global $anousu, $mesusu, $DB_instit, $db_debug ;
 
   global $F001, $F002, $F004, $F005, $F006,
@@ -6836,7 +6823,7 @@ function calc_rubrica($rubrica, $area0, $sigla, $sigla2, $nro_do_registro, $oper
      }else if( $sigla2 == "r94"){
        $area1 = "gerfprovs13";
      }
-     $formula = substr("#".$rubrica_contem,2,strlen($rubrica_contem)-1);
+     $formula = substr("#".$rubrica_contem,2,strlen((string) $rubrica_contem)-1);
      if( $area0 == "pontofr" || $area0 == "pontoprovfe"|| $area0 == "pontoprovf13"){
 
        if($db_debug == true) { echo "[calc_rubrica] Funo: calc_rubrica -> rle_var_bxxx <br>"; }
@@ -6848,7 +6835,7 @@ function calc_rubrica($rubrica, $area0, $sigla, $sigla2, $nro_do_registro, $oper
        if ($recursivo==0) {
 
           $qtd_chamadas=0;
-          $m_rubr = array();
+          $m_rubr = [];
           $m_rubr[1] = $rubrica;
 
           if ($db_debug == true) {
@@ -6913,7 +6900,7 @@ function le_var_bxxx($formula=null, $area0=null, $area1=null, $sigla=null, $sigl
   global $cadferia,$pontofe,$pontofr;
   global $anousu, $mesusu, $DB_instit;
 
-  global $$area0,$inssirf_base_ferias;
+  global ${$area0},$inssirf_base_ferias;
   global $opcao_tipo,$opcao_geral;
   global $Ipessoal, $pessoal;
   global $dias_pagamento;
@@ -6970,7 +6957,7 @@ function le_var_bxxx($formula=null, $area0=null, $area1=null, $sigla=null, $sigl
             $rubrica_contem = $carregarubricas_geral[$campo_rubrica];
 
             $campo_pd       = (substr("#".$rubrica_contem,1,1)=="+"?"1":"2");
-            $formula1       = substr("#".$rubrica_contem,2,strlen($rubrica_contem)-1);
+            $formula1       = substr("#".$rubrica_contem,2,strlen((string) $rubrica_contem)-1);
 
             global $basesr;
             $achou = false;
@@ -7033,7 +7020,7 @@ function le_var_bxxx($formula=null, $area0=null, $area1=null, $sigla=null, $sigl
         }
         if ($achou) {
 
-          $mrubr = array();
+          $mrubr = [];
           global $gerfant;
           $condicaoaux  = " and r14_regist = ".db_sqlformat($r110_regist );
           db_selectmax("gerfant", "select * from gerfsal ".bb_condicaosubpesanterior("r14_" ).$condicaoaux );
@@ -7102,7 +7089,7 @@ function le_var_bxxx($formula=null, $area0=null, $area1=null, $sigla=null, $sigl
           }
         }
         if ($achou ) {
-          $mrubr = array();
+          $mrubr = [];
           $condicaoaux  = " and r53_regist = ".db_sqlformat($r110_regist );
           global $transacao;
           db_selectmax("transacao", "select * from gerffx ".bb_condicaosubpes("r53_" ).$condicaoaux);
@@ -7117,7 +7104,7 @@ function le_var_bxxx($formula=null, $area0=null, $area1=null, $sigla=null, $sigl
               $pos = db_ascan($mrubr,$basesr[$i][$rubric]);
               if ($pos != 0 ) {
 
-                if (strtolower($area1) == "gerffx") {
+                if (strtolower((string) $area1) == "gerffx") {
                   global $transacao;
                   if ($transacao[$pos-1]["r53_pd"] == 1) {
                     if ('f' == $bases[0]["r08_calqua"]) {
@@ -7174,7 +7161,7 @@ function le_var_bxxx($formula=null, $area0=null, $area1=null, $sigla=null, $sigl
           $proc_ler_var_bxxx = true;
         }
         if ($proc_ler_var_bxxx ) {
-          $arq_ = $$area0;
+          $arq_ = ${$area0};
           // Percorre o Ponto (pontofs, pontofx,pontocom, etc..)
 
           $iTotalArq_ = count($arq_);
@@ -7189,7 +7176,7 @@ function le_var_bxxx($formula=null, $area0=null, $area1=null, $sigla=null, $sigl
 
             $campo_pd       = (substr("#".$rubrica_contem,1,1)=="+"?"1":"2");
 
-            $formula1       = substr("#".$rubrica_contem,2,strlen($rubrica_contem)-1);
+            $formula1       = substr("#".$rubrica_contem,2,strlen((string) $rubrica_contem)-1);
 
             global $basesr;
             $achou = false;
@@ -7236,9 +7223,9 @@ function le_var_bxxx($formula=null, $area0=null, $area1=null, $sigla=null, $sigl
 
               // Contabiliza somente as rubricas encontrada na base
               if ($area0 == "pontofe" ) {
-                $tpgto = strtolower($arq_[$ix]["r29_tpp"]);
+                $tpgto = strtolower((string) $arq_[$ix]["r29_tpp"]);
               } else if ($area0 == "pontofr") {
-                $tpgto = strtolower($arq_[$ix]["r19_tpp"]);
+                $tpgto = strtolower((string) $arq_[$ix]["r19_tpp"]);
               }
               if (db_empty($cadferia[0]["r30_proc2"]) ) {
 
@@ -7254,7 +7241,7 @@ function le_var_bxxx($formula=null, $area0=null, $area1=null, $sigla=null, $sigl
 
               // B004 - BASE IRRF (SALARIO)
               if ($base == "B004" && ($area0 == "pontofs" || $area0 == "pontocom")) {
-                if (( strtolower($cfpess[0]["r11_fersal"]) == "f" && ('t' == $cadferia[0]["r30_paga13"]) && $cadferia[0][$r30_proc] ==  $mes_gozo )) {
+                if (( strtolower((string) $cfpess[0]["r11_fersal"]) == "f" && ('t' == $cadferia[0]["r30_paga13"]) && $cadferia[0][$r30_proc] ==  $mes_gozo )) {
                   // No levar em contas as Rubricas Especiais , mesmo marcadas na base B004
                   if ($campo_rubrica == $cfpess[0]["r11_ferias"] ||      // Rubrica onde  pago as frias
                   $campo_rubrica == $cfpess[0]["r11_fer13"] ||      // Rubrica onde  pago um 1/3 de frias Constitucional
@@ -7291,7 +7278,7 @@ function le_var_bxxx($formula=null, $area0=null, $area1=null, $sigla=null, $sigl
                       continue;
                     }
                   }
-                } else if (strtolower($cfpess[0]["r11_fersal"]) == "f" ) {
+                } else if (strtolower((string) $cfpess[0]["r11_fersal"]) == "f" ) {
 
                   // Se Somente 1/3 sim e Pagar como Frias
 
@@ -7316,7 +7303,7 @@ function le_var_bxxx($formula=null, $area0=null, $area1=null, $sigla=null, $sigl
                       continue;
                     }
                   }
-                } else if (strtolower($cfpess[0]["r11_fersal"]) == "s") {
+                } else if (strtolower((string) $cfpess[0]["r11_fersal"]) == "s") {
 
                   // Se Somente 1/3 sim e Pagar como Salrio
                   // B005 - BASE IRRF (FERIAS)
@@ -7654,7 +7641,7 @@ function le_tbprev($r20_rubr=null, $area=null, $sigla=null, $sigla2=null, $nro_d
   }
 
   $lreaj      = false;
-  $r11_tbprev = trim($cfpess[0]["r11_tbprev"]);
+  $r11_tbprev = trim((string) $cfpess[0]["r11_tbprev"]);
 
   flush(); // @todo - Validar REAL necessidade disso.
 
@@ -7685,7 +7672,7 @@ function le_tbprev($r20_rubr=null, $area=null, $sigla=null, $sigla2=null, $nro_d
    */
   if (!db_empty($r11_tbprev ) && $cfpess[0]["r11_tbprev"] == $pessoal[$Ipessoal]["r01_tbprev"]+2 ) {
 
-    $basinst  = array();
+    $basinst  = [];
     $basetemp = 0;
     $vlrtemp  = 0;
     $ind      = 0;
@@ -8022,7 +8009,7 @@ function le_tbprev($r20_rubr=null, $area=null, $sigla=null, $sigla2=null, $nro_d
           (
             $opcao_geral == 8
             &&
-            strtolower($cadferia[0]["r30_ponto"]) =="c"
+            strtolower((string) $cadferia[0]["r30_ponto"]) =="c"
             &&
             $cadferia[0][$r30_proc] == $subpes
           )
@@ -8030,13 +8017,13 @@ function le_tbprev($r20_rubr=null, $area=null, $sigla=null, $sigla2=null, $nro_d
           (
             $opcao_geral == 1
             &&
-            strtolower($cadferia[0]["r30_ponto"]) =="s"
+            strtolower((string) $cadferia[0]["r30_ponto"]) =="s"
           )
           ||
           (
             $opcao_geral == 1
             &&
-            strtolower($cadferia[0]["r30_ponto"]) =="c"
+            strtolower((string) $cadferia[0]["r30_ponto"]) =="c"
             &&
             $cadferia[0][$r30_proc] < $subpes
           )
@@ -8053,9 +8040,9 @@ function le_tbprev($r20_rubr=null, $area=null, $sigla=null, $sigla2=null, $nro_d
           ".bb_condicaosubpes("R31_" ).$condicaoaux;
         $resfer = db_query($sqlfer);
         if ($db_debug == true) { echo "Busca informacoes da complementar: <br> $sqlfer <br>"; }
-        if ($db_debug == true) { echo "Registros encontrados na complementar: " . pg_numrows($resfer) . "<br>"; }
+        if ($db_debug == true) { echo "Registros encontrados na complementar: " . pg_num_rows($resfer) . "<br>"; }
         //echo "<BR> 1 r30_paga13 --> ".($cadferia[0]["r30_paga13"]=='t'?"1":"2"). " opcao_geral --> ".$opcao_geral;
-        if( pg_numrows($resfer) > 0 ){
+        if( pg_num_rows($resfer) > 0 ){
           db_fieldsmemory($resfer,0);
           //echo "<BR> 2 r30_paga13 --> ".($cadferia[0]["r30_paga13"]=='t'?"1":"2"). " opcao_geral --> ".$opcao_geral;
           if ($db_debug == true) { echo "<BR> 2 - Valor da complementar r31_valor = $r31_valor <br>"; }
@@ -8126,7 +8113,7 @@ function le_tbprev($r20_rubr=null, $area=null, $sigla=null, $sigla2=null, $nro_d
             $prev_desc = $r14_valor;
             if ($db_debug == true) { echo "<BR> 3 - gravando na Rubrica $r20_rubr --> $r14_valor tipo --> F matricula $r110_regist <br>"; }
           }
-  
+
           if ($db_debug == true) { echo "[le_tbprev] 18 - Chamando a funcao grava_gerf() <br>"; }
           grava_gerf($area,"F");
         }
@@ -8185,7 +8172,7 @@ function le_tbprev($r20_rubr=null, $area=null, $sigla=null, $sigla2=null, $nro_d
 
       // Ferias
 
-      if ($n == 3 && strtolower($cfpess[0]["r11_fersal"]) == "f" ) {
+      if ($n == 3 && strtolower((string) $cfpess[0]["r11_fersal"]) == "f" ) {
         // ir calculado ferias
         if (($F019+$F023) > 0) {
           $condicaoaux  = " and r31_regist = ".db_sqlformat($pessoal[$Ipessoal]["r01_regist"] );
@@ -8206,7 +8193,7 @@ function le_tbprev($r20_rubr=null, $area=null, $sigla=null, $sigla2=null, $nro_d
               (
                 $opcao_geral == 8
                 &&
-                strtolower($cadferia[0]["r30_ponto"]) =="c"
+                strtolower((string) $cadferia[0]["r30_ponto"]) =="c"
                 &&
                 $cadferia[0][$r30_proc] == $subpes
               )
@@ -8214,13 +8201,13 @@ function le_tbprev($r20_rubr=null, $area=null, $sigla=null, $sigla2=null, $nro_d
               (
                 $opcao_geral == 1
                 &&
-                strtolower($cadferia[0]["r30_ponto"]) =="s"
+                strtolower((string) $cadferia[0]["r30_ponto"]) =="s"
               )
               ||
               (
                 $opcao_geral == 1
                 &&
-                strtolower($cadferia[0]["r30_ponto"]) =="c"
+                strtolower((string) $cadferia[0]["r30_ponto"]) =="c"
                 &&
                 $cadferia[0][$r30_proc] < $subpes
               )
@@ -8333,7 +8320,7 @@ function rle_var_bxxx ($formula=null, $area0=null, $area1=null, $sigla=null, $si
   eval($quais_diversos);
 
   global $r110_regist;
-  global $$area0,$inssirf_base_ferias;
+  global ${$area0},$inssirf_base_ferias;
   global $opcao_tipo;
   global $subpes,$rescisao,$bases, $transacao2, $gerfant, $transacao1,$basesr;
 
@@ -8415,7 +8402,7 @@ function rle_var_bxxx ($formula=null, $area0=null, $area1=null, $sigla=null, $si
             $rubrica_contem = $carregarubricas_geral[$campo_rubrica];
 
             $campo_pd       = (substr("#".$rubrica_contem,1,1)=="+"?"1":"2");
-            $formula2       = '$formula1 = '.substr("#".$rubrica_contem,2,strlen($rubrica_contem)-1).";";
+            $formula2       = '$formula1 = '.substr("#".$rubrica_contem,2,strlen((string) $rubrica_contem)-1).";";
 
             global $basesr;
             $achou = false;
@@ -8565,7 +8552,7 @@ function rle_var_bxxx ($formula=null, $area0=null, $area1=null, $sigla=null, $si
 
           //echo "<BR> base 1.3 --> $base";
           LogCalculoFolha::write("Percorrendo os dados da tabela $area0");
-          $iTotalLinhasArea0 = count($$area0);
+          $iTotalLinhasArea0 = count(${$area0});
           for ($i = 0; $i < $iTotalLinhasArea0; $i++) {
 
             eval('$campo_rubrica = $'.$area0."[$i]['".$sigla."_rubric'];");
@@ -8599,7 +8586,7 @@ function rle_var_bxxx ($formula=null, $area0=null, $area1=null, $sigla=null, $si
             $conteudo_rubrica = "R".$campo_rubrica;
             $rubrica_contem   = $carregarubricas_geral[$campo_rubrica];
             $campo_pd         = (substr("#".$rubrica_contem,1,1)=="+"?"1":"2");
-                $formula1         = substr("#".$rubrica_contem,2,strlen($rubrica_contem)-1);
+                $formula1         = substr("#".$rubrica_contem,2,strlen((string) $rubrica_contem)-1);
 
             global $basesr;
             $achou            = false;
@@ -8639,7 +8626,7 @@ function rle_var_bxxx ($formula=null, $area0=null, $area1=null, $sigla=null, $si
                 $condicaoaux .= " and ".$sigla2."_pd = ".db_sqlformat( $campo_pd );
                 $condicaoaux .= " and ".$sigla2."_rubric = ".db_sqlformat( $campo_rubrica );
                 if( db_at($area0,"pontoprovfer pontoprovs13 pontofr") > 0 ){
-                  $condicaoaux .= " and upper(".$sigla2."_tpp) = ".db_sqlformat( strtoupper($tpgto) );
+                  $condicaoaux .= " and upper(".$sigla2."_tpp) = ".db_sqlformat( strtoupper((string) $tpgto) );
                 }
                 global $transacao;
                 if( db_selectmax( "transacao", "select * from ".$area1." ".bb_condicaosubpes( $sigla2."_" ).$condicaoaux )){
@@ -8803,7 +8790,7 @@ function teto_prev_inativo($r07_valor, $tbprev){
   LogCalculoFolha::write("Valor Base passado...: ".$r07_valor);
   LogCalculoFolha::write("Tabela de Previdencia: ".$tbprev);
 
-  if( strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) == "a" ){
+  if( strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) == "a" ){
     LogCalculoFolha::write("Vinculo do Servidor  Ativo, logo retorna o valor passado");
     return $r07_valor;
   }
@@ -9016,7 +9003,7 @@ function gravb_base_irf ($area_grava,$r20_rubrp){
        */
       if ($oServidor->getVinculo()->getTipo() == VinculoServidor::VINCULO_PENSIONISTA || $oServidor->getVinculo()->getTipo() == VinculoServidor::VINCULO_INATIVO) {
 
-        if (in_array($r20_rubr, array('R981', 'R982', 'R983')) && $pessoal[$Ipessoal]["rh02_portadormolestia"] == 't' ) {
+        if (in_array($r20_rubr, ['R981', 'R982', 'R983']) && $pessoal[$Ipessoal]["rh02_portadormolestia"] == 't' ) {
 
           LogCalculoFolha::write('Servidor possui molstia cadastrada e  Inativo ou Pensionista. $area_grava:'.$area_grava);
 
@@ -9175,8 +9162,8 @@ function grava_gerf($area_grava,$grava_tpp=" ") {
             $r14_quant = 0;
         }
 
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $matriz1[1] = "r14_regist";
         $matriz1[2] = "r14_rubric";
         $matriz1[3] = "r14_lotac";
@@ -9228,8 +9215,8 @@ function grava_gerf($area_grava,$grava_tpp=" ") {
       } else {
         $acao = "altera";
       }
-      $matriz1 = array();
-      $matriz2 = array();
+      $matriz1 = [];
+      $matriz2 = [];
       $matriz1[1] = "r48_regist";
       $matriz1[2] = "r48_rubric";
       $matriz1[3] = "r48_lotac";
@@ -9259,8 +9246,8 @@ function grava_gerf($area_grava,$grava_tpp=" ") {
         $retornar = db_update("gerfcom", $matriz1, $matriz2, bb_condicaosubpes("r48_").$condicaoaux );
       }
     } else if ($area_grava == "pontofr") {
-      $matriz1 = array();
-      $matriz2 = array();
+      $matriz1 = [];
+      $matriz2 = [];
 
       $matriz1[1] = "r20_regist";
       $matriz1[2] = "r20_rubric";
@@ -9307,8 +9294,8 @@ function grava_gerf($area_grava,$grava_tpp=" ") {
       } else {
         $tpgto = str_pad(" ",01);
       }
-      $matriz1  = array();
-      $matriz2  = array();
+      $matriz1  = [];
+      $matriz2  = [];
 
       $matriz1[1] = "r31_regist";
       $matriz1[2] = "r31_rubric";
@@ -9360,8 +9347,8 @@ function grava_gerf($area_grava,$grava_tpp=" ") {
       } else {
         $tpgto = str_pad(" ",01);
       }
-      $matriz1  = array();
-      $matriz2  = array();
+      $matriz1  = [];
+      $matriz2  = [];
 
       $matriz1[1] = "r93_regist";
       $matriz1[2] = "r93_rubric";
@@ -9401,8 +9388,8 @@ function grava_gerf($area_grava,$grava_tpp=" ") {
         $retornar = db_update("gerfprovfer", $matriz1, $matriz2, bb_condicaosubpes("r93_" ).$condicaoaux );
       }
     } else if ($area_grava == "pontof13") {
-      $matriz1  = array();
-      $matriz2  = array();
+      $matriz1  = [];
+      $matriz2  = [];
 
       if ($pessoal[$Ipessoal]["rh02_portadormolestia"] == 't') {
 
@@ -9442,8 +9429,8 @@ function grava_gerf($area_grava,$grava_tpp=" ") {
         $retornar = db_update("gerfs13", $matriz1,$matriz2, bb_condicaosubpes("r35_" ).$condicaoaux );
       }
     } else if ($area_grava == "pontoprovf13") {
-      $matriz1  = array();
-      $matriz2  = array();
+      $matriz1  = [];
+      $matriz2  = [];
 
       $matriz1[1] = "r94_regist";
       $matriz1[2] = "r94_rubric";
@@ -9516,15 +9503,15 @@ function calculos_especificos($r110_regist,$r110_lotac){
     }
   }
 
-  $varifica_tamanho = trim($cfpess[0]["r11_desliq"]);
+  $varifica_tamanho = trim((string) $cfpess[0]["r11_desliq"]);
   if(!db_empty($varifica_tamanho)){
     for($Ii=0;$Ii < strlen($varifica_tamanho) ;$Ii+=4){
       //echo "<BR><BR>IIIIII *--- $Ii";
-      $rub = substr("#". trim($cfpess[0]["r11_desliq"]), $Ii+1, 4 ) ;
+      $rub = substr("#". trim((string) $cfpess[0]["r11_desliq"]), $Ii+1, 4 ) ;
       $variavel = "calcula_xvalor_".$rub;
-      global $$variavel;
+      global ${$variavel};
       //echo "<BR><BR>$variavel --- ".($$variavel==true?"true":"false");
-      $calcula_xvalor = ($$variavel == true);
+      $calcula_xvalor = (${$variavel} == true);
       if( $calcula_xvalor){
         $condicaoaux  = " and r10_regist = ".db_sqlformat( $r110_regist );
         $condicaoaux .= " and r10_rubric = ".db_sqlformat( $rub );
@@ -9538,8 +9525,8 @@ function calculos_especificos($r110_regist,$r110_lotac){
             $xvalor_espec = $liquido_folha / 100 * $tem_quant ;
             if( $xvalor_espec > 0){
 
-              $matriz1 = array();
-              $matriz2 = array();
+              $matriz1 = [];
+              $matriz2 = [];
 
               $matriz1[1] = "r14_regist";
               $matriz1[2] = "r14_rubric";
@@ -9671,8 +9658,8 @@ function calculos_especificos_4($opcao_geral) {
           if( $valor_liquido > 0 ){
             $tot_desc += $valor_liquido;
             if ($db_debug == true) { echo "[calculos_especificos_4]32 - tot_desc: $tot_desc<br>"; }
-            $matriz1 = array();
-            $matriz2 = array();
+            $matriz1 = [];
+            $matriz2 = [];
 
             $matriz1[1] = "r14_regist";
             $matriz1[2] = "r14_rubric";
@@ -9805,8 +9792,8 @@ function calcula_r928 ($r110_regist,$r110_lotac,$opcao_geral) {
 
     if ($arredn > 0) {
 
-      $matriz1 = array();
-      $matriz2 = array();
+      $matriz1 = [];
+      $matriz2 = [];
 
       if ($opcao_geral == 1) {
 
@@ -9940,7 +9927,7 @@ function dependentes($registro){
 
       // 'c' --> Calcula pela Idade
 
-      if( strtolower($depend[$Idepend]["r03_depend"]) == 'c'){
+      if( strtolower((string) $depend[$Idepend]["r03_depend"]) == 'c'){
 
         // Tipo c = Calculado
         // Sera dependente se a idade for ate x idade
@@ -9965,7 +9952,7 @@ function dependentes($registro){
             $F006++;
           }
         }
-      }else if( strtolower($depend[$Idepend]["r03_depend"]) == 's') { // 's' --> Sempre dependente
+      }else if( strtolower((string) $depend[$Idepend]["r03_depend"]) == 's') { // 's' --> Sempre dependente
 
         // Sera dependente independente da idade
 
@@ -10025,7 +10012,7 @@ function vale_transp($registro, $admissao){
 
     $condicaoaux = " and r16_codigo = ".db_sqlformat( $vtffunc[$Ivt]["r17_codigo"] );
     if (db_selectmax( "vtfempr", "select * from vtfempr ".bb_condicaosubpes("r16_").$condicaoaux)) {
-      if( strtolower($vtffunc[$Ivt]["r17_situac"]) == "a"){
+      if( strtolower((string) $vtffunc[$Ivt]["r17_situac"]) == "a"){
 
         $quantvale = qvale($vtffunc[$Ivt]["r17_regist"],$vtffunc[$Ivt]["r17_tipo"],$vtffunc[$Ivt]["r17_codigo"],$vtffunc[$Ivt]["r17_difere"],$vtffunc[$Ivt]["r17_quant"],$admissao)    ;
         $quantvale = 0;
@@ -10146,10 +10133,10 @@ function grava_ajuste_previdencia (){
 
 /**
  * grava_ajuste_irrf
- * @deprecated
  * @see AjusteIRRF::gravarModificacoes
  * @return void
  */
+#[\Deprecated]
 function grava_ajuste_irrf($numcgm,$registrop,$r01_tpvinc) {
   return AjusteIRRF::gravarModificacoes($numcgm, $registrop, $r01_tpvinc);
 }
@@ -10353,7 +10340,7 @@ function calc_irf($r20_rubr_=null, $area=null, $sigla=null, $sigla2=null, $nro_d
       $r07_valor        += $nValorPrevidencia;
       LogCalculoFolha::write("Valor do abono permanencia.............................: {$nValorPrevidencia}" );
     }
-  } catch (Exception $e) {
+  } catch (Exception) {
     LogCalculoFolha::write("No foi possvel somar o valor do abono na base de IRRF");
   }
   LogCalculoFolha::write("Valor Base de IRRF aps abono permanencia.............................: {$r07_valor}" );
@@ -10378,7 +10365,7 @@ function calc_irf($r20_rubr_=null, $area=null, $sigla=null, $sigla2=null, $nro_d
     && $opcao_geral == PONTO_FERIAS
     && $pessoal[$Ipessoal]["r01_tbprev"] > 0
     && 'f' == $cadferia[0]["r30_paga13"]
-    && "f" == strtolower($cfpess[0]["r11_fersal"])
+    && "f" == strtolower((string) $cfpess[0]["r11_fersal"])
     && 't' == $cfpess[0]["r11_recalc"] ){
 
     global $transacao;
@@ -10475,7 +10462,7 @@ function calc_irf($r20_rubr_=null, $area=null, $sigla=null, $sigla2=null, $nro_d
   LogCalculoFolha::write("Modificando valor (Diferena Base e Desconto complementar): +" . ($base_folha_complementar - $base_desconto_prev_complementar));
   LogCalculoFolha::write("Modificando valor (Abate dependentes[D901*F005]).........: -".($D901*$F005)." ($D901 * $F005)");
 
-  if ($r20_rubr=="R915" && ( $opcao_geral == 3 || $opcao_geral == 11 ) && (  ( strtolower($cfpess[0]["r11_fersal"]) == "f"
+  if ($r20_rubr=="R915" && ( $opcao_geral == 3 || $opcao_geral == 11 ) && (  ( strtolower((string) $cfpess[0]["r11_fersal"]) == "f"
     && ('t' == $cadferia[0]["r30_paga13"]) )
     || 'f' == $cadferia[0]["r30_paga13"]) ) {
     // D901 VLR DESC IRF P/DEPENDENTE
@@ -10493,7 +10480,7 @@ function calc_irf($r20_rubr_=null, $area=null, $sigla=null, $sigla2=null, $nro_d
   }
 
 
-  if ( $r07_valor > 0 && db_at(strtolower($pessoal[$Ipessoal]["r01_tpvinc"]),"i-p") > 0 && ver_idade($ultdat,db_dtoc($pessoal[$Ipessoal]["r01_nasc"])) >= 65 ) {
+  if ( $r07_valor > 0 && db_at(strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]),"i-p") > 0 && ver_idade($ultdat,db_dtoc($pessoal[$Ipessoal]["r01_nasc"])) >= 65 ) {
 
     $r20_rubr_ant = $r20_rubr;
 
@@ -10653,7 +10640,7 @@ function calc_irf($r20_rubr_=null, $area=null, $sigla=null, $sigla2=null, $nro_d
       }
       // Fim do Abatimento da Pensao Alimenticia
     } else if ( ($opcao_geral == 3  || $opcao_geral == 11 )
-      && (  (strtolower($cfpess[0]["r11_fersal"]) == "f"
+      && (  (strtolower((string) $cfpess[0]["r11_fersal"]) == "f"
       && ('t' == $cadferia[0]["r30_paga13"]) )
       || 'f' == $cadferia[0]["r30_paga13"]) ) {
       // ir calculado ferias
@@ -11074,10 +11061,10 @@ function getRubricasValorIntegral($ano, $mes, $instituicao) {
 
   $parametrosFolha          = \DBRegistry::get('parametrosFolha');
   $sRubricasCalculoIntegral = $parametrosFolha[0]['r11_rubpgintegral'];
-  $tamanhoString            = strlen($sRubricasCalculoIntegral);
-  $rubricas = array();
+  $tamanhoString            = strlen((string) $sRubricasCalculoIntegral);
+  $rubricas = [];
   for ($i = 0; $i < $tamanhoString; $i += 4) {
-    $rubricas[] = "'".substr($sRubricasCalculoIntegral, $i, 4)."'";
+    $rubricas[] = "'".substr((string) $sRubricasCalculoIntegral, $i, 4)."'";
   }
   \DBRegistry::add($sChave, $rubricas);
   return $rubricas;

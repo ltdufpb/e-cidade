@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_suspensao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsuspensao = new cl_suspensao;
 $clsuspensao->rotulo->label("ar18_sequencial");
@@ -228,7 +228,7 @@ if(!isset($mostra)){
           }
         }
 
-        $query = array();
+        $query = [];
         $order = "ar18_sequencial";
 
         if(isset($chave_ar18_sequencial) && (trim($chave_ar18_sequencial)!="") ){
@@ -262,9 +262,9 @@ if(!isset($mostra)){
         $sql = $clsuspensao->sql_query_susp("",$campos, $order,$query);
 
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ar18_procjur)){
-          $repassa = array("chave_ar18_sequencial"=>$chave_ar18_sequencial,"chave_ar18_procjur"=>$chave_ar18_procjur);
+          $repassa = ["chave_ar18_sequencial"=>$chave_ar18_sequencial,"chave_ar18_procjur"=>$chave_ar18_procjur];
         }
         
         if(!!$mostra || $nova_quantidade_linhas){

@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE arquivosimplesimportacao
 class cl_arquivosimplesimportacao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $q64_sequencial = 0;
-   var $q64_nomearquivo = null;
-   var $q64_data_dia = null;
-   var $q64_data_mes = null;
-   var $q64_data_ano = null;
-   var $q64_data = null;
-   var $q64_processado = 'f';
-   var $q64_datalimitevencimentos_dia = null;
-   var $q64_datalimitevencimentos_mes = null;
-   var $q64_datalimitevencimentos_ano = null;
-   var $q64_datalimitevencimentos = null;
+   public $q64_sequencial = 0;
+   public $q64_nomearquivo = null;
+   public $q64_data_dia = null;
+   public $q64_data_mes = null;
+   public $q64_data_ano = null;
+   public $q64_data = null;
+   public $q64_processado = 'f';
+   public $q64_datalimitevencimentos_dia = null;
+   public $q64_datalimitevencimentos_mes = null;
+   public $q64_datalimitevencimentos_ano = null;
+   public $q64_datalimitevencimentos = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  q64_sequencial = int4 = Código Sequencial
                  q64_nomearquivo = varchar(60) = Nome do arquivo
                  q64_data = date = Data de importação
@@ -62,10 +62,10 @@ class cl_arquivosimplesimportacao {
                  q64_datalimitevencimentos = date = Data limite de vencimentos dos débitos
                  ";
    //funcao construtor da classe
-   function cl_arquivosimplesimportacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("arquivosimplesimportacao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -145,10 +145,10 @@ class cl_arquivosimplesimportacao {
          $this->erro_status = "0";
          return false;
        }
-       $this->q64_sequencial = pg_result($result,0,0);
+       $this->q64_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from arquivosimplesimportacao_q64_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q64_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q64_sequencial)){
          $this->erro_sql = " Campo q64_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_arquivosimplesimportacao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "arquivosimplesimportacao ($this->q64_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "arquivosimplesimportacao já Cadastrado";
@@ -213,14 +213,14 @@ class cl_arquivosimplesimportacao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20326,'$this->q64_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3653,20326,'','".AddSlashes(pg_result($resaco,0,'q64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3653,20328,'','".AddSlashes(pg_result($resaco,0,'q64_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3653,20327,'','".AddSlashes(pg_result($resaco,0,'q64_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3653,20329,'','".AddSlashes(pg_result($resaco,0,'q64_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3653,20336,'','".AddSlashes(pg_result($resaco,0,'q64_datalimitevencimentos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3653,20326,'','".AddSlashes(pg_fetch_result($resaco,0,'q64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3653,20328,'','".AddSlashes(pg_fetch_result($resaco,0,'q64_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3653,20327,'','".AddSlashes(pg_fetch_result($resaco,0,'q64_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3653,20329,'','".AddSlashes(pg_fetch_result($resaco,0,'q64_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3653,20336,'','".AddSlashes(pg_fetch_result($resaco,0,'q64_datalimitevencimentos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -230,10 +230,10 @@ class cl_arquivosimplesimportacao {
       $this->atualizacampos();
      $sql = " update arquivosimplesimportacao set ";
      $virgula = "";
-     if(trim($this->q64_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q64_sequencial"])){
+     if(trim((string) $this->q64_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q64_sequencial"])){
        $sql  .= $virgula." q64_sequencial = $this->q64_sequencial ";
        $virgula = ",";
-       if(trim($this->q64_sequencial) == null ){
+       if(trim((string) $this->q64_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "q64_sequencial";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_arquivosimplesimportacao {
          return false;
        }
      }
-     if(trim($this->q64_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q64_nomearquivo"])){
+     if(trim((string) $this->q64_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q64_nomearquivo"])){
        $sql  .= $virgula." q64_nomearquivo = '$this->q64_nomearquivo' ";
        $virgula = ",";
-       if(trim($this->q64_nomearquivo) == null ){
+       if(trim((string) $this->q64_nomearquivo) == null ){
          $this->erro_sql = " Campo Nome do arquivo não informado.";
          $this->erro_campo = "q64_nomearquivo";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_arquivosimplesimportacao {
          return false;
        }
      }
-     if(trim($this->q64_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q64_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q64_data_dia"] !="") ){
+     if(trim((string) $this->q64_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q64_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q64_data_dia"] !="") ){
        $sql  .= $virgula." q64_data = '$this->q64_data' ";
        $virgula = ",";
-       if(trim($this->q64_data) == null ){
+       if(trim((string) $this->q64_data) == null ){
          $this->erro_sql = " Campo Data de importação não informado.";
          $this->erro_campo = "q64_data_dia";
          $this->erro_banco = "";
@@ -272,7 +272,7 @@ class cl_arquivosimplesimportacao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["q64_data_dia"])){
          $sql  .= $virgula." q64_data = null ";
          $virgula = ",";
-         if(trim($this->q64_data) == null ){
+         if(trim((string) $this->q64_data) == null ){
            $this->erro_sql = " Campo Data de importação não informado.";
            $this->erro_campo = "q64_data_dia";
            $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_arquivosimplesimportacao {
          }
        }
      }
-     if(trim($this->q64_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q64_processado"])){
+     if(trim((string) $this->q64_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q64_processado"])){
        $sql  .= $virgula." q64_processado = '$this->q64_processado' ";
        $virgula = ",";
-       if(trim($this->q64_processado) == null ){
+       if(trim((string) $this->q64_processado) == null ){
          $this->erro_sql = " Campo Processado não informado.";
          $this->erro_campo = "q64_processado";
          $this->erro_banco = "";
@@ -296,7 +296,7 @@ class cl_arquivosimplesimportacao {
          return false;
        }
      }
-     if(trim($this->q64_datalimitevencimentos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q64_datalimitevencimentos_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q64_datalimitevencimentos_dia"] !="") ){
+     if(trim((string) $this->q64_datalimitevencimentos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q64_datalimitevencimentos_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q64_datalimitevencimentos_dia"] !="") ){
        $sql  .= $virgula." q64_datalimitevencimentos = '$this->q64_datalimitevencimentos' ";
        $virgula = ",";
      }     else{
@@ -319,19 +319,19 @@ class cl_arquivosimplesimportacao {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20326,'$this->q64_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q64_sequencial"]) || $this->q64_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3653,20326,'".AddSlashes(pg_result($resaco,$conresaco,'q64_sequencial'))."','$this->q64_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3653,20326,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q64_sequencial'))."','$this->q64_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q64_nomearquivo"]) || $this->q64_nomearquivo != "")
-             $resac = db_query("insert into db_acount values($acount,3653,20328,'".AddSlashes(pg_result($resaco,$conresaco,'q64_nomearquivo'))."','$this->q64_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3653,20328,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q64_nomearquivo'))."','$this->q64_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q64_data"]) || $this->q64_data != "")
-             $resac = db_query("insert into db_acount values($acount,3653,20327,'".AddSlashes(pg_result($resaco,$conresaco,'q64_data'))."','$this->q64_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3653,20327,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q64_data'))."','$this->q64_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q64_processado"]) || $this->q64_processado != "")
-             $resac = db_query("insert into db_acount values($acount,3653,20329,'".AddSlashes(pg_result($resaco,$conresaco,'q64_processado'))."','$this->q64_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3653,20329,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q64_processado'))."','$this->q64_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["q64_datalimitevencimentos"]) || $this->q64_datalimitevencimentos != "")
-             $resac = db_query("insert into db_acount values($acount,3653,20336,'".AddSlashes(pg_result($resaco,$conresaco,'q64_datalimitevencimentos'))."','$this->q64_datalimitevencimentos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3653,20336,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q64_datalimitevencimentos'))."','$this->q64_datalimitevencimentos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -385,14 +385,14 @@ class cl_arquivosimplesimportacao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20326,'$q64_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3653,20326,'','".AddSlashes(pg_result($resaco,$iresaco,'q64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3653,20328,'','".AddSlashes(pg_result($resaco,$iresaco,'q64_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3653,20327,'','".AddSlashes(pg_result($resaco,$iresaco,'q64_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3653,20329,'','".AddSlashes(pg_result($resaco,$iresaco,'q64_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3653,20336,'','".AddSlashes(pg_result($resaco,$iresaco,'q64_datalimitevencimentos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3653,20326,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q64_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3653,20328,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q64_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3653,20327,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q64_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3653,20329,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q64_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3653,20336,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q64_datalimitevencimentos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -453,7 +453,7 @@ class cl_arquivosimplesimportacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:arquivosimplesimportacao";
@@ -489,7 +489,7 @@ class cl_arquivosimplesimportacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -524,7 +524,7 @@ class cl_arquivosimplesimportacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

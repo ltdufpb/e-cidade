@@ -104,7 +104,7 @@ db_input('descricao',40,$Idescricao,true,'hidden',3,'')
     <td valign="top"  align="center">  
     <?php 
     if( isset ($codproced)){
-	 $chavepri= array("seqproitem"=>@$seqproitem,"codproced"=>@$codproced);
+	 $chavepri= ["seqproitem"=>@$seqproitem,"codproced"=>@$codproced];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_syscadproceditem->sql_query(null,"*",null," db_syscadproceditem.codproced = $codproced");
 	 $cliframe_alterar_excluir->campos  ="seqproitem,codproced,id_item,descricao";

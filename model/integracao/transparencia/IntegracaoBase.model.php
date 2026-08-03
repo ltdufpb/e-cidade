@@ -57,7 +57,7 @@ abstract class IntegracaoBase {
    */
   protected $iTipoLog;
 
-  protected $aInstituicoesTransparencia = array();
+  protected $aInstituicoesTransparencia = [];
 
   /**
    * Define o arquivo a ser usado para log

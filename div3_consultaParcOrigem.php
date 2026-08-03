@@ -107,7 +107,7 @@ $oGet    = db_utils::postmemory($_GET);
         
         $funcao_js = "js_consultaDetalhes{$oGet->parcelamento}|DB_tipo_origem|dl_codigo";
 
-        db_lovrot($sqlTermoOrigem,50,"()","","$funcao_js","","NoMe", array(),false, $arrayTot);
+        db_lovrot($sqlTermoOrigem,50,"()","","$funcao_js","","NoMe", [],false, $arrayTot);
 
       ?>
      </td>

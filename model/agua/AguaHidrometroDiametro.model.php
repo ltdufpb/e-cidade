@@ -28,11 +28,6 @@
 class AguaHidrometroDiametro {
 
   /**
-   * @var integer Código
-   */
-  private $iCodigo;
-
-  /**
    * @var string Descrição
    */
   private $sDescricao;
@@ -70,9 +65,8 @@ class AguaHidrometroDiametro {
    * @param integer|null $iCodigo
    * @throws DBException
    */
-  public function __construct($iCodigo = null) {
+  public function __construct(private $iCodigo = null) {
 
-    $this->iCodigo = $iCodigo;
     if (!$this->iCodigo) {
       return;
     }

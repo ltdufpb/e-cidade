@@ -6,22 +6,22 @@ require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_utils.php');
 
 $parametros = JSON::requestParameters();
-$ano = isset($parametros->ano) ? $parametros->ano : db_getsession('DB_anousu');
+$ano = $parametros->ano ?? db_getsession('DB_anousu');
 try {
     $retorno = new stdClass();
     $retorno->erro = false;
     switch ($parametros->exec) {
         case 'buscarCargos':
-            $cargos = array();
-            $campos = array(
+            $cargos = [];
+            $campos = [
                 'rh37_funcao as value',
                 'rh37_funcao || \' - \' || rh37_descr as label'
-            );
+            ];
 
-            $where = array(
+            $where = [
                 'rh37_ativo is true',
                 'rh37_instit = ' . db_getsession('DB_instit')
-            );
+            ];
 
             $dao = new cl_rhfuncao();
             $sql = $dao->sql_query_file(null, null, implode(', ', $campos), null, implode(' and ', $where));
@@ -29,11 +29,11 @@ try {
 
             break;
         case 'buscarFuncoes':
-            $funcoes = array();
-            $campos = array(
+            $funcoes = [];
+            $campos = [
                 'rh04_codigo as value',
                 'rh04_codigo || \' - \'  || rh04_descr as label'
-            );
+            ];
 
             $dao = new cl_rhcargo();
             $sql = $dao->sql_query_file(null, db_getsession('DB_instit'), implode(', ', $campos));
@@ -49,7 +49,7 @@ try {
                 throw new DBException('Não foi possível buscar as respostas da tabela de horários. Contate o suporte.');
             }
 
-            $retorno = array();
+            $retorno = [];
 
             while ($horario = pg_fetch_object($rs)) {
                 $horario->value = $horario->codigo;
@@ -70,7 +70,7 @@ echo JSON::create()->stringify($retorno);
 
 function executaQuery($sql) {
 
-    $dados = array();
+    $dados = [];
     $resultado = db_query($sql);
     if (pg_num_rows($resultado) > 0) {
         while ($linha = pg_fetch_object($resultado)) {

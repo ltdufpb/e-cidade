@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification('model/configuracao/PreferenciaUsuario.model.php'));
 require_once(modification('model/configuracao/SkinService.service.php'));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $_SESSION["DB_itemmenu_acessado"] = "0";
 require(modification("libs/db_usuariosonline.php"));
@@ -111,7 +111,7 @@ if (isset($atualiza)) {
 if (!isset($trocaip) && !isset($atualiza)) {
     $result = db_query("select nome,login,id_usuario from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario"));
 
-    if (pg_result($result, 0, 'id_usuario')==1) {
+    if (pg_fetch_result($result, 0, 'id_usuario')==1) {
         $atualiza = true;
     }
 }
@@ -159,11 +159,11 @@ if (!isset($trocaip) && !isset($atualiza)) {
            <table border="0" cellspacing="0" cellpadding="2">
              <tr>
                <td> <strong>Nome:</strong> </td>
-               <td> <?=@pg_result($result, 0, 0)?> </td>
+               <td> <?=@pg_fetch_result($result, 0, 0)?> </td>
              </tr>
              <tr>
                <td><strong>Login:</strong></td>
-               <td><?=@pg_result($result, 0, 1)?></td>
+               <td><?=@pg_fetch_result($result, 0, 1)?></td>
              </tr>
              <tr>
                <td><strong>Base de dados atual:</strong></td>
@@ -175,16 +175,16 @@ if (!isset($trocaip) && !isset($atualiza)) {
              </tr>
              <tr>
                <td><strong>IP:</strong></td>
-               <td><?=(isset($_SERVER["HTTP_X_FORWARDED_FOR"])?$_SERVER["HTTP_X_FORWARDED_FOR"]:$HTTP_SERVER_VARS['REMOTE_ADDR'])?></td>
+               <td><?=($_SERVER["HTTP_X_FORWARDED_FOR"] ?? $_SERVER['REMOTE_ADDR'])?></td>
              </tr>
              <tr>
                <td><strong>Local:</strong></td>
-               <td><?=$HTTP_SERVER_VARS['PHP_SELF'];?></td>
+               <td><?=$_SERVER['PHP_SELF'];?></td>
              </tr>
                 <?php
-                if (isset($HTTP_SESSION_VARS["DB_SELLER"]) || (isset($atualiza) || isset($db_ip))) {
+                if (isset($_SESSION["DB_SELLER"]) || (isset($atualiza) || isset($db_ip))) {
                     $result = db_query("select datname from pg_database where substr(datname,1,6) != 'templa' order by datname");
-                    if ($result!=false && pg_numrows($result)!=0) {
+                    if ($result!=false && pg_num_rows($result)!=0) {
                         if (!session_is_registered("DB_anousu")) {
                             $ano = date("Y");
                         } else {
@@ -200,9 +200,9 @@ if (!isset($trocaip) && !isset($atualiza)) {
                      <td><strong>Base:</strong></td>
                      <td><select name="db_base">
                             <?php
-                            for ($bb=0; $bb<pg_numrows($result); $bb++) {
+                            for ($bb=0; $bb<pg_num_rows($result); $bb++) {
                                 ?>
-                         <option value="<?=pg_result($result, $bb, 0)?>" <?=($DB_BASE==pg_result($result, $bb, 0)?"selected":"")?>><?=pg_result($result, $bb, 0)?></option>
+                         <option value="<?=pg_fetch_result($result, $bb, 0)?>" <?=($DB_BASE==pg_fetch_result($result, $bb, 0)?"selected":"")?>><?=pg_fetch_result($result, $bb, 0)?></option>
                                 <?php
                             }
                         }
@@ -229,8 +229,8 @@ if (!isset($trocaip) && !isset($atualiza)) {
             $skin             = $oPreferencias->getSkin();
             $visualizarEmOutraJanela = $oPreferencias->isVisulizarEmOutraJanela();
 
-            $aOrdenação  = array('sequencial' => 'Ordenação padrão do sistema', 'alfabetico' => 'Alfabética');
-            $aBuscaMenus = array('0' => 'Não', '1' => 'Sim');
+            $aOrdenação  = ['sequencial' => 'Ordenação padrão do sistema', 'alfabetico' => 'Alfabética'];
+            $aBuscaMenus = ['0' => 'Não', '1' => 'Sim'];
 
             $oSkin  = new SkinService();
             $aSkins = $oSkin->getSkins();
@@ -252,11 +252,11 @@ if (!isset($trocaip) && !isset($atualiza)) {
 
           <tr>
             <td><strong>Usar versão 3.0:</strong></td>
-            <td><?php db_select('versao3', array('0' => 'Não', '1' => 'Sim'), true, 1); ?></td>
+            <td><?php db_select('versao3', ['0' => 'Não', '1' => 'Sim'], true, 1); ?></td>
            </tr>
              <tr>
                  <td><strong>Visualizar documentos em janela separada:</strong></td>
-                 <td><?php db_select('visualizarEmOutraJanela', array('false' => 'Não', 'true' => 'Sim'), true, 1); ?></td>
+                 <td><?php db_select('visualizarEmOutraJanela', ['false' => 'Não', 'true' => 'Sim'], true, 1); ?></td>
              </tr>
 
          </table>

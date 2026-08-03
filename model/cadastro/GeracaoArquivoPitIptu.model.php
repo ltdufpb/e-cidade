@@ -68,7 +68,7 @@ class GeracaoArquivoPitIptu {
    * Array com as inconsistencias
    * @var array
    */
-  private $aErros = array();
+  private $aErros = [];
 
   /**
    * Codigo do Municipio.
@@ -262,9 +262,9 @@ class GeracaoArquivoPitIptu {
   private function escreveImovel($oMatricula){
 
     $this->oImovel = $this->oDomDocument->createElement('imovel');
-    $this->oImovel->setAttribute('matricula'        , utf8_encode($oMatricula->matricula));
-    $this->oImovel->setAttribute('zona'             , utf8_encode($oMatricula->zona));
-    $this->oImovel->setAttribute('nro_registro_iptu', utf8_encode($oMatricula->nro_registro_iptu));
+    $this->oImovel->setAttribute('matricula'        , mb_convert_encoding($oMatricula->matricula, 'UTF-8', 'ISO-8859-1'));
+    $this->oImovel->setAttribute('zona'             , mb_convert_encoding($oMatricula->zona, 'UTF-8', 'ISO-8859-1'));
+    $this->oImovel->setAttribute('nro_registro_iptu', mb_convert_encoding($oMatricula->nro_registro_iptu, 'UTF-8', 'ISO-8859-1'));
   }
 
   /**
@@ -288,7 +288,7 @@ class GeracaoArquivoPitIptu {
       $lProprietarioValido = true;
       $oProprietario       = $this->oDomDocument->createElement('proprietario');
 
-      $oProprietario->setAttribute('nome'    , utf8_encode($oDadosProprietario->nome));
+      $oProprietario->setAttribute('nome'    , mb_convert_encoding($oDadosProprietario->nome, 'UTF-8', 'ISO-8859-1'));
       $oProprietario->setAttribute('cpf_cnpj', $oDadosProprietario->cpf_cnpj);
 
       if (empty($oDadosProprietario->nome)) {
@@ -336,12 +336,12 @@ class GeracaoArquivoPitIptu {
     $oLogradouro       = $this->oDomDocument->createElement('logradouro');
 
     $oLogradouro->setAttribute('tipo'  , $oDadosLogradouro->tipo);
-    $oLogradouro->setAttribute('nome'  , utf8_encode($oDadosLogradouro->nome));
-    $oLogradouro->setAttribute('nro'   , utf8_encode($oDadosLogradouro->nro));
-    $oLogradouro->setAttribute('compl' , utf8_encode($oDadosLogradouro->complemento));
+    $oLogradouro->setAttribute('nome'  , mb_convert_encoding($oDadosLogradouro->nome, 'UTF-8', 'ISO-8859-1'));
+    $oLogradouro->setAttribute('nro'   , mb_convert_encoding($oDadosLogradouro->nro, 'UTF-8', 'ISO-8859-1'));
+    $oLogradouro->setAttribute('compl' , mb_convert_encoding($oDadosLogradouro->complemento, 'UTF-8', 'ISO-8859-1'));
     $oLogradouro->setAttribute('lote'  , $oDadosLogradouro->lote);
-    $oLogradouro->setAttribute('bairro', utf8_encode($oDadosLogradouro->bairro));
-    $oLogradouro->setAttribute('vila'  , utf8_encode($oDadosLogradouro->vila));
+    $oLogradouro->setAttribute('bairro', mb_convert_encoding($oDadosLogradouro->bairro, 'UTF-8', 'ISO-8859-1'));
+    $oLogradouro->setAttribute('vila'  , mb_convert_encoding($oDadosLogradouro->vila, 'UTF-8', 'ISO-8859-1'));
     $oLogradouro->setAttribute('quadra', $oDadosLogradouro->quadra);
     $oLogradouro->setAttribute('setor' , $oDadosLogradouro->setor);
 

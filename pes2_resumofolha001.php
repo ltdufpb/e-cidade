@@ -66,7 +66,7 @@ try {
   if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
     $sJavaScriptInput = 'class="field-size1" onchange="js_buscaComplementar(); js_buscaSuplementar();"';
   }
-} catch (Exception $eErro) {
+} catch (Exception) {
 
 }
 $DBtxt23 = DBPessoal::getAnoFolha();
@@ -146,10 +146,10 @@ $DBtxt25 = DBPessoal::getMesFolha();
           </td>
           <td>
           <?php
-            $aTipoOrdem = array(
+            $aTipoOrdem = [
               'n' => 'Numérica',
               'a' => 'Alfabética'
-            );
+            ];
 
             db_select('tipo_filtro',$aTipoOrdem,true,4,"");
           ?>

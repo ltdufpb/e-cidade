@@ -32,7 +32,7 @@ $clrotulo->label("db80_descricao");
 $clrotulo->label("nomeinst");
 
 if (isset($db82_arquivo)) {
-  $sUrlArquivo = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?oidarq=".$db82_arquivo;
+  $sUrlArquivo = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?oidarq=".$db82_arquivo;
 }
 ?>
 <form name="form1" method="post" action="" enctype="multipart/form-data" onsubmit="return js_valida();">
@@ -210,7 +210,7 @@ function js_preenchepesquisa(chave){
   db_iframe_db_documentotemplate.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

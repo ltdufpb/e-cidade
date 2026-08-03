@@ -60,7 +60,8 @@ class AnexoProgramaObrasPrestacaoServico extends RelatoriosLegaisBase {
    *
    * @return array $aRetorno
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $oDaoPeriodo      = db_utils::getDao("periodo");
     $sSqlDadosPeriodo = $oDaoPeriodo->sql_query_file($this->iCodigoPeriodo);
@@ -75,7 +76,7 @@ class AnexoProgramaObrasPrestacaoServico extends RelatoriosLegaisBase {
     $aParametrosColunaServico = $aLinhas[1]->getParametros($this->iAnoUsu)->contas;
     $aParametrosColunaObras   = $aLinhas[2]->getParametros($this->iAnoUsu)->contas;
     $rsDespesa = db_dotacaosaldo(7, 2, 2, true, $sWhereDespesa, $this->iAnoUsu, $sDataInicial, $sDataFinal);
-    $aRetorno  = array();
+    $aRetorno  = [];
     
     /**
      * Percorre o ResultSet organizando os dados dentro do array $aRetorno
@@ -131,7 +132,7 @@ class AnexoProgramaObrasPrestacaoServico extends RelatoriosLegaisBase {
         $oOrgao->servicos = 0;
         $oOrgao->obras    = 0;
         $oOrgao->total    = 0;
-        $oOrgao->unidades = array();
+        $oOrgao->unidades = [];
         
         $aRetorno[$oDespesa->o58_orgao] = $oOrgao;
       } else {
@@ -149,7 +150,7 @@ class AnexoProgramaObrasPrestacaoServico extends RelatoriosLegaisBase {
         $oUnidade->servicos   = 0;
         $oUnidade->obras      = 0;
         $oUnidade->total      = 0;
-        $oUnidade->atividades = array();
+        $oUnidade->atividades = [];
         
         $aRetorno[$oDespesa->o58_orgao]->unidades[$oDespesa->o58_unidade] = $oUnidade;
       } else {
@@ -175,7 +176,7 @@ class AnexoProgramaObrasPrestacaoServico extends RelatoriosLegaisBase {
 
       foreach ($aParametrosColunaServico as $oConta) {
 
-        if (substr($oConta->estrutural,0, $oConta->nivel) == substr($oDespesa->o58_elemento."00", 0, $oConta->nivel)) {
+        if (substr((string) $oConta->estrutural,0, $oConta->nivel) == substr($oDespesa->o58_elemento."00", 0, $oConta->nivel)) {
           
           $nValorSomar = $nValorTotal;
           if ($oConta->exclusao) {
@@ -192,7 +193,7 @@ class AnexoProgramaObrasPrestacaoServico extends RelatoriosLegaisBase {
       
       foreach ($aParametrosColunaObras as $oConta) {
 
-        if (substr($oConta->estrutural,0, $oConta->nivel) == substr($oDespesa->o58_elemento."00", 0, $oConta->nivel)) {
+        if (substr((string) $oConta->estrutural,0, $oConta->nivel) == substr($oDespesa->o58_elemento."00", 0, $oConta->nivel)) {
           
           $nValorSomar = $nValorTotal;
           if ($oConta->exclusao) {

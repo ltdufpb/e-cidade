@@ -44,6 +44,7 @@ class AnexoIII extends AnexoIII2018
      * @throws \BusinessException
      * @throws \ParameterException
      */
+    #[\Override]
     public function getDados($trazerConfiguracaoPadrao = true)
     {
         if (!$this->relatorioProcessado) {
@@ -85,7 +86,7 @@ class AnexoIII extends AnexoIII2018
         $linhaDivida->descricao = "(-) Transferências obrigatórias da União relativas às emendas individuais ";
         $linhaDivida->descricao .= "(art. 166-A, § 1o, da CF) (VII)";
         $linhaDivida->colunas = [];
-        $linhaDivida->contas = array();
+        $linhaDivida->contas = [];
         $linhaDivida->desdobrar = false;
         $linhaDivida->nivel = 2;
         $linhaDivida->parametros = [];
@@ -102,7 +103,7 @@ class AnexoIII extends AnexoIII2018
         $linhaDivida->descricao = "RECEITA CORRENTE LÍQUIDA AJUSTADA P ARA CÁLCULO DOS LIMITES DE ENDIVIDAMENTO ";
         $linhaDivida->descricao .= "(VIII) = (VI - VII)";
         $linhaDivida->colunas = [];
-        $linhaDivida->contas = array();
+        $linhaDivida->contas = [];
         $linhaDivida->desdobrar = false;
         $linhaDivida->nivel = 2;
         $linhaDivida->parametros = [];
@@ -115,6 +116,7 @@ class AnexoIII extends AnexoIII2018
     /**
      * Calcula Total das Garantias RCL.
      */
+    #[\Override]
     protected function calcularTotalGarantiasRCL()
     {
         $linhaReferencia = $this->aLinhasConsistencia["12.2"];
@@ -147,6 +149,7 @@ class AnexoIII extends AnexoIII2018
     /**
      * Calcula LIMITE DEFINIDO POR RESOLUÇÃO DO SENADO FEDERAL 32%
      */
+    #[\Override]
     protected function calcularLimiteResolucaoSenado()
     {
         $limiteSenado = 0.32;
@@ -154,7 +157,7 @@ class AnexoIII extends AnexoIII2018
         $linhaResolucao = $this->aLinhasConsistencia[14];
         $linhaResolucao->saldo_exercicio_anterior = $linhaReferencia->saldo_exercicio_anterior * $limiteSenado;
 
-        if (in_array($this->oPeriodo->getCodigo(), array(12, 13))) {
+        if (in_array($this->oPeriodo->getCodigo(), [12, 13])) {
             $linhaResolucao->semestre_1 = $linhaReferencia->semestre_1 * $limiteSenado;
             $linhaResolucao->semestre_2 = $linhaReferencia->semestre_2 * $limiteSenado;
         } else {
@@ -174,13 +177,14 @@ class AnexoIII extends AnexoIII2018
     /**
      * Calcula LIMITE DE ALERTA (inciso III do §1o do art. 59 da LRF) 28;8%
      */
+    #[\Override]
     protected function calcularLimiteAlerta()
     {
         $nLimiteAlerta = 28.8;
         $linhas = $this->aLinhasConsistencia;
         $linhas[15]->saldo_exercicio_anterior = ($linhas[12]->saldo_exercicio_anterior * $nLimiteAlerta) / 100;
 
-        if (in_array($this->oPeriodo->getCodigo(), array(12, 13))) {
+        if (in_array($this->oPeriodo->getCodigo(), [12, 13])) {
             $linhas[15]->semestre_1 = ($linhas[12]->semestre_1 * $nLimiteAlerta) / 100;
             $linhas[15]->semestre_2 = ($linhas[12]->semestre_2 * $nLimiteAlerta) / 100;
         } else {
@@ -190,6 +194,7 @@ class AnexoIII extends AnexoIII2018
         }
     }
 
+    #[\Override]
     protected function calcularRCL()
     {
         if ($this->iAno <= 2020) {

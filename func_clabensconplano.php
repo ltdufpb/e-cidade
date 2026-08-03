@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_clabensconplano_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clclabensconplano = new cl_clabensconplano;
 $clclabensconplano->rotulo->label("t86_sequencial");
 $clclabensconplano->rotulo->label("t86_sequencial");
@@ -98,9 +98,9 @@ $clclabensconplano->rotulo->label("t86_sequencial");
         }else{
            $sql = $clclabensconplano->sql_query("",$campos,"t86_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t86_sequencial)){
-          $repassa = array("chave_t86_sequencial"=>$chave_t86_sequencial,"chave_t86_sequencial"=>$chave_t86_sequencial);
+          $repassa = ["chave_t86_sequencial"=>$chave_t86_sequencial,"chave_t86_sequencial"=>$chave_t86_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

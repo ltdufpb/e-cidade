@@ -57,7 +57,7 @@ try {
           continue;
         }
 
-        if (!in_array($oStdDados->iFormaPagamento, array(PAGAMENTO_DOC, PAGAMENTO_TED))) {
+        if (!in_array($oStdDados->iFormaPagamento, [PAGAMENTO_DOC, PAGAMENTO_TED])) {
           throw new ParameterException('A forma de pagamento informada é inválida.');
         }
 

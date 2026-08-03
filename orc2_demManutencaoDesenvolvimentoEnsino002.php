@@ -58,8 +58,8 @@ $iAnoCorrente = db_getsession("DB_anousu");
 
 $aDadosReceita    = $oPPaReceita->getQuadroEstimativas();
 $aDadosDespesa    = $oPPaDespesa->getQuadroEstimativas();
-$aValoresReceita  = array();
-$aValoresDespesa  = array();
+$aValoresReceita  = [];
+$aValoresDespesa  = [];
 foreach ($aDadosReceita as $oPrevisao) {
   
   $aValoresReceita[$oPrevisao->iEstrutural] = 0; 
@@ -67,7 +67,7 @@ foreach ($aDadosReceita as $oPrevisao) {
      $aValoresReceita[$oPrevisao->iEstrutural] = $oPrevisao->aEstimativas[$iAnoRef];
   }
 }
-$aSubFuncoes      = array();
+$aSubFuncoes      = [];
 $aLinhasRelatorio = $oRelataorioContabil->getLinhas();
 $iLinhasTotal     = count($aLinhasRelatorio);
 /*
@@ -143,7 +143,7 @@ $head4 = $sModelo;
 $head5 = "DEMONSTRATIVO DAS RECEITAS E DESPESAS COM MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO - MDE";
 $head6 = "Versão: ".$oPPAVersao->getVersao()."(".db_formatar($oPPAVersao->getDatainicio(),"d").")";
 $head7 = $iAnoRef;
-$aTotalizadores              	= array();
+$aTotalizadores              	= [];
 $aTotalizadores[0]["label"]  	= "1- RECEITA DE IMPOSTOS";    
 $aTotalizadores[1]["label"]  	= "    1.1- Receita Resultante do Imposto sobre a Propriedade Predial e Territorial Urbana - IPTU";    
 $aTotalizadores[2]["label"]  	= "    1.2- Receita Resultante do Imposto sobre Transmissão Inter Vivos - ITBI";    

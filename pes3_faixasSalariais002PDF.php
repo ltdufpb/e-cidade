@@ -38,10 +38,10 @@ require_once modification("fpdf151/pdf.php");
 $iAlturaLinha      = 5;
 $iCorPreenchimento = 235;
 
-$aPontos = Array("salario"      => "Salário",
+$aPontos = ["salario"      => "Salário",
 								 "rescisao"     => "Rescisão",
 								 "decimo13"     => "13o Salario",
-								 "complementar" => "Complementar");
+								 "complementar" => "Complementar"];
 $sTipoFolha = '';
 
 foreach ($oParametros->aTiposFolha as $iIndice => $sFolha) {

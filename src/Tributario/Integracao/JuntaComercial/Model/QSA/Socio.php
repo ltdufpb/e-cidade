@@ -58,7 +58,7 @@ class Socio extends QSA
    */
   public function setValorCapital($valorCapital)
   {
-    $valorCapital = trim($valorCapital);
+    $valorCapital = trim((string) $valorCapital);
     if (!empty($valorCapital) && is_numeric($valorCapital)) {
       $this->valorCapital = $valorCapital;
     }

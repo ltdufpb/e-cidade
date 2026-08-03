@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veicitensobrigbaixa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveicitensobrigbaixa = new cl_veicitensobrigbaixa;
 $clveicitensobrigbaixa->rotulo->label("ve10_sequencial");
 $clveicitensobrigbaixa->rotulo->label("ve10_data");
@@ -98,9 +98,9 @@ $clveicitensobrigbaixa->rotulo->label("ve10_data");
         }else{
            $sql = $clveicitensobrigbaixa->sql_query("",$campos,"ve10_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve10_data)){
-          $repassa = array("chave_ve10_sequencial"=>$chave_ve10_sequencial,"chave_ve10_data"=>$chave_ve10_data);
+          $repassa = ["chave_ve10_sequencial"=>$chave_ve10_sequencial,"chave_ve10_data"=>$chave_ve10_data];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

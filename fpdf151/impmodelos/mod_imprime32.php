@@ -47,7 +47,7 @@ for($i=0;$i<2;$i++){
     $this->objpdf->setxy($coluna,$linha);
     $this->objpdf->RoundedRect($coluna-3,$linha,203,117,2,'1234'); // rect geral		
 //	$this->objpdf->Image('imagens/files/logo_boleto.png',$coluna+2,$linha+2,20);
-	if(strlen($this->logo) == 0) {
+	if(strlen((string) $this->logo) == 0) {
 		$this->logo = "logo_boleto.png";
 	}
 	$this->objpdf->Image("imagens/files/".$this->logo,$coluna+2,$linha+2,20);
@@ -58,17 +58,17 @@ for($i=0;$i<2;$i++){
 	$this->objpdf->cell(35,5,$this->tipodebito,$sb,1,"C",0);		// Tipo de Debito. Ex.: IPTU, 
 	                                                                //                      PARCELAMENTO DE DIVIDA
 	$linha += 5;
-    
+
     $this->objpdf->SetFont('Times', 'B', 14);
     $this->objpdf->cell(35,5,"",$sb,0,"C",0);
     $this->objpdf->cell(70,5," ",$sb,0,"C",0);
   	$this->objpdf->SetFont('Times', '', 8);
 // 	$this->objpdf->cell(95,5,"* Válido até o vencimento, após retirar novo carnê",$sb,1,"C",0);
 	$this->objpdf->cell(95,5,$this->iptcabec_obs,$sb,1,"C",0);
-    
+
     $linha = $this->objpdf->GetY(); 
     $coluna = $this->objpdf->GetX()-2;
-    
+
     $this->objpdf->RoundedRect($coluna+32,$linha,163,22,2,'1234'); // ok
     $this->objpdf->SetFont('Times', 'B', 12);
     $this->objpdf->cell(35,5,"",$sb,0,"C",0);
@@ -80,7 +80,7 @@ for($i=0;$i<2;$i++){
 	$this->objpdf->cell(40,5, $this->titulo6,$sb,0,"C",0);
     $this->objpdf->cell(40,5, $this->descr_dtemis,$sb,0,"C",0);    
     $this->objpdf->cell(40,5, $this->descr_anousu,$sb,1,"C",0);
-    
+
     $this->objpdf->SetFont('Times', '', 10);
     $this->objpdf->cell(35,5,"",$sb,0,"C",0);
 //    $this->objpdf->cell(40,5,"Única",$sb,0,"C",0);
@@ -88,14 +88,14 @@ for($i=0;$i<2;$i++){
     $this->objpdf->cell(40,5, $this->descr6,$sb,0,"C",0);
     $this->objpdf->cell(40,5, $this->iptdataemis,$sb,0,"C",0);
     $this->objpdf->cell(40,5, $this->iptexercicio,$sb,1,"C",0);
-    
+
     $this->objpdf->SetFont('Times', 'B', 12);
     $this->objpdf->cell(35,5,"",$sb,0,"C",0);
 //    $this->objpdf->cell(120,5,"Nome",$sb,0,"L",0);
 //    $this->objpdf->cell(40,5,"CNPJ/CPF",$sb,1,"C",0);
     $this->objpdf->cell(120,5,$this->titulo3,$sb,0,"L",0);
     $this->objpdf->cell(40,5,$this->descr_cgccpf,$sb,1,"C",0);
-    
+
     $this->objpdf->SetFont('Times', '', 10);
     $this->objpdf->cell(35,5,"",$sb,0,"C",0);
     $this->objpdf->cell(120,5,$this->descr3_1,$sb,0,"L",0);
@@ -115,9 +115,9 @@ for($i=0;$i<2;$i++){
     $this->objpdf->cell(10,5,"",$sb,0,"L",0);
 //    $this->objpdf->cell(140,5,"Pagável nas agências do Banrisul e casas conveniadas",$sb,0,"L",0);
 	if($i==0) {
-	    $parte1 = substr($this->descr12_1,0,115);
-	    $parte2 = substr($this->descr12_1,115,115);
-	    $parte3 = substr($this->descr12_1,230,115);
+	    $parte1 = substr((string) $this->descr12_1,0,115);
+	    $parte2 = substr((string) $this->descr12_1,115,115);
+	    $parte3 = substr((string) $this->descr12_1,230,115);
 
 		$this->objpdf->cell(140,5," ",$sb,0,"L",0);
 		$y = $linha;
@@ -160,10 +160,10 @@ for($i=0;$i<2;$i++){
     $this->objpdf->cell(50,5,$this->descr7,$sb,1,"C",0);
     $this->objpdf->cell(200,5,"",$sb,1,"C",0);
   $linha += 15;
-    
+
     $linha = $this->objpdf->GetY(); 
     $coluna = $this->objpdf->GetX()-2;
-        
+
     $this->objpdf->RoundedRect($coluna,$linha,195,35,2,'1234'); // rect das observações
     $this->objpdf->SetFont('Times', 'B', 14);
     $this->objpdf->cell(200,5,"Observações",$sb,1,"C",0);
@@ -172,43 +172,43 @@ for($i=0;$i<2;$i++){
     $this->objpdf->cell(50,5,$this->iptjtit_matric,$sb,0,"R",0);
     $this->objpdf->SetFont('Times', '', 10);
     $this->objpdf->cell(50,5,$this->iptj01_matric,$sb,0,"L",0);
-    
+
     $this->objpdf->SetFont('Times', 'B', 12);
 //    $this->objpdf->cell(50,5,"BQL : ",$sb,0,"R",0);
     $this->objpdf->cell(50,5,$this->descr_bql,$sb,0,"R",0);
     $this->objpdf->SetFont('Times', '', 10);
     $this->objpdf->cell(150,5,$this->iptbql,$sb,1,"L",0);
-    
+
     $this->objpdf->SetFont('Times', 'B', 12);
 //    $this->objpdf->cell(50,5,"Valor sem desconto : ",$sb,0,"R",0);
     $this->objpdf->cell(50,5,$this->descr_vrlcor,$sb,0,"R",0);
     $this->objpdf->SetFont('Times', '', 10);
     $this->objpdf->cell(50,5,$this->iptuvlrcor,$sb,0,"L",0);
-    
+
     $this->objpdf->SetFont('Times', 'B', 12);
 //    $this->objpdf->cell(50,5,"Valor Venal : ",$sb,0,"R",0);
     $this->objpdf->cell(50,5,$this->descr_vlrter,$sb,0,"R",0);
     $this->objpdf->SetFont('Times', '', 10);
     $this->objpdf->cell(50,5,$this->iptj23_vlrter,$sb,1,"L",0);
-    
+
     $this->objpdf->SetFont('Times', 'B', 12);
 //    $this->objpdf->cell(50,5,"Desconto : ",$sb,0,"R",0);
     $this->objpdf->cell(50,5,$this->iptdesc_desconto,$sb,0,"R",0);
     $this->objpdf->SetFont('Times', '', 10);
     $this->objpdf->cell(50,5,$this->iptuvlrdesconto,$sb,0,"L",0);
-    
+
     $this->objpdf->SetFont('Times', 'B', 12);
 //    $this->objpdf->cell(50,5,"Alíquota : ",$sb,0,"R",0);
     $this->objpdf->cell(50,5,$this->descr_aliq,$sb,0,"R",0);
     $this->objpdf->SetFont('Times', '', 10);
     $this->objpdf->cell(50,5,$this->iptj23_aliq,$sb,1,"L",0);
-    
+
     $this->objpdf->SetFont('Times', 'B', 12);
 //    $this->objpdf->cell(50,5,"Logradouro : ",$sb,0,"R",0);
     $this->objpdf->cell(50,5,$this->titulo10,$sb,0,"R",0);
     $this->objpdf->SetFont('Times', '', 10);
     $this->objpdf->cell(150,5,$this->descr15,$sb,1,"L",0);
-    
+
     $this->objpdf->SetFont('Times', 'B', 12);
 //    $this->objpdf->cell(50,5,"Proprietário : ",$sb,0,"R",0);
     $this->objpdf->cell(50,5,$this->iptproprietario,$sb,0,"R",0);
@@ -232,18 +232,18 @@ for($i=0;$i<2;$i++){
     $this->objpdf->cell(200,5,"",$sb,1,"C",0);
     $this->objpdf->cell(200,5,"",$sb,1,"C",0);
     $this->objpdf->cell(200,2,"",$sb,1,"C",0);
-        
+
     $linha  = $this->objpdf->GetY(); 
     $coluna = $this->objpdf->GetX()-2;
-    
+
     $this->objpdf->int25($coluna+45,$linha-17,$this->codigo_barras,9,0.341);
-   
+
 }
 //    $this->objpdf->cell(200,2,"",$sb,1,"C",0);
 //    $this->objpdf->cell(200,2,"",$sb,1,"C",0);
 //    $this->objpdf->cell(200,2,"",$sb,1,"C",0);
 //    $this->objpdf->cell(200,2,"",$sb,1,"C",0);
-    
+
     $sb = 0;
     $linha = $this->objpdf->GetY(); 
     $coluna = $this->objpdf->GetX();

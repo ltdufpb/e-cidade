@@ -375,14 +375,7 @@ try {
 	$oRetorno->status  = 2;
 	$oRetorno->message = urlencode($eErro->getMessage());
 
-} catch (DBException $eErro) {
-
-	$oRetorno->status  = 2;
-	$oRetorno->message = urlencode($eErro->getMessage());
-
-	db_fim_transacao(true);
-
-} catch (Exception $eErro) {
+} catch (DBException|Exception $eErro) {
 
 	$oRetorno->status  = 2;
 	$oRetorno->message = urlencode($eErro->getMessage());

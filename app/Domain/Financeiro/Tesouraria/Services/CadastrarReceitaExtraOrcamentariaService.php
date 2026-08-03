@@ -49,7 +49,7 @@ class CadastrarReceitaExtraOrcamentariaService
      */
     private function criar(ConplanoReduzido $reduzido, $descricao, $estrutural)
     {
-        $codigo = $this->nextCodigoSequence('tabrec_k02_codigo_seq');
+        $codigo = self::nextCodigoSequence('tabrec_k02_codigo_seq');
 
         DB::table('caixa.tabrec')->insert([
             "k02_codigo" => $codigo,
@@ -64,7 +64,7 @@ class CadastrarReceitaExtraOrcamentariaService
             "k02_reccredito" => null
         ]);
 
-        $codigoTabrecregrasjm = $this->nextCodigoSequence('tabrecregrasjm_k04_sequencial_seq');
+        $codigoTabrecregrasjm = self::nextCodigoSequence('tabrecregrasjm_k04_sequencial_seq');
         DB::table('caixa.tabrecregrasjm')->insert([
             "k04_sequencial" => $codigoTabrecregrasjm,
             "k04_receit" => $codigo,

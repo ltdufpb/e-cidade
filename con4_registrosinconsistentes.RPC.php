@@ -91,7 +91,7 @@ switch ($oParam->sExec) {
 
                 } else {
 
-                    $sValor = utf8_decode($oTabela->aValores[0]);
+                    $sValor = mb_convert_encoding($oTabela->aValores[0], 'ISO-8859-1');
                     $sWhere .= "{$sAnd} {$oTabela->sCampo} ilike '{$sValor}'";
                 }
 
@@ -145,7 +145,7 @@ switch ($oParam->sExec) {
             }
 
             $aModulos = db_utils::getCollectionByRecord($rsModulos);
-            $aModulosRetorno = array();
+            $aModulosRetorno = [];
 
             $oModuloRetorno = new stdClass();
             $oModuloRetorno->iCodigoModulo = '';
@@ -157,7 +157,7 @@ switch ($oParam->sExec) {
                 $oModuloRetorno = new stdClass();
 
                 $oModuloRetorno->iCodigoModulo = $oModulo->codmod;
-                $oModuloRetorno->sNomeModulo = ucfirst($oModulo->nomemod);
+                $oModuloRetorno->sNomeModulo = ucfirst((string) $oModulo->nomemod);
 
                 $aModulosRetorno[] = $oModuloRetorno;
             }
@@ -185,7 +185,7 @@ switch ($oParam->sExec) {
 
             $aTabelasRetorno = db_utils::getCollectionByRecord($rsTabelas, false, false, false);
 
-            $aTabelas = array();
+            $aTabelas = [];
 
             foreach ($aTabelasRetorno as $oTabelaRetorno) {
 
@@ -230,43 +230,43 @@ switch ($oParam->sExec) {
         $rsCampos = $oDaoDb_sysarqcamp->sql_record($sSqlCampos);
 
         $aCamposRetorno = db_utils::getCollectionByRecord($rsCampos);
-        $aCampos = array();
+        $aCampos = [];
 
         foreach ($aCamposRetorno as $oCampoRetorno) {
 
             $sTipoCampo = '';
 
-            if (strpos(trim($oCampoRetorno->conteudo), 'int') !== false ||
-                strpos(trim($oCampoRetorno->conteudo), 'numeric') !== false ||
-                strpos(trim($oCampoRetorno->conteudo), 'float') !== false) {
+            if (str_contains(trim((string) $oCampoRetorno->conteudo), 'int') ||
+                str_contains(trim((string) $oCampoRetorno->conteudo), 'numeric') ||
+                str_contains(trim((string) $oCampoRetorno->conteudo), 'float')) {
 
                 $sTipoCampo = 'integer';
 
-            } else if (strpos(trim($oCampoRetorno->conteudo), 'char') !== false ||
-                strpos(trim($oCampoRetorno->conteudo), 'text') !== false) {
+            } else if (str_contains(trim((string) $oCampoRetorno->conteudo), 'char') ||
+                str_contains(trim((string) $oCampoRetorno->conteudo), 'text')) {
 
                 $sTipoCampo = 'char';
 
-            } else if (strpos(trim($oCampoRetorno->conteudo), 'bool') !== false) {
+            } else if (str_contains(trim((string) $oCampoRetorno->conteudo), 'bool')) {
 
                 $sTipoCampo = 'boolean';
 
-            } else if (strpos(trim($oCampoRetorno->conteudo), 'date') !== false) {
+            } else if (str_contains(trim((string) $oCampoRetorno->conteudo), 'date')) {
 
                 $sTipoCampo = 'date';
 
-            } else if (strpos(trim($oCampoRetorno->conteudo), 'oid') !== false) {
+            } else if (str_contains(trim((string) $oCampoRetorno->conteudo), 'oid')) {
 
                 $sTipoCampo = 'oid';
 
             }
 
             $oCampo = new stdClass();
-            $oCampo->iCodigoCampo = trim($oCampoRetorno->codcam);
-            $oCampo->sNomeCampo = trim($oCampoRetorno->nomecam);
-            $oCampo->sTipoCampoBanco = trim($oCampoRetorno->conteudo);
+            $oCampo->iCodigoCampo = trim((string) $oCampoRetorno->codcam);
+            $oCampo->sNomeCampo = trim((string) $oCampoRetorno->nomecam);
+            $oCampo->sTipoCampoBanco = trim((string) $oCampoRetorno->conteudo);
             $oCampo->sTipoCampo = trim($sTipoCampo);
-            $oCampo->iTamanhoCampo = trim($oCampoRetorno->tamanho);
+            $oCampo->iTamanhoCampo = trim((string) $oCampoRetorno->tamanho);
             $oCampo->lPrimaryKey = $oCampoRetorno->primary_key == 't' ? true : false;
             $aCampos[] = $oCampo;
         }
@@ -307,7 +307,7 @@ switch ($oParam->sExec) {
 
         $aDb_registrosinconsistentesdados = db_utils::getCollectionByRecord($rsDb_registrosinconsistentesdados);
 
-        $aIn = array();
+        $aIn = [];
         foreach ($aDb_registrosinconsistentesdados as $oDb_regIncDadRetorno) {
 
             $aIn[] = $oDb_regIncDadRetorno->db137_chave;
@@ -345,7 +345,7 @@ switch ($oParam->sExec) {
              */
 
             $oDaodb_registrosinconsistentesdados = db_utils::getDao('db_registrosinconsistentesdados');
-            $aCamposIncorretos = array($oParam->iCorreto);
+            $aCamposIncorretos = [$oParam->iCorreto];
             foreach ($oParam->aCampos as $oCampo) {
                 array_push($aCamposIncorretos, $oCampo->iSequencialCampo);
             }

@@ -168,15 +168,15 @@ class DetalhamentoDespesa extends Model
         $programa = $this->iniciativa->programaEstrategico->pl9_orcprograma;
 
         return implode('.', [
-            str_pad($unidade->o41_orgao, 2, '0', STR_PAD_LEFT),
-            str_pad($unidade->o41_unidade, 2, '0', STR_PAD_LEFT),
-            str_pad($this->funcao->o52_funcao, 2, '0', STR_PAD_LEFT),
-            str_pad($this->subfuncao->o53_subfuncao, 3, '0', STR_PAD_LEFT),
-            str_pad($programa, 4, '0', STR_PAD_LEFT),
-            str_pad($this->iniciativa->pl12_orcprojativ, 4, '0', STR_PAD_LEFT),
+            str_pad((string) $unidade->o41_orgao, 2, '0', STR_PAD_LEFT),
+            str_pad((string) $unidade->o41_unidade, 2, '0', STR_PAD_LEFT),
+            str_pad((string) $this->funcao->o52_funcao, 2, '0', STR_PAD_LEFT),
+            str_pad((string) $this->subfuncao->o53_subfuncao, 3, '0', STR_PAD_LEFT),
+            str_pad((string) $programa, 4, '0', STR_PAD_LEFT),
+            str_pad((string) $this->iniciativa->pl12_orcprojativ, 4, '0', STR_PAD_LEFT),
             $naturezaDespesa->o56_elemento,
             $this->recurso->fonteRecurso($this->pl20_anoorcamento)->gestao,
-            str_pad($this->recurso->o15_complemento, 4, '0', STR_PAD_LEFT)
+            str_pad((string) $this->recurso->o15_complemento, 4, '0', STR_PAD_LEFT)
         ]);
     }
 

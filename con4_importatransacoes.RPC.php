@@ -26,7 +26,7 @@ try {
         case 'importarArquivo' :
 
             $oFiles = db_utils::postMemory($_FILES);
-            if (strtolower(substr($oFiles->arquivo['name'], -4)) != '.csv') {
+            if (strtolower(substr((string) $oFiles->arquivo['name'], -4)) != '.csv') {
                 throw new BusinessException("Arquivo importado com formato inválido! Arquivo deve ser do formato CSV.");
             }
 
@@ -39,7 +39,7 @@ try {
 
             $aFile = file($oFiles->arquivo['tmp_name']);
             $aFile = array_slice($aFile, 1, count($aFile));
-            $transacoesIncluidas = array();
+            $transacoesIncluidas = [];
 
 
             /*
@@ -55,7 +55,7 @@ try {
 
             foreach ($aFile as $linha) {
 
-                $colunas = explode(";", $linha);
+                $colunas = explode(";", (string) $linha);
 
                 $documento	          = $colunas[0];
                 $documento_estorno	  = $colunas[1];
@@ -92,7 +92,7 @@ try {
 
             db_fim_transacao(true);
 
-            $oRetorno->sMessage = utf8_encode("Importação efetuada com sucesso!");
+            $oRetorno->sMessage = mb_convert_encoding("Importação efetuada com sucesso!", 'UTF-8', 'ISO-8859-1');
 
             if (!empty($erros)) {
                 $oRetorno->sMessage = "Erro ao importar os codigos (".implode(",", $erros) .")";
@@ -105,7 +105,7 @@ try {
 } catch (Exception $eErro){
     db_fim_transacao(true);
     $oRetorno->iStatus  = 2;
-    $oRetorno->sMessage = utf8_encode($eErro->getMessage());
+    $oRetorno->sMessage = mb_convert_encoding($eErro->getMessage(), 'UTF-8', 'ISO-8859-1');
 }
 
 $oRetorno->erro = $oRetorno->status;

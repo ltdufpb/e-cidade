@@ -58,7 +58,7 @@ class AnexoX extends \RelatoriosLegaisBase
     */
     public function getDados() {
 
-        $dados = array();
+        $dados = [];
 
         for ($linha =1; $linha <= $this->totalLinhas; $linha++) {
 

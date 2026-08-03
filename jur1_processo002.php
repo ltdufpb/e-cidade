@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 if(isset($retorno)) {
   $sql = "select j.v50_codigo,j.v50_numero,to_char(j.v50_dataen,'DD') as data_dia,to_char(j.v50_dataen,'MM') as data_mes,
@@ -51,8 +51,8 @@ if(isset($retorno)) {
   db_fieldsmemory($result,0);
 }
 
-if(isset($HTTP_POST_VARS["enviar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["enviar"])) {
+  db_postmemory($_POST);
   $data = "$data_ano-$data_mes-$data_dia";
   $data = $data=="--"?"null":"'$data'";
   db_query("BEGIN");
@@ -69,7 +69,7 @@ if(isset($HTTP_POST_VARS["enviar"])) {
 						v50_movim = '$v50_movim'
 					WHERE v50_codigo = $v50_codigo") or die("Erro(43) atualizando juridico");
   $result = db_query("DELETE FROM autproc WHERE v55_proces = $v50_codigo") or die("Erro(44) deletando autproc");
-  $aux_autor = split("#",$aux_autor);
+  $aux_autor = preg_split("#\\##m",(string) $aux_autor);
   $tam = sizeof($aux_autor);
   for($i = 1;$i < $tam;$i++)
     $result = db_query("INSERT INTO autproc VALUES($v50_codigo,'".$aux_autor[$i]."',$i)") or die("Erro(48) inserindo em autproc");
@@ -98,24 +98,24 @@ if(isset($HTTP_POST_VARS["enviar"])) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"><br><br>
 	  <?php 
-	   if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
-	     db_postmemory($HTTP_POST_VARS);
+	   if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {
+	     db_postmemory($_POST);
          if(!empty($codigo)) {
            $result = db_query("select v50_codigo from juridico where v50_codigo = $codigo");
-	       if(pg_numrows($result) > 0) {
- 	         db_redireciona("jur1_processo002.php?".base64_encode("retorno=".pg_result($result,0,0)));
+	       if(pg_num_rows($result) > 0) {
+ 	         db_redireciona("jur1_processo002.php?".base64_encode("retorno=".pg_fetch_result($result,0,0)));
 	         exit;
 	       } else {             
              $filtro = base64_encode("v50_codigo like '".$codigo."%' order by v50_codigo");
 	       }
          } else {
 		   if(!empty($numero)) {
-             $filtro = base64_encode("upper(v50_numero) like upper('".$HTTP_POST_VARS["numero"]."%') order by v50_numero");
+             $filtro = base64_encode("upper(v50_numero) like upper('".$_POST["numero"]."%') order by v50_numero");
            } else
-             $filtro = base64_encode("upper(v50_reu) like upper('".$HTTP_POST_VARS["reu"]."%') order by v50_reu");
+             $filtro = base64_encode("upper(v50_reu) like upper('".$_POST["reu"]."%') order by v50_reu");
 	     }
-         if(isset($HTTP_POST_VARS["filtro"]))
-           $filtro = $HTTP_POST_VARS["filtro"];
+         if(isset($_POST["filtro"]))
+           $filtro = $_POST["filtro"];
          $sql = "select v50_codigo as db_codigo,v50_codigo as Código,v50_numero as número,v50_reu as réu,to_char(v50_dataen,'DD-MM-YYYY') as data from juridico where ".base64_decode($filtro);
 	     echo "<center>";
          db_lov($sql,15,"jur1_processo002.php",$filtro);

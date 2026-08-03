@@ -33,13 +33,13 @@ include(modification("dbforms/db_classesgenericas.php"));
 
 $clcriaabas      = new cl_criaabas;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 ?>
 <html>
@@ -64,26 +64,26 @@ $sizecp  = array();
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("g1"     => "Relatório", 
+    $clcriaabas->identifica = ["g1"     => "Relatório", 
                                     "filtro" => "Filtro",
                                     "notas"  => "Notas Explicativas"
-                                   );
-    $clcriaabas->title      = array(
+                                   ];
+    $clcriaabas->title      = [
                                     "g1"     => "Relatório",
                                     "filtro" => "Filtros",
                                     "notas"  => "Notas Explicativas"
-                                   );
-    $clcriaabas->src        = array(
+                                   ];
+    $clcriaabas->src        = [
                                     "g1"     => "cai2_relrecdesp011.php", 
                                     "filtro" => "func_selorcdotacao_aba.php",
                                     "notas"  => "con2_conrelnotas.php?c83_codrel=75"
-                                   );
-    $clcriaabas->sizecampo  = array( 
+                                   ];
+    $clcriaabas->sizecampo  = [ 
                                     "g1"     => "23",
                                     "filtro" => "15",
                                     "notas"  => 30
-                                   );
-    $clcriaabas->funcao_js  = array("g1"=>"","filtro"=>"js_atualizar_instit();");
+                                   ];
+    $clcriaabas->funcao_js  = ["g1"=>"","filtro"=>"js_atualizar_instit();"];
     $clcriaabas->cria_abas();    
     ?>
     </center>

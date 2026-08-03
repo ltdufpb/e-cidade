@@ -43,8 +43,8 @@ require_once(modification("classes/db_obrasender_classe.php"));
 require_once(modification("classes/db_obrasiptubase_classe.php"));
 require_once(modification("classes/db_parprojetos_classe.php"));
 
-$oPost             = db_utils::postMemory($HTTP_POST_VARS);
-$oGet              = db_utils::postMemory($HTTP_GET_VARS);
+$oPost             = db_utils::postMemory($_POST);
+$oGet              = db_utils::postMemory($_GET);
 
 $oDaoObrasAlvara   = new cl_obrasalvara;
 $oDaoObrasConstr   = new cl_obrasconstr;
@@ -58,7 +58,7 @@ $iDBOpcao          = 1;
 $db_botao          = true;
 $sqlerro           = false;
 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Incluir"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Incluir"){
 	db_inicio_transacao();
 	$clobrasconstr->incluir($ob08_codconstr);
 	if($clobrasconstr->erro_status == "0"){
@@ -119,7 +119,7 @@ if ($iDBOpcao == 1) {
   </body>
 </html>
 <?php 
-if ( isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Incluir") {
+if ( isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Incluir") {
 	
 	if ( $sqlerro == true ) {
 		

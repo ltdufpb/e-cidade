@@ -28,7 +28,7 @@
 set_time_limit(0);
 include(modification("libs/db_sql.php"));
 require(modification("fpdf151/pdf.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 db_postmemory($_GET);
 
@@ -38,10 +38,10 @@ if ($classes == ''){
 }else{
    $classe = "and q82_classe in (".str_replace("-",",",$classes).") ";
 }
-$mesini = substr($datai,5,2);
-$anoini = substr($datai,0,4);
-$mesfin = substr($dataf,5,2);
-$anofin = substr($dataf,0,4);
+$mesini = substr((string) $datai,5,2);
+$anoini = substr((string) $datai,0,4);
+$mesfin = substr((string) $dataf,5,2);
+$anofin = substr((string) $dataf,0,4);
  for ($x = 1; $x < 13;$x++){
    if ($anoini.db_formatar($mesini,'s','0',2,'e') <= $anofin.$mesfin){
 //   echo 'anoini : '.$anoini.$mesini.'<br>';
@@ -106,8 +106,8 @@ if ($tipo == 'c'){
 		    on b.k00_inscr = arreinscr.k00_inscr
         left join clasativ g  	on g.q82_ativ  = b.q07_ativ
         inner join arrepaga c 	on c.k00_numpre = q05_numpre and c.k00_numpar = q05_numpar
-     where q05_ano||lpad(q05_mes,2,'0') between '".substr($datai,0,4).substr($datai,5,2)."'
-       and '".substr($dataf,0,4).substr($dataf,5,2)."'
+     where q05_ano||lpad(q05_mes,2,'0') between '".substr((string) $datai,0,4).substr((string) $datai,5,2)."'
+       and '".substr((string) $dataf,0,4).substr((string) $dataf,5,2)."'
 	        $classe
    group by g.q82_classe,ano,mes 
    order by g.q82_classe,ano,mes ) as x ) as y
@@ -145,7 +145,7 @@ if ($tipo == 'c'){
 // die($sql);
 
 $result = db_query($sql);
-$num = pg_numrows($result);
+$num = pg_num_rows($result);
 if ($num == 0 ){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existe pagamentos efetuados no período de '.db_formatar($datai,'d').' até '.db_formatar($dataf,'d'));
 }
@@ -154,10 +154,10 @@ $pdf = new pdf();
 $pdf->Open();
 $pdf->AliasNbPages();
 $pdf->setleftmargin(5);
-$mesini = substr($datai,5,2);
-$anoini = substr($datai,0,4);
-$mesfin = substr($dataf,5,2);
-$anofin = substr($dataf,0,4);
+$mesini = substr((string) $datai,5,2);
+$anoini = substr((string) $datai,0,4);
+$mesfin = substr((string) $dataf,5,2);
+$anofin = substr((string) $dataf,0,4);
 $head2 = "RELATÓRIO DOS PAGAMENTOS";
 $head3 = "ISSQN VARIÁVEL POR CLASSE";
 $head5 = "PERÍODO DE : ".$mesini."/".$anoini." A ".db_formatar($xmesfin,'s','0',2,'e')."/".$xanofin ;
@@ -211,10 +211,10 @@ for ( $i = 0; $i < $num; $i++) {
       }
       $pdf->cell(10,$altura,'Classe',1,0,'C',1);
       $pdf->cell(50,$altura,'Descrição',1,0,'C',1);
-      $mesini = substr($datai,5,2);
-      $anoini = substr($datai,0,4);
-      $mesfin = substr($dataf,5,2);
-      $anofin = substr($dataf,0,4);
+      $mesini = substr((string) $datai,5,2);
+      $anoini = substr((string) $datai,0,4);
+      $mesfin = substr((string) $dataf,5,2);
+      $anofin = substr((string) $dataf,0,4);
       for ($x = 1; $x < 13;$x++){
          if ($x < 12){
             $pdf->cell($espaco,$altura,db_formatar($mesini,'s','0',2,'e').'/'.$anoini,1,0,'C',1);
@@ -236,7 +236,7 @@ for ( $i = 0; $i < $num; $i++) {
 	$pdf->cell(50,$altura,'',0,0,'C',0);
       }
       $pdf->cell(10,$altura,$q82_classe,1,0,'C',0);
-      $pdf->cell(50,$altura,substr($q12_descr,0,35),1,0,'L',0);
+      $pdf->cell(50,$altura,substr((string) $q12_descr,0,35),1,0,'L',0);
       if ($totais == "m") {
 	$pdf->cell($espaco,$altura,db_formatar($xx1,'f'),1,0,'R',0);
 	$pdf->cell($espaco,$altura,db_formatar($xx2,'f'),1,0,'R',0);

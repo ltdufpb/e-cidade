@@ -158,8 +158,8 @@ switch ($oParam->sExec) {
         $oDadosIniciais->sProcessoForo         = '';
       }
       
-      $oDadosIniciais->sObservacaoMovimentacao = urlencode($oInicial->getUltimaMovimentacao()->sObservacao);
-      $oRetorno->aIniciais                     = array($oDadosIniciais);
+      $oDadosIniciais->sObservacaoMovimentacao = urlencode((string) $oInicial->getUltimaMovimentacao()->sObservacao);
+      $oRetorno->aIniciais                     = [$oDadosIniciais];
       
     } else if (isset($oParam->iCodigoProcessoForo) and ($oParam->iCodigoProcessoForo != '')) {
       
@@ -175,7 +175,7 @@ switch ($oParam->sExec) {
         $oDadosIniciais->iSituacao               = $oInicial->getSituacao() == 1 ? 'Ativa' : 'Anulada';
         $oDadosIniciais->sProcessoForo           = $oProcessoForo->getNumeroProcesso();
         $oDadosIniciais->iCodigoMovimentacao     = $oInicial->getUltimaMovimentacao()->iCodigoMovimentacao;
-        $oDadosIniciais->sObservacaoMovimentacao = urlencode($oInicial->getUltimaMovimentacao()->sObservacao);
+        $oDadosIniciais->sObservacaoMovimentacao = urlencode((string) $oInicial->getUltimaMovimentacao()->sObservacao);
         $oRetorno->aIniciais[]                   = $oDadosIniciais;
       }
 

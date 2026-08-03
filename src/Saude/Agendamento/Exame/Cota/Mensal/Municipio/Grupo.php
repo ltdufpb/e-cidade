@@ -35,7 +35,7 @@ class Grupo extends Mensal
   /**
    * Array com os exames por prestador
    */
-  protected $aProcedimento = array();
+  protected $aProcedimento = [];
 
   /**
    * Busca o nome do exame

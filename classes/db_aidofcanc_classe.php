@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE aidofcanc
 class cl_aidofcanc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y03_codigo = 0; 
-   var $y03_aidof = 0; 
-   var $y03_data_dia = null; 
-   var $y03_data_mes = null; 
-   var $y03_data_ano = null; 
-   var $y03_data = null; 
-   var $y03_usuario = 0; 
-   var $y03_obs = null; 
-   var $y03_tipocanc = 'f'; 
+   public $y03_codigo = 0; 
+   public $y03_aidof = 0; 
+   public $y03_data_dia = null; 
+   public $y03_data_mes = null; 
+   public $y03_data_ano = null; 
+   public $y03_data = null; 
+   public $y03_usuario = 0; 
+   public $y03_obs = null; 
+   public $y03_tipocanc = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y03_codigo = int4 = Código Sequencial 
                  y03_aidof = int4 = Código do Aidof 
                  y03_data = date = Data Cancelamento 
@@ -61,10 +61,10 @@ class cl_aidofcanc {
                  y03_tipocanc = bool = Cancelamento 
                  ";
    //funcao construtor da classe 
-   function cl_aidofcanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aidofcanc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_aidofcanc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y03_codigo = pg_result($result,0,0); 
+       $this->y03_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from aidofcanc_y03_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y03_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y03_codigo)){
          $this->erro_sql = " Campo y03_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_aidofcanc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cancelamento de aidof ($this->y03_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cancelamento de aidof já Cadastrado";
@@ -218,15 +218,15 @@ class cl_aidofcanc {
      $resaco = $this->sql_record($this->sql_query_file($this->y03_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9107,'$this->y03_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1559,9107,'','".AddSlashes(pg_result($resaco,0,'y03_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1559,9108,'','".AddSlashes(pg_result($resaco,0,'y03_aidof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1559,9109,'','".AddSlashes(pg_result($resaco,0,'y03_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1559,9110,'','".AddSlashes(pg_result($resaco,0,'y03_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1559,9111,'','".AddSlashes(pg_result($resaco,0,'y03_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1559,9113,'','".AddSlashes(pg_result($resaco,0,'y03_tipocanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1559,9107,'','".AddSlashes(pg_fetch_result($resaco,0,'y03_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1559,9108,'','".AddSlashes(pg_fetch_result($resaco,0,'y03_aidof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1559,9109,'','".AddSlashes(pg_fetch_result($resaco,0,'y03_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1559,9110,'','".AddSlashes(pg_fetch_result($resaco,0,'y03_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1559,9111,'','".AddSlashes(pg_fetch_result($resaco,0,'y03_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1559,9113,'','".AddSlashes(pg_fetch_result($resaco,0,'y03_tipocanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_aidofcanc {
       $this->atualizacampos();
      $sql = " update aidofcanc set ";
      $virgula = "";
-     if(trim($this->y03_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_codigo"])){ 
+     if(trim((string) $this->y03_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_codigo"])){ 
        $sql  .= $virgula." y03_codigo = $this->y03_codigo ";
        $virgula = ",";
-       if(trim($this->y03_codigo) == null ){ 
+       if(trim((string) $this->y03_codigo) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "y03_codigo";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_aidofcanc {
          return false;
        }
      }
-     if(trim($this->y03_aidof)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_aidof"])){ 
+     if(trim((string) $this->y03_aidof)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_aidof"])){ 
        $sql  .= $virgula." y03_aidof = $this->y03_aidof ";
        $virgula = ",";
-       if(trim($this->y03_aidof) == null ){ 
+       if(trim((string) $this->y03_aidof) == null ){ 
          $this->erro_sql = " Campo Código do Aidof nao Informado.";
          $this->erro_campo = "y03_aidof";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_aidofcanc {
          return false;
        }
      }
-     if(trim($this->y03_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y03_data_dia"] !="") ){ 
+     if(trim((string) $this->y03_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y03_data_dia"] !="") ){ 
        $sql  .= $virgula." y03_data = '$this->y03_data' ";
        $virgula = ",";
-       if(trim($this->y03_data) == null ){ 
+       if(trim((string) $this->y03_data) == null ){ 
          $this->erro_sql = " Campo Data Cancelamento nao Informado.";
          $this->erro_campo = "y03_data_dia";
          $this->erro_banco = "";
@@ -277,7 +277,7 @@ class cl_aidofcanc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["y03_data_dia"])){ 
          $sql  .= $virgula." y03_data = null ";
          $virgula = ",";
-         if(trim($this->y03_data) == null ){ 
+         if(trim((string) $this->y03_data) == null ){ 
            $this->erro_sql = " Campo Data Cancelamento nao Informado.";
            $this->erro_campo = "y03_data_dia";
            $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_aidofcanc {
          }
        }
      }
-     if(trim($this->y03_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_usuario"])){ 
+     if(trim((string) $this->y03_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_usuario"])){ 
        $sql  .= $virgula." y03_usuario = $this->y03_usuario ";
        $virgula = ",";
-       if(trim($this->y03_usuario) == null ){ 
+       if(trim((string) $this->y03_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "y03_usuario";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_aidofcanc {
          return false;
        }
      }
-     if(trim($this->y03_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_obs"])){ 
+     if(trim((string) $this->y03_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_obs"])){ 
        $sql  .= $virgula." y03_obs = '$this->y03_obs' ";
        $virgula = ",";
-       if(trim($this->y03_obs) == null ){ 
+       if(trim((string) $this->y03_obs) == null ){ 
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "y03_obs";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_aidofcanc {
          return false;
        }
      }
-     if(trim($this->y03_tipocanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_tipocanc"])){ 
+     if(trim((string) $this->y03_tipocanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y03_tipocanc"])){ 
        $sql  .= $virgula." y03_tipocanc = '$this->y03_tipocanc' ";
        $virgula = ",";
-       if(trim($this->y03_tipocanc) == null ){ 
+       if(trim((string) $this->y03_tipocanc) == null ){ 
          $this->erro_sql = " Campo Cancelamento nao Informado.";
          $this->erro_campo = "y03_tipocanc";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_aidofcanc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9107,'$this->y03_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y03_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1559,9107,'".AddSlashes(pg_result($resaco,$conresaco,'y03_codigo'))."','$this->y03_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1559,9107,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y03_codigo'))."','$this->y03_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y03_aidof"]))
-           $resac = db_query("insert into db_acount values($acount,1559,9108,'".AddSlashes(pg_result($resaco,$conresaco,'y03_aidof'))."','$this->y03_aidof',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1559,9108,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y03_aidof'))."','$this->y03_aidof',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y03_data"]))
-           $resac = db_query("insert into db_acount values($acount,1559,9109,'".AddSlashes(pg_result($resaco,$conresaco,'y03_data'))."','$this->y03_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1559,9109,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y03_data'))."','$this->y03_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y03_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1559,9110,'".AddSlashes(pg_result($resaco,$conresaco,'y03_usuario'))."','$this->y03_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1559,9110,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y03_usuario'))."','$this->y03_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y03_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1559,9111,'".AddSlashes(pg_result($resaco,$conresaco,'y03_obs'))."','$this->y03_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1559,9111,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y03_obs'))."','$this->y03_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y03_tipocanc"]))
-           $resac = db_query("insert into db_acount values($acount,1559,9113,'".AddSlashes(pg_result($resaco,$conresaco,'y03_tipocanc'))."','$this->y03_tipocanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1559,9113,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y03_tipocanc'))."','$this->y03_tipocanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_aidofcanc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9107,'$y03_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1559,9107,'','".AddSlashes(pg_result($resaco,$iresaco,'y03_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1559,9108,'','".AddSlashes(pg_result($resaco,$iresaco,'y03_aidof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1559,9109,'','".AddSlashes(pg_result($resaco,$iresaco,'y03_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1559,9110,'','".AddSlashes(pg_result($resaco,$iresaco,'y03_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1559,9111,'','".AddSlashes(pg_result($resaco,$iresaco,'y03_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1559,9113,'','".AddSlashes(pg_result($resaco,$iresaco,'y03_tipocanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1559,9107,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y03_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1559,9108,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y03_aidof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1559,9109,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y03_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1559,9110,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y03_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1559,9111,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y03_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1559,9113,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y03_tipocanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from aidofcanc
@@ -462,7 +462,7 @@ class cl_aidofcanc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aidofcanc";
@@ -476,7 +476,7 @@ class cl_aidofcanc {
    function sql_query ( $y03_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -503,7 +503,7 @@ class cl_aidofcanc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_aidofcanc {
    function sql_query_file ( $y03_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,7 +536,7 @@ class cl_aidofcanc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -548,7 +548,7 @@ class cl_aidofcanc {
    function sql_query_nome ( $y03_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -576,7 +576,7 @@ class cl_aidofcanc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

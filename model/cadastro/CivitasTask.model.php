@@ -19,6 +19,7 @@ class CivitasTask extends Task implements iTarefa
      *
      * @return void
      */
+    #[\Override]
     public function iniciar()
     {
         parent::iniciar();
@@ -30,10 +31,10 @@ class CivitasTask extends Task implements iTarefa
             /**
              * Variaveis necessarias para usar as bibliotecas padroes
              */
-            global $HTTP_SERVER_VARS, $HTTP_POST_VARS, $HTTP_GET_VARS, $_SESSION, $conn;
-            $HTTP_SERVER_VARS = $_SESSION;
-            $HTTP_POST_VARS = $_POST;
-            $HTTP_GET_VARS = $_GET;
+            global $_SERVER, $_POST, $_GET, $_SESSION, $conn;
+            $_SERVER = $_SESSION;
+            $_POST = $_POST;
+            $_GET = $_GET;
 
             require_once modification("libs/db_conn.php");
             require_once modification("libs/db_stdlib.php");
@@ -78,36 +79,36 @@ class CivitasTask extends Task implements iTarefa
                  WHERE prefeitura is true;
             ");
 
-            $erro = array();
+            $erro = [];
 
 
-            $arquivos = array();
+            $arquivos = [];
 
             if (!empty($parametros['arquivoLotes'])) {
-                $arquivos[] = array(
+                $arquivos[] = [
                     "Nome" => $parametros['arquivoLotes'],
                     "TipoArquivo" => ImportadorModel::ARQUIVO_LOTES,
                     "Data" => $parametros['data'],
                     "Caminho" => Service::FILE_PATH
-                );
+                ];
             }
 
             if (!empty($parametros['arquivoEdificacoes'])) {
-                $arquivos[] = array(
+                $arquivos[] = [
                     "Nome" => $parametros['arquivoEdificacoes'],
                     "TipoArquivo" => ImportadorModel::ARQUIVO_EDIFICACOES,
                     "Data" => $parametros['data'],
                     "Caminho" => Service::FILE_PATH
-                );
+                ];
             }
 
             if (!empty($parametros['arquivoTestadas'])) {
-                $arquivos[] = array(
+                $arquivos[] = [
                     "Nome" => $parametros['arquivoTestadas'],
                     "TipoArquivo" => ImportadorModel::ARQUIVO_TESTADAS,
                     "Data" => $parametros['data'],
                     "Caminho" => Service::FILE_PATH
-                );
+                ];
             }
 
             $oImportador = ImportadorRepository::getImportador($arquivos);

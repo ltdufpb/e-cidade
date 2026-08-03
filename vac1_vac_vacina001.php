@@ -60,13 +60,13 @@ if ($db_opcao==1) {
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica    = array("a1"=>"Vacina",
+   $clcriaabas->identifica    = ["a1"=>"Vacina",
                                       "a2"=>"Complementos",
                                       "a3"=>"Doses",
-                                      "a4"=>"Doenças");
-   $clcriaabas->src           = array("a1"=>"$arquivo","a2"=>"","a3"=>"","a4"=>"");
-   $clcriaabas->sizecampo     = array("a1"=>20,"a2"=>20,"a3"=>20,"a4"=>20);
-   $clcriaabas->disabled      = array("a1"=>"false","a2"=>"true","a3"=>"true","a4"=>"true");
+                                      "a4"=>"Doenças"];
+   $clcriaabas->src           = ["a1"=>"$arquivo","a2"=>"","a3"=>"","a4"=>""];
+   $clcriaabas->sizecampo     = ["a1"=>20,"a2"=>20,"a3"=>20,"a4"=>20];
+   $clcriaabas->disabled      = ["a1"=>"false","a2"=>"true","a3"=>"true","a4"=>"true"];
    $clcriaabas->scrolling     = "no";
    $clcriaabas->iframe_height = "600";
    $clcriaabas->iframe_width  = "100%";

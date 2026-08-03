@@ -51,7 +51,7 @@ require_once(modification("dbforms/db_funcoes.php"));
     
     if ( $error == 0 ) {
 
-      $aTipos = array('image/jpeg', 'image/pjpeg', 'image/png');
+      $aTipos = ['image/jpeg', 'image/pjpeg', 'image/png'];
       if (!in_array($type, $aTipos)) {
 
         db_msgbox("Imagem no  um formato vlido!\\n\\nUtilize somente imagens no formato JPG!");

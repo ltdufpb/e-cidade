@@ -89,14 +89,14 @@ try {
   	  $rsConPlanoOrcamento     = $oDaoConPlanoOrcamento->sql_record($sSqlConPlanoOrcamento);
   	  $iTotalConPlanoOrcamento = $oDaoConPlanoOrcamento->numrows;
 
-  	  $oRetorno->aContasOrcamentarias = array();
+  	  $oRetorno->aContasOrcamentarias = [];
   	  if ( $iTotalConPlanoOrcamento > 0 ) {
 
   	    for ( $iContador = 0; $iContador < $iTotalConPlanoOrcamento; $iContador++ ) {
 
   	      $oDadosConPlanoOrcamento            = db_utils::fieldsMemory( $rsConPlanoOrcamento, $iContador, false, false, true );
   	      $oDadosConPlanoOrcamento->conta_pai = db_le_mae_conplano( $oDadosConPlanoOrcamento->c60_estrut );
-  	      $iClasse                            = substr( $oDadosConPlanoOrcamento->c60_estrut, 0, 1 );
+  	      $iClasse                            = substr( (string) $oDadosConPlanoOrcamento->c60_estrut, 0, 1 );
 
   	      /**
   	       * Verifica o primeiro dígito do estrutural para montar o array
@@ -180,7 +180,7 @@ try {
   	 */
   	case 'getContasPcasp':
 
-  	  $oRetorno->aContas = array();
+  	  $oRetorno->aContas = [];
 
   	  $oDaoConplano  = new cl_conplano;
   	  $sCamposPlano  = "c60_codcon as codigo_conta, c60_estrut as estrutural, c60_descr as descricao";
@@ -197,7 +197,7 @@ try {
   	  /**
        * Abre o arquivo que se encontra salvo dentro de config/pcasp
   	   */
-  	  $aVinculos = array();
+  	  $aVinculos = [];
   	  if ( file_exists( "config/pcasp/arquivo_vinculo_pcasp.txt" ) ) {
 
   	    $rArquivoVinculo = fopen( "config/pcasp/arquivo_vinculo_pcasp.txt", "r" );
@@ -231,7 +231,7 @@ try {
 	    for ( $iContador = 0; $iContador < $iTotalPlano; $iContador++ ) {
 
 	      $oDadosConta            = db_utils::fieldsMemory( $rsPlano, $iContador, false, false, true );
-	      $oDadosConta->aVinculos = array();
+	      $oDadosConta->aVinculos = [];
 
 	      if ( isset($aVinculos[$oDadosConta->estrutural]) ) {
 
@@ -269,17 +269,7 @@ try {
   	  $oRetorno->sMensagem = urlencode( _M( $sCaminhoMensagem.'vinculo_processados' ) );
   	  break;
   }
-} catch ( ParameterException $oErro ) {
-
-  db_fim_transacao( true );
-  $oRetorno->iStatus   = 2;
-  $oRetorno->sMensagem = urlencode( $oErro->getMessage() );
-} catch ( BusinessException $oErro ) {
-
-  db_fim_transacao( true );
-  $oRetorno->iStatus   = 2;
-  $oRetorno->sMensagem = urlencode( $oErro->getMessage() );
-} catch ( DBException $oErro ) {
+} catch ( ParameterException|BusinessException|DBException $oErro ) {
 
   db_fim_transacao( true );
   $oRetorno->iStatus   = 2;

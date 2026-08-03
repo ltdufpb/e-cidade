@@ -77,7 +77,7 @@ function js_preenchepesquisa(chave){
   db_iframe_obrassituacao.hide();
 <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
 ?>
 }

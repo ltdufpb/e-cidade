@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhlocaltrab_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhlocaltrab = new cl_rhlocaltrab;
 $clrhlocaltrab->rotulo->label("rh55_codigo");
 $clrhlocaltrab->rotulo->label("rh55_estrut");
@@ -111,9 +111,9 @@ $clrhlocaltrab->rotulo->label("rh55_descr");
         }else{
            $sql = $clrhlocaltrab->sql_query("",db_getsession("DB_instit"),$campos,"rh55_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh55_descr)){
-          $repassa = array("chave_rh55_codigo"=>$chave_rh55_codigo,"chave_rh55_descr"=>$chave_rh55_descr,"chave_rh55_estrut"=>$chave_rh55_estrut);
+          $repassa = ["chave_rh55_codigo"=>$chave_rh55_codigo,"chave_rh55_descr"=>$chave_rh55_descr,"chave_rh55_estrut"=>$chave_rh55_estrut];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

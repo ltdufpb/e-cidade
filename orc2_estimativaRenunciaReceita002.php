@@ -43,8 +43,8 @@ if (!isset($arqinclude)){
   $classinatura = new cl_assinatura;
   $orcparamrel  = new cl_orcparamrel;
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
 }
 
@@ -67,9 +67,9 @@ $xvirg = '';
 $flag_abrev = false;
 $nTotalRcl = 0;
 ////******************************************************************
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
 //  }else{
@@ -183,17 +183,17 @@ foreach ($aValores as $oValorlinha) {
   }
   $pdf->SetY($iMaxLinha);
   $iMaxLinha = $pdf->getY();
-  $pdf->multiCell(30,$alt,trim($oValorlinha->colunas[0]->o117_valor),'T',"J",0);
+  $pdf->multiCell(30,$alt,trim((string) $oValorlinha->colunas[0]->o117_valor),'T',"J",0);
   if ($iMaxLinha < $pdf->GetY()) {
     $iMaxLinha = $pdf->GetY();
   }
   $pdf->SetXY(40,$iYLinha);
-  $pdf->MultiCell(30,$alt,trim($oValorlinha->colunas[1]->o117_valor),'TL',"L",0);
+  $pdf->MultiCell(30,$alt,trim((string) $oValorlinha->colunas[1]->o117_valor),'TL',"L",0);
   if ($iMaxLinha < $pdf->GetY()) {
     $iMaxLinha = $pdf->GetY();
   }
   $pdf->SetXY(70,$iYLinha);
-  $pdf->MultiCell(30,$alt,trim($oValorlinha->colunas[2]->o117_valor),'LT',"L",0);
+  $pdf->MultiCell(30,$alt,trim((string) $oValorlinha->colunas[2]->o117_valor),'LT',"L",0);
   if ($iMaxLinha < $pdf->GetY()) {
     $iMaxLinha = $pdf->GetY();
   }
@@ -202,7 +202,7 @@ foreach ($aValores as $oValorlinha) {
   $pdf->cell(20,$alt,db_formatar($oValorlinha->colunas[4]->o117_valor,"f"),'LT',0,"R",0);
   $pdf->cell(20,$alt,db_formatar($oValorlinha->colunas[5]->o117_valor,"f"),'LT',0,"R",0);
   $pdf->SetXY(160,$iYLinha);
-  $pdf->MultiCell(40,$alt,trim($oValorlinha->colunas[6]->o117_valor),'LT',"J",0);
+  $pdf->MultiCell(40,$alt,trim((string) $oValorlinha->colunas[6]->o117_valor),'LT',"J",0);
 
   if ($iMaxLinha < $pdf->GetY()) {
     $iMaxLinha = $pdf->GetY();

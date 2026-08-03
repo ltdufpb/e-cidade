@@ -33,7 +33,7 @@ include_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoLabRequi     = db_utils::getdao('lab_requisicao');
 $oDaoLabRequiitem = db_utils::getdao('lab_requiitem');
 $db_opcao         = 1;
@@ -102,7 +102,7 @@ if (isset($confirma)) {
   $oDaoLabconferencia = db_utils::getdao('lab_conferencia');
   db_inicio_transacao();
   $aDados = explode(",",$sDados);
-  $aCod   = explode(",",$sCod);
+  $aCod   = explode(",",(string) $sCod);
   $iTam   = count($aDados);
   for ($iX=0; $iX < $iTam; $iX++) {
   	

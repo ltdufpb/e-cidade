@@ -101,7 +101,7 @@ class GeracaoGuiaPrestadorWebService {
    * lista de planilhas criadas
    * @var array
    */
-  private $aPlanilhas = array();
+  private $aPlanilhas = [];
 
   /**
    * Código da guia recebida
@@ -185,7 +185,7 @@ class GeracaoGuiaPrestadorWebService {
    * @param integer $iCodigoGuia
    */
   public function setCodigoGuia($iCodigoGuia) {
-    $this->iCodigoGuia = (($iCodigoGuia)? $iCodigoGuia : NULL);
+    $this->iCodigoGuia = ($iCodigoGuia ?: NULL);
   }
 
   /**
@@ -256,8 +256,8 @@ class GeracaoGuiaPrestadorWebService {
 
     $rsDadosCompentencia  = $oDaoIssVar->sql_record($sSqlDadosCompetencia);
 
-    $aListaPlanilhas = array();
-    $aDebitos        = array();
+    $aListaPlanilhas = [];
+    $aDebitos        = [];
 
     foreach ($this->aPlanilhas as $iCodigoPlanilha) {
 
@@ -279,7 +279,7 @@ class GeracaoGuiaPrestadorWebService {
 
     $oDadosRetorno                = new stdClass();
     $oDadosRetorno->dados_boleto  = '';
-    $oDadosRetorno->lista_debitos = array();
+    $oDadosRetorno->lista_debitos = [];
 
     foreach ($aListaPlanilhas as $oPlanilha) {
 
@@ -349,12 +349,12 @@ class GeracaoGuiaPrestadorWebService {
 
       if ($this->sTipoDebito == 'P') {
 
-        if (!$oDaoIssVar->incluir_issvar_nfse(array(), $this->iInscricao, $this->iNumcgm)) {
+        if (!$oDaoIssVar->incluir_issvar_nfse([], $this->iInscricao, $this->iNumcgm)) {
           throw new Exception("Ocorreu um erro ao incluir o issqn.{$oDaoIssVar->erro_msg}");
         }
       } else {
 
-        if (!$oDaoIssVar->incluir_issvar_dms(array(), $this->iInscricao, $this->iNumcgm)) {
+        if (!$oDaoIssVar->incluir_issvar_dms([], $this->iInscricao, $this->iNumcgm)) {
           throw new Exception("Ocorreu um erro ao incluir o issqn.{$oDaoIssVar->erro_msg}");
         }
       }

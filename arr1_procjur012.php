@@ -117,7 +117,7 @@ if(isset($oPost->alterar)){
 
   	 if ($oPost->v66_procjurtiporegra == 1){
 
-  	   if ( trim($oBuscaProc->v64_sequencial) != "" ) {
+  	   if ( trim((string) $oBuscaProc->v64_sequencial) != "" ) {
   	   	
 	     $clprocjuradm->excluir($oBuscaProc->v64_sequencial);
 	  

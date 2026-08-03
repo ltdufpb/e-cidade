@@ -64,7 +64,7 @@ $db_opcao = 1;
 							</td>
 							<td>
                  <?php 
-								 $aMigrados = array("M"=>"Migrados","N"=>"Não Migrados"); 
+								 $aMigrados = ["M"=>"Migrados","N"=>"Não Migrados"]; 
 								 db_select("selfiltros",$aMigrados,true,4,"");
                
 							 	 ?>
@@ -77,7 +77,7 @@ $db_opcao = 1;
 							</td>
 							<td>
                  <?php 
-								 $aSituacao = array("T"=>"Todos","S"=>"Saldo a Pagar"); 
+								 $aSituacao = ["T"=>"Todos","S"=>"Saldo a Pagar"]; 
 								 db_select("situacao",$aSituacao,true,4,"");
                
 							 	 ?>

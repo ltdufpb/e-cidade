@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_lab_horario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cllab_horario = new cl_lab_horario;
 $db_opcao = 1;
 $db_botao = true;
@@ -65,8 +65,8 @@ if(isset($incluir)){
    $sDia .= isset($chk_dom)?$chk_dom.", ":"";
    $sDia  = substr( $sDia, 0, strlen($sDia)-2 ); // tira o ', ' do final da string
    
-   $dValidadeIni = trim($la35_d_valinicio);
-   $dValidadeFim = trim($la35_d_valfim);
+   $dValidadeIni = trim((string) $la35_d_valinicio);
+   $dValidadeFim = trim((string) $la35_d_valfim);
 
    if(!empty($dValidadeIni)) {
      
@@ -121,7 +121,7 @@ if(isset($incluir)){
        }else{
            
            $aDia = explode(",", $sDia);
-           $dias_da_semana=array();
+           $dias_da_semana=[];
            for( $iCont=0; $iCont<sizeof($aDia); $iCont++){
                 $dias_da_semana[$aDia[$iCont]]=0;
            }
@@ -130,11 +130,11 @@ if(isset($incluir)){
                $escape=1;
            }else{
                //                 0          1          2          3          4           5         6           7
-               $escape=array($semanames,$semanames,$semanames,$semanames,$semanames,$semanames,$semanames,$semanames);
+               $escape=[$semanames,$semanames,$semanames,$semanames,$semanames,$semanames,$semanames,$semanames];
            }
-           $vet=explode("/",$la35_d_valinicio);
+           $vet=explode("/",(string) $la35_d_valinicio);
            $la35_d_valinicio=$vet[2]."-".$vet[1]."-".$vet[0];
-           $vet=explode("/",$la35_d_valfim);
+           $vet=explode("/",(string) $la35_d_valfim);
            $la35_d_valfim=$vet[2]."-".$vet[1]."-".$vet[0];
            $d2=strtotime($la35_d_valfim);
            //$cllab_horario->incluir(null);
@@ -193,8 +193,8 @@ if(isset($incluir)){
    }
 }else if(isset($alterar)) {
 
-   $dValidadeIni = trim($la35_d_valinicio);
-   $dValidadeFim = trim($la35_d_valfim);
+   $dValidadeIni = trim((string) $la35_d_valinicio);
+   $dValidadeFim = trim((string) $la35_d_valfim);
 
    if(!empty($dValidadeIni)) {
      

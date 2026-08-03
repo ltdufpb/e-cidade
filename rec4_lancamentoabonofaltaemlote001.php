@@ -40,7 +40,7 @@ try {
     db_msgbox($erro->getMessage());
 }
 
-$selecaoTiposAssentamento = array();
+$selecaoTiposAssentamento = [];
 
 if($tiposAssentamento !== null) {
     foreach($tiposAssentamento as $sequencial => $tipoAssentamento) {

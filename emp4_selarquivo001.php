@@ -43,7 +43,7 @@ $clempagegera->rotulo->label();
 $clempagetipo->rotulo->label();
 $clempagedadosret->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $action = "Confirmar ";
 $formul = "emp4_empageretornoconf001.php?lCancelado=0";

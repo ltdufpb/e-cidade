@@ -34,7 +34,7 @@ include(modification("classes/db_lab_setorexame_classe.php"));
 include(modification("classes/db_lab_horario_classe.php"));
 include(modification("classes/db_lab_requiitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cllab_labusuario = new cl_lab_labusuario;
 $cllab_setorexame = new cl_lab_setorexame;
 $cllab_horario = new cl_lab_horario;

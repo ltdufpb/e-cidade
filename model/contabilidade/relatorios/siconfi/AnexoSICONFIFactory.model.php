@@ -41,19 +41,11 @@ abstract class AnexoSICONFIFactory {
    */
   public static function getAnexoSICONFI($iAnoUsu, $iCodigoRelatorio) {
 
-    switch ($iCodigoRelatorio) {
-
-      case AnexoIDSICONFI::CODIGO_RELATORIO:
-        return new AnexoIDSICONFI($iAnoUsu, $iCodigoRelatorio, AnexoSICONFI::CODIGO_PERIODO);
-
-      case AnexoIFSICONFI::CODIGO_RELATORIO:
-        return new AnexoIFSICONFI($iAnoUsu, $iCodigoRelatorio, AnexoSICONFI::CODIGO_PERIODO);
-
-      case AnexoIGSICONFI::CODIGO_RELATORIO:
-        return new AnexoIGSICONFI($iAnoUsu, $iCodigoRelatorio, AnexoSICONFI::CODIGO_PERIODO);
-
-      default:
-        throw new ParameterException("O código do relatório informado é inválido.");
-    }
+    return match ($iCodigoRelatorio) {
+        AnexoIDSICONFI::CODIGO_RELATORIO => new AnexoIDSICONFI($iAnoUsu, $iCodigoRelatorio, AnexoSICONFI::CODIGO_PERIODO),
+        AnexoIFSICONFI::CODIGO_RELATORIO => new AnexoIFSICONFI($iAnoUsu, $iCodigoRelatorio, AnexoSICONFI::CODIGO_PERIODO),
+        AnexoIGSICONFI::CODIGO_RELATORIO => new AnexoIGSICONFI($iAnoUsu, $iCodigoRelatorio, AnexoSICONFI::CODIGO_PERIODO),
+        default => throw new ParameterException("O código do relatório informado é inválido."),
+    };
   }
 }

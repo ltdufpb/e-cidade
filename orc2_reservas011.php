@@ -61,7 +61,7 @@ $oAuxDpto = new cl_arquivo_auxiliar;
 				        </td>
 				        <td>
 								  <?php 
-							       $aNivel = array('1A'=>'Órgão Até o Nível',
+							       $aNivel = ['1A'=>'Órgão Até o Nível',
 							                       '1B'=>'Órgão só o Nível',
 							                       '2A'=>'Unidade Até o Nível',
 							                       '2B'=>'Unidade só o Nível',
@@ -77,7 +77,7 @@ $oAuxDpto = new cl_arquivo_auxiliar;
 							                       '7B'=>'Elemento só o Nível',
 							                       '8A'=>'Recurso Até o Nível',
 							                       '8B'=>'Recurso só o Nível',
-							                       '9B'=>'Desdobramento só o Nível');
+							                       '9B'=>'Desdobramento só o Nível'];
 							       
 								     db_select('nivel',$aNivel,true,2,"onChange='js_alteraNivel(this.value)' style='width:195px;'");
 								     
@@ -111,8 +111,8 @@ $oAuxDpto = new cl_arquivo_auxiliar;
                 </td>
                 <td>
                   <?php 
-                     $aFormaImpressao = array('a'=>'Analítico',
-                                              's'=>'Sintético');
+                     $aFormaImpressao = ['a'=>'Analítico',
+                                              's'=>'Sintético'];
                      
                      db_select('forma_impressao',$aFormaImpressao,true,2,"style='width:195px;'");
                      

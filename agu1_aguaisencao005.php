@@ -36,7 +36,7 @@ $claguaisencao = new cl_aguaisencao;
   /*
 $claguaisencaorec = new cl_aguaisencaorec;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){

@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE tipserv
 class cl_tipserv { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $u10_codigo = 0; 
-   var $u10_descr = null; 
+   public $u10_codigo = 0; 
+   public $u10_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  u10_codigo = int4 = Codigo da classificacao 
                  u10_descr = char(    30) = Descricao da classificacao 
                  ";
    //funcao construtor da classe 
-   function cl_tipserv() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipserv"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -104,7 +104,7 @@ class cl_tipserv {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela de tipos de servico                         () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela de tipos de servico                         já Cadastrado";
@@ -131,10 +131,10 @@ class cl_tipserv {
       $this->atualizacampos();
      $sql = " update tipserv set ";
      $virgula = "";
-     if(trim($this->u10_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u10_codigo"])){ 
+     if(trim((string) $this->u10_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u10_codigo"])){ 
        $sql  .= $virgula." u10_codigo = $this->u10_codigo ";
        $virgula = ",";
-       if(trim($this->u10_codigo) == null ){ 
+       if(trim((string) $this->u10_codigo) == null ){ 
          $this->erro_sql = " Campo Codigo da classificacao nao Informado.";
          $this->erro_campo = "u10_codigo";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_tipserv {
          return false;
        }
      }
-     if(trim($this->u10_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u10_descr"])){ 
+     if(trim((string) $this->u10_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["u10_descr"])){ 
        $sql  .= $virgula." u10_descr = '$this->u10_descr' ";
        $virgula = ",";
-       if(trim($this->u10_descr) == null ){ 
+       if(trim((string) $this->u10_descr) == null ){ 
          $this->erro_sql = " Campo Descricao da classificacao nao Informado.";
          $this->erro_campo = "u10_descr";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tipserv";

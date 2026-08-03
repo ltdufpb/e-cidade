@@ -36,8 +36,8 @@ include(modification("classes/db_empempenho_classe.php"));
 include(modification("classes/db_pagordem_classe.php"));
 include(modification("classes/db_empparametro_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempempenho = new cl_empempenho;
 $clpagordem   = new cl_pagordem;
 $clempparametro	  = new cl_empparametro;
@@ -75,7 +75,7 @@ if(isset($newsql) && $newsql=="true"){
         <!--
         <input name="Imprimir" type="button" id="imp" value="Imprimir esta tela" onClick = "js_emite();">
         -->
-        <input name="Todos" type="button" id="imptd" value="Imprimir todos" onClick = "parent.js_consulta002('<?=$HTTP_SERVER_VARS["QUERY_STRING"]?>');">
+        <input name="Todos" type="button" id="imptd" value="Imprimir todos" onClick = "parent.js_consulta002('<?=$_SERVER["QUERY_STRING"]?>');">
        </td>
      </tr>  
     <!--    
@@ -117,7 +117,7 @@ if(isset($newsql) && $newsql=="true"){
 	   exit;
   	}  
     if (isset($e60_codemp) and $e60_codemp != "" ) { 	  
-	  $arr = split("/",$e60_codemp);
+	  $arr = preg_split("#\\/#m",(string) $e60_codemp);
 	  if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
 	  	$where_sql .= 'e60_codemp =  '.$arr[0]." and e60_anousu = ".$arr[1]." and ";
 	  }else{
@@ -169,7 +169,7 @@ if (isset($pc01_codmater) and $pc01_codmater !=""){
 }
 
 	if(isset($o50_estrutdespesa) && $o50_estrutdespesa!=""){
-	  $matriz=split('\.',$o50_estrutdespesa);
+	  $matriz=preg_split('#\.#m',(string) $o50_estrutdespesa);
 	  for($i=0; $i<count($matriz); $i++){
 	    switch($i){
 	      case 0://orgao

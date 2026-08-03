@@ -66,12 +66,12 @@ if (!USE_PCASP) {
 
 $sCaminhoArquivoLog = "tmp/log_alteracao_lancamento_movimentacao_estoque.txt";
 
-$aTables = array("c70_codlan"     => "conlancam",
+$aTables = ["c70_codlan"     => "conlancam",
                  "c69_codlan"     => "conlancamval",
                  "c76_codlan"     => "conlancamcgm",
                  "c72_codlan"     => "conlancamcompl",
                  "c71_codlan"     => "conlancamdoc",
-                 "c103_conlancam" => "conlancammatestoqueinimei");
+                 "c103_conlancam" => "conlancammatestoqueinimei"];
 
 
 if (isset($_POST["processar"])) {

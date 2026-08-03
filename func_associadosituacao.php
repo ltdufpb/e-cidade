@@ -33,7 +33,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_associadosituacao_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -87,9 +87,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $classociadosituacao->sql_query("",$campos,"fm02_situacao","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fm02_descricao)){
-          $repassa = array("chave_fm02_situacao"=>$chave_fm02_situacao,"chave_fm02_descricao"=>$chave_fm02_descricao);
+          $repassa = ["chave_fm02_situacao"=>$chave_fm02_situacao,"chave_fm02_descricao"=>$chave_fm02_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

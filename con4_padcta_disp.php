@@ -28,16 +28,16 @@ use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
 
 class cta_disp
 {
-    var $arq = null;
+    public $arq = null;
 
     public $anousu = null;
 
-    function cta_disp($header)
+    function __construct($header)
     {
         $this->anousu = db_getsession("DB_anousu");
         umask(74);
         $this->arq = fopen("tmp/CTA_DISP.TXT", 'w+');
-        fputs($this->arq, $header);
+        fputs($this->arq, (string) $header);
         fputs($this->arq, "\r\n");
     }
 
@@ -71,7 +71,7 @@ class cta_disp
         $sql = $this->getSqlProcessarContasComValores($sele);
         $result = db_query($sql);
 
-        for ($x = 0; $x < pg_numrows($result); $x++) {
+        for ($x = 0; $x < pg_num_rows($result); $x++) {
             db_fieldsmemory($result, $x);
 
             $dados = db_utils::fieldsMemory($result, $x);
@@ -81,31 +81,21 @@ class cta_disp
                   join db_tipoinstit on db21_codtipo = db21_tipoinstit
                  where codigo = $c61_instit
             ");
-            if (pg_numrows($resintit) == 0) {
+            if (pg_num_rows($resintit) == 0) {
                 echo "Parametro db21_idtribunal não configurado na tabela db_config->db_tipoinstit";
                 exit;
             } else {
                 db_fieldsmemory($resintit, 0);
             }
 
-            switch ($dados->tipo_instituicao) {
-                case 1:
-                case 3:
-                case 4:
-                    $cla = 1;
-                    break;
-                case 2:
-                    $cla = 2;
-                    break;
-                case 5:
-                case 6:
-                    $cla = 3;
-                    break;
-                default:
-                    $cla = 9;
-            }
+            $cla = match ($dados->tipo_instituicao) {
+                1, 3, 4 => 1,
+                2 => 2,
+                5, 6 => 3,
+                default => 9,
+            };
 
-            $line = formatar($c60_estrut, 20, 'n');
+            $line = formatar($c60_estrut, 20);
             $tamanhoConta = 20;
             $alteraConta = false;
 
@@ -123,28 +113,28 @@ class cta_disp
             }
 
             $line .= $instituicoes[$c61_instit];
-            $line .= formatar($dados->recurso, 4, 'n');
-            $line .= formatar(trim($c63_banco), 5, 'n');
-            $line .= formatar(trim($c63_agencia), $tamanhoAgencia, 'n');
+            $line .= formatar($dados->recurso, 4);
+            $line .= formatar(trim((string) $c63_banco), 5);
+            $line .= formatar(trim((string) $c63_agencia), $tamanhoAgencia);
 
             if ($alteraAgencia) {
-                $line .= formatar(trim($c63_dvagencia), 1, 'n');
+                $line .= formatar(trim((string) $c63_dvagencia), 1);
             }
 
             if ($c63_banco == 104) {
-                $t = formatar(trim($c63_codigooperacao), 11, 'n');
+                $t = formatar(trim((string) $c63_codigooperacao), 11);
                 $line .= $t;
                 $tamanhoConta = $tamanhoConta - 11;
             }
 
-            $line .= formatar(trim(str_replace(array('-', '.'), array('', ''), trim($c63_conta))), $tamanhoConta, 'n');
+            $line .= formatar(trim(str_replace(['-', '.'], ['', ''], trim((string) $c63_conta))), $tamanhoConta);
 
             if ($alteraConta) {
-                $line .= formatar(trim($c63_dvconta), 1, 'n');
+                $line .= formatar(trim((string) $c63_dvconta), 1);
             }
 
-            $sEstrutural = substr($c60_estrut, 0, 7);
-            $sEstruturalQuintoNivel = substr($c60_estrut, 0, 5);
+            $sEstrutural = substr((string) $c60_estrut, 0, 7);
+            $sEstruturalQuintoNivel = substr((string) $c60_estrut, 0, 5);
 
             if ($sEstrutural == '1111101') {
                 $line .= '1'; // caixa
@@ -158,17 +148,17 @@ class cta_disp
                 ) {
                     $line .= '2'; // banco conta movimento
                 } else {
-                    if ($sEstrutural == '1111150' || ( substr($c60_estrut, 0,3) == '114' and $c60_identificadorfinanceiro == 'F') ) {
+                    if ($sEstrutural == '1111150' || ( str_starts_with((string) $c60_estrut, '114') and $c60_identificadorfinanceiro == 'F') ) {
                         $line .= '3'; // banco conta aplicacao
                     } else {
-                        if (substr($c60_estrut, 0, 11) == '11251020001' ||
-                          substr($c60_estrut, 0, 11) == '11251020002' ||
-                          substr($c60_estrut, 0, 11) == '11251020003') {
+                        if (str_starts_with((string) $c60_estrut, '11251020001') ||
+                          str_starts_with((string) $c60_estrut, '11251020002') ||
+                          str_starts_with((string) $c60_estrut, '11251020003')) {
                             $line .= '4'; // deposito sentencas judiciais
                         } else {
-                            if (substr($c60_estrut, 0, 11) == '11251020004' ||
-                              substr($c60_estrut, 0, 11) == '11251020005' ||
-                              substr($c60_estrut, 0, 11) == '11251020006') {
+                            if (str_starts_with((string) $c60_estrut, '11251020004') ||
+                              str_starts_with((string) $c60_estrut, '11251020005') ||
+                              str_starts_with((string) $c60_estrut, '11251020006')) {
                                 $line .= '5'; // depositos sentencas judiciais rp
                             } else {
                                 $line .= '2'; // depositos sentencas judiciais rp
@@ -178,10 +168,10 @@ class cta_disp
                 }
             }
 
-            $line .= formatar($cla, 1, 'n');
+            $line .= formatar($cla, 1);
             if ($this->anousu >= 2020) {
                 $complementoFonteRecurso = $dados->complemento;
-                $line .= str_pad($complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
+                $line .= str_pad((string) $complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
             }
             $contador++;
 
@@ -193,7 +183,7 @@ class cta_disp
         }
 
         // trailer
-        $contador = espaco(10 - (strlen($contador)), '0') . $contador;
+        $contador = espaco(10 - (strlen((string) $contador))) . $contador;
         $line = "FINALIZADOR" . $contador;
 
         fputs($this->arq, $line);

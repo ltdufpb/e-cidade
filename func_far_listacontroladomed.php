@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_listacontroladomed_classe.php"));
 include(modification("classes/db_far_listacontrolado_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_listacontroladomed = new cl_far_listacontroladomed;
 $clfar_listacontrolado = new cl_far_listacontrolado;
 $clfar_listacontroladomed->rotulo->label("fa35_i_codigo");
@@ -100,9 +100,9 @@ $clfar_listacontrolado->rotulo->label("fa15_c_listacontrolado");
         }else{
            $sql = $clfar_listacontroladomed->sql_query("",$campos,"fa35_i_codigo","fa35_i_medanvisa=$fa01_i_medanvisa");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa35_i_codigo)){
-          $repassa = array("chave_fa35_i_codigo"=>$chave_fa35_i_codigo,"chave_fa35_i_codigo"=>$chave_fa35_i_codigo);
+          $repassa = ["chave_fa35_i_codigo"=>$chave_fa35_i_codigo,"chave_fa35_i_codigo"=>$chave_fa35_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

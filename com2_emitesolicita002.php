@@ -84,7 +84,7 @@ if($clempparametro->numrows>0){
 $result_pcparam = $clpcparam->sql_record($clpcparam->sql_query_file(db_getsession("DB_instit"),"pc30_comsaldo,pc30_permsemdotac,pc30_gerareserva,pc30_libdotac"));
 db_fieldsmemory($result_pcparam,0);
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $where_solicita = "";
 if(isset($ini) && trim($ini)!=""){
@@ -136,7 +136,7 @@ if($pc30_permsemdotac=='f'){
       $lista_itens = "";
       $virgula     = "";
       $cod_item    = "";
-      for($i = 0; $i < pg_numrows($result_test_dot); $i++){
+      for($i = 0; $i < pg_num_rows($result_test_dot); $i++){
 	   db_fieldsmemory($result_test_dot,$i);
 	   if ($cod_item != $pc11_codigo){
 	        $cod_item     = $pc11_codigo;
@@ -150,7 +150,7 @@ if($pc30_permsemdotac=='f'){
       if ($clsolicitem->numrows > 0){
 	   $erro_msg = "Verifique o(s) item(ns) ";
 	   $virgula  = "";
-	   for($i = 0; $i < pg_numrows($res_itens); $i++){
+	   for($i = 0; $i < pg_num_rows($res_itens); $i++){
  	        db_fieldsmemory($res_itens,$i);
 	        $erro_msg .= $virgula."<b>".$pc01_codmater." - ".$pc01_descrmater."</b>";
 		$virgula   = ",";
@@ -374,13 +374,13 @@ for($contador=0;$contador<$numrows_solicita;$contador++) {
 
       $oLicitacao = db_utils::fieldsMemory($rsLicitacao, 0);
       $pdf1->iNumeroLicitacao     = $oLicitacao->l20_codigo;
-      $pdf1->sModalidadeLicitacao = substr($oLicitacao->l03_descr, 0, 19);
+      $pdf1->sModalidadeLicitacao = substr((string) $oLicitacao->l03_descr, 0, 19);
     }
 
   }
   $pdf1->anulada    = !empty($pc67_sequencial);
   $pdf1->prefeitura = $nomeinst;
-  $pdf1->enderpref  = trim($ender).",".$numero;
+  $pdf1->enderpref  = trim((string) $ender).",".$numero;
   $pdf1->municpref  = $munic;
   $pdf1->telefpref  = $telef;
   $pdf1->iTipo      = $pc10_solicitacaotipo;
@@ -399,7 +399,7 @@ for($contador=0;$contador<$numrows_solicita;$contador++) {
   $pdf1->processo_administrativo = $pc90_numeroprocesso;
   $pdf1->Sdata       = $pc10_data;
   $pdf1->Svalor      = $pc12_vlrap;
-  $pdf1->Sresumo     = substr(htmlspecialchars_decode(stripslashes($pc10_resumo)),0,735);
+  $pdf1->Sresumo     = substr(htmlspecialchars_decode(stripslashes((string) $pc10_resumo)),0,735);
   $pdf1->Stipcom     = $pc50_descr;
   $pdf1->Sdepart     = $descrdepto;
   $pdf1->Srespdepart = $nomeresponsavel;
@@ -593,7 +593,7 @@ if(isset($argv[1])){
 
       $pdf1->objpdf->Output("tmp/{$sTipoDocumento}_{$pc10_numero}.pdf");
 
-      $oGerenciador->moverArquivo(array($oStdDadosGED));
+      $oGerenciador->moverArquivo([$oStdDadosGED]);
 
     } catch (Exception $eErro) {
      db_redireciona("db_erros.php?fechar=true&db_erro=".$eErro->getMessage());

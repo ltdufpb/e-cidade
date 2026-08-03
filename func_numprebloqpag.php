@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_numprebloqpag_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clnumprebloqpag = new cl_numprebloqpag;
 $clnumprebloqpag->rotulo->label("ar22_sequencial");
 $clnumprebloqpag->rotulo->label("ar22_numpre");
@@ -125,9 +125,9 @@ $clnumprebloqpag->rotulo->label("ar22_numpar");
         
         $sql = $clnumprebloqpag->sql_query(null,$campos,"ar22_sequencial",$sWhere);
            
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ar22_numpre)){
-          $repassa = array("chave_ar22_sequencial"=>$chave_ar22_sequencial,"chave_ar22_numpre"=>$chave_ar22_numpre);
+          $repassa = ["chave_ar22_sequencial"=>$chave_ar22_sequencial,"chave_ar22_numpre"=>$chave_ar22_numpre];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

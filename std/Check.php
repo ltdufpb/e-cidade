@@ -51,7 +51,7 @@ class Check {
    * @return bool
    */
   public static function isInt($iValor) {
-    return filter_var($iValor, FILTER_VALIDATE_INT, array('flags' => FILTER_NULL_ON_FAILURE)) !== null;
+    return filter_var($iValor, FILTER_VALIDATE_INT, ['flags' => FILTER_NULL_ON_FAILURE]) !== null;
   }
 
   /**
@@ -61,7 +61,7 @@ class Check {
    * @return bool
    */
   public static function isFloat($nValor) {
-    return filter_var($nValor, FILTER_VALIDATE_FLOAT, array('flags' => FILTER_NULL_ON_FAILURE)) !== null;
+    return filter_var($nValor, FILTER_VALIDATE_FLOAT, ['flags' => FILTER_NULL_ON_FAILURE]) !== null;
   }
 
   /**
@@ -75,6 +75,6 @@ class Check {
     if (is_bool($nValor)) {
       return true;
     }
-    return filter_var($nValor, FILTER_VALIDATE_BOOLEAN, array('flags' => FILTER_NULL_ON_FAILURE)) !== null;
+    return filter_var($nValor, FILTER_VALIDATE_BOOLEAN, ['flags' => FILTER_NULL_ON_FAILURE]) !== null;
   }
 }

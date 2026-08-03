@@ -123,7 +123,7 @@ function js_emite(){
            }
           </script>
               <?php 
-	      $result1=array("1"=>"Janeiro");
+	      $result1=["1"=>"Janeiro"];
               db_select("mesini",$result1,true,2,'onchange="js_criames(this)"',"","","","");
               ?>
             </td>

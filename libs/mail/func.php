@@ -53,9 +53,9 @@ class FUNC {
 		return (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN');
 	}
 
-	function str_clear($strval, $addrep = array()){
+	function str_clear($strval, $addrep = []){
 		$ret = '';
-		$rep = array("\r", "\n", "\t");
+		$rep = ["\r", "\n", "\t"];
 		if(is_array($addrep) && count($addrep) > 0){
 			foreach($addrep as $strrep){
 				if(is_string($strrep) && $strrep != "") $rep[] = $strrep;
@@ -81,7 +81,7 @@ class FUNC {
 			for($i = 0; $i < $len1; $i++){
 				$found = false;
 				for($j = 0; $j < $len2; $j++){
-					if($lists{$j} == $strval{$i}){
+					if($lists[$j] == $strval[$i]){
 						$found = true;
 						break;
 					}
@@ -128,7 +128,7 @@ class FUNC {
 	}
 
 	function getmxrr_win($hostname, &$mxhosts){
-		$mxhosts = array();
+		$mxhosts = [];
 		if(is_string($hostname) && $hostname != ""){
 			if(FUNC::is_hostname($hostname)){
 				$hostname = strtolower($hostname);
@@ -181,7 +181,7 @@ class FUNC {
 		$ret = false;
 		if(is_string($addr) && $addr != ""){
 			$regs = '^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$';
-			if(eregi($regs, $addr)){
+			if(preg_match('#' . preg_quote($regs, '#') . '#mi', $addr)){
 				if(is_bool($vermx)){
 					if($vermx){
 						$exp = explode('@', $addr);
@@ -207,7 +207,7 @@ class FUNC {
 		$ret = false;
 		if(is_string($msg) && $msg != ""){
 			$sep = "\n\n";
-			$arr['header'] = $arr['body'] = array();
+			$arr['header'] = $arr['body'] = [];
 			$exp1 = explode($sep, $msg);
 			if(!(count($exp1) > 1)){
 				$sep = "\r\n\r\n";
@@ -215,7 +215,7 @@ class FUNC {
 			}
 			if(count($exp1) > 1){
 				$multipart = false;
-				$head = str_replace(array("\r\n\t", "\r\n "), " ", $exp1[0]);
+				$head = str_replace(["\r\n\t", "\r\n "], " ", $exp1[0]);
 				$exp2 = explode("\r\n", $head);
 				if(count($exp2) > 1){
 					foreach($exp2 as $hval){
@@ -225,8 +225,8 @@ class FUNC {
 							$sval = strstr($hval, ': ');
 							$sval = substr($sval, 2);
 							$sval = FUNC::str_clear($sval);
-							$sval = trim(FUNC::delwspace($sval));
-							$arr['header'][] = array($name => $sval);
+							$sval = trim((string) FUNC::delwspace($sval));
+							$arr['header'][] = [$name => $sval];
 							$hnm = strtolower($name);
 							if($hnm == "content-type"){
 								if(strstr($sval, 'multipart/') &&  strstr($sval, '; boundary=')){
@@ -271,17 +271,17 @@ class FUNC {
 	}
 
 	function split_reverse($body, $multipart, $boundary){
-		$ret = array();
-		if(strstr($body, '--'.$boundary.'--')){
-			$exp1 = explode('--'.$boundary.'--', $body);
+		$ret = [];
+		if(strstr((string) $body, '--'.$boundary.'--')){
+			$exp1 = explode('--'.$boundary.'--', (string) $body);
 			if(strstr($exp1[0], "--".$boundary."\r\n")){
 				$exp2 = explode("--".$boundary."\r\n", $exp1[0]);
 				foreach($exp2 as $part){
 					if(stristr($part, 'Content-Type: ')){
 						$exp31 = explode('Content-Type: ', $part);
 						$exp32 = explode('Content-type: ', $part);
-						if(count($exp31) > 1 && substr($exp31[1], 0, 10) == "multipart/") $data = $exp31[1];
-						elseif(count($exp32) > 1 && substr($exp32[1], 0, 10) == "multipart/") $data = $exp32[1];
+						if(count($exp31) > 1 && str_starts_with($exp31[1], "multipart/")) $data = $exp31[1];
+						elseif(count($exp32) > 1 && str_starts_with($exp32[1], "multipart/")) $data = $exp32[1];
 						else $data = false;
 						if($data && strstr($data, 'boundary=')){
 							$exp4 = explode('multipart/', $data);
@@ -297,9 +297,9 @@ class FUNC {
 							}
 						}else{
 							if($res = FUNC::split_msg($part)){
-								$one = array();
+								$one = [];
 								foreach($res['header'] as $harr){
-									foreach($harr as $hnm => $hvl) if(strstr($hnm, 'Content-')) $one[$hnm] = $hvl;
+									foreach($harr as $hnm => $hvl) if(strstr((string) $hnm, 'Content-')) $one[$hnm] = $hvl;
 								}
 								$one['Multipart'] = $multipart;
 								$one['Data'] = $res['body'];
@@ -317,14 +317,14 @@ class FUNC {
 		$ret = false;
 		if(is_string($str) && $str != ""){
 			if($res = FUNC::split_msg($str)){
-				$arr = array();
+				$arr = [];
 				if(isset($res['multipart'], $res['boundary'])){
 					$arr['header'] = $res['header'];
 					$arr['multipart'] = 'yes';
 					$arr['body'] = FUNC::split_reverse($res['body'], $res['multipart'], $res['boundary']);
 				}else{
 					foreach($res['header'] as $harr){
-						foreach($harr as $hnm => $hvl) if(strstr($hnm, 'Content-')) $content[$hnm] = $hvl;
+						foreach($harr as $hnm => $hvl) if(strstr((string) $hnm, 'Content-')) $content[$hnm] = $hvl;
 					}
 					$content['Data'] = $res['body'];
 					$arr['header'] = $res['header'];
@@ -343,7 +343,7 @@ class FUNC {
 			$decode = trim(strtolower($decode));
 			if($decode == "base64"){
 				$str = FUNC::str_clear($str);
-				$str = trim($str);
+				$str = trim((string) $str);
 				$ret = base64_decode($str);
 			}elseif($decode == "quoted-printable"){
 				$ret = quoted_printable_decode($str);
@@ -354,7 +354,7 @@ class FUNC {
 
 	function mimetype($filename){
 		$retm = "application/octet-stream";
-		$mime = array(
+		$mime = [
 			'z'    => "application/x-compress", 
 			'xls'  => "application/x-excel", 
 			'gtar' => "application/x-gtar", 
@@ -406,10 +406,10 @@ class FUNC {
 			'avi'  => "video/x-msvideo", 
 			'vrml' => "x-world/x-vrml", 
 			'wrl'  => "x-world/x-vrml"
-		);
+		];
 		if(is_string($filename)){
 			$filename = FUNC::str_clear($filename);
-			$filename = trim($filename);
+			$filename = trim((string) $filename);
 			if($filename != ""){
 				$expext = explode(".", $filename);
 				if(count($expext) >= 2){

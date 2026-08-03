@@ -82,7 +82,7 @@ class AtributoExame
      *
      * @var AtributoValorReferenciaNumerico|AtributoValorReferenciaAlfaNumerico
      */
-    protected $aValoresDeReferencia = array();
+    protected $aValoresDeReferencia = [];
 
     /**
      * Codigo da unidade de medida
@@ -134,7 +134,7 @@ class AtributoExame
      */
     public function __construct($iCodigo = null, $sigla = null)
     {
-        $where = array();
+        $where = [];
 
         if (!empty ($iCodigo)) {
             $where[] = "la25_i_codigo = {$iCodigo}";
@@ -379,22 +379,12 @@ class AtributoExame
     public function getValoresDeReferenciaParaExame(RequisicaoExame $oExame)
     {
         $this->oExame = $oExame;
-
-        switch ($this->iTipoReferencia) {
-            case AtributoExame::REFERENCIA_NUMERICA:
-                return $this->getAtributoNumerico();
-                break;
-
-            case AtributoExame::REFERENCIA_FIXA:
-                return $this->getAtributoAlfaNumerico();
-                break;
-
-            case AtributoExame::REFERENCIA_SELECIONAVEL:
-                return $this->getAtributoAlfaNumerico(true);
-                break;
-        }
-
-        return null;
+        return match ($this->iTipoReferencia) {
+            AtributoExame::REFERENCIA_NUMERICA => $this->getAtributoNumerico(),
+            AtributoExame::REFERENCIA_FIXA => $this->getAtributoAlfaNumerico(),
+            AtributoExame::REFERENCIA_SELECIONAVEL => $this->getAtributoAlfaNumerico(),
+            default => null,
+        };
     }
 
     /**
@@ -491,7 +481,7 @@ class AtributoExame
     public function getAtributosFormula(Exame $exame)
     {
         $abreviaturas = $this->getSiglasFormula();
-        $atributosFormula = array();
+        $atributosFormula = [];
 
         foreach ($abreviaturas as $abreviatura) {
             try {
@@ -506,7 +496,7 @@ class AtributoExame
                 $sigla->sigla = $abreviatura;
                 $sigla->valor = "";
                 $atributosFormula[] = $sigla;
-            } catch (Exception $erro) {
+            } catch (Exception) {
                 $dadosMensagem = new stdClass();
                 $dadosMensagem->sigla = $abreviatura;
                 $dadosMensagem->atributo = $this->getNome();

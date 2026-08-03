@@ -33,8 +33,8 @@ include(modification("classes/db_condominio_classe.php"));
 include(modification("classes/db_condominiocgm_classe.php"));
 include(modification("classes/db_condominioprocesso_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clcondominio = new cl_condominio;
 $clcondominiocgm 		= new cl_condominiocgm();
 $clcondominioprocesso = new cl_condominioprocesso();
@@ -50,7 +50,7 @@ if(isset($alterar)){
 		db_fieldsmemory($resCondominioCgm,0);
 		$clcondominiocgm->excluir($j106_sequencial);
 	}
-	if(trim($j106_numcgm)!=""){
+	if(trim((string) $j106_numcgm)!=""){
   	$clcondominiocgm->j106_condominio = $j107_sequencial;
   	$clcondominiocgm->j106_numcgm			= $j106_numcgm;
   	$clcondominiocgm->incluir(null);

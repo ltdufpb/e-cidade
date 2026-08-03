@@ -61,7 +61,7 @@ if ($db_opcao == 1) {
               </td>
               <td>
                 <?php
-                  $x = array("f" => "NAO", "t" => "SIM");
+                  $x = ["f" => "NAO", "t" => "SIM"];
                   db_select('l12_escolherprocesso', $x, true, $db_opcao, "");
                 ?>
               </td>
@@ -72,7 +72,7 @@ if ($db_opcao == 1) {
               </td>
               <td>
                 <?php
-                  $x = array("f" => "NAO", "t" => "SIM");
+                  $x = ["f" => "NAO", "t" => "SIM"];
                   db_select('l12_escolheprotocolo', $x, true, $db_opcao, "");
                 ?>
               </td>
@@ -83,7 +83,7 @@ if ($db_opcao == 1) {
               </td>
               <td>
                 <?php
-                  $x = array('1' => 'Data de Abertura', '2' => 'Até Julgamento');
+                  $x = ['1' => 'Data de Abertura', '2' => 'Até Julgamento'];
                   db_select('l12_tipoliberacaoweb', $x, true, $db_opcao, "onChange=js_liberacaoWebDias();");
                 ?>
               </td>
@@ -135,7 +135,7 @@ if ($db_opcao == 1) {
       db_iframe_licitaparam.hide();
       <?php
         if ($db_opcao != 1) {
-          echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
+          echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
         }
       ?>
     }
@@ -150,6 +150,6 @@ if ($db_opcao == 1) {
       }
     }
 
-    <?php echo (isset($sPosScripts) ? $sPosScripts : ""); ?>
+    <?php echo ($sPosScripts ?? ""); ?>
   </script>
 </html>

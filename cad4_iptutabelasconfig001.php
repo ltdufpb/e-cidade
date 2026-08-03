@@ -56,24 +56,24 @@ $db_opcao    = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica  = array("dadostabela"    => "Dados Tabela",
+       $clcriaabas->identifica  = ["dadostabela"    => "Dados Tabela",
                                         "camposchave"    => "Campos Chave",
-                                        "camposcorrecao" => "Campos Correção");
+                                        "camposcorrecao" => "Campos Correção"];
        
-       $clcriaabas->title       = array("dadostabela"    => "Dados Tabela",
+       $clcriaabas->title       = ["dadostabela"    => "Dados Tabela",
                                         "camposchave"    => "Campos Chave",
-                                        "camposcorrecao" => "Campos Correção");
+                                        "camposcorrecao" => "Campos Correção"];
         
-       $clcriaabas->src         = array("dadostabela"    => "cad4_iptutabelasconfig004.php",
+       $clcriaabas->src         = ["dadostabela"    => "cad4_iptutabelasconfig004.php",
                                         "camposchave"    => "cad4_iptutabelasconfigcampochave001.php",
-                                        "camposcorrecao" => "cad4_iptutabelasconfigcampocorrecao001.php");
+                                        "camposcorrecao" => "cad4_iptutabelasconfigcampocorrecao001.php"];
        
-       $clcriaabas->sizecampo   = array("dadostabela"    => "23",
+       $clcriaabas->sizecampo   = ["dadostabela"    => "23",
                                         "camposchave"    => "23",
-                                        "camposcorrecao" => "23");
+                                        "camposcorrecao" => "23"];
        
-       $clcriaabas->disabled    = array("camposchave"    => "true",
-                                        "camposcorrecao" => "true");
+       $clcriaabas->disabled    = ["camposchave"    => "true",
+                                        "camposcorrecao" => "true"];
         
        $clcriaabas->cria_abas(); 
      ?> 

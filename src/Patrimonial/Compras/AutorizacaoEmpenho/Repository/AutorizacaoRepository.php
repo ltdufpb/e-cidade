@@ -46,20 +46,15 @@ class AutorizacaoRepository
     /**
      * @var array
      */
-    private $scopes = array();
-
-    /**
-     * @var Object
-     */
-    private $dao;
+    private $scopes = [];
 
     /**
      * AutorizacaoRepository constructor.
      * @param $dao \cl_empautoriza
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
 
@@ -93,7 +88,7 @@ class AutorizacaoRepository
      * @return bool|Autorizacao
      * @throws Exception
      */
-    public function find($id, $columns = array('*'))
+    public function find($id, $columns = ['*'])
     {
         $sql = $this->dao->sql_query($id, implode(', ', $columns));
         $rs = db_query($sql);
@@ -252,7 +247,7 @@ class AutorizacaoRepository
             $daoDotacaoAutorizacao->e56_coddot = $dotacao->getCodigo();
             $daoDotacaoAutorizacao->e56_anousu = $dotacao->getAno();
             $daoDotacaoAutorizacao->incluir($autorizacao->getCodigoAutorizacao());
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception(
                 "Não foi possivel vincular a Dotação a Autorização
                 {$autorizacao->getCodigoAutorizacao()}"
@@ -278,7 +273,7 @@ class AutorizacaoRepository
                 $daoAutorizacaoItens->e55_descr = $autItem['e55_descr'];
                 $daoAutorizacaoItens->incluir($autorizacao->getCodigoAutorizacao(), $autItem['e55_sequen']);
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception(
                 "Não foi possivel vincular os Itens a Autorização
                 {$autorizacao->getCodigoAutorizacao()}"
@@ -302,7 +297,7 @@ class AutorizacaoRepository
             $daoHistorico->excluir($autorizacao->getCodigoAutorizacao());
             $daoHistorico->e40_codhist = $historico->getCodigo();
             $daoHistorico->incluir($autorizacao->getCodigoAutorizacao());
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception(
                 "Não foi possivel vincular o Histórico a Autorização
                 {$autorizacao->getCodigoAutorizacao()}"
@@ -326,7 +321,7 @@ class AutorizacaoRepository
             $daoAutorizacaoPrestacao->e58_tipo = $tipoPrestacao->getCodigoTipoPrestacao();
             $daoAutorizacaoPrestacao->e58_autori = $autorizacao->getCodigoAutorizacao();
             $daoAutorizacaoPrestacao->incluir();
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception(
                 "Não foi possivel vincular a Prestação com a Autorização
                 {$autorizacao->getCodigoAutorizacao()}"
@@ -352,15 +347,15 @@ class AutorizacaoRepository
             $daoProcessoAdministrativo->e150_empautoriza = $autorizacao->getCodigoAutorizacao();
             $daoProcessoAdministrativo->e150_numeroprocesso = $numeroProcesso;
             $daoProcessoAdministrativo->incluir('');
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception("Erro ao tentar cadastrar um Processo Administrativo vinculado a Autorização
             {$autorizacao->getCodigoAutorizacao()}");
         }
 
-        return ProcessoAdministrativo::fromState(array(
+        return ProcessoAdministrativo::fromState([
             'e150_empautoriza' => $autorizacao->getCodigoAutorizacao(),
             'e150_numeroprocesso' => $numeroProcesso
-        ));
+        ]);
     }
 
     /**

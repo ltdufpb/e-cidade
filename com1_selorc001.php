@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcorcam_classe.php"));
 $clpcorcam = new cl_pcorcam;
 $clpcorcam->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $action = 'com1_orcamlancval001.php';
 if(isset($julg) && trim($julg)!=""){

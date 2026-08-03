@@ -37,8 +37,8 @@ $clissbase = new cl_issbase;
 $clcgm     = new cl_cgm;
 $clrotulo  = new rotulocampo;
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $db_botao = true;
 $db_opcao = 2;
@@ -213,7 +213,7 @@ function js_retorna(inscr){
   return;
 }
 function js_voltar(){
-  location.href="<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>";
+  location.href="<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>";
 }
 function js_inscr(mostra){
   var inscr=document.form1.q02_inscr.value;

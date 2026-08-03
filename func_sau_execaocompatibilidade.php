@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_execaocompatibilidade_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_execaocompatibilidade = new cl_sau_execaocompatibilidade;
 $clsau_execaocompatibilidade->rotulo->label("sd67_i_codigo");
 $clsau_execaocompatibilidade->rotulo->label("sd67_i_procprincipal");
@@ -98,9 +98,9 @@ $clsau_execaocompatibilidade->rotulo->label("sd67_i_procprincipal");
         }else{
            $sql = $clsau_execaocompatibilidade->sql_query("",$campos,"sd67_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd67_i_procprincipal)){
-          $repassa = array("chave_sd67_i_codigo"=>$chave_sd67_i_codigo,"chave_sd67_i_procprincipal"=>$chave_sd67_i_procprincipal);
+          $repassa = ["chave_sd67_i_codigo"=>$chave_sd67_i_codigo,"chave_sd67_i_procprincipal"=>$chave_sd67_i_procprincipal];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

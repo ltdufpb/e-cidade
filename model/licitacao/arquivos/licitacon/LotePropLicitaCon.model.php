@@ -59,20 +59,20 @@ class LotePropLicitaCon extends ArquivoLicitaCon
      */
     public function getDados()
     {
-        $aSituacoes = array(
+        $aSituacoes = [
           SituacaoLicitacao::SITUACAO_JULGADA,
           SituacaoLicitacao::SITUACAO_ADJUDICADA,
           SituacaoLicitacao::SITUACAO_HOMOLOGADA
-        );
+        ];
 
         $oDaoLicitacao = new cl_liclicita;
 
-        $sTipos = implode(',', array(
+        $sTipos = implode(',', [
           licitacao::TIPO_JULGAMENTO_POR_ITEM,
           licitacao::TIPO_JULGAMENTO_GLOBAL,
-        ));
+        ]);
 
-        $aCampos = array(
+        $aCampos = [
           'l20_codigo',
           'z01_numcgm',
           'l20_numero AS nr_licitacao',
@@ -100,7 +100,7 @@ class LotePropLicitaCon extends ArquivoLicitaCon
           "CASE
                 WHEN l20_tipojulg = " . licitacao::TIPO_JULGAMENTO_POR_LOTE . " AND l44_sigla = 'CPC' THEN TO_CHAR(MAX(l11_data), 'DD/MM/YYYY')
               END AS dt_homologacao, pc23_orcamforne, pc22_orcamitem"
-        );
+        ];
 
         $aWhere = LicitacaoLicitaCon::getWhereLicitacao(
           $this->oCabecalho->getInstituicao(),
@@ -118,7 +118,7 @@ class LotePropLicitaCon extends ArquivoLicitaCon
             throw new DBException($sMsgErro);
         }
 
-        $aLicitacoes = array();
+        $aLicitacoes = [];
         $iTotalLotes = pg_num_rows($rsLotes);
 
         for ($iLinha = 0; $iLinha < $iTotalLotes; $iLinha++) {
@@ -240,7 +240,7 @@ class LotePropLicitaCon extends ArquivoLicitaCon
             }
         }
 
-        $aLotes = array();
+        $aLotes = [];
         foreach ($aLicitacoes as $aLicitante) {
             foreach ($aLicitante as $aLote) {
                 foreach ($aLote as $oLote) {

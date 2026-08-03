@@ -67,11 +67,11 @@ function novaLinha($oPdf, $sCbo, $sNomeCbo, $sProcedimento, $lMostraProfissional
   $iTam = 5;
   
   $oPdf->cell(15, $iTam, $sCbo, 1, 0, 'L', $lCor);
-  $oPdf->cell(70, $iTam, substr($sNomeCbo, 0, 52), 1, 0, 'L', $lCor);
+  $oPdf->cell(70, $iTam, substr((string) $sNomeCbo, 0, 52), 1, 0, 'L', $lCor);
 
   if ($lMostraProfissional) {
 
-    $oPdf->cell(125, $iTam, substr($sProcedimento, 0 , 72), 1, 0, 'L', $lCor);
+    $oPdf->cell(125, $iTam, substr((string) $sProcedimento, 0 , 72), 1, 0, 'L', $lCor);
     $oPdf->cell(69, $iTam, $sProfissional, 1, 1, 'L', $lCor);
 
   } else {
@@ -108,13 +108,13 @@ function formataData($dData, $iTipo = 1) {
 
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
  
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
  return $dData;
 
@@ -184,10 +184,10 @@ $oDados         = db_utils::fieldsmemory($rs, 0);
 $lProfissional  = $mostrarProfissional == 1 ? true : false; // controla se algum profissional será enviado
 
 if ($oDados->sd65_c_financiamento == '01') {
-  novoTitulo($oPdf, 'PROCEDIMENTOS PAB');
+  novoTitulo($oPdf);
 } else {
 
-  novoTitulo($oPdf, 'PROCEDIMENTOS NÃO PAB');
+  novoTitulo($oPdf);
   $lImprimeTitulo = false;
 
 }
@@ -196,7 +196,7 @@ $sProcedimento       = '';
 $sEspecialidade      = '';
 $iContEspecialidades = 0;
 
-novoCabecalho($oPdf, $lProfissional);
+novoCabecalho($oPdf);
 for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
 
   $oDados = db_utils::fieldsmemory($rs, $iCont);
@@ -208,7 +208,7 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
      o título será impresso novamente 
   */
   if ($lImprimeTitulo && $oDados->sd65_c_financiamento != '01') {
-    
+
     /* busco o total de procedimentos PAB */
     $sCampos             = ' distinct on (sau_procedimento.sd63_c_procedimento) sd63_c_procedimento ';
     $sWhere2             = " and sau_financiamento.sd65_c_financiamento = '01' ";
@@ -233,11 +233,11 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
 
     }
 
-    novoTotal($oPdf, $iContEspecialidades, $iTotalProcedimentos, $lProfissional, $iTotalProfissionais);
+    novoTotal($oPdf, $iContEspecialidades, $iTotalProcedimentos);
 
     $oPdf->Addpage('L');
-    novoTitulo($oPdf, 'PROCEDIMENTOS NÃO PAB');
-    novoCabecalho($oPdf, $lProfissional);
+    novoTitulo($oPdf);
+    novoCabecalho($oPdf);
     $lImprimeTitulo      = false;
     $iContEspecialidades = 0;
     $sEspecialidade      = '';
@@ -248,7 +248,7 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
   if ($oPdf->getY() >$oPdf->h - 30) {
 
     $oPdf->Addpage('L');
-    novoCabecalho($oPdf, $lProfissional);
+    novoCabecalho($oPdf);
 
   }
 
@@ -287,7 +287,7 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
     /* Laço que elimina os registros com os mesmos procedimentos dentro de uma especialidade, pois nestes
        registros só o que difere é o profissional e neste if só entra se o profissional não for exibido. */
     while ($sProcedimento == $oDados->sd63_c_procedimento && $sEspecialidade == $oDados->rh70_estrutural) {
-    
+
       $iCont++;
       if ($iCont < $iLinhas) {
         $oDados = db_utils::fieldsmemory($rs, $iCont);
@@ -329,7 +329,7 @@ if ($lProfissional) {
   $iTotalProfissionais = $oDaoProntproced->numrows;
 
 }
-novoTotal($oPdf, $iContEspecialidades, $iTotalProcedimentos, $lProfissional, $iTotalProfissionais);
+novoTotal($oPdf, $iContEspecialidades, $iTotalProcedimentos);
 
 $oPdf->Output();  
 ?>

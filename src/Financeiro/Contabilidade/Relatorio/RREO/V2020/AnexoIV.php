@@ -13,6 +13,7 @@ class AnexoIV extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2019\Ane
      * @return \stdClass[]
      * @throws \Exception
      */
+    #[\Override]
     public function getDados($trazerConfiguracaoPadrao = true)
     {
         parent::getDados($trazerConfiguracaoPadrao);

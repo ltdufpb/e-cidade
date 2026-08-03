@@ -112,13 +112,13 @@ if ( isset($_SESSION['objetoXML'])) {
 	      db_input(str_replace('$','',$oVariavel->getNome()),50,"0",true,"text",1,"");
 	      break;
 	    case 'bool':
-	      $aTipos = array("t" => "Sim",
-	                      "f" => "Não" );
+	      $aTipos = ["t" => "Sim",
+	                      "f" => "Não" ];
 	      db_select(str_replace('$','',$oVariavel->getNome()),$aTipos,true,1,"");
 	      break;
 	    case 'select':
  //             if( $oVariavel->getSql() != '' ){ 
-                  if( substr( strtolower(trim($oVariavel->getSql())) ,0,6)  == "select" ){
+                  if( str_starts_with(strtolower(trim((string) $oVariavel->getSql())), "select") ){
                      $res_sql = pg_query($oVariavel->getSql());
                      db_selectrecord(str_replace('$','',$oVariavel->getNome()), $res_sql, true, 2);
                   }
@@ -148,9 +148,9 @@ if ( isset($_SESSION['objetoXML'])) {
         $nova_saida[3] = 'txt';
         $nova_saida[4] = 'html';
         $sHtml .= " <select name='nova_saida'>
-                    <option value='pdf' ".($oPropriedades->getTipoSaida()==$nova_saida[1]?' selected ':'')."'>".strtoupper($nova_saida[1])."</option>
-                    <option value='csv' ".($oPropriedades->getTipoSaida()==$nova_saida[2]?' selected ':'')."'>".strtoupper($nova_saida[2])."</option>
-                    <option value='txt' ".($oPropriedades->getTipoSaida()==$nova_saida[3]?' selected ':'')."'>".strtoupper($nova_saida[3])."</option>
+                    <option value='pdf' ".($oPropriedades->getTipoSaida()==$nova_saida[1]?' selected ':'')."'>".strtoupper((string) $nova_saida[1])."</option>
+                    <option value='csv' ".($oPropriedades->getTipoSaida()==$nova_saida[2]?' selected ':'')."'>".strtoupper((string) $nova_saida[2])."</option>
+                    <option value='txt' ".($oPropriedades->getTipoSaida()==$nova_saida[3]?' selected ':'')."'>".strtoupper((string) $nova_saida[3])."</option>
                     <option value='html' ".($oPropriedades->getTipoSaida()==$nova_saida[4]?' selected ':'')."'>".strtoupper($nova_saida[4])."</option>
                     </select>";
 

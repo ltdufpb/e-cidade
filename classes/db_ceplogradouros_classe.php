@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE ceplogradouros
 class cl_ceplogradouros { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cp06_sequencial = 0; 
-   var $cp06_codlogradouro = 0; 
-   var $cp06_codbairroinicial = 0; 
-   var $cp06_codbairrofinal = 0; 
-   var $cp06_logradouro = null; 
-   var $cp06_adicional = null; 
-   var $cp06_cep = null; 
-   var $cp06_grandeusuario = null; 
-   var $cp06_numinicial = 0; 
-   var $cp06_numfinal = 0; 
-   var $cp06_lado = null; 
-   var $cp06_codseccao = 0; 
-   var $cp06_sigla = null; 
-   var $cp06_codlocalidade = 0; 
+   public $cp06_sequencial = 0; 
+   public $cp06_codlogradouro = 0; 
+   public $cp06_codbairroinicial = 0; 
+   public $cp06_codbairrofinal = 0; 
+   public $cp06_logradouro = null; 
+   public $cp06_adicional = null; 
+   public $cp06_cep = null; 
+   public $cp06_grandeusuario = null; 
+   public $cp06_numinicial = 0; 
+   public $cp06_numfinal = 0; 
+   public $cp06_lado = null; 
+   public $cp06_codseccao = 0; 
+   public $cp06_sigla = null; 
+   public $cp06_codlocalidade = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cp06_sequencial = int4 = Sequencial 
                  cp06_codlogradouro = int8 = Código do Logradouro 
                  cp06_codbairroinicial = int8 = Bairro Inicial 
@@ -74,10 +74,10 @@ class cl_ceplogradouros {
                  cp06_codlocalidade = int8 = Codigo da Localidade 
                  ";
    //funcao construtor da classe 
-   function cl_ceplogradouros() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ceplogradouros"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -239,10 +239,10 @@ class cl_ceplogradouros {
          $this->erro_status = "0";
          return false; 
        }
-       $this->cp06_sequencial = pg_result($result,0,0); 
+       $this->cp06_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from ceplogradouros_cp06_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cp06_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cp06_sequencial)){
          $this->erro_sql = " Campo cp06_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -296,7 +296,7 @@ class cl_ceplogradouros {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Logradouros ($this->cp06_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Logradouros já Cadastrado";
@@ -320,23 +320,23 @@ class cl_ceplogradouros {
      $resaco = $this->sql_record($this->sql_query_file($this->cp06_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9850,'$this->cp06_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1197,9850,'','".AddSlashes(pg_result($resaco,0,'cp06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7197,'','".AddSlashes(pg_result($resaco,0,'cp06_codlogradouro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7198,'','".AddSlashes(pg_result($resaco,0,'cp06_codbairroinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7199,'','".AddSlashes(pg_result($resaco,0,'cp06_codbairrofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7200,'','".AddSlashes(pg_result($resaco,0,'cp06_logradouro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7201,'','".AddSlashes(pg_result($resaco,0,'cp06_adicional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7202,'','".AddSlashes(pg_result($resaco,0,'cp06_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7217,'','".AddSlashes(pg_result($resaco,0,'cp06_grandeusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7203,'','".AddSlashes(pg_result($resaco,0,'cp06_numinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7204,'','".AddSlashes(pg_result($resaco,0,'cp06_numfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7205,'','".AddSlashes(pg_result($resaco,0,'cp06_lado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7206,'','".AddSlashes(pg_result($resaco,0,'cp06_codseccao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7207,'','".AddSlashes(pg_result($resaco,0,'cp06_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1197,7208,'','".AddSlashes(pg_result($resaco,0,'cp06_codlocalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,9850,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7197,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_codlogradouro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7198,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_codbairroinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7199,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_codbairrofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7200,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_logradouro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7201,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_adicional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7202,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7217,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_grandeusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7203,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_numinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7204,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_numfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7205,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_lado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7206,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_codseccao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7207,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1197,7208,'','".AddSlashes(pg_fetch_result($resaco,0,'cp06_codlocalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -345,10 +345,10 @@ class cl_ceplogradouros {
       $this->atualizacampos();
      $sql = " update ceplogradouros set ";
      $virgula = "";
-     if(trim($this->cp06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_sequencial"])){ 
+     if(trim((string) $this->cp06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_sequencial"])){ 
        $sql  .= $virgula." cp06_sequencial = $this->cp06_sequencial ";
        $virgula = ",";
-       if(trim($this->cp06_sequencial) == null ){ 
+       if(trim((string) $this->cp06_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "cp06_sequencial";
          $this->erro_banco = "";
@@ -358,10 +358,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_codlogradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codlogradouro"])){ 
+     if(trim((string) $this->cp06_codlogradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codlogradouro"])){ 
        $sql  .= $virgula." cp06_codlogradouro = $this->cp06_codlogradouro ";
        $virgula = ",";
-       if(trim($this->cp06_codlogradouro) == null ){ 
+       if(trim((string) $this->cp06_codlogradouro) == null ){ 
          $this->erro_sql = " Campo Código do Logradouro nao Informado.";
          $this->erro_campo = "cp06_codlogradouro";
          $this->erro_banco = "";
@@ -371,10 +371,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_codbairroinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codbairroinicial"])){ 
+     if(trim((string) $this->cp06_codbairroinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codbairroinicial"])){ 
        $sql  .= $virgula." cp06_codbairroinicial = $this->cp06_codbairroinicial ";
        $virgula = ",";
-       if(trim($this->cp06_codbairroinicial) == null ){ 
+       if(trim((string) $this->cp06_codbairroinicial) == null ){ 
          $this->erro_sql = " Campo Bairro Inicial nao Informado.";
          $this->erro_campo = "cp06_codbairroinicial";
          $this->erro_banco = "";
@@ -384,10 +384,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_codbairrofinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codbairrofinal"])){ 
+     if(trim((string) $this->cp06_codbairrofinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codbairrofinal"])){ 
        $sql  .= $virgula." cp06_codbairrofinal = $this->cp06_codbairrofinal ";
        $virgula = ",";
-       if(trim($this->cp06_codbairrofinal) == null ){ 
+       if(trim((string) $this->cp06_codbairrofinal) == null ){ 
          $this->erro_sql = " Campo Bairro Final nao Informado.";
          $this->erro_campo = "cp06_codbairrofinal";
          $this->erro_banco = "";
@@ -397,10 +397,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_logradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_logradouro"])){ 
+     if(trim((string) $this->cp06_logradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_logradouro"])){ 
        $sql  .= $virgula." cp06_logradouro = '$this->cp06_logradouro' ";
        $virgula = ",";
-       if(trim($this->cp06_logradouro) == null ){ 
+       if(trim((string) $this->cp06_logradouro) == null ){ 
          $this->erro_sql = " Campo Logradouro nao Informado.";
          $this->erro_campo = "cp06_logradouro";
          $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_adicional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_adicional"])){ 
+     if(trim((string) $this->cp06_adicional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_adicional"])){ 
        $sql  .= $virgula." cp06_adicional = '$this->cp06_adicional' ";
        $virgula = ",";
-       if(trim($this->cp06_adicional) == null ){ 
+       if(trim((string) $this->cp06_adicional) == null ){ 
          $this->erro_sql = " Campo Adicional nao Informado.";
          $this->erro_campo = "cp06_adicional";
          $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_cep"])){ 
+     if(trim((string) $this->cp06_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_cep"])){ 
        $sql  .= $virgula." cp06_cep = '$this->cp06_cep' ";
        $virgula = ",";
-       if(trim($this->cp06_cep) == null ){ 
+       if(trim((string) $this->cp06_cep) == null ){ 
          $this->erro_sql = " Campo Cep nao Informado.";
          $this->erro_campo = "cp06_cep";
          $this->erro_banco = "";
@@ -436,10 +436,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_grandeusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_grandeusuario"])){ 
+     if(trim((string) $this->cp06_grandeusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_grandeusuario"])){ 
        $sql  .= $virgula." cp06_grandeusuario = '$this->cp06_grandeusuario' ";
        $virgula = ",";
-       if(trim($this->cp06_grandeusuario) == null ){ 
+       if(trim((string) $this->cp06_grandeusuario) == null ){ 
          $this->erro_sql = " Campo Grande Usuario nao Informado.";
          $this->erro_campo = "cp06_grandeusuario";
          $this->erro_banco = "";
@@ -449,10 +449,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_numinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_numinicial"])){ 
+     if(trim((string) $this->cp06_numinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_numinicial"])){ 
        $sql  .= $virgula." cp06_numinicial = $this->cp06_numinicial ";
        $virgula = ",";
-       if(trim($this->cp06_numinicial) == null ){ 
+       if(trim((string) $this->cp06_numinicial) == null ){ 
          $this->erro_sql = " Campo Número Inicial nao Informado.";
          $this->erro_campo = "cp06_numinicial";
          $this->erro_banco = "";
@@ -462,10 +462,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_numfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_numfinal"])){ 
+     if(trim((string) $this->cp06_numfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_numfinal"])){ 
        $sql  .= $virgula." cp06_numfinal = $this->cp06_numfinal ";
        $virgula = ",";
-       if(trim($this->cp06_numfinal) == null ){ 
+       if(trim((string) $this->cp06_numfinal) == null ){ 
          $this->erro_sql = " Campo Número Final nao Informado.";
          $this->erro_campo = "cp06_numfinal";
          $this->erro_banco = "";
@@ -475,10 +475,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_lado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_lado"])){ 
+     if(trim((string) $this->cp06_lado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_lado"])){ 
        $sql  .= $virgula." cp06_lado = '$this->cp06_lado' ";
        $virgula = ",";
-       if(trim($this->cp06_lado) == null ){ 
+       if(trim((string) $this->cp06_lado) == null ){ 
          $this->erro_sql = " Campo Lado nao Informado.";
          $this->erro_campo = "cp06_lado";
          $this->erro_banco = "";
@@ -488,10 +488,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_codseccao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codseccao"])){ 
+     if(trim((string) $this->cp06_codseccao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codseccao"])){ 
        $sql  .= $virgula." cp06_codseccao = $this->cp06_codseccao ";
        $virgula = ",";
-       if(trim($this->cp06_codseccao) == null ){ 
+       if(trim((string) $this->cp06_codseccao) == null ){ 
          $this->erro_sql = " Campo Codigo Secção nao Informado.";
          $this->erro_campo = "cp06_codseccao";
          $this->erro_banco = "";
@@ -501,10 +501,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_sigla"])){ 
+     if(trim((string) $this->cp06_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_sigla"])){ 
        $sql  .= $virgula." cp06_sigla = '$this->cp06_sigla' ";
        $virgula = ",";
-       if(trim($this->cp06_sigla) == null ){ 
+       if(trim((string) $this->cp06_sigla) == null ){ 
          $this->erro_sql = " Campo Sigla Estado nao Informado.";
          $this->erro_campo = "cp06_sigla";
          $this->erro_banco = "";
@@ -514,10 +514,10 @@ class cl_ceplogradouros {
          return false;
        }
      }
-     if(trim($this->cp06_codlocalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codlocalidade"])){ 
+     if(trim((string) $this->cp06_codlocalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp06_codlocalidade"])){ 
        $sql  .= $virgula." cp06_codlocalidade = $this->cp06_codlocalidade ";
        $virgula = ",";
-       if(trim($this->cp06_codlocalidade) == null ){ 
+       if(trim((string) $this->cp06_codlocalidade) == null ){ 
          $this->erro_sql = " Campo Codigo da Localidade nao Informado.";
          $this->erro_campo = "cp06_codlocalidade";
          $this->erro_banco = "";
@@ -535,37 +535,37 @@ class cl_ceplogradouros {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9850,'$this->cp06_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1197,9850,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_sequencial'))."','$this->cp06_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,9850,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_sequencial'))."','$this->cp06_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_codlogradouro"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7197,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_codlogradouro'))."','$this->cp06_codlogradouro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7197,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_codlogradouro'))."','$this->cp06_codlogradouro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_codbairroinicial"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7198,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_codbairroinicial'))."','$this->cp06_codbairroinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7198,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_codbairroinicial'))."','$this->cp06_codbairroinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_codbairrofinal"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7199,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_codbairrofinal'))."','$this->cp06_codbairrofinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7199,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_codbairrofinal'))."','$this->cp06_codbairrofinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_logradouro"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7200,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_logradouro'))."','$this->cp06_logradouro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7200,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_logradouro'))."','$this->cp06_logradouro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_adicional"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7201,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_adicional'))."','$this->cp06_adicional',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7201,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_adicional'))."','$this->cp06_adicional',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_cep"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7202,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_cep'))."','$this->cp06_cep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7202,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_cep'))."','$this->cp06_cep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_grandeusuario"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7217,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_grandeusuario'))."','$this->cp06_grandeusuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7217,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_grandeusuario'))."','$this->cp06_grandeusuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_numinicial"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7203,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_numinicial'))."','$this->cp06_numinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7203,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_numinicial'))."','$this->cp06_numinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_numfinal"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7204,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_numfinal'))."','$this->cp06_numfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7204,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_numfinal'))."','$this->cp06_numfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_lado"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7205,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_lado'))."','$this->cp06_lado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7205,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_lado'))."','$this->cp06_lado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_codseccao"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7206,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_codseccao'))."','$this->cp06_codseccao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7206,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_codseccao'))."','$this->cp06_codseccao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_sigla"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7207,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_sigla'))."','$this->cp06_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7207,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_sigla'))."','$this->cp06_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp06_codlocalidade"]))
-           $resac = db_query("insert into db_acount values($acount,1197,7208,'".AddSlashes(pg_result($resaco,$conresaco,'cp06_codlocalidade'))."','$this->cp06_codlocalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1197,7208,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp06_codlocalidade'))."','$this->cp06_codlocalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -610,23 +610,23 @@ class cl_ceplogradouros {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9850,'$cp06_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1197,9850,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7197,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_codlogradouro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7198,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_codbairroinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7199,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_codbairrofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7200,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_logradouro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7201,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_adicional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7202,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7217,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_grandeusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7203,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_numinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7204,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_numfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7205,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_lado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7206,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_codseccao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7207,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1197,7208,'','".AddSlashes(pg_result($resaco,$iresaco,'cp06_codlocalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,9850,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7197,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_codlogradouro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7198,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_codbairroinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7199,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_codbairrofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7200,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_logradouro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7201,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_adicional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7202,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7217,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_grandeusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7203,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_numinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7204,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_numfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7205,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_lado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7206,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_codseccao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7207,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1197,7208,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp06_codlocalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from ceplogradouros
@@ -686,7 +686,7 @@ class cl_ceplogradouros {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:ceplogradouros";
@@ -700,7 +700,7 @@ class cl_ceplogradouros {
    function sql_query ( $cp06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -723,7 +723,7 @@ class cl_ceplogradouros {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -735,7 +735,7 @@ class cl_ceplogradouros {
    function sql_query_file ( $cp06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -756,7 +756,7 @@ class cl_ceplogradouros {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

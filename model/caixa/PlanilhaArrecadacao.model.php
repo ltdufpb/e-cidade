@@ -65,7 +65,7 @@ class PlanilhaArrecadacao
      * Colecao de Receitas pertencentes a planilha
      * @var array de ReceitaPlanilha
      */
-    private $aReceitaPlanilha = array();
+    private $aReceitaPlanilha = [];
 
     /**
      * @var string
@@ -99,7 +99,7 @@ class PlanilhaArrecadacao
                 }
 
                 if (!empty($oPlanilha->k144_numeroprocesso)) {
-                    $this->sProcessoAdministrativo = trim($oPlanilha->k144_numeroprocesso);
+                    $this->sProcessoAdministrativo = trim((string) $oPlanilha->k144_numeroprocesso);
                 }
             }
         }
@@ -265,7 +265,7 @@ class PlanilhaArrecadacao
     public function getSlipsAutomaticosDasExtras($situacao = null){
 
       $oDao = new cl_slipplacaixarec;
-      $aWhere = array();
+      $aWhere = [];
       $aWhere[] = "k81_codpla = {$this->getCodigo()}";
       if (!empty($situacao)) {
         $aWhere[] = "k17_situacao = {$situacao}";
@@ -273,7 +273,7 @@ class PlanilhaArrecadacao
       $sWhere = implode(" and ", $aWhere);
       $sql = $oDao->sql_query(null, "k207_slip, placaixarec.*", "k207_slip", $sWhere);
       $rs = $oDao->sql_record($sql);
-      $aSlips = array();
+      $aSlips = [];
       if ($oDao->numrows > 0) {
 
         for ($i = 0; $i < $oDao->numrows; $i++) {

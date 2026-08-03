@@ -55,8 +55,6 @@ final class Recibo implements Service
 {
     private $usaCustas;
 
-    private $cadTipo;
-
     private $iniciais;
 
     /** @var ReciboModel */
@@ -70,13 +68,11 @@ final class Recibo implements Service
 
     private $termoRepository;
 
-    public function __construct($cadTipo)
+    public function __construct(private $cadTipo)
     {
-        $this->cadTipo = $cadTipo;
-
         $this->modeloCarnePadraoRepository = ModeloCarnePadrao::getInstance();
-        $this->processoForoRepository = ProcessoForo::getInstance();
-        $this->termoRepository = TermoRepository::getInstance();
+        $this->processoForoRepository = (new ProcessoForo())->getInstance();
+        $this->termoRepository = (new TermoRepository())->getInstance();
 
         $this->termoRepository->setReturnFullItem(true);
         $this->processoForoRepository->setReturnFullItem(true);
@@ -132,10 +128,10 @@ final class Recibo implements Service
     public function validaUsoDeCustas()
     {
         try {
-            $existeRegraModelos = $this->modeloCarnePadraoRepository->existeRegraModelos(array(
+            $existeRegraModelos = $this->modeloCarnePadraoRepository->existeRegraModelos([
                 TipoModelo::RECIBO,
                 TipoModelo::CARNE
-            ));
+            ]);
 
             if ($existeRegraModelos and $this->emissaoReciboValido()) {
                 $this->usaCustas = true;
@@ -158,12 +154,12 @@ final class Recibo implements Service
         }
 
         if ($this->regraEmissao instanceof RegraEmissao) {
-            if (!in_array($this->cadTipo, array(18, 12, 13)) ||
+            if (!in_array($this->cadTipo, [18, 12, 13]) ||
                   $this->regraEmissao->getCadTipoConvenio() != RegraEmissao::getConveioCustaBoleto()) {
                 return false;
             }
         } else {
-            if (!in_array($this->regraEmissao->k03_tipo, array(18, 12, 13))
+            if (!in_array($this->regraEmissao->k03_tipo, [18, 12, 13])
                 || $this->regraEmissao->ar11_cadtipoconvenio != RegraEmissao::getConveioCustaBoleto()
             ) {
                 return false;
@@ -175,10 +171,10 @@ final class Recibo implements Service
         }
 
         /** @var PartilhaRecibo[] $partilhas */
-        $partilhas = array();
+        $partilhas = [];
 
         if ($this->emissaoReciboParcelamento()) {
-            $numpres = array();
+            $numpres = [];
 
             $debitos = $this->recibo->getDebitosRecibo();
 
@@ -191,8 +187,8 @@ final class Recibo implements Service
 
                 $termoIniciais = $termo->getTermoIniciais();
 
-                $iniciais = array();
-                $processos = array();
+                $iniciais = [];
+                $processos = [];
 
                 foreach ($termoIniciais as $termoInicial) {
                     $inicial = $termoInicial->getInicial();
@@ -237,8 +233,8 @@ final class Recibo implements Service
             }
         } else {
             if ($this->emissaoReciboInicialForo()) {
-                $iniciais = array();
-                $processos = array();
+                $iniciais = [];
+                $processos = [];
 
                 foreach ($this->iniciais as $codigoInicial) {
                     $processo = $this->processoForoRepository->getByInicial($codigoInicial);
@@ -301,10 +297,10 @@ final class Recibo implements Service
             return $repository->getCustasParcelamentoForo($numnov);
         }
 
-        $oProcessoForoPartilhaRepository = ProcessoForoPartilhaRepository::getInstance();
+        $oProcessoForoPartilhaRepository = (new ProcessoForoPartilhaRepository())->getInstance();
         $custasProcesso = $oProcessoForoPartilhaRepository->getDadosRecibo($numnov);
 
-        $oPartilhaCustasRepository = InicialPartilhaCustasRepository::getInstance();
+        $oPartilhaCustasRepository = (new InicialPartilhaCustasRepository())->getInstance();
         $custasInicial = $oPartilhaCustasRepository->getDadosRecibo($numnov);
 
         $custas = array_merge($custasProcesso, $custasInicial);

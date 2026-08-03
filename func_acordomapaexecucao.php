@@ -35,8 +35,8 @@ require_once(modification("classes/db_acordo_classe.php"));
 define('EXECUCAO_CONTRATO_FINANCEIRA', 1);
 define('EXECUCAO_FINANCEIRA_EMPENHO', 2);
 $oGet = db_utils::postMemory($_GET);
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoAcordo = new cl_acordo;
 $oDaoAcordo->rotulo->label();
@@ -101,7 +101,7 @@ db_app::load("estilos.css, grid.style.css");
     <td align="center" valign="top">
       <?php
 
-      $aWhere = array();
+      $aWhere = [];
 
       if (!empty($pesquisa_chave)) {
         $aWhere[] = 'ac16_sequencial = ' . $pesquisa_chave;
@@ -125,7 +125,7 @@ db_app::load("estilos.css, grid.style.css");
        */
       if (!empty($ac16_numeroacordo)) {
 
-        $aNumeroAcordo = explode('/', $ac16_numeroacordo);
+        $aNumeroAcordo = explode('/', (string) $ac16_numeroacordo);
         $iNumero = $aNumeroAcordo[0];
         $iAno = !empty($aNumeroAcordo[1]) ? $aNumeroAcordo[1] : db_getsession("DB_anousu");
 
@@ -155,11 +155,11 @@ db_app::load("estilos.css, grid.style.css");
         $sCampos .= "acordo.ac16_resumoobjeto::text,";
         $sCampos .= "ac28_descricao as dl_Origem";
 
-        $repassa = array();
+        $repassa = [];
         $sSql = $oDaoAcordo->$sNomeMetodo(null, $sCampos, 'ac16_sequencial', $sWhere);
 
         if (isset($chave_ac16_sequencial)) {
-          $repassa = array("chave_ac16_sequencial"=>$chave_ac16_sequencial,"chave_ac16_sequencial"=>$chave_ac16_sequencial);
+          $repassa = ["chave_ac16_sequencial"=>$chave_ac16_sequencial,"chave_ac16_sequencial"=>$chave_ac16_sequencial];
         }
 
         db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

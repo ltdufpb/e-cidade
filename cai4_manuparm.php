@@ -41,9 +41,9 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("k06_descr");
 
 
-if(isset($HTTP_POST_VARS["alterar"])) {
+if(isset($_POST["alterar"])) {
   $result = db_query("select k03_anousu from numpref where k03_anousu = ".db_getsession("DB_anousu"));
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
 
   $k03_numpre = $k03_numpre==""?0:$k03_numpre;
   $k03_defope = $k03_defope==""?0:$k03_defope;
@@ -52,7 +52,7 @@ if(isset($HTTP_POST_VARS["alterar"])) {
   $k03_codbco = $k03_codbco==""?0:$k03_codbco;
   $k03_recmul = $k03_recmul==""?0:$k03_recmul;
   
-  if(pg_numrows($result) == 0) {
+  if(pg_num_rows($result) == 0) {
     db_query("insert into numpref(k03_anousu,
                                  k03_numpre,                                 
                                  k03_defope,
@@ -103,7 +103,7 @@ if(isset($HTTP_POST_VARS["alterar"])) {
   }
 }
 $result = db_query("select * from numpref where k03_anousu = ".db_getsession("DB_anousu"));
-if(pg_numrows($result) > 0)
+if(pg_num_rows($result) > 0)
   db_fieldsmemory($result,0);
 ?>
 <html>
@@ -193,7 +193,7 @@ if(pg_numrows($result) > 0)
 				</td>
 				<td>
 				<?php 
-				$x = array("f"=>"NAO","t"=>"SIM");
+				$x = ["f"=>"NAO","t"=>"SIM"];
 				db_select('k03_reccert',$x,true,$db_opcao,"");
 				?>
 				</td>

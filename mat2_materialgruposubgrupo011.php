@@ -36,7 +36,7 @@ include(modification("classes/db_parcustos_classe.php"));
 require(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clparcustos = new cl_parcustos;
 $aux = new cl_arquivo_auxiliar;
@@ -98,9 +98,9 @@ $dPeriodoSetado = date('d/m/Y');
            </td>
            <td>
     	       <?php 
-    	       $tipo_ordem = array("1" => "Codigo",
+    	       $tipo_ordem = ["1" => "Codigo",
     	                           "2" => "Alfabética",
-    	                          );
+    	                          ];
     	       db_select("ordem",$tipo_ordem,true,2, "class=inputPadrao");
     	       ?>
    	       </td>
@@ -111,9 +111,9 @@ $dPeriodoSetado = date('d/m/Y');
            </td>
            <td>
              <?php 
-             $tipo_ordem = array("1" => "Analítica",
+             $tipo_ordem = ["1" => "Analítica",
                                  "2" => "Sintética",
-                                );
+                                ];
              db_select("tipoemissao",$tipo_ordem,true,2, "class=inputPadrao");
              ?>
            </td>

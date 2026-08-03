@@ -201,7 +201,7 @@ for ($iCont = 0; $iCont < $oDaoTfdPedidoTfd->numrows; $iCont++) {
     $oPdf->Setfont('arial', 'B', 8);
     $oPdf->text(6, $iY + 28, 'Nome da Mãe');
     $oPdf->Setfont('arial', '', 8);
-    $oPdf->text(26, $iY + 28, ': '.substr($oDados->z01_v_mae, 0, 32));
+    $oPdf->text(26, $iY + 28, ': '.substr((string) $oDados->z01_v_mae, 0, 32));
     $oPdf->Setfont('arial', 'B', 8);
     $oPdf->text(101, $iY + 28, 'Sexo ');
     $oPdf->Setfont('arial', '', 8);
@@ -217,11 +217,11 @@ for ($iCont = 0; $iCont < $oDaoTfdPedidoTfd->numrows; $iCont++) {
     $oPdf->Setfont('arial', 'B', 8);
     $oPdf->text(141, $iY + 32, 'Complemento ');
     $oPdf->Setfont('arial', '', 8);
-    $oPdf->text(162, $iY + 32, ': '.substr($oDados->z01_v_compl, 0, 23));
+    $oPdf->text(162, $iY + 32, ': '.substr((string) $oDados->z01_v_compl, 0, 23));
     $oPdf->Setfont('arial', 'B', 8);
     $oPdf->text(15, $iY + 36, 'Bairro ');
     $oPdf->Setfont('arial', '', 8);
-    $oPdf->text(26, $iY + 36, ': '.substr($oDados->z01_v_bairro, 0, 23));
+    $oPdf->text(26, $iY + 36, ': '.substr((string) $oDados->z01_v_bairro, 0, 23));
     $oPdf->Setfont('arial', 'B', 8);
     $oPdf->text(95, $iY + 36, 'Município ');
     $oPdf->Setfont('arial', '', 8);
@@ -300,7 +300,7 @@ for ($iCont = 0; $iCont < $oDaoTfdPedidoTfd->numrows; $iCont++) {
     $oPdf->Setfont('arial', 'B', 8);
     $oPdf->text(6, $iY + 83, 'Especialidade ');
     $oPdf->Setfont('arial', '', 8);
-    $oPdf->text(26, $iY + 83, ': '.substr($oDados->rh70_descr, 0, 36));
+    $oPdf->text(26, $iY + 83, ': '.substr((string) $oDados->rh70_descr, 0, 36));
     $oPdf->Setfont('arial', 'B', 8);
     $oPdf->text(89, $iY + 83, 'Complemento ');
     $oPdf->Setfont('arial', '', 8);

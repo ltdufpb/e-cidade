@@ -34,13 +34,13 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_serie_classe.php"));
 include(modification("classes/db_historico_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clserie     = new cl_serie;
 $clhistorico = new cl_historico;
 
-$sNome = isset($z01_nome) ? $z01_nome : '';
+$sNome = $z01_nome ?? '';
 
 ?>
 <html>
@@ -109,7 +109,7 @@ $sNome = isset($z01_nome) ? $z01_nome : '';
       $ser_jatem = 0;
     }
 
-    $aWhere   = array();
+    $aWhere   = [];
     $aWhere[] = "ed29_i_codigo = {$ed61_i_curso}";
     $aWhere[] = "ed11_i_codigo not in ( {$ser_jatem} )";
 

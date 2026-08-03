@@ -25,8 +25,8 @@
  *                                licenca/licenca_pt.txt 
  */
 
-   if(isset($HTTP_POST_VARS)) {
-     db_postmemory($HTTP_POST_VARS);
+   if(isset($_POST)) {
+     db_postmemory($_POST);
 	 if(!empty($verfEstrut)) {
 	   $verfEstrut = "";
 	   if($k02_tipo == "O") {
@@ -42,10 +42,10 @@
 				where c01_anousu = ".db_getsession("DB_anousu")." 
 				and c01_estrut = '$k02_estrut'");	   
        }		 
-	   if(pg_numrows($result) == 0) {
+	   if(pg_num_rows($result) == 0) {
 	     echo "<script>alert('Código da receita $tipo não encontrado!')</script>\n";
 	   } else {	   
-	     $k02_drecei = pg_result($result,0,0);
+	     $k02_drecei = pg_fetch_result($result,0,0);
 	   }
 	 }	
    }

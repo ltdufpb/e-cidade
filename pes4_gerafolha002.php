@@ -62,7 +62,7 @@ if(isset($_GET['lAutomatico']) && $_GET['lAutomatico'] != 3){
   $faixa_regis  = $_GET['iMatricula'];
   $opcao_gml    = "m";
   $opcao_filtro = "s";
-  $selregist    = array($_GET['iMatricula']);
+  $selregist    = [$_GET['iMatricula']];
   $db_debug     = "false";
 }
 
@@ -79,9 +79,9 @@ $DB_instit = DB_getsession("DB_instit");
  */
 
 require_once(modification("std/db_stdClass.php"));
-$aParamKeys = array(
+$aParamKeys = [
                    db_getsession("DB_anousu")
-                  );
+                  ];
 
 $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
 $iTipoControleCustos = 0;
@@ -111,7 +111,7 @@ db_inicio_transacao();
 
 $sTempoCalculo = "Início do cálculo: " . date('Y-m-d H:i:s');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(!isset($r110_lotaci)){
   $r110_lotaci = '    ';
@@ -246,7 +246,7 @@ for( $Idiversos = 0; $Idiversos < count($diversos); $Idiversos++ ) {
   $codigo          = $diversos[$Idiversos]["r07_codigo"];
   $quais_diversos .= $separa.'$'.$codigo;
   $separa          = ",";
-  global $$codigo;
+  global ${$codigo};
   eval('$$codigo = '.$diversos[$Idiversos]["r07_valor"].";");
 }
 
@@ -260,7 +260,7 @@ if ( $opcao_geral == 1 || $opcao_geral == 8 || $opcao_geral == 4 || $opcao_geral
 }
 
 
-$carregarubricas_geral = array();
+$carregarubricas_geral = [];
 
 db_selectmax("carregarubricas","select * from rhrubricas where rh27_instit = $DB_instit order by rh27_rubric" );
 
@@ -278,7 +278,7 @@ for($Icarregar=0;$Icarregar<count($carregarubricas);$Icarregar++){
     }
   } else {
 
-    $r10_form = '('.trim($formula).')';
+    $r10_form = '('.trim((string) $formula).')';
 
     if( $r10_pd == 2 ){
       $r10_form = "-".$r10_form;
@@ -292,10 +292,10 @@ for($Icarregar=0;$Icarregar<count($carregarubricas);$Icarregar++){
   $carregarubricas_geral[$carregarubricas[$Icarregar]["rh27_rubric"]] = $r10_form;
 }
 
-$aTipoFolhas = array(
+$aTipoFolhas = [
   PONTO_SALARIO => CalculoFolha::CALCULO_SALARIO,
   PONTO_COMPLEMENTAR => CalculoFolha::CALCULO_COMPLEMENTAR
-);
+];
 
 try {
   if ($opcao_gml == 'm' && empty($faixa_regis) ) {
@@ -328,11 +328,11 @@ try {
       DBRegistry::add('competencia', new DBCompetencia($anoFolha, $mesFolha));
 
       $daoInssIRF = new cl_inssirf();
-      $whereInssIRF = array (
+      $whereInssIRF =  [
           "r33_anousu = {$anoFolha}",
           "r33_mesusu = {$mesFolha}",
           "r33_instit = {$DB_instit}"
-      );
+      ];
 
       $sqlInssIRF = $daoInssIRF->sql_query_dados(null, 'DISTINCT r33_codtab as codigo', null, implode(' AND ', $whereInssIRF));
       $rsInssIRF = db_query($sqlInssIRF);

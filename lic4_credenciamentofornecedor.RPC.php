@@ -51,8 +51,8 @@ try {
         throw new ParameterException( _M(FONTE_MSG . "licitacao_nao_informado") );
       }
 
-      $oRetorno->aFornecedores   = array();
-      $oRetorno->aItensLicitacao = array();
+      $oRetorno->aFornecedores   = [];
+      $oRetorno->aItensLicitacao = [];
 
       $oLicitacao    = new licitacao($oParam->iLicitacao);
       $aFornecedores = $oLicitacao->getFornecedor();
@@ -65,7 +65,7 @@ try {
         $oFornecedor->sNome       = $oDadoFornecedor->z01_nome;
         $oFornecedor->iFornecedor = $oDadoFornecedor->pc21_orcamforne;
 
-        $oFornecedor->aItens = licitacao::getItensPorFornecedor(array($oParam->iLicitacao), $oDadoFornecedor->z01_numcgm, false, false);
+        $oFornecedor->aItens = licitacao::getItensPorFornecedor([$oParam->iLicitacao], $oDadoFornecedor->z01_numcgm, false, false);
 
         $oRetorno->iOrcamento      = $oDadoFornecedor->pc21_codorc;
         $oRetorno->aFornecedores[] = $oFornecedor;
@@ -79,7 +79,7 @@ try {
 
         $oItem                  = new stdClass();
         $oItem->iLicLicitem     = $oItemLicitacao->getCodigo();
-        $oItem->sItem           = urldecode( $oSolicitacao->getDescricaoMaterial() );
+        $oItem->sItem           = urldecode( (string) $oSolicitacao->getDescricaoMaterial() );
         $oItem->iQuantidadeItem = $oSolicitacao->getQuantidade();
         $oItem->nVlrUnitario    = $oSolicitacao->getValorUnitario();
         $oItem->nVlrTotal       = $oSolicitacao->getValorTotal();
@@ -151,7 +151,7 @@ try {
       $oRetorno->oFornecedor->iCgm        = $oParam->iCgm;
       $oRetorno->oFornecedor->sNome       = $oParam->sNome;
       $oRetorno->oFornecedor->iFornecedor = $oParam->iFornecedor;
-      $oRetorno->oFornecedor->aItens      = licitacao::getItensPorFornecedor(array($oParam->iLicitacao), $oParam->iCgm, false, false);
+      $oRetorno->oFornecedor->aItens      = licitacao::getItensPorFornecedor([$oParam->iLicitacao], $oParam->iCgm, false, false);
       break;
 
     case "removerFornecedor":
@@ -238,7 +238,7 @@ try {
 
 
       $oRetorno->sMessage = _M( FONTE_MSG . "itens_salvo" );
-      $oRetorno->aItens   = licitacao::getItensPorFornecedor(array($oParam->iLicitacao), $oParam->iCgm, false, false);
+      $oRetorno->aItens   = licitacao::getItensPorFornecedor([$oParam->iLicitacao], $oParam->iCgm, false, false);
 
       break;
   }
@@ -336,8 +336,8 @@ function removerPropostas ($iFornecedor) {
  */
 function permiteRemoverFornecedor($iLicitacao, $iCgm) {
 
-  $aItens      = licitacao::getItensPorFornecedor(array($iLicitacao), $iCgm, false, false);
-  $aCodLiclicitem = array();
+  $aItens      = licitacao::getItensPorFornecedor([$iLicitacao], $iCgm, false, false);
+  $aCodLiclicitem = [];
 
   if (empty($aItens)) {
     return true;

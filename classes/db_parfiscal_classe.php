@@ -29,47 +29,47 @@
 //CLASSE DA ENTIDADE parfiscal
 class cl_parfiscal {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $y32_instit = 0;
-   var $y32_tipo = 0;
-   var $y32_hist = 0;
-   var $y32_impdatas = 'f';
-   var $y32_impcodativ = 'f';
-   var $y32_impobs = 'f';
-   var $y32_impobslanc = 'f';
-   var $y32_modalvara = 0;
-   var $y32_modaidof = 0;
-   var $y32_receit = 0;
-   var $y32_receitexp = 0;
-   var $y32_proced = 0;
-   var $y32_procedexp = 0;
-   var $y32_formvist = 0;
-   var $y32_sanidepto = 0;
-   var $y32_sanbaixadiv = 0;
-   var $y32_tipoprocpadrao = 0;
-   var $y32_calcvistanosanteriores = 'f';
-   var $y32_procprotbaixaauto = 0;
-   var $y32_utilizacalculoporteatividade = 'f';
-   var $y32_templatealvarasanitariopermanente = 0;
-   var $y32_templatealvarasanitarioprovisorio = 0;
-   var $y32_templateautoinfracao = 0;
-   var $y32_calculavistoriamei = 'f';
-   var $y32_tipodataoperacao = 0; 
-   var $y32_tipodatavencimento = 0; 
+   public $y32_instit = 0;
+   public $y32_tipo = 0;
+   public $y32_hist = 0;
+   public $y32_impdatas = 'f';
+   public $y32_impcodativ = 'f';
+   public $y32_impobs = 'f';
+   public $y32_impobslanc = 'f';
+   public $y32_modalvara = 0;
+   public $y32_modaidof = 0;
+   public $y32_receit = 0;
+   public $y32_receitexp = 0;
+   public $y32_proced = 0;
+   public $y32_procedexp = 0;
+   public $y32_formvist = 0;
+   public $y32_sanidepto = 0;
+   public $y32_sanbaixadiv = 0;
+   public $y32_tipoprocpadrao = 0;
+   public $y32_calcvistanosanteriores = 'f';
+   public $y32_procprotbaixaauto = 0;
+   public $y32_utilizacalculoporteatividade = 'f';
+   public $y32_templatealvarasanitariopermanente = 0;
+   public $y32_templatealvarasanitarioprovisorio = 0;
+   public $y32_templateautoinfracao = 0;
+   public $y32_calculavistoriamei = 'f';
+   public $y32_tipodataoperacao = 0; 
+   public $y32_tipodatavencimento = 0; 
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  y32_instit = int4 = Código da Instituição
                  y32_tipo = int4 = Tipo de Débito
                  y32_hist = int4 = Histórico do Cálculo
@@ -98,10 +98,10 @@ class cl_parfiscal {
                  y32_tipodatavencimento = int4 = Tipo Data Vencimento 
                  ";
    //funcao construtor da classe
-   function cl_parfiscal() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parfiscal");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -417,7 +417,7 @@ class cl_parfiscal {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parametros do modulo fiscal ($this->y32_instit) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parametros do modulo fiscal já Cadastrado";
@@ -446,35 +446,35 @@ class cl_parfiscal {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10661,'$this->y32_instit','I')");
-         $resac = db_query("insert into db_acount values($acount,1103,10661,'','".AddSlashes(pg_result($resaco,0,'y32_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,6762,'','".AddSlashes(pg_result($resaco,0,'y32_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,6763,'','".AddSlashes(pg_result($resaco,0,'y32_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,7482,'','".AddSlashes(pg_result($resaco,0,'y32_impdatas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,7483,'','".AddSlashes(pg_result($resaco,0,'y32_impcodativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,7484,'','".AddSlashes(pg_result($resaco,0,'y32_impobs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,7566,'','".AddSlashes(pg_result($resaco,0,'y32_impobslanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,7565,'','".AddSlashes(pg_result($resaco,0,'y32_modalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,14589,'','".AddSlashes(pg_result($resaco,0,'y32_modaidof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,7767,'','".AddSlashes(pg_result($resaco,0,'y32_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,7768,'','".AddSlashes(pg_result($resaco,0,'y32_receitexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,7769,'','".AddSlashes(pg_result($resaco,0,'y32_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,7770,'','".AddSlashes(pg_result($resaco,0,'y32_procedexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,8741,'','".AddSlashes(pg_result($resaco,0,'y32_formvist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,9450,'','".AddSlashes(pg_result($resaco,0,'y32_sanidepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,10145,'','".AddSlashes(pg_result($resaco,0,'y32_sanbaixadiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,12056,'','".AddSlashes(pg_result($resaco,0,'y32_tipoprocpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,12291,'','".AddSlashes(pg_result($resaco,0,'y32_calcvistanosanteriores'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,16039,'','".AddSlashes(pg_result($resaco,0,'y32_procprotbaixaauto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,20479,'','".AddSlashes(pg_result($resaco,0,'y32_utilizacalculoporteatividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,20669,'','".AddSlashes(pg_result($resaco,0,'y32_templatealvarasanitariopermanente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,20668,'','".AddSlashes(pg_result($resaco,0,'y32_templatealvarasanitarioprovisorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,20824,'','".AddSlashes(pg_result($resaco,0,'y32_templateautoinfracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,21641,'','".AddSlashes(pg_result($resaco,0,'y32_calculavistoriamei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1103,1013324,'','".pg_result($resaco,0,'y32_tipodataoperacao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-	 $resac = db_query("insert into db_acount values($acount,1103,1013343,'','".pg_result($resaco,0,'y32_tipodatavencimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,10661,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,6762,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,6763,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,7482,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_impdatas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,7483,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_impcodativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,7484,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_impobs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,7566,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_impobslanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,7565,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_modalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,14589,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_modaidof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,7767,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,7768,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_receitexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,7769,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,7770,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_procedexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,8741,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_formvist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,9450,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_sanidepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,10145,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_sanbaixadiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,12056,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_tipoprocpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,12291,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_calcvistanosanteriores'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,16039,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_procprotbaixaauto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,20479,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_utilizacalculoporteatividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,20669,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_templatealvarasanitariopermanente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,20668,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_templatealvarasanitarioprovisorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,20824,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_templateautoinfracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,21641,'','".AddSlashes(pg_fetch_result($resaco,0,'y32_calculavistoriamei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1103,1013324,'','".pg_fetch_result($resaco,0,'y32_tipodataoperacao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+	 $resac = db_query("insert into db_acount values($acount,1103,1013343,'','".pg_fetch_result($resaco,0,'y32_tipodatavencimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -484,10 +484,10 @@ class cl_parfiscal {
       $this->atualizacampos();
      $sql = " update parfiscal set ";
      $virgula = "";
-     if(trim($this->y32_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_instit"])){
+     if(trim((string) $this->y32_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_instit"])){
        $sql  .= $virgula." y32_instit = $this->y32_instit ";
        $virgula = ",";
-       if(trim($this->y32_instit) == null ){
+       if(trim((string) $this->y32_instit) == null ){
          $this->erro_sql = " Campo Código da Instituição não informado.";
          $this->erro_campo = "y32_instit";
          $this->erro_banco = "";
@@ -497,10 +497,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipo"])){
+     if(trim((string) $this->y32_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipo"])){
        $sql  .= $virgula." y32_tipo = $this->y32_tipo ";
        $virgula = ",";
-       if(trim($this->y32_tipo) == null ){
+       if(trim((string) $this->y32_tipo) == null ){
          $this->erro_sql = " Campo Tipo de Débito não informado.";
          $this->erro_campo = "y32_tipo";
          $this->erro_banco = "";
@@ -510,10 +510,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_hist"])){
+     if(trim((string) $this->y32_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_hist"])){
        $sql  .= $virgula." y32_hist = $this->y32_hist ";
        $virgula = ",";
-       if(trim($this->y32_hist) == null ){
+       if(trim((string) $this->y32_hist) == null ){
          $this->erro_sql = " Campo Histórico do Cálculo não informado.";
          $this->erro_campo = "y32_hist";
          $this->erro_banco = "";
@@ -523,10 +523,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_impdatas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_impdatas"])){
+     if(trim((string) $this->y32_impdatas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_impdatas"])){
        $sql  .= $virgula." y32_impdatas = '$this->y32_impdatas' ";
        $virgula = ",";
-       if(trim($this->y32_impdatas) == null ){
+       if(trim((string) $this->y32_impdatas) == null ){
          $this->erro_sql = " Campo Imprime Datas do Alvará Sanitário não informado.";
          $this->erro_campo = "y32_impdatas";
          $this->erro_banco = "";
@@ -536,10 +536,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_impcodativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_impcodativ"])){
+     if(trim((string) $this->y32_impcodativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_impcodativ"])){
        $sql  .= $virgula." y32_impcodativ = '$this->y32_impcodativ' ";
        $virgula = ",";
-       if(trim($this->y32_impcodativ) == null ){
+       if(trim((string) $this->y32_impcodativ) == null ){
          $this->erro_sql = " Campo Código Atividade do Alvará Sanitário não informado.";
          $this->erro_campo = "y32_impcodativ";
          $this->erro_banco = "";
@@ -549,10 +549,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_impobs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_impobs"])){
+     if(trim((string) $this->y32_impobs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_impobs"])){
        $sql  .= $virgula." y32_impobs = '$this->y32_impobs' ";
        $virgula = ",";
-       if(trim($this->y32_impobs) == null ){
+       if(trim((string) $this->y32_impobs) == null ){
          $this->erro_sql = " Campo Imprime Obs. das Atividades do Alvará Sanitário não informado.";
          $this->erro_campo = "y32_impobs";
          $this->erro_banco = "";
@@ -562,10 +562,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_impobslanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_impobslanc"])){
+     if(trim((string) $this->y32_impobslanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_impobslanc"])){
        $sql  .= $virgula." y32_impobslanc = '$this->y32_impobslanc' ";
        $virgula = ",";
-       if(trim($this->y32_impobslanc) == null ){
+       if(trim((string) $this->y32_impobslanc) == null ){
          $this->erro_sql = " Campo Observação do Lançamento não informado.";
          $this->erro_campo = "y32_impobslanc";
          $this->erro_banco = "";
@@ -575,10 +575,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_modalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_modalvara"])){
+     if(trim((string) $this->y32_modalvara)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_modalvara"])){
        $sql  .= $virgula." y32_modalvara = $this->y32_modalvara ";
        $virgula = ",";
-       if(trim($this->y32_modalvara) == null ){
+       if(trim((string) $this->y32_modalvara) == null ){
          $this->erro_sql = " Campo Modelo Alvará não informado.";
          $this->erro_campo = "y32_modalvara";
          $this->erro_banco = "";
@@ -588,10 +588,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_modaidof)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_modaidof"])){
+     if(trim((string) $this->y32_modaidof)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_modaidof"])){
        $sql  .= $virgula." y32_modaidof = $this->y32_modaidof ";
        $virgula = ",";
-       if(trim($this->y32_modaidof) == null ){
+       if(trim((string) $this->y32_modaidof) == null ){
          $this->erro_sql = " Campo Modelo AIDOF não informado.";
          $this->erro_campo = "y32_modaidof";
          $this->erro_banco = "";
@@ -601,10 +601,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_receit"])){
+     if(trim((string) $this->y32_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_receit"])){
        $sql  .= $virgula." y32_receit = $this->y32_receit ";
        $virgula = ",";
-       if(trim($this->y32_receit) == null ){
+       if(trim((string) $this->y32_receit) == null ){
          $this->erro_sql = " Campo Receita não informado.";
          $this->erro_campo = "y32_receit";
          $this->erro_banco = "";
@@ -614,10 +614,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_receitexp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_receitexp"])){
+     if(trim((string) $this->y32_receitexp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_receitexp"])){
        $sql  .= $virgula." y32_receitexp = $this->y32_receitexp ";
        $virgula = ",";
-       if(trim($this->y32_receitexp) == null ){
+       if(trim((string) $this->y32_receitexp) == null ){
          $this->erro_sql = " Campo Receita do Lançamento Espontâneo não informado.";
          $this->erro_campo = "y32_receitexp";
          $this->erro_banco = "";
@@ -627,10 +627,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_proced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_proced"])){
+     if(trim((string) $this->y32_proced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_proced"])){
        $sql  .= $virgula." y32_proced = $this->y32_proced ";
        $virgula = ",";
-       if(trim($this->y32_proced) == null ){
+       if(trim((string) $this->y32_proced) == null ){
          $this->erro_sql = " Campo Procedência não informado.";
          $this->erro_campo = "y32_proced";
          $this->erro_banco = "";
@@ -640,10 +640,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_procedexp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_procedexp"])){
+     if(trim((string) $this->y32_procedexp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_procedexp"])){
        $sql  .= $virgula." y32_procedexp = $this->y32_procedexp ";
        $virgula = ",";
-       if(trim($this->y32_procedexp) == null ){
+       if(trim((string) $this->y32_procedexp) == null ){
          $this->erro_sql = " Campo Procedência do Lançamento Espontâneo não informado.";
          $this->erro_campo = "y32_procedexp";
          $this->erro_banco = "";
@@ -653,10 +653,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_formvist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_formvist"])){
+     if(trim((string) $this->y32_formvist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_formvist"])){
        $sql  .= $virgula." y32_formvist = $this->y32_formvist ";
        $virgula = ",";
-       if(trim($this->y32_formvist) == null ){
+       if(trim((string) $this->y32_formvist) == null ){
          $this->erro_sql = " Campo Fórmula de Cálculo das Vistorias não informado.";
          $this->erro_campo = "y32_formvist";
          $this->erro_banco = "";
@@ -666,10 +666,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_sanidepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_sanidepto"])){
+     if(trim((string) $this->y32_sanidepto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_sanidepto"])){
        $sql  .= $virgula." y32_sanidepto = $this->y32_sanidepto ";
        $virgula = ",";
-       if(trim($this->y32_sanidepto) == null ){
+       if(trim((string) $this->y32_sanidepto) == null ){
          $this->erro_sql = " Campo Controla Sanitário por Departamento não informado.";
          $this->erro_campo = "y32_sanidepto";
          $this->erro_banco = "";
@@ -679,10 +679,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_sanbaixadiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_sanbaixadiv"])){
+     if(trim((string) $this->y32_sanbaixadiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_sanbaixadiv"])){
        $sql  .= $virgula." y32_sanbaixadiv = $this->y32_sanbaixadiv ";
        $virgula = ",";
-       if(trim($this->y32_sanbaixadiv) == null ){
+       if(trim((string) $this->y32_sanbaixadiv) == null ){
          $this->erro_sql = " Campo Permite Baixa de Sanitário com Dívida não informado.";
          $this->erro_campo = "y32_sanbaixadiv";
          $this->erro_banco = "";
@@ -692,10 +692,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_tipoprocpadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipoprocpadrao"])){
+     if(trim((string) $this->y32_tipoprocpadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipoprocpadrao"])){
        $sql  .= $virgula." y32_tipoprocpadrao = $this->y32_tipoprocpadrao ";
        $virgula = ",";
-       if(trim($this->y32_tipoprocpadrao) == null ){
+       if(trim((string) $this->y32_tipoprocpadrao) == null ){
          $this->erro_sql = " Campo Tipo de Processo não informado.";
          $this->erro_campo = "y32_tipoprocpadrao";
          $this->erro_banco = "";
@@ -705,10 +705,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_calcvistanosanteriores)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_calcvistanosanteriores"])){
+     if(trim((string) $this->y32_calcvistanosanteriores)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_calcvistanosanteriores"])){
        $sql  .= $virgula." y32_calcvistanosanteriores = '$this->y32_calcvistanosanteriores' ";
        $virgula = ",";
-       if(trim($this->y32_calcvistanosanteriores) == null ){
+       if(trim((string) $this->y32_calcvistanosanteriores) == null ){
          $this->erro_sql = " Campo Calcula Vistorias para Anos Anteriores não informado.";
          $this->erro_campo = "y32_calcvistanosanteriores";
          $this->erro_banco = "";
@@ -718,10 +718,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_procprotbaixaauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_procprotbaixaauto"])){
+     if(trim((string) $this->y32_procprotbaixaauto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_procprotbaixaauto"])){
        $sql  .= $virgula." y32_procprotbaixaauto = $this->y32_procprotbaixaauto ";
        $virgula = ",";
-       if(trim($this->y32_procprotbaixaauto) == null ){
+       if(trim((string) $this->y32_procprotbaixaauto) == null ){
          $this->erro_sql = " Campo Processo Baixa de Auto de Infração não informado.";
          $this->erro_campo = "y32_procprotbaixaauto";
          $this->erro_banco = "";
@@ -731,10 +731,10 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_utilizacalculoporteatividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_utilizacalculoporteatividade"])){
+     if(trim((string) $this->y32_utilizacalculoporteatividade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_utilizacalculoporteatividade"])){
        $sql  .= $virgula." y32_utilizacalculoporteatividade = '$this->y32_utilizacalculoporteatividade' ";
        $virgula = ",";
-       if(trim($this->y32_utilizacalculoporteatividade) == null ){
+       if(trim((string) $this->y32_utilizacalculoporteatividade) == null ){
          $this->erro_sql = " Campo Utiliza Cálculo por Porte/Atividade não informado.";
          $this->erro_campo = "y32_utilizacalculoporteatividade";
          $this->erro_banco = "";
@@ -744,41 +744,41 @@ class cl_parfiscal {
          return false;
        }
      }
-     if(trim($this->y32_templatealvarasanitariopermanente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_templatealvarasanitariopermanente"])){
-        if(trim($this->y32_templatealvarasanitariopermanente)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_templatealvarasanitariopermanente"])){
+     if(trim((string) $this->y32_templatealvarasanitariopermanente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_templatealvarasanitariopermanente"])){
+        if(trim((string) $this->y32_templatealvarasanitariopermanente)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_templatealvarasanitariopermanente"])){
            $this->y32_templatealvarasanitariopermanente = "null" ;
         }
        $sql  .= $virgula." y32_templatealvarasanitariopermanente = $this->y32_templatealvarasanitariopermanente ";
        $virgula = ",";
      }
-     if(trim($this->y32_templatealvarasanitarioprovisorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_templatealvarasanitarioprovisorio"])){
-        if(trim($this->y32_templatealvarasanitarioprovisorio)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_templatealvarasanitarioprovisorio"])){
+     if(trim((string) $this->y32_templatealvarasanitarioprovisorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_templatealvarasanitarioprovisorio"])){
+        if(trim((string) $this->y32_templatealvarasanitarioprovisorio)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_templatealvarasanitarioprovisorio"])){
            $this->y32_templatealvarasanitarioprovisorio = "null" ;
         }
        $sql  .= $virgula." y32_templatealvarasanitarioprovisorio = $this->y32_templatealvarasanitarioprovisorio ";
        $virgula = ",";
      }
-     if(trim($this->y32_templateautoinfracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_templateautoinfracao"])){
-        if(trim($this->y32_templateautoinfracao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_templateautoinfracao"])){
+     if(trim((string) $this->y32_templateautoinfracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_templateautoinfracao"])){
+        if(trim((string) $this->y32_templateautoinfracao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_templateautoinfracao"])){
            $this->y32_templateautoinfracao = "null" ;
         }
        $sql  .= $virgula." y32_templateautoinfracao = $this->y32_templateautoinfracao ";
        $virgula = ",";
      }
-     if(trim($this->y32_calculavistoriamei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_calculavistoriamei"])){
-        if(trim($this->y32_calculavistoriamei)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_calculavistoriamei"])){
+     if(trim((string) $this->y32_calculavistoriamei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_calculavistoriamei"])){
+        if(trim((string) $this->y32_calculavistoriamei)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_calculavistoriamei"])){
            $this->y32_calculavistoriamei = "0" ;
         }
        $sql  .= $virgula." y32_calculavistoriamei = $this->y32_calculavistoriamei ";
        $virgula = ",";
      }
-     if(trim($this->y32_tipodataoperacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodataoperacao"])){ 
-        if(trim($this->y32_tipodataoperacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodataoperacao"])){ 
+     if(trim((string) $this->y32_tipodataoperacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodataoperacao"])){ 
+        if(trim((string) $this->y32_tipodataoperacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodataoperacao"])){ 
            $this->y32_tipodataoperacao = "0" ; 
         } 
        $sql  .= $virgula." y32_tipodataoperacao = $this->y32_tipodataoperacao ";
        $virgula = ",";
-       if(trim($this->y32_tipodataoperacao) == null ){ 
+       if(trim((string) $this->y32_tipodataoperacao) == null ){ 
          $this->erro_sql = " Campo Tipo Data Operação nao Informado.";
          $this->erro_campo = "y32_tipodataoperacao";
          $this->erro_banco = "";
@@ -789,13 +789,13 @@ class cl_parfiscal {
        }
      }
 
-     if(trim($this->y32_tipodatavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"])){ 
-        if(trim($this->y32_tipodatavencimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"])){ 
+     if(trim((string) $this->y32_tipodatavencimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"])){ 
+        if(trim((string) $this->y32_tipodatavencimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"])){ 
            $this->y32_tipodatavencimento = "0" ; 
         } 
        $sql  .= $virgula." y32_tipodatavencimento = $this->y32_tipodatavencimento ";
        $virgula = ",";
-       if(trim($this->y32_tipodatavencimento) == null ){ 
+       if(trim((string) $this->y32_tipodatavencimento) == null ){ 
          $this->erro_sql = " Campo Tipo Data Vencimento nao Informado.";
          $this->erro_campo = "y32_tipodatavencimento";
          $this->erro_banco = "";
@@ -820,62 +820,62 @@ class cl_parfiscal {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,10661,'$this->y32_instit','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_instit"]) || $this->y32_instit != "")
-             $resac = db_query("insert into db_acount values($acount,1103,10661,'".AddSlashes(pg_result($resaco,$conresaco,'y32_instit'))."','$this->y32_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,10661,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_instit'))."','$this->y32_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_tipo"]) || $this->y32_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,1103,6762,'".AddSlashes(pg_result($resaco,$conresaco,'y32_tipo'))."','$this->y32_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,6762,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_tipo'))."','$this->y32_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_hist"]) || $this->y32_hist != "")
-             $resac = db_query("insert into db_acount values($acount,1103,6763,'".AddSlashes(pg_result($resaco,$conresaco,'y32_hist'))."','$this->y32_hist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,6763,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_hist'))."','$this->y32_hist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_impdatas"]) || $this->y32_impdatas != "")
-             $resac = db_query("insert into db_acount values($acount,1103,7482,'".AddSlashes(pg_result($resaco,$conresaco,'y32_impdatas'))."','$this->y32_impdatas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,7482,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_impdatas'))."','$this->y32_impdatas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_impcodativ"]) || $this->y32_impcodativ != "")
-             $resac = db_query("insert into db_acount values($acount,1103,7483,'".AddSlashes(pg_result($resaco,$conresaco,'y32_impcodativ'))."','$this->y32_impcodativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,7483,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_impcodativ'))."','$this->y32_impcodativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_impobs"]) || $this->y32_impobs != "")
-             $resac = db_query("insert into db_acount values($acount,1103,7484,'".AddSlashes(pg_result($resaco,$conresaco,'y32_impobs'))."','$this->y32_impobs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,7484,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_impobs'))."','$this->y32_impobs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_impobslanc"]) || $this->y32_impobslanc != "")
-             $resac = db_query("insert into db_acount values($acount,1103,7566,'".AddSlashes(pg_result($resaco,$conresaco,'y32_impobslanc'))."','$this->y32_impobslanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,7566,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_impobslanc'))."','$this->y32_impobslanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_modalvara"]) || $this->y32_modalvara != "")
-             $resac = db_query("insert into db_acount values($acount,1103,7565,'".AddSlashes(pg_result($resaco,$conresaco,'y32_modalvara'))."','$this->y32_modalvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,7565,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_modalvara'))."','$this->y32_modalvara',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_modaidof"]) || $this->y32_modaidof != "")
-             $resac = db_query("insert into db_acount values($acount,1103,14589,'".AddSlashes(pg_result($resaco,$conresaco,'y32_modaidof'))."','$this->y32_modaidof',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,14589,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_modaidof'))."','$this->y32_modaidof',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_receit"]) || $this->y32_receit != "")
-             $resac = db_query("insert into db_acount values($acount,1103,7767,'".AddSlashes(pg_result($resaco,$conresaco,'y32_receit'))."','$this->y32_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,7767,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_receit'))."','$this->y32_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_receitexp"]) || $this->y32_receitexp != "")
-             $resac = db_query("insert into db_acount values($acount,1103,7768,'".AddSlashes(pg_result($resaco,$conresaco,'y32_receitexp'))."','$this->y32_receitexp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,7768,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_receitexp'))."','$this->y32_receitexp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_proced"]) || $this->y32_proced != "")
-             $resac = db_query("insert into db_acount values($acount,1103,7769,'".AddSlashes(pg_result($resaco,$conresaco,'y32_proced'))."','$this->y32_proced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,7769,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_proced'))."','$this->y32_proced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_procedexp"]) || $this->y32_procedexp != "")
-             $resac = db_query("insert into db_acount values($acount,1103,7770,'".AddSlashes(pg_result($resaco,$conresaco,'y32_procedexp'))."','$this->y32_procedexp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,7770,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_procedexp'))."','$this->y32_procedexp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_formvist"]) || $this->y32_formvist != "")
-             $resac = db_query("insert into db_acount values($acount,1103,8741,'".AddSlashes(pg_result($resaco,$conresaco,'y32_formvist'))."','$this->y32_formvist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,8741,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_formvist'))."','$this->y32_formvist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_sanidepto"]) || $this->y32_sanidepto != "")
-             $resac = db_query("insert into db_acount values($acount,1103,9450,'".AddSlashes(pg_result($resaco,$conresaco,'y32_sanidepto'))."','$this->y32_sanidepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,9450,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_sanidepto'))."','$this->y32_sanidepto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_sanbaixadiv"]) || $this->y32_sanbaixadiv != "")
-             $resac = db_query("insert into db_acount values($acount,1103,10145,'".AddSlashes(pg_result($resaco,$conresaco,'y32_sanbaixadiv'))."','$this->y32_sanbaixadiv',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,10145,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_sanbaixadiv'))."','$this->y32_sanbaixadiv',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_tipoprocpadrao"]) || $this->y32_tipoprocpadrao != "")
-             $resac = db_query("insert into db_acount values($acount,1103,12056,'".AddSlashes(pg_result($resaco,$conresaco,'y32_tipoprocpadrao'))."','$this->y32_tipoprocpadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,12056,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_tipoprocpadrao'))."','$this->y32_tipoprocpadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_calcvistanosanteriores"]) || $this->y32_calcvistanosanteriores != "")
-             $resac = db_query("insert into db_acount values($acount,1103,12291,'".AddSlashes(pg_result($resaco,$conresaco,'y32_calcvistanosanteriores'))."','$this->y32_calcvistanosanteriores',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,12291,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_calcvistanosanteriores'))."','$this->y32_calcvistanosanteriores',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_procprotbaixaauto"]) || $this->y32_procprotbaixaauto != "")
-             $resac = db_query("insert into db_acount values($acount,1103,16039,'".AddSlashes(pg_result($resaco,$conresaco,'y32_procprotbaixaauto'))."','$this->y32_procprotbaixaauto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,16039,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_procprotbaixaauto'))."','$this->y32_procprotbaixaauto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_utilizacalculoporteatividade"]) || $this->y32_utilizacalculoporteatividade != "")
-             $resac = db_query("insert into db_acount values($acount,1103,20479,'".AddSlashes(pg_result($resaco,$conresaco,'y32_utilizacalculoporteatividade'))."','$this->y32_utilizacalculoporteatividade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,20479,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_utilizacalculoporteatividade'))."','$this->y32_utilizacalculoporteatividade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_templatealvarasanitariopermanente"]) || $this->y32_templatealvarasanitariopermanente != "")
-             $resac = db_query("insert into db_acount values($acount,1103,20669,'".AddSlashes(pg_result($resaco,$conresaco,'y32_templatealvarasanitariopermanente'))."','$this->y32_templatealvarasanitariopermanente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,20669,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_templatealvarasanitariopermanente'))."','$this->y32_templatealvarasanitariopermanente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_templatealvarasanitarioprovisorio"]) || $this->y32_templatealvarasanitarioprovisorio != "")
-             $resac = db_query("insert into db_acount values($acount,1103,20668,'".AddSlashes(pg_result($resaco,$conresaco,'y32_templatealvarasanitarioprovisorio'))."','$this->y32_templatealvarasanitarioprovisorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,20668,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_templatealvarasanitarioprovisorio'))."','$this->y32_templatealvarasanitarioprovisorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_templateautoinfracao"]) || $this->y32_templateautoinfracao != "")
-             $resac = db_query("insert into db_acount values($acount,1103,20824,'".AddSlashes(pg_result($resaco,$conresaco,'y32_templateautoinfracao'))."','$this->y32_templateautoinfracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,20824,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_templateautoinfracao'))."','$this->y32_templateautoinfracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y32_calculavistoriamei"]) || $this->y32_calculavistoriamei != "")
-             $resac = db_query("insert into db_acount values($acount,1103,21641,'".AddSlashes(pg_result($resaco,$conresaco,'y32_calculavistoriamei'))."','$this->y32_calculavistoriamei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,21641,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y32_calculavistoriamei'))."','$this->y32_calculavistoriamei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
 
            if(isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodataoperacao"]))
-             $resac = db_query("insert into db_acount values($acount,1103,1013324,'".pg_result($resaco,0,'y32_tipodataoperacao')."','$this->y32_tipodataoperacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,1013324,'".pg_fetch_result($resaco,0,'y32_tipodataoperacao')."','$this->y32_tipodataoperacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
 	   if(isset($GLOBALS["HTTP_POST_VARS"]["y32_tipodatavencimento"]))
-             $resac = db_query("insert into db_acount values($acount,1103,1013343,'".pg_result($resaco,0,'y32_tipodatavencimento')."','$this->y32_tipodatavencimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1103,1013343,'".pg_fetch_result($resaco,0,'y32_tipodatavencimento')."','$this->y32_tipodatavencimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -929,35 +929,35 @@ class cl_parfiscal {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,10661,'$y32_instit','E')");
-           $resac  = db_query("insert into db_acount values($acount,1103,10661,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,6762,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,6763,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,7482,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_impdatas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,7483,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_impcodativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,7484,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_impobs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,7566,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_impobslanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,7565,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_modalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,14589,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_modaidof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,7767,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,7768,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_receitexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,7769,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,7770,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_procedexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,8741,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_formvist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,9450,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_sanidepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,10145,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_sanbaixadiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,12056,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_tipoprocpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,12291,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_calcvistanosanteriores'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,16039,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_procprotbaixaauto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,20479,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_utilizacalculoporteatividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,20669,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_templatealvarasanitariopermanente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,20668,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_templatealvarasanitarioprovisorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,20824,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_templateautoinfracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1103,21641,'','".AddSlashes(pg_result($resaco,$iresaco,'y32_calculavistoriamei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,1103,1013324,'','".pg_result($resaco,0,'y32_tipodataoperacao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,1103,1013343,'','".pg_result($resaco,0,'y32_tipodatavencimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,10661,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,6762,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,6763,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,7482,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_impdatas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,7483,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_impcodativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,7484,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_impobs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,7566,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_impobslanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,7565,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_modalvara'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,14589,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_modaidof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,7767,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,7768,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_receitexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,7769,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,7770,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_procedexp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,8741,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_formvist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,9450,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_sanidepto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,10145,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_sanbaixadiv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,12056,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_tipoprocpadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,12291,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_calcvistanosanteriores'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,16039,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_procprotbaixaauto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,20479,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_utilizacalculoporteatividade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,20669,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_templatealvarasanitariopermanente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,20668,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_templatealvarasanitarioprovisorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,20824,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_templateautoinfracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1103,21641,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y32_calculavistoriamei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1103,1013324,'','".pg_fetch_result($resaco,0,'y32_tipodataoperacao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1103,1013343,'','".pg_fetch_result($resaco,0,'y32_tipodatavencimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -1033,7 +1033,7 @@ class cl_parfiscal {
    function sql_query ( $y32_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1069,7 +1069,7 @@ class cl_parfiscal {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1081,7 +1081,7 @@ class cl_parfiscal {
    function sql_query_param ( $y32_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1118,7 +1118,7 @@ class cl_parfiscal {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1131,7 +1131,7 @@ class cl_parfiscal {
    function sql_query_file ( $y32_instit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -1152,7 +1152,7 @@ class cl_parfiscal {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

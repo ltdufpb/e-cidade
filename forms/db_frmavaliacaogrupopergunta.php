@@ -152,7 +152,7 @@ if (isset($oPost->db_opcaoal)) {
     <td valign="top"  align="center">
 	    <?php 
 	      $sWhere   = "db102_avaliacao = {$db102_avaliacao}";
-			  $chavepri = array("db102_sequencial"=>@$db102_sequencial);
+			  $chavepri = ["db102_sequencial"=>@$db102_sequencial];
 			  $cliframe_alterar_excluir->chavepri=$chavepri;
 			  $cliframe_alterar_excluir->sql     = $clavaliacaogrupopergunta->sql_query_file(null, "*", "db102_sequencial", $sWhere);
 			  $cliframe_alterar_excluir->campos  ="db102_sequencial,db102_avaliacao,db102_descricao, db102_identificador, db102_ordem";

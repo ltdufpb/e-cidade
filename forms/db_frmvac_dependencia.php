@@ -68,7 +68,7 @@ $clrotulo->label("vc07_c_nome");
     </td>
     <td> 
     <?php 
-     $x = array('1'=>'ATIVA','2'=>'INATIVA');
+     $x = ['1'=>'ATIVA','2'=>'INATIVA'];
      db_select('vc09_i_situacao',$x,true,$db_opcao,"");
     ?>
     </td>
@@ -93,7 +93,7 @@ $clrotulo->label("vc07_c_nome");
 <br><br>
 
 <?php 
-  $chavepri= array("vc09_i_codigo"=>@$vc09_i_codigo);
+  $chavepri= ["vc09_i_codigo"=>@$vc09_i_codigo];
   $oIframeAE->chavepri=$chavepri;
   if (isset($vc09_i_dependente) && $vc09_i_dependente != "") {
 
@@ -187,7 +187,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_vac_dependencia.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 

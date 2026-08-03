@@ -30,7 +30,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 global $cfpess,$subpes,$d08_carnes;
 
@@ -118,7 +118,7 @@ function gera_dirf($nomearq){
    
 
    $tipodirf = "o";
-   $logradouro = str_pad($d08_ender,40);
+   $logradouro = str_pad((string) $d08_ender,40);
 
    $numero = bb_space(6);
    $complemento = bb_space(20);
@@ -132,8 +132,8 @@ cria_work_12h();
 //echo "<BR> passou aqui !!";
 $numcgm = 0;
 
-$matriz1 = array();
-$matriz2 = array();
+$matriz1 = [];
+$matriz2 = [];
 $matriz1[1] = "w_numcgm";
 $matriz1[2] = "w_cpf";
 $matriz1[3] = "w_nome";
@@ -465,7 +465,7 @@ function ficha_12h(){
 
                $depmes = $vlrdep;
 //echo "<BR> entrou 1";
-               if( db_at(strtolower($pess[$Ipes]["r01_tpvinc"]),"ip") > 0 && ( $idade > 65 || ( $idade==65 && db_month($pess[$Ipes]["r01_nasc"]) <= (trim($d08_carnes)=='amparo'?db_val(db_substr($subpes,6,2)):$ind) ) )){
+               if( db_at(strtolower((string) $pess[$Ipes]["r01_tpvinc"]),"ip") > 0 && ( $idade > 65 || ( $idade==65 && db_month($pess[$Ipes]["r01_nasc"]) <= (trim($d08_carnes)=='amparo'?db_val(db_substr($subpes,6,2)):$ind) ) )){
 //echo "<BR> entrou 2";
 /*
                   if( $subpes < $cfpess[0]["r11_altfer"] || db_empty( $cfpess[0]["r11_altfer"] )){
@@ -484,7 +484,7 @@ function ficha_12h(){
                         $vdeducao65_13 = $D902;
                     }
                   }
-                  
+
                   if( $mtributo >= $vdeducao65){
                      $ina     += $vdeducao65;
                      $tributo -= $vdeducao65;
@@ -492,7 +492,7 @@ function ficha_12h(){
                      $ina      += $mtributo;
                      $tributo  -= $mtributo;
                   }
-                  
+
                   if( $mtribs13 >= $vdeducao65_13){
                      $ina13   += $vdeducao65_13;
                      $tribs13 -= $vdeducao65_13;
@@ -530,8 +530,8 @@ function ficha_12h(){
          $campo_wpre  = "w_pre".$mes;
          $campo_wpen  = "w_pen".$mes;
 
-         $matriz1 = array();
-	       $matriz2 = array();
+         $matriz1 = [];
+	       $matriz2 = [];
          $matriz1[1] = $campo_wtrib;
          $matriz1[2] = $campo_wret;
          $matriz1[3] = $campo_wdep;
@@ -551,8 +551,8 @@ function ficha_12h(){
          db_update( $arquivo, $matriz1, $matriz2, $condicaoaux );
 
          if( !db_empty($tribs13)){
-           $matriz1 = array();
-	         $matriz2 = array();
+           $matriz1 = [];
+	         $matriz2 = [];
            $matriz1[1] = "w_tribs13";
            $matriz1[2] = "w_rets13";
            $matriz1[3] = "w_deps13";
@@ -560,7 +560,7 @@ function ficha_12h(){
            $matriz1[5] = "w_pens13";
 
            $res_work = db_query("select w_tribs13,w_rets13,w_deps13,w_pres13,w_pens13 from $arquivo where w_numcgm = ".db_sqlformat( $matriculacgm ));
-           if(pg_numrows($res_work) > 0){
+           if(pg_num_rows($res_work) > 0){
              db_fieldsmemory($res_work,0);
              $matriz2[1] = $w_tribs13 + $tribs13;
              $matriz2[2] = $w_rets13  + $rets13;
@@ -717,7 +717,7 @@ for($Iarq=0;$Iarq<count($arq);$Iarq++){
             // busca previd (menos de 13o salario);
             if( db_at($mrubr,$sel_B907) > 0){
 
-               if( strtolower($inssirf[0]["r33_tipo"]) == "o" && $pess[$Ipes]["r01_tbprev"] != 0 ){
+               if( strtolower((string) $inssirf[0]["r33_tipo"]) == "o" && $pess[$Ipes]["r01_tbprev"] != 0 ){
                   if( $arq[$Iarq][$sigla."pd"] == 2){
                      $previd += $arq[$Iarq][$sigla."valor"];
                   }else{
@@ -807,11 +807,11 @@ function imprime_dirf_12h($nomearq){
    $head3 = "ANO BASE :".$ano_base;
    
    $arquivo = fopen($nomearq,"w");
-   $tributo = array();
-   $retido  = array();
-   $vlrdep  = array();
-   $vlrpre  = array();
-   $vlrpen  = array();
+   $tributo = [];
+   $retido  = [];
+   $vlrdep  = [];
+   $vlrpre  = [];
+   $vlrpen  = [];
    $tributo = array_fill(1,13,0);
    $retido  = array_fill(1,13,0);
    $vlrdep  = array_fill(1,13,0);
@@ -821,7 +821,7 @@ function imprime_dirf_12h($nomearq){
 //   echo "<BR> linha de inicializacao...";
    $lin  = "00000001";               // da 01 a 08;
    $lin .= "1";                      // da 09 a 091;
-   $lin .= str_pad($d08_cgc,14,'0'); // da 10 a 23;
+   $lin .= str_pad((string) $d08_cgc,14,'0'); // da 10 a 23;
    $lin .= "Dirf";                   // da 24 a 27;
    $lin .= $ano_base;                // da 28 a 31 ;
    $lin .= $oriret;                  // da 32 a 32 - original / retificadora;
@@ -831,13 +831,13 @@ function imprime_dirf_12h($nomearq){
    $lin .= "0";                      // da 36 a 36 - pelo menos um func.com valor;
    $lin .= db_str(db_anofolha(),4,"0");// da 37 a 40 - sempre 2003;
    $lin .= "00";                     // da 41 a 42 ;
-   $lin .= str_pad(substr($d08_nome,0,60),60);    // da 43 a 102;
-   $lin .= str_pad(substr($cpfresp,0,11),11);    // da 103 a 113 - cpf $respons. 
+   $lin .= str_pad(substr((string) $d08_nome,0,60),60);    // da 43 a 102;
+   $lin .= str_pad(substr((string) $cpfresp,0,11),11);    // da 103 a 113 - cpf $respons. 
    $lin .= bb_space(292);             // da 114 a 150 - filler;
-   $lin .= str_pad(trim($cpfresp),11,'0'); // da 406 a 416 - cpf $respons. 
-   $lin .= str_pad(substr($nomeresp,0,60),60);    // da 417 a 476 - $responsavel 
-   $lin .= str_pad(substr($dddresp,0,4),4,"0",0); // da 481 a 488 - fone $resp 
-   $lin .= str_pad(substr($foneresp,0,8),8,"0",0); 
+   $lin .= str_pad(trim((string) $cpfresp),11,'0'); // da 406 a 416 - cpf $respons. 
+   $lin .= str_pad(substr((string) $nomeresp,0,60),60);    // da 417 a 476 - $responsavel 
+   $lin .= str_pad(substr((string) $dddresp,0,4),4,"0",0); // da 481 a 488 - fone $resp 
+   $lin .= str_pad(substr((string) $foneresp,0,8),8,"0",0); 
    $lin .= "00000000000000";            // da 489 a 729 - ramal;
    $lin .= bb_space(227);            // da 489 a 729 - ramal;
    $lin .= "9";                      // da 730 a 730;
@@ -869,11 +869,11 @@ function imprime_dirf_12h($nomearq){
          $seq += 1;
          $lin = db_str($seq,8,0,"0");
          $lin .= "2";
-         $lin .= str_pad($d08_cgc,14,'0');
-         $lin .= str_pad(substr($codret,0,4),4,'0',0);                               // codigo de retencao
+         $lin .= str_pad((string) $d08_cgc,14,'0');
+         $lin .= str_pad(substr((string) $codret,0,4),4,'0',0);                               // codigo de retencao
          $lin .= "1";
-         $lin .= "000".(db_empty($work[$Iwork]["w_cpf"])?"00000000000000":substr($work[$Iwork]["w_cpf"],0,11));
-         $lin .= str_pad(substr($work[$Iwork]["w_nome"],0,59),60);
+         $lin .= "000".(db_empty($work[$Iwork]["w_cpf"])?"00000000000000":substr((string) $work[$Iwork]["w_cpf"],0,11));
+         $lin .= str_pad(substr((string) $work[$Iwork]["w_nome"],0,59),60);
          
          $lin .= valor_12h($work[$Iwork]["w_tribjan"]) . '000000000000000' . valor_12h($work[$Iwork]["w_retjan"]);
          $lin .= valor_12h($work[$Iwork]["w_tribfev"]) . '000000000000000' . valor_12h($work[$Iwork]["w_retfev"]);
@@ -913,11 +913,11 @@ function imprime_dirf_12h($nomearq){
              $seq += 1;
              $lin = db_str($seq,8,0,"0");
              $lin .= "2";
-             $lin .= str_pad($d08_cgc,14,'0');
-             $lin .= str_pad(substr($codret,0,4),4,'0',0);                               // codigo de retencao
+             $lin .= str_pad((string) $d08_cgc,14,'0');
+             $lin .= str_pad(substr((string) $codret,0,4),4,'0',0);                               // codigo de retencao
              $lin .= "1";
-             $lin .= "000".(db_empty($work[$Iwork]["w_cpf"])?"00000000000000":substr($work[$Iwork]["w_cpf"],0,11));
-             $lin .= str_pad(substr($work[$Iwork]["w_nome"],0,59),60);
+             $lin .= "000".(db_empty($work[$Iwork]["w_cpf"])?"00000000000000":substr((string) $work[$Iwork]["w_cpf"],0,11));
+             $lin .= str_pad(substr((string) $work[$Iwork]["w_nome"],0,59),60);
              
              $lin .= valor_12h($work[$Iwork]["w_prejan"]) . valor_12h($work[$Iwork]["w_depjan"]) . valor_12h($work[$Iwork]["w_penjan"]);
              $lin .= valor_12h($work[$Iwork]["w_prefev"]) . valor_12h($work[$Iwork]["w_depfev"]) . valor_12h($work[$Iwork]["w_penfev"]);
@@ -1022,10 +1022,10 @@ function imprime_dirf_12h($nomearq){
 	   $troca = 0;
        }
        $pdf->ln($alt);
-       $pdf->cell(25,$alt,"Nr cgm : ".str_pad($work[$Iwork]["w_numcgm"],6),1,0,"L",1);
-       $pdf->cell(80,$alt,"Nome : ".str_pad(trim($work[$Iwork]["w_nome"]),40),1,0,"L",1);
-       $pdf->cell(62,$alt,"Reg.: ".trim($work[$Iwork]["w_regist"] ),1,0,"L",1);
-       $pdf->cell(25,$alt,"Cpf : ".trim($work[$Iwork]["w_cpf"]),1,1,"L",1);
+       $pdf->cell(25,$alt,"Nr cgm : ".str_pad((string) $work[$Iwork]["w_numcgm"],6),1,0,"L",1);
+       $pdf->cell(80,$alt,"Nome : ".str_pad(trim((string) $work[$Iwork]["w_nome"]),40),1,0,"L",1);
+       $pdf->cell(62,$alt,"Reg.: ".trim((string) $work[$Iwork]["w_regist"] ),1,0,"L",1);
+       $pdf->cell(25,$alt,"Cpf : ".trim((string) $work[$Iwork]["w_cpf"]),1,1,"L",1);
 
        $tot_trib  = $work[$Iwork]["w_tribjan"] +$work[$Iwork]["w_tribfev"] +$work[$Iwork]["w_tribmar"] +$work[$Iwork]["w_tribabr"] +$work[$Iwork]["w_tribmai"] +$work[$Iwork]["w_tribjun"];
        $tot_trib += $work[$Iwork]["w_tribjul"] +$work[$Iwork]["w_tribago"] +$work[$Iwork]["w_tribset"] +$work[$Iwork]["w_tribout"] +$work[$Iwork]["w_tribnov"] +$work[$Iwork]["w_tribdez"];
@@ -1177,8 +1177,8 @@ function imprime_dirf_12h($nomearq){
       $seq += 1;
       $lin  = db_str($seq,8,0,"0");                                                     // sequencial do arquivo
       $lin .= "3";                                                                      // identificacao do registro
-      $lin .= str_pad($d08_cgc,14,'0');                                                 // cnpj
-      $lin .= str_pad(substr($codret,0,4),4,'0',0);                                     // codigo de retencao
+      $lin .= str_pad((string) $d08_cgc,14,'0');                                                 // cnpj
+      $lin .= str_pad(substr((string) $codret,0,4),4,'0',0);                                     // codigo de retencao
       $lin .= db_str($seq-2,8,0,"0");                                                   // total de registros do tipo 2
       $lin .= bb_space(67);                                                             // brancos
       $lin .= valor_12h($tributo[1])  . valor_12h($vlrdep[1])  . valor_12h($retido[1]);   // janeiro

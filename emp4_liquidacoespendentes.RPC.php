@@ -55,18 +55,18 @@ try {
         throw new ParameterException('Não foi informado nenhum movimento.');
       }
 
-      $aCodigosMovimentos = array();
-      $aCodigosNotas      = array();
-      $aDados             = array();
-      $aNotasParciais     = array();
-      $aSelecionadosJustificar = array();
-      $aMovimentoValor         = array();
+      $aCodigosMovimentos = [];
+      $aCodigosNotas      = [];
+      $aDados             = [];
+      $aNotasParciais     = [];
+      $aSelecionadosJustificar = [];
+      $aMovimentoValor         = [];
 
       //Código das formas de pagamento a serem consultadas.
-      $aFormasPagamentoBuscar = array();
+      $aFormasPagamentoBuscar = [];
 
       //Formas de pagamento, onde key = código e value = descrição.
-      $aFormasPagamentos = array();
+      $aFormasPagamentos = [];
 
       foreach ($oParam->movimentos as $oStdMovimento) {
 
@@ -86,7 +86,7 @@ try {
           $aNotasParciais[$oStdMovimento->iCodNota]->nValor               = $lPagamentoNDA ? 0 : round(($oStdMovimento->nValor + $oStdMovimento->nValorRetencao), 2);
           $aNotasParciais[$oStdMovimento->iCodNota]->nValorTotalMovimento = $lPagamentoNDA ? 0 : round($nValorMovimento, 2);
           $aNotasParciais[$oStdMovimento->iCodNota]->oStdMovimento        = $oStdMovimento;
-          $aNotasParciais[$oStdMovimento->iCodNota]->aCodigoMovimentos    = array($oStdMovimento->iCodMov);
+          $aNotasParciais[$oStdMovimento->iCodNota]->aCodigoMovimentos    = [$oStdMovimento->iCodMov];
 
         } else {
 
@@ -97,7 +97,7 @@ try {
       }
 
 
-      $aJustificar = array();
+      $aJustificar = [];
       foreach ($aNotasParciais as $iCodigoOrdem => $oNotaParcial) {
 
         foreach ($aNotasParciais as $iCodigoOrdemComparacao => $oNotaParcialComparacao) {
@@ -136,7 +136,7 @@ try {
         throw new DBException('Não foi possível verificar a ordem cronológica dos pagamentos.');
       }
 
-      $aValoresNota = array();
+      $aValoresNota = [];
       for ($iIndice = 0; $iIndice < $oDaoEmpagemov->numrows; $iIndice++) {
 
         $oDados   = db_utils::fieldsMemory($rsDados, $iIndice);
@@ -165,12 +165,12 @@ try {
        * Caso o valor PAGO + VALOR SELECIONADO (agenda) seja igual ao valor TOTAL da OP, este movimento é
        * desconsiderado da validação
        */
-      $aRemoverMovimentosValidacao = array();
+      $aRemoverMovimentosValidacao = [];
       foreach ($aMovimentos as $iCodigoMovimento => $oStdMovimento) {
 
-        $aWhere = array(
+        $aWhere = [
           "e82_codord = {$oStdMovimento->iCodNota}",
-       );
+       ];
 
         $sCampos = "e53_valor, sum(e53_vlrpag) as vlr_pago";
         $sWhere  = implode(' and ', $aWhere) . " group by e53_valor";
@@ -194,7 +194,7 @@ try {
 
 //      $sNotas = implode(',', $aCodigosNotas);
       $sNotas = implode(',', $aRemoverMovimentosValidacao);
-      $oRetorno->movimentos = array();
+      $oRetorno->movimentos = [];
 
 
       /**
@@ -245,7 +245,7 @@ try {
         }
 
         $sCampos  = 'count(*) as resultado';
-        $aWhere   = array();
+        $aWhere   = [];
         $aWhere[] = "cc31_classificacaocredores = {$oDados->cc31_classificacaocredores}";
         $aWhere[] = "e69_dtvencimento < '{$oDados->e69_dtvencimento}'";
         $aWhere[] = "e69_dtvencimento is not null";

@@ -1,5 +1,5 @@
 <?php
-$campos = implode(', ', array(
+$campos = implode(', ', [
     'rhpessoalmov.rh02_instit',
     'rhpessoalmov.rh02_seqpes',
     'rhpessoalmov.rh02_mesusu',
@@ -34,4 +34,4 @@ $campos = implode(', ', array(
     'rhpessoalmov.rh02_cnpjcedencia',
     'rhpessoalmov.rh02_regimejornadatrabalho',
     'rhpessoalmov.rh02_anousu AS db_rh02_anousu'
-));
+]);

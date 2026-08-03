@@ -68,9 +68,7 @@ abstract class BaseRelatoriosCronograma extends BaseCronograma
      */
     protected function organizaFiltrosComissao()
     {
-        $cgms = $this->planejamento->comissoes->map(function (Comissao $comissao) {
-            return $comissao->cgm->z01_nome;
-        })->toArray();
+        $cgms = $this->planejamento->comissoes->map(fn(Comissao $comissao) => $comissao->cgm->z01_nome)->toArray();
         $this->dados['planejamento']['comissao'] = $cgms;
     }
 }

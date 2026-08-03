@@ -205,7 +205,7 @@ if( !empty( $where ) ){
        if($ma01_o_imagem!=0){
         $arquivo = "tmp/".$ma01_c_nomeimagem;
         db_query("begin");
-        pg_loexport($ma01_o_imagem,$arquivo);
+        pg_lo_export($ma01_o_imagem,$arquivo);
         db_query("end");
        }else{
         $arquivo = "imagens/semmarca.jpg";

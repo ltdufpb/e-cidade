@@ -70,7 +70,7 @@ if (db_getsession("DB_id_usuario") == 1) {
       <td width=192> <strong>Tipo de Vinculo: </strong> </td>
       <td>
         <?php  
-         $aTipos = array("0"=>"Selecione","1"=>"Matricula","2"=>"Inscrição");
+         $aTipos = ["0"=>"Selecione","1"=>"Matricula","2"=>"Inscrição"];
          db_select("tipo", $aTipos,true,1);
         ?> 
       </td>

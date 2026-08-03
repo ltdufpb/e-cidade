@@ -218,7 +218,7 @@ if(isset($incluir)){
 	  
 	  if ( $clpensaoretencao->numrows > 0 ) {
 	    $oRetencao = db_utils::fieldsMemory($rsRetencao,0);
-	    if ( trim($rh77_retencaotiporec) != '') {
+	    if ( trim((string) $rh77_retencaotiporec) != '') {
 	      if ( $oRetencao->rh77_retencaotiporec != $rh77_retencaotiporec ) {
 	        $clpensaoretencao->rh77_retencaotiporec = $rh77_retencaotiporec;
           $clpensaoretencao->rh77_sequencial      = $oRetencao->rh77_sequencial;
@@ -234,7 +234,7 @@ if(isset($incluir)){
         }
 	    }
 	  } else {
-	    if ( trim($rh77_retencaotiporec) != '') {
+	    if ( trim((string) $rh77_retencaotiporec) != '') {
 	      $clpensaoretencao->rh77_retencaotiporec = $rh77_retencaotiporec;
 	      $clpensaoretencao->incluir(null);
         if ( $clpensaoretencao->erro_status == "0") {
@@ -270,7 +270,7 @@ if(isset($incluir)){
   $sWhereRetencao .= "and rh77_anousu = {$r52_anousu} ";
   $sWhereRetencao .= "and rh77_mesusu = {$r52_mesusu} ";
 
-  if ( trim($numcgm) != '') {  
+  if ( trim((string) $numcgm) != '') {  
     $sWhereRetencao .= "and rh77_numcgm = {$numcgm}   ";
   }
   

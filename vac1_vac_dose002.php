@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_vac_dose_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clvac_dose = new cl_vac_dose;
 $db_opcao   = 22;
 $db_botao   = false;
@@ -42,7 +42,7 @@ if (isset($alterar)) {
   db_inicio_transacao();
   $db_opcao = 2;
   $clvac_dose->alterar($vc03_i_codigo);
-  $aLista=explode(",",$sLista);
+  $aLista=explode(",",(string) $sLista);
   for ($iX=0;$iX<count($aLista);$iX++) {
 
     $sSql                      = $clvac_dose->sql_query_file("","*",""," vc03_i_codigo=".$aLista[$iX]);

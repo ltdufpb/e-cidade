@@ -29,13 +29,13 @@ use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
 
 class receita
 {
-    var $arq = null;
+    public $arq = null;
 
-    function receita($header)
+    function __construct($header)
     {
         umask(74);
         $this->arq = fopen("tmp/RECEITA.TXT", 'w+');
-        fputs($this->arq, $header);
+        fputs($this->arq, (string) $header);
         fputs($this->arq, "\r\n");
     }
 
@@ -43,9 +43,9 @@ class receita
     {
         if ($valor < 0) {
             $valor *= -1;
-            $valor = "-" . formatar($valor, $quant - 1, 'v');
+            $valor = "-" . formatar($valor, $quant - 1);
         } else {
-            $valor = formatar($valor, $quant, 'v');
+            $valor = formatar($valor, $quant);
         }
         return $valor;
     }
@@ -92,15 +92,15 @@ class receita
 
 //      if (substr($o57_fonte,0,1) != "9")
             if ($o70_anousu > 2007) {
-                if (db_conplano_grupo($o70_anousu, substr($o57_fonte, 0, 1) . "%", 9000) == false) {
-                    $line = formatar(substr($o57_fonte, 1, 14), 20, 'n'); // recompisoção
+                if (db_conplano_grupo($o70_anousu, substr((string) $o57_fonte, 0, 1) . "%", 9000) == false) {
+                    $line = formatar(substr((string) $o57_fonte, 1, 14), 20); // recompisoção
                 } else {
-                    $line = formatar(substr($o57_fonte, 0, 15), 20, 'n'); // recompisoção
+                    $line = formatar(substr((string) $o57_fonte, 0, 15), 20); // recompisoção
                 }
             } else {
-                $line = formatar(substr($o57_fonte, 1, 14), 20, 'n'); // recompisoção
+                $line = formatar(substr((string) $o57_fonte, 1, 14), 20); // recompisoção
             }
-            $line .= formatar($orgaotrib, 4, 'n');
+            $line .= formatar($orgaotrib, 4);
 
             $concarpeculiar = "000";
             $o70_codigo = "0000";
@@ -116,21 +116,21 @@ class receita
                     ";
 
                     $res_orcreceita = @db_query($sql_orcreceita) or die($sql_orcreceita);
-                    if (@pg_numrows($res_orcreceita) != 0) {
+                    if (@pg_num_rows($res_orcreceita) != 0) {
                         $dados = db_utils::fieldsMemory($res_orcreceita, 0);
-                        $concarpeculiar = formatar($dados->o70_concarpeculiar, 3, "n");
+                        $concarpeculiar = formatar($dados->o70_concarpeculiar, 3);
                         $o70_codigo = $dados->o15_recurso;
                     }
                 }
 
-                if (db_conplano_grupo($o70_anousu, substr($o57_fonte, 0, 1) . "%", 9000) == true) {
+                if (db_conplano_grupo($o70_anousu, substr((string) $o57_fonte, 0, 1) . "%", 9000) == true) {
                     if ($concarpeculiar == "000" and 1 == 2) {
                         $concarpeculiar = "101";
                     }
                 }
             }
 
-            if (db_conplano_grupo($o70_anousu, substr($o57_fonte, 0, 2) . "%", 9000) == true) {  // 49
+            if (db_conplano_grupo($o70_anousu, substr((string) $o57_fonte, 0, 2) . "%", 9000) == true) {  // 49
 
                 if ($dezembro <> 0) {
                     $dezembro = abs($dezembro) * -1;
@@ -191,12 +191,12 @@ class receita
             if ($o70_anousu > 2007) {
                 $line .= $concarpeculiar;
                 if (db_getsession('DB_anousu') > 2008) {
-                    $line .= formatar($o70_codigo, 4, 'n');
+                    $line .= formatar($o70_codigo, 4);
                 }
             }
 
             if (db_getsession("DB_anousu") >= 2020) {
-                $line .= str_pad($o15_complemento, 4, '0', STR_PAD_LEFT);
+                $line .= str_pad((string) $o15_complemento, 4, '0', STR_PAD_LEFT);
             }
 
             $contador++;
@@ -209,7 +209,7 @@ class receita
 
         //     echo $valortotal;exit;
         //  trailer
-        $contador = espaco(10 - (strlen($contador)), '0') . $contador;
+        $contador = espaco(10 - (strlen($contador))) . $contador;
         $line = "FINALIZADOR" . $contador;
         fputs($this->arq, $line);
         fputs($this->arq, "\r\n");

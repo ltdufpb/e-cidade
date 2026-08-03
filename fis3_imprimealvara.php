@@ -40,7 +40,7 @@ require_once(modification("dbagata/classes/core/AgataAPI.class"));
 require_once(modification("model/documentoTemplate.model.php"));
 require_once(modification("libs/db_conn.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $clativprinc     = new cl_ativprinc;
 $clsanitario     = new cl_sanitario;
@@ -61,7 +61,7 @@ $clrotulo->label("y80_numbloco");
 
 $rsResult = db_query("select * from parfiscal where y32_instit = " . db_getsession("DB_instit"));
 
-if (pg_numrows($rsResult)>0) {
+if (pg_num_rows($rsResult)>0) {
   db_fieldsmemory($rsResult,0);
 } else {
   db_redireciona('db_erros.php?fechar=true&db_erro=Configure os parâmetros do módulo fiscal !!!');
@@ -96,10 +96,10 @@ if ($y32_modalvara == '3') {
 
   $sAgt = "fiscal/alvara_sanitario.agt";
 
-  $aParam = array(
+  $aParam = [
     'iCodSani'   => $y80_codsani,
     'sDataAtual' => $datahj
-  );
+  ];
 
   /**
    * Buscamos se deve imprimir alvara provisorio ou permanente
@@ -147,12 +147,12 @@ $sqlparag = "select *
     inner join db_paragrafo on db04_idparag = db02_idparag
     where db03_tipodoc = 1012 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";
 $resparag = db_query($sqlparag);
-if ( pg_numrows($resparag) == 0 ) {
+if ( pg_num_rows($resparag) == 0 ) {
 
      db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do alvara sanitario!');
      exit;
 }
-$numrows = pg_numrows($resparag);
+$numrows = pg_num_rows($resparag);
 for($i=0;$i<$numrows;$i++){
   db_fieldsmemory($resparag,$i);
   if ($db04_ordem == '1'){
@@ -167,14 +167,14 @@ for($i=0;$i<$numrows;$i++){
 }
 
 $pdf1->tipoalvara = "ALVARÁ SANITÁRIO";
-$pref             = split(" ",$munic);
+$pref             = preg_split("# #m",(string) $munic);
 $munic            = "";
 $espaco           = "";
 for ($x=0; $x < count($pref); $x++) {
-  if ( strlen($pref[$x]) >2 ) {
-    $munic .= $espaco.ucfirst(strtolower($pref[$x]));
+  if ( strlen((string) $pref[$x]) >2 ) {
+    $munic .= $espaco.ucfirst(strtolower((string) $pref[$x]));
   } else {
-    $munic .= $espaco.strtolower($pref[$x]);
+    $munic .= $espaco.strtolower((string) $pref[$x]);
   }
   $espaco = " ";
 }
@@ -232,8 +232,8 @@ if($numrows != 0){
     $pdf1->q02_memo =$q02_memo;
   }
 }
-$arr= array();
-$arr02= array();
+$arr= [];
+$arr02= [];
 $descr="";
 
 $pdf1->imprime();

@@ -60,7 +60,7 @@ if ( $oGet->banco != 0 ) {
   
   $sSqlNomeBanco .= "                 and k15_instit = {$iInstit} limit 1 ";
    
-  $sNomeBco = pg_result(db_query($sSqlNomeBanco),0,"z01_nome");
+  $sNomeBco = pg_fetch_result(db_query($sSqlNomeBanco),0,"z01_nome");
   
 } else {
 	
@@ -276,7 +276,7 @@ if ( $iLinhasBaixaBco == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem valores com diferença no período e banco escolhido.');
 } 
 
-$aDadosBaixaBco = array();
+$aDadosBaixaBco = [];
 
 for ( $iInd=0; $iInd < $iLinhasBaixaBco; $iInd++ ) {
 	
@@ -291,7 +291,7 @@ for ( $iInd=0; $iInd < $iLinhasBaixaBco; $iInd++ ) {
 	$oValoresBaixaBco->iConta     = $oBaixaBco->k00_conta;
 	$oValoresBaixaBco->sTipo      = $oBaixaBco->tipo;
 
-  if ( trim($oGet->difapartir) != '' ) {
+  if ( trim((string) $oGet->difapartir) != '' ) {
     if( round($oValoresBaixaBco->nDiferenca,2) < round((float)$oGet->difapartir,2) ) {
       continue;  
     }    
@@ -311,7 +311,7 @@ for ( $iInd=0; $iInd < $iLinhasBaixaBco; $iInd++ ) {
 
   $aDadosBaixaBco[$oBaixaBco->codret][$oBaixaBco->$sCampoOrdem][$oBaixaBco->z01_numcgm][$oBaixaBco->k00_numpre][$oBaixaBco->k00_numpar]['oDados']    = $oValoresBaixaBco; 
 
-  if ( trim($oBaixaBco->numpre_origem) != '' ) {
+  if ( trim((string) $oBaixaBco->numpre_origem) != '' ) {
 	  $aDadosBaixaBco[$oBaixaBco->codret][$oBaixaBco->$sCampoOrdem][$oBaixaBco->z01_numcgm][$oBaixaBco->k00_numpre][$oBaixaBco->k00_numpar]['aOrigem'][] = $oNumpreOrigem;
   }
   
@@ -407,7 +407,7 @@ foreach ( $aDadosBaixaBco as $iCodRet => $aDadosOrdem ) {
                                     
           $rsSuperSimples    = db_query($sSqlSuperSimples) or die($sSqlSuperSimples);
 
-				  if ( pg_numrows($rsSuperSimples) > 0 ) {
+				  if ( pg_num_rows($rsSuperSimples) > 0 ) {
 				    $aDadosGerais['oDados']->nValorCalc = $aDadosGerais['oDados']->nValorPago;
 				  }				  
 				  

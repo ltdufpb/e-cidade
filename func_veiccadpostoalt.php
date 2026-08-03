@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadposto_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveiccadposto = new cl_veiccadposto;
 $clveiccadposto->rotulo->label("ve29_codigo");
@@ -60,7 +60,7 @@ $clveiccadposto->rotulo->label("ve29_codigo");
             </td>
             <td width="96%" align="left" nowrap> 
 					<?php 
-            $tipo = array('0' => 'Todos', '1'=>'Interno','2'=>'Externo');
+            $tipo = ['0' => 'Todos', '1'=>'Interno','2'=>'Externo'];
 					  db_select('tipo',$tipo,true,2,"");
 				  ?>
           </td>
@@ -111,9 +111,9 @@ $clveiccadposto->rotulo->label("ve29_codigo");
         }else{
            $sql = $clveiccadposto->sql_query_tip("",$campos,"ve29_codigo",$dbwhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve29_codigo)){
-          $repassa = array("chave_ve29_codigo"=>$chave_ve29_codigo,"chave_ve29_codigo"=>$chave_ve29_codigo);
+          $repassa = ["chave_ve29_codigo"=>$chave_ve29_codigo,"chave_ve29_codigo"=>$chave_ve29_codigo];
         }
         // echo $sql;
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

@@ -36,7 +36,7 @@ require_once(modification("classes/db_diarioavaliacao_classe.php"));
 require_once(modification("classes/db_regencia_classe.php"));
 require_once(modification("classes/db_periodoavaliacao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $resultedu          = eduparametros(db_getsession("DB_coddepto"));
 $cldiariofinal      = new cl_diariofinal;
 $cldiario           = new cl_diario;

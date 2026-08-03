@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE aguaisencaotipo
 class cl_aguaisencaotipo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x29_codisencaotipo = 0; 
-   var $x29_descr = null; 
-   var $x29_tipo = 0; 
+   public $x29_codisencaotipo = 0; 
+   public $x29_descr = null; 
+   public $x29_tipo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x29_codisencaotipo = int4 = Codigo 
                  x29_descr = varchar(40) = Descricao 
                  x29_tipo = int4 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_aguaisencaotipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaisencaotipo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_aguaisencaotipo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->x29_codisencaotipo = pg_result($result,0,0); 
+       $this->x29_codisencaotipo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from aguaisencaotipo_x29_codisencaotipo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $x29_codisencaotipo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $x29_codisencaotipo)){
          $this->erro_sql = " Campo x29_codisencaotipo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_aguaisencaotipo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo de Isencao ($this->x29_codisencaotipo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo de Isencao já Cadastrado";
@@ -166,12 +166,12 @@ class cl_aguaisencaotipo {
      $resaco = $this->sql_record($this->sql_query_file($this->x29_codisencaotipo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8446,'$this->x29_codisencaotipo','I')");
-       $resac = db_query("insert into db_acount values($acount,1435,8446,'','".AddSlashes(pg_result($resaco,0,'x29_codisencaotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1435,8447,'','".AddSlashes(pg_result($resaco,0,'x29_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1435,8448,'','".AddSlashes(pg_result($resaco,0,'x29_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1435,8446,'','".AddSlashes(pg_fetch_result($resaco,0,'x29_codisencaotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1435,8447,'','".AddSlashes(pg_fetch_result($resaco,0,'x29_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1435,8448,'','".AddSlashes(pg_fetch_result($resaco,0,'x29_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_aguaisencaotipo {
       $this->atualizacampos();
      $sql = " update aguaisencaotipo set ";
      $virgula = "";
-     if(trim($this->x29_codisencaotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_codisencaotipo"])){ 
+     if(trim((string) $this->x29_codisencaotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_codisencaotipo"])){ 
        $sql  .= $virgula." x29_codisencaotipo = $this->x29_codisencaotipo ";
        $virgula = ",";
-       if(trim($this->x29_codisencaotipo) == null ){ 
+       if(trim((string) $this->x29_codisencaotipo) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "x29_codisencaotipo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_aguaisencaotipo {
          return false;
        }
      }
-     if(trim($this->x29_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_descr"])){ 
+     if(trim((string) $this->x29_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_descr"])){ 
        $sql  .= $virgula." x29_descr = '$this->x29_descr' ";
        $virgula = ",";
-       if(trim($this->x29_descr) == null ){ 
+       if(trim((string) $this->x29_descr) == null ){ 
          $this->erro_sql = " Campo Descricao nao Informado.";
          $this->erro_campo = "x29_descr";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_aguaisencaotipo {
          return false;
        }
      }
-     if(trim($this->x29_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_tipo"])){ 
+     if(trim((string) $this->x29_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x29_tipo"])){ 
        $sql  .= $virgula." x29_tipo = $this->x29_tipo ";
        $virgula = ",";
-       if(trim($this->x29_tipo) == null ){ 
+       if(trim((string) $this->x29_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "x29_tipo";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_aguaisencaotipo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8446,'$this->x29_codisencaotipo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x29_codisencaotipo"]))
-           $resac = db_query("insert into db_acount values($acount,1435,8446,'".AddSlashes(pg_result($resaco,$conresaco,'x29_codisencaotipo'))."','$this->x29_codisencaotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1435,8446,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x29_codisencaotipo'))."','$this->x29_codisencaotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x29_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1435,8447,'".AddSlashes(pg_result($resaco,$conresaco,'x29_descr'))."','$this->x29_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1435,8447,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x29_descr'))."','$this->x29_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x29_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1435,8448,'".AddSlashes(pg_result($resaco,$conresaco,'x29_tipo'))."','$this->x29_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1435,8448,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x29_tipo'))."','$this->x29_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_aguaisencaotipo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8446,'$x29_codisencaotipo','E')");
-         $resac = db_query("insert into db_acount values($acount,1435,8446,'','".AddSlashes(pg_result($resaco,$iresaco,'x29_codisencaotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1435,8447,'','".AddSlashes(pg_result($resaco,$iresaco,'x29_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1435,8448,'','".AddSlashes(pg_result($resaco,$iresaco,'x29_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1435,8446,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x29_codisencaotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1435,8447,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x29_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1435,8448,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x29_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from aguaisencaotipo
@@ -345,7 +345,7 @@ class cl_aguaisencaotipo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aguaisencaotipo";
@@ -359,7 +359,7 @@ class cl_aguaisencaotipo {
    function sql_query ( $x29_codisencaotipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,7 +380,7 @@ class cl_aguaisencaotipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_aguaisencaotipo {
    function sql_query_file ( $x29_codisencaotipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_aguaisencaotipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

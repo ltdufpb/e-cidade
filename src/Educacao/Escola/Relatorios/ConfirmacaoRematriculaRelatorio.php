@@ -65,14 +65,14 @@ class ConfirmacaoRematriculaRelatorio
      */
     final public function __construct()
     {
-        $this->dados = array();
+        $this->dados = [];
         $this->inicializarPdf();
     }
 
     /**
      *
      */
-    final private function inicializarPdf()
+    private function inicializarPdf()
     {
         $pdf = new PDFDocument();
         $pdf->Open();

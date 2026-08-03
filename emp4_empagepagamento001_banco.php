@@ -39,7 +39,7 @@ $clempagemov     = new cl_empagemov;
 
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_seleciona = new cl_iframe_seleciona;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //db_postmemory($HTTP_POST_VARS);
 $db_opcao = 1;
 $db_botao = false;

@@ -32,7 +32,7 @@ class Unpack extends Command
             throw new \Exception(sprintf('Arquivo inválido: %s', $this->getArgument('path')));
         }
 
-        $packages = array();
+        $packages = [];
         $temp = tempnam(sys_get_temp_dir(), 'plugin_repack_');
         $plugin_path_bkp = $temp . '/bkp/';
         unlink($temp);

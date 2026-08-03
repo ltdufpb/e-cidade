@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 $clrotulo->label('rh27_rubric');
 $clrotulo->label('rh27_descr');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -152,7 +152,7 @@ db_postmemory($HTTP_POST_VARS);
         <td ><b>Ponto</b</td>
         <td >
          <?php 
-           $x = array("r90"=>"Fixo","r10"=>"Salário","r47"=>"Complementar","r21"=>"Adiantamento","r34"=>"13o. Salário","r19"=>"Rescisão");
+           $x = ["r90"=>"Fixo","r10"=>"Salário","r47"=>"Complementar","r21"=>"Adiantamento","r34"=>"13o. Salário","r19"=>"Rescisão"];
            db_select('ponto1',$x,true,4,"");
          ?>
 	
@@ -202,7 +202,7 @@ db_postmemory($HTTP_POST_VARS);
         <td ><b>Ponto</b</td>
         <td >
          <?php 
-           $x = array("pontofx"=>"Fixo","pontofs"=>"Salário","pontocom"=>"Complementar","pontofa"=>"Adiantamento","pontof13"=>"13o. Salário","pontofr"=>"Rescisão");
+           $x = ["pontofx"=>"Fixo","pontofs"=>"Salário","pontocom"=>"Complementar","pontofa"=>"Adiantamento","pontof13"=>"13o. Salário","pontofr"=>"Rescisão"];
            db_select('ponto2',$x,true,4,"");
          ?>
 	

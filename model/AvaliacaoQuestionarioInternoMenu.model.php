@@ -56,7 +56,7 @@ class AvaliacaoQuestionarioInternoMenu {
       }
     }
 
-    $this->tipo = __CLASS__;
+    $this->tipo = self::class;
   }
 
   /**

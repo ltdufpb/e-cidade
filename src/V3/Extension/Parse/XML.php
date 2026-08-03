@@ -6,8 +6,6 @@ use DOMDocument, DOMXpath, Exception;
 
 class XML {
 
-  protected $path;
-
   /**
    * @var \DOMDocument
    */
@@ -16,8 +14,8 @@ class XML {
   /**
    * @param string $path
    */
-  public function __construct($path = null) {
-    $this->path = $path;
+  public function __construct(protected $path = null)
+  {
   }
 
   /**
@@ -46,7 +44,7 @@ class XML {
 
     $errorsXml = libxml_get_errors();
     $errorsLength = count($errorsXml);
-    $errorsMessage = array();
+    $errorsMessage = [];
 
     libxml_clear_errors();
 
@@ -58,20 +56,12 @@ class XML {
 
     foreach ($errorsXml as $index => $error) {
 
-      switch ($error->level) {
-        case LIBXML_ERR_WARNING:
-          $level = "Warning";
-        break;
-        case LIBXML_ERR_ERROR:
-          $level = "Error";
-        break;
-        case LIBXML_ERR_FATAL:
-          $level = "Fatal Error";
-        break;
-        default : 
-          $level = "Unknown Error";
-        break;
-      }
+      $level = match ($error->level) {
+          LIBXML_ERR_WARNING => "Warning",
+          LIBXML_ERR_ERROR => "Error",
+          LIBXML_ERR_FATAL => "Fatal Error",
+          default => "Unknown Error",
+      };
 
       $message = ($index + 1) . ' - ' . $level .  ' line: ' . $error->line . ' column: ' . $error->column;
       $message .= ' message: ' . trim($error->message, "\n");

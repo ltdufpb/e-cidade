@@ -47,7 +47,7 @@ $clrotulo->label("o01_descricao");
 $clrotulo->label("o01_sequencial");
 $clrotulo->label("o01_numerolei");
 $db_opcao = 1;
-$aAnos    = array();
+$aAnos    = [];
 $lProcessaManual = true;
 if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
 
@@ -150,7 +150,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
               </td>
               <td>
                 <?php 
-        				  $aRodape = array("s"=>"Sim","n"=>"Não");
+        				  $aRodape = ["s"=>"Sim","n"=>"Não"];
                   db_select("selrodape",$aRodape,true,1,"");
                 ?>
               </td>
@@ -162,7 +162,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
               </td>
               <td>
                 <?php 
-                  $aTotalizar = array("o"=>"Orgão","u"=>"Unidade");
+                  $aTotalizar = ["o"=>"Orgão","u"=>"Unidade"];
                   db_select("seltotalizar",$aTotalizar,true,1,"");
                 ?>
               </td>
@@ -173,10 +173,10 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
               </td>
               <td>
                 <?php 
-                  $aModelo = array(
+                  $aModelo = [
                                    1 => "PPA",
                                    2 => "LDO"
-                                  );
+                                  ];
                   db_select("selmodelo",$aModelo,true,1,"onchange='js_setModelo(this.value)'");
                 ?>
               </td>
@@ -187,11 +187,11 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
               </td>
               <td>
                 <?php 
-                  $aQuadro = array(
+                  $aQuadro = [
                                    1 => "Sintético",
                                    2 => "Por Recurso",
                                    3 => "Por acao/sem preco unitario"
-                                  );
+                                  ];
                   db_select("selquadro",$aQuadro,true,1,"");
                 ?>
               </td>

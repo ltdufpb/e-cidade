@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE issplannumpreissplanit
 class cl_issplannumpreissplanit { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q77_sequencial = 0; 
-   var $q77_issplanit = 0; 
-   var $q77_issplannumpre = 0; 
+   public $q77_sequencial = 0; 
+   public $q77_issplanit = 0; 
+   public $q77_issplannumpre = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q77_sequencial = int4 = Código 
                  q77_issplanit = int4 = Codigo da issplanit 
                  q77_issplannumpre = int4 = Codigo da issplanumpre 
                  ";
    //funcao construtor da classe 
-   function cl_issplannumpreissplanit() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issplannumpreissplanit"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_issplannumpreissplanit {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q77_sequencial = pg_result($result,0,0); 
+       $this->q77_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from issplannumpreissplanit_q77_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q77_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q77_sequencial)){
          $this->erro_sql = " Campo q77_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_issplannumpreissplanit {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "issplannumpreissplanit ($this->q77_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "issplannumpreissplanit já Cadastrado";
@@ -166,12 +166,12 @@ class cl_issplannumpreissplanit {
      $resaco = $this->sql_record($this->sql_query_file($this->q77_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11984,'$this->q77_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2073,11984,'','".AddSlashes(pg_result($resaco,0,'q77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2073,11985,'','".AddSlashes(pg_result($resaco,0,'q77_issplanit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2073,11986,'','".AddSlashes(pg_result($resaco,0,'q77_issplannumpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2073,11984,'','".AddSlashes(pg_fetch_result($resaco,0,'q77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2073,11985,'','".AddSlashes(pg_fetch_result($resaco,0,'q77_issplanit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2073,11986,'','".AddSlashes(pg_fetch_result($resaco,0,'q77_issplannumpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_issplannumpreissplanit {
       $this->atualizacampos();
      $sql = " update issplannumpreissplanit set ";
      $virgula = "";
-     if(trim($this->q77_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q77_sequencial"])){ 
+     if(trim((string) $this->q77_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q77_sequencial"])){ 
        $sql  .= $virgula." q77_sequencial = $this->q77_sequencial ";
        $virgula = ",";
-       if(trim($this->q77_sequencial) == null ){ 
+       if(trim((string) $this->q77_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "q77_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_issplannumpreissplanit {
          return false;
        }
      }
-     if(trim($this->q77_issplanit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q77_issplanit"])){ 
+     if(trim((string) $this->q77_issplanit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q77_issplanit"])){ 
        $sql  .= $virgula." q77_issplanit = $this->q77_issplanit ";
        $virgula = ",";
-       if(trim($this->q77_issplanit) == null ){ 
+       if(trim((string) $this->q77_issplanit) == null ){ 
          $this->erro_sql = " Campo Codigo da issplanit nao Informado.";
          $this->erro_campo = "q77_issplanit";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_issplannumpreissplanit {
          return false;
        }
      }
-     if(trim($this->q77_issplannumpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q77_issplannumpre"])){ 
+     if(trim((string) $this->q77_issplannumpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q77_issplannumpre"])){ 
        $sql  .= $virgula." q77_issplannumpre = $this->q77_issplannumpre ";
        $virgula = ",";
-       if(trim($this->q77_issplannumpre) == null ){ 
+       if(trim((string) $this->q77_issplannumpre) == null ){ 
          $this->erro_sql = " Campo Codigo da issplanumpre nao Informado.";
          $this->erro_campo = "q77_issplannumpre";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_issplannumpreissplanit {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11984,'$this->q77_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q77_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2073,11984,'".AddSlashes(pg_result($resaco,$conresaco,'q77_sequencial'))."','$this->q77_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2073,11984,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q77_sequencial'))."','$this->q77_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q77_issplanit"]))
-           $resac = db_query("insert into db_acount values($acount,2073,11985,'".AddSlashes(pg_result($resaco,$conresaco,'q77_issplanit'))."','$this->q77_issplanit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2073,11985,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q77_issplanit'))."','$this->q77_issplanit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q77_issplannumpre"]))
-           $resac = db_query("insert into db_acount values($acount,2073,11986,'".AddSlashes(pg_result($resaco,$conresaco,'q77_issplannumpre'))."','$this->q77_issplannumpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2073,11986,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q77_issplannumpre'))."','$this->q77_issplannumpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_issplannumpreissplanit {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11984,'$q77_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2073,11984,'','".AddSlashes(pg_result($resaco,$iresaco,'q77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2073,11985,'','".AddSlashes(pg_result($resaco,$iresaco,'q77_issplanit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2073,11986,'','".AddSlashes(pg_result($resaco,$iresaco,'q77_issplannumpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2073,11984,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q77_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2073,11985,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q77_issplanit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2073,11986,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q77_issplannumpre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from issplannumpreissplanit
@@ -345,7 +345,7 @@ class cl_issplannumpreissplanit {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:issplannumpreissplanit";
@@ -359,7 +359,7 @@ class cl_issplannumpreissplanit {
    function sql_query ( $q77_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_issplannumpreissplanit {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,7 +396,7 @@ class cl_issplannumpreissplanit {
    function sql_query_file ( $q77_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_issplannumpreissplanit {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

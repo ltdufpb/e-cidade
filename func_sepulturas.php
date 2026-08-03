@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsepulturas = new cl_sepulturas;
 $clsepulturas->rotulo->label("cm05_c_numero");
@@ -65,7 +65,7 @@ $clsepulturas->rotulo->label("cm05_i_lotecemit");
        <strong>Quadra:</strong>
       </td>
       <td width="96%" align="left" nowrap>
-       <?php db_input("cm05_c_quadra",10,(isset($cm05_c_quadra) ? $cm05_c_quadra : null) ,true,"text",4,"","chave_cm05_c_quadra"); ?>
+       <?php db_input("cm05_c_quadra",10,($cm05_c_quadra ?? null) ,true,"text",4,"","chave_cm05_c_quadra"); ?>
       </td>
      </tr>
 
@@ -134,7 +134,7 @@ $clsepulturas->rotulo->label("cm05_i_lotecemit");
         $sql = $clsepulturas->sql_query("",$campos,"cm05_i_codigo desc", $sWhere);
       }
 
-        $repassa = array();
+        $repassa = [];
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{
 

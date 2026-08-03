@@ -34,7 +34,7 @@ class AnexoXI extends AnexoXI2018
     private function processarFormulaColunaSaldo()
     {
 
-        $linhasProcessar = array(8, 9, 10, 12);
+        $linhasProcessar = [8, 9, 10, 12];
         foreach ($linhasProcessar as $codigoLinha) {
             $stdLinha = $this->aLinhas[$codigoLinha];
             $this->aLinhas[$codigoLinha]->saldo = ($stdLinha->dot_atual - $stdLinha->despemp);
@@ -44,12 +44,12 @@ class AnexoXI extends AnexoXI2018
     private function processarColunaRestosAPagar()
     {
 
-        $linhasDespesa = array();
+        $linhasDespesa = [];
         for ($linhaDespesa = 6; $linhaDespesa <= 12; $linhaDespesa++) {
             $this->aLinhas[$linhaDespesa]->rp_apagar = 0;
 
 
-            if (in_array($linhaDespesa, array(8, 9, 10, 12))) {
+            if (in_array($linhaDespesa, [8, 9, 10, 12])) {
                 $this->aLinhas[$linhaDespesa]->colunas[6]->o116_formula= "(#vlrpag + #vlrpagnproc)";
                 $linhasDespesa[] = $linhaDespesa;
                 $this->processaValorManualPorLinhaEColuna($linhaDespesa, 5);
@@ -121,7 +121,7 @@ class AnexoXI extends AnexoXI2018
         $iAlturaAssinatura = 26;
 
         $this->oPdf->SetAutoPageBreak(true, 10);
-        $this->notaExplicativa($this->oPdf, array($this->oPdf, 'AddPage'), $iAlturaAssinatura);
+        $this->notaExplicativa($this->oPdf, [$this->oPdf, 'AddPage'], $iAlturaAssinatura);
         $this->oPdf->SetAutoPageBreak(false, 10);
         $this->oRelatorioLegal->assinatura($this->oPdf, 'LRF', false);
 

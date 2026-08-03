@@ -48,8 +48,8 @@ try {
   $clrhferias->rotulo->label();
   
   $oGet                               = db_utils::postMemory($_GET);
-  $rh109_regist                       = isset($oGet->rh109_regist) ? $oGet->rh109_regist : null;
-  $z01_nome                           = isset($oGet->z01_nome)     ? $oGet->z01_nome     : null;
+  $rh109_regist                       = $oGet->rh109_regist ?? null;
+  $z01_nome                           = $oGet->z01_nome ?? null;
   $oServidor                          = new Servidor($rh109_regist);
   $oPeriodoAquisitivo                 = PeriodoAquisitivoFerias::getDisponivel($oServidor, true);
 
@@ -59,7 +59,7 @@ try {
 
   $sTextoPeriodo         = $oPeriodoAquisitivo->getDataInicial()->getDate(DBDate::DATA_PTBR)." - ";
   $sTextoPeriodo        .= $oPeriodoAquisitivo->getDataFinal()->getDate(DBDate::DATA_PTBR)." Dias: {$rh109_diasdireito}";
-  $aPeriodosAquisitivos  = array($oPeriodoAquisitivo->getCodigo() => $sTextoPeriodo);
+  $aPeriodosAquisitivos  = [$oPeriodoAquisitivo->getCodigo() => $sTextoPeriodo];
 
 
   $rh109_periodoaquisitivoinicial_dia = $oPeriodoAquisitivo->getDataInicial()->getDia();

@@ -97,7 +97,7 @@ function js_setacampo(){
       <tr>
         <td>Homolognet:</td>
         <td>
-          <?php db_select('homolognet', array('true' => 'Sim', '0' => 'Não'), true, 2); ?>
+          <?php db_select('homolognet', ['true' => 'Sim', '0' => 'Não'], true, 2); ?>
         </td>
       </tr>
     </table>

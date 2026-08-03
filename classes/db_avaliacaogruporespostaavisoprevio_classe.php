@@ -82,7 +82,7 @@ class cl_avaliacaogruporespostaavisoprevio extends DAOBasica
         return $sql;
     }
 
-    public function avaliacaoPreenchida(array $campos = array('*'), array $where = array(), $outrosComandos = null)
+    public function avaliacaoPreenchida(array $campos = ['*'], array $where = [], $outrosComandos = null)
     {
         $sql = " select " . implode(', ', $campos);
         $sql .= "  from avaliacaogruporespostaavisoprevio";

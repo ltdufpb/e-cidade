@@ -40,28 +40,28 @@ $clrotulo->label("k11_tef");
 if (@$k11_local == "") {
   $sql = "select nome from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario");
   $result = db_query($sql);
-  if (pg_numrows($result) > 0) {
+  if (pg_num_rows($result) > 0) {
     db_fieldsmemory($result,0);
     $k11_local = substr("MICRO DO USUARIO " . $nome,0,30);
   }
   $sql = "select nomeinst from db_config where codigo = " . db_getsession("DB_instit");
   $result = db_query($sql) or die($sql);
-  if (pg_numrows($result) > 0) {
+  if (pg_num_rows($result) > 0) {
     db_fieldsmemory($result,0);
-    $palavras = split(" ",$nomeinst);
+    $palavras = preg_split("# #m",(string) $nomeinst);
     $conta=0;
     for ($i=0; $i < sizeof($palavras); $i++) {
       if ($palavras[$i] == "DE") {
           continue;
       }
       if ($conta == 0) {
-        $k11_ident1 = substr($palavras[$i],0,1);
+        $k11_ident1 = substr((string) $palavras[$i],0,1);
         $conta++;
       } else if ($conta == 1) {
-        $k11_ident2 = substr($palavras[$i],0,1);
+        $k11_ident2 = substr((string) $palavras[$i],0,1);
         $conta++;
       } else if ($conta == 2) {
-        $k11_ident3 = substr($palavras[$i],0,1);
+        $k11_ident3 = substr((string) $palavras[$i],0,1);
         $conta++;
       }
     }
@@ -198,7 +198,7 @@ db_input('k11_aut2',20,$Ik11_aut2,true,'text',$db_opcao,"")
     </td>
     <td>
 <?php 
-$x = array('1'=>'Autentica e Imprime','2'=>'Autentica e não Imprime','3'=>'Não Autentica e Não Imprime (Somente Empenho)');
+$x = ['1'=>'Autentica e Imprime','2'=>'Autentica e não Imprime','3'=>'Não Autentica e Não Imprime (Somente Empenho)'];
 db_select('k11_tipautent',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -283,7 +283,7 @@ db_input('k11_portaimpcheque',5,$Ik11_portaimpcheque,true,'text',$db_opcao,"")
     <td>
 <?php 
 //echo "k11_impassche = $k11_impassche";
-$x = array('2'=>'Não','1'=>'Sim');
+$x = ['2'=>'Não','1'=>'Sim'];
 db_select('k11_impassche',$x,true,$db_opcao,"onChange = 'js_mostra(this);'");
 
 
@@ -299,7 +299,7 @@ db_select('k11_impassche',$x,true,$db_opcao,"onChange = 'js_mostra(this);'");
     </td>
     <td>
 <?php 
-$x = array('1'=>'Zera troco quando autenticar','2'=>'Não zera troco quando autenticar');
+$x = ['1'=>'Zera troco quando autenticar','2'=>'Não zera troco quando autenticar'];
 db_select('k11_zeratrocoarrec',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -382,7 +382,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cfautent.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

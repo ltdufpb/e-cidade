@@ -68,7 +68,7 @@
 			
         db_inicio_transacao();
         $oDaoConCarPeculiar = new CaracteristicaPeculiar($oParam->sEstrutural);
-			  $oDaoConCarPeculiar->setDescricao(utf8_decode(db_stdClass::db_stripTagsJson($oParam->sDescricao)))
+			  $oDaoConCarPeculiar->setDescricao(mb_convert_encoding(db_stdClass::db_stripTagsJson($oParam->sDescricao), 'ISO-8859-1'))
 			                     ->setTipoConta($oParam->iTipo)
 			                     ->setTipoClassificacao($oParam->iClassificacao)
 			                     ->setEstrutura((int)$oParam->iEstruturaCP)
@@ -102,7 +102,7 @@
 
       $oDadosCaracteristica = db_utils::fieldsMemory($rsExecutaQuery,0);
       $oRetorno->c58_sequencial  = $oDadosCaracteristica->c58_sequencial;
-      $oRetorno->c58_descr       = urlencode($oDadosCaracteristica->c58_descr);
+      $oRetorno->c58_descr       = urlencode((string) $oDadosCaracteristica->c58_descr);
       $oRetorno->c58_tipo        = $oDadosCaracteristica->c58_tipo;
       $oRetorno->db121_tipoconta = $oDadosCaracteristica->db121_tipoconta;
       

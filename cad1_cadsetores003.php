@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 $clsetor = new cl_setor;
 $db_opcao = 3;
 $db_botao = false;
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Excluir"){
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Excluir"){
    db_inicio_transacao();
    $clsetor->alterar($codigo);
    db_fim_transacao();

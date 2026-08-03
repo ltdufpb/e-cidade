@@ -31,12 +31,12 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_parobrastipocons_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clparobrastipocons = new cl_parobrastipocons;
 $db_opcao = 22;
 $db_botao = false;
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
    db_inicio_transacao();
    $result = $clparobrastipocons->sql_record($clparobrastipocons->sql_query());
    if($result==false || $clparobrastipocons->numrows==0){
@@ -87,7 +87,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
   if($clparobrastipocons->erro_status=="0"){
     $clparobrastipocons->erro(true,false);
     $db_botao=true;

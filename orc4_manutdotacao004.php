@@ -46,7 +46,7 @@ require_once(modification("classes/db_orcprojativ_classe.php"));
 require_once(modification("classes/db_orctiporec_classe.php"));
 require_once(modification("libs/db_liborcamento.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clorcdotacao = new cl_orcdotacao;
@@ -126,7 +126,7 @@ if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
         db_fieldsmemory($resultPar, 0);
 
         if ($o50_subelem == 'f') {
-            $o56_elemento = substr($o56_elemento, 0, 7) . "000000";
+            $o56_elemento = substr((string) $o56_elemento, 0, 7) . "000000";
             $sSql = $clorcelemento->sql_query_file(null, null, 'o56_codele', 'o56_elemento', " o56_anousu = " . $anousu . " and o56_elemento = '$o56_elemento' ");
         } else {
             $sSql = $clorcelemento->sql_query_file(
@@ -200,7 +200,7 @@ if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
 </body>
 </html>
 <?php
-if ((isset ($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
     if ($clorcdotacao->erro_status == "0") {
         $clorcdotacao->erro(true, false);
         $db_botao = true;

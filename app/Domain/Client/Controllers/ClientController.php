@@ -29,7 +29,7 @@ class ClientController extends Controller
             return new DBJsonResponse(
                 null,
                 $exception->getMessage(),
-                ($exception->getCode() ? $exception->getCode() : 400)
+                ($exception->getCode() ?: 400)
             );
         }
     }

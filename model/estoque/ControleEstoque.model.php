@@ -40,7 +40,7 @@ class ControleEstoque {
    * @var Item[]
    * @access private
    */
-  private $aItens = array();
+  private $aItens = [];
 
   /**
    * Almoxarifados
@@ -48,7 +48,7 @@ class ControleEstoque {
    * @var Almoxarifado[]
    * @access private
    */
-  private $aAlmoxarifados = array();
+  private $aAlmoxarifados = [];
 
   /**
    * Periodo inicial
@@ -110,7 +110,7 @@ class ControleEstoque {
    * @access public
    * @return void
    */
-  public function setPeriodo(DBDate $oPeriodoInicial = null, DBDate $oPeriodoFinal = null) {
+  public function setPeriodo(?DBDate $oPeriodoInicial = null, ?DBDate $oPeriodoFinal = null) {
 
     $this->oPeriodoInicial = $oPeriodoInicial;
     $this->oPeriodoFinal   = $oPeriodoFinal;
@@ -204,12 +204,12 @@ class ControleEstoque {
     $sSqlSaldoAtual    = $oDaoMatEstoqueIni->sql_query_movimentacoes(null, $sCampos, null, $sWhereSaldos);
     $rsPrepararQuery   = pg_prepare("busca_movimentacao_material", $sSqlSaldoAtual);
 
-    $aMovimentacoesItem = array();
+    $aMovimentacoesItem = [];
     foreach ($this->aAlmoxarifados as $oAlmoxarifado) {
 
       foreach ($this->aItens as $oItem) {
 
-        $aParametrosQuery = array($oItem->getCodigo(), $oAlmoxarifado->getCodigo());
+        $aParametrosQuery = [$oItem->getCodigo(), $oAlmoxarifado->getCodigo()];
 
         if (!empty($this->oPeriodoInicial)) {
           $aParametrosQuery[] = $this->oPeriodoInicial->getDate();

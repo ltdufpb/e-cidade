@@ -97,7 +97,7 @@ $clarreprescr->rotulo->label();
                
                $result  = $cldivida->sql_record($sql);
                $numrows = $cldivida->numrows;
-               $exe     = array();
+               $exe     = [];
                
                //echo $sql;
                

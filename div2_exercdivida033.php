@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -56,7 +56,7 @@ $aux = new cl_arquivo_auxiliar;
            <td colspan=2 >
            <b>Tipo de Débito:</b>
            <?php 
-           $arr=array("d"=>"Todos","f"=>"Tributário","t"=>"Não Tributário");
+           $arr=["d"=>"Todos","f"=>"Tributário","t"=>"Não Tributário"];
            db_select('tipodeb',$arr,true,2,"onchange='document.form1.submit();'");
            ?>
            </td>

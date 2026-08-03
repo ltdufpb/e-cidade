@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE carface
 class cl_carface {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $j38_face = 0;
-   var $j38_caract = 0;
-   var $j38_datalancamento_dia = null;
-   var $j38_datalancamento_mes = null;
-   var $j38_datalancamento_ano = null;
-   var $j38_datalancamento = null;
+   public $j38_face = 0;
+   public $j38_caract = 0;
+   public $j38_datalancamento_dia = null;
+   public $j38_datalancamento_mes = null;
+   public $j38_datalancamento_ano = null;
+   public $j38_datalancamento = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  j38_face = int4 = Face
                  j38_caract = int4 = Caracteristica
                  j38_datalancamento = date = Date de Lançamento
                  ";
    //funcao construtor da classe
-   function cl_carface() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("carface");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -124,7 +124,7 @@ class cl_carface {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Caracteristica da Face ($this->j38_face."-".$this->j38_caract) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Caracteristica da Face já Cadastrado";
@@ -153,13 +153,13 @@ class cl_carface {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,77,'$this->j38_face','I')");
          $resac = db_query("insert into db_acountkey values($acount,78,'$this->j38_caract','I')");
-         $resac = db_query("insert into db_acount values($acount,18,77,'','".AddSlashes(pg_result($resaco,0,'j38_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,18,78,'','".AddSlashes(pg_result($resaco,0,'j38_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,18,20929,'','".AddSlashes(pg_result($resaco,0,'j38_datalancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,18,77,'','".AddSlashes(pg_fetch_result($resaco,0,'j38_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,18,78,'','".AddSlashes(pg_fetch_result($resaco,0,'j38_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,18,20929,'','".AddSlashes(pg_fetch_result($resaco,0,'j38_datalancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -169,10 +169,10 @@ class cl_carface {
       $this->atualizacampos();
      $sql = " update carface set ";
      $virgula = "";
-     if(trim($this->j38_face)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j38_face"])){
+     if(trim((string) $this->j38_face)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j38_face"])){
        $sql  .= $virgula." j38_face = $this->j38_face ";
        $virgula = ",";
-       if(trim($this->j38_face) == null ){
+       if(trim((string) $this->j38_face) == null ){
          $this->erro_sql = " Campo Face não informado.";
          $this->erro_campo = "j38_face";
          $this->erro_banco = "";
@@ -182,10 +182,10 @@ class cl_carface {
          return false;
        }
      }
-     if(trim($this->j38_caract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j38_caract"])){
+     if(trim((string) $this->j38_caract)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j38_caract"])){
        $sql  .= $virgula." j38_caract = $this->j38_caract ";
        $virgula = ",";
-       if(trim($this->j38_caract) == null ){
+       if(trim((string) $this->j38_caract) == null ){
          $this->erro_sql = " Campo Caracteristica não informado.";
          $this->erro_campo = "j38_caract";
          $this->erro_banco = "";
@@ -195,7 +195,7 @@ class cl_carface {
          return false;
        }
      }
-     if(trim($this->j38_datalancamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j38_datalancamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j38_datalancamento_dia"] !="") ){
+     if(trim((string) $this->j38_datalancamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j38_datalancamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j38_datalancamento_dia"] !="") ){
        $sql  .= $virgula." j38_datalancamento = '$this->j38_datalancamento' ";
        $virgula = ",";
      }     else{
@@ -221,16 +221,16 @@ class cl_carface {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,77,'$this->j38_face','A')");
            $resac = db_query("insert into db_acountkey values($acount,78,'$this->j38_caract','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j38_face"]) || $this->j38_face != "")
-             $resac = db_query("insert into db_acount values($acount,18,77,'".AddSlashes(pg_result($resaco,$conresaco,'j38_face'))."','$this->j38_face',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,18,77,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j38_face'))."','$this->j38_face',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j38_caract"]) || $this->j38_caract != "")
-             $resac = db_query("insert into db_acount values($acount,18,78,'".AddSlashes(pg_result($resaco,$conresaco,'j38_caract'))."','$this->j38_caract',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,18,78,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j38_caract'))."','$this->j38_caract',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j38_datalancamento"]) || $this->j38_datalancamento != "")
-             $resac = db_query("insert into db_acount values($acount,18,20929,'".AddSlashes(pg_result($resaco,$conresaco,'j38_datalancamento'))."','$this->j38_datalancamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,18,20929,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j38_datalancamento'))."','$this->j38_datalancamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -284,13 +284,13 @@ class cl_carface {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,77,'$j38_face','E')");
            $resac  = db_query("insert into db_acountkey values($acount,78,'$j38_caract','E')");
-           $resac  = db_query("insert into db_acount values($acount,18,77,'','".AddSlashes(pg_result($resaco,$iresaco,'j38_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,18,78,'','".AddSlashes(pg_result($resaco,$iresaco,'j38_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,18,20929,'','".AddSlashes(pg_result($resaco,$iresaco,'j38_datalancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,18,77,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j38_face'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,18,78,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j38_caract'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,18,20929,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j38_datalancamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

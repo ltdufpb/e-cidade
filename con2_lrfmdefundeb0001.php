@@ -42,12 +42,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $codrel  = 31; // relatorio de MDE FUNDEB
 $anousu  = db_getsession("DB_anousu");
@@ -92,30 +92,30 @@ if ($anousu >= 2017) {
     <center>
     <?php 
     if ($anousu <= 2007){
-      $clcriaabas->identifica = array("relatorio"=>"Relatório","variaveis"=>"Variáveis","parametro"=>"Parametros");
-      $clcriaabas->title      = array("relatorio"=>"Relatório","variaveis"=>"Variáveis","parametro"=>"Parametros");
-      $clcriaabas->src        = array("relatorio"=>"con2_lrfmdefundeb011.php?codrel=$codrel",
+      $clcriaabas->identifica = ["relatorio"=>"Relatório","variaveis"=>"Variáveis","parametro"=>"Parametros"];
+      $clcriaabas->title      = ["relatorio"=>"Relatório","variaveis"=>"Variáveis","parametro"=>"Parametros"];
+      $clcriaabas->src        = ["relatorio"=>"con2_lrfmdefundeb011.php?codrel=$codrel",
                                       "variaveis"=>"con4_parametrosrelatorioslegais001.php?c83_codrel=$codrel",
-  			                              "parametro"=>"con2_conrelparametros.php?c83_codrel=$codrel");
-      $clcriaabas->sizecampo= array("relatorio"=>"23","variaveis"=>"23","parametro"=>"23");
+  			                              "parametro"=>"con2_conrelparametros.php?c83_codrel=$codrel"];
+      $clcriaabas->sizecampo= ["relatorio"=>"23","variaveis"=>"23","parametro"=>"23"];
       $clcriaabas->scrolling ='yes';
 
     } else {
-      $clcriaabas->identifica = array("relatorio" => "Relatório",
+      $clcriaabas->identifica = ["relatorio" => "Relatório",
                                       "parametro"  =>"Parâmetros",
                                       "notas"     => "Fonte/Notas Explicativas"
-                                      );
-      $clcriaabas->title      = array("relatorio" => "Relatório",
+                                      ];
+      $clcriaabas->title      = ["relatorio" => "Relatório",
                                       "parametro" =>"Parâmetros",
                                       "notas"     => "Fonte/Notas Explicativas"
-                                      );
-      $clcriaabas->src        = array("relatorio" => "con2_lrfmdefundeb011.php?codrel=$codrel",
+                                      ];
+      $clcriaabas->src        = ["relatorio" => "con2_lrfmdefundeb011.php?codrel=$codrel",
                                       "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel=$codrel",
                                       "notas"     => "con2_conrelnotas.php?c83_codrel=$codrel",
-  			                              );
-      $clcriaabas->sizecampo= array("relatorio" => "23",
+  			                              ];
+      $clcriaabas->sizecampo= ["relatorio" => "23",
                                     "parametro" => "23",
-                                    "notas"     => "32");
+                                    "notas"     => "32"];
       $clcriaabas->scrolling ='yes';
     }
 

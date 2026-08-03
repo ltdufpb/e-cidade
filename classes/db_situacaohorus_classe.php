@@ -3,31 +3,31 @@
 //CLASSE DA ENTIDADE situacaohorus
 class cl_situacaohorus { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $fa60_sequencial = 0; 
-   var $fa60_descricao = null; 
+   public $fa60_sequencial = 0; 
+   public $fa60_descricao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  fa60_sequencial = int4 = Código 
                  fa60_descricao = varchar(30) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_situacaohorus() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("situacaohorus"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -69,10 +69,10 @@ class cl_situacaohorus {
          $this->erro_status = "0";
          return false; 
        }
-       $this->fa60_sequencial = pg_result($result,0,0); 
+       $this->fa60_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from situacaohorus_fa60_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa60_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa60_sequencial)){
          $this->erro_sql = " Campo fa60_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -102,7 +102,7 @@ class cl_situacaohorus {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Situação Horus ($this->fa60_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Situação Horus já Cadastrado";
@@ -131,11 +131,11 @@ class cl_situacaohorus {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21517,'$this->fa60_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3866,21517,'','".AddSlashes(pg_result($resaco,0,'fa60_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3866,21518,'','".AddSlashes(pg_result($resaco,0,'fa60_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3866,21517,'','".AddSlashes(pg_fetch_result($resaco,0,'fa60_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3866,21518,'','".AddSlashes(pg_fetch_result($resaco,0,'fa60_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -145,10 +145,10 @@ class cl_situacaohorus {
       $this->atualizacampos();
      $sql = " update situacaohorus set ";
      $virgula = "";
-     if(trim($this->fa60_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa60_sequencial"])){ 
+     if(trim((string) $this->fa60_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa60_sequencial"])){ 
        $sql  .= $virgula." fa60_sequencial = $this->fa60_sequencial ";
        $virgula = ",";
-       if(trim($this->fa60_sequencial) == null ){ 
+       if(trim((string) $this->fa60_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "fa60_sequencial";
          $this->erro_banco = "";
@@ -158,10 +158,10 @@ class cl_situacaohorus {
          return false;
        }
      }
-     if(trim($this->fa60_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa60_descricao"])){ 
+     if(trim((string) $this->fa60_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa60_descricao"])){ 
        $sql  .= $virgula." fa60_descricao = '$this->fa60_descricao' ";
        $virgula = ",";
-       if(trim($this->fa60_descricao) == null ){ 
+       if(trim((string) $this->fa60_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "fa60_descricao";
          $this->erro_banco = "";
@@ -185,13 +185,13 @@ class cl_situacaohorus {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21517,'$this->fa60_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa60_sequencial"]) || $this->fa60_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3866,21517,'".AddSlashes(pg_result($resaco,$conresaco,'fa60_sequencial'))."','$this->fa60_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3866,21517,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa60_sequencial'))."','$this->fa60_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa60_descricao"]) || $this->fa60_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3866,21518,'".AddSlashes(pg_result($resaco,$conresaco,'fa60_descricao'))."','$this->fa60_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3866,21518,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa60_descricao'))."','$this->fa60_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -245,11 +245,11 @@ class cl_situacaohorus {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21517,'$fa60_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3866,21517,'','".AddSlashes(pg_result($resaco,$iresaco,'fa60_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3866,21518,'','".AddSlashes(pg_result($resaco,$iresaco,'fa60_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3866,21517,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa60_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3866,21518,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa60_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -93,7 +93,7 @@ $descrdepto   = $_SESSION['DB_nomedepto'];
         </td>
         <td nowrap>
            <?php 
-             $tipo = array("N"=>"Notificação","A"=>"Auto");
+             $tipo = ["N"=>"Notificação","A"=>"Auto"];
     	       db_select("y29_tipoproced",$tipo,true,$db_opcao);
             ?>
          </td>

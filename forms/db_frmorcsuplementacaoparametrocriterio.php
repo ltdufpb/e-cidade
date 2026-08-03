@@ -100,7 +100,7 @@ db_input('o135_descricao',50,$Io135_descricao,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('6'=>'Ação','7'=>'Elemento','3'=>'Função','5'=>'Programa','8'=>'Recurso','1'=>'Órgão','4'=>'Subfunção','2'=>'Unidade');
+$x = ['6'=>'Ação','7'=>'Elemento','3'=>'Função','5'=>'Programa','8'=>'Recurso','1'=>'Órgão','4'=>'Subfunção','2'=>'Unidade'];
 db_select('o135_nivel',$x,true,$db_opcao,"onchange='valida_nivel_valor();'");
 ?>
     </td>
@@ -145,7 +145,7 @@ db_input('o135_valor',50,$Io135_valor,true,'text',3,"")
     <td valign="top"  align="center">  
     <?php 
    $iAnoUsu     = db_getsession("DB_anousu");
-	 $chavepri= array("o135_sequencial"=>@$o135_sequencial);
+	 $chavepri= ["o135_sequencial"=>@$o135_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 //$cliframe_alterar_excluir->sql     = $clorcsuplementacaoparametrocriterio->sql_query_file($o135_sequencial);
 	 $cliframe_alterar_excluir->sql     = $clorcsuplementacaoparametrocriterio->sql_query_file("", "*", "", "o135_orcsuplementacaoparametro = {$iAnoUsu}");
@@ -201,7 +201,7 @@ function js_preenchepesquisa(chave){
   db_iframe_orcsuplementacaoparametrocriterio.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

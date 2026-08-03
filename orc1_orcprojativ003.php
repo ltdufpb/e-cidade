@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
 
@@ -57,15 +57,15 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Dados Ação",
-								       "g2"=>"Programação Física");
+       $clcriaabas->identifica = ["g1"=>"Dados Ação",
+								       "g2"=>"Programação Física"];
        
-       $clcriaabas->title      = array("g1"=>"Dados Ação",
-								       "g2"=>"Programação Física");       
+       $clcriaabas->title      = ["g1"=>"Dados Ação",
+								       "g2"=>"Programação Física"];       
        								   
        
-       $clcriaabas->src        = array("g1"=>"orc1_orcprojativ013.php",
-       								   "g2"=>"orc1_orcprojativprogramfisica001.php");
+       $clcriaabas->src        = ["g1"=>"orc1_orcprojativ013.php",
+       								   "g2"=>"orc1_orcprojativprogramfisica001.php"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

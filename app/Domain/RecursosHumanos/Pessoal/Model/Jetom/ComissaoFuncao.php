@@ -68,7 +68,7 @@ class ComissaoFuncao extends Model
      */
     public function funcaoModel()
     {
-        return $this->belongsTo('App\Domain\RecursosHumanos\Pessoal\Model\Jetom\Funcao', 'rh246_funcao');
+        return $this->belongsTo(\App\Domain\RecursosHumanos\Pessoal\Model\Jetom\Funcao::class, 'rh246_funcao');
     }
 
     public function callSave(array $options = [])
@@ -108,7 +108,7 @@ class ComissaoFuncao extends Model
      */
     public function funcao()
     {
-        return $this->hasOne('App\Domain\RecursosHumanos\Pessoal\Model\Jetom\Funcao');
+        return $this->hasOne(\App\Domain\RecursosHumanos\Pessoal\Model\Jetom\Funcao::class);
     }
 
 

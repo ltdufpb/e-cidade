@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_levanta_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sql = "select 
               j14_codigo,

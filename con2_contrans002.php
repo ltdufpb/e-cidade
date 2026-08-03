@@ -43,7 +43,7 @@ $clrotulo->label('c47_debito');
 $clrotulo->label('c60_estrut');
 $clrotulo->label('c47_credito');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $dbwhere="1=1";
 $and="";
 
@@ -120,7 +120,7 @@ if($numrows>0){
 	             where c60_anousu = ".db_getsession("DB_anousu")." and c61_reduz = $c47_debito ";
       $rc = db_query($sql);
 	 @db_fieldsmemory($rc,0);
-      $pdf->cell(75,4,substr($c60_descr,0,40),1,0,"L",0); 
+      $pdf->cell(75,4,substr((string) $c60_descr,0,40),1,0,"L",0); 
       $pdf->cell(40,4,"($c47_credito)  $cred_estrut",1,0,"C",0);
 	  $sql="select c60_descr 
 	             from conplano 
@@ -128,7 +128,7 @@ if($numrows>0){
 	             where c60_anousu = ".db_getsession("DB_anousu")." and c61_reduz = $c47_credito ";
       $rc = db_query($sql);
 	  @db_fieldsmemory($rc,0);
-      $pdf->cell(75,4,substr($c60_descr,0,40),1,1,"L",0); 
+      $pdf->cell(75,4,substr((string) $c60_descr,0,40),1,1,"L",0); 
        
     }
   }

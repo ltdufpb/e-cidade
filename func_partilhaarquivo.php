@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_partilhaarquivo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpartilhaarquivo = new cl_partilhaarquivo;
 $clpartilhaarquivo->rotulo->label("v78_sequencial");
 $clpartilhaarquivo->rotulo->label("v78_nomearq");
@@ -98,9 +98,9 @@ $clpartilhaarquivo->rotulo->label("v78_nomearq");
         }else{
            $sql = $clpartilhaarquivo->sql_query("",$campos,"v78_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v78_nomearq)){
-          $repassa = array("chave_v78_sequencial"=>$chave_v78_sequencial,"chave_v78_nomearq"=>$chave_v78_nomearq);
+          $repassa = ["chave_v78_sequencial"=>$chave_v78_sequencial,"chave_v78_nomearq"=>$chave_v78_nomearq];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhavaliacaotipoavaliacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhavaliacaotipoavaliacao = new cl_rhavaliacaotipoavaliacao;
 $clrhavaliacaotipoavaliacao->rotulo->label("h76_sequencial");
 $clrhavaliacaotipoavaliacao->rotulo->label("h76_sequencial");
@@ -98,9 +98,9 @@ $clrhavaliacaotipoavaliacao->rotulo->label("h76_sequencial");
         }else{
            $sql = $clrhavaliacaotipoavaliacao->sql_query("",$campos,"h76_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h76_sequencial)){
-          $repassa = array("chave_h76_sequencial"=>$chave_h76_sequencial,"chave_h76_sequencial"=>$chave_h76_sequencial);
+          $repassa = ["chave_h76_sequencial"=>$chave_h76_sequencial,"chave_h76_sequencial"=>$chave_h76_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

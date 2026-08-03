@@ -70,7 +70,7 @@ $clrotulo->label("nome");
                                                                     "o119_versao",
                                                                     "o123_situacao = 1");
            $rsPerspectivas   = $oDaoPPaVersao->sql_record($sSqlPerspectivas);
-           $aPerspectivas    = array();
+           $aPerspectivas    = [];
            for ($i = 0; $i < $oDaoPPaVersao->numrows; $i++ ) {
 
              $oPerspectiva  = db_utils::fieldsMemory($rsPerspectivas, $i);
@@ -144,7 +144,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cronogramaperspectiva.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

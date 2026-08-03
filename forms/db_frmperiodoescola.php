@@ -99,7 +99,7 @@ if ( (isset($opcao) && $opcao == "alterar") || isset($alterar) ) {
       <tr>
         <td valign="top">
         <?php
-          $chavepri= array(
+          $chavepri= [
                             "ed17_i_codigo"      => @$ed17_i_codigo,
                             "ed17_i_escola"      => @$ed17_i_escola,
                             "ed17_i_turno"       => @$ed17_i_turno,
@@ -108,7 +108,7 @@ if ( (isset($opcao) && $opcao == "alterar") || isset($alterar) ) {
                             "ed08_c_descr"       => @$ed08_c_descr,
                             "ed17_h_inicio"      => @$ed17_h_inicio,
                             "ed17_h_fim"         => @$ed17_h_fim
-                          );
+                          ];
           $cliframe_alterar_excluir->chavepri      = $chavepri;
           $cliframe_alterar_excluir->sql           = $clperiodoescola->sql_query(
                                                                                   "",

@@ -35,8 +35,8 @@ include(modification("classes/db_atendrequiitem_classe.php"));
 include(modification("classes/db_matestoque_classe.php"));
 include(modification("classes/db_matestoquedevitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clmatrequiitem = new cl_matrequiitem;
 $clatendrequi = new cl_atendrequi;
@@ -150,7 +150,7 @@ $clrotulo->label("m60_descr");
         }
 
 	      $quantidade="quant_$m41_codmatmater"."_"."$m41_codigo"."_".$i."_".$m82_codigo;
-	      $$quantidade="";
+	      ${$quantidade}="";
 	      $op=1;
 	      if ($m43_quantatend==0||$quant_sol==0){
 	        $op=3;

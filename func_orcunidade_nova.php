@@ -39,7 +39,7 @@ $clorcunidade->rotulo->label("o41_orgao");
 $clorcunidade->rotulo->label("o41_unidade");
 $clorcunidade->rotulo->label("o41_descr");
 
-$where = array();
+$where = [];
 
 $ano = !empty($_GET['ano']) ? $_GET['ano'] : db_getsession('DB_anousu');
 $where[] = "o41_anousu = {$ano}";
@@ -133,9 +133,9 @@ if (!isset($pesquisa_chave)) {
     $where = implode(' and ', $where);
     $sql = $clorcunidade->sql_query(null, null, null, $campos, "o41_orgao, o41_unidade", $where);
 
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_o41_descr)) {
-        $repassa = array("chave_o41_descr" => $chave_o41_descr, "chave_o41_descr" => $chave_o41_descr);
+        $repassa = ["chave_o41_descr" => $chave_o41_descr, "chave_o41_descr" => $chave_o41_descr];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

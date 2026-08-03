@@ -28,9 +28,9 @@
 require_once(modification("fpdf151/scpdf.php"));
 require_once(modification("classes/db_carteira_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clcarteira = new cl_carteira;
-$prop       = explode(",",$lista);
+$prop       = explode(",",(string) $lista);
 $pdf        = new scpdf();
 
 $pdf->Open();
@@ -122,7 +122,7 @@ for ($i = 0; $i < count($prop); $i++) {
   if ($clcarteira->numrows > 0) {
   	 
     db_fieldsmemory($result,0);
-    $t1 = str_pad($bi16_codigo,11,0,STR_PAD_LEFT); //numero codigo barras
+    $t1 = str_pad((string) $bi16_codigo,11,0,STR_PAD_LEFT); //numero codigo barras
     $pdf->rect($rectx, $recty, 90, 54, 'D'); //retangulo
     $pdf->Image('imagens/files/logo_boleto.png', $imgx, $imgy, 10); //imagem
     
@@ -138,7 +138,7 @@ for ($i = 0; $i < count($prop); $i++) {
     
     $pdf->setfont('arial','',8);
     $pdf->text($docx,   $docy,   "CPF: ".$ov02_cnpjcpf); //cgccpf leitor
-    $pdf->text($identx, $identy, "Identidade: ".substr($ov02_ident, 0, 12)); //identidade leitor
+    $pdf->text($identx, $identy, "Identidade: ".substr((string) $ov02_ident, 0, 12)); //identidade leitor
     $pdf->text($catx,   $caty,   "Categoria: ".$bi07_nome); //categoria leitor
     $pdf->text($valx,   $valy,   "Validade: ".db_formatar($bi16_validade, 'd')); //validade da carteira
     

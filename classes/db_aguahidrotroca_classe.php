@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE aguahidrotroca
 class cl_aguahidrotroca { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x28_codigo = 0; 
-   var $x28_dttroca_dia = null; 
-   var $x28_dttroca_mes = null; 
-   var $x28_dttroca_ano = null; 
-   var $x28_dttroca = null; 
-   var $x28_obs = null; 
-   var $x28_codhidrometro = 0; 
+   public $x28_codigo = 0; 
+   public $x28_dttroca_dia = null; 
+   public $x28_dttroca_mes = null; 
+   public $x28_dttroca_ano = null; 
+   public $x28_dttroca = null; 
+   public $x28_obs = null; 
+   public $x28_codhidrometro = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x28_codigo = int4 = Caracteristica 
                  x28_dttroca = date = Data de Troca 
                  x28_obs = text = Observações 
                  x28_codhidrometro = int4 = Código do hidrômetro 
                  ";
    //funcao construtor da classe 
-   function cl_aguahidrotroca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguahidrotroca"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,7 +143,7 @@ class cl_aguahidrotroca {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "aguahidrotroca ($this->x28_codhidrometro) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "aguahidrotroca já Cadastrado";
@@ -167,13 +167,13 @@ class cl_aguahidrotroca {
      $resaco = $this->sql_record($this->sql_query_file($this->x28_codhidrometro));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8438,'$this->x28_codhidrometro','I')");
-       $resac = db_query("insert into db_acount values($acount,1433,8435,'','".AddSlashes(pg_result($resaco,0,'x28_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1433,8436,'','".AddSlashes(pg_result($resaco,0,'x28_dttroca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1433,8437,'','".AddSlashes(pg_result($resaco,0,'x28_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1433,8438,'','".AddSlashes(pg_result($resaco,0,'x28_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1433,8435,'','".AddSlashes(pg_fetch_result($resaco,0,'x28_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1433,8436,'','".AddSlashes(pg_fetch_result($resaco,0,'x28_dttroca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1433,8437,'','".AddSlashes(pg_fetch_result($resaco,0,'x28_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1433,8438,'','".AddSlashes(pg_fetch_result($resaco,0,'x28_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -182,10 +182,10 @@ class cl_aguahidrotroca {
       $this->atualizacampos();
      $sql = " update aguahidrotroca set ";
      $virgula = "";
-     if(trim($this->x28_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x28_codigo"])){ 
+     if(trim((string) $this->x28_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x28_codigo"])){ 
        $sql  .= $virgula." x28_codigo = $this->x28_codigo ";
        $virgula = ",";
-       if(trim($this->x28_codigo) == null ){ 
+       if(trim((string) $this->x28_codigo) == null ){ 
          $this->erro_sql = " Campo Caracteristica nao Informado.";
          $this->erro_campo = "x28_codigo";
          $this->erro_banco = "";
@@ -195,10 +195,10 @@ class cl_aguahidrotroca {
          return false;
        }
      }
-     if(trim($this->x28_dttroca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x28_dttroca_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x28_dttroca_dia"] !="") ){ 
+     if(trim((string) $this->x28_dttroca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x28_dttroca_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x28_dttroca_dia"] !="") ){ 
        $sql  .= $virgula." x28_dttroca = '$this->x28_dttroca' ";
        $virgula = ",";
-       if(trim($this->x28_dttroca) == null ){ 
+       if(trim((string) $this->x28_dttroca) == null ){ 
          $this->erro_sql = " Campo Data de Troca nao Informado.";
          $this->erro_campo = "x28_dttroca_dia";
          $this->erro_banco = "";
@@ -211,7 +211,7 @@ class cl_aguahidrotroca {
        if(isset($GLOBALS["HTTP_POST_VARS"]["x28_dttroca_dia"])){ 
          $sql  .= $virgula." x28_dttroca = null ";
          $virgula = ",";
-         if(trim($this->x28_dttroca) == null ){ 
+         if(trim((string) $this->x28_dttroca) == null ){ 
            $this->erro_sql = " Campo Data de Troca nao Informado.";
            $this->erro_campo = "x28_dttroca_dia";
            $this->erro_banco = "";
@@ -222,10 +222,10 @@ class cl_aguahidrotroca {
          }
        }
      }
-     if(trim($this->x28_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x28_obs"])){ 
+     if(trim((string) $this->x28_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x28_obs"])){ 
        $sql  .= $virgula." x28_obs = '$this->x28_obs' ";
        $virgula = ",";
-       if(trim($this->x28_obs) == null ){ 
+       if(trim((string) $this->x28_obs) == null ){ 
          $this->erro_sql = " Campo Observações nao Informado.";
          $this->erro_campo = "x28_obs";
          $this->erro_banco = "";
@@ -235,10 +235,10 @@ class cl_aguahidrotroca {
          return false;
        }
      }
-     if(trim($this->x28_codhidrometro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x28_codhidrometro"])){ 
+     if(trim((string) $this->x28_codhidrometro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x28_codhidrometro"])){ 
        $sql  .= $virgula." x28_codhidrometro = $this->x28_codhidrometro ";
        $virgula = ",";
-       if(trim($this->x28_codhidrometro) == null ){ 
+       if(trim((string) $this->x28_codhidrometro) == null ){ 
          $this->erro_sql = " Campo Código do hidrômetro nao Informado.";
          $this->erro_campo = "x28_codhidrometro";
          $this->erro_banco = "";
@@ -256,17 +256,17 @@ class cl_aguahidrotroca {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8438,'$this->x28_codhidrometro','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x28_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1433,8435,'".AddSlashes(pg_result($resaco,$conresaco,'x28_codigo'))."','$this->x28_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1433,8435,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x28_codigo'))."','$this->x28_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x28_dttroca"]))
-           $resac = db_query("insert into db_acount values($acount,1433,8436,'".AddSlashes(pg_result($resaco,$conresaco,'x28_dttroca'))."','$this->x28_dttroca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1433,8436,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x28_dttroca'))."','$this->x28_dttroca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x28_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1433,8437,'".AddSlashes(pg_result($resaco,$conresaco,'x28_obs'))."','$this->x28_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1433,8437,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x28_obs'))."','$this->x28_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x28_codhidrometro"]))
-           $resac = db_query("insert into db_acount values($acount,1433,8438,'".AddSlashes(pg_result($resaco,$conresaco,'x28_codhidrometro'))."','$this->x28_codhidrometro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1433,8438,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x28_codhidrometro'))."','$this->x28_codhidrometro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -311,13 +311,13 @@ class cl_aguahidrotroca {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8438,'$x28_codhidrometro','E')");
-         $resac = db_query("insert into db_acount values($acount,1433,8435,'','".AddSlashes(pg_result($resaco,$iresaco,'x28_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1433,8436,'','".AddSlashes(pg_result($resaco,$iresaco,'x28_dttroca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1433,8437,'','".AddSlashes(pg_result($resaco,$iresaco,'x28_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1433,8438,'','".AddSlashes(pg_result($resaco,$iresaco,'x28_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1433,8435,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x28_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1433,8436,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x28_dttroca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1433,8437,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x28_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1433,8438,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x28_codhidrometro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from aguahidrotroca
@@ -377,7 +377,7 @@ class cl_aguahidrotroca {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aguahidrotroca";
@@ -391,7 +391,7 @@ class cl_aguahidrotroca {
    function sql_query ( $x28_codhidrometro=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_aguahidrotroca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,7 +430,7 @@ class cl_aguahidrotroca {
    function sql_query_file ( $x28_codhidrometro=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_aguahidrotroca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

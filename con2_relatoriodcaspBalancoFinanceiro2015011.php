@@ -44,7 +44,7 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 $aPeriodos         = $oRelatorio->getPeriodos();
-$aListaPeriodos    = array();
+$aListaPeriodos    = [];
 $aListaPeriodos[0] = "Selecione";
 foreach ($aPeriodos as $oPeriodo) {
   $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;
@@ -108,13 +108,13 @@ if (!$isPrefeitura) {
       <table style="width: 100%;" border="0">
         <tr>
           <td style="width:50%" nowrap><label for="imprimirValorExercicioAnterior"><b>Imprimir Valores do Exercício Anterior:</b></label></td>
-          <td><?php db_select('imprimirValorExercicioAnterior', array(true => 'Sim', false => 'Não'), true, 1); ?></td>
+          <td><?php db_select('imprimirValorExercicioAnterior', [true => 'Sim', false => 'Não'], true, 1); ?></td>
         </tr>
         <tr>
           <td nowrap><label for="tipoImpressao"><b>Tipo de Impressão:</b></label></td>
           <td>
             <?php
-              $aTipoImpressao = array("A" => "Analítico", "S" => "Sintético");
+              $aTipoImpressao = ["A" => "Analítico", "S" => "Sintético"];
               db_select('tipoImpressao', $aTipoImpressao, true, 1);
             ?>
           </td>

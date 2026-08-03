@@ -256,7 +256,7 @@ if (isset($listaimpressao)) {
                             WHERE bi24_modelo = '$modeloselect'
                               AND bi23_codigo = bi25_exemplar";
 
-            if (trim($cod_localizacao) != "") {
+            if (trim((string) $cod_localizacao) != "") {
               $cond_local = " AND bi20_localizacao in ($cod_localizacao)";
             } else {
               $cond_local = "";
@@ -295,22 +295,22 @@ if (isset($listaimpressao)) {
 
                               db_fieldsmemory($result, $i);
                               $desc_local = $bi09_nome == "" ? "SEM LOCALIZAÇÃO" :
-                                      $bi09_nome . str_pad($sequencial, 5, "_", STR_PAD_LEFT);
+                                      $bi09_nome . str_pad((string) $sequencial, 5, "_", STR_PAD_LEFT);
                               $verifica = false;
 
                               if (pg_num_rows($result2) > 0) {
 
-                                $data = pg_result($result2, 0, 'bi24_data');
-                                $hora = pg_result($result2, 0, 'bi24_hora');
+                                $data = pg_fetch_result($result2, 0, 'bi24_data');
+                                $hora = pg_fetch_result($result2, 0, 'bi24_hora');
 
                                 for ($f = 0; $f < pg_num_rows($result2); $f++) {
 
-                                  $codigo_exemp = pg_result($result2, $f, 'bi23_codigo');
-                                  $bi24_data    = pg_result($result2, $f, 'bi24_data');
-                                  $bi24_hora    = pg_result($result2, $f, 'bi24_hora');
-                                  $bi24_modelo  = pg_result($result2, $f, 'bi24_modelo');
+                                  $codigo_exemp = pg_fetch_result($result2, $f, 'bi23_codigo');
+                                  $bi24_data    = pg_fetch_result($result2, $f, 'bi24_data');
+                                  $bi24_hora    = pg_fetch_result($result2, $f, 'bi24_hora');
+                                  $bi24_modelo  = pg_fetch_result($result2, $f, 'bi24_modelo');
 
-                                  if (trim($codigo_exemp) == trim($bi23_codigo) && ($bi24_data == $data)
+                                  if (trim($codigo_exemp) == trim((string) $bi23_codigo) && ($bi24_data == $data)
                                           && ($bi24_hora == $hora) && ($modeloselect != $bi24_modelo)
                                           && ($bi24_modelo != 'M3')) {
 

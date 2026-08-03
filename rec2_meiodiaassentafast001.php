@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpessoal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $rotulocampo = new rotulocampo;
 $rotulocampo->label("rh01_regist");
 $rotulocampo->label("z01_nome");
@@ -110,7 +110,7 @@ function js_emite() {
         </td>
         <td align="left">
           <?php 
-            $xx = array("a"=>"Afastamento","s"=>"Assentamento","g"=>"Geral");
+            $xx = ["a"=>"Afastamento","s"=>"Assentamento","g"=>"Geral"];
             db_select('qual_tipo',$xx,true,4,"");
     ?>
   </td>
@@ -120,7 +120,7 @@ function js_emite() {
         </td>
         <td align="left">
           <?php 
-            $xx = array("a"=>"Assentamento","d"=>"Data");
+            $xx = ["a"=>"Assentamento","d"=>"Data"];
             db_select('ordem',$xx,true,4,"");
     ?>
   </td>

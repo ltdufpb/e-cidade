@@ -3,19 +3,17 @@ namespace ECidade\Patrimonial\Licitacao\ComprasPublicas\Model;
 
 class ComprasPublicasRetornoItens
 {
-  /**
-   * identificador do item enviado para o portal l21_codigo da liclicitem
-   * */
-    private $identificadoritemecidade;
-    private $identificadoritemeportal;
+  private $identificadoritemeportal;
     private $dados;
     private $deparaFornecedores;
     private $propostas = [];
     private $lances   = [];
-    public function __construct($codigoItem, $retornoItem, $deparaFornecedor)
+    public function __construct(/**
+     * identificador do item enviado para o portal l21_codigo da liclicitem
+     * */
+    private $identificadoritemecidade, $retornoItem, $deparaFornecedor)
     {
    
-        $this->identificadoritemecidade  = $codigoItem;
         $this->identificadoritemeportal  = $retornoItem->IdItem;
         $this->dados                     = $retornoItem;
         $this->deparaFornecedor          = $deparaFornecedor;
@@ -24,7 +22,7 @@ class ComprasPublicasRetornoItens
     public function processar()
     {
         $valoresMelhorLanceFornecedor  = [];
-        $dadosLances = isset($this->dados->Lances)?$this->dados->Lances:[];
+        $dadosLances = $this->dados->Lances ?? [];
         foreach ($dadosLances as $lance) {
             $lanceItemLicitacao = new ComprasPublicasLancesFornecedor(
                 $this->identificadoritemeportal,
@@ -37,7 +35,7 @@ class ComprasPublicasRetornoItens
                 $lance->Justificativa,
                 $lance->ValorUnitario,
                 $lance->ValorTotal,
-                isset($lance->ValorDesconto) ? $lance->ValorDesconto : "0"
+                $lance->ValorDesconto ?? "0"
             );
             $lanceItemLicitacao->save();
 
@@ -52,7 +50,7 @@ class ComprasPublicasRetornoItens
             }
         }
     
-        $dadosProposta = isset($this->dados->Propostas)?$this->dados->Propostas:[];
+        $dadosProposta = $this->dados->Propostas ?? [];
     
         foreach ($dadosProposta as $proposta) {
             $propostaItem = new ComprasPublicasProposta(

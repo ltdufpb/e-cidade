@@ -15,13 +15,10 @@ use \Exception;
  */
 class AssinanteController extends Controller
 {
-    private $repository;
-
     /**
      */
-    public function __construct(AssinanteRepository $repository)
+    public function __construct(private readonly AssinanteRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     /**
@@ -34,14 +31,14 @@ class AssinanteController extends Controller
 
         if (!empty($cpf_cnpj)) {
             return new DBJsonResponse(
-                (new AssinanteTransformer())->transform(
+                new AssinanteTransformer()->transform(
                     $this->repository->findSignerByCpfCnpj($cpf_cnpj)
                 )
             );
         }
 
         return new DBJsonResponse(
-            (new AssinanteTransformer())->transform(
+            new AssinanteTransformer()->transform(
                 $this->repository->findAllSigners()
             )
         );
@@ -53,7 +50,7 @@ class AssinanteController extends Controller
     public function getByIdUsuario($idUsuario)
     {
         return new DBJsonResponse(
-            (new AssinanteTransformer())->transform(
+            new AssinanteTransformer()->transform(
                 $this->repository->findSignerByIdUsuario($idUsuario)
             )
         );

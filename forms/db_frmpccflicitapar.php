@@ -129,7 +129,7 @@ db_input('l25_numero',8,$Il25_numero,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("l25_codigo"=>@$l25_codigo);
+	 $chavepri= ["l25_codigo"=>@$l25_codigo];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clpccflicitapar->sql_query_file(@$l25_codigo,"*",null,"l25_codcflicita=$l25_codcflicita");
 	 $cliframe_alterar_excluir->campos  ="l25_codigo,l25_codcflicita,l25_anousu,l25_numero";

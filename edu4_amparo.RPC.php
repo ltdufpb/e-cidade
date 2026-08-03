@@ -55,7 +55,7 @@ try {
 
       db_inicio_transacao();
 
-      $oRetorno->aAlunos = array();
+      $oRetorno->aAlunos = [];
 
       $oTurma  = EducacaoSessionManager::carregarTurma( $oParam->iTurma );
       $oEtapa  = EducacaoSessionManager::carregarEtapa( $oParam->iEtapa );
@@ -77,9 +77,9 @@ try {
         $oDadosMatricula->iCodigo         = $oMatricula->getCodigo();
         $oDadosMatricula->iMatricula      = $oMatricula->getMatricula();
         $oDadosMatricula->iOrdem          = $oMatricula->getNumeroOrdemAluno();
-        $oDadosMatricula->sNome           = urlencode($oMatricula->getAluno()->getNome());
+        $oDadosMatricula->sNome           = urlencode((string) $oMatricula->getAluno()->getNome());
         $oDadosMatricula->dtDataMatricula = $oMatricula->getDataMatricula()->convertTo(DBDate::DATA_PTBR);
-        $oDadosMatricula->sSituacao       = urlencode($oMatricula->getSituacao());
+        $oDadosMatricula->sSituacao       = urlencode((string) $oMatricula->getSituacao());
         $oRetorno->aAlunos[]              = $oDadosMatricula;
       }
 
@@ -97,7 +97,7 @@ try {
 
       db_inicio_transacao();
 
-      $oRetorno->aAlunos = array();
+      $oRetorno->aAlunos = [];
       $oTurma            =  EducacaoSessionManager::carregarTurma( $oParam->iTurma );
       $oEtapa            =  EducacaoSessionManager::carregarEtapa( $oParam->iEtapa );
       $aAlunos           = $oTurma->getAlunosMatriculadosNaTurmaPorSerie($oEtapa);
@@ -119,9 +119,9 @@ try {
         if (!empty($oAmparo)) {
 
           $oDadosAluno->iMatricula        = $oMatricula->getCodigo();
-          $oDadosAluno->sNome             = urlencode($oMatricula->getAluno()->getNome());
+          $oDadosAluno->sNome             = urlencode((string) $oMatricula->getAluno()->getNome());
           $oDadosAluno->lGeraCargaHoraria = $oAmparo->isAdicionadoNaCargaHoraria();
-          $oDadosAluno->aPeriodos         = array();
+          $oDadosAluno->aPeriodos         = [];
 
           foreach ($oAmparo->getPeriodosAmparados() as $oPeriodo) {
 
@@ -130,8 +130,8 @@ try {
 
             if ( $oPeriodo->getElementoAvaliacao() instanceof AvaliacaoPeriodica ) {
 
-              $oDadosPeriodo->sDescricao   = urlencode($oPeriodo->getElementoAvaliacao()->getPeriodoAvaliacao()->getDescricao());
-              $oDadosPeriodo->sAbreviatura = urlencode($oPeriodo->getElementoAvaliacao()->getPeriodoAvaliacao()->getDescricaoAbreviada());
+              $oDadosPeriodo->sDescricao   = urlencode((string) $oPeriodo->getElementoAvaliacao()->getPeriodoAvaliacao()->getDescricao());
+              $oDadosPeriodo->sAbreviatura = urlencode((string) $oPeriodo->getElementoAvaliacao()->getPeriodoAvaliacao()->getDescricaoAbreviada());
             }
 
             if ( $oPeriodo->getElementoAvaliacao() instanceof ResultadoAvaliacao ) {
@@ -144,12 +144,12 @@ try {
 
             $oDadosAluno->sTipo      = urlencode("J");
             $oDadosAluno->iCodigo    = $oAmparo->getJustificativa()->getCodigo();
-            $oDadosAluno->sDescricao = urlencode($oAmparo->getJustificativa()->getDescricao());
+            $oDadosAluno->sDescricao = urlencode((string) $oAmparo->getJustificativa()->getDescricao());
           } else {
 
             $oDadosAluno->sTipo      = urlencode("C");
             $oDadosAluno->iCodigo    = $oAmparo->getConvencao()->getCodigo();
-            $oDadosAluno->sDescricao = urlencode($oAmparo->getConvencao()->getDescricao());
+            $oDadosAluno->sDescricao = urlencode((string) $oAmparo->getConvencao()->getDescricao());
           }
         }
         $oRetorno->aAlunos[] = $oDadosAluno;
@@ -184,7 +184,7 @@ try {
         $oDiarioAvaliacao = $oMatricula->getDiarioDeClasse()->getDisciplinasPorRegencia($oRegencia);
 
         $oTipoAmparo        = null;
-        $aPeriodosAvaliacao = array();
+        $aPeriodosAvaliacao = [];
 
         if ( !$oDiarioAvaliacao instanceof DiarioAvaliacaoDisciplina ) {
 

@@ -101,7 +101,7 @@ $lPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) && $_GET['poss
               </td>
               <td>
               <?php
-                if (trim(@$ed37_c_minimoaprov) != trim(@$ed43_c_minimoaprov)) {
+                if (trim((string) @$ed37_c_minimoaprov) != trim((string) @$ed43_c_minimoaprov)) {
 
                   $disable = "";
 
@@ -149,7 +149,7 @@ $lPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) && $_GET['poss
                     for( $z = 0; $z < $oDaoConceito->numrows; $z++ ) {
 
                       db_fieldsmemory($result, $z);
-                      $selected = trim($ed43_c_minimoaprov) == trim($ed39_c_conceito) ? "selected" : "";
+                      $selected = trim((string) $ed43_c_minimoaprov) == trim((string) $ed39_c_conceito) ? "selected" : "";
                       echo "<option value='$ed39_c_conceito' $selected>$ed39_c_conceito</option>";
                     }
                     ?>
@@ -162,7 +162,7 @@ $lPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) && $_GET['poss
                       <?php
                       for( $z = $ed37_i_menorvalor; $z <= $ed37_i_maiorvalor; $z = $z + $ed37_i_variacao ) {
 
-                        $selected = isset($ed43_c_minimoaprov) && trim($ed43_c_minimoaprov) == $z && trim(@$ed37_c_minimoaprov) != trim(@$ed43_c_minimoaprov) ? "selected" : "";
+                        $selected = isset($ed43_c_minimoaprov) && trim($ed43_c_minimoaprov) == $z && trim((string) @$ed37_c_minimoaprov) != trim(@$ed43_c_minimoaprov) ? "selected" : "";
                         echo "<option value='$z' $selected>{$z}</option>";
                       }
                       ?>
@@ -233,7 +233,7 @@ $lPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) && $_GET['poss
               <td>
                 <?php
                 $elem = ElementosFreq($ed43_i_codigo);
-                $x    = array( 'S' => 'SIM', 'N' => 'NÃO' );
+                $x    = [ 'S' => 'SIM', 'N' => 'NÃO' ];
                 db_select( 'ed43_c_geraresultado', $x, true, $db_opcao, " onchange = 'js_geraresultado(this.value, $elem)'" );
                 ?>
               </td>
@@ -244,7 +244,7 @@ $lPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) && $_GET['poss
               </td>
               <td>
                 <?php
-                $x = array( 'S' => 'SIM', 'N' => 'NÃO' );
+                $x = [ 'S' => 'SIM', 'N' => 'NÃO' ];
                 db_select( 'ed43_c_boletim', $x, true, $db_opcao );
                 ?>
               </td>
@@ -255,7 +255,7 @@ $lPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) && $_GET['poss
               </td>
               <td>
                <?php
-                $x = array( 'S' => 'SIM', 'N' => 'NÃO' );
+                $x = [ 'S' => 'SIM', 'N' => 'NÃO' ];
                 db_select( 'ed43_c_reprovafreq', $x, true, $db_opcao );
                ?>
               </td>
@@ -269,7 +269,7 @@ $lPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) && $_GET['poss
                 </td>
                 <td>
                   <?php
-                  $x = array( 'S' => 'SIM', 'N' => 'NÃO' );
+                  $x = [ 'S' => 'SIM', 'N' => 'NÃO' ];
                   db_select( 'ed43_c_arredmedia', $x, true, $db_opcao );
                   ?>
                 </td>
@@ -281,7 +281,7 @@ $lPossuiTurmasEncerradas = isset($_GET['possuiTurmasEncerradas']) && $_GET['poss
                 </td>
                 <td>
                   <?php
-                  $aOpcoes = array( 't' => 'SIM', 'f' => 'NÃO' );
+                  $aOpcoes = [ 't' => 'SIM', 'f' => 'NÃO' ];
                   db_select( 'ed43_proporcionalidade', $aOpcoes, true, $db_opcao );
                   ?>
                 </td>

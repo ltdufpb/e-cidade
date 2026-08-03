@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE pagordemrec
 class cl_pagordemrec { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e52_codord = 0; 
-   var $e52_receit = 0; 
-   var $e52_valor = 0; 
+   public $e52_codord = 0; 
+   public $e52_receit = 0; 
+   public $e52_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e52_codord = int4 = Ordem 
                  e52_receit = int4 = codigo da receita 
                  e52_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_pagordemrec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pagordemrec"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -120,7 +120,7 @@ class cl_pagordemrec {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Receita na ordem de pagamento ($this->e52_codord."-".$this->e52_receit) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Receita na ordem de pagamento já Cadastrado";
@@ -144,13 +144,13 @@ class cl_pagordemrec {
      $resaco = $this->sql_record($this->sql_query_file($this->e52_codord,$this->e52_receit));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5738,'$this->e52_codord','I')");
        $resac = db_query("insert into db_acountkey values($acount,5739,'$this->e52_receit','I')");
-       $resac = db_query("insert into db_acount values($acount,910,5738,'','".AddSlashes(pg_result($resaco,0,'e52_codord'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,910,5739,'','".AddSlashes(pg_result($resaco,0,'e52_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,910,5741,'','".AddSlashes(pg_result($resaco,0,'e52_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,910,5738,'','".AddSlashes(pg_fetch_result($resaco,0,'e52_codord'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,910,5739,'','".AddSlashes(pg_fetch_result($resaco,0,'e52_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,910,5741,'','".AddSlashes(pg_fetch_result($resaco,0,'e52_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -159,10 +159,10 @@ class cl_pagordemrec {
       $this->atualizacampos();
      $sql = " update pagordemrec set ";
      $virgula = "";
-     if(trim($this->e52_codord)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_codord"])){ 
+     if(trim((string) $this->e52_codord)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_codord"])){ 
        $sql  .= $virgula." e52_codord = $this->e52_codord ";
        $virgula = ",";
-       if(trim($this->e52_codord) == null ){ 
+       if(trim((string) $this->e52_codord) == null ){ 
          $this->erro_sql = " Campo Ordem nao Informado.";
          $this->erro_campo = "e52_codord";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_pagordemrec {
          return false;
        }
      }
-     if(trim($this->e52_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_receit"])){ 
+     if(trim((string) $this->e52_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_receit"])){ 
        $sql  .= $virgula." e52_receit = $this->e52_receit ";
        $virgula = ",";
-       if(trim($this->e52_receit) == null ){ 
+       if(trim((string) $this->e52_receit) == null ){ 
          $this->erro_sql = " Campo codigo da receita nao Informado.";
          $this->erro_campo = "e52_receit";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_pagordemrec {
          return false;
        }
      }
-     if(trim($this->e52_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_valor"])){ 
+     if(trim((string) $this->e52_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e52_valor"])){ 
        $sql  .= $virgula." e52_valor = $this->e52_valor ";
        $virgula = ",";
-       if(trim($this->e52_valor) == null ){ 
+       if(trim((string) $this->e52_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "e52_valor";
          $this->erro_banco = "";
@@ -209,16 +209,16 @@ class cl_pagordemrec {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5738,'$this->e52_codord','A')");
          $resac = db_query("insert into db_acountkey values($acount,5739,'$this->e52_receit','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e52_codord"]))
-           $resac = db_query("insert into db_acount values($acount,910,5738,'".AddSlashes(pg_result($resaco,$conresaco,'e52_codord'))."','$this->e52_codord',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,910,5738,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e52_codord'))."','$this->e52_codord',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e52_receit"]))
-           $resac = db_query("insert into db_acount values($acount,910,5739,'".AddSlashes(pg_result($resaco,$conresaco,'e52_receit'))."','$this->e52_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,910,5739,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e52_receit'))."','$this->e52_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e52_valor"]))
-           $resac = db_query("insert into db_acount values($acount,910,5741,'".AddSlashes(pg_result($resaco,$conresaco,'e52_valor'))."','$this->e52_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,910,5741,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e52_valor'))."','$this->e52_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -263,13 +263,13 @@ class cl_pagordemrec {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5738,'$e52_codord','E')");
          $resac = db_query("insert into db_acountkey values($acount,5739,'$e52_receit','E')");
-         $resac = db_query("insert into db_acount values($acount,910,5738,'','".AddSlashes(pg_result($resaco,$iresaco,'e52_codord'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,910,5739,'','".AddSlashes(pg_result($resaco,$iresaco,'e52_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,910,5741,'','".AddSlashes(pg_result($resaco,$iresaco,'e52_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,910,5738,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e52_codord'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,910,5739,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e52_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,910,5741,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e52_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pagordemrec
@@ -335,7 +335,7 @@ class cl_pagordemrec {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pagordemrec";
@@ -349,7 +349,7 @@ class cl_pagordemrec {
    function sql_query ( $e52_codord=null,$e52_receit=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_pagordemrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_pagordemrec {
    function sql_query_file ( $e52_codord=null,$e52_receit=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -423,7 +423,7 @@ class cl_pagordemrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

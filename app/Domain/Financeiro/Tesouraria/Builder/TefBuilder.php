@@ -71,7 +71,7 @@ class TefBuilder
      */
     private function validLine($line)
     {
-        $valueKeyColumn = trim($line[$this->mapper->getCollumnKey()]);
+        $valueKeyColumn = trim((string) $line[$this->mapper->getCollumnKey()]);
         if (empty($valueKeyColumn)) {
             return false;
         }

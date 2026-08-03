@@ -29,9 +29,9 @@ include(modification("fpdf151/scpdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_rhpagocor_classe.php"));
 $clrhpagocor = new cl_rhpagocor;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-if(trim($movimento) == ""){
+if(trim((string) $movimento) == ""){
   db_redireciona('db_erros.php?fechar=true&db_erro=Informe um movimento para gerar o recibo.');
 }
 

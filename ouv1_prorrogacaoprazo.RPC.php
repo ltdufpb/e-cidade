@@ -102,7 +102,7 @@ if ($oParam->acao == "pesquisar") {
 		if ($clprocessoouvidoriaprorrogacao->numrows > 0){
 			$oRetorno->andamentos = db_utils::getCollectionByRecord($rsProcOuvidoriaProrrogacao,false,false,true);
 		}else{
-			$oRetorno->andamentos = array();
+			$oRetorno->andamentos = [];
 		}
 		
 	}else {
@@ -112,7 +112,7 @@ if ($oParam->acao == "pesquisar") {
 	
 }else if ($oParam->acao == 'validaDatas'){
 	
-	$oRetorno->linhas = array();
+	$oRetorno->linhas = [];
 	
 	//require_once(modification("classes/db_calend_classe.php"));
 	
@@ -145,8 +145,8 @@ if ($oParam->acao == "pesquisar") {
 		
 		$oLinha->ov15_dtini = verificaFeriado($dtini,false);
 		
-		$dtini = explode('-',$oLinha->ov15_dtini);
-		$dtfim = explode('-',$dtfim);
+		$dtini = explode('-',(string) $oLinha->ov15_dtini);
+		$dtfim = explode('-',(string) $dtfim);
 		$mktime_dtini = mktime(0,0,0,$dtini[1],$dtini[2],$dtini[0]);
 		$mktime_dtfim = mktime(0,0,0,$dtfim[1],$dtfim[2],$dtfim[0]);
 		if(($mktime_dtfim - $mktime_dtini) <= 0){
@@ -162,7 +162,7 @@ if ($oParam->acao == "pesquisar") {
 		//Aqui verifica se a diferença entre a data ini e fim é a que existia se não for empurra a dt fim mais a frente
 		while ($dias < $oParam->linhas[$iInd]->difdatas){
 			$oLinha->ov15_dtfim = verificaFeriado(date('Y-m-d',strtotime("+1 day",$mktime_dtfim)),false);
-			$dtfim = explode('-',$oLinha->ov15_dtfim);
+			$dtfim = explode('-',(string) $oLinha->ov15_dtfim);
 			$mktime_dtfim = mktime(0,0,0,$dtfim[1],$dtfim[2],$dtfim[0]);			
 			$dias = ($mktime_dtfim - $mktime_dtini)/86400 ;
 			$dias = ceil($dias);
@@ -210,7 +210,7 @@ if ($oParam->acao == "pesquisar") {
 			$clprocessoouvidoriaprorrogacao_alteracao->alterar($oParam->linhas[$iInd]->ov15_sequencial);			
 			if($clprocessoouvidoriaprorrogacao_alteracao->erro_status == '0'){
 				$lerro = true;
-				$oRetorno->message = utf8_encode($clprocessoouvidoriaprorrogacao_alteracao->erro_msg);
+				$oRetorno->message = mb_convert_encoding($clprocessoouvidoriaprorrogacao_alteracao->erro_msg, 'UTF-8', 'ISO-8859-1');
 			}
 		}else{
 			break;		
@@ -221,12 +221,12 @@ if ($oParam->acao == "pesquisar") {
 			$clprocessoouvidoriaprorrogacao->ov15_coddepto			=	$oParam->linhas[$iInd]->ov15_coddepto;
 			$clprocessoouvidoriaprorrogacao->ov15_dtfim					= formataData($oParam->linhas[$iInd]->ov15_dtfim,'b');			
 			$clprocessoouvidoriaprorrogacao->ov15_dtini					= formataData($oParam->linhas[$iInd]->ov15_dtini,'b');			
-			$clprocessoouvidoriaprorrogacao->ov15_motivo				= utf8_decode(str_replace("/n","\n", $oParam->ov15_motivo));			
+			$clprocessoouvidoriaprorrogacao->ov15_motivo				= mb_convert_encoding(str_replace("/n","\n", $oParam->ov15_motivo), 'ISO-8859-1');			
 			$clprocessoouvidoriaprorrogacao->ov15_protprocesso	= $oParam->ov15_protprocesso;
 			$clprocessoouvidoriaprorrogacao->incluir(null);			
 			if($clprocessoouvidoriaprorrogacao->erro_status == '0'){			
 				$lerro = true;
-				$oRetorno->message = utf8_encode($clprocessoouvidoriaprorrogacao->erro_msg);
+				$oRetorno->message = mb_convert_encoding($clprocessoouvidoriaprorrogacao->erro_msg, 'UTF-8', 'ISO-8859-1');
 			}
 		}else{
 			break;		
@@ -235,7 +235,7 @@ if ($oParam->acao == "pesquisar") {
 	
 	if(!$lerro){
 		$oRetorno->status 	= 1;
-		$oRetorno->message 	= utf8_encode('Usuário:\\n\\n Atualização efetuada com sucesso!\\n\\nAdministrador:\\n\\n');
+		$oRetorno->message 	= mb_convert_encoding('Usuário:\\n\\n Atualização efetuada com sucesso!\\n\\nAdministrador:\\n\\n', 'UTF-8', 'ISO-8859-1');
 	}
 	
 	db_fim_transacao($lerro);
@@ -249,9 +249,9 @@ exit();
 
 function formataData($data,$tipo){
 	if($tipo == 'b'){
-		 return implode('-',array_reverse(explode('/',$data)));
+		 return implode('-',array_reverse(explode('/',(string) $data)));
 	}else{
-		return implode('/',array_reverse(explode('-',$data)));
+		return implode('/',array_reverse(explode('-',(string) $data)));
 	}
 }
 
@@ -282,7 +282,7 @@ function verificaFeriado($data,$retorno){
 			//echo $clCalend->sql_query_file($data)."\n";
 			$rsConsultaFeriado = $clCalend->sql_record($clCalend->sql_query_file($data));
 			if 	($clCalend->numrows > 0) {
-				$aData = explode("-",$data);
+				$aData = explode("-",(string) $data);
 				$data  = mktime(0,0,0,$aData[1],$aData[2],$aData[0]);
 				//echo $aData[2].'-'.$aData[1].'-'.$aData[0]."\n";
 				$data  = date('Y-m-d',strtotime("+1 day",$data));

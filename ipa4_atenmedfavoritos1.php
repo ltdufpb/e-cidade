@@ -31,26 +31,26 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
 //////////INCLUIR/////////////
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   $result = db_query("select max(codigo) + 1 from favoritos");
-  $codigo = pg_result($result,0,0);
+  $codigo = pg_fetch_result($result,0,0);
   $codigo = $codigo==""?"1":$codigo;
   db_query("insert into favoritos values($codigo,".db_getsession("DB_id_usuario").",'$descr')") or die("Erro(24) inserindo em favoritos");
   db_redireciona();
   exit;		   
 ////////////////ALTERAR////////////////  
-} else if(isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
+} else if(isset($_POST["alterar"])) {
+  db_postmemory($_POST);
   db_query("update favoritos set descr = '$descr'
            where codigo = $codigo
 		   and codmed = ".db_getsession("DB_id_usuario")) or die("Erro(22) atualizando favoritos");
-  db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+  db_redireciona($_SERVER['PHP_SELF']);
   exit;		     
 ////////////////EXCLUIR//////////////
-} else if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("delete from favoritos where codigo = ".$HTTP_POST_VARS["codigo"]) or die("Erro(15) deletando tabela favoritos");
-  db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+} else if(isset($_POST["excluir"])) {
+  db_query("delete from favoritos where codigo = ".$_POST["codigo"]) or die("Erro(15) deletando tabela favoritos");
+  db_redireciona($_SERVER['PHP_SELF']);
   exit;  
 }
 

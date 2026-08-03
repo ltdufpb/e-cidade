@@ -29,22 +29,22 @@ final class ParcelaReciboConverter extends Converter
             $s .= str_pad(substr($vencimentoParcela, 0, $size), $size);
 
             $size = $this->layout->getSize(ParcelaRecibo::VALOR_PARCELA);
-            $s .= str_pad(substr($this->format->decimal($parcelaRecibo->getValor()), 0, $size), $size);
+            $s .= str_pad(substr((string) $this->format->decimal($parcelaRecibo->getValor()), 0, $size), $size);
             
             $size = $this->layout->getSize(ParcelaRecibo::VALORJURO_PARCELA);
-            $s .= str_pad(substr($this->format->decimal($parcelaRecibo->getJuros()), 0, $size), $size);
+            $s .= str_pad(substr((string) $this->format->decimal($parcelaRecibo->getJuros()), 0, $size), $size);
             
             $size = $this->layout->getSize(ParcelaRecibo::VALORMULTA_PARCELA);
-            $s .= str_pad(substr($this->format->decimal($parcelaRecibo->getMulta()), 0, $size), $size);
+            $s .= str_pad(substr((string) $this->format->decimal($parcelaRecibo->getMulta()), 0, $size), $size);
             
             $size = $this->layout->getSize(ParcelaRecibo::NUMPRE_PARCELA);
-            $s .= str_pad(($this->format->numpre($parcelaRecibo->getCodigoArrecadacao())), $size, '0', STR_PAD_LEFT);
+            $s .= str_pad(((string) $this->format->numpre($parcelaRecibo->getCodigoArrecadacao())), $size, '0', STR_PAD_LEFT);
             
             $size = $this->layout->getSize(ParcelaRecibo::CODIGOBARRAS_PARCELA);
-            $s .= str_pad(substr($parcelaRecibo->getCodigoBarras(), 0, $size), $size, ' ', STR_PAD_LEFT);
+            $s .= str_pad(substr((string) $parcelaRecibo->getCodigoBarras(), 0, $size), $size, ' ', STR_PAD_LEFT);
             
             $size = $this->layout->getSize(ParcelaRecibo::PARCELA);
-            $s .= str_pad($parcelaRecibo->getNumero(), $size, '0', STR_PAD_LEFT);
+            $s .= str_pad((string) $parcelaRecibo->getNumero(), $size, '0', STR_PAD_LEFT);
         }
 
         return $s;
@@ -62,12 +62,12 @@ final class ParcelaReciboConverter extends Converter
             $s .= $this->format->decimal($parcelaRecibo->getMulta());
             
             $size = $this->layout->getSize(ParcelaRecibo::NUMPRE_PARCELA);
-            $s .= $this->format->numpre($parcelaRecibo->getCodigoArrecadacao()) . str_pad(null, $size, '0', STR_PAD_LEFT);
+            $s .= $this->format->numpre($parcelaRecibo->getCodigoArrecadacao()) . str_pad('', $size, '0', STR_PAD_LEFT);
             
             $s .= $parcelaRecibo->getCodigoBarras();
             
             $size = $this->layout->getSize(ParcelaRecibo::PARCELA);
-            $s .= str_pad($parcelaRecibo->getNumero(), $size, '0', STR_PAD_LEFT);
+            $s .= str_pad((string) $parcelaRecibo->getNumero(), $size, '0', STR_PAD_LEFT);
         }
 
         return $s;
@@ -76,7 +76,7 @@ final class ParcelaReciboConverter extends Converter
     public function ajustarQuantidade($parcelaReciboCollection) 
     {
         $quantidadeFaltante = ParcelaRecibo::MAXIMO_PARCELAS - count($parcelaReciboCollection);
-        $array              = array();
+        $array              = [];
 
         if(!empty($parcelaReciboCollection)) {
             $array          = $parcelaReciboCollection;

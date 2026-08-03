@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_certidarqremessa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcertidarqremessa = new cl_certidarqremessa;
 $clcertidarqremessa->rotulo->label("v83_sequencial");
 $clcertidarqremessa->rotulo->label("v83_sequencial");
@@ -98,9 +98,9 @@ $clcertidarqremessa->rotulo->label("v83_sequencial");
         }else{
            $sql = $clcertidarqremessa->sql_query("",$campos,"v83_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v83_sequencial)){
-          $repassa = array("chave_v83_sequencial"=>$chave_v83_sequencial,"chave_v83_sequencial"=>$chave_v83_sequencial);
+          $repassa = ["chave_v83_sequencial"=>$chave_v83_sequencial,"chave_v83_sequencial"=>$chave_v83_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

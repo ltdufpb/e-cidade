@@ -50,11 +50,6 @@ class TrabalhadorSemVinculo extends ProcessamentoAbstract implements Processamen
     /**
      * @var
      */
-    private $cgm;
-
-    /**
-     * @var
-     */
     private $instituicao;
 
     /**
@@ -66,9 +61,11 @@ class TrabalhadorSemVinculo extends ProcessamentoAbstract implements Processamen
      * Rubrica constructor.
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(/**
+     * @var
+     */
+    private $cgm)
     {
-        $this->cgm = $cgm;
         $this->alteracao = false;
     }
 
@@ -110,7 +107,7 @@ class TrabalhadorSemVinculo extends ProcessamentoAbstract implements Processamen
                         $this->selecao,
                         $this->instituicao
                     );
-                } catch (Exception $e) {
+                } catch (Exception) {
                     throw new \DBException("Ocorrêu um erro ao buscar as informações da seleção informada.");
                 }
             } else {

@@ -81,7 +81,7 @@ try {
                 throw new BusinessException("Número de inscrição não informado.");
             }
 
-            $aParametros = array('cnpj' => $oParam->cnpj);
+            $aParametros = ['cnpj' => $oParam->cnpj];
 
             if (!empty($oParam->iCodigoPreenchimento)) {
                 $aParametros["iCodigoPreenchimento"] = $oParam->iCodigoPreenchimento;

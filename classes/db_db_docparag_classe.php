@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE db_docparag
 class cl_db_docparag { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db04_docum = 0; 
-   var $db04_idparag = 0; 
-   var $db04_ordem = 0; 
+   public $db04_docum = 0; 
+   public $db04_idparag = 0; 
+   public $db04_ordem = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db04_docum = int4 = Código 
                  db04_idparag = int4 = Códido do parágrafo 
                  db04_ordem = int4 = Ordem do parágrafo 
                  ";
    //funcao construtor da classe 
-   function cl_db_docparag() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_docparag"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -120,7 +120,7 @@ class cl_db_docparag {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Paragrafos do documento ($this->db04_docum."-".$this->db04_idparag) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Paragrafos do documento já Cadastrado";
@@ -144,13 +144,13 @@ class cl_db_docparag {
      $resaco = $this->sql_record($this->sql_query_file($this->db04_docum,$this->db04_idparag));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,3595,'$this->db04_docum','I')");
        $resac = db_query("insert into db_acountkey values($acount,3596,'$this->db04_idparag','I')");
-       $resac = db_query("insert into db_acount values($acount,519,3595,'','".AddSlashes(pg_result($resaco,0,'db04_docum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,519,3596,'','".AddSlashes(pg_result($resaco,0,'db04_idparag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,519,3597,'','".AddSlashes(pg_result($resaco,0,'db04_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,519,3595,'','".AddSlashes(pg_fetch_result($resaco,0,'db04_docum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,519,3596,'','".AddSlashes(pg_fetch_result($resaco,0,'db04_idparag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,519,3597,'','".AddSlashes(pg_fetch_result($resaco,0,'db04_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -159,13 +159,13 @@ class cl_db_docparag {
       $this->atualizacampos();
      $sql = " update db_docparag set ";
      $virgula = "";
-     if(trim($this->db04_docum)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db04_docum"])){ 
-        if(trim($this->db04_docum)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db04_docum"])){ 
+     if(trim((string) $this->db04_docum)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db04_docum"])){ 
+        if(trim((string) $this->db04_docum)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db04_docum"])){ 
            $this->db04_docum = "0" ; 
         } 
        $sql  .= $virgula." db04_docum = $this->db04_docum ";
        $virgula = ",";
-       if(trim($this->db04_docum) == null ){ 
+       if(trim((string) $this->db04_docum) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "db04_docum";
          $this->erro_banco = "";
@@ -175,13 +175,13 @@ class cl_db_docparag {
          return false;
        }
      }
-     if(trim($this->db04_idparag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db04_idparag"])){ 
-        if(trim($this->db04_idparag)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db04_idparag"])){ 
+     if(trim((string) $this->db04_idparag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db04_idparag"])){ 
+        if(trim((string) $this->db04_idparag)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db04_idparag"])){ 
            $this->db04_idparag = "0" ; 
         } 
        $sql  .= $virgula." db04_idparag = $this->db04_idparag ";
        $virgula = ",";
-       if(trim($this->db04_idparag) == null ){ 
+       if(trim((string) $this->db04_idparag) == null ){ 
          $this->erro_sql = " Campo Códido do parágrafo nao Informado.";
          $this->erro_campo = "db04_idparag";
          $this->erro_banco = "";
@@ -191,13 +191,13 @@ class cl_db_docparag {
          return false;
        }
      }
-     if(trim($this->db04_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db04_ordem"])){ 
-        if(trim($this->db04_ordem)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db04_ordem"])){ 
+     if(trim((string) $this->db04_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db04_ordem"])){ 
+        if(trim((string) $this->db04_ordem)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db04_ordem"])){ 
            $this->db04_ordem = "0" ; 
         } 
        $sql  .= $virgula." db04_ordem = $this->db04_ordem ";
        $virgula = ",";
-       if(trim($this->db04_ordem) == null ){ 
+       if(trim((string) $this->db04_ordem) == null ){ 
          $this->erro_sql = " Campo Ordem do parágrafo nao Informado.";
          $this->erro_campo = "db04_ordem";
          $this->erro_banco = "";
@@ -218,16 +218,16 @@ class cl_db_docparag {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3595,'$this->db04_docum','A')");
          $resac = db_query("insert into db_acountkey values($acount,3596,'$this->db04_idparag','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db04_docum"]))
-           $resac = db_query("insert into db_acount values($acount,519,3595,'".AddSlashes(pg_result($resaco,$conresaco,'db04_docum'))."','$this->db04_docum',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,519,3595,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db04_docum'))."','$this->db04_docum',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db04_idparag"]))
-           $resac = db_query("insert into db_acount values($acount,519,3596,'".AddSlashes(pg_result($resaco,$conresaco,'db04_idparag'))."','$this->db04_idparag',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,519,3596,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db04_idparag'))."','$this->db04_idparag',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db04_ordem"]))
-           $resac = db_query("insert into db_acount values($acount,519,3597,'".AddSlashes(pg_result($resaco,$conresaco,'db04_ordem'))."','$this->db04_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,519,3597,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db04_ordem'))."','$this->db04_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -272,13 +272,13 @@ class cl_db_docparag {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3595,'$db04_docum','E')");
          $resac = db_query("insert into db_acountkey values($acount,3596,'$db04_idparag','E')");
-         $resac = db_query("insert into db_acount values($acount,519,3595,'','".AddSlashes(pg_result($resaco,$iresaco,'db04_docum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,519,3596,'','".AddSlashes(pg_result($resaco,$iresaco,'db04_idparag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,519,3597,'','".AddSlashes(pg_result($resaco,$iresaco,'db04_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,519,3595,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db04_docum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,519,3596,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db04_idparag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,519,3597,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db04_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_docparag
@@ -344,7 +344,7 @@ class cl_db_docparag {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_docparag";
@@ -389,7 +389,7 @@ class cl_db_docparag {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -433,7 +433,7 @@ class cl_db_docparag {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_db_docparag {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

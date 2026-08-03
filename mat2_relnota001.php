@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -115,7 +115,7 @@ $aux = new cl_arquivo_auxiliar;
                <td colspan=2  align="left"  title="Opções  Todas/Liquidadas/Não liquidadas" >
                <strong>Opção de impressão :&nbsp;&nbsp;</strong>
 	       <?php  
-	       $tipo_opcao = array("a"=>"Todas","b"=>"LIquidadas","c"=>"Não liquidadas");
+	       $tipo_opcao = ["a"=>"Todas","b"=>"LIquidadas","c"=>"Não liquidadas"];
 	       db_select("opcao",$tipo_opcao,true,2); ?>
             </td>
 	    </tr>

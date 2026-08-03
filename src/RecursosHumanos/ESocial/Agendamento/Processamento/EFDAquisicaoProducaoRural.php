@@ -38,19 +38,11 @@ use stdClass;
 class EFDAquisicaoProducaoRural extends ProcessamentoAbstract implements ProcessamentoInterface
 {
 
-    private $cgm;
-    private $instituicao;
-    private $ano;
-    private $mes;
     private $config;
 
-    public function __construct($cgm = null, $instituicao = null, $ano = null, $mes = null)
+    public function __construct(private $cgm = null, private $instituicao = null, private $ano = null, private $mes = null)
     {
-        $this->cgm = $cgm;
-        $this->instituicao = $instituicao;
-        $this->ano = $ano;
-        $this->mes = $mes;
-        $this->config = ConfiguracaoService::getInstance($instituicao);
+        $this->config = ConfiguracaoService::getInstance($this->instituicao);
     }
 
     public function processar()
@@ -87,7 +79,7 @@ class EFDAquisicaoProducaoRural extends ProcessamentoAbstract implements Process
         if ($this->config->filtraOrgaoUnidade()) {
             $filtroOrgaoUnidade = true;
             $unidade = CgmRepository::getByCodigo($this->cgm);
-            $unidadeCnpjBase = substr($unidade->getCnpj(), 0, 8);
+            $unidadeCnpjBase = substr((string) $unidade->getCnpj(), 0, 8);
         }
 
         $notas = $retencao->notas($this->instituicao, $this->ano, $this->mes, $filtroOrgaoUnidade, $unidadeCnpjBase);
@@ -109,7 +101,7 @@ class EFDAquisicaoProducaoRural extends ProcessamentoAbstract implements Process
 
                 $infoAquisProd->ideEstabAdquir->tpinscadq = "1";
                 $infoAquisProd->ideEstabAdquir->nrinscadq = $contribuinte;
-                $infoAquisProd->ideEstabAdquir->ideprodutor->tpinscprod = strlen($nota->nrinscProd) >= 14 ? 1 : 2;
+                $infoAquisProd->ideEstabAdquir->ideprodutor->tpinscprod = strlen((string) $nota->nrinscProd) >= 14 ? 1 : 2;
                 $infoAquisProd->ideEstabAdquir->ideprodutor->nrinscprod = $nota->nrinscProd;
                 $infoAquisProd->ideEstabAdquir->ideprodutor->detaquis = [];
 
@@ -123,7 +115,7 @@ class EFDAquisicaoProducaoRural extends ProcessamentoAbstract implements Process
             $aquisicao->vlrsenardesc = floatval($nota->vlrsenardesc);
 
             // verificar se existe processo judicial
-            $nota->ids = substr($nota->ids, 1, -1);
+            $nota->ids = substr((string) $nota->ids, 1, -1);
             $ids = explode(',', $nota->ids);
             $processos = AquisicaoProducaoRuralProcessos::whereIn(
                 'e157_retencaoreceitasprodutorrural',

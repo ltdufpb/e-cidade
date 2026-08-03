@@ -84,7 +84,7 @@ if(isset($atualizar)){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed39_i_codigo"=>@$ed39_i_codigo,"ed37_c_descr"=>@$ed37_c_descr,"ed39_i_formaavaliacao"=>@$ed39_i_formaavaliacao,"ed39_c_conceito"=>@$ed39_c_conceito,"ed39_c_conceitodescr"=>@$ed39_c_conceitodescr,"ed39_c_nome"=>@$ed39_c_nome);
+   $chavepri= ["ed39_i_codigo"=>@$ed39_i_codigo,"ed37_c_descr"=>@$ed37_c_descr,"ed39_i_formaavaliacao"=>@$ed39_i_formaavaliacao,"ed39_c_conceito"=>@$ed39_c_conceito,"ed39_c_conceitodescr"=>@$ed39_c_conceitodescr,"ed39_c_nome"=>@$ed39_c_nome];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clconceito->sql_query("","*","ed39_i_sequencia"," ed39_i_formaavaliacao = $ed39_i_formaavaliacao");
    $cliframe_alterar_excluir->campos  ="ed39_i_codigo,ed39_c_conceito,ed39_c_nome,ed39_c_conceitodescr";
@@ -115,7 +115,7 @@ if(isset($atualizar)){
        if($linhas>0){
         for($i=0;$i<$linhas;$i++){
         $dados = pg_fetch_array($query);
-         echo "<option value=\"".$dados["ed39_i_codigo"]."\">".trim($dados["ed39_c_conceito"])."</option>\n";
+         echo "<option value=\"".$dados["ed39_i_codigo"]."\">".trim((string) $dados["ed39_c_conceito"])."</option>\n";
         }
        }
       ?>

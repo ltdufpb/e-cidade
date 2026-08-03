@@ -66,11 +66,12 @@ class AnexoI extends AnexoI2018
     /**
      * @throws Exception
      */
+    #[\Override]
     protected function processarCalculoPorMeses()
     {
         $this->inicializaValoresDespesaPorLinhaMes();
 
-        $linhasLiquidacao = array(
+        $linhasLiquidacao = [
             static::LINHA_VENCIMENTOS_VANTAGENS_OUTRAS_DESPESAS_VARIAVEIS_VER_EDITAR_TRANSPARENTE_EDICAO_MANUAL,
             static::LINHA_OBRIGACOES_PATRONAIS_VER_EDITAR_TRANSPARENTE_EDICAO_MANUAL_TRANSPARENTE,
             static::LINHA_BENEFICIOS_PREVIDENCIARIOS_VER_EDITAR_TRANSPARENTE_EDICAO_MANUAL_TRANSPARENTE,
@@ -82,11 +83,11 @@ class AnexoI extends AnexoI2018
             static::LINHA_DECORRENTES_DE_DECISAO_JUDICIAL_DE_PERIODO_ANTERIOR_AO_DA_APURACAO,
             static::LINHA_DESPESAS_DE_EXERCICIOS_ANTERIORES_DE_PERIODO_ANTERIOR_AO_DA_APURACAO,
             static::LINHA_INATIVOS_E_PENSIONISTAS_COM_RECURSOS_VINCULADOS
-        );
+        ];
 
         if (count($this->linhasMSC) > 0) {
             foreach ($this->getMesesAbrangente() as $mesCompetencia => $competencia) {
-                $competencia = explode('/', $competencia);
+                $competencia = explode('/', (string) $competencia);
                 $anoCompetencia = $competencia[1];
                 $ultimoDiaMes = cal_days_in_month(CAL_GREGORIAN, $mesCompetencia, $anoCompetencia);
                 $oDataInicialPeriodo = new DBDate("01/{$mesCompetencia}/{$anoCompetencia}");
@@ -128,25 +129,26 @@ class AnexoI extends AnexoI2018
     /**
      * @param $linhaRelatorio
      */
+    #[\Override]
     protected function adicionaLinhaModeloDetalhado($linhaRelatorio)
     {
         $nivel = str_repeat(' ', $linhaRelatorio->nivel * 2);
         $descricao = "{$nivel} {$linhaRelatorio->descricao}";
 
-        $bordas = array('R', 'LR', 'L');
+        $bordas = ['R', 'LR', 'L'];
         $negrito = false;
 
         if ($linhaRelatorio->ordem == static::LINHA_DESPESA_LIQUIDA_COM_PESSOAL_III) {
-            $bordas = array('TBR', '1', 'TBL');
+            $bordas = ['TBR', '1', 'TBL'];
         }
 
-        $totalizadoras = array(
+        $totalizadoras = [
             static::LINHA_DESPESA_BRUTA_COM_PESSOAL_I,
             static::LINHA_PESSOAL_ATIVO,
             static::LINHA_PESSOAL_INATIVO_E_PENSIONISTAS,
             static::LINHA_DESPESAS_NAO_COMPUTADAS_II,
             static::LINHA_DESPESA_LIQUIDA_COM_PESSOAL_III
-        );
+        ];
 
         if (in_array($linhaRelatorio->ordem, $totalizadoras)) {
             $negrito = true;
@@ -179,40 +181,41 @@ class AnexoI extends AnexoI2018
     /**
      * @throws Exception
      */
+    #[\Override]
     protected function processarDetalhamentoMensal()
     {
         $this->getDados();
 
-        $linhasTotalizadorasSoma = array(
-            static::LINHA_PESSOAL_ATIVO => array(
+        $linhasTotalizadorasSoma = [
+            static::LINHA_PESSOAL_ATIVO => [
                 static::LINHA_VENCIMENTOS_VANTAGENS_OUTRAS_DESPESAS_VARIAVEIS_VER_EDITAR_TRANSPARENTE_EDICAO_MANUAL,
                 static::LINHA_OBRIGACOES_PATRONAIS_VER_EDITAR_TRANSPARENTE_EDICAO_MANUAL_TRANSPARENTE,
                 static::LINHA_BENEFICIOS_PREVIDENCIARIOS_VER_EDITAR_TRANSPARENTE_EDICAO_MANUAL_TRANSPARENTE
-            ),
-            static::LINHA_PESSOAL_INATIVO_E_PENSIONISTAS => array(
+            ],
+            static::LINHA_PESSOAL_INATIVO_E_PENSIONISTAS => [
                 static::LINHA_APOSENTADORIAS_RESERVA_E_REFORMAS_VER_EDITAR_TRANSPARENTE_EDICAO_MANUAL_TRANSPARENTE,
                 static::LINHA_PENSOES_VER_EDITAR_TRANSPARENTE_EDICAO_MANUAL_TRANSPARENTE,
                 static::LINHA_OUTROS_BENEFICIOS_PREVIDENCIARIOS_VER_EDITAR_TRANSPARENTE_EDICAO_MANUAL_TRANSPARENTE
-            ),
-            static::LINHA_DESPESA_BRUTA_COM_PESSOAL_I => array(
+            ],
+            static::LINHA_DESPESA_BRUTA_COM_PESSOAL_I => [
                 static::LINHA_PESSOAL_ATIVO,
                 static::LINHA_PESSOAL_INATIVO_E_PENSIONISTAS,
                 static::LINHA_OUTRAS_DESPESAS_PESSOAL_DECORRENTES_CONTRATOS_TERCEIRIZACAO_OU_CONTRATACAO_FORMA_INDIRETA
-            ),
-            static::LINHA_DESPESAS_NAO_COMPUTADAS_II => array(
+            ],
+            static::LINHA_DESPESAS_NAO_COMPUTADAS_II => [
                 static::LINHA_INDENIZACOES_POR_DEMISSAO_E_INCENTIVOS_A_DEMISSAO_VOLUNTARIA,
                 static::LINHA_DECORRENTES_DE_DECISAO_JUDICIAL_DE_PERIODO_ANTERIOR_AO_DA_APURACAO,
                 static::LINHA_DESPESAS_DE_EXERCICIOS_ANTERIORES_DE_PERIODO_ANTERIOR_AO_DA_APURACAO,
                 static::LINHA_INATIVOS_E_PENSIONISTAS_COM_RECURSOS_VINCULADOS
-            )
-        );
+            ]
+        ];
 
-        $linhasTotalizadorasSubtracao = array(
-            static::LINHA_DESPESA_LIQUIDA_COM_PESSOAL_III => array(
+        $linhasTotalizadorasSubtracao = [
+            static::LINHA_DESPESA_LIQUIDA_COM_PESSOAL_III => [
                 static::LINHA_DESPESA_BRUTA_COM_PESSOAL_I,
                 static::LINHA_DESPESAS_NAO_COMPUTADAS_II
-            )
-        );
+            ]
+        ];
 
         foreach ($linhasTotalizadorasSoma as $linhaTotalizadora => $linhasSoma) {
             foreach ($this->aValoresDespesaPorLinhaMes as $linha => $valoresMesAno) {
@@ -246,9 +249,9 @@ class AnexoI extends AnexoI2018
         $this->aLinhasConsistencia[static::LINHA_DESPESA_LIQUIDA_COM_PESSOAL_III]->despexec12 = $despexec12;
         $this->aLinhasConsistencia[static::LINHA_DESPESA_LIQUIDA_COM_PESSOAL_III]->inscrpnp = $inscrpnp;
 
-        $this->processarFormasDasLinhas(array(
+        $this->processarFormasDasLinhas([
             static::LINHA_DESPESA_TOTAL_COM_PESSOAL_DTP_VII
-        ));
+        ]);
         $this->calculaReceitaCorrenteLiquida();
     }
 
@@ -259,6 +262,7 @@ class AnexoI extends AnexoI2018
      *
      * Calcula o valor da liquidação que foi informado manualmente
      */
+    #[\Override]
     protected function calculaValorManual()
     {
         foreach ($this->linhasMSC as $iLinha) {
@@ -270,7 +274,7 @@ class AnexoI extends AnexoI2018
             );
 
             foreach ($this->getMesesAbrangente() as $iMes => $sCompetencia) {
-                list($sMesAbreviado, $iAno) = explode('/', $sCompetencia);
+                [$sMesAbreviado, $iAno] = explode('/', (string) $sCompetencia);
 
                 foreach ($aLinhasManuais as $oLinhaManual) {
                     if ($oLinhaManual->colunas[0]->o117_valor == $sCompetencia) {

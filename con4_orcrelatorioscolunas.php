@@ -65,7 +65,7 @@ $oJson           = new Services_JSON();
 
 $iAno = db_getsession("DB_anousu");
 //Para o ANEXO XIII de 2018, ajustado a descrição das colunas de exercício
-$aColunasExercicioDinamico = array(316 => 9,
+$aColunasExercicioDinamico = [316 => 9,
                                    315 => 8,
                                    314 => 7,
                                    313 => 6,
@@ -73,7 +73,7 @@ $aColunasExercicioDinamico = array(316 => 9,
                                    311 => 4,
                                    310 => 3,
                                    309 => 2,
-                                   308 => 1);
+                                   308 => 1];
 ?>
 <html>
 <head>
@@ -179,11 +179,11 @@ function js_linhaInicial(iLinha) {
 
      $sAling  = $oColuna->o115_tipo == 2?"left":"right";
      echo "aLinha += \"<td class='linhagrid'>\"\n";
-     if (trim($oColuna->o115_valoresdefault) != "") {
+     if (trim((string) $oColuna->o115_valoresdefault) != "") {
 
        echo "aLinha += \"<select id='linha\"+iTotalLinhas+\"coluna{$i}'\";\n";
        echo "aLinha += \"style='width:100%;height:99%;border:1px solid white'>\";\n";
-       $aValores = explode(",",$oColuna->o115_valoresdefault);
+       $aValores = explode(",",(string) $oColuna->o115_valoresdefault);
        for ($iDefault = 0; $iDefault < count($aValores); $iDefault++) {
           echo "aLinha += \"<option value='{$aValores[$iDefault]}'>{$aValores[$iDefault]}</option>\";\n";
        }

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_liclicitatipoempresa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clliclicitatipoempresa = new cl_liclicitatipoempresa;
 $clliclicitatipoempresa->rotulo->label("l32_sequencial");
 $clliclicitatipoempresa->rotulo->label("l32_descricao");
@@ -98,9 +98,9 @@ $clliclicitatipoempresa->rotulo->label("l32_descricao");
         }else{
            $sql = $clliclicitatipoempresa->sql_query("",$campos,"l32_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_l32_sequencial)){
-          $repassa = array("chave_l32_sequencial"=>$chave_l32_sequencial,"chave_l32_sequencial"=>$chave_l32_sequencial);
+          $repassa = ["chave_l32_sequencial"=>$chave_l32_sequencial,"chave_l32_sequencial"=>$chave_l32_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	     $clcriaabas->identifica = array("cadenderrua"=>"RUA","cadenderbairrocadenderrua"=>"Bairros"); 
-	     $clcriaabas->src = array("cadenderrua"=>"con1_cadenderrua006.php");
-	     $clcriaabas->disabled   =  array("cadenderbairrocadenderrua"=>"true"); 
+	     $clcriaabas->identifica = ["cadenderrua"=>"RUA","cadenderbairrocadenderrua"=>"Bairros"]; 
+	     $clcriaabas->src = ["cadenderrua"=>"con1_cadenderrua006.php"];
+	     $clcriaabas->disabled   =  ["cadenderbairrocadenderrua"=>"true"]; 
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>

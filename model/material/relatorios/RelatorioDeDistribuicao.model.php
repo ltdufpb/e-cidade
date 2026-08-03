@@ -57,22 +57,10 @@ class RelatorioDeDistribuicao {
   private $oDataFinal;
 
   /**
-   * Id da instituição para filtro.
-   * @var integer
-   */
-  private $iInstituicao;
-
-  /**
    * Diz se o relatório deve ser agrupado por grupo/subgrupo.
    * @var bool
    */
   private $lAgruparGrupoSubgrupo;
-
-  /**
-   * Informa se deve buscar materias com distribuição zerada.
-   * @var bool
-   */
-  private $lBuscarDistribuicaoZerada;
 
   /**
    * Tipo de quebra de página.
@@ -102,7 +90,7 @@ class RelatorioDeDistribuicao {
    * Departamentos usados para filtro do relatório.
    * @var stdClass[]
    */
-  private $aDepartamentos = array();
+  private $aDepartamentos = [];
 
   /**
    * Sem quebra de pagina
@@ -128,7 +116,7 @@ class RelatorioDeDistribuicao {
    */
   const OPCAO_EXIBIR_DISTRIBUICAO_ZERADA = 1;
 
-  private $aMeses = array();
+  private $aMeses = [];
 
   /**
    * @param DBDate  $oDataInicial
@@ -136,13 +124,17 @@ class RelatorioDeDistribuicao {
    * @param integer $iInstituicao
    * @param bool    $lBuscarDistribuicaoZerada
    */
-  function __construct(DBDate $oDataInicial, DBDate $oDataFinal, $iInstituicao, $lBuscarDistribuicaoZerada = false) {
+  function __construct(DBDate $oDataInicial, DBDate $oDataFinal, /**
+   * Id da instituição para filtro.
+   */
+  private $iInstituicao, /**
+   * Informa se deve buscar materias com distribuição zerada.
+   */
+  private $lBuscarDistribuicaoZerada = false) {
 
     $this->oPdf                      = new PDFDocument(PDFDocument::PRINT_LANDSCAPE);
     $this->oDataInicial              = $oDataInicial;
     $this->oDataFinal                = $oDataFinal;
-    $this->iInstituicao              = $iInstituicao;
-    $this->lBuscarDistribuicaoZerada = $lBuscarDistribuicaoZerada;
 
     $aMeses = DBDate::getMesesNoIntervalo($this->oDataInicial, $this->oDataFinal, false);
     foreach ($aMeses  as $iAno => $aMes) {
@@ -213,8 +205,8 @@ class RelatorioDeDistribuicao {
       $oGrupo->descricao  = "{$oGrupo->estrutural} - {$oGrupoPai->getDescricao()}";
       $oGrupo->grupoPai   = 0;
       $oGrupo->nivel      = $oGrupoPai->getNivel();
-      $oGrupo->itens      = array();
-      $oGrupo->meses      = array();
+      $oGrupo->itens      = [];
+      $oGrupo->meses      = [];
       $this->processaMeses($oGrupo);
 
       if ($oGrupoPai->getEstruturaPai() != '') {
@@ -297,8 +289,8 @@ class RelatorioDeDistribuicao {
     }
     $sCampos .= $sCamposGrupo;
 
-    $aOrdem   = array();
-    $aWhere   = array();
+    $aOrdem   = [];
+    $aWhere   = [];
     $aWhere[] = " instit = {$this->iInstituicao} ";
 
     $aOrdem[] = " m60_descr ";
@@ -333,7 +325,7 @@ class RelatorioDeDistribuicao {
 
     $rsMateriais = $oDaoMaterial->sql_record($sql);
 
-    $aMateriais = array();
+    $aMateriais = [];
     for ($i = 0; $i < $oDaoMaterial->numrows; $i++) {
 
       $oMaterial               = db_utils::fieldsMemory($rsMateriais, $i);
@@ -346,7 +338,7 @@ class RelatorioDeDistribuicao {
         $oDeptartamento            = new stdClass();
         $oDeptartamento->codigo    = $oMaterial->depto;
         $oDeptartamento->descricao = $oMaterial->departamento;
-        $oDeptartamento->itens     = array();
+        $oDeptartamento->itens     = [];
         $this->aDepartamentos[$oDeptartamento->codigo] = $oDeptartamento;
       }
     }
@@ -402,7 +394,7 @@ class RelatorioDeDistribuicao {
 
     foreach ($aMateriais as $iIndice => $oMaterial) {
 
-      $aParametros = array($oMaterial->codigo, $sDataInicial, $sDataFinal, $this->iInstituicao);
+      $aParametros = [$oMaterial->codigo, $sDataInicial, $sDataFinal, $this->iInstituicao];
 
       if ($this->iQuebraPagina == self::QUEBRA_PAGINA_DEPARTAMENTO) {
         $aParametros[] = $oMaterial->depto;
@@ -410,7 +402,7 @@ class RelatorioDeDistribuicao {
 
       $rsDistribuicao = pg_execute("dados_movimentacao", $aParametros);
       $iTotalLinhas   = pg_num_rows($rsDistribuicao);
-      $aDistribuicao  = array();
+      $aDistribuicao  = [];
 
       for ($iDistribuicao = 0; $iDistribuicao < $iTotalLinhas; $iDistribuicao++) {
 
@@ -438,8 +430,8 @@ class RelatorioDeDistribuicao {
     $oGrupo->nivel        = 1;
     $oGrupo->totalPeriodo = 0.0;
     $oGrupo->mediaPeriodo = 0.0;
-    $oGrupo->itens        = array();
-    $oGrupo->meses        = array();
+    $oGrupo->itens        = [];
+    $oGrupo->meses        = [];
     $this->processaMeses($oGrupo);
 
     $aGrupos[$oGrupo->codigo] = $oGrupo;
@@ -447,7 +439,7 @@ class RelatorioDeDistribuicao {
 
     if ($this->lAgruparGrupoSubgrupo) {
 
-      $aGrupos = array();
+      $aGrupos = [];
 
       $oDaoGrupoSubGrupo = new cl_materialestoquegrupo();
 
@@ -475,8 +467,8 @@ class RelatorioDeDistribuicao {
         $oGrupo->nivel        = $oGrupoAux->db121_nivel;
         $oGrupo->totalPeriodo = 0.0;
         $oGrupo->mediaPeriodo = 0.0;
-        $oGrupo->itens        = array();
-        $oGrupo->meses        = array();
+        $oGrupo->itens        = [];
+        $oGrupo->meses        = [];
         $this->processaMeses($oGrupo);
 
         $aGrupos[$oGrupo->codigo] = $oGrupo;
@@ -490,9 +482,7 @@ class RelatorioDeDistribuicao {
         $this->criarGrupoPai($oGrupo);
       }
       uasort($this->aGrupos,
-        function ($oGrupo, $oGrupoDepois) {
-          return $oGrupo->estrutural > $oGrupoDepois->estrutural;
-        }
+        fn($oGrupo, $oGrupoDepois) => $oGrupo->estrutural > $oGrupoDepois->estrutural
       );
     }
 
@@ -558,7 +548,7 @@ class RelatorioDeDistribuicao {
   private function escreverCabecalhoTabela() {
 
     $this->oPdf->setBold(true);
-    $aMeses = array();
+    $aMeses = [];
 
     $this->oPdf->Cell($this->iLargura * 0.28, $this->iAltura, "Material", 'TBR', 0, 'C');
 
@@ -595,7 +585,7 @@ class RelatorioDeDistribuicao {
     $oLinhaTotal               = new stdClass();
     $oLinhaTotal->codigo       = "";
     $oLinhaTotal->descricao    = "Total Geral Mensal";
-    $oLinhaTotal->meses        = array();
+    $oLinhaTotal->meses        = [];
     $oLinhaTotal->totalPeriodo = 0.0;
     $oLinhaTotal->mediaPeriodo = 0.0;
     $this->processaMeses($oLinhaTotal);

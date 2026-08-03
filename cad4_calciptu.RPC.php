@@ -55,7 +55,7 @@ try {
                 throw new DBException("Erro ao verificar pagamentos.");
             }
 
-            $sRetorno = pg_result($rsResult,0,0);
+            $sRetorno = pg_fetch_result($rsResult,0,0);
             $iCodigoRetorno = substr($sRetorno,3,2);
 
             if ($iCodigoRetorno == IPTU_QUITADO) {
@@ -140,7 +140,7 @@ try {
                 throw new DBException("Não foi possivel buscar as taxas de iptu para o exercicio {$oParametros->exercicio}.");
             }
             $taxas = pg_num_rows($rs);
-            $oRetorno->taxas = array();
+            $oRetorno->taxas = [];
             for ($i = 0; $i < $taxas; $i++) { 
                 $taxa = db_utils::fieldsMemory($rs, $i);
                 $oRetorno->taxas[] = $taxa;

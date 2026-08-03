@@ -69,7 +69,7 @@ class Pais
      */
     public function setNome($nome)
     {
-        $this->nome = trim($nome);
+        $this->nome = trim((string) $nome);
         return $this;
     }
 

@@ -130,7 +130,7 @@ function js_detectaarquivo(arquivo,pdf){
               $sqlanomes = "select max(r11_anousu||lpad(r11_mesusu,2,0)) from cfpess";
               $resultanomes = db_query($sqlanomes);
               db_fieldsmemory($resultanomes,0);
-              $ano_base = substr($max,0,4)-1;
+              $ano_base = substr((string) $max,0,4)-1;
                 db_input('ano_base',4, 1,true,'text',2,'', null, null, null, 4);
               ?>
             </td>
@@ -142,7 +142,7 @@ function js_detectaarquivo(arquivo,pdf){
             </td>
             <td nowrap>
               <?php
-                  $arr = array('s' => 'Sim','n'=>'Não');
+                  $arr = ['s' => 'Sim','n'=>'Não'];
                 db_select("dadosfinanceiros",$arr,true,1,'onchange="js_desabilitaAba(this.value)"');
                   ?>
             </td>

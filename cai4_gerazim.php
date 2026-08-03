@@ -58,17 +58,17 @@ order by k02_estorc
 on k02_estorc::char(13) = o02_codigo and o02_anousu =  ".$GLOBALS["DB_anousu"]."
 ");
 
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 set_time_limit(0);
 $clabre_arquivo =  new cl_abre_arquivo();
 if($clabre_arquivo->arquivo!=false){
   if($numrows!=false){
     for($i=0;$i<$numrows;$i++){
 	   db_fieldsmemory($result,$i,0);
-       fputs($clabre_arquivo->arquivo,str_pad($o08_reduz)."\n");
-       fputs($clabre_arquivo->arquivo,str_pad($k12_receit)."\n");
-       fputs($clabre_arquivo->arquivo,str_pad($arrec)."\n");
-       fputs($clabre_arquivo->arquivo,str_pad($estorno));
+       fputs($clabre_arquivo->arquivo,str_pad((string) $o08_reduz)."\n");
+       fputs($clabre_arquivo->arquivo,str_pad((string) $k12_receit)."\n");
+       fputs($clabre_arquivo->arquivo,str_pad((string) $arrec)."\n");
+       fputs($clabre_arquivo->arquivo,str_pad((string) $estorno));
     }
   }  
   fclose($clabre_arquivo->arquivo);

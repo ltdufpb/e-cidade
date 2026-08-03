@@ -36,7 +36,7 @@ $cliptucalclogmat->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label('z01_nome');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $where=" 1=1 ";
 
 
@@ -105,7 +105,7 @@ for($x = 0; $x < $cliptucalclog->numrows;$x++){
         $pdf->cell(20,$alt,"Ano: $j27_anousu",0,0,"L",0);
         $pdf->cell(30,$alt,"Data: ".db_formatar($j27_data,"d"),0,0,"L",0); 
         $pdf->cell(30,$alt,"Hora: $j27_hora",0,0,"L",0);
-        $pdf->cell(70,$alt,"Usuário: $j27_usuario - ".substr($nome,0,40),0,1,"L",0);
+        $pdf->cell(70,$alt,"Usuário: $j27_usuario - ".substr((string) $nome,0,40),0,1,"L",0);
         $pdf->Ln();
         $pdf->cell(40,$alt,$RLj28_matric,1,0,"C",1); 
         $pdf->cell(70,$alt,$RLz01_nome,1,0,"C",1);
@@ -117,7 +117,7 @@ for($x = 0; $x < $cliptucalclog->numrows;$x++){
    $pdf->setfont('arial','',7);
    $pdf->cell(40,$alt,$j28_matric,0,0,"C",$p); 
    $pdf->cell(70,$alt,$z01_nome,0,0,"L",$p);
-   $pdf->cell(80,$alt,substr($j62_descr,0,50),0,1,"L",$p);
+   $pdf->cell(80,$alt,substr((string) $j62_descr,0,50),0,1,"L",$p);
    if ($p==0){
    	$p=1;   
    }else{

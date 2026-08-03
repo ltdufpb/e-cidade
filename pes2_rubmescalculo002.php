@@ -126,37 +126,37 @@ if (! empty($iCodigoSelecao)) {
 }
 
 if ($sOrdem == 'a') {
-    $head6 = 'ORDEM : ALFABÉTICA ' . strtoupper($sTipoOrdem);
+    $head6 = 'ORDEM : ALFABÉTICA ' . strtoupper((string) $sTipoOrdem);
     $sOrderBy = 'order by ' . $sSigla . 'rubric, z01_nome ' . $sTipoOrdem;
     if ($sLocalTrab == "S") {
         $sOrderByLocalTrab = 'order by rubric, rh55_estrut, z01_nome ' . $sTipoOrdem;
     }
 } elseif ($sOrdem == 'n') {
-    $head6 = 'ORDEM : NUMÉRICA ' . strtoupper($sTipoOrdem);
+    $head6 = 'ORDEM : NUMÉRICA ' . strtoupper((string) $sTipoOrdem);
     $sOrderBy = 'order by ' . $sSigla . 'rubric, regist ' . $sTipoOrdem;
     if ($sLocalTrab == "S") {
         $sOrderByLocalTrab = 'order by rubric, rh55_estrut, regist ' . $sTipoOrdem;
     }
 } elseif ($sOrdem == 'l') {
-    $head6 = 'ORDEM : LOTAÇÃO ' . strtoupper($sTipoOrdem);
+    $head6 = 'ORDEM : LOTAÇÃO ' . strtoupper((string) $sTipoOrdem);
     $sOrderBy = 'order by ' . $sSigla . 'rubric, lotacao ' . $sTipoOrdem . ',z01_nome ';
     if ($sLocalTrab == "S") {
         $sOrderByLocalTrab = 'order by rubric, rh55_estrut, lotacao ' . $sTipoOrdem . ',z01_nome ';
     }
 } elseif ($sOrdem == 'v') {
-    $head6 = 'ORDEM : VALOR ' . strtoupper($sTipoOrdem);
+    $head6 = 'ORDEM : VALOR ' . strtoupper((string) $sTipoOrdem);
     $sOrderBy = 'order by ' . $sSigla . 'rubric, valor ' . $sTipoOrdem;
     if ($sLocalTrab == "S") {
         $sOrderByLocalTrab = 'order by rubric, rh55_estrut, valor ' . $sTipoOrdem;
     }
 } elseif ($sOrdem == 'q') {
-    $head6 = 'ORDEM : QUANTIDADE ' . strtoupper($sTipoOrdem);
+    $head6 = 'ORDEM : QUANTIDADE ' . strtoupper((string) $sTipoOrdem);
     $sOrderBy = 'order by ' . $sSigla . 'rubric, quant ' . $sTipoOrdem;
     if ($sLocalTrab == "S") {
         $sOrderByLocalTrab = 'order by rubric, rh55_estrut, quant ' . $sTipoOrdem;
     }
 } elseif ($sOrdem == 'r') {
-    $head6 = 'ORDEM : RECURSO ' . strtoupper($sTipoOrdem);
+    $head6 = 'ORDEM : RECURSO ' . strtoupper((string) $sTipoOrdem);
     $sOrderBy = 'order by ' . $sSigla . 'rubric, rh25_recurso ' . $sTipoOrdem . ', z01_nome ';
     if ($sLocalTrab == "S") {
         $sOrderByLocalTrab = 'order by rubric, rh55_estrut, rh25_recurso ' . $sTipoOrdem . ', z01_nome ';
@@ -238,7 +238,7 @@ if ($sTipo == 'r') {
         $tot_espaco = 152;
     }
 
-    for ($x = 0; $x < pg_numrows($rsFinanceiro); $x ++) {
+    for ($x = 0; $x < pg_num_rows($rsFinanceiro); $x ++) {
 
         db_fieldsmemory($rsFinanceiro, $x);
 
@@ -378,11 +378,11 @@ if ($sTipo == 'r') {
             $pdf->cell(15, $alt, $regist, 0, 0, "C", $pre);
             $pdf->cell(60, $alt, $z01_nome, 0, 0, "L", $pre);
             $pdf->cell(15, $alt, $lotacao, 0, 0, "C", $pre);
-            $pdf->cell(62, $alt, substr(trim($descricao), 0, 40), 0, 0, "L", $pre);
+            $pdf->cell(62, $alt, substr(trim((string) $descricao), 0, 40), 0, 0, "L", $pre);
 
             if ($sPagina == 'p') {
                 $pdf->cell(15, $alt, $cargo, 0, 0, "C", $pre);
-                $pdf->cell(62, $alt, substr(trim($desc_cargo), 0, 40), 0, 0, "L", $pre);
+                $pdf->cell(62, $alt, substr(trim((string) $desc_cargo), 0, 40), 0, 0, "L", $pre);
             }
 
             $pdf->cell(15, $alt, db_formatar($quant, 'f'), 0, 0, "R", $pre);
@@ -435,7 +435,7 @@ if ($sTipo == 'r') {
     fputs($fl_arquivo, $str_dados);
 
     $str_dados = str_pad(" Matrícula", 13)
-                 . " " . str_pad($RLz01_nome, 45)
+                 . " " . str_pad((string) $RLz01_nome, 45)
                  . " " . str_pad("QUANTIDADE", 15)
                  . " " . str_pad("VALOR", 10)
                  . " " . str_pad("LOTACAO", 10)
@@ -461,7 +461,7 @@ if ($sTipo == 'r') {
     $xvalor = 0;
     $xquant = 0;
     $total = 0;
-    for ($x = 0; $x < pg_numrows($rsFinanceiro); $x ++) {
+    for ($x = 0; $x < pg_num_rows($rsFinanceiro); $x ++) {
         db_fieldsmemory($rsFinanceiro, $x);
 
         if ($pd == '2') { // desconto
@@ -470,13 +470,13 @@ if ($sTipo == 'r') {
         }
 
         $str_dados = str_pad($regist . "-" . modulo11($regist), 12, " ", STR_PAD_LEFT)
-                     . " " . str_pad($z01_nome, 42, " ")
+                     . " " . str_pad((string) $z01_nome, 42, " ")
                      . " " . str_pad(trim(db_formatar($quant, 'f')), 15, " ", STR_PAD_LEFT)
                      . " " . str_pad(trim(db_formatar($valor, 'f')), 12, " ", STR_PAD_LEFT)
-                     . " " . str_pad($lotacao, 10, "0", STR_PAD_LEFT)
-                     . " " . str_pad(substr(trim($descricao), 0, 29), 40)
-                     . " " . str_pad($cargo, 8, "0", STR_PAD_LEFT)
-                     . " " . str_pad(substr(trim($desc_cargo), 0, 30), 34," ", STR_PAD_LEFT);
+                     . " " . str_pad((string) $lotacao, 10, "0", STR_PAD_LEFT)
+                     . " " . str_pad(substr(trim((string) $descricao), 0, 29), 40)
+                     . " " . str_pad((string) $cargo, 8, "0", STR_PAD_LEFT)
+                     . " " . str_pad(substr(trim((string) $desc_cargo), 0, 30), 34," ", STR_PAD_LEFT);
         if ($sLocalTrab == "S") {
            $str_dados .= " " . (empty($rh55_estrut)?"Não Informado":$rh55_estrut." - ".$rh55_descr);
         }
@@ -523,7 +523,7 @@ if ($sTipo == 'r') {
     $xvalor = 0;
     $xquant = 0;
     $total = 0;
-    for ($x = 0; $x < pg_numrows($rsFinanceiro); $x ++) {
+    for ($x = 0; $x < pg_num_rows($rsFinanceiro); $x ++) {
         db_fieldsmemory($rsFinanceiro, $x);
 
         if ($pd == '2') { // desconto
@@ -536,9 +536,9 @@ if ($sTipo == 'r') {
                    . trim(db_formatar($quant, 'f')) . ";"
                    . trim(db_formatar($valor, 'f')) . ";"
                    . $lotacao . ";"
-                   . substr(trim($descricao), 0, 29) . ";"
+                   . substr(trim((string) $descricao), 0, 29) . ";"
                    . $cargo . "; "
-                   . substr(trim($desc_cargo), 0, 29). ";";
+                   . substr(trim((string) $desc_cargo), 0, 29). ";";
         if ($sLocalTrab == "S") {
            $str_dados .= (empty($rh55_estrut)?"Não Informado":$rh55_estrut." - ".$rh55_descr);
         }
@@ -562,11 +562,11 @@ function modulo11($num, $base = 9, $r = 0)
 {
     $soma = 0;
     $fator = 2;
-    $xx = strlen($num);
+    $xx = strlen((string) $num);
     /* Separacao dos numeros */
-    for ($i = strlen($num); $i > 0; $i --) {
+    for ($i = strlen((string) $num); $i > 0; $i --) {
         // pega cada numero isoladamente
-        $numeros[$i] = substr($num, $i - 1, 1);
+        $numeros[$i] = substr((string) $num, $i - 1, 1);
         // Efetua multiplicacao do numero pelo falor
         $parcial[$i] = $numeros[$i] * $fator;
         // Soma dos digitos

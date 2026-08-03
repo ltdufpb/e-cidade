@@ -28673,9 +28673,7 @@ SQL
                                        ->where("db125_db_sistemaexterno", $iCodigoSistemaExterno)
                                        ->get(["db125_cadendermunicipio"])->toArray();
 
-        $aCadendermunicipiosistemaIds = array_map(function ($oCadendermunicipiosistema) {
-            return $oCadendermunicipiosistema->db125_cadendermunicipio;
-        }, $aCadendermunicipiosistema);
+        $aCadendermunicipiosistemaIds = array_map(fn($oCadendermunicipiosistema) => $oCadendermunicipiosistema->db125_cadendermunicipio, $aCadendermunicipiosistema);
 
         DB::table("cadendermunicipiosistema")->where("db125_db_sistemaexterno", $iCodigoSistemaExterno)->delete();
         DB::table("db_sistemaexterno")->where("db124_sequencial", $iCodigoSistemaExterno)->delete();

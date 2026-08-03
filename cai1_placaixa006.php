@@ -34,7 +34,7 @@ include(modification("classes/db_placaixa_classe.php"));
 include(modification("classes/db_placaixarec_classe.php"));
 $clplacaixa = new cl_placaixa;
 $clplacaixarec = new cl_placaixarec;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

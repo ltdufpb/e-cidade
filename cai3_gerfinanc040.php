@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -59,7 +59,7 @@ if(isset($matric)){
 
 	$tabela = 'arrenumcgm';
 	$campo  = 'arrenumcgm.k00_numcgm';
-	$valor  = pg_result(db_query("select v07_numcgm from termo where v07_parcel = $Parcelamento"),0,0);
+	$valor  = pg_fetch_result(db_query("select v07_numcgm from termo where v07_parcel = $Parcelamento"),0,0);
 }
 
 $iInstituicao = db_getsession('DB_instit');
@@ -118,7 +118,7 @@ if (isset($inicial)) {
 }
 
 $result  = db_query($sql) or die($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 ?>
 <html>
 <head>
@@ -208,7 +208,7 @@ $numrows = pg_numrows($result);
         if(!$rsNumpreCertidao){
           throw new Exception("Erro ao pesquisar numpres da certidão");
         }
-        $iTotalNumpresCertidao = pg_numrows($rsNumpreCertidao);
+        $iTotalNumpresCertidao = pg_num_rows($rsNumpreCertidao);
 
         $lrhis      = '';
         $lrcor      = '';
@@ -241,7 +241,7 @@ $numrows = pg_numrows($result);
 
           if($rsDebitosNumpre){
 
-            $iTotalQuantidadeDebitos = pg_numrows($rsDebitosNumpre);
+            $iTotalQuantidadeDebitos = pg_num_rows($rsDebitosNumpre);
             for($iIndiceDebito = 0; $iIndiceDebito < $iTotalQuantidadeDebitos; $iIndiceDebito++){
 
               $oRegistroNumpre = db_utils::fieldsMemory($rsDebitosNumpre, $iIndiceDebito);

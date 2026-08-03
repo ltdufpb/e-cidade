@@ -79,7 +79,7 @@ $iAnoUsu    = db_getsession("DB_anousu");
         $oRelatorio = new relatorioContabil($oGet->codrel);
 
         $aPeriodos         = $oRelatorio->getPeriodos();
-        $aListaPeriodos    = array();
+        $aListaPeriodos    = [];
         $aListaPeriodos[0] = "Selecione";
 
         foreach ($aPeriodos as $oPeriodo) {
@@ -88,10 +88,10 @@ $iAnoUsu    = db_getsession("DB_anousu");
 
         if ($iAnoUsu < 2010) {
 
-          $aListaPeriodos = array(
+          $aListaPeriodos = [
             "1B" => "1 º Bimestre", "2B" => "2 º Bimestre", "3B" => "3 º Bimestre",
             "4B" => "4 º Bimestre", "5B" => "5 º Bimestre", "6B" => "6 º Bimestre"
-          );
+          ];
         }
 
         db_select("o116_periodo", $aListaPeriodos, true, 1);

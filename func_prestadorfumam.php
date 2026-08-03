@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -48,7 +48,7 @@ $oGet  = db_utils::postMemory($_GET);
 $filtro = !empty($oGet->filtro) ? $oGet->filtro : 0;
 
 if (!isset($pesquisar)) {
-	parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $queryString);
+	parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 }
 
 $clcgm = new cl_cgm;
@@ -163,7 +163,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 					$sSql = $clprotparam->sql_query_file(null, "p90_valcpfcnpj", null, "p90_instit = " . db_getsession("DB_instit"));
 					$result_protparam = $clprotparam->sql_record($sSql);
 
-					if (pg_numrows($result_protparam) > 0) {
+					if (pg_num_rows($result_protparam) > 0) {
 						db_fieldsmemory($result_protparam, 0);
 						if ($p90_valcpfcnpj == 'f') {
 				?>
@@ -394,11 +394,11 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 
 					if (isset($nomeDigitadoParaPesquisa) && ($nomeDigitadoParaPesquisa != "")) {
 
-						$nomeDigitadoParaPesquisa = strtoupper($nomeDigitadoParaPesquisa);
+						$nomeDigitadoParaPesquisa = strtoupper((string) $nomeDigitadoParaPesquisa);
 						$sql = $clCgm->sqlnome($nomeDigitadoParaPesquisa, $campos, $filtro);
 
 					}else if (isset($emailDigitadoParaPesquisa) && ($emailDigitadoParaPesquisa != "")) {
-						$emailDigitadoParaPesquisa = strtoupper($emailDigitadoParaPesquisa);
+						$emailDigitadoParaPesquisa = strtoupper((string) $emailDigitadoParaPesquisa);
 						$sql = $clCgm->sql_query(null, $campos,"to_ascii(z01_email)", "to_ascii(upper(z01_email)) like to_ascii('{$emailDigitadoParaPesquisa}%')");
 
 					} else if (isset($numcgmDigitadoParaPesquisa) && $numcgmDigitadoParaPesquisa != "") {
@@ -499,12 +499,12 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 								</table>
 				<?php
 							} else {
-								$aVarRepassa = array(
+								$aVarRepassa = [
 									"nomeDigitadoParaPesquisa" => "$nomeDigitadoParaPesquisa",
-									"cpf"                      => (isset($cpf)  ? $cpf  : ""),
-									"cnpj"                     => (isset($cnpj) ? $cnpj : ""),
+									"cpf"                      => ($cpf ?? ""),
+									"cnpj"                     => ($cnpj ?? ""),
 									"emailDigitadoParaPesquisa" => (isset($emailDigitadoParaPesquisa) ? "$emailDigitadoParaPesquisa" : "")
-								);
+								];
 								
 
 								db_lovrot($sql, 14, "()", "", $funcao_js, "", "NoMe", $aVarRepassa);					
@@ -517,7 +517,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 						$result = $clcgm->sql_record($clcgm->$sMetodoExecutar($pesquisa_chave));
 						
 						if (!isset($testanome)) {
-							if (($result != false) && (pg_numrows($result) != 0)) {
+							if (($result != false) && (pg_num_rows($result) != 0)) {
 								db_fieldsmemory($result, 0);
 								if ($filtro == 1) {
 
@@ -536,7 +536,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 								echo "<script>" . $funcao_js . "(true,'Código (" . $pesquisa_chave . ") não Encontrado');</script>";
 							}
 						} else {
-							if (($result != false) && (pg_numrows($result) != 0)) {
+							if (($result != false) && (pg_num_rows($result) != 0)) {
 								db_fieldsmemory($result, 0);
 								echo "<script>\n";
 								if ($z01_ender == '' || $z01_cgccpf == '') {

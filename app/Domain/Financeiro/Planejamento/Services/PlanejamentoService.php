@@ -269,9 +269,7 @@ class PlanejamentoService
                 throw new Exception("Não é possivel alterar a situação de um plano APROVADO.", 403);
         }
 
-        return array_values(Status::all()->filter(function ($situacao) use ($situacoesPossiveis) {
-            return in_array($situacao->pl1_codigo, $situacoesPossiveis);
-        })->toArray());
+        return array_values(Status::all()->filter(fn($situacao) => in_array($situacao->pl1_codigo, $situacoesPossiveis))->toArray());
     }
 
     /**

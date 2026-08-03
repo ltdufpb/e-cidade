@@ -26,11 +26,11 @@
  */
 
 	class cl_tarefasolic {
-		var $numrows;
-		var $erro_banco;
-		var $erro_sql;
-		var $erro_msg;
-		var $erro_status;
+		public $numrows;
+		public $erro_banco;
+		public $erro_sql;
+		public $erro_msg;
+		public $erro_status;
 		
 		function sql_record ($sql) {
 		     $result = @db_query($sql);
@@ -43,7 +43,7 @@
 		       $this->erro_status = "0";
 		       return false;
 		     }
-		     $this->numrows = pg_numrows($result);
+		     $this->numrows = pg_num_rows($result);
 		      if($this->numrows==0){
 		        $this->erro_banco = "";
 		        $this->erro_sql   = "Record Vazio na Tabela:db_usuclientes";

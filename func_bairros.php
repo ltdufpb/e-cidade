@@ -32,12 +32,12 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_classecadastro.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 db_postmemory($_POST);
 
-if (isset($HTTP_POST_VARS["filtro"])) {
-  $nomeBairro = $HTTP_POST_VARS["filtro"];
+if (isset($_POST["filtro"])) {
+  $nomeBairro = $_POST["filtro"];
 }
 $clbairro = new cl_bairro();
 $clbairro->rotulo->label("j13_descr");

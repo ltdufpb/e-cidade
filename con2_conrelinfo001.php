@@ -50,8 +50,8 @@ $clrotulo->label('o42_descrrel');
 $clrotulo->label('c83_variavel');
 $clrotulo->label("c83_periodo");
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -190,7 +190,7 @@ if ($db_opcao==1) {
     <td>
       <?php 
          db_input("c83_periodo_ant",10,0,true,"hidden",3,"");
-         $matriz = array("0"=>"Nenhum",
+         $matriz = ["0"=>"Nenhum",
                          "1B"=>"Primeiro Bimestre",
                          "2B"=>"Segundo Bimestre",
                          "3B"=>"Terceiro Bimestre",
@@ -201,7 +201,7 @@ if ($db_opcao==1) {
                          "2Q"=>"Segundo  Quadrimestre",
                          "3Q"=>"Terceiro Quadrimestre",
                          "1S"=>"Primeiro Semestre",
-                         "2S"=>"Segundo Semestre");
+                         "2S"=>"Segundo Semestre"];
 /*         
          if ($db_opcao == 1){
            $db_opcao02 = $db_opcao;   
@@ -238,7 +238,7 @@ if ($db_opcao==1) {
  <tr>
  <td colspan=2>
  <?php 
-   $chavepri= array("c83_codigo"=>@$c83_codigo,"c83_codrel"=>@$c83_codrel,"c83_periodo"=>@$c83_periodo);
+   $chavepri= ["c83_codigo"=>@$c83_codigo,"c83_codrel"=>@$c83_codrel,"c83_periodo"=>@$c83_periodo];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql   = $clconrelinfo->sql_query(null,$instit,"*","conrelinfo.c83_codigo,conrelvalor.c83_periodo","c83_codrel=$c83_codrel");
 //   $cliframe_alterar_excluir->campos = "c83_codigo,c83_codrel,c83_variavel,c83_informacao,c83_periodo";

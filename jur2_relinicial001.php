@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label("v56_codsit");
 $clrotulo->label("v52_descr");
@@ -162,7 +162,7 @@ $instit=db_getsession("DB_instit");
 				      </td>
 				      <td>
     					  <?php 
-      				  	$tipo_lista = array("t"=>"Todas","p"=>"Somente as que possuem processo no foro","n"=>"Somente as que NÃO possuem processo no foro");
+      				  	$tipo_lista = ["t"=>"Todas","p"=>"Somente as que possuem processo no foro","n"=>"Somente as que NÃO possuem processo no foro"];
       					  db_select("listar",$tipo_lista,true,1,"");
     				    ?>
 				      </td>
@@ -251,7 +251,7 @@ $instit=db_getsession("DB_instit");
   				    </td>
   				    <td>
       				  <?php 
-      				    $tipo_ordem = array("n"=>"Nome","i"=>"Nº Inicial","p"=>"Nº Processo do Foro","v"=>"Vara");
+      				    $tipo_ordem = ["n"=>"Nome","i"=>"Nº Inicial","p"=>"Nº Processo do Foro","v"=>"Vara"];
       				    db_select("ordem",$tipo_ordem,true,1,"");
       				  ?>
     				  </td>
@@ -262,7 +262,7 @@ $instit=db_getsession("DB_instit");
     				  </td>
     				  <td>
   						  <?php 
-  					  		$aTipo = array("c"=>"Completo","r"=>"Resumido");
+  					  		$aTipo = ["c"=>"Completo","r"=>"Resumido"];
   					  		db_select("selTipo",$aTipo,true,1,"");
   				    	?>
     				  </td>
@@ -273,7 +273,7 @@ $instit=db_getsession("DB_instit");
   				    </td>
   			  	  <td>
   				    	<?php 
-  		 			  		$aSituacao = array("0"=>"Todas","1"=>"Ativa","2"=>"Anulada");
+  		 			  		$aSituacao = ["0"=>"Todas","1"=>"Ativa","2"=>"Anulada"];
   					  		db_select("selSituacao",$aSituacao,true,1,"");
   				    	?>
   				  	</td>

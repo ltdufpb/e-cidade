@@ -103,10 +103,10 @@ $oRotuloTipoGrupo->label();
             </td>
             <td>
               <?php
-                $aTiposAgrupamento = array("0" => "Nenhum",
+                $aTiposAgrupamento = ["0" => "Nenhum",
                                            "1" => "Grupo/SubGrupo",
                                            "2" => "Conta Despesa",
-                                           "3" => "Conta Patrimonial");
+                                           "3" => "Conta Patrimonial"];
                 db_select("iAgrupamento", $aTiposAgrupamento, true, 1, "class='select'");
               ?>
             </td>
@@ -118,9 +118,9 @@ $oRotuloTipoGrupo->label();
             </td>
             <td>
               <?php
-                $aTiposImpressao = array("1" => "Analítica",
+                $aTiposImpressao = ["1" => "Analítica",
                                          "2" => "Sintética",
-                                        );
+                                        ];
                 db_select("iTipoImpressao",$aTiposImpressao,true,1, "class='select' onchange='js_verificaTipoImpressao();'");
               ?>
             </td>
@@ -132,9 +132,9 @@ $oRotuloTipoGrupo->label();
             </td>
             <td>
               <?php
-                $aOrdenacao = array("1" => "Código do Ítem",
+                $aOrdenacao = ["1" => "Código do Ítem",
                                     "2" => "Ordem alfabética"
-                                   );
+                                   ];
                 db_select("iOrdem",$aOrdenacao,true,1, "class='select'");
               ?>
             </td>

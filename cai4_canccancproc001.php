@@ -59,7 +59,7 @@ $clcancdebitosprocconcarpeculiar = new cl_cancdebitosprocconcarpeculiar;
 $oCancelamentoDebitos 			     = new cancelamentoDebitos();
 
 $clcancdebitos->k20_instit = db_getsession("DB_instit");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 
@@ -68,11 +68,11 @@ if (isset($processa) && isset($chaves)) {
   db_inicio_transacao();
 	
   $sqlerro = false;
-  $aRegs   = split("#", $chaves);
+  $aRegs   = preg_split("#\\##m", $chaves);
   
   for ( $i = 0; $i < count($aRegs); $i++) {
   	
-    $aNumpreParRec = split("-", $aRegs[$i]);
+    $aNumpreParRec = preg_split("#\\-#m", (string) $aRegs[$i]);
     
     $aDebitos[$i]['Numpre'] = $aNumpreParRec[1];
     $aDebitos[$i]['Numpar'] = $aNumpreParRec[2];

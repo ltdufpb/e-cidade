@@ -35,7 +35,7 @@ require_once(modification("libs/exceptions/DBException.php"));
 
 $oGet       = db_utils::postMemory($_GET);
 
-$oGet->obs1 = base64_decode($oGet->obs1);
+$oGet->obs1 = base64_decode((string) $oGet->obs1);
 $oFiltros   = new stdClass();
 
 /**
@@ -60,7 +60,7 @@ $oFiltros->lParecerUnico = $oGet->punico == 'yes' ? true : false;
  *      R => Resultado
  * @var string
  */
-$sPeriodo             = explode("|", $oGet->periodo);
+$sPeriodo             = explode("|", (string) $oGet->periodo);
 $oFiltros->sAvaliacao = $sPeriodo[0];
 $oFiltros->iPeriodo   = $sPeriodo[1];
 
@@ -69,7 +69,7 @@ $oFiltros->iPeriodo   = $sPeriodo[1];
  * Array com o codigo da regencia da disciplina
  * @var array
  */
-$aDisciplinas = explode(",", $oGet->disciplinas);
+$aDisciplinas = explode(",", (string) $oGet->disciplinas);
 
 /**
  * Informa se deve ser impresso o nome do professor conselheiro
@@ -134,7 +134,7 @@ if ($oFiltros->oTurma->getProfessorConselheiro() && $oFiltros->oTurma->getProfes
 /**
  * Contém os elementos de avaliação
  */
-$aAvaliacoes = array();
+$aAvaliacoes = [];
 
 if ($oFiltros->sAvaliacao == 'A') {
 
@@ -171,7 +171,7 @@ $pdf->AliasNbPages();
 
 $oFiltros->iAlturaDeQuebraPagina = $pdf->h - 15;
 
-$aAlunosImpressao = array();
+$aAlunosImpressao = [];
 
 $clobsboletim    = new cl_obsboletim;
 $iEscola = $oFiltros->oTurma->getEscola()->getCodigo();
@@ -198,7 +198,7 @@ foreach ($aAlunos as $iMatricula) {
   $oDadosAluno->sSituacao       = $oMatricula->getSituacao();
   $oDadosAluno->sResultadoFinal = "EM ANDAMENTO";
 
-  $oDadosAluno->aDisciplinas = array();
+  $oDadosAluno->aDisciplinas = [];
 
   foreach ($aDisciplinas as $iDisciplina) {
 
@@ -290,7 +290,7 @@ foreach ($aAlunosImpressao as $oAluno) {
     $lAdicionaPagina = false;
   }
   $iPaginaInicial = $pdf->PageNo();
-  cabecalhoRelatorio($pdf, $oFiltros, $oAluno, $lImprimeMeioPagina);
+  cabecalhoRelatorio($pdf, $oFiltros);
   $iYInicialImpressaoAluno = $pdf->GetY();
 
   $pdf->Line($pdf->GetX(), $iYInicialImpressaoAluno, $oFiltros->iLarguraRetangulo, $pdf->GetY());
@@ -315,7 +315,7 @@ foreach ($aAlunosImpressao as $oAluno) {
       if ($oFiltros->sPadrao == 'C') {
         $iLinhasParecerPadronizado = $pdf->NbLines($iLarguraLinha, $oDisciplina->oParecer->sParecerPadronizado);
       } else {
-        $iLinhasParecerPadronizado = count(explode("**", $oDadosDisciplina->oParecer->sParecerPadronizado));
+        $iLinhasParecerPadronizado = count(explode("**", (string) $oDadosDisciplina->oParecer->sParecerPadronizado));
       }
       $iLinhasParecerPadronizado += 2;  //linhas de header do parecer padronizado
     }
@@ -600,7 +600,7 @@ function imprimePareceres(FpdfMultiCellBorder $pdf, $oFiltros, $oDadosDisciplina
 
       $pdf->SetFont('arial', 'b', 10);
       $pdf->cell($oFiltros->iLarguraLinha - 8, $oFiltros->iAlturaLinhaPadrao, "Seq - Parecer => Legenda", 1, 1, "L");
-      $aPareceres = explode("**", $oDadosDisciplina->oParecer->sParecerPadronizado);
+      $aPareceres = explode("**", (string) $oDadosDisciplina->oParecer->sParecerPadronizado);
 
       $pdf->SetFont('arial', '', 10);
         foreach ($aPareceres as $sParecer) {
@@ -686,7 +686,7 @@ function imprimePareceres(FpdfMultiCellBorder $pdf, $oFiltros, $oDadosDisciplina
     $sSqlDiarioAvaliacao = $cldiarioavaliacao->sql_query( "", "ed232_c_descr, ed72_t_obs", "", $sWhere );
     $result_obs          = $cldiarioavaliacao->sql_record( $sSqlDiarioAvaliacao );
     
-    $aObservacoes = array();
+    $aObservacoes = [];
     
     for( $iContador = 0; $iContador < pg_num_rows( $result_obs ); $iContador++ ) {  
       $oDadosObservacao = db_utils::fieldsMemory( $result_obs, $iContador );

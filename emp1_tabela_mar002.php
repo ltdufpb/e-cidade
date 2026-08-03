@@ -32,14 +32,14 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_tabela_mar_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltabela_mar = new cl_tabela_mar;
 $db_opcao = 22;
 $db_botao = false;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $cltabela_mar->alterar($m89_codigo);
@@ -85,7 +85,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($cltabela_mar->erro_status=="0"){
     $cltabela_mar->erro(true,false);
     $db_botao=true;

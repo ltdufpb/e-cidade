@@ -76,32 +76,32 @@ class Entrega
          * DADOS BÁSICOS > OUTRO PARAMETRO
          */
 
-        $aOutroParametros = array();
+        $aOutroParametros = [];
         foreach ($oOrigem->certidoes as $certidao) {
 
-            $aOutroParametros = array_merge($aOutroParametros, array(
+            $aOutroParametros = array_merge($aOutroParametros, [
 
-            array(
+            [
                 'nome' => 'DADOS_CDA',
                 'valor' => $certidao->numero_certidao . '_' .
                     $certidao->ano_exercicio . '_' .
                     $certidao->moeda_divida . '_' .
                     $certidao->valor_divida.'_'.$certidao->ufir_divida
 
-            ),
-            array('nome' => 'NOME_DEVEDOR', 'valor'           => utf8_encode($oOrigem->nome_devedor)),
-            array('nome' => 'NUMERO_INSCRICAO', 'valor'       => utf8_encode($oOrigem->numero_inscricao)),
-            array('nome' => 'NATUREZA_DIVIDA', 'valor'        => utf8_encode($oOrigem->natureza_divida)),
-            array('nome' => 'TIPO_LOGRADOURO', 'valor'        => utf8_encode($oOrigem->tipo_logradouro)),
-            array('nome' => 'NOME_LOGRADOURO', 'valor'        => utf8_encode($oOrigem->nome_logradouro)),
-            array('nome' => 'NUMERO_LOGRADOURO', 'valor'      => ($oOrigem->numero_logradouro)),
-            array('nome' => 'COMPLEMENTO_LOGRADOURO', 'valor' => utf8_encode($oOrigem->complemento_logradouro)),
-            array('nome' => 'BAIRRO_LOGRADOURO', 'valor'      => utf8_encode($oOrigem->bairro_logradouro)),
-            array('nome' => 'CIDADE_LOGRADOURO', 'valor'      => utf8_encode($oOrigem->cidade_logradouro)),
-            array('nome' => 'UF_LOGRADOURO', 'valor'          => utf8_encode($oOrigem->uf_logradouro)),
-            array('nome' => 'CEP_LOGRADOURO', 'valor'         => utf8_encode($oOrigem->cep_logradouro)),
-            array('nome' => 'BASE_LEGAL', 'valor'             => utf8_encode($certidao->base_legal))
-            ));
+            ],
+            ['nome' => 'NOME_DEVEDOR', 'valor'           => mb_convert_encoding($oOrigem->nome_devedor, 'UTF-8', 'ISO-8859-1')],
+            ['nome' => 'NUMERO_INSCRICAO', 'valor'       => mb_convert_encoding($oOrigem->numero_inscricao, 'UTF-8', 'ISO-8859-1')],
+            ['nome' => 'NATUREZA_DIVIDA', 'valor'        => mb_convert_encoding($oOrigem->natureza_divida, 'UTF-8', 'ISO-8859-1')],
+            ['nome' => 'TIPO_LOGRADOURO', 'valor'        => mb_convert_encoding($oOrigem->tipo_logradouro, 'UTF-8', 'ISO-8859-1')],
+            ['nome' => 'NOME_LOGRADOURO', 'valor'        => mb_convert_encoding($oOrigem->nome_logradouro, 'UTF-8', 'ISO-8859-1')],
+            ['nome' => 'NUMERO_LOGRADOURO', 'valor'      => ($oOrigem->numero_logradouro)],
+            ['nome' => 'COMPLEMENTO_LOGRADOURO', 'valor' => mb_convert_encoding($oOrigem->complemento_logradouro, 'UTF-8', 'ISO-8859-1')],
+            ['nome' => 'BAIRRO_LOGRADOURO', 'valor'      => mb_convert_encoding($oOrigem->bairro_logradouro, 'UTF-8', 'ISO-8859-1')],
+            ['nome' => 'CIDADE_LOGRADOURO', 'valor'      => mb_convert_encoding($oOrigem->cidade_logradouro, 'UTF-8', 'ISO-8859-1')],
+            ['nome' => 'UF_LOGRADOURO', 'valor'          => mb_convert_encoding($oOrigem->uf_logradouro, 'UTF-8', 'ISO-8859-1')],
+            ['nome' => 'CEP_LOGRADOURO', 'valor'         => mb_convert_encoding($oOrigem->cep_logradouro, 'UTF-8', 'ISO-8859-1')],
+            ['nome' => 'BASE_LEGAL', 'valor'             => mb_convert_encoding($certidao->base_legal, 'UTF-8', 'ISO-8859-1')]
+            ]);
 
         }
 
@@ -113,30 +113,30 @@ class Entrega
         $oPessoa->documento = '';
         $oPessoa->pessoaRelacionada = false;
         $oPessoa->pessoaVinculada = '';                                    // tipoPessoa ( precisa ???? )
-        $oPessoa->tipoPessoa = utf8_encode($oOrigem->tipo_pessoa); // tipoQualificacaoPessoa
-        $oPessoa->numeroDocumentoPrincipal = utf8_encode($oOrigem->cpf);                         // string
-        $oPessoa->cidadeNatural = utf8_encode($oOrigem->cidade_natural); // string
+        $oPessoa->tipoPessoa = mb_convert_encoding($oOrigem->tipo_pessoa, 'UTF-8', 'ISO-8859-1'); // tipoQualificacaoPessoa
+        $oPessoa->numeroDocumentoPrincipal = mb_convert_encoding($oOrigem->cpf, 'UTF-8', 'ISO-8859-1');                         // string
+        $oPessoa->cidadeNatural = mb_convert_encoding($oOrigem->cidade_natural, 'UTF-8', 'ISO-8859-1'); // string
         $oPessoa->nacionalidade = 'BR';  // string
         $oPessoa->estadoNatural = '';                                    // string
         $oPessoa->dataObito = '';                                    // string
-        $oPessoa->sexo = utf8_encode($oOrigem->sexo);            // modalidadeGeneroPessoa
-        $oPessoa->nome = utf8_encode($oOrigem->nome);           // string
-        $oPessoa->nomeGenitor = utf8_encode($oOrigem->nome_genitor);   // string
-        $oPessoa->dataNascimento = utf8_encode($oOrigem->data_nascimento);// string
-        $oPessoa->nomeGenitora = utf8_encode($oOrigem->nome_genitora);  // string
+        $oPessoa->sexo = mb_convert_encoding($oOrigem->sexo, 'UTF-8', 'ISO-8859-1');            // modalidadeGeneroPessoa
+        $oPessoa->nome = mb_convert_encoding($oOrigem->nome, 'UTF-8', 'ISO-8859-1');           // string
+        $oPessoa->nomeGenitor = mb_convert_encoding($oOrigem->nome_genitor, 'UTF-8', 'ISO-8859-1');   // string
+        $oPessoa->dataNascimento = mb_convert_encoding($oOrigem->data_nascimento, 'UTF-8', 'ISO-8859-1');// string
+        $oPessoa->nomeGenitora = mb_convert_encoding($oOrigem->nome_genitora, 'UTF-8', 'ISO-8859-1');  // string
 
         /**
          * DADOS BASICOS > PESSOA > ENDERECO
          */
 
-        $oPessoaEndereco->logradouro = utf8_encode($oOrigem->logradouro);  // string
-        $oPessoaEndereco->numero = utf8_encode($oOrigem->numero_end);  // string
-        $oPessoaEndereco->complemento = utf8_encode($oOrigem->complemento); // string
-        $oPessoaEndereco->bairro = utf8_encode($oOrigem->bairro);      // string
-        $oPessoaEndereco->cidade = utf8_encode($oOrigem->munic);       // string
-        $oPessoaEndereco->estado = utf8_encode($oOrigem->uf);          // string
-        $oPessoaEndereco->pais = utf8_encode($oOrigem->pais);        // string
-        $oPessoaEndereco->cep = utf8_encode($oOrigem->cep);         // string
+        $oPessoaEndereco->logradouro = mb_convert_encoding($oOrigem->logradouro, 'UTF-8', 'ISO-8859-1');  // string
+        $oPessoaEndereco->numero = mb_convert_encoding($oOrigem->numero_end, 'UTF-8', 'ISO-8859-1');  // string
+        $oPessoaEndereco->complemento = mb_convert_encoding($oOrigem->complemento, 'UTF-8', 'ISO-8859-1'); // string
+        $oPessoaEndereco->bairro = mb_convert_encoding($oOrigem->bairro, 'UTF-8', 'ISO-8859-1');      // string
+        $oPessoaEndereco->cidade = mb_convert_encoding($oOrigem->munic, 'UTF-8', 'ISO-8859-1');       // string
+        $oPessoaEndereco->estado = mb_convert_encoding($oOrigem->uf, 'UTF-8', 'ISO-8859-1');          // string
+        $oPessoaEndereco->pais = mb_convert_encoding($oOrigem->pais, 'UTF-8', 'ISO-8859-1');        // string
+        $oPessoaEndereco->cep = mb_convert_encoding($oOrigem->cep, 'UTF-8', 'ISO-8859-1');         // string
         $oPessoa->endereco = $oPessoaEndereco;                              // tipoEndereco
 
         /**
@@ -152,25 +152,25 @@ class Entrega
         $oPoloParteAt = new TipoParte();
 
         $oPartePessoaAt = new TipoPessoa();
-        $oPartePessoaAt->nome = utf8_encode($oOrigem->nome_at);
+        $oPartePessoaAt->nome = mb_convert_encoding($oOrigem->nome_at, 'UTF-8', 'ISO-8859-1');
         $oPartePessoaAt->numeroDocumentoPrincipal = $oOrigem->cpf_at;
-        $oPartePessoaAt->tipoPessoa = utf8_encode($oOrigem->tipo_pessoa_at);
+        $oPartePessoaAt->tipoPessoa = mb_convert_encoding($oOrigem->tipo_pessoa_at, 'UTF-8', 'ISO-8859-1');
 
         $oPessoaDocumentoAt = new TipoDocumentoIdentificacao();
         $oPessoaDocumentoAt->codigoDocumento = $oOrigem->cpf_at;
         $oPessoaDocumentoAt->emissorDocumento = 'SRFB';
-        $oPessoaDocumentoAt->nome = utf8_encode($oOrigem->nome_at);
+        $oPessoaDocumentoAt->nome = mb_convert_encoding($oOrigem->nome_at, 'UTF-8', 'ISO-8859-1');
         $oPessoaDocumentoAt->tipoDocumento = '';
 
         $oPartePessoaAt->documento = $oPessoaDocumentoAt;
 
         $oPessoaEnderecoAt = new TipoEndereco();
         $oPessoaEnderecoAt->cep = $oOrigem->cep_at;
-        $oPessoaEnderecoAt->logradouro = utf8_encode($oOrigem->logradouro_at);
+        $oPessoaEnderecoAt->logradouro = mb_convert_encoding($oOrigem->logradouro_at, 'UTF-8', 'ISO-8859-1');
         $oPessoaEnderecoAt->numero = $oOrigem->numero_end_at;
-        $oPessoaEnderecoAt->bairro = utf8_encode($oOrigem->bairro_at);
-        $oPessoaEnderecoAt->cidade = utf8_encode($oOrigem->munic_at);
-        $oPessoaEnderecoAt->estado = utf8_encode($oOrigem->uf_at);
+        $oPessoaEnderecoAt->bairro = mb_convert_encoding($oOrigem->bairro_at, 'UTF-8', 'ISO-8859-1');
+        $oPessoaEnderecoAt->cidade = mb_convert_encoding($oOrigem->munic_at, 'UTF-8', 'ISO-8859-1');
+        $oPessoaEnderecoAt->estado = mb_convert_encoding($oOrigem->uf_at, 'UTF-8', 'ISO-8859-1');
         $oPessoaEnderecoAt->pais = 'BR';
 
         $oPartePessoaAt->endereco = $oPessoaEnderecoAt;
@@ -183,17 +183,17 @@ class Entrega
          */
         $oPessoaAdvogadoAt = new TipoRepresentanteProcessual();
         $oPessoaAdvogadoAt->intimacao = false;
-        $oPessoaAdvogadoAt->nome = utf8_encode(mb_strtoupper($oOrigem->nome_advog));
+        $oPessoaAdvogadoAt->nome = mb_convert_encoding(mb_strtoupper((string) $oOrigem->nome_advog), 'UTF-8', 'ISO-8859-1');
         $oPessoaAdvogadoAt->numeroDocumentoPrincipal = $oOrigem->matricula_advogado;
         $oPessoaAdvogadoAt->tipoRepresentante = 'A';
         $oPessoaAdvogadoAt->inscricao =$oOrigem->oab_advog;
 
         $oAdvogadoEnderecoAt = new TipoEndereco();
         $oAdvogadoEnderecoAt->cep = $oOrigem->cep_advog;
-        $oAdvogadoEnderecoAt->logradouro = utf8_encode($oOrigem->logradouro_advog);
+        $oAdvogadoEnderecoAt->logradouro = mb_convert_encoding($oOrigem->logradouro_advog, 'UTF-8', 'ISO-8859-1');
         $oAdvogadoEnderecoAt->numero = $oOrigem->numero_advog;
-        $oAdvogadoEnderecoAt->bairro = utf8_encode($oOrigem->bairro_advog);
-        $oAdvogadoEnderecoAt->cidade = utf8_encode($oOrigem->cidade_advog);
+        $oAdvogadoEnderecoAt->bairro = mb_convert_encoding($oOrigem->bairro_advog, 'UTF-8', 'ISO-8859-1');
+        $oAdvogadoEnderecoAt->cidade = mb_convert_encoding($oOrigem->cidade_advog, 'UTF-8', 'ISO-8859-1');
         $oAdvogadoEnderecoAt->estado = $oOrigem->uf_advog;
         $oAdvogadoEnderecoAt->pais = 'BR';
 
@@ -210,18 +210,18 @@ class Entrega
         $oPoloPartePa = new TipoParte();
 
         $oPartePessoaPa = new TipoPessoa();
-        $oPartePessoaPa->nome = utf8_encode($oOrigem->nome);
+        $oPartePessoaPa->nome = mb_convert_encoding($oOrigem->nome, 'UTF-8', 'ISO-8859-1');
         $oPartePessoaPa->sexo = $oOrigem->sexo;
         $oPartePessoaPa->numeroDocumentoPrincipal = $oOrigem->cpf;
-        $oPartePessoaPa->tipoPessoa = utf8_encode($oOrigem->tipo_pessoa);
+        $oPartePessoaPa->tipoPessoa = mb_convert_encoding($oOrigem->tipo_pessoa, 'UTF-8', 'ISO-8859-1');
 
         $oPessoaEnderecoPa = new TipoEndereco();
         $oPessoaEnderecoPa->cep = $oOrigem->cep;
-        $oPessoaEnderecoPa->logradouro = utf8_encode($oOrigem->logradouro);
+        $oPessoaEnderecoPa->logradouro = mb_convert_encoding($oOrigem->logradouro, 'UTF-8', 'ISO-8859-1');
         $oPessoaEnderecoPa->numero = $oOrigem->numero_end;
-        $oPessoaEnderecoPa->bairro = utf8_encode($oOrigem->bairro);
-        $oPessoaEnderecoPa->cidade = utf8_encode($oOrigem->munic);
-        $oPessoaEnderecoPa->estado = utf8_encode($oOrigem->uf);
+        $oPessoaEnderecoPa->bairro = mb_convert_encoding($oOrigem->bairro, 'UTF-8', 'ISO-8859-1');
+        $oPessoaEnderecoPa->cidade = mb_convert_encoding($oOrigem->munic, 'UTF-8', 'ISO-8859-1');
+        $oPessoaEnderecoPa->estado = mb_convert_encoding($oOrigem->uf, 'UTF-8', 'ISO-8859-1');
         $oPessoaEnderecoPa->pais = 'BR';
 
         $oPartePessoaPa->endereco = $oPessoaEnderecoPa;
@@ -230,7 +230,7 @@ class Entrega
 
         $oPoloPa->parte = $oPoloPartePa;
 
-        $aPolo = array($oPoloAt, $oPoloPa);
+        $aPolo = [$oPoloAt, $oPoloPa];
 
         $oDadosBasicos->polo = $aPolo;
 
@@ -240,18 +240,18 @@ class Entrega
 
         $oDadosBasicos->assunto = $oAssunto;                                        // tipoAssuntoProcessual
         $oAssunto->assuntoLocal = $oAssuntoLocal;                               // tipoAssuntoLocal
-        $oAssuntoLocal->assuntoLocalPai = utf8_encode($oOrigem->assunto_local_pai);
-        $oAssuntoLocal->descricao = utf8_encode($oOrigem->descricao);
-        $oAssuntoLocal->codigoPaiNacional = utf8_encode($oOrigem->codigo_pai_nacional);
-        $oAssuntoLocal->codigoAssunto = utf8_encode($oOrigem->codigo_assunto);
+        $oAssuntoLocal->assuntoLocalPai = mb_convert_encoding($oOrigem->assunto_local_pai, 'UTF-8', 'ISO-8859-1');
+        $oAssuntoLocal->descricao = mb_convert_encoding($oOrigem->descricao, 'UTF-8', 'ISO-8859-1');
+        $oAssuntoLocal->codigoPaiNacional = mb_convert_encoding($oOrigem->codigo_pai_nacional, 'UTF-8', 'ISO-8859-1');
+        $oAssuntoLocal->codigoAssunto = mb_convert_encoding($oOrigem->codigo_assunto, 'UTF-8', 'ISO-8859-1');
 
-        $oAssunto->codigoNacional = utf8_encode($oOrigem->codigo_nacional);
+        $oAssunto->codigoNacional = mb_convert_encoding($oOrigem->codigo_nacional, 'UTF-8', 'ISO-8859-1');
         $oAssunto->principal = 'true'; //utf8_encode($oOrigem->principal);
 
         /*
          */
 
-        $oDadosBasicos->magistradoAtuante = utf8_encode($oOrigem->magistrado_atuante);
+        $oDadosBasicos->magistradoAtuante = mb_convert_encoding($oOrigem->magistrado_atuante, 'UTF-8', 'ISO-8859-1');
         $oDadosBasicos->processoVinculado = '';
         $oDadosBasicos->prioridade = '';
         $oDadosBasicos->outroParametro = $aOutroParametros;
@@ -313,7 +313,7 @@ class Entrega
         $oEntregar->documento = $oDocumento; // tipoDocumento
         $oEntregar->dataEnvio = $oOrigem->data_envio;
 
-        $aParametros = array(array('nome' => 'MOTIVO_GRERJ_AUSENTE', 'valor' => '9'));
+        $aParametros = [['nome' => 'MOTIVO_GRERJ_AUSENTE', 'valor' => '9']];
 
         $oEntregar->parametros = $aParametros; // array
         $oRetorno = $this->removeVazio($oEntregar);

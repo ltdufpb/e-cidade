@@ -64,14 +64,14 @@ $claguasitleitura->rotulo->label();
         </td>
         <td>
         <?php 
-        $aOpcoes = array(
+        $aOpcoes = [
           '0' => 'Normal',
           '1' => 'Sem Leitura - Sem Saldo',
           '3' => 'Sem Leitura - Com Saldo',
           '2' => 'Cancelamento',
           '4' => 'Média Últimos Meses',
           '5' => 'Média Penalidade',
-        );
+        ];
         db_select('x17_regra', $aOpcoes, true, $db_opcao, "");
         ?>
         </td>
@@ -93,7 +93,7 @@ function js_preenchepesquisa(chave){
   db_iframe_aguasitleitura.hide();
   <?php
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

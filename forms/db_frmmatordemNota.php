@@ -310,7 +310,7 @@ if ((isset($e60_numcgm) && $e60_numcgm!= "")){
     <td colspan='4' align='center'>
     <?php if ($e60_numcgm!=""){
       $result=db_query("select * from empempenho inner join empempitem on e62_numemp = e60_numemp inner join pcmater on pc01_codmater = e62_item where e60_numcgm=$e60_numcgm");
-      if (pg_numrows($result)>0){?>
+      if (pg_num_rows($result)>0){?>
         <input name="incluir" type="submit"  value="Incluir" onclick=" return js_valida()" <?=$sDisable?>>
           <input name="voltar" type="button" value="Voltar" onclick="location.href='emp4_ordemCompra001.php';" <?=$sDisable?>>
           <?php }else{?>
@@ -382,9 +382,9 @@ if($pesqemp == true){
 				echo "	</td>";
         echo "  <td class='linhagrid'id='empenho{$e62_sequencial}' align='center'>$e60_numemp</td>";
         echo "  <td class='linhagrid' align='center'><small>$e62_item  </small></td>";
-        echo "  <td class='linhagrid' id='e62_descr{$e62_sequencial}' nowrap align='left' title='$pc01_descrmater'><small>".substr($pc01_descrmater,0,20)."&nbsp;</small></td>";
+        echo "  <td class='linhagrid' id='e62_descr{$e62_sequencial}' nowrap align='left' title='$pc01_descrmater'><small>".substr((string) $pc01_descrmater,0,20)."&nbsp;</small></td>";
         echo "  <td class='linhagrid' id='sequen{$e62_sequencial}' align='center'>$e62_sequen</td>";
-        echo "  <td class='linhagrid' nowrap align='left' title='$e62_descr'><small>".substr($e62_descr,0,20)."&nbsp;</small></td>";
+        echo "  <td class='linhagrid' nowrap align='left' title='$e62_descr'><small>".substr((string) $e62_descr,0,20)."&nbsp;</small></td>";
         echo "  <td class='linhagrid' id='e62_quant{$e62_sequencial}' align='center'>$e62_quant</td>";
         echo "  <td class='linhagrid' id='e62_vltot{$e62_sequencial}'align='center'>$e62_vltot</td>";
         echo "  <td class='linhagrid' id='e62_vluni{$e62_sequencial}'align='center'>";

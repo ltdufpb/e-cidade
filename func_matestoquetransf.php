@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matestoquetransf_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatestoquetransf = new cl_matestoquetransf;
 $clmatestoquetransf->rotulo->label("m83_matestoqueini");
 $clmatestoquetransf->rotulo->label("m83_matestoqueini");
@@ -86,7 +86,7 @@ $clmatestoquetransf->rotulo->label("m83_matestoqueini");
             if (isset($canceladas) && $canceladas == 'true') {
                 $where_parametro = " and matestoquetransferencia.m84_ativo is false";
                 $where_parametro .= " and matestoquetransferencia.m84_transferido is false";
-                $data = (new DateTime('now'))->modify('-1 day')->format('Y-m-d');
+                $data = new DateTime('now')->modify('-1 day')->format('Y-m-d');
                 $where_parametro .= " and b.m80_data >= '" . $data . "' ";
             } else {
                 $where_parametro = " and b.m80_codigo is null ";

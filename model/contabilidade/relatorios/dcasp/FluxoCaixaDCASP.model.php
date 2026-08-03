@@ -37,13 +37,14 @@
  */
 final class FluxoCaixaDCASP extends RelatoriosLegaisBase {
 
-  const CODIGO_RELATORIO = 133;
+  const int CODIGO_RELATORIO = 133;
 
   /**
    * Retorna os Dados para emissão do Relatório
    * @return array
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $sWhereReceita = " o70_instit in ({$this->getInstituicoes()}) ";
     $sWhereDespesa = " o58_instit in ({$this->getInstituicoes()}) ";
@@ -53,9 +54,9 @@ final class FluxoCaixaDCASP extends RelatoriosLegaisBase {
     $oDataInicialAnterior->modificarIntervalo('-1 year');
     $oDataFinalAnterior = clone$this->getDataFinal();
     $oDataFinalAnterior->modificarIntervalo('-1 year');
-    $aLinhasUtilizamBalanceteReceita     = array(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 18, 33, 34, 40);
-    $aLinhasUtilizamBalanceteDespesa     = array(20, 22, 23, 24, 27, 28, 29, 30, 36, 37, 42);
-    $aLinhasUtilizamBalanceteVerificacao = array(45, 46);
+    $aLinhasUtilizamBalanceteReceita     = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 18, 33, 34, 40];
+    $aLinhasUtilizamBalanceteDespesa     = [20, 22, 23, 24, 27, 28, 29, 30, 36, 37, 42];
+    $aLinhasUtilizamBalanceteVerificacao = [45, 46];
 
     /**
      * Carregar a Receita do exericio atual
@@ -144,7 +145,7 @@ final class FluxoCaixaDCASP extends RelatoriosLegaisBase {
         $oColuna->formula = '#saldo_arrecadado_acumulado';
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteReceita,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                     RelatoriosLegaisBase::TIPO_CALCULO_RECEITA
                                                    );
         $oColuna          = new stdClass();
@@ -152,7 +153,7 @@ final class FluxoCaixaDCASP extends RelatoriosLegaisBase {
         $oColuna->formula = '#saldo_arrecadado_acumulado';
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteReceitaAnoAnterior,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_RECEITA
                                                   );
 
@@ -172,7 +173,7 @@ final class FluxoCaixaDCASP extends RelatoriosLegaisBase {
         }
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteDespesa,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_DESPESA
                                                   );
 
@@ -185,7 +186,7 @@ final class FluxoCaixaDCASP extends RelatoriosLegaisBase {
 
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteDespesaAnterior,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_DESPESA
                                                   );
       }
@@ -200,7 +201,7 @@ final class FluxoCaixaDCASP extends RelatoriosLegaisBase {
         $oColuna->formula = $sFormula;
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteVerificacaoAnterior,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO
                                                   );
 
@@ -209,7 +210,7 @@ final class FluxoCaixaDCASP extends RelatoriosLegaisBase {
         $oColuna->formula = $sFormula;
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteVerificacao,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO
                                                   );
       }

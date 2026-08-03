@@ -31,8 +31,8 @@ include(modification("classes/db_matestoque_classe.php"));
 include(modification("classes/db_matestoqueitem_classe.php"));
 include(modification("classes/db_db_almox_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $clmatestoque     = new cl_matestoque;
 $clmatestoqueitem = new cl_matestoqueitem;
@@ -104,16 +104,16 @@ if ($listausu != "") {
 		$txt_where_atend   .= " and m40_login not in ($listausu)";
 	}
 }
-$sDataIni = implode('-',array_reverse(explode('/',$dataini)));
-$sDataFin = implode('-',array_reverse(explode('/',$datafin)));
+$sDataIni = implode('-',array_reverse(explode('/',(string) $dataini)));
+$sDataFin = implode('-',array_reverse(explode('/',(string) $datafin)));
 
-if (( trim($dataini) != "--") && ( trim($datafin) != "--")) {
+if (( trim((string) $dataini) != "--") && ( trim((string) $datafin) != "--")) {
  	$txt_where_atend .= " and m40_data between '$sDataIni' and '$sDataFin' ";
   $info  = "De ".$dataini." até ".$datafin;
-} else if (trim($dataini) != "--") {
+} else if (trim((string) $dataini) != "--") {
  	$txt_where_atend .= " and m40_data >= '$sDataIni' ";
   $info  = "Apartir de ".$dataini;
-} else if (trim($datafin) != "--") { 
+} else if (trim((string) $datafin) != "--") { 
  	$txt_where_atend .= " and m40_data <= '$sDataFin' ";
   $info = "Até ".$datafin;
 }
@@ -124,7 +124,7 @@ if (isset($listausu)&&trim($listausu)!=""&&isset($quebra_usu)&&$quebra_usu=="N")
                    where id_usuario in ($listausu)";
      $resultado = @db_query($sql);
      $numrows   = 0;
-     $numrows   = @pg_numrows($resultado);
+     $numrows   = @pg_num_rows($resultado);
 
      if ($numrows > 0){
           $head6 = "Usuários: ";
@@ -242,7 +242,7 @@ if($listar_serv == "T") {
 
 
 $res_saida_atend = @db_query($sql);
-$numrows_atend   = @pg_numrows($res_saida_atend);
+$numrows_atend   = @pg_num_rows($res_saida_atend);
 
 $pdf = new PDF();
 $pdf->Open();
@@ -290,7 +290,7 @@ for ($x = 0; $x < $numrows_atend; $x ++) {
 		}
 	}	
 
-  if(isset($quebra_usu)&&$quebra_usu=="S"&&strlen($listausu)>0){
+  if(isset($quebra_usu)&&$quebra_usu=="S"&&strlen((string) $listausu)>0){
 		  if($usua_ant!=$m40_login){
 			    if($usua_ant!=""){
 		          $pdf->setfont('arial', 'b', 8);
@@ -315,7 +315,7 @@ for ($x = 0; $x < $numrows_atend; $x ++) {
 		     $pdf->addpage('L');
 		}
 
-    if(isset($quebra_usu)&&$quebra_usu=="S"&&strlen($listausu)>0){
+    if(isset($quebra_usu)&&$quebra_usu=="S"&&strlen((string) $listausu)>0){
 		    $pdf->setfont('arial', 'b', 8);
         $pdf->cell(100, ($alt+2), $m40_login." - ".$nome, 0, 1, "L", 0);
     }
@@ -390,9 +390,9 @@ for ($x = 0; $x < $numrows_atend; $x ++) {
 
 	$pdf->setfont('arial', '', 6);
 	$pdf->cell(10, $alt, $m41_codmatmater, $borda, 0, "C", $p);
-	$pdf->cell($tam, $alt, substr($m60_descr,0,45), $borda, 0, "L", $p);
+	$pdf->cell($tam, $alt, substr((string) $m60_descr,0,45), $borda, 0, "L", $p);
 	$pdf->cell(10, $alt, $m40_depto, $borda, 0, "C", $p);
-	$pdf->cell(50, $alt, substr($descrdepto,0,27), $borda, 0, "L", $p);
+	$pdf->cell(50, $alt, substr((string) $descrdepto,0,27), $borda, 0, "L", $p);
 	$pdf->cell(50, $alt, "ATENDIMENTO DE REQUISIÇÃO", $borda, 0, "L", $p);
 	$pdf->cell(10, $alt, $m40_codigo, $borda, 0, "C", $p);
 	$pdf->cell(15, $alt, db_formatar($m40_data,"d"), $borda, 0, "C", $p);
@@ -409,7 +409,7 @@ for ($x = 0; $x < $numrows_atend; $x ++) {
            $pdf->addpage('L');
       }
 
-      if(isset($quebra_usu)&&$quebra_usu=="S"&&strlen($listausu)>0){
+      if(isset($quebra_usu)&&$quebra_usu=="S"&&strlen((string) $listausu)>0){
           $pdf->setfont('arial', 'b', 8);
           $pdf->cell(100, ($alt+2), $m40_login." - ".$nome, 0, 1, "L", 0);
       }
@@ -434,7 +434,7 @@ for ($x = 0; $x < $numrows_atend; $x ++) {
     $m46_quantdev *= -1; 
 
 	  $pdf->cell(10, $alt, $m41_codmatmater, $borda, 0, "C", $p);
-    $pdf->cell($tam, $alt, substr($m60_descr,0,45), $borda, 0, "L", $p);  
+    $pdf->cell($tam, $alt, substr((string) $m60_descr,0,45), $borda, 0, "L", $p);  
     $pdf->cell(10, $alt, $m40_depto, $borda, 0, "C", $p);
     $pdf->cell(10, $alt, $m40_codigo, $borda, 0, "C", $p);
 	  $pdf->cell(50, $alt, "DEVOLUÇÃO", $borda, 0, "L", $p);
@@ -484,7 +484,7 @@ if (isset($quebra)&&$quebra=="S"){
      $pdf->cell(10, 6, db_formatar($valor_depto,"f"), $bord, 1, "C", 0);			
 }
 
-if(isset($quebra_usu)&&$quebra_usu=="S"&&strlen($listausu)>0){
+if(isset($quebra_usu)&&$quebra_usu=="S"&&strlen((string) $listausu)>0){
     $pdf->setfont('arial', 'b', 8);
     $comp=255;
     $bord="T";			

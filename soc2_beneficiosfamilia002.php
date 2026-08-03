@@ -42,7 +42,7 @@ db_app::import("social.cadastrounico.*");
 db_app::import("social.FamiliaRepository");
 
 $oGet   = db_utils::postMemory($_GET);
-$aWhere = array();
+$aWhere = [];
 
 /**
  * Verifica os filtros
@@ -72,7 +72,7 @@ $aCidadaoFamilia = FamiliaRepository::getFamiliasByFilter($sWhere, " ov02_nome "
 if (count($aCidadaoFamilia) == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não foram encontrados registros.');
 }
-$aDadosVisita    = array();
+$aDadosVisita    = [];
 
 /**
  * Organizamos os dados indexando-os pelo alfabeto
@@ -86,7 +86,7 @@ foreach ($aCidadaoFamilia as $oCidadaoFamilia) {
   $oDados->sNome           = $oResponsavel->getNome();
   $oDados->sBeneficios     = $oCidadaoFamilia->getListaBeneficios();
   ksort($oDados->sBeneficios);
-  $sLetra                  = substr($oResponsavel->getNome(), 0, 1);
+  $sLetra                  = substr((string) $oResponsavel->getNome(), 0, 1);
   $aDadosVisita[$sLetra][] = $oDados;
   unset($oDados);
 }
@@ -130,8 +130,8 @@ foreach ($aDadosVisita as $iIndice => $aDados) {
     $oPdf->SetFont("arial", "", 7);
     $oPdf->Cell(30, $iHeigth, "{$oDados->iCodigoFamiliar}", "TB", 0, "C");
     $oPdf->Cell(20, $iHeigth, $oDados->sNis,                "1",  0, "C");
-    if (strlen($oDados->sNome) > 65) {
-      $oDados->sNome = substr($oDados->sNome, 0, 64);
+    if (strlen((string) $oDados->sNome) > 65) {
+      $oDados->sNome = substr((string) $oDados->sNome, 0, 64);
     }
     $oPdf->Cell(100,  $iHeigth, "{$oDados->sNome}",          "1", 0, "L");
     $sBeneficios = "";

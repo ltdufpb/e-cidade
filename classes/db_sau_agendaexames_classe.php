@@ -29,42 +29,42 @@
 //CLASSE DA ENTIDADE sau_agendaexames
 class cl_sau_agendaexames {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $s113_i_codigo = 0;
-   var $s113_i_prestadorhorarios = 0;
-   var $s113_i_numcgs = 0;
-   var $s113_d_agendamento_dia = null;
-   var $s113_d_agendamento_mes = null;
-   var $s113_d_agendamento_ano = null;
-   var $s113_d_agendamento = null;
-   var $s113_d_exame_dia = null;
-   var $s113_d_exame_mes = null;
-   var $s113_d_exame_ano = null;
-   var $s113_d_exame = null;
-   var $s113_i_ficha = 0;
-   var $s113_c_hora = null;
-   var $s113_i_situacao = 0;
-   var $s113_d_cadastro_dia = null;
-   var $s113_d_cadastro_mes = null;
-   var $s113_d_cadastro_ano = null;
-   var $s113_d_cadastro = null;
-   var $s113_c_cadastro = null;
-   var $s113_i_login = 0;
-   var $s113_c_encaminhamento = null;
+   public $s113_i_codigo = 0;
+   public $s113_i_prestadorhorarios = 0;
+   public $s113_i_numcgs = 0;
+   public $s113_d_agendamento_dia = null;
+   public $s113_d_agendamento_mes = null;
+   public $s113_d_agendamento_ano = null;
+   public $s113_d_agendamento = null;
+   public $s113_d_exame_dia = null;
+   public $s113_d_exame_mes = null;
+   public $s113_d_exame_ano = null;
+   public $s113_d_exame = null;
+   public $s113_i_ficha = 0;
+   public $s113_c_hora = null;
+   public $s113_i_situacao = 0;
+   public $s113_d_cadastro_dia = null;
+   public $s113_d_cadastro_mes = null;
+   public $s113_d_cadastro_ano = null;
+   public $s113_d_cadastro = null;
+   public $s113_c_cadastro = null;
+   public $s113_i_login = 0;
+   public $s113_c_encaminhamento = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  s113_i_codigo = int4 = Código
                  s113_i_prestadorhorarios = int4 = Prestador Horários
                  s113_i_numcgs = int4 = CGS
@@ -79,10 +79,10 @@ class cl_sau_agendaexames {
                  s113_c_encaminhamento = varchar(10) = Encaminhamento
                  ";
    //funcao construtor da classe
-   function cl_sau_agendaexames() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_agendaexames");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -224,10 +224,10 @@ class cl_sau_agendaexames {
          $this->erro_status = "0";
          return false;
        }
-       $this->s113_i_codigo = pg_result($result,0,0);
+       $this->s113_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from sau_agendaexames_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $s113_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $s113_i_codigo)){
          $this->erro_sql = " Campo s113_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -277,7 +277,7 @@ class cl_sau_agendaexames {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Agenda Exames ($this->s113_i_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Agenda Exames já Cadastrado";
@@ -306,21 +306,21 @@ class cl_sau_agendaexames {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13587,'$this->s113_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,2380,13587,'','".AddSlashes(pg_result($resaco,0,'s113_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2380,13588,'','".AddSlashes(pg_result($resaco,0,'s113_i_prestadorhorarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2380,13589,'','".AddSlashes(pg_result($resaco,0,'s113_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2380,13590,'','".AddSlashes(pg_result($resaco,0,'s113_d_agendamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2380,13591,'','".AddSlashes(pg_result($resaco,0,'s113_d_exame'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2380,13592,'','".AddSlashes(pg_result($resaco,0,'s113_i_ficha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2380,13599,'','".AddSlashes(pg_result($resaco,0,'s113_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2380,13600,'','".AddSlashes(pg_result($resaco,0,'s113_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2380,13601,'','".AddSlashes(pg_result($resaco,0,'s113_d_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2380,13602,'','".AddSlashes(pg_result($resaco,0,'s113_c_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2380,13603,'','".AddSlashes(pg_result($resaco,0,'s113_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2380,14323,'','".AddSlashes(pg_result($resaco,0,'s113_c_encaminhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,13587,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,13588,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_i_prestadorhorarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,13589,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,13590,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_d_agendamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,13591,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_d_exame'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,13592,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_i_ficha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,13599,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,13600,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,13601,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_d_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,13602,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_c_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,13603,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2380,14323,'','".AddSlashes(pg_fetch_result($resaco,0,'s113_c_encaminhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -330,10 +330,10 @@ class cl_sau_agendaexames {
       $this->atualizacampos();
      $sql = " update sau_agendaexames set ";
      $virgula = "";
-     if(trim($this->s113_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_codigo"])){
+     if(trim((string) $this->s113_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_codigo"])){
        $sql  .= $virgula." s113_i_codigo = $this->s113_i_codigo ";
        $virgula = ",";
-       if(trim($this->s113_i_codigo) == null ){
+       if(trim((string) $this->s113_i_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "s113_i_codigo";
          $this->erro_banco = "";
@@ -343,10 +343,10 @@ class cl_sau_agendaexames {
          return false;
        }
      }
-     if(trim($this->s113_i_prestadorhorarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_prestadorhorarios"])){
+     if(trim((string) $this->s113_i_prestadorhorarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_prestadorhorarios"])){
        $sql  .= $virgula." s113_i_prestadorhorarios = $this->s113_i_prestadorhorarios ";
        $virgula = ",";
-       if(trim($this->s113_i_prestadorhorarios) == null ){
+       if(trim((string) $this->s113_i_prestadorhorarios) == null ){
          $this->erro_sql = " Campo Prestador Horários não informado.";
          $this->erro_campo = "s113_i_prestadorhorarios";
          $this->erro_banco = "";
@@ -356,10 +356,10 @@ class cl_sau_agendaexames {
          return false;
        }
      }
-     if(trim($this->s113_i_numcgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_numcgs"])){
+     if(trim((string) $this->s113_i_numcgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_numcgs"])){
        $sql  .= $virgula." s113_i_numcgs = $this->s113_i_numcgs ";
        $virgula = ",";
-       if(trim($this->s113_i_numcgs) == null ){
+       if(trim((string) $this->s113_i_numcgs) == null ){
          $this->erro_sql = " Campo CGS não informado.";
          $this->erro_campo = "s113_i_numcgs";
          $this->erro_banco = "";
@@ -369,10 +369,10 @@ class cl_sau_agendaexames {
          return false;
        }
      }
-     if(trim($this->s113_d_agendamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_d_agendamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s113_d_agendamento_dia"] !="") ){
+     if(trim((string) $this->s113_d_agendamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_d_agendamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s113_d_agendamento_dia"] !="") ){
        $sql  .= $virgula." s113_d_agendamento = '$this->s113_d_agendamento' ";
        $virgula = ",";
-       if(trim($this->s113_d_agendamento) == null ){
+       if(trim((string) $this->s113_d_agendamento) == null ){
          $this->erro_sql = " Campo Agendamento não informado.";
          $this->erro_campo = "s113_d_agendamento_dia";
          $this->erro_banco = "";
@@ -385,7 +385,7 @@ class cl_sau_agendaexames {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s113_d_agendamento_dia"])){
          $sql  .= $virgula." s113_d_agendamento = null ";
          $virgula = ",";
-         if(trim($this->s113_d_agendamento) == null ){
+         if(trim((string) $this->s113_d_agendamento) == null ){
            $this->erro_sql = " Campo Agendamento não informado.";
            $this->erro_campo = "s113_d_agendamento_dia";
            $this->erro_banco = "";
@@ -396,10 +396,10 @@ class cl_sau_agendaexames {
          }
        }
      }
-     if(trim($this->s113_d_exame)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_d_exame_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s113_d_exame_dia"] !="") ){
+     if(trim((string) $this->s113_d_exame)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_d_exame_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s113_d_exame_dia"] !="") ){
        $sql  .= $virgula." s113_d_exame = '$this->s113_d_exame' ";
        $virgula = ",";
-       if(trim($this->s113_d_exame) == null ){
+       if(trim((string) $this->s113_d_exame) == null ){
          $this->erro_sql = " Campo Agenda não informado.";
          $this->erro_campo = "s113_d_exame_dia";
          $this->erro_banco = "";
@@ -412,7 +412,7 @@ class cl_sau_agendaexames {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s113_d_exame_dia"])){
          $sql  .= $virgula." s113_d_exame = null ";
          $virgula = ",";
-         if(trim($this->s113_d_exame) == null ){
+         if(trim((string) $this->s113_d_exame) == null ){
            $this->erro_sql = " Campo Agenda não informado.";
            $this->erro_campo = "s113_d_exame_dia";
            $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_sau_agendaexames {
          }
        }
      }
-     if(trim($this->s113_i_ficha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_ficha"])){
+     if(trim((string) $this->s113_i_ficha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_ficha"])){
        $sql  .= $virgula." s113_i_ficha = $this->s113_i_ficha ";
        $virgula = ",";
-       if(trim($this->s113_i_ficha) == null ){
+       if(trim((string) $this->s113_i_ficha) == null ){
          $this->erro_sql = " Campo Ficha não informado.";
          $this->erro_campo = "s113_i_ficha";
          $this->erro_banco = "";
@@ -436,10 +436,10 @@ class cl_sau_agendaexames {
          return false;
        }
      }
-     if(trim($this->s113_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_c_hora"])){
+     if(trim((string) $this->s113_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_c_hora"])){
        $sql  .= $virgula." s113_c_hora = '$this->s113_c_hora' ";
        $virgula = ",";
-       if(trim($this->s113_c_hora) == null ){
+       if(trim((string) $this->s113_c_hora) == null ){
          $this->erro_sql = " Campo Hora não informado.";
          $this->erro_campo = "s113_c_hora";
          $this->erro_banco = "";
@@ -449,10 +449,10 @@ class cl_sau_agendaexames {
          return false;
        }
      }
-     if(trim($this->s113_i_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_situacao"])){
+     if(trim((string) $this->s113_i_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_situacao"])){
        $sql  .= $virgula." s113_i_situacao = $this->s113_i_situacao ";
        $virgula = ",";
-       if(trim($this->s113_i_situacao) == null ){
+       if(trim((string) $this->s113_i_situacao) == null ){
          $this->erro_sql = " Campo Situação não informado.";
          $this->erro_campo = "s113_i_situacao";
          $this->erro_banco = "";
@@ -462,7 +462,7 @@ class cl_sau_agendaexames {
          return false;
        }
      }
-     if(trim($this->s113_d_cadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_d_cadastro_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s113_d_cadastro_dia"] !="") ){
+     if(trim((string) $this->s113_d_cadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_d_cadastro_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s113_d_cadastro_dia"] !="") ){
        $sql  .= $virgula." s113_d_cadastro = '$this->s113_d_cadastro' ";
        $virgula = ",";
      }     else{
@@ -471,14 +471,14 @@ class cl_sau_agendaexames {
          $virgula = ",";
        }
      }
-     if(trim($this->s113_c_cadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_c_cadastro"])){
+     if(trim((string) $this->s113_c_cadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_c_cadastro"])){
        $sql  .= $virgula." s113_c_cadastro = '$this->s113_c_cadastro' ";
        $virgula = ",";
      }
-     if(trim($this->s113_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_login"])){
+     if(trim((string) $this->s113_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_i_login"])){
        $sql  .= $virgula." s113_i_login = $this->s113_i_login ";
        $virgula = ",";
-       if(trim($this->s113_i_login) == null ){
+       if(trim((string) $this->s113_i_login) == null ){
          $this->erro_sql = " Campo Login não informado.";
          $this->erro_campo = "s113_i_login";
          $this->erro_banco = "";
@@ -488,7 +488,7 @@ class cl_sau_agendaexames {
          return false;
        }
      }
-     if(trim($this->s113_c_encaminhamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_c_encaminhamento"])){
+     if(trim((string) $this->s113_c_encaminhamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s113_c_encaminhamento"])){
        $sql  .= $virgula." s113_c_encaminhamento = '$this->s113_c_encaminhamento' ";
        $virgula = ",";
      }
@@ -506,33 +506,33 @@ class cl_sau_agendaexames {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,13587,'$this->s113_i_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_i_codigo"]) || $this->s113_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,2380,13587,'".AddSlashes(pg_result($resaco,$conresaco,'s113_i_codigo'))."','$this->s113_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,13587,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_i_codigo'))."','$this->s113_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_i_prestadorhorarios"]) || $this->s113_i_prestadorhorarios != "")
-             $resac = db_query("insert into db_acount values($acount,2380,13588,'".AddSlashes(pg_result($resaco,$conresaco,'s113_i_prestadorhorarios'))."','$this->s113_i_prestadorhorarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,13588,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_i_prestadorhorarios'))."','$this->s113_i_prestadorhorarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_i_numcgs"]) || $this->s113_i_numcgs != "")
-             $resac = db_query("insert into db_acount values($acount,2380,13589,'".AddSlashes(pg_result($resaco,$conresaco,'s113_i_numcgs'))."','$this->s113_i_numcgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,13589,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_i_numcgs'))."','$this->s113_i_numcgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_d_agendamento"]) || $this->s113_d_agendamento != "")
-             $resac = db_query("insert into db_acount values($acount,2380,13590,'".AddSlashes(pg_result($resaco,$conresaco,'s113_d_agendamento'))."','$this->s113_d_agendamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,13590,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_d_agendamento'))."','$this->s113_d_agendamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_d_exame"]) || $this->s113_d_exame != "")
-             $resac = db_query("insert into db_acount values($acount,2380,13591,'".AddSlashes(pg_result($resaco,$conresaco,'s113_d_exame'))."','$this->s113_d_exame',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,13591,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_d_exame'))."','$this->s113_d_exame',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_i_ficha"]) || $this->s113_i_ficha != "")
-             $resac = db_query("insert into db_acount values($acount,2380,13592,'".AddSlashes(pg_result($resaco,$conresaco,'s113_i_ficha'))."','$this->s113_i_ficha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,13592,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_i_ficha'))."','$this->s113_i_ficha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_c_hora"]) || $this->s113_c_hora != "")
-             $resac = db_query("insert into db_acount values($acount,2380,13599,'".AddSlashes(pg_result($resaco,$conresaco,'s113_c_hora'))."','$this->s113_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,13599,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_c_hora'))."','$this->s113_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_i_situacao"]) || $this->s113_i_situacao != "")
-             $resac = db_query("insert into db_acount values($acount,2380,13600,'".AddSlashes(pg_result($resaco,$conresaco,'s113_i_situacao'))."','$this->s113_i_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,13600,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_i_situacao'))."','$this->s113_i_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_d_cadastro"]) || $this->s113_d_cadastro != "")
-             $resac = db_query("insert into db_acount values($acount,2380,13601,'".AddSlashes(pg_result($resaco,$conresaco,'s113_d_cadastro'))."','$this->s113_d_cadastro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,13601,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_d_cadastro'))."','$this->s113_d_cadastro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_c_cadastro"]) || $this->s113_c_cadastro != "")
-             $resac = db_query("insert into db_acount values($acount,2380,13602,'".AddSlashes(pg_result($resaco,$conresaco,'s113_c_cadastro'))."','$this->s113_c_cadastro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,13602,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_c_cadastro'))."','$this->s113_c_cadastro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_i_login"]) || $this->s113_i_login != "")
-             $resac = db_query("insert into db_acount values($acount,2380,13603,'".AddSlashes(pg_result($resaco,$conresaco,'s113_i_login'))."','$this->s113_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,13603,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_i_login'))."','$this->s113_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s113_c_encaminhamento"]) || $this->s113_c_encaminhamento != "")
-             $resac = db_query("insert into db_acount values($acount,2380,14323,'".AddSlashes(pg_result($resaco,$conresaco,'s113_c_encaminhamento'))."','$this->s113_c_encaminhamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2380,14323,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s113_c_encaminhamento'))."','$this->s113_c_encaminhamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -586,21 +586,21 @@ class cl_sau_agendaexames {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,13587,'$s113_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,2380,13587,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2380,13588,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_i_prestadorhorarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2380,13589,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2380,13590,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_d_agendamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2380,13591,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_d_exame'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2380,13592,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_i_ficha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2380,13599,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2380,13600,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2380,13601,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_d_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2380,13602,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_c_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2380,13603,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2380,14323,'','".AddSlashes(pg_result($resaco,$iresaco,'s113_c_encaminhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,13587,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,13588,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_i_prestadorhorarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,13589,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_i_numcgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,13590,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_d_agendamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,13591,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_d_exame'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,13592,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_i_ficha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,13599,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,13600,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,13601,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_d_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,13602,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_c_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,13603,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2380,14323,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s113_c_encaminhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -779,7 +779,7 @@ class cl_sau_agendaexames {
     return $sql;
   }
 
-  public function sql_query_grupo_competencia($sCampos = "*", $iGrupo, $iMes, $iAno){
+  public function sql_query_grupo_competencia($sCampos = "*", $iGrupo = null, $iMes = null, $iAno = null){
 
     $sSql  = " select $sCampos ";
     $sSql .= "   from sau_agendaexames ";

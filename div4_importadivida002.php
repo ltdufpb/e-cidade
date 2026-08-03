@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/JSON.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $oPost   = db_utils::postMemory($_POST);
 $oGet    = db_utils::postMemory($_GET);
@@ -43,7 +43,7 @@ $oProcesso = new stdClass();
 $oProcesso->lProcessoSistema = $oParam->lProcessoSistema ;
 $oProcesso->iProcesso        = $oParam->iProcesso        ;
 $oProcesso->sTitular         = $oParam->sTitular         ;
-$oProcesso->dDataProcesso    = implode("-", array_reverse(explode("/",$oParam->dDataProcesso)));
+$oProcesso->dDataProcesso    = implode("-", array_reverse(explode("/",(string) $oParam->dDataProcesso)));
 
 db_putsession("oDadosProcesso", $oProcesso);
 ?>

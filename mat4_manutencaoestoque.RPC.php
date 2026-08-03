@@ -68,7 +68,7 @@ switch ($oParam->exec) {
       /**
        * Configuramos a data para o formato banco (yyyy-mm-dd)
        */
-      $oParam->dtMovimentacao = implode("-", array_reverse(explode("/", $oParam->dtMovimentacao)));
+      $oParam->dtMovimentacao = implode("-", array_reverse(explode("/", (string) $oParam->dtMovimentacao)));
 
       /**
        * Salvamos os dados da tabela 'matestoqueini'
@@ -209,13 +209,13 @@ switch ($oParam->exec) {
        */
       $oRetorno->iCodigoMovimento           = $oDadoMaterial->m80_codigo;
       $oRetorno->iCodigoDepartamento        = $oDadoMaterial->m80_coddepto;
-      $oRetorno->sDescricaoDepartamento     = urlencode($oDadoMaterial->descrdepto);
+      $oRetorno->sDescricaoDepartamento     = urlencode((string) $oDadoMaterial->descrdepto);
       $oRetorno->iCodigoTipoMovimentacao    = $oDadoMaterial->m81_codtipo;
-      $oRetorno->sDescricaoTipoMovimentacao = urlencode($oDadoMaterial->m81_descr);
+      $oRetorno->sDescricaoTipoMovimentacao = urlencode((string) $oDadoMaterial->m81_descr);
       $oRetorno->dtMovimentacao             = $oDadoMaterial->m80_data;
       $oRetorno->sHoraMovimentacao          = $oDadoMaterial->m80_hora;
       $oRetorno->iCodigoMaterial            = $oParam->iCodigoMaterial;
-      $oRetorno->sDescricaoMaterial         = urlencode($oDadoMaterial->m60_descr);
+      $oRetorno->sDescricaoMaterial         = urlencode((string) $oDadoMaterial->m60_descr);
       $oRetorno->iTipoMovimento             = $oDadoMaterial->m81_tipo;
 
       /**

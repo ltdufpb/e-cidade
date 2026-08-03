@@ -29,14 +29,14 @@ namespace ECidade\RecursosHumanos\ESocial\Mapeadores\Tabelas;
 
 class TipoDependente implements TabelasInterface
 {
-    private $dependente = array(
+    private $dependente = [
         'C' => '01',
         'F' => '03',
         'P' => '09',
         'M' => '09',
         'A' => '09',
         'O' => '99',
-    );
+    ];
 
     /**
      * Retorna o valor da tabela do esocial equivalente ao valor de um dado no e-cidade
@@ -45,7 +45,7 @@ class TipoDependente implements TabelasInterface
      */
     public function getValue($valor)
     {
-        $valor = mb_strtoupper(trim($valor));
+        $valor = mb_strtoupper(trim((string) $valor));
 
         if ($this->dependente[$valor]) {
             return $this->dependente[$valor];

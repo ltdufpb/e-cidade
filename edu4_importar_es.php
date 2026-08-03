@@ -98,9 +98,9 @@ $db_botao = true;
              where ed129_i_escola = $escola
             ";
      $result = db_query($sql);
-     $ultima_atualizacaose = trim(pg_result($result,0,'ed129_i_ultatualizse'));
-     $ultima_transacao = trim(pg_result($result,0,'ed129_c_ulttransacao'));
-     $array_arquivo = explode("_",$name);
+     $ultima_atualizacaose = trim(pg_fetch_result($result,0,'ed129_i_ultatualizse'));
+     $ultima_transacao = trim(pg_fetch_result($result,0,'ed129_c_ulttransacao'));
+     $array_arquivo = explode("_",(string) $name);
      $escola_arquivo = trim($array_arquivo[0]);
      $base_arquivo = trim($array_arquivo[1]);
      $base_destino = trim($array_arquivo[1]).date("dnY").date("Hi");

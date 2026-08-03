@@ -41,7 +41,7 @@ require_once modification("libs/db_liborcamento.php");
 require_once modification("fpdf151/PDFDocument.php");
 
 $oGet     = db_utils::postMemory($_GET);
-$aQuadros = array();
+$aQuadros = [];
 
 try {
 

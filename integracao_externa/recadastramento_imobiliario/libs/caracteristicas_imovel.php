@@ -28,7 +28,7 @@
 
 function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
   
-  $aCaracteristicaConstrucao = array();
+  $aCaracteristicaConstrucao = [];
 
   /**
    * Características da utilização da construção
@@ -37,9 +37,9 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *  3 => 103 => Temporária
    */  
      
-  $aCaracteristicaConstrucao['utilizacao'] = array(1 => 100, 
+  $aCaracteristicaConstrucao['utilizacao'] = [1 => 100, 
                                                    2 => 101,
-                                                   3 => 102);
+                                                   3 => 102];
                                                  
   /*
    * Características da localização da unidade da construção
@@ -55,7 +55,7 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *
    */
      
-  $aCaracteristicaConstrucao['localizacao'] = array(1 => 250,                                             
+  $aCaracteristicaConstrucao['localizacao'] = [1 => 250,                                             
                                                     2 => 251,
                                                     3 => 252,
                                                     4 => 253,
@@ -63,7 +63,7 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
                                                     6 => 255,
                                                     7 => 256,
                                                     8 => 257,
-                                                    9 => 258);
+                                                    9 => 258];
 
   /*
    * Características do tipo de construção
@@ -80,7 +80,7 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    * 
    */
   
-  $aCaracteristicaConstrucao['tipo'] = array(1  => 105,  
+  $aCaracteristicaConstrucao['tipo'] = [1  => 105,  
                                              2  => 106,  
                                              3  => 107,  
                                              4  => 108,  
@@ -89,7 +89,7 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
                                              7  => 111,  
                                              8  => 112,  
                                              9  => 113,  
-                                             10 => 114);   
+                                             10 => 114];   
 
   /*
    * Características do padrão construtivo
@@ -102,11 +102,11 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *
    */
 
-  $aCaracteristicaConstrucao['padraoconstrutivo'] = array(1 => 630,
+  $aCaracteristicaConstrucao['padraoconstrutivo'] = [1 => 630,
                                                           2 => 631,
                                                           3 => 632,
                                                           4 => 633,
-                                                          5 => 634);
+                                                          5 => 634];
 
   /*
    * Características da conservação da construção
@@ -118,10 +118,10 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *
    */
 
-  $aCaracteristicaConstrucao['conservacao'] = array(1 => 640,
+  $aCaracteristicaConstrucao['conservacao'] = [1 => 640,
                                                     2 => 641,
                                                     3 => 643,
-                                                    4 => 644);
+                                                    4 => 644];
                                                    
   /*
    * Características do uso da construção
@@ -134,13 +134,13 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *  7 => 306 => Atividades Culturais
    */
 
-  $aCaracteristicaConstrucao['uso'] = array(1 => 300, 
+  $aCaracteristicaConstrucao['uso'] = [1 => 300, 
                                             2 => 301, 
                                             3 => 302, 
                                             4 => 303, 
                                             5 => 304, 
                                             6 => 305, 
-                                            7 => 306); 
+                                            7 => 306]; 
 
  /*
    * Características da estrutura da construção
@@ -153,13 +153,13 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *  7 => 356 => Mista
    */
 
-  $aCaracteristicaConstrucao['estrutura'] = array(1 => 350, 
+  $aCaracteristicaConstrucao['estrutura'] = [1 => 350, 
                                                   2 => 351, 
                                                   3 => 352, 
                                                   4 => 353, 
                                                   5 => 354, 
                                                   6 => 355, 
-                                                  7 => 356);  
+                                                  7 => 356];  
 
   /*
    * Características da água da construção
@@ -168,9 +168,9 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *  3 => 362 => Rede
    */
 
-  $aCaracteristicaConstrucao['agua'] = array(1 => 360, 
+  $aCaracteristicaConstrucao['agua'] = [1 => 360, 
                                              2 => 361, 
-                                             3 => 362); 
+                                             3 => 362]; 
 
 
   /*
@@ -181,10 +181,10 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *  4 => 373 => Fossa Séptica
    */
 
-  $aCaracteristicaConstrucao['esgoto']    = array(1 => 370, 
+  $aCaracteristicaConstrucao['esgoto']    = [1 => 370, 
                                                   2 => 371, 
                                                   3 => 372, 
-                                                  4 => 373);
+                                                  4 => 373];
 
   /*
    * Características da instalação elétrica da construção
@@ -194,10 +194,10 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *  4 => 373 => Embutido
    */
 
-  $aCaracteristicaConstrucao['eletrica']    = array(1 => 380, 
+  $aCaracteristicaConstrucao['eletrica']    = [1 => 380, 
                                                     2 => 381, 
                                                     3 => 382, 
-                                                    4 => 383); 
+                                                    4 => 383]; 
   /*
    * Características da instalação elétrica da construção
    *  1 => 390 => Sem 
@@ -206,10 +206,10 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *  4 => 393 => Mais de uma
    */
 
-  $aCaracteristicaConstrucao['sanitaria']    = array(1 => 390, 
+  $aCaracteristicaConstrucao['sanitaria']    = [1 => 390, 
                                                      2 => 391, 
                                                      3 => 392, 
-                                                     4 => 393); 
+                                                     4 => 393]; 
 
   /*
    * Características da cobertura da construção
@@ -221,12 +221,12 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *  6 => 405 => Especial
    */
 
-  $aCaracteristicaConstrucao['cobertura']    = array(1 => 400, 
+  $aCaracteristicaConstrucao['cobertura']    = [1 => 400, 
                                                      2 => 401, 
                                                      3 => 402, 
                                                      4 => 403,   
                                                      5 => 404,   
-                                                     6 => 405);  
+                                                     6 => 405];  
   /*
    * Características da esquadria da construção
    *  1 => 410 => Sem
@@ -235,10 +235,10 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *  4 => 413 => Especial
    */
 
-  $aCaracteristicaConstrucao['esquadria']    = array(1 => 410, 
+  $aCaracteristicaConstrucao['esquadria']    = [1 => 410, 
                                                      2 => 411, 
                                                      3 => 412, 
-                                                     4 => 413); 
+                                                     4 => 413]; 
 
   /*
    * Características do piso da construção
@@ -250,12 +250,12 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *  6 => 425 => Especial
    */
 
-  $aCaracteristicaConstrucao['piso']    = array(1 => 420, 
+  $aCaracteristicaConstrucao['piso']    = [1 => 420, 
                                                 2 => 421, 
                                                 3 => 422, 
                                                 4 => 423,
                                                 5 => 424,
-                                                6 => 425);  
+                                                6 => 425];  
 
   /*
    * Características do piso da construção
@@ -264,9 +264,9 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    *  3 => 432 => Cerâmica
    */
 
-  $aCaracteristicaConstrucao['revestimento']    = array(1 => 430, 
+  $aCaracteristicaConstrucao['revestimento']    = [1 => 430, 
                                                         2 => 431, 
-                                                        3 => 432);
+                                                        3 => 432];
 
   /**
    * Características de pavimento da construção
@@ -276,7 +276,7 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
    * ...
    */
 
-  $aCaracteristicaConstrucao['pavimento']       = array( 1 => 120,
+  $aCaracteristicaConstrucao['pavimento']       = [ 1 => 120,
                                                          2 => 121,
                                                          3 => 122,
                                                          4 => 123,
@@ -375,16 +375,16 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
                                                         97 => 216,
                                                         98 => 217,
                                                         99 => 218,
-                                                       100 => 219);
+                                                       100 => 219];
 
 
 
   if ( !is_null( $sGrupo ) ) {
 
     if ( !is_null( $iCodigoArquivo ) ) {
-       return isset($aCaracteristicaConstrucao[$sGrupo][$iCodigoArquivo]) ? $aCaracteristicaConstrucao[$sGrupo][$iCodigoArquivo] : 0;
+       return $aCaracteristicaConstrucao[$sGrupo][$iCodigoArquivo] ?? 0;
     }
-    return isset($aCaracteristicaConstrucao[$sGrupo]) ? $aCaracteristicaConstrucao[$sGrupo] : array();
+    return $aCaracteristicaConstrucao[$sGrupo] ?? [];
   }
 
   return $aCaracteristicaConstrucao;
@@ -393,7 +393,7 @@ function getCaracteristicasConstrucao( $sGrupo = null, $iCodigoArquivo = null) {
 
 function getCaracteristicasLote( $sGrupo = null, $iCodigoArquivo = null ) {
  
-  $aCaracteristicaLote = array();
+  $aCaracteristicaLote = [];
 
   /**
    * Características do lote do tipo de propriedade
@@ -404,11 +404,11 @@ function getCaracteristicasLote( $sGrupo = null, $iCodigoArquivo = null ) {
    *  5 => 34 => Particular
    */  
      
-  $aCaracteristicaLote['propriedade']    = array(1 => 30, 
+  $aCaracteristicaLote['propriedade']    = [1 => 30, 
                                                  2 => 31,
                                                  3 => 32,
                                                  4 => 33,
-                                                 5 => 34) ;
+                                                 5 => 34] ;
 
   /**
    * Características do lote do tipo de situacao
@@ -419,19 +419,19 @@ function getCaracteristicasLote( $sGrupo = null, $iCodigoArquivo = null ) {
    *  5 => 44 => Gleba
    */  
  
-  $aCaracteristicaLote['situacao']       = array(1 => 40, 
+  $aCaracteristicaLote['situacao']       = [1 => 40, 
                                                  2 => 41,
                                                  3 => 42,
                                                  4 => 43,
-                                                 5 => 44);
+                                                 5 => 44];
 
   /**
    * Características do lote tipo de lote 
    *  1 => 50 => Acidentado 
    *  2 => 51 => Horizontal
    */   
-  $aCaracteristicaLote['caracteristica'] = array(1 => 50, 
-                                                 2 => 51); 
+  $aCaracteristicaLote['caracteristica'] = [1 => 50, 
+                                                 2 => 51]; 
  
   /**
    * Características do lote nível
@@ -440,9 +440,9 @@ function getCaracteristicasLote( $sGrupo = null, $iCodigoArquivo = null ) {
    *  3 => 57 => Abaixo
    */  
  
-  $aCaracteristicaLote['nivel']          = array(1 => 55, 
+  $aCaracteristicaLote['nivel']          = [1 => 55, 
                                                  2 => 56,
-                                                 3 => 57);
+                                                 3 => 57];
   /**
    * Características do lote frentes
    * 0 frentes => 70
@@ -457,7 +457,7 @@ function getCaracteristicasLote( $sGrupo = null, $iCodigoArquivo = null ) {
    * 9 frentes => 79
    */
  
-  $aCaracteristicaLote['frentes']        = array(0 => 70,
+  $aCaracteristicaLote['frentes']        = [0 => 70,
                                                  1 => 71, 
                                                  2 => 72,
                                                  3 => 73,
@@ -466,7 +466,7 @@ function getCaracteristicasLote( $sGrupo = null, $iCodigoArquivo = null ) {
                                                  6 => 76,
                                                  7 => 77,
                                                  8 => 78,
-                                                 9 => 79);
+                                                 9 => 79];
                     
   /**
    * Características do lote ocupação
@@ -480,20 +480,20 @@ function getCaracteristicasLote( $sGrupo = null, $iCodigoArquivo = null ) {
    * 8 => 67 => Edif. temp
    */  
  
-  $aCaracteristicaLote['ocupacao']       = array(1 => 60,
+  $aCaracteristicaLote['ocupacao']       = [1 => 60,
                                                  2 => 61, 
                                                  3 => 62,
                                                  4 => 63,
                                                  5 => 64,
                                                  6 => 65,
                                                  7 => 66,
-                                                 8 => 67); 
+                                                 8 => 67]; 
   if ( !is_null( $sGrupo ) ) {
 
     if ( !is_null( $iCodigoArquivo ) ) {
-      return isset($aCaracteristicaLote[$sGrupo][$iCodigoArquivo]) ? $aCaracteristicaLote[$sGrupo][$iCodigoArquivo] : 0;
+      return $aCaracteristicaLote[$sGrupo][$iCodigoArquivo] ?? 0;
     }
-    return isset($aCaracteristicaLote[$sGrupo]) ? $aCaracteristicaLote[$sGrupo] : array();
+    return $aCaracteristicaLote[$sGrupo] ?? [];
   }                  
   return $aCaracteristicaLote;
 }  

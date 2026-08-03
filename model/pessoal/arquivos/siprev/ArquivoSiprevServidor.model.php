@@ -30,7 +30,7 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
   protected $sRegistro    = "servidores";
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["01"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["01"] = [];
   }
 
 	public function getDados() {
@@ -58,7 +58,7 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
     $sSqlDados .= "  order by rh01_instit, z01_nome  ";
 
     $rsDados      = db_query($sSqlDados);
-    $aErros       = array();
+    $aErros       = [];
     $oArquivo     = $this;
     $aListaDados  = db_utils::makeCollectionFromRecord($rsDados, function($oDados) use(&$aErros, $oArquivo) {
 
@@ -72,11 +72,11 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
       return;
     });
 
-    $aDados = array();
+    $aDados = [];
 
     foreach ($aListaDados as $oIndiceDados => $oValorDados) {
 
-      $aLinhas                  = array("dadosPessoais", "documentos");
+      $aLinhas                  = ["dadosPessoais", "documentos"];
       $aLinhas["dadosPessoais"] = $this->preencheDadosPessoais($oValorDados);
       $aLinhas["documentos"]    = $this->preencheDocumentos($oValorDados);
 
@@ -95,12 +95,12 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
    */
   private function preencheDadosPessoais($oValorDados) {
 
-    $aDadosPessoais                   = array();
+    $aDadosPessoais                   = [];
     $aDadosPessoais["nome"]           = DBString::removerCaracteresEspeciais($oValorDados->z01_nome);
     $aDadosPessoais["dataNascimento"] = $oValorDados->z01_nasc;
 
     if($oValorDados->z01_sexo == 'M' || $oValorDados->z01_sexo == 'F') {
-      $aDadosPessoais["sexo"] = strtoupper($oValorDados->z01_sexo);
+      $aDadosPessoais["sexo"] = strtoupper((string) $oValorDados->z01_sexo);
     }
 
     $aDadosPessoais["nomeMae"]        = DBString::removerCaracteresEspeciais($oValorDados->z01_mae);
@@ -112,7 +112,7 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
      */
     if(!empty($oValorDados->z01_estciv)) {
 
-      $aEstadoCivil      = array();
+      $aEstadoCivil      = [];
       $aEstadoCivil["1"] = 1;
       $aEstadoCivil["2"] = 2;
       $aEstadoCivil["3"] = 3;
@@ -136,7 +136,7 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
      */
     if(!empty($oValorDados->rh01_instru)) {
 
-      $aEscolaridade      = array();
+      $aEscolaridade      = [];
       $aEscolaridade["1"] = 1;
       $aEscolaridade["2"] = 3;
       $aEscolaridade["3"] = 3;
@@ -166,13 +166,13 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
    */
   private function preencheDocumentos($oValorDados) {
 
-    $aDocumentos = array();
+    $aDocumentos = [];
 
-    if(trim($oValorDados->z01_cgccpf) != '') {
+    if(trim((string) $oValorDados->z01_cgccpf) != '') {
       $aDocumentos["numeroCPF"] = $oValorDados->z01_cgccpf;
     }
 
-    if(trim($oValorDados->rh16_pis) != '' && $oValorDados->rh16_pis != '00000000000') {
+    if(trim((string) $oValorDados->rh16_pis) != '' && $oValorDados->rh16_pis != '00000000000') {
       $aDocumentos["numeroNIT"] = $oValorDados->rh16_pis;
     }
 
@@ -205,7 +205,7 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
    */
   public  function getElementos() {
 
-    $aDados   = array();
+    $aDados   = [];
     $aDados[] = $this->atributosDadosPessoais();
     $aDados[] = $this->atributosDocumentos();
 
@@ -218,9 +218,9 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
    */
   private function atributosDadosPessoais() {
 
-    $aDadosPessoais                 = array();
+    $aDadosPessoais                 = [];
     $aDadosPessoais["nome"]         = "dadosPessoais";
-    $aDadosPessoais["propriedades"] = array(
+    $aDadosPessoais["propriedades"] = [
       "nome",
       "estadoCivil",
       "dataNascimento",
@@ -230,7 +230,7 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
       "nomeMae",
       "nomePai",
       "dataIngressoServicoPublico"
-    );
+    ];
 
     return $aDadosPessoais;
   }
@@ -241,9 +241,9 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
    */
   private function atributosDocumentos() {
 
-    $aDadosDocumentos                 = array();
+    $aDadosDocumentos                 = [];
     $aDadosDocumentos["nome"]         = "documentos";
-    $aDadosDocumentos["propriedades"] = array(
+    $aDadosDocumentos["propriedades"] = [
       "numeroCPF",
       "numeroNIT",
       "numeroRG",
@@ -252,7 +252,7 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
       "numeroTituloEleitor",
       "zonaTituloEleitor",
       "secaoTituloEleitor"
-    );
+    ];
 
     return $aDadosDocumentos;
   }
@@ -264,7 +264,7 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
    */
   public function validarDadosServidor($oDados) {
 
-    $aErrosRegistro = array();
+    $aErrosRegistro = [];
     $lPisValido     = DBString::isPIS($oDados->rh16_pis);
     $lCpfValido     = DBString::isCPF($oDados->z01_cgccpf);
     $lSexoValido    = $oDados->z01_sexo == "M" || $oDados->z01_sexo == "F";
@@ -292,10 +292,10 @@ class ArquivoSiprevServidor extends ArquivoSiprevBase {
    */
   private function getErro($oDados, $sErro) {
 
-    return array(
+    return [
 			InstituicaoRepository::getInstituicaoByCodigo($oDados->rh01_instit)->getDescricao(),
       $oDados->z01_numcgm . " - " . $oDados->z01_nome,
 			$sErro,
-    );
+    ];
   }
 }

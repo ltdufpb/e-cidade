@@ -36,7 +36,7 @@ final class PadArquivoSigapSubFuncao extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "SubFuncao";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   public function gerarDados() {
@@ -52,7 +52,7 @@ final class PadArquivoSigapSubFuncao extends PadArquivoSigap {
      * Separamos a data do em ano, mes, dia
      */
     $iCodigoInstit  = db_getsession("DB_instit");
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     
     $sSqlSubFuncao  = "select distinct ";
     $sSqlSubFuncao .= "       o58_anousu as anousu,";
@@ -83,7 +83,7 @@ final class PadArquivoSigapSubFuncao extends PadArquivoSigap {
       $oSubFuncaoRetorno->sfuCodigoEntidade   = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oSubFuncaoRetorno->sfuMesAnoMovimento  = $sDiaMesAno;
       $oSubFuncaoRetorno->sfuExercicio        = $oSubFuncao->anousu;
-      $oSubFuncaoRetorno->sfuCodigoSubFuncao  = str_pad($oSubFuncao->subfuncao, 3, "0", STR_PAD_LEFT);
+      $oSubFuncaoRetorno->sfuCodigoSubFuncao  = str_pad((string) $oSubFuncao->subfuncao, 3, "0", STR_PAD_LEFT);
       $oSubFuncaoRetorno->sfuNomeSubFuncao    = $oSubFuncao->nome;
       array_push($this->aDados, $oSubFuncaoRetorno);
       
@@ -92,13 +92,13 @@ final class PadArquivoSigapSubFuncao extends PadArquivoSigap {
   
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "sfuCodigoEntidade",
                         "sfuMesAnoMovimento",
                         "sfuExercicio",
                         "sfuCodigoSubFuncao",
                         "sfuNomeSubFuncao"
-                       );
+                       ];
     return $aElementos;  
   }
   

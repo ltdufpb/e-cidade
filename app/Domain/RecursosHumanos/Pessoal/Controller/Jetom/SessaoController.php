@@ -57,12 +57,8 @@ class SessaoController extends Controller
 
                 return new DBJsonResponse(
                     Sessao::with('servidores')->where($em_processo)->orderBy('rh247_data', 'desc')
-                    ->when($mes_competencia, function ($query) use ($mes_competencia) {
-                        return $query->where('rh247_mes', $mes_competencia);
-                    })
-                    ->when($ano_competencia, function ($query) use ($ano_competencia) {
-                        return $query->where('rh247_ano', $ano_competencia);
-                    })->get()
+                    ->when($mes_competencia, fn($query) => $query->where('rh247_mes', $mes_competencia))
+                    ->when($ano_competencia, fn($query) => $query->where('rh247_ano', $ano_competencia))->get()
                 );
             }
 
@@ -85,9 +81,7 @@ class SessaoController extends Controller
 
                 // dados de comissoes
                 $dataComissoes = $permissaoData->map(
-                    function ($model) {
-                        return $model->rh251_comissao;
-                    }
+                    fn($model) => $model->rh251_comissao
                 )->toArray();
             }
             /**
@@ -104,11 +98,7 @@ class SessaoController extends Controller
             if (DefaultSession::getInstance()->get('DB_id_usuario') != 1) {
                 $sessaoData = Sessao::with('servidores')
                 ->where($em_processo)->orderBy('rh247_data', 'desc')
-                ->when($mes_competencia, function ($query) use ($mes_competencia) {
-                    return $query->where('rh247_mes', $mes_competencia);
-                })->when($ano_competencia, function ($query) use ($ano_competencia) {
-                    return $query->where('rh247_ano', $ano_competencia);
-                })
+                ->when($mes_competencia, fn($query) => $query->where('rh247_mes', $mes_competencia))->when($ano_competencia, fn($query) => $query->where('rh247_ano', $ano_competencia))
                 ->join('jetomcomissao', 'rh242_sequencial', 'rh247_comissao')
                 ->where('rh242_instit', DefaultSession::getInstance()->get('DB_instit')) // busca por instituicao
                 ->whereIn('rh242_sequencial', $dataComissoes) // busca por comissões
@@ -116,11 +106,7 @@ class SessaoController extends Controller
             } else {
                 $sessaoData = Sessao::with('servidores')
                     ->where($em_processo)->orderBy('rh247_data', 'desc')
-                    ->when($mes_competencia, function ($query) use ($mes_competencia) {
-                        return $query->where('rh247_mes', $mes_competencia);
-                    })->when($ano_competencia, function ($query) use ($ano_competencia) {
-                        return $query->where('rh247_ano', $ano_competencia);
-                    })
+                    ->when($mes_competencia, fn($query) => $query->where('rh247_mes', $mes_competencia))->when($ano_competencia, fn($query) => $query->where('rh247_ano', $ano_competencia))
                     ->join('jetomcomissao', 'rh242_sequencial', 'rh247_comissao')
                     ->where('rh242_instit', DefaultSession::getInstance()->get('DB_instit')) // busca por instituica
                     ->get();
@@ -175,7 +161,7 @@ class SessaoController extends Controller
             }
 
             return new DBJsonResponse($sessao);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return new DBJsonResponse(
                 null,
                 'Não foi possível buscar as informação da Sessão.',

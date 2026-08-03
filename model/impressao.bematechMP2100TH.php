@@ -119,10 +119,11 @@ final class impressaoMP2100TH extends impressao {
    * @param   string  $sStr
    * @return  string
    */
+  #[\Override]
   function strToAsc($sStr) {
 
     $sStrRetorno = "";
-    $aCaracters = array (         'é' => '82', 
+    $aCaracters =  [         'é' => '82', 
                                   'É' => '90', 
                                   'á' => 'A0', 
                                   'Á' => '86', 
@@ -140,7 +141,7 @@ final class impressaoMP2100TH extends impressao {
                                   'Õ' => '99', 
                                   'à' => '85', 
                                   'À' => '91' 
-    );
+    ];
     
     for($i = 0; $i < strlen($sStr); $i ++) {
       $char = $sStr [$i];

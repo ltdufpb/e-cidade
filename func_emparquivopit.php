@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_emparquivopit_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clemparquivopit = new cl_emparquivopit;
 $clemparquivopit->rotulo->label("e14_sequencial");
 $clemparquivopit->rotulo->label("e14_nomearquivo");
@@ -98,9 +98,9 @@ $clemparquivopit->rotulo->label("e14_nomearquivo");
         }else{
            $sql = $clemparquivopit->sql_query_ativo("",$campos,"e14_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e14_nomearquivo)){
-          $repassa = array("chave_e14_sequencial"=>$chave_e14_sequencial,"chave_e14_nomearquivo"=>$chave_e14_nomearquivo);
+          $repassa = ["chave_e14_sequencial"=>$chave_e14_sequencial,"chave_e14_nomearquivo"=>$chave_e14_nomearquivo];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

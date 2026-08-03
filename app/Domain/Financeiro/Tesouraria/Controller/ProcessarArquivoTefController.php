@@ -11,11 +11,8 @@ use Illuminate\Http\Request;
 
 class ProcessarArquivoTefController extends Controller
 {
-    private $service;
-
-    public function __construct(TefService $service)
+    public function __construct(private readonly TefService $service)
     {
-        $this->service = $service;
     }
 
     /**

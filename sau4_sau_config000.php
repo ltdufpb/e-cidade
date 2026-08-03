@@ -57,21 +57,21 @@ db_app::load(" prototype.js, strings.js, webseller.js, scripts.js, estilos.css "
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $oCriaAbas->identifica    = array('a1' => 'Parâmetros Globais',
+   $oCriaAbas->identifica    = ['a1' => 'Parâmetros Globais',
                                      'a2' => 'Agendamento',
                                      'a3' => 'Cartão SUS',
                                      'a4' => 'BPA',
                                      'a5' => 'Procedimento de Triagem'
-                                    );
+                                    ];
 
-   $oCriaAbas->src           = array('a1' => 'sau4_sau_config001.php',
+   $oCriaAbas->src           = ['a1' => 'sau4_sau_config001.php',
                                      'a2' => 'sau4_sau_config002.php',
                                      'a3' => 'sau4_sau_config003.php',
                                      'a4' => 'sau4_sau_config004.php',
                                      'a5' => 'sau4_sau_config005.php'
-                                    );
-   $oCriaAbas->sizecampo     = array('a1'=>20,'a2'=>20, 'a3'=>20, 'a4'=>20, 'a5'=>25);
-   $oCriaAbas->disabled      = array('a1'=>'false','a2'=>'true', 'a3'=>'true', 'a4'=>'true', 'a5'=>'true');
+                                    ];
+   $oCriaAbas->sizecampo     = ['a1'=>20,'a2'=>20, 'a3'=>20, 'a4'=>20, 'a5'=>25];
+   $oCriaAbas->disabled      = ['a1'=>'false','a2'=>'true', 'a3'=>'true', 'a4'=>'true', 'a5'=>'true'];
    $oCriaAbas->scrolling     = 'no';
    $oCriaAbas->iframe_height = '600';
    $oCriaAbas->iframe_width  = '100%';

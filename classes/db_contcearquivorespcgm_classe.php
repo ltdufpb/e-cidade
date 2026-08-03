@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE contcearquivorespcgm
 class cl_contcearquivorespcgm { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c13_sequencial = 0; 
-   var $c13_contcearquivoresp = 0; 
-   var $c13_numcgm = 0; 
+   public $c13_sequencial = 0; 
+   public $c13_contcearquivoresp = 0; 
+   public $c13_numcgm = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c13_sequencial = int4 = Codigo sequencial 
                  c13_contcearquivoresp = int4 = Codigo sequencial 
                  c13_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_contcearquivorespcgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("contcearquivorespcgm"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_contcearquivorespcgm {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c13_sequencial = pg_result($result,0,0); 
+       $this->c13_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from contcearquivorespcgm_c13_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c13_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c13_sequencial)){
          $this->erro_sql = " Campo c13_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_contcearquivorespcgm {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela de ligação do responsavel com cgm ($this->c13_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela de ligação do responsavel com cgm já Cadastrado";
@@ -166,12 +166,12 @@ class cl_contcearquivorespcgm {
      $resaco = $this->sql_record($this->sql_query_file($this->c13_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11939,'$this->c13_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2063,11939,'','".AddSlashes(pg_result($resaco,0,'c13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2063,11940,'','".AddSlashes(pg_result($resaco,0,'c13_contcearquivoresp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2063,11941,'','".AddSlashes(pg_result($resaco,0,'c13_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2063,11939,'','".AddSlashes(pg_fetch_result($resaco,0,'c13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2063,11940,'','".AddSlashes(pg_fetch_result($resaco,0,'c13_contcearquivoresp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2063,11941,'','".AddSlashes(pg_fetch_result($resaco,0,'c13_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_contcearquivorespcgm {
       $this->atualizacampos();
      $sql = " update contcearquivorespcgm set ";
      $virgula = "";
-     if(trim($this->c13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c13_sequencial"])){ 
+     if(trim((string) $this->c13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c13_sequencial"])){ 
        $sql  .= $virgula." c13_sequencial = $this->c13_sequencial ";
        $virgula = ",";
-       if(trim($this->c13_sequencial) == null ){ 
+       if(trim((string) $this->c13_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "c13_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_contcearquivorespcgm {
          return false;
        }
      }
-     if(trim($this->c13_contcearquivoresp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c13_contcearquivoresp"])){ 
+     if(trim((string) $this->c13_contcearquivoresp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c13_contcearquivoresp"])){ 
        $sql  .= $virgula." c13_contcearquivoresp = $this->c13_contcearquivoresp ";
        $virgula = ",";
-       if(trim($this->c13_contcearquivoresp) == null ){ 
+       if(trim((string) $this->c13_contcearquivoresp) == null ){ 
          $this->erro_sql = " Campo Codigo sequencial nao Informado.";
          $this->erro_campo = "c13_contcearquivoresp";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_contcearquivorespcgm {
          return false;
        }
      }
-     if(trim($this->c13_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c13_numcgm"])){ 
+     if(trim((string) $this->c13_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c13_numcgm"])){ 
        $sql  .= $virgula." c13_numcgm = $this->c13_numcgm ";
        $virgula = ",";
-       if(trim($this->c13_numcgm) == null ){ 
+       if(trim((string) $this->c13_numcgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "c13_numcgm";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_contcearquivorespcgm {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11939,'$this->c13_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c13_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2063,11939,'".AddSlashes(pg_result($resaco,$conresaco,'c13_sequencial'))."','$this->c13_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2063,11939,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c13_sequencial'))."','$this->c13_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c13_contcearquivoresp"]))
-           $resac = db_query("insert into db_acount values($acount,2063,11940,'".AddSlashes(pg_result($resaco,$conresaco,'c13_contcearquivoresp'))."','$this->c13_contcearquivoresp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2063,11940,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c13_contcearquivoresp'))."','$this->c13_contcearquivoresp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c13_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,2063,11941,'".AddSlashes(pg_result($resaco,$conresaco,'c13_numcgm'))."','$this->c13_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2063,11941,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c13_numcgm'))."','$this->c13_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_contcearquivorespcgm {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11939,'$c13_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2063,11939,'','".AddSlashes(pg_result($resaco,$iresaco,'c13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2063,11940,'','".AddSlashes(pg_result($resaco,$iresaco,'c13_contcearquivoresp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2063,11941,'','".AddSlashes(pg_result($resaco,$iresaco,'c13_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2063,11939,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2063,11940,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c13_contcearquivoresp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2063,11941,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c13_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from contcearquivorespcgm
@@ -345,7 +345,7 @@ class cl_contcearquivorespcgm {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:contcearquivorespcgm";
@@ -359,7 +359,7 @@ class cl_contcearquivorespcgm {
    function sql_query ( $c13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_contcearquivorespcgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_contcearquivorespcgm {
    function sql_query_file ( $c13_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_contcearquivorespcgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

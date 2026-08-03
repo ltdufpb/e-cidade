@@ -33,8 +33,8 @@ require_once(modification("libs/db_utils.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_processoforomov_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -116,9 +116,9 @@ $clprocessoforomov->rotulo->label("v73_sequencial");
 	          $sql     = $clprocessoforomov->sql_query(null, $campos, "v73_data desc",$sWhere);
 	        }
 	        
-	        $repassa = array();
+	        $repassa = [];
 	        if (isset($chave_v73_sequencial)) {
-	          $repassa = array("chave_v73_sequencial" => $chave_v73_sequencial);
+	          $repassa = ["chave_v73_sequencial" => $chave_v73_sequencial];
 	        }
 
 	        db_lovrot($sql,15,"()","",@$funcao_js,"","NoMe",$repassa);

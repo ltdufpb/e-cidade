@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE atendemail
 class cl_atendemail { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at12_codcli = 0; 
-   var $at12_seq = 0; 
-   var $at12_email = null; 
+   public $at12_codcli = 0; 
+   public $at12_seq = 0; 
+   public $at12_email = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at12_codcli = int4 = Código do cliente 
                  at12_seq = int4 = sequencia 
                  at12_email = varchar(40) = emails dos clientes do atendimento 
                  ";
    //funcao construtor da classe 
-   function cl_atendemail() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atendemail"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -99,10 +99,10 @@ class cl_atendemail {
          $this->erro_status = "0";
          return false; 
        }
-       $this->at12_seq = pg_result($result,0,0); 
+       $this->at12_seq = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from atendemail_at12_seq_seq");
-       if(($result != false) && (pg_result($result,0,0) < $at12_seq)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $at12_seq)){
          $this->erro_sql = " Campo at12_seq maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_atendemail {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "emails dos clientes do atendimento ($this->at12_codcli."-".$this->at12_seq) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "emails dos clientes do atendimento já Cadastrado";
@@ -166,13 +166,13 @@ class cl_atendemail {
      $resaco = $this->sql_record($this->sql_query_file($this->at12_codcli,$this->at12_seq));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5183,'$this->at12_codcli','I')");
        $resac = db_query("insert into db_acountkey values($acount,5185,'$this->at12_seq','I')");
-       $resac = db_query("insert into db_acount values($acount,745,5183,'','".AddSlashes(pg_result($resaco,0,'at12_codcli'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,745,5185,'','".AddSlashes(pg_result($resaco,0,'at12_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,745,5184,'','".AddSlashes(pg_result($resaco,0,'at12_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,745,5183,'','".AddSlashes(pg_fetch_result($resaco,0,'at12_codcli'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,745,5185,'','".AddSlashes(pg_fetch_result($resaco,0,'at12_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,745,5184,'','".AddSlashes(pg_fetch_result($resaco,0,'at12_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -181,10 +181,10 @@ class cl_atendemail {
       $this->atualizacampos();
      $sql = " update atendemail set ";
      $virgula = "";
-     if(trim($this->at12_codcli)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at12_codcli"])){ 
+     if(trim((string) $this->at12_codcli)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at12_codcli"])){ 
        $sql  .= $virgula." at12_codcli = $this->at12_codcli ";
        $virgula = ",";
-       if(trim($this->at12_codcli) == null ){ 
+       if(trim((string) $this->at12_codcli) == null ){ 
          $this->erro_sql = " Campo Código do cliente nao Informado.";
          $this->erro_campo = "at12_codcli";
          $this->erro_banco = "";
@@ -194,10 +194,10 @@ class cl_atendemail {
          return false;
        }
      }
-     if(trim($this->at12_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at12_seq"])){ 
+     if(trim((string) $this->at12_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at12_seq"])){ 
        $sql  .= $virgula." at12_seq = $this->at12_seq ";
        $virgula = ",";
-       if(trim($this->at12_seq) == null ){ 
+       if(trim((string) $this->at12_seq) == null ){ 
          $this->erro_sql = " Campo sequencia nao Informado.";
          $this->erro_campo = "at12_seq";
          $this->erro_banco = "";
@@ -207,10 +207,10 @@ class cl_atendemail {
          return false;
        }
      }
-     if(trim($this->at12_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at12_email"])){ 
+     if(trim((string) $this->at12_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at12_email"])){ 
        $sql  .= $virgula." at12_email = '$this->at12_email' ";
        $virgula = ",";
-       if(trim($this->at12_email) == null ){ 
+       if(trim((string) $this->at12_email) == null ){ 
          $this->erro_sql = " Campo emails dos clientes do atendimento nao Informado.";
          $this->erro_campo = "at12_email";
          $this->erro_banco = "";
@@ -231,16 +231,16 @@ class cl_atendemail {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5183,'$this->at12_codcli','A')");
          $resac = db_query("insert into db_acountkey values($acount,5185,'$this->at12_seq','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at12_codcli"]))
-           $resac = db_query("insert into db_acount values($acount,745,5183,'".AddSlashes(pg_result($resaco,$conresaco,'at12_codcli'))."','$this->at12_codcli',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,745,5183,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at12_codcli'))."','$this->at12_codcli',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at12_seq"]))
-           $resac = db_query("insert into db_acount values($acount,745,5185,'".AddSlashes(pg_result($resaco,$conresaco,'at12_seq'))."','$this->at12_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,745,5185,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at12_seq'))."','$this->at12_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at12_email"]))
-           $resac = db_query("insert into db_acount values($acount,745,5184,'".AddSlashes(pg_result($resaco,$conresaco,'at12_email'))."','$this->at12_email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,745,5184,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at12_email'))."','$this->at12_email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -285,13 +285,13 @@ class cl_atendemail {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5183,'$at12_codcli','E')");
          $resac = db_query("insert into db_acountkey values($acount,5185,'$at12_seq','E')");
-         $resac = db_query("insert into db_acount values($acount,745,5183,'','".AddSlashes(pg_result($resaco,$iresaco,'at12_codcli'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,745,5185,'','".AddSlashes(pg_result($resaco,$iresaco,'at12_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,745,5184,'','".AddSlashes(pg_result($resaco,$iresaco,'at12_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,745,5183,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at12_codcli'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,745,5185,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at12_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,745,5184,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at12_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from atendemail
@@ -357,7 +357,7 @@ class cl_atendemail {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:atendemail";
@@ -371,7 +371,7 @@ class cl_atendemail {
    function sql_query ( $at12_codcli=null,$at12_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -401,7 +401,7 @@ class cl_atendemail {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_atendemail {
    function sql_query_file ( $at12_codcli=null,$at12_seq=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,7 +442,7 @@ class cl_atendemail {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

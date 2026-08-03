@@ -81,7 +81,7 @@ class DisponibilidadeFinanceiraRepository extends ContaCorrenteRepositoryBase {
    */
   private function agrupar() {
 
-    $aContas = array();
+    $aContas = [];
 
     /**
      * Para cada índice do array, buscamos seus atributos e os agrupamos
@@ -133,7 +133,7 @@ class DisponibilidadeFinanceiraRepository extends ContaCorrenteRepositoryBase {
        */
       $sAgrupamento = $oConta->c19_instit.$oConta->c19_orctiporec.$oConta->c19_concarpeculiar;
       $aContas[$sAgrupamento] = new stdClass();
-      $aContas[$sAgrupamento]->aCabecalho = array();
+      $aContas[$sAgrupamento]->aCabecalho = [];
 
       $oStdInstituicao = new stdClass();
       $oStdInstituicao->sIdentificador = "Instituição";

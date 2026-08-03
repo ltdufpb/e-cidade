@@ -23,12 +23,12 @@ class EstadoCivilEnun extends Enum
      */
     public function name()
     {
-        $data = array(
+        $data = [
             self::SOLTEIRO => "Solteiro",
             self::CASADO => "Casado",
             self::VIUVO => "Viúvo",
             self::DIVORCIADO => "Divorciado",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Zona de residência não encontrada.');
@@ -42,15 +42,16 @@ class EstadoCivilEnun extends Enum
      * @return array
      * @throws Exception
      */
+    #[\Override]
     public static function toArrayWithNames()
     {
         $tipos = self::values();
-        $return = array();
+        $return = [];
         foreach ($tipos as $tipo) {
-            $return[] = array(
+            $return[] = [
                 'value' => $tipo->value(),
                 'name' => $tipo->name()
-            );
+            ];
         }
 
         return $return;

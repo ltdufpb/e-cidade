@@ -37,7 +37,7 @@ include(modification("classes/db_db_almox_classe.php"));
 include(modification("classes/db_db_usuarios_classe.php"));
 include(modification("classes/db_matestoqueini_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //if (substr($DB_BASE,0,5) != "ontem") {
 //	  die("rotina indisponivel");
 //}

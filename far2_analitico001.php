@@ -31,8 +31,8 @@ include(modification("libs/db_sql.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_far_retiradaitens_classe.php"));
 include(modification("classes/db_far_retirada_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clfar_retiradaitens = new cl_far_retiradaitens;
@@ -40,7 +40,7 @@ $clfar_retirada = new cl_far_retirada;
 
 if(isset($data1) && $data2!=""){ 
 @$d1= substr(@$data1,6,4)."/".substr(@$data1,3,2)."/".substr(@$data1,0,2);
-@$d2= substr(@$data2,6,4)."/".substr(@$data2,3,2)."/".substr(@$data2,0,2);
+@$d2= substr((string) @$data2,6,4)."/".substr((string) @$data2,3,2)."/".substr((string) @$data2,0,2);
 $result2 = $clfar_retiradaitens->sql_record($clfar_retiradaitens->sql_query_retiradaitens(null,"fa03_c_descr,descrdepto,z01_nome,far_retirada.*,fa06_i_matersaude,fa06_i_codigo,fa06_i_retirada,m60_descr,m77_lote,m77_dtvalidade,m61_descr,case when fa09_f_quant is null then fa06_f_quant else fa09_f_quant end as fa09_f_quant","fa04_i_codigo desc","fa04_i_cgsund=$fa04_i_cgsund  and fa04_d_data BETWEEN '$d1' AND '$d2'"));
 }else{
 $result2 = $clfar_retiradaitens->sql_record($clfar_retiradaitens->sql_query_retiradaitens(null,"fa03_c_descr,descrdepto,z01_nome,far_retirada.*,fa06_i_matersaude,fa06_i_codigo,fa06_i_retirada,m60_descr,m77_lote,m77_dtvalidade,m61_descr,case when fa09_f_quant is null then fa06_f_quant else fa09_f_quant end as fa09_f_quant","fa04_i_codigo desc","fa04_i_cgsund=$fa04_i_cgsund"));
@@ -121,7 +121,7 @@ $d=0;
 	  $pdf->setfillcolor(240);
       $pdf->cell(20,4,"$fa04_i_codigo",0,0,"L",1);
       $pdf->cell(20,4,db_formatar($fa04_d_data,'d'),0,0,"L",1);
-      $pdf->cell(25,4,substr($fa04_c_numeroreceita,0,10),0,0,"L",1);
+      $pdf->cell(25,4,substr((string) $fa04_c_numeroreceita,0,10),0,0,"L",1);
       $pdf->cell(20,4,db_formatar($fa04_d_dtvalidade,'d'),0,0,"L",1);
       $pdf->cell(40,4,"$fa03_c_descr",0,0,"L",1);
       $pdf->cell(56,4,substr($fa04_i_profissional. "-". $z01_nome,0,40),0,0,"L",1);
@@ -134,10 +134,10 @@ $d=0;
     $pdf->cell(25,5,"",0,0,"L",0);
     $pdf->cell(25,5,"",0,0,"L",0);
 	$pdf->cell(15,6,"$fa06_i_matersaude",0,0,"L",0);
-    $pdf->cell(75,6,substr($m60_descr,0,40),0,0,"L",0);
+    $pdf->cell(75,6,substr((string) $m60_descr,0,40),0,0,"L",0);
     $pdf->cell(30,6,"$m77_lote",0,0,"L",0);
 	$pdf->cell(25,6,db_formatar($m77_dtvalidade,'d'),0,0,"L",0);
-    $pdf->cell(31,6,substr($m61_descr,0,17),0,0,"L",0);
+    $pdf->cell(31,6,substr((string) $m61_descr,0,17),0,0,"L",0);
     $pdf->cell(20,6,"$fa09_f_quant",0,1,"L",0);
 	  $cont++;
    }

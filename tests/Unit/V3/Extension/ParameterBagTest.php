@@ -42,7 +42,7 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
     public function testReplace($data)
     {
 
-        $replace = array('test' => 'test');
+        $replace = ['test' => 'test'];
 
         $this->obj->add($data);
         $this->obj->replace($replace);
@@ -70,7 +70,7 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($this->obj->get('invalid_key'));
         $this->assertFalse($this->obj->get('invalid_key', false));
-        $this->assertEquals(array('test' => 'test'), $this->obj->get('invalid_key', array('test' => 'test')));
+        $this->assertEquals(['test' => 'test'], $this->obj->get('invalid_key', ['test' => 'test']));
     }
 
   /**
@@ -170,44 +170,44 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
     public function provideDefaultData()
     {
 
-        $data1 = array(
+        $data1 = [
         'teste' => 'Lorem ipsum Minim ut deserunt.'
-        );
+        ];
 
-        $data2 = array(
-        'obj' => (object) array('teste' => 1)
-        );
+        $data2 = [
+        'obj' => (object) ['teste' => 1]
+        ];
 
-        $data3 = array(
-        'field' => array('field' => array('field' => (object) array('teste' => 'teste')))
-        );
+        $data3 = [
+        'field' => ['field' => ['field' => (object) ['teste' => 'teste']]]
+        ];
 
-        return array(
-        array($data1),
-        array($data2),
-        array($data3)
-        );
+        return [
+        [$data1],
+        [$data2],
+        [$data3]
+        ];
     }
 
     public function provideArrayData()
     {
 
-        $data1 = array(
-        'test' => array()
-        );
+        $data1 = [
+        'test' => []
+        ];
 
-        $data2 = array(
-        'test' => (object) array('teste' => 'teste')
-        );
+        $data2 = [
+        'test' => (object) ['teste' => 'teste']
+        ];
 
-        $data3 = array(
-        'test' => array('a' => (object) array('b' => array('c' => (object) array('d' => array()))))
-        );
+        $data3 = [
+        'test' => ['a' => (object) ['b' => ['c' => (object) ['d' => []]]]]
+        ];
 
-        return array(
-        array($data1),
-        array($data2),
-        array($data3),
-        );
+        return [
+        [$data1],
+        [$data2],
+        [$data3],
+        ];
     }
 }

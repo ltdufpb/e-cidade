@@ -39,14 +39,8 @@ use Exception;
  */
 class MetasIniciativaController extends Controller
 {
-    /**
-     * @var MetasIniciativaService
-     */
-    private $service;
-
-    public function __construct(MetasIniciativaService $service)
+    public function __construct(private readonly MetasIniciativaService $service)
     {
-        $this->service = $service;
     }
 
     /**

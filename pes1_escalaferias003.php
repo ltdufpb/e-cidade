@@ -51,8 +51,8 @@ try {
   
   $oGet              = db_utils::postMemory($_GET);
   $db_botao          = false;
-  $rh109_regist      = isset($oGet->rh109_regist) ? $oGet->rh109_regist : null;
-  $z01_nome          = isset($oGet->z01_nome)     ? $oGet->z01_nome     : null;
+  $rh109_regist      = $oGet->rh109_regist ?? null;
+  $z01_nome          = $oGet->z01_nome ?? null;
   $oServidor         = new Servidor($rh109_regist);
   $z01_nome = $oServidor->getCgm()->getNome();
   $oPeriodoGozoFerias = PeriodoGozoFerias::getUltimoPeriodoGozo( $oServidor );
@@ -70,7 +70,7 @@ try {
   $sTextoPeriodo         = $oPeriodoAquisivo->getDataInicial()->getDate(DBDate::DATA_PTBR)." - ";
   $sTextoPeriodo        .= $oPeriodoAquisivo->getDataFinal()->getDate(DBDate::DATA_PTBR)." Dias: {$rh109_diasdireito}";
 
-  $aPeriodosAquisitivos = array($oPeriodoAquisivo->getCodigo() => $sTextoPeriodo);
+  $aPeriodosAquisitivos = [$oPeriodoAquisivo->getCodigo() => $sTextoPeriodo];
   $oPeriodoAquisivo   = $oPeriodoGozoFerias->getPeriodoAquisitivo();
   $iCodigoPeriodoGozo = $oPeriodoGozoFerias->getCodigoPeriodo();
   
@@ -98,7 +98,7 @@ try {
   $rh109_periodoaquisitivofinal_ano   = $oPeriodoAquisivo->getDataFinal()->getAno();
   $rh109_diasdireito                  = $oPeriodoAquisivo->getDiasDireito();
   $rh109_faltasperiodoaquisitivo      = $oPeriodoAquisivo->getFaltasPeriodoAquisitivo();
-  $rh110_sequencial                   = ($oPeriodoGozoFerias->getCodigoPeriodo()) ? $oPeriodoGozoFerias->getCodigoPeriodo() : null;
+  $rh110_sequencial                   = $oPeriodoGozoFerias->getCodigoPeriodo() ?: null;
   $rh110_datainicial_dia              = $oPeriodoGozoFerias->getPeriodoInicial()->getDia();
   $rh110_datainicial_mes              = $oPeriodoGozoFerias->getPeriodoInicial()->getMes();
   $rh110_datainicial_ano              = $oPeriodoGozoFerias->getPeriodoInicial()->getAno();

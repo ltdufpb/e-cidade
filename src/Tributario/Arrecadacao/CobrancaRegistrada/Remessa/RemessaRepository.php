@@ -377,7 +377,7 @@ class RemessaRepository
             foreach ($aParcelas['unicas'] as $key => $value) {
                 $sSql .= ($count > 0) ? " or" : " and";
                 $sSql .= " (par.k00_tipo = $key";
-                $aux = explode(',', $value);
+                $aux = explode(',', (string) $value);
                 $strAux = "'".implode("','", $aux)."'";
                 $sSql .= " and recibounica.k00_dtvenc in ($strAux)))";
                 $count++;
@@ -400,7 +400,7 @@ class RemessaRepository
                     $sSql .= " (par.k00_tipo = $key and (";
                 }
 
-                $aux = explode(',', $value);
+                $aux = explode(',', (string) $value);
                 $count2 = 0;
                 foreach ($aux as $dado) {
                     $arrData = explode('.', $dado);
@@ -419,7 +419,7 @@ class RemessaRepository
     public function getSqlDataEmissao($sDataEmisssao, $sSql)
     {
         if ($sDataEmisssao) {
-            $arrAux = explode('/', $sDataEmisssao);
+            $arrAux = explode('/', (string) $sDataEmisssao);
             $sSql .= ($sSql == "") ? " WHERE":" AND";
             $sSql .= " par.k138_data = '$arrAux[2]-$arrAux[1]-$arrAux[0]'" ;
         }

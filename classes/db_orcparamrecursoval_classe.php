@@ -60,7 +60,7 @@ class cl_orcparamrecursoval
     public function __construct()
     {
         $this->rotulo = new rotulo("orcparamrecursoval");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -145,10 +145,10 @@ class cl_orcparamrecursoval
                 $this->erro_status = "0";
                 return false;
             }
-            $this->o48_seq = pg_result($result, 0, 0);
+            $this->o48_seq = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from orcparamrecursoval_o48_seq_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $o48_seq)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $o48_seq)) {
                 $this->erro_sql = " Campo o48_seq maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -186,7 +186,7 @@ class cl_orcparamrecursoval
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = " ($this->o48_seq) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = " já Cadastrado";
@@ -215,15 +215,15 @@ class cl_orcparamrecursoval
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,7875,'$this->o48_seq','I')");
-                $resac = db_query("insert into db_acount values($acount,1645,7875,'','" . AddSlashes(pg_result($resaco, 0, 'o48_seq')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1645,9763,'','" . AddSlashes(pg_result($resaco, 0, 'o48_grupo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1645,9586,'','" . AddSlashes(pg_result($resaco, 0, 'o48_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1645,9587,'','" . AddSlashes(pg_result($resaco, 0, 'o48_codrec')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1645,9589,'','" . AddSlashes(pg_result($resaco, 0, 'o48_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1645,9588,'','" . AddSlashes(pg_result($resaco, 0, 'o48_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1645,7875,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o48_seq')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1645,9763,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o48_grupo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1645,9586,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o48_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1645,9587,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o48_codrec')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1645,9589,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o48_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,1645,9588,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'o48_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         return true;
@@ -234,10 +234,10 @@ class cl_orcparamrecursoval
         $this->atualizacampos();
         $sql = " update orcparamrecursoval set ";
         $virgula = "";
-        if (trim($this->o48_seq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_seq"])) {
+        if (trim((string) $this->o48_seq) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_seq"])) {
             $sql .= $virgula . " o48_seq = $this->o48_seq ";
             $virgula = ",";
-            if (trim($this->o48_seq) == null) {
+            if (trim((string) $this->o48_seq) == null) {
                 $this->erro_sql = " Campo sequencial não informado.";
                 $this->erro_campo = "o48_seq";
                 $this->erro_banco = "";
@@ -247,10 +247,10 @@ class cl_orcparamrecursoval
                 return false;
             }
         }
-        if (trim($this->o48_grupo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_grupo"])) {
+        if (trim((string) $this->o48_grupo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_grupo"])) {
             $sql .= $virgula . " o48_grupo = $this->o48_grupo ";
             $virgula = ",";
-            if (trim($this->o48_grupo) == null) {
+            if (trim((string) $this->o48_grupo) == null) {
                 $this->erro_sql = " Campo Agrupamento de registros não informado.";
                 $this->erro_campo = "o48_grupo";
                 $this->erro_banco = "";
@@ -260,10 +260,10 @@ class cl_orcparamrecursoval
                 return false;
             }
         }
-        if (trim($this->o48_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_anousu"])) {
+        if (trim((string) $this->o48_anousu) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_anousu"])) {
             $sql .= $virgula . " o48_anousu = $this->o48_anousu ";
             $virgula = ",";
-            if (trim($this->o48_anousu) == null) {
+            if (trim((string) $this->o48_anousu) == null) {
                 $this->erro_sql = " Campo Exercicio não informado.";
                 $this->erro_campo = "o48_anousu";
                 $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_orcparamrecursoval
                 return false;
             }
         }
-        if (trim($this->o48_codrec) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_codrec"])) {
+        if (trim((string) $this->o48_codrec) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_codrec"])) {
             $sql .= $virgula . " o48_codrec = $this->o48_codrec ";
             $virgula = ",";
-            if (trim($this->o48_codrec) == null) {
+            if (trim((string) $this->o48_codrec) == null) {
                 $this->erro_sql = " Campo Recurso não informado.";
                 $this->erro_campo = "o48_codrec";
                 $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_orcparamrecursoval
                 return false;
             }
         }
-        if (trim($this->o48_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_instit"])) {
+        if (trim((string) $this->o48_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_instit"])) {
             $sql .= $virgula . " o48_instit = $this->o48_instit ";
             $virgula = ",";
-            if (trim($this->o48_instit) == null) {
+            if (trim((string) $this->o48_instit) == null) {
                 $this->erro_sql = " Campo Instituição não informado.";
                 $this->erro_campo = "o48_instit";
                 $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_orcparamrecursoval
                 return false;
             }
         }
-        if (trim($this->o48_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_valor"])) {
+        if (trim((string) $this->o48_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o48_valor"])) {
             $sql .= $virgula . " o48_valor = $this->o48_valor ";
             $virgula = ",";
-            if (trim($this->o48_valor) == null) {
+            if (trim((string) $this->o48_valor) == null) {
                 $this->erro_sql = " Campo Valor não informado.";
                 $this->erro_campo = "o48_valor";
                 $this->erro_banco = "";
@@ -326,21 +326,21 @@ class cl_orcparamrecursoval
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,7875,'$this->o48_seq','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o48_seq"]) || $this->o48_seq != "")
-                        $resac = db_query("insert into db_acount values($acount,1645,7875,'" . AddSlashes(pg_result($resaco, $conresaco, 'o48_seq')) . "','$this->o48_seq'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1645,7875,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o48_seq')) . "','$this->o48_seq'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o48_grupo"]) || $this->o48_grupo != "")
-                        $resac = db_query("insert into db_acount values($acount,1645,9763,'" . AddSlashes(pg_result($resaco, $conresaco, 'o48_grupo')) . "','$this->o48_grupo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1645,9763,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o48_grupo')) . "','$this->o48_grupo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o48_anousu"]) || $this->o48_anousu != "")
-                        $resac = db_query("insert into db_acount values($acount,1645,9586,'" . AddSlashes(pg_result($resaco, $conresaco, 'o48_anousu')) . "','$this->o48_anousu'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1645,9586,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o48_anousu')) . "','$this->o48_anousu'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o48_codrec"]) || $this->o48_codrec != "")
-                        $resac = db_query("insert into db_acount values($acount,1645,9587,'" . AddSlashes(pg_result($resaco, $conresaco, 'o48_codrec')) . "','$this->o48_codrec'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1645,9587,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o48_codrec')) . "','$this->o48_codrec'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o48_instit"]) || $this->o48_instit != "")
-                        $resac = db_query("insert into db_acount values($acount,1645,9589,'" . AddSlashes(pg_result($resaco, $conresaco, 'o48_instit')) . "','$this->o48_instit'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1645,9589,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o48_instit')) . "','$this->o48_instit'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["o48_valor"]) || $this->o48_valor != "")
-                        $resac = db_query("insert into db_acount values($acount,1645,9588,'" . AddSlashes(pg_result($resaco, $conresaco, 'o48_valor')) . "','$this->o48_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,1645,9588,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'o48_valor')) . "','$this->o48_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -394,15 +394,15 @@ class cl_orcparamrecursoval
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,7875,'$o48_seq','E')");
-                    $resac = db_query("insert into db_acount values($acount,1645,7875,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o48_seq')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1645,9763,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o48_grupo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1645,9586,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o48_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1645,9587,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o48_codrec')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1645,9589,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o48_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1645,9588,'','" . AddSlashes(pg_result($resaco, $iresaco, 'o48_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1645,7875,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o48_seq')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1645,9763,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o48_grupo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1645,9586,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o48_anousu')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1645,9587,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o48_codrec')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1645,9589,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o48_instit')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,1645,9588,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'o48_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }

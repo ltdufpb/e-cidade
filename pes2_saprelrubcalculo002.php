@@ -34,7 +34,7 @@ $clrotulo->label('rh27_descr');
 $clrotulo->label('rh27_elemen');
 $clrotulo->label('rh27_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
@@ -46,11 +46,11 @@ $sql1 = "select rh27_rubric,
 //echo $sql1;exit;
 $result1 = db_query($sql1);
 db_fieldsmemory($result1,0);
-if (pg_numrows($result1) == 0){
+if (pg_num_rows($result1) == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Rubrica não cadastrada no período de '.$mes.' / '.$ano);
 }
 
-$head3 = strtoupper($rh27_descr);
+$head3 = strtoupper((string) $rh27_descr);
 $head5 = "PERÍODO : ".$mes." / ".$ano;
 
 if($ponto == 's'){
@@ -125,7 +125,7 @@ order by recurso,z01_nome
 //echo $sql ; exit;
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem descontos de mensalidadedo sindicato no período de '.$mes.' / '.$ano);
 
@@ -171,7 +171,7 @@ $pdf->cell(20,$alt,db_formatar($total,'f'),0,1,"R",0);
 */
 ///// POR FUNCIONARIO
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage();

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhemissaocheque_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhemissaocheque = new cl_rhemissaocheque;
 $clrhemissaocheque->rotulo->label("r15_sequencial");
 $clrhemissaocheque->rotulo->label("r15_descricao");
@@ -98,9 +98,9 @@ $clrhemissaocheque->rotulo->label("r15_descricao");
         }else{
            $sql = $clrhemissaocheque->sql_query("",$campos,"r15_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_r15_descricao)){
-          $repassa = array("chave_r15_sequencial"=>$chave_r15_sequencial,"chave_r15_descricao"=>$chave_r15_descricao);
+          $repassa = ["chave_r15_sequencial"=>$chave_r15_sequencial,"chave_r15_descricao"=>$chave_r15_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

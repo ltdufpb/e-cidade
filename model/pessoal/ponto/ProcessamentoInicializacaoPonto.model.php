@@ -27,7 +27,7 @@
  */
 class ProcessamentoInicializacaoPonto {
 
-  private $aProcessamentos = array();
+  private $aProcessamentos = [];
   private $diretory        = 'model/pessoal/ponto/processamento';
 
   /**
@@ -40,7 +40,7 @@ class ProcessamentoInicializacaoPonto {
 
     foreach ($oDirectory as $oFile) {
 
-      if (substr($oFile->getFilename(), -3) != 'php') {
+      if (!str_ends_with($oFile->getFilename(), 'php')) {
         continue;
       }
 

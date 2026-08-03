@@ -36,7 +36,7 @@ $clprocfiscal = new cl_procfiscal;
   /*
 $clprocfiscalfiscais = new cl_procfiscalfiscais;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

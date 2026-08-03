@@ -33,7 +33,7 @@ class cl_confissqnretidopublica
     public function __construct()
     {
         $this->rotulo = new rotulo("confissqnretidopublica"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -108,10 +108,10 @@ class cl_confissqnretidopublica
          $this->erro_status = "0";
          return false; 
        }
-       $this->j170_sequencial = pg_result($result,0,0); 
+       $this->j170_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from confissqnretidopublica_j170_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j170_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j170_sequencial)){
          $this->erro_sql = " Campo j170_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -147,7 +147,7 @@ class cl_confissqnretidopublica
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Configuração ISSQN Retido Empresa Pública ($this->j170_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Configuração ISSQN Retido Empresa Pública já Cadastrado";
@@ -176,14 +176,14 @@ class cl_confissqnretidopublica
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1011993,'$this->j170_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010650,1011993,'','".AddSlashes(pg_result($resaco,0,'j170_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010650,1011994,'','".AddSlashes(pg_result($resaco,0,'j170_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010650,1011995,'','".AddSlashes(pg_result($resaco,0,'j170_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010650,1014070,'','".AddSlashes(pg_result($resaco,0,'j170_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010650,1014071,'','".AddSlashes(pg_result($resaco,0,'j170_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010650,1011993,'','".AddSlashes(pg_fetch_result($resaco,0,'j170_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010650,1011994,'','".AddSlashes(pg_fetch_result($resaco,0,'j170_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010650,1011995,'','".AddSlashes(pg_fetch_result($resaco,0,'j170_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010650,1014070,'','".AddSlashes(pg_fetch_result($resaco,0,'j170_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010650,1014071,'','".AddSlashes(pg_fetch_result($resaco,0,'j170_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -194,10 +194,10 @@ class cl_confissqnretidopublica
       $this->atualizacampos();
      $sql = " update confissqnretidopublica set ";
      $virgula = "";
-     if(trim($this->j170_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j170_sequencial"])){ 
+     if(trim((string) $this->j170_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j170_sequencial"])){ 
        $sql  .= $virgula." j170_sequencial = $this->j170_sequencial ";
        $virgula = ",";
-       if(trim($this->j170_sequencial) == null ){ 
+       if(trim((string) $this->j170_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "j170_sequencial";
          $this->erro_banco = "";
@@ -207,10 +207,10 @@ class cl_confissqnretidopublica
          return false;
        }
      }
-     if(trim($this->j170_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j170_receit"])){ 
+     if(trim((string) $this->j170_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j170_receit"])){ 
        $sql  .= $virgula." j170_receit = $this->j170_receit ";
        $virgula = ",";
-       if(trim($this->j170_receit) == null ){ 
+       if(trim((string) $this->j170_receit) == null ){ 
          $this->erro_sql = " Campo Receita não informado.";
          $this->erro_campo = "j170_receit";
          $this->erro_banco = "";
@@ -220,10 +220,10 @@ class cl_confissqnretidopublica
          return false;
        }
      }
-     if(trim($this->j170_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j170_anousu"])){ 
+     if(trim((string) $this->j170_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j170_anousu"])){ 
        $sql  .= $virgula." j170_anousu = $this->j170_anousu ";
        $virgula = ",";
-       if(trim($this->j170_anousu) == null ){ 
+       if(trim((string) $this->j170_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício não informado.";
          $this->erro_campo = "j170_anousu";
          $this->erro_banco = "";
@@ -233,17 +233,17 @@ class cl_confissqnretidopublica
          return false;
        }
      }
-     if(trim($this->j170_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j170_tipo"])){ 
-        if(trim($this->j170_tipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j170_tipo"])){ 
+     if(trim((string) $this->j170_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j170_tipo"])){ 
+        if(trim((string) $this->j170_tipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j170_tipo"])){ 
            $this->j170_tipo = "0" ; 
         } 
        $sql  .= $virgula." j170_tipo = $this->j170_tipo ";
        $virgula = ",";
      }
-     if(trim($this->j170_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j170_hist"])){ 
+     if(trim((string) $this->j170_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j170_hist"])){ 
        $sql  .= $virgula." j170_hist = $this->j170_hist ";
        $virgula = ",";
-       if(trim($this->j170_hist) == null ){ 
+       if(trim((string) $this->j170_hist) == null ){ 
          $this->erro_sql = " Campo Histórico para retenção de empresa pública não informado.";
          $this->erro_campo = "j170_hist";
          $this->erro_banco = "";
@@ -267,19 +267,19 @@ class cl_confissqnretidopublica
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1011993,'$this->j170_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j170_sequencial"]) || $this->j170_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010650,1011993,'".AddSlashes(pg_result($resaco,$conresaco,'j170_sequencial'))."','$this->j170_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010650,1011993,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j170_sequencial'))."','$this->j170_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j170_receit"]) || $this->j170_receit != "")
-             $resac = db_query("insert into db_acount values($acount,1010650,1011994,'".AddSlashes(pg_result($resaco,$conresaco,'j170_receit'))."','$this->j170_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010650,1011994,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j170_receit'))."','$this->j170_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j170_anousu"]) || $this->j170_anousu != "")
-             $resac = db_query("insert into db_acount values($acount,1010650,1011995,'".AddSlashes(pg_result($resaco,$conresaco,'j170_anousu'))."','$this->j170_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010650,1011995,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j170_anousu'))."','$this->j170_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j170_tipo"]) || $this->j170_tipo != "")
-             $resac = db_query("insert into db_acount values($acount,1010650,1014070,'".AddSlashes(pg_result($resaco,$conresaco,'j170_tipo'))."','$this->j170_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010650,1014070,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j170_tipo'))."','$this->j170_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j170_hist"]) || $this->j170_hist != "")
-             $resac = db_query("insert into db_acount values($acount,1010650,1014071,'".AddSlashes(pg_result($resaco,$conresaco,'j170_hist'))."','$this->j170_hist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010650,1014071,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j170_hist'))."','$this->j170_hist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -333,14 +333,14 @@ class cl_confissqnretidopublica
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1011993,'$j170_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010650,1011993,'','".AddSlashes(pg_result($resaco,$iresaco,'j170_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010650,1011994,'','".AddSlashes(pg_result($resaco,$iresaco,'j170_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010650,1011995,'','".AddSlashes(pg_result($resaco,$iresaco,'j170_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010650,1014070,'','".AddSlashes(pg_result($resaco,$iresaco,'j170_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010650,1014071,'','".AddSlashes(pg_result($resaco,$iresaco,'j170_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010650,1011993,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j170_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010650,1011994,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j170_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010650,1011995,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j170_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010650,1014070,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j170_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010650,1014071,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j170_hist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

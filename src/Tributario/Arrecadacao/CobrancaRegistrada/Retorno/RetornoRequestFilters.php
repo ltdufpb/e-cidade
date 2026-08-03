@@ -51,9 +51,9 @@ class RetornoRequestFilters
 
   private $iCodigoOcorrencia;
 
-  private static $aOcorrencia = array(self::CODIGO_OCORRENCIA_TODOS => 'Todos',
+  private static $aOcorrencia = [self::CODIGO_OCORRENCIA_TODOS => 'Todos',
                                       self::CODIGO_OCORRENCIA_ACEITO => 'Aceito',
-                                      self::CODIGO_OCORRENCIA_INCONSISTENTE => 'Inconsistente');
+                                      self::CODIGO_OCORRENCIA_INCONSISTENTE => 'Inconsistente'];
 
   public function __construct(DBDate $oDataEmissaoInicio, DBDate $oDataEmissaoFim)
   {

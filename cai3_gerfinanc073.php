@@ -80,7 +80,7 @@ for ($i = 0; $i < $iNroVars; $i++) {
 
 if (isset($oGet->marcarvencidas) && isset($oGet->marcartodas)) {
     if ($oGet->marcarvencidas == 'true' && $oGet->marcartodas == 'false') {
-        $aNumpres = split("N", $sNumpres);
+        $aNumpres = preg_split("#N#m", $sNumpres);
         $sNumpres = "";
         $sNumPreAnt = "";
         $sAuxiliar = "";
@@ -90,9 +90,9 @@ if (isset($oGet->marcarvencidas) && isset($oGet->marcartodas)) {
                 continue;
             }
 
-            $iNumpre = split("P", $aNumpres[$iInd]);
-            $iNumpar = split("P", strstr($aNumpres[$iInd], "P"));
-            $iNumpar = split("R", $iNumpar[1]);
+            $iNumpre = preg_split("#P#m", (string) $aNumpres[$iInd]);
+            $iNumpar = preg_split("#P#m", strstr((string) $aNumpres[$iInd], "P"));
+            $iNumpar = preg_split("#R#m", (string) $iNumpar[1]);
             $iReceit = $iNumpar[1];
             $iNumpar = $iNumpar[0];
             $iNumpre = $iNumpre[0];
@@ -165,7 +165,7 @@ if (isset($oGet->marcarvencidas) && isset($oGet->marcartodas)) {
                         $sSqlNotiusu = $clnotiusu->sql_query(null, "distinct {$sCampos}", "k50_notifica",
                           "k50_notifica in ({$sNotificacoes})");
 
-                        db_lovrot($sSqlNotiusu, 10, "()", "16", "js_enviaNotif|k50_notifica", null, "NoMe", array(),
+                        db_lovrot($sSqlNotiusu, 10, "()", "16", "js_enviaNotif|k50_notifica", null, "NoMe", [],
                           false);
                     }
                     ?>

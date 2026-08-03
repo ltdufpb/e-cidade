@@ -52,13 +52,13 @@ use ECidade\Configuracao\RelatorioLegal\Repositorio\LinhaInformacaoComplementarR
 
 $linhaFiltroPadraoRepositorio = new LinhaFiltroPadraoRepositorio();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (!isset($iCodigoPeriodo)) {
     $iCodigoPeriodo = null;
@@ -166,9 +166,9 @@ sajax_export("atualiza_nivel");// função exportada !
 sajax_export("atualiza_nivel_exclusao");// função exportada !
 sajax_handle_client_request();
 
-$dbwhere = array(
+$dbwhere = [
     "o69_codparamrel = {$relatorio->getSequencial()}"
-);
+];
 
 switch ($relatorio->getSequencial()) {
     case AnexoVIResultadoPrimario::CODIGO_RELATORIO:
@@ -426,7 +426,7 @@ $virgula = "";
 
                         $record = $clorcparamseq->sql_record($sSqlLinhas);
                         if ($clorcparamseq->numrows > 0) {
-                            for ($x = 0; $x < pg_numrows($record); $x++) {
+                            for ($x = 0; $x < pg_num_rows($record); $x++) {
                                 db_fieldsmemory($record, $x);
 
                                 $linha = LinhaRegistry::get($relatorio, $o69_codseq);
@@ -539,7 +539,7 @@ $virgula = "";
 
                                         if ($linha->isManual()) {
                                             $aColunas = $oLinhaRelatorio->getCols();
-                                            $avalores = array();
+                                            $avalores = [];
                                             if (count($aColunas) > 0) {
                                                 $oLinhaRelatorio->setPeriodo($iCodigoPeriodo);
                                                 $avalores = $oLinhaRelatorio->getValoresColunas(

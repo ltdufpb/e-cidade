@@ -164,7 +164,7 @@ class PdfToImage
     public function saveImage($pathToImage)
     {
         if (is_dir($pathToImage)) {
-            $pathToImage = rtrim($pathToImage, '\/') . DIRECTORY_SEPARATOR . $this->page . '.' . $this->outputFormat;
+            $pathToImage = rtrim((string) $pathToImage, '\/') . DIRECTORY_SEPARATOR . $this->page . '.' . $this->outputFormat;
         }
 
         $imageData = $this->getImageData($pathToImage);
@@ -279,7 +279,7 @@ class PdfToImage
      */
     protected function determineOutputFormat($pathToImage)
     {
-        $outputFormat = pathinfo($pathToImage, PATHINFO_EXTENSION);
+        $outputFormat = pathinfo((string) $pathToImage, PATHINFO_EXTENSION);
 
         if ($this->outputFormat != '') {
             $outputFormat = $this->outputFormat;

@@ -41,7 +41,7 @@ $clacordoacordogarantia = new cl_acordoacordogarantia;
 $clacordoacordopenalidade = new cl_acordoacordopenalidade;
 $clacordoitem = new cl_acordoitem;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){

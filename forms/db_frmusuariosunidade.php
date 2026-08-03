@@ -94,7 +94,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('t'=>'Sim','f'=>'Não');
+$x = ['t'=>'Sim','f'=>'Não'];
 db_select('sd25_b_ativo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -110,7 +110,7 @@ db_select('sd25_b_ativo',$x,true,$db_opcao,"");
    <?php 
      if(isset($sd25_i_unidade)){
       $sql_item = $clusuariosunidade->sql_query($sd25_i_unidade,$sd25_i_usuario,"*","sd25_i_usuario","sd25_i_unidade = $sd25_i_unidade");
-      $chavepri= array("sd25_i_unidade"=>$sd25_i_unidade,"sd25_i_usuario"=>$sd25_i_usuario);
+      $chavepri= ["sd25_i_unidade"=>$sd25_i_unidade,"sd25_i_usuario"=>$sd25_i_usuario];
 	  $cliframe_alterar_excluir->chavepri=$chavepri;
  	  $cliframe_alterar_excluir->sql     = $sql_item;
       $cliframe_alterar_excluir->campos  ="id_usuario, nome,sd25_b_ativo";
@@ -179,7 +179,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_usuariosunidade.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

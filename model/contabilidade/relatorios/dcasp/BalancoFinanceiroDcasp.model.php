@@ -44,20 +44,20 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
   private $rsBalanceteDespesaAnterior     = null;
   private $rsBalanceteVerificacao         = null;
   private $rsBalanceteVerificacaoAnterior = null;
-  private $aLinhasRelatorio = array();
+  private $aLinhasRelatorio = [];
 
-  private $aLinhasComRecurso = array(4, 5, 6, 15, 16, 17);
+  private $aLinhasComRecurso = [4, 5, 6, 15, 16, 17];
 
   /**
    * @type int
    */
-  const CODIGO_RELATORIO = 129;
+  const int CODIGO_RELATORIO = 129;
 
   /**
    * Contém os Recursos que não foram configurados
    * @var array
    */
-  private $aRecursosNaoConfigurados = array();
+  private $aRecursosNaoConfigurados = [];
 
   /**
    * Retorna os recursos vinculados que não foram vinculados nas configurações
@@ -140,14 +140,15 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
   /**
    * Retorna os Dados para emissão do Relatório
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $this->calculaValoresRelatorio();
 
-    $aLinhasUtilizamBalanceteReceita       = array(2, 4, 5, 6, 7);
-    $aLinhasUtilizamBalanceteDespesa       = array(13, 14, 15, 16, 17);
-    $aLinhasUtilizamBalanceteVerificacao   = array(11, 20);
-    $aLinhasUtilizamLancamentoPorDocumento = array(8, 9, 18, 19);
+    $aLinhasUtilizamBalanceteReceita       = [2, 4, 5, 6, 7];
+    $aLinhasUtilizamBalanceteDespesa       = [13, 14, 15, 16, 17];
+    $aLinhasUtilizamBalanceteVerificacao   = [11, 20];
+    $aLinhasUtilizamLancamentoPorDocumento = [8, 9, 18, 19];
 
     foreach ($this->aLinhasRelatorio as $iLinha => $oLinha) {
 
@@ -173,7 +174,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         $oColuna->formula = '#saldo_arrecadado_acumulado';
         RelatoriosLegaisBase::calcularValorDaLinha($this->rsBalanceteReceita,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                     RelatoriosLegaisBase::TIPO_CALCULO_RECEITA);
 
         $oColuna          = new stdClass();
@@ -181,7 +182,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         $oColuna->formula = '#saldo_arrecadado_acumulado';
         RelatoriosLegaisBase::calcularValorDaLinha($this->rsBalanceteReceitaAnoAnterior,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_RECEITA);
 
       }
@@ -197,7 +198,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         $oColuna->formula = '#empenhado_acumulado - #anulado_acumulado';
         RelatoriosLegaisBase::calcularValorDaLinha($this->rsBalanceteDespesa,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_DESPESA);
 
         $oColuna          = new stdClass();
@@ -205,7 +206,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         $oColuna->formula = '#empenhado_acumulado - #anulado_acumulado';
         RelatoriosLegaisBase::calcularValorDaLinha($this->rsBalanceteDespesaAnterior,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_DESPESA);
       }
 
@@ -216,7 +217,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         $oColuna->formula = '#saldo_final';
         RelatoriosLegaisBase::calcularValorDaLinha($this->rsBalanceteVerificacaoAnterior,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO);
 
         $oColuna          = new stdClass();
@@ -224,7 +225,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         $oColuna->formula = '#saldo_final';
         RelatoriosLegaisBase::calcularValorDaLinha($this->rsBalanceteVerificacao,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO);
 
       }
@@ -236,7 +237,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         $oColuna->formula = '#saldo_anterior';
         RelatoriosLegaisBase::calcularValorDaLinha($this->rsBalanceteVerificacaoAnterior,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO);
 
         $oColuna          = new stdClass();
@@ -244,7 +245,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         $oColuna->formula = '#saldo_anterior';
         RelatoriosLegaisBase::calcularValorDaLinha($this->rsBalanceteVerificacao,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO);
       }
 
@@ -258,7 +259,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         $oColuna->formula = '(#empenhado - #anulado - #liquidado) + #atual_a_pagar_liquidado';
         RelatoriosLegaisBase::calcularValorDaLinha($this->rsBalanceteDespesa,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_DESPESA);
 
         $oColuna          = new stdClass();
@@ -266,7 +267,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         $oColuna->formula = '(#empenhado - #anulado - #liquidado) + #atual_a_pagar_liquidado';
         RelatoriosLegaisBase::calcularValorDaLinha($this->rsBalanceteDespesaAnterior,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_DESPESA);
       }
 
@@ -283,7 +284,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         RelatoriosLegaisBase::calcularValorDaLinha(
           $rsRestosPagar,
           $oLinha,
-          array($oColuna),
+          [$oColuna],
           RelatoriosLegaisBase::TIPO_CALCULO_RESTO
         );
 
@@ -297,7 +298,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
         RelatoriosLegaisBase::calcularValorDaLinha(
           $rsRestosPagar,
           $oLinha,
-          array($oColuna),
+          [$oColuna],
           RelatoriosLegaisBase::TIPO_CALCULO_RESTO
         );
       }
@@ -317,7 +318,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
            * - 131 Estorno de Receb de Transferência Financeira
            */
           case 8 :
-            $oValores = $this->getValoresDocumentos(array(130));
+            $oValores = $this->getValoresDocumentos([130]);
           break;
 
           /**
@@ -331,7 +332,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
            * - 162 Depósitos de Diversas Origens - Estorno de Recebimento.
            */
           case 9:
-            $oValores = $this->getValoresDocumentos(array(150, 160));
+            $oValores = $this->getValoresDocumentos([150, 160]);
           break;
 
           /**
@@ -341,7 +342,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
            * - 121 Estorno de Pagamento de Transferência Financeira
            */
           case 18 :
-            $oValores = $this->getValoresDocumentos(array(120));
+            $oValores = $this->getValoresDocumentos([120]);
           break;
 
           /**
@@ -352,7 +353,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
            * - Coddoc 163 ? Depósitos de Diversas Origens ? Estorno de Pagamento.
            */
           case 19:
-            $oValores = $this->getValoresDocumentos(array(151, 161));
+            $oValores = $this->getValoresDocumentos([151, 161]);
             break;
         }
 
@@ -406,12 +407,12 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
     /**
      * Eventos contabeis do exercicio atual
      */
-    $aEventoContabilAtual = array();
+    $aEventoContabilAtual = [];
 
     /**
      * Eventos contabeis do exercicio anterior
      */
-    $aEventoContabilAnterior = array();
+    $aEventoContabilAnterior = [];
 
     foreach (explode(', ', $this->getInstituicoes()) as $iInstituicao) {
 
@@ -454,7 +455,7 @@ final class BalancoFinanceiroDcasp extends RelatoriosLegaisBase {
             $aEventoContabilAnterior[$oEventoContabilAnteriorInverso->getCodigoDocumento()][] = $oEventoContabilAnteriorInverso;
           }
 
-        } catch (Exception $oErro) {}
+        } catch (Exception) {}
 
       } // foreach
 

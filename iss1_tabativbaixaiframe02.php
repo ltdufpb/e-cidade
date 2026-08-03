@@ -31,7 +31,7 @@ include(modification("classes/db_ativprinc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo;
 $clativprinc = new cl_ativprinc;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(isset($seq)){
      db_inicio_transacao();
        $clativprinc->sql_record($clativprinc->sql_query_file($q07_inscr));	

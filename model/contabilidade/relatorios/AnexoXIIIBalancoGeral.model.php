@@ -53,9 +53,10 @@ class AnexoXIIIBalancoGeral extends RelatoriosLegaisBase  {
    * 
    * @return array - Colecao de stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
   	
-     $aLinhas                   = array();
+     $aLinhas                   = [];
      
      /**
       * montamos as datas, e processamos o balancete de verificação
@@ -71,9 +72,9 @@ class AnexoXIIIBalancoGeral extends RelatoriosLegaisBase  {
      $sWhereRP           = " e60_instit in ({$this->getInstituicoes()}) ";
      $sWhereReceita      = " o70_instit in ({$this->getInstituicoes()}) ";
      $sWhereDespesa      = " o58_instit in ({$this->getInstituicoes()}) ";
-     $aLinhasUsamPlano   = array(21, 24, 29, 30, 33, 34, 35, 36, 42, 43, 45, 50, 51, 54, 55,56, 57);
-     $aLinhasUsamRP      = array(48, 49);
-     $aLinhasUsamDespesa = array(27, 28, 48, 49);
+     $aLinhasUsamPlano   = [21, 24, 29, 30, 33, 34, 35, 36, 42, 43, 45, 50, 51, 54, 55,56, 57];
+     $aLinhasUsamRP      = [48, 49];
+     $aLinhasUsamDespesa = [27, 28, 48, 49];
      
      /**
       * Poocessa os restos a pagar
@@ -117,13 +118,13 @@ class AnexoXIIIBalancoGeral extends RelatoriosLegaisBase  {
        
        $aLinhasRelatorio[$iLinha]->setPeriodo($this->iCodigoPeriodo);
        $aColunasRelatorio  = $aLinhasRelatorio[$iLinha]->getCols($this->iCodigoPeriodo);
-       $aColunaslinha      = array();
+       $aColunaslinha      = [];
        $oLinha             = new stdClass();
        $oLinha->totalizar  = $aLinhasRelatorio[$iLinha]->isTotalizador();
        $oLinha->descricao  = $aLinhasRelatorio[$iLinha]->getDescricaoLinha();
        $oLinha->colunas    = $aColunasRelatorio; 
        $oLinha->desdobrar  = false;
-       $oLinha->contas     = array(); 
+       $oLinha->contas     = []; 
        $oLinha->nivellinha = $aLinhasRelatorio[$iLinha]->getNivel(); 
        foreach ($aColunasRelatorio as $oColuna) {
          
@@ -171,12 +172,12 @@ class AnexoXIIIBalancoGeral extends RelatoriosLegaisBase  {
            
          } else if (in_array($iLinha, $aLinhasUsamPlano)) {
            
-           $aLinhasSaldoInicial   = array(33, 34, 35, 36);
-           $aLinhasSaldoFinal     = array(21, 24, 42, 45, 54, 55, 56, 57);
-           $aLinhasSaldoCredito   = array(29, 30);
-           $aLinhasSaldoDebito    = array(50, 51);
-           $aLinhasVerificarSaldo = array();
-           $aLinhasBanco          = array(33, 34, 35, 36, 54, 56, 55, 57);
+           $aLinhasSaldoInicial   = [33, 34, 35, 36];
+           $aLinhasSaldoFinal     = [21, 24, 42, 45, 54, 55, 56, 57];
+           $aLinhasSaldoCredito   = [29, 30];
+           $aLinhasSaldoDebito    = [50, 51];
+           $aLinhasVerificarSaldo = [];
+           $aLinhasBanco          = [33, 34, 35, 36, 54, 56, 55, 57];
            /**
             * linhas que usam o balancete de verificação
             */
@@ -305,7 +306,7 @@ class AnexoXIIIBalancoGeral extends RelatoriosLegaisBase  {
        $aLinhas[$iLinha] = $oLinha;
      }
      
-     $aLinhas[39]->subfuncao = array();
+     $aLinhas[39]->subfuncao = [];
      for ($i = 0; $i < $iTotalLinhasDespesaFUncao; $i++) {
 
        $oResultado = db_utils::fieldsMemory($rsDespesaFuncao, $i);
@@ -353,7 +354,7 @@ class AnexoXIIIBalancoGeral extends RelatoriosLegaisBase  {
 
          foreach ($oLinha->colunas as $iColuna => $oColuna) {
            
-           if (trim($oColuna->o116_formula) != "") {
+           if (trim((string) $oColuna->o116_formula) != "") {
              
              $sFormulaOriginal = ($oColuna->o116_formula);
              $sFormula         = $this->oRelatorioLegal->parseFormula('aLinhas', $sFormulaOriginal, $iColuna, $aLinhas);

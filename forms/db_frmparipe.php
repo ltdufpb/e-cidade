@@ -89,7 +89,7 @@ if ( $oDaoCfpess->numrows > 0) {
               </td>
               <td> 
                 <?php
-                  $aRecPatrAfasta = Array("t" => "Sim", "f" => "Não");
+                  $aRecPatrAfasta = ["t" => "Sim", "f" => "Não"];
                   db_select('r11_recpatrafasta', $aRecPatrAfasta, true, $db_opcao, "style='width:90px;'");
                 ?>
               </td>

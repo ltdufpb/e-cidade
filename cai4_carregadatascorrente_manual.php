@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_corrente_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 $clcorrente = new cl_corrente;
 
 $strRetorno = "";
@@ -43,8 +43,8 @@ $sWhereExtrato = "";
 $traco      = "-";
 
 if (isset($sData) && $sData != "") {
-    $sWhereData = " and k12_data > '".implode("-",array_reverse(explode("/",$sData )))."'";
-    $sWhereExtrato = " and k86_data > '".implode("-",array_reverse(explode("/",$sData )))."'";
+    $sWhereData = " and k12_data > '".implode("-",array_reverse(explode("/",(string) $sData )))."'";
+    $sWhereExtrato = " and k86_data > '".implode("-",array_reverse(explode("/",(string) $sData )))."'";
 }
 
 $sWhereReduz  = " select c61_reduz ";
@@ -186,7 +186,7 @@ if ($numrows > 0 ) {
         $pipe = "|";
     }
 
-    if( substr($sData,5,2) != substr($k12_data,5,2)){
+    if( substr((string) $sData,5,2) != substr((string) $k12_data,5,2)){
       if ( ($diferenca + 0) != 0 ){
         $strRetorno = "1;Conciliacao do mes nao esta fechada. Verifique Diferenca! Proxima Data: [".db_formatar($k12_data,'d')."]";
       }

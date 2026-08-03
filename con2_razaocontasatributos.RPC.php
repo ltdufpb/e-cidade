@@ -66,7 +66,7 @@ try {
 
             if (sizeof($parametro->filtros->contas) > 0) {
                 $filtros->setContas = true;
-                $filtros->contas    = array();
+                $filtros->contas    = [];
                 foreach ($parametro->filtros->contas as $conta) {
                     $filtros->contas[] = $conta->sCodigo;
                 }
@@ -74,7 +74,7 @@ try {
 
             if (sizeof($parametro->filtros->documentos) > 0) {
                 $filtros->setDocumentos = true;
-                $filtros->documentos    = array();
+                $filtros->documentos    = [];
                 foreach ($parametro->filtros->documentos as $documento) {
                    // $filtros->documentos[] = $documento->sCodigo;
                 }

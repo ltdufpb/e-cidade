@@ -36,8 +36,8 @@ include(modification("classes/db_processoouvidoria_classe.php"));
 include(modification("classes/db_ouvidoriaatendimento_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $oPost        = db_utils::postMemory($_POST);
 $oGet         = db_utils::postMemory($_GET);

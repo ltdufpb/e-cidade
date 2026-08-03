@@ -9,17 +9,17 @@
 //========================================================================
 
 class ImgData_Diamonds extends ImgData {
-    var $name = 'Diamonds';
-    var $an = array(MARK_IMG_DIAMOND =>'imgdata');
-    var $colors = array('lightblue','darkblue','gray', 
-			'blue','pink','purple','red','yellow');
-    var $index  = array('lightblue' =>7,'darkblue'=>2,'gray'=>6, 
-			'blue'=>4,'pink'=>1,'purple'=>5,'red'=>0,'yellow'=>3);
+    public $name = 'Diamonds';
+    public $an = [MARK_IMG_DIAMOND =>'imgdata'];
+    public $colors = ['lightblue','darkblue','gray', 
+			'blue','pink','purple','red','yellow'];
+    public $index  = ['lightblue' =>7,'darkblue'=>2,'gray'=>6, 
+			'blue'=>4,'pink'=>1,'purple'=>5,'red'=>0,'yellow'=>3];
 
-    var $maxidx = 7 ;
-    var $imgdata ;
+    public $maxidx = 7 ;
+    public $imgdata ;
 
-    function ImgData_Diamonds() {
+    function __construct() {
 //==========================================================
 // File: diam_red.png
 //==========================================================

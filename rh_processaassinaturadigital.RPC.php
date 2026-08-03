@@ -57,11 +57,11 @@ try {
             throw new Exception('Usuário logado deve ser pessoa física');
           }
 
-          $retorno->usuario = (object) array(
+          $retorno->usuario = (object) [
             'id'    => $idUsuario,
             'nome'  => $cgmUsuario->getNomeCompleto(),
             'cpf'   => $cgmUsuario->getCpf()
-          );
+          ];
 
           break;
 
@@ -102,7 +102,7 @@ try {
 
         // Onde busca portarias
         case 'buscaPortarias':
-            $idsEstorageAssinar = array();
+            $idsEstorageAssinar = [];
             $whereIdsEstorageAssinados = '';
             $idUsuario  = db_getsession("DB_id_usuario");
             $usuario    = UsuarioSistemaRepository::getPorCodigo($idUsuario);
@@ -110,7 +110,7 @@ try {
             $cpf_cnpj = null;
 
             if (!empty($parametros->filter)) {
-                $filter = json_decode($parametros->filter);
+                $filter = json_decode((string) $parametros->filter);
                 
                 if (!empty($filter->cSituacao) && $filter->cSituacao == 'A') {
 
@@ -144,8 +144,8 @@ try {
                 }
             }
 
-            $aWhere         = array(" rh01_instit = ". db_getsession("DB_instit"));
-            $aWhereSituacao = array(" total_assinaturas > 0 ");
+            $aWhere         = [" rh01_instit = ". db_getsession("DB_instit")];
+            $aWhereSituacao = [" total_assinaturas > 0 "];
 
             if (!empty($filter->sAno)) {
 
@@ -349,17 +349,17 @@ try {
                 // verificador se foi assinado pelo usu�rio
                 if( $filter->cSituacao == 'A' ) {
                     if(!empty($item->assinaturas)) {
-                        $assinaturas = str_replace(array('{', '}', "'", '"'), "", $item->assinaturas);
+                        $assinaturas = str_replace(['{', '}', "'", '"'], "", $item->assinaturas);
                         $assinaturas = explode(',', $assinaturas);
 
                         if(is_array($assinaturas) && count($assinaturas) > 0) {
 
-                            $assinaturasDOC = array();
+                            $assinaturasDOC = [];
 
                             do {
                                 $assinatura = current($assinaturas);
                                 if(!(empty($assinatura) || $assinatura == "NULL")) {
-                                    $assinaturasDOC[] = (object)array_combine(array('nome', 'doc'), explode(":", $assinatura));
+                                    $assinaturasDOC[] = (object)array_combine(['nome', 'doc'], explode(":", $assinatura));
                                 }
 
                             } while (next($assinaturas));
@@ -378,7 +378,7 @@ try {
 
 
                 if (!empty($item->idestorage)) {
-                    $item->idestorage = str_replace(array('{', '}'), '', $item->idestorage);
+                    $item->idestorage = str_replace(['{', '}'], '', $item->idestorage);
                     $item->idestorage = explode(',', $item->idestorage);
 
                     if (
@@ -396,22 +396,22 @@ try {
                 $oServidor   = ServidorRepository::getInstanciaByCodigo($item->matricula);
                 $dadosCargo  = $oServidor->getDadosCargo();
                 
-                $item->cargoservidor = trim($dadosCargo->rh37_descr);
+                $item->cargoservidor = trim((string) $dadosCargo->rh37_descr);
                 
 
                 if (!empty($item->assinaturas)) {
 
-                    $item->assinaturas = str_replace(array('{', '}', "'", '"'), "", $item->assinaturas);
+                    $item->assinaturas = str_replace(['{', '}', "'", '"'], "", $item->assinaturas);
                     $item->assinaturas = explode(',', $item->assinaturas);
 
                     if(is_array($item->assinaturas) && count($item->assinaturas) > 0) {
 
-                        $assinaturasDocumento = array();
+                        $assinaturasDocumento = [];
 
                         do {
                             $assinatura = current($item->assinaturas);
                             if(!(empty($assinatura) || $assinatura == "NULL")) {
-                                $assinaturasDocumento[] = (object)array_combine(array('nome', 'cpf'), explode(":", $assinatura));
+                                $assinaturasDocumento[] = (object)array_combine(['nome', 'cpf'], explode(":", $assinatura));
                             }
 
                         } while (next($item->assinaturas));
@@ -422,7 +422,7 @@ try {
                 
                 if (!empty($item->url)) {
 
-                    $item->url = str_replace(array('{"', '"}', '{', '}'), '', $item->url);
+                    $item->url = str_replace(['{"', '"}', '{', '}'], '', $item->url);
                     $item->url = explode(',', $item->url);
 
                     $configApi = (object)Registry::get('app.config')->get('app.api');
@@ -452,7 +452,7 @@ try {
         case 'salvarDocumentoAssinado':
             db_inicio_transacao();
 
-            $json         = json_decode($parametros->json);
+            $json         = json_decode((string) $parametros->json);
             $file         = current($json->files);
             $path         = "";
             $father_id    = "";
@@ -461,7 +461,7 @@ try {
             $assinante = "";
 
             if( $json->isB64 ) {
-                $data = base64_decode($json->b64file);
+                $data = base64_decode((string) $json->b64file);
                 $filename = uniqid() . time() . ".pdf";
                 $mountPath = ECIDADE_PATH . "tmp" . DS . $filename;
                 file_put_contents($mountPath, $data);
@@ -480,7 +480,7 @@ try {
                 }
 
             }else{
-                $path         = preg_replace('/.*\/(tmp\/.*?\..*)$/', "$1", $file->filename);
+                $path         = preg_replace('/.*\/(tmp\/.*?\..*)$/', "$1", (string) $file->filename);
                 $assinante = $json->assinante;
             }
 
@@ -506,9 +506,9 @@ try {
             db_inicio_transacao();
 
             $oAssinaturaPortaria = new AssinaturaPortaria();
-            $oAssinaturaPortaria->setParamsPortaria(array(
+            $oAssinaturaPortaria->setParamsPortaria([
                 'portaria' => $parametros->numero_portaria
-            ));
+            ]);
 
             $file = $oAssinaturaPortaria->getPortariaAssinada();
             $retorno->file = $file;
@@ -519,7 +519,7 @@ try {
 
         case 'alterarSituacoesPortarias':
             
-            $portarias = json_decode($parametros->portarias);
+            $portarias = json_decode((string) $parametros->portarias);
 
             db_inicio_transacao();
 
@@ -538,12 +538,10 @@ try {
             $arquivos = $parametros->arquivo;
 
             if (!empty($arquivos)) {
-                $multipartParams = array_map(function ($arqId) {
-                    return array(
-                        "name" => 'files[]',
-                        'contents' => $arqId
-                    );
-                }, $arquivos);
+                $multipartParams = array_map(fn($arqId) => [
+                    "name" => 'files[]',
+                    'contents' => $arqId
+                ], $arquivos);
 
                 $storageResponse = new Post(Autenticacao::getInstance()->execute());
                 $response = $storageResponse->run("/files/to-sign", $multipartParams);
@@ -555,10 +553,10 @@ try {
                         $arquivoComTodasAssinaturas[$file_id] = $file_id;
                     }
                     
-                    $novaVersaoArquivoAssinado[$file_id] = (object) array(
+                    $novaVersaoArquivoAssinado[$file_id] = (object) [
                         'id' => $documento->file_id,
                         'url' => !empty($documento->url) ? $documento->url : null
-                    );
+                    ];
                 }
 
                 db_inicio_transacao();
@@ -576,9 +574,7 @@ try {
                         throw new Exception("Erro ao obter a portaria do arquivo assinado. ({$documentos})");
                     }
 
-                    $portariaAtualizarStatus = db_utils::makeCollectionFromRecord($rs, function ($documentoportaria) {
-                        return $documentoportaria->rh235_portaria;
-                    });
+                    $portariaAtualizarStatus = db_utils::makeCollectionFromRecord($rs, fn($documentoportaria) => $documentoportaria->rh235_portaria);
                     $portarias[] = $portariaAtualizarStatus;
 
                     alterarSituacoesPortarias($portarias, 'S');
@@ -616,9 +612,7 @@ try {
                             throw new Exception('Erro o incluir vínculo de novas versões dos arquivos de portarias.');
                         }
 
-                        $documentoAnterior = db_utils::makeFromRecord($rsDocumentoPortaria, function ($item) {
-                            return $item;
-                        }, 0);
+                        $documentoAnterior = db_utils::makeFromRecord($rsDocumentoPortaria, fn($item) => $item, 0);
 
                         $arquivoestorage = new cl_arquivoestorage();
                         $arquivoestorage->db177_idestorage                 = $arquivoAssinado->id;
@@ -679,7 +673,7 @@ try {
                     db_query($clArquivoEstorage->sql_query_estorage_por_portaria((int) $sCodigoPortaria))
                 );
 
-                $idEstorage = $rsArquivoEstorage['db177_idestorage'] ? $rsArquivoEstorage['db177_idestorage'] : null;
+                $idEstorage = $rsArquivoEstorage['db177_idestorage'] ?: null;
 
                 $clPortaria = new \cl_portaria();
 
@@ -800,7 +794,7 @@ function gerarArquivo($parametros, $signers = null)
 
     $path     = $processamentoRelatorio->sMsg;
 
-    $parametros->aParametros = JSON::create()->parse(urldecode($parametros->aParametros));
+    $parametros->aParametros = JSON::create()->parse(urldecode((string) $parametros->aParametros));
     $parametrosPortaria = current($parametros->aParametros);
     $nroPortaria = $parametrosPortaria->sValor;
     $parametrosPortaria = next($parametros->aParametros);
@@ -822,7 +816,7 @@ function gerarArquivo($parametros, $signers = null)
     $retorno->idestorage = $response->data->id;
     $retorno->url        = $configStorage->url;
     $retorno->url       .= '/'. $response->data->url;
-    $retorno->path       = preg_replace('/.*?(tmp\/.*...*)$/', "$1", $path);
+    $retorno->path       = preg_replace('/.*?(tmp\/.*...*)$/', "$1", (string) $path);
 
     return $retorno;
 }
@@ -843,12 +837,12 @@ function salvarDocumentoEstorage(
 ) {
     $file = new FilePostStorage();
     $file->realPath($path);
-    $file->clientOriginalName(preg_replace('/.*\/(.*?\..*)$/', "$1", $path));
+    $file->clientOriginalName(preg_replace('/.*\/(.*?\..*)$/', "$1", (string) $path));
     $file->visibility('public');
 
 
 
-    $arrayPortaria = explode('/', $nroPortaria);
+    $arrayPortaria = explode('/', (string) $nroPortaria);
 
     $clPortaria = new cl_portaria;
     $rsAssentamento = pg_fetch_assoc(db_query($clPortaria->sql_query_assentamento_servidor($iCodigoPortaria)));
@@ -949,25 +943,25 @@ function salvarDocumentoEstorage(
 
     if(!empty($assinante)) {
 
-        $nomeAssinante = preg_replace('/^(.*?):.*/', "$1", $assinante);
-        $cpfAssinante  = preg_replace(array(
+        $nomeAssinante = preg_replace('/^(.*?):.*/', "$1", (string) $assinante);
+        $cpfAssinante  = preg_replace([
                 '/.*?:(.*)$/',
                 '/\D/'
-            ), 
-            array(
+            ], 
+            [
                 "$1",
                 ""
-            ),
-            $assinante
+            ],
+            (string) $assinante
         );
 
         // $cpfAssinante = substr($cpfAssinante, 0, 11);
 
         $assinaturasdocumento = new cl_assinaturasdocumento();
 
-        $aWhereAssinantes = array(
+        $aWhereAssinantes = [
             "db178_cpf = '{$cpfAssinante}'"
-        );
+        ];
         $whereAssinantes  = implode(" AND ", $aWhereAssinantes);
         $sqlAssinantes    = $assinaturasdocumento->sql_query_file(null, "db178_sequencial", null, $whereAssinantes);
         $rsAssinantes     = db_query($sqlAssinantes);
@@ -991,10 +985,10 @@ function salvarDocumentoEstorage(
               
                 if(!empty($servidor)) {
                 
-                    $metadadosAssinante = (object)array(
+                    $metadadosAssinante = (object)[
                         'matricula' => $servidor->getMatricula(),
                         'cgm'       => $servidor->getCgm()->getCodigo()
-                    );
+                    ];
                     $assinaturasdocumento->db178_metadados = JSON::create()->stringify($metadadosAssinante);
                 }
             }
@@ -1017,16 +1011,16 @@ function salvarDocumentoEstorage(
         }
 
         $assinaturasarquivo = new cl_arquivoestorageassinaturas();
-        $aWhereAssinaturasarquivo = array("h31_sequencial = {$iCodigoPortaria}");
+        $aWhereAssinaturasarquivo = ["h31_sequencial = {$iCodigoPortaria}"];
         $sqlAssinaturasarquivo    = $assinaturasarquivo->sql_query_limite_assinaturas(
             null
-            ,array(
+            ,[
                  "portaria.h31_sequencial"
                 ,"portaria.h31_numero"
                 ,"portaria.h31_anousu"
                 ,"count(distinct arquivoestorageassinaturas.db179_assinatura) as totalAssinaturas"
                 ,"count(distinct assinaturadocumentodesignacao.db59_usuario) as limiteAssinaturasDocumento"
-            )
+            ]
             ,null
             ,$aWhereAssinaturasarquivo
         );
@@ -1120,7 +1114,7 @@ function buscaAssinante()
         ";
 
     $rs = db_query($sql);
-    if (pg_numrows($rs) > 0) {
+    if (pg_num_rows($rs) > 0) {
         return pg_fetch_object($rs, 0);
     }
 

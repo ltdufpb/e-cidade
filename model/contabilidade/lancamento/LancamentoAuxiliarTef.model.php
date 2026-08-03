@@ -141,7 +141,7 @@ class LancamentoAuxiliarTef extends LancamentoAuxiliarBase implements ILancament
     $sCampos .= "c69_codlan,";
     $sCampos .= "c02_instit";
 
-    $aWhereLancamento = array();
+    $aWhereLancamento = [];
     $aWhereLancamento[] = "c71_coddoc = {$iDocumento}";
     $aWhereLancamento[] = "c69_ordem = 1";
     $aWhereLancamento[] = "c86_sequencial is null";
@@ -263,6 +263,7 @@ class LancamentoAuxiliarTef extends LancamentoAuxiliarBase implements ILancament
     //parent::setDataLancamento($dtLancamento);
   }
 
+  #[\Override]
   public function getDataLancamento()
   {
     return $this->dtLancamento;
@@ -320,6 +321,7 @@ class LancamentoAuxiliarTef extends LancamentoAuxiliarBase implements ILancament
    * Seta valor para o complemento do lançamento contábil
    * @see LancamentoAuxiliarBase::setObservacaoHistorico()
    */
+  #[\Override]
   public function setObservacaoHistorico($sObservacaoHistorico) {
   	$this->sComplemento = $sObservacaoHistorico;
   }
@@ -328,6 +330,7 @@ class LancamentoAuxiliarTef extends LancamentoAuxiliarBase implements ILancament
    * Retorna o complemento do lançamento contábil
    * @see LancamentoAuxiliarBase::getObservacaoHistorico()
    */
+  #[\Override]
   public function getObservacaoHistorico() {
   	return $this->sComplemento;
   }

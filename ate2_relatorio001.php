@@ -33,8 +33,8 @@ include(modification("classes/db_atendimento_classe.php"));
 include(modification("classes/db_atenditem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clclientes = new cl_clientes;
 $cltecnico = new cl_tecnico;
@@ -123,8 +123,8 @@ $pdf->Cell(3, 1, "TÉCNICO(S) DO ATENDIMENTO: ", 0, 0, "L", 0);
 $pdf->Ln(3);
 $pdf->SetFont($Letra, '', 7);
 $pdf->SetFillColor(225);
-if (pg_numrows($result1) > 1) {
-	for ($i = 0; $i < pg_numrows($result1); $i ++) {
+if (pg_num_rows($result1) > 1) {
+	for ($i = 0; $i < pg_num_rows($result1); $i ++) {
 		db_fieldsmemory($result1, $i);
 		$pdf->MultiCell(190, 4, ''.$nome, 0, "J", 0);
 	}
@@ -146,7 +146,7 @@ if ($clatenditem->numrows > 0) {
 	$pdf->SetFillColor(225);
 	$pdf->Cell(90, 4, "SOLICITADO: ", 1, 0, "L", 1);
 	$pdf->Cell(90, 4, "EXECUTADO: ", 1, 1, "L", 1);
-	$pdf->SetWidths(array (90, 90));
+	$pdf->SetWidths( [90, 90]);
 	for ($x = 0; $x < $numrows; $x ++) {
 		db_fieldsmemory($result, $x);
 		$pdf->SetFont($Letra, 'I', 6);
@@ -155,13 +155,13 @@ if ($clatenditem->numrows > 0) {
 			$pdf->Cell(90, 4, "SOLICITADO: ", 1, 0, "L", 1);
 			$pdf->Cell(90, 4, "EXECUTADO: ", 1, 1, "L", 1);
 		}
-		if(strlen($at05_solicitado) == 0) {
+		if(strlen((string) $at05_solicitado) == 0) {
 			$at05_solicitado = "";
 		}
-		if(strlen($at05_feito) == 0) {
+		if(strlen((string) $at05_feito) == 0) {
 		    $at05_feito = "";	
 		}
-		$pdf->Row(array ($at05_solicitado, $at05_feito), 3);
+		$pdf->Row( [$at05_solicitado, $at05_feito], 3);
 	}
 }
 //db_criatabela($result);exit;

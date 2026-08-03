@@ -34,8 +34,8 @@ include(modification("classes/db_processoouvidoriaprorrogacao_classe.php"));
 $clprotprocesso = new cl_protprocesso();
 $clprocessoouvidoriaprorrogacao = new cl_processoouvidoriaprorrogacao();
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_GET_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_GET);
 
 $codproc	 =  $p58_codproc;
 $datausu	 = 	date('Y-m-d',db_getsession('DB_datausu'));
@@ -75,8 +75,8 @@ if($codproc != ""){
 	// die($sQueryProcessos);			
 		$rsQueryProcessos	= db_query($sQueryProcessos);
 		if(pg_num_rows($rsQueryProcessos)>0){
-			$aDadosProrrogacao = array();
-			$aDadosSequencial	 = array();
+			$aDadosProrrogacao = [];
+			$aDadosSequencial	 = [];
 			$iNumRows = pg_num_rows($rsQueryProcessos);
 
 			for($iInd = 0; $iInd < $iNumRows; $iInd++){
@@ -117,7 +117,7 @@ if($codproc != ""){
 						}else{
 							$mktime_ant = $mktime_atual;
 						}
-						$dt_atual = explode('-',$aDados1->ov15_dtfim);
+						$dt_atual = explode('-',(string) $aDados1->ov15_dtfim);
 						$mktime_atual = mktime(0,0,0,$dt_atual[1],$dt_atual[2],$dt_atual[0]);
 						if($mktime_ant < $mktime_atual){						
 							$aDadosProrrogacao[] = $aDados1;

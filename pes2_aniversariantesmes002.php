@@ -27,7 +27,7 @@
 
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 // db_postmemory($HTTP_GET_VARS,2);exit;
 
 $head3 = "RELATÓRIO DE ANIVERSARIANTES";
@@ -43,7 +43,7 @@ if(isset($listapens)){
 $dbwhereativo.= ") ";
 
 $xwhere = "";
-if(trim($mes_ani) != ''){
+if(trim((string) $mes_ani) != ''){
   $xwhere = " and date_part('month',rh01_nasc) = ".$mes_ani;
 }
 $sql = "
@@ -82,7 +82,7 @@ order by o40_orgao,z01_nome;
 //echo $sql ; exit;
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem cálculos para o período de '.$mes.' / '.$ano);
 
@@ -99,7 +99,7 @@ $alt        = 4;
 $total_fun  = 0;
 $xorgao     = 0;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if($xorgao != $o40_orgao){
      $troca = 1;

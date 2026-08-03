@@ -28,7 +28,7 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $sql = "select ag30_codigo,ag30_codage,ag30_data,ag30_hora,j01_nome,w03_nome,ag30_regist,ag30_depend,
                      (CASE WHEN ag40_codate IS NULL THEN 'Aguardando' ELSE 'Atendido' END) as situacao
                      from agenate
@@ -44,7 +44,7 @@ $sql = "select ag30_codigo,ag30_codage,ag30_data,ag30_hora,j01_nome,w03_nome,ag3
 					 and ag30_data = '$dataini'
 					 ";
   $result = db_query($sql);
-  $numrows = pg_numrows($result);		 
+  $numrows = pg_num_rows($result);		 
   if($numrows == 0) {
     $DB_MSG = "Não existe atendimento para esta agenda.";
 	$DB_VOLTA = 1;
@@ -95,12 +95,12 @@ input {
   $cor = "";
   for($i = 0;$i < $numrows;$i++) {
     ?>
-	<tr bgcolor="<?php  echo $cor = ($cor==$cor1?$cor2:$cor1) ?>" style="cursor: hand" onClick="parent.location.href='ipa4_atenmed004.php?<?=base64_encode("codigo=".pg_result($result,$i,"ag30_codigo")."&regist=".pg_result($result,$i,"ag30_regist")."&codage=".pg_result($result,$i,"ag30_codage")."&dataini=".$dataini."&depend=".pg_result($result,$i,"ag30_depend"))?>'">
-	  <td nowrap><?=pg_result($result,$i,"ag30_codigo")?>&nbsp;</td>
-	  <td nowrap><?=pg_result($result,$i,"ag30_hora")?>&nbsp;</td>
-	  <td nowrap><?=pg_result($result,$i,"situacao")?>&nbsp;</td>
-	  <td nowrap><?=pg_result($result,$i,"j01_nome")?>&nbsp;</td>
-	  <td nowrap><?=pg_result($result,$i,"w03_nome")?>&nbsp;</td>	  	  	  	  
+	<tr bgcolor="<?php  echo $cor = ($cor==$cor1?$cor2:$cor1) ?>" style="cursor: hand" onClick="parent.location.href='ipa4_atenmed004.php?<?=base64_encode("codigo=".pg_fetch_result($result,$i,"ag30_codigo")."&regist=".pg_fetch_result($result,$i,"ag30_regist")."&codage=".pg_fetch_result($result,$i,"ag30_codage")."&dataini=".$dataini."&depend=".pg_fetch_result($result,$i,"ag30_depend"))?>'">
+	  <td nowrap><?=pg_fetch_result($result,$i,"ag30_codigo")?>&nbsp;</td>
+	  <td nowrap><?=pg_fetch_result($result,$i,"ag30_hora")?>&nbsp;</td>
+	  <td nowrap><?=pg_fetch_result($result,$i,"situacao")?>&nbsp;</td>
+	  <td nowrap><?=pg_fetch_result($result,$i,"j01_nome")?>&nbsp;</td>
+	  <td nowrap><?=pg_fetch_result($result,$i,"w03_nome")?>&nbsp;</td>	  	  	  	  
 	</tr>
 	<?php 
   }

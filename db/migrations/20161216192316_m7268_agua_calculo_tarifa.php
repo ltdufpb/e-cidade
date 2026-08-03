@@ -25,7 +25,7 @@ class M7268AguaCalculoTarifa extends PostgresMigration
         $this->execute("alter table aguacalc add column x22_aguacontrato int4");
         $this->execute("alter table aguacalc add constraint aguacalc_aguacontrato_fk foreign key (x22_aguacontrato) references aguacontrato");
 
-        $aSyscampoDados = array(
+        $aSyscampoDados = [
             'codcam'       => 22252,
             'nomecam'      => 'x22_aguacontrato',
             'conteudo'     => 'int4',
@@ -39,44 +39,44 @@ class M7268AguaCalculoTarifa extends PostgresMigration
             'aceitatipo'   => 1,
             'tipoobj'      => 'text',
             'rotulorel'    => 'Contrato',
-        );
-        $oSyscampo = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+        ];
+        $oSyscampo = $this->table('db_syscampo', ['schema' => 'configuracoes']);
         $oSyscampo->insert(
             array_keys($aSyscampoDados),
-            array(
+            [
                 array_values($aSyscampoDados)
-            )
+            ]
         );
         $oSyscampo->saveData();
 
-        $oSysarqcamp = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
-        $aSysarqcampDados = array(
+        $oSysarqcamp = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
+        $aSysarqcampDados = [
             'codarq'       => 1443,
             'codcam'       => 22252,
             'seqarq'       => 13,
             'codsequencia' => 0,
-        );
+        ];
         $oSysarqcamp->insert(
             array_keys($aSysarqcampDados),
-            array(
+            [
                 array_values($aSysarqcampDados)
-            )
+            ]
         );
         $oSysarqcamp->saveData();
 
-        $oSysforkey = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
-        $aSysforkeyDados = array(
+        $oSysforkey = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
+        $aSysforkeyDados = [
             'codarq'     => 1443,
             'codcam'     => 22252,
             'sequen'     => 1,
             'referen'    => 3966,
             'tipoobjrel' => 0,
-        );
+        ];
         $oSysforkey->insert(
             array_keys($aSysforkeyDados),
-            array(
+            [
                 array_values($aSysforkeyDados)
-            )
+            ]
         );
         $oSysforkey->saveData();
     }

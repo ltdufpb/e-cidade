@@ -52,7 +52,7 @@ $db_opcao = 3;
 $db_botao = true;
 
 //parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-echo ($HTTP_SERVER_VARS["QUERY_STRING"]);
+echo ($_SERVER["QUERY_STRING"]);
 //db_postmemory($HTTP_POST_VARS);
 $cldb_syscampo->rotulo->label();
 
@@ -114,7 +114,7 @@ $cods = str_replace("XX",",",$secs);
           </td>
           <td> 
             <?php 
-               $x = array("varchar"=>"Varchar","text"=>"Text","oid"=>"Oid","int4"=>"Int4","int8"=>"Int8","float4"=>"Float4","float8"=>"Float8","bool"=>"Lógico","char"=>"Char","date"=>"Data");
+               $x = ["varchar"=>"Varchar","text"=>"Text","oid"=>"Oid","int4"=>"Int4","int8"=>"Int8","float4"=>"Float4","float8"=>"Float8","bool"=>"Lógico","char"=>"Char","date"=>"Data"];
                db_select('conteudo',$x,true,$db_opcao);
             ?>
           </td>
@@ -178,7 +178,7 @@ $cods = str_replace("XX",",",$secs);
           </td>
           <td> 
             <?php 
-               $x = array("0"=>"Não Valida Campo","1"=>"Somente Números","2"=>"Somente Letras","3"=>"Números e letras","4"=>"Números Casa Dec.","5"=>"Verdadeiro/Falso");
+               $x = ["0"=>"Não Valida Campo","1"=>"Somente Números","2"=>"Somente Letras","3"=>"Números e letras","4"=>"Números Casa Dec.","5"=>"Verdadeiro/Falso"];
                db_select('aceitatipo',$x,true,$db_opcao);
             ?>
           </td>
@@ -214,7 +214,7 @@ $cods = str_replace("XX",",",$secs);
           </td>
           <td valign='top'> 
             <?php 
-               $x = array("text"=>"Input Text","checkbox"=>"Input Checkbox","radiobutton"=>"Input Radio Button","image"=>"Input Imagem","textarea"=>"TextArea","select"=>"Select","multiple"=>"Select Multiple");
+               $x = ["text"=>"Input Text","checkbox"=>"Input Checkbox","radiobutton"=>"Input Radio Button","image"=>"Input Imagem","textarea"=>"TextArea","select"=>"Select","multiple"=>"Select Multiple"];
                db_select('tipoobj',$x,true,$db_opcao);
             ?>
           </td>

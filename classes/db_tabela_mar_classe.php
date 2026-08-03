@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE tabela_mar
 class cl_tabela_mar { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m89_codigo = 0; 
-   var $m89_nome = null; 
+   public $m89_codigo = 0; 
+   public $m89_nome = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m89_codigo = int4 = Código da tabeal 
                  m89_nome = varchar(20) = NOmes 
                  ";
    //funcao construtor da classe 
-   function cl_tabela_mar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabela_mar"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -92,10 +92,10 @@ class cl_tabela_mar {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m89_codigo = pg_result($result,0,0); 
+       $this->m89_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = @db_query("select last_value from tabela_mar_m89_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m89_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m89_codigo)){
          $this->erro_sql = " Campo m89_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -125,7 +125,7 @@ class cl_tabela_mar {
      $result = @db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tabela de teste ($this->m89_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tabela de teste já Cadastrado";
@@ -147,10 +147,10 @@ class cl_tabela_mar {
      $resaco = $this->sql_record($this->sql_query_file($this->m89_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,5702,'$this->m89_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,900,5702,'','".AddSlashes(pg_result($resaco,0,'m89_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,900,5703,'','".AddSlashes(pg_result($resaco,0,'m89_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,900,5702,'','".AddSlashes(pg_fetch_result($resaco,0,'m89_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,900,5703,'','".AddSlashes(pg_fetch_result($resaco,0,'m89_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -159,10 +159,10 @@ class cl_tabela_mar {
       $this->atualizacampos();
      $sql = " update tabela_mar set ";
      $virgula = "";
-     if(trim($this->m89_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m89_codigo"])){ 
+     if(trim((string) $this->m89_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m89_codigo"])){ 
        $sql  .= $virgula." m89_codigo = $this->m89_codigo ";
        $virgula = ",";
-       if(trim($this->m89_codigo) == null ){ 
+       if(trim((string) $this->m89_codigo) == null ){ 
          $this->erro_sql = " Campo Código da tabeal nao Informado.";
          $this->erro_campo = "m89_codigo";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_tabela_mar {
          return false;
        }
      }
-     if(trim($this->m89_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m89_nome"])){ 
+     if(trim((string) $this->m89_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m89_nome"])){ 
        $sql  .= $virgula." m89_nome = '$this->m89_nome' ";
        $virgula = ",";
-       if(trim($this->m89_nome) == null ){ 
+       if(trim((string) $this->m89_nome) == null ){ 
          $this->erro_sql = " Campo NOmes nao Informado.";
          $this->erro_campo = "m89_nome";
          $this->erro_banco = "";
@@ -189,12 +189,12 @@ class cl_tabela_mar {
 ";
      $resaco = $this->sql_record($this->sql_query_file($this->m89_codigo));
      if($this->numrows>0){       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,5702,'$this->m89_codigo','A')");
        if(isset($GLOBALS["HTTP_POST_VARS"]["m89_codigo"]))
-         $resac = db_query("insert into db_acount values($acount,900,5702,'".AddSlashes(pg_result($resaco,0,'m89_codigo'))."','$this->m89_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,900,5702,'".AddSlashes(pg_fetch_result($resaco,0,'m89_codigo'))."','$this->m89_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["m89_nome"]))
-         $resac = db_query("insert into db_acount values($acount,900,5703,'".AddSlashes(pg_result($resaco,0,'m89_nome'))."','$this->m89_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,900,5703,'".AddSlashes(pg_fetch_result($resaco,0,'m89_nome'))."','$this->m89_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @db_query($sql);
      if($result==false){ 
@@ -231,10 +231,10 @@ class cl_tabela_mar {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
-         $resac = db_query("insert into db_acountkey values($acount,5702,'".pg_result($resaco,$iresaco,'m89_codigo')."','E')");
-         $resac = db_query("insert into db_acount values($acount,900,5702,'','".AddSlashes(pg_result($resaco,$iresaco,'m89_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,900,5703,'','".AddSlashes(pg_result($resaco,$iresaco,'m89_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $acount = pg_fetch_result($resac,0,0);
+         $resac = db_query("insert into db_acountkey values($acount,5702,'".pg_fetch_result($resaco,$iresaco,'m89_codigo')."','E')");
+         $resac = db_query("insert into db_acount values($acount,900,5702,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m89_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,900,5703,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m89_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tabela_mar
@@ -287,7 +287,7 @@ class cl_tabela_mar {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tabela_mar";
@@ -302,7 +302,7 @@ class cl_tabela_mar {
    function sql_query ( $m89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -323,7 +323,7 @@ class cl_tabela_mar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -336,7 +336,7 @@ class cl_tabela_mar {
    function sql_query_file ( $m89_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -357,7 +357,7 @@ class cl_tabela_mar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

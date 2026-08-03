@@ -39,7 +39,7 @@ $oRetorno->erro              = false;
 $oRetorno->caminho_relatorio = '';
 $oRetorno->mensagem          = '';
 
-$aInstituicoes    = array();
+$aInstituicoes    = [];
 $sErroInstituicao = "O campo Instituição é de preenchimento obrigatório.";
 
 try {
@@ -56,7 +56,7 @@ try {
         throw new ParameterException($sErroInstituicao);
       }
 
-      $aInstituicoes = explode(",", $oParametros->sInstituicao);
+      $aInstituicoes = explode(",", (string) $oParametros->sInstituicao);
       if (empty($aInstituicoes)) {
         throw new ParameterException($sErroInstituicao);
       }

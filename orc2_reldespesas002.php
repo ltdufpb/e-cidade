@@ -66,7 +66,7 @@ $datafin = "{$data_fin_ano}-{$data_fin_mes}-{$data_fin_dia}";
 $data_ini_exibida = "{$data_ini_dia}/{$data_ini_mes}/{$data_ini_ano}";
 $data_fin_exibida = "{$data_fin_dia}/{$data_fin_mes}/{$data_fin_ano}";
 
-$recursosEncontrados = array();
+$recursosEncontrados = [];
 
 //---------------------------------------------------------------
 $clselorcdotacao = new cl_selorcdotacao();
@@ -80,7 +80,7 @@ if (trim(@$instits) == "") {
 $resultinst = db_query("select codigo, nomeinst from db_config where codigo in ({$instits})");
 $descr_inst = '';
 $sVirgula = '';
-for ($iInstituicao = 0; $iInstituicao < pg_numrows($resultinst); $iInstituicao++) {
+for ($iInstituicao = 0; $iInstituicao < pg_num_rows($resultinst); $iInstituicao++) {
     db_fieldsmemory($resultinst, $iInstituicao);
     $descr_inst .= $sVirgula . $nomeinst;
     $sVirgula = ', ';
@@ -122,9 +122,9 @@ function getFonteRecurso($o58_codigo, $anousu, $apresentarCodigoSiconfi)
     return sprintf('%s - %s', $fonte, $fonteRecurso->recurso->o15_complemento);
 }
 
-if (substr($nivel, 1, 1) == 'A') {
+if (substr((string) $nivel, 1, 1) == 'A') {
     $completo = false;
-    $nivela = substr($nivel, 0, 1);
+    $nivela = substr((string) $nivel, 0, 1);
     if ($nivela == "9") {
         $completo = true;
         $nivela = "8";
@@ -193,7 +193,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
     $pagina = 1;
 
-    for ($i = 0; $i < pg_numrows($result); $i++) {
+    for ($i = 0; $i < pg_num_rows($result); $i++) {
         $automatico = 0;
         db_fieldsmemory($result, $i);
 
@@ -375,7 +375,7 @@ if (substr($nivel, 1, 1) == 'A') {
             $xorgao = $o58_orgao;
             if ($nivela == 1) {
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($o40_descr, 0, 33), 0, 0, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $o40_descr, 0, 33), 0, 0, "L", 0);
                 $pdf->cell(48, $alt, '', 0, 0, "L", 0);
                 $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
                 $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -401,7 +401,7 @@ if (substr($nivel, 1, 1) == 'A') {
                 $totunidaatual += $atual_menos_reservado;
             } else {
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($o40_descr, 0, 33), 0, 1, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $o40_descr, 0, 33), 0, 1, "L", 0);
                 $xunidade = 0;
             }
         }
@@ -410,7 +410,7 @@ if (substr($nivel, 1, 1) == 'A') {
             $xunidade = "$o58_unidade";
             if ($nivela == 2) {
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($o41_descr, 0, 33), 0, 0, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $o41_descr, 0, 33), 0, 0, "L", 0);
                 $pdf->cell(48, $alt, '', 0, 0, "L", 0);
                 $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
                 $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -436,7 +436,7 @@ if (substr($nivel, 1, 1) == 'A') {
                 $totunidaatual += $atual_menos_reservado;
             } else {
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($o41_descr, 0, 33), 0, 1, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $o41_descr, 0, 33), 0, 1, "L", 0);
             }
         }
 
@@ -446,7 +446,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
             if ($nivela == 3) {
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade') . db_formatar($o58_funcao, 'funcao'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 0, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 0, "L", 0);
                 $pdf->cell(48, $alt, '', 0, 0, "L", 0);
                 $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
                 $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -472,7 +472,7 @@ if (substr($nivel, 1, 1) == 'A') {
                 $totunidaatual += $atual_menos_reservado;
             } else {
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade') . db_formatar($o58_funcao, 'funcao'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 1, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 1, "L", 0);
             }
         }
         if ("$o58_orgao.$o58_unidade.$o58_funcao.$o58_subfuncao" != "$xsubfuncao" && $o58_subfuncao != 0) {
@@ -480,7 +480,7 @@ if (substr($nivel, 1, 1) == 'A') {
             $descr = $o53_descr;
             if ($nivela == 4) {
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade') . db_formatar($o58_funcao, 'orgao') . "." . db_formatar($o58_subfuncao, 'subfuncao'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 0, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 0, "L", 0);
                 $pdf->cell(48, $alt, '', 0, 0, "L", 0);
                 $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
                 $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -506,7 +506,7 @@ if (substr($nivel, 1, 1) == 'A') {
                 $totunidaatual += $atual_menos_reservado;
             } else {
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'orgao') . db_formatar($o58_funcao, 'unidade') . "." . db_formatar($o58_subfuncao, 'subfuncao'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 1, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 1, "L", 0);
             }
         }
 
@@ -516,7 +516,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
             if ($nivela == 5) {
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade') . db_formatar($o58_funcao, 'funcao') . "." . db_formatar($o58_subfuncao, 's', '0', 3, 'e') . "." . db_formatar($o58_programa, 'programa'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 0, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 0, "L", 0);
                 $pdf->cell(48, $alt, '', 0, 0, "L", 0);
                 $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
                 $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -542,7 +542,7 @@ if (substr($nivel, 1, 1) == 'A') {
                 $totunidaatual += $atual_menos_reservado;
             } else {
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade') . db_formatar($o58_funcao, 'funcao') . "." . db_formatar($o58_subfuncao, 'subfuncao') . "." . db_formatar($o58_programa, 'programa'));
-                $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 1, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 1, "L", 0);
             }
         }
 
@@ -552,7 +552,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
             if ($nivela == 6) {
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade') . db_formatar($o58_funcao, 'orgao') . "." . db_formatar($o58_subfuncao, 's', '0', 3, 'e') . "." . db_formatar($o58_programa, 'programa') . "." . db_formatar($o58_projativ, 'projativ'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 0, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 0, "L", 0);
                 $pdf->cell(48, $alt, '', 0, 0, "L", 0);
                 $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
                 $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -580,7 +580,7 @@ if (substr($nivel, 1, 1) == 'A') {
             } else {
                 $pdf->setfont('arial', 'b', 7);
                 $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade') . db_formatar($o58_funcao, 'funcao') . "." . db_formatar($o58_subfuncao, 'subfuncao') . "." . db_formatar($o58_programa, 'programa') . "." . db_formatar($o58_projativ, 'projativ'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 0, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 0, "L", 0);
                 $pdf->cell(48, $alt, '', 0, 0, "L", 0);
                 if ($completo == false) {
                     $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
@@ -601,7 +601,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
             if ($nivela == 7) {
                 $pdf->cell(27, $alt, db_formatar($o58_elemento, 'elemento'), 0, 0, "L", 0);
-                $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 0, "L", 0);
+                $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 0, "L", 0);
                 $pdf->cell(48, $alt, '', 0, 0, "L", 0);
                 $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
                 $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -634,7 +634,7 @@ if (substr($nivel, 1, 1) == 'A') {
             $codigo_recurso = getFonteRecurso($o58_codigo, $anousu, $apresentarCodigoSiconfi);
 
             if ($completo == false) {
-                $pdf->cell(27, $alt, substr($o58_elemento, 1, 14), 0, 0, "L", 0);
+                $pdf->cell(27, $alt, substr((string) $o58_elemento, 1, 14), 0, 0, "L", 0);
                 $pdf->cell(77, $alt, $descr, 0, 0, "L", 0);
                 $pdf->cell(15, $alt, $codigo_recurso, 0, 0, "R", 0);
                 $pdf->cell(16, $alt, $o58_coddot . "-" . db_CalculaDV($o58_coddot), 0, 0, "C", 0);
@@ -666,7 +666,7 @@ if (substr($nivel, 1, 1) == 'A') {
             } else {
                 $pdf->setfont('arial', 'b', 7);
                 $pdf->cell(27, $alt, $o58_elemento, 0, 0, "L", 0);
-                $pdf->cellAdapt(7, 63, $alt, substr($descr, 0, 50), 0, 0, "L", 0);
+                $pdf->cellAdapt(7, 63, $alt, substr((string) $descr, 0, 50), 0, 0, "L", 0);
                 $pdf->cell(15, $alt, $codigo_recurso, 0, 0, "L", 0);
 
                 $pdf->cell(30, $alt, $o58_coddot . "-" . db_CalculaDV($o58_coddot), 0, 0, "C", 0);
@@ -719,11 +719,11 @@ if (substr($nivel, 1, 1) == 'A') {
             if ($lista_subeleme == 'S') {
                 $sql = "select *
 					from orcelemento
-					where substr(o56_elemento,1,7) = '" . str_replace('.', '', substr($o58_elemento, 0, 7)) . "' and
+					where substr(o56_elemento,1,7) = '" . str_replace('.', '', substr((string) $o58_elemento, 0, 7)) . "' and
 					      substr(o56_elemento,8,5) != '00000' and o56_anousu = " . db_getsession("DB_anousu") . " and
 					      o56_orcado is true";
                 $res = db_query($sql);
-                for ($ne = 0; $ne < pg_numrows($res); $ne++) {
+                for ($ne = 0; $ne < pg_num_rows($res); $ne++) {
                     db_fieldsmemory($res, $ne);
                     $pdf->cell(20, $alt, $o56_elemento, 0, 0, "L", 0);
                     $pdf->cell(80, $alt, $o56_descr, 0, 0, "L", 0);
@@ -846,7 +846,7 @@ if (substr($nivel, 1, 1) == 'A') {
         $pdf->cell(25, $alt, db_formatar($nGeralTotOrgaopag, 'f'), "TBRL", 0, "R", 1);
     }
 } else {
-    $nivela = substr($nivel, 0, 1);
+    $nivela = substr((string) $nivel, 0, 1);
     $anousu = db_getsession("DB_anousu");
     $result = db_dotacaosaldo($nivela, 3, 2, true, $sele_work, $anousu, $dataini, $datafin);
 //db_criatabela($result);
@@ -888,7 +888,7 @@ if (substr($nivel, 1, 1) == 'A') {
     $nGeralTotOrgaoini = 0;
     $pagina = 1;
 
-    for ($iLinha = 0; $iLinha < pg_numrows($result); $iLinha++) {
+    for ($iLinha = 0; $iLinha < pg_num_rows($result); $iLinha++) {
         db_fieldsmemory($result, $iLinha);
 
         //Sobreescreve valores referente aosm reservados por reservados até a data informada (data final).
@@ -921,7 +921,7 @@ if (substr($nivel, 1, 1) == 'A') {
         }
         if ($nivela == 1) {
             $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao'), 0, 0, "L", 0);
-            $pdf->cell(60, $alt, substr($o40_descr, 0, 33), 0, 0, "L", 0);
+            $pdf->cell(60, $alt, substr((string) $o40_descr, 0, 33), 0, 0, "L", 0);
             $pdf->cell(48, $alt, '', 0, 0, "L", 0);
             $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -949,7 +949,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
         if ($nivela == 2) {
             $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade'), 0, 0, "L", 0);
-            $pdf->cell(60, $alt, substr($o41_descr, 0, 33), 0, 0, "L", 0);
+            $pdf->cell(60, $alt, substr((string) $o41_descr, 0, 33), 0, 0, "L", 0);
             $pdf->cell(48, $alt, '', 0, 0, "L", 0);
             $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -977,7 +977,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
         if ($nivela == 3) {
             $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade') . db_formatar($o58_funcao, 'funcao'), 0, 0, "L", 0);
-            $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 0, "L", 0);
+            $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 0, "L", 0);
             $pdf->cell(48, $alt, '', 0, 0, "L", 0);
             $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -1005,7 +1005,7 @@ if (substr($nivel, 1, 1) == 'A') {
         $descr = $o53_descr;
         if ($nivela == 4) {
             $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade') . db_formatar($o58_funcao, 'orgao') . "." . db_formatar($o58_subfuncao, 'subfuncao'), 0, 0, "L", 0);
-            $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 0, "L", 0);
+            $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 0, "L", 0);
             $pdf->cell(48, $alt, '', 0, 0, "L", 0);
             $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -1033,7 +1033,7 @@ if (substr($nivel, 1, 1) == 'A') {
         $descr = $o54_descr;
         if ($nivela == 5) {
             $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade') . db_formatar($o58_funcao, 'funcao') . "." . db_formatar($o58_subfuncao, 's', '0', 3, 'e') . "." . db_formatar($o58_programa, 'programa'), 0, 0, "L", 0);
-            $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 0, "L", 0);
+            $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 0, "L", 0);
             $pdf->cell(48, $alt, '', 0, 0, "L", 0);
             $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -1061,7 +1061,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
         if ($nivela == 6) {
             $pdf->cell(27, $alt, db_formatar($o58_orgao, 'orgao') . db_formatar($o58_unidade, 'unidade') . db_formatar($o58_funcao, 'orgao') . "." . db_formatar($o58_subfuncao, 's', '0', 3, 'e') . "." . db_formatar($o58_programa, 'programa') . "." . db_formatar($o58_projativ, 'projativ'), 0, 0, "L", 0);
-            $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 0, "L", 0);
+            $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 0, "L", 0);
             $pdf->cell(48, $alt, '', 0, 0, "L", 0);
             $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -1089,7 +1089,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
         if ($nivela == 7) {
             $pdf->cell(27, $alt, db_formatar($o58_elemento, 'elemento'), 0, 0, "L", 0);
-            $pdf->cell(60, $alt, substr($descr, 0, 33), 0, 0, "L", 0);
+            $pdf->cell(60, $alt, substr((string) $descr, 0, 33), 0, 0, "L", 0);
             $pdf->cell(48, $alt, '', 0, 0, "L", 0);
             $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);
@@ -1122,7 +1122,7 @@ if (substr($nivel, 1, 1) == 'A') {
 
             $pdf->cell(20, $alt, $codigo_recurso, 0, 0, "L", 0);
 
-            $pdf->cell(100, $alt, substr($o15_descr, 0, 25), 0, 0, "L", 0);
+            $pdf->cell(100, $alt, substr((string) $o15_descr, 0, 25), 0, 0, "L", 0);
             $pdf->cell(15, $alt, $o58_coddot . "-" . db_CalculaDV($o58_coddot), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($dot_ini, 'f'), 0, 0, "R", 0);
             $pdf->cell(25, $alt, db_formatar($atual, 'f'), 0, 0, "R", 0);

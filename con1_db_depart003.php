@@ -45,12 +45,12 @@ $cldb_departorg   = new cl_db_departorg;
 $cldb_departender = new cl_db_departender;
 $cldb_config      = new cl_db_config;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $db_botao = false;
 $db_opcao = 33;
 $anousu = db_getsession("DB_anousu");
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   $db_opcao = 3;
 
   db_inicio_transacao();
@@ -103,7 +103,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($cldb_depart->erro_status=="0"){
     $cldb_depart->erro(true,false);
     

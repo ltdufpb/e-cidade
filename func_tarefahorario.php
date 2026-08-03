@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefa_classe.php"));
 include(modification("classes/db_tarefaparam_classe.php"));
-db_postmemory($HTTP_POST_VARS,2);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST,2);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 if($pesquisa_chave!=null && $pesquisa_chave!=""){
 	$erro = testa_horarios($pesquisa_chave,$at40_sequencial);
 	if($erro == false) {
@@ -79,44 +79,44 @@ function testa_horarios($at40_responsavel,$at40_sequencial) {
 																																		                                                     (at40_horainidia <= '$horafim' and at40_horafim >= '$horainidia')"));
 	if($cltarefa->numrows > 0) {
 		$NumRows    = $cltarefa->numrows;
-		$NumFields  = pg_numfields($result);
-		$vet_update = array();
-		$vet_keys   = array();
+		$NumFields  = pg_num_fields($result);
+		$vet_update = [];
+		$vet_keys   = [];
 					
 		for($i = 0; $i < $NumRows; $i++) {
 			for($j = 0; $j < $NumFields; $j++) {
 				$resto = 0;
-				if(pg_fieldname($result, $j) == "at40_diaini") {
-					$db_diaini = pg_result($result, $i, $j);
+				if(pg_field_name($result, $j) == "at40_diaini") {
+					$db_diaini = pg_fetch_result($result, $i, $j);
 				}
-				if(pg_fieldname($result, $j) == "at40_diafim") {
-					$db_diafim = pg_result($result, $i, $j);
+				if(pg_field_name($result, $j) == "at40_diafim") {
+					$db_diafim = pg_fetch_result($result, $i, $j);
 				}
-				if(pg_fieldname($result, $j) == "at40_horainidia") {
-					$db_horaini = pg_result($result, $i, $j);
+				if(pg_field_name($result, $j) == "at40_horainidia") {
+					$db_horaini = pg_fetch_result($result, $i, $j);
 					if(strlen(trim($db_horaini)) == 2) {
-						$db_horaini  = substr(pg_result($result, $i, $j),0,2);
+						$db_horaini  = substr(pg_fetch_result($result, $i, $j),0,2);
 						$db_horaini .= ":00";
 					}
-					$uphoraini  = substr(pg_result($result, $i, $j),0,2) + $previsao;
-					$min        = substr(pg_result($result, $i, $j),3,2);
+					$uphoraini  = substr(pg_fetch_result($result, $i, $j),0,2) + $previsao;
+					$min        = substr(pg_fetch_result($result, $i, $j),3,2);
 					$uphoraini .= ":" . $min;
 
 					if($uphoraini > $at53_horafim_manha) {		// tarde
 						if($uphoraini > $at53_horafim_tarde) {	// maior que hora final da tarde 18
-							$resto = substr($uphoraini,0,2) - substr($at53_horafim_tarde,0,2);
+							$resto = substr($uphoraini,0,2) - substr((string) $at53_horafim_tarde,0,2);
 							if($resto == 0) {
-								$resto    += substr($uphoraini,3,2) - substr($at53_horafim_tarde,3,2);
-								$uphoraini = substr($at53_horaini_manha,0,2);
-								$resto    += substr($at53_horaini_manha,3,2);
+								$resto    += substr($uphoraini,3,2) - substr((string) $at53_horafim_tarde,3,2);
+								$uphoraini = substr((string) $at53_horaini_manha,0,2);
+								$resto    += substr((string) $at53_horaini_manha,3,2);
 							}
 							else {
-								$uphoraini = db_formatar((substr($at53_horaini_manha,0,2) + ($resto * 2)),'s','0',2,'e',0);
+								$uphoraini = db_formatar((substr((string) $at53_horaini_manha,0,2) + ($resto * 2)),'s','0',2,'e',0);
 								$resto     = 0;
 							}
 							if($resto >= 60) {
 								$resto    -= 60;
-								$uphoraini = db_formatar((substr($at53_horaini_manha,0,2) + 1),'s','0',2,'e',0);
+								$uphoraini = db_formatar((substr((string) $at53_horaini_manha,0,2) + 1),'s','0',2,'e',0);
 							}
 							$uphoraini .= ":" . db_formatar($resto,'s','0',2,'e',0);
 							$db_diafim  = substr($db_diafim,0,4) . "-" . substr($db_diafim,5,2) . "-" . db_formatar((substr($db_diafim,8,2) + 1),'s','0',2,'e',0); 
@@ -128,40 +128,40 @@ function testa_horarios($at40_responsavel,$at40_sequencial) {
 								// nda	  
 							}
 							else {
-								$resto     = substr($uphoraini,0,2) - substr($at53_horafim_manha,0,2);
+								$resto     = substr($uphoraini,0,2) - substr((string) $at53_horafim_manha,0,2);
 								$resto    += substr($uphoraini,3,2);
-								$uphoraini = substr($at53_horaini_tarde,0,2) . ":" . db_formatar($resto,'s','0',2,'e',0);
+								$uphoraini = substr((string) $at53_horaini_tarde,0,2) . ":" . db_formatar($resto,'s','0',2,'e',0);
 							}
 						}
 					}
 					
-					$vet_update[pg_result($result, $i, 0)] = "update tarefa set at40_horainidia = '$uphoraini', ";   
+					$vet_update[pg_fetch_result($result, $i, 0)] = "update tarefa set at40_horainidia = '$uphoraini', ";   
 				}
-				if(pg_fieldname($result, $j) == "at40_horafim") {
-					$db_horafim = pg_result($result, $i, $j);
+				if(pg_field_name($result, $j) == "at40_horafim") {
+					$db_horafim = pg_fetch_result($result, $i, $j);
 					if(strlen(trim($db_horafim)) == 2) {
-						$db_horafim  = substr(pg_result($result, $i, $j),0,2);
+						$db_horafim  = substr(pg_fetch_result($result, $i, $j),0,2);
 						$db_horafim .= ":00";
 					}
-					$uphorafim  = substr(pg_result($result, $i, $j),0,2) + $previsao;
-					$min        = substr(pg_result($result, $i, $j),3,2);
+					$uphorafim  = substr(pg_fetch_result($result, $i, $j),0,2) + $previsao;
+					$min        = substr(pg_fetch_result($result, $i, $j),3,2);
 					$uphorafim .= ":" . $min;
 
 					if($uphorafim > $at53_horafim_manha) {		// tarde
 						if($uphorafim > $at53_horafim_tarde) {	// maior que hora final da tarde 18
-							$resto = substr($uphorafim,0,2) - substr($at53_horafim_tarde,0,2);
+							$resto = substr($uphorafim,0,2) - substr((string) $at53_horafim_tarde,0,2);
 							if($resto == 0) {
-								$resto    += substr($uphorafim,3,2) - substr($at53_horafim_tarde,3,2);
-								$uphorafim = substr($at53_horaini_manha,0,2);
-								$resto    += substr($at53_horaini_manha,3,2);
+								$resto    += substr($uphorafim,3,2) - substr((string) $at53_horafim_tarde,3,2);
+								$uphorafim = substr((string) $at53_horaini_manha,0,2);
+								$resto    += substr((string) $at53_horaini_manha,3,2);
 							}
 							else {
-								$uphorafim = db_formatar((substr($at53_horaini_manha,0,2) + ($resto * 2)),'s','0',2,'e',0);
+								$uphorafim = db_formatar((substr((string) $at53_horaini_manha,0,2) + ($resto * 2)),'s','0',2,'e',0);
 								$resto     = 0;
 							}
 							if($resto >= 60) {
 								$resto    -= 60;
-								$uphorafim = db_formatar((substr($at53_horaini_manha,0,2) + 1),'s','0',2,'e',0);
+								$uphorafim = db_formatar((substr((string) $at53_horaini_manha,0,2) + 1),'s','0',2,'e',0);
 							}
 							$uphorafim .= ":" . db_formatar($resto,'s','0',2,'e',0);
 							$db_diafim  = substr($db_diafim,0,4) . "-" . substr($db_diafim,5,2) . "-" . db_formatar((substr($db_diafim,8,2) + 1),'s','0',2,'e',0); 
@@ -173,14 +173,14 @@ function testa_horarios($at40_responsavel,$at40_sequencial) {
 								// nda	  
 							}
 							else {
-								$resto     = substr($uphorafim,0,2) - substr($at53_horafim_manha,0,2);
+								$resto     = substr($uphorafim,0,2) - substr((string) $at53_horafim_manha,0,2);
 								$resto    += substr($uphorafim,3,2);
-								$uphorafim = substr($at53_horaini_tarde,0,2) . ":" . db_formatar($resto,'s','0',2,'e',0);
+								$uphorafim = substr((string) $at53_horaini_tarde,0,2) . ":" . db_formatar($resto,'s','0',2,'e',0);
 							}
 						}
 					}
 
-					$vet_update[pg_result($result, $i, 0)] .= "at40_horafim = '$uphorafim', at40_diaini = '$db_diaini', at40_diafim = '$db_diafim' where at40_sequencial = " . pg_result($result, $i, 0);  
+					$vet_update[pg_fetch_result($result, $i, 0)] .= "at40_horafim = '$uphorafim', at40_diaini = '$db_diaini', at40_diafim = '$db_diafim' where at40_sequencial = " . pg_fetch_result($result, $i, 0);  
 				}
 
 				if(strlen($db_diaini)  > 0 &&
@@ -191,7 +191,7 @@ function testa_horarios($at40_responsavel,$at40_sequencial) {
 				   	   $db_diafim >= $diaini) { //      02/02/2006 >= 02/02/2006
 				   	   	if($horainidia <= $db_horafim &&
 				   	   	   $horafim    >= $db_horaini) {
-				   	   	   	$vet_keys[pg_result($result, $i, 0)] = pg_result($result, $i, 0);
+				   	   	   	$vet_keys[pg_fetch_result($result, $i, 0)] = pg_fetch_result($result, $i, 0);
 				   	   	}
 				   	}
 		        }

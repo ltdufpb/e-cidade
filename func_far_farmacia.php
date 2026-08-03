@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_farmacia_classe.php"));
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_farmacia = new cl_far_farmacia;
 $clfar_farmacia->rotulo->label("fa13_i_codigo");
 $clfar_farmacia->rotulo->label("fa13_i_codigo");
@@ -101,10 +101,10 @@ $clfar_farmacia->rotulo->label("fa13_i_codigo");
         }else{
            $sql = $clfar_farmacia->sql_query("",$campos,"fa13_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         
         if(isset($chave_fa13_i_codigo)){
-          $repassa = array("chave_fa13_i_codigo"=>$chave_fa13_i_codigo,"chave_fa13_i_codigo"=>$chave_fa13_i_codigo);
+          $repassa = ["chave_fa13_i_codigo"=>$chave_fa13_i_codigo,"chave_fa13_i_codigo"=>$chave_fa13_i_codigo];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe", $repassa, false);

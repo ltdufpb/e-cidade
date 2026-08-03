@@ -51,7 +51,7 @@ $clrotulo->label('v01_dtinsc');
 $clrotulo->label('v51_certidao');
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
 $dd    = 0;
@@ -102,7 +102,7 @@ if ($ordem=="t") {
            $where
         order by v13_certid";
   $result = db_query($sql);
-  if (pg_numrows($result) == 0) {
+  if (pg_num_rows($result) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem certidões.');
   }
   
@@ -116,7 +116,7 @@ if ($ordem=="t") {
   $alt = 4;
   $total = 0;
   
-  for ($x = 0; $x < pg_numrows($result); $x++) {
+  for ($x = 0; $x < pg_num_rows($result); $x++) {
     db_fieldsmemory($result,$x);
     
     if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
@@ -146,7 +146,7 @@ if ($ordem=="t") {
       $ini="Não";
     } else {
       $ini="Sim";
-      $ini=str_pad($v51_inicial,8, "0", STR_PAD_LEFT);
+      $ini=str_pad((string) $v51_inicial,8, "0", STR_PAD_LEFT);
     }
     $pdf->setfont('arial','b',8);
     $pdf->cell(20,$alt,$v13_certid,0,0,"C",0);
@@ -183,7 +183,7 @@ if ($ordem=="t") {
                                     inner join cgm on z01_numcgm           = v07_numcgm
                               where certter.v14_certid=$v13_certid");
         
-        for ($x1 = 0; $x1 < pg_numrows($result1); $x1++) {
+        for ($x1 = 0; $x1 < pg_num_rows($result1); $x1++) {
           db_fieldsmemory($result1,$x1);
           $pdf->setfont('arial','',7);
           $pdf->cell(20,$alt,$v07_parcel,0,0,"C",0);
@@ -222,7 +222,7 @@ if ($ordem=="t") {
                                     inner join cgm on z01_numcgm = v01_numcgm
                               where v14_certid = $v13_certid  ");
         
-        for ($x2 = 0; $x2 < pg_numrows($result2); $x2++) {
+        for ($x2 = 0; $x2 < pg_num_rows($result2); $x2++) {
           db_fieldsmemory($result2,$x2);
           if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
             $pdf->addpage();
@@ -264,7 +264,7 @@ if ($ordem=="p") {
           $where and  certter.v14_certid is not null and v13_instit = ".db_getsession('DB_instit')." 
         order by certter.v14_certid";
   $result = db_query($sql);
-  if (pg_numrows($result) == 0) {
+  if (pg_num_rows($result) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem certidões.');
   }
   $pdf = new PDF();
@@ -277,7 +277,7 @@ if ($ordem=="p") {
   $alt = 4;
   $total = 0;
   
-  for ($x = 0; $x < pg_numrows($result); $x++) {
+  for ($x = 0; $x < pg_num_rows($result); $x++) {
     db_fieldsmemory($result,$x);
     
     if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
@@ -301,7 +301,7 @@ if ($ordem=="p") {
       $ini="-";
     } else {
       //$ini="Sim";
-      $ini=str_pad($v51_inicial,8, "0", STR_PAD_LEFT);
+      $ini=str_pad((string) $v51_inicial,8, "0", STR_PAD_LEFT);
     }
     $pdf->setfont('arial','b',8);
     $pdf->cell(20,$alt,$v14_certid,0,0,"C",0);
@@ -325,7 +325,7 @@ if ($ordem=="p") {
                                   inner join cgm    on z01_numcgm        = v07_numcgm
                             where certter.v14_certid=$v14_certid");
       
-      for ($x1 = 0; $x1 < pg_numrows($result1); $x1++) {
+      for ($x1 = 0; $x1 < pg_num_rows($result1); $x1++) {
         db_fieldsmemory($result1,$x1);
         if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
           $pdf->addpage();
@@ -369,7 +369,7 @@ if ($ordem=="d") {
           $where and certdiv.v14_certid is not null and certid.v13_instit = ".db_getsession('DB_instit')." ) as x
         order by v14_certid   ";
   $result = db_query($sql);
-  if (pg_numrows($result) == 0) {
+  if (pg_num_rows($result) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem certidões.');
   }
   
@@ -383,7 +383,7 @@ if ($ordem=="d") {
   $alt = 4;
   $total = 0;
   
-  for ($x = 0; $x < pg_numrows($result); $x++) {
+  for ($x = 0; $x < pg_num_rows($result); $x++) {
     db_fieldsmemory($result,$x);
     if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
       $pdf->addpage();
@@ -405,7 +405,7 @@ if ($ordem=="d") {
       $ini="-";
     } else {
       //$ini="Sim";
-      $ini=str_pad($v51_inicial,8, "0", STR_PAD_LEFT);
+      $ini=str_pad((string) $v51_inicial,8, "0", STR_PAD_LEFT);
     }
     $pdf->setfont('arial','b',8);
     $pdf->cell(20,$alt,$v14_certid,0,0,"C",0);
@@ -429,7 +429,7 @@ if ($ordem=="d") {
                                   inner join cgm    on z01_numcgm = v01_numcgm
                             where certdiv.v14_certid = $v14_certid  ");
       
-      for ($x2 = 0; $x2 < pg_numrows($result2); $x2++) {
+      for ($x2 = 0; $x2 < pg_num_rows($result2); $x2++) {
         db_fieldsmemory($result2,$x2);
         if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
           $pdf->addpage();

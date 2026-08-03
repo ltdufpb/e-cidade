@@ -130,7 +130,7 @@ $radioTerritorial = $filtrotipo == "Territorial" ? "checked" : "";
           
         }
 
-        db_lovrot($sql, 100, "()", $pesquisaRua, $funcao_js, "", "NoMe", array(), false);
+        db_lovrot($sql, 100, "()", $pesquisaRua, $funcao_js, "", "NoMe", [], false);
     } elseif (isset($pesquisaBairro)) {
         $sql = $clsqlamatriculas->sqlmatriculas_bairros($pesquisaBairro);
         db_lovrot($sql,15,"()",$pesquisaBairro,$funcao_js);

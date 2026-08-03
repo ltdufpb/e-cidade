@@ -19,9 +19,7 @@ class MapaPlanoContasOrcamentarioResource
         $contasOrcamento->each(function (ConplanoOrcamento $contaOrcamento) use (&$dados, $contasVinculadas) {
             $estrutural = $contaOrcamento->c60_estrut;
 
-            $vinculada = $contasVinculadas->filter(function (ConplanoOrcamento $contaVinculada) use ($estrutural) {
-                return $contaVinculada->c60_estrut === $estrutural;
-            })->count() > 0;
+            $vinculada = $contasVinculadas->filter(fn(ConplanoOrcamento $contaVinculada) => $contaVinculada->c60_estrut === $estrutural)->count() > 0;
 
             $dados[$estrutural] = self::toData($contaOrcamento, $vinculada);
         });

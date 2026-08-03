@@ -43,7 +43,7 @@ class EventHandler extends Handler
 
         if ($trace) {
             foreach ($trace->getSanitizedData() as $index => $trace) {
-                $args = array();
+                $args = [];
                 if (!empty($trace['args'])) {
                     foreach ($trace['args'] as $arg) {
                         if (!is_scalar($arg)) {
@@ -55,26 +55,26 @@ class EventHandler extends Handler
 
                 $args = implode(', ', $args);
 
-                $trace = strtr($traceMask, array(
+                $trace = strtr($traceMask, [
                 '{index}' => $index + 1,
-                '{file}' => isset($trace['file']) ? $trace['file'] : '',
-                '{line}' => isset($trace['line']) ? $trace['line'] : '',
-                '{class}' => isset($trace['class']) ? $trace['class'] : '',
-                '{function}' => isset($trace['function']) ? $trace['function'] : '',
-                '{type}' => isset($trace['type']) ? $trace['type'] : '',
+                '{file}' => $trace['file'] ?? '',
+                '{line}' => $trace['line'] ?? '',
+                '{class}' => $trace['class'] ?? '',
+                '{function}' => $trace['function'] ?? '',
+                '{type}' => $trace['type'] ?? '',
                 '{args}' => $args,
-                ));
+                ]);
                 $traces .= $trace;
             }
         }
 
-        $output = strtr($mask, array(
+        $output = strtr($mask, [
         '{type}' => $entity->getTypeAsString(),
         '{message}' => $entity->getMessage(),
         '{file}' => $entity->getFile(),
         '{line}' => $entity->getLine(),
         '{trace}' => $traces,
-        ));
+        ]);
 
         return $output;
     }

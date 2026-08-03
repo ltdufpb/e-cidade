@@ -71,7 +71,7 @@ class loginscricao {
    * 
    * @var array;
    */
-  private $aIssBaseLog = array();
+  private $aIssBaseLog = [];
   
   public function __construct(){
     
@@ -125,7 +125,7 @@ class loginscricao {
    * @param char    $sAreaNovo novo valor do campo area definido na alteracao
    * @param char    $sAreaAntiga valor antigo do campo area
    */
-  public function identificaAlteracao($iInscricao = null, $iOpcao, $iLogTipo = null, $iEscritorio = "",
+  public function identificaAlteracao($iInscricao = null, $iOpcao = null, $iLogTipo = null, $iEscritorio = "",
                                       $sAreaNovo = "", $sAreaAntiga   = "") {
     
     if ($iInscricao == null) {

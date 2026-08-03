@@ -68,7 +68,7 @@ if ((isset($get->dtemissini) && $get->dtemissini != null) and (isset($get->dtemi
 
   }
   $strAnd  = $strWh != null?" and ":null;
-  $dtEn    = explode("/",$get->dtemissini);
+  $dtEn    = explode("/",(string) $get->dtemissini);
   $strWh  .= $strAnd . "q51_dtemiss = '".$dtEn[2].$dtEn[1].$dtEn[0]."'";
 
 }else if ((isset($get->dtemissini) && $get->dtemissini == null) and isset($get->dtemissfim) && $get->dtemissfim != null){
@@ -79,7 +79,7 @@ if ((isset($get->dtemissini) && $get->dtemissini != null) and (isset($get->dtemi
 
   }
   $strAnd  = $strWh != null?" and ":null;
-  $dtEn    = explode("/",$get->dtemissfim);
+  $dtEn    = explode("/",(string) $get->dtemissfim);
   $strWh  .= $strAnd . "q51_dtemiss = '".$dtEn[2].$dtEn[1].$dtEn[0]."'";
 
 }else if ((isset($get->dtemissini) && $get->dtemissini != null) and (isset($get->dtemissfim) && $get->dtemissfim != null)){
@@ -90,8 +90,8 @@ if ((isset($get->dtemissini) && $get->dtemissini != null) and (isset($get->dtemi
 
   }
   $strAnd  = $strWh != null?" and ":null;
-  $dtEnini = explode("/",$get->dtemissini);
-  $dtEnfim = explode("/",$get->dtemissfim);
+  $dtEnini = explode("/",(string) $get->dtemissini);
+  $dtEnfim = explode("/",(string) $get->dtemissfim);
   $strWh  .= $strAnd . "q51_dtemiss between '".$dtEnini[2].$dtEnini[1].$dtEnini[0]."' and ";
   $strWh  .= "'".$dtEnfim[2].$dtEnfim[1].$dtEnfim[0]."'";
 

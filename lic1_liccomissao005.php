@@ -32,9 +32,9 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 $clliccomissao = new cl_liccomissao;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$l30_codigo = isset($l30_codigo) ? $l30_codigo : null;
+$l30_codigo ??= null;
 $db_opcao   = 22;
 $db_botao   = false;
 
@@ -100,7 +100,7 @@ if (isset($alterar)) {
                                   and l30_codigo            <> {$l30_codigo}";
   
       $rsValidaExistencia   = db_query($sSqlValidaExistencia);
-      if (pg_numrows($rsValidaExistencia) > 0) {
+      if (pg_num_rows($rsValidaExistencia) > 0) {
   
         $sqlerro  = true;
         $erro_msg = 'O arquivo já Existe no Cadastro. Renomeie o Arquivo.';

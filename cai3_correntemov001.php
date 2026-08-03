@@ -34,7 +34,7 @@ include(modification("classes/db_cfautent_classe.php"));
 $rotulocampo = new rotulocampo;
 $rotulocampo->label("k11_id");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>

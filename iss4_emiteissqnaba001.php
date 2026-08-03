@@ -84,10 +84,10 @@ $iAnousu        = db_getsession('DB_anousu');
 	    <td>
 	      <?php
 
-		      $aOpcoes = array ("2"  => "Fixo",
+		      $aOpcoes =  ["2"  => "Fixo",
 		                        "3"  => "Variável",
 		                        "19" => "Vistorias",
-		                        "5"  => "Vistorias sem ISSQN");
+		                        "5"  => "Vistorias sem ISSQN"];
 
 		      db_select('k03_tipo', $aOpcoes, true, 1,"onchange='js_submitform();'");
 	      ?>
@@ -136,9 +136,9 @@ $iAnousu        = db_getsession('DB_anousu');
               if ($oDaoTipoDebito) {
 
                 $iTotalRegistros = 0;
-      					$iTotalRegistros = pg_numrows($oDaoTipoDebito);
+      					$iTotalRegistros = pg_num_rows($oDaoTipoDebito);
 
-      					$aTipoDebito = array("0" => " Selecione o tipo de débito ");
+      					$aTipoDebito = ["0" => " Selecione o tipo de débito "];
 
       					for($iIndice=0; $iIndice < $iTotalRegistros; $iIndice++){
 
@@ -163,9 +163,9 @@ $iAnousu        = db_getsession('DB_anousu');
         <label for="numparini">Parcelas de:</label>
       </td>
       <td>
-        <input type="text" id="numparini" name="numparini" size="5" value=<?php echo (isset($numparini)?$numparini:"1");  ?> />
+        <input type="text" id="numparini" name="numparini" size="5" value=<?php echo ($numparini ?? "1");  ?> />
         <strong>A</strong>
-	      <input type="text" id="numparfim" name="numparfim" size="5" value=<?php echo (isset($numparfim)?$numparfim:"12"); ?> />
+	      <input type="text" id="numparfim" name="numparfim" size="5" value=<?php echo ($numparfim ?? "12"); ?> />
       </td>
     </tr>
 
@@ -175,9 +175,9 @@ $iAnousu        = db_getsession('DB_anousu');
 	    </td>
 	    <td>
 	      <?php
-		      $aOpcoes = array ( "0" => "Nenhum",
+		      $aOpcoes =  [ "0" => "Nenhum",
 		                         "1" => "Emite Valor Lançado",
-		                         "2" => "Emite Valor Zerado");
+		                         "2" => "Emite Valor Zerado"];
 
 		      db_select('emiteVal', $aOpcoes, true, 1,"onchange='js_submitform();'");
 	      ?>
@@ -193,9 +193,9 @@ $iAnousu        = db_getsession('DB_anousu');
 	    </td>
 	    <td>
 	      <?php
-		      $aOpcoes = array ( "pdf"    => "PDF",
+		      $aOpcoes =  [ "pdf"    => "PDF",
 		                         "txt"    => "TXT",
-                             "bsjtxt" => "TXT/BSJ");
+                             "bsjtxt" => "TXT/BSJ"];
 		      db_select('arq', $aOpcoes, true, 1,"onchange='js_mostraordem(); js_submitform();'");
 	      ?>
 	    </td>
@@ -210,9 +210,9 @@ $iAnousu        = db_getsession('DB_anousu');
 	    </td>
 	    <td>
 	      <?php
-		      $aOpcoes = array ("geral"   => "Geral",
+		      $aOpcoes =  ["geral"   => "Geral",
 		                        "comescr" => "Com os escritórios",
-		                        "semescr" => "Sem os escritórios");
+		                        "semescr" => "Sem os escritórios"];
 
 		      db_select('emis', $aOpcoes, true, 1,"onchange='js_mostraordem();'");
 	      ?>
@@ -225,9 +225,9 @@ $iAnousu        = db_getsession('DB_anousu');
       </td>
       <td>
         <?php
-	        $aOpcoes = array ("todas"      => "Todas",
+	        $aOpcoes =  ["todas"      => "Todas",
 	                          "socotunica" => "Só Cota Única",
-	                          "soparcela"  => "Só Parcelas");
+	                          "soparcela"  => "Só Parcelas"];
 	        db_select('impr', $aOpcoes, true, 1);
         ?>
       </td>
@@ -239,9 +239,9 @@ $iAnousu        = db_getsession('DB_anousu');
 	    </td>
 	    <td>
 	      <?php
-		      $aOpcoes = array ("inscricao"  => "Inscricão",
+		      $aOpcoes =  ["inscricao"  => "Inscricão",
 		                        "nome"       => "Nome",
-		                        "escritorio" => "Escritorio");
+		                        "escritorio" => "Escritorio"];
 		      db_select('ord', $aOpcoes, true, 1);
 	      ?>
 	      </div>
@@ -253,7 +253,7 @@ $iAnousu        = db_getsession('DB_anousu');
        <label for="quantidade">Quantidade de registros do select:</label>
 	    </td>
       <td>
-	      <input type="text" name="quantidade" id="quantidade" value="<?php echo (isset($quantidade)?$quantidade:""); ?>" />
+	      <input type="text" name="quantidade" id="quantidade" value="<?php echo ($quantidade ?? ""); ?>" />
 	    </td>
 	  </tr>
 
@@ -262,7 +262,7 @@ $iAnousu        = db_getsession('DB_anousu');
        <label for="quantidade_registros_real">Quantidade de registros a gerar no txt:</label>
 	    </td>
       <td>
-	     <input type="text" name="quantidade_registros_real" id="quantidade_registros_real" value="<?php echo (isset($quantidade_registros_real)?$quantidade_registros_real:"");?>" />
+	     <input type="text" name="quantidade_registros_real" id="quantidade_registros_real" value="<?php echo ($quantidade_registros_real ?? "");?>" />
 	   </td>
 	  </tr>
 
@@ -272,7 +272,7 @@ $iAnousu        = db_getsession('DB_anousu');
       </td>
       <td>
         <?php
-	        $aOpcoes = array ("s" => "Sim", "n" => "Não");
+	        $aOpcoes =  ["s" => "Sim", "n" => "Não"];
 	        db_select('imprimeparcelas', $aOpcoes, true, 1);
 				?>
       </td>
@@ -315,7 +315,7 @@ $iAnousu        = db_getsession('DB_anousu');
           }
           $result = db_query($sSql);
 
-         if ($result && pg_numrows($result) > 0) { ?>
+         if ($result && pg_num_rows($result) > 0) { ?>
           <label for="totcheck">Unicas:</label>
       <?php  } ?>
       </td>
@@ -325,9 +325,9 @@ $iAnousu        = db_getsession('DB_anousu');
       <td>
         <?php
 
-            if ($result && pg_numrows($result) > 0) {
+            if ($result && pg_num_rows($result) > 0) {
 
-              for ($iIndice = 0; $iIndice < pg_numrows($result); $iIndice ++) {
+              for ($iIndice = 0; $iIndice < pg_num_rows($result); $iIndice ++) {
 
                 db_fieldsmemory($result, $iIndice);
                 $expressao = $k00_dtvenc . "=" . $k00_dtoper . "=" . $k00_percdes;
@@ -339,7 +339,7 @@ $iAnousu        = db_getsession('DB_anousu');
 
       	} // Issqn variavel
         ?>
-      <input name="totcheck" type="hidden" id="totcheck" value="<?=pg_numrows($result)?>" />
+      <input name="totcheck" type="hidden" id="totcheck" value="<?=pg_num_rows($result)?>" />
       </td>
     </tr>
 
@@ -504,12 +504,12 @@ if (isset($geracarnes)) {
   for ($iIndice=0; $iIndice < $totcheck; $iIndice++) {
 
     $check = "check_".$iIndice;
-    if (isset($$check) and $$check != "--") {
+    if (isset(${$check}) and ${$check} != "--") {
 
       if ($iIndice == $totcheck-1) {
         $U = "";
       }
-      $unica .= $$check.$U;
+      $unica .= ${$check}.$U;
     }
   }
 

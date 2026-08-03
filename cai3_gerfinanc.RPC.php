@@ -83,8 +83,8 @@ try {
         case "mostrarCustas":
             db_inicio_transacao();
 
-            $arrayDebitos = array();
-            $arrayIniciais = array();
+            $arrayDebitos = [];
+            $arrayIniciais = [];
 
             foreach ($oParametros->debitos as $debito) {
                 if (isset($debito->inicial)) {
@@ -99,9 +99,9 @@ try {
             $service = Service\Relatorio\Factory::create($oParametros->tipoDebito, $oParametros->cadTipo, $arrayDebitos);
             $debitos = $service->processar();
 
-            $processos = array();
-            $iniciais = array();
-            $recibos = array();
+            $processos = [];
+            $iniciais = [];
+            $recibos = [];
 
             foreach ($debitos as $debito) {
                 if ($debito instanceof \recibo) {
@@ -126,9 +126,7 @@ try {
             $processoForo = ProcessoForo::getInstance();
 
             if (empty($arrayIniciais)) {
-                $numpres = implode(',', array_map(function ($numpres) {
-                    return $numpres->numpre;
-                }, $arrayDebitos));
+                $numpres = implode(',', array_map(fn($numpres) => $numpres->numpre, $arrayDebitos));
 
                 $sql = "SELECT termoini.inicial
                           FROM termoini

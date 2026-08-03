@@ -64,7 +64,7 @@ switch ($oParam->sExec) {
 		/**
 		 * Definimos as variáveis que são utilizadas pelos dois comportamentos.
 		 */
-		$oRetorno->aMatriculas = array();
+		$oRetorno->aMatriculas = [];
     $sWhereMatriculas      = null;
 
 		if ( $oParam->iDbOpcao == 3 ) {
@@ -336,7 +336,7 @@ switch ($oParam->sExec) {
 			/**
 			 * Array com as matriculas que já possuem iptuender 
 			 */
-			$aMatriculasAlteradas = array();
+			$aMatriculasAlteradas = [];
 
 			$oDaoIptuEnderGrupo = db_utils::getDao('iptuendergrupo');
 			$oDaoIptuEnder      = db_utils::getDao('iptuender');

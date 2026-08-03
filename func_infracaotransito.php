@@ -32,7 +32,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 $oGET        = db_utils::postMemory($_GET);
 $oPOST       = db_utils::postMemory($_POST);
-$iCodigo     = isset($oPOST->chave_i05_codigo) ? $oPOST->chave_i05_codigo : null;
+$iCodigo     = $oPOST->chave_i05_codigo ?? null;
 $iSequencial = !empty($oPOST->chave_i05_sequencial) ? $oPOST->chave_i05_sequencial : null;
 $sDescricao  = !empty($oPOST->chave_i05_descricao) ? $oPOST->chave_i05_descricao : null;
 $iNivel  = !empty($oPOST->chave_i05_nivel) ? $oPOST->chave_i05_nivel : null;
@@ -93,7 +93,7 @@ $oDaoInfracaoTransito = new \cl_infracaotransito();
               </td>
               <td >
                 <?php
-                  $aTipos = array('0'=>'Selecione', '1' => 'Nível 1', '2' => 'Nível 2', '3' => 'Nível 3', '4' => 'Nível 4');
+                  $aTipos = ['0'=>'Selecione', '1' => 'Nível 1', '2' => 'Nível 2', '3' => 'Nível 3', '4' => 'Nível 4'];
                   db_select("chave_i05_nivel", $aTipos, false, 1);
                 ?>
               </td>
@@ -107,7 +107,7 @@ $oDaoInfracaoTransito = new \cl_infracaotransito();
 
   <?php
     $sOrdem = 'i05_codigo';
-    $aWhere = array();;
+    $aWhere = [];;
 
     if ($iCodigo) {
       $aWhere[] = "i05_codigo = '{$iCodigo}'";

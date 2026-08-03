@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label("");
 ?>
@@ -93,7 +93,7 @@ db_inputdata('data1',@$data_dia,@$data_mes,@$data_ano,true,'text',4,"");
         </td>
         <td>
 	  <?php  
-	  $tipo_ordem = array("T"=>"Todos","l"=>"Liberadas","n"=>"Não liberadas");
+	  $tipo_ordem = ["T"=>"Todos","l"=>"Liberadas","n"=>"Não liberadas"];
 	  db_select("tipo",$tipo_ordem,true,2); ?>
         </td>
       </tr>

@@ -65,8 +65,8 @@ $oPdf->AliasNbPages();
 $oPdf->SetAutoPageBreak(false);
 
 $head1 = "ESCOLARIZAÇÃO DE ALUNOS DE CLASSES ESPECIAIS";
-$head2 = "ESCOLA :" . strtoupper(EscolaRepository::getEscolaByCodigo($codigo_escola)->getNome());
-$head3 = "TURMA: " . ($codigo_turma == 0 ? 'TODAS' : strtoupper(TurmaRepository::getTurmaByCodigo($codigo_turma)->getDescricao()));
+$head2 = "ESCOLA :" . strtoupper((string) EscolaRepository::getEscolaByCodigo($codigo_escola)->getNome());
+$head3 = "TURMA: " . ($codigo_turma == 0 ? 'TODAS' : strtoupper((string) TurmaRepository::getTurmaByCodigo($codigo_turma)->getDescricao()));
 $head4 = "ANO: " . $ano;
 
 $oPdf->AddPage();

@@ -12,13 +12,13 @@ x2
    Abscissa do segundo ponto. 
 y2
    Ordenada do segundo ponto.  */
-  
+
   $y  = 189;
   $x  = 5;
 
   $xx = 15;
   $yy = 0;
- 
+
   $this->objpdf->SetDash(1,1);
   $this->objpdf->Line($x-5,     $y-0.4, $xx+$x+190, $y-0.4); //horiz 
   $this->objpdf->SetDash();
@@ -62,20 +62,20 @@ y2
 
   $this->objpdf->SetLineWidth(0.4);
   $this->objpdf->Line($x,     $y+87, $xx+$x+182, $y+87); //horiz ultima linha
-  
+
   //codigo de barras
   $this->objpdf->SetFillColor(0,0,0);
-  
+
 	if ($this->codigo_barras != null) {
     $this->objpdf->int25(10,$y+92.5,$this->codigo_barras,15,0.3);
 	}
 
-   
+
     // quadrado inferior //
   $this->objpdf->Image($this->imagemlogo,$x,$y+1,32,7);
 //  $this->objpdf->Text($x+7,$y+7,$this->banco);
 
-  
+
 
   $this->objpdf->SetFont('Arial','b',14);
   $this->objpdf->Text($x+43,  $y+7,$this->numbanco);      // numero do banco
@@ -112,7 +112,7 @@ y2
   } else {
     $this->objpdf->Text($x+3,   $y+40,"Instruções");
   }
-  
+
   $this->objpdf->Text($x+138, $y+40,"( - ) Desconto / Abatimento");
 
   $this->objpdf->Text($x+138, $y+47,"( - ) Outras Deduções");
@@ -141,12 +141,12 @@ y2
   $this->objpdf->Text($x+138, $y+15,$this->descr10); // $this->parcela); // parcela
 //  $this->objpdf->Text($x+161, $y+15,$this->descr14); // $this->dtvenc);  // vencimento
   $this->objpdf->Text($x+158, $y+15,$this->dtparapag); // $this->dtvenc);  // vencimento
-  
+
     $this->objpdf->SetFont('Arial','b',5);
     $this->objpdf->Text($x+15, $y+19,$this->prefeitura);                  // nome prefeitura
     $this->objpdf->Text($x+115, $y+19,db_formatar($this->cgcpref,'cnpj'));                    // cnpj
     $this->objpdf->Text($x+15, $y+23,$this->enderpref . ', '. $this->numeropref);                  // nome prefeitura
-  
+
   $this->objpdf->SetFont('Arial','b',10);
   //$this->objpdf->Text($x+125,   $y+23,$this->tipo_convenio);             // tipo_convenio
   $this->objpdf->SetFont('Arial','',10);
@@ -168,37 +168,37 @@ y2
 
   $this->objpdf->Text($x+80,  $y+37,@$this->quantidade);        // quantidade
   $this->objpdf->Text($x+110, $y+37,@$this->valorhis);             // valor
-  
+
 //  $this->objpdf->setXY($x+114,$y+33);
   $this->objpdf->Text($x+131, $y+37, $this->valor_cobrado);//   nosso numero  
   //$this->objpdf->cell(60,4,$this->valor_cobrado,1,0,"L");//valor do Documento;
 // 	$this->objpdf->Text($x+141, $y+37,$this->valtotal);          // valor do documento
-  
+
   $this->objpdf->setXy($x+2,$y+41);
   $this->objpdf->SetFont('Arial','',9);
 
   $instrucao = "Tipo/Exercício: ".@$this->tipo_exerc.$this->descr12_1." \n".$this->pqllocal." \n".$this->sMensagemCaixa."\n";
 
   if(@$this->valororigem!=""){
-  	$instrucao .= "Valor origem= ".trim($this->valororigem).' ';
+  	$instrucao .= "Valor origem= ".trim((string) $this->valororigem).' ';
   }
   if(@$this->valtotal!=""){
-  	$instrucao .= "Valor corrigido = ".trim($this->valtotal).' ';;
+  	$instrucao .= "Valor corrigido = ".trim((string) $this->valtotal).' ';;
   }
   if(@$this->desconto_abatimento!=""){
-    $instrucao .= "Desconto/Abatimento = ".trim($this->desconto_abatimento).' ';;
+    $instrucao .= "Desconto/Abatimento = ".trim((string) $this->desconto_abatimento).' ';;
 	}
   if(@$this->mora_multa!=""){
-    $instrucao .= "Mora/Multa = ".trim($this->mora_multa).' ';;
+    $instrucao .= "Mora/Multa = ".trim((string) $this->mora_multa).' ';;
 	}
 	if(@$this->valor_cobrado!=""){
-    $instrucao .= "Valor do documento = ".trim($this->valor_cobrado).' ';;
+    $instrucao .= "Valor do documento = ".trim((string) $this->valor_cobrado).' ';;
 	}
-	
+
 	$this->objpdf->SetFont('Arial','',6);
   $this->objpdf->multicell(133,2,$instrucao); // Instrução
   $this->objpdf->SetFont('Arial','',10);
- 
+
   $this->objpdf->setXY($x+136,$y+39);
   $this->objpdf->cell(30,6,"",0,0,"R");//desconto abatimento;  tirei @$this->desconto_abatimento
   $this->objpdf->setXY($x+136,$y+46);
@@ -210,12 +210,12 @@ y2
   $this->objpdf->setXY($x+136,$y+67);
   $this->objpdf->cell(30,6,"",0,0,"R");//valor cobrado .... @$this->valor_cobrado
   $this->objpdf->SetFont('Arial','',8);
-  $this->objpdf->Text($x+19,  $y+77,substr($this->descr11_1,0,42));         // sacado 1
-  $this->objpdf->Text($x+93,  $y+77,"CPF/CNPJ: ".db_formatar(@$this->cgccpf,(strlen(@$this->cgccpf)<12?'cpf':'cnpj'))); // CPF/CNPJ
+  $this->objpdf->Text($x+19,  $y+77,substr((string) $this->descr11_1,0,42));         // sacado 1
+  $this->objpdf->Text($x+93,  $y+77,"CPF/CNPJ: ".db_formatar(@$this->cgccpf,(strlen((string) @$this->cgccpf)<12?'cpf':'cnpj'))); // CPF/CNPJ
 	$this->objpdf->Text($x+19,  $y+80,$this->descr11_2); // $this->ender);    // sacado 2
   if (!isset($this->ufcgm)) {
     $this->ufcgm = $this->uf_config; 
   }
   $this->objpdf->Text($x+19,  $y+83,$this->munic." / ".$this->ufcgm." / CEP-".$this->cep); // $this->munic);    // sacado 3
-	 
+
 ?>

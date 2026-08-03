@@ -28,6 +28,7 @@ class LayoutParcelasReceitas extends LayoutParcelas
      *
      * Retorna o layout
      */
+    #[\Override]
     public function get($counter)
     {
         if(empty($counter)) {
@@ -54,7 +55,7 @@ class LayoutParcelasReceitas extends LayoutParcelas
                         case ('{$nroParcela}'):
                             return str_pad($nroParcela, 3, 0, STR_PAD_LEFT) ;
                         case ('{$codigoReceita}'):
-                            return str_pad($codigoReceita, 3, 0, STR_PAD_LEFT) ;
+                            return str_pad((string) $codigoReceita, 3, 0, STR_PAD_LEFT) ;
                     }
                 };
 

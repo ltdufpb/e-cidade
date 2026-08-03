@@ -30,7 +30,7 @@ include(modification("libs/db_sql.php"));
 
 $clrotulo = new rotulocampo;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $head3 = "CADASTRO DE FUNCIONÁRIOS E DEPENDENTES";
@@ -73,7 +73,7 @@ $sql = "
 //echo $sql ; exit;
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mes.' / '.$ano);
 
@@ -90,8 +90,8 @@ $alt = 4;
 $iTotalComDependentes = 0;
 $iTotalSemDependentes = 0;
 $iTotalDependentesPorMatric = 0;
-$aCgm = array();
-for($x = 0; $x < pg_numrows($result);$x++){
+$aCgm = [];
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
 
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
@@ -111,7 +111,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
                where rh31_regist = $rh01_regist"; 
    $res_dep = db_query($sql_dep);
 
-   if(pg_numrows($res_dep) > 0){
+   if(pg_num_rows($res_dep) > 0){
      if(!in_array($z01_numcgm,$aCgm)){
        $iTotalComDependentes++;
      }
@@ -119,7 +119,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
      $iTotalSemDependentes++;
    }
      
-   for($yy = 0;$yy < pg_numrows($res_dep);$yy++){
+   for($yy = 0;$yy < pg_num_rows($res_dep);$yy++){
       db_fieldsmemory($res_dep,$yy);
       $iTotalDependentesPorMatric++;
       if($yy == 0)
@@ -129,7 +129,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
       $pdf->cell(60,$alt,$rh31_nome,0,0,"L",0);
       $pdf->cell(20,$alt,$rh31_gparen,0,0,"L",0);
       $pdf->cell(20,$alt,db_formatar($rh31_dtnasc,'d'),0,1,"C",0);
-      if(($yy+1) == pg_numrows($res_dep)){
+      if(($yy+1) == pg_num_rows($res_dep)){
         $pdf->cell(30,$alt,"Total de Dependentes: {$iTotalDependentesPorMatric}",0,1,"L",0);
 	$iTotalDependentesPorMatric = 0;
       }

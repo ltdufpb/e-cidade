@@ -39,8 +39,8 @@ require_once modification("classes/db_cfpatriplaca_classe.php");
 require_once modification("classes/db_db_departorg_classe.php");
 require_once modification("classes/db_cfpatri_classe.php");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 $clcfpatric = new cl_cfpatri;
@@ -176,7 +176,7 @@ if (isset($t52_bem) && $t52_bem != "") {
         $pdf->setfont('arial', '', 7);
         $pdf->cell(0, $alt, db_formatar($t52_dtaqu, "d"), 0, 1, "L", 0);
 
-        if (strlen(trim($t52_ident)) > 0) {
+        if (strlen(trim((string) $t52_ident)) > 0) {
             if ($t07_confplaca == 4) {
                 $t52_ident = db_formatar($t52_ident, "s", "0", $t07_digseqplaca, "e", 0);
             }

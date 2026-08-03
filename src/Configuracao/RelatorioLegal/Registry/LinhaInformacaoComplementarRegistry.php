@@ -36,7 +36,7 @@ class LinhaInformacaoComplementarRegistry
     /**
      * @var LinhaInformacaoComplementar[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param $key

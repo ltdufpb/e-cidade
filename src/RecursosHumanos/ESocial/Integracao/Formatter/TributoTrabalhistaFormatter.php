@@ -26,6 +26,7 @@ class TributoTrabalhistaFormatter extends Formatter
      * @throws \BusinessException
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosProcessoTrabalhista = null;

@@ -5,13 +5,13 @@ use Classes\PostgresMigration;
 class M16261In22CriacaoRelatorios extends PostgresMigration
 {
 
-    private $dadosRelatorios = array(
+    private $dadosRelatorios = [
         227 => 'TCE/RO - ANEXO 12',
         228 => 'TCE/RO - ANEXO 13',
         229 => 'TCE/RO - ANEXO 14',
         230 => 'TCE/RO - ANEXO 15',
         231 => 'TCE/RO - ANEXO 16',
-    );
+    ];
 
     public function up()
     {

@@ -31,11 +31,11 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_itbiconstrespecie_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clitbiconstrespecie = new cl_itbiconstrespecie;
 $db_opcao = 1;
 $db_botao = true;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   db_inicio_transacao();
   $clitbiconstrespecie->incluir($it09_codigo);
   db_fim_transacao();
@@ -75,7 +75,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clitbiconstrespecie->erro_status=="0"){
     $clitbiconstrespecie->erro(true,false);
     $db_botao=true;

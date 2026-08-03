@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $clrotulo = new rotulocampo;
 $clrharqbanco->rotulo->label();
@@ -257,7 +257,7 @@ function js_controlarodape(mostra, hora){
     <td><strong>Ordem:</strong></td>
     <td>
     <?php
-    	db_select('ordem', array('1' => 'Banco/Agência/Conta', '2' => 'Alfabética'), true, 1) 
+    	db_select('ordem', ['1' => 'Banco/Agência/Conta', '2' => 'Alfabética'], true, 1) 
     ?>
     </td>
   </tr>

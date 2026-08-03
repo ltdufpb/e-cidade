@@ -31,9 +31,9 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-echo($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS,2);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+echo($_SERVER['QUERY_STRING']);
+db_postmemory($_POST,2);
 // recebe como parametro duas variaveis com os nomes de:
 // funcao_objeto=[nome da funcao sem as ()]
 // objelemento=[nome do input que recebera os itens selecionados]
@@ -70,7 +70,7 @@ function js_envia_itens(){
     <form name="form1" method="post">
 	<input name="objeto_conteudo" type="hidden" value="<?=$objeto_conteudo?>">
      <?php 
-     if(!isset($HTTP_POST_VARS['mod'])){
+     if(!isset($_POST['mod'])){
       ?>
       <table border="0" cellspacing="0" cellpadding="0">
 	  <tr>
@@ -83,9 +83,9 @@ function js_envia_itens(){
 	    $result = db_query("select id_item,nome_modulo,descr_modulo 
 	    from db_modulos 
 	    order by lower(nome_modulo)");
-	    $numrows = pg_numrows($result);
+	    $numrows = pg_num_rows($result);
 		for($i = 0;$i < $numrows;$i++) {
-		   echo "<option value=\"".pg_result($result,$i,"id_item")."\">".pg_result($result,$i,"nome_modulo")."</option>\n";
+		   echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."\">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
 		}  
 		?>
         </select> 
@@ -97,10 +97,10 @@ function js_envia_itens(){
 	  </tr>
 	  </table>
 	  <?php 
-	  } else if(isset($HTTP_POST_VARS["mod"])) {
-		  $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$HTTP_POST_VARS["modulos"]);
-	      $mod = pg_result($result,0,0);
-	      $des = pg_result($result,0,1);
+	  } else if(isset($_POST["mod"])) {
+		  $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$_POST["modulos"]);
+	      $mod = pg_fetch_result($result,0,0);
+	      $des = pg_fetch_result($result,0,1);
 	  ?>
 <table border="1" cellspacing="0" cellpadding="0">
 <tr><td>
@@ -119,11 +119,11 @@ function js_envia_itens(){
 </td></tr>
 <tr>
 		    <td align="center"><strong>Ambiente:</strong>
-			<input name="modulos" type="hidden" value="<?=$HTTP_POST_VARS["modulos"]?>">
+			<input name="modulos" type="hidden" value="<?=$_POST["modulos"]?>">
 			<input name="mod" type="hidden" value="selecionar">
-			<input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
+			<input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="1"?"checked":""):"checked" ?>> 
              <label for="web"><strong>Web</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-             <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>>
+             <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="0"?"checked":""):"" ?>>
              <label for="caracter"><strong>Caracter</strong></label>
 			</td>
 		  </tr>
@@ -132,7 +132,7 @@ function js_envia_itens(){
          <tr> 
            <td> 
 		   <?php 
-		   $ambiente = (!isset($HTTP_POST_VARS["ambiente"])?"1":$HTTP_POST_VARS["ambiente"]);		  		   
+		   $ambiente = (!isset($_POST["ambiente"])?"1":$_POST["ambiente"]);		  		   
 		   	$wid = 15;
 			$conta = 0;
 			/***************/			
@@ -140,25 +140,25 @@ function js_envia_itens(){
 			  global $conta, $objeto_conteudo;
 			  global $wid;
 			  global $ambiente;
-			  global $HTTP_POST_VARS;
+			  global $_POST;
               $sub = db_query("select m.id_item_filho,i.descricao,i.help,i.funcao,m.id_item,m.modulo 
                               from db_menu m 
 			           inner join db_itensmenu i on i.id_item = m.id_item_filho 
                               where m.modulo = $mod  and m.id_item = $item 
 						     and i.itemativo = $ambiente");			  
-			  $numrows = pg_numrows($sub);
+			  $numrows = pg_num_rows($sub);
               if($numrows > 0) {
                 for($x = 0;$x < $numrows;$x++) {                  
-		  $valor = pg_result($sub,$x,"id_item_filho");
+		  $valor = pg_fetch_result($sub,$x,"id_item_filho");
 	          $objeto_conteudo = str_replace($objeto_conteudo,"-".$valor."-",'');
                   echo "<img src=\"imagens/alinha.gif\" height=\"5\" id=\"Img".$conta."\" width=\"".$wid."\" >
 	             <input size=\"1\" type=\"checkbox\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" ";
-		     if(strpos("###".$HTTP_POST_VARS["objeto_conteudo"],"-".$valor."-")>0)
+		     if(strpos("###".$_POST["objeto_conteudo"],"-".$valor."-")>0)
 		       echo "checked";
-	             echo   ">  <label for=\"ID$valor\">".pg_result($sub,$x,"descricao")."</label><br>\n";
+	             echo   ">  <label for=\"ID$valor\">".pg_fetch_result($sub,$x,"descricao")."</label><br>\n";
 				  $wid += 15;
 				  $conta++;
-				  submenus(pg_result($sub,$x,"id_item_filho"),$id,$mod);
+				  submenus(pg_fetch_result($sub,$x,"id_item_filho"),$id,$mod);
 				  $wid -= 15;
                 }				                
               }
@@ -168,19 +168,19 @@ function js_envia_itens(){
 	                           from db_itensmenu i 
 	                           inner join db_menu m 
 	                           on m.id_item_filho = i.id_item 
-	                           where m.modulo = ".$HTTP_POST_VARS["modulos"]."
+	                           where m.modulo = ".$_POST["modulos"]."
 							   and i.itemativo = $ambiente							   
-							   and m.id_item = ".$HTTP_POST_VARS["modulos"];
+							   and m.id_item = ".$_POST["modulos"];
             $result = db_query($SQL);			
-            for($i = 0;$i < pg_numrows($result);$i++) {
-	      $valor = pg_result($result,$i,"id_item_filho");
+            for($i = 0;$i < pg_num_rows($result);$i++) {
+	      $valor = pg_fetch_result($result,$i,"id_item_filho");
 	      $objeto_conteudo = str_replace($objeto_conteudo,"-".$valor."-",'');
               echo "<td id=\"col$i\" valign=\"top\" nowrap>\n
 	             <input size=\"1\" type=\"checkbox\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" ";
-	      if(strpos("###".$HTTP_POST_VARS["objeto_conteudo"],"-".$valor."-")>0)
+	      if(strpos("###".$_POST["objeto_conteudo"],"-".$valor."-")>0)
 		 echo "checked";
-	      echo   "> <label for=\"ID$valor\">".pg_result($result,$i,"descricao")."</label><br>\n";
-              submenus(pg_result($result,$i,"pai"),"col".$i,db_strpos($HTTP_POST_VARS["modulos"],"##"));
+	      echo   "> <label for=\"ID$valor\">".pg_fetch_result($result,$i,"descricao")."</label><br>\n";
+              submenus(pg_fetch_result($result,$i,"pai"),"col".$i,db_strpos($_POST["modulos"],"##"));
 			  echo "</td>\n";
             }	   
            if($objeto_conteudo!=""){

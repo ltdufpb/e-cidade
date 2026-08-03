@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE contacorrentesaldo
 class cl_contacorrentesaldo {
   // cria variaveis de erro
-  var $rotulo     = null;
-  var $query_sql  = null;
-  var $numrows    = 0;
-  var $numrows_incluir = 0;
-  var $numrows_alterar = 0;
-  var $numrows_excluir = 0;
-  var $erro_status= null;
-  var $erro_sql   = null;
-  var $erro_banco = null;
-  var $erro_msg   = null;
-  var $erro_campo = null;
-  var $pagina_retorno = null;
+  public $rotulo     = null;
+  public $query_sql  = null;
+  public $numrows    = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status= null;
+  public $erro_sql   = null;
+  public $erro_banco = null;
+  public $erro_msg   = null;
+  public $erro_campo = null;
+  public $pagina_retorno = null;
   // cria variaveis do arquivo
-  var $c29_sequencial = 0;
-  var $c29_contacorrentedetalhe = 0;
-  var $c29_anousu = 0;
-  var $c29_mesusu = 0;
-  var $c29_debito = 0;
-  var $c29_credito = 0;
+  public $c29_sequencial = 0;
+  public $c29_contacorrentedetalhe = 0;
+  public $c29_anousu = 0;
+  public $c29_mesusu = 0;
+  public $c29_debito = 0;
+  public $c29_credito = 0;
   // cria propriedade com as variaveis do arquivo
-  var $campos = "
+  public $campos = "
                  c29_sequencial = int4 = Sequencial
                  c29_contacorrentedetalhe = int4 = Sequencial
                  c29_anousu = int4 = Ano
@@ -58,10 +58,10 @@ class cl_contacorrentesaldo {
                  c29_credito = float4 = Crédito
                  ";
   //funcao construtor da classe
-  function cl_contacorrentesaldo() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("contacorrentesaldo");
-    $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+    $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
   function erro($mostra,$retorna) {
@@ -143,10 +143,10 @@ class cl_contacorrentesaldo {
         $this->erro_status = "0";
         return false;
       }
-      $this->c29_sequencial = pg_result($result,0,0);
+      $this->c29_sequencial = pg_fetch_result($result,0,0);
     }else{
       $result = db_query("select last_value from contacorrentesaldo_c29_sequencial_seq");
-      if(($result != false) && (pg_result($result,0,0) < $c29_sequencial)){
+      if(($result != false) && (pg_fetch_result($result,0,0) < $c29_sequencial)){
         $this->erro_sql = " Campo c29_sequencial maior que último número da sequencia.";
         $this->erro_banco = "Sequencia menor que este número.";
         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_contacorrentesaldo {
     $result = db_query($sql);
     if($result==false){
       $this->erro_banco = str_replace("\n","",@pg_last_error());
-      if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+      if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
         $this->erro_sql   = "Conta Corrente Saldo ($this->c29_sequencial) nao Incluído. Inclusao Abortada.";
         $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
         $this->erro_banco = "Conta Corrente Saldo já Cadastrado";
@@ -212,15 +212,15 @@ class cl_contacorrentesaldo {
       if (($resaco!=false)||($this->numrows!=0)) {
 
         $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-        $acount = pg_result($resac,0,0);
+        $acount = pg_fetch_result($resac,0,0);
         $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
         $resac = db_query("insert into db_acountkey values($acount,19669,'$this->c29_sequencial','I')");
-        $resac = db_query("insert into db_acount values($acount,3495,19669,'','".AddSlashes(pg_result($resaco,0,'c29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3495,19670,'','".AddSlashes(pg_result($resaco,0,'c29_contacorrentedetalhe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3495,19671,'','".AddSlashes(pg_result($resaco,0,'c29_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3495,19672,'','".AddSlashes(pg_result($resaco,0,'c29_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3495,19673,'','".AddSlashes(pg_result($resaco,0,'c29_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-        $resac = db_query("insert into db_acount values($acount,3495,19674,'','".AddSlashes(pg_result($resaco,0,'c29_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3495,19669,'','".AddSlashes(pg_fetch_result($resaco,0,'c29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3495,19670,'','".AddSlashes(pg_fetch_result($resaco,0,'c29_contacorrentedetalhe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3495,19671,'','".AddSlashes(pg_fetch_result($resaco,0,'c29_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3495,19672,'','".AddSlashes(pg_fetch_result($resaco,0,'c29_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3495,19673,'','".AddSlashes(pg_fetch_result($resaco,0,'c29_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+        $resac = db_query("insert into db_acount values($acount,3495,19674,'','".AddSlashes(pg_fetch_result($resaco,0,'c29_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
       }
     }
     return true;
@@ -230,10 +230,10 @@ class cl_contacorrentesaldo {
     $this->atualizacampos();
     $sql = " update contacorrentesaldo set ";
     $virgula = "";
-    if(trim($this->c29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_sequencial"])){
+    if(trim((string) $this->c29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_sequencial"])){
       $sql  .= $virgula." c29_sequencial = $this->c29_sequencial ";
       $virgula = ",";
-      if(trim($this->c29_sequencial) == null ){
+      if(trim((string) $this->c29_sequencial) == null ){
         $this->erro_sql = " Campo Sequencial nao Informado.";
         $this->erro_campo = "c29_sequencial";
         $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_contacorrentesaldo {
         return false;
       }
     }
-    if(trim($this->c29_contacorrentedetalhe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_contacorrentedetalhe"])){
+    if(trim((string) $this->c29_contacorrentedetalhe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_contacorrentedetalhe"])){
       $sql  .= $virgula." c29_contacorrentedetalhe = $this->c29_contacorrentedetalhe ";
       $virgula = ",";
-      if(trim($this->c29_contacorrentedetalhe) == null ){
+      if(trim((string) $this->c29_contacorrentedetalhe) == null ){
         $this->erro_sql = " Campo Sequencial nao Informado.";
         $this->erro_campo = "c29_contacorrentedetalhe";
         $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_contacorrentesaldo {
         return false;
       }
     }
-    if(trim($this->c29_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_anousu"])){
+    if(trim((string) $this->c29_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_anousu"])){
       $sql  .= $virgula." c29_anousu = $this->c29_anousu ";
       $virgula = ",";
-      if(trim($this->c29_anousu) == null ){
+      if(trim((string) $this->c29_anousu) == null ){
         $this->erro_sql = " Campo Ano nao Informado.";
         $this->erro_campo = "c29_anousu";
         $this->erro_banco = "";
@@ -269,10 +269,10 @@ class cl_contacorrentesaldo {
         return false;
       }
     }
-    if(trim($this->c29_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_mesusu"])){
+    if(trim((string) $this->c29_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_mesusu"])){
       $sql  .= $virgula." c29_mesusu = $this->c29_mesusu ";
       $virgula = ",";
-      if(trim($this->c29_mesusu) == null ){
+      if(trim((string) $this->c29_mesusu) == null ){
         $this->erro_sql = " Campo Mês nao Informado.";
         $this->erro_campo = "c29_mesusu";
         $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_contacorrentesaldo {
         return false;
       }
     }
-    if(trim($this->c29_debito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_debito"])){
+    if(trim((string) $this->c29_debito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_debito"])){
       $sql  .= $virgula." c29_debito = $this->c29_debito ";
       $virgula = ",";
-      if(trim($this->c29_debito) == null ){
+      if(trim((string) $this->c29_debito) == null ){
         $this->erro_sql = " Campo Débito nao Informado.";
         $this->erro_campo = "c29_debito";
         $this->erro_banco = "";
@@ -295,10 +295,10 @@ class cl_contacorrentesaldo {
         return false;
       }
     }
-    if(trim($this->c29_credito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_credito"])){
+    if(trim((string) $this->c29_credito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c29_credito"])){
       $sql  .= $virgula." c29_credito = $this->c29_credito ";
       $virgula = ",";
-      if(trim($this->c29_credito) == null ){
+      if(trim((string) $this->c29_credito) == null ){
         $this->erro_sql = " Campo Crédito nao Informado.";
         $this->erro_campo = "c29_credito";
         $this->erro_banco = "";
@@ -321,21 +321,21 @@ class cl_contacorrentesaldo {
         for ($conresaco=0;$conresaco<$this->numrows;$conresaco++) {
 
           $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-          $acount = pg_result($resac,0,0);
+          $acount = pg_fetch_result($resac,0,0);
           $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
           $resac = db_query("insert into db_acountkey values($acount,19669,'$this->c29_sequencial','A')");
           if(isset($GLOBALS["HTTP_POST_VARS"]["c29_sequencial"]) || $this->c29_sequencial != "")
-            $resac = db_query("insert into db_acount values($acount,3495,19669,'".AddSlashes(pg_result($resaco,$conresaco,'c29_sequencial'))."','$this->c29_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3495,19669,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c29_sequencial'))."','$this->c29_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if(isset($GLOBALS["HTTP_POST_VARS"]["c29_contacorrentedetalhe"]) || $this->c29_contacorrentedetalhe != "")
-            $resac = db_query("insert into db_acount values($acount,3495,19670,'".AddSlashes(pg_result($resaco,$conresaco,'c29_contacorrentedetalhe'))."','$this->c29_contacorrentedetalhe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3495,19670,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c29_contacorrentedetalhe'))."','$this->c29_contacorrentedetalhe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if(isset($GLOBALS["HTTP_POST_VARS"]["c29_anousu"]) || $this->c29_anousu != "")
-            $resac = db_query("insert into db_acount values($acount,3495,19671,'".AddSlashes(pg_result($resaco,$conresaco,'c29_anousu'))."','$this->c29_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3495,19671,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c29_anousu'))."','$this->c29_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if(isset($GLOBALS["HTTP_POST_VARS"]["c29_mesusu"]) || $this->c29_mesusu != "")
-            $resac = db_query("insert into db_acount values($acount,3495,19672,'".AddSlashes(pg_result($resaco,$conresaco,'c29_mesusu'))."','$this->c29_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3495,19672,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c29_mesusu'))."','$this->c29_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if(isset($GLOBALS["HTTP_POST_VARS"]["c29_debito"]) || $this->c29_debito != "")
-            $resac = db_query("insert into db_acount values($acount,3495,19673,'".AddSlashes(pg_result($resaco,$conresaco,'c29_debito'))."','$this->c29_debito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3495,19673,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c29_debito'))."','$this->c29_debito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
           if(isset($GLOBALS["HTTP_POST_VARS"]["c29_credito"]) || $this->c29_credito != "")
-            $resac = db_query("insert into db_acount values($acount,3495,19674,'".AddSlashes(pg_result($resaco,$conresaco,'c29_credito'))."','$this->c29_credito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+            $resac = db_query("insert into db_acount values($acount,3495,19674,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c29_credito'))."','$this->c29_credito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         }
       }
     }
@@ -384,15 +384,15 @@ class cl_contacorrentesaldo {
       if(($resaco!=false)||($this->numrows!=0)){
         for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
           $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-          $acount = pg_result($resac,0,0);
+          $acount = pg_fetch_result($resac,0,0);
           $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
           $resac = db_query("insert into db_acountkey values($acount,19669,'$c29_sequencial','E')");
-          $resac = db_query("insert into db_acount values($acount,3495,19669,'','".AddSlashes(pg_result($resaco,$iresaco,'c29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac = db_query("insert into db_acount values($acount,3495,19670,'','".AddSlashes(pg_result($resaco,$iresaco,'c29_contacorrentedetalhe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac = db_query("insert into db_acount values($acount,3495,19671,'','".AddSlashes(pg_result($resaco,$iresaco,'c29_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac = db_query("insert into db_acount values($acount,3495,19672,'','".AddSlashes(pg_result($resaco,$iresaco,'c29_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac = db_query("insert into db_acount values($acount,3495,19673,'','".AddSlashes(pg_result($resaco,$iresaco,'c29_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-          $resac = db_query("insert into db_acount values($acount,3495,19674,'','".AddSlashes(pg_result($resaco,$iresaco,'c29_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,3495,19669,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,3495,19670,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c29_contacorrentedetalhe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,3495,19671,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c29_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,3495,19672,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c29_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,3495,19673,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c29_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+          $resac = db_query("insert into db_acount values($acount,3495,19674,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c29_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
         }
       }
     }
@@ -453,7 +453,7 @@ class cl_contacorrentesaldo {
       $this->erro_status = "0";
       return false;
     }
-    $this->numrows = pg_numrows($result);
+    $this->numrows = pg_num_rows($result);
     if($this->numrows==0){
       $this->erro_banco = "";
       $this->erro_sql   = "Record Vazio na Tabela:contacorrentesaldo";
@@ -468,7 +468,7 @@ class cl_contacorrentesaldo {
   function sql_query ( $c29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -500,7 +500,7 @@ class cl_contacorrentesaldo {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -513,7 +513,7 @@ class cl_contacorrentesaldo {
   function sql_query_buscasaldo($c29_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -539,7 +539,7 @@ class cl_contacorrentesaldo {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -553,7 +553,7 @@ class cl_contacorrentesaldo {
   function sql_query_file ( $c29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -574,7 +574,7 @@ class cl_contacorrentesaldo {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

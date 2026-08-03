@@ -36,15 +36,15 @@ $this->objpdf->text(185, $xlin-14, db_formatar($this->Snumero, 's', '0', 6, 'e')
 $this->objpdf->Setfont('Arial', 'B', 7);
 
 if (!empty($this->processo_administrativo)) {
-    $this->objpdf->text(130, $xlin-9, 'PROCESSO ADMINISTRATIVO: '.substr($this->processo_administrativo, 0, 40));
+    $this->objpdf->text(130, $xlin-9, 'PROCESSO ADMINISTRATIVO: '.substr((string) $this->processo_administrativo, 0, 40));
 }
 
 $this->objpdf->text(130, $xlin -6, 'ORGÃO');
-$this->objpdf->text(142, $xlin -6, ': '.substr($this->Sorgao, 0, 40));
+$this->objpdf->text(142, $xlin -6, ': '.substr((string) $this->Sorgao, 0, 40));
 $this->objpdf->text(130, $xlin -3, 'UNIDADE');
-$this->objpdf->text(142, $xlin -3, ': '.substr($this->Sunidade, 0, 40));
+$this->objpdf->text(142, $xlin -3, ': '.substr((string) $this->Sunidade, 0, 40));
 $this->objpdf->text(130, $xlin, 'USUÁRIO');
-$this->objpdf->text(142, $xlin, ': '.substr($this->Susuarioger, 0, 40));
+$this->objpdf->text(142, $xlin, ': '.substr((string) $this->Susuarioger, 0, 40));
 
 if (isset($this->iPlanoPacto) && $this->iPlanoPacto != "") {
     $this->objpdf->text(130, $xlin+2, 'PLANO');
@@ -55,15 +55,15 @@ $this->objpdf->Setfont('Arial', 'B', 9);
 $this->objpdf->Image('imagens/files/'.$this->logo, 15, $xlin-17, 12);
 $this->objpdf->Setfont('Arial', 'B', 9);
 if ($isPB) {
-    if (substr($this->prefeitura, 0, 7) == 'EMPRESA') {
-        $this->objpdf->text(40, $xlin - 15, substr($this->prefeitura, 0, 32));
-        $this->objpdf->text(40, $xlin - 12, substr($this->prefeitura, 33, 12));
-    } elseif (substr($this->prefeitura, 0, 25) == 'FUNDO MUNICIPAL DE DEFESA') {
-        $this->objpdf->text(40, $xlin - 15, substr($this->prefeitura, 0, 45));
-        $this->objpdf->text(40, $xlin - 12, substr($this->prefeitura, 46, 30));
-    } elseif (substr($this->prefeitura, 0, 50) == 'INSTITUTO DE PREVIDÊNCIA DOS SERVIDORES MUNICIPAIS') {
-        $this->objpdf->text(40, $xlin - 15, substr($this->prefeitura, 0, 24));
-        $this->objpdf->text(40, $xlin - 12, substr($this->prefeitura, 25, 26));
+    if (str_starts_with((string) $this->prefeitura, 'EMPRESA')) {
+        $this->objpdf->text(40, $xlin - 15, substr((string) $this->prefeitura, 0, 32));
+        $this->objpdf->text(40, $xlin - 12, substr((string) $this->prefeitura, 33, 12));
+    } elseif (str_starts_with((string) $this->prefeitura, 'FUNDO MUNICIPAL DE DEFESA')) {
+        $this->objpdf->text(40, $xlin - 15, substr((string) $this->prefeitura, 0, 45));
+        $this->objpdf->text(40, $xlin - 12, substr((string) $this->prefeitura, 46, 30));
+    } elseif (str_starts_with((string) $this->prefeitura, 'INSTITUTO DE PREVIDÊNCIA DOS SERVIDORES MUNICIPAIS')) {
+        $this->objpdf->text(40, $xlin - 15, substr((string) $this->prefeitura, 0, 24));
+        $this->objpdf->text(40, $xlin - 12, substr((string) $this->prefeitura, 25, 26));
     } else {
         $this->objpdf->text(40, $xlin - 15, $this->prefeitura);
     }
@@ -71,7 +71,7 @@ if ($isPB) {
     $this->objpdf->text(40, $xlin - 9, $this->enderpref);
     $this->objpdf->text(40, $xlin - 6, $this->municpref);
     $this->objpdf->text(40, $xlin - 3, $this->telefpref);
-    if(trim($this->emailpref) == "" or $this->emailpref == null){
+    if(trim((string) $this->emailpref) == "" or $this->emailpref == null){
         $this->objpdf->text(40, $xlin + 2, $this->emailpref);
         $this->objpdf->text(40, $xlin - 0, db_formatar($this->cgcpref, 'cnpj'));
     }else{
@@ -148,7 +148,7 @@ $this->objpdf->Setfont('Arial', '', 6);
  * ao invés de termos vários \n ou \r, teremos apenas um \n
  */
 $Sresumo = "";
-$aResumo = array_unique(split("[\n\r]", $this->Sresumo));
+$aResumo = array_unique(preg_split("#[\n\r]#m", (string) $this->Sresumo));
 $Sresumo = implode("\n", $aResumo);
 $this->Sresumo = $Sresumo;
   $iSomaHeight = 0;
@@ -241,18 +241,18 @@ if ($this->linhasdosfornec>0) {
     $this->objpdf->setx($xcol);
     $this->objpdf->setleftmargin(4);
     $this->objpdf->Setfont('Arial', '', 7);
-    $this->objpdf->SetAligns(array('C','L','L','L','C'));
-    $this->objpdf->SetWidths(array(15,64,63,40,20));
+    $this->objpdf->SetAligns(['C','L','L','L','C']);
+    $this->objpdf->SetWidths([15,64,63,40,20]);
     for ($i=0; $i<$this->linhasdosfornec; $i++) {
         db_fieldsmemory($this->recorddosfornec, $i);
-        $cgmforn   = trim(pg_result($this->recorddosfornec, $i, $this->cgmforn));
-        $nomeforn  = trim(pg_result($this->recorddosfornec, $i, $this->nomeforn));
-        $enderforn = trim(pg_result($this->recorddosfornec, $i, $this->enderforn));
-        $numforn   = trim(pg_result($this->recorddosfornec, $i, $this->numforn));
-        $municforn = trim(pg_result($this->recorddosfornec, $i, $this->municforn));
-        $foneforn  = trim(pg_result($this->recorddosfornec, $i, $this->foneforn));
-        $cgccpf    = trim(pg_result($this->recorddosfornec, $i, $this->cgccpf));
-        $this->objpdf->Row(array($cgmforn,$nomeforn."\n"."CNPJ/CPF: ".$cgccpf,$enderforn.", ".$numforn,$municforn,$foneforn), 4, false, 4);
+        $cgmforn   = trim(pg_fetch_result($this->recorddosfornec, $i, $this->cgmforn));
+        $nomeforn  = trim(pg_fetch_result($this->recorddosfornec, $i, $this->nomeforn));
+        $enderforn = trim(pg_fetch_result($this->recorddosfornec, $i, $this->enderforn));
+        $numforn   = trim(pg_fetch_result($this->recorddosfornec, $i, $this->numforn));
+        $municforn = trim(pg_fetch_result($this->recorddosfornec, $i, $this->municforn));
+        $foneforn  = trim(pg_fetch_result($this->recorddosfornec, $i, $this->foneforn));
+        $cgccpf    = trim(pg_fetch_result($this->recorddosfornec, $i, $this->cgccpf));
+        $this->objpdf->Row([$cgmforn,$nomeforn."\n"."CNPJ/CPF: ".$cgccpf,$enderforn.", ".$numforn,$municforn,$foneforn], 4, false, 4);
         break;
     }
     if ($this->linhasdosfornec > 1) {
@@ -350,7 +350,7 @@ for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
     // verifica se é Paty
     if (isset($this->casadec_medicamentos)) {
         // verifica se é medicamento
-        $codigo_material = pg_result($this->recorddositens, $ii, $this->scodpcmater);
+        $codigo_material = pg_fetch_result($this->recorddositens, $ii, $this->scodpcmater);
         // verifica se é medicamento
         $classe_pcmater = new cl_pcmater();
         $sSqlMedicamento = $classe_pcmater->sql_query_grupo($codigo_material);
@@ -365,8 +365,8 @@ for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
     }
     $itemant = "";
     $pass = false;
-    $this->objpdf->SetWidths(array(10,12,24,95,30,30));
-    $this->objpdf->SetAligns(array('C','C','C','J','R','R'));
+    $this->objpdf->SetWidths([10,12,24,95,30,30]);
+    $this->objpdf->SetAligns(['C','C','C','J','R','R']);
     $pagina = $this->objpdf->PageNo();
     db_fieldsmemory($this->recorddositens, $ii);
 
@@ -385,42 +385,42 @@ for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
   //       $muda_pag = false;
     }
 
-    $codigo         = pg_result($this->recorddositens, $ii, "pc11_codigo");
-    $item           = pg_result($this->recorddositens, $ii, $this->item);
-    $quantitem      = pg_result($this->recorddositens, $ii, $this->quantitem);
-    $descricaoitem  = pg_result($this->recorddositens, $ii, $this->descricaoitem);
+    $codigo         = pg_fetch_result($this->recorddositens, $ii, "pc11_codigo");
+    $item           = pg_fetch_result($this->recorddositens, $ii, $this->item);
+    $quantitem      = pg_fetch_result($this->recorddositens, $ii, $this->quantitem);
+    $descricaoitem  = pg_fetch_result($this->recorddositens, $ii, $this->descricaoitem);
 
-    $pc11_numero    = pg_result($this->recorddositens, $ii, $this->pc11_numero);
-    $pc11_codigo    = pg_result($this->recorddositens, $ii, $this->pc11_codigo);
+    $pc11_numero    = pg_fetch_result($this->recorddositens, $ii, $this->pc11_numero);
+    $pc11_codigo    = pg_fetch_result($this->recorddositens, $ii, $this->pc11_codigo);
 
 
   //$valoritem      = pg_result($this->recorddositens,$ii,$this->valoritem);
-    $valoritem      = db_formatar(pg_result($this->recorddositens, $ii, $this->valoritem), "f", ' ', 0, 'e', $this->casadec);
-    $valtot         = pg_result($this->recorddositens, $ii, $this->svalortot);
+    $valoritem      = db_formatar(pg_fetch_result($this->recorddositens, $ii, $this->valoritem), "f", ' ', 0, 'e', $this->casadec);
+    $valtot         = pg_fetch_result($this->recorddositens, $ii, $this->svalortot);
     $valimp         = db_formatar($valtot, 'f');
-    $prazo          = pg_result($this->recorddositens, $ii, $this->sprazo);
-    $pgto           = pg_result($this->recorddositens, $ii, $this->spgto);
-    $resum          = pg_result($this->recorddositens, $ii, $this->sresum);
+    $prazo          = pg_fetch_result($this->recorddositens, $ii, $this->sprazo);
+    $pgto           = pg_fetch_result($this->recorddositens, $ii, $this->spgto);
+    $resum          = pg_fetch_result($this->recorddositens, $ii, $this->sresum);
 
   /**
    * Quando o resumo não estiver liberado e o resumo do item da solicitação estiver vazio, traz o complemento do cadastro do item
    */
     if (!empty($this->lLiberaresumo) && !empty($this->sComplemento)) {
-        if (pg_result($this->recorddositens, $ii, $this->lLiberaresumo) == 'f' && trim($resum) == '') {
-            $resum = pg_result($this->recorddositens, $ii, $this->sComplemento);
+        if (pg_fetch_result($this->recorddositens, $ii, $this->lLiberaresumo) == 'f' && trim($resum) == '') {
+            $resum = pg_fetch_result($this->recorddositens, $ii, $this->sComplemento);
         }
     }
 
     $resum          = stripslashes(addslashes($resum));
-    $just           = pg_result($this->recorddositens, $ii, $this->sjust);
-    $unid           = pg_result($this->recorddositens, $ii, $this->sunidade);
-    $abrevunid      = pg_result($this->recorddositens, $ii, $this->sabrevunidade);
-    $servico        = pg_result($this->recorddositens, $ii, $this->sservico);
-    $quantunid      = pg_result($this->recorddositens, $ii, $this->squantunid);
-    $susaquant      = pg_result($this->recorddositens, $ii, $this->susaquant);
-    $scodpcmater    = pg_result($this->recorddositens, $ii, $this->scodpcmater);
-    $selemento      = pg_result($this->recorddositens, $ii, $this->selemento);
-    $sdelemento     = pg_result($this->recorddositens, $ii, $this->sdelemento);
+    $just           = pg_fetch_result($this->recorddositens, $ii, $this->sjust);
+    $unid           = pg_fetch_result($this->recorddositens, $ii, $this->sunidade);
+    $abrevunid      = pg_fetch_result($this->recorddositens, $ii, $this->sabrevunidade);
+    $servico        = pg_fetch_result($this->recorddositens, $ii, $this->sservico);
+    $quantunid      = pg_fetch_result($this->recorddositens, $ii, $this->squantunid);
+    $susaquant      = pg_fetch_result($this->recorddositens, $ii, $this->susaquant);
+    $scodpcmater    = pg_fetch_result($this->recorddositens, $ii, $this->scodpcmater);
+    $selemento      = pg_fetch_result($this->recorddositens, $ii, $this->selemento);
+    $sdelemento     = pg_fetch_result($this->recorddositens, $ii, $this->sdelemento);
 
     $xtotal    += number_format($valtot, 2, '.', '');
     $xtotalitem+= number_format($valoritem, 2, '.', '');
@@ -485,7 +485,7 @@ for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
     $x = $this->muda_pag($pagina, $mostra, $xcol, "false", $contapagina, $mais);
 
     if (isset($selemento) && trim($selemento)!="") {
-        $this->objpdf->Row(array('','','',db_formatar($selemento, 'elemento')." - ".$sdelemento,'',''), 3, false, 4);
+        $this->objpdf->Row(['','','',db_formatar($selemento, 'elemento')." - ".$sdelemento,'',''], 3, false, 4);
     }
 
     $mais = $this->objpdf->NbLines(95, $scodpcmater.$descricaoitem.$barran);
@@ -493,7 +493,7 @@ for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
 
     $x = $this->muda_pag($pagina, $mostra, $xcol, "false", $contapagina, $mais);
 
-    $this->objpdf->Row(array($item, $quantitem, $unid, $scodpcmater.$descricaoitem .$barran, $valoritem, $valimp), 3, false, $distanciar, 0, true);
+    $this->objpdf->Row([$item, $quantitem, $unid, $scodpcmater.$descricaoitem .$barran, $valoritem, $valimp], 3, false, $distanciar, 0, true);
 
 
 
@@ -507,7 +507,7 @@ for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
         $rsFornecedor  = $oDaoPcorcam->sql_record($sqlFornecedor);
         if ($oDaoPcorcam->numrows > 0) {
             $oFornecedor = db_utils::fieldsMemory($rsFornecedor, 0);
-            $this->objpdf->Row(array("", "", "","Fornecedor: " . $oFornecedor->z01_numcgm . " - " . $oFornecedor->z01_nome , "", ""), 3, false, $distanciar, 0, true);
+            $this->objpdf->Row(["", "", "","Fornecedor: " . $oFornecedor->z01_numcgm . " - " . $oFornecedor->z01_nome , "", ""], 3, false, $distanciar, 0, true);
         }
     }
 
@@ -529,7 +529,7 @@ for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
             }
             $alturapaginafunc = (int)$alturapaginafunc;
 
-            $prazo = $this->objpdf->Row_multicell(array('','','',$prazo,'',''), 3, false, $dist, 0, true, true, 3, $alturapaginafunc);
+            $prazo = $this->objpdf->Row_multicell(['','','',$prazo,'',''], 3, false, $dist, 0, true, true, 3, $alturapaginafunc);
             $x = $this->muda_pag($pagina, $mostra, $xcol, "false", $contapagina, $mais);
         }
     }
@@ -545,7 +545,7 @@ for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
             }
             $alturapaginafunc = (int)$alturapaginafunc;
 
-            $pgto = $this->objpdf->Row_multicell(array('','','',$pgto,'',''), 3, false, $dist, 0, true, true, 3, $alturapaginafunc);
+            $pgto = $this->objpdf->Row_multicell(['','','',$pgto,'',''], 3, false, $dist, 0, true, true, 3, $alturapaginafunc);
             $x = $this->muda_pag($pagina, $mostra, $xcol, "false", $contapagina, $mais);
         }
     }
@@ -560,7 +560,7 @@ for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
                 $alturapaginafunc = $this->objpdf->h - 30;
             }
             $alturapaginafunc = (int)$alturapaginafunc;
-            $resum = $this->objpdf->Row_multicell(array('', '', '', trim(preg_replace('/\s\s+/', ' ', $resum)), '', ''), 3, false, $dist, 0, true, true, 3, $alturapaginafunc);
+            $resum = $this->objpdf->Row_multicell(['', '', '', trim((string) preg_replace('/\s\s+/', ' ', (string) $resum)), '', ''], 3, false, $dist, 0, true, true, 3, $alturapaginafunc);
             $x = $this->muda_pag($pagina, $mostra, $xcol, "false", $contapagina, $mais);
         }
     }
@@ -576,46 +576,46 @@ for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
             }
 
             $alturapaginafunc = (int)$alturapaginafunc;
-            $just = $this->objpdf->Row_multicell(array('','','',$just,'',''), 3, false, $dist, 0, true, true, 3, $alturapaginafunc);
+            $just = $this->objpdf->Row_multicell(['','','',$just,'',''], 3, false, $dist, 0, true, true, 3, $alturapaginafunc);
             $x = $this->muda_pag($pagina, $mostra, $xcol, "false", $contapagina, $mais);
         }
     }
 
-    $this->objpdf->SetWidths(array(10,12,24,95,30,30));
-    $this->objpdf->SetWidths(array(10,12,24,23.7,9,20.7,20.7,20.7,0.2,30,30));
-    $arr_dotac = array();
+    $this->objpdf->SetWidths([10,12,24,95,30,30]);
+    $this->objpdf->SetWidths([10,12,24,23.7,9,20.7,20.7,20.7,0.2,30,30]);
+    $arr_dotac = [];
     for ($i=0; $i<$this->linhasdasdotac; $i++) {
         db_fieldsmemory($this->recorddasdotac, $i);
 
-        $aTestaDotac = array(pg_result($this->recorddasdotac, $i, $this->dcoddot),
-                           pg_result($this->recorddasdotac, $i, $this->dcontrap));
-        if (pg_result($this->recorddasdotac, $i, $this->dcodigo)==$codigo && !in_array($aTestaDotac, $arr_dotac)) {
+        $aTestaDotac = [pg_fetch_result($this->recorddasdotac, $i, $this->dcoddot),
+                           pg_fetch_result($this->recorddasdotac, $i, $this->dcontrap)];
+        if (pg_fetch_result($this->recorddasdotac, $i, $this->dcodigo)==$codigo && !in_array($aTestaDotac, $arr_dotac)) {
             if ($item!=$itemant) {
                 $pass = true;
                 $this->objpdf->Setfont('Arial', 'B', 7);
                 $distc = 3.5;
                 $distb = 3;
                 $x = $this->muda_pag($pagina, $xlin, $xcol, "false", $contapagina, 2);
-                $this->objpdf->SetAligns(array('C','C','C','C','C','C','C','C','R','R'));
-                $this->objpdf->Row(array('','',"\n",'',''), 3, false, $dist);
-                $this->objpdf->Row(array('','','',"DOTAÇÃO","CP","ANO","ELEMENTO","RESERVADO",'',''), 3, false, $dist);
+                $this->objpdf->SetAligns(['C','C','C','C','C','C','C','C','R','R']);
+                $this->objpdf->Row(['','',"\n",'',''], 3, false, $dist);
+                $this->objpdf->Row(['','','',"DOTAÇÃO","CP","ANO","ELEMENTO","RESERVADO",'',''], 3, false, $dist);
                 $itemant = $item;
             }
 
             $this->objpdf->Setfont('Arial', '', 7);
-            $this->objpdf->SetAligns(array('C','C',"C",'C','C','C','C','C','C','R','R'));
-            $dquant             = pg_result($this->recorddasdotac, $i, $this->dquant);
-            $danousu            = pg_result($this->recorddasdotac, $i, $this->danousu);
-            $dcoddot            = pg_result($this->recorddasdotac, $i, $this->dcoddot);
-            $dcontrap           = pg_result($this->recorddasdotac, $i, $this->dcontrap);
-            $dvalor             = pg_result($this->recorddasdotac, $i, $this->dvalor);
-            $delemento          = pg_result($this->recorddasdotac, $i, $this->delemento);
-            $projAtividade      = pg_result($this->recorddasdotac, $i, $this->projAtividade);
-            $projAtividadeDescr = pg_result($this->recorddasdotac, $i, $this->projAtividadeDescr);
+            $this->objpdf->SetAligns(['C','C',"C",'C','C','C','C','C','C','R','R']);
+            $dquant             = pg_fetch_result($this->recorddasdotac, $i, $this->dquant);
+            $danousu            = pg_fetch_result($this->recorddasdotac, $i, $this->danousu);
+            $dcoddot            = pg_fetch_result($this->recorddasdotac, $i, $this->dcoddot);
+            $dcontrap           = pg_fetch_result($this->recorddasdotac, $i, $this->dcontrap);
+            $dvalor             = pg_fetch_result($this->recorddasdotac, $i, $this->dvalor);
+            $delemento          = pg_fetch_result($this->recorddasdotac, $i, $this->delemento);
+            $projAtividade      = pg_fetch_result($this->recorddasdotac, $i, $this->projAtividade);
+            $projAtividadeDescr = pg_fetch_result($this->recorddasdotac, $i, $this->projAtividadeDescr);
 
 
           //        $dreserva = pg_result($this->recorddasdotac,$i,$this->dreserva);
-            $arr_dotac[] = array($dcoddot,$dcontrap);
+            $arr_dotac[] = [$dcoddot,$dcontrap];
             if (isset($dcoddot) && trim($dcoddot)!="") {
                 $result_orcreservasol = $clorcreservasol->sql_record($clorcreservasol->sql_query_orcreserva(null, null, "o82_codres as codigodareserva,o80_valor as valorreserva", "", "o82_solicitem=$codigo and o80_coddot=$dcoddot"));
                 $ddvalor = "NÃO";
@@ -631,34 +631,34 @@ for ($ii = 0; $ii < $this->linhasdositens; $ii++) {
                 }
                 $mais = $this->objpdf->NbLines(23.7, $delemento);
                 $x = $this->muda_pag($pagina, $xlin, $xcol, "false", $contapagina, $mais);
-                $this->objpdf->SetWidths(array(10,12,24,23.7,9,20.7,20.7,20.7,0.2,30,30));
-                $this->objpdf->Row(array('',$dquant,'',$dcoddot,$dcontrap,$danousu,$delemento,$ddvalor,'',db_formatar($dvalor/$dquant, 'f', " ", 0, "d", $this->casadec),db_formatar($dvalor, "f")), $distc, false, $distb);
+                $this->objpdf->SetWidths([10,12,24,23.7,9,20.7,20.7,20.7,0.2,30,30]);
+                $this->objpdf->Row(['',$dquant,'',$dcoddot,$dcontrap,$danousu,$delemento,$ddvalor,'',db_formatar($dvalor/$dquant, 'f', " ", 0, "d", $this->casadec),db_formatar($dvalor, "f")], $distc, false, $distb);
 
                 $oDotacao = new Dotacao($dcoddot, $danousu);
                 $oRecurso = $oDotacao->getDadosRecurso();
                 $sRecurso = $oRecurso->getRecurso() . " - " . $oRecurso->getDescricao();
 
                 $this->objpdf->Setfont('Arial', 'b', 7);
-                $this->objpdf->SetWidths(array(10, 12, 24, 30));
-                $this->objpdf->SetAligns(array('C','C','L','L'));
-                $this->objpdf->Row(array('','','','RECURSO'), 3, false, $dist);
+                $this->objpdf->SetWidths([10, 12, 24, 30]);
+                $this->objpdf->SetAligns(['C','C','L','L']);
+                $this->objpdf->Row(['','','','RECURSO'], 3, false, $dist);
 
                 $this->objpdf->Setfont('Arial', '', 7);
-                $this->objpdf->SetWidths(array(10, 12, 24, 100));
-                $this->objpdf->SetAligns(array('C','C','L','L'));
-                $this->objpdf->Row(array('','','',$sRecurso), 3, false, $dist);
+                $this->objpdf->SetWidths([10, 12, 24, 100]);
+                $this->objpdf->SetAligns(['C','C','L','L']);
+                $this->objpdf->Row(['','','',$sRecurso], 3, false, $dist);
 
                 $this->objpdf->Setfont('Arial', 'b', 7);
-                $this->objpdf->SetWidths(array(10, 12, 24, 120));
-                $this->objpdf->SetAligns(array('C','C','L','L'));
-                $this->objpdf->Row(array('','','','PROJ/ATIVIDADE'), 3, false, $dist);
+                $this->objpdf->SetWidths([10, 12, 24, 120]);
+                $this->objpdf->SetAligns(['C','C','L','L']);
+                $this->objpdf->Row(['','','','PROJ/ATIVIDADE'], 3, false, $dist);
 
                 $this->objpdf->Setfont('Arial', '', 7);
-                $this->objpdf->SetWidths(array(10, 12, 24, 120));
+                $this->objpdf->SetWidths([10, 12, 24, 120]);
              //$this->objpdf->SetWidths(array(10, 12, 24, 24, 10, 18, 24, 17, 12, 20));
-                $this->objpdf->SetAligns(array('C','C','L','L', 'C', 'C', "C", "L", "L", "R"));
+                $this->objpdf->SetAligns(['C','C','L','L', 'C', 'C', "C", "L", "L", "R"]);
 
-                $this->objpdf->Row(array('','','', substr($projAtividade. ' - '.$projAtividadeDescr, 0, 50)), $distc, false, $distb);
+                $this->objpdf->Row(['','','', substr($projAtividade. ' - '.$projAtividadeDescr, 0, 50)], $distc, false, $distb);
             }
         } else {
             $pass = false;
@@ -683,7 +683,7 @@ if ($contapagina == 1) {
 
     $resparag = @db_query($sqlparag);
 
-    if (@pg_numrows($resparag) > 0) {
+    if (@pg_num_rows($resparag) > 0) {
         db_fieldsmemory($resparag, 0);
 
         eval($db02_texto);
@@ -697,7 +697,7 @@ if ($contapagina == 1) {
         $sqlparagpadrao .= " where db60_tipodoc = 1400 order by db62_ordem";
         $resparagpadrao = @db_query($sqlparagpadrao);
 
-        if (@pg_numrows($resparagpadrao) > 0) {
+        if (@pg_num_rows($resparagpadrao) > 0) {
             db_fieldsmemory($resparagpadrao, 0);
 
             eval($db61_texto);

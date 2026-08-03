@@ -7,7 +7,7 @@
  */
 function db_transcreve_data($sData, $array_row) {
 
-  $aMeses = array();
+  $aMeses = [];
   $aMeses["01"] = "Janeiro";
   $aMeses["02"] = "Fevereiro";
   $aMeses["03"] = "Marco";

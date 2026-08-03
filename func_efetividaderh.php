@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_efetividaderh_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clefetividaderh = new cl_efetividaderh;
 $clefetividaderh->rotulo->label("ed98_i_ano");
 $clefetividaderh->rotulo->label("ed98_c_tipo");
@@ -55,7 +55,7 @@ $clefetividaderh->rotulo->label("ed98_c_tipo");
      </td>
      <td>
       <?php 
-      $x = array(""=>"","P"=>"PROFESSORES","F"=>"FUNCIONÁRIOS");
+      $x = [""=>"","P"=>"PROFESSORES","F"=>"FUNCIONÁRIOS"];
       db_select('ed98_c_tipo',$x,true,@$db_opcao,"","")
       ?>
      </td>
@@ -141,9 +141,9 @@ $clefetividaderh->rotulo->label("ed98_c_tipo");
      $condicao .= " AND ed98_c_tipo = '$ed98_c_tipo' ";
     }
     $sql = $clefetividaderh->sql_query("",$campos,"ed98_d_datafim desc,ed98_c_tipo"," $condicao ");
-    $repassa = array();
+    $repassa = [];
     if(isset($ed98_i_ano)){
-     $repassa = array("ed98_i_ano"=>$ed98_i_ano,"ed98_c_tipo"=>$ed98_c_tipo);
+     $repassa = ["ed98_i_ano"=>$ed98_i_ano,"ed98_c_tipo"=>$ed98_c_tipo];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

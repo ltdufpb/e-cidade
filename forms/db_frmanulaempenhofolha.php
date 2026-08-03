@@ -68,9 +68,9 @@ $clrotulo->label('DBtxt25');
 				</td>
 				<td>
 					<?php 
-						$aTipos = array("1" => "Salário        ",
+						$aTipos = ["1" => "Salário        ",
                             "2" => "Previdência    ",
-                            "3" => "FGTS           ");
+                            "3" => "FGTS           "];
 						db_select('tipo', $aTipos, true, 1, "onChange='js_validaTipoPonto(true)'; style='width:103px;'");
 					?>
 				</td>
@@ -82,7 +82,7 @@ $clrotulo->label('DBtxt25');
 				</td>
 				<td>
 					<?php 
-						$aSigla = array();
+						$aSigla = [];
 						db_select('ponto',$aSigla,true,4,"onChange='js_validaTipoPonto(false)'; style='width:103px;'");
 					?>
 				</td>

@@ -97,7 +97,7 @@ function js_troca(rel){
       	   </td>
            <td height="25" nowrap  align="left" >
               <?php 
-              $result=array("1"=>"Pavimentação","2"=>"Pavimentação Solidária","3"=>"Financeiro");
+              $result=["1"=>"Pavimentação","2"=>"Pavimentação Solidária","3"=>"Financeiro"];
               db_select("relatorio",$result,true,$db_opcao,"onchange='js_troca(this.value);'");
               ?>
 	         </td>

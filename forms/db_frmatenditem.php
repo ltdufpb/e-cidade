@@ -129,7 +129,7 @@ db_textarea('at05_feito',3,50,$Iat05_feito,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-  $matriz = array("0"=>"0%",
+  $matriz = ["0"=>"0%",
                   "10"=>"10%", 
                   "20"=>"20%",
                   "30"=>"30%",
@@ -139,7 +139,7 @@ db_textarea('at05_feito',3,50,$Iat05_feito,true,'text',$db_opcao,"")
                   "70"=>"70%",
                   "80"=>"80%",
                   "90"=>"90%",
-                  "100"=>"100%");             
+                  "100"=>"100%"];             
   db_select("at05_perc", $matriz,true,$db_opcao); 
 ?>
     </td>
@@ -152,7 +152,7 @@ db_textarea('at05_feito',3,50,$Iat05_feito,true,'text',$db_opcao,"")
   <tr>
     <td colspan="2" align="top">
    <?php 
-    $chavepri= array("at05_seq"=>@$at05_seq,"at05_codatend"=>@$at05_codatend);
+    $chavepri= ["at05_seq"=>@$at05_seq,"at05_codatend"=>@$at05_codatend];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="at05_seq,at05_codatend,at05_solicitado,at05_feito";
     $cliframe_alterar_excluir->sql=$clatenditem->sql_query(null,"*","","at05_codatend = $at05_codatend");

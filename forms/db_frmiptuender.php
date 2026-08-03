@@ -29,10 +29,10 @@ if(!isset($iEnderecoMunicipio)){
   $iEnderecoMunicipio = '1';
 }
 
-$aEnderecoMunicipio = array(
+$aEnderecoMunicipio = [
   '1' => 'Sim',
   '0' => 'Não'
-);
+];
 
 $clrotulo = new rotulocampo;
 $clrotulo->label('j01_numcgm');
@@ -504,7 +504,7 @@ function js_validaTamanhoCampo(){
   function js_preenchepesquisa(chave){
 
     db_iframe_iptuender.hide();
-    <?php echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave"; ?>
+    <?php echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave"; ?>
   }
 
   if($('db_opcao').value != 1){

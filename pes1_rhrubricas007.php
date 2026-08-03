@@ -56,15 +56,13 @@ if(isset($cadastrar)){
   }
 
   if($sqlerro == false){
-    while (list($k,$v) = each($r09_rubric)){
-
-      $clbasesr->incluir($anousu,$mesusu,$r09_base,$v,db_getsession("DB_instit"));
-
-      if($clbasesr->erro_status == 0){
-
-        $erro_msg = $clbasesr->erro_msg;
-        $sqlerro=true;
-      }
+    foreach ($r09_rubric as $k => $v) {
+        $clbasesr->incluir($anousu,$mesusu,$r09_base,$v,db_getsession("DB_instit"));
+        if($clbasesr->erro_status == 0){
+  
+          $erro_msg = $clbasesr->erro_msg;
+          $sqlerro=true;
+        }
     }
   }
   db_fim_transacao($sqlerro);
@@ -149,8 +147,8 @@ if (!$rs) {
 
 
 
-$aSelecionados = array();
-$aSelecionar   = array();
+$aSelecionados = [];
+$aSelecionar   = [];
 
 $aCollection = db_utils::makeCollectionFromRecord($rs, function($oDados) {
 
@@ -166,12 +164,12 @@ $aCollection = db_utils::makeCollectionFromRecord($rs, function($oDados) {
     break;
   }
 
-  return (object)array(
+  return (object)[
     "rubrica"     => $oDados->rh27_rubric,
-    "descricao"   => urlencode($oDados->rh27_descr),
+    "descricao"   => urlencode((string) $oDados->rh27_descr),
     "tipo"        => $sTipoRubrica,
     "selecionado" => !empty($oDados->r09_base)
-  );
+  ];
 
 });
 

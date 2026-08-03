@@ -67,13 +67,13 @@ class ViradaIPTUPadrao implements iViradaIPTU {
 	 * Campos chave configurados na tabela iptutabelasconfigcampochave
 	 * @var array
 	 */
-	private $aCampoChave    = array();
+	private $aCampoChave    = [];
 
 	/**
 	 * Campos correcao configurados na tabela iptutabelasconfigcampocorrecao
 	 * @var array
 	 */
-	private $aCampoCorrecao = array();
+	private $aCampoCorrecao = [];
 
   /**
    * @return $this->sNomeTabela
@@ -196,7 +196,7 @@ class ViradaIPTUPadrao implements iViradaIPTU {
    */
   function __construct( $sNomeTabela='' ) {
 
-  	$this->setNomeTabela(trim($sNomeTabela));
+  	$this->setNomeTabela(trim((string) $sNomeTabela));
   	$this->setAnoAtual(db_getsession('DB_anousu'));
   	$this->setAnoNovo((db_getsession('DB_anousu') + 1));
 
@@ -306,7 +306,7 @@ class ViradaIPTUPadrao implements iViradaIPTU {
     $oDaoIptuTabelasDepend = db_utils::getDao('iptutabelasdepend');
     $oDaoTabela            = db_utils::getDao($this->getNomeTabela());
 
-    $aWhereAnoNovo = array();
+    $aWhereAnoNovo = [];
     foreach ( $this->getCampoChave() as $sNomeCampo ) {
     	$aWhereAnoNovo[] = "$sNomeCampo = {$this->getAnoNovo()} ";
     }
@@ -320,7 +320,7 @@ class ViradaIPTUPadrao implements iViradaIPTU {
       throw new Exception($sMensagem);
     }
 
-    $aWhereAnoAtual = array();
+    $aWhereAnoAtual = [];
     foreach ( $this->getCampoChave() as $sNomeCampo ) {
       $aWhereAnoAtual[] = "$sNomeCampo = {$this->getAnoAtual()} ";
     }
@@ -367,7 +367,7 @@ class ViradaIPTUPadrao implements iViradaIPTU {
 	      $oDaoTabela->$sNomeCampo = $this->getAnoNovo();
 	    }
 
-	    $aParamentros = array();
+	    $aParamentros = [];
 	    foreach ( $this->getCampoChave() as $sNomeCampo ) {
 	      $aParamentros[] = null;
 	    }

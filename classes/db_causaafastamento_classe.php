@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE causaafastamento
 class cl_causaafastamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh115_sequencial = 0; 
-   var $rh115_sigla = null; 
-   var $rh115_descricao = null; 
+   public $rh115_sequencial = 0; 
+   public $rh115_sigla = null; 
+   public $rh115_descricao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh115_sequencial = int4 = Sequencial 
                  rh115_sigla = char(3) = Sigla 
                  rh115_descricao = varchar(200) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_causaafastamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("causaafastamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_causaafastamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh115_sequencial = pg_result($result,0,0); 
+       $this->rh115_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from causaafastamento_rh115_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh115_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh115_sequencial)){
          $this->erro_sql = " Campo rh115_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_causaafastamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Causas de afastamento ($this->rh115_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Causas de afastamento já Cadastrado";
@@ -166,12 +166,12 @@ class cl_causaafastamento {
      $resaco = $this->sql_record($this->sql_query_file($this->rh115_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19577,'$this->rh115_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3480,19577,'','".AddSlashes(pg_result($resaco,0,'rh115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3480,19578,'','".AddSlashes(pg_result($resaco,0,'rh115_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3480,19579,'','".AddSlashes(pg_result($resaco,0,'rh115_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3480,19577,'','".AddSlashes(pg_fetch_result($resaco,0,'rh115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3480,19578,'','".AddSlashes(pg_fetch_result($resaco,0,'rh115_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3480,19579,'','".AddSlashes(pg_fetch_result($resaco,0,'rh115_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_causaafastamento {
       $this->atualizacampos();
      $sql = " update causaafastamento set ";
      $virgula = "";
-     if(trim($this->rh115_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh115_sequencial"])){ 
+     if(trim((string) $this->rh115_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh115_sequencial"])){ 
        $sql  .= $virgula." rh115_sequencial = $this->rh115_sequencial ";
        $virgula = ",";
-       if(trim($this->rh115_sequencial) == null ){ 
+       if(trim((string) $this->rh115_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "rh115_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_causaafastamento {
          return false;
        }
      }
-     if(trim($this->rh115_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh115_sigla"])){ 
+     if(trim((string) $this->rh115_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh115_sigla"])){ 
        $sql  .= $virgula." rh115_sigla = '$this->rh115_sigla' ";
        $virgula = ",";
-       if(trim($this->rh115_sigla) == null ){ 
+       if(trim((string) $this->rh115_sigla) == null ){ 
          $this->erro_sql = " Campo Sigla nao Informado.";
          $this->erro_campo = "rh115_sigla";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_causaafastamento {
          return false;
        }
      }
-     if(trim($this->rh115_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh115_descricao"])){ 
+     if(trim((string) $this->rh115_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh115_descricao"])){ 
        $sql  .= $virgula." rh115_descricao = '$this->rh115_descricao' ";
        $virgula = ",";
-       if(trim($this->rh115_descricao) == null ){ 
+       if(trim((string) $this->rh115_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "rh115_descricao";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_causaafastamento {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19577,'$this->rh115_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh115_sequencial"]) || $this->rh115_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3480,19577,'".AddSlashes(pg_result($resaco,$conresaco,'rh115_sequencial'))."','$this->rh115_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3480,19577,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh115_sequencial'))."','$this->rh115_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh115_sigla"]) || $this->rh115_sigla != "")
-           $resac = db_query("insert into db_acount values($acount,3480,19578,'".AddSlashes(pg_result($resaco,$conresaco,'rh115_sigla'))."','$this->rh115_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3480,19578,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh115_sigla'))."','$this->rh115_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["rh115_descricao"]) || $this->rh115_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,3480,19579,'".AddSlashes(pg_result($resaco,$conresaco,'rh115_descricao'))."','$this->rh115_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3480,19579,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh115_descricao'))."','$this->rh115_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_causaafastamento {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19577,'$rh115_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3480,19577,'','".AddSlashes(pg_result($resaco,$iresaco,'rh115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3480,19578,'','".AddSlashes(pg_result($resaco,$iresaco,'rh115_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3480,19579,'','".AddSlashes(pg_result($resaco,$iresaco,'rh115_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3480,19577,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh115_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3480,19578,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh115_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3480,19579,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh115_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from causaafastamento
@@ -345,7 +345,7 @@ class cl_causaafastamento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:causaafastamento";
@@ -360,7 +360,7 @@ class cl_causaafastamento {
    function sql_query ( $rh115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,7 +381,7 @@ class cl_causaafastamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_causaafastamento {
    function sql_query_file ( $rh115_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_causaafastamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

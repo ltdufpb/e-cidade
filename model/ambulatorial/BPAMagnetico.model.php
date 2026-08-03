@@ -45,29 +45,17 @@ class BPAMagnetico {
   private $lConsolidado = false;
 
   /**
-   * Fechamento da Competência
-   * @var ICompetenciaSaude
-   */
-  private $oCompetenciaFechada;
-
-  /**
    * Layout do arquivo que será gerado
    * @var db_layouttxt
    */
   private $oLayout;
 
   /**
-   * Nome do arquivo
-   * @var string
-   */
-  private $sNomeArquivo;
-
-  /**
    * Coleção de Unidades de Pronto Socorro selecionadas
    * Este array é indexado pelo código da unidade
    * @var Array::UnidadeProntoSocorro
    */
-  private $aUnidades = array();
+  private $aUnidades = [];
 
   /**
    * Dados do cabeçalho do arquivo
@@ -79,7 +67,7 @@ class BPAMagnetico {
    * Array com os dados do corpo do arquivo BPA
    * @var array
    */
-  private $aDados = array();
+  private $aDados = [];
 
   /**
    * Log de inconsistencia
@@ -103,14 +91,14 @@ class BPAMagnetico {
    * Array com as raças e seus código para uso no arquivo
    * @var array
    */
-  private $aRaca = array("BRANCA"         => "01",
+  private $aRaca = ["BRANCA"         => "01",
                          "PRETA"          => "02",
                          "PARDA"          => "03",
                          "AMARELA"        => "04",
                          "INDÍGENA"       => "05",
                          "NÃO DECLARADA"  => "99",
                          "SEM INFORMACAO" => "99"
-                        );
+                        ];
 
   /**
    * Instituição que esta gerando o BPA
@@ -141,36 +129,40 @@ class BPAMagnetico {
    * So valido quando gerado BPA pelo módulo laboratorio
    * @var Laboratorio[]
    */
-  private $aLaboratorios = array();
+  private $aLaboratorios = [];
 
   /**
    * Lista dos procedimentos que foram gerados no arquivo atual
    * @var array
    */
-  private $aProcedimentosInclusosArquivo = array();
+  private $aProcedimentosInclusosArquivo = [];
 
   /**
    * construtor da classe
    * @param string $sTipo
    * @param string $sNomeArqivo
+   * @param string $sNomeArquivo
    */
-  public function __construct($iLayout, $sNomeArquivo, ICompetenciaSaude $oCompetenciaFechada, DBLogJSON $oDBLog) {
+  public function __construct($iLayout, /**
+   * Nome do arquivo
+   */
+  private $sNomeArquivo, /**
+   * Fechamento da Competência
+   */
+  private readonly ICompetenciaSaude $oCompetenciaFechada, DBLogJSON $oDBLog) {
 
-    $this->sNomeArquivo = $sNomeArquivo;
-
-    if (!in_array($iLayout, array(self::BPA_CONSOLIDADO, self::BPA_INDIVIDUAL))) {
+    if (!in_array($iLayout, [self::BPA_CONSOLIDADO, self::BPA_INDIVIDUAL])) {
       throw new ParameterException(_M("saude.ambulatorial.BPAMagnetico.layout_invalido"));
     }
 
-    $this->oLayout             = new db_layouttxt($iLayout, $sNomeArquivo);
+    $this->oLayout             = new db_layouttxt($iLayout, $this->sNomeArquivo);
     $this->lConsolidado        = $iLayout == self::BPA_CONSOLIDADO;
-    $this->oCompetenciaFechada = $oCompetenciaFechada;
 
     if (empty($oDBLog)) {
       throw new ParameterException(_M("saude.ambulatorial.BPAMagnetico.arquivo_de_log_nao_instaciado"));
     }
 
-    switch (get_class($oCompetenciaFechada)) {
+    switch ($this->oCompetenciaFechada::class) {
 
     	case 'CompetenciaTFD':
       case 'CompetenciaLaboratorio':
@@ -192,7 +184,7 @@ class BPAMagnetico {
 
     $nLinhas = count($this->aDados);
 
-    $aControleProcedimentos = array();
+    $aControleProcedimentos = [];
 
     $this->getParametros();
 
@@ -291,7 +283,7 @@ class BPAMagnetico {
       $this->oCompetenciaFechada->adicionaFiltroBuscaProcedimentos("lab_laboratorio.la02_i_codigo in (". implode(", ", $aKeys).")");
     }
 
-    $aDadosAgrupados = array();
+    $aDadosAgrupados = [];
     $aProcedimentos  = $this->oCompetenciaFechada->getProcedimentos();
 
     $exigeIdade = [
@@ -315,11 +307,11 @@ class BPAMagnetico {
 
     foreach ($aProcedimentos as $iIndice => $oProcedimento) {
 
-      if (strpos($oProcedimento->tipo_registro, '01') === false) {
+      if (!str_contains((string) $oProcedimento->tipo_registro, '01')) {
         continue;
       }
 
-      if ( get_class($this->oCompetenciaFechada) == 'CompetenciaLaboratorio' )  {
+      if ( $this->oCompetenciaFechada::class == 'CompetenciaLaboratorio' )  {
         $this->aProcedimentosInclusosArquivo[] = $oProcedimento->codigo_procedimento_fechado;
       }
 
@@ -351,13 +343,13 @@ class BPAMagnetico {
         }
 
         $oDadosProcedimento->prd_ident = "02";
-        $oDadosProcedimento->prd_cnes  = str_pad($oProcedimento->cnes_unidade, 7, 0, STR_PAD_LEFT);
+        $oDadosProcedimento->prd_cnes  = str_pad((string) $oProcedimento->cnes_unidade, 7, 0, STR_PAD_LEFT);
         $oDadosProcedimento->prd_cmp   = $iCompetencia;
-        $oDadosProcedimento->prd_cbo   = str_pad($oProcedimento->cbo, 6, '0', STR_PAD_LEFT);
+        $oDadosProcedimento->prd_cbo   = str_pad((string) $oProcedimento->cbo, 6, '0', STR_PAD_LEFT);
         $oDadosProcedimento->prd_flh   = str_pad($iPagina, 3, 0, STR_PAD_LEFT);
         $oDadosProcedimento->prd_seq   = str_pad($iLinha,  2, 0, STR_PAD_LEFT);
         $oDadosProcedimento->prd_pa    = $oProcedimento->procedimento;
-        $oDadosProcedimento->prd_idade = str_pad($oProcedimento->idade_atendimento, 3, 0, STR_PAD_LEFT);
+        $oDadosProcedimento->prd_idade = str_pad((string) $oProcedimento->idade_atendimento, 3, 0, STR_PAD_LEFT);
 		    $oDadosProcedimento->prd_qt    = 1;
         /*PLUGIN ESF - Alterado para buscar quantidade retornada da query dos procedimentos*/
         $oDadosProcedimento->prd_org   = 'BPA';
@@ -373,7 +365,7 @@ class BPAMagnetico {
 
     foreach ($aDadosAgrupados as $oDados) {
 
-      $oDados->prd_qt = str_pad($oDados->prd_qt, 6, 0, STR_PAD_LEFT);
+      $oDados->prd_qt = str_pad((string) $oDados->prd_qt, 6, 0, STR_PAD_LEFT);
       $this->aDados[] = $oDados;
     }
     $this->iNumeroPaginas = $iPagina;
@@ -433,7 +425,7 @@ class BPAMagnetico {
 
     foreach ($aProcedimentos as $iIndice => $oProcedimento) {
 
-      if (strpos($oProcedimento->tipo_registro, '02') === false) {
+      if (!str_contains((string) $oProcedimento->tipo_registro, '02')) {
         continue;
       }
       if (!$this->validaInformacoes($oProcedimento)) {
@@ -486,8 +478,8 @@ class BPAMagnetico {
         $this->iNumeroPaginas = $iPagina;
       }
 
-      $iTelefonePaciente = preg_replace('/[^0-9]/', '', $oProcedimento->telefone_paciente);
-      $iTelefonePaciente = str_pad($iTelefonePaciente, 11, ' ', STR_PAD_LEFT);
+      $iTelefonePaciente = preg_replace('/[^0-9]/', '', (string) $oProcedimento->telefone_paciente);
+      $iTelefonePaciente = str_pad((string) $iTelefonePaciente, 11, ' ', STR_PAD_LEFT);
 
       $oDadosProcedimento = new stdClass();
 
@@ -495,21 +487,21 @@ class BPAMagnetico {
       $oDadosProcedimento->prd_cnes         = $oProcedimento->cnes_unidade;
       $oDadosProcedimento->prd_cmp          = $iCompetencia;
       $oDadosProcedimento->prd_cnsmed       = $oProcedimento->cnsmedico;
-      $oDadosProcedimento->prd_cbo          = str_pad($oProcedimento->cbo, 6, '0', STR_PAD_LEFT);
+      $oDadosProcedimento->prd_cbo          = str_pad((string) $oProcedimento->cbo, 6, '0', STR_PAD_LEFT);
       $oDadosProcedimento->prd_dtaten       = $iDataAtendimento;
       $oDadosProcedimento->prd_flh          = str_pad($iPagina, 3, 0, STR_PAD_LEFT);
       $oDadosProcedimento->prd_seq          = str_pad($iLinha,  2, 0, STR_PAD_LEFT);
       $oDadosProcedimento->prd_pa           = $oProcedimento->procedimento;
       $oDadosProcedimento->prd_cnspac       = $oProcedimento->cartao_sus;
-      $oDadosProcedimento->prd_sexo         = str_pad($oProcedimento->sexo, 1, ' ', STR_PAD_LEFT);
+      $oDadosProcedimento->prd_sexo         = str_pad((string) $oProcedimento->sexo, 1, ' ', STR_PAD_LEFT);
       $oDadosProcedimento->prd_ibge         = $this->oConfigParamentros->iIBGE;
       $oDadosProcedimento->prd_cid          = $oProcedimento->cid;
-      $oDadosProcedimento->prd_idade        = str_pad($oProcedimento->idade_atendimento, 3, 0, STR_PAD_LEFT);
-      $oDadosProcedimento->prd_qt           = str_pad($oProcedimento->quantidade, 6, 0, STR_PAD_LEFT);
+      $oDadosProcedimento->prd_idade        = str_pad((string) $oProcedimento->idade_atendimento, 3, 0, STR_PAD_LEFT);
+      $oDadosProcedimento->prd_qt           = str_pad((string) $oProcedimento->quantidade, 6, 0, STR_PAD_LEFT);
       $oDadosProcedimento->prd_caten        = '01';
       $oDadosProcedimento->prd_naut         = str_repeat(" ", 13);
       $oDadosProcedimento->prd_org          = 'BPA';
-      $oDadosProcedimento->prd_nmpac        = str_pad(substr(trim($oProcedimento->nome_paciente), 0, 30), 30, " ", STR_PAD_RIGHT);
+      $oDadosProcedimento->prd_nmpac        = str_pad(substr(trim((string) $oProcedimento->nome_paciente), 0, 30), 30, " ", STR_PAD_RIGHT);
       $oDadosProcedimento->prd_dtnasc       = $iDataNascimetno;
       $oDadosProcedimento->prd_raca         = $iCodigoRaca;
       $oDadosProcedimento->prd_etnia        = $oProcedimento->etinia;
@@ -519,14 +511,14 @@ class BPAMagnetico {
       $oDadosProcedimento->prd_equipe_seq   = str_repeat(" ", 8);
       $oDadosProcedimento->prd_equipe_area  = str_repeat(" ", 4);
       $oDadosProcedimento->prd_cnpj         = str_repeat(" ", 14);
-      $oDadosProcedimento->prd_cep_pcnte    = str_pad(preg_replace('/[^0-9]/', '', $oProcedimento->cep_paciente), 8, " ", STR_PAD_LEFT);
+      $oDadosProcedimento->prd_cep_pcnte    = str_pad((string) preg_replace('/[^0-9]/', '', (string) $oProcedimento->cep_paciente), 8, " ", STR_PAD_LEFT);
       $oDadosProcedimento->prd_lograd_pcnte = "081"; //Rua
-      $oDadosProcedimento->prd_end_pcnte    = str_pad(substr($oProcedimento->endereco_paciente, 0, 30), 30, " ", STR_PAD_RIGHT);
-      $oDadosProcedimento->prd_compl_pcnte  = str_pad(substr($oProcedimento->complemento_end_paciente, 0, 10), 10, " ", STR_PAD_RIGHT);
-      $oDadosProcedimento->prd_num_pcnte    = str_pad($oProcedimento->numero_end_paciente, 5, " ", STR_PAD_RIGHT);
-      $oDadosProcedimento->prd_bairro_pcnte = str_pad(substr($oProcedimento->bairro_end_paciente, 0, 30), 30, " ", STR_PAD_RIGHT);
+      $oDadosProcedimento->prd_end_pcnte    = str_pad(substr((string) $oProcedimento->endereco_paciente, 0, 30), 30, " ", STR_PAD_RIGHT);
+      $oDadosProcedimento->prd_compl_pcnte  = str_pad(substr((string) $oProcedimento->complemento_end_paciente, 0, 10), 10, " ", STR_PAD_RIGHT);
+      $oDadosProcedimento->prd_num_pcnte    = str_pad((string) $oProcedimento->numero_end_paciente, 5, " ", STR_PAD_RIGHT);
+      $oDadosProcedimento->prd_bairro_pcnte = str_pad(substr((string) $oProcedimento->bairro_end_paciente, 0, 30), 30, " ", STR_PAD_RIGHT);
       $oDadosProcedimento->prd_ddtel_pcnte  = str_pad($iTelefonePaciente, 11, " ",STR_PAD_RIGHT);
-      $oDadosProcedimento->prd_email_pcnte  = str_pad(substr($oProcedimento->email, 0, 40), 40, " ", STR_PAD_RIGHT);
+      $oDadosProcedimento->prd_email_pcnte  = str_pad(substr((string) $oProcedimento->email, 0, 40), 40, " ", STR_PAD_RIGHT);
       /** PLUGIN ESF MODIFICANDO A LINHA ABAIXO */
       $oDadosProcedimento->prd_ine          = str_repeat(' ', 10);
       $oDadosProcedimento->prd_fim          = ' ';
@@ -534,7 +526,7 @@ class BPAMagnetico {
       $this->aDados[] = $oDadosProcedimento;
       $iCodigoMedico  = $oProcedimento->codigo_medico;
 
-      if ( get_class($this->oCompetenciaFechada) == 'CompetenciaLaboratorio' )  {
+      if ( $this->oCompetenciaFechada::class == 'CompetenciaLaboratorio' )  {
         $this->aProcedimentosInclusosArquivo[] = $oProcedimento->codigo_procedimento_fechado;
       }
     }
@@ -673,7 +665,7 @@ class BPAMagnetico {
       throw new BusinessException(_M("saude.ambulatorial.BPAMagnetico.nao_foi_possivel_gerar_oid"));
     }
 
-    switch (get_class($this->oCompetenciaFechada)) {
+    switch ($this->oCompetenciaFechada::class) {
 
       case "CompetenciaAtendimento":
 
@@ -764,13 +756,13 @@ class BPAMagnetico {
       case 1 :
 
         $oLog->paciente = $oDadosProcedimento->codigo_paciente;
-        $oLog->nome     = utf8_encode($oDadosProcedimento->nome_paciente);
+        $oLog->nome     = mb_convert_encoding($oDadosProcedimento->nome_paciente, 'UTF-8', 'ISO-8859-1');
         break;
 
      case 2:
 
         $oLog->medico = $oDadosProcedimento->codigo_medico;
-        $oLog->nome   = utf8_encode($oDadosProcedimento->nome_medico);
+        $oLog->nome   = mb_convert_encoding($oDadosProcedimento->nome_medico, 'UTF-8', 'ISO-8859-1');
         break;
      case 3:
 
@@ -778,7 +770,7 @@ class BPAMagnetico {
        $oLog->procedimento = $oDadosProcedimento->procedimento;
        break;
     }
-    $oLog->erro     = utf8_encode($sMensagem);
+    $oLog->erro     = mb_convert_encoding($sMensagem, 'UTF-8', 'ISO-8859-1');
     $this->oLogger->log($oLog, DBLog::LOG_ERROR);
 
   }

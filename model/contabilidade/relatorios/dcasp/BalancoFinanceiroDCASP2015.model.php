@@ -76,7 +76,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
      *
      * @var array
      */
-    private $aLinhasFinais = array(23, 46);
+    private $aLinhasFinais = [23, 46];
 
     /**
      * Linhas que podem ter Recursos, caso o relatório seja emitido
@@ -84,7 +84,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
      *
      * @var array
      */
-    private $aLinhasComRecurso = array(4, 5, 6, 7, 8, 9, 27, 28, 29, 30, 31, 32);
+    private $aLinhasComRecurso = [4, 5, 6, 7, 8, 9, 27, 28, 29, 30, 31, 32];
 
     /**
      * Tipo de impressão (Analítico ou Sintético)
@@ -146,7 +146,8 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
         $this->sTipo = $sTipo;
     }
 
-    public function getDados()
+    #[\Override]
+    public function getDados($trazerConfiguracaoPadrao = \true)
     {
         $this->aLinhasConsistencia = $this->getLinhasRelatorio();
         $this->processarTiposDeCalculo();
@@ -159,11 +160,11 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
         if ($this->sTipo == self::TIPO_ANALITICO) {
             foreach ($this->aLinhasComRecurso as $iLinha) {
                 foreach ($this->aLinhasConsistencia[$iLinha]->colunas as $oColuna) {
-                    $oColuna->agrupar = (object)array(
+                    $oColuna->agrupar = (object)[
                         'nome' => 'recursos',
                         'campo' => ($iLinha <= 9 ? 'o70_codigo' : 'o58_codigo'),
                         'descricao' => 'o15_descr'
-                    );
+                    ];
                 }
             }
         }
@@ -197,7 +198,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
             foreach ($this->aLinhasProcessarReceita as $iLinha) {
                 $oLinha = $this->aLinhasConsistencia[$iLinha];
 
-                $aColunas = $this->getColunasPorLinha($oLinha, array(0));
+                $aColunas = $this->getColunasPorLinha($oLinha, [0]);
                 RelatoriosLegaisBase::calcularValorDaLinha(
                     $rsBalanceteReceita,
                     $oLinha,
@@ -206,7 +207,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
                 );
 
                 if ($this->lExibirExercicioAnterior) {
-                    $aColunas = $this->getColunasPorLinha($oLinha, array(1));
+                    $aColunas = $this->getColunasPorLinha($oLinha, [1]);
                     $oLinha->vlrexanter = 0;
 
                     RelatoriosLegaisBase::calcularValorDaLinha(
@@ -257,7 +258,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
 
             foreach ($this->aLinhasProcessarDespesa as $iLinha) {
                 $oLinha = $this->aLinhasConsistencia[$iLinha];
-                $aColunas = $this->getColunasPorLinha($oLinha, array(0));
+                $aColunas = $this->getColunasPorLinha($oLinha, [0]);
                 RelatoriosLegaisBase::calcularValorDaLinha(
                     $rsBalanceteDespesa,
                     $oLinha,
@@ -266,7 +267,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
                 );
 
                 if ($this->lExibirExercicioAnterior) {
-                    $aColunas = $this->getColunasPorLinha($oLinha, array(1));
+                    $aColunas = $this->getColunasPorLinha($oLinha, [1]);
                     RelatoriosLegaisBase::calcularValorDaLinha(
                         $rsBalanceteDespesaAnterior,
                         $oLinha,
@@ -312,7 +313,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
             foreach ($this->aLinhasProcessarVerificacao as $iLinha) {
                 $oLinha = $this->aLinhasConsistencia[$iLinha];
 
-                $aColunas = $this->getColunasPorLinha($oLinha, array(0));
+                $aColunas = $this->getColunasPorLinha($oLinha, [0]);
                 RelatoriosLegaisBase::calcularValorDaLinha(
                     $rsBalanceteVerificacao,
                     $oLinha,
@@ -321,7 +322,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
                 );
 
                 if ($this->lExibirExercicioAnterior) {
-                    $aColunas = $this->getColunasPorLinha($oLinha, array(1));
+                    $aColunas = $this->getColunasPorLinha($oLinha, [1]);
                     RelatoriosLegaisBase::calcularValorDaLinha(
                         $rsBalanceteVerificacaoAnterior,
                         $oLinha,
@@ -362,7 +363,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
             foreach ($this->aLinhasProcessarRestosPagar as $iLinha) {
                 $oLinha = $this->aLinhasConsistencia[$iLinha];
 
-                $aColunas = $this->getColunasPorLinha($oLinha, array(0));
+                $aColunas = $this->getColunasPorLinha($oLinha, [0]);
                 RelatoriosLegaisBase::calcularValorDaLinha(
                     $rsRestosPagar,
                     $oLinha,
@@ -371,7 +372,7 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
                 );
 
                 if ($this->lExibirExercicioAnterior) {
-                    $aColunas = $this->getColunasPorLinha($oLinha, array(1));
+                    $aColunas = $this->getColunasPorLinha($oLinha, [1]);
                     RelatoriosLegaisBase::calcularValorDaLinha(
                         $rsRestosPagarAnterior,
                         $oLinha,
@@ -737,11 +738,11 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
         foreach ($registros as $registro) {
             $idRecurso = $registro['o70_codigo'];
             $estrutural = $registro['o57_fonte'];
-            if (in_array($idRecurso, $recursos) && substr($estrutural, 0, 1) == 4) {
+            if (in_array($idRecurso, $recursos) && substr((string) $estrutural, 0, 1) == 4) {
                 $dado->receitaOrcamentaria += $registro['saldo_arrecadado_acumulado'];
             }
 
-            if (in_array($idRecurso, $recursos) && substr($estrutural, 0, 1) == 9) {
+            if (in_array($idRecurso, $recursos) && substr((string) $estrutural, 0, 1) == 9) {
                 $dado->deducaoReceitaOrcamentaria += $registro['saldo_arrecadado_acumulado'];
             }
         }
@@ -751,11 +752,11 @@ class BalancoFinanceiroDCASP2015 extends RelatoriosLegaisBase
             foreach ($registros as $registro) {
                 $idRecurso = $registro['o70_codigo'];
                 $estrutural = $registro['o57_fonte'];
-                if (in_array($idRecurso, $recursos) && substr($estrutural, 0, 1) == 4) {
+                if (in_array($idRecurso, $recursos) && substr((string) $estrutural, 0, 1) == 4) {
                     $dado->receitaOrcamentariaAnterior += $registro['saldo_arrecadado_acumulado'];
                 }
 
-                if (in_array($idRecurso, $recursos) && substr($estrutural, 0, 1) == 9) {
+                if (in_array($idRecurso, $recursos) && substr((string) $estrutural, 0, 1) == 9) {
                     $dado->deducaoReceitaOrcamentariaAnterior += $registro['saldo_arrecadado_acumulado'];
                 }
             }

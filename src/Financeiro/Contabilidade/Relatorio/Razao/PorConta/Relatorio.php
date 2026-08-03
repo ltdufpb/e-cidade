@@ -244,7 +244,7 @@ abstract class Relatorio
         if (!empty($this->getEstrutural())) {
             $estruturais = [];
             foreach ($this->getEstrutural() as $estrutural) {
-                $estruturais[] = " conplano.c60_estrut like '".trim($estrutural)."%' ";
+                $estruturais[] = " conplano.c60_estrut like '".trim((string) $estrutural)."%' ";
             }
             $where .= " AND (" . implode(" OR ", $estruturais) . ")";
         }
@@ -280,7 +280,7 @@ abstract class Relatorio
         if (!empty($this->getEstrutural())) {
             $estruturais = [];
             foreach ($this->getEstrutural() as $estrutural) {
-                $estruturais[] = " conplano.c60_estrut like '".trim($estrutural)."%' ";
+                $estruturais[] = " conplano.c60_estrut like '".trim((string) $estrutural)."%' ";
             }
             $where .= " AND (" . implode(" OR ", $estruturais) . ")";
         }

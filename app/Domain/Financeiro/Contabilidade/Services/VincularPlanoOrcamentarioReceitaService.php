@@ -60,12 +60,10 @@ class VincularPlanoOrcamentarioReceitaService extends VincularPlanoOrcamentario
                     $planoOrcamentario->contas_ecidade = $planoOrcamentario
                         ->contasEcidade()
                         ->get()
-                        ->map(function (ConplanoOrcamento $conplanoOrcamento) {
-                            return MapaPlanoContasOrcamentarioResource::toData(
-                                $conplanoOrcamento,
-                                true
-                            );
-                        });
+                        ->map(fn(ConplanoOrcamento $conplanoOrcamento) => MapaPlanoContasOrcamentarioResource::toData(
+                            $conplanoOrcamento,
+                            true
+                        ));
                     $planoOrcamentario->tem_vinculo = $planoOrcamentario->contas_ecidade->count();
                 }
 
@@ -111,9 +109,7 @@ class VincularPlanoOrcamentarioReceitaService extends VincularPlanoOrcamentario
                 ->get();
 
             if (!$contasEcidade->isEmpty()) {
-                $idContasEcidade = $contasEcidade->map(function ($conta) {
-                    return $conta->c60_codigo;
-                })->toArray();
+                $idContasEcidade = $contasEcidade->map(fn($conta) => $conta->c60_codigo)->toArray();
 
                 $this->vincularContas($planoOrcamentario, $idContasEcidade);
             }
@@ -121,6 +117,7 @@ class VincularPlanoOrcamentarioReceitaService extends VincularPlanoOrcamentario
     }
 
 
+    #[\Override]
     public function vincular($planoOrcamentario, array $idsContasEcidade)
     {
         $existe = DB::table('contabilidade.planoreceitaconplanoorcamento')

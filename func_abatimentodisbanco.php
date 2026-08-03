@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_abatimentodisbanco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clabatimentodisbanco = new cl_abatimentodisbanco;
 $clabatimentodisbanco->rotulo->label("k132_sequencial");
 $clabatimentodisbanco->rotulo->label("k132_abatimento");
@@ -98,9 +98,9 @@ $clabatimentodisbanco->rotulo->label("k132_abatimento");
         }else{
            $sql = $clabatimentodisbanco->sql_query("",$campos,"k132_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k132_abatimento)){
-          $repassa = array("chave_k132_sequencial"=>$chave_k132_sequencial,"chave_k132_abatimento"=>$chave_k132_abatimento);
+          $repassa = ["chave_k132_sequencial"=>$chave_k132_sequencial,"chave_k132_abatimento"=>$chave_k132_abatimento];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

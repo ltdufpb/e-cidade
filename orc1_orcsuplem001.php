@@ -43,8 +43,8 @@ include(modification("classes/db_orcsuplemrec_classe.php"));
 include(modification("classes/db_orcsuplemval_classe.php"));
 include(modification("classes/db_orcsuplementacaoparametro_classe.php"));
 db_app::import("orcamento.suplementacao.*");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clorcsuplem     = new cl_orcsuplem;
 $clorcsuplemrec  = new cl_orcsuplemrec;
@@ -122,7 +122,7 @@ if (pg_num_rows($rsValorOrcamento) > 0) {
  * Verificamos se existe parametro para o orcamento no ano 
  */
 $nPercentualLoa = 0;
-$aParametro = db_stdClass::getParametro("orcsuplementacaoparametro", array(db_getsession("DB_anousu")));
+$aParametro = db_stdClass::getParametro("orcsuplementacaoparametro", [db_getsession("DB_anousu")]);
 if (count($aParametro) > 0) {
   $nPercentualLoa = $aParametro[0]->o134_percentuallimiteloa;
 } else {
@@ -170,7 +170,7 @@ function js_alterar(projeto,codsup){
 } 
 function js_excluir(projeto,codsup){ 
   if (confirm('Deseja Excluir a Suplementação '+codsup)==true){
-    <?php   echo " location.href='".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+projeto+'&excluir=true&projeto='+projeto+'&codsup='+codsup";  ?>
+    <?php   echo " location.href='".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+projeto+'&excluir=true&projeto='+projeto+'&codsup='+codsup";  ?>
   }
 }  
 
@@ -178,7 +178,7 @@ function js_fechar(){
   db_iframe_suplementacao.hide();
   chave = document.form1.o39_codproj.value;
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }  
 
@@ -189,7 +189,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_orcprojeto.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
 </script>

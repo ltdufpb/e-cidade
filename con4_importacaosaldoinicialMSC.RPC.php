@@ -61,29 +61,29 @@ try {
 
             $controle = findCsvControl($arquivo['tmp_name']);
             $file = new SplFileObject($arquivo['tmp_name']);
-            $file->setCsvControl($controle);
+            $file->setCsvControl($controle, escape: '\\');
 
             while (!$file->eof()) {
-                $linha = $file->fgetcsv();
+                $linha = $file->fgetcsv(escape: '\\');
 
                 if ($linha[14] !== 'ending_balance') {
                     continue;
                 }
 
-                $stdLinha = (object)array(
+                $stdLinha = (object)[
                     'hash' => montarHashMatriz($linha),
                     'conta' => $linha[0],
                     'valor' => $linha[13],
                     'tipo_valor' => $linha[14],
                     'natureza' => $linha[15],
-                );
+                ];
 
                 $daoAtributos = new cl_conplanoatributosaldo();
                 $daoAtributos->c125_sequencial = null;
                 $daoAtributos->c125_anousu = $anoSessao;
                 $daoAtributos->c125_hashcontaatributos = $stdLinha->hash;
                 $daoAtributos->c125_valor = $stdLinha->valor;
-                $daoAtributos->c125_natureza = strtoupper($stdLinha->natureza);
+                $daoAtributos->c125_natureza = strtoupper((string) $stdLinha->natureza);
                 $daoAtributos->c125_instit = $instituicaoSessao;
                 $daoAtributos->c125_mesusu = '0';
                 $daoAtributos->c125_conplanosistema = 1;
@@ -130,8 +130,8 @@ echo JSON::create()->stringify($oRetorno);
  */
 function montarHashMatriz(array $linha)
 {
-    $colunas = array(1, 3, 5, 7, 9, 11);
-    $hash = array($linha[0]);
+    $colunas = [1, 3, 5, 7, 9, 11];
+    $hash = [$linha[0]];
     foreach ($colunas as $indice) {
         $valorAtributo = $linha[$indice];
         if (!empty($valorAtributo)) {
@@ -148,11 +148,11 @@ function montarHashMatriz(array $linha)
  */
 function excluirImportacaoArquivo()
 {
-    $where = implode(' and ', array(
+    $where = implode(' and ', [
             " c125_mesusu = 0 ",
             " c125_tiposaldo = 1 ",
             " c125_tipo = 4 ",
-        )
+        ]
     );
     $daoAtributos = new cl_conplanoatributosaldo();
     $daoAtributos->excluir(null, $where);
@@ -169,7 +169,7 @@ function findCsvControl($arquivo)
     $file = fopen($arquivo, 'r');
     $linha = fgets($file);
     $control = ',';
-    if (strpos($linha, ";") !== false) {
+    if (str_contains($linha, ";")) {
         $control = ";";
     }
 

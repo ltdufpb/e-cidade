@@ -96,7 +96,7 @@ if(!isset($r54_mesusu)) {
         </td>
         <td style="width: 50px;">
           <?php
-          $aOpcoes = array( "f" => "NÃO", "t" => "SIM");
+          $aOpcoes = [ "f" => "NÃO", "t" => "SIM"];
           db_select('teste', $aOpcoes, true, 4);
           ?>
         </td>

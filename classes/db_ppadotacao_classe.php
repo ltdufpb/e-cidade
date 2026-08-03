@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE ppadotacao
 class cl_ppadotacao {
   // cria variaveis de erro
-  var $rotulo = null;
-  var $query_sql = null;
-  var $numrows = 0;
-  var $numrows_incluir = 0;
-  var $numrows_alterar = 0;
-  var $numrows_excluir = 0;
-  var $erro_status = null;
-  var $erro_sql = null;
-  var $erro_banco = null;
-  var $erro_msg = null;
-  var $erro_campo = null;
-  var $pagina_retorno = null;
+  public $rotulo = null;
+  public $query_sql = null;
+  public $numrows = 0;
+  public $numrows_incluir = 0;
+  public $numrows_alterar = 0;
+  public $numrows_excluir = 0;
+  public $erro_status = null;
+  public $erro_sql = null;
+  public $erro_banco = null;
+  public $erro_msg = null;
+  public $erro_campo = null;
+  public $pagina_retorno = null;
   // cria variaveis do arquivo
-  var $o08_sequencial = 0;
-  var $o08_ano = 0;
-  var $o08_orgao = 0;
-  var $o08_unidade = 0;
-  var $o08_funcao = 0;
-  var $o08_subfuncao = 0;
-  var $o08_programa = 0;
-  var $o08_projativ = 0;
-  var $o08_elemento = 0;
-  var $o08_recurso = 0;
-  var $o08_instit = 0;
-  var $o08_localizadorgastos = 0;
-  var $o08_ppaversao = 0;
-  var $o08_concarpeculiar = null;
+  public $o08_sequencial = 0;
+  public $o08_ano = 0;
+  public $o08_orgao = 0;
+  public $o08_unidade = 0;
+  public $o08_funcao = 0;
+  public $o08_subfuncao = 0;
+  public $o08_programa = 0;
+  public $o08_projativ = 0;
+  public $o08_elemento = 0;
+  public $o08_recurso = 0;
+  public $o08_instit = 0;
+  public $o08_localizadorgastos = 0;
+  public $o08_ppaversao = 0;
+  public $o08_concarpeculiar = null;
   // cria propriedade com as variaveis do arquivo
-  var $campos = "
+  public $campos = "
                  o08_sequencial = int4 = Código Sequencial
                  o08_ano = int4 = Ano da Dotação
                  o08_orgao = int4 = Orgão
@@ -74,10 +74,10 @@ class cl_ppadotacao {
                  o08_concarpeculiar = varchar(100) = C.Peculiar/ C. Aplicação
                  ";
   //funcao construtor da classe
-  function cl_ppadotacao() {
+  function __construct() {
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("ppadotacao");
-    $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+    $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro
   function erro($mostra, $retorna) {
@@ -255,10 +255,10 @@ class cl_ppadotacao {
         $this->erro_status = "0";
         return false;
       }
-      $this->o08_sequencial = pg_result($result, 0, 0);
+      $this->o08_sequencial = pg_fetch_result($result, 0, 0);
     } else {
       $result = db_query("select last_value from ppadotacao_o08_sequencial_seq");
-      if (($result != false) && (pg_result($result, 0, 0) < $o08_sequencial)) {
+      if (($result != false) && (pg_fetch_result($result, 0, 0) < $o08_sequencial)) {
         $this->erro_sql = " Campo o08_sequencial maior que último número da sequencia.";
         $this->erro_banco = "Sequencia menor que este número.";
         $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -314,7 +314,7 @@ class cl_ppadotacao {
     $result = db_query($sql);
     if ($result == false) {
       $this->erro_banco = str_replace("\n", "", @pg_last_error());
-      if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+      if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
         $this->erro_sql = "Dotações do ppa ($this->o08_sequencial) nao Incluído. Inclusao Abortada.";
         $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
         $this->erro_banco = "Dotações do ppa já Cadastrado";
@@ -345,10 +345,10 @@ class cl_ppadotacao {
     $this->atualizacampos();
     $sql = " update ppadotacao set ";
     $virgula = "";
-    if (trim($this->o08_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_sequencial"])) {
+    if (trim((string) $this->o08_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_sequencial"])) {
       $sql .= $virgula . " o08_sequencial = $this->o08_sequencial ";
       $virgula = ",";
-      if (trim($this->o08_sequencial) == null) {
+      if (trim((string) $this->o08_sequencial) == null) {
         $this->erro_sql = " Campo Código Sequencial nao Informado.";
         $this->erro_campo = "o08_sequencial";
         $this->erro_banco = "";
@@ -359,10 +359,10 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_ano"])) {
+    if (trim((string) $this->o08_ano) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_ano"])) {
       $sql .= $virgula . " o08_ano = $this->o08_ano ";
       $virgula = ",";
-      if (trim($this->o08_ano) == null) {
+      if (trim((string) $this->o08_ano) == null) {
         $this->erro_sql = " Campo Ano da Dotação nao Informado.";
         $this->erro_campo = "o08_ano";
         $this->erro_banco = "";
@@ -373,10 +373,10 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_orgao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_orgao"])) {
+    if (trim((string) $this->o08_orgao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_orgao"])) {
       $sql .= $virgula . " o08_orgao = $this->o08_orgao ";
       $virgula = ",";
-      if (trim($this->o08_orgao) == null) {
+      if (trim((string) $this->o08_orgao) == null) {
         $this->erro_sql = " Campo Orgão nao Informado.";
         $this->erro_campo = "o08_orgao";
         $this->erro_banco = "";
@@ -387,10 +387,10 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_unidade) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_unidade"])) {
+    if (trim((string) $this->o08_unidade) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_unidade"])) {
       $sql .= $virgula . " o08_unidade = $this->o08_unidade ";
       $virgula = ",";
-      if (trim($this->o08_unidade) == null) {
+      if (trim((string) $this->o08_unidade) == null) {
         $this->erro_sql = " Campo Unidade nao Informado.";
         $this->erro_campo = "o08_unidade";
         $this->erro_banco = "";
@@ -401,10 +401,10 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_funcao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_funcao"])) {
+    if (trim((string) $this->o08_funcao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_funcao"])) {
       $sql .= $virgula . " o08_funcao = $this->o08_funcao ";
       $virgula = ",";
-      if (trim($this->o08_funcao) == null) {
+      if (trim((string) $this->o08_funcao) == null) {
         $this->erro_sql = " Campo Função nao Informado.";
         $this->erro_campo = "o08_funcao";
         $this->erro_banco = "";
@@ -415,10 +415,10 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_subfuncao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_subfuncao"])) {
+    if (trim((string) $this->o08_subfuncao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_subfuncao"])) {
       $sql .= $virgula . " o08_subfuncao = $this->o08_subfuncao ";
       $virgula = ",";
-      if (trim($this->o08_subfuncao) == null) {
+      if (trim((string) $this->o08_subfuncao) == null) {
         $this->erro_sql = " Campo SubFunção nao Informado.";
         $this->erro_campo = "o08_subfuncao";
         $this->erro_banco = "";
@@ -429,10 +429,10 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_programa) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_programa"])) {
+    if (trim((string) $this->o08_programa) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_programa"])) {
       $sql .= $virgula . " o08_programa = $this->o08_programa ";
       $virgula = ",";
-      if (trim($this->o08_programa) == null) {
+      if (trim((string) $this->o08_programa) == null) {
         $this->erro_sql = " Campo Programa nao Informado.";
         $this->erro_campo = "o08_programa";
         $this->erro_banco = "";
@@ -443,10 +443,10 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_projativ) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_projativ"])) {
+    if (trim((string) $this->o08_projativ) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_projativ"])) {
       $sql .= $virgula . " o08_projativ = $this->o08_projativ ";
       $virgula = ",";
-      if (trim($this->o08_projativ) == null) {
+      if (trim((string) $this->o08_projativ) == null) {
         $this->erro_sql = " Campo Projeto/Atividade nao Informado.";
         $this->erro_campo = "o08_projativ";
         $this->erro_banco = "";
@@ -457,10 +457,10 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_elemento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_elemento"])) {
+    if (trim((string) $this->o08_elemento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_elemento"])) {
       $sql .= $virgula . " o08_elemento = $this->o08_elemento ";
       $virgula = ",";
-      if (trim($this->o08_elemento) == null) {
+      if (trim((string) $this->o08_elemento) == null) {
         $this->erro_sql = " Campo Elemento nao Informado.";
         $this->erro_campo = "o08_elemento";
         $this->erro_banco = "";
@@ -471,10 +471,10 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_recurso) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_recurso"])) {
+    if (trim((string) $this->o08_recurso) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_recurso"])) {
       $sql .= $virgula . " o08_recurso = $this->o08_recurso ";
       $virgula = ",";
-      if (trim($this->o08_recurso) == null) {
+      if (trim((string) $this->o08_recurso) == null) {
         $this->erro_sql = " Campo Recurso nao Informado.";
         $this->erro_campo = "o08_recurso";
         $this->erro_banco = "";
@@ -485,10 +485,10 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_instit"])) {
+    if (trim((string) $this->o08_instit) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_instit"])) {
       $sql .= $virgula . " o08_instit = $this->o08_instit ";
       $virgula = ",";
-      if (trim($this->o08_instit) == null) {
+      if (trim((string) $this->o08_instit) == null) {
         $this->erro_sql = " Campo Instituição nao Informado.";
         $this->erro_campo = "o08_instit";
         $this->erro_banco = "";
@@ -499,17 +499,17 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_localizadorgastos) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_localizadorgastos"])) {
-      if (trim($this->o08_localizadorgastos) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o08_localizadorgastos"])) {
+    if (trim((string) $this->o08_localizadorgastos) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_localizadorgastos"])) {
+      if (trim((string) $this->o08_localizadorgastos) == "" && isset($GLOBALS["HTTP_POST_VARS"]["o08_localizadorgastos"])) {
         $this->o08_localizadorgastos = "0";
       }
       $sql .= $virgula . " o08_localizadorgastos = $this->o08_localizadorgastos ";
       $virgula = ",";
     }
-    if (trim($this->o08_ppaversao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_ppaversao"])) {
+    if (trim((string) $this->o08_ppaversao) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_ppaversao"])) {
       $sql .= $virgula . " o08_ppaversao = $this->o08_ppaversao ";
       $virgula = ",";
-      if (trim($this->o08_ppaversao) == null) {
+      if (trim((string) $this->o08_ppaversao) == null) {
         $this->erro_sql = " Campo Versão do PPA nao Informado.";
         $this->erro_campo = "o08_ppaversao";
         $this->erro_banco = "";
@@ -520,10 +520,10 @@ class cl_ppadotacao {
         return false;
       }
     }
-    if (trim($this->o08_concarpeculiar) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_concarpeculiar"])) {
+    if (trim((string) $this->o08_concarpeculiar) != "" || isset($GLOBALS["HTTP_POST_VARS"]["o08_concarpeculiar"])) {
       $sql .= $virgula . " o08_concarpeculiar = '$this->o08_concarpeculiar' ";
       $virgula = ",";
-      if (trim($this->o08_concarpeculiar) == null) {
+      if (trim((string) $this->o08_concarpeculiar) == null) {
         $this->erro_sql = " Campo C.Peculiar/ C. Aplicação nao Informado.";
         $this->erro_campo = "o08_concarpeculiar";
         $this->erro_banco = "";
@@ -642,7 +642,7 @@ class cl_ppadotacao {
       $this->erro_status = "0";
       return false;
     }
-    $this->numrows = pg_numrows($result);
+    $this->numrows = pg_num_rows($result);
     if ($this->numrows == 0) {
       $this->erro_banco = "";
       $this->erro_sql = "Record Vazio na Tabela:ppadotacao";
@@ -658,7 +658,7 @@ class cl_ppadotacao {
   function sql_query($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = preg_split("#\\##m", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -696,7 +696,7 @@ class cl_ppadotacao {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = preg_split("#\\##m", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -709,7 +709,7 @@ class cl_ppadotacao {
   function sql_query_file($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = preg_split("#\\##m", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -730,7 +730,7 @@ class cl_ppadotacao {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = preg_split("#\\##m", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -753,7 +753,7 @@ class cl_ppadotacao {
     $sql = "select ";
     if ($campos != "*") {
 
-      $campos_sql = split("#", $campos);
+      $campos_sql = preg_split("#\\##m", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -791,7 +791,7 @@ class cl_ppadotacao {
     if ($ordem != null) {
 
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = preg_split("#\\##m", $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -803,7 +803,7 @@ class cl_ppadotacao {
   function sql_query_estimativa($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = preg_split("#\\##m", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -842,7 +842,7 @@ class cl_ppadotacao {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = preg_split("#\\##m", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -855,7 +855,7 @@ class cl_ppadotacao {
   function sql_query_despesa_ppa($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = preg_split("#\\##m", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -880,7 +880,7 @@ class cl_ppadotacao {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = preg_split("#\\##m", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -893,7 +893,7 @@ class cl_ppadotacao {
   function sql_query_despesa_programa($o08_sequencial = null, $campos = "*", $ordem = null, $dbwhere = "") {
     $sql = "select ";
     if ($campos != "*") {
-      $campos_sql = split("#", $campos);
+      $campos_sql = preg_split("#\\##m", $campos);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];
@@ -920,7 +920,7 @@ class cl_ppadotacao {
     $sql .= $sql2;
     if ($ordem != null) {
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = preg_split("#\\##m", (string) $ordem);
       $virgula = "";
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
         $sql .= $virgula . $campos_sql[$i];

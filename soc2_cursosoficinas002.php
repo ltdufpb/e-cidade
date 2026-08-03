@@ -59,7 +59,7 @@ $sPeriodoFinal   = "";
 $sTipoCurso      = "";
 $lCurso          = false;
 
-$aWhere = array();
+$aWhere = [];
 if (!empty($oFiltros->sDataInicial)) {
   
   $oDataInicial    = new DBDate($oFiltros->sDataInicial);
@@ -100,7 +100,7 @@ if ($iLinhas == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não foram encontrados registros para os filtros selecionados.');
 }
 
-$aCursos = array();
+$aCursos = [];
 for ($i = 0; $i < $iLinhas; $i++) {
   
   $oCursoSocial = new CursoSocial(db_utils::fieldsMemory($rsCursos, $i)->as19_sequencial);
@@ -140,7 +140,7 @@ if (!empty($sTipoCurso)) {
 
 foreach ($aCursos as $oCursoSocial) {
 
-  setHeader($oPdf, $iHeight, $oCursoSocial);
+  setHeader($oPdf, $iHeight);
   
   $iTotalCidadaoMatriculado = "0";
   $lPrimeiraPagina          = true;
@@ -148,7 +148,7 @@ foreach ($aCursos as $oCursoSocial) {
     
      if ($oPdf->gety() > $oPdf->h - 15) {
        
-      setHeader($oPdf, $iHeight, $oCursoSocial);
+      setHeader($oPdf, $iHeight);
       $lPrimeiraPagina = true;
     }
     if ($lPrimeiraPagina) {

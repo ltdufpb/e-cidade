@@ -14,12 +14,10 @@ use DBDate;
  */
 class DisponibilidadeRecursoController extends Controller
 {
-    private $service;
     private $filtros;
 
-    public function __construct(DisponibilidadeRecursoService $service)
+    public function __construct(private readonly DisponibilidadeRecursoService $service)
     {
-        $this->service = $service;
     }
 
     public function processarSaldoDisponibilidadeRecurso(Request $request)

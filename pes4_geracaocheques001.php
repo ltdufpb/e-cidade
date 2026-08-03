@@ -92,8 +92,8 @@ $clrotulo->label('r18_numcheque');
               </td>
               <td>
                 <?php 
-                   $aTipo = array("f"=>"Funcionários",
-                                  "p"=>"Pensão Alimentícia");
+                   $aTipo = ["f"=>"Funcionários",
+                                  "p"=>"Pensão Alimentícia"];
                    db_select("tipoGera",$aTipo,true,1,"onChange='document.form1.submit();'");
                 ?>
               </td>             
@@ -162,21 +162,21 @@ $clrotulo->label('r18_numcheque');
 						  $geraform->tipofol     = true;                      // MOSTRAR DO CAMPO PARA TIPO DE FOLHA
 						  
 						  if ( isset($oPost->tipoGera) && $oPost->tipoGera == "p" ) {
-							   $aTipoFolha = array(
+							   $aTipoFolha = [
 														          "r14"=>"Salário",
 														          "r48"=>"Complementar",
 	                                    "r20"=>"Rescisão",
 							                        "r35"=>"13o. Salário",
 							                        "r52"=>"Férias"
-							                      );
+							                      ];
 						  } else {
-	               $aTipoFolha = array(
+	               $aTipoFolha = [
 	                                    "r14"=>"Salário",
 	                                    "r48"=>"Complementar",
 	                                    "r20"=>"Rescisão",
 	                                    "r35"=>"13o. Salário",
 	                                    "r22"=>"Adiantamento"
-	                                  );					  	                             
+	                                  ];					  	                             
 						  }
 	
 						  $geraform->arr_tipofol  = $aTipoFolha;

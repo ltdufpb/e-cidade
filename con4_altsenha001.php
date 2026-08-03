@@ -30,26 +30,26 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if( isset( $HTTP_POST_VARS["alterar"] ) ) {
+if( isset( $_POST["alterar"] ) ) {
 
   $sSql   = "select id_usuario, senha from db_usuarios where login = '" . db_getsession("DB_login") . "'";
   $result = db_query( $sSql );
 
-  if( pg_numrows($result) == 0 ) {
+  if( pg_num_rows($result) == 0 ) {
 
     echo "<script>alert('Login Inválido');(window.CurrentWindow || parent.CurrentWindow).location.href='index.php'</script>\n";
     exit;
   } else {
 
-    if ( empty($HTTP_POST_VARS["novaSenha"]) ) {
+    if ( empty($_POST["novaSenha"]) ) {
 
       db_msgbox("Senha não pode ser nula!");
-    } else if( Encriptacao::hash( $HTTP_POST_VARS["senha"] ) != pg_result($result,0,"senha") ) {
+    } else if( Encriptacao::hash( $_POST["senha"] ) != pg_fetch_result($result,0,"senha") ) {
 
       echo "<script> alert('Senha Inválida');</script>\n";
     } else {
 
-      $sSql = "update db_usuarios set senha = '" . Encriptacao::encriptaSenha($HTTP_POST_VARS["novaSenha"]) . "' where login =  '".db_getsession("DB_login")."'";
+      $sSql = "update db_usuarios set senha = '" . Encriptacao::encriptaSenha($_POST["novaSenha"]) . "' where login =  '".db_getsession("DB_login")."'";
 	    db_query( $sSql )  or die ("Erro atualizando senha");
 	    db_msgbox("Senha alterada com sucesso");
 	  }

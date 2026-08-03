@@ -33,8 +33,8 @@ $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ?>
 <table align="center" border="0">
@@ -63,7 +63,7 @@ parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
     <td align="right"><b>Ponto:</b></td>
     <td>
      <?php 
-       $x = array("s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento");
+       $x = ["s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento"];
        db_select('ponto',$x,true,4,"onchange='return js_verifica();'");
      ?>
     </td>

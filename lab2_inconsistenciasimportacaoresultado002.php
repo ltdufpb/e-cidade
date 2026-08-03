@@ -61,7 +61,7 @@ try {
     } else {
         $dados = $service->getInconsistenciasByRequisicao($requisicao);
         $jsonObject = JSON::create();
-        $dadosJson = array();
+        $dadosJson = [];
 
         foreach ($dados as $dado) {
             $dadosJson[] = $jsonObject->parse(

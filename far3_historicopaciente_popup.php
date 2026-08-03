@@ -94,13 +94,13 @@ function formataData($dData, $iTipo = 1) {
 
   if ($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
  
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
  return $dData;
 
@@ -219,9 +219,7 @@ for($iCont = 0; $iCont < $iLinhas; $iCont++) {
 
   }
   novaLinha($oDados->fa07_i_matrequi, $oDados->m77_lote, formataData($oDados->fa04_d_data, 2), 
-            $oDados->fa06_f_quant, $oDados->fa01_i_codigo, $oDados->m60_descr, $oDados->login,
-            formataData($oDados->m77_dtvalidade, 2), $oDados->stipo, $oDados->fa23_c_motivo,
-            $oDados->tipo
+            $oDados->fa06_f_quant, $oDados->fa01_i_codigo, $oDados->m60_descr, $oDados->login
            );
 
 }

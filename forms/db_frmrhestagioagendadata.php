@@ -130,7 +130,7 @@ db_inputdata('h64_data',@$h64_data_dia,@$h64_data_mes,@$h64_data_ano,true,'text'
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("h64_sequencial"=>@$h64_sequencial);
+	 $chavepri= ["h64_sequencial"=>@$h64_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhestagioagendadata->sql_query_file(null,"*","h64_data","h64_estagioagenda=".@$h64_estagioagenda);
 	 $cliframe_alterar_excluir->campos  ="h64_sequencial,h64_seqaval, h64_data";

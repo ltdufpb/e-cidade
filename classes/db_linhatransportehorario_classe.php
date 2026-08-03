@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE linhatransportehorario
 class cl_linhatransportehorario { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tre07_sequencial = 0; 
-   var $tre07_linhatransporteitinerario = 0; 
-   var $tre07_horasaida = null; 
-   var $tre07_horachegada = null; 
+   public $tre07_sequencial = 0; 
+   public $tre07_linhatransporteitinerario = 0; 
+   public $tre07_horasaida = null; 
+   public $tre07_horachegada = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tre07_sequencial = int4 = Sequencial 
                  tre07_linhatransporteitinerario = int4 = Sequencial 
                  tre07_horasaida = varchar(5) = Hora de Saída 
                  tre07_horachegada = varchar(5) = Hora de Chegada 
                  ";
    //funcao construtor da classe 
-   function cl_linhatransportehorario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("linhatransportehorario"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_linhatransportehorario {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tre07_sequencial = pg_result($result,0,0); 
+       $this->tre07_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from linhatransportehorario_tre07_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tre07_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tre07_sequencial)){
          $this->erro_sql = " Campo tre07_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_linhatransportehorario {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Linha de Transporte Horário ($this->tre07_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Linha de Transporte Horário já Cadastrado";
@@ -185,13 +185,13 @@ class cl_linhatransportehorario {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20096,'$this->tre07_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3604,20096,'','".AddSlashes(pg_result($resaco,0,'tre07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3604,20097,'','".AddSlashes(pg_result($resaco,0,'tre07_linhatransporteitinerario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3604,20098,'','".AddSlashes(pg_result($resaco,0,'tre07_horasaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3604,20099,'','".AddSlashes(pg_result($resaco,0,'tre07_horachegada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3604,20096,'','".AddSlashes(pg_fetch_result($resaco,0,'tre07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3604,20097,'','".AddSlashes(pg_fetch_result($resaco,0,'tre07_linhatransporteitinerario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3604,20098,'','".AddSlashes(pg_fetch_result($resaco,0,'tre07_horasaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3604,20099,'','".AddSlashes(pg_fetch_result($resaco,0,'tre07_horachegada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -201,10 +201,10 @@ class cl_linhatransportehorario {
       $this->atualizacampos();
      $sql = " update linhatransportehorario set ";
      $virgula = "";
-     if(trim($this->tre07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre07_sequencial"])){ 
+     if(trim((string) $this->tre07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre07_sequencial"])){ 
        $sql  .= $virgula." tre07_sequencial = $this->tre07_sequencial ";
        $virgula = ",";
-       if(trim($this->tre07_sequencial) == null ){ 
+       if(trim((string) $this->tre07_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "tre07_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_linhatransportehorario {
          return false;
        }
      }
-     if(trim($this->tre07_linhatransporteitinerario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre07_linhatransporteitinerario"])){ 
+     if(trim((string) $this->tre07_linhatransporteitinerario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre07_linhatransporteitinerario"])){ 
        $sql  .= $virgula." tre07_linhatransporteitinerario = $this->tre07_linhatransporteitinerario ";
        $virgula = ",";
-       if(trim($this->tre07_linhatransporteitinerario) == null ){ 
+       if(trim((string) $this->tre07_linhatransporteitinerario) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "tre07_linhatransporteitinerario";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_linhatransportehorario {
          return false;
        }
      }
-     if(trim($this->tre07_horasaida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre07_horasaida"])){ 
+     if(trim((string) $this->tre07_horasaida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre07_horasaida"])){ 
        $sql  .= $virgula." tre07_horasaida = '$this->tre07_horasaida' ";
        $virgula = ",";
-       if(trim($this->tre07_horasaida) == null ){ 
+       if(trim((string) $this->tre07_horasaida) == null ){ 
          $this->erro_sql = " Campo Hora de Saída nao Informado.";
          $this->erro_campo = "tre07_horasaida";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_linhatransportehorario {
          return false;
        }
      }
-     if(trim($this->tre07_horachegada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre07_horachegada"])){ 
+     if(trim((string) $this->tre07_horachegada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tre07_horachegada"])){ 
        $sql  .= $virgula." tre07_horachegada = '$this->tre07_horachegada' ";
        $virgula = ",";
-       if(trim($this->tre07_horachegada) == null ){ 
+       if(trim((string) $this->tre07_horachegada) == null ){ 
          $this->erro_sql = " Campo Hora de Chegada nao Informado.";
          $this->erro_campo = "tre07_horachegada";
          $this->erro_banco = "";
@@ -267,17 +267,17 @@ class cl_linhatransportehorario {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20096,'$this->tre07_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre07_sequencial"]) || $this->tre07_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3604,20096,'".AddSlashes(pg_result($resaco,$conresaco,'tre07_sequencial'))."','$this->tre07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3604,20096,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre07_sequencial'))."','$this->tre07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre07_linhatransporteitinerario"]) || $this->tre07_linhatransporteitinerario != "")
-             $resac = db_query("insert into db_acount values($acount,3604,20097,'".AddSlashes(pg_result($resaco,$conresaco,'tre07_linhatransporteitinerario'))."','$this->tre07_linhatransporteitinerario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3604,20097,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre07_linhatransporteitinerario'))."','$this->tre07_linhatransporteitinerario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre07_horasaida"]) || $this->tre07_horasaida != "")
-             $resac = db_query("insert into db_acount values($acount,3604,20098,'".AddSlashes(pg_result($resaco,$conresaco,'tre07_horasaida'))."','$this->tre07_horasaida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3604,20098,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre07_horasaida'))."','$this->tre07_horasaida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["tre07_horachegada"]) || $this->tre07_horachegada != "")
-             $resac = db_query("insert into db_acount values($acount,3604,20099,'".AddSlashes(pg_result($resaco,$conresaco,'tre07_horachegada'))."','$this->tre07_horachegada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3604,20099,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tre07_horachegada'))."','$this->tre07_horachegada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -331,13 +331,13 @@ class cl_linhatransportehorario {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20096,'$tre07_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3604,20096,'','".AddSlashes(pg_result($resaco,$iresaco,'tre07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3604,20097,'','".AddSlashes(pg_result($resaco,$iresaco,'tre07_linhatransporteitinerario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3604,20098,'','".AddSlashes(pg_result($resaco,$iresaco,'tre07_horasaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3604,20099,'','".AddSlashes(pg_result($resaco,$iresaco,'tre07_horachegada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3604,20096,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3604,20097,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre07_linhatransporteitinerario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3604,20098,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre07_horasaida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3604,20099,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tre07_horachegada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -398,7 +398,7 @@ class cl_linhatransportehorario {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:linhatransportehorario";
@@ -413,7 +413,7 @@ class cl_linhatransportehorario {
    function sql_query ( $tre07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -436,7 +436,7 @@ class cl_linhatransportehorario {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,7 +449,7 @@ class cl_linhatransportehorario {
    function sql_query_file ( $tre07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -470,7 +470,7 @@ class cl_linhatransportehorario {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

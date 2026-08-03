@@ -33,7 +33,7 @@ include(modification("classes/db_assenta_classe.php"));
 include(modification("classes/db_assmeio_classe.php"));
 include(modification("classes/db_tipoasse_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $classenta = new cl_assenta;
 $classmeio = new cl_assmeio;
 $cltipoasse = new cl_tipoasse;
@@ -80,8 +80,8 @@ if(isset($incluir)){
     $classmeio->h22_regist = $h16_regist; 
     $classmeio->h22_assent = $h16_assent;
     $classmeio->h22_dtconc = $dtconc;
-    $classmeio->h22_histor = substr($h16_histor,   0, 240);
-    $classmeio->h22_hist2  = substr($h16_histor, 240, 240);
+    $classmeio->h22_histor = substr((string) $h16_histor,   0, 240);
+    $classmeio->h22_hist2  = substr((string) $h16_histor, 240, 240);
     $classmeio->h22_nrport = $h16_nrport;
     $classmeio->h22_atofic = $h16_atofic;
     $classmeio->h22_quant  = $h16_quant;
@@ -95,8 +95,8 @@ if(isset($incluir)){
       $sqlerro = true;
     }else if(isset($codigo) && trim($codigo) != ""){
       $classmeio = new cl_assmeio;
-      $classmeio->h22_histor = substr($historico_mdia,   0, 240);
-      $classmeio->h22_hist2  = substr($historico_mdia, 240, 240);
+      $classmeio->h22_histor = substr((string) $historico_mdia,   0, 240);
+      $classmeio->h22_hist2  = substr((string) $historico_mdia, 240, 240);
       $classmeio->h22_data   = $dtconc;
       $classmeio->h22_codigo = $codigo;
       $classmeio->alterar($codigo);

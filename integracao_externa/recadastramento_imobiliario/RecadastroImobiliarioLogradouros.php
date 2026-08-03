@@ -37,11 +37,11 @@ class RecadastroImobiliarioLogradouros {
   private $oArquivo;
   private $oCabecalhoArquivo;
   private $oRodapeArquivo;
-  private $aRegistrosArquivo    = array();
-  private $aTabelas             = array();
+  private $aRegistrosArquivo    = [];
+  private $aTabelas             = [];
   private $oConfiguracao;
   private $oLog;
-  private $aTiposPadraoSistema  = array();
+  private $aTiposPadraoSistema  = [];
   private $iRegistrosArquivo    = 0;
   /**
    * Construtor da Classe 
@@ -89,7 +89,7 @@ class RecadastroImobiliarioLogradouros {
 
   public function carregarArquivo() {
 
-    $aRuasArquivo                    = array();
+    $aRuasArquivo                    = [];
     $sLinhaCabecalhoArquivo          = fgets($this->oArquivo);
     $oCabecalhoArquivo               = new stdClass();
     $oCabecalhoArquivo->iAnoArquivo  = trim( substr($sLinhaCabecalhoArquivo, 0,  4) );  //001-004 Ano
@@ -184,15 +184,15 @@ class RecadastroImobiliarioLogradouros {
 
       $oDadosInclusao                                       = new stdClass();
       $oDadosInclusao->ie25_recadastroimobiliarioarquivos   = pg_escape_string($iCodigoImportacao);
-      $oDadosInclusao->ie25_sequencialregistro              = pg_escape_string(trim($oLinhaArquivo->sSequencial));
-      $oDadosInclusao->ie25_codigologradouro                = pg_escape_string((int)trim($oLinhaArquivo->iCodigoLogradouro));
-      $oDadosInclusao->ie25_tipologradouro                  = pg_escape_string(trim($oLinhaArquivo->iTipoLogradouro));
+      $oDadosInclusao->ie25_sequencialregistro              = pg_escape_string(trim((string) $oLinhaArquivo->sSequencial));
+      $oDadosInclusao->ie25_codigologradouro                = pg_escape_string((int)trim((string) $oLinhaArquivo->iCodigoLogradouro));
+      $oDadosInclusao->ie25_tipologradouro                  = pg_escape_string(trim((string) $oLinhaArquivo->iTipoLogradouro));
       $oDadosInclusao->ie25_nomelogradouro                  = pg_escape_string(trim($oLinhaArquivo->sTituloLogradouro . " " . $oLinhaArquivo->sNomeLogradouro));
-      $oDadosInclusao->ie25_nomelogradouroanterior          = pg_escape_string(trim($oLinhaArquivo->sNomeAnteriorLogradouro));
-      $oDadosInclusao->ie25_lei                             = pg_escape_string(trim($oLinhaArquivo->sLei));
-      $oDadosInclusao->ie25_datalei                         = pg_escape_string(trim($oLinhaArquivo->oDataLei));
-      $oDadosInclusao->ie25_codigologradouroinicio          = pg_escape_string((int)trim($oLinhaArquivo->iCodigoLogradouroInicio));
-      $oDadosInclusao->ie25_codigologradourofim             = pg_escape_string((int)trim($oLinhaArquivo->iCodigoLogradouroFim));
+      $oDadosInclusao->ie25_nomelogradouroanterior          = pg_escape_string(trim((string) $oLinhaArquivo->sNomeAnteriorLogradouro));
+      $oDadosInclusao->ie25_lei                             = pg_escape_string(trim((string) $oLinhaArquivo->sLei));
+      $oDadosInclusao->ie25_datalei                         = pg_escape_string(trim((string) $oLinhaArquivo->oDataLei));
+      $oDadosInclusao->ie25_codigologradouroinicio          = pg_escape_string((int)trim((string) $oLinhaArquivo->iCodigoLogradouroInicio));
+      $oDadosInclusao->ie25_codigologradourofim             = pg_escape_string((int)trim((string) $oLinhaArquivo->iCodigoLogradouroFim));
       $oRecadastroLogradouros->setByLineOfDBUtils($oDadosInclusao);
       $oRecadastroLogradouros->insertValue();
     }
@@ -268,9 +268,9 @@ class RecadastroImobiliarioLogradouros {
     foreach ( $this->aRegistrosArquivo as $iCodigoRegistro => $oRegistro )  {
 
       $iLinha                 = $iCodigoRegistro + 2;//Linha + Linha Cabecalho + Array que começa em 0(zero)
-      $sSequencial            = trim( $oRegistro->sSequencial );
-      $sCodigoLogradouro      = trim( $oRegistro->iCodigoLogradouro );
-      $sNomeLogradouro        = trim( $oRegistro->sNomeLogradouro );
+      $sSequencial            = trim( (string) $oRegistro->sSequencial );
+      $sCodigoLogradouro      = trim( (string) $oRegistro->iCodigoLogradouro );
+      $sNomeLogradouro        = trim( (string) $oRegistro->sNomeLogradouro );
 
       $lSequencialVazio       = empty( $sSequencial ); 
       $lCodigoLogradouroVazio = empty( $sCodigoLogradouro );
@@ -335,7 +335,7 @@ class RecadastroImobiliarioLogradouros {
     foreach ( db_utils::getCollectionByRecord($rsDadosImportados) as $oLogradouroImportado ) {
      
       $iRegistroAtual++;
-      $oBarraProgresso->atualizar($iRegistroAtual);
+      $oBarraProgresso->atualizar();
 
       $oDadosNovosLogradouro                     = new stdClass();
       $oDadosNovosLogradouro->j14_codigo         = $oLogradouroImportado->ie25_codigologradouro;
@@ -457,7 +457,7 @@ class RecadastroImobiliarioLogradouros {
     }
 
     if ( pg_num_rows($rsDadosLogradouro) > 0 ) {
-      return db_utils::fieldsMemory($rsDadosLogradouro, 0);
+      return (new db_utils())->fieldsMemory($rsDadosLogradouro, 0);
     }
     return false;
 

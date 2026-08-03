@@ -51,10 +51,10 @@ $clcriaabas     = new cl_criaabas;
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("a1"=>"Profissional","a2"=>"UPS");
-	 $clcriaabas->src        = array("a1"=>"sau2_atendimentomedico001.php","a2"=>"sau2_atendimentomedico003.php");
+	 $clcriaabas->identifica = ["a1"=>"Profissional","a2"=>"UPS"];
+	 $clcriaabas->src        = ["a1"=>"sau2_atendimentomedico001.php","a2"=>"sau2_atendimentomedico003.php"];
 	 //$clcriaabas->disabled   = array("medicos"=>"true");
-     $clcriaabas->sizecampo  = array("a1"=>20,"a2"=>20);
+     $clcriaabas->sizecampo  = ["a1"=>20,"a2"=>20];
 	 $clcriaabas->scrolling = "no";
      $clcriaabas->cria_abas();
      ?> 

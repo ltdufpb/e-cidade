@@ -90,7 +90,7 @@ if ($oProtParamGlobal->p06_tipo == ProcessoProtocoloNumeracao::TIPOORGAO) {
                   $clorcunidade->sql_query(null,null,null,"distinct o40_orgao,o40_descr","o40_descr",$sWhere)
                 );
 
-                if (@pg_numrows($result) == 0) {
+                if (@pg_num_rows($result) == 0) {
                   echo "<strong>Sistema não localizou nenhum orgão com unidades vinculadas na instituição selecionada!</strong>";
                 } else {
                   db_selectrecord("p07_orgao", @$result, true, $db_opcao);
@@ -121,7 +121,7 @@ if ($oProtParamGlobal->p06_tipo == ProcessoProtocoloNumeracao::TIPOORGAO) {
       }
       $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 
-      $chavepri = array("p07_sequencial"=>@$p07_sequencial);
+      $chavepri = ["p07_sequencial"=>@$p07_sequencial];
       $cliframe_alterar_excluir->chavepri = $chavepri;
       $cliframe_alterar_excluir->campos = "p07_sequencial, p07_instit, p07_ano, p07_proximonumero";
 

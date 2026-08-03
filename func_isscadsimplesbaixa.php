@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_isscadsimplesbaixa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrotulo             = new rotulocampo;
 $clisscadsimplesbaixa = new cl_isscadsimplesbaixa;
 $clisscadsimplesbaixa->rotulo->label("q39_sequencial");
@@ -103,9 +103,9 @@ $clrotulo->label("q38_inscr");
         }else{
            $sql = $clisscadsimplesbaixa->sql_query_cgm("",$campos,"q39_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q39_dtbaixa)){
-          $repassa = array("chave_q39_sequencial"=>$chave_q39_sequencial,"chave_q39_dtbaixa"=>$chave_q39_dtbaixa);
+          $repassa = ["chave_q39_sequencial"=>$chave_q39_sequencial,"chave_q39_dtbaixa"=>$chave_q39_dtbaixa];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

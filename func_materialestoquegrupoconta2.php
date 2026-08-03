@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_materialestoquegrupoconta_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmaterialestoquegrupoconta = new cl_materialestoquegrupoconta;
 $clmaterialestoquegrupoconta->rotulo->label("m66_sequencial");
 $clmaterialestoquegrupoconta->rotulo->label("m66_materialestoquegrupo");
@@ -99,9 +99,9 @@ $clmaterialestoquegrupoconta->rotulo->label("m66_materialestoquegrupo");
         }else{
            $sql = $clmaterialestoquegrupoconta->sql_query("",$campos,"c60_descr","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m66_materialestoquegrupo)){
-          $repassa = array("chave_m66_sequencial"=>$chave_m66_sequencial,"chave_m66_materialestoquegrupo"=>$chave_m66_materialestoquegrupo);
+          $repassa = ["chave_m66_sequencial"=>$chave_m66_sequencial,"chave_m66_materialestoquegrupo"=>$chave_m66_materialestoquegrupo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

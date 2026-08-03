@@ -65,7 +65,7 @@ if (in_array(1, $carregarLaravel)) {
 
 $ano = db_getsession('DB_anousu');
 $instituicoes = str_replace('-', ',', $get->db_selinstit);
-$quadros = array(
+$quadros = [
     AnexoXVIIIResumido::EMITIR_BALANCO_ORCAMENTARIO => $get->emite_balorc,
     AnexoXVIIIResumido::EMITIR_DESPESA_FUNCAO_SUBFUNCAO => $get->emite_desp_funcsub,
     AnexoXVIIIResumido::EMITIR_RECEITA_CORRENTE_LIQUIDA => $get->emite_rcl,
@@ -78,7 +78,7 @@ $quadros = array(
     AnexoXVIIIResumido::EMITIR_PROJECAO_ATUARIAL_RPPS => $get->emite_proj,
     AnexoXVIIIResumido::EMITIR_ALIENACAO_ATIVOS => $get->emite_alienacao,
     AnexoXVIIIResumido::EMITIR_PPP => $get->emite_ppp,
-);
+];
 
 $relatorio = RelatorioFactory::getInstance($ano, $get->bimestre);
 

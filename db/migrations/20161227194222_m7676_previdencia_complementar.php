@@ -6,11 +6,11 @@ class M7676PrevidenciaComplementar extends PostgresMigration
 {
    public function up() 
    {
-      $this->table('rhrubricas', array('schema'=>'pessoal'))
-           ->addColumn('rh27_previdenciacomplementar', 'integer', array('null' => true))
+      $this->table('rhrubricas', ['schema'=>'pessoal'])
+           ->addColumn('rh27_previdenciacomplementar', 'integer', ['null' => true])
            ->save();
 
-      $aSyscampo = array(
+      $aSyscampo = [
         'codcam'       => 22305,
         'nomecam'      => 'rh27_previdenciacomplementar',
         'conteudo'     => 'int4',
@@ -24,27 +24,27 @@ class M7676PrevidenciaComplementar extends PostgresMigration
         'aceitatipo'   => 1,
         'tipoobj'      => 'text',
         'rotulorel'    => 'Previdência Complementar'
-      );
+      ];
 
-      $this->table('db_syscampo', array('schema'=>'configuracoes'))
-           ->insert(array_keys($aSyscampo), array(array_values($aSyscampo)))
+      $this->table('db_syscampo', ['schema'=>'configuracoes'])
+           ->insert(array_keys($aSyscampo), [array_values($aSyscampo)])
            ->saveData();
 
-      $aSysarqcamp = array (
+      $aSysarqcamp =  [
         'codarq'       => 1177,
         'codcam'       => 22305,
         'seqarq'       => 31,
         'codsequencia' => 0
-      );
+      ];
  
-      $this->table('db_sysarqcamp', array('schema'=>'configuracoes'))
-           ->insert(array_keys($aSysarqcamp), array(array_values($aSysarqcamp)))
+      $this->table('db_sysarqcamp', ['schema'=>'configuracoes'])
+           ->insert(array_keys($aSysarqcamp), [array_values($aSysarqcamp)])
            ->saveData();
    }
 
    public function down() 
    {
-      $this->table('rhrubricas', array('schema'=>'pessoal'))
+      $this->table('rhrubricas', ['schema'=>'pessoal'])
            ->removeColumn('rh27_previdenciacomplementar')
            ->save();
 

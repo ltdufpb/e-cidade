@@ -55,9 +55,9 @@ class R2020 extends EventoAbstract
             return null;
         }
 
-        $where = array(
+        $where = [
             "efd05_avaliacaogruporesposta = $parametros->preenchimento"
-        );
+        ];
 
         $sql = $this->dao->sql_query_file(null, "*", 'efd05_sequencial DESC', implode(' AND ', $where));
         $rs = db_query($sql);
@@ -78,7 +78,7 @@ class R2020 extends EventoAbstract
      * @param array $parametros
      * @return int
      */
-    public function persistir(Avaliacao $avaliacao, array $parametros = array())
+    public function persistir(Avaliacao $avaliacao, array $parametros = [])
     {
         if (!empty($parametros['preenchimento'])) {
             $this->dao->excluir(null, "efd05_avaliacaogruporesposta = {$parametros['preenchimento']}");
@@ -87,14 +87,14 @@ class R2020 extends EventoAbstract
         $preenchimento = $avaliacao->getAvaliacaoGrupo();
         $competencia = $parametros['perApur'];
         $inscricao = $parametros['nrInscEstabPrest'];
-        $inscricao = str_replace(array('.', '/', '-'), '', $inscricao);
+        $inscricao = str_replace(['.', '/', '-'], '', $inscricao);
         $cgm = $this->getCgm()->getCodigo();
 
-        $where = array(
+        $where = [
             "efd05_cgm = {$cgm}",
             "efd05_inscricaoprestadora = '{$inscricao}'",
             "efd05_competencia = '{$competencia}'",
-        );
+        ];
 
         $sql = $this->dao->sql_query_file(null, "*", null, implode(' and ', $where));
         $rs = db_query($sql);

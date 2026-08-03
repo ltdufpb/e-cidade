@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_tfd_tipotratamentoproced_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("sd63_c_procedimento");
@@ -148,9 +148,9 @@ $oDaoTfdTipoTratamentoProced->rotulo->label("tf05_i_codigo");
         } else {
           $sSql = $oDaoTfdTipoTratamentoProced->{$sTipoQuery}('', $campos, "tf05_i_codigo", $sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_tf05_i_codigo)) {
-          $repassa = array("chave_tf05_i_codigo"=>$chave_tf05_i_codigo,"chave_tf05_i_codigo"=>$chave_tf05_i_codigo);
+          $repassa = ["chave_tf05_i_codigo"=>$chave_tf05_i_codigo,"chave_tf05_i_codigo"=>$chave_tf05_i_codigo];
         }
 
         if (isset($nao_mostra)) {

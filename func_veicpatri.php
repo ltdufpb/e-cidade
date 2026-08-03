@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veicpatri_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveicpatri = new cl_veicpatri;
 $clveicpatri->rotulo->label("ve03_codigo");
 $clveicpatri->rotulo->label("ve03_codigo");
@@ -98,9 +98,9 @@ $clveicpatri->rotulo->label("ve03_codigo");
         }else{
            $sql = $clveicpatri->sql_query("",$campos,"ve03_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve03_codigo)){
-          $repassa = array("chave_ve03_codigo"=>$chave_ve03_codigo,"chave_ve03_codigo"=>$chave_ve03_codigo);
+          $repassa = ["chave_ve03_codigo"=>$chave_ve03_codigo,"chave_ve03_codigo"=>$chave_ve03_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

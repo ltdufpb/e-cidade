@@ -150,7 +150,7 @@ function nota($sDescricao, $nValor, $lPreencher = false) {
   if (empty($sDescricao)) {
     $sDescricao = 'Não informada';
   } else {
-    $sDescricao = utf8_decode($sDescricao);
+    $sDescricao = mb_convert_encoding($sDescricao, 'ISO-8859-1');
   }
 
   $oPdf = $GLOBALS['oPdf'];

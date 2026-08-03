@@ -58,15 +58,15 @@ try {
 
       $oBaseCurricular               = new BaseCurricular( $oParam->iBaseCurricular );
       $oRetorno->iCurso              = $oBaseCurricular->getCurso()->getCodigo();
-      $oRetorno->sCurso              = urlencode($oBaseCurricular->getCurso()->getNome());
+      $oRetorno->sCurso              = urlencode((string) $oBaseCurricular->getCurso()->getNome());
       $oRetorno->sNomeBase           = urlencode($oBaseCurricular->getDescricao());
       $oRetorno->sTurno              = urlencode($oBaseCurricular->getTurno());
       $oRetorno->iRegimeMatricula    = $oBaseCurricular->getRegimeMatricula()->getCodigo();
-      $oRetorno->sRegimeMatricula    = urlencode($oBaseCurricular->getRegimeMatricula()->getNome());
+      $oRetorno->sRegimeMatricula    = urlencode((string) $oBaseCurricular->getRegimeMatricula()->getNome());
       $oRetorno->iEtapaInicial       = $oBaseCurricular->getEtapaInicial()->getCodigo();
-      $oRetorno->sEtapaInicial       = urlencode($oBaseCurricular->getEtapaInicial()->getNome());
+      $oRetorno->sEtapaInicial       = urlencode((string) $oBaseCurricular->getEtapaInicial()->getNome());
       $oRetorno->iEtapaFinal         = $oBaseCurricular->getEtapaFinal()->getCodigo();
-      $oRetorno->sEtapaFinal         = urlencode($oBaseCurricular->getEtapaFinal()->getNome());
+      $oRetorno->sEtapaFinal         = urlencode((string) $oBaseCurricular->getEtapaFinal()->getNome());
       $oRetorno->sFrequencia         = urlencode($oBaseCurricular->getFrequencia());
       $oRetorno->sControleFrequencia = urlencode($oBaseCurricular->getControleFrequencia());
       $oRetorno->lConcluiCurso       = $oBaseCurricular->encerraCurso();

@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE fiscalprocrec
 class cl_fiscalprocrec {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $y45_codtipo = 0;
-   var $y45_receit = 0;
-   var $y45_valor = 0;
-   var $y45_descr = null;
-   var $y45_vlrfixo = 'f';
-   var $y45_percentual = 'f';
+   public $y45_codtipo = 0;
+   public $y45_receit = 0;
+   public $y45_valor = 0;
+   public $y45_descr = null;
+   public $y45_vlrfixo = 'f';
+   public $y45_percentual = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  y45_codtipo = int8 = Código da Procedência
                  y45_receit = int4 = codigo da receita
                  y45_valor = float8 = Valor padrão para a receita
@@ -58,10 +58,10 @@ class cl_fiscalprocrec {
                  y45_percentual = bool = Percentual
                  ";
    //funcao construtor da classe
-   function cl_fiscalprocrec() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscalprocrec");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -162,7 +162,7 @@ class cl_fiscalprocrec {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "fiscalprocrec ($this->y45_codtipo."-".$this->y45_receit) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "fiscalprocrec já Cadastrado";
@@ -191,16 +191,16 @@ class cl_fiscalprocrec {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4937,'$this->y45_codtipo','I')");
          $resac = db_query("insert into db_acountkey values($acount,4938,'$this->y45_receit','I')");
-         $resac = db_query("insert into db_acount values($acount,682,4937,'','".AddSlashes(pg_result($resaco,0,'y45_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,682,4938,'','".AddSlashes(pg_result($resaco,0,'y45_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,682,4939,'','".AddSlashes(pg_result($resaco,0,'y45_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,682,4940,'','".AddSlashes(pg_result($resaco,0,'y45_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,682,6627,'','".AddSlashes(pg_result($resaco,0,'y45_vlrfixo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,682,20812,'','".AddSlashes(pg_result($resaco,0,'y45_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,682,4937,'','".AddSlashes(pg_fetch_result($resaco,0,'y45_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,682,4938,'','".AddSlashes(pg_fetch_result($resaco,0,'y45_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,682,4939,'','".AddSlashes(pg_fetch_result($resaco,0,'y45_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,682,4940,'','".AddSlashes(pg_fetch_result($resaco,0,'y45_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,682,6627,'','".AddSlashes(pg_fetch_result($resaco,0,'y45_vlrfixo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,682,20812,'','".AddSlashes(pg_fetch_result($resaco,0,'y45_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -210,10 +210,10 @@ class cl_fiscalprocrec {
       $this->atualizacampos();
      $sql = " update fiscalprocrec set ";
      $virgula = "";
-     if(trim($this->y45_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_codtipo"])){
+     if(trim((string) $this->y45_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_codtipo"])){
        $sql  .= $virgula." y45_codtipo = $this->y45_codtipo ";
        $virgula = ",";
-       if(trim($this->y45_codtipo) == null ){
+       if(trim((string) $this->y45_codtipo) == null ){
          $this->erro_sql = " Campo Código da Procedência não informado.";
          $this->erro_campo = "y45_codtipo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_fiscalprocrec {
          return false;
        }
      }
-     if(trim($this->y45_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_receit"])){
+     if(trim((string) $this->y45_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_receit"])){
        $sql  .= $virgula." y45_receit = $this->y45_receit ";
        $virgula = ",";
-       if(trim($this->y45_receit) == null ){
+       if(trim((string) $this->y45_receit) == null ){
          $this->erro_sql = " Campo codigo da receita não informado.";
          $this->erro_campo = "y45_receit";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_fiscalprocrec {
          return false;
        }
      }
-     if(trim($this->y45_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_valor"])){
+     if(trim((string) $this->y45_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_valor"])){
        $sql  .= $virgula." y45_valor = $this->y45_valor ";
        $virgula = ",";
-       if(trim($this->y45_valor) == null ){
+       if(trim((string) $this->y45_valor) == null ){
          $this->erro_sql = " Campo Valor padrão para a receita não informado.";
          $this->erro_campo = "y45_valor";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_fiscalprocrec {
          return false;
        }
      }
-     if(trim($this->y45_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_descr"])){
+     if(trim((string) $this->y45_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_descr"])){
        $sql  .= $virgula." y45_descr = '$this->y45_descr' ";
        $virgula = ",";
-       if(trim($this->y45_descr) == null ){
+       if(trim((string) $this->y45_descr) == null ){
          $this->erro_sql = " Campo Descrição padrão da receita não informado.";
          $this->erro_campo = "y45_descr";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_fiscalprocrec {
          return false;
        }
      }
-     if(trim($this->y45_vlrfixo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_vlrfixo"])){
+     if(trim((string) $this->y45_vlrfixo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_vlrfixo"])){
        $sql  .= $virgula." y45_vlrfixo = '$this->y45_vlrfixo' ";
        $virgula = ",";
-       if(trim($this->y45_vlrfixo) == null ){
+       if(trim((string) $this->y45_vlrfixo) == null ){
          $this->erro_sql = " Campo Valor Fixo não informado.";
          $this->erro_campo = "y45_vlrfixo";
          $this->erro_banco = "";
@@ -275,10 +275,10 @@ class cl_fiscalprocrec {
          return false;
        }
      }
-     if(trim($this->y45_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_percentual"])){
+     if(trim((string) $this->y45_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y45_percentual"])){
        $sql  .= $virgula." y45_percentual = '$this->y45_percentual' ";
        $virgula = ",";
-       if(trim($this->y45_percentual) == null ){
+       if(trim((string) $this->y45_percentual) == null ){
          $this->erro_sql = " Campo Percentual não informado.";
          $this->erro_campo = "y45_percentual";
          $this->erro_banco = "";
@@ -305,22 +305,22 @@ class cl_fiscalprocrec {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,4937,'$this->y45_codtipo','A')");
            $resac = db_query("insert into db_acountkey values($acount,4938,'$this->y45_receit','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y45_codtipo"]) || $this->y45_codtipo != "")
-             $resac = db_query("insert into db_acount values($acount,682,4937,'".AddSlashes(pg_result($resaco,$conresaco,'y45_codtipo'))."','$this->y45_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,682,4937,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y45_codtipo'))."','$this->y45_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y45_receit"]) || $this->y45_receit != "")
-             $resac = db_query("insert into db_acount values($acount,682,4938,'".AddSlashes(pg_result($resaco,$conresaco,'y45_receit'))."','$this->y45_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,682,4938,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y45_receit'))."','$this->y45_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y45_valor"]) || $this->y45_valor != "")
-             $resac = db_query("insert into db_acount values($acount,682,4939,'".AddSlashes(pg_result($resaco,$conresaco,'y45_valor'))."','$this->y45_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,682,4939,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y45_valor'))."','$this->y45_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y45_descr"]) || $this->y45_descr != "")
-             $resac = db_query("insert into db_acount values($acount,682,4940,'".AddSlashes(pg_result($resaco,$conresaco,'y45_descr'))."','$this->y45_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,682,4940,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y45_descr'))."','$this->y45_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y45_vlrfixo"]) || $this->y45_vlrfixo != "")
-             $resac = db_query("insert into db_acount values($acount,682,6627,'".AddSlashes(pg_result($resaco,$conresaco,'y45_vlrfixo'))."','$this->y45_vlrfixo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,682,6627,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y45_vlrfixo'))."','$this->y45_vlrfixo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y45_percentual"]) || $this->y45_percentual != "")
-             $resac = db_query("insert into db_acount values($acount,682,20812,'".AddSlashes(pg_result($resaco,$conresaco,'y45_percentual'))."','$this->y45_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,682,20812,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y45_percentual'))."','$this->y45_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -374,16 +374,16 @@ class cl_fiscalprocrec {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,4937,'$y45_codtipo','E')");
            $resac  = db_query("insert into db_acountkey values($acount,4938,'$y45_receit','E')");
-           $resac  = db_query("insert into db_acount values($acount,682,4937,'','".AddSlashes(pg_result($resaco,$iresaco,'y45_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,682,4938,'','".AddSlashes(pg_result($resaco,$iresaco,'y45_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,682,4939,'','".AddSlashes(pg_result($resaco,$iresaco,'y45_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,682,4940,'','".AddSlashes(pg_result($resaco,$iresaco,'y45_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,682,6627,'','".AddSlashes(pg_result($resaco,$iresaco,'y45_vlrfixo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,682,20812,'','".AddSlashes(pg_result($resaco,$iresaco,'y45_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,682,4937,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y45_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,682,4938,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y45_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,682,4939,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y45_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,682,4940,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y45_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,682,6627,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y45_vlrfixo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,682,20812,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y45_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -526,7 +526,7 @@ class cl_fiscalprocrec {
    function sql_query_fiscaltipo ( $y45_codtipo=null,$y45_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -561,7 +561,7 @@ class cl_fiscalprocrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -573,7 +573,7 @@ class cl_fiscalprocrec {
    function sql_query_autotipo ( $y45_codtipo=null,$y45_receit=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -608,7 +608,7 @@ class cl_fiscalprocrec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

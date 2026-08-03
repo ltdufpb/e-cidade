@@ -31,13 +31,13 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 $clcriaabas->scrolling="yes";
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 ?>
   <html>
@@ -61,9 +61,9 @@ $sizecp  = array();
   <tr> 
      <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Credor","filtro"=>"Filtro");
-       $clcriaabas->title = array("g1"=>"Selecionar credores","filtro"=>"Filtro");
-       $clcriaabas->src = array("g1"=>"emp2_empliqpag03.php","filtro"=>"emp2_emp_liq_pag004.php");
+       $clcriaabas->identifica = ["g1"=>"Credor","filtro"=>"Filtro"];
+       $clcriaabas->title = ["g1"=>"Selecionar credores","filtro"=>"Filtro"];
+       $clcriaabas->src = ["g1"=>"emp2_empliqpag03.php","filtro"=>"emp2_emp_liq_pag004.php"];
        $clcriaabas->cria_abas();
      ?> 
      </td>

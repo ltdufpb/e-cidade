@@ -133,10 +133,10 @@ class Grupo
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'la66_codigo' => $this->getCodigo(),
             'la66_descricao' => $this->getDescricao(),
-        );
+        ];
 
         return $retorno;
     }

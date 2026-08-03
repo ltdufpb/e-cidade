@@ -39,8 +39,8 @@ if (!isset($arqinclude)){
   $classinatura = new cl_assinatura;
   $orcparamrel  = new cl_orcparamrel;
   
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
   
 }
 
@@ -50,15 +50,15 @@ include_once(modification("classes/db_conrelvalor_classe.php"));
 $clconrelinfo  = new cl_conrelinfo;
 $clconrelvalor = new cl_conrelvalor;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
 //******************************************************************
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
   }else{
@@ -117,7 +117,7 @@ $dt_ini   = $dt[0];  // data inicial do periodo
 $dt_fim   = $dt[1];  // data final do período
 
 // se o ano atual é bissexto deve subtrair 366 somente se a data for superior a 28/02/200X
-$dt = split('-',$dt_fim);  // mktime -- (mes,dia,ano)
+$dt = preg_split('#\-#m',(string) $dt_fim);  // mktime -- (mes,dia,ano)
 //$dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1],$dt[2]-364,$dt[0]));
 $dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1]-11,"01",$dt[0]));
 $dt_fim_ant = $anousu_ant.'-12-31';
@@ -130,7 +130,7 @@ for ($x=0; $x < 11;$x++) {
   $valor1[$x] = 0;
 }
 
-for($i=0;$i< pg_numrows($resultado);$i++) {
+for($i=0;$i< pg_num_rows($resultado);$i++) {
   db_fieldsmemory($resultado,$i);
   if (in_array($estrutural,$parametro[0])){
     $valor1[1] += $saldo_final;
@@ -203,7 +203,7 @@ if (!isset($arqinclude)){
   $pdf->cell(145,$alt,$texto[1],'R',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($valor1[1], 'f'),'',1,"R",0);
   $te = 0;
-  for($x=0;$x< pg_numrows($resultado);$x++) {
+  for($x=0;$x< pg_num_rows($resultado);$x++) {
     db_fieldsmemory($resultado,$x);
     if (in_array($estrutural,$parametro[0])){
       $pdf->cell(145,$alt,'    '.$c60_descr,'R',0,"L",0);
@@ -213,7 +213,7 @@ if (!isset($arqinclude)){
   
   $pdf->cell(145,$alt,$texto[2],'R',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($valor1[2], 'f'),'',1,"R",0);
-  for($x=0;$x < pg_numrows($resultado);$x++) {
+  for($x=0;$x < pg_num_rows($resultado);$x++) {
     db_fieldsmemory($resultado,$x);
     if (in_array($estrutural,$parametro[1])){
       $pdf->cell(145,$alt,'    '.$c60_descr,'R',0,"L",0);
@@ -231,7 +231,7 @@ if (!isset($arqinclude)){
   $pdf->setfont('arial','',5);
   $pdf->ln(20);
   
-  assinaturas(&$pdf,&$classinatura,'GF');
+  assinaturas($pdf,$classinatura,'GF');
   
   $pdf->Output();
   

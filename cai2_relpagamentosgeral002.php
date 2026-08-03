@@ -291,24 +291,24 @@ $sAnd = $sWhere != "" ? " and " : "";
 // Fim Filtro Pagamentos Por Compensação Parcial/Total do Débito
 
 //Verifica se foi escolhido a opção 1-Processamento
-if ($oGet->cboData == 1 && (trim($oGet->dtini) != "" || trim($oGet->dtfim) != "")){
+if ($oGet->cboData == 1 && (trim((string) $oGet->dtini) != "" || trim((string) $oGet->dtfim) != "")){
 
   $sFiltroData .= " Processamento";
-  if (trim($oGet->dtini) != "" && trim($oGet->dtfim) != "") {
+  if (trim((string) $oGet->dtini) != "" && trim((string) $oGet->dtfim) != "") {
 
     $sFiltroPeriodo .= db_formatar($oGet->dtini, "d"). " à " . db_formatar($oGet->dtfim, "d");
     $sWhere .= $sAnd." arrepaga.k00_dtpaga between '".$oGet->dtini."' and '".$oGet->dtfim."' ";
-  } else if (trim($oGet->dtini) != "") {
+  } else if (trim((string) $oGet->dtini) != "") {
 
     $sFiltroPeriodo .= " até ".db_formatar($oGet->dtini, "d");
     $sWhere .= $sAnd." arrepaga.k00_dtpaga >= '".$oGet->dtini."'";
-  } else if (trim($oGet->dtfim) != "") {
+  } else if (trim((string) $oGet->dtfim) != "") {
 
     $sFiltroPeriodo .= " à partir " . db_formatar($oGet->dtfim, "d");
     $sWhere .= $sAnd." arrepaga.k00_dtpaga <= '".$oGet->dtfim."'";
   }
 //Verifica se foi escolhido a opção 2-Efetivo Pagamento
-} else if ($oGet->cboData == 2 && (trim($oGet->dtini) != "" || trim($oGet->dtfim) != "")){
+} else if ($oGet->cboData == 2 && (trim((string) $oGet->dtini) != "" || trim((string) $oGet->dtfim) != "")){
 
 	$sFrom  = "            disbanco                                                                      ";
 	$sFrom .= "            inner join arreidret  on arreidret.idret       = disbanco.idret               ";
@@ -316,15 +316,15 @@ if ($oGet->cboData == 1 && (trim($oGet->dtini) != "" || trim($oGet->dtfim) != ""
 	$sFrom .= "                                 and arrepaga.k00_numpar   = arreidret.k00_numpar         ";
 
   $sFiltroData .= " Efetivo Pagamento";
-  if (trim($oGet->dtini) != "" && trim($oGet->dtfim) != "") {
+  if (trim((string) $oGet->dtini) != "" && trim((string) $oGet->dtfim) != "") {
     $sFiltroPeriodo .= db_formatar($oGet->dtini, "d"). " à " . db_formatar($oGet->dtfim, "d");
 //    $sWhere .= $sAnd." disbanco.dtpago between '".$oGet->dtini."' and '".$oGet->dtfim."' ";
     $sWhere .= $sAnd." disbanco.dtpago between '".$oGet->dtini."' and '".$oGet->dtfim."' ";
-  } else if (trim($oGet->dtini) != "") {
+  } else if (trim((string) $oGet->dtini) != "") {
     $sFiltroPeriodo .= " até ".db_formatar($oGet->dtini, "d");
 //    $sWhere .= $sAnd." disbanco.dtpago >= '".$oGet->dtini."'";
     $sWhere .= $sAnd." ( select count(*) from disbanco inner join caixa.arreidret on disbanco.idret = arreidret.idret where arreidret.k00_numpre = arrepaga.k00_numpre and arreidret.k00_numpar = arrepaga.k00_numpar and disbanco.dtpago >= '".$oGet->dtini."' ) > 0 ";
-  } else if (trim($oGet->dtfim) != "") {
+  } else if (trim((string) $oGet->dtfim) != "") {
     $sFiltroPeriodo .= " à partir " . db_formatar($oGet->dtfim, "d");
 //    $sWhere .= $sAnd." disbanco.dtpago <= '".$oGet->dtfim."'";
     $sWhere .= $sAnd." ( select count(*) from disbanco inner join caixa.arreidret on disbanco.idret = arreidret.idret where arreidret.k00_numpre = arrepaga.k00_numpre and arreidret.k00_numpar = arrepaga.k00_numpar and disbanco.dtpago <= '".$oGet->dtfim."' ) > 0 ";
@@ -334,20 +334,20 @@ if ($oGet->cboData == 1 && (trim($oGet->dtini) != "" || trim($oGet->dtfim) != ""
 
 $sAnd = $sWhere != "" ? " and " : "";
 
-if (trim($oGet->vlIni) != "" && trim($oGet->vlFim) != "") {
+if (trim((string) $oGet->vlIni) != "" && trim((string) $oGet->vlFim) != "") {
   $sFiltroValorInicial .= $oGet->vlIni. " à " .$oGet->vlFim;
   $sWhere .= $sAnd." arrepaga.k00_valor between ".$oGet->vlIni." and ".$oGet->vlFim;
-} else if (trim($oGet->vlIni) != "" ) {
+} else if (trim((string) $oGet->vlIni) != "" ) {
   $sFiltroValorInicial .= " até ".$oGet->vlIni;
   $sWhere .= $sAnd." arrepaga.k00_valor >=".$oGet->vlIni;
-} else if (trim($oGet->vlFim) != "") {
+} else if (trim((string) $oGet->vlFim) != "") {
   $sFiltroValorInicial .= " à partir ".$oGet->vlFim;
   $sWhere .= $sAnd." arrepaga.k00_valor <=".$oGet->vlFim;
 }
 
 $sAnd = $sWhere != "" ? " and " : "";
 
-if (trim($oGet->arretipo) != "") {
+if (trim((string) $oGet->arretipo) != "") {
 
   $sWhere .= $sAnd." exists (select 1 from arrecant                             ";
   $sWhere .= "                where k00_tipo in {$oGet->arretipo}               ";
@@ -363,17 +363,17 @@ if (trim($oGet->arretipo) != "") {
 
 $sAnd = $sWhere != "" ? " and " : "";
 
-if (trim($oGet->receita) != "") {
+if (trim((string) $oGet->receita) != "") {
 
   $sWhere .= $sAnd." tabrec.k02_codigo in".$oGet->receita;
 }
 
 $sAnd = $sWhere != "" ? " and " : "";
 
-if (trim($oGet->cboDemonstracao) != "" && $oGet->cboDemonstracao == 2) {
+if (trim((string) $oGet->cboDemonstracao) != "" && $oGet->cboDemonstracao == 2) {
   $sFiltroDemonstracao .= " Imposto/Taxa ";
   $sWhere .= $sAnd." arrepaga.k00_hist in (400,401) ";
-} else if (trim($oGet->cboDemonstracao) != "" && $oGet->cboDemonstracao == 3) {
+} else if (trim((string) $oGet->cboDemonstracao) != "" && $oGet->cboDemonstracao == 3) {
   $sFiltroDemonstracao .= " Juro e Multa ";
   $sWhere .= $sAnd." arrepaga.k00_hist not in (400,401) ";
 } else {
@@ -504,8 +504,8 @@ $head9 = $sFiltroTotalizacao;
 
 //$aDados = db_utils::getCollectionByRecord($rsSql);
 
-$aPagamentos = array();
-$aTotais     = array();
+$aPagamentos = [];
+$aTotais     = [];
 
 /**
  * Percorremos os registros retornados do banco
@@ -525,7 +525,7 @@ for ($i = 0; $i < $iNumRows; $i++) {
   $oCgmPagamento->codigoTipoDebito    = $oPagamento->k00_tipo;
   $oCgmPagamento->estrutural          = $oPagamento->k02_estorc;
   $oCgmPagamento->descrestrutural     = $oPagamento->o57_descr;
-  if (trim($oPagamento->k00_tipo) == "") {
+  if (trim((string) $oPagamento->k00_tipo) == "") {
     $oCgmPagamento->descricaoTipoDebito = $oPagamento->k00_descr_recibo ;
     $oCgmPagamento->codigoTipoDebito    = $oPagamento->k00_tipo_recibo;
   }
@@ -549,7 +549,7 @@ for ($i = 0; $i < $iNumRows; $i++) {
 
         $aPagamentos[$oCgmPagamento->codigoTipoDebito]->totalRegistros  = 0;
         $aPagamentos[$oCgmPagamento->codigoTipoDebito]->totalGeral      = 0;
-        $aPagamentos[$oCgmPagamento->codigoTipoDebito]->dados           = array();
+        $aPagamentos[$oCgmPagamento->codigoTipoDebito]->dados           = [];
       }
 
       if (isset($aPagamentos[$oCgmPagamento->codigoTipoDebito]->dados[$oCgmPagamento->codigoReceita]) ) {
@@ -604,9 +604,9 @@ for ($i = 0; $i < $iNumRows; $i++) {
         if (!isset($aPagamentos[$oCgmPagamento->matricula])) {
 
           $aPagamentos[$oCgmPagamento->matricula] = new stdClass;
-          $aPagamentos[$oCgmPagamento->matricula]->dados = array();
-          $aPagamentos[$oCgmPagamento->matricula]->totalReceita = array();
-          $aPagamentos[$oCgmPagamento->matricula]->totalDebito = array();
+          $aPagamentos[$oCgmPagamento->matricula]->dados = [];
+          $aPagamentos[$oCgmPagamento->matricula]->totalReceita = [];
+          $aPagamentos[$oCgmPagamento->matricula]->totalDebito = [];
         }
 
         if (isset($aPagamentos[$oCgmPagamento->matricula]->dados[$oCgmPagamento->codigoReceita])) {
@@ -673,9 +673,9 @@ for ($i = 0; $i < $iNumRows; $i++) {
           if (!isset($aPagamentos[$oCgmPagamento->inscricao])) {
 
             $aPagamentos[$oCgmPagamento->inscricao] = new stdClass;
-            $aPagamentos[$oCgmPagamento->inscricao]->dados = array();
-            $aPagamentos[$oCgmPagamento->inscricao]->totalReceita = array();
-            $aPagamentos[$oCgmPagamento->inscricao]->totalDebito = array();
+            $aPagamentos[$oCgmPagamento->inscricao]->dados = [];
+            $aPagamentos[$oCgmPagamento->inscricao]->totalReceita = [];
+            $aPagamentos[$oCgmPagamento->inscricao]->totalDebito = [];
           }
 
           if (isset($aPagamentos[$oCgmPagamento->inscricao]->dados[$oCgmPagamento->codigoReceita])) {
@@ -745,9 +745,9 @@ for ($i = 0; $i < $iNumRows; $i++) {
           if (!isset($aPagamentos[$oCgmPagamento->cgm])) {
 
             $aPagamentos[$oCgmPagamento->cgm] = new stdClass;
-            $aPagamentos[$oCgmPagamento->cgm]->dados = array();
-            $aPagamentos[$oCgmPagamento->cgm]->totalReceita = array();
-            $aPagamentos[$oCgmPagamento->cgm]->totalDebito = array();
+            $aPagamentos[$oCgmPagamento->cgm]->dados = [];
+            $aPagamentos[$oCgmPagamento->cgm]->totalReceita = [];
+            $aPagamentos[$oCgmPagamento->cgm]->totalDebito = [];
           }
 
           if (isset($aPagamentos[$oCgmPagamento->cgm]->dados[$oCgmPagamento->codigoReceita])) {
@@ -949,21 +949,21 @@ if ($lOrderValor && $iTipoRelatorio == 2) {
 
   if ($oGet->cboOrdenacaoValor == 1) {
 
-   uasort($aPagamentos,'ordenaUp');
+   uasort($aPagamentos,ordenaUp(...));
   } else {
 
-    uasort($aPagamentos,'ordenaDown');
+    uasort($aPagamentos,ordenaDown(...));
   }
 
 } else if ($lOrderValor) {
   if ($oGet->cboOrdenacaoValor == 1) {
     foreach ($aPagamentos as $oCgm) {
-      uasort($oCgm->dados,'ordenaUp');
+      uasort($oCgm->dados,ordenaUp(...));
     }
     ksort($aPagamentos);
   } else {
     foreach ($aPagamentos as $oCgm) {
-      uasort($oCgm->dados,'ordenaDown');
+      uasort($oCgm->dados,ordenaDown(...));
     }
     ksort($aPagamentos);
   }

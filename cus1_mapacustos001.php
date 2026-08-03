@@ -42,9 +42,9 @@ include(modification("classes/db_custocriteriorateio_classe.php"));
 include(modification("classes/db_custoplanilhaorigem_classe.php"));
 require_once(modification("model/custoPlanilha.model.php"));
 include(modification("dbforms/db_funcoes.php"));
-$aParamKeys = array(
+$aParamKeys = [
                     db_getsession("DB_anousu")
-                   );
+                   ];
 $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
 $iTipoControleCustos = 0; 
 $db_opcao            = 1;
@@ -112,7 +112,7 @@ $oRotuloCampo->label("cc15_mesusu");
                   </td>
                   <td>
                     <?php 
-                     $aFormatos = array("1" => "PDF", "2" => "CSV"); 
+                     $aFormatos = ["1" => "PDF", "2" => "CSV"]; 
                      db_select("formato",$aFormatos, true,1);
                     ?>
                   </td>
@@ -123,7 +123,7 @@ $oRotuloCampo->label("cc15_mesusu");
                   </td>
                   <td>
                     <?php 
-                     $aForma = array("1" => "Por Desdobramento", "2" => "Agrupado por Nivel"); 
+                     $aForma = ["1" => "Por Desdobramento", "2" => "Agrupado por Nivel"]; 
                      db_select("visualizar",$aForma, true,1);
                     ?>
                   </td>

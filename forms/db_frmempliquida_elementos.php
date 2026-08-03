@@ -34,8 +34,8 @@ include(modification("classes/db_pagordemele_classe.php"));
 include(modification("classes/db_empnotaele_classe.php"));
 include(modification("classes/db_empnota_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clempelemento = new cl_empelemento;
 $clpagordemele = new cl_pagordemele;
 $clempnotaele = new cl_empnotaele;
@@ -249,7 +249,7 @@ $clrotulo->label("e64_vlrpag");
 	      for($o=0; $o<$numrows06; $o++){
 		db_fieldsmemory($result06,$o,true);
 		$e="saldo_".$o56_codele."_".$e70_codnota;
-		$$e = number_format($e70_valor-$e70_vlranu,"2",".","");		       
+		${$e} = number_format($e70_valor-$e70_vlranu,"2",".","");		       
 		db_input("saldo_".$o56_codele."_$e70_codnota",8,0,true,'hidden',3);
  	        $nota_valor  += $e70_valor  ;
 	        $nota_vlranu += $e70_vlranu;
@@ -257,30 +257,30 @@ $clrotulo->label("e64_vlrpag");
 
               //total disponivel de  nota para o elemento
 	      $e="saldo_$o56_codele";
-              $$e = number_format($nota_valor-$nota_vlranu,"2",".","");		       
+              ${$e} = number_format($nota_valor-$nota_vlranu,"2",".","");		       
               db_input("saldo_".$o56_codele,8,0,true,'hidden',3);
             //====================================================== 
 	    
             $vlrdis=($e64_vlremp-$e64_vlrliq-$e64_vlranu);  
 //            echo "$vlrdis=($e64_vlremp-$e64_vlrliq-$e64_vlranu)";  
 		     $e="e64_vlrliq_$o56_codele";
-		     $$e = number_format($e64_vlrliq,"2",".","");		       
+		     ${$e} = number_format($e64_vlrliq,"2",".","");		       
 		     
 		     $e="e64_vlrpag_$o56_codele";
-		     $$e = number_format($e64_vlrpag,"2",".","");		    
+		     ${$e} = number_format($e64_vlrpag,"2",".","");		    
 		     
 		     $e="e64_vlranu_$o56_codele";
-		     $$e = $e64_vlranu;		       
+		     ${$e} = $e64_vlranu;		       
 		      
 		     $r="e64_vlremp_$o56_codele";
-		     $$r = $e64_vlremp;		       
+		     ${$r} = $e64_vlremp;		       
                      
 		     $vlrdis  = number_format($vlrdis,"2",".","");		       
 		     $a="generico_$o56_codele";
-		       $$a = "0.00";		       
+		       ${$a} = "0.00";		       
 		      
 		     $a="disponivel_$o56_codele";
-		     $$a = $vlrdis;		       
+		     ${$a} = $vlrdis;		       
 		 //rotina que pega os valores de pagordemele
                         $result02  = $clpagordemele->sql_record($clpagordemele->sql_query(null,null,"sum(e53_valor) as tot_valor, sum(e53_vlrpag) as tot_vlrpag, sum(e53_vlranu) as tot_vlranu","","e60_numemp=$e60_numemp and e53_codele=$o56_codele")); 
                         if($clpagordemele->numrows>0){
@@ -291,16 +291,16 @@ $clrotulo->label("e64_vlrpag");
 	                    $tot_valor  = '0.00';
 	                 }	
 		      $e="e53_vlrpag_$o56_codele";
-		      $$e = number_format($tot_vlrpag,"2",".","");		       
+		      ${$e} = number_format($tot_vlrpag,"2",".","");		       
 		      $e="e53_vlranu_$o56_codele";
-		      $$e = number_format($tot_vlranu,"2",".","");		       
+		      ${$e} = number_format($tot_vlranu,"2",".","");		       
 		      $e="e53_valor_$o56_codele";
-		      $$e = number_format($tot_valor,"2",".","");		       
+		      ${$e} = number_format($tot_valor,"2",".","");		       
                 //fim
 
 	    echo "<tr>	    
    	            <td	 class='bordas_corp' align='center'><small>$o56_elemento </small></td>
-	            <td	 class='bordas_corp' align='center' title='$o56_descr'><small>".substr($o56_descr,0,8)."... </small></td>
+	            <td	 class='bordas_corp' align='center' title='$o56_descr'><small>".substr((string) $o56_descr,0,8)."... </small></td>
 		    
        	            <td	 class='bordas_corp' align='center'><small>";db_input("e64_vlremp_$o56_codele",7,0,true,'text',3);echo "\n</small></td>
 	            <td	 class='bordas_corp' align='center'><small>";db_input("e64_vlrliq_$o56_codele",7,0,true,'text',3);echo "</small></td>

@@ -99,7 +99,7 @@ $clprocjurjudicialadvog->rotulo->label();
 	      </td>
 	      <td> 
   		    <?php 
-  		  	  $x = array('1'=>'Ativa','2'=>'Finalizada');
+  		  	  $x = ['1'=>'Ativa','2'=>'Finalizada'];
   			    db_select('v62_situacao',$x,true,$db_opcao,"style='width:110px;'");
   		    ?>
 	      </td>
@@ -327,7 +327,7 @@ function js_preenchepesquisa(chave){
   db_iframe_procjur.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

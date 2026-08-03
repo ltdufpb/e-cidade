@@ -34,8 +34,8 @@ require_once modification('classes/db_rhcedencia_classe.php');
 require_once modification('dbforms/db_funcoes.php');
 
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clrhcedencia = new cl_rhcedencia;
 $clrhpessoal = new cl_rhpessoal;
 $clrhcadregime = new cl_rhcadregime;
@@ -72,16 +72,16 @@ if (isset($novo) && $novo == 'true') {
     $rh261_tiporegimeprev = "";
 }
 
-$rh261_devolucao_dia = isset($rh261_devolucao_dia) ? $rh261_devolucao_dia : "";
-$rh261_devolucao_mes = isset($rh261_devolucao_mes) ? $rh261_devolucao_mes : "";
-$rh261_devolucao_ano = isset($rh261_devolucao_ano) ? $rh261_devolucao_ano : "";
-$rh261_datamovimentacao_dia = isset($rh261_datamovimentacao_dia) ? $rh261_datamovimentacao_dia : "";
-$rh261_datamovimentacao_mes = isset($rh261_datamovimentacao_mes) ? $rh261_datamovimentacao_mes : "";
-$rh261_datamovimentacao_ano = isset($rh261_datamovimentacao_ano) ? $rh261_datamovimentacao_ano : "";
-$rh261_dtorigemadmissao_dia = isset($rh261_dtorigemadmissao_dia) ? $rh261_dtorigemadmissao_dia : "";
-$rh261_dtorigemadmissao_mes = isset($rh261_dtorigemadmissao_mes) ? $rh261_dtorigemadmissao_mes : "";
-$rh261_dtorigemadmissao_ano = isset($rh261_dtorigemadmissao_ano) ? $rh261_dtorigemadmissao_ano : "";
-$rh261_numcgm = isset($rh261_numcgm) ? $rh261_numcgm : null;
+$rh261_devolucao_dia ??= "";
+$rh261_devolucao_mes ??= "";
+$rh261_devolucao_ano ??= "";
+$rh261_datamovimentacao_dia ??= "";
+$rh261_datamovimentacao_mes ??= "";
+$rh261_datamovimentacao_ano ??= "";
+$rh261_dtorigemadmissao_dia ??= "";
+$rh261_dtorigemadmissao_mes ??= "";
+$rh261_dtorigemadmissao_ano ??= "";
+$rh261_numcgm ??= null;
 
 if (!isset($rh261_sequencial)) {
     $rh261_sequencial = 0;

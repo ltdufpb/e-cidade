@@ -58,7 +58,7 @@ $clissporte->rotulo->label();
         </td>
         <td>
           <?php
-            $x = array('t'=>'Física','f'=>'Jurídica');
+            $x = ['t'=>'Física','f'=>'Jurídica'];
             db_select('q40_fisica',$x,true,$db_opcao,"");
           ?>
         </td>
@@ -83,7 +83,7 @@ function js_preenchepesquisa(chave){
   db_iframe_issporte.hide();
   <?php
     if ( $db_opcao != 1 ) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

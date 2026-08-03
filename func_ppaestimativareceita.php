@@ -33,8 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ppaestimativareceita_classe.php"));
 include(modification("classes/db_ppaversao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clppaestimativareceita = new cl_ppaestimativareceita;
 $clppaestimativareceita->rotulo->label("o06_sequencial");
 $clppaestimativareceita->rotulo->label("o06_codrec");
@@ -86,7 +86,7 @@ $clppaestimativareceita->rotulo->label("o06_codrec");
                                                                            or o123_tipointegracao <> 1)
                                                                          ");
                $rsPerspectivas   = $oDaoPPaVersao->sql_record($sSqlPerspectivas);
-               $aPerspectivas    = array();
+               $aPerspectivas    = [];
                if ($oDaoPPaVersao->numrows == 0) {
                	 echo "Nenhuma prespectiva ativa encontrada";
                	 exit; 
@@ -146,9 +146,9 @@ $clppaestimativareceita->rotulo->label("o06_codrec");
         }else{
            $sql = $clppaestimativareceita->sql_query_analitica("",$campos,"o57_fonte","$sWhere");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o06_codrec)){
-          $repassa = array("chave_o06_sequencial"=>$chave_o06_sequencial,"chave_o06_ppacodrec"=>$chave_o06_codrec);
+          $repassa = ["chave_o06_sequencial"=>$chave_o06_sequencial,"chave_o06_ppacodrec"=>$chave_o06_codrec];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

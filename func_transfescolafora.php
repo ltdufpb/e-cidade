@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_transfescolafora_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltransfescolafora = new cl_transfescolafora;
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed47_i_codigo");
@@ -125,9 +125,9 @@ $clrotulo->label("ed47_v_nome");
      $sql .= " AND ed47_v_nome like '$chave_ed47_v_nome%'";
     }
     $sql .= " ORDER BY ed47_v_nome";
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed47_i_codigo)){
-     $repassa = array("chave_ed47_i_codigo"=>$chave_ed47_i_codigo,"chave_ed47_v_nome"=>$chave_ed47_v_nome,"chave_ed52_i_ano"=>$chave_ed52_i_ano);
+     $repassa = ["chave_ed47_i_codigo"=>$chave_ed47_i_codigo,"chave_ed47_v_nome"=>$chave_ed47_v_nome,"chave_ed52_i_ano"=>$chave_ed52_i_ano];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }

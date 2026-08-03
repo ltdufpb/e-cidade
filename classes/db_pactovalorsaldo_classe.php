@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE pactovalorsaldo
 class cl_pactovalorsaldo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o103_sequencial = 0; 
-   var $o103_pactovalor = 0; 
-   var $o103_pactovalorsaldotipo = 0; 
-   var $o103_anousu = 0; 
-   var $o103_mesusu = 0; 
-   var $o103_valor = 0; 
-   var $o103_contrapartida = 'f'; 
+   public $o103_sequencial = 0; 
+   public $o103_pactovalor = 0; 
+   public $o103_pactovalorsaldotipo = 0; 
+   public $o103_anousu = 0; 
+   public $o103_mesusu = 0; 
+   public $o103_valor = 0; 
+   public $o103_contrapartida = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o103_sequencial = int4 = Sequencial 
                  o103_pactovalor = int4 = Item 
                  o103_pactovalorsaldotipo = int4 = Tipo Item 
@@ -60,10 +60,10 @@ class cl_pactovalorsaldo {
                  o103_contrapartida = bool = Contrapartida 
                  ";
    //funcao construtor da classe 
-   function cl_pactovalorsaldo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pactovalorsaldo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -155,10 +155,10 @@ class cl_pactovalorsaldo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o103_sequencial = pg_result($result,0,0); 
+       $this->o103_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pactovalorsaldo_o103_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o103_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o103_sequencial)){
          $this->erro_sql = " Campo o103_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -198,7 +198,7 @@ class cl_pactovalorsaldo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "pactovalorsaldo ($this->o103_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "pactovalorsaldo já Cadastrado";
@@ -222,16 +222,16 @@ class cl_pactovalorsaldo {
      $resaco = $this->sql_record($this->sql_query_file($this->o103_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13928,'$this->o103_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2447,13928,'','".AddSlashes(pg_result($resaco,0,'o103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2447,13929,'','".AddSlashes(pg_result($resaco,0,'o103_pactovalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2447,13932,'','".AddSlashes(pg_result($resaco,0,'o103_pactovalorsaldotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2447,13933,'','".AddSlashes(pg_result($resaco,0,'o103_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2447,13934,'','".AddSlashes(pg_result($resaco,0,'o103_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2447,13935,'','".AddSlashes(pg_result($resaco,0,'o103_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2447,13984,'','".AddSlashes(pg_result($resaco,0,'o103_contrapartida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2447,13928,'','".AddSlashes(pg_fetch_result($resaco,0,'o103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2447,13929,'','".AddSlashes(pg_fetch_result($resaco,0,'o103_pactovalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2447,13932,'','".AddSlashes(pg_fetch_result($resaco,0,'o103_pactovalorsaldotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2447,13933,'','".AddSlashes(pg_fetch_result($resaco,0,'o103_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2447,13934,'','".AddSlashes(pg_fetch_result($resaco,0,'o103_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2447,13935,'','".AddSlashes(pg_fetch_result($resaco,0,'o103_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2447,13984,'','".AddSlashes(pg_fetch_result($resaco,0,'o103_contrapartida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -240,10 +240,10 @@ class cl_pactovalorsaldo {
       $this->atualizacampos();
      $sql = " update pactovalorsaldo set ";
      $virgula = "";
-     if(trim($this->o103_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_sequencial"])){ 
+     if(trim((string) $this->o103_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_sequencial"])){ 
        $sql  .= $virgula." o103_sequencial = $this->o103_sequencial ";
        $virgula = ",";
-       if(trim($this->o103_sequencial) == null ){ 
+       if(trim((string) $this->o103_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "o103_sequencial";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_pactovalor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_pactovalor"])){ 
+     if(trim((string) $this->o103_pactovalor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_pactovalor"])){ 
        $sql  .= $virgula." o103_pactovalor = $this->o103_pactovalor ";
        $virgula = ",";
-       if(trim($this->o103_pactovalor) == null ){ 
+       if(trim((string) $this->o103_pactovalor) == null ){ 
          $this->erro_sql = " Campo Item nao Informado.";
          $this->erro_campo = "o103_pactovalor";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_pactovalorsaldotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_pactovalorsaldotipo"])){ 
+     if(trim((string) $this->o103_pactovalorsaldotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_pactovalorsaldotipo"])){ 
        $sql  .= $virgula." o103_pactovalorsaldotipo = $this->o103_pactovalorsaldotipo ";
        $virgula = ",";
-       if(trim($this->o103_pactovalorsaldotipo) == null ){ 
+       if(trim((string) $this->o103_pactovalorsaldotipo) == null ){ 
          $this->erro_sql = " Campo Tipo Item nao Informado.";
          $this->erro_campo = "o103_pactovalorsaldotipo";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_anousu"])){ 
+     if(trim((string) $this->o103_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_anousu"])){ 
        $sql  .= $virgula." o103_anousu = $this->o103_anousu ";
        $virgula = ",";
-       if(trim($this->o103_anousu) == null ){ 
+       if(trim((string) $this->o103_anousu) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "o103_anousu";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_mesusu"])){ 
+     if(trim((string) $this->o103_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_mesusu"])){ 
        $sql  .= $virgula." o103_mesusu = $this->o103_mesusu ";
        $virgula = ",";
-       if(trim($this->o103_mesusu) == null ){ 
+       if(trim((string) $this->o103_mesusu) == null ){ 
          $this->erro_sql = " Campo Mes nao Informado.";
          $this->erro_campo = "o103_mesusu";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_valor"])){ 
+     if(trim((string) $this->o103_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_valor"])){ 
        $sql  .= $virgula." o103_valor = $this->o103_valor ";
        $virgula = ",";
-       if(trim($this->o103_valor) == null ){ 
+       if(trim((string) $this->o103_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "o103_valor";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_pactovalorsaldo {
          return false;
        }
      }
-     if(trim($this->o103_contrapartida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_contrapartida"])){ 
+     if(trim((string) $this->o103_contrapartida)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o103_contrapartida"])){ 
        $sql  .= $virgula." o103_contrapartida = '$this->o103_contrapartida' ";
        $virgula = ",";
-       if(trim($this->o103_contrapartida) == null ){ 
+       if(trim((string) $this->o103_contrapartida) == null ){ 
          $this->erro_sql = " Campo Contrapartida nao Informado.";
          $this->erro_campo = "o103_contrapartida";
          $this->erro_banco = "";
@@ -339,23 +339,23 @@ class cl_pactovalorsaldo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13928,'$this->o103_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o103_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2447,13928,'".AddSlashes(pg_result($resaco,$conresaco,'o103_sequencial'))."','$this->o103_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2447,13928,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o103_sequencial'))."','$this->o103_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o103_pactovalor"]))
-           $resac = db_query("insert into db_acount values($acount,2447,13929,'".AddSlashes(pg_result($resaco,$conresaco,'o103_pactovalor'))."','$this->o103_pactovalor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2447,13929,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o103_pactovalor'))."','$this->o103_pactovalor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o103_pactovalorsaldotipo"]))
-           $resac = db_query("insert into db_acount values($acount,2447,13932,'".AddSlashes(pg_result($resaco,$conresaco,'o103_pactovalorsaldotipo'))."','$this->o103_pactovalorsaldotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2447,13932,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o103_pactovalorsaldotipo'))."','$this->o103_pactovalorsaldotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o103_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,2447,13933,'".AddSlashes(pg_result($resaco,$conresaco,'o103_anousu'))."','$this->o103_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2447,13933,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o103_anousu'))."','$this->o103_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o103_mesusu"]))
-           $resac = db_query("insert into db_acount values($acount,2447,13934,'".AddSlashes(pg_result($resaco,$conresaco,'o103_mesusu'))."','$this->o103_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2447,13934,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o103_mesusu'))."','$this->o103_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o103_valor"]))
-           $resac = db_query("insert into db_acount values($acount,2447,13935,'".AddSlashes(pg_result($resaco,$conresaco,'o103_valor'))."','$this->o103_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2447,13935,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o103_valor'))."','$this->o103_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o103_contrapartida"]))
-           $resac = db_query("insert into db_acount values($acount,2447,13984,'".AddSlashes(pg_result($resaco,$conresaco,'o103_contrapartida'))."','$this->o103_contrapartida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2447,13984,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o103_contrapartida'))."','$this->o103_contrapartida',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -400,16 +400,16 @@ class cl_pactovalorsaldo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13928,'$o103_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2447,13928,'','".AddSlashes(pg_result($resaco,$iresaco,'o103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2447,13929,'','".AddSlashes(pg_result($resaco,$iresaco,'o103_pactovalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2447,13932,'','".AddSlashes(pg_result($resaco,$iresaco,'o103_pactovalorsaldotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2447,13933,'','".AddSlashes(pg_result($resaco,$iresaco,'o103_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2447,13934,'','".AddSlashes(pg_result($resaco,$iresaco,'o103_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2447,13935,'','".AddSlashes(pg_result($resaco,$iresaco,'o103_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2447,13984,'','".AddSlashes(pg_result($resaco,$iresaco,'o103_contrapartida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2447,13928,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o103_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2447,13929,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o103_pactovalor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2447,13932,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o103_pactovalorsaldotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2447,13933,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o103_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2447,13934,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o103_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2447,13935,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o103_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2447,13984,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o103_contrapartida'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pactovalorsaldo
@@ -469,7 +469,7 @@ class cl_pactovalorsaldo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pactovalorsaldo";
@@ -484,7 +484,7 @@ class cl_pactovalorsaldo {
    function sql_query ( $o103_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -514,7 +514,7 @@ class cl_pactovalorsaldo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,7 +527,7 @@ class cl_pactovalorsaldo {
    function sql_query_file ( $o103_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -548,7 +548,7 @@ class cl_pactovalorsaldo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

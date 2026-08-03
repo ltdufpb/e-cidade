@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoitem_classe.php"));
 $cltipo = new cl_tipoitem;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $quant = 30;
 ?>
 <html>

@@ -34,7 +34,7 @@ require_once modification("libs/JSON.php");
 
 $oJson       = new services_json();
 $oParametro  = $oJson->decode(str_replace("\\", "", $_POST["json"]));
-$oRetorno    = (object)array( 'erro' => false, 'sMessage'=> '');
+$oRetorno    = (object)[ 'erro' => false, 'sMessage'=> ''];
 
 try {
 
@@ -82,5 +82,5 @@ try {
   $oRetorno->sMessage = $eErro->getMessage();
 }
 
-$oRetorno->sMensagem = urlencode($oRetorno->sMensagem);
+$oRetorno->sMensagem = urlencode((string) $oRetorno->sMensagem);
 echo $oJson->encode($oRetorno);

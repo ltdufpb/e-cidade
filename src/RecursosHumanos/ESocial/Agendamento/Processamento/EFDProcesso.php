@@ -35,14 +35,12 @@ use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 class EFDProcesso extends ProcessamentoAbstract implements ProcessamentoInterface
 {
 
-    private $cgm;
     /**
      * ProcessamentoInterface constructor.
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(private $cgm)
     {
-        $this->cgm = $cgm;
     }
 
     /**

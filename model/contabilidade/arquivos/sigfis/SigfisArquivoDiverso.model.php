@@ -40,7 +40,7 @@ class SigfisArquivoDiverso extends SigfisArquivoBase implements iPadArquivoTXTBa
   
   protected $iCodigoLayout     = 132;
   protected $sNomeArquivo      = 'DocDiver';
-  protected $aMovimentoContabil = array();
+  protected $aMovimentoContabil = [];
   
   
   /**
@@ -97,10 +97,10 @@ class SigfisArquivoDiverso extends SigfisArquivoBase implements iPadArquivoTXTBa
       }
       
       for ($i = 0; $i < $clConLanCamEmp->numrows; $i++) {
-        
+
         $oDadosQuery = new stdClass();
         $oDadosQuery = db_utils::fieldsMemory($rsConLanCamEmp, $i);
-        
+
         if ($oDadosQuery->valor_pago == 0 ){
            continue;
         }
@@ -109,37 +109,37 @@ class SigfisArquivoDiverso extends SigfisArquivoBase implements iPadArquivoTXTBa
          * Verifica se a Conta retornada possui vinculo com a conta do Sigfis
          */
 //        if ($oVinculo = SigfisVinculoConta::getVinculoConta($oDadosQuery->c61_codcon)) {
-          
+
           $sObServacao = str_replace("\n", " ", $oDadosQuery->e50_obs);
           $sObServacao = str_replace("\r", " ", $sObServacao);
-          
+
           $oDados                = new stdClass();
 //          $sUnidadeOrcamentaria  = str_pad($oDadosQuery->o58_orgao, 2, '0', STR_PAD_LEFT);
-          $sUnidadeOrcamentaria = str_pad($oDadosQuery->o58_unidade,4, ' ', STR_PAD_LEFT);
-          
+          $sUnidadeOrcamentaria = str_pad((string) $oDadosQuery->o58_unidade,4, ' ', STR_PAD_LEFT);
+
           $dtPagamento           = $this->formataData($oDadosQuery->c70_data);
           $dtEmissao   = $this->formataData($oDadosQuery->e50_data);
-          
-          $oDados->Cd_Unidade             = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
+
+          $oDados->Cd_Unidade             = str_pad((string) $this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
           $oDados->Cd_UnidadeOrcamentaria = str_pad($sUnidadeOrcamentaria,     4, ' ', STR_PAD_LEFT); 
-          $oDados->Nu_Empenho             = str_pad($oDadosQuery->e60_codemp, 10, ' ', STR_PAD_RIGHT);
+          $oDados->Nu_Empenho             = str_pad((string) $oDadosQuery->e60_codemp, 10, ' ', STR_PAD_RIGHT);
           $oDados->Dt_PagamentoEmpenho    = $dtPagamento;
-          $oDados->Nu_Documento           = str_pad($oDadosQuery->e60_codemp, 10, ' ', STR_PAD_RIGHT);
+          $oDados->Nu_Documento           = str_pad((string) $oDadosQuery->e60_codemp, 10, ' ', STR_PAD_RIGHT);
           $oDados->Dt_Ano                 = $oDadosQuery->e60_anousu;
-          $oDados->cd_CICEmitente          = str_pad($oDadosQuery->z01_cgccpf, 14, ' ', STR_PAD_RIGHT);
-          $oDados->nm_Emitente             = str_pad(substr($oDadosQuery->z01_nome, 0, 30), 100, ' ', STR_PAD_RIGHT);
+          $oDados->cd_CICEmitente          = str_pad((string) $oDadosQuery->z01_cgccpf, 14, ' ', STR_PAD_RIGHT);
+          $oDados->nm_Emitente             = str_pad(substr((string) $oDadosQuery->z01_nome, 0, 30), 100, ' ', STR_PAD_RIGHT);
           $oDados->Tp_PessoaEmitente       = $oDadosQuery->tipo_pessoa;
           $oDados->de_ObjetoDocumento      = str_pad(substr($sObServacao, 0, 100) , 200, ' ', STR_PAD_RIGHT);
-          $oDados->nm_Documento            = str_pad(substr($oDadosQuery->e50_codord,0,50), 50, ' ', STR_PAD_RIGHT);
+          $oDados->nm_Documento            = str_pad(substr((string) $oDadosQuery->e50_codord,0,50), 50, ' ', STR_PAD_RIGHT);
           $oDados->dt_Emissao              = $dtEmissao;
           $oDados->vl_Documento           = str_pad($this->formataValor($oDadosQuery->valor_pago), 16, ' ', STR_PAD_LEFT);
           $oDados->dt_AnoMes              = $oDadosQuery->competencia;
-          $oDados->cd_Orgao               = str_pad($oDadosQuery->o58_orgao,   4, ' ', STR_PAD_LEFT);
+          $oDados->cd_Orgao               = str_pad((string) $oDadosQuery->o58_orgao,   4, ' ', STR_PAD_LEFT);
           $oDados->nu_EmpenhoSup           = str_pad(str_repeat(' ', 10), 10, ' ', STR_PAD_LEFT);
-          
-          $aContas = array_unique((explode(',',$oDadosQuery->c60_estrut)));
 
-          $aContasNovas = array();
+          $aContas = array_unique((explode(',',(string) $oDadosQuery->c60_estrut)));
+
+          $aContasNovas = [];
           foreach ($aContas as $a) {
             if (!empty($a)) {            
               $aContasNovas[] = $a;
@@ -152,16 +152,16 @@ class SigfisArquivoDiverso extends SigfisArquivoBase implements iPadArquivoTXTBa
           $oDados->cd_ContaContabil3      = str_pad($aContas[2], 34, ' ', STR_PAD_RIGHT); // str_repeat(' ', 34); // Não usado no e-cidada
 
 
-          
+
           $oDados->dt_AnoMes              = $oDadosQuery->competencia;
-          $oDados->cd_Orgao               = str_pad($oDadosQuery->o58_orgao,   4, ' ', STR_PAD_LEFT);
+          $oDados->cd_Orgao               = str_pad((string) $oDadosQuery->o58_orgao,   4, ' ', STR_PAD_LEFT);
           $oDados->nu_EmpenhoSup          = str_pad(str_repeat(' ', 10), 10, ' ', STR_PAD_LEFT);
           $oDados->Reservado_tce          = str_repeat(' ', 41);
    //       $oDados->Cd_ContaCorrente1      = str_pad(str_repeat(' ', 30),  30, ' ', STR_PAD_LEFT);
    //       $oDados->Cd_ContaCorrente2      = str_pad(str_repeat(' ', 30),  30, ' ', STR_PAD_LEFT);
    //       $oDados->Cd_ContaCorrente3      = str_pad(str_repeat(' ', 30),  30, ' ', STR_PAD_LEFT);
           $oDados->codigolinha            = 419;
-  
+
           $this->aDados[] = $oDados;
 /*
         } else {

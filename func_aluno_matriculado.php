@@ -6,7 +6,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $daoSerie = new cl_serie();
 $camposSerie = "ed11_i_codigo, ed11_c_descr ||' - '|| ed10_c_descr , ed11_i_ensino, ed11_i_sequencia";
@@ -99,7 +99,7 @@ $where = [
     <input name="Fechar"    type="button" id="fechar"     value="Fechar" onClick="parent.db_iframe_aluno.hide();">
 </form>
 <?php
-$campos = array(
+$campos = [
     'ed47_i_codigo',
     'ed47_v_nome',
     'ed56_c_situacao',
@@ -112,9 +112,9 @@ $campos = array(
     'ed18_c_nome as dl_escola',
     'ed29_c_descr as dl_curso',
     'ed52_c_descr as dl_calendario',
-);
+];
 
-$ordem = array('to_ascii(ed47_v_nome)');
+$ordem = ['to_ascii(ed47_v_nome)'];
 $campos = implode(', ', $campos);
 
 $sql = "
@@ -149,7 +149,7 @@ if (!isset($pesquisa_chave)) {
     $sql .= " where " . implode(' and ', $where);
     $sql .= " order by " . implode(', ', $ordem);
 
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_ed47_i_codigo)) {
         $repassa = [
             "chave_ed47_i_codigo" => $chave_ed47_i_codigo,
@@ -174,7 +174,7 @@ if (!isset($pesquisa_chave)) {
 
         $rs = db_query($sql);
 
-        if (pg_numrows($rs) != 0) {
+        if (pg_num_rows($rs) != 0) {
             db_fieldsmemory($rs, 0);
             echo "<script>" . $funcao_js . "('$ed47_v_nome', false);</script>";
         } else {

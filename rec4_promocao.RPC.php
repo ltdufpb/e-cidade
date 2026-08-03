@@ -45,7 +45,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("model/recursosHumanos/Promocao.model.php"));
 
 $oJson                  = new services_json();
-$oParam                 = $oJson->decode( str_replace("\\", "", urldecode($_POST["json"]) ) );
+$oParam                 = $oJson->decode( str_replace("\\", "", urldecode((string) $_POST["json"]) ) );
 
 $oRetorno               = new stdClass();
 $oRetorno->iStatus      = 1;
@@ -77,7 +77,7 @@ try {
         throw new Exception($oDaoAssenta->erro_msg);
       }
       
-      $oRetorno->aDadosRetorno = array();
+      $oRetorno->aDadosRetorno = [];
 
       if($oDaoAssenta->numrows > 0) {
 
@@ -116,7 +116,7 @@ try {
         $iPontosAvaliacao = $oParam->totalPontos;
         $aTipoPerdas      = $oParam->aTipoPerdas;
 
-        $aCodigoTipoPerda = array();
+        $aCodigoTipoPerda = [];
 
         foreach ($aTipoPerdas as $oTipoPerdas) {
         	 
@@ -131,7 +131,7 @@ try {
         }
 
 
-        $aAssentamentos = array();
+        $aAssentamentos = [];
         
         if ( count($aCodigoTipoPerda) > 0 ) {
 

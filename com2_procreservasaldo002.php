@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 $sql="
@@ -96,15 +96,15 @@ from orcreserva
 
 // echo($sql); die;
 $result = pg_exec($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existe Cadastrada  Contate suporte.');
 
 }
 
-$aDadosReserva = array();
-$aReservas     = array();
-for($x = 0; $x < pg_numrows($result);$x++){
+$aDadosReserva = [];
+$aReservas     = [];
+for($x = 0; $x < pg_num_rows($result);$x++){
 
   db_fieldsmemory($result,$x);
 

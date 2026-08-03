@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE orcdotacaorp
 class cl_orcdotacaorp { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o73_anousu = 0; 
-   var $o73_coddot = 0; 
-   var $o73_funcao = 0; 
-   var $o73_subfuncao = 0; 
-   var $o73_subprograma = 0; 
+   public $o73_anousu = 0; 
+   public $o73_coddot = 0; 
+   public $o73_funcao = 0; 
+   public $o73_subfuncao = 0; 
+   public $o73_subprograma = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o73_anousu = int4 = Ano 
                  o73_coddot = int4 = Reduzido 
                  o73_funcao = int4 = Função 
@@ -56,10 +56,10 @@ class cl_orcdotacaorp {
                  o73_subprograma = int8 = Subprograma 
                  ";
    //funcao construtor da classe 
-   function cl_orcdotacaorp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcdotacaorp"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -148,7 +148,7 @@ class cl_orcdotacaorp {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dotações dos RP's ($this->o73_anousu."-".$this->o73_coddot) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dotações dos RP's já Cadastrado";
@@ -172,15 +172,15 @@ class cl_orcdotacaorp {
      $resaco = $this->sql_record($this->sql_query_file($this->o73_anousu,$this->o73_coddot));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6512,'$this->o73_anousu','I')");
        $resac = db_query("insert into db_acountkey values($acount,6513,'$this->o73_coddot','I')");
-       $resac = db_query("insert into db_acount values($acount,1073,6512,'','".AddSlashes(pg_result($resaco,0,'o73_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1073,6513,'','".AddSlashes(pg_result($resaco,0,'o73_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1073,6514,'','".AddSlashes(pg_result($resaco,0,'o73_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1073,6515,'','".AddSlashes(pg_result($resaco,0,'o73_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1073,6516,'','".AddSlashes(pg_result($resaco,0,'o73_subprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1073,6512,'','".AddSlashes(pg_fetch_result($resaco,0,'o73_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1073,6513,'','".AddSlashes(pg_fetch_result($resaco,0,'o73_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1073,6514,'','".AddSlashes(pg_fetch_result($resaco,0,'o73_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1073,6515,'','".AddSlashes(pg_fetch_result($resaco,0,'o73_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1073,6516,'','".AddSlashes(pg_fetch_result($resaco,0,'o73_subprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -189,10 +189,10 @@ class cl_orcdotacaorp {
       $this->atualizacampos();
      $sql = " update orcdotacaorp set ";
      $virgula = "";
-     if(trim($this->o73_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o73_anousu"])){ 
+     if(trim((string) $this->o73_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o73_anousu"])){ 
        $sql  .= $virgula." o73_anousu = $this->o73_anousu ";
        $virgula = ",";
-       if(trim($this->o73_anousu) == null ){ 
+       if(trim((string) $this->o73_anousu) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "o73_anousu";
          $this->erro_banco = "";
@@ -202,10 +202,10 @@ class cl_orcdotacaorp {
          return false;
        }
      }
-     if(trim($this->o73_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o73_coddot"])){ 
+     if(trim((string) $this->o73_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o73_coddot"])){ 
        $sql  .= $virgula." o73_coddot = $this->o73_coddot ";
        $virgula = ",";
-       if(trim($this->o73_coddot) == null ){ 
+       if(trim((string) $this->o73_coddot) == null ){ 
          $this->erro_sql = " Campo Reduzido nao Informado.";
          $this->erro_campo = "o73_coddot";
          $this->erro_banco = "";
@@ -215,10 +215,10 @@ class cl_orcdotacaorp {
          return false;
        }
      }
-     if(trim($this->o73_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o73_funcao"])){ 
+     if(trim((string) $this->o73_funcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o73_funcao"])){ 
        $sql  .= $virgula." o73_funcao = $this->o73_funcao ";
        $virgula = ",";
-       if(trim($this->o73_funcao) == null ){ 
+       if(trim((string) $this->o73_funcao) == null ){ 
          $this->erro_sql = " Campo Função nao Informado.";
          $this->erro_campo = "o73_funcao";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_orcdotacaorp {
          return false;
        }
      }
-     if(trim($this->o73_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o73_subfuncao"])){ 
+     if(trim((string) $this->o73_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o73_subfuncao"])){ 
        $sql  .= $virgula." o73_subfuncao = $this->o73_subfuncao ";
        $virgula = ",";
-       if(trim($this->o73_subfuncao) == null ){ 
+       if(trim((string) $this->o73_subfuncao) == null ){ 
          $this->erro_sql = " Campo Sub Função nao Informado.";
          $this->erro_campo = "o73_subfuncao";
          $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_orcdotacaorp {
          return false;
        }
      }
-     if(trim($this->o73_subprograma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o73_subprograma"])){ 
+     if(trim((string) $this->o73_subprograma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o73_subprograma"])){ 
        $sql  .= $virgula." o73_subprograma = $this->o73_subprograma ";
        $virgula = ",";
-       if(trim($this->o73_subprograma) == null ){ 
+       if(trim((string) $this->o73_subprograma) == null ){ 
          $this->erro_sql = " Campo Subprograma nao Informado.";
          $this->erro_campo = "o73_subprograma";
          $this->erro_banco = "";
@@ -265,20 +265,20 @@ class cl_orcdotacaorp {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6512,'$this->o73_anousu','A')");
          $resac = db_query("insert into db_acountkey values($acount,6513,'$this->o73_coddot','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o73_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,1073,6512,'".AddSlashes(pg_result($resaco,$conresaco,'o73_anousu'))."','$this->o73_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1073,6512,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o73_anousu'))."','$this->o73_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o73_coddot"]))
-           $resac = db_query("insert into db_acount values($acount,1073,6513,'".AddSlashes(pg_result($resaco,$conresaco,'o73_coddot'))."','$this->o73_coddot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1073,6513,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o73_coddot'))."','$this->o73_coddot',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o73_funcao"]))
-           $resac = db_query("insert into db_acount values($acount,1073,6514,'".AddSlashes(pg_result($resaco,$conresaco,'o73_funcao'))."','$this->o73_funcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1073,6514,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o73_funcao'))."','$this->o73_funcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o73_subfuncao"]))
-           $resac = db_query("insert into db_acount values($acount,1073,6515,'".AddSlashes(pg_result($resaco,$conresaco,'o73_subfuncao'))."','$this->o73_subfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1073,6515,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o73_subfuncao'))."','$this->o73_subfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o73_subprograma"]))
-           $resac = db_query("insert into db_acount values($acount,1073,6516,'".AddSlashes(pg_result($resaco,$conresaco,'o73_subprograma'))."','$this->o73_subprograma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1073,6516,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o73_subprograma'))."','$this->o73_subprograma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -323,15 +323,15 @@ class cl_orcdotacaorp {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6512,'$o73_anousu','E')");
          $resac = db_query("insert into db_acountkey values($acount,6513,'$o73_coddot','E')");
-         $resac = db_query("insert into db_acount values($acount,1073,6512,'','".AddSlashes(pg_result($resaco,$iresaco,'o73_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1073,6513,'','".AddSlashes(pg_result($resaco,$iresaco,'o73_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1073,6514,'','".AddSlashes(pg_result($resaco,$iresaco,'o73_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1073,6515,'','".AddSlashes(pg_result($resaco,$iresaco,'o73_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1073,6516,'','".AddSlashes(pg_result($resaco,$iresaco,'o73_subprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1073,6512,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o73_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1073,6513,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o73_coddot'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1073,6514,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o73_funcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1073,6515,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o73_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1073,6516,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o73_subprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcdotacaorp
@@ -397,7 +397,7 @@ class cl_orcdotacaorp {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcdotacaorp";

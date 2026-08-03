@@ -34,8 +34,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("model/educacao/DBEducacaoTermo.model.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $oDaoMatricula = db_utils::getdao("matricula");
 
 $sCampos      = " to_char(ed60_d_datasaida, 'DD/MM/YYYY') as datasaida,  ";
@@ -86,10 +86,10 @@ $rsMatricula   = $oDaoMatricula->sql_record($sSqlMatricula);
       <table border='1px' width="100%" bgcolor="#cccccc" style="" cellspacing="0px">
        <tr class='cabec'>
         <td align='center' colspan='8'>
-          Turma: <?=pg_result($rsMatricula, 0, "ed57_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
-          Etapa: <?=pg_result($rsMatricula, 0, "ed11_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
-          Calendário: <?=pg_result($rsMatricula, 0, "ed52_c_descr")?><br>
-          Ensino: <?=pg_result($rsMatricula, 0, "ed29_c_descr")?>
+          Turma: <?=pg_fetch_result($rsMatricula, 0, "ed57_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
+          Etapa: <?=pg_fetch_result($rsMatricula, 0, "ed11_c_descr")?>&nbsp;&nbsp;&nbsp;&nbsp;
+          Calendário: <?=pg_fetch_result($rsMatricula, 0, "ed52_c_descr")?><br>
+          Ensino: <?=pg_fetch_result($rsMatricula, 0, "ed29_c_descr")?>
         </td>
        </tr>
        <tr><td height='2' colspan='8' bgcolor='#444444'></td></tr>

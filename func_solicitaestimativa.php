@@ -33,7 +33,7 @@ require_once modification("dbforms/db_funcoes.php");
 
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsolicita = new cl_solicita;
 $clsolicita->rotulo->label("pc10_numero");
@@ -158,7 +158,7 @@ $clsolicita->rotulo->label("pc10_data");
                 }
 
                 $sql = $clsolicita->sql_query_solicitaanulada("", $campos, "pc10_numero desc ", implode(' and ', $where));
-                db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", array(), false);
+                db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", [], false);
             } else {
                 if ($pesquisa_chave != null && $pesquisa_chave != "") {
                     $result = $clsolicita->sql_record($clsolicita->sql_query_solicitaanulada(null, "distinct *", "", " pc10_numero = $pesquisa_chave" . implode(' and ', $where)));

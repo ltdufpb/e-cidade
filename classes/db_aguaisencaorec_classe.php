@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE aguaisencaorec
 class cl_aguaisencaorec { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x26_codisencao = 0; 
-   var $x26_codisencaorec = 0; 
-   var $x26_percentual = 0; 
-   var $x26_codconsumotipo = 0; 
+   public $x26_codisencao = 0; 
+   public $x26_codisencaorec = 0; 
+   public $x26_percentual = 0; 
+   public $x26_codconsumotipo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x26_codisencao = int4 = Codigo Isencao 
                  x26_codisencaorec = int4 = Codigo 
                  x26_percentual = float4 = Percentual 
                  x26_codconsumotipo = int4 = Consumo 
                  ";
    //funcao construtor da classe 
-   function cl_aguaisencaorec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaisencaorec"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -111,10 +111,10 @@ class cl_aguaisencaorec {
          $this->erro_status = "0";
          return false; 
        }
-       $this->x26_codisencaorec = pg_result($result,0,0); 
+       $this->x26_codisencaorec = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from aguaisencaorec_x26_codisencaorec_seq");
-       if(($result != false) && (pg_result($result,0,0) < $x26_codisencaorec)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $x26_codisencaorec)){
          $this->erro_sql = " Campo x26_codisencaorec maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -148,7 +148,7 @@ class cl_aguaisencaorec {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "aguaisencaorec ($this->x26_codisencaorec) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "aguaisencaorec já Cadastrado";
@@ -172,13 +172,13 @@ class cl_aguaisencaorec {
      $resaco = $this->sql_record($this->sql_query_file($this->x26_codisencaorec));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8456,'$this->x26_codisencaorec','I')");
-       $resac = db_query("insert into db_acount values($acount,1448,8455,'','".AddSlashes(pg_result($resaco,0,'x26_codisencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1448,8456,'','".AddSlashes(pg_result($resaco,0,'x26_codisencaorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1448,8457,'','".AddSlashes(pg_result($resaco,0,'x26_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1448,8462,'','".AddSlashes(pg_result($resaco,0,'x26_codconsumotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1448,8455,'','".AddSlashes(pg_fetch_result($resaco,0,'x26_codisencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1448,8456,'','".AddSlashes(pg_fetch_result($resaco,0,'x26_codisencaorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1448,8457,'','".AddSlashes(pg_fetch_result($resaco,0,'x26_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1448,8462,'','".AddSlashes(pg_fetch_result($resaco,0,'x26_codconsumotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -187,10 +187,10 @@ class cl_aguaisencaorec {
       $this->atualizacampos();
      $sql = " update aguaisencaorec set ";
      $virgula = "";
-     if(trim($this->x26_codisencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x26_codisencao"])){ 
+     if(trim((string) $this->x26_codisencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x26_codisencao"])){ 
        $sql  .= $virgula." x26_codisencao = $this->x26_codisencao ";
        $virgula = ",";
-       if(trim($this->x26_codisencao) == null ){ 
+       if(trim((string) $this->x26_codisencao) == null ){ 
          $this->erro_sql = " Campo Codigo Isencao nao Informado.";
          $this->erro_campo = "x26_codisencao";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_aguaisencaorec {
          return false;
        }
      }
-     if(trim($this->x26_codisencaorec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x26_codisencaorec"])){ 
+     if(trim((string) $this->x26_codisencaorec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x26_codisencaorec"])){ 
        $sql  .= $virgula." x26_codisencaorec = $this->x26_codisencaorec ";
        $virgula = ",";
-       if(trim($this->x26_codisencaorec) == null ){ 
+       if(trim((string) $this->x26_codisencaorec) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "x26_codisencaorec";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_aguaisencaorec {
          return false;
        }
      }
-     if(trim($this->x26_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x26_percentual"])){ 
+     if(trim((string) $this->x26_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x26_percentual"])){ 
        $sql  .= $virgula." x26_percentual = $this->x26_percentual ";
        $virgula = ",";
-       if(trim($this->x26_percentual) == null ){ 
+       if(trim((string) $this->x26_percentual) == null ){ 
          $this->erro_sql = " Campo Percentual nao Informado.";
          $this->erro_campo = "x26_percentual";
          $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_aguaisencaorec {
          return false;
        }
      }
-     if(trim($this->x26_codconsumotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x26_codconsumotipo"])){ 
+     if(trim((string) $this->x26_codconsumotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x26_codconsumotipo"])){ 
        $sql  .= $virgula." x26_codconsumotipo = $this->x26_codconsumotipo ";
        $virgula = ",";
-       if(trim($this->x26_codconsumotipo) == null ){ 
+       if(trim((string) $this->x26_codconsumotipo) == null ){ 
          $this->erro_sql = " Campo Consumo nao Informado.";
          $this->erro_campo = "x26_codconsumotipo";
          $this->erro_banco = "";
@@ -247,17 +247,17 @@ class cl_aguaisencaorec {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8456,'$this->x26_codisencaorec','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x26_codisencao"]))
-           $resac = db_query("insert into db_acount values($acount,1448,8455,'".AddSlashes(pg_result($resaco,$conresaco,'x26_codisencao'))."','$this->x26_codisencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1448,8455,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x26_codisencao'))."','$this->x26_codisencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x26_codisencaorec"]))
-           $resac = db_query("insert into db_acount values($acount,1448,8456,'".AddSlashes(pg_result($resaco,$conresaco,'x26_codisencaorec'))."','$this->x26_codisencaorec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1448,8456,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x26_codisencaorec'))."','$this->x26_codisencaorec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x26_percentual"]))
-           $resac = db_query("insert into db_acount values($acount,1448,8457,'".AddSlashes(pg_result($resaco,$conresaco,'x26_percentual'))."','$this->x26_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1448,8457,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x26_percentual'))."','$this->x26_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x26_codconsumotipo"]))
-           $resac = db_query("insert into db_acount values($acount,1448,8462,'".AddSlashes(pg_result($resaco,$conresaco,'x26_codconsumotipo'))."','$this->x26_codconsumotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1448,8462,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x26_codconsumotipo'))."','$this->x26_codconsumotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -302,13 +302,13 @@ class cl_aguaisencaorec {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8456,'$x26_codisencaorec','E')");
-         $resac = db_query("insert into db_acount values($acount,1448,8455,'','".AddSlashes(pg_result($resaco,$iresaco,'x26_codisencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1448,8456,'','".AddSlashes(pg_result($resaco,$iresaco,'x26_codisencaorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1448,8457,'','".AddSlashes(pg_result($resaco,$iresaco,'x26_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1448,8462,'','".AddSlashes(pg_result($resaco,$iresaco,'x26_codconsumotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1448,8455,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x26_codisencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1448,8456,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x26_codisencaorec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1448,8457,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x26_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1448,8462,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x26_codconsumotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from aguaisencaorec
@@ -368,7 +368,7 @@ class cl_aguaisencaorec {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aguaisencaorec";
@@ -382,7 +382,7 @@ class cl_aguaisencaorec {
    function sql_query ( $x26_codisencaorec=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -409,7 +409,7 @@ class cl_aguaisencaorec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_aguaisencaorec {
    function sql_query_file ( $x26_codisencaorec=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,7 +442,7 @@ class cl_aguaisencaorec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

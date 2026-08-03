@@ -48,7 +48,7 @@
           </td>
           <td>
             <?php
-              $opcoes = array('Selecionar Tipo', '1' => 'Individual', '2' => 'Grupo' );
+              $opcoes = ['Selecionar Tipo', '1' => 'Individual', '2' => 'Grupo' ];
               db_select('tipo',$opcoes,true,$db_opcao,"");
             ?>
           </td>

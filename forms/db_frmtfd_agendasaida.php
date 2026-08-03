@@ -136,7 +136,7 @@ $oRotulo->label("ve01_placa");
                   if($tf11_i_utilizagradehorario == 1 && $db_opcao != 3) { // utiliza a grade de horário
                 
                     $db_opcaosaida = 3;
-                    $aX = array(''=>'');
+                    $aX = [''=>''];
                     db_select('tf17_c_horasaida', $aX, true, $db_opcao, " onchange=\"js_localSaida();\"");            
 
                   } else {

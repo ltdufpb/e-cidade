@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE ppadotacaoorcdotacao
 class cl_ppadotacaoorcdotacao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $o19_sequencial = 0;
-   var $o19_ppadotacao = 0;
-   var $o19_coddot = 0;
-   var $o19_anousu = 0;
+   public $o19_sequencial = 0;
+   public $o19_ppadotacao = 0;
+   public $o19_coddot = 0;
+   public $o19_anousu = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  o19_sequencial = int4 = Código Sequencial
                  o19_ppadotacao = int4 = Código da Dotacao do PPA
                  o19_coddot = int4 = Código da Dotação Orcamentaria
                  o19_anousu = int4 = Ano do Exercicio
                  ";
    //funcao construtor da classe
-   function cl_ppadotacaoorcdotacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ppadotacaoorcdotacao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -119,10 +119,10 @@ class cl_ppadotacaoorcdotacao {
          $this->erro_status = "0";
          return false;
        }
-       $this->o19_sequencial = pg_result($result,0,0);
+       $this->o19_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from ppadotacaoorcdotacao_o19_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o19_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o19_sequencial)){
          $this->erro_sql = " Campo o19_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_ppadotacaoorcdotacao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "dotacao do ppa ($this->o19_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "dotacao do ppa já Cadastrado";
@@ -185,10 +185,10 @@ class cl_ppadotacaoorcdotacao {
       $this->atualizacampos();
      $sql = " update ppadotacaoorcdotacao set ";
      $virgula = "";
-     if(trim($this->o19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o19_sequencial"])){
+     if(trim((string) $this->o19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o19_sequencial"])){
        $sql  .= $virgula." o19_sequencial = $this->o19_sequencial ";
        $virgula = ",";
-       if(trim($this->o19_sequencial) == null ){
+       if(trim((string) $this->o19_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "o19_sequencial";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_ppadotacaoorcdotacao {
          return false;
        }
      }
-     if(trim($this->o19_ppadotacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o19_ppadotacao"])){
+     if(trim((string) $this->o19_ppadotacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o19_ppadotacao"])){
        $sql  .= $virgula." o19_ppadotacao = $this->o19_ppadotacao ";
        $virgula = ",";
-       if(trim($this->o19_ppadotacao) == null ){
+       if(trim((string) $this->o19_ppadotacao) == null ){
          $this->erro_sql = " Campo Código da Dotacao do PPA nao Informado.";
          $this->erro_campo = "o19_ppadotacao";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_ppadotacaoorcdotacao {
          return false;
        }
      }
-     if(trim($this->o19_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o19_coddot"])){
+     if(trim((string) $this->o19_coddot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o19_coddot"])){
        $sql  .= $virgula." o19_coddot = $this->o19_coddot ";
        $virgula = ",";
-       if(trim($this->o19_coddot) == null ){
+       if(trim((string) $this->o19_coddot) == null ){
          $this->erro_sql = " Campo Código da Dotação Orcamentaria nao Informado.";
          $this->erro_campo = "o19_coddot";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_ppadotacaoorcdotacao {
          return false;
        }
      }
-     if(trim($this->o19_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o19_anousu"])){
+     if(trim((string) $this->o19_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o19_anousu"])){
        $sql  .= $virgula." o19_anousu = $this->o19_anousu ";
        $virgula = ",";
-       if(trim($this->o19_anousu) == null ){
+       if(trim((string) $this->o19_anousu) == null ){
          $this->erro_sql = " Campo Ano do Exercicio nao Informado.";
          $this->erro_campo = "o19_anousu";
          $this->erro_banco = "";
@@ -338,7 +338,7 @@ class cl_ppadotacaoorcdotacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:ppadotacaoorcdotacao";
@@ -353,7 +353,7 @@ class cl_ppadotacaoorcdotacao {
    function sql_query ( $o19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_ppadotacaoorcdotacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,7 +405,7 @@ class cl_ppadotacaoorcdotacao {
    function sql_query_file ( $o19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_ppadotacaoorcdotacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

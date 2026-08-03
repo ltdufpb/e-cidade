@@ -30,10 +30,10 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["enviar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["enviar"])) {
+  db_postmemory($_POST);
   $result = db_query("select max(v51_codigo) + 1 from tipojur");
-  $codigo = pg_result($result,0,0);
+  $codigo = pg_fetch_result($result,0,0);
   $codigo = $codigo == ""?"1":$codigo;
   db_query("insert into tipojur values($codigo,'$descr')") or die("Erro(11) inserindo em tipojur");
   unset($codigo,$descr);

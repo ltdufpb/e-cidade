@@ -90,7 +90,11 @@ $oIframe                = new cl_iframe_alterar_excluir();
 
                   if ( !isset($oRequest->rh143_folhapagamento) ) {
                     reset($aCodigosFolha);
-                    $aCodigo                        = each($aCodigosFolha);
+                    $aCodigo[1] = current($aCodigosFolha);
+                    $aCodigo['value'] = current($aCodigosFolha);
+                    $aCodigo[0] = key($aCodigosFolha);
+                    $aCodigo['key'] = key($aCodigosFolha);
+                    next($aCodigosFolha);
                     $iCodigo                        = $aCodigo[0];
                     $oRequest->rh143_folhapagamento = $rh143_folhapagamento = $iCodigo;
                     reset($aCodigosFolha);
@@ -126,9 +130,9 @@ $oIframe                = new cl_iframe_alterar_excluir();
                 <fieldset>
                   <legend><label for="rh143_tipoevento">Tipo</label></legend>
                   <?php 
-                    $aTiposEventos = array("1" =>"Provento", 
+                    $aTiposEventos = ["1" =>"Provento", 
                                            "2" =>"Desconto", 
-                                           "3" =>"Base"    );
+                                           "3" =>"Base"    ];
                     db_select("rh143_tipoevento", $aTiposEventos, true, $db_opcao, "class='field-size2' rel='ignore-css'");
                   ?>
                 </fieldset>
@@ -165,12 +169,12 @@ $oIframe                = new cl_iframe_alterar_excluir();
         <legend>Lançamentos</legend>
           <?php
            if ( !empty($oRequest->rh01_regist) ) {
-              $oIframe->chavepri      = array("rh143_sequencial"  => $oRequest->rh143_sequencial, 
+              $oIframe->chavepri      = ["rh143_sequencial"  => $oRequest->rh143_sequencial, 
                                               "rh143_rubrica"     => $oRequest->rh143_rubrica,
                                               "rh143_quantidade"  => $oRequest->rh143_quantidade,
                                               "rh143_valor"       => $oRequest->rh143_valor,
                                               "rh143_tipoevento"  => $oRequest->rh143_tipoevento, 
-                                              "rh27_descr"        => $oRequest->rh27_descr );
+                                              "rh27_descr"        => $oRequest->rh27_descr ];
               $oIframe->iframe_height = "100%";
               $oIframe->iframe_width  = "100%";
               $oIframe->opcoes        = 1;

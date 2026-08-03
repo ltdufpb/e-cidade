@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE db_cgmatualizaliga
 class cl_db_cgmatualizaliga { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $w12_sequencial = 0; 
-   var $w12_cgmatualiza = 0; 
-   var $w12_numcgm = 0; 
+   public $w12_sequencial = 0; 
+   public $w12_cgmatualiza = 0; 
+   public $w12_numcgm = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  w12_sequencial = int4 = Sequencial 
                  w12_cgmatualiza = int4 = Sequencial 
                  w12_numcgm = int4 = Numcgm 
                  ";
    //funcao construtor da classe 
-   function cl_db_cgmatualizaliga() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_cgmatualizaliga"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_db_cgmatualizaliga {
          $this->erro_status = "0";
          return false; 
        }
-       $this->w12_sequencial = pg_result($result,0,0); 
+       $this->w12_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_cgmatualizaliga_w12_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $w12_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $w12_sequencial)){
          $this->erro_sql = " Campo w12_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_db_cgmatualizaliga {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ligacao do login externo a um cgm atualizado ($this->w12_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ligacao do login externo a um cgm atualizado já Cadastrado";
@@ -166,12 +166,12 @@ class cl_db_cgmatualizaliga {
      $resaco = $this->sql_record($this->sql_query_file($this->w12_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8204,'$this->w12_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1382,8204,'','".AddSlashes(pg_result($resaco,0,'w12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1382,8205,'','".AddSlashes(pg_result($resaco,0,'w12_cgmatualiza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1382,8206,'','".AddSlashes(pg_result($resaco,0,'w12_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1382,8204,'','".AddSlashes(pg_fetch_result($resaco,0,'w12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1382,8205,'','".AddSlashes(pg_fetch_result($resaco,0,'w12_cgmatualiza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1382,8206,'','".AddSlashes(pg_fetch_result($resaco,0,'w12_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_db_cgmatualizaliga {
       $this->atualizacampos();
      $sql = " update db_cgmatualizaliga set ";
      $virgula = "";
-     if(trim($this->w12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w12_sequencial"])){ 
+     if(trim((string) $this->w12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w12_sequencial"])){ 
        $sql  .= $virgula." w12_sequencial = $this->w12_sequencial ";
        $virgula = ",";
-       if(trim($this->w12_sequencial) == null ){ 
+       if(trim((string) $this->w12_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "w12_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_db_cgmatualizaliga {
          return false;
        }
      }
-     if(trim($this->w12_cgmatualiza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w12_cgmatualiza"])){ 
+     if(trim((string) $this->w12_cgmatualiza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w12_cgmatualiza"])){ 
        $sql  .= $virgula." w12_cgmatualiza = $this->w12_cgmatualiza ";
        $virgula = ",";
-       if(trim($this->w12_cgmatualiza) == null ){ 
+       if(trim((string) $this->w12_cgmatualiza) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "w12_cgmatualiza";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_db_cgmatualizaliga {
          return false;
        }
      }
-     if(trim($this->w12_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w12_numcgm"])){ 
+     if(trim((string) $this->w12_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w12_numcgm"])){ 
        $sql  .= $virgula." w12_numcgm = $this->w12_numcgm ";
        $virgula = ",";
-       if(trim($this->w12_numcgm) == null ){ 
+       if(trim((string) $this->w12_numcgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "w12_numcgm";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_db_cgmatualizaliga {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8204,'$this->w12_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["w12_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1382,8204,'".AddSlashes(pg_result($resaco,$conresaco,'w12_sequencial'))."','$this->w12_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1382,8204,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w12_sequencial'))."','$this->w12_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["w12_cgmatualiza"]))
-           $resac = db_query("insert into db_acount values($acount,1382,8205,'".AddSlashes(pg_result($resaco,$conresaco,'w12_cgmatualiza'))."','$this->w12_cgmatualiza',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1382,8205,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w12_cgmatualiza'))."','$this->w12_cgmatualiza',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["w12_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,1382,8206,'".AddSlashes(pg_result($resaco,$conresaco,'w12_numcgm'))."','$this->w12_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1382,8206,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w12_numcgm'))."','$this->w12_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_db_cgmatualizaliga {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8204,'$w12_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1382,8204,'','".AddSlashes(pg_result($resaco,$iresaco,'w12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1382,8205,'','".AddSlashes(pg_result($resaco,$iresaco,'w12_cgmatualiza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1382,8206,'','".AddSlashes(pg_result($resaco,$iresaco,'w12_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1382,8204,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1382,8205,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w12_cgmatualiza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1382,8206,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w12_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_cgmatualizaliga
@@ -345,7 +345,7 @@ class cl_db_cgmatualizaliga {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_cgmatualizaliga";
@@ -359,7 +359,7 @@ class cl_db_cgmatualizaliga {
    function sql_query ( $w12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_db_cgmatualizaliga {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_db_cgmatualizaliga {
    function sql_query_file ( $w12_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_db_cgmatualizaliga {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

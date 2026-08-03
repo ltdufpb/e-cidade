@@ -36,7 +36,7 @@ require_once(modification("classes/db_bensguarda_classe.php"));
 $oGet = db_utils::postMemory($_GET);
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbensguarda = new cl_bensguarda;
 $clbensguarda->rotulo->label("t21_codigo");
 $clbensguarda->rotulo->label("t21_codigo");
@@ -77,7 +77,7 @@ $clbensguarda->rotulo->label("t21_codigo");
   <tr> 
     <td align="center" valign="top"> 
       <?php 
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = "t21_instit = ".db_getsession("DB_instit");
       
       if (isset($oGet->devolucao) && $oGet->devolucao == "true") {
@@ -96,10 +96,10 @@ $clbensguarda->rotulo->label("t21_codigo");
         }else{
           $sql = $clbensguarda->sql_query_dev("", $sCampos, "t21_codigo", $sWhereGuarda);
         }
-        $repassa = array();
+        $repassa = [];
         
         if (isset($chave_t21_codigo)) {
-          $repassa = array("chave_t21_codigo"=>$chave_t21_codigo);
+          $repassa = ["chave_t21_codigo"=>$chave_t21_codigo];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

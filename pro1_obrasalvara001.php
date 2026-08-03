@@ -130,7 +130,7 @@ db_app::load('estilos.css');
 				<td nowrap>
 					<?php 
 					  $lProcessoSistema = true;
-						db_select('lProcessoSistema', array(true=>'SIM', false=>'NÃO'), true, $db_opcao, "onchange='js_processoSistema(this.value)' style='width: 95px'")
+						db_select('lProcessoSistema', [true=>'SIM', false=>'NÃO'], true, $db_opcao, "onchange='js_processoSistema(this.value)' style='width: 95px'")
 					?>
 				</td>
 			</tr>

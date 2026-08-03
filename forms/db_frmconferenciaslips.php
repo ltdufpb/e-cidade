@@ -58,12 +58,12 @@ $clrotulo->label('DBtxt25');
           </td>
           <td>
            <?php 
-             $aSigla = array( "td"=>"Todos",
+             $aSigla = [ "td"=>"Todos",
                               "r14"=>"Salário",
                               "r48"=>"Complementar",
                               "r35"=>"13o. Salário",
                               "r20"=>"Rescisão",
-                              "r22"=>"Adiantamento");
+                              "r22"=>"Adiantamento"];
              
              db_select('ponto',$aSigla,true,4," style='width: 100%' onChange='js_validaTipoPonto()'");
            ?>
@@ -77,8 +77,8 @@ $clrotulo->label('DBtxt25');
           </td>
           <td>
            <?php 
-             $aOrdem = array( "rc"=>"Recurso",
-                              "tf"=>"Tipo de Folha");
+             $aOrdem = [ "rc"=>"Recurso",
+                              "tf"=>"Tipo de Folha"];
              
              db_select('ordem',$aOrdem,true,4," style='width: 100%'");
            ?>

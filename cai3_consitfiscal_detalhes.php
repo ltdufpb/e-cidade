@@ -33,8 +33,8 @@ include(modification("classes/db_vistorias_classe.php"));
 include(modification("classes/db_auto_classe.php"));
 include(modification("classes/db_fiscal_classe.php"));
 include(modification("classes/db_levanta_classe.php"));
-db_postmemory($HTTP_GET_VARS,0);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_GET,0);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clvistorias = new cl_vistorias;
 $clauto = new cl_auto;
 $clfiscal = new cl_fiscal;
@@ -108,10 +108,10 @@ if ($solicitacao == "VISTORIA") {
 }
 if ($pesquisaLocalizada==true) {
   $result = db_query($sql);
-  if(pg_numrows($result) == 0){
+  if(pg_num_rows($result) == 0){
     echo "<br><br><b>Nenhum Registro Cadastrado!!<b>";
   }else{  	
-      db_lovrot($sql,20,"()","",$funcao_js,"","NoMe",array (),false);
+      db_lovrot($sql,20,"()","",$funcao_js,"","NoMe", [],false);
   }
 }
 ?>

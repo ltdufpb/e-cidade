@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $db_botao=true;
 $db_opcao=2;
 $clrotulo = new rotulocampo;
@@ -169,10 +169,10 @@ function js_invalido(hide,msg){
        </td>
        <td>
 <?php        
-$result=array("0"=>"...","1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+$result=["0"=>"...","1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
 db_select("mes_ini",$result,true,$db_opcao,"","","","","");
 
-$anos=array();
+$anos=[];
 $anoatual=date("Y",db_getsession("DB_datausu"));
 $anos[0]="...";
 for($i=$anoatual; $i>($anoatual-15); $i--){
@@ -188,10 +188,10 @@ db_select("ano_ini",$anos,true,$db_opcao,"","","","","");
        </td>
        <td>
 <?php        
-$result=array("0"=>"...","1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+$result=["0"=>"...","1"=>"Janeiro","2"=>"Feveireiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
 db_select("mes_fim",$result,true,$db_opcao,"","","","","");
 
-$anos=array();
+$anos=[];
 $anos[0]="...";
 $anoatual=date("Y",db_getsession("DB_datausu"));
 for($i=$anoatual; $i>($anoatual-15); $i--){

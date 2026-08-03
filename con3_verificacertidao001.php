@@ -36,7 +36,7 @@ if(isset($verifica) && @$verifica != ""){
   $clcertidao = new cl_db_certidaoweb;
   $result = $clcertidao->sql_record($clcertidao->sql_query("","*","","codcert = $cod"));
   db_fieldsmemory($result,0);
-  if(pg_numrows($result) == 0){
+  if(pg_num_rows($result) == 0){
     echo "<script>alert('codigo de autenticidade inválido');</script>";
   }else{
     echo "<script>window.open('gerador.php?cod=$cod','','toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=1,resizable=1,height=500,width=700');</script>";

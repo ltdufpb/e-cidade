@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_configuracaogrupocaracteristicas_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconfiguracaogrupocaracteristicas = new cl_configuracaogrupocaracteristicas;
 $clconfiguracaogrupocaracteristicas->rotulo->label("db144_sequencial");
 $clconfiguracaogrupocaracteristicas->rotulo->label("db144_sequencial");
@@ -98,9 +98,9 @@ $clconfiguracaogrupocaracteristicas->rotulo->label("db144_sequencial");
         }else{
            $sql = $clconfiguracaogrupocaracteristicas->sql_query("",$campos,"db144_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db144_sequencial)){
-          $repassa = array("chave_db144_sequencial"=>$chave_db144_sequencial,"chave_db144_sequencial"=>$chave_db144_sequencial);
+          $repassa = ["chave_db144_sequencial"=>$chave_db144_sequencial,"chave_db144_sequencial"=>$chave_db144_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

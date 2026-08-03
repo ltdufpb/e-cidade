@@ -122,7 +122,7 @@ $clrotulo->label("vc05_c_descr");
     </td>
     <td> 
       <?php 
-         $aX = array('1'=>'ATIVA', '2'=>'INATIVA');
+         $aX = ['1'=>'ATIVA', '2'=>'INATIVA'];
          db_select('vc07_i_situacao', $aX, true, $db_opcao,"");
       ?>
     </td>
@@ -145,7 +145,7 @@ $clrotulo->label("vc05_c_descr");
 <br><br>
 
 <?php 
-  $chavepri= array("vc07_i_codigo"=>@$vc07_i_codigo);
+  $chavepri= ["vc07_i_codigo"=>@$vc07_i_codigo];
   $cliframe_alterar_excluir->chavepri     = $chavepri;
   $cliframe_alterar_excluir->sql          = $clvac_vacinadose->sql_query2(null,
                                                                 '*',
@@ -278,7 +278,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_vac_vacinadose.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

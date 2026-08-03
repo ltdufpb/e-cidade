@@ -33,7 +33,7 @@ include(modification("classes/db_agualeitura_classe.php"));
 include(modification("classes/db_ruas_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clagualeitura = new cl_agualeitura;
 $clruas = new cl_ruas;
 $clcgm = new cl_cgm;

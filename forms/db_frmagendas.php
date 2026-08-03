@@ -110,7 +110,7 @@ db_input('ed17_c_final',5,$Ied17_c_final,true,'text',$db_opcao,"OnKeyUp=\"mascar
     </td>
     <td> 
 <?php 
-$x = array('COMPARECEU'=>'Compareceu','NÃO COMPARECEU'=>'Não Compareceu','TRANFERIDO'=>'Transferido para outra data','CANCELADO'=>'Cancelado','AGENDADO'=>'Agendado');
+$x = ['COMPARECEU'=>'Compareceu','NÃO COMPARECEU'=>'Não Compareceu','TRANFERIDO'=>'Transferido para outra data','CANCELADO'=>'Cancelado','AGENDADO'=>'Agendado'];
 db_select('ed17_c_status',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -204,7 +204,7 @@ function js_preenchepesquisa(chave){
   db_iframe_agendas.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

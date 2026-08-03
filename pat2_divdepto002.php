@@ -35,7 +35,7 @@ $clrotulo->label('z01_nome');
 
 //echo $HTTP_SERVER_VARS["QUERY_STRING"];
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $where="db_depart.instit = ".db_getsession("DB_instit");
 if ($listadepart != "") {

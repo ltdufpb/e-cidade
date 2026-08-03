@@ -96,7 +96,7 @@
                     
                   	echo "<script>document.form1.serv.value = '{$serv}';</script>";
                     for ( $xInd = 0; $xInd < $numrows_bases; $xInd++ ) {
-                      $datname = pg_result($result_bases,$xInd,"datname");
+                      $datname = pg_fetch_result($result_bases,$xInd,"datname");
                 ?>
                 <option name='condicaobase' value='<?=@$datname?>'><?=@$datname?> </option>");
                 <?php 

@@ -16,11 +16,9 @@ class IndicadoresDesempenhoFactory
      */
     public static function getService($tipo)
     {
-        switch ($tipo) {
-            case IndicadorDesempenhoService::UM:
-                return new IndicadorUmService;
-            default:
-                throw new \Exception('Indicador de desempenho não configurado! Selecione um tipo válido.');
-        }
+        return match ($tipo) {
+            IndicadorDesempenhoService::UM => new IndicadorUmService,
+            default => throw new \Exception('Indicador de desempenho não configurado! Selecione um tipo válido.'),
+        };
     }
 }

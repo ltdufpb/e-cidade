@@ -56,7 +56,7 @@ class Situacao
         self::$inicializado = true;
         self::$situacao = new \stdClass();
         self::$situacao->situacao = 1;
-        self::$situacao->erros  = array();
+        self::$situacao->erros  = [];
     }
 
     /**

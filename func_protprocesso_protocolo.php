@@ -33,7 +33,7 @@ require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet = db_utils::postMemory($_GET);
@@ -91,7 +91,7 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
                     </tr>
                     <!-- PLUGIN procjudicial -->
                     <?php 
-                    $departamentosLiberados = array(125, 236, 2481, 2479, 2483, 2489, 2488, 570, 2476, 2214);
+                    $departamentosLiberados = [125, 236, 2481, 2479, 2483, 2489, 2488, 570, 2476, 2214];
                     if (in_array(db_getsession("DB_coddepto"), $departamentosLiberados)) { ?>
                         <tr>
                             <td width="4%" align="left" nowrap title="">
@@ -344,7 +344,7 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
 
                 if (isset($chave_p58_codproc)) {
                     $ordem = "p58_codproc desc";
-                    $repassa = array("chave_p58_codproc" => $chave_p58_codproc);
+                    $repassa = ["chave_p58_codproc" => $chave_p58_codproc];
                 }
 
                 $where = implode(' AND ', $where);
@@ -355,7 +355,7 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
                 db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa, false);
             } else {
                 if ($pesquisa_chave != null && $pesquisa_chave != "") {
-                    $aPesquisa = explode("/", $pesquisa_chave);
+                    $aPesquisa = explode("/", (string) $pesquisa_chave);
                     $iAno = db_getsession("DB_anousu");
 
                     if (count($aPesquisa) > 1) {
@@ -387,7 +387,7 @@ $daoOvidoriaAtendimento->rotulo->label('ov01_numero');
 
                             if (!empty($oGet->sCampoRetorno)) {
                                 $sCampoRetorno = $oGet->sCampoRetorno;
-                                $sCampoRetorno = $$sCampoRetorno;
+                                $sCampoRetorno = ${$sCampoRetorno};
                             }
 
                             if (!empty($oGet->anexardocumento)) {

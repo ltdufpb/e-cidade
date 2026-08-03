@@ -7,12 +7,10 @@ use ECidade\Tributario\Library\Service;
 
 class ArquivoTxtService extends Service
 {
-    private $file;
     private $path;
 
-    public function __construct(File $file)
+    public function __construct(private readonly File $file)
     {
-        $this->file = $file;
     }
 
     public function path($path)

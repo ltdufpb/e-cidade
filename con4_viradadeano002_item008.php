@@ -50,7 +50,7 @@ if($sqlerro==false) {
       $linhasdestino = pg_num_rows($resultdestino);
       if ($linhasdestino==0) {
         //se não tiver dados em 2008 pode incluir
-        
+
         $sqlpermemp = "
           select db20_orgao,
           db20_unidade,
@@ -102,7 +102,7 @@ if($sqlerro==false) {
           $sqlerro = true;
           //echo "<br>Ocorreu um erro durante o processamento do item $c33_descricao. Processamento cancelado.";
         }
-        
+
         // akiiiiiiiii
       }
       

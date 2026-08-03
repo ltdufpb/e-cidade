@@ -38,7 +38,7 @@ $get = db_utils::postMemory($_GET);
 $dePara = RelatoriosIn22::getRegrasEmissaoRelatorio($get->anexo);
 $relatorioContabil = new relatorioContabil($dePara["codigo"]);
 $periodos = $relatorioContabil->getPeriodos();
-$periodosComboBox = array();
+$periodosComboBox = [];
 $periodosComboBox[0] = "Selecione";
 
 foreach ($periodos as $oPeriodo) {

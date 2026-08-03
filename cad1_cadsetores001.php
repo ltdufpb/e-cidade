@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 $clsetor = new cl_setor;
 $db_opcao = 1;
 $db_botao = true;
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Incluir"){
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Incluir"){
    db_inicio_transacao();
    $clsetor->incluir($j30_codi);
    db_fim_transacao();

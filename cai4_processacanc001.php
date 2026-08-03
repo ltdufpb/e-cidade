@@ -51,7 +51,7 @@ $clcancdebitosprocreg = new cl_cancdebitosprocreg;
 $clcancdebitosprocconcarpeculiar = new cl_cancdebitosprocconcarpeculiar;
 $clrotulo = new rotulocampo;
 $clrotulo->label("c58_sequencial");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if (isset ($processa)) {

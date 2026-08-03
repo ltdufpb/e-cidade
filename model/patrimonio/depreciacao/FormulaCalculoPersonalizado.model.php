@@ -38,12 +38,6 @@ require_once(modification('model/patrimonio/depreciacao/interface/IFormulaCalcul
 class FormulaCalculoPersonalizado implements IFormulaCalculo {
   
   /**
-  * Codigo do tipo de calculo
-  * @var integer
-  */
-  protected $iTipoCalculo;
-  
-  /**
    * Valor da aquisicao
    * @var float
    */
@@ -103,10 +97,13 @@ class FormulaCalculoPersonalizado implements IFormulaCalculo {
   /**
    * Construtor
    * Seta o tipo de cálculo e busca o percentual anual cadastrado pelo usuário
+   * @param int $iTipoCalculo
    */
-  public function __construct($iTipoCalculo) {
+  public function __construct(/**
+   * Codigo do tipo de calculo
+   */
+  protected $iTipoCalculo) {
     
-    $this->iTipoCalculo  = $iTipoCalculo;
     $oDaoTipoDepreciacao = db_utils::getDao("benstipodepreciacao");
     $sSqlTipoDepreciacao = $oDaoTipoDepreciacao->sql_query_file($this->iTipoCalculo);
     $rsTipoDepreciacao   = $oDaoTipoDepreciacao->sql_record($sSqlTipoDepreciacao);

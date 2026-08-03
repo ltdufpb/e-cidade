@@ -95,7 +95,7 @@ $lPartilha = db_utils::fieldsMemory($rsParJuridico, 0)->v19_partilha;
 		        <td style="background-color: #FFFFFF;" align="left" width="300px">
 		          <?php 
 		          $sSqlProcessoForoMov = $clprocessoforomov->sql_record($clprocessoforomov->sql_query(null," v74_descricao "," v73_data desc limit 1 "," v73_processoforo = $v70_sequencial "));
-              if ( $sSqlProcessoForoMov != false && pg_numrows($sSqlProcessoForoMov)>0){
+              if ( $sSqlProcessoForoMov != false && pg_num_rows($sSqlProcessoForoMov)>0){
                 db_fieldsmemory($sSqlProcessoForoMov,0);
                 echo $v74_descricao;
               }

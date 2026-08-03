@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("k11_id");
@@ -50,7 +50,7 @@ if(isset($exclusao) && trim($exclusao) == "S") {
   $sql .= " and k11_instit = " . db_getsession("DB_instit");
   $result = @db_query($sql);
 
-  if(@pg_numrows($result) == 0)
+  if(@pg_num_rows($result) == 0)
       db_msgbox("Registro não encontrado");
   else {
       if (isset($k11_id) && $k11_id != ""){
@@ -140,7 +140,7 @@ if(isset($exclusao) && trim($exclusao) == "S") {
              db_iframe_cfautent.hide();
           <?php 
 	     if ($db_opcao != 3){
-                  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+                  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
              }
           ?>
           }

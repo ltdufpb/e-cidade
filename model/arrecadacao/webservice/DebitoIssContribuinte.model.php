@@ -145,7 +145,7 @@ class DebitoIssContribuinte {
     try {
 
       $iCodigoPlanilha = $this->criarPlanilha();
-      $aPlanilhasNotas = array();
+      $aPlanilhasNotas = [];
       foreach ($oDadosPlanilha->notas as $oNota) {
 
         $iCodigoNotaPlanilha         = $this->adicionarNotaNaPlanilha($oNota);

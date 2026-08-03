@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_rhrubricas_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 $clrhrubricas = new cl_rhrubricas;
 $clrhrubricas->rotulo->label();
 $clrotulo = new rotulocampo;
@@ -174,7 +174,7 @@ function js_relatorio(){
                                         and r14_anousu = $ano 
                                         and r14_mesusu = $mes 
 																				and r14_instit = ".db_getsession('DB_instit')." limit 1" );
-        if(pg_numrows($resultgerfsal) != 0){
+        if(pg_num_rows($resultgerfsal) != 0){
 	      $temsalario = true;
 	    }else{
           $temsalario = false;
@@ -186,7 +186,7 @@ function js_relatorio(){
 			                            and r31_anousu = $ano 
 				                        and r31_mesusu = $mes 
 																and r31_instit = ".db_getsession('DB_instit')." limit 1");
-        if(pg_numrows($resultgerffer) != 0){
+        if(pg_num_rows($resultgerffer) != 0){
 	      $temferias = true;
 	    }else{
           $temferias = false;
@@ -198,7 +198,7 @@ function js_relatorio(){
 			                            and r20_anousu = $ano 
 				                          and r20_mesusu = $mes 
 																	and r20_instit = ".db_getsession('DB_instit')." limit 1");
-        if(pg_numrows($resultgerfres) != 0){
+        if(pg_num_rows($resultgerfres) != 0){
 	      $temrescisao = true;
 	    }else{
           $temrescisao = false;
@@ -210,7 +210,7 @@ function js_relatorio(){
 			                          and r22_anousu = $ano 
 				                        and r22_mesusu = $mes
 																and r22_instit = ".db_getsession('DB_instit')."limit 1");
-        if(pg_numrows($resultgerfadi) != 0){
+        if(pg_num_rows($resultgerfadi) != 0){
 	      $temadiantamento = true;
 	    }else{
           $temadiantamento = false;
@@ -222,7 +222,7 @@ function js_relatorio(){
 			                          and r35_anousu = $ano 
 				                        and r35_mesusu = $mes
 																and r35_instit = ".db_getsession('DB_instit')." limit 1");
-        if(pg_numrows($resultgerfs13) != 0){
+        if(pg_num_rows($resultgerfs13) != 0){
 	      $tem13salario = true;
 	    }else{
           $tem13salario = false;
@@ -234,7 +234,7 @@ function js_relatorio(){
 			                            and r48_anousu = $ano 
 				                        and r48_mesusu = $mes
 																and r48_instit = ".db_getsession('DB_instit')." limit 1");
-        if(pg_numrows($resultgerfcom) != 0){
+        if(pg_num_rows($resultgerfcom) != 0){
 	      $temcomplementar = true;
 	    }else{
           $temcomplementar = false;
@@ -246,7 +246,7 @@ function js_relatorio(){
 			                         and r53_anousu = $ano 
 				                       and r53_mesusu = $mes
 															 and r53_instit = ".db_getsession('DB_instit')." limit 1");
-        if(pg_numrows($resultgerffx) != 0){
+        if(pg_num_rows($resultgerffx) != 0){
 	      $tempontofixo = true;
 	    }else{
           $tempontofixo = false;

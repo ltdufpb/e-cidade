@@ -54,7 +54,7 @@ try {
       $oRetorno->sLaboratorio = $oLaboratorio->getDescricao();
       break;
   }
-} catch ( Exception $oError ) {
+} catch ( Exception ) {
 
 }
 

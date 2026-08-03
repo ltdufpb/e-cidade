@@ -46,10 +46,10 @@ db_app::import("AvaliacaoPergunta");
 db_app::import("exceptions.*");
 
 $oDados        = db_utils::postMemory($_GET);
-$aFamilias     = array();
-$aDadosFamilia = array();
-$aFiltros      = array();
-$aCabecalho    = array();
+$aFamilias     = [];
+$aDadosFamilia = [];
+$aFiltros      = [];
+$aCabecalho    = [];
 $iTotalRegistros = 0;
 
 /**
@@ -109,7 +109,7 @@ foreach ($aAvaliacoes as $oAvaliacao) {
   $oDadosFamilia->iCodigoFamiliar  = $oFamilia->getCodigoFamiliarCadastroUnico();
   $oDadosFamilia->sBairroFamilia   = $oFamilia->getResponsavel()->getBairro();
   $oDadosFamilia->nRendaPerCapita  = $oFamilia->getRendaPerCapita();
-  $sLetra                          = substr($oFamilia->getResponsavel()->getNome(),  0 , 1);
+  $sLetra                          = substr((string) $oFamilia->getResponsavel()->getNome(),  0 , 1);
   $aDadosFamilia[$sLetra][]        = $oDadosFamilia;
 
   /**

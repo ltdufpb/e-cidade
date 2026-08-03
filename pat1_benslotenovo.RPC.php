@@ -192,8 +192,8 @@ function setDadosBem($oParam, $oBem = null, $salvar = true)
     /**
      * setamos as informações do item em sí
      */
-    if (strpos($oParam->t52_dtaqu, '/')) {
-        $oParam->t52_dtaqu = implode("-", array_reverse(explode("/", $oParam->t52_dtaqu)));
+    if (strpos((string) $oParam->t52_dtaqu, '/')) {
+        $oParam->t52_dtaqu = implode("-", array_reverse(explode("/", (string) $oParam->t52_dtaqu)));
     }
 
     $oBem->setDataAquisicao($oParam->t52_dtaqu);
@@ -239,7 +239,7 @@ function setDadosBem($oParam, $oBem = null, $salvar = true)
         $oBemDadosMaterial->setOrdemCompra(converteStringCodificada($oParam->cod_ordemdecompra));
 
         if (!empty($oParam->garantia)) {
-            $oBemDadosMaterial->setDataGarantia(implode("-", array_reverse(explode("/", $oParam->garantia))));
+            $oBemDadosMaterial->setDataGarantia(implode("-", array_reverse(explode("/", (string) $oParam->garantia))));
         }
 
         $oBem->setDadosCompra($oBemDadosMaterial);
@@ -327,29 +327,29 @@ function buscaDadosBem(Bem $oBem)
 
     $oDadosBem->t52_dtaqu = db_formatar($oBem->getDataAquisicao(), 'd');
     $oDadosBem->t52_descr = urlencode($oBem->getDescricao());
-    $oDadosBem->t64_class = urlencode($oBem->getClassificacao()->getClassificacao());
+    $oDadosBem->t64_class = urlencode((string) $oBem->getClassificacao()->getClassificacao());
     $oDadosBem->t64_codcla = $oBem->getClassificacao()->getCodigo();
-    $oDadosBem->t64_descr = urlencode($oBem->getClassificacao()->getDescricao());
+    $oDadosBem->t64_descr = urlencode((string) $oBem->getClassificacao()->getDescricao());
     $oDadosBem->t52_numcgm = $oBem->getFornecedor()->getCodigo();
-    $oDadosBem->z01_nome = urlencode($oBem->getFornecedor()->getNome());
+    $oDadosBem->z01_nome = urlencode((string) $oBem->getFornecedor()->getNome());
 
     $oTipoAquisicao = $oBem->getTipoAquisicao();
 
     $oDadosBem->t45_sequencial = ($oTipoAquisicao ? $oTipoAquisicao->getCodigo() : '');
     $oDadosBem->t45_descricao = urlencode(($oTipoAquisicao ? $oTipoAquisicao->getDescricao() : ''));
     $oDadosBem->t52_depart = $oBem->getDepartamento();
-    $oDadosBem->descrdepto = urlencode(buscaDescricaoDepartamento($oDadosBem->t52_depart));
+    $oDadosBem->descrdepto = urlencode((string) buscaDescricaoDepartamento($oDadosBem->t52_depart));
     $oDadosBem->divisao = $oBem->getDivisao();
     $oDadosBem->t04_sequencial = '';
     $oDadosBem->z01_nome_convenio = '';
 
     if ($oBem->getCedente() != '') {
         $oDadosBem->t04_sequencial = $oBem->getCedente()->getCodigo();
-        $oDadosBem->z01_nome_convenio = urlencode($oBem->getCedente()->getCedente()->getNome());
+        $oDadosBem->z01_nome_convenio = urlencode((string) $oBem->getCedente()->getCedente()->getNome());
     }
 
     $oDadosBem->t56_situac = $oBem->getSituacaoBem();
-    $oDadosBem->t70_descr = urlencode(buscaDescricaoSituacao($oDadosBem->t56_situac));
+    $oDadosBem->t70_descr = urlencode((string) buscaDescricaoSituacao($oDadosBem->t56_situac));
     $oDadosBem->vlAquisicao = $oBem->getValorAquisicao();
     $oDadosBem->vlResidual = $oBem->getValorResidual();
     $oDadosBem->vlTotal = $oBem->getValorAtual();
@@ -378,7 +378,7 @@ function buscaDadosBem(Bem $oBem)
 
     if ($oBem->getDadosImovel() != "") {
         $oDadosBem->t54_itbql = $oBem->getDadosImovel()->getIdBql();
-        $oDadosBem->observacoesimovel = urlencode($oBem->getDadosImovel()->getObservacao());
+        $oDadosBem->observacoesimovel = urlencode((string) $oBem->getDadosImovel()->getObservacao());
     }
 
     if ($oBem->getDadosCompra() != "") {
@@ -392,7 +392,7 @@ function buscaDadosBem(Bem $oBem)
         $oDadosBem->t53_empen = $oBem->getDadosCompra()->getEmpenho();
         $oDadosBem->cod_ordemdecompra = $oBem->getDadosCompra()->getOrdemCompra();
         $oDadosBem->garantia = $oBem->getDadosCompra()->getDataGarantia();
-        $oDadosBem->z01_nome_empenho = urlencode($oBem->getDadosCompra()->getCredor());
+        $oDadosBem->z01_nome_empenho = urlencode((string) $oBem->getDadosCompra()->getCredor());
     }
 
     return $oDadosBem;

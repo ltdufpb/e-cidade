@@ -37,7 +37,7 @@ require_once(modification("classes/db_proctransfer_classe.php"));
 require_once(modification("classes/db_protparam_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clprotparam          = new cl_protparam;
 $clprocandamint       = new cl_procandamint;
@@ -70,7 +70,7 @@ if ( isset($incluir) ) {
 
     $iDespachoMinimoCaracteres = $p90_minchardesp;
     $lDespachoObrigatorio = $p90_despachoob == "t";
-    $iDespachoCaracteres = strlen($p78_despacho);
+    $iDespachoCaracteres = strlen((string) $p78_despacho);
 
     /**
      * Parametro com minimo de caracteres 

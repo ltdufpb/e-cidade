@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='ate1_atendimento005.php?db_opcao=3'</script>";
   exit;
@@ -39,14 +39,14 @@ include(modification("classes/db_tecnico_classe.php"));
 include(modification("classes/db_atendimento_classe.php"));
 include(modification("classes/db_atenditem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clatendimentolanc = new cl_atendimentolanc;
 $clatendimento     = new cl_atendimento;
 $clatenditem       = new cl_atenditem;
 $db_opcao = 33;
 $db_botao = false;
 echo "<script>parent.document.formaba.atenditem.disabled=true;</script>";
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   $db_opcao = 3;
   db_inicio_transacao();
   $result = $clatenditem->sql_record($clatenditem->sql_query("",$at02_codatend));
@@ -95,7 +95,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clatendimento->erro_status=="0"){
     $clatendimento->erro(true,false);
   }else{

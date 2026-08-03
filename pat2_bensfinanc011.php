@@ -32,7 +32,7 @@ include(modification("libs/db_app.utils.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 
@@ -132,14 +132,14 @@ function js_emite(){
               </td>
               <td>
       	  <?php 
-      	  $tipo_ordem = array ("0" => "Classificação",
+      	  $tipo_ordem =  ["0" => "Classificação",
       	                       "1" => "Plano de Contas",
       	                       "2" => "Plano de Contas/Classificação",
       	                       "3" => "localizacao (orgão)",
       	                       "4" => "localizacao (orgão/unidade)",
       	                       "5" => "localizacao (orgão/unidade/departamento)",
       	                       "6" => "localizacao (orgão/unidade/departamento/divisão)",
-      	                     );
+      	                     ];
       	  db_select("tipoagrupa",$tipo_ordem,true,2);
       	  ?>
               </td>
@@ -151,7 +151,7 @@ function js_emite(){
               </td>
               <td>
                 <?php 
-                  $aBemTipo = array(''=>'TODOS', '1'=>'M&Oacute;VEIS', '2'=>'IM&Oacute;VEIS', '3'=>'SEMOVENTES');
+                  $aBemTipo = [''=>'TODOS', '1'=>'M&Oacute;VEIS', '2'=>'IM&Oacute;VEIS', '3'=>'SEMOVENTES'];
                   db_select('tipo_bens', $aBemTipo, true, 1);
                 ?>
               </td>
@@ -203,7 +203,7 @@ function js_emite(){
                <td nowrap align="left" title="Bens a serem listados"><b>Listar:</b></td>
                <td nowrap title="">
                <?php 
-                 $matriz_baix = array("t"=>"Todos","n"=>"Não Baixados", "b"=>"Baixados");
+                 $matriz_baix = ["t"=>"Todos","n"=>"Não Baixados", "b"=>"Baixados"];
                  db_select("opcao_baixados",$matriz_baix,true,1);
                ?>
                </td>
@@ -214,10 +214,10 @@ function js_emite(){
               </td>
               <td>
               <?php 
-              $aConvenios = array (1 => "Ambos",
+              $aConvenios =  [1 => "Ambos",
                                    2 => "Apenas vinculado a convênios",
                                    3 => "Apenas não vinculado a convênios"
-                                 );
+                                 ];
               db_select("vinculoconvenio", $aConvenios, true, 2, "onchange='js_showCedentes()'");
               ?>
               </td>

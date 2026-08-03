@@ -34,7 +34,7 @@ include(modification("libs/db_liborcamento.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -230,7 +230,7 @@ function js_selecionar(){
         <td align='left'>
 	  <?php 
 	  
-	   $xy = array('1A'=>'Órgão','2A'=>'Unidade');
+	   $xy = ['1A'=>'Órgão','2A'=>'Unidade'];
 	     db_select('nivel',$xy,true,2,"");
 	     
 	   ?>
@@ -241,7 +241,7 @@ function js_selecionar(){
          <td align='right' ><strong>Agrupar:</strong></td>
          <td align='left'>
 	 <?php 
-         $xy = array('1'=>'Sim','2'=>'Não');
+         $xy = ['1'=>'Sim','2'=>'Não'];
  	 db_select('tipoagrupar',$xy,true,2);
          ?>
          </td>
@@ -257,7 +257,7 @@ function js_selecionar(){
         
 	  <?php 
 	  
-	   $xy = array('0'=>'Geral','3B'=>'Função','4B'=>'Sub-Função','5B'=>'Programa','6B'=>'Proj/Ativ','7B'=>'Elemento');
+	   $xy = ['0'=>'Geral','3B'=>'Função','4B'=>'Sub-Função','5B'=>'Programa','6B'=>'Proj/Ativ','7B'=>'Elemento'];
 	     db_select('nivelele',$xy,true,2," onchange=\"js_selecionar()\" ");
 	     
 	   ?>

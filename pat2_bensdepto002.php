@@ -81,7 +81,7 @@ $clrotulo->label("t64_class");
 $clrotulo->label("t52_ident");
 $clrotulo->label("descrdepto");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $and              = "and";
 $where            = " t55_codbem is null ";
@@ -196,22 +196,11 @@ if (isset($cboValor) && trim($cboValor) != "" && $cboValor == 1) {
 /**
  * Ordenação
  */
-switch ( $iTipoAgrupamento ) {
-
-  case AGRUPAR_ORGAO :
-  case AGRUPAR_ORGAO_UNIDADE :
-    $sOrder = "o40_orgao, o41_unidade, t52_bem";
-  break;
-
-  case AGRUPAR_DEPARTAMENTO :
-  case AGRUPAR_DEPARTAMENTO_DIVISAO :
-    $sOrder = "t52_depart, t30_codigo, t52_bem";
-  break;
-
-  default :
-    $sOrder = "t52_depart, t52_bem";
-  break;
-}
+$sOrder = match ($iTipoAgrupamento) {
+    AGRUPAR_ORGAO, AGRUPAR_ORGAO_UNIDADE => "o40_orgao, o41_unidade, t52_bem",
+    AGRUPAR_DEPARTAMENTO, AGRUPAR_DEPARTAMENTO_DIVISAO => "t52_depart, t30_codigo, t52_bem",
+    default => "t52_depart, t52_bem",
+};
 
 if (isset($orgaos) && isset($unidades)) {
   $sSql = $cldbbens->sql_query_termo("",$sCampos,$sOrder,$where);
@@ -221,7 +210,7 @@ if (isset($orgaos) && isset($unidades)) {
 
 $result = db_query($sSql);
 $linhas = $cldbbens->numrows;
-$xxnum  = pg_numrows($result);
+$xxnum  = pg_num_rows($result);
 
 if ($xxnum == 0) {
 
@@ -245,14 +234,14 @@ try {
   $oLibDocumento = new libdocumento(10);
   $aParagrafos   = $oLibDocumento->getDocParagrafos();
 
-} catch (Exception $e) {
-  $aParagrafos = array();
+} catch (Exception) {
+  $aParagrafos = [];
 }
 
-$aParagrafos = (empty($aParagrafos) ? array() : $aParagrafos);
+$aParagrafos = (empty($aParagrafos) ? [] : $aParagrafos);
 
 // plugin - TermoResponsabilidade: declara variável de controle de departamento e array de caracteres
-for ($x = 0; $x < pg_numrows($result); $x++) {
+for ($x = 0; $x < pg_num_rows($result); $x++) {
 
   db_fieldsmemory($result, $x);
 
@@ -391,8 +380,8 @@ for ($x = 0; $x < pg_numrows($result); $x++) {
   }
 
   $iDepartamentoAnterior = $t52_depart;
-  $iOrgaoAnterior        = isset($o40_orgao) ? $o40_orgao : '';
-  $iUnidadeAnterior      = isset($o41_unidade) ? $o41_unidade : '';
+  $iOrgaoAnterior        = $o40_orgao ?? '';
+  $iUnidadeAnterior      = $o41_unidade ?? '';
   $iDivisaoAnterior      = $t30_codigo;
 
   $res_situacaobem = $clhistbem->sql_record($clhistbem->sql_query(null,"t70_descr", "t56_histbem desc", "t52_bem = $t52_bem"));
@@ -549,11 +538,11 @@ for ($x = 0; $x < pg_numrows($result); $x++) {
 
   if ($lClassificacao) {
     $pdf->cell(20, $alt, $t64_class, 0, 0, "C", 0);
-    $pdf->cell(80,$alt,substr($t64_descr,0,48),0,0,"L",0);
+    $pdf->cell(80,$alt,substr((string) $t64_descr,0,48),0,0,"L",0);
   }
 
   $pdf->cell(20,$alt,db_formatar($t52_dtaqu ,'d'),0,0,"C",0);
-  $pdf->cell(25,$alt,substr(@$t70_descr,0,48),0,0,"C",0);
+  $pdf->cell(25,$alt,substr((string) @$t70_descr,0,48),0,0,"C",0);
 
   if ($lValor) {
     $pdf->cell(15,$alt,db_formatar($t52_valaqu,"f") , 0, 1, "R", 0);
@@ -650,7 +639,7 @@ if (!isset($ass)) {
 
   $oResourceParagrafo = @db_query($sSqlParagrafo);
 
-  if (@pg_numrows($oResourceParagrafo) > 0) {
+  if (@pg_num_rows($oResourceParagrafo) > 0) {
 
     db_fieldsmemory($oResourceParagrafo, 0);
     eval($db02_texto);
@@ -666,7 +655,7 @@ if (!isset($ass)) {
 
     $oResourceParagrafoPadrao = @db_query($sSqlParagrafoPadrao);
 
-    if (@pg_numrows($oResourceParagrafoPadrao) > 0) {
+    if (@pg_num_rows($oResourceParagrafoPadrao) > 0) {
 
       db_fieldsmemory($oResourceParagrafoPadrao, 0);
       eval($db61_texto);
@@ -677,7 +666,7 @@ if (!isset($ass)) {
 
 } else {
 
-  $ass = utf8_decode(db_stdClass::db_stripTagsJson($ass));
+  $ass = mb_convert_encoding(db_stdClass::db_stripTagsJson($ass), 'ISO-8859-1');
   $ass = str_replace('\n', "\n", $ass);
   $pdf->MultiCell(270,$alt, $ass,'',"R");
 }

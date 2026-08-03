@@ -88,7 +88,7 @@ try {
 
             if (!empty($parametros->empenho)) {
 
-                $empenhoExplode = explode('/', $parametros->empenho);
+                $empenhoExplode = explode('/', (string) $parametros->empenho);
                 $anoPesquisa = $anoSessao;
                 if (count($empenhoExplode) == 2) {
                     $anoPesquisa = $empenhoExplode[1];
@@ -99,7 +99,7 @@ try {
 
             $campos = implode(
                 ', ',
-                array(
+                [
                     "e60_codemp||'/'||e60_anousu as numero",
                     'e60_numemp as seq_empenho',
                     "fc_estruturaldotacao({$anoSessao},o58_coddot) as dotacao",
@@ -108,7 +108,7 @@ try {
                         from origemcomplementorecurso
                        where o206_numero = e60_numemp
                          and o206_origem = 1 limit 1) as codigo',
-                )
+                ]
             );
 
             $where = implode(' and ', $filtros);
@@ -161,7 +161,7 @@ try {
 
             $campos = implode(
                 ', ',
-                array(
+                [
                     "c70_codlan as lancamento",
                     'c70_valor as valor',
                     "fc_estruturalreceita(".db_getsession("DB_anousu").",orcreceita.o70_codrec) || ' - ' ||o57_descr as receita",
@@ -170,7 +170,7 @@ try {
                              join conlancamrec on c74_codlan = o201_codlan
                        where o201_codlan = c70_codlan
                        limit 1) as codigo',
-                )
+                ]
             );
 
             $where = implode(' and ', $filtros);
@@ -304,7 +304,7 @@ try {
 
             $recurso = null;
             if ($parametros->origem === 'despesa') {
-                $empenhoExplode = explode('/', $parametros->empenho);
+                $empenhoExplode = explode('/', (string) $parametros->empenho);
                 $anoPesquisa = $anoSessao;
                 if (count($empenhoExplode) == 2) {
                     $anoPesquisa = $empenhoExplode[1];

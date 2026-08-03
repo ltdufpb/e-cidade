@@ -35,8 +35,8 @@ include(modification("classes/db_far_modelolivro_classe.php"));
 include(modification("classes/db_far_fechalivro_classe.php"));
 include(modification("classes/db_far_farmacia_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_modelolivro = new cl_far_modelolivro;
 $clfar_fechalivro  = new cl_far_fechalivro;
 $clfar_farmacia    = new cl_far_farmacia;
@@ -79,7 +79,7 @@ $ano          = date("Y");
               </td>
               <td nowrap>
 	            <?php 
-                  $x = array("0"=>"Escolha um Período","t"=>"Trimestre","a"=>"Anual");
+                  $x = ["0"=>"Escolha um Período","t"=>"Trimestre","a"=>"Anual"];
                   db_select("escolha", $x, "", "","Onchange='js_escolha(this.value)'", "", "");
 	            ?>
               </td>

@@ -39,8 +39,8 @@ require_once(modification("classes/db_liclicita_classe.php"));
 require_once(modification("classes/db_empparametro_classe.php"));
 // Plugin PregaoPresencial - Importa classe cl_lb_configurapregao
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clpcorcamitem    = new cl_pcorcamitem;
 $clpcorcamjulg    = new cl_pcorcamjulg;
@@ -59,7 +59,7 @@ $res_empparametro = $clempparametro->sql_record($clempparametro->sql_query(db_ge
 if ($clempparametro->numrows > 0) {
 
   db_fieldsmemory($res_empparametro,0);
-  if (trim($e30_numdec) == "" || $e30_numdec == 0) {
+  if (trim((string) $e30_numdec) == "" || $e30_numdec == 0) {
     $numdec = 2;
   } else {
     $numdec = $e30_numdec;
@@ -79,7 +79,7 @@ if ($clempparametro->numrows > 0) {
  */
 function getItensJulgamento(Licitacao $licitacao, $itens)
 {
-    $itensFiltrados = array();
+    $itensFiltrados = [];
 
     // Para licitações do PNAE, todos os itens serão usados independente do preço
     if ($licitacao->isPNAE() || (isParaiba() && $licitacao->isCHP())) {
@@ -111,7 +111,7 @@ function getItensJulgamento(Licitacao $licitacao, $itens)
     }
     // Se a licitação por 2 (Global) deverá buscar pelos menor somatório dos itens
     else {
-        $fornecedores = array();
+        $fornecedores = [];
         foreach ($itens as $item) {
             // Separa por array de chave [fornecedor] e valor [valor total]
 
@@ -131,15 +131,13 @@ function getItensJulgamento(Licitacao $licitacao, $itens)
             }
         }
     }
-    $itensFiltrados = array_map(function($item) {
-        return array(
-            'orcamforne' => $item['pc23_orcamforne'],
-            'lote' => $item['l04_descricao']
-        );
-    }, $itensFiltrados);
+    $itensFiltrados = array_map(fn($item) => [
+        'orcamforne' => $item['pc23_orcamforne'],
+        'lote' => $item['l04_descricao']
+    ], $itensFiltrados);
 
     // Devolve as chaves numéricas ao array
-    $res = array();
+    $res = [];
     foreach($itensFiltrados as $item) {
         $res[] = $item;
     }
@@ -301,7 +299,7 @@ if(isset($orcamento) && trim($orcamento)!="") {
     $res_itens  = $clliclicitemlote->sql_record($sql_itens);
 
     $numrows      = $clliclicitemlote->numrows;
-    $retira_forne = array(array());
+    $retira_forne = [[]];
     $lote_antes   = "";
     $linha        = 0;
     $tot_itens    = 0;
@@ -328,22 +326,22 @@ if(isset($orcamento) && trim($orcamento)!="") {
 
           if ($tot_itens > $itens_cotados) {
 
-            $retira_forne[$linha]["orcamforne"] = trim($pc23_orcamforne);
-            $retira_forne[$linha]["lote"]       = trim($l04_descricao);
+            $retira_forne[$linha]["orcamforne"] = trim((string) $pc23_orcamforne);
+            $retira_forne[$linha]["lote"]       = trim((string) $l04_descricao);
             $linha++;
           } else {
 
-            if (count($vetor_lote) > 0 && trim($vetor_lote[$l04_descricao]) != "") {
+            if (count($vetor_lote) > 0 && trim((string) $vetor_lote[$l04_descricao]) != "") {
 
-              if ($tot_itens < trim($vetor_lote[$l04_descricao])) {
+              if ($tot_itens < trim((string) $vetor_lote[$l04_descricao])) {
 
                 $encontrar = false;
                 for ($ii = 0; $ii < sizeof($retira_forne); $ii++) {
 
                   if (isset($retira_forne[$ii]["orcamforne"]) && $retira_forne[$ii]["lote"]) {
 
-                    if (@$retira_forne[$ii]["orcamforne"] == trim(@$orcamforne) &&
-                        @$retira_forne[$ii]["lote"]       == trim(@$lote_antes)) {
+                    if (@$retira_forne[$ii]["orcamforne"] == trim((string) @$orcamforne) &&
+                        @$retira_forne[$ii]["lote"]       == trim((string) @$lote_antes)) {
 
                       $encontrar = true;
                       break;
@@ -353,7 +351,7 @@ if(isset($orcamento) && trim($orcamento)!="") {
 
                 if ($encontrar == false) {
 
-                  $retira_forne[$linha]["orcamforne"] = trim($orcamforne);
+                  $retira_forne[$linha]["orcamforne"] = trim((string) $orcamforne);
                   $retira_forne[$linha]["lote"]       = trim($lote_antes);
                   $linha++;
                 }
@@ -388,22 +386,14 @@ if(isset($orcamento) && trim($orcamento)!="") {
     $sql_valor .= " order by l04_descricao, pc23_valor, pc23_orcamforne                  \n";
     $res_valor  = $clliclicitemlote->sql_record($sql_valor);
 
-    $itensJulgamento   = array(array());
+    $itensJulgamento   = [[]];
     $linha_valor   = 0;
     $numrows_valor = $clliclicitemlote->numrows;
 
     if ($clliclicitemlote->numrows > 0 && $flag_julg == false) {
 
         $itens = pg_fetch_all($res_valor);
-        $itens = array_filter($itens, function($item) use ($retira_forne) {
-            // Remova os itens que estejam no array $retira_forne
-            foreach ($retira_forne as $filtra) {
-                if (!empty($filtra) && $filtra['orcamforne'] === $item['pc23_orcamforne'] && $filtra['lote'] === $filtra['l04_descricao']) {
-                    return false;
-                }
-            }
-            return true;
-        });
+        $itens = array_filter($itens, fn($item) => array_all($retira_forne, fn($filtra) => !(!empty($filtra) && $filtra['orcamforne'] === $item['pc23_orcamforne'] && $filtra['lote'] === $filtra['l04_descricao'])));
         $itensJulgamento = getItensJulgamento($licitacao, $itens);
         $linha_valor = count($itensJulgamento);
     }
@@ -524,7 +514,7 @@ if(isset($orcamento) && trim($orcamento)!="") {
       echo "</tr>\n";
 
 
-      $vitens      = array(array());
+      $vitens      = [[]];
       $cont_itens  = 0;
 
       $descrlote   = "";
@@ -587,7 +577,7 @@ if(isset($orcamento) && trim($orcamento)!="") {
 
           echo "  <td nowrap class='$bordas' align='center' >".$pc81_codprocitem."</td>";
           echo "  <td nowrap class='$bordas' align='center' >".$l21_ordem."</td>";
-          echo "  <td class='$bordas' align='left' >  ".$pc01_codmater." - ".ucfirst(strtolower($pc01_descrmater))."</td>\n";
+          echo "  <td class='$bordas' align='left' >  ".$pc01_codmater." - ".ucfirst(strtolower((string) $pc01_descrmater))."</td>\n";
 	        echo "  <td class='$bordas' align='left' >  ".(strlen($pc23_obs) > 0?ucfirst(strtolower($pc23_obs)):"&nbsp;")."</td>\n";
 	        echo "  <td class='$bordas' align='center' >".$z01_numcgm." - ".$z01_nome;
 
@@ -631,7 +621,7 @@ if(isset($orcamento) && trim($orcamento)!="") {
             echo "  <td nowrap class='$bordas' align='right' >R$ " . db_formatar(($pc23_vlrun), "f", " ", ' ', "e", $numdec) . "</td>\n";
           }
 	        echo "  <td nowrap class='$bordas' align='right' >R$".db_formatar(($pc23_valor),"f"," ",' ',"e", $numdec)."</td>\n";
-	        echo "  <td class='$bordas' align='left'>".(strlen($pc11_resum) > 0?substr(ucfirst($pc11_resum),0,40):"&nbsp;")."</td>\n";
+	        echo "  <td class='$bordas' align='left'>".(strlen((string) $pc11_resum) > 0?substr(ucfirst((string) $pc11_resum),0,40):"&nbsp;")."</td>\n";
 	        echo "</tr>\n";
         }
       }

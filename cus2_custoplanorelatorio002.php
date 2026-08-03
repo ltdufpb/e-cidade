@@ -54,9 +54,9 @@ db_postmemory($_GET);
 */
 function tamanhoString($string, $tamanho) {
 	// formata o tamanho da string 
-  if ( strlen($string) > $tamanho ) {
+  if ( strlen((string) $string) > $tamanho ) {
   	// corta a string deixando-a com tamanho máximo de caracteres definido
-	  $string = substr($string,0,$tamanho);
+	  $string = substr((string) $string,0,$tamanho);
 		$string .= "...";
 	} 
   return $string;

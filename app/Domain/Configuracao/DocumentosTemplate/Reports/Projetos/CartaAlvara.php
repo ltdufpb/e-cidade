@@ -8,13 +8,11 @@ use \cl_obrasalvara;
 class CartaAlvara extends ProcessaDocumentoTemplate
 {
   
-    private $codigoObra;
     const GRUPOTEMPLATE = 14;
   
-    public function __construct($codigoObra)
+    public function __construct(private $codigoObra)
     {
         parent::__construct(self::GRUPOTEMPLATE);
-        $this->codigoObra        = $codigoObra;
         $this->setNomeDocumento('CartaAlvara');
     }
     

@@ -33,7 +33,7 @@ require_once(modification("classes/db_autousu_classe.php"));
 require_once(modification("classes/db_fandamusu_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clautousu   = new cl_autousu;
 $clfandamusu = new cl_fandamusu;
@@ -41,7 +41,7 @@ $db_opcao    = 1;
 $db_botao    = true;
 global $y59_codauto;
 global $y39_codandam;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   db_inicio_transacao();
   $clfandamusu->y40_obs="0";
@@ -73,7 +73,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clautousu->erro_status=="0"){
     $clautousu->erro(true,false);
     $db_botao=true;

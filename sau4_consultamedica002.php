@@ -42,7 +42,7 @@ $z01_d_cadast_ano = date("Y",db_getsession("DB_datausu"));
 $z01_i_login = DB_getsession("DB_id_usuario");
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clprontuarios = new cl_prontuarios;
 

@@ -59,7 +59,7 @@ class AlunoLeitorBibliotecaWebservice {
       throw new ParameterException('Aluno não existe no cadastro.');
     }
     $oDadosLeitorAluno              = new stdClass();
-    $oDadosLeitorAluno->emprestimos = array();
+    $oDadosLeitorAluno->emprestimos = [];
     
     $oDaoLeitor      = new cl_leitor();
     $sSqlDadosLeitor = $oDaoLeitor->sql_query(null, "bi10_codigo", null, "bi11_aluno = {$this->iCodigoAluno}");
@@ -72,14 +72,14 @@ class AlunoLeitorBibliotecaWebservice {
     
     $iCodigoLeitor =  db_Utils::fieldsMemory($rsDadosLeitor, 0)->bi10_codigo;
     
-    $aWhere   = array();
+    $aWhere   = [];
     $aWhere[] = "bi16_leitor = {$iCodigoLeitor}";
     
-    if (trim($sDataInicial) != "") {
+    if (trim((string) $sDataInicial) != "") {
       $aWhere[] = " bi18_retirada >= '{$sDataInicial}'";
     }
     
-    if (trim($sDataFinal) != "") {
+    if (trim((string) $sDataFinal) != "") {
       $aWhere[] = " bi18_retirada <= '{$sDataFinal}'";
     }
     
@@ -123,7 +123,7 @@ class AlunoLeitorBibliotecaWebservice {
     $rsAcervosRetirados = $oDaoEmprestivoAcervo->sql_record($sSqlAcervosRetirados);
     $iTotalEmprestimos  = $oDaoEmprestivoAcervo->numrows;
     
-    $aSituacao = array(1 => "ATRASADO", 2 => 'ABERTO', 3 => 'DEVOLVIDOS');
+    $aSituacao = [1 => "ATRASADO", 2 => 'ABERTO', 3 => 'DEVOLVIDOS'];
     
     if ($rsAcervosRetirados && $iTotalEmprestimos > 0) {
       
@@ -132,14 +132,14 @@ class AlunoLeitorBibliotecaWebservice {
         $oDadosEmprestimo = db_utils::fieldsMemory($rsAcervosRetirados, $iExemplar);
         
         $oEmprestimo                          = new stdClass();
-        $oEmprestimo->nome_exemplar           = utf8_encode($oDadosEmprestimo->bi06_titulo);
-        $oEmprestimo->codigo_exemplar         = utf8_encode($oDadosEmprestimo->bi23_codigo);
-        $oEmprestimo->autores                 = utf8_encode($oDadosEmprestimo->autores);
-        $oEmprestimo->biblicoteca             = utf8_encode($oDadosEmprestimo->bi17_nome);
-        $oEmprestimo->data_retirada           = utf8_encode($oDadosEmprestimo->bi18_retirada);
-        $oEmprestimo->data_devolucao_prevista = utf8_encode($oDadosEmprestimo->bi18_devolucao);
-        $oEmprestimo->data_devolucao          = utf8_encode($oDadosEmprestimo->bi21_entrega);
-        $oEmprestimo->situacao                = utf8_encode($aSituacao[$oDadosEmprestimo->situacao]);
+        $oEmprestimo->nome_exemplar           = mb_convert_encoding($oDadosEmprestimo->bi06_titulo, 'UTF-8', 'ISO-8859-1');
+        $oEmprestimo->codigo_exemplar         = mb_convert_encoding($oDadosEmprestimo->bi23_codigo, 'UTF-8', 'ISO-8859-1');
+        $oEmprestimo->autores                 = mb_convert_encoding($oDadosEmprestimo->autores, 'UTF-8', 'ISO-8859-1');
+        $oEmprestimo->biblicoteca             = mb_convert_encoding($oDadosEmprestimo->bi17_nome, 'UTF-8', 'ISO-8859-1');
+        $oEmprestimo->data_retirada           = mb_convert_encoding($oDadosEmprestimo->bi18_retirada, 'UTF-8', 'ISO-8859-1');
+        $oEmprestimo->data_devolucao_prevista = mb_convert_encoding($oDadosEmprestimo->bi18_devolucao, 'UTF-8', 'ISO-8859-1');
+        $oEmprestimo->data_devolucao          = mb_convert_encoding($oDadosEmprestimo->bi21_entrega, 'UTF-8', 'ISO-8859-1');
+        $oEmprestimo->situacao                = mb_convert_encoding($aSituacao[$oDadosEmprestimo->situacao], 'UTF-8', 'ISO-8859-1');
         
         $oDadosLeitorAluno->emprestimos[] = $oEmprestimo;
       }

@@ -85,7 +85,7 @@ try {
         $oRetorno->sResumoLista = $sDescricaoLista;
       }
 
-      $aItensRetornar = array();
+      $aItensRetornar = [];
 
       foreach ($aItensLista as $iIndice => $oItemLista) {
 
@@ -100,7 +100,7 @@ try {
           throw new Exception( _M( MENSAGENS . "erro_busca_origem_numpre",  $oMensagem) );
         }
 
-        $aOrigemNumpre = explode(" ", $sOrigemNumpre);
+        $aOrigemNumpre = explode(" ", (string) $sOrigemNumpre);
         $iQuant        = count($aOrigemNumpre);
 
         $iCodigo = $aOrigemNumpre[$iQuant - 1];
@@ -134,13 +134,13 @@ try {
       case "excluirItensLista":
 
         $oItensLista  = $oParametros->aItensMarcados;
-        $aWhere       = array();
+        $aWhere       = [];
         $oDaolistadeb = new cl_listadeb();
 
         db_inicio_transacao();
         foreach ($oItensLista as $oNumpreNumpar) {
 
-          list($sNumpre, $sNumpar) = explode('/', $oNumpreNumpar->sNumpreNumpar);
+          [$sNumpre, $sNumpar] = explode('/', (string) $oNumpreNumpar->sNumpreNumpar);
 
           $rslistadeb = $oDaolistadeb->excluir( $oParametros->iCodigoLista, $sNumpre, $sNumpar );
 

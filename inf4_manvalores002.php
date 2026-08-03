@@ -94,7 +94,7 @@ function mo_camada(camada,mostra){
             }else{
               $dias_mes = date('t',mktime(0,0,0,$mes,1,$exercicio));
             }
-          $matriz = array();
+          $matriz = [];
           
           $iNumRows = pg_num_rows($result);
           if ($dias_mes > $iNumRows) {
@@ -104,7 +104,7 @@ function mo_camada(camada,mostra){
             db_fieldsmemory($result,$im-1);
             $matriz[$im] = '$i02_valor';
             $vartemp = "i02_valor_".$qm."_".$im;
-            $$vartemp = $i02_valor;
+            ${$vartemp} = $i02_valor;
          }
 
           for($im=1;$im<12;$im++){

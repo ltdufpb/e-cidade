@@ -80,7 +80,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed25_i_codigo"=>@$ed25_i_codigo,"ed25_c_descr"=>@$ed25_c_descr,"ed25_i_ensino"=>@$ed25_i_ensino,"ed10_c_descr"=>@$ed10_c_descr);
+   $chavepri= ["ed25_i_codigo"=>@$ed25_i_codigo,"ed25_c_descr"=>@$ed25_c_descr,"ed25_i_ensino"=>@$ed25_i_ensino,"ed10_c_descr"=>@$ed10_c_descr];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clareatrabalho->sql_query("","ed25_i_codigo,ed25_c_descr,ed25_i_ensino,ed10_c_descr","ed10_c_descr,ed25_c_descr");
    $cliframe_alterar_excluir->campos  ="ed25_i_codigo,ed25_c_descr,ed10_c_descr";

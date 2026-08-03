@@ -45,18 +45,18 @@ require_once(modification("model/configuracao/DBDivisaoDepartamento.model.php"))
 
 require_once(modification("model/CgmFactory.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oGet       = db_utils::postMemory($_GET,0);
 $iInstit    = db_getsession("DB_instit") ;
 $sWhere     = "instit = {$iInstit} ";
-$aCabecalho = array();
+$aCabecalho = [];
 
 /**
  * Filtro por Situação
  */
-$aSituacao = array();
+$aSituacao = [];
 if (isset($oGet->lAberto) && $oGet->lAberto == 1) {
   $aSituacao[] = $oGet->lAberto;
 }
@@ -124,7 +124,7 @@ $sSqlInventario = $oDaoInventario->sql_query(null, $sCampos, $sOrder, $sWhere);
 //echo $sSqlInventario; die();
 
 $rsInventario   = $oDaoInventario->sql_record($sSqlInventario);
-$aInventarios   = array();
+$aInventarios   = [];
 
 if ($oDaoInventario->numrows == 0) {
   
@@ -183,7 +183,7 @@ for($i = 0; $i < $iCabecalho; $i++) {
     
     $iHead  = $i+3;
     $sHead  = "head{$iHead}";
-    $$sHead = $aCabecalho[$i];
+    ${$sHead} = $aCabecalho[$i];
 }
 
 

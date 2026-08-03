@@ -34,8 +34,8 @@ $clrotulo->label("y30_data");
 $clrotulo->label("y30_dtvenc");
 $clrotulo->label("y29_descr");
 $clrotulo->label("y39_codandam");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_fiscaltipo.location.href='fis1_fiscaltipo002.php?chavepesquisa=$y31_codnoti&chavepesquisa1=$y31_codtipo'</script>";
 }
@@ -95,7 +95,7 @@ db_input('y29_descr',50,$Iy29_descr,true,'text',3,'')
   <tr>
     <td colspan="2" align="center">
     <?php 
-    $chavepri= array("y31_codnoti"=>@$y31_codnoti,"y31_codtipo"=>@$y31_codtipo);
+    $chavepri= ["y31_codnoti"=>@$y31_codnoti,"y31_codtipo"=>@$y31_codtipo];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y31_codtipo,y29_descr,y41_descr";
     $cliframe_alterar_excluir->sql=$clfiscaltipo->sql_query("",""," * ",""," y31_codnoti = $y31_codnoti");

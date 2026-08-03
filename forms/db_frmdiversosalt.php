@@ -535,7 +535,7 @@ function js_volta() {
 <?php 
 echo "js_trocatotal();";
 
-if( isset($xxx) && $xxx == "ok" && !isset($HTTP_POST_VARS["db_opcao"])) {
+if( isset($xxx) && $xxx == "ok" && !isset($_POST["db_opcao"])) {
   $sMsg = _M('tributario.diversos.db_frmdiversosalt.informe_valor_corrigido_total');
   echo "
      function js_xxx(){
@@ -554,7 +554,7 @@ function js_preenchepesquisa(chave) {
 
   db_iframe.hide();
   <?php  if ( $db_opcao !=1 ){ ?>
-    location.href = '<?= basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa=" + chave;
+    location.href = '<?= basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa=" + chave;
   <?php  }  ?>
 }
 </script>

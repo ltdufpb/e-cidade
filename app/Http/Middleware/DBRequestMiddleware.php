@@ -49,7 +49,7 @@ class DBRequestMiddleware
                 continue;
             }
 
-            $request[$key] = utf8_decode($value);
+            $request[$key] = mb_convert_encoding($value, 'ISO-8859-1');
         }
     }
 }

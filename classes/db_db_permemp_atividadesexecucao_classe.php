@@ -29,7 +29,7 @@ class cl_db_permemp_atividadesexecucao
     public function __construct()
     {
         $this->rotulo = new rotulo("db_permemp_atividadesexecucao"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -95,7 +95,7 @@ class cl_db_permemp_atividadesexecucao
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Permissão Atividade () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Permissão Atividade já Cadastrado";
@@ -128,10 +128,10 @@ class cl_db_permemp_atividadesexecucao
       $this->atualizacampos();
      $sql = " update db_permemp_atividadesexecucao set ";
      $virgula = "";
-     if(trim($this->db69_codperm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db69_codperm"])){ 
+     if(trim((string) $this->db69_codperm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db69_codperm"])){ 
        $sql  .= $virgula." db69_codperm = $this->db69_codperm ";
        $virgula = ",";
-       if(trim($this->db69_codperm) == null ){ 
+       if(trim((string) $this->db69_codperm) == null ){ 
          $this->erro_sql = " Campo Código Permissão não informado.";
          $this->erro_campo = "db69_codperm";
          $this->erro_banco = "";
@@ -141,10 +141,10 @@ class cl_db_permemp_atividadesexecucao
          return false;
        }
      }
-     if(trim($this->db69_atividadesexecucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db69_atividadesexecucao"])){ 
+     if(trim((string) $this->db69_atividadesexecucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db69_atividadesexecucao"])){ 
        $sql  .= $virgula." db69_atividadesexecucao = $this->db69_atividadesexecucao ";
        $virgula = ",";
-       if(trim($this->db69_atividadesexecucao) == null ){ 
+       if(trim((string) $this->db69_atividadesexecucao) == null ){ 
          $this->erro_sql = " Campo Atividades de execução não informado.";
          $this->erro_campo = "db69_atividadesexecucao";
          $this->erro_banco = "";
@@ -154,10 +154,10 @@ class cl_db_permemp_atividadesexecucao
          return false;
        }
      }
-     if(trim($this->db69_tipoprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db69_tipoprocesso"])){ 
+     if(trim((string) $this->db69_tipoprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db69_tipoprocesso"])){ 
        $sql  .= $virgula." db69_tipoprocesso = $this->db69_tipoprocesso ";
        $virgula = ",";
-       if(trim($this->db69_tipoprocesso) == null ){ 
+       if(trim((string) $this->db69_tipoprocesso) == null ){ 
          $this->erro_sql = " Campo Tipo de Processo não informado.";
          $this->erro_campo = "db69_tipoprocesso";
          $this->erro_banco = "";

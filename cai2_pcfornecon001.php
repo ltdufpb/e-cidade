@@ -33,8 +33,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 
 
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 //---- instancia classes
 
@@ -80,7 +80,7 @@ function js_emite() {
            </b>
            </td>
            <td nowrap>  <?php 
-           $tipo_blo = array("t"=>"Todos","s"=>"Sim","b"=>"Não");
+           $tipo_blo = ["t"=>"Todos","s"=>"Sim","b"=>"Não"];
 	       db_select("bloqueado",$tipo_blo,true,2); ?>
             </td>
                    
@@ -92,7 +92,7 @@ function js_emite() {
            </b>
            </td>
            <td nowrap>  <?php 
-           $tipo_ordem = array("a"=>"Alfabética","n"=>"Numerica");
+           $tipo_ordem = ["a"=>"Alfabética","n"=>"Numerica"];
 	       db_select("ordem",$tipo_ordem,true,2); ?>
             </td>
                    
@@ -104,7 +104,7 @@ function js_emite() {
            </b>
            </td>
            <td nowrap>  <?php 
-           $tipo = array("t"=>"Todos","c"=>"Com conta","s"=>"Sem conta");
+           $tipo = ["t"=>"Todos","c"=>"Com conta","s"=>"Sem conta"];
 	       db_select("forne",$tipo,true,2); ?>
             </td>
                    

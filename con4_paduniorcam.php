@@ -29,14 +29,14 @@
 //include(modification("classes/db_conarquivospad_classe.php"));
 
 class uniorcam {
-    var $arq=null;
+    public $arq=null;
 
-  function uniorcam($header){
+  function __construct($header){
 
      umask(74);
      $this->arq = fopen("tmp/UNIORCAM.TXT",'w+');
      
-     fputs($this->arq,$header);
+     fputs($this->arq,(string) $header);
      fputs($this->arq,"\r\n");  
 
   }  
@@ -52,15 +52,15 @@ class uniorcam {
     $res =$clarqpad->sql_record(
                $clarqpad->sql_query(null,"*",null," c54_nomearq = 'UNIORCAM.TXT' and c54_anousu=".db_getsession("DB_anousu")."  and c54_codtrib = $tribinst "));
     if($clarqpad->numrows > 0){
-      $rubant = split("\r\n",pg_result($res,0,"c54_arquivo"));
+      $rubant = preg_split("#\r\n#m",pg_fetch_result($res,0,"c54_arquivo"));
       for($yy=0;$yy<sizeof($rubant);$yy++){
          $contador++;
          $line = $rubant[$yy];
 
-         $exercicios .= $virg.substr($rubant[$yy],0,4);
+         $exercicios .= $virg.substr((string) $rubant[$yy],0,4);
          $virg = ",";
  
-         fputs($this->arq,$line);
+         fputs($this->arq,(string) $line);
          fputs($this->arq,"\r\n");
       }
     }
@@ -97,19 +97,19 @@ class uniorcam {
                    o41_ident
             having count(distinct cgc) > 1";
    $rs_verifica = db_query($sql_verifica) or die($sql_verifica);
-   $rows = pg_numrows($rs_verifica);
+   $rows = pg_num_rows($rs_verifica);
    if ( $rows > 0 ) {
      echo "<br><b>PROVAVEIS ERROS NOS REGISTROS DA UNIORCAM:</b><br>";
      for ($x=0;$x < $rows;$x++) {
 
-       $anousu_erro        = pg_result($rs_verifica,$x,"anousu_erro");
-       $orgao_erro         = pg_result($rs_verifica,$x,"orgao_erro");
-       $unidade_erro       = pg_result($rs_verifica,$x,"unidade_erro");
-       $nome_erro          = pg_result($rs_verifica,$x,"nome_erro");
-       $identificador_erro = pg_result($rs_verifica,$x,"identificador_erro");
-       $quant_cnpj_erro    = pg_result($rs_verifica,$x,"quant_cnpj_erro");
-       $instit_erro        = pg_result($rs_verifica,$x,"instit_erro");
-       $dotacoes_erro      = pg_result($rs_verifica,$x,"dotacoes_erro");
+       $anousu_erro        = pg_fetch_result($rs_verifica,$x,"anousu_erro");
+       $orgao_erro         = pg_fetch_result($rs_verifica,$x,"orgao_erro");
+       $unidade_erro       = pg_fetch_result($rs_verifica,$x,"unidade_erro");
+       $nome_erro          = pg_fetch_result($rs_verifica,$x,"nome_erro");
+       $identificador_erro = pg_fetch_result($rs_verifica,$x,"identificador_erro");
+       $quant_cnpj_erro    = pg_fetch_result($rs_verifica,$x,"quant_cnpj_erro");
+       $instit_erro        = pg_fetch_result($rs_verifica,$x,"instit_erro");
+       $dotacoes_erro      = pg_fetch_result($rs_verifica,$x,"dotacoes_erro");
 
        echo "ano: $anousu_erro - orgao: $orgao_erro - unidade: $unidade_erro [$nome_erro] - identificador: $identificador_erro - quantidade cnpj: $quant_cnpj_erro - dotacoes: $dotacoes_erro - instituicoes: $instit_erro" . "<br>";
      }
@@ -131,26 +131,26 @@ class uniorcam {
 
   // echo $sql;exit;
    $res=db_query($sql);
-   $rows = pg_numrows($res);
+   $rows = pg_num_rows($res);
    for ($x=0;$x < $rows;$x++){
-      $anousu         = formatar(pg_result($res,$x,"anousu"),4,'n');
-      $orgao          = formatar(pg_result($res,$x,"orgao"),2,'n');
-      $unidade        = formatar(pg_result($res,$x,"unidade"),2,'n');
-      $nome           = formatar(pg_result($res,$x,"nome"),80,'c');
-      $identificador  = formatar(pg_result($res,$x,"identificador"),2,'n');
-      $cnpj           = formatar(pg_result($res,$x,"cnpj"),14,'n');
-      
-   
+      $anousu         = formatar(pg_fetch_result($res,$x,"anousu"),4);
+      $orgao          = formatar(pg_fetch_result($res,$x,"orgao"),2);
+      $unidade        = formatar(pg_fetch_result($res,$x,"unidade"),2);
+      $nome           = formatar(pg_fetch_result($res,$x,"nome"),80);
+      $identificador  = formatar(pg_fetch_result($res,$x,"identificador"),2);
+      $cnpj           = formatar(pg_fetch_result($res,$x,"cnpj"),14);
+
+
       //-- 
       $line = $anousu.$orgao.$unidade.$nome.$identificador.$cnpj; 
       fputs($this->arq,$line);
       fputs($this->arq,"\r\n");
-  
+
       $contador = $contador+1; // incrementa contador global
    }
 
    //  trailer
-   $contador = espaco(10-(strlen($contador)),'0').$contador;
+   $contador = espaco(10-(strlen((string) $contador))).$contador;
    $line = "FINALIZADOR".$contador;
    fputs($this->arq,$line);
    fputs($this->arq,"\r\n");

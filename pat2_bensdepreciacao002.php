@@ -106,8 +106,8 @@ if (empty($oGet->sDataInicio) &&  !empty($oGet->sDataFinal)) {
 if (!empty($oGet->sDataInicio) && !empty($oGet->sDataFinal)) {
 
   $sDataFinal  = formataData($oGet->sDataFinal);
-  list($iDiaInicio, $iMesInicio, $iAnoInicio) = explode("/", $oGet->sDataInicio);
-  list($iDiaFinal, $iMesFinal, $iAnoFinal)    = explode("/", $oGet->sDataFinal);
+  [$iDiaInicio, $iMesInicio, $iAnoInicio] = explode("/", (string) $oGet->sDataInicio);
+  [$iDiaFinal, $iMesFinal, $iAnoFinal]    = explode("/", (string) $oGet->sDataFinal);
 
 
   $sPeriodo    = "{$oGet->sDataInicio} até {$oGet->sDataFinal}";
@@ -248,9 +248,9 @@ if ($iNumrows == 0) {
   exit;
 }
 
-$aHistoricoDepreciacao       = array();
-$aValoresDepreciado 		 = array();
-$aValoresDepreciadoAcumulado = array();
+$aHistoricoDepreciacao       = [];
+$aValoresDepreciado 		 = [];
+$aValoresDepreciadoAcumulado = [];
 
 for ($i = 0; $i < $iNumrows; $i++) {
 
@@ -444,7 +444,7 @@ switch ($oGet->sImpressao) {
             }
 
 			if ($lQuebraPagina || $lPrimeiroLaco || $lQuebraDepto || $lQuebraOrgao) {
-				setHeader($oPdf, $iHeigth, $oGet->sImpressao, $lQuebraPagina, $oPeriodoDepreciado, $sDescricaoH, $sTipoTotal);
+				setHeader($oPdf, $iHeigth);
 				$lPrimeiroLaco = false;
 			}
 
@@ -538,7 +538,7 @@ switch ($oGet->sImpressao) {
                 $lNovaPagina      = ($oPdf->getAvailHeight() < ($iHeigth*2)+$iMultiCellHeight);
 
 				if ($lNovaPagina || $lPrimeiroLaco || $lQuebraDepto || $lQuebraOrgao) {
-					setHeader($oPdf, $iHeigth, $oGet->sImpressao, $lNovaPagina, $aHistorico[0], $sDescricaoH, $sTipoTotal);
+					setHeader($oPdf, $iHeigth);
 					$lPrimeiroLaco = false;
 				}
 
@@ -548,7 +548,7 @@ switch ($oGet->sImpressao) {
                 $oPdf->setAutoNewLineMulticell(false);
 				$oPdf->Cell(15,  $iMultiCellHeight, $oHistorico->placa,                         "TBR", 0, "C");
 				$oPdf->MultiCell(45,  $iHeigth, $oHistorico->bem_descricao,           1, "L");
-				$oPdf->Cell(45,  $iMultiCellHeight, substr($oHistorico->tipo_depreciacao, 0, 30),        1, 0, "L");
+				$oPdf->Cell(45,  $iMultiCellHeight, substr((string) $oHistorico->tipo_depreciacao, 0, 30),        1, 0, "L");
 				$oPdf->Cell(25,  $iMultiCellHeight, $oHistorico->classe,                                 1, 0, "C");
 				$oPdf->Cell(27,  $iMultiCellHeight, $oHistorico->vida_util,                              1, 0, "C");
 				$oPdf->Cell(30,  $iMultiCellHeight, db_formatar($oHistorico->valor_aquisicao, 'f'),      1, 0, "R");
@@ -668,7 +668,7 @@ switch ($oGet->sImpressao) {
             } 
 
 			if ($lQuebraPagina || $lPrimeiroLaco || $lQuebraDepto || $lQuebraOrgao) {
-				setHeader($oPdf, $iHeigth, $oGet->sImpressao, $lQuebraPagina, null, $sDescricaoH, $sTipoTotal);
+				setHeader($oPdf, $iHeigth);
                 $lPrimeiroLaco = false;
 			}
 
@@ -681,7 +681,7 @@ switch ($oGet->sImpressao) {
             $oPdf->setAutoNewLineMulticell(false);
 			$oPdf->Cell(15,  $iMultiCellHeight, $oHistorico->placa,                         "TBR", 0, "C");
 			$oPdf->MultiCell(45,  $iHeigth, $oHistorico->bem_descricao,           1, "L");
-			$oPdf->Cell(45,  $iMultiCellHeight, substr($oHistorico->tipo_depreciacao, 0, 30),        1, 0, "L");
+			$oPdf->Cell(45,  $iMultiCellHeight, substr((string) $oHistorico->tipo_depreciacao, 0, 30),        1, 0, "L");
 			$oPdf->Cell(25,  $iMultiCellHeight, $oHistorico->classe,                                 1, 0, "C");
 			$oPdf->Cell(27,  $iMultiCellHeight, $oHistorico->vida_util,                              1, 0, "C");
 			$oPdf->Cell(30,  $iMultiCellHeight, db_formatar($oHistorico->valor_aquisicao, 'f'),      1, 0, "R");

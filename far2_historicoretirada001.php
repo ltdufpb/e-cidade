@@ -68,7 +68,7 @@ $rotulo->label("descrdepto");
                       </td>
                       <td align='center'>
                             <?php
-                              $aX = array('1'=>'CGS', '2'=>'MEDICAMENTO');
+                              $aX = ['1'=>'CGS', '2'=>'MEDICAMENTO'];
                               db_select('ordem', $aX, true, 1, '');
                             ?>
                       </td>

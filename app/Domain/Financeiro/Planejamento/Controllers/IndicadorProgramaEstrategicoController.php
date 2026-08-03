@@ -41,14 +41,8 @@ use App\Http\Controllers\Controller;
  */
 class IndicadorProgramaEstrategicoController extends Controller
 {
-    /**
-     * @var IndicadorProgramaEstrategicoService
-     */
-    private $service;
-
-    public function __construct(IndicadorProgramaEstrategicoService $service)
+    public function __construct(private readonly IndicadorProgramaEstrategicoService $service)
     {
-        $this->service = $service;
     }
 
     /**

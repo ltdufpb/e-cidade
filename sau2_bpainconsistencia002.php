@@ -39,9 +39,9 @@ $sArquivo    = file_get_contents("tmp/erro_bpa_magnetico.json");
 $oLogArquivo = json_decode($sArquivo);
 $oDados      = db_utils::postMemory($_GET);
 
-$aInconsistenciaPaciente = array();
-$aInconsistenciaMedico   = array();
-$aInconsistenciaFaa      = array();
+$aInconsistenciaPaciente = [];
+$aInconsistenciaMedico   = [];
+$aInconsistenciaFaa      = [];
 
 
 /**
@@ -96,14 +96,14 @@ foreach ($aInconsistenciaPaciente as $oLogPaciente) {
   if ($lImprimeCabecalho || $oPdf->h < $oPdf->GetY() + 25) {
     
     $lAdicionaPagina = $oPdf->h < ($oPdf->GetY() + 25) || $lImprimeCabecalho ? true : false;
-    cabecalho($oPdf, 1, $lAdicionaPagina);
+    cabecalho($oPdf);
     $lImprimeCabecalho = false;
   }   
 
   $oPdf->SetFont("arial", "", 8);
   $oPdf->Cell(25, 4, $oLogPaciente->paciente,           "TBR", 0, "C");
-  $oPdf->Cell(80, 4, utf8_decode($oLogPaciente->nome),      1, 0, "L");
-  $oPdf->Cell(87, 4, utf8_decode($oLogPaciente->erro),  "TBL", 1, "L");
+  $oPdf->Cell(80, 4, mb_convert_encoding($oLogPaciente->nome, 'ISO-8859-1'),      1, 0, "L");
+  $oPdf->Cell(87, 4, mb_convert_encoding($oLogPaciente->erro, 'ISO-8859-1'),  "TBL", 1, "L");
   
   $iContador++;
 }
@@ -129,14 +129,14 @@ foreach ($aInconsistenciaMedico as $oLogMedico) {
     if (!$lImprimeCabecalho) {
       $lAdicionaPagina = $oPdf->h < ($oPdf->GetY() + 25) ? true : false; 
     }
-    cabecalho($oPdf, 2, $lAdicionaPagina);
+    cabecalho($oPdf);
     $lImprimeCabecalho = false;
   }
   
   $oPdf->SetFont("arial", "", 8);
   $oPdf->Cell(25, 4, $oLogMedico->medico,             "TBR", 0, "C");
-  $oPdf->Cell(80, 4, utf8_decode($oLogMedico->nome),      1, 0, "L");
-  $oPdf->Cell(87, 4, utf8_decode($oLogMedico->erro),  "TBL", 1, "L");
+  $oPdf->Cell(80, 4, mb_convert_encoding($oLogMedico->nome, 'ISO-8859-1'),      1, 0, "L");
+  $oPdf->Cell(87, 4, mb_convert_encoding($oLogMedico->erro, 'ISO-8859-1'),  "TBL", 1, "L");
   $iContador++;
 }
 
@@ -159,14 +159,14 @@ foreach ($aInconsistenciaFaa as $oLogFaa) {
   if ($lImprimeCabecalho || $oPdf->h < $oPdf->GetY() + 25) {
     
     $lAdicionaPagina = $oPdf->h < ($oPdf->GetY() + 25) ? true : false;
-    cabecalho($oPdf, 3, $lAdicionaPagina);
+    cabecalho($oPdf);
     $lImprimeCabecalho = false;
   }
   
   $oPdf->SetFont("arial", "", 8);
   $oPdf->Cell(25, 4, $oLogFaa->faa,                "TBR", 0, "C");
   $oPdf->Cell(80, 4, $oLogFaa->procedimento,           1, 0, "L");
-  $oPdf->Cell(87, 4, utf8_decode($oLogFaa->erro),  "TBL", 1, "L");
+  $oPdf->Cell(87, 4, mb_convert_encoding($oLogFaa->erro, 'ISO-8859-1'),  "TBL", 1, "L");
   $iContador++;
 }
 if (count($aInconsistenciaFaa) > 0) {

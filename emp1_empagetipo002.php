@@ -33,7 +33,7 @@ include(modification("classes/db_empagetipo_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplanoconta_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clempagetipo    = new cl_empagetipo;
@@ -72,7 +72,7 @@ if (isset($alterar)) {
 
     db_inicio_transacao();
 
-    $clempagetipo->e83_codigocompromisso = str_pad($e83_codigocompromisso, 4, "0", STR_PAD_LEFT);
+    $clempagetipo->e83_codigocompromisso = str_pad((string) $e83_codigocompromisso, 4, "0", STR_PAD_LEFT);
     $clempagetipo->e83_codtipo           = $e83_codtipo;
     $clempagetipo->e83_codmod            = 3;
     $clempagetipo->e83_sequencia         = $e83_sequencia;

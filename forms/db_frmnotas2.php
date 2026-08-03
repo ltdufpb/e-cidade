@@ -45,7 +45,7 @@ db_fieldsmemory($result,0);
   </tr>
   <tr>
    <td colspan="4">
-    <b>Data:</b> <?=substr($ed13_d_data,8,2)?>/<?=substr($ed13_d_data,5,2)?>/<?=substr($ed13_d_data,0,4)?>
+    <b>Data:</b> <?=substr((string) $ed13_d_data,8,2)?>/<?=substr((string) $ed13_d_data,5,2)?>/<?=substr((string) $ed13_d_data,0,4)?>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <b>Turma:</b> <?=$ed05_c_nome?>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -91,7 +91,7 @@ db_fieldsmemory($result,0);
   </table><br>
   Fechadas:
   <?php 
-  $x = array('f'=>'Não','t'=>'Sim');
+  $x = ['f'=>'Não','t'=>'Sim'];
   db_select('ed11_c_fechado',$x,true,$db_opcao,"");
   ?>
   <input type="button" value="Salvar" name="botao" onclick="valida(<?=$clmatriculas->numrows?>,this,'<?php if($ed11_f_media==""){echo 'incluir';}else{echo 'alterar';}?>')" <?=($db_opcao==3?"disabled":"")?>>

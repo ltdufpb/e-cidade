@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE matordemalmox
 class cl_matordemalmox { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m56_sequencial = 0; 
-   var $m56_codordem = 0; 
-   var $m56_almox = 0; 
-   var $m56_departlanc = 0; 
+   public $m56_sequencial = 0; 
+   public $m56_codordem = 0; 
+   public $m56_almox = 0; 
+   public $m56_departlanc = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m56_sequencial = int4 = Cod. Sequencial 
                  m56_codordem = int4 = Código O.C. 
                  m56_almox = int4 = Codigo Almox. 
                  m56_departlanc = int4 = Depart. O.C. 
                  ";
    //funcao construtor da classe 
-   function cl_matordemalmox() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matordemalmox"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_matordemalmox {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m56_sequencial = pg_result($result,0,0); 
+       $this->m56_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from matordemalmox_m56_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m56_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m56_sequencial)){
          $this->erro_sql = " Campo m56_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_matordemalmox {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "guardar dados da entrega da ordem ao almox ($this->m56_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "guardar dados da entrega da ordem ao almox já Cadastrado";
@@ -180,13 +180,13 @@ class cl_matordemalmox {
      $resaco = $this->sql_record($this->sql_query_file($this->m56_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8787,'$this->m56_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1501,8787,'','".AddSlashes(pg_result($resaco,0,'m56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1501,8791,'','".AddSlashes(pg_result($resaco,0,'m56_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1501,8789,'','".AddSlashes(pg_result($resaco,0,'m56_almox'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1501,8788,'','".AddSlashes(pg_result($resaco,0,'m56_departlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1501,8787,'','".AddSlashes(pg_fetch_result($resaco,0,'m56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1501,8791,'','".AddSlashes(pg_fetch_result($resaco,0,'m56_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1501,8789,'','".AddSlashes(pg_fetch_result($resaco,0,'m56_almox'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1501,8788,'','".AddSlashes(pg_fetch_result($resaco,0,'m56_departlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_matordemalmox {
       $this->atualizacampos();
      $sql = " update matordemalmox set ";
      $virgula = "";
-     if(trim($this->m56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m56_sequencial"])){ 
+     if(trim((string) $this->m56_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m56_sequencial"])){ 
        $sql  .= $virgula." m56_sequencial = $this->m56_sequencial ";
        $virgula = ",";
-       if(trim($this->m56_sequencial) == null ){ 
+       if(trim((string) $this->m56_sequencial) == null ){ 
          $this->erro_sql = " Campo Cod. Sequencial nao Informado.";
          $this->erro_campo = "m56_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_matordemalmox {
          return false;
        }
      }
-     if(trim($this->m56_codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m56_codordem"])){ 
+     if(trim((string) $this->m56_codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m56_codordem"])){ 
        $sql  .= $virgula." m56_codordem = $this->m56_codordem ";
        $virgula = ",";
-       if(trim($this->m56_codordem) == null ){ 
+       if(trim((string) $this->m56_codordem) == null ){ 
          $this->erro_sql = " Campo Código O.C. nao Informado.";
          $this->erro_campo = "m56_codordem";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_matordemalmox {
          return false;
        }
      }
-     if(trim($this->m56_almox)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m56_almox"])){ 
+     if(trim((string) $this->m56_almox)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m56_almox"])){ 
        $sql  .= $virgula." m56_almox = $this->m56_almox ";
        $virgula = ",";
-       if(trim($this->m56_almox) == null ){ 
+       if(trim((string) $this->m56_almox) == null ){ 
          $this->erro_sql = " Campo Codigo Almox. nao Informado.";
          $this->erro_campo = "m56_almox";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_matordemalmox {
          return false;
        }
      }
-     if(trim($this->m56_departlanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m56_departlanc"])){ 
+     if(trim((string) $this->m56_departlanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m56_departlanc"])){ 
        $sql  .= $virgula." m56_departlanc = $this->m56_departlanc ";
        $virgula = ",";
-       if(trim($this->m56_departlanc) == null ){ 
+       if(trim((string) $this->m56_departlanc) == null ){ 
          $this->erro_sql = " Campo Depart. O.C. nao Informado.";
          $this->erro_campo = "m56_departlanc";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_matordemalmox {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8787,'$this->m56_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m56_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1501,8787,'".AddSlashes(pg_result($resaco,$conresaco,'m56_sequencial'))."','$this->m56_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1501,8787,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m56_sequencial'))."','$this->m56_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m56_codordem"]))
-           $resac = db_query("insert into db_acount values($acount,1501,8791,'".AddSlashes(pg_result($resaco,$conresaco,'m56_codordem'))."','$this->m56_codordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1501,8791,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m56_codordem'))."','$this->m56_codordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m56_almox"]))
-           $resac = db_query("insert into db_acount values($acount,1501,8789,'".AddSlashes(pg_result($resaco,$conresaco,'m56_almox'))."','$this->m56_almox',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1501,8789,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m56_almox'))."','$this->m56_almox',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m56_departlanc"]))
-           $resac = db_query("insert into db_acount values($acount,1501,8788,'".AddSlashes(pg_result($resaco,$conresaco,'m56_departlanc'))."','$this->m56_departlanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1501,8788,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m56_departlanc'))."','$this->m56_departlanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_matordemalmox {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8787,'$m56_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1501,8787,'','".AddSlashes(pg_result($resaco,$iresaco,'m56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1501,8791,'','".AddSlashes(pg_result($resaco,$iresaco,'m56_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1501,8789,'','".AddSlashes(pg_result($resaco,$iresaco,'m56_almox'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1501,8788,'','".AddSlashes(pg_result($resaco,$iresaco,'m56_departlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1501,8787,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m56_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1501,8791,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m56_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1501,8789,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m56_almox'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1501,8788,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m56_departlanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from matordemalmox
@@ -376,7 +376,7 @@ class cl_matordemalmox {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matordemalmox";
@@ -390,7 +390,7 @@ class cl_matordemalmox {
    function sql_query ( $m56_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_matordemalmox {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,7 +429,7 @@ class cl_matordemalmox {
    function sql_query_file ( $m56_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_matordemalmox {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

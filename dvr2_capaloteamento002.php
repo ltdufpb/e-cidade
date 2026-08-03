@@ -27,7 +27,7 @@
 
 include(modification("libs/db_sql.php"));
 include(modification("fpdf151/scpdf.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $sqlinst = "select * from db_config where codigo = ".db_getsession("DB_instit");
@@ -58,7 +58,7 @@ $sql = "select * from proprietario_nome where j01_matric in (   select distinct 
 //echo $sql;exit;
 $result = db_query($sql);
 //db_criatabela($result);exit;
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
   
    $oParms = new stdClass();
    $oParms->sLista = $lista;
@@ -73,7 +73,7 @@ $preenc = 1;
 $pdf->SetFont('Arial','',8);
 $linha = 0;
 //for($x=0;$x < 8;$x++){
-for($x=0;$x < pg_numrows($result);$x++){
+for($x=0;$x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($x%4==0){
       $pdf->addpage();

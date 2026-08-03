@@ -28,11 +28,6 @@ class LicitaConValidacao
 {
 
   /**
-   * @var licitacao
-   */
-    private $oLicitacao;
-
-  /**
    * @var array
    */
     private $aAtributosDinamicos;
@@ -42,9 +37,8 @@ class LicitaConValidacao
    *
    * @param licitacao $oLicitacao
    */
-    public function __construct(licitacao $oLicitacao)
+    public function __construct(private readonly licitacao $oLicitacao)
     {
-        $this->oLicitacao = $oLicitacao;
     }
 
   /**

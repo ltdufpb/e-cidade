@@ -32,8 +32,8 @@ include(modification("libs/db_stdlibwebseller.php"));
 include(modification("classes/db_prontuarios_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 set_time_limit(0);
 
@@ -51,7 +51,7 @@ try {
                                           where unidades.sd02_i_codigo = $unidade
                                         "
                                       );
-}catch ( Exception $e ){
+}catch ( Exception ){
   die("erro");
 }
 
@@ -83,8 +83,8 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
   //Gerar número prontuário automático
     //gera numatend
     $sql_fc    = "select fc_numatend()";
-    $query_fc  = db_query($sql_fc) or die(pg_errormessage().$sql_fc);
-    $fc_numatend = explode(",",pg_result($query_fc,0,0));
+    $query_fc  = db_query($sql_fc) or die(pg_last_error().$sql_fc);
+    $fc_numatend = explode(",",pg_fetch_result($query_fc,0,0));
 
     $clprontuarios->sd24_i_ano      = trim($fc_numatend[0]);
     $clprontuarios->sd24_i_mes      = trim($fc_numatend[1]);
@@ -133,7 +133,7 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
     $pdf->setfont('arial','b',7);
 // $pdf->text( $pdf->getX()+60,$pdf->getY()+3,"NÚMERO DO ATENDIMENTO");
     $pdf->text( $pdf->getX()+70,$pdf->getY()+5,"ATENDIMENTO Nro :   ".$sd24_i_codigo);
-    $t1 = str_pad($sd24_i_codigo,10,0, STR_PAD_LEFT);//numero codigo barras
+    $t1 = str_pad((string) $sd24_i_codigo,10,0, STR_PAD_LEFT);//numero codigo barras
     $pdf->setfont('arial','b',8);
   $pdf->SetFillColor(000);//fundo codbarras
 //$pdf->text($pdf->getX()+59,$pdf->getY()+15,str_pad($sd24_i_codigo,10," ",'str_pad_left').' - ');
@@ -164,15 +164,15 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
     $pdf->setfont('arial','b',7);
     $pdf->text( $pdf->getX()+2, $alt+24, "NOME DA UNIDADE: ");
     $pdf->setfont('arial','b',6);
-    $pdf->text( $pdf->getX()+2, $alt+27,  substr($descrdepto,0,40));
+    $pdf->text( $pdf->getX()+2, $alt+27,  substr((string) $descrdepto,0,40));
     $pdf->setfont('arial','b',7);
     $pdf->text( $pdf->getX()+2, $alt+34, "ENDEREÇO: ");
     $pdf->setfont('arial','b',6);
-    $pdf->text( $pdf->getX()+2, $alt+37, substr($est_ender,0,40));
+    $pdf->text( $pdf->getX()+2, $alt+37, substr((string) $est_ender,0,40));
     $pdf->setfont('arial','b',7);
     $pdf->text( $pdf->getX()+2, $alt+42, "MUNICÍPIO: ");
     $pdf->setfont('arial','b',6);
-    $pdf->text( $pdf->getX()+2, $alt+44, substr($est_munic,0,40));
+    $pdf->text( $pdf->getX()+2, $alt+44, substr((string) $est_munic,0,40));
     $pdf->setfont('arial','b',6);
     $pdf->text( $pdf->getX()+2, $alt+50, "UF:".$est_uf);
     $pdf->setfont('arial','b',6);
@@ -255,9 +255,9 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
     $pdf->setfont('arial','b',7);
     $alt=$pdf->getY();
     $lar=$pdf->getX();
-    $sd24_t_diagnostico1=substr($sd24_t_diagnostico,0,46);
-    $sd24_t_diagnostico2=substr($sd24_t_diagnostico,46,46);
-    $sd24_t_diagnostico3=substr($sd24_t_diagnostico,92,46);
+    $sd24_t_diagnostico1=substr((string) $sd24_t_diagnostico,0,46);
+    $sd24_t_diagnostico2=substr((string) $sd24_t_diagnostico,46,46);
+    $sd24_t_diagnostico3=substr((string) $sd24_t_diagnostico,92,46);
     $pdf->setY($alt+119);
     $pdf->setX($lar+76);
     $pdf->text($lar+78,$alt+122,$sd24_t_diagnostico1);
@@ -274,7 +274,7 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
     $pdf->rect( $pdf->getX(), $pdf->getY()+131, 27, 10, "D");
     $pdf->text( $pdf->getX(), $pdf->getY()+134, "DATA DO ATENDIMENTO:");
     $pdf->setfont('arial','b',7);
-    $sd24_d_cadastro2 = substr($sd24_d_cadastro,8,2)."/".substr($sd24_d_cadastro,5,2)."/".substr($sd24_d_cadastro,0,4);
+    $sd24_d_cadastro2 = substr((string) $sd24_d_cadastro,8,2)."/".substr((string) $sd24_d_cadastro,5,2)."/".substr((string) $sd24_d_cadastro,0,4);
     $pdf->text( $pdf->getX()+5, $pdf->getY()+137, $sd24_d_cadastro2);
     //Linha 4 - 2ï¿½ Retangulo HORA
     $pdf->rect( $pdf->getX()+29, $pdf->getY()+131, 27, 10, "D");

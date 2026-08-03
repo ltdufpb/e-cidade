@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE db_cepmunic
 class cl_db_cepmunic { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db10_codigo = 0; 
-   var $db10_munic = null; 
-   var $db10_cep = null; 
-   var $db10_uf = 0; 
-   var $db10_codibge = 0; 
+   public $db10_codigo = 0; 
+   public $db10_munic = null; 
+   public $db10_cep = null; 
+   public $db10_uf = 0; 
+   public $db10_codibge = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db10_codigo = int8 = Código 
                  db10_munic = varchar(60) = Município 
                  db10_cep = varchar(8) = Cep 
@@ -56,10 +56,10 @@ class cl_db_cepmunic {
                  db10_codibge = int4 = Código do município no cadastro do IBGE 
                  ";
    //funcao construtor da classe 
-   function cl_db_cepmunic() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_cepmunic"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -125,10 +125,10 @@ class cl_db_cepmunic {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db10_codigo = pg_result($result,0,0); 
+       $this->db10_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_cepmunic_db10_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db10_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db10_codigo)){
          $this->erro_sql = " Campo db10_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -164,7 +164,7 @@ class cl_db_cepmunic {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cep do municipio ($this->db10_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cep do municipio já Cadastrado";
@@ -188,14 +188,14 @@ class cl_db_cepmunic {
      $resaco = $this->sql_record($this->sql_query_file($this->db10_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4819,'$this->db10_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,648,4819,'','".AddSlashes(pg_result($resaco,0,'db10_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,648,4820,'','".AddSlashes(pg_result($resaco,0,'db10_munic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,648,4829,'','".AddSlashes(pg_result($resaco,0,'db10_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,648,4821,'','".AddSlashes(pg_result($resaco,0,'db10_uf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,648,6013,'','".AddSlashes(pg_result($resaco,0,'db10_codibge'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,648,4819,'','".AddSlashes(pg_fetch_result($resaco,0,'db10_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,648,4820,'','".AddSlashes(pg_fetch_result($resaco,0,'db10_munic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,648,4829,'','".AddSlashes(pg_fetch_result($resaco,0,'db10_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,648,4821,'','".AddSlashes(pg_fetch_result($resaco,0,'db10_uf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,648,6013,'','".AddSlashes(pg_fetch_result($resaco,0,'db10_codibge'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -204,10 +204,10 @@ class cl_db_cepmunic {
       $this->atualizacampos();
      $sql = " update db_cepmunic set ";
      $virgula = "";
-     if(trim($this->db10_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db10_codigo"])){ 
+     if(trim((string) $this->db10_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db10_codigo"])){ 
        $sql  .= $virgula." db10_codigo = $this->db10_codigo ";
        $virgula = ",";
-       if(trim($this->db10_codigo) == null ){ 
+       if(trim((string) $this->db10_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "db10_codigo";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_db_cepmunic {
          return false;
        }
      }
-     if(trim($this->db10_munic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db10_munic"])){ 
+     if(trim((string) $this->db10_munic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db10_munic"])){ 
        $sql  .= $virgula." db10_munic = '$this->db10_munic' ";
        $virgula = ",";
-       if(trim($this->db10_munic) == null ){ 
+       if(trim((string) $this->db10_munic) == null ){ 
          $this->erro_sql = " Campo Município nao Informado.";
          $this->erro_campo = "db10_munic";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_db_cepmunic {
          return false;
        }
      }
-     if(trim($this->db10_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db10_cep"])){ 
+     if(trim((string) $this->db10_cep)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db10_cep"])){ 
        $sql  .= $virgula." db10_cep = '$this->db10_cep' ";
        $virgula = ",";
-       if(trim($this->db10_cep) == null ){ 
+       if(trim((string) $this->db10_cep) == null ){ 
          $this->erro_sql = " Campo Cep nao Informado.";
          $this->erro_campo = "db10_cep";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_db_cepmunic {
          return false;
        }
      }
-     if(trim($this->db10_uf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db10_uf"])){ 
+     if(trim((string) $this->db10_uf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db10_uf"])){ 
        $sql  .= $virgula." db10_uf = $this->db10_uf ";
        $virgula = ",";
-       if(trim($this->db10_uf) == null ){ 
+       if(trim((string) $this->db10_uf) == null ){ 
          $this->erro_sql = " Campo UF nao Informado.";
          $this->erro_campo = "db10_uf";
          $this->erro_banco = "";
@@ -256,8 +256,8 @@ class cl_db_cepmunic {
          return false;
        }
      }
-     if(trim($this->db10_codibge)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db10_codibge"])){ 
-        if(trim($this->db10_codibge)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db10_codibge"])){ 
+     if(trim((string) $this->db10_codibge)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db10_codibge"])){ 
+        if(trim((string) $this->db10_codibge)=="" && isset($GLOBALS["HTTP_POST_VARS"]["db10_codibge"])){ 
            $this->db10_codibge = "0" ; 
         } 
        $sql  .= $virgula." db10_codibge = $this->db10_codibge ";
@@ -271,19 +271,19 @@ class cl_db_cepmunic {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4819,'$this->db10_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db10_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,648,4819,'".AddSlashes(pg_result($resaco,$conresaco,'db10_codigo'))."','$this->db10_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,648,4819,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db10_codigo'))."','$this->db10_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db10_munic"]))
-           $resac = db_query("insert into db_acount values($acount,648,4820,'".AddSlashes(pg_result($resaco,$conresaco,'db10_munic'))."','$this->db10_munic',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,648,4820,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db10_munic'))."','$this->db10_munic',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db10_cep"]))
-           $resac = db_query("insert into db_acount values($acount,648,4829,'".AddSlashes(pg_result($resaco,$conresaco,'db10_cep'))."','$this->db10_cep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,648,4829,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db10_cep'))."','$this->db10_cep',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db10_uf"]))
-           $resac = db_query("insert into db_acount values($acount,648,4821,'".AddSlashes(pg_result($resaco,$conresaco,'db10_uf'))."','$this->db10_uf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,648,4821,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db10_uf'))."','$this->db10_uf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db10_codibge"]))
-           $resac = db_query("insert into db_acount values($acount,648,6013,'".AddSlashes(pg_result($resaco,$conresaco,'db10_codibge'))."','$this->db10_codibge',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,648,6013,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db10_codibge'))."','$this->db10_codibge',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -328,14 +328,14 @@ class cl_db_cepmunic {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4819,'$db10_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,648,4819,'','".AddSlashes(pg_result($resaco,$iresaco,'db10_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,648,4820,'','".AddSlashes(pg_result($resaco,$iresaco,'db10_munic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,648,4829,'','".AddSlashes(pg_result($resaco,$iresaco,'db10_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,648,4821,'','".AddSlashes(pg_result($resaco,$iresaco,'db10_uf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,648,6013,'','".AddSlashes(pg_result($resaco,$iresaco,'db10_codibge'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,648,4819,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db10_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,648,4820,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db10_munic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,648,4829,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db10_cep'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,648,4821,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db10_uf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,648,6013,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db10_codibge'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_cepmunic
@@ -395,7 +395,7 @@ class cl_db_cepmunic {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_cepmunic";
@@ -409,7 +409,7 @@ class cl_db_cepmunic {
    function sql_query ( $db10_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,7 +431,7 @@ class cl_db_cepmunic {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -443,7 +443,7 @@ class cl_db_cepmunic {
    function sql_query_file ( $db10_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -464,7 +464,7 @@ class cl_db_cepmunic {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

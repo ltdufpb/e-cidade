@@ -44,37 +44,22 @@ $cldb_config = new cl_db_config;
 $clconplanoreduz = new cl_conplanoreduz;
 $clrotulo = new rotulocampo;
 $clrotulo->label("o15_descr");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $instit=str_replace("-",",",$instit);
 
 function php_espaco($nivel){
       $espaco="";
-      switch($nivel){
-	case 1:
-		$espaco="";
-		break;
-	case 2:
-		$espaco=" ";
-		break;
-	case 3:
-		$espaco="    ";
-		break;
-	case 4:
-		$espaco="       ";
-		break;
-	case 5:
-		$espaco="           ";
-		break;
-	case 6:
-		$espaco="              ";
-		break;
-	case 7:
-		$espaco="                  ";
-		break;
-	case 8:
-		$espaco="                      ";
-		break;
-      }
+      $espaco = match ($nivel) {
+          1 => "",
+          2 => " ",
+          3 => "    ",
+          4 => "       ",
+          5 => "           ",
+          6 => "              ",
+          7 => "                  ",
+          8 => "                      ",
+          default => $espaco,
+      };
       return $espaco;
 }
 
@@ -89,8 +74,8 @@ $pdf = new PDF();
 $pdf->Open(); 
 $pdf->AliasNbPages(); 
 $pdf->setfillcolor(235);
-$matriz01=array();
-$matriz02=array();
+$matriz01=[];
+$matriz02=[];
 $cont02=0;
 if($origem=="R"){
     //-- classe $conplanosis->sql_vs_planocontas($c64_codpla, campos, ordem , where )
@@ -119,13 +104,13 @@ if($origem=="R"){
     // for
     //db_criatabela($result);
     //exit;
-    for($i=0;$i<pg_numrows($result);$i++){
+    for($i=0;$i<pg_num_rows($result);$i++){
          db_fieldsmemory($result,$i);
         if($pdf->gety()>$pdf->h-30 || $pagina ==1){
     	   $pagina = 0;
     	   $pdf->addpage();
 	   $pdf->setfont('arial','b',7);
-	
+
  	   $pdf->cell(35,$alt,"Estrutural",1,0,"C",0);
 	   $pdf->cell(15,$alt,"Reduz",1,0,"C",0);
 	   $pdf->cell(80,$alt,"Descrição",1,0,"C",0);
@@ -135,9 +120,9 @@ if($origem=="R"){
 	   $pdf->cell(30,$alt,$RLo15_descr,1,1,"C",0);
          } 
 
-      
-         $matriz01=array();
-         $matriz_descr=array();
+
+         $matriz01=[];
+         $matriz_descr=[];
          $cont=0;
          $nivel = db_le_mae_sistema($c64_estrut,true); // false - conta mae, true= nivel
          $testamae=false;
@@ -187,13 +172,13 @@ if($origem=="R"){
 	         }	
 	         /*fim*/
 
-	     
+
 	         $matriz02[$cont02]=$matriz01[$tt];    
 	         $cont02++; 
-	   
+
                  $nivel02 = db_le_mae_sistema($matriz01[$tt],true);
                  $espaco=php_espaco($nivel02);
-	
+
 	         $pdf->cell(35,$alt,$matriz01[$tt],0,0,"L",0);
 	         $pdf->cell(15,$alt,'',0,0,"L",0);
 	         $pdf->cell(80,$alt,$espaco.$matriz_descr[$tt],0,0,"L",0);
@@ -206,7 +191,7 @@ if($origem=="R"){
       unset($matriz01);
       unset($matriz_descr);
 
-      
+
 	  /*rotina para verificar se a estrutura nao esta se repetindo*/
       $testa_repete=true; 
       for($f=0; $f<count($matriz02); $f++){
@@ -228,9 +213,9 @@ if($origem=="R"){
       // $pdf->cell(6,$alt,$c52_descrred,0,0,"L",1);
       $pdf->cell(11,$alt,$c62_codrec,0,0,"L",1);
       $pdf->cell(30,$alt,$o15_descr,0,1,"L",1);
-     
+
  }
-    
+
         $pdf->Output();
 
 ////////////////////////////////////////////////
@@ -259,7 +244,7 @@ if($origem=="R"){
     $alt = 4;
     $pagina = 1;
     // for
-    for($i=0;$i<pg_numrows($result);$i++){
+    for($i=0;$i<pg_num_rows($result);$i++){
          db_fieldsmemory($result,$i);
 	 // -- cabeçalho das paginas
          if($pdf->gety()>$pdf->h-30 || $pagina ==1){
@@ -284,8 +269,8 @@ if($origem=="R"){
 	     $pdf->setfont('arial','B',6);
          } 
       
-         $matriz01=array();
-         $matriz_descr=array();
+         $matriz01=[];
+         $matriz_descr=[];
          $cont=0;
          $nivel = db_le_mae_sistema($c60_estrut,true); // false - conta mae, true= nivel
          $testamae=false;

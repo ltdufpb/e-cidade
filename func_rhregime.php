@@ -32,7 +32,7 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_rhregime_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhregime = new cl_rhregime;
 $clrhregime->rotulo->label("rh30_codreg");
 $clrhregime->rotulo->label("rh30_descr");
@@ -92,7 +92,7 @@ $clrhregime->rotulo->label("rh30_descr");
            }
         }
 
-        $where = array("rh30_instit = " . db_getsession("DB_instit"));
+        $where = ["rh30_instit = " . db_getsession("DB_instit")];
         if(isset($chave_rh30_codreg) && (trim($chave_rh30_codreg)!="") ){
             $where[] = "rh30_codreg = {$chave_rh30_codreg}";
         }else if(isset($chave_rh30_descr) && (trim($chave_rh30_descr)!="") ){
@@ -103,9 +103,9 @@ $clrhregime->rotulo->label("rh30_descr");
 
         $sql = $clrhregime->sql_query("",$campos,"rh30_codreg", $where);
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh30_descr)){
-          $repassa = array("chave_rh30_codreg"=>$chave_rh30_codreg,"chave_rh30_descr"=>$chave_rh30_descr);
+          $repassa = ["chave_rh30_codreg"=>$chave_rh30_codreg,"chave_rh30_descr"=>$chave_rh30_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

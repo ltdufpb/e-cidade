@@ -37,7 +37,7 @@ class TipoSituacaoCadastroUnicoRepository {
    * Array com as instancias dos tipo de situacao
    * @var array
    */
-  private $aTipoSituacao = array();
+  private $aTipoSituacao = [];
   
   private static $oInstance;
   

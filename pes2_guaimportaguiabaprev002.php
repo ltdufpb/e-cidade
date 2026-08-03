@@ -27,7 +27,7 @@
 
 include(modification("fpdf151/pdf.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_POST_VARS,2);
 
 ?>
@@ -75,7 +75,7 @@ function ImportaArquivo($AArquivo){
 
   //// cria um tabela com o numcgm numerico
   $res_convcgm = db_query("select * from pg_class where relname = 'w_convcgm' and relkind = 'r'");
-  if(pg_numrows($res_convcgm ) > 0 ){
+  if(pg_num_rows($res_convcgm ) > 0 ){
     db_query("drop table w_convcgm");
   } 
   db_query("create table w_convcgm as 
@@ -91,7 +91,7 @@ function ImportaArquivo($AArquivo){
 
 
   $res_ipegp = db_query("select * from pg_class where relname = 'w_ipegp' and relkind = 'r'");
-  if(pg_numrows($res_ipegp ) > 0 ){
+  if(pg_num_rows($res_ipegp ) > 0 ){
     db_query("drop table w_ipegp");
   } 
   db_query("create table w_ipegp(
@@ -152,11 +152,11 @@ function ImportaArquivo($AArquivo){
        echo "<script>parent.db_iframe_bbconverte.hide();parent.location.href='pes2_guaimportaguiabaprev001.php';</script>";
     }
     $numcgm = 0;
-    if(pg_numrows($ver_cgm) > 0){
-      $numcgm = pg_result($ver_cgm,0,"z01_numcgm");
+    if(pg_num_rows($ver_cgm) > 0){
+      $numcgm = pg_fetch_result($ver_cgm,0,"z01_numcgm");
     }else{
       $res_valcgm = db_query("select nextval('cgm_z01_numcgm_seq') as sequencia");
-      $numcgm = pg_result($res_valcgm,0,"sequencia");
+      $numcgm = pg_fetch_result($res_valcgm,0,"sequencia");
        
     
       if($estciv == 1){     
@@ -279,11 +279,11 @@ function ImportaArquivo($AArquivo){
     $res_rhipenumcgm = db_query($sql_rhipenumcgm);
     if($res_rhipenumcgm == false){
        return "erro ao pesquisar rhipenumcgm   : $sql_rhipenumcgm";
-    }elseif(pg_numrows($res_rhipenumcgm) > 0){
-       db_query("update rhipe set rh14_valor = ".$salario."::float8/100 where rh14_sequencia = ".pg_result($res_rhipenumcgm,0,"rh63_sequencia"));
+    }elseif(pg_num_rows($res_rhipenumcgm) > 0){
+       db_query("update rhipe set rh14_valor = ".$salario."::float8/100 where rh14_sequencia = ".pg_fetch_result($res_rhipenumcgm,0,"rh63_sequencia"));
     }else{
       $res_seq_ipe = db_query("select nextval('rhipe_rh14_sequencia_seq') as seqipe ");
-      $seq_ipe = pg_result($res_seq_ipe,0,"seqipe");
+      $seq_ipe = pg_fetch_result($res_seq_ipe,0,"seqipe");
       $sql_rhipe = "insert into rhipe (
                                        rh14_sequencia,
                rh14_matipe,

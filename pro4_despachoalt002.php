@@ -34,7 +34,7 @@ require_once(modification("classes/db_procandamintusu_classe.php"));
 require_once(modification("classes/db_protprocesso_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clprocandamint    = new cl_procandamint;
 $clprocandamintusu = new cl_procandamintusu;
@@ -65,7 +65,7 @@ if ( isset($alterar) ) {
 
       if ($p78_sequencial == $sequencial) {
 
-        $p78_despacho = trim($p78_despacho);
+        $p78_despacho = trim((string) $p78_despacho);
 
         $sWhereParametrosProtocolo = "p90_instit = " . db_getsession('DB_instit');
         $sSqlParametrosProtocolo = $clprotparam->sql_query_file(null, '*', null, $sWhereParametrosProtocolo);

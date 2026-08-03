@@ -81,7 +81,7 @@ db_input('fa15_c_listacontrolado',40,@$Ifa15_c_listacontrolado,true,'text',3,'')
 <tr>
 	<td>
 		<?php 
-		$chavepri= array("fa21_i_listacontrolado"=>@$fa21_i_listacontrolado,"fa21_i_codigo"=>@$fa21_i_codigo);
+		$chavepri= ["fa21_i_listacontrolado"=>@$fa21_i_listacontrolado,"fa21_i_codigo"=>@$fa21_i_codigo];
 		$cliframe_alterar_excluir->chavepri=$chavepri;
 		@$cliframe_alterar_excluir->sql = $clfar_listaprescricao->sql_query(null,'*',null,"fa21_i_prescricaomedica=$fa21_i_prescricaomedica");
 		$cliframe_alterar_excluir->campos  ="fa21_i_codigo,fa15_c_listacontrolado";
@@ -132,7 +132,7 @@ function js_preenchepesquisa(chave){
   db_iframe_far_listaprescricao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

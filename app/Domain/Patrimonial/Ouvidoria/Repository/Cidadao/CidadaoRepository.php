@@ -37,6 +37,7 @@ final class CidadaoRepository extends BaseRepository implements RepositoryInterf
      *
      * @return Model
      */
+    #[\Override]
     public function find($id)
     {
         return $this->newQuery()

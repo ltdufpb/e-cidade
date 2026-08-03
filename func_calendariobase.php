@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_calendario_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcalendario = new cl_calendario;
 $clcalendario->rotulo->label("ed52_i_codigo");
 $clcalendario->rotulo->label("ed52_c_descr");
@@ -82,7 +82,7 @@ $clcalendario->rotulo->label("ed52_c_descr");
   <td align="center" valign="top">
    <?php 
    
-   $aWhere = array();
+   $aWhere = [];
    $sWhere = "";
    if(!isset($pesquisa_chave)) {
 

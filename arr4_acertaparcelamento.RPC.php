@@ -50,7 +50,7 @@ switch($oParam->exec) {
     
     $rDAOTermo = $oDAOTermo->sql_record($oDAOTermo->sql_query_parcelas_termo($oParam->iCodParcelamento));
     
-    $aParcel   = array();
+    $aParcel   = [];
     
     if($oDAOTermo->numrows > 0) {
       

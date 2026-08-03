@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcindicaindiceesperado_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcindicaindiceesperado = new cl_orcindicaindiceesperado;
 $clorcindicaindiceesperado->rotulo->label("o25_sequencial");
 $clorcindicaindiceesperado->rotulo->label("o25_orcindica");
@@ -98,9 +98,9 @@ $clorcindicaindiceesperado->rotulo->label("o25_orcindica");
         }else{
            $sql = $clorcindicaindiceesperado->sql_query("",$campos,"o25_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o25_orcindica)){
-          $repassa = array("chave_o25_sequencial"=>$chave_o25_sequencial,"chave_o25_orcindica"=>$chave_o25_orcindica);
+          $repassa = ["chave_o25_sequencial"=>$chave_o25_sequencial,"chave_o25_orcindica"=>$chave_o25_orcindica];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

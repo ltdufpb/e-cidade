@@ -34,7 +34,7 @@ include(modification("classes/db_bensbaix_classe.php"));
 $clbensbaix = new cl_bensbaix;
 $clrotulo = new rotulocampo;
 $clbensbaix->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $t55_dataINI="";
 $t55_dataFIM = "";
 ?>

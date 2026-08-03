@@ -43,7 +43,7 @@ class M12451IndiceInstitCfautent extends PostgresMigration
         }
 
         foreach ($registrosDuplicados as $registroDuplicado) {
-            $ids = explode(',', str_replace(array('{', '}'), '', $registroDuplicado->k11_id));
+            $ids = explode(',', str_replace(['{', '}'], '', $registroDuplicado->k11_id));
             array_shift($ids);
 
             foreach ($ids as $id) {

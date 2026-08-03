@@ -47,17 +47,16 @@ require_once(modification('libs/db_stdlib.php'));
 class AlteracaoContratual extends ProcessamentoAbstract implements ProcessamentoInterface
 {
     /**
-     * @var
-     */
-    private $cgm;
-
-    /**
      * Rubrica constructor.
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $cgm
+    )
     {
-        $this->cgm = $cgm;
     }
 
     /**
@@ -85,7 +84,7 @@ class AlteracaoContratual extends ProcessamentoAbstract implements Processamento
                         $mes,
                         $this->selecao
                     );
-                } catch (Exception $e) {
+                } catch (Exception) {
                     throw new \DBException("Ocorrêu um erro ao buscar as informações da seleção informada.");
                 }
             }

@@ -52,7 +52,7 @@ $sNomeBaseAtual = db_getsession('DB_base');
 $iAno           = date('Y'); 
 $iMes           = date('m');
 
-$oPost = db_utils::postMemory($HTTP_POST_VARS);
+$oPost = db_utils::postMemory($_POST);
 
 if ( isset($btnProcessaBase) ) {
   

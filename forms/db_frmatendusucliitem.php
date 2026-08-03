@@ -111,10 +111,10 @@ if(isset($db_opcaoal)){
     </td>
     <td>
 <?php 
-  $x = array("1"=>"Baixa",
+  $x = ["1"=>"Baixa",
              "2"=>"Média",
              "3"=>"Alta"
-           );
+           ];
   db_select("at81_prioridade", $x,true,$db_opcao);
 ?>
     </td>
@@ -161,7 +161,7 @@ if(isset($db_opcaoal)){
       if(isset($at81_seq) && trim($at81_seq) != ""){
         $dbwhere.= " and at81_seq <> ".$at81_seq;
       }
-      $chavepri= array("at81_seq"=>@$at81_seq);
+      $chavepri= ["at81_seq"=>@$at81_seq];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       $cliframe_alterar_excluir->sql     = $clatendusucliitem->sql_query(null,"at81_seq,
                                                                                at81_codatendcli,

@@ -35,7 +35,7 @@ db_postmemory($_GET);
 db_postmemory($_POST);
 $oGet = db_utils::postMemory($_GET);
 
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $clliclicitem = new cl_liclicitem;
 $clliclicita = new cl_liclicita;
@@ -316,7 +316,7 @@ if (!isset($pesquisa_chave)) {
         }
     }
 
-    $aRepassa = array();
+    $aRepassa = [];
     echo "<div class='subcontainer'>";
     echo "<fieldset><legend>Licitações</legend>";
     db_lovrot($sql . ' desc ', 15, "()", "", $funcao_js, null, 'NoMe', $aRepassa, false);

@@ -47,7 +47,7 @@ include(modification("classes/db_selecao_classe.php"));
 <tr height=25><td>&nbsp;</td></tr>
 </table>
 <?php 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 db_criatermometro('termometro','Concluido...','blue',1);
 flush();
 $wh = '';
@@ -122,13 +122,13 @@ if ($_POST["vinculo"] == "A"){
 ";
   
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
 		db_atutermometro($x,$num,'termometro');
 	  flush();
 
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
     ////  verifica se tem conjuge
     
@@ -141,8 +141,8 @@ if ($_POST["vinculo"] == "A"){
 				 
     $res1 = db_query($sql1);
     
-    if(pg_numrows($res1) > 0){
-      $dtconj  = pg_result($res1,0,'nasc');
+    if(pg_num_rows($res1) > 0){
+      $dtconj  = pg_fetch_result($res1,0,'nasc');
       $temconj = 'S'; 
     }else{
       $dtconj = '0000';
@@ -159,8 +159,8 @@ if ($_POST["vinculo"] == "A"){
 				 
     $res2 = db_query($sql2);
     
-    if(pg_numrows($res2) > 0){
-      $numfilhos = pg_result($res2,0,'soma_filhos');
+    if(pg_num_rows($res2) > 0){
+      $numfilhos = pg_fetch_result($res2,0,'soma_filhos');
     }else{
       $numfilhos = '00';
     }
@@ -177,8 +177,8 @@ if ($_POST["vinculo"] == "A"){
 				 
     $res3 = db_query($sql3);
     
-    if(pg_numrows($res3) > 0){
-      $cacula = pg_result($res3,0,'nasc');
+    if(pg_num_rows($res3) > 0){
+      $cacula = pg_fetch_result($res3,0,'nasc');
     }else{
       $cacula = '0000';
     }
@@ -193,7 +193,7 @@ if ($_POST["vinculo"] == "A"){
       $tipoinstit = 1;
     }
 		
-  fputs($arquivo,pg_result($result,$x,'todo').$yseparador.
+  fputs($arquivo,pg_fetch_result($result,$x,'todo').$yseparador.
                                   $meses_inss.$yseparador.
                                       $dtconj.$yseparador.
                                       $cacula.$yseparador.
@@ -258,12 +258,12 @@ $sql = "
   
   //echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
 		db_atutermometro($x,$num,'termometro');
 	  flush();
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
     ////  verifica se tem conjuge
     
@@ -276,8 +276,8 @@ $sql = "
 				 
     $res1 = db_query($sql1);
     
-    if(pg_numrows($res1) > 0){
-      $dtconj  = pg_result($res1,0,'nasc');
+    if(pg_num_rows($res1) > 0){
+      $dtconj  = pg_fetch_result($res1,0,'nasc');
       $temconj = 'S'; 
     }else{
       $dtconj = '0000';
@@ -294,8 +294,8 @@ $sql = "
 				 
     $res2 = db_query($sql2);
     
-    if(pg_numrows($res2) > 0){
-      $numfilhos = pg_result($res2,0,'soma_filhos');
+    if(pg_num_rows($res2) > 0){
+      $numfilhos = pg_fetch_result($res2,0,'soma_filhos');
     }else{
       $numfilhos = '0';
     }
@@ -312,8 +312,8 @@ $sql = "
 				 
     $res3 = db_query($sql3);
     
-    if(pg_numrows($res3) > 0){
-      $cacula = pg_result($res3,0,'nasc');
+    if(pg_num_rows($res3) > 0){
+      $cacula = pg_fetch_result($res3,0,'nasc');
     }else{
       $cacula = '0000';
     }
@@ -325,7 +325,7 @@ $sql = "
 		$tempo_contrib = "000";
 		$tempo_total_contrib = "000";
 		
-  fputs($arquivo,pg_result($result,$x,'todo').$yseparador.
+  fputs($arquivo,pg_fetch_result($result,$x,'todo').$yseparador.
                                       $dtconj.$yseparador.
                                    $numfilhos.$yseparador.
                                       $cacula.$yseparador.
@@ -396,12 +396,12 @@ $sql = "
   
 //  echo $sql;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
   	db_atutermometro($x,$num,'termometro');
 	  flush();
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
     ////  verifica se tem conjuge
     
@@ -414,8 +414,8 @@ $sql = "
 				 
     $res1 = db_query($sql1);
     
-    if(pg_numrows($res1) > 0){
-      $dtconj  = pg_result($res1,0,'nasc');
+    if(pg_num_rows($res1) > 0){
+      $dtconj  = pg_fetch_result($res1,0,'nasc');
       $temconj = 'S'; 
     }else{
       $dtconj = '0000';
@@ -432,8 +432,8 @@ $sql = "
 				 
     $res2 = db_query($sql2);
     
-    if(pg_numrows($res2) > 0){
-      $numfilhos = pg_result($res2,0,'soma_filhos');
+    if(pg_num_rows($res2) > 0){
+      $numfilhos = pg_fetch_result($res2,0,'soma_filhos');
     }else{
       $numfilhos = '00';
     }
@@ -450,13 +450,13 @@ $sql = "
 				 
     $res3 = db_query($sql3);
     
-    if(pg_numrows($res3) > 0){
-      $cacula = pg_result($res3,0,'nasc');
+    if(pg_num_rows($res3) > 0){
+      $cacula = pg_fetch_result($res3,0,'nasc');
     }else{
       $cacula = '0000';
     }
 
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");
   }
   fclose($arquivo);
 

@@ -32,7 +32,7 @@ class PrevisaoFaseCollection {
 	
 	public function __construct() {
 		
-		$this->aPrevisaoFase = array();
+		$this->aPrevisaoFase = [];
 	}
 	
 	/*
@@ -47,24 +47,24 @@ class PrevisaoFaseCollection {
 	 * VERIFICA AS PREVISOES ANTES DE INSERIR NO OBJETO
 	 */
 	public function insertPrevisao($oPrevisaoFase) {
-		
+
 		for ($i=0; $i<count($this->aPrevisaoFase); $i++) { // PERCORRE O ARRAY DE PREVISOES DO OBJETO
-			
+
 			if ($oPrevisaoFase->getDtIni() != "" && $oPrevisaoFase->getDtFim() != "") { // SE AS DATAS NAO FOREM SETADAS IGNORA ESTA FASE
 
 				if ($this->aPrevisaoFase[$i]->getStatus() != "E") { // SE O OBJETO A SER COMPARADO ESTIVER COM STATUS 'E' DE EXCLUISO, IGNORA ESTA FASE
-				
+
 					if (($oPrevisaoFase->getCodFase() != $this->aPrevisaoFase[$i]->getCodFase())) { // SE AS FASES FOREM IGUAIS, É O MESMO OBJETO, SIMPLESMENTE TRANSFORMA O STATUS DO ANTERIOR PARA 'E'
-					
+
 						if ($this->aPrevisaoFase[$i]->getDtIni() > 0 && $this->aPrevisaoFase[$i]->getDtFim() > 0) { // SE AS DATAS FOREM MAIOR QUE ZERO EXECUTA
-							
+
 		  				if ($oPrevisaoFase->getCodUsuario() == $this->aPrevisaoFase[$i]->getCodUsuario()) { // VERIFICA SE É O MESMO USUARIO 
-					  
+
 					      if (DBTime::conflitoDatas($oPrevisaoFase->getDtIni(),$oPrevisaoFase->getDtFim(), 
 					                               $this->aPrevisaoFase[$i]->getDtIni(), $this->aPrevisaoFase[$i]->getDtFim())) { // VERIFICA SE EXISTE CONFLITO NAS DATAS UTILIZANDO METODO DA CLASSE DBTime  
-		
+
 					      	$this->aPrevisaoFase[$i]->setStatus("E"); // SETA O STATUS DA PREVISAO ANTERIOR PARA EXCLUIDA
-					        
+
 					      	$oNewPrev = new PrevisaoFase(); // CRIA UM NOVO OBJETO PrevisaoFase E SETA OS VALORES
 					        $oNewPrev->setCodFase($this->aPrevisaoFase[$i]->getCodFase());
 					        $oNewPrev->setCodSituacao($this->aPrevisaoFase[$i]->getCodSituacao());
@@ -78,30 +78,30 @@ class PrevisaoFaseCollection {
 					                               (DBTime::verifData($oNewPrev->getDtIni()+($oNewPrev->getQtdHoras()*(3600)))),
 					                               $oNewPrev->getQtdHoras())); // VERIFICA A DATA E O INTERVALOR (CASO DE EXISTIR MEIO DIA ENTRE AS DATAS)
 	                $oNewPrev->setStatus("N"); // SETA O STATUS DO OBJETO COMO NOVO
-	                
-	                
+
+
                   $this->empurraDependencias($oNewPrev); // VERIFICA AS DEPENDENCIAS					        
 					        $this->insertPrevisao($oNewPrev); // INSERE O NOVO OBJETO NA PREVISAO
 							  }
 							} else {
-            
+
 		            if ($this->aPrevisaoFase[$i]->getCodFase() != 0 && ($oPrevisaoFase->getCodUsuario() == $this->aPrevisaoFase[$i]->getCodUsuario()))
 		              $this->aPrevisaoFase[$i]->setStatus("E");
 		          }
 						} else {
-            
+
 	            if ($this->aPrevisaoFase[$i]->getCodFase() != 0 && ($oPrevisaoFase->getCodUsuario() == $this->aPrevisaoFase[$i]->getCodUsuario()))
 	              $this->aPrevisaoFase[$i]->setStatus("E");
 	          }
 					} else {
-						
+
 						if ($this->aPrevisaoFase[$i]->getCodFase() != 0)
 						  $this->aPrevisaoFase[$i]->setStatus("E");
 					}
 				}
 			}
 		}
-		
+
 		$this->addPrevisaoFase($oPrevisaoFase); // SE NAO EXISTIU NENHUM CONFLITO ADICIONA O OBJETO SIMPLESMENTE
 	}
 	

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_classe_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clclasse = new cl_classe;
 $clclasse->rotulo->label("q12_classe");
 $clclasse->rotulo->label("q12_descr");
@@ -107,9 +107,9 @@ $clclasse->rotulo->label("q12_descr");
         }else{
            $sql = $clclasse->sql_query("",$campos,"q12_classe","$where 1=1");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q12_descr)){
-          $repassa = array("chave_q12_classe"=>$chave_q12_classe,"$where chave_q12_descr"=>$chave_q12_descr);
+          $repassa = ["chave_q12_classe"=>$chave_q12_classe,"$where chave_q12_descr"=>$chave_q12_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

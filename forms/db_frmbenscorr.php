@@ -121,7 +121,7 @@ db_input('t63_deprec',15,$It63_deprec,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("t63_codcor"=>@$t63_codcor,"t63_codbem"=>null);
+	 $chavepri= ["t63_codcor"=>@$t63_codcor,"t63_codbem"=>null];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clbenscorr->sql_query_file($t63_codcor,null);
 	 $cliframe_alterar_excluir->campos  ="t63_codcor,t63_codbem,t63_valcor,t63_deprec";

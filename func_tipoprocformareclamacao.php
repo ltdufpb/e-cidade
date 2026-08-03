@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoprocformareclamacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltipoprocformareclamacao = new cl_tipoprocformareclamacao;
 $cltipoprocformareclamacao->rotulo->label("p43_sequencial");
 $cltipoprocformareclamacao->rotulo->label("p43_sequencial");
@@ -98,9 +98,9 @@ $cltipoprocformareclamacao->rotulo->label("p43_sequencial");
         }else{
            $sql = $cltipoprocformareclamacao->sql_query("",$campos,"p43_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_p43_sequencial)){
-          $repassa = array("chave_p43_sequencial"=>$chave_p43_sequencial,"chave_p43_sequencial"=>$chave_p43_sequencial);
+          $repassa = ["chave_p43_sequencial"=>$chave_p43_sequencial,"chave_p43_sequencial"=>$chave_p43_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

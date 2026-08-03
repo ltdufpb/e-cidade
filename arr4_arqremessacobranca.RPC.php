@@ -135,7 +135,7 @@ switch($oParam->exec) {
       
       $rsPartilhaArquivo = $oDaoPartilhaArquivo->sql_record($sSql);
       
-      $aPartilhaArquivo = array();
+      $aPartilhaArquivo = [];
       
       for ($iContador = 0; $iContador < $oDaoPartilhaArquivo->numrows; $iContador++) {
 

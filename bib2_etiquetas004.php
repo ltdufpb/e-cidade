@@ -31,7 +31,7 @@ include(modification("classes/db_exemplar_classe.php"));
 include(modification("classes/db_assunto_classe.php"));
 include(modification("classes/db_localacervo_classe.php"));
 include(modification("classes/db_localizacao_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $lista = db_getsession('sListaImpressao');
 $clexemplar = new cl_exemplar;
@@ -73,7 +73,7 @@ for($i=0;$i<$linhas;$i++){
  $pdf->setfont('arial','b',7);
  $pdf->cell(46,3,"Assunto:","LR",2,"C",0);
  $pdf->setfont('arial','',8);
- $pdf->cell(46,3,substr($bi15_assunto,0,22),"LR",2,"C",0);
+ $pdf->cell(46,3,substr((string) $bi15_assunto,0,22),"LR",2,"C",0);
  $pdf->setfont('arial','b',7);
  $pdf->cell(46,3,"Localização:","LR",2,"C",0);
  $pdf->setfont('arial','',8);

@@ -29,7 +29,7 @@
 class SimulaCalculoInscricao {
   
   public $iCodigoSimulacao           = null;  
-  public $oAtividadesCalculo         = array();
+  public $oAtividadesCalculo         = [];
   public $dDataCalculo               = null;
   public $iAnoCalculo                = null;
   public $iMesCalculo                = null;
@@ -171,11 +171,11 @@ class SimulaCalculoInscricao {
     $this->dDataCalculo = $dData;
     
     if ($this->getAnoCalculo() == null) {
-      $this->setAnoCalculo(substr($dData,0,4));
+      $this->setAnoCalculo(substr((string) $dData,0,4));
     }
     
     if ($this->getMesCalculo() == null) {
-      $this->setMesCalculo(substr($dData,5,2));
+      $this->setMesCalculo(substr((string) $dData,5,2));
     }    
      
   }  
@@ -191,11 +191,11 @@ class SimulaCalculoInscricao {
     
     $this->dDataInicioAtividade = $dData;
     if ($this->getAnoInicioAtividade() == null) {
-      $this->setAnoInicioAtividade(substr($dData,0,4));
+      $this->setAnoInicioAtividade(substr((string) $dData,0,4));
     }
     
     if ($this->getMesInicioAtividade() == null) {
-      $this->setMesInicioAtividade(substr($dData,5,2));
+      $this->setMesInicioAtividade(substr((string) $dData,5,2));
     }    
     
   }
@@ -272,7 +272,7 @@ class SimulaCalculoInscricao {
     
     $sMsgLog = "Atividades para Simulação: <br>";
     foreach ($oAtividadeSimulacao as $oAtividade) {
-      $sMsgLog .= "($oAtividade->sequencia) - Atividade: {$oAtividade->atividade} - ".str_pad($oAtividade->descricao,40," ");
+      $sMsgLog .= "($oAtividade->sequencia) - Atividade: {$oAtividade->atividade} - ".str_pad((string) $oAtividade->descricao,40," ");
       $sMsgLog .= "Quantidade: {$oAtividade->quantidade} Permanente: {$oAtividade->permanente} <br>"; 
     }
     $this->logCalculo($sMsgLog);
@@ -409,8 +409,8 @@ class SimulaCalculoInscricao {
     $lCalculoVariavel           = false;
     $lCalculoFixo               = false; 
     
-    $aDadosTipoCalculoAtividade = array();
-    $aTipoCalculoProcessado     = array();
+    $aDadosTipoCalculoAtividade = [];
+    $aTipoCalculoProcessado     = [];
     
     foreach( $this->getAtividadeCalculo() as $oAtividade) {
       
@@ -827,7 +827,7 @@ class SimulaCalculoInscricao {
   
   function processaSimulacao() {
 
-    $aRetorno          = array();
+    $aRetorno          = [];
     $oDaoCadVenc       = db_utils::getDao("cadvenc");
       
     $oDadosTipoCalculo = $this->processaAtividadeTipoCalculo();
@@ -972,7 +972,7 @@ class SimulaCalculoInscricao {
           if ($iQuantidadeVencimentoProcessar == 0) {
 
             if ($iDiasParaVencimento > 0) {
-              $aDataCalculo = explode("-", $this->getDataCalculo());
+              $aDataCalculo = explode("-", (string) $this->getDataCalculo());
               $dVencimento  = date("Y-m-d", mktime(0,0,0,$aDataCalculo[1], $aDataCalculo[2]+$iDiasParaVencimento, $aDataCalculo[0]));
             } else {
               $dVencimento = $dUltimoDiaAno;
@@ -1006,16 +1006,16 @@ class SimulaCalculoInscricao {
             
           } 
 
-          $aVencimento               = explode("-", $dVencimento);
+          $aVencimento               = explode("-", (string) $dVencimento);
           $sMktimeVencimento         = mktime(0,0,0,$aVencimento[1],$aVencimento[2],$aVencimento[0]); 
                                      
-          $aMaiorVencimento          = explode("-", $dMaiorVencimento);
+          $aMaiorVencimento          = explode("-", (string) $dMaiorVencimento);
           $sMktimeMaiorVencimento    = mktime(0,0,0,$aMaiorVencimento[1],$aMaiorVencimento[2],$aMaiorVencimento[0]);
 
-          $aDataInicioAtividade      = explode("-", $this->getDataInicioAtividade());
+          $aDataInicioAtividade      = explode("-", (string) $this->getDataInicioAtividade());
           $sMktimeDataInicioAtividade = mktime(0,0,0,$aDataInicioAtividade[1],$aDataInicioAtividade[2],$aDataInicioAtividade[0]);
           
-          $aDataCalculo              = explode("-", $this->getDataCalculo());
+          $aDataCalculo              = explode("-", (string) $this->getDataCalculo());
           $sMktimeDataCalculo        = mktime(0,0,0,$aDataCalculo[1],$aDataCalculo[2],$aDataCalculo[0]);
           
           if ($sMktimeVencimento > $sMktimeMaiorVencimento ) {
@@ -1084,7 +1084,7 @@ class SimulaCalculoInscricao {
                   $dInicioAtividadeCalculado = $this->getDataInicioAtividade();
                 }
                 
-                $aInicioAtividadeCalculado       = explode("-", $dInicioAtividadeCalculado);
+                $aInicioAtividadeCalculado       = explode("-", (string) $dInicioAtividadeCalculado);
                 $sMktimeInicioAtividadeCalculado = mktime(0,0,0,$aInicioAtividadeCalculado[1],$aInicioAtividadeCalculado[2],$aInicioAtividadeCalculado[0]);
                 
                 $iDiasInicio     = date("d", ($sMktimeUltimoDiaAno - $sMktimeDataInicioAtividade)) + 1; 

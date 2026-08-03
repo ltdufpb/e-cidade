@@ -139,7 +139,7 @@ function js_processar() {
     return false;
   }
     
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?inicialini="+document.form1.v50_inicialini.value+"&inicialfim="+document.form1.v50_inicialfim.value;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?inicialini="+document.form1.v50_inicialini.value+"&inicialfim="+document.form1.v50_inicialfim.value;
 }
 
 function js_inicialini(mostra){

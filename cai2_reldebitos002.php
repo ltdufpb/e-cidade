@@ -153,7 +153,7 @@ function js_relatorio() {
 	  </td>
 	  <td>
 			<?php  
-			  $result=array("resumido"=>"Resumido","completo"=>"Completo");
+			  $result=["resumido"=>"Resumido","completo"=>"Completo"];
 			  db_select("modelo",$result,true,$db_opcao);
 			?>
 	  </td>
@@ -164,7 +164,7 @@ function js_relatorio() {
 	  </td>
 	  <td>
 			<?php  
-			  $result=array("cgm"=>"Numcgm","matricula"=>"Matrícula","inscricao"=>"Inscricao");
+			  $result=["cgm"=>"Numcgm","matricula"=>"Matrícula","inscricao"=>"Inscricao"];
 			  db_select("origem",$result,true,$db_opcao);
 			?>	 
    </td>
@@ -175,10 +175,10 @@ function js_relatorio() {
 	  </td>
 	  <td>
 			<?php  
-			  $result=array("z01_nome"=>"Nome","vlrcor"=>"Valor corrigido","k22_data"=>"Vencimento","total"=>"Valor total");
+			  $result=["z01_nome"=>"Nome","vlrcor"=>"Valor corrigido","k22_data"=>"Vencimento","total"=>"Valor total"];
 			  db_select("order",$result,true,$db_opcao);
 			
-			  $result=array("asc"=>"Ascendente","desc"=>"Descendente");
+			  $result=["asc"=>"Ascendente","desc"=>"Descendente"];
 			  db_select("ordem",$result,true,$db_opcao);
 			?>
 	  </td>

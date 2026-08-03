@@ -157,7 +157,7 @@ try {
 
           $oUsuarioSistema->validaPrimeiroAcesso();
           $dDataToken    = $oUsuarioSistema->getToken();
-        } catch(Exception $eErro) {
+        } catch(Exception) {
           continue;
         }
       }
@@ -177,5 +177,5 @@ try {
   $oRetorno->sMessage = urlencode( $eErro->getMessage() );
 }
 
-$oRetorno->sMessage = utf8_encode($oRetorno->sMessage);
+$oRetorno->sMessage = mb_convert_encoding($oRetorno->sMessage, 'UTF-8', 'ISO-8859-1');
 echo $oJson->encode($oRetorno);

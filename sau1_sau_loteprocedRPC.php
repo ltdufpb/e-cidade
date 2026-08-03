@@ -205,7 +205,7 @@ switch ($objParam->exec) {
 			$objRetorno->message = urlencode ( "E R R O ! ! ! \n\nSessão não aberta." );
 		} else {
 			$objRegProcedimento = unserialize ( $_SESSION ["objRegistros"] );
-			$objRegProcedimentoNew = array ();
+			$objRegProcedimentoNew =  [];
 			foreach ( $objRegProcedimento as $intKey => $valor ) {
 
 				if ($objParam->intIterator == $intKey) {
@@ -222,7 +222,7 @@ switch ($objParam->exec) {
 		break;
 	case "Incluir" :
 		if (! isset ( $_SESSION ["objRegistros"] )) {
-			$objRegProcedimento = array ();
+			$objRegProcedimento =  [];
 		} else {
 			$objRegProcedimento = unserialize ( $_SESSION ["objRegistros"] );
 		}
@@ -247,7 +247,7 @@ switch ($objParam->exec) {
 			$objRetorno->message = urlencode ( "E R R O ! ! ! \n\nSessão não aberta." );
 		} else {
 			$objRegProcedimento = unserialize ( $_SESSION ["objRegistros"] );
-			$objRegProcedimentoNew = array ();
+			$objRegProcedimentoNew =  [];
 
 			foreach ( $objRegProcedimento as $intKey => $valor ) {
 
@@ -288,7 +288,7 @@ switch ($objParam->exec) {
 								$clprontproced->alterar ( $obj_prontproced->sd29_i_codigo );
 								if ($clprontproced->numrows_alterar == 0) {
 									$objRetorno->status = 2;
-									$objRetorno->message = urlencode ( $clprontproced->erro_msg );
+									$objRetorno->message = urlencode ( (string) $clprontproced->erro_msg );
 									break;
 								}
 								//prontprocedcid
@@ -299,7 +299,7 @@ switch ($objParam->exec) {
 									$clprontprocedcid->incluir ( null );
 									if ($clprontprocedcid->numrows_incluir == 0) {
 										$objRetorno->status = 2;
-										$objRetorno->message = urlencode ( $clprontprocedcid->erro_msg );
+										$objRetorno->message = urlencode ( (string) $clprontprocedcid->erro_msg );
 										break;
 									}
 								}
@@ -334,7 +334,7 @@ switch ($objParam->exec) {
 			$objRetorno->message = urlencode ( "E R R O ! ! ! \n\nSessão não aberta." );
 		} else {
 			$objRegProcedimento = unserialize ( $_SESSION ["objRegistros"] );
-			$objRegProcedimentoNew = array ();
+			$objRegProcedimentoNew =  [];
 			//if( $objParam->sd29_i_codigo == ""){
 			foreach ( $objRegProcedimento as $intKey => $valor ) {
 
@@ -372,7 +372,7 @@ switch ($objParam->exec) {
 								$clprontprocedcid->excluir ( null, "s135_i_prontproced = {$obj_prontproced->sd29_i_codigo}" );
 								if ($clprontprocedcid->erro_status == "0" && $clprontprocedcid->numrows_excluir == 0) {
 									$objRetorno->status = 2;
-									$objRetorno->message = urlencode ( $clprontprocedcid->erro_msg );
+									$objRetorno->message = urlencode ( (string) $clprontprocedcid->erro_msg );
 									break;
 								}
 
@@ -381,7 +381,7 @@ switch ($objParam->exec) {
 								$clprontproced->excluir ( $obj_prontproced->sd29_i_codigo );
 								if ($clprontproced->numrows_excluir == 0) {
 									$objRetorno->status = 2;
-									$objRetorno->message = urlencode ( $clprontproced->erro_msg );
+									$objRetorno->message = urlencode ( (string) $clprontproced->erro_msg );
 									break;
 								}
 							}
@@ -432,7 +432,7 @@ switch ($objParam->exec) {
 							$clprontproced->sd29_sigilosa       = 'false';
 							$clprontproced->sd29_i_prontuario   = $obj_sau_lote->sd59_i_prontuario;
 							$clprontproced->sd29_i_procedimento = $objRegistro->sd29_i_procedimento;
-							$clprontproced->sd29_d_data         = implode ( "-", array_reverse ( explode ( "/", $objRegistro->sd29_d_data ) ) );
+							$clprontproced->sd29_d_data         = implode ( "-", array_reverse ( explode ( "/", (string) $objRegistro->sd29_d_data ) ) );
 							$clprontproced->sd29_c_hora         = $objRegistro->sd29_c_hora;
 							$clprontproced->sd29_t_tratamento   = $objRegistro->sd29_t_tratamento;
 							$clprontproced->sd29_i_usuario      = DB_getsession ( "DB_id_usuario" );
@@ -443,7 +443,7 @@ switch ($objParam->exec) {
 							$clprontproced->incluir ( null );
 							if ($clprontproced->numrows_incluir == 0) {
 								$objRetorno->status = 2;
-								$objRetorno->message = urlencode ( $clprontproced->erro_msg );
+								$objRetorno->message = urlencode ( (string) $clprontproced->erro_msg );
 								break;
 							}
 							//prontprocedcid
@@ -453,7 +453,7 @@ switch ($objParam->exec) {
 								$clprontprocedcid->incluir ( null );
 								if ($clprontprocedcid->numrows_incluir == 0) {
 									$objRetorno->status = 2;
-									$objRetorno->message = urlencode ( $clprontprocedcid->erro_msg );
+									$objRetorno->message = urlencode ( (string) $clprontprocedcid->erro_msg );
 									break;
 								}
 							}
@@ -464,7 +464,7 @@ switch ($objParam->exec) {
 							$clprontuarios->alterar ( $obj_sau_lote->sd59_i_prontuario );
 							if ($clprontuarios->numrows_alterar == 0) {
 								$objRetorno->status = 2;
-								$objRetorno->message = urlencode ( $clprontproced->erro_msg );
+								$objRetorno->message = urlencode ( (string) $clprontproced->erro_msg );
 								break;
 							}
 						} //for
@@ -478,7 +478,7 @@ switch ($objParam->exec) {
 							$clsau_lote->alterar ( $objRegistro->sd58_i_codigo );
 							if ($clsau_lote->numrows_alterar == 0) {
 								$objRetorno->status = 2;
-								$objRetorno->message = urlencode ( $clsau_lote->erro_msg );
+								$objRetorno->message = urlencode ( (string) $clsau_lote->erro_msg );
 								break;
 							}
 

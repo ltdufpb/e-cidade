@@ -166,7 +166,7 @@ class LeituraTest extends TestCase
          */
         $oRepository
             ->method('findBy')
-            ->will(call_user_func_array(array($this, 'onConsecutiveCalls'), $aUltimasLeituras));
+            ->will(call_user_func_array([$this, 'onConsecutiveCalls'], $aUltimasLeituras));
 
         return $oRepository;
     }

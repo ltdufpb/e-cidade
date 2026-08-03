@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_retencaoreceitasadicionais_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clretencaoreceitasadicionais = new cl_retencaoreceitasadicionais();
 $clretencaoreceitasadicionais->rotulo->label('e19_sequencial');
 $clretencaoreceitasadicionais->rotulo->label('e19_sequencial');
@@ -58,9 +58,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clretencaoreceitasadicionais->sql_query("",$campos,"e19_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e19_sequencial)){
-          $repassa = array("chave_e19_sequencial"=>$chave_e19_sequencial,"chave_e19_sequencial"=>$chave_e19_sequencial);
+          $repassa = ["chave_e19_sequencial"=>$chave_e19_sequencial,"chave_e19_sequencial"=>$chave_e19_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

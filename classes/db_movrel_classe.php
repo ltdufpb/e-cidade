@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE movrel
 class cl_movrel { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $r54_instit = 0; 
-   var $r54_anomes = null; 
-   var $r54_codrel = null; 
-   var $r54_regist = 0; 
-   var $r54_codeve = null; 
-   var $r54_quant1 = 0; 
-   var $r54_quant2 = 0; 
-   var $r54_quant3 = 0; 
-   var $r54_lancad = 'f'; 
+   public $r54_instit = 0; 
+   public $r54_anomes = null; 
+   public $r54_codrel = null; 
+   public $r54_regist = 0; 
+   public $r54_codeve = null; 
+   public $r54_quant1 = 0; 
+   public $r54_quant2 = 0; 
+   public $r54_quant3 = 0; 
+   public $r54_lancad = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  r54_instit = int4 = Cod. Instituição 
                  r54_anomes = char(6) = Ano e Mes de leitura dados 
                  r54_codrel = char(4) = Convênio 
@@ -64,10 +64,10 @@ class cl_movrel {
                  r54_lancad = bool = Lançado 
                  ";
    //funcao construtor da classe 
-   function cl_movrel() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("movrel"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -202,7 +202,7 @@ class cl_movrel {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "arquivo gerado pelo sistema a partir da leitura de () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "arquivo gerado pelo sistema a partir da leitura de já Cadastrado";
@@ -230,11 +230,11 @@ class cl_movrel {
      $sql = " update movrel set ";
      $virgula = "";
      $sql1 = '';
-     if(trim($this->r54_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_instit"])){ 
+     if(trim((string) $this->r54_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_instit"])){ 
        $sql  .= $virgula." r54_instit = $this->r54_instit ";
        $sql1 .= " and r54_instit = $this->r54_instit ";
        $virgula = ",";
-       if(trim($this->r54_instit) == null ){ 
+       if(trim((string) $this->r54_instit) == null ){ 
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "r54_instit";
          $this->erro_banco = "";
@@ -244,11 +244,11 @@ class cl_movrel {
          return false;
        }
      }
-     if(trim($this->r54_anomes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_anomes"])){ 
+     if(trim((string) $this->r54_anomes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_anomes"])){ 
        $sql  .= $virgula." r54_anomes = '$this->r54_anomes' ";
        $sql1 .= " and r54_anomes = '$this->r54_anomes' ";
        $virgula = ",";
-       if(trim($this->r54_anomes) == null ){ 
+       if(trim((string) $this->r54_anomes) == null ){ 
          $this->erro_sql = " Campo Ano e Mes de leitura dados nao Informado.";
          $this->erro_campo = "r54_anomes";
          $this->erro_banco = "";
@@ -258,11 +258,11 @@ class cl_movrel {
          return false;
        }
      }
-     if(trim($this->r54_codrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_codrel"])){ 
+     if(trim((string) $this->r54_codrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_codrel"])){ 
        $sql  .= $virgula." r54_codrel = '$this->r54_codrel' ";
        $sql1 .= " and r54_codrel = '$this->r54_codrel' ";
        $virgula = ",";
-       if(trim($this->r54_codrel) == null ){ 
+       if(trim((string) $this->r54_codrel) == null ){ 
          $this->erro_sql = " Campo Convênio nao Informado.";
          $this->erro_campo = "r54_codrel";
          $this->erro_banco = "";
@@ -272,11 +272,11 @@ class cl_movrel {
          return false;
        }
      }
-     if(trim($this->r54_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_regist"])){ 
+     if(trim((string) $this->r54_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_regist"])){ 
        $sql  .= $virgula." r54_regist = $this->r54_regist ";
        $sql1 .= " and r54_regist = $this->r54_regist ";
        $virgula = ",";
-       if(trim($this->r54_regist) == null ){ 
+       if(trim((string) $this->r54_regist) == null ){ 
          $this->erro_sql = " Campo Servidor nao Informado.";
          $this->erro_campo = "r54_regist";
          $this->erro_banco = "";
@@ -286,11 +286,11 @@ class cl_movrel {
          return false;
        }
      }
-     if(trim($this->r54_codeve)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_codeve"])){ 
+     if(trim((string) $this->r54_codeve)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_codeve"])){ 
        $sql  .= $virgula." r54_codeve = '$this->r54_codeve' ";
        $sql1 .= " and r54_codeve = '$this->r54_codeve' ";
        $virgula = ",";
-       if(trim($this->r54_codeve) == null ){ 
+       if(trim((string) $this->r54_codeve) == null ){ 
          $this->erro_sql = " Campo Relacionamento nao Informado.";
          $this->erro_campo = "r54_codeve";
          $this->erro_banco = "";
@@ -300,11 +300,11 @@ class cl_movrel {
          return false;
        }
      }
-     if(trim($this->r54_quant1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_quant1"])){ 
+     if(trim((string) $this->r54_quant1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_quant1"])){ 
        $sql  .= $virgula." r54_quant1 = $this->r54_quant1 ";
        $sql1 .= " and r54_quant1 = $this->r54_quant1 ";
        $virgula = ",";
-       if(trim($this->r54_quant1) == null ){ 
+       if(trim((string) $this->r54_quant1) == null ){ 
          $this->erro_sql = " Campo Rubrica 1 nao Informado.";
          $this->erro_campo = "r54_quant1";
          $this->erro_banco = "";
@@ -314,11 +314,11 @@ class cl_movrel {
          return false;
        }
      }
-     if(trim($this->r54_quant2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_quant2"])){ 
+     if(trim((string) $this->r54_quant2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_quant2"])){ 
        $sql  .= $virgula." r54_quant2 = $this->r54_quant2 ";
        $sql1 .= " and r54_quant2 = $this->r54_quant2 ";
        $virgula = ",";
-       if(trim($this->r54_quant2) == null ){ 
+       if(trim((string) $this->r54_quant2) == null ){ 
          $this->erro_sql = " Campo Rubrica 2 nao Informado.";
          $this->erro_campo = "r54_quant2";
          $this->erro_banco = "";
@@ -328,11 +328,11 @@ class cl_movrel {
          return false;
        }
      }
-     if(trim($this->r54_quant3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_quant3"])){ 
+     if(trim((string) $this->r54_quant3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_quant3"])){ 
        $sql  .= $virgula." r54_quant3 = $this->r54_quant3 ";
        $sql1 .= " and r54_quant3 = $this->r54_quant3 ";
        $virgula = ",";
-       if(trim($this->r54_quant3) == null ){ 
+       if(trim((string) $this->r54_quant3) == null ){ 
          $this->erro_sql = " Campo Rubrica 3 nao Informado.";
          $this->erro_campo = "r54_quant3";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_movrel {
          return false;
        }
      }
-     if(trim($this->r54_lancad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_lancad"])){ 
+     if(trim((string) $this->r54_lancad)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r54_lancad"])){ 
        $sql  .= $virgula." r54_lancad = '$this->r54_lancad' ";
        $virgula = ",";
-       if(trim($this->r54_lancad) == null ){ 
+       if(trim((string) $this->r54_lancad) == null ){ 
          $this->erro_sql = " Campo Lançado nao Informado.";
          $this->erro_campo = "r54_lancad";
          $this->erro_banco = "";
@@ -438,7 +438,7 @@ class cl_movrel {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:movrel";
@@ -452,7 +452,7 @@ class cl_movrel {
    function sql_query ( $oid = null,$campos="movrel.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,7 +477,7 @@ class cl_movrel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,7 +489,7 @@ class cl_movrel {
    function sql_query_dados ( $oid = null,$campos="movrel.oid,*",$ordem=null,$dbwhere="",$ano="",$mes=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -527,7 +527,7 @@ class cl_movrel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -539,7 +539,7 @@ class cl_movrel {
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -557,7 +557,7 @@ class cl_movrel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -569,7 +569,7 @@ class cl_movrel {
    function sql_query_gerfsal ( $oid = null,$campos="movrel.oid,*",$ordem=null,$dbwhere="",$ano="",$mes="",$rubric="",$regist=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -602,7 +602,7 @@ class cl_movrel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -36,9 +36,9 @@ $clcaracter = new cl_caracter;
 $clcarpadrao = new cl_carpadrao;
 $db_opcao = 2;
 $db_botao = false;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-if(isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if(isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
    db_inicio_transacao();
    $clcaracter->alterar($j31_codigo);
    if($j33_codcaracter != $padrao){
@@ -124,7 +124,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clcaracter->erro_status=="0"){
     $clcaracter->erro(true,false);
     if($clcaracter->erro_campo!=""){

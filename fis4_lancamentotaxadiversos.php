@@ -73,19 +73,11 @@ if(isset($oGet->codigo) && !empty($oGet->codigo)) {
   $unidade              = $oLancamentoAlterar->getUnidade();
   $periodo              = $oLancamentoAlterar->getPeriodo();
 
-  switch ($oLancamentoAlterar->getNaturezaTaxa()->getTipoPeriodo()) {
-    case 'A':
-      $tipoPeriodoNatureza = 'Anual';
-      break;
-
-    case 'M':
-      $tipoPeriodoNatureza = 'Mensal';
-      break;
-    
-    default:
-      $tipoPeriodoNatureza = 'Diária';
-      break;
-  }
+  $tipoPeriodoNatureza = match ($oLancamentoAlterar->getNaturezaTaxa()->getTipoPeriodo()) {
+      'A' => 'Anual',
+      'M' => 'Mensal',
+      default => 'Diária',
+  };
 
   $data_inicio = null;
   if($oLancamentoAlterar->getDataInicio() instanceof DBDate) {
@@ -126,7 +118,7 @@ $data_vencimento_ano = $oDataVencimento->getAno();
 <head>
   <meta http-equiv="Expires" CONTENT="0">
   <?php
-  db_app::load(array(
+  db_app::load([
     "strings.js",
     "scripts.js",
     "dates.js",
@@ -140,7 +132,7 @@ $data_vencimento_ano = $oDataVencimento->getAno();
     "widgets/FormCollection.widget.js",
     "estilos.css",
     "grid.style.css"
-  ));
+  ]);
   ?>
   <style type="text/css">
     #tipoPeriodoAviso {

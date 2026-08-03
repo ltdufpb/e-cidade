@@ -69,9 +69,9 @@ $clrotulo->label("nomeinst");
         </td>
         <td> 
 	      <?php 
-	  	    $aTipoEmissao = array( 1=>"Conforme Lista Gerada",
+	  	    $aTipoEmissao = [ 1=>"Conforme Lista Gerada",
 	  	    					   2=>"Corrigir Históricos Conforme Situação Atual",
-	  	    					   3=>"Não Emitir Notificações com Diferença" );
+	  	    					   3=>"Não Emitir Notificações com Diferença" ];
 	  	    db_select("k102_tipoemissao",$aTipoEmissao,true,$db_opcao,"");
 	  	  ?>
         </td>

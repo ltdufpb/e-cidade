@@ -28,7 +28,8 @@
 
 final class BalancoOrcamentarioDcasp extends RelatoriosLegaisBase {
 
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $sWhereReceita = " o70_instit in ({$this->getInstituicoes()}) ";
     $sWhereDespesa = " o58_instit in ({$this->getInstituicoes()}) ";
@@ -80,7 +81,7 @@ final class BalancoOrcamentarioDcasp extends RelatoriosLegaisBase {
 
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteReceita,
                                                    $oLinha,
-                                                   array($oSaldoInicial, $oPrevisaoAtualizada, $oReceitaRealizada),
+                                                   [$oSaldoInicial, $oPrevisaoAtualizada, $oReceitaRealizada],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_RECEITA
                                                  );
 
@@ -110,8 +111,8 @@ final class BalancoOrcamentarioDcasp extends RelatoriosLegaisBase {
 
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteDespesa,
                                                    $oLinha,
-                                                   array($oDotacaoInicial, $oDotacaoAtualizada,
-                                                         $oDotacaoEmpenhada, $oDotacaoLiquidada, $oDotacaoPaga),
+                                                   [$oDotacaoInicial, $oDotacaoAtualizada,
+                                                         $oDotacaoEmpenhada, $oDotacaoLiquidada, $oDotacaoPaga],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_DESPESA
                                                   );
 

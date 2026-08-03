@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhtipoavaliacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhtipoavaliacao = new cl_rhtipoavaliacao;
 $clrhtipoavaliacao->rotulo->label("h69_sequencial");
 $clrhtipoavaliacao->rotulo->label("h69_descricao");
@@ -98,9 +98,9 @@ $clrhtipoavaliacao->rotulo->label("h69_descricao");
         }else{
            $sql = $clrhtipoavaliacao->sql_query("",$campos,"h69_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h69_descricao)){
-          $repassa = array("chave_h69_sequencial"=>$chave_h69_sequencial,"chave_h69_descricao"=>$chave_h69_descricao);
+          $repassa = ["chave_h69_sequencial"=>$chave_h69_sequencial,"chave_h69_descricao"=>$chave_h69_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

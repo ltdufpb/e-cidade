@@ -50,17 +50,11 @@ class ItemProp extends BaseAbstract
      */
     public function getCodigoLayout()
     {
-        switch ($this->oConfiguracao->getVersao()) {
-            case '1.2':
-            case '1.3':
-                $codigoRetorno = self::CODIGO_LAYOUT_V12;
-                break;
-            case '1.4':
-                $codigoRetorno = self::CODIGO_LAYOUT_V14;
-                break;
-            default:
-                throw new Exception('Versão do layout inválido.');
-        }
+        $codigoRetorno = match ($this->oConfiguracao->getVersao()) {
+            '1.2', '1.3' => self::CODIGO_LAYOUT_V12,
+            '1.4' => self::CODIGO_LAYOUT_V14,
+            default => throw new Exception('Versão do layout inválido.'),
+        };
 
         return $codigoRetorno;
     }

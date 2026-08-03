@@ -31,7 +31,7 @@ include(modification("libs/db_utils.php"));
 include(modification("classes/db_matestoque_classe.php"));
 include(modification("classes/db_matestoqueitem_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oGet = db_utils::postMemory($_GET,0);
 
@@ -123,9 +123,9 @@ $pdf->SetAutoPageBreak(false);
 $pdf->SetTextColor(0,0,0);
 $pdf->SetFillColor(235);
 
-$aDadosMatEstoque  = array();
-$aDadosNumNota     = array();
-$aDados            = array();
+$aDadosMatEstoque  = [];
+$aDadosNumNota     = [];
+$aDados            = [];
 $lImprime          = true;
 $nAlt              = 4; 
 $nTotalRegistros   = 0;
@@ -249,7 +249,7 @@ foreach ( $aDadosMatEstoque as $iCodInd => $aDados ) {
 	    
       $pdf->SetFont($sLetra,'',5);
       $pdf->Cell(20,$nAlt,$oDados->iCodMater                                        ,"TRB",0,"C",0);
-      $pdf->Cell(82,$nAlt,substr($oDados->sDescMater,0,60)                          ,1,0,"C",0);
+      $pdf->Cell(82,$nAlt,substr((string) $oDados->sDescMater,0,60)                          ,1,0,"C",0);
       $pdf->Cell(30,$nAlt,$oDados->iCodOrdem                                        ,1,0,"C",0);
       $pdf->Cell(20,$nAlt,$oDados->iQuantidade                                      ,1,0,"C",0);
       $pdf->Cell(20,$nAlt,db_formatar($oDados->nValorUnit,'f')                      ,1,0,"C",0);

@@ -47,7 +47,7 @@ require_once(modification("classes/db_arrecadcompos_classe.php"));
 require_once(modification("classes/db_arreckey_classe.php"));
 require_once(modification("classes/db_dividaprotprocesso_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cltabrec               = new cl_tabrec;
 $clarrecad              = new cl_arrecad;
@@ -66,7 +66,7 @@ $oDaoDividaprotprocesso = new cl_dividaprotprocesso;
 
 $teste	          = false;
 $iInstit          = db_getsession("DB_instit");
-$aTipos           = array(3, 7, 4, 11, 16, 17, 19);
+$aTipos           = [3, 7, 4, 11, 16, 17, 19];
 
 $oProcesso        = db_getsession("oDadosProcesso");
 
@@ -124,8 +124,8 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
   $result_pesq_divida = $clarrecad->sql_record( $sSqlArrecad );
 
   $numrows 	  = $clarrecad->numrows;
-  $codigo_k02 = split(",", $cod_k02_codigo);
-  $codigo_v03 = split(",", $cod_v03_codigo);
+  $codigo_k02 = preg_split("#,#m", $cod_k02_codigo);
+  $codigo_v03 = preg_split("#,#m", $cod_v03_codigo);
   $sqlerro	  = false;
   $dataini    = date("Y-m-d",db_getsession('DB_datausu'));
   $horaini    = db_hora();
@@ -182,7 +182,7 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
 
 	  	    $resultjadivida  = db_query($sqljadivida);
 	  	    $jaexiste        = false;
-          $numrowsjadivida = pg_numrows($resultjadivida);
+          $numrowsjadivida = pg_num_rows($resultjadivida);
 
           // Trata tipo de Debito 20 - Saneamento Basico
           if ($numrowsjadivida == 0 || ( $numrowsjadivida > 0 && $k03_tipo == 20) ) {
@@ -249,7 +249,7 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
 
           $v01_obs = $cldivida->resumo_importacao($k00_numpre, $k03_tipo);
         }
-        $iExercicioDivida         = $cldivida->getExercicioDivida($k00_numpre, $k03_tipo, substr($k00_dtoper, 6, 4));
+        $iExercicioDivida         = $cldivida->getExercicioDivida($k00_numpre, $k03_tipo, substr((string) $k00_dtoper, 6, 4));
 
       	$cldivida->v01_numcgm     = $k00_numcgm;
       	$cldivida->v01_dtinsc     = date("Y-m-d",db_getsession('DB_datausu') );
@@ -266,10 +266,10 @@ if (isset($cod_k02_codigo) && trim($cod_k02_codigo)!="" && isset($cod_v03_codigo
       	$cldivida->v01_obs        = pg_escape_string($v01_obs);
       	$cldivida->v01_livro      = "";
       	$cldivida->v01_folha      = "";
-      	$dt_venc			            = split("/",$k00_dtvenc);
+      	$dt_venc			            = preg_split("#\\/#m",(string) $k00_dtvenc);
       	$dt_venc_data 		        = $dt_venc[2]."-".$dt_venc[1]."-".$dt_venc[0];
       	$cldivida->v01_dtvenc     = $dt_venc_data;
-      	$dt_oper			            = split("/",$k00_dtoper);
+      	$dt_oper			            = preg_split("#\\/#m",(string) $k00_dtoper);
       	$dt_oper_data 		        = $dt_oper[2]."-".$dt_oper[1]."-".$dt_oper[0];
       	$cldivida->v01_dtoper     = $dt_oper_data;
       	$cldivida->v01_valor      = $k00_valor;

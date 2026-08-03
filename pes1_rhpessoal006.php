@@ -85,7 +85,7 @@ $clrhestagiovinculo               = new cl_rhestagiovinculo;
 $clrhimigrante                    = new cl_rhimigrante;
 $clrhcedencia                     = new cl_rhcedencia;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 

@@ -35,7 +35,7 @@ $clrotulo->label('x11_complemento');
 $clrotulo->label('x04_nrohidro');
 $clrotulo->label('z01_nome');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $where = " (fc_agua_hidrometroativo(aguahidromatric.x04_codhidrometro) is true or aguahidromatric.x04_codhidrometro is null) and (x11_tipo = 'P' or x11_matric is null)";
 if ($lista != "") {
 	if (isset ($ver) and $ver == "com") {
@@ -128,12 +128,12 @@ for($x = 0; $x < $claguabase->numrows;$x++){
    }
    $pdf->setfont('arial','',7);   
    $pdf->cell(15,$alt,@$x01_matric,0,0,"C",$p);
-   $pdf->cell(75,$alt,substr(@$proprietario,0,50),0,0,"L",$p);
+   $pdf->cell(75,$alt,substr((string) @$proprietario,0,50),0,0,"L",$p);
    $pdf->cell(15,$alt,@$x01_numero,0,0,"C",$p);
    $pdf->cell(20,$alt,@$x01_letra,0,0,"C",$p);
    $pdf->cell(25,$alt,@$x11_complemento,0,0,"C",$p);
    $pdf->cell(30,$alt,@$x04_nrohidro,0,0,"C",$p);
-   $pdf->cell(20,$alt,substr(@$j31_descr,0,35),0,0,"L",$p);          
+   $pdf->cell(20,$alt,substr((string) @$j31_descr,0,35),0,0,"L",$p);          
    $pdf->cell(80,$alt,"",0,1,"L",$p);
    if ($p==0){
    	$p=1;

@@ -51,19 +51,19 @@ try {
                 throw new ParameterException("Código da Conta não informado.");
             }
 
-            $where = implode( ' and ', array(
+            $where = implode( ' and ', [
                 "conplanoreduz.c61_reduz  = {$oParam->reduzido_conta}",
                 "conplanoreduz.c61_anousu = {$anoSessao}",
                 "conplanoreduz.c61_instit = {$instituicaoSessao}",
                 "conplanosistema.c122_tipo = 2",
-            )) . ' order by conplanosistemaatributos.c129_ordem';
+            ]) . ' order by conplanosistemaatributos.c129_ordem';
 
-            $campos = array(
+            $campos = [
                 'c121_sequencial as codigo',
                 'c121_sigla as sigla',
                 'c121_descricao as descricao',
                 'c121_ajuda as ajuda',
-            );
+            ];
 
 
             if (!empty($oParam->codigo_lancamento)) {
@@ -90,16 +90,13 @@ try {
                 throw new DBException("Ocorreu um erro ao consultar os atributos da conta contábil.");
             }
 
-            $atributos = db_utils::makeCollectionFromRecord($buscaAtributos, function($stdLinha) {
-
-                return (object)array(
-                    'codigo' => $stdLinha->codigo,
-                    'sigla' => $stdLinha->sigla,
-                    'descricao' => $stdLinha->descricao,
-                    'ajuda' => $stdLinha->ajuda,
-                    'valor' => empty($stdLinha->valor) ? '' : $stdLinha->valor,
-                );
-            });
+            $atributos = db_utils::makeCollectionFromRecord($buscaAtributos, fn($stdLinha) => (object)[
+                'codigo' => $stdLinha->codigo,
+                'sigla' => $stdLinha->sigla,
+                'descricao' => $stdLinha->descricao,
+                'ajuda' => $stdLinha->ajuda,
+                'valor' => empty($stdLinha->valor) ? '' : $stdLinha->valor,
+            ]);
             $oRetorno->atributos = $atributos;
             break;
 

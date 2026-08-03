@@ -42,7 +42,7 @@ $clfiscalmatric  = new cl_fiscalmatric;
 $clrotulo        = new rotulocampo;
 $clrotulo->label('y30_codnoti');
 $clrotulo->label('y30_nome');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 //-----------------------BUSCA AS INFORMAÇÕES DA NOTIFICAÇÃO--------------------------
 $result = $clfiscal->sql_record($clfiscal->sql_query_info($codfiscal,"*"," y30_codnoti = $codfiscal and y30_instit = ".db_getsession('DB_instit') ));
@@ -53,10 +53,10 @@ if ($clfiscal->numrows>0){
 	exit;
 }
 //------------------------E DISPONIBILIZA AS VARIAVESI PARA SER USADA NOS PARAGRAFOS COM OS NOMES ABAIXO----
-$identificacao = (trim($z01_nomecomple) != ''?$z01_nomecomple:$z01_nome);
+$identificacao = (trim((string) $z01_nomecomple) != ''?$z01_nomecomple:$z01_nome);
 $cpf           = $z01_cgccpf;
 $hora          = $y30_hora;
-$arr_data      = split("/",$y30_data);
+$arr_data      = preg_split("#\\/#m",(string) $y30_data);
 $dia           = $arr_data[0];
 $mes           = db_mes($arr_data[1]);
 $ano           = $arr_data[2];
@@ -120,7 +120,7 @@ $result_sql=$clfiscalmatric->sql_record($clfiscalmatric->sql_query(null,"j34_set
 if ($clfiscalmatric->numrows>0){
 	db_fieldsmemory($result_sql,0,true);
 	$bql   = $j34_setor . "/" . $j34_quadra . "/" . $j34_lote;
-	$setor = $j34_setor . " - " . trim($j30_descr);
+	$setor = $j34_setor . " - " . trim((string) $j30_descr);
 }
 
 
@@ -133,7 +133,7 @@ $sqlhead = "select db02_texto
 			 where db03_tipodoc = 1017 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";			 
 $reshead = db_query($sqlhead);
 
-if ( pg_numrows($reshead) == 0 ) {
+if ( pg_num_rows($reshead) == 0 ) {
 //     $head1 = 'Departamento de Fazenda';
      $head1 = 'SECRETARIA DE FINANÇAS';
 }else{

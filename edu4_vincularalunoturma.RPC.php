@@ -57,14 +57,14 @@ try {
     case 'getAlunosVinculados':
 
       $oTurma            = TurmaRepository::getTurmaByCodigo($oParam->iCodigoTurma);
-      $aAlunosVinculados = array();
+      $aAlunosVinculados = [];
       foreach ($oTurma->getAlunosProgressaoParcial() as $oProgressaoAluno) {
 
         $oDadosAluno                           = new stdClass();
         $oDadosAluno->iCodigoProgressaoParcial = $oProgressaoAluno->getCodigoProgressaoParcial();
         $oDadosAluno->iCodigoAluno             = $oProgressaoAluno->getAluno()->getCodigoAluno();
-        $oDadosAluno->sNomeAluno               = urlencode($oProgressaoAluno->getAluno()->getNome());
-        $oDadosAluno->sDisciplina              = urlencode($oProgressaoAluno->getDisciplina()->getNomeDisciplina());
+        $oDadosAluno->sNomeAluno               = urlencode((string) $oProgressaoAluno->getAluno()->getNome());
+        $oDadosAluno->sDisciplina              = urlencode((string) $oProgressaoAluno->getDisciplina()->getNomeDisciplina());
         $oDadosAluno->dtVinculo                = $oProgressaoAluno->getVinculoRegencia()
                                                                   ->getDataVinculo()
                                                                   ->convertTo(DBDate::DATA_EN);
@@ -85,7 +85,7 @@ try {
     case 'getDadosTurma':
 
       $oTurma  = TurmaRepository::getTurmaByCodigo($oParam->iCodigoTurma);
-      $aEtapas = array();
+      $aEtapas = [];
 
       foreach ($oTurma->getEtapas() as $oEtapaTurma) {
 
@@ -94,17 +94,17 @@ try {
         }
         $oEtapa         = new stdClass();
         $oEtapa->iEtapa = $oEtapaTurma->getEtapa()->getCodigo();
-        $oEtapa->sEtapa = urlencode($oEtapaTurma->getEtapa()->getNome());
+        $oEtapa->sEtapa = urlencode((string) $oEtapaTurma->getEtapa()->getNome());
         $aEtapas[]      = $oEtapa;
       }
 
       $oDadosTurma                    = new stdClass();
       $oDadosTurma->iCodigoTurma      = $oTurma->getCodigo();
-      $oDadosTurma->sNomeTurma        = urlencode($oTurma->getDescricao());
-      $oDadosTurma->sCalendario       = urlencode($oTurma->getCalendario()->getDescricao());
-      $oDadosTurma->sCurso            = urlencode($oTurma->getBaseCurricular()->getCurso()->getNome());
+      $oDadosTurma->sNomeTurma        = urlencode((string) $oTurma->getDescricao());
+      $oDadosTurma->sCalendario       = urlencode((string) $oTurma->getCalendario()->getDescricao());
+      $oDadosTurma->sCurso            = urlencode((string) $oTurma->getBaseCurricular()->getCurso()->getNome());
       $oDadosTurma->aEtapas           = $aEtapas;
-      $oDadosTurma->sTurno            = urlencode($oTurma->getTurno()->getDescricao());
+      $oDadosTurma->sTurno            = urlencode((string) $oTurma->getTurno()->getDescricao());
 
       if ( !$oTurma->getTurno()->isIntegral() ) {
 
@@ -121,7 +121,7 @@ try {
 
       $oTurma       = TurmaRepository::getTurmaByCodigo($oParam->iCodigoTurma);
       $oEtapa       = EtapaRepository::getEtapaByCodigo($oParam->iEtapa);
-      $aDisciplinas = array();
+      $aDisciplinas = [];
 
       foreach ($oTurma->getDisciplinasPorEtapa($oEtapa) as $oRegencia) {
 
@@ -132,7 +132,7 @@ try {
         $oDisciplina                       = new stdClass();
         $oDisciplina->iRegencia            = $oRegencia->getCodigo();
         $oDisciplina->iCodigoDisciplina    = $oRegencia->getDisciplina()->getCodigoDisciplina();
-        $oDisciplina->sDescricaoDisciplina = urlencode($oRegencia->getDisciplina()->getNomeDisciplina());
+        $oDisciplina->sDescricaoDisciplina = urlencode((string) $oRegencia->getDisciplina()->getNomeDisciplina());
 
         $aDisciplinas[] = $oDisciplina;
       }
@@ -156,15 +156,15 @@ try {
                                                                                                         $lSomenteAlunosEscola
                                                                                                        );
 
-      $aAlunosSemVinculo = array();
+      $aAlunosSemVinculo = [];
 
       foreach ($aProgressoes as $oProgressaoAluno) {
 
         $oAlunosSemVinculo                    = new stdClass();
         $oAlunosSemVinculo->iCodigoAluno      = $oProgressaoAluno->getAluno()->getCodigoAluno();
         $oAlunosSemVinculo->iCodigoProgressao = $oProgressaoAluno->getCodigoProgressaoParcial();
-        $oAlunosSemVinculo->sDisciplina       = urlencode($oProgressaoAluno->getDisciplina()->getNomeDisciplina());
-        $oAlunosSemVinculo->sNomeAluno        = urlencode($oProgressaoAluno->getAluno()->getNome());
+        $oAlunosSemVinculo->sDisciplina       = urlencode((string) $oProgressaoAluno->getDisciplina()->getNomeDisciplina());
+        $oAlunosSemVinculo->sNomeAluno        = urlencode((string) $oProgressaoAluno->getAluno()->getNome());
         $aAlunosSemVinculo[]                  = $oAlunosSemVinculo;
       }
 
@@ -268,7 +268,7 @@ try {
       }
       $iLinhas = pg_num_rows( $rsProgressao );
 
-      $oRetorno->aProgressao = array();
+      $oRetorno->aProgressao = [];
       for ($i = 0; $i < $iLinhas; $i++) {
 
         $oDadosProgressao                = db_utils::fieldsMemory($rsProgressao, $i);
@@ -276,31 +276,16 @@ try {
         $oProgressao->iCodigoProgressao  = $oDadosProgressao->ed114_sequencial;
         $oProgressao->iAno               = $oDadosProgressao->ed114_ano;
         $oProgressao->iEtapa             = $oDadosProgressao->ed114_serie;
-        $oProgressao->sEtapa             = urlencode($oDadosProgressao->serie);
+        $oProgressao->sEtapa             = urlencode((string) $oDadosProgressao->serie);
         $oProgressao->iDisciplina        = $oDadosProgressao->ed12_i_codigo;
-        $oProgressao->sDisciplina        = urlencode($oDadosProgressao->disciplina);
+        $oProgressao->sDisciplina        = urlencode((string) $oDadosProgressao->disciplina);
 
         $oRetorno->aProgressao[] = $oProgressao;
       }
 
       break;
   }
-} catch (BusinessException $eErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = $eErro->getMessage();
-} catch (ParameterException $eErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = $eErro->getMessage();
-} catch (DBException $eErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = $eErro->getMessage();
-} catch (Exception $eErro) {
+} catch (BusinessException|ParameterException|DBException|Exception $eErro) {
 
   db_fim_transacao(true);
   $oRetorno->status  = 2;

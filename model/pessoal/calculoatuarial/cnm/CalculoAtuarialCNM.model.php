@@ -54,7 +54,7 @@ class CalculoAtuarialCNM {
    * @var array
    * @access private
    */
-	private $aAssentamentos = array();
+	private $aAssentamentos = [];
 	
   /**
    * Codigos dos cargos dos professores
@@ -62,7 +62,7 @@ class CalculoAtuarialCNM {
    * @var array
    * @access private
    */
-	private $aCargosProfessores = array();
+	private $aCargosProfessores = [];
 	
   /**
    * TIpos de arquivos
@@ -70,7 +70,7 @@ class CalculoAtuarialCNM {
    * @var array
    * @access private
    */
-	private $aTiposArquivos = array();
+	private $aTiposArquivos = [];
 	
   /**
    * Instituicoes com servidores inativos
@@ -78,7 +78,7 @@ class CalculoAtuarialCNM {
    * @var array
    * @access private
    */
-	private $aInstituicoesInativos = array();
+	private $aInstituicoesInativos = [];
 	
 	/**
 	 * Instituicoes com servidores ativos
@@ -86,7 +86,7 @@ class CalculoAtuarialCNM {
 	 * @var array
 	 * @access private
 	 */
-	private $aInstituicoesAtivos = array();
+	private $aInstituicoesAtivos = [];
 	
   /**
    * Tipos de arquivos a serem gerados, um para cada tipo de vinculo do servidor
@@ -94,11 +94,11 @@ class CalculoAtuarialCNM {
    * @var array
    * @access private
    */
-	private $aArquivosGeracao = array();
+	private $aArquivosGeracao = [];
 
-  private $aTiposDependentes = array(Dependente::IRF_FILHOS_ATE_21,
+  private $aTiposDependentes = [Dependente::IRF_FILHOS_ATE_21,
                                      Dependente::IRF_FILHO_ENTEADO_ATE_24_ENSINO_SUPERIOR,
-                                     Dependente::IRF_ABSOLUTAMENTE_INCAPAZ); 
+                                     Dependente::IRF_ABSOLUTAMENTE_INCAPAZ]; 
 
   public function processar() {
 
@@ -117,7 +117,7 @@ class CalculoAtuarialCNM {
           $sInstituicoes     = implode(',', $this->aInstituicoesAtivos);          
           $aServidoresAtivos = ServidorRepository::getServidoresPorVinculo($this->iAnoFolha, $this->iMesFolha, VinculoServidor::ATIVO, $sInstituicoes);
           sort($aServidoresAtivos);
-          
+
           for ( $iIndice = 0; $iIndice < count($aServidoresAtivos); $iIndice++ ) {
 
             $oServidor = $aServidoresAtivos[$iIndice];
@@ -125,11 +125,11 @@ class CalculoAtuarialCNM {
             if ( $oServidor->getTipoRegime() != "1" ) { // != Estatutario
               continue;
             }
- 
+
             if ( $oServidor->getVinculo()->getTipo() != 'A' ) { //Ativo
               continue;
             }
- 
+
 						$oInformacoes = new InformacaoCalculoAtuarialAtivos();						
 
             if ( $oServidor->getTipoExposicaoAgentesNocivos() == '' ) {
@@ -140,7 +140,7 @@ class CalculoAtuarialCNM {
 
             $iTempoServico  = DBDate::calculaIntervaloEntreDatas(new DBDate(date('Y-m-d'), db_getsession('DB_datausu')), $oServidor->getDataAdmissao(), 'y');
 						$iTempoAverbado = self::getTempoAverbado($oServidor, $this->aAssentamentos);
-            
+
             $oInformacoes->setTempoServicoEnteEstatal($iTempoServico);
             $oInformacoes->setTempocontribuicaoFundo ($iTempoServico + $iTempoAverbado);
             $oInformacoes->setTempoServicoAnterior   ($iTempoAverbado);
@@ -160,31 +160,31 @@ class CalculoAtuarialCNM {
             $oDaoRhPessoalMov = new cl_rhpessoalmov();
             $sSqlRhPessoalMov = $oDaoRhPessoalMov->sql_query(null, $oServidor->getCodigoInstituicao(), '*', 'rh02_anousu, rh02_mesusu', "rh02_regist = {$oServidor->getMatricula()}");
             $rsRhPessoalMov   = db_query($sSqlRhPessoalMov);
-            
+
             $oRhPessoalMovNaAdmissao = db_utils::fieldsMemory($rsRhPessoalMov, 0);
-            
+
             $oServidorNaAdmissao = ServidorRepository::getInstanciaByCodigo($oServidor->getMatricula(), 
             																														    $oRhPessoalMovNaAdmissao->rh02_anousu, 			
             																																$oRhPessoalMovNaAdmissao->rh02_mesusu);
 
             $oCalculoSalario     = new CalculoFolhaSalario($oServidorNaAdmissao);
             $aRemuneracao        = $oCalculoSalario->getEventosFinanceiros(null, 'R992');
-            
+
             $nRemuneracao      = 0;
-            
+
             if (count($aRemuneracao) > 0) {
 	            foreach ($aRemuneracao as $oRemuneracao) {
 	              $nRemuneracao += $oRemuneracao->getValor();
 	            }
             } else {
-            	
+
             	$nRemuneracao = $oServidor->getValorVariaveisCalculo($this->iAnoFolha, 
             																											 $this->iMesFolha, 
             			                                                 $oServidor->getMatricula(), 	
             																										   db_getsession('DB_instit'), 
             																											 Servidor::VARIAVEL_SALARIO_BASE_PROGRESSAO);
             }
-            
+
             $aRemuneracaoFinal = $oServidor->getCalculoFinanceiro(CalculoFolha::CALCULO_SALARIO)->getEventosFinanceiros(null, 'R992');
             $nRemuneracaoFinal = 0;
             foreach ($aRemuneracaoFinal as $oRemuneracaoFinal) {
@@ -194,9 +194,9 @@ class CalculoAtuarialCNM {
             $oInformacoes->setRemuneracao( $nRemuneracao ) ;
             $oInformacoes->setRemuneracaoFinal( $nRemuneracaoFinal ) ; 
 
-            $aIdadeFilhos           = array();
+            $aIdadeFilhos           = [];
             $iQuantidadeDependentes = 0;
-            
+
             foreach ( $oServidor->getDependentes() as $oDependente ) {
 
               if ( in_array( $oDependente->getTipo(), $this->aTiposDependentes ) ) {
@@ -205,11 +205,11 @@ class CalculoAtuarialCNM {
                 if ($oDependente->getDataNascimento() instanceof DBDate) {
                   $iIdadeDependente = DBDate::calculaIntervaloEntreDatas($oDataAtual, $oDependente->getDataNascimento(), 'y');
               	}
-                
+
                 if ( $oDependente->getTipo() == Dependente::IRF_FILHOS_ATE_21 && $iIdadeDependente > 21) {
                   continue;
                 }
-                
+
                 if ( $oDependente->getTipo() == Dependente::IRF_FILHO_ENTEADO_ATE_24_ENSINO_SUPERIOR && $iIdadeDependente > 24) {
                   continue;
                 }
@@ -225,9 +225,9 @@ class CalculoAtuarialCNM {
 
                 $oInformacoes->setIdadeConjuge( DBDate::calculaIntervaloEntreDatas($oDataAtual, $oDependente->getDataNascimento(), 'y') ) ;
                 $iQuantidadeDependentes++;
-                
+
               }
-              
+
             }
 
             /**
@@ -235,7 +235,7 @@ class CalculoAtuarialCNM {
              */
             foreach ( $aIdadeFilhos as $iIndiceFilho => $iIdade ) {
 
-              
+
               $oInformacoes->setIdadeFilho( $iIndiceFilho,  $iIdade ) ;
             }
 
@@ -251,7 +251,7 @@ class CalculoAtuarialCNM {
 
 
           } // endforeach
-            
+
           $this->aArquivosGeracao[] = $oArquivo;
 
         break;		
@@ -266,7 +266,7 @@ class CalculoAtuarialCNM {
           $sInstituicoes       = implode(',', $this->aInstituicoesInativos);
 
           $aServidoresInativos = ServidorRepository::getServidoresPorVinculo($this->iAnoFolha, $this->iMesFolha, $iTipoArquivo, $sInstituicoes);
-          
+
           foreach ( $aServidoresInativos as $oServidor ) {
 
             if ( $oServidor->getTipoRegime() != "1" ) {
@@ -279,7 +279,7 @@ class CalculoAtuarialCNM {
                 continue;
               }
               $oInformacoes = new InformacaoCalculoAtuarialPensionistas();						
-              
+
               $oInformacoes->setDataNascimentoRecebedor($oServidor->getDataNascimento());
               if ($oServidorOrigem = $oServidor->getServidorOrigem()) {
               	$oInformacoes->setDataNascimentoInstituidor($oServidor->getServidorOrigem()->getDataNascimento());
@@ -303,7 +303,7 @@ class CalculoAtuarialCNM {
             }
             $oInformacoes->setSexo                ($oServidor->getSexo() == 'M' ? 1 : 2);
             $oInformacoes->setDataInicioBeneficio ($oServidor->getDataAdmissao());
-            
+
             $nRemuneracao      = 0;
 
             $aRemuneracao      = $oServidor->getCalculoFinanceiro(CalculoFolha::CALCULO_SALARIO)->getEventosFinanceiros(null, 'R981');
@@ -320,7 +320,7 @@ class CalculoAtuarialCNM {
 	            	$nRemuneracao += $oRemuneracao->getValor();
 	            }
             }
-            
+
             /**
              * Caso não possua nenhum valor da R975, pesquisar na R997
              */
@@ -334,7 +334,7 @@ class CalculoAtuarialCNM {
             $oInformacoes->setRemuneracao ($nRemuneracao);
 
             $iQuantidadeDependentes = 0;
-            $aIdadeFilhos           = array();
+            $aIdadeFilhos           = [];
 
             foreach ( $oServidor->getDependentes() as $oDependente ) {
 
@@ -365,7 +365,7 @@ class CalculoAtuarialCNM {
           } 
 
 					$this->aArquivosGeracao[] = $oArquivo;
-				
+
         break;
 
       } // endswitch	
@@ -377,7 +377,7 @@ class CalculoAtuarialCNM {
 	
 	public function gerarArquivos() {
 		
-		$aCaminhosArquivosGerados = array();
+		$aCaminhosArquivosGerados = [];
 		
 		foreach ( $this->aArquivosGeracao as $oArquivo ) {
 			

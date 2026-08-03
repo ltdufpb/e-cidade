@@ -203,10 +203,7 @@ function escreverPacientes($pdf, $dados)
             $dado->s115_c_cartaosus,
             $dado->z01_v_cgccpf,
             $dado->z01_v_ender,
-            $dado->z01_i_numero,
-            $dado->z01_v_compl,
-            $dado->z01_v_bairro,
-            $dado->z01_v_munic
+            $dado->z01_i_numero
         );
         $linhasNaPagina++;
     }

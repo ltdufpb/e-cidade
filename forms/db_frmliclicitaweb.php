@@ -136,7 +136,7 @@ $clrotulo->label("l20_codigo");
                     </td>
                     <td>
                         <?php
-                        $x = array('1' => 'Sem Cadastro', '2' => 'Com Cadastro');
+                        $x = ['1' => 'Sem Cadastro', '2' => 'Com Cadastro'];
                         db_select('l29_liberaedital', $x, true, $db_opcao, "");
                         ?>
                     </td>
@@ -214,7 +214,7 @@ $clrotulo->label("l20_codigo");
         <?php
         if ($db_opcao != 1) {
             echo " location.href = '" .
-                basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) .
+                basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) .
                 "?chavepesquisa='+chave";
         }
         ?>

@@ -33,16 +33,13 @@ use Exception;
 class BemPlacaRepository
 {
     /**
-     * @var Object
+     * @param object $dao
      */
-    private $dao;
-
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
-    public function buscaBemPlacasPorIdBem($id, $colunas = array('*'))
+    public function buscaBemPlacasPorIdBem($id, $colunas = ['*'])
     {
         $sql = $this->dao->sql_query_file(
             $id,
@@ -63,7 +60,7 @@ class BemPlacaRepository
             return false;
         }
 
-        $bemPlacas = array();
+        $bemPlacas = [];
 
         for ($i = 0; $i < $numrows; $i++) {
             $bemPlacas[] = BemPlaca::fromState(pg_fetch_array($rs, $i));

@@ -184,7 +184,7 @@ class DadosESocial
     /**
      * @var Servidor[]
      */
-    private $servidores = array();
+    private $servidores = [];
 
     private $recibo = '';
 
@@ -426,9 +426,7 @@ class DadosESocial
             $this->dados[] = $dadosPreechimento->formatar(
                 $this->tipo,
                 $this->identificaResponsavel($preenchimento),
-                (isset($preenchimento->inscricao_empregador)
-                    ? $preenchimento->inscricao_empregador
-                    : $preenchimento->inscricao_contribuinte
+                ($preenchimento->inscricao_empregador ?? $preenchimento->inscricao_contribuinte
                 ),
                 Preenchimentos::buscaRespostas($preenchimento->preenchimento),
                 $preenchimento
@@ -446,49 +444,17 @@ class DadosESocial
      */
     private function identificaResponsavel(\stdClass $preenchimento)
     {
-        switch ($this->tipo) {
-            case Tipo::SERVIDOR:
-            case Tipo::TRABALHADOR_SEM_VINCULO:
-            case Tipo::ALTERACAO_TRABALHADOR_SEM_VINCULO:
-            case Tipo::AVISO_PREVIO:
-            case Tipo::ADMISSAO_PRELIMINAR:
-            case Tipo::ALTERACAO_SERVIDOR:
-                return $preenchimento->matricula;
-            case Tipo::EMPREGADOR:
-            case Tipo::LOTACAO_TRIBUTARIA:
-                return $preenchimento->cgm;
-            case Tipo::CARGO:
-                return $preenchimento->cargo;
-            case Tipo::RUBRICA:
-            case Tipo::FUNCAO:
-            case Tipo::HORARIO:
-            case Tipo::TRABALHO_INTERMITENTE:
-            case Tipo::AFASTAMENTO_TEMPORARIO:
-            case Tipo::EXCLUSAO_EVENTOS:
-            case Tipo::REINTEGRACAO:
-            case Tipo::CONTRIBUINTE:
-            case Tipo::ALTERACAO_CONTRATUAL:
-            case Tipo::REMUNERACAO_RGPS:
-            case Tipo::EFD_EXCLUSAO_EVENTOS:
-            case Tipo::EFD_RETENCOES_SERVICOS_TOMADOS:
-            case Tipo::FECHAMENTO_EVENTOS_PERIODICOS:
-            case Tipo::TOTALIZACAO_PAGAMENTOS_CONTINGENCIA:
-            case TIPO::EFD_FECHAMENTO_PERIODICOS:
-                return $preenchimento->identificador;
-            case Tipo::DESLIGAMENTO_SERVIDOR:
-            case Tipo::TERMINO_TRABALHADOR_SEM_VINCULO:
-                return $preenchimento->referencia;
-            case Tipo::PROCESSOS:
-            case Tipo::EFD_PROCESSOS:
-            case Tipo::EFD_SERVICOS_PRESTADOS:
-                return $preenchimento->preenchimento;
-            case Tipo::OBRAS:
-                return $preenchimento->cnpj_obras;
-            case Tipo::CAT:
-                return "{$preenchimento->cpf_cat}_{$preenchimento->data_cat}";
-            default:
-                throw new Exception('Identificador de responsável por tipo de evento não encontrado.');
-        }
+        return match ($this->tipo) {
+            Tipo::SERVIDOR, Tipo::TRABALHADOR_SEM_VINCULO, Tipo::ALTERACAO_TRABALHADOR_SEM_VINCULO, Tipo::AVISO_PREVIO, Tipo::ADMISSAO_PRELIMINAR, Tipo::ALTERACAO_SERVIDOR => $preenchimento->matricula,
+            Tipo::EMPREGADOR, Tipo::LOTACAO_TRIBUTARIA => $preenchimento->cgm,
+            Tipo::CARGO => $preenchimento->cargo,
+            Tipo::RUBRICA, Tipo::FUNCAO, Tipo::HORARIO, Tipo::TRABALHO_INTERMITENTE, Tipo::AFASTAMENTO_TEMPORARIO, Tipo::EXCLUSAO_EVENTOS, Tipo::REINTEGRACAO, Tipo::CONTRIBUINTE, Tipo::ALTERACAO_CONTRATUAL, Tipo::REMUNERACAO_RGPS, Tipo::EFD_EXCLUSAO_EVENTOS, Tipo::EFD_RETENCOES_SERVICOS_TOMADOS, Tipo::FECHAMENTO_EVENTOS_PERIODICOS, Tipo::TOTALIZACAO_PAGAMENTOS_CONTINGENCIA, TIPO::EFD_FECHAMENTO_PERIODICOS => $preenchimento->identificador,
+            Tipo::DESLIGAMENTO_SERVIDOR, Tipo::TERMINO_TRABALHADOR_SEM_VINCULO => $preenchimento->referencia,
+            Tipo::PROCESSOS, Tipo::EFD_PROCESSOS, Tipo::EFD_SERVICOS_PRESTADOS => $preenchimento->preenchimento,
+            Tipo::OBRAS => $preenchimento->cnpj_obras,
+            Tipo::CAT => "{$preenchimento->cpf_cat}_{$preenchimento->data_cat}",
+            default => throw new Exception('Identificador de responsável por tipo de evento não encontrado.'),
+        };
     }
 
     /**
@@ -556,16 +522,16 @@ class DadosESocial
                     $referencias
                 );
 
-                $codigosAssentamentos = array();
+                $codigosAssentamentos = [];
 
                 $matriculas = [];
                 foreach ($servidores as $servidor) {
                     $matriculas[] = $servidor->getMatricula();
                 }
-                $where = array(
+                $where = [
                     "rh01_instit = {$instituicao->getCodigo()}",
                     "avaliacaopergunta.db103_identificadorcampo = 'codMotAfast'"
-                );
+                ];
                 if (!empty($matriculas)) {
                     $where[] = " eso12_rhpessoal IN (". implode(', ', $matriculas) . ")";
                 }

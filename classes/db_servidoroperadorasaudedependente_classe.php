@@ -33,7 +33,7 @@ class cl_servidoroperadorasaudedependente
     public function __construct()
     {
         $this->rotulo = new rotulo("servidoroperadorasaudedependente");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -113,10 +113,10 @@ class cl_servidoroperadorasaudedependente
                 $this->erro_status = "0";
                 return false;
             }
-            $this->rh223_sequencial = pg_result($result, 0, 0);
+            $this->rh223_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM servidoroperadorasaudedependente_rh223_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $rh223_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $rh223_sequencial)) {
                 $this->erro_sql = " Campo rh223_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -154,7 +154,7 @@ class cl_servidoroperadorasaudedependente
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Dependente do Servidor no Plano de Saúde ($this->rh223_sequencial) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Dependente do Servidor no Plano de Saúde já Cadastrado";
@@ -186,22 +186,22 @@ class cl_servidoroperadorasaudedependente
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,1010061,'$this->rh223_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,1010335,1010068,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010335,1010068,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh223_dependente')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010335,1010067,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010335,1010067,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh223_servidoroperadorasaude')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010335,1010066,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010335,1010066,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh223_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010335,1010062,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010335,1010062,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh223_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,1010335,1010061,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,1010335,1010061,'','" . AddSlashes(pg_fetch_result($resaco,
                         0,
                         'rh223_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -214,10 +214,10 @@ class cl_servidoroperadorasaudedependente
         $this->atualizacampos();
         $sql = " UPDATE servidoroperadorasaudedependente SET ";
         $virgula = "";
-        if (trim($this->rh223_dependente) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh223_dependente"])) {
+        if (trim((string) $this->rh223_dependente) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh223_dependente"])) {
             $sql .= $virgula . " rh223_dependente = $this->rh223_dependente ";
             $virgula = ",";
-            if (trim($this->rh223_dependente) == null) {
+            if (trim((string) $this->rh223_dependente) == null) {
                 $this->erro_sql = " Campo Dependente não informado.";
                 $this->erro_campo = "rh223_dependente";
                 $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_servidoroperadorasaudedependente
                 return false;
             }
         }
-        if (trim($this->rh223_servidoroperadorasaude) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh223_servidoroperadorasaude"])) {
+        if (trim((string) $this->rh223_servidoroperadorasaude) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh223_servidoroperadorasaude"])) {
             $sql .= $virgula . " rh223_servidoroperadorasaude = $this->rh223_servidoroperadorasaude ";
             $virgula = ",";
-            if (trim($this->rh223_servidoroperadorasaude) == null) {
+            if (trim((string) $this->rh223_servidoroperadorasaude) == null) {
                 $this->erro_sql = " Campo Operadora de Saúde do Servidor não informado.";
                 $this->erro_campo = "rh223_servidoroperadorasaude";
                 $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_servidoroperadorasaudedependente
                 return false;
             }
         }
-        if (trim($this->rh223_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh223_valor"])) {
+        if (trim((string) $this->rh223_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh223_valor"])) {
             $sql .= $virgula . " rh223_valor = $this->rh223_valor ";
             $virgula = ",";
-            if (trim($this->rh223_valor) == null) {
+            if (trim((string) $this->rh223_valor) == null) {
                 $this->erro_sql = " Campo Valor não informado.";
                 $this->erro_campo = "rh223_valor";
                 $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_servidoroperadorasaudedependente
                 return false;
             }
         }
-        if (trim($this->rh223_tipo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh223_tipo"])) {
+        if (trim((string) $this->rh223_tipo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh223_tipo"])) {
             $sql .= $virgula . " rh223_tipo = '$this->rh223_tipo' ";
             $virgula = ",";
-            if (trim($this->rh223_tipo) == null) {
+            if (trim((string) $this->rh223_tipo) == null) {
                 $this->erro_sql = " Campo Tipo não informado.";
                 $this->erro_campo = "rh223_tipo";
                 $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_servidoroperadorasaudedependente
                 return false;
             }
         }
-        if (trim($this->rh223_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh223_sequencial"])) {
+        if (trim((string) $this->rh223_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["rh223_sequencial"])) {
             $sql .= $virgula . " rh223_sequencial = $this->rh223_sequencial ";
             $virgula = ",";
-            if (trim($this->rh223_sequencial) == null) {
+            if (trim((string) $this->rh223_sequencial) == null) {
                 $this->erro_sql = " Campo Sequencial não informado.";
                 $this->erro_campo = "rh223_sequencial";
                 $this->erro_banco = "";
@@ -298,31 +298,31 @@ class cl_servidoroperadorasaudedependente
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010061,'$this->rh223_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh223_dependente"]) || $this->rh223_dependente != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010335,1010068,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010335,1010068,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh223_dependente')) . "','$this->rh223_dependente'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh223_servidoroperadorasaude"]) || $this->rh223_servidoroperadorasaude != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010335,1010067,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010335,1010067,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh223_servidoroperadorasaude')) . "','$this->rh223_servidoroperadorasaude'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh223_valor"]) || $this->rh223_valor != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010335,1010066,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010335,1010066,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh223_valor')) . "','$this->rh223_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh223_tipo"]) || $this->rh223_tipo != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010335,1010062,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010335,1010062,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh223_tipo')) . "','$this->rh223_tipo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
                     if (isset($GLOBALS["HTTP_POST_VARS"]["rh223_sequencial"]) || $this->rh223_sequencial != "") {
-                        $resac = db_query("insert into db_acount values($acount,1010335,1010061,'" . AddSlashes(pg_result($resaco,
+                        $resac = db_query("insert into db_acount values($acount,1010335,1010061,'" . AddSlashes(pg_fetch_result($resaco,
                                 $conresaco,
                                 'rh223_sequencial')) . "','$this->rh223_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     }
@@ -382,22 +382,22 @@ class cl_servidoroperadorasaudedependente
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,1010061,'$rh223_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,1010335,1010068,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010335,1010068,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh223_dependente')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010335,1010067,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010335,1010067,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh223_servidoroperadorasaude')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010335,1010066,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010335,1010066,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh223_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010335,1010062,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010335,1010062,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh223_tipo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,1010335,1010061,'','" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,1010335,1010061,'','" . AddSlashes(pg_fetch_result($resaco,
                             $iresaco,
                             'rh223_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }

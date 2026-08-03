@@ -69,7 +69,7 @@ if (!empty($x21_codleitura)) {
     db_msgbox("Não foi possível verificar se a leitura foi emitida pelos coletores.");
   }
 
-  if ($rsDadosExportados && pg_numrows($rsDadosExportados)) {
+  if ($rsDadosExportados && pg_num_rows($rsDadosExportados)) {
     $db_botao = false;
     $naltera  = false;
     $lEmitidaColetor = true;
@@ -158,7 +158,7 @@ db_app::load('prototype.js, strings.js, AjaxRequest.js');
                   <label class="bold" for="codigo_contrato">Contrato:</label>
                 </td>
                 <td nowrap colspan="5">
-                  <?php $x21_aguacontrato = isset($x21_aguacontrato) ? $x21_aguacontrato : null ?>
+                  <?php $x21_aguacontrato ??= null ?>
                   <input type="text" readonly="readonly" class="readonly field-size2" name="x21_aguacontrato" id="x21_aguacontrato" value="<?php echo $x21_aguacontrato ?>" maxlength="10">
                 </td>
               </tr>
@@ -452,7 +452,7 @@ db_app::load('prototype.js, strings.js, AjaxRequest.js');
 </form>
 <script>
 
-<?php if (isset($x21_tipo) && $x21_tipo == 3 && in_array($db_opcao, array(2, 22, 3, 33)) && $lEmitidaColetor) { ?>
+<?php if (isset($x21_tipo) && $x21_tipo == 3 && in_array($db_opcao, [2, 22, 3, 33]) && $lEmitidaColetor) { ?>
     alert("Não é possível fazer alterações em leituras emitidas do coletor.");
 <?php } else { ?>
   js_verifica_matricula();
@@ -901,7 +901,7 @@ function js_preenchepesquisa(chave){
   db_iframe_agualeitura.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

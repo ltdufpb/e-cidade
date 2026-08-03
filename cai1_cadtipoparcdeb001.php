@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_cadtipoparcdeb_classe.php"));
 include(modification("classes/db_cadtipoparc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clcadtipoparcdeb = new cl_cadtipoparcdeb;
 $clcadtipoparc = new cl_cadtipoparc;
@@ -66,7 +66,7 @@ if( isset($_self)) {
     if($linhastipo>0){
       db_fieldsmemory($resulttipo,0);
       $erro_msg= "Já existe regra cadastrada para este tipo de débito dentro deste período. (Regra: $k40_codigo)";
-                
+
       $sqlerro = true;
     }
     */

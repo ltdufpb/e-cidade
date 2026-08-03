@@ -44,7 +44,7 @@ $oRetorno->sMessage = '';
 try {
   switch ($oParam->exec) {
     case 'getRetiradasCgs':
-      $oParametroFarmacia                 = db_stdClass::getParametro("far_parametros", array());
+      $oParametroFarmacia                 = db_stdClass::getParametro("far_parametros", []);
       $lImpressaotermica                  = $oParametroFarmacia[0]->fa02_utilizaimpressoratermica;
       $oRetorno->lUtilizaImpressaoTermica = $lImpressaotermica == 't'?true:false;  
       $oDaoFarRetirada                    = new cl_far_retirada();

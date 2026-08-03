@@ -329,9 +329,9 @@ function js_confir() {
 				<td nowrap title="<?=@$Tj39_idprinc?>"><?=@$Lj39_idprinc?>
 				</td>
 				<td><?php  if (isset($j39_matric) && $num > 0) {
-				  $x = array("f"=>"Construção Secundária","t"=>"Construção Principal");
+				  $x = ["f"=>"Construção Secundária","t"=>"Construção Principal"];
 				} else {
-				  $x = array("t"=>"Construção Principal","f"=>"Construção Secundária");
+				  $x = ["t"=>"Construção Principal","f"=>"Construção Secundária"];
 				}
 				db_select('j39_idprinc',$x,true,$db_opcao,"");
 				?> <input type="hidden" name="testaprinc" value="<?=@$j39_idprinc?>">
@@ -383,7 +383,7 @@ function js_confir() {
 								<td title="Origem do Processo"><b>Processo do Sistema:</b>
 								</td>
 								<td><?php 
-								$x = array("S"=>"Sim", "N"=>"Não");
+								$x = ["S"=>"Sim", "N"=>"Não"];
 								db_select("lProcesso", $x, true, $db_opcao, "onChange=js_montaCampoProcesso()");
 								?>
 								</td>

@@ -45,7 +45,7 @@ if(isset($opcao) && $opcao=="alterar"){
 } 
 
 ?>
-<form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" >
+<form name="form1" method="post" action="<?=basename((string) $_SERVER['PHP_SELF'])?>" >
       <table border="0" cellspacing="1" cellpadding="1">
 	<tr>
 	  <td nowrap align="right" title="<?=@$Tl22_codliclicita?> ">
@@ -107,7 +107,7 @@ db_inputdata("l22_dtretira",@$l22_dtretira_dia,@$l22_dtretira_mes,@$l22_dtretira
   <tr>
     <td valign="top"> 
     <?php 
-     $chavepri= array("l22_codigo"=>@$l22_codigo,"l22_codliclicita"=>@$l22_codliclicita,"l22_numcgm"=>@$l22_numcgm,"l22_dtretira"=>@$l22_dtretira,"l22_nomeretira"=>@$l22_nomeretira,"z01_nome"=>@$z01_nome);
+     $chavepri= ["l22_codigo"=>@$l22_codigo,"l22_codliclicita"=>@$l22_codliclicita,"l22_numcgm"=>@$l22_numcgm,"l22_dtretira"=>@$l22_dtretira,"l22_nomeretira"=>@$l22_nomeretira,"z01_nome"=>@$z01_nome];
      $cliframe_alterar_excluir->chavepri=$chavepri;
      $cliframe_alterar_excluir->sql = $clliclicitaforne->sql_query(null,'*',null,"l22_codliclicita=".@$l20_codigo);
       //$cliframe_alterar_excluir->sql_disabled = 
@@ -162,7 +162,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_liclicita.hide();
   <?php 
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
    		
   
   ?>

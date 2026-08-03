@@ -3,26 +3,26 @@
 //CLASSE DA ENTIDADE liclicitaeventodocumento
 class cl_liclicitaeventodocumento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l47_sequencial = 0; 
-   var $l47_liclicitaevento = 0; 
-   var $l47_nomearquivo = null; 
-   var $l47_arquivo = 0; 
-   var $l47_tipodocumento = null; 
+   public $l47_sequencial = 0; 
+   public $l47_liclicitaevento = 0; 
+   public $l47_nomearquivo = null; 
+   public $l47_arquivo = 0; 
+   public $l47_tipodocumento = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l47_sequencial = int4 = Código 
                  l47_liclicitaevento = int4 = Eventos da Licitação 
                  l47_nomearquivo = varchar(200) = Nome do Arquivo 
@@ -30,10 +30,10 @@ class cl_liclicitaeventodocumento {
                  l47_tipodocumento = varchar(3) = Tipo de Documento 
                  ";
    //funcao construtor da classe 
-   function cl_liclicitaeventodocumento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitaeventodocumento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,10 +105,10 @@ class cl_liclicitaeventodocumento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->l47_sequencial = pg_result($result,0,0); 
+       $this->l47_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from liclicitaeventodocumento_l47_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l47_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l47_sequencial)){
          $this->erro_sql = " Campo l47_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -144,7 +144,7 @@ class cl_liclicitaeventodocumento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Documentos Vinculados ao Evento da Licitação ($this->l47_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Documentos Vinculados ao Evento da Licitação já Cadastrado";
@@ -173,14 +173,14 @@ class cl_liclicitaeventodocumento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21749,'$this->l47_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3918,21749,'','".AddSlashes(pg_result($resaco,0,'l47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3918,21750,'','".AddSlashes(pg_result($resaco,0,'l47_liclicitaevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3918,21752,'','".AddSlashes(pg_result($resaco,0,'l47_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3918,21751,'','".AddSlashes(pg_result($resaco,0,'l47_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3918,21753,'','".AddSlashes(pg_result($resaco,0,'l47_tipodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3918,21749,'','".AddSlashes(pg_fetch_result($resaco,0,'l47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3918,21750,'','".AddSlashes(pg_fetch_result($resaco,0,'l47_liclicitaevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3918,21752,'','".AddSlashes(pg_fetch_result($resaco,0,'l47_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3918,21751,'','".AddSlashes(pg_fetch_result($resaco,0,'l47_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3918,21753,'','".AddSlashes(pg_fetch_result($resaco,0,'l47_tipodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -190,10 +190,10 @@ class cl_liclicitaeventodocumento {
       $this->atualizacampos();
      $sql = " update liclicitaeventodocumento set ";
      $virgula = "";
-     if(trim($this->l47_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l47_sequencial"])){ 
+     if(trim((string) $this->l47_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l47_sequencial"])){ 
        $sql  .= $virgula." l47_sequencial = $this->l47_sequencial ";
        $virgula = ",";
-       if(trim($this->l47_sequencial) == null ){ 
+       if(trim((string) $this->l47_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "l47_sequencial";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_liclicitaeventodocumento {
          return false;
        }
      }
-     if(trim($this->l47_liclicitaevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l47_liclicitaevento"])){ 
+     if(trim((string) $this->l47_liclicitaevento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l47_liclicitaevento"])){ 
        $sql  .= $virgula." l47_liclicitaevento = $this->l47_liclicitaevento ";
        $virgula = ",";
-       if(trim($this->l47_liclicitaevento) == null ){ 
+       if(trim((string) $this->l47_liclicitaevento) == null ){ 
          $this->erro_sql = " Campo Eventos da Licitação não informado.";
          $this->erro_campo = "l47_liclicitaevento";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_liclicitaeventodocumento {
          return false;
        }
      }
-     if(trim($this->l47_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l47_nomearquivo"])){ 
+     if(trim((string) $this->l47_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l47_nomearquivo"])){ 
        $sql  .= $virgula." l47_nomearquivo = '$this->l47_nomearquivo' ";
        $virgula = ",";
-       if(trim($this->l47_nomearquivo) == null ){ 
+       if(trim((string) $this->l47_nomearquivo) == null ){ 
          $this->erro_sql = " Campo Nome do Arquivo não informado.";
          $this->erro_campo = "l47_nomearquivo";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_liclicitaeventodocumento {
          return false;
        }
      }
-     if(trim($this->l47_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l47_arquivo"])){ 
+     if(trim((string) $this->l47_arquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l47_arquivo"])){ 
        $sql  .= $virgula." l47_arquivo = $this->l47_arquivo ";
        $virgula = ",";
-       if(trim($this->l47_arquivo) == null ){ 
+       if(trim((string) $this->l47_arquivo) == null ){ 
          $this->erro_sql = " Campo Identificador do Arquivo não informado.";
          $this->erro_campo = "l47_arquivo";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_liclicitaeventodocumento {
          return false;
        }
      }
-     if(trim($this->l47_tipodocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l47_tipodocumento"])){ 
+     if(trim((string) $this->l47_tipodocumento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l47_tipodocumento"])){ 
        $sql  .= $virgula." l47_tipodocumento = '$this->l47_tipodocumento' ";
        $virgula = ",";
-       if(trim($this->l47_tipodocumento) == null ){ 
+       if(trim((string) $this->l47_tipodocumento) == null ){ 
          $this->erro_sql = " Campo Tipo de Documento não informado.";
          $this->erro_campo = "l47_tipodocumento";
          $this->erro_banco = "";
@@ -269,19 +269,19 @@ class cl_liclicitaeventodocumento {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21749,'$this->l47_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l47_sequencial"]) || $this->l47_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3918,21749,'".AddSlashes(pg_result($resaco,$conresaco,'l47_sequencial'))."','$this->l47_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3918,21749,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l47_sequencial'))."','$this->l47_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l47_liclicitaevento"]) || $this->l47_liclicitaevento != "")
-             $resac = db_query("insert into db_acount values($acount,3918,21750,'".AddSlashes(pg_result($resaco,$conresaco,'l47_liclicitaevento'))."','$this->l47_liclicitaevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3918,21750,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l47_liclicitaevento'))."','$this->l47_liclicitaevento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l47_nomearquivo"]) || $this->l47_nomearquivo != "")
-             $resac = db_query("insert into db_acount values($acount,3918,21752,'".AddSlashes(pg_result($resaco,$conresaco,'l47_nomearquivo'))."','$this->l47_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3918,21752,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l47_nomearquivo'))."','$this->l47_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l47_arquivo"]) || $this->l47_arquivo != "")
-             $resac = db_query("insert into db_acount values($acount,3918,21751,'".AddSlashes(pg_result($resaco,$conresaco,'l47_arquivo'))."','$this->l47_arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3918,21751,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l47_arquivo'))."','$this->l47_arquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["l47_tipodocumento"]) || $this->l47_tipodocumento != "")
-             $resac = db_query("insert into db_acount values($acount,3918,21753,'".AddSlashes(pg_result($resaco,$conresaco,'l47_tipodocumento'))."','$this->l47_tipodocumento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3918,21753,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l47_tipodocumento'))."','$this->l47_tipodocumento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -335,14 +335,14 @@ class cl_liclicitaeventodocumento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21749,'$l47_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3918,21749,'','".AddSlashes(pg_result($resaco,$iresaco,'l47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3918,21750,'','".AddSlashes(pg_result($resaco,$iresaco,'l47_liclicitaevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3918,21752,'','".AddSlashes(pg_result($resaco,$iresaco,'l47_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3918,21751,'','".AddSlashes(pg_result($resaco,$iresaco,'l47_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3918,21753,'','".AddSlashes(pg_result($resaco,$iresaco,'l47_tipodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3918,21749,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l47_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3918,21750,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l47_liclicitaevento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3918,21752,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l47_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3918,21751,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l47_arquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3918,21753,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l47_tipodocumento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

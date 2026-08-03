@@ -30,16 +30,16 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["excluir"])) {
-  $tam_vetor = sizeof($HTTP_POST_VARS);
-  reset($HTTP_POST_VARS);
+if(isset($_POST["excluir"])) {
+  $tam_vetor = sizeof($_POST);
+  reset($_POST);
   for($i = 0;$i < $tam_vetor;$i++) {
 //    if(strtoupper($HTTP_POST_VARS[key($HTTP_POST_VARS)]) != "EXCLUIR") {
-    if(db_indexOf(key($HTTP_POST_VARS),"CHECK") > 0) {
-      $aux = explode("#",$HTTP_POST_VARS[key($HTTP_POST_VARS)]);
-	  pg_exec("delete from db_menu where id_item = ".$aux[0]." and id_item_filho = ".$aux[1]." and modulo = ".$aux[2]) or die("Erro(10) excluindo db_menus: ".pg_errormessage());
+    if(db_indexOf(key($_POST),"CHECK") > 0) {
+      $aux = explode("#",(string) $_POST[key($_POST)]);
+	  pg_exec("delete from db_menu where id_item = ".$aux[0]." and id_item_filho = ".$aux[1]." and modulo = ".$aux[2]) or die("Erro(10) excluindo db_menus: ".pg_last_error());
     }	  
-    next($HTTP_POST_VARS);
+    next($_POST);
   }
 
   /**
@@ -201,7 +201,7 @@ input {
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
       <form name="form1" method="post">
         <?php 
-	        if(!isset($HTTP_POST_VARS["selecionar"]) && !isset($HTTP_POST_VARS["ambiente"])) {
+	        if(!isset($_POST["selecionar"]) && !isset($_POST["ambiente"])) {
 	      ?>
         <table border="0" cellspacing="0" cellpadding="0">
         
@@ -236,10 +236,10 @@ input {
 								                        order by lower(m.nome_modulo)");
 			            }
 
-			            $numrows = pg_numrows($result);
+			            $numrows = pg_num_rows($result);
 			            for($i = 0;$i < $numrows;$i++) {
 
-			              echo "<option value=\"".pg_result($result,$i,"id_item")."##".pg_result($result,$i,"descr_modulo")."||".pg_result($result,$i,"nome_modulo")."\">".pg_result($result,$i,"nome_modulo")."</option>\n";
+			              echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."##".pg_fetch_result($result,$i,"descr_modulo")."||".pg_fetch_result($result,$i,"nome_modulo")."\">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
 			            }  
 		            ?>
               </select> 
@@ -261,17 +261,17 @@ input {
           <tr> 
             <td align="center" nowrap> <strong>M&oacute;dulo: </strong> 
               <?php  
-			          $aux = $HTTP_POST_VARS["modulos"];
-			          echo substr(strstr($aux,"||"),2);
+			          $aux = $_POST["modulos"];
+			          echo substr(strstr((string) $aux,"||"),2);
 			        ?>
             </td>
           </tr>
           
           <tr style='display:none'> 
-            <td align="center"><strong>Ambiente:</strong> <input type="hidden" name="modulos" value="<?=$HTTP_POST_VARS["modulos"]?>">	
-              <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
+            <td align="center"><strong>Ambiente:</strong> <input type="hidden" name="modulos" value="<?=$_POST["modulos"]?>">	
+              <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="1"?"checked":""):"checked" ?>> 
               <label for="web"><strong>Web</strong></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-              <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>> 
+              <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="0"?"checked":""):"" ?>> 
               <label for="caracter"><strong>Caracter</strong></label> 
             </td>
           </tr>
@@ -291,7 +291,7 @@ input {
 
         </table>       
         <?php 
-          $ambiente = (!isset($HTTP_POST_VARS["ambiente"])?"1":$HTTP_POST_VARS["ambiente"]);
+          $ambiente = (!isset($_POST["ambiente"])?"1":$_POST["ambiente"]);
           include(modification("libs/db_submenus.php"));
         ?>
             

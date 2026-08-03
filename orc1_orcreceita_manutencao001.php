@@ -38,7 +38,7 @@ include(modification("classes/db_orcfontesdes_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_orcreceitaval_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);	
+db_postmemory($_POST);	
 
 $clorcreceita = new cl_orcreceita;
 $clorcfontes = new cl_orcfontes;
@@ -164,7 +164,7 @@ if (isset($incluir)   &&  ($incluir== 'Incluir')){
 
 
 $db_opcao = 1;
-$chavepri = array ("o71_anousu" => @ $o71_anousu, "o71_codrec" => @ $o71_codrec, "o71_mes" => @ $o71_mes);
+$chavepri =  ["o71_anousu" => @ $o71_anousu, "o71_codrec" => @ $o71_codrec, "o71_mes" => @ $o71_mes];
 $cliframe_alterar_excluir->chavepri = $chavepri;
 $cliframe_alterar_excluir->sql = $clorcreceitaval->sql_query_file(null, null, null, null, "*", " o71_anousu desc, o71_mes", " o71_codrec = $o70_codrec and o71_anousu < $anousu");
 $cliframe_alterar_excluir->campos = "o71_anousu,o71_codrec,o71_coddoc,o71_mes,o71_valor";
@@ -193,13 +193,13 @@ function js_receitas(mostra){
 function js_mostraReceita(chave1){
 	 db_iframe_orcreceita.hide();
      <?php 
-	 echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave1;";
+	 echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave1;";
      ?> 
 }
 function js_mostraReceita1(chave1,erro){      
      rec = document.form2.o70_codrec.value;
 	 <?php 
-	 echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+rec;";
+	 echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+rec;";
      ?> 
 }
 </script>

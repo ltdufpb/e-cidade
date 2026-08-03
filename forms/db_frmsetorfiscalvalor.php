@@ -104,7 +104,7 @@ if(isset($db_opcaoal)){
     <tr>
       <td valign="top"  align="center">
         <?php 
-        $chavepri= array("j82_codigo"=>@$j82_codigo);
+        $chavepri= ["j82_codigo"=>@$j82_codigo];
         $cliframe_alterar_excluir->chavepri=$chavepri;
         $cliframe_alterar_excluir->sql     = $clsetorfiscalvalor->sql_query_file(null,"*",null,"j82_setorfiscal=$j82_setorfiscal");
         $cliframe_alterar_excluir->campos  ="j82_codigo,j82_setorfiscal,j82_anousu,j82_valorterreno";

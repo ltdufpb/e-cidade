@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE aguadescarrecad
 class cl_aguadescarrecad { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x35_numpre = 0; 
-   var $x35_numpar = 0; 
-   var $x35_numcgm = 0; 
-   var $x35_dtoper_dia = null; 
-   var $x35_dtoper_mes = null; 
-   var $x35_dtoper_ano = null; 
-   var $x35_dtoper = null; 
-   var $x35_receit = 0; 
-   var $x35_hist = 0; 
-   var $x35_valor = 0; 
-   var $x35_dtvenc_dia = null; 
-   var $x35_dtvenc_mes = null; 
-   var $x35_dtvenc_ano = null; 
-   var $x35_dtvenc = null; 
-   var $x35_numtot = 0; 
-   var $x35_numdig = 0; 
-   var $x35_tipo = 0; 
-   var $x35_tipojm = 0; 
+   public $x35_numpre = 0; 
+   public $x35_numpar = 0; 
+   public $x35_numcgm = 0; 
+   public $x35_dtoper_dia = null; 
+   public $x35_dtoper_mes = null; 
+   public $x35_dtoper_ano = null; 
+   public $x35_dtoper = null; 
+   public $x35_receit = 0; 
+   public $x35_hist = 0; 
+   public $x35_valor = 0; 
+   public $x35_dtvenc_dia = null; 
+   public $x35_dtvenc_mes = null; 
+   public $x35_dtvenc_ano = null; 
+   public $x35_dtvenc = null; 
+   public $x35_numtot = 0; 
+   public $x35_numdig = 0; 
+   public $x35_tipo = 0; 
+   public $x35_tipojm = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x35_numpre = int4 = Numpre 
                  x35_numpar = int4 = Numpar 
                  x35_numcgm = int4 = cgm 
@@ -73,10 +73,10 @@ class cl_aguadescarrecad {
                  x35_tipojm = int4 = Tipo de juro e multa 
                  ";
    //funcao construtor da classe 
-   function cl_aguadescarrecad() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguadescarrecad"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -260,7 +260,7 @@ class cl_aguadescarrecad {
                       )");
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "aguadescarrecad () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "aguadescarrecad já Cadastrado";
@@ -285,13 +285,13 @@ class cl_aguadescarrecad {
       $this->atualizacampos();
      $sql = " update aguadescarrecad set ";
      $virgula = "";
-     if(trim($this->x35_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_numpre"])){ 
-        if(trim($this->x35_numpre)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_numpre"])){ 
+     if(trim((string) $this->x35_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_numpre"])){ 
+        if(trim((string) $this->x35_numpre)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_numpre"])){ 
            $this->x35_numpre = "0" ; 
         } 
        $sql  .= $virgula." x35_numpre = $this->x35_numpre ";
        $virgula = ",";
-       if(trim($this->x35_numpre) == null ){ 
+       if(trim((string) $this->x35_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "x35_numpre";
          $this->erro_banco = "";
@@ -301,13 +301,13 @@ class cl_aguadescarrecad {
          return false;
        }
      }
-     if(trim($this->x35_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_numpar"])){ 
-        if(trim($this->x35_numpar)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_numpar"])){ 
+     if(trim((string) $this->x35_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_numpar"])){ 
+        if(trim((string) $this->x35_numpar)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_numpar"])){ 
            $this->x35_numpar = "0" ; 
         } 
        $sql  .= $virgula." x35_numpar = $this->x35_numpar ";
        $virgula = ",";
-       if(trim($this->x35_numpar) == null ){ 
+       if(trim((string) $this->x35_numpar) == null ){ 
          $this->erro_sql = " Campo Numpar nao Informado.";
          $this->erro_campo = "x35_numpar";
          $this->erro_banco = "";
@@ -317,13 +317,13 @@ class cl_aguadescarrecad {
          return false;
        }
      }
-     if(trim($this->x35_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_numcgm"])){ 
-        if(trim($this->x35_numcgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_numcgm"])){ 
+     if(trim((string) $this->x35_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_numcgm"])){ 
+        if(trim((string) $this->x35_numcgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_numcgm"])){ 
            $this->x35_numcgm = "0" ; 
         } 
        $sql  .= $virgula." x35_numcgm = $this->x35_numcgm ";
        $virgula = ",";
-       if(trim($this->x35_numcgm) == null ){ 
+       if(trim((string) $this->x35_numcgm) == null ){ 
          $this->erro_sql = " Campo cgm nao Informado.";
          $this->erro_campo = "x35_numcgm";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_aguadescarrecad {
          return false;
        }
      }
-     if(trim($this->x35_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x35_dtoper_dia"] !="") ){ 
+     if(trim((string) $this->x35_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x35_dtoper_dia"] !="") ){ 
        $sql  .= $virgula." x35_dtoper = '$this->x35_dtoper' ";
        $virgula = ",";
-       if(trim($this->x35_dtoper) == null ){ 
+       if(trim((string) $this->x35_dtoper) == null ){ 
          $this->erro_sql = " Campo Data Operação nao Informado.";
          $this->erro_campo = "x35_dtoper_dia";
          $this->erro_banco = "";
@@ -349,7 +349,7 @@ class cl_aguadescarrecad {
        if(isset($GLOBALS["HTTP_POST_VARS"]["x35_dtoper_dia"])){ 
          $sql  .= $virgula." x35_dtoper = null ";
          $virgula = ",";
-         if(trim($this->x35_dtoper) == null ){ 
+         if(trim((string) $this->x35_dtoper) == null ){ 
            $this->erro_sql = " Campo Data Operação nao Informado.";
            $this->erro_campo = "x35_dtoper_dia";
            $this->erro_banco = "";
@@ -360,13 +360,13 @@ class cl_aguadescarrecad {
          }
        }
      }
-     if(trim($this->x35_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_receit"])){ 
-        if(trim($this->x35_receit)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_receit"])){ 
+     if(trim((string) $this->x35_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_receit"])){ 
+        if(trim((string) $this->x35_receit)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_receit"])){ 
            $this->x35_receit = "0" ; 
         } 
        $sql  .= $virgula." x35_receit = $this->x35_receit ";
        $virgula = ",";
-       if(trim($this->x35_receit) == null ){ 
+       if(trim((string) $this->x35_receit) == null ){ 
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "x35_receit";
          $this->erro_banco = "";
@@ -376,13 +376,13 @@ class cl_aguadescarrecad {
          return false;
        }
      }
-     if(trim($this->x35_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_hist"])){ 
-        if(trim($this->x35_hist)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_hist"])){ 
+     if(trim((string) $this->x35_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_hist"])){ 
+        if(trim((string) $this->x35_hist)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_hist"])){ 
            $this->x35_hist = "0" ; 
         } 
        $sql  .= $virgula." x35_hist = $this->x35_hist ";
        $virgula = ",";
-       if(trim($this->x35_hist) == null ){ 
+       if(trim((string) $this->x35_hist) == null ){ 
          $this->erro_sql = " Campo Histórico nao Informado.";
          $this->erro_campo = "x35_hist";
          $this->erro_banco = "";
@@ -392,13 +392,13 @@ class cl_aguadescarrecad {
          return false;
        }
      }
-     if(trim($this->x35_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_valor"])){ 
-        if(trim($this->x35_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_valor"])){ 
+     if(trim((string) $this->x35_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_valor"])){ 
+        if(trim((string) $this->x35_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_valor"])){ 
            $this->x35_valor = "0" ; 
         } 
        $sql  .= $virgula." x35_valor = $this->x35_valor ";
        $virgula = ",";
-       if(trim($this->x35_valor) == null ){ 
+       if(trim((string) $this->x35_valor) == null ){ 
          $this->erro_sql = " Campo Valor Débito nao Informado.";
          $this->erro_campo = "x35_valor";
          $this->erro_banco = "";
@@ -408,10 +408,10 @@ class cl_aguadescarrecad {
          return false;
        }
      }
-     if(trim($this->x35_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x35_dtvenc_dia"] !="") ){ 
+     if(trim((string) $this->x35_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x35_dtvenc_dia"] !="") ){ 
        $sql  .= $virgula." x35_dtvenc = '$this->x35_dtvenc' ";
        $virgula = ",";
-       if(trim($this->x35_dtvenc) == null ){ 
+       if(trim((string) $this->x35_dtvenc) == null ){ 
          $this->erro_sql = " Campo Data Vencimento nao Informado.";
          $this->erro_campo = "x35_dtvenc_dia";
          $this->erro_banco = "";
@@ -424,7 +424,7 @@ class cl_aguadescarrecad {
        if(isset($GLOBALS["HTTP_POST_VARS"]["x35_dtvenc_dia"])){ 
          $sql  .= $virgula." x35_dtvenc = null ";
          $virgula = ",";
-         if(trim($this->x35_dtvenc) == null ){ 
+         if(trim((string) $this->x35_dtvenc) == null ){ 
            $this->erro_sql = " Campo Data Vencimento nao Informado.";
            $this->erro_campo = "x35_dtvenc_dia";
            $this->erro_banco = "";
@@ -435,13 +435,13 @@ class cl_aguadescarrecad {
          }
        }
      }
-     if(trim($this->x35_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_numtot"])){ 
-        if(trim($this->x35_numtot)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_numtot"])){ 
+     if(trim((string) $this->x35_numtot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_numtot"])){ 
+        if(trim((string) $this->x35_numtot)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_numtot"])){ 
            $this->x35_numtot = "0" ; 
         } 
        $sql  .= $virgula." x35_numtot = $this->x35_numtot ";
        $virgula = ",";
-       if(trim($this->x35_numtot) == null ){ 
+       if(trim((string) $this->x35_numtot) == null ){ 
          $this->erro_sql = " Campo Total de Parcelas nao Informado.";
          $this->erro_campo = "x35_numtot";
          $this->erro_banco = "";
@@ -451,13 +451,13 @@ class cl_aguadescarrecad {
          return false;
        }
      }
-     if(trim($this->x35_numdig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_numdig"])){ 
-        if(trim($this->x35_numdig)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_numdig"])){ 
+     if(trim((string) $this->x35_numdig)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_numdig"])){ 
+        if(trim((string) $this->x35_numdig)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_numdig"])){ 
            $this->x35_numdig = "0" ; 
         } 
        $sql  .= $virgula." x35_numdig = $this->x35_numdig ";
        $virgula = ",";
-       if(trim($this->x35_numdig) == null ){ 
+       if(trim((string) $this->x35_numdig) == null ){ 
          $this->erro_sql = " Campo digito nao Informado.";
          $this->erro_campo = "x35_numdig";
          $this->erro_banco = "";
@@ -467,13 +467,13 @@ class cl_aguadescarrecad {
          return false;
        }
      }
-     if(trim($this->x35_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_tipo"])){ 
-        if(trim($this->x35_tipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_tipo"])){ 
+     if(trim((string) $this->x35_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_tipo"])){ 
+        if(trim((string) $this->x35_tipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_tipo"])){ 
            $this->x35_tipo = "0" ; 
         } 
        $sql  .= $virgula." x35_tipo = $this->x35_tipo ";
        $virgula = ",";
-       if(trim($this->x35_tipo) == null ){ 
+       if(trim((string) $this->x35_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo de débito nao Informado.";
          $this->erro_campo = "x35_tipo";
          $this->erro_banco = "";
@@ -483,13 +483,13 @@ class cl_aguadescarrecad {
          return false;
        }
      }
-     if(trim($this->x35_tipojm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_tipojm"])){ 
-        if(trim($this->x35_tipojm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_tipojm"])){ 
+     if(trim((string) $this->x35_tipojm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x35_tipojm"])){ 
+        if(trim((string) $this->x35_tipojm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x35_tipojm"])){ 
            $this->x35_tipojm = "0" ; 
         } 
        $sql  .= $virgula." x35_tipojm = $this->x35_tipojm ";
        $virgula = ",";
-       if(trim($this->x35_tipojm) == null ){ 
+       if(trim((string) $this->x35_tipojm) == null ){ 
          $this->erro_sql = " Campo Tipo de juro e multa nao Informado.";
          $this->erro_campo = "x35_tipojm";
          $this->erro_banco = "";
@@ -571,7 +571,7 @@ class cl_aguadescarrecad {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Dados do Grupo nao Encontrado";
@@ -586,7 +586,7 @@ class cl_aguadescarrecad {
    function sql_query ( $oid = null,$campos="aguadescarrecad.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -615,7 +615,7 @@ class cl_aguadescarrecad {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -628,7 +628,7 @@ class cl_aguadescarrecad {
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -646,7 +646,7 @@ class cl_aguadescarrecad {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

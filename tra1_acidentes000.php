@@ -62,10 +62,10 @@ $db_opcao = 1;
       }else{
         $arquivo = "tra1_acidentes003.php";
       }      
-      $clcriaabas->identifica = array("acidente"=>"Dados do Acidente","condutores"=>"Condutores","vitimas"=>"Vitimas");
-      $clcriaabas->src = array("acidente"=>$arquivo);
-      $clcriaabas->disabled   =  array("condutores"=>"true","vitimas"=>"true");
-      $clcriaabas->sizecampo  = array("acidente"=>30,"condutores"=>30,"vitimas"=>30);
+      $clcriaabas->identifica = ["acidente"=>"Dados do Acidente","condutores"=>"Condutores","vitimas"=>"Vitimas"];
+      $clcriaabas->src = ["acidente"=>$arquivo];
+      $clcriaabas->disabled   =  ["condutores"=>"true","vitimas"=>"true"];
+      $clcriaabas->sizecampo  = ["acidente"=>30,"condutores"=>30,"vitimas"=>30];
       $clcriaabas->scrolling  = "yes";
       $clcriaabas->cria_abas();
      ?>

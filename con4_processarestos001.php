@@ -40,7 +40,7 @@ $clempresto     = new cl_empresto;
 $clconlancam    = new cl_conlancam;
 $clempempenho   = new cl_empempenho;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(isset($processaroutros)){
 

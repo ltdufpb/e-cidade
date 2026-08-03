@@ -63,7 +63,7 @@ if ($oParam->exec == "getDadosArquivos") {
 
    $sMensagem = "Arquivos nao encontrados";
    $iStatus   = 2;
-   $aArquivos = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+   $aArquivos = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
 
   }
 

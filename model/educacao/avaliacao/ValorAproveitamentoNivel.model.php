@@ -35,14 +35,11 @@
 require_once modification("model/educacao/avaliacao/ValorAproveitamento.model.php");
 final class ValorAproveitamentoNivel extends ValorAproveitamento {
 
-  private $iOrdem;
-
   protected $lUtilizaNivel = true;
-  public function __construct($mValor='', $iOrdem = '') {
+  public function __construct($mValor='', private $iOrdem = '') {
 
     $this->mValorAproveitamento     = $mValor;
     $this->mValorAproveitamentoReal = $mValor;
-    $this->iOrdem                   = $iOrdem;
   }
 
   public function setOrdem($iOrdem) {

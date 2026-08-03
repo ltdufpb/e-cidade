@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_usuarios_classe.php"));
 include(modification("classes/db_db_modulos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 $cldb_usuarios = new cl_db_usuarios;
@@ -100,7 +100,7 @@ db_selectrecord("modulo",$resultmod,true,'texte',2,null,null,'0');
 </table>
 <?php 
 
-if(isset($pesquisar) || count($HTTP_POST_VARS)>0){
+if(isset($pesquisar) || count($_POST)>0){
   
   $sql = "select codsequen,ip,data,hora,
                    case when (select db_acountacesso.codsequen from db_acountacesso where db_acountacesso.codsequen = l.codsequen limit 1 ) is not null then 'SIM' end::varchar as dl_acount,

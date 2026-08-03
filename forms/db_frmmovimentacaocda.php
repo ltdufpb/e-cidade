@@ -63,7 +63,7 @@ $db_opcao = 1;
         </td>
         <td>
           <?php
-            $aOpcoes = array("" => "Selecione", "2" => "Protestada", "3" => "Resgatada");
+            $aOpcoes = ["" => "Selecione", "2" => "Protestada", "3" => "Resgatada"];
             db_select('tipoMovimentacao', $aOpcoes, true, $db_opcao);
           ?>
         </td>

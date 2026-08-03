@@ -235,11 +235,11 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                         echo $ed47_certidaomatricula = "Não Informado ";
 
                       } else {
-                        echo substr($ed47_certidaomatricula, 0, 6)." ".substr($ed47_certidaomatricula, 6, 2)." ".
-                             substr($ed47_certidaomatricula, 8, 2)." ".substr($ed47_certidaomatricula, 10, 4)." ".
-                             substr($ed47_certidaomatricula, 14, 1)." ".substr($ed47_certidaomatricula, 15, 5)." ".
-                             substr($ed47_certidaomatricula, 20, 3)." ".substr($ed47_certidaomatricula, 23, 7)." ".
-                             substr($ed47_certidaomatricula, 30, 2);
+                        echo substr((string) $ed47_certidaomatricula, 0, 6)." ".substr((string) $ed47_certidaomatricula, 6, 2)." ".
+                             substr((string) $ed47_certidaomatricula, 8, 2)." ".substr((string) $ed47_certidaomatricula, 10, 4)." ".
+                             substr((string) $ed47_certidaomatricula, 14, 1)." ".substr((string) $ed47_certidaomatricula, 15, 5)." ".
+                             substr((string) $ed47_certidaomatricula, 20, 3)." ".substr((string) $ed47_certidaomatricula, 23, 7)." ".
+                             substr((string) $ed47_certidaomatricula, 30, 2);
                       }
                     ?>
                    </td>
@@ -553,8 +553,8 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                   && $oMatricula->getTurma()->getBaseCurricular()->getCurso()->getEnsino()->isInfantil()
                 ) {
 
-               $aDescricaoTurno = array();
-               $aTurnoReferente = array( 1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE' );
+               $aDescricaoTurno = [];
+               $aTurnoReferente = [ 1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE' ];
 
                foreach ( $oMatricula->getTurnosVinculados() as $oTurnoReferente ) {
                  $aDescricaoTurno[] = $aTurnoReferente[ $oTurnoReferente->ed336_turnoreferente ];
@@ -575,7 +575,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
               <?=$Led60_d_datamatricula?> <?=db_formatar($ed60_d_datamatricula,'d')?>
               &nbsp;&nbsp;
               <?php
-              if (trim($ed60_c_situacao) == "AVANÇADO" || trim($ed60_c_situacao) == "CLASSIFICADO") {
+              if (trim((string) $ed60_c_situacao) == "AVANÇADO" || trim((string) $ed60_c_situacao) == "CLASSIFICADO") {
                 $sitt = 'Aprovado através de progressão';
               } else {
 
@@ -786,7 +786,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
               $rsAprovConselho   = $oDaoAprovConselho->sql_record($sSqlAprovCons);
               $iLinhasAprovCons  = $oDaoAprovConselho->numrows;
 
-              $aAprovadoConselhoRegimento = array();
+              $aAprovadoConselhoRegimento = [];
 
               if ($iLinhasAprovCons > 0) {
 
@@ -821,7 +821,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                   $sStringAprovado .= " {$oDadosAprovConselho->ed52_i_ano},";
                   $sStringAprovado .= " o aluno foi {$sTipoAprovConselho}";
 
-                  $aTipoConselho = array(1, 3);
+                  $aTipoConselho = [1, 3];
                   if(    in_array( $oDadosAprovConselho->ed253_aprovconselhotipo,$aTipoConselho  )
                       || ( $oDadosAprovConselho->ed253_aprovconselhotipo == 2 && $iControleFrquencia == 1 ) ) {
                     $sStringAprovado .= " na disciplina {$oDisciplina->getNomeDisciplina()}";
@@ -1034,7 +1034,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                                       $cor = $cor1;
                                     }
 
-                                    if( trim( $ed65_c_situacao ) == "AMPARADO" ) {
+                                    if( trim( (string) $ed65_c_situacao ) == "AMPARADO" ) {
                                       $ed65_t_resultobtido = "&nbsp;";
                                     }
                                     ?>
@@ -1044,7 +1044,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                                       <td class='aluno' align="<?=$ed65_c_tiporesultado == 'N' ? 'right' : 'center'?>"><?=$ed65_t_resultobtido?></td>
                                       <td class='aluno' align="center"><?=$ed65_c_resultadofinal == "R" ? "REPROVADO" : "APROVADO"?></td>
                                       <td class='aluno' align="right"><?=$ed65_i_qtdch == "" ? 0 : DBNumber::truncate( $ed65_i_qtdch )?></td>
-                                      <td class='aluno' align="center"><?=trim($ed65_c_tiporesultado)?></td>
+                                      <td class='aluno' align="center"><?=trim((string) $ed65_c_tiporesultado)?></td>
                                     </tr>
                                     <?php
                                   }
@@ -1109,7 +1109,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                                       $cor = $cor1;
                                     }
 
-                                    if( trim( $ed100_c_situacao ) == "AMPARADO" ) {
+                                    if( trim( (string) $ed100_c_situacao ) == "AMPARADO" ) {
                                       $ed100_t_resultobtido = "&nbsp;";
                                     }
                                     ?>
@@ -1119,7 +1119,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                                       <td class='aluno' align="<?=$ed100_c_tiporesultado == 'N' ? 'right' : 'center'?>"><?=$ed100_t_resultobtido?></td>
                                       <td class='aluno'><?=$ed100_c_resultadofinal == "R" ? "REPROVADO" : "APROVADO"?></td>
                                       <td class='aluno' align="right"><?=$ed100_i_qtdch == "" ? 0 : $ed100_i_qtdch?></td>
-                                      <td class='aluno' align="right"><?=trim( $ed100_c_tiporesultado )?></td>
+                                      <td class='aluno' align="right"><?=trim( (string) $ed100_c_tiporesultado )?></td>
                                     </tr>
                                     <?php
                                   }
@@ -1241,7 +1241,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                    <?=$ordem=="DESC"?"selected":""?>>Decrescente</option></select></b></legend>
             <table border="1" width="100%" bgcolor="#f3f3f3" cellspacing="0" cellpading="0">
              <?php
-              $array_mov = array();
+              $array_mov = [];
               $sCamposResult  = " ed229_i_codigo,ed229_d_dataevento,ed18_i_codigo,ed18_c_nome,ed60_i_codigo,";
               $sCamposResult .= " ed52_i_ano,ed11_c_descr,ed229_c_procedimento, ed60_matricula,";
               $sCamposResult .= " ed57_c_descr,ed229_t_descr,id_usuario||' / '||nome as nome";
@@ -1262,7 +1262,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                   $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
                   $iContador = count($array_mov)-1;
                   $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d');
-                  $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+                  $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
                   $array_mov[$iContador] .= "#".$ed60_matricula."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
                   $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;
                 }
@@ -1285,7 +1285,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                 $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
                 $iContador = count($array_mov)-1;
                 $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d');
-                $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+                $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
                 $array_mov[$iContador] .= "#".$ed60_matricula."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
                 $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;
 
@@ -1308,7 +1308,7 @@ if (isset($chavepesquisa) && !empty($chavepesquisa)) {
                 $array_mov[]  = str_replace("-","",$ed229_d_dataevento).$ed229_i_codigo;
                 $iContador = count($array_mov)-1;
                 $array_mov[$iContador] .= "|".db_formatar($ed229_d_dataevento,'d');
-                $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr($ed18_c_nome,0,30);
+                $array_mov[$iContador] .= "#".$ed18_i_codigo." - ".substr((string) $ed18_c_nome,0,30);
                 $array_mov[$iContador] .= "#".$ed60_matricula."#".$ed57_c_descr."#".$ed52_i_ano."#".$ed11_c_descr;
                 $array_mov[$iContador] .= "#".$ed229_c_procedimento."#".$ed229_t_descr."#".$nome;
               }

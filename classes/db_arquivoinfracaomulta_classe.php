@@ -100,12 +100,10 @@ class cl_arquivoinfracaomulta extends DAOBasica
             throw new DBException(_M("financeiro.caixa.db_arquivoinfracaomulta_classe.erro_buscar_multas"));
         }
         if (pg_num_rows($rsMultas) == 0) {
-            return array();
+            return [];
         }
 
-        $aMultasConsolidadas = \db_utils::makeCollectionFromRecord($rsMultas, function ($oMulta) {
-            return $oMulta;
-        });
+        $aMultasConsolidadas = \db_utils::makeCollectionFromRecord($rsMultas, fn($oMulta) => $oMulta);
 
         return $aMultasConsolidadas;
     }

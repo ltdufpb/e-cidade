@@ -427,9 +427,9 @@ $clrotulo = new rotulocampo;
         <table style="width: 30%;">
             <tbody>
             <tr>
-                <td class='dados-orcamento' title="<?php echo isset($Tpc20_codorc) ? $Tpc20_codorc : ''; ?>">
+                <td class='dados-orcamento' title="<?php echo $Tpc20_codorc ?? ''; ?>">
                     <label for="pc20_codorc">
-                        <?php echo isset($Lpc20_codorc) ? $Lpc20_codorc : ''; ?>
+                        <?php echo $Lpc20_codorc ?? ''; ?>
                     </label>
                 </td>
                 <td>

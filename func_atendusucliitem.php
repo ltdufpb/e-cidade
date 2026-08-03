@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atendusucliitem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatendusucliitem = new cl_atendusucliitem;
 $clatendusucliitem->rotulo->label("at81_seq");
 $clatendusucliitem->rotulo->label("at81_codatendcli");
@@ -98,9 +98,9 @@ $clatendusucliitem->rotulo->label("at81_codatendcli");
         }else{
            $sql = $clatendusucliitem->sql_query("",$campos,"at81_seq","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at81_codatendcli)){
-          $repassa = array("chave_at81_seq"=>$chave_at81_seq,"chave_at81_codatendcli"=>$chave_at81_codatendcli);
+          $repassa = ["chave_at81_seq"=>$chave_at81_seq,"chave_at81_codatendcli"=>$chave_at81_codatendcli];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

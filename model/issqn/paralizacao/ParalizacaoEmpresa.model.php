@@ -102,14 +102,14 @@ class ParalizacaoEmpresa {
      * Erro na consulta que realiza a busca da paralização
      */
     if ( !$rsIssBaseParalizacao ) {
-      throw new DBException(_M(ParalizacaoEmpresa::MENSAGEM . 'erro_buscar_paralizacao', (object) array('sErroBanco' => pg_last_error())));
+      throw new DBException(_M(ParalizacaoEmpresa::MENSAGEM . 'erro_buscar_paralizacao', (object) ['sErroBanco' => pg_last_error()]));
     }
 
     /**
      * Nenhuma PAralização encontrada para o código informado
      */
     if ( pg_num_rows($rsIssBaseParalizacao) == 0 ) {
-      throw new BusinessException(_M(ParalizacaoEmpresa::MENSAGEM . 'nenhuma_paralizacao', (object) array('iCodigo' => $iCodigo)));
+      throw new BusinessException(_M(ParalizacaoEmpresa::MENSAGEM . 'nenhuma_paralizacao', (object) ['iCodigo' => $iCodigo]));
     }
 
     $oDadosParalizacaoEmpresa = db_utils::fieldsMemory($rsIssBaseParalizacao, 0);
@@ -204,7 +204,7 @@ class ParalizacaoEmpresa {
    * Define a data do fim da paralização
    * @param DBDate $oDataFim
    */
-  public function setDataFim( DBDate $oDataFim = null) {
+  public function setDataFim( ?DBDate $oDataFim = null) {
     $this->oDataFim = $oDataFim;
   }
 
@@ -240,7 +240,7 @@ class ParalizacaoEmpresa {
 
     if ( !$rsMotivoParalizacao ) {
 
-      $oErroBanco = (object) array('sErroBanco' => pg_last_error());
+      $oErroBanco = (object) ['sErroBanco' => pg_last_error()];
       throw new DBException(_M(ParalizacaoEmpresa::MENSAGEM . 'erro_buscar_paralizacao', $oErroBanco));
     }
 
@@ -302,7 +302,7 @@ class ParalizacaoEmpresa {
        */
       if ( $oDaoIssBaseParalizacao->erro_status == "0" ) {
 
-        $oErroBanco = (object) array('sErroBanco' => $oDaoIssBaseParalizacao->erro_banco);
+        $oErroBanco = (object) ['sErroBanco' => $oDaoIssBaseParalizacao->erro_banco];
         throw new DBException(_M(ParalizacaoEmpresa::MENSAGEM . 'erro_incluir_paralizacao', $oErroBanco));
       }
     } else {
@@ -318,7 +318,7 @@ class ParalizacaoEmpresa {
        */
       if ( $oDaoIssBaseParalizacao->erro_status == "0" ) {
  
-        $oErroBanco = (object) array('sErroBanco' => $oDaoIssBaseParalizacao->erro_banco);
+        $oErroBanco = (object) ['sErroBanco' => $oDaoIssBaseParalizacao->erro_banco];
         throw new DBException(_M(ParalizacaoEmpresa::MENSAGEM . 'erro_alterar_paralizacao', $oErroBanco));
       } 
     }
@@ -362,7 +362,7 @@ class ParalizacaoEmpresa {
      */
     if ( $oDaoHistOcorrencia->erro_status = "0" ) {
 
-      $oErroBanco = (object) array('sErroBanco' => $oDaoHistOcorrencia->erro_sql);
+      $oErroBanco = (object) ['sErroBanco' => $oDaoHistOcorrencia->erro_sql];
       throw new DBException(_M(ParalizacaoEmpresa::MENSAGEM . 'erro_incluir_ocorrencia',$oErroBanco));
     }
 
@@ -381,7 +381,7 @@ class ParalizacaoEmpresa {
      */
     if ( $oDaoHistOcorrenciaInscr->erro_status = "0" ) {
 
-      $oErroBanco = (object) array('sErroBanco' => $oDaoHistOcorrenciaInscr->erro_banco);
+      $oErroBanco = (object) ['sErroBanco' => $oDaoHistOcorrenciaInscr->erro_banco];
       throw new DBException(_M(ParalizacaoEmpresa::MENSAGEM . 'erro_incluir_ocorrencia',$oErroBanco));
     }
     

@@ -36,7 +36,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 $clcriaabas     = new cl_criaabas;
 $clrotulo = new rotulocampo;
 $db_opcao = 3;
-$aParametrosEmpenho = db_stdClass::getParametro("empparametro",array(db_getsession("DB_anousu")));
+$aParametrosEmpenho = db_stdClass::getParametro("empparametro",[db_getsession("DB_anousu")]);
 $lUsaNotaLiquidacao = false;
 if (isset($aParametrosEmpenho[0])) {
   
@@ -68,11 +68,11 @@ if (isset($aParametrosEmpenho[0])) {
      <?php 
       if (!$lUsaNotaLiquidacao) {
 
-        $clcriaabas->identifica = array("pagordem"=>"Ordem de pagamento","pagordemrec"=>"Receitas"); 
-        $clcriaabas->sizecampo  = array("pagordem"=>"20"); 
-        $clcriaabas->title      =  array("pagordem"=>"Ordem de pagemento de empenho","pagordemrec"=>"Receitas"); 
-        $clcriaabas->src = array("pagordem"=>"emp1_pagordem006.php");
-        $clcriaabas->disabled   =  array("pagordemrec"=>"true"); 
+        $clcriaabas->identifica = ["pagordem"=>"Ordem de pagamento","pagordemrec"=>"Receitas"]; 
+        $clcriaabas->sizecampo  = ["pagordem"=>"20"]; 
+        $clcriaabas->title      =  ["pagordem"=>"Ordem de pagemento de empenho","pagordemrec"=>"Receitas"]; 
+        $clcriaabas->src = ["pagordem"=>"emp1_pagordem006.php"];
+        $clcriaabas->disabled   =  ["pagordemrec"=>"true"]; 
         $clcriaabas->cria_abas();
          
       } else {

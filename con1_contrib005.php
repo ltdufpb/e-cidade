@@ -36,18 +36,18 @@ $cleditalrua = new cl_editalrua;
 $clcontrib = new cl_contrib;
 $clcontlot = new cl_contlot;
 $clcontrib->rotulo->label();
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 if(isset($confirma) && $confirma=="ok"){
   db_inicio_transacao();
   $sqlerro=false;
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,5)=="CHECK"){
-      $dados=split("_",$chave); 
+    if(str_starts_with((string) $chave, "CHECK")){
+      $dados=preg_split("#_#m",(string) $chave); 
       $matric=$dados[1];
       $valor=$vt["d07_valor_".$matric];
       $vlrdes=$vt["d07_vlrdes_".$matric];
@@ -167,7 +167,7 @@ class cl_fate extends cl_contrib {
      //echo "<br>$sQueryContlotv<br>";
 
      $resultad=pg_query($sQueryContlotv);
-	   $nu=pg_numrows($resultad);
+	   $nu=pg_num_rows($resultad);
 	   
 	   if($nu>0){
 	     $total="";
@@ -204,20 +204,20 @@ class cl_fate extends cl_contrib {
 	   }
 	   
            $y="d07_vlrdes_$j01_matric";
-           global $$y;
+           global ${$y};
            if($d01_perc!="" && $d01_perc!=0){
 	   //mudança evandro  
           //    $d07_vlrdes=($d07_valor*$d01_perc)/100;
 	       $d07_vlrdes = "0.00";
 	  
               $d07_valor=($d07_valor-$d07_vlrdes);
-	      $$y=number_format($d07_vlrdes,2,'.','');
+	      ${$y}=number_format($d07_vlrdes,2,'.','');
 	   }else{
-	    $$y="0.00";    
+	    ${$y}="0.00";    
 	   }
 	   $x="d07_valor_$j01_matric";
-	   global $$x;
-	   $$x=number_format($d07_valor,2,'.','');
+	   global ${$x};
+	   ${$x}=number_format($d07_valor,2,'.','');
 	   
 	  echo "
    	       <tr>
@@ -225,7 +225,7 @@ class cl_fate extends cl_contrib {
 		   <td align='left'><input  id='CHECK_".$j01_matric."_ok' name='CHECK_".$j01_matric."_ok' type='checkbox'></td>
 		   <td>$j01_matric</td>
 		   <td>&nbsp;$j40_refant</td>
-		   <td>".substr($z01_nome,0,20)."</td>
+		   <td>".substr((string) $z01_nome,0,20)."</td>
 		   <td id='td'>".$j34_setor."</td> 
 		   <td id='td'>".$j34_quadra."</td> 
 		   <td id='td'>".$j34_lote."</td>
@@ -346,7 +346,7 @@ function js_incluirlinha(matri,refant,nome,setor,quadra,lote,zona,total,desconto
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
   <form name="form1" method="post" action="">
-  <input name="contri" type="hidden" value="<?=(isset($contri)?$contri:$numcontri)?>">
+  <input name="contri" type="hidden" value="<?=($contri ?? $numcontri)?>">
   <input name="confirma" type="hidden">
   <table border="0">
     <table id='id_tabela' cellpadding="0" cellspacing="0" border="1" >

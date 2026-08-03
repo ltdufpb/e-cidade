@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sqlperfil = "select distinct id_perfil ,u.nome
 							from db_usuarios 

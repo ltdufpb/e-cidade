@@ -56,12 +56,12 @@ $oFiltros->sEtapas = $oParam->sEtapas;
 /**
  * Array para controle das quebras
  */
-$oFiltros->aQuebras = array();
+$oFiltros->aQuebras = [];
 
 /**
  * Array com os cabecalhos selecionados para serem impressos
  */
-$oFiltros->aCabecalho = array();
+$oFiltros->aCabecalho = [];
 
 /**
  * stdClass referente ao CODIGO DO ALUNO
@@ -129,7 +129,7 @@ $oFiltros->aCabecalho[]                 = $oFiltros->oResultadoFinal;
 /**
  * Array com os resultados finais de todas as escolas
  */
-$oFiltros->aSituacoesGeral = array();
+$oFiltros->aSituacoesGeral = [];
 
 /**
  * Propriedades para controle dos totalizadores dos resultados finais de todas as escolas
@@ -147,12 +147,12 @@ $oFiltros->iAlturaColuna = 4;
 /**
  * Array com as condicoes para SQL
  */
-$aWhereEscola = array();
+$aWhereEscola = [];
 
 /**
  * Array com as escolas para imprimir o nome no cabecalho
  */
-$aEscolas = array();
+$aEscolas = [];
 
 /**
  * Condicoes do SQL
@@ -280,7 +280,7 @@ $head4 = "Ensino: {$sEnsino}";
 /**
  * Array para controle dos alunos, nao permitindo contabilizar alunos duplicados
  */
-$oFiltros->aControleAlunos = array();
+$oFiltros->aControleAlunos = [];
 
 /**
  * Percorremos o array quebrado a pagina e totalizando os alunos por escola
@@ -290,7 +290,7 @@ foreach ($oFiltros->aQuebras as $iEscola => $aEscola) {
   /**
    * Array com os resultados finais por escola
    */
-  $oFiltros->aSituacoesPorEscola = array();
+  $oFiltros->aSituacoesPorEscola = [];
 
   /**
    * Propriedades para controle dos totalizadores dos resultados finais por escola

@@ -241,7 +241,7 @@ switch ($oParam->exec) {
         throw new Exception("usuário: \n\nParâmetros do endereço não configurados!\n\nContate o Administrador.\n\n");
       }
 
-      $aEstados = array();
+      $aEstados = [];
 
       /**
        * estados pelo pais padrao
@@ -277,7 +277,7 @@ switch ($oParam->exec) {
       $oRetorno->message = urlencode("Parâmetros do endereço não configurados!\n\n Contate o Administrador.\n\n");
     }
 
-    $oParam->lCgmMunicipio = isset($oParam->lCgmMunicipio) ? $oParam->lCgmMunicipio : false;
+    $oParam->lCgmMunicipio ??= false;
     $iCodigoMunicipio      = $oParam->lCgmMunicipio ? $oRetorno->valoresPadrao[0]->db72_sequencial : null;
     $oRetorno->bairroRuaMunicipio = endereco::buscaBairroRuaMunicipio((int) $oParam->icodigobairromunicipio,
                                                                       (int) $oParam->icodigoruamunicipio,

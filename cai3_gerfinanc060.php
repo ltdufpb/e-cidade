@@ -57,9 +57,9 @@ $clnoticonf->rotulo->label();
 
 $db_opcao = 2;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(isset($db_datausu)){
   if(!checkdate(substr($db_datausu,5,2),substr($db_datausu,8,2),substr($db_datausu,0,4))){
@@ -127,7 +127,7 @@ if(isset($notificacao)){
       if($k58_data_dia!=""){
 	$clnotiagenda->k58_notifica = $clnotificacao->k50_notifica;
 	if($k58_hora==""){
-	   $HTTP_POST_VARS['k58_hora'] = date("H:i",db_getsession("DB_datausu"));
+	   $_POST['k58_hora'] = date("H:i",db_getsession("DB_datausu"));
 	}
 	$clnotiagenda->k58_id_usuario = db_getsession("DB_id_usuario");
 	$clnotiagenda->incluir("");
@@ -176,7 +176,7 @@ if(isset($notificacao)){
 	       $numpres .= " a.k00_numpre = $numpre and "; 
 	    }
 	    $numpres .= " k00_tipo in (";
-	    $num = split(",",$tipo);
+	    $num = preg_split("#,#m",(string) $tipo);
 	    $numm = "";
 	    for($i=0;$i<sizeof($num);$i++){
 	      $numpres .= $numm.$num[$i];
@@ -184,7 +184,7 @@ if(isset($notificacao)){
 	    }
 	    $numpres .= ")";
 	    $result = db_query($numpres);
-	    for($i=0;$i<pg_numrows($result);$i++){
+	    for($i=0;$i<pg_num_rows($result);$i++){
 	      db_fieldsmemory($result,$i);
 	      $clnotidebitos->k53_notifica = $clnotificacao->k50_notifica;
 	      $clnotidebitos->k53_numpre   = $k00_numpre;
@@ -248,7 +248,7 @@ if(isset($matric)){
 }
 
 if(isset($notificacao_tipo)){
-  $vt = $HTTP_POST_VARS;
+  $vt = $_POST;
   $virgula = "";
   for($i = 0; $i < sizeof($vt) ;$i++) {
     if(db_indexOf(key($vt),"CHECK") > 0){

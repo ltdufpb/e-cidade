@@ -41,9 +41,7 @@ class MeioComunicacaoResource
      */
     public static function toArray(array $meiosComunicacao)
     {
-        return array_map(function (MeioComunicacao $meioComunicacao) {
-            return self::toObject($meioComunicacao);
-        }, $meiosComunicacao);
+        return array_map(self::toObject(...), $meiosComunicacao);
     }
 
     /**

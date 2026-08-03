@@ -36,8 +36,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_proccid_classe.php"));
 include(modification("classes/db_sau_atualiza_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrotulo = new rotulocampo;
 $clsau_proccid = new cl_sau_proccid;
@@ -132,9 +132,9 @@ $objAtualiza = db_utils::fieldsMemory($resAtualiza,0);
         }else{
            $sql = $clsau_proccid->sql_query("",$campos,"sd70_c_cid",$strWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd70_c_cid)){
-          $repassa = array("chave_sd70_c_cid"=>$chave_sd70_c_cid,"chave_sd70_c_nome"=>$chave_sd70_c_nome);
+          $repassa = ["chave_sd70_c_cid"=>$chave_sd70_c_cid,"chave_sd70_c_nome"=>$chave_sd70_c_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

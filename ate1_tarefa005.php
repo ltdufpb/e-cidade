@@ -73,8 +73,8 @@ $cltarefa_lancprorrog 	= new cl_tarefa_lancprorrog;
 $cldb_usuarios 	  	= new cl_db_usuarios;
 $cl_tarefasyscadproced = new cl_tarefasyscadproced;
 $cltarefaprojetoativcli = new cl_tarefaprojetoativcli;
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 //db_msgbox('005');
 if(@$tipotar=='T' and @$chavepesquisa!=""){
   // chama o ate1_tarefausu010.php para inclui a tarefa automatica 
@@ -115,11 +115,11 @@ if(isset($alterar)||isset($autorizar)) {
   	$erro_msg = "Campo Procedimento deve ser informado";
     $sqlerro = true;
   } else {
-    
+
     $sqlerro = false;
-    
+
     $resulttarefa = $cltarefa->sql_record($cltarefa->sql_query_file($at40_sequencial,"at40_autorizada, at40_diaini as at58_diaini, at40_diafim as at58_diafim, at40_previsao as at58_previsao, at40_tipoprevisao as at58_tipoprevisao, at40_horainidia as at58_horainidia, at40_horafim as at58_horafim"));
-    
+
     $result = $cltarefa->sql_record($cltarefa->sql_query_envol(null,"*","at40_sequencial,at45_usuario","at40_progresso < 100 and at40_sequencial<>$at40_sequencial and at45_usuario=$at40_responsavel"));
     if($cltarefa->numrows > 0) {
       $cltarefa->at40_sequencial = $at40_sequencial;
@@ -129,24 +129,24 @@ if(isset($alterar)||isset($autorizar)) {
       if (@$at40_diafim_ano != "") {
         $cltarefa->at40_diafim = $at40_diafim_ano . "-" . db_formatar($at40_diafim_mes,'s','0',2,'e',0) . "-" . db_formatar($at40_diafim_dia,'s','0',2,'e',0);
       }
-      
-      if(strlen(@$at40_horainidia) == 2) {
+
+      if(strlen((string) @$at40_horainidia) == 2) {
         $at40_horainidia .= ":00";
       }
-      
-      if(strlen(@$at40_horafim) == 2) {
+
+      if(strlen((string) @$at40_horafim) == 2) {
         $at40_horafim .= ":00";
       }
-      
+
       $cltarefa->at40_horainidia = @$at40_horainidia;
       $cltarefa->at40_horafim    = @$at40_horafim;
-      
+
       $erro_horario = testa_horarios($result, $cltarefa);
-      
+
     }
-    
+
     db_inicio_transacao();
-    
+
     if($sqlerro == false) {
       if(@$at40_previsao=="") {
         $cltarefa->at40_previsao = 0;
@@ -165,15 +165,15 @@ if(isset($alterar)||isset($autorizar)) {
       }
       $erro_msg = $cltarefa->erro_msg;
     }
-    
+
     if($sqlerro == true) { 
       $erro_msg = $cltarefa->erro_msg;
     } 
-    
+
     if ($sqlerro == false) {
-      
+
       if($prorrogar==1) {
-        
+
         $cltarefa_lanc->at36_data    = date("Y", db_getsession("DB_datausu"))."-".
         date("m", db_getsession("DB_datausu"))."-".
         date("d", db_getsession("DB_datausu"));
@@ -187,9 +187,9 @@ if(isset($alterar)||isset($autorizar)) {
           $sqlerro = true;
           $erro_msg = $cltarefa_lanc->erro_msg;
         }
-        
+
         db_fieldsmemory($resulttarefa,0);
-        
+
         $cltarefa_lancprorrog->at58_tarefalanc 	= $cltarefa_lanc->at36_sequencia;
         $cltarefa_lancprorrog->at58_tarefa		= $cltarefa->at40_sequencial;
         $cltarefa_lancprorrog->at58_diaini		= $at58_diaini;
@@ -198,13 +198,13 @@ if(isset($alterar)||isset($autorizar)) {
         $cltarefa_lancprorrog->at58_tipoprevisao	= $at58_tipoprevisao;
         $cltarefa_lancprorrog->at58_horainidia	= $at58_horainidia;
         $cltarefa_lancprorrog->at58_horafim		= $at58_horafim;
-        
+
         $cltarefa_lancprorrog->incluir(null);
         if($cltarefa_lancprorrog->erro_status==0) {
           $sqlerro = true;
           $erro_msg = $cltarefa_lancprorrog->erro_msg;
         }
-        
+
       } elseif($aut==0) {
         // Inclui lançamento de quem esta alterando a tarefa 
         $cltarefa_lanc->at36_data    = date("Y", db_getsession("DB_datausu"))."-".
@@ -222,9 +222,9 @@ if(isset($alterar)||isset($autorizar)) {
           $erro_msg = $cltarefa_lanc->erro_msg;
         }
       }
-      
-      
-      
+
+
+
       // tem que pegar o motivo e area
       // pega a area.....
       $sqlteste = "select codarea from db_syscadproced where codproced = $codproced";
@@ -233,11 +233,11 @@ if(isset($alterar)||isset($autorizar)) {
       if ($linhasteste>0){
         db_fieldsmemory($resultteste, 0);
       }
-      
+
       // pegar motivo   $at34_tarefacadmotivo
-          
+
       $at41_proced = "";
-      
+
       if ($codproced == 278 or $codproced == 328) { // agenda de visitas ou reuniao
         $at41_proced = 9;
       } else {
@@ -252,7 +252,7 @@ if(isset($alterar)||isset($autorizar)) {
           db_fieldsmemory($resultmotarea, 0);
         }
       }
-      
+
       if ($at41_proced == "") {
         $sqlerro = true;
         $erro_msg = "Sem procedimento especificado!";
@@ -266,11 +266,11 @@ if(isset($alterar)||isset($autorizar)) {
         }
       }
     }
-    
+
     if ($sqlerro == false) {
-      
+
       if($aut==1) {
-        
+
         $cltarefa_aut->at39_data      = date("Y", db_getsession("DB_datausu"))."-".
         date("m", db_getsession("DB_datausu"))."-".
         date("d", db_getsession("DB_datausu"));
@@ -280,18 +280,18 @@ if(isset($alterar)||isset($autorizar)) {
         $cltarefa_aut->at39_usuario   = db_getsession("DB_id_usuario");
         $cltarefa_aut->at39_cancelada = "false";
         $cltarefa_aut->incluir(null);
-        
+
         $rs_autorizador  = $cldb_usuarios->sql_record($cldb_usuarios->sql_query($cltarefa_aut->at39_usuario,"nome as nome_aut","id_usuario"));
         db_fieldsmemory($rs_autorizador, 0);
-        
+
         if($cltarefa_aut->erro_status==0) {
           $sqlerro = true;
           $erro_msg = $cltarefa_aut->erro_msg;
         }	  	  
-        
-        
-        
-        
+
+
+
+
         // Envio de e-mail para envolvidos
         $rs_tarefa = $cltarefa->sql_record($cltarefa->sql_query_envol($cltarefausu->at42_tarefa,"at45_usuario,
         at40_responsavel,
@@ -306,9 +306,9 @@ if(isset($alterar)||isset($autorizar)) {
         at36_data,
         at36_hora",
         "at40_sequencial,at45_usuario","at45_tarefa=$cltarefa->at40_sequencial"));
-        
+
         if($cltarefa->numrows > 0) {
-          
+
           for($i=0; $i < $cltarefa->numrows; $i++) {
             db_fieldsmemory($rs_tarefa,$i);
             $rs_usuario = $cldb_usuarios->sql_record($cldb_usuarios->sql_query($at45_usuario,"email,nome","id_usuario"));
@@ -326,7 +326,7 @@ if(isset($alterar)||isset($autorizar)) {
               $rs_resp  = $cldb_usuarios->sql_record($cldb_usuarios->sql_query($at40_responsavel,"nome as nome_resp","id_usuario"));
               if($cldb_usuarios->numrows > 0) {	
                 db_fieldsmemory($rs_resp,0);
-                
+
                 $mensagem  = $nome . ":<br><br>";
                 $mensagem .= "Uma nova tarefa foi criada e autorizada para você:<br>";
                 $mensagem .= "Criado por:          " . $nome_criado . " - em: $at36_data - $at36_hora<br>";
@@ -338,23 +338,23 @@ if(isset($alterar)||isset($autorizar)) {
                 $mensagem .= "Previsto em        : " . $at40_previsao    . "/" . $at40_tipoprevisao . "<br>";
                 $mensagem .= "Prioridade         : " . $prioridade       . "<br><br>";
                 $mensagem .= "Autorizada por     : " . $cltarefa_aut->at39_usuario . " - $nome_aut - Data: " . $cltarefa_aut->at39_data . " - Hora: " . $cltarefa_aut->at39_hora . "<br>";
-                
+
                 $envio = $cltarefa->enviar_email($email,"Nova tarefa: ".$cltarefa->at40_sequencial . " - " . $at40_descr,$mensagem);
                 if($envio == false) {
                   db_msgbox("Erro ao enviar e-mail para " . $email);
                 }
-                
+
               }
             }
           } 
         }
         // Fim do Envio de e-mail		  
-        
-        
+
+
       }
-      
+
     }
-    
+
     if ($sqlerro == false) {
       $result = $cltarefausu->sql_record($cltarefausu->sql_query(null, "at42_sequencial", null, "at42_tarefa=$at40_sequencial"));
       if ($cltarefausu->numrows > 0) {
@@ -376,7 +376,7 @@ if(isset($alterar)||isset($autorizar)) {
         }
       }
     }
-    
+
     if ($sqlerro == false) {
       $result = $cltarefaenvol->sql_record($cltarefaenvol->sql_query(null, "at45_sequencial", null, "at45_tarefa=$at40_sequencial and at45_usuario=$at40_usuant"));
       if ($cltarefaenvol->numrows > 0) {
@@ -409,10 +409,10 @@ if(isset($alterar)||isset($autorizar)) {
             // Passa tarefa para 2-Análise 
             $at47_situacao = 2;
           }
-          
+
         }
       }
-      
+
       if($sqlerro == false) {
         $cltarefamotivo->at55_tarefa = $at40_sequencial;
         $cltarefamotivo->at55_motivo = $at54_sequencial;
@@ -422,9 +422,9 @@ if(isset($alterar)||isset($autorizar)) {
           $sqlerro = true;
         }
       }
-      
+
     }
-    
+
     if ($sqlerro == false) {
       $result = $cltarefasituacao->sql_record($cltarefasituacao->sql_query(null, "at47_sequencial", null, "at47_tarefa=$at40_sequencial"));
       if ($cltarefasituacao->numrows > 0) {
@@ -438,8 +438,8 @@ if(isset($alterar)||isset($autorizar)) {
         }
       }
     }
-    
-    
+
+
     if($sqlerro == false) {
       //if (@$at49_modulo != "") {
         $result = $cltarefamodulo->sql_record($cltarefamodulo->sql_query_file(null, "at49_sequencial", null, "at49_tarefa=$at40_sequencial"));
@@ -455,40 +455,40 @@ if(isset($alterar)||isset($autorizar)) {
         }
       //}
     }
-    
+
     if($sqlerro==false) {
       $sqlproced = "select * from tarefasyscadproced where at37_tarefa = $at40_sequencial";
-      
+
       $resultproced = db_query($sqlproced);
       $linhasproced = pg_num_rows($resultproced);
       if ($linhasproced>0){
         db_fieldsmemory($resultproced, 0);
         //$cl_tarefasyscadproced->at37_sequencial=$at37_sequencial;
-        
+
         $cl_tarefasyscadproced->excluir($at37_sequencial);
       }
       //$cl_tarefasyscadproced->at37_sequencial=$at37_sequencial;
       //$cl_tarefasyscadproced->excluir($at37_sequencial);
       if($codproced>0){
-        
+
         $cl_tarefasyscadproced->at37_tarefa       = $at40_sequencial;
         $cl_tarefasyscadproced->at37_syscadproced = $codproced;
         $cl_tarefasyscadproced->incluir(null);
-        
+
         if($cl_tarefasyscadproced->erro_status == 0) {
           $sqlerro = true;
           $erro_msg = $cl_tarefasyscadproced->erro_msg;
         }
-        
+
       }
-      
+
     }
-    
+
     if($sqlerro == false) {
       $cltarefa_agenda->excluir(null,"at13_tarefa=$at40_sequencial");
       $sqlerro = $cltarefa_agenda->gera_agenda($cltarefaparam,$cltarefa,$erro_msg);
     }
-    
+
     if($sqlerro == false) {
 
       if ( $at64_sequencial > 0 ){
@@ -530,18 +530,18 @@ if(isset($alterar)||isset($autorizar)) {
 
 
     db_fim_transacao($sqlerro);
-    
+
   }
-  
+
   $db_opcao = 2;
   $db_botao = true;
   // ############################### CANCELAR #################################
 } else if(isset($cancelar)) {
   //die("cancelar");
   $sqlerro = false;
-  
+
   db_inicio_transacao();
-  
+
   if($sqlerro==false) {
     $rs_registros = $cltarefalog->sql_record($cltarefalog->sql_query_file(null,"at43_tarefa","at43_tarefa","at43_tarefa=$at40_sequencial"));
     if($cltarefalog->numrows>0) {
@@ -562,12 +562,12 @@ if(isset($alterar)||isset($autorizar)) {
           $cltarefa_autcanc->at38_ip        = db_getsession("DB_ip");
           $cltarefa_autcanc->at38_usuario   = db_getsession("DB_id_usuario");
           $cltarefa_autcanc->incluir($at39_sequencia);
-          
+
           if($cltarefa_autcanc->erro_status!=0) {
             $cltarefa_aut->at39_sequencia = $at39_sequencia;
             $cltarefa_aut->at39_cancelada = "true";
             $cltarefa_aut->alterar($at39_sequencia);
-            
+
             $cltarefa->at40_autorizada = "false";			
             $cltarefa->alterar($at40_sequencial);
             if($cltarefa->erro_status==0) {
@@ -585,7 +585,7 @@ if(isset($alterar)||isset($autorizar)) {
           $erro_msg = "Autorização já cancelada";
         }
       }
-      
+
       if($sqlerro==false) {
         if($cltarefa_aut->erro_status==0) {
           $sqlerro  = true;
@@ -594,14 +594,14 @@ if(isset($alterar)||isset($autorizar)) {
       }	  	  
     }
   }
-  
+
   db_fim_transacao($sqlerro);
-  
+
   $db_opcao = 2;
   $db_botao = true;
   // ############################### CHAVEPESQUISA #################################
 } else if (isset ($chavepesquisa)) { 
-  
+
   $db_opcao = 2;
   $db_botao = true;
   $result = $cltarefa->sql_record($cltarefa->sql_query($chavepesquisa));
@@ -611,7 +611,7 @@ if(isset($alterar)||isset($autorizar)) {
   $result = $cltarefamodulo->sql_record($cltarefamodulo->sql_query(null, "*", null, "at49_tarefa=$chavepesquisa"));
   if ($cltarefamodulo->numrows > 0) {
     db_fieldsmemory($result, 0);
-    
+
   }
   $result = $cltarefaproced->sql_record($cltarefaproced->sql_query(null, null, "*", null, "at41_tarefa=$chavepesquisa"));
   if ($cltarefaproced->numrows > 0) {
@@ -621,38 +621,38 @@ if(isset($alterar)||isset($autorizar)) {
   if ($cltarefasituacao->numrows > 0) {
     db_fieldsmemory($result, 0);
   }
-  
+
   $result = $cltarefa->sql_record($cltarefa->sql_query_envol(null,"*","at40_sequencial,at45_usuario","at40_progresso < 100 and at40_sequencial<>$at40_sequencial and at45_usuario=$at40_responsavel"));
   if($cltarefa->numrows > 0) {
     $cltarefa->at40_sequencial = $chavepesquisa;
     $cltarefa->at40_diaini     = $at40_diaini_ano . "-" . db_formatar($at40_diaini_mes,'s','0',2,'e',0) . "-" . db_formatar($at40_diaini_dia,'s','0',2,'e',0);
     $cltarefa->at40_diafim     = $at40_diafim_ano . "-" . db_formatar($at40_diafim_mes,'s','0',2,'e',0) . "-" . db_formatar($at40_diafim_dia,'s','0',2,'e',0);
-    
-    if(strlen($at40_horainidia) == 2) {
+
+    if(strlen((string) $at40_horainidia) == 2) {
       $at40_horainidia .= ":00";
     }
-    
-    if(strlen($at40_horafim) == 2) {
+
+    if(strlen((string) $at40_horafim) == 2) {
       $at40_horafim .= ":00";
     }
-    
+
     $cltarefa->at40_horainidia = $at40_horainidia;
     $cltarefa->at40_horafim    = $at40_horafim;
-    
+
     $erro_horario = testa_horarios($result, $cltarefa);
   }
-  
+
   $result = $cltarefamotivo->sql_record($cltarefamotivo->sql_query(null,"at55_motivo","at55_tarefa","at55_tarefa=$at40_sequencial"));
   if ($cltarefamotivo->numrows > 0) {
     db_fieldsmemory($result, 0);
     $at54_sequencial = $at55_motivo;
   }
-  
+
   $result = $cltarefaclientes->sql_record($cltarefaclientes->sql_query(null,"*","at70_tarefa","at70_tarefa=$at40_sequencial"));
   if ($cltarefaclientes->numrows > 0) {
     db_fieldsmemory($result, 0);
   }
-  
+
   $result = $cltarefaprojetoativcli->sql_record($cltarefaprojetoativcli->sql_query(null,"at64_sequencial","","at69_seqtarefa=$at40_sequencial"));
   if ($cltarefaprojetoativcli->numrows > 0) {
     db_fieldsmemory($result, 0);
@@ -771,7 +771,7 @@ if (($db_opcao == 22 || $db_opcao == 33) && ($trocamodulo!='t')&&(@$abrefunc!='f
 function testa_horarios($result, $cltarefa) {
   $retorno    = false;
   $NumRows    = $cltarefa->numrows;
-  $NumFields  = pg_numfields($result);
+  $NumFields  = pg_num_fields($result);
   $db_diaini  = "";
   $db_diafim  = "";
   $db_horaini = "";
@@ -779,23 +779,23 @@ function testa_horarios($result, $cltarefa) {
   
   for($i= 0; $i < $NumRows; $i++) {
     for($j = 0; $j < $NumFields; $j++) {
-      if(pg_fieldname($result, $j) == "at40_diaini") {
-        $db_diaini = db_formatar(pg_result($result, $i, $j),'d');
+      if(pg_field_name($result, $j) == "at40_diaini") {
+        $db_diaini = db_formatar(pg_fetch_result($result, $i, $j),'d');
       }
-      if(pg_fieldname($result, $j) == "at40_diafim") {
-        $db_diafim = db_formatar(pg_result($result, $i, $j),'d');
+      if(pg_field_name($result, $j) == "at40_diafim") {
+        $db_diafim = db_formatar(pg_fetch_result($result, $i, $j),'d');
       }
-      if(pg_fieldname($result, $j) == "at40_horainidia") {
-        $db_horaini = pg_result($result, $i, $j);
+      if(pg_field_name($result, $j) == "at40_horainidia") {
+        $db_horaini = pg_fetch_result($result, $i, $j);
         if(strlen(trim($db_horaini)) == 2) {
-          $db_horaini  = substr(pg_result($result, $i, $j),0,2);
+          $db_horaini  = substr(pg_fetch_result($result, $i, $j),0,2);
           $db_horaini .= ":00";
         }
       }
-      if(pg_fieldname($result, $j) == "at40_horafim") {
-        $db_horafim = pg_result($result, $i, $j);
+      if(pg_field_name($result, $j) == "at40_horafim") {
+        $db_horafim = pg_fetch_result($result, $i, $j);
         if(strlen(trim($db_horafim)) == 2) {
-          $db_horafim  = substr(pg_result($result, $i, $j),0,2);
+          $db_horafim  = substr(pg_fetch_result($result, $i, $j),0,2);
           $db_horafim .= ":00";
         }
       }

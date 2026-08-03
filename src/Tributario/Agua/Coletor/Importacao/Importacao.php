@@ -97,11 +97,9 @@ class Importacao {
       throw new \DBException('Não foi possível consultar as informações da exportação.');
     }
 
-    $fRegistro = function($aRegistro) {
-      return (int) $aRegistro['x50_sequencial'];
-    };
+    $fRegistro = (fn($aRegistro) => (int) $aRegistro['x50_sequencial']);
     $aLinhasExportacao = array_map($fRegistro, pg_fetch_all($rsContagemLinhas));
-    $aLinhasArquivo = array();
+    $aLinhasArquivo = [];
     $oLayoutReader = new \DBLayoutReader(self::CODIGO_LAYOUT, $this->sCaminhoArquivo);
     foreach ($oLayoutReader->getLines() as $oLinha) {
 

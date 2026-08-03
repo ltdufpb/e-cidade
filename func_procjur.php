@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procjur_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocjur = new cl_procjur;
 $clprocjur->rotulo->label("v62_sequencial");
 $clprocjur->rotulo->label("v62_procjurtipo");
@@ -83,9 +83,9 @@ $clprocjur->rotulo->label("v62_procjurtipo");
         }else{
            $sql = $clprocjur->sql_query("",$campos,"v62_sequencial","$sWhereInstit");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v62_procjurtipo)){
-          $repassa = array("chave_v62_sequencial"=>$chave_v62_sequencial,"chave_v62_procjurtipo"=>$chave_v62_procjurtipo);
+          $repassa = ["chave_v62_sequencial"=>$chave_v62_sequencial,"chave_v62_procjurtipo"=>$chave_v62_procjurtipo];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

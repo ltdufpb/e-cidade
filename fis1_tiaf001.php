@@ -31,7 +31,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_tiaf_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 $cltiaf = new cl_tiaf;
 $db_opcao = 1;
@@ -62,9 +62,9 @@ $db_botao = true;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
 	<?php 
-       $clcriaabas->identifica = array("g1"=>"Tiaf","g2"=>"Documentação");
-       $clcriaabas->title = array("g1"=>"Cadastrar tiaf","g2"=>"Documentação");
-       $clcriaabas->src = array("g1"=>"fis1_tiafaba001.php","g2"=>"fis1_tiafaba002.php");
+       $clcriaabas->identifica = ["g1"=>"Tiaf","g2"=>"Documentação"];
+       $clcriaabas->title = ["g1"=>"Cadastrar tiaf","g2"=>"Documentação"];
+       $clcriaabas->src = ["g1"=>"fis1_tiafaba001.php","g2"=>"fis1_tiafaba002.php"];
        //$clcriaabas->disabled = array("g2"=>"true");
        $clcriaabas->cria_abas();    
 	?>

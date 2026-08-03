@@ -35,7 +35,7 @@ $oGet = db_utils::postMemory($_GET);
 $clObrasAlvara = new cl_obrasalvara();
 $oPdf          = new PDF();
 
-$aWhere   = array();
+$aWhere   = [];
 $sFiltros = '';
 $lHabite  = null;
 

@@ -45,7 +45,7 @@ include(modification("classes/db_inssirf_classe.php"));
 include(modification("classes/db_rhlota_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcodmovsefip   = new cl_codmovsefip;
 $cldb_config     = new cl_db_config;
 $clcfpess        = new cl_cfpess;
@@ -62,8 +62,8 @@ $db_opcao        = 1;
 $db_botao        = true;
 $sFgts           = "1";
 $instit          = db_getsession("DB_instit");
-$aListaGerados   = array();
-$aListaSemPIS    = array();
+$aListaGerados   = [];
+$aListaSemPIS    = [];
 
 if(isset($gerar)){
   $sqlerro = false;
@@ -179,32 +179,32 @@ if(isset($gerar)){
         // $arr_siglas = array("r14","r48","r31","r20","r35");
 	      if(!$mes13){
 	        //if($mesusu != $r11_mes13){ 
-             $arr_siglas = array("r14","r48","r35","r20");
+             $arr_siglas = ["r14","r48","r35","r20"];
 	        //}else{
           //   $arr_siglas = array("r14","r48","r20");
 	        //}
         }else{
-          $arr_siglas = array("r35");
+          $arr_siglas = ["r35"];
         }
         $inss_sal = "R9".db_formatar((($r11_tbprev * 3) - 2),"s","0",2,"e",0);
         $inss_s13 = "R9".db_formatar((($r11_tbprev * 3) - 1),"s","0",2,"e",0);
         $inss_fer = "R9".db_formatar((($r11_tbprev * 3)),"s","0",2,"e",0);
-        if(trim($r11_rubdec) != ""){
+        if(trim((string) $r11_rubdec) != ""){
           $r11_rubdec = ",'".$r11_rubdec."'";
         }
 
-        $arr_sal_matern    = Array();
-        $arr_sal_familia   = Array();
-        $arr_base_fgts     = Array();
-        $arr_base_fgts13   = Array();
-        $arr_fgts13        = Array();
-        $arr_fgts          = Array();
-        $arr_base_inss     = Array();
-        $arr_base_inss13   = Array();
-        $arr_base_descinss = Array();
-        $arr_descinss      = Array();
-        $arr_descinss13    = Array();
-        $arr_base_inssR990 = Array();
+        $arr_sal_matern    = [];
+        $arr_sal_familia   = [];
+        $arr_base_fgts     = [];
+        $arr_base_fgts13   = [];
+        $arr_fgts13        = [];
+        $arr_fgts          = [];
+        $arr_base_inss     = [];
+        $arr_base_inss13   = [];
+        $arr_base_descinss = [];
+        $arr_descinss      = [];
+        $arr_descinss13    = [];
+        $arr_base_inssR990 = [];
 
         for($i=0; $i<$clrhpessoal->numrows; $i++){
           db_fieldsmemory($result_dad, $i);
@@ -236,7 +236,7 @@ if(isset($gerar)){
                                                      );
                                                      
             $result_ger = db_query($sql_ger);
-            $numrows_ger = pg_numrows($result_ger);
+            $numrows_ger = pg_num_rows($result_ger);
             for($im=0; $im<$numrows_ger; $im++){
               db_fieldsmemory($result_ger, $im);
               if($rubri == "R919" || $rubri == "R921"){
@@ -350,9 +350,9 @@ if(isset($gerar)){
            $cllayout_SEFIP->SFPRegistro00_301_301 = $indrecfgts;
            $cllayout_SEFIP->SFPRegistro00_302_302 = $sFgts;
 	}
-        $cllayout_SEFIP->SFPRegistro00_303_310 = db_formatar($dtrecfgts_dia,"s",(trim($dtrecfgts_dia)==""?" ":"0"),2,"e",0)."-".db_formatar($dtrecfgts_mes,"s",(trim($dtrecfgts_mes)==""?" ":"0"),2,"e",0)."-".db_formatar($dtrecfgts_ano,"s",(trim($dtrecfgts_ano)==""?" ":"0"),4,"e",0);
+        $cllayout_SEFIP->SFPRegistro00_303_310 = db_formatar($dtrecfgts_dia,"s",(trim((string) $dtrecfgts_dia)==""?" ":"0"),2,"e",0)."-".db_formatar($dtrecfgts_mes,"s",(trim($dtrecfgts_mes)==""?" ":"0"),2,"e",0)."-".db_formatar($dtrecfgts_ano,"s",(trim((string) $dtrecfgts_ano)==""?" ":"0"),4,"e",0);
         $cllayout_SEFIP->SFPRegistro00_311_311 = $indrecinss;
-        $cllayout_SEFIP->SFPRegistro00_312_319 = db_formatar($dtrecinss_dia,"s",(trim($dtrecinss_dia)==""?" ":"0"),2,"e",0)."-".db_formatar($dtrecinss_mes,"s",(trim($dtrecinss_mes)==""?" ":"0"),2,"e",0)."-".db_formatar($dtrecinss_ano,"s",(trim($dtrecinss_ano)==""?" ":"0"),4,"e",0);
+        $cllayout_SEFIP->SFPRegistro00_312_319 = db_formatar($dtrecinss_dia,"s",(trim((string) $dtrecinss_dia)==""?" ":"0"),2,"e",0)."-".db_formatar($dtrecinss_mes,"s",(trim($dtrecinss_mes)==""?" ":"0"),2,"e",0)."-".db_formatar($dtrecinss_ano,"s",(trim((string) $dtrecinss_ano)==""?" ":"0"),4,"e",0);
         $cllayout_SEFIP->SFPRegistro00_320_326 = $indatrasoinss;
         $cllayout_SEFIP->SFPRegistro00_328_341 = $cgc;
 //        $teste++;
@@ -373,7 +373,7 @@ if(isset($gerar)){
         $cllayout_SEFIP->SFPRegistro10_206_206 = $alteraender;
         $cllayout_SEFIP->SFPRegistro10_207_213 = $cnae;
         $cllayout_SEFIP->SFPRegistro10_214_214 = $alteracnae;
-        $cllayout_SEFIP->SFPRegistro10_215_216 = str_pad(trim($aliqsat),2,"0",STR_PAD_RIGHT);
+        $cllayout_SEFIP->SFPRegistro10_215_216 = str_pad(trim((string) $aliqsat),2,"0",STR_PAD_RIGHT);
         $cllayout_SEFIP->SFPRegistro10_219_221 = $r11_cdfpas;
         $cllayout_SEFIP->SFPRegistro10_222_225 = $codterceiro;
         $cllayout_SEFIP->SFPRegistro10_226_229 = $codgps;
@@ -504,12 +504,12 @@ if(isset($gerar)){
 //	        $valorrescis = 0.01;
 //              }
 		
-              $ocorrencia = trim($rh02_ocorre);
-              if(trim($rh02_ocorre) == ""){
+              $ocorrencia = trim((string) $rh02_ocorre);
+              if(trim((string) $rh02_ocorre) == ""){
                 $ocorrencia = "  ";
               }
               if((int)($anousu.$mesusu) > 200306 && ($rh51_basefo > 0 || $rh51_descfo > 0 || $rh51_b13fo > 0 || $rh51_d13fo > 0)){
-                if(trim($rh51_ocorre) != ""){
+                if(trim((string) $rh51_ocorre) != ""){
                   $ocorrencia = $rh51_ocorre;
                 }
               }
@@ -528,7 +528,7 @@ if(isset($gerar)){
               }
 
               if($mpis == true){
-                if(trim($ocorrencia) == "" || (int)$ocorrencia == 1){
+                if(trim((string) $ocorrencia) == "" || (int)$ocorrencia == 1){
                   $ocorrencia = "05";
                 }else if((int)$ocorrencia == 2){
                   $ocorrencia = "06";
@@ -552,24 +552,24 @@ if(isset($gerar)){
               $xctps_s = str_repeat(" ",5);
 
               $stringcategoriactps = "01-02-03-04-06-07-26";
-              $posicaocategoria = strpos($stringcategoriactps,$h13_tpcont);
+              $posicaocategoria = strpos($stringcategoriactps,(string) $h13_tpcont);
               if($posicaocategoria !== false){
                 $xctps_n = db_formatar($rh16_ctps_n,"s","0",7,"e",0);
                 $xctps_s = db_formatar($rh16_ctps_s,"s","0",5,"e",0);
-                if(trim($rh15_data) != ""){
+                if(trim((string) $rh15_data) != ""){
                   $xctps_d = db_formatar($rh15_data,"d");
                 }
               }
 
               $data_admiss = str_repeat(" ",8);
               $stringcategoriaadmiss = "01-03-04-05-06-07-11-12-19-20-21-26";
-              $posicaocategoria = strpos($stringcategoriaadmiss,$h13_tpcont);
+              $posicaocategoria = strpos($stringcategoriaadmiss,(string) $h13_tpcont);
               if($posicaocategoria !== false){
                 $data_admiss = db_formatar($rh01_admiss,"d");
               }
 
               $stringcategoriaregist = "06-13-14-15-16-17-18-22-23-24-25";
-              $posicaocategoria = strpos($stringcategoriaregist,$h13_tpcont);
+              $posicaocategoria = strpos($stringcategoriaregist,(string) $h13_tpcont);
               if($posicaocategoria !== false){
                 $iRegist = str_repeat(" ",11);
               } else {
@@ -578,7 +578,7 @@ if(isset($gerar)){
 
               $data_nasc = str_repeat(" ",8);
               $stringcategorianasc = "01-02-03-04-05-06-07-12-19-20-21-26";
-              $posicaocategoria = strpos($stringcategorianasc,$h13_tpcont);
+              $posicaocategoria = strpos($stringcategorianasc,(string) $h13_tpcont);
               if($posicaocategoria !== false){
                 $data_nasc = db_formatar($rh01_nasc,"d");
               }
@@ -629,8 +629,8 @@ if(isset($gerar)){
 
                    if(
                       ((int)db_subdata($r45_dtafas,"m") == (int)$mesusu && (int)db_subdata($r45_dtafas,"a") == (int)$anousu) ||
-                      ((int)db_subdata($r45_dtafas,"a") <  (int)$anousu && (trim($r45_dtreto) == "" || ((int)db_subdata($r45_dtreto,"m") >= (int)$mesusu && (int)db_subdata($r45_dtreto,"a") >= (int)$anousu))) ||
-                      (((int)db_subdata($r45_dtafas,"m") <= (int)$mesusu && (int)db_subdata($r45_dtafas,"a") <= (int)$anousu) && (trim($r45_dtreto) == "" || ((int)db_subdata($r45_dtreto,"m") >= (int)$mesusu && (int)db_subdata($r45_dtreto,"a") >= (int)$anousu))) ||
+                      ((int)db_subdata($r45_dtafas,"a") <  (int)$anousu && (trim((string) $r45_dtreto) == "" || ((int)db_subdata($r45_dtreto,"m") >= (int)$mesusu && (int)db_subdata($r45_dtreto,"a") >= (int)$anousu))) ||
+                      (((int)db_subdata($r45_dtafas,"m") <= (int)$mesusu && (int)db_subdata($r45_dtafas,"a") <= (int)$anousu) && (trim((string) $r45_dtreto) == "" || ((int)db_subdata($r45_dtreto,"m") >= (int)$mesusu && (int)db_subdata($r45_dtreto,"a") >= (int)$anousu))) ||
                       ((int)db_subdata($r45_dtreto,"a") > (int)$anousu)
                      ){
                      $situacao = $r45_situac;
@@ -654,7 +654,7 @@ if(isset($gerar)){
                          db_fieldsmemory($result_codmovsefip, 0);
                          $datamov = $dataafasta;
                          $codmov  = $r45_codafa;
-                       }else if(db_subdata($dataretorno,"m") < $mesusu && db_subdata($dataretorno,"a") < $anousu && trim($r45_codret) != ""){
+                       }else if(db_subdata($dataretorno,"m") < $mesusu && db_subdata($dataretorno,"a") < $anousu && trim((string) $r45_codret) != ""){
                          $datamov = $dataafasta;
                          $codmov  = $r45_codafa;
                        }else{

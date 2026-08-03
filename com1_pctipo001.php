@@ -35,19 +35,19 @@ include(modification("classes/db_pctipoelemento_classe.php"));
 $clpctipoelemento  = new cl_pctipoelemento;
 //-- incluir ($pc06_codtipo,$pc06_codele){
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clpctipo = new cl_pctipo;
 include(modification("classes/db_pcgrupo_classe.php"));
 $clpcgrupo = new cl_pcgrupo;
 $db_opcao = 1;
 $db_botao = true;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
     db_inicio_transacao();
 		$sqlerro = false;
-    $clpctipo->incluir(trim($pc05_codtipo));
+    $clpctipo->incluir(trim((string) $pc05_codtipo));
     $codigo = $clpctipo->pc05_codtipo; // pega codigo gerado
     if($clpctipo->erro_status != 0){
-      $matriz = explode("#",@$chaves); //gera matriz com as chaves
+      $matriz = explode("#",(string) @$chaves); //gera matriz com as chaves
       for ($i=0;$i < sizeof($matriz);$i++){
         $clpctipoelemento->incluir($codigo,$matriz[$i]); //inclui na pctipoelemento
 				if ($clpctipoelemento->erro_status == 0) {
@@ -101,7 +101,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   if($clpctipo->erro_status=="0"){
     $clpctipo->erro(true,false);
     $db_botao=true;

@@ -31,7 +31,7 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification('libs/db_utils.php'));
 
 db_postmemory($_GET);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 /**
  * Quando o relatório for uma reemissão, busca o código sequencial da tabela concilia.

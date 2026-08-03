@@ -44,13 +44,13 @@ function formataData($dData, $iTipo = 1) {
 
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
  
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
  return $dData;
 
@@ -58,7 +58,7 @@ function formataData($dData, $iTipo = 1) {
 
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoFarArquivoHiperdia  = db_utils::getdao('far_arquivohiperdia');
 $oDaoFarAcompPacHiperdia = db_utils::getdao('far_cadacomppachiperdia');
@@ -570,9 +570,9 @@ if (isset($gerararquivo)) {
   $sWhere[2]   = "far_cadacomppachiperdia.fa50_i_tipo = 2 and s152_d_datasistema between '$dDataIni' and '$dDataFim' ";
   $sOrder[2]   = 'z01_v_nome';
 
-  $aNumLinhas  = array();
+  $aNumLinhas  = [];
   $iCodMunic   = null;
-  $aNomesArquivosTmp = array();;
+  $aNomesArquivosTmp = [];;
   for ($iCont = 0; $iCont < 3; $iCont++) {
 
     $sSql               = $oDaoFarAcompPacHiperdia->sql_query2(null, $sCampos[$iCont], 

@@ -49,7 +49,7 @@ if( $oParam->exec == "getLinhasArquivo" ){
 	$sSqlArquivo .= "   and db51_tipolinha = 3  ";
 	$sSqlArquivo .= " order by db_layoutlinha.db51_codigo ";
   $rsLinhas     = db_query($sSqlArquivo);
-	$aDadosArquivo = array();
+	$aDadosArquivo = [];
 	$aDadosArquivo = db_utils::getCollectionByRecord($rsLinhas,false,false,true);
 	echo $oJson->encode($aDadosArquivo);
 

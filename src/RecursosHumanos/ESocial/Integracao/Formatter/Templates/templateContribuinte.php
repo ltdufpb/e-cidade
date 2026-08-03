@@ -1,67 +1,67 @@
 <?php
-return array(
-    'idePeriodo' => array(
-        'properties' => array(
+return [
+    'idePeriodo' => [
+        'properties' => [
             'iniValid',
-            'fimValid' => array(
+            'fimValid' => [
                 'nome_api' => 'fimvalid'
-            )
-        )
-    ),
-    'infoCadastro' => array(
+            ]
+        ]
+    ],
+    'infoCadastro' => [
         'nome_api' => 'infocadastro',
-        'properties' => array(
-            'classTrib' => array(
+        'properties' => [
+            'classTrib' => [
                 'nome_api' => 'classtrib'
-            ),
-            'indEscrituracao' => array(
+            ],
+            'indEscrituracao' => [
                 'nome_api' => 'indescrituracao',
                 'type' => 'int'
-            ),
-            'indDesoneracao' => array(
+            ],
+            'indDesoneracao' => [
                 'nome_api' => 'inddesoneracao',
                 'type' => 'int'
-            ),
-            'indAcordoIsenMulta' => array(
+            ],
+            'indAcordoIsenMulta' => [
                 'nome_api' => 'indacordoisenmulta',
                 'type' => 'int'
-            ),
-            'indSitPJ' => array(
+            ],
+            'indSitPJ' => [
                 'nome_api' => 'indsitpj',
                 'type' => 'int'
-            )
-        ),
-        'groups' => array(
-            'contato' => array(
-                'properties' => array(
-                    'nmCtt' => array(
+            ]
+        ],
+        'groups' => [
+            'contato' => [
+                'properties' => [
+                    'nmCtt' => [
                         'nome_api' => 'nmctt'
-                    ),
-                    'cpfCtt' => array(
+                    ],
+                    'cpfCtt' => [
                         'nome_api' => 'cpfctt'
-                    ),
-                    'foneFixo' => array(
+                    ],
+                    'foneFixo' => [
                         'nome_api' => 'fonefixo'
-                    ),
-                    'foneCel' => array(
+                    ],
+                    'foneCel' => [
                         'nome_api' => 'fonecel'
-                    ),
-                    'email' => array(
+                    ],
+                    'email' => [
                         'nome_api' => 'email'
-                    )
-                )
-            )
-        )
-    ),
-    'grupo-novaValidade' => array(
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'grupo-novaValidade' => [
         'nome_api' => 'novavalidade',
-        'properties' => array(
-            'novainiValid' => array(
+        'properties' => [
+            'novainiValid' => [
                 'nome_api' => 'inivalid'
-            ),
-            'novafimValid' => array(
+            ],
+            'novafimValid' => [
                 'nome_api' => 'fimvalid'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

@@ -51,14 +51,10 @@ class AnexoII
             throw new Exception('O Anexo 2 - Dívida (E, DF e M) é exclusivo para 2017 e anos posteriores.');
         }
 
-        switch ($ano) {
-            case 2017:
-                return new Anexo2017($ano, $oPeriodo);
-            case 2018:
-            case 2019:
-                return new Anexo2018($ano, $oPeriodo);
-            default:
-                return new Anexo2018($ano, $oPeriodo);
-        }
+        return match ($ano) {
+            2017 => new Anexo2017($ano, $oPeriodo),
+            2018, 2019 => new Anexo2018($ano, $oPeriodo),
+            default => new Anexo2018($ano, $oPeriodo),
+        };
     }
 }

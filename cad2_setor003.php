@@ -32,8 +32,8 @@ include(modification("classes/db_setor_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_sanitario_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clsetor = new cl_setor;
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clsetor->rotulo->label();
@@ -153,7 +153,7 @@ function js_validaOrdem(){
 		          
 			  <td colspan=3 align='left' >
 			    <?php 
-			    $aOrdem= array("S"=>"Setor","Q"=>"Quadra","Z"=>"Zona");
+			    $aOrdem= ["S"=>"Setor","Q"=>"Quadra","Z"=>"Zona"];
 			     db_select("ordem",$aOrdem,true,2,"onchange = js_validaOrdem();"); 	      
 			    ?>
 			  </td>
@@ -164,7 +164,7 @@ function js_validaOrdem(){
 		    </td>
 		    <td>
 		        <?php 
-			    $aTipo= array("A"=>"Alfabética","N"=>"Numérica");
+			    $aTipo= ["A"=>"Alfabética","N"=>"Numérica"];
 			     db_select("tipo",$aTipo,true,2); 	      
 			    ?>
 			  </td>  

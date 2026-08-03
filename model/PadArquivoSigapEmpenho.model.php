@@ -46,7 +46,7 @@ final class PadArquivoSigapEmpenho extends PadArquivoSigap
     {
 
         $this->sNomeArquivo = "Empenho";
-        $this->aDados = array();
+        $this->aDados = [];
     }
 
     /**
@@ -67,7 +67,7 @@ final class PadArquivoSigapEmpenho extends PadArquivoSigap
         /**
          * Separamos a data do em ano, mes, dia
          */
-        list($iAno, $iMes, $iDia) = explode("-", $this->sDataFinal);
+        [$iAno, $iMes, $iDia] = explode("-", $this->sDataFinal);
         $sListaInstit = db_getsession("DB_instit");
         /**
          * Aqui temos a lista de empenhos do exercicio., separado por documento cont?bil
@@ -216,29 +216,29 @@ final class PadArquivoSigapEmpenho extends PadArquivoSigap
             $oEmpenhoRetorno->empCodigoEntidade = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
             $sDiaMesAno = "{$iAno}-" . str_pad($iMes, 2, "0", STR_PAD_LEFT) . "-" . str_pad($iDia, 2, "0", STR_PAD_LEFT);
             $oEmpenhoRetorno->empMesAnoMovimento = $sDiaMesAno;
-            $oEmpenhoRetorno->empCodigoOrgao = str_pad($oEmpenho->o58_orgao, 2, "0", STR_PAD_LEFT);
-            $oEmpenhoRetorno->empCodigoUnidadeOrcamentaria = str_pad($oEmpenho->o58_unidade, 2, "0", STR_PAD_LEFT);
-            $oEmpenhoRetorno->empCodigoFuncao = str_pad($oEmpenho->o58_funcao, 2, "0", STR_PAD_LEFT);
-            $oEmpenhoRetorno->empCodigoFuncao = str_pad($oEmpenho->o58_funcao, 2, "0", STR_PAD_LEFT);
-            $oEmpenhoRetorno->empCodigoSubFuncao = str_pad($oEmpenho->o58_subfuncao, 3, "0", STR_PAD_LEFT);
-            $oEmpenhoRetorno->empCodigoPrograma = str_pad($oEmpenho->o58_programa, 4, "0", STR_PAD_LEFT);
-            $oEmpenhoRetorno->empCodigoProjetoAtividade = str_pad($oEmpenho->o58_projativ, 5, "0", STR_PAD_LEFT);
-            $oEmpenhoRetorno->empCodigoRubricaDespesa = str_pad($oEmpenho->rubrica, 15, "0", STR_PAD_LEFT);
+            $oEmpenhoRetorno->empCodigoOrgao = str_pad((string) $oEmpenho->o58_orgao, 2, "0", STR_PAD_LEFT);
+            $oEmpenhoRetorno->empCodigoUnidadeOrcamentaria = str_pad((string) $oEmpenho->o58_unidade, 2, "0", STR_PAD_LEFT);
+            $oEmpenhoRetorno->empCodigoFuncao = str_pad((string) $oEmpenho->o58_funcao, 2, "0", STR_PAD_LEFT);
+            $oEmpenhoRetorno->empCodigoFuncao = str_pad((string) $oEmpenho->o58_funcao, 2, "0", STR_PAD_LEFT);
+            $oEmpenhoRetorno->empCodigoSubFuncao = str_pad((string) $oEmpenho->o58_subfuncao, 3, "0", STR_PAD_LEFT);
+            $oEmpenhoRetorno->empCodigoPrograma = str_pad((string) $oEmpenho->o58_programa, 4, "0", STR_PAD_LEFT);
+            $oEmpenhoRetorno->empCodigoProjetoAtividade = str_pad((string) $oEmpenho->o58_projativ, 5, "0", STR_PAD_LEFT);
+            $oEmpenhoRetorno->empCodigoRubricaDespesa = str_pad((string) $oEmpenho->rubrica, 15, "0", STR_PAD_LEFT);
             $recurso = ComplementoRecurso::getComplementoPelaDotacao($oEmpenho->o58_coddot, $oEmpenho->o60_anousu, $oEmpenho->recurso);
             $oEmpenhoRetorno->empCodigoRecursoVinculado = str_pad($recurso, 8, "0", STR_PAD_LEFT);
             $oEmpenhoRetorno->empContrapartida = "";
-            $sNumeroEmpenho = str_pad($oEmpenho->e60_codemp, 16, "0", STR_PAD_LEFT);
+            $sNumeroEmpenho = str_pad((string) $oEmpenho->e60_codemp, 16, "0", STR_PAD_LEFT);
             $oEmpenhoRetorno->empNumero = $oEmpenho->e60_anousu . $sNumeroEmpenho;
             $oEmpenhoRetorno->empData = $oEmpenho->e60_emiss;
             $oEmpenhoRetorno->empValor = number_format($oEmpenho->valor_empenho, 2, ".", "");
             $oEmpenhoRetorno->empSinalValor = $oEmpenho->sinal;
-            $iTamanhoPad = strlen($oEmpenho->z01_cgccpf);
+            $iTamanhoPad = strlen((string) $oEmpenho->z01_cgccpf);
             $resumo = $oEmpenho->e60_resumo;
             if (empty($resumo)) {
                 $resumo = "Empenho {$sNumeroEmpenho}";
             }
-            $oEmpenhoRetorno->empCnpjCpf = str_pad($oEmpenho->z01_cgccpf, $iTamanhoPad, 0, STR_PAD_LEFT);
-            $oEmpenhoRetorno->empHistorico = str_pad(str_replace("\n", "", substr($resumo, 0, 255)), 255, " ");
+            $oEmpenhoRetorno->empCnpjCpf = str_pad((string) $oEmpenho->z01_cgccpf, $iTamanhoPad, 0, STR_PAD_LEFT);
+            $oEmpenhoRetorno->empHistorico = str_pad(str_replace("\n", "", substr((string) $resumo, 0, 255)), 255, " ");
             $oEmpenhoRetorno->empProcesso = $oEmpenho->e60_numemp . "/" . $oEmpenho->e60_anousu;
 
             switch ($oEmpenho->e60_codtipo) {
@@ -281,8 +281,8 @@ final class PadArquivoSigapEmpenho extends PadArquivoSigap
             if ($iNumRowsTipoLicitacao > 0) {
 
                 $oTipoLicitacao = db_utils::fieldsMemory($rsSqlTipoLicitacao, 0);
-                $oEmpenhoRetorno->empNumeroEdital = str_pad($oTipoLicitacao->l20_edital, 20, "0", STR_PAD_LEFT);
-                $oEmpenhoRetorno->empModalLicitacao = str_pad($oTipoLicitacao->l44_codigotribunal, 2, "0", STR_PAD_LEFT);
+                $oEmpenhoRetorno->empNumeroEdital = str_pad((string) $oTipoLicitacao->l20_edital, 20, "0", STR_PAD_LEFT);
+                $oEmpenhoRetorno->empModalLicitacao = str_pad((string) $oTipoLicitacao->l44_codigotribunal, 2, "0", STR_PAD_LEFT);
 
             } else {
 
@@ -297,7 +297,7 @@ final class PadArquivoSigapEmpenho extends PadArquivoSigap
 
                     $oTipoCompra = db_utils::fieldsMemory($rsSqlTipoCompra, 0);
                     $oEmpenhoRetorno->empNumeroEdital = str_pad("0", 20, "0", STR_PAD_LEFT);
-                    $oEmpenhoRetorno->empModalLicitacao = str_pad($oTipoCompra->l44_codigotribunal, 2, "0", STR_PAD_LEFT);
+                    $oEmpenhoRetorno->empModalLicitacao = str_pad((string) $oTipoCompra->l44_codigotribunal, 2, "0", STR_PAD_LEFT);
                 }
             }
             if ($oEmpenhoRetorno->empModalLicitacao == '00') {
@@ -318,7 +318,7 @@ final class PadArquivoSigapEmpenho extends PadArquivoSigap
     public function getNomeElementos()
     {
 
-        $aElementos = array(
+        $aElementos = [
             "empCodigoEntidade",
             "empMesAnoMovimento",
             "empCodigoOrgao",
@@ -341,7 +341,7 @@ final class PadArquivoSigapEmpenho extends PadArquivoSigap
             "empModalLicitacao",
             "empNumeroConvenio",
             "empTipo"
-        );
+        ];
 
         return $aElementos;
     }

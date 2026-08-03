@@ -31,7 +31,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clrhcbo = new cl_rhcbo;
 $clrhcbo->rotulo->label("rh70_sequencial");
@@ -108,9 +108,9 @@ $clrhcbo->rotulo->label("rh70_descr");
             $sql = $clrhcbo->sql_query( "", $campos, "rh70_sequencial", " rh70_tipo in (4,5) {$sRhcbo}" );
           }
 
-          $repassa = array();
+          $repassa = [];
           if( isset( $chave_rh70_sequencial ) ) {
-            $repassa = array( "chave_rh70_sequencial" => $chave_rh70_sequencial );
+            $repassa = [ "chave_rh70_sequencial" => $chave_rh70_sequencial ];
           }
 
           db_lovrot( $sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa );

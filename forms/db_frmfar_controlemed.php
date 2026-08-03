@@ -263,7 +263,7 @@ $hoje = date('Y-m-d', db_getsession('DB_datausu'));
        	$controle = 0;
        }
       
-      $chavepri                             = array("fa10_i_codigo"=>@$fa10_i_codigo);
+      $chavepri                             = ["fa10_i_codigo"=>@$fa10_i_codigo];
       $oIframeAlterarExcluir->chavepri      = $chavepri;
       $oIframeAlterarExcluir->sql           = $oDaoFarControlemed->sql_query('', '*', $ordem, "$controle");
       $oIframeAlterarExcluir->campos        = 'fa10_i_codigo, m60_descr, fa10_i_quantidade, fa10_i_prazo, ';
@@ -449,7 +449,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_far_controlemed.hide();
   <?php
   if ($db_opcao!=1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 

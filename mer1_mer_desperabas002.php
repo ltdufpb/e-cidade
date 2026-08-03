@@ -54,16 +54,16 @@ $db_opcao   = 1;
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica = array("a1"=>"Refeição/Data",
+   $clcriaabas->identifica = ["a1"=>"Refeição/Data",
                                    "a2"=>"Informações"
-                                  );
-   $clcriaabas->sizecampo  = array("a1"=>"25",
+                                  ];
+   $clcriaabas->sizecampo  = ["a1"=>"25",
                                    "a2"=>"25"
-                                  );
-   $clcriaabas->src        = array("a1"=>"mer1_mer_desperdicio002.php",
+                                  ];
+   $clcriaabas->src        = ["a1"=>"mer1_mer_desperdicio002.php",
                                    "a2"=>""
-                                  );
-   $clcriaabas->disabled      = array("a2"=>"true");
+                                  ];
+   $clcriaabas->disabled      = ["a2"=>"true"];
    $clcriaabas->cordisabled   = "#9b9b9b";
    $clcriaabas->scrolling     = "no";
    $clcriaabas->iframe_height = "600";

@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE declaracaoquitacaocancelamento
 class cl_declaracaoquitacaocancelamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ar32_sequencial = 0; 
-   var $ar32_declaracaoquitacao = 0; 
-   var $ar32_id_usuario = 0; 
-   var $ar32_datacancelamento_dia = null; 
-   var $ar32_datacancelamento_mes = null; 
-   var $ar32_datacancelamento_ano = null; 
-   var $ar32_datacancelamento = null; 
-   var $ar32_hora = null; 
-   var $ar32_obs = null; 
-   var $ar32_automatico = 'f'; 
+   public $ar32_sequencial = 0; 
+   public $ar32_declaracaoquitacao = 0; 
+   public $ar32_id_usuario = 0; 
+   public $ar32_datacancelamento_dia = null; 
+   public $ar32_datacancelamento_mes = null; 
+   public $ar32_datacancelamento_ano = null; 
+   public $ar32_datacancelamento = null; 
+   public $ar32_hora = null; 
+   public $ar32_obs = null; 
+   public $ar32_automatico = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ar32_sequencial = int8 = Código 
                  ar32_declaracaoquitacao = int8 = Código Declaração 
                  ar32_id_usuario = int4 = Cod. Usuário 
@@ -63,10 +63,10 @@ class cl_declaracaoquitacaocancelamento {
                  ar32_automatico = bool = Automático 
                  ";
    //funcao construtor da classe 
-   function cl_declaracaoquitacaocancelamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("declaracaoquitacaocancelamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_declaracaoquitacaocancelamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ar32_sequencial = pg_result($result,0,0); 
+       $this->ar32_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from declaracaoquitacaocancelamento_ar32_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ar32_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ar32_sequencial)){
          $this->erro_sql = " Campo ar32_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_declaracaoquitacaocancelamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cancelamento Declaração de Quitação ($this->ar32_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cancelamento Declaração de Quitação já Cadastrado";
@@ -232,16 +232,16 @@ class cl_declaracaoquitacaocancelamento {
      $resaco = $this->sql_record($this->sql_query_file($this->ar32_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17173,'$this->ar32_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3036,17173,'','".AddSlashes(pg_result($resaco,0,'ar32_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3036,17174,'','".AddSlashes(pg_result($resaco,0,'ar32_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3036,17175,'','".AddSlashes(pg_result($resaco,0,'ar32_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3036,17176,'','".AddSlashes(pg_result($resaco,0,'ar32_datacancelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3036,17177,'','".AddSlashes(pg_result($resaco,0,'ar32_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3036,17178,'','".AddSlashes(pg_result($resaco,0,'ar32_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3036,17179,'','".AddSlashes(pg_result($resaco,0,'ar32_automatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3036,17173,'','".AddSlashes(pg_fetch_result($resaco,0,'ar32_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3036,17174,'','".AddSlashes(pg_fetch_result($resaco,0,'ar32_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3036,17175,'','".AddSlashes(pg_fetch_result($resaco,0,'ar32_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3036,17176,'','".AddSlashes(pg_fetch_result($resaco,0,'ar32_datacancelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3036,17177,'','".AddSlashes(pg_fetch_result($resaco,0,'ar32_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3036,17178,'','".AddSlashes(pg_fetch_result($resaco,0,'ar32_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3036,17179,'','".AddSlashes(pg_fetch_result($resaco,0,'ar32_automatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,10 +250,10 @@ class cl_declaracaoquitacaocancelamento {
       $this->atualizacampos();
      $sql = " update declaracaoquitacaocancelamento set ";
      $virgula = "";
-     if(trim($this->ar32_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_sequencial"])){ 
+     if(trim((string) $this->ar32_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_sequencial"])){ 
        $sql  .= $virgula." ar32_sequencial = $this->ar32_sequencial ";
        $virgula = ",";
-       if(trim($this->ar32_sequencial) == null ){ 
+       if(trim((string) $this->ar32_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ar32_sequencial";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_declaracaoquitacaocancelamento {
          return false;
        }
      }
-     if(trim($this->ar32_declaracaoquitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_declaracaoquitacao"])){ 
+     if(trim((string) $this->ar32_declaracaoquitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_declaracaoquitacao"])){ 
        $sql  .= $virgula." ar32_declaracaoquitacao = $this->ar32_declaracaoquitacao ";
        $virgula = ",";
-       if(trim($this->ar32_declaracaoquitacao) == null ){ 
+       if(trim((string) $this->ar32_declaracaoquitacao) == null ){ 
          $this->erro_sql = " Campo Código Declaração nao Informado.";
          $this->erro_campo = "ar32_declaracaoquitacao";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_declaracaoquitacaocancelamento {
          return false;
        }
      }
-     if(trim($this->ar32_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_id_usuario"])){ 
+     if(trim((string) $this->ar32_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_id_usuario"])){ 
        $sql  .= $virgula." ar32_id_usuario = $this->ar32_id_usuario ";
        $virgula = ",";
-       if(trim($this->ar32_id_usuario) == null ){ 
+       if(trim((string) $this->ar32_id_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "ar32_id_usuario";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_declaracaoquitacaocancelamento {
          return false;
        }
      }
-     if(trim($this->ar32_datacancelamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_datacancelamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ar32_datacancelamento_dia"] !="") ){ 
+     if(trim((string) $this->ar32_datacancelamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_datacancelamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["ar32_datacancelamento_dia"] !="") ){ 
        $sql  .= $virgula." ar32_datacancelamento = '$this->ar32_datacancelamento' ";
        $virgula = ",";
-       if(trim($this->ar32_datacancelamento) == null ){ 
+       if(trim((string) $this->ar32_datacancelamento) == null ){ 
          $this->erro_sql = " Campo Data Cancelamento nao Informado.";
          $this->erro_campo = "ar32_datacancelamento_dia";
          $this->erro_banco = "";
@@ -305,7 +305,7 @@ class cl_declaracaoquitacaocancelamento {
        if(isset($GLOBALS["HTTP_POST_VARS"]["ar32_datacancelamento_dia"])){ 
          $sql  .= $virgula." ar32_datacancelamento = null ";
          $virgula = ",";
-         if(trim($this->ar32_datacancelamento) == null ){ 
+         if(trim((string) $this->ar32_datacancelamento) == null ){ 
            $this->erro_sql = " Campo Data Cancelamento nao Informado.";
            $this->erro_campo = "ar32_datacancelamento_dia";
            $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_declaracaoquitacaocancelamento {
          }
        }
      }
-     if(trim($this->ar32_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_hora"])){ 
+     if(trim((string) $this->ar32_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_hora"])){ 
        $sql  .= $virgula." ar32_hora = '$this->ar32_hora' ";
        $virgula = ",";
-       if(trim($this->ar32_hora) == null ){ 
+       if(trim((string) $this->ar32_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "ar32_hora";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_declaracaoquitacaocancelamento {
          return false;
        }
      }
-     if(trim($this->ar32_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_obs"])){ 
+     if(trim((string) $this->ar32_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_obs"])){ 
        $sql  .= $virgula." ar32_obs = '$this->ar32_obs' ";
        $virgula = ",";
-       if(trim($this->ar32_obs) == null ){ 
+       if(trim((string) $this->ar32_obs) == null ){ 
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "ar32_obs";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_declaracaoquitacaocancelamento {
          return false;
        }
      }
-     if(trim($this->ar32_automatico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_automatico"])){ 
+     if(trim((string) $this->ar32_automatico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar32_automatico"])){ 
        $sql  .= $virgula." ar32_automatico = '$this->ar32_automatico' ";
        $virgula = ",";
-       if(trim($this->ar32_automatico) == null ){ 
+       if(trim((string) $this->ar32_automatico) == null ){ 
          $this->erro_sql = " Campo Automático nao Informado.";
          $this->erro_campo = "ar32_automatico";
          $this->erro_banco = "";
@@ -363,23 +363,23 @@ class cl_declaracaoquitacaocancelamento {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17173,'$this->ar32_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar32_sequencial"]) || $this->ar32_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3036,17173,'".AddSlashes(pg_result($resaco,$conresaco,'ar32_sequencial'))."','$this->ar32_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3036,17173,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar32_sequencial'))."','$this->ar32_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar32_declaracaoquitacao"]) || $this->ar32_declaracaoquitacao != "")
-           $resac = db_query("insert into db_acount values($acount,3036,17174,'".AddSlashes(pg_result($resaco,$conresaco,'ar32_declaracaoquitacao'))."','$this->ar32_declaracaoquitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3036,17174,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar32_declaracaoquitacao'))."','$this->ar32_declaracaoquitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar32_id_usuario"]) || $this->ar32_id_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3036,17175,'".AddSlashes(pg_result($resaco,$conresaco,'ar32_id_usuario'))."','$this->ar32_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3036,17175,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar32_id_usuario'))."','$this->ar32_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar32_datacancelamento"]) || $this->ar32_datacancelamento != "")
-           $resac = db_query("insert into db_acount values($acount,3036,17176,'".AddSlashes(pg_result($resaco,$conresaco,'ar32_datacancelamento'))."','$this->ar32_datacancelamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3036,17176,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar32_datacancelamento'))."','$this->ar32_datacancelamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar32_hora"]) || $this->ar32_hora != "")
-           $resac = db_query("insert into db_acount values($acount,3036,17177,'".AddSlashes(pg_result($resaco,$conresaco,'ar32_hora'))."','$this->ar32_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3036,17177,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar32_hora'))."','$this->ar32_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar32_obs"]) || $this->ar32_obs != "")
-           $resac = db_query("insert into db_acount values($acount,3036,17178,'".AddSlashes(pg_result($resaco,$conresaco,'ar32_obs'))."','$this->ar32_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3036,17178,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar32_obs'))."','$this->ar32_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar32_automatico"]) || $this->ar32_automatico != "")
-           $resac = db_query("insert into db_acount values($acount,3036,17179,'".AddSlashes(pg_result($resaco,$conresaco,'ar32_automatico'))."','$this->ar32_automatico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3036,17179,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar32_automatico'))."','$this->ar32_automatico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,16 +424,16 @@ class cl_declaracaoquitacaocancelamento {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17173,'$ar32_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3036,17173,'','".AddSlashes(pg_result($resaco,$iresaco,'ar32_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3036,17174,'','".AddSlashes(pg_result($resaco,$iresaco,'ar32_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3036,17175,'','".AddSlashes(pg_result($resaco,$iresaco,'ar32_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3036,17176,'','".AddSlashes(pg_result($resaco,$iresaco,'ar32_datacancelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3036,17177,'','".AddSlashes(pg_result($resaco,$iresaco,'ar32_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3036,17178,'','".AddSlashes(pg_result($resaco,$iresaco,'ar32_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3036,17179,'','".AddSlashes(pg_result($resaco,$iresaco,'ar32_automatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3036,17173,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar32_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3036,17174,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar32_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3036,17175,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar32_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3036,17176,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar32_datacancelamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3036,17177,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar32_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3036,17178,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar32_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3036,17179,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar32_automatico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from declaracaoquitacaocancelamento
@@ -493,7 +493,7 @@ class cl_declaracaoquitacaocancelamento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:declaracaoquitacaocancelamento";
@@ -508,7 +508,7 @@ class cl_declaracaoquitacaocancelamento {
    function sql_query ( $ar32_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -533,7 +533,7 @@ class cl_declaracaoquitacaocancelamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -546,7 +546,7 @@ class cl_declaracaoquitacaocancelamento {
    function sql_query_file ( $ar32_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -567,7 +567,7 @@ class cl_declaracaoquitacaocancelamento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

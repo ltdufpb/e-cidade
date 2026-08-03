@@ -34,7 +34,7 @@ class ErroBancoRepository {
   /**
    * @var ErroBanco[]
    */
-  private $aItens = array();
+  private $aItens = [];
 
   /**
    * @var ErroBancoRepository

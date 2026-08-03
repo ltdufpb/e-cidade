@@ -31,14 +31,14 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cllab_setorexame = new cl_lab_setorexame;
 $cllab_setorexame->rotulo->label("la09_i_codigo");
 $cllab_setorexame->rotulo->label("la08_c_descr");
 
-$parametros = explode('|', $_GET['funcao_js']);
+$parametros = explode('|', (string) $_GET['funcao_js']);
 foreach($parametros as $parametro){
   if(str_contains($parametro, 'la23_i_codigo')){
     $la23_i_codigo = explode('=', $parametro)[1];
@@ -91,7 +91,7 @@ foreach($parametros as $parametro){
         <td>
           <?php
 
-          $aWhere = array();
+          $aWhere = [];
           if( isset( $la02_i_codigo ) ) {
             $aWhere[] = " la02_i_codigo = {$la02_i_codigo} ";
           }
@@ -119,9 +119,9 @@ foreach($parametros as $parametro){
             $sWhere = implode(" and ", $aWhere);
             $sSql   = $cllab_setorexame->sql_query( "", $campos, "la23_c_descr, la08_c_descr", $sWhere);
 
-            $repassa = array();
+            $repassa = [];
             if( isset( $chave_la09_i_codigo ) ) {
-              $repassa = array( "chave_la09_i_codigo" => $chave_la09_i_codigo, "chave_la09_i_codigo" => $chave_la09_i_codigo );
+              $repassa = [ "chave_la09_i_codigo" => $chave_la09_i_codigo, "chave_la09_i_codigo" => $chave_la09_i_codigo ];
             }
 
             db_lovrot( $sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa );

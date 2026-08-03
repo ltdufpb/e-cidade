@@ -71,9 +71,9 @@ abstract class PartilhaJuridica extends Partilha
 
         $this->validador = $validador;
         $this->processoForo = $processoForo;
-        $this->processoForoRepository = Repository\ProcessoForo::getInstance();
-        $this->processoForoPartilhaRepository = ProcessoForoPartilhaRepository::getInstance();
-        $this->inicialRepository = InicialRepository::getInstance();
+        $this->processoForoRepository = (new Repository\ProcessoForo())->getInstance();
+        $this->processoForoPartilhaRepository = (new ProcessoForoPartilhaRepository())->getInstance();
+        $this->inicialRepository = (new InicialRepository())->getInstance();
 
         // PLUGINTAXAJURIDICAADICIONALPORNOME1
     }
@@ -139,7 +139,7 @@ abstract class PartilhaJuridica extends Partilha
             $taxasEmissao = $this->processaRemocaoTaxa($taxasEmissao, $this->getPartilhasPagasSemHonrarios());
         } else {
             $desmembramentoRepository = new HistoricoDesmembramentoRepository();
-            $termoInicialRepository = TermoInicialRepository::getInstance();
+            $termoInicialRepository = (new TermoInicialRepository())->getInstance();
 
             foreach ($iniciais as $inicial) {
                 $history = $desmembramentoRepository->getHistoryByInitial($inicial->getCodigo());
@@ -165,7 +165,7 @@ abstract class PartilhaJuridica extends Partilha
 
     public function processaRemocaoTaxa(array $taxas, array $partilhas)
     {
-        $taxasRemover = array();
+        $taxasRemover = [];
 
         foreach ($partilhas as $inicialPartilha) {
             foreach ($inicialPartilha->getCustas() as $inicialPartilhaCusta) {
@@ -205,6 +205,7 @@ abstract class PartilhaJuridica extends Partilha
     /**
      * @inheritdoc
      */
+    #[\Override]
     public function calculaValorTaxa(Taxa $taxa, Valor $valor)
     {
         $valor = parent::calculaValorTaxa($taxa, $valor);

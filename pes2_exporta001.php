@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
@@ -686,7 +686,7 @@ order by z01_nome";
        fputs($arquivo,$sql1."\r\n");
   }
 
-  for($x = 0;$x < pg_numrows($result);$x++){
+  for($x = 0;$x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
     fputs($arquivo,$tipo."\r\n");
   }
@@ -743,7 +743,7 @@ order by z01_nome";
         <td align="right"><b>Tipo de Arquivo :&nbsp;&nbsp;<b></td>
 	<td align="left">
 	<?php 
-	  $arr = array('C'=>'Cadastro',
+	  $arr = ['C'=>'Cadastro',
                  'B'=>'Bancos',
                  'D'=>'Cadastro CEF',
                  'E'=>'Cadastro Banespa',
@@ -752,7 +752,7 @@ order by z01_nome";
                  'G'=>'CDC Banrisul',
                  'P'=>'Portal Transparência'
 
-                 );
+                 ];
 	  db_select("exporta",$arr,true,1);
 	?>
         </td>
@@ -761,11 +761,11 @@ order by z01_nome";
         <td align="right"><b>Tipo de Servidor :&nbsp;&nbsp;<b></td>
 	<td align="left">
 	<?php 
-	  $arr_f = array('T'=>'Todos',
+	  $arr_f = ['T'=>'Todos',
                    'E'=>'Estatutário',
                    'C'=>'Comissionados',
                    'L'=>'CLT'
-                 );
+                 ];
 	  db_select("tipofun",$arr_f,true,1);
 	?>
         </td>

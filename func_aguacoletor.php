@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguacoletor_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claguacoletor = new cl_aguacoletor;
 $claguacoletor->rotulo->label("x46_sequencial");
 $claguacoletor->rotulo->label("x46_descricao");
@@ -100,9 +100,9 @@ $claguacoletor->rotulo->label("x46_descricao");
         }else{
            $sql = $claguacoletor->sql_query("",$campos,"x46_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_x46_sequencial)){
-          $repassa = array("chave_x46_sequencial"=>$chave_x46_sequencial,"chave_x46_descricao"=>$chave_x46_descricao);
+          $repassa = ["chave_x46_sequencial"=>$chave_x46_sequencial,"chave_x46_descricao"=>$chave_x46_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

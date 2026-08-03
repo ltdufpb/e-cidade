@@ -275,10 +275,10 @@ try {
       $oValoresDetalhes->c19_numemp              = $sEmpenho                           ;
       $oValoresDetalhes->z01_nome                = $oDetalhes->z01_nome                ;
       $oValoresDetalhes->c19_orcunidadeanousu    = $oDetalhes->c19_orcunidadeanousu    ;
-      $oValoresDetalhes->c19_orcunidadeorgao     = urlencode($oDetalhes->o40_descr);//$oDetalhes->c19_orcunidadeorgao     ;
-      $oValoresDetalhes->c19_orcunidadeunidade   = urlencode($oDetalhes->o41_descr);//$oDetalhes->c19_orcunidadeunidade   ;
+      $oValoresDetalhes->c19_orcunidadeorgao     = urlencode((string) $oDetalhes->o40_descr);//$oDetalhes->c19_orcunidadeorgao     ;
+      $oValoresDetalhes->c19_orcunidadeunidade   = urlencode((string) $oDetalhes->o41_descr);//$oDetalhes->c19_orcunidadeunidade   ;
       $oValoresDetalhes->c19_orcorgaoanousu      = $oDetalhes->c19_orcorgaoanousu      ;
-      $oValoresDetalhes->c19_orcorgaoorgao       = urlencode($oDetalhes->o40_descr);//$oDetalhes->c19_orcorgaoorgao       ;
+      $oValoresDetalhes->c19_orcorgaoorgao       = urlencode((string) $oDetalhes->o40_descr);//$oDetalhes->c19_orcorgaoorgao       ;
       $oValoresDetalhes->c19_conplanoreduzanousu = $oDetalhes->c19_conplanoreduzanousu ;
       $oValoresDetalhes->c19_acordo              = $oDetalhes->c19_acordo              ;
 
@@ -306,7 +306,7 @@ try {
 
       if ( count($aDetalhamentos) > 0 ) {
 
-        $aCodigosDetalhes = array();
+        $aCodigosDetalhes = [];
         foreach ($aDetalhamentos as $iIndice => $oValores) {
           $aCodigosDetalhes[] = $oValores->sCodigo;
         }
@@ -405,11 +405,11 @@ try {
       db_inicio_transacao();
 
       $sCampos = "array_to_string(array_accum(c19_sequencial), ',') as detalhes_excluir";
-      $aWhere = array(
+      $aWhere = [
         "c19_reduz = {$oParam->iCodigoReduzido}",
         "c19_conplanoreduzanousu = $iAnoSessao",
         "c19_instit = {$iInstituicaoSessao}"
-      );
+      ];
       $oDaoBuscaDetalhesExcluir = new cl_contacorrentedetalhe();
       $sSqlBuscaDetalhes = $oDaoBuscaDetalhesExcluir->sql_query_file(null, $sCampos, null, implode(' and ', $aWhere));
       $rsBuscaDetalhes   = db_query($sSqlBuscaDetalhes);
@@ -455,9 +455,9 @@ try {
 				$nValorDebito  = '0.0';
 				$nValorCredito = '0.0';
 
-				if (strtoupper($oValores->sTipoSaldo) == 'C') {
+				if (strtoupper((string) $oValores->sTipoSaldo) == 'C') {
 					$nValorCredito = $oValores->nValor;
-				} else if (strtoupper($oValores->sTipoSaldo) == 'D') {
+				} else if (strtoupper((string) $oValores->sTipoSaldo) == 'D') {
 					$nValorDebito = $oValores->nValor;
 				} else {
 					throw new BusinessException("O Tipo de Saldo para o Detalhamento da Conta Corrente de código {$oValores->iSequencial} não informado.");
@@ -511,7 +511,7 @@ try {
        */
       $iAnoUsu         = db_getsession("DB_anousu");
       $iReduzido       = $oParam->iCodigoReduzido;
-      $aDetalhesContas = array();
+      $aDetalhesContas = [];
 
       $sWhereConplanoExe   = "     c62_anousu = {$iAnoUsu}   ";
       $sWhereConplanoExe  .= " and c62_reduz  = {$iReduzido} ";
@@ -598,7 +598,7 @@ try {
           }
           // setamoso sequencial dos detalhes e a descrição que irá na grid
           $oDadosDetalhes->iCodigo          = $oValores->c19_sequencial;
-          $oDadosDetalhes->sConta           = urlencode($sDescricao);
+          $oDadosDetalhes->sConta           = urlencode((string) $sDescricao);
 
           /*
            * sql para verificar se existe valor ja implantado
@@ -630,7 +630,7 @@ try {
           $aDetalhesContas[] = $oDadosDetalhes;
         }
         $oRetorno->iCodigoDescricao        = $oValores->c17_sequencial;
-        $oRetorno->sDescricaoContaCorrente = $oValores->c17_contacorrente . " - " . urlencode($oValores->c17_descricao);
+        $oRetorno->sDescricaoContaCorrente = $oValores->c17_contacorrente . " - " . urlencode((string) $oValores->c17_descricao);
 
       } else {
 
@@ -655,8 +655,8 @@ try {
       }
 
 
-      $oRetorno->nSaldoCredito           = trim($oValoresConplanoExe->c62_vlrcre);
-      $oRetorno->nSaldoDebito            = trim($oValoresConplanoExe->c62_vlrdeb);
+      $oRetorno->nSaldoCredito           = trim((string) $oValoresConplanoExe->c62_vlrcre);
+      $oRetorno->nSaldoDebito            = trim((string) $oValoresConplanoExe->c62_vlrdeb);
       $oRetorno->iTipoSaldoConta         = $oValoresConplanoExe->c60_naturezasaldo;
       $oRetorno->aDados                  = $aDetalhesContas;
 
@@ -675,13 +675,13 @@ try {
 
       $oContaCorrente   = new ContaCorrente($oParam->iCodigoContaCorrente);
       $aContasContabeis = $oContaCorrente->getContasContabeis();
-      $aContasRetorno   = array();
+      $aContasRetorno   = [];
       foreach ($aContasContabeis as $iIndice => $oContaPCASP) {
 
         $oStdContaRetorno               = new stdClass();
         $oStdContaRetorno->iCodigoConta = $oContaPCASP->getCodigoConta();
         $oStdContaRetorno->sEstrutural  = $oContaPCASP->getEstrutural();
-        $oStdContaRetorno->sDescricao   = urlencode($oContaPCASP->getDescricao());
+        $oStdContaRetorno->sDescricao   = urlencode((string) $oContaPCASP->getDescricao());
         $aContasRetorno[] = $oStdContaRetorno;
       }
 

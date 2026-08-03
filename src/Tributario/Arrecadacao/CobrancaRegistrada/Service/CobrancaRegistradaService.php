@@ -15,15 +15,12 @@ use \Recibo as ReciboLegacy;
  */
 final class CobrancaRegistradaService extends Service
 {
-    private $reciboValorTotalStrategy;
-
     /**
      * CobrancaRegistradaService constructor.
-     * @param ReciboValorTotal $reciboValorTotal
+     * @param ReciboValorTotal $reciboValorTotalStrategy
      */
-    public function __construct(ReciboValorTotal $reciboValorTotal)
+    public function __construct(private readonly ReciboValorTotal $reciboValorTotalStrategy)
     {
-        $this->reciboValorTotalStrategy = $reciboValorTotal;
     }
 
     /**

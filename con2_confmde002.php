@@ -35,8 +35,8 @@ include(modification("dbforms/db_funcoes.php"));
 
 $anousu = db_getsession("DB_anousu");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $classinatura = new cl_assinatura;
 $orcparamrel = new cl_orcparamrel;
@@ -51,7 +51,7 @@ $interferencias = $orcparamrel->sql_parametro('19','0');
 
 //-----------------------------------------
 $r_orgao = db_query("select distinct(o41_orgao) from orcunidade where o41_ident=03 and o41_anousu=$anousu");
-if (pg_numrows($r_orgao) == 0 ){
+if (pg_num_rows($r_orgao) == 0 ){
    db_redireciona('db_erros.php?fechar=true&db_erro=No cadastro das unidades não foi definido o identificador do tribunal!');   
    exit;
 }   
@@ -68,11 +68,11 @@ $total_saldo_arrecadado          =0;
 $total_saldo_arrecadado_acumulado=0;
 $total_saldo_a_arrecadar        = 0;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
       $descr_inst .= $xvirg.$nomeinst ;
         $xvirg = ', ';
@@ -118,7 +118,7 @@ $total_saldo_prevadic_acum        = 0;
 $total_saldo_arrecadado           = 0;
 $total_saldo_arrecadado_acumulado = 0;
 $total_saldo_a_arrecadar          = 0;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $elemento = $o57_fonte;
   $descr    = $o57_descr;
@@ -161,7 +161,7 @@ $pdf->setfont('arial','b',7);
 $pdf->cell(145,$alt,"RELAÇÃO DAS DESPESAS ",0,0,"L",0);
 $pdf->cell(17,$alt,"",0,0,"R",0);
 $pdf->cell(17,$alt,"Valor",0,1,"R",0);
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   $pdf->setfont('arial','',6);
   $pdf->cell(145,$alt,$o40_descr,0,0,"L",0,'','.');
@@ -170,7 +170,7 @@ for($i=0;$i<pg_numrows($result_desp);$i++){
   $total_despesas += $liquidado;
 } 
 // lista interferencias
-for($i=0;$i<pg_numrows($result_balancete);$i++){
+for($i=0;$i<pg_num_rows($result_balancete);$i++){
   db_fieldsmemory($result_balancete,$i);
   $estrutural = $estrutural;
   if (in_array($estrutural,$interferencias)){

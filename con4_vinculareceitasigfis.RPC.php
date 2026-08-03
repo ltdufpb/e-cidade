@@ -112,7 +112,7 @@ switch ($oParam->exec) {
     $oDomXML->load('config/sigfis/vinculoreceita.xml');
     $oNoReceitas         = $oDomXML->getElementsByTagName('receitas');
     $aReceitas           = $oDomXML->getElementsByTagName('receita');
-    $aReceitasVinculadas = array();
+    $aReceitasVinculadas = [];
     
     $oDaoOrcFonte        = db_utils::getDao('orcfontes');
     
@@ -126,7 +126,7 @@ switch ($oParam->exec) {
       
       if ($oDaoOrcFonte->numrows == 1) {
         
-        $sDescricaoReceita = urlencode(db_utils::fieldsMemory($rsReceita, 0)->o57_descr);
+        $sDescricaoReceita = urlencode((string) db_utils::fieldsMemory($rsReceita, 0)->o57_descr);
         
         $oReceitaVinculada                = new stdClass();
         $oReceitaVinculada->descricao     = $sDescricaoReceita;
@@ -158,7 +158,7 @@ switch ($oParam->exec) {
     $oDomXML->load("config/sigfis/vinculoreceita.xml");
     $oNoReceitas         = $oDomXML->getElementsByTagName('receitas');
     $aReceitas           = $oDomXML->getElementsByTagName('receita');
-    $aReceitasVinculadas = array();
+    $aReceitasVinculadas = [];
     $oDaoOrcFonte        = db_utils::getDao('orcfontes');
     
     foreach ($aReceitas as $oReceita) {

@@ -4,7 +4,7 @@ include("/var/www/dbportal2/libs/db_stdlib.php");
 
 db_imprimecheque("JOAO DA SILVA", "001", 100, "01/01/2008", 2, "192.168.0.72", "4444", "PORTO ALEGRE");
 
-function db_imprimecheque ($nome, $codbco, $valor, $data, $modelo = 1, $ip_imprime, $porta, $municipio ){
+function db_imprimecheque ($nome, $codbco, $valor, $data, $modelo = 1, $ip_imprime = null, $porta = null, $municipio = null ){
     
   global $prefeito, $tesoureiro, $municipio, $ip_imprime;
   if($municipio == ''){
@@ -17,8 +17,8 @@ function db_imprimecheque ($nome, $codbco, $valor, $data, $modelo = 1, $ip_impri
   echo "porta: $porta\n";
   echo "modelo: $modelo\n";
 
-  $valor = trim(db_formatar($valor, 'p', '', 2));
-  $nome = str_pad($nome,40," ", STR_PAD_RIGHT);
+  $valor = trim((string) db_formatar($valor, 'p', '', 2));
+  $nome = str_pad((string) $nome,40," ", STR_PAD_RIGHT);
   $fd = fsockopen($ip_imprime, $porta);
   if(!$fd) {
 		//

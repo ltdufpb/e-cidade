@@ -34,7 +34,7 @@ class cl_isscnaeanexos
     public function __construct()
     {
         $this->rotulo = new rotulo("isscnaeanexos"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -100,10 +100,10 @@ class cl_isscnaeanexos
          $this->erro_status = "0";
          return false; 
        }
-       $this->q178_sequencial = pg_result($result,0,0); 
+       $this->q178_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from isscnaeanexos_q178_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q178_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q178_sequencial)){
          $this->erro_sql = " Campo q178_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -137,7 +137,7 @@ class cl_isscnaeanexos
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->q178_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -166,13 +166,13 @@ class cl_isscnaeanexos
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1011894,'$this->q178_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010630,1011894,'','".AddSlashes(pg_result($resaco,0,'q178_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010630,1011895,'','".AddSlashes(pg_result($resaco,0,'q178_cnae'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010630,1011896,'','".AddSlashes(pg_result($resaco,0,'q178_issgscadanexos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010630,1011897,'','".AddSlashes(pg_result($resaco,0,'q178_data_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010630,1011894,'','".AddSlashes(pg_fetch_result($resaco,0,'q178_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010630,1011895,'','".AddSlashes(pg_fetch_result($resaco,0,'q178_cnae'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010630,1011896,'','".AddSlashes(pg_fetch_result($resaco,0,'q178_issgscadanexos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010630,1011897,'','".AddSlashes(pg_fetch_result($resaco,0,'q178_data_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -183,10 +183,10 @@ class cl_isscnaeanexos
       $this->atualizacampos();
      $sql = " update isscnaeanexos set ";
      $virgula = "";
-     if(trim($this->q178_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q178_sequencial"])){ 
+     if(trim((string) $this->q178_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q178_sequencial"])){ 
        $sql  .= $virgula." q178_sequencial = $this->q178_sequencial ";
        $virgula = ",";
-       if(trim($this->q178_sequencial) == null ){ 
+       if(trim((string) $this->q178_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "q178_sequencial";
          $this->erro_banco = "";
@@ -196,10 +196,10 @@ class cl_isscnaeanexos
          return false;
        }
      }
-     if(trim($this->q178_cnae)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q178_cnae"])){ 
+     if(trim((string) $this->q178_cnae)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q178_cnae"])){ 
        $sql  .= $virgula." q178_cnae = $this->q178_cnae ";
        $virgula = ",";
-       if(trim($this->q178_cnae) == null ){ 
+       if(trim((string) $this->q178_cnae) == null ){ 
          $this->erro_sql = " Campo CNAE não informado.";
          $this->erro_campo = "q178_cnae";
          $this->erro_banco = "";
@@ -209,10 +209,10 @@ class cl_isscnaeanexos
          return false;
        }
      }
-     if(trim($this->q178_issgscadanexos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q178_issgscadanexos"])){ 
+     if(trim((string) $this->q178_issgscadanexos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q178_issgscadanexos"])){ 
        $sql  .= $virgula." q178_issgscadanexos = $this->q178_issgscadanexos ";
        $virgula = ",";
-       if(trim($this->q178_issgscadanexos) == null ){ 
+       if(trim((string) $this->q178_issgscadanexos) == null ){ 
          $this->erro_sql = " Campo issgscadanexos não informado.";
          $this->erro_campo = "q178_issgscadanexos";
          $this->erro_banco = "";
@@ -222,7 +222,7 @@ class cl_isscnaeanexos
          return false;
        }
      }
-     if(trim($this->q178_data_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q178_data_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q178_data_fim_dia"] !="") ){ 
+     if(trim((string) $this->q178_data_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q178_data_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q178_data_fim_dia"] !="") ){ 
        $sql  .= $virgula." q178_data_fim = '$this->q178_data_fim' ";
        $virgula = ",";
      }     else{ 
@@ -245,17 +245,17 @@ class cl_isscnaeanexos
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1011894,'$this->q178_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q178_sequencial"]) || $this->q178_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010630,1011894,'".AddSlashes(pg_result($resaco,$conresaco,'q178_sequencial'))."','$this->q178_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010630,1011894,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q178_sequencial'))."','$this->q178_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q178_cnae"]) || $this->q178_cnae != "")
-             $resac = db_query("insert into db_acount values($acount,1010630,1011895,'".AddSlashes(pg_result($resaco,$conresaco,'q178_cnae'))."','$this->q178_cnae',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010630,1011895,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q178_cnae'))."','$this->q178_cnae',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q178_issgscadanexos"]) || $this->q178_issgscadanexos != "")
-             $resac = db_query("insert into db_acount values($acount,1010630,1011896,'".AddSlashes(pg_result($resaco,$conresaco,'q178_issgscadanexos'))."','$this->q178_issgscadanexos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010630,1011896,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q178_issgscadanexos'))."','$this->q178_issgscadanexos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q178_data_fim"]) || $this->q178_data_fim != "")
-             $resac = db_query("insert into db_acount values($acount,1010630,1011897,'".AddSlashes(pg_result($resaco,$conresaco,'q178_data_fim'))."','$this->q178_data_fim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010630,1011897,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q178_data_fim'))."','$this->q178_data_fim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -309,13 +309,13 @@ class cl_isscnaeanexos
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1011894,'$q178_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010630,1011894,'','".AddSlashes(pg_result($resaco,$iresaco,'q178_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010630,1011895,'','".AddSlashes(pg_result($resaco,$iresaco,'q178_cnae'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010630,1011896,'','".AddSlashes(pg_result($resaco,$iresaco,'q178_issgscadanexos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010630,1011897,'','".AddSlashes(pg_result($resaco,$iresaco,'q178_data_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010630,1011894,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q178_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010630,1011895,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q178_cnae'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010630,1011896,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q178_issgscadanexos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010630,1011897,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q178_data_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

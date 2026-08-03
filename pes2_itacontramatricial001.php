@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_layouttxt.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("libs/db_sql.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -95,13 +95,13 @@ db_postmemory($HTTP_POST_VARS);
                                                   //                                       o - rgo,
 
   $geraform->tipofol = true;                      // NOME DO CAMPO PARA TIPO DE FOLHA
-  $geraform->arr_tipofol = array(
+  $geraform->arr_tipofol = [
                                  "salario"=>"Salário",
                                  "complementar"=>"Complementar",
                                  "rescisao"=>"Rescisão",
                                  "13salario"=>"13o. Salário",
                                  "adiantamento"=>"Adiantamento"
-                                );
+                                ];
   $geraform->complementar = "complementar";                // VALUE DA COMPLEMENTAR PARA BUSCAR SEMEST 
 
   $geraform->campo_auxilio_orga = "faixa_orgao";  // NOME DO DoS ORGAOS SELECIONADOS
@@ -110,7 +110,7 @@ db_postmemory($HTTP_POST_VARS);
 
   $geraform->trenome = "tipo";                    // NOME DO CAMPO TIPO DE RESUMO
   $geraform->mostord = true;
-  $geraform->arr_mostord = Array("a"=>"Alfabética", "n"=>"Numérica");
+  $geraform->arr_mostord = ["a"=>"Alfabética", "n"=>"Numérica"];
 
   $geraform->onchpad = true;                      // MUDAR AS OPES AO SELECIONAR OS TIPOS DE FILTRO OU RESUMO
   $geraform->gera_form($anofolha,$mesfolha);
@@ -316,7 +316,7 @@ if(isset($emite2)){
                                          );
 //echo $sqlDentro;exit;
   $res = db_query($sqlDentro);
-  $num = pg_numrows($res);
+  $num = pg_num_rows($res);
   if($num == 0){
     $erro_msg = "No existe clculo no perodo de $mesfolha / $anofolha";
     $sqlerro = true;

@@ -164,8 +164,8 @@ $clrhpesrubcalc = new cl_rhpesrubcalc;
 $cltomador = new \cl_tomador();
 
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 
 $periodoini1 = $dataii_dia . "/" . $dataii_mes . "/" . $dataii_ano;
@@ -195,7 +195,7 @@ if (!isset($desprocess)) {
             $competencia = DBCompetencia::folha();
             $controleHoraExtraService->atualizaCompetenciaControleHoraExtra($instituicaoSessao, $competencia);
             $controleAfastamentoService->atualizaCompetenciaControleAfastamentos($instituicaoSessao, $dataii_ano, $dataii_mes);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $sqlerro = true;
         }
     }
@@ -308,7 +308,7 @@ function db_incluir_sql($sql1, $table, $trigger)
     $colunas = pg_num_fields($result_tabela1);
 
     for ($ii = 0; $ii < $colunas; $ii++) {
-        $dcoluna = pg_fieldname($result_tabela1, $ii);   // Nome do campo corrente.
+        $dcoluna = pg_field_name($result_tabela1, $ii);   // Nome do campo corrente.
         // Testa se o campo  o anousu, se for, seta o ano do novo perodo da folha.
         if (strpos($dcoluna, "anousu") || (strpos($dcoluna, "ano") && $trigger == "baserhcadregime")) {
             $dcoluna = $ano;
@@ -505,12 +505,12 @@ if (UTILIZAR_NOVO_CADASTRO_FERIAS and !isset($desprocess)) {
                  */
 
                 $iAnoAtual = $dataii_ano;
-                $iMesPeriodoAquisitivo = date("m", strtotime($oServidorPeriodoAquisitivo->data_admissao));
-                $iDiaPeriodoAquisitivo = date("d", strtotime($oServidorPeriodoAquisitivo->data_admissao));
+                $iMesPeriodoAquisitivo = date("m", strtotime((string) $oServidorPeriodoAquisitivo->data_admissao));
+                $iDiaPeriodoAquisitivo = date("d", strtotime((string) $oServidorPeriodoAquisitivo->data_admissao));
 
                 try {
                     $oDataInicial = new DBDate($iAnoAtual . "-" . $iMesPeriodoAquisitivo . "-" . $iDiaPeriodoAquisitivo);
-                } catch (ParameterException $e) {
+                } catch (ParameterException) {
                     $oDataInicial = new DBDate($iAnoAtual . "-" . $iMesPeriodoAquisitivo . "-" . ($iDiaPeriodoAquisitivo - 1));
                 }
 
@@ -542,7 +542,7 @@ if (isset($desprocess) && $desprocess == "true") {
         $competencia = DBCompetencia::folha();
         $controleHoraExtraService->excluirCompetenciaControleHoraExtra($instituicaoSessao, $competencia);
         $controleAfastamentoService->excluirControleAfastamentoPorCompetencia($instituicaoSessao, $dataii_ano, $dataii_mes);
-    } catch (Exception $e) {
+    } catch (Exception) {
         $sqlerro = true;
     }
 
@@ -633,7 +633,7 @@ if (isset($desprocess) && $desprocess == "true") {
         }
     }
 
-    $arr_tabelas_exclui = Array(
+    $arr_tabelas_exclui = [
         "AFASTA", "AJUSTEIR", "BASESR", "BASES", "CADFERIA", "CALFOLHA", "CEDULAS", "CFPESS",
         "CHEQUES", "DEPEND", "DESCONTO", "PESDIVER", "EFETIV", "FOLHAEMP", "GERFSAL",
         "GERFFER", "GERFS13", "GERFADI", "GERFFX", "GERFRES", "GERFCOM", "HISTORIC", "INSSIRF",
@@ -641,13 +641,13 @@ if (isset($desprocess) && $desprocess == "true") {
         "PONTOFE", "PONTOCOM", "VTFDIAS", "VTFFUNC ", "PREVIDEN", "REPOSIC", "PESSOAL",
         "PROGRESS", "PADROES", "CARGO", "FUNCAO", "RUBRICAS", "RESCISAO", "MOVCASADASSEFIP",
         "TIPOASSEEXTERNO", "CODMOVSEFIP", "VTFEMPR", "RHPESSOALMOV", "RHVISAVALECAD", "TIPOASSEFINANCEIRO"
-    );
-    $arr_siglass_exclui = Array(
+    ];
+    $arr_siglass_exclui = [
         "r45", "r61", "r09", "r08", "r30", "r51", "r05", "r11", "r12", "r03", "r27", "r07", "r57",
         "r42", "r14", "r31", "r35", "r22", "r53", "r20", "r48", "r25", "r33", "r36", "r28", "r41", "rh77", "r52",
         "r90", "r10", "r21", "r34", "r19", "r29", "r47", "r63", "r17", "r60", "r64", "r01", "r24",
         "r02", "r65", "r37", "r06", "r59", "r67", "rh167", "r66", "r16", "rh02", "rh49", "rh165"
-    );
+    ];
     $exist_virada = false;
     $result_exist_virada = $clcfpess->sql_record($clcfpess->sql_query_file(null, null, null, "*", null, "r11_instit<>" . db_getsession("DB_instit") . " and r11_anousu=$dataii_ano and r11_mesusu=$dataii_mes"));
     if ($clcfpess->numrows > 0) {
@@ -673,7 +673,7 @@ if (isset($desprocess) && $desprocess == "true") {
             if ($table == "RHPESSOALMOV") {
                 $result_max_min = $clrhpessoalmov->sql_record($clrhpessoalmov->sql_query_file(null, null, "max(rh02_seqpes) as maximo,min(rh02_seqpes) as minimo", "", "rh02_instit = " . db_getsession("DB_instit") . " and rh02_anousu = " . $dataii_ano . " and rh02_mesusu = " . $dataii_mes));
                 db_fieldsmemory($result_max_min, 0);
-                if (trim($minimo) != "" && trim($maximo) != "") {
+                if (trim((string) $minimo) != "" && trim((string) $maximo) != "") {
 
                     $retorno = $clrhpesbanco->excluir(null, "rh44_seqpes between " . $minimo . " and " . $maximo . " and fc_instit_seqpes(rh44_seqpes) = " . db_getsession("DB_instit"));
                     if ($clrhpesbanco->erro_status == 0 && $result_rhpesbanco == false) {
@@ -925,7 +925,7 @@ if (isset($desprocess) && $desprocess == "true") {
           and rh02_instit = " . db_getsession("DB_instit") . "
           limit 1";
                 $res_dias = db_query("$sql_dias");
-                if (pg_numrows($res_dias) > 0) {
+                if (pg_num_rows($res_dias) > 0) {
                     $sql_exc1 = "delete from vtfdias
     where r63_anousu = $dataii_ano
     and r63_mesusu = $dataii_mes
@@ -1055,7 +1055,6 @@ if (isset($desprocess) && $desprocess == "true") {
 
             $retorno = $ex->getMessage();
             $sqlerro = true;
-            break;
         }
     }
     flush();
@@ -1187,8 +1186,8 @@ if (isset($desprocess) && $desprocess == "true") {
 
             $numdias = db_dias_mes($ano, $mes);
 
-            $arr_data1 = split("-", $inici_1_periodo);
-            $arr_data2 = split("-", $final_1_periodo);
+            $arr_data1 = preg_split("#\\-#m", $inici_1_periodo);
+            $arr_data2 = preg_split("#\\-#m", $final_1_periodo);
 
             $anomesi = $arr_data1[1] . $arr_data1[2];
             $anomesf = $arr_data2[1] . $arr_data2[2];
@@ -1803,8 +1802,8 @@ if (isset($desprocess) && $desprocess == "true") {
         echo "<script>parent.js_mostrardiv(true,'Atualizando dados da tabela <font color=\"red\">pessoal</font>');</script>";
         //echo "<BR> ".$clgerfsal->sql_query_seleciona(null,null,null,null,"r14_regist, r14_rubric, r14_valor","r14_regist,r14_rubric","r14_anousu = ".$dataii_ano." and r14_mesusu = ".$dataii_mes." and (r14_rubric = 'R926' or r14_rubric = 'R928')");
         $result_gerf = $clgerfsal->sql_record($clgerfsal->sql_query_seleciona(null, null, null, null, "r14_regist, r14_rubric, r14_valor", "r14_regist,r14_rubric", "r14_anousu = " . $dataii_ano . " and r14_mesusu = " . $dataii_mes . " and (r14_rubric = 'R926' or r14_rubric = 'R928') and r14_instit = " . db_getsession("DB_instit")));
-        $arr_valores = Array();
-        $arr_rubrica = Array();
+        $arr_valores = [];
+        $arr_rubrica = [];
         for ($i = 0; $i < $clgerfsal->numrows; $i++) {
             db_fieldsmemory($result_gerf, $i);
             //echo "<BR> ".$clrhpessoalmov->sql_query_file(null,null,"rh02_seqpes","","rh02_instit = ".db_getsession("DB_instit")." and rh02_anousu = ".$dataif_ano." and rh02_mesusu = ".$dataff_mes." and rh02_regist = ".$r14_regist);
@@ -1819,7 +1818,7 @@ if (isset($desprocess) && $desprocess == "true") {
         reset($arr_valores);
         for ($i = 0; $i < count($arr_valores); $i++) {
             $seqpes = key($arr_valores);
-            $rmais = substr($arr_rubrica[$seqpes], 3, 1) + 1;
+            $rmais = substr((string) $arr_rubrica[$seqpes], 3, 1) + 1;
             $clrhpesrubcalc->rh65_seqpes = $seqpes;
             $clrhpesrubcalc->rh65_rubric = "R92" . $rmais;
             $clrhpesrubcalc->rh65_valor = $arr_valores[$seqpes];

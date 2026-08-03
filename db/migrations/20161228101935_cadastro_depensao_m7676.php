@@ -6,8 +6,8 @@ class CadastroDepensaoM7676 extends PostgresMigration
 {
   public function up()
   {
-     $this->table('pensao',  array('schema'=>'pessoal'))
-                ->addColumn('r52_relacaodependencia', 'integer', array('null' => true, 'default' => '0'))
+     $this->table('pensao',  ['schema'=>'pessoal'])
+                ->addColumn('r52_relacaodependencia', 'integer', ['null' => true, 'default' => '0'])
                 ->save();
 
      $this->execute("insert into configuracoes.db_syscampo values(22304, 'r52_relacaodependencia', 'int4', 'Relação de Dependência para a dirf','0', 'Relação de Dependência',10,'t','f','f',1,'text','Relação de Dependência')");
@@ -27,7 +27,7 @@ class CadastroDepensaoM7676 extends PostgresMigration
     $this->execute("delete from configuracoes.db_sysarqcamp where codcam = 22304");
     $this->execute("delete from configuracoes.db_syscampodef where codcam = 22304");
     $this->execute("delete from configuracoes.db_syscampo where codcam = 22304");
-    $this->table('pensao',  array('schema'=>'pessoal'))
+    $this->table('pensao',  ['schema'=>'pessoal'])
       ->removeColumn('r52_relacaodependencia')
       ->save();
   }

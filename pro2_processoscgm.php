@@ -33,8 +33,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_cgm_classe.php"));
 
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 //---- instancia classes
 $cl_cgm = new cl_cgm;
@@ -63,7 +63,7 @@ $cl_cgm->rotulo->label();
 	            <td align="center">
 	              <b>Opções:</b>
 	                <?php 
-	                  $aCondicoes = array ('com' => 'Com o CGM selecionado', 'sem' => 'Sem o CGM selecionado');
+	                  $aCondicoes =  ['com' => 'Com o CGM selecionado', 'sem' => 'Sem o CGM selecionado'];
 	                  db_select('ver',$aCondicoes, true, 1);
 	                ?>
 	            </td>

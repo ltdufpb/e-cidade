@@ -32,9 +32,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 /* echo "<br><br>sel = $ssel4[0] <br> ";
  echo " sel = $ssel4[1] <br> ";
  echo " sel = $ssel4[2] <br> "; */
@@ -89,7 +89,7 @@ db_postmemory($HTTP_POST_VARS);
 		// motivo
 		$sqlmot ="select  at54_sequencial,at54_descr from tarefacadmotivo where at54_tipo = 1 order by at54_descr";
 		$resultmot= db_query($sqlmot);
-		db_multiploselect("at54_sequencial", "at54_descr", "nsel1", "ssel1", $resultmot, array(), 4, 250);
+		db_multiploselect("at54_sequencial", "at54_descr", "nsel1", "ssel1", $resultmot, [], 4, 250);
 		?></td>
 	</tr>
 	<tr>
@@ -103,7 +103,7 @@ db_postmemory($HTTP_POST_VARS);
 		//cliente
 		$sqlcliente = "select at01_codcli,at01_nomecli from clientes where at01_ativo is true";
 		$resultcliente=db_query($sqlcliente);
-		db_multiploselect("at01_codcli", "at01_nomecli", "nsel2", "ssel2", $resultcliente, array(), 4, 250);
+		db_multiploselect("at01_codcli", "at01_nomecli", "nsel2", "ssel2", $resultcliente, [], 4, 250);
 		?></td>
 	</tr>
 	<tr>
@@ -112,11 +112,11 @@ db_postmemory($HTTP_POST_VARS);
 	<tr>
 		<td align="center">
       <?php 
-      $arr_tipo = Array(
+      $arr_tipo = [
                           "1"=>"Tudo",
                           "2"=>"Somente Totais",
                           "3"=>"Somente Tarefas"
-                         );
+                         ];
       db_select("tipo", $arr_tipo, true, 1, "");
       ?>
 

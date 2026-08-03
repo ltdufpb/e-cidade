@@ -55,20 +55,20 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array( 
+	 $clcriaabas->identifica = [ 
 	 								 "issnotaavulsa"        => "Nota",
 									 "issnotaavulsatomador" => "Tomador", 
 									 "issnotaavulsaservico" => "Serviços"
-									);
+									];
 									 
-	 $clcriaabas->src        = array(
+	 $clcriaabas->src        = [
 	                                 "issnotaavulsa" => "iss1_issnotaavulsa004.php",
-	                                );
+	                                ];
 	                                
-	 $clcriaabas->disabled   = array(
+	 $clcriaabas->disabled   = [
 	                                 "issnotaavulsaservico" => true,
 									 "issnotaavulsatomador" => true
-									); 
+									]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

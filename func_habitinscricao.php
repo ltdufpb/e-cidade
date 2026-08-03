@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_habitinscricao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clhabitinscricao = new cl_habitinscricao;
 $clhabitinscricao->rotulo->label("ht15_sequencial");
@@ -114,11 +114,11 @@ $clhabitinscricao->rotulo->label("ht15_candidato");
 	          $sql = $clhabitinscricao->sql_query(null, $campos, "ht15_sequencial", $sWhere);
 	        }
 	        
-	        $repassa = array();
+	        $repassa = [];
 	        if (isset($chave_ht15_candidato)) {
 	        	
-	          $repassa = array("chave_ht15_sequencial" => $chave_ht15_sequencial,
-	                           "chave_ht15_candidato"  => $chave_ht15_candidato);
+	          $repassa = ["chave_ht15_sequencial" => $chave_ht15_sequencial,
+	                           "chave_ht15_candidato"  => $chave_ht15_candidato];
 	        }
 
 	        db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

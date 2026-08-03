@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE emparquivopitanulado
 class cl_emparquivopitanulado { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e16_sequencial = 0; 
-   var $e16_idusuario = 0; 
-   var $e16_emparquivopit = 0; 
-   var $e16_dtanulacao_dia = null; 
-   var $e16_dtanulacao_mes = null; 
-   var $e16_dtanulacao_ano = null; 
-   var $e16_dtanulacao = null; 
-   var $e16_horaanulacao = null; 
-   var $e16_motivo = null; 
+   public $e16_sequencial = 0; 
+   public $e16_idusuario = 0; 
+   public $e16_emparquivopit = 0; 
+   public $e16_dtanulacao_dia = null; 
+   public $e16_dtanulacao_mes = null; 
+   public $e16_dtanulacao_ano = null; 
+   public $e16_dtanulacao = null; 
+   public $e16_horaanulacao = null; 
+   public $e16_motivo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e16_sequencial = int4 = Código Sequencial 
                  e16_idusuario = int4 = Código do Usuário 
                  e16_emparquivopit = int4 = Código do Arquivo 
@@ -61,10 +61,10 @@ class cl_emparquivopitanulado {
                  e16_motivo = text = Motivo 
                  ";
    //funcao construtor da classe 
-   function cl_emparquivopitanulado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("emparquivopitanulado"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_emparquivopitanulado {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e16_sequencial = pg_result($result,0,0); 
+       $this->e16_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from emparquivopitanulado_e16_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e16_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e16_sequencial)){
          $this->erro_sql = " Campo e16_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -195,7 +195,7 @@ class cl_emparquivopitanulado {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Arquivos do pit anulados ($this->e16_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Arquivos do pit anulados já Cadastrado";
@@ -219,15 +219,15 @@ class cl_emparquivopitanulado {
      $resaco = $this->sql_record($this->sql_query_file($this->e16_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14673,'$this->e16_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2581,14673,'','".AddSlashes(pg_result($resaco,0,'e16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2581,14674,'','".AddSlashes(pg_result($resaco,0,'e16_idusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2581,14677,'','".AddSlashes(pg_result($resaco,0,'e16_emparquivopit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2581,14675,'','".AddSlashes(pg_result($resaco,0,'e16_dtanulacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2581,14676,'','".AddSlashes(pg_result($resaco,0,'e16_horaanulacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2581,14678,'','".AddSlashes(pg_result($resaco,0,'e16_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2581,14673,'','".AddSlashes(pg_fetch_result($resaco,0,'e16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2581,14674,'','".AddSlashes(pg_fetch_result($resaco,0,'e16_idusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2581,14677,'','".AddSlashes(pg_fetch_result($resaco,0,'e16_emparquivopit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2581,14675,'','".AddSlashes(pg_fetch_result($resaco,0,'e16_dtanulacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2581,14676,'','".AddSlashes(pg_fetch_result($resaco,0,'e16_horaanulacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2581,14678,'','".AddSlashes(pg_fetch_result($resaco,0,'e16_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -236,10 +236,10 @@ class cl_emparquivopitanulado {
       $this->atualizacampos();
      $sql = " update emparquivopitanulado set ";
      $virgula = "";
-     if(trim($this->e16_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_sequencial"])){ 
+     if(trim((string) $this->e16_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_sequencial"])){ 
        $sql  .= $virgula." e16_sequencial = $this->e16_sequencial ";
        $virgula = ",";
-       if(trim($this->e16_sequencial) == null ){ 
+       if(trim((string) $this->e16_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "e16_sequencial";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_emparquivopitanulado {
          return false;
        }
      }
-     if(trim($this->e16_idusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_idusuario"])){ 
+     if(trim((string) $this->e16_idusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_idusuario"])){ 
        $sql  .= $virgula." e16_idusuario = $this->e16_idusuario ";
        $virgula = ",";
-       if(trim($this->e16_idusuario) == null ){ 
+       if(trim((string) $this->e16_idusuario) == null ){ 
          $this->erro_sql = " Campo Código do Usuário nao Informado.";
          $this->erro_campo = "e16_idusuario";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_emparquivopitanulado {
          return false;
        }
      }
-     if(trim($this->e16_emparquivopit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_emparquivopit"])){ 
+     if(trim((string) $this->e16_emparquivopit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_emparquivopit"])){ 
        $sql  .= $virgula." e16_emparquivopit = $this->e16_emparquivopit ";
        $virgula = ",";
-       if(trim($this->e16_emparquivopit) == null ){ 
+       if(trim((string) $this->e16_emparquivopit) == null ){ 
          $this->erro_sql = " Campo Código do Arquivo nao Informado.";
          $this->erro_campo = "e16_emparquivopit";
          $this->erro_banco = "";
@@ -275,10 +275,10 @@ class cl_emparquivopitanulado {
          return false;
        }
      }
-     if(trim($this->e16_dtanulacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao_dia"] !="") ){ 
+     if(trim((string) $this->e16_dtanulacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao_dia"] !="") ){ 
        $sql  .= $virgula." e16_dtanulacao = '$this->e16_dtanulacao' ";
        $virgula = ",";
-       if(trim($this->e16_dtanulacao) == null ){ 
+       if(trim((string) $this->e16_dtanulacao) == null ){ 
          $this->erro_sql = " Campo data da Anulação nao Informado.";
          $this->erro_campo = "e16_dtanulacao_dia";
          $this->erro_banco = "";
@@ -291,7 +291,7 @@ class cl_emparquivopitanulado {
        if(isset($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao_dia"])){ 
          $sql  .= $virgula." e16_dtanulacao = null ";
          $virgula = ",";
-         if(trim($this->e16_dtanulacao) == null ){ 
+         if(trim((string) $this->e16_dtanulacao) == null ){ 
            $this->erro_sql = " Campo data da Anulação nao Informado.";
            $this->erro_campo = "e16_dtanulacao_dia";
            $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_emparquivopitanulado {
          }
        }
      }
-     if(trim($this->e16_horaanulacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_horaanulacao"])){ 
+     if(trim((string) $this->e16_horaanulacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_horaanulacao"])){ 
        $sql  .= $virgula." e16_horaanulacao = '$this->e16_horaanulacao' ";
        $virgula = ",";
-       if(trim($this->e16_horaanulacao) == null ){ 
+       if(trim((string) $this->e16_horaanulacao) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "e16_horaanulacao";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_emparquivopitanulado {
          return false;
        }
      }
-     if(trim($this->e16_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_motivo"])){ 
+     if(trim((string) $this->e16_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e16_motivo"])){ 
        $sql  .= $virgula." e16_motivo = '$this->e16_motivo' ";
        $virgula = ",";
-       if(trim($this->e16_motivo) == null ){ 
+       if(trim((string) $this->e16_motivo) == null ){ 
          $this->erro_sql = " Campo Motivo nao Informado.";
          $this->erro_campo = "e16_motivo";
          $this->erro_banco = "";
@@ -336,21 +336,21 @@ class cl_emparquivopitanulado {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14673,'$this->e16_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e16_sequencial"]) || $this->e16_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2581,14673,'".AddSlashes(pg_result($resaco,$conresaco,'e16_sequencial'))."','$this->e16_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2581,14673,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e16_sequencial'))."','$this->e16_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e16_idusuario"]) || $this->e16_idusuario != "")
-           $resac = db_query("insert into db_acount values($acount,2581,14674,'".AddSlashes(pg_result($resaco,$conresaco,'e16_idusuario'))."','$this->e16_idusuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2581,14674,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e16_idusuario'))."','$this->e16_idusuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e16_emparquivopit"]) || $this->e16_emparquivopit != "")
-           $resac = db_query("insert into db_acount values($acount,2581,14677,'".AddSlashes(pg_result($resaco,$conresaco,'e16_emparquivopit'))."','$this->e16_emparquivopit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2581,14677,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e16_emparquivopit'))."','$this->e16_emparquivopit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e16_dtanulacao"]) || $this->e16_dtanulacao != "")
-           $resac = db_query("insert into db_acount values($acount,2581,14675,'".AddSlashes(pg_result($resaco,$conresaco,'e16_dtanulacao'))."','$this->e16_dtanulacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2581,14675,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e16_dtanulacao'))."','$this->e16_dtanulacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e16_horaanulacao"]) || $this->e16_horaanulacao != "")
-           $resac = db_query("insert into db_acount values($acount,2581,14676,'".AddSlashes(pg_result($resaco,$conresaco,'e16_horaanulacao'))."','$this->e16_horaanulacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2581,14676,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e16_horaanulacao'))."','$this->e16_horaanulacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e16_motivo"]) || $this->e16_motivo != "")
-           $resac = db_query("insert into db_acount values($acount,2581,14678,'".AddSlashes(pg_result($resaco,$conresaco,'e16_motivo'))."','$this->e16_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2581,14678,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e16_motivo'))."','$this->e16_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -395,15 +395,15 @@ class cl_emparquivopitanulado {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14673,'$e16_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2581,14673,'','".AddSlashes(pg_result($resaco,$iresaco,'e16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2581,14674,'','".AddSlashes(pg_result($resaco,$iresaco,'e16_idusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2581,14677,'','".AddSlashes(pg_result($resaco,$iresaco,'e16_emparquivopit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2581,14675,'','".AddSlashes(pg_result($resaco,$iresaco,'e16_dtanulacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2581,14676,'','".AddSlashes(pg_result($resaco,$iresaco,'e16_horaanulacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2581,14678,'','".AddSlashes(pg_result($resaco,$iresaco,'e16_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2581,14673,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e16_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2581,14674,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e16_idusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2581,14677,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e16_emparquivopit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2581,14675,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e16_dtanulacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2581,14676,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e16_horaanulacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2581,14678,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e16_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from emparquivopitanulado
@@ -463,7 +463,7 @@ class cl_emparquivopitanulado {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:emparquivopitanulado";
@@ -478,7 +478,7 @@ class cl_emparquivopitanulado {
    function sql_query ( $e16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_emparquivopitanulado {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_emparquivopitanulado {
    function sql_query_file ( $e16_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -536,7 +536,7 @@ class cl_emparquivopitanulado {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

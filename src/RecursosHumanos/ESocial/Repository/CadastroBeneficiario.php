@@ -51,7 +51,7 @@ class CadastroBeneficiario extends \BaseClassRepository
      */
     public static function buscarBeneficiarios(DBCompetencia $dbCompetencia, $servidores = null, $selecao = null)
     {
-        $retorno = array();
+        $retorno = [];
         
         $servidorMovimentacaoRepository = new ServidorMovimentacaoRepository();
         $codigoInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();

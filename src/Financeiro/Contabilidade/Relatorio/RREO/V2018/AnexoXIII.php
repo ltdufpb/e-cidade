@@ -244,7 +244,7 @@ class AnexoXIII extends \RelatoriosLegaisBase
             throw new DBException('Não foi possível buscar as linhas dos entes federados.');
         }
 
-        $aLinhasRetornadas = array();
+        $aLinhasRetornadas = [];
 
         while ($dados = pg_fetch_object($rsDespesasPPEnteFederado)) {
             $aLinhasRetornadas[$dados->o117_instit][$dados->o117_linha][$dados->o116_ordem] = $dados->o117_valor;

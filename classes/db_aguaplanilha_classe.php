@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE aguaplanilha
 class cl_aguaplanilha { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x24_matric = 0; 
-   var $x24_exerc = 0; 
-   var $x24_mes = 0; 
-   var $x24_nome = null; 
-   var $x24_codrua = 0; 
-   var $x24_nomerua = null; 
-   var $x24_numero = 0; 
-   var $x24_complemento = null; 
-   var $x24_zona = 0; 
-   var $x24_rota = 0; 
-   var $x24_pagina = 0; 
-   var $x24_nrohidro = null; 
+   public $x24_matric = 0; 
+   public $x24_exerc = 0; 
+   public $x24_mes = 0; 
+   public $x24_nome = null; 
+   public $x24_codrua = 0; 
+   public $x24_nomerua = null; 
+   public $x24_numero = 0; 
+   public $x24_complemento = null; 
+   public $x24_zona = 0; 
+   public $x24_rota = 0; 
+   public $x24_pagina = 0; 
+   public $x24_nrohidro = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x24_matric = int4 = Matrícula 
                  x24_exerc = int4 = Ano 
                  x24_mes = int4 = Mes 
@@ -70,10 +70,10 @@ class cl_aguaplanilha {
                  x24_nrohidro = varchar(15) = Hidrometro 
                  ";
    //funcao construtor da classe 
-   function cl_aguaplanilha() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguaplanilha"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -244,7 +244,7 @@ class cl_aguaplanilha {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Planilha de Leitura () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Planilha de Leitura já Cadastrado";
@@ -271,10 +271,10 @@ class cl_aguaplanilha {
       $this->atualizacampos();
      $sql = " update aguaplanilha set ";
      $virgula = "";
-     if(trim($this->x24_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_matric"])){ 
+     if(trim((string) $this->x24_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_matric"])){ 
        $sql  .= $virgula." x24_matric = $this->x24_matric ";
        $virgula = ",";
-       if(trim($this->x24_matric) == null ){ 
+       if(trim((string) $this->x24_matric) == null ){ 
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "x24_matric";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_aguaplanilha {
          return false;
        }
      }
-     if(trim($this->x24_exerc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_exerc"])){ 
+     if(trim((string) $this->x24_exerc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_exerc"])){ 
        $sql  .= $virgula." x24_exerc = $this->x24_exerc ";
        $virgula = ",";
-       if(trim($this->x24_exerc) == null ){ 
+       if(trim((string) $this->x24_exerc) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "x24_exerc";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_aguaplanilha {
          return false;
        }
      }
-     if(trim($this->x24_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_mes"])){ 
+     if(trim((string) $this->x24_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_mes"])){ 
        $sql  .= $virgula." x24_mes = $this->x24_mes ";
        $virgula = ",";
-       if(trim($this->x24_mes) == null ){ 
+       if(trim((string) $this->x24_mes) == null ){ 
          $this->erro_sql = " Campo Mes nao Informado.";
          $this->erro_campo = "x24_mes";
          $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_aguaplanilha {
          return false;
        }
      }
-     if(trim($this->x24_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_nome"])){ 
+     if(trim((string) $this->x24_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_nome"])){ 
        $sql  .= $virgula." x24_nome = '$this->x24_nome' ";
        $virgula = ",";
-       if(trim($this->x24_nome) == null ){ 
+       if(trim((string) $this->x24_nome) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "x24_nome";
          $this->erro_banco = "";
@@ -323,10 +323,10 @@ class cl_aguaplanilha {
          return false;
        }
      }
-     if(trim($this->x24_codrua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_codrua"])){ 
+     if(trim((string) $this->x24_codrua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_codrua"])){ 
        $sql  .= $virgula." x24_codrua = $this->x24_codrua ";
        $virgula = ",";
-       if(trim($this->x24_codrua) == null ){ 
+       if(trim((string) $this->x24_codrua) == null ){ 
          $this->erro_sql = " Campo cód. Logradouro nao Informado.";
          $this->erro_campo = "x24_codrua";
          $this->erro_banco = "";
@@ -336,10 +336,10 @@ class cl_aguaplanilha {
          return false;
        }
      }
-     if(trim($this->x24_nomerua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_nomerua"])){ 
+     if(trim((string) $this->x24_nomerua)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_nomerua"])){ 
        $sql  .= $virgula." x24_nomerua = '$this->x24_nomerua' ";
        $virgula = ",";
-       if(trim($this->x24_nomerua) == null ){ 
+       if(trim((string) $this->x24_nomerua) == null ){ 
          $this->erro_sql = " Campo Nome Rua nao Informado.";
          $this->erro_campo = "x24_nomerua";
          $this->erro_banco = "";
@@ -349,10 +349,10 @@ class cl_aguaplanilha {
          return false;
        }
      }
-     if(trim($this->x24_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_numero"])){ 
+     if(trim((string) $this->x24_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_numero"])){ 
        $sql  .= $virgula." x24_numero = $this->x24_numero ";
        $virgula = ",";
-       if(trim($this->x24_numero) == null ){ 
+       if(trim((string) $this->x24_numero) == null ){ 
          $this->erro_sql = " Campo Numero nao Informado.";
          $this->erro_campo = "x24_numero";
          $this->erro_banco = "";
@@ -362,10 +362,10 @@ class cl_aguaplanilha {
          return false;
        }
      }
-     if(trim($this->x24_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_complemento"])){ 
+     if(trim((string) $this->x24_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_complemento"])){ 
        $sql  .= $virgula." x24_complemento = '$this->x24_complemento' ";
        $virgula = ",";
-       if(trim($this->x24_complemento) == null ){ 
+       if(trim((string) $this->x24_complemento) == null ){ 
          $this->erro_sql = " Campo Complemento nao Informado.";
          $this->erro_campo = "x24_complemento";
          $this->erro_banco = "";
@@ -375,10 +375,10 @@ class cl_aguaplanilha {
          return false;
        }
      }
-     if(trim($this->x24_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_zona"])){ 
+     if(trim((string) $this->x24_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_zona"])){ 
        $sql  .= $virgula." x24_zona = $this->x24_zona ";
        $virgula = ",";
-       if(trim($this->x24_zona) == null ){ 
+       if(trim((string) $this->x24_zona) == null ){ 
          $this->erro_sql = " Campo Zona nao Informado.";
          $this->erro_campo = "x24_zona";
          $this->erro_banco = "";
@@ -388,10 +388,10 @@ class cl_aguaplanilha {
          return false;
        }
      }
-     if(trim($this->x24_rota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_rota"])){ 
+     if(trim((string) $this->x24_rota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_rota"])){ 
        $sql  .= $virgula." x24_rota = $this->x24_rota ";
        $virgula = ",";
-       if(trim($this->x24_rota) == null ){ 
+       if(trim((string) $this->x24_rota) == null ){ 
          $this->erro_sql = " Campo Rota nao Informado.";
          $this->erro_campo = "x24_rota";
          $this->erro_banco = "";
@@ -401,10 +401,10 @@ class cl_aguaplanilha {
          return false;
        }
      }
-     if(trim($this->x24_pagina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_pagina"])){ 
+     if(trim((string) $this->x24_pagina)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_pagina"])){ 
        $sql  .= $virgula." x24_pagina = $this->x24_pagina ";
        $virgula = ",";
-       if(trim($this->x24_pagina) == null ){ 
+       if(trim((string) $this->x24_pagina) == null ){ 
          $this->erro_sql = " Campo Pagina nao Informado.";
          $this->erro_campo = "x24_pagina";
          $this->erro_banco = "";
@@ -414,10 +414,10 @@ class cl_aguaplanilha {
          return false;
        }
      }
-     if(trim($this->x24_nrohidro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_nrohidro"])){ 
+     if(trim((string) $this->x24_nrohidro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x24_nrohidro"])){ 
        $sql  .= $virgula." x24_nrohidro = '$this->x24_nrohidro' ";
        $virgula = ",";
-       if(trim($this->x24_nrohidro) == null ){ 
+       if(trim((string) $this->x24_nrohidro) == null ){ 
          $this->erro_sql = " Campo Hidrometro nao Informado.";
          $this->erro_campo = "x24_nrohidro";
          $this->erro_banco = "";
@@ -508,7 +508,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aguaplanilha";
@@ -522,7 +522,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="aguaplanilha.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -547,7 +547,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -559,7 +559,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -577,7 +577,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

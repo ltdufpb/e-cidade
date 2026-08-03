@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_tfd_destino_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $oDaotfd_destino = new cl_tfd_destino;
 $oDaotfd_destino->rotulo->label("tf03_i_codigo");
 $oDaotfd_destino->rotulo->label("tf03_c_descr");
@@ -123,9 +123,9 @@ $oDaotfd_destino->rotulo->label("tf03_c_descr");
 
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_tf03_i_codigo)) {
-          $repassa = array("chave_tf03_i_codigo"=>$chave_tf03_i_codigo,"chave_tf03_c_descr"=>$chave_tf03_c_descr);
+          $repassa = ["chave_tf03_i_codigo"=>$chave_tf03_i_codigo,"chave_tf03_c_descr"=>$chave_tf03_c_descr];
         }
         db_lovrot($sSql,15,"()","",$funcao_js,"","NoMe",$repassa);
 

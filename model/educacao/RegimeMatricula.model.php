@@ -71,8 +71,8 @@ final class RegimeMatricula {
 
         $oDadosRegime = db_utils::fieldsMemory($rsDadosRegime, 0);
         $this->setCodigo($oDadosRegime->ed218_i_codigo);
-        $this->setNome(trim($oDadosRegime->ed218_c_nome));
-        $this->setAbreviatura(trim($oDadosRegime->ed218_c_abrev));
+        $this->setNome(trim((string) $oDadosRegime->ed218_c_nome));
+        $this->setAbreviatura(trim((string) $oDadosRegime->ed218_c_abrev));
         $this->lPossuiDivisao = $oDadosRegime->ed218_c_divisao == 'S' ? true : false;
         unset($oDadosRegime);
       }

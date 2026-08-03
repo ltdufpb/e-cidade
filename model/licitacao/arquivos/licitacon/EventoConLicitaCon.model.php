@@ -36,7 +36,7 @@ class EventoConLicitaCon extends ArquivoLicitaCon {
    * Lista de Eventos dos Contratos
    * @var stdClass[]
    */
-  private $aEventos = array();
+  private $aEventos = [];
 
   public function __construct(CabecalhoLicitaCon $oCabecalho) {
 
@@ -54,20 +54,20 @@ class EventoConLicitaCon extends ArquivoLicitaCon {
 
     $sDataAtual = $this->oCabecalho->getDataGeracao()->getDate();
     $oDaoAcordoEvento = new cl_acordoevento;
-    $sCampos = " distinct " . implode(",", array(
+    $sCampos = " distinct " . implode(",", [
       "acordoevento.*",
       "ac16_numero",
       "ac16_anousu",
       "ac16_sequencial",
       "ac16_tipoinstrumento",
       "ac26_numeroaditamento",
-    ));
-    $sWhere = implode(' and ', array(
+    ]);
+    $sWhere = implode(' and ', [
       "(ac58_acordo is null or ac58_data >= '{$sDataAtual}')",
       "ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()}",
       "(ac55_tipoevento <> 12 or (ac55_tipoevento = 12 and ac56_acordoevento is not null))",
       "exists (select 1 from acordoitem ai inner join acordoposicao ap on ap.ac26_sequencial = ai.ac20_acordoposicao where ap.ac26_acordo = acordo.ac16_sequencial) "
-    ));
+    ]);
     $sOrder = 'ac16_sequencial asc, ac55_sequencial asc';
     $sSqlAcordoEvento = $oDaoAcordoEvento->sql_query(null, $sCampos, $sOrder, $sWhere);
     $rsAcordoEvento   = db_query($sSqlAcordoEvento);
@@ -141,14 +141,14 @@ class EventoConLicitaCon extends ArquivoLicitaCon {
       /**
        * Numero do Registro
        */
-      if (in_array($aTiposEventos[$oEvento->ac55_tipoevento], array("TAD", "APO", "TIN"))) {
+      if (in_array($aTiposEventos[$oEvento->ac55_tipoevento], ["TAD", "APO", "TIN"])) {
         $oStdEvento->NR_REGISTRO = $oEvento->ac26_numeroaditamento;
       }
 
       /**
        * Número do Processo e Ano
        */
-      if (in_array($aTiposEventos[$oEvento->ac55_tipoevento], array("SCD", "SCC"))) {
+      if (in_array($aTiposEventos[$oEvento->ac55_tipoevento], ["SCD", "SCC"])) {
 
         $oStdEvento->NR_PROCESSO  = $oEvento->ac55_numeroprocesso;
         $oStdEvento->ANO_PROCESSO = $oEvento->ac55_anoprocesso;

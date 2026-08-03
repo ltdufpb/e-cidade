@@ -50,7 +50,8 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
      * @param array $dados
      * @return array
      */
-    public function formatar($servidores)
+    #[\Override]
+    public function formatar($servidores, $alteracao = false)
     {
         $retorno = [];
 
@@ -142,7 +143,7 @@ class AlteracaoDadosServidorFormatter extends ServidorFormatter
         $dados->sexo      = $this->servidorAtual->getSexo();
         $dados->racaCor   = $this->deParaRacaCor[$this->servidorAtual->getRacaCor()];
         $dados->estCiv    = $this->deParaEstadoCivil[$this->servidorAtual->getEstadoCivil()];
-        $dados->grauInstr = str_pad($this->servidorAtual->getGrauInstrucao(), 2, '0', STR_PAD_LEFT);
+        $dados->grauInstr = str_pad((string) $this->servidorAtual->getGrauInstrucao(), 2, '0', STR_PAD_LEFT);
 
         if (array_key_exists($this->servidorAtual->getGrauInstrucao(), $this->deParaGrauInstrucao)) {
             $dados->grauInstr = $this->deParaGrauInstrucao[$this->servidorAtual->getGrauInstrucao()];

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_utils.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory ( $HTTP_POST_VARS );
+db_postmemory ( $_POST );
 $db_opcao             = 1;
 $oDaoSauParametrosAge = db_utils::getdao('sau_parametrosagendamento');
 

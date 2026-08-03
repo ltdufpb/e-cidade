@@ -42,8 +42,8 @@ $clempagemov = new cl_empagemov;
 $clempagegera = new cl_empagegera;
 $clempageconf = new cl_empageconf;
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = false;
 
@@ -71,7 +71,7 @@ if(isset($atualizar)){
     }else{
       $gera = $clempagegera->e87_codgera;
     } 
-    $arr =  split("XX",$movs);
+    $arr =  preg_split("#XX#m",$movs);
     $tot_valor ='';
     for($i=0; $i<count($arr); $i++ ){
        $mov = $arr[$i];  
@@ -257,7 +257,7 @@ if((isset($e83_codmod) && $e83_codmod == 1) || isset($reemite)){
    
    $result = db_query($sql);
   
-   $codbco = pg_result($result,0,0);
+   $codbco = pg_fetch_result($result,0,0);
   
    //$fd = fsockopen(db_getsession('DB_ip'),4444);
    $fd = fsockopen('192.168.0.111',4444);
@@ -267,7 +267,7 @@ if((isset($e83_codmod) && $e83_codmod == 1) || isset($reemite)){
    fputs($fd,chr(27).chr(162)."$codbco\n");
    $tot_valor = trim(db_formatar($tot_valor,'p','',2));
    fputs($fd,chr(27).chr(163)."$e81_valor\n");
-   fputs($fd,chr(27).chr(164)."$dtin_dia-$dtin_mes-".substr($dtin_ano,2,2)."\n");
+   fputs($fd,chr(27).chr(164)."$dtin_dia-$dtin_mes-".substr((string) $dtin_ano,2,2)."\n");
    fputs($fd,chr(27).chr(176));
    // fecha a conecção
    fclose($fd);

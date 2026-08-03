@@ -67,16 +67,16 @@ if ($oParam->acao == "pesquisar") {
 			$oRetorno->status 	= 1;	
 		}else{
 			$oRetorno->status  = 1;
-			$oRetorno->message = utf8_encode("Usuário:\\n\\n Nenhum Resultado para o filtro selecionado!\\n\\nAdministrador:\\n\\n");
+			$oRetorno->message = mb_convert_encoding("Usuário:\\n\\n Nenhum Resultado para o filtro selecionado!\\n\\nAdministrador:\\n\\n", 'UTF-8', 'ISO-8859-1');
 		}
 			
 }else if ($oParam->acao == 'rejeitar'){
 	$oRetorno->retorno = $oParam->retorno;
-	$oRetorno->cidadoes = array();
+	$oRetorno->cidadoes = [];
 	$lerro = false;
 	db_inicio_transacao();
 	
-	if (trim($oParam->ov02_sequencial) != "" && $oParam->ov02_sequencial != null && trim($oParam->ov02_seq) != "" && $oParam->ov02_seq != null){
+	if (trim((string) $oParam->ov02_sequencial) != "" && $oParam->ov02_sequencial != null && trim((string) $oParam->ov02_seq) != "" && $oParam->ov02_seq != null){
 		
 		//$clcidado->ov02_ativo 					= 'false';
 		$clcidado->ov02_situacaocidadao = 3;
@@ -86,12 +86,12 @@ if ($oParam->acao == "pesquisar") {
 		
 		if($clcidado->erro_status == '0'){
 			$lerro = true;
-			$oRetorno->message 	= utf8_encode($clcidado->erro_msg);
+			$oRetorno->message 	= mb_convert_encoding($clcidado->erro_msg, 'UTF-8', 'ISO-8859-1');
 			$oRetorno->status 	= 0;
 		}else{
 			
 			$oRetorno->status 	= 1;
-			$oRetorno->message  = utf8_encode($clcidado->erro_msg);
+			$oRetorno->message  = mb_convert_encoding($clcidado->erro_msg, 'UTF-8', 'ISO-8859-1');
 			//$sCampos	=	"ov02_sequencial,ov02_seq,ov02_nome,ov16_descricao";
 			$sCampos	=	" ov02_sequencial, ";
 			$sCampos .=	" ov02_seq,        ";
@@ -126,7 +126,7 @@ if ($oParam->acao == "pesquisar") {
 		
 	}else{
 		$oRetorno->status  = 0;
-		$oRetorno->message = utf8_encode("Usuário:\\n\\n Falha ao Rejeitar o cadastro do cidadão!\\n\\nAdministrador:\\n\\n");
+		$oRetorno->message = mb_convert_encoding("Usuário:\\n\\n Falha ao Rejeitar o cadastro do cidadão!\\n\\nAdministrador:\\n\\n", 'UTF-8', 'ISO-8859-1');
 	}
 	
 	db_fim_transacao($lerro);
@@ -136,7 +136,7 @@ if ($oParam->acao == "pesquisar") {
 	$lerro = false;
 	db_inicio_transacao();
 	
-	if (trim($oParam->ov02_sequencial) != "" && $oParam->ov02_sequencial != null && trim($oParam->ov02_seq) != "" && $oParam->ov02_seq != null){
+	if (trim((string) $oParam->ov02_sequencial) != "" && $oParam->ov02_sequencial != null && trim((string) $oParam->ov02_seq) != "" && $oParam->ov02_seq != null){
 		
 		$oRetorno->retorno = $oParam->retorno;
 
@@ -147,12 +147,12 @@ if ($oParam->acao == "pesquisar") {
 		
 		if($clcidado->erro_status == '0'){
 			$lerro = true;
-			$oRetorno->message 	= utf8_encode($clcidado->erro_msg);
+			$oRetorno->message 	= mb_convert_encoding($clcidado->erro_msg, 'UTF-8', 'ISO-8859-1');
 			$oRetorno->status 	= 0;
 		}else{
-			$oRetorno->cidadoes = array();
+			$oRetorno->cidadoes = [];
 			$oRetorno->status 	= 1;
-			$oRetorno->message  = utf8_encode($clcidado->erro_msg);
+			$oRetorno->message  = mb_convert_encoding($clcidado->erro_msg, 'UTF-8', 'ISO-8859-1');
 			//$sCampos	=	"ov02_sequencial,ov02_seq,ov02_nome,ov16_descricao";
 			$sCampos	=	" ov02_sequencial, ";
 			$sCampos .=	" ov02_seq,        ";
@@ -173,7 +173,7 @@ if ($oParam->acao == "pesquisar") {
 				
 				}else {
 					$oRetorno->status 	= 1;	
-					$oRetorno->cidadoes = array();
+					$oRetorno->cidadoes = [];
 				}
 			}
 		}
@@ -181,7 +181,7 @@ if ($oParam->acao == "pesquisar") {
 	}else{
 		
 		$oRetorno->status  = 0;
-		$oRetorno->message = utf8_encode("Usuário:\\n\\n Falha ao Rejeitar o cadastro do cidadão!\\n\\nAdministrador:\\n\\n");
+		$oRetorno->message = mb_convert_encoding("Usuário:\\n\\n Falha ao Rejeitar o cadastro do cidadão!\\n\\nAdministrador:\\n\\n", 'UTF-8', 'ISO-8859-1');
 	
 	}
 	

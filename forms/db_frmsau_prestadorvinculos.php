@@ -89,7 +89,7 @@ if ( $lExameComAgenda || $db_opcao == 3) {
           </td>
           <td>
             <?php
-            $x = array( 'A' => 'ATIVO', 'I' => 'INATIVO' );
+            $x = [ 'A' => 'ATIVO', 'I' => 'INATIVO' ];
             db_select( 's111_c_situacao', $x, true, $db_opcao );
             ?>
           </td>
@@ -114,7 +114,7 @@ if ( $lExameComAgenda || $db_opcao == 3) {
         <td>
           <?php
           @$s111_i_prestador = $s111_i_prestador;
-          $chavepri          = array( "s110_i_codigo" => @$s110_i_codigo, "s111_i_codigo" => @$s111_i_codigo );
+          $chavepri          = [ "s110_i_codigo" => @$s110_i_codigo, "s111_i_codigo" => @$s111_i_codigo ];
           $sCampos           = "s110_i_codigo, s111_i_codigo, sd63_c_procedimento, sd63_i_codigo, sd63_c_nome";
           $sCampos          .= ", case s111_c_situacao           ";
           $sCampos          .= "       when 'A'                  ";
@@ -219,7 +219,7 @@ function js_preenchepesquisa( chave ) {
   db_iframe_sau_prestadorvinculos.hide();
   <?php
   if( $db_opcao != 1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

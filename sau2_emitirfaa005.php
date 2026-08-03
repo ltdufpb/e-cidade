@@ -34,7 +34,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("model/dbModeloArquivoTexto.model.php"));
 require_once(modification("model/dbVisualizadorImpressaoTexto.model.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
   <head>
@@ -58,7 +58,7 @@ try {
 
 $oProntuarios      = db_utils::getdao('prontuarios');
 $oProntproced      = db_utils::getdao('prontproced');
-$aChaveProntuarios = explode(",", $chave_sd29_i_prontuario);
+$aChaveProntuarios = explode(",", (string) $chave_sd29_i_prontuario);
 $iTam              = count($aChaveProntuarios);
 
 /* Sub sql para obter os procedimentos (prontproced) */
@@ -129,7 +129,7 @@ for ($iInd = 0; $iInd < $iTam; $iInd++) {
   
   try {
 
-    $oGerador->setSql(array($sSql, $sSqlProc));
+    $oGerador->setSql([$sSql, $sSqlProc]);
     $oGerador->gerarArquivo();
     $aArquivos[] = TiraAcento($oGerador->getArquivo(), false);
 

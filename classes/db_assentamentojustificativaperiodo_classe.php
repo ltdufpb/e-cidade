@@ -38,7 +38,7 @@ class cl_assentamentojustificativaperiodo extends DAOBasica {
    * @return string
    * @throws ParameterException
    */
-  public function sqlTipoAsse($aCampos = array(), $aWhere = array(), $sOrdenacao = '') {
+  public function sqlTipoAsse($aCampos = [], $aWhere = [], $sOrdenacao = '') {
 
     if(!is_array($aCampos)) {
       throw new ParameterException('Parâmetro dos campos do SQL deve ser um Array.');

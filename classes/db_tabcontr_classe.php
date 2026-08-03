@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE tabcontr
 class cl_tabcontr { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h20_descr = null; 
-   var $h20_coluna = 0; 
-   var $h20_rubr = null; 
+   public $h20_descr = null; 
+   public $h20_coluna = 0; 
+   public $h20_rubr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h20_descr = varchar(30) = Descrição do Tipo 
                  h20_coluna = int4 = Coluna do rel 36 contribuicoes 
                  h20_rubr = varchar(250) = Rúbricas 
                  ";
    //funcao construtor da classe 
-   function cl_tabcontr() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabcontr"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -118,7 +118,7 @@ class cl_tabcontr {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela de contribuicoes                            () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela de contribuicoes                            já Cadastrado";
@@ -145,10 +145,10 @@ class cl_tabcontr {
       $this->atualizacampos();
      $sql = " update tabcontr set ";
      $virgula = "";
-     if(trim($this->h20_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h20_descr"])){ 
+     if(trim((string) $this->h20_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h20_descr"])){ 
        $sql  .= $virgula." h20_descr = '$this->h20_descr' ";
        $virgula = ",";
-       if(trim($this->h20_descr) == null ){ 
+       if(trim((string) $this->h20_descr) == null ){ 
          $this->erro_sql = " Campo Descrição do Tipo nao Informado.";
          $this->erro_campo = "h20_descr";
          $this->erro_banco = "";
@@ -158,10 +158,10 @@ class cl_tabcontr {
          return false;
        }
      }
-     if(trim($this->h20_coluna)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h20_coluna"])){ 
+     if(trim((string) $this->h20_coluna)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h20_coluna"])){ 
        $sql  .= $virgula." h20_coluna = $this->h20_coluna ";
        $virgula = ",";
-       if(trim($this->h20_coluna) == null ){ 
+       if(trim((string) $this->h20_coluna) == null ){ 
          $this->erro_sql = " Campo Coluna do rel 36 contribuicoes nao Informado.";
          $this->erro_campo = "h20_coluna";
          $this->erro_banco = "";
@@ -171,10 +171,10 @@ class cl_tabcontr {
          return false;
        }
      }
-     if(trim($this->h20_rubr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h20_rubr"])){ 
+     if(trim((string) $this->h20_rubr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h20_rubr"])){ 
        $sql  .= $virgula." h20_rubr = '$this->h20_rubr' ";
        $virgula = ",";
-       if(trim($this->h20_rubr) == null ){ 
+       if(trim((string) $this->h20_rubr) == null ){ 
          $this->erro_sql = " Campo Rúbricas nao Informado.";
          $this->erro_campo = "h20_rubr";
          $this->erro_banco = "";
@@ -265,7 +265,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tabcontr";

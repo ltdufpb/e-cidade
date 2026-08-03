@@ -7,7 +7,7 @@ class M11206Relatorio extends PostgresMigration
     public function up()
     {
 
-        $aSql = array();
+        $aSql = [];
         $aSql [] = "insert 
                        into db_itensmenu ( id_item ,descricao ,help ,funcao ,itemativo ,manutencao ,desctec ,libcliente ) 
                             values (10545 ,'Relatório Líquido de Férias' ,'Relatório Líquido de Férias' ,'pes2_feriasliquido001.php' ,'1' ,'1' ,'Relatório Líquido de Férias' ,'true' );";
@@ -21,7 +21,7 @@ class M11206Relatorio extends PostgresMigration
     public function down()
     {
 
-        $aSql = array();
+        $aSql = [];
         $aSql [] = "DELETE FROM db_menu  WHERE  id_item =5703  AND id_item_filho = 10545;";
         $aSql [] = "DELETE FROM db_itensmenu  WHERE id_item= 10545";
 

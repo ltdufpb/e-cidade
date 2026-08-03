@@ -101,15 +101,15 @@ if(!isset($rh58_data_dia) && !isset($rh58_data_mes) && !isset($rh58_data_ano)){
               $dbwhere = " and registro is null ";
             }
 
-            $result_dados_ssel = array();
+            $result_dados_ssel = [];
             if(isset($selecionados) && count($selecionados) > 0){
               $sselecionados_where = "";
               $nselecionados_where = "";
               $selecionados_igual = "";
               $selecionados_difer = "";
               for($i=0; $i<count($selecionados); $i++){
-                $ano_where = substr($selecionados[$i],0,4);
-                $mes_where = substr($selecionados[$i],4,2);
+                $ano_where = substr((string) $selecionados[$i],0,4);
+                $mes_where = substr((string) $selecionados[$i],4,2);
                 $sselecionados_where .= $selecionados_igual." rh57_ano = ".$ano_where." and rh57_mes = ".$mes_where;
                 $nselecionados_where .= $selecionados_difer." (rh57_ano <> ".$ano_where." or rh57_mes <> ".$mes_where.") ";
 
@@ -130,7 +130,7 @@ if(!isset($rh58_data_dia) && !isset($rh58_data_mes) && !isset($rh58_data_ano)){
           <td align="right"><b>Pagar:</b></td>
           <td>
             <?php 
-            $arr_pagar = Array(0=>"Todos",1=>"Funcionários que não estão na justiça");
+            $arr_pagar = [0=>"Todos",1=>"Funcionários que não estão na justiça"];
             db_select("pagar", $arr_pagar, true, 1, "onchange='js_seleciona_combo(document.form1.selecionados);document.form1.submit();'");
             ?>
           </td>

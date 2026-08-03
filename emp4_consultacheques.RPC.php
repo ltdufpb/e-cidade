@@ -436,9 +436,9 @@ switch ($oParam->exec) {
         $rsSql = db_query($sql);
         if (pg_num_rows($rsSql) > 0) {
 
-            $aTemp = array();
+            $aTemp = [];
             $aTemp = db_utils::getCollectionByRecord($rsSql, false, false, true);
-            $oRetorno->dados = array();
+            $oRetorno->dados = [];
             $oDado = new stdClass();
             $oDado->valor = 0;
             $oDado->numcgm = $aTemp[0]->numcgm;
@@ -454,7 +454,7 @@ switch ($oParam->exec) {
             $recurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($aTemp[0]->recurso);
             $complemento = $recurso->getComplementoRecursoVinculado();
             $oDado->fonteRecurso = $recurso->getFonteDeRecurso();
-            $oDado->complemento = "{$complemento->getCodigo()} - " . urlencode($complemento->getDescricao());
+            $oDado->complemento = "{$complemento->getCodigo()} - " . urlencode((string) $complemento->getDescricao());
 
             $oDado->e91_cheque = $aTemp[0]->e91_cheque;
             $oDado->db90_descr = $aTemp[0]->db90_descr;

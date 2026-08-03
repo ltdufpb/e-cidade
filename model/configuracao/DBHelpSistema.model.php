@@ -16,10 +16,10 @@ class DBHelpSistema extends DBHelp {
     $oHttpRequest->send($sUri);
     $sRetorno = $oHttpRequest->getBody();
 
-    $oHelp = json_decode($sRetorno);
+    $oHelp = json_decode((string) $sRetorno);
 
     if (!empty($oHelp->error)) {
-      throw new BusinessException(utf8_decode($oHelp->message));
+      throw new BusinessException(mb_convert_encoding($oHelp->message, 'ISO-8859-1'));
     }
 
     $this->setData($oHelp);

@@ -107,10 +107,7 @@ class SaldoRecurso
     {
 
         global $DB_BASE;
-        $codigoInstituicoes = array_map(function (\Instituicao $instituicao) {
-
-            return "'%" . $instituicao->getCodigoTribunal() . "#PO%'";
-        }, $this->instituicoes);
+        $codigoInstituicoes = array_map(fn(\Instituicao $instituicao) => "'%" . $instituicao->getCodigoTribunal() . "#PO%'", $this->instituicoes);
 
         $whereInstituicoes = 'like ' . implode(' or c125_hashcontaatributos like', $codigoInstituicoes);
         $this->tableName = "saldo_recursos_matriz_" . time();
@@ -167,10 +164,7 @@ SQL;
     {
         $dataInicial = $this->dataInicial->format('Y-m-d');
         $dataFinal = $this->dataFinal->format('Y-m-d');
-        $codigoInstituicoes = implode(',', array_map(function (\Instituicao $instituicao) {
-
-            return $instituicao->getCodigo();
-        }, $this->instituicoes));
+        $codigoInstituicoes = implode(',', array_map(fn(\Instituicao $instituicao) => $instituicao->getCodigo(), $this->instituicoes));
 
         $ano = $this->dataInicial->format('Y');
 

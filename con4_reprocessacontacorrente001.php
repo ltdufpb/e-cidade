@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_conhistdoc_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clconhistdoc = new cl_conhistdoc;
 $clconhistdoc->rotulo->label();
 
@@ -93,7 +93,7 @@ db_app::load("dbcomboBox.widget.js");
 	    </td>
 	    <td nowrap>
 	      <?php
-	        $aMeses = array("00" => "Selecione",
+	        $aMeses = ["00" => "Selecione",
                           "01" => "Janeiro",
 	                        "02" => "Fevereiro",
                           "03" => "Março",
@@ -105,7 +105,7 @@ db_app::load("dbcomboBox.widget.js");
                           "09" => "Setembro",
                           "10" => "Outubro",
                           "11" => "Novembro",
-                          "12" => "Dezembro");
+                          "12" => "Dezembro"];
 	        db_select("iMes", $aMeses, true, 1);
 	      ?>
 	    </td>

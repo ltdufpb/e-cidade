@@ -57,7 +57,7 @@ if(isset($menu))
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("tarefa"=>"Tarefa","tarefaobs"=>"Observações","tarefausu"=>"Usu. iniciais","tarefaclientes"=>"Clientes","tarefaanexos"=>"Anexos");
+	 $clcriaabas->identifica = ["tarefa"=>"Tarefa","tarefaobs"=>"Observações","tarefausu"=>"Usu. iniciais","tarefaclientes"=>"Clientes","tarefaanexos"=>"Anexos"];
 	 if (isset($at05_seq)&&$at05_seq!=""){
 	 	 $param = "ate1_tarefa004.php?at05_seq=$at05_seq"; 
 	 	 if(isset($at40_responsavel)&&$at40_responsavel!="") {
@@ -67,12 +67,12 @@ if(isset($menu))
 	 	 	$param .= "&at49_modulo=$at49_modulo";
 	 	 }
 	 	 $param .= "&tipo=".@$tipo; 
-		 $clcriaabas->src = array("tarefa"=>$param);
+		 $clcriaabas->src = ["tarefa"=>$param];
 	 }else{
-		 $clcriaabas->src = array("tarefaobs"=>"ate1_tarefaobs001.php");
-		 $clcriaabas->src = array("tarefa"=>"ate1_tarefa004.php?tipo=".@$tipo);
+		 $clcriaabas->src = ["tarefaobs"=>"ate1_tarefaobs001.php"];
+		 $clcriaabas->src = ["tarefa"=>"ate1_tarefa004.php?tipo=".@$tipo];
 	 }
-	 $clcriaabas->disabled   =  array("tarefaobs"=>"true","tarefausu"=>"true","tarefaclientes"=>"true","tarefaanexos"=>"true"); 
+	 $clcriaabas->disabled   =  ["tarefaobs"=>"true","tarefausu"=>"true","tarefaclientes"=>"true","tarefaanexos"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

@@ -9,6 +9,7 @@ class DecretoService2022 extends DecretoService
 {
     protected $suplementacoesRemanejamentoRecursos = [];
 
+    #[\Override]
     protected function getDados()
     {
 
@@ -124,6 +125,7 @@ class DecretoService2022 extends DecretoService
         }
     }
 
+    #[\Override]
     protected function getBuilder()
     {
         return new DecretoBuilder2022();

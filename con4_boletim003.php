@@ -54,7 +54,7 @@ include(modification("classes/db_conlancamcorgrupocorrente_classe.php"));
 include(modification("model/contaTesouraria.model.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clsaltes = new cl_saltes;
 $clorcreceita = new cl_orcreceita;
@@ -87,30 +87,30 @@ if (isset ($processar) || isset ($desprocessar)) {
 				}
 			db_redireciona('con4_boletim003.php');
 		} else {
-		  
+
 			$lErro = false;
 			$msg_erro = 'Processamento concluido com sucesso.';
 			db_inicio_transacao();
-			
+
 		  $sSqlSaltes = "select k13_conta, k13_saldo 
 		                   from saltes 
 		                        inner join conplanoreduz on conplanoreduz.c61_reduz  = saltes.k13_reduz
 		                                                and conplanoreduz.c61_anousu = ".db_getsession('DB_anousu')."
 		                                                and conplanoreduz.c61_instit = ".db_getsession('DB_instit')."
 		                  where k13_datvlr >= '{$data}' and k13_vlratu <> 0";
-     
+
 		     $rsSaltes   = db_query($sSqlSaltes);
           if (pg_num_rows($rsSaltes) > 0) {
-        
+
           	for($iInd = 0 ; $iInd<pg_num_fields($rsSaltes); $iInd++ ){
-          		
+
           		$oResultConta = db_utils::fieldsMemory($rsSaltes, $iInd);
-          		
+
           		/*
                * subtrai um dia da data de processamento
                */
               $dataAnt = date("Y-m-d", mktime(0, 0, 0, $c70_data_mes, ($c70_data_dia)-1, $c70_data_ano) );        		
-              
+
               try {
           		  $oContaTes = new contaTesouraria($oResultConta->k13_conta);
           		  $oContaTes->implantarSaldo($dataAnt, $oResultConta->k13_saldo, false);
@@ -118,12 +118,12 @@ if (isset ($processar) || isset ($desprocessar)) {
               	$msg_erro = $e->getMessage();
               	$lErro = true;              	
               }
-          		
+
           	}      
           }
-          
+
       db_fim_transacao($lErro);
-          
+
 		  $executar = true;
 		}
 	};
@@ -145,11 +145,11 @@ if (isset ($processar) || isset ($desprocessar)) {
 		$clconlancamcompl = new cl_conlancamcompl;
 		$clconlancamcgm   = new cl_conlancamcgm;
 		$clconlancamcorgrupocorrente   = new cl_conlancamcorgrupocorrente;
-		
+
 
 		// seleciona  conlancam que tenha referencia no conlancambol e coloca num array     
 		// apaga por ultimo o conlancam
-		
+
 		$res = $clconlancam->sql_record("select  c77_codlan as c70_codlan
 		                                   from conlancambol
 		                                           inner join conlancam on c77_codlan      = c70_codlan and
@@ -229,9 +229,9 @@ if (isset ($processar) || isset ($desprocessar)) {
 					$erro = true;
 					db_msgbox("8".$clconlancam->erro_msg);
 				}
-				
 
-				
+
+
 			} // end for
 
 			if ($erro == false) {

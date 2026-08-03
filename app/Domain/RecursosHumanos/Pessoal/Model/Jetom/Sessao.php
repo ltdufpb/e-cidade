@@ -156,7 +156,7 @@ class Sessao extends Model
     public function servidores()
     {
         return $this->hasMany(
-            'App\Domain\RecursosHumanos\Pessoal\Model\Jetom\SessaoServidor',
+            \App\Domain\RecursosHumanos\Pessoal\Model\Jetom\SessaoServidor::class,
             'rh248_sessao',
             'rh247_sequencial'
         );
@@ -166,7 +166,7 @@ class Sessao extends Model
     {
         return $this
             ->belongsTo(
-                'App\Domain\RecursosHumanos\Pessoal\Model\Jetom\Comissao',
+                \App\Domain\RecursosHumanos\Pessoal\Model\Jetom\Comissao::class,
                 'rh247_comissao',
                 'rh242_sequencial'
             )->orderBy('rh242_descricao');
@@ -176,7 +176,7 @@ class Sessao extends Model
     {
         return $this
             ->hasOne(
-                'App\Domain\RecursosHumanos\Pessoal\Model\Jetom\TipoSessao',
+                \App\Domain\RecursosHumanos\Pessoal\Model\Jetom\TipoSessao::class,
                 'rh240_sequencial',
                 'rh247_tiposessao'
             );
@@ -353,9 +353,7 @@ class Sessao extends Model
         ->where('db_usuarios.id_usuario', $db_session['id_usuario']) // ID usuario a ser consultado
         ;
 
-        $dataMatriculas = $loginExists->get()->map(function ($obj, $key) {
-            return $obj->rh01_regist;
-        })->toArray();
+        $dataMatriculas = $loginExists->get()->map(fn($obj, $key) => $obj->rh01_regist)->toArray();
 
         // valida se o usuario tem login
         if (!$dataMatriculas) {

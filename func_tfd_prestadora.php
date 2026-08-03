@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tfd_prestadora_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrotulo = new rotulocampo;
 $cltfd_prestadora = new cl_tfd_prestadora;
 $cltfd_prestadora->rotulo->label("tf25_i_codigo");
@@ -100,9 +100,9 @@ $clrotulo->label("z01_nome");
         }else{
            $sql = $cltfd_prestadora->sql_query("",$campos,"tf25_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_tf25_i_codigo)){
-          $repassa = array("chave_tf25_i_codigo"=>$chave_tf25_i_codigo,"chave_z01_nome"=>$chave_z01_nome);
+          $repassa = ["chave_tf25_i_codigo"=>$chave_tf25_i_codigo,"chave_z01_nome"=>$chave_z01_nome];
         }
         //echo $sql;
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

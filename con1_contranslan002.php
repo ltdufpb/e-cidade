@@ -61,9 +61,9 @@ $db_opcao = 1;
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-	 $clcriaabas->identifica = array("contranslan"=>"Transações","contranslr"=>"Lançamentos");
-	 $clcriaabas->src = array("contranslan"=>"con1_contranslan005.php");
-	 $clcriaabas->disabled   =  array("contranslr"=>"true");
+	 $clcriaabas->identifica = ["contranslan"=>"Transações","contranslr"=>"Lançamentos"];
+	 $clcriaabas->src = ["contranslan"=>"con1_contranslan005.php"];
+	 $clcriaabas->disabled   =  ["contranslr"=>"true"];
 	 $clcriaabas->cria_abas();
        ?>
        </td>

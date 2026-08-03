@@ -129,8 +129,8 @@ $pdf->SetTextColor(0,0,0);
 $pdf->SetFillColor(235);
 
 $lImprime       = true;
-$aDadosvirada   = array();
-$aDadosExecucao = array();
+$aDadosvirada   = [];
+$aDadosExecucao = [];
 
 for ( $iInd = 0; $iInd  < $iNumRownsSql; $iInd++ ) {
           
@@ -160,7 +160,7 @@ for ( $iInd = 0; $iInd  < $iNumRownsSql; $iInd++ ) {
 
 foreach ( $aDadosvirada as $iInd => $aDadosExecucao ) {
 	
-	$sNome = substr($aDadosExecucao['oDadosExecVir']->sUsuario,0,35);
+	$sNome = substr((string) $aDadosExecucao['oDadosExecVir']->sUsuario,0,35);
 	
   if ($pdf->gety() > $pdf->h - 30  || $lImprime  ){
       

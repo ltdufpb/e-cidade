@@ -37,18 +37,6 @@
 class CalculoMediaRubricaQuantidadeFixo implements ICalculoMediaRubrica{
   
   /**
-   * Instancia do objeto Servidor
-   * @var Servidor
-   */
-  private $oServidor;
-  
-  /**
-   * Instancia do objeto Rubrica
-   * @var Rubrica
-   */
-  private $oRubrica;
-  
-  /**
    * Data inicial do período aquisitivo/específico
    * @var DBDate
    */
@@ -156,10 +144,14 @@ class CalculoMediaRubricaQuantidadeFixo implements ICalculoMediaRubrica{
    * @param DBDate $oDataInicial
    * @param DBDate $oDataFinal
    */
-  public function __construct ( Servidor $oServidor, Rubrica $oRubrica, DBDate $oDataInicial, DBDate $oDataFinal ) {
+  public function __construct ( /**
+   * Instancia do objeto Servidor
+   */
+  private Servidor $oServidor, /**
+   * Instancia do objeto Rubrica
+   */
+  private Rubrica $oRubrica, DBDate $oDataInicial, DBDate $oDataFinal ) {
   
-    $this->oServidor    = $oServidor;
-    $this->oRubrica     = $oRubrica;
     $this->oDataInicial = $oDataInicial;
     $this->oDataFinal   = $oDataFinal;
   

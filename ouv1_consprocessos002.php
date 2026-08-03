@@ -29,8 +29,8 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("libs/db_utils.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_GET_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_GET);
 
 $coddepto	 =  $p58_coddepto;
 $datausu	 = 	date('Y-m-d',db_getsession('DB_datausu'));
@@ -39,7 +39,7 @@ $sWhere = "";
 
 if ($tipo == 0) {
 			
-	if(trim($dtini) != "" && trim($dtfim) != ""){
+	if(trim((string) $dtini) != "" && trim((string) $dtfim) != ""){
 		$sWhere = " and p58_dtproc between '".$dtini."' and '".$dtfim."'"; 
 	}
 		
@@ -128,7 +128,7 @@ if ($tipo == 0) {
   $sQueryProcessos .= "    )                          ";                
   $sQueryProcessos .= " )                             ";   
     
-  if ( trim($p58_codigo) != '' ) {
+  if ( trim((string) $p58_codigo) != '' ) {
     $sQueryProcessos .= " and p58_codigo = ".$p58_codigo;
   }
     
@@ -162,7 +162,7 @@ if ($tipo == 0) {
     $sQueryProcessos   .= " and pa.p61_coddepto = ".$coddepto;
   }
     
-  if ( trim($p58_codigo) != '' ) {
+  if ( trim((string) $p58_codigo) != '' ) {
     $sQueryProcessos   .= "  and pp.p58_codigo = ".$p58_codigo;
   }
     
@@ -172,7 +172,7 @@ if ($tipo == 0) {
   $sQueryProcessos   .= "                  where p63_codproc = p58_codproc "; 
   $sQueryProcessos   .= "                    and p64_codtran is null limit 1 )";
 
-	if(trim($dtini) != "" && trim($dtfim) != ""){
+	if(trim((string) $dtini) != "" && trim((string) $dtfim) != ""){
 		$sQueryProcessos .= " and pp.p58_dtproc between '".$dtini."' and '".$dtfim."'";
 	}
 	
@@ -189,7 +189,7 @@ if ($tipo == 0) {
 		
 	$sWhere = "";
 		
-	if(trim($dtini) != "" && trim($dtfim) != ""){
+	if(trim((string) $dtini) != "" && trim((string) $dtfim) != ""){
 		$sWhere = " and p58_dtproc between '".$dtini."' and '".$dtfim."'";  
 	}
 		
@@ -276,7 +276,7 @@ if ($tipo == 0) {
   $sQueryProcessos .= "   )                  ";
   $sQueryProcessos .= " )    ";
     
-  if ( trim($p58_codigo) != '' ) {
+  if ( trim((string) $p58_codigo) != '' ) {
     $sQueryProcessos .= " and p58_codigo = ".$p58_codigo; 
   }
     
@@ -291,7 +291,7 @@ if ($tipo == 0) {
     $sQueryProcessos .= "            and processoouvidoriaprorrogacao.ov15_coddepto  = fc_deptoatualprocesso(p58_codproc) ) < '$datausu'";
   }        
     
-  if ( trim($p58_codigo) != '' ) {
+  if ( trim((string) $p58_codigo) != '' ) {
     $sQueryProcessos .= "                     and p58_codigo = ".$p58_codigo;
   }
     
@@ -319,11 +319,11 @@ if($tipo == 0){
 	$head5 .= " Em Atrazo";	
 }
 
-if(trim($dtini) != "" && trim($dtfim) != ""){
+if(trim((string) $dtini) != "" && trim((string) $dtfim) != ""){
 	$head6 = "Período: ".db_formatar($dtini,'d')." à ".db_formatar($dtfim,'d');
 }
 
-if ( trim($p58_codigo) != '' ) {
+if ( trim((string) $p58_codigo) != '' ) {
 	$sQueryTipo  = "select p51_descr,p51_codigo from tipoproc where p51_codigo = $p58_codigo";
 	$rsQueryTipo = db_query($sQueryTipo);
 	if (pg_num_rows($rsQueryTipo) > 0) {
@@ -375,8 +375,8 @@ for ($iInd=0; $iInd<$iNumRows; $iInd++) {
 		$pdf_cabecalho == false;
 	}  
 
-	if ( trim($aDados[$iInd]->ov15_dtfim) != '' && $aDados[$iInd]->ov15_dtfim < date('Y-m-d',db_getsession('DB_datausu'))) {
-    $aDataPrevFin = explode('-',$aDados[$iInd]->ov15_dtfim);
+	if ( trim((string) $aDados[$iInd]->ov15_dtfim) != '' && $aDados[$iInd]->ov15_dtfim < date('Y-m-d',db_getsession('DB_datausu'))) {
+    $aDataPrevFin = explode('-',(string) $aDados[$iInd]->ov15_dtfim);
     $iDataPrevFin = mktime(0,0,0,$aDataPrevFin[1],$aDataPrevFin[2],$aDataPrevFin[0]);
     $iDiasAtraso  = ceil(((db_getsession('DB_datausu')-$iDataPrevFin)/86400)-1);
 	} else {

@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE sau_tpmodvinculo
 class cl_sau_tpmodvinculo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd53_i_vinculacao = 0; 
-   var $sd53_i_tpvinculo = 0; 
-   var $sd53_v_descrvinculo = null; 
-   var $sd53_i_tpesfadm = 0; 
+   public $sd53_i_vinculacao = 0; 
+   public $sd53_i_tpvinculo = 0; 
+   public $sd53_v_descrvinculo = null; 
+   public $sd53_i_tpesfadm = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd53_i_vinculacao = int4 = Vinculação 
                  sd53_i_tpvinculo = int4 = Tipo Vínculo 
                  sd53_v_descrvinculo = varchar(60) = Descrição do Vínculo 
                  sd53_i_tpesfadm = int4 = Tipo Esfera Administrativa 
                  ";
    //funcao construtor da classe 
-   function cl_sau_tpmodvinculo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_tpmodvinculo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,7 +134,7 @@ class cl_sau_tpmodvinculo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tpmodvinculo ($this->sd53_i_vinculacao."-".$this->sd53_i_tpvinculo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tpmodvinculo já Cadastrado";
@@ -158,14 +158,14 @@ class cl_sau_tpmodvinculo {
      $resaco = $this->sql_record($this->sql_query_file($this->sd53_i_vinculacao,$this->sd53_i_tpvinculo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11469,'$this->sd53_i_vinculacao','I')");
        $resac = db_query("insert into db_acountkey values($acount,11462,'$this->sd53_i_tpvinculo','I')");
-       $resac = db_query("insert into db_acount values($acount,1971,11469,'','".AddSlashes(pg_result($resaco,0,'sd53_i_vinculacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1971,11462,'','".AddSlashes(pg_result($resaco,0,'sd53_i_tpvinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1971,11463,'','".AddSlashes(pg_result($resaco,0,'sd53_v_descrvinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1971,11464,'','".AddSlashes(pg_result($resaco,0,'sd53_i_tpesfadm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1971,11469,'','".AddSlashes(pg_fetch_result($resaco,0,'sd53_i_vinculacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1971,11462,'','".AddSlashes(pg_fetch_result($resaco,0,'sd53_i_tpvinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1971,11463,'','".AddSlashes(pg_fetch_result($resaco,0,'sd53_v_descrvinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1971,11464,'','".AddSlashes(pg_fetch_result($resaco,0,'sd53_i_tpesfadm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -174,10 +174,10 @@ class cl_sau_tpmodvinculo {
       $this->atualizacampos();
      $sql = " update sau_tpmodvinculo set ";
      $virgula = "";
-     if(trim($this->sd53_i_vinculacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_vinculacao"])){ 
+     if(trim((string) $this->sd53_i_vinculacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_vinculacao"])){ 
        $sql  .= $virgula." sd53_i_vinculacao = $this->sd53_i_vinculacao ";
        $virgula = ",";
-       if(trim($this->sd53_i_vinculacao) == null ){ 
+       if(trim((string) $this->sd53_i_vinculacao) == null ){ 
          $this->erro_sql = " Campo Vinculação nao Informado.";
          $this->erro_campo = "sd53_i_vinculacao";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_sau_tpmodvinculo {
          return false;
        }
      }
-     if(trim($this->sd53_i_tpvinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_tpvinculo"])){ 
+     if(trim((string) $this->sd53_i_tpvinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_tpvinculo"])){ 
        $sql  .= $virgula." sd53_i_tpvinculo = $this->sd53_i_tpvinculo ";
        $virgula = ",";
-       if(trim($this->sd53_i_tpvinculo) == null ){ 
+       if(trim((string) $this->sd53_i_tpvinculo) == null ){ 
          $this->erro_sql = " Campo Tipo Vínculo nao Informado.";
          $this->erro_campo = "sd53_i_tpvinculo";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_sau_tpmodvinculo {
          return false;
        }
      }
-     if(trim($this->sd53_v_descrvinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_v_descrvinculo"])){ 
+     if(trim((string) $this->sd53_v_descrvinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_v_descrvinculo"])){ 
        $sql  .= $virgula." sd53_v_descrvinculo = '$this->sd53_v_descrvinculo' ";
        $virgula = ",";
-       if(trim($this->sd53_v_descrvinculo) == null ){ 
+       if(trim((string) $this->sd53_v_descrvinculo) == null ){ 
          $this->erro_sql = " Campo Descrição do Vínculo nao Informado.";
          $this->erro_campo = "sd53_v_descrvinculo";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_sau_tpmodvinculo {
          return false;
        }
      }
-     if(trim($this->sd53_i_tpesfadm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_tpesfadm"])){ 
+     if(trim((string) $this->sd53_i_tpesfadm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_tpesfadm"])){ 
        $sql  .= $virgula." sd53_i_tpesfadm = $this->sd53_i_tpesfadm ";
        $virgula = ",";
-       if(trim($this->sd53_i_tpesfadm) == null ){ 
+       if(trim((string) $this->sd53_i_tpesfadm) == null ){ 
          $this->erro_sql = " Campo Tipo Esfera Administrativa nao Informado.";
          $this->erro_campo = "sd53_i_tpesfadm";
          $this->erro_banco = "";
@@ -237,18 +237,18 @@ class cl_sau_tpmodvinculo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11469,'$this->sd53_i_vinculacao','A')");
          $resac = db_query("insert into db_acountkey values($acount,11462,'$this->sd53_i_tpvinculo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_vinculacao"]))
-           $resac = db_query("insert into db_acount values($acount,1971,11469,'".AddSlashes(pg_result($resaco,$conresaco,'sd53_i_vinculacao'))."','$this->sd53_i_vinculacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1971,11469,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd53_i_vinculacao'))."','$this->sd53_i_vinculacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_tpvinculo"]))
-           $resac = db_query("insert into db_acount values($acount,1971,11462,'".AddSlashes(pg_result($resaco,$conresaco,'sd53_i_tpvinculo'))."','$this->sd53_i_tpvinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1971,11462,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd53_i_tpvinculo'))."','$this->sd53_i_tpvinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd53_v_descrvinculo"]))
-           $resac = db_query("insert into db_acount values($acount,1971,11463,'".AddSlashes(pg_result($resaco,$conresaco,'sd53_v_descrvinculo'))."','$this->sd53_v_descrvinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1971,11463,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd53_v_descrvinculo'))."','$this->sd53_v_descrvinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["sd53_i_tpesfadm"]))
-           $resac = db_query("insert into db_acount values($acount,1971,11464,'".AddSlashes(pg_result($resaco,$conresaco,'sd53_i_tpesfadm'))."','$this->sd53_i_tpesfadm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1971,11464,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd53_i_tpesfadm'))."','$this->sd53_i_tpesfadm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -293,14 +293,14 @@ class cl_sau_tpmodvinculo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11469,'$sd53_i_vinculacao','E')");
          $resac = db_query("insert into db_acountkey values($acount,11462,'$sd53_i_tpvinculo','E')");
-         $resac = db_query("insert into db_acount values($acount,1971,11469,'','".AddSlashes(pg_result($resaco,$iresaco,'sd53_i_vinculacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1971,11462,'','".AddSlashes(pg_result($resaco,$iresaco,'sd53_i_tpvinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1971,11463,'','".AddSlashes(pg_result($resaco,$iresaco,'sd53_v_descrvinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1971,11464,'','".AddSlashes(pg_result($resaco,$iresaco,'sd53_i_tpesfadm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1971,11469,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd53_i_vinculacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1971,11462,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd53_i_tpvinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1971,11463,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd53_v_descrvinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1971,11464,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd53_i_tpesfadm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sau_tpmodvinculo
@@ -366,7 +366,7 @@ class cl_sau_tpmodvinculo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sau_tpmodvinculo";
@@ -380,7 +380,7 @@ class cl_sau_tpmodvinculo {
    function sql_query ( $sd53_i_vinculacao=null,$sd53_i_tpvinculo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -410,7 +410,7 @@ class cl_sau_tpmodvinculo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -422,7 +422,7 @@ class cl_sau_tpmodvinculo {
    function sql_query_file ( $sd53_i_vinculacao=null,$sd53_i_tpvinculo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_sau_tpmodvinculo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

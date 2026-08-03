@@ -158,7 +158,7 @@ class InstituicaoEnsino
             $self->setCodigo($state['ed257_i_codigo']);
         }
         if (array_key_exists('ed257_c_nome', $state)) {
-            $self->setNome(trim($state['ed257_c_nome']));
+            $self->setNome(trim((string) $state['ed257_c_nome']));
         }
         if (array_key_exists('ed257_i_dependencia', $state)) {
             $self->setDependencia($state['ed257_i_dependencia']);

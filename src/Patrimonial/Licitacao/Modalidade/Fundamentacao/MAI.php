@@ -45,10 +45,10 @@ final class MAI implements DeparaInterface
      */
     public function __construct()
     {
-        $this->aFundamentacoes = array(
+        $this->aFundamentacoes = [
           'A78III',
           'OUT'
-        );
+        ];
     }
 
     /**

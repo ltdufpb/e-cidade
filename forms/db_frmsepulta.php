@@ -41,7 +41,7 @@ $clrotulo->label("cm22_c_quadra");
 $clrotulo->label("cm22_i_cemiterio");
 $clrotulo->label("z01_nome");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (isset($sepultamento)) {
   $sSql = $clsepulta->sql_query(null, "*, cgmcemit.z01_nome as nome_cemit", null, "cm24_i_sepultamento = {$sepultamento}");
@@ -276,7 +276,7 @@ function js_preenchepesquisa(chave) {
 
   <?php
     if ($db_opcao != 1) {
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

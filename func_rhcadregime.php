@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhcadregime_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhcadregime = new cl_rhcadregime;
 $clrhcadregime->rotulo->label("rh52_regime");
 $clrhcadregime->rotulo->label("rh52_descr");
@@ -101,9 +101,9 @@ $clrhcadregime->rotulo->label("rh52_descr");
         }else{
            $sql = $clrhcadregime->sql_query("",$campos,"rh52_regime","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh52_descr)){
-          $repassa = array("chave_rh52_regime"=>$chave_rh52_regime,"chave_rh52_descr"=>$chave_rh52_descr);
+          $repassa = ["chave_rh52_regime"=>$chave_rh52_regime,"chave_rh52_descr"=>$chave_rh52_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

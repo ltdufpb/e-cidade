@@ -80,8 +80,8 @@ function js_rel(opcao){
     <td>
 <?php 
   $result =  db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
-  $numrows = pg_numrows($result);
-  $arr = array();
+  $numrows = pg_num_rows($result);
+  $arr = [];
   for($i=0; $i<$numrows; $i++){
     db_fieldsmemory($result,$i);
     $arr[$j18_anousu] = $j18_anousu;

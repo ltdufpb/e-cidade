@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE julgam
 class cl_julgam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l05_tipo = null; 
-   var $l05_numero = null; 
-   var $l05_numcgm = 0; 
-   var $l05_item = null; 
-   var $l05_valor = 0; 
-   var $l05_condpg = null; 
-   var $l05_prazo = 0; 
-   var $l05_garant = 0; 
-   var $l05_quant = 0; 
-   var $l05_vlradj = 0; 
-   var $l05_qtdadj = 0; 
-   var $l05_dotac = 0; 
-   var $l05_marca = null; 
+   public $l05_tipo = null; 
+   public $l05_numero = null; 
+   public $l05_numcgm = 0; 
+   public $l05_item = null; 
+   public $l05_valor = 0; 
+   public $l05_condpg = null; 
+   public $l05_prazo = 0; 
+   public $l05_garant = 0; 
+   public $l05_quant = 0; 
+   public $l05_vlradj = 0; 
+   public $l05_qtdadj = 0; 
+   public $l05_dotac = 0; 
+   public $l05_marca = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l05_tipo = char(     1) = Tipo da Licitacao 
                  l05_numero = char(     8) = Numero da Licitacao 
                  l05_numcgm = int4 = Codigo do Fornecedor (CGM) 
@@ -72,10 +72,10 @@ class cl_julgam {
                  l05_marca = varchar(45) = Marca 
                  ";
    //funcao construtor da classe 
-   function cl_julgam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("julgam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -249,7 +249,7 @@ class cl_julgam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Contem dados dos itens cotados  por cada fornecedo () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Contem dados dos itens cotados  por cada fornecedo já Cadastrado";
@@ -276,10 +276,10 @@ class cl_julgam {
       $this->atualizacampos();
      $sql = " update julgam set ";
      $virgula = "";
-     if(trim($this->l05_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_tipo"])){ 
+     if(trim((string) $this->l05_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_tipo"])){ 
        $sql  .= $virgula." l05_tipo = '$this->l05_tipo' ";
        $virgula = ",";
-       if(trim($this->l05_tipo) == null ){ 
+       if(trim((string) $this->l05_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo da Licitacao nao Informado.";
          $this->erro_campo = "l05_tipo";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_numero"])){ 
+     if(trim((string) $this->l05_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_numero"])){ 
        $sql  .= $virgula." l05_numero = '$this->l05_numero' ";
        $virgula = ",";
-       if(trim($this->l05_numero) == null ){ 
+       if(trim((string) $this->l05_numero) == null ){ 
          $this->erro_sql = " Campo Numero da Licitacao nao Informado.";
          $this->erro_campo = "l05_numero";
          $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_numcgm"])){ 
+     if(trim((string) $this->l05_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_numcgm"])){ 
        $sql  .= $virgula." l05_numcgm = $this->l05_numcgm ";
        $virgula = ",";
-       if(trim($this->l05_numcgm) == null ){ 
+       if(trim((string) $this->l05_numcgm) == null ){ 
          $this->erro_sql = " Campo Codigo do Fornecedor (CGM) nao Informado.";
          $this->erro_campo = "l05_numcgm";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_item"])){ 
+     if(trim((string) $this->l05_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_item"])){ 
        $sql  .= $virgula." l05_item = '$this->l05_item' ";
        $virgula = ",";
-       if(trim($this->l05_item) == null ){ 
+       if(trim((string) $this->l05_item) == null ){ 
          $this->erro_sql = " Campo Codigo do Item (materiais) nao Informado.";
          $this->erro_campo = "l05_item";
          $this->erro_banco = "";
@@ -328,10 +328,10 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_valor"])){ 
+     if(trim((string) $this->l05_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_valor"])){ 
        $sql  .= $virgula." l05_valor = $this->l05_valor ";
        $virgula = ",";
-       if(trim($this->l05_valor) == null ){ 
+       if(trim((string) $this->l05_valor) == null ){ 
          $this->erro_sql = " Campo Valor Unitario * quantidade nao Informado.";
          $this->erro_campo = "l05_valor";
          $this->erro_banco = "";
@@ -341,10 +341,10 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_condpg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_condpg"])){ 
+     if(trim((string) $this->l05_condpg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_condpg"])){ 
        $sql  .= $virgula." l05_condpg = '$this->l05_condpg' ";
        $virgula = ",";
-       if(trim($this->l05_condpg) == null ){ 
+       if(trim((string) $this->l05_condpg) == null ){ 
          $this->erro_sql = " Campo Condicoes de pagamento nao Informado.";
          $this->erro_campo = "l05_condpg";
          $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_prazo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_prazo"])){ 
+     if(trim((string) $this->l05_prazo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_prazo"])){ 
        $sql  .= $virgula." l05_prazo = $this->l05_prazo ";
        $virgula = ",";
-       if(trim($this->l05_prazo) == null ){ 
+       if(trim((string) $this->l05_prazo) == null ){ 
          $this->erro_sql = " Campo Prazo para entrega (em dias) nao Informado.";
          $this->erro_campo = "l05_prazo";
          $this->erro_banco = "";
@@ -367,10 +367,10 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_garant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_garant"])){ 
+     if(trim((string) $this->l05_garant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_garant"])){ 
        $sql  .= $virgula." l05_garant = $this->l05_garant ";
        $virgula = ",";
-       if(trim($this->l05_garant) == null ){ 
+       if(trim((string) $this->l05_garant) == null ){ 
          $this->erro_sql = " Campo Garantia (em dias) nao Informado.";
          $this->erro_campo = "l05_garant";
          $this->erro_banco = "";
@@ -380,10 +380,10 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_quant"])){ 
+     if(trim((string) $this->l05_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_quant"])){ 
        $sql  .= $virgula." l05_quant = $this->l05_quant ";
        $virgula = ",";
-       if(trim($this->l05_quant) == null ){ 
+       if(trim((string) $this->l05_quant) == null ){ 
          $this->erro_sql = " Campo Quantidade nao Informado.";
          $this->erro_campo = "l05_quant";
          $this->erro_banco = "";
@@ -393,10 +393,10 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_vlradj)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_vlradj"])){ 
+     if(trim((string) $this->l05_vlradj)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_vlradj"])){ 
        $sql  .= $virgula." l05_vlradj = $this->l05_vlradj ";
        $virgula = ",";
-       if(trim($this->l05_vlradj) == null ){ 
+       if(trim((string) $this->l05_vlradj) == null ){ 
          $this->erro_sql = " Campo Valor adjudicado nao Informado.";
          $this->erro_campo = "l05_vlradj";
          $this->erro_banco = "";
@@ -406,10 +406,10 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_qtdadj)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_qtdadj"])){ 
+     if(trim((string) $this->l05_qtdadj)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_qtdadj"])){ 
        $sql  .= $virgula." l05_qtdadj = $this->l05_qtdadj ";
        $virgula = ",";
-       if(trim($this->l05_qtdadj) == null ){ 
+       if(trim((string) $this->l05_qtdadj) == null ){ 
          $this->erro_sql = " Campo Quantidade adjudicada nao Informado.";
          $this->erro_campo = "l05_qtdadj";
          $this->erro_banco = "";
@@ -419,10 +419,10 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_dotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_dotac"])){ 
+     if(trim((string) $this->l05_dotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_dotac"])){ 
        $sql  .= $virgula." l05_dotac = $this->l05_dotac ";
        $virgula = ",";
-       if(trim($this->l05_dotac) == null ){ 
+       if(trim((string) $this->l05_dotac) == null ){ 
          $this->erro_sql = " Campo Codigo Estrutural da Dotacao nao Informado.";
          $this->erro_campo = "l05_dotac";
          $this->erro_banco = "";
@@ -432,7 +432,7 @@ class cl_julgam {
          return false;
        }
      }
-     if(trim($this->l05_marca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_marca"])){ 
+     if(trim((string) $this->l05_marca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l05_marca"])){ 
        $sql  .= $virgula." l05_marca = '$this->l05_marca' ";
        $virgula = ",";
      }
@@ -517,7 +517,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:julgam";

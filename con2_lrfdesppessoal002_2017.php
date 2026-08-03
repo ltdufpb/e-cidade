@@ -50,8 +50,8 @@ try {
         throw new Exception("Selecione ao menos uma instituição.");
     }
 
-    $aInstituicoes = array();
-    $aCodigosInstituicoes = explode('-', $oGet->db_selinstit);
+    $aInstituicoes = [];
+    $aCodigosInstituicoes = explode('-', (string) $oGet->db_selinstit);
     foreach ($aCodigosInstituicoes as $iInstituicao) {
         $aInstituicoes[] = InstituicaoRepository::getInstituicaoByCodigo($iInstituicao);
     }

@@ -51,7 +51,7 @@ class clArqExpColetor {
 	 * @var integer
 	 */
 	protected $iCodigoColetor;
-	
+
 	/**
 	 * Codigo do leiturista que realizara as leituras
 	 * @var integer
@@ -75,25 +75,25 @@ class clArqExpColetor {
 	 * @var integer
 	 */
 	protected $iNumMatriculas;
-	
+
 	/**
 	 * Aciona Termometro. 0 - Não 1 - Sim
 	 * @var unknown_type
 	 */
 	protected $iTermometro;
-	
+
 	public $msg_deb_conta;
-	
+
 	public $msg_deb_conta2;
 
-  
-	
+
+
 	public function arquivoDadosMatricula($iCodExportacao, $iTermometro = 0) {
 
 		$this->iCodExportacao = $iCodExportacao;
-		
+
 		$this->iTermometro    = $iTermometro;
-		
+
 
 		require_once(modification("classes/db_aguacoletorexporta_classe.php"));
 		require_once(modification("classes/db_aguacoletorexportadados_classe.php"));
@@ -106,8 +106,8 @@ class clArqExpColetor {
 		$this->iCodigoColetor  = $oAguaColetorExporta->x49_aguacoletor;
 		$this->iAnoExportacao  = $oAguaColetorExporta->x49_anousu;
 		$this->iMesExportacao  = $oAguaColetorExporta->x49_mesusu;
-		
-		
+
+
 		$this->getArretipo($oAguaColetorExporta->x49_anousu);
 
 		$clAguaColetorExportaDados         = new cl_aguacoletorexportadados();
@@ -121,7 +121,7 @@ class clArqExpColetor {
 		$sCamposAguaColetorExportaDados .= "x50_consumo, x50_diasleitura,  x50_mediadiaria, x50_vencimento, x50_valoracrescimo, x50_valordesconto, ";
 		$sCamposAguaColetorExportaDados .= "x50_valortotal, x50_linhadigitavel, x50_codigobarras, x50_imprimeconta, x50_consumopadrao, x50_consumomaximo,";
     	$sCamposAguaColetorExportaDados .= "x50_avisoleiturista";
-		
+
 		$sSqlAguaColetorExportaDados = $clAguaColetorExportaDados->sql_query_dados(null, $sCamposAguaColetorExportaDados, "x50_sequencial", "x50_aguacoletorexporta = $this->iCodExportacao");
 		$rsAguaColetorExportaDados   = $clAguaColetorExportaDados->sql_record($sSqlAguaColetorExportaDados);
 
@@ -136,36 +136,36 @@ class clArqExpColetor {
 		}
 
     $numRowsMatriculas = $clAguaColetorExportaDados->numrows;
-		
+
 		for($d = 0; $d < $numRowsMatriculas; $d++) {
 
 			$oAguaColetorExportaDados = db_utils::fieldsMemory($rsAguaColetorExportaDados, $d);
-			
+
 			if($this->iTermometro == 1) {
 			  db_atutermometro ( $d, $numRowsMatriculas, "termometro", 1, "Processando Matricula $oAguaColetorExportaDados->x50_matric (" . ($d + 1) . "/$numRowsMatriculas) ...   " );
 			}
-			
+
 			$oLibDocumento  = new libdocumento(32);
-			
+
 			if($oAguaColetorExportaDados->x50_imprimeconta == 3) {
-			  
+
 			  $oLibDocumento->msg_debconta01 = $this->msg_deb_conta;
 			  $oLibDocumento->msg_debconta02 = $this->msg_deb_conta2;
-			  
+
 			} else {
-			  
+
 			  $oLibDocumento->msg_debconta01 = "";
         $oLibDocumento->msg_debconta02 = "";
-        
+
 			}
-			
+
       $paragrafos     = $oLibDocumento->getDocParagrafos();
 
 			$cldb_layouttxt->setCampoTipoLinha(3);
 			$cldb_layouttxt->limpaCampos();
 
 			$cldb_layouttxt->setCampo("codleitura"             , $oAguaColetorExportaDados->x50_sequencial);
-			
+
 			if ($oAguaColetorExportaDados->x50_rota == 0){
 				$cldb_layouttxt->setCampo("rota"                 , ' '.$oAguaColetorExportaDados->x50_rota);
 			} else {
@@ -225,21 +225,21 @@ class clArqExpColetor {
 
 			$cldb_layouttxt->setCampo("titulo_receita_1", "Rec   Descricao        Parcela       Valor  Numpre");
 			$cldb_layouttxt->setCampo("titulo_receita_2", "Rec   Descricao        Parcela       Valor  Numpre");
-			
+
 			$sSqlAguaColetorExportaDadosLeitura = $clAguaColetorExportaDadosLeitura->sql_query_file(null, "x51_numcgm", null, "x51_aguacoletorexportadados = $oAguaColetorExportaDados->x50_sequencial");
 			$rsAguaColetorExportaDadosLeitura   = $clAguaColetorExportaDadosLeitura->sql_record($sSqlAguaColetorExportaDadosLeitura);
 			$oAguaColetorExportaDadosLeitura    = db_utils::fieldsMemory($rsAguaColetorExportaDadosLeitura, 0);
-      
+
       if ($oAguaColetorExportaDadosLeitura->x51_numcgm == 0){
         $cldb_layouttxt->setCampo("numcgm", ' '.$oAguaColetorExportaDadosLeitura->x51_numcgm);
       } else {
 
         $cldb_layouttxt->setCampo("numcgm", $oAguaColetorExportaDadosLeitura->x51_numcgm);
       }
-			
+
 			$sSqlAguaLeiturasAnteriores = $clAguaColetorExportaDados->sql_query_leituras_anteriores($oAguaColetorExportaDados->x50_matric, $this->iAnoExportacao, $this->iMesExportacao);
 			$rsAguaLeiturasAnteriores   = $clAguaColetorExportaDados->sql_record($sSqlAguaLeiturasAnteriores);
-			
+
 			$numRowsLeiturasAnteriores  = $clAguaColetorExportaDados->numrows;
 			$iSaldoCompensar = 0;
 			if($numRowsLeiturasAnteriores > 0) {
@@ -247,16 +247,16 @@ class clArqExpColetor {
 			  $dt_referencia = new DateTime($oAguaColetorExportaDados->x49_anousu."-".$oAguaColetorExportaDados->x49_mesusu."-01");
 			  $numero        = 2;
 			  for($l = 0; $l <= $numRowsLeiturasAnteriores; $l++) {
-			    
+
 			    $oLeiturasAnteriores        = db_utils::fieldsMemory($rsAguaLeiturasAnteriores, $l);
 			    $oLeiturasAnterioresProxima = db_utils::fieldsMemory($rsAguaLeiturasAnteriores, $l+1);
-			    
+
 			    if($oLeiturasAnterioresProxima->x21_codleitura != '') {
 			      $diasUltimaLeitura = db_datedif($oLeiturasAnteriores->x21_dtleitura, $oLeiturasAnterioresProxima->x21_dtleitura);
 			    } else {
 			      $diasUltimaLeitura = " 0";
 			    }
-			    
+
 			    if($numero <= 6) {
             $cldb_layouttxt->setCampo("leitura_".$numero."_ano",      $oLeiturasAnteriores->x21_exerc);
             $cldb_layouttxt->setCampo("leitura_".$numero."_mes",      $oLeiturasAnteriores->x21_mes);
@@ -274,15 +274,15 @@ class clArqExpColetor {
               $iSaldoCompensar +=  $oLeiturasAnteriores->x21_saldo ?: 0;
             }
 			    }
-          
+
           $numero++;
-          
-			    
+
+
 			  }
-			  
+
 			}
 			$cldb_layouttxt->setCampo("consumo_saldo", $iSaldoCompensar);
-			
+
 			$sCampos = "x52_receita, x52_descricao, x52_numpar, x52_numtot, x52_valor, x52_numpre";
 			$sSqlAguaColetorExportaDadosReceita = $clAguaColetorExportaDadosReceita->sql_query(null, $sCampos, "x52_receita", "x52_aguacoletorexportadados = $oAguaColetorExportaDados->x50_sequencial");
 			$rsAguaColetorExportaDadosReceita   = $clAguaColetorExportaDadosReceita->sql_record($sSqlAguaColetorExportaDadosReceita);
@@ -310,22 +310,22 @@ class clArqExpColetor {
 	}//function
 
 
-	
+
 	public function getArretipo($iAno) {
-	  
+
 	  $rsArreTipo = db_query("select fc_agua_confarretipo($iAno) as x18_arretipo");
-	  
+
 	  if(pg_num_rows($rsArreTipo) > 0) {
-	    
+
 	    $iArretipo = db_utils::fieldsMemory($rsArreTipo, 0)->x18_arretipo;
 
 	    $this->getMsgArretipo($iArretipo);
 	  }
-    
+
 	}
-	
+
 	public function getMsgArretipo($iArretipo) {
-	  
+
 	  $sSqlArretipo = " select k00_codbco, 
 	                           k00_codage, 
 	                           k00_descr, 
@@ -343,21 +343,21 @@ class clArqExpColetor {
                             from arretipo 
                            where k00_tipo   = {$iArretipo}
                              and k00_instit = " . db_getsession('DB_instit');
-	  
+
 	  $rsArretipo = db_query($sSqlArretipo);
-	  
+
 	  if(pg_num_rows($rsArretipo) > 0) {
-	    
+
 	    $oArretipo = db_utils::fieldsMemory($rsArretipo, 0);
-	    
+
 	    $this->msg_deb_conta  = $oArretipo->k00_hist7;
-	    
+
 	    $this->msg_deb_conta2 = $oArretipo->k00_hist8; 
-	    
+
 	  }
-	  
+
 	}
-	
+
 	public function arquivoDadosSitLeitura() {
 
 		require_once(modification("classes/db_aguasitleitura_classe.php"));
@@ -469,7 +469,7 @@ class clArqExpColetor {
 
 		$oArretipo = db_utils::fieldsMemory($rsArretipo,0);
 
-		$cldb_layouttxt->setCampo("digito_vencimento", isset($oArretipo->k00_tercdigrecnormal) ? $oArretipo->k00_tercdigrecnormal : "");
+		$cldb_layouttxt->setCampo("digito_vencimento", $oArretipo->k00_tercdigrecnormal ?? "");
 		$cldb_layouttxt->geraDadosLinha();
 
 		$cldb_layouttxt->fechaArquivo();
@@ -528,13 +528,13 @@ class clArqExpColetor {
 
     return $nomeArquivo;
   }
-	
+
 	public function iniciaTermometro() {
 	  db_criatermometro ( 'termometro', 'Concluido...', 'blue', 1, 'Processando Arquivos Exportacao' );
     flush ();
 	}
-	
-	
+
+
 	/**
 	 * 
    * funcao q percorre o objeto procurando a descricao do paragrafo informado e retorna o texto referente a descricao.
@@ -543,14 +543,14 @@ class clArqExpColetor {
    * @param $tamanho    = numero de caracteres da string
 	 * @return string
 	 */
-	
+
 	public function retornaTexto($descricao, $paragrafos, $tamanho) {
 
 		foreach($paragrafos as $oParagrafo) {
 
-			if($oParagrafo->oParag->db02_descr == trim($descricao)) {
+			if($oParagrafo->oParag->db02_descr == trim((string) $descricao)) {
 
-				return substr($oParagrafo->oParag->db02_texto, 0, $tamanho);
+				return substr((string) $oParagrafo->oParag->db02_texto, 0, $tamanho);
 
 			}
 

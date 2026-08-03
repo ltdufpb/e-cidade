@@ -29,7 +29,7 @@ require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label('k17_codigo');
@@ -140,7 +140,7 @@ $iInstit = pg_num_rows($resInst);
 if ($iInstit > 0) {
     for ($i = 0; $i < $iInstit; $i++) {
         $oDescrInst = db_utils::fieldsMemory($resInst, $i);
-        if (strlen(trim($oDescrInst->nomeinstabrev)) > 0) {
+        if (strlen(trim((string) $oDescrInst->nomeinstabrev)) > 0) {
             $sDescrInst .= $sVirg . "($oDescrInst->codigo)" . $oDescrInst->nomeinstabrev;
             $bFlagAbrev = true;
         } else {
@@ -210,7 +210,7 @@ $sql = "
 $result = db_query($sql);
 
 
-if (pg_numrows($result) == 0) {
+if (pg_num_rows($result) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 
 }
@@ -226,7 +226,7 @@ $alt = 4;
 $total = 0;
 $total_valor = 0;
 
-for ($x = 0; $x < pg_numrows($result); $x++) {
+for ($x = 0; $x < pg_num_rows($result); $x++) {
     db_fieldsmemory($result, $x);
 
     if (isset($sprocesso) && !empty($sprocesso)) {
@@ -266,12 +266,12 @@ for ($x = 0; $x < pg_numrows($result); $x++) {
     $pdf->cell(15, $alt, db_formatar($k17_data, 'd'), 0, 0, "C", $prenc);
     $pdf->cell(15, $alt, db_formatar($k17_dtaut, 'd'), 0, 0, "C", $prenc);
     $pdf->cell(15, $alt, $k17_debito, 0, 0, "C", $prenc);
-    $pdf->cell(65, $alt, substr($debito_descr, 0, 44), 0, 0, "L", $prenc);
+    $pdf->cell(65, $alt, substr((string) $debito_descr, 0, 44), 0, 0, "L", $prenc);
     $pdf->cell(15, $alt, $k17_credito, 0, 0, "C", $prenc);
-    $pdf->cell(65, $alt, substr($credito_descr, 0, 44), 0, 0, "L", $prenc);
+    $pdf->cell(65, $alt, substr((string) $credito_descr, 0, 44), 0, 0, "L", $prenc);
     $pdf->cell(40, $alt, $k17_situacao, 0, 0, "C", $prenc);
     $pdf->cell(30, $alt, db_formatar($k17_valor, 'f'), 0, 1, "R", $prenc);
-    $pdf->cell(65, $alt, substr($z01_nome, 0, 35), 0, 0, "L", $prenc);
+    $pdf->cell(65, $alt, substr((string) $z01_nome, 0, 35), 0, 0, "L", $prenc);
     $pdf->multicell(200, $alt, $k17_texto, 0, "L", $prenc);
     $total++;
     $total_valor += $k17_valor;

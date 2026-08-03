@@ -42,12 +42,12 @@ function formataData($dData, $iTipo = 1)
     }
 
     if ($iTipo == 1) {
-        $dData = explode('/', $dData);
+        $dData = explode('/', (string) $dData);
         $dData = $dData[2] . '-' . $dData[1] . '-' . $dData[0];
         return $dData;
     }
 
-    $dData = explode('-', $dData);
+    $dData = explode('-', (string) $dData);
     $dData = @$dData[2] . '/' . @$dData[1] . '/' . @$dData[0];
 
     return $dData;
@@ -60,13 +60,13 @@ $oRetorno->iStatus = 1;
 $oRetorno->sMessage = '';
 
 if ($oParam->exec == 'duplicarControleFisFin') {
-    $aIni = explode("/", $oParam->la56_d_ini);
+    $aIni = explode("/", (string) $oParam->la56_d_ini);
     $dIni = $aIni[2] . '-' . $aIni[1] . '-' . $aIni[0];
-    $aFim = explode("/", $oParam->la56_d_fim);
+    $aFim = explode("/", (string) $oParam->la56_d_fim);
     $dFim = $aFim[2] . '-' . $aFim[1] . '-' . $aFim[0];
-    $aIniAlvo = explode("/", $oParam->la56_d_ini2);
+    $aIniAlvo = explode("/", (string) $oParam->la56_d_ini2);
     $dIniAlvo = $aIniAlvo[2] . '-' . $aIniAlvo[1] . '-' . $aIniAlvo[0];
-    $aFimAlvo = explode("/", $oParam->la56_d_fim2);
+    $aFimAlvo = explode("/", (string) $oParam->la56_d_fim2);
     $dFimAlvo = $aFimAlvo[2] . '-' . $aFimAlvo[1] . '-' . $aFimAlvo[0];
 
     $oDaolab_ctrlfisfin = new cl_lab_controlefisicofinanceiro;
@@ -203,8 +203,8 @@ if ($oParam->exec == 'duplicarControleFisFin') {
         $oRetorno->sMessage = urlencode('Nenhuma informação de controle físico / financeiro encontrada.');
     }
 } elseif ($oParam->exec == 'getValorProcedimento') {
-    $mAno = isset($oParam->iAno) ? $oParam->iAno : 'null';
-    $mMes = isset($oParam->iMes) ? $oParam->iMes : 'null';
+    $mAno = $oParam->iAno ?? 'null';
+    $mMes = $oParam->iMes ?? 'null';
     $rs = db_query("select fc_get_valor_procedimento('" . $oParam->sProcedimento . "', $mAno, $mMes) as valor;");
     $iLin = pg_num_rows($rs);
     if ($iLin > 0) {
@@ -221,7 +221,7 @@ if ($oParam->exec == 'duplicarControleFisFin') {
     $sMsg = '';
     $oRetorno->lLiberarSemSaldo = false;
     $oRetorno->lSaldoSuficiente = true;
-    $aInfoReq = array();
+    $aInfoReq = [];
     for ($i = 0; $i < count($oParam->iSetorExame); $i++) {
         $dData = formataData($oParam->dData[$i]);
         $oControleExames = new controleExamesLaboratorio($oParam->iSetorExame[$i]);
@@ -253,8 +253,8 @@ if ($oParam->exec == 'duplicarControleFisFin') {
                              */
 
                             /* Obtenho as datas de início e fim do mês do controle para o qual a requição vai contar */
-                            $tNovo = strtotime($dData);
-                            $sDiaIniNovo = substr($oInfoControle->la56_d_ini, 8, 2);
+                            $tNovo = strtotime((string) $dData);
+                            $sDiaIniNovo = substr((string) $oInfoControle->la56_d_ini, 8, 2);
                             $sDiaNovo = date('d', $tNovo);
                             $sMesNovo = date('m', $tNovo);
                             $sAnoNovo = date('Y', $tNovo);
@@ -269,8 +269,8 @@ if ($oParam->exec == 'duplicarControleFisFin') {
                              * Obtenho as datas de início e fim do mês do controle para o qual
                              * a requição já analisada vai contar
                              */
-                            $tVelho = strtotime($oInfoReq->dDataExame);
-                            $sDiaIniVelho = substr($oInfoReq->oInfoControle->la56_d_ini, 8, 2);
+                            $tVelho = strtotime((string) $oInfoReq->dDataExame);
+                            $sDiaIniVelho = substr((string) $oInfoReq->oInfoControle->la56_d_ini, 8, 2);
                             $sDiaVelho = date('d', $tNovo);
                             $sMesVelho = date('m', $tNovo);
                             $sAnoVelho = date('Y', $tNovo);

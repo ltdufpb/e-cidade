@@ -34,8 +34,8 @@ include(modification("classes/db_issarqsimplesreg_classe.php"));
 include(modification("classes/db_issarqsimples_classe.php"));
 include(modification("classes/db_issarqsimplesregissbase_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clissarqsimplesreg        = new cl_issarqsimplesreg;
 $clissarqsimples           = new cl_issarqsimples;
 $clissarqsimplesregissbase = new cl_issarqsimplesregissbase;
@@ -75,7 +75,7 @@ if (isset($incluir)) {
     }
     
     db_fim_transacao();
-  } catch (Exception $oException) {
+  } catch (Exception) {
     db_fim_transacao(true);
   }
   
@@ -118,7 +118,7 @@ if (isset($incluir)) {
     }
     
     db_fim_transacao();
-  } catch(Exception $oException) {
+  } catch(Exception) {
     db_fim_transacao(true);
   }
 } else if (isset($excluir)) {
@@ -131,7 +131,7 @@ if (isset($incluir)) {
       throw Exception ("Erro ao excluir registros na tabela issarqsimplesreg.\n".$clissarqsimplesreg->erro_msg);
     }
     db_fim_transacao();
-  } catch(Exception $oException) {
+  } catch(Exception) {
     db_fim_transacao(true);
   }
 } else if (isset($opcao)) {

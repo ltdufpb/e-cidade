@@ -122,13 +122,13 @@ try {
 
     $containerTributario   = Registry::get('app.container')->get('tributario.container');
     $serviceEmissaoArquivo = $containerTributario->get('Arquivo\Autoatendimento\RCB800\EmissaoService');
-    $filtro = $containerTributario->get('Arquivo\Autoatendimento\RCB800\FiltroHydrator')->hydrate((object)array(
+    $filtro = $containerTributario->get('Arquivo\Autoatendimento\RCB800\FiltroHydrator')->hydrate((object)[
                                                                                                     'codigoLista'     => $codigoLista
                                                                                                    ,'datainicial'     => $datainicial->getDate()
                                                                                                    ,'datafinal'       => $datafinal->getDate()
                                                                                                    ,'producao'        => $producao
                                                                                                    ,'codigoConvenio'  => $codigoConvenio
-                                                                                                 ));
+                                                                                                 ]);
     $tiposDebitoNaoProcessados = $serviceEmissaoArquivo->execute($filtro, $progressBar, $path . $nomeArquivo);
 
     $tipoDebitoRepository = $containerTributario->get('Arquivo\Autoatendimento\RCB800\Repository\TipoDebito');

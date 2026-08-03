@@ -87,11 +87,11 @@ if(isset($opcao) && $opcao == "excluir"){
         </td>
         <td>
           <?php
-          $aFormaCalculo = array( "1" => "Valor Fixo",
+          $aFormaCalculo = [ "1" => "Valor Fixo",
                                    "2" => "Valor Variável",
                                    "3" => "Percentual Fixo",
                                    "4" => "Percentual Variável"
-                                );
+                                ];
           db_select("formacalculo",$aFormaCalculo,true,$db_opcao,"onchange='js_validaValor();'");
 
           if (isset($formaCalculo)) {
@@ -146,7 +146,7 @@ if(isset($opcao) && $opcao == "excluir"){
       <tr>
         <td colspan="2" align="top">
          <?php
-          $chavepri = array("y45_codtipo"=>@$y45_codtipo,"y45_receit"=>@$y45_receit);
+          $chavepri = ["y45_codtipo"=>@$y45_codtipo,"y45_receit"=>@$y45_receit];
           $cliframe_alterar_excluir->chavepri      = $chavepri;
           $cliframe_alterar_excluir->campos        = "y45_codtipo,y45_receit,y45_valor,y45_descr";
           $cliframe_alterar_excluir->sql           = $clfiscalprocrec->sql_query("","","*",""," y45_codtipo = $y45_codtipo");
@@ -294,7 +294,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_fiscalprocrec.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 +"&chavepesquisa1="+chave1}

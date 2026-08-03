@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE zonasaliq
 class cl_zonasaliq { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j70_zona = 0; 
-   var $j70_alipre = 0; 
-   var $j70_aliter = 0; 
+   public $j70_zona = 0; 
+   public $j70_alipre = 0; 
+   public $j70_aliter = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j70_zona = int8 = Zona fiscal 
                  j70_alipre = float8 = Aliquota predial 
                  j70_aliter = float8 = Aliquota territorial 
                  ";
    //funcao construtor da classe 
-   function cl_zonasaliq() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("zonasaliq"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,7 +119,7 @@ class cl_zonasaliq {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Aliquotas por zona ($this->j70_zona) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Aliquotas por zona já Cadastrado";
@@ -143,12 +143,12 @@ class cl_zonasaliq {
      $resaco = $this->sql_record($this->sql_query_file($this->j70_zona));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6922,'$this->j70_zona','I')");
-       $resac = db_query("insert into db_acount values($acount,1139,6922,'','".AddSlashes(pg_result($resaco,0,'j70_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1139,6923,'','".AddSlashes(pg_result($resaco,0,'j70_alipre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1139,6924,'','".AddSlashes(pg_result($resaco,0,'j70_aliter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1139,6922,'','".AddSlashes(pg_fetch_result($resaco,0,'j70_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1139,6923,'','".AddSlashes(pg_fetch_result($resaco,0,'j70_alipre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1139,6924,'','".AddSlashes(pg_fetch_result($resaco,0,'j70_aliter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -157,10 +157,10 @@ class cl_zonasaliq {
       $this->atualizacampos();
      $sql = " update zonasaliq set ";
      $virgula = "";
-     if(trim($this->j70_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j70_zona"])){ 
+     if(trim((string) $this->j70_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j70_zona"])){ 
        $sql  .= $virgula." j70_zona = $this->j70_zona ";
        $virgula = ",";
-       if(trim($this->j70_zona) == null ){ 
+       if(trim((string) $this->j70_zona) == null ){ 
          $this->erro_sql = " Campo Zona fiscal nao Informado.";
          $this->erro_campo = "j70_zona";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_zonasaliq {
          return false;
        }
      }
-     if(trim($this->j70_alipre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j70_alipre"])){ 
+     if(trim((string) $this->j70_alipre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j70_alipre"])){ 
        $sql  .= $virgula." j70_alipre = $this->j70_alipre ";
        $virgula = ",";
-       if(trim($this->j70_alipre) == null ){ 
+       if(trim((string) $this->j70_alipre) == null ){ 
          $this->erro_sql = " Campo Aliquota predial nao Informado.";
          $this->erro_campo = "j70_alipre";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_zonasaliq {
          return false;
        }
      }
-     if(trim($this->j70_aliter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j70_aliter"])){ 
+     if(trim((string) $this->j70_aliter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j70_aliter"])){ 
        $sql  .= $virgula." j70_aliter = $this->j70_aliter ";
        $virgula = ",";
-       if(trim($this->j70_aliter) == null ){ 
+       if(trim((string) $this->j70_aliter) == null ){ 
          $this->erro_sql = " Campo Aliquota territorial nao Informado.";
          $this->erro_campo = "j70_aliter";
          $this->erro_banco = "";
@@ -204,15 +204,15 @@ class cl_zonasaliq {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6922,'$this->j70_zona','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j70_zona"]))
-           $resac = db_query("insert into db_acount values($acount,1139,6922,'".AddSlashes(pg_result($resaco,$conresaco,'j70_zona'))."','$this->j70_zona',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1139,6922,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j70_zona'))."','$this->j70_zona',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j70_alipre"]))
-           $resac = db_query("insert into db_acount values($acount,1139,6923,'".AddSlashes(pg_result($resaco,$conresaco,'j70_alipre'))."','$this->j70_alipre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1139,6923,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j70_alipre'))."','$this->j70_alipre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j70_aliter"]))
-           $resac = db_query("insert into db_acount values($acount,1139,6924,'".AddSlashes(pg_result($resaco,$conresaco,'j70_aliter'))."','$this->j70_aliter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1139,6924,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j70_aliter'))."','$this->j70_aliter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -257,12 +257,12 @@ class cl_zonasaliq {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6922,'$j70_zona','E')");
-         $resac = db_query("insert into db_acount values($acount,1139,6922,'','".AddSlashes(pg_result($resaco,$iresaco,'j70_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1139,6923,'','".AddSlashes(pg_result($resaco,$iresaco,'j70_alipre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1139,6924,'','".AddSlashes(pg_result($resaco,$iresaco,'j70_aliter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1139,6922,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j70_zona'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1139,6923,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j70_alipre'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1139,6924,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j70_aliter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from zonasaliq
@@ -322,7 +322,7 @@ class cl_zonasaliq {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:zonasaliq";

@@ -34,7 +34,7 @@ include(modification("classes/db_orcreservasol_classe.php"));
 include(modification("classes/db_orcreserva_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clsolicita = new cl_solicita;
 $clorcreserva = new cl_orcreserva;
@@ -42,7 +42,7 @@ $clorcreservasol = new cl_orcreservasol;
 $clrotulo = new rotulocampo;
 $clrotulo->label("");
 if (isset($processar)){
-  $arr_info = split("#",$chaves);
+  $arr_info = preg_split("#\\##m",$chaves);
   $sqlerro=false;
   db_inicio_transacao();
   for($w=0;$w<count($arr_info);$w++){

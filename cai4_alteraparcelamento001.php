@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_termo_classe.php"));
 include(modification("classes/db_arrecad_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cltermo = new cl_termo;
 $clarrecad = new cl_arrecad;
@@ -49,7 +49,7 @@ if(isset($anularparcelamento)){
   $result = $cltermo->sql_record($cltermo->sql_query($v07_parcel));
   if($cltermo->numrows>0){
 
-    $numpre = pg_result($result,0,'v07_numpre');
+    $numpre = pg_fetch_result($result,0,'v07_numpre');
     
     db_inicio_transacao();
      

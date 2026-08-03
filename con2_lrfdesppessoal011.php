@@ -35,7 +35,7 @@ include_once(modification("libs/db_liborcamento.php"));
 require_once(modification("model/relatorioContabil.model.php"));
 
 $oGet       = db_utils::postMemory($_GET);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oRelatorio = new relatorioContabil($oGet->c83_codrel);
 $clrotulo   = new rotulocampo;
@@ -87,23 +87,23 @@ $iAnoUsu    = db_getsession("DB_anousu");
                 </td>
                 <td>
 									<?php 
-                    $aListaPeriodos    = array();
+                    $aListaPeriodos    = [];
                     $aListaPeriodos[0] = "Selecione";
 									  if ($iAnoUsu <= 2007) {
 
-									    $aListaPeriodos  = array("1B" => "Primeiro Bimestre",
+									    $aListaPeriodos  = ["1B" => "Primeiro Bimestre",
 									                             "2B" => "Segundo  Bimestre",
 									                             "3B" => "Terceiro Bimestre",
 									                             "4B" => "Quarto   Bimestre",
 									                             "5B" => "Quinto   Bimestre",
-									                             "6B" => "Sexto    Bimestre");
+									                             "6B" => "Sexto    Bimestre"];
 									  } else if  ($iAnoUsu <= 2009) {
 									  	
-									  	$aListaPeriodos  = array("1Q" => "Primeiro Quadrimestre",
+									  	$aListaPeriodos  = ["1Q" => "Primeiro Quadrimestre",
 									  	                         "2Q" => "Segundo  Quadrimestre",
 									  	                         "3Q" => "Terceiro Quadrimestre",
 									  	                         "1S" => "Primeiro Semestre",
-									  	                         "2S" => "Segundo Semestre");
+									  	                         "2S" => "Segundo Semestre"];
 									  } else {
 									  	
 									    $aPeriodos = $oRelatorio->getPeriodos();
@@ -125,8 +125,8 @@ $iAnoUsu    = db_getsession("DB_anousu");
 				        </td>
 				        <td>
 				          <?php 
-				            $aListaEmissao = array("1" => "Publicação Oficial",
-				                                   "2" => "Detalhamento Mensal");
+				            $aListaEmissao = ["1" => "Publicação Oficial",
+				                                   "2" => "Detalhamento Mensal"];
 				            db_select("emissao", $aListaEmissao, true, 1);
 				          ?>
 				        </td>

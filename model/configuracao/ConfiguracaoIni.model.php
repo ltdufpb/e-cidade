@@ -2,10 +2,10 @@
 
 class ConfiguracaoIni  {
 
-  private static $aIgnorePath = array(
+  private static $aIgnorePath = [
     'dbagata/',
     'plugins/'
-  );
+  ];
 
   /**
    * Implementação da funcção glob do php de forma recursiva
@@ -41,14 +41,14 @@ class ConfiguracaoIni  {
 
     $aIni = ConfiguracaoIni::glob('*ini', GLOB_NOSORT, "{$sPath}/", true);
 
-    $aFilterFiles = array();
+    $aFilterFiles = [];
     foreach ($aIni as $iIndice => $sFile) {
 
       $sFilterFile = str_replace("{$sPath}/", "", $sFile);
 
       foreach( self::$aIgnorePath as $sIgnore ) {
 
-        if (  is_numeric( strpos($sFilterFile, $sIgnore) ) ) {
+        if (  is_numeric( strpos($sFilterFile, (string) $sIgnore) ) ) {
           continue 2;
         }
       }

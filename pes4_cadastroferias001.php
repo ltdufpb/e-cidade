@@ -63,7 +63,7 @@ $clrotulo->label("DBtxt23");
 $clrotulo->label("DBtxt25");
 $rh109_dias = 30;
 
-$rh109_regist  = isset($oPost->rh109_regist) ? $oPost->rh109_regist : null;
+$rh109_regist  = $oPost->rh109_regist ?? null;
 
 if (isset($oPost->rh109_regist)) {
   

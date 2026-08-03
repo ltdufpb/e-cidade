@@ -34,8 +34,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_obrasender_classe.php"));
 
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 //---- instancia classes
 $clobrasender = new cl_obrasender;
@@ -164,7 +164,7 @@ $clrotulo->label("ob08_area");
         <td>Habite-se:</td>
         <td>
 	        <?php 
-            $x = array("t"=>"Todas","c"=>"com Habite-se","s"=>"sem Habite-se");
+            $x = ["t"=>"Todas","c"=>"com Habite-se","s"=>"sem Habite-se"];
             db_select('habite',$x,true,1,"");
           ?>
 	      </td>

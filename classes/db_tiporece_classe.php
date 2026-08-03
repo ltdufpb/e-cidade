@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE tiporece
 class cl_tiporece { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p08_tipo = 0; 
-   var $p08_receit = 0; 
-   var $p08_descr = null; 
-   var $p08_valor = 0; 
-   var $p08_qtufir = 0; 
+   public $p08_tipo = 0; 
+   public $p08_receit = 0; 
+   public $p08_descr = null; 
+   public $p08_valor = 0; 
+   public $p08_qtufir = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p08_tipo = int4 = Tipo 
                  p08_receit = int4 = Receita 
                  p08_descr = varchar(60) = Descrição 
@@ -56,10 +56,10 @@ class cl_tiporece {
                  p08_qtufir = float8 = Quantidade de UFIR 
                  ";
    //funcao construtor da classe 
-   function cl_tiporece() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tiporece"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -148,7 +148,7 @@ class cl_tiporece {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipos de Receitas ($this->p08_tipo."-".$this->p08_receit) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipos de Receitas já Cadastrado";
@@ -172,15 +172,15 @@ class cl_tiporece {
      $resaco = $this->sql_record($this->sql_query_file($this->p08_tipo,$this->p08_receit));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4755,'$this->p08_tipo','I')");
        $resac = db_query("insert into db_acountkey values($acount,4756,'$this->p08_receit','I')");
-       $resac = db_query("insert into db_acount values($acount,637,4755,'','".AddSlashes(pg_result($resaco,0,'p08_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,637,4756,'','".AddSlashes(pg_result($resaco,0,'p08_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,637,4757,'','".AddSlashes(pg_result($resaco,0,'p08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,637,4758,'','".AddSlashes(pg_result($resaco,0,'p08_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,637,4759,'','".AddSlashes(pg_result($resaco,0,'p08_qtufir'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,637,4755,'','".AddSlashes(pg_fetch_result($resaco,0,'p08_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,637,4756,'','".AddSlashes(pg_fetch_result($resaco,0,'p08_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,637,4757,'','".AddSlashes(pg_fetch_result($resaco,0,'p08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,637,4758,'','".AddSlashes(pg_fetch_result($resaco,0,'p08_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,637,4759,'','".AddSlashes(pg_fetch_result($resaco,0,'p08_qtufir'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -189,10 +189,10 @@ class cl_tiporece {
       $this->atualizacampos();
      $sql = " update tiporece set ";
      $virgula = "";
-     if(trim($this->p08_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p08_tipo"])){ 
+     if(trim((string) $this->p08_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p08_tipo"])){ 
        $sql  .= $virgula." p08_tipo = $this->p08_tipo ";
        $virgula = ",";
-       if(trim($this->p08_tipo) == null ){ 
+       if(trim((string) $this->p08_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "p08_tipo";
          $this->erro_banco = "";
@@ -202,10 +202,10 @@ class cl_tiporece {
          return false;
        }
      }
-     if(trim($this->p08_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p08_receit"])){ 
+     if(trim((string) $this->p08_receit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p08_receit"])){ 
        $sql  .= $virgula." p08_receit = $this->p08_receit ";
        $virgula = ",";
-       if(trim($this->p08_receit) == null ){ 
+       if(trim((string) $this->p08_receit) == null ){ 
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "p08_receit";
          $this->erro_banco = "";
@@ -215,10 +215,10 @@ class cl_tiporece {
          return false;
        }
      }
-     if(trim($this->p08_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p08_descr"])){ 
+     if(trim((string) $this->p08_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p08_descr"])){ 
        $sql  .= $virgula." p08_descr = '$this->p08_descr' ";
        $virgula = ",";
-       if(trim($this->p08_descr) == null ){ 
+       if(trim((string) $this->p08_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "p08_descr";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_tiporece {
          return false;
        }
      }
-     if(trim($this->p08_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p08_valor"])){ 
+     if(trim((string) $this->p08_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p08_valor"])){ 
        $sql  .= $virgula." p08_valor = $this->p08_valor ";
        $virgula = ",";
-       if(trim($this->p08_valor) == null ){ 
+       if(trim((string) $this->p08_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "p08_valor";
          $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_tiporece {
          return false;
        }
      }
-     if(trim($this->p08_qtufir)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p08_qtufir"])){ 
+     if(trim((string) $this->p08_qtufir)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p08_qtufir"])){ 
        $sql  .= $virgula." p08_qtufir = $this->p08_qtufir ";
        $virgula = ",";
-       if(trim($this->p08_qtufir) == null ){ 
+       if(trim((string) $this->p08_qtufir) == null ){ 
          $this->erro_sql = " Campo Quantidade de UFIR nao Informado.";
          $this->erro_campo = "p08_qtufir";
          $this->erro_banco = "";
@@ -265,20 +265,20 @@ class cl_tiporece {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4755,'$this->p08_tipo','A')");
          $resac = db_query("insert into db_acountkey values($acount,4756,'$this->p08_receit','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p08_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,637,4755,'".AddSlashes(pg_result($resaco,$conresaco,'p08_tipo'))."','$this->p08_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,637,4755,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p08_tipo'))."','$this->p08_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p08_receit"]))
-           $resac = db_query("insert into db_acount values($acount,637,4756,'".AddSlashes(pg_result($resaco,$conresaco,'p08_receit'))."','$this->p08_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,637,4756,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p08_receit'))."','$this->p08_receit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p08_descr"]))
-           $resac = db_query("insert into db_acount values($acount,637,4757,'".AddSlashes(pg_result($resaco,$conresaco,'p08_descr'))."','$this->p08_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,637,4757,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p08_descr'))."','$this->p08_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p08_valor"]))
-           $resac = db_query("insert into db_acount values($acount,637,4758,'".AddSlashes(pg_result($resaco,$conresaco,'p08_valor'))."','$this->p08_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,637,4758,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p08_valor'))."','$this->p08_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p08_qtufir"]))
-           $resac = db_query("insert into db_acount values($acount,637,4759,'".AddSlashes(pg_result($resaco,$conresaco,'p08_qtufir'))."','$this->p08_qtufir',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,637,4759,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p08_qtufir'))."','$this->p08_qtufir',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -323,15 +323,15 @@ class cl_tiporece {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4755,'$p08_tipo','E')");
          $resac = db_query("insert into db_acountkey values($acount,4756,'$p08_receit','E')");
-         $resac = db_query("insert into db_acount values($acount,637,4755,'','".AddSlashes(pg_result($resaco,$iresaco,'p08_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,637,4756,'','".AddSlashes(pg_result($resaco,$iresaco,'p08_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,637,4757,'','".AddSlashes(pg_result($resaco,$iresaco,'p08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,637,4758,'','".AddSlashes(pg_result($resaco,$iresaco,'p08_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,637,4759,'','".AddSlashes(pg_result($resaco,$iresaco,'p08_qtufir'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,637,4755,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p08_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,637,4756,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p08_receit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,637,4757,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,637,4758,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p08_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,637,4759,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p08_qtufir'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tiporece
@@ -397,7 +397,7 @@ class cl_tiporece {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tiporece";

@@ -39,13 +39,13 @@ $subpes = db_anofolha().'/'.db_mesfolha();
 
 db_selectmax("cfpess"," select * from cfpess ".bb_condicaosubpes("r11_")); 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $subpes = db_anofolha().'/'.db_mesfolha();
 
 $r11_sald13 = ($opcao==1?'0':'1');
-$matriz1 = array();
-$matriz2 = array();
+$matriz1 = [];
+$matriz2 = [];
 $matriz1[1] = "r11_sald13";
 $matriz2[1] = (db_boolean($r11_sald13)== true? 't': 'f');
 
@@ -68,7 +68,7 @@ $sql = "select rh01_regist as r01_regist,
         where rh05_seqpes is null";
 $result = db_query($sql);
 
-for($x=0;$x<pg_numrows($result);$x++){
+for($x=0;$x<pg_num_rows($result);$x++){
   db_fieldsmemory($result,$x);
 
   $situa_func = situacao_funcionario($pessoal[$Ipessoal]["r01_regist"]);

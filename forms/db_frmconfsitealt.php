@@ -27,13 +27,13 @@
 
 //MODULO: prefeitura
 $clconfsite->rotulo->label();
-$tambordas = array("0px"=>"0px","1px"=>"1px","2px"=>"2px","3px"=>"3px","4px"=>"4px","5px"=>"5px");
-$estilobordas = array("none"=>"none","dashed"=>"dashed","solid"=>"solid","inset"=>"inset","outset"=>"outset","double"=>"double");
-$fontes = array("Arial, Helvetica, sans-serif"=>"Arial","Times New Roman, Times, serif"=>"Times","Courier New, Courier, mono"=>"Courier","Georgia, Times New Roman, Times, serif"=>"Georgia","Verdana, Arial, Helvetica, sans-serif"=>"Verdana","Geneva, Arial, Helvetica, san-serif"=>"Geneva");
-$tamfontes = array("8px"=>"8px","9px"=>"9px","10px"=>"10px","11px"=>"11px","12px"=>"12px","13px"=>"13px","14px"=>"14px","15px"=>"15px","16px"=>"16px");
-$estilo = array("normal"=>"normal","bold"=>"bold","bolder"=>"bolder","lighter"=>"lighter");
-$estilofontes = array("normal"=>"normal","italic"=>"itálico");
-$linhafontes = array("underline"=>"sim","none"=>"não");
+$tambordas = ["0px"=>"0px","1px"=>"1px","2px"=>"2px","3px"=>"3px","4px"=>"4px","5px"=>"5px"];
+$estilobordas = ["none"=>"none","dashed"=>"dashed","solid"=>"solid","inset"=>"inset","outset"=>"outset","double"=>"double"];
+$fontes = ["Arial, Helvetica, sans-serif"=>"Arial","Times New Roman, Times, serif"=>"Times","Courier New, Courier, mono"=>"Courier","Georgia, Times New Roman, Times, serif"=>"Georgia","Verdana, Arial, Helvetica, sans-serif"=>"Verdana","Geneva, Arial, Helvetica, san-serif"=>"Geneva"];
+$tamfontes = ["8px"=>"8px","9px"=>"9px","10px"=>"10px","11px"=>"11px","12px"=>"12px","13px"=>"13px","14px"=>"14px","15px"=>"15px","16px"=>"16px"];
+$estilo = ["normal"=>"normal","bold"=>"bold","bolder"=>"bolder","lighter"=>"lighter"];
+$estilofontes = ["normal"=>"normal","italic"=>"itálico"];
+$linhafontes = ["underline"=>"sim","none"=>"não"];
 ?>
 <form enctype="multipart/form-data" name="form1" method="post" action="">
 <center>
@@ -859,7 +859,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 </script>
 <?php 

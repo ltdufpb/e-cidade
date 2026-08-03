@@ -26,27 +26,27 @@
  */
 
 header("Content-type: image/png");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $img = imagecreatefromjpeg(__DIR__ . "/logomodulo.jpg");
 $preto = imagecolorallocate($img,0,0,0);
 
-$nome = urldecode(base64_decode($nome));
+$nome = urldecode(base64_decode((string) $nome));
 
 if(strpos($nome," ")) {
-  $nome = split(" ",$nome);
-  $x1 = 50 - ((strlen(trim($nome[0])) / 2) * 7);
+  $nome = preg_split("# #m",$nome);
+  $x1 = 50 - ((strlen(trim((string) $nome[0])) / 2) * 7);
   if(sizeof($nome) > 1)
-    $x2 = 50 - ((strlen(trim($nome[1])) / 2) * 7);
+    $x2 = 50 - ((strlen(trim((string) $nome[1])) / 2) * 7);
   else
     $x2 = 0;
   if(sizeof($nome) > 2)
-    $x3 = 50 - ((strlen(trim($nome[2])) / 2) * 7);
+    $x3 = 50 - ((strlen(trim((string) $nome[2])) / 2) * 7);
   else
     $x3 = 0;
 //  imagestring($img,3,30,30,"Módulo",$preto);
-  imagestring($img,3,$x1,30,@$nome[0],$preto);
-  imagestring($img,3,$x2,50,@$nome[1],$preto);
-  imagestring($img,3,$x3,70,@$nome[2],$preto);
+  imagestring($img,3,$x1,30,(string) @$nome[0],$preto);
+  imagestring($img,3,$x2,50,(string) @$nome[1],$preto);
+  imagestring($img,3,$x3,70,(string) @$nome[2],$preto);
 } else {
   $x = 50 - ((strlen(trim($nome)) / 2) * 7);
 //  imagestring($img,3,'30',30,"Módulo",$preto);

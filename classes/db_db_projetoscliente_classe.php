@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE db_projetoscliente
 class cl_db_projetoscliente { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at60_codproj = 0; 
-   var $at60_codcli = 0; 
-   var $at60_codproced = 0; 
-   var $at60_inicio_dia = null; 
-   var $at60_inicio_mes = null; 
-   var $at60_inicio_ano = null; 
-   var $at60_inicio = null; 
-   var $at60_fim_dia = null; 
-   var $at60_fim_mes = null; 
-   var $at60_fim_ano = null; 
-   var $at60_fim = null; 
-   var $at60_descricao = null; 
+   public $at60_codproj = 0; 
+   public $at60_codcli = 0; 
+   public $at60_codproced = 0; 
+   public $at60_inicio_dia = null; 
+   public $at60_inicio_mes = null; 
+   public $at60_inicio_ano = null; 
+   public $at60_inicio = null; 
+   public $at60_fim_dia = null; 
+   public $at60_fim_mes = null; 
+   public $at60_fim_ano = null; 
+   public $at60_fim = null; 
+   public $at60_descricao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at60_codproj = int4 = Codigo do projeto 
                  at60_codcli = int4 = Clientes 
                  at60_codproced = int4 = Cod. Proced 
@@ -64,10 +64,10 @@ class cl_db_projetoscliente {
                  at60_descricao = text = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_db_projetoscliente() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_projetoscliente"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -154,10 +154,10 @@ class cl_db_projetoscliente {
          $this->erro_status = "0";
          return false; 
        }
-       $this->at60_codproj = pg_result($result,0,0); 
+       $this->at60_codproj = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_projetos_at60_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $at60_codproj)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $at60_codproj)){
          $this->erro_sql = " Campo at60_codproj maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -195,7 +195,7 @@ class cl_db_projetoscliente {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Projetos ($this->at60_codproj) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Projetos já Cadastrado";
@@ -219,15 +219,15 @@ class cl_db_projetoscliente {
      $resaco = $this->sql_record($this->sql_query_file($this->at60_codproj));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8345,'$this->at60_codproj','I')");
-       $resac = db_query("insert into db_acount values($acount,1410,8345,'','".AddSlashes(pg_result($resaco,0,'at60_codproj'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1410,8346,'','".AddSlashes(pg_result($resaco,0,'at60_codcli'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1410,8347,'','".AddSlashes(pg_result($resaco,0,'at60_codproced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1410,8348,'','".AddSlashes(pg_result($resaco,0,'at60_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1410,8349,'','".AddSlashes(pg_result($resaco,0,'at60_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1410,11854,'','".AddSlashes(pg_result($resaco,0,'at60_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1410,8345,'','".AddSlashes(pg_fetch_result($resaco,0,'at60_codproj'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1410,8346,'','".AddSlashes(pg_fetch_result($resaco,0,'at60_codcli'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1410,8347,'','".AddSlashes(pg_fetch_result($resaco,0,'at60_codproced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1410,8348,'','".AddSlashes(pg_fetch_result($resaco,0,'at60_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1410,8349,'','".AddSlashes(pg_fetch_result($resaco,0,'at60_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1410,11854,'','".AddSlashes(pg_fetch_result($resaco,0,'at60_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -236,10 +236,10 @@ class cl_db_projetoscliente {
       $this->atualizacampos();
      $sql = " update db_projetoscliente set ";
      $virgula = "";
-     if(trim($this->at60_codproj)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_codproj"])){ 
+     if(trim((string) $this->at60_codproj)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_codproj"])){ 
        $sql  .= $virgula." at60_codproj = $this->at60_codproj ";
        $virgula = ",";
-       if(trim($this->at60_codproj) == null ){ 
+       if(trim((string) $this->at60_codproj) == null ){ 
          $this->erro_sql = " Campo Codigo do projeto nao Informado.";
          $this->erro_campo = "at60_codproj";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_db_projetoscliente {
          return false;
        }
      }
-     if(trim($this->at60_codcli)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_codcli"])){ 
+     if(trim((string) $this->at60_codcli)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_codcli"])){ 
        $sql  .= $virgula." at60_codcli = $this->at60_codcli ";
        $virgula = ",";
-       if(trim($this->at60_codcli) == null ){ 
+       if(trim((string) $this->at60_codcli) == null ){ 
          $this->erro_sql = " Campo Clientes nao Informado.";
          $this->erro_campo = "at60_codcli";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_db_projetoscliente {
          return false;
        }
      }
-     if(trim($this->at60_codproced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_codproced"])){ 
+     if(trim((string) $this->at60_codproced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_codproced"])){ 
        $sql  .= $virgula." at60_codproced = $this->at60_codproced ";
        $virgula = ",";
-       if(trim($this->at60_codproced) == null ){ 
+       if(trim((string) $this->at60_codproced) == null ){ 
          $this->erro_sql = " Campo Cod. Proced nao Informado.";
          $this->erro_campo = "at60_codproced";
          $this->erro_banco = "";
@@ -275,10 +275,10 @@ class cl_db_projetoscliente {
          return false;
        }
      }
-     if(trim($this->at60_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_inicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at60_inicio_dia"] !="") ){ 
+     if(trim((string) $this->at60_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_inicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at60_inicio_dia"] !="") ){ 
        $sql  .= $virgula." at60_inicio = '$this->at60_inicio' ";
        $virgula = ",";
-       if(trim($this->at60_inicio) == null ){ 
+       if(trim((string) $this->at60_inicio) == null ){ 
          $this->erro_sql = " Campo Inicio nao Informado.";
          $this->erro_campo = "at60_inicio_dia";
          $this->erro_banco = "";
@@ -291,7 +291,7 @@ class cl_db_projetoscliente {
        if(isset($GLOBALS["HTTP_POST_VARS"]["at60_inicio_dia"])){ 
          $sql  .= $virgula." at60_inicio = null ";
          $virgula = ",";
-         if(trim($this->at60_inicio) == null ){ 
+         if(trim((string) $this->at60_inicio) == null ){ 
            $this->erro_sql = " Campo Inicio nao Informado.";
            $this->erro_campo = "at60_inicio_dia";
            $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_db_projetoscliente {
          }
        }
      }
-     if(trim($this->at60_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at60_fim_dia"] !="") ){ 
+     if(trim((string) $this->at60_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["at60_fim_dia"] !="") ){ 
        $sql  .= $virgula." at60_fim = '$this->at60_fim' ";
        $virgula = ",";
-       if(trim($this->at60_fim) == null ){ 
+       if(trim((string) $this->at60_fim) == null ){ 
          $this->erro_sql = " Campo Fim nao Informado.";
          $this->erro_campo = "at60_fim_dia";
          $this->erro_banco = "";
@@ -318,7 +318,7 @@ class cl_db_projetoscliente {
        if(isset($GLOBALS["HTTP_POST_VARS"]["at60_fim_dia"])){ 
          $sql  .= $virgula." at60_fim = null ";
          $virgula = ",";
-         if(trim($this->at60_fim) == null ){ 
+         if(trim((string) $this->at60_fim) == null ){ 
            $this->erro_sql = " Campo Fim nao Informado.";
            $this->erro_campo = "at60_fim_dia";
            $this->erro_banco = "";
@@ -329,7 +329,7 @@ class cl_db_projetoscliente {
          }
        }
      }
-     if(trim($this->at60_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_descricao"])){ 
+     if(trim((string) $this->at60_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at60_descricao"])){ 
        $sql  .= $virgula." at60_descricao = '$this->at60_descricao' ";
        $virgula = ",";
      }
@@ -341,21 +341,21 @@ class cl_db_projetoscliente {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8345,'$this->at60_codproj','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at60_codproj"]))
-           $resac = db_query("insert into db_acount values($acount,1410,8345,'".AddSlashes(pg_result($resaco,$conresaco,'at60_codproj'))."','$this->at60_codproj',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1410,8345,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at60_codproj'))."','$this->at60_codproj',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at60_codcli"]))
-           $resac = db_query("insert into db_acount values($acount,1410,8346,'".AddSlashes(pg_result($resaco,$conresaco,'at60_codcli'))."','$this->at60_codcli',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1410,8346,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at60_codcli'))."','$this->at60_codcli',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at60_codproced"]))
-           $resac = db_query("insert into db_acount values($acount,1410,8347,'".AddSlashes(pg_result($resaco,$conresaco,'at60_codproced'))."','$this->at60_codproced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1410,8347,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at60_codproced'))."','$this->at60_codproced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at60_inicio"]))
-           $resac = db_query("insert into db_acount values($acount,1410,8348,'".AddSlashes(pg_result($resaco,$conresaco,'at60_inicio'))."','$this->at60_inicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1410,8348,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at60_inicio'))."','$this->at60_inicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at60_fim"]))
-           $resac = db_query("insert into db_acount values($acount,1410,8349,'".AddSlashes(pg_result($resaco,$conresaco,'at60_fim'))."','$this->at60_fim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1410,8349,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at60_fim'))."','$this->at60_fim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at60_descricao"]))
-           $resac = db_query("insert into db_acount values($acount,1410,11854,'".AddSlashes(pg_result($resaco,$conresaco,'at60_descricao'))."','$this->at60_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1410,11854,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at60_descricao'))."','$this->at60_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -400,15 +400,15 @@ class cl_db_projetoscliente {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8345,'$at60_codproj','E')");
-         $resac = db_query("insert into db_acount values($acount,1410,8345,'','".AddSlashes(pg_result($resaco,$iresaco,'at60_codproj'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1410,8346,'','".AddSlashes(pg_result($resaco,$iresaco,'at60_codcli'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1410,8347,'','".AddSlashes(pg_result($resaco,$iresaco,'at60_codproced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1410,8348,'','".AddSlashes(pg_result($resaco,$iresaco,'at60_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1410,8349,'','".AddSlashes(pg_result($resaco,$iresaco,'at60_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1410,11854,'','".AddSlashes(pg_result($resaco,$iresaco,'at60_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1410,8345,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at60_codproj'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1410,8346,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at60_codcli'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1410,8347,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at60_codproced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1410,8348,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at60_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1410,8349,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at60_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1410,11854,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at60_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_projetoscliente
@@ -468,7 +468,7 @@ class cl_db_projetoscliente {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_projetoscliente";
@@ -482,7 +482,7 @@ class cl_db_projetoscliente {
    function sql_query ( $at60_codproj=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -507,7 +507,7 @@ class cl_db_projetoscliente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -519,7 +519,7 @@ class cl_db_projetoscliente {
    function sql_query_file ( $at60_codproj=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -540,7 +540,7 @@ class cl_db_projetoscliente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

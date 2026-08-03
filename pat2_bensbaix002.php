@@ -54,13 +54,13 @@ $clrotulo->label("t64_descr"); //descrição classificação
 $clrotulo->label("descrdepto"); //descrição do depart
 $clrotulo->label("t51_descr"); //descrição do motivo da baixa
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $relbaix    = "t52_instit = ".db_getsession("DB_instit");
 $msg        = "";
 $sHeadPlaca = "";
 if(isset($dataINI) && trim($dataINI)!="" || isset($dataFIM) && trim($dataFIM)!=""){
-  if(isset($dataINI) && trim($dataINI)!=""&&trim($dataFIM)=="" ){
+  if(isset($dataINI) && trim($dataINI)!=""&&trim((string) $dataFIM)=="" ){
     $relbaix .= " and t55_baixa >='".$dataINI."' ";
     $msg      = "posterior a ".db_formatar($dataINI,"d");
   }
@@ -207,7 +207,7 @@ for ($iRow = 0; $iRow < $iNumRows; $iRow++) {
   $iHeightMotivo        = $oPdf->getMultiCellHeight($nWidthInfo, $alt, $oBemMotivoBaixa->t51_descr);
   $iHeightDados         = $oPdf->getMultiCellHeight($nWidthInfo, $alt, $oBem->t55_obs);
 
-  $iHeightLinha = max(array($iHeightDescricao, $iHeightClassificacao, $iHeightDepartamento));
+  $iHeightLinha = max([$iHeightDescricao, $iHeightClassificacao, $iHeightDepartamento]);
 
   if ($lImprimeOrgao) {
 
@@ -233,7 +233,7 @@ for ($iRow = 0; $iRow < $iNumRows; $iRow++) {
     }
   }
 
-  if ($oPdf->getAvailHeight() <= array_sum(array($iHeightLinha, $iHeightMotivo, $iHeightDados)) || $iRow == 0 || $lQuebraOrgaoUnidade) {
+  if ($oPdf->getAvailHeight() <= array_sum([$iHeightLinha, $iHeightMotivo, $iHeightDados]) || $iRow == 0 || $lQuebraOrgaoUnidade) {
 
     if ($iRow != 0 && !$lQuebraOrgaoUnidade) {
       $oPdf->addPage();

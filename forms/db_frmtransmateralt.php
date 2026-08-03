@@ -40,7 +40,7 @@ if(isset($opcao) && $opcao=="alterar"){
   $db_opcao = 1;
 } 
 ?>
-<form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" >
+<form name="form1" method="post" action="<?=basename((string) $_SERVER['PHP_SELF'])?>" >
       <table border="0" cellspacing="0" cellpadding="0">
       <br><br>
 	  <td nowrap title="<?=@$Tm60_codmater?>">
@@ -89,7 +89,7 @@ db_input('pc01_descrmater',40,'',true,'text',3)
   <tr>
     <td valign="top"> 
     <?php 
-     $chavepri= array("m63_codmatmater"=>@$m63_codmatmater,"m63_codpcmater"=>@$m63_codpcmater);
+     $chavepri= ["m63_codmatmater"=>@$m63_codmatmater,"m63_codpcmater"=>@$m63_codpcmater];
      $cliframe_alterar_excluir->chavepri=$chavepri;
      if (isset($m60_codmater)&&@$m60_codmater!=""){        
         $cliframe_alterar_excluir->sql = $cltransmater->sql_query(null,'*',null,"m63_codmatmater=$m60_codmater");

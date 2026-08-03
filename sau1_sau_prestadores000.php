@@ -61,10 +61,10 @@ switch( $op ) {
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php
-   $clcriaabas->identifica  = array( "a1" => "Prestadores", "a2" => "Vínculos", "a3" => "Cotas Diárias", "a4" => "Cota Mensal" );
-   $clcriaabas->sizecampo   = array( "a1" => "20", "a2" => "20", "a3" => "20", "a4" => "20" );
-   $clcriaabas->src         = array( "a1" => "{$arquivo}", "a2" => "sau1_sau_prestadorvinculos001.php", "a3" => "sau1_sau_prestadorhorarios001.php", "a4" => "sau1_sau_prestadorhorarios001.php" );
-   $clcriaabas->disabled    = array( "a2" => "true", "a3" => "true", "a4" => "true" );
+   $clcriaabas->identifica  = [ "a1" => "Prestadores", "a2" => "Vínculos", "a3" => "Cotas Diárias", "a4" => "Cota Mensal" ];
+   $clcriaabas->sizecampo   = [ "a1" => "20", "a2" => "20", "a3" => "20", "a4" => "20" ];
+   $clcriaabas->src         = [ "a1" => "{$arquivo}", "a2" => "sau1_sau_prestadorvinculos001.php", "a3" => "sau1_sau_prestadorhorarios001.php", "a4" => "sau1_sau_prestadorhorarios001.php" ];
+   $clcriaabas->disabled    = [ "a2" => "true", "a3" => "true", "a4" => "true" ];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->cria_abas();
    ?>

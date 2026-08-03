@@ -46,7 +46,7 @@ class ImportacaoInconsistencia
     /**
      * @var array
      */
-    private $inconsistencias = array();
+    private $inconsistencias = [];
 
     /**
      * @var int
@@ -100,7 +100,7 @@ class ImportacaoInconsistencia
         if (!isset($this->inconsistencias[$this->codigoRequisicao])) {
             $this->inconsistencias[$this->codigoRequisicao] = new stdClass();
             $this->inconsistencias[$this->codigoRequisicao]->requisicao = $this->codigoRequisicao;
-            $this->inconsistencias[$this->codigoRequisicao]->exames = array();
+            $this->inconsistencias[$this->codigoRequisicao]->exames = [];
         }
     }
 
@@ -124,7 +124,7 @@ class ImportacaoInconsistencia
             $dadosExame->codigoSetor = $setor->getCodigo();
             $dadosExame->nomeSetor = $setor->getDescricao();
             $dadosExame->nome = $exame->getNome();
-            $dadosExame->atributos = array();
+            $dadosExame->atributos = [];
 
             $inconsistenciaRequisicao->exames[$exame->getCodigo()] = $dadosExame;
         }

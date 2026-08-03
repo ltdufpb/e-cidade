@@ -3,11 +3,9 @@
 class RegistroHistoricoCalculo extends EventoFinanceiroFolha {
   
   private $oFolhaPagamento;
-  private $iCodigo;
   
-  public function __construct( $iCodigo = null ) {
-
-    $this->iCodigo = $iCodigo;
+  public function __construct(private $iCodigo = null)
+  {
   }
   
   public function setFolhaPagamento( FolhaPagamento $oFolhaPagamento) {

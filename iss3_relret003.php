@@ -45,7 +45,7 @@ $pdf->Ln(20);
 $pdf->SetFont('Arial','',8);
 $pdf->MultiCell(0,4,$db12_extenso,0,"C",0);
 $pdf->SetFont('Arial','B',11);
-$pdf->MultiCell(0,6,'PREFEITURA MUNICIPAL DE '.strtoupper($munic),0,"C",0);
+$pdf->MultiCell(0,6,'PREFEITURA MUNICIPAL DE '.strtoupper((string) $munic),0,"C",0);
 $pdf->Ln(3);
 $pdf->SetFont('Arial','B',8);
 $pdf->MultiCell(0,4,'RELATÓRIO DE RETENÇÃO DE ISSQN DA COMPETÊNCIA ___________ / _________________',0,"C",0);
@@ -92,7 +92,7 @@ $pdf->SetFont('Arial','',8);
 //$pdf->Cell(170,6,'Local do Pagamento(Banco)','TRB',1,"L",0);
 //$pdf->Cell(270,6,'N'.chr(176).' do Documento',1,1,"L",0);
 $pdf->Ln(3);
-$pdf->Cell(270,6,ucwords(strtolower($munic)).', ________ de _______________________ de __________.',0,1,"L",0);
+$pdf->Cell(270,6,ucwords(strtolower((string) $munic)).', ________ de _______________________ de __________.',0,1,"L",0);
 $pdf->Ln(3);
 //$pdf->Cell(270,2,'______________________________________________',0,1,"L",0);
 //Busca numero de dias para venciemnto 
@@ -102,6 +102,6 @@ db_fieldsmemory($result,0);
 
 $pdf->Cell(270,3,'Nome e Assinatura do Reponsável pelas Informações',0,1,"L",0);
 $pdf->Text(10,190,'O pagamento do imposto deverá ser efetuado até o dia '.$w10_dia.' do mês subseqüente ao da competência e a respectiva guia de recolhimento solicitada junto ao Setor de Tributos, mediante a apresentação deste relatório.');
-$pdf->Text(10,195,'* Preenchimento obrigatório apenas para empresas sediadas no Município de '.ucwords(strtolower($munic)).' - '.$uf);
+$pdf->Text(10,195,'* Preenchimento obrigatório apenas para empresas sediadas no Município de '.ucwords(strtolower((string) $munic)).' - '.$uf);
 $pdf->Output();
 ?>

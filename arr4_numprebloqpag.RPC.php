@@ -66,7 +66,7 @@ switch ($oParam->exec) {
 
 	    $sMensagem  = "Nenhuma parcela encontrada.";
 	    $iStatus    = 2;
-	    $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+	    $aRegistros = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
 	  }
 	  
 	  $oRetorno             = new stdClass();
@@ -102,7 +102,7 @@ switch ($oParam->exec) {
 
       $sMensagem  = "Nenhuma parcela encontrada.";
       $iStatus    = 2;
-      $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+      $aRegistros = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
     }
     
     $oRetorno             = new stdClass();

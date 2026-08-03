@@ -36,7 +36,7 @@ include(modification("pes4_avaliaferiasrescisao.php"));
 include(modification("pes4_gerafolha003.php"));
 include(modification("pes4_gerafolha004.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_botao = true;
 ?>
@@ -99,7 +99,7 @@ if(isset($processar) && $processar == "Processar" || isset($db_debug) ) {
 
    db_selectmax("db_config","select lower(trim(munic)) as d08_carnes , cgc, db21_codcli from db_config where codigo = ".db_getsession("DB_instit"));
    
-   if(trim($db_config[0]["cgc"]) == "90940172000138"){
+   if(trim((string) $db_config[0]["cgc"]) == "90940172000138"){
       $d08_carnes = "daeb";
    }else{
       $d08_carnes = $db_config[0]["d08_carnes"];
@@ -113,13 +113,13 @@ if(isset($processar) && $processar == "Processar" || isset($db_debug) ) {
    $cfpess[0]["r11_recalc"] = false;
    $cfpess[0]["r11_mes13"]  = $mesusu;
    
-   $m_rubr = array();
-   $m_quant= array();
-   $m_valor= array();
-   $m_media= array();
-   $m_tipo = array();
-   $qten   = array();
-   $vlrn   = array();
+   $m_rubr = [];
+   $m_quant= [];
+   $m_valor= [];
+   $m_media= [];
+   $m_tipo = [];
+   $qten   = [];
+   $vlrn   = [];
    $nsaldo = 30; 
         
    $sql  = " select rh01_regist as r01_regist,                                    \n";
@@ -302,7 +302,7 @@ if(isset($processar) && $processar == "Processar" || isset($db_debug) ) {
 	    	  $lancarferias = true;
 	    	  if ( strtolower($tipoferias) != "d") {
 	    	  	
-	    		if (bcdiv(db_datedif($datafim,$datainicio),30,0) == 12) {
+	    		if (bcdiv((string) db_datedif($datafim,$datainicio),30,0) == 12) {
 	    		  $tipoferias = "V";
 	    		  if ($db_debug) {
                     echo "tipoferias 1.1 --> $tipoferias <br>";
@@ -420,7 +420,7 @@ if(isset($processar) && $processar == "Processar" || isset($db_debug) ) {
 	    $quais_diversos .= $separa.'$'.$codigo;	   
 	    $separa = ",";
 	 	 
-	    global $$codigo;
+	    global ${$codigo};
 	    eval('$$codigo = '.$diversos[$Idiversos]["r07_valor"].";");
   }
   $quais_diversos .= ';';	   
@@ -433,7 +433,7 @@ if(isset($processar) && $processar == "Processar" || isset($db_debug) ) {
   }
   global $carregarubricas_geral,$carregarubricas;
       
-  $carregarubricas_geral = array();
+  $carregarubricas_geral = [];
       
   db_selectmax("carregarubricas","select * from rhrubricas where rh27_instit = $DB_instit order by rh27_rubric" );
       
@@ -448,7 +448,7 @@ if(isset($processar) && $processar == "Processar" || isset($db_debug) ) {
 	         $r10_form = "-";
 	      }
 	   }else{
-	     $r10_form = '('.trim($formula).')';
+	     $r10_form = '('.trim((string) $formula).')';
 	     if( $r10_pd){
 	        $r10_form = "+".$r10_form;
 	     }else{

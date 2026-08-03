@@ -42,7 +42,7 @@ class Gestor
     /**
      * @var array
      */
-    private $aDepartamentosGeridos = array();
+    private $aDepartamentosGeridos = [];
 
     /**
      * @var bool
@@ -117,9 +117,7 @@ class Gestor
             $rs = db_query($sqlGestao);
 
             if (pg_num_rows($rs) > 0) {
-                $this->aDepartamentosGeridos = \db_utils::makeCollectionFromRecord($rs, function ($oDados) {
-                    return new Departamento($oDados->coddepto);
-                });
+                $this->aDepartamentosGeridos = \db_utils::makeCollectionFromRecord($rs, fn($oDados) => new Departamento($oDados->coddepto));
             }
         }
     }
@@ -130,16 +128,14 @@ class Gestor
      */
     private function getTodosDepartamentos()
     {
-        $departamentos = array();
+        $departamentos = [];
 
         $oDepartamento = new \cl_db_depart();
         $sql = $oDepartamento->sql_query_file(null, "coddepto", null, null);
         $rs = db_query($sql);
 
         if (pg_num_rows($rs) > 0) {
-            $departamentos = \db_utils::makeCollectionFromRecord($rs, function ($dados) {
-                return new Departamento($dados->coddepto);
-            });
+            $departamentos = \db_utils::makeCollectionFromRecord($rs, fn($dados) => new Departamento($dados->coddepto));
         }
 
         return $departamentos;

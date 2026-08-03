@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhempenhofolharubrica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhempenhofolharubrica = new cl_rhempenhofolharubrica;
 $clrhempenhofolharubrica->rotulo->label("rh73_sequencial");
 $clrhempenhofolharubrica->rotulo->label("rh73_rubric");
@@ -98,9 +98,9 @@ $clrhempenhofolharubrica->rotulo->label("rh73_rubric");
         }else{
            $sql = $clrhempenhofolharubrica->sql_query("",$campos,"rh73_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh73_rubric)){
-          $repassa = array("chave_rh73_sequencial"=>$chave_rh73_sequencial,"chave_rh73_rubric"=>$chave_rh73_rubric);
+          $repassa = ["chave_rh73_sequencial"=>$chave_rh73_sequencial,"chave_rh73_rubric"=>$chave_rh73_rubric];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

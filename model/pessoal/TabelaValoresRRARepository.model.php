@@ -2,6 +2,7 @@
 
 class TabelaValoresRRARepository extends TabelaValoresRepository {
 
+  #[\Override]
   public static function getInstancia() {
 
     if (!DBRegistry::get("TabelaValoresRRARepository")){
@@ -11,6 +12,7 @@ class TabelaValoresRRARepository extends TabelaValoresRepository {
     return DBRegistry::get("TabelaValoresRRARepository");
   }
 
+  #[\Override]
   public function getMaker($oTabela) {
 
     return function($oDadosTabela) use ($oTabela) {
@@ -24,6 +26,7 @@ class TabelaValoresRRARepository extends TabelaValoresRepository {
     };
   }
 
+  #[\Override]
   protected function getTabela($iCodigo) {
     return new TabelaIRRFRRA($iCodigo);
   }

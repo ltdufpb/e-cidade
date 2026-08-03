@@ -120,7 +120,7 @@ class mail {
         default:
         
         	$sHeader = "From: {$this->sEmailFrom} <{$this->sEmailFrom}>";
-        	if ( !mail($this->sEmailTo,$this->sSubject,$this->sMsg, $sHeader) ) {
+        	if ( !mail((string) $this->sEmailTo,$this->sSubject,(string) $this->sMsg, $sHeader) ) {
         		throw Exception("Função mail");
         	}
         	
@@ -140,7 +140,7 @@ class mail {
     
     try {
       fclose($connection);       
-    } catch (Exception $eException){
+    } catch (Exception){
       return "02 - Erro ao fechar conexão";    
     }
     

@@ -93,7 +93,7 @@ if(isset($atualizar2)){
   </td>
   <td>
    <?php 
-   $x = array('SE'=>'SECRETARIA -> ESCOLA','ES'=>'ESCOLA -> SECRETARIA');
+   $x = ['SE'=>'SECRETARIA -> ESCOLA','ES'=>'ESCOLA -> SECRETARIA'];
    db_select('ed130_c_tipo',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -104,7 +104,7 @@ if(isset($atualizar2)){
   </td>
   <td>
    <?php 
-   $x = array('S'=>'SIM','N'=>'NÃO');
+   $x = ['S'=>'SIM','N'=>'NÃO'];
    db_select('ed130_c_dumpseq',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -115,7 +115,7 @@ if(isset($atualizar2)){
   </td>
   <td>
    <?php 
-   $x = array('S'=>'SIM','N'=>'NÃO');
+   $x = ['S'=>'SIM','N'=>'NÃO'];
    db_select('ed130_c_dumptrigger',$x,true,$db_opcao,"");
    ?>
   </td>
@@ -130,7 +130,7 @@ if(isset($atualizar2)){
     <tr>
      <td valign="top"><br>
      <?php 
-      $chavepri= array("ed130_i_codigo"=>@$ed130_i_codigo,"ed130_c_tabela"=>@$ed130_c_tabela,"ed130_c_tipo"=>@$ed130_c_tipo,"ed130_c_dumpseq"=>@$ed130_c_dumpseq,"ed130_i_sequencia"=>@$ed130_i_sequencia);
+      $chavepri= ["ed130_i_codigo"=>@$ed130_i_codigo,"ed130_c_tabela"=>@$ed130_c_tabela,"ed130_c_tipo"=>@$ed130_c_tipo,"ed130_c_dumpseq"=>@$ed130_c_dumpseq,"ed130_i_sequencia"=>@$ed130_i_sequencia];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       @$cliframe_alterar_excluir->sql = $cledutabelasdump->sql_query("","*","ed130_i_sequencia"," ed130_c_tipo = 'SE'");
       $cliframe_alterar_excluir->campos  ="ed130_c_tabela,ed130_c_dumpseq,ed130_c_dumptrigger";
@@ -156,7 +156,7 @@ if(isset($atualizar2)){
     <tr>
      <td valign="top"><br>
      <?php 
-      $chavepri= array("ed130_i_codigo"=>@$ed130_i_codigo,"ed130_c_tabela"=>@$ed130_c_tabela,"ed130_c_tipo"=>@$ed130_c_tipo,"ed130_c_dumpseq"=>@$ed130_c_dumpseq,"ed130_i_sequencia"=>@$ed130_i_sequencia);
+      $chavepri= ["ed130_i_codigo"=>@$ed130_i_codigo,"ed130_c_tabela"=>@$ed130_c_tabela,"ed130_c_tipo"=>@$ed130_c_tipo,"ed130_c_dumpseq"=>@$ed130_c_dumpseq,"ed130_i_sequencia"=>@$ed130_i_sequencia];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       @$cliframe_alterar_excluir->sql = $cledutabelasdump->sql_query("","*","ed130_i_sequencia"," ed130_c_tipo = 'ES'");
       $cliframe_alterar_excluir->campos  ="ed130_c_tabela,ed130_c_dumpseq,ed130_c_dumptrigger";
@@ -196,7 +196,7 @@ if(isset($atualizar2)){
        if($linhas>0){
         for($i=0;$i<$linhas;$i++){
          $dados = pg_fetch_array($query);
-         echo "<option value=\"".$dados["ed130_i_codigo"]."\">".str_pad($dados["ed130_i_sequencia"],3,0,str_pad_left)." - ".trim($dados["ed130_c_tabela"])."</option>\n";
+         echo "<option value=\"".$dados["ed130_i_codigo"]."\">".str_pad((string) $dados["ed130_i_sequencia"],3,0,\STR_PAD_LEFT)." - ".trim((string) $dados["ed130_c_tabela"])."</option>\n";
         }
        }
       ?>
@@ -228,7 +228,7 @@ if(isset($atualizar2)){
        if($linhas>0){
         for($i=0;$i<$linhas;$i++){
          $dados = pg_fetch_array($query);
-         echo "<option value=\"".$dados["ed130_i_codigo"]."\">".str_pad($dados["ed130_i_sequencia"],3,0,str_pad_left)." - ".trim($dados["ed130_c_tabela"])."</option>\n";
+         echo "<option value=\"".$dados["ed130_i_codigo"]."\">".str_pad((string) $dados["ed130_i_sequencia"],3,0,\STR_PAD_LEFT)." - ".trim((string) $dados["ed130_c_tabela"])."</option>\n";
         }
        }
       ?>

@@ -47,7 +47,7 @@ include(modification("classes/db_selecao_classe.php"));
 <tr height=25><td>&nbsp;</td></tr>
 </table>
 <?php 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 db_criatermometro('termometro','Concluido...','blue',1);
 flush();
 $wh = '';
@@ -209,15 +209,15 @@ order by ano, mes, tipo, regist
 ";
 // echo $sql;exit;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
 		db_atutermometro($x,$num,'termometro');
 	  flush();
 
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");
   }
   fclose($arquivo);
 
@@ -322,15 +322,15 @@ order by rh02_regist
 ";
 // echo $sql;exit;
   $result = db_query($sql);
-  $num = pg_numrows($result);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  $num = pg_num_rows($result);
+  for($x = 0;$x < pg_num_rows($result);$x++){
     
 		db_atutermometro($x,$num,'termometro');
 	  flush();
 
-    $matric = pg_result($result,$x,'matricula');
+    $matric = pg_fetch_result($result,$x,'matricula');
     
-  fputs($arquivo,pg_result($result,$x,'todo')."\r\n");
+  fputs($arquivo,pg_fetch_result($result,$x,'todo')."\r\n");
   }
   fclose($arquivo);
 

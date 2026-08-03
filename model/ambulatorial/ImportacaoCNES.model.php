@@ -17,13 +17,13 @@ class ImportacaoCNES {
    * Array com todas as unidades que não foi encontrada no banco de dados buscando pelo cnes
    * @var array
    */
-  private $aUnidadesNaoLocalizadas = array();
+  private $aUnidadesNaoLocalizadas = [];
 
   /**
    * Guarda os CNES encontrados nas unidades existentes
    * @var array
    */
-  private $aCNESVinculados = array();
+  private $aCNESVinculados = [];
 
   /**
    * Valida se houve um erro ou inconsistencia nas informações.
@@ -38,16 +38,10 @@ class ImportacaoCNES {
   private $oArquivoXML;
 
   /**
-   * [$oLog description]
-   * @var [type]
-   */
-  private $oLog;
-
-  /**
    * Array de escolaridades
    * @var array
    */
-  private $aEscolaridade = array (
+  private $aEscolaridade =  [
                                   '0' => 'SEM DEFINIÇÃO',
                                   '1' => 'ANALFABETO',
                                   '2' => 'FUNDAMENTAL INCOMPLETO',
@@ -58,9 +52,9 @@ class ImportacaoCNES {
                                   '7' => 'ENSINO SUPERIOR COMPLETO',
                                   '8' => 'MESTRADO',
                                   '9' => 'DOUTORADO'
-                                );
+                                ];
 
-  private $aEstadoCivil = array (
+  private $aEstadoCivil =  [
                                  "1" => "Solteiro",
                                  "2" => "Casado",
                                  "3" => "Viúvo",
@@ -68,40 +62,40 @@ class ImportacaoCNES {
                                  "5" => "Separado Consensual",
                                  "6" => "Separado Judicial",
                                  "7" => "União Estavel"
-                                );
+                                ];
 
   /**
    * Array com os códigos de municipios do IBGE
    * @var array
    */
-  private $aMunicipioIBGE = array();
+  private $aMunicipioIBGE = [];
 
   /**
    * Arrays com dos dados da Caracterização da Unidade
    * Usados para validar se os dados do arquivo xml existem na base de dados do e-cidade
    * @var array
    */
-  private $aTiposUnidades        = array();
-  private $aEsferaAdministrativa = array();
-  private $aAtividade            = array();
-  private $aRetencaoTributos     = array();
-  private $aNaturezaOrganizacao  = array();
-  private $aFluxoClientela       = array();
-  private $aNivelHierarquia      = array();
-  private $aTurnoAtendimento     = array();
+  private $aTiposUnidades        = [];
+  private $aEsferaAdministrativa = [];
+  private $aAtividade            = [];
+  private $aRetencaoTributos     = [];
+  private $aNaturezaOrganizacao  = [];
+  private $aFluxoClientela       = [];
+  private $aNivelHierarquia      = [];
+  private $aTurnoAtendimento     = [];
 
   /**
    * Array comn os códigos dos CBO no e-cidade
    * @var array
    */
-  private $aCbo = array();
+  private $aCbo = [];
 
   /**
    *
    * @param string $sPachtXml caminho onde esta a base xml
    * @param DBLog $oLog       instancia do arquivo de log
    */
-  function __construct($sPachtXml, DBLog $oLog) {
+  function __construct($sPachtXml, private readonly DBLog $oLog) {
 
     $oMsgErro           = new stdClass();
     $oMsgErro->sArquivo = $sPachtXml;
@@ -138,7 +132,6 @@ class ImportacaoCNES {
     }
 
     $this->oArquivoXML = $oArquivoXML;
-    $this->oLog        = $oLog;
 
   }
 
@@ -178,7 +171,7 @@ class ImportacaoCNES {
     }
   }
 
-  public function processarNovosVinculos($aNovosVinculos = array()) {
+  public function processarNovosVinculos($aNovosVinculos = []) {
 
     $oDaoUnidades   = new cl_unidades();
 
@@ -820,13 +813,13 @@ class ImportacaoCNES {
     $oCgm->setCpf($iCpf);
     $oCgm->setPIS($oDadosProfissionalXML->getAttribute('PISPASEP'));
 
-    if ( strlen($sNomeCGM) > 40 ) {
+    if ( strlen((string) $sNomeCGM) > 40 ) {
       $sNomeCGM = DBString::abreviaSobrenome($sNomeCGM);
     }
 
     $oCgm->setNome( $sNomeCGM );
     $sNomeMae = $oDadosProfissionalXML->getAttribute('NOME_MAE');
-    if ( strlen($sNomeMae) > 40 ) {
+    if ( strlen((string) $sNomeMae) > 40 ) {
       $sNomeMae = DBString::abreviaSobrenome($sNomeMae);
     }
     $oCgm->setNomeMae( $sNomeMae );
@@ -856,7 +849,7 @@ class ImportacaoCNES {
     }
 
     $sNomePai = $oDadosProfissionalXML->getAttribute('NOME_PAI');
-    if ( strlen($sNomePai) > 40 ) {
+    if ( strlen((string) $sNomePai) > 40 ) {
       $sNomePai = DBString::abreviaSobrenome($sNomePai);
     }
     $oCgm->setNomePai( $sNomePai );

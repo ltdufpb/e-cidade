@@ -88,40 +88,21 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 
 	$aBrowserVersao   = getBrowser();
 
-	switch ($aBrowserVersao["browser"]) {
-	    case "MSIE" :
-	        $sBrowser = "Internet Explorer ".$aBrowserVersao["version"];
-	        break;
-	    case "OPERA" :
-	        $sBrowser = "Opera Browser ".$aBrowserVersao["version"];
-	        break;
-	    case "FIREFOX" :
-	        $sBrowser = "Mozilla Firefox ".$aBrowserVersao["version"];
-	        break;
-	    case "MOZILLA" :
-	        $sBrowser = "Mozilla Firefox ".$aBrowserVersao["version"];
-	        break;
-	    case "CHROME" :
-	        $sBrowser = "Google Chrome ".$aBrowserVersao["version"];
-	        break;
-	    case "NETSCAPE" :
-	        $sBrowser = "Netscape Browser ".$aBrowserVersao["version"];
-	        break;
-	    case "SAFARI" :
-	        $sBrowser = "Safari Browser ".$aBrowserVersao["version"];
-	        break;
-	    case "LYNX" :
-	        $sBrowser = "Lynx Browser ".$aBrowserVersao["version"];
-	        break;
-	    case "KONQUEROR" :
-	        $sBrowser = "Konqueror Browser ".$aBrowserVersao["version"];
-	        break;
-	    default :
-	       $sBrowser = "Browser Desconhecido";
-	}
+	$sBrowser = match ($aBrowserVersao["browser"]) {
+        "MSIE" => "Internet Explorer ".$aBrowserVersao["version"],
+        "OPERA" => "Opera Browser ".$aBrowserVersao["version"],
+        "FIREFOX" => "Mozilla Firefox ".$aBrowserVersao["version"],
+        "MOZILLA" => "Mozilla Firefox ".$aBrowserVersao["version"],
+        "CHROME" => "Google Chrome ".$aBrowserVersao["version"],
+        "NETSCAPE" => "Netscape Browser ".$aBrowserVersao["version"],
+        "SAFARI" => "Safari Browser ".$aBrowserVersao["version"],
+        "LYNX" => "Lynx Browser ".$aBrowserVersao["version"],
+        "KONQUEROR" => "Konqueror Browser ".$aBrowserVersao["version"],
+        default => "Browser Desconhecido",
+    };
 
 	// retorna versao do browser sem a sua subversao
-	$aVersao = explode(".", $aBrowserVersao["version"]);
+	$aVersao = explode(".", (string) $aBrowserVersao["version"]);
 	// verifica modulos pendentes
 	$aModulos = get_loaded_extensions();
 	$sVersao = $aVersao[0];
@@ -132,12 +113,12 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 
 	foreach ($oXmlEst->browsers->browser as $oValCampo ) {
 
-	  $sStrpos = strpos($oValCampo['versao'],'*');
+	  $sStrpos = strpos((string) $oValCampo['versao'],'*');
 
 	  if ($sStrpos === false) {
 
 	     $aListaBrowser = $oValCampo['name'].$oValCampo['versao'];
-	     $iTam          = strlen($oValCampo['versao']);
+	     $iTam          = strlen((string) $oValCampo['versao']);
 	     if ($aListaBrowser == $oBrowserVersaoSub) {
          $lBrowser = true;
 	       break;
@@ -146,7 +127,7 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 
 
 	    $sVersao          = $oValCampo['versao'];
-	    $aVersaoVerificar = explode(".", $sVersao);
+	    $aVersaoVerificar = explode(".", (string) $sVersao);
 	    $iTotalVersoesUsuario   = count($aVersao);
 	    $iTotalVersoesVerificar = count($aVersaoVerificar);
 	    /**
@@ -170,7 +151,7 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 	      }
 	    }
 	    $sVersao = implode("", $aVersaoVerificar);
-	    $oBrowserVersaoSemSub =  strtolower($aBrowserVersao["browser"]).implode("", $aVersao);
+	    $oBrowserVersaoSemSub =  strtolower((string) $aBrowserVersao["browser"]).implode("", $aVersao);
 	    $aListaBrowser = $oValCampo['name'].$sVersao;
 	    $sValCampo     = str_replace("*", "", $oValCampo['versao']);
 	    $sValCampo     = str_replace(".", "", $sValCampo);
@@ -203,7 +184,7 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 	  $i++;
 	}
 
-	$aListaParam = array();
+	$aListaParam = [];
 	foreach ($oXmlEst->parametros->parametro as $aParametro) {
 
 	  if ( !db_compara_conf_php(ini_get($aParametro['name']), $aParametro['valorpadrao'], $aParametro['bool'],
@@ -243,7 +224,7 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 	   	        $aItemPostgre[$i]       = $oSettings->current_setting;
 	  	      } else {
 
-	  	        $sStrpos = strpos($aParametro['valorpadrao'],'*');
+	  	        $sStrpos = strpos((string) $aParametro['valorpadrao'],'*');
 	            if ($sStrpos === false) {
 
 	           	  if ($oSettings->current_setting != $aParametro['valorpadrao']) {
@@ -254,8 +235,8 @@ if ( isset($DB_VALIDA_REQUISITOS) && $DB_VALIDA_REQUISITOS == true ) {
 	              }
 	            } else {
 
-	             	$sVersaoConfigurada = substr($aParametro['valorpadrao'], 0,$sStrpos-1);
-	              $sVersaoPostgre    = substr($oSettings->current_setting, 0,$sStrpos-1);
+	             	$sVersaoConfigurada = substr((string) $aParametro['valorpadrao'], 0,$sStrpos-1);
+	              $sVersaoPostgre    = substr((string) $oSettings->current_setting, 0,$sStrpos-1);
 	              if ($sVersaoPostgre != $sVersaoConfigurada) {
 
 	                $lErroSetings            = true;
@@ -447,12 +428,12 @@ if (count(@$aListaParamPostgre) > 0) {
        echo "  <td id=lista_pendente_td>".$aParametro['name']."</td>";
 
          if ($aParametro['bool'] == 'true') {
-         	$sStrpos = strpos($aParametro['valorpadrao'],'*');
+         	$sStrpos = strpos((string) $aParametro['valorpadrao'],'*');
 
          	if ($sStrpos === false) {
          	   echo "  <td id=lista_pendente_td>".$aParametro['valorpadrao']."</td>";
          	} else {
-         	   $sVersaoConfigurada = substr($aParametro['valorpadrao'], 0,$sStrpos-1);
+         	   $sVersaoConfigurada = substr((string) $aParametro['valorpadrao'], 0,$sStrpos-1);
          	   echo "  <td id=lista_pendente_td>".$sVersaoConfigurada."</td>";
          	}
 
@@ -715,23 +696,23 @@ function getBrowser()  {
      $var = $_SERVER['HTTP_USER_AGENT'];
      $info['browser'] = "OTHER";
 
-     $browser = array ("MSIE", "OPERA", "CHROME", "FIREFOX", "MOZILLA",
-                       "NETSCAPE", "SAFARI", "LYNX", "KONQUEROR");
+     $browser =  ["MSIE", "OPERA", "CHROME", "FIREFOX", "MOZILLA",
+                       "NETSCAPE", "SAFARI", "LYNX", "KONQUEROR"];
 
-     $bots = array('GOOGLEBOT', 'MSNBOT', 'SLURP');
+     $bots = ['GOOGLEBOT', 'MSNBOT', 'SLURP'];
 
      foreach ($bots as $bot) {
-         if (strpos(strtoupper($var), $bot) !== FALSE) {
+         if (str_contains(strtoupper((string) $var), $bot)) {
              return $info;
          }
      }
 
      foreach ($browser as $parent) {
-         $s = strpos(strtoupper($var), $parent);
+         $s = strpos(strtoupper((string) $var), $parent);
          $f = $s + strlen($parent);
-         $version = substr($var, $f, 10);
+         $version = substr((string) $var, $f, 10);
          $version = preg_replace('/[^0-9,.]/','',$version);
-         if (strpos(strtoupper($var), $parent) !== FALSE) {
+         if (str_contains(strtoupper((string) $var), $parent)) {
              $info['browser'] = $parent;
              $info['version'] = $version;
              return $info;
@@ -743,34 +724,21 @@ function getBrowser()  {
 function db_compara_conf_php($sValorIni, $sValorConfig, $lBoolean, $sOperacao='==') {
 
   if ($lBoolean == 'false') {
-    $sValorIni    = ereg_replace('[^0-9]', '', $sValorIni);
-    $sValorConfig = ereg_replace('[^0-9]', '', $sValorConfig);
+    $sValorIni    = preg_replace('#[^0-9]#m', '', (string) $sValorIni);
+    $sValorConfig = preg_replace('#[^0-9]#m', '', (string) $sValorConfig);
   }
 
-  $nValorIni    = (trim($sValorIni)=='')?0:$sValorIni;
-  $nValorConfig = (trim($sValorConfig)=='')?0:$sValorConfig;
+  $nValorIni    = (trim((string) $sValorIni)=='')?0:$sValorIni;
+  $nValorConfig = (trim((string) $sValorConfig)=='')?0:$sValorConfig;
 
-  switch ($sOperacao) {
-    case "==":
-    case "=":
-      $lRetorno = ($nValorIni == $nValorConfig);
-      break;
-    case ">":
-      $lRetorno = ($nValorIni > $nValorConfig);
-      break;
-    case ">=":
-      $lRetorno = ($nValorIni >= $nValorConfig);
-      break;
-    case "<":
-      $lRetorno = ($nValorIni < $nValorConfig);
-      break;
-    case "<=":
-      $lRetorno = ($nValorIni <= $nValorConfig);
-      break;
-    default:
-      $lRetorno = false;
-      break;
-  }
+  $lRetorno = match ($sOperacao) {
+      "==", "=" => $nValorIni == $nValorConfig,
+      ">" => $nValorIni > $nValorConfig,
+      ">=" => $nValorIni >= $nValorConfig,
+      "<" => $nValorIni < $nValorConfig,
+      "<=" => $nValorIni <= $nValorConfig,
+      default => false,
+  };
 
   return $lRetorno;
 

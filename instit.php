@@ -61,7 +61,7 @@ if (session_is_registered("DB_uol_hora")) {
                    uol_modulo = 'Selecionando Instituição',
                    uol_inativo = ".time()."
              where uol_id = ".db_getsession("DB_id_usuario")."
-               and uol_ip = '".(isset($_SERVER["HTTP_X_FORWARDED_FOR"])?$_SERVER["HTTP_X_FORWARDED_FOR"]:$HTTP_SERVER_VARS['REMOTE_ADDR'])."'
+               and uol_ip = '".($_SERVER["HTTP_X_FORWARDED_FOR"] ?? $_SERVER['REMOTE_ADDR'])."'
                and uol_hora = ".db_getsession("DB_uol_hora")) or die("Erro(26) atualizando db_usuariosonline");
 
   

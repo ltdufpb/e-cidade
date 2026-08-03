@@ -59,6 +59,7 @@ class ControleRubricasCalculoServiceTest extends TestCase
      */
     private $repositoryParametros;
 
+    #[\Override]
     protected function setUp()
     {
         $this->instituicao = new Instituicao();

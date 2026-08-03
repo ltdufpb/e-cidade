@@ -41,7 +41,7 @@ class AssentamentoRepository
      *
      * @var array Assentamentos
      */
-    private $aAssentamentos = array();
+    private $aAssentamentos = [];
 
     /**
      * Instancia da Classe
@@ -180,7 +180,7 @@ class AssentamentoRepository
      */
     public static function getServidoresAssentamentoSubstituicao()
     {
-        $aListaServidores = array();
+        $aListaServidores = [];
         $iNaturezaAssentamentoSubstituicao = AssentamentoSubstituicao::CODIGO_NATUREZA;
         $oCompetencia = DBPessoal::getCompetenciaFolha();
         $oDaoAssentamento = new cl_assenta();
@@ -224,7 +224,7 @@ class AssentamentoRepository
      * @return array
      * @throws Exception
      */
-    public static function getAssentamentosSubstituicaoServidor($iMatricula, DBCompetencia $oCompetencia = null)
+    public static function getAssentamentosSubstituicaoServidor($iMatricula, ?DBCompetencia $oCompetencia = null)
     {
         if (is_null($oCompetencia)) {
             $oCompetencia = DBPessoal::getCompetenciaFolha();
@@ -237,7 +237,7 @@ class AssentamentoRepository
         );
 
         $aAssentamentos = $oServidor->getAssentamentosSubstituicao();
-        $assentamentosServidor = array();
+        $assentamentosServidor = [];
 
         foreach ($aAssentamentos as $oAssentamento) {
             $oStdAssentamento = new stdClass();
@@ -293,7 +293,7 @@ class AssentamentoRepository
     public static function getAssentamentosPorServidor(
         Servidor $oServidor,
         $iTipoAssentamento = null,
-        DBDate $oDataMinima = null,
+        ?DBDate $oDataMinima = null,
         $sTipo = null,
         $lAssentamentoFuncional = null
     ) {
@@ -336,7 +336,7 @@ class AssentamentoRepository
             throw new DBException(_M(self::MENSAGEM . "erro_buscar_assentamentos_servidor"));
         }
 
-        $assentamentos = array();
+        $assentamentos = [];
 
         foreach (db_utils::getCollectionByRecord($rsAssentamentos) as $oDados) {
             $assentamentos[] = AssentamentoFactory::getByCodigo($oDados->h16_codigo);
@@ -373,7 +373,7 @@ class AssentamentoRepository
     public static function getAssentamentosDeAfastamentoPorServidor(
         Servidor $oServidor,
         $iTipoAssentamento = null,
-        DBDate $oDataMinima = null
+        ?DBDate $oDataMinima = null
     ) {
 
         $sWhere = "h16_regist = {$oServidor->getMatricula()}";
@@ -402,7 +402,7 @@ class AssentamentoRepository
             throw new DBException(_M(self::MENSAGEM . "erro_buscar_assentamentos_servidor"));
         }
 
-        $assentamentos = array();
+        $assentamentos = [];
 
         foreach (db_utils::getCollectionByRecord($rsAssentamentos) as $oDados) {
             $assentamentos[] = AssentamentoFactory::getByCodigo($oDados->h16_codigo);
@@ -425,15 +425,15 @@ class AssentamentoRepository
         $codigoTipoAssentamento,
         $matricula,
         DBDate $dataConcessao,
-        DBDate $dataTermino = null,
+        ?DBDate $dataTermino = null,
         $codigoAssentamento = null
     ) {
 
-        $aWhere = array(
+        $aWhere = [
             "h12_natureza = " . Assentamento::NATUREZA_JUSTIFICATIVA,
             "h16_regist  = {$matricula}",
             "h16_assent  = {$codigoTipoAssentamento}"
-        );
+        ];
 
         if (!empty($codigoAssentamento)) {
             $aWhere[] = "h16_codigo != {$codigoAssentamento}";
@@ -466,9 +466,7 @@ class AssentamentoRepository
         }
 
         if (pg_num_rows($rsAssentamentos) > 0) {
-            return db_utils::makeFromRecord($rsAssentamentos, function ($retorno) {
-                return AssentamentoFactory::getByCodigo($retorno->h16_codigo);
-            });
+            return db_utils::makeFromRecord($rsAssentamentos, fn($retorno) => AssentamentoFactory::getByCodigo($retorno->h16_codigo));
         }
 
         return null;
@@ -500,7 +498,7 @@ class AssentamentoRepository
 
         $daoAssenta = new cl_assenta;
 
-        $aWhereAssenta = array("h16_regist = {$servidor->getMatricula()}");
+        $aWhereAssenta = ["h16_regist = {$servidor->getMatricula()}"];
         if (!empty($tipoAssentamento)) {
             $aWhereAssenta[] = "h12_tipo = '{$tipoAssentamento}'";
         }
@@ -540,9 +538,7 @@ class AssentamentoRepository
         if (pg_num_rows($rsAssenta) > 0) {
             $assentamentoRepository = self::getInstance();
 
-            return db_utils::makeCollectionFromRecord($rsAssenta, function ($retorno) {
-                return AssentamentoFactory::getByCodigo($retorno->h16_codigo);
-            });
+            return db_utils::makeCollectionFromRecord($rsAssenta, fn($retorno) => AssentamentoFactory::getByCodigo($retorno->h16_codigo));
         }
 
         return null;
@@ -562,7 +558,7 @@ class AssentamentoRepository
     public static function getAssentamentosServidorPorTipoENatureza(
         Servidor $servidor,
         $tipoAssentamento = 'S',
-        DBDate $data,
+        ?DBDate $data = null,
         $natureza = null,
         $lFuncional = false,
         $codigoAssentamento = null
@@ -573,7 +569,7 @@ class AssentamentoRepository
 
         $daoAssenta = new cl_assenta;
 
-        $aWhereAssenta = array("h16_regist = {$servidor->getMatricula()}");
+        $aWhereAssenta = ["h16_regist = {$servidor->getMatricula()}"];
         $aWhereAssenta[] = "h12_tipo = '{$tipoAssentamento}'";
         $aWhereAssenta[] = "(    (h16_dtterm is null AND h16_dtconc <= '{$data->getDate()}')
                           OR (h16_dtterm >= '{$data->getDate()}' AND h16_dtconc <= '{$data->getDate()}')
@@ -611,9 +607,7 @@ class AssentamentoRepository
         if (pg_num_rows($rsAssenta) > 0) {
             $assentamentoRepository = self::getInstance();
 
-            return db_utils::makeCollectionFromRecord($rsAssenta, function ($retorno) {
-                return AssentamentoFactory::getByCodigo($retorno->h16_codigo);
-            });
+            return db_utils::makeCollectionFromRecord($rsAssenta, fn($retorno) => AssentamentoFactory::getByCodigo($retorno->h16_codigo));
         }
 
         return null;
@@ -628,8 +622,8 @@ class AssentamentoRepository
      */
     public static function getAssentamentosServidorDia(
         Servidor $oServidor,
-        $aTipoAssentamento = array(),
-        DBDate $oData,
+        $aTipoAssentamento = [],
+        ?DBDate $oData = null,
         $lFuncional = null
     ) {
         $sWhere = "     h16_regist = {$oServidor->getMatricula()}";
@@ -658,9 +652,7 @@ class AssentamentoRepository
             throw new DBException('Erro ao buscar os assentamentos lançados para o servidor.');
         }
 
-        return db_utils::makeCollectionFromRecord($rsAssenta, function ($oRetorno) {
-            return AssentamentoFactory::getByCodigo($oRetorno->h16_codigo);
-        });
+        return db_utils::makeCollectionFromRecord($rsAssenta, fn($oRetorno) => AssentamentoFactory::getByCodigo($oRetorno->h16_codigo));
     }
 
     /**
@@ -759,7 +751,7 @@ class AssentamentoRepository
         $listaInformacoesExternas = InformacoesExternasTipoAssentamento::getTipoAssentamentoConfiguradosPorCompetencia(DBPessoal::getCompetenciaFolha());
 
         if (is_array($listaInformacoesExternas)) {
-            $tiposAssentamentoConfigurados = array();
+            $tiposAssentamentoConfigurados = [];
             foreach ($listaInformacoesExternas as $informacoesExternas) {
                 $tiposAssentamentoConfigurados[] = $informacoesExternas->getTipoAssentamento()->getSequencial();
             }

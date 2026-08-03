@@ -51,7 +51,7 @@ if (isset($chavepesquisa)) {
     $o50_estrutreceita = db_formatar($o50_estrutreceita, $formatarEmentario);
 }
 if ((isset($atualizar) || isset($o50_estrutreceita)) && empty($incluir) && empty($alterar) && empty($excluir) && empty($chavepesquisa)) {
-    $matriz = split("\.", $o50_estrutreceita);
+    $matriz = preg_split("#\\.#m", (string) $o50_estrutreceita);
     $inicia = false;//variavel que indica que o nivel não tem mais filhos
     $tam = (count($matriz) - 1);
     $codigos = '';
@@ -72,7 +72,7 @@ if ((isset($atualizar) || isset($o50_estrutreceita)) && empty($incluir) && empty
     } else {
         $campo_concarpeculiar = "";
     }
-    $taman = strlen($codigo);
+    $taman = strlen((string) $codigo);
     $clorcfontes->sql_record($clorcfontes->sql_query(null, null, "o57_fonte", '', "substr(o57_fonte,1,$taman)='$codigo' and o57_anousu = $anousu"));
     $result01 = $clorcreceita->sql_record($clorcreceita->sql_query(null, null, "o70_codrec as codrec", '',
         "o70_anousu=" . db_getsession('DB_anousu') . "
@@ -165,7 +165,7 @@ if($db_opcao==1){
                 <td colspan='2' align='center'>
                     <?php
                     if((isset($atualizar) || isset($o50_estrutreceita)) && empty($cadastrado)&& empty($negado)){
-                        $matriz= split("\.",$o50_estrutreceita);
+                        $matriz= preg_split("#\\.#m",(string) $o50_estrutreceita);
                         $inicia=false;//variavel que indica que o nivel não tem mais filhos
                         $tam=(count($matriz)-1);
                         $codigos='';
@@ -184,7 +184,7 @@ if($db_opcao==1){
                                 $codigos=$codigo."#".$codigos;
                             }
                         }
-                        $matriz02= split("#",$codigos);
+                        $matriz02= preg_split("#\\##m",$codigos);
                         $tam=count($matriz02);
                         $espaco=3;
                         $esp='';
@@ -279,7 +279,7 @@ if($db_opcao==1){
                 </td>
                 <td>
                     <?php
-                    $x = array("f"=>"NAO","t"=>"SIM");
+                    $x = ["f"=>"NAO","t"=>"SIM"];
                     db_select('o70_reclan',$x,true,$db_opcao,"style='width:125px;'");
                     ?>
                 </td>
@@ -523,7 +523,7 @@ if($db_opcao==1){
       db_iframe_orcreceita.hide();
         <?php 
         if($db_opcao!=1){
-            echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+            echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
         }
         ?>
     }

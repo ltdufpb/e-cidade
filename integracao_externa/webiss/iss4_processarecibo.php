@@ -158,12 +158,12 @@ function fc_getVencimentoByCompetencia($iAno, $iMes) {
                                  Verifique dados na Tabela integra_cad_config_vencimentos ");
   }
 
-  return new DBDate(db_utils::fieldsMemory($rsConfiguracoes,0)->data_vencimento);
+  return new DBDate((new db_utils())->fieldsMemory($rsConfiguracoes, 0)->data_vencimento);
 
 }
 
 /************************   Processamento dos Debitos   ************************/
-$aCompetencias = array();
+$aCompetencias = [];
 db_logTitulo("PROCESSA DEBITOS",$sArquivoLog,$iParamLog);
 
 $sSqlIntegraRecibo  = "    select integra_recibo.sequencial,                                                                                      \n";
@@ -200,7 +200,7 @@ $sSqlIntegraRecibo .= "           integra_recibo_detalhe.mes_competencia_origem 
 $rsIntegraRecibo      = db_query($connDestino,$sSqlIntegraRecibo);
 $iLinhasIntegraRecibo = pg_num_rows($rsIntegraRecibo);
 $iNumdocAnterior      = 0;
-$aIssVarSemLancamento = array();
+$aIssVarSemLancamento = [];
 if ( $iLinhasIntegraRecibo > 0 ) {
 
   db_log("Total de Registros Encontrados : {$iLinhasIntegraRecibo}", $sArquivoLog, $iParamLog);
@@ -209,17 +209,17 @@ if ( $iLinhasIntegraRecibo > 0 ) {
   for ( $iIndRecibo=0; $iIndRecibo < $iLinhasIntegraRecibo; $iIndRecibo++ ) {
 
    logProcessamento($iIndRecibo,$iLinhasIntegraRecibo,$iParamLog);
-   $oIntegraRecibo                  = db_utils::fieldsMemory($rsIntegraRecibo, $iIndRecibo);
+   $oIntegraRecibo                  = (new db_utils())->fieldsMemory($rsIntegraRecibo, $iIndRecibo);
 
    /**
     * Validando se o recibo está vinculado a uma inscrição ou cgm
     */
-    if (trim($oIntegraRecibo->inscricao) != '') {
+    if (trim((string) $oIntegraRecibo->inscricao) != '') {
 
       $sSqlConsultaCgm  = " select q02_numcgm  as cgm                       ";
       $sSqlConsultaCgm .= "   from issbase                                  ";
       $sSqlConsultaCgm .= "  where q02_inscr = {$oIntegraRecibo->inscricao} ";
-    } else if (trim($oIntegraRecibo->cpfcnpj) != '') {
+    } else if (trim((string) $oIntegraRecibo->cpfcnpj) != '') {
 
       $sSqlConsultaCgm  = " select z01_numcgm  as cgm                       ";
       $sSqlConsultaCgm .= "   from cgm                                      ";
@@ -235,7 +235,7 @@ if ( $iLinhasIntegraRecibo > 0 ) {
     $rsConsultaCgm = db_query($conn,$sSqlConsultaCgm);
 
     if ( pg_num_rows($rsConsultaCgm) > 0 ) {
-      $iNumCgm = db_utils::fieldsMemory($rsConsultaCgm,0)->cgm;
+      $iNumCgm = (new db_utils())->fieldsMemory($rsConsultaCgm, 0)->cgm;
     } else {
       $sMsgLog  = "Recibo: {$oIntegraRecibo->sequencial} Numdoc: {$oIntegraRecibo->numdoc} não processado!";
       $sMsgLog .= " Empresa não cadastrada! ";
@@ -244,7 +244,7 @@ if ( $iLinhasIntegraRecibo > 0 ) {
     }
 
 
-    $sTipoBoleto = strtoupper($oIntegraRecibo->tipo_boleto);
+    $sTipoBoleto = strtoupper((string) $oIntegraRecibo->tipo_boleto);
 
     if (trim($sTipoBoleto) == '') {
       $sMsgLog  = "Recibo: {$oIntegraRecibo->sequencial} Numdoc: {$oIntegraRecibo->numdoc} não processado! ";
@@ -298,7 +298,7 @@ if ( $iLinhasIntegraRecibo > 0 ) {
 
     if ( pg_num_rows($rsConsultaReciboAnulado) > 0 ) {
 
-      $oReciboAnulado = db_utils::fieldsMemory($rsConsultaReciboAnulado,0);
+      $oReciboAnulado = (new db_utils())->fieldsMemory($rsConsultaReciboAnulado, 0);
 
       $sSqlAlteraIntegraReciboAnulado  = " update integra_recibo_anulado                     ";
       $sSqlAlteraIntegraReciboAnulado .= "    set processado = true                          ";
@@ -316,13 +316,13 @@ if ( $iLinhasIntegraRecibo > 0 ) {
      *  Desconsidera os registros tipo "T"-(Tomador) com valor zerado
      */
     if (  $oIntegraRecibo->tipo_boleto   == 'T' &&
-        ( $oIntegraRecibo->valor_imposto == 0 || trim($oIntegraRecibo->valor_imposto) == '' )
+        ( $oIntegraRecibo->valor_imposto == 0 || trim((string) $oIntegraRecibo->valor_imposto) == '' )
       ) {
       continue;
     }
 
 
-    if ( $oIntegraRecibo->valor_imposto == 0 || trim($oIntegraRecibo->valor_imposto) == '' ) {
+    if ( $oIntegraRecibo->valor_imposto == 0 || trim((string) $oIntegraRecibo->valor_imposto) == '' ) {
 
       $sSqlConsultaIssVar  = " select issvar.*                                                            ";
       $sSqlConsultaIssVar .= "   from issvar                                                              ";
@@ -364,7 +364,7 @@ if ( $iLinhasIntegraRecibo > 0 ) {
 
     if ( pg_num_rows($rsConsultaIssvar) > 0 && $sTipoBoleto == 'P' ) {
 
-      $oDadosIssVar = db_utils::fieldsMemory($rsConsultaIssvar,0);
+      $oDadosIssVar = (new db_utils())->fieldsMemory($rsConsultaIssvar, 0);
       $oDaoIssVar->excluir_issvar($oDadosIssVar->q05_codigo);
 
       if ($oDaoIssVar->erro_status == "0") {
@@ -380,7 +380,7 @@ if ( $iLinhasIntegraRecibo > 0 ) {
     }
 
     $rsNumpre      = db_query($conn, "select nextval('numpref_k03_numpre_seq') as k03_numpre");
-    $iNumpreGerado = db_utils::fieldsMemory($rsNumpre, 0)->k03_numpre;
+    $iNumpreGerado = (new db_utils())->fieldsMemory($rsNumpre, 0)->k03_numpre;
 
     $oDaoIssVar->q05_numpre = $iNumpreGerado;//$oIntegraRecibo->numdoc;
     $oDaoIssVar->q05_numpar = $oIntegraRecibo->mes_competencia;
@@ -398,7 +398,7 @@ if ( $iLinhasIntegraRecibo > 0 ) {
     $oDataVencimento = fc_getVencimentoByCompetencia($oIntegraRecibo->ano_competencia,  $oIntegraRecibo->mes_competencia);
     $iReceita        = $sTipoBoleto == 'P' ? $iReceitaDebitoPrestador : $iReceitaDebitoTomador;
 
-    if ( trim($oIntegraRecibo->inscricao) != '' ) {
+    if ( trim((string) $oIntegraRecibo->inscricao) != '' ) {
       $oDaoIssVar->gerarIssqnVariavelComplementar($oDataVencimento, $iReceita, null,$oIntegraRecibo->inscricao,null,$sTipoBoleto);
     } else {
 
@@ -423,7 +423,7 @@ if ( $iLinhasIntegraRecibo > 0 ) {
       throw new Exception('Erro ao Vincular dados do Arrecad ao Detalhe da Guia: ' . pg_last_error($rsAlteracaoIntegraRecibo));
     }
 
-    if ( $oIntegraRecibo->valor_imposto == 0 || trim($oIntegraRecibo->valor_imposto) == '' ) {
+    if ( $oIntegraRecibo->valor_imposto == 0 || trim((string) $oIntegraRecibo->valor_imposto) == '' ) {
 
       $sSqlReceitaDebito = " select arrecad.*                                                      \n";
       $sSqlReceitaDebito.= "   from issvar                                                         \n";
@@ -436,13 +436,13 @@ if ( $iLinhasIntegraRecibo > 0 ) {
       if ( pg_num_rows($rsReceitaDebito) == 0 ) {
         throw new Exception("ERRO-51: Débito não encontrado!");
       } else {
-        $oDadosDebito = db_utils::fieldsMemory($rsReceitaDebito,0);
+        $oDadosDebito = (new db_utils())->fieldsMemory($rsReceitaDebito, 0);
       }
 
       $aDadosDebitos['Numpre']  = $oDadosDebito->k00_numpre;
       $aDadosDebitos['Numpar']  = $oDadosDebito->k00_numpar;
       $aDadosDebitos['Receita'] = $oDadosDebito->k00_receit;
-      $aDebitos                 = array($aDadosDebitos);
+      $aDebitos                 = [$aDadosDebitos];
 
       try {
         $oCancelaDebito->setArreHistTXT("Cancelado pela importação WebISS");
@@ -536,8 +536,8 @@ if ($iTotalCompetencias > 0) {
 
         $aCompetenciasIntegraRecibo = db_utils::getCollectionByRecord($rsCompetenciasGuias);
 
-        $aDebitosLancadosGuia  = array();
-        $aReciboVinculadosGuia = array();
+        $aDebitosLancadosGuia  = [];
+        $aReciboVinculadosGuia = [];
 
         foreach ( db_utils::getCollectionByRecord($rsCompetenciasGuias) as $oDadosGuia ) {
 
@@ -565,7 +565,7 @@ if ($iTotalCompetencias > 0) {
       db_log("Emitindo Recibo\n", $sArquivoLog, 0);
       $oRecibo->emiteRecibo();
 
-      if ( trim($oDadosDocumento->iNumbco) != '' ) {
+      if ( trim((string) $oDadosDocumento->iNumbco) != '' ) {
 
         $sSqlIncluiArrebanco = " insert into                                 ";
         $sSqlIncluiArrebanco.= "   arrebanco ( k00_numpre,                   ";
@@ -612,7 +612,7 @@ if ( $iLinhasIntegraReciboAnulado > 0 ) {
 
   for ( $iIndRecibo=0; $iIndRecibo < $iLinhasIntegraReciboAnulado; $iIndRecibo++ ) {
 
-    $oIntegraReciboAnulado = db_utils::fieldsMemory($rsIntegraReciboAnulado,$iIndRecibo);
+    $oIntegraReciboAnulado = (new db_utils())->fieldsMemory($rsIntegraReciboAnulado, $iIndRecibo);
 
     logProcessamento($iIndRecibo,$iLinhasIntegraReciboAnulado,$iParamLog);
 
@@ -632,12 +632,12 @@ if ( $iLinhasIntegraReciboAnulado > 0 ) {
       db_log($sMsgLog,$sArquivoLog,2);
       continue;
     }
-    $oDadosCancelarArrecad = db_utils::fieldsMemory($rsReceitaDebito,0);
+    $oDadosCancelarArrecad = (new db_utils())->fieldsMemory($rsReceitaDebito, 0);
 
     $aDadosDebitos['Numpre']  = $oDadosCancelarArrecad->k00_numpre;
     $aDadosDebitos['Numpar']  = $oDadosCancelarArrecad->k00_numpar;
     $aDadosDebitos['Receita'] = $oDadosCancelarArrecad->k00_receit;
-    $aDebitos = array($aDadosDebitos);
+    $aDebitos = [$aDadosDebitos];
 
     try {
       $oCancelaDebito->setArreHistTXT("Cancelado pela importação WebISS");
@@ -678,7 +678,7 @@ if ( $iLinhasReciboSemBaixa > 0 ) {
 
   for ( $iInd=0; $iInd < $iLinhasReciboSemBaixa; $iInd++ ) {
 
-    $oReciboSemBaixa = db_utils::fieldsMemory($rsReciboSemBaixa,$iInd);
+    $oReciboSemBaixa = (new db_utils())->fieldsMemory($rsReciboSemBaixa, $iInd);
 
     logProcessamento($iInd,$iLinhasReciboSemBaixa,$iParamLog);
 
@@ -753,7 +753,7 @@ if ( $iLinhasReciboSemBaixa > 0 ) {
 
     if ( $rsSituacaoDebito && pg_num_rows($rsSituacaoDebito) > 0 ) {
 
-      $oSituacaoDebito = db_utils::fieldsMemory($rsSituacaoDebito,0);
+      $oSituacaoDebito = (new db_utils())->fieldsMemory($rsSituacaoDebito, 0);
 
       $sMsgLog  = "Processado Numpre : {$oSituacaoDebito->numpre} Sequencial Integra : {$oReciboSemBaixa->sequencial} ";
       $sMsgLog .= "Tipo Baixa : {$oSituacaoDebito->tipo_baixa}";

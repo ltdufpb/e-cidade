@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE cancdebitosproc
 class cl_cancdebitosproc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k23_codigo = 0; 
-   var $k23_data_dia = null; 
-   var $k23_data_mes = null; 
-   var $k23_data_ano = null; 
-   var $k23_data = null; 
-   var $k23_hora = null; 
-   var $k23_usuario = 0; 
-   var $k23_obs = null; 
-   var $k23_cancdebitostipo = 0; 
+   public $k23_codigo = 0; 
+   public $k23_data_dia = null; 
+   public $k23_data_mes = null; 
+   public $k23_data_ano = null; 
+   public $k23_data = null; 
+   public $k23_hora = null; 
+   public $k23_usuario = 0; 
+   public $k23_obs = null; 
+   public $k23_cancdebitostipo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k23_codigo = int8 = Código 
                  k23_data = date = Data 
                  k23_hora = varchar(5) = Hora 
@@ -61,10 +61,10 @@ class cl_cancdebitosproc {
                  k23_cancdebitostipo = int4 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_cancdebitosproc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cancdebitosproc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -144,10 +144,10 @@ class cl_cancdebitosproc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k23_codigo = pg_result($result,0,0); 
+       $this->k23_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cancdebitosproc_k23_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k23_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k23_codigo)){
          $this->erro_sql = " Campo k23_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -185,7 +185,7 @@ class cl_cancdebitosproc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Processamento dos Debitos Cancelados ($this->k23_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Processamento dos Debitos Cancelados já Cadastrado";
@@ -209,15 +209,15 @@ class cl_cancdebitosproc {
      $resaco = $this->sql_record($this->sql_query_file($this->k23_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7405,'$this->k23_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1233,7405,'','".AddSlashes(pg_result($resaco,0,'k23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1233,7406,'','".AddSlashes(pg_result($resaco,0,'k23_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1233,7407,'','".AddSlashes(pg_result($resaco,0,'k23_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1233,7408,'','".AddSlashes(pg_result($resaco,0,'k23_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1233,7409,'','".AddSlashes(pg_result($resaco,0,'k23_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1233,11750,'','".AddSlashes(pg_result($resaco,0,'k23_cancdebitostipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1233,7405,'','".AddSlashes(pg_fetch_result($resaco,0,'k23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1233,7406,'','".AddSlashes(pg_fetch_result($resaco,0,'k23_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1233,7407,'','".AddSlashes(pg_fetch_result($resaco,0,'k23_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1233,7408,'','".AddSlashes(pg_fetch_result($resaco,0,'k23_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1233,7409,'','".AddSlashes(pg_fetch_result($resaco,0,'k23_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1233,11750,'','".AddSlashes(pg_fetch_result($resaco,0,'k23_cancdebitostipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -226,10 +226,10 @@ class cl_cancdebitosproc {
       $this->atualizacampos();
      $sql = " update cancdebitosproc set ";
      $virgula = "";
-     if(trim($this->k23_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_codigo"])){ 
+     if(trim((string) $this->k23_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_codigo"])){ 
        $sql  .= $virgula." k23_codigo = $this->k23_codigo ";
        $virgula = ",";
-       if(trim($this->k23_codigo) == null ){ 
+       if(trim((string) $this->k23_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "k23_codigo";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_cancdebitosproc {
          return false;
        }
      }
-     if(trim($this->k23_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k23_data_dia"] !="") ){ 
+     if(trim((string) $this->k23_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k23_data_dia"] !="") ){ 
        $sql  .= $virgula." k23_data = '$this->k23_data' ";
        $virgula = ",";
-       if(trim($this->k23_data) == null ){ 
+       if(trim((string) $this->k23_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "k23_data_dia";
          $this->erro_banco = "";
@@ -255,7 +255,7 @@ class cl_cancdebitosproc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k23_data_dia"])){ 
          $sql  .= $virgula." k23_data = null ";
          $virgula = ",";
-         if(trim($this->k23_data) == null ){ 
+         if(trim((string) $this->k23_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "k23_data_dia";
            $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_cancdebitosproc {
          }
        }
      }
-     if(trim($this->k23_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_hora"])){ 
+     if(trim((string) $this->k23_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_hora"])){ 
        $sql  .= $virgula." k23_hora = '$this->k23_hora' ";
        $virgula = ",";
-       if(trim($this->k23_hora) == null ){ 
+       if(trim((string) $this->k23_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "k23_hora";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_cancdebitosproc {
          return false;
        }
      }
-     if(trim($this->k23_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_usuario"])){ 
+     if(trim((string) $this->k23_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_usuario"])){ 
        $sql  .= $virgula." k23_usuario = $this->k23_usuario ";
        $virgula = ",";
-       if(trim($this->k23_usuario) == null ){ 
+       if(trim((string) $this->k23_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "k23_usuario";
          $this->erro_banco = "";
@@ -292,14 +292,14 @@ class cl_cancdebitosproc {
          return false;
        }
      }
-     if(trim($this->k23_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_obs"])){ 
+     if(trim((string) $this->k23_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_obs"])){ 
        $sql  .= $virgula." k23_obs = '$this->k23_obs' ";
        $virgula = ",";
      }
-     if(trim($this->k23_cancdebitostipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_cancdebitostipo"])){ 
+     if(trim((string) $this->k23_cancdebitostipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k23_cancdebitostipo"])){ 
        $sql  .= $virgula." k23_cancdebitostipo = $this->k23_cancdebitostipo ";
        $virgula = ",";
-       if(trim($this->k23_cancdebitostipo) == null ){ 
+       if(trim((string) $this->k23_cancdebitostipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "k23_cancdebitostipo";
          $this->erro_banco = "";
@@ -317,21 +317,21 @@ class cl_cancdebitosproc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7405,'$this->k23_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k23_codigo"]) || $this->k23_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,1233,7405,'".AddSlashes(pg_result($resaco,$conresaco,'k23_codigo'))."','$this->k23_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1233,7405,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k23_codigo'))."','$this->k23_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k23_data"]) || $this->k23_data != "")
-           $resac = db_query("insert into db_acount values($acount,1233,7406,'".AddSlashes(pg_result($resaco,$conresaco,'k23_data'))."','$this->k23_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1233,7406,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k23_data'))."','$this->k23_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k23_hora"]) || $this->k23_hora != "")
-           $resac = db_query("insert into db_acount values($acount,1233,7407,'".AddSlashes(pg_result($resaco,$conresaco,'k23_hora'))."','$this->k23_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1233,7407,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k23_hora'))."','$this->k23_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k23_usuario"]) || $this->k23_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,1233,7408,'".AddSlashes(pg_result($resaco,$conresaco,'k23_usuario'))."','$this->k23_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1233,7408,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k23_usuario'))."','$this->k23_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k23_obs"]) || $this->k23_obs != "")
-           $resac = db_query("insert into db_acount values($acount,1233,7409,'".AddSlashes(pg_result($resaco,$conresaco,'k23_obs'))."','$this->k23_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1233,7409,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k23_obs'))."','$this->k23_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k23_cancdebitostipo"]) || $this->k23_cancdebitostipo != "")
-           $resac = db_query("insert into db_acount values($acount,1233,11750,'".AddSlashes(pg_result($resaco,$conresaco,'k23_cancdebitostipo'))."','$this->k23_cancdebitostipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1233,11750,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k23_cancdebitostipo'))."','$this->k23_cancdebitostipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -376,15 +376,15 @@ class cl_cancdebitosproc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7405,'$k23_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1233,7405,'','".AddSlashes(pg_result($resaco,$iresaco,'k23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1233,7406,'','".AddSlashes(pg_result($resaco,$iresaco,'k23_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1233,7407,'','".AddSlashes(pg_result($resaco,$iresaco,'k23_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1233,7408,'','".AddSlashes(pg_result($resaco,$iresaco,'k23_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1233,7409,'','".AddSlashes(pg_result($resaco,$iresaco,'k23_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1233,11750,'','".AddSlashes(pg_result($resaco,$iresaco,'k23_cancdebitostipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1233,7405,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k23_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1233,7406,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k23_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1233,7407,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k23_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1233,7408,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k23_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1233,7409,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k23_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1233,11750,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k23_cancdebitostipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cancdebitosproc
@@ -444,7 +444,7 @@ class cl_cancdebitosproc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cancdebitosproc";
@@ -459,7 +459,7 @@ class cl_cancdebitosproc {
    function sql_query ( $k23_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,7 +482,7 @@ class cl_cancdebitosproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -495,7 +495,7 @@ class cl_cancdebitosproc {
    function sql_query_file ( $k23_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -516,7 +516,7 @@ class cl_cancdebitosproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -539,7 +539,7 @@ class cl_cancdebitosproc {
     
     if ( $campos != "*" ) {
       
-      $campos_sql = split("#", $campos);
+      $campos_sql = preg_split("#\\##m", $campos);
       $virgula    = "";
       
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -593,7 +593,7 @@ class cl_cancdebitosproc {
     if ( $ordem != null ) {
     
       $sql       .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = preg_split("#\\##m", $ordem);
       $virgula    = "";
     
       for ($i = 0; $i < sizeof($campos_sql); $i++) {

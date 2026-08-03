@@ -95,7 +95,7 @@ db_input('q92_descr',40,$Iq92_descr,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('q85_var',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -106,7 +106,7 @@ db_select('q85_var',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('q85_fixmes',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -132,7 +132,7 @@ db_input('q87_descr',40,$Iq87_descr,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('q85_perman',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -143,7 +143,7 @@ db_select('q85_perman',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('q85_outromun',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -199,7 +199,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cadcalc.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }

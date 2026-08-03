@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_condicionantetipolicenca_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcondicionantetipolicenca = new cl_condicionantetipolicenca;
 $clcondicionantetipolicenca->rotulo->label("am17_sequencial");
 $clcondicionantetipolicenca->rotulo->label("am17_tipolicenca");
@@ -78,9 +78,9 @@ $clcondicionantetipolicenca->rotulo->label("am17_tipolicenca");
         }else{
            $sql = $clcondicionantetipolicenca->sql_query("",$campos,"am17_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_am17_tipolicenca)){
-          $repassa = array("chave_am17_sequencial"=>$chave_am17_sequencial,"chave_am17_tipolicenca"=>$chave_am17_tipolicenca);
+          $repassa = ["chave_am17_sequencial"=>$chave_am17_sequencial,"chave_am17_tipolicenca"=>$chave_am17_tipolicenca];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

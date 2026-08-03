@@ -57,7 +57,7 @@ switch ($oParametro->sExec) {
     }
 
     $oParametroetrosFiscais = db_utils::fieldsMemory($rsParfiscal, 0);
-    $oRetorno->aAnosCalculo = array();
+    $oRetorno->aAnosCalculo = [];
 
     if ($oParametroetrosFiscais->y32_calcvistanosanteriores == 't') {
 
@@ -86,7 +86,7 @@ switch ($oParametro->sExec) {
 
     $oRetorno->iNumeroParcelasAlvara = $resultParametros->parcelasalvara;
 
-    $maximoParcelasIssqn = $resultParametros->parcelasissqn ? $resultParametros->parcelasissqn : null;
+    $maximoParcelasIssqn = $resultParametros->parcelasissqn ?: null;
     $data = DBDate::createFromTimestamp(db_getsession('DB_datausu'));
     $oRetorno->iNumeroParcelasIssqn = 13 - $data->getMes();
 
@@ -125,7 +125,7 @@ switch ($oParametro->sExec) {
 
     $rsTabativ      = $oDaoTabativ->sql_record($sSqlTabativ);
 
-    $oRetorno->aAtividades = array();
+    $oRetorno->aAtividades = [];
 
     if ($rsTabativ and $oDaoTabativ->numrows > 0) {
 
@@ -136,7 +136,7 @@ switch ($oParametro->sExec) {
         $oDadosAtividade = new stdClass();
 
         $oDadosAtividade->iSequencial  = $oAtividade->q07_seq;
-        $oDadosAtividade->sDescricao   = urlencode($oAtividade->q03_descr);
+        $oDadosAtividade->sDescricao   = urlencode((string) $oAtividade->q03_descr);
         $oDadosAtividade->dDataInicial = $oAtividade->q07_datain;
         $oDadosAtividade->lPermanente  = $oAtividade->q07_perman;
         $oDadosAtividade->iQuantidade  = $oAtividade->q07_quant;
@@ -161,7 +161,7 @@ switch ($oParametro->sExec) {
          */
         if( $oEmpresa->isParalisada() ) {
 
-          $oErroMensagem = (object) array('iInscricao', $oParametro->iInscricao);
+          $oErroMensagem = (object) ['iInscricao', $oParametro->iInscricao];
           throw new Exception(_M(Empresa::MENSAGENS . 'empresa_paralisada', $oErroMensagem));
         }
 
@@ -215,7 +215,7 @@ switch ($oParametro->sExec) {
 
           $sResultado  = db_utils::fieldsMemory($rsCalculo,0)->resultado_calculo;
 
-          if (substr($sResultado, 0, 2) != "01") {
+          if (!str_starts_with((string) $sResultado, "01")) {
             throw new BusinessException( "Erro ao Processar Cálculo : \n\n{$sResultado}");
           }
 

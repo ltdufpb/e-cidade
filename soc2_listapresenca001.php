@@ -99,7 +99,7 @@ require_once('scripts/widgets/DBToggleList.widget.js');
           <td class='bold'>Modelo:</td>
           <td>
             <?php
-              $aModelos = array(1=>'Por Mês',2=>'Total');
+              $aModelos = [1=>'Por Mês',2=>'Total'];
               db_select('iModelo', $aModelos, true, 1);
             ?>
           </td>

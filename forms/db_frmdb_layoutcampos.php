@@ -146,7 +146,7 @@ db_input('db52_tamanho_old',6,null,true,'hidden',$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('f'=>'Não','t'=>'Sim');
+$x = ['f'=>'Não','t'=>'Sim'];
 db_select('db52_ident',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -155,7 +155,7 @@ db_select('db52_ident',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('t'=>'Sim','f'=>'Não');
+$x = ['t'=>'Sim','f'=>'Não'];
 db_select('db52_imprimir',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -186,7 +186,7 @@ db_textarea('db52_obs',2,48,$Idb52_obs,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('d'=>'Esquerda','e'=>'Direita');
+$x = ['d'=>'Esquerda','e'=>'Direita'];
 db_select('db52_alinha',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -218,7 +218,7 @@ db_input('db52_quebraapos',2,$Idb52_quebraapos,true,'text',$db_opcao,"")
       if(isset($db52_codigo) && trim($db52_codigo) != ""){
 	$dbwhere .= " and db52_codigo <> ".$db52_codigo;
       }
-      $chavepri= array("db52_codigo"=>@$db52_codigo);
+      $chavepri= ["db52_codigo"=>@$db52_codigo];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       $cliframe_alterar_excluir->sql     = $cldb_layoutcampos->sql_query(null,"db52_codigo,db52_nome,db52_descr,db52_layoutformat,db53_descr,lpad(db52_posicao,4,'0')||'-'||lpad((db52_posicao - 1 + (case when db52_tamanho = 0 then db53_tamanho else db52_tamanho end)),4,'0') as db52_posicao,db52_ident,db52_default,case when db52_tamanho = 0 then db53_tamanho else db52_tamanho end as db52_tamanho,db52_alinha ","db52_posicao desc",$dbwhere);
       $cliframe_alterar_excluir->campos  ="db52_posicao,db52_tamanho,db52_nome,db52_descr,db53_descr,db52_ident,db52_default";

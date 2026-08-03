@@ -42,7 +42,7 @@ $clcontlotv = new cl_contlotv;
 $cleditalserv = new cl_editalserv;
 $db_opcao = 1;
 $db_botao = true;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clprojmelhorias->rotulo->label();
 $cllote->rotulo->label();

@@ -42,8 +42,8 @@ include(modification("classes/db_prontprofatend_ext_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 set_time_limit(0);
 
@@ -68,7 +68,7 @@ try {
 	                                      "
 	                                    );
 	$obj_sau_config = db_utils::fieldsMemory( $clsau_config->sql_record( $clsau_config->sql_query_ext() ), 0 );
-}catch ( Exception $e ){
+}catch ( Exception ){
 	die("erro");
 }
 
@@ -92,9 +92,9 @@ $pdf->SetLineWidth(0.5);
 //Gera FA do agendamento
 if( isset($agendamentofa) && $agendamentofa==true ){
 
-	$ano = substr( $sd23_d_consulta, 6, 4 );
-	$mes = substr( $sd23_d_consulta, 3, 2 );
-	$dia = substr( $sd23_d_consulta, 0, 2 );
+	$ano = substr( (string) $sd23_d_consulta, 6, 4 );
+	$mes = substr( (string) $sd23_d_consulta, 3, 2 );
+	$dia = substr( (string) $sd23_d_consulta, 0, 2 );
 
 	if( isset($codigos) ){
 		$codigos = " and sd23_i_codigo in ($codigos)";
@@ -109,7 +109,7 @@ if( isset($agendamentofa) && $agendamentofa==true ){
 		            												)
 													and sd27_i_codigo = $sd27_i_codigo") );
 	$obj_agendamento = db_utils::fieldsMemory($res_agendamento,0);
-	$arr_totalagenda = explode(",", $obj_agendamento->fc_totalagendado );
+	$arr_totalagenda = explode(",", (string) $obj_agendamento->fc_totalagendado );
 	$qtd = $arr_totalagenda[5] > $clagendamentos->numrows?$clagendamentos->numrows:$arr_totalagenda[5];
   $intProfissional = $sd27_i_codigo;
 }
@@ -141,8 +141,8 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
 	//Gerar número prontuário automático
     //gera numatend
     $sql_fc    = "select fc_numatend()";
-    $query_fc  = db_query($sql_fc) or die(pg_errormessage()."<br>$sql_fc  <br> $intQtd");
-    $fc_numatend = explode(",",pg_result($query_fc,0,0));
+    $query_fc  = db_query($sql_fc) or die(pg_last_error()."<br>$sql_fc  <br> $intQtd");
+    $fc_numatend = explode(",",pg_fetch_result($query_fc,0,0));
 
     $clprontuarios->sd24_i_ano      = trim($fc_numatend[0]);
     $clprontuarios->sd24_i_mes      = trim($fc_numatend[1]);
@@ -207,7 +207,7 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
 	  $pdf->setfont('arial','b',7);
 	  // $pdf->text( $pdf->getX()+60,$pdf->getY()+3,"NÚMERO DO ATENDIMENTO");
 	  $pdf->text( $pdf->getX()+70,$pdf->getY()+5,"ATENDIMENTO Nro :   ".$sd24_i_codigo);
-	  $t1 = str_pad($sd24_i_codigo,10,0,'str_pad_left');//numero codigo barras
+	  $t1 = str_pad((string) $sd24_i_codigo,10,0,'str_pad_left');//numero codigo barras
 	  $pdf->setfont('arial','b',8);
 	  $pdf->SetFillColor(000);//fundo codbarras
 	  //$pdf->text($pdf->getX()+59,$pdf->getY()+15,str_pad($sd24_i_codigo,10," ",'str_pad_left').' - ');
@@ -238,15 +238,15 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
 	  $pdf->setfont('arial','b',7);
 	  $pdf->text( $pdf->getX()+2, $alt+24, "NOME DA UNIDADE: ");
 	  $pdf->setfont('arial','b',6);
-	  $pdf->text( $pdf->getX()+2, $alt+27,  substr($descrdepto,0,40));
+	  $pdf->text( $pdf->getX()+2, $alt+27,  substr((string) $descrdepto,0,40));
 	  $pdf->setfont('arial','b',7);
 	  $pdf->text( $pdf->getX()+2, $alt+34, "ENDEREÇO: ");
 	  $pdf->setfont('arial','b',6);
-	  $pdf->text( $pdf->getX()+2, $alt+37, substr($est_ender,0,40));
+	  $pdf->text( $pdf->getX()+2, $alt+37, substr((string) $est_ender,0,40));
 	  $pdf->setfont('arial','b',7);
 	  $pdf->text( $pdf->getX()+2, $alt+42, "MUNICÍPIO: ");
 	  $pdf->setfont('arial','b',6);
-	  $pdf->text( $pdf->getX()+2, $alt+44, substr($est_munic,0,40));
+	  $pdf->text( $pdf->getX()+2, $alt+44, substr((string) $est_munic,0,40));
 	  $pdf->setfont('arial','b',6);
 	  $pdf->text( $pdf->getX()+2, $alt+50, "UF:".$est_uf);
 	  $pdf->setfont('arial','b',6);
@@ -294,16 +294,16 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
 			db_fieldsMemory($result_prontprofatend,0);
 	       $pdf->setX($lar+58);
 	       $pdf->setfont('arial','',7);
-	       $pdf->SetWidths(array(19,38,20,53,24));
-	       $pdf->SetAligns(array("C","C","L","J","L"));
+	       $pdf->SetWidths([19,38,20,53,24]);
+	       $pdf->SetAligns(["C","C","L","J","L"]);
 	       $nbx="";
 
-	       $pdf->Row(array( "{$estrutural}",
+	       $pdf->Row([ "{$estrutural}",
 	       					"{$descricao}",
 	       					"{$profissional}",
 	       					"{$nome_profissional}",
 	       					"$nbx"
-	       				  ), 3,false,3 );
+	       				  ], 3,false,3 );
 	       $pdf->line( $lar+58, $pdf->getY(), $lar+58+19, $pdf->getY() );
 	       $pdf->line( $lar+79, $pdf->getY(), $lar+74+40, $pdf->getY() );
 	       $pdf->line( $lar+116, $pdf->getY(), $lar+116+94, $pdf->getY() );
@@ -332,17 +332,17 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
 	  $pdf->setX($lar);
 
 	  $alt = $pdf->getY()+50+5;
-	  $sexo= array("F"=>"Feminino","M"=>"Masculino");
-	  $dia_nasc = substr($z01_d_nasc,8,2);
-	  $mes_nasc = substr($z01_d_nasc,5,2);
-	  $ano_nasc = substr($z01_d_nasc,0,4);
+	  $sexo= ["F"=>"Feminino","M"=>"Masculino"];
+	  $dia_nasc = substr((string) $z01_d_nasc,8,2);
+	  $mes_nasc = substr((string) $z01_d_nasc,5,2);
+	  $ano_nasc = substr((string) $z01_d_nasc,0,4);
 	  $idade = isset($agendamentofa)?calcage( $dia_nasc, $mes_nasc, $ano_nasc, date("d"), date("m"), date("Y") ):"";
 
 	  $pdf->text( $pdf->getX()+2, $alt+29, "ENDEREÇO: ".substr($z01_v_ender.", ".$z01_i_numero.", ".$z01_v_compl,0,21));
 	  $pdf->text( $pdf->getX()+2, $alt+32, substr($z01_v_ender.", ".$z01_i_numero.", ".$z01_v_compl,21,40));
 	  $pdf->text( $pdf->getX()+2, $alt+35, "BAIRRO: ".$z01_v_bairro);
-	  $pdf->text( $pdf->getX()+2, $alt+41, "MUNICÍPIO:".substr($z01_v_munic,0,40));
-	  $pdf->text( $pdf->getX()+2, $alt+44, substr($z01_v_munic,40,40));
+	  $pdf->text( $pdf->getX()+2, $alt+41, "MUNICÍPIO:".substr((string) $z01_v_munic,0,40));
+	  $pdf->text( $pdf->getX()+2, $alt+44, substr((string) $z01_v_munic,40,40));
 	  $pdf->text( $pdf->getX()+2, $alt+47, "UF:".$z01_v_uf." IDADE:".$idade);
 	  $pdf->text( $pdf->getX()+2, $alt+53, "SEXO: ".@$sexo[$z01_v_sexo]);
 	  $pdf->text( $pdf->getX()+2, $alt+59, "DATA NASC:".$dia_nasc."/".$mes_nasc."/".$ano_nasc );
@@ -357,9 +357,9 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
 	  $pdf->setfont('arial','b',7);
 	  $alt=$pdf->getY();
 	  $lar=$pdf->getX();
-	  $sd24_t_diagnostico1=substr($sd24_t_diagnostico,0,46);
-	  $sd24_t_diagnostico2=substr($sd24_t_diagnostico,46,46);
-	  $sd24_t_diagnostico3=substr($sd24_t_diagnostico,92,46);
+	  $sd24_t_diagnostico1=substr((string) $sd24_t_diagnostico,0,46);
+	  $sd24_t_diagnostico2=substr((string) $sd24_t_diagnostico,46,46);
+	  $sd24_t_diagnostico3=substr((string) $sd24_t_diagnostico,92,46);
 	  $pdf->setY($alt+119);
 	  $pdf->setX($lar+76);
 	  $pdf->text($lar+78,$alt+122,$sd24_t_diagnostico1);
@@ -376,8 +376,8 @@ for( $intQtd = 1; $intQtd <= $qtd; $intQtd++ ){
 	  $pdf->rect( $pdf->getX(), $pdf->getY()+131, 27, 10, "D");
 	  //$pdf->text( $pdf->getX(), $pdf->getY()+134, "TIPO DE FICHA");
 	  $pdf->setfont('arial','b',7);
-	  $sd24_d_cadastro2 = substr($obj_agendamento->sd23_d_consulta,8,2)."/".substr($obj_agendamento->sd23_d_consulta,5,2)."/".substr($obj_agendamento->sd23_d_consulta,0,4);
-	  $pdf->text( $pdf->getX()+5, $pdf->getY()+137, trim($obj_agendamento->sd101_c_descr));
+	  $sd24_d_cadastro2 = substr((string) $obj_agendamento->sd23_d_consulta,8,2)."/".substr((string) $obj_agendamento->sd23_d_consulta,5,2)."/".substr((string) $obj_agendamento->sd23_d_consulta,0,4);
+	  $pdf->text( $pdf->getX()+5, $pdf->getY()+137, trim((string) $obj_agendamento->sd101_c_descr));
 	  //Linha 4 - 2ª Retangulo HORA
 	  $pdf->rect( $pdf->getX()+29, $pdf->getY()+131, 27, 10, "D");
 	  $pdf->setfont('arial','b',6);

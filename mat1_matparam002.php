@@ -36,8 +36,8 @@ require_once(modification("model/configuracao/DBEstrutura.model.php"));
 require_once(modification("model/configuracao/DBEstruturaValor.model.php"));
 require_once(modification("model/estoque/MaterialGrupo.model.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clmatparam = new cl_matparam;
 $db_opcao = 22;
 $db_botao = false;
@@ -70,7 +70,7 @@ if(isset($alterar)){
        }
        
        $iTotalNivelCriar  = ($iTotalNiveisNova - $iTotalNiveisAnterior);
-       $aNovaEstrutura   = array();
+       $aNovaEstrutura   = [];
        foreach ($aNiveisEstruturaNova as $oStdNivel) {
          
          if ($oStdNivel->nivel <= $iTotalNivelCriar) {

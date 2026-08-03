@@ -37,12 +37,6 @@ class GeracaoArquivoPitLogradouros {
 	 * Caminho do JSON com as mensagens
 	 */
 	const MENSAGENS = 'arrecadacao.cadastro.GeracaoArquivoPitLogradouros.';
-	
-  /**
-   * Ano que deve ser usado para a geração do arquivo.
-   * @var Integer
-   */
-  private $iAno;
 
   /**
    * Semestre que deve ser usado para a geração do arquivo
@@ -73,12 +67,14 @@ class GeracaoArquivoPitLogradouros {
    * @param integer $iAno      Ano que deve ser usado para a geração de Arquivo
    * @param integer $iSemestre Semestre que deve ser usado para a geração do Arquivo
    */
-  function __construct( $iAno, $iSemestre ){
+  function __construct( /**
+   * Ano que deve ser usado para a geração do arquivo.
+   */
+  private $iAno, $iSemestre ){
     
-    $this->iAno      = $iAno;
     $this->iSemestre = $iSemestre;
     $this->iInstit   = db_getsession('DB_instit');
-    $this->aErros    = array();
+    $this->aErros    = [];
     
     $this->oDomDocument = new DOMDocument('1.0', 'iso-8859-1');
     $this->oDomDocument->xmlStandalone = true;
@@ -119,14 +115,14 @@ class GeracaoArquivoPitLogradouros {
     	 */
     	$oChildLogradouro = $this->oDomDocument->createElement('logradouro');
     	$oChildLogradouro->setAttribute('tipo', $oLogradouros->tipo );
-    	$oChildLogradouro->setAttribute('nome', utf8_encode( $oLogradouros->nome ) );
+    	$oChildLogradouro->setAttribute('nome', mb_convert_encoding( $oLogradouros->nome, 'UTF-8', 'ISO-8859-1' ) );
     	$oParentLogradouro->appendChild( $oChildLogradouro );
 
     	/**
     	 * Escreve tag <bairro> dentro do Parent BAIRROS
     	 */
     	$oChildBairro = $this->oDomDocument->createElement('bairro');
-    	$oChildBairro->setAttribute('nome', utf8_encode( $oLogradouros->bairro ) );
+    	$oChildBairro->setAttribute('nome', mb_convert_encoding( $oLogradouros->bairro, 'UTF-8', 'ISO-8859-1' ) );
     	$oParentBairro->appendChild( $oChildBairro );
     	
     	/**

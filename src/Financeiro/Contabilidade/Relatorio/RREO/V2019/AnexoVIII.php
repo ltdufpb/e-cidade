@@ -41,11 +41,11 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
      */
     const CODIGO_RELATORIO = 195;
 
-    private $aLinhasOrcamento = array();
+    private $aLinhasOrcamento = [];
 
-    private $aLinhasOrcamentoDebito = array();
+    private $aLinhasOrcamentoDebito = [];
 
-    private $aLinhasProcessar = array();
+    private $aLinhasProcessar = [];
 
     /**
      * AnexoVII constructor.
@@ -61,43 +61,43 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         /**
          * Array associativo onde o indice é o código da linha e os valores em 'inclusao' e 'exclusao' são os documentos
          */
-        $this->aLinhasOrcamento = array(
+        $this->aLinhasOrcamento = [
             // 47.1 Orçamento do Exercício
-          106 => array(
-            'inclusao' => array(5, 161, 151, 120, 140)
-          ),
-          119 => array(
-            'inclusao' => array(5, 161, 151, 120, 140)
-          ),
+          106 => [
+            'inclusao' => [5, 161, 151, 120, 140]
+          ],
+          119 => [
+            'inclusao' => [5, 161, 151, 120, 140]
+          ],
             // 48.2 Restos a Pagar
-          107 => array(
-            'inclusao' => array(35, 37)
-          ),
-          120 => array(
-            'inclusao' => array(35, 37)
-          ),
+          107 => [
+            'inclusao' => [35, 37]
+          ],
+          120 => [
+            'inclusao' => [35, 37]
+          ],
             // 51.1 Retenções
-          111 => array(
-            'inclusao' => array(160, 163)
-          ),
-          124 => array(
-            'inclusao' => array(160, 163)
-          )
-        );
+          111 => [
+            'inclusao' => [160, 163]
+          ],
+          124 => [
+            'inclusao' => [160, 163]
+          ]
+        ];
 
-        $this->aLinhasOrcamentoDebito = array(
+        $this->aLinhasOrcamentoDebito = [
             //  47- (+) INGRESSO DE RECURSOS ATÉ O BIMESTRE
-          104 => array(
-            'inclusao' => array(100, 130),
-            'exclusao' => array(101, 131)
-          ),
-          117 => array(
-            'inclusao' => array(100, 130),
-            'exclusao' => array(101, 131)
-          )
-        );
+          104 => [
+            'inclusao' => [100, 130],
+            'exclusao' => [101, 131]
+          ],
+          117 => [
+            'inclusao' => [100, 130],
+            'exclusao' => [101, 131]
+          ]
+        ];
 
-        $this->aLinhasProcessar = array(
+        $this->aLinhasProcessar = [
           49,
           57,
           58,
@@ -118,7 +118,7 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
           122,
           123,
           128
-        );
+        ];
     }
 
     /**
@@ -153,7 +153,7 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
             $formula = "((L[53]->empenhado_atebim-(L[59]->valor+L[62]->valor))/L[45]->recatebim)*100";
             $this->aLinhasConsistencia[66]->colunas[0]->o116_formula = $formula;
 
-            $this->processarFormasDasLinhas(array(92, 64, 65, 66));
+            $this->processarFormasDasLinhas([92, 64, 65, 66]);
         }
 
         foreach ($this->aLinhasOrcamento as $linha => $aConfiguracao) {
@@ -193,7 +193,7 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         }
 
         $sInclusao = implode(",", $aConfiguracao['inclusao']);
-        $aContas = array();
+        $aContas = [];
 
         foreach ($this->aLinhasConsistencia[$iLinha]->parametros->contas as $oStdConta) {
             $aContas[$oStdConta->estrutural] = $oStdConta->nivel;
@@ -202,15 +202,15 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
         $oValor = new \stdClass();
         $oValor->valor = 0;
 
-        if (!in_array($iLinha, array(111, 124))) {
+        if (!in_array($iLinha, [111, 124])) {
             $oDaoLancamento = new \cl_conlancam();
             $sCampos = "sum(case when c71_coddoc in(".$sInclusao.") then c70_valor else c70_valor * -1 end) as valor";
-            $aWhere = array(
+            $aWhere = [
                 "c70_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'",
                 "c71_coddoc in (" . $sInclusao . ")",
                 "(c60_estrut ilike '111%' or c60_estrut ilike '114%')",
                 "c02_instit in ({$this->getInstituicoes()})"
-            );
+            ];
             // Caso exista recurso, adiciona na busca o recurso configurado
             if (!empty($iCodigoRecurso)) {
                 $aWhere[] = "c61_codigo = {$iCodigoRecurso}";
@@ -241,7 +241,7 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
             }
         }
 
-        if (in_array($iLinha, array(106, 119))) {
+        if (in_array($iLinha, [106, 119])) {
             $oValor->valor = $this->processarOrcamentoExercicioLinhaOrcamentoExercicio($iCodigoRecurso);
         }
 
@@ -264,13 +264,13 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
             $oDaoLancamento = new \cl_conlancam();
             $campoPesquisa = $indice === 'inclusao' ? 'c69_debito' : 'c69_credito';
             $sCampos = "coalesce(sum(c70_valor), 0) as valor";
-            $aWhere = array(
+            $aWhere = [
                 "c70_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'",
                 "c71_coddoc in ({$documentos})",
                 "(c60_estrut ilike '111%' or c60_estrut ilike '114%')",
                 "c02_instit in ({$this->getInstituicoes()})",
                 "{$campoPesquisa} = c61_reduz"
-            );
+            ];
 
             $iCodigoRecurso = '';
             // Verifica se existe recurso configurado
@@ -312,12 +312,12 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
      */
     protected function processarOrcamentoExercicioLinhaOrcamentoExercicio($recurso)
     {
-        $aWhere = array(
+        $aWhere = [
             "c70_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'",
             "c71_coddoc in (140, 161,151, 120,5,121,163,153,141,6)",
             "(c60_estrut ilike '111%' or c60_estrut ilike '114%')",
             "c02_instit in ({$this->getInstituicoes()})"
-        );
+        ];
         if (!empty($recurso)) {
             $aWhere[] = "c61_codigo = {$recurso}";
         }

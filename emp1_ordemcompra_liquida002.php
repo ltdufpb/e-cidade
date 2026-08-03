@@ -40,12 +40,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $codrel = 12; // relatorio de gastos com MDE
 
@@ -72,12 +72,12 @@ $codrel = 12; // relatorio de gastos com MDE
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("oc"=>"Liquidação","ret"=>"Retenções");
-    $clcriaabas->title      = array("oc"=>"Liquidação","ret"=>"Retenções");
+    $clcriaabas->identifica = ["oc"=>"Liquidação","ret"=>"Retenções"];
+    $clcriaabas->title      = ["oc"=>"Liquidação","ret"=>"Retenções"];
     $clcriaabas->src  =
-      array("oc"=>"emp1_ordemcompra_liquida003.php?vLiquida=true&e60_numemp=$e60_numemp",
-                "ret"=>"emp4_empretencao.php");   
-    $clcriaabas->sizecampo= array("oc"=>"23","ret"=>"23");
+      ["oc"=>"emp1_ordemcompra_liquida003.php?vLiquida=true&e60_numemp=$e60_numemp",
+                "ret"=>"emp4_empretencao.php"];   
+    $clcriaabas->sizecampo= ["oc"=>"23","ret"=>"23"];
     $clcriaabas->scrolling ='yes';
     $clcriaabas->cria_abas();    
     ?>

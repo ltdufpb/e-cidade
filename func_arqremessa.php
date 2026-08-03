@@ -59,8 +59,8 @@ $clrotulo->label('k51_descr');
 $clrotulo->label('v83_sequencial');
 $clrotulo->label('v83_nomearq');
 $instit = db_getsession("DB_instit");
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $oPost = db_utils::postMemory($_POST);
 

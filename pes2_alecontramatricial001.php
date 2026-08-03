@@ -44,7 +44,7 @@ $clrotulo->label('DBtxt28');
 $clrotulo->label('r48_semest');
 $clrotulo->label("rh56_localtrab");
 $clrotulo->label("rh55_descr");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -144,7 +144,7 @@ function js_filtra(){
 	  <td><strong>Filtro:</strong></td>
 	  <td>
 	  <?php 
-	  $arr=array("N"=>"Nenhum","M"=>"Matrícula","L"=>"Lotação","T"=>"Locais de trabalho");
+	  $arr=["N"=>"Nenhum","M"=>"Matrícula","L"=>"Lotação","T"=>"Locais de trabalho"];
 	  db_select("filtro",$arr,true,2,"onchange='js_filtra();'"); 
 	  ?>
 	  </td>
@@ -156,7 +156,7 @@ function js_filtra(){
 	  <td><strong>Filtrar por:</strong></td>
 	  <td>
 	  <?php 
-	  $arr1=array("."=>"------------","I"=>"Intervalo","S"=>"Selecionados");
+	  $arr1=["."=>"------------","I"=>"Intervalo","S"=>"Selecionados"];
 	  db_select("filtrar",$arr1,true,2,"onchange='js_filtra();'"); 
 	  ?>
 	  </td>
@@ -239,7 +239,7 @@ function js_filtra(){
     </td>
     <td>
     <?php 
-    $arr1=array("1"=>"Laser","2"=>"Matricial");
+    $arr1=["1"=>"Laser","2"=>"Matricial"];
     db_select("tipoimpress",$arr1,true,2); 
     ?>
     </td>
@@ -499,7 +499,7 @@ if(isset($emite2)){
 					 );
   // die($sqlDentro);
   $res = db_query($sqlDentro);
-  $num = pg_numrows($res);
+  $num = pg_num_rows($res);
   if($num == 0){
     $erro_msg = "Não existe Cálculo no período de $mes / $ano";
     $sqlerro = true;
@@ -662,7 +662,7 @@ if(isset($emite2)){
     }
     $db_layouttxt->adicionaLinha(chr(18));
 
-    $arr_posicoes = array();
+    $arr_posicoes = [];
     $posicaocorrente = 0;
     $passar  = 0;
     $contador = 0;

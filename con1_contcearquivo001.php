@@ -55,16 +55,16 @@ $db_opcao   = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica  = array("contcearquivo"         => "Dados da Geração do Arquivo",
+	 $clcriaabas->identifica  = ["contcearquivo"         => "Dados da Geração do Arquivo",
 	                                  "contcearquivoresp"     => "Responsáveis",
-	                                  "contcearquivosgeracao" => "Arquivos"); 
-	 $clcriaabas->src         = array("contcearquivo"         => "con1_contcearquivo004.php",
-	                                  "contcearquivosgeracao" => "con4_geratcearq001.php" );
-	 $clcriaabas->sizecampo   = array("contcearquivo"         => "40",
+	                                  "contcearquivosgeracao" => "Arquivos"]; 
+	 $clcriaabas->src         = ["contcearquivo"         => "con1_contcearquivo004.php",
+	                                  "contcearquivosgeracao" => "con4_geratcearq001.php" ];
+	 $clcriaabas->sizecampo   = ["contcearquivo"         => "40",
 	                                  "contcearquivoresp"     => "40",
-	                                  "contcearquivosgeracao" => "40");
-	 $clcriaabas->disabled    = array("contcearquivoresp"     => "true",
-	                                  "contcearquivosgeracao" => "true");
+	                                  "contcearquivosgeracao" => "40"];
+	 $clcriaabas->disabled    = ["contcearquivoresp"     => "true",
+	                                  "contcearquivosgeracao" => "true"];
    // $clcriaabas->funcao_js   = array("contcearquivosgeracao" => "true"); 
 	 
 	 $clcriaabas->cria_abas(); 

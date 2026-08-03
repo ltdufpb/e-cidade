@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empempenho_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempempenho = new cl_empempenho;
 $clempempenho->rotulo->label("e60_numemp");
 $clempempenho->rotulo->label("e60_codemp");
@@ -110,7 +110,7 @@ $rotulo->label("z01_nome");
         if(isset($chave_e60_numemp) && (trim($chave_e60_numemp)!="") ){
               $sql = $clempempenho->sql_query($chave_e60_numemp,$campos,"e60_numemp","$dbwhere and e60_numemp=$chave_e60_numemp ");
         }else if(isset($chave_e60_codemp) && (trim($chave_e60_codemp)!="") ){
-	      $arr = split("/",$chave_e60_codemp);
+	      $arr = preg_split("#\\/#m",$chave_e60_codemp);
 	      if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
 		$dbwhere_ano = " and e60_anousu = ".$arr[1];
               }else if(count($arr)==1){
@@ -125,7 +125,7 @@ $rotulo->label("z01_nome");
            $sql = "";
         }
 	// echo $sql;exit;
-	$repassa = array("chave_z01_nome"=>@$chave_z01_nome);
+	$repassa = ["chave_z01_nome"=>@$chave_z01_nome];
 	$result = $clempempenho->sql_record($sql);
 	if($clempempenho->numrows>0){
 	  db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

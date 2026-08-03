@@ -40,7 +40,7 @@ class SindicatoRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param $id
@@ -48,7 +48,7 @@ class SindicatoRepository
      * @return bool|Sindicato
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_rhsindicato;
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -100,7 +100,7 @@ class SindicatoRepository
      * @param Sindicato|null $sindicato
      * @throws Exception
      */
-    public function delete(Sindicato $sindicato = null)
+    public function delete(?Sindicato $sindicato = null)
     {
         $sequencial = $sindicato instanceof Sindicato ? $sindicato->getSequencial() : null;
 

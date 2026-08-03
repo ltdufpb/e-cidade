@@ -101,13 +101,13 @@ class Aluno {
 	/**
    * Array com as matriculas do aluno
 	 */
-	private $aMatricula = array();
+	private $aMatricula = [];
 
 	/**
 	 * Array com as progressoes parciais do Aluno
 	 * @var ProgressaoParcialAluno[]
 	 */
-	private $aProgressaoParcial = array();
+	private $aProgressaoParcial = [];
 
 	/**
 	 * Sexo do aluno
@@ -131,14 +131,14 @@ class Aluno {
 	 * Array com as necessidades especiais do aluno
 	 * @var array
 	 */
-	protected $aNecessidadesEspeciais = array();
+	protected $aNecessidadesEspeciais = [];
 
 	/**
 	 * Array com os recursos necessarios para avaliacao do INEP. Recursos existentes apenas quando o aluno possui alguma
 	 * necessidade especial
 	 * @var array
 	 */
-	protected $aRecursosAvaliacaoInep = array();
+	protected $aRecursosAvaliacaoInep = [];
 
 	/**
 	 * Codigo do Inep
@@ -376,8 +376,8 @@ class Aluno {
       if ($rsAluno && $oDaoAluno->numrows > 0 ) {
         $oAluno = db_utils::fieldsMemory($rsAluno, 0);
         $this->iCodigoAluno                 = $oAluno->ed47_i_codigo;
-        $this->sNome                        = trim($oAluno->ed47_v_nome);
-        $this->sNomeSocial                  = trim($oAluno->ed47_v_nomesocial);
+        $this->sNome                        = trim((string) $oAluno->ed47_v_nome);
+        $this->sNomeSocial                  = trim((string) $oAluno->ed47_v_nomesocial);
         $this->sDataNascimento              = $oAluno->ed47_d_nasc;
         $this->sNomePai                     = $oAluno->ed47_v_pai;
         $this->sNomeMae                     = $oAluno->ed47_v_mae;
@@ -407,7 +407,7 @@ class Aluno {
         $this->paisResidencia               = $oAluno->ed47_paisresidencia;
         $this->certidaoCartorio             = $oAluno->ed47_c_certidaocart;
         $this->localizacaoDiferenciada      = $oAluno->ed47_localizacaodiferenciada;
-        $this->sFoto                        = trim($oAluno->ed47_c_foto);
+        $this->sFoto                        = trim((string) $oAluno->ed47_c_foto);
         $this->cpf                          = $oAluno->ed47_v_cpf;
         $this->dEmissaoIdentidade           = $oAluno->ed47_d_identdtexp;
         $this->iUFIdentidade                = $oAluno->ed47_i_censoufident;
@@ -767,7 +767,7 @@ class Aluno {
     $rsAnoMesDia     = db_query($sSqlAnoMesDia);
     if ($rsAnoMesDia && pg_num_rows($rsAnoMesDia) > 0) {
 
-      $aDadosIdade   = explode(',', db_utils::fieldsMemory($rsAnoMesDia, 0)->dias);
+      $aDadosIdade   = explode(',', (string) db_utils::fieldsMemory($rsAnoMesDia, 0)->dias);
       $oIdade->anos  = trim($aDadosIdade[0]);
       $oIdade->meses = trim($aDadosIdade[1]);
       $oIdade->dias  = trim($aDadosIdade[2]);
@@ -1201,18 +1201,11 @@ class Aluno {
     if (pg_num_rows($rsEscolaProcedencia) > 0) {
 
       $oDadosEscola = db_utils::fieldsMemory($rsEscolaProcedencia, 0);
-      switch ($oDadosEscola->ed76_c_tipo) {
-
-        case 'M':
-
-          $this->oEscolaProcedencia = EscolaRepository::getEscolaByCodigo($oDadosEscola->ed76_i_escola);
-          break;
-
-        case 'F':
-
-          $this->oEscolaProcedencia = EscolaProcedenciaRepository::getEscolaByCodigo($oDadosEscola->ed76_i_escola);
-          break;
-      }
+      $this->oEscolaProcedencia = match ($oDadosEscola->ed76_c_tipo) {
+          'M' => EscolaRepository::getEscolaByCodigo($oDadosEscola->ed76_i_escola),
+          'F' => EscolaProcedenciaRepository::getEscolaByCodigo($oDadosEscola->ed76_i_escola),
+          default => $this->oEscolaProcedencia,
+      };
       return $this->oEscolaProcedencia;
     }
   }

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipoturma_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltipoturma = new cl_tipoturma;
 $cltipoturma->rotulo->label("ed111_sequencial");
 $cltipoturma->rotulo->label("ed111_descricao");
@@ -98,9 +98,9 @@ $cltipoturma->rotulo->label("ed111_descricao");
         }else{
            $sql = $cltipoturma->sql_query("",$campos,"ed111_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed111_descricao)){
-          $repassa = array("chave_ed111_sequencial"=>$chave_ed111_sequencial,"chave_ed111_descricao"=>$chave_ed111_descricao);
+          $repassa = ["chave_ed111_sequencial"=>$chave_ed111_sequencial,"chave_ed111_descricao"=>$chave_ed111_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

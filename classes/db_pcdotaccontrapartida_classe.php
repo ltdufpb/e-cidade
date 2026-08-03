@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE pcdotaccontrapartida
 class cl_pcdotaccontrapartida { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc19_sequencial = 0; 
-   var $pc19_orctiporec = 0; 
-   var $pc19_pcdotac = 0; 
-   var $pc19_valor = 0; 
+   public $pc19_sequencial = 0; 
+   public $pc19_orctiporec = 0; 
+   public $pc19_pcdotac = 0; 
+   public $pc19_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc19_sequencial = int4 = Código Sequencial 
                  pc19_orctiporec = int4 = Contrapartida 
                  pc19_pcdotac = int4 = Dotação 
                  pc19_valor = float4 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_pcdotaccontrapartida() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcdotaccontrapartida"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_pcdotaccontrapartida {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc19_sequencial = pg_result($result,0,0); 
+       $this->pc19_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pcdotaccontrapartida_pc19_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc19_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc19_sequencial)){
          $this->erro_sql = " Campo pc19_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -144,7 +144,7 @@ class cl_pcdotaccontrapartida {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Contrapartida da dotações ($this->pc19_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Contrapartida da dotações já Cadastrado";
@@ -168,13 +168,13 @@ class cl_pcdotaccontrapartida {
      $resaco = $this->sql_record($this->sql_query_file($this->pc19_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11916,'$this->pc19_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2059,11916,'','".AddSlashes(pg_result($resaco,0,'pc19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2059,11917,'','".AddSlashes(pg_result($resaco,0,'pc19_orctiporec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2059,11918,'','".AddSlashes(pg_result($resaco,0,'pc19_pcdotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2059,11919,'','".AddSlashes(pg_result($resaco,0,'pc19_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2059,11916,'','".AddSlashes(pg_fetch_result($resaco,0,'pc19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2059,11917,'','".AddSlashes(pg_fetch_result($resaco,0,'pc19_orctiporec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2059,11918,'','".AddSlashes(pg_fetch_result($resaco,0,'pc19_pcdotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2059,11919,'','".AddSlashes(pg_fetch_result($resaco,0,'pc19_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -183,10 +183,10 @@ class cl_pcdotaccontrapartida {
       $this->atualizacampos();
      $sql = " update pcdotaccontrapartida set ";
      $virgula = "";
-     if(trim($this->pc19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc19_sequencial"])){ 
+     if(trim((string) $this->pc19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc19_sequencial"])){ 
        $sql  .= $virgula." pc19_sequencial = $this->pc19_sequencial ";
        $virgula = ",";
-       if(trim($this->pc19_sequencial) == null ){ 
+       if(trim((string) $this->pc19_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "pc19_sequencial";
          $this->erro_banco = "";
@@ -196,17 +196,17 @@ class cl_pcdotaccontrapartida {
          return false;
        }
      }
-     if(trim($this->pc19_orctiporec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc19_orctiporec"])){ 
-        if(trim($this->pc19_orctiporec)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc19_orctiporec"])){ 
+     if(trim((string) $this->pc19_orctiporec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc19_orctiporec"])){ 
+        if(trim((string) $this->pc19_orctiporec)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc19_orctiporec"])){ 
            $this->pc19_orctiporec = "0" ; 
         } 
        $sql  .= $virgula." pc19_orctiporec = $this->pc19_orctiporec ";
        $virgula = ",";
      }
-     if(trim($this->pc19_pcdotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc19_pcdotac"])){ 
+     if(trim((string) $this->pc19_pcdotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc19_pcdotac"])){ 
        $sql  .= $virgula." pc19_pcdotac = $this->pc19_pcdotac ";
        $virgula = ",";
-       if(trim($this->pc19_pcdotac) == null ){ 
+       if(trim((string) $this->pc19_pcdotac) == null ){ 
          $this->erro_sql = " Campo Dotação nao Informado.";
          $this->erro_campo = "pc19_pcdotac";
          $this->erro_banco = "";
@@ -216,8 +216,8 @@ class cl_pcdotaccontrapartida {
          return false;
        }
      }
-     if(trim($this->pc19_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc19_valor"])){ 
-        if(trim($this->pc19_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc19_valor"])){ 
+     if(trim((string) $this->pc19_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc19_valor"])){ 
+        if(trim((string) $this->pc19_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc19_valor"])){ 
            $this->pc19_valor = "0" ; 
         } 
        $sql  .= $virgula." pc19_valor = $this->pc19_valor ";
@@ -231,17 +231,17 @@ class cl_pcdotaccontrapartida {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11916,'$this->pc19_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc19_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2059,11916,'".AddSlashes(pg_result($resaco,$conresaco,'pc19_sequencial'))."','$this->pc19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2059,11916,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc19_sequencial'))."','$this->pc19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc19_orctiporec"]))
-           $resac = db_query("insert into db_acount values($acount,2059,11917,'".AddSlashes(pg_result($resaco,$conresaco,'pc19_orctiporec'))."','$this->pc19_orctiporec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2059,11917,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc19_orctiporec'))."','$this->pc19_orctiporec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc19_pcdotac"]))
-           $resac = db_query("insert into db_acount values($acount,2059,11918,'".AddSlashes(pg_result($resaco,$conresaco,'pc19_pcdotac'))."','$this->pc19_pcdotac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2059,11918,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc19_pcdotac'))."','$this->pc19_pcdotac',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc19_valor"]))
-           $resac = db_query("insert into db_acount values($acount,2059,11919,'".AddSlashes(pg_result($resaco,$conresaco,'pc19_valor'))."','$this->pc19_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2059,11919,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc19_valor'))."','$this->pc19_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -286,13 +286,13 @@ class cl_pcdotaccontrapartida {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11916,'$pc19_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2059,11916,'','".AddSlashes(pg_result($resaco,$iresaco,'pc19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2059,11917,'','".AddSlashes(pg_result($resaco,$iresaco,'pc19_orctiporec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2059,11918,'','".AddSlashes(pg_result($resaco,$iresaco,'pc19_pcdotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2059,11919,'','".AddSlashes(pg_result($resaco,$iresaco,'pc19_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2059,11916,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2059,11917,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc19_orctiporec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2059,11918,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc19_pcdotac'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2059,11919,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc19_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pcdotaccontrapartida
@@ -352,7 +352,7 @@ class cl_pcdotaccontrapartida {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pcdotaccontrapartida";
@@ -366,7 +366,7 @@ class cl_pcdotaccontrapartida {
    function sql_query ( $pc19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -388,7 +388,7 @@ class cl_pcdotaccontrapartida {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -400,7 +400,7 @@ class cl_pcdotaccontrapartida {
    function sql_query_file ( $pc19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_pcdotaccontrapartida {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -42,7 +42,7 @@ $clbenstransfdes    = new cl_benstransfdes;
 $cldb_depart        = new cl_db_depart;
 $cldb_usuarios      = new cl_db_usuarios;
 $clbenstransfcodigo = new cl_benstransfcodigo;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 

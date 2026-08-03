@@ -79,7 +79,7 @@ db_input('k00_descr',40,$Ik00_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('k00_emrec',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -90,7 +90,7 @@ db_select('k00_emrec',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('k00_agnum',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -101,7 +101,7 @@ db_select('k00_agnum',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('k00_agpar',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -252,7 +252,7 @@ db_input('codmodelo',6,$Icodmodelo,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('k00_impval',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -288,7 +288,7 @@ db_input('k03_tipo',3,$Ik03_tipo,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('t'=>'Marcado','f'=>'Desmarcado');
+$x = ['t'=>'Marcado','f'=>'Desmarcado'];
 db_select('k00_marcado',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -383,7 +383,7 @@ db_input('k00_hist8',80,$Ik00_hist8,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Nenhum','2'=>'Parcial','3'=>'Total');
+$x = ['1'=>'Nenhum','2'=>'Parcial','3'=>'Total'];
 db_select('k00_tipoagrup',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -424,7 +424,7 @@ function js_preenchepesquisa(chave){
   db_iframe_arretipo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

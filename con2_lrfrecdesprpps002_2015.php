@@ -41,11 +41,9 @@ try {
     throw new Exception("Periodo não informado.");
   }
 
-  $aInstituicoes = InstituicaoRepository::getInstituicoesPorTipo( array(5,6) );
+  $aInstituicoes = InstituicaoRepository::getInstituicoesPorTipo( [5,6] );
 
-  $aCodigos = array_map(function($oInstiuicao) {
-    return $oInstiuicao->getCodigo();
-  }, $aInstituicoes);
+  $aCodigos = array_map(fn($oInstiuicao) => $oInstiuicao->getCodigo(), $aInstituicoes);
 
   $sInstituicoes = implode(',', $aCodigos);
 

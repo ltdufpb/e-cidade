@@ -37,7 +37,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("std/DBDate.php"));
 
 $oGet     = db_utils::postMemory($_GET);
-$aCorRaca = explode(",", $oGet->sCorRacas);
+$aCorRaca = explode(",", (string) $oGet->sCorRacas);
 
 $oDaoCidadaoFamilia = new cl_cidadaofamilia();
 $sSqlListaCidadaos  = $oDaoCidadaoFamilia->sql_query_responsavel_por_resposta_avaliacao($aCorRaca);
@@ -55,9 +55,9 @@ $aCidadaos = organizaDados($rsListaCidadaos);
  * Realizamos a ordenação dos dados.
  */
 function ordernarDados($aArrayAtual, $aProximoArray){
-  return strcasecmp($aArrayAtual->nome, $aProximoArray->nome);
+  return strcasecmp((string) $aArrayAtual->nome, (string) $aProximoArray->nome);
 }
-uasort($aCidadaos, "ordernarDados");
+uasort($aCidadaos, ordernarDados(...));
 
 $iHeigth        = 4;
 $lPrimeiroLaco  = true;
@@ -120,7 +120,7 @@ function setHeader($oPdf, $iHeigth) {
 
 function ajustaResposta($sResposta) {
   
-  $sResposta = urldecode($sResposta);
+  $sResposta = urldecode((string) $sResposta);
   $iInicio   = strpos($sResposta, "-");
   $iInicio   = $iInicio === false ? 0 : $iInicio + 1;
   $sResposta = trim(substr($sResposta, $iInicio));
@@ -129,7 +129,7 @@ function ajustaResposta($sResposta) {
 
 function organizaDados($rsResource) {
   
-  $aCidadaos = array();
+  $aCidadaos = [];
   $iLinhas   = pg_num_rows($rsResource);
   
   for ($i = 0; $i < $iLinhas; $i++) {

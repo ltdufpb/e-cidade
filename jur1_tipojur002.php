@@ -30,15 +30,15 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 if(isset($retorno)) {
   $result = db_query("select v51_codigo as codigo,v51_descr as descr from tipojur where v51_codigo = $retorno");
   db_fieldsmemory($result,0);
 }
 
-if(isset($HTTP_POST_VARS["alterar"])) {
-  db_query("update tipojur set v51_descr = '".$HTTP_POST_VARS["descr"]."' where v51_codigo = ".$HTTP_POST_VARS["codigo"]) or die("Erro(14) alterando tipojur");
+if(isset($_POST["alterar"])) {
+  db_query("update tipojur set v51_descr = '".$_POST["descr"]."' where v51_codigo = ".$_POST["codigo"]) or die("Erro(14) alterando tipojur");
   db_redireciona();
 }
 ?>
@@ -63,23 +63,23 @@ if(isset($HTTP_POST_VARS["alterar"])) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 	<?php 
-	  if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
-        db_postmemory($HTTP_POST_VARS);
+	  if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {
+        db_postmemory($_POST);
         if(!empty($codigo)) {
           $result = db_query("select v51_codigo from tipojur where v51_codigo = $codigo");
-	      if(pg_numrows($result) > 0) {
- 	        db_redireciona("jur1_tipojur002.php?".base64_encode("retorno=".pg_result($result,0,0)));
+	      if(pg_num_rows($result) > 0) {
+ 	        db_redireciona("jur1_tipojur002.php?".base64_encode("retorno=".pg_fetch_result($result,0,0)));
 	        exit;
 	      } else {             
              $filtro = base64_encode("v51_codigo like '".$codigo."%' order by v51_codigo");
 	      }
         } else {
 		  if(!empty($descr))
-            $filtro = base64_encode("upper(v51_descr) like upper('".$HTTP_POST_VARS["descr"]."%') order by v51_descr");
+            $filtro = base64_encode("upper(v51_descr) like upper('".$_POST["descr"]."%') order by v51_descr");
 	    }
-        if(isset($HTTP_POST_VARS["filtro"]))
-          $filtro = $HTTP_POST_VARS["filtro"];
-	    $sql = "select v51_codigo as db_codigo,v51_codigo as código,v51_descr as descrição from tipojur where ".base64_decode($filtro);
+        if(isset($_POST["filtro"]))
+          $filtro = $_POST["filtro"];
+	    $sql = "select v51_codigo as db_codigo,v51_codigo as código,v51_descr as descrição from tipojur where ".base64_decode((string) $filtro);
         echo "<center>\n";
         db_lov($sql,15,"jur1_tipojur002.php",$filtro);
         echo "</center>\n";		

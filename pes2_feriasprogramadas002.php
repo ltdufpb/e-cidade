@@ -66,7 +66,7 @@ try {
     define("ORDENACAO_RELATORIO_NUMERICA", "n");
     define("ORDENACAO_RELATORIO_ALFABETICA", "a");
 
-    $aWhere = array();
+    $aWhere = [];
     $sDescricaoSelecao = '';
 
     /**
@@ -74,12 +74,12 @@ try {
      */
     if (!empty($oParametros->iSelecao)) {
 
-        $sSelecao = trim(db_utils::getDao("selecao")->getCondicaoSelecao($oParametros->iSelecao));
+        $sSelecao = trim((string) db_utils::getDao("selecao")->getCondicaoSelecao($oParametros->iSelecao));
 
         if (!empty($sSelecao)) {
             $aWhere['selecao'] = $sSelecao;
 
-            $sDescricaoSelecao = trim(db_utils::getDao("selecao")->getDescricaoSelecao($oParametros->iSelecao, $iInstituicao));
+            $sDescricaoSelecao = trim((string) db_utils::getDao("selecao")->getDescricaoSelecao($oParametros->iSelecao, $iInstituicao));
             $sDescricaoSelecao = "\nSELEÇÃO : " . $sDescricaoSelecao;
         }
     }
@@ -218,31 +218,13 @@ try {
     }
 
     $ordem = "";
-    switch ($oParametros->iTipoOrdem) {
-
-        case "0":
-            $ordem= "rh55_descr";
-            break;
-
-        case "1":
-
-            $ordem = "rh55_codigo, rh55_instit";
-            break;
-
-        case "2":
-
-            $ordem = "r30_perai";
-             break;
-
-        case "3":
-            $ordem = "r30_peraf";
-            break;
-
-        default:
-
-            $ordem = "rh55_descr";
-            break;
-    }
+    $ordem = match ($oParametros->iTipoOrdem) {
+        "0" => "rh55_descr",
+        "1" => "rh55_codigo, rh55_instit",
+        "2" => "r30_perai",
+        "3" => "r30_peraf",
+        default => "rh55_descr",
+    };
 
     $dataInicial = "{$oParametros->iAno}-{$oParametros->iMes}-01";
     $dataFinal = "{$oParametros->iAno}-{$oParametros->iMes}-" . cal_days_in_month(CAL_GREGORIAN, $oParametros->iMes, $oParametros->iAno);
@@ -301,14 +283,14 @@ try {
     $aDadosRelatorios = db_utils::getCollectionByRecord($rsServidores);
 
 
-    $headers = array('Matricula',
+    $headers = ['Matricula',
         'Nome',
         'Periodo Aquisitivo Inicial',
         'Periodo Aquisitivo Final',
         'Periodo de gozo inicial',
         'Periodo de gozo final',
         'Local de trabalho',
-        'Faltas');
+        'Faltas'];
 
     if ($oParametros->iFormato == 1) {
 
@@ -316,7 +298,7 @@ try {
         $rArquivo = fopen($arquivo, 'w');
         fputs($rArquivo, implode(",", $headers) . "\n");
         foreach ($aDadosRelatorios as $registro) {
-            $linha = array(
+            $linha = [
                 $registro->matricula,
                 $registro->nome,
                 db_formatar($registro->periodo_aquisitivo_inicial, 'd'),
@@ -325,7 +307,7 @@ try {
                 db_formatar($registro->periodogozofinal, 'd'),
                 $registro->local_trabalho,
                 $registro->faltas
-            );
+            ];
 
             fputs($rArquivo, implode(",", $linha) . "\n");
         }
@@ -343,7 +325,7 @@ try {
         readfile($arquivo);
         exit();
     }
-    $dadosAgrupados = array();
+    $dadosAgrupados = [];
     foreach ($aDadosRelatorios as $registro) {
 
         $codigoAgrupamento = 'g';
@@ -351,7 +333,7 @@ try {
             $codigoAgrupamento = $registro->rh55_codigo.$registro->rh55_instit;
         }
         if (empty($dadosAgrupados[$codigoAgrupamento])) {
-            $dadosAgrupados[$codigoAgrupamento] = array();
+            $dadosAgrupados[$codigoAgrupamento] = [];
         }
         $dadosAgrupados[$codigoAgrupamento][] = $registro;
     }

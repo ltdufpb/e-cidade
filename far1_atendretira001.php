@@ -33,7 +33,7 @@ require(modification("libs/db_stdlibwebseller.php"));
 include(modification("fpdf151/impfarmacia.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sErro = "";
 $dHoje = date("Y-m-d", db_getsession("DB_datausu"));
@@ -209,7 +209,7 @@ for ($iCont = 0; $iCont < $iLinhasRetirada; $iCont++) {
     }
 
     //inicializa array que armazena a proxima data dos continuados
-    $aProxDisp = array();
+    $aProxDisp = [];
 
     //Percorre os itens
     for ($iContItens = 0; $iContItens < $iLinhasItens; $iContItens++) {

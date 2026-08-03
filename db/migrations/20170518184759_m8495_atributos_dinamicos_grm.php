@@ -44,104 +44,104 @@ class M8495AtributosDinamicosGrm extends PostgresMigration
     /**
      * Cria tabelas
      */
-    $aColumns = array('codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform');
-    $aValues  = array(
-      array(1010197, 'tiporecolhimentoatributosdinamicos', 'Atributos dinamicos da guia', 'k176', '2017-05-18', 'Atributos dinamicos da guia', 0, 'f', 'f', 'f', 'f'),      
-    );
-    $table    = $this->table('db_sysarquivo', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform'];
+    $aValues  = [
+      [1010197, 'tiporecolhimentoatributosdinamicos', 'Atributos dinamicos da guia', 'k176', '2017-05-18', 'Atributos dinamicos da guia', 0, 'f', 'f', 'f', 'f'],      
+    ];
+    $table    = $this->table('db_sysarquivo', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // vincula modulo
-    $aColumns = array('codmod', 'codarq' );
-    $aValues  = array(
-      array(5,1010197)      
-    );
-    $table    = $this->table('db_sysarqmod', array('schema' => 'configuracoes'));
+    $aColumns = ['codmod', 'codarq' ];
+    $aValues  = [
+      [5,1010197]      
+    ];
+    $table    = $this->table('db_sysarqmod', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     /**
      * Cria campos
      */
-    $aColumns = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-    $aValues  = array(
-      array(1009284 ,'k176_sequencial' ,'int4' ,'Atributos dinamicos da guia' ,'' ,'Sequencial' ,10 ,'false' ,'false' ,'false' ,1 ,'text' ,'Sequencial'),     
-      array(1009285 ,'k176_tiporecolhimento' ,'int4' ,'Atributos dinamicos da guia' ,'' ,'Tipo do Recolhimento' ,10 ,'false' ,'false' ,'false' ,1 ,'text' ,'Tipo do Recolhimento'),     
-      array(1009286 ,'k176_db_cadattdinamico' ,'int4' ,'Atributo Dinamico' ,'' ,'Atributo Dinamico' ,10 ,'false' ,'false' ,'false' ,1 ,'text' ,'Atributo Dinamico'),     
-      array(1009287,'db109_obrigatorio','bool','Preenchimento Obrigatório','false', 'Preenchimento Obrigatório',1,'t','f','f',5,'text','Preenchimento Obrigatório'),     
-      array(1009288 ,'k174_atributodinamicovalor' ,'int4' ,'Grupo de valores Dinamicos' ,'null' ,'Grupo de valores Dinamicos' ,10 ,'true' ,'false' ,'false' ,1 ,'text' ,'Grupo de valores Dinamicos'),     
+    $aColumns = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+    $aValues  = [
+      [1009284 ,'k176_sequencial' ,'int4' ,'Atributos dinamicos da guia' ,'' ,'Sequencial' ,10 ,'false' ,'false' ,'false' ,1 ,'text' ,'Sequencial'],     
+      [1009285 ,'k176_tiporecolhimento' ,'int4' ,'Atributos dinamicos da guia' ,'' ,'Tipo do Recolhimento' ,10 ,'false' ,'false' ,'false' ,1 ,'text' ,'Tipo do Recolhimento'],     
+      [1009286 ,'k176_db_cadattdinamico' ,'int4' ,'Atributo Dinamico' ,'' ,'Atributo Dinamico' ,10 ,'false' ,'false' ,'false' ,1 ,'text' ,'Atributo Dinamico'],     
+      [1009287,'db109_obrigatorio','bool','Preenchimento Obrigatório','false', 'Preenchimento Obrigatório',1,'t','f','f',5,'text','Preenchimento Obrigatório'],     
+      [1009288 ,'k174_atributodinamicovalor' ,'int4' ,'Grupo de valores Dinamicos' ,'null' ,'Grupo de valores Dinamicos' ,10 ,'true' ,'false' ,'false' ,1 ,'text' ,'Grupo de valores Dinamicos'],     
 
-    );
-    $table    = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+    ];
+    $table    = $this->table('db_syscampo', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     /**
      * db_sysarqcamp
      */
-    $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-    $aValues  = array(
-      array(1010197, 1009284 ,1 ,0),      
-      array(1010197, 1009285 ,2 ,0),      
-      array(1010197, 1009286 ,3 ,0),     
-      array(3163,    1009287,8,0),
-      array(4033,    1009288 ,17 ,0),     
-    );
-    $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+    $aValues  = [
+      [1010197, 1009284 ,1 ,0],      
+      [1010197, 1009285 ,2 ,0],      
+      [1010197, 1009286 ,3 ,0],     
+      [3163,    1009287,8,0],
+      [4033,    1009288 ,17 ,0],     
+    ];
+    $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
 
     // inclui a sequence
-    $aColumns = array('codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq');
-    $aValues  = array(
-      array(1000663, 'tiporecolhimentoatributosdinamicos_k176_sequencial_seq', 1, 1, 9223372036854775807, 1, 1),      
-    );
-    $table    = $this->table('db_syssequencia', array('schema' => 'configuracoes'));
+    $aColumns = ['codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq'];
+    $aValues  = [
+      [1000663, 'tiporecolhimentoatributosdinamicos_k176_sequencial_seq', 1, 1, 9223372036854775807, 1, 1],      
+    ];
+    $table    = $this->table('db_syssequencia', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui a chave primaria
-    $aColumns = array('codarq','codcam','sequen','camiden');
-    $aValues  = array(
-      array(1010197,1009284,1,1009285),      
-    );
-    $table    = $this->table('db_sysprikey', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq','codcam','sequen','camiden'];
+    $aValues  = [
+      [1010197,1009284,1,1009285],      
+    ];
+    $table    = $this->table('db_sysprikey', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui a chave estrangeira
-    $aColumns = array('codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel');
-    $aValues  = array(
-      array(1010197,1009285,1,4031,0),
-      array(1010197,1009286,1,3162,0),
-      array(4033,1009288,1,3165,0),      
-    );
-    $table    = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel'];
+    $aValues  = [
+      [1010197,1009285,1,4031,0],
+      [1010197,1009286,1,3162,0],
+      [4033,1009288,1,3165,0],      
+    ];
+    $table    = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui os indices
-    $aColumns = array('codind', 'nomeind', 'codarq', 'campounico');
-    $aValues  = array(
-      array(1008191,'tiporecolhimentoatributosdinamicos_in',1010197,'0'),
-      array(1008192,'tiporecolhimentoatributosdinamicos_db_cadattdinamico_in',1010197,'0'),
-      array(1008193,'guiarecolhimento_atributovalorgrupo_in',4033,'0'),
+    $aColumns = ['codind', 'nomeind', 'codarq', 'campounico'];
+    $aValues  = [
+      [1008191,'tiporecolhimentoatributosdinamicos_in',1010197,'0'],
+      [1008192,'tiporecolhimentoatributosdinamicos_db_cadattdinamico_in',1010197,'0'],
+      [1008193,'guiarecolhimento_atributovalorgrupo_in',4033,'0'],
       
-    );
-    $table    = $this->table('db_sysindices', array('schema' => 'configuracoes'));
+    ];
+    $table    = $this->table('db_sysindices', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // vincula os indices
-    $aColumns = array('codind', 'codcam', 'sequen');
-    $aValues  = array(
-      array(1008191,1009285,1),      
-      array(1008192,1009286,1),      
-      array(1008193,1009288,1),      
-    );
-    $table    = $this->table('db_syscadind', array('schema' => 'configuracoes'));
+    $aColumns = ['codind', 'codcam', 'sequen'];
+    $aValues  = [
+      [1008191,1009285,1],      
+      [1008192,1009286,1],      
+      [1008193,1009288,1],      
+    ];
+    $table    = $this->table('db_syscadind', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
@@ -152,14 +152,14 @@ class M8495AtributosDinamicosGrm extends PostgresMigration
 
 
     $this->execute("CREATE SEQUENCE caixa.tiporecolhimentoatributosdinamicos_k176_sequencial_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
-    $tabela = $this->table('tiporecolhimentoatributosdinamicos',  array('schema'=>'caixa', 'id'=> false, 'primary_key'=>'k176_sequencial', 'constraint'=>'tiporecolhimentoatributosdinamicos_k176_sequencial_pk'));
+    $tabela = $this->table('tiporecolhimentoatributosdinamicos',  ['schema'=>'caixa', 'id'=> false, 'primary_key'=>'k176_sequencial', 'constraint'=>'tiporecolhimentoatributosdinamicos_k176_sequencial_pk']);
     $tabela->addColumn('k176_sequencial', 'integer')
           ->addColumn('k176_tiporecolhimento', 'integer')
           ->addColumn('k176_db_cadattdinamico', 'integer')
-          ->addForeignKey('k176_tiporecolhimento', 'caixa.tiporecolhimento', 'k172_sequencial', array('constraint'=>'tiporecolhimentoatributosdinamicos_tiporecolhimento_fk'))
-          ->addForeignKey('k176_db_cadattdinamico', 'configuracoes.db_cadattdinamico', 'db118_sequencial', array('constraint'=>'tiporecolhimentoatributosdinamicos_cadattdinamico_fk'))
-          ->addIndex(array('k176_tiporecolhimento'), array('name' => 'tiporecolhimentoatributosdinamicos_in'))
-          ->addIndex(array('k176_db_cadattdinamico'), array('name' => 'tiporecolhimentoatributosdinamicos_db_cadattdinamico_in'))
+          ->addForeignKey('k176_tiporecolhimento', 'caixa.tiporecolhimento', 'k172_sequencial', ['constraint'=>'tiporecolhimentoatributosdinamicos_tiporecolhimento_fk'])
+          ->addForeignKey('k176_db_cadattdinamico', 'configuracoes.db_cadattdinamico', 'db118_sequencial', ['constraint'=>'tiporecolhimentoatributosdinamicos_cadattdinamico_fk'])
+          ->addIndex(['k176_tiporecolhimento'], ['name' => 'tiporecolhimentoatributosdinamicos_in'])
+          ->addIndex(['k176_db_cadattdinamico'], ['name' => 'tiporecolhimentoatributosdinamicos_db_cadattdinamico_in'])
           ->create();
     $this->execute("ALTER TABLE caixa.tiporecolhimentoatributosdinamicos ALTER COLUMN k176_sequencial SET DEFAULT nextval('caixa.tiporecolhimentoatributosdinamicos_k176_sequencial_seq')");     
     $this->execute('alter table caixa.guiarecolhimento add k174_atributodinamicovalor integer');

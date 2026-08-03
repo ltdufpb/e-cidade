@@ -38,7 +38,7 @@ include_once(modification("classes/db_censodistrito_classe.php"));
 include_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clescolaproc    = new cl_escolaproc;
 $clcensouf 			 = new cl_censouf;
 $clcensomunic    = new cl_censomunic;

@@ -51,7 +51,7 @@ $oDadosFormulario  = $oJson->decode( str_replace("\\","",$oGet->sJson) );
 $oDaoObrasAlvara->rotulo->label();
 $sOrderBy          = $oDadosFormulario->sCampoOrdenacao;
 $sLabelOrderBy     = null;
-$aWhere            = array();
+$aWhere            = [];
 $sTipoSelecao      = "in";
 $sLabelData        = null;
 
@@ -215,7 +215,7 @@ switch ($oDadosFormulario->sFormatoRelatorio) {
       $oPdf->cell(20,$iAlturaLinha,$oObrasAlvara->ob04_alvara                            ,$bord1,0,"C",$iBgColor);
       $oPdf->cell(20,$iAlturaLinha,db_formatar($oObrasAlvara->ob04_dataexpedicao, "d")   ,$bord2,0,"C",$iBgColor);
       $oPdf->cell(20,$iAlturaLinha,$oObrasAlvara->ob04_codobra                           ,$bord2,0,"C",$iBgColor);
-      $oPdf->cell(40,$iAlturaLinha,substr($oObrasAlvara->ob01_nomeobra,0,25)             ,$bord2,0,"L",$iBgColor);
+      $oPdf->cell(40,$iAlturaLinha,substr((string) $oObrasAlvara->ob01_nomeobra,0,25)             ,$bord2,0,"L",$iBgColor);
       $oPdf->cell(90,$iAlturaLinha,$oObrasAlvara->endereco_obra                          ,$bord2,0,"L",$iBgColor);
       $oPdf->cell(0 ,$iAlturaLinha,$oObrasAlvara->nome_responsavel                       ,$bord3,1,"L",$iBgColor);
       $oPdf->cell(0 ,$iAlturaLinha,"Técnico responsável: ".$oObrasAlvara->nome_tecnico   ,"RL"  ,1,"L",$iBgColor);
@@ -238,7 +238,7 @@ switch ($oDadosFormulario->sFormatoRelatorio) {
     
     $sArquivo                        = "tmp/relatorioObrasAlvara.csv";
     $fArquivo                        = fopen($sArquivo, "w");
-    $aDadosCSV                       = array();
+    $aDadosCSV                       = [];
     $aDadosCSV["ob04_codobra"]       = "Código da Obra";
     $aDadosCSV["ob04_alvara"]        = "Numero Alvara";
     $aDadosCSV["ob04_dataexpedicao"] = "Data Alvará";
@@ -248,7 +248,7 @@ switch ($oDadosFormulario->sFormatoRelatorio) {
     $aDadosCSV["endereco_obra"]      = "Endereço";
     $aDadosCSV["nome_tecnico"]       = "Nome do Técnico";
     
-    $lEscritaArquivo = fputcsv($fArquivo, $aDadosCSV, ";");
+    $lEscritaArquivo = fputcsv($fArquivo, $aDadosCSV, ";", escape: '\\');
     
     if ( !$lEscritaArquivo ) {
       
@@ -259,7 +259,7 @@ switch ($oDadosFormulario->sFormatoRelatorio) {
     
     foreach ($aObrasAlvara as $iRegistro => $oObrasAlvara) {
 
-      $aDadosCSV                       = array();
+      $aDadosCSV                       = [];
       $aDadosCSV["ob04_codobra"]       = $oObrasAlvara->ob04_codobra;
       $aDadosCSV["ob04_alvara"]        = $oObrasAlvara->ob04_alvara;    
       $aDadosCSV["ob04_dataexpedicao"] = db_formatar($oObrasAlvara->ob04_dataexpedicao, "d"); 
@@ -269,7 +269,7 @@ switch ($oDadosFormulario->sFormatoRelatorio) {
       $aDadosCSV["endereco_obra"]      = $oObrasAlvara->endereco_obra;  
       $aDadosCSV["nome_tecnico"]       = $oObrasAlvara->nome_tecnico;   
       
-      $lEscritaArquivo               = fputcsv($fArquivo, $aDadosCSV,";");
+      $lEscritaArquivo               = fputcsv($fArquivo, $aDadosCSV,";", escape: '\\');
       if ( !$lEscritaArquivo ) {
       
         $oParms = new stdClass();

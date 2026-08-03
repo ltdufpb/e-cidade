@@ -474,7 +474,7 @@ function js_pesquisaprontuarios(){
 function js_preenchepesquisapront( chave1, chave2, chave3 ) {
 
   db_iframe_prontuarios.hide();
-  location.href ='<?php echo basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+chave1;
+  location.href ='<?php echo basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+chave1;
 }
 
 /**
@@ -886,7 +886,7 @@ function js_preenchepesquisa( chave ) {
   db_iframe_prontproced.hide();
   <?php
   if( $db_opcao != 1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

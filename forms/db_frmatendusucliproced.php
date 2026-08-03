@@ -62,8 +62,8 @@ if(!isset($selecionar)){
       <td align="center" nowrap> <strong>Módulo: </strong> 
         <?php  
         $aux = $modulos[0];
-        echo substr(strstr($aux,"||"),2)."<br>";
-        echo "<font style=\"font-size:10px\">(".substr($aux,strpos($aux,"--")+2,strpos($aux,"||")-3).")</font>";
+        echo substr(strstr((string) $aux,"||"),2)."<br>";
+        echo "<font style=\"font-size:10px\">(".substr((string) $aux,strpos((string) $aux,"--")+2,strpos((string) $aux,"||")-3).")</font>";
         ?>
       </td>
     </tr>

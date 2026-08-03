@@ -42,8 +42,8 @@ $cldb_depart    = new cl_db_depart;
 $clrotulo = new rotulocampo;
 $clsolicita->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $and    = "";
 $where  = "";
 $info   = "";
@@ -87,16 +87,16 @@ $mostra_aut = true;
 foreach ($_POST as $key => $val) {
     switch($key) {
         case 'pc10_numeroINI':
-            $pc10_numeroINI = trim($pc10_numeroINI);
-            $pc10_numeroFIM = trim($pc10_numeroFIM);
+            $pc10_numeroINI = trim((string) $pc10_numeroINI);
+            $pc10_numeroFIM = trim((string) $pc10_numeroFIM);
 
             if (!empty($pc10_numeroINI) && !empty($pc10_numeroFIM)) {
                 $condicoes[] = montaQueryBetween('pc10_numero', $pc10_numeroINI, $pc10_numeroFIM);
             }
             break;
         case 'pc10_dataINI':
-            $pc10_dataINI = trim($pc10_dataINI);
-            $pc10_dataFIM = trim($pc10_dataFIM);
+            $pc10_dataINI = trim((string) $pc10_dataINI);
+            $pc10_dataFIM = trim((string) $pc10_dataFIM);
 
             if (!empty($pc10_dataINI) && !empty($pc10_dataFIM)) {
                 $condicoes[] = montaQueryBetween('pc10_data', $pc10_dataINI, $pc10_dataFIM);
@@ -107,25 +107,25 @@ foreach ($_POST as $key => $val) {
             }
             break;
         case 'inp_dotac':
-            if (!empty(trim($inp_dotac))) {
+            if (!empty(trim((string) $inp_dotac))) {
                 $notIn = $par_dotac == 'S' ? true : false;
                 $condicoes[] = montaQueryIn('pc13_coddot', $inp_dotac, $notIn);
             }
             break;
         case 'inp_depart':
-            if (!empty(trim($inp_depart))) {
+            if (!empty(trim((string) $inp_depart))) {
                 $notIn = $par_depart == 'S' ? true : false;
                 $condicoes[] = montaQueryIn('pc10_depto', $inp_depart, $notIn);
             }
             break;
         case 'inp_mater':
-            if (!empty(trim($inp_mater))) {
+            if (!empty(trim((string) $inp_mater))) {
                 $notIn = $par_mater == 'S' ? true : false;
                 $condicoes[] = montaQueryIn('pc16_codmater', $inp_mater, $notIn);
             }
             break;
         case 'inp_tipcom': 
-            if (!empty(trim($inp_tipcom))) {
+            if (!empty(trim((string) $inp_tipcom))) {
                 $notIn = $par_tipcom == 'S' ? true : false;
                 $condicoes[] = montaQueryIn('pc12_tipo', $inp_tipcom, $notIn);
             }
@@ -257,15 +257,15 @@ $pc11_codigo_ant   = null;
 $valortotal        = "";
 $sSomar            = "";
 
-$aDepartamentosListados = array();
-$aItensListados         = array();
-$aTipoCompraListadas    = array();
-$aDotacaoListadas       = array();
+$aDepartamentosListados = [];
+$aItensListados         = [];
+$aTipoCompraListadas    = [];
+$aDotacaoListadas       = [];
 
-$aDepart     = array();
-$aItens      = array();
-$aDotacao    = array();
-$aTipoCompra = array();
+$aDepart     = [];
+$aItens      = [];
+$aDotacao    = [];
+$aTipoCompra = [];
 
 $tDep        = 0;
 $tMat        = 0;
@@ -320,7 +320,7 @@ for($i = 0; $i < $numrows;$i++){
 
     $pdf->setfont('arial', 'B', 8);
     $pdf->cell(22, $alt, $pc10_numero, 0, 0, "C", 0);
-    $pdf->cell(22, $alt, date('d/m/Y', strtotime($pc10_data)), 0, 0, "C", 0);
+    $pdf->cell(22, $alt, date('d/m/Y', strtotime((string) $pc10_data)), 0, 0, "C", 0);
     $pdf->cell(91, $alt, $descrdepto, 0, 0, "L", 0);
     $pdf->cell(105, $alt, $pc50_descr, 0, 0, "L", 0);
     $pdf->cell(31, $alt, db_formatar($tot_sol, 'f'), 0, 1, "R", 0);
@@ -344,7 +344,7 @@ for($i = 0; $i < $numrows;$i++){
        if (!isset($pc01_descrmater) || (isset($pc01_descrmater) && $pc01_descrmater=="")) {
          $pc01_descrmater = $pc11_resum;
        }
-       $pdf->cell(90,$alt,substr($pc01_descrmater,0,50) ,0,0,"L",0);
+       $pdf->cell(90,$alt,substr((string) $pc01_descrmater,0,50) ,0,0,"L",0);
        $pdf->cell(22,$alt,$pc11_quant                   ,0,0,"C",0);
        $pdf->cell(22,$alt,$pc11_vlrun                   ,0,0,"R",0);
        $pdf->cell(31,$alt,$valor_tot                    ,0,1,"R",0);

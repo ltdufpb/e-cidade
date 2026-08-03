@@ -75,7 +75,7 @@ class ArquivoConsignadoManual extends ArquivoConsignado {
    * Lista de parcelas
    * @var ArquivoConsignadoManualParcela[]
    */
-  private $parcelas = array();
+  private $parcelas = [];
 
   /**
    * @var ArquivoConsignadoManual
@@ -205,6 +205,7 @@ class ArquivoConsignadoManual extends ArquivoConsignado {
    * Retorna a competencia de inicio do financiamento
    * @return \DBCompetencia
    */
+  #[\Override]
   public function getCompetencia() {
 
     return $this->competencia;
@@ -214,6 +215,7 @@ class ArquivoConsignadoManual extends ArquivoConsignado {
    * Define a competencia de inicio do financiamento
    * @param \DBCompetencia $competencia
    */
+  #[\Override]
   public function setCompetencia(DBCompetencia $competencia) {
     $this->competencia = $competencia;
   }
@@ -244,7 +246,7 @@ class ArquivoConsignadoManual extends ArquivoConsignado {
   /**
    * @param \ArquivoConsignadoManual $consignadoOrigem
    */
-  public function setConsignadoOrigem(ArquivoConsignadoManual $consignadoOrigem = null) {
+  public function setConsignadoOrigem(?ArquivoConsignadoManual $consignadoOrigem = null) {
 
     if (empty($consignadoOrigem)) {
       return;
@@ -274,12 +276,12 @@ class ArquivoConsignadoManual extends ArquivoConsignado {
    * Adiciona as parcelas do financiamento
    * @return ArquivoConsignadoManualParcela[]
    */
-  public function adicionarParcelas($iParcelaInicial = 1, DBCompetencia $oCompetenciaInicial = null) {
+  public function adicionarParcelas($iParcelaInicial = 1, ?DBCompetencia $oCompetenciaInicial = null) {
 
     /**
      * a classe DBCompetencia, cquando retorna a proxima competencia, altera a instancia atual da competencia também;
      */
-    $this->parcelas = array();
+    $this->parcelas = [];
     $oCompetencia   = $this->competencia;
     if (!empty($oCompetenciaInicial)) {
       $oCompetencia = $oCompetenciaInicial;

@@ -30,16 +30,16 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
     /**
      * @var array
      */
-    public static $camposMSC = array(
+    public static $camposMSC = [
         'beginning_balance',
         'period_change_debit',
         'period_change_credit',
         'ending_balance'
-    );
+    ];
     /**
      * @var array
      */
-    protected $linhasMSC = array();
+    protected $linhasMSC = [];
     /**
      * @var Relatorio
      */
@@ -65,11 +65,11 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
      */
     public function decomporValoresMSCPorLinha(Linha $linha)
     {
-        $contas = array();
-        $colunas = array();
-        $atributos = array();
-        $filtroEstruturais = array();
-        $siglasInformacoesComplementares = array();
+        $contas = [];
+        $colunas = [];
+        $atributos = [];
+        $filtroEstruturais = [];
+        $siglasInformacoesComplementares = [];
 
         $linhaColunas = $linha->getLinhaColunas();
         $linhaInformacoesComplementares = $linha->getLinhaInformacoesComplementares();
@@ -90,7 +90,7 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
                 ->setUseJoin(true)
                 ->scopeRelatorio($this->relatorio)
                 ->scopeLinha($linha)
-                ->get(array('DISTINCT orcparamseqinfocomplementarlancamento.*'));
+                ->get(['DISTINCT orcparamseqinfocomplementarlancamento.*']);
 
             if (empty($informacaoComplementarLancamentos)) {
                 foreach ($linhaColunas as $linhaColuna) {
@@ -99,13 +99,13 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
                     $colunaEstruturais = $coluna->getColunaEstruturais();
                     $ordemLinhaColuna = $linhaColuna->getOrdem();
 
-                    $colunas[$ordemLinhaColuna] = array(
+                    $colunas[$ordemLinhaColuna] = [
                         'descricao' => $descricaoColuna,
                         'ordem' => $ordemLinhaColuna,
-                        'contas' => array()
-                    );
+                        'contas' => []
+                    ];
 
-                    $contas[$ordemLinhaColuna] = array();
+                    $contas[$ordemLinhaColuna] = [];
 
                     foreach ($colunaEstruturais as $colunaEstrutural) {
                         $estrutural = $colunaEstrutural->getEstrutural();
@@ -124,7 +124,7 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
                     ->scopeInformacaoComplementarLancamento($informacaoComplementarLancamento)
                     ->get();
 
-                $informacoesComplementares = array();
+                $informacoesComplementares = [];
                 $hashAtributos = '';
 
                 foreach ($linhaInformacoesComplementares as $linhaInformacaoComplementar) {
@@ -136,10 +136,10 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
                     $hashAtributos .= "{$linhaInformacaoComplementarValor}#{$linhaInformacaoComplementarSigla}";
                 }
 
-                $atributos[$hashAtributos] = array(
+                $atributos[$hashAtributos] = [
                     'informacoes' => $informacoesComplementares,
-                    'valores' => array()
-                );
+                    'valores' => []
+                ];
 
                 foreach ($linhaColunas as $linhaColuna) {
                     $coluna = $linhaColuna->getColuna();
@@ -147,17 +147,17 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
                     $colunaEstruturais = $coluna->getColunaEstruturais();
                     $ordemLinhaColuna = $linhaColuna->getOrdem();
 
-                    $colunas[$ordemLinhaColuna] = array(
+                    $colunas[$ordemLinhaColuna] = [
                         'descricao' => $descricaoColuna,
                         'ordem' => $ordemLinhaColuna,
-                        'contas' => array()
-                    );
+                        'contas' => []
+                    ];
 
                     if (empty($atributos[$hashAtributos]['valores'][$ordemLinhaColuna])) {
-                        $atributos[$hashAtributos]['valores'][$ordemLinhaColuna] = array();
+                        $atributos[$hashAtributos]['valores'][$ordemLinhaColuna] = [];
                     }
 
-                    $contas[$ordemLinhaColuna] = array();
+                    $contas[$ordemLinhaColuna] = [];
 
                     foreach ($colunaEstruturais as $colunaEstrutural) {
                         $estrutural = $colunaEstrutural->getEstrutural();
@@ -174,8 +174,8 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
         }
 
         foreach ($lancamentosContabeis as $lancamentoContabil) {
-            $atributosLancamentoContabil = explode('|', $lancamentoContabil->atributos);
-            $informacoesComplementares = array();
+            $atributosLancamentoContabil = explode('|', (string) $lancamentoContabil->atributos);
+            $informacoesComplementares = [];
 
             foreach ($atributosLancamentoContabil as $atributoLancamentoContabil) {
                 $informacaoComplementar = explode('#', $atributoLancamentoContabil);
@@ -195,32 +195,32 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
 
             if ($informacoesComplementares) {
                 if (empty($atributos[$hashAtributos]['valores'])) {
-                    $atributos[$hashAtributos]['valores'] = array();
+                    $atributos[$hashAtributos]['valores'] = [];
                 }
 
-                $atributos[$hashAtributos] = array(
+                $atributos[$hashAtributos] = [
                     'informacoes' => $informacoesComplementares,
                     'valores' => $atributos[$hashAtributos]['valores']
-                );
+                ];
 
                 foreach ($linhaColunas as $linhaColuna) {
-                    $excluidos = array();
+                    $excluidos = [];
                     $coluna = $linhaColuna->getColuna();
                     $descricaoColuna = $coluna->getDescricao();
                     $colunaEstruturais = $coluna->getColunaEstruturais();
                     $ordemLinhaColuna = $linhaColuna->getOrdem();
 
-                    $colunas[$ordemLinhaColuna] = array(
+                    $colunas[$ordemLinhaColuna] = [
                         'descricao' => $descricaoColuna,
                         'ordem' => $ordemLinhaColuna,
-                        'contas' => array()
-                    );
+                        'contas' => []
+                    ];
 
                     if (empty($atributos[$hashAtributos]['valores'][$ordemLinhaColuna])) {
-                        $atributos[$hashAtributos]['valores'][$ordemLinhaColuna] = array();
+                        $atributos[$hashAtributos]['valores'][$ordemLinhaColuna] = [];
                     }
 
-                    $contas[$ordemLinhaColuna] = array();
+                    $contas[$ordemLinhaColuna] = [];
 
                     foreach ($colunaEstruturais as $colunaEstrutural) {
                         $estruturalAteNivel = $this->getEstruturalAteNivel($lancamentoContabil, $colunaEstrutural);
@@ -289,7 +289,7 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
      */
     private function buscarDecomposicaoMSC(
         Linha $linha,
-        array $filtroEstruturais = array()
+        array $filtroEstruturais = []
     ) {
         $sql = "
             {$this->montarDeclaracoesAuxiliares($linha, $filtroEstruturais)}
@@ -319,7 +319,7 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
      */
     private function montarDeclaracoesAuxiliares(
         Linha $linha,
-        array $filtroEstruturais = array()
+        array $filtroEstruturais = []
     ) {
         $temInformacoesComplementares = count($linha->getLinhaInformacoesComplementares()) > 0;
         $nomeDeclaracao = $temInformacoesComplementares
@@ -346,7 +346,7 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
      * @return string
      * @throws Exception
      */
-    private function sqlMatrizSaldoContabilLancamentos(array $filtroEstruturais = array())
+    private function sqlMatrizSaldoContabilLancamentos(array $filtroEstruturais = [])
     {
         $filtroEstruturais = $filtroEstruturais ? 'WHERE (' . implode(' OR ', $filtroEstruturais) . ')' : '';
 
@@ -426,7 +426,7 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
         ColunaEstrutural $colunaEstrutural
     ) {
         $estruturalAteNivel = substr(
-            $lancamentoContabil->estrutural,
+            (string) $lancamentoContabil->estrutural,
             0,
             strlen($colunaEstrutural->getEstrutural())
         );
@@ -541,7 +541,7 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
             $linhaConsistencia = $this->aLinhasConsistencia[$chaveLinhaConsistencia];
             $linha = $linhas[$chaveLinhaConsistencia];
             $linhaColunas = $linha->getLinhaColunas();
-            $filtroEstruturais = array();
+            $filtroEstruturais = [];
 
             $this->montarFiltroEstruturais($linhaColunas, $filtroEstruturais);
             $valoresMSC = $this->buscarValoresMSC($linha, $filtroEstruturais);
@@ -550,7 +550,7 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
                 $coluna = $linhaColuna->getColuna();
                 $nomeColuna = $coluna->getNome();
                 $linhaConsistencia->{$nomeColuna} = 0;
-                $excluidos = array();
+                $excluidos = [];
 
                 foreach ($valoresMSC as $valorMSC) {
                     $valorMSCCalculo = clone $valorMSC;
@@ -583,7 +583,7 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
      */
     private function buscarValoresMSC(
         Linha $linha,
-        array $filtroEstruturais = array()
+        array $filtroEstruturais = []
     ) {
         $sql = "
             {$this->montarDeclaracoesAuxiliares($linha, $filtroEstruturais)}
@@ -612,10 +612,10 @@ class RelatoriosLegaisBaseMSC extends RelatoriosLegaisBase
      * @return array
      * @throws Exception
      */
-    protected function getColunasPorLinha(stdClass $linhaConsistencia, array $colunas = array())
+    protected function getColunasPorLinha(stdClass $linhaConsistencia, array $colunas = [])
     {
         $linha = LinhaRegistry::get($this->relatorio, $linhaConsistencia->oLinhaRelatorio->getCodigo());
-        $colunasProcessar = array();
+        $colunasProcessar = [];
 
         foreach ($linhaConsistencia->colunas as $ordemColuna => $colunaRelatorio) {
             if (!empty($colunas) && !in_array($ordemColuna, $colunas)) {

@@ -33,8 +33,8 @@ include(modification("classes/db_rescisao_classe.php"));
 include(modification("classes/db_rhcadregime_classe.php"));
 include(modification("classes/db_codmovsefip_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clrescisao = new cl_rescisao;
 $clrhcadregime = new cl_rhcadregime;
 $clcodmovsefip = new cl_codmovsefip;
@@ -42,16 +42,16 @@ $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
   db_inicio_transacao();
-  if(trim($r59_tercof) == "" || $r59_tercof == 0){
+  if(trim((string) $r59_tercof) == "" || $r59_tercof == 0){
     $clrescisao->r59_tercof = "0";
   }
-  if(trim($r59_codsaq) == ""){
+  if(trim((string) $r59_codsaq) == ""){
     $clrescisao->r59_codsaq = "  ";
   }
   if(trim($r59_mfgts) == "" || $r59_mfgts == 0){
     $clrescisao->r59_mfgts = "0";
   }
-  if(trim($r59_caub) == ""){
+  if(trim((string) $r59_caub) == ""){
     $clrescisao->r59_descr1 = " ";
   }
   $clrescisao->incluir($r59_anousu,$r59_mesusu,$r59_regime,$r59_causa,$r59_caub,$r59_menos1,db_getsession("DB_instit"));

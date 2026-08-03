@@ -397,7 +397,7 @@ function js_trocarua(valor){
           </td>
           <td nowrap> 
       			<?php 
-	    		  $x = array('1'=>'utilizando valor para calculo','2'=>'utilizando valor para valorizacao', '3'=>'testada proporcional');
+	    		  $x = ['1'=>'utilizando valor para calculo','2'=>'utilizando valor para valorizacao', '3'=>'testada proporcional'];
 	    	  	db_select('d04_forma',$x,true,$db_opcao,"onChange='js_controlaFormaCalculo(this.value)';");
 	      		?>
           </td>	   
@@ -615,7 +615,7 @@ function js_preenchepesquisa(chave){
   <?php 
   if ($db_opcao!=1) {
     ?>
-    location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+    location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
     <?php 
   }
   ?>

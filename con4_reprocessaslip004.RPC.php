@@ -67,7 +67,7 @@ try {
         throw new BusinessException("Nenhum slip encontrado para os filtros selecionados.");
       }
 
-      $aCodigosSlip = array();
+      $aCodigosSlip = [];
       for ($iRowSlip = 0; $iRowSlip < $oDaoSlip->numrows; $iRowSlip++) {
         $aCodigosSlip[] = db_utils::fieldsMemory($rsPesquisaSlip, $iRowSlip)->k17_codigo;
       }
@@ -112,7 +112,7 @@ try {
        */
       foreach ($aCodigosSlip as $iCodigoSlip) {
 
-        $rsExecutaBusca = pg_execute("pesquisa_autenticacao_slip", array($iCodigoSlip));
+        $rsExecutaBusca = pg_execute("pesquisa_autenticacao_slip", [$iCodigoSlip]);
         $iTotalAutenticacao = pg_num_rows($rsExecutaBusca);
         if (!$rsExecutaBusca || $iTotalAutenticacao == 0) {
           throw new DBException("Não foi possível buscar a autenticação do slip {$iCodigoSlip}.\n\n".pg_last_error());
@@ -160,7 +160,7 @@ echo $oJson->encode($oRetorno);
  */
 function getTabelasContabilidade() {
 
-  $aTabelasContabilidade = array(
+  $aTabelasContabilidade = [
     'c44_conlancam' => 'conencerramentolancam',
     'c80_conlancam' => 'conlancamaberturaexercicio',
     'c105_codlan' => 'conlancamaberturaexercicioorcamento',
@@ -198,6 +198,6 @@ function getTabelasContabilidade() {
     'c03_codlan' => 'conlancamordem',
     'c69_codlan' => 'conlancamval',
     'c70_codlan' => 'conlancam',
-  );
+  ];
   return $aTabelasContabilidade;
 }

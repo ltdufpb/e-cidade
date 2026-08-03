@@ -44,7 +44,7 @@ $z01_d_cadast_mes = date("m",db_getsession("DB_datausu"));
 $z01_d_cadast_ano = date("Y",db_getsession("DB_datausu"));
 $z01_i_login = DB_getsession("DB_id_usuario");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clprontuarios = new cl_prontuarios_ext;
 $clsau_triagemprocsf = new cl_sau_triagemprocsf;
@@ -83,7 +83,7 @@ if(isset($proceguir)){
            if($clprontuarios->erro_status!="0"){
               $clsau_triagemprocsf->excluir(null," s147_i_triagem=$clprontuarios->sd24_i_codigo ");
               $clsau_triagemprocsf->s147_i_triagem=$clprontuarios->sd24_i_codigo;
-              $vet=explode(",",$listaproc); 
+              $vet=explode(",",(string) $listaproc); 
               for($x=0;$x<count($vet);$x++){
                  $clsau_triagemprocsf->s147_i_procsf=$vet[$x];
                  $clsau_triagemprocsf->incluir(null);
@@ -118,10 +118,10 @@ if(isset($proceguir)){
                                                    where s147_i_triagem=$sd24_i_codigo";
                                         $result_proc=db_query($sql_proc);
                                         $linhas_proc=pg_num_rows($result_proc);
-                                        $proc=array();
+                                        $proc=[];
                                         for($c=0;$c<$linhas_proc;$c++){
                                             db_fieldsmemory($result_proc,$c);
-                                            $proc[$c]=array($s146_i_codigo,$s146_c_cod,$s146_c_descr);
+                                            $proc[$c]=[$s146_i_codigo,$s146_c_cod,$s146_c_descr];
                                         }
 	   			}
    			}
@@ -137,7 +137,7 @@ $sql1 = "select z01_nome  as profissional,sd03_i_codigo,z01_numcgm
                   inner join unidades on unidades.sd02_i_codigo= unidademedicos.sd04_i_unidade		               
                   where sd02_i_codigo = $sd24_i_unidade and db_usuacgm.id_usuario=".db_getsession("DB_id_usuario");
                   
-$query1 = db_query($sql1) or die(pg_errormessage());
+$query1 = db_query($sql1) or die(pg_last_error());
 $linhas1 = pg_num_rows($query1);
 $profissional_branco = true;
 if($linhas1>0 && ( !isset( $sd03_i_codigo ) || (int)$sd03_i_codigo == 0 )) {

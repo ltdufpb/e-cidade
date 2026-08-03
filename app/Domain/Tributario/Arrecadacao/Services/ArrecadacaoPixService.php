@@ -129,7 +129,7 @@ final class ArrecadacaoPixService
      */
     protected function geraPixBanco($convenio, Cgm $cgm, $valor, $codigoBarras = null)
     {
-        if ($this->validaEmissaoReciboBarPix($codigoBarras ? $codigoBarras : $convenio->getCodigoBarra())) {
+        if ($this->validaEmissaoReciboBarPix($codigoBarras ?: $convenio->getCodigoBarra())) {
             return;
         }
 
@@ -138,19 +138,14 @@ final class ArrecadacaoPixService
         $arretipopixbancogeracaoService = new ArretipopixbancogeracaoService();
         $bankCode = $arretipopixbancogeracaoService->chooseBankToGeneratePix($arretipopix, true, false);
 
-        switch ($bankCode) {
-            case BancoDoBrasil::BANK_CODE:
-                $banco = new BancoDoBrasil();
-                break;
-            case Banrisul::BANK_CODE:
-                $banco = new Banrisul();
-                break;
-            default:
-                throw new \BusinessException("Verifique as configurações do PIX, banco {$bankCode} não configurado.");
-        }
+        $banco = match ($bankCode) {
+            BancoDoBrasil::BANK_CODE => new BancoDoBrasil(),
+            Banrisul::BANK_CODE => new Banrisul(),
+            default => throw new \BusinessException("Verifique as configurações do PIX, banco {$bankCode} não configurado."),
+        };
 
         $banco->setConvenio($convenio);
-        $banco->setCodigoBarras($codigoBarras ? $codigoBarras : $convenio->getCodigoBarra());
+        $banco->setCodigoBarras($codigoBarras ?: $convenio->getCodigoBarra());
         $banco->setCgm($cgm);
         $banco->setValor($valor);
         $banco->setCodigoArrecadacao($this->getCodigoArrecadacao());

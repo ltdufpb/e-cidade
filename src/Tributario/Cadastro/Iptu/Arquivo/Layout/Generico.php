@@ -8,42 +8,39 @@ use \BusinessException;
 final class Generico extends Layout
 {
     /**
-     * @var string|null
-     *
-     * Nome do layout
-     */
-    private $name;
-    
-    /**
-     * @var string|null
-     *
-     * Descrição do layout
-     */
-    private $description;
-
-    /**
      * @var integer|null
      *
      * Variável contem o tamanho do campo
      */
     private $size;
 
-    public function __construct ($name, $description, $size)
+    /**
+     * @param string|null $name
+     * @param string|null $description
+     */
+    public function __construct (/**
+     * @var string|null
+     *
+     * Nome do layout
+     */
+    private $name, /**
+     * @var string|null
+     *
+     * Descrição do layout
+     */
+    private $description, $size)
     {
         if(empty($size)) {
             throw BusinessException("Informe o tamanho do campo.");
         }
-
-        $this->name        = $name;
-        $this->description = $description;
         $this->size        = $size;
 
-        $this->fields = array(
-            'DEFAULT' => array(
+        $this->fields = [
+            'DEFAULT' => [
                 'name'         => $this->name
                 ,'description' => $this->description
                 ,'size'        => $this->size
-            )
-        );
+            ]
+        ];
     }
 }

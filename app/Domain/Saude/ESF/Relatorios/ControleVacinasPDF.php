@@ -9,11 +9,6 @@ use FpdfMultiCellBorder;
 class ControleVacinasPDF extends FpdfMultiCellBorder
 {
     /**
-     * @var array
-     */
-    private $dados;
-
-    /**
      * @var int
      */
     private $totalVacinas = 0;
@@ -21,10 +16,9 @@ class ControleVacinasPDF extends FpdfMultiCellBorder
     /**
      * @param array $dados
      */
-    public function __construct(array $dados, \stdClass $request)
+    public function __construct(private readonly array $dados, \stdClass $request)
     {
         parent::__construct();
-        $this->dados = $dados;
 
         global $head2;
         global $head4;
@@ -38,11 +32,11 @@ class ControleVacinasPDF extends FpdfMultiCellBorder
 
         $situacao = empty($request->situacao) ?
             'TODAS' :
-            (new SituacaoPacienteVacinacaoEnum((int)$request->situacao))->name();
+            new SituacaoPacienteVacinacaoEnum((int)$request->situacao)->name();
 
         $faixaEtaria = empty($request->faixaEtaria) ?
             'TODAS' :
-            (new FaixaEtariaEnum((int)$request->faixaEtaria))->name();
+            new FaixaEtariaEnum((int)$request->faixaEtaria)->name();
 
         $head4 = "Período: {$periodoInicial} até {$periodoFinal}";
         $head5 = "Situação/Condição: {$situacao}";

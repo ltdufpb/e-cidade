@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE liclicitaforne
 class cl_liclicitaforne { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l22_codigo = 0; 
-   var $l22_codliclicita = 0; 
-   var $l22_numcgm = 0; 
-   var $l22_dtretira_dia = null; 
-   var $l22_dtretira_mes = null; 
-   var $l22_dtretira_ano = null; 
-   var $l22_dtretira = null; 
-   var $l22_nomeretira = null; 
+   public $l22_codigo = 0; 
+   public $l22_codliclicita = 0; 
+   public $l22_numcgm = 0; 
+   public $l22_dtretira_dia = null; 
+   public $l22_dtretira_mes = null; 
+   public $l22_dtretira_ano = null; 
+   public $l22_dtretira = null; 
+   public $l22_nomeretira = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l22_codigo = int8 = Cod. Sequencial 
                  l22_codliclicita = int8 = Cod. Licitação 
                  l22_numcgm = int4 = Numcgm 
@@ -59,10 +59,10 @@ class cl_liclicitaforne {
                  l22_nomeretira = varchar(100) = Nome da Pessoa que Retirou o Edital 
                  ";
    //funcao construtor da classe 
-   function cl_liclicitaforne() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitaforne"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_liclicitaforne {
          $this->erro_status = "0";
          return false; 
        }
-       $this->l22_codigo = pg_result($result,0,0); 
+       $this->l22_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from liclicitaforne_l22_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l22_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l22_codigo)){
          $this->erro_sql = " Campo l22_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_liclicitaforne {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "liclicitaforne ($this->l22_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "liclicitaforne já Cadastrado";
@@ -204,14 +204,14 @@ class cl_liclicitaforne {
      $resaco = $this->sql_record($this->sql_query_file($this->l22_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7603,'$this->l22_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1262,7603,'','".AddSlashes(pg_result($resaco,0,'l22_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1262,7604,'','".AddSlashes(pg_result($resaco,0,'l22_codliclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1262,7605,'','".AddSlashes(pg_result($resaco,0,'l22_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1262,7849,'','".AddSlashes(pg_result($resaco,0,'l22_dtretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1262,7850,'','".AddSlashes(pg_result($resaco,0,'l22_nomeretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1262,7603,'','".AddSlashes(pg_fetch_result($resaco,0,'l22_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1262,7604,'','".AddSlashes(pg_fetch_result($resaco,0,'l22_codliclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1262,7605,'','".AddSlashes(pg_fetch_result($resaco,0,'l22_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1262,7849,'','".AddSlashes(pg_fetch_result($resaco,0,'l22_dtretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1262,7850,'','".AddSlashes(pg_fetch_result($resaco,0,'l22_nomeretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_liclicitaforne {
       $this->atualizacampos();
      $sql = " update liclicitaforne set ";
      $virgula = "";
-     if(trim($this->l22_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l22_codigo"])){ 
+     if(trim((string) $this->l22_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l22_codigo"])){ 
        $sql  .= $virgula." l22_codigo = $this->l22_codigo ";
        $virgula = ",";
-       if(trim($this->l22_codigo) == null ){ 
+       if(trim((string) $this->l22_codigo) == null ){ 
          $this->erro_sql = " Campo Cod. Sequencial nao Informado.";
          $this->erro_campo = "l22_codigo";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_liclicitaforne {
          return false;
        }
      }
-     if(trim($this->l22_codliclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l22_codliclicita"])){ 
+     if(trim((string) $this->l22_codliclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l22_codliclicita"])){ 
        $sql  .= $virgula." l22_codliclicita = $this->l22_codliclicita ";
        $virgula = ",";
-       if(trim($this->l22_codliclicita) == null ){ 
+       if(trim((string) $this->l22_codliclicita) == null ){ 
          $this->erro_sql = " Campo Cod. Licitação nao Informado.";
          $this->erro_campo = "l22_codliclicita";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_liclicitaforne {
          return false;
        }
      }
-     if(trim($this->l22_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l22_numcgm"])){ 
+     if(trim((string) $this->l22_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l22_numcgm"])){ 
        $sql  .= $virgula." l22_numcgm = $this->l22_numcgm ";
        $virgula = ",";
-       if(trim($this->l22_numcgm) == null ){ 
+       if(trim((string) $this->l22_numcgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "l22_numcgm";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_liclicitaforne {
          return false;
        }
      }
-     if(trim($this->l22_dtretira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l22_dtretira_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l22_dtretira_dia"] !="") ){ 
+     if(trim((string) $this->l22_dtretira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l22_dtretira_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l22_dtretira_dia"] !="") ){ 
        $sql  .= $virgula." l22_dtretira = '$this->l22_dtretira' ";
        $virgula = ",";
-       if(trim($this->l22_dtretira) == null ){ 
+       if(trim((string) $this->l22_dtretira) == null ){ 
          $this->erro_sql = " Campo Data da Retirada do Edital nao Informado.";
          $this->erro_campo = "l22_dtretira_dia";
          $this->erro_banco = "";
@@ -275,7 +275,7 @@ class cl_liclicitaforne {
        if(isset($GLOBALS["HTTP_POST_VARS"]["l22_dtretira_dia"])){ 
          $sql  .= $virgula." l22_dtretira = null ";
          $virgula = ",";
-         if(trim($this->l22_dtretira) == null ){ 
+         if(trim((string) $this->l22_dtretira) == null ){ 
            $this->erro_sql = " Campo Data da Retirada do Edital nao Informado.";
            $this->erro_campo = "l22_dtretira_dia";
            $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_liclicitaforne {
          }
        }
      }
-     if(trim($this->l22_nomeretira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l22_nomeretira"])){ 
+     if(trim((string) $this->l22_nomeretira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l22_nomeretira"])){ 
        $sql  .= $virgula." l22_nomeretira = '$this->l22_nomeretira' ";
        $virgula = ",";
-       if(trim($this->l22_nomeretira) == null ){ 
+       if(trim((string) $this->l22_nomeretira) == null ){ 
          $this->erro_sql = " Campo Nome da Pessoa que Retirou o Edital nao Informado.";
          $this->erro_campo = "l22_nomeretira";
          $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_liclicitaforne {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7603,'$this->l22_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l22_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1262,7603,'".AddSlashes(pg_result($resaco,$conresaco,'l22_codigo'))."','$this->l22_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1262,7603,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l22_codigo'))."','$this->l22_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l22_codliclicita"]))
-           $resac = db_query("insert into db_acount values($acount,1262,7604,'".AddSlashes(pg_result($resaco,$conresaco,'l22_codliclicita'))."','$this->l22_codliclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1262,7604,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l22_codliclicita'))."','$this->l22_codliclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l22_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,1262,7605,'".AddSlashes(pg_result($resaco,$conresaco,'l22_numcgm'))."','$this->l22_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1262,7605,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l22_numcgm'))."','$this->l22_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l22_dtretira"]))
-           $resac = db_query("insert into db_acount values($acount,1262,7849,'".AddSlashes(pg_result($resaco,$conresaco,'l22_dtretira'))."','$this->l22_dtretira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1262,7849,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l22_dtretira'))."','$this->l22_dtretira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l22_nomeretira"]))
-           $resac = db_query("insert into db_acount values($acount,1262,7850,'".AddSlashes(pg_result($resaco,$conresaco,'l22_nomeretira'))."','$this->l22_nomeretira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1262,7850,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l22_nomeretira'))."','$this->l22_nomeretira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_liclicitaforne {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7603,'$l22_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1262,7603,'','".AddSlashes(pg_result($resaco,$iresaco,'l22_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1262,7604,'','".AddSlashes(pg_result($resaco,$iresaco,'l22_codliclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1262,7605,'','".AddSlashes(pg_result($resaco,$iresaco,'l22_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1262,7849,'','".AddSlashes(pg_result($resaco,$iresaco,'l22_dtretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1262,7850,'','".AddSlashes(pg_result($resaco,$iresaco,'l22_nomeretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1262,7603,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l22_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1262,7604,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l22_codliclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1262,7605,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l22_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1262,7849,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l22_dtretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1262,7850,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l22_nomeretira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from liclicitaforne
@@ -431,7 +431,7 @@ class cl_liclicitaforne {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:liclicitaforne";
@@ -445,7 +445,7 @@ class cl_liclicitaforne {
    function sql_query ( $l22_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -470,7 +470,7 @@ class cl_liclicitaforne {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -482,7 +482,7 @@ class cl_liclicitaforne {
    function sql_query_file ( $l22_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -503,7 +503,7 @@ class cl_liclicitaforne {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

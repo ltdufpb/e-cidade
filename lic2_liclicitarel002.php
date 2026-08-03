@@ -43,8 +43,8 @@ $clpcorcamjulg       = new cl_pcorcamjulg;
 $clrotulo            = new rotulocampo;
 
 $clrotulo->label('');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 $sWhere = "";
 $sAnd   = "";
 if (($data != "--") && ($data1 != "--")) {
@@ -122,7 +122,7 @@ $p           = 0;
 $valortot    = 0;
 $muda        = 0;
 $mostraAndam = $mostramov;
-$oInfoLog    = array();
+$oInfoLog    = [];
 for ($i = 0; $i < $numrows; $i++) {
 
   db_fieldsmemory($result,$i);
@@ -209,7 +209,7 @@ for ($i = 0; $i < $numrows; $i++) {
   $pdf->setfont('arial','b',8);
   $pdf->cell(30,$alt,'Objeto :',0,0,"R",0);
   $pdf->setfont('arial','b',8);
-  $pdf->multicell(150,$alt,htmlspecialchars_decode($l20_objeto),0,"L",0);
+  $pdf->multicell(150,$alt,htmlspecialchars_decode((string) $l20_objeto),0,"L",0);
 
   $result_sec=$clliclicitem->sql_record($clliclicitem->sql_query_orc(null,"distinct o40_descr",null,"l21_codliclicita = $l20_codigo"));
   if ($l20_licsituacao == 3) {
@@ -226,7 +226,7 @@ for ($i = 0; $i < $numrows; $i++) {
       if ($l20_licsituacao != 3 ) {
         db_fieldsmemory($result_sec,$z);
       } else {
-        $o40_descr = utf8_decode($oInfoLog->secretarias->secretaria[$i]);
+        $o40_descr = mb_convert_encoding($oInfoLog->secretarias->secretaria[$i], 'ISO-8859-1');
       }
       if ($z != 0) {
         $pdf->cell(30,$alt,"",0,0,"R",0);
@@ -289,11 +289,11 @@ for ($i = 0; $i < $numrows; $i++) {
     /**
      * Situações em que devem ser apresentado o valor julgado do item, ao invés do valor da solicitação da compra
      */
-    $aSituacoes = array(
+    $aSituacoes = [
       SituacaoLicitacao::SITUACAO_JULGADA,
       SituacaoLicitacao::SITUACAO_ADJUDICADA,
       SituacaoLicitacao::SITUACAO_HOMOLOGADA
-    );
+    ];
 
     if (in_array($l20_licsituacao, $aSituacoes)) {
 
@@ -336,7 +336,7 @@ for ($i = 0; $i < $numrows; $i++) {
     if ($l20_licsituacao == 3) {
       $clliclicitem->numrows = count($oInfoLog->item);
     }
-    $aItens = array();
+    $aItens = [];
     if ($clliclicitem->numrows > 0) {
       for ($w = 0; $w < $clliclicitem->numrows; $w++) {
 
@@ -345,16 +345,16 @@ for ($i = 0; $i < $numrows; $i++) {
         } else {
 
           $oItem                  = new stdClass();
-          $oItem->l21_ordem       = utf8_decode($oInfoLog->item[$w]->l21_ordem);
-          $oItem->pc01_codmater   = utf8_decode($oInfoLog->item[$w]->pc01_codmater);
-          $oItem->pc01_descrmater = utf8_decode($oInfoLog->item[$w]->pc01_descrmater);
-          $oItem->pc11_quant      = utf8_decode($oInfoLog->item[$w]->pc11_quant);
-          $oItem->pc11_vlrun      = utf8_decode($oInfoLog->item[$w]->pc11_vlrun);
-          $oItem->pc01_servico    = utf8_decode($oInfoLog->item[$w]->pc01_servico);
-          $oItem->m61_descr       = utf8_decode($oInfoLog->item[$w]->m61_descr);
-          $oItem->m61_usaquant    = utf8_decode($oInfoLog->item[$w]->m61_usaquant);
-          $oItem->pc17_quant      = utf8_decode($oInfoLog->item[$w]->pc17_quant);
-          $oItem->pc11_resum      = utf8_decode($oInfoLog->item[$w]->pc11_resum);
+          $oItem->l21_ordem       = mb_convert_encoding($oInfoLog->item[$w]->l21_ordem, 'ISO-8859-1');
+          $oItem->pc01_codmater   = mb_convert_encoding($oInfoLog->item[$w]->pc01_codmater, 'ISO-8859-1');
+          $oItem->pc01_descrmater = mb_convert_encoding($oInfoLog->item[$w]->pc01_descrmater, 'ISO-8859-1');
+          $oItem->pc11_quant      = mb_convert_encoding($oInfoLog->item[$w]->pc11_quant, 'ISO-8859-1');
+          $oItem->pc11_vlrun      = mb_convert_encoding($oInfoLog->item[$w]->pc11_vlrun, 'ISO-8859-1');
+          $oItem->pc01_servico    = mb_convert_encoding($oInfoLog->item[$w]->pc01_servico, 'ISO-8859-1');
+          $oItem->m61_descr       = mb_convert_encoding($oInfoLog->item[$w]->m61_descr, 'ISO-8859-1');
+          $oItem->m61_usaquant    = mb_convert_encoding($oInfoLog->item[$w]->m61_usaquant, 'ISO-8859-1');
+          $oItem->pc17_quant      = mb_convert_encoding($oInfoLog->item[$w]->pc17_quant, 'ISO-8859-1');
+          $oItem->pc11_resum      = mb_convert_encoding($oInfoLog->item[$w]->pc11_resum, 'ISO-8859-1');
           $oItem->z01_nome        = '';
           $oItem->z01_numcgm      = '';
         }
@@ -363,7 +363,7 @@ for ($i = 0; $i < $numrows; $i++) {
           $oFornecedor         = new stdClass();
           $oFornecedor->numcgm = $oItem->z01_numcgm;
           $oFornecedor->nome   = $oItem->z01_nome;
-          $oFornecedor->itens  = array();
+          $oFornecedor->itens  = [];
           $aItens[$oItem->z01_numcgm] = $oFornecedor;
         }
         $aItens[$oItem->z01_numcgm]->itens[] = $oItem;
@@ -399,13 +399,13 @@ for ($i = 0; $i < $numrows; $i++) {
           $pdf->setfont('arial','',7);
           $pdf->cell(10,$alt,$oItem->l21_ordem,0,0,"C",$p);
           $pdf->cell(20,$alt,$oItem->pc01_codmater,0,0,"C",$p);
-          $pdf->cell(50,$alt,ucfirst(mb_strtolower(substr($oItem->pc01_descrmater,0,40))),0,0,"L",$p);
+          $pdf->cell(50,$alt,ucfirst(mb_strtolower(substr((string) $oItem->pc01_descrmater,0,40))),0,0,"L",$p);
           $pdf->cell(15,$alt,$oItem->pc11_quant,0,0,"C",$p);
           $pdf->cell(15,$alt,db_formatar($oItem->pc11_vlrun,"f"),0,0,"R",$p);
           $pdf->cell(15,$alt,db_formatar(($oItem->pc11_vlrun*$oItem->pc11_quant),"f"),0,0,"R",$p);
           if ((isset($oItem->pc01_servico) && (trim($oItem->pc01_servico) == "f" || trim($oItem->pc01_servico) == "")) || !isset($oItem->pc01_servico)) {
 
-            $unid = trim(substr($oItem->m61_descr,0,10));
+            $unid = trim(substr((string) $oItem->m61_descr,0,10));
             if ($oItem->m61_usaquant=="t") {
               $unid .= " ($oItem->pc17_quant UNIDADES)";
             }
@@ -413,7 +413,7 @@ for ($i = 0; $i < $numrows; $i++) {
             $unid = "SERVIÇO";
           }
           $pdf->cell(35,$alt,"$unid",0,0,"C",$p);
-          $pdf->multicell(35,$alt,substr($oItem->pc11_resum,0,35),0,"L",$p);
+          $pdf->multicell(35,$alt,substr((string) $oItem->pc11_resum,0,35),0,"L",$p);
           if ($p == 0) {
             $p = 1;
           } else {
@@ -441,7 +441,7 @@ for ($i = 0; $i < $numrows; $i++) {
         if ($l20_licsituacao != 3) {
           db_fieldsmemory($result_dot,$w);
         } else {
-          $estrutural  = utf8_decode($oInfoLog->elementos->elemento[$w]);
+          $estrutural  = mb_convert_encoding($oInfoLog->elementos->elemento[$w], 'ISO-8859-1');
         }
         if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ) {
 
@@ -525,7 +525,7 @@ for ($i = 0; $i < $numrows; $i++) {
                                                 and pc23_orcamforne is not null"
                                                );
 
-    $aItensFornecedor = array();
+    $aItensFornecedor = [];
     $rsItens          = $clliclicitem->sql_record($sSqlCotacoes);
 
     if ($rsItens) {
@@ -537,7 +537,7 @@ for ($i = 0; $i < $numrows; $i++) {
            $oFornecedor         = new stdClass();
            $oFornecedor->numcgm = $oItem->z01_numcgm;
            $oFornecedor->nome   = $oItem->z01_nome;
-           $oFornecedor->itens  = array();
+           $oFornecedor->itens  = [];
            $aItensFornecedor[$oItem->z01_numcgm] = $oFornecedor;
          }
          $aItensFornecedor[$oItem->z01_numcgm]->itens[] = $oItem;
@@ -568,8 +568,8 @@ for ($i = 0; $i < $numrows; $i++) {
           $lMostraCabecalhoCotacoes = false;
         }
         $pdf->cell(10, $alt, $oItem->l21_ordem, 0, 0, "R");
-        $pdf->cell(70, $alt, mb_strtolower($oItem->pc01_descrmater), 0, 0, "L");
-        $pdf->cell(90, $alt, substr(htmlspecialchars_decode($oItem->pc11_resum), 0, 70), 0, 0, "L");
+        $pdf->cell(70, $alt, mb_strtolower((string) $oItem->pc01_descrmater), 0, 0, "L");
+        $pdf->cell(90, $alt, substr(htmlspecialchars_decode((string) $oItem->pc11_resum), 0, 70), 0, 0, "L");
         $pdf->cell(20, $alt, db_formatar($oItem->pc23_valor, 'f'), 0, 1, "R");
       }
     }

@@ -33,8 +33,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_censodistrito_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcensodistrito = new cl_censodistrito;
 ?>
 <html>
@@ -66,9 +66,9 @@ $clcensodistrito = new cl_censodistrito;
               ed262_c_nome as dl_distrito
              ";
    $sql = $clcensodistrito->sql_query("",$campos,"ed260_c_sigla,ed261_c_nome,ed262_c_nome","");
-   $repassa = array();
+   $repassa = [];
    if(isset($chave_ed262_i_codigo)){
-    $repassa = array("chave_ed262_i_codigo"=>@$chave_ed262_i_codigo);
+    $repassa = ["chave_ed262_i_codigo"=>@$chave_ed262_i_codigo];
    }
    db_lovrot($sql,25,"","","","","NoMe",$repassa);
    ?>

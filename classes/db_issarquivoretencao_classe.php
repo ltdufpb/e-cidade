@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE issarquivoretencao
 class cl_issarquivoretencao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $q90_sequencial = 0;
-   var $q90_instit = 0;
-   var $q90_data_dia = null;
-   var $q90_data_mes = null;
-   var $q90_data_ano = null;
-   var $q90_data = null;
-   var $q90_numeroremessa = 0;
-   var $q90_versao = 0;
-   var $q90_quantidaderegistro = 0;
-   var $q90_valortotal = 0;
-   var $q90_codigobanco = 0;
-   var $q90_oidarquivo = 0;
-   var $q90_nomearquivo = null;
+   public $q90_sequencial = 0;
+   public $q90_instit = 0;
+   public $q90_data_dia = null;
+   public $q90_data_mes = null;
+   public $q90_data_ano = null;
+   public $q90_data = null;
+   public $q90_numeroremessa = 0;
+   public $q90_versao = 0;
+   public $q90_quantidaderegistro = 0;
+   public $q90_valortotal = 0;
+   public $q90_codigobanco = 0;
+   public $q90_oidarquivo = 0;
+   public $q90_nomearquivo = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  q90_sequencial = int4 = Código Arquivo de Retenção
                  q90_instit = int4 = Instituição
                  q90_data = date = Data do Arquivo
@@ -69,10 +69,10 @@ class cl_issarquivoretencao {
                  q90_nomearquivo = varchar(50) = Nome do Arquivo
                  ";
    //funcao construtor da classe
-   function cl_issarquivoretencao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issarquivoretencao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -201,10 +201,10 @@ class cl_issarquivoretencao {
          $this->erro_status = "0";
          return false;
        }
-       $this->q90_sequencial = pg_result($result,0,0);
+       $this->q90_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from issarquivoretencao_q90_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q90_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q90_sequencial)){
          $this->erro_sql = " Campo q90_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -250,7 +250,7 @@ class cl_issarquivoretencao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Arquivo de Retenção ($this->q90_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Arquivo de Retenção já Cadastrado";
@@ -279,19 +279,19 @@ class cl_issarquivoretencao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21049,'$this->q90_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3791,21049,'','".AddSlashes(pg_result($resaco,0,'q90_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3791,21054,'','".AddSlashes(pg_result($resaco,0,'q90_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3791,21055,'','".AddSlashes(pg_result($resaco,0,'q90_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3791,21063,'','".AddSlashes(pg_result($resaco,0,'q90_numeroremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3791,21062,'','".AddSlashes(pg_result($resaco,0,'q90_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3791,21064,'','".AddSlashes(pg_result($resaco,0,'q90_quantidaderegistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3791,21069,'','".AddSlashes(pg_result($resaco,0,'q90_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3791,21070,'','".AddSlashes(pg_result($resaco,0,'q90_codigobanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3791,21075,'','".AddSlashes(pg_result($resaco,0,'q90_oidarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3791,21076,'','".AddSlashes(pg_result($resaco,0,'q90_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3791,21049,'','".AddSlashes(pg_fetch_result($resaco,0,'q90_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3791,21054,'','".AddSlashes(pg_fetch_result($resaco,0,'q90_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3791,21055,'','".AddSlashes(pg_fetch_result($resaco,0,'q90_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3791,21063,'','".AddSlashes(pg_fetch_result($resaco,0,'q90_numeroremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3791,21062,'','".AddSlashes(pg_fetch_result($resaco,0,'q90_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3791,21064,'','".AddSlashes(pg_fetch_result($resaco,0,'q90_quantidaderegistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3791,21069,'','".AddSlashes(pg_fetch_result($resaco,0,'q90_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3791,21070,'','".AddSlashes(pg_fetch_result($resaco,0,'q90_codigobanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3791,21075,'','".AddSlashes(pg_fetch_result($resaco,0,'q90_oidarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3791,21076,'','".AddSlashes(pg_fetch_result($resaco,0,'q90_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -301,10 +301,10 @@ class cl_issarquivoretencao {
       $this->atualizacampos();
      $sql = " update issarquivoretencao set ";
      $virgula = "";
-     if(trim($this->q90_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_sequencial"])){
+     if(trim((string) $this->q90_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_sequencial"])){
        $sql  .= $virgula." q90_sequencial = $this->q90_sequencial ";
        $virgula = ",";
-       if(trim($this->q90_sequencial) == null ){
+       if(trim((string) $this->q90_sequencial) == null ){
          $this->erro_sql = " Campo Código Arquivo de Retenção não informado.";
          $this->erro_campo = "q90_sequencial";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_issarquivoretencao {
          return false;
        }
      }
-     if(trim($this->q90_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_instit"])){
+     if(trim((string) $this->q90_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_instit"])){
        $sql  .= $virgula." q90_instit = $this->q90_instit ";
        $virgula = ",";
-       if(trim($this->q90_instit) == null ){
+       if(trim((string) $this->q90_instit) == null ){
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "q90_instit";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_issarquivoretencao {
          return false;
        }
      }
-     if(trim($this->q90_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q90_data_dia"] !="") ){
+     if(trim((string) $this->q90_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q90_data_dia"] !="") ){
        $sql  .= $virgula." q90_data = '$this->q90_data' ";
        $virgula = ",";
-       if(trim($this->q90_data) == null ){
+       if(trim((string) $this->q90_data) == null ){
          $this->erro_sql = " Campo Data do Arquivo não informado.";
          $this->erro_campo = "q90_data_dia";
          $this->erro_banco = "";
@@ -343,7 +343,7 @@ class cl_issarquivoretencao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["q90_data_dia"])){
          $sql  .= $virgula." q90_data = null ";
          $virgula = ",";
-         if(trim($this->q90_data) == null ){
+         if(trim((string) $this->q90_data) == null ){
            $this->erro_sql = " Campo Data do Arquivo não informado.";
            $this->erro_campo = "q90_data_dia";
            $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_issarquivoretencao {
          }
        }
      }
-     if(trim($this->q90_numeroremessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_numeroremessa"])){
+     if(trim((string) $this->q90_numeroremessa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_numeroremessa"])){
        $sql  .= $virgula." q90_numeroremessa = $this->q90_numeroremessa ";
        $virgula = ",";
-       if(trim($this->q90_numeroremessa) == null ){
+       if(trim((string) $this->q90_numeroremessa) == null ){
          $this->erro_sql = " Campo Número da Remessa não informado.";
          $this->erro_campo = "q90_numeroremessa";
          $this->erro_banco = "";
@@ -367,10 +367,10 @@ class cl_issarquivoretencao {
          return false;
        }
      }
-     if(trim($this->q90_versao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_versao"])){
+     if(trim((string) $this->q90_versao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_versao"])){
        $sql  .= $virgula." q90_versao = $this->q90_versao ";
        $virgula = ",";
-       if(trim($this->q90_versao) == null ){
+       if(trim((string) $this->q90_versao) == null ){
          $this->erro_sql = " Campo Versão do Arquivo não informado.";
          $this->erro_campo = "q90_versao";
          $this->erro_banco = "";
@@ -380,10 +380,10 @@ class cl_issarquivoretencao {
          return false;
        }
      }
-     if(trim($this->q90_quantidaderegistro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_quantidaderegistro"])){
+     if(trim((string) $this->q90_quantidaderegistro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_quantidaderegistro"])){
        $sql  .= $virgula." q90_quantidaderegistro = $this->q90_quantidaderegistro ";
        $virgula = ",";
-       if(trim($this->q90_quantidaderegistro) == null ){
+       if(trim((string) $this->q90_quantidaderegistro) == null ){
          $this->erro_sql = " Campo Quantidade de Registros não informado.";
          $this->erro_campo = "q90_quantidaderegistro";
          $this->erro_banco = "";
@@ -393,10 +393,10 @@ class cl_issarquivoretencao {
          return false;
        }
      }
-     if(trim($this->q90_valortotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_valortotal"])){
+     if(trim((string) $this->q90_valortotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_valortotal"])){
        $sql  .= $virgula." q90_valortotal = $this->q90_valortotal ";
        $virgula = ",";
-       if(trim($this->q90_valortotal) == null ){
+       if(trim((string) $this->q90_valortotal) == null ){
          $this->erro_sql = " Campo Valor Total não informado.";
          $this->erro_campo = "q90_valortotal";
          $this->erro_banco = "";
@@ -406,10 +406,10 @@ class cl_issarquivoretencao {
          return false;
        }
      }
-     if(trim($this->q90_codigobanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_codigobanco"])){
+     if(trim((string) $this->q90_codigobanco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_codigobanco"])){
        $sql  .= $virgula." q90_codigobanco = $this->q90_codigobanco ";
        $virgula = ",";
-       if(trim($this->q90_codigobanco) == null ){
+       if(trim((string) $this->q90_codigobanco) == null ){
          $this->erro_sql = " Campo Código do Banco não informado.";
          $this->erro_campo = "q90_codigobanco";
          $this->erro_banco = "";
@@ -419,10 +419,10 @@ class cl_issarquivoretencao {
          return false;
        }
      }
-     if(trim($this->q90_oidarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_oidarquivo"])){
+     if(trim((string) $this->q90_oidarquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_oidarquivo"])){
        $sql  .= $virgula." q90_oidarquivo = $this->q90_oidarquivo ";
        $virgula = ",";
-       if(trim($this->q90_oidarquivo) == null ){
+       if(trim((string) $this->q90_oidarquivo) == null ){
          $this->erro_sql = " Campo Arquivo não informado.";
          $this->erro_campo = "q90_oidarquivo";
          $this->erro_banco = "";
@@ -432,10 +432,10 @@ class cl_issarquivoretencao {
          return false;
        }
      }
-     if(trim($this->q90_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_nomearquivo"])){
+     if(trim((string) $this->q90_nomearquivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q90_nomearquivo"])){
        $sql  .= $virgula." q90_nomearquivo = '$this->q90_nomearquivo' ";
        $virgula = ",";
-       if(trim($this->q90_nomearquivo) == null ){
+       if(trim((string) $this->q90_nomearquivo) == null ){
          $this->erro_sql = " Campo Nome do Arquivo não informado.";
          $this->erro_campo = "q90_nomearquivo";
          $this->erro_banco = "";
@@ -459,29 +459,29 @@ class cl_issarquivoretencao {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21049,'$this->q90_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q90_sequencial"]) || $this->q90_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3791,21049,'".AddSlashes(pg_result($resaco,$conresaco,'q90_sequencial'))."','$this->q90_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3791,21049,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q90_sequencial'))."','$this->q90_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q90_instit"]) || $this->q90_instit != "")
-             $resac = db_query("insert into db_acount values($acount,3791,21054,'".AddSlashes(pg_result($resaco,$conresaco,'q90_instit'))."','$this->q90_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3791,21054,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q90_instit'))."','$this->q90_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q90_data"]) || $this->q90_data != "")
-             $resac = db_query("insert into db_acount values($acount,3791,21055,'".AddSlashes(pg_result($resaco,$conresaco,'q90_data'))."','$this->q90_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3791,21055,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q90_data'))."','$this->q90_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q90_numeroremessa"]) || $this->q90_numeroremessa != "")
-             $resac = db_query("insert into db_acount values($acount,3791,21063,'".AddSlashes(pg_result($resaco,$conresaco,'q90_numeroremessa'))."','$this->q90_numeroremessa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3791,21063,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q90_numeroremessa'))."','$this->q90_numeroremessa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q90_versao"]) || $this->q90_versao != "")
-             $resac = db_query("insert into db_acount values($acount,3791,21062,'".AddSlashes(pg_result($resaco,$conresaco,'q90_versao'))."','$this->q90_versao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3791,21062,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q90_versao'))."','$this->q90_versao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q90_quantidaderegistro"]) || $this->q90_quantidaderegistro != "")
-             $resac = db_query("insert into db_acount values($acount,3791,21064,'".AddSlashes(pg_result($resaco,$conresaco,'q90_quantidaderegistro'))."','$this->q90_quantidaderegistro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3791,21064,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q90_quantidaderegistro'))."','$this->q90_quantidaderegistro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q90_valortotal"]) || $this->q90_valortotal != "")
-             $resac = db_query("insert into db_acount values($acount,3791,21069,'".AddSlashes(pg_result($resaco,$conresaco,'q90_valortotal'))."','$this->q90_valortotal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3791,21069,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q90_valortotal'))."','$this->q90_valortotal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q90_codigobanco"]) || $this->q90_codigobanco != "")
-             $resac = db_query("insert into db_acount values($acount,3791,21070,'".AddSlashes(pg_result($resaco,$conresaco,'q90_codigobanco'))."','$this->q90_codigobanco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3791,21070,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q90_codigobanco'))."','$this->q90_codigobanco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q90_oidarquivo"]) || $this->q90_oidarquivo != "")
-             $resac = db_query("insert into db_acount values($acount,3791,21075,'".AddSlashes(pg_result($resaco,$conresaco,'q90_oidarquivo'))."','$this->q90_oidarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3791,21075,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q90_oidarquivo'))."','$this->q90_oidarquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["q90_nomearquivo"]) || $this->q90_nomearquivo != "")
-             $resac = db_query("insert into db_acount values($acount,3791,21076,'".AddSlashes(pg_result($resaco,$conresaco,'q90_nomearquivo'))."','$this->q90_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3791,21076,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q90_nomearquivo'))."','$this->q90_nomearquivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -535,19 +535,19 @@ class cl_issarquivoretencao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21049,'$q90_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3791,21049,'','".AddSlashes(pg_result($resaco,$iresaco,'q90_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3791,21054,'','".AddSlashes(pg_result($resaco,$iresaco,'q90_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3791,21055,'','".AddSlashes(pg_result($resaco,$iresaco,'q90_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3791,21063,'','".AddSlashes(pg_result($resaco,$iresaco,'q90_numeroremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3791,21062,'','".AddSlashes(pg_result($resaco,$iresaco,'q90_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3791,21064,'','".AddSlashes(pg_result($resaco,$iresaco,'q90_quantidaderegistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3791,21069,'','".AddSlashes(pg_result($resaco,$iresaco,'q90_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3791,21070,'','".AddSlashes(pg_result($resaco,$iresaco,'q90_codigobanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3791,21075,'','".AddSlashes(pg_result($resaco,$iresaco,'q90_oidarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3791,21076,'','".AddSlashes(pg_result($resaco,$iresaco,'q90_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3791,21049,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q90_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3791,21054,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q90_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3791,21055,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q90_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3791,21063,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q90_numeroremessa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3791,21062,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q90_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3791,21064,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q90_quantidaderegistro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3791,21069,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q90_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3791,21070,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q90_codigobanco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3791,21075,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q90_oidarquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3791,21076,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q90_nomearquivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -35,7 +35,7 @@ function Warning($txt)
 	Message($txt, 'Warning');
 }
 
-function Error($txt)
+function Error($txt): never
 {
 	Message($txt, 'Error');
 	exit;
@@ -43,18 +43,18 @@ function Error($txt)
 
 function LoadMap($enc)
 {
-	$file = dirname(__FILE__).'/'.strtolower($enc).'.map';
+	$file = __DIR__.'/'.strtolower((string) $enc).'.map';
 	$a = file($file);
 	if(empty($a))
 		Error('Encoding not found: '.$enc);
-	$map = array_fill(0, 256, array('uv'=>-1, 'name'=>'.notdef'));
+	$map = array_fill(0, 256, ['uv'=>-1, 'name'=>'.notdef']);
 	foreach($a as $line)
 	{
 		$e = explode(' ', rtrim($line));
 		$c = hexdec(substr($e[0],1));
 		$uv = hexdec(substr($e[1],2));
 		$name = $e[2];
-		$map[$c] = array('uv'=>$uv, 'name'=>$name);
+		$map[$c] = ['uv'=>$uv, 'name'=>$name];
 	}
 	return $map;
 }
@@ -77,7 +77,7 @@ function GetInfoFromTrueType($file, $embed, $subset, $map)
 			Error('Font license does not allow embedding');
 		if($subset)
 		{
-			$chars = array();
+			$chars = [];
 			foreach($map as $v)
 			{
 				if($v['name']!='.notdef')
@@ -88,7 +88,7 @@ function GetInfoFromTrueType($file, $embed, $subset, $map)
 		}
 		else
 			$info['Data'] = file_get_contents($file);
-		$info['OriginalSize'] = strlen($info['Data']);
+		$info['OriginalSize'] = strlen((string) $info['Data']);
 	}
 	$k = 1000/$ttf->unitsPerEm;
 	$info['FontName'] = $ttf->postScriptName;
@@ -99,7 +99,7 @@ function GetInfoFromTrueType($file, $embed, $subset, $map)
 	$info['Descender'] = round($k*$ttf->typoDescender);
 	$info['UnderlineThickness'] = round($k*$ttf->underlineThickness);
 	$info['UnderlinePosition'] = round($k*$ttf->underlinePosition);
-	$info['FontBBox'] = array(round($k*$ttf->xMin), round($k*$ttf->yMin), round($k*$ttf->xMax), round($k*$ttf->yMax));
+	$info['FontBBox'] = [round($k*$ttf->xMin), round($k*$ttf->yMin), round($k*$ttf->xMax), round($k*$ttf->yMax)];
 	$info['CapHeight'] = round($k*$ttf->capHeight);
 	$info['MissingWidth'] = round($k*$ttf->glyphs[0]['w']);
 	$widths = array_fill(0, 256, $info['MissingWidth']);
@@ -147,7 +147,7 @@ function GetInfoFromType1($file, $embed, $map)
 		$info['Size2'] = $size2;
 	}
 
-	$afm = substr($file, 0, -3).'afm';
+	$afm = substr((string) $file, 0, -3).'afm';
 	if(!file_exists($afm))
 		Error('AFM font file not found: '.$afm);
 	$a = file($afm);
@@ -182,7 +182,7 @@ function GetInfoFromType1($file, $embed, $map)
 		elseif($entry=='IsFixedPitch')
 			$info['IsFixedPitch'] = ($e[1]=='true');
 		elseif($entry=='FontBBox')
-			$info['FontBBox'] = array((int)$e[1], (int)$e[2], (int)$e[3], (int)$e[4]);
+			$info['FontBBox'] = [(int)$e[1], (int)$e[2], (int)$e[3], (int)$e[4]];
 		elseif($entry=='CapHeight')
 			$info['CapHeight'] = (int)$e[1];
 		elseif($entry=='StdVW')
@@ -297,7 +297,7 @@ function MakeFontEncoding($map)
 function MakeUnicodeArray($map)
 {
 	// Build mapping to Unicode values
-	$ranges = array();
+	$ranges = [];
 	foreach($map as $c=>$v)
 	{
 		$uv = $v['uv'];
@@ -313,11 +313,11 @@ function MakeUnicodeArray($map)
 				else
 				{
 					$ranges[] = $range;
-					$range = array($c, $c, $uv, $uv);
+					$range = [$c, $c, $uv, $uv];
 				}
 			}
 			else
-				$range = array($c, $c, $uv, $uv);
+				$range = [$c, $c, $uv, $uv];
 		}
 	}
 	$ranges[] = $range;
@@ -344,7 +344,7 @@ function SaveToFile($file, $s, $mode)
 	$f = fopen($file, 'w'.$mode);
 	if(!$f)
 		Error('Can\'t write to file '.$file);
-	fwrite($f, $s);
+	fwrite($f, (string) $s);
 	fclose($f);
 }
 
@@ -386,7 +386,7 @@ function MakeFont($fontfile, $enc='cp1252', $embed=true, $subset=true)
 	// Generate a font definition file
 	if(!file_exists($fontfile))
 		Error('Font file not found: '.$fontfile);
-	$ext = strtolower(substr($fontfile,-3));
+	$ext = strtolower(substr((string) $fontfile,-3));
 	if($ext=='ttf' || $ext=='otf')
 		$type = 'TrueType';
 	elseif($ext=='pfb')
@@ -401,19 +401,19 @@ function MakeFont($fontfile, $enc='cp1252', $embed=true, $subset=true)
 	else
 		$info = GetInfoFromType1($fontfile, $embed, $map);
 
-	$basename = substr(basename($fontfile), 0, -4);
+	$basename = substr(basename((string) $fontfile), 0, -4);
 	if($embed)
 	{
 		if(function_exists('gzcompress'))
 		{
 			$file = $basename.'.z';
-			SaveToFile($file, gzcompress($info['Data']), 'b');
+			SaveToFile($file, gzcompress((string) $info['Data']), 'b');
 			$info['File'] = $file;
 			Message('Font file compressed: '.$file);
 		}
 		else
 		{
-			$info['File'] = basename($fontfile);
+			$info['File'] = basename((string) $fontfile);
 			$subset = false;
 			Notice('Font file could not be compressed (zlib extension not available)');
 		}

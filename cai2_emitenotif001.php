@@ -33,8 +33,8 @@ include_once(modification("libs/db_utils.php"));
 include_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_libpostgres.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $clpostgresqlutils = new PostgreSQLUtils;
 $clrotulo          = new rotulocampo;
@@ -95,11 +95,11 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <td>
           <?php
 
-            $aOrdem = array( "a" => "Alfabética",
+            $aOrdem = [ "a" => "Alfabética",
               	 	 	         "n" => "Numérica",
               			         "t" => "Notificação",
     	 	    			           "e" => "Endereço de Entrega",
-               	 	    	     "c" => "Cidade/CEP" );
+               	 	    	     "c" => "Cidade/CEP" ];
 			      db_select('ordem', $aOrdem, true, $db_opcao, "");
           ?>
         </td>
@@ -109,7 +109,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <td>
           <?php
 
-  	        $aOpcoesTratamento = array();
+  	        $aOpcoesTratamento = [];
   	        if ( isset($k60_codigo) && trim($k60_codigo) != "" ) {
 
   	          $sSqlLista  = " select k60_tipo					          ";
@@ -127,7 +127,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 
   	            $sSqlOrdendent   = "select defcampo, defdescr from db_syscampodef where codcam = 9856";
   	            $resultordendent = db_query($sSqlOrdendent);
-  	            for ($xord=0; $xord < pg_numrows($resultordendent); $xord++) {
+  	            for ($xord=0; $xord < pg_num_rows($resultordendent); $xord++) {
 
   	              db_fieldsmemory($resultordendent, $xord);
   	              $aOpcoesTratamento["$defcampo"] = "$defdescr";
@@ -143,7 +143,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <td>
           <?php
 
-            $aOpcoes = array( "n" => "Não", "s" => "Sim" );
+            $aOpcoes = [ "n" => "Não", "s" => "Sim" ];
             db_select('imprimirmesmoembranco', $aOpcoes, true, $db_opcao );
           ?>
         </td>
@@ -153,7 +153,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <td>
           <?php
 
-	         $aIntervalo = array( "q" => "Quantidade", "n" => "Notificação" );
+	         $aIntervalo = [ "q" => "Quantidade", "n" => "Notificação" ];
 			     db_select('intervalo', $aIntervalo, true, $db_opcao);
 	        ?>
 	        &nbsp;<strong>De</strong>&nbsp;
@@ -172,10 +172,10 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <td>
           <?php
 
-            $aTimbre = array( "1" => "Emitir Ambos",
+            $aTimbre = [ "1" => "Emitir Ambos",
                               "2" => "Somente Interno",
                               "3" => "Somente Externo",
-                              "4" => "Sem Timbre" );
+                              "4" => "Sem Timbre" ];
             db_select('imprimirtimbre', $aTimbre, true, $db_opcao);
           ?>
         </td>
@@ -203,7 +203,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         </td>
   			<td>
 	          <?php
-	          	$aRotateRemetente= array("n"=>"Não","s"=>'Sim');
+	          	$aRotateRemetente= ["n"=>"Não","s"=>'Sim'];
 	          	db_select('selRotateRemetente',$aRotateRemetente,false,4,"style='width:83;'");
 	          ?>
 	        </td>
@@ -215,7 +215,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
         <td>
           <?php
 
-			      $aTipo = array("2" => "Somente Selecionados", "3" => "Menos os Selecionados");
+			      $aTipo = ["2" => "Somente Selecionados", "3" => "Menos os Selecionados"];
 			      db_select('tipo', $aTipo, true, $db_opcao);
           ?>
         </td>
@@ -255,9 +255,9 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 
 	         	      $resulta = db_query($sSql);
 
-                  if(pg_numrows($resulta) != 0){
+                  if(pg_num_rows($resulta) != 0){
 
-                    $numrows = pg_numrows($resulta);
+                    $numrows = pg_num_rows($resulta);
                     for($i = 0;$i < $numrows;$i++) {
 
                       db_fieldsmemory($resulta,$i);
@@ -596,7 +596,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
 
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 function js_pesquisanotitipo(mostra){

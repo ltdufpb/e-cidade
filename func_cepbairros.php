@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cepbairros_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcepbairros = new cl_cepbairros;
 $clcepbairros->rotulo->label("cp01_codbairro");
 $clcepbairros->rotulo->label("cp01_bairro");
@@ -98,9 +98,9 @@ $clcepbairros->rotulo->label("cp01_bairro");
         }else{
            $sql = $clcepbairros->sql_query("",$campos,"cp01_codbairro","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cp01_bairro)){
-          $repassa = array("chave_cp01_codbairro"=>$chave_cp01_codbairro,"chave_cp01_bairro"=>$chave_cp01_bairro);
+          $repassa = ["chave_cp01_codbairro"=>$chave_cp01_codbairro,"chave_cp01_bairro"=>$chave_cp01_bairro];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

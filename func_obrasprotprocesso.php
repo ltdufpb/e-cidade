@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_obrasprotprocesso_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clobrasprotprocesso = new cl_obrasprotprocesso;
 $clobrasprotprocesso->rotulo->label("ob25_sequencial");
 $clobrasprotprocesso->rotulo->label("ob25_sequencial");
@@ -98,9 +98,9 @@ $clobrasprotprocesso->rotulo->label("ob25_sequencial");
         }else{
            $sql = $clobrasprotprocesso->sql_query("",$campos,"ob25_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ob25_sequencial)){
-          $repassa = array("chave_ob25_sequencial"=>$chave_ob25_sequencial,"chave_ob25_sequencial"=>$chave_ob25_sequencial);
+          $repassa = ["chave_ob25_sequencial"=>$chave_ob25_sequencial,"chave_ob25_sequencial"=>$chave_ob25_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

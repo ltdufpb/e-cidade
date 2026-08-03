@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_retencaotipocalc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clretencaotipocalc = new cl_retencaotipocalc;
 $clretencaotipocalc->rotulo->label("e32_sequencial");
 $clretencaotipocalc->rotulo->label("e32_descricao");
@@ -98,9 +98,9 @@ $clretencaotipocalc->rotulo->label("e32_descricao");
         }else{
            $sql = $clretencaotipocalc->sql_query("",$campos,"e32_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e32_descricao)){
-          $repassa = array("chave_e32_sequencial"=>$chave_e32_sequencial,"chave_e32_descricao"=>$chave_e32_descricao);
+          $repassa = ["chave_e32_sequencial"=>$chave_e32_sequencial,"chave_e32_descricao"=>$chave_e32_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

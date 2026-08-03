@@ -105,7 +105,7 @@ if ( !isset($sd30_i_diasemana) ) {
                         <td nowrap title="<?php echo @$Tsd30_c_tipograde?>"><?php echo @$Lsd30_c_tipograde?></td>
                         <td>
                            <?php
-                              $x = array('I'=>'INTERVALO','P'=>'PERÍODO');
+                              $x = ['I'=>'INTERVALO','P'=>'PERÍODO'];
                               db_select('sd30_c_tipograde',$x,true,$db_opcao,"");
                            ?>
                         </td>
@@ -245,7 +245,7 @@ if ( !isset($sd30_i_diasemana) ) {
              onclick="location.href='sau1_undmedhorario006.php?sd04_i_medico=<?php echo $sd04_i_medico?>&z01_nome=<?php echo $z01_nome?>&validade='+this.checked" >
 
       <?php
-        $chavepri                           = array("sd30_i_codigo"=>@$sd30_i_codigo );
+        $chavepri                           = ["sd30_i_codigo"=>@$sd30_i_codigo ];
         $cliframe_alterar_excluir->chavepri = $chavepri;
         $str_validade                       = " and (sd30_d_valfinal is null or sd30_d_valfinal >= '".date('Y-m-d', db_getsession('DB_datausu') )."' )";
 

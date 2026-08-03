@@ -33,10 +33,10 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 
 $clcriaabas = new cl_criaabas;
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 ?>
 <html>
 <head>
@@ -60,30 +60,30 @@ $sizecp  = array();
       <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
         <center>
           <?php
-            $clcriaabas->identifica = array(
+            $clcriaabas->identifica = [
               "conta"    => "Conta",
               "reduzido" => "Reduzidos",
               "grupos"   => "Grupos"
-            );
-            $clcriaabas->title = array (
+            ];
+            $clcriaabas->title =  [
               "conta"    => "Conta",
               "reduzido" => "Reduzidos",
               "grupos"   => "Grupos"
-            );
-            $clcriaabas->src = array(
+            ];
+            $clcriaabas->src = [
               "conta"    => "con1_conplanoorcamento011.php?db_opcao=1",
               "reduzido" => "",
               "grupos"   => ""
-            );
-            $clcriaabas->sizecampo= array(
+            ];
+            $clcriaabas->sizecampo= [
               "conta"    => "23",
               "reduzido" => "15",
               "grupos"   => "15"
-            );
-            $clcriaabas->disabled = array(
+            ];
+            $clcriaabas->disabled = [
               "reduzido" => "true",
               "grupos"   => "true"
-            );   
+            ];   
             
             $clcriaabas->cria_abas();
           ?>

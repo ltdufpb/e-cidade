@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_censocursoprofiss_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcensocursoprofiss = new cl_censocursoprofiss;
 $clcensocursoprofiss->rotulo->label("ed247_i_codigo");
 $clcensocursoprofiss->rotulo->label("ed247_c_descr");
@@ -72,7 +72,7 @@ $clcensocursoprofiss->rotulo->label("ed247_i_tipo");
      </td>
      <td width="96%" align="left" nowrap>
       <?php 
-      $x = array( ''=>''
+      $x = [ ''=>''
                  ,'1'=>'AGROPECUÁRIA'
                  ,'2'=>'RECURSOS PESQUEIROS'
                  ,'3'=>'INDÚSTRIA'
@@ -94,7 +94,7 @@ $clcensocursoprofiss->rotulo->label("ed247_i_tipo");
                  ,'19'=>'MEIO AMBIENTE'
                  ,'20'=>'DESIGN'
                  ,'21'=>'SERVIÇOS DE APOIO ESCOLAR'
-                );
+                ];
       db_select('chave_ed247_i_tipo',$x,true,@$db_opcao,"");
       ?>
      </td>
@@ -130,9 +130,9 @@ $clcensocursoprofiss->rotulo->label("ed247_i_tipo");
     }else{
      $sql = $clcensocursoprofiss->sql_query("",$campos,"ed247_c_descr","");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed247_i_codigo)){
-     $repassa = array("chave_ed247_i_codigo"=>$chave_ed247_i_codigo,"chave_ed247_c_descr"=>$chave_ed247_c_descr,"chave_ed247_i_tipo"=>$chave_ed247_i_tipo);
+     $repassa = ["chave_ed247_i_codigo"=>$chave_ed247_i_codigo,"chave_ed247_c_descr"=>$chave_ed247_c_descr,"chave_ed247_i_tipo"=>$chave_ed247_i_tipo];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

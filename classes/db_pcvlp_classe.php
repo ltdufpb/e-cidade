@@ -29,46 +29,46 @@
 //CLASSE DA ENTIDADE pcvlp
 class cl_pcvlp { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h10_regist = 0; 
-   var $h10_emissa_dia = null; 
-   var $h10_emissa_mes = null; 
-   var $h10_emissa_ano = null; 
-   var $h10_emissa = null; 
-   var $h10_porta = null; 
-   var $h10_pref = null; 
-   var $h10_cargas = null; 
-   var $h10_proc = null; 
-   var $h10_cargo = null; 
-   var $h10_nmes = null; 
-   var $h10_per1_dia = null; 
-   var $h10_per1_mes = null; 
-   var $h10_per1_ano = null; 
-   var $h10_per1 = null; 
-   var $h10_per2_dia = null; 
-   var $h10_per2_mes = null; 
-   var $h10_per2_ano = null; 
-   var $h10_per2 = null; 
-   var $h10_art = null; 
-   var $h10_lein = null; 
-   var $h10_locpu = null; 
-   var $h10_perpu = null; 
-   var $h10_portc = null; 
-   var $h10_ndias = null; 
+   public $h10_regist = 0; 
+   public $h10_emissa_dia = null; 
+   public $h10_emissa_mes = null; 
+   public $h10_emissa_ano = null; 
+   public $h10_emissa = null; 
+   public $h10_porta = null; 
+   public $h10_pref = null; 
+   public $h10_cargas = null; 
+   public $h10_proc = null; 
+   public $h10_cargo = null; 
+   public $h10_nmes = null; 
+   public $h10_per1_dia = null; 
+   public $h10_per1_mes = null; 
+   public $h10_per1_ano = null; 
+   public $h10_per1 = null; 
+   public $h10_per2_dia = null; 
+   public $h10_per2_mes = null; 
+   public $h10_per2_ano = null; 
+   public $h10_per2 = null; 
+   public $h10_art = null; 
+   public $h10_lein = null; 
+   public $h10_locpu = null; 
+   public $h10_perpu = null; 
+   public $h10_portc = null; 
+   public $h10_ndias = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h10_regist = int4 = Codigo do Funcionario 
                  h10_emissa = date = Data da Emissao 
                  h10_porta = varchar(9) = Número da Portaria 
@@ -87,10 +87,10 @@ class cl_pcvlp {
                  h10_ndias = char(     3) = nr dias a convertidos 
                  ";
    //funcao construtor da classe 
-   function cl_pcvlp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcvlp"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -330,7 +330,7 @@ class cl_pcvlp {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro das Portaria de Consecao                  () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro das Portaria de Consecao                  já Cadastrado";
@@ -357,10 +357,10 @@ class cl_pcvlp {
       $this->atualizacampos();
      $sql = " update pcvlp set ";
      $virgula = "";
-     if(trim($this->h10_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_regist"])){ 
+     if(trim((string) $this->h10_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_regist"])){ 
        $sql  .= $virgula." h10_regist = $this->h10_regist ";
        $virgula = ",";
-       if(trim($this->h10_regist) == null ){ 
+       if(trim((string) $this->h10_regist) == null ){ 
          $this->erro_sql = " Campo Codigo do Funcionario nao Informado.";
          $this->erro_campo = "h10_regist";
          $this->erro_banco = "";
@@ -370,10 +370,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_emissa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_emissa_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h10_emissa_dia"] !="") ){ 
+     if(trim((string) $this->h10_emissa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_emissa_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h10_emissa_dia"] !="") ){ 
        $sql  .= $virgula." h10_emissa = '$this->h10_emissa' ";
        $virgula = ",";
-       if(trim($this->h10_emissa) == null ){ 
+       if(trim((string) $this->h10_emissa) == null ){ 
          $this->erro_sql = " Campo Data da Emissao nao Informado.";
          $this->erro_campo = "h10_emissa_dia";
          $this->erro_banco = "";
@@ -386,7 +386,7 @@ class cl_pcvlp {
        if(isset($GLOBALS["HTTP_POST_VARS"]["h10_emissa_dia"])){ 
          $sql  .= $virgula." h10_emissa = null ";
          $virgula = ",";
-         if(trim($this->h10_emissa) == null ){ 
+         if(trim((string) $this->h10_emissa) == null ){ 
            $this->erro_sql = " Campo Data da Emissao nao Informado.";
            $this->erro_campo = "h10_emissa_dia";
            $this->erro_banco = "";
@@ -397,10 +397,10 @@ class cl_pcvlp {
          }
        }
      }
-     if(trim($this->h10_porta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_porta"])){ 
+     if(trim((string) $this->h10_porta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_porta"])){ 
        $sql  .= $virgula." h10_porta = '$this->h10_porta' ";
        $virgula = ",";
-       if(trim($this->h10_porta) == null ){ 
+       if(trim((string) $this->h10_porta) == null ){ 
          $this->erro_sql = " Campo Número da Portaria nao Informado.";
          $this->erro_campo = "h10_porta";
          $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_pref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_pref"])){ 
+     if(trim((string) $this->h10_pref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_pref"])){ 
        $sql  .= $virgula." h10_pref = '$this->h10_pref' ";
        $virgula = ",";
-       if(trim($this->h10_pref) == null ){ 
+       if(trim((string) $this->h10_pref) == null ){ 
          $this->erro_sql = " Campo Nome do Responsável nao Informado.";
          $this->erro_campo = "h10_pref";
          $this->erro_banco = "";
@@ -423,10 +423,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_cargas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_cargas"])){ 
+     if(trim((string) $this->h10_cargas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_cargas"])){ 
        $sql  .= $virgula." h10_cargas = '$this->h10_cargas' ";
        $virgula = ",";
-       if(trim($this->h10_cargas) == null ){ 
+       if(trim((string) $this->h10_cargas) == null ){ 
          $this->erro_sql = " Campo Quem Determinou nao Informado.";
          $this->erro_campo = "h10_cargas";
          $this->erro_banco = "";
@@ -436,10 +436,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_proc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_proc"])){ 
+     if(trim((string) $this->h10_proc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_proc"])){ 
        $sql  .= $virgula." h10_proc = '$this->h10_proc' ";
        $virgula = ",";
-       if(trim($this->h10_proc) == null ){ 
+       if(trim((string) $this->h10_proc) == null ){ 
          $this->erro_sql = " Campo Código do Processo nao Informado.";
          $this->erro_campo = "h10_proc";
          $this->erro_banco = "";
@@ -449,10 +449,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_cargo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_cargo"])){ 
+     if(trim((string) $this->h10_cargo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_cargo"])){ 
        $sql  .= $virgula." h10_cargo = '$this->h10_cargo' ";
        $virgula = ",";
-       if(trim($this->h10_cargo) == null ){ 
+       if(trim((string) $this->h10_cargo) == null ){ 
          $this->erro_sql = " Campo Cargo do Servidor nao Informado.";
          $this->erro_campo = "h10_cargo";
          $this->erro_banco = "";
@@ -462,10 +462,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_nmes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_nmes"])){ 
+     if(trim((string) $this->h10_nmes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_nmes"])){ 
        $sql  .= $virgula." h10_nmes = '$this->h10_nmes' ";
        $virgula = ",";
-       if(trim($this->h10_nmes) == null ){ 
+       if(trim((string) $this->h10_nmes) == null ){ 
          $this->erro_sql = " Campo mes da Emissao nao Informado.";
          $this->erro_campo = "h10_nmes";
          $this->erro_banco = "";
@@ -475,10 +475,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_per1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_per1_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h10_per1_dia"] !="") ){ 
+     if(trim((string) $this->h10_per1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_per1_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h10_per1_dia"] !="") ){ 
        $sql  .= $virgula." h10_per1 = '$this->h10_per1' ";
        $virgula = ",";
-       if(trim($this->h10_per1) == null ){ 
+       if(trim((string) $this->h10_per1) == null ){ 
          $this->erro_sql = " Campo Periodo Inicial nao Informado.";
          $this->erro_campo = "h10_per1_dia";
          $this->erro_banco = "";
@@ -491,7 +491,7 @@ class cl_pcvlp {
        if(isset($GLOBALS["HTTP_POST_VARS"]["h10_per1_dia"])){ 
          $sql  .= $virgula." h10_per1 = null ";
          $virgula = ",";
-         if(trim($this->h10_per1) == null ){ 
+         if(trim((string) $this->h10_per1) == null ){ 
            $this->erro_sql = " Campo Periodo Inicial nao Informado.";
            $this->erro_campo = "h10_per1_dia";
            $this->erro_banco = "";
@@ -502,10 +502,10 @@ class cl_pcvlp {
          }
        }
      }
-     if(trim($this->h10_per2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_per2_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h10_per2_dia"] !="") ){ 
+     if(trim((string) $this->h10_per2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_per2_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["h10_per2_dia"] !="") ){ 
        $sql  .= $virgula." h10_per2 = '$this->h10_per2' ";
        $virgula = ",";
-       if(trim($this->h10_per2) == null ){ 
+       if(trim((string) $this->h10_per2) == null ){ 
          $this->erro_sql = " Campo Periodo Final nao Informado.";
          $this->erro_campo = "h10_per2_dia";
          $this->erro_banco = "";
@@ -518,7 +518,7 @@ class cl_pcvlp {
        if(isset($GLOBALS["HTTP_POST_VARS"]["h10_per2_dia"])){ 
          $sql  .= $virgula." h10_per2 = null ";
          $virgula = ",";
-         if(trim($this->h10_per2) == null ){ 
+         if(trim((string) $this->h10_per2) == null ){ 
            $this->erro_sql = " Campo Periodo Final nao Informado.";
            $this->erro_campo = "h10_per2_dia";
            $this->erro_banco = "";
@@ -529,10 +529,10 @@ class cl_pcvlp {
          }
        }
      }
-     if(trim($this->h10_art)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_art"])){ 
+     if(trim((string) $this->h10_art)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_art"])){ 
        $sql  .= $virgula." h10_art = '$this->h10_art' ";
        $virgula = ",";
-       if(trim($this->h10_art) == null ){ 
+       if(trim((string) $this->h10_art) == null ){ 
          $this->erro_sql = " Campo Artigo da Lei nao Informado.";
          $this->erro_campo = "h10_art";
          $this->erro_banco = "";
@@ -542,10 +542,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_lein)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_lein"])){ 
+     if(trim((string) $this->h10_lein)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_lein"])){ 
        $sql  .= $virgula." h10_lein = '$this->h10_lein' ";
        $virgula = ",";
-       if(trim($this->h10_lein) == null ){ 
+       if(trim((string) $this->h10_lein) == null ){ 
          $this->erro_sql = " Campo Lei Portaria nao Informado.";
          $this->erro_campo = "h10_lein";
          $this->erro_banco = "";
@@ -555,10 +555,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_locpu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_locpu"])){ 
+     if(trim((string) $this->h10_locpu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_locpu"])){ 
        $sql  .= $virgula." h10_locpu = '$this->h10_locpu' ";
        $virgula = ",";
-       if(trim($this->h10_locpu) == null ){ 
+       if(trim((string) $this->h10_locpu) == null ){ 
          $this->erro_sql = " Campo Local da Publicacao nao Informado.";
          $this->erro_campo = "h10_locpu";
          $this->erro_banco = "";
@@ -568,10 +568,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_perpu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_perpu"])){ 
+     if(trim((string) $this->h10_perpu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_perpu"])){ 
        $sql  .= $virgula." h10_perpu = '$this->h10_perpu' ";
        $virgula = ",";
-       if(trim($this->h10_perpu) == null ){ 
+       if(trim((string) $this->h10_perpu) == null ){ 
          $this->erro_sql = " Campo Período Publicação nao Informado.";
          $this->erro_campo = "h10_perpu";
          $this->erro_banco = "";
@@ -581,10 +581,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_portc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_portc"])){ 
+     if(trim((string) $this->h10_portc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_portc"])){ 
        $sql  .= $virgula." h10_portc = '$this->h10_portc' ";
        $virgula = ",";
-       if(trim($this->h10_portc) == null ){ 
+       if(trim((string) $this->h10_portc) == null ){ 
          $this->erro_sql = " Campo Portaria de Consseção nao Informado.";
          $this->erro_campo = "h10_portc";
          $this->erro_banco = "";
@@ -594,10 +594,10 @@ class cl_pcvlp {
          return false;
        }
      }
-     if(trim($this->h10_ndias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_ndias"])){ 
+     if(trim((string) $this->h10_ndias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h10_ndias"])){ 
        $sql  .= $virgula." h10_ndias = '$this->h10_ndias' ";
        $virgula = ",";
-       if(trim($this->h10_ndias) == null ){ 
+       if(trim((string) $this->h10_ndias) == null ){ 
          $this->erro_sql = " Campo nr dias a convertidos nao Informado.";
          $this->erro_campo = "h10_ndias";
          $this->erro_banco = "";
@@ -688,7 +688,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pcvlp";

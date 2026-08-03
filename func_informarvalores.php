@@ -30,9 +30,9 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_GET_VARS,2);exit;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrotulo = new rotulocampo;
 $clrotulo->label("e81_valor");
 ?>
@@ -80,11 +80,11 @@ $clrotulo->label("e81_valor");
     </td>
   </tr>
     <?php 
-    $arr_cheqsel = Array();
-    $arr_cheques = Array();
+    $arr_cheqsel = [];
+    $arr_cheques = [];
     $mostraquant = true;
     if(isset($ch) && trim($ch) != ""){
-    	$arr_cheqsel = split("-",$ch);
+    	$arr_cheqsel = preg_split("#\\-#m",$ch);
     	$novaquant = $quantidade-count($arr_cheqsel);
   		// if($novaquant == 0 || $novaquant > 0){
 		    $mostraquant = false;
@@ -127,9 +127,9 @@ $clrotulo->label("e81_valor");
     	$db_opcao = 3;
       }
       $valorcheque  = "valche_".$i;
-      $$valorcheque = "0.00";
+      ${$valorcheque} = "0.00";
       if(isset($arr_cheques[$i])){
-        $$valorcheque = db_formatar($arr_cheques[$i],'p', '', 2);
+        ${$valorcheque} = db_formatar($arr_cheques[$i],'p', '', 2);
       }
       echo "
             <tr>
@@ -301,7 +301,7 @@ function js_verificardados(){
 	con = 1;
 	<?php 
 	if(isset($ch) && trim($ch)){
-		$arr_cheqsel = split("-",$ch);
+		$arr_cheqsel = preg_split("#\\-#m",$ch);
 		echo "con = ".count($arr_cheqsel).";";
 	}
 	?>

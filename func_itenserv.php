@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itenserv_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clitenserv = new cl_itenserv;
 $clrotulo = new rotulocampo;
 $clrotulo->label("cm11_c_descr");
@@ -102,9 +102,9 @@ $clrotulo->label("z01_nome");
            $sql = $clitenserv->sql_query("",$campos,"cm10_i_codigo","");
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_z01_nome)){
-          $repassa = array("chave_cm10_i_codigo"=>$chave_cm10_i_codigo,"chave_z01_nome"=>$chave_z01_nome);
+          $repassa = ["chave_cm10_i_codigo"=>$chave_cm10_i_codigo,"chave_z01_nome"=>$chave_z01_nome];
         }
         db_lovrot(@$sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -54,7 +54,7 @@ switch($oParam->exec) {
     
 	  db_inicio_transacao();
 
-	  $aSituacao        = array();
+	  $aSituacao        = [];
    	$iCgm             = $oParam->iCgm;
     $iSituacao        = $oParam->iSituacao;
     $cl_SituacaoCpf   = new CgmFisico();

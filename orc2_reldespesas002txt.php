@@ -59,7 +59,7 @@ $clselorcdotacao = new cl_selorcdotacao();
 $clselorcdotacao->setDados($filtra_despesa); // passa os parametros vindos da func_selorcdotacao_abas.php
 $instits= $clselorcdotacao->getInstit();
 
-if (!isset($instits) && trim(@$instits)==""){
+if (!isset($instits) && trim((string) @$instits)==""){
     $instits = "(".db_getsession("DB_instit").")";
 }
 
@@ -72,7 +72,7 @@ $head3 = "EXERCÍCIO: ".db_getsession("DB_anousu");
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in $instits");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   $descr_inst .= $xvirg.$nomeinst ;
   $xvirg = ', ';
@@ -154,9 +154,9 @@ oc.o15_recurso,
 x.o15_descr
 ";
 
-if (substr($nivel,1,1) == 'A'){
+if (substr((string) $nivel,1,1) == 'A'){
   $completo = false;
-  $nivela = substr($nivel,0,1);
+  $nivela = substr((string) $nivel,0,1);
   if($nivela=="9"){
     $completo = true;
     $nivela = "8";
@@ -253,7 +253,7 @@ if (substr($nivel,1,1) == 'A'){
 
   $pagina        = 1;
 
-  for($i=0;$i<pg_numrows($result);$i++){
+  for($i=0;$i<pg_num_rows($result);$i++){
 
     db_fieldsmemory($result,$i);
 
@@ -625,11 +625,11 @@ if (substr($nivel,1,1) == 'A'){
 
       	$sql = "select *
       		from orcelemento
-      		where substr(o56_elemento,1,7) = '".str_replace('.','',substr($o58_elemento,0,7))."' and
+      		where substr(o56_elemento,1,7) = '".str_replace('.','',substr((string) $o58_elemento,0,7))."' and
       		      substr(o56_elemento,8,5) != '00000' and
       		      o56_liberado is true";
       	$res = db_query($sql);
-      	for($ne=0;$ne<pg_numrows($res);$ne++){
+      	for($ne=0;$ne<pg_num_rows($res);$ne++){
       	  db_fieldsmemory($res,$ne);
       	  $pdf->cell(20,$alt,$o56_elemento,0,0,"L",0);
       	  $pdf->cell(80,$alt,$o56_descr,0,0,"L",0);
@@ -697,7 +697,7 @@ if (substr($nivel,1,1) == 'A'){
 
 }else{
 
-  $nivela = substr($nivel,0,1);
+  $nivela = substr((string) $nivel,0,1);
 
   $anousu  = db_getsession("DB_anousu");
   $dataini = db_getsession("DB_anousu")."-01-01";
@@ -743,7 +743,7 @@ if (substr($nivel,1,1) == 'A'){
   $totunidaatual = 0;
   $pagina = 1;
 
-  for($k=0;$k<pg_numrows($result);$k++){
+  for($k=0;$k<pg_num_rows($result);$k++){
 
     db_fieldsmemory($result,$k);
     if($pdf->gety()>$pdf->h-30 || $pagina == 1){

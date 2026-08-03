@@ -43,7 +43,7 @@ if(isset($opcao) && $opcao=="alterar"){
 } 
 
 ?>
-<form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" >
+<form name="form1" method="post" action="<?=basename((string) $_SERVER['PHP_SELF'])?>" >
       <table border="0" cellspacing="1" cellpadding="1">
 	<tr>
 	  <td nowrap title="<?=@$Tl03_codigo?>">
@@ -113,7 +113,7 @@ if(isset($opcao) && $opcao=="alterar"){
   <tr>
     <td valign="top"> 
     <?php 
-     $chavepri= array("l03_codigo"=>@$l03_codigo,"l03_descr"=>@$l03_descr,"l03_tipo"=>@$l03_tipo,"l03_codcom"=>@$l03_codcom,"l03_instit"=>@$l03_instit);
+     $chavepri= ["l03_codigo"=>@$l03_codigo,"l03_descr"=>@$l03_descr,"l03_tipo"=>@$l03_tipo,"l03_codcom"=>@$l03_codcom,"l03_instit"=>@$l03_instit];
      $cliframe_alterar_excluir->chavepri=$chavepri;
      $cliframe_alterar_excluir->sql = $clcflicita->sql_query(null,'*',null,"");
       //$cliframe_alterar_excluir->sql_disabled = 

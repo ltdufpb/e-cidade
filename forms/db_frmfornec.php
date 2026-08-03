@@ -128,7 +128,7 @@ db_input('z01_nome',40,$Iz01_nome,true,'text',3);
   <tr>
     <td valign="top"  align="center">
      <?php 
-			 $chavepri= array("pc21_orcamforne"=>@$pc21_orcamforne);
+			 $chavepri= ["pc21_orcamforne"=>@$pc21_orcamforne];
 			 $cliframe_alterar_excluir->chavepri=$chavepri;
 			 $cliframe_alterar_excluir->sql     = $clpcorcamforne->sql_query(null,"pc21_orcamforne,pc21_codorc,pc21_numcgm,z01_nome",""," pc21_codorc=$pc21_codorc");
 			 $cliframe_alterar_excluir->campos  ="pc21_orcamforne,pc21_numcgm,z01_nome";

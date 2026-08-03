@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_sysfuncoes_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if (!isset($chave_codfuncao)){
   $chave_codfuncao = '';
@@ -120,9 +120,9 @@ $cldb_sysfuncoes->rotulo->label("nomefuncao");
         }else{
            $sql = $cldb_sysfuncoes->sql_query("",$campos,"codfuncao desc","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_nomefuncao)){
-          $repassa = array("chave_codfuncao"=>$chave_codfuncao,"chave_nomefuncao"=>$chave_nomefuncao);
+          $repassa = ["chave_codfuncao"=>$chave_codfuncao,"chave_nomefuncao"=>$chave_nomefuncao];
         }
 
        if( isset($chave_nomefuncao) ){

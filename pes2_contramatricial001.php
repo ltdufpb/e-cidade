@@ -35,8 +35,8 @@ include(modification("libs/db_libpessoal.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_db_layouttxt_classe.php"));
 include_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 $cldb_layouttxt = new cl_db_layouttxt;
 $cldb_layouttxt->rotulo->label("db50_codigo");
 $cldb_layouttxt->rotulo->label("db50_descr");
@@ -135,19 +135,19 @@ function js_mostralayout1(chave1,chave2){
                                                   //                                       t - local de trabalho,
 
   $geraform->tipofol = true;                      // NOME DO CAMPO PARA TIPO DE FOLHA
-  $geraform->arr_tipofol = array(
+  $geraform->arr_tipofol = [
                                  "salario"=>"Salário",
                                  "complementar"=>"Complementar",
                                  "rescisao"=>"Rescisão",
                                  "13salario"=>"13o. Salário",
                                  "adiantamento"=>"Adiantamento",
                                  "suplementar"=>"Suplementar"
-                                );
+                                ];
   $geraform->complementar = "complementar";                // VALUE DA COMPLEMENTAR PARA BUSCAR SEMEST
 
   $geraform->trenome = "tipo";                    // NOME DO CAMPO TIPO DE RESUMO
   $geraform->mostord = true;
-  $geraform->arr_mostord = Array("a"=>"Alfabética", "n"=>"Numérica");
+  $geraform->arr_mostord = ["a"=>"Alfabética", "n"=>"Numérica"];
 
   $geraform->onchpad = true;                      // MUDAR AS OPÃ‡Ã•ES AO SELECIONAR OS TIPOS DE FILTRO OU RESUMO
   $geraform->gera_form($anofolha,$mesfolha);
@@ -388,7 +388,7 @@ if(isset($emite2)){
                                          );
   //echo "<BR> $sqlDentro";exit;
   $res = db_query($sqlDentro);
-  $num = pg_numrows($res);
+  $num = pg_num_rows($res);
   if($num == 0){
     $erro_msg = "Não existe cálculo no período de $mesfolha / $anofolha";
     $sqlerro = true;

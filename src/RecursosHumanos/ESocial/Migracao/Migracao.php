@@ -53,14 +53,14 @@ abstract class Migracao
      *
      * @var array
      */
-    protected $opcoesAtual = array();
+    protected $opcoesAtual = [];
 
     /**
      * Contém os códigos das opções de respostas do novo fomulário indexado pelo identificador campo
      *
      * @var array
      */
-    protected $opcoesNovas = array();
+    protected $opcoesNovas = [];
 
     /**
      * Código do usuário
@@ -137,7 +137,7 @@ abstract class Migracao
     {
         $formulario = FormularioRepository::getById($codigoFormulario);
         $perguntas = PerguntaRepository::getPerguntasDoFormulario($formulario);
-        $opcoes = array();
+        $opcoes = [];
 
         foreach ($perguntas as $pergunta) {
             foreach ($pergunta->getOpcoes() as $opcao) {
@@ -160,7 +160,7 @@ abstract class Migracao
      */
     protected function deAtualParaNovo($identificador)
     {
-        return isset($this->opcoesNovas[$identificador]) ? $this->opcoesNovas[$identificador] : null;
+        return $this->opcoesNovas[$identificador] ?? null;
     }
 
     /**
@@ -203,7 +203,7 @@ abstract class Migracao
      */
     protected function buscarRespostasPreenchimento($idPreenchimento)
     {
-        $respostas = array();
+        $respostas = [];
         foreach ($this->perguntasAtual as $pergunta) {
             $oPergunta = new \AvaliacaoPergunta($pergunta->getCodigo());
             $oPergunta->setPreenchimento($idPreenchimento);

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atendusucli_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatendusucli = new cl_atendusucli;
 $clatendusucli->rotulo->label("at80_codatendcli");
 $clatendusucli->rotulo->label("at80_id_usuario");
@@ -106,9 +106,9 @@ $clatendusucli->rotulo->label("at80_id_usuario");
         }else{
            $sql = $clatendusucli->sql_query(null,$campos,"at80_codatendcli",$dbwhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at80_id_usuario)){
-          $repassa = array("chave_at80_codatendcli"=>$chave_at80_codatendcli,"chave_at80_id_usuario"=>$chave_at80_id_usuario);
+          $repassa = ["chave_at80_codatendcli"=>$chave_at80_codatendcli,"chave_at80_id_usuario"=>$chave_at80_id_usuario];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -29,18 +29,18 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_prontuarios_classe.php"));
 include(modification("classes/db_unidades_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clprontuarios = new cl_prontuarios;
 $clprontuarios->rotulo->label();
 $unidade = @str_replace("X",",",$unidades);
 $data1 = str_replace("X","-",$data1);
 $data2 = str_replace("X","-",$data2);
-$cid = @strtoupper($cid);
-$bairro = @trim(strtoupper($bairro));
-$paciente = @trim($paciente);
-$ordercid = @trim($ordercid);
-$orderpac = @trim($orderpac);
+$cid = @strtoupper((string) $cid);
+$bairro = @trim(strtoupper((string) $bairro));
+$paciente = @trim((string) $paciente);
+$ordercid = @trim((string) $ordercid);
+$orderpac = @trim((string) $orderpac);
 $posto = @$posto;
 //Monta SQL
 
@@ -254,8 +254,8 @@ for ($i = 0;$i < $linhas;$i++){
    $pdf->setfont('arial','',6);
    $pdf->cell(60,4,($x+1)." - ".$z01_nome,0,0,"L",$cor);
    $pdf->cell(30,4,$z01_bairro,0,0,"L",$cor);
-   $dt_nasc = substr( $z01_nasc, 8, 2 )."/".substr( $z01_nasc, 5, 2 )."/".substr( $z01_nasc, 0, 4 );
-   $dt_atend = substr( $sd29_d_data, 8, 2 )."/".substr( $sd29_d_data, 5, 2 )."/".substr( $sd29_d_data, 0, 4 );
+   $dt_nasc = substr( (string) $z01_nasc, 8, 2 )."/".substr( (string) $z01_nasc, 5, 2 )."/".substr( (string) $z01_nasc, 0, 4 );
+   $dt_atend = substr( (string) $sd29_d_data, 8, 2 )."/".substr( (string) $sd29_d_data, 5, 2 )."/".substr( (string) $sd29_d_data, 0, 4 );
    $pdf->cell(15,4,$dt_nasc,0,0,"L",$cor);
    $pdf->cell(60,4,$sd02_i_codigo." - ".$descrdepto,0,0,"L",$cor);
    $pdf->cell(15,4,$dt_atend,0,0,"L",$cor);

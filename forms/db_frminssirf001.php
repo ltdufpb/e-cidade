@@ -103,7 +103,7 @@ if(isset($codtab) && $codigo_tab <= 2) {
                   </td>
                   <td>
                     <?php
-                    $arr_tipos = array("O"=>"Oficial","P"=>"Privada");
+                    $arr_tipos = ["O"=>"Oficial","P"=>"Privada"];
                     db_select("r33_tipo", $arr_tipos, true, $db_opcao);
                     ?>
                   </td>
@@ -370,7 +370,7 @@ if(isset($codtab) && $codigo_tab <= 2) {
                         </td>
                         <td>
                           <?php
-                          $aAtosLegais  = array("" => "NENHUM");
+                          $aAtosLegais  = ["" => "NENHUM"];
                           $sSqlAtoLegal = $oDaoAtoLegalPrevidencia->sql_query_file();
                           $rsAtoLegal   = db_query($sSqlAtoLegal);
 
@@ -466,7 +466,7 @@ if(isset($codtab) && $codigo_tab <= 2) {
                           Tipo de plano de segregação da massa:
                       </label>
                   <?php
-                  $opcoes_segregacao = array("0"=>"Sem segregação da massa","1"=>"Fundo em capitalização", "2"=>"Fundo em repartição","3"=>"Mantido pelo Tesouro");
+                  $opcoes_segregacao = ["0"=>"Sem segregação da massa","1"=>"Fundo em capitalização", "2"=>"Fundo em repartição","3"=>"Mantido pelo Tesouro"];
                   db_select("r33_tiposegregacao", $opcoes_segregacao, true, $db_opcao, "style='width: 50%; margin-left: 2%;'");
                   ?>
                   </fieldset>
@@ -517,15 +517,15 @@ if(isset($codtab) && $codigo_tab <= 2) {
           $sCampos    = "r33_codigo, r33_anousu, r33_mesusu, r33_codtab, r33_inic, r33_fim, r33_perc, r33_deduzi, r33_tiposegregacao";
           $sql_iframe = $clinssirf->sql_query_file(null, null, $sCampos, "r33_inic", $dbwhere);
 
-          $chavepri = array(
-            "r33_codigo" => isset($r33_codigo) ? $r33_codigo : "",
-            "r33_anousu" => isset($r33_anousu) ? $r33_anousu : "",
-            "r33_mesusu" => isset($r33_mesusu) ? $r33_mesusu : ""
-          );
+          $chavepri = [
+            "r33_codigo" => $r33_codigo ?? "",
+            "r33_anousu" => $r33_anousu ?? "",
+            "r33_mesusu" => $r33_mesusu ?? ""
+          ];
 
           $result_iframe = $clinssirf->sql_record($sql_iframe);
-          $arr_faixasini = Array();
-          $arr_faixasfim = Array();
+          $arr_faixasini = [];
+          $arr_faixasfim = [];
 
           for($i = 0; $i < $clinssirf->numrows; $i++) {
 
@@ -817,7 +817,7 @@ if(isset($codtab) && $codigo_tab <= 2) {
     db_iframe_inssirf.hide();
     <?php 
     if(isset($opcao)){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
     }
     ?>
   }

@@ -54,7 +54,7 @@ $clorcparametro->rotulo->label();
             <td nowrap title="<?=@$To50_subelem?>"><?=@$Lo50_subelem?> </td>
             <td>
              <?php 
-               $x = array("f"=>"NAO","t"=>"SIM"); 
+               $x = ["f"=>"NAO","t"=>"SIM"]; 
                db_select('o50_subelem',$x,true,$db_opcao,"style='width:65px'"); 
              ?>
             </td>
@@ -80,20 +80,20 @@ $clorcparametro->rotulo->label();
             <td nowrap title="<?=@$To50_tipoproj?>"><?=@$Lo50_tipoproj?> </td>
             <td>
               <?php  
-                $x = array("1"=>"1-Com Timbre","2"=>"2-Dotação Sintética","3"=>"3-Com Dot","4"=>"4-Sem Timbre"); 
+                $x = ["1"=>"1-Com Timbre","2"=>"2-Dotação Sintética","3"=>"3-Com Dot","4"=>"4-Sem Timbre"]; 
                 db_select('o50_tipoproj',$x,true,$db_opcao,"style='width:200px'"); 
               ?>
             </td>
           </tr>
          <tr>
             <td nowrap title="<?=@$To50_utilizapacto?>"><?=@$Lo50_utilizapacto?> </td>
-            <td><?php  $x = array("t"=>"Sim","f"=>"Não");
+            <td><?php  $x = ["t"=>"Sim","f"=>"Não"];
              db_select('o50_utilizapacto',$x,true,$db_opcao,"style='width:200px'"); ?></td>
           </tr>
           <tr>
             <td nowrap title="<?=@$To50_liberadecimalppa?>">
               <?=@$Lo50_liberadecimalppa?> </td>
-            <td><?php  $x = array("t"=>"Sim","f"=>"Não");
+            <td><?php  $x = ["t"=>"Sim","f"=>"Não"];
              db_select('o50_liberadecimalppa',$x,true,$db_opcao,"style='width:200px'"); ?></td>
           </tr>
         </table>
@@ -246,7 +246,7 @@ $clorcparametro->rotulo->label();
     db_iframe_orcparametro.hide();
     <?php 
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
     ?>
   }

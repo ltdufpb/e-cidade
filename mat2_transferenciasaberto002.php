@@ -42,14 +42,14 @@ $dtInicial        = "1900-01-01";
 $dtFinal          = date("Y-m-d", db_getsession("DB_datausu"));
 
 if (!empty($oGet->dtInicial)) {
-  $dtInicial = implode("-", array_reverse(explode("/", $oGet->dtInicial)));
+  $dtInicial = implode("-", array_reverse(explode("/", (string) $oGet->dtInicial)));
 }
 
 if (!empty($oGet->dtFinal)) {
-    $dtFinal = implode("-", array_reverse(explode("/", $oGet->dtFinal)));
+    $dtFinal = implode("-", array_reverse(explode("/", (string) $oGet->dtFinal)));
 }
 
-$aWhereParametros = array();
+$aWhereParametros = [];
 $aWhereParametros[] = "matestoqueini.m80_data >= '{$dtInicial}'";
 $aWhereParametros[] = "matestoqueini.m80_data <= '{$dtFinal}'";
 $aWhereParametros[] = "b.m80_codigo is null";
@@ -97,7 +97,7 @@ $iAltura = 4;
 /**
  * Organizo em um array as transferências por departamento
  */
-$aTransferencias = array();
+$aTransferencias = [];
 for ($iRowTransferencia = 0; $iRowTransferencia < $iTotalTransferencias; $iRowTransferencia++) {
   $oStdTransferencia = db_utils::fieldsMemory($rsBuscaTransferencia, $iRowTransferencia);
   $aTransferencias[$oStdTransferencia->codigo_departamento_origem][] = $oStdTransferencia;
@@ -141,8 +141,8 @@ foreach ($aTransferencias as $iIndiceDepartamento => $aTransferencia) {
         montaCabecalho($oPdf, $iAltura);
     }
 
-    $sDepartamentoDestino = substr($oTransferencia->departamento_destino, 0, 45);
-    $sDescricaoMaterial   = substr($oTransferencia->material            , 0, 45);
+    $sDepartamentoDestino = substr((string) $oTransferencia->departamento_destino, 0, 45);
+    $sDescricaoMaterial   = substr((string) $oTransferencia->material            , 0, 45);
 
     $oPdf->cell(20, $iAltura, $oTransferencia->m83_matestoqueini,                  0, 0, "C", 0);
     $oPdf->cell(20, $iAltura, db_formatar($oTransferencia->data_lancamento, "d"),  0, 0, "C", 0);

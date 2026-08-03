@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE matanulitem
 class cl_matanulitem { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m103_codigo = 0; 
-   var $m103_id_usuario = 0; 
-   var $m103_data_dia = null; 
-   var $m103_data_mes = null; 
-   var $m103_data_ano = null; 
-   var $m103_data = null; 
-   var $m103_hora = null; 
-   var $m103_motivo = null; 
-   var $m103_quantanulada = 0; 
-   var $m103_tipoanu = 0; 
+   public $m103_codigo = 0; 
+   public $m103_id_usuario = 0; 
+   public $m103_data_dia = null; 
+   public $m103_data_mes = null; 
+   public $m103_data_ano = null; 
+   public $m103_data = null; 
+   public $m103_hora = null; 
+   public $m103_motivo = null; 
+   public $m103_quantanulada = 0; 
+   public $m103_tipoanu = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m103_codigo = int8 = Código 
                  m103_id_usuario = int8 = Usuário 
                  m103_data = date = Data 
@@ -63,10 +63,10 @@ class cl_matanulitem {
                  m103_tipoanu = int8 = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_matanulitem() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matanulitem"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_matanulitem {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m103_codigo = pg_result($result,0,0); 
+       $this->m103_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from matanulitem_m103_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m103_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m103_codigo)){
          $this->erro_sql = " Campo m103_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_matanulitem {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "matanulitem ($this->m103_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "matanulitem já Cadastrado";
@@ -232,16 +232,16 @@ class cl_matanulitem {
      $resaco = $this->sql_record($this->sql_query_file($this->m103_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15257,'$this->m103_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2690,15257,'','".AddSlashes(pg_result($resaco,0,'m103_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2690,15258,'','".AddSlashes(pg_result($resaco,0,'m103_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2690,15259,'','".AddSlashes(pg_result($resaco,0,'m103_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2690,15260,'','".AddSlashes(pg_result($resaco,0,'m103_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2690,15261,'','".AddSlashes(pg_result($resaco,0,'m103_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2690,15262,'','".AddSlashes(pg_result($resaco,0,'m103_quantanulada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2690,15263,'','".AddSlashes(pg_result($resaco,0,'m103_tipoanu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2690,15257,'','".AddSlashes(pg_fetch_result($resaco,0,'m103_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2690,15258,'','".AddSlashes(pg_fetch_result($resaco,0,'m103_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2690,15259,'','".AddSlashes(pg_fetch_result($resaco,0,'m103_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2690,15260,'','".AddSlashes(pg_fetch_result($resaco,0,'m103_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2690,15261,'','".AddSlashes(pg_fetch_result($resaco,0,'m103_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2690,15262,'','".AddSlashes(pg_fetch_result($resaco,0,'m103_quantanulada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2690,15263,'','".AddSlashes(pg_fetch_result($resaco,0,'m103_tipoanu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,10 +250,10 @@ class cl_matanulitem {
       $this->atualizacampos();
      $sql = " update matanulitem set ";
      $virgula = "";
-     if(trim($this->m103_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_codigo"])){ 
+     if(trim((string) $this->m103_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_codigo"])){ 
        $sql  .= $virgula." m103_codigo = $this->m103_codigo ";
        $virgula = ",";
-       if(trim($this->m103_codigo) == null ){ 
+       if(trim((string) $this->m103_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "m103_codigo";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_matanulitem {
          return false;
        }
      }
-     if(trim($this->m103_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_id_usuario"])){ 
+     if(trim((string) $this->m103_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_id_usuario"])){ 
        $sql  .= $virgula." m103_id_usuario = $this->m103_id_usuario ";
        $virgula = ",";
-       if(trim($this->m103_id_usuario) == null ){ 
+       if(trim((string) $this->m103_id_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "m103_id_usuario";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_matanulitem {
          return false;
        }
      }
-     if(trim($this->m103_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m103_data_dia"] !="") ){ 
+     if(trim((string) $this->m103_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m103_data_dia"] !="") ){ 
        $sql  .= $virgula." m103_data = '$this->m103_data' ";
        $virgula = ",";
-       if(trim($this->m103_data) == null ){ 
+       if(trim((string) $this->m103_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "m103_data_dia";
          $this->erro_banco = "";
@@ -292,7 +292,7 @@ class cl_matanulitem {
        if(isset($GLOBALS["HTTP_POST_VARS"]["m103_data_dia"])){ 
          $sql  .= $virgula." m103_data = null ";
          $virgula = ",";
-         if(trim($this->m103_data) == null ){ 
+         if(trim((string) $this->m103_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "m103_data_dia";
            $this->erro_banco = "";
@@ -303,10 +303,10 @@ class cl_matanulitem {
          }
        }
      }
-     if(trim($this->m103_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_hora"])){ 
+     if(trim((string) $this->m103_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_hora"])){ 
        $sql  .= $virgula." m103_hora = '$this->m103_hora' ";
        $virgula = ",";
-       if(trim($this->m103_hora) == null ){ 
+       if(trim((string) $this->m103_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "m103_hora";
          $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_matanulitem {
          return false;
        }
      }
-     if(trim($this->m103_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_motivo"])){ 
+     if(trim((string) $this->m103_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_motivo"])){ 
        $sql  .= $virgula." m103_motivo = '$this->m103_motivo' ";
        $virgula = ",";
-       if(trim($this->m103_motivo) == null ){ 
+       if(trim((string) $this->m103_motivo) == null ){ 
          $this->erro_sql = " Campo Motivo nao Informado.";
          $this->erro_campo = "m103_motivo";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_matanulitem {
          return false;
        }
      }
-     if(trim($this->m103_quantanulada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_quantanulada"])){ 
+     if(trim((string) $this->m103_quantanulada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_quantanulada"])){ 
        $sql  .= $virgula." m103_quantanulada = $this->m103_quantanulada ";
        $virgula = ",";
-       if(trim($this->m103_quantanulada) == null ){ 
+       if(trim((string) $this->m103_quantanulada) == null ){ 
          $this->erro_sql = " Campo Quantidade Anulada nao Informado.";
          $this->erro_campo = "m103_quantanulada";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_matanulitem {
          return false;
        }
      }
-     if(trim($this->m103_tipoanu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_tipoanu"])){ 
+     if(trim((string) $this->m103_tipoanu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m103_tipoanu"])){ 
        $sql  .= $virgula." m103_tipoanu = $this->m103_tipoanu ";
        $virgula = ",";
-       if(trim($this->m103_tipoanu) == null ){ 
+       if(trim((string) $this->m103_tipoanu) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "m103_tipoanu";
          $this->erro_banco = "";
@@ -363,23 +363,23 @@ class cl_matanulitem {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15257,'$this->m103_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m103_codigo"]) || $this->m103_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2690,15257,'".AddSlashes(pg_result($resaco,$conresaco,'m103_codigo'))."','$this->m103_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2690,15257,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m103_codigo'))."','$this->m103_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m103_id_usuario"]) || $this->m103_id_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,2690,15258,'".AddSlashes(pg_result($resaco,$conresaco,'m103_id_usuario'))."','$this->m103_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2690,15258,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m103_id_usuario'))."','$this->m103_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m103_data"]) || $this->m103_data != "")
-           $resac = db_query("insert into db_acount values($acount,2690,15259,'".AddSlashes(pg_result($resaco,$conresaco,'m103_data'))."','$this->m103_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2690,15259,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m103_data'))."','$this->m103_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m103_hora"]) || $this->m103_hora != "")
-           $resac = db_query("insert into db_acount values($acount,2690,15260,'".AddSlashes(pg_result($resaco,$conresaco,'m103_hora'))."','$this->m103_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2690,15260,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m103_hora'))."','$this->m103_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m103_motivo"]) || $this->m103_motivo != "")
-           $resac = db_query("insert into db_acount values($acount,2690,15261,'".AddSlashes(pg_result($resaco,$conresaco,'m103_motivo'))."','$this->m103_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2690,15261,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m103_motivo'))."','$this->m103_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m103_quantanulada"]) || $this->m103_quantanulada != "")
-           $resac = db_query("insert into db_acount values($acount,2690,15262,'".AddSlashes(pg_result($resaco,$conresaco,'m103_quantanulada'))."','$this->m103_quantanulada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2690,15262,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m103_quantanulada'))."','$this->m103_quantanulada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m103_tipoanu"]) || $this->m103_tipoanu != "")
-           $resac = db_query("insert into db_acount values($acount,2690,15263,'".AddSlashes(pg_result($resaco,$conresaco,'m103_tipoanu'))."','$this->m103_tipoanu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2690,15263,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m103_tipoanu'))."','$this->m103_tipoanu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,16 +424,16 @@ class cl_matanulitem {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15257,'$m103_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2690,15257,'','".AddSlashes(pg_result($resaco,$iresaco,'m103_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2690,15258,'','".AddSlashes(pg_result($resaco,$iresaco,'m103_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2690,15259,'','".AddSlashes(pg_result($resaco,$iresaco,'m103_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2690,15260,'','".AddSlashes(pg_result($resaco,$iresaco,'m103_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2690,15261,'','".AddSlashes(pg_result($resaco,$iresaco,'m103_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2690,15262,'','".AddSlashes(pg_result($resaco,$iresaco,'m103_quantanulada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2690,15263,'','".AddSlashes(pg_result($resaco,$iresaco,'m103_tipoanu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2690,15257,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m103_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2690,15258,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m103_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2690,15259,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m103_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2690,15260,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m103_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2690,15261,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m103_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2690,15262,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m103_quantanulada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2690,15263,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m103_tipoanu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from matanulitem
@@ -493,7 +493,7 @@ class cl_matanulitem {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matanulitem";
@@ -508,7 +508,7 @@ class cl_matanulitem {
    function sql_query ( $m103_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,7 +530,7 @@ class cl_matanulitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -543,7 +543,7 @@ class cl_matanulitem {
    function sql_query_file ( $m103_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -564,7 +564,7 @@ class cl_matanulitem {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

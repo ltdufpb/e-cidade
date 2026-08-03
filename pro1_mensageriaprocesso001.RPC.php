@@ -6,7 +6,7 @@ use ECidade\Patrimonial\Protocolo\Procedimentos\Parametros\Servico\NotificacaoMo
 $post = JSON::requestParameters();
 $status = 200;
 $mensagem = '';
-$dados = array();
+$dados = [];
 
 $notificacaoMovimentacaoProcessoRepositorio = new NotificacaoMovimentacaoProcessoRepositorio();
 $notificacaoMovimentacaoProcessoServico = new NotificacaoMovimentacaoProcessoServico($notificacaoMovimentacaoProcessoRepositorio);
@@ -27,10 +27,10 @@ try {
     $status = 400;
 }
 
-echo JSON::create()->stringify(array(
+echo JSON::create()->stringify([
     'mensagem' => $mensagem,
     'dados' => $dados
-));
+]);
 
 exit($status);
 

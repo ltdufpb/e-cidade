@@ -19,7 +19,7 @@ class UnidadeGestora
     {
 
         $oUnidadeRepository  = new \ECidade\Tributario\Grm\Repository\UnidadeGestora();
-        $aUnidades = array();
+        $aUnidades = [];
         foreach ($oUnidadeRepository->getAll() as $oUnidade) {
             $oUnidadeRetorno         = new \stdClass();
             $oUnidadeRetorno->codigo = $oUnidade->getCodigo();
@@ -41,7 +41,7 @@ class UnidadeGestora
 
         $oTipoRecolhimentoRepository = new TipoRecolhimentoRepository();
         $aRecolhimentosUnidade       = $oTipoRecolhimentoRepository->getTiposRecolhimentoDaUnidadeGestora($oUnidade);
-        $aRecolhimentos = array();
+        $aRecolhimentos = [];
         foreach ($aRecolhimentosUnidade as $oRecolhimento) {
             $oRecolhimentoRetorno = new \stdClass();
             $oRecolhimentoRetorno->codigo = $oRecolhimento->getTipoRecolhimento()->getCodigo();
@@ -81,7 +81,7 @@ class UnidadeGestora
                     $oRecolhimentoRetorno->atributos[] = $oAtributoRetorno;
                 }
             } else {
-                $oRecolhimentoRetorno->atributos                 = array();
+                $oRecolhimentoRetorno->atributos                 = [];
                 $oGrupoAtributo  = TipoRecolhimentoRepository::getAtributosDoRecolhimento(
                     $oRecolhimento->getTipoRecolhimento()
                 );

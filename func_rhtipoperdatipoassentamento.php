@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhtipoperdatipoassentamento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhtipoperdatipoassentamento = new cl_rhtipoperdatipoassentamento;
 $clrhtipoperdatipoassentamento->rotulo->label("h71_sequencial");
 $clrhtipoperdatipoassentamento->rotulo->label("h71_sequencial");
@@ -98,9 +98,9 @@ $clrhtipoperdatipoassentamento->rotulo->label("h71_sequencial");
         }else{
            $sql = $clrhtipoperdatipoassentamento->sql_query("",$campos,"h71_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h71_sequencial)){
-          $repassa = array("chave_h71_sequencial"=>$chave_h71_sequencial,"chave_h71_sequencial"=>$chave_h71_sequencial);
+          $repassa = ["chave_h71_sequencial"=>$chave_h71_sequencial,"chave_h71_sequencial"=>$chave_h71_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

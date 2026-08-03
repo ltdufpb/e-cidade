@@ -58,8 +58,8 @@ db_app::import("contabilidade.contacorrente.*");
 (float)$quantlanc = 0;
 $valores = null;
 $departamentodestino = null;
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clmatestoque = new cl_matestoque;
 $clmatestoqueitem = new cl_matestoqueitem;

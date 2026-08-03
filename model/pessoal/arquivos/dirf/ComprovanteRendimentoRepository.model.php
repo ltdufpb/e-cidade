@@ -39,7 +39,7 @@ class ComprovanteRendimentoRepository
      * @var Array
      * @access private
      */
-    private static $aColecao = array();
+    private static $aColecao = [];
 
     /**
      * Representa a instancia a classe
@@ -101,7 +101,7 @@ class ComprovanteRendimentoRepository
             null
         );
         $rsRubricasBase = db_query($sSqlRubricasBase);
-        $aRubricas = array();
+        $aRubricas = [];
         if (pg_num_rows($rsRubricasBase) > 0) {
             $sRubricas = db_utils::fieldsMemory($rsRubricasBase, 0)->rubricas;
             if (!empty($sRubricas)) {
@@ -145,7 +145,7 @@ class ComprovanteRendimentoRepository
         $outrasInformacoes = $oDirf->getInformacoesComplementares($oDados->matricula->getCgm()->getCodigo());
 
         $oComprovante = new ComprovanteRendimento();
-        $oComprovante->setMatriculas(array($oDados->matricula));
+        $oComprovante->setMatriculas([$oDados->matricula]);
         $oComprovante->setCgm($oDados->matricula->getCgm());
         $oComprovante->setFontePagadora($oDados->rh95_fontepagadora);
         $oComprovante->setNomeFontePagadora($oDados->nome_fonte);

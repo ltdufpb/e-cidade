@@ -40,8 +40,8 @@ require_once modification("classes/db_meicgm_classe.php");
 require_once modification("classes/db_meiprocessaregmeicgm_classe.php");
 require_once modification("classes/db_isscadsimples_classe.php");
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);

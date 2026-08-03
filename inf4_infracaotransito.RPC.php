@@ -157,7 +157,7 @@ try {
       $oReceitaRepository         = ReceitaRepository::getInstance();
 
       $aReceitaInfracao            = $oReceitaInfracaoRepository->getByAno($oParam->anousu);
-      $oRetorno->receitas_infracao = array();
+      $oRetorno->receitas_infracao = [];
 
       foreach ($aReceitaInfracao as $oReceitaInfracao) {
 
@@ -168,8 +168,8 @@ try {
         $oDadosReceita                     = new \stdClass;
         $oDadosReceita->codigo             = $oReceitaInfracao->getId();
         $oDadosReceita->nivel              = $oReceitaInfracao->getNivel();
-        $oDadosReceita->receitaPrincipal   = array('k02_codigo' => $oReceitaPrincipal->getDadosReceita()->k02_codigo, 'k02_drecei' => $oReceitaPrincipal->getDadosReceita()->k02_drecei);
-        $oDadosReceita->receitaDuplicidade = array('k02_codigo' => $oReceitaDuplicidade->getDadosReceita()->k02_codigo, 'k02_drecei' => $oReceitaDuplicidade->getDadosReceita()->k02_drecei);
+        $oDadosReceita->receitaPrincipal   = ['k02_codigo' => $oReceitaPrincipal->getDadosReceita()->k02_codigo, 'k02_drecei' => $oReceitaPrincipal->getDadosReceita()->k02_drecei];
+        $oDadosReceita->receitaDuplicidade = ['k02_codigo' => $oReceitaDuplicidade->getDadosReceita()->k02_codigo, 'k02_drecei' => $oReceitaDuplicidade->getDadosReceita()->k02_drecei];
         $oDadosReceita->conta              = $oContaTesouraria->getCodigoConta();
         $oDadosReceita->conta_descricao    = $oContaTesouraria->getDescricao();
         $oRetorno->receitas_infracao[]     = $oDadosReceita;

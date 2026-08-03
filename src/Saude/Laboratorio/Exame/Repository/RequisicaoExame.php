@@ -42,12 +42,12 @@ class RequisicaoExame extends \BaseClassRepository
     /**
      * @var RequisicaoExameModel[]
      */
-    private $requisicoesExame = array();
+    private $requisicoesExame = [];
 
     /**
      * @var array
      */
-    private $condicoesWhere = array();
+    private $condicoesWhere = [];
 
     /**
      * @return RequisicaoExameModel[]
@@ -75,7 +75,7 @@ class RequisicaoExame extends \BaseClassRepository
             $this->getRequisicaoExameByCodigo(db_utils::fieldsMemory($rs, $contador)->la21_i_codigo);
         }
 
-        $this->condicoesWhere = array();
+        $this->condicoesWhere = [];
 
         return self::getInstance()->requisicoesExame;
     }

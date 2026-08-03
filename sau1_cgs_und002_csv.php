@@ -48,18 +48,18 @@ $sql = $clcgs_und->sql_query_ext($chavepesquisa, "*", null, $sWhere);
 $result    = $clcgs_und->sql_record($sql);
 db_fieldsmemory($result,0);
 
-$export = array(
-  array('Código CGS', 'Nome do paciente', 'Nascimento', 'Cartão SUS', 'Endereço', 'Município', 'CEP'),
-  array(
+$export = [
+  ['Código CGS', 'Nome do paciente', 'Nascimento', 'Cartão SUS', 'Endereço', 'Município', 'CEP'],
+  [
     $GLOBALS['z01_i_cgsund'],
-    utf8_encode($GLOBALS['z01_v_nome']),
+    mb_convert_encoding($GLOBALS['z01_v_nome'], 'UTF-8', 'ISO-8859-1'),
     $GLOBALS['z01_d_nasc_dia'] . '/' . $GLOBALS['z01_d_nasc_mes'] . '/' . $GLOBALS['z01_d_nasc_ano'],
     $GLOBALS['s115_c_cartaosus'],
-    utf8_encode($GLOBALS['z01_v_ender'] . ', ' . $GLOBALS['z01_i_numero'] . ' ' . $GLOBALS['z01_v_compl'] . ', ' . $GLOBALS['z01_v_bairro']),
-    utf8_encode($GLOBALS['z01_v_munic'] . ' - ' . $GLOBALS['z01_v_uf']),
-    utf8_encode($GLOBALS['z01_v_cep'])
-  )
-);
+    mb_convert_encoding($GLOBALS['z01_v_ender'] . ', ' . $GLOBALS['z01_i_numero'] . ' ' . $GLOBALS['z01_v_compl'] . ', ' . $GLOBALS['z01_v_bairro'], 'UTF-8', 'ISO-8859-1'),
+    mb_convert_encoding($GLOBALS['z01_v_munic'] . ' - ' . $GLOBALS['z01_v_uf'], 'UTF-8', 'ISO-8859-1'),
+    mb_convert_encoding($GLOBALS['z01_v_cep'], 'UTF-8', 'ISO-8859-1')
+  ]
+];
 
 
 
@@ -72,7 +72,7 @@ function array2csv(array &$array)
   $df = fopen("php://output", 'w');
   //fputcsv($df, array_keys(reset($array)));
   foreach ($array as $row) {
-    fputcsv($df, $row);
+    fputcsv($df, $row, escape: '\\');
   }
   fclose($df);
   return ob_get_clean();

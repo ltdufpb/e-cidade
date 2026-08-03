@@ -55,7 +55,7 @@ class PaisEndereco {
    * Array com os estados vinculados ao Pais
    * @var array
    */
-  private $aEstados = array(); 
+  private $aEstados = []; 
   
   /**
    * Construtor da classe. Recebe como parametro, o sequencial da tabela cadenderpais.

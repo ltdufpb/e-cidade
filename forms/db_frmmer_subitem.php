@@ -144,7 +144,7 @@ $db_opcao1=3;
        onClick='location.href="mer4_mer_subitens001.php?cancelar"'>
 <br><br>
 <?php 
-  $chavepri= array("me29_i_codigo"=>@$me29_i_codigo);
+  $chavepri= ["me29_i_codigo"=>@$me29_i_codigo];
   $cliframe_alterar_excluir->chavepri=$chavepri;
   $campos2  = " me29_i_codigo,me01_c_nome,me01_f_versao,";
   $campos2 .= " substr(mer_alimento.me35_c_nomealimento,0,30) as me35_c_nomealimento,me29_i_alimentonovo,";
@@ -352,7 +352,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_mer_subitem.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

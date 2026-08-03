@@ -33,8 +33,8 @@ require_once(modification("libs/db_utils.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_inicial_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);

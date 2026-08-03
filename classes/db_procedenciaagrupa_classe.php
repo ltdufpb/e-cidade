@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE procedenciaagrupa
 class cl_procedenciaagrupa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v24_sequencial = 0; 
-   var $v24_proced = 0; 
-   var $v24_procedagrupa = 0; 
+   public $v24_sequencial = 0; 
+   public $v24_proced = 0; 
+   public $v24_procedagrupa = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v24_sequencial = int4 = Código Sequencial 
                  v24_proced = int4 = Código da procedencia 
                  v24_procedagrupa = int4 = Agrupar em 
                  ";
    //funcao construtor da classe 
-   function cl_procedenciaagrupa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procedenciaagrupa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_procedenciaagrupa {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v24_sequencial = pg_result($result,0,0); 
+       $this->v24_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from procedenciaagrupa_v24_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v24_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v24_sequencial)){
          $this->erro_sql = " Campo v24_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_procedenciaagrupa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Agrupamentos de Procedencia ($this->v24_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Agrupamentos de Procedencia já Cadastrado";
@@ -166,12 +166,12 @@ class cl_procedenciaagrupa {
      $resaco = $this->sql_record($this->sql_query_file($this->v24_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14830,'$this->v24_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2610,14830,'','".AddSlashes(pg_result($resaco,0,'v24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2610,14831,'','".AddSlashes(pg_result($resaco,0,'v24_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2610,14832,'','".AddSlashes(pg_result($resaco,0,'v24_procedagrupa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2610,14830,'','".AddSlashes(pg_fetch_result($resaco,0,'v24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2610,14831,'','".AddSlashes(pg_fetch_result($resaco,0,'v24_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2610,14832,'','".AddSlashes(pg_fetch_result($resaco,0,'v24_procedagrupa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_procedenciaagrupa {
       $this->atualizacampos();
      $sql = " update procedenciaagrupa set ";
      $virgula = "";
-     if(trim($this->v24_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v24_sequencial"])){ 
+     if(trim((string) $this->v24_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v24_sequencial"])){ 
        $sql  .= $virgula." v24_sequencial = $this->v24_sequencial ";
        $virgula = ",";
-       if(trim($this->v24_sequencial) == null ){ 
+       if(trim((string) $this->v24_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "v24_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_procedenciaagrupa {
          return false;
        }
      }
-     if(trim($this->v24_proced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v24_proced"])){ 
+     if(trim((string) $this->v24_proced)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v24_proced"])){ 
        $sql  .= $virgula." v24_proced = $this->v24_proced ";
        $virgula = ",";
-       if(trim($this->v24_proced) == null ){ 
+       if(trim((string) $this->v24_proced) == null ){ 
          $this->erro_sql = " Campo Código da procedencia nao Informado.";
          $this->erro_campo = "v24_proced";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_procedenciaagrupa {
          return false;
        }
      }
-     if(trim($this->v24_procedagrupa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v24_procedagrupa"])){ 
+     if(trim((string) $this->v24_procedagrupa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v24_procedagrupa"])){ 
        $sql  .= $virgula." v24_procedagrupa = $this->v24_procedagrupa ";
        $virgula = ",";
-       if(trim($this->v24_procedagrupa) == null ){ 
+       if(trim((string) $this->v24_procedagrupa) == null ){ 
          $this->erro_sql = " Campo Agrupar em nao Informado.";
          $this->erro_campo = "v24_procedagrupa";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_procedenciaagrupa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14830,'$this->v24_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v24_sequencial"]) || $this->v24_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2610,14830,'".AddSlashes(pg_result($resaco,$conresaco,'v24_sequencial'))."','$this->v24_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2610,14830,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v24_sequencial'))."','$this->v24_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v24_proced"]) || $this->v24_proced != "")
-           $resac = db_query("insert into db_acount values($acount,2610,14831,'".AddSlashes(pg_result($resaco,$conresaco,'v24_proced'))."','$this->v24_proced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2610,14831,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v24_proced'))."','$this->v24_proced',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v24_procedagrupa"]) || $this->v24_procedagrupa != "")
-           $resac = db_query("insert into db_acount values($acount,2610,14832,'".AddSlashes(pg_result($resaco,$conresaco,'v24_procedagrupa'))."','$this->v24_procedagrupa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2610,14832,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v24_procedagrupa'))."','$this->v24_procedagrupa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_procedenciaagrupa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14830,'$v24_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2610,14830,'','".AddSlashes(pg_result($resaco,$iresaco,'v24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2610,14831,'','".AddSlashes(pg_result($resaco,$iresaco,'v24_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2610,14832,'','".AddSlashes(pg_result($resaco,$iresaco,'v24_procedagrupa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2610,14830,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v24_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2610,14831,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v24_proced'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2610,14832,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v24_procedagrupa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from procedenciaagrupa
@@ -345,7 +345,7 @@ class cl_procedenciaagrupa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procedenciaagrupa";
@@ -360,7 +360,7 @@ class cl_procedenciaagrupa {
    function sql_query ( $v24_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_procedenciaagrupa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_procedenciaagrupa {
    function sql_query_file ( $v24_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_procedenciaagrupa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -432,7 +432,7 @@ class cl_procedenciaagrupa {
   function sql_query_agrupa ( $v24_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,7 +455,7 @@ class cl_procedenciaagrupa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

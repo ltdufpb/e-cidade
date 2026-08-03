@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_meiimportalinhaempresameievento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmeiimportalinhaempresameievento = new cl_meiimportalinhaempresameievento;
 $clmeiimportalinhaempresameievento->rotulo->label("q112_sequencial");
 $clmeiimportalinhaempresameievento->rotulo->label("q112_meiimportalinhaempresa");
@@ -98,9 +98,9 @@ $clmeiimportalinhaempresameievento->rotulo->label("q112_meiimportalinhaempresa")
         }else{
            $sql = $clmeiimportalinhaempresameievento->sql_query("",$campos,"q112_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q112_meiimportalinhaempresa)){
-          $repassa = array("chave_q112_sequencial"=>$chave_q112_sequencial,"chave_q112_meiimportalinhaempresa"=>$chave_q112_meiimportalinhaempresa);
+          $repassa = ["chave_q112_sequencial"=>$chave_q112_sequencial,"chave_q112_meiimportalinhaempresa"=>$chave_q112_meiimportalinhaempresa];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

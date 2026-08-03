@@ -157,10 +157,10 @@ if(pg_num_rows($rsSql) > 0){
 
 	$oRelatorio = new stdClass();
 
-	$aTemp = array();
+	$aTemp = [];
  	$aTemp = db_utils::getCollectionByRecord($rsSql,false,false,false);
     $oRetorno = new stdClass();
- 	$oRetorno->dados = array();
+ 	$oRetorno->dados = [];
  	$oDado = new stdClass();
  	$oDado->valor 			= 0;
  	$oDado->numcgm 			= $aTemp[0]->numcgm;
@@ -204,7 +204,7 @@ if(pg_num_rows($rsSql) > 0){
 
  	$oRelatorio->dados[] = $oDado;
 
- 	$oRelatorio->historico = array();
+ 	$oRelatorio->historico = [];
  	 		$sql  = "SELECT corrente.k12_data, ";
       $sql .= " case when corrente.k12_estorn is true then 'Estornado' else 'Autenticado' end as situacao, ";
       $sql .= " k11_tesoureiro, ";

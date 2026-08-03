@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_undmedhorario_classe.php"));
 include(modification("classes/db_medicos_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clundmedhorario = new cl_undmedhorario;
 $clmedicos = new cl_medicos;
 $db_botao = true;

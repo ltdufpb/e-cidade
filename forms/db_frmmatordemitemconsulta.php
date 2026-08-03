@@ -33,8 +33,8 @@ include(modification("classes/db_matordem_classe.php"));
 include(modification("classes/db_matordemitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empempenho_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clempempenho = new cl_empempenho;
 $clmatordemitem = new cl_matordemitem;
@@ -158,9 +158,9 @@ $clrotulo->label("pc23_obs");
    	              <td	 class='bordas_corp' align='center'><small>$e60_codemp </small></td>
    	              <td	 class='bordas_corp' align='center'><small>$m52_numemp </small></td>
     	            <td	 class='bordas_corp' align='center'><small>$e62_item  </small></td>		    
-    		          <td	 class='bordas_corp' nowrap align='left' title='$pc01_descrmater'><small>".substr($pc01_descrmater,0,20)."&nbsp;</small></td>
+    		          <td	 class='bordas_corp' nowrap align='left' title='$pc01_descrmater'><small>".substr((string) $pc01_descrmater,0,20)."&nbsp;</small></td>
 	                <td	 class='bordas_corp' align='center'><small>$m52_sequen</small></td>
-                  <td	 class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr($e62_descr,0,20)."&nbsp;</small></td>
+                  <td	 class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr((string) $e62_descr,0,20)."&nbsp;</small></td>
                   <td  class='bordas_corp' nowrap align='left' title='$pc23_obs'><small>".substr($pc23_obs,0,15)."...&nbsp;</small></td>
 	                <td	 class='bordas_corp' align='center'><small>$m52_quant</small></td>
 	                <td	 class='bordas_corp' align='right'><small>$m52_vlruni</small></td>

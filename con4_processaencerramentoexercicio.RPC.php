@@ -90,11 +90,11 @@ SQL;
              $sLinha = implode(";",$aDadosLog);
              file_put_contents($pArquivoLog, "$sLinha \n", FILE_APPEND);
 
-             if (pg_numrows($rs) > 0 ) {
+             if (pg_num_rows($rs) > 0 ) {
 
                 $oRetorno->lRegistros = true;
 
-                for ( $i = 0; $i < pg_numrows($rs); $i++) {
+                for ( $i = 0; $i < pg_num_rows($rs); $i++) {
 
                     $oDados = db_utils::fieldsMemory($rs, $i);
                     $aDadosLog = [];
@@ -125,7 +125,7 @@ SQL;
                     ConsistenciaEncerramento::TIPO_ENCERRAMENTO
                 );
 
-                $consistenciasComProblema = array();
+                $consistenciasComProblema = [];
                 foreach ($consistencias as $consistenciaExecutada) {
                     $registros = $consistencia->executarConsistencia($consistenciaExecutada->id);
                     if ($registros) {
@@ -290,7 +290,7 @@ function getDadosDocumentos($documentos)
     $dados = \db_utils::getCollectionByRecord($rsTipoDocumento);
     foreach ($dados as $documentosConsulta) {
 
-        $documentos[$documentosConsulta->codigo] = array();
+        $documentos[$documentosConsulta->codigo] = [];
         $documentos[$documentosConsulta->codigo]["codigo"] = $documentosConsulta->codigo;
         $documentos[$documentosConsulta->codigo]["descricao"] = $documentosConsulta->descricao;
         $documentos[$documentosConsulta->codigo]["processado"] = $documentosConsulta->processado == 't';

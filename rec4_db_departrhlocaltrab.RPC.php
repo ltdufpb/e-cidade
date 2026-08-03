@@ -61,7 +61,7 @@ try {
                                     order by rhlocaltrab.rh55_codigo";
 
       $rsRhlocaltrab            = db_query($sSqlRhlocaltrab);
-      $aLocaisDeTrabalho        = array();
+      $aLocaisDeTrabalho        = [];
 
       for ($iLocalDeTrabalho = 0; $iLocalDeTrabalho < pg_num_rows($rsRhlocaltrab); $iLocalDeTrabalho++) {
 
@@ -69,7 +69,7 @@ try {
 
         $oResultado             = new stdClass();
         $oResultado->iCodigo    = $oLocalDeTrabalho->rh55_codigo;
-        $oResultado->sDescricao = utf8_encode($oLocalDeTrabalho->rh55_descr);
+        $oResultado->sDescricao = mb_convert_encoding($oLocalDeTrabalho->rh55_descr, 'UTF-8', 'ISO-8859-1');
         $oResultado->lMarcado   = $oLocalDeTrabalho->marcado == 't' ? true : false;
 
         $aLocaisDeTrabalho[]    = $oResultado;

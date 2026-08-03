@@ -26,10 +26,10 @@ class Status extends Command
 
         $this->connect_db();
 
-        $manifests = array();
+        $manifests = [];
         $service = new \PluginService();
         $plugins = $service->getPlugins();
-        $plugins_instalados = array();
+        $plugins_instalados = [];
 
         echo "\n Plugins instaladados: ", count($plugins), "\n\n";
 
@@ -39,11 +39,11 @@ class Status extends Command
 
         foreach ($plugins as $data) {
 
-            $manifest_files = $this->manifest_extract_files(array($manifests[$data->sNome]));
+            $manifest_files = $this->manifest_extract_files([$manifests[$data->sNome]]);
             $modications = $this->manifest_extract_modifications($manifest_files);
             $modications_instaled = $this->modifications_instaled($modications);
 
-            $versao = $this->color('v' . ltrim($data->nVersao, 'v'), 'cyan');
+            $versao = $this->color('v' . ltrim((string) $data->nVersao, 'v'), 'cyan');
             $situacao = $data->lSituacao ? $this->color('ativado', 'light_green') : $this->color('desativado', 'brown');
             $log_path = "tmp/" .$data->sNome . '.log';
 
@@ -111,10 +111,7 @@ class Status extends Command
     {
         return array_filter(
             $files,
-            function($path)
-            {
-                return strpos($path, 'modification/xml/') === 0;
-            }
+            fn($path) => str_starts_with((string) $path, 'modification/xml/')
         );
     }
 
@@ -127,11 +124,11 @@ class Status extends Command
 
     private function modifications_instaled($modications)
     {
-        $data = array(
-            'global' => array(),
-            'user' => array(),
-            'parse_error' => array(),
-        );
+        $data = [
+            'global' => [],
+            'user' => [],
+            'parse_error' => [],
+        ];
 
         foreach ($modications as $path) {
 
@@ -146,18 +143,18 @@ class Status extends Command
 
                 if ($modification->isUserType()) {
                     foreach ($modification->getUsersStatus() as $user => $status) {
-                        $data['user'][$modification->getId()][$user] = array(
+                        $data['user'][$modification->getId()][$user] = [
                             'status' => $modification->isEnabled($user),
                             'errors' => $errors,
-                        );
+                        ];
                     }
                     continue;
                 }
 
-                $data['global'][$modification->getId()] = array(
+                $data['global'][$modification->getId()] = [
                     'status' => $modification->isEnabled(),
                     'errors' => $errors,
-                );
+                ];
 
             } catch (\Exception $e) {
                 $data['parse_error'][$path] = $e->getMessage();
@@ -169,10 +166,10 @@ class Status extends Command
 
     private function modification_extract_errros($modification)
     {
-        $data = array(
+        $data = [
             'error' => 0,
             'warning' => 0,
-        );
+        ];
         foreach($modification->getFilesErrors() as $file => $errors) {
             foreach($errors as $error) {
                 if ($error['type'] === ModificationOperation::ERROR_ABORT) {
@@ -188,7 +185,7 @@ class Status extends Command
 
     private function manifest_extract_modifications($manifest_files)
     {
-        $plugins_modifications = array();
+        $plugins_modifications = [];
         foreach($manifest_files as $manifest => $files) {
             foreach ($this->files_extract_modifications($files) as $file) {
                 $plugins_modifications[] = $file;
@@ -200,7 +197,7 @@ class Status extends Command
 
     private function modification_without_plugin($plugins_modifications)
     {
-        $data = array();
+        $data = [];
         $modications = glob(ECIDADE_PATH . 'modification/xml/*.xml', GLOB_BRACE);
 
         foreach ($modications as $modication) {
@@ -216,12 +213,12 @@ class Status extends Command
 
     private function manifest_extract_files($manifests)
     {
-        $files = array();
+        $files = [];
 
         foreach ($manifests as $manifest) {
 
             $name = (string) $manifest->plugin['name'];
-            $files[$name] = array();
+            $files[$name] = [];
 
             foreach ($manifest->plugin->files->file as $file) {
                 $files[$name][] = ltrim((string) $file['path'], '/');
@@ -233,8 +230,8 @@ class Status extends Command
 
     private function connect_db()
     {
-        $HTTP_SERVER_VARS['HTTP_HOST'] = '';
-        $HTTP_SERVER_VARS['PHP_SELF'] = '';
+        $_SERVER['HTTP_HOST'] = '';
+        $_SERVER['PHP_SELF'] = '';
         require_once ECIDADE_PATH . 'libs/db_conn.php';
         require_once ECIDADE_PATH . 'libs/db_stdlib.php';
 

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE seguradoras
 class cl_seguradoras { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t80_segura = 0; 
-   var $t80_numcgm = 0; 
-   var $t80_contato = null; 
+   public $t80_segura = 0; 
+   public $t80_numcgm = 0; 
+   public $t80_contato = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t80_segura = int8 = Seguradora 
                  t80_numcgm = int4 = Numcgm 
                  t80_contato = varchar(40) = Contato na seguradora 
                  ";
    //funcao construtor da classe 
-   function cl_seguradoras() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("seguradoras"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_seguradoras {
          $this->erro_status = "0";
          return false; 
        }
-       $this->t80_segura = pg_result($result,0,0); 
+       $this->t80_segura = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from seguradoras_t80_segura_seq");
-       if(($result != false) && (pg_result($result,0,0) < $t80_segura)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $t80_segura)){
          $this->erro_sql = " Campo t80_segura maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_seguradoras {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Seguradoras ($this->t80_segura) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Seguradoras já Cadastrado";
@@ -166,12 +166,12 @@ class cl_seguradoras {
      $resaco = $this->sql_record($this->sql_query_file($this->t80_segura));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5813,'$this->t80_segura','I')");
-       $resac = db_query("insert into db_acount values($acount,927,5813,'','".AddSlashes(pg_result($resaco,0,'t80_segura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,927,5814,'','".AddSlashes(pg_result($resaco,0,'t80_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,927,5815,'','".AddSlashes(pg_result($resaco,0,'t80_contato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,927,5813,'','".AddSlashes(pg_fetch_result($resaco,0,'t80_segura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,927,5814,'','".AddSlashes(pg_fetch_result($resaco,0,'t80_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,927,5815,'','".AddSlashes(pg_fetch_result($resaco,0,'t80_contato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_seguradoras {
       $this->atualizacampos();
      $sql = " update seguradoras set ";
      $virgula = "";
-     if(trim($this->t80_segura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_segura"])){ 
+     if(trim((string) $this->t80_segura)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_segura"])){ 
        $sql  .= $virgula." t80_segura = $this->t80_segura ";
        $virgula = ",";
-       if(trim($this->t80_segura) == null ){ 
+       if(trim((string) $this->t80_segura) == null ){ 
          $this->erro_sql = " Campo Seguradora nao Informado.";
          $this->erro_campo = "t80_segura";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_seguradoras {
          return false;
        }
      }
-     if(trim($this->t80_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_numcgm"])){ 
+     if(trim((string) $this->t80_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_numcgm"])){ 
        $sql  .= $virgula." t80_numcgm = $this->t80_numcgm ";
        $virgula = ",";
-       if(trim($this->t80_numcgm) == null ){ 
+       if(trim((string) $this->t80_numcgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "t80_numcgm";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_seguradoras {
          return false;
        }
      }
-     if(trim($this->t80_contato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_contato"])){ 
+     if(trim((string) $this->t80_contato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t80_contato"])){ 
        $sql  .= $virgula." t80_contato = '$this->t80_contato' ";
        $virgula = ",";
-       if(trim($this->t80_contato) == null ){ 
+       if(trim((string) $this->t80_contato) == null ){ 
          $this->erro_sql = " Campo Contato na seguradora nao Informado.";
          $this->erro_campo = "t80_contato";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_seguradoras {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5813,'$this->t80_segura','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t80_segura"]))
-           $resac = db_query("insert into db_acount values($acount,927,5813,'".AddSlashes(pg_result($resaco,$conresaco,'t80_segura'))."','$this->t80_segura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,927,5813,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t80_segura'))."','$this->t80_segura',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t80_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,927,5814,'".AddSlashes(pg_result($resaco,$conresaco,'t80_numcgm'))."','$this->t80_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,927,5814,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t80_numcgm'))."','$this->t80_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t80_contato"]))
-           $resac = db_query("insert into db_acount values($acount,927,5815,'".AddSlashes(pg_result($resaco,$conresaco,'t80_contato'))."','$this->t80_contato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,927,5815,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t80_contato'))."','$this->t80_contato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_seguradoras {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5813,'$t80_segura','E')");
-         $resac = db_query("insert into db_acount values($acount,927,5813,'','".AddSlashes(pg_result($resaco,$iresaco,'t80_segura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,927,5814,'','".AddSlashes(pg_result($resaco,$iresaco,'t80_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,927,5815,'','".AddSlashes(pg_result($resaco,$iresaco,'t80_contato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,927,5813,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t80_segura'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,927,5814,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t80_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,927,5815,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t80_contato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from seguradoras
@@ -345,7 +345,7 @@ class cl_seguradoras {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:seguradoras";
@@ -359,7 +359,7 @@ class cl_seguradoras {
    function sql_query ( $t80_segura=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,7 +381,7 @@ class cl_seguradoras {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,7 +393,7 @@ class cl_seguradoras {
    function sql_query_file ( $t80_segura=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_seguradoras {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

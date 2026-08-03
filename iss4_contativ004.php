@@ -37,15 +37,15 @@ include(modification("dbforms/db_funcoes.php"));
 //include(modification("libs/db_sql.php"));
 //require(modification("libs/db_stdlib.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $sql = "select q12_classe,q12_descr from clasativ inner join classe on q82_classe=q12_classe group by q12_classe,q12_descr";
 $result = db_query($sql);
-if(pg_numrows($result) == 0 ){
+if(pg_num_rows($result) == 0 ){
   db_redireciona("db_erros.php?fechar=true&db_erro=Não Existe Atividade Para o Intervalo Digitado.&pagina_retorno=iss4_contativ001.php");
   exit;
 }
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 ?>
 
 <html>

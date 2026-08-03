@@ -34,7 +34,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("model/dbModeloArquivoTexto.model.php"));
 require_once(modification("model/dbVisualizadorImpressaoTexto.model.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
   <head>
@@ -59,7 +59,7 @@ try {
 $oProntuarios      = db_utils::getdao('prontuarios');
 $oProntproced      = db_utils::getdao('prontproced');
 $oProntprocedExt   = db_utils::getdao('prontproced_ext');
-$aChaveProntuarios = explode(",", $chave_sd29_i_prontuario);
+$aChaveProntuarios = explode(",", (string) $chave_sd29_i_prontuario);
 $iTam              = count($aChaveProntuarios);
 
 /* Sub sql para obter os profissionais (vindos da prontproced) */
@@ -183,7 +183,7 @@ for ($iInd = 0; $iInd < $iTam; $iInd++) {
   $iLinhasProc = $oProntproced->numrows;
   try {
 
-    $aSql = array($sSql);
+    $aSql = [$sSql];
     if ($iLinhasProc > 0) {
       $aSql[1] = $sSqlProc;
     } else {

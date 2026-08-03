@@ -32,12 +32,12 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_orcfontes_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_liborcamento.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clorcfontes = new cl_orcfontes;
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   $db_opcao = 3;
   $db_botao = true;
    $retorna=$clorcfontes->db_verifica_fonte_exclusao($o57_fonte);
@@ -93,7 +93,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 if(isset($erro_elem)){
     db_msgbox($erro_elem);
 }  
-if(empty($erro_elem) && (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if(empty($erro_elem) && (isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clorcfontes->erro_status=="0"){
     $clorcfontes->erro(true,false);
   }else{

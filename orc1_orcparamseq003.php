@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("orcparamseq"=>"Linhas","orcparamseqorcparamseqcoluna"=>"Colunas"); 
-	 $clcriaabas->src = array("orcparamseq"=>"orc1_orcparamseq006.php");
-	 $clcriaabas->disabled   =  array("orcparamseqorcparamseqcoluna"=>"true"); 
+	 $clcriaabas->identifica = ["orcparamseq"=>"Linhas","orcparamseqorcparamseqcoluna"=>"Colunas"]; 
+	 $clcriaabas->src = ["orcparamseq"=>"orc1_orcparamseq006.php"];
+	 $clcriaabas->disabled   =  ["orcparamseqorcparamseqcoluna"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

@@ -79,21 +79,21 @@ class Menu extends Controller {
     }
 
     $menus = $this->getEstruturaMenu($instit);
-    $needle = urldecode(utf8_decode($needle));
+    $needle = urldecode(mb_convert_encoding($needle, 'ISO-8859-1'));
 
     $search = new \Search\Match($menus);
     $search->haystackKey('breadcrumb');
     $search->highlight('<b>', '</b>');
     $search->limit(20);
     $search->threshold(1);
-    $matches = array();
+    $matches = [];
 
     foreach($search->execute($needle) as $match) {
-      $matches[] = array(
+      $matches[] = [
         'highlight' => $match->highlight(),
         'score' => $match->score(),
         'context' => $match->context(),
-      );
+      ];
     }
 
     return $matches;
@@ -125,7 +125,7 @@ class Menu extends Controller {
       throw new ResponseException('Arquivo não informado.');
     }
 
-    $data = (object) array('id' => null, 'breadcrumb' => null, 'permission' => true);
+    $data = (object) ['id' => null, 'breadcrumb' => null, 'permission' => true];
     $model = new ModelMenu();
 
     $file = $this->request->params()->get('file', $file);

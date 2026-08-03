@@ -33,7 +33,7 @@ include(modification("classes/db_orcparamrel_classe.php"));
 include(modification("classes/db_orcparamelemento_classe.php"));
 include(modification("classes/db_orcparamfontes_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcparamrel = new cl_orcparamrel;
 $clorcparamrel->rotulo->label();
@@ -51,7 +51,7 @@ if(isset($qreceitas)){
     $clorcparamfontes->excluir(db_getsession("DB_anousu"),$o42_codparrel);
   } 
   if($qreceitas!=""){
-    $rec = split("-",$qreceitas);
+    $rec = preg_split("#\\-#m",$qreceitas);
     for($i=0;$i<sizeof($rec);$i++){
       $clorcparamfontes->o43_anousu = db_getsession("DB_anousu");
       $clorcparamfontes->o43_codparrel = $o42_codparrel;
@@ -72,7 +72,7 @@ if(isset($qreceitas)){
     $clorcparamelemento->excluir(db_getsession("DB_anousu"),$o42_codparrel);
   } 
   if($qdespesas!=""){
-    $rec = split("-",$qdespesas);
+    $rec = preg_split("#\\-#m",$qdespesas);
     for($i=0;$i<sizeof($rec);$i++){
       $clorcparamelemento->o43_anousu = db_getsession("DB_anousu");
       $clorcparamelemento->o43_codparrel = $o42_codparrel;

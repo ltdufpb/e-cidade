@@ -105,7 +105,7 @@ function js_relatorio2() {
             </tr>
            <tr>
              <td nowrap align=right><b>Somente contas com movimento </b></td>
-              <td><?php  $matriz = array("n"=>"nao","s"=>"sim");
+              <td><?php  $matriz = ["n"=>"nao","s"=>"sim"];
                    $somente_contas_com_movimento = "s";             
                    db_select("somente_contas_com_movimento", $matriz,true,1); 
                    ?> 
@@ -114,7 +114,7 @@ function js_relatorio2() {
   
            <tr>
              <td nowrap align=right><b>Totalizador diário </b></td>
-              <td><?php  $matriz = array("s"=>"sim","n"=>"nao");  
+              <td><?php  $matriz = ["s"=>"sim","n"=>"nao"];  
                               
                    db_select("totalizador_diario", $matriz,true,1); 
                    ?> 
@@ -123,7 +123,7 @@ function js_relatorio2() {
 
            <tr>
              <td nowrap align=right><b>Imprime receitas </b></td>
-              <td><?php  $matriz = array("s"=>"sim","n"=>"nao");             
+              <td><?php  $matriz = ["s"=>"sim","n"=>"nao"];             
                    db_select("imprime_receitas", $matriz,true,1); 
                    ?> 
               </td>
@@ -131,7 +131,7 @@ function js_relatorio2() {
 
            <tr>
              <td nowrap align=right><b>Imprime histórico </b></td>
-              <td><?php  $matriz = array("s"=>"sim","n"=>"nao");             
+              <td><?php  $matriz = ["s"=>"sim","n"=>"nao"];             
                    db_select("imprime_historico", $matriz,true,1); 
                    ?> 
               </td>
@@ -139,7 +139,7 @@ function js_relatorio2() {
 
            <tr>
              <td nowrap align=right><b>Tipo Impressão</b></td>
-              <td><?php  $matriz = array("a"=>"Analítico","s"=>"Sintético");             
+              <td><?php  $matriz = ["a"=>"Analítico","s"=>"Sintético"];             
                    db_select("imprime_analitico", $matriz,true,1); 
                    ?> 
               </td>

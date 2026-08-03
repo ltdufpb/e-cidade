@@ -49,9 +49,9 @@ try {
             $rubrica = new Rubrica($parametros->codigoRubrica);
 
             $retorno->rubrica = $repository->getByRubricaAndInstituicao($rubrica, $instituicao);
-            $retorno->opcoesCodIncCP = array();
-            $retorno->opcoesCodIncIRRF = array();
-            $retorno->opcoesCodIncFGTS = array();
+            $retorno->opcoesCodIncCP = [];
+            $retorno->opcoesCodIncIRRF = [];
+            $retorno->opcoesCodIncFGTS = [];
             $retorno->opcoesCodTetoRemun = [];
             $retorno->opcoesCodIncCPRP = [];
 
@@ -59,49 +59,49 @@ try {
             $opcoes = $pergunta->getOpcoes();
 
             foreach ($opcoes as $opcao) {
-                $retorno->opcoesCodIncCP[] = array(
+                $retorno->opcoesCodIncCP[] = [
                     'value' => $opcao->getCodigo(),
                     'label' => $opcao->getDescricao()
-                );
+                ];
             }
 
             $pergunta = new AvaliacaoPergunta(3000948);
             $opcoes = $pergunta->getOpcoes();
 
             foreach ($opcoes as $opcao) {
-                $retorno->opcoesCodIncIRRF[] = array(
+                $retorno->opcoesCodIncIRRF[] = [
                     'value' => $opcao->getCodigo(),
                     'label' => $opcao->getDescricao()
-                );
+                ];
             }
 
             $pergunta = new AvaliacaoPergunta(3000949);
             $opcoes = $pergunta->getOpcoes();
 
             foreach ($opcoes as $opcao) {
-                $retorno->opcoesCodIncFGTS[] = array(
+                $retorno->opcoesCodIncFGTS[] = [
                     'value' => $opcao->getCodigo(),
                     'label' => $opcao->getDescricao()
-                );
+                ];
             }
 
             $pergunta = new AvaliacaoPergunta(4000297);
             $opcoes = $pergunta->getOpcoes();
 
             foreach ($opcoes as $opcao) {
-                $retorno->opcoesCodIncCPRP[] = array(
+                $retorno->opcoesCodIncCPRP[] = [
                     'value' => $opcao->getCodigo(),
                     'label' => $opcao->getDescricao()
-                );
+                ];
             }
 
             $pergunta = new AvaliacaoPergunta(4000298);
             $opcoes = $pergunta->getOpcoes();
             foreach ($opcoes as $opcao) {
-                $retorno->opcoesCodTetoRemun[] = array(
+                $retorno->opcoesCodTetoRemun[] = [
                     'value' => $opcao->getCodigo(),
                     'label' => $opcao->getDescricao()
-                );
+                ];
             }
 
             $sql = "select * from esocial.rubricasubgrupotce order by rh263_grupo asc, rh263_subgrupo asc";

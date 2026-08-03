@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_carvalor_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcarvalor = new cl_carvalor;
 $clcarvalor->rotulo->label("j71_codigo");
@@ -104,10 +104,10 @@ $clcarvalor->rotulo->label("j71_anousu");
           $sql = $clcarvalor->sql_query("",$campos,"j71_codigo","");
         }
         
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_j71_anousu)) {
-          $repassa = array("chave_j71_codigo" => $chave_j71_codigo,
-                           "chave_j71_anousu" => $chave_j71_anousu);
+          $repassa = ["chave_j71_codigo" => $chave_j71_codigo,
+                           "chave_j71_anousu" => $chave_j71_anousu];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

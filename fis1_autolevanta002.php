@@ -34,7 +34,7 @@ require_once(modification("classes/db_levanta_classe.php"));
 require_once(modification("classes/db_autolevanta_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 
 $clauto        = new cl_auto;
@@ -47,7 +47,7 @@ $db_botao    = true;
 global $y50_codauto;
 global $y39_codandam;
 
-if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alterar" ) {
+if ( (isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar" ) {
 
   try {
 
@@ -110,7 +110,7 @@ if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alt
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 
   if($clautolevanta->erro_status=="0"){
 

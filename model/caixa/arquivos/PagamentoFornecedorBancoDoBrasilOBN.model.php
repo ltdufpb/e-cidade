@@ -63,8 +63,8 @@ class PagamentoFornecedorBancoDoBrasilOBN extends PagamentoFornecedorTXTBase imp
     $oLayoutReader->processarArquivo(0, false, true);
     $oDadosRetorno            = new stdClass();
     $oDadosRetorno->header    = new stdClass();
-    $oDadosRetorno->registros = array();
-     $sNomeArqRetorno          = substr($this->sCaminhoArquivo,12);
+    $oDadosRetorno->registros = [];
+     $sNomeArqRetorno          = substr((string) $this->sCaminhoArquivo,12);
 
     /**
      * processa cada linha do arquivo, conforme o tipo de linha.
@@ -198,7 +198,7 @@ class PagamentoFornecedorBancoDoBrasilOBN extends PagamentoFornecedorTXTBase imp
         case '4' :
           
           $oRegistro->numeroautenticacao  = $oArquivo->numeroautenticacao;
-          $oRegistro->dadosretornodetalhe = array();
+          $oRegistro->dadosretornodetalhe = [];
           $oDadosRetornoDetalhe           = new stdClass();
           
           $oDadosRetornoDetalhe->e140_codmov                = (integer)$oArquivo->codob;

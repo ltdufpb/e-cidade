@@ -32,13 +32,13 @@ $clfolha = new cl_folha;
 $clfolha->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label('z01_nome');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $result=db_query($sql);
-if (pg_numrows($result)==0){
+if (pg_num_rows($result)==0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 }
 $head3=$rh34_descr;
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 $pdf = new PDF(); 
 $pdf->Open(); 
 $pdf->AliasNbPages(); 

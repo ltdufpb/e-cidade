@@ -52,25 +52,25 @@ switch ($oParam->exec) {
 
 		$iAbertura      = $oParam->iAbertura;
 		$sArquivo       = "tmp/abertura_{$iAbertura}.csv";
-		$aDepartamentos = array();
+		$aDepartamentos = [];
 
 		try{
 
 			$oAbertura            = new aberturaRegistroPreco($iAbertura);
 			$aItensAbertura       = $oAbertura->getItens();
       $aEstimativas         = $oAbertura->getEstimativas();
-      $aCodigoDepartamentos = array();
+      $aCodigoDepartamentos = [];
 
-      $aHeaderArquivo       = array(0 => "RESUMO DAS ESTIMATIVAS - ABERTURA REGISTRO DE PREÇO {$iAbertura} ");
+      $aHeaderArquivo       = [0 => "RESUMO DAS ESTIMATIVAS - ABERTURA REGISTRO DE PREÇO {$iAbertura} "];
 
 
 			//Define objeto standart para representar a abertura com suas estimativas
 			$oAbertura   						   						= new stdClass();
-			$oAbertura->aItens				 						= array();
-			$oAbertura->aDepartamentosEstimativas = array();
+			$oAbertura->aItens				 						= [];
+			$oAbertura->aDepartamentosEstimativas = [];
 
       // Busca estimativas anuladas
-      $aIdsEstimativas = array();
+      $aIdsEstimativas = [];
 
       foreach ($aEstimativas as $oEstimativa) {
         $aIdsEstimativas[] = $oEstimativa->getCodigoSolicitacao();
@@ -88,7 +88,7 @@ switch ($oParam->exec) {
       ";
 
       $rsAnuladas = db_query($sSqlAnuladas);
-      $aEstimativasAnuladas = array();
+      $aEstimativasAnuladas = [];
 
       while ($row = pg_fetch_assoc($rsAnuladas)) {
         $aEstimativasAnuladas[$row['pc67_solicita']] = true;
@@ -116,8 +116,8 @@ switch ($oParam->exec) {
           if (empty($oAbertura->aItens[$sIndice])) {
 
             $oStdItemAbertura                  = new stdClass();
-            $oStdItemAbertura->sDescricao      = urldecode($oItemEstimativa->getDescricaoMaterial());
-            $oStdItemAbertura->aDepartamentos  = array();
+            $oStdItemAbertura->sDescricao      = urldecode((string) $oItemEstimativa->getDescricaoMaterial());
+            $oStdItemAbertura->aDepartamentos  = [];
             $oStdItemAbertura->iTotal          = 0;
             $oAbertura->aItens[$sIndice] =  $oStdItemAbertura;
           }
@@ -135,19 +135,19 @@ switch ($oParam->exec) {
 			$aDepartamentos['0'] = "";
 		  $aDepartamentos[]	   = "TOTAL";
 			ksort($aDepartamentos);
-			fputcsv($fArquivo,$aHeaderArquivo, ";");
-			fputcsv($fArquivo, $aDepartamentos, ";");
+			fputcsv($fArquivo,$aHeaderArquivo, ";", escape: '\\');
+			fputcsv($fArquivo, $aDepartamentos, ";", escape: '\\');
 
       foreach ($oAbertura->aItens as $oItem) {
 
         $sDescricao            = $oItem->sDescricao;
         $aQuantidades          = $oItem->aDepartamentos + $aCodigoDepartamentos;
-        $aLinha                = array();
+        $aLinha                = [];
         $aLinha[]              = $sDescricao;
         ksort($aQuantidades);
         $aLinha               += $aQuantidades;
         $aLinha[]              = $oItem->iTotal;
-        fputcsv($fArquivo, $aLinha, ";");
+        fputcsv($fArquivo, $aLinha, ";", escape: '\\');
       }
 			fclose($fArquivo);
 			$oRetorno->sArquivo = $sArquivo;
@@ -217,7 +217,7 @@ switch ($oParam->exec) {
       }
 
       $oSolicita->setLiberado($oParam->liberado);
-      $oSolicita->setResumo(utf8_decode($oParam->resumo));
+      $oSolicita->setResumo(mb_convert_encoding($oParam->resumo, 'ISO-8859-1'));
       $oSolicita->setDataInicio($oParam->datainicio);
       $oSolicita->setDataTermino($oParam->datatermino);
       $oSolicita->setCodigoAbertura($oParam->iAbertura);
@@ -353,7 +353,7 @@ switch ($oParam->exec) {
          }
        }
        db_fim_transacao(true);
-     } catch (Exception $eErro) {
+     } catch (Exception) {
        db_fim_transacao(true);
      }
      break;
@@ -367,10 +367,10 @@ switch ($oParam->exec) {
       $oItem     = $aItens[$oParam->iIndice];
       if (!$oItem->isAutomatico()) {
 
-        $oItem->setResumo(utf8_decode(urldecode($oParam->sResumo)));
-        $oItem->setJustificativa(utf8_decode(urldecode($oParam->sJustificativa)));
-        $oItem->setPagamento(utf8_decode(urldecode($oParam->sPgto)));
-        $oItem->setPrazos(utf8_decode(urldecode($oParam->sPrazo)));
+        $oItem->setResumo(mb_convert_encoding(urldecode((string) $oParam->sResumo), 'ISO-8859-1'));
+        $oItem->setJustificativa(mb_convert_encoding(urldecode((string) $oParam->sJustificativa), 'ISO-8859-1'));
+        $oItem->setPagamento(mb_convert_encoding(urldecode((string) $oParam->sPgto), 'ISO-8859-1'));
+        $oItem->setPrazos(mb_convert_encoding(urldecode((string) $oParam->sPrazo), 'ISO-8859-1'));
         $oItem->setUnidade($oParam->iUnidade);
         $oItem->setQuantidadeUnidade($oParam->nQuantUnidade);
         $aitens = $oSolicita->getItens();
@@ -513,7 +513,7 @@ switch ($oParam->exec) {
   	$aDados = false;
 
   	$oRetorno->detalhe = $oParam->detalhe;
-  	$adados  = array();
+  	$adados  = [];
   	if ($oParam->detalhe == 'estimativa') {
 
   		$oConsulta = new aberturaRegistroPreco($oParam->pc10_numero);
@@ -530,7 +530,7 @@ switch ($oParam->exec) {
   			$oEst->codigo        = $oEstimativa->getCodigoSolicitacao();
   			$oEst->emissao       = $oEstimativa->getDataSolicitacao();
   			$oEst->anulacao      = $oEstimativa->getDataAnulacao();
-  			$oEst->departamento  = $oEstimativa->getDepartamento() ."-". urlencode($oEstimativa->getDescricaoDepartamento());
+  			$oEst->departamento  = $oEstimativa->getDepartamento() ."-". urlencode((string) $oEstimativa->getDescricaoDepartamento());
   			$oInstituicao        = new Instituicao($oEstimativa->getCodigoInstituicao());
   			$oEst->sInstituicao  = $oInstituicao->getSequencial()."-".urlencode($oInstituicao->getDescricao());
   			$adados[]            = $oEst;
@@ -550,7 +550,7 @@ switch ($oParam->exec) {
         $oComp->datainicial      = $oCompilacao->getDataInicio();
         $oComp->datafinal        = $oCompilacao->getDataTermino();
         $oComp->datacancelamento = $oCompilacao->getDataAnulacao();
-        $oComp->departamento     = urlencode($oCompilacao->getDescricaoDepartamento());
+        $oComp->departamento     = urlencode((string) $oCompilacao->getDescricaoDepartamento());
         $oComp->processocompra   = $oCompilacao->getProcessodeCompras();
         $oComp->processamento    = urlencode($oComp->processocompra == null ? 'Não' : 'Sim');
 
@@ -576,7 +576,7 @@ switch ($oParam->exec) {
         $oItem->resumo         = $oItemAbertura->getResumo();
         $oItem->ordem          = $oItemAbertura->getOrdem();
         $oItem->valor_unitario = $oItemAbertura->getValorUnitario();
-        $oItem->unidade        = urlencode($oItemAbertura->getDadosUnidade()->m61_descr);//getUnidade();
+        $oItem->unidade        = urlencode((string) $oItemAbertura->getDadosUnidade()->m61_descr);//getUnidade();
         $adados[]             = $oItem;
       }
 
@@ -591,7 +591,7 @@ switch ($oParam->exec) {
         $oItem->codigo         = $oIt->getCodigoMaterial();
         $oItem->material       = $oIt->getDescricaoMaterial();
         $oItem->resumo         = $oIt->getResumo();
-        $oItem->unidade        = urlencode($oIt->getDadosUnidade()->m61_descr);//$oIt->getUnidade();
+        $oItem->unidade        = urlencode((string) $oIt->getDadosUnidade()->m61_descr);//$oIt->getUnidade();
         $oItem->quantidade     = $oIt->getQuantidade();
         $oQtdDisponiveis       = $oIt->getMovimentacao();
         $oItem->iQtdSaldo      = $oQtdDisponiveis->saldo;
@@ -615,7 +615,7 @@ switch ($oParam->exec) {
         $oItem->codigo        = $oIt->getCodigoMaterial();
         $oItem->material      = $oIt->getDescricaoMaterial();
         $oItem->resumo        = $oIt->getResumo();
-        $oItem->unidade       = urlencode($oIt->getDadosUnidade()->m61_descr);
+        $oItem->unidade       = urlencode((string) $oIt->getDadosUnidade()->m61_descr);
         $oItem->quantmax      = $oIt->getQuantidadeMaxima();
         $oItem->quantmin      = $oIt->getQuantidadeMinima();
         $oItem->valortotal    = $oIt->getValorTotal();

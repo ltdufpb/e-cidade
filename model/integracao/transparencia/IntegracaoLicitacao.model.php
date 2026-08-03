@@ -160,7 +160,7 @@ class IntegracaoLicitacao extends IntegracaoBase implements IItemIntegracao {
     $sWhere  = " l20_anousu >= {$this->iAnoInicioIntegracao} ";
     $sWhere .= " and exists(select 1 from liclicitem where l21_codliclicita = l20_codigo) ";
 
-    $aQueryesDocumentos = array();
+    $aQueryesDocumentos = [];
     $sCamposAta  = "null as id, l39_liclicita as licitacao_id,  l39_arquivo as documento, ";
     $sCamposAta .= "'{$sDiretorioLicitacaoes}/arquivo_1_'||l39_arquivo||'.dat' as nome_arquivo_importacao, ";
     $sCamposAta .= " l39_arqnome as nome,";
@@ -183,15 +183,15 @@ class IntegracaoLicitacao extends IntegracaoBase implements IItemIntegracao {
     /**
      * Documentos de licitação vinculados a eventos
      */
-    $aCamposEventos = array(
+    $aCamposEventos = [
       'null as id',
       'l46_liclicita as licitacao_id',
       'l47_arquivo as documento',
       "'{$sDiretorioLicitacaoes}/arquivo_'||l47_arquivo||'.dat' as nome_arquivo_importacao",
       'l47_nomearquivo as nome',
-    );
+    ];
 
-    $aTiposDocumentoAta = array(
+    $aTiposDocumentoAta = [
       DocumentoEventoLicitacao::ATA_JULGAMENTO_CREDENCIAMENTO,
       DocumentoEventoLicitacao::ATA_JULGAMENTO_RECURSOS,
       DocumentoEventoLicitacao::ATA_REGISTRO_PRECO,
@@ -201,20 +201,16 @@ class IntegracaoLicitacao extends IntegracaoBase implements IItemIntegracao {
       DocumentoEventoLicitacao::ATA_RDC,
       DocumentoEventoLicitacao::ATA_HABILITACAO_PROPOSTAS,
       DocumentoEventoLicitacao::ATA_HABILITACAO_PROPOSTAS_PROJETOS
-    );
-    $sTiposDocumentoAta = implode(', ', array_map(function($iTipo) {
-      return "'" . $iTipo . "'";
-    }, $aTiposDocumentoAta));
+    ];
+    $sTiposDocumentoAta = implode(', ', array_map(fn($iTipo) => "'" . $iTipo . "'", $aTiposDocumentoAta));
 
-    $aTiposDocumentoEdital = array(
+    $aTiposDocumentoEdital = [
       DocumentoEventoLicitacao::AVISO_ALTERACAO_EDITAL_ERRATA,
       DocumentoEventoLicitacao::EDITAL_PRE_QUALIFICACAO,
       DocumentoEventoLicitacao::EDITAL_ANEXOS,
       DocumentoEventoLicitacao::EDITAL_ANEXOS_OUTRO_ORGAO,
-    );
-    $sTiposDocumentoEdital = implode(', ', array_map(function($iTipo) {
-      return "'" . $iTipo . "'";
-    }, $aTiposDocumentoEdital));
+    ];
+    $sTiposDocumentoEdital = implode(', ', array_map(fn($iTipo) => "'" . $iTipo . "'", $aTiposDocumentoEdital));
 
     // Verifica se esta configurado a exportacao de outros tipos de arquivos enviados para o LICITACON
     $sqlOutros = $oDaoLicitacaoOutros->sql_query();
@@ -222,27 +218,25 @@ class IntegracaoLicitacao extends IntegracaoBase implements IItemIntegracao {
 
     // Se existir, monta adiciona os tipos na busca como tipo 4 - outros
     if ($rsOutros) {
-        $aTipoOutros      = array();
+        $aTipoOutros      = [];
         $quantidadeOutros = pg_num_rows($rsOutros);
         for ( $i=0; $i < $quantidadeOutros; $i++ ) {
             $outro = db_utils::fieldsMemory($rsOutros,$i);
             $aTipoOutros[] = $outro->l48_documento;
         }
         if (sizeof($aTipoOutros) > 0) {
-            $sTiposOutros = implode(', ', array_map(function($iTipo) {
-                return "'" . $iTipo . "'";
-            }, $aTipoOutros));
-            $sCamposEventos       = implode(', ', array_merge($aCamposEventos, array(self::DOCUMENTO_OUTROS. ' as tipo')));
+            $sTiposOutros = implode(', ', array_map(fn($iTipo) => "'" . $iTipo . "'", $aTipoOutros));
+            $sCamposEventos       = implode(', ', array_merge($aCamposEventos, [self::DOCUMENTO_OUTROS. ' as tipo']));
             $sWhereEventos        = "{$sWhere} and l47_tipodocumento in({$sTiposOutros})";
             $aQueryesDocumentos[] = $oDaoLicitacaoEventoDocumento->sql_query(null, $sCamposEventos, null, $sWhereEventos);
         }
     }
 
-    $sCamposEventos       = implode(', ', array_merge($aCamposEventos, array(self::DOCUMENTO_ATA. ' as tipo')));
+    $sCamposEventos       = implode(', ', array_merge($aCamposEventos, [self::DOCUMENTO_ATA. ' as tipo']));
     $sWhereEventos        = "{$sWhere} and l47_tipodocumento in({$sTiposDocumentoAta})";
     $aQueryesDocumentos[] = $oDaoLicitacaoEventoDocumento->sql_query(null, $sCamposEventos, null, $sWhereEventos);
 
-    $sCamposEventos       = implode(', ', array_merge($aCamposEventos, array(self::DOCUMENTO_EDITAL . ' as tipo')));
+    $sCamposEventos       = implode(', ', array_merge($aCamposEventos, [self::DOCUMENTO_EDITAL . ' as tipo']));
     $sWhereEventos        = "{$sWhere} and l47_tipodocumento in({$sTiposDocumentoEdital})";
     $aQueryesDocumentos[] = $oDaoLicitacaoEventoDocumento->sql_query(null, $sCamposEventos, null, $sWhereEventos);
 
@@ -257,7 +251,7 @@ class IntegracaoLicitacao extends IntegracaoBase implements IItemIntegracao {
       "licitacoes_documentos", "id", true, 500
     );
 
-    $aListaArquivos  = array();
+    $aListaArquivos  = [];
     for ($iDocumento = 0 ; $iDocumento < $iTotalDocumentos; $iDocumento++) {
 
       $oDocumento = db_utils::fieldsMemory($rsDocumentosLicitacao, $iDocumento);

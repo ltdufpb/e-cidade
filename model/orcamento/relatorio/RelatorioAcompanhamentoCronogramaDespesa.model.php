@@ -31,21 +31,6 @@
 class RelatorioAcompanhamentoCronogramaDespesa {
 
   /**
-   * @type cronogramaFinanceiro
-   */
-  private $oAcompanhamento;
-
-  /**
-   * @type array
-   */
-  private $aInstituicoes = array();
-
-  /**
-   * @type integer
-   */
-  private $iNivel;
-
-  /**
    * @type string
    */
   private $sNomeArquivo;
@@ -53,7 +38,7 @@ class RelatorioAcompanhamentoCronogramaDespesa {
   /**
    * @type LinhaRelatorioAcompanhamentoCronogramaDespesa[]
    */
-  private $aDespesas = array();
+  private $aDespesas = [];
 
   /**
    * @type File
@@ -65,11 +50,8 @@ class RelatorioAcompanhamentoCronogramaDespesa {
    * @param array                 $aInstituicoes
    * @param integer               $iNivel
    */
-  public function __construct(cronogramaFinanceiro $oAcompanhamento, array $aInstituicoes, $iNivel) {
+  public function __construct(private readonly cronogramaFinanceiro $oAcompanhamento, private readonly array $aInstituicoes, private $iNivel) {
 
-    $this->oAcompanhamento = $oAcompanhamento;
-    $this->aInstituicoes   = $aInstituicoes;
-    $this->iNivel          = $iNivel;
     $this->sNomeArquivo    = "AcompanhamentoCronogramaDespesa_{$this->oAcompanhamento->getPerspectiva()}.csv";
   }
 
@@ -80,7 +62,7 @@ class RelatorioAcompanhamentoCronogramaDespesa {
    */
   private function carregarInformacoes() {
 
-    $aInstituicoes = array();
+    $aInstituicoes = [];
     $this->oAcompanhamento->setInstituicoes($this->aInstituicoes);
     $aDespesas = $this->oAcompanhamento->getMetasDespesa($this->iNivel);
     foreach ($aDespesas as $iIndice => $oStdDadoDespesa) {
@@ -90,15 +72,15 @@ class RelatorioAcompanhamentoCronogramaDespesa {
       if ($this->iNivel != 9) {
 
         $oLinhaRelatorio->setCodigo($oStdDadoDespesa->codigo);
-        $oLinhaRelatorio->setDescricao(urldecode($oStdDadoDespesa->descricao));
+        $oLinhaRelatorio->setDescricao(urldecode((string) $oStdDadoDespesa->descricao));
       } else {
 
         $oLinhaRelatorio->setCodigoOrgao($oStdDadoDespesa->o58_orgao);
         $oLinhaRelatorio->setCodigoUnidade($oStdDadoDespesa->o58_unidade);
         $oLinhaRelatorio->setCodigoRecurso($oStdDadoDespesa->o58_codigo);
         $oLinhaRelatorio->setCodigoAnexo($oStdDadoDespesa->o58_localizadorgastos);
-        $oLinhaRelatorio->setDescricaoRecurso(urldecode($oStdDadoDespesa->o15_descr));
-        $oLinhaRelatorio->setDescricaoAnexo(urldecode($oStdDadoDespesa->o11_descricao));
+        $oLinhaRelatorio->setDescricaoRecurso(urldecode((string) $oStdDadoDespesa->o15_descr));
+        $oLinhaRelatorio->setDescricaoAnexo(urldecode((string) $oStdDadoDespesa->o11_descricao));
       }
 
       if ($this->iNivel == 2) {
@@ -145,7 +127,7 @@ class RelatorioAcompanhamentoCronogramaDespesa {
 
     foreach ($this->aDespesas as $oLinhaRelatorio) {
 
-      $aLinha   = array();
+      $aLinha   = [];
       $aLinha[] = $oLinhaRelatorio->getDescricaoLinha();
 
       foreach ($oLinhaRelatorio->getValoresDespesa() as $oValorDespesa) {
@@ -177,7 +159,7 @@ class RelatorioAcompanhamentoCronogramaDespesa {
    */
   private function criarCabecalhoArquivo($hArquivo) {
 
-    $aCabecalho = array(" ");
+    $aCabecalho = [" "];
     for ($iMes = 1; $iMes <= 12; $iMes++) {
       $sCabecalho = DBDate::getMesExtenso($iMes).";;;";
       if ($iMes != 1) {
@@ -194,7 +176,7 @@ class RelatorioAcompanhamentoCronogramaDespesa {
    */
   private function criarCabecalhoMeses($hArquivo) {
 
-    $aCabecalho = array("Descricao");
+    $aCabecalho = ["Descricao"];
     for ($iMes = 1; $iMes <= 12; $iMes++) {
       $sCabecalho = "Previsto;Comprometido;";
       if ($iMes != 1) {

@@ -123,27 +123,27 @@ class ServidorService
     {
 
         if (empty($dados)) {
-            return array();
+            return [];
         }
 
         foreach ($dados as $dado) {
-            $dado->periodo_de_gozo = array();
+            $dado->periodo_de_gozo = [];
             if (!empty($dado->data_inicio_gozo_1)) {
-                $dado->periodo_de_gozo[] = array(
+                $dado->periodo_de_gozo[] = [
                     'inicio' => $dado->data_inicio_gozo_1,
                     'termino' => $dado->data_termino_gozo_1,
                     'dias' => $dado->dias_gozados_1,
                     'mes' => $dado->mes_pagamento_1,
-                );
+                ];
             }
 
             if (!empty($dado->data_inicio_gozo_2)) {
-                $dado->periodo_de_gozo[] = array(
+                $dado->periodo_de_gozo[] = [
                     'inicio' => $dado->data_inicio_gozo_2,
                     'termino' => $dado->data_termino_gozo_2,
                     'dias' => $dado->dias_gozados_2,
                     'mes' => $dado->mes_pagamento_2,
-                );
+                ];
             }
 
             unset($dado->data_inicio_gozo_1);
@@ -196,10 +196,10 @@ class ServidorService
 
         $dataNoDia = new \DateTime();
 
-        $oNovoPeriodo = array(
+        $oNovoPeriodo = [
             'inicio' => $dataInicioPeriodo->modify('+1 days')->format("Y-m-d"),
             'termino' => $dataFimPeriodo->modify('+1 year')->format("Y-m-d")
-        );
+        ];
 
         if ($oNovoPeriodo["termino"] >= $dataNoDia) {
             return null;

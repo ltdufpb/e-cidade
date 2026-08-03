@@ -81,7 +81,7 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
    }
    $sql_record = $clpcmaterele->sql_record($clpcmaterele->sql_query(null,null,"o56_elemento,substr(o56_descr,1,30) as o56_descr","",$where_codmater));
    $numrows_materele = $clpcmaterele->numrows;
-   $dad_select = array();
+   $dad_select = [];
    for($i=0;$i<$numrows_materele;$i++){
      db_fieldsmemory($sql_record,$i);
      $dad_select[$o56_elemento] = $o56_descr;
@@ -235,7 +235,7 @@ if($pc13_quantmax==0 || ($pc13_valormax==0 && $pc11_vlrun>0)){
 	  if(isset($pc13_coddot) && $pc13_coddot && !isset($incluir) && !isset($alterar) && !isset($excluir)){
 	    $where_coddot = " and pc13_coddot<>$pc13_coddot";
 	  }
-	  $chavepri= array("pc13_anousu"=>$pc13_anousu,"pc13_coddot"=>@$pc13_coddot);
+	  $chavepri= ["pc13_anousu"=>$pc13_anousu,"pc13_coddot"=>@$pc13_coddot];
 	  $cliframe_alterar_excluir->chavepri= $chavepri;
 	  $cliframe_alterar_excluir->sql     = $clpcdotac->sql_query_descrdot(null,null,null,"pc13_codigo,pc13_coddot,o56_descr,pc13_anousu,pc13_quant,pc13_valor","pc13_codigo"," pc13_codigo =".@$pc13_codigo." and pc13_anousu=".@$pc13_anousu.$where_coddot);
 	  $cliframe_alterar_excluir->campos  = "pc13_codigo,pc13_coddot,o56_descr,pc13_anousu,pc13_quant,pc13_valor";

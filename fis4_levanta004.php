@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clrotulo = new rotulocampo;
 $clcriaabas     = new cl_criaabas;
 ?>
@@ -56,11 +56,11 @@ $clcriaabas     = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("levanta"=>"Levantamento","levvalor"=>"Valores","levusu"=>"Fiscais");//nome do iframe e o label    
-       $clcriaabas->title = array("levanta"=>"Levantamento","levvalor"=>"Levvalor","levusu"=>"Leveusu");//label do iframe e o label    
-       $clcriaabas->sizecampo= array("levanta"=>"18");
-       $clcriaabas->disabled= array("levvalor"=>"true","levusu"=>"true");    
-       $clcriaabas->src = array("levanta"=>"fis4_levanta014.php?tipo=$tipo&valor=$valor");  //nome do iframe e SRC  
+       $clcriaabas->identifica = ["levanta"=>"Levantamento","levvalor"=>"Valores","levusu"=>"Fiscais"];//nome do iframe e o label    
+       $clcriaabas->title = ["levanta"=>"Levantamento","levvalor"=>"Levvalor","levusu"=>"Leveusu"];//label do iframe e o label    
+       $clcriaabas->sizecampo= ["levanta"=>"18"];
+       $clcriaabas->disabled= ["levvalor"=>"true","levusu"=>"true"];    
+       $clcriaabas->src = ["levanta"=>"fis4_levanta014.php?tipo=$tipo&valor=$valor"];  //nome do iframe e SRC  
        $clcriaabas->cria_abas();    
      ?> 
      </td>

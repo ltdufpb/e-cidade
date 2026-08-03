@@ -83,7 +83,7 @@ final class ContribuinteRepository extends DataBaseRepository
 
         $ender = $object->j23_ender;
 
-        if (trim($object->j23_cxpostal) != "" && $object->j23_cxpostal > 0) {
+        if (trim((string) $object->j23_cxpostal) != "" && $object->j23_cxpostal > 0) {
             $ender = "CAIXA POSTAL: $j23_cxpostal";
         }
 
@@ -91,7 +91,7 @@ final class ContribuinteRepository extends DataBaseRepository
         $entregaNumero = $object->j23_numero;
         $entregaComplemento = $object->j23_compl;
 
-        if (trim($ender) == "") {
+        if (trim((string) $ender) == "") {
 
             $entregaLogradouro = $object->nomepri;
             $entregaNumero = $object->j39_numero;

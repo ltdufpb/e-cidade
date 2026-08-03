@@ -81,16 +81,16 @@ $mesFolha = DBPessoal::getMesFolha();
                     <td nowrap colspan="2">
                         <?php
                         db_input("folhaselecion", 3, 0, true, 'hidden', 3);
-                        $arr_pontosgerfs_inicial = array();
-                        $arr_pontosgerfs_final = array();
-                        $arr_pontos = array(
+                        $arr_pontosgerfs_inicial = [];
+                        $arr_pontosgerfs_final = [];
+                        $arr_pontos = [
                             "0" => "Salário",
                             "1" => "Adiantamento",
                             "2" => "Férias",
                             "3" => "Rescisão",
                             "4" => "Saldo do 13o",
                             "5" => "Complementar"
-                        );
+                        ];
                         if (isset($objeto1)) {
                             foreach ($objeto1 as $index) {
                                 $arr_pontosgerfs_inicial[$index] = $arr_pontos[$index];
@@ -112,7 +112,7 @@ $mesFolha = DBPessoal::getMesFolha();
                     </td>
                     <td>
                         <?php
-                        $arr_tipo = array("s" => "Sim", "n" => "Não");
+                        $arr_tipo = ["s" => "Sim", "n" => "Não"];
                         db_select('totaliza', $arr_tipo, true, 4);
                         ?>
                     </td>

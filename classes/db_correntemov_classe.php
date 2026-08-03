@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE correntemov
 class cl_correntemov { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k12_idmov = 0; 
-   var $k12_idautent = 0; 
-   var $k12_dtmov_dia = null; 
-   var $k12_dtmov_mes = null; 
-   var $k12_dtmov_ano = null; 
-   var $k12_dtmov = null; 
-   var $k12_horamov = null; 
-   var $k12_valormov = 0; 
-   var $k12_tipomov = 0; 
-   var $k12_obsmov = null; 
+   public $k12_idmov = 0; 
+   public $k12_idautent = 0; 
+   public $k12_dtmov_dia = null; 
+   public $k12_dtmov_mes = null; 
+   public $k12_dtmov_ano = null; 
+   public $k12_dtmov = null; 
+   public $k12_horamov = null; 
+   public $k12_valormov = 0; 
+   public $k12_tipomov = 0; 
+   public $k12_obsmov = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k12_idmov = int4 = Sequência 
                  k12_idautent = int4 = Autenticadora 
                  k12_dtmov = date = Data da Movimentação 
@@ -63,10 +63,10 @@ class cl_correntemov {
                  k12_obsmov = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_correntemov() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("correntemov"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_correntemov {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k12_idmov = pg_result($result,0,0); 
+       $this->k12_idmov = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from correntemov_k12_idmov_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k12_idmov)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k12_idmov)){
          $this->erro_sql = " Campo k12_idmov maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_correntemov {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Movimentação Interna ($this->k12_idmov) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Movimentação Interna já Cadastrado";
@@ -232,16 +232,16 @@ class cl_correntemov {
      $resaco = $this->sql_record($this->sql_query_file($this->k12_idmov));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4691,'$this->k12_idmov','I')");
-       $resac = db_query("insert into db_acount values($acount,620,4691,'','".AddSlashes(pg_result($resaco,0,'k12_idmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,620,4692,'','".AddSlashes(pg_result($resaco,0,'k12_idautent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,620,4695,'','".AddSlashes(pg_result($resaco,0,'k12_dtmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,620,4696,'','".AddSlashes(pg_result($resaco,0,'k12_horamov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,620,4697,'','".AddSlashes(pg_result($resaco,0,'k12_valormov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,620,4698,'','".AddSlashes(pg_result($resaco,0,'k12_tipomov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,620,4699,'','".AddSlashes(pg_result($resaco,0,'k12_obsmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,620,4691,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_idmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,620,4692,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_idautent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,620,4695,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_dtmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,620,4696,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_horamov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,620,4697,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_valormov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,620,4698,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_tipomov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,620,4699,'','".AddSlashes(pg_fetch_result($resaco,0,'k12_obsmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,13 +250,13 @@ class cl_correntemov {
       $this->atualizacampos();
      $sql = " update correntemov set ";
      $virgula = "";
-     if(trim($this->k12_idmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_idmov"])){ 
-        if(trim($this->k12_idmov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_idmov"])){ 
+     if(trim((string) $this->k12_idmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_idmov"])){ 
+        if(trim((string) $this->k12_idmov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_idmov"])){ 
            $this->k12_idmov = "0" ; 
         } 
        $sql  .= $virgula." k12_idmov = $this->k12_idmov ";
        $virgula = ",";
-       if(trim($this->k12_idmov) == null ){ 
+       if(trim((string) $this->k12_idmov) == null ){ 
          $this->erro_sql = " Campo Sequência nao Informado.";
          $this->erro_campo = "k12_idmov";
          $this->erro_banco = "";
@@ -266,13 +266,13 @@ class cl_correntemov {
          return false;
        }
      }
-     if(trim($this->k12_idautent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_idautent"])){ 
-        if(trim($this->k12_idautent)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_idautent"])){ 
+     if(trim((string) $this->k12_idautent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_idautent"])){ 
+        if(trim((string) $this->k12_idautent)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_idautent"])){ 
            $this->k12_idautent = "0" ; 
         } 
        $sql  .= $virgula." k12_idautent = $this->k12_idautent ";
        $virgula = ",";
-       if(trim($this->k12_idautent) == null ){ 
+       if(trim((string) $this->k12_idautent) == null ){ 
          $this->erro_sql = " Campo Autenticadora nao Informado.";
          $this->erro_campo = "k12_idautent";
          $this->erro_banco = "";
@@ -282,10 +282,10 @@ class cl_correntemov {
          return false;
        }
      }
-     if(trim($this->k12_dtmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_dtmov_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_dtmov_dia"] !="") ){ 
+     if(trim((string) $this->k12_dtmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_dtmov_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k12_dtmov_dia"] !="") ){ 
        $sql  .= $virgula." k12_dtmov = '$this->k12_dtmov' ";
        $virgula = ",";
-       if(trim($this->k12_dtmov) == null ){ 
+       if(trim((string) $this->k12_dtmov) == null ){ 
          $this->erro_sql = " Campo Data da Movimentação nao Informado.";
          $this->erro_campo = "k12_dtmov_dia";
          $this->erro_banco = "";
@@ -298,7 +298,7 @@ class cl_correntemov {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k12_dtmov_dia"])){ 
          $sql  .= $virgula." k12_dtmov = null ";
          $virgula = ",";
-         if(trim($this->k12_dtmov) == null ){ 
+         if(trim((string) $this->k12_dtmov) == null ){ 
            $this->erro_sql = " Campo Data da Movimentação nao Informado.";
            $this->erro_campo = "k12_dtmov_dia";
            $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_correntemov {
          }
        }
      }
-     if(trim($this->k12_horamov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_horamov"])){ 
+     if(trim((string) $this->k12_horamov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_horamov"])){ 
        $sql  .= $virgula." k12_horamov = '$this->k12_horamov' ";
        $virgula = ",";
-       if(trim($this->k12_horamov) == null ){ 
+       if(trim((string) $this->k12_horamov) == null ){ 
          $this->erro_sql = " Campo Hora da Movimentação nao Informado.";
          $this->erro_campo = "k12_horamov";
          $this->erro_banco = "";
@@ -322,13 +322,13 @@ class cl_correntemov {
          return false;
        }
      }
-     if(trim($this->k12_valormov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_valormov"])){ 
-        if(trim($this->k12_valormov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_valormov"])){ 
+     if(trim((string) $this->k12_valormov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_valormov"])){ 
+        if(trim((string) $this->k12_valormov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_valormov"])){ 
            $this->k12_valormov = "0" ; 
         } 
        $sql  .= $virgula." k12_valormov = $this->k12_valormov ";
        $virgula = ",";
-       if(trim($this->k12_valormov) == null ){ 
+       if(trim((string) $this->k12_valormov) == null ){ 
          $this->erro_sql = " Campo Valor da Movimentação nao Informado.";
          $this->erro_campo = "k12_valormov";
          $this->erro_banco = "";
@@ -338,13 +338,13 @@ class cl_correntemov {
          return false;
        }
      }
-     if(trim($this->k12_tipomov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_tipomov"])){ 
-        if(trim($this->k12_tipomov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_tipomov"])){ 
+     if(trim((string) $this->k12_tipomov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_tipomov"])){ 
+        if(trim((string) $this->k12_tipomov)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k12_tipomov"])){ 
            $this->k12_tipomov = "0" ; 
         } 
        $sql  .= $virgula." k12_tipomov = $this->k12_tipomov ";
        $virgula = ",";
-       if(trim($this->k12_tipomov) == null ){ 
+       if(trim((string) $this->k12_tipomov) == null ){ 
          $this->erro_sql = " Campo Tipo de Movimentação nao Informado.";
          $this->erro_campo = "k12_tipomov";
          $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_correntemov {
          return false;
        }
      }
-     if(trim($this->k12_obsmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_obsmov"])){ 
+     if(trim((string) $this->k12_obsmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k12_obsmov"])){ 
        $sql  .= $virgula." k12_obsmov = '$this->k12_obsmov' ";
        $virgula = ",";
-       if(trim($this->k12_obsmov) == null ){ 
+       if(trim((string) $this->k12_obsmov) == null ){ 
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "k12_obsmov";
          $this->erro_banco = "";
@@ -375,23 +375,23 @@ class cl_correntemov {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4691,'$this->k12_idmov','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_idmov"]))
-           $resac = db_query("insert into db_acount values($acount,620,4691,'".AddSlashes(pg_result($resaco,$conresaco,'k12_idmov'))."','$this->k12_idmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,620,4691,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_idmov'))."','$this->k12_idmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_idautent"]))
-           $resac = db_query("insert into db_acount values($acount,620,4692,'".AddSlashes(pg_result($resaco,$conresaco,'k12_idautent'))."','$this->k12_idautent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,620,4692,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_idautent'))."','$this->k12_idautent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_dtmov"]))
-           $resac = db_query("insert into db_acount values($acount,620,4695,'".AddSlashes(pg_result($resaco,$conresaco,'k12_dtmov'))."','$this->k12_dtmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,620,4695,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_dtmov'))."','$this->k12_dtmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_horamov"]))
-           $resac = db_query("insert into db_acount values($acount,620,4696,'".AddSlashes(pg_result($resaco,$conresaco,'k12_horamov'))."','$this->k12_horamov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,620,4696,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_horamov'))."','$this->k12_horamov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_valormov"]))
-           $resac = db_query("insert into db_acount values($acount,620,4697,'".AddSlashes(pg_result($resaco,$conresaco,'k12_valormov'))."','$this->k12_valormov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,620,4697,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_valormov'))."','$this->k12_valormov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_tipomov"]))
-           $resac = db_query("insert into db_acount values($acount,620,4698,'".AddSlashes(pg_result($resaco,$conresaco,'k12_tipomov'))."','$this->k12_tipomov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,620,4698,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_tipomov'))."','$this->k12_tipomov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k12_obsmov"]))
-           $resac = db_query("insert into db_acount values($acount,620,4699,'".AddSlashes(pg_result($resaco,$conresaco,'k12_obsmov'))."','$this->k12_obsmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,620,4699,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k12_obsmov'))."','$this->k12_obsmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -436,16 +436,16 @@ class cl_correntemov {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4691,'$k12_idmov','E')");
-         $resac = db_query("insert into db_acount values($acount,620,4691,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_idmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,620,4692,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_idautent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,620,4695,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_dtmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,620,4696,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_horamov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,620,4697,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_valormov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,620,4698,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_tipomov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,620,4699,'','".AddSlashes(pg_result($resaco,$iresaco,'k12_obsmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,620,4691,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_idmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,620,4692,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_idautent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,620,4695,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_dtmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,620,4696,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_horamov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,620,4697,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_valormov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,620,4698,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_tipomov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,620,4699,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k12_obsmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from correntemov
@@ -505,7 +505,7 @@ class cl_correntemov {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:correntemov";
@@ -519,7 +519,7 @@ class cl_correntemov {
    function sql_query ( $k12_idmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -542,7 +542,7 @@ class cl_correntemov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -554,7 +554,7 @@ class cl_correntemov {
    function sql_query_file ( $k12_idmov=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -577,7 +577,7 @@ class cl_correntemov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

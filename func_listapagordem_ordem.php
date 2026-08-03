@@ -33,8 +33,8 @@ include(modification("classes/db_empelemento_classe.php"));
 include(modification("classes/db_pagordemele_classe.php"));
 include(modification("classes/db_pagordem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clpagordemele = new cl_pagordemele;
 $clpagordem = new cl_pagordem;
@@ -75,11 +75,11 @@ $clrotulo->label("o56_elemento");
 	    db_fieldsmemory($result,$i);
                  
 	      $e="e53_vlrpag_$o56_codele";
-	      $$e = number_format($e53_vlrpag,"2",".","");		       
+	      ${$e} = number_format($e53_vlrpag,"2",".","");		       
 	      $e="e53_vlranu_$o56_codele";
-	      $$e = number_format($e53_vlranu,"2",".","");		       
+	      ${$e} = number_format($e53_vlranu,"2",".","");		       
 	      $e="e53_valor_$o56_codele";
-	      $$e = number_format($e53_valor,"2",".","");		       
+	      ${$e} = number_format($e53_valor,"2",".","");		       
 
 	    echo "<tr>	    
    	            <td align='center'><small>$o56_elemento </small></td>

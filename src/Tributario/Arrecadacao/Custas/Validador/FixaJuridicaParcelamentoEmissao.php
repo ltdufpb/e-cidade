@@ -31,16 +31,10 @@ use ECidade\Tributario\Arrecadacao\Custas\Interfaces;
 use ECidade\Tributario\Divida\Termo\Termo;
 use ECidade\Tributario\Juridico\ProcessoForo\ProcessoForo;
 
-final class FixaJuridicaParcelamentoEmissao implements Interfaces\Validador
+final readonly class FixaJuridicaParcelamentoEmissao implements Interfaces\Validador
 {
-    private $termo;
-
-    private $processoForo;
-
-    public function __construct(Termo $termo, ProcessoForo $processoForo)
+    public function __construct(private Termo $termo, private ProcessoForo $processoForo)
     {
-        $this->termo = $termo;
-        $this->processoForo = $processoForo;
     }
 
     public function processarValidacao()

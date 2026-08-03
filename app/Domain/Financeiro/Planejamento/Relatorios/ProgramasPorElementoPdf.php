@@ -45,6 +45,7 @@ class ProgramasPorElementoPdf extends Pdf
      */
     private $wTotalizadores;
 
+    #[\Override]
     public function setDados(array $dados)
     {
         parent::setDados($dados);
@@ -173,9 +174,7 @@ class ProgramasPorElementoPdf extends Pdf
         }
 
         foreach ($this->exercicios as $exercicio) {
-            $valor = collect($elemento->valores)->filter(function ($valor) use ($exercicio) {
-                return $valor->ano == $exercicio;
-            })->shift();
+            $valor = collect($elemento->valores)->filter(fn($valor) => $valor->ano == $exercicio)->shift();
 
             $valorApresentar = 0;
             if (!empty($valor)) {

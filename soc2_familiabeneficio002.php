@@ -42,7 +42,7 @@ db_app::import("Avaliacao");
 db_app::import("AvaliacaoPergunta");
 
 $oGet   = db_utils::postMemory($_GET);
-$aWhere = array();
+$aWhere = [];
 
 /**
  * Verificação dos filtros
@@ -75,7 +75,7 @@ if ($oDaoBeneficio->numrows == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não foram encontrados registros.');
 }
 
-$aDadosFamilia = array();
+$aDadosFamilia = [];
 for ($i = 0; $i < $oDaoBeneficio->numrows; $i++) {
 	
 	$oDados             = new stdClass();

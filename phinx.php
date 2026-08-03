@@ -45,7 +45,7 @@ if (function_exists('db_getsession') && isset($_SESSION['DB_servidor'])) {
     $port = db_getsession("DB_porta");
 }
 
-$config['environments'][$environment] = array(
+$config['environments'][$environment] = [
     'adapter' => 'pgsql',
     'host' => $host,
     'name' => $name,
@@ -53,6 +53,6 @@ $config['environments'][$environment] = array(
     'pass' => $pass,
     'port' => $port,
     'charset' => 'latin1'
-);
+];
 
 return $config;

@@ -36,7 +36,7 @@ include(modification("classes/db_db_versaousu_classe.php"));
 $cldb_versao = new cl_db_versao;
 $cldb_versaocpd = new cl_db_versaocpd;
 $cldb_versaousu = new cl_db_versaousu;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){

@@ -68,7 +68,7 @@ if ($_POST) {
   
   $oFile  = $_FILES['arquivo_importacao'];
   
-  if ($oFile['type'] == "text/csv" || strtolower(substr($oFile["name"],-3)) == "csv") {
+  if ($oFile['type'] == "text/csv" || strtolower(substr((string) $oFile["name"],-3)) == "csv") {
   
     $instit  = db_getsession("DB_instit");
     $login   = db_getsession("DB_id_usuario");
@@ -147,7 +147,7 @@ echo "555";
               $sSqlRhPessoalMov .= " WHERE rh02_anousu = {$ano} AND rh02_mesusu = {$mes} AND rh02_regist = {$oAtestado->matricula}";
               
               $rsRhPessoalMov = db_query($sSqlRhPessoalMov);   
-              if(pg_numrows($rsRhPessoalMov) == 0){
+              if(pg_num_rows($rsRhPessoalMov) == 0){
               	echo "Matricula $oAtestado->matricula não encontrada no cadastro de servidores. Registro não processado. <br>  $sSqlRhPessoalMov  <br>";exit;
               	continue;
               }
@@ -225,7 +225,7 @@ echo "333 -->  ".$oAssenta->query_sql."      ";
       $rsPontoFs   = $oPontoFs->sql_record($sSqlPontoFs);
       
       if ($rsPontoFs) {       
-        
+
         //continue;
         
       } else {        

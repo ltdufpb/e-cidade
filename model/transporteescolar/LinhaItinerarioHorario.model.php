@@ -59,7 +59,7 @@ class LinhaItinerarioHorario {
    */
   protected $oLinhaItinerario;
 
-  protected $aVeiculosTransporte = array();
+  protected $aVeiculosTransporte = [];
 
   /**
    * Tipo do itinerario

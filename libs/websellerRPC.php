@@ -61,7 +61,7 @@ if($objParam->exec == 'getvalor'){
    $sql = $classe->sql_query("",$objParam->campo,"",$where);
    $result = $classe->sql_record($sql);
    if($classe->numrows>0){
-   	 $objRetorno->valor = pg_result($result,0,0);
+   	 $objRetorno->valor = pg_fetch_result($result,0,0);
    }else{
    	 $objRetorno->valor = "Chave (".$objParam->valor.") Não encontrada.";
    }

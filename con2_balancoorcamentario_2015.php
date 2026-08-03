@@ -45,7 +45,7 @@ $iCodigoPeriodo           = $oGet->periodo;
 $iCodigoRelatorio         = $oGet->codrel;
 $sListaInstituicoes       = $oGet->db_selinstit;
 $oBalancoOrcamentarioRepo = BalancoOrcamentarioRepository::getInstance();
-$aQuadros = array();
+$aQuadros = [];
 
 try {
 

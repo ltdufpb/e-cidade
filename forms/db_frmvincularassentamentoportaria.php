@@ -36,7 +36,7 @@ $oDaoPortariaassinatura->rotulo->label('rh136_nome');
 $oDaoAssentamento->rotulo->label('h16_codigo');
 
 $db_opcao_nro_portaria = 3;
-if(trim($sEsconderNumeracaoPortaria) == '') {
+if(trim((string) $sEsconderNumeracaoPortaria) == '') {
   $db_opcao_nro_portaria = $db_opcao;
 }
 ?>
@@ -83,7 +83,7 @@ if(trim($sEsconderNumeracaoPortaria) == '') {
               </td>
               <td nowrap title="<?=@$Th31_dtportaria?>">
                 <?php
-                  if (!isset($h31_anousu) && trim(@$h31_anousu)==""){
+                  if (!isset($h31_anousu) && trim((string) @$h31_anousu)==""){
                        $h31_anousu = db_getsession('DB_anousu');
                   }
                   db_input('h31_anousu',4,$Ih31_anousu,true,'text',$db_opcao_nro_portaria," onChange='js_configuraNumeroAto();'")

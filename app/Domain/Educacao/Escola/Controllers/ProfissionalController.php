@@ -26,9 +26,7 @@ class ProfissionalController extends Controller
 
         $aVacinasProfissional = $vacinasProfissional->toArray();
 
-        usort($aVacinasProfissional, function ($a, $b) {
-            return strcmp($a['vacina']['ed178_descricao'], $b['vacina']['ed178_descricao']);
-        });
+        usort($aVacinasProfissional, fn($a, $b) => strcmp((string) $a['vacina']['ed178_descricao'], (string) $b['vacina']['ed178_descricao']));
 
         return new DBJsonResponse($aVacinasProfissional);
     }
@@ -51,12 +49,8 @@ class ProfissionalController extends Controller
         $dose = Dose::find($request->get('dose'));
 
         $vacinasProfissional = $profissional->vacinacao()->get()->filter(
-            function ($vacinacaoProfissional) use ($vacina, $dose) {
-                return (
-                    $vacinacaoProfissional->ed181_vacina == $vacina->ed178_codigo &&
-                    $vacinacaoProfissional->ed181_dose == $dose->ed180_codigo
-                );
-            }
+            fn($vacinacaoProfissional) => $vacinacaoProfissional->ed181_vacina == $vacina->ed178_codigo &&
+            $vacinacaoProfissional->ed181_dose == $dose->ed180_codigo
         );
 
         if ($vacinasProfissional->count() > 0) {
@@ -131,7 +125,7 @@ class ProfissionalController extends Controller
                                                 updateOrCreate(['ed183_id' => $parametros['ed183_id']], $parametros);
                 return new DBJsonResponse($profissional->ed183_id, 'Formação alterada com sucesso!');
             }
-        } catch (Exception $exception) {
+        } catch (Exception) {
             throw new Exception("Falha aso salvar formação do profisiional!");
         }
     }
@@ -147,7 +141,7 @@ class ProfissionalController extends Controller
         try {
             ProfissionalFormacaoSuperior::where('ed183_id', $request->get('ed183_id'))->delete();
             return new DBJsonResponse([], 'Formação excluída com sucesso!');
-        } catch (Exception $exception) {
+        } catch (Exception) {
             throw new Exception("Falha aso excluir formação do profisiional!");
         }
     }
@@ -208,7 +202,7 @@ class ProfissionalController extends Controller
             }
 
             db_query("end");
-        } catch (Exception $exception) {
+        } catch (Exception) {
             db_query("rollback");
             throw new Exception("Falha ao salvar Pós Graduação do profisional!");
         }
@@ -225,7 +219,7 @@ class ProfissionalController extends Controller
 
             db_query("end");
             return new DBJsonResponse([], 'Pós Graduação do profisiional excluida com sucesso!');
-        } catch (Exception $exception) {
+        } catch (Exception) {
             db_query("rollback");
             throw new Exception("Falha ao exluir Pós Graduação do profisiional!");
         }

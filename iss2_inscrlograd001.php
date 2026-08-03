@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptubase_classe.php"));
 include_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
 
@@ -61,10 +61,10 @@ $clcriaabas = new cl_criaabas;
 		<tr> 
 			<td>
 				<?php 
-					$clcriaabas->identifica     = array("aGeral"=>"Geral", "aLogradouro"=>"Logradouro");
-					$clcriaabas->title             = array("aGeral"=>"Geral", "aLogradouro"=>"Logradouro");
-					$clcriaabas->sizecampo  = array("aGeral"=>"25", "aLogradouro"=>"25" );
-					$clcriaabas->src              = array("aGeral"=>"iss2_inscrlograd_aba001.php", "aLogradouro"=>"iss2_inscrlograd_aba002.php");
+					$clcriaabas->identifica     = ["aGeral"=>"Geral", "aLogradouro"=>"Logradouro"];
+					$clcriaabas->title             = ["aGeral"=>"Geral", "aLogradouro"=>"Logradouro"];
+					$clcriaabas->sizecampo  = ["aGeral"=>"25", "aLogradouro"=>"25" ];
+					$clcriaabas->src              = ["aGeral"=>"iss2_inscrlograd_aba001.php", "aLogradouro"=>"iss2_inscrlograd_aba002.php"];
 					$clcriaabas->cria_abas();
 				?>
 			</td>

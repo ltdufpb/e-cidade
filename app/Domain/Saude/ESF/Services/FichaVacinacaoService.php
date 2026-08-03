@@ -30,8 +30,8 @@ class FichaVacinacaoService
                     'profissional' => $profissional->cgm->z01_nome,
                     'imunobiologico' => $vacina->imunobiologico->psf22_descricao,
                     'situacao' => !empty($self->getSituacoes($ficha)) ? $self->getSituacoes($ficha) : 'NÃO INFORMADO',
-                    'estrategia' => (new EstrategiaVacinacaoEnum($vacina->psf21_estrategia))->name(),
-                    'dose' => (new DoseEnum($vacina->psf21_dose))->name(),
+                    'estrategia' => new EstrategiaVacinacaoEnum($vacina->psf21_estrategia)->name(),
+                    'dose' => new DoseEnum($vacina->psf21_dose)->name(),
                     'lote' => $vacina->psf21_lote,
                     'fabricante' => $vacina->psf21_fabricante
                 ];
@@ -46,16 +46,16 @@ class FichaVacinacaoService
         $situacoes = [];
         
         if ($ficha->psf20_comunicante_hanseniase) {
-            $situacoes[] = (new SituacaoPacienteVacinacaoEnum(1))->name();
+            $situacoes[] = new SituacaoPacienteVacinacaoEnum(1)->name();
         }
         if ($ficha->psf20_gestante) {
-            $situacoes[] = (new SituacaoPacienteVacinacaoEnum(2))->name();
+            $situacoes[] = new SituacaoPacienteVacinacaoEnum(2)->name();
         }
         if ($ficha->psf20_puerpera) {
-            $situacoes[] = (new SituacaoPacienteVacinacaoEnum(3))->name();
+            $situacoes[] = new SituacaoPacienteVacinacaoEnum(3)->name();
         }
         if ($ficha->psf20_viajante) {
-            $situacoes[] = (new SituacaoPacienteVacinacaoEnum(4))->name();
+            $situacoes[] = new SituacaoPacienteVacinacaoEnum(4)->name();
         }
 
         return implode(', ', $situacoes);

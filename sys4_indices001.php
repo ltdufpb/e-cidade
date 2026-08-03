@@ -33,15 +33,15 @@ require_once modification('libs/db_usuariosonline.php');
 db_postmemory($_GET);
 db_postmemory($_POST);
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']), $queryString);
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
 }
 
-$tabela = isset($HTTP_POST_VARS["tabela"]) ? $HTTP_POST_VARS["tabela"] : $tabela;
+$tabela = $_POST["tabela"] ?? $tabela;
 $nomearq = db_query("select nomearq from db_sysarquivo where codarq = $tabela");
-$nomearq = pg_result($nomearq, 0, 0);
+$nomearq = pg_fetch_result($nomearq, 0, 0);
 
 ?>
 <!doctype html>
@@ -83,7 +83,7 @@ $nomearq = pg_result($nomearq, 0, 0);
     <tr>
         <td align="center" valign="top" bgcolor="#CCCCCC">
             <?php
-            if (!isset($HTTP_POST_VARS["b_campo_ind"]) && !isset($HTTP_POST_VARS["excluir"])) {
+            if (!isset($_POST["b_campo_ind"]) && !isset($_POST["excluir"])) {
                 if (isset($ind)) {
                     $result = db_query("select i.campounico,i.nomeind as nome_indice,c.nomecam as nome_campo
 			           from db_sysindices i
@@ -93,8 +93,8 @@ $nomearq = pg_result($nomearq, 0, 0);
 			           on c.codcam = ci.codcam
 			           where i.codind = $ind
 			           order by ci.sequen");
-                    $num_linhas = pg_numrows($result);
-                    $nome_ind = pg_result($result, 0, "nome_indice");
+                    $num_linhas = pg_num_rows($result);
+                    $nome_ind = pg_fetch_result($result, 0, "nome_indice");
                 } ?>
                 <form method="post" name="f_campo" onSubmit="return js_submeter(this)">
                     <fieldset style="width:500px">
@@ -122,7 +122,7 @@ $nomearq = pg_result($nomearq, 0, 0);
 
                 if (isset($ind)) {
                     for ($i = 0; $i < $num_linhas; $i++) {
-                        echo trim(pg_result($result, $i, "nome_campo")) . "\n";
+                        echo trim(pg_fetch_result($result, $i, "nome_campo")) . "\n";
                     }
                 } ?>
             </textarea>
@@ -137,8 +137,8 @@ $nomearq = pg_result($nomearq, 0, 0);
                                            value="unico"
                                         <?php
 
-                                        echo @pg_result($result, 0, "campounico") == "0" ||
-                                        @pg_result($result, 0, "campounico") == ""
+                                        echo @pg_fetch_result($result, 0, "campounico") == "0" ||
+                                        @pg_fetch_result($result, 0, "campounico") == ""
                                             ? ""
                                             : "checked"; ?>
                                     >
@@ -154,12 +154,12 @@ $nomearq = pg_result($nomearq, 0, 0);
                            onclick="location.href='sys3_campos001.php?<?= base64_encode("tabela=" . $GLOBALS["tabela"]) ?>'">
                     <input type="hidden" name="tabela" value="<?= @$tabela ?>">
                     <input type="hidden" name="ind"
-                           value="<?= @(isset($HTTP_POST_VARS["ind"]) ? $HTTP_POST_VARS["ind"] : $ind) ?>">
+                           value="<?= @($_POST["ind"] ?? $ind) ?>">
                 </form>
                 <?php
             } else {
-                if (!isset($HTTP_POST_VARS["excluir"])) {
-                    db_postmemory($HTTP_POST_VARS);
+                if (!isset($_POST["excluir"])) {
+                    db_postmemory($_POST);
                     if (isset($campounico)) {
                         $campounico = $campounico == "" ? "0" : "1";
                     } else {
@@ -173,15 +173,15 @@ $nomearq = pg_result($nomearq, 0, 0);
                         $result = db_query("select codind 
                            from db_sysindices 
                            where nomeind = '$nome_ind'") or die("Erro(97) selecionando db_sysindices");
-                        $ind = pg_result($result, 0, 0);
-                        $alt_ind = split("\r\n", $alt_ind);
+                        $ind = pg_fetch_result($result, 0, 0);
+                        $alt_ind = preg_split("#\r\n#m", (string) $alt_ind);
                         for ($i = 0; $i < sizeof($alt_ind) - 1; $i++) {
                             if ($alt_ind[$i] != "" && $alt_ind[$i] != " " && $alt_ind[$i] != "  ") {
                                 $alt_ind[$i] = trim(str_replace("#", "", $alt_ind[$i]));
                                 $alt_ind[$i] = trim(str_replace("#", "", $alt_ind[$i]));
                                 $result = db_query("select codcam from db_syscampo where nomecam = '$alt_ind[$i]'") or die("Erro(102) selecionando db_syscampo");
                                 $s = $i + 1;
-                                db_query("insert into db_syscadind values($ind," . pg_result(
+                                db_query("insert into db_syscadind values($ind," . pg_fetch_result(
                                     $result,
                                     0,
                                     "codcam"
@@ -194,7 +194,7 @@ $nomearq = pg_result($nomearq, 0, 0);
                         db_query("BEGIN");
                         db_query("update db_sysindices set nomeind = '$nome_ind',campounico = '$campounico' where codind = $ind") or die("Erro(111) atualizando db_sysindices");
                         db_query("delete from db_syscadind where codind = $ind") or die("Erro(112) excluindo db_syscadind");
-                        $alt_ind = split("\r\n", $alt_ind);
+                        $alt_ind = preg_split("#\r\n#m", (string) $alt_ind);
                         for ($i = 0; $i < sizeof($alt_ind) - 1; $i++) {
                             if ($alt_ind[$i] != "" && $alt_ind[$i] != " " && $alt_ind[$i] != "  ") {
                                 $result = db_query("
@@ -204,7 +204,7 @@ $nomearq = pg_result($nomearq, 0, 0);
                                 $s = $i + 1;
                                 $result = db_query($conn, "
 					insert into db_syscadind 
-					values($ind," . pg_result(
+					values($ind," . pg_fetch_result(
                                     $result,
                                     0,
                                     "codcam"
@@ -215,7 +215,7 @@ $nomearq = pg_result($nomearq, 0, 0);
                         db_redireciona("sys3_campos001.php?" . base64_encode("tabela=$tabela"));
                     }
                 } else {
-                    if (isset($HTTP_POST_VARS["excluir"])) {
+                    if (isset($_POST["excluir"])) {
                         db_query("BEGIN");
                         db_query("delete from db_syscadind	where codind = $ind") or die("Erro(131) excluindo db_syscadind");
                         db_query("delete from db_sysindices where codind = $ind") or die("Erro(132) excluindo db_sysindices");

@@ -213,7 +213,7 @@ class Empresa extends Base
   private function getInformacoesMatricula($iMatricula)
   {
     $oDaoInptuConstr = new \cl_iptuconstr();
-    $aCampos = array();
+    $aCampos = [];
 
     $aCampos[] = "j39_idcons as construcao";
     $aCampos[] = "j39_codigo as rua";

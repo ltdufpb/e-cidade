@@ -195,7 +195,7 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
         </td>
         <td>
           <?php
-            $aTipoIngresso = array( 1 => "Normal", 2 => "Classificado", 3 => "Reclassificado", 4 => "Avanço" );
+            $aTipoIngresso = [ 1 => "Normal", 2 => "Classificado", 3 => "Reclassificado", 4 => "Avanço" ];
             db_select( 'ed334_tipo', $aTipoIngresso, true, 1, "class = 'field-size3';");
           ?>
         </td>
@@ -305,7 +305,7 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
 
                   }
 
-                  if(trim($ed37_c_tipo) == "NOTA") {
+                  if(trim((string) $ed37_c_tipo) == "NOTA") {
 
                     if($resultedu == 'S') {
                       $aproveitamento = $oDados->ed72_i_valornota != "" ?
@@ -315,7 +315,7 @@ $ed60_d_datamatricula = $ed60_d_datamatricula_dia."/".$ed60_d_datamatricula_mes.
                                         number_format($oDados->ed72_i_valornota, 0) : "";
                     }
 
-                  } elseif (trim($ed37_c_tipo) == "NIVEL") {
+                  } elseif (trim((string) $ed37_c_tipo) == "NIVEL") {
                     $aproveitamento = $oDados->ed72_c_valorconceito;
                   } else {
                     $aproveitamento = "";

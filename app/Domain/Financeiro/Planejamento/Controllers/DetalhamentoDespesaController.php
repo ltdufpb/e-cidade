@@ -41,14 +41,8 @@ use Illuminate\Http\Request;
  */
 class DetalhamentoDespesaController extends Controller
 {
-    /**
-     * @var DetalhamentoDespesaService
-     */
-    private $service;
-
-    public function __construct(DetalhamentoDespesaService $service)
+    public function __construct(private readonly DetalhamentoDespesaService $service)
     {
-        $this->service = $service;
     }
 
     /**

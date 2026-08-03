@@ -36,7 +36,7 @@ $clrotulo->label('DBtxt11');
 $clrotulo->label('k02_codigo');
 $clrotulo->label('k02_drecei');
 $clrotulo->label('o08_reduz');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -128,7 +128,7 @@ function js_emite() {
         <td><strong>Tipo</strong></td>
         <td>
           <?php 
-            $xx = array("g"=>"Geral","o"=>"Orçamentária","e"=>"Extra-Orçamentária");
+            $xx = ["g"=>"Geral","o"=>"Orçamentária","e"=>"Extra-Orçamentária"];
             db_select('tipo',$xx,true,4,"");
           ?>
         </td>

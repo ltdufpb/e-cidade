@@ -35,7 +35,7 @@ require_once(modification("classes/db_itbirural_classe.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clitbi      = new cl_itbi;
 $clitbirural = new cl_itbirural; 
@@ -163,9 +163,9 @@ function js_emite(){
                     </td>
                     <td colspan='3'>
                       <?php 
-                        $aTipo = array( 't'=>'Todos',
+                        $aTipo = [ 't'=>'Todos',
                                         'u'=>'Urbano',
-                                        'r'=>'Rural' );
+                                        'r'=>'Rural' ];
                           
                         db_select('tipo',$aTipo,true,2," style='width:275px;'"); 
                        ?>                    
@@ -193,10 +193,10 @@ function js_emite(){
                     </td>
                     <td colspan='3'>
                       <?php 
-                        $aSituacao = array( '1'=>'Todos',
+                        $aSituacao = [ '1'=>'Todos',
                                             '2'=>'Aberto',
                                             '3'=>'Pago',
-                                            '4'=>'Cancelado');
+                                            '4'=>'Cancelado'];
                         db_select('situacao',$aSituacao,true,2," style='width:275px;'"); 
                       ?>                    
                     </td>
@@ -210,12 +210,12 @@ function js_emite(){
                     </td>
                     <td>
                       <?php 
-                        $aOrdem = array( 'g'=>'Guia',
+                        $aOrdem = [ 'g'=>'Guia',
                                          'log'=>'Logradouro',
                                          's'=>'Setor',
                                          'q'=>'Quadra',
                                          'lot'=>'Lote'
-                                        );
+                                        ];
                         db_select('ordem',$aOrdem,true,2," style='width:275px;'"); 
                       ?>          
                     </td>

@@ -31,13 +31,13 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 $clcriaabas->scrolling="yes";
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 ?>
   <html>
@@ -61,9 +61,9 @@ $sizecp  = array();
   <tr> 
      <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Bairro","g2"=>"Rua","g3"=>"Setor","g4"=>"Quadra","g5"=>"Zona");
-       $clcriaabas->title = array("g1"=>"Selecionar Bairro ","g2"=>"Selecionar Rua ","g3"=>"Selecionar Setor ","g4"=>"Selecionar Quadra ","g5"=>"Selecionar Zona ");
-       $clcriaabas->src = array("g1"=>"cad2_posiptu002.php","g2"=>"cad2_posiptu003.php","g3"=>"cad2_posiptu004.php","g4"=>"cad2_posiptu005.php","g5"=>"cad2_posiptu006.php");
+       $clcriaabas->identifica = ["g1"=>"Bairro","g2"=>"Rua","g3"=>"Setor","g4"=>"Quadra","g5"=>"Zona"];
+       $clcriaabas->title = ["g1"=>"Selecionar Bairro ","g2"=>"Selecionar Rua ","g3"=>"Selecionar Setor ","g4"=>"Selecionar Quadra ","g5"=>"Selecionar Zona "];
+       $clcriaabas->src = ["g1"=>"cad2_posiptu002.php","g2"=>"cad2_posiptu003.php","g3"=>"cad2_posiptu004.php","g4"=>"cad2_posiptu005.php","g5"=>"cad2_posiptu006.php"];
        $clcriaabas->cria_abas();
      ?> 
      </td>

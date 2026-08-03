@@ -37,13 +37,13 @@ include(modification("classes/db_orcsuplemtipo_classe.php"));
 $clcriaabas      = new cl_criaabas;
 $clorcsuplemtipo = new cl_orcsuplemtipo;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 ?>
 <html>
@@ -68,10 +68,10 @@ $sizecp  = array();
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-    $clcriaabas->identifica = array("relatorio"=>"Relatório","filtro"=>"Filtro");
-    $clcriaabas->title      = array("relatorio"=>"Relatório","filtro"=>"Filtros");
-    $clcriaabas->src  = array("relatorio"=>"orc2_reldespesas011.php","filtro"=>"func_selorcdotacao_aba.php");
-    $clcriaabas->sizecampo= array("relatorio"=>"23","filtro"=>"15");
+    $clcriaabas->identifica = ["relatorio"=>"Relatório","filtro"=>"Filtro"];
+    $clcriaabas->title      = ["relatorio"=>"Relatório","filtro"=>"Filtros"];
+    $clcriaabas->src  = ["relatorio"=>"orc2_reldespesas011.php","filtro"=>"func_selorcdotacao_aba.php"];
+    $clcriaabas->sizecampo= ["relatorio"=>"23","filtro"=>"15"];
     $clcriaabas->cria_abas();    
     ?>
     </center>

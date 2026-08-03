@@ -29,29 +29,29 @@ require_once(modification('model/PadArquivoEscritor.model.php'));
 require_once(modification('dbforms/db_layouttxt.php'));
 
 class PadArquivoEscritorTXT extends PadArquivoEscritor {
-	
-  protected $aCacheLinhas = array();
+
+  protected $aCacheLinhas = [];
 	/**
 	 * Transforma os dados passados para TXT
 	 * @param iPadArquivoTXTBase $oArquivo
 	 * @return caminho do arquivo
 	 */
 	public function  criarArquivo(iPadArquivoTXTBase $oArquivo) {
-		
+
 		/**
 		 * Instância dos objetos que serão utilizados para
 		 * escrever o arquivo txt 
 		 */
-		
+
 		$iCodigoLayout    = $oArquivo->getCodigoLayout();
 		$sNomeArquivo     = $oArquivo->getNomeArquivo();
 		$oLayoutTxt       = new db_layouttxt($iCodigoLayout, "tmp/{$sNomeArquivo}.txt");
-		
+
 		/**
 		 * Busca as linhas do layout e as percorre buscando os seus
 		 * respectivos campos
 		 */
-				
+
 		foreach ($oArquivo->getDados() as $oLinha) {
 
 			/**
@@ -60,7 +60,7 @@ class PadArquivoEscritorTXT extends PadArquivoEscritor {
 			$aCamposLinha = $this->getCamposLinha($oLinha->codigolinha);
 			$oLayoutTxt->setCampoTipoLinha($aCamposLinha[0]->db51_tipolinha);				
 			foreach ($aCamposLinha as $oCampo) {
-				
+
 				if (isset($oLinha->{$oCampo->db52_nome})) {
 	        $oLayoutTxt->setCampo($oCampo->db52_nome, $oLinha->{$oCampo->db52_nome});
 				} else {
@@ -72,16 +72,16 @@ class PadArquivoEscritorTXT extends PadArquivoEscritor {
 		$oLayoutTxt->fechaArquivo();
 		return "tmp/{$sNomeArquivo}.txt";
 	} // fim do método
-	
+
 	/**
 	 * retorna os campos da linha 
 	 * @param integer $iCodigoLinha codigo da linha
 	 * @return array
 	 */
 	protected function getCamposLinha($iCodigoLinha) {
-	  
+
 	  if (!isset($this->aCacheLinhas[$iCodigoLinha])) {
-	    
+
 	    $oDaoLayoutCampos = db_utils::getDao('db_layoutcampos');
 	    $sWhereBuscaCamposLinha = " db52_layoutlinha = {$iCodigoLinha} ";
       $sSqlBuscaCamposLinha   = $oDaoLayoutCampos->sql_query(null, "*", null, $sWhereBuscaCamposLinha);

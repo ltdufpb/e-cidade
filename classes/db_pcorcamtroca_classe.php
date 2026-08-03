@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE pcorcamtroca
 class cl_pcorcamtroca { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc25_codtroca = 0; 
-   var $pc25_orcamitem = 0; 
-   var $pc25_motivo = null; 
-   var $pc25_forneant = 0; 
-   var $pc25_forneatu = 0; 
+   public $pc25_codtroca = 0; 
+   public $pc25_orcamitem = 0; 
+   public $pc25_motivo = null; 
+   public $pc25_forneant = 0; 
+   public $pc25_forneatu = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc25_codtroca = int4 = Código sequencial do registro de troca 
                  pc25_orcamitem = int4 = Código sequencial do item no orçamento 
                  pc25_motivo = text = Motivo da troca de pontuação 
@@ -56,10 +56,10 @@ class cl_pcorcamtroca {
                  pc25_forneatu = int8 = Fornecedor trocado após julgamento 
                  ";
    //funcao construtor da classe 
-   function cl_pcorcamtroca() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamtroca"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_pcorcamtroca {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc25_codtroca = pg_result($result,0,0); 
+       $this->pc25_codtroca = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pcorcamtroca_pc25_codtroca_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc25_codtroca)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc25_codtroca)){
          $this->erro_sql = " Campo pc25_codtroca maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_pcorcamtroca {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Troca de pontuação dos orçamentos ($this->pc25_codtroca) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Troca de pontuação dos orçamentos já Cadastrado";
@@ -194,14 +194,14 @@ class cl_pcorcamtroca {
      $resaco = $this->sql_record($this->sql_query_file($this->pc25_codtroca));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5521,'$this->pc25_codtroca','I')");
-       $resac = db_query("insert into db_acount values($acount,862,5521,'','".AddSlashes(pg_result($resaco,0,'pc25_codtroca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,862,5522,'','".AddSlashes(pg_result($resaco,0,'pc25_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,862,5523,'','".AddSlashes(pg_result($resaco,0,'pc25_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,862,10622,'','".AddSlashes(pg_result($resaco,0,'pc25_forneant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,862,10623,'','".AddSlashes(pg_result($resaco,0,'pc25_forneatu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,862,5521,'','".AddSlashes(pg_fetch_result($resaco,0,'pc25_codtroca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,862,5522,'','".AddSlashes(pg_fetch_result($resaco,0,'pc25_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,862,5523,'','".AddSlashes(pg_fetch_result($resaco,0,'pc25_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,862,10622,'','".AddSlashes(pg_fetch_result($resaco,0,'pc25_forneant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,862,10623,'','".AddSlashes(pg_fetch_result($resaco,0,'pc25_forneatu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_pcorcamtroca {
       $this->atualizacampos();
      $sql = " update pcorcamtroca set ";
      $virgula = "";
-     if(trim($this->pc25_codtroca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_codtroca"])){ 
+     if(trim((string) $this->pc25_codtroca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_codtroca"])){ 
        $sql  .= $virgula." pc25_codtroca = $this->pc25_codtroca ";
        $virgula = ",";
-       if(trim($this->pc25_codtroca) == null ){ 
+       if(trim((string) $this->pc25_codtroca) == null ){ 
          $this->erro_sql = " Campo Código sequencial do registro de troca nao Informado.";
          $this->erro_campo = "pc25_codtroca";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_pcorcamtroca {
          return false;
        }
      }
-     if(trim($this->pc25_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_orcamitem"])){ 
+     if(trim((string) $this->pc25_orcamitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_orcamitem"])){ 
        $sql  .= $virgula." pc25_orcamitem = $this->pc25_orcamitem ";
        $virgula = ",";
-       if(trim($this->pc25_orcamitem) == null ){ 
+       if(trim((string) $this->pc25_orcamitem) == null ){ 
          $this->erro_sql = " Campo Código sequencial do item no orçamento nao Informado.";
          $this->erro_campo = "pc25_orcamitem";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_pcorcamtroca {
          return false;
        }
      }
-     if(trim($this->pc25_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_motivo"])){ 
+     if(trim((string) $this->pc25_motivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_motivo"])){ 
        $sql  .= $virgula." pc25_motivo = '$this->pc25_motivo' ";
        $virgula = ",";
-       if(trim($this->pc25_motivo) == null ){ 
+       if(trim((string) $this->pc25_motivo) == null ){ 
          $this->erro_sql = " Campo Motivo da troca de pontuação nao Informado.";
          $this->erro_campo = "pc25_motivo";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_pcorcamtroca {
          return false;
        }
      }
-     if(trim($this->pc25_forneant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_forneant"])){ 
+     if(trim((string) $this->pc25_forneant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_forneant"])){ 
        $sql  .= $virgula." pc25_forneant = $this->pc25_forneant ";
        $virgula = ",";
-       if(trim($this->pc25_forneant) == null ){ 
+       if(trim((string) $this->pc25_forneant) == null ){ 
          $this->erro_sql = " Campo Fornecedor Julgado anteriormente nao Informado.";
          $this->erro_campo = "pc25_forneant";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_pcorcamtroca {
          return false;
        }
      }
-     if(trim($this->pc25_forneatu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_forneatu"])){ 
+     if(trim((string) $this->pc25_forneatu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc25_forneatu"])){ 
        $sql  .= $virgula." pc25_forneatu = $this->pc25_forneatu ";
        $virgula = ",";
-       if(trim($this->pc25_forneatu) == null ){ 
+       if(trim((string) $this->pc25_forneatu) == null ){ 
          $this->erro_sql = " Campo Fornecedor trocado após julgamento nao Informado.";
          $this->erro_campo = "pc25_forneatu";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_pcorcamtroca {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5521,'$this->pc25_codtroca','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc25_codtroca"]))
-           $resac = db_query("insert into db_acount values($acount,862,5521,'".AddSlashes(pg_result($resaco,$conresaco,'pc25_codtroca'))."','$this->pc25_codtroca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,862,5521,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc25_codtroca'))."','$this->pc25_codtroca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc25_orcamitem"]))
-           $resac = db_query("insert into db_acount values($acount,862,5522,'".AddSlashes(pg_result($resaco,$conresaco,'pc25_orcamitem'))."','$this->pc25_orcamitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,862,5522,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc25_orcamitem'))."','$this->pc25_orcamitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc25_motivo"]))
-           $resac = db_query("insert into db_acount values($acount,862,5523,'".AddSlashes(pg_result($resaco,$conresaco,'pc25_motivo'))."','$this->pc25_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,862,5523,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc25_motivo'))."','$this->pc25_motivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc25_forneant"]))
-           $resac = db_query("insert into db_acount values($acount,862,10622,'".AddSlashes(pg_result($resaco,$conresaco,'pc25_forneant'))."','$this->pc25_forneant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,862,10622,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc25_forneant'))."','$this->pc25_forneant',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc25_forneatu"]))
-           $resac = db_query("insert into db_acount values($acount,862,10623,'".AddSlashes(pg_result($resaco,$conresaco,'pc25_forneatu'))."','$this->pc25_forneatu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,862,10623,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc25_forneatu'))."','$this->pc25_forneatu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_pcorcamtroca {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5521,'$pc25_codtroca','E')");
-         $resac = db_query("insert into db_acount values($acount,862,5521,'','".AddSlashes(pg_result($resaco,$iresaco,'pc25_codtroca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,862,5522,'','".AddSlashes(pg_result($resaco,$iresaco,'pc25_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,862,5523,'','".AddSlashes(pg_result($resaco,$iresaco,'pc25_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,862,10622,'','".AddSlashes(pg_result($resaco,$iresaco,'pc25_forneant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,862,10623,'','".AddSlashes(pg_result($resaco,$iresaco,'pc25_forneatu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,862,5521,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc25_codtroca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,862,5522,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc25_orcamitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,862,5523,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc25_motivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,862,10622,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc25_forneant'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,862,10623,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc25_forneatu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pcorcamtroca
@@ -407,7 +407,7 @@ class cl_pcorcamtroca {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pcorcamtroca";
@@ -421,7 +421,7 @@ class cl_pcorcamtroca {
    function sql_query ( $pc25_codtroca=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_pcorcamtroca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -462,7 +462,7 @@ class cl_pcorcamtroca {
    function sql_query_file ( $pc25_codtroca=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -488,7 +488,7 @@ class cl_pcorcamtroca {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

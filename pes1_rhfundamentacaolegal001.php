@@ -6,7 +6,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_rhfundamentacaolegal_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoRhfundamentacaolegal = new cl_rhfundamentacaolegal;
 $db_opcao    = 1;
@@ -32,7 +32,7 @@ if (isset($incluir)) {
       $sPosScripts .= "document.form1.{$oDaoRhfundamentacaolegal->erro_campo}.focus();\n";
     }
   } else {
-    $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
+    $sPosScripts .= "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
   }
 }
 

@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_liclicita_classe.php"));
 include(modification("classes/db_liclicitem_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clliclicitem = new cl_liclicitem;
 $clliclicita  = new cl_liclicita;

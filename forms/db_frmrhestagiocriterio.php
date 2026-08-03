@@ -115,7 +115,7 @@ db_input('h52_pontos',10,$Ih52_pontos,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("h52_sequencial"=>@$h52_sequencial);
+	 $chavepri= ["h52_sequencial"=>@$h52_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhestagiocriterio->sql_query_file(null,"*","h52_sequencial","h52_rhestagio={$h52_rhestagio}");
 	 $cliframe_alterar_excluir->campos  ="h52_sequencial,h52_rhestagio,h52_descr,h52_pontos";

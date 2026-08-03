@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadvencdesc_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcadvencdesc = new cl_cadvencdesc;
 $clcadvencdesc->rotulo->label("q92_codigo");
@@ -104,10 +104,10 @@ $clcadvencdesc->rotulo->label("q92_descr");
           $sql = $clcadvencdesc->sql_query("",$campos,"q92_codigo","");
         }
         
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_q92_descr)) {
-          $repassa = array("chave_q92_codigo" => $chave_q92_codigo,
-                           "chave_q92_descr"  => $chave_q92_descr);
+          $repassa = ["chave_q92_codigo" => $chave_q92_codigo,
+                           "chave_q92_descr"  => $chave_q92_descr];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

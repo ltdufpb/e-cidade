@@ -84,8 +84,8 @@ $clorcsuplem = new cl_orcsuplem;
                         </td>
                         <td>
                             <?php
-                            $x = array('1' => 'PDF',
-                                '2' => 'DOC');
+                            $x = ['1' => 'PDF',
+                                '2' => 'DOC'];
                             db_select('iFormatoSaida', $x, true, $db_opcao, "");
                             ?>
 

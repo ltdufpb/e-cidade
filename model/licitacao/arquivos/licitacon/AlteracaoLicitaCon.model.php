@@ -42,7 +42,7 @@ class AlteracaoLicitaCon extends ArquivoLicitaCon
     /**
      * @var array
      */
-    private $aDadosArquivo = array();
+    private $aDadosArquivo = [];
 
     /**
      * AlteracaoLicitaCon constructor.
@@ -74,17 +74,17 @@ class AlteracaoLicitaCon extends ArquivoLicitaCon
         /**
          * Executa a busca de todos os acordos que tem como origem Licitação
          */
-        $aCampos = array(
+        $aCampos = [
             'DISTINCT ac16_numero AS numero_acordo',
             'ac16_anousu AS ano_acordo',
             'ac16_tipoinstrumento AS tipo_instrumento',
             'ac16_sequencial AS sequencial_acordo',
-        );
+        ];
 
-        $aWhere = array(
+        $aWhere = [
             "(ac58_acordo IS NULL OR ac58_data >= '{$this->oCabecalho->getDataGeracao()->getDate()}')",
             "ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()}",
-        );
+        ];
 
         $oDaoAcordo = new cl_acordo;
         $sSqlBuscaAcordos = $oDaoAcordo->sql_query_acordo_licitacao(implode(',', $aCampos), implode(' and ', $aWhere));
@@ -117,16 +117,16 @@ class AlteracaoLicitaCon extends ArquivoLicitaCon
             $oStdAcordo->tipo_instrumento = $this->oRegra->getTipoInstrumento($oStdAcordo->tipo_instrumento);
             $oStdAcordo->data_inicial = $oAcordo->getDataInicialVigenciaOriginal();
             $oStdAcordo->data_final = $oAcordo->getDataFinalVigenciaOriginal();
-            $oStdAcordo->posicoes = array();
+            $oStdAcordo->posicoes = [];
 
-            $aCamposPosicao = array(
+            $aCamposPosicao = [
                 'ac26_sequencial AS codigo_posicao',
                 'ac55_sequencial AS codigo_evento',
                 'ac26_acordoposicaotipo AS tipo_aditamento',
                 'ac26_tipooperacao AS tipo_operacao',
-            );
+            ];
 
-            $aWhere = array(
+            $aWhere = [
                 "ac26_acordo = {$oStdAcordo->sequencial_acordo} AND ac55_sequencial IS NOT NULL
                 GROUP BY
                     ac26_sequencial,
@@ -134,7 +134,7 @@ class AlteracaoLicitaCon extends ArquivoLicitaCon
                     ac26_tipooperacao,
                     ac55_sequencial
                 ORDER BY ac26_sequencial"
-            );
+            ];
             $oDaoAcordoPosicao = new cl_acordoposicao;
             $sSqlBuscaPosicao = $oDaoAcordoPosicao->sql_query_posicoes_licitacon(implode(', ', $aCamposPosicao),
                 implode(' and ', $aWhere));
@@ -151,7 +151,7 @@ class AlteracaoLicitaCon extends ArquivoLicitaCon
                  * Correção para pegar a posição de inclusão
                  */
                 if ($iRowEvento == 0) {
-                    $aWhere = array(
+                    $aWhere = [
                         "ac26_acordo = {$oStdAcordo->sequencial_acordo} AND ac26_acordoposicaotipo = 1
                         GROUP BY
                             ac26_sequencial,
@@ -160,7 +160,7 @@ class AlteracaoLicitaCon extends ArquivoLicitaCon
                             ac55_sequencial
                         ORDER BY ac26_sequencial
                         LIMIT 1"
-                    );
+                    ];
                     $sSqlBuscaInclusao = $oDaoAcordoPosicao->sql_query_posicoes_licitacon(implode(', ',
                         $aCamposPosicao), implode(' and ', $aWhere));
                     $rsBuscaInclusao = db_query($sSqlBuscaInclusao);

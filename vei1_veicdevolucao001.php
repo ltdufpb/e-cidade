@@ -95,7 +95,7 @@ if (isset($incluir)) {
          */
         $sSqlValidaDevolucao = $clveicdevolucao->sql_query_file(null, "ve61_codigo", null, "ve61_veicretirada = {$ve61_veicretirada}");
         $rsDevolucao = db_query($sSqlValidaDevolucao);
-        if (pg_numrows($rsDevolucao) > 0) {
+        if (pg_num_rows($rsDevolucao) > 0) {
             $iDevolucao = db_utils::fieldsMemory($rsDevolucao, 0)->ve61_codigo;
             throw new Exception("Encontrada devolução {$iDevolucao} cadastrada para esta retirada!");
         }

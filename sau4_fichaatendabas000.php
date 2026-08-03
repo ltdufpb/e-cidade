@@ -57,18 +57,18 @@ $db_opcao   = 1;
    <?php
    if( isset( $triagem ) && $triagem == "false" ) {
 
-     $clcriaabas->identifica  = array( "a1" => "Paciente", "a3" => "Procedimentos", "a4" => "Diagnóstico" );
-     $clcriaabas->sizecampo   = array( "a1" => "20", "a3" => "30", "a4" => "30" );
-     $clcriaabas->src         = array( "a1" => "sau4_fichaatendabas001.php?triagem=false", "a3" => "" );
-     $clcriaabas->disabled    = array( "a3" => "true");
+     $clcriaabas->identifica  = [ "a1" => "Paciente", "a3" => "Procedimentos", "a4" => "Diagnóstico" ];
+     $clcriaabas->sizecampo   = [ "a1" => "20", "a3" => "30", "a4" => "30" ];
+     $clcriaabas->src         = [ "a1" => "sau4_fichaatendabas001.php?triagem=false", "a3" => "" ];
+     $clcriaabas->disabled    = [ "a3" => "true"];
      $clcriaabas->cordisabled = "#9b9b9b";
      $clcriaabas->cria_abas();
    } else {
 
-     $clcriaabas->identifica  = array( "a1" => "Paciente", "a2" => "Triagem", "a3" => "Procedimentos", "a4" => "Diagnóstico" );
-     $clcriaabas->sizecampo   = array( "a1" => "20", "a2" => "30", "a3" => "30", "a4" => "30" );
-     $clcriaabas->src         = array( "a1" => "sau4_fichaatendabas001.php", "a2" => "", "a3" => "", "a4" => "" );
-     $clcriaabas->disabled    = array( "a2" => "true", "a3" => "true", "a4" => "true" );
+     $clcriaabas->identifica  = [ "a1" => "Paciente", "a2" => "Triagem", "a3" => "Procedimentos", "a4" => "Diagnóstico" ];
+     $clcriaabas->sizecampo   = [ "a1" => "20", "a2" => "30", "a3" => "30", "a4" => "30" ];
+     $clcriaabas->src         = [ "a1" => "sau4_fichaatendabas001.php", "a2" => "", "a3" => "", "a4" => "" ];
+     $clcriaabas->disabled    = [ "a2" => "true", "a3" => "true", "a4" => "true" ];
      $clcriaabas->cordisabled = "#9b9b9b";
      $clcriaabas->cria_abas();
    }

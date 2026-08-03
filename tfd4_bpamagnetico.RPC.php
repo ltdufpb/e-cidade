@@ -101,7 +101,7 @@ try {
   	      $oDados->dtInicio          = $oCompetencia->getPeriodoInicial()->convertTo(DBDate::DATA_PTBR);
   	      $oDados->dtFim             = $oCompetencia->getPeriodoFinal()->convertTo(DBDate::DATA_PTBR);
   	      $oDados->sDescricao        = urlencode($oCompetencia->getDescricao());
-  	      $oDados->sUsuario          = urlencode($oCompetencia->getUsuario()->getNome());
+  	      $oDados->sUsuario          = urlencode((string) $oCompetencia->getUsuario()->getNome());
   	      $oDados->lGerouArquivo     = $oDadosFechamento->gero_arquivo == 't';
   	      
   	      $oRetorno->aDados[] = $oDados;
@@ -166,11 +166,11 @@ try {
 	    $oDadosConfig = db_utils::fieldsMemory($rsDBConfig, 0);
 	    $oDadosSaude  = db_utils::fieldsMemory($rsSauConfig, 0);
 	    
-	    $oRetorno->sInstituicao = urlencode($oDadosConfig->nomeinst);
+	    $oRetorno->sInstituicao = urlencode((string) $oDadosConfig->nomeinst);
 	    $oRetorno->iCnpj        = $oDadosConfig->cnpj;
-	    $oRetorno->sBpaSigla    = urlencode($oDadosSaude->s103_c_bpasigla);
-	    $oRetorno->sBpaDestino  = urlencode($oDadosSaude->s103_c_bpasecrdestino);
-	    $oRetorno->sBpaIbge     = urlencode($oDadosSaude->s103_c_bpaibge);
+	    $oRetorno->sBpaSigla    = urlencode((string) $oDadosSaude->s103_c_bpasigla);
+	    $oRetorno->sBpaDestino  = urlencode((string) $oDadosSaude->s103_c_bpasecrdestino);
+	    $oRetorno->sBpaIbge     = urlencode((string) $oDadosSaude->s103_c_bpaibge);
 	    $oRetorno->iMesAtual    = date("n", db_getsession("DB_datausu"));
 	    
 	    break;
@@ -193,7 +193,7 @@ try {
 	     */
 	    if (!empty($oParam->sUps)) {
 	    
-	      foreach (explode(",", $oParam->sUps) as $iUnidade) {
+	      foreach (explode(",", (string) $oParam->sUps) as $iUnidade) {
 	        $oBPAMagnetico->adicionarUnidades(UnidadeProntoSocorroRepository::getUnidadeProntoSocorroByCodigo($iUnidade));
 	      }
 	    }
@@ -214,17 +214,7 @@ try {
 	    $oRetorno->sArquivoInconsistencia = urlencode($sArquivoInconsistencia);
 	    break;
   }
-} catch (ParameterException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = urlencode($oErro->getMessage());
-} catch (BusinessException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = urlencode($oErro->getMessage());
-} catch (DBException $oErro) {
+} catch (ParameterException|BusinessException|DBException $oErro) {
 
   db_fim_transacao(true);
   $oRetorno->status  = 2;

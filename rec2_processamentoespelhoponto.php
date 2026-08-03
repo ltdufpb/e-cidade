@@ -53,7 +53,7 @@ Registry::get('app.eventManager')->register('app.error', function ($event) {
 
         foreach ($trace->getSanitizedData() as $index => $trace) {
 
-            $args = array();
+            $args = [];
             if (!empty($trace['args'])) {
                 foreach ($trace['args'] as $arg) {
                     if (!is_scalar($arg)) $arg = print_r($arg, true);
@@ -63,26 +63,26 @@ Registry::get('app.eventManager')->register('app.error', function ($event) {
 
             $args = implode(', ', $args);
 
-            $trace = strtr($traceMask, array(
+            $trace = strtr($traceMask, [
               '{index}' => $index + 1,
-              '{file}' => isset($trace['file']) ? $trace['file'] : '',
-              '{line}' => isset($trace['line']) ? $trace['line'] : '',
-              '{class}' => isset($trace['class']) ? $trace['class'] : '',
-              '{function}' => isset($trace['function']) ? $trace['function'] : '',
-              '{type}' => isset($trace['type']) ? $trace['type'] : '',
+              '{file}' => $trace['file'] ?? '',
+              '{line}' => $trace['line'] ?? '',
+              '{class}' => $trace['class'] ?? '',
+              '{function}' => $trace['function'] ?? '',
+              '{type}' => $trace['type'] ?? '',
               '{args}' => $args,
-            ));
+            ]);
             $traces .= $trace;
         }
     }
 
-    $output = strtr($mask, array(
+    $output = strtr($mask, [
       '{type}' => $entity->getTypeAsString(),
       '{message}' => $entity->getMessage(),
       '{file}' => $entity->getFile(),
       '{line}' => $entity->getLine(),
       '{trace}' => $traces,
-    ));
+    ]);
 
     $path   = $config->get('app.error.log.path.ponto', 'extension/log/error_ponto_eletronico.log');
     $logger = new Logger($path, Logger::ERROR);
@@ -123,8 +123,8 @@ Registry::get('app.eventManager')->register('app.error', function ($event) {
 <?php
 
 $oParametros = \db_utils::postMemory(array_merge($_GET, $_POST));
-$aMatriculas = explode(',', $oParametros->aMatriculas);
-$aLocalTrabalho = explode(',', $oParametros->aLocalTrabalho);
+$aMatriculas = explode(',', (string) $oParametros->aMatriculas);
+$aLocalTrabalho = explode(',', (string) $oParametros->aLocalTrabalho);
 $iCodigoSelecao = !empty($oParametros->iCodigoSelecao) ? $oParametros->iCodigoSelecao : null;
 $lMostraObservacoes = $oParametros->lMostraObservacoes == 'S';
 $lEmiteTodosAfastamentos = !empty($oParametros->iEmiteTodosAfastamentos) && $oParametros->iEmiteTodosAfastamentos == 1;
@@ -163,7 +163,7 @@ try {
 
     if (!empty($aLocalTrabalho) && !empty($aLocalTrabalho[0])) {
         if (!isset($aMatriculas) || empty($aMatriculas) || !is_array($aMatriculas)) {
-            $aMatriculas = array();
+            $aMatriculas = [];
         }
 
         foreach ($aLocalTrabalho as $codigoLocalTrabalho) {
@@ -191,8 +191,8 @@ try {
     $dadosRelatorio = new stdClass();
     $dadosRelatorio->mostraObservacoes      = $lMostraObservacoes;
     $dadosRelatorio->emiteTodosAfastamentos = $lEmiteTodosAfastamentos;
-    $dadosRelatorio->dataInicio             = implode('/', array_reverse(explode('-', $oParametros->periodoInicio)));
-    $dadosRelatorio->dataFim                = implode('/', array_reverse(explode('-', $oParametros->periodoFim)));
+    $dadosRelatorio->dataInicio             = implode('/', array_reverse(explode('-', (string) $oParametros->periodoInicio)));
+    $dadosRelatorio->dataFim                = implode('/', array_reverse(explode('-', (string) $oParametros->periodoFim)));
     
     $id          = uniqid();
     $fileName    = "tmp/dados_espelho_ponto_{$id}.txt";
@@ -234,12 +234,12 @@ try {
         }
         
         $dataServidor  = (object)current($datasServidor);
-        $dadosServidor = array(
+        $dadosServidor = [
             'dados'                                   => $dataServidor->dados,
-            'datas'                                   => array(),
-            'aHorasJornada'                           => array(),
-            'observacoes'                             => array(),
-        );
+            'datas'                                   => [],
+            'aHorasJornada'                           => [],
+            'observacoes'                             => [],
+        ];
 
         foreach ($datasServidor as $dataServidor) {
 
@@ -276,9 +276,9 @@ try {
             file_put_contents($fileName, serialize($dadosServidor) . PHP_EOL, FILE_APPEND);
         }
 
-    $matriculasComErro = array(
+    $matriculasComErro = [
         'matriculasComErro' => $retornoAjuste->matriculasComErro
-    );
+    ];
     file_put_contents($fileName, serialize($matriculasComErro) . PHP_EOL, FILE_APPEND);
 
     if(!$servidorAdicionado && empty($retornoAjuste->matriculasComErro)) {

@@ -14,7 +14,7 @@ use ECidade\Tributario\Library\Entity;
 
 final class HeaderConverter extends Converter
 {
-    const IDENTIFICACAO_ARQUIVO = "RCB800";
+    const string IDENTIFICACAO_ARQUIVO = "RCB800";
 
     /**
      * @param Entity $entity
@@ -30,10 +30,10 @@ final class HeaderConverter extends Converter
         $size = $this->layout->getSize(Header::NUMERO_CONVENIO);
        // $convArrecadacao = $entity->getConvenio()->getConvenioArrecadacao();
         $convArrecadacao = $this->layout->getDefault(Header::NUMERO_CONVENIO);
-        $header .= substr(str_pad($convArrecadacao, $size, '0', STR_PAD_LEFT), ($size * -1));
+        $header .= substr(str_pad((string) $convArrecadacao, $size, '0', STR_PAD_LEFT), ($size * -1));
 
         $size = $this->layout->getSize(Header::DATA_GERACAO);
-        $header .= substr(str_pad($entity->getDataGeracao()->format("Ymd"), $size, '0', STR_PAD_LEFT), 0, $size);
+        $header .= substr(str_pad((string) $entity->getDataGeracao()->format("Ymd"), $size, '0', STR_PAD_LEFT), 0, $size);
 
         $size    = $this->layout->getSize(Header::IDENTIFICACAO_ARQUIVO);
         $header .= substr(str_pad(self::IDENTIFICACAO_ARQUIVO, $size, ' ', STR_PAD_RIGHT), 0, $size);
@@ -47,7 +47,7 @@ final class HeaderConverter extends Converter
         $header .= substr(str_pad($tipo, $size, ' ', STR_PAD_RIGHT), 0, $size);
 
         $size = $this->layout->getSize(Header::PREFIXO_AGENCIA);
-        $header .= substr(str_pad($entity->getConvenio()->getCodigoAgencia(), $size, '0', STR_PAD_LEFT), ($size * -1));
+        $header .= substr(str_pad((string) $entity->getConvenio()->getCodigoAgencia(), $size, '0', STR_PAD_LEFT), ($size * -1));
 
         $size = $this->layout->getSize(Header::ANO_REMESSA);
         $header .= substr(str_pad($entity->getAnoRemessa(), $size, '0', STR_PAD_LEFT), 0, $size);
@@ -56,23 +56,23 @@ final class HeaderConverter extends Converter
         $header .= substr(str_pad($entity->getNumero(), $size, '0', STR_PAD_LEFT), 0, $size);
 
         $size = $this->layout->getSize(Header::INICIO_VIGENCIA);
-        $header .= substr(str_pad($entity->getDataInicioVigencia()->format("Ymd"), $size, '0', STR_PAD_LEFT), 0, $size);
+        $header .= substr(str_pad((string) $entity->getDataInicioVigencia()->format("Ymd"), $size, '0', STR_PAD_LEFT), 0, $size);
 
         $size = $this->layout->getSize(Header::FIM_VIGENCIA);
-        $header .= substr(str_pad($entity->getDataFimVigencia()->format("Ymd"), $size, '0', STR_PAD_LEFT), 0, $size);
+        $header .= substr(str_pad((string) $entity->getDataFimVigencia()->format("Ymd"), $size, '0', STR_PAD_LEFT), 0, $size);
 
         $size = $this->layout->getSize(Header::CODIGO_CLIENTE_BANCO);
         $codigoCliente = $this->layout->getDefault(Header::CODIGO_CLIENTE_BANCO);
-        $header .= substr(str_pad($codigoCliente, $size, '0', STR_PAD_LEFT), 0, $size);
+        $header .= substr(str_pad((string) $codigoCliente, $size, '0', STR_PAD_LEFT), 0, $size);
 
         //Espaços em branco
         $size         = $this->layout->getSize(Header::RESERVADO);
         $defaultValue = $this->layout->getDefault(Header::RESERVADO);
-        $header      .= str_repeat($defaultValue, $size);
+        $header      .= str_repeat((string) $defaultValue, $size);
        
         $size         = $this->layout->getSize(Header::SEQUENCIAL);
         $defaultValue = $this->layout->getDefault(Header::SEQUENCIAL);
-        $header      .= substr(str_pad($defaultValue, $size, '0', STR_PAD_LEFT), 0, $size);
+        $header      .= substr(str_pad((string) $defaultValue, $size, '0', STR_PAD_LEFT), 0, $size);
 
         return $header;
     }

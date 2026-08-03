@@ -99,9 +99,7 @@ class EstimativaReceitaService
         $modelValor = $valoreService->salvar(Valor::ORIGEM_RECEITA, $id, $valor, $exercicio, true);
 
         $cronograma = $estimativa->cronogramaDesembolso->filter(
-            function (CronogramaDesembolsoReceita $cronograma) use ($exercicio) {
-                return $cronograma->exercicio == $exercicio;
-            }
+            fn(CronogramaDesembolsoReceita $cronograma) => $cronograma->exercicio == $exercicio
         )->shift();
 
         $service = new CronogramaDesembolsoReceitaService();
@@ -139,7 +137,7 @@ class EstimativaReceitaService
 
         $valores = str_replace('\\', '', $dados->valores);
         $valores = json_decode($valores);
-        if (substr($dados->natureza, 0, 1) == 9) {
+        if (substr((string) $dados->natureza, 0, 1) == 9) {
             foreach ($valores as $valor) {
                 if ($valor->valor > 0) {
                     $valor->valor *= -1;

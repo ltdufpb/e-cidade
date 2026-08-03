@@ -136,7 +136,7 @@ class RubricaMapeador implements FormularioMapeador
     {
     }
 
-    public function getSqlDePara()
+    public function getSqlDePara($ano, $mes)
     {
         $instituicao = \InstituicaoRepository::getInstituicaoSessao();
         $campos = array_merge($this->getCamposSistema(), $this->getCamposAuxiliares());
@@ -183,7 +183,7 @@ class RubricaMapeador implements FormularioMapeador
         return $this->dadosFormulario;
     }
 
-    public function processarDadosEcidade()
+    public function processarDadosEcidade($ano, $mes)
     {
         $sql = $this->getSqlDePara();
         $rs = db_query($sql);
@@ -192,9 +192,7 @@ class RubricaMapeador implements FormularioMapeador
             throw new DBException("Erro ao buscar as informações do sistema.");
         }
 
-        $this->dadosEcidade =\db_utils::makeCollectionFromRecord($rs, function ($dadoEcidade) {
-            return (get_object_vars($dadoEcidade));
-        });
+        $this->dadosEcidade =\db_utils::makeCollectionFromRecord($rs, fn($dadoEcidade) => get_object_vars($dadoEcidade));
     }
 
     public function getColunas()

@@ -9,21 +9,14 @@ abstract class DBReleaseNote {
   const TIPO_PLUGIN = 'plugin';
   const TIPO_MODIFICACAO = 'modificacao';
   const TIPO_PREVIA = 'previa';
-
-  protected $iUsuario;
-  protected $sNomeArquivo;
   protected $sNomeArquivoAtual;
-  protected $sVersao;
   protected $lSomenteNaoLidos = false;
 
   private $dirBase;
 
-  public function __construct($idUsuario, $sNomeArquivo = null, $sNomeArquivoAtual = null, $sVersao = null) {
+  public function __construct(protected $iUsuario, protected $sNomeArquivo = null, $sNomeArquivoAtual = null, protected $sVersao = null) {
 
-    $this->iUsuario  = $idUsuario;
-    $this->sNomeArquivo = $sNomeArquivo;
-    $this->sNomeArquivoAtual = $sNomeArquivoAtual ?: $sNomeArquivo;
-    $this->sVersao = $sVersao;   
+    $this->sNomeArquivoAtual = $sNomeArquivoAtual ?: $this->sNomeArquivo;   
   }
 
   /**
@@ -120,12 +113,12 @@ abstract class DBReleaseNote {
   protected function getVersoesPorNomeArquivo($iSorting = self::SORT_ASC) {
 
     if (!is_dir($this->getDirBase())) {
-      return array();
+      return [];
     }
 
     $aVersoes = scandir($this->getDirBase(), $iSorting);
 
-    $aRetornoReleaseNotes = array();
+    $aRetornoReleaseNotes = [];
 
     foreach ($aVersoes as $sVersao) {
 
@@ -191,7 +184,7 @@ abstract class DBReleaseNote {
 
     foreach ($aArquivos as $iIndex => $sArquivo) {
       
-      $lProximoArquivo = strpos($sArquivo, $this->sNomeArquivo) === 0;
+      $lProximoArquivo = str_starts_with($sArquivo, (string) $this->sNomeArquivo);
 
       if ( $lProximoArquivo && $lArquivoAtual) {
         $iInicio = $iIndex;
@@ -265,7 +258,7 @@ abstract class DBReleaseNote {
 
     // Caso seja somente nao lidos, retorna a proxima ocorrencia se existir
     if (!$lSomenteNaoLido) {
-      return isset($aVersoes[$iInicio+1]) ? $aVersoes[$iInicio+1] : "";
+      return $aVersoes[$iInicio+1] ?? "";
     }
 
     $sVersao = "";
@@ -302,7 +295,7 @@ abstract class DBReleaseNote {
       return $aVersoes[0];
     }
 
-    $aVersoesLidas = array();
+    $aVersoesLidas = [];
 
     foreach ($aArquivosLidas as $aVersao) {
 
@@ -360,28 +353,15 @@ abstract class DBReleaseNote {
   }
 
 
-  public static function createInstance($sTipo, $idUsuario, $sNomeArquivo = null, $sNomeArquivoAtual = null, $sVersao = null) {
-
-    switch($sTipo) {
-
-      case self::TIPO_SISTEMA :
-        return new DBReleaseNoteSistema($idUsuario, $sNomeArquivo, $sNomeArquivoAtual, $sVersao);
-      break;
-
-      case self::TIPO_PLUGIN :
-        return new DBReleaseNotePlugin($idUsuario, $sNomeArquivo, $sNomeArquivoAtual, $sVersao);
-      break;
-
-      case self::TIPO_MODIFICACAO :
-        return new DBReleaseNoteModificacao($idUsuario, $sNomeArquivo, $sNomeArquivoAtual, $sVersao);
-      break;
-
-      case self::TIPO_PREVIA :
-        return new DBReleaseNotePrevia($idUsuario, $sNomeArquivo, $sNomeArquivoAtual, $sVersao);
-      break;
-    }
-
-    throw new BusinessException('Não foi possivel criar instancia de DBReleaseNote');
+  public static function createInstance($sTipo, $idUsuario, $sNomeArquivo = null, $sNomeArquivoAtual = null, $sVersao = null)
+  {
+      return match ($sTipo) {
+          self::TIPO_SISTEMA => new DBReleaseNoteSistema($idUsuario, $sNomeArquivo, $sNomeArquivoAtual, $sVersao),
+          self::TIPO_PLUGIN => new DBReleaseNotePlugin($idUsuario, $sNomeArquivo, $sNomeArquivoAtual, $sVersao),
+          self::TIPO_MODIFICACAO => new DBReleaseNoteModificacao($idUsuario, $sNomeArquivo, $sNomeArquivoAtual, $sVersao),
+          self::TIPO_PREVIA => new DBReleaseNotePrevia($idUsuario, $sNomeArquivo, $sNomeArquivoAtual, $sVersao),
+          default => throw new BusinessException('Não foi possivel criar instancia de DBReleaseNote'),
+      };
   }
 
   /**
@@ -390,10 +370,10 @@ abstract class DBReleaseNote {
    */
   public static function buildFromParams(stdClass $oParam) {
 
-    $aPadrao = array(
+    $aPadrao = [
       'sTipo' => null, 'idUsuario' => null, 'sNomeArquivo' => null, 
       'sArquivoAtual' => null, 'sVersao' => null, 'lSomenteNaoLidos' => false,
-    );
+    ];
     $oParam = (object) array_merge($aPadrao, (array) $oParam);
 
     $oDBReleaseNote = DBReleaseNote::createInstance(

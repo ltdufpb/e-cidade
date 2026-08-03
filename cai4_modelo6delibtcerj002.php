@@ -394,7 +394,7 @@ $sSqlParag .= "       inner join db_tipodoc   on db08_codigo  = db03_tipodoc ";
 $sSqlParag .= "       inner join db_paragrafo on db04_idparag = db02_idparag ";
 $sSqlParag .= " where db03_tipodoc = 1036 and db03_instit = {$iIntituicao} order by db04_ordem ";
 $rsParag    = db_query($sSqlParag);
-if ($rsParag && pg_numrows($rsParag) > 0) {
+if ($rsParag && pg_num_rows($rsParag) > 0) {
 
   $oParagrafo = db_utils::fieldsMemory($rsParag, 0);
   eval($oParagrafo->db02_texto);
@@ -407,7 +407,7 @@ if ($rsParag && pg_numrows($rsParag) > 0) {
   $sSqlParagPadrao .= " where db60_tipodoc = 1036 and db60_instit = {$iIntituicao} order by db62_ordem";
 
   $rsParagPadrao    = db_query($sSqlParagPadrao);
-  if ($rsParagPadrao && pg_numrows($rsParagPadrao) > 0) {
+  if ($rsParagPadrao && pg_num_rows($rsParagPadrao) > 0) {
 
     $oParagrafo = db_utils::fieldsMemory($rsParagPadrao, 0);
     eval($oParagrafo->db61_texto);
@@ -462,7 +462,7 @@ function dadosBasicos($oGet) {
 
   $rsDadosBasico = db_query($sSqlBasico);
 
-  if (pg_numrows($rsDadosBasico) == 0) {
+  if (pg_num_rows($rsDadosBasico) == 0) {
     $sSqlBasico  = " select k68_sequencial  as conciliacao,                                 ";
     $sSqlBasico .= "        db83_descricao  as descricao_conta,                             ";
     $sSqlBasico .= "        db89_db_bancos  as codigo_banco,                                ";

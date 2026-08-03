@@ -57,14 +57,14 @@ db_input('h04_descr',35,$Ih04_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$arr_tpfund = array(
+$arr_tpfund = [
                     1=>"1 - Decreto",
                     2=>"2 - Edital",
                     3=>"3 - Lei",
                     4=>"4 - Portaria",
                     5=>"5 - Resolucao",
                     9=>"9 - Outros"
-                   );
+                   ];
 if(!isset($h04_tpfund) || (isset($h04_tpfund) && trim($h04_tpfund) != "")){
   $h04_tpfund = 3;
 }
@@ -85,7 +85,7 @@ function js_preenchepesquisa(chave){
   db_iframe_flegal.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_motivo_ausencia_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_motivo_ausencia = new cl_sau_motivo_ausencia;
 $clsau_motivo_ausencia->rotulo->label("s139_i_codigo");
 $clsau_motivo_ausencia->rotulo->label("s139_c_descr");
@@ -98,9 +98,9 @@ $clsau_motivo_ausencia->rotulo->label("s139_c_descr");
         }else{
            $sql = $clsau_motivo_ausencia->sql_query("",$campos,"s139_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s139_i_codigo)){
-          $repassa = array("chave_s139_i_codigo"=>$chave_s139_c_descr,"chave_s139_i_codigo"=>$chave_s139_c_descr);
+          $repassa = ["chave_s139_i_codigo"=>$chave_s139_c_descr,"chave_s139_i_codigo"=>$chave_s139_c_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

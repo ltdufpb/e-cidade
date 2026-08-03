@@ -90,12 +90,12 @@ require_once(modification("dbforms/db_classesgenericas.php"));
             <td>Ordenação:</td>
             <td>
               <?php
-                $aCampos = array('Ordenação'=>'Ordenação');
+                $aCampos = ['Ordenação'=>'Ordenação'];
                 db_select('sCampoOrdem', $aCampos, true, 1);
                 
                 echo '&nbsp';
                 
-                $aOrdem = array("asc"=>"Crescente", "desc"=>"Decrescente");
+                $aOrdem = ["asc"=>"Crescente", "desc"=>"Decrescente"];
                 db_select('sOrdem', $aOrdem, true, 1);
               ?>
             </td>

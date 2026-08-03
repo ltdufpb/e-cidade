@@ -69,17 +69,17 @@ $clcriaabas = new cl_criaabas();
     <center>
     <?php 
     
-    $clcriaabas->identifica = array("campos"=>"Campos","ordem"=>"Ordem","filtros"=>"Filtros","layout"=>"Layout","variaveis"=>"Variáveis","finalizar"=>"Finalizar");
-    $clcriaabas->title      = array("campos"=>"Campos","ordem"=>"Ordem","filtros"=>"Filtros","layout"=>"Layout","variaveis"=>"Variáveis","finalizar"=>"Finalizar");
+    $clcriaabas->identifica = ["campos"=>"Campos","ordem"=>"Ordem","filtros"=>"Filtros","layout"=>"Layout","variaveis"=>"Variáveis","finalizar"=>"Finalizar"];
+    $clcriaabas->title      = ["campos"=>"Campos","ordem"=>"Ordem","filtros"=>"Filtros","layout"=>"Layout","variaveis"=>"Variáveis","finalizar"=>"Finalizar"];
     
-    $clcriaabas->src	      = array("campos"	 =>"sys4_confrelatorio003.php",
+    $clcriaabas->src	      = ["campos"	 =>"sys4_confrelatorio003.php",
 																    "ordem"	   =>"sys4_confrelatorio008.php",
 								    								"filtros"  =>"sys4_confrelatorio004.php",
 								    								"variaveis"=>"sys4_confrelatorio007.php",
 								    								"layout"   =>"sys4_confrelatorio005.php",
-	   																"finalizar"=>"sys4_confrelatorio006.php");
+	   																"finalizar"=>"sys4_confrelatorio006.php"];
       
-    $clcriaabas->sizecampo  = array("campos"=>"10","filtros"=>"10","variaveis"=>"10","layout"=>"10","finalizar"=>"10");
+    $clcriaabas->sizecampo  = ["campos"=>"10","filtros"=>"10","variaveis"=>"10","layout"=>"10","finalizar"=>"10"];
     
     if ( isset($oGet->lSql) && $oGet->lSql == 'true') {
     	$clcriaabas->identifica["editasql"] = "Editar SQL";

@@ -178,7 +178,7 @@ if (isset($oPost->o05_ppalei) && $oPost->o05_ppalei != "") {
                 <?php 
                   $agrupaporrecurso = 2;
                   db_select("agrupaporrecurso",
-                            array(1 => "Sim", 2=>"Não"),
+                            [1 => "Sim", 2=>"Não"],
                             true,1,"onchange='js_showListaRecursos(this.value)'");
                 ?>
               </td>

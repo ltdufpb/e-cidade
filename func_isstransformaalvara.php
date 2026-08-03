@@ -35,7 +35,7 @@ include(modification("classes/db_issmovalvara_classe.php"));
 
 $oPost = db_utils::postmemory($_POST);
 $oGet  = db_utils::postmemory($_GET);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clIssMovAlvara = new cl_issmovalvara();
 $clIssMovAlvara->rotulo->label("q120_sequencial");
 
@@ -102,10 +102,10 @@ $clIssMovAlvara->rotulo->label("q120_sequencial");
            $sSql = $clIssMovAlvara->sql_queryAlvarasTransformacao("q120_sequencial, q120_issalvara, z01_nome, q123_inscr, issgrupotipoalvara.q97_sequencial, issgrupotipoalvara.q97_descricao, isstipoalvara.q98_sequencial, isstipoalvara.q98_descricao", "q120_isstipomovalvara <> 2");
         }
         
-        $repassa = array();
+        $repassa = [];
         
         if (isset($chave_q120_sequencial)) {
-          $repassa = array("chave_q120_sequencial"=>$chave_q120_sequencial);
+          $repassa = ["chave_q120_sequencial"=>$chave_q120_sequencial];
         }
         db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
       } else {

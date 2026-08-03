@@ -48,7 +48,7 @@ class TaxasLancadasDepartRepository extends \BaseClassRepository
 
     private function workData(TaxasLancadasDepart $oDepartamento)
     {
-        $oDados = (object) array();
+        $oDados = (object) [];
 
         $oDados->ar45_sequencial = $oDepartamento->getSequencial();
         $oDados->ar45_taxaslancadas = $oDepartamento->getTaxaslancadas();
@@ -60,10 +60,10 @@ class TaxasLancadasDepartRepository extends \BaseClassRepository
     public function makeCollection($rReturn)
     {
         $oReturn = \db_utils::getColectionByRecord($rReturn);
-        $aDados = array();
+        $aDados = [];
 
         foreach ($oReturn as $item) {
-            $oDados = (object) array();
+            $oDados = (object) [];
             $oDepartamento = $this->make($item);
 
             $oDados = $this->workData($oDepartamento);

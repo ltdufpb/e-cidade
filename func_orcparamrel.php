@@ -32,8 +32,8 @@ require_once modification('libs/db_usuariosonline.php');
 require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_orcparamrel_classe.php');
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -111,12 +111,12 @@ $clorcparamrel->rotulo->label("o42_descrrel");
                 } else {
                     $sql = $clorcparamrel->sql_query(null, $campos, "o42_codparrel", "");
                 }
-                $repassa = array();
+                $repassa = [];
                 if (isset($chave_o42_descrrel)) {
-                    $repassa = array(
+                    $repassa = [
                         "chave_o42_codparrel" => $chave_o42_codparrel,
                         "chave_o42_descrrel" => $chave_o42_descrrel
-                    );
+                    ];
                 }
                 db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
             } else {

@@ -32,10 +32,10 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_saniatividade_classe.php"));
 include(modification("classes/db_sanitario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clsaniatividade = new cl_saniatividade;
 $clsanitario     = new cl_sanitario;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $db_opcao = 1;
 $db_botao = true;
 if(!isset($y83_codsani)){
@@ -45,7 +45,7 @@ if(!isset($y83_codsani)){
 $sSql       = $clsanitario->sql_query($y83_codsani, 'z01_cgccpf');
 $z01_cgccpf = db_utils::fieldsMemory($clsanitario->sql_record($sSql), 0)->z01_cgccpf;
 
-if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Incluir"){
+if((isset($_POST["opcaoExec"]) && $_POST["opcaoExec"])=="Incluir"){
 
   db_inicio_transacao();
   $sqlerro = false;
@@ -81,9 +81,9 @@ if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Inclu
     if($y80_dtbaixa != ""){
       $clsaniatividade->sql_record($clsaniatividade->sql_query("","","*",""," y83_codsani = $y83_codsani and y83_dtfim is null"));
       if($clsaniatividade->numrows > 0){
-        $HTTP_POST_VARS["y80_dtbaixa_dia"] = "";
-        $HTTP_POST_VARS["y80_dtbaixa_mes"] = "";
-        $HTTP_POST_VARS["y80_dtbaixa_ano"] = "";
+        $_POST["y80_dtbaixa_dia"] = "";
+        $_POST["y80_dtbaixa_mes"] = "";
+        $_POST["y80_dtbaixa_ano"] = "";
         $clsanitario->y80_dtbaixa = "";
         $clsanitario->y80_codsani = $y80_codsani;
         $clsanitario->alterar($y83_codsani);
@@ -135,7 +135,7 @@ $db_opcao = 1;
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Incluir"){
+if((isset($_POST["opcaoExec"]) && $_POST["opcaoExec"])=="Incluir"){
   if($clsaniatividade->erro_status=="0"){
     echo "<script>parent.iframe_saniatividade.location.href='fis1_saniatividade001.php?y83_codsani=".$clsaniatividade->y83_codsani."&opcao=Incluir';\n</script>";
     echo "<script> document.form1.db_opcao.disabled=false;</script>";

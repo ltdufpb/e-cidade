@@ -342,7 +342,7 @@ class AndamentoProcessoInterno
      */
     public function toArray()
     {
-        return array(
+        return [
             'p78_sequencial' => $this->getId(),
             'p78_codandam' => $this->getIdAndamento(),
             'p78_data' => !is_null($this->getData()) ? $this->getData()->format('Y-m-d') : null,
@@ -352,6 +352,6 @@ class AndamentoProcessoInterno
             'p78_publico' => $this->isPublico(),
             'p78_transint' => $this->isTransitoInterno(),
             'p78_tipodespacho' => $this->getIdTipoDespacho()
-        );
+        ];
     }
 }

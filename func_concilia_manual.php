@@ -33,8 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_saltes_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsaltes = new cl_saltes;
 $clsaltes->rotulo->label("k13_conta");
@@ -77,7 +77,7 @@ $clsaltes->rotulo->label("k13_descr");
                                     Recursos Livres:</b></td>
                             <td width="96%" align="left" nowrap>
                                 <?php
-                                $x = array("N" => "NÃO", "S" => "SIM");
+                                $x = ["N" => "NÃO", "S" => "SIM"];
                                 db_select("disp_rec", $x, true, 4, "");
                                 ?>
                             </td>
@@ -198,7 +198,7 @@ $clsaltes->rotulo->label("k13_descr");
                                   status
                         ";
                     //    echo $sql;
-                db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", array(), false);
+                db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", [], false);
             } else {
 
                 if ($pesquisa_chave != null && $pesquisa_chave != "") {

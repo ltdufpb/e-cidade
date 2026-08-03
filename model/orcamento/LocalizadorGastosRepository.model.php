@@ -30,7 +30,7 @@ class LocalizadorGastosRepository {
   /**
    * @var LocalizadorGastos[]
    */
-  private $aLocalizadorGastos = array();
+  private $aLocalizadorGastos = [];
 
   /**
    * @var LocalizadorGastosRepository

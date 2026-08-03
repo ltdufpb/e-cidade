@@ -44,10 +44,10 @@ $sSqlAutorizacao = null;
  */
 
 if (!empty($oGet->dtDataInicial)) {
-  $dtDataInicial = implode("-", array_reverse(explode("/", $oGet->dtDataInicial))); 
+  $dtDataInicial = implode("-", array_reverse(explode("/", (string) $oGet->dtDataInicial))); 
 }
 if (!empty($oGet->dtDataFinal)) {
-  $dtDataFinal  = implode("-", array_reverse(explode("/", $oGet->dtDataFinal)));
+  $dtDataFinal  = implode("-", array_reverse(explode("/", (string) $oGet->dtDataFinal)));
 }
 
 $sDataEmissao = "";

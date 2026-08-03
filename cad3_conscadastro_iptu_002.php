@@ -57,7 +57,7 @@ $sql = "select proprietario.*, j50_descr,
  			   where $where limit 1";
 
 $matriculaSelecionada    = db_query($sql) or die($sql);
-$numMatriculaSelecionada = pg_numrows($matriculaSelecionada);
+$numMatriculaSelecionada = pg_num_rows($matriculaSelecionada);
 
 if($numMatriculaSelecionada > 0){
 
@@ -193,7 +193,7 @@ if ($linhasareaconst>0){
   <?php 
   $sqlimo = "select * from imobil where j44_matric = $cod_matricula";
   $resultimo = db_query($sqlimo);
-  $linhasimo = pg_numrows($resultimo);
+  $linhasimo = pg_num_rows($resultimo);
   ?>
   <tr>
     <td width="73" align="right" bgcolor="#CCCCCC">
@@ -220,7 +220,7 @@ if ($linhasareaconst>0){
     <td align="left" bgcolor="#FFFFFF" width="35"><font color="#666666"><strong>&nbsp;<?=$j34_zona  . " - " . $j50_descr?></strong></font></td>
     <?php 
     $rsSetfis = db_query("select * from lotesetorfiscal inner join cadastro.setorfiscal on j90_codigo = j91_codigo inner join iptubase on j01_idbql = j91_idbql where j01_matric = $cod_matricula");
-    if (pg_numrows($rsSetfis)>0){
+    if (pg_num_rows($rsSetfis)>0){
     	db_fieldsmemory($rsSetfis,0);
     }
     ?>
@@ -242,7 +242,7 @@ if ($linhasareaconst>0){
        $rsSetor = $clsetor->sql_record($clsetor->sql_query_file($j34_setor, 'j30_descr'));
        if( $clsetor->numrows > 0 ) {
          db_fieldsmemory($rsSetor, 0);
-         echo " - ".trim($j30_descr)." ";
+         echo " - ".trim((string) $j30_descr)." ";
        }
 
         if(@$areaconst>0){

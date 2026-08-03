@@ -261,7 +261,7 @@ class PontoParada {
    * Define o departamento vinculado ao ponto de parada
    * @param DBDepartamento $oDBDepartamento
    */
-  public function setDepartamento(DBDepartamento $oDBDepartamento = null) {
+  public function setDepartamento(?DBDepartamento $oDBDepartamento = null) {
 
 
     $this->iCodigoDepartamento = null;

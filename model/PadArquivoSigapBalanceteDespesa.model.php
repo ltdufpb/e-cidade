@@ -46,7 +46,7 @@ final class PadArquivoSigapBalanceteDespesa extends PadArquivoSigap
     {
 
         $this->sNomeArquivo = "BalanceteDespesa";
-        $this->aDados = array();
+        $this->aDados = [];
     }
 
     /**
@@ -65,9 +65,9 @@ final class PadArquivoSigapBalanceteDespesa extends PadArquivoSigap
             throw new Exception("Data final não informada!");
         }
 
-        list($iAno, $iMes, $iDia) = explode("-", $this->sDataFinal);
+        [$iAno, $iMes, $iDia] = explode("-", $this->sDataFinal);
         $lUsaSubElemento = false;
-        $oParamOrcamento = db_stdClass::getParametro("orcparametro", array($iAno));
+        $oParamOrcamento = db_stdClass::getParametro("orcparametro", [$iAno]);
         if ($oParamOrcamento[0]->o50_subelem == 't') {
             $lUsaSubElemento = true;
         }
@@ -137,7 +137,7 @@ final class PadArquivoSigapBalanceteDespesa extends PadArquivoSigap
             $sSqlDesdobramento .= "  where c71_coddoc in (7,52,53,54,55,56,58,59,60,61,62,63,64) ";
             $sSqlDesdobramento .= "    and c71_data between '{$this->sDataInicial}' and '{$this->sDataFinal}' ";
             //$sql_desdobramento .= "  /* and c73_coddot = $o58_coddot */ ";
-            $sSqlDesdobramento .= "    and substr(o56_elemento,1,7)='" . substr($oDespesa->o58_elemento, 0, 7) . "' ";
+            $sSqlDesdobramento .= "    and substr(o56_elemento,1,7)='" . substr((string) $oDespesa->o58_elemento, 0, 7) . "' ";
             $sSqlDesdobramento .= "    and c73_anousu = " . db_getsession("DB_anousu");
 
             if ($lUsaSubElemento) {
@@ -169,15 +169,15 @@ final class PadArquivoSigapBalanceteDespesa extends PadArquivoSigap
             $oDotacaoRetorno = new stdClass();
             $oDotacaoRetorno->bdeCodigoEntidade = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
             $oDotacaoRetorno->bdeMesAnoMovimento = $sDiaMesAno;
-            $oDotacaoRetorno->bdeCodigoOrgao = str_pad($oDespesa->o58_orgao, 2, 0, STR_PAD_LEFT);
-            $oDotacaoRetorno->bdeCodigoUnidadeOrcamentaria = str_pad($oDespesa->o58_unidade, 2, 0, STR_PAD_LEFT);
-            $oDotacaoRetorno->bdeCodigoFuncao = str_pad($oDespesa->o58_funcao, 2, 0, STR_PAD_LEFT);
-            $oDotacaoRetorno->bdeCodigoSubFuncao = str_pad($oDespesa->o58_subfuncao, 3, 0, STR_PAD_LEFT);
-            $oDotacaoRetorno->bdeCodigoPrograma = str_pad($oDespesa->o58_programa, 4, 0, STR_PAD_LEFT);
-            $oDotacaoRetorno->bdeCodigoProjetoAtividade = str_pad($oDespesa->o58_projativ, 5, 0, STR_PAD_LEFT);
-            $oDotacaoRetorno->bdeCodigoElemento = str_pad(substr($oDespesa->o58_elemento, 1, 14), 15, "0",
+            $oDotacaoRetorno->bdeCodigoOrgao = str_pad((string) $oDespesa->o58_orgao, 2, 0, STR_PAD_LEFT);
+            $oDotacaoRetorno->bdeCodigoUnidadeOrcamentaria = str_pad((string) $oDespesa->o58_unidade, 2, 0, STR_PAD_LEFT);
+            $oDotacaoRetorno->bdeCodigoFuncao = str_pad((string) $oDespesa->o58_funcao, 2, 0, STR_PAD_LEFT);
+            $oDotacaoRetorno->bdeCodigoSubFuncao = str_pad((string) $oDespesa->o58_subfuncao, 3, 0, STR_PAD_LEFT);
+            $oDotacaoRetorno->bdeCodigoPrograma = str_pad((string) $oDespesa->o58_programa, 4, 0, STR_PAD_LEFT);
+            $oDotacaoRetorno->bdeCodigoProjetoAtividade = str_pad((string) $oDespesa->o58_projativ, 5, 0, STR_PAD_LEFT);
+            $oDotacaoRetorno->bdeCodigoElemento = str_pad(substr((string) $oDespesa->o58_elemento, 1, 14), 15, "0",
                 STR_PAD_RIGHT);
-            $oDotacaoRetorno->bdeCodigoRecursoVinculado = str_pad($iCodigoRecurso, 8, 0, STR_PAD_LEFT);
+            $oDotacaoRetorno->bdeCodigoRecursoVinculado = str_pad((string) $iCodigoRecurso, 8, 0, STR_PAD_LEFT);
             $oDotacaoRetorno->bdeDotacaoInicial = $this->corrigeValor($oDespesa->dot_ini, 13);
             $oDotacaoRetorno->bdeAtualizacaoMonetaria = $this->corrigeValor(0, 13);
             $oDotacaoRetorno->bdeCreditoSuplementar = $this->corrigeValor($nSuplementacoes, 13);
@@ -214,7 +214,7 @@ final class PadArquivoSigapBalanceteDespesa extends PadArquivoSigap
     public function getNomeElementos()
     {
 
-        $aElementos = array(
+        $aElementos = [
             "bdeCodigoEntidade",
             "bdeMesAnoMovimento",
             "bdeCodigoOrgao",
@@ -240,7 +240,7 @@ final class PadArquivoSigapBalanceteDespesa extends PadArquivoSigap
             "bdeValorRecomposicaoDotacaoLRF",
             "bdeValorPrevisaoRealizacaoTerminoExercicioLRF",
             "bdeValorDotacaoAtualizada"
-        );
+        ];
 
         return $aElementos;
     }

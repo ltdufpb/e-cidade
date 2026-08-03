@@ -43,8 +43,6 @@ class ProcessamentoRelatorioLegal extends RelatoriosLegaisBaseMSC
     const ANEXO_V    = 'V';
     const ANEXO_VI   = 'VI';
 
-    protected $iAno;
-
   /**
    * Período contábil
    * @var \Periodo
@@ -65,13 +63,13 @@ class ProcessamentoRelatorioLegal extends RelatoriosLegaisBaseMSC
    * Linhas do relatório com todas informacoes
    * @var array
    */
-    protected $aLinhas = array();
+    protected $aLinhas = [];
 
   /**
    * Linhas já processadas com as colunas
    * @var Linha[]
    */
-    protected $aLinhasProcessadas = array();
+    protected $aLinhasProcessadas = [];
 
   /**
    * Instituições informadas para calculo
@@ -85,18 +83,15 @@ class ProcessamentoRelatorioLegal extends RelatoriosLegaisBaseMSC
    * @param integer        $iCodigoRelatorio
    * @param \Instituicao[] $aInstituicoes
    */
-    public function __construct($iAno, \Periodo $oPeriodo, $iCodigoRelatorio, $aInstituicoes)
+    public function __construct(protected $iAno, \Periodo $oPeriodo, $iCodigoRelatorio, $aInstituicoes)
     {
 
-        $this->iAno       = $iAno;
         $this->oPeriodo   = $oPeriodo;
-        parent::__construct($iAno, $iCodigoRelatorio, $oPeriodo->getCodigo());
+        parent::__construct($this->iAno, $iCodigoRelatorio, $oPeriodo->getCodigo());
 
         $this->oPrefeitura = \InstituicaoRepository::getInstituicaoPrefeitura();
 
-        $aCodigos = array_map(function ($oInstiuicao) {
-            return $oInstiuicao->getCodigo();
-        }, $aInstituicoes);
+        $aCodigos = array_map(fn($oInstiuicao) => $oInstiuicao->getCodigo(), $aInstituicoes);
 
         $this->setInstituicoes(implode(', ', $aCodigos));
         $this->aInstituicoes = $aInstituicoes;

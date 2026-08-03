@@ -108,7 +108,7 @@
         <tr>
           <td valign="top"  align="center">  
             <?php 
- 						  $chavepri= array("x14_matric"=>@$x14_matric);
+ 						  $chavepri= ["x14_matric"=>@$x14_matric];
 	 					  $cliframe_alterar_excluir->chavepri      = $chavepri;
 		 				  $cliframe_alterar_excluir->sql           = $claguabaseresp->sql_query($x14_matric);
 						  $cliframe_alterar_excluir->campos        = "x14_matric,x14_numcgm,z01_nome";

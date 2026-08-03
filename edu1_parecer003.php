@@ -36,8 +36,8 @@ require_once(modification("classes/db_parecerdisciplina_classe.php"));
 require_once(modification("classes/db_parecerperiodo_classe.php"));
 require_once(modification("classes/db_parecer_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clparecer = new cl_parecer;
 $db_opcao  = 3;
 ?>

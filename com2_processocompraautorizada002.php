@@ -62,7 +62,7 @@ if ($oDaoEmparametro->numrows > 0) {
 /**
  * Verifica os filtros 
  */
-$aWhereProcessoCompras = array();
+$aWhereProcessoCompras = [];
 if (isset($oGet->iProcessoInicial) && !empty($oGet->iProcessoInicial)) {
   $aWhereProcessoCompras[] = " pc80_codproc >= {$oGet->iProcessoInicial}";
 }
@@ -72,12 +72,12 @@ if (isset($oGet->iProcessoFinal) && !empty($oGet->iProcessoFinal)) {
 
 if (isset($oGet->dtInicial) && !empty($oGet->dtInicial)) {
   
-  $sDataInicial            = implode("-", array_reverse(explode("/", $oGet->dtInicial)));
+  $sDataInicial            = implode("-", array_reverse(explode("/", (string) $oGet->dtInicial)));
   $aWhereProcessoCompras[] = " pc80_data >= '{$sDataInicial}'";
 }
 if (isset($oGet->dtFinal) && !empty($oGet->dtFinal)) {
   
-  $sDataFinal              = implode("-", array_reverse(explode("/", $oGet->dtFinal)));
+  $sDataFinal              = implode("-", array_reverse(explode("/", (string) $oGet->dtFinal)));
   $aWhereProcessoCompras[] = " pc80_data <= '{$sDataFinal}' ";
 }
 
@@ -141,17 +141,12 @@ foreach ($aProcessoCompra as $aProcesso) {
  */
 function getSituacao($iSituacao) {
   $sSituacao = "Todas";
-  switch ($iSituacao) {
-    case 1:
-      $sSituacao = "Em Analise";
-      break;
-    case 2:
-      $sSituacao = "Autorizado";
-      break;
-    case 3:
-      $sSituacao = "Não Autorizado";
-      break;
-  }
+  $sSituacao = match ($iSituacao) {
+      1 => "Em Analise",
+      2 => "Autorizado",
+      3 => "Não Autorizado",
+      default => $sSituacao,
+  };
   return $sSituacao;
 }
 

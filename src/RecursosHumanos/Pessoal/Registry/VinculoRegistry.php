@@ -37,7 +37,7 @@ class VinculoRegistry
     /**
      * @var Vinculo[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Vinculo $vinculo

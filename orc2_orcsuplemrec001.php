@@ -39,7 +39,7 @@ $clorcsuplem->rotulo->label();
 $clrotulo = new rotulocampo();
 $clrotulo->label('o39_tipoproj');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 ?>
 

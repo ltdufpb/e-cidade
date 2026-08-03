@@ -69,7 +69,7 @@ switch($oParam->exec) {
 
   case 'Ajusta' :
 
-  	$sDtAjuste         = implode("-", array_reverse(explode("/",$oParam->sDtAjuste)));
+  	$sDtAjuste         = implode("-", array_reverse(explode("/",(string) $oParam->sDtAjuste)));
   	$tHoraAjuste       = date("H:i:s");
   	$nValorPrecoMedio  = $oParam->nValorPrecoMedio;
   	$sMotivo           = $oParam->sMotivo;

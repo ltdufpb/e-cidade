@@ -32,8 +32,8 @@ include(modification("classes/db_saniatividade_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_sanitario_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clsaniatividade = new cl_saniatividade;
 $db_botao = false;
 $cliframe_seleciona = new cl_iframe_seleciona;
@@ -43,10 +43,10 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
 $clrotulo->label("y80_numcgm");
 $clrotulo->label("q03_descr");
-if(isset($HTTP_POST_VARS["db_opcao"]) && $db_opcao == "Alterar"){
-    $HTTP_POST_VARS["y80_dtbaixa_dia"] = "";
-    $HTTP_POST_VARS["y80_dtbaixa_mes"] = "";
-    $HTTP_POST_VARS["y80_dtbaixa_ano"] = "";
+if(isset($_POST["db_opcao"]) && $db_opcao == "Alterar"){
+    $_POST["y80_dtbaixa_dia"] = "";
+    $_POST["y80_dtbaixa_mes"] = "";
+    $_POST["y80_dtbaixa_ano"] = "";
     db_inicio_transacao();
       $clsanitario->alterar($y80_codsani);
       $clsanitario->erro(true,true);

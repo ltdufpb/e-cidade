@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_vac_aplica_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoVacAplica = new cl_vac_aplica;
 $oDaoVacAplica->rotulo->label("vc16_i_codigo");
@@ -137,9 +137,9 @@ $oDaoVacAplica->rotulo->label("vc16_i_codigo");
    
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_vc16_i_codigo)) {
-          $repassa = array("chave_vc16_i_codigo"=>$chave_vc16_i_codigo,"chave_vc16_i_codigo"=>$chave_vc16_i_codigo);
+          $repassa = ["chave_vc16_i_codigo"=>$chave_vc16_i_codigo,"chave_vc16_i_codigo"=>$chave_vc16_i_codigo];
         }
         db_lovrot($sSql,15,"()","",$funcao_js,"","NoMe",$repassa);
 

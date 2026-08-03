@@ -82,7 +82,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
 
 
 ?>
-<form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" onload='js_testadata();' >
+<form name="form1" method="post" action="<?=basename((string) $_SERVER['PHP_SELF'])?>" onload='js_testadata();' >
 <fieldset>
 <legend>Vincular Atividades</legend>
 <table>
@@ -105,7 +105,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
 				db_input('q07_inscr',10,$Iq07_inscr,true,'text',3);
 			?>
        <?php 
-					$z01_nome = stripslashes($z01_nome);
+					$z01_nome = stripslashes((string) $z01_nome);
 					db_input('z01_nome',50,$Iz01_nome,true,'text',3);
        ?>
     </td>
@@ -137,7 +137,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
       }else{
         $db_opcao_02=1;
       }
-      $xq = array("f"=>"NÃO","t"=>"SIM");
+      $xq = ["f"=>"NÃO","t"=>"SIM"];
       db_select('princ',$xq,true,$db_opcao_02, 'onchange="js_mostraImprime(this.value)"');
       if(isset($npods)){
       echo "<small><b>Não será possível alterar este campo.</b></small>";
@@ -147,7 +147,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
       <a nowrap title="<?=@$Tq07_imprimealvara?>"></a>
       <span id='imprime_alvara'><?=@$Lq07_imprimealvara?></span>
         <?php 
-        $imprime = array("Sim"=>"SIM","Não"=>"NÃO");
+        $imprime = ["Sim"=>"SIM","Não"=>"NÃO"];
         db_select('q07_imprimealvara',$imprime,true,1);
         ?>
     </td>
@@ -171,7 +171,7 @@ if(empty($excluir) && empty($alterar) && isset($opcao) && $opcao!=""){
     </td>
     <td>
 			<?php 
-				$xe = array("t"=>"PERMANENTE","f"=>"PROVISÓRIO");
+				$xe = ["t"=>"PERMANENTE","f"=>"PROVISÓRIO"];
 				db_select('q07_perman',$xe,true,$db_opcao,"onchange='js_testadata(this.value);'");
 			?>
     </td>
@@ -376,7 +376,7 @@ function js_dtfim(){
  <tr>
    <td >
    <?php 
-    $chavepri= array("q07_inscr"=>$q07_inscr,"q07_seq"=>@$q07_seq);
+    $chavepri= ["q07_inscr"=>$q07_inscr,"q07_seq"=>@$q07_seq];
     $campos="q07_inscr,q07_seq,q07_val_ativ_int,q88_inscr,q03_ativ,q03_descr,q07_datain,q07_horaini,q07_horafim,q07_datafi,q07_databx,q07_perman,q07_quant, q07_imprimealvara";
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->sql     = $cltabativ->sql_query_atividade_inscr($q07_inscr,"$campos", "");

@@ -91,7 +91,7 @@ $oDaoSauCid->rotulo->label("sd70_c_nome");
           <?php
           
           $sCampos = " distinct sd70_i_codigo, sd70_c_nome ";
-          $aWhere  = array();
+          $aWhere  = [];
           
           if ( !empty($dtInicio) && !empty($dtFim) ) {
             
@@ -110,9 +110,9 @@ $oDaoSauCid->rotulo->label("sd70_c_nome");
             $sWhere = implode(" and ", $aWhere);
             $sSql   = $oDaoAgravo->sql_query("", $sCampos, "sd70_c_nome", $sWhere);
             
-            $repassa = array();
+            $repassa = [];
             if (isset($chave_sd70_c_nome)) {
-              $repassa = array("chave_sd70_i_codigo" => $chave_sd70_i_codigo, "chave_sd70_c_nome" => $chave_sd70_c_nome);
+              $repassa = ["chave_sd70_i_codigo" => $chave_sd70_i_codigo, "chave_sd70_c_nome" => $chave_sd70_c_nome];
             }
             db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
           } else {

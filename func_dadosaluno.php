@@ -39,7 +39,7 @@ $clrotulo->label("ed47_v_nome");
 $clrotulo->label("ed223_i_serie");
 $clrotulo->label("situacao");
 
-$aRepassa  = array();
+$aRepassa  = [];
 $oDaoSerie = new cl_serie();
 ?>
 <html>
@@ -75,7 +75,7 @@ $oDaoSerie = new cl_serie();
           $rsSerie     = $oDaoSerie ->sql_record($sSqlSerie);
           $iLinhas     = $oDaoSerie->numrows;
           
-          $aDadosSerie = array('' => '');
+          $aDadosSerie = ['' => ''];
           for ($i = 0; $i < $iLinhas; $i++) {
              
             $oDadosSerie   = db_utils::fieldsMemory($rsSerie, $i);
@@ -142,13 +142,13 @@ $oDaoSerie = new cl_serie();
     
       if (isset($chave_ed47_i_codigo)) {
     
-        $aRepassa = array("chave_ed47_i_codigo"=>$chave_ed47_i_codigo,
+        $aRepassa = ["chave_ed47_i_codigo"=>$chave_ed47_i_codigo,
             "chave_ed47_v_nome"=>$chave_ed47_v_nome,
             "chave_ed223_i_serie"=>$chave_ed223_i_serie,
-            "situacao"=>$situacao);
+            "situacao"=>$situacao];
       }
       
-      $aWhere = array();
+      $aWhere = [];
       if (isset($situacao) && (trim($situacao) != "")) {
 
         $aWhere[] = " trim(ed56_c_situacao) = '{$oGet->situacao}' ";

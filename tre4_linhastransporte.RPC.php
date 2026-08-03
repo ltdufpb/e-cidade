@@ -167,7 +167,7 @@ try {
 
       if (isset($oParam->iCodigoLinha)) {
 
-        $oRetorno->aLogradouros = array();
+        $oRetorno->aLogradouros = [];
         $oLinhaTransporte       = new LinhaTransporte($oParam->iCodigoLinha);
         foreach ($oLinhaTransporte->getItinerarios() as $oLinhaItinerario) {
 
@@ -181,10 +181,10 @@ try {
             $oDadosLogradouro->iCodigoLinhaLogradouro  = $oLinhaItinerarioLogradouro->getCodigo();
             $oDadosLogradouro->iBairroLogradouro       = $oLinhaItinerarioLogradouro->getLogradouroBairro()
                                                                                     ->getCodigo();
-            $oDadosLogradouro->sNomeLogradouro         = urlencode($oLinhaItinerarioLogradouro->getLogradouroBairro()
+            $oDadosLogradouro->sNomeLogradouro         = urlencode((string) $oLinhaItinerarioLogradouro->getLogradouroBairro()
                                                                                               ->getLogradouro()
                                                                                               ->getDescricao());
-            $oDadosLogradouro->sBairro                 = urlencode($oLinhaItinerarioLogradouro->getLogradouroBairro()
+            $oDadosLogradouro->sBairro                 = urlencode((string) $oLinhaItinerarioLogradouro->getLogradouroBairro()
                                                                                               ->getBairro()
                                                                                               ->getDescricao());
             $oDadosLogradouro->iTipo                   = $oLinhaItinerario->getTipo();
@@ -208,7 +208,7 @@ try {
 
       if (isset($oParam->iCodigoLinha)) {
 
-        $oRetorno->aHorariosItinerario = array();
+        $oRetorno->aHorariosItinerario = [];
         $oLinhaTransporte              = new LinhaTransporte($oParam->iCodigoLinha);
         foreach ($oLinhaTransporte->getItinerarios() as $oLinhaItinerario) {
 
@@ -216,8 +216,8 @@ try {
 
             $oDadosHorario                   = new stdClass();
             $oDadosHorario->iCodigoHorario   = $oLinhaItinerarioHorario->getCodigo();
-            $oDadosHorario->sHoraPartida     = urlencode($oLinhaItinerarioHorario->getHoraSaida());
-            $oDadosHorario->sHoraRetorno     = urlencode($oLinhaItinerarioHorario->getHoraChegada());
+            $oDadosHorario->sHoraPartida     = urlencode((string) $oLinhaItinerarioHorario->getHoraSaida());
+            $oDadosHorario->sHoraRetorno     = urlencode((string) $oLinhaItinerarioHorario->getHoraChegada());
             $oDadosHorario->iItinerario      = $oLinhaItinerarioHorario->getTipoItinerario();
             $oRetorno->aHorariosItinerario[] = $oDadosHorario;
           }
@@ -322,7 +322,7 @@ try {
 
       if (isset($oParam->iLinhaTransporte)) {
 
-        $oRetorno->aPontosParada = array();
+        $oRetorno->aPontosParada = [];
         $oLinhaTransporte        = new LinhaTransporte($oParam->iLinhaTransporte);
         foreach ($oLinhaTransporte->getItinerarios() as $oLinhaItinerario) {
 
@@ -332,12 +332,12 @@ try {
 
               $oDadosPontoParada = new stdClass();
               $oDadosPontoParada->iCodigo      = $oPontoParada->getCodigo();
-              $oDadosPontoParada->sLogradouro  = urlencode($oLinhaItinerarioLogradouro->getLogradouroBairro()
+              $oDadosPontoParada->sLogradouro  = urlencode((string) $oLinhaItinerarioLogradouro->getLogradouroBairro()
                                                                                       ->getLogradouro()
                                                                                       ->getDescricao());
-              $oDadosPontoParada->sBairro      = urlencode($oLinhaItinerarioLogradouro->getLogradouroBairro()
+              $oDadosPontoParada->sBairro      = urlencode((string) $oLinhaItinerarioLogradouro->getLogradouroBairro()
                                                                                       ->getBairro()->getDescricao());
-              $oDadosPontoParada->sPontoParada = urlencode($oPontoParada->getPontoParada()->getNome());
+              $oDadosPontoParada->sPontoParada = urlencode((string) $oPontoParada->getPontoParada()->getNome());
               $oDadosPontoParada->sItinerario  = urlencode($oLinhaItinerario->getTipo() == 1 ? "Ida" : "Retorno");
               $oRetorno->aPontosParada[]       = $oDadosPontoParada;
             }
@@ -354,7 +354,7 @@ try {
      */
     case 'getPontoParadaPorLogradouro':
 
-      $oRetorno->aPontosParada = array();
+      $oRetorno->aPontosParada = [];
       if (isset($oParam->iItinerarioLogradouro)) {
 
         $oLinhaItinerarioLogradouro = new LinhaItinerarioLogradouro($oParam->iItinerarioLogradouro);

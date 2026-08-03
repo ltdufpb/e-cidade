@@ -37,7 +37,7 @@ $clorcfontes = new cl_orcfontes;
 $clorcreceita = new cl_orcreceita;
 $clorcfontes->rotulo->label();
 $clorcreceita->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_classepont_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clclassepont = new cl_classepont;
 $clclassepont->rotulo->label("q25_classe");
 $clclassepont->rotulo->label("q25_pontuacao");
@@ -98,9 +98,9 @@ $clclassepont->rotulo->label("q25_pontuacao");
         }else{
            $sql = $clclassepont->sql_query("",$campos,"q25_classe","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q25_pontuacao)){
-          $repassa = array("chave_q25_classe"=>$chave_q25_classe,"chave_q25_pontuacao"=>$chave_q25_pontuacao);
+          $repassa = ["chave_q25_classe"=>$chave_q25_classe,"chave_q25_pontuacao"=>$chave_q25_pontuacao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

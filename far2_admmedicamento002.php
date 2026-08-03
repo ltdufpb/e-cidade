@@ -179,12 +179,12 @@ function novoTotal($oPdf, $iPacientes, $iMedicamentos)
 function formataData($dData, $iTipo = 1)
 {
     if ($iTipo == 1) {
-        $dData = explode('/', $dData);
+        $dData = explode('/', (string) $dData);
         $dData = $dData[2] . '-' . $dData[1] . '-' . $dData[0];
         return $dData;
     }
 
-    $dData = explode('-', $dData);
+    $dData = explode('-', (string) $dData);
     $dData = @$dData[2] . '/' . @$dData[1] . '/' . @$dData[0];
     return $dData;
 }
@@ -324,7 +324,7 @@ $iPaciente = -1;
 $iMedicamento = -1;
 $iTotalPacientes = 0;
 $iTotalMedicamentos = 0;
-$aMedicamentosDep = array();
+$aMedicamentosDep = [];
 
 for ($iCount = 0; $iCount < $iLinhas; $iCount++) {
     $oDados = db_utils::fieldsmemory($rsFarControle, $iCount);
@@ -341,7 +341,7 @@ for ($iCount = 0; $iCount < $iLinhas; $iCount++) {
 
         $iTotalPacientes = 0;
         $iTotalMedicamentos = 0;
-        $aMedicamentosDep = array();
+        $aMedicamentosDep = [];
     }
 
     if ($iPaciente != $oDados->z01_i_cgsund || $iAlmoxAntes != $oDados->coddepto) {

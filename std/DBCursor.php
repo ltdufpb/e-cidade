@@ -35,12 +35,6 @@
 class DBCursor{
 
   /**
-   * Nome da Tabela
-   * @var string
-   */
-  public  $sTableName = null;
-
-  /**
    * SQL a ser executado no banco de dados
    * @var string
    */
@@ -58,17 +52,18 @@ class DBCursor{
    * @param string $sSql       - sql que será executado no banco de dados
    * @throws Exception
    */
-  public  function __construct($sTableName, $sSql = null){
-
-    $this->sTableName = $sTableName;
+  public  function __construct(/**
+   * Nome da Tabela
+   */
+  public $sTableName, $sSql = null){
 
     db_inicio_transacao();
 
-    if ( trim($sSql) != '' ) {
+    if ( trim((string) $sSql) != '' ) {
       $this->setSql($sSql);
     }
 
-    $sDeclareCursor = "declare cur_$sTableName cursor for ".$this->getSql();
+    $sDeclareCursor = "declare cur_{$this->sTableName} cursor for ".$this->getSql();
     $rsCursor       = db_query($sDeclareCursor);
 
     if (!$rsCursor){

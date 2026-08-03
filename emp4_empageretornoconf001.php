@@ -91,18 +91,18 @@ $clempagedadosret    = new cl_empagedadosret;
 $clempagedadosretmov = new cl_empagedadosretmov;
 $daoSlip = new cl_slip();
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $iInstituicaoSessao = db_getsession('DB_instit');
 //db_postmemory($_POST);
 //db_postmemory($_GET);
-$aSlipAutomatico = array();
+$aSlipAutomatico = [];
 
 if (isset($atualizar)) {
 
   db_inicio_transacao();
   $sqlerro=false;
-  $sCodigoRetornoGerado = urldecode($retornoarq);
-  $retornoarq = urldecode($retornoarq);
+  $sCodigoRetornoGerado = urldecode((string) $retornoarq);
+  $retornoarq = urldecode((string) $retornoarq);
   $movs   = str_replace("XX", ",", $movs);
   $sWhere = "e76_codret in ($retornoarq) and e76_codmov in ($movs)";
   $sSqlDadosEmpagedadosretmov = $clempagedadosretmov->sql_query_file(null,null,"e76_codret, e76_codmov",null,$sWhere);
@@ -480,7 +480,7 @@ function js_atualizar(){
           <?php
 
             if (isset($e87_data) && trim($e87_data) != "") {
-              $arr_data = split("-",$e87_data);
+              $arr_data = preg_split("#\\-#m",$e87_data);
               $data_proc_dia = $arr_data[2];
               $data_proc_mes = $arr_data[1];
               $data_proc_ano = $arr_data[0];

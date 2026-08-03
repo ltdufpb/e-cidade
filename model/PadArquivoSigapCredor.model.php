@@ -41,7 +41,7 @@ final class PadArquivoSigapCredor extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "Credor";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -62,7 +62,7 @@ final class PadArquivoSigapCredor extends PadArquivoSigap {
      * Separamos a data do em ano, mes, dia
      */
     $sWhereInstit = " and o58_instit = ".db_getsession("DB_instit");
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sSqlCredor  = "select distinct z01_numcgm as codigo,";
     $sSqlCredor .= "       z01_nome   as nome,";
@@ -81,41 +81,41 @@ final class PadArquivoSigapCredor extends PadArquivoSigap {
     $rsCredor    = db_query($sSqlCredor);
     $iTotalLinhas = pg_num_rows($rsCredor);
 
-    $aCnpjsIncluidos = array();
+    $aCnpjsIncluidos = [];
     $this->addLog("\n".str_repeat("-", 30)."\nCredor\n");
     for ($i = 0; $i < $iTotalLinhas; $i++) {
       
       $sDiaMesAno =  "{$iAno}-".str_pad($iMes, 2, "0", STR_PAD_LEFT)."-".str_pad($iDia, 2, "0", STR_PAD_LEFT);
       $oCredor   = db_utils::fieldsMemory($rsCredor, $i);
 
-      if (trim($oCredor->cidade) == "" || strlen($oCredor->cidade) < 2) {
+      if (trim((string) $oCredor->cidade) == "" || strlen((string) $oCredor->cidade) < 2) {
         $oCredor->cidade = $oInstituicao->munic;
       }
       $oCredorRetorno                                = new stdClass();
       $oCredorRetorno->creCodigoEntidade             = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oCredorRetorno->creMesAnoMovimento            = $sDiaMesAno;
-      $oCredorRetorno->creNomeCredor                 = substr($oCredor->nome, 0, 80);
-      $iTamanhoPad = strlen($oCredor->cnpj);
-      $oCredorRetorno->creCNPJCPF                    = str_pad($oCredor->cnpj, $iTamanhoPad, 0, STR_PAD_LEFT);
-      $oCredorRetorno->creInscricaoEstadual          = str_pad($oCredor->cgc, 15, 0, STR_PAD_LEFT);
-      $oCredorRetorno->creInscricaoMunicipal         = str_pad($oCredor->iss, 15, 0, STR_PAD_LEFT);
-      $oCredorRetorno->creEndereco                   = substr($oCredor->endereco, 0, 50);
-      $oCredorRetorno->creCidade                     = substr($oCredor->cidade, 0, 30);
+      $oCredorRetorno->creNomeCredor                 = substr((string) $oCredor->nome, 0, 80);
+      $iTamanhoPad = strlen((string) $oCredor->cnpj);
+      $oCredorRetorno->creCNPJCPF                    = str_pad((string) $oCredor->cnpj, $iTamanhoPad, 0, STR_PAD_LEFT);
+      $oCredorRetorno->creInscricaoEstadual          = str_pad((string) $oCredor->cgc, 15, 0, STR_PAD_LEFT);
+      $oCredorRetorno->creInscricaoMunicipal         = str_pad((string) $oCredor->iss, 15, 0, STR_PAD_LEFT);
+      $oCredorRetorno->creEndereco                   = substr((string) $oCredor->endereco, 0, 50);
+      $oCredorRetorno->creCidade                     = substr((string) $oCredor->cidade, 0, 30);
       if ($oCredor->uf == "") {
         $oCredor->uf = $oInstituicao->uf;
       }
-      $oCredorRetorno->creUF                         = str_pad($oCredor->uf, 2, "0");
+      $oCredorRetorno->creUF                         = str_pad((string) $oCredor->uf, 2, "0");
       $sCep                                          = str_replace(".","",str_replace("-","",$oCredor->cep));
       $oCredorRetorno->creCEP                        = str_pad($sCep, 8, "0", STR_PAD_LEFT);
-      $sFone                                         = str_replace(array("(",")","-"),
-                                                                   array("","",""),                                        
+      $sFone                                         = str_replace(["(",")","-"],
+                                                                   ["","",""],                                        
                                                                    $oCredor->fone);
-      $sFax                                          = str_replace(array("(",")","-"),
-                                                                   array("","",""),                                        
+      $sFax                                          = str_replace(["(",")","-"],
+                                                                   ["","",""],                                        
                                                                    $oCredor->fax);                                                                   
       $oCredorRetorno->creFone                       = $sFone;
       $oCredorRetorno->creFax                        = $sFax;
-      $oCredorRetorno->creTipoCredor                 = str_pad($oCredor->tipo, 2, "0", STR_PAD_LEFT);
+      $oCredorRetorno->creTipoCredor                 = str_pad((string) $oCredor->tipo, 2, "0", STR_PAD_LEFT);
       
       array_push($this->aDados, $oCredorRetorno);
       if (in_array($oCredor->cnpj, $aCnpjsIncluidos)) {
@@ -124,20 +124,20 @@ final class PadArquivoSigapCredor extends PadArquivoSigap {
          $this->addLog($sLog);
       }
       array_push($aCnpjsIncluidos, $oCredor->cnpj);      
-      if (strlen($oCredor->cnpj) < 11) {
+      if (strlen((string) $oCredor->cnpj) < 11) {
 
-        $sLog = "Cnpj Tamanho (".strlen($oCredor->cnpj).") Inválido:{$oCredorRetorno->creCNPJCPF} - CGM:{$oCredor->codigo} - Nome:{$oCredor->nome}\n";
+        $sLog = "Cnpj Tamanho (".strlen((string) $oCredor->cnpj).") Inválido:{$oCredorRetorno->creCNPJCPF} - CGM:{$oCredor->codigo} - Nome:{$oCredor->nome}\n";
         $this->addLog($sLog);
         
       }
       
-      if (strlen($oCredor->cnpj) == 11 && !validaCPF($oCredor->cnpj)) {
+      if (strlen((string) $oCredor->cnpj) == 11 && !validaCPF($oCredor->cnpj)) {
         
         $sLog = "Cpf Inválido:{$oCredorRetorno->creCNPJCPF} - CGM:{$oCredor->codigo} - Nome:{$oCredor->nome}\n";
         $this->addLog($sLog);
       }
       
-      if (strlen($oCredor->cnpj) == 14 && !validaCNPJ($oCredor->cnpj)) {
+      if (strlen((string) $oCredor->cnpj) == 14 && !validaCNPJ($oCredor->cnpj)) {
         
         $sLog = "Cnpj Inválido:{$oCredorRetorno->creCNPJCPF} - CGM:{$oCredor->codigo} - Nome:{$oCredor->nome}\n";
         $this->addLog($sLog);
@@ -156,7 +156,7 @@ final class PadArquivoSigapCredor extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "creCodigoEntidade",
                         "creMesAnoMovimento",
                         "creNomeCredor",
@@ -170,14 +170,14 @@ final class PadArquivoSigapCredor extends PadArquivoSigap {
                         "creFone",
                         "creFax",
                         "creTipoCredor",
-                       );
+                       ];
     return $aElementos;  
   }
   
 }
 function validaCPF($vcic) {
   
-  if (strlen($vcic) != 11) {
+  if (strlen((string) $vcic) != 11) {
     return false;
   }
   for ($vdigpos = 10; $vdigpos < 12; $vdigpos++ ){
@@ -186,11 +186,11 @@ function validaCPF($vcic) {
     $vpos = 0;
     for ($vfator = $vdigpos; $vfator >= 2; $vfator-- ) {
       
-      $vdig = ($vdig + substr($vcic, $vpos, 1) * $vfator);
+      $vdig = ($vdig + substr((string) $vcic, $vpos, 1) * $vfator);
       $vpos++;
     }
     $vdig  = 11 -($vdig % 11) < 10 ? (11 - $vdig % 11) : 0;
-    if ($vdig != substr($vcic, $vdigpos-1,1)) {
+    if ($vdig != substr((string) $vcic, $vdigpos-1,1)) {
      return false;
     }
   }
@@ -199,7 +199,7 @@ function validaCPF($vcic) {
 
 function validaCNPJ($vcnpj) {
   
-  if (strlen($vcnpj) != 14) {
+  if (strlen((string) $vcnpj) != 14) {
     return false;
   }
   for ($vdigpos = 13; $vdigpos < 15; $vdigpos++ ) {
@@ -208,16 +208,16 @@ function validaCNPJ($vcnpj) {
     $vpos = 0;
     for ($vfator = $vdigpos - 8; $vfator >= 2; $vfator-- ) {
 
-      $vdig = $vdig + substr($vcnpj, $vpos,1) * $vfator;
+      $vdig = $vdig + substr((string) $vcnpj, $vpos,1) * $vfator;
       $vpos++;
     }
     for ($vfator = 9; $vfator >= 2; $vfator-- ) {
       
-      $vdig = $vdig + substr($vcnpj, $vpos,1) * $vfator;
+      $vdig = $vdig + substr((string) $vcnpj, $vpos,1) * $vfator;
       $vpos++;
     }
     $vdig  = (11 -($vdig % 11)) < 10 ? (11 - $vdig % 11) : 0;
-    if ($vdig != substr($vcnpj, $vdigpos-1,1)) {
+    if ($vdig != substr((string) $vcnpj, $vdigpos-1,1)) {
       return false;
     }
   }

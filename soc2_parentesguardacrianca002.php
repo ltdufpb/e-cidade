@@ -111,8 +111,8 @@ if ($iTotalCidadaoFamilia > 0) {
     $oPdf->Cell(20,  $iHeigth, "{$iCodigoFamilia}",                      "TBRL", 0);
     $oPdf->Cell(60,  $iHeigth, "{$sResponsavel}",                        "TBRL", 0);
     $oPdf->Cell(60,  $iHeigth, substr($sEndereco, 0, 60),                "LTB",  0);
-    $oPdf->Cell(30,  $iHeigth, substr($sBairro, 0, 30) ,                 "TBRL", 0);
-    $oPdf->Cell(70,  $iHeigth, substr($oDadosFamilia->ov02_nome, 0, 50), "TBRL", 0);
+    $oPdf->Cell(30,  $iHeigth, substr((string) $sBairro, 0, 30) ,                 "TBRL", 0);
+    $oPdf->Cell(70,  $iHeigth, substr((string) $oDadosFamilia->ov02_nome, 0, 50), "TBRL", 0);
     $oPdf->Cell(20,  $iHeigth, "Outros",                                 "TBRL", 1);
     $iTotalRegistros ++;
   }

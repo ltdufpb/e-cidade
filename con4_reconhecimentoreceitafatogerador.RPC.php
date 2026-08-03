@@ -80,13 +80,13 @@ switch ( $oParam->exec ) {
       $oDadosContaDebito = buscaDadoContaDebito(105, $oDadosOrcReceita->o70_codfon, 1, false);
 
 	    $oRetorno->o57_codfon_debito  = $oDadosContaDebito->o57_codfon_debito;
-	    $oRetorno->c57_descr_debito   = urlencode($oDadosContaDebito->c57_descr_debito);
+	    $oRetorno->c57_descr_debito   = urlencode((string) $oDadosContaDebito->c57_descr_debito);
 	    $oRetorno->o57_codfon_credito = $oDadosContaDebito->o57_codfon_credito;
-	    $oRetorno->c57_descr_credito  = urlencode($oDadosContaDebito->c57_descr_credito);
+	    $oRetorno->c57_descr_credito  = urlencode((string) $oDadosContaDebito->c57_descr_credito);
 	    $oRetorno->o70_codrec         = $oDadosOrcReceita->o70_codrec;
 	    $oRetorno->o70_valor          = $oDadosOrcReceita->o70_valor;
 	    $oRetorno->c50_codhist        = $oDadosHistorico->c50_codhist;
-	    $oRetorno->c50_descr          = urlencode($oDadosHistorico->c50_descr);
+	    $oRetorno->c50_descr          = urlencode((string) $oDadosHistorico->c50_descr);
 
 		  db_fim_transacao(false);
 
@@ -116,13 +116,13 @@ switch ( $oParam->exec ) {
 
 
 	    $oRetorno->o57_codfon_debito  = $oDadosContaDebito->o57_codfon_debito;
-	    $oRetorno->c57_descr_debito   = urlencode($oDadosContaDebito->c57_descr_debito);
+	    $oRetorno->c57_descr_debito   = urlencode((string) $oDadosContaDebito->c57_descr_debito);
 	    $oRetorno->o57_codfon_credito = $oDadosContaDebito->o57_codfon_credito;
-	    $oRetorno->c57_descr_credito  = urlencode($oDadosContaDebito->c57_descr_credito);
+	    $oRetorno->c57_descr_credito  = urlencode((string) $oDadosContaDebito->c57_descr_credito);
 	    $oRetorno->o70_codrec         = $oDadosOrcReceita->o70_codrec;
 	    $oRetorno->o70_valor          = $oDadosOrcReceita->o70_valor;
 	    $oRetorno->c50_codhist        = $oDadosHistorico->c50_codhist;
-	    $oRetorno->c50_descr          = urlencode($oDadosHistorico->c50_descr);
+	    $oRetorno->c50_descr          = urlencode((string) $oDadosHistorico->c50_descr);
 	    db_fim_transacao(false);
 
 	  } catch (Exception $eException) {

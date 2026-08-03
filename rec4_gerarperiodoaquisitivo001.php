@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $clrhferias = new cl_rhferias;
@@ -51,7 +51,7 @@ if (isset($processar)) {
             throw new BusinessException("Informe ao menos uma forma para gerar os períodos aquisitivos.");
         }
 
-        $aMatriculas = array();
+        $aMatriculas = [];
 
         if ((isset($lAtivos) && $lAtivos == true) || (isset($r44_selec) && !empty($r44_selec))) {
 
@@ -94,7 +94,7 @@ if (isset($processar)) {
             }
         } else if (isset($rh109_regist) && !empty($rh109_regist)) {
 
-            $aMatriculas = array($rh109_regist);
+            $aMatriculas = [$rh109_regist];
         }
 
         $oDaoRhPeriodoAquisitivo = new cl_rhferias();
@@ -124,7 +124,7 @@ if (isset($processar)) {
                 continue;
             }
             $dadosPeriodo = db_utils::fieldsMemory($rsNovoPeriodoAquisitivo, 0);
-            $dadosParaIncluir = array($dadosPeriodo);
+            $dadosParaIncluir = [$dadosPeriodo];
 
             foreach ($dadosParaIncluir as $periodosInclusao) {
 

@@ -46,8 +46,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $oDaoModeloLivro = db_utils::getdao('far_modelolivro');
 $oDaoFechaLivro  = db_utils::getdao('far_fechalivro');
@@ -118,7 +118,7 @@ $fa26_i_login = DB_getsession("DB_id_usuario");
                       <b>Ordem:</b>
                     </td>
                     <td>
-                      <?php db_select('ordem', array('R' => 'REMÉDIO', 'D' => 'DATA'), true, 2, "");?>
+                      <?php db_select('ordem', ['R' => 'REMÉDIO', 'D' => 'DATA'], true, 2, "");?>
                     </td>
                   </tr>
                 </table>

@@ -47,11 +47,11 @@ $oParam   = @$oJson->decode(str_replace("\\","",@$_POST["json"]));
 switch ($oParam->exec) {
 
   case "getTarefas": 
- 
+
   $aTarefas = getTarefas();
 
   echo $oJson->encode($aTarefas);
-  
+
   break;
 
   case "getDetalheTarefa":
@@ -76,7 +76,7 @@ switch ($oParam->exec) {
   } else {
     $sMensagem = "Nenhum dado retornado";
     $iStatus   = 2;
-    $oTarefa   = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+    $oTarefa   = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
   }
 
   $sSqlTotaisSituacao  = "    select at46_codigo, ";
@@ -96,11 +96,11 @@ switch ($oParam->exec) {
 
   $rsTotaisSituacao = $oDaoTarefas->sql_record($sSqlTotaisSituacao);
   $aSituacaoTarefas = db_utils::getCollectionByRecord($rsTotaisSituacao,false,false,true);
-  $aRetorno = array("oDetalheTarefa"=>$oTarefa,"aSituacaoTarefas"=>$aSituacaoTarefas);
+  $aRetorno = ["oDetalheTarefa"=>$oTarefa,"aSituacaoTarefas"=>$aSituacaoTarefas];
 
   echo $oJson->encode($aRetorno);
   break;	
-	
+
   case "getTarefas_old": 
 
   $oDaoTarefas = db_utils::getDao('tarefa');
@@ -154,16 +154,16 @@ switch ($oParam->exec) {
 */
 
   $rsTarefas = $oDaoTarefas->sql_record($oDaoTarefas->sql_query_previsao(null,$sCampos, "at81_ordem,final_previsto"));
-  
+
   if ($rsTarefas) {
     $aTarefas = db_utils::getCollectionByRecord($rsTarefas,false,false,true); 
   } else {
     $sMensagem  = "Nenhum dado retornado".pg_last_error();
     $iStatus    = 2;
-    $aTarefas = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+    $aTarefas = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
   }
 
-  $aDadosValores = array();
+  $aDadosValores = [];
 
   echo $oJson->encode($aTarefas);
   break;
@@ -190,7 +190,7 @@ switch ($oParam->exec) {
   } else {
     $sMensagem = "Nenhum dado retornado";
     $iStatus   = 2;
-    $oTarefa   = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+    $oTarefa   = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
   }
 
   $sSqlTotaisSituacao  = "    select at46_codigo, ";
@@ -210,7 +210,7 @@ switch ($oParam->exec) {
 
   $rsTotaisSituacao = $oDaoTarefas->sql_record($sSqlTotaisSituacao);
   $aSituacaoTarefas = db_utils::getCollectionByRecord($rsTotaisSituacao,false,false,true);
-  $aRetorno = array("oDetalheTarefa"=>$oTarefa,"aSituacaoTarefas"=>$aSituacaoTarefas);
+  $aRetorno = ["oDetalheTarefa"=>$oTarefa,"aSituacaoTarefas"=>$aSituacaoTarefas];
 
   echo $oJson->encode($aRetorno);
   break;
@@ -235,12 +235,12 @@ switch ($oParam->exec) {
   } else {
     $sMensagem  = "Nenhum dado retornado";
     $iStatus    = 2;
-    $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+    $aRegistros = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
   }
 
   echo $oJson->encode($aRegistros);
   break;
-  
+
   case "getPrevisaoTarefa":
 
   $sSqlLancamentos  = "select at84_sequencial  as at46_codigo,      ";
@@ -294,7 +294,7 @@ switch ($oParam->exec) {
   } else {
     $sMensagem  = "Nenhum dado retornado";
     $iStatus    = 2;
-    $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+    $aRegistros = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
   }
   $oRetorno = new stdClass();
   $oRetorno->iCodTarefa = $oParam->iCodTarefa;
@@ -303,15 +303,15 @@ switch ($oParam->exec) {
   break;
 
   case "lancarRegistros":
-  	
+
   	$oDaoTarefaPrevisao        = db_utils::getDao('tarefaprevisao');
 	  $oDaoTarefaPrevisaoFase    = db_utils::getDao('tarefaprevisaofase');
 	  $oDaoTarefaPrevisaoRecurso = db_utils::getDao('tarefaprevisaofaserecurso');
-	  
+
 	  $sSqlTarefaPrevisao = $oDaoTarefaPrevisao->sql_query_file(null, "at81_sequencial", "", "at81_tarefa={$oParam->iCodTarefa}");
 	  $rsTarefaPrevisao   = $oDaoTarefaPrevisao->sql_record($sSqlTarefaPrevisao);
 	  $tarefaprevisao     = db_utils::fieldsMemory($rsTarefaPrevisao,0)->at81_sequencial;
-	  
+
 	  $sSqlPrevisaoFase = $oDaoTarefaPrevisaoFase->sql_query(null, "*, 
                                                             (SELECT at83_usuario FROM tarefaprevisaofaserecurso
                                                              WHERE at83_tarefaprevisaofase = tarefaprevisaofase.at82_sequencial) as recurso", 
@@ -319,22 +319,22 @@ switch ($oParam->exec) {
     $rsPrevisaoFase   = $oDaoTarefaPrevisaoFase->sql_record($sSqlPrevisaoFase);
 
     $aPrevisaoFase = new PrevisaoFaseCollection();
-    
+
     /*
      * CARREGA AS PREVISÕES DO BANCO PARA O OBJETO PrevisaoFaseCollection
      */
     if ($rsPrevisaoFase) {
-        
+
       $aPrevisoes = db_utils::getCollectionByRecord($rsPrevisaoFase);
-      
+
       // Adiciona os objetos PrevisaoFase para o array //
       foreach ($aPrevisoes as $oPrevFase) {
-          
+
         $iDtIni = strtotime("{$oPrevFase->at82_dataini} {$oPrevFase->at82_horaini}");
         $iDtFim = strtotime("{$oPrevFase->at82_datafim} {$oPrevFase->at82_horafim}");
-          
+
         $oPrevisaoFase = new PrevisaoFase();
-          
+
         $oPrevisaoFase->setCodTarefa($oPrevFase->at81_tarefa);
         $oPrevisaoFase->setCodTarefaPrevisao($oPrevFase->at81_sequencial);
         $oPrevisaoFase->setCodFase($oPrevFase->at82_sequencial);
@@ -344,27 +344,27 @@ switch ($oParam->exec) {
         $oPrevisaoFase->setDtIni($iDtIni);
         $oPrevisaoFase->setDtFim($iDtFim);
         $oPrevisaoFase->setStatus("A");
-          
+
         $aPrevisaoFase->addPrevisaoFase($oPrevisaoFase);
       }
     }
-	  
+
     /*
      * CRIA E INSERE AS NOVAS PREVISÔES NO OBJETO PrevisaoFaseCollection
      */
 	  foreach ($oParam->aRegistros as $oRegistro) {
-	      
-		  $sDataIni = $oRegistro->sDtIni ? implode('-',array_reverse(explode('/',$oRegistro->sDtIni))) : '';
-      $sHoraIni = $oRegistro->sDtIni ? ($oRegistro->sHoraIni?$oRegistro->sHoraIni:'00:00') : '';        
-      $sDataFim = $oRegistro->sDtFim ? implode('-',array_reverse(explode('/',$oRegistro->sDtFim))) : '';
-      $sHoraFim = $oRegistro->sDtFim ? ($oRegistro->sHoraFim?$oRegistro->sHoraFim:'00:00') : '';
-      
+
+		  $sDataIni = $oRegistro->sDtIni ? implode('-',array_reverse(explode('/',(string) $oRegistro->sDtIni))) : '';
+      $sHoraIni = $oRegistro->sDtIni ? ($oRegistro->sHoraIni ?: '00:00') : '';        
+      $sDataFim = $oRegistro->sDtFim ? implode('-',array_reverse(explode('/',(string) $oRegistro->sDtFim))) : '';
+      $sHoraFim = $oRegistro->sDtFim ? ($oRegistro->sHoraFim ?: '00:00') : '';
+
       /*
        * TRASNFORMA DATAS EM INTEIROS TIMESTAMPS 
        */      
       $iDtIni = strtotime("{$sDataIni} {$sHoraIni}");
       $iDtFim = strtotime("{$sDataFim} {$sHoraFim}");
-             
+
 	    $oNewPrevisaoFase = new PrevisaoFase();
 	    $oNewPrevisaoFase->setCodTarefa($oParam->iCodTarefa);
 	    $oNewPrevisaoFase->setCodTarefaPrevisao($tarefaprevisao);
@@ -374,7 +374,7 @@ switch ($oParam->exec) {
 	    $oNewPrevisaoFase->setDtIni($iDtIni);
 	    $oNewPrevisaoFase->setDtFim($iDtFim);
 	    $oNewPrevisaoFase->setStatus("N");
-	    
+
 	    $aPrevisaoFase->insertPrevisao($oNewPrevisaoFase);		  			  	
 		}
 	  /*
@@ -385,84 +385,84 @@ switch ($oParam->exec) {
 	  if (!$aPrevisaoFase->persist())
 	    $sqlerro = true; 	  
 	  db_fim_transacao($sqlerro);
-	  
+
 	  if ($sqlerro) {
-	  	
+
     	$sMensagem  = "Erro ao incluir registros";
 		  $iStatus    = 0;  
-		  $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));		  
-		  
+		  $aRegistros = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];		  
+
 	  } else {
-	  	
+
 		  $sMensagem  = "Registros incluidos com sucesso";
       $iStatus    = 1;  
-      $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+      $aRegistros = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
 	  }
 
 	 echo $oJson->encode($aRegistros);
    break;	
-	  
+
 	  //die;
 	  //print_r($oParam->aRegistros);
 	  //die;
 /*	  
 	  foreach ($oParam->aRegistros as $oRegistro) {
-      
+
 	  	$iCodUsuario = $oRegistro->iCodUsuario;
 
 //	  	die($iCodUsuario);
-	  	
+
 	    if ($iCodUsuario) {
-	  	
+
 	      $nHoras = $oRegistro->nQtdHoras;
-	  
+
 			  if ($oRegistro->sDtIni) { 
 				  $sDataIni = implode('-',array_reverse(explode('/',$oRegistro->sDtIni)));
 				  $sHoraIni = $oRegistro->sHoraIni;
 			  }
-			  
+
 			  if ($oRegistro->sDtFim != "") {
 				  $sDataFim = implode('-',array_reverse(explode('/',$oRegistro->sDtFim)));
 				  $sHoraFim = $oRegistro->sHoraFim;
 			  }
-			  
+
 			  $sDataFinal   = "{$sDataFim} {$sHoraFim}";
 			  $sDataInicial = "{$sDataIni} {$sHoraIni}";
-			  		  
+
 			  $sWhere  = "at83_usuario = {$iCodUsuario} ";
 			  $sWhere .= "AND ";
 			  $sWhere .= "(";
 			  $sWhere .= "(at82_dataini||' '||at82_horaini BETWEEN '{$sDataInicial}' AND '{$sDataFinal}') ";
 			  $sWhere .= "OR (at82_datafim||' '||at82_horafim BETWEEN '{$sDataInicial}' AND '{$sDataFinal}')";
 			  $sWhere .= ")"; 
-			  
+
 			  $sSql         = $oDaoTarefaPrevisaoRecurso->sql_query(null, "*", "", $sWhere);
 		    //echo $sWhere."<br>";
-	      
+
 		    die($sSql);
-	      
+
 		    $rsNConflitos = $oDaoTarefaPrevisaoRecurso->sql_record($sSql);
 	      $oConflito   = db_utils::fieldsMemory($rsNConflitos,0);
-	
+
 	      if ($oConflito->nconflitos > 0) 
 	        $lConflito = true;
-		    
+
 	    }
 	  } */
 
 	 /* 
 	  die;
-  	
+
 		  $lErro = false;
 		  db_inicio_transacao();
-		
+
 		  $rsTarefaPrevisao          = $oDaoTarefaPrevisao->sql_record($oDaoTarefaPrevisao->sql_query_file(null,"at81_sequencial",null,"at81_tarefa = {$oParam->iCodTarefa}"));
 		  if (!$rsTarefaPrevisao || pg_num_rows($rsTarefaPrevisao) == 0) {
 		    $lErro     = true;
 		    $sMensagem = "Previsao da tarefa não encontrada, tarefa : {$oParam->iCodTarefa}";
 		  }
 		  $oTarefaPrevisao = db_utils::fieldsMemory($rsTarefaPrevisao,0);
-		
+
 		  $rsTarefaPrevisaoFase = $oDaoTarefaPrevisaoFase->sql_record($oDaoTarefaPrevisaoFase->sql_query(null,"distinct at82_sequencial",null,"at81_tarefa = {$oParam->iCodTarefa}"));
 		  if ($rsTarefaPrevisaoFase && pg_num_rows($rsTarefaPrevisaoFase) > 0 ) {
 		    for ($i = 0; $i < pg_num_rows($rsTarefaPrevisaoFase); $i++) {
@@ -474,15 +474,15 @@ switch ($oParam->exec) {
 		      }
 		    }
 		  }
-		
+
 		  $oDaoTarefaPrevisaoFase->excluir(null,"at82_tarefaprevisao = {$oTarefaPrevisao->at81_sequencial}");
 		  if ($oDaoTarefaPrevisaoFase->erro_status == '0') {
 		    $lErro     = true;
 		    $sMensagem = $oDaoTarefaPrevisaoFase->erro_msg;
 		  }
-		
+
 		  foreach ($oParam->aRegistros as $oRegistro) {
-		    
+
 		    $sDataIni = "";
 		    $sDataFim = "";
 		    $oDaoTarefaPrevisaoFase->at82_tarefaprevisao        = $oTarefaPrevisao->at81_sequencial;
@@ -505,7 +505,7 @@ switch ($oParam->exec) {
 		      $sMensagem = $oDaoTarefaPrevisaoFase->erro_msg;
 		      break;
 		    }
-		
+
 		    if (isset($oRegistro->iCodUsuario) && $oRegistro->iCodUsuario != "" ) {
 		      $oDaoTarefaPrevisaoRecurso->at83_tarefaprevisaofase = $oDaoTarefaPrevisaoFase->at82_sequencial;
 		      $oDaoTarefaPrevisaoRecurso->at83_usuario            = $oRegistro->iCodUsuario;
@@ -516,11 +516,11 @@ switch ($oParam->exec) {
 		        break;
 		      }
 		    }
-		
+
 		  }
-		
+
 		  db_fim_transacao($lErro);
-		  
+
 			if ($lErro) {
 		    // $sMensagem  = "Previsão nao econtrada";
 		    $iStatus    = 2;
@@ -529,20 +529,20 @@ switch ($oParam->exec) {
 		    $sMensagem  = "Registros incluidos com sucesso";
 		    $iStatus    = 1;
 		    $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
-		
+
 		  }  
   */
 
 
-  
+
   case "getTarefasPrevisao":
 
-	
+
   $oDaoTarefa       = db_utils::getDao('tarefa');
-  
+
   $sCampos  = " tarefa.at40_sequencial as tarefa,   ";      
   $sCampos .= " tarefa.at40_descr      as descricao ";
-  
+
 	$sSqlListaTarefas = $oDaoTarefa->sql_query_semprevisao(null,$sCampos);
   $rsTarefas        = db_query($sSqlListaTarefas);
 
@@ -551,18 +551,18 @@ switch ($oParam->exec) {
   } else {
     $sMensagem = "Nenhum dado retornado".pg_last_error();
     $iStatus   = 2;
-    $aTarefas  = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+    $aTarefas  = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
   }
 
-  $aDadosValores = array();
+  $aDadosValores = [];
 
   echo $oJson->encode($aTarefas);
   break;
 
-  
+
   case "salvarTarefasPrevisao":
 
-	
+
   $oDaoTarefaPrevisao = db_utils::getDao('tarefaprevisao');
   $oDaoTarefa         = db_utils::getDao('tarefa');
 
@@ -570,37 +570,37 @@ switch ($oParam->exec) {
   $sMensagem = 'Alteração efetuada com sucesso!';
 
   db_inicio_transacao();
-  
+
   $sSqlListaSemPrevisao = $oDaoTarefa->sql_query_semprevisao(null,'at40_sequencial');
   $sSqlExcluirTarefas   = "delete from tarefaprevisao where at81_tarefa in ( $sSqlListaSemPrevisao )";
   $rsExcluirLista       = db_query($sSqlExcluirTarefas);
-  
+
   if ( !$rsExcluirLista ) {
   	$sMensagem = "Erro ao recriar lista de tarefas!";
   	$lErro     = true;
   }
-  
+
   if ( count($oParam->aTarefas) && !$lErro ) {
 
   	foreach ( $oParam->aTarefas as $iInd => $iCodTarefa ) {
-  		
+
 	 	  $oDaoTarefaPrevisao->at81_tarefa  = $iCodTarefa;
 		  $oDaoTarefaPrevisao->at81_usuario = db_getsession('DB_id_usuario');
 		  $oDaoTarefaPrevisao->at81_dtlanc  = date('Y-m-d',db_getsession('DB_datausu'));
 		  $oDaoTarefaPrevisao->at81_hora    = db_hora();
 		  $oDaoTarefaPrevisao->at81_ordem   = ($iInd+1);
 		  $oDaoTarefaPrevisao->incluir(null); 
-		  
+
 		  if ( $oDaoTarefaPrevisao->erro_status == 0 ) {
 		    $lErro     = true;     
 		    $sMensagem = $oDaoTarefaPrevisao->erro_msg;
 		    break;
 		  }
-		    		
+
   	}
-  	
+
   }
-  
+
   db_fim_transacao($lErro);
 
 
@@ -609,15 +609,15 @@ switch ($oParam->exec) {
   }else{
     $iStatus = 1;
   }
-  
-  $aRegistros = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
-  
+
+  $aRegistros = ["iStatus"=>$iStatus, "sMensagem"=>urlencode((string) $sMensagem)];
+
   echo $oJson->encode($aRegistros);
   break;
 
 }	
 
-function getTarefas($tar=0, $aTarefasFinal=array()) {
+function getTarefas($tar=0, $aTarefasFinal=[]) {
 
   $oDaoTarefas = db_utils::getDao('tarefa');
 
@@ -651,12 +651,12 @@ function getTarefas($tar=0, $aTarefasFinal=array()) {
   $sCampos .= "   where at81_tarefa = at40_sequencial and at82_datafim is not null  AND at82_ativo = 't' ";
   $sCampos .= "   order by to_timestamp((at82_datafim|| ' ' ||at82_horafim)::text, 'YYYY-MM-DD HH24:MI') desc limit 1 "; 
   $sCampos .= " ) as hora_final_previsto,   ";
-  
+
   $sCampos .= " (select count(*)       ";
   $sCampos .= "    from tarefadependencia  ";
   $sCampos .= "   where at85_tarefapai = at40_sequencial ";
   $sCampos .= " ) as nfilhas,   ";
-  
+
   $sCampos .= " at40_progresso          as progresso             ";
 
   if ($tar > 0) {
@@ -664,75 +664,75 @@ function getTarefas($tar=0, $aTarefasFinal=array()) {
   } else {
   	$sWhere  = " not exists (select * from tarefadependencia where at85_tarefa = at40_sequencial)";  	
   }
-  
+
   $rsTarefas = $oDaoTarefas->sql_record($oDaoTarefas->sql_query_previsao(null,$sCampos, "at81_ordem,final_previsto", $sWhere));
 
   if ($rsTarefas) {  	
     $aTarefas = db_utils::getCollectionByRecord($rsTarefas,false,false,true);
-    
+
     foreach($aTarefas as $oTarefa) {
-    	
-    	
+
+
     	if ($oTarefa->nfilhas > 0) { 
-    	  $oTarefa->aFilhas = getTarefas($oTarefa->tarefa, array());
+    	  $oTarefa->aFilhas = getTarefas($oTarefa->tarefa, []);
     	  $oTarefa->iTemfilhas = 1;
     	} else {
     		$oTarefa->iTemfilhas = 0;  
     	}
-    	
+
     	$aTarefasFinal[] = $oTarefa;
     }
     return $aTarefasFinal;
-    
+
   } else {
     $sMensagem  = "Nenhum dado retornado".pg_last_error();
     $iStatus    = 2;
-    $aTarefas = array("iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem));
+    $aTarefas = ["iStatus"=>$iStatus, "sMensagem"=>urlencode($sMensagem)];
   }
 
 }
 /*(
 function verificaConflitos($aReg = null, $aConflitos = array()) {
-	
+
 	if ($aReg!=null) {
-		
+
     foreach ($aReg as $oRegistro) {
-    	
+
       $iCodUsuario = $oRegistro->iCodUsuario;
 
       if ($iCodUsuario) {
-      
+
         $nHoras = $oRegistro->nQtdHoras;
-    
+
         if ($oRegistro->sDtIni) { 
           $sDataIni = implode('-',array_reverse(explode('/',$oRegistro->sDtIni)));
           $sHoraIni = $oRegistro->sHoraIni;
         }
-        
+
         if ($oRegistro->sDtFim != "") {
           $sDataFim = implode('-',array_reverse(explode('/',$oRegistro->sDtFim)));
           $sHoraFim = $oRegistro->sHoraFim;
         }
-        
+
         $sDataFinal   = "{$sDataFim} {$sHoraFim}";
         $sDataInicial = "{$sDataIni} {$sHoraIni}";
-              
+
         $sWhere  = "at83_usuario = {$iCodUsuario} ";
         $sWhere += "AND ";
         $sWhere += "(";
         $sWhere += "at82_dataini||' '||at82_horaini BETWEEN '{$sDataInicial}' AND '{$sDataFinal}')";
         $sWhere += "OR (at82_datafim||' '||at82_horafim BETWEEN '{$sDataInicial}' AND '{$sDataFinal}')";
         $sWhere += ")"; 
-        
+
         $sSql         = $oDaoTarefaPrevisaoRecurso->sql_query(null, "*", "", $sWhere);
         $rsNConflitos = $oDaoTarefaPrevisaoRecurso->sql_record($sSql);
-         
+
         if ($rsNConflitos) {
-          
+
         	$aConflitos = db_utils::getCollectionByRecord($rsNConflitos);
-        	
+
         	foreach ($aConflitos as $oConflito) {
-        		
+
         		$oConfTemp = new stdClass();
         		$oConfTemp->iCodSituacao = '';//$oConflito->
         		$oConfTemp->iCodUsuario  = '';//$oConflito->
@@ -741,22 +741,22 @@ function verificaConflitos($aReg = null, $aConflitos = array()) {
         		$oConfTemp->sHoraIni     = '';//$oConflito->
         		$oConfTemp->sDtFim       = '';//$oConflito->
         		$oConfTemp->sHoraFim     = '';//$oConflito->
-        		
-        	
+
+
         	}
-            
+
         }
-        
+
       }
     }
 	}
 
-	
+
 	else {
 
 		return $aConflitos;
 	}
- 
+
 }
 */
 ?>

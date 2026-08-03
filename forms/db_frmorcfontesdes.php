@@ -37,7 +37,7 @@ $clrotulo->label("o50_estrutreceita");
 if(isset($atualizar) || isset($chavepesquisa)){
   $fonte_full=str_replace('.','',$o50_estrutreceita); 
   /*rotina que traz somente o código*/
-  $matriz= split("\.",$o50_estrutreceita);
+  $matriz= preg_split("#\\.#m",(string) $o50_estrutreceita);
   $inicia=false;//variavel que indica que o nivel não tem mais filhos
   $tam=(count($matriz)-1);
   for($i=$tam; $i>=0; $i--){
@@ -90,7 +90,7 @@ if(isset($atualizar) || isset($chavepesquisa)){
 
   $dbwhere .= " and o57_anousu = ".db_getsession("DB_anousu");
   
-  $taman=strlen($codigo);
+  $taman=strlen((string) $codigo);
   if(isset($chavepesquisa)){
      $result=$clorcfontes->sql_record($clorcfontes->sql_query(null,null,"o57_fonte as fonte,o57_codfon",'o57_fonte',"$dbwhere"));
   }else{
@@ -358,7 +358,7 @@ function js_preenchepesquisa(chave1,chave){
   db_iframe_orcfontesdes.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }
@@ -368,7 +368,7 @@ if(isset($fonts) && $fonts!=''){
   echo "
        <script>
           alert('As seguintes fontes já foram incluídas:$fonts ');
-          location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."';
+          location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."';
        </script>
   ";
 }else  if(isset($testa) && $testa=='nops'){

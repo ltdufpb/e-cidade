@@ -135,7 +135,7 @@ class RelatorioTcePDF extends Pdf
         $this->setFillColor(235);
         $this->setFont('Arial', 'B', 9);
         $this->exibeHeader();
-        $this->addTitulo('Período: '. str_pad($this->mes, 2, "0", STR_PAD_LEFT) . '/'.$this->ano);
+        $this->addTitulo('Período: '. str_pad((string) $this->mes, 2, "0", STR_PAD_LEFT) . '/'.$this->ano);
     }
 
     /**

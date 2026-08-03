@@ -34,7 +34,7 @@
 
   $db101_cargadados = false;
 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   $mensagem = '';
 
   try {
@@ -53,7 +53,7 @@
 
     if (isset($_POST['db101_cargadados'])) {
 
-      $sCargaDados = str_replace(array("\\", ';'), '', $_POST['db101_cargadados']);
+      $sCargaDados = str_replace(["\\", ';'], '', $_POST['db101_cargadados']);
       db_inicio_transacao();
       $rsCargaDados = db_query($sCargaDados);
 
@@ -100,7 +100,7 @@
           <?php
     			  db_input('db101_sequencial', 10, '0', true, 'hidden', 3, "");
     			?>
-          <textarea cols="150" rows="20"  name="db101_cargadados" id="db101_cargadados"><?=($db101_cargadados) ? $db101_cargadados : '' ?></textarea>
+          <textarea cols="150" rows="20"  name="db101_cargadados" id="db101_cargadados"><?=$db101_cargadados ?: '' ?></textarea>
         </fieldset>
       </fieldset>
       <input type="submit" name="salvar" value="Salvar" />

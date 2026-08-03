@@ -294,7 +294,7 @@ if (isset($oPost->processar)) {
   }
 
   fputs($pArquivo,'CP'.db_formatar( strtoupper(db_mes($oPost->mesfolha)),'s',' ',9,'e',0).
-                                               '/'.$oPost->anofolha.str_repeat($sMensagemPadrao, 78)."\r\n");
+                                               '/'.$oPost->anofolha.str_repeat((string) $sMensagemPadrao, 78)."\r\n");
   
   $sSqlRhPessoalMov  = "     select *                                                                                 ";
   $sSqlRhPessoalMov .= "       from ( select distinct                                                                 ";
@@ -359,7 +359,7 @@ if (isset($oPost->processar)) {
   $sSqlRhPessoalMov .= "   {$sOrder}                                                                                  ";
 
   $rsSql    = db_query($sSqlRhPessoalMov);
-  $iNumRows = pg_numrows($rsSql);
+  $iNumRows = pg_num_rows($rsSql);
   
   if ($iNumRows == 0) {
     
@@ -370,7 +370,7 @@ if (isset($oPost->processar)) {
     // ------------- busca url do site do cliente ----------------------
     $sqlDbConfig = " select url from db_config where prefeitura = true ";
     $rsDbConfig  = db_query($sqlDbConfig);
-    $iDbConfig   = pg_numrows($rsDbConfig);
+    $iDbConfig   = pg_num_rows($rsDbConfig);
     
     if ($iDbConfig > 0) {
       $oDbConfig = db_utils::fieldsMemory($rsDbConfig, 0);
@@ -398,7 +398,7 @@ if (isset($oPost->processar)) {
             db_formatar($oRhPessoalMov->dvconta    ,'s',' ',2,'e',0).
             db_formatar($oRhPessoalMov->regime     ,'s',' ',16,'d',0).
             db_formatar($oRhPessoalMov->orgao      ,'s',' ',45,'d',0).
-            db_formatar(substr($oRhPessoalMov->setor,0,44),'s',' ',44,'d',0).
+            db_formatar(substr((string) $oRhPessoalMov->setor,0,44),'s',' ',44,'d',0).
             db_formatar($iInd+1                    ,'s','0',4,'e',0)."\r\n");
             
       $iMargem = 0;
@@ -452,7 +452,7 @@ if (isset($oPost->processar)) {
       $sSqlTipoFolha .= " order by {$sSigla}_regist,{$sSigla}_rubric                                                  ";
 
       $rsSqlTipoFolha    = db_query($sSqlTipoFolha);
-      $iNumRowsRubricas  = pg_numrows($rsSqlTipoFolha);
+      $iNumRowsRubricas  = pg_num_rows($rsSqlTipoFolha);
       
       $base_prev      = 0;
       $base_irrf      = 0;
@@ -505,7 +505,7 @@ if (isset($oPost->processar)) {
                                            ,str_replace('.','',trim(db_formatar($iValorTipo1,'f')))),'s','0',9 ,'e',0).
                 db_formatar(str_replace(',',''
                                            ,str_replace('.','',trim(db_formatar($iValorTipo2,'f')))),'s','0',9 ,'e',0).
-                str_repeat($sMensagemPadrao, 59).'P'."\r\n");
+                str_repeat((string) $sMensagemPadrao, 59).'P'."\r\n");
              
           if ($oTipoFolha->pd == 1) {
             $bruto += $oTipoFolha->valor;
@@ -526,11 +526,11 @@ if (isset($oPost->processar)) {
         }
       }
     
-      fputs($pArquivo,'MS'.str_pad($mensagem1,64,' ',STR_PAD_RIGHT).str_repeat($sMensagemPadrao,61).'P'."\r\n");
-      fputs($pArquivo,'MS'.str_pad($mensagem2,64,' ',STR_PAD_RIGHT).str_repeat($sMensagemPadrao,61).'P'."\r\n");
-      fputs($pArquivo,'MS'.str_pad($mensagem3,64,' ',STR_PAD_RIGHT).str_repeat($sMensagemPadrao,61).'P'."\r\n");
-      fputs($pArquivo,'MS'.str_pad($mensagem4,64,' ',STR_PAD_RIGHT).str_repeat($sMensagemPadrao,61).'P'."\r\n");
-      fputs($pArquivo,'MS'.str_pad($mensagem5,64,' ',STR_PAD_RIGHT).str_repeat($sMensagemPadrao,61).'P'."\r\n");
+      fputs($pArquivo,'MS'.str_pad((string) $mensagem1,64,' ',STR_PAD_RIGHT).str_repeat((string) $sMensagemPadrao,61).'P'."\r\n");
+      fputs($pArquivo,'MS'.str_pad((string) $mensagem2,64,' ',STR_PAD_RIGHT).str_repeat((string) $sMensagemPadrao,61).'P'."\r\n");
+      fputs($pArquivo,'MS'.str_pad((string) $mensagem3,64,' ',STR_PAD_RIGHT).str_repeat((string) $sMensagemPadrao,61).'P'."\r\n");
+      fputs($pArquivo,'MS'.str_pad((string) $mensagem4,64,' ',STR_PAD_RIGHT).str_repeat((string) $sMensagemPadrao,61).'P'."\r\n");
+      fputs($pArquivo,'MS'.str_pad((string) $mensagem5,64,' ',STR_PAD_RIGHT).str_repeat((string) $sMensagemPadrao,61).'P'."\r\n");
       
       fputs($pArquivo,'TT'.
             db_formatar(str_replace(',','',str_replace('.','',trim(
@@ -559,20 +559,20 @@ if (isset($oPost->processar)) {
             db_formatar($fgts,'f')))),'s','0',11,'e',0).
             db_formatar(str_replace(',','',str_replace('.','',trim(
             db_formatar(0,'f')))),'s','0',11,'e',0).
-            str_repeat($sMensagemPadrao, 11).'PM'."\r\n");
+            str_repeat((string) $sMensagemPadrao, 11).'PM'."\r\n");
             
         /*Gerar o código de autenticacao e grava na tabela*/
                      
         $rsSeqContraCheque = db_query("select nextval('rhemitecontracheque_rh85_sequencial_seq') as sequencial");
         $oSeqContraCheque  = db_utils::fieldsMemory($rsSeqContraCheque,0);
-        $iSequencial       = str_pad($oSeqContraCheque->sequencial,6,'0',STR_PAD_LEFT);
+        $iSequencial       = str_pad((string) $oSeqContraCheque->sequencial,6,'0',STR_PAD_LEFT);
         
         $mes        = $oPost->mesfolha;
         $ano        = $oPost->anofolha;
         $regist     = $oRhPessoalMov->regist;
         
         $iMes       = str_pad($mes, 2, '0', STR_PAD_LEFT);
-        $iMatricula = str_pad($regist, 6, '0', STR_PAD_LEFT);
+        $iMatricula = str_pad((string) $regist, 6, '0', STR_PAD_LEFT);
         $iMod1      = db_CalculaDV($iMatricula);
         $iMod2      = db_CalculaDV($iMatricula.$iMod1.$iMes.$ano.$iSequencial); 
            
@@ -669,11 +669,11 @@ if (isset($oPost->processar)) {
               
                 $clformulariorelpes->tipofol      = true;                
                 
-                $clformulariorelpes->arr_tipofol  = array("r14"=>"Salário",
+                $clformulariorelpes->arr_tipofol  = ["r14"=>"Salário",
                                                           "r48"=>"Complementar",
                                                           "r20"=>"Rescisão",
                                                           "r35"=>"13o. Salário",
-                                                          "r22"=>"Adiantamento");
+                                                          "r22"=>"Adiantamento"];
 
                 $clformulariorelpes->complementar = "r48";                   
               
@@ -681,7 +681,7 @@ if (isset($oPost->processar)) {
                 
                 $clformulariorelpes->mostord      = true;                
                 
-                $clformulariorelpes->arr_mostord  = Array("a"=>"Alfabética", "n"=>"Numérica");
+                $clformulariorelpes->arr_mostord  = ["a"=>"Alfabética", "n"=>"Numérica"];
               
                 $clformulariorelpes->onchpad      = true;          
                 $clformulariorelpes->gera_form($iAnoFolha,$iMesFolha);

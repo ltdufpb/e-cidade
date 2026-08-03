@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_empautoriza_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clempautoriza = new cl_empautoriza;
 $sWhere = " and e54_instit = " . db_getsession("DB_instit");
@@ -84,11 +84,11 @@ $sWhere = " and e54_instit = " . db_getsession("DB_instit");
       @$data1 = $dt1;
       @$data2 = $dt2;
 
-      if (strlen($data1) < 3) {
+      if (strlen((string) $data1) < 3) {
           unset($data1);
       }
 
-      if (strlen($data2) < 3) {
+      if (strlen((string) $data2) < 3) {
           unset($data2);
       }
       //--

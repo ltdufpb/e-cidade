@@ -33,26 +33,8 @@ class Remessa
 {
   private $iSequencial;
 
-  private $iInstit;
-
-  private $iConvenio;
-
-  private $iSequencialRemessa;
-
-  private $oDataEmissao;
-
-  private $iOId;
-
-  private $sTiposDebito;
-
-  public function __construct($iInstit, $iConvenio, $iSequencialRemessa, DateTime $oDataEmissao, $iOId, $sTiposDebito)
+  public function __construct(private $iInstit, private $iConvenio, private $iSequencialRemessa, private DateTime $oDataEmissao, private $iOId, private $sTiposDebito)
   {
-    $this->iInstit = $iInstit;
-    $this->iConvenio = $iConvenio;
-    $this->iSequencialRemessa = $iSequencialRemessa;
-    $this->oDataEmissao = $oDataEmissao;
-    $this->iOId = $iOId;
-    $this->sTiposDebito = $sTiposDebito;
   }
 
   public function getSequencial()

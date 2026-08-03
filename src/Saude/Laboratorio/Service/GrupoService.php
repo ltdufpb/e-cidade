@@ -41,18 +41,12 @@ use Exception;
  */
 class GrupoService
 {
-    private $repositorio;
-    
-    private $repositorioGrupoLaboratorio;
-
     /**
      * GrupoService constructor.
      * @param GrupoRepository $repositorio
      */
-    public function __construct(GrupoRepository $repositorio, GrupoLaboratorioRepository $repositorioGrupoLaboratorio)
+    public function __construct(private readonly GrupoRepository $repositorio, private readonly GrupoLaboratorioRepository $repositorioGrupoLaboratorio)
     {
-        $this->repositorio = $repositorio;
-        $this->repositorioGrupoLaboratorio = $repositorioGrupoLaboratorio;
     }
 
     /**
@@ -69,8 +63,8 @@ class GrupoService
     public function salvar($parametros)
     {
         $grupo = new Grupo();
-        $grupo->setCodigo(isset($parametros->codigo) ? $parametros->codigo : '');
-        $grupo->setDescricao(isset($parametros->descricao) ? $parametros->descricao : '');
+        $grupo->setCodigo($parametros->codigo ?? '');
+        $grupo->setDescricao($parametros->descricao ?? '');
 
         $grupo = $this->repositorio->salvar($grupo);
 

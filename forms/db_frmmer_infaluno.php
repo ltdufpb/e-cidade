@@ -103,12 +103,12 @@ $escola = db_getsession("DB_coddepto");
     }else{
      $tipocompetencia = "";
     }
-    $xtipocompetencia = array(""=>"","1"=>"Mês","2"=>"Período de Avaliação");
+    $xtipocompetencia = [""=>"","1"=>"Mês","2"=>"Período de Avaliação"];
     db_select("tipocompetencia",$xtipocompetencia,true,$db_opcao," onchange=\"js_Periodo(this.value);\" ");?>          
     </td>
     <td colspan="4" align="center" id="mes" style="display: none;" >
     <b>Meses:</b>
-     <?php $xme14_i_mes = array( ""=>"",
+     <?php $xme14_i_mes = [ ""=>"",
                              "1"=>"Janeiro",
                             "2"=>"Fevereiro",
                             "3"=>"Março",
@@ -121,14 +121,14 @@ $escola = db_getsession("DB_coddepto");
                            "10"=>"Outubro",
                            "11"=>"Novembro",
                            "12"=>"Dezembro"                           
-                          );
+                          ];
        db_select("me14_i_mes",$xme14_i_mes,true,$db_opcao,"");?>      
     </td>    
     <td colspan="4" align="center" id="ano" style="display: none;" >
     <b>Ano:</b>
-     <?php $xme14_i_ano = array(""=>"",date('Y')=>date('Y'),
+     <?php $xme14_i_ano = [""=>"",date('Y')=>date('Y'),
                            date('Y')-1=>date('Y')-1                                                     
-                          );
+                          ];
        db_select("me14_i_ano",$xme14_i_ano,true,$db_opcao,"");?>      
       </td>    
       <td align="center" id="calendario2" style="display: none;" >
@@ -195,7 +195,7 @@ $escola = db_getsession("DB_coddepto");
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array( "me14_i_codigo"=>@$me14_i_codigo,
+   $chavepri= [ "me14_i_codigo"=>@$me14_i_codigo,
                      "ed47_v_nome"=>@$ed47_v_nome,
                      "me14_f_peso"=>@$me14_f_peso,
                      "me14_f_altura"=>@$me14_f_altura,
@@ -203,7 +203,7 @@ $escola = db_getsession("DB_coddepto");
                      "me14_i_ano"=>@$me14_i_ano,
                      "me14_i_periodocalendario"=>@$me14_i_periodocalendario
                      
-                   );
+                   ];
    $cliframe_alterar_excluir->chavepri      = $chavepri;   
    if (isset($me14_i_aluno) && @$me14_i_aluno != "") {
    	 $campos = "me14_i_codigo,ed47_v_nome,me14_f_altura,me14_f_peso,me14_i_mes,me14_i_ano,me14_i_periodocalendario";   	

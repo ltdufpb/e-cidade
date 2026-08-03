@@ -38,8 +38,8 @@ function grava_cadferia () {
 
     if( ($mtipo >= "01" && $mtipo <= "08") || ($mtipo >= "12" && $mtipo <= "15") || $mtipo == "999") {
 
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $matriz1[1]  = "r30_regist";
         $matriz1[2]  = "r30_numcgm";
         $matriz1[3]  = "r30_perai";
@@ -89,7 +89,7 @@ function grava_cadferia () {
 
         $matriz2[12] = $nabono;
         $matriz2[13] = $r30_ndias;
-        $matriz2[14] = strtoupper($paga_13);
+        $matriz2[14] = strtoupper((string) $paga_13);
         $matriz2[15] = $mpsal;
         $matriz2[16] = db_val( db_substr($subpes,1,4));
         $matriz2[17] = db_val( db_substr($subpes,6,2));
@@ -98,8 +98,8 @@ function grava_cadferia () {
         if (isset($r30_tipoapuracaomedia) && $r30_tipoapuracaomedia == 2) {
 
             $matriz2[19] = $r30_tipoapuracaomedia;
-            $matriz2[20] = implode("-", array_reverse(explode("/",$r30_periodolivreinicial)));
-            $matriz2[21] = implode("-", array_reverse(explode("/",$r30_periodolivrefinal)));
+            $matriz2[20] = implode("-", array_reverse(explode("/",(string) $r30_periodolivreinicial)));
+            $matriz2[21] = implode("-", array_reverse(explode("/",(string) $r30_periodolivrefinal)));
             $r30_perai =     $r30_periodolivreinicial;
             $r30_peraf =     $r30_periodolivrefinal;
         }
@@ -118,8 +118,8 @@ function grava_cadferia () {
 
         db_debug1("vai gravar r30_per2i --> $r30_peri");
         db_debug1("vai gravar r30_per2i --> $r30_perf");
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $matriz1[1] = "r30_per2i";
         $matriz1[2] = "r30_per2f";
         $matriz1[3] = "r30_proc2";
@@ -139,8 +139,8 @@ function grava_cadferia () {
         db_update( "cadferia", $matriz1, $matriz2, bb_condicaosubpes("r30_").$condicaoaux );
 
     } else if( $mtipo == "10") {
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $matriz1[1] = "r30_abono";
         $matriz1[2] = "r30_proc2";
         $matriz1[3] = "r30_tip2";
@@ -200,9 +200,9 @@ function limpsal($ponto){
                     db_delete( "pontofs", bb_condicaosubpes( "r10_" ).$condicaoaux );
                 }
 
-            } else if( $ponto == "C" && strtolower($cfpess[0]["r11_fersal"]) == 'f' && $paga_13 == 'f' && $ok == true && $rubricas[0]["rh27_limdat"] == 't' && $rubricas[0]["rh27_pd"] == '2' ) {
-                $matriz1ps = array();
-                $matriz2ps = array();
+            } else if( $ponto == "C" && strtolower((string) $cfpess[0]["r11_fersal"]) == 'f' && $paga_13 == 'f' && $ok == true && $rubricas[0]["rh27_limdat"] == 't' && $rubricas[0]["rh27_pd"] == '2' ) {
+                $matriz1ps = [];
+                $matriz2ps = [];
                 $matriz1ps[1] = "r47_regist";
                 $matriz1ps[2] = "r47_rubric";
                 $matriz1ps[3] = "r47_valor";
@@ -272,7 +272,7 @@ function limpaAjustesIrrfPreviden() {
     $oServidorAtual      = ServidorRepository::getInstanciaByCodigo($pessoal[0]["r01_regist"],
       DBPessoal::getAnoFolha(),
       DBPessoal::getMesFolha());
-    $aMatriculasAjusteIrPreviden = array($oServidorAtual->getMatricula());
+    $aMatriculasAjusteIrPreviden = [$oServidorAtual->getMatricula()];
 
     if($oServidorAtual->hasServidorVinculado()) {
 
@@ -322,18 +322,18 @@ function cadastro_162(){
     $subpes_ofi = $subpes ;
 
     if (isset($r30_periodolivrefinal) && $r30_periodolivrefinal != "") {
-        $r30_peraf = implode("-", array_reverse(explode("/", $r30_periodolivrefinal)));
+        $r30_peraf = implode("-", array_reverse(explode("/", (string) $r30_periodolivrefinal)));
     }
     if (isset($r30_periodolivreinicial) && $r30_periodolivreinicial != "") {
-        $r30_perai = implode("-", array_reverse(explode("/", $r30_periodolivreinicial)));
+        $r30_perai = implode("-", array_reverse(explode("/", (string) $r30_periodolivreinicial)));
     }
-    $m_rubr = array();
-    $m_quant= array();
-    $m_valor= array();
-    $m_media= array();
-    $m_tipo = array();
-    $qten   = array();
-    $vlrn   = array();
+    $m_rubr = [];
+    $m_quant= [];
+    $m_valor= [];
+    $m_media= [];
+    $m_tipo = [];
+    $qten   = [];
+    $vlrn   = [];
 
     if( db_substr($subpes,6,2) == "12"){
         $subtem = db_str(db_val(db_substr($subpes,1,4))+1,4)."/01";
@@ -484,7 +484,7 @@ function cadastro_162(){
     $nsaldo_anterior = $nsaldo;
     $dias_adi = 0;
     if(db_year($r30_peri) > $anopagto || (db_month($r30_peri) > $mespagto  && db_year($r30_peri) == $anopagto )  ){
-        if( strtolower($cfpess[0]["r11_fersal"]) == 'f' && !db_boolean($cfpess[0]["r11_recalc"]) ){
+        if( strtolower((string) $cfpess[0]["r11_fersal"]) == 'f' && !db_boolean($cfpess[0]["r11_recalc"]) ){
             $dias_adi = 0;
             $nsaldo = $nsaldo;
         }else {
@@ -501,7 +501,7 @@ function cadastro_162(){
                 $nsaldo = 1;
                 $dias_adi = 29;
             }else{
-                if( !( strtolower($cfpess[0]["r11_fersal"]) == 's' && !db_boolean($cfpess[0]["r11_recalc"]) )){
+                if( !( strtolower((string) $cfpess[0]["r11_fersal"]) == 's' && !db_boolean($cfpess[0]["r11_recalc"]) )){
                     //echo "<BR> 4 nsaldo --> $nsaldo";
                     $dias_adi = db_datedif($r30_perf,db_substr($r30_perf,1,8)."01")+1;
 //echo "<BR> $dias_adi = db_datedif($r30_perf,".db_substr($r30_perf,1,8)."01) + 1";
@@ -578,7 +578,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("pes4_avalferia001.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 db_inicio_transacao();
 
 $matric = $r30_regist;
@@ -588,7 +588,7 @@ $subpes = db_anofolha().'/'.db_mesfolha();
 global $db_config;
 db_selectmax("db_config","select lower(trim(munic)) as d08_carnes , cgc from db_config where codigo = ".db_getsession("DB_instit"));
 
-if(trim($db_config[0]["cgc"]) == "90940172000138"){
+if(trim((string) $db_config[0]["cgc"]) == "90940172000138"){
     $d08_carnes = "daeb";
 }else{
     $d08_carnes = $db_config[0]["d08_carnes"];

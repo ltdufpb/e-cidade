@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_clientesmodulosproc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clclientesmodulosproc = new cl_clientesmodulosproc;
 
 if(isset($atualizar)){
@@ -40,27 +40,27 @@ if(isset($atualizar)){
    
    $result = $clclientesmodulosproc->excluir(null," at75_seqclimod = $sequencial ");
 
-   reset($HTTP_POST_VARS);
+   reset($_POST);
 
-   for($i=0;$i<count($HTTP_POST_VARS);$i++){
+   for($i=0;$i<count($_POST);$i++){
   
-     if(substr(key($HTTP_POST_VARS),0,14) == "at75_codproced"){
-       $var1 = "at75_codproced_".substr(key($HTTP_POST_VARS),15);
-       $var2 = "at75_data_".substr(key($HTTP_POST_VARS),15);
+     if(str_starts_with((string) key($_POST), "at75_codproced")){
+       $var1 = "at75_codproced_".substr((string) key($_POST),15);
+       $var2 = "at75_data_".substr((string) key($_POST),15);
    
-       if( $$var2 != "" ){
+       if( ${$var2} != "" ){
          
-         $var22 = "at75_data_".substr(key($HTTP_POST_VARS),15)."_ano";
-         $var23 = "at75_data_".substr(key($HTTP_POST_VARS),15)."_mes";
-         $var24 = "at75_data_".substr(key($HTTP_POST_VARS),15)."_dia";
+         $var22 = "at75_data_".substr((string) key($_POST),15)."_ano";
+         $var23 = "at75_data_".substr((string) key($_POST),15)."_mes";
+         $var24 = "at75_data_".substr((string) key($_POST),15)."_dia";
 
-         $var3 = "at75_obs_".substr(key($HTTP_POST_VARS),15);
+         $var3 = "at75_obs_".substr((string) key($_POST),15);
 
          $clclientesmodulosproc->at75_sequen = 0;
          $clclientesmodulosproc->at75_seqclimod = $sequencial;
-         $clclientesmodulosproc->at75_codproced = $$var1;
-         $clclientesmodulosproc->at75_data      = $$var22."-".$$var23."-".$$var24;
-         $clclientesmodulosproc->at75_obs       = $$var3;
+         $clclientesmodulosproc->at75_codproced = ${$var1};
+         $clclientesmodulosproc->at75_data      = ${$var22}."-".${$var23}."-".${$var24};
+         $clclientesmodulosproc->at75_obs       = ${$var3};
 
          $clclientesmodulosproc->incluir(0);
          if($clclientesmodulosproc->erro_status == "0"){
@@ -70,7 +70,7 @@ if(isset($atualizar)){
        }
      }
 
-     next($HTTP_POST_VARS);
+     next($_POST);
    
    }
 

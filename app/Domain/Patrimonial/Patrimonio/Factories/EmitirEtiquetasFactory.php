@@ -20,13 +20,10 @@ class EmitirEtiquetasFactory
      */
     public static function getPdf($tipo, $modeloEtiqueta, array $dados)
     {
-        $template = (new ModeloEtiquetaEnum((int)$modeloEtiqueta))->name();
-        switch ($tipo) {
-            case self::PIMACO:
-                return new EtiquetasPimacoPDF($dados, $template, __DIR__ . '/../Relatorios/TemplatesEtiquetas/');
-            default:
-                throw new Exception('Erro ao gerar Relatório! Selecione um tipo válido.');
-                break;
-        }
+        $template = new ModeloEtiquetaEnum((int)$modeloEtiqueta)->name();
+        return match ($tipo) {
+            self::PIMACO => new EtiquetasPimacoPDF($dados, $template, __DIR__ . '/../Relatorios/TemplatesEtiquetas/'),
+            default => throw new Exception('Erro ao gerar Relatório! Selecione um tipo válido.'),
+        };
     }
 }

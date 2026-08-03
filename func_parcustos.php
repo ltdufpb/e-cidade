@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parcustos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clparcustos = new cl_parcustos;
 $clparcustos->rotulo->label("cc09_anousu");
 $clparcustos->rotulo->label("cc09_mascaracustoplano");
@@ -88,9 +88,9 @@ $clparcustos->rotulo->label("cc09_mascaracustoplano");
         }else{
            $sql = $clparcustos->sql_query(db_getsession('DB_anousu'),$campos,"cc09_anousu","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cc09_mascaracustoplano)){
-          $repassa = array("chave_cc09_anousu"=>$chave_cc09_anousu,"chave_cc09_mascaracustoplano"=>$chave_cc09_mascaracustoplano);
+          $repassa = ["chave_cc09_anousu"=>$chave_cc09_anousu,"chave_cc09_mascaracustoplano"=>$chave_cc09_mascaracustoplano];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

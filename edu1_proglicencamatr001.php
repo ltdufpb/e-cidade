@@ -35,7 +35,7 @@ include(modification("dbforms/db_funcoes.php"));
 $ed122_d_data_dia = date("d",db_getsession("DB_datausu"));
 $ed122_d_data_mes = date("m",db_getsession("DB_datausu"));
 $ed122_d_data_ano = date("Y",db_getsession("DB_datausu"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clproglicencamatr = new cl_proglicencamatr;
 $db_opcao = 1;
 $db_opcao1 = 1;

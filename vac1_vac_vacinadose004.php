@@ -33,7 +33,7 @@ include(modification("classes/db_vac_vacinadose_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clvac_vacinadose = new cl_vac_vacinadose;
 $db_opcao         = 1;
 $db_botao         = true;

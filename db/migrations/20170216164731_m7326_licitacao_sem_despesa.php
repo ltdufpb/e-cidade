@@ -14,32 +14,32 @@ class M7326LicitacaoSemDespesa extends PostgresMigration
 
     private function criarDiscionario()
     {
-        $aColumns = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-        $aValues  = array(array(22362,'l20_tipo','int4','Tipo da licitação: - 1 gera despesa - 2 não gera despesa','1', 'Tipo',10,'f','f','f',1,'text','Tipo'));
-        $table    = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+        $aColumns = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+        $aValues  = [[22362,'l20_tipo','int4','Tipo da licitação: - 1 gera despesa - 2 não gera despesa','1', 'Tipo',10,'f','f','f',1,'text','Tipo']];
+        $table    = $this->table('db_syscampo', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
-        $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-        $aValues  = array( array(1260,22362,27,0) );
-        $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+        $aValues  = [ [1260,22362,27,0] ];
+        $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
     }
 
     private function criarDml()
     {
-        $aColumns = array('pc52_sequencial', 'pc52_descricao');
-        $aValues  = array( array(8, 'Automática') );
-        $table    = $this->table('solicitacaotipo', array('schema' => 'compras'));
+        $aColumns = ['pc52_sequencial', 'pc52_descricao'];
+        $aValues  = [ [8, 'Automática'] ];
+        $table    = $this->table('solicitacaotipo', ['schema' => 'compras']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
     }
 
     public function adicionaColuna()
     {
-        $table = $this->table('liclicita', array('schema' => 'licitacao'));
-        $table->addColumn('l20_tipo', 'integer', array('default' => 1))
+        $table = $this->table('liclicita', ['schema' => 'licitacao']);
+        $table->addColumn('l20_tipo', 'integer', ['default' => 1])
               ->update();
     }
 
@@ -51,7 +51,7 @@ class M7326LicitacaoSemDespesa extends PostgresMigration
 
         $this->execute('delete from compras.solicitacaotipo where pc52_sequencial = 8 ');
 
-        $table = $this->table('liclicita', array('schema' => 'licitacao'));
+        $table = $this->table('liclicita', ['schema' => 'licitacao']);
         $table->removeColumn('l20_tipo')
               ->save();
     }

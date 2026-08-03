@@ -108,7 +108,7 @@ if(isset($db_opcaoal)){
         </td>
         <td> 
     <?php 
-    $x = array('1'=>'Proprietario','2'=>'Promitente');
+    $x = ['1'=>'Proprietario','2'=>'Promitente'];
     db_select('j76_tipo',$x,true,$db_opcao,"");
     ?>
         </td>
@@ -123,9 +123,9 @@ if(isset($db_opcaoal)){
     
     $result_principal=$claverbacgm->sql_record($claverbacgm->sql_query_file(null,"*",null,"j76_averbacao=$j76_averbacao and j76_principal is true"));
     if ($claverbacgm->numrows>0){
-      $x = array("f"=>"Não");
+      $x = ["f"=>"Não"];
     }else{
-      $x = array("t"=>"Sim","f"=>"Não");
+      $x = ["t"=>"Sim","f"=>"Não"];
     }
     db_select('j76_principal',$x,true,$db_opcao,"");
     ?>
@@ -140,7 +140,7 @@ if(isset($db_opcaoal)){
         <tr>
           <td valign="top"  align="center">  
           <?php 
-         $chavepri= array("j76_codigo"=>@$j76_codigo);
+         $chavepri= ["j76_codigo"=>@$j76_codigo];
          $cliframe_alterar_excluir->chavepri=$chavepri;
          $cliframe_alterar_excluir->sql     = $claverbacgm->sql_query(null,"*",null,"j76_averbacao=$j76_averbacao");
          $cliframe_alterar_excluir->campos  ="j76_codigo,j76_numcgm,z01_nome,j76_principal";

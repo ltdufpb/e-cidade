@@ -124,7 +124,7 @@ input {
 			order by ag40_data desc
 			limit 10";
 	$result = db_query($sql);
-	$numrows = pg_numrows($result);
+	$numrows = pg_num_rows($result);
 	if($numrows == 0) {
 	  echo "<h3>Sem Consultas Anteriores</h3>\n";
 	} else {

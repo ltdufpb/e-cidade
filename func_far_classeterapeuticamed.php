@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_classeterapeuticamed_classe.php"));
 include(modification("classes/db_far_classeterapeutica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_classeterapeuticamed = new cl_far_classeterapeuticamed;
 $clfar_classeterapeutica = new cl_far_classeterapeutica;
 $clfar_classeterapeuticamed->rotulo->label("fa36_i_codigo");
@@ -100,9 +100,9 @@ $clfar_classeterapeutica->rotulo->label("fa18_c_classetera");
         }else{
            $sql = $clfar_classeterapeuticamed->sql_query("",$campos,"fa36_i_codigo","fa36_i_medanvisa=$fa01_i_medanvisa");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa36_i_codigo)){
-          $repassa = array("chave_fa36_i_codigo"=>$chave_fa36_i_codigo,"chave_fa36_i_codigo"=>$chave_fa36_i_codigo);
+          $repassa = ["chave_fa36_i_codigo"=>$chave_fa36_i_codigo,"chave_fa36_i_codigo"=>$chave_fa36_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

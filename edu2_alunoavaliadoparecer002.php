@@ -65,7 +65,7 @@ $oPdf->AliasNbPages();
 $oPdf->SetAutoPageBreak(false);
 
 $head1 = "ALUNOS AVALIADOS POR PARECER";
-$head2 = "ESCOLA :" . strtoupper(EscolaRepository::getEscolaByCodigo($codigo_escola)->getNome());
+$head2 = "ESCOLA :" . strtoupper((string) EscolaRepository::getEscolaByCodigo($codigo_escola)->getNome());
 $head3 = "ANO: " . $ano;
 
 $oPdf->AddPage();

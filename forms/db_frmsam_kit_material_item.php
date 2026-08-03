@@ -106,7 +106,7 @@ $clrotulo->label("sm04_kit_material");
     $oGridAltExc->sql = $oDaoKitMaterialItem->sql_query(null,$sCampos,null,$sWhere);
 
   }
-  $chavepri                   = array("sm04_sequencial"=>@$sm04_sequencial);
+  $chavepri                   = ["sm04_sequencial"=>@$sm04_sequencial];
   $oGridAltExc->chavepri      = $chavepri;
   $oGridAltExc->legenda       = "Registros Materiais";
   $oGridAltExc->campos        = "sm04_sequencial, m60_descr, sm04_quantidade";

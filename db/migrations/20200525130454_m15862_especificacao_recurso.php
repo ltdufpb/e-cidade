@@ -74,7 +74,7 @@ SQL_UP
 );
 
         $row = $this->fetchRow("select uf from db_config order by codigo limit 1;");
-        if (strtoupper($row['uf']) === 'RS') {
+        if (strtoupper((string) $row['uf']) === 'RS') {
             $this->execute("update orctiporec set o15_loaespecificacao = o15_codigo;");
         }
     }

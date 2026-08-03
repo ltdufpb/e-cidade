@@ -43,7 +43,7 @@ require_once(modification("classes/db_empelemento_classe.php"));
 
 db_postmemory($_POST);
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clselorcdotacao = new cl_selorcdotacao();
 $clorcelemento   = new cl_orcelemento;
@@ -89,7 +89,7 @@ if ($desdobramentos != "") {
 $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 db_fieldsmemory($resultinst,0);
 
-$head1 = "MUNICÍPIO DE ".strtoupper($munic);
+$head1 = "MUNICÍPIO DE ".strtoupper((string) $munic);
 
 //////////////////////////////////////////////////////////////////
 // echo $sele_work;exit;
@@ -127,10 +127,10 @@ if ($nValorEmpenhoFinal != "") {
 if ($listasub != "") {
 	$resultado = db_query("select pc01_codmater from pcmater where pc01_codsubgrupo in ($listasub)");
 
-	if (pg_numrows($resultado) > 0){
+	if (pg_num_rows($resultado) > 0){
 		$virgula = "";
 		$listar  = "";
-		for ($i = 0; $i < pg_numrows($resultado); $i++){
+		for ($i = 0; $i < pg_num_rows($resultado); $i++){
 			db_fieldsmemory($resultado, $i);
 			$listar  .= $virgula.$pc01_codmater;
 			$virgula  = ", ";
@@ -767,22 +767,22 @@ if ($tipo == "a" or 1 == 1) {
 
 			if ($agrupar == "a") {
 				if ($sememp == "n") {
-					$pdf->Cell(45, $tam, strtoupper($RLo15_codigo), 1, 0, "C", 1);
-					$pdf->Cell(120, $tam, strtoupper($RLz01_nome), 1, 0, "C", 1);
+					$pdf->Cell(45, $tam, strtoupper((string) $RLo15_codigo), 1, 0, "C", 1);
+					$pdf->Cell(120, $tam, strtoupper((string) $RLz01_nome), 1, 0, "C", 1);
 					$pdf->Cell(72, $tam, "MOVIMENTAÇÃO", 1, 0, "C", 1);
 					$pdf->Cell(54, $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 				} else {
-					$pdf->Cell(45, $tam, strtoupper($RLo15_codigo), 1, 0, "C", 1);
-					$pdf->Cell(80, $tam, strtoupper($RLz01_nome), 1, 0, "C", 1);
+					$pdf->Cell(45, $tam, strtoupper((string) $RLo15_codigo), 1, 0, "C", 1);
+					$pdf->Cell(80, $tam, strtoupper((string) $RLz01_nome), 1, 0, "C", 1);
 					$pdf->Cell(97, $tam, "MOVIMENTAÇÃO", 1, 0, "C", 1);
 					$pdf->Cell(54, $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 
 					$pdf->Cell(125, $tam, '', 1, 0, "C", 1);
 					$pdf->Cell(25, $tam, "QUANTIDADE", 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "LIQUIDADO", 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "NAO LIQUID", 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "GERAL", 1, 1, "C", 1); //quebra linha
@@ -791,22 +791,22 @@ if ($tipo == "a" or 1 == 1) {
 
 			if ($agrupar == "d") {
 				if ($sememp == "n") {
-					$pdf->Cell(45, $tam, strtoupper($RLo56_codele), 1, 0, "C", 1);
-					$pdf->Cell(120, $tam, strtoupper($RLo56_descr), 1, 0, "C", 1);
+					$pdf->Cell(45, $tam, strtoupper((string) $RLo56_codele), 1, 0, "C", 1);
+					$pdf->Cell(120, $tam, strtoupper((string) $RLo56_descr), 1, 0, "C", 1);
 					$pdf->Cell(72, $tam, "MOVIMENTAÇÃO", 1, 0, "C", 1);
 					$pdf->Cell(54, $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 				} else {
-					$pdf->Cell(45, $tam, strtoupper($RLo56_codele), 1, 0, "C", 1);
-					$pdf->Cell(80, $tam, strtoupper($RLo56_descr), 1, 0, "C", 1);
+					$pdf->Cell(45, $tam, strtoupper((string) $RLo56_codele), 1, 0, "C", 1);
+					$pdf->Cell(80, $tam, strtoupper((string) $RLo56_descr), 1, 0, "C", 1);
 					$pdf->Cell(97, $tam, "MOVIMENTAÇÃO", 1, 0, "C", 1);
 					$pdf->Cell(54, $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 
 					$pdf->Cell(125, $tam, '', 1, 0, "C", 1);
 					$pdf->Cell(25, $tam, "QUANTIDADE", 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "LIQUIDADO", 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "NAO LIQUID", 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "GERAL", 1, 1, "C", 1); //quebra linha
@@ -815,22 +815,22 @@ if ($tipo == "a" or 1 == 1) {
 
 			if ($agrupar == "r") {
 				if ($sememp == "n") {
-					$pdf->Cell(45, $tam, strtoupper($RLo15_codigo), 1, 0, "C", 1);
-					$pdf->Cell(120, $tam, strtoupper($RLo15_descr), 1, 0, "C", 1);
+					$pdf->Cell(45, $tam, strtoupper((string) $RLo15_codigo), 1, 0, "C", 1);
+					$pdf->Cell(120, $tam, strtoupper((string) $RLo15_descr), 1, 0, "C", 1);
 					$pdf->Cell(72, $tam, "MOVIMENTAÇÃO", 1, 0, "C", 1);
 					$pdf->Cell(54, $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 				} else {
-					$pdf->Cell(45, $tam, strtoupper($RLo15_codigo), 1, 0, "C", 1);
-					$pdf->Cell(80, $tam, strtoupper($RLo15_descr), 1, 0, "C", 1);
+					$pdf->Cell(45, $tam, strtoupper((string) $RLo15_codigo), 1, 0, "C", 1);
+					$pdf->Cell(80, $tam, strtoupper((string) $RLo15_descr), 1, 0, "C", 1);
 					$pdf->Cell(97, $tam, "MOVIMENTAÇÃO", 1, 0, "C", 1);
 					$pdf->Cell(54, $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 
 					$pdf->Cell(125, $tam, '', 1, 0, "C", 1);
 					$pdf->Cell(25, $tam, "QUANTIDADE", 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "LIQUIDADO", 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "NAO LIQUID", 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "GERAL", 1, 1, "C", 1); //quebra linha
@@ -839,22 +839,22 @@ if ($tipo == "a" or 1 == 1) {
 
 			if ($agrupar == "orgao") {
 				if ($sememp == "n") {
-					$pdf->Cell(45, $tam, strtoupper($RLo58_orgao), 1, 0, "C", 1);
-					$pdf->Cell(120, $tam, strtoupper($RLo40_descr), 1, 0, "C", 1);
+					$pdf->Cell(45, $tam, strtoupper((string) $RLo58_orgao), 1, 0, "C", 1);
+					$pdf->Cell(120, $tam, strtoupper((string) $RLo40_descr), 1, 0, "C", 1);
 					$pdf->Cell(72, $tam, "MOVIMENTAÇÃO", 1, 0, "C", 1);
 					$pdf->Cell(54 , $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 				} else {
-					$pdf->Cell(45, $tam, strtoupper($RLo58_orgao), 1, 0, "C", 1);
-					$pdf->Cell(80, $tam, strtoupper($RLo40_descr), 1, 0, "C", 1);
+					$pdf->Cell(45, $tam, strtoupper((string) $RLo58_orgao), 1, 0, "C", 1);
+					$pdf->Cell(80, $tam, strtoupper((string) $RLo40_descr), 1, 0, "C", 1);
 					$pdf->Cell(97, $tam, "MOVIMENTAÇÃO", 1, 0, "C", 1);
 					$pdf->Cell(54, $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 
 					$pdf->Cell(125, $tam, '', 1, 0, "C", 1);
 					$pdf->Cell(25, $tam, "QUANTIDADE", 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-					$pdf->Cell(18, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+					$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "LIQUIDADO", 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "NAO LIQUID", 1, 0, "C", 1);
 					$pdf->Cell(18, $tam, "GERAL", 1, 1, "C", 1); //quebra linha
@@ -865,10 +865,10 @@ if ($tipo == "a" or 1 == 1) {
 			if ($tipo == "a" and $sememp == "n") {
 				if ($agrupar == "oo") {
 					if($mostrar == "r"){
-						$pdf->Cell(45, $tam, strtoupper($RLo15_codigo), 1, 0, "C", 1);
-						$pdf->Cell(120, $tam, strtoupper($RLo15_descr), 1, 0, "C", 1);
+						$pdf->Cell(45, $tam, strtoupper((string) $RLo15_codigo), 1, 0, "C", 1);
+						$pdf->Cell(120, $tam, strtoupper((string) $RLo15_descr), 1, 0, "C", 1);
 					} elseif ($mostrar == "t"){
-						$pdf->Cell(45, $tam, strtoupper($RLo15_codigo), 1, 0, "C", 1);
+						$pdf->Cell(45, $tam, strtoupper((string) $RLo15_codigo), 1, 0, "C", 1);
 						$pdf->Cell(120, $tam, strtoupper('Tipo de Compra'), 1, 0, "C", 1);
 					} elseif ($mostrar == "f"){
 						$pdf->Cell(45, $tam, "", 1, 0, "C", 1);
@@ -887,7 +887,7 @@ if ($tipo == "a" or 1 == 1) {
 					 * 	Quando agrupar  por fornecedor , não mostrar desnecessariamente o fornecedor
 					 */
 					if ($mostrar == "r" || $mostrar == "f") {
-						$pdf->Cell(40, $tam, strtoupper($RLo15_recurso), 1, 0, "C", 1); // recurso
+						$pdf->Cell(40, $tam, strtoupper((string) $RLo15_recurso), 1, 0, "C", 1); // recurso
 					} elseif ($mostrar == "t") {
 						$pdf->Cell(40, $tam, strtoupper('Tipo de Compra'), 1, 0, "C", 1); // tipo de compra
 					}
@@ -895,11 +895,11 @@ if ($tipo == "a" or 1 == 1) {
 
 				if ($agrupar == "d") {
 					if ($mostrar == "r") {
-						$pdf->Cell(40, $tam, strtoupper($RLo15_recurso), 1, 0, "C", 1); // recurso
+						$pdf->Cell(40, $tam, strtoupper((string) $RLo15_recurso), 1, 0, "C", 1); // recurso
 					} elseif ($mostrar == "t") {
 						$pdf->Cell(40, $tam, strtoupper('Tipo de Compra'), 1, 0, "C", 1); // tipo de compra
 					} elseif ($mostrar == "f") {
-						$pdf->Cell(40, $tam, strtoupper($RLz01_nome), 1, 0, "C", 1); // Fornecedor
+						$pdf->Cell(40, $tam, strtoupper((string) $RLz01_nome), 1, 0, "C", 1); // Fornecedor
 					}
 				}
 
@@ -908,7 +908,7 @@ if ($tipo == "a" or 1 == 1) {
 					 * 	Quando agrupar  por recurso , não mostrar desnecessariamente o recurso
 					 */
 					if ($mostrar == "r" || $mostrar == "f") {
-						$pdf->Cell(40, $tam, strtoupper($RLz01_nome), 1, 0, "C", 1); // fornecedor
+						$pdf->Cell(40, $tam, strtoupper((string) $RLz01_nome), 1, 0, "C", 1); // fornecedor
 					} elseif ($mostrar == "t") {
 							$pdf->Cell(40, $tam, strtoupper('Tipo de Compra'), 1, 0, "C", 1); // tipo de compra
 					}
@@ -916,24 +916,24 @@ if ($tipo == "a" or 1 == 1) {
 
 				if ($agrupar == "orgao") {
 					if ($mostrar == "r") {
-						$pdf->Cell(40, $tam, strtoupper($RLo15_recurso), 1, 0, "C", 1); // recurso
+						$pdf->Cell(40, $tam, strtoupper((string) $RLo15_recurso), 1, 0, "C", 1); // recurso
 					} elseif ($mostrar == "t") {
 						$pdf->Cell(40, $tam, strtoupper('Tipo de Compra'), 1, 0, "C", 1); // tipo de compra
 					} elseif ($mostrar == "f") {
-						$pdf->Cell(40, $tam, strtoupper($RLz01_nome), 1, 0, "C", 1); // Fornecedor
+						$pdf->Cell(40, $tam, strtoupper((string) $RLz01_nome), 1, 0, "C", 1); // Fornecedor
 					}
 				}
 
 				if ($agrupar == "oo") {
-					$pdf->Cell(40, $tam, strtoupper($RLz01_nome), 1, 0, "C", 1);
+					$pdf->Cell(40, $tam, strtoupper((string) $RLz01_nome), 1, 0, "C", 1);
 				}
 
-				$pdf->Cell(65, $tam, strtoupper($RLe60_coddot), 1, 0, "L", 1); // cod+estrut dotatao // quebra linha
+				$pdf->Cell(65, $tam, strtoupper((string) $RLe60_coddot), 1, 0, "L", 1); // cod+estrut dotatao // quebra linha
 				$pdf->Cell(15, $tam, "CP", 1, 0, "C", 1);
-				$pdf->Cell(18, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-				$pdf->Cell(18, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-				$pdf->Cell(18, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-				$pdf->Cell(18, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+				$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+				$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+				$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+				$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 				$pdf->Cell(18, $tam, "LIQUIDADO", 1, 0, "C", 1);
 				$pdf->Cell(18, $tam, "NAO LIQUID", 1, 0, "C", 1);
 				$pdf->Cell(18, $tam, "GERAL", 1, 1, "C", 1); //quebra linha
@@ -959,10 +959,10 @@ if ($tipo == "a" or 1 == 1) {
 				$pdf->Cell(72, $tam, "MOVIMENTAÇÃO", 1, 0, "C", 1);
 				$pdf->Cell(54, $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 				$pdf->Cell(150, $tam, "", 1, 0, "C", 1);
-				$pdf->Cell(18, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-				$pdf->Cell(18, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-				$pdf->Cell(18, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-				$pdf->Cell(18, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+				$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+				$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+				$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+				$pdf->Cell(18, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 				$pdf->Cell(18, $tam, "LIQUIDADO", 1, 0, "C", 1);
 				$pdf->Cell(18, $tam, "NAO LIQUID", 1, 0, "C", 1);
 				$pdf->Cell(18, $tam, "GERAL", 1, 1, "C", 1); //quebra linha
@@ -1322,7 +1322,7 @@ if ($tipo == "a" or 1 == 1) {
 		$quantimp ++;
 		// caso o exercicio do empenho for maior que o do exercicio do resto nao gerar
 
-		if(substr($dataesp22,0,4)<db_getsession("DB_anousu")){
+		if(substr((string) $dataesp22,0,4)<db_getsession("DB_anousu")){
 
 			$resresto = $clempresto->sql_record($clempresto->sql_query(db_getsession("DB_anousu"), $e60_numemp, "*", "", ""));
 			if ($clempresto->numrows > 0) {
@@ -1356,7 +1356,7 @@ if ($tipo == "a" or 1 == 1) {
 				 * 	Quando agrupar  por fornecedor , não mostrar desnecessariamente o fornecedor
 				 */
 				if ($mostrar == "r" || $mostrar == "f") {
-					$recurso = db_formatar($codigo_recurso, 'recurso')." - ".substr($o15_descr, 0, 20);
+					$recurso = db_formatar($codigo_recurso, 'recurso')." - ".substr((string) $o15_descr, 0, 20);
                     $pdf->Cell(40, $tam, $recurso, $iBorda, 0, "L", $preenche); // recurso
 				} elseif ($mostrar == "t") {
 					$pdf->Cell(40, $tam, $e60_codcom." - $pc50_descr", $iBorda, 0, "L", $preenche); // tipo de compra
@@ -1365,12 +1365,12 @@ if ($tipo == "a" or 1 == 1) {
 
 			if ($agrupar == "d") {
 				if ($mostrar == "r") {
-					$recurso = db_formatar($codigo_recurso, 'recurso')." - ".substr($o15_descr, 0, 20);
+					$recurso = db_formatar($codigo_recurso, 'recurso')." - ".substr((string) $o15_descr, 0, 20);
 					$pdf->Cell(40, $tam, $recurso , $iBorda, 0, "L", $preenche); // recurso
 				} elseif ($mostrar == "t") {
 					$pdf->Cell(40, $tam, $e60_codcom." - $pc50_descr", $iBorda, 0, "L", $preenche); // tipo de compra
 				} elseif ($mostrar == "f"){
-					$pdf->Cell(40, $tam, substr($z01_nome, 0, 25), $iBorda, 0, "L", $preenche); // fornecedor
+					$pdf->Cell(40, $tam, substr((string) $z01_nome, 0, 25), $iBorda, 0, "L", $preenche); // fornecedor
 				}
 			}
 
@@ -1379,7 +1379,7 @@ if ($tipo == "a" or 1 == 1) {
 				 * 	Quando agrupar  por recurso , não mostrar desnecessariamente o recurso
 				 */
 				if ($mostrar == "r" || $mostrar == "f") {
-					$pdf->Cell(40, $tam, substr($z01_nome, 0, 25), $iBorda, 0, "L", $preenche); // fornecedor
+					$pdf->Cell(40, $tam, substr((string) $z01_nome, 0, 25), $iBorda, 0, "L", $preenche); // fornecedor
 				} elseif ($mostrar == "t") {
 					$pdf->Cell(40, $tam, $e60_codcom." - $pc50_descr", $iBorda, 0, "L", $preenche); // tipo de compra
 				}
@@ -1387,20 +1387,20 @@ if ($tipo == "a" or 1 == 1) {
 
 			if ($agrupar == "orgao") {
 				if ($mostrar == "r") {
-					$recurso =  db_formatar($codigo_recurso, 'recurso')." - ".substr($o15_descr, 0, 20);
+					$recurso =  db_formatar($codigo_recurso, 'recurso')." - ".substr((string) $o15_descr, 0, 20);
 					$pdf->Cell(40, $tam, $recurso, $iBorda, 0, "L", $preenche); // recurso
 				} elseif ($mostrar == "t") {
 					$pdf->Cell(40, $tam, $e60_codcom." - $pc50_descr", $iBorda, 0, "L", $preenche); // tipo de compra
 				} elseif ($mostrar == "f") {
-					$pdf->Cell(40, $tam, substr($z01_nome, 0, 25), $iBorda, 0, "L", $preenche); // fornecedor
+					$pdf->Cell(40, $tam, substr((string) $z01_nome, 0, 25), $iBorda, 0, "L", $preenche); // fornecedor
 				}
 			}
 
 			if ($agrupar == "oo") {
-				$pdf->Cell(40, $tam, substr($z01_nome,0,20),$iBorda, 0, "L", 0);
+				$pdf->Cell(40, $tam, substr((string) $z01_nome,0,20),$iBorda, 0, "L", 0);
 			}
 
-			$pdf->Cell(65, $tam, str_pad($e60_coddot, 4, '0', STR_PAD_LEFT)." -  $dl_estrutural", $iBorda, 0, "L", $preenche); //quebra linha
+			$pdf->Cell(65, $tam, str_pad((string) $e60_coddot, 4, '0', STR_PAD_LEFT)." -  $dl_estrutural", $iBorda, 0, "L", $preenche); //quebra linha
 			$pdf->Cell(15, $tam, $e60_concarpeculiar, 0, 0, "C", $preenche);
 			$pdf->Cell(18, $tam, db_formatar($e60_vlremp, 'f'), 'B', 0, "R", $preenche);
 			$pdf->Cell(18, $tam, db_formatar($e60_vlranu, 'f'), 'B', 0, "R", $preenche);
@@ -1467,8 +1467,8 @@ if ($tipo == "a" or 1 == 1) {
 				$rows_item = $clempempitem->numrows;
 				for ($item = 0; $item < $rows_item; $item ++) {
 					db_fieldsmemory($resitem, $item, true);
-					if (strlen($pc01_descrmater) > 55) {
-					  $pc01_descrmater = trim(substr($pc01_descrmater, 0, 55)) . '...';
+					if (strlen((string) $pc01_descrmater) > 55) {
+					  $pc01_descrmater = trim(substr((string) $pc01_descrmater, 0, 55)) . '...';
 					}
 					$preenche = ($item % 2 == 0 ? 0 : 1);
 					$pdf->Cell(40, $tam, "", $iBorda, 0, "R", $preenche);
@@ -1476,7 +1476,7 @@ if ($tipo == "a" or 1 == 1) {
 					$pdf->Cell(75, $tam, "$pc01_descrmater", $iBorda, 0, "L", $preenche);
 					$pdf->Cell(20, $tam, db_formatar($e62_quant, 'f'), $iBorda, 0, "R", $preenche);
 					$pdf->Cell(20, $tam, db_formatar($e62_vltot, 'f'), $iBorda, 0, "R", $preenche);
-					$pdf->Cell(80, $tam, substr($e62_descr, 0, 70), $iBorda, 1, "L", $preenche);
+					$pdf->Cell(80, $tam, substr((string) $e62_descr, 0, 70), $iBorda, 1, "L", $preenche);
 					$pdf->Cell(20, $tam, "", 0, 1, "R", $preenche);
 				}
 			}
@@ -1571,12 +1571,12 @@ if ($tipo == "s") {
 		if ($imprime_header == true) {
 			$pdf->Ln();
 			$pdf->SetFont('Arial', 'B', 7);
-			$pdf->Cell(20, $tam, strtoupper($RLe60_numcgm), 1, 0, "C", 1);
-			$pdf->Cell(100, $tam, strtoupper($RLz01_nome), 1, 0, "C", 1);
-			$pdf->Cell(20, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-			$pdf->Cell(20, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-			$pdf->Cell(20, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-			$pdf->Cell(20, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+			$pdf->Cell(20, $tam, strtoupper((string) $RLe60_numcgm), 1, 0, "C", 1);
+			$pdf->Cell(100, $tam, strtoupper((string) $RLz01_nome), 1, 0, "C", 1);
+			$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+			$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+			$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+			$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 			$pdf->Cell(30, $tam, "TOTAL A PAGAR", 1, 1, "C", 1); //quebra linha
 			$pdf->Ln();
 			$pdf->SetFont('Arial', '', 7);
@@ -1670,12 +1670,12 @@ if ($hist == "h") {
 				$pdf->cell(200, $tam, "TOTALIZAÇÃO DOS HISTÓRICOS", 1, 0, "C", 1);
 				$pdf->cell(66, $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 				$pdf->SetFont('Arial', 'B', 7);
-				$pdf->Cell(20, $tam, strtoupper($RLe63_codhist), 1, 0, "C", 1);
-				$pdf->Cell(100, $tam, strtoupper($RLe40_descr), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe63_codhist), 1, 0, "C", 1);
+				$pdf->Cell(100, $tam, strtoupper((string) $RLe40_descr), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 				$pdf->Cell(22, $tam, "LIQUIDADO", 1, 0, "C", 1); //quebra linha
 				$pdf->Cell(22, $tam, "NAO LIQUIDADO", 1, 0, "C", 1); //quebra linha
 				$pdf->Cell(22, $tam, "GERAL", 1, 1, "C", 1); //quebra linha
@@ -1775,12 +1775,12 @@ if ($hist == "h") {
 				$pdf->cell(200, $tam, "TOTALIZAÇÃO DOS RECURSOS", 1, 0, "C", 1);
 				$pdf->cell(66, $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 				$pdf->SetFont('Arial', 'B', 7);
-				$pdf->Cell(20, $tam, strtoupper($RLo58_codigo), 1, 0, "C", 1);
-				$pdf->Cell(100, $tam, strtoupper($RLo15_descr), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLo58_codigo), 1, 0, "C", 1);
+				$pdf->Cell(100, $tam, strtoupper((string) $RLo15_descr), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 				$pdf->Cell(22, $tam, "LIQUIDADO", 1, 0, "C", 1); //quebra linha
 				$pdf->Cell(22, $tam, "NAO LIQUIDADO", 1, 0, "C", 1); //quebra linha
 				$pdf->Cell(22, $tam, "GERAL", 1, 1, "C", 1); //quebra linha
@@ -1888,11 +1888,11 @@ if ($hist == "h") {
 				$pdf->cell(66, $tam, "SALDO A PAGAR", 1, 1, "C", 1);
 				$pdf->SetFont('Arial', 'B', 7);
 				$pdf->Cell(20, $tam, 'Codigo', 1, 0, "C", 1);
-				$pdf->Cell(100, $tam, strtoupper($RLpc50_descr), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+				$pdf->Cell(100, $tam, strtoupper((string) $RLpc50_descr), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 				$pdf->Cell(22, $tam, "LIQUIDADO", 1, 0, "C", 1);
 				$pdf->Cell(22, $tam, "NÃO LIQUIDADO", 1, 0, "C", 1);
 				$pdf->Cell(22, $tam, "GERAL", 1, 1, "C", 1); //quebra linha
@@ -2003,10 +2003,10 @@ if ($hist == "h") {
 				$pdf->SetFont('Arial', 'B', 7);
 				$pdf->Cell(20, $tam, 'ORGAO', 1, 0, "C", 1);
 				$pdf->Cell(100, $tam, "DESCRICAO", 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 				$pdf->Cell(22, $tam, "LIQUIDADO", 1, 0, "C", 1);
 				$pdf->Cell(22, $tam, "NÃO LIQUIDADO", 1, 0, "C", 1);
 				$pdf->Cell(22, $tam, "GERAL", 1, 1, "C", 1); //quebra linha
@@ -2121,10 +2121,10 @@ if ($hist == "h") {
 				$pdf->Cell(60, $tam, "DESCRICAO", 1, 0, "C", 1);
 				$pdf->Cell(15, $tam, "UNIDADE", 1, 0, "C", 1);
 				$pdf->Cell(80, $tam, "DESCRICAO", 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlremp), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlranu), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlrliq), 1, 0, "C", 1);
-				$pdf->Cell(20, $tam, strtoupper($RLe60_vlrpag), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlremp), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlranu), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrliq), 1, 0, "C", 1);
+				$pdf->Cell(20, $tam, strtoupper((string) $RLe60_vlrpag), 1, 0, "C", 1);
 				$pdf->Cell(30, $tam, "TOTAL A PAGAR", 1, 1, "C", 1); //quebra linha
 				$pdf->Ln();
 				$pdf->SetFont('Arial', '', 7);
@@ -2133,7 +2133,7 @@ if ($hist == "h") {
 			/* ----------- */
 			$pdf->Ln(1);
 			$pdf->Cell(10, $tam, $o58_orgao, $iBorda, 0, "R", $p);
-			$pdf->Cell(60, $tam, substr($o40_descr, 0, 50), $iBorda, 0, "L", $p);
+			$pdf->Cell(60, $tam, substr((string) $o40_descr, 0, 50), $iBorda, 0, "L", $p);
 			$pdf->Cell(15, $tam, $o58_unidade, $iBorda, 0, "L", $p);
 			$pdf->Cell(80, $tam, $o41_descr, $iBorda, 0, "L", $p);
 			$pdf->Cell(20, $tam, $e60_vlremp, $iBorda, 0, "R", $p);

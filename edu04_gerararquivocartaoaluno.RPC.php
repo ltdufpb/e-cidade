@@ -119,7 +119,7 @@ switch ($oParam->exec) {
   case 'getCartoesAlunos':  
     
     $oDaoLoteCartao = db_utils::getDao("loteimpressaocartaoidentificacao");
-    $aWhere = Array();
+    $aWhere = [];
     if (isset($oParam->iLote) && $oParam->iLote != "") {
       $aWhere[] = "ed305_sequencial = {$oParam->iLote}";
     }
@@ -143,7 +143,7 @@ switch ($oParam->exec) {
                                                               
     $rsCartaoIdentificacao = $oDaoLoteCartao->sql_record($sSqlCartaoIdentificacao);
     $iTotalLinhas          = $oDaoLoteCartao->numrows;
-    $aCartoes              = array(); 
+    $aCartoes              = []; 
     db_inicio_transacao();
     for ($iCartao = 0; $iCartao < $iTotalLinhas; $iCartao++) {
 
@@ -158,7 +158,7 @@ switch ($oParam->exec) {
       $oDadosAluno->nomeresponsavellegal      = urlencode($oAluno->getNomeResponsavelLegal());
       $oDadosAluno->foto                      = urlencode($oAluno->getFoto());
       $oDadosAluno->situacaocarteira          = $oAluno->getCarteiraIdentificacao()->getSituacao()->getCodigoSituacao();
-      $oDadosAluno->descricaosituacaocarteira = urlencode($oAluno->getCarteiraIdentificacao()->getSituacao()->getDescricao());
+      $oDadosAluno->descricaosituacaocarteira = urlencode((string) $oAluno->getCarteiraIdentificacao()->getSituacao()->getDescricao());
       $oDadosAluno->codigocarteira            = $oAluno->getCarteiraIdentificacao()->getSequencialCarteira();
       $aCartoes[] = $oDadosAluno;
       unset($oAluno);

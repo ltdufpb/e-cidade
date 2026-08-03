@@ -45,7 +45,7 @@ final class PadArquivoSigapBalanceteReceita extends PadArquivoSigap
     {
 
         $this->sNomeArquivo = "BalanceteReceita";
-        $this->aDados = array();
+        $this->aDados = [];
     }
 
     /**
@@ -66,7 +66,7 @@ final class PadArquivoSigapBalanceteReceita extends PadArquivoSigap
         /**
          * Separamos a data do em ano, mes, dia
          */
-        list($iAno, $iMes, $iDia) = explode("-", $this->sDataFinal);
+        [$iAno, $iMes, $iDia] = explode("-", $this->sDataFinal);
         $oInstituicao = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
         $sListaInstit = db_getsession("DB_instit");
         $sWhere = " o70_instit in ({$sListaInstit})";
@@ -125,18 +125,18 @@ final class PadArquivoSigapBalanceteReceita extends PadArquivoSigap
             }
 
             $sDiaMesAno = "{$iAno}-" . str_pad($iMes, 2, "0", STR_PAD_LEFT) . "-" . str_pad($iDia, 2, "0", STR_PAD_LEFT);
-            $oReceita->nivel = str_pad($oReceita->nivel, 2, "0", STR_PAD_LEFT);
+            $oReceita->nivel = str_pad((string) $oReceita->nivel, 2, "0", STR_PAD_LEFT);
             $oReceitaRetorno = new stdClass();
 
             $oReceitaRetorno->breCodigoEntidade = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
             $oReceitaRetorno->breMesAnoMovimento = $sDiaMesAno;
 
-            if (strlen($oReceita->o57_fonte) < 15) {
-                $oReceita->o57_fonte = str_pad($oReceita->o57_fonte, 15, "0", STR_PAD_RIGHT);
+            if (strlen((string) $oReceita->o57_fonte) < 15) {
+                $oReceita->o57_fonte = str_pad((string) $oReceita->o57_fonte, 15, "0", STR_PAD_RIGHT);
             }
-            $oReceitaRetorno->breContaReceita = str_pad($oReceita->o57_fonte, 20, 0, STR_PAD_RIGHT);
+            $oReceitaRetorno->breContaReceita = str_pad((string) $oReceita->o57_fonte, 20, 0, STR_PAD_RIGHT);
 
-            $iTamanhoCampo = strlen($oInstituicao->codtrib);
+            $iTamanhoCampo = strlen((string) $oInstituicao->codtrib);
             if ($iTamanhoCampo != 4) {
 
                 $sMsg = "Identificação do Orgão/Unidade da instituição ({$oInstituicao->codtrib}) está incorreto. \\n ";
@@ -146,8 +146,8 @@ final class PadArquivoSigapBalanceteReceita extends PadArquivoSigap
                 throw new Exception($sMsg);
             }
 
-            $sOrgao = substr($oInstituicao->codtrib, 0, 2);
-            $sUnidade = substr($oInstituicao->codtrib, 2, 2);
+            $sOrgao = substr((string) $oInstituicao->codtrib, 0, 2);
+            $sUnidade = substr((string) $oInstituicao->codtrib, 2, 2);
             $oReceitaRetorno->breCodigoOrgao = str_pad($sOrgao, 2, "0", STR_PAD_LEFT);
             $oReceitaRetorno->breCodigoUnidadeOrcamentaria = str_pad($sUnidade, 2, "0", STR_PAD_LEFT);
             $oReceitaRetorno->breValorPrevisaoAtualizada = number_format(((float)$oReceita->saldo_prevadic_acum + (float)$oReceita->saldo_inicial), 2, ".", "");
@@ -171,12 +171,12 @@ final class PadArquivoSigapBalanceteReceita extends PadArquivoSigap
                 $nArrecadadoAcumulado = number_format(abs($oReceita->saldo_arrecadado_acumulado), 2, ".", "");
             }
             $oReceitaRetorno->breValorReceitaRealizada = $nArrecadadoAcumulado;
-            $oReceitaRetorno->breCodigoRecursoVinculado = str_pad($oReceita->o70_codigo, 8, "0", STR_PAD_LEFT);
-            $oReceitaRetorno->breDescricaoContaReceita = substr($oReceita->o57_descr, 0, 255);
+            $oReceitaRetorno->breCodigoRecursoVinculado = str_pad((string) $oReceita->o70_codigo, 8, "0", STR_PAD_LEFT);
+            $oReceitaRetorno->breDescricaoContaReceita = substr((string) $oReceita->o57_descr, 0, 255);
             $oReceitaRetorno->breNivelContaReceita = ($oReceita->o70_codrec == 0 ? 'S' : 'A');
 
             $oReceitaRetorno->breNumeroNivelContaReceita = str_pad($oReceita->nivel, 2, "0", STR_PAD_LEFT);
-            $oReceitaRetorno->breCaracteristicaPeculiar = str_pad($iCaracteristicaPeculiar, 3, "0", STR_PAD_LEFT);
+            $oReceitaRetorno->breCaracteristicaPeculiar = str_pad((string) $iCaracteristicaPeculiar, 3, "0", STR_PAD_LEFT);
 
             $this->aDados[] = $oReceitaRetorno;
             $array_teste[$i][0] = $oReceita->o57_fonte;
@@ -205,7 +205,7 @@ final class PadArquivoSigapBalanceteReceita extends PadArquivoSigap
         }
 
         $numerro = 0;
-        $array_erro = array();
+        $array_erro = [];
         for ($nivel_atual = $maxnivelsintetico; $nivel_atual > 0; $nivel_atual--) {
 
             for ($x = 1; $x <= sizeof($array_teste); $x++) {
@@ -264,11 +264,11 @@ final class PadArquivoSigapBalanceteReceita extends PadArquivoSigap
 
             $this->addLog("\nERRO - RECEITAS DO ORCAMENTO SEM REDUZIDO NO PLANO DE CONTAS:\n");
 
-            for ($x = 0; $x < pg_numrows($resultorcreceita); $x++) {
+            for ($x = 0; $x < pg_num_rows($resultorcreceita); $x++) {
 
-                $o70_codrec = pg_result($resultorcreceita, $x, "o70_codrec");
-                $o70_codfon = pg_result($resultorcreceita, $x, "o70_codfon");
-                $c60_estrut = pg_result($resultorcreceita, $x, "c60_estrut");
+                $o70_codrec = pg_fetch_result($resultorcreceita, $x, "o70_codrec");
+                $o70_codfon = pg_fetch_result($resultorcreceita, $x, "o70_codfon");
+                $c60_estrut = pg_fetch_result($resultorcreceita, $x, "c60_estrut");
 
                 $this->addLog("REDUZIDO ORCAMENTO: $o70_codrec - CODCON: $o70_codfon - ESTRUTURAL: $c60_estrut\n");
 
@@ -289,7 +289,7 @@ final class PadArquivoSigapBalanceteReceita extends PadArquivoSigap
     public function getNomeElementos()
     {
 
-        $aElementos = array(
+        $aElementos = [
             "breCodigoEntidade",
             "breMesAnoMovimento",
             "breContaReceita",
@@ -303,7 +303,7 @@ final class PadArquivoSigapBalanceteReceita extends PadArquivoSigap
             "breCaracteristicaPeculiar",
             "breNumeroNivelContaReceita",
             "breValorPrevisaoAtualizada"
-        );
+        ];
 
         return $aElementos;
     }

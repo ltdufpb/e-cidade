@@ -40,7 +40,7 @@ $clcarface   = new cl_carface;
 $clcfiptu    = new cl_cfiptu;
 $clfacevalor = new cl_facevalor;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -48,7 +48,7 @@ if (isset ($incluir)) {
 
 	$sqlerro = false;
 	db_inicio_transacao();
-	$j37_quadra = str_pad($j37_quadra, 4, "0", STR_PAD_LEFT);
+	$j37_quadra = str_pad((string) $j37_quadra, 4, "0", STR_PAD_LEFT);
 	$clface->j37_quadra = $j37_quadra;
 	$clface->j37_valor = '0';
 	$clface->j37_vlcons = '0';
@@ -61,7 +61,7 @@ if (isset ($incluir)) {
 	}
 	$erro_msg = $clface->erro_msg;
 	$j37_face = $clface->j37_face;
-	$matriz = split("X", $caracteristica);
+	$matriz = preg_split("#X#m", (string) $caracteristica);
 	for ($i = 0; $i < sizeof($matriz); $i++) {
 		$j38_caract = $matriz[$i];
 		if ($j38_caract != "") {

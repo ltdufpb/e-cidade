@@ -92,7 +92,7 @@ if ($oSauConfig != false) {
                   <td colspan="2">
                     <b>Tipo de BPA:</b>
                     <?php 
-                      $arr_tipo = array ("02" => "Individual", "01" => "Consolidado" );
+                      $arr_tipo =  ["02" => "Individual", "01" => "Consolidado" ];
                       db_select('sTipo', $arr_tipo, true, 4 );
                     ?>
                   </td>
@@ -192,7 +192,7 @@ if ($oSauConfig != false) {
                         $sSql       = $oDaoUnidades->sql_query("", "sd02_i_codigo,descrdepto");
                         $rsUnidades = $oDaoUnidades->sql_record($sSql);
                         db_multiploselect("sd02_i_codigo", "descrdepto", "nselecionados", "sselecionados", $rsUnidades,
-                                          array(), 5, 250);
+                                          [], 5, 250);
                         db_input ('sd24_i_unidade', 100, "", true, 'hidden', 1, "" );
                       ?>
                     </fieldset>

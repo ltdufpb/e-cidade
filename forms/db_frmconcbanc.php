@@ -99,11 +99,11 @@ $sSqlReduz .= "  where contabancaria.db83_sequencial = {$conta} ";
 $rsReduz    = db_query($sSqlReduz);
 
 $sReduzidos = "Não Encontrado";
-$aReduzidos = array();
-if ( pg_numrows($rsReduz ) > 0) {
+$aReduzidos = [];
+if ( pg_num_rows($rsReduz ) > 0) {
 
 
-    for( $i=0; $i < pg_numrows($rsReduz ); $i++ ){
+    for( $i=0; $i < pg_num_rows($rsReduz ); $i++ ){
       
       $oDados = db_utils::fieldsMemory($rsReduz, $i);
       $aReduzidos[] = $oDados->c61_reduz;

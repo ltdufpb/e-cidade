@@ -43,12 +43,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $anousu = db_getsession("DB_anousu");
 
@@ -86,16 +86,16 @@ if (isset($oGet->dfiscal) && $oGet->dfiscal == true) {
     <center>
     <?php 
     if ($anousu <= 2007) {
-      $clcriaabas->identifica = array("relatorio"=>"Relatório");
-      $clcriaabas->title      = array("relatorio"=>"Relatório");
-      $clcriaabas->src        = array("relatorio"=>"con2_lfrorcanexoii001.php");
-      $clcriaabas->sizecampo  = array("relatorio"=>"23");
+      $clcriaabas->identifica = ["relatorio"=>"Relatório"];
+      $clcriaabas->title      = ["relatorio"=>"Relatório"];
+      $clcriaabas->src        = ["relatorio"=>"con2_lfrorcanexoii001.php"];
+      $clcriaabas->sizecampo  = ["relatorio"=>"23"];
     } else {
-      $clcriaabas->identifica = array("relatorio"=>"Relatório","notas"=>"Fonte/Notas Explicativas");
-      $clcriaabas->title      = array("relatorio"=>"Relatório","notas"=>"Fonte/Notas Explicativas");
-      $clcriaabas->src        = array("relatorio"=>"con2_lfrorcanexoii001.php",
-                                      "notas"    =>"con2_conrelnotas.php?c83_codrel=$codrel");
-      $clcriaabas->sizecampo  = array("relatorio"=>"23","notas"=>"23");
+      $clcriaabas->identifica = ["relatorio"=>"Relatório","notas"=>"Fonte/Notas Explicativas"];
+      $clcriaabas->title      = ["relatorio"=>"Relatório","notas"=>"Fonte/Notas Explicativas"];
+      $clcriaabas->src        = ["relatorio"=>"con2_lfrorcanexoii001.php",
+                                      "notas"    =>"con2_conrelnotas.php?c83_codrel=$codrel"];
+      $clcriaabas->sizecampo  = ["relatorio"=>"23","notas"=>"23"];
     }
 
     $clcriaabas->cria_abas();

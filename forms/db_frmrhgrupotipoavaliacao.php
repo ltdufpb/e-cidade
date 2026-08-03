@@ -63,10 +63,10 @@ $clrhgrupotipoavaliacao->rotulo->label();
     </td>
     <td> 
 			<?php 
-			$aTipos = array( "1" => "Digitável",
+			$aTipos = [ "1" => "Digitável",
 			                 "2" => "Valor padrão",
 			                 "3" => "Calculado"
-			                );
+			                ];
 			db_select('h68_tipolancamento',$aTipos, true,  $db_opcao);                
 			?>
     </td>
@@ -86,7 +86,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rhgrupotipoavaliacao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

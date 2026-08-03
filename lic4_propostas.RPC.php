@@ -46,7 +46,7 @@ try {
 
         case 'getOrcamentoProcessoCompra':
 
-            $stdRetorno->valoresEstimados = array();
+            $stdRetorno->valoresEstimados = [];
             $licitacao = new licitacao($stdParam->codigoLicitacao);
             $itensLicitacao = $licitacao->getItens();
             $fornecedor = new OrcamentoFornecedor($stdParam->codigoFornecedor);
@@ -54,20 +54,20 @@ try {
             $daoOrcamentoProcesso = new cl_pcorcamitemproc();
             foreach ($itensLicitacao as $item) {
 
-                $where = implode(' and ', array(
+                $where = implode(' and ', [
                     "pcorcamitemproc.pc31_pcprocitem = {$item->getItemProcessoCompras()}",
                     "pcorcamforne.pc21_numcgm = {$codigoCgmFornecedor}"
-                ));
+                ]);
                 $buscaOrcamento = $daoOrcamentoProcesso->sql_query_orcamento_item('coalesce(pc23_vlrun, 0) as pc23_vlrun', $where);
                 $resBuscaOrcamento = db_query($buscaOrcamento);
                 if (!$resBuscaOrcamento) {
                     throw new DBException("Ocorreu um erro ao consultar o orçamento par ao item {$item->getItemProcessoCompras()}.");
                 }
 
-                $stdRetorno->valoresEstimados[] = (object)array(
+                $stdRetorno->valoresEstimados[] = (object)[
                     'codigoItemProcesso' => $item->getItemProcessoCompras(),
                     'valorEstimado' => trim(db_formatar(db_utils::fieldsMemory($resBuscaOrcamento, 0)->pc23_vlrun, 'p'))
-                );
+                ];
             }
 
             break;

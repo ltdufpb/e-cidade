@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE lotecemit
 class cl_lotecemit {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $cm23_i_codigo = 0;
-   var $cm23_i_quadracemit = 0;
-   var $cm23_i_lotecemit = 0;
-   var $cm23_c_situacao = null;
-   var $cm23_b_selecionado = 'f';
+   public $cm23_i_codigo = 0;
+   public $cm23_i_quadracemit = 0;
+   public $cm23_i_lotecemit = 0;
+   public $cm23_c_situacao = null;
+   public $cm23_b_selecionado = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  cm23_i_codigo = int4 = Código Lote
                  cm23_i_quadracemit = int4 = Quadra Cemitério
                  cm23_i_lotecemit = int4 = Numero Lote
@@ -56,10 +56,10 @@ class cl_lotecemit {
                  cm23_b_selecionado = bool = Lote Selecionado
                  ";
    //funcao construtor da classe
-   function cl_lotecemit() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lotecemit");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -119,10 +119,10 @@ class cl_lotecemit {
          $this->erro_status = "0";
          return false;
        }
-       $this->cm23_i_codigo = pg_result($result,0,0);
+       $this->cm23_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from lotecemit_cm23_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cm23_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cm23_i_codigo)){
          $this->erro_sql = " Campo cm23_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -158,7 +158,7 @@ class cl_lotecemit {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastra os lotes das quadras para o cemiterio ($this->cm23_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastra os lotes das quadras para o cemiterio já Cadastrado";
@@ -182,14 +182,14 @@ class cl_lotecemit {
      $resaco = $this->sql_record($this->sql_query_file($this->cm23_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10344,'$this->cm23_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1790,10344,'','".AddSlashes(pg_result($resaco,0,'cm23_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1790,10345,'','".AddSlashes(pg_result($resaco,0,'cm23_i_quadracemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1790,10346,'','".AddSlashes(pg_result($resaco,0,'cm23_i_lotecemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1790,10347,'','".AddSlashes(pg_result($resaco,0,'cm23_c_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1790,10348,'','".AddSlashes(pg_result($resaco,0,'cm23_b_selecionado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1790,10344,'','".AddSlashes(pg_fetch_result($resaco,0,'cm23_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1790,10345,'','".AddSlashes(pg_fetch_result($resaco,0,'cm23_i_quadracemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1790,10346,'','".AddSlashes(pg_fetch_result($resaco,0,'cm23_i_lotecemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1790,10347,'','".AddSlashes(pg_fetch_result($resaco,0,'cm23_c_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1790,10348,'','".AddSlashes(pg_fetch_result($resaco,0,'cm23_b_selecionado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -198,10 +198,10 @@ class cl_lotecemit {
       $this->atualizacampos();
      $sql = " update lotecemit set ";
      $virgula = "";
-     if(trim($this->cm23_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm23_i_codigo"])){
+     if(trim((string) $this->cm23_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm23_i_codigo"])){
        $sql  .= $virgula." cm23_i_codigo = $this->cm23_i_codigo ";
        $virgula = ",";
-       if(trim($this->cm23_i_codigo) == null ){
+       if(trim((string) $this->cm23_i_codigo) == null ){
          $this->erro_sql = " Campo Código Lote nao Informado.";
          $this->erro_campo = "cm23_i_codigo";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_lotecemit {
          return false;
        }
      }
-     if(trim($this->cm23_i_quadracemit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm23_i_quadracemit"])){
+     if(trim((string) $this->cm23_i_quadracemit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm23_i_quadracemit"])){
        $sql  .= $virgula." cm23_i_quadracemit = $this->cm23_i_quadracemit ";
        $virgula = ",";
-       if(trim($this->cm23_i_quadracemit) == null ){
+       if(trim((string) $this->cm23_i_quadracemit) == null ){
          $this->erro_sql = " Campo Quadra Cemitério nao Informado.";
          $this->erro_campo = "cm23_i_quadracemit";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_lotecemit {
          return false;
        }
      }
-     if(trim($this->cm23_i_lotecemit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm23_i_lotecemit"])){
+     if(trim((string) $this->cm23_i_lotecemit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm23_i_lotecemit"])){
        $sql  .= $virgula." cm23_i_lotecemit = $this->cm23_i_lotecemit ";
        $virgula = ",";
-       if(trim($this->cm23_i_lotecemit) == null ){
+       if(trim((string) $this->cm23_i_lotecemit) == null ){
          $this->erro_sql = " Campo Numero Lote nao Informado.";
          $this->erro_campo = "cm23_i_lotecemit";
          $this->erro_banco = "";
@@ -237,11 +237,11 @@ class cl_lotecemit {
          return false;
        }
      }
-     if(trim($this->cm23_c_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm23_c_situacao"])){
+     if(trim((string) $this->cm23_c_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm23_c_situacao"])){
        $sql  .= $virgula." cm23_c_situacao = '$this->cm23_c_situacao' ";
        $virgula = ",";
      }
-     if(trim($this->cm23_b_selecionado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm23_b_selecionado"])){
+     if(trim((string) $this->cm23_b_selecionado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm23_b_selecionado"])){
        $sql  .= $virgula." cm23_b_selecionado = '$this->cm23_b_selecionado' ";
        $virgula = ",";
      }
@@ -253,19 +253,19 @@ class cl_lotecemit {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10344,'$this->cm23_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm23_i_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1790,10344,'".AddSlashes(pg_result($resaco,$conresaco,'cm23_i_codigo'))."','$this->cm23_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1790,10344,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm23_i_codigo'))."','$this->cm23_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm23_i_quadracemit"]))
-           $resac = db_query("insert into db_acount values($acount,1790,10345,'".AddSlashes(pg_result($resaco,$conresaco,'cm23_i_quadracemit'))."','$this->cm23_i_quadracemit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1790,10345,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm23_i_quadracemit'))."','$this->cm23_i_quadracemit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm23_i_lotecemit"]))
-           $resac = db_query("insert into db_acount values($acount,1790,10346,'".AddSlashes(pg_result($resaco,$conresaco,'cm23_i_lotecemit'))."','$this->cm23_i_lotecemit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1790,10346,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm23_i_lotecemit'))."','$this->cm23_i_lotecemit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm23_c_situacao"]))
-           $resac = db_query("insert into db_acount values($acount,1790,10347,'".AddSlashes(pg_result($resaco,$conresaco,'cm23_c_situacao'))."','$this->cm23_c_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1790,10347,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm23_c_situacao'))."','$this->cm23_c_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm23_b_selecionado"]))
-           $resac = db_query("insert into db_acount values($acount,1790,10348,'".AddSlashes(pg_result($resaco,$conresaco,'cm23_b_selecionado'))."','$this->cm23_b_selecionado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1790,10348,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm23_b_selecionado'))."','$this->cm23_b_selecionado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,14 +310,14 @@ class cl_lotecemit {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10344,'$cm23_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1790,10344,'','".AddSlashes(pg_result($resaco,$iresaco,'cm23_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1790,10345,'','".AddSlashes(pg_result($resaco,$iresaco,'cm23_i_quadracemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1790,10346,'','".AddSlashes(pg_result($resaco,$iresaco,'cm23_i_lotecemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1790,10347,'','".AddSlashes(pg_result($resaco,$iresaco,'cm23_c_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1790,10348,'','".AddSlashes(pg_result($resaco,$iresaco,'cm23_b_selecionado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1790,10344,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm23_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1790,10345,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm23_i_quadracemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1790,10346,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm23_i_lotecemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1790,10347,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm23_c_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1790,10348,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm23_b_selecionado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from lotecemit
@@ -377,7 +377,7 @@ class cl_lotecemit {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:lotecemit";
@@ -391,7 +391,7 @@ class cl_lotecemit {
    function sql_query ( $cm23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_lotecemit {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,7 +430,7 @@ class cl_lotecemit {
    function sql_query_file ( $cm23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_lotecemit {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

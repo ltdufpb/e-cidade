@@ -39,27 +39,21 @@ use ECidade\Tributario\Juridico\ProcessoForo\Repository\ProcessoForo;
 final class Simulacao implements Service
 {
     /**
-     * @var Termo
-     */
-    private $termo;
-
-    /**
      * @var ProcessoForo
      */
     private $processoForoRepository;
 
-	public function __construct(Termo $termo)
+	public function __construct(private readonly Termo $termo)
 	{
-		$this->termo = $termo;
-	 	$this->processoForoRepository = ProcessoForo::getInstance();
+		$this->processoForoRepository = (new ProcessoForo())->getInstance();
 	}
 
 	public function processar()
 	{
 		$termoIniciais = $this->termo->getTermoIniciais();
 
-		$iniciais = array();
-		$processos = array();
+		$iniciais = [];
+		$processos = [];
 
 		foreach($termoIniciais as $termoInicial) {
 
@@ -76,7 +70,7 @@ final class Simulacao implements Service
 
 		$processos = array_unique($processos);
 
-		$partilhas = array();
+		$partilhas = [];
 
 		foreach ($iniciais as $inicial) {
 
@@ -94,7 +88,7 @@ final class Simulacao implements Service
             $partilhas[] = new PartilhaJuridicaParcelamentoSimulacao($calculoJuridicaParcelamentoSimulacao, $fixaJuridicaParcelamento, $processo, $this->termo);
 		}
 
-		$partilhasTermo = array();
+		$partilhasTermo = [];
 
 		foreach ($partilhas as $partilha) {
 			$partilhasTermo[] = $partilha->processar();

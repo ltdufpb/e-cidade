@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE aguacortetipodebito
 class cl_aguacortetipodebito { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x45_codcorte = 0; 
-   var $x45_tipo = 0; 
-   var $x45_parcelas = 0; 
-   var $x45_dtvenc_dia = null; 
-   var $x45_dtvenc_mes = null; 
-   var $x45_dtvenc_ano = null; 
-   var $x45_dtvenc = null; 
-   var $x45_vlrminimo = 0; 
-   var $x45_codcortetipodebito = 0; 
-   var $x45_dtopini_dia = null; 
-   var $x45_dtopini_mes = null; 
-   var $x45_dtopini_ano = null; 
-   var $x45_dtopini = null; 
-   var $x45_dtopfim_dia = null; 
-   var $x45_dtopfim_mes = null; 
-   var $x45_dtopfim_ano = null; 
-   var $x45_dtopfim = null; 
+   public $x45_codcorte = 0; 
+   public $x45_tipo = 0; 
+   public $x45_parcelas = 0; 
+   public $x45_dtvenc_dia = null; 
+   public $x45_dtvenc_mes = null; 
+   public $x45_dtvenc_ano = null; 
+   public $x45_dtvenc = null; 
+   public $x45_vlrminimo = 0; 
+   public $x45_codcortetipodebito = 0; 
+   public $x45_dtopini_dia = null; 
+   public $x45_dtopini_mes = null; 
+   public $x45_dtopini_ano = null; 
+   public $x45_dtopini = null; 
+   public $x45_dtopfim_dia = null; 
+   public $x45_dtopfim_mes = null; 
+   public $x45_dtopfim_ano = null; 
+   public $x45_dtopfim = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x45_codcorte = int4 = Corte 
                  x45_tipo = int4 = Débito 
                  x45_parcelas = int4 = Parcelas Atraso 
@@ -71,10 +71,10 @@ class cl_aguacortetipodebito {
                  x45_dtopfim = date = Data Final Operação 
                  ";
    //funcao construtor da classe 
-   function cl_aguacortetipodebito() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacortetipodebito"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -171,10 +171,10 @@ class cl_aguacortetipodebito {
          $this->erro_status = "0";
          return false; 
        }
-       $this->x45_codcortetipodebito = pg_result($result,0,0); 
+       $this->x45_codcortetipodebito = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from aguacortetipodebito_x45_codcortetipodebito_seq");
-       if(($result != false) && (pg_result($result,0,0) < $x45_codcortetipodebito)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $x45_codcortetipodebito)){
          $this->erro_sql = " Campo x45_codcortetipodebito maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -216,7 +216,7 @@ class cl_aguacortetipodebito {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "aguacortetipodebito ($this->x45_codcortetipodebito) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "aguacortetipodebito já Cadastrado";
@@ -240,17 +240,17 @@ class cl_aguacortetipodebito {
      $resaco = $this->sql_record($this->sql_query_file($this->x45_codcortetipodebito));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8568,'$this->x45_codcortetipodebito','I')");
-       $resac = db_query("insert into db_acount values($acount,1453,8539,'','".AddSlashes(pg_result($resaco,0,'x45_codcorte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1453,8540,'','".AddSlashes(pg_result($resaco,0,'x45_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1453,8541,'','".AddSlashes(pg_result($resaco,0,'x45_parcelas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1453,8542,'','".AddSlashes(pg_result($resaco,0,'x45_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1453,8543,'','".AddSlashes(pg_result($resaco,0,'x45_vlrminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1453,8568,'','".AddSlashes(pg_result($resaco,0,'x45_codcortetipodebito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1453,8571,'','".AddSlashes(pg_result($resaco,0,'x45_dtopini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1453,8572,'','".AddSlashes(pg_result($resaco,0,'x45_dtopfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1453,8539,'','".AddSlashes(pg_fetch_result($resaco,0,'x45_codcorte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1453,8540,'','".AddSlashes(pg_fetch_result($resaco,0,'x45_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1453,8541,'','".AddSlashes(pg_fetch_result($resaco,0,'x45_parcelas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1453,8542,'','".AddSlashes(pg_fetch_result($resaco,0,'x45_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1453,8543,'','".AddSlashes(pg_fetch_result($resaco,0,'x45_vlrminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1453,8568,'','".AddSlashes(pg_fetch_result($resaco,0,'x45_codcortetipodebito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1453,8571,'','".AddSlashes(pg_fetch_result($resaco,0,'x45_dtopini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1453,8572,'','".AddSlashes(pg_fetch_result($resaco,0,'x45_dtopfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -259,10 +259,10 @@ class cl_aguacortetipodebito {
       $this->atualizacampos();
      $sql = " update aguacortetipodebito set ";
      $virgula = "";
-     if(trim($this->x45_codcorte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_codcorte"])){ 
+     if(trim((string) $this->x45_codcorte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_codcorte"])){ 
        $sql  .= $virgula." x45_codcorte = $this->x45_codcorte ";
        $virgula = ",";
-       if(trim($this->x45_codcorte) == null ){ 
+       if(trim((string) $this->x45_codcorte) == null ){ 
          $this->erro_sql = " Campo Corte nao Informado.";
          $this->erro_campo = "x45_codcorte";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_aguacortetipodebito {
          return false;
        }
      }
-     if(trim($this->x45_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_tipo"])){ 
+     if(trim((string) $this->x45_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_tipo"])){ 
        $sql  .= $virgula." x45_tipo = $this->x45_tipo ";
        $virgula = ",";
-       if(trim($this->x45_tipo) == null ){ 
+       if(trim((string) $this->x45_tipo) == null ){ 
          $this->erro_sql = " Campo Débito nao Informado.";
          $this->erro_campo = "x45_tipo";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_aguacortetipodebito {
          return false;
        }
      }
-     if(trim($this->x45_parcelas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_parcelas"])){ 
+     if(trim((string) $this->x45_parcelas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_parcelas"])){ 
        $sql  .= $virgula." x45_parcelas = $this->x45_parcelas ";
        $virgula = ",";
-       if(trim($this->x45_parcelas) == null ){ 
+       if(trim((string) $this->x45_parcelas) == null ){ 
          $this->erro_sql = " Campo Parcelas Atraso nao Informado.";
          $this->erro_campo = "x45_parcelas";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_aguacortetipodebito {
          return false;
        }
      }
-     if(trim($this->x45_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x45_dtvenc_dia"] !="") ){ 
+     if(trim((string) $this->x45_dtvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_dtvenc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x45_dtvenc_dia"] !="") ){ 
        $sql  .= $virgula." x45_dtvenc = '$this->x45_dtvenc' ";
        $virgula = ",";
-       if(trim($this->x45_dtvenc) == null ){ 
+       if(trim((string) $this->x45_dtvenc) == null ){ 
          $this->erro_sql = " Campo Vencimento nao Informado.";
          $this->erro_campo = "x45_dtvenc_dia";
          $this->erro_banco = "";
@@ -314,7 +314,7 @@ class cl_aguacortetipodebito {
        if(isset($GLOBALS["HTTP_POST_VARS"]["x45_dtvenc_dia"])){ 
          $sql  .= $virgula." x45_dtvenc = null ";
          $virgula = ",";
-         if(trim($this->x45_dtvenc) == null ){ 
+         if(trim((string) $this->x45_dtvenc) == null ){ 
            $this->erro_sql = " Campo Vencimento nao Informado.";
            $this->erro_campo = "x45_dtvenc_dia";
            $this->erro_banco = "";
@@ -325,17 +325,17 @@ class cl_aguacortetipodebito {
          }
        }
      }
-     if(trim($this->x45_vlrminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_vlrminimo"])){ 
-        if(trim($this->x45_vlrminimo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x45_vlrminimo"])){ 
+     if(trim((string) $this->x45_vlrminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_vlrminimo"])){ 
+        if(trim((string) $this->x45_vlrminimo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x45_vlrminimo"])){ 
            $this->x45_vlrminimo = "0" ; 
         } 
        $sql  .= $virgula." x45_vlrminimo = $this->x45_vlrminimo ";
        $virgula = ",";
      }
-     if(trim($this->x45_codcortetipodebito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_codcortetipodebito"])){ 
+     if(trim((string) $this->x45_codcortetipodebito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_codcortetipodebito"])){ 
        $sql  .= $virgula." x45_codcortetipodebito = $this->x45_codcortetipodebito ";
        $virgula = ",";
-       if(trim($this->x45_codcortetipodebito) == null ){ 
+       if(trim((string) $this->x45_codcortetipodebito) == null ){ 
          $this->erro_sql = " Campo Corte Tipo Debito nao Informado.";
          $this->erro_campo = "x45_codcortetipodebito";
          $this->erro_banco = "";
@@ -345,7 +345,7 @@ class cl_aguacortetipodebito {
          return false;
        }
      }
-     if(trim($this->x45_dtopini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_dtopini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x45_dtopini_dia"] !="") ){ 
+     if(trim((string) $this->x45_dtopini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_dtopini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x45_dtopini_dia"] !="") ){ 
        $sql  .= $virgula." x45_dtopini = '$this->x45_dtopini' ";
        $virgula = ",";
      }     else{ 
@@ -354,7 +354,7 @@ class cl_aguacortetipodebito {
          $virgula = ",";
        }
      }
-     if(trim($this->x45_dtopfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_dtopfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x45_dtopfim_dia"] !="") ){ 
+     if(trim((string) $this->x45_dtopfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x45_dtopfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x45_dtopfim_dia"] !="") ){ 
        $sql  .= $virgula." x45_dtopfim = '$this->x45_dtopfim' ";
        $virgula = ",";
      }     else{ 
@@ -371,25 +371,25 @@ class cl_aguacortetipodebito {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8568,'$this->x45_codcortetipodebito','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x45_codcorte"]))
-           $resac = db_query("insert into db_acount values($acount,1453,8539,'".AddSlashes(pg_result($resaco,$conresaco,'x45_codcorte'))."','$this->x45_codcorte',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1453,8539,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x45_codcorte'))."','$this->x45_codcorte',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x45_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1453,8540,'".AddSlashes(pg_result($resaco,$conresaco,'x45_tipo'))."','$this->x45_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1453,8540,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x45_tipo'))."','$this->x45_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x45_parcelas"]))
-           $resac = db_query("insert into db_acount values($acount,1453,8541,'".AddSlashes(pg_result($resaco,$conresaco,'x45_parcelas'))."','$this->x45_parcelas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1453,8541,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x45_parcelas'))."','$this->x45_parcelas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x45_dtvenc"]))
-           $resac = db_query("insert into db_acount values($acount,1453,8542,'".AddSlashes(pg_result($resaco,$conresaco,'x45_dtvenc'))."','$this->x45_dtvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1453,8542,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x45_dtvenc'))."','$this->x45_dtvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x45_vlrminimo"]))
-           $resac = db_query("insert into db_acount values($acount,1453,8543,'".AddSlashes(pg_result($resaco,$conresaco,'x45_vlrminimo'))."','$this->x45_vlrminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1453,8543,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x45_vlrminimo'))."','$this->x45_vlrminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x45_codcortetipodebito"]))
-           $resac = db_query("insert into db_acount values($acount,1453,8568,'".AddSlashes(pg_result($resaco,$conresaco,'x45_codcortetipodebito'))."','$this->x45_codcortetipodebito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1453,8568,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x45_codcortetipodebito'))."','$this->x45_codcortetipodebito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x45_dtopini"]))
-           $resac = db_query("insert into db_acount values($acount,1453,8571,'".AddSlashes(pg_result($resaco,$conresaco,'x45_dtopini'))."','$this->x45_dtopini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1453,8571,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x45_dtopini'))."','$this->x45_dtopini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["x45_dtopfim"]))
-           $resac = db_query("insert into db_acount values($acount,1453,8572,'".AddSlashes(pg_result($resaco,$conresaco,'x45_dtopfim'))."','$this->x45_dtopfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1453,8572,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x45_dtopfim'))."','$this->x45_dtopfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -434,17 +434,17 @@ class cl_aguacortetipodebito {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8568,'$x45_codcortetipodebito','E')");
-         $resac = db_query("insert into db_acount values($acount,1453,8539,'','".AddSlashes(pg_result($resaco,$iresaco,'x45_codcorte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1453,8540,'','".AddSlashes(pg_result($resaco,$iresaco,'x45_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1453,8541,'','".AddSlashes(pg_result($resaco,$iresaco,'x45_parcelas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1453,8542,'','".AddSlashes(pg_result($resaco,$iresaco,'x45_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1453,8543,'','".AddSlashes(pg_result($resaco,$iresaco,'x45_vlrminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1453,8568,'','".AddSlashes(pg_result($resaco,$iresaco,'x45_codcortetipodebito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1453,8571,'','".AddSlashes(pg_result($resaco,$iresaco,'x45_dtopini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1453,8572,'','".AddSlashes(pg_result($resaco,$iresaco,'x45_dtopfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1453,8539,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x45_codcorte'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1453,8540,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x45_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1453,8541,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x45_parcelas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1453,8542,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x45_dtvenc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1453,8543,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x45_vlrminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1453,8568,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x45_codcortetipodebito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1453,8571,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x45_dtopini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1453,8572,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x45_dtopfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from aguacortetipodebito
@@ -504,7 +504,7 @@ class cl_aguacortetipodebito {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:aguacortetipodebito";
@@ -518,7 +518,7 @@ class cl_aguacortetipodebito {
    function sql_query ( $x45_codcortetipodebito=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -545,7 +545,7 @@ class cl_aguacortetipodebito {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -557,7 +557,7 @@ class cl_aguacortetipodebito {
    function sql_query_file ( $x45_codcortetipodebito=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -578,7 +578,7 @@ class cl_aguacortetipodebito {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

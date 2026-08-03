@@ -32,24 +32,19 @@ use ECidade\Patrimonial\Patrimonio\Bem\Repository\BemPlacaRepository;
 
 class BemService
 {
-    private $repositorio;
-    private $bemPlacaRepositorio;
-
     /**
      * BemService constructor.
      * @param BemRepository $repositorio
      */
-    public function __construct(BemRepository $repositorio, BemPlacaRepository $bemPlacaRepositorio)
+    public function __construct(private readonly BemRepository $repositorio, private readonly BemPlacaRepository $bemPlacaRepositorio)
     {
-        $this->repositorio = $repositorio;
-        $this->bemPlacaRepositorio = $bemPlacaRepositorio;
     }
 
     public function busca($id)
     {
         try {
             return $this->repositorio->busca($id);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception('Bem não encontrado.');
         }
     }
@@ -62,7 +57,7 @@ class BemService
 
         try {
             return $this->bemPlacaRepositorio->buscaPlacasParaExclusao((int) $idBem, (int) $sequencialPlaca);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception('Não há placas para exclusão.');
         }
     }
@@ -71,7 +66,7 @@ class BemService
     {
         try {
             return $this->bemPlacaRepositorio->excluiPlacas($idsPlacas);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception('Erro ao tentar excluir as placas.');
         }
     }

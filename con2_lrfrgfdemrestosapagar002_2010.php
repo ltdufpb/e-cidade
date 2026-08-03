@@ -97,7 +97,7 @@ $oPdf->SetFillColor(235);
 $iTamFonte = 5;
 $iAltCell  = 3;
 
-imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, true);
+imprimirCabecalho($oPdf, $iAltCell, $iTamFonte);
 
 $nTotalRestosPagarProcessadosExercicioAnteriorI    = 0;
 $nTotalRestosPagarProcessadosExercicioI            = 0;
@@ -110,7 +110,7 @@ foreach ($aDadosAnexoVI->recursosVinculados as $oRecursoVinculado) {
 
   $oPdf->SetFont('arial', '', $iTamFonte);
   $oPdf->Cell(60, $iAltCell, "    ".$oRecursoVinculado->codigo.
-                             " - ".substr($oRecursoVinculado->descricao, 0, 50),                                         'R', 0, "L", 0);
+                             " - ".substr((string) $oRecursoVinculado->descricao, 0, 50),                                         'R', 0, "L", 0);
   $oPdf->Cell(15, $iAltCell, db_formatar(round($oRecursoVinculado->restospagarprocessadosexercicioanterior, 2), 'f'),    'RL', 0, "R", 0);
   $oPdf->Cell(15, $iAltCell, db_formatar(round($oRecursoVinculado->restospagarprocessadosexercicio, 2), 'f'),            'RL', 0, "R", 0);
   $oPdf->Cell(15, $iAltCell, db_formatar(round($oRecursoVinculado->restospagarnaoprocessadosexercicioanterior, 2), 'f'), 'RL', 0, "R", 0);
@@ -125,8 +125,8 @@ $nTotalRestosPagarNaoProcessadosExercicioI         += round($oRecursoVinculado->
 $nTotalDisponibilidadeDeCaixaI                     += round($oRecursoVinculado->disponibilidadedecaixa, 2);
 $nTotalInsuficienciaFinanceiraI                    += round($oRecursoVinculado->insuficienciafinanceira, 2);
 
-  imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, false);
-  imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte, false, false);
+  imprimirCabecalho($oPdf, $iAltCell, $iTamFonte);
+  imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte);
 }
 
 $oPdf->SetFont('arial', 'b', $iTamFonte);
@@ -151,7 +151,7 @@ foreach ($aDadosAnexoVI->recursosNaoVinculados as $oRecursoNaoVinculado) {
 
   $oPdf->SetFont('arial', '', $iTamFonte);
   $oPdf->Cell(60, $iAltCell, "    ".$oRecursoNaoVinculado->codigo.
-                             "-".substr($oRecursoNaoVinculado->descricao, 0, 50),                                           'R', 0, "L", 0);
+                             "-".substr((string) $oRecursoNaoVinculado->descricao, 0, 50),                                           'R', 0, "L", 0);
   $oPdf->Cell(15, $iAltCell, db_formatar(round($oRecursoNaoVinculado->restospagarprocessadosexercicioanterior, 2), 'f'),    'RL', 0, "R", 0);
   $oPdf->Cell(15, $iAltCell, db_formatar(round($oRecursoNaoVinculado->restospagarprocessadosexercicio, 2), 'f'),            'RL', 0, "R", 0);
   $oPdf->Cell(15, $iAltCell, db_formatar(round($oRecursoNaoVinculado->restospagarnaoprocessadosexercicioanterior, 2), 'f'), 'RL', 0, "R", 0);
@@ -166,8 +166,8 @@ foreach ($aDadosAnexoVI->recursosNaoVinculados as $oRecursoNaoVinculado) {
 	$nTotalDisponibilidadeDeCaixaII                     += round($oRecursoNaoVinculado->disponibilidadedecaixa, 2);
 	$nTotalInsuficienciaFinanceiraII                    += round($oRecursoNaoVinculado->insuficienciafinanceira, 2);
 
-  imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, false);
-  imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte, false, false);
+  imprimirCabecalho($oPdf, $iAltCell, $iTamFonte);
+  imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte);
 }
 
 $oPdf->SetFont('arial', 'b', $iTamFonte);
@@ -252,7 +252,7 @@ function imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, $lImprime) {
     if ( !$lImprime ) {
 
       $oPdf->AddPage("P");
-      imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte, true);
+      imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte);
     } else {
 
       $oPdf->Cell(130, $iAltCell, 'RGF - ANEXO VI(LRF, art. 55, Inciso III, alínea "b")', 'B', 0, "L", 0);
@@ -352,7 +352,7 @@ function imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte, $lImprime, $lCabeca
     } else {
 
       $oPdf->Cell(190, ($iAltCell*3), 'Continua na página '.($oPdf->PageNo()+1)."/{nb}",    'T', 1, "R", 0);
-      imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, false);
+      imprimirCabecalho($oPdf, $iAltCell, $iTamFonte);
     }
   }
 }

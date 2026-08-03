@@ -34,8 +34,8 @@ include(modification("classes/db_pcorcamitem_classe.php"));
 include(modification("classes/db_pcorcamjulg_classe.php"));
 include(modification("classes/db_pcorcamval_classe.php"));
 include(modification("classes/db_empparametro_classe.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clpcorcamitem = new cl_pcorcamitem;
 $clpcorcamjulg = new cl_pcorcamjulg;
@@ -52,7 +52,7 @@ if ($clempparametro->numrows > 0){
 
   db_fieldsmemory($res_empparametro,0);
 
-  if (trim($e30_numdec) == "" || $e30_numdec == 0){
+  if (trim((string) $e30_numdec) == "" || $e30_numdec == 0){
     $numdec = 2;
   } else {
     $numdec = $e30_numdec;
@@ -181,14 +181,14 @@ if(isset($orcamento) && trim($orcamento)!=""){
 		echo "<tr>\n";
 		echo "  <td nowrap class='$bordas' align='center' >$pc22_orcamitem</td>\n";
 		echo "  <td nowrap class='$bordas' align='center' title='Clique para efetuar troca de fornecedor do item'>";db_ancora("Trocar","js_troca($pc22_orcamitem,$orcamento,$sol);",1);echo"</td>\n";
-		echo "  <td class='$bordas' align='left' >  ".ucfirst(strtolower($pc01_descrmater))."&nbsp;</td>\n";
+		echo "  <td class='$bordas' align='left' >  ".ucfirst(strtolower((string) $pc01_descrmater))."&nbsp;</td>\n";
 		echo "  <td class='$bordas' align='left' >  ".ucfirst(strtolower($pc23_obs))."&nbsp;</td>\n";
 		echo "  <td class='$bordas' align='center' >$z01_nome</td>\n";
         echo "  <td nowrap class='$bordas' align='center' >$referencia</td>\n";
 		echo "  <td nowrap class='$bordas' align='center' >$pc23_quant</td>\n";
 		echo "  <td nowrap class='$bordas' align='right' >R$ ".db_formatar(($pc23_vlrun),"f"," ",' ',"e",$numdec ,"f")."</td>\n";
 		echo "  <td nowrap class='$bordas' align='right' >R$ ".db_formatar(($pc23_valor),"f"," ",' ',"e",2)."</td>\n";
-		echo "  <td class='$bordas' align='left'>".substr(stripslashes($pc11_resum),0,40)."&nbsp;</td>\n";
+		echo "  <td class='$bordas' align='left'>".substr(stripslashes((string) $pc11_resum),0,40)."&nbsp;</td>\n";
 		echo "</tr>\n";
 	  }
 	}
@@ -212,14 +212,14 @@ if(isset($orcamento) && trim($orcamento)!=""){
                     <input type='button' value='Imprimir mapa de propostas' onClick='js_escolher_relatorio(true, <?=$orcamento?>);'>
                     <strong>Tipo:</strong>
                     <?php
-                      $aTipoProcesso = array("2"=>"Por Lote", "1"=>"Por Item", "3" => "Por Lote (2)");
+                      $aTipoProcesso = ["2"=>"Por Lote", "1"=>"Por Item", "3" => "Por Lote (2)"];
                       db_select("cbxTipoProcesso", $aTipoProcesso, true, 4, "onChange='js_mostrar_modelos(this.value);'");
                     ?>
                   </div>
                   <div id="div_modelo">
                     <strong>Modelo:</strong>
                     <?php
-                      $aModelos = array("1"=>"Modelo 1","2"=>"Modelo 2","3"=>"Modelo 3");
+                      $aModelos = ["1"=>"Modelo 1","2"=>"Modelo 2","3"=>"Modelo 3"];
                       db_select("cbxModelo", $aModelos, true, 4);
                     ?>
                   </div>
@@ -233,7 +233,7 @@ if(isset($orcamento) && trim($orcamento)!=""){
                  <input type='button' value='Imprimir mapa de propostas' onClick='js_escolher_relatorio(false, <?=$orcamento?>);'>
                  <strong>Modelo:</strong>
                  <?php
-                   $aModelos = array("1"=>"Modelo 1","2"=>"Modelo 2","3"=>"Modelo 3");
+                   $aModelos = ["1"=>"Modelo 1","2"=>"Modelo 2","3"=>"Modelo 3"];
                    db_select("cbxModelo", $aModelos, true, 4);
                  ?>
                 </td>

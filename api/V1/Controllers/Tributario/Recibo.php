@@ -62,17 +62,17 @@ class Recibo extends GenericController implements ResourceInterface
             $url = $pdf->imprimir($recibos);
             /** @todo Emitir pdfs e responder com as urls de download */
 
-            return new JsonResponse(array(
+            return new JsonResponse([
                 'success' => true,
                 'message' => "Recibos gerados com sucesso!",
                 'path' => $url
-            ), 200);
+            ], 200);
 
         } catch (Exception $e) {
-            return new JsonResponse(array(
+            return new JsonResponse([
                 'success' => false,
                 'message' => utf8_encode_all($e->getMessage())
-            ), 500);
+            ], 500);
         }
     }
 }

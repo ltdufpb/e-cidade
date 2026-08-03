@@ -33,9 +33,9 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_clientesmodulos_classe.php"));
 include(modification("classes/db_db_versao_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo      		= new rotulocampo;
 
@@ -113,25 +113,25 @@ function monta_menu_func_contarefa($item_modulo,$id_modulo,$espacos,$nivel=1,$pr
           order by menusequencia";
   $res = db_query($sql) or die($sql);
 
-  if(pg_numrows($res)>0){
+  if(pg_num_rows($res)>0){
 
-    for($i=0;$i<pg_numrows($res);$i++){
+    for($i=0;$i<pg_num_rows($res);$i++){
 
-      $item_filho		= pg_result($res,$i,0);
-      $descricao		= pg_result($res,$i,1);
-      $funcao				= trim(pg_result($res,$i,2));
-      $item					= trim(pg_result($res,$i,3));
-      $codproced		= trim(pg_result($res,$i,4));
-			$descrproced	= trim(pg_result($res,$i,5));
+      $item_filho		= pg_fetch_result($res,$i,0);
+      $descricao		= pg_fetch_result($res,$i,1);
+      $funcao				= trim(pg_fetch_result($res,$i,2));
+      $item					= trim(pg_fetch_result($res,$i,3));
+      $codproced		= trim(pg_fetch_result($res,$i,4));
+			$descrproced	= trim(pg_fetch_result($res,$i,5));
 
       $sqlbuscamenus = "select upper(rsmenu) as rsmenu from fc_buscamenus('$item', 1) order by riseq desc";
       $resultbuscamenus = db_query($sqlbuscamenus) or die($sqlbuscamenus);
       global $rsmenu;
       $menu_completo="";
-      if (pg_numrows($resultbuscamenus) > 0) {
-        for ($id_busca=0; $id_busca<pg_numrows($resultbuscamenus); $id_busca++){
+      if (pg_num_rows($resultbuscamenus) > 0) {
+        for ($id_busca=0; $id_busca<pg_num_rows($resultbuscamenus); $id_busca++){
           db_fieldsmemory($resultbuscamenus, $id_busca);
-          $menu_completo.=($menu_completo==""?"":" > ").strtoupper($rsmenu);
+          $menu_completo.=($menu_completo==""?"":" > ").strtoupper((string) $rsmenu);
         }
         $menu_completo.="\\n\\n";
       }
@@ -160,12 +160,12 @@ function monta_menu_func_contarefa($item_modulo,$id_modulo,$espacos,$nivel=1,$pr
                 where id_item = $item_filho";
         $resproced = db_query($sql);
 
-        if(pg_numrows($resproced)>0){
+        if(pg_num_rows($resproced)>0){
           global $codproced,$descrproced,$codmod,$nomemod,$at75_data,$at76_usuario;
           db_fieldsmemory($resproced,0);
           $descr = $descrproced."\n";
-          if(pg_numrows($resproced)>1){
-            for($p=0;$p<pg_numrows($resproced);$p++){
+          if(pg_num_rows($resproced)>1){
+            for($p=0;$p<pg_num_rows($resproced);$p++){
               global $codproced,$descrproced,$codmod,$nomemod,$at75_data,$at76_usuario;
               db_fieldsmemory($resproced,$p);
 
@@ -206,7 +206,7 @@ function monta_menu_func_contarefa($item_modulo,$id_modulo,$espacos,$nivel=1,$pr
                 where id_item = $item_filho";
         $resproced = db_query($sql);
 
-        if(pg_numrows($resproced)>0){
+        if(pg_num_rows($resproced)>0){
           global $codproced;
           db_fieldsmemory($resproced,0);
           monta_menu_func_contarefa($item_filho,$id_modulo,$espacos."&nbsp&nbsp&nbsp",1,@$codproced,$cliente);

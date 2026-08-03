@@ -66,9 +66,9 @@ function inicializa_vt()
   
   $subpes = db_anofolha().'/'.db_mesfolha();
   
-  $m_semana = array();
+  $m_semana = [];
   
-  $diasdasemana = array();
+  $diasdasemana = [];
   $diasdasemana[1] = "dom";
   $diasdasemana[2] = "seg";
   $diasdasemana[3] = "ter";
@@ -116,8 +116,8 @@ function inicializa_vt()
   deleta_vale_funcionarios($condicao_deleta );
   
   // die("retornou da função deleta_vale_funcionarios");
-  $matriz1 = array();
-  $matriz2 = array();
+  $matriz1 = [];
+  $matriz2 = [];
   $matriz1[1] = "r63_regist";
   $matriz1[2] = "r63_vale";
   $matriz1[3] = "r63_dia";
@@ -128,8 +128,8 @@ function inicializa_vt()
   $matriz1[8] = "r63_anousu";
   $matriz1[9] = "r63_mesusu";
   
-  $matriz3 = array();
-  $matriz4 = array();
+  $matriz3 = [];
+  $matriz4 = [];
   $matriz3[1] = "r17_regist";
   $matriz3[2] = "r17_lotac";
   $matriz3[3] = "r17_codigo";
@@ -207,7 +207,7 @@ function inicializa_vt()
       }
     } else {
       
-      $m_vtfdias01 = array();
+      $m_vtfdias01 = [];
       monta_semana_mesant();
       leitura_vtfdias_mesanterior($matric);
       montaquadrosemanaapartirdovtfdias();
@@ -261,7 +261,7 @@ function monta_vtfdias_novo()
   
   // a partir da semana gerada cria novo vetor do vtfdias ;
   
-  $m_vtfdias02 = array();
+  $m_vtfdias02 = [];
   $total_vales = 0;
   for ($xy=1 ; $xy<=$qtdmes_novo; $xy++) {
     $dia = db_str($xy ,2,0,"0")."/".db_substr($subpes_origem,6,2)."/".db_substr($subpes_origem,1,4);
@@ -280,7 +280,7 @@ function monta_vtfdias_novo()
     $quants = $m_semana[$indice][1];
     $qtd_dia = $m_semana[$indice][1];
     ;
-    if ($feriado || (!$feriado && strtolower($obrigatorio) == "s") ) {
+    if ($feriado || (!$feriado && strtolower((string) $obrigatorio) == "s") ) {
       $total_vales += $qtd_dia;
     }
     if (db_empty($qtd_dia)) {
@@ -315,7 +315,7 @@ function leitura_vtfdias_mesanterior($matric)
   global $vtffuncant,$Ivtffuncant,$subpes_origem,$qtdmes_ant,$mesano_ant,$lotacao,$total_vales,$m_vtfdias01;
   global $subpes,$lotacao, $subpes_ant;
   
-  $m_vtfdias01 = array();
+  $m_vtfdias01 = [];
   
   // cria vetor todo vazio para depis preencher com os dias com qtd do arquivo;
   $subpes = $subpes_ant;
@@ -410,7 +410,7 @@ function deleta_vale_funcionarios($condicao_deleta)
 function montaquadrosemanaapartirdovtfdias()
 {
   global $diasdasemana,$m_semana,$m_vtfdias01,$qtdmes;
-  $lersemana = array();
+  $lersemana = [];
   for ($a=1; $a<=7; $a++) {
     $lersemana[$a][1] = 0;
     // quant;
@@ -473,7 +473,7 @@ function calcula_pela_semana($y)
   if (db_empty($obrigatorio)) {
     $obrigatorio = "n";
   }
-  if ($feriado || (!$feriado && strtolower($obrigatorio) == "s")) {
+  if ($feriado || (!$feriado && strtolower((string) $obrigatorio) == "s")) {
     $total_vales += $qtd_dia;
   }
   if ($qtd_dia > 0 ) {

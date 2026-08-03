@@ -40,11 +40,11 @@ require_once modification('classes/db_orcelemento_classe.php');
 require_once modification('classes/db_conlancamemp_classe.php');
 require_once modification('classes/db_conlancamdoc_classe.php');
 require_once modification('classes/db_empempitem_classe.php');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_GET);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clselorcdotacao = new cl_selorcdotacao();
 $clorcelemento = new cl_orcelemento();
@@ -339,7 +339,7 @@ $resultinst = db_query('select codigo,
                          where codigo in ('.str_replace('-', ', ', $db_selinstit).') ');
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); ++$xins) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); ++$xins) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg.$nomeinst;
     $xvirg = ', ';
@@ -372,7 +372,7 @@ $iContEmpEst = 0;
 $iContLiqEst = 0;
 $iContPagEst = 0;
 
-$total_desdobramento = array();
+$total_desdobramento = [];
 
 for ($x = 0; $x < $rows; ++$x) {
     db_fieldsmemory($res, $x);
@@ -436,7 +436,7 @@ for ($x = 0; $x < $rows; ++$x) {
     $pdf->Cell(85, $tam, $c53_descr, 0, 1, 'C', $pre);
 
     if ($oPost->sDadosFornecedor == 's') {
-        $sCnpjCpf = strlen($z01_cgccpf) == 11 ? db_formatar($z01_cgccpf, 'cpf') : db_formatar($z01_cgccpf, 'cnpj');
+        $sCnpjCpf = strlen((string) $z01_cgccpf) == 11 ? db_formatar($z01_cgccpf, 'cpf') : db_formatar($z01_cgccpf, 'cnpj');
         $pdf->cell(64, $tam, "CPF / CNPJ: {$sCnpjCpf}", 0, 0, 'L');
         $pdf->cell(63, $tam, "INSC. EST.: {$z01_incest}", 0, 0, 'L');
         $pdf->cell(63, $tam, "NOTA: {$c66_codnota}", 0, 1, 'L');
@@ -460,10 +460,10 @@ for ($x = 0; $x < $rows; ++$x) {
             $preenche = ($item % 2 == 0 ? 0 : 1);
 //        $pdf->Cell(40,$tam,"",0,0,"R",$preenche);
             $pdf->Cell(10, $tam, "$e62_item", 0, 0, 'R', $preenche);
-            $pdf->Cell(100, $tam, substr($pc01_descrmater, 0, 67), 0, 0, 'L', $preenche);
+            $pdf->Cell(100, $tam, substr((string) $pc01_descrmater, 0, 67), 0, 0, 'L', $preenche);
             $pdf->Cell(10, $tam, db_formatar($e62_quant, 'f'), 0, 0, 'R', $preenche);
 //        $pdf->Cell(20,$tam,db_formatar($e62_vltot,'f'),0,0,"R",$preenche);
-            $pdf->multicell(0, $tam, substr($e62_descr, 0, 200), 0, 'L', $preenche);
+            $pdf->multicell(0, $tam, substr((string) $e62_descr, 0, 200), 0, 'L', $preenche);
         }
     }
     $pdf->cell(0, 1, '', 'B', 1, 'C', 0);

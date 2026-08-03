@@ -56,12 +56,12 @@ $db_opcao   = 1;
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php	
-   $clcriaabas->identifica  = array( "a1" => "Triagem", "a2" => "Procedimentos Faturáveis");
-   $clcriaabas->sizecampo   = array( "a1" => "20", "a2" => "40" );
-   $clcriaabas->src         = array("a1"=>"sau4_sau_triagemavulsanovo001.php?&lFormTriagem=true".
+   $clcriaabas->identifica  = [ "a1" => "Triagem", "a2" => "Procedimentos Faturáveis"];
+   $clcriaabas->sizecampo   = [ "a1" => "20", "a2" => "40" ];
+   $clcriaabas->src         = ["a1"=>"sau4_sau_triagemavulsanovo001.php?&lFormTriagem=true".
                                     "&lFiltroUnidade=true", "a2"=>""
-                                   );
-   $clcriaabas->disabled    = array( "a2" => "true");
+                                   ];
+   $clcriaabas->disabled    = [ "a2" => "true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->cria_abas();
    ?>

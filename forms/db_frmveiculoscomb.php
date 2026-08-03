@@ -33,7 +33,7 @@ include_once(modification("libs/db_usuariosonline.php"));
 include_once(modification("dbforms/db_funcoes.php"));
 include_once(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveiculoscomb = new cl_veiculoscomb;
 $clveiccadcomb  = new cl_veiccadcomb;

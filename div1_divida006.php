@@ -40,8 +40,8 @@ require_once(modification("classes/db_issbase_classe.php"));
 require_once(modification("classes/db_proced_classe.php"));
 require_once(modification("classes/db_arrecad_classe.php"));
 require_once(modification("classes/db_dividaprotprocesso_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $oPost                  = db_utils::postMemory($_POST);
 $oGet                   = db_utils::postMemory($_GET);
                         

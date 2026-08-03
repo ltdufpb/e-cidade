@@ -32,8 +32,8 @@ require_once modification('libs/db_usuariosonline.php');
 require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_orcparamrelgrupo_classe.php');
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $queryString);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -128,12 +128,12 @@ $clorcparamrelgrupo->rotulo->label("o112_descricao");
                 } else {
                     $sql = $clorcparamrelgrupo->sql_query("", $campos, "o112_sequencial", "");
                 }
-                $repassa = array();
+                $repassa = [];
                 if (isset($chave_o112_descricao)) {
-                    $repassa = array(
+                    $repassa = [
                         "chave_o112_sequencial" => $chave_o112_sequencial,
                         "chave_o112_descricao" => $chave_o112_descricao
-                    );
+                    ];
                 }
                 db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
             } else {

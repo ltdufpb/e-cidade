@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_alunoalt_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clalunoalt = new cl_alunoalt;
 $clalunoalt->rotulo->label("ed275_i_codigo");
 $clalunoalt->rotulo->label("ed275_i_codigo");
@@ -98,9 +98,9 @@ $clalunoalt->rotulo->label("ed275_i_codigo");
         }else{
            $sql = $clalunoalt->sql_query("",$campos,"ed275_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed275_i_codigo)){
-          $repassa = array("chave_ed275_i_codigo"=>$chave_ed275_i_codigo,"chave_ed275_i_codigo"=>$chave_ed275_i_codigo);
+          $repassa = ["chave_ed275_i_codigo"=>$chave_ed275_i_codigo,"chave_ed275_i_codigo"=>$chave_ed275_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

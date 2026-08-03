@@ -117,7 +117,7 @@ abstract class EmissaoGuia
     {
         $this->carregaAtributos();
 
-        $sNomeArquivo = md5($this->pdf->itbi).".pdf";
+        $sNomeArquivo = md5((string) $this->pdf->itbi).".pdf";
         $sLocalArquivo = ECIDADE_PATH."tmp/{$sNomeArquivo}";
 
         $this->pdf->imprime();
@@ -268,7 +268,7 @@ abstract class EmissaoGuia
         $this->setAtributo("j34_setor", $this->dados->oItbi->it22_setor);
         $this->setAtributo("j34_quadra", $this->dados->oItbi->it22_quadra);
         $this->setAtributo("j34_lote", $this->dados->oItbi->it22_lote);
-        $iMatricri = ($this->dados->oItbi->it22_matricri ? $this->dados->oItbi->it22_matricri : "");
+        $iMatricri = ($this->dados->oItbi->it22_matricri ?: "");
         $this->setAtributo("it22_matricri", $iMatricri);
         $this->setAtributo("it22_quadrari", $this->dados->oItbi->it22_quadrari);
         $this->setAtributo("it22_loteri", $this->dados->oItbi->it22_loteri);
@@ -288,7 +288,7 @@ abstract class EmissaoGuia
         $this->setAtributo("it18_prof", $this->dados->oItbi->it18_prof);
         $this->setAtributo("aDadosRuralCaractUtil", $this->dados->aDadosRuralCaractUtil);
         $this->setAtributo("aDadosRuralCaractDist", $this->dados->aDadosRuralCaractDist);
-        $this->setAtributo("fracaoIdeal", (isset($this->dados->iFracaoIdeal) ? $this->dados->iFracaoIdeal : ""));
+        $this->setAtributo("fracaoIdeal", ($this->dados->iFracaoIdeal ?? ""));
 
         // Observações
         $this->setAtributo("observacaoIncluido", $this->dados->oItbi->it01_obs);
@@ -297,7 +297,7 @@ abstract class EmissaoGuia
         $this->setAtributo("transmitentes", $this->dados->sTransmitentesSecundarios);
 
         // Avaliação
-        $sDataLiberacao = date("d/m/Y", strtotime($this->dados->oItbi->it14_dtliber));
+        $sDataLiberacao = date("d/m/Y", strtotime((string) $this->dados->oItbi->it14_dtliber));
         $this->setAtributo("dataLiberado", ($this->dados->bLiberado ? $sDataLiberacao : ""));
         $this->setAtributo("it14_valoraval", $this->dados->oItbi->it14_valoraval);
         $this->setAtributo("it14_valoravalconstr", $this->dados->oItbi->it14_valoravalconstr);
@@ -309,7 +309,7 @@ abstract class EmissaoGuia
         // Intermediador
         if (is_object($this->dados->oItbiintermediador)) {
             $this->setAtributo("intermediadorCpf", $this->dados->oItbiintermediador->it35_cnpj_cpf);
-            $this->setAtributo("intermediadorNome", utf8_decode($this->dados->oItbiintermediador->it35_nome));
+            $this->setAtributo("intermediadorNome", mb_convert_encoding($this->dados->oItbiintermediador->it35_nome, 'ISO-8859-1'));
             $this->setAtributo("intermediadorCreci", $this->dados->oItbiintermediador->it35_creci);
         }
 

@@ -78,6 +78,7 @@ class BalanceteRubricaAnterior extends BRAnterior
         return $this;
     }
 
+    #[\Override]
     public function toArray()
     {
         return [

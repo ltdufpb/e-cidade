@@ -33,7 +33,7 @@ include(modification("classes/db_tfd_parametros_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltfd_parametros = new cl_tfd_parametros;
 $db_opcao         = 1;
 $db_botao         = true;

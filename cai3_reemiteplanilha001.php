@@ -100,10 +100,10 @@ db_postmemory($_GET);
               </td>
               <td colspan='3'>
                 <?php 
-                   $aFiltro = array(
+                   $aFiltro = [
                                     "k80_data"  => "Data de Lancamento",
                                     "k80_dtaut" => "Data de Autenticação"
-                                   );
+                                   ];
                   db_select("sFiltro", $aFiltro,true,1);
                  ?>
               </td>

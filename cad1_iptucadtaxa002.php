@@ -56,10 +56,10 @@ $db_opcao   = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <?php
-        $clcriaabas->identifica = array("iptucadtaxa"=>" Dados da Taxa","iptucadtaxaexe"=>"Configuração da Taxa"); 
-        $clcriaabas->sizecampo  = array("iptucadtaxa"=>"50","iptucadtaxaexe"=>"50"); 
-        $clcriaabas->src        = array("iptucadtaxa"=>"cad1_iptucadtaxa005.php");
-        $clcriaabas->disabled   =  array("iptucadtaxaexe"=>"true"); 
+        $clcriaabas->identifica = ["iptucadtaxa"=>" Dados da Taxa","iptucadtaxaexe"=>"Configuração da Taxa"]; 
+        $clcriaabas->sizecampo  = ["iptucadtaxa"=>"50","iptucadtaxaexe"=>"50"]; 
+        $clcriaabas->src        = ["iptucadtaxa"=>"cad1_iptucadtaxa005.php"];
+        $clcriaabas->disabled   =  ["iptucadtaxaexe"=>"true"]; 
         $clcriaabas->cria_abas(); 
       ?> 
     </td>

@@ -120,13 +120,13 @@ function cadastro_164 (){
 	$refazer_13_do_mes = true;
 	$subpes_original = $subpes;
 
-	$m_rubr = array();
-	$m_quant= array();
-	$m_valor= array();
-	$m_media= array();
-	$m_tipo = array();
-	$qten   = array();
-	$vlrn   = array();
+	$m_rubr = [];
+	$m_quant= [];
+	$m_valor= [];
+	$m_media= [];
+	$m_tipo = [];
+	$qten   = [];
+	$vlrn   = [];
 	$nsaldo = 30;
 
 	global $Ipessoal;
@@ -263,8 +263,8 @@ function cadastro_164 (){
     //echo "<BR> 18 ndias --> $ndias";
     //echo "<BR> 19 dias_afastados --> $dias_afastados";
     //exit;
-	$matriz1 = array();
-	$matriz2 = array();
+	$matriz1 = [];
+	$matriz2 = [];
 	$matriz1[1] = "r19_regist";
 	$matriz1[2] = "r19_rubric";
 	$matriz1[3] = "r19_valor";
@@ -417,7 +417,7 @@ function cadastro_164 (){
 			//echo "<BR> datafim      1.1 --> $datafim";
 			$lancarferias = true;
 			if( strtolower($tipoferias) != "d"){
-				if( bcdiv(db_datedif($datafim,$datainicio),30,0) == 12){
+				if( bcdiv((string) db_datedif($datafim,$datainicio),30,0) == 12){
 					$tipoferias = "V";
 
 					//echo "<BR> tipoferias 1.1 --> $tipoferias";
@@ -496,8 +496,8 @@ function cadastro_164 (){
 	".bb_condicaosubpes("r52_" ).$condicaoaux ;
 	db_selectmax("pensao", $sql);
 	for ($Ipensao=0; $Ipensao<count($pensao); $Ipensao++) {
-		$matriz1 = array();
-		$matriz2 = array();
+		$matriz1 = [];
+		$matriz2 = [];
 		$condicaoaux  = " and r52_regist = ".db_sqlformat($pensao[$Ipensao]["r52_regist"]);
 		$condicaoaux .= " and r52_numcgm = ".db_sqlformat($pensao[$Ipensao]["r52_numcgm"]);
 
@@ -512,8 +512,8 @@ function cadastro_164 (){
 		$retornar = db_update("pensao", $matriz1, $matriz2, bb_condicaosubpes("r52_").$condicaoaux );
 	}
 
-	$matriz1 = array();
-	$matriz2 = array();
+	$matriz1 = [];
+	$matriz2 = [];
 	$codigoIdentificadorRescisao = $matric . $rh05_recis_ano . $rh05_recis_mes;
 	$dataPagamentoRescisao = 'null';
 
@@ -661,7 +661,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("pes4_avaliaferiasrescisao.php"));
 require_once(modification("classes/db_rhpesrescisao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 db_inicio_transacao();
 
 if(!isset($campomatriculas)){
@@ -680,7 +680,7 @@ $r01_mremun = $rh05_mremun;
 global $db_config;
 db_selectmax("db_config","select lower(trim(munic)) as d08_carnes , cgc, db21_codcli from db_config where codigo = ".db_getsession("DB_instit"));
 
-if(trim($db_config[0]["cgc"]) == "90940172000138"){
+if(trim((string) $db_config[0]["cgc"]) == "90940172000138"){
 	$d08_carnes = "daeb";
 }else{
 	$d08_carnes = $db_config[0]["d08_carnes"];
@@ -701,7 +701,7 @@ $menos_um_ano = ( db_mktime($r01_recis) < db_mktime($admissao_mais_um_ano)? "S":
 
 $condicao = " and r59_regime = ".$rhregime[0]["rh30_regime"];
 $condicao.= " and r59_causa  = ".$rh05_causa;
-$condicao.= " and trim(r59_caub)  = '".trim($rh05_caub)."'";
+$condicao.= " and trim(r59_caub)  = '".trim((string) $rh05_caub)."'";
 $condicao.= " and r59_menos1  = '".$menos_um_ano."'";
 global $rescisao;
 db_selectmax("rescisao","select * from rescisao ".bb_condicaosubpes("r59_").$condicao );

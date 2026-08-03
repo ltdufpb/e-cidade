@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE pcorcamsol
 class cl_pcorcamsol { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc27_codorc = 0; 
-   var $pc27_solic = 0; 
+   public $pc27_codorc = 0; 
+   public $pc27_solic = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc27_codorc = int4 = Código do orçamento 
                  pc27_solic = int4 = numero da solicitacao 
                  ";
    //funcao construtor da classe 
-   function cl_pcorcamsol() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamsol"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_pcorcamsol {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Solicitação do orcamento ($this->pc27_codorc."-".$this->pc27_solic) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Solicitação do orcamento já Cadastrado";
@@ -130,12 +130,12 @@ class cl_pcorcamsol {
      $resaco = $this->sql_record($this->sql_query_file($this->pc27_codorc,$this->pc27_solic));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5524,'$this->pc27_codorc','I')");
        $resac = db_query("insert into db_acountkey values($acount,5525,'$this->pc27_solic','I')");
-       $resac = db_query("insert into db_acount values($acount,861,5524,'','".AddSlashes(pg_result($resaco,0,'pc27_codorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,861,5525,'','".AddSlashes(pg_result($resaco,0,'pc27_solic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,861,5524,'','".AddSlashes(pg_fetch_result($resaco,0,'pc27_codorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,861,5525,'','".AddSlashes(pg_fetch_result($resaco,0,'pc27_solic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_pcorcamsol {
       $this->atualizacampos();
      $sql = " update pcorcamsol set ";
      $virgula = "";
-     if(trim($this->pc27_codorc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc27_codorc"])){ 
+     if(trim((string) $this->pc27_codorc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc27_codorc"])){ 
        $sql  .= $virgula." pc27_codorc = $this->pc27_codorc ";
        $virgula = ",";
-       if(trim($this->pc27_codorc) == null ){ 
+       if(trim((string) $this->pc27_codorc) == null ){ 
          $this->erro_sql = " Campo Código do orçamento nao Informado.";
          $this->erro_campo = "pc27_codorc";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_pcorcamsol {
          return false;
        }
      }
-     if(trim($this->pc27_solic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc27_solic"])){ 
+     if(trim((string) $this->pc27_solic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc27_solic"])){ 
        $sql  .= $virgula." pc27_solic = $this->pc27_solic ";
        $virgula = ",";
-       if(trim($this->pc27_solic) == null ){ 
+       if(trim((string) $this->pc27_solic) == null ){ 
          $this->erro_sql = " Campo numero da solicitacao nao Informado.";
          $this->erro_campo = "pc27_solic";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_pcorcamsol {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5524,'$this->pc27_codorc','A')");
          $resac = db_query("insert into db_acountkey values($acount,5525,'$this->pc27_solic','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc27_codorc"]))
-           $resac = db_query("insert into db_acount values($acount,861,5524,'".AddSlashes(pg_result($resaco,$conresaco,'pc27_codorc'))."','$this->pc27_codorc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,861,5524,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc27_codorc'))."','$this->pc27_codorc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc27_solic"]))
-           $resac = db_query("insert into db_acount values($acount,861,5525,'".AddSlashes(pg_result($resaco,$conresaco,'pc27_solic'))."','$this->pc27_solic',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,861,5525,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc27_solic'))."','$this->pc27_solic',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_pcorcamsol {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5524,'$pc27_codorc','E')");
          $resac = db_query("insert into db_acountkey values($acount,5525,'$pc27_solic','E')");
-         $resac = db_query("insert into db_acount values($acount,861,5524,'','".AddSlashes(pg_result($resaco,$iresaco,'pc27_codorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,861,5525,'','".AddSlashes(pg_result($resaco,$iresaco,'pc27_solic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,861,5524,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc27_codorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,861,5525,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc27_solic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pcorcamsol
@@ -304,7 +304,7 @@ class cl_pcorcamsol {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pcorcamsol";

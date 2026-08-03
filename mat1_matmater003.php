@@ -39,8 +39,8 @@ include(modification("classes/db_matmaterestoque_classe.php"));
 include(modification("classes/db_db_almox_classe.php"));
 require_once(modification("classes/db_matmatermaterialestoquegrupo_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clmatmater                     = new cl_matmater;
 $cltransmater                   = new cl_transmater;

@@ -98,7 +98,7 @@ if ($db_opcao == 1) {
         <td nowrap>
             <?php
               if (isset($z01_cgccpf) && !empty($z01_cgccpf)) {
-                 if (strlen($z01_cgccpf) > 11) {
+                 if (strlen((string) $z01_cgccpf) > 11) {
                     $z01_cgccpf = db_formatar($z01_cgccpf, 'cnpj');
                   } else {
                     $z01_cgccpf = db_formatar($z01_cgccpf, 'cpf');

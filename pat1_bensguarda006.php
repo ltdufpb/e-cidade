@@ -36,7 +36,7 @@ require_once(modification("libs/db_app.utils.php"));
 $clbensguarda = new cl_bensguarda;
 $clbensguardaitem = new cl_bensguardaitem;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if (isset($excluir)) {

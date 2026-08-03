@@ -80,8 +80,8 @@ class Cabecalho {
         throw new \DBException("Erro ao salvar o arquivo.");
       }
 
-      $oDataInicialArquivo = new \DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", $oLinha->DATA_INICIAL));
-      $oDataFinalArquivo   = new \DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", $oLinha->DATA_FINAL));
+      $oDataInicialArquivo = new \DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", (string) $oLinha->DATA_INICIAL));
+      $oDataFinalArquivo   = new \DBDate(preg_replace("/(\d{2})(\d{2})(\d{4})/", "$3-$2-$1", (string) $oLinha->DATA_FINAL));
 
       if(!\DBDate::overlaps($oDataInicialArquivo, $oDataFinalArquivo, $oPeriodo->getDataInicio(), $oPeriodo->getDataFim())) {
         return null;
@@ -96,8 +96,8 @@ class Cabecalho {
     $this->oDao->rh196_efetividade_exercicio   = $oPeriodo->getExercicio();
     $this->oDao->rh196_efetividade_competencia = (string) $oPeriodo->getCompetencia();
     $this->oDao->rh196_instituicao             = $this->iInstituicao;
-    $this->oDao->rh196_ano                     = substr($sDataInicial, 4);
-    $this->oDao->rh196_mes                     = substr($sDataInicial, 2, 2);
+    $this->oDao->rh196_ano                     = substr((string) $sDataInicial, 4);
+    $this->oDao->rh196_mes                     = substr((string) $sDataInicial, 2, 2);
     $this->oDao->rh196_sequencial              = $iSequencial;
     $this->oDao->rh196_arquivo                 = $iOid;
 

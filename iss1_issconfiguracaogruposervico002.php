@@ -106,7 +106,7 @@ if ( isset($oPost->salvar) ) {
                 db_fieldsmemory($result,0);
 
                 // Se existir vínculo com data 'null'(ativo) altera o último registro com data 'null' para receber a data atual(hoje)
-                if (pg_numrows($result) > 0) {
+                if (pg_num_rows($result) > 0) {
                     $dataAtual = db_getsession('DB_datausu');
                     $dataAtualFormatada = str_replace('/', '-', date('Y/m/d',$dataAtual));
                     $clissgsanexos->q162_data_fim = $dataAtualFormatada;
@@ -129,7 +129,7 @@ if ( isset($oPost->salvar) ) {
                 $sql = "SELECT * FROM issqn.issgsanexos WHERE q162_data_fim = '$clissgsanexos->q162_data_fim'";
                 $result = db_query($sql);
 
-                if (pg_numrows($result) > 0 ) {
+                if (pg_num_rows($result) > 0 ) {
                     db_msgbox("Vínculo já existente");
                 } else {
                     $clissgsanexos->incluir(null);
@@ -147,7 +147,7 @@ if ( isset($oPost->salvar) ) {
 
             $result = db_query($sql);
 
-            if (pg_numrows($result) >0 ) {
+            if (pg_num_rows($result) >0 ) {
                 db_msgbox("Vínculo já existente");
             } else {
                 $clissgsanexos->alterar($q162_sequencial);

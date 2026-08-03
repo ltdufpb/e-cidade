@@ -30,7 +30,7 @@ include(modification("libs/db_sql.php"));
 include(modification("classes/db_prontuarios_classe.php"));
 include(modification("classes/db_unidades_classe.php"));
 include(modification("classes/db_unidademedicos_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 set_time_limit(0);
 $clunidades = new cl_unidades;
 $clunidademedicos = new cl_unidademedicos;
@@ -58,7 +58,7 @@ $unidade = str_replace("X",",",$unidades);
                              )
                 order by unidades.sd02_i_codigo";
 
-$query_und = @db_query($sql_und) or die(pg_errormessage());
+$query_und = @db_query($sql_und) or die(pg_last_error());
 $linhas = @pg_num_rows($query_und);
 if($linhas == 0){
  echo "<table width='100%'>
@@ -276,7 +276,7 @@ $primeiro=0; //pg_result($query_meio,0,"sd04_i_unidade");
 	                     INNER JOIN db_depart on db_depart.coddepto = unidades.sd02_i_codigo
 	                      left JOIN cgm on cgm.z01_numcgm = unidades.sd02_i_numcgm
 	                     where unidades.sd02_i_codigo = $sd04_i_unidade ";
-	        $query_und1 = @db_query($sql_und1) or die(pg_errormessage());
+	        $query_und1 = @db_query($sql_und1) or die(pg_last_error());
 	        db_fieldsmemory($query_und1,0);
         }
 

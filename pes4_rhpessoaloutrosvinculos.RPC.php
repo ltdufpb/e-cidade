@@ -60,13 +60,11 @@ try {
             $service = new ServidorOutrosVinculosService();
             $servidorOutrosVinculos = $service->buscarOutrosVinculosPorMatriculaCompetencia($parametros);
 
-            $retorno->servidorOutrosVinculos = array_map(function (ServidorOutrosVinculos $servidorOutrosVinculos) {
-                return $servidorOutrosVinculos->toArray();
-            }, $servidorOutrosVinculos);
+            $retorno->servidorOutrosVinculos = array_map(fn(ServidorOutrosVinculos $servidorOutrosVinculos) => $servidorOutrosVinculos->toArray(), $servidorOutrosVinculos);
             break;
         case 'buscarCategorias':
 
-            $retorno->categorias = array();
+            $retorno->categorias = [];
             $avaliacao = AvaliacaoRepository::getAvaliacaoByCodigo(3000013);
             $avaliacao->setAvaliacaoGrupo(3000013);
             $respostasCategoria = $avaliacao->getRespostasDaPerguntaPoCodigo(3000827);

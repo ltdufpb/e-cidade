@@ -55,10 +55,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-      $clcriaabas->identifica = array("a1"=>"Proprietário","a2"=>"Jazigo","a3"=>"Sepultados","a4"=>"Taxas");
-      $clcriaabas->src = array("a1"=>"cem3_ossoariojazigo001.php");
-      $clcriaabas->disabled   = array("a2"=>"true","a3"=>"true","a4"=>"true");
-      $clcriaabas->sizecampo  = array("a1"=>30,"a2"=>20,"a3"=>20);
+      $clcriaabas->identifica = ["a1"=>"Proprietário","a2"=>"Jazigo","a3"=>"Sepultados","a4"=>"Taxas"];
+      $clcriaabas->src = ["a1"=>"cem3_ossoariojazigo001.php"];
+      $clcriaabas->disabled   = ["a2"=>"true","a3"=>"true","a4"=>"true"];
+      $clcriaabas->sizecampo  = ["a1"=>30,"a2"=>20,"a3"=>20];
       $clcriaabas->scrolling  = "yes";
       $clcriaabas->cria_abas();
        ?> 

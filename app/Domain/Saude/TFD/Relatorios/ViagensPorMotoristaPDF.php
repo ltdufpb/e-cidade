@@ -11,17 +11,11 @@ use App\Domain\Saude\TFD\Contracts\ViagensPorMotorista;
  */
 class ViagensPorMotoristaPDF extends FpdfMultiCellBorder implements ViagensPorMotorista
 {
-    /**
-     * @var array $dados
-     */
-    private $dados;
-
     private $totalDestino;
 
-    public function __construct(array $dados)
+    public function __construct(private readonly array $dados)
     {
         parent::__construct();
-        $this->dados = $dados;
         $this->totalDestino = [
             'geral' => [],
             'motorista' => []

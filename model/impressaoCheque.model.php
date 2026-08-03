@@ -217,7 +217,7 @@ class impressaoCheque extends impressao {
 
         unset($this->sStringImpressao);
 
-        list($iAno,$iMes,$iDia)  = explode("-",$this->getdtDataImpressao());
+        [$iAno, $iMes, $iDia]  = explode("-",$this->getdtDataImpressao());
 
         $sMunicipio     = $this->getSMunicipio();
         $sMes           = str_pad(strtoupper(db_mes($iMes)),14,' ',STR_PAD_RIGHT);
@@ -263,6 +263,7 @@ class impressaoCheque extends impressao {
   /**
    * @param string $sImprimir
    */
+  #[\Override]
   public function imprimir($sImprimir = '') {
     parent::imprimir($sImprimir);
   }

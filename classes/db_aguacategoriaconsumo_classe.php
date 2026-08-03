@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE aguacategoriaconsumo
 class cl_aguacategoriaconsumo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x13_sequencial = 0; 
-   var $x13_exercicio = 0; 
-   var $x13_descricao = null; 
+   public $x13_sequencial = 0; 
+   public $x13_exercicio = 0; 
+   public $x13_descricao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x13_sequencial = int4 = Código 
                  x13_exercicio = int4 = Exercício 
                  x13_descricao = varchar(100) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_aguacategoriaconsumo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacategoriaconsumo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_aguacategoriaconsumo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->x13_sequencial = pg_result($result,0,0); 
+       $this->x13_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from aguacategoriaconsumo_x13_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $x13_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $x13_sequencial)){
          $this->erro_sql = " Campo x13_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_aguacategoriaconsumo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Categoria de Consumo ($this->x13_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Categoria de Consumo já Cadastrado";
@@ -171,12 +171,12 @@ class cl_aguacategoriaconsumo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22042,'$this->x13_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3969,22042,'','".AddSlashes(pg_result($resaco,0,'x13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3969,22043,'','".AddSlashes(pg_result($resaco,0,'x13_exercicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3969,22044,'','".AddSlashes(pg_result($resaco,0,'x13_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3969,22042,'','".AddSlashes(pg_fetch_result($resaco,0,'x13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3969,22043,'','".AddSlashes(pg_fetch_result($resaco,0,'x13_exercicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3969,22044,'','".AddSlashes(pg_fetch_result($resaco,0,'x13_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_aguacategoriaconsumo {
       $this->atualizacampos();
      $sql = " update aguacategoriaconsumo set ";
      $virgula = "";
-     if(trim($this->x13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x13_sequencial"])){ 
+     if(trim((string) $this->x13_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x13_sequencial"])){ 
        $sql  .= $virgula." x13_sequencial = $this->x13_sequencial ";
        $virgula = ",";
-       if(trim($this->x13_sequencial) == null ){ 
+       if(trim((string) $this->x13_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "x13_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_aguacategoriaconsumo {
          return false;
        }
      }
-     if(trim($this->x13_exercicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x13_exercicio"])){ 
+     if(trim((string) $this->x13_exercicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x13_exercicio"])){ 
        $sql  .= $virgula." x13_exercicio = $this->x13_exercicio ";
        $virgula = ",";
-       if(trim($this->x13_exercicio) == null ){ 
+       if(trim((string) $this->x13_exercicio) == null ){ 
          $this->erro_sql = " Campo Exercício não informado.";
          $this->erro_campo = "x13_exercicio";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_aguacategoriaconsumo {
          return false;
        }
      }
-     if(trim($this->x13_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x13_descricao"])){ 
+     if(trim((string) $this->x13_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x13_descricao"])){ 
        $sql  .= $virgula." x13_descricao = '$this->x13_descricao' ";
        $virgula = ",";
-       if(trim($this->x13_descricao) == null ){ 
+       if(trim((string) $this->x13_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "x13_descricao";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_aguacategoriaconsumo {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22042,'$this->x13_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x13_sequencial"]) || $this->x13_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3969,22042,'".AddSlashes(pg_result($resaco,$conresaco,'x13_sequencial'))."','$this->x13_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3969,22042,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x13_sequencial'))."','$this->x13_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x13_exercicio"]) || $this->x13_exercicio != "")
-             $resac = db_query("insert into db_acount values($acount,3969,22043,'".AddSlashes(pg_result($resaco,$conresaco,'x13_exercicio'))."','$this->x13_exercicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3969,22043,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x13_exercicio'))."','$this->x13_exercicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x13_descricao"]) || $this->x13_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3969,22044,'".AddSlashes(pg_result($resaco,$conresaco,'x13_descricao'))."','$this->x13_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3969,22044,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x13_descricao'))."','$this->x13_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_aguacategoriaconsumo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22042,'$x13_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3969,22042,'','".AddSlashes(pg_result($resaco,$iresaco,'x13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3969,22043,'','".AddSlashes(pg_result($resaco,$iresaco,'x13_exercicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3969,22044,'','".AddSlashes(pg_result($resaco,$iresaco,'x13_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3969,22042,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x13_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3969,22043,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x13_exercicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3969,22044,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x13_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

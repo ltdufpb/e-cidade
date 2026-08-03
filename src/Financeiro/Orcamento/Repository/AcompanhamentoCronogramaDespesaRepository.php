@@ -269,7 +269,7 @@ class AcompanhamentoCronogramaDespesaRepository extends Repository
     {
         $filtroUnidades = [];
         foreach ($valores as $unidade) {
-            $data = explode('-', $unidade);
+            $data = explode('-', (string) $unidade);
             $filtroUnidades[] = sprintf(
                 '(o58_orgao %s (%s) and o58_unidade %s (%s))',
                 $operador,

@@ -189,7 +189,7 @@ function preenchepesquisaed313_db_layoutcampo(chave) {
   
   db_iframe_db_layoutcampo.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
   
 }
@@ -260,7 +260,7 @@ function preenchepesquisaed313_avaliacaoperguntaopcao(chave) {
   
   db_iframe_db_layoutcampo.hide();
   <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
     
 }

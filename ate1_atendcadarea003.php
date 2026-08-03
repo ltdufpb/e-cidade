@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("atendcadarea"=>"Área","atendcadareamod"=>"Módulos"); 
-	 $clcriaabas->src = array("atendcadarea"=>"ate1_atendcadarea006.php");
-	 $clcriaabas->disabled   =  array("atendcadareamod"=>"true"); 
+	 $clcriaabas->identifica = ["atendcadarea"=>"Área","atendcadareamod"=>"Módulos"]; 
+	 $clcriaabas->src = ["atendcadarea"=>"ate1_atendcadarea006.php"];
+	 $clcriaabas->disabled   =  ["atendcadareamod"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

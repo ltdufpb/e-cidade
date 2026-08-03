@@ -36,7 +36,7 @@ require_once(modification("classes/db_lab_valorreferenciasel_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_lab_valorrefselgrupo_classe.php"));
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 db_postmemory($_POST);
 
 $cllab_valorreferencia          = new cl_lab_valorreferencia;
@@ -97,7 +97,7 @@ if (isset($alterar)) {
         //incluir Grupo selecionavel
         if( $str_valorRefSel != "" ) {
 
-          $vet = explode(",",$str_valorRefSel);
+          $vet = explode(",",(string) $str_valorRefSel);
           $cllab_valorrefselgrupo->la51_i_referencia=$cllab_tiporeferenciaalfa->la29_i_codigo;
 
           for ($x = 0; $x < count($vet); $x++) {

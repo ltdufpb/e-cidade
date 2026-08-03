@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE pcorcamjulgamentolog
 class cl_pcorcamjulgamentolog { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc92_sequencial = 0; 
-   var $pc92_usuario = 0; 
-   var $pc92_datajulgamento_dia = null; 
-   var $pc92_datajulgamento_mes = null; 
-   var $pc92_datajulgamento_ano = null; 
-   var $pc92_datajulgamento = null; 
-   var $pc92_hora = null; 
-   var $pc92_ativo = 'f'; 
+   public $pc92_sequencial = 0; 
+   public $pc92_usuario = 0; 
+   public $pc92_datajulgamento_dia = null; 
+   public $pc92_datajulgamento_mes = null; 
+   public $pc92_datajulgamento_ano = null; 
+   public $pc92_datajulgamento = null; 
+   public $pc92_hora = null; 
+   public $pc92_ativo = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc92_sequencial = int4 = Código 
                  pc92_usuario = int4 = Usuário 
                  pc92_datajulgamento = date = Data Julgamento 
@@ -59,10 +59,10 @@ class cl_pcorcamjulgamentolog {
                  pc92_ativo = bool = Status do Julgamento 
                  ";
    //funcao construtor da classe 
-   function cl_pcorcamjulgamentolog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamjulgamentolog"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_pcorcamjulgamentolog {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc92_sequencial = pg_result($result,0,0); 
+       $this->pc92_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pcorcamjulgamentolog_pc92_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc92_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc92_sequencial)){
          $this->erro_sql = " Campo pc92_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_pcorcamjulgamentolog {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Log do Julgamento ($this->pc92_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Log do Julgamento já Cadastrado";
@@ -204,14 +204,14 @@ class cl_pcorcamjulgamentolog {
      $resaco = $this->sql_record($this->sql_query_file($this->pc92_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18829,'$this->pc92_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3339,18829,'','".AddSlashes(pg_result($resaco,0,'pc92_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3339,18832,'','".AddSlashes(pg_result($resaco,0,'pc92_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3339,18830,'','".AddSlashes(pg_result($resaco,0,'pc92_datajulgamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3339,18831,'','".AddSlashes(pg_result($resaco,0,'pc92_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3339,18833,'','".AddSlashes(pg_result($resaco,0,'pc92_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3339,18829,'','".AddSlashes(pg_fetch_result($resaco,0,'pc92_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3339,18832,'','".AddSlashes(pg_fetch_result($resaco,0,'pc92_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3339,18830,'','".AddSlashes(pg_fetch_result($resaco,0,'pc92_datajulgamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3339,18831,'','".AddSlashes(pg_fetch_result($resaco,0,'pc92_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3339,18833,'','".AddSlashes(pg_fetch_result($resaco,0,'pc92_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_pcorcamjulgamentolog {
       $this->atualizacampos();
      $sql = " update pcorcamjulgamentolog set ";
      $virgula = "";
-     if(trim($this->pc92_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc92_sequencial"])){ 
+     if(trim((string) $this->pc92_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc92_sequencial"])){ 
        $sql  .= $virgula." pc92_sequencial = $this->pc92_sequencial ";
        $virgula = ",";
-       if(trim($this->pc92_sequencial) == null ){ 
+       if(trim((string) $this->pc92_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "pc92_sequencial";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_pcorcamjulgamentolog {
          return false;
        }
      }
-     if(trim($this->pc92_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc92_usuario"])){ 
+     if(trim((string) $this->pc92_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc92_usuario"])){ 
        $sql  .= $virgula." pc92_usuario = $this->pc92_usuario ";
        $virgula = ",";
-       if(trim($this->pc92_usuario) == null ){ 
+       if(trim((string) $this->pc92_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "pc92_usuario";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_pcorcamjulgamentolog {
          return false;
        }
      }
-     if(trim($this->pc92_datajulgamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc92_datajulgamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc92_datajulgamento_dia"] !="") ){ 
+     if(trim((string) $this->pc92_datajulgamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc92_datajulgamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc92_datajulgamento_dia"] !="") ){ 
        $sql  .= $virgula." pc92_datajulgamento = '$this->pc92_datajulgamento' ";
        $virgula = ",";
-       if(trim($this->pc92_datajulgamento) == null ){ 
+       if(trim((string) $this->pc92_datajulgamento) == null ){ 
          $this->erro_sql = " Campo Data Julgamento nao Informado.";
          $this->erro_campo = "pc92_datajulgamento_dia";
          $this->erro_banco = "";
@@ -262,7 +262,7 @@ class cl_pcorcamjulgamentolog {
        if(isset($GLOBALS["HTTP_POST_VARS"]["pc92_datajulgamento_dia"])){ 
          $sql  .= $virgula." pc92_datajulgamento = null ";
          $virgula = ",";
-         if(trim($this->pc92_datajulgamento) == null ){ 
+         if(trim((string) $this->pc92_datajulgamento) == null ){ 
            $this->erro_sql = " Campo Data Julgamento nao Informado.";
            $this->erro_campo = "pc92_datajulgamento_dia";
            $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_pcorcamjulgamentolog {
          }
        }
      }
-     if(trim($this->pc92_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc92_hora"])){ 
+     if(trim((string) $this->pc92_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc92_hora"])){ 
        $sql  .= $virgula." pc92_hora = '$this->pc92_hora' ";
        $virgula = ",";
-       if(trim($this->pc92_hora) == null ){ 
+       if(trim((string) $this->pc92_hora) == null ){ 
          $this->erro_sql = " Campo Hora do Julgamento nao Informado.";
          $this->erro_campo = "pc92_hora";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_pcorcamjulgamentolog {
          return false;
        }
      }
-     if(trim($this->pc92_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc92_ativo"])){ 
+     if(trim((string) $this->pc92_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc92_ativo"])){ 
        $sql  .= $virgula." pc92_ativo = '$this->pc92_ativo' ";
        $virgula = ",";
-       if(trim($this->pc92_ativo) == null ){ 
+       if(trim((string) $this->pc92_ativo) == null ){ 
          $this->erro_sql = " Campo Status do Julgamento nao Informado.";
          $this->erro_campo = "pc92_ativo";
          $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_pcorcamjulgamentolog {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18829,'$this->pc92_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc92_sequencial"]) || $this->pc92_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3339,18829,'".AddSlashes(pg_result($resaco,$conresaco,'pc92_sequencial'))."','$this->pc92_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3339,18829,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc92_sequencial'))."','$this->pc92_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc92_usuario"]) || $this->pc92_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3339,18832,'".AddSlashes(pg_result($resaco,$conresaco,'pc92_usuario'))."','$this->pc92_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3339,18832,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc92_usuario'))."','$this->pc92_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc92_datajulgamento"]) || $this->pc92_datajulgamento != "")
-           $resac = db_query("insert into db_acount values($acount,3339,18830,'".AddSlashes(pg_result($resaco,$conresaco,'pc92_datajulgamento'))."','$this->pc92_datajulgamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3339,18830,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc92_datajulgamento'))."','$this->pc92_datajulgamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc92_hora"]) || $this->pc92_hora != "")
-           $resac = db_query("insert into db_acount values($acount,3339,18831,'".AddSlashes(pg_result($resaco,$conresaco,'pc92_hora'))."','$this->pc92_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3339,18831,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc92_hora'))."','$this->pc92_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc92_ativo"]) || $this->pc92_ativo != "")
-           $resac = db_query("insert into db_acount values($acount,3339,18833,'".AddSlashes(pg_result($resaco,$conresaco,'pc92_ativo'))."','$this->pc92_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3339,18833,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc92_ativo'))."','$this->pc92_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_pcorcamjulgamentolog {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18829,'$pc92_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3339,18829,'','".AddSlashes(pg_result($resaco,$iresaco,'pc92_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3339,18832,'','".AddSlashes(pg_result($resaco,$iresaco,'pc92_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3339,18830,'','".AddSlashes(pg_result($resaco,$iresaco,'pc92_datajulgamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3339,18831,'','".AddSlashes(pg_result($resaco,$iresaco,'pc92_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3339,18833,'','".AddSlashes(pg_result($resaco,$iresaco,'pc92_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3339,18829,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc92_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3339,18832,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc92_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3339,18830,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc92_datajulgamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3339,18831,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc92_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3339,18833,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc92_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pcorcamjulgamentolog
@@ -431,7 +431,7 @@ class cl_pcorcamjulgamentolog {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pcorcamjulgamentolog";
@@ -446,7 +446,7 @@ class cl_pcorcamjulgamentolog {
    function sql_query ( $pc92_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_pcorcamjulgamentolog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,7 +481,7 @@ class cl_pcorcamjulgamentolog {
    function sql_query_file ( $pc92_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_pcorcamjulgamentolog {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

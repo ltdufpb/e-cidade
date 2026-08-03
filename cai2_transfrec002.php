@@ -71,8 +71,8 @@ if (!empty($filtroRecurso)) {
 $sql .= "  order by rdeb.o15_codigo,rcred.o15_codigo,corlanc.k12_data  ";
 
 $result = db_query($sql);
-$rows = pg_numrows($result);
-if (pg_numrows($result) == 0) {
+$rows = pg_num_rows($result);
+if (pg_num_rows($result) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dados neste periodo.');
 }
 
@@ -151,7 +151,7 @@ for ($linha = 0; $linha < $rows; $linha++) {
 
     if ($k17_valor < 0) {
         $pdf->SetTextColor(255, 0, 0);
-        $valor = '(-)' . trim(db_formatar(substr($k17_valor, 1), 'f'));
+        $valor = '(-)' . trim(db_formatar(substr((string) $k17_valor, 1), 'f'));
     } else {
         $valor = db_formatar($k17_valor, 'f');
         $pdf->SetTextColor(0, 0, 0);

@@ -38,7 +38,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 $oGet = db_utils::postMemory($_GET);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oRelatorio  = new relatorioContabil($oGet->c83_codrel, false);
 $anousu = db_getsession("DB_anousu");
@@ -151,7 +151,7 @@ function js_emite(sFonte){
               <td>
                  <?php                  
                   $aPeriodos = $oRelatorio->getPeriodos();
-                  $aListaPeriodos = array();
+                  $aListaPeriodos = [];
                   $aListaPeriodos[0] = "Selecione";
                   foreach ($aPeriodos as $oPeriodo) {
                     $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;

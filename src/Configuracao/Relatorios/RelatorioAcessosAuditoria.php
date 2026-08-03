@@ -44,24 +44,21 @@ class RelatorioAcessosAuditoria extends FpdfMultiCellBorder
     private $sCaminhoMensagens;
 
     /**
-     * @var Array
+     * @param mixed[] $aParametros
      */
-    private $aParametros;
-
-    public function __construct($aParametros)
+    public function __construct(private $aParametros)
     {
         parent::__construct();
 
         $this->sCaminhoMensagens    = "configuracao.configuracao.con2_consultaacesso";
-        $this->aParametros = $aParametros;
 
         $oInstituicao = new Instituicao(db_getsession('DB_instit'));
 
         global $head2, $head4, $head6;
 
         $head2  = "Relatório de Auditorias do e-cidade";
-        $head4  = "Período de " . db_formatar($aParametros["dDataInicio"], "d");
-        $head4 .= " a " . db_formatar($aParametros["dDataFim"], "d");
+        $head4  = "Período de " . db_formatar($this->aParametros["dDataInicio"], "d");
+        $head4 .= " a " . db_formatar($this->aParametros["dDataFim"], "d");
         $head6  = "Instituição: " . $oInstituicao->getCodigo();
         $head6 .= " - " . $oInstituicao->getDescricao();
     }
@@ -84,7 +81,7 @@ class RelatorioAcessosAuditoria extends FpdfMultiCellBorder
         $fileName = 'tmp/acessos_auditoria_' . time() . '.pdf';
         $this->Output($fileName, false, true);
         return [
-            "name" => utf8_encode("Relatório de Auditorias do e-cidade"),
+            "name" => mb_convert_encoding("Relatório de Auditorias do e-cidade", 'UTF-8', 'ISO-8859-1'),
             "path" => ECIDADE_REQUEST_PATH . $fileName
         ];
     }
@@ -114,7 +111,7 @@ class RelatorioAcessosAuditoria extends FpdfMultiCellBorder
         $total = 0;
 
         while ($aRetornoAcessos = pg_fetch_object($rsRetornoAcessos)) {
-            $aParametrosModif             = array();
+            $aParametrosModif             = [];
             $sParametroEsquema = db_stdClass::normalizeStringJsonEscapeString($this->aParametros['sEsquema']);
             $aParametrosModif['sEsquema'] = $sParametroEsquema;
             $aParametrosModif['sCampo'] = db_stdClass::normalizeStringJsonEscapeString($this->aParametros['sCampo']);

@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_db_syscadproceditem_classe.php"));
 include(modification("classes/db_db_syscadproced_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $cldb_syscadproceditem = new cl_db_syscadproceditem;
 $cldb_syscadproceditempesquisa = new cl_db_syscadproceditem;
 $cldb_syscadproced = new cl_db_syscadproced;
@@ -50,7 +50,7 @@ $cldb_syscadproceditem->id_item = $id_item;
 if(isset($incluir) || isset($alterar)){
   if($sqlerro==false){
     db_inicio_transacao();
-    $itens = split("-",$itens);
+    $itens = preg_split("#\\-#m",$itens);
 		if( count($itens) > 0 ){
 		  for($i=0;$i<count($itens);$i++){
 			  if($itens[$i]==null)

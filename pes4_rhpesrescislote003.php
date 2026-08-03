@@ -36,8 +36,8 @@ require_once(modification("classes/db_rhpessoal_classe.php"));
 require_once(modification("classes/db_selecao_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clrhpesrescisao = new cl_rhpesrescisao;
 $clrhpessoal     = new cl_rhpessoal;
@@ -67,7 +67,7 @@ if (isset($excluir)) {
 
   if ($selecao != 0) {
     $result_sel = db_query("select r44_where from selecao where r44_selec = ".$selecao);
-    if(pg_numrows($result_sel) > 0){
+    if(pg_num_rows($result_sel) > 0){
       db_fieldsmemory($result_sel, 0, 1);
       $whereestrut .= " and ".$r44_where;
     }else{
@@ -195,8 +195,8 @@ if (isset($excluir)) {
        //echo "<BR> ".count($pensao)." $sql";exit;
        db_selectmax("pensao", $sql);
        for ($Ipensao=0; $Ipensao<count($pensao); $Ipensao++) {
-           $matriz1 = array();
-           $matriz2 = array();
+           $matriz1 = [];
+           $matriz2 = [];
            $condicaoaux  = " and r52_regist = ".db_sqlformat($pensao[$Ipensao]["r52_regist"]);
            $condicaoaux .= " and r52_numcgm = ".db_sqlformat($pensao[$Ipensao]["r52_numcgm"]);
            
@@ -242,7 +242,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 <?php
 if(isset($excluir)){
     db_msgbox("Processamento concluído.");
-    if(trim($erro_msg) != ""){
+    if(trim((string) $erro_msg) != ""){
       db_msgbox($erro_msg);
     }
     echo "<script>location.href = 'pes4_rhpesrescislote003.php';</script>";

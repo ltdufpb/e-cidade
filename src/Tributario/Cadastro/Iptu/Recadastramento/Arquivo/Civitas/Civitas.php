@@ -25,19 +25,9 @@ class Civitas
     private $arquivoConstrucao;
 
     /**
-     * @var string $nomeImportacao
-     */
-    private $nomeImportacao;
-
-    /**
      * @var array $aMatriculasImportadas
      */
-    private $aMatriculasImportadas = array();
-
-    /**
-     * @var bool $importacaoManual
-     */
-    private $importacaoManual;
+    private $aMatriculasImportadas = [];
 
 
     /**
@@ -46,11 +36,10 @@ class Civitas
      * Civitas constructor.
      * @param $nomeImportacao
      * @param bool $importacaoManual
+     * @param string $nomeImportacao
      */
-    public function __construct($nomeImportacao, $importacaoManual = true)
+    public function __construct(private $nomeImportacao, private $importacaoManual = true)
     {
-        $this->nomeImportacao = $nomeImportacao;
-        $this->importacaoManual = $importacaoManual;
     }
 
     /**
@@ -113,9 +102,7 @@ class Civitas
             throw new \DBException('Erro ao buscar os setores cadastrados no sistema.');
         }
 
-        $aSetores = \db_utils::makeCollectionFromRecord($rsSetor, function ($oSetor) {
-            return $oSetor->j30_codi;
-        });
+        $aSetores = \db_utils::makeCollectionFromRecord($rsSetor, fn($oSetor) => $oSetor->j30_codi);
 
         return $aSetores;
     }
@@ -131,7 +118,7 @@ class Civitas
 
         $oArquivoLote = new \SplFileObject($this->arquivoLote);
         $oArquivoLote->setFlags(\SplFileObject::READ_CSV);
-        $oArquivoLote->setCsvControl('|');
+        $oArquivoLote->setCsvControl('|', escape: '\\');
 
         $aSetores = $this->getSetores();
 
@@ -139,9 +126,9 @@ class Civitas
 
         RequestLogger::log(
             RequestLogger::INFO,
-            'civitas_carga_processa_lote', $this->nomeImportacao , '' ,  array(
+            'civitas_carga_processa_lote', $this->nomeImportacao , '' ,  [
             'linhas' =>  iterator_to_array($aLinhasArquivoLote)
-        ));
+        ]);
 
         foreach ($aLinhasArquivoLote as $aLinha) {
 
@@ -189,15 +176,15 @@ class Civitas
         $oArquivoConstrucao = new \SplFileObject($this->arquivoConstrucao);
 
         $oArquivoConstrucao->setFlags(\SplFileObject::READ_CSV);
-        $oArquivoConstrucao->setCsvControl('|');
+        $oArquivoConstrucao->setCsvControl('|', escape: '\\');
 
         $aLinhasArquivoConstrucao = new \LimitIterator($oArquivoConstrucao, 1);
 
         RequestLogger::log(
             RequestLogger::INFO,
-            'civitas_carga_processa_construcao', $this->nomeImportacao , '' ,  array(
+            'civitas_carga_processa_construcao', $this->nomeImportacao , '' ,  [
             'linhas' =>  iterator_to_array($aLinhasArquivoConstrucao)
-        ));
+        ]);
 
         foreach ($aLinhasArquivoConstrucao as $key => $aLinha) {
 

@@ -275,7 +275,7 @@ class Calculo {
   /**
    * @param \DateTime $oData
    */
-  public function setData(\DateTime $oData = null) {
+  public function setData(?\DateTime $oData = null) {
     $this->oData = $oData;
   }
 

@@ -60,7 +60,7 @@ class EscalaTrabalho {
      * Jornadas configuradas para escala
      * @var array
      */
-    private $aJornadas = array();
+    private $aJornadas = [];
 
     /**
      * @var bool|Revezamento

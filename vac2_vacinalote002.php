@@ -37,8 +37,8 @@ $oDaoMatestoqueitem = db_utils::getdao('matestoqueitemlote');
 $dHoje              = date("Y-m-d",db_getsession("DB_datausu"));
 $aHoje              = explode("-",$dHoje);
 $iDepartamento      = db_getsession("DB_coddepto");
-$dIni               = substr($dDataini,6,4)."-".substr($dDataini,3,2)."-".substr($dDataini,0,2);
-$dFim               = substr($dDatafim,6,4)."-".substr($dDatafim,3,2)."-".substr($dDatafim,0,2);
+$dIni               = substr((string) $dDataini,6,4)."-".substr((string) $dDataini,3,2)."-".substr((string) $dDataini,0,2);
+$dFim               = substr((string) $dDatafim,6,4)."-".substr((string) $dDatafim,3,2)."-".substr((string) $dDatafim,0,2);
 $sWhere             = " vc16_d_data between '$dIni' and '$dFim' ";
 if ($iLote != 0) {
   $sWhere .= " and m77_sequencial=$iLote ";
@@ -100,27 +100,27 @@ if ($iUnidades == 1) {
 
 //For das unidades que tem salas cadastradas
 for ($iInUnid=0; $iInUnid < $iTotalUnid; $iInUnid++) {
-  
+
   if ($iUnidades == 1) {
-  	
+
 	 $oDadosDepto  = db_utils::fieldsmemory($rsSala,$iInUnid);
    $head3        = "unidade: ".$oDadosDepto->descrdepto;
    $lFirst       = true;
-   
+
   }
   //for principal percorre todas os Lotes ou a que foi selecionada na formulario
   for ($iX = 0; $iX < $iTam; $iX++) {
 
     if ($pdf->GetY() > $pdf->h -25 || $lFirst == true) {
-      
+
       $pdf->ln(5);
       $pdf->addpage('P');
       $lFirst = false;
-      
+
     }
     $pdf->setfont('arial','b',10);
     $pdf->cell(110,4," Lote: ".$asLote[$iX],0,1,"L",0);
-    
+
     //selecionas todas as vacinas do lote corrente
     $sCampos  = "vc06_i_codigo,vc06_c_codpni,vc06_c_descr";
     $sSql     = $oDaoVacina->sql_query_file(null,$sCampos);
@@ -134,15 +134,15 @@ for ($iInUnid=0; $iInUnid < $iTotalUnid; $iInUnid++) {
     $iVacinaL = $oDaoVacina->numrows;
     //for secundario percorre todas as doses da vacina corrente no for principal
     if ($iVacinaL > 0) {
-    	
+
       $oVacina = db_utils::fieldsMemory($rsVacina,0);
       $pdf->cell(170,4,"       Imuno: ".$oVacina->vc06_c_codpni." - ".$oVacina->vc06_c_descr,0,1,"L",0);
       $pdf->cell(30,4," CGS ",1,0,"C",1);
       $pdf->cell(80,4," Nome ",1,0,"C",1);
       $pdf->cell(40,4," Data de Aplcação ",1,1,"C",1);
-      
+
       $pdf->setfont('arial','',10);
-      
+
       //Percorre todas as plaicação daqueela vacina com aquele lote num determinado periodo de tempo
       $sWhere      = " vc16_d_data between '$dIni' and '$dFim' ";
       $sWhere     .= " and m77_sequencial=$aiLote[$iX] ";
@@ -153,12 +153,12 @@ for ($iInUnid=0; $iInUnid < $iTotalUnid; $iInUnid++) {
       $sSql        = $oDaoVacAplicalote->sql_query2(null,$sCampos,null,$sWhere);
       $rsAplicadas = $oDaoVacAplicalote->sql_record($sSql);
       for ($iInd = 0; $iInd < $oDaoVacAplicalote->numrows; $iInd++) {
-      
+
         $oAplicadas = db_utils::fieldsMemory($rsAplicadas,$iInd,true);
         $pdf->cell(30,4,$oAplicadas->z01_i_cgsund,1,0,"C",0);
         $pdf->cell(80,4,$oAplicadas->z01_v_nome,1,0,"L",0);
         $pdf->cell(40,4,$oAplicadas->vc16_d_data,1,1,"C",0);
-      
+
       }
       if ($oDaoVacAplicalote->numrows == 0) {
       	$pdf->cell(150,4,"Nenhuma vacina aplicada",1,1,"C",0);
@@ -167,7 +167,7 @@ for ($iInUnid=0; $iInUnid < $iTotalUnid; $iInUnid++) {
       $pdf->cell(110,4,"","TBL",0,"C",1);
       $pdf->cell(40,4," Total: ".$oDaoVacAplicalote->numrows,"TBR",1,"L",1);
     }
-    
+
   }//For dos lotes
 }//For do das Unidades 
 $pdf->Output();

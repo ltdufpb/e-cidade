@@ -107,7 +107,7 @@ if( isset($opcao) ){
     <td> 
 <?php 
 //db_input('k86_bancohistmov',10,$Ik86_bancohistmov,true,'text',$db_opcao," onchange='js_pesquisak86_bancohistmov(false);'")
-      $arraytipo = array('1'=>'Extrato Bancário','2'=>'Tesouraria'); 
+      $arraytipo = ['1'=>'Extrato Bancário','2'=>'Tesouraria']; 
       db_select('k86_bancohistmov',$arraytipo,true,$ativo);
 	
 ?>
@@ -147,7 +147,7 @@ if( isset($opcao) ){
 		</td>
 		<td>
 		<?php 
-		  $arraytipo = array('D'=>'Débito','C'=>'Crédito'); 
+		  $arraytipo = ['D'=>'Débito','C'=>'Crédito']; 
       db_select('k86_tipo',$arraytipo,true,$ativo);
 		?>
 		</td>
@@ -192,7 +192,7 @@ db_input('k86_historico',64,$Ik86_historico,true,'text',$db_opcao,"")
     <td> 
 <?php 
  //$x = array("f"=>"SIM","f"=>"NÃO");
- $x = array("f"=>"NÃO");
+ $x = ["f"=>"NÃO"];
  db_select("recalcula",$x, true, 1,'hidden');
 ?>
     </td>
@@ -225,7 +225,7 @@ db_input('k86_historico',64,$Ik86_historico,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-         $chavepri= array("k86_sequencial"=>@$k86_sequencial);
+         $chavepri= ["k86_sequencial"=>@$k86_sequencial];
 	 $cliframe_alterar_excluir->chavepri      = $chavepri;
 	 $cliframe_alterar_excluir->sql           = $clextratolinha->sql_query_file(null,"*","extratolinha.k86_data, extratolinha.k86_sequencial"," k86_contabancaria = $conta and k86_data = '$sDtSaldoFinal'");
 	 $cliframe_alterar_excluir->sql_disabled  = "select * from extratolinha inner join conciliaextrato on k86_sequencial = k87_extratolinha where k86_contabancaria = $conta and k86_data = '$sDtSaldoFinal' ";

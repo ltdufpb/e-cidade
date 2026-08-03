@@ -109,6 +109,7 @@ class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao {
    * @param AvaliacaoAproveitamento[] $aElementosAvaliacoes
    * @return string
    */
+  #[\Override]
   public function calcularNotaProjetada(array $aElementosAvaliacoes) {
 
     $nMinimoAprovacao = $this->oResultadoAvaliacao->getAproveitamentoMinimo();
@@ -191,11 +192,11 @@ class FormaObtencaoSoma extends FormaObtencao implements IFormaObtencao {
   public function calculaNotaComAmparo( $aElementosAvaliacao, $iAno ) {
 
     $nAproveitamento              = null;
-    $aPeriodosValidos             = array();
+    $aPeriodosValidos             = [];
     $aNotasPeriodos               = $this->getElementosParaCalculo( $aElementosAvaliacao, $iAno );
     $aElementos                   = $this->getResultadoAvaliacao()->getElementosComposicaoResultado();
 
-    $aPeriodoAvaliacaoAlternativa = array();
+    $aPeriodoAvaliacaoAlternativa = [];
 
     foreach ($aNotasPeriodos as $oNotaDoAproveitamento ) {
 

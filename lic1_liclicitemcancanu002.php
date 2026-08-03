@@ -46,8 +46,8 @@ $cliframe_seleciona_itens = new cl_iframe_seleciona;
 
 $clliclicitemanu->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $action   = "lic1_liclicitemcancanu002.php";
 $db_botao = false;
@@ -59,11 +59,11 @@ if (isset($confirmar) && trim(@$confirmar) != "") {
 
   db_inicio_transacao();
 
-  $vetor_itens = split(",",$coditens);
+  $vetor_itens = preg_split("#,#m",$coditens);
   
   for ($i = 0; $i < count($vetor_itens); $i++) {
     
-    $clliclicitemanu->excluir(null,"l07_liclicitem in (".trim($vetor_itens[$i]).")");
+    $clliclicitemanu->excluir(null,"l07_liclicitem in (".trim((string) $vetor_itens[$i]).")");
 
     if ($clliclicitemanu->erro_status == "0") {
       
@@ -74,9 +74,9 @@ if (isset($confirmar) && trim(@$confirmar) != "") {
 
     if ($sqlerro == false) {
       
-      $clliclicitem->l21_codigo   = trim($vetor_itens[$i]); 
+      $clliclicitem->l21_codigo   = trim((string) $vetor_itens[$i]); 
       $clliclicitem->l21_situacao = "0";
-      $clliclicitem->alterar(trim($vetor_itens[$i]));
+      $clliclicitem->alterar(trim((string) $vetor_itens[$i]));
       
       if ($clliclicitem->erro_status == "0") {
         
@@ -89,7 +89,7 @@ if (isset($confirmar) && trim(@$confirmar) != "") {
     if ($sqlerro == false) {
       
       $res_pcorcam        = $clpcorcam->sql_record($clpcorcamitemlic->sql_query(null,"distinct pc20_codorc",null,"l20_codigo = $l20_codigo"));
-      $res_pcorcamitemlic = $clpcorcamitemlic->sql_record($clpcorcamitemlic->sql_query(null,"l21_codigo","l21_codigo","pc26_liclicitem = ".trim($vetor_itens[$i])));
+      $res_pcorcamitemlic = $clpcorcamitemlic->sql_record($clpcorcamitemlic->sql_query(null,"l21_codigo","l21_codigo","pc26_liclicitem = ".trim((string) $vetor_itens[$i])));
       
       if ($clpcorcamitemlic->numrows == 0 && $clpcorcam->numrows > 0) {
         
@@ -109,7 +109,7 @@ if (isset($confirmar) && trim(@$confirmar) != "") {
 		    if ($sqlerro == false) {
 		      
 		      $clpcorcamitemlic->pc26_orcamitem  = $pc22_orcamitem;
-		      $clpcorcamitemlic->pc26_liclicitem = trim($vetor_itens[$i]);
+		      $clpcorcamitemlic->pc26_liclicitem = trim((string) $vetor_itens[$i]);
 	        $clpcorcamitemlic->incluir();
 		      if ($clpcorcamitemlic->erro_status == "0") {
 		        
@@ -231,7 +231,7 @@ db_input("coditens", 500,"",true,"hidden",3);
       <input name="confirmar" type="submit" onClick="return js_confirmar();" value="Confirmar" <?=($db_botao == true?"disabled":"")?>>
       <input name="voltar"    type="button" onClick="location.href='lic1_liclicitemcancanu001.php';" value="Voltar">
 <?php 
-   if (trim(@$erro_msg) != ""){
+   if (trim((string) @$erro_msg) != ""){
         db_msgbox($erro_msg);
    }
 ?>

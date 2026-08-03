@@ -10,7 +10,7 @@ use ECidade\RecursosHumanos\ESocial\Model\Configuracao;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $rotulo = new rotulocampo;
 $rotulo->label("z01_nome");
@@ -28,7 +28,7 @@ $instituicao = null;
 if (!empty($_GET["instituicao"])) {
     $instituicao = $_GET["instituicao"];
 }
-$where = array();
+$where = [];
 $where[] = " db102_avaliacao = {$formularioId} ";
 
 ?>
@@ -70,14 +70,14 @@ $where[] = " db102_avaliacao = {$formularioId} ";
 
     $tipoProcesso = "case when eso05_tipoprocesso = 1 then 'Administrativo' else 'Judicial' end::varchar as dl_tipo_processo";
 
-    $campos = array(
+    $campos = [
         "distinct eso05_avaliacaogruporesposta as db_preenchimento",
         "eso05_cgm",
         "z01_nome as dl_empregador",
         "eso05_processo",
         "eso05_tipoprocesso as db_tipoprocesso",
         $tipoProcesso
-    );
+    ];
     if (!isset($pesquisa_chave)) {
         if (isset($chave_eso05_cgm) && (trim($chave_eso05_cgm) != "")) {
             $where[] = " eso05_cgm = {$chave_eso05_cgm} ";
@@ -87,15 +87,15 @@ $where[] = " db102_avaliacao = {$formularioId} ";
             $where[] = " eso05_processo ilike '{$chave_eso05_processo}%' ";
         }
 
-        $order = array('eso05_avaliacaogruporesposta', 'eso05_processo');
+        $order = ['eso05_avaliacaogruporesposta', 'eso05_processo'];
         $sql = $dao->buscaPreenchimento($campos, $where, $order, $instituicao);
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_z01_nome)) {
-            $repassa = array(
+            $repassa = [
                 "chave_eso05_cgm" => $chave_eso05_cgm,
                 "chave_z01_nome" => $chave_z01_nome,
                 "chave_eso05_processo" => $chave_eso05_processo
-            );
+            ];
         }
 
         echo '<div class="container">';

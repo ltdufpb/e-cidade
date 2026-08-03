@@ -88,7 +88,7 @@ db_input('x30_codigo',10,$Ix30_codigo,true,'text',$db_opcao,"")
     <td valign="top"  align="center">  
     <?php 
 	 //$chavepri= array("x30_codigo"=>@$x30_codigo,"x30_matric"=>@$x30_matric);
-	 $chavepri= array("x30_matric"=>@$x30_matric);
+	 $chavepri= ["x30_matric"=>@$x30_matric];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 //$cliframe_alterar_excluir->sql     = $claguabasecar->sql_query_file($x30_codigo);
 	 $cliframe_alterar_excluir->sql     = $claguabasecar->sql_query($x30_matric);

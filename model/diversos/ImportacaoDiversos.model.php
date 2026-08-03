@@ -62,7 +62,7 @@ class ImportacaoDiversos {
      */
     const ESCOLHA_DATA_VENCIMENTO = 3;
 
-    protected $oDadosDebitos = array();
+    protected $oDadosDebitos = [];
 
   /**
    * Quantidade de Parcelas que a Importação Irá Gerar por Receita de Cada Parcela de Cada Débito. 
@@ -76,7 +76,7 @@ class ImportacaoDiversos {
    * 
    * @var tableDataManager[]
    */
-  protected $aDataManager        = array();
+  protected $aDataManager        = [];
 
   /**
    * iCodigoImportacao
@@ -96,7 +96,7 @@ class ImportacaoDiversos {
    * Tabela arrecad
    * @var array
    */
-  protected $aBaseDebitos    = array();
+  protected $aBaseDebitos    = [];
 
   /**
    * aDividasArrecad
@@ -104,7 +104,7 @@ class ImportacaoDiversos {
    * @var array
    * @access protected
    */
-  protected $aDividasArrecad = array();
+  protected $aDividasArrecad = [];
   
   /**
    * aReceitaProcedencia
@@ -112,7 +112,7 @@ class ImportacaoDiversos {
    * @var array
    * @access protected
    */
-  private $aReceitaProcedencia = array();
+  private $aReceitaProcedencia = [];
   
   /**
    * Observações sobre a Importacao
@@ -265,12 +265,12 @@ class ImportacaoDiversos {
     $oDaoDiversos->dv05_vlrhis    = $oDiverImporta->k00_valor;
     $oDaoDiversos->dv05_valor     = $oDiverImporta->k00_valor;
     $oDaoDiversos->dv05_procdiver = $iProcedencia;
-    $oDaoDiversos->dv05_exerc     = substr($oDiverImporta->k00_dtoper, 0, 4);
+    $oDaoDiversos->dv05_exerc     = substr((string) $oDiverImporta->k00_dtoper, 0, 4);
     $oDaoDiversos->dv05_numpre    = $iNumpreAdd;
     $oDaoDiversos->dv05_numtot    = $oDiverImporta->k00_numtot;
     $oDaoDiversos->dv05_privenc   = $oDiverImporta->k00_dtvenc;
     $oDaoDiversos->dv05_provenc   = $oDiverImporta->k00_dtvenc;
-    $oDaoDiversos->dv05_diaprox   = substr($oDiverImporta->k00_dtvenc,8,2);
+    $oDaoDiversos->dv05_diaprox   = substr((string) $oDiverImporta->k00_dtvenc,8,2);
     $oDaoDiversos->dv05_oper      = $oDiverImporta->k00_dtoper;
     $oDaoDiversos->dv05_obs       = pg_escape_string($this->sObservacoes);
     $oDaoDiversos->dv05_instit    = db_getsession('DB_instit');
@@ -391,7 +391,7 @@ class ImportacaoDiversos {
    * @return bool
    * @throws DBException
    */
-  protected function processaArrecad($aDebito, ProcedenciaDiversos $oProcedenciaDiversos, $iMatricula = null, $iNumpreGerado, DBDate $oVencimento = null ) {
+  protected function processaArrecad($aDebito, ProcedenciaDiversos $oProcedenciaDiversos, $iMatricula = null, $iNumpreGerado = null, ?DBDate $oVencimento = null ) {
 
     $oDaoArrecad      = new cl_arrecad();
     $oDadosDebito     = $aDebito[0][0];
@@ -497,7 +497,7 @@ class ImportacaoDiversos {
       $oDadosArrematric->k00_matric = $this->iCodigoOrigem;
       $oDadosArrematric->k00_perc   = 100;
       $this->aDataManager['arrematric']->setByLineOfDBUtils( $oDadosArrematric, true );
-      
+
      /**
       * Ou Inscrição
       */
@@ -603,7 +603,7 @@ class ImportacaoDiversos {
     }
 
     $aDiverImporta        = db_utils::getCollectionByRecord($rsValidaImportacao);
-    $aNumpresCancelamento = array();
+    $aNumpresCancelamento = [];
     
     foreach ( $aDiverImporta as $oNumpreCancelamento ) {
       $aNumpresCancelamento[] = $oNumpreCancelamento->dv13_numpre;
@@ -783,9 +783,7 @@ class ImportacaoDiversos {
     protected function adicionaObservacaoOrigemParcelamento()
     {
         $termoRepository = TermoRepository::getInstance();
-        $numpres = array_map(function($debito) {
-            return $debito->k00_numpre;
-        }, $this->oDadosDebitos);
+        $numpres = array_map(fn($debito) => $debito->k00_numpre, $this->oDadosDebitos);
 
         $parcelamentos = $termoRepository->getParcelamentosPorNumpre($numpres);
 

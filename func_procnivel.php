@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procnivel_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprocnivel = new cl_procnivel;
 $clprocnivel->rotulo->label("sd28_i_seq");
 $clprocnivel->rotulo->label("sd28_i_seq");
@@ -98,9 +98,9 @@ $clprocnivel->rotulo->label("sd28_i_seq");
         }else{
            $sql = $clprocnivel->sql_query("",$campos,"sd28_i_seq","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd28_i_seq)){
-          $repassa = array("chave_sd28_i_seq"=>$chave_sd28_i_seq,"chave_sd28_i_seq"=>$chave_sd28_i_seq);
+          $repassa = ["chave_sd28_i_seq"=>$chave_sd28_i_seq,"chave_sd28_i_seq"=>$chave_sd28_i_seq];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

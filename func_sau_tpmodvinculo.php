@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_tpmodvinculo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_tpmodvinculo = new cl_sau_tpmodvinculo;
 $clsau_tpmodvinculo->rotulo->label("sd53_i_vinculacao");
 $clsau_tpmodvinculo->rotulo->label("sd53_i_tpvinculo");
@@ -111,9 +111,9 @@ $clsau_tpmodvinculo->rotulo->label("sd53_v_descrvinculo");
         }else{
            $sql = $clsau_tpmodvinculo->sql_query($chave_sd53_i_vinculacao,"",$campos,"sd53_i_vinculacao#sd53_i_tpvinculo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd53_i_vinculacao)){
-          $repassa = array("chave_sd53_i_vinculacao"=>$chave_sd53_i_vinculacao,"chave_sd53_i_vinculacao"=>$chave_sd53_i_vinculacao);
+          $repassa = ["chave_sd53_i_vinculacao"=>$chave_sd53_i_vinculacao,"chave_sd53_i_vinculacao"=>$chave_sd53_i_vinculacao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

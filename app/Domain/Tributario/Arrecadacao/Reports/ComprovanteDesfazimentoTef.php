@@ -115,7 +115,7 @@ abstract class ComprovanteDesfazimentoTef extends \GenericPdf
 
             $this->setY($altura);
             $this->setX(85);
-            $this->Cell(40, $height, substr($oOperacao->getBandeira(), 0, 17), 1, 0, "C");
+            $this->Cell(40, $height, substr((string) $oOperacao->getBandeira(), 0, 17), 1, 0, "C");
 
             $this->setY($altura);
             $this->setX(125);
@@ -123,7 +123,7 @@ abstract class ComprovanteDesfazimentoTef extends \GenericPdf
 
             $this->setY($altura);
             $this->setX(140);
-            $this->Cell(40, $height, substr($oOperacao->operacoesTef->getDescricao(), 0, 19), 1, 0, "C");
+            $this->Cell(40, $height, substr((string) $oOperacao->operacoesTef->getDescricao(), 0, 19), 1, 0, "C");
 
             $this->setY($altura);
             $this->setX(180);

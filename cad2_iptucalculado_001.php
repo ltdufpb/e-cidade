@@ -73,7 +73,7 @@ $cliptucalc = new cl_iptucalc;
   		               $sSql = "select j18_anousu as j23_anousu from cfiptu order by j18_anousu desc";
                      $result = db_query($sSql) or die($sSql);
 
-                    for($i = 0;$i < pg_numrows($result);$i++){
+                    for($i = 0;$i < pg_num_rows($result);$i++){
 
                       db_fieldsmemory($result,$i);
                       $sel = "";
@@ -118,7 +118,7 @@ $cliptucalc = new cl_iptucalc;
 	        <tr>
            <td><strong>Mês inicial:</strong> </td><td>
              <?php
-              $meses = array("01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho","07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+              $meses = ["01"=>"Janeiro","02"=>"Fevereiro","03"=>"Março","04"=>"Abril","05"=>"Maio","06"=>"Junho","07"=>"Julho","08"=>"Agosto","09"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
               $mesini = "01" ;
               db_select("mesini",$meses,true,"text",1);
              ?>

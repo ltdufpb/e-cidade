@@ -33,21 +33,21 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory($_POST);
 $daoContribuicao = new cl_contribuicaosindicalperiodo;
 
 $instituicao = db_getsession('DB_instit');
-$where = array(
+$where = [
     "r70_ativo IS TRUE",
     "r70_instit = {$instituicao}"
-);
+];
 
-$campos = array(
+$campos = [
     "z01_numcgm AS cgm",
     "z01_nome AS nome",
-);
+];
 
 $dao = new cl_rhlota();
 $sql = $dao->sql_query_lota_cgm(
@@ -123,10 +123,10 @@ $campos = "
 ";
 
 if (!empty($empregador)) {
-    $where = array(
+    $where = [
         "eso30_empregador = {$empregador}",
         "eso30_indicativo_periodo = {$indicativoPeriodo}",
-    );
+    ];
 
     if (!empty($periodo)) {
         $where[] = "eso30_periodo = '{$periodo}'";
@@ -139,10 +139,10 @@ if (!empty($empregador)) {
         implode(' and ', $where)
     );
 
-    $repassa = array(
+    $repassa = [
         "empregador" => $empregador,
         "indicativoPeriodo" => $indicativoPeriodo,
-    );
+    ];
 
     echo '<div class="container">';
     echo '  <fieldset>';

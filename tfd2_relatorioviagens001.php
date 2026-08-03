@@ -39,13 +39,13 @@ $oRotulo->label('tf27_i_codigo');
 $oRotulo->label('rh70_descr');
 $oRotulo->label('rh70_estrutural');
 
-$aAssets = array( 
+$aAssets = [ 
   "estilos.css",
   "scripts.js",
   "prototype.js",
   "strings.js",
   "dbautocomplete.widget.js",
-);
+];
 ?>
 <html>
   <head>
@@ -107,7 +107,7 @@ $aAssets = array(
             </td>
             <td>
               <?php
-              $aSituacoes      = array( 0 => "TODAS" );
+              $aSituacoes      = [ 0 => "TODAS" ];
               $oDaoSituacaoTfd = new cl_tfd_situacaotfd();
               $sSqlSituacaoTfd = $oDaoSituacaoTfd->sql_query_file();
               $rsSituacaoTfd   = db_query( $sSqlSituacaoTfd );

@@ -42,9 +42,9 @@
   $clrotulo->label('k00_numtot');
   $clrotulo->label('k00_descr');
   
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
   
-  db_postmemory($HTTP_SERVER_VARS);
+  db_postmemory($_SERVER);
   
   $datausu = date("Y/m/d", db_getsession("DB_datausu"));
   
@@ -134,15 +134,15 @@
   if (!empty($vencimentoini) && !empty($vencimentofim)) {
     
     $where .= "and arrecad.k00_dtvenc BETWEEN '{$vencimentoini}' and '{$vencimentofim}'";
-    $head7  = "VENCIMENTO: " . date("d/m/Y", strtotime($vencimentoini)) . " ATÉ ". date("d/m/Y", strtotime($vencimentofim));
+    $head7  = "VENCIMENTO: " . date("d/m/Y", strtotime((string) $vencimentoini)) . " ATÉ ". date("d/m/Y", strtotime((string) $vencimentofim));
   } else if (!empty($vencimentoini)) {
     
     $where .= "and arrecad.k00_dtvenc >= '{$vencimentoini}'";
-    $head7  = "VENCIMENTO: INICIAL " . date("d/m/Y", strtotime($vencimentoini));
+    $head7  = "VENCIMENTO: INICIAL " . date("d/m/Y", strtotime((string) $vencimentoini));
   } else if (!empty($vencimentofim)) {
     
     $where .= "and arrecad.k00_dtvenc <= '{$vencimentofim}' ";
-    $head7  = "VENCIMENTO: FINAL " . date("d/m/Y", strtotime($vencimentofim));
+    $head7  = "VENCIMENTO: FINAL " . date("d/m/Y", strtotime((string) $vencimentofim));
   }
   
   if (empty($head7) && ($numini != "" or $numfim != "")) {
@@ -244,7 +244,7 @@
   }
   
   $result = db_query($sql);
-  if (pg_numrows($result) == 0) {
+  if (pg_num_rows($result) == 0) {
    
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
   }
@@ -284,17 +284,17 @@
   $pre            = 0;
   $k00_dtvenc_one = "";
   
-  $aDados = array();
+  $aDados = [];
   
-  for ($x = 0; $x < pg_numrows($result); $x ++) {
+  for ($x = 0; $x < pg_num_rows($result); $x ++) {
     
     db_fieldsmemory($result, $x);
     
-    $vlrhis      = (float) substr($fc_calcula,  1, 13);
-    $vlrcor      = (float) substr($fc_calcula, 14, 13);
-    $vlrjuros    = (float) substr($fc_calcula, 27, 13);
-    $vlrmulta    = (float) substr($fc_calcula, 40, 13);
-    $vlrdesconto = (float) substr($fc_calcula, 53, 13);
+    $vlrhis      = (float) substr((string) $fc_calcula,  1, 13);
+    $vlrcor      = (float) substr((string) $fc_calcula, 14, 13);
+    $vlrjuros    = (float) substr((string) $fc_calcula, 27, 13);
+    $vlrmulta    = (float) substr((string) $fc_calcula, 40, 13);
+    $vlrdesconto = (float) substr((string) $fc_calcula, 53, 13);
     
     $total = $vlrcor + $vlrjuros + $vlrmulta - $vlrdesconto;
         
@@ -304,7 +304,7 @@
       $numpre_ant = $numpre;
     }
     
-    if (($numpre == $numpre_ant && pg_numrows($result) > 1) and !( $x == pg_numrows($result) - 1) ) {
+    if (($numpre == $numpre_ant && pg_num_rows($result) > 1) and !( $x == pg_num_rows($result) - 1) ) {
       
       if ($k00_dtvenc < date('Y-m-d', db_getsession("DB_datausu"))) {
         
@@ -337,7 +337,7 @@
       continue;
     } else {
       
-      if (pg_numrows($result) == 1) {
+      if (pg_num_rows($result) == 1) {
         
         $v07_parcel_ant = $v07_parcel;
         $k00_tipo_ant   = $k00_tipo;
@@ -356,9 +356,9 @@
                                                        and arrepaga.k00_numpar = arrecant.k00_numpar
                               where arrecant.k00_numpre = {$numpre_ant}");
       
-      if (pg_numrows($result_pag) > 0) {
+      if (pg_num_rows($result_pag) > 0) {
         
-        $par_pag = pg_numrows($result_pag);
+        $par_pag = pg_num_rows($result_pag);
       }
       
       $result_pag = db_query("select sum(arrepaga.k00_valor) as val_pag 
@@ -368,7 +368,7 @@
                                                         and arrepaga.k00_receit = arrecant.k00_receit
                                where arrecant.k00_numpre = {$numpre_ant}");
       
-      if (pg_numrows($result_pag) > 0) {
+      if (pg_num_rows($result_pag) > 0) {
         
         db_fieldsmemory($result_pag, 0);
       }
@@ -380,7 +380,7 @@
                                               inner join juridico.processoforo        on v71_processoforo = v70_sequencial
                                         where termo.v07_numpre = {$numpre_ant}");
       
-      if (pg_numrows($result_processoforo) > 0) {
+      if (pg_num_rows($result_processoforo) > 0) {
         
         db_fieldsmemory($result_processoforo, 0);
       } else {
@@ -399,7 +399,7 @@
         }
       }
       
-      if (strpos($grafico, "R") > 0) {
+      if (strpos((string) $grafico, "R") > 0) {
         
         /**
          * Busca Nome do Contribuinte
@@ -412,7 +412,7 @@
                                            left join cgm        on k00_numcgm            = z01_numcgm
                                      where arrenumcgm.k00_numpre = {$numpre_ant}");
         
-        if (pg_numrows($result_contrib) > 0) {
+        if (pg_num_rows($result_contrib) > 0) {
           
           db_fieldsmemory($result_contrib, 0);
           
@@ -462,10 +462,10 @@
           $origem = "CGM: " . $cgm_contrib;
         }
 
-        $aDados[$chave] = array($v07_parcel_ant, $v07_dtlanc_ant, $cgm_contrib , $contrib      , $v07_numcgm_ant,
+        $aDados[$chave] = [$v07_parcel_ant, $v07_dtlanc_ant, $cgm_contrib , $contrib      , $v07_numcgm_ant,
                                 $z01_nome_ant  , $z01_telef_ant , $k00_tipo_ant, $k00_descr_ant, $k00_dtvenc_one,
                                 $k00_numtot_ant, $par_pag       , $par_aber    , $par_venc     , $v07_valor_ant ,
-                                $val_pag       , $val_aber      , $val_venc    , $processoforo , $origem);
+                                $val_pag       , $val_aber      , $val_venc    , $processoforo , $origem];
       }
       
       $totalparcvenc += $par_venc;
@@ -527,7 +527,7 @@
 
   foreach ($aDados as $aDados2) {
     
-    if (strpos($grafico, "R") > 0) {
+    if (strpos((string) $grafico, "R") > 0) {
       
       if (($pdf->gety() > $pdf->h - 30) || $pag == 1) {
         
@@ -541,7 +541,7 @@
         $pdf->Cell(65, 5, 'RESPONSAVEL'            , 1, 0, "C", 1);
         $pdf->Cell(22, 5, 'FONE RESP'              , 1, 0, "C", 1);
         $pdf->Cell(30, 5, 'ORIGEM'                , 1, 0, "C", 1);
-        $pdf->Cell(50, 5, strtoupper($RLk00_descr) , 1, 1, "C", 1);
+        $pdf->Cell(50, 5, strtoupper((string) $RLk00_descr) , 1, 1, "C", 1);
         $pdf->Cell(50, 5, 'PROCESSO FORO'          , 1, 0, "C", 1);
         $pdf->Cell(23, 5, 'DT 1º PARC VENC'        , 1, 0, "C", 1);
         $pdf->Cell(20, 5, 'TOTAL PARC.'            , 1, 0, "C", 1);
@@ -569,7 +569,7 @@
       }
     }
     
-    if (strpos($grafico, "R") > 0) {
+    if (strpos((string) $grafico, "R") > 0) {
       
       /**
        * Busca Nome do Contribuinte
@@ -584,7 +584,7 @@
       $pdf->Cell(22, 5, $aDados2[6]                       , $b, 0, "L", $pre);
       $pdf->Cell(30, 5, $aDados2[19]                      , $b, 0, "L", $pre);
       $pdf->Cell(50, 5, @$aDados2[7] . '-' . @ $aDados2[8], $b, 1, "L", $pre);
-      $pdf->Cell(50, 5, substr($aDados2[18], 1, 40)       , $b, 0, "L", $pre);
+      $pdf->Cell(50, 5, substr((string) $aDados2[18], 1, 40)       , $b, 0, "L", $pre);
       $pdf->Cell(23, 5, db_formatar($aDados2[9], 'd')     ,  0, 0, "C", $pre);
       $pdf->Cell(20, 5, @$aDados2[10]                     , $b, 0, "C", $pre);
       $pdf->Cell(20, 5, @$aDados2[11]                     , $b, 0, "C", $pre);
@@ -602,7 +602,7 @@
     db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
   }
   
-  if (strpos($grafico, "R") > 0) {
+  if (strpos((string) $grafico, "R") > 0) {
     
     $pdf->SetFont('Arial', 'B', 7);
     
@@ -666,14 +666,14 @@
     $pdf->Ln(5);
   }
   
-  if (strpos($grafico, "G") > 0) {
+  if (strpos((string) $grafico, "G") > 0) {
     
-    $data  = array ();
-    $data1 = array ();
-    $data2 = array ();
-    $data3 = array ();
-    $data4 = array ();
-    $col   = array ();
+    $data  =  [];
+    $data1 =  [];
+    $data2 =  [];
+    $data3 =  [];
+    $data4 =  [];
+    $col   =  [];
     $cor   = 240;
     
     if ($parc_dia != 0 || $parc_venc != 0) {
@@ -685,14 +685,14 @@
         $cor = 248;
       }
       
-      $col[0] = array ($cor, $cor, $cor);
+      $col[0] =  [$cor, $cor, $cor];
       $cor   -= 20;
       
       if ($cor < 80) {
         $cor = 248;
       }
       
-      $col[1] = array ($cor, $cor, $cor);
+      $col[1] =  [$cor, $cor, $cor];
       
       $pdf->addpage("L");
       

@@ -58,7 +58,7 @@ $sCampos .= " trim( tf28_c_obs )     as observacao,       ";
 $sCampos .= " tf28_i_codigo                               ";
 
 $sIntevalo = $oDataInicial->getDate()."' and '".$oDataFinal->getDate();
-$aWhere    = array();
+$aWhere    = [];
 $aWhere[]  = " tf16_d_dataagendamento between '$sIntevalo' ";
 $aWhere[]  = " tf16_i_pedidotfd is not null ";
 
@@ -82,7 +82,7 @@ $sSql       = $oDaoPedido->sql_query_pedido_relatorio('', $sCampos, $sOrdem, $sW
 
 //echo $sSql;die();
 
-$aPedidos   = array();
+$aPedidos   = [];
 
 try {
 
@@ -98,7 +98,7 @@ try {
     throw new Exception( _M( MSG_RELATORIOVIAGEM . "nenhum_registro_encontrado") );
   }
 
-  $aControlaPedidosDuplicados = array();
+  $aControlaPedidosDuplicados = [];
 
   for ($i=0; $i < $iLinhas; $i++) {
 
@@ -117,7 +117,7 @@ try {
       $oDestino            = new stdClass();
       $oDestino->iDestino  = $oDados->cod_destino;
       $oDestino->sDestino  = $oDados->destino;
-      $oDestino->aSituacao = array();
+      $oDestino->aSituacao = [];
 
       $aPedidos[$oDados->cod_destino] = $oDestino;
     }
@@ -127,7 +127,7 @@ try {
       $oSituacao            = new stdClass();
       $oSituacao->iSituacao = $oDados->cod_situacao;
       $oSituacao->sSituacao = $oDados->situacao;
-      $oSituacao->aPedidos  = array();
+      $oSituacao->aPedidos  = [];
       $aPedidos[$iDestino]->aSituacao[$iSituacao] = $oSituacao;
     }
 

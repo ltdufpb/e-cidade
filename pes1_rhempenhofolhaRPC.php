@@ -68,7 +68,7 @@ try {
         case 'consultaPontoComplementar':
 
             $oInstituicao = InstituicaoRepository::getInstituicaoByCodigo(db_getsession('DB_instit'));
-            $aListaSemestre = array();
+            $aListaSemestre = [];
 
             if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
 
@@ -113,8 +113,8 @@ try {
                 }
             }
 
-            $aRetorno = array("lErro" => false,
-                "aSemestre" => $aListaSemestre);
+            $aRetorno = ["lErro" => false,
+                "aSemestre" => $aListaSemestre];
             break;
 
         case 'consultaPontoSuplementar':
@@ -131,15 +131,15 @@ try {
             $sSql = $oDaoHistorico->sql_query(null, $sCampo, null, $sWhere);
             $rsHistorico = $oDaoHistorico->sql_record($sSql);
 
-            $aSemestre = array();
+            $aSemestre = [];
             if ($oDaoHistorico->numrows) {
                 $aSemestre = db_utils::getCollectionByRecord($rsHistorico);
             }
 
-            $aRetorno = array(
+            $aRetorno = [
                 'lErro' => false,
                 'aSemestre' => $aSemestre
-            );
+            ];
             break;
 
         /**
@@ -150,7 +150,7 @@ try {
          */
         case 'consultaComplementaresFechadas':
 
-            $aFolhas = array();
+            $aFolhas = [];
             $iAnoUsu = $oPost->iAnoFolha;
             $iMesUsu = $oPost->iMesFolha;
             $oCompetencia = new DBCompetencia($iAnoUsu, $iMesUsu);
@@ -164,12 +164,12 @@ try {
                     $oFolhaComplementar->verificarEmpenho();
                     $aFolhas[] = $oFolhaComplementar->getNumero();
 
-                } catch (Exception $ex) {
+                } catch (Exception) {
                 }
             }
 
-            $aRetorno = array("lErro" => false,
-                "aSemestre" => $aFolhas);
+            $aRetorno = ["lErro" => false,
+                "aSemestre" => $aFolhas];
 
             break;
         case 'gerarEmpenhos':
@@ -186,7 +186,7 @@ try {
             if ($oPost->sSigla == 'r20' && $oPost->iTipo == 1) {
 
                 $oDadosEmpenhoFolha = new dadosEmpenhoFolhaRescisao;
-                $sSemestre = explode(",", $oPost->sRescisoes);
+                $sSemestre = explode(",", (string) $oPost->sRescisoes);
                 // include_once modification("pes4_acertaempenhospcasp.RPC.php");
             }
 
@@ -209,8 +209,8 @@ try {
 
             db_fim_transacao(false);
 
-            $aRetorno = array("lErro" => false,
-                "sMsg" => urlencode($sMsgErro));
+            $aRetorno = ["lErro" => false,
+                "sMsg" => urlencode($sMsgErro)];
 
 
             break;
@@ -222,14 +222,14 @@ try {
                 $sSemestre = '';
             }
 
-            $aListaEmpenhos = array();
+            $aListaEmpenhos = [];
             if ($oPost->sSigla == 'r20' && $oPost->iTipo == 1) {
                 $oDadosEmpenhoFolha = new dadosEmpenhoFolhaRescisao;
             }
 
             if ($oPost->sSigla == 'r20' && $oPost->iTipo == 1) {
 
-                $aRescisoes = explode(",", $oPost->sRescisoes);
+                $aRescisoes = explode(",", (string) $oPost->sRescisoes);
                 $aListaEmpenhos = $oDadosEmpenhoFolha->getDadosEmpenhosFolha($oPost->sSigla,
                     $oPost->iAnoFolha,
                     $oPost->iMesFolha,
@@ -250,8 +250,8 @@ try {
                 $lExiste = true;
             }
 
-            $aRetorno = array("lErro" => false,
-                "lExiste" => $lExiste);
+            $aRetorno = ["lErro" => false,
+                "lExiste" => $lExiste];
 
             break;
         case 'gerarEmpenhosFGTS':
@@ -270,13 +270,13 @@ try {
 
             db_fim_transacao(false);
 
-            $aRetorno = array("lErro" => false,
-                "sMsg" => urlencode($sMsgErro));
+            $aRetorno = ["lErro" => false,
+                "sMsg" => urlencode($sMsgErro)];
 
             break;
         case 'consultarEmpenhosFGTS':
 
-            $aListaEmpenhos = array();
+            $aListaEmpenhos = [];
 
             $aListaEmpenhos = $oDadosEmpenhoFolha->getRubricasEmpenhosFGTS($oPost->sTipo,
                 $oPost->iAnoFolha,
@@ -288,13 +288,13 @@ try {
                 $lExiste = true;
             }
 
-            $aRetorno = array("lErro" => false,
-                "lExiste" => $lExiste);
+            $aRetorno = ["lErro" => false,
+                "lExiste" => $lExiste];
 
             break;
         case 'gerarEmpenhosPrev':
 
-            $aListaPrev = explode(",", $oPost->sPrev);
+            $aListaPrev = explode(",", (string) $oPost->sPrev);
             $sListaPrev = "'" . implode("','", $aListaPrev) . "'";
 
             if (count($aListaPrev) > 1) {
@@ -311,7 +311,7 @@ try {
 
             }
 
-            $aNovaListaPrev = array();
+            $aNovaListaPrev = [];
 
             foreach ($aListaPrev as $sPrev) {
                 $aNovaListaPrev[] = $sPrev - 2;
@@ -335,13 +335,13 @@ try {
 
             db_fim_transacao(false);
 
-            $aRetorno = array("lErro" => false,
-                "sMsg" => urlencode($sMsgErro));
+            $aRetorno = ["lErro" => false,
+                "sMsg" => urlencode($sMsgErro)];
 
             break;
         case 'consultarEmpenhosPrev':
 
-            $aListaPrev = explode(",", $oPost->sPrev);
+            $aListaPrev = explode(",", (string) $oPost->sPrev);
             if (count($aListaPrev) > 1) {
 
                 $sListaPrevPatro = implode("','", $aListaPrev);
@@ -358,7 +358,7 @@ try {
 
             }
 
-            $aNovaListaPrev = array();
+            $aNovaListaPrev = [];
 
             foreach ($aListaPrev as $sPrev) {
                 $aNovaListaPrev[] = $sPrev - 2;
@@ -366,7 +366,7 @@ try {
 
             $sListaPrev = implode(",", $aNovaListaPrev);
 
-            $aListaEmpenhos = array();
+            $aListaEmpenhos = [];
 
             $aListaEmpenhos = $oDadosEmpenhoFolha->getRubricasEmpenhosPrev($oPost->sTipo,
                 $oPost->iAnoFolha,
@@ -379,8 +379,8 @@ try {
                 $lExiste = true;
             }
 
-            $aRetorno = array("lErro" => false,
-                "lExiste" => $lExiste);
+            $aRetorno = ["lErro" => false,
+                "lExiste" => $lExiste];
 
             break;
         case 'consultarSLIP':
@@ -405,7 +405,7 @@ try {
             $sWhereSlip .= "          true                                          ";
             $sWhereSlip .= "      end)                                               ";
             if (isset($oPost->sRescisoes) && $oPost->sRescisoes != "") {
-                $aRescisoes = explode(",", $oPost->sRescisoes);
+                $aRescisoes = explode(",", (string) $oPost->sRescisoes);
                 $sWhereSlip .= " and rh73_seqpes in({$oPost->sRescisoes})";
             } else {
                 $sWhereSlip .= " and rh79_seqcompl = {$sSemestre}        ";
@@ -427,9 +427,9 @@ try {
 
             }
 
-            $aRetorno = array("lErro" => $lErro,
+            $aRetorno = ["lErro" => $lErro,
                 "lGerados" => $lGerados,
-                "lSlipGerados" => $lSlipGerados);
+                "lSlipGerados" => $lSlipGerados];
 
             break;
         case 'consultarDadosGeracaoSLIP':
@@ -472,9 +472,9 @@ try {
             $sWhereSlip .= " and rh73_instit   = " . db_getsession('DB_instit');
             $sWhereSlip .= " and rh73_tiporubrica = 3                       ";
             $sWhereSlip .= " and rh82_sequencial is null                    ";
-            $aRescisoes = array();
+            $aRescisoes = [];
             if (isset($oPost->sRescisoes) && $oPost->sRescisoes != "") {
-                $aRescisoes = explode(",", $oPost->sRescisoes);
+                $aRescisoes = explode(",", (string) $oPost->sRescisoes);
                 $sWhereSlip .= " and rh73_seqpes in({$oPost->sRescisoes})        ";
                 $oDadosEmpenhoFolha = new dadosEmpenhoFolhaRescisao;
             } else {
@@ -495,9 +495,9 @@ try {
                 $aRescisoes
             );
 
-            $aRetorno = array("lErro" => false,
+            $aRetorno = ["lErro" => false,
                 "aSlips" => $aListaSlips,
-                "lLiberada" => $lLiberada);
+                "lLiberada" => $lLiberada];
 
             break;
         case 'consultarSelectContas':
@@ -535,7 +535,7 @@ try {
             if ($rsContas) {
 
                 $iLinhasContas = pg_num_rows($rsContas);
-                $aListaContas = array();
+                $aListaContas = [];
                 $aListaContas = db_utils::getCollectionByRecord($rsContas, false, false, true);
 
             } else {
@@ -544,13 +544,13 @@ try {
 
             }
 
-            $aRetorno = array("lErro" => $lErro,
-                "aContas" => $aListaContas);
+            $aRetorno = ["lErro" => $lErro,
+                "aContas" => $aListaContas];
             break;
         case 'geraSLIP':
             $aSlips = $oJson->decode(str_replace("\\", "", $oPost->aSlips));
 
-            $aObjSlip = array();
+            $aObjSlip = [];
             switch ($oPost->sSigla) {
                 case "r48":
                     $sTipoFolha = "COMPLEMENTAR";
@@ -572,7 +572,7 @@ try {
                     break;
             }
 
-            $sAnoMesFolha = $oPost->iAnoFolha . "/" . str_pad($oPost->iMesFolha, 2, "0", STR_PAD_LEFT);
+            $sAnoMesFolha = $oPost->iAnoFolha . "/" . str_pad((string) $oPost->iMesFolha, 2, "0", STR_PAD_LEFT);
 
             foreach ($aSlips as $slip) {
                 $oSlip = new stdClass();
@@ -591,7 +591,7 @@ try {
                     db_stdClass::normalizeStringJsonEscapeString($slip->complemento)
                 );
 
-                if (trim($slip->concarpeculiar) != '' && trim($slip->concarpeculiar) != 0) {
+                if (trim((string) $slip->concarpeculiar) != '' && trim((string) $slip->concarpeculiar) != 0) {
                     $sConcarPeculiar = " Característica Peculiar : " . $slip->concarpeculiar;
                 } else {
                     $sConcarPeculiar = "";
@@ -611,9 +611,9 @@ try {
             $iSlipIni = $aListaSlips[0];
             $iSlipFin = end($aListaSlips);
 
-            $aRetorno = array("lErro" => $lErro,
+            $aRetorno = ["lErro" => $lErro,
                 "sMsg" => urlencode("Gerados com sucesso SLIPs de {$iSlipIni} a {$iSlipFin}!"),
-                "sListaSlips" => implode(",", $aListaSlips));
+                "sListaSlips" => implode(",", $aListaSlips)];
 
             break;
         case 'geraPlanilha':
@@ -628,7 +628,7 @@ try {
             if ($oPost->sSigla == 'r20') {
 
                 $oDadosEmpenhoFolha = new dadosEmpenhoFolhaRescisao;
-                $sSemestre = explode(",", $oPost->sRescisoes);
+                $sSemestre = explode(",", (string) $oPost->sRescisoes);
             }
 
             $aPlanilha = $oDadosEmpenhoFolha->geraPlanilhaGeral(
@@ -652,45 +652,45 @@ try {
 
             db_fim_transacao(false);
 
-            $aRetorno = array("lErro" => false,
+            $aRetorno = ["lErro" => false,
                 "sMsg" => urlencode($sMsgPlan),
-                "sListaPla" => implode(",", $aPlanilha));
+                "sListaPla" => implode(",", $aPlanilha)];
 
             break;
         case 'getRescisoesNaoEmpenhadas':
 
             $oDadosEmpenhoFolhaRescisao = new dadosEmpenhoFolhaRescisao();
             $aRescisoes = $oDadosEmpenhoFolhaRescisao->getRescisoesNaoEmpenhadas($oPost->iMesFolha, $oPost->iAnoFolha, $oPost->sDataInicial, $oPost->sDataFinal);
-            $aRetorno = array("lErro" => false,
+            $aRetorno = ["lErro" => false,
                 "sListaRescisoes" => $aRescisoes
-            );
+            ];
 
             break;
         case 'getRescisoesEmpenhadas':
 
             $oDadosEmpenhoFolhaRescisao = new dadosEmpenhoFolhaRescisao();
             $aRescisoes = $oDadosEmpenhoFolhaRescisao->getRescisoesEmpenhadas($oPost->iMesFolha, $oPost->iAnoFolha, $oPost->sDataInicial, $oPost->sDataFinal);
-            $aRetorno = array("lErro" => false,
+            $aRetorno = ["lErro" => false,
                 "sListaRescisoes" => $aRescisoes
-            );
+            ];
 
             break;
         case 'getRescisoesSlips':
 
             $oDadosEmpenhoFolhaRescisao = new dadosEmpenhoFolhaRescisao();
             $aRescisoes = $oDadosEmpenhoFolhaRescisao->getRescisoesSlips($oPost->iMesFolha, $oPost->iAnoFolha);
-            $aRetorno = array("lErro" => false,
+            $aRetorno = ["lErro" => false,
                 "sListaRescisoes" => $aRescisoes
-            );
+            ];
 
             break;
         case 'getRescisoesPlanilhas':
 
             $oDadosEmpenhoFolhaRescisao = new dadosEmpenhoFolhaRescisao();
             $aRescisoes = $oDadosEmpenhoFolhaRescisao->getRescisoesPlanilhas($oPost->iMesFolha, $oPost->iAnoFolha);
-            $aRetorno = array("lErro" => false,
+            $aRetorno = ["lErro" => false,
                 "sListaRescisoes" => $aRescisoes
-            );
+            ];
 
             break;
 
@@ -698,7 +698,7 @@ try {
 
             $lExisteEmpenho = false;
 
-            $aSiglas = explode(",", $oPost->sSigla);
+            $aSiglas = explode(",", (string) $oPost->sSigla);
 
             db_inicio_transacao();
 
@@ -778,7 +778,7 @@ try {
                      */
                     if ($oPost->sSigla == 'r20' && $oPost->iTipo == 1) {
 
-                        $aRescisoes = explode(",", $oPost->aRescisoes);
+                        $aRescisoes = explode(",", (string) $oPost->aRescisoes);
 
                         foreach ($aRescisoes as $iRescisao) {
 
@@ -801,7 +801,7 @@ try {
                 throw new Exception('Não foram encontrados empenhos gerados com os filtros informados.');
             }
 
-            $aRetorno = array("lErro" => false, "sMsg" => urlencode("Empenhos anulados com sucesso!"));
+            $aRetorno = ["lErro" => false, "sMsg" => urlencode("Empenhos anulados com sucesso!")];
 
             break;
 
@@ -813,7 +813,7 @@ try {
          */
         case 'consultaSuplementaresFechadas':
 
-            $aFolhas = array();
+            $aFolhas = [];
             $iAnoUsu = $oPost->iAnoFolha;
             $iMesUsu = $oPost->iMesFolha;
             $oCompetencia = new DBCompetencia($iAnoUsu, $iMesUsu);
@@ -827,12 +827,12 @@ try {
                     $oFolhaSuplementar->verificarEmpenho();
                     $aFolhas[] = $oFolhaSuplementar->getNumero();
 
-                } catch (Exception $ex) {
+                } catch (Exception) {
                 }
             }
 
-            $aRetorno = array("lErro" => false,
-                "aSemestre" => $aFolhas);
+            $aRetorno = ["lErro" => false,
+                "aSemestre" => $aFolhas];
 
             break;
 
@@ -845,7 +845,7 @@ try {
          */
         case 'getFolhasPagamentoEmpenhas':
 
-            $aFolhas = array();
+            $aFolhas = [];
             $iTipoFolha = $oPost->iTipoFolha;
             $iAnoUsu = $oPost->iAnoFolha;
             $iMesUsu = $oPost->iMesFolha;
@@ -857,14 +857,14 @@ try {
 
                 try {
                     $oFolhaPagamento->verificarEmpenho();
-                } catch (Exception $ex) {
+                } catch (Exception) {
                     $aFolhas[] = $oFolhaPagamento->getNumero();
                 }
 
             }
 
-            $aRetorno = array("lErro" => false,
-                "aSemestre" => $aFolhas);
+            $aRetorno = ["lErro" => false,
+                "aSemestre" => $aFolhas];
 
             break;
 
@@ -881,7 +881,7 @@ try {
          */
         case 'getFolhasComPreSlipGerado':
 
-            $aFolhas = array();
+            $aFolhas = [];
             $iTipoFolha = $oPost->iTipoFolha;
             $iAnoUsu = $oPost->iAnoFolha;
             $iMesUsu = $oPost->iMesFolha;
@@ -895,8 +895,8 @@ try {
                 }
             }
 
-            $aRetorno = array("lErro" => false,
-                "aSemestre" => $aFolhas);
+            $aRetorno = ["lErro" => false,
+                "aSemestre" => $aFolhas];
 
             break;
 
@@ -909,7 +909,7 @@ try {
          */
         case 'getFolhaPagamentoFechada':
 
-            $aFolhas = array();
+            $aFolhas = [];
             $iTipoFolha = $oPost->iTipoFolha;
             $iAnoUsu = $oPost->iAnoFolha;
             $iMesUsu = $oPost->iMesFolha;
@@ -920,8 +920,8 @@ try {
                 $aFolhas[] = $oFolhaPagamento->getNumero();
             }
 
-            $aRetorno = array("lErro" => false,
-                "aSemestre" => $aFolhas);
+            $aRetorno = ["lErro" => false,
+                "aSemestre" => $aFolhas];
 
             break;
     }
@@ -929,8 +929,8 @@ try {
 
     db_fim_transacao(true);
 
-    $aRetorno = array("lErro" => true,
-        "sMsg" => urlencode($eErro->getMessage()));
+    $aRetorno = ["lErro" => true,
+        "sMsg" => urlencode($eErro->getMessage())];
 }
 
 echo $oJson->encode($aRetorno);

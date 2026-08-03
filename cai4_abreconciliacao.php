@@ -45,7 +45,7 @@
 	$sqlerro = false;
 	$erromsg = "";
 
-	db_postmemory($HTTP_POST_VARS);
+	db_postmemory($_POST);
 
 	// verifica se ja nao existe uma conciliacao aberta para a conta selecionada //
 	$rsVerificaConcilacao = $clconcilia->sql_record($clconcilia->sql_query_file(null,"*",null," k68_contabancaria = $conta and k68_conciliastatus = 1 "));

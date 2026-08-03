@@ -44,7 +44,7 @@ $clempagegera->rotulo->label();
 $clempagetipo->rotulo->label();
 $clempagedadosret->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -124,7 +124,7 @@ db_postmemory($HTTP_POST_VARS);
     <td align="right" nowrap><strong>Opções:</strong></td>
     <td align="left" nowrap>
       <?php 
-	  $arr_opcoes = array("S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;");
+	  $arr_opcoes = ["S"=>"Somente Selecionados&nbsp;&nbsp;","N"=>"Menos os Selecionados&nbsp;&nbsp;"];
 	  db_select('opcoes',$arr_opcoes,true,2);
 	  ?>
     </td>

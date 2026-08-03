@@ -30,12 +30,12 @@ use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Campos\TipoInstrumentoCont
 
 class liquidac {
 
-  var $arq=null;
+  public $arq=null;
 
-  function liquidac($header){
+  function __construct($header){
     umask(74);
     $this->arq = fopen("tmp/LIQUIDAC.TXT",'w+');
-    fputs($this->arq,$header);
+    fputs($this->arq,(string) $header);
     fputs($this->arq,"\r\n");
   }
 
@@ -187,7 +187,7 @@ class liquidac {
     $sql = "select * from ($sql) as x order by x.c75_data";
 
     $res  = db_query($sql);
-    $rows = pg_numrows($res);
+    $rows = pg_num_rows($res);
 
     for ($x = 0; $x < $rows; $x++) {
 
@@ -196,20 +196,20 @@ class liquidac {
       $ano         = $oStdInformacao->ano;
       $instituicao = $oStdInformacao->e60_instit;
         $numero = $oStdInformacao->c75_numemp;
-      $empenho = $ano . str_pad($instituicao, 2, "0", STR_PAD_LEFT) . "0" . formatar($numero, 6, 'n');
-      $liquidacao  = formatar($oStdInformacao->c75_codlan, 20, 'n');
-      $data        = formatar($oStdInformacao->c75_data, 8, 'd');
-      $valor       = formatar($oStdInformacao->c70_valor, 13, 'v');
+      $empenho = $ano . str_pad((string) $instituicao, 2, "0", STR_PAD_LEFT) . "0" . formatar($numero, 6);
+      $liquidacao  = formatar($oStdInformacao->c75_codlan, 20);
+      $data        = formatar($oStdInformacao->c75_data, 8);
+      $valor       = formatar($oStdInformacao->c70_valor, 13);
       $sinal       = $oStdInformacao->sinal;
       $sObsoleto   = str_pad(" ", 165, " ", STR_PAD_RIGHT);
       $hist        = $oStdInformacao->historico;
 
-      $hist = trim($hist);
+      $hist = trim((string) $hist);
       if (empty($hist)) $hist = "Sem Resumo";
 
       $hist      = addcslashes($hist, "\n\r");
-      $historico = formatar($hist, 400, 'c');
-      $operacao  = formatar($oStdInformacao->operacao, 30, 'c');
+      $historico = formatar($hist, 400);
+      $operacao  = formatar($oStdInformacao->operacao, 30);
 
       if ($valor == 0) {
         continue;
@@ -225,9 +225,9 @@ class liquidac {
         $oContratosPADRS = ContratosPADRS::getByLancamento($oStdInformacao->c75_codlan);
 
       if ($oContratosPADRS) {
-        $sNumeroContrato = str_pad($oContratosPADRS->iNumero, 20, '0', STR_PAD_LEFT);
+        $sNumeroContrato = str_pad((string) $oContratosPADRS->iNumero, 20, '0', STR_PAD_LEFT);
         $sNumeroAnoContrato = str_pad($oContratosPADRS->iNumero . '/' . $oContratosPADRS->iAno, 20, ' ', STR_PAD_LEFT);
-        $sAnoContrato = str_pad($oContratosPADRS->iAno, 4, '0', STR_PAD_LEFT);
+        $sAnoContrato = str_pad((string) $oContratosPADRS->iAno, 4, '0', STR_PAD_LEFT);
       }
 
         $existeContratoTermoCampo = new ExisteContratoTermoCampo($iAnoSessao, $oStdInformacao->c75_codlan);
@@ -256,9 +256,9 @@ class liquidac {
        * 52 - Equipamentos e Material Permanente
        * 62 - Aquisição de Produtos para Revenda
        */
-      if ($oStdInformacao->verifica_nota == 't' && preg_match('/^\d{5}(30|32|35|36|37|39|51|52|62)/', $oStdInformacao->estrutural)) {
+      if ($oStdInformacao->verifica_nota == 't' && preg_match('/^\d{5}(30|32|35|36|37|39|51|52|62)/', (string) $oStdInformacao->estrutural)) {
 
-        $sNumeroNota = preg_replace('/[^0-9]/', '', $oStdInformacao->numero_nota);
+        $sNumeroNota = preg_replace('/[^0-9]/', '', (string) $oStdInformacao->numero_nota);
         $sNumeroNota = (int)$sNumeroNota;
         $sExisteNota = 'N';
         if (!empty($sNumeroNota) || $sNumeroNota > 0) {
@@ -267,8 +267,8 @@ class liquidac {
           $sSerieNota  = $oStdInformacao->numeroserie;
         }
 
-        $sNumeroNota = formatar($sNumeroNota, 9, 'n');
-        $sSerieNota  = str_pad($sSerieNota, 3, '0', STR_PAD_RIGHT);
+        $sNumeroNota = formatar($sNumeroNota, 9);
+        $sSerieNota  = str_pad((string) $sSerieNota, 3, '0', STR_PAD_RIGHT);
       }
 
         $tipoInstrumentoContratualCampo = new TipoInstrumentoContratualCampo($iAnoSessao, $oStdInformacao->c75_codlan);
@@ -281,7 +281,7 @@ class liquidac {
     }
 
     //trailer
-    $contador = espaco(10-(strlen($contador)),'0').$contador;
+    $contador = espaco(10-(strlen($contador))).$contador;
     $line = "FINALIZADOR".$contador;
     fputs($this->arq,$line);
     fputs($this->arq,"\r\n");

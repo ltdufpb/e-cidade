@@ -8,7 +8,7 @@ use \Extension;
 
 class Data extends AbstractMetadata {
 
-  private $events = array();
+  private $events = [];
 
   public function __construct() {
     parent::__construct(ECIDADE_EXTENSION_DATA_PATH . 'config');
@@ -17,7 +17,7 @@ class Data extends AbstractMetadata {
   public function addEvent($event, $triggers) {
 
     if (!is_array($triggers)) {
-      $triggers = array($triggers);
+      $triggers = [$triggers];
     }
 
     foreach ($triggers as $trigger) {
@@ -56,7 +56,7 @@ class Data extends AbstractMetadata {
     $eventManager = Registry::get('app.eventManager');
     
     // config events
-    foreach(Registry::get('app.config')->get('app.events', array()) as $event => $callback) {
+    foreach(Registry::get('app.config')->get('app.events', []) as $event => $callback) {
       $eventManager->register($event, $this->normalizaCallable($callback) );
     }
 
@@ -79,10 +79,10 @@ class Data extends AbstractMetadata {
     $class = new $callable;
 
     if (method_exists($class, 'execute')) {
-      return array($class, 'execute');
+      return [$class, 'execute'];
     }
 
-    throw new Exception(get_class($class) . ' não é um handler válido.');
+    throw new Exception($class::class . ' não é um handler válido.');
   }
 
 }

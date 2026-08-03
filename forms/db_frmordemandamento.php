@@ -27,11 +27,11 @@
  
   db_getsession(); 
   $resultPesquisaNome = db_query("select nome from db_usuarios where id_usuario = $DB_id_usuario");
-  $nomeUsuario = pg_result($resultPesquisaNome,0,0);
+  $nomeUsuario = pg_fetch_result($resultPesquisaNome,0,0);
   
   //seleciona todos os departamentos e verifica o total de registros encontrados
   $departamentos = db_query("select * from db_depart");
-  $numeroDepartamentos = pg_numrows($departamentos);
+  $numeroDepartamentos = pg_num_rows($departamentos);
 
   //para cada departamento encontrado verifica quais sao seus usuarios e separa em arrays
   //se tiver ao menos um usuario encontrado na pesquisa anterior
@@ -42,13 +42,13 @@
 	                   from db_usuarios us
         	           inner join db_depusu du 
 		        	   on du.id_usuario = us.id_usuario
-        			   where coddepto = ".pg_result($departamentos,$i,"coddepto"));
-	  $numusu = pg_numrows($usu);
+        			   where coddepto = ".pg_fetch_result($departamentos,$i,"coddepto"));
+	  $numusu = pg_num_rows($usu);
 	  $aux= '';
 	  $c = '';
- 	  echo strtolower(str_replace(" ","_",pg_result($departamentos,$i,"descrdepto")))." = new Array(";
+ 	  echo strtolower(str_replace(" ","_",pg_fetch_result($departamentos,$i,"descrdepto")))." = new Array(";
       for($j=0;$j<$numusu;$j++) {
-        $aux .= "$c'".pg_result($usu,$j,"nome")."'";
+        $aux .= "$c'".pg_fetch_result($usu,$j,"nome")."'";
 		$c = ",";
 	  }
 	  echo $aux.");\n";
@@ -111,12 +111,12 @@
                   <td width="54%" nowrap style="font-size:13px" >
 				  <select name="depto" id="depto" onChange="vai(eval(this.options[this.selectedIndex].value))">
 				  <?php  
-				    $descratual = pg_result($result,0,"descrdepto");
+				    $descratual = pg_fetch_result($result,0,"descrdepto");
 					$listaDepartamentos = db_query("select * from db_depart where descrdepto not like '$descratual'");
-					$numdep = pg_numrows($listaDepartamentos);
- 				    echo "<option selected value=\"".strtolower(str_replace(" ","_",pg_result($result,0,"descrdepto")))."\">".pg_result($result,0,"descrdepto")."</option>";
+					$numdep = pg_num_rows($listaDepartamentos);
+ 				    echo "<option selected value=\"".strtolower(str_replace(" ","_",pg_fetch_result($result,0,"descrdepto")))."\">".pg_fetch_result($result,0,"descrdepto")."</option>";
 					for ($i=0;$i<$numdep;$i++) {
-					  echo "<option value=\"".strtolower(str_replace(" ","_",pg_result($listaDepartamentos,$i,"descrdepto")))."\">".pg_result($listaDepartamentos,$i,"descrdepto")."</option>";
+					  echo "<option value=\"".strtolower(str_replace(" ","_",pg_fetch_result($listaDepartamentos,$i,"descrdepto")))."\">".pg_fetch_result($listaDepartamentos,$i,"descrdepto")."</option>";
 					}
 				  ?> 
                   </select>
@@ -127,18 +127,18 @@
                   <td nowrap style="font-size:13px" ><select name="usuarioescolhido" id="select">
                     <?php  
 					
-					$coddepartamento = pg_result($result,0,"coddepto");
-					$nome = pg_result($result,0,"nomeusureceb");
+					$coddepartamento = pg_fetch_result($result,0,"coddepto");
+					$nome = pg_fetch_result($result,0,"nomeusureceb");
 					if ($nome=="") {$nome=$nomeUsuario;}
 					$listanomes = db_query("select u.id_usuario , d.nome
 				                     from db_depusu u 
 									 inner join db_usuarios d
 									 on d.id_usuario = u.id_usuario
 									 where u.coddepto = $coddepartamento");
-					$numnomes = pg_numrows($listanomes); 
+					$numnomes = pg_num_rows($listanomes); 
 					for ($i=0;$i<$numnomes;$i++) {
-					  if (pg_result($listanomes,$i,"nome")==$nome) {$estado="selected";} else {$estado="";}
-					  echo "<option ".$estado." value=\"".pg_result($listanomes,$i,"nome")."\">".pg_result($listanomes,$i,"nome")."</option>";
+					  if (pg_fetch_result($listanomes,$i,"nome")==$nome) {$estado="selected";} else {$estado="";}
+					  echo "<option ".$estado." value=\"".pg_fetch_result($listanomes,$i,"nome")."\">".pg_fetch_result($listanomes,$i,"nome")."</option>";
 					}
 
 					?>                    

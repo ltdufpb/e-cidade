@@ -6,31 +6,31 @@ use ECidade\Tributario\Library\Entity;
 
 final class Contribuinte extends Entity
 {
-    const NOME                        = 'NOME';
-    const PROMITENTE                  = 'PROMITENTE';
-    const PROPRIETARIO                = 'PROPRIETARIO';
-    const PROPRIETARIO_ENDERECO       = 'PROPRIETARIOENDERECO';
-    const PROPRIETARIO_NUMERO         = 'PROPRIETARIONUMERO';
-    const PROPRIETARIO_COMPLEMENTO    = 'PROPRIETARIOCOMPLEMENTO';
-    const PROPRIETARIO_MUNICIPIO      = 'PROPRIETARIOMUNICIPIO';
-    const PROPRIETARIO_CEP            = 'PROPRIETARIOCEP';
-    const PROPRIETARIO_UF             = 'PROPRIETARIOUF';
-    const PROPRIETARIO_CNPJ_CPF       = 'PROPRIETARIOCNPJCPF';
-    const IMOVEL_CODIGO_LOGRADOURO    = 'IMOVELCODIGOLOGRADOURO';
-    const IMOVEL_TIPO_LOGRADOURO      = 'IMOVELTIPOLOGRADOURO';
-    const IMOVEL_NOME_LOGRADOURO      = 'IMOVELNOMELOGRADOURO';
-    const IMOVEL_NUMERO               = 'IMOVELNUMERO';
-    const IMOVEL_COMPLEMENTO          = 'IMOVELCOMPLEMENTO';
-    const IMOVEL_BAIRRO               = 'IMOVELBAIRRO';
-    const ENTREGA_LOGRADOURO          = 'ENTREGALOGRADOURO';
-    const ENTREGA_NUMERO              = 'ENTREGANUMERO';
-    const ENTREGA_COMPLEMENTO         = 'ENTREGACOMPLEMENTO';
-    const ENTREGA_BAIRRO              = 'ENTREGABAIRRO';
-    const ENTREGA_CIDADE              = 'ENTREGACIDADE';
-    const ENTREGA_UF                  = 'ENTREGAUF';
-    const ENTREGA_CEP                 = 'ENTREGACEP';
-    const ENTREGA_CAIXA_POSTAL        = 'ENTREGACAIXAPOSTAL';
-    const ENTREGA_DESTINATARIO        = 'ENTREGADESTINATARIO';
+    const string NOME                        = 'NOME';
+    const string PROMITENTE                  = 'PROMITENTE';
+    const string PROPRIETARIO                = 'PROPRIETARIO';
+    const string PROPRIETARIO_ENDERECO       = 'PROPRIETARIOENDERECO';
+    const string PROPRIETARIO_NUMERO         = 'PROPRIETARIONUMERO';
+    const string PROPRIETARIO_COMPLEMENTO    = 'PROPRIETARIOCOMPLEMENTO';
+    const string PROPRIETARIO_MUNICIPIO      = 'PROPRIETARIOMUNICIPIO';
+    const string PROPRIETARIO_CEP            = 'PROPRIETARIOCEP';
+    const string PROPRIETARIO_UF             = 'PROPRIETARIOUF';
+    const string PROPRIETARIO_CNPJ_CPF       = 'PROPRIETARIOCNPJCPF';
+    const string IMOVEL_CODIGO_LOGRADOURO    = 'IMOVELCODIGOLOGRADOURO';
+    const string IMOVEL_TIPO_LOGRADOURO      = 'IMOVELTIPOLOGRADOURO';
+    const string IMOVEL_NOME_LOGRADOURO      = 'IMOVELNOMELOGRADOURO';
+    const string IMOVEL_NUMERO               = 'IMOVELNUMERO';
+    const string IMOVEL_COMPLEMENTO          = 'IMOVELCOMPLEMENTO';
+    const string IMOVEL_BAIRRO               = 'IMOVELBAIRRO';
+    const string ENTREGA_LOGRADOURO          = 'ENTREGALOGRADOURO';
+    const string ENTREGA_NUMERO              = 'ENTREGANUMERO';
+    const string ENTREGA_COMPLEMENTO         = 'ENTREGACOMPLEMENTO';
+    const string ENTREGA_BAIRRO              = 'ENTREGABAIRRO';
+    const string ENTREGA_CIDADE              = 'ENTREGACIDADE';
+    const string ENTREGA_UF                  = 'ENTREGAUF';
+    const string ENTREGA_CEP                 = 'ENTREGACEP';
+    const string ENTREGA_CAIXA_POSTAL        = 'ENTREGACAIXAPOSTAL';
+    const string ENTREGA_DESTINATARIO        = 'ENTREGADESTINATARIO';
 
     private $nome = '';
 

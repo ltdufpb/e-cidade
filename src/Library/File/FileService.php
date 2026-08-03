@@ -6,15 +6,12 @@ use ECidade\Tributario\Library\Service;
 
 class FileService extends Service
 {
-    private $file;
-
     private $path;
 
     private $lines;
 
-    public function __construct(File $file)
+    public function __construct(private readonly File $file)
     {
-        $this->file = $file;
     }
 
     public function create($path)

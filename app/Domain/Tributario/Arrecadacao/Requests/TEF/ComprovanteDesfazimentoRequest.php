@@ -34,24 +34,24 @@ class ComprovanteDesfazimentoRequest extends FormRequest
 
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     public function messages()
     {
         return [
-            "numnov.required"        => utf8_encode("Numnov não informado."),
-            "numnov.integer"         => utf8_encode("Numnov inválido."),
+            "numnov.required"        => mb_convert_encoding("Numnov não informado.", 'UTF-8', 'ISO-8859-1'),
+            "numnov.integer"         => mb_convert_encoding("Numnov inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "grupo.required"        => utf8_encode("Grupo não informado."),
-            "grupo.integer"         => utf8_encode("Grupo inválido."),
+            "grupo.required"        => mb_convert_encoding("Grupo não informado.", 'UTF-8', 'ISO-8859-1'),
+            "grupo.integer"         => mb_convert_encoding("Grupo inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_modulo.required"        => utf8_encode("Módulo não informado."),
-            "DB_modulo.integer"         => utf8_encode("Módulo inválido."),
+            "DB_modulo.required"        => mb_convert_encoding("Módulo não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_modulo.integer"         => mb_convert_encoding("Módulo inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_itemmenu_acessado.required"        => utf8_encode("Menu não informado."),
-            "DB_itemmenu_acessado.integer"         => utf8_encode("Menu inválido.")
+            "DB_itemmenu_acessado.required"        => mb_convert_encoding("Menu não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_itemmenu_acessado.integer"         => mb_convert_encoding("Menu inválido.", 'UTF-8', 'ISO-8859-1')
         ];
     }
 }

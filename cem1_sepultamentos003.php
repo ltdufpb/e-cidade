@@ -37,9 +37,9 @@
 	require_once(modification("classes/db_gavetas_classe.php"));
 	require_once(modification("dbforms/db_funcoes.php"));
 
-	parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+	parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
 
 	$clsepultamentos = new cl_sepultamentos;
 	$cllotecemit     = new cl_lotecemit;

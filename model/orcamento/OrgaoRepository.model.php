@@ -30,7 +30,7 @@ class OrgaoRepository {
   /**
    * @var Orgao[]
    */
-  private $aOrgao = array();
+  private $aOrgao = [];
 
   /**
    * @var OrgaoRepository

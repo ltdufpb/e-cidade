@@ -185,7 +185,7 @@ function js_preenchepesquisa(chave){
   if($db_opcao == 2 || $db_opcao == 22){
     echo " location.href = 'fis1_tipovistorias002.php?abas=1&chavepesquisa='+chave;";
   }elseif($db_opcao == 33 || $db_opcao == 3){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }

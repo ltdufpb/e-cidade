@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE db_chat
 class cl_db_chat { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s_id_chat = 0; 
-   var $s_nome = null; 
-   var $s_email = null; 
-   var $s_login = null; 
-   var $s_data_dia = null; 
-   var $s_data_mes = null; 
-   var $s_data_ano = null; 
-   var $s_data = null; 
-   var $s_hora = null; 
-   var $s_texto = null; 
-   var $s_verificado = 'f'; 
-   var $ip = null; 
+   public $s_id_chat = 0; 
+   public $s_nome = null; 
+   public $s_email = null; 
+   public $s_login = null; 
+   public $s_data_dia = null; 
+   public $s_data_mes = null; 
+   public $s_data_ano = null; 
+   public $s_data = null; 
+   public $s_hora = null; 
+   public $s_texto = null; 
+   public $s_verificado = 'f'; 
+   public $ip = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s_id_chat = int4 = ID chat 
                  s_nome = varchar(200) = Nome 
                  s_email = varchar(50) = Email 
@@ -67,10 +67,10 @@ class cl_db_chat {
                  ip = varchar(50) = IP 
                  ";
    //funcao construtor da classe 
-   function cl_db_chat() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_chat"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -212,7 +212,7 @@ class cl_db_chat {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Chat () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Chat já Cadastrado";
@@ -239,10 +239,10 @@ class cl_db_chat {
       $this->atualizacampos();
      $sql = " update db_chat set ";
      $virgula = "";
-     if(trim($this->s_id_chat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_id_chat"])){ 
+     if(trim((string) $this->s_id_chat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_id_chat"])){ 
        $sql  .= $virgula." s_id_chat = $this->s_id_chat ";
        $virgula = ",";
-       if(trim($this->s_id_chat) == null ){ 
+       if(trim((string) $this->s_id_chat) == null ){ 
          $this->erro_sql = " Campo ID chat nao Informado.";
          $this->erro_campo = "s_id_chat";
          $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_db_chat {
          return false;
        }
      }
-     if(trim($this->s_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_nome"])){ 
+     if(trim((string) $this->s_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_nome"])){ 
        $sql  .= $virgula." s_nome = '$this->s_nome' ";
        $virgula = ",";
-       if(trim($this->s_nome) == null ){ 
+       if(trim((string) $this->s_nome) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "s_nome";
          $this->erro_banco = "";
@@ -265,10 +265,10 @@ class cl_db_chat {
          return false;
        }
      }
-     if(trim($this->s_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_email"])){ 
+     if(trim((string) $this->s_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_email"])){ 
        $sql  .= $virgula." s_email = '$this->s_email' ";
        $virgula = ",";
-       if(trim($this->s_email) == null ){ 
+       if(trim((string) $this->s_email) == null ){ 
          $this->erro_sql = " Campo Email nao Informado.";
          $this->erro_campo = "s_email";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_db_chat {
          return false;
        }
      }
-     if(trim($this->s_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_login"])){ 
+     if(trim((string) $this->s_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_login"])){ 
        $sql  .= $virgula." s_login = '$this->s_login' ";
        $virgula = ",";
-       if(trim($this->s_login) == null ){ 
+       if(trim((string) $this->s_login) == null ){ 
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "s_login";
          $this->erro_banco = "";
@@ -291,10 +291,10 @@ class cl_db_chat {
          return false;
        }
      }
-     if(trim($this->s_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s_data_dia"] !="") ){ 
+     if(trim((string) $this->s_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s_data_dia"] !="") ){ 
        $sql  .= $virgula." s_data = '$this->s_data' ";
        $virgula = ",";
-       if(trim($this->s_data) == null ){ 
+       if(trim((string) $this->s_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "s_data_dia";
          $this->erro_banco = "";
@@ -307,7 +307,7 @@ class cl_db_chat {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s_data_dia"])){ 
          $sql  .= $virgula." s_data = null ";
          $virgula = ",";
-         if(trim($this->s_data) == null ){ 
+         if(trim((string) $this->s_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "s_data_dia";
            $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_db_chat {
          }
        }
      }
-     if(trim($this->s_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_hora"])){ 
+     if(trim((string) $this->s_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_hora"])){ 
        $sql  .= $virgula." s_hora = '$this->s_hora' ";
        $virgula = ",";
-       if(trim($this->s_hora) == null ){ 
+       if(trim((string) $this->s_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "s_hora";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_db_chat {
          return false;
        }
      }
-     if(trim($this->s_texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_texto"])){ 
+     if(trim((string) $this->s_texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_texto"])){ 
        $sql  .= $virgula." s_texto = '$this->s_texto' ";
        $virgula = ",";
-       if(trim($this->s_texto) == null ){ 
+       if(trim((string) $this->s_texto) == null ){ 
          $this->erro_sql = " Campo Texto nao Informado.";
          $this->erro_campo = "s_texto";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_db_chat {
          return false;
        }
      }
-     if(trim($this->s_verificado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_verificado"])){ 
+     if(trim((string) $this->s_verificado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_verificado"])){ 
        $sql  .= $virgula." s_verificado = '$this->s_verificado' ";
        $virgula = ",";
-       if(trim($this->s_verificado) == null ){ 
+       if(trim((string) $this->s_verificado) == null ){ 
          $this->erro_sql = " Campo Verificado nao Informado.";
          $this->erro_campo = "s_verificado";
          $this->erro_banco = "";
@@ -357,10 +357,10 @@ class cl_db_chat {
          return false;
        }
      }
-     if(trim($this->ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ip"])){ 
+     if(trim((string) $this->ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ip"])){ 
        $sql  .= $virgula." ip = '$this->ip' ";
        $virgula = ",";
-       if(trim($this->ip) == null ){ 
+       if(trim((string) $this->ip) == null ){ 
          $this->erro_sql = " Campo IP nao Informado.";
          $this->erro_campo = "ip";
          $this->erro_banco = "";
@@ -451,7 +451,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_chat";

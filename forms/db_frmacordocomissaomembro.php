@@ -49,21 +49,21 @@ if (isset($ac07_acordocomissao)) {
     $ac08_descricao = db_utils::fieldsMemory($rsAcordo, 0)->ac08_descricao;
 }
 
-$Tac07_acordocomissao = isset($Tac07_acordocomissao) ? $Tac07_acordocomissao : null;
-$Tac07_numcgm = isset($Tac07_numcgm) ? $Tac07_numcgm : null;
-$Lac07_numcgm = isset($Lac07_numcgm) ? $Lac07_numcgm : null;
-$Tac07_tipomembro = isset($Tac07_tipomembro) ? $Tac07_tipomembro : null;
-$Lac07_tipomembro = isset($Lac07_tipomembro) ? $Lac07_tipomembro : null;
-$Tac07_datainicio = isset($Tac07_datainicio) ? $Tac07_datainicio : null;
-$Lac07_datainicio = isset($Lac07_datainicio) ? $Lac07_datainicio : null;
-$Tac07_datatermino = isset($Tac07_datatermino) ? $Tac07_datatermino : null;
-$Lac07_datatermino = isset($Lac07_datatermino) ? $Lac07_datatermino : null;
-$Tac07_numeroatodesignacao = isset($Tac07_numeroatodesignacao) ? $Tac07_numeroatodesignacao : null;
-$Lac07_numeroatodesignacao = isset($Lac07_numeroatodesignacao) ? $Lac07_numeroatodesignacao : null;
-$Tac07_anoatodesignacao = isset($Tac07_anoatodesignacao) ? $Tac07_anoatodesignacao : null;
-$Lac07_anoatodesignacao = isset($Lac07_anoatodesignacao) ? $Lac07_anoatodesignacao : null;
-$Tac07_arquivo = isset($Tac07_arquivo) ? $Tac07_arquivo : null;
-$Lac07_arquivo = isset($Lac07_arquivo) ? $Lac07_arquivo : null;
+$Tac07_acordocomissao ??= null;
+$Tac07_numcgm ??= null;
+$Lac07_numcgm ??= null;
+$Tac07_tipomembro ??= null;
+$Lac07_tipomembro ??= null;
+$Tac07_datainicio ??= null;
+$Lac07_datainicio ??= null;
+$Tac07_datatermino ??= null;
+$Lac07_datatermino ??= null;
+$Tac07_numeroatodesignacao ??= null;
+$Lac07_numeroatodesignacao ??= null;
+$Tac07_anoatodesignacao ??= null;
+$Lac07_anoatodesignacao ??= null;
+$Tac07_arquivo ??= null;
+$Lac07_arquivo ??= null;
 
 ?>
 <style>
@@ -131,9 +131,9 @@ $Lac07_arquivo = isset($Lac07_arquivo) ? $Lac07_arquivo : null;
                             "ac42_sequencial");
                         $rsBuscaTipoMembro = $oDaoAcordoComissaoTipoMembro->sql_record($sSqlBuscaTipoMembro);
 
-                        $aTipo = array("0" => "Selecione");
+                        $aTipo = ["0" => "Selecione"];
                         if ($oDaoAcordoComissaoTipoMembro->numrows > 0) {
-                            $aTipo = array();
+                            $aTipo = [];
                             for ($iRowTipoMembro = 0; $iRowTipoMembro < $oDaoAcordoComissaoTipoMembro->numrows; $iRowTipoMembro++) {
                                 $oDadoTipoMembro = db_utils::fieldsMemory($rsBuscaTipoMembro, $iRowTipoMembro);
                                 $aTipo[$oDadoTipoMembro->ac42_sequencial] = $oDadoTipoMembro->ac42_descricao;

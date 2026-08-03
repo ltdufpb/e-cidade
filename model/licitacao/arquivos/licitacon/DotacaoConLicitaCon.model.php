@@ -45,9 +45,9 @@ class DotacaoConLicitaCon extends ArquivoLicitaCon {
 
     $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
 
-    $aDados = array();
+    $aDados = [];
 
-    $sCampos = implode(', ', array(
+    $sCampos = implode(', ', [
       'ac16_sequencial            as sequencial',
       'ac16_numero                as nr_contrato',
       'ac16_anousu                as ano_contrato',
@@ -56,18 +56,18 @@ class DotacaoConLicitaCon extends ArquivoLicitaCon {
       '(case when empdot.o58_projativ is not null then empdot.o58_projativ else acodot.o58_projativ end)               as cd_projeto_atividade',
       '(case when empdot.o58_codigo   is not null then empdot.o58_codigo   else acodot.o58_codigo end)                 as cd_recurso_orcamentario',
       'substr((case when empele.o56_elemento is not null then empele.o56_elemento else acoele.o56_elemento end), 2, 6) as cd_natureza_despesa',
-    ));
+    ]);
 
     $sDataAtual = $this->oCabecalho->getDataGeracao()->getDate();
 
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       "ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()}",
       "(ac58_sequencial is null or ac58_data >= '{$sDataAtual}')",
       "(empdot.o58_projativ is not null or acodot.o58_projativ is not null)",
       "acordoitem.ac20_sequencial is not null"
-    ));
+    ]);
 
-    $sSql = implode(" \n", array(
+    $sSql = implode(" \n", [
       "select distinct {$sCampos} from acordo",
       'inner join acordoposicao on ac26_acordo = ac16_sequencial',
       'left join acordoencerramentolicitacon on ac16_sequencial = ac58_acordo',
@@ -87,7 +87,7 @@ class DotacaoConLicitaCon extends ArquivoLicitaCon {
       "where {$sWhere}",
 
       'order by ac16_sequencial',
-    ));
+    ]);
 
     $rsContratos = db_query($sSql);
     if (!$rsContratos) {

@@ -40,12 +40,12 @@ require_once(modification("model/pessoal/arquivos/consignet/GeracaoArquivoConsig
 define('ARQUIVO_MENSAGEM', 'recursoshumanos.pessoal.pes4_conferenciaconsignados.');
 
 $oJson              = new services_json();
-$oParametros        = $oJson->decode(utf8_decode(str_replace("\\", "", urldecode($_POST["json"]))));
+$oParametros        = $oJson->decode(mb_convert_encoding(str_replace("\\", "", urldecode((string) $_POST["json"])), 'ISO-8859-1'));
 $oRetorno           = new stdClass();
 $oRetorno->status   = 1;
 $oRetorno->mensagem = '';
 $oRetorno->erro     = false;
-$aMotivos = array(
+$aMotivos = [
                   '' => 'ACEITO',
                   1 => 'FALECIMENTO',
                   2 => 'SERVIDOR NÃO IDENTIFICADO',
@@ -56,7 +56,7 @@ $aMotivos = array(
                   7 => "SERVIDOR AFASTADO EM LICENÇA SAÚDE",
                   8 => "EXCLUÍDO",
                   9 => "SALDO INSUFICIENTE"
-                );
+                ];
 try {
 
   db_inicio_transacao();
@@ -71,7 +71,7 @@ try {
       }
 
       $oRetorno->arquivo_processado = false;
-      $oRetorno->consignacoes       = array();
+      $oRetorno->consignacoes       = [];
       $oBanco   = new Banco($oParametros->banco);
 
       $oArquivo = ArquivoConsignadoRepository::getUltimoArquivoNaCompetenciaDoBanco($oInstituicao, null, $oBanco);
@@ -94,7 +94,7 @@ try {
         $oStdRegistro                   = new \stdClass();
         $oStdRegistro->codigo           = $oRegistro->getCodigo();
         $oStdRegistro->matricula        = $oRegistro->getMatricula();
-        $oStdRegistro->nome             = urlencode($oRegistro->getNome());
+        $oStdRegistro->nome             = urlencode((string) $oRegistro->getNome());
         $oStdRegistro->valor            = $oRegistro->getValorDescontar();
         $oStdRegistro->motivo           = $oRegistro->getMotivo();
         $oStdRegistro->parcela          = $oRegistro->getParcela();
@@ -132,7 +132,7 @@ try {
       }
 
       RegistroConsignadoRepository::persist($oRegistroConsignado);
-      $iMotivo                    =  ($oRegistroConsignado->getMotivo() === null) ? '' : $oRegistroConsignado->getMotivo();
+      $iMotivo                    =  $oRegistroConsignado->getMotivo() ?? '';
       $oRetorno->motivo           = $oRegistroConsignado->getMotivo();
       $oRetorno->descricao_motivo = urlencode($aMotivos[$iMotivo]);
       break;

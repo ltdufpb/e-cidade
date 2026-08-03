@@ -40,7 +40,7 @@ class estimativaRegistroPreco extends solicitacaoCompra {
    * Itens da Estimativa
    * @var ItemEstimativa[]
    */
-  protected $aItens = array();
+  protected $aItens = [];
 
   protected $iCodigoSolicitacao;
 

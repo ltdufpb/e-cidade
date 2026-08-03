@@ -126,7 +126,7 @@ $oRotulo->label("cc31_classificacaocredores");
                   <td class="bold"><label for="situacao">Situação:</label></td>
                   <td>
                     <?php
-                    $aOpcoes = array(0 => "Todos", RelatorioEmpenhoClassificacaoCredores::SITUACAO_PAGOS => "Pagos", RelatorioEmpenhoClassificacaoCredores::SITUACAO_APAGAR => "A Pagar");
+                    $aOpcoes = [0 => "Todos", RelatorioEmpenhoClassificacaoCredores::SITUACAO_PAGOS => "Pagos", RelatorioEmpenhoClassificacaoCredores::SITUACAO_APAGAR => "A Pagar"];
                     db_select('situacao_pagamento', $aOpcoes, true, 1);
                     ?>
                   </td>

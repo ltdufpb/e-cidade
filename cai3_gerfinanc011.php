@@ -29,10 +29,10 @@ set_time_limit(0);
 include(modification("libs/db_sql.php"));
 include(modification("libs/db_utils.php"));
 require(modification("fpdf151/pdf.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $sTiposDebitos = $tipos;
-$tipos 		  = split(",", $tipos);
+$tipos 		  = preg_split("#,#m", $tipos);
 
 if (isset ($db_datausu)) {
 	if (!checkdate(substr($db_datausu, 5, 2), substr($db_datausu, 8, 2), substr($db_datausu, 0, 4))) {
@@ -162,7 +162,7 @@ $head5 = @$info;
 $head6 = @$info1;
 
 if ($chave != 0) {
-	if ($result != false && pg_numrows($result) > 0) {
+	if ($result != false && pg_num_rows($result) > 0) {
 		$cor = "#EFE029";
 		$ttvlrhis = 0;
 		$ttvlrcor = 0;
@@ -170,7 +170,7 @@ if ($chave != 0) {
 		$ttvlrmulta = 0;
 		$ttvlrdesconto = 0;
 		$tttotal = 0;
-		for ($x = 0; $x < pg_numrows($result); $x++) {
+		for ($x = 0; $x < pg_num_rows($result); $x++) {
 			db_fieldsmemory($result, $x, true);
 							
 			if (in_array($k00_tipo, $tipos) == true) {
@@ -191,14 +191,14 @@ if ($chave != 0) {
 					continue;
 				}			
 				
-				if (pg_numrows($debitos) > 0) {
+				if (pg_num_rows($debitos) > 0) {
 					$tvlrhis = 0;
 					$tvlrcor = 0;
 					$tvlrjuros = 0;
 					$tvlrmulta = 0;
 					$tvlrdesconto = 0;
 					$ttotal = 0;
-					for ($xx = 0; $xx < pg_numrows($debitos); $xx++) {
+					for ($xx = 0; $xx < pg_num_rows($debitos); $xx++) {
 						db_fieldsmemory($debitos, $xx);
 						$tvlrhis += $vlrhis;
 						$tvlrcor += $vlrcor;
@@ -261,7 +261,7 @@ if ($chave != 0) {
 					}
 					$pdf->SetFont('Arial', '', 8);
 					$pdf->Cell(7, 05, $k00_tipo, 1, 0, "C", 0);
-					$pdf->Cell(60, 05, substr($k00_descr, 0, 35), 1, 0, "L", 0);
+					$pdf->Cell(60, 05, substr((string) $k00_descr, 0, 35), 1, 0, "L", 0);
 					$pdf->Cell(20, 05, db_formatar($tvlrhis, 'f'), 1, 0, "R", 0);
 					$pdf->Cell(20, 05, db_formatar($tvlrcor, 'f'), 1, 0, "R", 0);
 					$pdf->Cell(20, 05, db_formatar($tvlrjuros, 'f'), 1, 0, "R", 0);
@@ -330,7 +330,7 @@ if ($chave != 0) {
    $sSqlSuspensao .= " 	 {$sSqlInnerTabela}		 								 	  				";
    $sSqlSuspensao .= " 	 where {$sSqlWhereTabela} 							 	 	  				";
    $sSqlSuspensao .= " 	   and suspensao.ar18_situacao = 1 											";
-   if (trim($parReceit) != ""){
+   if (trim((string) $parReceit) != ""){
 	 $sSqlSuspensao .= "   and arresusp.k00_receit in ({$parReceit})			 	  				";   	
    }      
    $sSqlSuspensao .= " 	   and arresusp.k00_tipo   in ({$sTiposDebitos})			 	  		    ";
@@ -338,7 +338,7 @@ if ($chave != 0) {
    
    $rsSuspensao      = db_query($sSqlSuspensao);
    $iLinhasSuspensao = pg_num_rows($rsSuspensao);
-   $aSuspensao		 = array();
+   $aSuspensao		 = [];
 	
    if ( $iLinhasSuspensao > 0 ) {
    	
@@ -392,7 +392,7 @@ if ($chave != 0) {
    	   	 $nTotal = ( $aValores['vlrcor'] + $aValores['vlrjur'] + $aValores['vlrmul'] ) - $aValores['vlrdes'];
    	   	 
    	     $pdf->Cell(7 ,5, $iTipo							   , 1, 0, "C", 0);
-   	     $pdf->Cell(60,5, substr($sDescrTipo, 0, 35)		   , 1, 0, "L", 0);
+   	     $pdf->Cell(60,5, substr((string) $sDescrTipo, 0, 35)		   , 1, 0, "L", 0);
    	     $pdf->Cell(20,5, db_formatar($aValores['vlrhis'], 'f'), 1, 0, "R", 0);
    	     $pdf->Cell(20,5, db_formatar($aValores['vlrcor'], 'f'), 1, 0, "R", 0);
    	     $pdf->Cell(20,5, db_formatar($aValores['vlrjur'], 'f'), 1, 0, "R", 0);

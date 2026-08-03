@@ -41,9 +41,7 @@ class UnidadeGestora
         if (!$rsUnidades) {
             throw new \BusinessException("Erro ao pesquisar dados da Unidade gestora");
         }
-        $aUnidadesRecolhimento = \db_utils::makeCollectionFromRecord($rsUnidades, function ($oDados) use ($oInstancia) {
-            return $oInstancia->make($oDados);
-        });
+        $aUnidadesRecolhimento = \db_utils::makeCollectionFromRecord($rsUnidades, fn($oDados) => $oInstancia->make($oDados));
 
         $aUnidades = array_merge($aUnidadesTaxas, $aUnidadesRecolhimento);
 

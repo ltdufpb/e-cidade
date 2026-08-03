@@ -77,8 +77,6 @@ abstract class PadService
      */
     protected function getListaInstituicoes()
     {
-        return implode(', ', array_map(function (Instituicao $instituicao) {
-            return $instituicao->getCodigo();
-        }, $this->instituicoes));
+        return implode(', ', array_map(fn(Instituicao $instituicao) => $instituicao->getCodigo(), $this->instituicoes));
     }
 }

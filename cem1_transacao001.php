@@ -38,7 +38,7 @@ require_once(modification("classes/db_gavetas_classe.php"));
 require_once(modification("classes/db_jazigos_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clsepulturas   = new cl_sepulturas;
 $clossoario     = new cl_ossoario;

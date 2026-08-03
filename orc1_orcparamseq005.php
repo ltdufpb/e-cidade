@@ -105,7 +105,7 @@ if (isset($alterar)) {
     db_fieldsmemory($result, 0);
 
 
-    $o69_observacao = urldecode($o69_observacao);
+    $o69_observacao = urldecode((string) $o69_observacao);
 }
 ?>
 <html>

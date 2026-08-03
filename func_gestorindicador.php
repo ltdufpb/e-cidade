@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_gestorindicador_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clgestorindicador = new cl_gestorindicador;
 $clgestorindicador->rotulo->label("g04_sequencial");
@@ -105,9 +105,9 @@ $clgestorindicador->rotulo->label("g04_sequencial");
           $sql = $clgestorindicador->sql_query(null, $campos, "g04_sequencial", $sWhere);
         }
         
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_g04_sequencial)){
-          $repassa = array("chave_g04_sequencial"=>$chave_g04_sequencial,"chave_g04_sequencial"=>$chave_g04_sequencial);
+          $repassa = ["chave_g04_sequencial"=>$chave_g04_sequencial,"chave_g04_sequencial"=>$chave_g04_sequencial];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

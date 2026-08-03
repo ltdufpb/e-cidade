@@ -55,7 +55,7 @@ db_input('db60_coddoc', 8, $Idb60_coddoc, true, 'text', 3)
 ?>
 <b>Ordem:</b>
       <?php 
-        $tipo_ordem = array("b"=>"Numérica","a"=>"Alfabética");
+        $tipo_ordem = ["b"=>"Numérica","a"=>"Alfabética"];
 	    db_select("ordem",$tipo_ordem,true,2,"onchange='js_ordem(this.value);'"); ?>
     </td>
   </tr>

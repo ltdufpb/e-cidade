@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE zonassetorvalor
 class cl_zonassetorvalor {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $j141_sequencial = 0;
-   var $j141_anousu = 0;
-   var $j141_zonas = 0;
-   var $j141_setor = null;
-   var $j141_valorminimo = 0;
-   var $j141_valorm2 = 0;
+   public $j141_sequencial = 0;
+   public $j141_anousu = 0;
+   public $j141_zonas = 0;
+   public $j141_setor = null;
+   public $j141_valorminimo = 0;
+   public $j141_valorm2 = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  j141_sequencial = int4 = Sequencial da tabela zonasetorvalor
                  j141_anousu = int4 = Ano de execício
                  j141_zonas = int8 = Código da zona
@@ -58,10 +58,10 @@ class cl_zonassetorvalor {
                  j141_valorm2 = float8 = Valor do metro quadrado
                  ";
    //funcao construtor da classe
-   function cl_zonassetorvalor() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("zonassetorvalor");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -127,10 +127,10 @@ class cl_zonassetorvalor {
          $this->erro_status = "0";
          return false;
        }
-       $this->j141_sequencial = pg_result($result,0,0);
+       $this->j141_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from zonassetorvalor_j141_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j141_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j141_sequencial)){
          $this->erro_sql = " Campo j141_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_zonassetorvalor {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Valores por zona, setor e ano ($this->j141_anousu."-".$this->j141_zonas."-".$this->j141_setor) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Valores por zona, setor e ano já Cadastrado";
@@ -213,17 +213,17 @@ class cl_zonassetorvalor {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20997,'$this->j141_anousu','I')");
          $resac = db_query("insert into db_acountkey values($acount,20998,'$this->j141_zonas','I')");
          $resac = db_query("insert into db_acountkey values($acount,20999,'$this->j141_setor','I')");
-         $resac = db_query("insert into db_acount values($acount,3783,20996,'','".AddSlashes(pg_result($resaco,0,'j141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3783,20997,'','".AddSlashes(pg_result($resaco,0,'j141_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3783,20998,'','".AddSlashes(pg_result($resaco,0,'j141_zonas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3783,20999,'','".AddSlashes(pg_result($resaco,0,'j141_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3783,21000,'','".AddSlashes(pg_result($resaco,0,'j141_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3783,21001,'','".AddSlashes(pg_result($resaco,0,'j141_valorm2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3783,20996,'','".AddSlashes(pg_fetch_result($resaco,0,'j141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3783,20997,'','".AddSlashes(pg_fetch_result($resaco,0,'j141_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3783,20998,'','".AddSlashes(pg_fetch_result($resaco,0,'j141_zonas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3783,20999,'','".AddSlashes(pg_fetch_result($resaco,0,'j141_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3783,21000,'','".AddSlashes(pg_fetch_result($resaco,0,'j141_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3783,21001,'','".AddSlashes(pg_fetch_result($resaco,0,'j141_valorm2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -233,10 +233,10 @@ class cl_zonassetorvalor {
       $this->atualizacampos();
      $sql = " update zonassetorvalor set ";
      $virgula = "";
-     if(trim($this->j141_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_sequencial"])){
+     if(trim((string) $this->j141_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_sequencial"])){
        $sql  .= $virgula." j141_sequencial = $this->j141_sequencial ";
        $virgula = ",";
-       if(trim($this->j141_sequencial) == null ){
+       if(trim((string) $this->j141_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial da tabela zonasetorvalor não informado.";
          $this->erro_campo = "j141_sequencial";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_zonassetorvalor {
          return false;
        }
      }
-     if(trim($this->j141_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_anousu"])){
+     if(trim((string) $this->j141_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_anousu"])){
        $sql  .= $virgula." j141_anousu = $this->j141_anousu ";
        $virgula = ",";
-       if(trim($this->j141_anousu) == null ){
+       if(trim((string) $this->j141_anousu) == null ){
          $this->erro_sql = " Campo Ano de execício não informado.";
          $this->erro_campo = "j141_anousu";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_zonassetorvalor {
          return false;
        }
      }
-     if(trim($this->j141_zonas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_zonas"])){
+     if(trim((string) $this->j141_zonas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_zonas"])){
        $sql  .= $virgula." j141_zonas = $this->j141_zonas ";
        $virgula = ",";
-       if(trim($this->j141_zonas) == null ){
+       if(trim((string) $this->j141_zonas) == null ){
          $this->erro_sql = " Campo Código da zona não informado.";
          $this->erro_campo = "j141_zonas";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_zonassetorvalor {
          return false;
        }
      }
-     if(trim($this->j141_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_setor"])){
+     if(trim((string) $this->j141_setor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_setor"])){
        $sql  .= $virgula." j141_setor = '$this->j141_setor' ";
        $virgula = ",";
-       if(trim($this->j141_setor) == null ){
+       if(trim((string) $this->j141_setor) == null ){
          $this->erro_sql = " Campo Código do setor não informado.";
          $this->erro_campo = "j141_setor";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_zonassetorvalor {
          return false;
        }
      }
-     if(trim($this->j141_valorminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_valorminimo"])){
+     if(trim((string) $this->j141_valorminimo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_valorminimo"])){
        $sql  .= $virgula." j141_valorminimo = $this->j141_valorminimo ";
        $virgula = ",";
-       if(trim($this->j141_valorminimo) == null ){
+       if(trim((string) $this->j141_valorminimo) == null ){
          $this->erro_sql = " Campo Valor mínimo não informado.";
          $this->erro_campo = "j141_valorminimo";
          $this->erro_banco = "";
@@ -298,10 +298,10 @@ class cl_zonassetorvalor {
          return false;
        }
      }
-     if(trim($this->j141_valorm2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_valorm2"])){
+     if(trim((string) $this->j141_valorm2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j141_valorm2"])){
        $sql  .= $virgula." j141_valorm2 = $this->j141_valorm2 ";
        $virgula = ",";
-       if(trim($this->j141_valorm2) == null ){
+       if(trim((string) $this->j141_valorm2) == null ){
          $this->erro_sql = " Campo Valor do metro quadrado não informado.";
          $this->erro_campo = "j141_valorm2";
          $this->erro_banco = "";
@@ -331,23 +331,23 @@ class cl_zonassetorvalor {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20997,'$this->j141_anousu','A')");
            $resac = db_query("insert into db_acountkey values($acount,20998,'$this->j141_zonas','A')");
            $resac = db_query("insert into db_acountkey values($acount,20999,'$this->j141_setor','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j141_sequencial"]) || $this->j141_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3783,20996,'".AddSlashes(pg_result($resaco,$conresaco,'j141_sequencial'))."','$this->j141_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3783,20996,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j141_sequencial'))."','$this->j141_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j141_anousu"]) || $this->j141_anousu != "")
-             $resac = db_query("insert into db_acount values($acount,3783,20997,'".AddSlashes(pg_result($resaco,$conresaco,'j141_anousu'))."','$this->j141_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3783,20997,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j141_anousu'))."','$this->j141_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j141_zonas"]) || $this->j141_zonas != "")
-             $resac = db_query("insert into db_acount values($acount,3783,20998,'".AddSlashes(pg_result($resaco,$conresaco,'j141_zonas'))."','$this->j141_zonas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3783,20998,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j141_zonas'))."','$this->j141_zonas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j141_setor"]) || $this->j141_setor != "")
-             $resac = db_query("insert into db_acount values($acount,3783,20999,'".AddSlashes(pg_result($resaco,$conresaco,'j141_setor'))."','$this->j141_setor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3783,20999,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j141_setor'))."','$this->j141_setor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j141_valorminimo"]) || $this->j141_valorminimo != "")
-             $resac = db_query("insert into db_acount values($acount,3783,21000,'".AddSlashes(pg_result($resaco,$conresaco,'j141_valorminimo'))."','$this->j141_valorminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3783,21000,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j141_valorminimo'))."','$this->j141_valorminimo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["j141_valorm2"]) || $this->j141_valorm2 != "")
-             $resac = db_query("insert into db_acount values($acount,3783,21001,'".AddSlashes(pg_result($resaco,$conresaco,'j141_valorm2'))."','$this->j141_valorm2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3783,21001,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j141_valorm2'))."','$this->j141_valorm2',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -401,17 +401,17 @@ class cl_zonassetorvalor {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20997,'$j141_anousu','E')");
            $resac  = db_query("insert into db_acountkey values($acount,20998,'$j141_zonas','E')");
            $resac  = db_query("insert into db_acountkey values($acount,20999,'$j141_setor','E')");
-           $resac  = db_query("insert into db_acount values($acount,3783,20996,'','".AddSlashes(pg_result($resaco,$iresaco,'j141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3783,20997,'','".AddSlashes(pg_result($resaco,$iresaco,'j141_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3783,20998,'','".AddSlashes(pg_result($resaco,$iresaco,'j141_zonas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3783,20999,'','".AddSlashes(pg_result($resaco,$iresaco,'j141_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3783,21000,'','".AddSlashes(pg_result($resaco,$iresaco,'j141_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3783,21001,'','".AddSlashes(pg_result($resaco,$iresaco,'j141_valorm2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3783,20996,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3783,20997,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j141_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3783,20998,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j141_zonas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3783,20999,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j141_setor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3783,21000,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j141_valorminimo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3783,21001,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j141_valorm2'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

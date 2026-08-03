@@ -34,7 +34,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoVacina    = db_utils::getdao('vac_vacina');
 $oDaoCgsUnd    = db_utils::getdao('cgs_und');
 $db_opcao      = 1;
@@ -174,7 +174,7 @@ $aHoje         = explode("/",$dHoje);
                                               "nselecionados",
                                               "sselecionados",
                                               $rsDados,
-                                              array(),
+                                              [],
                                               5,
                                               250
                                              );

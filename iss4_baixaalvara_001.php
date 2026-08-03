@@ -34,8 +34,8 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("model/issqn/alvara/MovimentacaoAlvaraFactory.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $oPost   = db_utils::postMemory($_POST);
 $oGet    = db_utils::postMemory($_GET);
@@ -176,11 +176,11 @@ try {
         </td>
         <td>
           <?php 
-            $aMotivos = array( "" => "Selecione",
+            $aMotivos = [ "" => "Selecione",
                                "1" => "Pedido",
                                "2" => "Oficio"
 
-                              );
+                              ];
             db_select("motivo", $aMotivos ,true, 1);
           ?>
         </td>

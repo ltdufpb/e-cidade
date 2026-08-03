@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE abatimentoarreckeyarrecadcompos
 class cl_abatimentoarreckeyarrecadcompos { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k129_sequencial = 0; 
-   var $k129_abatimentoarreckey = 0; 
-   var $k129_arrecadcompos = 0; 
-   var $k129_vlrhist = 0; 
-   var $k129_correcao = 0; 
-   var $k129_juros = 0; 
-   var $k129_multa = 0; 
+   public $k129_sequencial = 0; 
+   public $k129_abatimentoarreckey = 0; 
+   public $k129_arrecadcompos = 0; 
+   public $k129_vlrhist = 0; 
+   public $k129_correcao = 0; 
+   public $k129_juros = 0; 
+   public $k129_multa = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k129_sequencial = int4 = Sequencial 
                  k129_abatimentoarreckey = int4 = Abatimento Arreckey 
                  k129_arrecadcompos = int4 = Composição do Débito 
@@ -60,10 +60,10 @@ class cl_abatimentoarreckeyarrecadcompos {
                  k129_multa = numeric(15,2) = Multa 
                  ";
    //funcao construtor da classe 
-   function cl_abatimentoarreckeyarrecadcompos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentoarreckeyarrecadcompos"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -155,10 +155,10 @@ class cl_abatimentoarreckeyarrecadcompos {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k129_sequencial = pg_result($result,0,0); 
+       $this->k129_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from abatimentoarreckeyarrecadcompos_k129_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k129_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k129_sequencial)){
          $this->erro_sql = " Campo k129_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -198,7 +198,7 @@ class cl_abatimentoarreckeyarrecadcompos {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Abatimento da Composição do Débito ($this->k129_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Abatimento da Composição do Débito já Cadastrado";
@@ -222,16 +222,16 @@ class cl_abatimentoarreckeyarrecadcompos {
      $resaco = $this->sql_record($this->sql_query_file($this->k129_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18125,'$this->k129_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3205,18125,'','".AddSlashes(pg_result($resaco,0,'k129_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3205,18126,'','".AddSlashes(pg_result($resaco,0,'k129_abatimentoarreckey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3205,18127,'','".AddSlashes(pg_result($resaco,0,'k129_arrecadcompos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3205,18128,'','".AddSlashes(pg_result($resaco,0,'k129_vlrhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3205,18129,'','".AddSlashes(pg_result($resaco,0,'k129_correcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3205,18130,'','".AddSlashes(pg_result($resaco,0,'k129_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3205,18131,'','".AddSlashes(pg_result($resaco,0,'k129_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3205,18125,'','".AddSlashes(pg_fetch_result($resaco,0,'k129_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3205,18126,'','".AddSlashes(pg_fetch_result($resaco,0,'k129_abatimentoarreckey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3205,18127,'','".AddSlashes(pg_fetch_result($resaco,0,'k129_arrecadcompos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3205,18128,'','".AddSlashes(pg_fetch_result($resaco,0,'k129_vlrhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3205,18129,'','".AddSlashes(pg_fetch_result($resaco,0,'k129_correcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3205,18130,'','".AddSlashes(pg_fetch_result($resaco,0,'k129_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3205,18131,'','".AddSlashes(pg_fetch_result($resaco,0,'k129_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -240,10 +240,10 @@ class cl_abatimentoarreckeyarrecadcompos {
       $this->atualizacampos();
      $sql = " update abatimentoarreckeyarrecadcompos set ";
      $virgula = "";
-     if(trim($this->k129_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_sequencial"])){ 
+     if(trim((string) $this->k129_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_sequencial"])){ 
        $sql  .= $virgula." k129_sequencial = $this->k129_sequencial ";
        $virgula = ",";
-       if(trim($this->k129_sequencial) == null ){ 
+       if(trim((string) $this->k129_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k129_sequencial";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_abatimentoarreckeyarrecadcompos {
          return false;
        }
      }
-     if(trim($this->k129_abatimentoarreckey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_abatimentoarreckey"])){ 
+     if(trim((string) $this->k129_abatimentoarreckey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_abatimentoarreckey"])){ 
        $sql  .= $virgula." k129_abatimentoarreckey = $this->k129_abatimentoarreckey ";
        $virgula = ",";
-       if(trim($this->k129_abatimentoarreckey) == null ){ 
+       if(trim((string) $this->k129_abatimentoarreckey) == null ){ 
          $this->erro_sql = " Campo Abatimento Arreckey nao Informado.";
          $this->erro_campo = "k129_abatimentoarreckey";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_abatimentoarreckeyarrecadcompos {
          return false;
        }
      }
-     if(trim($this->k129_arrecadcompos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_arrecadcompos"])){ 
+     if(trim((string) $this->k129_arrecadcompos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_arrecadcompos"])){ 
        $sql  .= $virgula." k129_arrecadcompos = $this->k129_arrecadcompos ";
        $virgula = ",";
-       if(trim($this->k129_arrecadcompos) == null ){ 
+       if(trim((string) $this->k129_arrecadcompos) == null ){ 
          $this->erro_sql = " Campo Composição do Débito nao Informado.";
          $this->erro_campo = "k129_arrecadcompos";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_abatimentoarreckeyarrecadcompos {
          return false;
        }
      }
-     if(trim($this->k129_vlrhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_vlrhist"])){ 
+     if(trim((string) $this->k129_vlrhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_vlrhist"])){ 
        $sql  .= $virgula." k129_vlrhist = $this->k129_vlrhist ";
        $virgula = ",";
-       if(trim($this->k129_vlrhist) == null ){ 
+       if(trim((string) $this->k129_vlrhist) == null ){ 
          $this->erro_sql = " Campo Valor Histórico nao Informado.";
          $this->erro_campo = "k129_vlrhist";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_abatimentoarreckeyarrecadcompos {
          return false;
        }
      }
-     if(trim($this->k129_correcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_correcao"])){ 
+     if(trim((string) $this->k129_correcao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_correcao"])){ 
        $sql  .= $virgula." k129_correcao = $this->k129_correcao ";
        $virgula = ",";
-       if(trim($this->k129_correcao) == null ){ 
+       if(trim((string) $this->k129_correcao) == null ){ 
          $this->erro_sql = " Campo Correção nao Informado.";
          $this->erro_campo = "k129_correcao";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_abatimentoarreckeyarrecadcompos {
          return false;
        }
      }
-     if(trim($this->k129_juros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_juros"])){ 
+     if(trim((string) $this->k129_juros)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_juros"])){ 
        $sql  .= $virgula." k129_juros = $this->k129_juros ";
        $virgula = ",";
-       if(trim($this->k129_juros) == null ){ 
+       if(trim((string) $this->k129_juros) == null ){ 
          $this->erro_sql = " Campo Juros nao Informado.";
          $this->erro_campo = "k129_juros";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_abatimentoarreckeyarrecadcompos {
          return false;
        }
      }
-     if(trim($this->k129_multa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_multa"])){ 
+     if(trim((string) $this->k129_multa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k129_multa"])){ 
        $sql  .= $virgula." k129_multa = $this->k129_multa ";
        $virgula = ",";
-       if(trim($this->k129_multa) == null ){ 
+       if(trim((string) $this->k129_multa) == null ){ 
          $this->erro_sql = " Campo Multa nao Informado.";
          $this->erro_campo = "k129_multa";
          $this->erro_banco = "";
@@ -339,23 +339,23 @@ class cl_abatimentoarreckeyarrecadcompos {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18125,'$this->k129_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k129_sequencial"]) || $this->k129_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3205,18125,'".AddSlashes(pg_result($resaco,$conresaco,'k129_sequencial'))."','$this->k129_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3205,18125,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k129_sequencial'))."','$this->k129_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k129_abatimentoarreckey"]) || $this->k129_abatimentoarreckey != "")
-           $resac = db_query("insert into db_acount values($acount,3205,18126,'".AddSlashes(pg_result($resaco,$conresaco,'k129_abatimentoarreckey'))."','$this->k129_abatimentoarreckey',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3205,18126,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k129_abatimentoarreckey'))."','$this->k129_abatimentoarreckey',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k129_arrecadcompos"]) || $this->k129_arrecadcompos != "")
-           $resac = db_query("insert into db_acount values($acount,3205,18127,'".AddSlashes(pg_result($resaco,$conresaco,'k129_arrecadcompos'))."','$this->k129_arrecadcompos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3205,18127,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k129_arrecadcompos'))."','$this->k129_arrecadcompos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k129_vlrhist"]) || $this->k129_vlrhist != "")
-           $resac = db_query("insert into db_acount values($acount,3205,18128,'".AddSlashes(pg_result($resaco,$conresaco,'k129_vlrhist'))."','$this->k129_vlrhist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3205,18128,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k129_vlrhist'))."','$this->k129_vlrhist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k129_correcao"]) || $this->k129_correcao != "")
-           $resac = db_query("insert into db_acount values($acount,3205,18129,'".AddSlashes(pg_result($resaco,$conresaco,'k129_correcao'))."','$this->k129_correcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3205,18129,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k129_correcao'))."','$this->k129_correcao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k129_juros"]) || $this->k129_juros != "")
-           $resac = db_query("insert into db_acount values($acount,3205,18130,'".AddSlashes(pg_result($resaco,$conresaco,'k129_juros'))."','$this->k129_juros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3205,18130,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k129_juros'))."','$this->k129_juros',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k129_multa"]) || $this->k129_multa != "")
-           $resac = db_query("insert into db_acount values($acount,3205,18131,'".AddSlashes(pg_result($resaco,$conresaco,'k129_multa'))."','$this->k129_multa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3205,18131,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k129_multa'))."','$this->k129_multa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -400,16 +400,16 @@ class cl_abatimentoarreckeyarrecadcompos {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18125,'$k129_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3205,18125,'','".AddSlashes(pg_result($resaco,$iresaco,'k129_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3205,18126,'','".AddSlashes(pg_result($resaco,$iresaco,'k129_abatimentoarreckey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3205,18127,'','".AddSlashes(pg_result($resaco,$iresaco,'k129_arrecadcompos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3205,18128,'','".AddSlashes(pg_result($resaco,$iresaco,'k129_vlrhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3205,18129,'','".AddSlashes(pg_result($resaco,$iresaco,'k129_correcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3205,18130,'','".AddSlashes(pg_result($resaco,$iresaco,'k129_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3205,18131,'','".AddSlashes(pg_result($resaco,$iresaco,'k129_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3205,18125,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k129_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3205,18126,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k129_abatimentoarreckey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3205,18127,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k129_arrecadcompos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3205,18128,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k129_vlrhist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3205,18129,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k129_correcao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3205,18130,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k129_juros'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3205,18131,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k129_multa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from abatimentoarreckeyarrecadcompos
@@ -469,7 +469,7 @@ class cl_abatimentoarreckeyarrecadcompos {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:abatimentoarreckeyarrecadcompos";
@@ -484,7 +484,7 @@ class cl_abatimentoarreckeyarrecadcompos {
    function sql_query ( $k129_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,7 +510,7 @@ class cl_abatimentoarreckeyarrecadcompos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -523,7 +523,7 @@ class cl_abatimentoarreckeyarrecadcompos {
    function sql_query_file ( $k129_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -544,7 +544,7 @@ class cl_abatimentoarreckeyarrecadcompos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

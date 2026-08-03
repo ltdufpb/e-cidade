@@ -56,11 +56,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	   $clcriaabas->identifica = array("g1"=>"Requisição com Atendimento ","g2"=>"Itens");
-	   $clcriaabas->sizecampo  = array("g1"=>"30","g2"=>"20");
-	   $clcriaabas->title      = array("g1"=>"Requisição com Atendimento","g2"=>"Itens");
-	   $clcriaabas->src        = array("g1"=>"mat1_matrequiauto001.php","g2"=>"mat1_matrequiitemauto001.php");
-	   $clcriaabas->disabled   =  array("g2"=>"true"); 
+	   $clcriaabas->identifica = ["g1"=>"Requisição com Atendimento ","g2"=>"Itens"];
+	   $clcriaabas->sizecampo  = ["g1"=>"30","g2"=>"20"];
+	   $clcriaabas->title      = ["g1"=>"Requisição com Atendimento","g2"=>"Itens"];
+	   $clcriaabas->src        = ["g1"=>"mat1_matrequiauto001.php","g2"=>"mat1_matrequiitemauto001.php"];
+	   $clcriaabas->disabled   =  ["g2"=>"true"]; 
 	   $clcriaabas->cria_abas(); 
 	 ?> 
 	 </td>

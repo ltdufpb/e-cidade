@@ -46,7 +46,7 @@ class DBFormCache {
     
     $this->delete(); 
     $fCache        = fopen($sPath, "w");
-    fwrite($fCache, $sObjectJson);
+    fwrite($fCache, (string) $sObjectJson);
     chmod($sPath, 0777);
     fclose($fCache);
   }
@@ -79,7 +79,7 @@ class DBFormCache {
     if ($_SERVER['DOCUMENT_ROOT']) {
       $sPath = "{$_SERVER['DOCUMENT_ROOT']}";
     }
-    $sPath .= dirname($_SERVER['PHP_SELF']);
+    $sPath .= dirname((string) $_SERVER['PHP_SELF']);
     $sPath .= "/cache";
 
     if (defined('ECIDADE_PATH')) {
@@ -111,7 +111,7 @@ class DBFormCache {
   
   private function fileNameToCache() {
   
-    $aNomeArquivo  = explode(".", $this->sFileName);
+    $aNomeArquivo  = explode(".", (string) $this->sFileName);
     return $aNomeArquivo[0].".json";
   }
 

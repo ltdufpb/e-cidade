@@ -43,20 +43,20 @@ class HorusEntradaMedicamento extends HorusArquivoBase implements iArquivosHorus
 
   protected $iCodigoTipo = 1;
 
-  protected $aMedicamentos = array();
+  protected $aMedicamentos = [];
 
   /**
    * Lista de campos do arquivo xml
    * @var array
    */
-  static $aCampos = array( "nuproduto"      => "nuProduto",
+  static $aCampos = [ "nuproduto"      => "nuProduto",
                            "vlitem"         => "vlItem",
                            "dtvalidade"     => "dtValidade",
                            "nulote"         => "nuLote",
                            "qtadquirida"    => "qtAdquirida",
                            "dtrecebimento"  => "dtRecebimento",
                            "tpproduto"      => "tpProduto",
-                           "tpmovimentacao" => "tpMovimentacao" );
+                           "tpmovimentacao" => "tpMovimentacao" ];
 
   /**
    * Busca todas entradas de medicamentos no estoque
@@ -117,10 +117,11 @@ class HorusEntradaMedicamento extends HorusArquivoBase implements iArquivosHorus
     return $this->fecharArquivo(self::NOME);
   }
 
+  #[\Override]
   public function preProcessar() {
 
     parent::preProcessar();
-    $this->getCodigoIntegracaoCompetencia(self::ARQUIVO_ENTRADA);
+    $this->getCodigoIntegracaoCompetencia();
     $this->consistirDadosCompetencia();
   }
 
@@ -216,7 +217,7 @@ class HorusEntradaMedicamento extends HorusArquivoBase implements iArquivosHorus
     return true;
   }
 
-  private function salvarDadosCompetencia($iCodigoDadosCompetencia = null, $oDadosMedicamento, $lEnviar ) {
+  private function salvarDadosCompetencia($iCodigoDadosCompetencia = null, $oDadosMedicamento = null, $lEnviar = null ) {
 
     $oDaoDadosCompetencia                        = new cl_dadoscompetenciaentrada();
     $oDaoDadosCompetencia->fa62_sequencial       = $iCodigoDadosCompetencia;

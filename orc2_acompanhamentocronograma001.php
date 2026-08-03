@@ -40,9 +40,9 @@ $clrotulo->label("o124_sequencial");
 $clrotulo->label("o124_descricao");
 $db_opcao = 1;
 
-$iTipoRelatorio = (isset($oGet->tipo)) ? $oGet->tipo : null;
+$iTipoRelatorio = $oGet->tipo ?? null;
 
-if (empty($iTipoRelatorio) || !in_array($iTipoRelatorio, array(1, 2))) {
+if (empty($iTipoRelatorio) || !in_array($iTipoRelatorio, [1, 2])) {
   throw new Exception('Parâmetro do tipo de relatório inválido ou não informado.');
 }
 
@@ -112,7 +112,7 @@ if ($iTipoRelatorio == 1) {
                     <td>
                       <?php
                       /* Extensão FiltroCronogramaDesembolso */
-                      $aNiveis = array(
+                      $aNiveis = [
                         1 => "Órgão",
                         2 => "Unidade",
                         3 => "Função",
@@ -121,7 +121,7 @@ if ($iTipoRelatorio == 1) {
                         6 => "Projeto/Atividade",
                         7 => "Elemento",
                         8 => "Recurso",
-                      );
+                      ];
                       db_select("nivel", $aNiveis, true, 1);
                       ?>
                     </td>

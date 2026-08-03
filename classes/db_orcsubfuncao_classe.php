@@ -58,7 +58,7 @@ class cl_orcsubfuncao
     public function __construct()
     {
         $this->rotulo = new rotulo("orcsubfuncao");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -140,7 +140,7 @@ class cl_orcsubfuncao
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Sub Função Orçamento ($this->o53_subfuncao) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Sub Função Orçamento já Cadastrado";
@@ -169,14 +169,14 @@ class cl_orcsubfuncao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5256,'$this->o53_subfuncao','I')");
-         $resac = db_query("insert into db_acount values($acount,751,5256,'','".AddSlashes(pg_result($resaco,0,'o53_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,751,5257,'','".AddSlashes(pg_result($resaco,0,'o53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,751,5258,'','".AddSlashes(pg_result($resaco,0,'o53_codtri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,751,5259,'','".AddSlashes(pg_result($resaco,0,'o53_finali'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,751,1014660,'','".AddSlashes(pg_result($resaco,0,'o53_siconfi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,751,5256,'','".AddSlashes(pg_fetch_result($resaco,0,'o53_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,751,5257,'','".AddSlashes(pg_fetch_result($resaco,0,'o53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,751,5258,'','".AddSlashes(pg_fetch_result($resaco,0,'o53_codtri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,751,5259,'','".AddSlashes(pg_fetch_result($resaco,0,'o53_finali'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,751,1014660,'','".AddSlashes(pg_fetch_result($resaco,0,'o53_siconfi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -187,10 +187,10 @@ class cl_orcsubfuncao
       $this->atualizacampos();
      $sql = " update orcsubfuncao set ";
      $virgula = "";
-     if(trim($this->o53_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o53_subfuncao"])){
+     if(trim((string) $this->o53_subfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o53_subfuncao"])){
        $sql  .= $virgula." o53_subfuncao = $this->o53_subfuncao ";
        $virgula = ",";
-       if(trim($this->o53_subfuncao) == null ){
+       if(trim((string) $this->o53_subfuncao) == null ){
          $this->erro_sql = " Campo Sub Função não informado.";
          $this->erro_campo = "o53_subfuncao";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_orcsubfuncao
          return false;
        }
      }
-     if(trim($this->o53_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o53_descr"])){
+     if(trim((string) $this->o53_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o53_descr"])){
        $sql  .= $virgula." o53_descr = '$this->o53_descr' ";
        $virgula = ",";
-       if(trim($this->o53_descr) == null ){
+       if(trim((string) $this->o53_descr) == null ){
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "o53_descr";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_orcsubfuncao
          return false;
        }
      }
-     if(trim($this->o53_codtri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o53_codtri"])){
+     if(trim((string) $this->o53_codtri)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o53_codtri"])){
        $sql  .= $virgula." o53_codtri = '$this->o53_codtri' ";
        $virgula = ",";
-       if(trim($this->o53_codtri) == null ){
+       if(trim((string) $this->o53_codtri) == null ){
          $this->erro_sql = " Campo Código tribunal não informado.";
          $this->erro_campo = "o53_codtri";
          $this->erro_banco = "";
@@ -226,14 +226,14 @@ class cl_orcsubfuncao
          return false;
        }
      }
-     if(trim($this->o53_finali)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o53_finali"])){
+     if(trim((string) $this->o53_finali)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o53_finali"])){
        $sql  .= $virgula." o53_finali = '$this->o53_finali' ";
        $virgula = ",";
      }
-     if(trim($this->o53_siconfi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o53_siconfi"])){
+     if(trim((string) $this->o53_siconfi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o53_siconfi"])){
        $sql  .= $virgula." o53_siconfi = '$this->o53_siconfi' ";
        $virgula = ",";
-       if(trim($this->o53_siconfi) == null ){
+       if(trim((string) $this->o53_siconfi) == null ){
          $this->erro_sql = " Campo Código Siconfi não informado.";
          $this->erro_campo = "o53_siconfi";
          $this->erro_banco = "";
@@ -257,19 +257,19 @@ class cl_orcsubfuncao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,5256,'$this->o53_subfuncao','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o53_subfuncao"]) || $this->o53_subfuncao != "")
-             $resac = db_query("insert into db_acount values($acount,751,5256,'".AddSlashes(pg_result($resaco,$conresaco,'o53_subfuncao'))."','$this->o53_subfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,751,5256,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o53_subfuncao'))."','$this->o53_subfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o53_descr"]) || $this->o53_descr != "")
-             $resac = db_query("insert into db_acount values($acount,751,5257,'".AddSlashes(pg_result($resaco,$conresaco,'o53_descr'))."','$this->o53_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,751,5257,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o53_descr'))."','$this->o53_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o53_codtri"]) || $this->o53_codtri != "")
-             $resac = db_query("insert into db_acount values($acount,751,5258,'".AddSlashes(pg_result($resaco,$conresaco,'o53_codtri'))."','$this->o53_codtri',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,751,5258,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o53_codtri'))."','$this->o53_codtri',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o53_finali"]) || $this->o53_finali != "")
-             $resac = db_query("insert into db_acount values($acount,751,5259,'".AddSlashes(pg_result($resaco,$conresaco,'o53_finali'))."','$this->o53_finali',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,751,5259,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o53_finali'))."','$this->o53_finali',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o53_siconfi"]) || $this->o53_siconfi != "")
-             $resac = db_query("insert into db_acount values($acount,751,1014660,'".AddSlashes(pg_result($resaco,$conresaco,'o53_siconfi'))."','$this->o53_siconfi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,751,1014660,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o53_siconfi'))."','$this->o53_siconfi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -323,14 +323,14 @@ class cl_orcsubfuncao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,5256,'$o53_subfuncao','E')");
-           $resac  = db_query("insert into db_acount values($acount,751,5256,'','".AddSlashes(pg_result($resaco,$iresaco,'o53_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,751,5257,'','".AddSlashes(pg_result($resaco,$iresaco,'o53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,751,5258,'','".AddSlashes(pg_result($resaco,$iresaco,'o53_codtri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,751,5259,'','".AddSlashes(pg_result($resaco,$iresaco,'o53_finali'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,751,1014660,'','".AddSlashes(pg_result($resaco,$iresaco,'o53_siconfi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,751,5256,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o53_subfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,751,5257,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o53_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,751,5258,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o53_codtri'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,751,5259,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o53_finali'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,751,1014660,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o53_siconfi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -30,7 +30,7 @@ include(modification("libs/db_sql.php"));
 include(modification("classes/db_selecao_classe.php"));
 $clselecao = new cl_selecao;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $head3 = "RELAÇÃO DE CARGOS / PADRÃO";
@@ -42,7 +42,7 @@ if(isset($selec) && $selec != ''){
 }
 $head6 = "";
 $head5 = "";
-if(trim($selecao) != ""){
+if(trim((string) $selecao) != ""){
    $result_selecao = $clselecao->sql_record($clselecao->sql_query_file($selecao,db_getsession("DB_instit")," r44_descr, r44_where "));
   if($clselecao->numrows > 0){
     db_fieldsmemory($result_selecao, 0);
@@ -108,7 +108,7 @@ order by rh37_funcao,r02_codigo,z01_nome;
 //echo $sql ; exit;
 //die ($sql);
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem cálculos para o período de '.$mes.' / '.$ano);
 
@@ -134,7 +134,7 @@ $imp_cab = true;
 $total_sec = 0;
 $total_pad = 0;
 $pre = 1;
-$tot_registros = pg_numrows($result);
+$tot_registros = pg_num_rows($result);
 $x = 0;
 while($x < $tot_registros){
    db_fieldsmemory($result,$x);

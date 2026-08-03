@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_rhpessoalprocessocontrato_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -62,9 +62,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clrhpessoalprocessocontrato->sql_query("",$campos,"rh273_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh273_sequencial)){
-          $repassa = array("chave_rh273_sequencial"=>$chave_rh273_sequencial,"chave_rh273_sequencial"=>$chave_rh273_sequencial);
+          $repassa = ["chave_rh273_sequencial"=>$chave_rh273_sequencial,"chave_rh273_sequencial"=>$chave_rh273_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

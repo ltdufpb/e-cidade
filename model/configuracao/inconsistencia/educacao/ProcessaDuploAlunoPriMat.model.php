@@ -57,7 +57,7 @@ class ProcessaDuploAlunoPriMat implements IExcecaoProcessamentoDependencias {
       $this->sMsgErro  = "Erro ao excluir registro da tabela alunoprimat. ";
       $this->sMsgErro .= "Registro incorréto: {$iChaveIncorreta} \n";
       
-      $this->sMsgErro = utf8_encode($this->sMsgErro);
+      $this->sMsgErro = mb_convert_encoding($this->sMsgErro, 'UTF-8', 'ISO-8859-1');
     }
     return true;
   }

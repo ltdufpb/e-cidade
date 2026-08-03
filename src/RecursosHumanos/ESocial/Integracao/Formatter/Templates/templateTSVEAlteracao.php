@@ -1,94 +1,94 @@
 <?php
 /* S-2306 - Trabalhador Sem Vínculo de Emprego/Estatutário - Alteração */
-return array(
-    'ideTrabSemVinculo' => array(
-        'properties' => array(
+return [
+    'ideTrabSemVinculo' => [
+        'properties' => [
             'cpfTrab',
             'nisTrab',
-            'codCateg' => array(
+            'codCateg' => [
               'type' => 'int'
-            )
-        )
-    ),
-    'infoTSVAlteracao' => array(
-        'properties' => array(
+            ]
+        ]
+    ],
+    'infoTSVAlteracao' => [
+        'properties' => [
             'dtAlteracao',
-            'natAtividade' => array(
+            'natAtividade' => [
                 'type' => 'int'
-            )
-        ),
-        'groups' => array(
-            'infoComplementares' => array(
-                'groups' => array(
-                    'cargoFuncao' => array(
-                        'properties' => array(
+            ]
+        ],
+        'groups' => [
+            'infoComplementares' => [
+                'groups' => [
+                    'cargoFuncao' => [
+                        'properties' => [
                             'codCargo',
                             'codFuncao'
-                        )
-                    ),
-                    'remuneracao' => array(
-                        'properties' => array(
-                            'vrSalFx' => array(
+                        ]
+                    ],
+                    'remuneracao' => [
+                        'properties' => [
+                            'vrSalFx' => [
                                 'type' => 'float'
-                            ),
-                            'undSalFixo' => array(
+                            ],
+                            'undSalFixo' => [
                               'type' => 'int'
-                            ),
+                            ],
                             'dscSalVar'
-                        )
-                    ),
-                    'infoEstagiario' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'infoEstagiario' => [
+                        'properties' => [
                             'natEstagio',
-                            'nivEstagio' => array(
+                            'nivEstagio' => [
                                 'type' => 'int',
-                            ),
+                            ],
                             'areaAtuacao',
                             'nrApol',
-                            'vlrBolsa' => array(
+                            'vlrBolsa' => [
                                 'type' => 'float',
-                            ),
+                            ],
                             'dtPrevTerm'
-                        ),
-                        'groups' => array(
-                            'instEnsino' => array(
-                                'properties' => array(
+                        ],
+                        'groups' => [
+                            'instEnsino' => [
+                                'properties' => [
                                     'instEnsino_cnpjInstEnsino' => 'cnpjInstEnsino',
                                     'instEnsino_nmRazao' => 'nmRazao',
                                     'instEnsino_dscLograd' => 'dscLograd',
                                     'instEnsino_nrLograd' => 'nrLograd',
                                     'instEnsino_bairro' => 'bairro',
                                     'instEnsino_cep' => 'cep',
-                                    'instEnsino_codMunic' => array(
+                                    'instEnsino_codMunic' => [
                                         'nome_api' => 'codMunic'
-                                    ),
+                                    ],
                                     'instEnsino_uf' => 'uf',
-                                )
-                            ),
-                            'ageIntegracao' => array(
-                                'properties' => array(
+                                ]
+                            ],
+                            'ageIntegracao' => [
+                                'properties' => [
                                     'ageIntegracao_cnpjAgntInteg' => 'cnpjAgntInteg',
                                     'ageIntegracao_nmRazao' => 'nmRazao',
                                     'ageIntegracao_dscLograd' => 'dscLograd',
                                     'ageIntegracao_nrLograd' => 'nrLograd',
                                     'ageIntegracao_bairro' => 'bairro',
                                     'ageIntegracao_cep' => 'cep',
-                                    'ageIntegracao_codMunic' => array(
+                                    'ageIntegracao_codMunic' => [
                                         'nome_api' => 'codMunic'
-                                    ),
+                                    ],
                                     'ageIntegracao_uf' => 'uf',
-                                )
-                            ),
-                            'supervisorEstagio' => array(
-                                'properties' => array(
+                                ]
+                            ],
+                            'supervisorEstagio' => [
+                                'properties' => [
                                     'cpfSupervisor',
                                     'nmSuperv'
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-    )
-);
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

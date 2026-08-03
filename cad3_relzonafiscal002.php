@@ -40,9 +40,9 @@ $oGet    = db_utils::postMemory($_GET);
 $iAnousu = $oGet->anousu;
 
 $oPdfTable      = new PDFTable(PDFDocument::PRINT_LANDSCAPE);
-$aCabecalho     = array( "Código", "Descrição", " Valor do Terreno (m²)" );
-$aLarguraColuna = array( 10, 43, 20 );
-$aLinhamento    = array( PDFDocument::ALIGN_CENTER, PDFDocument::ALIGN_LEFT, PDFDocument::ALIGN_RIGHT );
+$aCabecalho     = [ "Código", "Descrição", " Valor do Terreno (m²)" ];
+$aLarguraColuna = [ 10, 43, 20 ];
+$aLinhamento    = [ PDFDocument::ALIGN_CENTER, PDFDocument::ALIGN_LEFT, PDFDocument::ALIGN_RIGHT ];
 
 $oPdfTable->setTotalByPage(true);
 $oPdfTable->setPercentWidth(true);
@@ -68,11 +68,11 @@ if( $rsZonasValor ){
     $oZonasValor = db_utils::fieldsMemory($rsZonasValor, $iRow);
 
     $oPdfTable->addLineInformation(
-      array(
+      [
         $oZonasValor->j50_zona,
         $oZonasValor->j50_descr,
         trim(db_formatar($oZonasValor->j51_valorm2t,'f'))
-      )
+      ]
     );
   }
 }

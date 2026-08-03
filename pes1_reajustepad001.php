@@ -48,17 +48,17 @@ $clpadroes = new cl_padroes;
 $clpesdiver = new cl_pesdiver;
 $aux = new cl_arquivo_auxiliar;
 $clrotulo = new rotulocampo;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 if(isset($incluir)){
   db_inicio_transacao();
   $sqlerro = false;
   $dbwhere = " r02_anousu = ".$anofolha." and r02_mesusu = ".$mesfolha." and r02_instit = ".db_getsession("DB_instit")." " ;
   if(isset($matini) || isset($matfim)){
-    if(trim($matini) != "" && trim($matfim) != ""){
+    if(trim((string) $matini) != "" && trim((string) $matfim) != ""){
       $dbwhere.= " and rh02_regist between ".$matini." and ".$matfim; 
-    }else if(trim($matini) != ""){
+    }else if(trim((string) $matini) != ""){
       $dbwhere.= " and rh02_regist >= ".$matini; 
-    }else if(trim($matfim) != ""){
+    }else if(trim((string) $matfim) != ""){
       $dbwhere.= " and rh02_regist <= ".$matfim; 
     }
   }
@@ -72,11 +72,11 @@ if(isset($incluir)){
     }
   }
   if(isset($lotini) || isset($lotfim)){
-    if(trim($lotini) != "" && trim($lotfim) != ""){
+    if(trim((string) $lotini) != "" && trim((string) $lotfim) != ""){
       $dbwhere.= " and r70_estrut between '".$lotini."' and '".$lotfim."' "; 
-    }else if(trim($lotini) != ""){
+    }else if(trim((string) $lotini) != ""){
       $dbwhere.= " and r70_estrut >= '".$lotini."' ";
-    }else if(trim($lotfim) != ""){
+    }else if(trim((string) $lotfim) != ""){
       $dbwhere.= " and r70_estrut <= '".$lotfim."' ";
     }
   }
@@ -110,8 +110,8 @@ if(isset($incluir)){
         $r02_valor += ($r02_valor * ($rh02_salari / 100));
         $valorpadrao = "round($r02_valor, 2)";
         $alterar_padrao = true;
-      }else if($lancar == "f" && trim($r02_form) != ""){
-        $formpesdiver = explode("D",$r02_form);
+      }else if($lancar == "f" && trim((string) $r02_form) != ""){
+        $formpesdiver = explode("D",(string) $r02_form);
         for($ii=1; $ii<count($formpesdiver); $ii++){
           $coddiver = "D".substr($formpesdiver[$ii],0,3);
           $result_diverso = $clpesdiver->sql_record($clpesdiver->sql_query_file(db_anofolha(),db_mesfolha(),$coddiver,db_getsession("DB_instit"),"r07_valor"));

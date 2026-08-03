@@ -38,7 +38,7 @@ $clextrato = new cl_extrato;
   /*
 $clextratolinha = new cl_extratolinha;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 

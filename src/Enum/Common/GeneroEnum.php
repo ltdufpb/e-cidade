@@ -18,10 +18,10 @@ class GeneroEnum extends Enum
      */
     public function name()
     {
-        $data = array(
+        $data = [
             self::MASCULINO => 'Masculino',
             self::FEMININO => 'Feminino'
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Tipo de genero não encontrado.');

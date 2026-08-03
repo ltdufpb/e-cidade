@@ -6,16 +6,16 @@ use ECidade\Tributario\Library\Entity;
 
 final class Face extends Entity
 {
-    const OUTRAS_INFORMACOES                = 'OUTRASINFORMACOES';
-    const CODIGO_CGM                        = 'CODIGOCGM';
-    const FRACAO_LOTE                       = 'FRACAOLOTE';
-    const CEP_IMOVEL                        = 'CEPIMOVEL';
-    const MUNICIPIO_IMOVEL                  = 'MUNICIPIOIMOVEL';
-    const UF_IMOVEL                         = 'UFIMOVEL';
-    const MENSAGEM_DEBITOS_ANOS_ANTERIORES  = 'MENSAGEMDEBITOSANOSANTERIORES';
-    const NOME_BAIRRO                       = 'NOMEBAIRRO';
-    const CODIGO_ISENCAO                    = 'CODIGOISENCAO';
-    const CODIGO_TIPO_ISENCAO               = 'CODIGOTIPOISENCAO';
+    const string OUTRAS_INFORMACOES                = 'OUTRASINFORMACOES';
+    const string CODIGO_CGM                        = 'CODIGOCGM';
+    const string FRACAO_LOTE                       = 'FRACAOLOTE';
+    const string CEP_IMOVEL                        = 'CEPIMOVEL';
+    const string MUNICIPIO_IMOVEL                  = 'MUNICIPIOIMOVEL';
+    const string UF_IMOVEL                         = 'UFIMOVEL';
+    const string MENSAGEM_DEBITOS_ANOS_ANTERIORES  = 'MENSAGEMDEBITOSANOSANTERIORES';
+    const string NOME_BAIRRO                       = 'NOMEBAIRRO';
+    const string CODIGO_ISENCAO                    = 'CODIGOISENCAO';
+    const string CODIGO_TIPO_ISENCAO               = 'CODIGOTIPOISENCAO';
     
     /**
      * @var string|null OUTRAS INFORMACOES DA FACE

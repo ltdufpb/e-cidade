@@ -58,7 +58,7 @@ if ($db_opcao == 1) {
                 <td title="<?php echo $Tx40_dtinc ?: ''; ?>">
                     <label for="x40_dtinc"><?php echo $Lx40_dtinc ?: ''; ?></label>
                 </td>
-                <td><?php db_inputdata('x40_dtinc', isset($x40_dtinc_dia) ? $x40_dtinc_dia : '', isset($x40_dtinc_mes) ? $x40_dtinc_mes : '', isset($x40_dtinc_ano) ? $x40_dtinc_ano : '', true, 'text', $db_opcao, ''); ?></td>
+                <td><?php db_inputdata('x40_dtinc', $x40_dtinc_dia ?? '', $x40_dtinc_mes ?? '', $x40_dtinc_ano ?? '', true, 'text', $db_opcao, ''); ?></td>
             </tr>
             <tr>
                 <td title="<?php echo $Tx40_anoini ?: ''; ?>">
@@ -118,7 +118,7 @@ if ($db_opcao == 1) {
                 <td>
                     <?php
                         $dbopcao = $db_opcao == 22 || $db_opcao == 2 ? 3 : $db_opcao;
-                          $aAcoes = array('1' => 'Todos', '2' => 'Territoriais', '3' => 'Prediais');
+                          $aAcoes = ['1' => 'Todos', '2' => 'Territoriais', '3' => 'Prediais'];
                           db_select('x40_tipomatricula', $aAcoes, true, $dbopcao, '', '', '', 'width: 95px;');
                         ?>
                 </td>
@@ -259,7 +259,7 @@ if ($db_opcao == 1) {
         db_iframe_aguacorte.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

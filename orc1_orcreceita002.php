@@ -39,7 +39,7 @@ require_once(modification("classes/db_conplanoorcamentoanalitica_classe.php"));
 require_once(modification("classes/db_orcreceita_classe.php"));
 require_once(modification("classes/db_orcparametro_classe.php"));
 require_once(modification("classes/db_orcfontes_classe.php"));
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clconplanoorcamentoanalitica = new cl_conplanoorcamentoanalitica;
@@ -92,8 +92,8 @@ try {
                 $msg = "O código da fonte já está cadastrado para o ano: {$ano}!\n Código Reduzido: {$codrec}";
                 throw new Exception($msg);
             }
-            $unidade = substr($unidadeOrcamentaria, 2, strlen($unidadeOrcamentaria) - 1);
-            $orgao = substr($unidadeOrcamentaria, 0, 2);
+            $unidade = substr((string) $unidadeOrcamentaria, 2, strlen((string) $unidadeOrcamentaria) - 1);
+            $orgao = substr((string) $unidadeOrcamentaria, 0, 2);
 
             $clorcreceita->o70_orcunidade = $unidade;
             $clorcreceita->o70_orcorgao = $orgao;
@@ -145,8 +145,8 @@ try {
             db_fieldsmemory($result, 0);
 
             if (!empty($o70_orcorgao)) {
-                $unidadeOrcamentaria = str_pad($o70_orcorgao, 2, "0", STR_PAD_LEFT);
-                $unidadeOrcamentaria .= str_pad($o70_orcunidade, 2, "0", STR_PAD_LEFT);
+                $unidadeOrcamentaria = str_pad((string) $o70_orcorgao, 2, "0", STR_PAD_LEFT);
+                $unidadeOrcamentaria .= str_pad((string) $o70_orcunidade, 2, "0", STR_PAD_LEFT);
                 $unidadeOrcamentariaDescricao = $o41_descr;
             }
             $sql = $clorcfontes->sql_query_file(

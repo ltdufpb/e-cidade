@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_carzonafator_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcarzonafator = new cl_carzonafator;
 $clcarzonafator->rotulo->label("j96_sequencial");
 ?>
@@ -87,9 +87,9 @@ $clcarzonafator->rotulo->label("j96_sequencial");
         }else{
            $sql = $clcarzonafator->sql_query("",$campos,"j96_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j96_sequencial)){
-          $repassa = array("chave_j96_sequencial"=>$chave_j96_sequencial);
+          $repassa = ["chave_j96_sequencial"=>$chave_j96_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

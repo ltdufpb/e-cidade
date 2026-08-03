@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_matmater_classe.php"));
 
 db_postmemory($_POST);
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $iModulo = db_getsession( "DB_modulo" );
 
@@ -88,7 +88,7 @@ $Lm60_codmater = "<b>Código do Material:</b>";
   <tr>
     <td align="center" valign="top">
       <?php
-      $aWhere = array();
+      $aWhere = [];
 
       if( $iModulo == 1000004  ) {
         $aWhere[] = "exists( select 1 from far_matersaude where far_matersaude.fa01_i_codmater = m60_codmater )";
@@ -134,7 +134,7 @@ $Lm60_codmater = "<b>Código do Material:</b>";
           if( $clmatmater->numrows != 0 ) {
 
             db_fieldsmemory( $result, 0 );
-            $m60_descr = addslashes( $m60_descr );
+            $m60_descr = addslashes( (string) $m60_descr );
             echo "<script>".$funcao_js."('".substr($m60_descr,0,40)."',false, '$m61_descr');</script>";
           }else{
 	         echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado', true);</script>";

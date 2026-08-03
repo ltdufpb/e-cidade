@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-	 $clcriaabas->identifica = array("emppresta"=>"Prestação","empprestaitem"=>"Itens","encerra"=>"Encerra");
-	 $clcriaabas->src        = array("emppresta"=>"emp1_emppresta009.php");
-	 $clcriaabas->disabled   =  array("empprestaitem"=>"true","encerra"=>true);
+	 $clcriaabas->identifica = ["emppresta"=>"Prestação","empprestaitem"=>"Itens","encerra"=>"Encerra"];
+	 $clcriaabas->src        = ["emppresta"=>"emp1_emppresta009.php"];
+	 $clcriaabas->disabled   =  ["empprestaitem"=>"true","encerra"=>true];
 	 $clcriaabas->cria_abas();
        ?>
        </td>

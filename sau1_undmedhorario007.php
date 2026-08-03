@@ -43,8 +43,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_sau_motivo_ausencia_classe.php"));
 $clmotivo_ausencia = new cl_sau_motivo_ausencia;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 //$clmedicos                = new cl_medicos;
@@ -76,13 +76,13 @@ if(isset($incluir)||isset($alterar)){
 
   $db_opcao = isset($alterar)?2:$db_opcao;	
   $db_opcao2 = isset($alterar)?22:$db_opcao;	
-  $inicio_ano = substr( $sd06_d_inicio, 6, 4 );
-  $inicio_mes = substr( $sd06_d_inicio, 3, 2 );
-  $inicio_dia = substr( $sd06_d_inicio, 0, 2 );
+  $inicio_ano = substr( (string) $sd06_d_inicio, 6, 4 );
+  $inicio_mes = substr( (string) $sd06_d_inicio, 3, 2 );
+  $inicio_dia = substr( (string) $sd06_d_inicio, 0, 2 );
 
-  $fim_ano = substr( $sd06_d_fim, 6, 4 );
-  $fim_mes = substr( $sd06_d_fim, 3, 2 );
-  $fim_dia = substr( $sd06_d_fim, 0, 2 );
+  $fim_ano = substr( (string) $sd06_d_fim, 6, 4 );
+  $fim_mes = substr( (string) $sd06_d_fim, 3, 2 );
+  $fim_dia = substr( (string) $sd06_d_fim, 0, 2 );
 
   $sWhere  = "sd27_i_codigo = $sd06_i_especmed ";
   $sWhere .= "and sd23_d_consulta between '$inicio_ano/$inicio_mes/$inicio_dia' and '$fim_ano/$fim_mes/$fim_dia' ";
@@ -93,12 +93,12 @@ if(isset($incluir)||isset($alterar)){
   $rsAgendamentos = $clagendamentos->sql_record($sSql);
   
   $iDias          = quantDias($sd06_d_inicio,$sd06_d_fim)+1;
-  $aVet           = explode("/",$sd06_d_inicio);
+  $aVet           = explode("/",(string) $sd06_d_inicio);
   $dInicio        = $aVet[2].'-'.$aVet[1].'-'.$aVet[0];
   $lLibera        = true;
   for($iY=0;$iY < $iDias;$iY++){
 
-    $aFichas = array();
+    $aFichas = [];
     for($iX=0; $iX < $clagendamentos->numrows; $iX++){
 
       $oAgendamentos = db_utils::fieldsmemory($rsAgendamentos,$iX);
@@ -139,12 +139,12 @@ if(isset($incluir)||isset($alterar)){
         if (isset($sd06_c_horafim) && $sd06_c_horafim != "") {
           $sFim = $sd06_c_horafim;
         }
-        $aIni = explode(':',$sIni);
-        $aFim = explode(':',$sFim);
+        $aIni = explode(':',(string) $sIni);
+        $aFim = explode(':',(string) $sFim);
         $iMinutosParalizados = (((int)$aFim[0]*60)+(int)$aFim[1])-(((int)$aIni[0]*60)+(int)$aIni[1]);
         //Minutos da grade
-        $aIni              = explode(':',$aFichas[$iZ]["horaini"]);
-        $aFim              = explode(':',$aFichas[$iZ]["horafim"]);
+        $aIni              = explode(':',(string) $aFichas[$iZ]["horaini"]);
+        $aFim              = explode(':',(string) $aFichas[$iZ]["horafim"]);
         $iMinutosDaGrade   = (((int)$aFim[0]*60)+(int)$aFim[1])-(((int)$aIni[0]*60)+(int)$aIni[1]);
         if ($aFichas[$iZ]["tipo"] == "P") {
 
@@ -171,10 +171,10 @@ if(isset($incluir)||isset($alterar)){
             //tempo em minutos do fim da consulta
             $iMinutosFimConsulta = $iMinutosIniConsulta+$MinutosPorFicha;
             //tempo em minutos do inicio da paralização 
-            $aVet = explode(':',$sIni);
+            $aVet = explode(':',(string) $sIni);
             $iMinutosIniParalizacao = (((int)$aVet[0]*60)+(int)$aVet[1]);
             //tempo em minutos do fim da paralização
-            $aVet = explode(':',$sFim);
+            $aVet = explode(':',(string) $sFim);
             $iMinutosFimParalizacao = (((int)$aVet[0]*60)+(int)$aVet[1]);
             //verificar se há intercecção entre os tempos
             //echo"Consulta = $iMinutosIniConsulta - $iMinutosFimConsulta |".

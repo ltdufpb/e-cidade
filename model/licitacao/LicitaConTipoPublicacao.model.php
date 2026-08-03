@@ -27,7 +27,7 @@
 
 class LicitaConTipoPublicacao {
 
-  public static $aTipos = array(
+  public static $aTipos = [
     EventoLicitacao::PUBLICACAO_DIARIO_ESTADO         => EventoLicitacao::SIGLA_PUBLICACAO_DIARIO_ESTADO,
     EventoLicitacao::PUBLICACAO_INTERNET              => EventoLicitacao::SIGLA_PUBLICACAO_INTERNET,
     EventoLicitacao::PUBLICACAO_JORNAL                => EventoLicitacao::SIGLA_PUBLICACAO_JORNAL,
@@ -38,7 +38,7 @@ class LicitaConTipoPublicacao {
     EventoLicitacao::PUBLICACAO_NAO_PUBLICADO         => EventoLicitacao::SIGLA_PUBLICACAO_NAO_PUBLICADO,
     EventoLicitacao::PUBLICACAO_SITE_OFICIAL          => EventoLicitacao::SIGLA_PUBLICACAO_SITE_OFICIAL,
     EventoLicitacao::PUBLICACAO_CONTRATACOES_PUBLICAS => EventoLicitacao::SIGLA_PUBLICACAO_CONTRATACOES_PUBLICAS,
-  );
+  ];
 
   /**
    * Retorna a sigla do tipo de publicação equivalente ao código númerico
@@ -47,7 +47,7 @@ class LicitaConTipoPublicacao {
    * @return string
    */
   public static function getSigla($iTipo) {
-    return isset(self::$aTipos[$iTipo]) ? self::$aTipos[$iTipo] : null;
+    return self::$aTipos[$iTipo] ?? null;
   }
 
 }

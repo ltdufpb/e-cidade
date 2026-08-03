@@ -184,10 +184,10 @@ $oPdf->Cell(190, $iAltCell,  '', 'T', 1,  "R", 0);
 $oPdf->ln();
 //==============================================================================================
 
-if (in_array($oGet->periodo, array(11, 13))) {
+if (in_array($oGet->periodo, [11, 13])) {
   imprimirCabecalhoDespesaSaudeUltimoPeriodo($oPdf, $iAltCell, true, $oGet->periodo);
 } else {
-  imprimeTerceiroCabecalho($oPdf, $iAltCell, true, $oGet->periodo);
+  imprimeTerceiroCabecalho($oPdf, $iAltCell, true);
 }
 for ($iLinhaPrimeiroCabecalho = 29; $iLinhaPrimeiroCabecalho <= 37; $iLinhaPrimeiroCabecalho++) {
 
@@ -216,7 +216,7 @@ for ($iLinhaPrimeiroCabecalho = 29; $iLinhaPrimeiroCabecalho <= 37; $iLinhaPrime
   $oPdf->Cell(70, $iAltCell, $sDescricao           , 'R'.$sTopo, 0, "L", 0);
   $oPdf->Cell(20, $iAltCell, $nDot_ini             , 'R'.$sTopo, 0, "R", 0);
   $oPdf->Cell(20, $iAltCell, $nDot_atual           , 'R'.$sTopo, 0, "R", 0);
-  if (!in_array($oGet->periodo, array(11, 13))) {
+  if (!in_array($oGet->periodo, [11, 13])) {
 
     $oPdf->Cell(20, $iAltCell, $nEmp_atebim, 'R' . $sTopo, 0, "R", 0);
     $oPdf->Cell(20, $iAltCell, $nPercentualEmpenhado, 'R' . $sTopo, 0, "R", 0);
@@ -239,8 +239,8 @@ imprimeInfoProxPagina($oPdf, $iAltCell, 6);
 
 //=================================================QUEBRA PAGINA ==============================
 
-if (in_array($oGet->periodo, array(11, 13))) {
-  imprimirCabecalhoDespesaSaudeNaoComputadasUltimoPeriodo($oPdf, $iAltCell, true, $oGet->periodo);
+if (in_array($oGet->periodo, [11, 13])) {
+  imprimirCabecalhoDespesaSaudeNaoComputadasUltimoPeriodo($oPdf, $iAltCell, true);
 } else {
   imprimeQuartoCabecalho($oPdf, $iAltCell, true);
 }
@@ -288,7 +288,7 @@ for ($iLinhaPrimeiroCabecalho = 38; $iLinhaPrimeiroCabecalho <= 49; $iLinhaPrime
   $oPdf->SetXY(100, $iPosYAntes );
   $oPdf->Line(120, $iPosYAtual, 120, $oPdf->getY());
   $oPdf->multicell(20, $iAltCell, $nDot_atual, "LR".$sTopo, "R", 0);
-  if (!in_array($oGet->periodo, array(11, 13))) {
+  if (!in_array($oGet->periodo, [11, 13])) {
 
     $oPdf->SetXY(120, $iPosYAntes);
     $oPdf->Line(140, $iPosYAtual, 140, $oPdf->getY());
@@ -305,7 +305,7 @@ for ($iLinhaPrimeiroCabecalho = 38; $iLinhaPrimeiroCabecalho <= 49; $iLinhaPrime
   } else {
 
     $oPdf->SetXY(120, $iPosYAntes);
-    if (in_array($iLinhaPrimeiroCabecalho, array(48, 49))) {
+    if (in_array($iLinhaPrimeiroCabecalho, [48, 49])) {
 
       $oPdf->Line(177, $iPosYAtual, 177, $oPdf->getY());
       $oPdf->multicell(57, $iAltCell, $nTotalLiquidacoes, "LR" . $sTopo, "R", 0);
@@ -418,7 +418,7 @@ for ($iLinhaPrimeiroCabecalho = 58; $iLinhaPrimeiroCabecalho <= 61; $iLinhaPrime
 $oPdf->Cell(190, $iAltCell,  '', 'T', 1,  "R", 0);
 $oPdf->ln();
 
-if (in_array($oGet->periodo, array(11, 13))) {
+if (in_array($oGet->periodo, [11, 13])) {
   imprimirDespesasPorSubfuncaoUltimoPeriodo($oPdf, $iAltCell, true);
 } else {
   imprimeDecimoCabecalho($oPdf, $iAltCell, true);
@@ -451,7 +451,7 @@ for ($iLinhaPrimeiroCabecalho = 62; $iLinhaPrimeiroCabecalho <= 69; $iLinhaPrime
   $oPdf->Cell(70, $iAltCell, $sDescricao           , 'R'.$sTopo, 0, "L", 0);
   $oPdf->Cell(20, $iAltCell, $nDot_ini             , 'R'.$sTopo, 0, "R", 0);
   $oPdf->Cell(20, $iAltCell, $nDot_atual           , 'R'.$sTopo, 0, "R", 0);
-  if (!in_array($oGet->periodo, array(11, 13))) {
+  if (!in_array($oGet->periodo, [11, 13])) {
 
     $oPdf->Cell(20, $iAltCell, $nEmp_atebim, 'R' . $sTopo, 0, "R", 0);
     $oPdf->Cell(20, $iAltCell, $nPercentualEmpenhado, 'R' . $sTopo, 0, "R", 0);

@@ -52,7 +52,7 @@ class LoteConLicitaCon extends ArquivoLicitaCon
      */
     public static function getItens($sCampos, $sWhere = null, $sGroupBy = null, $sOrderBy = 'l20_codigo')
     {
-        $aSql = array(
+        $aSql = [
           "select {$sCampos}",
           'from acordo',
           'inner join acordoposicao        on ac26_acordo              = ac16_sequencial',
@@ -69,7 +69,7 @@ class LoteConLicitaCon extends ArquivoLicitaCon
           'inner join cflicita             on l20_codtipocom           = l03_codigo',
           'inner join pctipocompratribunal on l03_pctipocompratribunal = l44_sequencial',
           'left join acordoencerramentolicitacon on ac58_acordo       = ac16_sequencial'
-        );
+        ];
 
         if ($sWhere) {
             $aSql[] = "where {$sWhere}";
@@ -104,7 +104,7 @@ class LoteConLicitaCon extends ArquivoLicitaCon
      */
     private function getItensProcessoCompras($sCampos, $sWhere = null, $sGroupBy = null, $sOrderBy = null)
     {
-        $aSql = array(
+        $aSql = [
           "select {$sCampos}",
           "from acordo",
           "inner join acordoposicao                  on ac26_acordo                          = ac16_sequencial",
@@ -121,7 +121,7 @@ class LoteConLicitaCon extends ArquivoLicitaCon
           "inner join cflicita                       on l20_codtipocom                       = l03_codigo",
           "inner join pctipocompratribunal           on l03_pctipocompratribunal             = l44_sequencial",
           "left join acordoencerramentolicitacon     on ac58_acordo                          = ac16_sequencial",
-        );
+        ];
 
         if ($sWhere) {
             $aSql[] = "where {$sWhere}";
@@ -150,7 +150,7 @@ class LoteConLicitaCon extends ArquivoLicitaCon
      */
     public function getDados()
     {
-        $sCampos = implode(', ', array(
+        $sCampos = implode(', ', [
           'distinct l20_codigo as codigo_licitacao',
           'l20_numero as nr_licitacao',
           'l20_anousu as ano_licitacao',
@@ -163,10 +163,10 @@ class LoteConLicitaCon extends ArquivoLicitaCon
           '(select min(coalesce(case when l20_tipojulg in(1,2) then 1 else l04_codigo end, 1))) as nr_lote',
           '(case when l20_tipojulg in(1,2) then null else l04_descricao end) as ds_lote',
           'ac16_origem',
-        ));
+        ]);
 
         $sCamposProcessoCompras = "{$sCampos}, ac16_valor as vl_lote";
-        $sGroupBy = implode(', ', array(
+        $sGroupBy = implode(', ', [
           'l20_codigo',
           'l20_numero',
           'l20_anousu',
@@ -178,23 +178,23 @@ class LoteConLicitaCon extends ArquivoLicitaCon
           'ac16_anousu',
           'ac16_tipoinstrumento',
           'ac16_origem',
-        ));
+        ]);
 
         $sDataAtual = $this->oCabecalho->getDataGeracao()->getDate();
-        $aWherePadrao = array(
+        $aWherePadrao = [
           "(ac58_acordo is null or ac58_data >= '{$sDataAtual}')",
           "ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()}",
           "ac16_dataassinatura >= '2016-05-02'"
-        );
+        ];
 
-        $aWhereItensLicitacao = array(
+        $aWhereItensLicitacao = [
           'ac16_origem in (' . Acordo::ORIGEM_LICITACAO . ',' . Acordo::ORIGEM_MANUAL . ')'
-        );
+        ];
 
-        $aWhereItensProcessoCompras = array(
+        $aWhereItensProcessoCompras = [
           'ac16_origem = ' . Acordo::ORIGEM_PROCESSO_COMPRAS,
           'ac26_acordoposicaotipo = 1'
-        );
+        ];
 
         $sWhereItensLicitacao = implode(' and ', array_merge($aWherePadrao, $aWhereItensLicitacao));
         $sWhereItensProcessCompras = implode(' and ', array_merge($aWherePadrao, $aWhereItensProcessoCompras));
@@ -222,7 +222,7 @@ class LoteConLicitaCon extends ArquivoLicitaCon
     {
         $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
 
-        $aLinhas = array();
+        $aLinhas = [];
         $iQuantidadeItens = pg_num_rows($rsItens);
 
         for ($iItem = 0; $iItem < $iQuantidadeItens; $iItem++) {
@@ -240,12 +240,12 @@ class LoteConLicitaCon extends ArquivoLicitaCon
 
             if ($oStdItem->tipo_julgamento == licitacao::TIPO_JULGAMENTO_POR_LOTE) {
                 $oDaoLicitacao = new cl_liclicita;
-                $aCampos = array(
+                $aCampos = [
                     'distinct l20_codigo',
                     'l20_tipojulg as tipo_julgamento',
                     "min(coalesce(l04_codigo)) as nr_lote",
                     "l04_descricao as ds_lote",
-                );
+                ];
                 $aWhere = LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(),
                     $this->oCabecalho->getDataGeracao());
                 $aWhere .= ' and l20_tipojulg = 3';

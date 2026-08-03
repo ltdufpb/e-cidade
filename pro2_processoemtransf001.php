@@ -109,7 +109,7 @@ $db_opcao = 1;
                     <td>
                         <?php 
                         $listar = 1; // Por padrão Listar Ativos
-                        $x = array("1"=>"Usuário/Departamento que Receberá","2"=>"Usuário/Departamento que Enviou");
+                        $x = ["1"=>"Usuário/Departamento que Receberá","2"=>"Usuário/Departamento que Enviou"];
                         db_select('listar',$x,true,$db_opcao,"");
                         ?>
                     <td>

@@ -39,13 +39,13 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('libs/db_app.utils.php');
 require_once modification('libs/db_libdicionario.php');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -170,7 +170,7 @@ if (isset($incluir) && !$lErro) {
   }
 
   if($sqlerro == false){
-    if(trim($rh21_regpri)!=""){
+    if(trim((string) $rh21_regpri)!=""){
       $clrhpesorigem->incluir($rh02_regist);
       if($clrhpesorigem->erro_status==0){
         $erro_msg = $clrhpesorigem->erro_msg;
@@ -201,7 +201,7 @@ if (isset($incluir) && !$lErro) {
 
     if($sqlerro == false) {
 
-      if(trim($rh05_recis_dia)!="" && trim($rh05_recis_mes)!="" && trim($rh05_recis_ano)!=""){
+      if(trim((string) $rh05_recis_dia)!="" && trim($rh05_recis_mes)!="" && trim((string) $rh05_recis_ano)!=""){
         $clrhpesrescisao->rh05_seqpes = $rh02_seqpes;
         $clrhpesrescisao->incluir($rh02_regist);
 
@@ -230,7 +230,7 @@ if (isset($incluir) && !$lErro) {
   }
 
   if($sqlerro == false){
-    if(trim($rh03_padrao) != ""){
+    if(trim((string) $rh03_padrao) != ""){
       $clrhpespadrao->rh03_anousu     = $rh02_anousu;
       $clrhpespadrao->rh03_mesusu     = $rh02_mesusu;
       $clrhpespadrao->rh03_padrao     = $rh03_padrao;
@@ -245,7 +245,7 @@ if (isset($incluir) && !$lErro) {
   }
 
   if($sqlerro == false){
-    if(trim($rh20_cargo) != ""){
+    if(trim((string) $rh20_cargo) != ""){
       $clrhpescargo->rh20_instit = db_getsession("DB_instit");
       $clrhpescargo->rh20_cargo = $rh20_cargo;
       $clrhpescargo->incluir($rh02_seqpes);
@@ -257,7 +257,7 @@ if (isset($incluir) && !$lErro) {
   }
 
   if($sqlerro == false){
-    if(trim($rh19_propi) != ""){
+    if(trim((string) $rh19_propi) != ""){
       $clrhpesprop->rh19_propi = $rh19_propi;
       $clrhpesprop->incluir($rh02_regist);
       if($clrhpesprop->erro_status==0){
@@ -271,7 +271,7 @@ if (isset($incluir) && !$lErro) {
 
     $oServidor      = ServidorRepository::getInstanciaByCodigo($rh02_regist, $rh02_anousu, $rh02_mesusu);
 
-    if(trim($inputCodigoBanco) != ""){
+    if(trim((string) $inputCodigoBanco) != ""){
       try {
         $oContaBancaria = $oServidor->getContaBancaria();
         if ( $inputSequencialConta != "" ) {
@@ -287,7 +287,7 @@ if (isset($incluir) && !$lErro) {
         $oContaBancaria->setTipoConta($cboTipoConta);
         $oContaBancaria->salvar();
 
-      } catch ( Exception $oException ) {
+      } catch ( Exception ) {
 
         $erro_msg = "Erro ao Cadastrar dados bancários do Servidor";
         $sqlerro  = true;
@@ -355,7 +355,7 @@ if (isset($incluir) && !$lErro) {
       $alteracao = true;
     }
 
-    $salarioExplode = explode('.', $rh02_salari);
+    $salarioExplode = explode('.', (string) $rh02_salari);
     if (
       ($oServidor->getISalario() !=='0' || $salarioExplode[0])
       || ($oServidor->getISalario() !== $salarioExplode[0])) {
@@ -459,7 +459,7 @@ if (isset($incluir) && !$lErro) {
       }
   }
 
-  if (in_array(@$rh261_ressarcimento, array ('A', 'C'))) {
+  if (in_array(@$rh261_ressarcimento,  ['A', 'C'])) {
     if ($rh261_onus === 'X' || $rh261_ressarcimento === 'X') {
         $erro_msg = 'Quando o Tipo da Cedência for Adido ou Cedido os dados de Ônus e Ressarcimento não podem ser "Não se aplica."';
         $sqlerro=true;
@@ -478,7 +478,7 @@ if (isset($incluir) && !$lErro) {
   }
 
   if($sqlerro == false){
-    if(trim($rh21_regpri)!=""){
+    if(trim((string) $rh21_regpri)!=""){
       $result_origem = $clrhpesorigem->sql_record($clrhpesorigem->sql_query_file($rh02_regist));
       if($clrhpesorigem->numrows > 0){
         $clrhpesorigem->rh21_regist = $rh02_regist;
@@ -505,7 +505,7 @@ if (isset($incluir) && !$lErro) {
   }
 
   if($sqlerro == false){
-    if(trim($rh20_cargo) != ""){
+    if(trim((string) $rh20_cargo) != ""){
       $clrhpescargo->rh20_instit = db_getsession('DB_instit');
       $clrhpescargo->rh20_cargo = $rh20_cargo;
       $clrhpescargo->incluir($rh02_seqpes);
@@ -518,7 +518,7 @@ if (isset($incluir) && !$lErro) {
 
   if($sqlerro==false){
 
-    if(trim($inputCodigoBanco) != ""){
+    if(trim((string) $inputCodigoBanco) != ""){
 
       try {
 
@@ -549,7 +549,7 @@ if (isset($incluir) && !$lErro) {
       }
     }
 
-    if (trim($inputCodigoBanco) == "") {
+    if (trim((string) $inputCodigoBanco) == "") {
 
         $oDaoRhPessoalMovContaBancaria = db_utils::getDao('rhpessoalmovcontabancaria');
         $sSqlRhPessoalMovContaBancaria = $oDaoRhPessoalMovContaBancaria->sql_query(null, 'rh138_sequencial', null, "rh02_regist = {$rh02_regist}");
@@ -578,7 +578,7 @@ if (isset($incluir) && !$lErro) {
 
     if($sqlerro == false) {
 
-      if(trim($rh05_recis_dia)!="" && trim($rh05_recis_mes)!="" && trim($rh05_recis_ano)!=""){
+      if(trim((string) $rh05_recis_dia)!="" && trim($rh05_recis_mes)!="" && trim((string) $rh05_recis_ano)!=""){
 
         $sCamposPensao = "distinct(r52_regist+r52_numcgm), r52_regist, r52_numcgm";
         $sWherePensao  = " r52_anousu = " . db_anofolha() . " and r52_mesusu = " . db_mesfolha();
@@ -702,7 +702,7 @@ if (isset($incluir) && !$lErro) {
   }
 
   if($sqlerro == false){
-    if(trim($rh03_padrao) != ""){
+    if(trim((string) $rh03_padrao) != ""){
       $result_testa = $clrhpespadrao->sql_record($clrhpespadrao->sql_query_file($rh02_seqpes));
       if($clrhpespadrao->numrows == 0){
         $clrhpespadrao->rh03_anousu     = $rh02_anousu;
@@ -730,7 +730,7 @@ if (isset($incluir) && !$lErro) {
   }
 
   if($sqlerro == false){
-    if(trim($rh19_propi) != ""){
+    if(trim((string) $rh19_propi) != ""){
       $result_propi = $clrhpesprop->sql_record($clrhpesprop->sql_query_file($rh02_regist));
       $clrhpesprop->rh19_regist = $rh02_regist;
       $clrhpesprop->rh19_propi = $rh19_propi;
@@ -859,7 +859,7 @@ if(isset($rh02_regist)){
     $result_rescisao = $clrhpesrescisao->sql_record($clrhpesrescisao->sql_query_file($rh02_seqpes));
     if($clrhpesrescisao->numrows > 0){
       db_fieldsmemory($result_rescisao,0);
-      if(trim($rh30_regime) != ""){
+      if(trim((string) $rh30_regime) != ""){
         $result_descricoes = $clrescisao->sql_record($clrescisao->sql_query_file($rh02_anousu,$rh02_mesusu,$rh30_regime,$rh05_causa,$rh05_caub,null,null,"r59_descr,r59_descr1"));
         if($clrescisao->numrows > 0){
           db_fieldsmemory($result_descricoes,0);
@@ -940,7 +940,7 @@ if(isset($limparbanco) && $limparbanco == true){
       $db83_tipoconta      = $oContaBancaria->getTipoConta();
       $db83_codigooperacao = $oContaBancaria->getCodigoOperacao();
     }
-  } catch(Exception $e ) {
+  } catch(Exception ) {
 
     $db83_sequencial     = "";
     $db83_tipoconta      = "";
@@ -977,8 +977,8 @@ function alterarCargoFuncao($iCargo, $iFuncao, $iMatricula, $iAno, $iMes, DBDate
       $dataTrocaCargoFuncao = $dataInicioMes;
   }
 
-  $aRubricaCadastrar = array();
-  $aRubricaRemover = array();
+  $aRubricaCadastrar = [];
+  $aRubricaRemover = [];
 
   $clrhpessoalmov = new cl_rhpessoalmov;
   $clfuncaorhrubricas = new cl_funcaorhrubricas;

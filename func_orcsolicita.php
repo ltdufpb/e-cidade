@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcorcam_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clpcorcam = new cl_pcorcam;
 $clrotulo = new rotulocampo;
 $clrotulo->label("pc20_codorc");
@@ -185,7 +185,7 @@ if (isset($datafinal)){
           $sql = $clpcorcam->sql_query_solproc(null,$campos,"pc20_codorc desc",' 1=1 '.$where_sol);
         }
 
-        db_lovrot($sql,15,"()","",$funcao_js, "", "NoMe", array(), false);
+        db_lovrot($sql,15,"()","",$funcao_js, "", "NoMe", [], false);
         
       }else{
       	

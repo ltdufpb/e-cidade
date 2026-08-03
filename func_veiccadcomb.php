@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadcomb_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveiccadcomb = new cl_veiccadcomb;
 $clveiccadcomb->rotulo->label("ve26_codigo");
 $clveiccadcomb->rotulo->label("ve26_descr");
@@ -98,9 +98,9 @@ $clveiccadcomb->rotulo->label("ve26_descr");
         }else{
            $sql = $clveiccadcomb->sql_query("",$campos,"ve26_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve26_codigo)){
-          $repassa = array("chave_ve26_codigo"=>$chave_ve26_codigo,"chave_ve26_codigo"=>$chave_ve26_codigo);
+          $repassa = ["chave_ve26_codigo"=>$chave_ve26_codigo,"chave_ve26_codigo"=>$chave_ve26_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

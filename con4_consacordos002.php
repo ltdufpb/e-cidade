@@ -36,22 +36,22 @@ $oGet   = db_utils::postMemory($_GET);
 
 $sWhere = "";
 $sAnd   = $sWhere != "" ? " and " : "";
-if (trim($oGet->ac16_sequencial) != "") {
+if (trim((string) $oGet->ac16_sequencial) != "") {
 	$sWhere .= "{$sAnd} ac16_sequencial = ".$oGet->ac16_sequencial;
 }
 
 $sAnd = $sWhere != "" ? " and " : "";
-if (trim($oGet->ac16_origem) != "" && $oGet->ac16_origem != 0) {
+if (trim((string) $oGet->ac16_origem) != "" && $oGet->ac16_origem != 0) {
   $sWhere .= "{$sAnd} ac16_origem = ".$oGet->ac16_origem;
 }
 
 $sAnd = $sWhere != "" ? " and " : "";
-if (trim($oGet->ac16_contratado) != "") {
+if (trim((string) $oGet->ac16_contratado) != "") {
   $sWhere .= "{$sAnd} ac16_contratado = ".$oGet->ac16_contratado;
 }
 
 $sAnd = $sWhere != "" ? " and " : "";
-if (trim($oGet->ac16_coddepto) != "") {
+if (trim((string) $oGet->ac16_coddepto) != "") {
 
 	$sWhere .= "{$sAnd} ( ac16_coddepto = {$oGet->ac16_coddepto}";
 	$sWhere .= "          or ac16_deptoresponsavel = {$oGet->ac16_coddepto} )";
@@ -83,7 +83,7 @@ $sSql       = $oDaoAcordo->sql_query(null, $sCampos, null, $sWhere);
 	  </tr>
 	  <tr> 
 	    <td align="center" valign="top"> 
-	      <?php db_lovrot($sSql, 15, "()", "", $oGet->funcao_js, "", "NoMe", array()); ?>
+	      <?php db_lovrot($sSql, 15, "()", "", $oGet->funcao_js, "", "NoMe", []); ?>
 	     </td>
 	  </tr>
 	</table>

@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE orcimpactoger
 class cl_orcimpactoger { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o62_codimpger = 0; 
-   var $o62_data_dia = null; 
-   var $o62_data_mes = null; 
-   var $o62_data_ano = null; 
-   var $o62_data = null; 
-   var $o62_obs = null; 
-   var $o62_ativo = 0; 
-   var $o62_passivo = 0; 
+   public $o62_codimpger = 0; 
+   public $o62_data_dia = null; 
+   public $o62_data_mes = null; 
+   public $o62_data_ano = null; 
+   public $o62_data = null; 
+   public $o62_obs = null; 
+   public $o62_ativo = 0; 
+   public $o62_passivo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o62_codimpger = int8 = Código 
                  o62_data = date = Data 
                  o62_obs = text = Obs 
@@ -59,10 +59,10 @@ class cl_orcimpactoger {
                  o62_passivo = float8 = Passivo 
                  ";
    //funcao construtor da classe 
-   function cl_orcimpactoger() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcimpactoger"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_orcimpactoger {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o62_codimpger = pg_result($result,0,0); 
+       $this->o62_codimpger = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from orcimpactoger_o62_codimpger_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o62_codimpger)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o62_codimpger)){
          $this->erro_sql = " Campo o62_codimpger maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_orcimpactoger {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Impactos gerados ($this->o62_codimpger) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Impactos gerados já Cadastrado";
@@ -204,14 +204,14 @@ class cl_orcimpactoger {
      $resaco = $this->sql_record($this->sql_query_file($this->o62_codimpger));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6662,'$this->o62_codimpger','I')");
-       $resac = db_query("insert into db_acount values($acount,1094,6662,'','".AddSlashes(pg_result($resaco,0,'o62_codimpger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1094,6663,'','".AddSlashes(pg_result($resaco,0,'o62_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1094,6664,'','".AddSlashes(pg_result($resaco,0,'o62_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1094,6665,'','".AddSlashes(pg_result($resaco,0,'o62_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1094,6666,'','".AddSlashes(pg_result($resaco,0,'o62_passivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1094,6662,'','".AddSlashes(pg_fetch_result($resaco,0,'o62_codimpger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1094,6663,'','".AddSlashes(pg_fetch_result($resaco,0,'o62_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1094,6664,'','".AddSlashes(pg_fetch_result($resaco,0,'o62_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1094,6665,'','".AddSlashes(pg_fetch_result($resaco,0,'o62_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1094,6666,'','".AddSlashes(pg_fetch_result($resaco,0,'o62_passivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_orcimpactoger {
       $this->atualizacampos();
      $sql = " update orcimpactoger set ";
      $virgula = "";
-     if(trim($this->o62_codimpger)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o62_codimpger"])){ 
+     if(trim((string) $this->o62_codimpger)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o62_codimpger"])){ 
        $sql  .= $virgula." o62_codimpger = $this->o62_codimpger ";
        $virgula = ",";
-       if(trim($this->o62_codimpger) == null ){ 
+       if(trim((string) $this->o62_codimpger) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "o62_codimpger";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_orcimpactoger {
          return false;
        }
      }
-     if(trim($this->o62_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o62_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["o62_data_dia"] !="") ){ 
+     if(trim((string) $this->o62_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o62_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["o62_data_dia"] !="") ){ 
        $sql  .= $virgula." o62_data = '$this->o62_data' ";
        $virgula = ",";
-       if(trim($this->o62_data) == null ){ 
+       if(trim((string) $this->o62_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "o62_data_dia";
          $this->erro_banco = "";
@@ -249,7 +249,7 @@ class cl_orcimpactoger {
        if(isset($GLOBALS["HTTP_POST_VARS"]["o62_data_dia"])){ 
          $sql  .= $virgula." o62_data = null ";
          $virgula = ",";
-         if(trim($this->o62_data) == null ){ 
+         if(trim((string) $this->o62_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "o62_data_dia";
            $this->erro_banco = "";
@@ -260,10 +260,10 @@ class cl_orcimpactoger {
          }
        }
      }
-     if(trim($this->o62_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o62_obs"])){ 
+     if(trim((string) $this->o62_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o62_obs"])){ 
        $sql  .= $virgula." o62_obs = '$this->o62_obs' ";
        $virgula = ",";
-       if(trim($this->o62_obs) == null ){ 
+       if(trim((string) $this->o62_obs) == null ){ 
          $this->erro_sql = " Campo Obs nao Informado.";
          $this->erro_campo = "o62_obs";
          $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_orcimpactoger {
          return false;
        }
      }
-     if(trim($this->o62_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o62_ativo"])){ 
+     if(trim((string) $this->o62_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o62_ativo"])){ 
        $sql  .= $virgula." o62_ativo = $this->o62_ativo ";
        $virgula = ",";
-       if(trim($this->o62_ativo) == null ){ 
+       if(trim((string) $this->o62_ativo) == null ){ 
          $this->erro_sql = " Campo Ativo nao Informado.";
          $this->erro_campo = "o62_ativo";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_orcimpactoger {
          return false;
        }
      }
-     if(trim($this->o62_passivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o62_passivo"])){ 
+     if(trim((string) $this->o62_passivo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o62_passivo"])){ 
        $sql  .= $virgula." o62_passivo = $this->o62_passivo ";
        $virgula = ",";
-       if(trim($this->o62_passivo) == null ){ 
+       if(trim((string) $this->o62_passivo) == null ){ 
          $this->erro_sql = " Campo Passivo nao Informado.";
          $this->erro_campo = "o62_passivo";
          $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_orcimpactoger {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6662,'$this->o62_codimpger','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o62_codimpger"]))
-           $resac = db_query("insert into db_acount values($acount,1094,6662,'".AddSlashes(pg_result($resaco,$conresaco,'o62_codimpger'))."','$this->o62_codimpger',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1094,6662,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o62_codimpger'))."','$this->o62_codimpger',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o62_data"]))
-           $resac = db_query("insert into db_acount values($acount,1094,6663,'".AddSlashes(pg_result($resaco,$conresaco,'o62_data'))."','$this->o62_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1094,6663,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o62_data'))."','$this->o62_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o62_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1094,6664,'".AddSlashes(pg_result($resaco,$conresaco,'o62_obs'))."','$this->o62_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1094,6664,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o62_obs'))."','$this->o62_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o62_ativo"]))
-           $resac = db_query("insert into db_acount values($acount,1094,6665,'".AddSlashes(pg_result($resaco,$conresaco,'o62_ativo'))."','$this->o62_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1094,6665,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o62_ativo'))."','$this->o62_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o62_passivo"]))
-           $resac = db_query("insert into db_acount values($acount,1094,6666,'".AddSlashes(pg_result($resaco,$conresaco,'o62_passivo'))."','$this->o62_passivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1094,6666,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o62_passivo'))."','$this->o62_passivo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_orcimpactoger {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6662,'$o62_codimpger','E')");
-         $resac = db_query("insert into db_acount values($acount,1094,6662,'','".AddSlashes(pg_result($resaco,$iresaco,'o62_codimpger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1094,6663,'','".AddSlashes(pg_result($resaco,$iresaco,'o62_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1094,6664,'','".AddSlashes(pg_result($resaco,$iresaco,'o62_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1094,6665,'','".AddSlashes(pg_result($resaco,$iresaco,'o62_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1094,6666,'','".AddSlashes(pg_result($resaco,$iresaco,'o62_passivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1094,6662,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o62_codimpger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1094,6663,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o62_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1094,6664,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o62_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1094,6665,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o62_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1094,6666,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o62_passivo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcimpactoger
@@ -431,7 +431,7 @@ class cl_orcimpactoger {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcimpactoger";
@@ -445,7 +445,7 @@ class cl_orcimpactoger {
    function sql_query ( $o62_codimpger=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -466,7 +466,7 @@ class cl_orcimpactoger {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -478,7 +478,7 @@ class cl_orcimpactoger {
    function sql_query_file ( $o62_codimpger=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -499,7 +499,7 @@ class cl_orcimpactoger {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

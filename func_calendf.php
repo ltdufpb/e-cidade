@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_calendf_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcalendf = new cl_calendf;
 $clcalendf->rotulo->label("r62_calend");
 $clcalendf->rotulo->label("r62_data");
@@ -109,9 +109,9 @@ $clcalendf->rotulo->label("r62_data");
         }else{
            $sql = $clcalendf->sql_query("","",$campos,"r62_calend#r62_data","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_r62_data)){
-          $repassa = array("chave_r62_calend"=>$chave_r62_calend,"chave_r62_data"=>$chave_r62_data);
+          $repassa = ["chave_r62_calend"=>$chave_r62_calend,"chave_r62_data"=>$chave_r62_data];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

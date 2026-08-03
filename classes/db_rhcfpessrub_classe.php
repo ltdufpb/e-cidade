@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE rhcfpessrub
 class cl_rhcfpessrub { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh23_rubmat = null; 
-   var $rh23_rubdec = null; 
-   var $rh23_palime = null; 
-   var $rh23_ferias = null; 
-   var $rh23_fer13 = null; 
-   var $rh23_ferant = null; 
-   var $rh23_fer13o = null; 
-   var $rh23_fer13a = null; 
-   var $rh23_ferabo = null; 
-   var $rh23_feabot = null; 
-   var $rh23_feradi = null; 
-   var $rh23_fadiab = null; 
+   public $rh23_rubmat = null; 
+   public $rh23_rubdec = null; 
+   public $rh23_palime = null; 
+   public $rh23_ferias = null; 
+   public $rh23_fer13 = null; 
+   public $rh23_ferant = null; 
+   public $rh23_fer13o = null; 
+   public $rh23_fer13a = null; 
+   public $rh23_ferabo = null; 
+   public $rh23_feabot = null; 
+   public $rh23_feradi = null; 
+   public $rh23_fadiab = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh23_rubmat = varchar(4) = Rubrica do Salário Maternidade 
                  rh23_rubdec = varchar(4) = Rubrica do Adiantamento de 13. 
                  rh23_palime = varchar(4) = Rubrica Pensão Alimentícia 
@@ -70,10 +70,10 @@ class cl_rhcfpessrub {
                  rh23_fadiab = varchar(4) = Adiantamento s/abono de férias 
                  ";
    //funcao construtor da classe 
-   function cl_rhcfpessrub() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhcfpessrub"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -244,7 +244,7 @@ class cl_rhcfpessrub {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Rubricas do CFPESS () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Rubricas do CFPESS já Cadastrado";
@@ -271,10 +271,10 @@ class cl_rhcfpessrub {
       $this->atualizacampos();
      $sql = " update rhcfpessrub set ";
      $virgula = "";
-     if(trim($this->rh23_rubmat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_rubmat"])){ 
+     if(trim((string) $this->rh23_rubmat)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_rubmat"])){ 
        $sql  .= $virgula." rh23_rubmat = '$this->rh23_rubmat' ";
        $virgula = ",";
-       if(trim($this->rh23_rubmat) == null ){ 
+       if(trim((string) $this->rh23_rubmat) == null ){ 
          $this->erro_sql = " Campo Rubrica do Salário Maternidade nao Informado.";
          $this->erro_campo = "rh23_rubmat";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_rhcfpessrub {
          return false;
        }
      }
-     if(trim($this->rh23_rubdec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_rubdec"])){ 
+     if(trim((string) $this->rh23_rubdec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_rubdec"])){ 
        $sql  .= $virgula." rh23_rubdec = '$this->rh23_rubdec' ";
        $virgula = ",";
-       if(trim($this->rh23_rubdec) == null ){ 
+       if(trim((string) $this->rh23_rubdec) == null ){ 
          $this->erro_sql = " Campo Rubrica do Adiantamento de 13. nao Informado.";
          $this->erro_campo = "rh23_rubdec";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_rhcfpessrub {
          return false;
        }
      }
-     if(trim($this->rh23_palime)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_palime"])){ 
+     if(trim((string) $this->rh23_palime)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_palime"])){ 
        $sql  .= $virgula." rh23_palime = '$this->rh23_palime' ";
        $virgula = ",";
-       if(trim($this->rh23_palime) == null ){ 
+       if(trim((string) $this->rh23_palime) == null ){ 
          $this->erro_sql = " Campo Rubrica Pensão Alimentícia nao Informado.";
          $this->erro_campo = "rh23_palime";
          $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_rhcfpessrub {
          return false;
        }
      }
-     if(trim($this->rh23_ferias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_ferias"])){ 
+     if(trim((string) $this->rh23_ferias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_ferias"])){ 
        $sql  .= $virgula." rh23_ferias = '$this->rh23_ferias' ";
        $virgula = ",";
-       if(trim($this->rh23_ferias) == null ){ 
+       if(trim((string) $this->rh23_ferias) == null ){ 
          $this->erro_sql = " Campo Férias nao Informado.";
          $this->erro_campo = "rh23_ferias";
          $this->erro_banco = "";
@@ -323,10 +323,10 @@ class cl_rhcfpessrub {
          return false;
        }
      }
-     if(trim($this->rh23_fer13)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_fer13"])){ 
+     if(trim((string) $this->rh23_fer13)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_fer13"])){ 
        $sql  .= $virgula." rh23_fer13 = '$this->rh23_fer13' ";
        $virgula = ",";
-       if(trim($this->rh23_fer13) == null ){ 
+       if(trim((string) $this->rh23_fer13) == null ){ 
          $this->erro_sql = " Campo 1/3 de férias nao Informado.";
          $this->erro_campo = "rh23_fer13";
          $this->erro_banco = "";
@@ -336,10 +336,10 @@ class cl_rhcfpessrub {
          return false;
        }
      }
-     if(trim($this->rh23_ferant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_ferant"])){ 
+     if(trim((string) $this->rh23_ferant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_ferant"])){ 
        $sql  .= $virgula." rh23_ferant = '$this->rh23_ferant' ";
        $virgula = ",";
-       if(trim($this->rh23_ferant) == null ){ 
+       if(trim((string) $this->rh23_ferant) == null ){ 
          $this->erro_sql = " Campo Férias mês anterior nao Informado.";
          $this->erro_campo = "rh23_ferant";
          $this->erro_banco = "";
@@ -349,10 +349,10 @@ class cl_rhcfpessrub {
          return false;
        }
      }
-     if(trim($this->rh23_fer13o)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_fer13o"])){ 
+     if(trim((string) $this->rh23_fer13o)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_fer13o"])){ 
        $sql  .= $virgula." rh23_fer13o = '$this->rh23_fer13o' ";
        $virgula = ",";
-       if(trim($this->rh23_fer13o) == null ){ 
+       if(trim((string) $this->rh23_fer13o) == null ){ 
          $this->erro_sql = " Campo 1/3 de férias nao Informado.";
          $this->erro_campo = "rh23_fer13o";
          $this->erro_banco = "";
@@ -362,10 +362,10 @@ class cl_rhcfpessrub {
          return false;
        }
      }
-     if(trim($this->rh23_fer13a)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_fer13a"])){ 
+     if(trim((string) $this->rh23_fer13a)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_fer13a"])){ 
        $sql  .= $virgula." rh23_fer13a = '$this->rh23_fer13a' ";
        $virgula = ",";
-       if(trim($this->rh23_fer13a) == null ){ 
+       if(trim((string) $this->rh23_fer13a) == null ){ 
          $this->erro_sql = " Campo 1/3 s/ abono de férias nao Informado.";
          $this->erro_campo = "rh23_fer13a";
          $this->erro_banco = "";
@@ -375,10 +375,10 @@ class cl_rhcfpessrub {
          return false;
        }
      }
-     if(trim($this->rh23_ferabo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_ferabo"])){ 
+     if(trim((string) $this->rh23_ferabo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_ferabo"])){ 
        $sql  .= $virgula." rh23_ferabo = '$this->rh23_ferabo' ";
        $virgula = ",";
-       if(trim($this->rh23_ferabo) == null ){ 
+       if(trim((string) $this->rh23_ferabo) == null ){ 
          $this->erro_sql = " Campo Abono de férias nao Informado.";
          $this->erro_campo = "rh23_ferabo";
          $this->erro_banco = "";
@@ -388,10 +388,10 @@ class cl_rhcfpessrub {
          return false;
        }
      }
-     if(trim($this->rh23_feabot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_feabot"])){ 
+     if(trim((string) $this->rh23_feabot)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_feabot"])){ 
        $sql  .= $virgula." rh23_feabot = '$this->rh23_feabot' ";
        $virgula = ",";
-       if(trim($this->rh23_feabot) == null ){ 
+       if(trim((string) $this->rh23_feabot) == null ){ 
          $this->erro_sql = " Campo Abono Mês Anterior nao Informado.";
          $this->erro_campo = "rh23_feabot";
          $this->erro_banco = "";
@@ -401,10 +401,10 @@ class cl_rhcfpessrub {
          return false;
        }
      }
-     if(trim($this->rh23_feradi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_feradi"])){ 
+     if(trim((string) $this->rh23_feradi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_feradi"])){ 
        $sql  .= $virgula." rh23_feradi = '$this->rh23_feradi' ";
        $virgula = ",";
-       if(trim($this->rh23_feradi) == null ){ 
+       if(trim((string) $this->rh23_feradi) == null ){ 
          $this->erro_sql = " Campo Adiantamento de férias nao Informado.";
          $this->erro_campo = "rh23_feradi";
          $this->erro_banco = "";
@@ -414,10 +414,10 @@ class cl_rhcfpessrub {
          return false;
        }
      }
-     if(trim($this->rh23_fadiab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_fadiab"])){ 
+     if(trim((string) $this->rh23_fadiab)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh23_fadiab"])){ 
        $sql  .= $virgula." rh23_fadiab = '$this->rh23_fadiab' ";
        $virgula = ",";
-       if(trim($this->rh23_fadiab) == null ){ 
+       if(trim((string) $this->rh23_fadiab) == null ){ 
          $this->erro_sql = " Campo Adiantamento s/abono de férias nao Informado.";
          $this->erro_campo = "rh23_fadiab";
          $this->erro_banco = "";
@@ -508,7 +508,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhcfpessrub";

@@ -35,9 +35,9 @@ require_once modification("fpdf151/pdf.php");
 require_once modification("fpdf151/assinatura.php");
 require_once modification("libs/db_libcontabilidade.php");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clempresto = new cl_empresto;
 $clorcelemento = new cl_orcelemento;
@@ -113,12 +113,12 @@ function cabecalho($pdf, $troca)
     }
 }
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (" . str_replace('-', ', ',
         $db_selinstit) . ") ");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinstabrev;
     $xvirg = ', ';
@@ -425,10 +425,10 @@ $vprojativ = "";
 for ($x = 0; $x < $rows; $x++) {
     db_fieldsmemory($res, $x);
 
-    cabecalho($pdf, $troca);
+    cabecalho($pdf);
     $troca = 0;
 
-    $oSubtotalizador = (object)array(
+    $oSubtotalizador = (object)[
         'rp_n_proc' => $subtotal_rp_n_proc,
         'rp_proc' => $subtotal_rp_proc,
         'anula_rp_n_proc' => $subtotal_anula_rp_n_proc,
@@ -439,7 +439,7 @@ for ($x = 0; $x < $rows; $x++) {
         'aliquidar_finais' => $subtotal_aliquidar_finais,
         'liquidados_finais' => $subtotal_liquidados_finais,
         'geral_finais' => $subtotal_geral_finais
-    );
+    ];
 
     $lZerarSubtotalizador = false;
 
@@ -505,7 +505,7 @@ for ($x = 0; $x < $rows; $x++) {
         $mValorAgrupamento = $o58_projativ;
     }
 
-    $elemento = substr($o56_elemento,0,7);
+    $elemento = substr((string) $o56_elemento,0,7);
     if ($mValorAgrupamento != $elemento  && $tipo == "el") {
         if ($mValorAgrupamento !== null) {
             exibirSubtotal($pdf, $oSubtotalizador);
@@ -582,7 +582,7 @@ for ($x = 0; $x < $rows; $x++) {
     if ($tipo == "or" and $vorgao != $o58_orgao) {//orgão
         if (isset($quebradepagina) and $verifica == false) {
             $troca = 1;
-            cabecalho($pdf, $troca);
+            cabecalho($pdf);
         }
 
         $pdf->SetFont('Arial', 'B', 7);
@@ -595,7 +595,7 @@ for ($x = 0; $x < $rows; $x++) {
     if ($tipo == "un" and $vunidade != $o58_unidade) {//unidade
         if (isset($quebradepagina) and $verifica == false) {
             $troca = 1;
-            cabecalho($pdf, $troca);
+            cabecalho($pdf);
         }
 
         $pdf->SetFont('Arial', 'B', 7);
@@ -609,7 +609,7 @@ for ($x = 0; $x < $rows; $x++) {
     if ($tipo == "fu" and $vfuncao != $o58_funcao) {//função
         if (isset($quebradepagina) and $verifica == false) {
             $troca = 1;
-            cabecalho($pdf, $troca);
+            cabecalho($pdf);
         }
 
         $pdf->SetFont('Arial', 'B', 7);
@@ -622,7 +622,7 @@ for ($x = 0; $x < $rows; $x++) {
     if ($tipo == "su" and $vsubfuncao != $o58_subfuncao) {//subfuncao
         if (isset($quebradepagina) and $verifica == false) {
             $troca = 1;
-            cabecalho($pdf, $troca);
+            cabecalho($pdf);
         }
         $pdf->SetFont('Arial', 'B', 7);
         $pdf->cell(0, 2, "", 0, 1, "", 0);
@@ -634,7 +634,7 @@ for ($x = 0; $x < $rows; $x++) {
     if ($tipo == "pr" and $vprograma != $o58_programa) {//programa
         if (isset($quebradepagina) and $verifica == false) {
             $troca = 1;
-            cabecalho($pdf, $troca);
+            cabecalho($pdf);
         }
         $pdf->SetFont('Arial', 'B', 7);
         $pdf->cell(0, 2, "", 0, 1, "", 0);
@@ -646,7 +646,7 @@ for ($x = 0; $x < $rows; $x++) {
     if ($tipo == "pa" and $vprojativ != $o58_projativ) {//projetto atividade
         if (isset($quebradepagina) and $verifica == false) {
             $troca = 1;
-            cabecalho($pdf, $troca);
+            cabecalho($pdf);
         }
         if ($vprojativ != $o58_projativ or $o55anousu != $e60_anousu) {
 
@@ -662,11 +662,11 @@ for ($x = 0; $x < $rows; $x++) {
         $verifica = false;
     }
 
-    $elemento = substr($o56_elemento, 0, 7);
+    $elemento = substr((string) $o56_elemento, 0, 7);
     if ($tipo == "el" and $velemento !=  $elemento ) {//elemento
         if (isset($quebradepagina) and $verifica == false) {
             $troca = 1;
-            cabecalho($pdf, $troca);
+            cabecalho($pdf);
         }
 
         $elementoCodigo = str_pad($elemento,13,"0",STR_PAD_RIGHT);
@@ -680,8 +680,8 @@ for ($x = 0; $x < $rows; $x++) {
 
     if ($tipo == 'de') {
 
-        $resdesdob = retorna_desdob(substr($o56_elemento, 0, 7), $e64_codele, $clorcelemento);
-        $numrows = pg_numrows($resdesdob);
+        $resdesdob = retorna_desdob(substr((string) $o56_elemento, 0, 7), $e64_codele, $clorcelemento);
+        $numrows = pg_num_rows($resdesdob);
 
         for ($i = 0; $i < $numrows; $i++) {
             db_fieldsmemory($resdesdob, $i);
@@ -689,7 +689,7 @@ for ($x = 0; $x < $rows; $x++) {
             if ($estrutural != $estrutura) {
                 if (isset($quebradepagina) && $verifica == false) {
                     $troca = 1;
-                    cabecalho($pdf, $troca);
+                    cabecalho($pdf);
                 }
 
                 $pdf->SetFont('Arial', 'B', 7);
@@ -704,7 +704,7 @@ for ($x = 0; $x < $rows; $x++) {
     if ($tipo == "re" and $vrecurso != $e91_recurso) {//recurso
         if (isset($quebradepagina) and $verifica == false) {
             $troca = 1;
-            cabecalho($pdf, $troca);
+            cabecalho($pdf);
         }
         $pdf->SetFont('Arial', 'B', 7);
         $pdf->cell(0, 2, "", 0, 1, "", 0);
@@ -727,7 +727,7 @@ for ($x = 0; $x < $rows; $x++) {
     if ($tipo == "tr" and $vtiporesto != $e91_codtipo) {//tipo resto
         if (isset($quebradepagina) and $verifica == false) {
             $troca = 1;
-            cabecalho($pdf, $troca);
+            cabecalho($pdf);
         }
         $pdf->SetFont('Arial', 'B', 7);
         $pdf->cell(0, 2, "", 0, 1, "", 0);
@@ -740,12 +740,12 @@ for ($x = 0; $x < $rows; $x++) {
     if ($tipo == "cr" and $vnumcgm != $z01_numcgm) {//credor
         if ((isset($quebradepagina) and $verifica == false)) {
             $troca = 1;
-            cabecalho($pdf, $troca);
+            cabecalho($pdf);
         }
         $pdf->SetFont('Arial', 'B', 7);
         $pdf->cell(0, 2, "", 0, 1, "", 0);
         $pdf->cell(0, 5,
-            "Credor:" . $z01_numcgm . " CNPJ:" . db_formatar($z01_cgccpf, 'cnpj') . " " . substr($z01_nome, 0, 100), 0,
+            "Credor:" . $z01_numcgm . " CNPJ:" . db_formatar($z01_cgccpf, 'cnpj') . " " . substr((string) $z01_nome, 0, 100), 0,
             1, "L", 0);
         $vnumcgm = $z01_numcgm;
         $verifica = false;
@@ -756,7 +756,7 @@ for ($x = 0; $x < $rows; $x++) {
 
         if ((isset($quebradepagina) && $verifica == false)) {
             $troca = 1;
-            cabecalho($pdf, $troca);
+            cabecalho($pdf);
         }
 
         $pdf->SetFont('Arial', 'B', 7);
@@ -790,7 +790,7 @@ for ($x = 0; $x < $rows; $x++) {
         //dados cadastrais dos empenhos
         $pdf->Cell(15, $tam, ($e60_codemp . "/" . $e60_anousu), "TBR", 0, "R", 0);//empenho
         $pdf->Cell(15, $tam, db_formatar($e60_emiss, 'd'), 1, 0, "C", 0);//emissao
-        $pdf->Cell(50, $tam, substr($z01_nome, 0, 25), 1, 0, "L", 0);//credor
+        $pdf->Cell(50, $tam, substr((string) $z01_nome, 0, 25), 1, 0, "L", 0);//credor
 
         //saldos a pagar anteriores
         $pdf->Cell(20, $tam, db_formatar(abs($e91_vlremp - $e91_vlranu - $e91_vlrliq), 'f'), 1, 0, "R",
@@ -878,7 +878,7 @@ $pdf->Cell(20, $tam, db_formatar(abs($total_geral_finais), 'f'), "TBL", 1, "R", 
  *Melhoria para imprecao dos filtros selecionados
  */
 $pdf->SetAutoPageBreak(true, 20);
-$pdf->widths = array(200);
+$pdf->widths = [200];
 //-- imprime parametros
 $imprime_filtro = $_POST['imprimefiltros'];
 if (isset($imprime_filtro) && ($imprime_filtro == 'sim')) {
@@ -886,7 +886,7 @@ if (isset($imprime_filtro) && ($imprime_filtro == 'sim')) {
     $pdf->SetFont("Arial", "", 6);
     $pdf->Ln(10);
     $sParametros = $clselorcdotacao->getParametros();
-    $aParametros = array($sParametros);
+    $aParametros = [$sParametros];
 
     $resto = $pdf->multicell(270, $tam, $sParametros, 1);
 }

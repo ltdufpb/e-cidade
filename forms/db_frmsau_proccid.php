@@ -80,7 +80,7 @@ db_input('sd70_c_nome',60,$Isd70_c_nome,true,'text',3,'')
     </td>
     <td>
 <?php 
-$x = array('N'=>'Não','S'=>'Sim');
+$x = ['N'=>'Não','S'=>'Sim'];
 db_select('sd72_c_principal',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -155,7 +155,7 @@ function js_preenchepesquisa(chave){
   db_iframe_sau_proccid.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

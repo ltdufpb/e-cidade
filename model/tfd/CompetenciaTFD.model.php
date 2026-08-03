@@ -94,13 +94,13 @@ class CompetenciaTFD implements ICompetenciaSaude {
    * Procedimentos encerrados para Competência
    * @var array
    */
-  private $aProcedimentos = array();
+  private $aProcedimentos = [];
   
   /**
    * Lista de filtros usados para buscar os procedimentos
    * @var array
    */
-  private $aFiltrosProcedimentos = array();
+  private $aFiltrosProcedimentos = [];
   
   /**
    * Cria instancia da Competência 
@@ -347,7 +347,7 @@ class CompetenciaTFD implements ICompetenciaSaude {
    */
   private function getPedidosEncerradosNoPeriodo() {
   	
-    $aProcedimentosEncerrados = array();
+    $aProcedimentosEncerrados = [];
     
     $sDataInicial = $this->oPeriodoInicial->convertTo(DBDate::DATA_EN);
     $sDataFinal   = $this->oPeriodoFinal->convertTo(DBDate::DATA_EN);
@@ -373,7 +373,7 @@ class CompetenciaTFD implements ICompetenciaSaude {
        * Criamos um array de stdclass com o paciente e acompanhantes com as informações necessárias 
        * para salvar-mos o fechamento  
        */
-      $aPessoasTFD = array();
+      $aPessoasTFD = [];
       
       $oPaciente              = new stdClass();  
       $oPaciente->lPaciente   = true;

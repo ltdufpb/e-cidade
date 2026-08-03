@@ -61,7 +61,7 @@ try {
   
     case 'Consulta' :
       
-      $oRetorno->dados = array(); 
+      $oRetorno->dados = []; 
       
       $sCampos  = "v01_exerc,v01_numcgm, v01_numpre,v01_numpar,k02_descr,k02_drecei,k30_valor,k30_vlrcorr,k30_vlrjuros,k30_multa,k30_desconto";
       $sCampos .= ",(k30_vlrcorr+k30_vlrjuros+k30_multa-k30_desconto) as total";

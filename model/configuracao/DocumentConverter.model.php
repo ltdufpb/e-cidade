@@ -105,7 +105,7 @@ Class DocumentConverter{
       self::checkFile( self::SOFFICE );
       $cmd = self::SOFFICE . " --version | awk '{print $2}' | head -n 1";
       $resposta = self::execShell( $cmd );
-    } catch (Exception $e) {
+    } catch (Exception) {
       $msg = 'Falhou em executar o soffice em :' . self::SOFFICE . ',';
       $msg .= ' Verifique se o mesmo está instalado';
       throw new Exception( $msg );
@@ -125,7 +125,7 @@ Class DocumentConverter{
       self::checkFile( $file );
       $cmd = "file " . $file . " | cut -d ':' -f 2";
       $resposta = self::execShell( $cmd );
-    } catch (Exception $e) {
+    } catch (Exception) {
       throw new Exception('Falhou ao determinar o tipo de arquivo! Retorno:' . $retorno );
     }
     return $resposta;
@@ -138,17 +138,11 @@ Class DocumentConverter{
    * @return string Filtro a ser utilizado na conversão
    */
   private static function getOdtSxwFilters( $output_type ){
-    switch ( $output_type ) {
-      case 'pdf':
-        return 'writer_pdf_Export';
-        break;
-      case 'odt':
-        return 'writer8';
-        break;
-      default:
-        throw new Exception( 'Tipo de arquivo: ' . $file_type . ', não suportado!' );
-        break;
-    }
+    return match ($output_type) {
+        'pdf' => 'writer_pdf_Export',
+        'odt' => 'writer8',
+        default => throw new Exception( 'Tipo de arquivo: ' . $file_type . ', não suportado!' ),
+    };
   }
 
   /**
@@ -162,18 +156,11 @@ Class DocumentConverter{
   {
       try {
         $file_type = self::getFileType( $input_file );
-        switch ( $file_type ) {
-          case 'OpenDocument Text':
-            return self::getOdtSxwFilters( $output_type );
-            break;
-          case 'OpenOffice.org 1.x Writer document':
-            return self::getOdtSxwFilters( $output_type );
-            break;
-          default:
-            return self::getOdtSxwFilters( $output_type ); // TODO ajustar para retornar exception
-            //throw new Exception( 'Tipo de arquivo: ' . $file_type . ' não suportado!' );
-            break;
-        }
+        return match ($file_type) {
+            'OpenDocument Text' => self::getOdtSxwFilters( $output_type ),
+            'OpenOffice.org 1.x Writer document' => self::getOdtSxwFilters( $output_type ),
+            default => self::getOdtSxwFilters( $output_type ),
+        };
       } catch (Exception $e) {
         throw $e;
       }
@@ -202,7 +189,7 @@ Class DocumentConverter{
    * @access private
    * @return array Diretório e Path do arquivo de saída
    */
-  private static function getOutputName( $input_file, $output_file = null, $type ){
+  private static function getOutputName( $input_file, $output_file = null, $type = null ){
     if ( $output_file == null ){
       $input_file = pathinfo( $input_file );
       $output_file = $input_file['dirname'] . DIRECTORY_SEPARATOR . $input_file['filename'] . '.' . $type;
@@ -220,7 +207,7 @@ Class DocumentConverter{
     } catch (Exception $e) {
       throw $e;
     }
-    return array( 'dir'=> $output_dir, 'file' => $output_file );
+    return [ 'dir'=> $output_dir, 'file' => $output_file ];
   }
 
   /**
@@ -231,7 +218,7 @@ Class DocumentConverter{
    * @access private
    * @return string Path do arquivo convertido
    */
-  private static function convert( $input_file, $output_file = null, $type )
+  private static function convert( $input_file, $output_file = null, $type = null )
   {
     try {
       self::checkSoffice();

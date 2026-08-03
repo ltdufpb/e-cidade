@@ -30,16 +30,16 @@ require ("libs/db_stdlib.php");
 require ("libs/db_conecta.php");
 include ("libs/db_sessoes.php");
 include ("libs/db_usuariosonline.php");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $situacao = "";
 if (isset ($processar))
 {
 	// recebe codbco,codage,tamanho
 	// verifica banco e agencia
 	db_postmemory($_FILES["arqret"]);
-	$arq_name = basename($name);
+	$arq_name = basename((string) $name);
 	$arq_type = $type;
-	$arq_tmpname = basename($tmp_name);
+	$arq_tmpname = basename((string) $tmp_name);
 	$arq_size = $size;
 	$arq_array = file($tmp_name);
 
@@ -50,7 +50,7 @@ if (isset ($processar))
 	                     where k15_codbco = $k15_codbco and 
 						       k15_codage  = '$k15_codage'");
 
-	if (pg_numrows($result) == 0)
+	if (pg_num_rows($result) == 0)
 	{
 		echo "Banco / Agencia nao cadastrados.";
 
@@ -62,8 +62,8 @@ if (isset ($processar))
 		echo "Tamanho do registro [".strlen($arq_array[0])."] Sistema : [".$k15_taman."] Inválido.";
 		exit;
 	}
-	$acodbco = substr($arq_array[0], substr($posbco, 0, 3), substr($posbco, 3, 3));
-	$acodage = substr($arq_array[0], substr($posage, 0, 3), substr($posage, 3, 3));
+	$acodbco = substr($arq_array[0], substr((string) $posbco, 0, 3), substr((string) $posbco, 3, 3));
+	$acodage = substr($arq_array[0], substr((string) $posage, 0, 3), substr((string) $posage, 3, 3));
 
 	if ($codbco != $acodbco)
 	{
@@ -141,7 +141,7 @@ if ($situacao == 2)
 	// grava arquivo disarq
 	pg_exec("begin");
 
-	$dtarquivo = substr($arq_array[0], substr($k15_posdta, 0, 3) - 1, substr($k15_posdta, 3, 3));
+	$dtarquivo = substr((string) $arq_array[0], substr((string) $k15_posdta, 0, 3) - 1, substr((string) $k15_posdta, 3, 3));
 
 	$result = pg_exec("select nextval('disarq_codret_seq') as codret");
 	db_fieldsmemory($result, 0);
@@ -152,16 +152,16 @@ if ($situacao == 2)
 	{
 		// grava arquivo disbanco
 
-		$numbco = substr($arq_array[$i], substr($k15_posbco, 0, 3) - 1, substr($k15_posbco, 3, 3));
-		$dtarq = substr($arq_array[$i], substr($k15_poslan, 0, 3) - 1, substr($k15_poslan, 3, 3));
-		$dtpago = substr($arq_array[$i], substr($k15_pospag, 0, 3) - 1, substr($k15_pospag, 3, 3));
-		$vlrpago = substr($arq_array[$i], substr($k15_posvlr, 0, 3) - 1, substr($k15_posvlr, 3, 3));
-		$vlrjuros = substr($arq_array[$i], substr($k15_posjur, 0, 3) - 1, substr($k15_posjur, 3, 3));
-		$vlrmulta = substr($arq_array[$i], substr($k15_posmul, 0, 3) - 1, substr($k15_posmul, 3, 3));
-		$vlracres = substr($arq_array[$i], substr($k15_posacr, 0, 3) - 1, substr($k15_posacr, 3, 3));
-		$vlrdesco = substr($arq_array[$i], substr($k15_posdes, 0, 3) - 1, substr($k15_posdes, 3, 3));
-		$vlrabat = substr($arq_array[$i], substr($k15_poscon, 0, 3) - 1, substr($k15_poscon, 3, 3));
-		$cedente = substr($arq_array[$i], substr($k15_posced, 0, 3) - 1, substr($k15_posced, 3, 3));
+		$numbco = substr((string) $arq_array[$i], substr((string) $k15_posbco, 0, 3) - 1, substr((string) $k15_posbco, 3, 3));
+		$dtarq = substr((string) $arq_array[$i], substr((string) $k15_poslan, 0, 3) - 1, substr((string) $k15_poslan, 3, 3));
+		$dtpago = substr((string) $arq_array[$i], substr((string) $k15_pospag, 0, 3) - 1, substr((string) $k15_pospag, 3, 3));
+		$vlrpago = substr((string) $arq_array[$i], substr((string) $k15_posvlr, 0, 3) - 1, substr((string) $k15_posvlr, 3, 3));
+		$vlrjuros = substr((string) $arq_array[$i], substr((string) $k15_posjur, 0, 3) - 1, substr((string) $k15_posjur, 3, 3));
+		$vlrmulta = substr((string) $arq_array[$i], substr((string) $k15_posmul, 0, 3) - 1, substr((string) $k15_posmul, 3, 3));
+		$vlracres = substr((string) $arq_array[$i], substr((string) $k15_posacr, 0, 3) - 1, substr((string) $k15_posacr, 3, 3));
+		$vlrdesco = substr((string) $arq_array[$i], substr($k15_posdes, 0, 3) - 1, substr($k15_posdes, 3, 3));
+		$vlrabat = substr((string) $arq_array[$i], substr((string) $k15_poscon, 0, 3) - 1, substr((string) $k15_poscon, 3, 3));
+		$cedente = substr((string) $arq_array[$i], substr((string) $k15_posced, 0, 3) - 1, substr((string) $k15_posced, 3, 3));
 
 		/*    echo "<script>";
 		    echo "js_termometro($i);";

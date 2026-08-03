@@ -48,7 +48,7 @@ $erro = false;
 $excluiu = false;
 $mensagem = '';
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 db_inicio_transacao();
 
 try {

@@ -34,7 +34,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 $clacordo = new cl_acordo;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 
@@ -118,13 +118,13 @@ if(isset($chavepesquisa)) {
 
          parent.document.formaba.acordo.disabled=false;
          parent.document.formaba.acordogarantia.disabled=false;
-         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acordogarantia.location.href='aco1_acordoacordogarantia001.php?ac12_acordo=". (isset($chavepesquisa) ? $chavepesquisa : null) ."';
+         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acordogarantia.location.href='aco1_acordoacordogarantia001.php?ac12_acordo=". ($chavepesquisa ?? null) ."';
          parent.document.formaba.acordopenalidade.disabled=false;
-         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acordopenalidade.location.href='aco1_acordoacordopenalidade001.php?ac15_acordo=". (isset($chavepesquisa) ? $chavepesquisa : null) ."';
+         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acordopenalidade.location.href='aco1_acordoacordopenalidade001.php?ac15_acordo=". ($chavepesquisa ?? null) ."';
          parent.document.formaba.acordoitem.disabled=false;
-         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acordoitem.location.href='aco1_acordoitem001.php?ac20_acordo=". (isset($chavepesquisa) ? $chavepesquisa : null) ."';
+         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acordoitem.location.href='aco1_acordoitem001.php?ac20_acordo=". ($chavepesquisa ?? null) ."';
          parent.document.formaba.acordodocumento.disabled=false;
-         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acordodocumento.location.href='aco1_acordodocumento001.php?ac40_acordo=". (isset($chavepesquisa) ? $chavepesquisa : null) ."';
+         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_acordodocumento.location.href='aco1_acordodocumento001.php?ac40_acordo=". ($chavepesquisa ?? null) ."';
      ";
          if(isset($liberaaba)){
          }

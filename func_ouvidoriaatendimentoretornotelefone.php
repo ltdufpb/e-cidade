@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ouvidoriaatendimentoretornotelefone_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clouvidoriaatendimentoretornotelefone = new cl_ouvidoriaatendimentoretornotelefone;
 $clouvidoriaatendimentoretornotelefone->rotulo->label("ov14_sequencial");
 $clouvidoriaatendimentoretornotelefone->rotulo->label("ov14_ouvidoriaatendimento");
@@ -98,9 +98,9 @@ $clouvidoriaatendimentoretornotelefone->rotulo->label("ov14_ouvidoriaatendimento
         }else{
            $sql = $clouvidoriaatendimentoretornotelefone->sql_query("",$campos,"ov14_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov14_ouvidoriaatendimento)){
-          $repassa = array("chave_ov14_sequencial"=>$chave_ov14_sequencial,"chave_ov14_ouvidoriaatendimento"=>$chave_ov14_ouvidoriaatendimento);
+          $repassa = ["chave_ov14_sequencial"=>$chave_ov14_sequencial,"chave_ov14_ouvidoriaatendimento"=>$chave_ov14_ouvidoriaatendimento];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -51,7 +51,7 @@ try {
     case "getDadosProcessoProtocolo":
 
       $iAnoSessao     = db_getsession("DB_anousu");
-      $aDadosProcesso = explode("/", $oParametro->sNumeroProcesso);
+      $aDadosProcesso = explode("/", (string) $oParametro->sNumeroProcesso);
       
       if (count($aDadosProcesso) == 2) {
         $iAnoSessao = $aDadosProcesso[1];
@@ -70,7 +70,7 @@ try {
       $oRetorno->iSequencialProcesso = $oProcessoProtocolo->getCodProcesso();
       $oRetorno->iNumeroProcesso     = $aDadosProcesso[0];
       $oRetorno->iAnoProcesso        = $iAnoSessao;
-      $oRetorno->sRequerenteProcesso = urlencode($oProcessoProtocolo->getRequerente());
+      $oRetorno->sRequerenteProcesso = urlencode((string) $oProcessoProtocolo->getRequerente());
 
     break;
 
@@ -80,7 +80,7 @@ try {
 
       $oRefactorProcessoProtocolo = new RefactorConsultaProcessoProtocolo($oParametro->iCodigoProcesso);
       $aMovimentacoes = $oRefactorProcessoProtocolo->getMovimentacoes();
-      $oRetorno->aMovimentacoes = array();
+      $oRetorno->aMovimentacoes = [];
 
       /**
        * Passa urlEncode() em todas as propriedades dos movimentos
@@ -101,7 +101,7 @@ try {
 
     case 'carregarDocumentosDespacho' :
 
-      $oRetorno->aDocumentosDespacho = array();
+      $oRetorno->aDocumentosDespacho = [];
       $oDaoProtProcessoDocumento = new cl_protprocessodocumento();
       $sWhere                    = "p01_procandamint = $oParametro->iCodigoDespacho";
       $sSqlProcessoDocumento     = $oDaoProtProcessoDocumento->sql_query_file(null, '*', 'p01_sequencial', $sWhere );
@@ -113,7 +113,7 @@ try {
 
       $oRetorno->aDocumentosDespacho = \db_utils::makeCollectionFromRecord($rsProcessoDocumento, function($oDados){
           $oDocumentosDespacho = new stdClass();
-          $oDocumentosDespacho->descricao     = urlEncode($oDados->p01_descricao);
+          $oDocumentosDespacho->descricao     = urlEncode((string) $oDados->p01_descricao);
           $oDocumentosDespacho->codigoArquivo = $oDados->p01_sequencial;
           $oDocumentosDespacho->nomeDocumento = $oDados->p01_nomedocumento;
           return $oDocumentosDespacho;

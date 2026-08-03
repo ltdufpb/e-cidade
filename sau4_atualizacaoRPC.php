@@ -48,37 +48,37 @@ switch ($objParam->exec) {
 			$objRetorno->status  = 2;
 			$objRetorno->message = urlencode ( "Remova a última competência primeiramente" );
 		} else {
-			$arrTabelas  = array( 
-                      array( "tabela"=> "sau_prochabilitacao","campos"=>"sd77_i_anocomp,sd77_i_mescomp" ),
-							        array( "tabela"=> "sau_execaocompatibilidade","campos"=>"sd67_i_anocomp,sd67_i_mescomp" ),  
-                      array( "tabela"=> "sau_proccompativel", "campos"=>"sd66_i_anocomp,sd66_i_mescomp"),
-                      array( "tabela"=> "sau_proccbo", "campos"=>"sd96_i_anocomp,sd96_i_mescomp"),
-                      array( "tabela"=> "sau_procsiasih", "campos"=>"sd94_i_anocomp,sd94_i_mescomp"),
-                      array( "tabela"=> "sau_siasih", "campos"=>"sd92_i_anocomp,sd92_i_mescomp"),							 
-                      array( "tabela"=> "sau_procservico", "campos"=>"sd88_i_anocomp,sd88_i_mescomp"),
-                      array( "tabela"=> "sau_servclassificacao", "campos"=>"sd87_i_anocomp,sd87_i_mescomp"),
-                      array( "tabela"=> "sau_procregistro", "campos"=>"sd85_i_anocomp,sd85_i_mescomp"),
-                      array( "tabela"=> "sau_procorigem", "campos"=>"sd95_i_anocomp,sd95_i_mescomp"),
-                      array( "tabela"=> "sau_procmodalidade","campos"=>"sd83_i_anocomp,sd83_i_mescomp" ),
-                      array( "tabela"=> "sau_procleito", "campos"=>"sd81_i_anocomp,sd81_i_mescomp"),
-                      array( "tabela"=> "sau_procincremento", "campos"=>"sd79_i_anocomp,sd79_i_mescomp"),
-                      array( "tabela"=> "sau_procdetalhe","campos"=>"sd74_i_anocomp,sd74_i_mescomp" ),
-                      array( "tabela"=> "sau_proccid","campos"=>"sd72_i_anocomp,sd72_i_mescomp" ),					
-                      array( "tabela"=> "sau_procedimento", "campos"=>"sd63_i_anocomp,sd63_i_mescomp"),
-                      array( "tabela"=> "sau_detalhe",  "campos"=>"sd73_i_anocomp, sd73_i_mescomp" ),
-                      array( "tabela"=> "sau_financiamento", "campos"=>" sd65_i_anocomp, sd65_i_mescomp" ),
-                      array( "tabela"=> "sau_formaorganizacao", "campos"=>"sd62_i_anocomp,sd62_i_mescomp" ),
-                      array( "tabela"=> "sau_subgrupo", "campos"=>"sd61_i_anocomp,sd61_i_mescomp" ),
-                      array( "tabela"=> "sau_grupohabilitacao", "campos"=>" sd75_i_anocomp, sd75_i_mescomp" ),
-                      array( "tabela"=> "sau_grupo",  "campos"=>"sd60_i_anocomp, sd60_i_mescomp" ),
-                      array( "tabela"=> "sau_habilitacao", "campos"=>" sd75_i_anocomp, sd75_i_mescomp" ),
-                      array( "tabela"=> "sau_modalidade",  "campos"=>" sd82_i_anocomp, sd82_i_mescomp" ),
-                      array( "tabela"=> "sau_registro",  "campos"=>" sd84_i_anocomp, sd84_i_mescomp" ),
-                      array( "tabela"=> "sau_rubrica",  "campos"=>"sd64_i_anocomp, sd64_i_mescomp" ),
-                      array( "tabela"=> "sau_servico",  "campos"=>"sd86_i_anocomp, sd86_i_mescomp" ),
-                      array( "tabela"=> "sau_tipoleito","campos"=>"sd80_i_anocomp, sd80_i_mescomp" ),
-                      array( "tabela"=> "sau_atualiza", "campos"=>"s100_i_anocomp,s100_i_mescomp" )							
-							);
+			$arrTabelas  = [ 
+                      [ "tabela"=> "sau_prochabilitacao","campos"=>"sd77_i_anocomp,sd77_i_mescomp" ],
+							        [ "tabela"=> "sau_execaocompatibilidade","campos"=>"sd67_i_anocomp,sd67_i_mescomp" ],  
+                      [ "tabela"=> "sau_proccompativel", "campos"=>"sd66_i_anocomp,sd66_i_mescomp"],
+                      [ "tabela"=> "sau_proccbo", "campos"=>"sd96_i_anocomp,sd96_i_mescomp"],
+                      [ "tabela"=> "sau_procsiasih", "campos"=>"sd94_i_anocomp,sd94_i_mescomp"],
+                      [ "tabela"=> "sau_siasih", "campos"=>"sd92_i_anocomp,sd92_i_mescomp"],							 
+                      [ "tabela"=> "sau_procservico", "campos"=>"sd88_i_anocomp,sd88_i_mescomp"],
+                      [ "tabela"=> "sau_servclassificacao", "campos"=>"sd87_i_anocomp,sd87_i_mescomp"],
+                      [ "tabela"=> "sau_procregistro", "campos"=>"sd85_i_anocomp,sd85_i_mescomp"],
+                      [ "tabela"=> "sau_procorigem", "campos"=>"sd95_i_anocomp,sd95_i_mescomp"],
+                      [ "tabela"=> "sau_procmodalidade","campos"=>"sd83_i_anocomp,sd83_i_mescomp" ],
+                      [ "tabela"=> "sau_procleito", "campos"=>"sd81_i_anocomp,sd81_i_mescomp"],
+                      [ "tabela"=> "sau_procincremento", "campos"=>"sd79_i_anocomp,sd79_i_mescomp"],
+                      [ "tabela"=> "sau_procdetalhe","campos"=>"sd74_i_anocomp,sd74_i_mescomp" ],
+                      [ "tabela"=> "sau_proccid","campos"=>"sd72_i_anocomp,sd72_i_mescomp" ],					
+                      [ "tabela"=> "sau_procedimento", "campos"=>"sd63_i_anocomp,sd63_i_mescomp"],
+                      [ "tabela"=> "sau_detalhe",  "campos"=>"sd73_i_anocomp, sd73_i_mescomp" ],
+                      [ "tabela"=> "sau_financiamento", "campos"=>" sd65_i_anocomp, sd65_i_mescomp" ],
+                      [ "tabela"=> "sau_formaorganizacao", "campos"=>"sd62_i_anocomp,sd62_i_mescomp" ],
+                      [ "tabela"=> "sau_subgrupo", "campos"=>"sd61_i_anocomp,sd61_i_mescomp" ],
+                      [ "tabela"=> "sau_grupohabilitacao", "campos"=>" sd75_i_anocomp, sd75_i_mescomp" ],
+                      [ "tabela"=> "sau_grupo",  "campos"=>"sd60_i_anocomp, sd60_i_mescomp" ],
+                      [ "tabela"=> "sau_habilitacao", "campos"=>" sd75_i_anocomp, sd75_i_mescomp" ],
+                      [ "tabela"=> "sau_modalidade",  "campos"=>" sd82_i_anocomp, sd82_i_mescomp" ],
+                      [ "tabela"=> "sau_registro",  "campos"=>" sd84_i_anocomp, sd84_i_mescomp" ],
+                      [ "tabela"=> "sau_rubrica",  "campos"=>"sd64_i_anocomp, sd64_i_mescomp" ],
+                      [ "tabela"=> "sau_servico",  "campos"=>"sd86_i_anocomp, sd86_i_mescomp" ],
+                      [ "tabela"=> "sau_tipoleito","campos"=>"sd80_i_anocomp, sd80_i_mescomp" ],
+                      [ "tabela"=> "sau_atualiza", "campos"=>"s100_i_anocomp,s100_i_mescomp" ]							
+							];
 			 db_inicio_transacao();		
 			 $objRetorno->message = urlencode(("Registro efetuado com sucesso"));
 	          for( $x_arq=0; $x_arq<sizeof( $arrTabelas ); $x_arq++ ){	            	                  	         
@@ -97,7 +97,7 @@ switch ($objParam->exec) {
 				    if( $tab->numrows_excluir == 0 && $tab->erro_status == "0" ){
 						
 				    	$objRetorno->status  = 2;						
-						  $objRetorno->message = urlencode( $tab->erro_msg );
+						  $objRetorno->message = urlencode( (string) $tab->erro_msg );
 					   	break;										  	
 		        }		          							
 			  } ////termina for	

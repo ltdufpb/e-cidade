@@ -46,16 +46,16 @@ try {
 
   db_inicio_transacao();//Begin
   switch ($oParam->exec) {
-      
+
      /**
       * Retorna as lotações que estão disponiveis, e que já 
       * estão selecionadas para cada uma das intituições que o usuário tem acesso.
       */
      case 'carregarLotacoes':
 
-       $aLotacoesUsuarioIntituicoes = array();
-       $aLotacoesInstituicoes       = array();
-       $aInstituicoesPermitidas     = array();    
+       $aLotacoesUsuarioIntituicoes = [];
+       $aLotacoesInstituicoes       = [];
+       $aInstituicoesPermitidas     = [];    
 
        $oUsuarioSistema = UsuarioSistemaRepository::getPorCodigo($oParam->iCodigoUsuario);
        $aInstituicoes   = $oUsuarioSistema->getInstituicoes();
@@ -90,16 +90,16 @@ try {
       * Salva as Lotações selecionadas para o usuário.
       */
      case 'salvarLotacoes':
-     
+
        $oUsuarioSistema  = UsuarioSistemaRepository::getPorCodigo($oParam->iCodigoUsuario);
-       
+
        LotacaoRepository::excluir(null, $oUsuarioSistema);
 
        foreach ($oParam->aLotacoesSelecionadas as $oLotacaoSelecionada) {
 
          $oLotacao = new Lotacao();
          $oLotacao->setCodigoLotacao($oLotacaoSelecionada->id);
-         $oLotacao->setUsuarios(array($oParam->iCodigoUsuario));
+         $oLotacao->setUsuarios([$oParam->iCodigoUsuario]);
          LotacaoRepository::persist($oLotacao);
        }
 

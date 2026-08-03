@@ -80,7 +80,7 @@ include(modification("dbforms/db_funcoes.php"));
 	   </td>
 			<td align="left" width="50%" height="30" colspan="6"><font size="3">
 				<?php 
-				$tipo = array ("a"=>"Total e Parcial","t"=>"Demolicao total","p"=>"Demolicao parcial");
+				$tipo =  ["a"=>"Total e Parcial","t"=>"Demolicao total","p"=>"Demolicao parcial"];
 				db_select('tiporel', $tipo, true, 2);
 				?>
 		 	</td>

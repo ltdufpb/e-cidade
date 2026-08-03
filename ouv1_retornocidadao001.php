@@ -106,12 +106,12 @@ $clTipoRetorno = new cl_tiporetorno();
                 </td>
                 <td>
                   <?php 
-                    $aTipoRetorno = array(0=>"Todos",
+                    $aTipoRetorno = [0=>"Todos",
 											                    1=>"Pessoalmente",
 											                    2=>"Carta",
 											                    3=>"Email",
 											                    4=>"Telefone/Fax",
-											                    5=>"Sem Retorno");
+											                    5=>"Sem Retorno"];
 
                     db_select('tiporetorno',$aTipoRetorno,true,1,'');											                    
                   ?>

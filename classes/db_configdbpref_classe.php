@@ -3,49 +3,49 @@
 //CLASSE DA ENTIDADE configdbpref
 class cl_configdbpref { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $w13_liberaatucgm = 'f'; 
-   var $w13_liberapedsenha = 'f'; 
-   var $w13_permfornsemlog = 'f'; 
-   var $w13_permvarsemlog = 'f'; 
-   var $w13_liberaescritorios = 0; 
-   var $w13_liberaimobiliaria = 'f'; 
-   var $w13_permconscgm = 'f'; 
-   var $w13_aliqissretido = 'f'; 
-   var $w13_liberaissretido = 'f'; 
-   var $w13_utilizafolha = 'f'; 
-   var $w13_instit = 0; 
-   var $w13_libcertpos = 'f'; 
-   var $w13_libcarnevariavel = 'f'; 
-   var $w13_libsociosdai = 'f'; 
-   var $w13_libissprestado = 'f'; 
-   var $w13_emailadmin = null; 
-   var $w13_liberalancisssemmov = 'f'; 
-   var $w13_exigecpfcnpjmatricula = 'f'; 
-   var $w13_exigecpfcnpjinscricao = 'f'; 
-   var $w13_regracnd = 0; 
-   var $w13_permconsservdemit = 'f'; 
-   var $w13_tipocertidao = 0; 
-   var $w13_agrupadebrecibos = 'f'; 
-   var $w13_msgaviso = 'f'; 
-   var $w13_tipocodigocertidao = 0; 
-   var $w13_uploadarquivos = null; 
-   var $w13_recaptcha_sitekey = null; 
-   var $w13_recaptcha_privatekey = null; 
+   public $w13_liberaatucgm = 'f'; 
+   public $w13_liberapedsenha = 'f'; 
+   public $w13_permfornsemlog = 'f'; 
+   public $w13_permvarsemlog = 'f'; 
+   public $w13_liberaescritorios = 0; 
+   public $w13_liberaimobiliaria = 'f'; 
+   public $w13_permconscgm = 'f'; 
+   public $w13_aliqissretido = 'f'; 
+   public $w13_liberaissretido = 'f'; 
+   public $w13_utilizafolha = 'f'; 
+   public $w13_instit = 0; 
+   public $w13_libcertpos = 'f'; 
+   public $w13_libcarnevariavel = 'f'; 
+   public $w13_libsociosdai = 'f'; 
+   public $w13_libissprestado = 'f'; 
+   public $w13_emailadmin = null; 
+   public $w13_liberalancisssemmov = 'f'; 
+   public $w13_exigecpfcnpjmatricula = 'f'; 
+   public $w13_exigecpfcnpjinscricao = 'f'; 
+   public $w13_regracnd = 0; 
+   public $w13_permconsservdemit = 'f'; 
+   public $w13_tipocertidao = 0; 
+   public $w13_agrupadebrecibos = 'f'; 
+   public $w13_msgaviso = 'f'; 
+   public $w13_tipocodigocertidao = 0; 
+   public $w13_uploadarquivos = null; 
+   public $w13_recaptcha_sitekey = null; 
+   public $w13_recaptcha_privatekey = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  w13_liberaatucgm = bool = Libera Atualização do CGM 
                  w13_liberapedsenha = bool = Libera Pedido de Senha 
                  w13_permfornsemlog = bool = permite acessar fornecedor sem estar logado 
@@ -76,10 +76,10 @@ class cl_configdbpref {
                  w13_recaptcha_privatekey = varchar(200) = Captcha Chave Privada 
                  ";
    //funcao construtor da classe 
-   function cl_configdbpref() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("configdbpref"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -434,7 +434,7 @@ class cl_configdbpref {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "configdbpref ($this->w13_instit) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "configdbpref já Cadastrado";
@@ -463,37 +463,37 @@ class cl_configdbpref {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9570,'$this->w13_instit','I')");
-         $resac = db_query("insert into db_acount values($acount,1383,8213,'','".AddSlashes(pg_result($resaco,0,'w13_liberaatucgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,8214,'','".AddSlashes(pg_result($resaco,0,'w13_liberapedsenha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,8216,'','".AddSlashes(pg_result($resaco,0,'w13_permfornsemlog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,8215,'','".AddSlashes(pg_result($resaco,0,'w13_permvarsemlog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,8236,'','".AddSlashes(pg_result($resaco,0,'w13_liberaescritorios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,8235,'','".AddSlashes(pg_result($resaco,0,'w13_liberaimobiliaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,8372,'','".AddSlashes(pg_result($resaco,0,'w13_permconscgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,8664,'','".AddSlashes(pg_result($resaco,0,'w13_aliqissretido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,8766,'','".AddSlashes(pg_result($resaco,0,'w13_liberaissretido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,9569,'','".AddSlashes(pg_result($resaco,0,'w13_utilizafolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,9570,'','".AddSlashes(pg_result($resaco,0,'w13_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,10725,'','".AddSlashes(pg_result($resaco,0,'w13_libcertpos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,10726,'','".AddSlashes(pg_result($resaco,0,'w13_libcarnevariavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,10727,'','".AddSlashes(pg_result($resaco,0,'w13_libsociosdai'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,10728,'','".AddSlashes(pg_result($resaco,0,'w13_libissprestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,12352,'','".AddSlashes(pg_result($resaco,0,'w13_emailadmin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,12612,'','".AddSlashes(pg_result($resaco,0,'w13_liberalancisssemmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,13345,'','".AddSlashes(pg_result($resaco,0,'w13_exigecpfcnpjmatricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,20543,'','".AddSlashes(pg_result($resaco,0,'w13_exigecpfcnpjinscricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,14401,'','".AddSlashes(pg_result($resaco,0,'w13_regracnd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,14548,'','".AddSlashes(pg_result($resaco,0,'w13_permconsservdemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,14585,'','".AddSlashes(pg_result($resaco,0,'w13_tipocertidao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,14593,'','".AddSlashes(pg_result($resaco,0,'w13_agrupadebrecibos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,15337,'','".AddSlashes(pg_result($resaco,0,'w13_msgaviso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,19218,'','".AddSlashes(pg_result($resaco,0,'w13_tipocodigocertidao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,20004,'','".AddSlashes(pg_result($resaco,0,'w13_uploadarquivos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,1009742,'','".AddSlashes(pg_result($resaco,0,'w13_recaptcha_sitekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1383,1009740,'','".AddSlashes(pg_result($resaco,0,'w13_recaptcha_privatekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,8213,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_liberaatucgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,8214,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_liberapedsenha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,8216,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_permfornsemlog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,8215,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_permvarsemlog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,8236,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_liberaescritorios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,8235,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_liberaimobiliaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,8372,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_permconscgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,8664,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_aliqissretido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,8766,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_liberaissretido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,9569,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_utilizafolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,9570,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,10725,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_libcertpos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,10726,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_libcarnevariavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,10727,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_libsociosdai'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,10728,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_libissprestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,12352,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_emailadmin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,12612,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_liberalancisssemmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,13345,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_exigecpfcnpjmatricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,20543,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_exigecpfcnpjinscricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,14401,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_regracnd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,14548,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_permconsservdemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,14585,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_tipocertidao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,14593,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_agrupadebrecibos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,15337,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_msgaviso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,19218,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_tipocodigocertidao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,20004,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_uploadarquivos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,1009742,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_recaptcha_sitekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1383,1009740,'','".AddSlashes(pg_fetch_result($resaco,0,'w13_recaptcha_privatekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -503,10 +503,10 @@ class cl_configdbpref {
       $this->atualizacampos();
      $sql = " update configdbpref set ";
      $virgula = "";
-     if(trim($this->w13_liberaatucgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaatucgm"])){ 
+     if(trim((string) $this->w13_liberaatucgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaatucgm"])){ 
        $sql  .= $virgula." w13_liberaatucgm = '$this->w13_liberaatucgm' ";
        $virgula = ",";
-       if(trim($this->w13_liberaatucgm) == null ){ 
+       if(trim((string) $this->w13_liberaatucgm) == null ){ 
          $this->erro_sql = " Campo Libera Atualização do CGM não informado.";
          $this->erro_campo = "w13_liberaatucgm";
          $this->erro_banco = "";
@@ -516,10 +516,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_liberapedsenha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberapedsenha"])){ 
+     if(trim((string) $this->w13_liberapedsenha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberapedsenha"])){ 
        $sql  .= $virgula." w13_liberapedsenha = '$this->w13_liberapedsenha' ";
        $virgula = ",";
-       if(trim($this->w13_liberapedsenha) == null ){ 
+       if(trim((string) $this->w13_liberapedsenha) == null ){ 
          $this->erro_sql = " Campo Libera Pedido de Senha não informado.";
          $this->erro_campo = "w13_liberapedsenha";
          $this->erro_banco = "";
@@ -529,10 +529,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_permfornsemlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permfornsemlog"])){ 
+     if(trim((string) $this->w13_permfornsemlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permfornsemlog"])){ 
        $sql  .= $virgula." w13_permfornsemlog = '$this->w13_permfornsemlog' ";
        $virgula = ",";
-       if(trim($this->w13_permfornsemlog) == null ){ 
+       if(trim((string) $this->w13_permfornsemlog) == null ){ 
          $this->erro_sql = " Campo permite acessar fornecedor sem estar logado não informado.";
          $this->erro_campo = "w13_permfornsemlog";
          $this->erro_banco = "";
@@ -542,10 +542,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_permvarsemlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permvarsemlog"])){ 
+     if(trim((string) $this->w13_permvarsemlog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permvarsemlog"])){ 
        $sql  .= $virgula." w13_permvarsemlog = '$this->w13_permvarsemlog' ";
        $virgula = ",";
-       if(trim($this->w13_permvarsemlog) == null ){ 
+       if(trim((string) $this->w13_permvarsemlog) == null ){ 
          $this->erro_sql = " Campo Permite ISS Var sem login não informado.";
          $this->erro_campo = "w13_permvarsemlog";
          $this->erro_banco = "";
@@ -555,10 +555,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_liberaescritorios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaescritorios"])){ 
+     if(trim((string) $this->w13_liberaescritorios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaescritorios"])){ 
        $sql  .= $virgula." w13_liberaescritorios = $this->w13_liberaescritorios ";
        $virgula = ",";
-       if(trim($this->w13_liberaescritorios) == null ){ 
+       if(trim((string) $this->w13_liberaescritorios) == null ){ 
          $this->erro_sql = " Campo Regra para Escritório Informar Clientes não informado.";
          $this->erro_campo = "w13_liberaescritorios";
          $this->erro_banco = "";
@@ -568,10 +568,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_liberaimobiliaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaimobiliaria"])){ 
+     if(trim((string) $this->w13_liberaimobiliaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaimobiliaria"])){ 
        $sql  .= $virgula." w13_liberaimobiliaria = '$this->w13_liberaimobiliaria' ";
        $virgula = ",";
-       if(trim($this->w13_liberaimobiliaria) == null ){ 
+       if(trim((string) $this->w13_liberaimobiliaria) == null ){ 
          $this->erro_sql = " Campo Libera Imobiliárias para adicionar seus clientes não informado.";
          $this->erro_campo = "w13_liberaimobiliaria";
          $this->erro_banco = "";
@@ -581,10 +581,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_permconscgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permconscgm"])){ 
+     if(trim((string) $this->w13_permconscgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permconscgm"])){ 
        $sql  .= $virgula." w13_permconscgm = '$this->w13_permconscgm' ";
        $virgula = ",";
-       if(trim($this->w13_permconscgm) == null ){ 
+       if(trim((string) $this->w13_permconscgm) == null ){ 
          $this->erro_sql = " Campo Permite consulta Contribuinte por CGM não informado.";
          $this->erro_campo = "w13_permconscgm";
          $this->erro_banco = "";
@@ -594,10 +594,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_aliqissretido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_aliqissretido"])){ 
+     if(trim((string) $this->w13_aliqissretido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_aliqissretido"])){ 
        $sql  .= $virgula." w13_aliqissretido = '$this->w13_aliqissretido' ";
        $virgula = ",";
-       if(trim($this->w13_aliqissretido) == null ){ 
+       if(trim((string) $this->w13_aliqissretido) == null ){ 
          $this->erro_sql = " Campo Permitir alíquota fora do padrão não informado.";
          $this->erro_campo = "w13_aliqissretido";
          $this->erro_banco = "";
@@ -607,10 +607,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_liberaissretido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaissretido"])){ 
+     if(trim((string) $this->w13_liberaissretido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaissretido"])){ 
        $sql  .= $virgula." w13_liberaissretido = '$this->w13_liberaissretido' ";
        $virgula = ",";
-       if(trim($this->w13_liberaissretido) == null ){ 
+       if(trim((string) $this->w13_liberaissretido) == null ){ 
          $this->erro_sql = " Campo Libera ISS Retido sem login não informado.";
          $this->erro_campo = "w13_liberaissretido";
          $this->erro_banco = "";
@@ -620,10 +620,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_utilizafolha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_utilizafolha"])){ 
+     if(trim((string) $this->w13_utilizafolha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_utilizafolha"])){ 
        $sql  .= $virgula." w13_utilizafolha = '$this->w13_utilizafolha' ";
        $virgula = ",";
-       if(trim($this->w13_utilizafolha) == null ){ 
+       if(trim((string) $this->w13_utilizafolha) == null ){ 
          $this->erro_sql = " Campo Utiliza Folha não informado.";
          $this->erro_campo = "w13_utilizafolha";
          $this->erro_banco = "";
@@ -633,10 +633,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_instit"])){ 
+     if(trim((string) $this->w13_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_instit"])){ 
        $sql  .= $virgula." w13_instit = $this->w13_instit ";
        $virgula = ",";
-       if(trim($this->w13_instit) == null ){ 
+       if(trim((string) $this->w13_instit) == null ){ 
          $this->erro_sql = " Campo instituição não informado.";
          $this->erro_campo = "w13_instit";
          $this->erro_banco = "";
@@ -646,10 +646,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_libcertpos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libcertpos"])){ 
+     if(trim((string) $this->w13_libcertpos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libcertpos"])){ 
        $sql  .= $virgula." w13_libcertpos = '$this->w13_libcertpos' ";
        $virgula = ",";
-       if(trim($this->w13_libcertpos) == null ){ 
+       if(trim((string) $this->w13_libcertpos) == null ){ 
          $this->erro_sql = " Campo Libera certidao positiva não informado.";
          $this->erro_campo = "w13_libcertpos";
          $this->erro_banco = "";
@@ -659,10 +659,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_libcarnevariavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libcarnevariavel"])){ 
+     if(trim((string) $this->w13_libcarnevariavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libcarnevariavel"])){ 
        $sql  .= $virgula." w13_libcarnevariavel = '$this->w13_libcarnevariavel' ";
        $virgula = ",";
-       if(trim($this->w13_libcarnevariavel) == null ){ 
+       if(trim((string) $this->w13_libcarnevariavel) == null ){ 
          $this->erro_sql = " Campo Libera carne de ISSQN variável não informado.";
          $this->erro_campo = "w13_libcarnevariavel";
          $this->erro_banco = "";
@@ -672,10 +672,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_libsociosdai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libsociosdai"])){ 
+     if(trim((string) $this->w13_libsociosdai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libsociosdai"])){ 
        $sql  .= $virgula." w13_libsociosdai = '$this->w13_libsociosdai' ";
        $virgula = ",";
-       if(trim($this->w13_libsociosdai) == null ){ 
+       if(trim((string) $this->w13_libsociosdai) == null ){ 
          $this->erro_sql = " Campo Libera aba socios na DAI não informado.";
          $this->erro_campo = "w13_libsociosdai";
          $this->erro_banco = "";
@@ -685,10 +685,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_libissprestado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libissprestado"])){ 
+     if(trim((string) $this->w13_libissprestado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_libissprestado"])){ 
        $sql  .= $virgula." w13_libissprestado = '$this->w13_libissprestado' ";
        $virgula = ",";
-       if(trim($this->w13_libissprestado) == null ){ 
+       if(trim((string) $this->w13_libissprestado) == null ){ 
          $this->erro_sql = " Campo Libera opcao de ISSQN prestado não informado.";
          $this->erro_campo = "w13_libissprestado";
          $this->erro_banco = "";
@@ -698,10 +698,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_emailadmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_emailadmin"])){ 
+     if(trim((string) $this->w13_emailadmin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_emailadmin"])){ 
        $sql  .= $virgula." w13_emailadmin = '$this->w13_emailadmin' ";
        $virgula = ",";
-       if(trim($this->w13_emailadmin) == null ){ 
+       if(trim((string) $this->w13_emailadmin) == null ){ 
          $this->erro_sql = " Campo E-mail do administrador não informado.";
          $this->erro_campo = "w13_emailadmin";
          $this->erro_banco = "";
@@ -711,10 +711,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_liberalancisssemmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberalancisssemmov"])){ 
+     if(trim((string) $this->w13_liberalancisssemmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_liberalancisssemmov"])){ 
        $sql  .= $virgula." w13_liberalancisssemmov = '$this->w13_liberalancisssemmov' ";
        $virgula = ",";
-       if(trim($this->w13_liberalancisssemmov) == null ){ 
+       if(trim((string) $this->w13_liberalancisssemmov) == null ){ 
          $this->erro_sql = " Campo Permitir ISSQN sem movimento não informado.";
          $this->erro_campo = "w13_liberalancisssemmov";
          $this->erro_banco = "";
@@ -724,10 +724,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_exigecpfcnpjmatricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_exigecpfcnpjmatricula"])){ 
+     if(trim((string) $this->w13_exigecpfcnpjmatricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_exigecpfcnpjmatricula"])){ 
        $sql  .= $virgula." w13_exigecpfcnpjmatricula = '$this->w13_exigecpfcnpjmatricula' ";
        $virgula = ",";
-       if(trim($this->w13_exigecpfcnpjmatricula) == null ){ 
+       if(trim((string) $this->w13_exigecpfcnpjmatricula) == null ){ 
          $this->erro_sql = " Campo Exige CPF/CNPJ na consulta de imóveis não informado.";
          $this->erro_campo = "w13_exigecpfcnpjmatricula";
          $this->erro_banco = "";
@@ -737,10 +737,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_exigecpfcnpjinscricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_exigecpfcnpjinscricao"])){ 
+     if(trim((string) $this->w13_exigecpfcnpjinscricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_exigecpfcnpjinscricao"])){ 
        $sql  .= $virgula." w13_exigecpfcnpjinscricao = '$this->w13_exigecpfcnpjinscricao' ";
        $virgula = ",";
-       if(trim($this->w13_exigecpfcnpjinscricao) == null ){ 
+       if(trim((string) $this->w13_exigecpfcnpjinscricao) == null ){ 
          $this->erro_sql = " Campo Exige CPF/CNPJ na consulta de inscrições não informado.";
          $this->erro_campo = "w13_exigecpfcnpjinscricao";
          $this->erro_banco = "";
@@ -750,10 +750,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_regracnd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_regracnd"])){ 
+     if(trim((string) $this->w13_regracnd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_regracnd"])){ 
        $sql  .= $virgula." w13_regracnd = $this->w13_regracnd ";
        $virgula = ",";
-       if(trim($this->w13_regracnd) == null ){ 
+       if(trim((string) $this->w13_regracnd) == null ){ 
          $this->erro_sql = " Campo Regra para Emissão CND não informado.";
          $this->erro_campo = "w13_regracnd";
          $this->erro_banco = "";
@@ -763,10 +763,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_permconsservdemit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permconsservdemit"])){ 
+     if(trim((string) $this->w13_permconsservdemit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_permconsservdemit"])){ 
        $sql  .= $virgula." w13_permconsservdemit = '$this->w13_permconsservdemit' ";
        $virgula = ",";
-       if(trim($this->w13_permconsservdemit) == null ){ 
+       if(trim((string) $this->w13_permconsservdemit) == null ){ 
          $this->erro_sql = " Campo Permite Consulta de Servidor Demitido não informado.";
          $this->erro_campo = "w13_permconsservdemit";
          $this->erro_banco = "";
@@ -776,10 +776,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_tipocertidao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_tipocertidao"])){ 
+     if(trim((string) $this->w13_tipocertidao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_tipocertidao"])){ 
        $sql  .= $virgula." w13_tipocertidao = $this->w13_tipocertidao ";
        $virgula = ",";
-       if(trim($this->w13_tipocertidao) == null ){ 
+       if(trim((string) $this->w13_tipocertidao) == null ){ 
          $this->erro_sql = " Campo Forma Emissão Certidão de Débitos não informado.";
          $this->erro_campo = "w13_tipocertidao";
          $this->erro_banco = "";
@@ -789,10 +789,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_agrupadebrecibos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_agrupadebrecibos"])){ 
+     if(trim((string) $this->w13_agrupadebrecibos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_agrupadebrecibos"])){ 
        $sql  .= $virgula." w13_agrupadebrecibos = '$this->w13_agrupadebrecibos' ";
        $virgula = ",";
-       if(trim($this->w13_agrupadebrecibos) == null ){ 
+       if(trim((string) $this->w13_agrupadebrecibos) == null ){ 
          $this->erro_sql = " Campo Agrupa Déb. Venc. na Emissão de Recibos não informado.";
          $this->erro_campo = "w13_agrupadebrecibos";
          $this->erro_banco = "";
@@ -802,10 +802,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_msgaviso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_msgaviso"])){ 
+     if(trim((string) $this->w13_msgaviso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_msgaviso"])){ 
        $sql  .= $virgula." w13_msgaviso = '$this->w13_msgaviso' ";
        $virgula = ",";
-       if(trim($this->w13_msgaviso) == null ){ 
+       if(trim((string) $this->w13_msgaviso) == null ){ 
          $this->erro_sql = " Campo Mostrar Mensagem de Aviso de Corte não informado.";
          $this->erro_campo = "w13_msgaviso";
          $this->erro_banco = "";
@@ -815,10 +815,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_tipocodigocertidao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_tipocodigocertidao"])){ 
+     if(trim((string) $this->w13_tipocodigocertidao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_tipocodigocertidao"])){ 
        $sql  .= $virgula." w13_tipocodigocertidao = $this->w13_tipocodigocertidao ";
        $virgula = ",";
-       if(trim($this->w13_tipocodigocertidao) == null ){ 
+       if(trim((string) $this->w13_tipocodigocertidao) == null ){ 
          $this->erro_sql = " Campo Tipo de Codificação da certidão não informado.";
          $this->erro_campo = "w13_tipocodigocertidao";
          $this->erro_banco = "";
@@ -828,14 +828,14 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_uploadarquivos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_uploadarquivos"])){ 
+     if(trim((string) $this->w13_uploadarquivos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_uploadarquivos"])){ 
        $sql  .= $virgula." w13_uploadarquivos = '$this->w13_uploadarquivos' ";
        $virgula = ",";
      }
-     if(trim($this->w13_recaptcha_sitekey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_sitekey"])){ 
+     if(trim((string) $this->w13_recaptcha_sitekey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_sitekey"])){ 
        $sql  .= $virgula." w13_recaptcha_sitekey = '$this->w13_recaptcha_sitekey' ";
        $virgula = ",";
-       if(trim($this->w13_recaptcha_sitekey) == null ){ 
+       if(trim((string) $this->w13_recaptcha_sitekey) == null ){ 
          $this->erro_sql = " Campo Captcha Chave Pública não informado.";
          $this->erro_campo = "w13_recaptcha_sitekey";
          $this->erro_banco = "";
@@ -845,10 +845,10 @@ class cl_configdbpref {
          return false;
        }
      }
-     if(trim($this->w13_recaptcha_privatekey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_privatekey"])){ 
+     if(trim((string) $this->w13_recaptcha_privatekey)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_privatekey"])){ 
        $sql  .= $virgula." w13_recaptcha_privatekey = '$this->w13_recaptcha_privatekey' ";
        $virgula = ",";
-       if(trim($this->w13_recaptcha_privatekey) == null ){ 
+       if(trim((string) $this->w13_recaptcha_privatekey) == null ){ 
          $this->erro_sql = " Campo Captcha Chave Privada não informado.";
          $this->erro_campo = "w13_recaptcha_privatekey";
          $this->erro_banco = "";
@@ -872,65 +872,65 @@ class cl_configdbpref {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,9570,'$this->w13_instit','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaatucgm"]) || $this->w13_liberaatucgm != "")
-             $resac = db_query("insert into db_acount values($acount,1383,8213,'".AddSlashes(pg_result($resaco,$conresaco,'w13_liberaatucgm'))."','$this->w13_liberaatucgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,8213,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_liberaatucgm'))."','$this->w13_liberaatucgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_liberapedsenha"]) || $this->w13_liberapedsenha != "")
-             $resac = db_query("insert into db_acount values($acount,1383,8214,'".AddSlashes(pg_result($resaco,$conresaco,'w13_liberapedsenha'))."','$this->w13_liberapedsenha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,8214,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_liberapedsenha'))."','$this->w13_liberapedsenha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_permfornsemlog"]) || $this->w13_permfornsemlog != "")
-             $resac = db_query("insert into db_acount values($acount,1383,8216,'".AddSlashes(pg_result($resaco,$conresaco,'w13_permfornsemlog'))."','$this->w13_permfornsemlog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,8216,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_permfornsemlog'))."','$this->w13_permfornsemlog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_permvarsemlog"]) || $this->w13_permvarsemlog != "")
-             $resac = db_query("insert into db_acount values($acount,1383,8215,'".AddSlashes(pg_result($resaco,$conresaco,'w13_permvarsemlog'))."','$this->w13_permvarsemlog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,8215,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_permvarsemlog'))."','$this->w13_permvarsemlog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaescritorios"]) || $this->w13_liberaescritorios != "")
-             $resac = db_query("insert into db_acount values($acount,1383,8236,'".AddSlashes(pg_result($resaco,$conresaco,'w13_liberaescritorios'))."','$this->w13_liberaescritorios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,8236,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_liberaescritorios'))."','$this->w13_liberaescritorios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaimobiliaria"]) || $this->w13_liberaimobiliaria != "")
-             $resac = db_query("insert into db_acount values($acount,1383,8235,'".AddSlashes(pg_result($resaco,$conresaco,'w13_liberaimobiliaria'))."','$this->w13_liberaimobiliaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,8235,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_liberaimobiliaria'))."','$this->w13_liberaimobiliaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_permconscgm"]) || $this->w13_permconscgm != "")
-             $resac = db_query("insert into db_acount values($acount,1383,8372,'".AddSlashes(pg_result($resaco,$conresaco,'w13_permconscgm'))."','$this->w13_permconscgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,8372,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_permconscgm'))."','$this->w13_permconscgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_aliqissretido"]) || $this->w13_aliqissretido != "")
-             $resac = db_query("insert into db_acount values($acount,1383,8664,'".AddSlashes(pg_result($resaco,$conresaco,'w13_aliqissretido'))."','$this->w13_aliqissretido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,8664,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_aliqissretido'))."','$this->w13_aliqissretido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_liberaissretido"]) || $this->w13_liberaissretido != "")
-             $resac = db_query("insert into db_acount values($acount,1383,8766,'".AddSlashes(pg_result($resaco,$conresaco,'w13_liberaissretido'))."','$this->w13_liberaissretido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,8766,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_liberaissretido'))."','$this->w13_liberaissretido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_utilizafolha"]) || $this->w13_utilizafolha != "")
-             $resac = db_query("insert into db_acount values($acount,1383,9569,'".AddSlashes(pg_result($resaco,$conresaco,'w13_utilizafolha'))."','$this->w13_utilizafolha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,9569,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_utilizafolha'))."','$this->w13_utilizafolha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_instit"]) || $this->w13_instit != "")
-             $resac = db_query("insert into db_acount values($acount,1383,9570,'".AddSlashes(pg_result($resaco,$conresaco,'w13_instit'))."','$this->w13_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,9570,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_instit'))."','$this->w13_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_libcertpos"]) || $this->w13_libcertpos != "")
-             $resac = db_query("insert into db_acount values($acount,1383,10725,'".AddSlashes(pg_result($resaco,$conresaco,'w13_libcertpos'))."','$this->w13_libcertpos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,10725,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_libcertpos'))."','$this->w13_libcertpos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_libcarnevariavel"]) || $this->w13_libcarnevariavel != "")
-             $resac = db_query("insert into db_acount values($acount,1383,10726,'".AddSlashes(pg_result($resaco,$conresaco,'w13_libcarnevariavel'))."','$this->w13_libcarnevariavel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,10726,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_libcarnevariavel'))."','$this->w13_libcarnevariavel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_libsociosdai"]) || $this->w13_libsociosdai != "")
-             $resac = db_query("insert into db_acount values($acount,1383,10727,'".AddSlashes(pg_result($resaco,$conresaco,'w13_libsociosdai'))."','$this->w13_libsociosdai',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,10727,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_libsociosdai'))."','$this->w13_libsociosdai',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_libissprestado"]) || $this->w13_libissprestado != "")
-             $resac = db_query("insert into db_acount values($acount,1383,10728,'".AddSlashes(pg_result($resaco,$conresaco,'w13_libissprestado'))."','$this->w13_libissprestado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,10728,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_libissprestado'))."','$this->w13_libissprestado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_emailadmin"]) || $this->w13_emailadmin != "")
-             $resac = db_query("insert into db_acount values($acount,1383,12352,'".AddSlashes(pg_result($resaco,$conresaco,'w13_emailadmin'))."','$this->w13_emailadmin',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,12352,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_emailadmin'))."','$this->w13_emailadmin',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_liberalancisssemmov"]) || $this->w13_liberalancisssemmov != "")
-             $resac = db_query("insert into db_acount values($acount,1383,12612,'".AddSlashes(pg_result($resaco,$conresaco,'w13_liberalancisssemmov'))."','$this->w13_liberalancisssemmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,12612,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_liberalancisssemmov'))."','$this->w13_liberalancisssemmov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_exigecpfcnpjmatricula"]) || $this->w13_exigecpfcnpjmatricula != "")
-             $resac = db_query("insert into db_acount values($acount,1383,13345,'".AddSlashes(pg_result($resaco,$conresaco,'w13_exigecpfcnpjmatricula'))."','$this->w13_exigecpfcnpjmatricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,13345,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_exigecpfcnpjmatricula'))."','$this->w13_exigecpfcnpjmatricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_exigecpfcnpjinscricao"]) || $this->w13_exigecpfcnpjinscricao != "")
-             $resac = db_query("insert into db_acount values($acount,1383,20543,'".AddSlashes(pg_result($resaco,$conresaco,'w13_exigecpfcnpjinscricao'))."','$this->w13_exigecpfcnpjinscricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,20543,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_exigecpfcnpjinscricao'))."','$this->w13_exigecpfcnpjinscricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_regracnd"]) || $this->w13_regracnd != "")
-             $resac = db_query("insert into db_acount values($acount,1383,14401,'".AddSlashes(pg_result($resaco,$conresaco,'w13_regracnd'))."','$this->w13_regracnd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,14401,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_regracnd'))."','$this->w13_regracnd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_permconsservdemit"]) || $this->w13_permconsservdemit != "")
-             $resac = db_query("insert into db_acount values($acount,1383,14548,'".AddSlashes(pg_result($resaco,$conresaco,'w13_permconsservdemit'))."','$this->w13_permconsservdemit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,14548,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_permconsservdemit'))."','$this->w13_permconsservdemit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_tipocertidao"]) || $this->w13_tipocertidao != "")
-             $resac = db_query("insert into db_acount values($acount,1383,14585,'".AddSlashes(pg_result($resaco,$conresaco,'w13_tipocertidao'))."','$this->w13_tipocertidao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,14585,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_tipocertidao'))."','$this->w13_tipocertidao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_agrupadebrecibos"]) || $this->w13_agrupadebrecibos != "")
-             $resac = db_query("insert into db_acount values($acount,1383,14593,'".AddSlashes(pg_result($resaco,$conresaco,'w13_agrupadebrecibos'))."','$this->w13_agrupadebrecibos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,14593,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_agrupadebrecibos'))."','$this->w13_agrupadebrecibos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_msgaviso"]) || $this->w13_msgaviso != "")
-             $resac = db_query("insert into db_acount values($acount,1383,15337,'".AddSlashes(pg_result($resaco,$conresaco,'w13_msgaviso'))."','$this->w13_msgaviso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,15337,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_msgaviso'))."','$this->w13_msgaviso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_tipocodigocertidao"]) || $this->w13_tipocodigocertidao != "")
-             $resac = db_query("insert into db_acount values($acount,1383,19218,'".AddSlashes(pg_result($resaco,$conresaco,'w13_tipocodigocertidao'))."','$this->w13_tipocodigocertidao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,19218,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_tipocodigocertidao'))."','$this->w13_tipocodigocertidao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_uploadarquivos"]) || $this->w13_uploadarquivos != "")
-             $resac = db_query("insert into db_acount values($acount,1383,20004,'".AddSlashes(pg_result($resaco,$conresaco,'w13_uploadarquivos'))."','$this->w13_uploadarquivos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,20004,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_uploadarquivos'))."','$this->w13_uploadarquivos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_sitekey"]) || $this->w13_recaptcha_sitekey != "")
-             $resac = db_query("insert into db_acount values($acount,1383,1009742,'".AddSlashes(pg_result($resaco,$conresaco,'w13_recaptcha_sitekey'))."','$this->w13_recaptcha_sitekey',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,1009742,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_recaptcha_sitekey'))."','$this->w13_recaptcha_sitekey',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["w13_recaptcha_privatekey"]) || $this->w13_recaptcha_privatekey != "")
-             $resac = db_query("insert into db_acount values($acount,1383,1009740,'".AddSlashes(pg_result($resaco,$conresaco,'w13_recaptcha_privatekey'))."','$this->w13_recaptcha_privatekey',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1383,1009740,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'w13_recaptcha_privatekey'))."','$this->w13_recaptcha_privatekey',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -984,37 +984,37 @@ class cl_configdbpref {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,9570,'$w13_instit','E')");
-           $resac  = db_query("insert into db_acount values($acount,1383,8213,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_liberaatucgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,8214,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_liberapedsenha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,8216,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_permfornsemlog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,8215,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_permvarsemlog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,8236,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_liberaescritorios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,8235,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_liberaimobiliaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,8372,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_permconscgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,8664,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_aliqissretido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,8766,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_liberaissretido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,9569,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_utilizafolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,9570,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,10725,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_libcertpos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,10726,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_libcarnevariavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,10727,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_libsociosdai'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,10728,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_libissprestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,12352,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_emailadmin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,12612,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_liberalancisssemmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,13345,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_exigecpfcnpjmatricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,20543,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_exigecpfcnpjinscricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,14401,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_regracnd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,14548,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_permconsservdemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,14585,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_tipocertidao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,14593,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_agrupadebrecibos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,15337,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_msgaviso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,19218,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_tipocodigocertidao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,20004,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_uploadarquivos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,1009742,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_recaptcha_sitekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1383,1009740,'','".AddSlashes(pg_result($resaco,$iresaco,'w13_recaptcha_privatekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,8213,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_liberaatucgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,8214,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_liberapedsenha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,8216,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_permfornsemlog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,8215,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_permvarsemlog'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,8236,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_liberaescritorios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,8235,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_liberaimobiliaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,8372,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_permconscgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,8664,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_aliqissretido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,8766,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_liberaissretido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,9569,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_utilizafolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,9570,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,10725,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_libcertpos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,10726,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_libcarnevariavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,10727,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_libsociosdai'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,10728,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_libissprestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,12352,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_emailadmin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,12612,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_liberalancisssemmov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,13345,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_exigecpfcnpjmatricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,20543,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_exigecpfcnpjinscricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,14401,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_regracnd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,14548,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_permconsservdemit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,14585,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_tipocertidao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,14593,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_agrupadebrecibos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,15337,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_msgaviso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,19218,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_tipocodigocertidao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,20004,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_uploadarquivos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,1009742,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_recaptcha_sitekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1383,1009740,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'w13_recaptcha_privatekey'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

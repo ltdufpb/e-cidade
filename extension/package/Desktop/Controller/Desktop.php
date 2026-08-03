@@ -39,7 +39,7 @@ class Desktop extends Controller
         $this->view->document->setTitle('DBSeller Informática Ltda - e-cidade - 3.0');
         $this->view->document->setCharset($this->response->getCharset());
 
-        $styles = array(
+        $styles = [
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/css/topbar.css",
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/css/desktop.css",
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/css/taskbar.css",
@@ -52,9 +52,9 @@ class Desktop extends Controller
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/vendors/alertify/themes/alertify.bootstrap.css",
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/vendors/jquery.menu-search/jquery.menu-search.css",
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/fontawesome/css/all.min.css",
-        );
+        ];
 
-        $scripts = array(
+        $scripts = [
             ECIDADE_REQUEST_PATH . "scripts/jquery-2.1.1.min.js",
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/js/fm.scrollator.jquery.min.js",
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/js/jquery.ba-outside-events.min.js",
@@ -66,23 +66,23 @@ class Desktop extends Controller
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/js/desktop.js",
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/js/menu.js",
             ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . "assets/js/bootstrap.js",
-        );
+        ];
 
         foreach ($styles as $href) {
-            $this->view->document->addLink($href, array('type' => 'text/css', 'rel' => 'stylesheet', 'media' => 'screen'));
+            $this->view->document->addLink($href, ['type' => 'text/css', 'rel' => 'stylesheet', 'media' => 'screen']);
         }
 
         // favicon
         $this->view->document->addLink(
-            ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . 'assets/img/favicon.png', array('type' => 'image/png', 'rel' => 'icon')
+            ECIDADE_CURRENT_EXTENSION_REQUEST_PATH . 'assets/img/favicon.png', ['type' => 'image/png', 'rel' => 'icon']
         );
 
         foreach ($scripts as $src) {
-            $this->view->document->addScript($src, array('type' => 'text/javascript'));
+            $this->view->document->addScript($src, ['type' => 'text/javascript']);
         }
 
         // dispara o evento do desktop
-        Registry::get('app.eventManager')->trigger('extension.desktop.bootstrap', $this, array($this));
+        Registry::get('app.eventManager')->trigger('extension.desktop.bootstrap', $this, [$this]);
 
         /**
          * Conecta no banco
@@ -112,7 +112,7 @@ class Desktop extends Controller
             $isDBSeller = $this->request->session()->get('DB_login') == 'dbseller';
             $isDBug = $this->request->session()->get('DB_DEBUG', false);
             $this->view->showFallbackButton = ($modificationDesktopData->isUserType() && !$isDBSeller) || $isDBug;
-        } catch (\Exception $error) {
+        } catch (\Exception) {
             $this->view->showFallbackButton = false;
         }
 
@@ -123,7 +123,7 @@ class Desktop extends Controller
             $documentosAndamento = $this->getQuantidadeDocumentos($usuarioSistema);
             $this->view->countDocumentos = count($documentosAndamento);
             $this->view->instituicaoUsuario = $this->getInstituicaoUsuario($usuarioSistema);
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             $this->view->countDocumentos = 0;
             $this->view->instituicaoUsuario = null;
         }
@@ -137,7 +137,7 @@ class Desktop extends Controller
     public function session()
     {
         foreach ($this->request->post() as $name => $value) {
-            $this->request->session()->set($name, utf8_decode($value));
+            $this->request->session()->set($name, mb_convert_encoding($value, 'ISO-8859-1'));
         }
     }
 
@@ -216,20 +216,20 @@ class Desktop extends Controller
         $result = db_query("select datname from pg_database where substr(datname,1,6) != 'templa' order by datname");
 
         if (!$result) {
-            return array();
+            return [];
         }
 
         $total = pg_num_rows($result);
-        $bases = array();
+        $bases = [];
         for ($index = 0; $index < $total; $index++) {
             $bases[] = pg_fetch_result($result, $index, 'datname');
         }
 
-        return (object) array(
+        return (object) [
             'atual' => $this->request->session()->get('DB_NBASE'),
             'acesso' => $acesso,
             'bases' => $bases
-        );
+        ];
     }
 
     /**

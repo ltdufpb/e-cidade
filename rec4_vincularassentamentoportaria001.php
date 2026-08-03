@@ -41,7 +41,7 @@ $oDaoPortariaAssenta        = new cl_portariaassenta;
 $db_opcao                   = 1;
 $sEsconderNumeracaoPortaria = '';
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if( !empty($_POST) ) {
 

@@ -33,8 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sanitario_classe.php"));
 require_once(modification("classes/db_parfiscal_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsanitario = new cl_sanitario;
 $clparfiscal = new cl_parfiscal;
@@ -80,7 +80,7 @@ $clrotulo->label("z01_nome");
             </td>
             <td width="96%" align="left" nowrap>
               <?php
-			         $x=array('0'=>'Todas as atividades','1'=>'Somente atividade principal');
+			         $x=['0'=>'Todas as atividades','1'=>'Somente atividade principal'];
                if(!isset($Tatividade)){ $Tatividade=0; }
     		       db_select('Tatividade',$x,true,1);
     	        ?>

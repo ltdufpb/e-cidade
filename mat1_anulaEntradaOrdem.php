@@ -64,8 +64,8 @@ $clmatestoqueinill = new cl_matestoqueinill;
 $clempnota->rotulo->label();
 $clempnotaele->rotulo->label();
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 if (isset($anula)){
   db_inicio_transacao();
@@ -83,27 +83,27 @@ if (isset($anula)){
     $erro_msg=$clmatestoqueini->erro_msg;
   }
   $codigoini=$clmatestoqueini->m80_codigo;
-  $vlitem=split("valor",$val);
-  $dados=split("quant_","$valores");
-  $qmult=split("qntmul_",$valmul);
-  $unidad=split("codunid_","$codunidade");
-  $antigas=split("qantigas_","$qantigas");
+  $vlitem=preg_split("#valor#m",(string) $val);
+  $dados=preg_split("#quant_#m","$valores");
+  $qmult=preg_split("#qntmul_#m",(string) $valmul);
+  $unidad=preg_split("#codunid_#m","$codunidade");
+  $antigas=preg_split("#qantigas_#m","$qantigas");
   for ($i=1;$i<count($dados);$i++){
     if ($sqlerro==false){
-      $numero=split("_",$dados[$i]);
+      $numero=preg_split("#_#m",(string) $dados[$i]);
       $matestoqueitem=$numero[0];
       $quantidade=$numero[2];
-      $quamul=split("_",$qmult[$i]);
+      $quamul=preg_split("#_#m",(string) $qmult[$i]);
       $quant_mult=$quamul[1];
       $quant_uni=$quantidade;
       $quantidade=$quantidade*$quant_mult;
-      $unid=split("_",$unidad[$i]);
-      $antig=split("_",$antigas[$i]);
+      $unid=preg_split("#_#m",(string) $unidad[$i]);
+      $antig=preg_split("#_#m",(string) $antigas[$i]);
       $codi_unid=$unid[1];
 			$quantantiga=$antig[2];
-      $tam=strlen($codi_unid);
+      $tam=strlen((string) $codi_unid);
       $tam=$tam-1;
-      $codi_unid=substr($codi_unid,0,$tam);
+      $codi_unid=substr((string) $codi_unid,0,$tam);
       $result_iniant=$clmatestoqueinimei->sql_record($clmatestoqueinimei->sql_query(null,"m82_matestoqueini as ini_ant",null,"m82_matestoqueitem=$matestoqueitem and m80_codtipo=12"));
       if ($clmatestoqueinimei->numrows>0){
         db_fieldsmemory($result_iniant,0);
@@ -130,14 +130,14 @@ if (isset($anula)){
         db_fieldsmemory($result_unidant,0);
         $quanti_reti=$m75_quant-$quant_uni;
       }
-      
-      $valitem=split("_",$vlitem[$i]);
+
+      $valitem=preg_split("#_#m",(string) $vlitem[$i]);
       $valorquant=$valitem[2];
-      if (strpos(trim($valorquant),',')!=""){
+      if (strpos(trim((string) $valorquant),',')!=""){
         $valorquant=str_replace('.','',$valorquant);
         $valorquant=str_replace(',','.',$valorquant);
       }
-      
+
       $result_oc=$clmatestoqueitemoc->sql_record($clmatestoqueitemoc->sql_query($matestoqueitem,null,"m52_quant,m52_valor,m71_quant as quant_ant,m70_codigo as codestoque,m70_valor as valor_est,m70_quant as quant_est"));
       if ($clmatestoqueitemoc->numrows!=0){
         db_fieldsmemory($result_oc,0);
@@ -146,15 +146,15 @@ if (isset($anula)){
         $quant_ret=$quant_ant-$quantidade;
         $valor_ret=$quanti_reti*$valor_uni;
       }
-      
+
       $valor_alt=$valor_uni*$quant_uni;
-      
+
       if ($valorquant > 0){
         if ($valorquant != $valor_alt){
           $valor_alt = $valorquant;
         }
       }
-      
+
       $clmatestoqueitem->m71_valor="$valor_alt";
 //			if ($quantidade == 0) {
         $clmatestoqueitem->m71_quant="$quantidade";
@@ -191,7 +191,7 @@ if (isset($anula)){
         }
       }
     }
-    
+
     if ($sqlerro==false){
       $res_estoque = $clmatestoque->sql_record($clmatestoque->sql_query_file($codestoque,"m70_quant,m70_valor"));
       if ($clmatestoque->numrows > 0){
@@ -199,14 +199,14 @@ if (isset($anula)){
         $quant_est = $m70_quant;
         $valor_est = $m70_valor;
       }
-      
+
       $quant_est -= $quant_ret;
       $valor_est -= $valor_ret;
-      
+
       if ($valor_est < 0){
         $valor_est *= -1;
       }
-      
+
       $clmatestoque->m70_valor="$valor_est";
       $clmatestoque->m70_quant="$quant_est";
       $clmatestoque->m70_codigo=$codestoque;
@@ -261,7 +261,7 @@ if (isset($anula)){
         if ($clempnotaord->erro_status==0){
           $sqlerro=true;
           $erro_msg=$clempnotaord->erro_msg;
-          
+
         }
       }
       if ($sqlerro==false){
@@ -269,7 +269,7 @@ if (isset($anula)){
         if ($clempnotaele->erro_status==0){
           $sqlerro=true;
           $erro_msg=$clempnotaele->erro_msg;
-          
+
         }
       }
       if ($sqlerro==false){
@@ -277,7 +277,7 @@ if (isset($anula)){
         if ($clempnota->erro_status==0){
           $sqlerro=true;
           $erro_msg=$clempnota->erro_msg;
-          
+
         }    	
       }
     }else{
@@ -303,7 +303,7 @@ if (isset($anula)){
   db_criatabela($result_oc);
   db_msgbox($erro_msg);
   */
-  
+
   //  $sqlerro = true;
   //die("fim");
   db_fim_transacao($sqlerro);
@@ -342,7 +342,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 ?>
 <?php 
 if (isset($anula)){
-  if (trim($erro_msg) != ""){
+  if (trim((string) $erro_msg) != ""){
     db_msgbox($erro_msg);
   }   
   if($clempnota->erro_campo!=""){

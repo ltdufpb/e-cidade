@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issarquivoretencaoregistroissplan_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissarquivoretencaoregistroissplan = new cl_issarquivoretencaoregistroissplan;
 $clissarquivoretencaoregistroissplan->rotulo->label("q137_sequencial");
 $clissarquivoretencaoregistroissplan->rotulo->label("q137_issplan");
@@ -52,9 +52,9 @@ $clissarquivoretencaoregistroissplan->rotulo->label("q137_issplan");
         }else{
            $sql = $clissarquivoretencaoregistroissplan->sql_query("",$campos,"q137_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q137_issplan)){
-          $repassa = array("chave_q137_sequencial"=>$chave_q137_sequencial,"chave_q137_issplan"=>$chave_q137_issplan);
+          $repassa = ["chave_q137_sequencial"=>$chave_q137_sequencial,"chave_q137_issplan"=>$chave_q137_issplan];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

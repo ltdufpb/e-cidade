@@ -10,11 +10,8 @@ use App\Http\Controllers\Controller;
 
 class CgmController extends Controller
 {
-    private $cgmService;
-
-    public function __construct(CgmService $cgmService)
+    public function __construct(private readonly CgmService $cgmService)
     {
-        $this->cgmService = $cgmService;
     }
 
     public function getByNumcgm(CgmRequest $request)

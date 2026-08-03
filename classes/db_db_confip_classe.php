@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE db_confip
 class cl_db_confip { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $w02_ip = null; 
-   var $w02_ativo = 'f'; 
+   public $w02_ip = null; 
+   public $w02_ativo = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  w02_ip = varchar(100) = Número do IP 
                  w02_ativo = bool = Acesso Negado 
                  ";
    //funcao construtor da classe 
-   function cl_db_confip() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_confip"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -104,7 +104,7 @@ class cl_db_confip {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Configura Ips () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Configura Ips já Cadastrado";
@@ -131,10 +131,10 @@ class cl_db_confip {
       $this->atualizacampos();
      $sql = " update db_confip set ";
      $virgula = "";
-     if(trim($this->w02_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w02_ip"])){ 
+     if(trim((string) $this->w02_ip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w02_ip"])){ 
        $sql  .= $virgula." w02_ip = '$this->w02_ip' ";
        $virgula = ",";
-       if(trim($this->w02_ip) == null ){ 
+       if(trim((string) $this->w02_ip) == null ){ 
          $this->erro_sql = " Campo Número do IP nao Informado.";
          $this->erro_campo = "w02_ip";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_db_confip {
          return false;
        }
      }
-     if(trim($this->w02_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w02_ativo"])){ 
+     if(trim((string) $this->w02_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["w02_ativo"])){ 
        $sql  .= $virgula." w02_ativo = '$this->w02_ativo' ";
        $virgula = ",";
-       if(trim($this->w02_ativo) == null ){ 
+       if(trim((string) $this->w02_ativo) == null ){ 
          $this->erro_sql = " Campo Acesso Negado nao Informado.";
          $this->erro_campo = "w02_ativo";
          $this->erro_banco = "";
@@ -238,7 +238,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_confip";
@@ -252,7 +252,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="db_confip.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -273,7 +273,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -285,7 +285,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -303,7 +303,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -62,8 +62,8 @@ $clempageconfgera = new cl_empageconfgera;
 $clempagemod      = new cl_empagemod;
 $cldb_bancos      = new cl_db_bancos;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 
 const UTILIZA_SEGMENTO_O = false;
@@ -403,8 +403,8 @@ if (isset($atualizar)) {
             $pc63_banco = db_formatar($pc63_banco, 's', '0', 3, 'e', 0);
             if ($codigomodelo == 3 && $sqlerro == false) {
 
-                $arr_data  = split('-', $e87_data);
-                $arr_datap = split('-', $e87_dataproc);
+                $arr_data  = preg_split('#\-#m', (string) $e87_data);
+                $arr_datap = preg_split('#\-#m', (string) $e87_dataproc);
                 $data      = $arr_data[2] . $arr_data[1] . $arr_data[0];
                 $dat_cred  = $arr_datap[2] . $arr_datap[1] . $arr_datap[0];
                 /// criar campo de sequencia do arquivo no empagetipo.
@@ -434,17 +434,17 @@ if (isset($atualizar)) {
                     $conta_pre     = str_replace('.', '', str_replace('-', '', $c63_conta));
                     $c63_conta     = (int) $c63_conta;
 
-                    if (trim($c63_dvconta) != "") {
+                    if (trim((string) $c63_dvconta) != "") {
 
-                        $digitos     = strlen($c63_dvconta);
+                        $digitos     = strlen((string) $c63_dvconta);
                         $dvconta_pre = $c63_dvconta[0];
                         if ($digitos > 1) {
                             $dvagconta_pre = $c63_dvconta[1];
                         }
                     }
-                    if (trim($c63_dvagencia) != "") {
+                    if (trim((string) $c63_dvagencia) != "") {
 
-                        $digitos1      = strlen($c63_dvagencia);
+                        $digitos1      = strlen((string) $c63_dvagencia);
                         $dvagencia_pre = $c63_dvagencia[0];
 
                         if (isset($digitos) && $digitos == 1) {
@@ -481,20 +481,20 @@ if (isset($atualizar)) {
                         $cllayout_BBBS->BSheaderA_009_017 = str_repeat(' ', 9);
                         $cllayout_BBBS->BSheaderA_018_018 = "2";
                         $cllayout_BBBS->BSheaderA_019_032 = $comboboxCNPJ;
-                        $cllayout_BBBS->BSheaderA_033_037 = db_formatar(substr($convenio, 0, 5), 's', '0', 5, 'e', 0);
+                        $cllayout_BBBS->BSheaderA_033_037 = db_formatar(substr((string) $convenio, 0, 5), 's', '0', 5, 'e', 0);
                         $cllayout_BBBS->BSheaderA_038_052 = str_repeat(' ', 15);
                         $cllayout_BBBS->BSheaderA_053_057 = $agencia_pre;
                         $cllayout_BBBS->BSheaderA_058_058 = "0";
                         $cllayout_BBBS->BSheaderA_059_061 = str_repeat('0', 3);
                         $cllayout_BBBS->BSheaderA_062_071 = $conta_pre;
                         $cllayout_BBBS->BSheaderA_072_072 = "0";
-                        $cllayout_BBBS->BSheaderA_073_102 = db_translate(db_formatar(substr(strtoupper($nomeinst), 0, 30),
+                        $cllayout_BBBS->BSheaderA_073_102 = db_translate(db_formatar(substr(strtoupper((string) $nomeinst), 0, 30),
                             's',
                             ' ',
                             30,
                             'e',
                             0));
-                        $cllayout_BBBS->BSheaderA_103_132 = db_translate(db_formatar(substr(strtoupper($dbanco), 0, 30),
+                        $cllayout_BBBS->BSheaderA_103_132 = db_translate(db_formatar(substr(strtoupper((string) $dbanco), 0, 30),
                             's',
                             ' ',
                             30,
@@ -504,18 +504,18 @@ if (isset($atualizar)) {
                         $cllayout_BBBS->BSheaderA_143_143 = "1";
                         $cllayout_BBBS->BSheaderA_144_151 = $data;
                         $cllayout_BBBS->BSheaderA_152_157 = date("H") . date("i") . date("s");
-                        $cllayout_BBBS->BSheaderA_158_163 = db_formatar(substr($e90_codgera, 0, 6), 's', '0', 6, 'e', 0);
+                        $cllayout_BBBS->BSheaderA_158_163 = db_formatar(substr((string) $e90_codgera, 0, 6), 's', '0', 6, 'e', 0);
                         $cllayout_BBBS->BSheaderA_164_166 = "030";
                         $cllayout_BBBS->BSheaderA_167_171 = str_repeat('0', 5);
                         $cllayout_BBBS->BSheaderA_172_191 = str_repeat(' ', 20);
-                        $cllayout_BBBS->BSheaderA_192_211 = db_formatar(substr($e90_codgera, 0, 20), 's', ' ', 20, 'e', 0);
+                        $cllayout_BBBS->BSheaderA_192_211 = db_formatar(substr((string) $e90_codgera, 0, 20), 's', ' ', 20, 'e', 0);
                         $cllayout_BBBS->BSheaderA_212_240 = str_repeat(' ', 29);
                         $cllayout_BBBS->geraHEADERArqBS();
                     } else if ($banco == "001") {
                         /*
                          * header banco do brasil
                          */
-                        $conveniobb = db_formatar(trim($convenio), 's', '0', 9, 'e', 0);
+                        $conveniobb = db_formatar(trim((string) $convenio), 's', '0', 9, 'e', 0);
                         $conveniobb .= '0126';
                         $conta_pre                        = db_formatar(str_replace('.', '', str_replace('-', '', $c63_conta)),
                             's',
@@ -528,20 +528,20 @@ if (isset($atualizar)) {
                         $cllayout_BBBS->BBheaderA_008_008 = "0";
                         $cllayout_BBBS->BBheaderA_009_017 = str_repeat(' ', 9);
                         $cllayout_BBBS->BBheaderA_018_018 = "2";
-                        $cllayout_BBBS->BBheaderA_019_032 = db_formatar(substr($comboboxCNPJ, 0, 14), 's', ' ', 14, 'd', 0);
+                        $cllayout_BBBS->BBheaderA_019_032 = db_formatar(substr((string) $comboboxCNPJ, 0, 14), 's', ' ', 14, 'd', 0);
                         $cllayout_BBBS->BBheaderA_033_052 = db_formatar(substr($conveniobb, 0, 20), 's', ' ', 20, 'd', 0);
                         $cllayout_BBBS->BBheaderA_053_057 = db_formatar(substr($agencia_pre, 0, 5), 's', '0', 5, 'e', 0);
-                        $cllayout_BBBS->BBheaderA_058_058 = db_formatar(substr($dvagencia_pre, 0, 1), 's', '0', 1, 'e', 0);
+                        $cllayout_BBBS->BBheaderA_058_058 = db_formatar(substr((string) $dvagencia_pre, 0, 1), 's', '0', 1, 'e', 0);
                         $cllayout_BBBS->BBheaderA_059_070 = db_formatar(substr($conta_pre, 0, 12), 's', '0', 12, 'e', 0);
-                        $cllayout_BBBS->BBheaderA_071_071 = db_formatar(substr($dvconta_pre, 0, 1), 's', '1', 1, 'e', 0);
+                        $cllayout_BBBS->BBheaderA_071_071 = db_formatar(substr((string) $dvconta_pre, 0, 1), 's', '1', 1, 'e', 0);
                         $cllayout_BBBS->BBheaderA_072_072 = ' ';
-                        $cllayout_BBBS->BBheaderA_073_102 = db_translate(db_formatar(substr(strtoupper($nomeinst), 0, 30),
+                        $cllayout_BBBS->BBheaderA_073_102 = db_translate(db_formatar(substr(strtoupper((string) $nomeinst), 0, 30),
                             's',
                             ' ',
                             30,
                             'e',
                             0));
-                        $cllayout_BBBS->BBheaderA_103_132 = db_translate(db_formatar(substr(strtoupper($dbanco), 0, 30),
+                        $cllayout_BBBS->BBheaderA_103_132 = db_translate(db_formatar(substr(strtoupper((string) $dbanco), 0, 30),
                             's',
                             ' ',
                             30,
@@ -551,11 +551,11 @@ if (isset($atualizar)) {
                         $cllayout_BBBS->BBheaderA_143_143 = "1";
                         $cllayout_BBBS->BBheaderA_144_151 = $data;
                         $cllayout_BBBS->BBheaderA_152_157 = date("H") . date("i") . date("s");
-                        $cllayout_BBBS->BBheaderA_158_163 = db_formatar(substr($e90_codgera, 0, 6), 's', '0', 6, 'e', 0);
+                        $cllayout_BBBS->BBheaderA_158_163 = db_formatar(substr((string) $e90_codgera, 0, 6), 's', '0', 6, 'e', 0);
                         $cllayout_BBBS->BBheaderA_164_166 = "030";
                         $cllayout_BBBS->BBheaderA_167_171 = str_repeat('0', 5);
                         $cllayout_BBBS->BBheaderA_172_191 = str_repeat(' ', 20);
-                        $cllayout_BBBS->BBheaderA_192_211 = db_formatar(substr($e90_codgera, 0, 20), 's', ' ', 20, 'e', 0);
+                        $cllayout_BBBS->BBheaderA_192_211 = db_formatar(substr((string) $e90_codgera, 0, 20), 's', ' ', 20, 'e', 0);
                         $cllayout_BBBS->BBheaderA_212_222 = str_repeat(' ', 11);
                         $cllayout_BBBS->BBheaderA_223_225 = str_repeat(' ', 3);
                         $cllayout_BBBS->BBheaderA_226_228 = str_repeat('0', 3);
@@ -567,12 +567,12 @@ if (isset($atualizar)) {
                         /**
                          * Header Caixa
                          */
-                        $conveniobanco      = substr($convenio, 0, 6);
-                        $parametrotransmiss = substr($convenio, 10, 2);
+                        $conveniobanco      = substr((string) $convenio, 0, 6);
+                        $parametrotransmiss = substr((string) $convenio, 10, 2);
                         $ambientecliente    = "P";
                         $agenciaheader      = $agencia_pre;
                         $dvagenciaheader    = $dvagencia_pre;
-                        $contaheader        = str_pad($c63_codigooperacao, 4, "0", STR_PAD_LEFT) . str_pad($conta_pre,
+                        $contaheader        = str_pad((string) $c63_codigooperacao, 4, "0", STR_PAD_LEFT) . str_pad($conta_pre,
                                 8,
                                 "0",
                                 STR_PAD_LEFT);
@@ -710,17 +710,17 @@ if (isset($atualizar)) {
                             $dvconta_pre   = "0";
                             $dvagconta_pre = "0";
 
-                            if (trim($c63_dvconta) != "") {
+                            if (trim((string) $c63_dvconta) != "") {
 
-                                $digitos     = strlen($c63_dvconta);
+                                $digitos     = strlen((string) $c63_dvconta);
                                 $dvconta_pre = $c63_dvconta[0];
                                 if ($digitos > 1) {
                                     $dvagconta_pre = $c63_dvconta[1];
                                 }
                             }
-                            if (trim($c63_dvagencia) != "") {
+                            if (trim((string) $c63_dvagencia) != "") {
 
-                                $digitos1      = strlen($c63_dvagencia);
+                                $digitos1      = strlen((string) $c63_dvagencia);
                                 $dvagencia_pre = $c63_dvagencia[0];
                                 if (isset($digitos) && $digitos == 1) {
 
@@ -754,35 +754,35 @@ if (isset($atualizar)) {
                                 $cllayout_BBBS->BSheaderL_017_017 = ' ';
                                 $cllayout_BBBS->BSheaderL_018_018 = '2';
                                 $cllayout_BBBS->BSheaderL_019_032 = $comboboxCNPJ;
-                                $cllayout_BBBS->BSheaderL_033_037 = db_formatar(substr($convenio, 0, 5), 's', '0', 5, 'e', 0);
+                                $cllayout_BBBS->BSheaderL_033_037 = db_formatar(substr((string) $convenio, 0, 5), 's', '0', 5, 'e', 0);
                                 $cllayout_BBBS->BSheaderL_038_052 = str_repeat(' ', 15);
                                 $cllayout_BBBS->BSheaderL_053_057 = substr($agencia_pre, 0, 5);
                                 $cllayout_BBBS->BSheaderL_058_061 = str_repeat('0', 4);
                                 $cllayout_BBBS->BSheaderL_062_071 = substr($conta_pre, 0, 10);
                                 $cllayout_BBBS->BSheaderL_072_072 = ' ';
-                                $cllayout_BBBS->BSheaderL_073_102 = db_translate(db_formatar(substr(strtoupper($nomeinst), 0, 30),
+                                $cllayout_BBBS->BSheaderL_073_102 = db_translate(db_formatar(substr(strtoupper((string) $nomeinst), 0, 30),
                                     's',
                                     ' ',
                                     30,
                                     'e',
                                     0));
                                 $cllayout_BBBS->BSheaderL_103_142 = str_repeat(' ', 40);
-                                $cllayout_BBBS->BSheaderL_143_172 = db_translate(db_formatar(strtoupper(substr(trim($ender), 0, 30)),
+                                $cllayout_BBBS->BSheaderL_143_172 = db_translate(db_formatar(strtoupper(substr(trim((string) $ender), 0, 30)),
                                     's',
                                     ' ',
                                     30,
                                     'd',
                                     0));
-                                $cllayout_BBBS->BSheaderL_173_177 = db_formatar(substr($numero, 0, 5), 's', ' ', 5, 'e', 0);
+                                $cllayout_BBBS->BSheaderL_173_177 = db_formatar(substr((string) $numero, 0, 5), 's', ' ', 5, 'e', 0);
                                 $cllayout_BBBS->BSheaderL_178_192 = str_repeat(' ', 15);
-                                $cllayout_BBBS->BSheaderL_193_212 = db_translate(db_formatar(strtoupper(substr(trim($munic), 0, 20)),
+                                $cllayout_BBBS->BSheaderL_193_212 = db_translate(db_formatar(strtoupper(substr(trim((string) $munic), 0, 20)),
                                     's',
                                     ' ',
                                     20,
                                     'd',
                                     0));
                                 $cllayout_BBBS->BSheaderL_213_220 = db_formatar(substr(trim($cep), 0, 8), 's', ' ', 8, 'e', 0);
-                                $cllayout_BBBS->BSheaderL_221_222 = db_formatar(strtoupper(substr($uf, 0, 2)), 's', ' ', 2, 'd', 0);
+                                $cllayout_BBBS->BSheaderL_221_222 = db_formatar(strtoupper(substr((string) $uf, 0, 2)), 's', ' ', 2, 'd', 0);
                                 $cllayout_BBBS->BSheaderL_223_224 = str_repeat(' ', 2);
                                 $cllayout_BBBS->BSheaderL_225_240 = str_repeat(' ', 16);
                                 $cllayout_BBBS->geraHEADERLoteBS();
@@ -796,7 +796,7 @@ if (isset($atualizar)) {
                                     $com = db_formatar(substr($cep, 5, $tamanho), 's', ' ', 3, 'd', 0);
                                     $cep = substr($cep, 0, 5);
                                 }
-                                $conveniobb = db_formatar(trim($convenio), 's', '0', 9, 'e', 0);
+                                $conveniobb = db_formatar(trim((string) $convenio), 's', '0', 9, 'e', 0);
                                 $conveniobb .= '0126';
                                 $cllayout_BBBS->BBheaderL_001_003 = $banco;
                                 $cllayout_BBBS->BBheaderL_004_007 = db_formatar(substr($seq_header, 0, 4), 's', '0', 4, 'e', 0);
@@ -810,34 +810,34 @@ if (isset($atualizar)) {
                                 $cllayout_BBBS->BBheaderL_019_032 = $comboboxCNPJ;
                                 $cllayout_BBBS->BBheaderL_033_052 = db_formatar(substr($conveniobb, 0, 20), 's', ' ', 20, 'd', 0);
                                 $cllayout_BBBS->BBheaderL_053_057 = substr($agencia_pre, 0, 5);
-                                $cllayout_BBBS->BBheaderL_058_058 = substr($dvagencia_pre, 0, 1);
+                                $cllayout_BBBS->BBheaderL_058_058 = substr((string) $dvagencia_pre, 0, 1);
                                 $cllayout_BBBS->BBheaderL_059_070 = substr($conta_pre, 0, 12);
-                                $cllayout_BBBS->BBheaderL_071_071 = substr($dvconta_pre, 0, 1);
+                                $cllayout_BBBS->BBheaderL_071_071 = substr((string) $dvconta_pre, 0, 1);
                                 $cllayout_BBBS->BBheaderL_072_072 = ' ';
-                                $cllayout_BBBS->BBheaderL_073_102 = db_translate(db_formatar(substr(strtoupper(trim($nomeinst)), 0, 30),
+                                $cllayout_BBBS->BBheaderL_073_102 = db_translate(db_formatar(substr(strtoupper(trim((string) $nomeinst)), 0, 30),
                                     's',
                                     ' ',
                                     30,
                                     'e',
                                     0));
                                 $cllayout_BBBS->BBheaderL_103_142 = str_repeat(' ', 40);
-                                $cllayout_BBBS->BBheaderL_143_172 = db_translate(db_formatar(strtoupper(substr(trim($ender), 0, 30)),
+                                $cllayout_BBBS->BBheaderL_143_172 = db_translate(db_formatar(strtoupper(substr(trim((string) $ender), 0, 30)),
                                     's',
                                     ' ',
                                     30,
                                     'd',
                                     0));
-                                $cllayout_BBBS->BBheaderL_173_177 = db_formatar(substr($numero, 0, 5), 's', ' ', 5, 'e', 0);
+                                $cllayout_BBBS->BBheaderL_173_177 = db_formatar(substr((string) $numero, 0, 5), 's', ' ', 5, 'e', 0);
                                 $cllayout_BBBS->BBheaderL_178_192 = str_repeat(' ', 15);
-                                $cllayout_BBBS->BBheaderL_193_212 = db_translate(db_formatar(strtoupper(substr(trim($munic), 0, 20)),
+                                $cllayout_BBBS->BBheaderL_193_212 = db_translate(db_formatar(strtoupper(substr(trim((string) $munic), 0, 20)),
                                     's',
                                     ' ',
                                     20,
                                     'd',
                                     0));
                                 $cllayout_BBBS->BBheaderL_213_217 = db_formatar(substr($cep, 0, 5), 's', ' ', 5, 'e', 0);
-                                $cllayout_BBBS->BBheaderL_218_220 = substr($com, 0, 3);
-                                $cllayout_BBBS->BBheaderL_221_222 = db_formatar(strtoupper(substr($uf, 0, 2)), 's', ' ', 2, 'd', 0);
+                                $cllayout_BBBS->BBheaderL_218_220 = substr((string) $com, 0, 3);
+                                $cllayout_BBBS->BBheaderL_221_222 = db_formatar(strtoupper(substr((string) $uf, 0, 2)), 's', ' ', 2, 'd', 0);
                                 $cllayout_BBBS->BBheaderL_223_230 = str_repeat(' ', 8);
                                 $cllayout_BBBS->BBheaderL_231_240 = str_repeat(' ', 10);
                                 $cllayout_BBBS->geraHEADERLoteBB();
@@ -859,13 +859,13 @@ if (isset($atualizar)) {
 
                                 $formalancamento    = ($e74_tipofatura == 2 ? "11" : $formalancamento);
 
-                                $conveniobanco      = substr($convenio, 0, 6);
+                                $conveniobanco      = substr((string) $convenio, 0, 6);
                                 $codigocompromisso  = "{$e83_codigocompromisso}";
-                                $parametrotransmiss = substr($convenio, 10, 2);
+                                $parametrotransmiss = substr((string) $convenio, 10, 2);
                                 $tipocompromisso    =  ($e74_tipofatura == 2 ? "03" : "01");
                                 $agencialote        = $agencia_pre;
                                 $dvagencialote      = $dvagencia_pre;
-                                $contalote          = str_pad($c63_codigooperacao, 4, "0", STR_PAD_LEFT) . str_pad($xconta,
+                                $contalote          = str_pad((string) $c63_codigooperacao, 4, "0", STR_PAD_LEFT) . str_pad($xconta,
                                         8,
                                         "0",
                                         STR_PAD_LEFT);
@@ -926,15 +926,15 @@ if (isset($atualizar)) {
                         $dvconta_fav   = "0";
                         $dvagconta_fav = "0";
 
-                        if (trim($pc63_conta_dig) != "") {
-                            $digitos2    = strlen($pc63_conta_dig);
+                        if (trim((string) $pc63_conta_dig) != "") {
+                            $digitos2    = strlen((string) $pc63_conta_dig);
                             $dvconta_fav = $pc63_conta_dig[0];
                             if ($digitos2 > 1) {
                                 $dvagconta_fav = $pc63_conta_dig[1];
                             }
                         }
 
-                        if (trim($pc63_agencia_dig) != "") {
+                        if (trim((string) $pc63_agencia_dig) != "") {
                             $dvagencia_fav = $pc63_agencia_dig[0];
                         }
 
@@ -973,7 +973,7 @@ if (isset($atualizar)) {
                             $cllayout_BBBS->BSregist_043_043 = " ";
                             $cllayout_BBBS->BSregist_044_073 = db_translate(db_formatar(str_replace('-',
                                 '',
-                                substr($z01_nome, 0, 30)),
+                                substr((string) $z01_nome, 0, 30)),
                                 's',
                                 ' ',
                                 30,
@@ -1027,7 +1027,7 @@ if (isset($atualizar)) {
                             $cllayout_BBBS->BBregistA_043_043 = $dvagconta_fav;
                             $cllayout_BBBS->BBregistA_044_073 = db_translate(db_formatar(str_replace('-',
                                 '',
-                                substr($z01_nome, 0, 30)),
+                                substr((string) $z01_nome, 0, 30)),
                                 's',
                                 ' ',
                                 30,
@@ -1062,26 +1062,26 @@ if (isset($atualizar)) {
                             $cllayout_BBBS->BBregistB_015_017 = str_repeat(' ', 3);
                             $cllayout_BBBS->BBregistB_018_018 = $conf;
                             $cllayout_BBBS->BBregistB_019_032 = $cgccpf;
-                            $cllayout_BBBS->BBregistB_033_062 = db_translate(db_formatar(substr($z01_ender, 0, 30),
+                            $cllayout_BBBS->BBregistB_033_062 = db_translate(db_formatar(substr((string) $z01_ender, 0, 30),
                                 's',
                                 ' ',
                                 30,
                                 'd',
                                 0));
-                            $cllayout_BBBS->BBregistB_063_067 = db_formatar(substr($z01_numero, 0, 5), 's', '0', 5, 'e', 0);
-                            $cllayout_BBBS->BBregistB_068_082 = db_translate(db_formatar(substr($z01_compl, 0, 15),
+                            $cllayout_BBBS->BBregistB_063_067 = db_formatar(substr((string) $z01_numero, 0, 5), 's', '0', 5, 'e', 0);
+                            $cllayout_BBBS->BBregistB_068_082 = db_translate(db_formatar(substr((string) $z01_compl, 0, 15),
                                 's',
                                 ' ',
                                 15,
                                 'd',
                                 0));
-                            $cllayout_BBBS->BBregistB_083_097 = db_translate(db_formatar(substr($z01_bairro, 0, 15),
+                            $cllayout_BBBS->BBregistB_083_097 = db_translate(db_formatar(substr((string) $z01_bairro, 0, 15),
                                 's',
                                 ' ',
                                 15,
                                 'd',
                                 0));
-                            $cllayout_BBBS->BBregistB_098_117 = db_translate(db_formatar(substr($z01_munic, 0, 20),
+                            $cllayout_BBBS->BBregistB_098_117 = db_translate(db_formatar(substr((string) $z01_munic, 0, 20),
                                 's',
                                 ' ',
                                 20,
@@ -1127,7 +1127,7 @@ if (isset($atualizar)) {
                             if (!empty($tiponatureza)) {
                                 $informacao2 = $finalidade . " " . \FinalidadePagamentoFundeb::$FINALIDADE_DESCRICAO_CNAB[$finalidade];
                                 if (empty($informacao2)) {
-                                    $informacao2 = substr($e151_descricao,0,40);
+                                    $informacao2 = substr((string) $e151_descricao,0,40);
                                 }
                             }
 
@@ -1197,12 +1197,12 @@ if (isset($atualizar)) {
                                 $jCodMovimento = "00";
                                 $jBancoDest = $pc63_banco;
                                 $jCodMoeda = "9";
-                                $jDvCodBarra = substr($e74_codigodebarra, 4, 1);
-                                $jFatorVencimento = substr($e74_codigodebarra, 5, 4);
-                                $jValorDoc = str_pad(substr($e74_codigodebarra, 9, 10), 10, '0', STR_PAD_LEFT);
-                                $jCampoLivre = str_pad(substr($e74_codigodebarra, 19, 25), 25, "0",STR_PAD_LEFT);
+                                $jDvCodBarra = substr((string) $e74_codigodebarra, 4, 1);
+                                $jFatorVencimento = substr((string) $e74_codigodebarra, 5, 4);
+                                $jValorDoc = str_pad(substr((string) $e74_codigodebarra, 9, 10), 10, '0', STR_PAD_LEFT);
+                                $jCampoLivre = str_pad(substr((string) $e74_codigodebarra, 19, 25), 25, "0",STR_PAD_LEFT);
                                 $jNomeCedente = $z01_nome;
-                                $jDataVencimento = date("dmY", strtotime($e74_datavencimento));
+                                $jDataVencimento = date("dmY", strtotime((string) $e74_datavencimento));
 
                                 $jValorTitulo = str_pad(number_format($e74_valornominal, 2, '', ''), 15, '0', STR_PAD_LEFT);
                                 $jValorDesconto = str_pad(number_format($e74_valorabatimento + $e74_valordesconto, 2, '', ''), 15, '0', STR_PAD_LEFT);
@@ -1211,7 +1211,7 @@ if (isset($atualizar)) {
                                 $jValorPagamento = str_pad(number_format(($e74_valornominal - ($e74_valorabatimento + $e74_valordesconto) + ($e74_valormulta)), 2, '', ''), 15, '0', STR_PAD_LEFT);
 
                                 $jQuantidadeMoeda = str_repeat('0', 15);
-                                $jNumeroDocumento = str_pad($e81_numemp, 6, '0', STR_PAD_LEFT);
+                                $jNumeroDocumento = str_pad((string) $e81_numemp, 6, '0', STR_PAD_LEFT);
                                 $jFiller = str_repeat(' ', 14);
                                 $jnumeroDocBanco = str_repeat('0', 9);
                                 $jFiller2 = str_repeat(' ', 11);
@@ -1234,10 +1234,10 @@ if (isset($atualizar)) {
                                 $oNsr = str_pad($registro, 5, "0", STR_PAD_LEFT);
                                 $oCodSegmento = "O";
                                 $oTipoMovimento = "000";
-                                $oCodBarras = str_pad($e74_codigodebarra, 44, "0", STR_PAD_LEFT);
+                                $oCodBarras = str_pad((string) $e74_codigodebarra, 44, "0", STR_PAD_LEFT);
                                 $oCodMovimento = "00";
-                                $oNomeConcessionaria = str_pad($nomeinst, 30," ", STR_PAD_RIGHT);
-                                $oDtVencimento = date("dmY", strtotime($e74_datavencimento));
+                                $oNomeConcessionaria = str_pad((string) $nomeinst, 30," ", STR_PAD_RIGHT);
+                                $oDtVencimento = date("dmY", strtotime((string) $e74_datavencimento));
                                 $oDtPagamento = $data;
                                 $oValorPagamento =str_pad(number_format( $e74_valornominal, 2, '', ''), 15, '0', STR_PAD_LEFT);
                                 $onumeroDocumento = $e90_codmov;
@@ -1265,7 +1265,7 @@ if (isset($atualizar)) {
                                 $oFiller2        = str_repeat(' ', 14);
                                 $oDocumentoEmpresa = $e90_codmov;
                                 $oFiller1       = str_repeat(' ', 12);
-                                $oCodBarras     = str_pad($e74_codigodebarra, 44, "0", STR_PAD_LEFT);
+                                $oCodBarras     = str_pad((string) $e74_codigodebarra, 44, "0", STR_PAD_LEFT);
                                 $oCodInstrucao  = "00";
                                 $oTipoMovimento = "000";
                                 $oCodSegmento   = 'K';
@@ -1347,7 +1347,7 @@ if (isset($atualizar)) {
             }
         }
     }
-    if (trim($nmov) == "") {
+    if (trim((string) $nmov) == "") {
         unset($db_bancos);
     }
     db_fim_transacao($sqlerro);
@@ -1362,7 +1362,7 @@ if (isset($atualizar)) {
         $erro_msg = $clempageconf->erro_msg;
         $sqlerro  = true;
     }
-    if (trim($nmov) == "") {
+    if (trim((string) $nmov) == "") {
         unset($db_bancos);
     }
     db_fim_transacao($sqlerro);

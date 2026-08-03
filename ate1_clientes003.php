@@ -56,20 +56,20 @@ $db_opcao = 1;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
      
-       $clcriaabas->identifica = array("clientes"       =>"Clientes",
+       $clcriaabas->identifica = ["clientes"       =>"Clientes",
                                        "contatos"       =>"Contatos",
                                        "produtos"       =>"Produtos",
                                        "atributos"      =>"Atributos",
                                        "atendemail"     =>"Email",
-                                       "clientesmodulos"=>"Modulos");
+                                       "clientesmodulos"=>"Modulos"];
         
-       $clcriaabas->src        = array("clientes"       =>"ate1_clientes006.php");
+       $clcriaabas->src        = ["clientes"       =>"ate1_clientes006.php"];
        
-       $clcriaabas->disabled   = array("atendemail"     =>"true",
+       $clcriaabas->disabled   = ["atendemail"     =>"true",
                                        "contatos"       =>"true",
                                        "produtos"       =>"true",
                                        "atributos"      =>"true",
-                                       "clientesmodulos"=>"true"); 
+                                       "clientesmodulos"=>"true"]; 
        $clcriaabas->cria_abas();      
      
        ?> 

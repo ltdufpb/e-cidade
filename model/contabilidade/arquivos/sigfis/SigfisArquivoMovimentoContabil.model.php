@@ -40,7 +40,7 @@ class SigfisArquivoMovimentoContabil extends SigfisArquivoBase implements iPadAr
 {
     protected $iCodigoLayout = 205;
     protected $sNomeArquivo = 'MovConta';
-    protected $aMovimentoContabil = array();
+    protected $aMovimentoContabil = [];
 
     /**
      * Busca os dados para gerar o Arquivo do Movimento Contabil
@@ -101,7 +101,7 @@ class SigfisArquivoMovimentoContabil extends SigfisArquivoBase implements iPadAr
                     }
 
                     if ($oDadosQuery->competencia == "") {
-                        $oDadosQuery->competencia = substr($this->dtDataInicial, 0, 4) . substr($this->dtDataInicial, 5, 2);
+                        $oDadosQuery->competencia = substr((string) $this->dtDataInicial, 0, 4) . substr((string) $this->dtDataInicial, 5, 2);
                     }
 
                     $oConta = new stdClass();
@@ -116,7 +116,7 @@ class SigfisArquivoMovimentoContabil extends SigfisArquivoBase implements iPadAr
                         $aMovimentoContabil[$sIndice] = $oConta;
                     }
 
-                    if (substr($oDadosQuery->competencia, -2) == "01") {
+                    if (str_ends_with((string) $oDadosQuery->competencia, "01")) {
                         if ($oDadosQuery->c62_vlrcre > 0 or $oDadosQuery->c62_vlrdeb > 0) {
                             // saldo abertura
                             $oConta = new stdClass();
@@ -149,13 +149,13 @@ class SigfisArquivoMovimentoContabil extends SigfisArquivoBase implements iPadAr
         foreach ($aMovimentoContabil as $oMovimento) {
             $oDados = new stdClass();
             $oDados->dt_AnoCriacao = $this->iAnoUso;
-            $oDados->cd_Unidade = str_pad($this->sCodigoTribunal, 4, ' ', STR_PAD_LEFT);
-            $oDados->cd_ContaContabil = str_pad(substr($oMovimento->conta, 0, 34), 34, ' ', STR_PAD_RIGHT);
+            $oDados->cd_Unidade = str_pad((string) $this->sCodigoTribunal, 4, ' ', STR_PAD_LEFT);
+            $oDados->cd_ContaContabil = str_pad(substr((string) $oMovimento->conta, 0, 34), 34, ' ', STR_PAD_RIGHT);
             $oDados->tp_MovContabil = $oMovimento->tipo_movimento;
             $oDados->dt_AnoMes = $oMovimento->competencia;
             $oDados->vl_Debito = str_pad(number_format($oMovimento->valor_debito, 2, '', ''), 16, '0', STR_PAD_LEFT);
             $oDados->vl_Credito = str_pad(number_format($oMovimento->valor_credito, 2, '', ''), 16, '0', STR_PAD_LEFT);
-            $oDados->Cd_Conta_Corrente = str_pad($oMovimento->seq_conta_corrente, 30, ' ', STR_PAD_RIGHT);
+            $oDados->Cd_Conta_Corrente = str_pad((string) $oMovimento->seq_conta_corrente, 30, ' ', STR_PAD_RIGHT);
 
             if ($iAnoSessao < 2013) {
                 $oDados->codigolinha = 411;

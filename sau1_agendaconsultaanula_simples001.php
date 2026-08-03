@@ -66,7 +66,7 @@ if(isset($incluir)){
     $oDaoAgendaConsultaAnula->s114_c_hora = date('H:i');
     $oDaoAgendaConsultaAnula->s114_d_data = date('Y-m-d');
 	  $oDaoAgendaConsultaAnula->incluir(null);
-    
+
     /*Inclusão código Plugin SMS Cancelamento de Consulta - NÃO APAGAR*/
     
 	}

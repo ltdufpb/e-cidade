@@ -126,7 +126,7 @@ class Repository
         }
 
         $aDadosEmissao = \db_utils::getCollectionByRecord($rsEmissao, 0);
-        $aEmissaoGeral = array();
+        $aEmissaoGeral = [];
 
         foreach ($aDadosEmissao as $iIndice => $oDadosEmissao) {
             $oEmissaoGeral = new EmissaoGeral();

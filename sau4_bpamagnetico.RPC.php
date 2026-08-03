@@ -76,7 +76,7 @@ try {
        */
       if (!empty($oParam->iUnidade)) {
 
-        foreach (explode(",", $oParam->iUnidade) as $iUnidade) {
+        foreach (explode(",", (string) $oParam->iUnidade) as $iUnidade) {
 
           if ( empty($iUnidade) ) {
             continue;
@@ -105,17 +105,7 @@ try {
 
   }
 
-} catch (ParameterException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = urlencode($oErro->getMessage());
-} catch (BusinessException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = urlencode($oErro->getMessage());
-} catch (DBException $oErro) {
+} catch (ParameterException|BusinessException|DBException $oErro) {
 
   db_fim_transacao(true);
   $oRetorno->status  = 2;

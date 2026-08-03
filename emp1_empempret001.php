@@ -40,7 +40,7 @@ $clempautret = new cl_empautret;
 $clempempret = new cl_empempret;
 $clempretencao = new cl_empretencao;
 $clempautitem = new cl_empautitem;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $nao_mostrar_botao = true;
 
 $e66_autori = $chavepesquisa;

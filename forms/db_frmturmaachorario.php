@@ -63,7 +63,7 @@ $db_botao1 = false;
                                             "ed15_i_sequencia,ed08_i_sequencia",
                                             "ed17_i_escola = $escola and ed17_i_turno=$ed268_i_turno"
                                            );
-     $result1 = $clperiodoescola->sql_record($sql) or die (pg_errormessage());
+     $result1 = $clperiodoescola->sql_record($sql) or die (pg_last_error());
      $contp   = 0;
      $contd   = 0;
      $contqd  = 0;
@@ -83,7 +83,7 @@ $db_botao1 = false;
          <tr><td colspan="<?=$cldiasemana->numrows+1?>" 
                  bgcolor=""><b><?=$ed15_i_codigo==$ed17_i_turno?"TURNO PRINCIPAL":"TURNO ADICIONAL"?></b></td></tr>
          <tr bgcolor="#444444">
-         <td align="center" width="30" style="font-weight: bold; color: #DEB887;"><?=pg_result($result1,$z,"ed15_c_nome");?>
+         <td align="center" width="30" style="font-weight: bold; color: #DEB887;"><?=pg_fetch_result($result1,$z,"ed15_c_nome");?>
          </td>
          <?php 
          if ($cldiasemana->numrows == 0) {

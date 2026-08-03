@@ -54,7 +54,7 @@ $iLinhasInstit = $cldb_config->numrows;
 
 if ( $iLinhasInstit > 0 ){
 
-  $aListaInstit = array();
+  $aListaInstit = [];
 
   for ($iInd=0; $iInd < $iLinhasInstit; $iInd++) {
     $oInstit = db_utils::fieldsMemory($rsRppsInstit,$iInd);
@@ -246,7 +246,7 @@ for($linha = 35; $linha <= 38; $linha++) {
 
 // RECEITAS
 
-$receita  = array();
+$receita  = [];
 
 $receita[0]['txt']  = 'RECEITAS PREVIDENCIÁRIAS - RPPS (EXCETO INTRA-ORÇAMENTÁRIAS)(I)';
 $receita[1]['txt']  = '  RECEITAS CORRENTES ';
@@ -326,10 +326,10 @@ if (!isset($arqinclude)){ // se este arquivo não esta incluido por outro
 // Caso o Periodo Seja 6B (Sexto Bimestre) ou 3Q (Terceiro Quadrimestre) ou 2S (Segundo Simestre)
 // seta $ultimo_periodo como true, caso contrario false
 
-$aDataInicial     = explode("-",$dtDataInicial);
+$aDataInicial     = explode("-",(string) $dtDataInicial);
 $periodo_mes      = strtoupper(db_mes($aDataInicial[1]));
 $dtDataInicialAnt = $anousu_ant."-".$aDataInicial[1]."-".$aDataInicial[2];
-$aDataFinal     = explode("-",$dtDataFinal);
+$aDataFinal     = explode("-",(string) $dtDataFinal);
 
 if ($aDataFinal[1] == 2){
   $aDataFinal[2]  = cal_days_in_month(CAL_GREGORIAN, $aDataFinal[1],$anousu_ant);
@@ -451,11 +451,11 @@ if (!isset($lInResumido)) {
     }
   }
 }
-$pcol = array( 1 => 'inicial',
+$pcol = [ 1 => 'inicial',
          2 => 'atualizada',
          3 => 'bimestre',
          4 => 'exercicio',
-         5 => 'anterior');
+         5 => 'anterior'];
 
 $ipcol = count($pcol);
 
@@ -554,7 +554,7 @@ $total_rec_anterior   = $receita[0]['anterior']   + $receita[25]['anterior'];
 
 // DESPESAS
 
-$despesa = array();
+$despesa = [];
 
 $despesa[0]['txt']  = 'DESP. PREVID.-RPPS(EXCETO INTRA-ORÇAMENTÁRIAS)(IV)';
 $despesa[1]['txt']  = '  ADMINISTRAÇÃO';
@@ -602,7 +602,7 @@ for ($linha = 18; $linha <= 27; $linha++) {
 
     $oDespFuncaoAtual = db_utils::fieldsMemory($rsDespFuncaoAtual,$iInd);
 
-   if (substr($oDespFuncaoAtual->o58_elemento,3,2) == "91"){
+   if (substr((string) $oDespFuncaoAtual->o58_elemento,3,2) == "91"){
       continue;
     }
     $oParametro      = $m_despesa[$linha]['parametros'];
@@ -640,7 +640,7 @@ for ($linha = 18; $linha <= 27; $linha++) {
     for ($iInd=0; $iInd < $iLinhaDespFuncaoAnterior; $iInd++) {
 
       $oDespFuncaoAnterior = db_utils::fieldsMemory($rsDespFuncaoAnterior,$iInd);
-      if (substr($oDespFuncaoAnterior->o58_elemento,3,2) == "91"){
+      if (substr((string) $oDespFuncaoAnterior->o58_elemento,3,2) == "91"){
         continue;
       }
       $oParametro      = $m_despesa[$linha]['parametros'];
@@ -671,13 +671,13 @@ for ($linha = 18; $linha <= 27; $linha++) {
   }
 }
 
-$pcol = array( 1 => 'inicial',
+$pcol = [ 1 => 'inicial',
            2 => 'atualizada',
            3 => 'bimestre',
            4 => 'exercicio',
            5 => 'anterior',
            6 => 'rpnp_exe',
-           7 => 'rpnp_ant');
+           7 => 'rpnp_ant'];
 
 
 $ipcol = count($pcol);
@@ -726,7 +726,7 @@ for ($linha = 54; $linha <= 55; $linha++){
 
     $oDespFuncaoAtual = db_utils::fieldsMemory($rsDespFuncaoAtual,$iInd);
 
-   if (substr($oDespFuncaoAtual->o58_elemento,3,2) != "91"){
+   if (substr((string) $oDespFuncaoAtual->o58_elemento,3,2) != "91"){
       continue;
     }
     $oParametro      = $m_despesa[$linha]['parametros'];
@@ -764,7 +764,7 @@ for ($linha = 54; $linha <= 55; $linha++){
     for ($iInd=0; $iInd < $iLinhaDespFuncaoAnterior; $iInd++) {
 
       $oDespFuncaoAnterior = db_utils::fieldsMemory($rsDespFuncaoAnterior,$iInd);
-      if (substr($oDespFuncaoAnterior->o58_elemento,3,2) != "91"){
+      if (substr((string) $oDespFuncaoAnterior->o58_elemento,3,2) != "91"){
         continue;
       }
       $oParametro      = $m_despesa[$linha]['parametros'];
@@ -801,13 +801,13 @@ $despesa[49]["txt"] = " Despesas Correntes";//55
 $despesa[50]["txt"] = " Despesas de Capital";//56
 
 
-$pcol = array( 1 => 'inicial',
+$pcol = [ 1 => 'inicial',
          2 => 'atualizada',
          3 => 'bimestre',
          4 => 'exercicio',
          5 => 'anterior',
          6 => 'rpnp_exe',
-         7 => 'rpnp_ant');
+         7 => 'rpnp_ant'];
 
 $ipcol = count($pcol);
 
@@ -837,7 +837,7 @@ $total_desp_rpnp_ant   = $despesa[0]['rpnp_ant']   + $despesa[16]['rpnp_ant'];
 
 
 // aportes
-$aAportes  = array();
+$aAportes  = [];
 $aAportes[1]['txt'] = "TOTAL DO APORTES PARA O RPPS";
 $aAportes[2]['txt'] = "    Plano Financeiro";
 $aAportes[3]['txt'] = "      Recursos para Cobertura de Insuficiências Financeiras";//linha 28
@@ -889,7 +889,7 @@ for ($linha = 28; $linha <= 33; $linha++) {
 
     $oDispAtual  = db_utils::fieldsMemory($rsDispAtual,$iInd);
 
-    if (substr($oDispAtual->estrutural,3,2) == "91"){
+    if (substr((string) $oDispAtual->estrutural,3,2) == "91"){
       continue;
     }
     $oParametro      = $aParamAportes[$linha]['parametros'];
@@ -915,7 +915,7 @@ for ($linha = 28; $linha <= 33; $linha++) {
 
       $oDispAnterior = db_utils::fieldsMemory($rsDispAnterior,$iInd);
 
-      if (substr($oDispAnterior->estrutural,3,2) == "91"){
+      if (substr((string) $oDispAnterior->estrutural,3,2) == "91"){
         continue;
       }
 
@@ -944,7 +944,7 @@ for ($iInd = 0; $iInd < $iLinhaDespFuncaoAtual; $iInd++) {
   $oDespFuncaoAtual = db_utils::fieldsMemory($rsDespFuncaoAtual,$iInd);
   $sEstrutural      = $oDespFuncaoAtual->o58_elemento.'00';
 
-  if (substr($oDespFuncaoAtual->o58_elemento,3,2) == "91"){
+  if (substr((string) $oDespFuncaoAtual->o58_elemento,3,2) == "91"){
     continue;
   }
   $oParametro   = $aParamAportes[$linha]['parametros'];
@@ -963,11 +963,11 @@ for ($iInd = 0; $iInd < $iLinhaDespFuncaoAtual; $iInd++) {
 
 
 
-$pcol = array( 1 => 'inicial',
+$pcol = [ 1 => 'inicial',
          2 => 'atualizada',
          3 => 'bimestre',
          4 => 'exercicio',
-         5 => 'anterior');
+         5 => 'anterior'];
 
 
 $ipcol = count($pcol);
@@ -1001,7 +1001,7 @@ for($col = 1; $col <= $ipcol; $col++){
 
 }
 // reserva orçamentária
-$reserva_orc  = array();
+$reserva_orc  = [];
 $reserva_orc[1]['txt'] = "VALOR";//linha 34
 
 for ($linha=1;$linha<=1;$linha++) {
@@ -1011,7 +1011,7 @@ for ($linha=1;$linha<=1;$linha++) {
 
 
 // Disponibilidades e Investimentos Financeiros
-$disponivel  = array();
+$disponivel  = [];
 $disponivel[1]['txt'] = "CAIXA";//linha 35
 $disponivel[2]['txt'] = "BANCOS CONTA MOVIMENTO";//linha 36
 $disponivel[3]['txt'] = "INVESTIMENTOS";//linha 37
@@ -1047,7 +1047,7 @@ if (!isset($lInResumido)) {
   @db_query("drop table work_pl_estrut");
   @db_query("drop table work_pl_estrutmae");
 }
-$aDataMes               = explode("-", $dtDataInicial);
+$aDataMes               = explode("-", (string) $dtDataInicial);
 $dtDataFinalMesAnterior = "{$aDataMes[0]}-{$aDataMes[1]}-".cal_days_in_month(CAL_GREGORIAN, $aDataMes[1], $aDataMes[2]);
 $rsDispMesAnterior      = db_planocontassaldo_matriz($anousu, $dtDataInicial, $dtDataFinalMesAnterior, false, $db_filtro_disponivel);
 $iLinhasMesAnterior     = pg_num_rows($rsDispMesAnterior);
@@ -1063,7 +1063,7 @@ for ($linha = 35; $linha <= 38; $linha++) {
 
     $oDispAtual = db_utils::fieldsMemory($rsDispAtual,$iInd);
 
-    if (substr($oDispAtual->estrutural,3,2) == "91") {
+    if (substr((string) $oDispAtual->estrutural,3,2) == "91") {
       continue;
     }
     $oParametro      = $m_disponivel[$linha]['parametros'];
@@ -1085,7 +1085,7 @@ for ($linha = 35; $linha <= 38; $linha++) {
 
     $oDispMesAnterior = db_utils::fieldsMemory($rsDispMesAnterior,$iInd);
 
-    if (substr($oDispMesAnterior->estrutural,3,2) == "91"){
+    if (substr((string) $oDispMesAnterior->estrutural,3,2) == "91"){
       continue;
     }
     $oParametro      = $m_disponivel[$linha]['parametros'];
@@ -1108,7 +1108,7 @@ for ($linha = 35; $linha <= 38; $linha++) {
 
       $oDispAnterior = db_utils::fieldsMemory($rsDispAnterior,$iInd);
 
-      if (substr($oDispAnterior->estrutural,3,2) == "91"){
+      if (substr((string) $oDispAnterior->estrutural,3,2) == "91"){
         continue;
       }
       $oParametro      = $m_disponivel[$linha]['parametros'];
@@ -1130,9 +1130,9 @@ for ($linha = 35; $linha <= 38; $linha++) {
 
 for ($col=1;$col<=3;$col++){
 
-  $pcol = array( 1=>'saldo_inicial',
+  $pcol = [ 1=>'saldo_inicial',
                  2=>'saldo_periodo_atual',
-                 3=>'saldo_periodo_anterior');
+                 3=>'saldo_periodo_anterior'];
 
   $disponivel[1][$pcol[$col]]  = $m_disponivel[35][$pcol[$col]];
   $disponivel[2][$pcol[$col]]  = $m_disponivel[36][$pcol[$col]];
@@ -1152,9 +1152,9 @@ if (!isset($arqinclude)){ //
   $xvirg = '';
   $flag_abrev = false;
 
-  for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+  for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
       $descr_inst .= $xvirg.$nomeinstabrev;
       $flag_abrev  = true;
 
@@ -1176,14 +1176,14 @@ if (!isset($arqinclude)){ //
   $head3 = "DEMONSTRATIVO DE RECEITAS E DESPESAS PREVIDENCIÁRIAS DO REGIME PRÓPRIO DOS SERVIDORES";
   $head4 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
   $txt = strtoupper(db_mes('01'));
-  $dt  = split("-",$dtDataFinal);
+  $dt  = preg_split("#\\-#m",(string) $dtDataFinal);
   $txt.= " À ".strtoupper(db_mes($dt[1]))." $anousu";
   $head5 = "$txt";
    $dados  = data_periodo($anousu, $sSiglaPeriodo);
-  $perini = split("-",$dados[0]);
-  $perfin = split("-",$dados[1]);
+  $perini = preg_split("#\\-#m",(string) $dados[0]);
+  $perfin = preg_split("#\\-#m",(string) $dados[1]);
 
-  $txtper = strtoupper($dados["periodo"]);
+  $txtper = strtoupper((string) $dados["periodo"]);
   $mesini = db_mes($perini[1],1);
   $mesfin = db_mes($perfin[1],1);
   $head5 .= " / ".$txtper." ".$mesini."-".$mesfin;
@@ -1621,11 +1621,11 @@ if (!isset($arqinclude)){ //
   $pdf->cell($tam_desp, $alt, "({nb}/{nb})", 'TB', 1, "R", 0);
   //assinatura
   $oRelatorio = new relatorioContabil($iCodigoRelatorio, false);
-  $oRelatorio->getNotaExplicativa(&$pdf,$iCodigoPeriodo,180);
+  $oRelatorio->getNotaExplicativa($pdf,$iCodigoPeriodo,180);
   $pdf->ln(10);
   $pdf->setfont('arial','',6);
 
-  assinaturas(&$pdf,&$classinatura,'LRF');
+  assinaturas($pdf,$classinatura,'LRF');
 
   $pdf->Output();
 

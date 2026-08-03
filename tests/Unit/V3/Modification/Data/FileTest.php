@@ -32,9 +32,9 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
     public function provideDefaultData()
     {
-        return array(
-        array('login.php', null, 'global/'),
-        array('scripts/scripts.js', 'dbseller', 'user/dbseller/')
-        );
+        return [
+        ['login.php', null, 'global/'],
+        ['scripts/scripts.js', 'dbseller', 'user/dbseller/']
+        ];
     }
 }

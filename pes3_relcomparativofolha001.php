@@ -97,11 +97,11 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
           <td>
             <?php  
             
-              $aFiltro = array( 
+              $aFiltro = [ 
 							                  ''           => 'Selecione',
 							                  'todos'      => 'Todos',
 							                  'diferentes' => 'Com Diferença de Valor'
-							                );
+							                ];
 							db_select("sFiltro", $aFiltro, "",1);
             ?>
           </td>
@@ -111,11 +111,11 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
           <td>
             <?php  
             
-              $aFiltroRubrica = array(
+              $aFiltroRubrica = [
                                         ''             => 'Selecione', 
                                         'todos'        => 'Proventos',
                                         'selecionadas' => 'Selecionadas'
-                                      );
+                                      ];
               db_select("sFiltroRubrica", $aFiltroRubrica, '',1,'onchange="js_mostratiporubricas();"');
             ?>
           </td>
@@ -126,12 +126,12 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
           <td>
             <?php  
             
-              $aFiltroTipoRubrica = array(
+              $aFiltroTipoRubrica = [
                                         ''      => 'Selecione', 
                                         '1'     => 'Provento',
                                         '2'     => 'Desconto',
                                         '3'     => 'Base'
-                                      );
+                                      ];
               db_select("iFiltroTipoRubrica", $aFiltroTipoRubrica, '',1,'onchange="js_mostrarubricas();"');
             ?>
           </td>
@@ -176,12 +176,12 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
 	        </td>
 	        <td>
 			          <?php  
-			            $aTiposFolha = array( 
+			            $aTiposFolha = [ 
 			                                  'gerfsal' => 'Salário',
 			                                  'gerfs13' => 'Saldo do 13º',
 			                                  'gerfcom' => 'Complementar',
                                         'gerfadi' => 'Adiantamento'
-			                                );
+			                                ];
                   db_multiploselect("valor","descr", "", "", $aTiposFolha, "", 6, 250, "", "", true, "");
 
 			          ?>

@@ -32,7 +32,7 @@ include(modification("libs/db_utils.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_tipoproc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 db_postmemory($_POST);
 $cltipoproc = new cl_tipoproc;
 $db_opcao = 22;
@@ -41,15 +41,15 @@ $sqlerro  = false;
 
 $oPost = db_utils::postMemory($_POST);
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
 
   $result = $cltipoproc->sql_record("select p58_codigo,p51_dtlimite as limite from protprocesso inner join tipoproc on p51_codigo = p58_codigo where p58_codigo = $p51_codigo limit 1");
   if($cltipoproc->numrows > 0) {
 
    db_fieldsmemory($result,0);
 
-   $d1 = substr($p51_dtlimite,6,4).substr($p51_dtlimite,3,2).substr($p51_dtlimite,0,2);
-   $d2 = substr($limite,0,4).substr($limite,5,2).substr($limite,8,2);
+   $d1 = substr((string) $p51_dtlimite,6,4).substr((string) $p51_dtlimite,3,2).substr((string) $p51_dtlimite,0,2);
+   $d2 = substr((string) $limite,0,4).substr((string) $limite,5,2).substr((string) $limite,8,2);
    if (db_getsession("DB_administrador") != 1 && $d2 != "" && $d2 < date('Ymd',db_getsession("DB_datausu")) ) {
 
 	   db_msgbox('Aviso:\nAlteração não Permitida!\nData limite do processo menor que a data atual\nData Limite:'.db_formatar($limite,'d'));

@@ -111,7 +111,7 @@ class ImportarPontoService
             $dadosLinha[0],
             $this->ano,
             $this->mes,
-            str_pad($dadosLinha[1], 4, '0', STR_PAD_LEFT)
+            str_pad((string) $dadosLinha[1], 4, '0', STR_PAD_LEFT)
         );
 
         if ($ponto && $this->acao == 'ignorar') {
@@ -141,7 +141,7 @@ class ImportarPontoService
         $ponto->setMes($this->mes);
         $ponto->setInstituicao($this->instituicao);
         $ponto->setMatricula($dadosLinha[0]);
-        $ponto->setRubrica(str_pad($dadosLinha[1], 4, '0', STR_PAD_LEFT));
+        $ponto->setRubrica(str_pad((string) $dadosLinha[1], 4, '0', STR_PAD_LEFT));
         $ponto->setQuantidade($dadosLinha[2]);
         $ponto->setValor($dadosLinha[3]);
         $ponto->setLotacao($servidor->getCodigoLotacao());

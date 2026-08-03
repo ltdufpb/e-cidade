@@ -37,7 +37,7 @@ class RegistroArquivoImportacaoConsignet extends RegistroArquivoImportacao {
   /**
    * Método que persiste um registro de consignação na base de dados
    */
-  public function persist(RegistroArquivoImportacaoConsignet $oRegistro = null){
+  public function persist(?RegistroArquivoImportacaoConsignet $oRegistro = null){
 
     if ( $oRegistro === null ){
       $oRegistro = $this;
@@ -50,7 +50,7 @@ class RegistroArquivoImportacaoConsignet extends RegistroArquivoImportacao {
       $sSqlConsignadoMovimento   = $oDaoConsignadoMovimento->sql_query_file(null, "*", null, $sWhereConsignadoMovimento);
       $rsConsignadoMovimento     = db_query($sSqlConsignadoMovimento);
   
-      if( pg_numrows($rsConsignadoMovimento) > 0 ){
+      if( pg_num_rows($rsConsignadoMovimento) > 0 ){
 
         $oConsignadoMovimento = db_utils::fieldsMemory($rsConsignadoMovimento, 0);
         
@@ -168,7 +168,7 @@ class RegistroArquivoImportacaoConsignet extends RegistroArquivoImportacao {
     try { 
       $oRubrica = RubricaRepository::getInstanciaByCodigo($oRegistroSalvo->getRubric(), 
                                                           $oRegistroSalvo->getArquivo()->getInstituicao()->getSequencial());
-    } catch ( BusinessException $eException ) {
+    } catch ( BusinessException ) {
 
       $oRubrica = new Rubrica();
       $oRubrica->setCodigo( $oRegistroSalvo->getRubric() );

@@ -16,14 +16,14 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                             CACHE 1;"
         );
         $this->table('inicialpartilha',
-                    array('schema' => 'juridico', 'id' => false, 'primary_key' => 'v35_sequencial'))
-            ->addColumn('v35_sequencial', 'integer', array('null' => false))
-            ->addColumn('v35_inicial', 'integer', array('null' => false))
-            ->addColumn('v35_tipolancamento', 'integer', array('null' => false, 'default' => 0))
-            ->addColumn('v35_dtpagamento', 'date', array('null' => true, 'default' => null))
-            ->addColumn('v35_obs', 'text', array('null' => true))
-            ->addColumn('v35_valorpartilha', 'decimal', array('null' => true, 'precision' => 15, 'scale' => 2))
-            ->addColumn('v35_datapartilha', 'date', array('null' => true))
+                    ['schema' => 'juridico', 'id' => false, 'primary_key' => 'v35_sequencial'])
+            ->addColumn('v35_sequencial', 'integer', ['null' => false])
+            ->addColumn('v35_inicial', 'integer', ['null' => false])
+            ->addColumn('v35_tipolancamento', 'integer', ['null' => false, 'default' => 0])
+            ->addColumn('v35_dtpagamento', 'date', ['null' => true, 'default' => null])
+            ->addColumn('v35_obs', 'text', ['null' => true])
+            ->addColumn('v35_valorpartilha', 'decimal', ['null' => true, 'precision' => 15, 'scale' => 2])
+            ->addColumn('v35_datapartilha', 'date', ['null' => true])
             ->addForeignKey('v35_inicial', 'inicial', 'v50_inicial')
             ->create();
         $this->execute("ALTER TABLE juridico.inicialpartilha ALTER COLUMN v35_sequencial SET DEFAULT nextval('juridico.inicialpartilha_v35_sequencial_seq')");
@@ -35,13 +35,13 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                             START 1
                             CACHE 1;"
         );
-        $this->table('inicialpartilhacustas', array('schema' => 'juridico', 'id' => false, 'primary_key' => 'v36_sequencial'))
-            ->addColumn('v36_sequencial', 'integer', array('null' => false))
-            ->addColumn('v36_taxa', 'integer', array('null' => false))
-            ->addColumn('v36_inicialpartilha', 'integer', array('null' => false))
-            ->addColumn('v36_valor', 'decimal', array('null' => false, 'precision' => 15, 'scale' => 2, 'default' => 0))
-            ->addColumn('v36_numnov', 'biginteger', array('null' => true, 'default' => 0))
-            ->addColumn('v36_dispensalancamentorecibo', 'boolean', array('null' => false, 'default' => 'false'))
+        $this->table('inicialpartilhacustas', ['schema' => 'juridico', 'id' => false, 'primary_key' => 'v36_sequencial'])
+            ->addColumn('v36_sequencial', 'integer', ['null' => false])
+            ->addColumn('v36_taxa', 'integer', ['null' => false])
+            ->addColumn('v36_inicialpartilha', 'integer', ['null' => false])
+            ->addColumn('v36_valor', 'decimal', ['null' => false, 'precision' => 15, 'scale' => 2, 'default' => 0])
+            ->addColumn('v36_numnov', 'biginteger', ['null' => true, 'default' => 0])
+            ->addColumn('v36_dispensalancamentorecibo', 'boolean', ['null' => false, 'default' => 'false'])
             ->addForeignKey('v36_taxa', 'taxa', 'ar36_sequencial')
             ->addForeignKey('v36_inicialpartilha', 'inicialpartilha', 'v35_sequencial')
             ->create();
@@ -64,9 +64,9 @@ class M9647InicialPartilhaCustas extends PostgresMigration
     private function criaDicionario()
     {
         /* @note: Registra tabela inicialpartilha e inicialpartilhacustas */
-        $this->table('db_sysarquivo', array('schema' => 'configuracoes'))
+        $this->table('db_sysarquivo', ['schema' => 'configuracoes'])
             ->insert(
-                array(
+                [
                     'codarq',
                     'nomearq',
                     'descricao',
@@ -77,9 +77,9 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                     'naolibclass',
                     'naolibfunc',
                     'naolibprog',
-                    'naolibform'),
-                array(
-                    array(
+                    'naolibform'],
+                [
+                    [
                         1010234,
                         'inicialpartilha',
                         'Partilha de Custas da Inicial do Foro',
@@ -91,8 +91,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         'f',
                         'f'
-                    ),
-                    array(
+                    ],
+                    [
                         1010235,
                         'inicialpartilhacustas',
                         'Custas da Partilha da Inicial',
@@ -104,38 +104,38 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         'f',
                         'f'
-                    )
-                )
+                    ]
+                ]
             )
             ->saveData();
 
         /* @note: registra as tabelas ao modulo juridico */
-        $this->table('db_sysarqmod', array('schema' => 'configuracoes'))
+        $this->table('db_sysarqmod', ['schema' => 'configuracoes'])
             ->insert(
-                array('codmod', 'codarq'),
-                array(
-                    array(21, 1010234),
-                    array(21, 1010235)
-                )
+                ['codmod', 'codarq'],
+                [
+                    [21, 1010234],
+                    [21, 1010235]
+                ]
             )
             ->saveData();
 
         /* @note: registra vinculos das tabelas */
-        $this->table('db_sysarqarq', array('schema' => 'configuracoes'))
+        $this->table('db_sysarqarq', ['schema' => 'configuracoes'])
             ->insert(
-                array('codarqpai', 'codarq'),
-                array(
+                ['codarqpai', 'codarq'],
+                [
                     /* vinculta inicialpartilha a inicial*/
-                    array(108, 1010234),
+                    [108, 1010234],
                     /* vincula inicialpartilhacustas a inicialpartilha */
-                    array(1010234,1010235)
-                )
+                    [1010234,1010235]
+                ]
             )
             ->saveData();
 
-        $this->table('db_syscampo', array('schema' => 'configuracoes'))
+        $this->table('db_syscampo', ['schema' => 'configuracoes'])
             ->insert(
-                array(
+                [
                     'codcam',
                     'nomecam',
                     'conteudo',
@@ -148,9 +148,9 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                     'autocompl',
                     'aceitatipo',
                     'tipoobj',
-                    'rotulorel'),
-                array(
-                    array(
+                    'rotulorel'],
+                [
+                    [
                         1009495,
                         'v35_sequencial',
                         'int4',
@@ -163,8 +163,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         1,
                         'text',
-                        'Código'),
-                    array(
+                        'Código'],
+                    [
                         1009496,
                         'v35_inicial',
                         'int4',
@@ -177,8 +177,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         1,
                         'text',
-                        'Inicial'),
-                    array(
+                        'Inicial'],
+                    [
                         1009497,
                         'v35_tipolancamento',
                         'int4',
@@ -191,8 +191,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         1,
                         'text',
-                        'Tipo Lançamento'),
-                    array(
+                        'Tipo Lançamento'],
+                    [
                         1009498,
                         'v35_dtpagamento',
                         'date',
@@ -205,8 +205,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         0,
                         'text',
-                        'Data Pagamento'),
-                    array(
+                        'Data Pagamento'],
+                    [
                         1009499,
                         'v35_obs',
                         'text',
@@ -219,8 +219,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         0,
                         'text',
-                        'Observação'),
-                    array(
+                        'Observação'],
+                    [
                         1009500,
                         'v35_valorpartilha',
                         'float8',
@@ -233,8 +233,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         4,
                         'text',
-                        'Valor da Partilha'),
-                    array(
+                        'Valor da Partilha'],
+                    [
                         1009501,
                         'v35_datapartilha',
                         'date',
@@ -247,9 +247,9 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         0,
                         'text',
-                        'Data Partilha'),
+                        'Data Partilha'],
                     /* campos da tabela inicialpartilhacustas */
-                    array(
+                    [
                         1009505,
                         'v36_sequencial',
                         'int4',
@@ -262,8 +262,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         't',
                         1,
                         'text',
-                        'Código'),
-                    array(
+                        'Código'],
+                    [
                         1009506,
                         'v36_taxa',
                         'int4',
@@ -276,8 +276,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         1,
                         'text',
-                        'Taxa'),
-                    array(
+                        'Taxa'],
+                    [
                         1009507,
                         'v36_inicialpartilha',
                         'int4',
@@ -290,8 +290,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         1,
                         'text',
-                        'Inicial Partilha'),
-                    array(
+                        'Inicial Partilha'],
+                    [
                         1009508,
                         'v36_valor',
                         'float8',
@@ -304,8 +304,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         4,
                         'text',
-                        'Valor da Custa'),
-                    array(
+                        'Valor da Custa'],
+                    [
 
                         1009509,
                         'v36_numnov',
@@ -319,8 +319,8 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         1,
                         'text',
-                        'Numnov'),
-                    array(
+                        'Numnov'],
+                    [
                         1009510,
                         'v36_dispensalancamentorecibo',
                         'bool',
@@ -333,33 +333,33 @@ class M9647InicialPartilhaCustas extends PostgresMigration
                         'f',
                         5,
                         'text',
-                        'Dispensa Lançamento Recibo')
-                )
+                        'Dispensa Lançamento Recibo']
+                ]
             )
             ->saveData();
 
         /* @note: vincula os campos a tabela */
-        $this->table('db_sysarqcamp', array('schema' => 'configuracoes'))
+        $this->table('db_sysarqcamp', ['schema' => 'configuracoes'])
             ->insert(
-                array(
-                    'codarq', 'codcam', 'seqarq', 'codsequencia'),
-                array(
+                [
+                    'codarq', 'codcam', 'seqarq', 'codsequencia'],
+                [
                     /* campos da tabela inicialpartilha */
-                    array(1010234,1009495,1,0),
-                    array(1010234,1009496,2,0),
-                    array(1010234,1009497,3,0),
-                    array(1010234,1009498,4,0),
-                    array(1010234,1009499,5,0),
-                    array(1010234,1009500,6,0),
-                    array(1010234,1009501,7,0),
+                    [1010234,1009495,1,0],
+                    [1010234,1009496,2,0],
+                    [1010234,1009497,3,0],
+                    [1010234,1009498,4,0],
+                    [1010234,1009499,5,0],
+                    [1010234,1009500,6,0],
+                    [1010234,1009501,7,0],
                     /* campos da tabela inicialpartilhacustas */
-                    array(1010235,1009505,1,0),
-                    array(1010235,1009506,2,0),
-                    array(1010235,1009507,3,0),
-                    array(1010235,1009508,4,0),
-                    array(1010235,1009509,5,0),
-                    array(1010235,1009510,6,0)
-                )
+                    [1010235,1009505,1,0],
+                    [1010235,1009506,2,0],
+                    [1010235,1009507,3,0],
+                    [1010235,1009508,4,0],
+                    [1010235,1009509,5,0],
+                    [1010235,1009510,6,0]
+                ]
             )
             ->saveData();
 

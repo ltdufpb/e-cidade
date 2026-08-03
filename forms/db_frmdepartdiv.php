@@ -76,7 +76,7 @@ $clrotulo->label("z01_nome");
         </td>
         <td> 
           <?php 
-            $x = array('t'=>'Sim','f'=>'Não');
+            $x = ['t'=>'Sim','f'=>'Não'];
             db_select('t30_ativo',$x,true,$db_opcao,"");
           ?>
         </td>
@@ -155,7 +155,7 @@ function js_preenchepesquisa(chave){
   db_iframe_departdiv.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

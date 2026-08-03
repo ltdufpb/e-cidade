@@ -126,12 +126,12 @@ if (isset($mostrahtml) and $mostrahtml == true) {
   $rsSessao   = db_query($conn, $sqlSessao) or die("Problema com a sessão");
   $sqlinstit  = "select codigo from db_config where prefeitura is true";
   $rsInstit   = db_query($conn, $sqlinstit);
-  $instit     = pg_result($rsInstit, 0, 0);
+  $instit     = pg_fetch_result($rsInstit, 0, 0);
   $sqlPut     = "SELECT fc_putsession('DB_instit','" . $instit ."')";
   $rsPut      = db_query($conn, $sqlPut) or die("Problema com a sessão");
   $sql        = "select nextval('db_logsacessa_codsequen_seq')";
   $result     = db_query($sql) or die($sql);
-  $codsequen  = pg_result($result, 0, 0);
+  $codsequen  = pg_fetch_result($result, 0, 0);
 }
 
 db_putsession("DB_instit",     $instit);
@@ -350,7 +350,7 @@ if ($cancelaProcessamento == false) {
 
       if ( pg_num_rows($rsRegimeEmpresa) > 0) {
 
-      	$oRegimeEmpresa = db_utils::fieldsMemory($rsRegimeEmpresa, 0);
+      	$oRegimeEmpresa = (new db_utils())->fieldsMemory($rsRegimeEmpresa, 0);
 
       	if ( $oRegimeEmpresa->q01_cadcal == 2 ) {
 
@@ -378,7 +378,7 @@ if ($cancelaProcessamento == false) {
       $sSqlTipcalc .= "         and (  q07_datafi is null or q07_datafi >= '{$dtDataHoje}' ) ";
       $sSqlTipcalc .= "       ) and tabativ.q07_inscr = {$num_cadastro} ";
       $rsTipcalc   = db_query($conn, $sSqlTipcalc) or die($sSqlTipcalc);
-      $oTipCalc    = db_utils::fieldsMemory($rsTipcalc, 0);
+      $oTipCalc    = (new db_utils())->fieldsMemory($rsTipcalc, 0);
 
       if ( $oTipCalc->quant > 0 ) {
       $sRegimeEmpresa = 'A';
@@ -463,7 +463,7 @@ if ($cancelaProcessamento == false) {
                   null,
                   " . dbValida($logradouro, 'string') . ",
                   " . dbValida($num_imovel, 'string') . ",
-                  " . dbValida(substr($complemento,0,30), 'string') . ",
+                  " . dbValida(substr((string) $complemento,0,30), 'string') . ",
                   " . dbValida($bairro, 'string') . ",
                   " . dbValida($cep, 'int') . ",
                   " . dbValida($cidade, 'string') . ",
@@ -650,8 +650,8 @@ if ($cancelaProcessamento == false) {
         if ($linhasfund > 0) {
           db_fieldsmemory($resultfund, 0);
         }
-        $v13_certid = str_pad($v13_certid, 8, "0", STR_PAD_LEFT);
-        $v01_coddiv = str_pad($v01_coddiv, 8, "0", STR_PAD_LEFT);
+        $v13_certid = str_pad((string) $v13_certid, 8, "0", STR_PAD_LEFT);
+        $v01_coddiv = str_pad((string) $v01_coddiv, 8, "0", STR_PAD_LEFT);
         $num_documento = $v13_certid . $v01_coddiv;
 
         //
@@ -667,7 +667,7 @@ if ($cancelaProcessamento == false) {
 
         $iNumRowsVerificaCDA = pg_num_rows($rsVerificaCDA);
         if ( $iNumRowsVerificaCDA > 0 ) {
-        	$oVerificaCDA = db_utils::fieldsMemory($rsVerificaCDA,0);
+        	$oVerificaCDA = (new db_utils())->fieldsMemory($rsVerificaCDA, 0);
         }else{
         	unset($oVerificaCDA);
         }
@@ -935,7 +935,7 @@ if ($cancelaProcessamento == false) {
   }
 
   //SOCIOS
-  if (trim($whereinscr) == '') {
+  if (trim((string) $whereinscr) == '') {
   	$sWhereTipoSocio = " where q95_tipo = 1 ";
   } else {
     $sWhereTipoSocio = "   and q95_tipo = 1 ";
@@ -1029,7 +1029,7 @@ if ($cancelaProcessamento == false) {
                                                     null,
                                                     null,
                                                     " . dbValida($z01_numero, 'string') . ",
-                                                    " . dbValida(substr($z01_compl,0,30), 'string') . ",
+                                                    " . dbValida(substr((string) $z01_compl,0,30), 'string') . ",
                                                     " . dbValida($z01_bairro, 'string') . ",
                                                     " . dbValida($z01_cep, 'int') . ",
                                                     " . dbValida($z01_munic, 'string') . ",
@@ -1152,20 +1152,20 @@ if ($linhasBuscaBoleto > 0) {
       $sSqlPesquisaCgmCnpjGiss .= "   from tb_inter_empresas_giss ";
       $sSqlPesquisaCgmCnpjGiss .= "  where num_cadastro = $num_cadastro ";
       $rsPesquisaCgmCnpjGiss = db_query($conn2, $sSqlPesquisaCgmCnpjGiss) or die($sSqlPesquisaCgmCnpjGiss);
-      $iNumRowsGiss = pg_numrows($rsPesquisaCgmCnpjGiss);
+      $iNumRowsGiss = pg_num_rows($rsPesquisaCgmCnpjGiss);
 
       if ($iNumRowsGiss > 0) {
 
         db_log("Encontrou EMPRESA no giss (tb_inter_empresas_giss) ", $sArquivoLog, 2, true, true);
-        $oPesquisaCgmCnpjGiss = db_utils::fieldsMemory($rsPesquisaCgmCnpjGiss, 0);
+        $oPesquisaCgmCnpjGiss = (new db_utils())->fieldsMemory($rsPesquisaCgmCnpjGiss, 0);
         $sSqlPesquisaCgmCnpj = " select * ";
         $sSqlPesquisaCgmCnpj .= "   from cgm ";
         $sSqlPesquisaCgmCnpj .= "  where z01_cgccpf = '{$oPesquisaCgmCnpjGiss->cpf_cnpj}'";
         $rsPesquisaCgmCnpj = db_query($conn, $sSqlPesquisaCgmCnpj) or die($sSqlPesquisaCgmCnpj);
-        $iNumRows = pg_numrows($rsPesquisaCgmCnpj);
+        $iNumRows = pg_num_rows($rsPesquisaCgmCnpj);
 
         if ($iNumRows > 0) {
-          $oPesquisaCgmCnpj = db_utils::fieldsMemory($rsPesquisaCgmCnpj, 0);
+          $oPesquisaCgmCnpj = (new db_utils())->fieldsMemory($rsPesquisaCgmCnpj, 0);
           db_log("Encontrou CGM : {$oPesquisaCgmCnpj->z01_numcgm} para inscrição : {$num_cadastro}, procurando pelo CNPJ.", $sArquivoLog, 2, true, true);
           db_log("Incluindo ISS complementar automaticamente para o CGM : {$oPesquisaCgmCnpj->z01_numcgm}", $sArquivoLog, 2, true, true);
         } else {
@@ -1177,13 +1177,13 @@ if ($linhasBuscaBoleto > 0) {
           $sCamposInsertCGM = "z01_numcgm,z01_nome,z01_ender,z01_compl,z01_bairro,z01_uf,z01_cep,z01_telef,z01_incest,z01_email,z01_cgccpf,z01_nomefanta";
           $sSqlInsertCGM  = " insert into cgm ({$sCamposInsertCGM}) ";
           $sSqlInsertCGM .= "          values (nextval('cgm_z01_numcgm_seq'), ";
-          $sSqlInsertCGM .= "                  ".dbValida(substr($oPesquisaCgmCnpjGiss->nome_empresa,0,40), 'string').", ";
-          $sSqlInsertCGM .= "                  ".dbValida(substr($oPesquisaCgmCnpjGiss->logradouro,0,40)  , 'string').", ";
+          $sSqlInsertCGM .= "                  ".dbValida(substr((string) $oPesquisaCgmCnpjGiss->nome_empresa,0,40), 'string').", ";
+          $sSqlInsertCGM .= "                  ".dbValida(substr((string) $oPesquisaCgmCnpjGiss->logradouro,0,40)  , 'string').", ";
           $sSqlInsertCGM .= "                  ".dbValida(       $oPesquisaCgmCnpjGiss->complemento       , 'string').", ";
-          $sSqlInsertCGM .= "                  ".dbValida(substr($oPesquisaCgmCnpjGiss->bairro,0,40)      , 'string').", ";
+          $sSqlInsertCGM .= "                  ".dbValida(substr((string) $oPesquisaCgmCnpjGiss->bairro,0,40)      , 'string').", ";
           $sSqlInsertCGM .= "                  ".dbValida(       $oPesquisaCgmCnpjGiss->estado            , 'string').", ";
           $sSqlInsertCGM .= "                  ".dbValida(       $oPesquisaCgmCnpjGiss->cep               , 'int')   .", ";
-          $sSqlInsertCGM .= "                  ".dbValida(substr($oPesquisaCgmCnpjGiss->telefone,0,12)    , 'string').", ";
+          $sSqlInsertCGM .= "                  ".dbValida(substr((string) $oPesquisaCgmCnpjGiss->telefone,0,12)    , 'string').", ";
           $sSqlInsertCGM .= "                  ".dbValida(       $oPesquisaCgmCnpjGiss->num_cadastro      , 'int')   .", ";
           $sSqlInsertCGM .= "                  ".dbValida(       $oPesquisaCgmCnpjGiss->email             , 'string').", ";
           $sSqlInsertCGM .= "                  ".dbValida(       $oPesquisaCgmCnpjGiss->cpf_cnpj          , 'int')   .", ";
@@ -1197,9 +1197,9 @@ if ($linhasBuscaBoleto > 0) {
              $sSqlPesquisaCgmCnpj .= "   from cgm ";
              $sSqlPesquisaCgmCnpj .= "  where z01_cgccpf = '{$oPesquisaCgmCnpjGiss->cpf_cnpj}'";
              $rsPesquisaCgmCnpj = db_query($conn, $sSqlPesquisaCgmCnpj) or die($sSqlPesquisaCgmCnpj);
-             $iNumRows = pg_numrows($rsPesquisaCgmCnpj);
+             $iNumRows = pg_num_rows($rsPesquisaCgmCnpj);
              if ($iNumRows > 0) {
-               $oPesquisaCgmCnpj = db_utils::fieldsMemory($rsPesquisaCgmCnpj, 0);
+               $oPesquisaCgmCnpj = (new db_utils())->fieldsMemory($rsPesquisaCgmCnpj, 0);
              }
 
           }else{
@@ -1221,14 +1221,14 @@ if ($linhasBuscaBoleto > 0) {
       //       se for upper(T) lanca complementar para o cgm da inscricao(q02_numcgm)
       //       no campo historico do issvar identificar que o complementar foi incluido pela integracao com o gissonline
       //
-      if (strtoupper(trim($tipo_boleto)) == strtoupper('T')) {
+      if (strtoupper(trim((string) $tipo_boleto)) == strtoupper('T')) {
       	$lEncontrouIssbase      = false;
       	$lProcessaBoletoSimples = true;
       	$sSqlCGMempresa = "select q02_numcgm as z01_numcgm from issbase where q02_inscr = {$num_cadastro}";
       	$rsCGMEmpresa   = db_query($conn,$sSqlCGMempresa);
       	if (pg_num_rows($rsCGMEmpresa) > 0) {
 
-      	  $oCGMEmpresa = db_utils::fieldsMemory($rsCGMEmpresa,0);
+      	  $oCGMEmpresa = (new db_utils())->fieldsMemory($rsCGMEmpresa, 0);
       	  $oPesquisaCgmCnpj->z01_numcgm = $oCGMEmpresa->z01_numcgm ;
       	}
       }
@@ -1321,7 +1321,7 @@ if ($linhasBuscaBoleto > 0) {
            * Após geramos um recibo para o registro do issvar e alteramos a informação do boleto no Giss para lido
            *
            */
-          $vt = array ();
+          $vt =  [];
           $clissvar->q05_numpre = $num_documento;
           $clissvar->q05_numpar = $mes_competencia;
           $clissvar->q05_valor  = $valor_imposto;
@@ -1744,12 +1744,12 @@ db_log("\n *** FINAL Script " . $sNomeScript . " *** \n\n", $sArquivoLog);
 
 function dbValida($valor, $tipo) {
 
-  $aValorDefault = array ( 'int' => "0", 'date' => "null", 'string' => "null" );
+  $aValorDefault =  [ 'int' => "0", 'date' => "null", 'string' => "null" ];
   if ($valor != '') {
     if ($tipo == 'int') {
       return $valor;
     } else {
-      $valor = "'" . addslashes($valor) . "'";
+      $valor = "'" . addslashes((string) $valor) . "'";
       return $valor;
     }
 
@@ -1760,11 +1760,11 @@ function dbValida($valor, $tipo) {
 
 function dbValidaNumero($string) {
 
-  $tamanho = strlen($string);
+  $tamanho = strlen((string) $string);
   $string2 = "";
   for($tm = 0; $tm < $tamanho; $tm ++) {
 
-    $letra = $string {$tm};
+    $letra = $string[$tm];
     if ($letra == '0' or $letra == '1' or $letra == '2' or $letra == '3' or $letra == '4' or $letra == '5' or $letra == '6' or $letra == '7' or $letra == '8' or $letra == '9') {
       $string2 .= $letra;
     }
@@ -1794,7 +1794,7 @@ function db_log($sLog = "", $sArquivo = "", $iTipo = 0, $lLogDataHora = true, $l
     if (! empty($sArquivo)) {
       $fd = fopen($sArquivo, "a+");
       if ($fd) {
-        fwrite($fd, $sOutputLog);
+        fwrite($fd, (string) $sOutputLog);
         fclose($fd);
       }
     }

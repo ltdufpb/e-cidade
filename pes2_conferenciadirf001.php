@@ -128,11 +128,11 @@ td {
               <td> 
 					      <?php 
 					        $tipo        = 'pf';
-					        $aTipoResumo = array('g'  => 'Geral', 
+					        $aTipoResumo = ['g'  => 'Geral', 
 					                             'l'  => 'Lotação',
 					                             'm'  => 'Matricula',
 					                             'pf' => 'Autônomos/Fornecedores',
-					                             'pj' => 'Pessoas Jurídicas');
+					                             'pj' => 'Pessoas Jurídicas'];
 					        db_select("tipo", $aTipoResumo, true, 1, " onchange='js_tiporesumo();' ");
 					      ?>
               </td>
@@ -144,9 +144,9 @@ td {
               <td> 
                 <?php 
                   $tipofiltro  = '1';
-                  $aTipoFiltro = array('1' => 'Geral', 
+                  $aTipoFiltro = ['1' => 'Geral', 
                                        '2'    => 'Intervalo',
-                                       '3'    => 'Selecionados');
+                                       '3'    => 'Selecionados'];
                   db_select("tipofiltro", $aTipoFiltro, true, 1, " onchange='js_tiporesumo();' ");
                 ?>
               </td>
@@ -210,8 +210,8 @@ td {
               </td>
               <td> 
                 <?php 
-                  $aOrdem = array('a' => 'Alfabética', 
-                                  'n' => 'Numérica');
+                  $aOrdem = ['a' => 'Alfabética', 
+                                  'n' => 'Numérica'];
                   db_select("ordem", $aOrdem, true, 1, "");
                 ?>
               </td>

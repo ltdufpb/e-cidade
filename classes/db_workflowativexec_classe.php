@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE workflowativexec
 class cl_workflowativexec { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db113_sequencial = 0; 
-   var $db113_workflowativ = 0; 
-   var $db113_id_usuario = 0; 
-   var $db113_dtexecucao_dia = null; 
-   var $db113_dtexecucao_mes = null; 
-   var $db113_dtexecucao_ano = null; 
-   var $db113_dtexecucao = null; 
-   var $db113_obs = null; 
-   var $db113_concluido = 'f'; 
+   public $db113_sequencial = 0; 
+   public $db113_workflowativ = 0; 
+   public $db113_id_usuario = 0; 
+   public $db113_dtexecucao_dia = null; 
+   public $db113_dtexecucao_mes = null; 
+   public $db113_dtexecucao_ano = null; 
+   public $db113_dtexecucao = null; 
+   public $db113_obs = null; 
+   public $db113_concluido = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db113_sequencial = int4 = Código Sequencial 
                  db113_workflowativ = int4 = Código Work Flow Atividade 
                  db113_id_usuario = int4 = Código Usuário 
@@ -61,10 +61,10 @@ class cl_workflowativexec {
                  db113_concluido = bool = Concluído 
                  ";
    //funcao construtor da classe 
-   function cl_workflowativexec() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("workflowativexec"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_workflowativexec {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db113_sequencial = pg_result($result,0,0); 
+       $this->db113_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from workflowativexec_db113_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db113_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db113_sequencial)){
          $this->erro_sql = " Campo db113_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_workflowativexec {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "workflowativexec ($this->db113_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "workflowativexec já Cadastrado";
@@ -218,15 +218,15 @@ class cl_workflowativexec {
      $resaco = $this->sql_record($this->sql_query_file($this->db113_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17867,'$this->db113_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3156,17867,'','".AddSlashes(pg_result($resaco,0,'db113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3156,17868,'','".AddSlashes(pg_result($resaco,0,'db113_workflowativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3156,17869,'','".AddSlashes(pg_result($resaco,0,'db113_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3156,17870,'','".AddSlashes(pg_result($resaco,0,'db113_dtexecucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3156,17871,'','".AddSlashes(pg_result($resaco,0,'db113_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3156,17872,'','".AddSlashes(pg_result($resaco,0,'db113_concluido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3156,17867,'','".AddSlashes(pg_fetch_result($resaco,0,'db113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3156,17868,'','".AddSlashes(pg_fetch_result($resaco,0,'db113_workflowativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3156,17869,'','".AddSlashes(pg_fetch_result($resaco,0,'db113_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3156,17870,'','".AddSlashes(pg_fetch_result($resaco,0,'db113_dtexecucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3156,17871,'','".AddSlashes(pg_fetch_result($resaco,0,'db113_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3156,17872,'','".AddSlashes(pg_fetch_result($resaco,0,'db113_concluido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_workflowativexec {
       $this->atualizacampos();
      $sql = " update workflowativexec set ";
      $virgula = "";
-     if(trim($this->db113_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_sequencial"])){ 
+     if(trim((string) $this->db113_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_sequencial"])){ 
        $sql  .= $virgula." db113_sequencial = $this->db113_sequencial ";
        $virgula = ",";
-       if(trim($this->db113_sequencial) == null ){ 
+       if(trim((string) $this->db113_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "db113_sequencial";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_workflowativexec {
          return false;
        }
      }
-     if(trim($this->db113_workflowativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_workflowativ"])){ 
+     if(trim((string) $this->db113_workflowativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_workflowativ"])){ 
        $sql  .= $virgula." db113_workflowativ = $this->db113_workflowativ ";
        $virgula = ",";
-       if(trim($this->db113_workflowativ) == null ){ 
+       if(trim((string) $this->db113_workflowativ) == null ){ 
          $this->erro_sql = " Campo Código Work Flow Atividade nao Informado.";
          $this->erro_campo = "db113_workflowativ";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_workflowativexec {
          return false;
        }
      }
-     if(trim($this->db113_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_id_usuario"])){ 
+     if(trim((string) $this->db113_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_id_usuario"])){ 
        $sql  .= $virgula." db113_id_usuario = $this->db113_id_usuario ";
        $virgula = ",";
-       if(trim($this->db113_id_usuario) == null ){ 
+       if(trim((string) $this->db113_id_usuario) == null ){ 
          $this->erro_sql = " Campo Código Usuário nao Informado.";
          $this->erro_campo = "db113_id_usuario";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_workflowativexec {
          return false;
        }
      }
-     if(trim($this->db113_dtexecucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_dtexecucao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db113_dtexecucao_dia"] !="") ){ 
+     if(trim((string) $this->db113_dtexecucao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_dtexecucao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["db113_dtexecucao_dia"] !="") ){ 
        $sql  .= $virgula." db113_dtexecucao = '$this->db113_dtexecucao' ";
        $virgula = ",";
-       if(trim($this->db113_dtexecucao) == null ){ 
+       if(trim((string) $this->db113_dtexecucao) == null ){ 
          $this->erro_sql = " Campo Data Execução nao Informado.";
          $this->erro_campo = "db113_dtexecucao_dia";
          $this->erro_banco = "";
@@ -290,7 +290,7 @@ class cl_workflowativexec {
        if(isset($GLOBALS["HTTP_POST_VARS"]["db113_dtexecucao_dia"])){ 
          $sql  .= $virgula." db113_dtexecucao = null ";
          $virgula = ",";
-         if(trim($this->db113_dtexecucao) == null ){ 
+         if(trim((string) $this->db113_dtexecucao) == null ){ 
            $this->erro_sql = " Campo Data Execução nao Informado.";
            $this->erro_campo = "db113_dtexecucao_dia";
            $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_workflowativexec {
          }
        }
      }
-     if(trim($this->db113_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_obs"])){ 
+     if(trim((string) $this->db113_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_obs"])){ 
        $sql  .= $virgula." db113_obs = '$this->db113_obs' ";
        $virgula = ",";
-       if(trim($this->db113_obs) == null ){ 
+       if(trim((string) $this->db113_obs) == null ){ 
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "db113_obs";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_workflowativexec {
          return false;
        }
      }
-     if(trim($this->db113_concluido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_concluido"])){ 
+     if(trim((string) $this->db113_concluido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db113_concluido"])){ 
        $sql  .= $virgula." db113_concluido = '$this->db113_concluido' ";
        $virgula = ",";
-       if(trim($this->db113_concluido) == null ){ 
+       if(trim((string) $this->db113_concluido) == null ){ 
          $this->erro_sql = " Campo Concluído nao Informado.";
          $this->erro_campo = "db113_concluido";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_workflowativexec {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17867,'$this->db113_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db113_sequencial"]) || $this->db113_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3156,17867,'".AddSlashes(pg_result($resaco,$conresaco,'db113_sequencial'))."','$this->db113_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3156,17867,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db113_sequencial'))."','$this->db113_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db113_workflowativ"]) || $this->db113_workflowativ != "")
-           $resac = db_query("insert into db_acount values($acount,3156,17868,'".AddSlashes(pg_result($resaco,$conresaco,'db113_workflowativ'))."','$this->db113_workflowativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3156,17868,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db113_workflowativ'))."','$this->db113_workflowativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db113_id_usuario"]) || $this->db113_id_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3156,17869,'".AddSlashes(pg_result($resaco,$conresaco,'db113_id_usuario'))."','$this->db113_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3156,17869,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db113_id_usuario'))."','$this->db113_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db113_dtexecucao"]) || $this->db113_dtexecucao != "")
-           $resac = db_query("insert into db_acount values($acount,3156,17870,'".AddSlashes(pg_result($resaco,$conresaco,'db113_dtexecucao'))."','$this->db113_dtexecucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3156,17870,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db113_dtexecucao'))."','$this->db113_dtexecucao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db113_obs"]) || $this->db113_obs != "")
-           $resac = db_query("insert into db_acount values($acount,3156,17871,'".AddSlashes(pg_result($resaco,$conresaco,'db113_obs'))."','$this->db113_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3156,17871,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db113_obs'))."','$this->db113_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db113_concluido"]) || $this->db113_concluido != "")
-           $resac = db_query("insert into db_acount values($acount,3156,17872,'".AddSlashes(pg_result($resaco,$conresaco,'db113_concluido'))."','$this->db113_concluido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3156,17872,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db113_concluido'))."','$this->db113_concluido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_workflowativexec {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17867,'$db113_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3156,17867,'','".AddSlashes(pg_result($resaco,$iresaco,'db113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3156,17868,'','".AddSlashes(pg_result($resaco,$iresaco,'db113_workflowativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3156,17869,'','".AddSlashes(pg_result($resaco,$iresaco,'db113_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3156,17870,'','".AddSlashes(pg_result($resaco,$iresaco,'db113_dtexecucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3156,17871,'','".AddSlashes(pg_result($resaco,$iresaco,'db113_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3156,17872,'','".AddSlashes(pg_result($resaco,$iresaco,'db113_concluido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3156,17867,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3156,17868,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db113_workflowativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3156,17869,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db113_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3156,17870,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db113_dtexecucao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3156,17871,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db113_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3156,17872,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db113_concluido'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from workflowativexec
@@ -462,7 +462,7 @@ class cl_workflowativexec {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:workflowativexec";
@@ -477,7 +477,7 @@ class cl_workflowativexec {
    function sql_query ( $db113_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -501,7 +501,7 @@ class cl_workflowativexec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -514,7 +514,7 @@ class cl_workflowativexec {
    function sql_query_file ( $db113_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -535,7 +535,7 @@ class cl_workflowativexec {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

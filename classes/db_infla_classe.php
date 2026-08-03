@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE infla
 class cl_infla { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $i02_codigo = null; 
-   var $i02_data_dia = null; 
-   var $i02_data_mes = null; 
-   var $i02_data_ano = null; 
-   var $i02_data = null; 
-   var $i02_valor = 0; 
+   public $i02_codigo = null; 
+   public $i02_data_dia = null; 
+   public $i02_data_mes = null; 
+   public $i02_data_ano = null; 
+   public $i02_data = null; 
+   public $i02_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  i02_codigo = varchar(5) = codigo do inflator 
                  i02_data = date = data do inflator 
                  i02_valor = float8 = valor do inflator 
                  ";
    //funcao construtor da classe 
-   function cl_infla() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("infla"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -130,7 +130,7 @@ class cl_infla {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->i02_codigo."-".$this->i02_data) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -154,13 +154,13 @@ class cl_infla {
      $resaco = $this->sql_record($this->sql_query_file($this->i02_codigo,$this->i02_data));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,446,'$this->i02_codigo','I')");
        $resac = db_query("insert into db_acountkey values($acount,447,'$this->i02_data','I')");
-       $resac = db_query("insert into db_acount values($acount,81,446,'','".AddSlashes(pg_result($resaco,0,'i02_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,81,447,'','".AddSlashes(pg_result($resaco,0,'i02_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,81,448,'','".AddSlashes(pg_result($resaco,0,'i02_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,81,446,'','".AddSlashes(pg_fetch_result($resaco,0,'i02_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,81,447,'','".AddSlashes(pg_fetch_result($resaco,0,'i02_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,81,448,'','".AddSlashes(pg_fetch_result($resaco,0,'i02_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -169,10 +169,10 @@ class cl_infla {
       $this->atualizacampos();
      $sql = " update infla set ";
      $virgula = "";
-     if(trim($this->i02_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i02_codigo"])){ 
+     if(trim((string) $this->i02_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i02_codigo"])){ 
        $sql  .= $virgula." i02_codigo = '$this->i02_codigo' ";
        $virgula = ",";
-       if(trim($this->i02_codigo) == null ){ 
+       if(trim((string) $this->i02_codigo) == null ){ 
          $this->erro_sql = " Campo codigo do inflator nao Informado.";
          $this->erro_campo = "i02_codigo";
          $this->erro_banco = "";
@@ -182,10 +182,10 @@ class cl_infla {
          return false;
        }
      }
-     if(trim($this->i02_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i02_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["i02_data_dia"] !="") ){ 
+     if(trim((string) $this->i02_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i02_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["i02_data_dia"] !="") ){ 
        $sql  .= $virgula." i02_data = '$this->i02_data' ";
        $virgula = ",";
-       if(trim($this->i02_data) == null ){ 
+       if(trim((string) $this->i02_data) == null ){ 
          $this->erro_sql = " Campo data do inflator nao Informado.";
          $this->erro_campo = "i02_data_dia";
          $this->erro_banco = "";
@@ -198,7 +198,7 @@ class cl_infla {
        if(isset($GLOBALS["HTTP_POST_VARS"]["i02_data_dia"])){ 
          $sql  .= $virgula." i02_data = null ";
          $virgula = ",";
-         if(trim($this->i02_data) == null ){ 
+         if(trim((string) $this->i02_data) == null ){ 
            $this->erro_sql = " Campo data do inflator nao Informado.";
            $this->erro_campo = "i02_data_dia";
            $this->erro_banco = "";
@@ -209,10 +209,10 @@ class cl_infla {
          }
        }
      }
-     if(trim($this->i02_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i02_valor"])){ 
+     if(trim((string) $this->i02_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["i02_valor"])){ 
        $sql  .= $virgula." i02_valor = $this->i02_valor ";
        $virgula = ",";
-       if(trim($this->i02_valor) == null ){ 
+       if(trim((string) $this->i02_valor) == null ){ 
          $this->erro_sql = " Campo valor do inflator nao Informado.";
          $this->erro_campo = "i02_valor";
          $this->erro_banco = "";
@@ -233,16 +233,16 @@ class cl_infla {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,446,'$this->i02_codigo','A')");
          $resac = db_query("insert into db_acountkey values($acount,447,'$this->i02_data','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["i02_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,81,446,'".AddSlashes(pg_result($resaco,$conresaco,'i02_codigo'))."','$this->i02_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,81,446,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'i02_codigo'))."','$this->i02_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["i02_data"]))
-           $resac = db_query("insert into db_acount values($acount,81,447,'".AddSlashes(pg_result($resaco,$conresaco,'i02_data'))."','$this->i02_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,81,447,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'i02_data'))."','$this->i02_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["i02_valor"]))
-           $resac = db_query("insert into db_acount values($acount,81,448,'".AddSlashes(pg_result($resaco,$conresaco,'i02_valor'))."','$this->i02_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,81,448,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'i02_valor'))."','$this->i02_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -287,13 +287,13 @@ class cl_infla {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,446,'$i02_codigo','E')");
          $resac = db_query("insert into db_acountkey values($acount,447,'$i02_data','E')");
-         $resac = db_query("insert into db_acount values($acount,81,446,'','".AddSlashes(pg_result($resaco,$iresaco,'i02_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,81,447,'','".AddSlashes(pg_result($resaco,$iresaco,'i02_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,81,448,'','".AddSlashes(pg_result($resaco,$iresaco,'i02_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,81,446,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'i02_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,81,447,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'i02_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,81,448,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'i02_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from infla
@@ -359,7 +359,7 @@ class cl_infla {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:infla";
@@ -373,7 +373,7 @@ class cl_infla {
    function sql_query ( $i02_codigo=null,$i02_data=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -403,7 +403,7 @@ class cl_infla {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_infla {
    function sql_query_file ( $i02_codigo=null,$i02_data=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -444,7 +444,7 @@ class cl_infla {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

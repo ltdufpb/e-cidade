@@ -33,8 +33,8 @@ include(modification("classes/db_custoplanoanalitica_classe.php"));
 include(modification("classes/db_custotipoconta_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clcustotipoconta = new cl_custotipoconta;
 $clcustoplanoanalitica = new cl_custoplanoanalitica;

@@ -38,7 +38,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 
@@ -114,7 +114,7 @@ function js_emite(){
     </td>
     <td>
     <?php 
-      $x = array("s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento","f"=>"Férias");
+      $x = ["s"=>"Salário","c"=>"Complementar","d"=>"13o. Salário","r"=>"Rescisão","a"=>"Adiantamento","f"=>"Férias"];
       db_select('arquivo',$x,true,4,"onchange='document.form1.submit();'");
     ?>
     </td>
@@ -168,7 +168,7 @@ function js_emite(){
     </td>
     <td >
     <?php 
-      $x = array("n"=>"Salário","p"=>"Previdência","f"=>"FGTS");
+      $x = ["n"=>"Salário","p"=>"Previdência","f"=>"FGTS"];
       db_select('tipo',$x,true,4,"");
     ?>
 
@@ -181,7 +181,7 @@ function js_emite(){
 		<td>
 		<?php 
 		  $mostra = "s";
-		  $x = array("a"=>"Analítico","s"=>"Sintético");
+		  $x = ["a"=>"Analítico","s"=>"Sintético"];
 		  db_select('mostra',$x,true,4,"");
 		?>
 		</td>

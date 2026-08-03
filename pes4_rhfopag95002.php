@@ -28,10 +28,10 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
-$e_linux = strpos(strtolower($HTTP_USER_AGENT),'linux') ;
+$e_linux = strpos(strtolower((string) $HTTP_USER_AGENT),'linux') ;
 
 if($e_linux > 0){
   $troca_linha = "\n";
@@ -185,7 +185,7 @@ global $fopag_geracao,
               }
               $total_registros += 1;
               $lin  =  "2";
-              $lin .=  str_pad($rhfopag[$Ipes]["rh66_pis"],11);
+              $lin .=  str_pad((string) $rhfopag[$Ipes]["rh66_pis"],11);
               $lin .=  db_str($rhfopag[$Ipes]["rh66_regist"],15,0,"0");
               $lin .=  bb_space(15);
               fputs($arquivo,$lin.$troca_linha);

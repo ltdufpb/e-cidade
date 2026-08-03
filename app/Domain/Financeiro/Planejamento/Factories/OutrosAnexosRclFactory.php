@@ -26,12 +26,10 @@ class OutrosAnexosRclFactory
      */
     public static function getCodigoRelatorio($exercicio)
     {
-        switch ($exercicio) {
-            case 2022:
-                return 267;
-            default:
-                return 267;
-        }
+        return match ($exercicio) {
+            2022 => 267,
+            default => 267,
+        };
     }
         
     /**
@@ -42,12 +40,10 @@ class OutrosAnexosRclFactory
      */
     private static function getRota($exercicio)
     {
-        switch ($exercicio) {
-            case 2022:
-                return 'financeiro/planejamento/relatorios/previsao-rcl-outros-anexos';
-            default:
-                return 'financeiro/planejamento/relatorios/previsao-rcl-outros-anexos';
-        }
+        return match ($exercicio) {
+            2022 => 'financeiro/planejamento/relatorios/previsao-rcl-outros-anexos',
+            default => 'financeiro/planejamento/relatorios/previsao-rcl-outros-anexos',
+        };
     }
 
     /**
@@ -69,13 +65,10 @@ class OutrosAnexosRclFactory
      */
     public static function getModeloRelatorio($tipo)
     {
-        switch ($tipo) {
-            case 'LDO':
-                return new PrevisaoRclLdo();
-            case 'LOA':
-                return new PrevisaoRclLoa();
-            default:
-                throw new Exception('Tipo de planejamento não permitido para o relatório escolhido.');
-        }
+        return match ($tipo) {
+            'LDO' => new PrevisaoRclLdo(),
+            'LOA' => new PrevisaoRclLoa(),
+            default => throw new Exception('Tipo de planejamento não permitido para o relatório escolhido.'),
+        };
     }
 }

@@ -47,7 +47,7 @@ $clrotulo->label("j13_codi");
         if($ed47_o_oid!=0){
          $arquivo = "tmp/".$ed47_c_foto;
          db_query("begin");
-         pg_loexport($ed47_o_oid,$arquivo);
+         pg_lo_export($ed47_o_oid,$arquivo);
          db_query("end");
          if($db_botao==true){
           ?>
@@ -93,12 +93,12 @@ $clrotulo->label("j13_codi");
           <?php db_inputdata('ed47_d_nasc',@$ed47_d_nasc_dia,@$ed47_d_nasc_mes,@$ed47_d_nasc_ano,true,'text',$db_opcao);?>
           <?=$Led47_v_sexo?>
           <?php 
-          $sex = array(""=>"","M"=>"Masculino","F"=>"Feminino");
+          $sex = [""=>"","M"=>"Masculino","F"=>"Feminino"];
           db_select('ed47_v_sexo',$sex,true,$db_opcao);
           ?>
           <?=$Led47_i_estciv?>
           <?php 
-          $x = array("1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado");
+          $x = ["1"=>"Solteiro","2"=>"Casado","3"=>"Viúvo","4"=>"Divorciado"];
           db_select('ed47_i_estciv',$x,true,$db_opcao);
           ?>
          </td>
@@ -109,12 +109,12 @@ $clrotulo->label("j13_codi");
          </td>
          <td>
           <?php 
-          $fil = array("0"=>"NÃO DECLARADO / IGNORADO","1"=>"PAI E/OU MÃE");
+          $fil = ["0"=>"NÃO DECLARADO / IGNORADO","1"=>"PAI E/OU MÃE"];
           db_select('ed47_i_filiacao',$fil,true,$db_opcao," onchange='js_filiacao(this.value)'");
           ?>
           <?=@$Led47_c_raca?>
           <?php 
-          $x = array('NÃO DECLARADA'=>'NÃO DECLARADA','BRANCA'=>'BRANCA','PRETA'=>'PRETA','PARDA'=>'PARDA','AMARELA'=>'AMARELA','INDÍGENA'=>'INDÍGENA');
+          $x = ['NÃO DECLARADA'=>'NÃO DECLARADA','BRANCA'=>'BRANCA','PRETA'=>'PRETA','PARDA'=>'PARDA','AMARELA'=>'AMARELA','INDÍGENA'=>'INDÍGENA'];
           db_select('ed47_c_raca',$x,true,$db_opcao,"");
           ?>
          </td>
@@ -174,7 +174,7 @@ $clrotulo->label("j13_codi");
       <td colspan="2">
        <b>Libera Endereço:</b>
        <?php 
-       $x = array("N"=>"NÃO","S"=>"SIM");
+       $x = ["N"=>"NÃO","S"=>"SIM"];
        db_select('liberaendereco',$x,true,$db_opcao," onchange='LiberaEndereco(this.value);'");
        ?>
       </td>
@@ -218,13 +218,13 @@ $clrotulo->label("j13_codi");
        if(isset($ed47_i_censoufend) && $ed47_i_censoufend!=""){
         $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $ed47_i_censoufend"));
         if($clcensomunic->numrows==0){
-         $x = array(' '=>'Selecione o Estado');
+         $x = [' '=>'Selecione o Estado'];
          db_select('ed47_i_censomunicend',$x,true,@$db_opcao,"");
         }else{
          db_selectrecord("ed47_i_censomunicend",$result_munic,"","","","","","  ","",1);
         }
        }else{
-        $x = array(' '=>'Selecione o Estado');
+        $x = [' '=>'Selecione o Estado'];
         db_select('ed47_i_censomunicend',$x,true,@$db_opcao,"");
        }
        ?>
@@ -246,7 +246,7 @@ $clrotulo->label("j13_codi");
       </td>
       <td>
        <?php 
-       $x = array('URBANA'=>'Urbana','RURAL'=>'Rural');
+       $x = ['URBANA'=>'Urbana','RURAL'=>'Rural'];
        db_select('ed47_c_zona',$x,true,$db_opcao,"");
        ?>
        <?=@$Led47_v_cep?>
@@ -293,7 +293,7 @@ $clrotulo->label("j13_codi");
       </td>
       <td>
        <?php 
-       $x = array("1"=>"Brasileira","2"=>"Brasileira no Exterior ou Naturalizado","3"=>"Estrangeira");
+       $x = ["1"=>"Brasileira","2"=>"Brasileira no Exterior ou Naturalizado","3"=>"Estrangeira"];
        db_select('ed47_i_nacion',$x,true,$db_opcao," onchange='js_nacionalidade(this.value)'");
        ?>
       </td>
@@ -309,7 +309,7 @@ $clrotulo->label("j13_codi");
        }
        $result_pais = $clpais->sql_record($clpais->sql_query_file("","ed228_i_codigo,ed228_c_descr","ed228_c_descr",""));
        if($clpais->numrows==0){
-        $x = array(''=>'NENHUM REGISTRO');
+        $x = [''=>'NENHUM REGISTRO'];
         db_select('ed47_i_pais',$x,true,$db_opcao,"");
        }else{
         db_selectrecord("ed47_i_pais",$result_pais,"",$db_opcao,"","","","  ","","");
@@ -337,13 +337,13 @@ $clrotulo->label("j13_codi");
        if(isset($ed47_i_censoufnat) && $ed47_i_censoufnat!=""){
         $result_munic = $clcensomunic->sql_record($clcensomunic->sql_query_file("","ed261_i_codigo,ed261_c_nome","ed261_c_nome","ed261_i_censouf = $ed47_i_censoufnat"));
         if($clcensomunic->numrows==0){
-         $x = array(' '=>'Selecione o Estado');
+         $x = [' '=>'Selecione o Estado'];
          db_select('ed47_i_censomunicnat',$x,true,@$db_opcao,"");
         }else{
          db_selectrecord("ed47_i_censomunicnat",$result_munic,"","","","","","  ","",1);
         }
        }else{
-        $x = array(' '=>'Selecione o Estado');
+        $x = [' '=>'Selecione o Estado'];
         db_select('ed47_i_censomunicnat',$x,true,@$db_opcao,"");
        }
        ?>
@@ -356,7 +356,7 @@ $clrotulo->label("j13_codi");
       </td>
       <td>
        <?php 
-       $x = array("0"=>"Não Utiliza","1"=>"Utiliza");
+       $x = ["0"=>"Não Utiliza","1"=>"Utiliza"];
        db_select('ed47_i_transpublico',$x,true,$db_opcao);
        ?>
       </td>
@@ -367,7 +367,7 @@ $clrotulo->label("j13_codi");
       </td>
       <td>
        <?php 
-       $x = array(''=>'','1'=>'Estadual','2'=>'Municipal');
+       $x = [''=>'','1'=>'Estadual','2'=>'Municipal'];
        db_select('ed47_c_transporte',$x,true,$db_opcao,"");
        ?>
       </td>
@@ -376,7 +376,7 @@ $clrotulo->label("j13_codi");
       <td colspan="2">
        <?=$Led47_c_atenddifer?>
        <?php 
-       $x = array("3"=>"Não Recebe","1"=>"Em Hospital","2"=>"Em Domicílio");
+       $x = ["3"=>"Não Recebe","1"=>"Em Hospital","2"=>"Em Domicílio"];
        db_select('ed47_c_atenddifer',$x,true,$db_opcao);
        ?>
       </td>
@@ -387,7 +387,7 @@ $clrotulo->label("j13_codi");
       </td>
       <td>
        <?php 
-       $x = array('N'=>'NÃO','S'=>'SIM');
+       $x = ['N'=>'NÃO','S'=>'SIM'];
        db_select('ed47_c_bolsafamilia',$x,true,$db_opcao,"");
        ?>
        <?php db_input('ed47_i_atendespec',10,$Ied47_i_atendespec,true,'hidden',$db_opcao);?>
@@ -493,7 +493,7 @@ function LiberaEndereco(valor){
 }
 function js_preenchepesquisa(chave){
  db_iframe_aluno.hide();
- <?php echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
+ <?php echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
 }
 function js_novo(){
  location.href = "edu1_alunodados001.php";

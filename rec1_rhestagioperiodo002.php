@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("rhestagioperiodo"=>"Período","rhestagioperiodomes"=>"Meses"); 
-	 $clcriaabas->src = array("rhestagioperiodo"=>"rec1_rhestagioperiodo005.php");
-	 $clcriaabas->disabled   =  array("rhestagioperiodomes"=>"true"); 
+	 $clcriaabas->identifica = ["rhestagioperiodo"=>"Período","rhestagioperiodomes"=>"Meses"]; 
+	 $clcriaabas->src = ["rhestagioperiodo"=>"rec1_rhestagioperiodo005.php"];
+	 $clcriaabas->disabled   =  ["rhestagioperiodomes"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

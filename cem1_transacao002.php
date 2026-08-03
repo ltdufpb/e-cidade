@@ -38,8 +38,8 @@ include(modification("classes/db_gavetas_classe.php"));
 include(modification("classes/db_retiradas_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clsepultamentos = new cl_sepultamentos;
 $cllotecemit = new cl_lotecemit;
@@ -201,7 +201,7 @@ if(isset($incluir)){
        <td>
 
         <?php
-	          $arrayValores = array( "0"=>"Selecione",
+	          $arrayValores = [ "0"=>"Selecione",
 																	 " " => '------------------',
 	                                 "1"=>"Sepultura",
 	                                 "2"=>"Ossário Geral",
@@ -209,7 +209,7 @@ if(isset($incluir)){
 	                                 "4"=>"Jazigo",
 																	 "  " => '------------------',
 																	 "5" => 'Retirada'
-);
+];
 	          db_select("local",$arrayValores,true,2,"onchange='submit()'");
          	?>
        </td>

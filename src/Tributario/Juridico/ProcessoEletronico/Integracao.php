@@ -43,17 +43,6 @@ class Integracao
     const SITUACAO_COM_RECIBO = 5;
 
     /**
-     * Codigo da lista
-     * @var integer
-     */
-    private $lista;
-
-    /**
-     * @var Configuracao;
-     */
-    private $configuracao;
-
-    /**
      * @var integer
      */
     private $matricula;
@@ -85,11 +74,16 @@ class Integracao
      * Integracao constructor.
      * @param $lista
      * @param Configuracao $configuracao
+     * @param int $lista
      */
-    public function __construct($lista, Configuracao $configuracao)
+    public function __construct(
+        /**
+         * Codigo da lista
+         */
+        private $lista,
+        private readonly Configuracao $configuracao
+    )
     {
-        $this->lista = $lista;
-        $this->configuracao = $configuracao;
     }
 
 
@@ -98,7 +92,7 @@ class Integracao
      * @return \stdClass[]
      * @throws \Exception
      */
-    public function getIniciaisParaEnvio(array $situacao = null, array $processos = null)
+    public function getIniciaisParaEnvio(?array $situacao = null, ?array $processos = null)
     {
 
         $dadosLista = "select k60_tipo from lista where k60_codigo = {$this->lista}";
@@ -107,7 +101,7 @@ class Integracao
             throw new \BusinessException("Lista {$this->lista} não encontrada no sistema.");
         }
         $this->tipoFiltro = db_utils::fieldsMemory($rsLista, 0)->k60_tipo;
-        $where = array(" k61_codigo = {$this->lista}");
+        $where = [" k61_codigo = {$this->lista}"];
         if (!empty($situacao)) {
             $where[] = "v38_situacao in(".implode(",", $situacao).")";
         }

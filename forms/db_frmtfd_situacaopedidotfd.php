@@ -74,7 +74,7 @@ $clrotulo->label("z01_v_nome");
     </td>
     <td> 
       <?php 
-      $aX = array();
+      $aX = [];
       $sSql = $oDaotfd_situacaotfd->sql_query_file(null, ' * ', ' tf26_i_codigo ');
       $rs = $oDaotfd_situacaotfd->sql_record($sSql);
 
@@ -109,14 +109,14 @@ $clrotulo->label("z01_v_nome");
 	  <tr>
 		  <td valign="top"><br>
         <?php 
-				$aChavepri = array ('tf28_i_codigo' => @$tf28_i_codigo,
+				$aChavepri =  ['tf28_i_codigo' => @$tf28_i_codigo,
                             'tf28_i_pedidotfd' => @$tf28_i_pedidotfd, 
                             'tf28_i_situacao' => @$tf28_i_situacao, 
                             'tf28_i_login' => @$tf28_i_login, 
                             'tf28_c_obs' => @$tf28_c_obs,
                             'tf28_d_datasistema' => @$tf28_d_datasistema,
                             'tf28_c_horasistema' => @$tf28_c_horasistema,
-                            'tf01_i_cgsund' => @$tf01_i_cgsund);
+                            'tf01_i_cgsund' => @$tf01_i_cgsund];
 				$oIframeAE->chavepri = $aChavepri;
 
         $sCampos = 
@@ -176,7 +176,7 @@ function js_desabilitaAlteracao() {
 function js_cancelar() {
  
   <?php 
-  echo ' location.href = "'.basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]).'?tf28_i_pedidotfd='.
+  echo ' location.href = "'.basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]).'?tf28_i_pedidotfd='.
                           $tf28_i_pedidotfd.'&tf01_i_cgsund="'.
                           '+document.getElementById(\'tf01_i_cgsund\').value+"&z01_v_nome='.$z01_v_nome.'";'
   ?>

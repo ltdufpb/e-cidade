@@ -550,7 +550,7 @@ function js_preenchepesquisa(chave){
   db_iframe_prontproced.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
@@ -581,12 +581,12 @@ function js_pesquisaprontuarios(){
 function js_preenchecgs(chave){
   db_iframe_cgs_und.hide();
   
-  location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisacgs='+chave+'&triagem='+'<?=@$triagem?>';
+  location.href ='<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisacgs='+chave+'&triagem='+'<?=@$triagem?>';
 }
 
 function js_preenchepesquisa(chave1,chave2,chave3){
  db_iframe_prontuarios.hide();
- location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+chave1;
+ location.href ='<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisaprontuario='+chave1;
  //retirado pois no select da prontuarios ja vem CGS
  //+'&z01_v_nome='+chave2+'&z01_i_cgsund='+chave3
 }

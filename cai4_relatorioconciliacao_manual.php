@@ -31,7 +31,7 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification('libs/db_utils.php'));
 
 db_postmemory($_GET);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 /**
  * Quando o relatório for uma reemissão, busca o código sequencial da tabela concilia.
@@ -86,7 +86,7 @@ if (isset($lReemissao) && $lReemissao) {
           }
 
 	  $processa_geral = true;
-	  $contas_nao_conciliadas = array();
+	  $contas_nao_conciliadas = [];
   }
 
 
@@ -198,7 +198,7 @@ for( $lista = 0 ; $lista < pg_num_rows($rsCodigoConcilia); $lista ++ ){
 		$numrows     = $clsaltes->numrows;
 		$d="";
 		for($i=0;$i<$numrows;$i++){
-		   $d .= db_formatar(pg_result($rsContas,$i,0),'d');
+		   $d .= db_formatar(pg_fetch_result($rsContas,$i,0),'d');
 		   if( $i+1 <= $numrows ) {
 			 $d .= " - ";
 		   }
@@ -212,7 +212,7 @@ for( $lista = 0 ; $lista < pg_num_rows($rsCodigoConcilia); $lista ++ ){
 		   }
 		}
 
-	if ( substr($k68_data,0,4) <= 2012 && false) {
+	if ( substr((string) $k68_data,0,4) <= 2012 && false) {
 
 	  $sqlTotalExtrato  = " select k97_saldofinal as  saldoextrato         ";
 	  $sqlTotalExtrato .= "   from extratosaldo                            ";
@@ -315,25 +315,25 @@ for( $lista = 0 ; $lista < pg_num_rows($rsCodigoConcilia); $lista ++ ){
 	$pdf->setfont($fonte,'b',8);
 	$pdf->cell(25,$alt,"SEQ. CONTA : ",0,0,"L",0);
 	$pdf->setfont($fonte,'',8);
-	$pdf->cell(75,$alt,(isset($reduzido) ? $reduzido : null),0,1,"L",0);
+	$pdf->cell(75,$alt,($reduzido ?? null),0,1,"L",0);
 
 	$pdf->setfont($fonte,'b',8);
 	$pdf->cell(25,$alt,"AGÊNCIA : ",0,0,"L",0);
 	$pdf->setfont($fonte,'',8);
-	$pdf->cell(35,$alt,(isset($agencia) ? $agencia : null),0,0,"L",0);
+	$pdf->cell(35,$alt,($agencia ?? null),0,0,"L",0);
 	$pdf->setfont($fonte,'b',8);
 	$pdf->cell(40,$alt,"REDUZIDO CONTABIL: ",0,0,"L",0);
 	$pdf->setfont($fonte,'',8);
-	$pdf->multicell(60,$alt,(isset($reduzido_contabil) ? $reduzido_contabil : null),0,1,"L",0);
+	$pdf->multicell(60,$alt,($reduzido_contabil ?? null),0,1,"L",0);
 
 	$pdf->setfont($fonte,'b',8);
 	$pdf->cell(25,$alt,"CONTA : ",0,0,"L",0);
 	$pdf->setfont($fonte,'',8);
-	$pdf->cell(35,$alt,(isset($conta) ? $conta : null),0,0,"L",0);
+	$pdf->cell(35,$alt,($conta ?? null),0,0,"L",0);
 	$pdf->setfont($fonte,'b',8);
 	$pdf->cell(25,$alt,"DESCRIÇÃO : ",0,0,"L",0);
 	$pdf->setfont($fonte,'',8);
-	$pdf->cell(75,$alt,(isset($descricao) ? $descricao : null),0,1,"L",0);
+	$pdf->cell(75,$alt,($descricao ?? null),0,1,"L",0);
 
 	$pdf->ln(1);
 	$pdf->setfont($fonte,'b',8);

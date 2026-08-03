@@ -40,7 +40,7 @@ $clrotulo->label("l11_obs");
 $clliclicita          = new cl_liclicita;
 $clliclicitasituacao  = new cl_liclicitasituacao;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_botao = true;
 $db_name  = "enviar";

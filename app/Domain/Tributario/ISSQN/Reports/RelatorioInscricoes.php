@@ -140,7 +140,7 @@ class RelatorioInscricoes extends \GenericPdf
 
             $this->setY($altura);
             $this->setX(78);
-            $this->Cell(171, $height, substr($oInscricaoRedesim->issBase->cgm->z01_nome, 0, 25), 1, 0, "L");
+            $this->Cell(171, $height, substr((string) $oInscricaoRedesim->issBase->cgm->z01_nome, 0, 25), 1, 0, "L");
 
             $this->setY($altura);
             $this->setX(249);
@@ -148,10 +148,10 @@ class RelatorioInscricoes extends \GenericPdf
 
             $this->setY($altura + 5);
             $this->setX(10);
-            $sTipoRua = trim($oInscricaoRedesim->j88_descricao);
-            $sNomeRua = trim($oInscricaoRedesim->j14_nome);
-            $sNumeroRua = trim($oInscricaoRedesim->q02_numero);
-            $sNomeBairro = trim($oInscricaoRedesim->j13_descr);
+            $sTipoRua = trim((string) $oInscricaoRedesim->j88_descricao);
+            $sNomeRua = trim((string) $oInscricaoRedesim->j14_nome);
+            $sNumeroRua = trim((string) $oInscricaoRedesim->q02_numero);
+            $sNomeBairro = trim((string) $oInscricaoRedesim->j13_descr);
             $sRua = "{$sTipoRua} {$sNomeRua}, {$sNumeroRua}, {$sNomeBairro}";
             $this->Cell(139, $height, substr($sRua, 0, 65), 1, 0, "L");
 

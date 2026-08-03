@@ -27,7 +27,7 @@
 
 require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
-parse_str( $_SERVER['QUERY_STRING'] );
+parse_str( (string) $_SERVER['QUERY_STRING'], $result );
 
 $clprontproced = new cl_prontproced;
 $clprontproced->rotulo->label();
@@ -219,7 +219,7 @@ for( $i = 0; $i < $linhas; $i++ ) {
     $pdf->setfillcolor( 240 );
 
     $sNumeroAtendimento  = "{$sd24_i_ano} - " . str_pad( $sd24_i_mes, 2, 0, STR_PAD_LEFT ) . " - ";
-    $sNumeroAtendimento .= str_pad( $sd24_i_seq, 6, 0, STR_PAD_LEFT );
+    $sNumeroAtendimento .= str_pad( (string) $sd24_i_seq, 6, 0, STR_PAD_LEFT );
 
     $pdf->cell(  5, 4, "",                               0, 0, "L", 0 );
     $pdf->cell( 10, 4, $cont,                            0, 0, "L", $cor );

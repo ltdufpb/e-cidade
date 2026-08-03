@@ -51,12 +51,12 @@ if (!isset($arqinclude)){
   $oOrcParamRelopcre = new cl_orcparamrelopcre;
   $clorcparamelemento = new cl_orcparamelemento();
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
 }
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,munic,nomeinst,nomeinstabrev, uf from db_config");
 $descr_inst = '';
 $xvirg = '';
@@ -66,9 +66,9 @@ $sInstituicoes = "";
 
 
 //******************************************************************
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
        $descr_inst .= $xvirg.$nomeinstabrev;
        $flag_abrev  = true;
   }else{
@@ -97,7 +97,7 @@ $dt               = data_periodo($anousu,$periodo); // no dbforms/db_funcoes.php
 $dt_ini_plano     = $dt[0];  // data inicial do periodo
 $dt_ini           = "{$anousu}-01-01";  // data inicial do periodo PADRÃO
 $dt_fim           = $dt[1];  // data final do período
-$dt = split('-',$dt_fim);  // mktime -- (mes,caddia,ano)
+$dt = preg_split('#\-#m',(string) $dt_fim);  // mktime -- (mes,caddia,ano)
 $dt_ini_ant = date('Y-m-d',mktime(0,0,0,$dt[1]+1,"01",$anousu_ant));
 $dt_fim_ant = $anousu_ant.'-12-31';
 $head2 = "MUNICÍPIO DE ".$munic . " - " . $uf;
@@ -112,39 +112,39 @@ if ($periodo=="1Q") {
 
   $period           = "JANEIRO A ABRIL DE {$anousu}";
   $descr_periodo    = "Quadrimestre";
-  $aRCL["anterior"] = array("maio","junho","julho","agosto","setembro","outubro","novembro", "dezembro");
-  $aRCL["atual"]    = array("janeiro","fevereiro","marco","abril" );
+  $aRCL["anterior"] = ["maio","junho","julho","agosto","setembro","outubro","novembro", "dezembro"];
+  $aRCL["atual"]    = ["janeiro","fevereiro","marco","abril" ];
 
 } else if($periodo == "2Q") {
 
   $period           = "JANEIRO A AGOSTO DE {$anousu}";
   $descr_periodo    = "Quadrimestre";
-  $aRCL["anterior"] = array();
-  $aRCL["anterior"] = array("setembro","novembro","outubro", "dezembro");
-  $aRCL["atual"]    = array("janeiro","fevereiro","marco","abril","maio","junho","julho","agosto");
+  $aRCL["anterior"] = [];
+  $aRCL["anterior"] = ["setembro","novembro","outubro", "dezembro"];
+  $aRCL["atual"]    = ["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto"];
   $dt_ini           = "{$anousu}-05-01";  // data inicial do periodo
 
 } else if ($periodo == "3Q") {
 
   $period           = "JANEIRO A DEZEMBRO DE {$anousu}";
   $descr_periodo    = "Quadrimestre";
-  $aRCL["anterior"] = array();
-  $aRCL["atual"]    = array("janeiro","fevereiro","marco","abril","maio","junho","julho","agosto",
-                            "setembro","novembro","outubro", "dezembro");
+  $aRCL["anterior"] = [];
+  $aRCL["atual"]    = ["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto",
+                            "setembro","novembro","outubro", "dezembro"];
   $dt_ini           = "{$anousu}-09-01";  // data inicial do periodo
 } elseif ($periodo == "1S") {
 
   $period           = "JANEIRO A JUNHO DE {$anousu}";
   $descr_periodo    = "Semestre";
-  $aRCL["anterior"] = array("julho","agosto","setembro","outubro","novembro", "dezembro");
-  $aRCL["atual"]    = array("janeiro","fevereiro","marco","abril", "maio","junho");
+  $aRCL["anterior"] = ["julho","agosto","setembro","outubro","novembro", "dezembro"];
+  $aRCL["atual"]    = ["janeiro","fevereiro","marco","abril", "maio","junho"];
 } elseif($periodo == "2S") {
 
   $period           = "JANEIRO A DEZEMBRO DE {$anousu}";
   $descr_periodo    = "Semestre";
-  $aRCL["anterior"] = array();
-  $aRCL["atual"]    = array("janeiro","fevereiro","marco","abril","maio","junho","julho","agosto",
-                            "setembro","novembro","outubro", "dezembro");
+  $aRCL["anterior"] = [];
+  $aRCL["atual"]    = ["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto",
+                            "setembro","novembro","outubro", "dezembro"];
   $dt_ini           = "{$anousu}-07-01";  // data inicial do periodo
 }
 
@@ -165,7 +165,7 @@ for ($i = 1; $i <= 20; $i++) {
   $aParametros[$i]->atebimestre = 0;
   $aParametros[$i]->parametros  = $aParametros[$i]->getParametros($anousu);
   $aParametros[$i]->setPeriodo($iCodigoPeriodo);
-  $aParametros[$i]->linhas       = array();
+  $aParametros[$i]->linhas       = [];
   $aColunas = $aParametros[$i]->getValoresColunas(null, null, $sInstituicoes, $anousu);
   foreach ($aColunas as $oColuna) {
 
@@ -181,7 +181,7 @@ for ($i = 1; $i <= 20; $i++) {
 
       case 8:
 
-        if (in_array($iCodigoPeriodo, array(12, 13, 14, 15, 16))) {
+        if (in_array($iCodigoPeriodo, [12, 13, 14, 15, 16])) {
 
           if (isset($oColuna->colunas[0])) {
             $aParametros[$i]->nobimestre  +=$oColuna->colunas[0]->o117_valor;
@@ -247,7 +247,7 @@ for ($iParam = 1; $iParam <= 18; $iParam++) {
 /**
  * Linhas do relatorio
  */
-$aLinhasRelatorio              = array();
+$aLinhasRelatorio              = [];
 $aLinhasRelatorio[0]->label  = "SUJEITAS AO LIMITE PARA FINS DE CONTRATAÇÃO (I)";
 $aLinhasRelatorio[1]->label  = "    Mobiliária";
 $aLinhasRelatorio[2]->label  = "       Interna";
@@ -264,7 +264,7 @@ $aLinhasRelatorio[12]->label = "                Demais Antecipações de Receita";
 $aLinhasRelatorio[13]->label = "            Assunção, Reconhecimento e Confissão de Dívidas (LRF, art. 29, § 1º)";
 $aLinhasRelatorio[14]->label = "            Outras Operações de Crédito";
 $aLinhasRelatorio[15]->label = "        Externa";
-$aLinhasRelatorio[15]->linhas = array();
+$aLinhasRelatorio[15]->linhas = [];
 $aLinhasRelatorio[16]->label = "NÃO SUJEITAS AO LIMITE PARA FINS DE CONTRATAÇÃO (II)";
 $aLinhasRelatorio[17]->label = "    Parcelamentos de Dívidas";
 $aLinhasRelatorio[18]->label = "        De Tributos";
@@ -394,9 +394,9 @@ $nValorInternoExterno    = 0;
 $nPercValorInterno       = 0;
 $nPercValorAntecipacao   = 0;
 
-$aOperacaoCredito["interna"]     = array();//linhas operacoes internas
-$aOperacaoCredito["externa"]     = array();//linhas operacoes externas
-$aOperacaoCredito["antecipacao"] = array();//linhas operacoes antecipadas;
+$aOperacaoCredito["interna"]     = [];//linhas operacoes internas
+$aOperacaoCredito["externa"]     = [];//linhas operacoes externas
+$aOperacaoCredito["antecipacao"] = [];//linhas operacoes antecipadas;
 $sTodasInstit = null;
 
 $rsInstit =  db_query("select codigo from db_config");

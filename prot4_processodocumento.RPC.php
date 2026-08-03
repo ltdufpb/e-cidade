@@ -58,7 +58,7 @@ try {
 
             $oProcessoProtocolo = new processoProtocolo($oParam->iCodigoProcesso);
             $aDocumentosVinculados = $oProcessoProtocolo->getDocumentos();
-            $aDocumentosRetorno = array();
+            $aDocumentosRetorno = [];
 
             foreach ($aDocumentosVinculados as $oProcessoDocumento) {
                 if (isset($oParam->storage) && !empty($oParam->storage)) {
@@ -91,9 +91,9 @@ try {
                 $oStdDocumento->iIdUsuario = $oProcessoDocumento->getUsuario()->getIdUsuario();
                 $oStdDocumento->sNomeUsuario = $oProcessoDocumento->getUsuario()->getNome();
 
-                $oStdDocumento->sData = date('d/m/Y', strtotime($oProcessoDocumento->getData()));
+                $oStdDocumento->sData = date('d/m/Y', strtotime((string) $oProcessoDocumento->getData()));
 
-                $oStdDocumento->sDescricaoDocumento = urlencode($oProcessoDocumento->getDescricao());
+                $oStdDocumento->sDescricaoDocumento = urlencode((string) $oProcessoDocumento->getDescricao());
                 $aDocumentosRetorno[] = $oStdDocumento;
             }
 
@@ -107,7 +107,7 @@ try {
             $oProcessoProtocolo = new processoProtocolo($oParam->iCodigoProcesso);
             $oDepartamentoAtual = $oProcessoProtocolo->getDepartamentoAtual();
             if ($oDepartamentoAtual->getCodigo() != db_getsession("DB_coddepto") && !isset($oParam->storage)) {
-                $oStdErro = (object)array("sDepartamento" => "{$oDepartamentoAtual->getCodigo()} - {$oDepartamentoAtual->getNomeDepartamento()}");
+                $oStdErro = (object)["sDepartamento" => "{$oDepartamentoAtual->getCodigo()} - {$oDepartamentoAtual->getNomeDepartamento()}"];
                 throw new BusinessException(_M(URL_MENSAGEM_PROT4PROCESSODOCUMENTO . "departamento_diferente_vinculo_documento",
                     $oStdErro));
             }
@@ -116,7 +116,7 @@ try {
             $oProcessoDocumento->setDescricao(db_stdClass::normalizeStringJsonEscapeString($oParam->sDescricaoDocumento));
             $oProcessoDocumento->setProcessoProtocolo($oProcessoProtocolo);
             $oProcessoDocumento->setUsuario(new UsuarioSistema(db_getsession("DB_id_usuario")));
-            $procandamint = isset($_SESSION['protprocesso_codprocandamint']) ? $_SESSION['protprocesso_codprocandamint'] : 0;
+            $procandamint = $_SESSION['protprocesso_codprocandamint'] ?? 0;
 
             if (!empty($oParam->storage)) {
                 $daoProtprocesso = new cl_protprocesso();
@@ -208,7 +208,7 @@ try {
 
             if ($oDepartamentoAtual->getCodigo() != db_getsession("DB_coddepto")) {
 
-                $oStdErro = (object)array("sDepartamento" => "{$oDepartamentoAtual->getCodigo()} - {$oDepartamentoAtual->getNomeDepartamento()}");
+                $oStdErro = (object)["sDepartamento" => "{$oDepartamentoAtual->getCodigo()} - {$oDepartamentoAtual->getNomeDepartamento()}"];
                 throw new BusinessException(_M(URL_MENSAGEM_PROT4PROCESSODOCUMENTO . "departamento_diferente_vinculo_documento",
                     $oStdErro));
             }

@@ -33,7 +33,7 @@ require_once(modification("classes/db_rhcadregime_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 define("MSG_PATH", "recursoshumanos.pessoal.pes1_rhcadregime002.");
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 $clrhcadregime     = new cl_rhcadregime;
 $clbaserhcadregime = new cl_baserhcadregime;

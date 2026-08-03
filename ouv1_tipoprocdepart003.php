@@ -57,7 +57,7 @@
           <td align="center">
             <b>Opções;</b>
             <?php 
-              $aOpcaoDepartamento = array("Com departamentos selecionados", "Sem departamentos selecionados");
+              $aOpcaoDepartamento = ["Com departamentos selecionados", "Sem departamentos selecionados"];
               db_select("iOpcaoDepartamento", $aOpcaoDepartamento, true, 1);
             ?>
           </td>

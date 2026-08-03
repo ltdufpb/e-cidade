@@ -36,7 +36,7 @@ $clrhestagiocomissao = new cl_rhestagiocomissao;
   /*
 $clrhestagiocomissaomembro = new cl_rhestagiocomissaomembro;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){

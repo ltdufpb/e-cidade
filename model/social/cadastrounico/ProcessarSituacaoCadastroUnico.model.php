@@ -82,7 +82,7 @@ abstract class ProcessarSituacaoCadastroUnico {
    */
   public function escreveArquivoRegistrosNaoProcessados ($sLinhaArquivo) {
     
-    fputs($this->fArquivoLog, $sLinhaArquivo);
+    fputs($this->fArquivoLog, (string) $sLinhaArquivo);
   }
   
 }

@@ -47,8 +47,8 @@ define('DB_BIBLIOT', true);
 
 require_once(modification("fpdf151/scpdf.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("k60_codigo");
@@ -108,7 +108,7 @@ if (isset($_GET["lista"])) {
         $sqlvenc .= "where k00_numpre = $numpre ";
         $sqlvenc .= "  and k00_numpar = $numpar";
         $resultvenc = db_query($sqlvenc) or die($sqlvenc);
-        if (pg_numrows($resultvenc) == 0) {
+        if (pg_num_rows($resultvenc) == 0) {
             return 0;
         }
         db_fieldsmemory($resultvenc, 0);
@@ -125,7 +125,7 @@ if (isset($_GET["lista"])) {
         $sqltipoparc .= "  and '$k00_dtvenc' <= k41_vencfim ";
         $resulttipoparc = db_query($sqltipoparc) or die($sqltipoparc);
 
-        if (pg_numrows($resulttipoparc) > 0) {
+        if (pg_num_rows($resulttipoparc) > 0) {
             db_fieldsmemory($resulttipoparc, 0);
         } else {
             $sqltipoparc = "select k40_codigo, k40_todasmarc, cadtipoparc ";
@@ -140,7 +140,7 @@ if (isset($_GET["lista"])) {
             $sqltipoparc .= "  and '$k00_dtvenc' <= k41_vencfim ";
             $resulttipoparc = db_query($sqltipoparc) or die($sqltipoparc);
 
-            if (pg_numrows($resulttipoparc) == 1) {
+            if (pg_num_rows($resulttipoparc) == 1) {
                 db_fieldsmemory($resulttipoparc, 0);
             } else {
                 $k40_todasmarc = false;
@@ -151,7 +151,7 @@ if (isset($_GET["lista"])) {
         $resulttipoparcdeb = db_query($sqltipoparcdeb) or die($sqltipoparcdeb);
         $passar = false;
 
-        if (pg_numrows($resulttipoparcdeb) == 0) {
+        if (pg_num_rows($resulttipoparcdeb) == 0) {
             $passar = true;
         } else {
             $sqltipoparcdeb = "select k40_codigo, k40_todasmarc ";
@@ -163,12 +163,12 @@ if (isset($_GET["lista"])) {
             $sqltipoparcdeb .= "  and '$k00_dtvenc' <= k41_vencfim ";
             $resulttipoparcdeb = db_query($sqltipoparcdeb) or die($sqltipoparcdeb);
 
-            if (pg_numrows($resulttipoparcdeb) > 0) {
+            if (pg_num_rows($resulttipoparcdeb) > 0) {
                 $passar = true;
             }
         }
 
-        if (pg_numrows($resulttipoparc) == 0 or ($k40_todasmarc == 't' ? $totalregistrospassados <> $totregistros : false) or $passar == false) {
+        if (pg_num_rows($resulttipoparc) == 0 or ($k40_todasmarc == 't' ? $totalregistrospassados <> $totregistros : false) or $passar == false) {
             $desconto = 0;
         } else {
             $desconto = $k40_codigo;
@@ -205,7 +205,7 @@ if (isset($_GET["lista"])) {
         $db_datausu = $aDataVenc[2] . "-" . $aDataVenc[1] . "-" . $aDataVenc[0];
     }
 
-    $DB_DATACALC = mktime(0, 0, 0, substr($db_datausu, 5, 2), substr($db_datausu, 8, 2), substr($db_datausu, 0, 4));
+    $DB_DATACALC = mktime(0, 0, 0, substr((string) $db_datausu, 5, 2), substr((string) $db_datausu, 8, 2), substr((string) $db_datausu, 0, 4));
 
     $virgula = '';
     $tipos = '';
@@ -216,11 +216,11 @@ if (isset($_GET["lista"])) {
     db_criatermometro('termometro', 'Concluido...', 'blue', 1);
     flush();
 
-    for ($yy = 0; $yy < pg_numrows($resultlistatipo); $yy++) {
+    for ($yy = 0; $yy < pg_num_rows($resultlistatipo); $yy++) {
         db_fieldsmemory($resultlistatipo, $yy);
 
         $tipos .= $virgula . $k62_tipodeb;
-        $descrtipo .= $virgula . trim($k03_descr);
+        $descrtipo .= $virgula . trim((string) $k03_descr);
         $virgula = ' , ';
 
         if ($k03_tipo != 6 and $k03_tipo != 13 and $k03_tipo != 16) {
@@ -360,7 +360,7 @@ if (isset($_GET["lista"])) {
     }
     $rsNotifica = db_query($sql) or die($sql);
 
-    if (pg_numrows($result) == 0) {
+    if (pg_num_rows($result) == 0) {
         $oParms = new stdClass();
         $oParms->sLista = $lista;
         $sMsg = _M('tributario.notificacoes.cai4_emitenotificacaotxt.nenhuma_notificacao_gerada', $oParms);
@@ -374,14 +374,14 @@ if (isset($_GET["lista"])) {
         } else {
             $lim = 0;
         }
-        if ($fim > pg_numrows($rsNotifica)) {
-            $lim2 = pg_numrows($rsNotifica);
+        if ($fim > pg_num_rows($rsNotifica)) {
+            $lim2 = pg_num_rows($rsNotifica);
         } else {
             $lim2 = $fim;
         }
     } else {
         $lim1 = 0;
-        $lim2 = pg_numrows($rsNotifica);
+        $lim2 = pg_num_rows($rsNotifica);
     }
 
     $numrows = pg_num_rows($rsNotifica);
@@ -454,7 +454,7 @@ if (isset($_GET["lista"])) {
             exit;
         }
 
-        if (pg_numrows($resultjapagou) == 0) {
+        if (pg_num_rows($resultjapagou) == 0) {
             continue;
         }
 
@@ -497,7 +497,7 @@ if (isset($_GET["lista"])) {
             $sql2 .= " group by k22_tipo,k00_descr";
 
             $result2 = db_query($sql2);
-            $num2 = pg_numrows($result2);
+            $num2 = pg_num_rows($result2);
         }
 
         $sqlproced = "select distinct proced.v03_codigo, proced.v03_dcomp ";
@@ -510,7 +510,7 @@ if (isset($_GET["lista"])) {
         global $procedencias;
         $procedencias = '';
 
-        for ($i = 0; $i < pg_numrows($resultaproced); $i++) {
+        for ($i = 0; $i < pg_num_rows($resultaproced); $i++) {
             db_fieldsmemory($resultaproced, $i);
             $procedencias .= $virgula . $v03_dcomp;
             $virgula = ', ';
@@ -536,10 +536,10 @@ if (isset($_GET["lista"])) {
             $sqlpropri .= " where j01_matric = $matric";
             $resultpropri = db_query($sqlpropri);
 
-            if (pg_numrows($resultpropri) > 0) {
+            if (pg_num_rows($resultpropri) > 0) {
                 db_fieldsmemory($resultpropri, 0);
-                $nomepri = ucwords(strtolower($nomepri));
-                $j13_descr = ucwords(strtolower($j13_descr));
+                $nomepri = ucwords(strtolower((string) $nomepri));
+                $j13_descr = ucwords(strtolower((string) $j13_descr));
                 $z01compl = $j39_compl;
                 $z01ender = $nomepri;
                 $z01numero = $j39_numero;
@@ -548,7 +548,7 @@ if (isset($_GET["lista"])) {
             $sqlconfig = "select munic,uf,cep from db_config where prefeitura is true";
             $resultconfig = db_query($sqlconfig);
 
-            if (pg_numrows($resultconfig) > 0) {
+            if (pg_num_rows($resultconfig) > 0) {
                 db_fieldsmemory($resultconfig, 0);
                 $z01uf = $uf;
                 $z01cep = $cep;
@@ -559,7 +559,7 @@ if (isset($_GET["lista"])) {
             $resultender = db_query($sqlender);
             db_fieldsmemory($resultender, 0);
 
-            $endereco = split("#", $fc_iptuender);
+            $endereco = preg_split("#\\##m", (string) $fc_iptuender);
 
             if (sizeof($endereco) < 7) {
                 $z01_ender = "";
@@ -588,7 +588,7 @@ if (isset($_GET["lista"])) {
             $sqlempresa = "select * from empresa where q02_inscr = $q02_inscr";
             $resultempresa = db_query($sqlempresa);
 
-            if (pg_numrows($resultempresa) > 0) {
+            if (pg_num_rows($resultempresa) > 0) {
                 db_fieldsmemory($resultempresa, 0);
 
                 $z01compl = $z01_compl;
@@ -605,7 +605,7 @@ if (isset($_GET["lista"])) {
             $sqlender = "select z01_ender,z01_cgccpf, z01_numero, z01_compl, z01_bairro, z01_munic, z01_uf, z01_cep, z01_cxpostal from cgm where z01_numcgm = $cgm";
             $resultender = db_query($sqlender);
 
-            if (pg_numrows($resultender) > 0) {
+            if (pg_num_rows($resultender) > 0) {
                 db_fieldsmemory($resultender, 0, true);
 
                 $z01compl = $z01_compl;
@@ -630,10 +630,10 @@ if (isset($_GET["lista"])) {
 
         db_fieldsmemory($result, 0);
 
-        $dia = date('d', strtotime($k60_datadeb));
-        $mes = db_mes(date('m', strtotime($k60_datadeb)));
-        $ano = date('Y', strtotime($k60_datadeb));
-        $data_ext = strtolower($munic) . ", " . $dia . " de " . $mes . " de " . $ano;
+        $dia = date('d', strtotime((string) $k60_datadeb));
+        $mes = db_mes(date('m', strtotime((string) $k60_datadeb)));
+        $ano = date('Y', strtotime((string) $k60_datadeb));
+        $data_ext = strtolower((string) $munic) . ", " . $dia . " de " . $mes . " de " . $ano;
         $cldb_layouttxt->setCampoTipoLinha(3); // 3-Registro
         $cldb_layouttxt->limpaCampos();
         $cldb_layouttxt->setCampo("cod_lista", $lista);
@@ -708,7 +708,7 @@ if (isset($_GET["lista"])) {
         $sqltipoparc .= "  and '" . date("Y-m-d", db_getsession("DB_datausu")) . "' <= k40_dtfim";
         $resulttipoparc = db_query($sqltipoparc);
 
-        if (pg_numrows($resulttipoparc) > 0) {
+        if (pg_num_rows($resulttipoparc) > 0) {
             db_fieldsmemory($resulttipoparc, 0);
         } else {
             $k40_todasmarc = false;
@@ -718,13 +718,13 @@ if (isset($_GET["lista"])) {
         $resulttipoparcdeb = db_query($sqltipoparcdeb);
         $passar = false;
 
-        if (pg_numrows($resulttipoparcdeb) == 0) {
+        if (pg_num_rows($resulttipoparcdeb) == 0) {
             $passar = true;
         } else {
             $sqltipoparcdeb = "select * from cadtipoparcdeb where k41_cadtipoparc = $cadtipoparc and k41_arretipo = $tipo_debito";
             $resulttipoparcdeb = db_query($sqltipoparcdeb);
 
-            if (pg_numrows($resulttipoparcdeb) > 0) {
+            if (pg_num_rows($resulttipoparcdeb) > 0) {
                 $passar = true;
             }
         }
@@ -772,13 +772,13 @@ if (isset($_GET["lista"])) {
 
         $resultcompara2 = db_query($sqlanostipos) or die($sqlanostipos);
 
-        if (pg_numrows($resulttipoparc) == 0 or $passar == false or ($k40_todasmarc == 't' ? pg_numrows($resultcompara1) <> pg_numrows($resultcompara2) : false)) {
+        if (pg_num_rows($resulttipoparc) == 0 or $passar == false or ($k40_todasmarc == 't' ? pg_num_rows($resultcompara1) <> pg_num_rows($resultcompara2) : false)) {
             $desconto = 0;
         } else {
             $desconto = $k40_codigo;
             $rsDesconto = db_query(" select coalesce(descmul,1), coalesce(descjur,1) from tipoparc where cadtipoparc = $desconto ");
 
-            if (pg_numrows($rsDesconto) > 0) {
+            if (pg_num_rows($rsDesconto) > 0) {
                 db_fieldsmemory($rsDesconto, 0);
             }
         }
@@ -787,7 +787,7 @@ if (isset($_GET["lista"])) {
         $k00_codage = "";
         $tipo_arrecadacao = 0;
         $tipo_cobranca = 0;
-        $dt_venc = substr($db_datausu, 0, 10);
+        $dt_venc = substr((string) $db_datausu, 0, 10);
         $tot_desc = 0;
 
         try {
@@ -797,21 +797,21 @@ if (isset($_GET["lista"])) {
             exit;
         }
 
-        for ($regrecibo = 0; $regrecibo < pg_numrows($resultrecibo); $regrecibo++) {
+        for ($regrecibo = 0; $regrecibo < pg_num_rows($resultrecibo); $regrecibo++) {
             db_fieldsmemory($resultrecibo, $regrecibo);
 
-            $desconto = recibodesconto($k53_numpre, $k53_numpar, $k22_tipo, $k22_tipo, "", pg_numrows($resultrecibo),
-              pg_numrows($resultrecibo), $dt_venc);
+            $desconto = recibodesconto($k53_numpre, $k53_numpar, $k22_tipo, $k22_tipo, "", pg_num_rows($resultrecibo),
+              pg_num_rows($resultrecibo), $dt_venc);
             if ($desconto != 0) {
                 $result_desc = db_query("select * from tipoparc where cadtipoparc = $desconto");
-                $numrows_desc = pg_numrows($result_desc);
+                $numrows_desc = pg_num_rows($result_desc);
 
                 if ($numrows_desc > 0) {
                     db_fieldsmemory($result_desc, 0);
 
                     if (isset($descmul) && isset($descjur)) {
-                        $juros = substr($fc_calcula, 28, 13);
-                        $multa = substr($fc_calcula, 41, 13);
+                        $juros = substr((string) $fc_calcula, 28, 13);
+                        $multa = substr((string) $fc_calcula, 41, 13);
                         $nTotalMulta += $multa;
                         $nTotalJuros += $juros;
                         $tot_desc += (($juros / 100) * $descjur);
@@ -890,11 +890,11 @@ if (isset($_GET["lista"])) {
         $sql .= "          r.k00_numcgm, ";
         $sql .= "          codreduz";
         $DadosPagamento = db_query($sql) or die($sql);
-        $datavencimento = pg_result($DadosPagamento, 0, "k00_dtpaga");
+        $datavencimento = pg_fetch_result($DadosPagamento, 0, "k00_dtpaga");
         $total_recibo = 0;
 
-        for ($i = 0; $i < pg_numrows($DadosPagamento); $i++) {
-            $total_recibo += pg_result($DadosPagamento, $i, "valor");
+        for ($i = 0; $i < pg_num_rows($DadosPagamento); $i++) {
+            $total_recibo += pg_fetch_result($DadosPagamento, $i, "valor");
         }
 
         pg_result_seek($resultcompara1, 0);
@@ -912,14 +912,14 @@ if (isset($_GET["lista"])) {
 
         //cria codigo de barras e linha digitável
 
-        $taxabancaria = pg_result($DadosInstit, 0, "tx_banc");
-        $src = pg_result($DadosInstit, 0, 'logo');
-        $db_nomeinst = pg_result($DadosInstit, 0, 'nomeinst');
-        $db_ender = pg_result($DadosInstit, 0, 'ender');
-        $db_munic = pg_result($DadosInstit, 0, 'munic');
-        $db_uf = pg_result($DadosInstit, 0, 'uf');
-        $db_telef = pg_result($DadosInstit, 0, 'telef');
-        $db_email = pg_result($DadosInstit, 0, 'email');
+        $taxabancaria = pg_fetch_result($DadosInstit, 0, "tx_banc");
+        $src = pg_fetch_result($DadosInstit, 0, 'logo');
+        $db_nomeinst = pg_fetch_result($DadosInstit, 0, 'nomeinst');
+        $db_ender = pg_fetch_result($DadosInstit, 0, 'ender');
+        $db_munic = pg_fetch_result($DadosInstit, 0, 'munic');
+        $db_uf = pg_fetch_result($DadosInstit, 0, 'uf');
+        $db_telef = pg_fetch_result($DadosInstit, 0, 'telef');
+        $db_email = pg_fetch_result($DadosInstit, 0, 'email');
 
         $total_recibo += $taxabancaria;
 
@@ -1037,7 +1037,7 @@ if (isset($_GET["lista"])) {
             $relanos = 0;
             $hifen = "";
 
-            for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+            for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
                 db_fieldsmemory($resultanos, $totano);
 
                 if ($descricao != $k00_descr) {
@@ -1090,7 +1090,7 @@ if (isset($_GET["lista"])) {
             $relanos = 0;
             $hifen = "";
 
-            for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+            for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
                 db_fieldsmemory($resultanos, $totano);
 
                 if ($descricao != $k00_descr) {
@@ -1144,7 +1144,7 @@ if (isset($_GET["lista"])) {
             $parcel = 0;
 
             $hifen = "";
-            for ($totano = 0; $totano < pg_numrows($resultanos); $totano++) {
+            for ($totano = 0; $totano < pg_num_rows($resultanos); $totano++) {
                 db_fieldsmemory($resultanos, $totano);
 
                 if ($descricao != $k00_descr) {
@@ -1196,18 +1196,11 @@ if (isset($_GET["lista"])) {
             for ($iHist = 0; $iHist < $iTotalLinhasRecibo; $iHist++) {
                 $oLinhaRecibo = db_utils::fieldsMemory($rsValoresRecibo, $iHist);
 
-                switch ($oLinhaRecibo->k00_hist) {
-                    case 918:
-                        $nTotalDesconto += abs($oLinhaRecibo->valor);
-                        break;
-
-                    case 400:
-                        $nTotalMulta += abs($oLinhaRecibo->valor);
-                        break;
-
-                    default:
-                        $nTotalDocumento += abs($oLinhaRecibo->valor);
-                }
+                match ($oLinhaRecibo->k00_hist) {
+                    918 => $nTotalDesconto += abs($oLinhaRecibo->valor),
+                    400 => $nTotalMulta += abs($oLinhaRecibo->valor),
+                    default => $nTotalDocumento += abs($oLinhaRecibo->valor),
+                };
             }
         }
 
@@ -1330,7 +1323,7 @@ if (isset($_GET["lista"])) {
 function getValorTaxaExpediente($numnov)
 {
     $repository = new RecibopagaRepository(DataBase::getInstance(), new \cl_recibopaga());
-    $where = array("k00_numnov = {$numnov}", "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO);
+    $where = ["k00_numnov = {$numnov}", "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO];
     $reciboPaga = $repository->findAll(implode(' AND ', $where))->get(0);
 
     return (float) $reciboPaga->getValor();

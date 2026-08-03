@@ -70,7 +70,7 @@ if(isset($iRegime) && trim($iRegime) != 't' ){
   }
 }
 
-if(trim($sOrdem) != 'p'){
+if(trim((string) $sOrdem) != 'p'){
   $head6 = "ORDEM : Regime";
   $sgroupby = " group by r02_anousu, r02_regime, r02_codigo, r02_descr ";
   $sorderby = " order by r02_anousu, r02_regime, r02_codigo, r02_descr ";
@@ -112,7 +112,7 @@ $sql_padrao =
 
 $rsPadrao = db_query($sql_padrao);
 // echo $sql_padrao;db_criatabela($rsPadrao);exit;
-if (pg_numrows($rsPadrao) == 0 ) {
+if (pg_num_rows($rsPadrao) == 0 ) {
 		db_redireciona('db_erros.php?fechar=true&db_erro=Não existem valores para o padrão '.$sPadrao.', no período de '.$iAno1.' a '.$iAno2);
 } 
 
@@ -129,7 +129,7 @@ $troca = 1;
 $pre   = 0;
 $alt   = 4;
 
-for($x = 0; $x < pg_numrows($rsPadrao);$x++){
+for($x = 0; $x < pg_num_rows($rsPadrao);$x++){
 	
 	db_fieldsmemory($rsPadrao,$x);
 	if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){

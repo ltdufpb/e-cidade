@@ -29,7 +29,7 @@ include(modification("fpdf151/impcarne.php"));
 include(modification("fpdf151/scpdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $sql_inst = "select * from db_config where codigo = ".db_getsession("DB_instit");
@@ -235,7 +235,7 @@ where r35_anousu = $ano
 
 $result = db_query($sql);
 //db_criatabela($result);exit;
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mes.' / '.$ano);
 
@@ -267,7 +267,7 @@ $pdf1->cod_pagto        = $cod_pagto;
 $pdf1->terceiros        = 0;
 $pdf1->atu_monetaria    = 0;
 $pdf1->juros            = 0;
-$pdf1->previdencia      = strtoupper($r33_nome);
+$pdf1->previdencia      = strtoupper((string) $r33_nome);
 $pdf1->imprime();
 //$pdf1->mensagem         = $msg;
  

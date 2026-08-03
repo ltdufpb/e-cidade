@@ -123,7 +123,7 @@ db_app::load("estilos.css, grid.style.css, scripts.js, strings.js, prototype.js,
 					<td
 						title="Sim = Processo registrado no protocolo, Não = Processo externo">
 						<?php
-						db_select('lProcessoSistema', array('' => 'SELECIONE', 'S' => 'SIM', 'N' => 'NÃO'), true, 1, 'onchange="js_processoSistema(this.value)" style="width: 93px;"')
+						db_select('lProcessoSistema', ['' => 'SELECIONE', 'S' => 'SIM', 'N' => 'NÃO'], true, 1, 'onchange="js_processoSistema(this.value)" style="width: 93px;"')
 						?>
 					</td>
 				</tr>

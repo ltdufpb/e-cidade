@@ -37,7 +37,7 @@ include(modification("classes/db_recparprocdiver_classe.php"));
 include(modification("classes/db_procedenciaagrupa_classe.php"));
 include(modification("classes/db_tipoproced_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrecparproc			 = new cl_recparproc;
 $clrecparprocdiver = new cl_recparprocdiver;

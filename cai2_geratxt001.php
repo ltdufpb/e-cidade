@@ -33,10 +33,10 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_db_bancos_classe.php"));
 
 $cldb_bancos = new cl_db_bancos;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$tipo_ordem = array("a" => "Nome fornecedor", "b" => "CGM fornecedor", "c" => "Recurso");
-$aBancos    = Array();
+$tipo_ordem = ["a" => "Nome fornecedor", "b" => "CGM fornecedor", "c" => "Recurso"];
+$aBancos    = [];
 
 $sSqlBancos     = $cldb_bancos->sql_query_empage(null, "distinct db90_codban,db90_descr", "db90_descr", " e90_codmov is null ");
 $result_bancos  = $cldb_bancos->sql_record($sSqlBancos);
@@ -91,7 +91,7 @@ if (isset($db_bancos) && isset($aBancos[$db_bancos])) {
             <strong>CNPJ:</strong>
           </td>
           <td>
-           <?php db_select("comboboxCNPJ", array(0 => 'Selecione...'), true, 1); ?>
+           <?php db_select("comboboxCNPJ", [0 => 'Selecione...'], true, 1); ?>
           </td>
         </tr>
         

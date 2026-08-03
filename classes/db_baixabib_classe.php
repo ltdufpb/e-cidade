@@ -3,29 +3,29 @@
 //CLASSE DA ENTIDADE baixabib
 class cl_baixabib { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $bi08_codigo = 0; 
-   var $bi08_descr = null; 
-   var $bi08_exemplar = 0; 
-   var $bi08_inclusao_dia = null; 
-   var $bi08_inclusao_mes = null; 
-   var $bi08_inclusao_ano = null; 
-   var $bi08_inclusao = null; 
-   var $bi08_usuario = 0; 
+   public $bi08_codigo = 0; 
+   public $bi08_descr = null; 
+   public $bi08_exemplar = 0; 
+   public $bi08_inclusao_dia = null; 
+   public $bi08_inclusao_mes = null; 
+   public $bi08_inclusao_ano = null; 
+   public $bi08_inclusao = null; 
+   public $bi08_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  bi08_codigo = int8 = Código 
                  bi08_descr = text = Descrição da Baixa 
                  bi08_exemplar = int8 = Exemplar 
@@ -33,10 +33,10 @@ class cl_baixabib {
                  bi08_usuario = int8 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_baixabib() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("baixabib"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -115,10 +115,10 @@ class cl_baixabib {
          $this->erro_status = "0";
          return false; 
        }
-       $this->bi08_codigo = pg_result($result,0,0); 
+       $this->bi08_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from baixabib_bi08_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $bi08_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $bi08_codigo)){
          $this->erro_sql = " Campo bi08_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,7 +154,7 @@ class cl_baixabib {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Baixa de exemplares do acervo ($this->bi08_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Baixa de exemplares do acervo já Cadastrado";
@@ -183,14 +183,14 @@ class cl_baixabib {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1008133,'$this->bi08_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1008016,1008133,'','".AddSlashes(pg_result($resaco,0,'bi08_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008016,1008134,'','".AddSlashes(pg_result($resaco,0,'bi08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008016,1008136,'','".AddSlashes(pg_result($resaco,0,'bi08_exemplar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008016,1008188,'','".AddSlashes(pg_result($resaco,0,'bi08_inclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1008016,1008937,'','".AddSlashes(pg_result($resaco,0,'bi08_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008016,1008133,'','".AddSlashes(pg_fetch_result($resaco,0,'bi08_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008016,1008134,'','".AddSlashes(pg_fetch_result($resaco,0,'bi08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008016,1008136,'','".AddSlashes(pg_fetch_result($resaco,0,'bi08_exemplar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008016,1008188,'','".AddSlashes(pg_fetch_result($resaco,0,'bi08_inclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1008016,1008937,'','".AddSlashes(pg_fetch_result($resaco,0,'bi08_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -200,10 +200,10 @@ class cl_baixabib {
       $this->atualizacampos();
      $sql = " update baixabib set ";
      $virgula = "";
-     if(trim($this->bi08_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi08_codigo"])){ 
+     if(trim((string) $this->bi08_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi08_codigo"])){ 
        $sql  .= $virgula." bi08_codigo = $this->bi08_codigo ";
        $virgula = ",";
-       if(trim($this->bi08_codigo) == null ){ 
+       if(trim((string) $this->bi08_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "bi08_codigo";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_baixabib {
          return false;
        }
      }
-     if(trim($this->bi08_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi08_descr"])){ 
+     if(trim((string) $this->bi08_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi08_descr"])){ 
        $sql  .= $virgula." bi08_descr = '$this->bi08_descr' ";
        $virgula = ",";
-       if(trim($this->bi08_descr) == null ){ 
+       if(trim((string) $this->bi08_descr) == null ){ 
          $this->erro_sql = " Campo Descrição da Baixa não informado.";
          $this->erro_campo = "bi08_descr";
          $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_baixabib {
          return false;
        }
      }
-     if(trim($this->bi08_exemplar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi08_exemplar"])){ 
+     if(trim((string) $this->bi08_exemplar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi08_exemplar"])){ 
        $sql  .= $virgula." bi08_exemplar = $this->bi08_exemplar ";
        $virgula = ",";
-       if(trim($this->bi08_exemplar) == null ){ 
+       if(trim((string) $this->bi08_exemplar) == null ){ 
          $this->erro_sql = " Campo Exemplar não informado.";
          $this->erro_campo = "bi08_exemplar";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_baixabib {
          return false;
        }
      }
-     if(trim($this->bi08_inclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi08_inclusao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi08_inclusao_dia"] !="") ){ 
+     if(trim((string) $this->bi08_inclusao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi08_inclusao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["bi08_inclusao_dia"] !="") ){ 
        $sql  .= $virgula." bi08_inclusao = '$this->bi08_inclusao' ";
        $virgula = ",";
-       if(trim($this->bi08_inclusao) == null ){ 
+       if(trim((string) $this->bi08_inclusao) == null ){ 
          $this->erro_sql = " Campo Data da Baixa não informado.";
          $this->erro_campo = "bi08_inclusao_dia";
          $this->erro_banco = "";
@@ -255,7 +255,7 @@ class cl_baixabib {
        if(isset($GLOBALS["HTTP_POST_VARS"]["bi08_inclusao_dia"])){ 
          $sql  .= $virgula." bi08_inclusao = null ";
          $virgula = ",";
-         if(trim($this->bi08_inclusao) == null ){ 
+         if(trim((string) $this->bi08_inclusao) == null ){ 
            $this->erro_sql = " Campo Data da Baixa não informado.";
            $this->erro_campo = "bi08_inclusao_dia";
            $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_baixabib {
          }
        }
      }
-     if(trim($this->bi08_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi08_usuario"])){ 
+     if(trim((string) $this->bi08_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["bi08_usuario"])){ 
        $sql  .= $virgula." bi08_usuario = $this->bi08_usuario ";
        $virgula = ",";
-       if(trim($this->bi08_usuario) == null ){ 
+       if(trim((string) $this->bi08_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "bi08_usuario";
          $this->erro_banco = "";
@@ -293,19 +293,19 @@ class cl_baixabib {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1008133,'$this->bi08_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi08_codigo"]) || $this->bi08_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1008016,1008133,'".AddSlashes(pg_result($resaco,$conresaco,'bi08_codigo'))."','$this->bi08_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008016,1008133,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi08_codigo'))."','$this->bi08_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi08_descr"]) || $this->bi08_descr != "")
-             $resac = db_query("insert into db_acount values($acount,1008016,1008134,'".AddSlashes(pg_result($resaco,$conresaco,'bi08_descr'))."','$this->bi08_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008016,1008134,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi08_descr'))."','$this->bi08_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi08_exemplar"]) || $this->bi08_exemplar != "")
-             $resac = db_query("insert into db_acount values($acount,1008016,1008136,'".AddSlashes(pg_result($resaco,$conresaco,'bi08_exemplar'))."','$this->bi08_exemplar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008016,1008136,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi08_exemplar'))."','$this->bi08_exemplar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi08_inclusao"]) || $this->bi08_inclusao != "")
-             $resac = db_query("insert into db_acount values($acount,1008016,1008188,'".AddSlashes(pg_result($resaco,$conresaco,'bi08_inclusao'))."','$this->bi08_inclusao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008016,1008188,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi08_inclusao'))."','$this->bi08_inclusao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["bi08_usuario"]) || $this->bi08_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,1008016,1008937,'".AddSlashes(pg_result($resaco,$conresaco,'bi08_usuario'))."','$this->bi08_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1008016,1008937,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'bi08_usuario'))."','$this->bi08_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -359,14 +359,14 @@ class cl_baixabib {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1008133,'$bi08_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1008016,1008133,'','".AddSlashes(pg_result($resaco,$iresaco,'bi08_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008016,1008134,'','".AddSlashes(pg_result($resaco,$iresaco,'bi08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008016,1008136,'','".AddSlashes(pg_result($resaco,$iresaco,'bi08_exemplar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008016,1008188,'','".AddSlashes(pg_result($resaco,$iresaco,'bi08_inclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1008016,1008937,'','".AddSlashes(pg_result($resaco,$iresaco,'bi08_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008016,1008133,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi08_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008016,1008134,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi08_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008016,1008136,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi08_exemplar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008016,1008188,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi08_inclusao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1008016,1008937,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'bi08_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -484,7 +484,7 @@ class cl_baixabib {
    function sql_query_baixa_acervo ( $bi08_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_baixabib {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

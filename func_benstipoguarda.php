@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_benstipoguarda_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbenstipoguarda = new cl_benstipoguarda;
 $clbenstipoguarda->rotulo->label("t20_codigo");
 $clbenstipoguarda->rotulo->label("t20_descr");
@@ -98,9 +98,9 @@ $clbenstipoguarda->rotulo->label("t20_descr");
         }else{
            $sql = $clbenstipoguarda->sql_query("",$campos,"t20_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t20_codigo)){
-          $repassa = array("chave_t20_codigo"=>$chave_t20_codigo,"chave_t20_descr"=>$chave_t20_descr);
+          $repassa = ["chave_t20_codigo"=>$chave_t20_codigo,"chave_t20_descr"=>$chave_t20_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

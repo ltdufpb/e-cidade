@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issvar_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissvar = new cl_issvar;
 $clissvar->rotulo->label("q05_codigo");
 $clissvar->rotulo->label("q05_numpre");
@@ -114,9 +114,9 @@ $clissvar->rotulo->label("q05_numpre");
         }else{
            $sql = $clissvar->sql_query_pesq("",$campos,"q05_codigo",$where);
         }        
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q05_numpre)){
-          $repassa = array("chave_q05_codigo"=>$chave_q05_codigo,"chave_q05_numpre"=>$chave_q05_numpre);
+          $repassa = ["chave_q05_codigo"=>$chave_q05_codigo,"chave_q05_numpre"=>$chave_q05_numpre];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

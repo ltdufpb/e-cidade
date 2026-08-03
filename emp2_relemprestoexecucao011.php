@@ -105,7 +105,7 @@ if ($oDaoEmpparam->numrows > 0 ) {
             </td>
             <td>
               <?php 
-              $acumu = array(
+              $acumu = [
                 "or"=>"Órgão",
                 "un"=>"Unidade",
                 "fu"=>"Função",
@@ -118,7 +118,7 @@ if ($oDaoEmpparam->numrows > 0 ) {
                 "tr"=>"Tipo de resto",
                 "cr"=>"Credor",
                 "ex"=>"Exercício"
-              );
+              ];
               db_select("tipo",$acumu,true,"text",2);
               ?>
             </td>
@@ -130,7 +130,7 @@ if ($oDaoEmpparam->numrows > 0 ) {
             </td>
             <td>
               <?php 
-              $acumu = array(
+              $acumu = [
                 "0"=>"Geral-todos",
                 "1"=>"Com Movimento até a Data",
                 "2"=>"Com saldo a pagar",
@@ -138,7 +138,7 @@ if ($oDaoEmpparam->numrows > 0 ) {
                 "4"=>"Anulados",
                 "5"=>"Pagos",
                 "6"=>"Com saldo a liquidar"
-              );
+              ];
 
               db_select("commov",$acumu,true,"text",2);
               ?>
@@ -152,7 +152,7 @@ if ($oDaoEmpparam->numrows > 0 ) {
             <td>
               <?php 
               $result = $clempresto->sql_record($clempresto->sql_query_empenho(db_getsession("DB_anousu"),null,' distinct e60_anousu ','e60_anousu'));
-              $opcao = array("0"=>"Todos");
+              $opcao = ["0"=>"Todos"];
 
               for ($ini=0;$ini < $clempresto->numrows;$ini++){
                 db_fieldsmemory($result,$ini);
@@ -182,10 +182,10 @@ if ($oDaoEmpparam->numrows > 0 ) {
             </td>
             <td>
               <?php
-                $aImpressao = array(
+                $aImpressao = [
                   "0"=>"Analítico",
                   "1"=>"Sintético"
-                );
+                ];
 
                 db_select("impressao",$aImpressao,true,"text",2);
               ?>
@@ -197,10 +197,10 @@ if ($oDaoEmpparam->numrows > 0 ) {
             </td>
             <td>
               <?php
-                $aFiltros = array(
+                $aFiltros = [
                   "nao"=>"Não",
                   "sim"=>"Sim"
-                );
+                ];
 
                 db_select("imprimefiltros",$aFiltros,true,"text",2);
               ?>

@@ -150,15 +150,15 @@ if($gerf == "fs"){
             // Se for folha de rescisão, colocará o CAMPO da TPP
             if($gerf == "fr"){
               echo "<td>";
-	            $arr_tpp = Array("V"=>"Vencida","P"=>"Proporcional","S"=>"Saldo");
+	            $arr_tpp = ["V"=>"Vencida","P"=>"Proporcional","S"=>"Saldo"];
               db_select("r20_tpp",$arr_tpp,true,(($db_opcao==1)?"1":"3"));
               echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
               echo "</td>";
             }else if($gerf == "fs" || $gerf == "com"){
               echo "<td>";
-	            $arr_pd = Array("1"=>"Provento",
+	            $arr_pd = ["1"=>"Provento",
 	                            "2"=>"Desconto",
-	                            "3"=>"Base");
+	                            "3"=>"Base"];
               db_select("r14_pd",$arr_pd,true,(($db_opcao==1)?"1":"3"));
               echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
               echo "</td>";
@@ -253,7 +253,7 @@ if($gerf == "fs"){
                 r70_descr,". $sigla."quant as r14_quant,".  $sigla."valor as r14_valor";
       $orderby= $sigla."regist,". $sigla."rubric";
 
-      $chavepri = array ("r14_anousu" => @ $r14_anousu, "r14_mesusu" => @ $r14_mesusu, "r14_regist" => @ $r14_regist, "r14_rubric" => @ $r14_rubric);
+      $chavepri =  ["r14_anousu" => @ $r14_anousu, "r14_mesusu" => @ $r14_mesusu, "r14_regist" => @ $r14_regist, "r14_rubric" => @ $r14_rubric];
       
       // Seta TPP como chave primária.
       if($gerf == "fr"){

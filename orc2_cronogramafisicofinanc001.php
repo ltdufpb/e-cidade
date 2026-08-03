@@ -77,7 +77,7 @@ $clrotulo->label("o74_descricao");
                      $sSqlAno    .= " order by o103_anousu     ";
                      $rsAno       = db_query($sSqlAno);
                      $aAnos       = db_utils::getCollectionByRecord($rsAno);
-                     $aAnosSelect = array();
+                     $aAnosSelect = [];
                      foreach ($aAnos as $oAno) {
                        $aAnosSelect[$oAno->o103_anousu] = $oAno->o103_anousu; 
                      }

@@ -32,7 +32,7 @@ require_once modification("libs/db_usuariosonline.php");
 require_once modification("dbforms/db_funcoes.php");
 require_once modification("classes/db_avaliacao_classe.php");
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clavaliacao = new cl_avaliacao;
 $clavaliacao->rotulo->label("db101_sequencial");
 $clavaliacao->rotulo->label("db101_descricao");
@@ -84,7 +84,7 @@ $clavaliacao->rotulo->label("db101_descricao");
     <td align="center" valign="top">
       <?php 
 
-      $aWhere = array();
+      $aWhere = [];
       if (!isset($_GET["todos"])) {
         $aWhere[] = "db101_sequencial < 3000000";
       }
@@ -94,7 +94,7 @@ $clavaliacao->rotulo->label("db101_descricao");
       }
 
       if(isset($_GET['iTipoAvaliacao']) && ($_GET['iTipoAvaliacao'] == 5 || $_GET['iTipoAvaliacao'] == 6)) {
-        $aWhere = array();
+        $aWhere = [];
         $aWhere[] = "db101_avaliacaotipo = ".$_GET['iTipoAvaliacao'] . " and db101_ativo = 't'";
       }
 
@@ -118,9 +118,9 @@ $clavaliacao->rotulo->label("db101_descricao");
         $sWhere = implode(" and ", $aWhere);
         $sql    = $clavaliacao->sql_query("",$campos,"db101_sequencial", $sWhere);
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db101_sequencial)){
-          $repassa = array("chave_db101_sequencial"=>$chave_db101_sequencial,"chave_db101_sequencial"=>$chave_db101_sequencial);
+          $repassa = ["chave_db101_sequencial"=>$chave_db101_sequencial,"chave_db101_sequencial"=>$chave_db101_sequencial];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

@@ -31,9 +31,9 @@
  */
 final class ParametroProtocolo {
   
-  const  TRAMITE_PERMITE_ESCOLHER_DEPARTAMENTO           = 1;            
-  const  TRAMITE_NAO_PERMITE_ESCOLHER_DEPARAMENTO        = 2;        
-  const  TRAMITE_PERMITE_ESCOLHER_DEPARTAMENTO_COM_AVISO = 3; 
+  const int  TRAMITE_PERMITE_ESCOLHER_DEPARTAMENTO           = 1;            
+  const int  TRAMITE_NAO_PERMITE_ESCOLHER_DEPARAMENTO        = 2;        
+  const int  TRAMITE_PERMITE_ESCOLHER_DEPARTAMENTO_COM_AVISO = 3; 
     
   /*
    * codigo do parametro p90_traminic Tramite/transferencia

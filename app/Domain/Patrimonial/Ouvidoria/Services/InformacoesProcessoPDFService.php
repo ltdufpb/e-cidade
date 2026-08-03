@@ -194,14 +194,14 @@ class InformacoesProcessoPDFService
         $secaoTabela = new \stdClass();
         $secaoTabela->label = $secao->label;
 
-        $camposLabel = array();
+        $camposLabel = [];
 
         foreach ($secao->campos as $campo) {
             $camposLabel[$campo->nome] = $campo->label;
         }
 
         foreach ($secao->resposta as $resposta) {
-            $secaoTabela->campos = array();
+            $secaoTabela->campos = [];
 
             foreach ($resposta as $chave => $valor) {
                 if (array_key_exists($chave, $camposLabel)) {

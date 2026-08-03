@@ -38,8 +38,8 @@ include(modification("classes/db_rhcadastroferiaslote_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("libs/db_utils.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clcadferia             = new cl_cadferia;
 $clselecao              = new cl_selecao;
@@ -81,8 +81,8 @@ if(isset($semdireito)){
   $subpes = $anofolha."/".$mesfolha;
 
   db_inicio_transacao();
-  $matriz1 = array();
-  $matriz2 = array();
+  $matriz1 = [];
+  $matriz2 = [];
   $matriz1[1] = "r30_regist";
   $matriz1[2] = "r30_numcgm";
   $matriz1[3] = "r30_perai";
@@ -313,7 +313,7 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
   } else if ( isset($campomatriculas) && trim($campomatriculas) != "" ) {
   	
     $retorno = 'true';
-    $arr_matriculas = split(",", $campomatriculas);
+    $arr_matriculas = preg_split("#,#m", $campomatriculas);
     $r30_regist = array_shift($arr_matriculas);
     $campomatriculas = implode(",", $arr_matriculas);
   }
@@ -324,11 +324,11 @@ if((isset($r30_regist) && !isset($semdireito)) || isset($enviar_selecao) || (iss
     if($clrhpesrescisao->numrows > 0){
       $rescindido = true;
     } else {
-    	
+
       $result_admissao = $clrhpessoal->sql_record($clrhpessoal->sql_query_cgm($r30_regist,"z01_nome,z01_numcgm,rh01_admiss"));
-      
+
       if ($clrhpessoal->numrows > 0) {
-      	
+
         db_fieldsmemory($result_admissao, 0);
         $nexistfunc = false;
       }
@@ -476,7 +476,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </html>
 <?php 
 if(isset($semdireito)){
-  if( ($result_insert == true && trim($retorno) == "") || ($result_insert == true && isset($campomatriculas) )){
+  if( ($result_insert == true && trim((string) $retorno) == "") || ($result_insert == true && isset($campomatriculas) )){
     db_msgbox("Inclusão efetuada com sucesso.");
     echo "<script>location.href = 'pes4_cadferia001.php';</script>";
   }else if($result_insert == true){

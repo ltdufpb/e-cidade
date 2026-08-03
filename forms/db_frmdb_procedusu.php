@@ -94,13 +94,13 @@ db_input('nome',40,$Inome,true,'text',3,'')
     <td valign="top"  align="center">  
     <?php 
 	 if(isset($db_opcao)&&$db_opcao==2) {
-	 	$chavepri= array("at31_proced"=>@$at31_proced);
+	 	$chavepri= ["at31_proced"=>@$at31_proced];
 	 }
 	 else if(isset($db_opcao)&&$db_opcao==3) {
-	 	$chavepri= array("at31_proced"=>@$at31_proced);
+	 	$chavepri= ["at31_proced"=>@$at31_proced];
 	 }
      else if(isset($db_opcao)&&$db_opcao==1) {
-	 	$chavepri= array("at31_sequencial"=>@$at31_sequencial,"at31_proced"=>@$at31_proced);
+	 	$chavepri= ["at31_sequencial"=>@$at31_sequencial,"at31_proced"=>@$at31_proced];
 	 }
 
 	 $cliframe_alterar_excluir->chavepri=$chavepri;

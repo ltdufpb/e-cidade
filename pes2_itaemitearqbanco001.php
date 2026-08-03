@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $clrotulo = new rotulocampo;
 $clrharqbanco->rotulo->label();
@@ -243,7 +243,7 @@ function js_controlarodape(mostra, hora){
     </td>
     <td> 
       <?php 
-       $arr_tipo = array("c"=>"Com Conta","s"=>"Sem Conta");
+       $arr_tipo = ["c"=>"Com Conta","s"=>"Sem Conta"];
        db_select('tipo',$arr_tipo,true,4,"");
       ?>
     </td>

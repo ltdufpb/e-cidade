@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rharqbanco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $clrotulo = new rotulocampo;
 $clrharqbanco->rotulo->label();
@@ -250,9 +250,9 @@ function js_controlarodape(mostra){
     </td>
     <td>
       <?php 
-      $arr_layout = Array(
+      $arr_layout = [
                           "9"=>"CNAB240"
-                         );
+                         ];
       db_select("layout", $arr_layout, true, 1, "");
       ?>
     </td>
@@ -271,10 +271,10 @@ function js_controlarodape(mostra){
     </td>
     <td>
       <?php 
-      $arr_ambientecliente = Array(
+      $arr_ambientecliente = [
                           "P"=>"Produção",
                           "T"=>"Teste",
-                         );
+                         ];
       db_select("ambientecliente", $arr_ambientecliente, true, 1, "");
       ?>
     </td>
@@ -285,10 +285,10 @@ function js_controlarodape(mostra){
     </td>
     <td>
       <?php 
-      $arr_tiparq = Array(
+      $arr_tiparq = [
 			                    "0"=>"0 - Todos",
 			                    "1"=>"1 - Pensão judicial"
-                         );
+                         ];
       db_select("tiparq", $arr_tiparq, true, 1, "onchange='js_habilita(this.value);'");
       ?>
     </td>
@@ -300,12 +300,12 @@ function js_controlarodape(mostra){
     <td>
       <?php
       
-      $arr_qfolha = Array(
+      $arr_qfolha = [
                           "1"=>"Salário",
 	                        "2"=>"Complementar",
                           "3"=>"13º. Salário",
                           "4"=>"Rescisão"
-                         );
+                         ];
       
       if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
         $arr_qfolha["5"] = "Suplementar"; 

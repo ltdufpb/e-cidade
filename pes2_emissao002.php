@@ -78,9 +78,9 @@ define( "TIPO_VINCULO_INATIVOS_PENSIONISTAS", "ip");
 try {
 
   $oJson        = new services_json();
-  $oParametros  = $oJson->decode(str_replace("\\","",base64_decode($_GET["json"])));
+  $oParametros  = $oJson->decode(str_replace("\\","",base64_decode((string) $_GET["json"])));
   $iInstituicao = db_getsession( "DB_instit" );
-  $aWhere       = array();
+  $aWhere       = [];
 
 	/**
 	 * Realiza busca das rubricas a partir do relatorio selecionado.
@@ -142,13 +142,13 @@ try {
 	 * Retorna as Rubricas Selecionadas
 	 */
 	$aDadosRubricas        = db_utils::getCollectionByRecord($rsRubricas);
-	$aRubricasUtilizadas   = array();
-	$aTipoValorRubricas    = array();
+	$aRubricasUtilizadas   = [];
+	$aTipoValorRubricas    = [];
 
   /**
    * Utilizado para definir a ordem da Rubrica na Formula Total. i.e.: RUB1, RUB2,....
    */
-  $aOrdemFormula         = array();
+  $aOrdemFormula         = [];
   $iContadorOrdemFormula = 0;
 
 	foreach ( $aDadosRubricas as $oDadosRubrica ) {
@@ -321,10 +321,10 @@ try {
     throw new BusinessException( "Nenhum servidor encontrado." );
   }
 
-  $aServidores      = array();
-  $aQuebras         = array();
-  $aValorRubricas   = array();
-  $aDadosServidores = array();
+  $aServidores      = [];
+  $aQuebras         = [];
+  $aValorRubricas   = [];
+  $aDadosServidores = [];
   $aRubricas        = db_utils::getCollectionByRecord($rsRubricas);
   $iTotalServidores = 0;
 

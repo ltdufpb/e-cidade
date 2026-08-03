@@ -184,7 +184,7 @@ class TSVETerminoService
     private function buscarPagamentos()
     {
         $calculoRescisao = $this->servidor->getCalculoFinanceiro(CalculoFolha::CALCULO_RESCISAO);
-        $pagamentos = array();
+        $pagamentos = [];
 
         foreach ($calculoRescisao->getEventosFinanceiros() as $eventoFinanceiro) {
             if (!array_key_exists($eventoFinanceiro->getRubrica()->getCodigo(), $this->rubricasValidas)) {

@@ -33,8 +33,8 @@ include(modification("classes/db_pctipodoccertif_classe.php"));
 include(modification("classes/db_pcforne_classe.php"));
 include(modification("classes/db_pcfornecertif_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clpctipodoccertif = new cl_pctipodoccertif;
 $clpcforne = new cl_pcforne;
 $clpcfornecertif = new cl_pcfornecertif;
@@ -74,7 +74,7 @@ $clrotulo->label("pc74_pctipocertif");
                            inner join pctipocertif on pctipocertif.pc70_codigo = pcfornecertif.pc74_pctipocertif";
                            
       $result_certif = db_query($sSqlCertificado);
-      $numrows       = pg_numrows($result_certif);
+      $numrows       = pg_num_rows($result_certif);
       if ($numrows == 0) {
         echo "<h2 align=\"center\">Este fornecedor não possui certificado!</h2>";
       }

@@ -34,7 +34,7 @@ require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 $aTiposAssentamento       = \TipoAssentamentoRepository::getInstanciasPorNatureza(\Assentamento::NATUREZA_AUTORIZA_HORA_EXTRA);
-$aAutorizacaoHorasExtras  = array();
+$aAutorizacaoHorasExtras  = [];
 
 if(!empty($aTiposAssentamento)) {
     foreach ($aTiposAssentamento as $tipoAssentamento) {

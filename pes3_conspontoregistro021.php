@@ -42,8 +42,8 @@ include(modification("classes/db_gerfs13_classe.php"));
 include(modification("classes/db_gerfres_classe.php"));
 */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $xtipo = "'x'";
 if ($opcao == 'salario') {
@@ -79,7 +79,7 @@ elseif ($opcao == 'fixo') {
 	echo "SELECIONE ALGUMA OPÇÃO";
 }
 
-if (trim($opcao) != '') {
+if (trim((string) $opcao) != '') {
 	$sql = "
 	          select distinct
                    rh27_rubric,
@@ -155,7 +155,7 @@ MM_reloadPage(true);
 <?php 
 
 
-if (trim($opcao) != '') {
+if (trim((string) $opcao) != '') {
 ?>
    <tr bgcolor="#FFCC66">
      <th class="borda" style="font-size:12px" nowrap>Rubrica</th>
@@ -171,7 +171,7 @@ if (trim($opcao) != '') {
 	$totalvalor = 0;
 	$totalquant = 0;
 	$totalregis = 0;
-	for ($x = 0; $x < pg_numrows($result); $x ++) {
+	for ($x = 0; $x < pg_num_rows($result); $x ++) {
 		db_fieldsmemory($result, $x, true);
 		if ($cor == "#EFE029")
 			$cor = "#E4F471";

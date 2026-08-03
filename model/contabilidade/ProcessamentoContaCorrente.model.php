@@ -77,14 +77,14 @@ class ProcessamentoContaCorrente {
     $this->validar();
 
     $sCampos = "distinct conlancamval.*";
-    $sWhere  = implode(' and ', array(
+    $sWhere  = implode(' and ', [
       "c71_coddoc = {$this->oDocumentoEventoContabil->getCodigo()}",
       "c18_contacorrente = {$this->oContaCorrente->getCodigo()}",
       "c60_anousu = {$this->oDataInicial->getAno()}",
       "c61_anousu = {$this->oDataInicial->getAno()}",
       "c70_data between '{$this->oDataInicial->getDate()}' and '{$this->oDataFinal->getDate()}'",
       "c61_instit = {$this->oInstituicao->getCodigo()}"
-    ));
+    ]);
 
     $oDaoLancamentoContabil = new cl_conlancam();
     $sSqlBuscaPartidas = $oDaoLancamentoContabil->sql_query_conta_corrente($sCampos, 'c69_sequen', $sWhere);

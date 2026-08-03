@@ -58,7 +58,7 @@ class RegraLancamentoIncorporacaoBem implements IRegraLancamentoContabil
             throw new BusinessException($sMsgErro);
         }
 
-        $aRegrasEncontradas = array();
+        $aRegrasEncontradas = [];
 
         $iContaMaterial = $oLancamentoAuxiliar->getBem()->getClassificacao()->getContaContabil()->getReduzido();
 
@@ -73,7 +73,7 @@ class RegraLancamentoIncorporacaoBem implements IRegraLancamentoContabil
 
             if ($oDadosTransacao->c46_ordem == 1) {
 
-                if ((int)in_array($iCodigoDocumento, array(705, 706, 707, 708, 709, 710)) && UTILIZA_INCORPORACAO_BEM) {
+                if ((int)in_array($iCodigoDocumento, [705, 706, 707, 708, 709, 710]) && UTILIZA_INCORPORACAO_BEM) {
                     if ($oLancamentoAuxiliar->isEstorno()) {
                         $oRegraLancamento->setContaCredito($iContaMaterial);
                     } else {

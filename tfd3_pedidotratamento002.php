@@ -40,7 +40,7 @@ $sWhere           = " tf01_i_codigo = {$oGet->iPedido} ";
 $sSqlTratamentos  = $oDaoPedidoTFD->sql_query2(null, $sCampos, null, $sWhere);
 $rsTratamentos    = db_query($sSqlTratamentos);
 
-$aTratamentos = array();
+$aTratamentos = [];
 if ( $rsTratamentos && pg_num_rows($rsTratamentos) > 0) {
 
   $iLinha = pg_num_rows($rsTratamentos);
@@ -50,7 +50,7 @@ if ( $rsTratamentos && pg_num_rows($rsTratamentos) > 0) {
     $oDados = db_utils::fieldsMemory($rsTratamentos, $i);
     $oTratamento = new stdClass();
     $oTratamento->sCodigo       = $oDados->sd63_c_procedimento;
-    $oTratamento->sProcedimento = utf8_encode($oDados->sd63_c_nome);
+    $oTratamento->sProcedimento = mb_convert_encoding($oDados->sd63_c_nome, 'UTF-8', 'ISO-8859-1');
     $oTratamento->sTipo         = $oDados->tf04_c_descr;
 
     $aTratamentos[] = $oTratamento;

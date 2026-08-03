@@ -63,7 +63,7 @@ $iTabelaPrevidencia = $prev;
 
 try {
 
-  $aCamposConfig   = array();
+  $aCamposConfig   = [];
   $aCamposConfig[] = "numero";
   $aCamposConfig[] = "ender";
   $aCamposConfig[] = "cgc";
@@ -87,9 +87,7 @@ try {
     throw new Exception("Ocorreu um erro ao consultar os dados da instituição.");
   }
 
-  $oDadosConfig = db_utils::makeFromRecord($rsConfig, function($oConfig){
-    return $oConfig;
-  }, 0);
+  $oDadosConfig = db_utils::makeFromRecord($rsConfig, fn($oConfig) => $oConfig, 0);
 
   $d08_ender  = $oDadosConfig->ender;
   $d08_cgc    = $oDadosConfig->cgc;
@@ -102,7 +100,7 @@ try {
   $d08_email  = $oDadosConfig->email;
   $d08_numero = $oDadosConfig->numero;
 
-  if(trim($oDadosConfig->cgc) == "90940172000138"){
+  if(trim((string) $oDadosConfig->cgc) == "90940172000138"){
     $d08_carnes = "daeb";
   }else{
     $d08_carnes = $oDadosConfig->d08_carnes;
@@ -208,12 +206,12 @@ function queryServidores($nomearq, $iTabelaPrevidencia, $oCompetencia, $oParamet
   db_fieldsmemory($res_prev,0);
   $perc_patronal = $r33_ppatro;
   $rubrica_saude = "('')";
-  if(trim($r33_rubsau) != '' && $ls == 's' ){
+  if(trim((string) $r33_rubsau) != '' && $ls == 's' ){
    $rubrica_saude = "('$r33_rubsau')";
   }
 
   $rubrica_gestante = "('')";
-  if(trim($r33_rubmat) != '' && $lg == 's' ){
+  if(trim((string) $r33_rubmat) != '' && $lg == 's' ){
    $rubrica_gestante = "('$r33_rubmat')";
   }
 
@@ -624,16 +622,14 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
   $total_patronal = 0;
   $total_desc     = 0;
 
-  $aDadosServidores = array();
-  $aDadosServidores = db_utils::makeCollectionFromRecord($rsDadosServidores, function($oItemServidor){
-    return $oItemServidor;
-  });
+  $aDadosServidores = [];
+  $aDadosServidores = db_utils::makeCollectionFromRecord($rsDadosServidores, fn($oItemServidor) => $oItemServidor);
 
 
   foreach ($aDadosServidores as $oDadosServidor) {
 
     $oServidor = ServidorRepository::getInstanciaByCodigo($oDadosServidor->r01_regist);
-    $aLinhas   = array();
+    $aLinhas   = [];
     $sLinha    = '';
 
     $nTotalValoresServidor  = 0;
@@ -654,19 +650,19 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
     $aLinhas[] = "2";
 
     // Matricula do Servidor ;
-    $aLinhas[] = str_pad($oDadosServidor->regist, 10, "0", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->regist, 10, "0", STR_PAD_LEFT);
 
     // nome ;
     $aLinhas[] = db_formatar($oDadosServidor->nome,'s',' ',40,'d');
 
     // data de admissao  ;
-    $aLinhas[] = str_pad($oDadosServidor->admissao, 8, '0',STR_PAD_LEFT) ;
+    $aLinhas[] = str_pad((string) $oDadosServidor->admissao, 8, '0',STR_PAD_LEFT) ;
 
     // localizacao ;
     $aLinhas[] = db_formatar($oDadosServidor->lotacao,'s',' ',20,'d');
 
     // situacao ;
-    $aLinhas[] = str_pad($oDadosServidor->situacao, 2, "0", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->situacao, 2, "0", STR_PAD_LEFT);
 
     // cpf ;
     $aLinhas[] = db_formatar($oDadosServidor->cpf,'s','0',11,'e');
@@ -685,7 +681,7 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
 
     // campo 12 - Data de início da aposentadoria ;
     if( $oDadosServidor->situacao == '02' ){
-      $aLinhas[] = str_pad($oDadosServidor->apos, 8, '0', STR_PAD_LEFT);
+      $aLinhas[] = str_pad((string) $oDadosServidor->apos, 8, '0', STR_PAD_LEFT);
     }else{
       $aLinhas[] = "00000000" ;
     }
@@ -695,13 +691,13 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
 
     // campo 14 - inicio pensao ;
     if( $oDadosServidor->situacao == '03' ){
-      $aLinhas[] = str_pad($oDadosServidor->apos, 8, '0', STR_PAD_LEFT);
+      $aLinhas[] = str_pad((string) $oDadosServidor->apos, 8, '0', STR_PAD_LEFT);
     }else{
       $aLinhas[] = "00000000";
     }
 
     // campo 15 - data inicio contr. fundo ;
-    $aLinhas[] = str_pad( $oDadosServidor->admissao, 8, '0', STR_PAD_LEFT);;
+    $aLinhas[] = str_pad( (string) $oDadosServidor->admissao, 8, '0', STR_PAD_LEFT);;
 
     //campo 16 - data demissao ;
     $aLinhas[] = db_formatar($oDadosServidor->rescisao,'s','0',8,'e');
@@ -719,24 +715,24 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
     // perc. contribuicao do func. ;
     if( $sTipoFolha == "S" ){
       if(db_val($oDadosServidor->quant_desc_prev) > 0){
-        $aLinhas[] = str_pad($oDadosServidor->quant_desc_prev, 5, "0", STR_PAD_RIGHT);
+        $aLinhas[] = str_pad((string) $oDadosServidor->quant_desc_prev, 5, "0", STR_PAD_RIGHT);
       }else if(db_val($oDadosServidor->quant_desc_prevc) > 0){
-        $aLinhas[] = str_pad($oDadosServidor->quant_desc_prevc, 5, "0", STR_PAD_RIGHT);
+        $aLinhas[] = str_pad((string) $oDadosServidor->quant_desc_prevc, 5, "0", STR_PAD_RIGHT);
       }else{
-        $aLinhas[] = str_pad($oDadosServidor->quant_desc_prevr, 5, "0", STR_PAD_RIGHT);
+        $aLinhas[] = str_pad((string) $oDadosServidor->quant_desc_prevr, 5, "0", STR_PAD_RIGHT);
       }
     }else{ // 13.salario;
       if(db_val( $oDadosServidor->quant_desc_prev ) > 0){
-        $aLinhas[] = str_pad($oDadosServidor->quant_desc_prev, 5, "0", STR_PAD_RIGHT);
+        $aLinhas[] = str_pad((string) $oDadosServidor->quant_desc_prev, 5, "0", STR_PAD_RIGHT);
       }else{
-        $aLinhas[] = str_pad($oDadosServidor->quant_desc_prevr, 5, "0", STR_PAD_RIGHT);
+        $aLinhas[] = str_pad((string) $oDadosServidor->quant_desc_prevr, 5, "0", STR_PAD_RIGHT);
       }
     }
 
     // base contribuicao ;
     if( $oDadosServidor->situacao == '01' ){
 
-      $aLinhas[] = str_pad($oDadosServidor->base_prev, 14, "0", STR_PAD_RIGHT);
+      $aLinhas[] = str_pad((string) $oDadosServidor->base_prev, 14, "0", STR_PAD_RIGHT);
       $total_base += round(db_val($oDadosServidor->base_prev)/100, 2);
 
     }else{ // para inativos e pensionistas - soma proventos;
@@ -749,12 +745,12 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
     $aLinhas[] = "00000000000000";
 
     // desc. previdencia ;
-    $aLinhas[] = str_pad($oDadosServidor->desc_prev, 14, "0", STR_PAD_RIGHT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->desc_prev, 14, "0", STR_PAD_RIGHT);
     $total_desc += round(db_val($oDadosServidor->desc_prev)/100,2);
 
     // contribuicao da entidade ;
     if( $oDadosServidor->situacao == '01' ){
-      $aLinhas[]       = str_pad($oDadosServidor->cont_ent, 14, "0", STR_PAD_RIGHT);
+      $aLinhas[]       = str_pad((string) $oDadosServidor->cont_ent, 14, "0", STR_PAD_RIGHT);
       $total_patronal += round(db_val($oDadosServidor->cont_ent)/100,2);
     }else{
       $aLinhas[] = "00000000000000"; // nao lancar contribuicao da entidade para inativos / pensionistas;
@@ -766,19 +762,19 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
       $aLinhas[] = "20";
 
       // fixo - salario familia R918;
-      $aLinhas[] =  str_pad($oDadosServidor->salfamilia, 8, "0", STR_PAD_RIGHT);
+      $aLinhas[] =  str_pad((string) $oDadosServidor->salfamilia, 8, "0", STR_PAD_RIGHT);
 
       // fixo ;
       $aLinhas[] = "21";
 
       // fixo - licenca gestante - ver tabela inssirf rubrica relacionada;
-      $aLinhas[] = str_pad($oDadosServidor->salgestante, 8, "0", STR_PAD_RIGHT);
+      $aLinhas[] = str_pad((string) $oDadosServidor->salgestante, 8, "0", STR_PAD_RIGHT);
 
       // fixo ;
       $aLinhas[] = "22";
 
       // fixo - licenca saude - ver tabela inssirf;
-      $aLinhas[] = str_pad($oDadosServidor->salsaude, 8, "0", STR_PAD_RIGHT);
+      $aLinhas[] = str_pad((string) $oDadosServidor->salsaude, 8, "0", STR_PAD_RIGHT);
 
     }else{
 
@@ -831,7 +827,7 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
     // fixo
     $aLinhas[] = "00000000";
     // cep ;
-    $aLinhas[] = str_pad($oDadosServidor->z01_cep, 8, "0", STR_PAD_RIGHT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->z01_cep, 8, "0", STR_PAD_RIGHT);
     // fixo
     $aLinhas[] = "30";
     // fixo
@@ -845,11 +841,11 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
     // data de nascimento ;
     $aLinhas[] = $oDadosServidor->nascimento;
     // Valor total de salário - 50
-    $aLinhas[] = str_pad($oDadosServidor->proventos, 14, "0", STR_PAD_LEFT); //@todo verificar se é esse campo
+    $aLinhas[] = str_pad((string) $oDadosServidor->proventos, 14, "0", STR_PAD_LEFT); //@todo verificar se é esse campo
     // Código da pensao - 51
     $aLinhas[] = 1;
     //PIS/PASEP - 52
-    $aLinhas[] = str_pad($oDadosServidor->pis_pasep, 20, "0", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->pis_pasep, 20, "0", STR_PAD_LEFT);
 
     /**
      * Campos de 53 a 58.
@@ -868,12 +864,12 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
 
     //indicador de periculosidade ou insalubridade - 60
     $oCalculoFixo          = $oServidor->getCalculoFinanceiro(CalculoFolha::CALCULO_PONTO_FIXO);
-    $aRubricaInsalubridade = $oCalculoFixo->getEventosFinanceiros(null, array('0043', '0044'));
+    $aRubricaInsalubridade = $oCalculoFixo->getEventosFinanceiros(null, ['0043', '0044']);
     $aLinhas[]             = count($aRubricaInsalubridade) > 0 ? 'S' : 'N';
     //remuneração base para aposentadoria - 61
-    $aLinhas[] = str_pad($oDadosServidor->base_prev, 14, "0", STR_PAD_RIGHT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->base_prev, 14, "0", STR_PAD_RIGHT);
     //remuneração de final de carreira - 62
-    $aLinhas[] = str_pad($oDadosServidor->base_prev, 14, "0", STR_PAD_RIGHT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->base_prev, 14, "0", STR_PAD_RIGHT);
     //reserva de poupança - 63
     $aLinhas[] = '00000000000000';
     //vínculo ao ente - 64
@@ -884,20 +880,12 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
     $aLinhas[] = 1;  //Ainda esta sendo regulamentado pelo governo federal, então por enquanto é sempre 1
 
     //estado civil - 67
-    switch ($oDadosServidor->estado_civil) {
-      case 1:
-        $sEstadoCivil = 'SOLTEIRO';
-        break;
-      case 2:
-        $sEstadoCivil = 'CASADO';
-        break;
-      case 3:
-        $sEstadoCivil = 'VIUVO';
-        break;
-      default:
-        $sEstadoCivil = 'DIVORCIADO';
-        break;
-    }
+    $sEstadoCivil = match ($oDadosServidor->estado_civil) {
+        1 => 'SOLTEIRO',
+        2 => 'CASADO',
+        3 => 'VIUVO',
+        default => 'DIVORCIADO',
+    };
 
     $aLinhas[] = str_pad($sEstadoCivil, 30, " ", STR_PAD_RIGHT);
 
@@ -906,25 +894,25 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
       $iTotalDiasAposentadoria = (int) DBDAte::calculaIntervaloEntreDatas(new DBDate(date('Y-m-d')), $oAssentamentoAposentadoria->getDataConcessao(), 'd') + 1;
     }
 
-    $aLinhas[] = str_pad((isset($iTotalDiasAposentadoria) ? $iTotalDiasAposentadoria : 0), 10, "0", STR_PAD_LEFT);
+    $aLinhas[] = str_pad(((string) ($iTotalDiasAposentadoria ?? 0)), 10, "0", STR_PAD_LEFT);
     //Data de falescimento - 69
-    $aLinhas[] = str_pad($oDadosServidor->data_falescimento, 8, "0", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->data_falescimento, 8, "0", STR_PAD_LEFT);
     //campo 70 - identidade
-    $aLinhas[] = str_pad(substr($oDadosServidor->identidade, 0, 10), 10, "0", STR_PAD_LEFT);
+    $aLinhas[] = str_pad(substr((string) $oDadosServidor->identidade, 0, 10), 10, "0", STR_PAD_LEFT);
     //campo 71 - titulo de eleitor
-    $aLinhas[] = str_pad($oDadosServidor->titulo_eleitor, 12, "0", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->titulo_eleitor, 12, "0", STR_PAD_LEFT);
     //campo 72 - zona
-    $aLinhas[] = str_pad($oDadosServidor->zona_titulo, 10, "0", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->zona_titulo, 10, "0", STR_PAD_LEFT);
     //campo 73 - secao
-    $aLinhas[] = str_pad($oDadosServidor->secao_titulo, 10, "0", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->secao_titulo, 10, "0", STR_PAD_LEFT);
     //campo 74 - secao
     $aLinhas[] = $oDadosServidor->admissao;
     //campo 75 - data de entrada no cargo atual
     $aLinhas[] = $oDadosServidor->admissao;
     //campo 76 - codigo do cargo
-    $aLinhas[] = str_pad($oDadosServidor->codigo_cargo, 10, "0", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->codigo_cargo, 10, "0", STR_PAD_LEFT);
     //campo 77 - regime de horario - @todo verificar se é mensal.
-    $aLinhas[] = str_pad($oDadosServidor->regime_horario, 10, "0", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->regime_horario, 10, "0", STR_PAD_LEFT);
     //campo 78 - data de entrada no cargo anterior
     $aLinhas[] = '00000000';
     //campo 79 - regime de horario
@@ -932,27 +920,27 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
     //campo 80 - data de nomeacao do funcionario
     $aLinhas[] = $oDadosServidor->admissao;
     //campo 81 - numero da conta corrente
-    $aLinhas[] = str_pad($oDadosServidor->conta_bancaria, 15, " ", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->conta_bancaria, 15, " ", STR_PAD_LEFT);
     //campo 82 - numero da certidao de nascimento
-    $aLinhas[] = str_pad($oDadosServidor->numero_certidao_nascimento, 20, " ", STR_PAD_LEFT);;
+    $aLinhas[] = str_pad((string) $oDadosServidor->numero_certidao_nascimento, 20, " ", STR_PAD_LEFT);;
     //campo 83 - numero do telefone comercial
-    $aLinhas[] = str_pad($oDadosServidor->numero_telefone_comercial, 13, " ", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->numero_telefone_comercial, 13, " ", STR_PAD_LEFT);
     //campo 84 - numero do telefone residencial
-    $aLinhas[] = str_pad($oDadosServidor->numero_telefone_residencial, 13, " ", STR_PAD_LEFT);;
+    $aLinhas[] = str_pad((string) $oDadosServidor->numero_telefone_residencial, 13, " ", STR_PAD_LEFT);;
     //campo 85 - numero do fax
-    $aLinhas[] = str_pad($oDadosServidor->numero_fax, 13, " ", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->numero_fax, 13, " ", STR_PAD_LEFT);
     //campo 86 - numero do telefone celular
-    $aLinhas[] = str_pad($oDadosServidor->numero_telefone_celular, 13, " ", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->numero_telefone_celular, 13, " ", STR_PAD_LEFT);
     //campo 87 - email
-    $aLinhas[] = str_pad($oDadosServidor->email, 50, " ", STR_PAD_RIGHT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->email, 50, " ", STR_PAD_RIGHT);
     //campo 88 - nome conjuge
-    $aLinhas[] = str_pad($oDadosServidor->nome_conjuge, 50, " ", STR_PAD_RIGHT);;
+    $aLinhas[] = str_pad((string) $oDadosServidor->nome_conjuge, 50, " ", STR_PAD_RIGHT);;
     //campo 89 - uf zona titulo eleitor
     $aLinhas[] = $oDadosServidor->uf_zona_titulo;
     //campo 90 - nacionalidade
-    $aLinhas[] = str_pad($oDadosServidor->nacionalidade, 50, " ", STR_PAD_RIGHT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->nacionalidade, 50, " ", STR_PAD_RIGHT);
     //campo 91 - naturalidade
-    $aLinhas[] = str_pad($oDadosServidor->naturalidade, 50, " ", STR_PAD_RIGHT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->naturalidade, 50, " ", STR_PAD_RIGHT);
 
     $iGrauInstrucao = 12;
     switch ($oDadosServidor->grau_instrucao) {
@@ -990,25 +978,25 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
     }
 
     //campo 92 - grau de instrução
-    $aLinhas[] = str_pad($iGrauInstrucao, 2, "0", STR_PAD_RIGHT);
+    $aLinhas[] = str_pad((string) $iGrauInstrucao, 2, "0", STR_PAD_RIGHT);
     //campo 93 - codigo do banco
-    $aLinhas[] = str_pad($oDadosServidor->codigo_banco, 6, "0", STR_PAD_RIGHT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->codigo_banco, 6, "0", STR_PAD_RIGHT);
     //campo 94 - codigo da agencia
-    $aLinhas[] = str_pad($oDadosServidor->codigo_agencia_bancaria, 6, "0", STR_PAD_RIGHT);;
+    $aLinhas[] = str_pad((string) $oDadosServidor->codigo_agencia_bancaria, 6, "0", STR_PAD_RIGHT);;
     //campo 95 - padrao - campo em branco
     $aLinhas[] = str_repeat('0', 40);
     //campo 96 - orgao expedidor identidade
-    $aLinhas[] = str_pad($oDadosServidor->orgao_expedidor_identidade, 15, " ", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->orgao_expedidor_identidade, 15, " ", STR_PAD_LEFT);
     //campo 97 - data expedicao identidade
-    $aLinhas[] = str_pad($oDadosServidor->data_expedicao_identidade, 8, "0", STR_PAD_RIGHT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->data_expedicao_identidade, 8, "0", STR_PAD_RIGHT);
     //campo 98 - uf orgao expedidor identidade
-    $aLinhas[] = str_pad($oDadosServidor->uf_expedidor_identidade, 2, " ", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->uf_expedidor_identidade, 2, " ", STR_PAD_LEFT);
     //campo 99 - complemento endereco
-    $aLinhas[] = str_pad($oDadosServidor->complemento_imovel, 30, " ", STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->complemento_imovel, 30, " ", STR_PAD_LEFT);
     //campo 100 - numero do imovel
-    $aLinhas[] = str_pad($oDadosServidor->numero_imovel, 8, "0", STR_PAD_RIGHT);;
+    $aLinhas[] = str_pad((string) $oDadosServidor->numero_imovel, 8, "0", STR_PAD_RIGHT);;
     //campo 101 - tipo do logradouro
-    $aLinhas[] = str_pad($oDadosServidor->tipo_logradouro, 3, 0, STR_PAD_RIGHT);
+    $aLinhas[] = str_pad((string) $oDadosServidor->tipo_logradouro, 3, 0, STR_PAD_RIGHT);
     //campo 102 - deficiente
     $aLinhas[] = $oDadosServidor->deficiente_fisico == 't' ? 'S' : 'N';
 
@@ -1016,13 +1004,13 @@ function emite_layoutideal($nomearq, $nomepdf, DBCompetencia $oCompetencia, $iTa
     fputs($arquivo, $sLinha);
 
     // Monta a seção de depentendes do servidor
-    fputs($arquivo, getDependentesPorServidor($oServidor, $oCompetencia, $iTabelaPrevidencia));
+    fputs($arquivo, (string) getDependentesPorServidor($oServidor, $oCompetencia, $iTabelaPrevidencia));
 
     // Monta seção para afastamentos.
     fputs($arquivo, getAfastamentosDoServidor($oServidor));
 
     // Monta seção para tempo anterior.
-    fputs($arquivo, getAssentamentosTempoAnteriorPorServidor($oServidor));
+    fputs($arquivo, (string) getAssentamentosTempoAnteriorPorServidor($oServidor));
 
     // Monta a seção de assentamentos
     //fputs($arquivo, getAssentamentosPorServidor($oServidor));
@@ -1122,7 +1110,7 @@ function montaPDF($pdf, $oDadosServidor, $bases, $troca, $alt, $sTipoFolha) {
  */
 function getDependentesPorServidor(Servidor $oServidor, DBCompetencia $oCompetencia, $iTabelaPrevidencia, $sSeparador = ";") {
 
-  $camposSqlDepentendes   = array();
+  $camposSqlDepentendes   = [];
   $camposSqlDepentendes[] = "lpad(rh31_regist,10,0) as matricula";
   $camposSqlDepentendes[] = "rh31_nome as nome";
   $camposSqlDepentendes[] = "coalesce(to_char(rh31_dtnasc,'ddmmyyyy'),'00000000') as data_nascimento";
@@ -1143,7 +1131,7 @@ function getDependentesPorServidor(Servidor $oServidor, DBCompetencia $oCompeten
                                                and  rhpessoalmov.rh02_instit = ".db_getsession("DB_instit")."
                         INNER JOIN cgm          on  cgm.z01_numcgm = rhpessoal.rh01_numcgm ";
 
-  $aWhereDependentes   = array();
+  $aWhereDependentes   = [];
   $aWhereDependentes[] = "rh02_tbprev = ". $iTabelaPrevidencia;
   $aWhereDependentes[] = "rh31_regist = ". $oServidor->getMatricula();
   $sWhereDependentes   = implode(" and ", $aWhereDependentes);
@@ -1155,28 +1143,26 @@ function getDependentesPorServidor(Servidor $oServidor, DBCompetencia $oCompeten
     throw new Exception("Ocorreu um erro ao buscar os dependentes do servidor: {$oServidor->getMatricula()}.\nContate o suporte.");
   }
 
-  $aDependetes = array();
-  $aDependetes = db_utils::makeCollectionFromRecord($rsDependentes, function($oDependente){
-    return $oDependente;
-  });
+  $aDependetes = [];
+  $aDependetes = db_utils::makeCollectionFromRecord($rsDependentes, fn($oDependente) => $oDependente);
 
   $sLinhas = "";
   foreach ($aDependetes as $oDependenteServidor) {
 
-    $aLinhas   = array();
+    $aLinhas   = [];
     $aLinhas[] = "3";
 
     //Mátricula do servidor
-    $aLinhas[] = str_pad($oDependenteServidor->matricula, 10, '0', STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDependenteServidor->matricula, 10, '0', STR_PAD_LEFT);
 
     //Nome do dependente
     $aLinhas[] = db_formatar($oDependenteServidor->nome,'s',' ',40,'d');
 
     //Data de nascimento do dependente
-    $aLinhas[] = str_pad($oDependenteServidor->data_nascimento, 8, '0', STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDependenteServidor->data_nascimento, 8, '0', STR_PAD_LEFT);
 
     //Grau de parentesco do dependente
-    $aLinhas[] = str_pad($oDependenteServidor->grau_parentesco, 2, '0', STR_PAD_LEFT);
+    $aLinhas[] = str_pad((string) $oDependenteServidor->grau_parentesco, 2, '0', STR_PAD_LEFT);
 
     //Campos nao disponiveis;
     // campo 6 sexo
@@ -1201,7 +1187,7 @@ function getAssentamentosTempoAnteriorPorServidor(Servidor $oServidor, $sSeparad
   /**
    * Tipos de assentamentos que serão buscados para tempo anterior.
    */
-  $aTiposAssentamenos     = array(14,16,15,32,58);
+  $aTiposAssentamenos     = [14,16,15,32,58];
   $aAssentamentosServidor = AssentamentoRepository::getAssentamentosPorServidor($oServidor, $aTiposAssentamenos);
 
 
@@ -1220,7 +1206,7 @@ function getAssentamentosTempoAnteriorPorServidor(Servidor $oServidor, $sSeparad
        */
       foreach ($aAtributosDinamicos as $oAtributoDinamico) {
 
-        switch (trim(mb_strtolower($oAtributoDinamico->nomeAtributo))) {
+        switch (trim(mb_strtolower((string) $oAtributoDinamico->nomeAtributo))) {
 
           case 'empresa onde trabalhou':
             $sEmpresa = $oAtributoDinamico->valorAtributo;
@@ -1235,7 +1221,7 @@ function getAssentamentosTempoAnteriorPorServidor(Servidor $oServidor, $sSeparad
       }
 
       $oTipoAssentamento = TipoAssentamentoRepository::getInstanciaPorCodigo($oAssentamento->getTipoAssentamento());
-      $aLinha = array();
+      $aLinha = [];
 
       $aLinha[] = "5";
 
@@ -1261,16 +1247,16 @@ function getAssentamentosTempoAnteriorPorServidor(Servidor $oServidor, $sSeparad
         $sEmpresa = 'nao informado';
       }
       //Empresa onde trabalhou
-      $aLinha[] = str_pad($sEmpresa, 40, " ", STR_PAD_RIGHT);
+      $aLinha[] = str_pad((string) $sEmpresa, 40, " ", STR_PAD_RIGHT);
 
       // Número de dias do tempo anterior.
       $aLinha[] = str_pad($iDias, 10, "0", STR_PAD_LEFT);
 
       // Tipo de contribuição da Pessoa.
-      $aLinha[] = str_pad($sTipoContribuicao, 1, "0", STR_PAD_LEFT);
+      $aLinha[] = str_pad((string) $sTipoContribuicao, 1, "0", STR_PAD_LEFT);
 
       // Tipo de empresa.
-      $aLinha[] = str_pad($sTipoEmpresa, 1, "0", STR_PAD_LEFT);
+      $aLinha[] = str_pad((string) $sTipoEmpresa, 1, "0", STR_PAD_LEFT);
 
       $sLinhas .= implode($sSeparador, $aLinha);
       $sLinhas .= PHP_EOL;
@@ -1294,7 +1280,7 @@ function getAssentamentosPorServidor(Servidor $oServidor, $sSeparador = ";") {
 
       $oTipoAssentamento = TipoAssentamentoRepository::getInstanciaPorCodigo($oAssentamento->getTipoAssentamento());
       $iDias             = $oAssentamento->getDataTermino() !== null ? $oAssentamento->getDias() : DBDate::calculaIntervaloEntreDatas(new DBDate(date('Y-m-d')), $oAssentamento->getDataConcessao(), 'd');
-      $aLinhas           = array();
+      $aLinhas           = [];
 
       $aLinhas[] = "6";
 
@@ -1308,10 +1294,10 @@ function getAssentamentosPorServidor(Servidor $oServidor, $sSeparador = ";") {
       $aLinhas[] = str_pad($iDias, 4, "0", STR_PAD_LEFT);
 
       // Descrição resumida do assentamento (descrição do tipo de assentamento)
-      $aLinhas[] = str_pad(substr($oTipoAssentamento->getDescricao(), 0, 40), 40, " ", STR_PAD_RIGHT);
+      $aLinhas[] = str_pad(substr((string) $oTipoAssentamento->getDescricao(), 0, 40), 40, " ", STR_PAD_RIGHT);
 
       // Detalhamento, campo histórico do assentamento
-      $aLinhas[] = str_pad(substr(str_replace(array(PHP_EOL, "\r\n", "\n\r", "\n", "\r"), ' ', $oAssentamento->getHistorico()), 0, 500), 500, " ", STR_PAD_RIGHT);
+      $aLinhas[] = str_pad(substr(str_replace([PHP_EOL, "\r\n", "\n\r", "\n", "\r"], ' ', $oAssentamento->getHistorico()), 0, 500), 500, " ", STR_PAD_RIGHT);
 
       $sLinhas  .= implode($sSeparador, $aLinhas) . PHP_EOL;
     }
@@ -1376,15 +1362,15 @@ function getAfastamentosDoServidor(Servidor $oServidor, $sSeparador = ";") {
        break;
     }
 
-    $sHistorico = trim(substr(str_replace(array(PHP_EOL, "\r\n", "\n\r", "\n", "\r"), ' ', $oAfastamento->getHistorico()), 0, 40));
+    $sHistorico = trim(substr(str_replace([PHP_EOL, "\r\n", "\n\r", "\n", "\r"], ' ', $oAfastamento->getHistorico()), 0, 40));
     if (empty($sHistorico)) {
 
       $oTipoAssentamento = TipoAssentamentoRepository::getInstanciaPorCodigo($oAfastamento->getTipoAssentamento());
-            $sHistorico   = substr($oTipoAssentamento->getDescricao(), 0, 40);
+            $sHistorico   = substr((string) $oTipoAssentamento->getDescricao(), 0, 40);
 
     }
 
-    $aLinha   = array();
+    $aLinha   = [];
     $aLinha[] = "4";
     $aLinha[] = str_pad($oServidor->getMatricula(), 10, "0", STR_PAD_LEFT);
     $aLinha[] = str_replace("/", "", $oAfastamento->getDataConcessao()->getDate(DBDate::DATA_PTBR));
@@ -1410,7 +1396,7 @@ function getDadosAposentadoria($oServidor, $oAssentamentoAposentadoria) {
      */
     foreach ($aAtributosDinamicos as $oAtributoDinamico) {
 
-      switch (trim(mb_strtolower($oAtributoDinamico->nomeAtributo))) {
+      switch (trim(mb_strtolower((string) $oAtributoDinamico->nomeAtributo))) {
 
         case 'valor do benefício':
           $iNumeroHomologacaoTCE = $oAtributoDinamico->valorAtributo;
@@ -1423,17 +1409,17 @@ function getDadosAposentadoria($oServidor, $oAssentamentoAposentadoria) {
   }
 
   //Número do ato da aposentadoria - 53
-  $aLinhas[] = str_pad((isset($iAtoAposentadoria) ? $iAtoAposentadoria : null), 25, " ", STR_PAD_LEFT);
+  $aLinhas[] = str_pad(($iAtoAposentadoria ?? ''), 25, " ", STR_PAD_LEFT);
   //Número do homologação TCE - 54
-  $aLinhas[] = str_pad((isset($iNumeroHomologacaoTCE) ? $iNumeroHomologacaoTCE : null), 25, " ", STR_PAD_LEFT);
+  $aLinhas[] = str_pad(($iNumeroHomologacaoTCE ?? ''), 25, " ", STR_PAD_LEFT);
   //Nome do Pai - 55
-  $aLinhas[] = str_pad($oServidor->getCgm()->getNomePai(), 40, " ", STR_PAD_RIGHT);
+  $aLinhas[] = str_pad((string) $oServidor->getCgm()->getNomePai(), 40, " ", STR_PAD_RIGHT);
   //Nome da Mãe - 56
-  $aLinhas[] = str_pad($oServidor->getCgm()->getNomeMae(), 40, " ", STR_PAD_RIGHT);
+  $aLinhas[] = str_pad((string) $oServidor->getCgm()->getNomeMae(), 40, " ", STR_PAD_RIGHT);
   //Data de concessão do benefício - 57
-  $aLinhas[] = str_pad((isset($sDataConcessaoBeneficio) ? $sDataConcessaoBeneficio : null), 8, "0", STR_PAD_RIGHT);
+  $aLinhas[] = str_pad(($sDataConcessaoBeneficio ?? null), 8, "0", STR_PAD_RIGHT);
   //valor do benefício - 58
-  $aLinhas[] = str_pad((isset($sValorBeneficio) ? $sValorBeneficio : null), 14, "0", STR_PAD_RIGHT);
+  $aLinhas[] = str_pad(($sValorBeneficio ?? ''), 14, "0", STR_PAD_RIGHT);
 
   return $aLinhas;
 }

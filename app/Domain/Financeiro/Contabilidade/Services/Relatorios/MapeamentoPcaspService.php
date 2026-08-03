@@ -50,9 +50,7 @@ class MapeamentoPcaspService
                 $contasVinculadas = $conta->pcaspEstadual;
             }
             if ($contasVinculadas->count() === 0) {
-                $temMovimentacao = $conta->getReduzidos()->filter(function (ConplanoReduzido $reduzido) {
-                    return $reduzido->possueMovimentacao($reduzido->c61_reduz, $reduzido->c61_anousu);
-                })->count() > 0;
+                $temMovimentacao = $conta->getReduzidos()->filter(fn(ConplanoReduzido $reduzido) => $reduzido->possueMovimentacao($reduzido->c61_reduz, $reduzido->c61_anousu))->count() > 0;
 
                 if ($temMovimentacao) {
                     $this->contasSemVinculoComMovimentacao[] = $conta;
@@ -67,7 +65,7 @@ class MapeamentoPcaspService
 
     private function getContas()
     {
-        return Conplano::apenasAnaliticas()
+        return (new Conplano())->apenasAnaliticas()
             ->where('c60_anousu', $this->filtros['exercicio'])
             ->orderBy('c60_estrut')
             ->get();

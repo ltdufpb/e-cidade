@@ -35,7 +35,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 db_postmemory( $_POST );
 
 $dHoje                    = date("Y-m-d", db_getsession("DB_datausu"));
@@ -62,9 +62,9 @@ if (isset($incluir) || isset($alterar) && $lAgendamentos) {
 
     db_msgbox( _M( MENSAGENS_SAU1_UNDMEDHORARIOS006 . 'data_inicial_nao_informada' ) );
 
-    $sNome    = addslashes( $z01_nome );
-    $sVinculo = addslashes( $rh70_descr );
-    $sUnidade = addslashes( $descrdepto );
+    $sNome    = addslashes( (string) $z01_nome );
+    $sVinculo = addslashes( (string) $rh70_descr );
+    $sUnidade = addslashes( (string) $descrdepto );
 
     $sParametros  = "?sd04_i_medico={$sd04_i_medico}&z01_nome={$sNome}&sd30_i_undmed={$sd30_i_undmed}";
     $sParametros .= "&rh70_descr={$sVinculo}&sd04_i_unidade={$sd04_i_unidade}&descrdepto={$sUnidade}";
@@ -82,7 +82,7 @@ if (isset($incluir) || isset($alterar) && $lAgendamentos) {
 
   $oDataInicial = new DBDate( $sd30_d_valinicial );
 
-  $aWhereValidaConflito   = array();
+  $aWhereValidaConflito   = [];
   $aWhereValidaConflito[] = " sd04_i_medico = {$sd04_i_medico} ";
   $aWhereValidaConflito[] = " (sd30_c_horaini::time, sd30_c_horafim::time) overlaps ('{$sd30_c_horaini}'::time, '{$sd30_c_horafim}'::time ) ";
   $sWhereValidaConflito   = implode(" and ", $aWhereValidaConflito );
@@ -218,9 +218,9 @@ if (isset($incluir) || isset($alterar) && $lAgendamentos) {
 
     if ( $sd30_d_valinicial_ano != "" && $sd30_d_valfinal_ano != "") {
 
-      $aVet   = explode( "/", $sd30_d_valinicial );
+      $aVet   = explode( "/", (string) $sd30_d_valinicial );
       $dData1 = $aVet[2] . $aVet[1] . $aVet[0];
-      $aVet   = explode( "/", $sd30_d_valfinal );
+      $aVet   = explode( "/", (string) $sd30_d_valfinal );
       $dData2 = $aVet[2] . $aVet[1] . $aVet[0];
     }
 
@@ -245,7 +245,7 @@ if (isset($incluir) || isset($alterar) && $lAgendamentos) {
 
           //montando array dia semana
           $aDia           = explode(",", $iDia);
-          $dias_da_semana = array();
+          $dias_da_semana = [];
 
           for ( $iCont = 0; $iCont < sizeof($aDia); $iCont++ ) {
             $dias_da_semana[$aDia[$iCont]] = 0;
@@ -257,14 +257,14 @@ if (isset($incluir) || isset($alterar) && $lAgendamentos) {
           } else {
 
             //                 0          1          2          3          4           5         6           7
-            $escape = array($semanames, $semanames, $semanames, $semanames, $semanames, $semanames, $semanames, $semanames);
+            $escape = [$semanames, $semanames, $semanames, $semanames, $semanames, $semanames, $semanames, $semanames];
           }
 
 
 
-          $vet               = explode( "/", $sd30_d_valinicial );
+          $vet               = explode( "/", (string) $sd30_d_valinicial );
           $sd30_d_valinicial = $vet[2] . "-" . $vet[1] . "-".$vet[0];
-          $vet               = explode( "/", $sd30_d_valfinal );
+          $vet               = explode( "/", (string) $sd30_d_valfinal );
           $sd30_d_valfinal   = $vet[2] . "-" . $vet[1] . "-" . $vet[0];
           $d2                = strtotime( $sd30_d_valfinal );
 
@@ -423,7 +423,7 @@ if (isset($excluir) && $lAgendamentos) {
 	         			 where sd23_i_undmedhor = $sd30_i_codigo  ";
 	$result = db_query( $str_query );
 
-	if( pg_numrows( $result ) > 0 ) {
+	if( pg_num_rows( $result ) > 0 ) {
 
 		$clundmedhorario->erro_status = "0";
 		$clundmedhorario->erro_msg    = _M( MENSAGENS_SAU1_UNDMEDHORARIOS006 . 'agendamentos_posteriores_profissional' );

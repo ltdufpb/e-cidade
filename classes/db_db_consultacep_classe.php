@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE db_consultacep
 class cl_db_consultacep {
 	// cria variaveis de erro
-	var $rotulo = null;
-	var $query_sql = null;
-	var $numrows = 0;
-	var $erro_status = null;
-	var $erro_sql = null;
-	var $erro_banco = null;
-	var $erro_msg = null;
-	var $erro_campo = null;
-	var $pagina_retorno = null;
+	public $rotulo = null;
+	public $query_sql = null;
+	public $numrows = 0;
+	public $erro_status = null;
+	public $erro_sql = null;
+	public $erro_banco = null;
+	public $erro_msg = null;
+	public $erro_campo = null;
+	public $pagina_retorno = null;
 
-	var $propagar = array ();
+	public $propagar =  [];
 
 	// cria variaveis do arquivo
-	var $cep = 0;
+	public $cep = 0;
 	// cria propriedade com as variaveis do arquivo
-	var $campos = "
+	public $campos = "
 	                 db10_codigo = int8 = Código
 	                 db10_munic = varchar(40) = Município
 	                 db10_cep = varchar(8) = Cep
 	                 db10_uf = int8 = UF
 	                 ";
 	//funcao construtor da classe
-	function cl_db_consultacep() {
+	function __construct() {
 		//classes dos rotulos dos campos
 		$this->rotulo = new rotulo("db_consultacep");
-		$this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+		$this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
 	}
 	//funcao erro
 	function erro($mostra, $retorna) {
@@ -81,7 +81,7 @@ class cl_db_consultacep {
 			$this->erro_status = "0";
 			return false;
 		}
-		$this->numrows = pg_numrows($result);
+		$this->numrows = pg_num_rows($result);
 		if ($this->numrows == 0) {
 			$this->erro_banco = "";
 			$this->erro_sql = "Dados do Grupo nao Encontrado";
@@ -99,7 +99,7 @@ class cl_db_consultacep {
 			db_fieldsmemory($result, 0);
 			$sql = ("select j29_cep as cep,j14_nome as endereco,'' as bairro,j14_codigo as codigorua from ruascep inner join ruas on j14_codigo = j29_codigo where j29_cep = '$cep'");
 			$result = $this->sql_record($sql);
-			$campos = split("\|", $funcao_js);
+			$campos = preg_split("#\\|#m", $funcao_js);
 			if ($this->numrows > 0) {
 				db_fieldsmemory($result, 0);
 				echo "<script>" . $campos[0] . "('" . $GLOBALS['cep'] . "','" . $GLOBALS['endereco'] . "','" . $GLOBALS['munic'] . "','" . $GLOBALS['uf'] . "','" . $GLOBALS['bairro'] . "','" . $GLOBALS['codigorua'] . "')</script>";
@@ -361,7 +361,7 @@ class cl_db_consultacep {
 	function sql_query($cep, $campos = "*", $ordem = null, $dbwhere = "") {
 		$sql = "select ";
 		if ($campos != "*") {
-			$campos_sql = split("#", $campos);
+			$campos_sql = preg_split("#\\##m", $campos);
 			$virgula = "";
 			for ($i = 0; $i < sizeof($campos_sql); $i++) {
 				$sql .= $virgula . $campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_db_consultacep {
 		$sql .= $sql2;
 		if ($ordem != null) {
 			$sql .= " order by ";
-			$campos_sql = split("#", $ordem);
+			$campos_sql = preg_split("#\\##m", (string) $ordem);
 			$virgula = "";
 			for ($i = 0; $i < sizeof($campos_sql); $i++) {
 				$sql .= $virgula . $campos_sql[$i];

@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_serieregimemat_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clserieregimemat = new cl_serieregimemat;
 $db_opcao         = 1;
 $db_botao         = true;

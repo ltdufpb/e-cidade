@@ -28,26 +28,26 @@
 
 class cl_confvencissqnvariavel { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q144_sequencial = 0; 
-   var $q144_ano = 0; 
-   var $q144_codvenc = 0; 
-   var $q144_receita = 0; 
-   var $q144_tipo = 0; 
-   var $q144_hist = 0; 
-   var $q144_diavenc = 1;
-   var $q144_valor = 0; 
+   public $q144_sequencial = 0; 
+   public $q144_ano = 0; 
+   public $q144_codvenc = 0; 
+   public $q144_receita = 0; 
+   public $q144_tipo = 0; 
+   public $q144_hist = 0; 
+   public $q144_diavenc = 1;
+   public $q144_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q144_sequencial = int4 = Código Sequencial 
                  q144_ano = int4 = Ano Competência 
                  q144_codvenc = int4 = Vencimento 
@@ -58,10 +58,10 @@ class cl_confvencissqnvariavel {
                  q144_valor = float4 = Valor Mínimo 
                  ";
    //funcao construtor da classe 
-   function cl_confvencissqnvariavel() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("confvencissqnvariavel"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -166,10 +166,10 @@ class cl_confvencissqnvariavel {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q144_sequencial = pg_result($result,0,0); 
+       $this->q144_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = @db_query("select last_value from confvencissqnvariavel_q144_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q144_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q144_sequencial)){
          $this->erro_sql = " Campo q144_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -210,7 +210,7 @@ class cl_confvencissqnvariavel {
                       )");
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Configurações de ISSQN Variável ($this->q144_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Configurações de ISSQN Variável já Cadastrado";
@@ -232,16 +232,16 @@ class cl_confvencissqnvariavel {
      $resaco = $this->sql_record($this->sql_query_file($this->q144_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,20952,'$this->q144_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3774,20952,'','".pg_result($resaco,0,'q144_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20953,'','".pg_result($resaco,0,'q144_ano')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20954,'','".pg_result($resaco,0,'q144_codvenc')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20955,'','".pg_result($resaco,0,'q144_receita')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20958,'','".pg_result($resaco,0,'q144_tipo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20957,'','".pg_result($resaco,0,'q144_hist')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20956,'','".pg_result($resaco,0,'q144_diavenc')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20959,'','".pg_result($resaco,0,'q144_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20952,'','".pg_fetch_result($resaco,0,'q144_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20953,'','".pg_fetch_result($resaco,0,'q144_ano')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20954,'','".pg_fetch_result($resaco,0,'q144_codvenc')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20955,'','".pg_fetch_result($resaco,0,'q144_receita')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20958,'','".pg_fetch_result($resaco,0,'q144_tipo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20957,'','".pg_fetch_result($resaco,0,'q144_hist')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20956,'','".pg_fetch_result($resaco,0,'q144_diavenc')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20959,'','".pg_fetch_result($resaco,0,'q144_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,13 +250,13 @@ class cl_confvencissqnvariavel {
       $this->atualizacampos();
      $sql = " update confvencissqnvariavel set ";
      $virgula = "";
-     if(trim($this->q144_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_sequencial"])){ 
-        if(trim($this->q144_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_sequencial"])){ 
+     if(trim((string) $this->q144_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_sequencial"])){ 
+        if(trim((string) $this->q144_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_sequencial"])){ 
            $this->q144_sequencial = "0" ; 
         } 
        $sql  .= $virgula." q144_sequencial = $this->q144_sequencial ";
        $virgula = ",";
-       if(trim($this->q144_sequencial) == null ){ 
+       if(trim((string) $this->q144_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "q144_sequencial";
          $this->erro_banco = "";
@@ -266,13 +266,13 @@ class cl_confvencissqnvariavel {
          return false;
        }
      }
-     if(trim($this->q144_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_ano"])){ 
-        if(trim($this->q144_ano)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_ano"])){ 
+     if(trim((string) $this->q144_ano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_ano"])){ 
+        if(trim((string) $this->q144_ano)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_ano"])){ 
            $this->q144_ano = "0" ; 
         } 
        $sql  .= $virgula." q144_ano = $this->q144_ano ";
        $virgula = ",";
-       if(trim($this->q144_ano) == null ){ 
+       if(trim((string) $this->q144_ano) == null ){ 
          $this->erro_sql = " Campo Ano Competência nao Informado.";
          $this->erro_campo = "q144_ano";
          $this->erro_banco = "";
@@ -282,13 +282,13 @@ class cl_confvencissqnvariavel {
          return false;
        }
      }
-     if(trim($this->q144_codvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_codvenc"])){ 
-        if(trim($this->q144_codvenc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_codvenc"])){ 
+     if(trim((string) $this->q144_codvenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_codvenc"])){ 
+        if(trim((string) $this->q144_codvenc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_codvenc"])){ 
            $this->q144_codvenc = "0" ; 
         } 
        $sql  .= $virgula." q144_codvenc = $this->q144_codvenc ";
        $virgula = ",";
-       if(trim($this->q144_codvenc) == null ){ 
+       if(trim((string) $this->q144_codvenc) == null ){ 
          $this->erro_sql = " Campo Vencimento nao Informado.";
          $this->erro_campo = "q144_codvenc";
          $this->erro_banco = "";
@@ -298,13 +298,13 @@ class cl_confvencissqnvariavel {
          return false;
        }
      }
-     if(trim($this->q144_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_receita"])){ 
-        if(trim($this->q144_receita)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_receita"])){ 
+     if(trim((string) $this->q144_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_receita"])){ 
+        if(trim((string) $this->q144_receita)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_receita"])){ 
            $this->q144_receita = "0" ; 
         } 
        $sql  .= $virgula." q144_receita = $this->q144_receita ";
        $virgula = ",";
-       if(trim($this->q144_receita) == null ){ 
+       if(trim((string) $this->q144_receita) == null ){ 
          $this->erro_sql = " Campo Receita nao Informado.";
          $this->erro_campo = "q144_receita";
          $this->erro_banco = "";
@@ -314,13 +314,13 @@ class cl_confvencissqnvariavel {
          return false;
        }
      }
-     if(trim($this->q144_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_tipo"])){ 
-        if(trim($this->q144_tipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_tipo"])){ 
+     if(trim((string) $this->q144_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_tipo"])){ 
+        if(trim((string) $this->q144_tipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_tipo"])){ 
            $this->q144_tipo = "0" ; 
         } 
        $sql  .= $virgula." q144_tipo = $this->q144_tipo ";
        $virgula = ",";
-       if(trim($this->q144_tipo) == null ){ 
+       if(trim((string) $this->q144_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo de Débito nao Informado.";
          $this->erro_campo = "q144_tipo";
          $this->erro_banco = "";
@@ -330,13 +330,13 @@ class cl_confvencissqnvariavel {
          return false;
        }
      }
-     if(trim($this->q144_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_hist"])){ 
-        if(trim($this->q144_hist)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_hist"])){ 
+     if(trim((string) $this->q144_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_hist"])){ 
+        if(trim((string) $this->q144_hist)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_hist"])){ 
            $this->q144_hist = "0" ; 
         } 
        $sql  .= $virgula." q144_hist = $this->q144_hist ";
        $virgula = ",";
-       if(trim($this->q144_hist) == null ){ 
+       if(trim((string) $this->q144_hist) == null ){ 
          $this->erro_sql = " Campo Histórico nao Informado.";
          $this->erro_campo = "q144_hist";
          $this->erro_banco = "";
@@ -346,13 +346,13 @@ class cl_confvencissqnvariavel {
          return false;
        }
      }
-     if(trim($this->q144_diavenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_diavenc"])){ 
-        if(trim($this->q144_diavenc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_diavenc"])){ 
+     if(trim((string) $this->q144_diavenc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_diavenc"])){ 
+        if(trim((string) $this->q144_diavenc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_diavenc"])){ 
            $this->q144_diavenc = "1" ;
         } 
        $sql  .= $virgula." q144_diavenc = $this->q144_diavenc ";
        $virgula = ",";
-       if(trim($this->q144_diavenc) == null ){ 
+       if(trim((string) $this->q144_diavenc) == null ){ 
          $this->erro_sql = " Campo Dia do Vencimento nao Informado.";
          $this->erro_campo = "q144_diavenc";
          $this->erro_banco = "";
@@ -371,8 +371,8 @@ class cl_confvencissqnvariavel {
          return false;
        }
      }
-     if(trim($this->q144_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_valor"])){ 
-        if(trim($this->q144_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_valor"])){ 
+     if(trim((string) $this->q144_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q144_valor"])){ 
+        if(trim((string) $this->q144_valor)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q144_valor"])){ 
            $this->q144_valor = "0" ; 
         } 
        $sql  .= $virgula." q144_valor = $this->q144_valor ";
@@ -382,24 +382,24 @@ class cl_confvencissqnvariavel {
 ";
      $resaco = $this->sql_record($this->sql_query_file($this->q144_sequencial));
      if($this->numrows>0){       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,20952,'$this->q144_sequencial','A')");
        if(isset($GLOBALS["HTTP_POST_VARS"]["q144_sequencial"]))
-         $resac = db_query("insert into db_acount values($acount,3774,20952,'".pg_result($resaco,0,'q144_sequencial')."','$this->q144_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3774,20952,'".pg_fetch_result($resaco,0,'q144_sequencial')."','$this->q144_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["q144_ano"]))
-         $resac = db_query("insert into db_acount values($acount,3774,20953,'".pg_result($resaco,0,'q144_ano')."','$this->q144_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3774,20953,'".pg_fetch_result($resaco,0,'q144_ano')."','$this->q144_ano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["q144_codvenc"]))
-         $resac = db_query("insert into db_acount values($acount,3774,20954,'".pg_result($resaco,0,'q144_codvenc')."','$this->q144_codvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3774,20954,'".pg_fetch_result($resaco,0,'q144_codvenc')."','$this->q144_codvenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["q144_receita"]))
-         $resac = db_query("insert into db_acount values($acount,3774,20955,'".pg_result($resaco,0,'q144_receita')."','$this->q144_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3774,20955,'".pg_fetch_result($resaco,0,'q144_receita')."','$this->q144_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["q144_tipo"]))
-         $resac = db_query("insert into db_acount values($acount,3774,20958,'".pg_result($resaco,0,'q144_tipo')."','$this->q144_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3774,20958,'".pg_fetch_result($resaco,0,'q144_tipo')."','$this->q144_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["q144_hist"]))
-         $resac = db_query("insert into db_acount values($acount,3774,20957,'".pg_result($resaco,0,'q144_hist')."','$this->q144_hist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3774,20957,'".pg_fetch_result($resaco,0,'q144_hist')."','$this->q144_hist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["q144_diavenc"]))
-         $resac = db_query("insert into db_acount values($acount,3774,20956,'".pg_result($resaco,0,'q144_diavenc')."','$this->q144_diavenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3774,20956,'".pg_fetch_result($resaco,0,'q144_diavenc')."','$this->q144_diavenc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["q144_valor"]))
-         $resac = db_query("insert into db_acount values($acount,3774,20959,'".pg_result($resaco,0,'q144_valor')."','$this->q144_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3774,20959,'".pg_fetch_result($resaco,0,'q144_valor')."','$this->q144_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @db_query($sql);
      if($result==false){ 
@@ -436,16 +436,16 @@ class cl_confvencissqnvariavel {
      $resaco = $this->sql_record($this->sql_query_file($this->q144_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,20952,'$this->q144_sequencial','E')");
-       $resac = db_query("insert into db_acount values($acount,3774,20952,'','".pg_result($resaco,0,'q144_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20953,'','".pg_result($resaco,0,'q144_ano')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20954,'','".pg_result($resaco,0,'q144_codvenc')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20955,'','".pg_result($resaco,0,'q144_receita')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20958,'','".pg_result($resaco,0,'q144_tipo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20957,'','".pg_result($resaco,0,'q144_hist')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20956,'','".pg_result($resaco,0,'q144_diavenc')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3774,20959,'','".pg_result($resaco,0,'q144_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20952,'','".pg_fetch_result($resaco,0,'q144_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20953,'','".pg_fetch_result($resaco,0,'q144_ano')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20954,'','".pg_fetch_result($resaco,0,'q144_codvenc')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20955,'','".pg_fetch_result($resaco,0,'q144_receita')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20958,'','".pg_fetch_result($resaco,0,'q144_tipo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20957,'','".pg_fetch_result($resaco,0,'q144_hist')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20956,'','".pg_fetch_result($resaco,0,'q144_diavenc')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3774,20959,'','".pg_fetch_result($resaco,0,'q144_valor')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $sql = " delete from confvencissqnvariavel
                     where ";
@@ -497,7 +497,7 @@ class cl_confvencissqnvariavel {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Dados do Grupo nao Encontrado";
@@ -543,7 +543,7 @@ class cl_confvencissqnvariavel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -577,7 +577,7 @@ class cl_confvencissqnvariavel {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -650,8 +650,8 @@ class cl_confvencissqnvariavel {
 
         $iDiaVenvimento = (empty($this->q144_diavenc)) ? 1 : $this->q144_diavenc;
         $iDiaVenvimento = str_pad((int) $iDiaVenvimento, 2, '0', STR_PAD_LEFT);
-        $iMesVenvimento = date('m', strtotime($oCadVenc->q82_venc));
-        $iAnoVenvimento = date('Y', strtotime($oCadVenc->q82_venc));
+        $iMesVenvimento = date('m', strtotime((string) $oCadVenc->q82_venc));
+        $iAnoVenvimento = date('Y', strtotime((string) $oCadVenc->q82_venc));
 
         // Verifica último dia para os meses que terminam em (28,29,30,31)
         $iUltimoDiaMes = date('t', mktime(0, 0, 0, $iMesVenvimento, '01', $iAnoVenvimento));

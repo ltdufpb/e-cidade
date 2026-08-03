@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_convenio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconvenio = new cl_convenio;
 $clconvenio->rotulo->label("r56_codrel");
 $clconvenio->rotulo->label("r56_descr");
@@ -98,9 +98,9 @@ $clconvenio->rotulo->label("r56_descr");
         }else{
            $sql = $clconvenio->sql_query("",db_getsession("DB_instit"),$campos,"r56_codrel","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_r56_descr)){
-          $repassa = array("chave_r56_codrel"=>$chave_r56_codrel,"chave_r56_descr"=>$chave_r56_descr);
+          $repassa = ["chave_r56_codrel"=>$chave_r56_codrel,"chave_r56_descr"=>$chave_r56_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

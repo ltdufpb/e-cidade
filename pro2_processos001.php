@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,9 +55,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("s1"=>"Processo","s2"=>"Cgm","s3"=>"Departamento Inicial","s4"=>"Tipo do Processo","s5"=>"Departamento Atual");
-       $clcriaabas->title = array("s1"=>"Selecione os Processos","s2"=>"Selecione os Cgm","s3"=>"Selecione os Departamentos","s4"=>"Seleciones os Tipos dos Processos","s5"=>"Selecione os Andamentos dos Processos");
-       $clcriaabas->src = array("s1"=>"pro2_processosproc.php","s2"=>"pro2_processoscgm.php","s3"=>"pro2_processosdept.php","s4"=>"pro2_processostipo.php","s5"=>"pro2_processosandamento.php");
+       $clcriaabas->identifica = ["s1"=>"Processo","s2"=>"Cgm","s3"=>"Departamento Inicial","s4"=>"Tipo do Processo","s5"=>"Departamento Atual"];
+       $clcriaabas->title = ["s1"=>"Selecione os Processos","s2"=>"Selecione os Cgm","s3"=>"Selecione os Departamentos","s4"=>"Seleciones os Tipos dos Processos","s5"=>"Selecione os Andamentos dos Processos"];
+       $clcriaabas->src = ["s1"=>"pro2_processosproc.php","s2"=>"pro2_processoscgm.php","s3"=>"pro2_processosdept.php","s4"=>"pro2_processostipo.php","s5"=>"pro2_processosandamento.php"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

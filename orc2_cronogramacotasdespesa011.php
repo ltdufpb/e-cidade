@@ -90,7 +90,7 @@ $db_opcao = 1;
               </td> 
               <td>
                 <?php 
-                 $aNiveis = array(
+                 $aNiveis = [
                                   1 => "Orgão",
                                   2 => "Unidade",
                                   3 => "Função",
@@ -100,7 +100,7 @@ $db_opcao = 1;
                                   7 => "Elemento",
                                   8 => "Recurso",
                                   9 => "Orgao /Unidade /Recurso / Anexo",
-                                 );
+                                 ];
                   db_select("nivel", $aNiveis,true,1);
                   ?>          
                 </td>
@@ -113,7 +113,7 @@ $db_opcao = 1;
                 			<td><b>Periodicidade:</b></td>
                 			<td>
                 			<?php  
-                				$x = array('1'=>'Mensal','2'=>'Bimestral');
+                				$x = ['1'=>'Mensal','2'=>'Bimestral'];
                 				db_select('iPeriodoImpr',$x,1,1);
                 			?>
                 			</td>

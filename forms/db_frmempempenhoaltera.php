@@ -111,7 +111,7 @@ if (!empty($outros_dados)) {
                 $numeroLicitacao = '';
                 $anoLicitacao = '';
                 if (!empty($e60_numerol)) {
-                    $dadosLicitacao = explode('/', $e60_numerol);
+                    $dadosLicitacao = explode('/', (string) $e60_numerol);
                     $numeroLicitacao = $dadosLicitacao[0];
                     $anoLicitacao = !empty($dadosLicitacao[1]) ? $dadosLicitacao[1] : '';
                 }
@@ -174,7 +174,7 @@ if (!empty($outros_dados)) {
             </td>
         </tr>
 
-        <?php if (isParaiba() && substr($o56_elemento, 0, 7) === '3449051'): ?>
+        <?php if (isParaiba() && str_starts_with((string) $o56_elemento, '3449051')): ?>
         <tr>
             <td nowrap title="Código do Geo Obra">
                 <label for="geo_obra" class="bold">GEO Obras:</label>
@@ -217,7 +217,7 @@ if (!empty($outros_dados)) {
                 $result = $clempprestatip->sql_record($sql);
                 $numrows = $clempprestatip->numrows;
 
-                $arr = array();
+                $arr = [];
                 for ($i = 0; $i < $numrows; $i++) {
                     db_fieldsmemory($result, $i);
                     if ($e44_obriga == 0 && empty($e44_tipo)) {
@@ -291,7 +291,7 @@ if (!empty($outros_dados)) {
                                 $oResult = db_utils::getCollectionByRecord($result);
 
                                 $numrows = $clorcelemento->numrows;
-                                $aEle = array();
+                                $aEle = [];
 
                                 foreach ($oResult as $oRow) {
                                     $aEle[$oRow->o56_codele] = $oRow->o56_descr;
@@ -310,7 +310,7 @@ if (!empty($outros_dados)) {
                             }
                         }
                     } else {
-                        $aEle = array();
+                        $aEle = [];
                         $e56_codele = "";
                         db_select("e56_codele", $aEle, true, 1);
                     }
@@ -426,7 +426,7 @@ if (!empty($outros_dados)) {
                     </td>
                     <td>
                         <?php
-                        $aNota = array("s" => "Sim", "n" => "NÃO");
+                        $aNota = ["s" => "Sim", "n" => "NÃO"];
                         db_select("e68_numemp", $aNota, true, 1);
                         ?>
                     </td>
@@ -506,7 +506,7 @@ if (!empty($outros_dados)) {
     function js_preenchepesquisa(chave) {
         db_iframe_empempenho.hide();
         <?php
-        echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+        echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         ?>
     }
 

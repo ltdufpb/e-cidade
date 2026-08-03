@@ -36,7 +36,7 @@ class cl_issveiculo extends DAOBasica {
     parent::__construct('issqn.issveiculo');
   }
 
-  public function sqlDados($campos = '*', $where = array())
+  public function sqlDados($campos = '*', $where = [])
   {
 
   	$sql = "SELECT {$campos}

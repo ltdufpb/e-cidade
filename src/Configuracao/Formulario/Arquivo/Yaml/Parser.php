@@ -47,16 +47,10 @@ class Parser implements ParserInterface
     private $evaluation;
 
     /**
-     * @var string
-     */
-    private $path;
-
-    /**
      * @param string $path
      */
-    public function __construct($path)
+    public function __construct(private $path)
     {
-        $this->path = $path;
     }
 
     /**
@@ -82,7 +76,7 @@ class Parser implements ParserInterface
      * @throws \BusinessException
      * @throws \DBException
      */
-    private function createEvaluation(array & $data = null)
+    private function createEvaluation(?array & $data = null)
     {
         if (empty($data)) {
             return false;
@@ -116,11 +110,7 @@ class Parser implements ParserInterface
     private function getValue(array $data, $index, $default = null)
     {
 
-        if (isset($data[$index])) {
-            return $data[$index];
-        }
-
-        return $default;
+        return $data[$index] ?? $default;
     }
 
     /**
@@ -131,7 +121,7 @@ class Parser implements ParserInterface
      * @throws \BusinessException
      * @throws \DBException
      */
-    private function createGroups(array & $groups = null)
+    private function createGroups(?array & $groups = null)
     {
         if (empty($groups)) {
             return false;
@@ -166,7 +156,7 @@ class Parser implements ParserInterface
      * @throws \BusinessException
      * @throws \DBException
      */
-    private function createQuestion(array & $questions = null, \AvaliacaoGrupo $group)
+    private function createQuestion(?array & $questions = null, ?\AvaliacaoGrupo $group = null)
     {
         if (empty($questions)) {
             return false;
@@ -217,7 +207,7 @@ class Parser implements ParserInterface
      * @throws \BusinessException
      * @throws \DBException
      */
-    private function createOptionAnswer(array & $options = null, \AvaliacaoPergunta $question)
+    private function createOptionAnswer(?array & $options = null, ?\AvaliacaoPergunta $question = null)
     {
         if (empty($options)) {
             return false;

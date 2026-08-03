@@ -84,15 +84,15 @@ class SigfisArquivoOrgao extends SigfisArquivoBase implements iPadArquivoTXTBase
 				
 				$sDataInicioGestao = str_replace("/", "", $sDataInicioGestao);
 				$oDadosLinha = new stdClass();
-				$oDadosLinha->Dt_Ano          = str_pad($oOrgao->o40_anousu,    4, ' ', STR_PAD_LEFT);
-				$oDadosLinha->Cd_Unidade      = str_pad($this->sCodigoTribunal, 4, ' ', STR_PAD_LEFT);
-				$oDadosLinha->Cd_Orgao        = str_pad($oOrgao->o40_orgao,     4, ' ', STR_PAD_LEFT);
-				$oDadosLinha->De_Orgao        = str_pad(utf8_decode(substr($oOrgao->o40_descr, 0, 50)), 50, ' ', STR_PAD_RIGHT);
+				$oDadosLinha->Dt_Ano          = str_pad((string) $oOrgao->o40_anousu,    4, ' ', STR_PAD_LEFT);
+				$oDadosLinha->Cd_Unidade      = str_pad((string) $this->sCodigoTribunal, 4, ' ', STR_PAD_LEFT);
+				$oDadosLinha->Cd_Orgao        = str_pad((string) $oOrgao->o40_orgao,     4, ' ', STR_PAD_LEFT);
+				$oDadosLinha->De_Orgao        = str_pad(mb_convert_encoding(substr((string) $oOrgao->o40_descr, 0, 50), 'ISO-8859-1'), 50, ' ', STR_PAD_RIGHT);
 				$oDadosLinha->Reservado_TCE   = str_repeat('0', 6);
-				$oDadosLinha->Cd_CPFOrdenador = str_pad($iCpfResponsavel,      11, ' ', STR_PAD_RIGHT);
+				$oDadosLinha->Cd_CPFOrdenador = str_pad((string) $iCpfResponsavel,      11, ' ', STR_PAD_RIGHT);
 				$oDadosLinha->Tp_Credito      = str_pad($iTipoGestaoCreditos,   1, ' ', STR_PAD_LEFT);
 				$oDadosLinha->Dt_Iniciogestao = str_pad($sDataInicioGestao,     8, ' ', STR_PAD_RIGHT);
-				$oDadosLinha->Tp_ordenador    = str_pad($iTipoOrdenador,        1, ' ', STR_PAD_LEFT);
+				$oDadosLinha->Tp_ordenador    = str_pad((string) $iTipoOrdenador,        1, ' ', STR_PAD_LEFT);
 				$oDadosLinha->codigolinha     = 399;
 				$this->aDados[] = $oDadosLinha;
 			}

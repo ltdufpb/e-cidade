@@ -146,12 +146,12 @@ if ($oGet->iTipo == 4) {
           </td>
           <td>
             <?php
-            $aTipoPrograma = array('0' => "Todos",
-                                   '3' => "Programas Temáticos");
+            $aTipoPrograma = ['0' => "Todos",
+                                   '3' => "Programas Temáticos"];
 
             if ($oGet->iTipo == 4) {
-              $aTipoPrograma    = array('0' => "Todos",
-                                        '4' => "Programas de Gestão, Manutenção e Serviços");
+              $aTipoPrograma    = ['0' => "Todos",
+                                        '4' => "Programas de Gestão, Manutenção e Serviços"];
             }
 
             db_select("tipo_programa", $aTipoPrograma, true, 1, "class='db_select'");
@@ -193,7 +193,7 @@ if ($oGet->iTipo == 4) {
             </td>
             <td>
               <?php
-              $aTipoModelo = array('1' => "PPA", '2' => "LDO");
+              $aTipoModelo = ['1' => "PPA", '2' => "LDO"];
               db_select("tipo_modelo", $aTipoModelo, true, 1, "class='db_select'");
               ?>
             </td>

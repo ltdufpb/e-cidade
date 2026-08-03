@@ -34,7 +34,7 @@ $cltabrec = new cl_tabrec;
 
 $instit = db_getsession("DB_instit");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if(isset($codtaxa) && (!empty($codtaxa)) ) {
 
@@ -45,7 +45,7 @@ if(isset($codtaxa) && (!empty($codtaxa)) ) {
 
   if ( gettype($result) != "boolean" ) {
 
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
       db_fieldsmemory($result,0);
 
         /**
@@ -56,7 +56,7 @@ if(isset($codtaxa) && (!empty($codtaxa)) ) {
 
       $result_vlrcor = db_query("select fc_infla(k07_codinf, k07_valorf, k07_data, '" . date("Y-m-d",db_getsession("DB_datausu")) ."') from tabdesc where k07_instit = $instit and codsubrec = $codtaxa");
 
-      if (pg_numrows($result_vlrcor)>0){
+      if (pg_num_rows($result_vlrcor)>0){
         db_fieldsmemory($result_vlrcor,0);
 
         if ($fc_infla!=-1){
@@ -87,7 +87,7 @@ if(isset($codtaxa) && (!empty($codtaxa)) ) {
     }
 
     $result_vlrcor = db_query("select fc_infla(k07_codinf, k07_valorv, k07_data, '" . date("Y-m-d",db_getsession("DB_datausu")) ."') from tabdesc where k07_instit = $instit and codsubrec = $codtaxa");
-    if (pg_numrows($result_vlrcor)>0){
+    if (pg_num_rows($result_vlrcor)>0){
       db_fieldsmemory($result_vlrcor,0);
 
       if ($fc_infla!=-1){

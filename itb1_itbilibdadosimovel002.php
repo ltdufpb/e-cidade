@@ -168,12 +168,12 @@ if(isset($oPost->alterar)){
 		    $aListaCaracImovel = explode("|",$oPost->valorCaracImovel);
 		    foreach ( $aListaCaracImovel as $aChave) {
 
-		      $aListaDadosCaracImovel = split("X", $aChave);
+		      $aListaDadosCaracImovel = preg_split("#X#m", $aChave);
 
 		      $clitbiruralcaract->sql_record($clitbiruralcaract->sql_query_file($oPost->it01_guia, $aListaDadosCaracImovel[0]));
 		      $clitbiruralcaract->it19_guia   = $oPost->it01_guia;
-		      $clitbiruralcaract->it19_codigo = isset($aListaDadosCaracImovel[0]) ? $aListaDadosCaracImovel[0] : 0 ;
-		      $clitbiruralcaract->it19_valor  = isset($aListaDadosCaracImovel[1]) ? $aListaDadosCaracImovel[1] : 0 ;
+		      $clitbiruralcaract->it19_codigo = $aListaDadosCaracImovel[0] ?? 0 ;
+		      $clitbiruralcaract->it19_valor  = $aListaDadosCaracImovel[1] ?? 0 ;
 		      $clitbiruralcaract->it19_tipocaract = 1;
 		      if ($clitbiruralcaract->numrows > 0) {
 		       $clitbiruralcaract->alterar($oPost->it01_guia,$aListaDadosCaracImovel[0], 1);
@@ -193,12 +193,12 @@ if(isset($oPost->alterar)){
 	    $aListaCaracUtil = explode("|",$oPost->valorCaracUtil);
 	    foreach ( $aListaCaracUtil as $aChave) {
 
-	      $aListaDadosCaracUtil = split("X",$aChave);
+	      $aListaDadosCaracUtil = preg_split("#X#m",$aChave);
 
 	      $clitbiruralcaract->sql_record($clitbiruralcaract->sql_query_file($oPost->it01_guia, $aListaDadosCaracUtil[0]));
 	      $clitbiruralcaract->it19_guia   = $oPost->it01_guia;
-        $clitbiruralcaract->it19_codigo = isset($aListaDadosCaracUtil[0]) ? $aListaDadosCaracUtil[0] : 0 ;
-        $clitbiruralcaract->it19_valor  = isset($aListaDadosCaracUtil[1]) ? $aListaDadosCaracUtil[1] : 0 ;
+        $clitbiruralcaract->it19_codigo = $aListaDadosCaracUtil[0] ?? 0 ;
+        $clitbiruralcaract->it19_valor  = $aListaDadosCaracUtil[1] ?? 0 ;
         $clitbiruralcaract->it19_tipocaract = '2';
 
 	      if ($clitbiruralcaract->numrows > 0) {
@@ -249,7 +249,7 @@ if(isset($oPost->alterar)){
 
     $rItbiMatric = db_query($clitbimatric->sql_query_file($oGet->chavepesquisa, null, "it06_matric AS j01_matric"));
 
-    if ($rItbiMatric AND pg_numrows($rItbiMatric) > 0) {
+    if ($rItbiMatric AND pg_num_rows($rItbiMatric) > 0) {
         db_fieldsmemory($rItbiMatric,0);
 
         $rIptuant  = db_query($cliptuant->sql_query_file($j01_matric));

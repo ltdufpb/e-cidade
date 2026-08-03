@@ -51,7 +51,7 @@ $oRetorno->status = 1;
 $oRetorno->message = "";
 
 if (isset($oParam->finalidaderecurso)) {
-    $sFinalidadeRecurso = utf8_decode($oParam->finalidaderecurso);
+    $sFinalidadeRecurso = mb_convert_encoding($oParam->finalidaderecurso, 'ISO-8859-1');
 }
 
 switch ($oParam->exec) {
@@ -66,7 +66,7 @@ switch ($oParam->exec) {
 
     case "getComplementoFonteRecurso":
 
-        $aDadosComplemento = array();
+        $aDadosComplemento = [];
         $oDaoComplementoFonteRecurso = db_utils::getDao('complementofonterecurso');
         $sSql = $oDaoComplementoFonteRecurso->sql_query(null, " * ", "o200_sequencial", " o200_sequencial > 0");
         $rsComplemento = $oDaoComplementoFonteRecurso->sql_record($sSql);
@@ -76,7 +76,7 @@ switch ($oParam->exec) {
             $oDados = db_utils::fieldsMemory($rsComplemento, $iComplemento);
             $oDadosComplemento = new stdClass();
             $oDadosComplemento->o200_sequencial = $oDados->o200_sequencial;
-            $oDadosComplemento->o200_descricao = urlencode($oDados->o200_descricao);
+            $oDadosComplemento->o200_descricao = urlencode((string) $oDados->o200_descricao);
             $oDadosComplemento->o200_msc = urlencode($oDados->o200_msc == 't' ? 'Sim' : 'Não');
             $aDadosComplemento[] = $oDadosComplemento;
         }
@@ -89,7 +89,7 @@ switch ($oParam->exec) {
 
         $oDaoComplementoFonteRecurso = db_utils::getDao('complementofonterecurso');
         $o200_sequencial = $oParam->o200_sequencial;
-        $o200_descricao  = addslashes(utf8_decode( urlDecode($oParam->o200_descricao) ));
+        $o200_descricao  = addslashes(mb_convert_encoding( urlDecode((string) $oParam->o200_descricao), 'ISO-8859-1' ));
         $o200_msc        = $oParam->o200_msc;
 
         db_inicio_transacao();
@@ -141,7 +141,7 @@ switch ($oParam->exec) {
         $oRecurso = new Recurso((int)$oParam->codigorecurso);
         $oRetorno->codigorecurso = $oRecurso->getCodigo();
         $oRetorno->descricaorecurso = urlencode($oRecurso->getDescricao());
-        $oRetorno->codigotribunalrecurso = urlencode($oRecurso->getEstruturaValor()->getEstrutural());
+        $oRetorno->codigotribunalrecurso = urlencode((string) $oRecurso->getEstruturaValor()->getEstrutural());
         $oRetorno->finalidaderecurso = urlencode($oRecurso->getFinalidadeRecurso());
         $oRetorno->tipo = $oRecurso->getEstruturaValor()->getTipoConta();
         $oRetorno->tiporecurso = $oRecurso->getTipoRecurso();
@@ -175,10 +175,10 @@ switch ($oParam->exec) {
             break;
         }
 
-        $aRecursos = array();
+        $aRecursos = [];
         for ($iRecurso = 0; $iRecurso < $oDaoRecursos->numrows; $iRecurso++) {
             $oRecurso = db_utils::fieldsMemory($rsRecursos, $iRecurso);
-            $oRecurso->descricao = urlencode($oRecurso->descricao);
+            $oRecurso->descricao = urlencode((string) $oRecurso->descricao);
             $aRecursos[] = $oRecurso;
         }
 
@@ -263,7 +263,7 @@ switch ($oParam->exec) {
 
             $oRecurso->setCodigoRecurso((int)$oParam->codigorecurso);
             $oRecurso->setTipoRecurso($oParam->tiporecurso);
-            $oRecurso->setDataLimiteRecurso(implode("-", array_reverse(explode("/", $oParam->datalimiterecurso))));
+            $oRecurso->setDataLimiteRecurso(implode("-", array_reverse(explode("/", (string) $oParam->datalimiterecurso))));
             $oRecurso->setFinalidadeRecurso(db_stdClass::normalizeStringJsonEscapeString($oParam->finalidaderecurso));
             $oRecurso->setEstruturaValor($oTribunalEstrutura);
             $oRecurso->setCodigoSiconfi($oParam->codigosiconfi);
@@ -336,14 +336,14 @@ switch ($oParam->exec) {
             }
 
             $rsSqlOrcTipoRec = $oDaoOrcTipoRec->sql_record($sSqlOrcTipoRec);
-            $oRetorno->recursos = array();
+            $oRetorno->recursos = [];
             if ($oDaoOrcTipoRec->numrows > 0) {
                 $recursos = db_utils::getCollectionByRecord($rsSqlOrcTipoRec, false, false, true);
                 $oRetorno->recursos = $recursos;
             }
 
 
-        } catch (Exception $erro) {
+        } catch (Exception) {
             $oRetorno->status = 2;
             $oRetorno->message = urlencode(str_replace("\\n", "\n", $eErro->getMessage()));
         }

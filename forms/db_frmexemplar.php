@@ -40,9 +40,9 @@ $bi23_dataaquisicao_mes = '';
 $bi23_dataaquisicao_ano = '';
 if (!empty($bi23_dataaquisicao)) {
 
-    $bi23_dataaquisicao_dia = substr($bi23_dataaquisicao, 0, 2);
-    $bi23_dataaquisicao_mes = substr($bi23_dataaquisicao, 3, 2);
-    $bi23_dataaquisicao_ano = substr($bi23_dataaquisicao, 6, 4);
+    $bi23_dataaquisicao_dia = substr((string) $bi23_dataaquisicao, 0, 2);
+    $bi23_dataaquisicao_mes = substr((string) $bi23_dataaquisicao, 3, 2);
+    $bi23_dataaquisicao_ano = substr((string) $bi23_dataaquisicao, 6, 4);
 }
 
 if (isset($opcao) && $opcao == "alterar") {
@@ -180,7 +180,7 @@ if ($db_opcao != 1) {
         $sCampos .= "  else 'INATIVO' ";
         $sCampos .= " end as bi23_situacao ";
 
-        $chavepri = array(
+        $chavepri = [
             "bi23_codigo" => empty($bi23_codigo) ? '' : $bi23_codigo,
             "bi23_exemplar" => empty($bi23_exemplar) ? '' : $bi23_exemplar,
             "bi23_acervo" => empty($bi23_acervo) ? '' : $bi23_acervo,
@@ -191,7 +191,7 @@ if ($db_opcao != 1) {
             "bi23_aquisicao" => empty($bi23_aquisicao) ? '' : $bi23_aquisicao,
             "bi23_anoedicao" => empty($bi23_anoedicao) ? '' :  $bi23_anoedicao,
             "bi23_edicao" => empty($bi23_edicao) ? '' :  $bi23_edicao,
-        );
+        ];
         $cliframe_alterar_excluir->chavepri = $chavepri;
         $cliframe_alterar_excluir->sql = $oDaoExemplar->sql_query("", $sCampos, "bi23_situacao, bi23_exemplar", " bi23_acervo = $bi23_acervo");
         $cliframe_alterar_excluir->campos = "bi23_codigo, bi23_exemplar, bi23_codbarras, bi04_forma, bi23_dataaquisicao, bi23_anoedicao, bi23_edicao, bi23_situacao";

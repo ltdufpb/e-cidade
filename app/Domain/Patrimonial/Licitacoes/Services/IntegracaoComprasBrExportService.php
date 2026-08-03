@@ -102,8 +102,8 @@ class IntegracaoComprasBrExportService
             $itemSolicitacao = $item->getItemSolicitacao();
             $lote            = $item->getLoteLicitacao();
             $unidade         = $itemSolicitacao->getDadosUnidade();
-            $itemTitulo      = urldecode($itemSolicitacao->getDescricaoMaterial());
-            $itemDescr       = urldecode($itemSolicitacao->getResumo());
+            $itemTitulo      = urldecode((string) $itemSolicitacao->getDescricaoMaterial());
+            $itemDescr       = urldecode((string) $itemSolicitacao->getResumo());
 
             // lote por item
             if ($tipoJulgamento != 2) {

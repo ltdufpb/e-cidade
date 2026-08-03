@@ -48,7 +48,7 @@ SQL_DOWN
 
     private function upDDL()
     {
-        $this->tableArquivoData = $this->table('pontoeletronicoarquivodata', array('schema' => 'recursoshumanos'));
+        $this->tableArquivoData = $this->table('pontoeletronicoarquivodata', ['schema' => 'recursoshumanos']);
 
         $existColumnAtraso = $this->tableArquivoData->hasColumn('rh197_horas_atraso');
 
@@ -56,24 +56,24 @@ SQL_DOWN
             $this->tableArquivoData->removeColumn('rh197_horas_atraso')->save();
         }
 
-        $this->tableArquivoData->addColumn('rh197_horas_atraso', 'string', array('null' => true, 'limit' => 5))
-                               ->addColumn('rh197_horas_saida_antecipada', 'string', array('null' => true, 'limit' => 5))
+        $this->tableArquivoData->addColumn('rh197_horas_atraso', 'string', ['null' => true, 'limit' => 5])
+                               ->addColumn('rh197_horas_saida_antecipada', 'string', ['null' => true, 'limit' => 5])
                                ->save();
 
-        $this->tableConfiguracoesGerais = $this->table('pontoeletronicoconfiguracoesgerais', array('schema' => 'recursoshumanos'));
-        $this->tableConfiguracoesGerais->addColumn('rh200_tipoasse_atraso', 'integer', array('null' => true))
-                                       ->addForeignKey('rh200_tipoasse_atraso', 'recursoshumanos.tipoasse', 'h12_codigo', array('constraint' => 'pontoeletronicoconfiguracoesgerais_tipoasse_atraso_fk'))
+        $this->tableConfiguracoesGerais = $this->table('pontoeletronicoconfiguracoesgerais', ['schema' => 'recursoshumanos']);
+        $this->tableConfiguracoesGerais->addColumn('rh200_tipoasse_atraso', 'integer', ['null' => true])
+                                       ->addForeignKey('rh200_tipoasse_atraso', 'recursoshumanos.tipoasse', 'h12_codigo', ['constraint' => 'pontoeletronicoconfiguracoesgerais_tipoasse_atraso_fk'])
                                        ->save();
     }
 
     private function downDDL()
     {
-        $this->tableArquivoData = $this->table('pontoeletronicoarquivodata', array('schema' => 'recursoshumanos'));
+        $this->tableArquivoData = $this->table('pontoeletronicoarquivodata', ['schema' => 'recursoshumanos']);
         $this->tableArquivoData->removeColumn('rh197_horas_atraso')
                                ->removeColumn('rh197_horas_saida_antecipada')
                                ->save();
 
-        $this->tableConfiguracoesGerais = $this->table('pontoeletronicoconfiguracoesgerais', array('schema' => 'recursoshumanos'));
+        $this->tableConfiguracoesGerais = $this->table('pontoeletronicoconfiguracoesgerais', ['schema' => 'recursoshumanos']);
         $this->tableConfiguracoesGerais->removeColumn('rh200_tipoasse_atraso')
                                        ->dropForeignKey('pontoeletronicoconfiguracoesgerais_tipoasse_atraso_fk')
                                        ->save();

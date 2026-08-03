@@ -31,7 +31,7 @@ include(modification("classes/db_iptubase_classe.php"));
 include(modification("classes/db_issbase_classe.php"));
 include(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $sql = "select z01_nome , 
                r70_codigo, 
                r70_descr
@@ -320,10 +320,10 @@ if ($opcao != 'previden' && $opcao != 'irf'){
   $pdf->setfillcolor(235);
    
   
-  $aBase     = array();
-  $aProvento = array();
-  $aDesconto = array();
-  $aTotal    = array();
+  $aBase     = [];
+  $aProvento = [];
+  $aDesconto = [];
+  $aTotal    = [];
   foreach( $oResult as $oDados){
     if ($oDados->provdesc == "Base") {
       $aBase[] = $oDados;

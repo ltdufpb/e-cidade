@@ -6,61 +6,61 @@ class LayoutBS
     /*
         CABEÇALHO
     */
-    var $cabec101 = null;
-    var $cabec102 = null;
-    var $cabec103 = null;
-    var $cabec104 = null;
-    var $cabec105 = null;
-    var $cabec106 = null;
-    var $cabec107 = null;
-    var $cabec108 = null;
-    var $cabec109 = null;
-    var $cabec110 = null;
-    var $cabec111 = null;
-    var $cabec112 = null;
-    var $cabec113 = null;
-    var $cabec114 = null;
-    var $cabec115 = null;
-    var $cabec116 = null;
-    var $cabec117 = null;
-    var $cabec118 = null;
-    var $cabec119 = null;
-    var $cabec120 = null;
-    var $cabec121 = null;
-    var $cabec122 = null;
-    var $cabec123 = null;
-    var $cabec124 = null;
-    var $cabec125 = null;
-    var $cabec126 = null;
-    var $cabec127 = null;
+    public $cabec101 = null;
+    public $cabec102 = null;
+    public $cabec103 = null;
+    public $cabec104 = null;
+    public $cabec105 = null;
+    public $cabec106 = null;
+    public $cabec107 = null;
+    public $cabec108 = null;
+    public $cabec109 = null;
+    public $cabec110 = null;
+    public $cabec111 = null;
+    public $cabec112 = null;
+    public $cabec113 = null;
+    public $cabec114 = null;
+    public $cabec115 = null;
+    public $cabec116 = null;
+    public $cabec117 = null;
+    public $cabec118 = null;
+    public $cabec119 = null;
+    public $cabec120 = null;
+    public $cabec121 = null;
+    public $cabec122 = null;
+    public $cabec123 = null;
+    public $cabec124 = null;
+    public $cabec125 = null;
+    public $cabec126 = null;
+    public $cabec127 = null;
 
-    var $cabec201 = null;
-    var $cabec202 = null;
-    var $cabec203 = null;
-    var $cabec204 = null;
-    var $cabec205 = null;
-    var $cabec206 = null;
-    var $cabec207 = null;
-    var $cabec208 = null;
-    var $cabec209 = null;
-    var $cabec210 = null;
-    var $cabec211 = null;
-    var $cabec212 = null;
-    var $cabec213 = null;
-    var $cabec214 = null;
-    var $cabec215 = null;
-    var $cabec216 = null;
-    var $cabec217 = null;
-    var $cabec218 = null;
-    var $cabec219 = null;
-    var $cabec220 = null;
-    var $cabec221 = null;
-    var $cabec222 = null;
-    var $cabec223 = null;
-    var $cabec224 = null;
-    var $cabec225 = null;
-    var $cabec226 = null;
-    var $cabec227 = null;
+    public $cabec201 = null;
+    public $cabec202 = null;
+    public $cabec203 = null;
+    public $cabec204 = null;
+    public $cabec205 = null;
+    public $cabec206 = null;
+    public $cabec207 = null;
+    public $cabec208 = null;
+    public $cabec209 = null;
+    public $cabec210 = null;
+    public $cabec211 = null;
+    public $cabec212 = null;
+    public $cabec213 = null;
+    public $cabec214 = null;
+    public $cabec215 = null;
+    public $cabec216 = null;
+    public $cabec217 = null;
+    public $cabec218 = null;
+    public $cabec219 = null;
+    public $cabec220 = null;
+    public $cabec221 = null;
+    public $cabec222 = null;
+    public $cabec223 = null;
+    public $cabec224 = null;
+    public $cabec225 = null;
+    public $cabec226 = null;
+    public $cabec227 = null;
 
     /*
           FINAL CABEÇALHO
@@ -70,72 +70,72 @@ class LayoutBS
     /*
             CORPO
     */
-    var $detalhe01 = null;
-    var $detalhe02 = null;
-    var $detalhe03 = null;
-    var $detalhe04 = null;
-    var $detalhe05 = null;
-    var $detalhe06 = null;
-    var $detalhe07 = null;
-    var $detalhe08 = null;
-    var $detalhe09 = null;
-    var $detalhe10 = null;
-    var $detalhe11 = null;
-    var $detalhe12 = null;
-    var $detalhe13 = null;
-    var $detalhe14 = null;
-    var $detalhe15 = null;
-    var $detalhe16 = null;
-    var $detalhe17 = null;
-    var $detalhe18 = null;
-    var $detalhe19 = null;
-    var $detalhe20 = null;
-    var $detalhe21 = null;
-    var $detalhe22 = null;
-    var $detalhe23 = null;
-    var $detalhe24 = null;
-    var $detalhe25 = null;
-    var $detalhe26 = null;
-    var $detalhe27 = null;
-    var $detalhe28 = null;
-    var $detalhe29 = null;
-    var $detalhe30 = null;
+    public $detalhe01 = null;
+    public $detalhe02 = null;
+    public $detalhe03 = null;
+    public $detalhe04 = null;
+    public $detalhe05 = null;
+    public $detalhe06 = null;
+    public $detalhe07 = null;
+    public $detalhe08 = null;
+    public $detalhe09 = null;
+    public $detalhe10 = null;
+    public $detalhe11 = null;
+    public $detalhe12 = null;
+    public $detalhe13 = null;
+    public $detalhe14 = null;
+    public $detalhe15 = null;
+    public $detalhe16 = null;
+    public $detalhe17 = null;
+    public $detalhe18 = null;
+    public $detalhe19 = null;
+    public $detalhe20 = null;
+    public $detalhe21 = null;
+    public $detalhe22 = null;
+    public $detalhe23 = null;
+    public $detalhe24 = null;
+    public $detalhe25 = null;
+    public $detalhe26 = null;
+    public $detalhe27 = null;
+    public $detalhe28 = null;
+    public $detalhe29 = null;
+    public $detalhe30 = null;
 
 
     /*
             TRAILLER
     */
-    var $roda101 = null;
-    var $roda102 = null;
-    var $roda103 = null;
-    var $roda104 = null;
-    var $roda105 = null;
-    var $roda106 = null;
-    var $roda107 = null;
-    var $roda108 = null;
-    var $roda109 = null;
-    var $roda110 = null;
-    var $roda111 = null;
-    var $roda112 = null;
-    var $roda113 = null;
-    var $roda114 = null;
-    var $roda115 = null;
+    public $roda101 = null;
+    public $roda102 = null;
+    public $roda103 = null;
+    public $roda104 = null;
+    public $roda105 = null;
+    public $roda106 = null;
+    public $roda107 = null;
+    public $roda108 = null;
+    public $roda109 = null;
+    public $roda110 = null;
+    public $roda111 = null;
+    public $roda112 = null;
+    public $roda113 = null;
+    public $roda114 = null;
+    public $roda115 = null;
 
-    var $roda201 = null;
-    var $roda202 = null;
-    var $roda203 = null;
-    var $roda204 = null;
-    var $roda205 = null;
-    var $roda206 = null;
-    var $roda207 = null;
-    var $roda208 = null;
-    var $roda209 = null;
-    var $roda210 = null;
-    var $roda211 = null;
-    var $roda212 = null;
-    var $roda213 = null;
-    var $roda214 = null;
-    var $roda215 = null;
+    public $roda201 = null;
+    public $roda202 = null;
+    public $roda203 = null;
+    public $roda204 = null;
+    public $roda205 = null;
+    public $roda206 = null;
+    public $roda207 = null;
+    public $roda208 = null;
+    public $roda209 = null;
+    public $roda210 = null;
+    public $roda211 = null;
+    public $roda212 = null;
+    public $roda213 = null;
+    public $roda214 = null;
+    public $roda215 = null;
 
 
     /*
@@ -143,10 +143,10 @@ class LayoutBS
     */
 
 
-    var $arquivo = null;
+    public $arquivo = null;
 
 
-    var $nomearq = '/tmp/modelo.txt';
+    public $nomearq = '/tmp/modelo.txt';
 
     function gera_cabecalho()
     {

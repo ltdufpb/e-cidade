@@ -82,7 +82,7 @@ fieldset table td:first-child {
        $cldb_periodicidade = new cl_db_periodicidade;
        $sSqlPeriodicidade = $cldb_periodicidade->sql_query("","*","db84_sequencial ASC");       
        $result = $cldb_periodicidade->sql_record($sSqlPeriodicidade);
-       $aPer = array();
+       $aPer = [];
        while ($row = pg_fetch_array($result)) {
          $aPer[$row[0]] = $row[1]; 
        }
@@ -107,7 +107,7 @@ fieldset table td:first-child {
     </td>
     <td> 
 			<?php 
-			$x = array('1'=>'Crescente','2'=>'Decrescente');
+			$x = ['1'=>'Crescente','2'=>'Decrescente'];
 			db_select('g04_tipo',$x,true,$db_opcao,"onchange='js_limpaCampos();'");
 			?>
     </td>
@@ -235,7 +235,7 @@ fieldset table td:first-child {
     </td>
     <td> 
       <?php 
-      $x = array("f"=>"NAO","t"=>"SIM");
+      $x = ["f"=>"NAO","t"=>"SIM"];
       db_select('g04_emitealerta',$x,true,$db_opcao,"onChange='js_show_hide();'");
       ?>
     </td>
@@ -639,7 +639,7 @@ function js_preenchepesquisa(chave){
   db_iframe_gestorindicador.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

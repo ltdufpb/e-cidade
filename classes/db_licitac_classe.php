@@ -29,39 +29,39 @@
 //CLASSE DA ENTIDADE licitac
 class cl_licitac { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l01_tipo = null; 
-   var $l01_dtabre_dia = null; 
-   var $l01_dtabre_mes = null; 
-   var $l01_dtabre_ano = null; 
-   var $l01_dtabre = null; 
-   var $l01_numero = null; 
-   var $l01_hhabre = null; 
-   var $l01_local = null; 
-   var $l01_dtpubl_dia = null; 
-   var $l01_dtpubl_mes = null; 
-   var $l01_dtpubl_ano = null; 
-   var $l01_dtpubl = null; 
-   var $l01_obs = null; 
-   var $l01_dtadju_dia = null; 
-   var $l01_dtadju_mes = null; 
-   var $l01_dtadju_ano = null; 
-   var $l01_dtadju = null; 
-   var $l01_dotac = 0; 
+   public $l01_tipo = null; 
+   public $l01_dtabre_dia = null; 
+   public $l01_dtabre_mes = null; 
+   public $l01_dtabre_ano = null; 
+   public $l01_dtabre = null; 
+   public $l01_numero = null; 
+   public $l01_hhabre = null; 
+   public $l01_local = null; 
+   public $l01_dtpubl_dia = null; 
+   public $l01_dtpubl_mes = null; 
+   public $l01_dtpubl_ano = null; 
+   public $l01_dtpubl = null; 
+   public $l01_obs = null; 
+   public $l01_dtadju_dia = null; 
+   public $l01_dtadju_mes = null; 
+   public $l01_dtadju_ano = null; 
+   public $l01_dtadju = null; 
+   public $l01_dotac = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l01_tipo = varchar(1) = Tipo 
                  l01_dtabre = date = Data 
                  l01_numero = varchar(8) = Número 
@@ -73,10 +73,10 @@ class cl_licitac {
                  l01_dotac = int4 = Codigo Reduzido da Dotacao 
                  ";
    //funcao construtor da classe 
-   function cl_licitac() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("licitac"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -226,7 +226,7 @@ class cl_licitac {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dados Cadastrais da Licitacao                      () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dados Cadastrais da Licitacao                      já Cadastrado";
@@ -253,10 +253,10 @@ class cl_licitac {
       $this->atualizacampos();
      $sql = " update licitac set ";
      $virgula = "";
-     if(trim($this->l01_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_tipo"])){ 
+     if(trim((string) $this->l01_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_tipo"])){ 
        $sql  .= $virgula." l01_tipo = '$this->l01_tipo' ";
        $virgula = ",";
-       if(trim($this->l01_tipo) == null ){ 
+       if(trim((string) $this->l01_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "l01_tipo";
          $this->erro_banco = "";
@@ -266,7 +266,7 @@ class cl_licitac {
          return false;
        }
      }
-     if(trim($this->l01_dtabre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_dtabre_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l01_dtabre_dia"] !="") ){ 
+     if(trim((string) $this->l01_dtabre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_dtabre_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l01_dtabre_dia"] !="") ){ 
        $sql  .= $virgula." l01_dtabre = '$this->l01_dtabre' ";
        $virgula = ",";
      }     else{ 
@@ -275,10 +275,10 @@ class cl_licitac {
          $virgula = ",";
        }
      }
-     if(trim($this->l01_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_numero"])){ 
+     if(trim((string) $this->l01_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_numero"])){ 
        $sql  .= $virgula." l01_numero = '$this->l01_numero' ";
        $virgula = ",";
-       if(trim($this->l01_numero) == null ){ 
+       if(trim((string) $this->l01_numero) == null ){ 
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "l01_numero";
          $this->erro_banco = "";
@@ -288,10 +288,10 @@ class cl_licitac {
          return false;
        }
      }
-     if(trim($this->l01_hhabre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_hhabre"])){ 
+     if(trim((string) $this->l01_hhabre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_hhabre"])){ 
        $sql  .= $virgula." l01_hhabre = '$this->l01_hhabre' ";
        $virgula = ",";
-       if(trim($this->l01_hhabre) == null ){ 
+       if(trim((string) $this->l01_hhabre) == null ){ 
          $this->erro_sql = " Campo Hora de Abertura nao Informado.";
          $this->erro_campo = "l01_hhabre";
          $this->erro_banco = "";
@@ -301,10 +301,10 @@ class cl_licitac {
          return false;
        }
      }
-     if(trim($this->l01_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_local"])){ 
+     if(trim((string) $this->l01_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_local"])){ 
        $sql  .= $virgula." l01_local = '$this->l01_local' ";
        $virgula = ",";
-       if(trim($this->l01_local) == null ){ 
+       if(trim((string) $this->l01_local) == null ){ 
          $this->erro_sql = " Campo Local de Abertura nao Informado.";
          $this->erro_campo = "l01_local";
          $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_licitac {
          return false;
        }
      }
-     if(trim($this->l01_dtpubl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_dtpubl_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l01_dtpubl_dia"] !="") ){ 
+     if(trim((string) $this->l01_dtpubl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_dtpubl_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l01_dtpubl_dia"] !="") ){ 
        $sql  .= $virgula." l01_dtpubl = '$this->l01_dtpubl' ";
        $virgula = ",";
-       if(trim($this->l01_dtpubl) == null ){ 
+       if(trim((string) $this->l01_dtpubl) == null ){ 
          $this->erro_sql = " Campo Data de Publicacao nao Informado.";
          $this->erro_campo = "l01_dtpubl_dia";
          $this->erro_banco = "";
@@ -330,7 +330,7 @@ class cl_licitac {
        if(isset($GLOBALS["HTTP_POST_VARS"]["l01_dtpubl_dia"])){ 
          $sql  .= $virgula." l01_dtpubl = null ";
          $virgula = ",";
-         if(trim($this->l01_dtpubl) == null ){ 
+         if(trim((string) $this->l01_dtpubl) == null ){ 
            $this->erro_sql = " Campo Data de Publicacao nao Informado.";
            $this->erro_campo = "l01_dtpubl_dia";
            $this->erro_banco = "";
@@ -341,10 +341,10 @@ class cl_licitac {
          }
        }
      }
-     if(trim($this->l01_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_obs"])){ 
+     if(trim((string) $this->l01_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_obs"])){ 
        $sql  .= $virgula." l01_obs = '$this->l01_obs' ";
        $virgula = ",";
-       if(trim($this->l01_obs) == null ){ 
+       if(trim((string) $this->l01_obs) == null ){ 
          $this->erro_sql = " Campo Observacoes nao Informado.";
          $this->erro_campo = "l01_obs";
          $this->erro_banco = "";
@@ -354,10 +354,10 @@ class cl_licitac {
          return false;
        }
      }
-     if(trim($this->l01_dtadju)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_dtadju_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l01_dtadju_dia"] !="") ){ 
+     if(trim((string) $this->l01_dtadju)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_dtadju_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l01_dtadju_dia"] !="") ){ 
        $sql  .= $virgula." l01_dtadju = '$this->l01_dtadju' ";
        $virgula = ",";
-       if(trim($this->l01_dtadju) == null ){ 
+       if(trim((string) $this->l01_dtadju) == null ){ 
          $this->erro_sql = " Campo Data da Adjudicacao ou Encerra nao Informado.";
          $this->erro_campo = "l01_dtadju_dia";
          $this->erro_banco = "";
@@ -370,7 +370,7 @@ class cl_licitac {
        if(isset($GLOBALS["HTTP_POST_VARS"]["l01_dtadju_dia"])){ 
          $sql  .= $virgula." l01_dtadju = null ";
          $virgula = ",";
-         if(trim($this->l01_dtadju) == null ){ 
+         if(trim((string) $this->l01_dtadju) == null ){ 
            $this->erro_sql = " Campo Data da Adjudicacao ou Encerra nao Informado.";
            $this->erro_campo = "l01_dtadju_dia";
            $this->erro_banco = "";
@@ -381,10 +381,10 @@ class cl_licitac {
          }
        }
      }
-     if(trim($this->l01_dotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_dotac"])){ 
+     if(trim((string) $this->l01_dotac)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l01_dotac"])){ 
        $sql  .= $virgula." l01_dotac = $this->l01_dotac ";
        $virgula = ",";
-       if(trim($this->l01_dotac) == null ){ 
+       if(trim((string) $this->l01_dotac) == null ){ 
          $this->erro_sql = " Campo Codigo Reduzido da Dotacao nao Informado.";
          $this->erro_campo = "l01_dotac";
          $this->erro_banco = "";
@@ -475,7 +475,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:licitac";

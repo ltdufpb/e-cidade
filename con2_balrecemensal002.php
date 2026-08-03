@@ -36,7 +36,7 @@ require_once(modification("libs/db_libcontabilidade.php"));
 
 $clAssinatura = new cl_assinatura;
 $oGet         = db_utils::postMemory($_GET);
-$iInstituicao = split("-",$oGet->db_selinstit);
+$iInstituicao = preg_split("#\\-#m",(string) $oGet->db_selinstit);
 $sInstituicao = implode(", ", $iInstituicao);
 
 /**
@@ -62,7 +62,7 @@ $dtFin     = $iAnoUsu."-12-31";
  * Se for setada uma data limite para retorno dos dados, utilizar ela.
  */
 if (isset($oGet->dtLimit) && !empty($oGet->dtLimit)) {
-  $dtFin = implode("-", array_reverse(explode("/", $oGet->dtLimit)));
+  $dtFin = implode("-", array_reverse(explode("/", (string) $oGet->dtLimit)));
 }
 
 /**
@@ -87,33 +87,33 @@ $nSomatorioGeral   = 0;
 /**
  * Array dos Meses
  */
-$aMeses = array("janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro",
-                "outubro", "novembro", "dezembro");
+$aMeses = ["janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro",
+                "outubro", "novembro", "dezembro"];
 /**
  * Seta os meses para o período selecionado
  */
-$aMesesPeriodo = array();
+$aMesesPeriodo = [];
 if (isset($oGet->periodo)) {
 
   switch ($oGet->periodo) {
     case "2":
 
-      $aMesesPeriodo           = array("janeiro", "fevereiro", "marco", "abril", "maio", "junho");
+      $aMesesPeriodo           = ["janeiro", "fevereiro", "marco", "abril", "maio", "junho"];
       $iTmValor                = 23;
       $iTmDescr                = 55;
       $iTamanhoSubstrDescricao = 38;
       break;
     case "3":
 
-      $aMesesPeriodo           = array("julho", "agosto", "setembro", "outubro", "novembro", "dezembro");
+      $aMesesPeriodo           = ["julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
       $iTmValor                = 23;
       $iTmDescr                = 55;
       $iTamanhoSubstrDescricao = 38;
       break;
     default:
 
-      $aMesesPeriodo = array("janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro",
-                             "outubro", "novembro", "dezembro");
+      $aMesesPeriodo = ["janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro",
+                             "outubro", "novembro", "dezembro"];
       break;
   }
 }

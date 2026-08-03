@@ -25,7 +25,7 @@ class TipoSessaoController extends Controller
     {
         try {
             return new DBJsonResponse(TipoSessao::all());
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             return new DBJsonResponse([], 'Não foi possível buscar os tipo de sessão.', 400);
         }
     }

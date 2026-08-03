@@ -30,7 +30,7 @@ require_once modification('libs/db_conecta.php');
 require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_usuariosonline.php');
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']), $queryString);
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -51,10 +51,10 @@ if(isset($retorno)){
 		  on m.codarq = a.codarq
 		  where c.codcam = $retorno";
   $result = db_query($sql);
-  if(isset($HTTP_POST_VARS["modulo"]) && $HTTP_POST_VARS["modulo"] == "")
-    $HTTP_POST_VARS["modulo"] = pg_result($result,0,"codmod");
-  if(isset($HTTP_POST_VARS["tabela"]) && $HTTP_POST_VARS["tabela"] == "")
-    $HTTP_POST_VARS["tabela"] = pg_result($result,0,"tabela");
+  if(isset($_POST["modulo"]) && $_POST["modulo"] == "")
+    $_POST["modulo"] = pg_fetch_result($result,0,"codmod");
+  if(isset($_POST["tabela"]) && $_POST["tabela"] == "")
+    $_POST["tabela"] = pg_fetch_result($result,0,"tabela");
   db_fieldsmemory($result,0);
 
   if(isset($campodefault)){
@@ -65,8 +65,8 @@ if(isset($retorno)){
   }
 }
 //////////INCLUIR/////////////
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   switch($conteudo) {
     case "char":
     case "varchar":
@@ -82,7 +82,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   if($tamanho == "") {
     $tamanho = 0;
   }
-  
+
   if(isset($vnulo)) $nulo = 't';
   else $nulo = 'f';
   if(isset($vmaiusculo)) $maiusculo = 't';
@@ -90,17 +90,17 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   if(isset($vautocompl)) $autocompl = 't';
   else $autocompl = 'f';
   $result = db_query("select nextval('db_syscampo_codcam_seq')");
-  $codcam = pg_result($result,0,0);
-  if((substr($conteudo,0,4)=="date") && empty($valorinicial)){
+  $codcam = pg_fetch_result($result,0,0);
+  if((str_starts_with((string) $conteudo, "date")) && empty($valorinicial)){
     $valorinicial = "null";
   } 
-  if((substr($conteudo,0,3)=="int") && empty($valorinicial)){
+  if((str_starts_with((string) $conteudo, "int")) && empty($valorinicial)){
     $valorinicial = "0";
   } 
-  if((substr($conteudo,0,5)=="float") && empty($valorinicial)){
+  if((str_starts_with((string) $conteudo, "float")) && empty($valorinicial)){
     $valorinicial = "0";
   } 
-  if((substr($conteudo,0,3)=="boo") && empty($valorinicial)){
+  if((str_starts_with((string) $conteudo, "boo")) && empty($valorinicial)){
     $valorinicial = "f";
   } 
 
@@ -121,7 +121,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
       if(isset($itensdef)){
 	$numArray = sizeof($itensdef);
 	for($i = 0;$i < $numArray;$i++) {
-	  $aux = split("#&",$itensdef[$i]);
+	  $aux = preg_split("#\\#&#m",(string) $itensdef[$i]);
 	      db_query("insert into db_syscampodef values(".$codcam.",'".$aux[0]."','".$aux[1]."')") or die("Erro(44) inserindo em db_syscampodef");
 	}
       }
@@ -130,8 +130,8 @@ if(isset($HTTP_POST_VARS["incluir"])) {
        unset($nomecam,$conteudo,$tamanho,$descricao,$rotulo,$valorinicial,$codcampai);
   }    
 ////////////////ALTERAR////////////////  
-} else if(isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
+} else if(isset($_POST["alterar"])) {
+  db_postmemory($_POST);
   if(isset($vnulo)){
      $nulo = 't';
   }else{
@@ -156,21 +156,21 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   if($tamanho == ""){
      $tamanho = 0;
   }
-  if((substr($conteudo,0,4)=="date") && empty($valorinicial)){
+  if((str_starts_with((string) $conteudo, "date")) && empty($valorinicial)){
     $valorinicial = "null";
   } 
-  if((substr($conteudo,0,3)=="int") && empty($valorinicial)){
+  if((str_starts_with((string) $conteudo, "int")) && empty($valorinicial)){
     $valorinicial = "0";
   } 
-  if((substr($conteudo,0,5)=="float") && empty($valorinicial)){
+  if((str_starts_with((string) $conteudo, "float")) && empty($valorinicial)){
     $valorinicial = "0";
   } 
-  if((substr($conteudo,0,3)=="boo") && empty($valorinicial)){
+  if((str_starts_with((string) $conteudo, "boo")) && empty($valorinicial)){
     $valorinicial = "f";
   } 
 
   $pode_ir=true;
-  
+
   $result05 = db_query("select codcam as codcamal from db_syscampo where nomecam ='$nomecam'");
   $numrows = @pg_num_rows($result);
   if($numrows>0){
@@ -205,7 +205,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
     if(isset($itensdef)){
       $numArray = sizeof($itensdef);
       for($i = 0;$i < $numArray;$i++) {
-	$aux = split("#&",$itensdef[$i]);
+	$aux = preg_split("#\\#&#m",(string) $itensdef[$i]);
 	    db_query("insert into db_syscampodef values(".$codcam.",'".$aux[0]."','".$aux[1]."')") or die("Erro(44) inserindo em db_syscampodef");
       }
     }
@@ -214,7 +214,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   db_query("END");
 //  db_redireciona();
 ////////////////EXCLUIR//////////////
-} else if(isset($HTTP_POST_VARS["excluir"])) {
+} else if(isset($_POST["excluir"])) {
   db_query("BEGIN");
   db_query("delete from db_syscampodef where codcam = $codcam") or die("Erro(44) Excluindo em db_syscampodef");
   db_query("delete from db_syscampodep where codcam = $codcam") or die("Erro(43) Excluindo em db_syscampodep");
@@ -439,7 +439,7 @@ input {
 
                   $sql="Select nomecam as nom,codcampai as pai from db_syscampodep inner join db_syscampo on db_syscampo.codcam=codcampai  where db_syscampodep.codcam = $codcam";
                   $result = db_query($sql);
-  	              if(pg_numrows($result)>0){
+  	              if(pg_num_rows($result)>0){
 
 		                db_fieldsmemory($result,0);
                     echo "<option selected value='$pai'>$nom</option>";
@@ -459,10 +459,10 @@ input {
             <td width="302"> <input type="text" name="nomecam" value="<?=@$nomecam?>"> 
               <?php 
 	  if(isset($conteudo)) {
-	    $v_tipo = split('\(',$conteudo);
+	    $v_tipo = preg_split('#\(#m',$conteudo);
 		$conteudo = $v_tipo[0];
 		if(isset($v_tipo[1])){
-		    $v = split("\)",$v_tipo[1]);
+		    $v = preg_split("#\\)#m",$v_tipo[1]);
 		}else{
 		  $v = "";
 		}
@@ -491,9 +491,9 @@ input {
                       <?php 
 					  if(isset($retorno)){
 				        $result = db_query("select * from db_syscampodef where codcam = ".$retorno);
-					    $numrows = pg_numrows($result);
+					    $numrows = pg_num_rows($result);
 					    for($i = 0;$i < $numrows;$i++)
-					      echo "<option value=\"".pg_result($result,$i,"defcampo")."#&".pg_result($result,$i,"defdescr")."\">".pg_result($result,$i,"defcampo")."</option>\n";
+					      echo "<option value=\"".pg_fetch_result($result,$i,"defcampo")."#&".pg_fetch_result($result,$i,"defdescr")."\">".pg_fetch_result($result,$i,"defcampo")."</option>\n";
 					  }
 				      ?>
                     </select> </td>

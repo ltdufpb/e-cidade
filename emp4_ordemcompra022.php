@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -60,7 +60,7 @@ db_postmemory($HTTP_POST_VARS);
         <strong>Emitir por:&nbsp;&nbsp;</strong>
         
 	    <?php  
-	    $tipo_ordem = array("E"=>"Empenho","F"=>"Fornecedor");
+	    $tipo_ordem = ["E"=>"Empenho","F"=>"Fornecedor"];
 	    db_select("emitir",$tipo_ordem,true,2); ?>
       </td>
       </tr>

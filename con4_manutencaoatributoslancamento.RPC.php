@@ -64,7 +64,7 @@ function buscarInformacoes($conta, $sinal)
     $anoSessao = db_getsession('DB_anousu');
     $instituicaoSessao = db_getsession('DB_instit');
 
-    $campos = implode(',', array(
+    $campos = implode(',', [
         'c60_codcon as codigo_conta',
         'c61_reduz as codigo_reduzido',
         'c60_descr as descricao_conta',
@@ -80,7 +80,7 @@ function buscarInformacoes($conta, $sinal)
         'c60_codsis as codigo_sistema',
         'c120_infocomplementar as atributo',
         "'{$sinal}' as sinal_conta"
-    ));
+    ]);
 
     $sqlBuscaInformacoes = "
         select distinct {$campos}
@@ -130,17 +130,11 @@ function getValorAtributoMSC($conta, $sigla)
             return $conta->codigo_sistema == 9 ? '0' : '1';
             break;
         case 'FP':
-            switch ($conta->identificador_financeiro) {
-                case 'F' :
-                    $valor = '1';
-                    break;
-                case 'P':
-                    $valor = '2';
-                    break;
-                default:
-                    $valor = '';
-                    break;
-            }
+            $valor = match ($conta->identificador_financeiro) {
+                'F' => '1',
+                'P' => '2',
+                default => '',
+            };
             return $valor;
             break;
 
@@ -223,11 +217,11 @@ function getAtributosPadraoContaCorrente($conta, $sigla)
             break;
         case "ORG":
             $instituicao = InstituicaoRepository::getInstituicaoSessao();
-            $valor = substr($instituicao->getCodigoTribunal(),0 , 2);
+            $valor = substr((string) $instituicao->getCodigoTribunal(),0 , 2);
             break;
         case "UO":
             $instituicao = InstituicaoRepository::getInstituicaoSessao();
-            $valor = substr($instituicao->getCodigoTribunal(),2 , 2);
+            $valor = substr((string) $instituicao->getCodigoTribunal(),2 , 2);
             break;
         case "IRP":
             $valor = "F";

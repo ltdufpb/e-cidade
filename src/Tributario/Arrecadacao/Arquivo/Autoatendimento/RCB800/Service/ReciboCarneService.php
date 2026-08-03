@@ -9,16 +9,13 @@ use ECidade\Tributario\Arrecadacao\Arquivo\Autoatendimento\RCB800\Service\Recibo
 
 final class ReciboCarneService extends Service
 {
-    private $reciboService;
-
-    public function __construct(ReciboService $reciboService)
+    public function __construct(private readonly ReciboService $reciboService)
     {
-        $this->reciboService = $reciboService;
     }
 
     public function execute(Debito $debito, $datavigfinal)
     {
-        $carnes = array();
+        $carnes = [];
         $recibos = new ReciboCollection();
 
         $parcelas = $debito->getParcelas();

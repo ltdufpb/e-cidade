@@ -17,21 +17,14 @@ use ECidade\Library\File\FileService;
 
 final class EmissaoService extends Service
 {
-    private $dataBase;
-    private $arquivoTxtService;
-    private $headerService;
-
     public function __construct(
-        DataBase $dataBase,
-        FileService $arquivoTxtService,
-        HeaderService $headerService,
+        private readonly DataBase $dataBase,
+        private readonly FileService $arquivoTxtService,
+        private readonly HeaderService $headerService,
         DetalheService $detalheService,
         TrailerService $trailerService,
         TipoDebitoRepository $tipoDebitoRepository
     ) {
-        $this->dataBase             = $dataBase;
-        $this->arquivoTxtService    = $arquivoTxtService;
-        $this->headerService        = $headerService;
         $this->detalheService       = $detalheService;
         $this->trailerService       = $trailerService;
         $this->tipoDebitoRepository = $tipoDebitoRepository;
@@ -49,7 +42,7 @@ final class EmissaoService extends Service
         $contLinhaArq = 0;
 
         $this->arquivoTxtService->create($nomeArquivo);
-        $tiposDebitoNaoProcessados = array();
+        $tiposDebitoNaoProcessados = [];
 
         foreach ($debitos as $debito) {
             $tipoDebito = $this->tipoDebitoRepository->findByDebito($debito);

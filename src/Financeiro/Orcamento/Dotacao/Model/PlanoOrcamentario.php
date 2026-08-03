@@ -31,7 +31,7 @@ class PlanoOrcamentario
     /**
      * @var LinhaDePacto[]
      */
-    protected $linhasPacto = array();
+    protected $linhasPacto = [];
 
     /**
      * @return LinhaDePacto[]

@@ -55,7 +55,7 @@ if (isset($ordem)) {
   								     where o.codordem = $ordem
 								     order by o.dtini, o.codandam
 								    ");
-  $numAndamentosSelecionados = pg_numrows($andamentosSelecionados);
+  $numAndamentosSelecionados = pg_num_rows($andamentosSelecionados);
   //Mostra tabela contendo todos os andamentos selecionados
   echo"
 	<table width=\"95%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">
@@ -80,11 +80,11 @@ if (isset($ordem)) {
   if ($i%2==0) {$cor="#97B5E6";} else {$cor="#E796A4";}
   echo"
   			<tr align=\"center\" bgcolor=\"". $cor ."\" style=\"font-size:13px\"> 
-			  <td>".pg_result($andamentosSelecionados,$i,"codandam")."&nbsp;</td>
-			  <td>".pg_result($andamentosSelecionados,$i,"nome")."&nbsp;</td>
-			  <td>".pg_result($andamentosSelecionados,$i,"datainicial")."&nbsp;</td>
-			  <td>".pg_result($andamentosSelecionados,$i,"datafinal")."&nbsp;</td>
-			  <td><a href=\"con6_andamentolista.php?descrCodAndam=".pg_result($andamentosSelecionados,$i,"codandam")."\">imprimir descrição</a></td>
+			  <td>".pg_fetch_result($andamentosSelecionados,$i,"codandam")."&nbsp;</td>
+			  <td>".pg_fetch_result($andamentosSelecionados,$i,"nome")."&nbsp;</td>
+			  <td>".pg_fetch_result($andamentosSelecionados,$i,"datainicial")."&nbsp;</td>
+			  <td>".pg_fetch_result($andamentosSelecionados,$i,"datafinal")."&nbsp;</td>
+			  <td><a href=\"con6_andamentolista.php?descrCodAndam=".pg_fetch_result($andamentosSelecionados,$i,"codandam")."\">imprimir descrição</a></td>
 			</tr>
   \n";
   }
@@ -113,11 +113,11 @@ if (isset($ordem)) {
 		<td width=\"10%\">Fim</td>
 	  </tr>
 	  <tr align=\"center\" style=\"font-size:13px\"> 
-		<td>".pg_result($selecionaAndamento,0,"codordem")."&nbsp;</td>
-		<td>".pg_result($selecionaAndamento,0,"codandam")."&nbsp;</td>
-		<td>".pg_result($selecionaAndamento,0,"nome")."&nbsp;</td>
-		<td>".pg_result($selecionaAndamento,0,"datainicial")."&nbsp;</td>
-		<td>".pg_result($selecionaAndamento,0,"datafinal")."&nbsp;</td>
+		<td>".pg_fetch_result($selecionaAndamento,0,"codordem")."&nbsp;</td>
+		<td>".pg_fetch_result($selecionaAndamento,0,"codandam")."&nbsp;</td>
+		<td>".pg_fetch_result($selecionaAndamento,0,"nome")."&nbsp;</td>
+		<td>".pg_fetch_result($selecionaAndamento,0,"datainicial")."&nbsp;</td>
+		<td>".pg_fetch_result($selecionaAndamento,0,"datafinal")."&nbsp;</td>
 	  </tr>
 	  <tr>
 		<td colspan=\"5\">&nbsp;</td>
@@ -126,7 +126,7 @@ if (isset($ordem)) {
 		<td colspan=\"5\">Descri&ccedil;&atilde;o</td>
 	  </tr>
 	  <tr>
-		<td colspan=\"5\">".str_replace("\n","<br>",pg_result($selecionaAndamento,0,"descricao"))."&nbsp;</td>
+		<td colspan=\"5\">".str_replace("\n","<br>",pg_fetch_result($selecionaAndamento,0,"descricao"))."&nbsp;</td>
 	  </tr>
 	</table>
   \n";

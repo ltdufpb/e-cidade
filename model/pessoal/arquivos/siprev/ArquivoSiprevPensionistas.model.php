@@ -28,11 +28,11 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
 
   protected $sNomeArquivo         = "07-Pensionistas";
   protected $sRegistro            = "pensionistas";
-  private   $aIRFNaoPermitidos    = array('0', '3', '8');
-  private   $aMatriculasNaoEnviar = array();
+  private   $aIRFNaoPermitidos    = ['0', '3', '8'];
+  private   $aMatriculasNaoEnviar = [];
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["07"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["07"] = [];
   }
 
   public function getDados() {
@@ -52,7 +52,7 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
     }
 
     $self                 = $this;
-    $aErros               = array();
+    $aErros               = [];
     $aRetornoPensionistas = db_utils::makeCollectionFromRecord($rsPensionistas, function($oDados) use(&$aErros, $self) {
 
       $oServidor = ServidorRepository::getInstanciaByCodigo(
@@ -72,7 +72,7 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
       return;
     });
 
-    $aDadosPensionistas = array();
+    $aDadosPensionistas = [];
 
     foreach($aRetornoPensionistas as $oDadosPensionista) {
 
@@ -83,7 +83,7 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
         continue;
       }
 
-      $aRegistros                  = array();
+      $aRegistros                  = [];
       $aRegistros["dependencias"]  = $this->preencheDependencias($oDadosPensionista);
       $aRegistros["dadosPessoais"] = $this->preencheDadosPessoais($oDadosPensionista);
       $aDadosPensionistas[]        = (object) $aRegistros;
@@ -98,7 +98,7 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
    */
   public function getElementos() {
 
-    $aDados   = array();
+    $aDados   = [];
     $aDados[] = $this->atributosDependencias();
     $aDados[] = $this->atributosDadosPessoais();
 
@@ -111,13 +111,13 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
    */
   private function atributosDependencias() {
 
-    $aServidor                 = array();
+    $aServidor                 = [];
     $aServidor['nome']         = 'servidor';
-    $aServidor['propriedades'] = array('nome', 'numeroCPF', 'numeroNIT');
+    $aServidor['propriedades'] = ['nome', 'numeroCPF', 'numeroNIT'];
 
-    $aDadosDependencia                 = array();
+    $aDadosDependencia                 = [];
     $aDadosDependencia["nome"]         = "dependencias";
-    $aDadosDependencia["propriedades"] = array("tipoDependencia", $aServidor);
+    $aDadosDependencia["propriedades"] = ["tipoDependencia", $aServidor];
 
     return $aDadosDependencia;
   }
@@ -128,9 +128,9 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
    */
   private function atributosDadosPessoais() {
 
-    $aDadosPessoais                 = array();
+    $aDadosPessoais                 = [];
     $aDadosPessoais["nome"]         = "dadosPessoais";
-    $aDadosPessoais["propriedades"] = array("nome", "dataNascimento", "nomeMae");
+    $aDadosPessoais["propriedades"] = ["nome", "dataNascimento", "nomeMae"];
 
     return $aDadosPessoais;
   }
@@ -142,7 +142,7 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
    */
   private function preencheDependencias(Servidor $oServidor) {
 
-    $aDependencias    = array();
+    $aDependencias    = [];
     $iTipoDependencia = null;
     $oServidorOrigem  = $oServidor->getServidorOrigem();
 
@@ -155,7 +155,7 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
 
     if(!empty($iTipoDependencia)) {
 
-      $aTipoDependencia      = array();
+      $aTipoDependencia      = [];
       $aTipoDependencia['1'] = 1;
       $aTipoDependencia['2'] = 3;
       $aTipoDependencia['4'] = 8;
@@ -180,7 +180,7 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
    */
   private function preencheDadosServidor(Servidor $oServidorOrigem) {
 
-    $aServidor              = array();
+    $aServidor              = [];
     $aServidor['nome']      = DBString::removerCaracteresEspeciais($oServidorOrigem->getCgm()->getNome());
 
     if($oServidorOrigem->getCgm()->getCpf() != '') {
@@ -202,7 +202,7 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
   private function preencheDadosPessoais(Servidor $oServidor) {
 
     $oCgm                             = $oServidor->getCgm();
-    $aDadosPessoais                   = array();
+    $aDadosPessoais                   = [];
     $aDadosPessoais["nome"]           = DBString::removerCaracteresEspeciais($oCgm->getNome());
     $aDadosPessoais["dataNascimento"] = $oCgm->getDataNascimento();
     $aDadosPessoais["nomeMae"]        = DBString::removerCaracteresEspeciais($oCgm->getNomeMae());
@@ -217,7 +217,7 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
    */
   public function validarDadosPensionista(Servidor $oServidor) {
 
-    $aErrosRegistro  = array();
+    $aErrosRegistro  = [];
     $oServidorOrigem = $oServidor->getServidorOrigem();
 
     if(is_bool($oServidorOrigem)) {
@@ -273,10 +273,10 @@ class ArquivoSiprevPensionistas extends ArquivoSiprevBase {
    */
   private function getErro(Servidor $oServidor, $sErro) {
 
-    return array(
+    return [
       "instituicao" => $oServidor->getInstituicao()->getDescricao(),
       "cgm"         => $oServidor->getCgm()->getCodigo() ." - ". $oServidor->getCgm()->getNome(),
       "erro"        => $sErro,
-    );
+    ];
   }
 }

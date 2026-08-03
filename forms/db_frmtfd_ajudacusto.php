@@ -86,14 +86,14 @@ $clrotulo->label("sd63_c_nome");
           <td class="field-size2" nowrap="nowrap" title="<?=@$Ttf12_acompanhente?>"><?=@$Ltf12_acompanhente?></td>
           <td nowrap="nowrap">
             <?php 
-              $aX = array('f'=>'NÃO', 't'=>'SIM',);
+              $aX = ['f'=>'NÃO', 't'=>'SIM',];
               db_select('tf12_acompanhente', $aX, true, $db_opcao, '');
             ?>
           </td>
           <td nowrap="nowrap" title="<?=@$Ttf12_faturabpa?>" align="right"><?=@$Ltf12_faturabpa?></td>
           <td nowrap="nowrap" > 
             <?php 
-            $aX = array('t'=>'SIM', 'f'=>'NÃO');
+            $aX = ['t'=>'SIM', 'f'=>'NÃO'];
             db_select('tf12_faturabpa', $aX, true, $db_opcao, '');
             ?>
           </td>
@@ -112,7 +112,7 @@ $clrotulo->label("sd63_c_nome");
             <?php 
             if(isset($tf12_d_validadeini) && !empty($tf12_d_validadeini)) {
           
-              $dTmp = explode('/', $tf12_d_validadeini);
+              $dTmp = explode('/', (string) $tf12_d_validadeini);
               if(count($dTmp) == 3) {
                  
                 $tf12_d_validadeini_dia = $dTmp[0];
@@ -132,7 +132,7 @@ $clrotulo->label("sd63_c_nome");
             <?php 
             if(isset($tf12_d_validadefim) && !empty($tf12_d_validadefim)) {
           
-              $dTmp = explode('/', $tf12_d_validadefim);
+              $dTmp = explode('/', (string) $tf12_d_validadefim);
               if(count($dTmp) == 3) {
                  
                 $tf12_d_validadefim_dia = $dTmp[0];
@@ -158,7 +158,7 @@ $clrotulo->label("sd63_c_nome");
   <tr>
 	  <td valign="top"><br>
         <?php 
-				$aChavepri = array ('tf12_i_codigo' => @$tf12_i_codigo,
+				$aChavepri =  ['tf12_i_codigo' => @$tf12_i_codigo,
  				                    'tf12_faturabpa' => @$tf12_faturabpa,
                             'tf12_acompanhente' => @$tf12_acompanhente,
  				                    'tf12_descricao' => @$tf12_descricao,
@@ -167,7 +167,7 @@ $clrotulo->label("sd63_c_nome");
                             'sd63_c_procedimento' => @$sd63_c_procedimento, 
                             'tf12_f_valor' => @$tf12_f_valor, 
                             'tf12_d_validadeini' => @$tf12_d_validadeini, 
-                            'tf12_d_validadefim' => @$tf12_d_validadefim);
+                            'tf12_d_validadefim' => @$tf12_d_validadefim];
 				$oIframeAE->chavepri = $aChavepri;
 
         $sCampos = 
@@ -209,7 +209,7 @@ $clrotulo->label("sd63_c_nome");
 
 function js_cancelar() {
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
   ?>
 }
 
@@ -312,7 +312,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_tfd_ajudacusto.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

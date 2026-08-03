@@ -33,8 +33,8 @@ String
     $this->execute("update configuracoes.db_itensmenu set id_item = 10431 , descricao = 'Cadastro de Órgão Público' , help = 'Cadastro de Órgão Público' , funcao = 'cai4_cgmnatureza001.php' , itemativo = '1' , manutencao = '1' , desctec = 'Vincula natureza com CGM, para podermos saber qual natureza de finalidade esse cgm faz parte.' , libcliente = 'true' where id_item = 10431;");
     $this->execute("update configuracoes.db_itensmenu set id_item = 10431 , descricao = 'Cadastro de Órgão Público' , help = 'Cadastro de Órgão Público' , funcao = 'cai4_cgmnatureza001.php' , itemativo = '1' , manutencao = '1' , desctec = 'Vincula natureza com CGM, para podermos saber qual natureza de finalidade esse cgm faz parte.' , libcliente = 'true' where id_item = 10431;");
 
-    $detalhetransmissao = $this->table('empagemovdetalhetransmissao', array('schema' => 'empenho'));
-    $detalhetransmissao->addColumn('e74_finalidade', 'string', array('limit' => 3, 'null' => true))->update();
+    $detalhetransmissao = $this->table('empagemovdetalhetransmissao', ['schema' => 'empenho']);
+    $detalhetransmissao->addColumn('e74_finalidade', 'string', ['limit' => 3, 'null' => true])->update();
 
     $this->execute("CREATE SEQUENCE caixa.cgmnatureza_c05_sequencial_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;");
     $this->execute("CREATE TABLE caixa.cgmnatureza(c05_sequencial int4 NOT NULL default 0,c05_numcgm    int4 NOT NULL default 0,c05_tipo    int4 default 0, CONSTRAINT cgmnatureza_sequ_pk PRIMARY KEY (c05_sequencial));");
@@ -62,7 +62,7 @@ String
 String
     );
 
-    $detalhetransmissao = $this->table('empagemovdetalhetransmissao', array('schema' => 'empenho'));
+    $detalhetransmissao = $this->table('empagemovdetalhetransmissao', ['schema' => 'empenho']);
     $detalhetransmissao->removeColumn('e74_finalidade')->update();
     $this->execute("DROP TABLE IF EXISTS cgmnatureza CASCADE;");
     $this->execute("DROP SEQUENCE IF EXISTS cgmnatureza_c05_sequencial_seq;");

@@ -51,6 +51,7 @@ class Extra100Diurna extends Extra100 implements Horas {
    * Calcula o número de horas extra 100% em determinado dia
    * @return \DateTime
    */
+  #[\Override]
   public function calcular() {
 
     $this->atualizaMaximoExtra100();

@@ -56,7 +56,7 @@ $departamento = db_getsession("DB_coddepto");
 function somardata($data, $dias = 0, $meses = 0, $ano = 0)
 {
 
-    $data = explode("/", $data);
+    $data = explode("/", (string) $data);
     $novadata = date("d/m/Y", mktime(0, 0, 0, $data[1] + $meses, $data[0] + $dias, $data[2] + $ano));
     return $novadata;
 }
@@ -133,17 +133,17 @@ if (isset($excluir)) {
 
     //incluir Exame da requisicao
     if ($cllab_requisicao->erro_status != '0') {
-        $aPartes = explode("##", $sStr);
-        $aUrgente = explode("##", $sUrgente);
+        $aPartes = explode("##", (string) $sStr);
+        $aUrgente = explode("##", (string) $sUrgente);
 
-        $aIdsSetorExame = array();
+        $aIdsSetorExame = [];
 
         for ($x = 0; $x < count($aPartes); $x++) {
-            $codigoRequiItem = split("#", $aPartes[$x])[9];
+            $codigoRequiItem = preg_split("#\\##m", $aPartes[$x])[9];
             if ($codigoRequiItem) {
                 $sql = $cllab_requiitem->sql_query_file(null, "*", null, "la21_i_codigo = {$codigoRequiItem}");
                 $rs = db_query($sql);
-                if (pg_numrows($rs)) {
+                if (pg_num_rows($rs)) {
                     continue;
                 }
             }
@@ -166,7 +166,7 @@ if (isset($excluir)) {
             $dData_entrega = somardata($aVet[3], $aVet[5]);
             $cllab_requiitem->la21_i_requisicao = $iRequisicao;
             $cllab_requiitem->la21_i_setorexame = $aVet[0];
-            $aData = explode("/", $dData_entrega);
+            $aData = explode("/", (string) $dData_entrega);
             $cllab_requiitem->la21_d_entrega = $aData[2] . "-" . $aData[1] . "-" . $aData[0];
             $cllab_requiitem->la21_c_hora = $aVet[4];
             $aData = explode("/", $aVet[3]);
@@ -216,12 +216,12 @@ if (isset($excluir)) {
     $sWhere = "     la21_i_requisicao = {$chavepesquisa} ";
     $sSql = $cllab_requisicao->sql_query_requiitem('', $sCampos, 'la21_c_situacao', $sWhere);
     $result = $cllab_requisicao->sql_record($sSql);
-    $alinhasgrid = array();
+    $alinhasgrid = [];
 
     for ($x = 0; $x < $cllab_requisicao->numrows; $x++) {
         db_fieldsmemory($result, $x);
         //montar array com linhas do grid
-        $aData = explode("-", $la21_d_data);
+        $aData = explode("-", (string) $la21_d_data);
         $alinhasgrid[$x] = "$la21_i_setorexame#$la02_c_descr#$la08_c_descr#" . $aData[2] . "/" . $aData[1] . "/" . $aData[0];
         $alinhasgrid[$x] .= "#$la21_c_hora#$la08_i_dias#$la21_i_emergencia#$la21_i_quantidade#$la21_c_situacao#$la21_i_codigo";
     }

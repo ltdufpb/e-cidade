@@ -41,7 +41,7 @@ require_once(modification("model/cda.model.php"));
 require_once(modification("libs/db_conecta.php"));
 use ECidade\Tributario\Divida\Service\TermoInscricaoService;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if( empty($proced) ){
   $proced = 0;
@@ -68,8 +68,8 @@ if( empty($origem) ){
  */
 
 $instit = db_getsession('DB_instit');
-$dataInicial = implode('-', array_reverse(explode('/', $dataini)));
-$dataFinal = implode('-', array_reverse(explode('/', $datafim)));
+$dataInicial = implode('-', array_reverse(explode('/', (string) $dataini)));
+$dataFinal = implode('-', array_reverse(explode('/', (string) $datafim)));
 
 if (!isset($certid) || empty($certid)) { 
  

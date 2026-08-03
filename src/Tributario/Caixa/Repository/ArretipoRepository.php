@@ -63,7 +63,8 @@ final class ArretipoRepository extends ArrebaseRepository
      * @param integer $tipo
      * @return Arretipo
      */
-    public function find($tipo)
+    #[\Override]
+    public function find($tipo, $identificador)
     {
         $sql = $this->dao->sql_query_file($tipo);
 

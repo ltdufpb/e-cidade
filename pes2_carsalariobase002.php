@@ -31,7 +31,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('rh61_regist');
 $clrotulo->label('z01_nome');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 /* parametros
 
@@ -46,7 +46,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 
 $iInstit = db_getsession("DB_instit");
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 $orderby = " z01_nome ";
 $ordenacao = "Alfabética";
 if(isset($ordem) && $ordem == "n"){
@@ -123,7 +123,7 @@ $sql = "select rh01_regist as matricula,
 //// da variável $sql no $resultado_sql = pg_exec($sql);
 //// pg_numrows - verifica quantas linhas vieram no RECORDSET e coloca o resultado na variávei $qtd_linhas_sql
 $resultado_sql = pg_query($sql);
-$qtd_linhas_sql = pg_numrows($resultado_sql);
+$qtd_linhas_sql = pg_num_rows($resultado_sql);
 if($qtd_linhas_sql == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários cadastrados no período.');
 }

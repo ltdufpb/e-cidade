@@ -31,7 +31,7 @@ class cl_linhacolunavalorinformacaocomplementar
     public function __construct()
     {
         $this->rotulo = new rotulo("linhacolunavalorinformacaocomplementar"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -96,10 +96,10 @@ class cl_linhacolunavalorinformacaocomplementar
          $this->erro_status = "0";
          return false; 
        }
-       $this->o157_sequencial = pg_result($result,0,0); 
+       $this->o157_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from linhacolunavalorinformacaocomplementar_o157_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o157_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o157_sequencial)){
          $this->erro_sql = " Campo o157_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -133,7 +133,7 @@ class cl_linhacolunavalorinformacaocomplementar
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Contas da Linha/Coluna ($this->o157_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Contas da Linha/Coluna já Cadastrado";
@@ -162,13 +162,13 @@ class cl_linhacolunavalorinformacaocomplementar
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1010354,'$this->o157_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010424,1010357,'','".AddSlashes(pg_result($resaco,0,'o157_orcparamseqorcparamseqcoluna'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010424,1010356,'','".AddSlashes(pg_result($resaco,0,'o157_conplanoinfocomplementar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010424,1010355,'','".AddSlashes(pg_result($resaco,0,'o157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010424,1010354,'','".AddSlashes(pg_result($resaco,0,'o157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010424,1010357,'','".AddSlashes(pg_fetch_result($resaco,0,'o157_orcparamseqorcparamseqcoluna'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010424,1010356,'','".AddSlashes(pg_fetch_result($resaco,0,'o157_conplanoinfocomplementar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010424,1010355,'','".AddSlashes(pg_fetch_result($resaco,0,'o157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010424,1010354,'','".AddSlashes(pg_fetch_result($resaco,0,'o157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -179,10 +179,10 @@ class cl_linhacolunavalorinformacaocomplementar
       $this->atualizacampos();
      $sql = " update linhacolunavalorinformacaocomplementar set ";
      $virgula = "";
-     if(trim($this->o157_orcparamseqorcparamseqcoluna)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o157_orcparamseqorcparamseqcoluna"])){ 
+     if(trim((string) $this->o157_orcparamseqorcparamseqcoluna)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o157_orcparamseqorcparamseqcoluna"])){ 
        $sql  .= $virgula." o157_orcparamseqorcparamseqcoluna = $this->o157_orcparamseqorcparamseqcoluna ";
        $virgula = ",";
-       if(trim($this->o157_orcparamseqorcparamseqcoluna) == null ){ 
+       if(trim((string) $this->o157_orcparamseqorcparamseqcoluna) == null ){ 
          $this->erro_sql = " Campo Linha/Coluna não informado.";
          $this->erro_campo = "o157_orcparamseqorcparamseqcoluna";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_linhacolunavalorinformacaocomplementar
          return false;
        }
      }
-     if(trim($this->o157_conplanoinfocomplementar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o157_conplanoinfocomplementar"])){ 
+     if(trim((string) $this->o157_conplanoinfocomplementar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o157_conplanoinfocomplementar"])){ 
        $sql  .= $virgula." o157_conplanoinfocomplementar = $this->o157_conplanoinfocomplementar ";
        $virgula = ",";
-       if(trim($this->o157_conplanoinfocomplementar) == null ){ 
+       if(trim((string) $this->o157_conplanoinfocomplementar) == null ){ 
          $this->erro_sql = " Campo Informação Complementar não informado.";
          $this->erro_campo = "o157_conplanoinfocomplementar";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_linhacolunavalorinformacaocomplementar
          return false;
        }
      }
-     if(trim($this->o157_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o157_valor"])){ 
+     if(trim((string) $this->o157_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o157_valor"])){ 
        $sql  .= $virgula." o157_valor = '$this->o157_valor' ";
        $virgula = ",";
-       if(trim($this->o157_valor) == null ){ 
+       if(trim((string) $this->o157_valor) == null ){ 
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "o157_valor";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_linhacolunavalorinformacaocomplementar
          return false;
        }
      }
-     if(trim($this->o157_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o157_sequencial"])){ 
+     if(trim((string) $this->o157_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o157_sequencial"])){ 
        $sql  .= $virgula." o157_sequencial = $this->o157_sequencial ";
        $virgula = ",";
-       if(trim($this->o157_sequencial) == null ){ 
+       if(trim((string) $this->o157_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "o157_sequencial";
          $this->erro_banco = "";
@@ -245,17 +245,17 @@ class cl_linhacolunavalorinformacaocomplementar
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1010354,'$this->o157_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o157_orcparamseqorcparamseqcoluna"]) || $this->o157_orcparamseqorcparamseqcoluna != "")
-             $resac = db_query("insert into db_acount values($acount,1010424,1010357,'".AddSlashes(pg_result($resaco,$conresaco,'o157_orcparamseqorcparamseqcoluna'))."','$this->o157_orcparamseqorcparamseqcoluna',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010424,1010357,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o157_orcparamseqorcparamseqcoluna'))."','$this->o157_orcparamseqorcparamseqcoluna',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o157_conplanoinfocomplementar"]) || $this->o157_conplanoinfocomplementar != "")
-             $resac = db_query("insert into db_acount values($acount,1010424,1010356,'".AddSlashes(pg_result($resaco,$conresaco,'o157_conplanoinfocomplementar'))."','$this->o157_conplanoinfocomplementar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010424,1010356,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o157_conplanoinfocomplementar'))."','$this->o157_conplanoinfocomplementar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o157_valor"]) || $this->o157_valor != "")
-             $resac = db_query("insert into db_acount values($acount,1010424,1010355,'".AddSlashes(pg_result($resaco,$conresaco,'o157_valor'))."','$this->o157_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010424,1010355,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o157_valor'))."','$this->o157_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["o157_sequencial"]) || $this->o157_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010424,1010354,'".AddSlashes(pg_result($resaco,$conresaco,'o157_sequencial'))."','$this->o157_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010424,1010354,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o157_sequencial'))."','$this->o157_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -309,13 +309,13 @@ class cl_linhacolunavalorinformacaocomplementar
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1010354,'$o157_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010424,1010357,'','".AddSlashes(pg_result($resaco,$iresaco,'o157_orcparamseqorcparamseqcoluna'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010424,1010356,'','".AddSlashes(pg_result($resaco,$iresaco,'o157_conplanoinfocomplementar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010424,1010355,'','".AddSlashes(pg_result($resaco,$iresaco,'o157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010424,1010354,'','".AddSlashes(pg_result($resaco,$iresaco,'o157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010424,1010357,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o157_orcparamseqorcparamseqcoluna'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010424,1010356,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o157_conplanoinfocomplementar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010424,1010355,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010424,1010354,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -55,9 +55,9 @@ $db_opcao = 2;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("db_sysregrasacesso"=>"Cad. Acesso","db_sysregrasacessousu"=>"Usuário","db_sysregrasacessoip"=>"IP/Máscara","db_sysregrasacessocanc"=>"Cancela"); 
-	 $clcriaabas->src = array("db_sysregrasacesso"=>"con1_db_sysregrasacesso005.php");
-	 $clcriaabas->disabled   =  array("db_sysregrasacessocanc"=>"true","db_sysregrasacessousu"=>"true","db_sysregrasacessoip"=>"true"); 
+	 $clcriaabas->identifica = ["db_sysregrasacesso"=>"Cad. Acesso","db_sysregrasacessousu"=>"Usuário","db_sysregrasacessoip"=>"IP/Máscara","db_sysregrasacessocanc"=>"Cancela"]; 
+	 $clcriaabas->src = ["db_sysregrasacesso"=>"con1_db_sysregrasacesso005.php"];
+	 $clcriaabas->disabled   =  ["db_sysregrasacessocanc"=>"true","db_sysregrasacessousu"=>"true","db_sysregrasacessoip"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

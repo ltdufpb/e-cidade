@@ -40,32 +40,20 @@ class RelatorioNotasPendentes {
   private $oPdf;
 
   /**
-   * @type Instituicao
-   */
-  private $oInstituicao;
-
-  /**
    * @type stdClass[]
    */
-  private $aMovimentosJustificar = array();
-
-  /**
-   * @type stdClass[]
-   */
-  private $aMovimentosImpressao = array();
+  private $aMovimentosImpressao = [];
 
   /**
    * @param array       $aMovimentosJustificar
    * @param Instituicao $oInstituicao
    * @throws ParameterException
    */
-  public function __construct(array $aMovimentosJustificar, Instituicao $oInstituicao) {
+  public function __construct(private readonly array $aMovimentosJustificar, private readonly Instituicao $oInstituicao) {
 
-    $this->aMovimentosJustificar = $aMovimentosJustificar;
     if (count($this->aMovimentosJustificar) == 0) {
       throw new ParameterException(_M(self::PATH_MENSAGEM . 'movimento_invalidos'));
     }
-    $this->oInstituicao = $oInstituicao;
   }
 
   /**
@@ -102,7 +90,7 @@ class RelatorioNotasPendentes {
         $this->oPdf->Cell(20, $this->iAltura, "{$oStdMovimento->e60_codemp}/{$oStdMovimento->e60_anousu}", "LR", 0, 'C');
         $this->oPdf->Cell(20, $this->iAltura, $oStdMovimento->e69_codnota, "LR", 0, 'C');
         $this->oPdf->Cell(20, $this->iAltura, $oStdMovimento->e53_codord, "LR", 0, 'C');
-        $this->oPdf->Cell(90, $this->iAltura, substr($oStdMovimento->z01_nome, 0, 85), "LR", 0, 'L');
+        $this->oPdf->Cell(90, $this->iAltura, substr((string) $oStdMovimento->z01_nome, 0, 85), "LR", 0, 'L');
         $this->oPdf->Cell(20, $this->iAltura, $oStdMovimento->e69_dtvencimento->getDate(DBDate::DATA_PTBR), "LR", 0, 'C');
         $this->oPdf->Cell(20, $this->iAltura, trim(db_formatar(round($oStdMovimento->e81_valor, 2), 'f')), "LR", 1, 'R');
       }
@@ -140,7 +128,7 @@ class RelatorioNotasPendentes {
    */
   private function prepararDados() {
 
-    $aOrdemSelecionada = array();
+    $aOrdemSelecionada = [];
     foreach ($this->aMovimentosJustificar as $iCodigoClassificacao => $oStdMovimentosSelecionado) {
       array_push($aOrdemSelecionada, $oStdMovimentosSelecionado->iCodNota);
     }
@@ -148,11 +136,11 @@ class RelatorioNotasPendentes {
 
     foreach ($this->aMovimentosJustificar as $oStdMovimento) {
 
-      list($iCodigoEmpenho, $iAno) = explode('/', $oStdMovimento->sNumeroEmpenho);
+      [$iCodigoEmpenho, $iAno] = explode('/', (string) $oStdMovimento->sNumeroEmpenho);
       $oEmpenho = EmpenhoFinanceiroRepository::getEmpenhoFinanceiroPorCodigoAno($iCodigoEmpenho, $iAno, $this->oInstituicao);
       $iCodigoClassificacao = $oEmpenho->getCodigoListaClassificacaoCredor();
 
-      $aCampos = array(
+      $aCampos = [
         'e60_numemp',
         'e60_codemp',
         'e60_anousu',
@@ -163,10 +151,10 @@ class RelatorioNotasPendentes {
         'e53_codord',
         'z01_nome',
         'cc30_descricao',
-      );
+      ];
 
       $oDataVencimento = new DBDate($oStdMovimento->dtVencimento);
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = "cc31_classificacaocredores = {$iCodigoClassificacao}";
       $aWhere[] = "e69_dtvencimento < '{$oDataVencimento->getDate()}'";
       $aWhere[] = "e69_dtvencimento is not null";
@@ -197,7 +185,7 @@ class RelatorioNotasPendentes {
         $oStdMovimentoPendente->e69_dtvencimento = new DBDate($oStdMovimentoPendente->e69_dtvencimento);
         if (empty($this->aMovimentosImpressao[$iCodigoClassificacao])) {
 
-          $this->aMovimentosImpressao[$iCodigoClassificacao] = array();
+          $this->aMovimentosImpressao[$iCodigoClassificacao] = [];
           $this->aMovimentosImpressao[$iCodigoClassificacao] = new stdClass();
           $this->aMovimentosImpressao[$iCodigoClassificacao]->descricao   = $oStdMovimentoPendente->cc30_descricao;
           $this->aMovimentosImpressao[$iCodigoClassificacao]->valor_total = $oStdMovimentoPendente->e81_valor;

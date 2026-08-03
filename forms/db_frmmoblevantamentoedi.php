@@ -104,7 +104,7 @@ db_input('j96_compl',50,$Ij96_compl,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('14'=>'Metálica','15'=>'Alvenaria','16'=>'Mista','17'=>'Madeira','18'=>'Compensado)','19'=>'Nenhuma');
+$x = ['14'=>'Metálica','15'=>'Alvenaria','16'=>'Mista','17'=>'Madeira','18'=>'Compensado)','19'=>'Nenhuma'];
 db_select('j96_paredes',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -115,7 +115,7 @@ db_select('j96_paredes',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('20'=>'Especial','21'=>'Lage/Concreto','22'=>'Telha Colonial','23'=>'Telha Francesa','24'=>'Fibra de Cimento','25'=>'Zinco/Papelão/Pau');
+$x = ['20'=>'Especial','21'=>'Lage/Concreto','22'=>'Telha Colonial','23'=>'Telha Francesa','24'=>'Fibra de Cimento','25'=>'Zinco/Papelão/Pau'];
 db_select('j96_cobertura',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -126,7 +126,7 @@ db_select('j96_cobertura',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('26'=>'Especial','27'=>'Reboco','28'=>'Sem Reboco');
+$x = ['26'=>'Especial','27'=>'Reboco','28'=>'Sem Reboco'];
 db_select('j96_revexterno',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -137,7 +137,7 @@ db_select('j96_revexterno',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('29'=>'Aluminio/Vidro Temperado','30'=>'Madeira/Ferro','31'=>'Tampões');
+$x = ['29'=>'Aluminio/Vidro Temperado','30'=>'Madeira/Ferro','31'=>'Tampões'];
 db_select('j96_esquadrias',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -148,7 +148,7 @@ db_select('j96_esquadrias',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('32'=>'Lage/Concreto','33'=>'Chapas/Compensado/PVC','34'=>'Madeira','35'=>'Compensado','36'=>'Nenhuma');
+$x = ['32'=>'Lage/Concreto','33'=>'Chapas/Compensado/PVC','34'=>'Madeira','35'=>'Compensado','36'=>'Nenhuma'];
 db_select('j96_forro',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -159,7 +159,7 @@ db_select('j96_forro',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('37'=>'Óleo/PVA','38'=>'Salpique','39'=>'Caiação','40'=>'Nenhuma');
+$x = ['37'=>'Óleo/PVA','38'=>'Salpique','39'=>'Caiação','40'=>'Nenhuma'];
 db_select('j96_pintura',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -170,7 +170,7 @@ db_select('j96_pintura',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('41'=>'Especial','42'=>'Material Vinílico','43'=>'Parquê/Cerâmica','44'=>'Lajota','45'=>'Madeira','46'=>'Bruto','47'=>'Nenhum');
+$x = ['41'=>'Especial','42'=>'Material Vinílico','43'=>'Parquê/Cerâmica','44'=>'Lajota','45'=>'Madeira','46'=>'Bruto','47'=>'Nenhum'];
 db_select('j96_piso',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -181,7 +181,7 @@ db_select('j96_piso',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('48'=>'Massa Corrida','49'=>'Madeira','50'=>'Reboco Siples','51'=>'Nenhum');
+$x = ['48'=>'Massa Corrida','49'=>'Madeira','50'=>'Reboco Siples','51'=>'Nenhum'];
 db_select('j96_revinterno',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -192,7 +192,7 @@ db_select('j96_revinterno',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('52'=>'Mais de uma Interna','53'=>'Interna','54'=>'Externa','55'=>'Latrina','56'=>'Nenhuma');
+$x = ['52'=>'Mais de uma Interna','53'=>'Interna','54'=>'Externa','55'=>'Latrina','56'=>'Nenhuma'];
 db_select('j96_instsanitario',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -203,7 +203,7 @@ db_select('j96_instsanitario',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('57'=>'Embutida','58'=>'Mista','59'=>'Exposta','60'=>'Nenhuma');
+$x = ['57'=>'Embutida','58'=>'Mista','59'=>'Exposta','60'=>'Nenhuma'];
 db_select('j96_insteletrica',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -214,7 +214,7 @@ db_select('j96_insteletrica',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('61'=>'Idade (0-03)','62'=>'Idade (04-06)','63'=>'idade (07-09)','64'=>'Idade (10-12)','65'=>'Idade (13-15)','66'=>'Idade (16-18)','67'=>'Idade (19-21)','68'=>'Idade (22-24)','69'=>'Idade (25-27)','70'=>'Idade (28-30)','71'=>'Idade (+ 30)');
+$x = ['61'=>'Idade (0-03)','62'=>'Idade (04-06)','63'=>'idade (07-09)','64'=>'Idade (10-12)','65'=>'Idade (13-15)','66'=>'Idade (16-18)','67'=>'Idade (19-21)','68'=>'Idade (22-24)','69'=>'Idade (25-27)','70'=>'Idade (28-30)','71'=>'Idade (+ 30)'];
 db_select('j96_idade',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -225,7 +225,7 @@ db_select('j96_idade',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('100'=>'CASA/SOBRADO','101'=>'LOJA','102'=>'SALA/CONJUNTO','103'=>'APARTAMENTO','104'=>'OUTROS');
+$x = ['100'=>'CASA/SOBRADO','101'=>'LOJA','102'=>'SALA/CONJUNTO','103'=>'APARTAMENTO','104'=>'OUTROS'];
 db_select('j96_tipoconstr',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -236,7 +236,7 @@ db_select('j96_tipoconstr',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('72'=>'Superposta','73'=>'Isolada','74'=>'Semi-Isolada','75'=>'Conjugada','76'=>'Geminada','77'=>'Qualquer','78'=>'Pavilhão','79'=>'Indústria','80'=>'Especial','81'=>'Galpão','82'=>'Garagem','83'=>'Telheiro','84'=>'Anexo');
+$x = ['72'=>'Superposta','73'=>'Isolada','74'=>'Semi-Isolada','75'=>'Conjugada','76'=>'Geminada','77'=>'Qualquer','78'=>'Pavilhão','79'=>'Indústria','80'=>'Especial','81'=>'Galpão','82'=>'Garagem','83'=>'Telheiro','84'=>'Anexo'];
 db_select('j96_subtitulo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -277,7 +277,7 @@ function js_preenchepesquisa(chave){
   db_iframe_moblevantamentoedi.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

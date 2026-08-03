@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_acordocomissaotipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clacordocomissaotipo = new cl_acordocomissaotipo;
 $clacordocomissaotipo->rotulo->label("ac43_sequencial");
 $clacordocomissaotipo->rotulo->label("ac43_descricao");
@@ -98,9 +98,9 @@ $clacordocomissaotipo->rotulo->label("ac43_descricao");
         }else{
            $sql = $clacordocomissaotipo->sql_query("",$campos,"ac43_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ac43_descricao)){
-          $repassa = array("chave_ac43_sequencial"=>$chave_ac43_sequencial,"chave_ac43_descricao"=>$chave_ac43_descricao);
+          $repassa = ["chave_ac43_sequencial"=>$chave_ac43_sequencial,"chave_ac43_descricao"=>$chave_ac43_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

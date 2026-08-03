@@ -33,7 +33,7 @@ $func_iframe->altura=430;
 $func_iframe->titulo='Pesquisa';
 $func_iframe->iniciarVisivel = false;
 $func_iframe->mostrar();
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 ?>
 <script>
 function js_ruacorreta(){
@@ -97,7 +97,7 @@ return false;
 }
 function js_preenche(chave){
   func_nome.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 function js_func_nome(){
   func_nome.jan.location.href = 'func_nome.php?funcao_js=parent.js_preenche|0';
@@ -107,7 +107,7 @@ function js_func_nome(){
 }
 </script>
 <?php 
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   $clcgm = new cl_cgm;
   $cldb_cgmruas = new cl_db_cgmruas;
   $cldb_cgmbairro = new cl_db_cgmbairro;
@@ -135,7 +135,7 @@ function js_func_nome(){
     if($cldb_cgmruas->numrows > 0 && !isset($municipio)){
       $municipio = "t";
     }elseif(!isset($municipio)){
-      if(strtoupper($munic) == strtoupper($z01_munic) && strtoupper($uf) == strtoupper($z01_uf)){
+      if(strtoupper((string) $munic) == strtoupper((string) $z01_munic) && strtoupper((string) $uf) == strtoupper((string) $z01_uf)){
         $municipio = "t";
       }else{
         $municipio = "f";
@@ -254,7 +254,7 @@ if(isset($pessoa)){
 	  </table>
 	</table>
 	<?php 
-	if(strcmp(strrev(substr(strrev($z01_nome),0,2)),"ME") == 0 || strcmp(strrev(substr(strrev($z01_nome),0,4)),"LTDA") == 0 || strcmp(strrev(substr(strrev($z01_nome),0,2)),"SA") == 0){
+	if(strcmp(strrev(substr(strrev((string) $z01_nome),0,2)),"ME") == 0 || strcmp(strrev(substr(strrev((string) $z01_nome),0,4)),"LTDA") == 0 || strcmp(strrev(substr(strrev((string) $z01_nome),0,2)),"SA") == 0){
           echo "<script>document.form1.pessoa.options[1].selected = true</script>";
 	}
 	if(!isset($testanome))
@@ -262,13 +262,13 @@ if(isset($pessoa)){
 	exit;
 	}elseif(isset($pessoa)){
 	  if($pessoa == "fisica"){
-	    if(strtoupper($z01_munic) == strtoupper($munic) && !isset($municipio))
+	    if(strtoupper((string) $z01_munic) == strtoupper((string) $munic) && !isset($municipio))
 	      $municipio = "t";
 	    elseif(!isset($municipio))
 	      $municipio = "f";
 	    include(modification("prot1_pfisica.php"));
 	  }elseif($pessoa == "juridica"){
-	    if(strtoupper($z01_munic) == strtoupper($munic) && !isset($municipio))
+	    if(strtoupper((string) $z01_munic) == strtoupper((string) $munic) && !isset($municipio))
 	      $municipio = "t";
 	    elseif(!isset($municipio))
 	      $municipio = "f";
@@ -278,7 +278,7 @@ if(isset($pessoa)){
 	  if(strlen($z01_cgccpf) == 14){
 	    $result = $clcgm->sql_record($clcgm->sql_query($z01_numcgm,"*"));
 	    db_fieldsmemory($result,0);
-	    if(strtoupper($z01_munic) == strtoupper($munic) && !isset($municipio))
+	    if(strtoupper((string) $z01_munic) == strtoupper((string) $munic) && !isset($municipio))
 	      $municipio = "t";
 	    elseif(!isset($municipio))
 	      $municipio = "f";
@@ -286,7 +286,7 @@ if(isset($pessoa)){
 	  }elseif(strlen($z01_cgccpf) == 11){
 	    $result = $clcgm->sql_record($clcgm->sql_query($z01_numcgm,"*"));
 	    db_fieldsmemory($result,0);
-	    if(strtoupper($z01_munic) == strtoupper($munic) && !isset($municipio))
+	    if(strtoupper((string) $z01_munic) == strtoupper((string) $munic) && !isset($municipio))
 	      $municipio = "t";
 	    elseif(!isset($municipio))
 	      $municipio = "f";
@@ -438,9 +438,9 @@ if(isset($pessoa)){
             <td nowrap> 
               <?php 
 			  if ($municipio == 't') {
-			     $z01_munic = strtoupper($munic);
+			     $z01_munic = strtoupper((string) $munic);
 			  }else{
-			     $z01_munic = @strtoupper($z01_munic);
+			     $z01_munic = @strtoupper((string) $z01_munic);
 			  }
 		  db_input('z01_munic',20,$Iz01_munic,true,'text',3);
 
@@ -456,7 +456,7 @@ if(isset($pessoa)){
 		  if ($municipio == 't') {
 			$z01_uf = $uf;
                   }else{
-			$z01_uf = @strtoupper($z01_uf);
+			$z01_uf = @strtoupper((string) $z01_uf);
 		  }
 		  db_input('z01_uf',2,$Iz01_uf,true,'text',3);
 

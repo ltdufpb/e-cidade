@@ -31,7 +31,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 ?>
@@ -75,7 +75,7 @@ $db_botao = true;
       </td>
       <td>
        <?php 
-       $x = array(''=>'','I'=>'INCLUSÃO','A'=>'ALTERAÇÃO','E'=>'EXCLUSÃO');
+       $x = [''=>'','I'=>'INCLUSÃO','A'=>'ALTERAÇÃO','E'=>'EXCLUSÃO'];
        db_select('actipo',$x,true,$db_opcao," onchange='js_registros(this.value)'");
        ?>
        <span id="reg">
@@ -139,8 +139,8 @@ $db_botao = true;
   <?php 
   for($x=0;$x<$linhas;$x++){
    db_fieldsmemory($result,$x);
-   $data = date("d/m/Y",trim($datahr));
-   $hora = date("H:i:s",trim($datahr));
+   $data = date("d/m/Y",trim((string) $datahr));
+   $hora = date("H:i:s",trim((string) $datahr));
    if($data!=$datainicial){
     ?>
     <tr bgcolor="#444444" style="color:#DEB887">
@@ -176,8 +176,8 @@ $db_botao = true;
    <tr bgcolor="#f3f3f3">
     <td>&nbsp;</td>
     <td style="font-size:9px;"><?=$descricao?></td>
-    <td bgcolor="#CCFFCC" style="font-size:9px;"><?=$contant==""?"&nbsp;":trim($contant)?></td>
-    <td bgcolor="#CCFFCC" style="font-size:9px;"><?=$contatu==""?"&nbsp;":trim($contatu)?></td>
+    <td bgcolor="#CCFFCC" style="font-size:9px;"><?=$contant==""?"&nbsp;":trim((string) $contant)?></td>
+    <td bgcolor="#CCFFCC" style="font-size:9px;"><?=$contatu==""?"&nbsp;":trim((string) $contatu)?></td>
     <td style="font-size:9px;"><?=($actipo=="I")?"INCLUSÃO":($actipo=="A"?"ALTERAÇÃO":"EXCLUSÃO")?></td>
    </tr>
    <?php 
@@ -230,14 +230,14 @@ function js_registros(valor){
 </script>
 <?php 
 function Registro($tabela,$valor){
- if(trim($tabela)=="regencia"){
+ if(trim((string) $tabela)=="regencia"){
   $sql = "SELECT ed232_c_descr, ed18_c_nome FROM regencia
            inner join disciplina on ed12_i_codigo = ed59_i_disciplina
            inner join caddisciplina on ed232_i_codigo= ed12_i_caddisciplina
            inner join turma on ed57_i_codigo = ed59_i_turma
            inner join escola on ed18_i_codigo = ed57_i_escola
           WHERE ed59_i_codigo = $valor";
- }elseif(trim($tabela)=="parecer"){
+ }elseif(trim((string) $tabela)=="parecer"){
   $sql = "SELECT ed92_c_descr FROM $tabela
           WHERE ed92_i_codigo = $valor
          ";
@@ -252,7 +252,7 @@ function Registro($tabela,$valor){
    $retorno = "";
    $sep = "";
    for($x=0;$x<$ncampos;$x++){
-    $retorno .= $sep.pg_result($result,0,$x);
+    $retorno .= $sep.pg_fetch_result($result,0,$x);
     $sep = " - ";
    }
    return $retorno;

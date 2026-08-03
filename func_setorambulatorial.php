@@ -31,7 +31,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsetorambulatorial = new cl_setorambulatorial;
 $clsetorambulatorial->rotulo->label("sd91_codigo");
 $clsetorambulatorial->rotulo->label("sd91_descricao");
@@ -63,7 +63,7 @@ $clsetorambulatorial->rotulo->label("sd91_descricao");
   </form>
       <?php
 
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = " sd91_unidades = " . db_getsession('DB_coddepto');
       if (!isset($pesquisa_chave)) {
 
@@ -84,10 +84,10 @@ $clsetorambulatorial->rotulo->label("sd91_descricao");
 
         $sWhere  = implode(" and ", $aWhere);
         $sql     = $clsetorambulatorial->sql_query_file("", $campos, "sd91_codigo", $sWhere);
-        $repassa = array();
+        $repassa = [];
 
         if (isset($chave_sd91_descricao)) {
-          $repassa = array("chave_sd91_codigo"=>$chave_sd91_codigo,"chave_sd91_descricao"=>$chave_sd91_descricao);
+          $repassa = ["chave_sd91_codigo"=>$chave_sd91_codigo,"chave_sd91_descricao"=>$chave_sd91_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

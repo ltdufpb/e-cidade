@@ -86,7 +86,7 @@ class EmissaoBoleto
      * @var array
      * @access protected
      */
-    protected $aDebitos = array();
+    protected $aDebitos = [];
 
     /**
      * Numpre do boleto
@@ -543,7 +543,7 @@ class EmissaoBoleto
     {
         $oDaoArrecad = db_utils::getDao('arrecad');
 
-        $aNumpres = array();
+        $aNumpres = [];
 
         foreach ($this->aDebitos as $oDebito) {
             $aNumpres[] = $oDebito->iNumpre;
@@ -813,7 +813,7 @@ class EmissaoBoleto
                 $this->nValorHistorico = $oDadosBoleto->valor_historico;
             }
 
-            if (in_array($oDadosBoleto->tipo_receita, array(2, 3, 5))) {
+            if (in_array($oDadosBoleto->tipo_receita, [2, 3, 5])) {
                 $this->nJurosMulta += $oDadosBoleto->valor;
             }
 

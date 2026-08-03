@@ -36,8 +36,8 @@ require_once(modification("model/issqn/AlvaraMovimentacao.model.php"));
 require_once(modification("model/issqn/AlvaraMovimentacaoLiberacao.model.php"));
 require_once(modification("classes/db_issmovalvara_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $oPost   = db_utils::postMemory($_POST);
 $oGet    = db_utils::postMemory($_GET);
@@ -59,14 +59,14 @@ if (isset($oGet->q123_inscr)){
 if (isset($liberar)) {
 
 	$oLiberarAlvara  = new AlvaraMovimentacaoLiberacao($oPost->q120_issalvara);
-	$aDocumentos     = Array();
+	$aDocumentos     = [];
 	try {
 
 		db_inicio_transacao();
 
 	  if ($oPost->documentos != "") {
 
-	     $aDocumentos = explode(",", $oPost->documentos);
+	     $aDocumentos = explode(",", (string) $oPost->documentos);
 	     foreach($aDocumentos as $iIndice => $oValor){
 
 	       $oLiberarAlvara->addDocumento($oValor);

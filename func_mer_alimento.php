@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_alimento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_alimento = new cl_mer_alimento;
 $clmer_alimento->rotulo->label("me35_i_codigo");
 $clmer_alimento->rotulo->label("me35_c_nomealimento");
@@ -115,9 +115,9 @@ $clmer_alimento->rotulo->label("me35_c_nomealimento");
         } else {
           $sql = $clmer_alimento->sql_query("",$campos,"me35_c_nomealimento",$condicao2);
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_me35_i_codigo)) {
-          $repassa = array("chave_me35_i_codigo"=>$chave_me35_i_codigo,"chave_me35_i_codigo"=>$chave_me35_i_codigo);
+          $repassa = ["chave_me35_i_codigo"=>$chave_me35_i_codigo,"chave_me35_i_codigo"=>$chave_me35_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

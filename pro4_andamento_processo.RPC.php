@@ -33,16 +33,16 @@ require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_utils.php');
 require_once modification('dbforms/db_funcoes.php');
 
-$definicoesCamposDinamicos = array();
+$definicoesCamposDinamicos = [];
 
 if (!empty($_REQUEST['campos'])) {
     array_map(function ($campo) use (&$definicoesCamposDinamicos) {
         $definicoesCamposDinamicos[$campo] = FILTER_DEFAULT;
         $definicoesCamposDinamicos['sequencial_' . $campo] = FILTER_VALIDATE_INT;
-    }, explode(",", $_REQUEST['campos']));
+    }, explode(",", (string) $_REQUEST['campos']));
 }
 
-$definicoes = array_merge($definicoesCamposDinamicos, array(
+$definicoes = array_merge($definicoesCamposDinamicos, [
     'codigoTransferencia' => FILTER_SANITIZE_STRING,
     'departamentoDestino' => FILTER_VALIDATE_INT,
     'recebimentoDestino' => FILTER_VALIDATE_INT,
@@ -60,7 +60,7 @@ $definicoes = array_merge($definicoesCamposDinamicos, array(
     'mensagem'=> FILTER_SANITIZE_STRING,
     'respostaOuvidoria'=>FILTER_VALIDATE_BOOLEAN,
     'filtraDepartamentosPorDataLimite'=>FILTER_VALIDATE_INT
-));
+]);
 
 $parametros = JSON::requestParameters($definicoes);
 

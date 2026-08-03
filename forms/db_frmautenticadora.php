@@ -30,16 +30,16 @@ if (@$k11_local == "") {
 
   $sql = "select nome from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario");
   $result = db_query($sql);
-  if (pg_numrows($result) > 0) {
+  if (pg_num_rows($result) > 0) {
     db_fieldsmemory($result,0);
     $k11_local = "MICRO DO USUARIO " . $nome;
   }
 
   $sql = "select nomeinst from db_config where codigo = " . db_getsession("DB_instit");
   $result = db_query($sql) or die($sql);
-  if (pg_numrows($result) > 0) {
+  if (pg_num_rows($result) > 0) {
     db_fieldsmemory($result,0);
-    $palavras = split(" ",$nomeinst);
+    $palavras = preg_split("# #m",(string) $nomeinst);
     $conta=0;
     for ($i=0; $i < sizeof($palavras); $i++) {
 //    echo $i . "-" . $palavras[$i] . "- conta: $conta<br>";
@@ -47,13 +47,13 @@ if (@$k11_local == "") {
         	continue;
       }
       if ($conta == 0) {
-	      $k11_ident1 = substr($palavras[$i],0,1);
+	      $k11_ident1 = substr((string) $palavras[$i],0,1);
        	$conta++;
       } else if ($conta == 1) {
-	$k11_ident2 = substr($palavras[$i],0,1);
+	$k11_ident2 = substr((string) $palavras[$i],0,1);
 	$conta++;
       } else if ($conta == 2) {
-	$k11_ident3 = substr($palavras[$i],0,1);
+	$k11_ident3 = substr((string) $palavras[$i],0,1);
 	$conta++;
       }
     }
@@ -123,7 +123,7 @@ if (@$k11_aut2 == "") {
         <td height="25"><strong>Tipo da impressora de cheques :</strong></td>
 	<td>
 	<?php 
-	$x = array("1"=>"CHRONOS","2"=>"Bematech","3"=>"Schalter");
+	$x = ["1"=>"CHRONOS","2"=>"Bematech","3"=>"Schalter"];
 	db_select('k11_tipoimp',$x,true,4,'');
 	?>
 	</td>
@@ -132,7 +132,7 @@ if (@$k11_aut2 == "") {
         <td height="25"><strong>Tipo de Autenticação:</strong></td>
 	<td>
 	<?php 
-	$x = array("1"=>"Autentica e Imprime","2"=>"Autentica e Não Imprime","3"=>"Não Autentica e Não Imprime(somente Empenho)");
+	$x = ["1"=>"Autentica e Imprime","2"=>"Autentica e Não Imprime","3"=>"Não Autentica e Não Imprime(somente Empenho)"];
 	db_select('k11_tipautent',$x,true,4,'');
 	?>
 	</td>

@@ -13,64 +13,64 @@ define('FPDF_VERSION','1.51');
 class FPDF
 {
 //Private properties
-var $page;               //current page number
-var $n;                  //current object number
-var $offsets;            //array of object offsets
-var $buffer;             //buffer holding in-memory PDF
-var $pages;              //array containing pages
-var $state;              //current document state
-var $compress;           //compression flag
-var $DefOrientation;     //default orientation
-var $CurOrientation;     //current orientation
-var $OrientationChanges; //array indicating orientation changes
-var $fwPt;
-var $fhPt;         //dimensions of page format in points
-var $fw;
-var $fh;             //dimensions of page format in user unit
-var $wPt;
-var $hPt;           //current dimensions of page in points
-var $k;                  //scale factor (number of points in user unit)
-var $w;
-var $h;               //current dimensions of page in user unit
-var $lMargin;            //left margin
-var $tMargin;            //top margin
-var $rMargin;            //right margin
-var $bMargin;            //page break margin
-var $cMargin;            //cell margin
-var $x;
-var $y;               //current position in user unit for cell positionning
-var $lasth;              //height of last cell printed
-var $LineWidth;          //line width in user unit
-var $CoreFonts;          //array of standard font names
-var $fonts;              //array of used fonts
-var $FontFiles;          //array of font files
-var $diffs;              //array of encoding differences
-var $images;             //array of used images
-var $PageLinks;          //array of links in pages
-var $links;              //array of internal links
-var $FontFamily;         //current font family
-var $FontStyle;          //current font style
-var $underline;          //underlining flag
-var $CurrentFont;        //current font info
-var $FontSizePt;         //current font size in points
-var $FontSize;           //current font size in user unit
-var $DrawColor;          //commands for drawing color
-var $FillColor;          //commands for filling color
-var $TextColor;          //commands for text color
-var $ColorFlag;          //indicates whether fill and text colors are different
-var $ws;                 //word spacing
-var $AutoPageBreak;      //automatic page breaking
-var $PageBreakTrigger;   //threshold used to trigger page breaks
-var $InFooter;           //flag set when processing footer
-var $ZoomMode;           //zoom display mode
-var $LayoutMode;         //layout display mode
-var $title;              //title
-var $subject;            //subject
-var $author;             //author
-var $keywords;           //keywords
-var $creator;            //creator
-var $AliasNbPages;       //alias for total number of pages
-var $fpdf_charwidths;
+public $page;               //current page number
+public $n;                  //current object number
+public $offsets;            //array of object offsets
+public $buffer;             //buffer holding in-memory PDF
+public $pages;              //array containing pages
+public $state;              //current document state
+public $compress;           //compression flag
+public $DefOrientation;     //default orientation
+public $CurOrientation;     //current orientation
+public $OrientationChanges; //array indicating orientation changes
+public $fwPt;
+public $fhPt;         //dimensions of page format in points
+public $fw;
+public $fh;             //dimensions of page format in user unit
+public $wPt;
+public $hPt;           //current dimensions of page in points
+public $k;                  //scale factor (number of points in user unit)
+public $w;
+public $h;               //current dimensions of page in user unit
+public $lMargin;            //left margin
+public $tMargin;            //top margin
+public $rMargin;            //right margin
+public $bMargin;            //page break margin
+public $cMargin;            //cell margin
+public $x;
+public $y;               //current position in user unit for cell positionning
+public $lasth;              //height of last cell printed
+public $LineWidth;          //line width in user unit
+public $CoreFonts;          //array of standard font names
+public $fonts;              //array of used fonts
+public $FontFiles;          //array of font files
+public $diffs;              //array of encoding differences
+public $images;             //array of used images
+public $PageLinks;          //array of links in pages
+public $links;              //array of internal links
+public $FontFamily;         //current font family
+public $FontStyle;          //current font style
+public $underline;          //underlining flag
+public $CurrentFont;        //current font info
+public $FontSizePt;         //current font size in points
+public $FontSize;           //current font size in user unit
+public $DrawColor;          //commands for drawing color
+public $FillColor;          //commands for filling color
+public $TextColor;          //commands for text color
+public $ColorFlag;          //indicates whether fill and text colors are different
+public $ws;                 //word spacing
+public $AutoPageBreak;      //automatic page breaking
+public $PageBreakTrigger;   //threshold used to trigger page breaks
+public $InFooter;           //flag set when processing footer
+public $ZoomMode;           //zoom display mode
+public $LayoutMode;         //layout display mode
+public $title;              //title
+public $subject;            //subject
+public $author;             //author
+public $keywords;           //keywords
+public $creator;            //creator
+public $AliasNbPages;       //alias for total number of pages
+public $fpdf_charwidths;
 
 /****************************************************************************
 *                                                                           *
@@ -86,14 +86,14 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
 	$this->page=0;
 	$this->n=2;
 	$this->buffer='';
-	$this->pages=array();
-	$this->OrientationChanges=array();
+	$this->pages=[];
+	$this->OrientationChanges=[];
 	$this->state=0;
-	$this->fonts=array();
-	$this->FontFiles=array();
-	$this->diffs=array();
-	$this->images=array();
-	$this->links=array();
+	$this->fonts=[];
+	$this->FontFiles=[];
+	$this->diffs=[];
+	$this->images=[];
+	$this->links=[];
 	$this->InFooter=false;
 	$this->FontFamily='';
 	$this->FontStyle='';
@@ -110,7 +110,7 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
     $fpdf_charwidths['courierI']=$fpdf_charwidths['courier'];
     $fpdf_charwidths['courierBI']=$fpdf_charwidths['courier'];
 
-    $fpdf_charwidths['helvetica']=array(
+    $fpdf_charwidths['helvetica']=[
         chr(0)=>278,chr(1)=>278,chr(2)=>278,chr(3)=>278,chr(4)=>278,chr(5)=>278,chr(6)=>278,chr(7)=>278,chr(8)=>278,chr(9)=>278,chr(10)=>278,chr(11)=>278,chr(12)=>278,chr(13)=>278,chr(14)=>278,chr(15)=>278,chr(16)=>278,chr(17)=>278,chr(18)=>278,chr(19)=>278,chr(20)=>278,chr(21)=>278,
         chr(22)=>278,chr(23)=>278,chr(24)=>278,chr(25)=>278,chr(26)=>278,chr(27)=>278,chr(28)=>278,chr(29)=>278,chr(30)=>278,chr(31)=>278,' '=>278,'!'=>278,'"'=>355,'#'=>556,'$'=>556,'%'=>889,'&'=>667,'\''=>191,'('=>333,')'=>333,'*'=>389,'+'=>584,
         ','=>278,'-'=>333,'.'=>278,'/'=>278,'0'=>556,'1'=>556,'2'=>556,'3'=>556,'4'=>556,'5'=>556,'6'=>556,'7'=>556,'8'=>556,'9'=>556,':'=>278,';'=>278,'<'=>584,'='=>584,'>'=>584,'?'=>556,'@'=>1015,'A'=>667,
@@ -122,9 +122,9 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
         chr(176)=>400,chr(177)=>584,chr(178)=>333,chr(179)=>333,chr(180)=>333,chr(181)=>556,chr(182)=>537,chr(183)=>278,chr(184)=>333,chr(185)=>333,chr(186)=>365,chr(187)=>556,chr(188)=>834,chr(189)=>834,chr(190)=>834,chr(191)=>611,chr(192)=>667,chr(193)=>667,chr(194)=>667,chr(195)=>667,chr(196)=>667,chr(197)=>667,
         chr(198)=>1000,chr(199)=>722,chr(200)=>667,chr(201)=>667,chr(202)=>667,chr(203)=>667,chr(204)=>278,chr(205)=>278,chr(206)=>278,chr(207)=>278,chr(208)=>722,chr(209)=>722,chr(210)=>778,chr(211)=>778,chr(212)=>778,chr(213)=>778,chr(214)=>778,chr(215)=>584,chr(216)=>778,chr(217)=>722,chr(218)=>722,chr(219)=>722,
         chr(220)=>722,chr(221)=>667,chr(222)=>667,chr(223)=>611,chr(224)=>556,chr(225)=>556,chr(226)=>556,chr(227)=>556,chr(228)=>556,chr(229)=>556,chr(230)=>889,chr(231)=>500,chr(232)=>556,chr(233)=>556,chr(234)=>556,chr(235)=>556,chr(236)=>278,chr(237)=>278,chr(238)=>278,chr(239)=>278,chr(240)=>556,chr(241)=>556,
-        chr(242)=>556,chr(243)=>556,chr(244)=>556,chr(245)=>556,chr(246)=>556,chr(247)=>584,chr(248)=>611,chr(249)=>556,chr(250)=>556,chr(251)=>556,chr(252)=>556,chr(253)=>500,chr(254)=>556,chr(255)=>500);
+        chr(242)=>556,chr(243)=>556,chr(244)=>556,chr(245)=>556,chr(246)=>556,chr(247)=>584,chr(248)=>611,chr(249)=>556,chr(250)=>556,chr(251)=>556,chr(252)=>556,chr(253)=>500,chr(254)=>556,chr(255)=>500];
 
-    $fpdf_charwidths['helveticaB']=array(
+    $fpdf_charwidths['helveticaB']=[
         chr(0)=>278,chr(1)=>278,chr(2)=>278,chr(3)=>278,chr(4)=>278,chr(5)=>278,chr(6)=>278,chr(7)=>278,chr(8)=>278,chr(9)=>278,chr(10)=>278,chr(11)=>278,chr(12)=>278,chr(13)=>278,chr(14)=>278,chr(15)=>278,chr(16)=>278,chr(17)=>278,chr(18)=>278,chr(19)=>278,chr(20)=>278,chr(21)=>278,
         chr(22)=>278,chr(23)=>278,chr(24)=>278,chr(25)=>278,chr(26)=>278,chr(27)=>278,chr(28)=>278,chr(29)=>278,chr(30)=>278,chr(31)=>278,' '=>278,'!'=>333,'"'=>474,'#'=>556,'$'=>556,'%'=>889,'&'=>722,'\''=>238,'('=>333,')'=>333,'*'=>389,'+'=>584,
         ','=>278,'-'=>333,'.'=>278,'/'=>278,'0'=>556,'1'=>556,'2'=>556,'3'=>556,'4'=>556,'5'=>556,'6'=>556,'7'=>556,'8'=>556,'9'=>556,':'=>333,';'=>333,'<'=>584,'='=>584,'>'=>584,'?'=>611,'@'=>975,'A'=>722,
@@ -136,8 +136,8 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
         chr(176)=>400,chr(177)=>584,chr(178)=>333,chr(179)=>333,chr(180)=>333,chr(181)=>611,chr(182)=>556,chr(183)=>278,chr(184)=>333,chr(185)=>333,chr(186)=>365,chr(187)=>556,chr(188)=>834,chr(189)=>834,chr(190)=>834,chr(191)=>611,chr(192)=>722,chr(193)=>722,chr(194)=>722,chr(195)=>722,chr(196)=>722,chr(197)=>722,
         chr(198)=>1000,chr(199)=>722,chr(200)=>667,chr(201)=>667,chr(202)=>667,chr(203)=>667,chr(204)=>278,chr(205)=>278,chr(206)=>278,chr(207)=>278,chr(208)=>722,chr(209)=>722,chr(210)=>778,chr(211)=>778,chr(212)=>778,chr(213)=>778,chr(214)=>778,chr(215)=>584,chr(216)=>778,chr(217)=>722,chr(218)=>722,chr(219)=>722,
         chr(220)=>722,chr(221)=>667,chr(222)=>667,chr(223)=>611,chr(224)=>556,chr(225)=>556,chr(226)=>556,chr(227)=>556,chr(228)=>556,chr(229)=>556,chr(230)=>889,chr(231)=>556,chr(232)=>556,chr(233)=>556,chr(234)=>556,chr(235)=>556,chr(236)=>278,chr(237)=>278,chr(238)=>278,chr(239)=>278,chr(240)=>611,chr(241)=>611,
-        chr(242)=>611,chr(243)=>611,chr(244)=>611,chr(245)=>611,chr(246)=>611,chr(247)=>584,chr(248)=>611,chr(249)=>611,chr(250)=>611,chr(251)=>611,chr(252)=>611,chr(253)=>556,chr(254)=>611,chr(255)=>556);
-    $fpdf_charwidths['helveticaBI']=array(
+        chr(242)=>611,chr(243)=>611,chr(244)=>611,chr(245)=>611,chr(246)=>611,chr(247)=>584,chr(248)=>611,chr(249)=>611,chr(250)=>611,chr(251)=>611,chr(252)=>611,chr(253)=>556,chr(254)=>611,chr(255)=>556];
+    $fpdf_charwidths['helveticaBI']=[
         chr(0)=>278,chr(1)=>278,chr(2)=>278,chr(3)=>278,chr(4)=>278,chr(5)=>278,chr(6)=>278,chr(7)=>278,chr(8)=>278,chr(9)=>278,chr(10)=>278,chr(11)=>278,chr(12)=>278,chr(13)=>278,chr(14)=>278,chr(15)=>278,chr(16)=>278,chr(17)=>278,chr(18)=>278,chr(19)=>278,chr(20)=>278,chr(21)=>278,
         chr(22)=>278,chr(23)=>278,chr(24)=>278,chr(25)=>278,chr(26)=>278,chr(27)=>278,chr(28)=>278,chr(29)=>278,chr(30)=>278,chr(31)=>278,' '=>278,'!'=>333,'"'=>474,'#'=>556,'$'=>556,'%'=>889,'&'=>722,'\''=>238,'('=>333,')'=>333,'*'=>389,'+'=>584,
         ','=>278,'-'=>333,'.'=>278,'/'=>278,'0'=>556,'1'=>556,'2'=>556,'3'=>556,'4'=>556,'5'=>556,'6'=>556,'7'=>556,'8'=>556,'9'=>556,':'=>333,';'=>333,'<'=>584,'='=>584,'>'=>584,'?'=>611,'@'=>975,'A'=>722,
@@ -149,9 +149,9 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
         chr(176)=>400,chr(177)=>584,chr(178)=>333,chr(179)=>333,chr(180)=>333,chr(181)=>611,chr(182)=>556,chr(183)=>278,chr(184)=>333,chr(185)=>333,chr(186)=>365,chr(187)=>556,chr(188)=>834,chr(189)=>834,chr(190)=>834,chr(191)=>611,chr(192)=>722,chr(193)=>722,chr(194)=>722,chr(195)=>722,chr(196)=>722,chr(197)=>722,
         chr(198)=>1000,chr(199)=>722,chr(200)=>667,chr(201)=>667,chr(202)=>667,chr(203)=>667,chr(204)=>278,chr(205)=>278,chr(206)=>278,chr(207)=>278,chr(208)=>722,chr(209)=>722,chr(210)=>778,chr(211)=>778,chr(212)=>778,chr(213)=>778,chr(214)=>778,chr(215)=>584,chr(216)=>778,chr(217)=>722,chr(218)=>722,chr(219)=>722,
         chr(220)=>722,chr(221)=>667,chr(222)=>667,chr(223)=>611,chr(224)=>556,chr(225)=>556,chr(226)=>556,chr(227)=>556,chr(228)=>556,chr(229)=>556,chr(230)=>889,chr(231)=>556,chr(232)=>556,chr(233)=>556,chr(234)=>556,chr(235)=>556,chr(236)=>278,chr(237)=>278,chr(238)=>278,chr(239)=>278,chr(240)=>611,chr(241)=>611,
-        chr(242)=>611,chr(243)=>611,chr(244)=>611,chr(245)=>611,chr(246)=>611,chr(247)=>584,chr(248)=>611,chr(249)=>611,chr(250)=>611,chr(251)=>611,chr(252)=>611,chr(253)=>556,chr(254)=>611,chr(255)=>556);
-        
-    $fpdf_charwidths['helveticaI']=array(
+        chr(242)=>611,chr(243)=>611,chr(244)=>611,chr(245)=>611,chr(246)=>611,chr(247)=>584,chr(248)=>611,chr(249)=>611,chr(250)=>611,chr(251)=>611,chr(252)=>611,chr(253)=>556,chr(254)=>611,chr(255)=>556];
+
+    $fpdf_charwidths['helveticaI']=[
         chr(0)=>278,chr(1)=>278,chr(2)=>278,chr(3)=>278,chr(4)=>278,chr(5)=>278,chr(6)=>278,chr(7)=>278,chr(8)=>278,chr(9)=>278,chr(10)=>278,chr(11)=>278,chr(12)=>278,chr(13)=>278,chr(14)=>278,chr(15)=>278,chr(16)=>278,chr(17)=>278,chr(18)=>278,chr(19)=>278,chr(20)=>278,chr(21)=>278,
         chr(22)=>278,chr(23)=>278,chr(24)=>278,chr(25)=>278,chr(26)=>278,chr(27)=>278,chr(28)=>278,chr(29)=>278,chr(30)=>278,chr(31)=>278,' '=>278,'!'=>278,'"'=>355,'#'=>556,'$'=>556,'%'=>889,'&'=>667,'\''=>191,'('=>333,')'=>333,'*'=>389,'+'=>584,
         ','=>278,'-'=>333,'.'=>278,'/'=>278,'0'=>556,'1'=>556,'2'=>556,'3'=>556,'4'=>556,'5'=>556,'6'=>556,'7'=>556,'8'=>556,'9'=>556,':'=>278,';'=>278,'<'=>584,'='=>584,'>'=>584,'?'=>556,'@'=>1015,'A'=>667,
@@ -163,9 +163,9 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
         chr(176)=>400,chr(177)=>584,chr(178)=>333,chr(179)=>333,chr(180)=>333,chr(181)=>556,chr(182)=>537,chr(183)=>278,chr(184)=>333,chr(185)=>333,chr(186)=>365,chr(187)=>556,chr(188)=>834,chr(189)=>834,chr(190)=>834,chr(191)=>611,chr(192)=>667,chr(193)=>667,chr(194)=>667,chr(195)=>667,chr(196)=>667,chr(197)=>667,
         chr(198)=>1000,chr(199)=>722,chr(200)=>667,chr(201)=>667,chr(202)=>667,chr(203)=>667,chr(204)=>278,chr(205)=>278,chr(206)=>278,chr(207)=>278,chr(208)=>722,chr(209)=>722,chr(210)=>778,chr(211)=>778,chr(212)=>778,chr(213)=>778,chr(214)=>778,chr(215)=>584,chr(216)=>778,chr(217)=>722,chr(218)=>722,chr(219)=>722,
         chr(220)=>722,chr(221)=>667,chr(222)=>667,chr(223)=>611,chr(224)=>556,chr(225)=>556,chr(226)=>556,chr(227)=>556,chr(228)=>556,chr(229)=>556,chr(230)=>889,chr(231)=>500,chr(232)=>556,chr(233)=>556,chr(234)=>556,chr(235)=>556,chr(236)=>278,chr(237)=>278,chr(238)=>278,chr(239)=>278,chr(240)=>556,chr(241)=>556,
-        chr(242)=>556,chr(243)=>556,chr(244)=>556,chr(245)=>556,chr(246)=>556,chr(247)=>584,chr(248)=>611,chr(249)=>556,chr(250)=>556,chr(251)=>556,chr(252)=>556,chr(253)=>500,chr(254)=>556,chr(255)=>500);
+        chr(242)=>556,chr(243)=>556,chr(244)=>556,chr(245)=>556,chr(246)=>556,chr(247)=>584,chr(248)=>611,chr(249)=>556,chr(250)=>556,chr(251)=>556,chr(252)=>556,chr(253)=>500,chr(254)=>556,chr(255)=>500];
 
-    $fpdf_charwidths['symbol']=array(
+    $fpdf_charwidths['symbol']=[
         chr(0)=>250,chr(1)=>250,chr(2)=>250,chr(3)=>250,chr(4)=>250,chr(5)=>250,chr(6)=>250,chr(7)=>250,chr(8)=>250,chr(9)=>250,chr(10)=>250,chr(11)=>250,chr(12)=>250,chr(13)=>250,chr(14)=>250,chr(15)=>250,chr(16)=>250,chr(17)=>250,chr(18)=>250,chr(19)=>250,chr(20)=>250,chr(21)=>250,
         chr(22)=>250,chr(23)=>250,chr(24)=>250,chr(25)=>250,chr(26)=>250,chr(27)=>250,chr(28)=>250,chr(29)=>250,chr(30)=>250,chr(31)=>250,' '=>250,'!'=>333,'"'=>713,'#'=>500,'$'=>549,'%'=>833,'&'=>778,'\''=>439,'('=>333,')'=>333,'*'=>500,'+'=>549,
         ','=>250,'-'=>549,'.'=>250,'/'=>278,'0'=>500,'1'=>500,'2'=>500,'3'=>500,'4'=>500,'5'=>500,'6'=>500,'7'=>500,'8'=>500,'9'=>500,':'=>278,';'=>278,'<'=>549,'='=>549,'>'=>549,'?'=>444,'@'=>549,'A'=>722,
@@ -177,9 +177,9 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
         chr(176)=>400,chr(177)=>549,chr(178)=>411,chr(179)=>549,chr(180)=>549,chr(181)=>713,chr(182)=>494,chr(183)=>460,chr(184)=>549,chr(185)=>549,chr(186)=>549,chr(187)=>549,chr(188)=>1000,chr(189)=>603,chr(190)=>1000,chr(191)=>658,chr(192)=>823,chr(193)=>686,chr(194)=>795,chr(195)=>987,chr(196)=>768,chr(197)=>768,
         chr(198)=>823,chr(199)=>768,chr(200)=>768,chr(201)=>713,chr(202)=>713,chr(203)=>713,chr(204)=>713,chr(205)=>713,chr(206)=>713,chr(207)=>713,chr(208)=>768,chr(209)=>713,chr(210)=>790,chr(211)=>790,chr(212)=>890,chr(213)=>823,chr(214)=>549,chr(215)=>250,chr(216)=>713,chr(217)=>603,chr(218)=>603,chr(219)=>1042,
         chr(220)=>987,chr(221)=>603,chr(222)=>987,chr(223)=>603,chr(224)=>494,chr(225)=>329,chr(226)=>790,chr(227)=>790,chr(228)=>786,chr(229)=>713,chr(230)=>384,chr(231)=>384,chr(232)=>384,chr(233)=>384,chr(234)=>384,chr(235)=>384,chr(236)=>494,chr(237)=>494,chr(238)=>494,chr(239)=>494,chr(240)=>0,chr(241)=>329,
-        chr(242)=>274,chr(243)=>686,chr(244)=>686,chr(245)=>686,chr(246)=>384,chr(247)=>384,chr(248)=>384,chr(249)=>384,chr(250)=>384,chr(251)=>384,chr(252)=>494,chr(253)=>494,chr(254)=>494,chr(255)=>0);
+        chr(242)=>274,chr(243)=>686,chr(244)=>686,chr(245)=>686,chr(246)=>384,chr(247)=>384,chr(248)=>384,chr(249)=>384,chr(250)=>384,chr(251)=>384,chr(252)=>494,chr(253)=>494,chr(254)=>494,chr(255)=>0];
 
-    $fpdf_charwidths['times']=array(
+    $fpdf_charwidths['times']=[
         chr(0)=>250,chr(1)=>250,chr(2)=>250,chr(3)=>250,chr(4)=>250,chr(5)=>250,chr(6)=>250,chr(7)=>250,chr(8)=>250,chr(9)=>250,chr(10)=>250,chr(11)=>250,chr(12)=>250,chr(13)=>250,chr(14)=>250,chr(15)=>250,chr(16)=>250,chr(17)=>250,chr(18)=>250,chr(19)=>250,chr(20)=>250,chr(21)=>250,
         chr(22)=>250,chr(23)=>250,chr(24)=>250,chr(25)=>250,chr(26)=>250,chr(27)=>250,chr(28)=>250,chr(29)=>250,chr(30)=>250,chr(31)=>250,' '=>250,'!'=>333,'"'=>408,'#'=>500,'$'=>500,'%'=>833,'&'=>778,'\''=>180,'('=>333,')'=>333,'*'=>500,'+'=>564,
         ','=>250,'-'=>333,'.'=>250,'/'=>278,'0'=>500,'1'=>500,'2'=>500,'3'=>500,'4'=>500,'5'=>500,'6'=>500,'7'=>500,'8'=>500,'9'=>500,':'=>278,';'=>278,'<'=>564,'='=>564,'>'=>564,'?'=>444,'@'=>921,'A'=>722,
@@ -191,9 +191,9 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
         chr(176)=>400,chr(177)=>564,chr(178)=>300,chr(179)=>300,chr(180)=>333,chr(181)=>500,chr(182)=>453,chr(183)=>250,chr(184)=>333,chr(185)=>300,chr(186)=>310,chr(187)=>500,chr(188)=>750,chr(189)=>750,chr(190)=>750,chr(191)=>444,chr(192)=>722,chr(193)=>722,chr(194)=>722,chr(195)=>722,chr(196)=>722,chr(197)=>722,
         chr(198)=>889,chr(199)=>667,chr(200)=>611,chr(201)=>611,chr(202)=>611,chr(203)=>611,chr(204)=>333,chr(205)=>333,chr(206)=>333,chr(207)=>333,chr(208)=>722,chr(209)=>722,chr(210)=>722,chr(211)=>722,chr(212)=>722,chr(213)=>722,chr(214)=>722,chr(215)=>564,chr(216)=>722,chr(217)=>722,chr(218)=>722,chr(219)=>722,
         chr(220)=>722,chr(221)=>722,chr(222)=>556,chr(223)=>500,chr(224)=>444,chr(225)=>444,chr(226)=>444,chr(227)=>444,chr(228)=>444,chr(229)=>444,chr(230)=>667,chr(231)=>444,chr(232)=>444,chr(233)=>444,chr(234)=>444,chr(235)=>444,chr(236)=>278,chr(237)=>278,chr(238)=>278,chr(239)=>278,chr(240)=>500,chr(241)=>500,
-        chr(242)=>500,chr(243)=>500,chr(244)=>500,chr(245)=>500,chr(246)=>500,chr(247)=>564,chr(248)=>500,chr(249)=>500,chr(250)=>500,chr(251)=>500,chr(252)=>500,chr(253)=>500,chr(254)=>500,chr(255)=>500);
+        chr(242)=>500,chr(243)=>500,chr(244)=>500,chr(245)=>500,chr(246)=>500,chr(247)=>564,chr(248)=>500,chr(249)=>500,chr(250)=>500,chr(251)=>500,chr(252)=>500,chr(253)=>500,chr(254)=>500,chr(255)=>500];
 
-    $fpdf_charwidths['timesB']=array(
+    $fpdf_charwidths['timesB']=[
         chr(0)=>250,chr(1)=>250,chr(2)=>250,chr(3)=>250,chr(4)=>250,chr(5)=>250,chr(6)=>250,chr(7)=>250,chr(8)=>250,chr(9)=>250,chr(10)=>250,chr(11)=>250,chr(12)=>250,chr(13)=>250,chr(14)=>250,chr(15)=>250,chr(16)=>250,chr(17)=>250,chr(18)=>250,chr(19)=>250,chr(20)=>250,chr(21)=>250,
         chr(22)=>250,chr(23)=>250,chr(24)=>250,chr(25)=>250,chr(26)=>250,chr(27)=>250,chr(28)=>250,chr(29)=>250,chr(30)=>250,chr(31)=>250,' '=>250,'!'=>333,'"'=>555,'#'=>500,'$'=>500,'%'=>1000,'&'=>833,'\''=>278,'('=>333,')'=>333,'*'=>500,'+'=>570,
         ','=>250,'-'=>333,'.'=>250,'/'=>278,'0'=>500,'1'=>500,'2'=>500,'3'=>500,'4'=>500,'5'=>500,'6'=>500,'7'=>500,'8'=>500,'9'=>500,':'=>333,';'=>333,'<'=>570,'='=>570,'>'=>570,'?'=>500,'@'=>930,'A'=>722,
@@ -205,9 +205,9 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
         chr(176)=>400,chr(177)=>570,chr(178)=>300,chr(179)=>300,chr(180)=>333,chr(181)=>556,chr(182)=>540,chr(183)=>250,chr(184)=>333,chr(185)=>300,chr(186)=>330,chr(187)=>500,chr(188)=>750,chr(189)=>750,chr(190)=>750,chr(191)=>500,chr(192)=>722,chr(193)=>722,chr(194)=>722,chr(195)=>722,chr(196)=>722,chr(197)=>722,
         chr(198)=>1000,chr(199)=>722,chr(200)=>667,chr(201)=>667,chr(202)=>667,chr(203)=>667,chr(204)=>389,chr(205)=>389,chr(206)=>389,chr(207)=>389,chr(208)=>722,chr(209)=>722,chr(210)=>778,chr(211)=>778,chr(212)=>778,chr(213)=>778,chr(214)=>778,chr(215)=>570,chr(216)=>778,chr(217)=>722,chr(218)=>722,chr(219)=>722,
         chr(220)=>722,chr(221)=>722,chr(222)=>611,chr(223)=>556,chr(224)=>500,chr(225)=>500,chr(226)=>500,chr(227)=>500,chr(228)=>500,chr(229)=>500,chr(230)=>722,chr(231)=>444,chr(232)=>444,chr(233)=>444,chr(234)=>444,chr(235)=>444,chr(236)=>278,chr(237)=>278,chr(238)=>278,chr(239)=>278,chr(240)=>500,chr(241)=>556,
-        chr(242)=>500,chr(243)=>500,chr(244)=>500,chr(245)=>500,chr(246)=>500,chr(247)=>570,chr(248)=>500,chr(249)=>556,chr(250)=>556,chr(251)=>556,chr(252)=>556,chr(253)=>500,chr(254)=>556,chr(255)=>500);
+        chr(242)=>500,chr(243)=>500,chr(244)=>500,chr(245)=>500,chr(246)=>500,chr(247)=>570,chr(248)=>500,chr(249)=>556,chr(250)=>556,chr(251)=>556,chr(252)=>556,chr(253)=>500,chr(254)=>556,chr(255)=>500];
 
-    $fpdf_charwidths['timesBI']=array(
+    $fpdf_charwidths['timesBI']=[
         chr(0)=>250,chr(1)=>250,chr(2)=>250,chr(3)=>250,chr(4)=>250,chr(5)=>250,chr(6)=>250,chr(7)=>250,chr(8)=>250,chr(9)=>250,chr(10)=>250,chr(11)=>250,chr(12)=>250,chr(13)=>250,chr(14)=>250,chr(15)=>250,chr(16)=>250,chr(17)=>250,chr(18)=>250,chr(19)=>250,chr(20)=>250,chr(21)=>250,
         chr(22)=>250,chr(23)=>250,chr(24)=>250,chr(25)=>250,chr(26)=>250,chr(27)=>250,chr(28)=>250,chr(29)=>250,chr(30)=>250,chr(31)=>250,' '=>250,'!'=>389,'"'=>555,'#'=>500,'$'=>500,'%'=>833,'&'=>778,'\''=>278,'('=>333,')'=>333,'*'=>500,'+'=>570,
         ','=>250,'-'=>333,'.'=>250,'/'=>278,'0'=>500,'1'=>500,'2'=>500,'3'=>500,'4'=>500,'5'=>500,'6'=>500,'7'=>500,'8'=>500,'9'=>500,':'=>333,';'=>333,'<'=>570,'='=>570,'>'=>570,'?'=>500,'@'=>832,'A'=>667,
@@ -219,9 +219,9 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
         chr(176)=>400,chr(177)=>570,chr(178)=>300,chr(179)=>300,chr(180)=>333,chr(181)=>576,chr(182)=>500,chr(183)=>250,chr(184)=>333,chr(185)=>300,chr(186)=>300,chr(187)=>500,chr(188)=>750,chr(189)=>750,chr(190)=>750,chr(191)=>500,chr(192)=>667,chr(193)=>667,chr(194)=>667,chr(195)=>667,chr(196)=>667,chr(197)=>667,
         chr(198)=>944,chr(199)=>667,chr(200)=>667,chr(201)=>667,chr(202)=>667,chr(203)=>667,chr(204)=>389,chr(205)=>389,chr(206)=>389,chr(207)=>389,chr(208)=>722,chr(209)=>722,chr(210)=>722,chr(211)=>722,chr(212)=>722,chr(213)=>722,chr(214)=>722,chr(215)=>570,chr(216)=>722,chr(217)=>722,chr(218)=>722,chr(219)=>722,
         chr(220)=>722,chr(221)=>611,chr(222)=>611,chr(223)=>500,chr(224)=>500,chr(225)=>500,chr(226)=>500,chr(227)=>500,chr(228)=>500,chr(229)=>500,chr(230)=>722,chr(231)=>444,chr(232)=>444,chr(233)=>444,chr(234)=>444,chr(235)=>444,chr(236)=>278,chr(237)=>278,chr(238)=>278,chr(239)=>278,chr(240)=>500,chr(241)=>556,
-        chr(242)=>500,chr(243)=>500,chr(244)=>500,chr(245)=>500,chr(246)=>500,chr(247)=>570,chr(248)=>500,chr(249)=>556,chr(250)=>556,chr(251)=>556,chr(252)=>556,chr(253)=>444,chr(254)=>500,chr(255)=>444);
+        chr(242)=>500,chr(243)=>500,chr(244)=>500,chr(245)=>500,chr(246)=>500,chr(247)=>570,chr(248)=>500,chr(249)=>556,chr(250)=>556,chr(251)=>556,chr(252)=>556,chr(253)=>444,chr(254)=>500,chr(255)=>444];
 
-    $fpdf_charwidths['timesI']=array(
+    $fpdf_charwidths['timesI']=[
         chr(0)=>250,chr(1)=>250,chr(2)=>250,chr(3)=>250,chr(4)=>250,chr(5)=>250,chr(6)=>250,chr(7)=>250,chr(8)=>250,chr(9)=>250,chr(10)=>250,chr(11)=>250,chr(12)=>250,chr(13)=>250,chr(14)=>250,chr(15)=>250,chr(16)=>250,chr(17)=>250,chr(18)=>250,chr(19)=>250,chr(20)=>250,chr(21)=>250,
         chr(22)=>250,chr(23)=>250,chr(24)=>250,chr(25)=>250,chr(26)=>250,chr(27)=>250,chr(28)=>250,chr(29)=>250,chr(30)=>250,chr(31)=>250,' '=>250,'!'=>333,'"'=>420,'#'=>500,'$'=>500,'%'=>833,'&'=>778,'\''=>214,'('=>333,')'=>333,'*'=>500,'+'=>675,
         ','=>250,'-'=>333,'.'=>250,'/'=>278,'0'=>500,'1'=>500,'2'=>500,'3'=>500,'4'=>500,'5'=>500,'6'=>500,'7'=>500,'8'=>500,'9'=>500,':'=>333,';'=>333,'<'=>675,'='=>675,'>'=>675,'?'=>500,'@'=>920,'A'=>611,
@@ -233,9 +233,9 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
         chr(176)=>400,chr(177)=>675,chr(178)=>300,chr(179)=>300,chr(180)=>333,chr(181)=>500,chr(182)=>523,chr(183)=>250,chr(184)=>333,chr(185)=>300,chr(186)=>310,chr(187)=>500,chr(188)=>750,chr(189)=>750,chr(190)=>750,chr(191)=>500,chr(192)=>611,chr(193)=>611,chr(194)=>611,chr(195)=>611,chr(196)=>611,chr(197)=>611,
         chr(198)=>889,chr(199)=>667,chr(200)=>611,chr(201)=>611,chr(202)=>611,chr(203)=>611,chr(204)=>333,chr(205)=>333,chr(206)=>333,chr(207)=>333,chr(208)=>722,chr(209)=>667,chr(210)=>722,chr(211)=>722,chr(212)=>722,chr(213)=>722,chr(214)=>722,chr(215)=>675,chr(216)=>722,chr(217)=>722,chr(218)=>722,chr(219)=>722,
         chr(220)=>722,chr(221)=>556,chr(222)=>611,chr(223)=>500,chr(224)=>500,chr(225)=>500,chr(226)=>500,chr(227)=>500,chr(228)=>500,chr(229)=>500,chr(230)=>667,chr(231)=>444,chr(232)=>444,chr(233)=>444,chr(234)=>444,chr(235)=>444,chr(236)=>278,chr(237)=>278,chr(238)=>278,chr(239)=>278,chr(240)=>500,chr(241)=>500,
-        chr(242)=>500,chr(243)=>500,chr(244)=>500,chr(245)=>500,chr(246)=>500,chr(247)=>675,chr(248)=>500,chr(249)=>500,chr(250)=>500,chr(251)=>500,chr(252)=>500,chr(253)=>444,chr(254)=>500,chr(255)=>444);
+        chr(242)=>500,chr(243)=>500,chr(244)=>500,chr(245)=>500,chr(246)=>500,chr(247)=>675,chr(248)=>500,chr(249)=>500,chr(250)=>500,chr(251)=>500,chr(252)=>500,chr(253)=>444,chr(254)=>500,chr(255)=>444];
 
-    $fpdf_charwidths['zapfdingbats']=array(
+    $fpdf_charwidths['zapfdingbats']=[
         chr(0)=>0,chr(1)=>0,chr(2)=>0,chr(3)=>0,chr(4)=>0,chr(5)=>0,chr(6)=>0,chr(7)=>0,chr(8)=>0,chr(9)=>0,chr(10)=>0,chr(11)=>0,chr(12)=>0,chr(13)=>0,chr(14)=>0,chr(15)=>0,chr(16)=>0,chr(17)=>0,chr(18)=>0,chr(19)=>0,chr(20)=>0,chr(21)=>0,
         chr(22)=>0,chr(23)=>0,chr(24)=>0,chr(25)=>0,chr(26)=>0,chr(27)=>0,chr(28)=>0,chr(29)=>0,chr(30)=>0,chr(31)=>0,' '=>278,'!'=>974,'"'=>961,'#'=>974,'$'=>980,'%'=>719,'&'=>789,'\''=>790,'('=>791,')'=>690,'*'=>960,'+'=>939,
         ','=>549,'-'=>855,'.'=>911,'/'=>933,'0'=>911,'1'=>945,'2'=>974,'3'=>755,'4'=>846,'5'=>762,'6'=>761,'7'=>571,'8'=>677,'9'=>763,':'=>760,';'=>759,'<'=>754,'='=>494,'>'=>552,'?'=>537,'@'=>577,'A'=>692,
@@ -247,7 +247,7 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
         chr(176)=>788,chr(177)=>788,chr(178)=>788,chr(179)=>788,chr(180)=>788,chr(181)=>788,chr(182)=>788,chr(183)=>788,chr(184)=>788,chr(185)=>788,chr(186)=>788,chr(187)=>788,chr(188)=>788,chr(189)=>788,chr(190)=>788,chr(191)=>788,chr(192)=>788,chr(193)=>788,chr(194)=>788,chr(195)=>788,chr(196)=>788,chr(197)=>788,
         chr(198)=>788,chr(199)=>788,chr(200)=>788,chr(201)=>788,chr(202)=>788,chr(203)=>788,chr(204)=>788,chr(205)=>788,chr(206)=>788,chr(207)=>788,chr(208)=>788,chr(209)=>788,chr(210)=>788,chr(211)=>788,chr(212)=>894,chr(213)=>838,chr(214)=>1016,chr(215)=>458,chr(216)=>748,chr(217)=>924,chr(218)=>748,chr(219)=>918,
         chr(220)=>927,chr(221)=>928,chr(222)=>928,chr(223)=>834,chr(224)=>873,chr(225)=>828,chr(226)=>924,chr(227)=>924,chr(228)=>917,chr(229)=>930,chr(230)=>931,chr(231)=>463,chr(232)=>883,chr(233)=>836,chr(234)=>836,chr(235)=>867,chr(236)=>867,chr(237)=>696,chr(238)=>696,chr(239)=>874,chr(240)=>0,chr(241)=>874,
-        chr(242)=>760,chr(243)=>946,chr(244)=>771,chr(245)=>865,chr(246)=>771,chr(247)=>888,chr(248)=>967,chr(249)=>888,chr(250)=>831,chr(251)=>873,chr(252)=>927,chr(253)=>970,chr(254)=>918,chr(255)=>0);
+        chr(242)=>760,chr(243)=>946,chr(244)=>771,chr(245)=>865,chr(246)=>771,chr(247)=>888,chr(248)=>967,chr(249)=>888,chr(250)=>831,chr(251)=>873,chr(252)=>927,chr(253)=>970,chr(254)=>918,chr(255)=>0];
 
     $this->fpdf_charwidths = $fpdf_charwidths;
 	//Standard fonts
@@ -281,15 +281,15 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
 	{
 		$format=strtolower($format);
 		if($format=='a3')
-			$format=array(841.89,1190.55);
+			$format=[841.89,1190.55];
 		elseif($format=='a4')
-			$format=array(595.28,841.89);
+			$format=[595.28,841.89];
 		elseif($format=='a5')
-			$format=array(420.94,595.28);
+			$format=[420.94,595.28];
 		elseif($format=='letter')
-			$format=array(612,792);
+			$format=[612,792];
 		elseif($format=='legal')
-			$format=array(612,1008);
+			$format=[612,1008];
 		else
 			$this->Error('Unknown page format: '.$format);
 		$this->fwPt=$format[0];
@@ -303,7 +303,7 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
 	$this->fw=$this->fwPt/$this->k;
 	$this->fh=$this->fhPt/$this->k;
 	//Page orientation
-	$orientation=strtolower($orientation);
+	$orientation=strtolower((string) $orientation);
 	if($orientation=='p' or $orientation=='portrait')
 	{
 		$this->DefOrientation='P';
@@ -583,7 +583,7 @@ function GetStringWidth($s)
 	$w=0;
 	$l=strlen($s);
 	for($i=0;$i<$l;$i++)
-		$w+=$cw[$s{$i}];
+		$w+=$cw[$s[$i]];
 	return $w*$this->FontSize/1000;
 }
 
@@ -616,10 +616,10 @@ function Rect($x,$y,$w,$h,$style='')
 function AddFont($family,$style='',$file='')
 {
 	//Add a TrueType or Type1 font
-	$family=strtolower($family);
+	$family=strtolower((string) $family);
 	if($family=='arial')
 		$family='helvetica';
-	$style=strtoupper($style);
+	$style=strtoupper((string) $style);
 	if($style=='IB')
 		$style='BI';
 	if(isset($this->fonts[$family.$style]))
@@ -632,7 +632,7 @@ function AddFont($family,$style='',$file='')
 	//if(!isset($name))
 	//	$this->Error('Could not include font definition file');
 	$i=count($this->fonts)+1;
-	$this->fonts[$family.$style]=array('i'=>$i,'type'=>$type,'name'=>$name,'desc'=>$desc,'up'=>$up,'ut'=>$ut,'cw'=>$cw,'enc'=>$enc,'file'=>$file);
+	$this->fonts[$family.$style]=['i'=>$i,'type'=>$type,'name'=>$name,'desc'=>$desc,'up'=>$up,'ut'=>$ut,'cw'=>$cw,'enc'=>$enc,'file'=>$file];
 	if($diff)
 	{
 		//Search existing encodings
@@ -654,9 +654,9 @@ function AddFont($family,$style='',$file='')
 	if($file)
 	{
 		if($type=='TrueType')
-			$this->FontFiles[$file]=array('length1'=>$originalsize);
+			$this->FontFiles[$file]=['length1'=>$originalsize];
 		else
-			$this->FontFiles[$file]=array('length1'=>$size1,'length2'=>$size2);
+			$this->FontFiles[$file]=['length1'=>$size1,'length2'=>$size2];
 	}
 }
 
@@ -665,14 +665,14 @@ function SetFont($family,$style='',$size=0)
 	//Select a font; size given in points
 	//global $fpdf_charwidths;
 
-	$family=strtolower($family);
+	$family=strtolower((string) $family);
 	if($family=='')
 		$family=$this->FontFamily;
 	if($family=='arial')
 		$family='helvetica';
 	elseif($family=='symbol' or $family=='zapfdingbats')
 		$style='';
-	$style=strtoupper($style);
+	$style=strtoupper((string) $style);
 	if(is_int(strpos($style,'U')))
 	{
 		$this->underline=true;
@@ -708,7 +708,7 @@ function SetFont($family,$style='',$size=0)
 					$this->Error('Could not include font metric file');
 			}
 			$i=count($this->fonts)+1;
-			$this->fonts[$fontkey]=array('i'=>$i,'type'=>'core','name'=>$this->CoreFonts[$fontkey],'up'=>-100,'ut'=>50,'cw'=>$this->fpdf_charwidths[$fontkey]);
+			$this->fonts[$fontkey]=['i'=>$i,'type'=>'core','name'=>$this->CoreFonts[$fontkey],'up'=>-100,'ut'=>50,'cw'=>$this->fpdf_charwidths[$fontkey]];
 		}
 		else
         {
@@ -740,7 +740,7 @@ function AddLink()
 {
 	//Create a new internal link
 	$n=count($this->links)+1;
-	$this->links[$n]=array(0,0);
+	$this->links[$n]=[0,0];
 	return $n;
 }
 
@@ -751,13 +751,13 @@ function SetLink($link,$y=0,$page=-1)
 		$y=$this->y;
 	if($page==-1)
 		$page=$this->page;
-	$this->links[$link]=array($page,$y);
+	$this->links[$link]=[$page,$y];
 }
 
 function Link($x,$y,$w,$h,$link)
 {
 	//Put a link on the page
-	$this->PageLinks[$this->page][]=array($x*$this->k,$this->hPt-$y*$this->k,$w*$this->k,$h*$this->k,$link);
+	$this->PageLinks[$this->page][]=[$x*$this->k,$this->hPt-$y*$this->k,$w*$this->k,$h*$this->k,$link];
 }
 
 function WriteText($x,$y,$txt)
@@ -879,11 +879,11 @@ function MultiCell($w,$h,$txt,$border=0,$align='J',$fill=0)
 		else
 		{
 			$b2='';
-			if(is_int(strpos($border,'L')))
+			if(is_int(strpos((string) $border,'L')))
 				$b2.='L';
-			if(is_int(strpos($border,'R')))
+			if(is_int(strpos((string) $border,'R')))
 				$b2.='R';
-			$b=is_int(strpos($border,'T')) ? $b2.'T' : $b2;
+			$b=is_int(strpos((string) $border,'T')) ? $b2.'T' : $b2;
 		}
 	}
 	$sep=-1;
@@ -963,7 +963,7 @@ function MultiCell($w,$h,$txt,$border=0,$align='J',$fill=0)
 		$this->ws=0;
 		$this->_out('0 Tw');
 	}
-	if($border and is_int(strpos($border,'B')))
+	if($border and is_int(strpos((string) $border,'B')))
 		$b.='B';
 	$this->Cell($w,$h,substr($s,$j,$i),$b,2,$align,$fill);
 	$this->x=$this->lMargin;
@@ -985,7 +985,7 @@ function Write($h,$txt,$link='')
 	while($i<$nb)
 	{
 		//Get next character
-		$c=$s{$i};
+		$c=$s[$i];
 		if($c=="\n")
 		{
 			//Explicit line break
@@ -1061,12 +1061,12 @@ function Image($file,$x,$y,$w,$h=0,$type='',$link='')
 		//First use of image, get info
 		if($type=='')
 		{
-			$pos=strrpos($file,'.');
+			$pos=strrpos((string) $file,'.');
 			if(!$pos)
 				$this->Error('Image file has no extension and no type was specified: '.$file);
-			$type=substr($file,$pos+1);
+			$type=substr((string) $file,$pos+1);
 		}
-		$type=strtolower($type);
+		$type=strtolower((string) $type);
 		$mqr=get_magic_quotes_runtime();
 		set_magic_quotes_runtime(0);
 		if($type=='jpg' or $type=='jpeg')
@@ -1142,7 +1142,7 @@ function SetXY($x,$y)
 function Output($file='',$download=false)
 {
 	//Output PDF to file or browser
-	global $HTTP_ENV_VARS;
+	global $_ENV;
 
 	if($this->state<3)
 		$this->Close();
@@ -1152,7 +1152,7 @@ function Output($file='',$download=false)
 		Header('Content-Type: application/pdf');
 		if(headers_sent())
 			$this->Error('Some data has already been output to browser, can\'t send PDF file');
-		Header('Content-Length: '.strlen($this->buffer));
+		Header('Content-Length: '.strlen((string) $this->buffer));
 		Header('Content-disposition: inline; filename=doc.pdf');
 		echo $this->buffer;
 	}
@@ -1161,13 +1161,13 @@ function Output($file='',$download=false)
 		if($download)
 		{
 			//Download file
-			if(isset($HTTP_ENV_VARS['HTTP_USER_AGENT']) and strpos($HTTP_ENV_VARS['HTTP_USER_AGENT'],'MSIE 5.5'))
+			if(isset($_ENV['HTTP_USER_AGENT']) and strpos($_ENV['HTTP_USER_AGENT'],'MSIE 5.5'))
 				Header('Content-Type: application/dummy');
 			else
 				Header('Content-Type: application/octet-stream');
 			if(headers_sent())
 				$this->Error('Some data has already been output to browser, can\'t send PDF file');
-			Header('Content-Length: '.strlen($this->buffer));
+			Header('Content-Length: '.strlen((string) $this->buffer));
 			Header('Content-disposition: attachment; filename='.$file);
 			echo $this->buffer;
 		}
@@ -1177,7 +1177,7 @@ function Output($file='',$download=false)
 			$f=fopen($file,'wb');
 			if(!$f)
 				$this->Error('Unable to create output file: '.$file);
-			fwrite($f,$this->buffer,strlen($this->buffer));
+			fwrite($f,(string) $this->buffer,strlen((string) $this->buffer));
 			fclose($f);
 		}
 	}
@@ -1246,14 +1246,14 @@ function _putpages()
 		$this->_out('/Contents '.($this->n+1).' 0 R>>');
 		$this->_out('endobj');
 		//Page content
-		$p=($this->compress) ? gzcompress($this->pages[$n]) : $this->pages[$n];
+		$p=($this->compress) ? gzcompress((string) $this->pages[$n]) : $this->pages[$n];
 		$this->_newobj();
-		$this->_out('<<'.$filter.'/Length '.strlen($p).'>>');
+		$this->_out('<<'.$filter.'/Length '.strlen((string) $p).'>>');
 		$this->_putstream($p);
 		$this->_out('endobj');
 	}
 	//Pages root
-	$this->offsets[1]=strlen($this->buffer);
+	$this->offsets[1]=strlen((string) $this->buffer);
 	$this->_out('1 0 obj');
 	$this->_out('<</Type /Pages');
 	$kids='/Kids [';
@@ -1289,7 +1289,7 @@ function _putfonts()
 		if(!$size)
 			$this->Error('Font file not found');
 		$this->_out('<</Length '.$size);
-		if(substr($file,-2)=='.z')
+		if(str_ends_with((string) $file, '.z'))
 			$this->_out('/Filter /FlateDecode');
 		$this->_out('/Length1 '.$info['length1']);
 		if(isset($info['length2']))
@@ -1370,7 +1370,7 @@ function _putimages()
 		$this->_out('/Width '.$info['w']);
 		$this->_out('/Height '.$info['h']);
 		if($info['cs']=='Indexed')
-			$this->_out('/ColorSpace [/Indexed /DeviceRGB '.(strlen($info['pal'])/3-1).' '.($this->n+1).' 0 R]');
+			$this->_out('/ColorSpace [/Indexed /DeviceRGB '.(strlen((string) $info['pal'])/3-1).' '.($this->n+1).' 0 R]');
 		else
 		{
 			$this->_out('/ColorSpace /'.$info['cs']);
@@ -1388,15 +1388,15 @@ function _putimages()
 				$trns.=$info['trns'][$i].' '.$info['trns'][$i].' ';
 			$this->_out('/Mask ['.$trns.']');
 		}
-		$this->_out('/Length '.strlen($info['data']).'>>');
+		$this->_out('/Length '.strlen((string) $info['data']).'>>');
 		$this->_putstream($info['data']);
 		$this->_out('endobj');
 		//Palette
 		if($info['cs']=='Indexed')
 		{
 			$this->_newobj();
-			$pal=($this->compress) ? gzcompress($info['pal']) : $info['pal'];
-			$this->_out('<<'.$filter.'/Length '.strlen($pal).'>>');
+			$pal=($this->compress) ? gzcompress((string) $info['pal']) : $info['pal'];
+			$this->_out('<<'.$filter.'/Length '.strlen((string) $pal).'>>');
 			$this->_putstream($pal);
 			$this->_out('endobj');
 		}
@@ -1408,7 +1408,7 @@ function _putresources()
 	$this->_putfonts();
 	$this->_putimages();
 	//Resource dictionary
-	$this->offsets[2]=strlen($this->buffer);
+	$this->offsets[2]=strlen((string) $this->buffer);
 	$this->_out('2 0 obj');
 	$this->_out('<</ProcSet [/PDF /Text /ImageB /ImageC /ImageI]');
 	$this->_out('/Font <<');
@@ -1486,7 +1486,7 @@ function _enddoc()
 	$this->_out('>>');
 	$this->_out('endobj');
 	//Cross-ref
-	$o=strlen($this->buffer);
+	$o=strlen((string) $this->buffer);
 	$this->_out('xref');
 	$this->_out('0 '.($this->n+1));
 	$this->_out('0000000000 65535 f ');
@@ -1517,7 +1517,7 @@ function _beginpage($orientation)
 		$orientation=$this->DefOrientation;
 	else
 	{
-		$orientation=strtoupper($orientation{0});
+		$orientation=strtoupper((string) $orientation[0]);
 		if($orientation!=$this->DefOrientation)
 			$this->OrientationChanges[$this->page]=true;
 	}
@@ -1553,7 +1553,7 @@ function _newobj()
 {
 	//Begin a new object
 	$this->n++;
-	$this->offsets[$this->n]=strlen($this->buffer);
+	$this->offsets[$this->n]=strlen((string) $this->buffer);
 	$this->_out($this->n.' 0 obj');
 }
 
@@ -1562,7 +1562,7 @@ function _dounderline($x,$y,$txt)
 	//Underline text
 	$up=$this->CurrentFont['up'];
 	$ut=$this->CurrentFont['ut'];
-	$w=$this->GetStringWidth($txt)+$this->ws*substr_count($txt,' ');
+	$w=$this->GetStringWidth($txt)+$this->ws*substr_count((string) $txt,' ');
 	return sprintf('%.2f %.2f %.2f %.2f re f',$x*$this->k,($this->h-($y-$up/1000*$this->FontSize))*$this->k,$w*$this->k,-$ut/1000*$this->FontSizePt);
 }
 
@@ -1580,12 +1580,12 @@ function _parsejpg($file)
 		$colspace='DeviceCMYK';
 	else
 		$colspace='DeviceGray';
-	$bpc=isset($a['bits']) ? $a['bits'] : 8;
+	$bpc=$a['bits'] ?? 8;
 	//Read whole file
 	$f=fopen($file,'rb');
 	$data=fread($f,filesize($file));
 	fclose($f);
-	return array('w'=>$a[0],'h'=>$a[1],'cs'=>$colspace,'bpc'=>$bpc,'f'=>'DCTDecode','data'=>$data);
+	return ['w'=>$a[0],'h'=>$a[1],'cs'=>$colspace,'bpc'=>$bpc,'f'=>'DCTDecode','data'=>$data];
 }
 
 function _parsepng($file)
@@ -1642,14 +1642,14 @@ function _parsepng($file)
 			//Read transparency info
 			$t=fread($f,$n);
 			if($ct==0)
-				$trns=array(ord(substr($t,1,1)));
+				$trns=[ord(substr($t,1,1))];
 			elseif($ct==2)
-				$trns=array(ord(substr($t,1,1)),ord(substr($t,3,1)),ord(substr($t,5,1)));
+				$trns=[ord(substr($t,1,1)),ord(substr($t,3,1)),ord(substr($t,5,1))];
 			else
 			{
 				$pos=strpos($t,chr(0));
 				if(is_int($pos))
-					$trns=array($pos);
+					$trns=[$pos];
 			}
 			fread($f,4);
 		}
@@ -1668,7 +1668,7 @@ function _parsepng($file)
 	if($colspace=='Indexed' and empty($pal))
 		$this->Error('Missing palette in '.$file);
 	fclose($f);
-	return array('w'=>$w,'h'=>$h,'cs'=>$colspace,'bpc'=>$bpc,'f'=>'FlateDecode','parms'=>$parms,'pal'=>$pal,'trns'=>$trns,'data'=>$data);
+	return ['w'=>$w,'h'=>$h,'cs'=>$colspace,'bpc'=>$bpc,'f'=>'FlateDecode','parms'=>$parms,'pal'=>$pal,'trns'=>$trns,'data'=>$data];
 }
 
 function _freadint($f)
@@ -1712,7 +1712,7 @@ function _out($s)
 }
 
 //Handle silly IE contype request
-if(isset($HTTP_ENV_VARS['HTTP_USER_AGENT']) and $HTTP_ENV_VARS['HTTP_USER_AGENT']=='contype')
+if(isset($_ENV['HTTP_USER_AGENT']) and $_ENV['HTTP_USER_AGENT']=='contype')
 {
 	Header('Content-Type: application/pdf');
 	exit;

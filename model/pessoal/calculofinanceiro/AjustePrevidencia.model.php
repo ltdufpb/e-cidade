@@ -15,8 +15,8 @@ class AjustePrevidencia
     const RUBRICA_BASE_FERIAS = "R987";
     const RUBRICA_SOMA_BASE_SALARIO = "R992";
 
-    public static $aValorTeto = array();
-    private static $aValoresBase = array();
+    public static $aValorTeto = [];
+    private static $aValoresBase = [];
 
     /**
      * Pré-Processa as informações
@@ -90,10 +90,10 @@ class AjustePrevidencia
 
             if (count($pes_prev) > 1) {
 
-                $matrizr = array();
-                $matrizb = array();
-                $matrizd = array();
-                $matrizp = array();
+                $matrizr = [];
+                $matrizb = [];
+                $matrizd = [];
+                $matrizp = [];
                 $matrizb[1] = 0;
                 $matrizb[2] = 0;
                 $matrizb[3] = 0;
@@ -219,8 +219,8 @@ class AjustePrevidencia
                             }
                         }
 
-                        $matriz1 = array();
-                        $matriz2 = array();
+                        $matriz1 = [];
+                        $matriz2 = [];
 
                         $matriz1[1] = "r60_numcgm";
                         $matriz1[2] = "r60_regist";
@@ -295,10 +295,10 @@ class AjustePrevidencia
 
         global $tipo_arquivo;
         global $previden, $inssirf, $Iinssirf, $previden_, $campos_pessoal, $opcao_geral, $db21_codcli, $subpes, $perc_inss, $opcao_tipo;
-        global $$arquivo, $cfpess, $pessoal, $db_debug;
+        global ${$arquivo}, $cfpess, $pessoal, $db_debug;
         global $anousu, $mesusu, $DB_instit, $F023, $F019;
 
-        $aMatriculas = array();
+        $aMatriculas = [];
 
         if ( $opcao_tipo == TIPO_CALCULO_PARCIAL) {
           foreach ($pessoal as $aPessoal) {
@@ -347,8 +347,8 @@ class AjustePrevidencia
 
         }
 
-        $matriz1 = array();
-        $matriz2 = array();
+        $matriz1 = [];
+        $matriz2 = [];
         $matriz1[1] = "r60_ajuste";
         $matriz2[1] = 'f';
 
@@ -415,7 +415,7 @@ class AjustePrevidencia
                     if (db_selectmax("transacao1",
                       "select sum(r60_basef) as soma_basef from previden " . bb_condicaosubpes("r60_") . $condicaoaux)) {
 
-                        $soma_base_teto = isset($transacao1[0]["soma_basef"]) ? $transacao1[0]["soma_basef"] : 0;
+                        $soma_base_teto = $transacao1[0]["soma_basef"] ?? 0;
                         LogCalculoFolha::write("Soma da Base do Teto.....: $soma_base_teto");
                     }
                 }
@@ -467,15 +467,15 @@ class AjustePrevidencia
                 }
 
                 $soma_base_D = $soma_base - $soma_base_F;
-                $mat_r60_numcgm = array();
-                $mat_r60_tbprev = array();
-                $mat_r60_rubric = array();
-                $mat_r60_regist = array();
-                $mat_r60_folha = array();
-                $mat_r60_novods = array();
-                $mat_r60_novodf = array();
-                $mat_r60_dif = array();
-                $mat_r60_novop = array();
+                $mat_r60_numcgm = [];
+                $mat_r60_tbprev = [];
+                $mat_r60_rubric = [];
+                $mat_r60_regist = [];
+                $mat_r60_folha = [];
+                $mat_r60_novods = [];
+                $mat_r60_novodf = [];
+                $mat_r60_dif = [];
+                $mat_r60_novop = [];
                 $nro = 0;
 
                 $soma_base1 = 0;
@@ -609,8 +609,8 @@ class AjustePrevidencia
                     }
 
 
-                    $matriz1 = array();
-                    $matriz2 = array();
+                    $matriz1 = [];
+                    $matriz2 = [];
                     $matriz1[1] = $sigla_ajuste . "valor";
                     $matriz1[2] = $sigla_ajuste . "quant";
                     $soma_desc_F = 0;
@@ -682,7 +682,7 @@ class AjustePrevidencia
                             }
 
                             $registrop = $previden_[$Ipreviden_]["r60_regist"];
-                            $qual_folha = strtoupper($previden_[$Ipreviden_]["r60_folha"]);
+                            $qual_folha = strtoupper((string) $previden_[$Ipreviden_]["r60_folha"]);
                             $valor_desconto_fer = 0;
                             $valor_desconto_com = 0;
                             if ($opcao_geral != 3) {
@@ -695,8 +695,8 @@ class AjustePrevidencia
                                 if ($resfer == false) {
                                     //echo "erro no ajuste da previdencia.";exit;
                                 }
-                                if (pg_numrows($resfer) > 0) {
-                                    $valor_desconto_fer = pg_result($resfer, 0, 0);
+                                if (pg_num_rows($resfer) > 0) {
+                                    $valor_desconto_fer = pg_fetch_result($resfer, 0, 0);
                                     //echo "<BR>  salario matricula --> $registrop valor_desconto_fer --> $valor_desconto_fer";
                                 }
                                 if ($arquivo == 'gerfsal') {
@@ -709,8 +709,8 @@ class AjustePrevidencia
                                     if ($resfer == false) {
                                         //echo "erro no ajuste da previdencia.";exit;
                                     }
-                                    if (pg_numrows($resfer) > 0) {
-                                        $valor_desconto_fer += pg_result($resfer, 0, 0);
+                                    if (pg_num_rows($resfer) > 0) {
+                                        $valor_desconto_fer += pg_fetch_result($resfer, 0, 0);
                                         //echo "<BR>  complementar  matricula --> $registrop valor_desconto_fer --> $valor_desconto_fer";
                                     }
                                     $sqlcom = " select sum(r48_valor) as valor_desconto_com
@@ -723,8 +723,8 @@ class AjustePrevidencia
                                     if ($rescom == false) {
                                         //echo "erro no ajuste da previdencia.";exit;
                                     }
-                                    if (pg_numrows($rescom) > 0) {
-                                        $valor_desconto_com += pg_result($rescom, 0, 0);
+                                    if (pg_num_rows($rescom) > 0) {
+                                        $valor_desconto_com += pg_fetch_result($rescom, 0, 0);
                                     }
                                 }
                                 //echo "<BR> valor_desconto_fer -----> ".$valor_desconto_fer;
@@ -769,12 +769,12 @@ class AjustePrevidencia
 
                         if ($opcao_geral != 3) {
                             //echo "<BR> 1-$nro> ".$mat_r60_numcgm[$nro]." ".$mat_r60_regist[$nro]." ".$mat_r60_novods[$nro]." ".$mat_r60_novop[$nro];
-                            $matriz1 = array();
-                            $matriz2 = array();
+                            $matriz1 = [];
+                            $matriz2 = [];
                             $matriz1[1] = "r60_novod";
                             $matriz1[2] = "r60_novop";
-                            $matriz2[1] = ($mat_r60_novods[$nro]) ? $mat_r60_novods[$nro] : 0;
-                            $matriz2[2] = ($mat_r60_novop[$nro]) ? $mat_r60_novop[$nro] : 0;
+                            $matriz2[1] = $mat_r60_novods[$nro] ?: 0;
+                            $matriz2[2] = $mat_r60_novop[$nro] ?: 0;
                             $condicaoaux = " and r60_numcgm = " . db_sqlformat($mat_r60_numcgm[$nro]);
                             $condicaoaux .= " and r60_tbprev = " . db_sqlformat($mat_r60_tbprev[$nro]);
                             $condicaoaux .= " and r60_rubric = " . db_sqlformat($mat_r60_rubric[$nro]);
@@ -802,7 +802,7 @@ class AjustePrevidencia
 
                                 LogCalculoFolha::write("Não eh que existe!!!");
 
-                                $arq_ = $$arquivo;
+                                $arq_ = ${$arquivo};
 
                                 LogCalculoFolha::write("Diferença no Ajuste....: {$ajusta_dif}");
                                 LogCalculoFolha::write("Atingiu o teto..........: " . ($atingiu_o_teto_tbprev ? "Sim" : "Não"));
@@ -828,8 +828,8 @@ class AjustePrevidencia
                                 } else {
 
 
-                                    $matriz1 = array();
-                                    $matriz2 = array();
+                                    $matriz1 = [];
+                                    $matriz2 = [];
                                     $matriz1[1] = $sigla_ajuste . "valor";
                                     $matriz1[2] = $sigla_ajuste . "quant";
                                     $matriz2[1] = $ajusta_dif;
@@ -858,8 +858,8 @@ class AjustePrevidencia
                                     //echo "<BR> rubrica 36 -->$rubrica_desconto  valor --> ".($mat_r60_novods[$nro]-$mat_r60_novodf[$nro]) ; // reis
                                     $oServidorAtual = ServidorRepository::getInstanciaByCodigo($mat_r60_regist[$nro]);
 
-                                    $matriz1 = array();
-                                    $matriz2 = array();
+                                    $matriz1 = [];
+                                    $matriz2 = [];
                                     $matriz1[1] = $sigla_ajuste . "regist";
                                     $matriz1[2] = $sigla_ajuste . "rubric";
                                     $matriz1[3] = $sigla_ajuste . "lotac";
@@ -903,10 +903,10 @@ class AjustePrevidencia
                             //echo "<BR> select * from ".$arquivo." ".bb_condicaosubpes($sigla_ajuste ).$condicaoaux ;
                             if (db_selectmax($arquivo,
                               "select * from " . $arquivo . " " . bb_condicaosubpes($sigla_ajuste) . $condicaoaux)) {
-                                $arq_ = $$arquivo;
+                                $arq_ = ${$arquivo};
                                 if ($mat_r60_novods[$nro] > 0) {
-                                    $matriz1 = array();
-                                    $matriz2 = array();
+                                    $matriz1 = [];
+                                    $matriz2 = [];
                                     $matriz1[1] = $sigla_ajuste . "valor";
                                     $matriz2[1] = $mat_r60_novods[$nro];
                                     db_update($arquivo, $matriz1, $matriz2,
@@ -923,8 +923,8 @@ class AjustePrevidencia
                                 //echo "<BR> rubrica 35.9 -->$numcgm  rubrica baser --> $rubrica_base"; // reis
                                 if ($mat_r60_novods[$nro] > 0) {
                                     //echo "<BR> rubrica 35.10 -->$numcgm  rubrica baser --> $rubrica_base"; // reis
-                                    $matriz1 = array();
-                                    $matriz2 = array();
+                                    $matriz1 = [];
+                                    $matriz2 = [];
                                     $matriz1[1] = $sigla_ajuste . "regist";
                                     $matriz1[2] = $sigla_ajuste . "rubric";
                                     $matriz1[3] = $sigla_ajuste . "lotac";
@@ -979,7 +979,7 @@ class AjustePrevidencia
                         $condicaoaux = " and " . $sigla_ajuste . "regist = " . db_sqlformat($mat_r60_regist[$nro]);
                         db_selectmax($arquivo,
                           "select * from " . $arquivo . " " . bb_condicaosubpes($sigla_ajuste) . $condicaoaux);
-                        $arq_ = $$arquivo;
+                        $arq_ = ${$arquivo};
                         for ($Iarquivo = 0; $Iarquivo < count($arq_); $Iarquivo++) {
                             if (substr("#" . $arq_[$Iarquivo][$sigla_ajuste . "rubric"], 1, 1) != "R") {
                                 if ($db21_codcli == "999999999" && $arq_[$Iarquivo][$sigla_ajuste . "rubric"] == "0045") {
@@ -1043,8 +1043,8 @@ class AjustePrevidencia
                             }
 
                             if ($arredn > 0 && $arquivo != "gerfres") {
-                                $matriz1 = array();
-                                $matriz2 = array();
+                                $matriz1 = [];
+                                $matriz2 = [];
                                 $matriz1[1] = $sigla_ajuste . "regist";
                                 $matriz1[2] = $sigla_ajuste . "rubric";
                                 $matriz1[3] = $sigla_ajuste . "lotac";
@@ -1126,12 +1126,12 @@ class AjustePrevidencia
          * R911 - % Previdencia 4 S/13§ SALARIO
          * R912 - % Previdencia 4 S/FERIAS
          */
-        $aDeParaRubricasDesconto = array(
+        $aDeParaRubricasDesconto = [
           1 => "R901",
           2 => "R904",
           3 => "R907",
           4 => "R910"
-        );
+        ];
 
         /**
          * O Código no cadastro do servidor diferrZ
@@ -1140,13 +1140,13 @@ class AjustePrevidencia
          * 3 => Previdência --> codigo no inssirf --> 5
          * 4 => Previdência --> codigo no inssirf --> 6
          */
-        $aDeParaPrevidenciaServidor = array(
+        $aDeParaPrevidenciaServidor = [
           1 => 3,
           2 => 4,
           3 => 5,
           4 => 6
-        );
-        $aServidores = array($oServidorPrincipal, $oServidorPrincipal->getServidorVinculado());
+        ];
+        $aServidores = [$oServidorPrincipal, $oServidorPrincipal->getServidorVinculado()];
 
         foreach ($aServidores as $oServidor) {
 
@@ -1272,8 +1272,7 @@ class AjustePrevidencia
         $aServidores = ServidorRepository::getServidoresByCgm($oCGM);
         $lTodosInativos = true;
 
-        while (list($iIndice, $oServidor) = each($aServidores)) {
-
+        foreach ($aServidores as $iIndice => $oServidor) {
             if ($oServidor->getVinculo()->getTipo() == VinculoServidor::VINCULO_ATIVO) {
                 $lTodosInativos = false;
                 break;
@@ -1310,10 +1309,8 @@ class AjustePrevidencia
                 break;
         }
 
-        while (list($iCgm, $aRubricas) = each(self::$aValoresBase)) {
-
+        foreach (self::$aValoresBase as $iCgm => $aRubricas) {
             LogCalculoFolha::write('Inicio do Laco CGM atual: ' . $iCgm);
-
             if (!array_key_exists($sRubrica, $aRubricas)) {
                 continue;
             }
@@ -1328,23 +1325,17 @@ class AjustePrevidencia
             $nValorTeto = self::$aValorTeto[$iCgm];
             $aEventos = $aRubricas[$sRubrica];
             $nTotalBases = 0;
-
             LogCalculoFolha::write();
             LogCalculoFolha::write('--Valor do teto do CGM: ' . $nValorTeto);
-
-            $aValores = array();
-
-            while (list($iMatricula, $oEvento) = each($aEventos)) {
-
+            $aValores = [];
+            foreach ($aEventos as $iMatricula => $oEvento) {
                 $aValores[$iMatricula] = $oEvento->getValor();
                 $nTotalBases += $oEvento->getValor();
-
                 LogCalculoFolha::write();
                 LogCalculoFolha::write('-- Matricula................: ' . $iMatricula);
                 LogCalculoFolha::write('-- Evento financeiro........: ' . $oEvento->getRubrica()->getCodigo());
                 LogCalculoFolha::write('-- Valor total das bases....: ' . $nTotalBases);
             }
-
             /**
              * Caso o valor das bases não atinja o teto
              * Vai para o proximo cgm
@@ -1353,13 +1344,11 @@ class AjustePrevidencia
                 LogCalculoFolha::write('Valor das bases somadas é menor que o teto para o cgm.' . $iCgm);
                 continue;
             }
-
             $nValorBaseCorreto = $nTotalBases - $nValorTeto;
             LogCalculoFolha::write();
             LogCalculoFolha::write('Valor das bases: ' . $nTotalBases);
             LogCalculoFolha::write('Valor do teto: ' . $nValorTeto);
             LogCalculoFolha::write('Valor da base correto: ' . $nValorBaseCorreto);
-
             foreach ($aValores as $iMatricula => $nValor) {
 
                 LogCalculoFolha::write();
@@ -1378,8 +1367,8 @@ class AjustePrevidencia
                      and r60_rubric = '$sRubrica';");
 
                 db_update($sTabela,
-                  array(1 => "{$sSigla}_valor"),
-                  array(1 => "{$nValorBaseIndividual}"),
+                  [1 => "{$sSigla}_valor"],
+                  [1 => "{$nValorBaseIndividual}"],
                   bb_condicaosubpes("{$sSigla}_") . " and {$sSigla}_regist = {$iMatricula} and {$sSigla}_rubric in ('{$sRubrica}','R992')");
 
             }

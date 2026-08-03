@@ -47,7 +47,7 @@ $clrotulo->label("k59_codigo");
 $clrotulo->label("k59_descr");
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(isset($incluir)){
   $usuario = db_getsession("DB_id_usuario");

@@ -103,8 +103,8 @@ if (!empty($oGet->listalog)) {
   
   $sSql .= "    AND x01_codrua IN ({$oGet->listalog}) \n";
   
-  if (strlen($oGet->listalog) > 38) {
-    $head5 = substr($oGet->listalog, 0,38) . '...';
+  if (strlen((string) $oGet->listalog) > 38) {
+    $head5 = substr((string) $oGet->listalog, 0,38) . '...';
   } else {
     $head5 = $oGet->listalog;
   }
@@ -116,8 +116,8 @@ if (!empty($oGet->listazonaentrega)) {
   
   $sSql .= "    AND x01_entrega IN ({$oGet->listazonaentrega}) \n";
 
-  if (strlen($oGet->listazonaentrega) > 33) {
-    $head7 = substr($oGet->listazonaentrega, 0,33) . '...';
+  if (strlen((string) $oGet->listazonaentrega) > 33) {
+    $head7 = substr((string) $oGet->listazonaentrega, 0,33) . '...';
   } else {
     $head7 = $oGet->listazonaentrega;
   }
@@ -129,8 +129,8 @@ if (!empty($oGet->listazona)) {
   
   $sSql .= "    AND x01_zona IN ({$oGet->listazona}) \n";
   
-  if (strlen($oGet->listazona) > 37) {
-    $head6 = substr($oGet->listazona, 0,37) . '...';
+  if (strlen((string) $oGet->listazona) > 37) {
+    $head6 = substr((string) $oGet->listazona, 0,37) . '...';
   } else {
     $head6 = $oGet->listazona;
   }

@@ -46,8 +46,8 @@ $oRetorno          = new stdClass();
 $oParam            = $oJson->decode(str_replace("\\","",$_POST["json"]));
 
 $oRetorno->erro           = 0;
-$oRetorno->aItensDptos    = array();
-$oRetorno->aItensDptosSel = array();
+$oRetorno->aItensDptos    = [];
+$oRetorno->aItensDptosSel = [];
 
 $dtDataUsu = date('Y-m-d',db_getsession("DB_datausu"));
 $iInstit   = db_getsession("DB_instit");
@@ -142,7 +142,7 @@ switch ($oParam->exec) {
     }
 
     $sCampos  = " db_depart.coddepto, db_depart.descrdepto ";
-    $aWhere   = array();
+    $aWhere   = [];
     $aWhere[] = " db_depart.instit  = {$iInstit} ";
     $aWhere[] = " (limite is null or limite >= '{$dtDataUsu}') ";
     $aWhere[] = " db_depusu.id_usuario = " . db_getsession('DB_id_usuario');

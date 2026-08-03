@@ -63,7 +63,7 @@ class ItinerarioPontoParada {
    * Alunos que são pegos no pontos de parada
    * @var Aluno
    */
-  protected $aVinculoAlunos = array();
+  protected $aVinculoAlunos = [];
   
   /**
    * propriedade para controle do lazy loading dos alunos

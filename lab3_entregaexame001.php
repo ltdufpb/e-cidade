@@ -30,8 +30,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cllab_entrega = new cl_lab_entrega;
 $clrotulo      = new rotulocampo;
@@ -43,12 +43,12 @@ $clrotulo->label("la24_c_descr");
 $clrotulo->label("la22_i_codigo");
 $clrotulo->label("z01_v_nome");
 
-@$dia1 = substr($data1,0,2);
-@$mes1 = substr($data1,3,2);
-@$ano1 = substr($data1,6,4);
-@$dia2 = substr($data2,0,2);
-@$mes2 = substr($data2,3,2);
-@$ano2 = substr($data2,6,4);
+@$dia1 = substr((string) $data1,0,2);
+@$mes1 = substr((string) $data1,3,2);
+@$ano1 = substr((string) $data1,6,4);
+@$dia2 = substr((string) $data2,0,2);
+@$mes2 = substr((string) $data2,3,2);
+@$ano2 = substr((string) $data2,6,4);
 ?>
 <html>
 <head>

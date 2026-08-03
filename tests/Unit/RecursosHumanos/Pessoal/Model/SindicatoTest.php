@@ -108,13 +108,13 @@ class SindicatoTest extends TestCase
         $cnpj = $this->faker->numberBetween(1, 10000);
         $razaoSocial = $this->faker->company;
 
-        $state = array(
+        $state = [
             'rh116_sequencial' => $sequencial,
             'rh116_codigo' => $codigo,
             'rh116_cnpj' => $cnpj,
             'rh116_descricao' => $razaoSocial,
             'rh116_mesdatabase' => $mesDataBase
-        );
+        ];
 
         $sindicato = Sindicato::fromState($state);
 

@@ -37,7 +37,7 @@ include(modification("classes/db_orcparamrelnota_classe.php"));
 include(modification("classes/db_empresto_classe.php"));
 include(modification("classes/db_empempenho_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $classinatura = new cl_assinatura;
@@ -52,7 +52,7 @@ $sSqlInstituicaoRPPS .= " where (db21_tipoinstit in (5,6) or prefeitura is true 
 $sSqlInstituicaoRPPS .= "   and codigo = {$iUsuInstit}";
 $rsUsuInstit          = db_query($sSqlInstituicaoRPPS);
 $iNumRowsUsuInstit    = pg_num_rows($rsUsuInstit);
-$iCodigo              = pg_result($rsUsuInstit,0);
+$iCodigo              = pg_fetch_result($rsUsuInstit,0);
 
 if($iNumRowsUsuInstit == 0){
     db_redireciona('db_erros.php?fechar=true&db_erro=O usuário deve ser da instituição RPPS ou Prefeitura para visualizar o relatório');
@@ -82,12 +82,12 @@ $aVariacoesPatrimonias = db_varPatrimoniaisRpps($anousu,$dataini,$datafin,$iInst
 $aDefict=$aVariacoesPatrimonias['TotaisAtivo']['DeficitPatrimonial'];
 $aSuperavit=$aVariacoesPatrimonias['TotaisPassivo']['SuperavitPatrimonial'];
 
-if (trim($aDefict) <> "-") {
+if (trim((string) $aDefict) <> "-") {
   
    $aDefictDiminui                ="-";
    $v_passivo_lucros_prejuizos_ac = $aDefict;
 }
-if (trim($aSuperavit) <> "-") {
+if (trim((string) $aSuperavit) <> "-") {
   
   $aDefictDiminui                = "";
   $v_passivo_lucros_prejuizos_ac = $aSuperavit;
@@ -247,7 +247,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-conta caixa
   if ($estrutural == "111110000000000"){
        $v_ativo_caixa = $saldo_final;
-       if (strtoupper($sinal_final)=="C"){
+       if (strtoupper((string) $sinal_final)=="C"){
        $v_ativo_caixa=$negativo.$v_ativo_caixa;
        }
    }
@@ -255,7 +255,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-conta banco movimento
   if ($estrutural == "111120000000000"){
        $v_ativo_banco_movimento = $saldo_final;
-       if (strtoupper($sinal_final)=="C"){
+       if (strtoupper((string) $sinal_final)=="C"){
          $v_ativo_banco_movimento=$negativo.$v_ativo_banco_movimento;
           }
   
@@ -264,7 +264,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-créditos a receber 
   if ($estrutural == "112100000000000"){
       $v_ativo_credito_receber = $saldo_final; 
-      if (strtoupper($sinal_final)=="C"){
+      if (strtoupper((string) $sinal_final)=="C"){
           $v_ativo_credito_receber=$negativo.$v_ativo_credito_receber;
       }
   
@@ -273,7 +273,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-devedores-ent e ag
   if ($estrutural == "112200000000000"){
       $v_ativo_devedores_ent_ag = $saldo_final;
-      if (strtoupper($sinal_final)=="C"){
+      if (strtoupper((string) $sinal_final)=="C"){
           $v_ativo_devedores_ent_ag=$negativo.$v_ativo_devedores_ent_ag;
        }
   
@@ -282,7 +282,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-adiantamentos concedidos
   if ($estrutural == "112400000000000"){
       $v_ativo_adiant_concedido = $saldo_final;
-      if (strtoupper($sinal_final)=="C"){
+      if (strtoupper((string) $sinal_final)=="C"){
           $v_ativo_adiant_concedido=$negativo.$v_ativo_adiant_concedido;
         }
   
@@ -292,7 +292,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-depósitos realizáveis a curto prazo
   if ($estrutural == "112500000000000"){
       $v_ativo_dep_real_curto_prazo = $saldo_final;
-      if (strtoupper($sinal_final)=="C"){
+      if (strtoupper((string) $sinal_final)=="C"){
          $v_ativo_dep_real_curto_prazo =$negativo.$v_ativo_dep_real_curto_prazo;
       }
   
@@ -302,7 +302,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-valores em trânsito realizáveis
   if ($estrutural == "112600000000000"){
       $v_ativo_val_trans_real = $saldo_final;
-      if (strtoupper($sinal_final)=="C"){
+      if (strtoupper((string) $sinal_final)=="C"){
           $v_ativo_val_trans_real =$negativo.$v_ativo_val_trans_real;
         }
   
@@ -311,7 +311,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-títulos e valores
   if ($estrutural == "113200000000000"){
       $v_ativo_titulos_valores = $saldo_final;
-      if (strtoupper($sinal_final)=="C"){
+      if (strtoupper((string) $sinal_final)=="C"){
           $v_ativo_titulos_valores =$negativo.$v_ativo_titulos_valores;
         }
   
@@ -331,7 +331,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
     
     if ($estrutural == "111140100000000") {
     
-      if (strtoupper($sinal_final) == "C") { 
+      if (strtoupper((string) $sinal_final) == "C") { 
         $saldo_final *= -1;     
       }
       $v_ativo_invest_seg_rend_fixa += $saldo_final;
@@ -340,7 +340,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   	
     if ($estrutural == "115100000000000") {
   
-  	  if (strtoupper($sinal_final) == "C") {
+  	  if (strtoupper((string) $sinal_final) == "C") {
   	    $saldo_final *= -1;     
   	  }
   	  $v_ativo_invest_seg_rend_fixa += $saldo_final;
@@ -354,7 +354,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-investimento no segmento renda variável
     if ($estrutural == "111140200000000") {
         $v_ativo_invest_seg_rend_var = $saldo_final;
-        if (strtoupper($sinal_final) == "C") {
+        if (strtoupper((string) $sinal_final) == "C") {
             $v_ativo_invest_seg_rend_var =$negativo.$v_ativo_invest_seg_rend_var;
           }
     
@@ -365,7 +365,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   
     if ($estrutural == "115200000000000") {
         $v_ativo_invest_seg_rend_var = $saldo_final;
-        if (strtoupper($sinal_final) == "C"){
+        if (strtoupper((string) $sinal_final) == "C"){
             $v_ativo_invest_seg_rend_var = $negativo.$v_ativo_invest_seg_rend_var;
           }
     }
@@ -375,14 +375,14 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-investimentos segmento imóveis
     if ($estrutural == "111140300000000") {
         $v_ativo_invest_seg_imov = $saldo_final;
-        if (strtoupper($sinal_final) == "C"){
+        if (strtoupper((string) $sinal_final) == "C"){
             $v_ativo_invest_seg_imov = $negativo.$v_ativo_invest_seg_imov;
            }
     }
   } else {  
     if ($estrutural == "115300000000000") {
         $v_ativo_invest_seg_imov = $saldo_final;
-        if (strtoupper($sinal_final) == "C") {
+        if (strtoupper((string) $sinal_final) == "C") {
             $v_ativo_invest_seg_imov = $negativo.$v_ativo_invest_seg_imov;
            }
     }
@@ -392,14 +392,14 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-títulos e valores imobiliários
     if ( ($estrutural == "111140400000000") || ($estrutural == "111140500000000") ) {
         $v_ativo_titulos_val_imob = $saldo_final;
-       if (strtoupper($sinal_final) == "C") {
+       if (strtoupper((string) $sinal_final) == "C") {
            $v_ativo_titulos_val_imob = $negativo.$v_ativo_titulos_val_imob;
           }
     }
   } else {  
     if ($estrutural == "115400000000000") {
         $v_ativo_titulos_val_imob = $saldo_final;
-       if (strtoupper($sinal_final) == "C") {
+       if (strtoupper((string) $sinal_final) == "C") {
            $v_ativo_titulos_val_imob = $negativo.$v_ativo_titulos_val_imob;
           }
     }
@@ -411,7 +411,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-investimentos taxa administração rpps
       if ($estrutural == "111140600000000") {
            $v_ativo_taxa_administ_rpps = $saldo_final;
-            if (strtoupper($sinal_final) == "C") {
+            if (strtoupper((string) $sinal_final) == "C") {
               $v_ativo_taxa_administ_rpps = $negativo.$v_ativo_taxa_administ_rpps;
              }
       }
@@ -419,7 +419,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
       
       if ($estrutural == "115500000000000") {
            $v_ativo_taxa_administ_rpps = $saldo_final;
-            if (strtoupper($sinal_final) == "C") {
+            if (strtoupper((string) $sinal_final) == "C") {
               $v_ativo_taxa_administ_rpps = $negativo.$v_ativo_taxa_administ_rpps;
              }
       }
@@ -429,14 +429,14 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-empréstimo recursos previdenciários a receber
       if ($estrutural == "115000000000000") {
           $v_ativo_emprest_rec_prev_rec = $saldo_final;
-          if (strtoupper($sinal_final) == "C") {
+          if (strtoupper((string) $sinal_final) == "C") {
                $v_ativo_emprest_rec_prev_rec = $negativo.$v_ativo_emprest_rec_prev_rec;
             }
       }
   } else {  
       if ($estrutural == "115600000000000") {
           $v_ativo_emprest_rec_prev_rec = $saldo_final;
-          if (strtoupper($sinal_final) == "C") {
+          if (strtoupper((string) $sinal_final) == "C") {
                $v_ativo_emprest_rec_prev_rec = $negativo.$v_ativo_emprest_rec_prev_rec;
             }
       }
@@ -446,7 +446,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-provisão para perdas em investimentos
       if ($estrutural == "111149900000000") {
           $v_ativo_provisao_perda_invest = $saldo_final;
-          if (strtoupper($sinal_final) == "C"){
+          if (strtoupper((string) $sinal_final) == "C"){
              $v_ativo_provisao_perda_invest = $negativo.$v_ativo_provisao_perda_invest;
              }
       }
@@ -454,7 +454,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
       
       if ($estrutural == "115800000000000") {
           $v_ativo_provisao_perda_invest = $saldo_final;
-          if (strtoupper($sinal_final) == "C"){
+          if (strtoupper((string) $sinal_final) == "C"){
              $v_ativo_provisao_perda_invest = $negativo.$v_ativo_provisao_perda_invest;
              }
       }
@@ -464,7 +464,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-ativo estoque
   if ($estrutural == "113100000000000") {
       $v_ativo_estoque = $saldo_final;
-      if (strtoupper($sinal_final) == "C"){
+      if (strtoupper((string) $sinal_final) == "C"){
           $v_ativo_estoque = $negativo.$v_ativo_estoque;
         }
   }
@@ -472,7 +472,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-custos e despesas pagos antecipadamente
   if ($estrutural == "114100000000000") {
       $v_ativo_custo_desp_pagos_antec = $saldo_final;
-      if (strtoupper($sinal_final) == "C"){
+      if (strtoupper((string) $sinal_final) == "C"){
           $v_ativo_custo_desp_pagos_antec = $negativo.$v_ativo_custo_desp_pagos_antec;
         }
   
@@ -482,7 +482,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-créditos inscritos em dívida ativa
   if ($estrutural == "116100000000000") {
       $v_ativo_cred_inscr_div_ativa = $saldo_final;
-      if (strtoupper($sinal_final) == "C") {
+      if (strtoupper((string) $sinal_final) == "C") {
           $v_ativo_cred_inscr_div_ativa = $negativo.$v_ativo_cred_inscr_div_ativa;
          }
   
@@ -492,7 +492,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-depósitos realizáveis longo prazo
   if ($estrutural == "121000000000000") {
       $v_ativo_dep_real_longo_prazo = $saldo_final;
-      if (strtoupper($sinal_final) == "C"){
+      if (strtoupper((string) $sinal_final) == "C"){
           $v_ativo_dep_real_longo_prazo = $negativo.$v_ativo_dep_real_longo_prazo;
        }
   
@@ -501,7 +501,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-créditos realizáveis a longo prazo
   if ($estrutural == "122000000000000") {
       $v_ativo_cred_real_logo_prazo = $saldo_final;
-      if (strtoupper($sinal_final) == "C"){
+      if (strtoupper((string) $sinal_final) == "C"){
           $v_ativo_cred_real_logo_prazo = $negativo.$v_ativo_cred_real_logo_prazo;
          }
   
@@ -511,7 +511,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-imobilizado
   if ($estrutural == "142000000000000") {
       $v_ativo_imobilizado  = $saldo_final;
-      if (strtoupper($sinal_final) == "C") {
+      if (strtoupper((string) $sinal_final) == "C") {
           $v_ativo_imobilizado = $negativo.$v_ativo_imobilizado;
         }
   }
@@ -519,7 +519,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-execução orçamentária da receita
   if ($estrutural == "191000000000000") {
       $v_ativo_exec_orc_receita = $saldo_final;
-      if (strtoupper($sinal_final) == "C"){
+      if (strtoupper((string) $sinal_final) == "C"){
           $v_ativo_exec_orc_receita = $negativo.$v_ativo_exec_orc_receita;
        }
   
@@ -528,7 +528,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-fixação orçamentária da despesa
   if ($estrutural == "192000000000000") {
       $v_ativo_fixa_orc_despesa = $saldo_final;
-      if (strtoupper($sinal_final) == "C"){
+      if (strtoupper((string) $sinal_final) == "C"){
            $v_ativo_fixa_orc_despesa = $negativo.$v_ativo_fixa_orc_despesa;
        }
   
@@ -538,7 +538,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-execução da programação financeira
   if ($estrutural == "193000000000000") {
       $v_ativo_exec_prog_financeira = $saldo_final;
-      if (strtoupper($sinal_final) == "C") {
+      if (strtoupper((string) $sinal_final) == "C") {
           $v_ativo_exec_prog_financeira = $negativo.$v_ativo_exec_prog_financeira;
       }
   
@@ -548,7 +548,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-despesas e dívidas dos estado e municípios
   if ($estrutural == "194000000000000") {
       $v_ativo_desp_div_estados_munic = $saldo_final;
-      if (strtoupper($sinal_final) == "C") {
+      if (strtoupper((string) $sinal_final) == "C") {
           $v_ativo_desp_div_estados_munic = $negativo.$v_ativo_desp_div_estados_munic;
         }
   
@@ -558,7 +558,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-execução de restos a pagar
   if ($estrutural == "195000000000000") {
       $v_ativo_exec_restos_pagar = $saldo_final;
-      if (strtoupper($sinal_final) == "C"){
+      if (strtoupper((string) $sinal_final) == "C"){
           $v_ativo_exec_restos_pagar = $negativo.$v_ativo_exec_restos_pagar;
        }
   
@@ -568,7 +568,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-conpensações ativas diversas
   if ($estrutural == "199000000000000") {
       $v_ativo_compens_ativas_diver = $saldo_final;
-      if (strtoupper($sinal_final) == "C") {
+      if (strtoupper((string) $sinal_final) == "C") {
           $v_ativo_compens_ativas_diver = $negativo.$v_ativo_compens_ativas_diver;
          }
                      
@@ -582,7 +582,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-consignações
   if ($estrutural == "211100000000000") {
       $v_passivo_consignacoes = $saldo_final;
-      if (strtoupper($sinal_final) == "D"){
+      if (strtoupper((string) $sinal_final) == "D"){
           $v_passivo_consignacoes = $negativo.$v_passivo_consignacoes;
        }
   }
@@ -590,7 +590,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-recursos da união
   if ($estrutural == "211200000000000") {
       $v_passivo_recursos_uniao = $saldo_final;
-      if (strtoupper($sinal_final) == "D") {
+      if (strtoupper((string) $sinal_final) == "D") {
           $v_passivo_recursos_uniao = $negativo.$v_passivo_recursos_uniao;
        }
   
@@ -599,7 +599,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-depósitos diversas origens
   if ($estrutural == "211400000000000"){
       $v_passivo_depos_diversas_orig = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
           $v_passivo_depos_diversas_orig =$negativo.$v_passivo_depos_diversas_orig;
        }
   
@@ -609,7 +609,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-obrigações a pagar
   if ($estrutural == "212100000000000"){
       $v_passivo_obrigacoes_pagar = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
           $v_passivo_obrigacoes_pagar =$negativo.$v_passivo_obrigacoes_pagar;
        }
   
@@ -618,7 +618,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-credores - entidades e agentes
   if ($estrutural == "212200000000000"){
       $v_passivo_credores_entidade_ag = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
           $v_passivo_credores_entidade_ag =$negativo.$v_passivo_credores_entidade_ag;
        }
   
@@ -629,7 +629,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-valores em trânsito exigíveis
   if ($estrutural == "212600000000000"){
       $v_passivo_valor_transito_exig = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
           $v_passivo_valor_transito_exig =$negativo.$v_passivo_valor_transito_exig;
        }
   
@@ -638,7 +638,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-recursos vinculados
   if ($estrutural == "221200000000000"){
       $v_passivo_recurso_vinculado = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
          $v_passivo_recurso_vinculado =$negativo.$v_passivo_recurso_vinculado;
         }
   
@@ -647,7 +647,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-obrigações legais e tributárias
   if ($estrutural == "222300000000000"){
       $v_passivo_obr_legal_tributaria = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
           $v_passivo_obr_legal_tributaria =$negativo.$v_passivo_obr_legal_tributaria;
          }
   
@@ -656,7 +656,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-obrigações a pagar
   if ($estrutural == "222400000000000"){
       $v_passivo_obr_pagar = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
           $v_passivo_obr_pagar =$negativo.$v_passivo_obr_pagar;
       }
   }
@@ -664,7 +664,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-provisões matemáticas previdenciárias
   if ($estrutural == "222500000000000"){
       $v_passivo_prov_matematica_prev = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
           $v_passivo_prov_matematica_prev =$negativo.$v_passivo_prov_matematica_prev;
        }
                     
@@ -682,7 +682,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   if ($estrutural == $sEstruturalPatrimonioLiquido) {
     
     $v_passivo_patrimonio_capital = $saldo_final;
-    if (strtoupper($sinal_final) == "D") {
+    if (strtoupper((string) $sinal_final) == "D") {
         $v_passivo_patrimonio_capital = $negativo.$v_passivo_patrimonio_capital;
       }
   
@@ -691,7 +691,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-reservas
   if ($estrutural == "242000000000000"){
       $v_passivo_reservas = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
           $v_passivo_reservas =$negativo.$v_passivo_reservas;
        }
   
@@ -701,7 +701,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-previsão orçamentária da receita
   if ($estrutural == "291000000000000"){
       $v_passivo_prev_orc_receita = $saldo_final;
-       if (strtoupper($sinal_final)=="D"){
+       if (strtoupper((string) $sinal_final)=="D"){
            $v_passivo_prev_orc_receita =$negativo.$v_passivo_prev_orc_receita;
           }
   
@@ -710,7 +710,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-execução orçamentária da despesa
   if ($estrutural == "292000000000000"){
       $v_passivo_exec_orc_despesa = $saldo_final;
-       if (strtoupper($sinal_final)=="D"){
+       if (strtoupper((string) $sinal_final)=="D"){
            $v_passivo_exec_orc_despesa =$negativo.$v_passivo_exec_orc_despesa;
         }
   }
@@ -718,7 +718,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-execução programação financeira
   if ($estrutural == "293000000000000"){
       $v_passivo_exec_prog_financeira = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
           $v_passivo_exec_prog_financeira =$negativo.$v_passivo_exec_prog_financeira;
         }
   
@@ -727,7 +727,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-despesas e dívidas de estados e municípios
   if ($estrutural == "294000000000000"){
       $v_passivo_desp_div_estados_munic = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
           $v_passivo_desp_div_estados_munic =$negativo.$v_passivo_desp_div_estados_munic;
        }
   }
@@ -735,7 +735,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //-execução de restos a pagar
   if ($estrutural == "295000000000000"){
       $v_passivo_exec_restos_pagar = $saldo_final;
-       if (strtoupper($sinal_final)=="D"){
+       if (strtoupper((string) $sinal_final)=="D"){
             $v_passivo_exec_restos_pagar =$negativo.$v_passivo_exec_restos_pagar;
         }
                       
@@ -744,7 +744,7 @@ for ($i = 0; $i < pg_num_rows($result); $i++) {
   //compensações passiva diversas
   if ($estrutural == "299000000000000"){
       $v_passivo_compens_ativas_diver = $saldo_final;
-      if (strtoupper($sinal_final)=="D"){
+      if (strtoupper((string) $sinal_final)=="D"){
           $v_passivo_compens_ativas_diver =$negativo.$v_passivo_compens_ativas_diver;
        }
   
@@ -1333,12 +1333,12 @@ $pdf->ln(3);
 
 
 //$periodo = db_retorna_periodo($mes,"B");
-notasExplicativas(&$pdf,56,($mes>9?$mes:"0".$mes),190);
+notasExplicativas($pdf,56,($mes>9?$mes:"0".$mes),190);
 
 $pdf->ln(15);
 
 // assinaturas
-assinaturas(&$pdf,&$classinatura,'BG');
+assinaturas($pdf,$classinatura,'BG');
 
 function anexo14_retorna_saldo($saldo, $sinal, $grupo) {
   if ($grupo == "A" and $sinal == "C") {

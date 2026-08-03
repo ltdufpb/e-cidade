@@ -42,7 +42,8 @@ class DemonstrativoDespesaSaude extends RelatoriosLegaisBase {
     parent::__construct($iAnoUsu, $iCodigoRelatorio, $iCodigoPeriodo);
   }
   
-  public function getDados(){
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true){
     
     /**
      * buscamos os parametros relacionados ao periodo
@@ -60,7 +61,7 @@ class DemonstrativoDespesaSaude extends RelatoriosLegaisBase {
     
     $aLinhasRelatorio = $this->oRelatorioLegal->getLinhasCompleto();
     $iTotalLinhas     = count($aLinhasRelatorio);
-    $aLinhas          = array();
+    $aLinhas          = [];
     $sWhereDespesa    = "o58_instit in ({$this->getInstituicao()})";
     $rsDespesa        = db_dotacaosaldo(8, 2, 3, true, $sWhereDespesa, $this->iAnoUsu,
                                        $dDataInicial, $dDataFinal);
@@ -70,13 +71,13 @@ class DemonstrativoDespesaSaude extends RelatoriosLegaisBase {
 
       $aLinhasRelatorio[$iLinha]->setPeriodo($this->iCodigoPeriodo);
       $aColunasRelatorio  = $aLinhasRelatorio[$iLinha]->getCols($this->iCodigoPeriodo);
-      $aColunaslinha      = array();
+      $aColunaslinha      = [];
       $oLinha             = new stdClass();
       $oLinha->totalizar  = $aLinhasRelatorio[$iLinha]->isTotalizador();
       $oLinha->descricao  = $aLinhasRelatorio[$iLinha]->getDescricaoLinha();
       $oLinha->colunas    = $aColunasRelatorio; 
       $oLinha->desdobrar  = false;
-      $oLinha->contas     = array(); 
+      $oLinha->contas     = []; 
       $oLinha->nivellinha = $aLinhasRelatorio[$iLinha]->getNivel(); 
       
       foreach ($aColunasRelatorio as $oColuna) {
@@ -145,7 +146,7 @@ class DemonstrativoDespesaSaude extends RelatoriosLegaisBase {
     
         foreach ($oLinha->colunas as $iColuna => $oColuna) {
            
-          if (trim($oColuna->o116_formula) != "") {
+          if (trim((string) $oColuna->o116_formula) != "") {
              
             $sFormulaOriginal = ($oColuna->o116_formula);
             $sFormula         = $this->oRelatorioLegal->parseFormula('aLinhas', $sFormulaOriginal, $iColuna, $aLinhas);

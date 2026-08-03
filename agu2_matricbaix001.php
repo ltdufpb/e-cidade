@@ -166,7 +166,7 @@ de Matr&iacute;culas Baixadas</strong> </legend>
 	<tr>
 		<td><strong>Ordenar por:</strong></td>
 		<td><?php 
-		$orderBy = array("1"=>"Matr&iacute;cula", "2"=>"CGM", "3"=>"Nome", "4"=>"Data Baixa", "5"=>"Logradouro");
+		$orderBy = ["1"=>"Matr&iacute;cula", "2"=>"CGM", "3"=>"Nome", "4"=>"Data Baixa", "5"=>"Logradouro"];
 		db_select("orderBy", $orderBy, true, 2, "style='width: 200px;'");
 		?></td>
 	</tr>

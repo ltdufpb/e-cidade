@@ -33,8 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_propri_classe.php"));
 require_once(modification("classes/db_iptubase_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $db_botao    = 1;
 $db_opcao    = 1;
@@ -198,7 +198,7 @@ if(isset($incluir)||isset($excluir)){
     db_msgbox($erroMensagem);
   } else {
     $clpropri->erro(true,false);
-    $tipoimovel = isset($tipoImovel) ? $tipoImovel : $j01_tipoimovel;
+    $tipoimovel = $tipoImovel ?? $j01_tipoimovel;
     db_redireciona("cad1_proprialt.php?j42_matric=$j42_matric&j01_tipoimovel=$tipoimovel" );
   }
 }

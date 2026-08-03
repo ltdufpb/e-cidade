@@ -56,10 +56,10 @@ $db_opcao = 2;
   <tr> 
     <td height="460" align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-         $clcriaabas->identifica = array("a1"=>"Dados Pessoais","a2"=>"Especialidades");
-         $clcriaabas->src = array("a1"=>"sau1_medicos002.php","a2"=>"sau1_especmedico001.php");
-         $clcriaabas->sizecampo  = array("a1"=>20,"a2"=>20);
-         $clcriaabas->disabled   =  array("a2"=>"true");
+         $clcriaabas->identifica = ["a1"=>"Dados Pessoais","a2"=>"Especialidades"];
+         $clcriaabas->src = ["a1"=>"sau1_medicos002.php","a2"=>"sau1_especmedico001.php"];
+         $clcriaabas->sizecampo  = ["a1"=>20,"a2"=>20];
+         $clcriaabas->disabled   =  ["a2"=>"true"];
          $clcriaabas->iframe_width = "90%";
          $clcriaabas->scrolling  = "no";
          $clcriaabas->cria_abas();

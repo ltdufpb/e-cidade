@@ -186,11 +186,11 @@ try {
   $oProgressBar->setMessageLog('Cálculo concluído.');
   $oLog->escreverLog("Cálculo concluído.");
 
-  $aArquivos = array();
-  $aArquivos[] = array(
+  $aArquivos = [];
+  $aArquivos[] = [
     'path' => $sArquivoLog . '.txt',
     'name' => 'Arquivo de Log do Cálculo',
-  );
+  ];
   showDownloader($aArquivos);
   showAlert("Cálculo concluído.");
 

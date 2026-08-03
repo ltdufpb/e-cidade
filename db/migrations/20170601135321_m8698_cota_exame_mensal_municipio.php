@@ -38,22 +38,22 @@ class M8698CotaExameMensalMunicipio extends PostgresMigration
     {
 
 
-      $aColumns   =  array('id_item' ,'descricao' ,'help' ,'funcao' ,'itemativo' ,'manutencao' ,'desctec' ,'libcliente');
-      $aValues    =  array(
-          array(10424 ,'Cota de Exames Municipais' ,'Cota de Exames a serem realizados pelo município' ,'age4_municipiocotamensalexame001.php' ,'1' ,'1' ,'Cota de Exames a serem realizados pelo município' ,'true')
-      );
-      $table      = $this->table('db_itensmenu', array('schema' => 'configuracoes'));
+      $aColumns   =  ['id_item' ,'descricao' ,'help' ,'funcao' ,'itemativo' ,'manutencao' ,'desctec' ,'libcliente'];
+      $aValues    =  [
+          [10424 ,'Cota de Exames Municipais' ,'Cota de Exames a serem realizados pelo município' ,'age4_municipiocotamensalexame001.php' ,'1' ,'1' ,'Cota de Exames a serem realizados pelo município' ,'true']
+      ];
+      $table      = $this->table('db_itensmenu', ['schema' => 'configuracoes']);
       $table->insert($aColumns, $aValues);
       $table->saveData();
 
       /**
        * Vincular itensMenu ao pai db_menu
        */
-      $aColumns   =    array('id_item', 'id_item_filho', 'menusequencia', 'modulo');
-      $aValues    =    array(
-          array(32 ,10424 ,480 ,6952)
-      );
-      $table      =  $this->table('db_menu', array('schema' => 'configuracoes'));
+      $aColumns   =    ['id_item', 'id_item_filho', 'menusequencia', 'modulo'];
+      $aValues    =    [
+          [32 ,10424 ,480 ,6952]
+      ];
+      $table      =  $this->table('db_menu', ['schema' => 'configuracoes']);
       $table->insert($aColumns, $aValues);
       $table->saveData();
 
@@ -70,13 +70,13 @@ class M8698CotaExameMensalMunicipio extends PostgresMigration
        * Cria campos db_syscampo
        *
        */
-      $aColumns  = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-      $aValues   = array(
-        array(1009319,'age04_sequencial','int4','Código sequencial da tabela grupomunicipio','0', 'Código sequencial',10,'f','f','f',1,'text','Código sequencial'),
-        array(1009320,'age04_grupoexame','int4','Código sequencial da tabela grupoexame','0', 'Código do grupoexame',10,'f','f','f',1,'text','Código do grupoexame'),
-        array(1009321,'age04_procedimento','int4','Código procedimento da tabela sau_procedimento','0', 'Código procedimento',10,'f','f','f',1,'text','Código procedimento')
-      );
-      $table     = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+      $aColumns  = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+      $aValues   = [
+        [1009319,'age04_sequencial','int4','Código sequencial da tabela grupomunicipio','0', 'Código sequencial',10,'f','f','f',1,'text','Código sequencial'],
+        [1009320,'age04_grupoexame','int4','Código sequencial da tabela grupoexame','0', 'Código do grupoexame',10,'f','f','f',1,'text','Código do grupoexame'],
+        [1009321,'age04_procedimento','int4','Código procedimento da tabela sau_procedimento','0', 'Código procedimento',10,'f','f','f',1,'text','Código procedimento']
+      ];
+      $table     = $this->table('db_syscampo', ['schema' => 'configuracoes']);
       $table->insert($aColumns, $aValues);
       $table->saveData();
 
@@ -88,22 +88,22 @@ class M8698CotaExameMensalMunicipio extends PostgresMigration
       /**
        * Campos db_sysarquivo
        */
-      $aColumns  = array('codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform');
-      $aValues   = array(
-        array(1010204, 'grupomunicipio', 'Cota de exame mensal por município', 'age04', '2017-06-01', 'Cota do Município', 0, 'f', 'f', 'f', 'f')
-      );
-      $table     = $this->table('db_sysarquivo', array('schema' => 'configuracoes'));
+      $aColumns  = ['codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform'];
+      $aValues   = [
+        [1010204, 'grupomunicipio', 'Cota de exame mensal por município', 'age04', '2017-06-01', 'Cota do Município', 0, 'f', 'f', 'f', 'f']
+      ];
+      $table     = $this->table('db_sysarquivo', ['schema' => 'configuracoes']);
       $table->insert($aColumns, $aValues);
       $table->saveData();
 
       /**
        * Campos db_sysarqmod
        */
-      $aColumns  =  array('codmod', 'codarq');
-      $aValues   =  array(
-        array(30,1010204)
-        );
-      $table     =  $this->table('db_sysarqmod', array('schema' => 'configuracoes'));
+      $aColumns  =  ['codmod', 'codarq'];
+      $aValues   =  [
+        [30,1010204]
+        ];
+      $table     =  $this->table('db_sysarqmod', ['schema' => 'configuracoes']);
       $table->insert($aColumns, $aValues);
       $table->saveData();
 
@@ -112,13 +112,13 @@ class M8698CotaExameMensalMunicipio extends PostgresMigration
        * Campos db_sysarqcamp
        *
        */
-      $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-      $aValues  = array(
-        array(1010204,1009319,1,0),
-        array(1010204,1009320,2,0),
-        array(1010204,1009321,3,0)
-      );
-      $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+      $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+      $aValues  = [
+        [1010204,1009319,1,0],
+        [1010204,1009320,2,0],
+        [1010204,1009321,3,0]
+      ];
+      $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
       $table->insert($aColumns, $aValues);
       $table->saveData();
 
@@ -127,11 +127,11 @@ class M8698CotaExameMensalMunicipio extends PostgresMigration
        * Campos db_sysprikey
        *
        */
-      $aColumns = array('codarq', 'codcam','sequen', 'camiden');
-      $aValues  = array(
-        array(1010204,1009319,1,1009319)
-      );
-      $table    = $this->table('db_sysprikey', array('schema' => 'configuracoes'));
+      $aColumns = ['codarq', 'codcam','sequen', 'camiden'];
+      $aValues  = [
+        [1010204,1009319,1,1009319]
+      ];
+      $table    = $this->table('db_sysprikey', ['schema' => 'configuracoes']);
       $table->insert($aColumns, $aValues);
       $table->saveData();
 
@@ -141,14 +141,14 @@ class M8698CotaExameMensalMunicipio extends PostgresMigration
        *  Campos  db_sysforkey
        *
        */
-      $aColumns = array('codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel');
-      $aValues  = array(
-      array(1010204,1009320,1,1010204,0),
-      array(1010204,1009321,2,1010204,0),
-      array(1010204,1009321,1,1988,0),
-      array(1010204,1009320,1,1010195,0)
-      );
-      $table    = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
+      $aColumns = ['codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel'];
+      $aValues  = [
+      [1010204,1009320,1,1010204,0],
+      [1010204,1009321,2,1010204,0],
+      [1010204,1009321,1,1988,0],
+      [1010204,1009320,1,1010195,0]
+      ];
+      $table    = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
       $table->insert($aColumns, $aValues);
       $table->saveData();
 
@@ -157,11 +157,11 @@ class M8698CotaExameMensalMunicipio extends PostgresMigration
        * Campos db_sysindices
        *
        */
-      $aColumns = array('codind', 'nomeind', 'codarq', 'campounico');
-      $aValues  = array(
-        array(1008200,'grupomunicipio_sequencial_in',1010204,'1')
-      );
-      $table    = $this->table('db_sysindices', array('schema' => 'configuracoes'));
+      $aColumns = ['codind', 'nomeind', 'codarq', 'campounico'];
+      $aValues  = [
+        [1008200,'grupomunicipio_sequencial_in',1010204,'1']
+      ];
+      $table    = $this->table('db_sysindices', ['schema' => 'configuracoes']);
       $table->insert($aColumns, $aValues);
       $table->saveData();
 
@@ -170,11 +170,11 @@ class M8698CotaExameMensalMunicipio extends PostgresMigration
        * Campos db_syscadind
        *
        */
-        $aColumns   = array('codind', 'codcam', 'sequen');
-        $aValues    = array(
-          array(1008200,1009318,1)
-        );
-        $table      =  $this->table('db_syscadind', array('schema' => 'configuracoes'));
+        $aColumns   = ['codind', 'codcam', 'sequen'];
+        $aValues    = [
+          [1008200,1009318,1]
+        ];
+        $table      =  $this->table('db_syscadind', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
@@ -183,11 +183,11 @@ class M8698CotaExameMensalMunicipio extends PostgresMigration
        * Campos db_syssequencia
        *
        */
-      $aColumns   = array('codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq');
-      $aValues    = array(
-        array(1000670, 'grupomunicipio_age04_sequencial_seq', 1, 1, 9223372036854775807, 1, 1)
-      );
-      $table      =  $this->table('db_syssequencia', array('schema' => 'configuracoes'));
+      $aColumns   = ['codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq'];
+      $aValues    = [
+        [1000670, 'grupomunicipio_age04_sequencial_seq', 1, 1, 9223372036854775807, 1, 1]
+      ];
+      $table      =  $this->table('db_syssequencia', ['schema' => 'configuracoes']);
       $table->insert($aColumns, $aValues);
       $table->saveData();
 
@@ -204,13 +204,13 @@ class M8698CotaExameMensalMunicipio extends PostgresMigration
     {
 
       $this->execute("CREATE SEQUENCE agendamento.grupomunicipio_age04_sequencial_seq");
-      $grupomunicipio = $this->table('grupomunicipio', array('schema' => 'agendamento', 'id' => false, 'primary_key' => 'age04_sequencial', 'constraint' => 'agendamento.age04_sequencial_pk'));
-      $grupomunicipio->addColumn('age04_sequencial',   'integer',   array('null'      => false))
-                     ->addColumn('age04_grupoexame',   'integer',   array('null'      => false))
-                     ->addColumn('age04_procedimento', 'integer',   array('default'   => 0))
-                     ->addForeignKey('age04_grupoexame', 'agendamento.grupoexame', 'age02_sequencial', array('constraint'=>'grupomunicipio_grupoexame_fk'))
-                     ->addForeignKey('age04_procedimento', 'ambulatorial.sau_procedimento', 'sd63_i_codigo', array('constraint'=>'grupomunicipio_procedimento_fk'))
-                     ->addIndex(array('age04_sequencial'), array('name' => 'grupomunicipio_sequencial_in'))
+      $grupomunicipio = $this->table('grupomunicipio', ['schema' => 'agendamento', 'id' => false, 'primary_key' => 'age04_sequencial', 'constraint' => 'agendamento.age04_sequencial_pk']);
+      $grupomunicipio->addColumn('age04_sequencial',   'integer',   ['null'      => false])
+                     ->addColumn('age04_grupoexame',   'integer',   ['null'      => false])
+                     ->addColumn('age04_procedimento', 'integer',   ['default'   => 0])
+                     ->addForeignKey('age04_grupoexame', 'agendamento.grupoexame', 'age02_sequencial', ['constraint'=>'grupomunicipio_grupoexame_fk'])
+                     ->addForeignKey('age04_procedimento', 'ambulatorial.sau_procedimento', 'sd63_i_codigo', ['constraint'=>'grupomunicipio_procedimento_fk'])
+                     ->addIndex(['age04_sequencial'], ['name' => 'grupomunicipio_sequencial_in'])
                      ->create();
 
       $this->execute("ALTER TABLE agendamento.grupomunicipio ALTER COLUMN age04_sequencial SET DEFAULT nextval('agendamento.grupomunicipio_age04_sequencial_seq')");

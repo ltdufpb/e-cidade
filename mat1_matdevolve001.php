@@ -59,7 +59,7 @@ db_app::import("Dotacao");
 db_app::import("contabilidade.planoconta.*");
 db_app::import("contabilidade.contacorrente.*");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $daoDeposito = new cl_db_almox();
 $clatendrequi = new cl_atendrequi;
 $clatendrequiitem = new cl_atendrequiitem;
@@ -79,7 +79,7 @@ $oDaoMatestoqueInimeiPm = new cl_matestoqueinimeipm();
 $db_opcao = 1;
 $db_botao = true;
 $pesq=false;
-$aItens = array();
+$aItens = [];
 if (isset($incluir)) {
   $sqlerro = false;
   db_inicio_transacao();
@@ -402,11 +402,7 @@ if (isset($incluir)) {
                     $oRequisicao = new RequisicaoMaterial($m40_codigo);
                     $oRequisicao->estornarLancamento($oMaterial, $codigo_inimei, $nValorLancamento);
 
-                  } catch (BusinessException $eException) {
-                    $erro_msg = str_replace("\n", "\\n", $eException->getMessage());
-                    $sqlerro  = true;
-                  }
-                  catch (Exception $eException) {
+                  } catch (BusinessException|Exception $eException) {
                     $erro_msg = str_replace("\n", "\\n", $eException->getMessage());
                     $sqlerro  = true;
                   }
@@ -473,7 +469,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </html>
 <?php 
 if(isset($incluir)){
-  if (trim($erro_msg)==""){
+  if (trim((string) $erro_msg)==""){
        $sqlerro = false;
   } else {
        db_msgbox($erro_msg);

@@ -27,16 +27,13 @@
 
 class planilhaCaixa {
 
-  var $iPlanilha = null;
-  var $iAnoUsu   = null;
+  public $iAnoUsu   = null;
   /**
    * metodo Construtor
-   * @param integer $iCodPlanilha Código da planilha
-   *
+   * @param integer $iPlanilha Código da planilha
    */
-  function planilhaCaixa($iCodPlanilha) {
+  function __construct(public $iPlanilha) {
 
-    $this->iPlanilha = $iCodPlanilha;
     $this->iAnoUsu   = db_getsession("DB_anousu");
 
   }
@@ -74,7 +71,7 @@ class planilhaCaixa {
     $oDaoPlaCaixaRec->k81_valor          = $oReceita->k81_valor;
     $oDaoPlaCaixaRec->k81_obs            = $oReceita->k81_obs;
     $oDaoPlaCaixaRec->k81_codigo         = $oReceita->k81_codigo;
-    $oDaoPlaCaixaRec->k81_datareceb      = implode("/",array_reverse(explode("/", $oReceita->k81_datareceb)));
+    $oDaoPlaCaixaRec->k81_datareceb      = implode("/",array_reverse(explode("/", (string) $oReceita->k81_datareceb)));
     $oDaoPlaCaixaRec->k81_operbanco      = $oReceita->k81_operbanco;
     $oDaoPlaCaixaRec->k81_origem         = $oReceita->k81_origem;
     $oDaoPlaCaixaRec->k81_numcgm         = $iNumCgm;
@@ -186,7 +183,7 @@ class planilhaCaixa {
     $oDaoPlaCaixaRec->k81_valor          = $oReceita->k81_valor;
     $oDaoPlaCaixaRec->k81_obs            = $oReceita->k81_obs;
     $oDaoPlaCaixaRec->k81_codigo         = $oReceita->k81_codigo;
-    $oDaoPlaCaixaRec->k81_datareceb      = implode("/",array_reverse(explode("/", $oReceita->k81_datareceb)));
+    $oDaoPlaCaixaRec->k81_datareceb      = implode("/",array_reverse(explode("/", (string) $oReceita->k81_datareceb)));
     $oDaoPlaCaixaRec->k81_operbanco      = $oReceita->k81_operbanco;
     $oDaoPlaCaixaRec->k81_origem         = $oReceita->k81_origem;
     $oDaoPlaCaixaRec->k81_numcgm         = $iNumCgm;

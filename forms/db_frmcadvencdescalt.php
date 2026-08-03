@@ -127,11 +127,11 @@ db_input('k01_descr',40,$Ik01_descr,true,'text',3,'')
     </td>
     <td> 
       <?php 
-        $xw = array(
+        $xw = [
                      '1'=>"Calcula todas parcelas vencidas",
                      '2'=>"Calcula somente as escolhidas",
                      '3'=>"Não calcula parcelas vencidas"
-                   );
+                   ];
         db_select('q92_formacalcparcvenc',$xw,true,$db_opcao,"");
       ?>
     </td>
@@ -231,7 +231,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cadvencdesc.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }

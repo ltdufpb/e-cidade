@@ -35,6 +35,7 @@
  */
  class TabelaIRRF extends TabelaValores {
 
+   #[\Override]
    public function addFaixa(FaixaValor $faixaValor) {
 
     //  if (count($this->aFaixas) === 5) {

@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='fis3_fandam005.php?db_opcao=2'</script>";
   exit;
@@ -41,8 +41,8 @@ include(modification("classes/db_tipovistorias_classe.php"));
 include(modification("classes/db_fandamusu_classe.php"));
 include(modification("classes/db_fandam_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clvistorias     = new cl_vistorias;
 $clvistusuario   = new cl_vistusuario;
 $clvistoriaandam = new cl_vistoriaandam;
@@ -54,7 +54,7 @@ $clrotulo->label("y39_codandam");
 $db_opcao = 22;
 $db_botao = false;
 echo "<script>parent.document.formaba.fiscais.disabled=true;</script>";
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $sqlerro=false;
@@ -142,7 +142,7 @@ function js_vist(codigo){
 }
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clvistorias->erro_status=="0"){
     $clvistorias->erro(true,false);
     $db_botao=true;

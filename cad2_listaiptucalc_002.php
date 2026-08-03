@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $db_anousu= db_getsession("DB_anousu");
 
@@ -49,7 +49,7 @@ if($agrupar=='m'){
    $left = "";
    $camposleft = "";
 
-   for ($unica = 0; $unica < pg_numrows($resultunica); $unica++) {
+   for ($unica = 0; $unica < pg_num_rows($resultunica); $unica++) {
      db_fieldsmemory($resultunica, $unica);
 
      $camposleft .= ($camposleft == ""?"":", ") . "r$unica.k00_numpre as k00_numpre_$unica, r$unica.k00_dtvenc as k00_dtvenc_$unica ";
@@ -129,7 +129,7 @@ if($quantidade > 0){
 }
 
 $result=db_query($sql) or die($sql);
-if(pg_numrows($result)==0){
+if(pg_num_rows($result)==0){
   // db_redireciona('db_erros.php?fechar=true&db_erro=Não existem matrículas calculadas: Exercício:'.$db_anousu);
    exit;
 }else{
@@ -159,13 +159,13 @@ if(pg_numrows($result)==0){
   $pagina = 1;
 
 
-  for ($unica = 0; $unica < pg_numrows($resultunica); $unica++) {
+  for ($unica = 0; $unica < pg_num_rows($resultunica); $unica++) {
     $vartotal = "total$unica";
-    $$vartotal = 0;
+    ${$vartotal} = 0;
   }
 
   
-  for($i = 0;$i < pg_numrows($result);$i++) {
+  for($i = 0;$i < pg_num_rows($result);$i++) {
 //  for($i = 0;$i < 200;$i++) {
     db_fieldsmemory($result,$i);
 
@@ -184,7 +184,7 @@ if(pg_numrows($result)==0){
       $pdf->Cell(25,4,"S/Q/L",$bordat,0,"L",$preenc);
       $pdf->Cell(20,4,"VALOR TOTAL",$bordat,0,"R",$preenc);
 
-      for ($unica = 0; $unica < pg_numrows($resultunica); $unica++) {
+      for ($unica = 0; $unica < pg_num_rows($resultunica); $unica++) {
 	       db_fieldsmemory($resultunica, $unica);
 	       $pdf->Cell(20,4,"UNICA " . $k00_percdes . "%",$bordat,0,"R",$preenc);
       }
@@ -212,27 +212,27 @@ if(pg_numrows($result)==0){
       $pdf->Cell(25,4,$sql,$bordat,0,"L",$preenc);
       $pdf->Cell(20,4,db_formatar($valor,'f'),$bordat,0,"R",$preenc);
 
-      for ($unica = 0; $unica < pg_numrows($resultunica); $unica++) {
+      for ($unica = 0; $unica < pg_num_rows($resultunica); $unica++) {
 	       db_fieldsmemory($resultunica, $unica);
 
 	       $varnumpre = "k00_numpre_$unica";
 	       $varvenc   = "k00_dtvenc_$unica";
 
-        if ($$varnumpre != "") {
+        if (${$varnumpre} != "") {
 
-				  $sqlvalunica = "select fc_calcula(" . $$varnumpre . ",0,0,'" . $$varvenc . "','" . $$varvenc . "'," . db_getsession("DB_anousu") . ")";
+				  $sqlvalunica = "select fc_calcula(" . ${$varnumpre} . ",0,0,'" . ${$varvenc} . "','" . ${$varvenc} . "'," . db_getsession("DB_anousu") . ")";
 				  $resultvalunica = db_query($sqlvalunica);
 				  db_fieldsmemory($resultvalunica, 0);
 			
-				  $uvlrhis =  substr($fc_calcula,1,13);
-				  $uvlrcor = substr($fc_calcula,14,13);
-				  $uvlrjuros = substr($fc_calcula,27,13);
-				  $uvlrmulta = substr($fc_calcula,40,13);
-				  $uvlrdesconto = substr($fc_calcula,53,13);
+				  $uvlrhis =  substr((string) $fc_calcula,1,13);
+				  $uvlrcor = substr((string) $fc_calcula,14,13);
+				  $uvlrjuros = substr((string) $fc_calcula,27,13);
+				  $uvlrmulta = substr((string) $fc_calcula,40,13);
+				  $uvlrdesconto = substr((string) $fc_calcula,53,13);
 				  $utotal = $uvlrcor + $uvlrjuros + $uvlrmulta - $uvlrdesconto;
 			
 				  $vartotal = "total$unica";
-				  $$vartotal += $utotal;
+				  ${$vartotal} += $utotal;
 				  
 				  $pdf->Cell(20,4,db_formatar($utotal,'f'),$bordat,0,"R",$preenc);
 			
@@ -264,10 +264,10 @@ if(pg_numrows($result)==0){
     $pdf->Cell(80,4,"",$bordat,0,"R",$preenc);
     $pdf->Cell(20,4,db_formatar($valortot, 'f'),$bordat,0,"R",$preenc);
 
-    for ($unica = 0; $unica < pg_numrows($resultunica); $unica++) {
+    for ($unica = 0; $unica < pg_num_rows($resultunica); $unica++) {
 
       $vartotal = "total$unica";
-      $pdf->Cell(20,4,db_formatar($$vartotal,'f'),$bordat,0,"R",$preenc);
+      $pdf->Cell(20,4,db_formatar(${$vartotal},'f'),$bordat,0,"R",$preenc);
       
     }
     $pdf->ln();

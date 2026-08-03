@@ -123,15 +123,15 @@ class TaxasLancadasDinamicosRepository extends \BaseClassRepository
         $valor = "";
 
         if ($oCampo->ar47_tipocampo == 3) {
-            if (trim(strrpos($oCampo->ar47_valordefault, 'now')) != "") {
+            if (trim(strrpos((string) $oCampo->ar47_valordefault, 'now')) != "") {
                 $data = date("d/m/Y");
-                if (trim(strrpos($oCampo->ar47_valordefault, '#')) != "") {
-                    $dias = explode("#", $oCampo->ar47_valordefault)[1];
+                if (trim(strrpos((string) $oCampo->ar47_valordefault, '#')) != "") {
+                    $dias = explode("#", (string) $oCampo->ar47_valordefault)[1];
     
                     $data = date("d/m/Y", strtotime("+{$dias} days"));
                 } else {
-                    if (trim(strrpos($oCampo->ar47_valordefault, '|')) != "") {
-                        $dias = explode("|", $oCampo->ar47_valordefault)[1];
+                    if (trim(strrpos((string) $oCampo->ar47_valordefault, '|')) != "") {
+                        $dias = explode("|", (string) $oCampo->ar47_valordefault)[1];
     
                         $data = date("d/m/Y", strtotime("-{$dias} days"));
                     }
@@ -140,8 +140,8 @@ class TaxasLancadasDinamicosRepository extends \BaseClassRepository
 
             $valor = $data;
         } elseif ($oCampo->ar47_tipocampo == 7) {
-            $aOptions = explode("|", $oCampo->ar47_valordefault);
-            $aOptions2 = array();
+            $aOptions = explode("|", (string) $oCampo->ar47_valordefault);
+            $aOptions2 = [];
 
             if (!empty($aOptions)) {
                 foreach ($aOptions as $option) {

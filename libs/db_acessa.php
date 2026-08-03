@@ -30,7 +30,7 @@ $sqlCodVersaoRelease = " select db30_codversao as ultimaversao
                            from db_versao                                
                        order by db30_codver desc limit 1 ";
 $rsCodVersaoRelease  = db_query($sqlCodVersaoRelease);
-$codVersao           = pg_result($rsCodVersaoRelease,0,"ultimaversao");
+$codVersao           = pg_fetch_result($rsCodVersaoRelease,0,"ultimaversao");
 $db_fonte_codversao  = "{$codVersao}";
 
 /* PEGA A ULTIMA RELEASE */
@@ -38,6 +38,6 @@ $sqlCodRelease = " select db30_codrelease as ultimarelease
                      from db_versao 
                  order by db30_codver desc limit 1 ";
 $rsCodRelease  = db_query($sqlCodRelease);
-$codRelease    = pg_result($rsCodRelease,0,"ultimarelease");
+$codRelease    = pg_fetch_result($rsCodRelease,0,"ultimarelease");
 $db_fonte_codrelease= "{$codRelease}";
 ?>

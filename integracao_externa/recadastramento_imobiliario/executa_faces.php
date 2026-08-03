@@ -26,11 +26,11 @@
  */
 
 // Declarando variáveis necessárias para que a inclusão das bibliotecas não retorne mensagens.
-$HTTP_SERVER_VARS['HTTP_HOST']      = '';
-$HTTP_SERVER_VARS['PHP_SELF']       = '';
-$HTTP_SERVER_VARS["HTTP_REFERER"]   = '';
-$HTTP_POST_VARS                     = array();
-$HTTP_GET_VARS                      = array();
+$_SERVER['HTTP_HOST']      = '';
+$_SERVER['PHP_SELF']       = '';
+$_SERVER["HTTP_REFERER"]   = '';
+$_POST                     = [];
+$_GET                      = [];
 
 define("PATH_IMPORTACAO", "integracao_externa/recadastramento_imobiliario/");
 
@@ -62,7 +62,7 @@ try {
  if ( $oRecadastroImobiliarioFacesQuadra->processarInformacoes() ) {
   db_query(Conexao::getInstancia()->getConexao(), "COMMIT");
  }
-} catch( Exception $eErro ) {
+} catch( Exception ) {
 
   db_query(Conexao::getInstancia()->getConexao(), "ROLLBACK");
   

@@ -43,8 +43,8 @@ $clcfpatriplaca = new cl_cfpatriplaca;
 
 $clbensplaca->rotulo->label();
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 // echo $t52_bem;
 ?>
 <html>
@@ -107,8 +107,8 @@ db_postmemory($HTTP_POST_VARS);
               $depto_origem = $descrdepto;
 	      
 	      if(isset($t56_histor) && $t56_histor != ""){
-		if(strlen($t56_histor)>15){
-		  $t56_historico = substr($t56_histor,0,15);
+		if(strlen((string) $t56_histor)>15){
+		  $t56_historico = substr((string) $t56_histor,0,15);
 		}else{
 		  $t56_historico = $t56_histor;
 		}
@@ -162,7 +162,7 @@ if(isset($t52_bem) && trim($t52_bem) != ''){
          	db_fieldsmemory($result_bensplaca,$i);
 
           if ($t07_confplaca == 4){
-               if (strlen(trim(@$t41_placa)) > 0){
+               if (strlen(trim((string) @$t41_placa)) > 0){
                     $t41_placa = db_formatar($t41_placa,"s","0",$t07_digseqplaca,"e",0);
                }
 

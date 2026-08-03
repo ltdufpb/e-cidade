@@ -32,7 +32,7 @@ $clorcreceita->rotulo->label();
 $clrotulocampo = new rotulocampo;
 $clrotulocampo->label("c70_valor");
 $clrotulocampo->label("c70_data");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
   <form name="form1" method="post" action="" >
   <center>

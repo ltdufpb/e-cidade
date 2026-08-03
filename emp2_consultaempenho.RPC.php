@@ -67,14 +67,14 @@ try {
       $sSqlItensEmpenho = $oDaoEmpenho->sql_query_itens_consulta_empenho($oParam->iCodigoEmpenho, $sCamposEmpenho, 'riseqitem');
       $rsBuscaEmpenho   = $oDaoEmpenho->sql_record($sSqlItensEmpenho);
 
-      $aItensRetorno    = array();
+      $aItensRetorno    = [];
 
       for ($iRowItem = 0; $iRowItem < $oDaoEmpenho->numrows; $iRowItem++) {
 
         $oStdItem = db_utils::fieldsMemory($rsBuscaEmpenho, $iRowItem);
-        $oStdItem->descricao_material = urlencode($oStdItem->descricao_material);
-        $oStdItem->observacao         = urlencode($oStdItem->observacao);
-        $oStdItem->e62_descr          = urlencode($oStdItem->e62_descr);
+        $oStdItem->descricao_material = urlencode((string) $oStdItem->descricao_material);
+        $oStdItem->observacao         = urlencode((string) $oStdItem->observacao);
+        $oStdItem->e62_descr          = urlencode((string) $oStdItem->e62_descr);
         $aItensRetorno[] = $oStdItem;
       }
       $oRetorno->aItensEmpenho = $aItensRetorno;

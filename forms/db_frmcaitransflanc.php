@@ -84,9 +84,9 @@ if(isset($db_opcaoal)){
 	                    select k92_instit
 	                    from caitransfdest where k92_transf= $k93_transf
 	                  ) order by codigo desc ");
-	 $db_matriz = array();
-	 if (pg_numrows($res)>0){
-            for ($x=0;$x<pg_numrows($res);$x++){
+	 $db_matriz = [];
+	 if (pg_num_rows($res)>0){
+            for ($x=0;$x<pg_num_rows($res);$x++){
                  db_fieldsmemory($res,$x);
 		 $db_matriz[$codigo]=$nomeinst;
 	    }  
@@ -127,9 +127,9 @@ if(isset($db_opcaoal)){
     <?php 
      $where = "";
      if($db_opcao==1||$db_opcao==11) {
-	     $chavepri = array("k93_sequen"=>@$k93_sequen,"k93_transf"=>@$k93_transf);
+	     $chavepri = ["k93_sequen"=>@$k93_sequen,"k93_transf"=>@$k93_transf];
      } else {
-	     $chavepri = array("k93_transf"=>@$k93_transf);
+	     $chavepri = ["k93_transf"=>@$k93_transf];
 		 $where = "k93_sequen <> $k93_sequen and ";
      }
      $cliframe_alterar_excluir->chavepri=$chavepri;

@@ -124,7 +124,7 @@ $clclabens->rotulo->label();
             </td>
             <td>
               <?php
-                $aTipoImpressao = array("S"=>"Sintético","A"=>"Análitico", "T"=>"Acumulado");
+                $aTipoImpressao = ["S"=>"Sintético","A"=>"Análitico", "T"=>"Acumulado"];
                 db_select("impressao", $aTipoImpressao, true, 1);
               ?>
             </td>
@@ -135,7 +135,7 @@ $clclabens->rotulo->label();
             </td>
             <td>
               <?php
-                $aTipoTotal = array("N"=>"Nenhum", "D"=>"Departamento", "O"=>"Órgão");
+                $aTipoTotal = ["N"=>"Nenhum", "D"=>"Departamento", "O"=>"Órgão"];
                 db_select("tipoTotal", $aTipoTotal, true, 1);
               ?>
             </td>

@@ -36,15 +36,15 @@ $oRetorno          = new stdClass();
 $oRetorno->message = '';
 $oRetorno->erro    = false;
 
-$aTiposPublicacoesObrigatorios = array(
+$aTiposPublicacoesObrigatorios = [
   EventoLicitacao::PUBLICACAO_DIARIO_ESTADO          => 'Diário Oficial do Estado',
   EventoLicitacao::PUBLICACAO_INTERNET               => 'Internet',
   EventoLicitacao::PUBLICACAO_DIARIO_UNIAO           => 'Diário Oficial da União',
   EventoLicitacao::PUBLICACAO_SITE_OFICIAL           => 'Site Oficial',
   EventoLicitacao::PUBLICACAO_CONTRATACOES_PUBLICAS  => 'Portal Nacional de Contratações Públicas'
-);
+];
 
-$aTiposPublicacoesDescricao = array(
+$aTiposPublicacoesDescricao = [
   EventoLicitacao::PUBLICACAO_DIARIO_ESTADO             => 'Diário Oficial do Estado',
   EventoLicitacao::PUBLICACAO_INTERNET                  => 'Internet',
   EventoLicitacao::PUBLICACAO_JORNAL                    => 'Jornal',
@@ -55,7 +55,7 @@ $aTiposPublicacoesDescricao = array(
   EventoLicitacao::PUBLICACAO_NAO_PUBLICADO             => 'Não publicado',
   EventoLicitacao::PUBLICACAO_SITE_OFICIAL              => 'Site Oficial',
   EventoLicitacao::PUBLICACAO_CONTRATACOES_PUBLICAS     => 'Portal Nacional de Contratações Públicas'
-);
+];
 
 try {
 
@@ -99,7 +99,7 @@ try {
 
       $oLicitacao = new licitacao($iLicitacao);
       $aEventos   = $oLicitacao->getEventos();
-      $oRetorno->aEventos = array();
+      $oRetorno->aEventos = [];
 
       foreach ($aEventos as $oEvento) {
         $sTipo = LicitaConTipoEvento::$aDescricaoEvento[$oEvento->getTipo()];
@@ -107,17 +107,17 @@ try {
         $sData  = $oEvento->getData()->getDate(DBDate::DATA_PTBR);
         $oAutor = $oEvento->getAutor();
 
-        $oRetorno->aEventos[] = array(
+        $oRetorno->aEventos[] = [
           'codigo' => $oEvento->getCodigo(),
-          'fase'   => urlencode($sDescricaoFase),
-          'evento' => urlencode($sTipo),
-          'data'   => urlencode($sData),
-          'autor'  => $oAutor ? urlencode($oAutor->getNome()) : '',
+          'fase'   => urlencode((string) $sDescricaoFase),
+          'evento' => urlencode((string) $sTipo),
+          'data'   => urlencode((string) $sData),
+          'autor'  => $oAutor ? urlencode((string) $oAutor->getNome()) : '',
           'cpf_autor' => $oAutor && $oAutor->isFisico() ? db_formatar($oAutor->getCpf(), "cpf") : '',
           'cnpj_autor' => $oAutor && !$oAutor->isFisico() ? db_formatar($oAutor->getCnpj(), "cnpj") : '',
           'tipo_publicacao' => $aTiposPublicacoesDescricao[$oEvento->getTipoPublicacao()],
           'descricao_publicacao' => $oEvento->getDescricaoPublicacao()
-        );
+        ];
       }
 
     break;
@@ -140,13 +140,10 @@ try {
         throw new DBException('Não foi possível consultar os tipos de eventos.');
       }
 
-      $oRetorno->aTipoEventos = db_utils::makeCollectionFromRecord($oTipo, function($oRegistro) {
-
-        return (object) array(
-          'codigo' => $oRegistro->l45_sequencial,
-          'descricao' => urlencode($oRegistro->l45_descricao)
-        );
-      });
+      $oRetorno->aTipoEventos = db_utils::makeCollectionFromRecord($oTipo, fn($oRegistro) => (object) [
+        'codigo' => $oRegistro->l45_sequencial,
+        'descricao' => urlencode((string) $oRegistro->l45_descricao)
+      ]);
 
     break;
 
@@ -157,18 +154,18 @@ try {
         throw new ParameterException('Código do evento não informado.');
       }
 
-      $oRetorno->aDocumentos = array();
+      $oRetorno->aDocumentos = [];
       $oEvento = new EventoLicitacao($iCodigo);
       $aDocumentos = $oEvento->getDocumentos();
 
       foreach ($aDocumentos as $oDocumento) {
 
         $sDescricaoTipoDocumento = LicitaConTipoDocumento::$aDescricaoTipoDocumento[$oDocumento->getTipoDocumento()];
-        $oRetorno->aDocumentos[] = array(
+        $oRetorno->aDocumentos[] = [
           'codigo'  => $oDocumento->getCodigo(),
-          'arquivo' => urlencode($oDocumento->getNomeArquivo()),
-          'tipo'    => urlencode($sDescricaoTipoDocumento)
-        );
+          'arquivo' => urlencode((string) $oDocumento->getNomeArquivo()),
+          'tipo'    => urlencode((string) $sDescricaoTipoDocumento)
+        ];
       }
 
     break;
@@ -177,8 +174,8 @@ try {
 
       $oStdEvento    = $oParam->evento;
     
-      $iCodigoEvento = isset($oStdEvento->codigo_evento) ? $oStdEvento->codigo_evento : null;
-      $oData         = new DBDate(urldecode($oStdEvento->data));
+      $iCodigoEvento = $oStdEvento->codigo_evento ?? null;
+      $oData         = new DBDate(urldecode((string) $oStdEvento->data));
       $oDataSessao   = new DBDate(date('Y-m-d', db_getsession('DB_datausu')));
 
       if ($oData->getTimeStamp() > $oDataSessao->getTimeStamp()) {
@@ -259,7 +256,7 @@ try {
         throw new FileException('Ocorreu um erro ao fazer envio do arquivo.');
       }
 
-      $aExtensoesProibidas = array('exe', 'php', 'sh', 'bat', 'py');
+      $aExtensoesProibidas = ['exe', 'php', 'sh', 'bat', 'py'];
 //      $oFile = new File($_FILES['arquivo']['name']);
 //      if (in_array($oFile->getExtension(), $aExtensoesProibidas)) {
 //        throw new FileException('A extensão utilizada não é permitida');
@@ -269,7 +266,7 @@ try {
       $oDocumento->setCodigoEvento((int) $oParam->codigo_evento);
       $oDocumento->setTipoDocumento((int) $oParam->tipo_documento);
       $oDocumento->setArquivoTemporario($_FILES['arquivo']['tmp_name']);
-      $oDocumento->setNomeArquivo(db_removeAcentuacao(utf8_decode($_FILES['arquivo']['name'])));
+      $oDocumento->setNomeArquivo(db_removeAcentuacao(mb_convert_encoding($_FILES['arquivo']['name'], 'ISO-8859-1')));
       $oDocumento->salvar();
 
       $oRetorno->message = "Documento salvo com sucesso.";

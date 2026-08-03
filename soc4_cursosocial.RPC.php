@@ -130,7 +130,7 @@ try {
       $oCurso->iCategoria    = $oCursoSocial->getCategoria()->getCodigo();
       $oCurso->sCategoria    = $oCursoSocial->getCategoria()->getDescricao();
 
-      $oCurso->aDiasSemana = array();
+      $oCurso->aDiasSemana = [];
 
       foreach ($oCursoSocial->getDiasSemana() as $iDiaSemana) {
         $oCurso->aDiasSemana[] = $iDiaSemana;
@@ -151,7 +151,7 @@ try {
       $rsCategoria   = $oDaoCategoria->sql_record($sSqlCategoria);
       $iLinhas       = $oDaoCategoria->numrows;
 
-      $oRetorno->aCategorias = array();
+      $oRetorno->aCategorias = [];
       if ($iLinhas > 0) {
 
         for ($i = 0; $i < $iLinhas; $i++) {
@@ -159,7 +159,7 @@ try {
           $oDados                  = db_utils::fieldsMemory($rsCategoria, $i);
           $oCategoria              = new stdClass();
           $oCategoria->iCodigo     = $oDados->h02_codigo;
-          $oCategoria->sDescricao  = urlencode($oDados->h02_descr);
+          $oCategoria->sDescricao  = urlencode((string) $oDados->h02_descr);
           $oRetorno->aCategorias[] = $oCategoria;
         }
       }
@@ -173,7 +173,7 @@ try {
 
       $oCursoSocial = new CursoSocial($oParam->iCodigoCurso);
 
-      $aDiasSemana = array();
+      $aDiasSemana = [];
       foreach ($oCursoSocial->getDiasSemana() as $iDiaSemana) {
         $aDiasSemana[] = $iDiaSemana-1;
       }
@@ -198,7 +198,7 @@ try {
     case 'getDiasAulaCurso':
 
       $oCursoSocial    = new CursoSocial($oParam->iCodigoCurso);
-      $oRetorno->aDias = array();
+      $oRetorno->aDias = [];
       foreach ($oCursoSocial->getDiasDeAula() as $oDiaAula) {
 
         $oData             = new stdClass();
@@ -272,7 +272,7 @@ try {
 
       $oCursoSocial = new CursoSocial($oParam->iCurso);
 
-      $oRetorno->aCidadaos = array();
+      $oRetorno->aCidadaos = [];
       foreach ($oCursoSocial->getCidadaosMatriculados() as $oMatricula) {
 
         $oMatriculaDado             = new stdClass();
@@ -305,7 +305,7 @@ try {
      */
     case 'buscaCursos':
 
-      $oRetorno->aCursos  = array();
+      $oRetorno->aCursos  = [];
       $sWhereCursoSocial  = '';
       $oDaoCursoSocial    = new cl_cursosocial();
       $sCamposCursoSocial = "as19_sequencial, as19_nome";
@@ -325,7 +325,7 @@ try {
 
     case "getCursoMinistrante":
 
-      $oRetorno->aCursos  = array();
+      $oRetorno->aCursos  = [];
       $sWhereCursoSocial  = "as19_ministrante = {$oParam->iMinistrante}";
       $oDaoCursoSocial    = new cl_cursosocial();
       $sCamposCursoSocial = "as19_sequencial, as19_nome";
@@ -355,7 +355,7 @@ try {
     case "getDiasAula":
 
       $oCursoSocial    = new CursoSocial($oParam->iCurso);
-      $oRetorno->aDias = array();
+      $oRetorno->aDias = [];
 
       foreach ($oCursoSocial->getDiasDeAula($oParam->iMes) as $oDiaAula) {
 
@@ -371,7 +371,7 @@ try {
     case "getDiasAulaPorMes":
 
       $oCursoSocial    = new CursoSocial($oParam->iCurso);
-      $oRetorno->aDias = array();
+      $oRetorno->aDias = [];
       foreach ($oCursoSocial->getDiasDeAulaPorMes($oParam->iMes) as $oDiaMes) {
 
         if ($oDiaMes->oDataAula->getAno() != $oParam->iAno) {
@@ -393,7 +393,7 @@ try {
       $oCursoSocial = new CursoSocial($oParam->iCurso);
       $aMatriculas  = $oCursoSocial->getCidadaosMatriculados();
 
-      $oRetorno->aAlunos = array();
+      $oRetorno->aAlunos = [];
       if (count($aMatriculas) > 0) {
 
         foreach ($aMatriculas as $oMatriculaCurso) {
@@ -403,7 +403,7 @@ try {
           $oMatricula->sNome      = $oMatriculaCurso->getCidadao()->getNome();
           $oMatricula->iCidadao   = $oMatriculaCurso->getCidadao()->getCodigo();
 
-          $oMatricula->aAusencias = array();
+          $oMatricula->aAusencias = [];
           foreach ($oMatriculaCurso->getAusencias() as $oAusenciaCidadao) {
 
             $oAusencia              = new stdClass();
@@ -422,7 +422,7 @@ try {
     case "salvarFaltas":
 
       $oCursoSocial = new CursoSocial($oParam->iCurso);
-      $aDiasDeFaltas = array();
+      $aDiasDeFaltas = [];
       $oDaoCursoAula = new cl_cursosocialaula();
 
       db_inicio_transacao();
@@ -452,17 +452,7 @@ try {
       break;
 
   }
-}  catch (ParameterException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = $oErro->getMessage();
-} catch (BusinessException $oErro) {
-
-  db_fim_transacao(true);
-  $oRetorno->status  = 2;
-  $oRetorno->message = $oErro->getMessage();
-} catch (DBException $oErro) {
+}  catch (ParameterException|BusinessException|DBException $oErro) {
 
   db_fim_transacao(true);
   $oRetorno->status  = 2;

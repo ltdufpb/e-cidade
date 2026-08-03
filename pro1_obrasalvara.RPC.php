@@ -48,7 +48,7 @@ $lErro = false;
 switch ($oParam->sExec) {
     case 'getConstrucoes':
         try {
-            $oRetorno->aConstrucao = array();
+            $oRetorno->aConstrucao = [];
 
             $oDAOObras = db_utils::getDao('obras');
             $sSqlObras = $oDAOObras->sql_query_obras_construcoes($oParam->iCodigoObra);
@@ -113,8 +113,8 @@ switch ($oParam->sExec) {
             $oDAOObrasAlvara->ob04_obsprocesso = db_stdClass::normalizeStringJson($oParam->sObservacao);
             $oDAOObrasAlvara->ob04_dtvalidade  = $oParam->dDtValidade;
             $oDAOObrasAlvara->ob04_classe      = $oParam->sClasse;
-            $oDAOObrasAlvara->ob04_ativo       = boolval(isset($oObrasAlvara->ob04_ativo)?$oObrasAlvara->ob04_ativo:true);
-            $oRetorno->ativo                   = boolval(isset($oObrasAlvara->ob04_ativo)?$oObrasAlvara->ob04_ativo:true);
+            $oDAOObrasAlvara->ob04_ativo       = boolval($oObrasAlvara->ob04_ativo ?? true);
+            $oRetorno->ativo                   = boolval($oObrasAlvara->ob04_ativo ?? true);
             $oDAOObrasAlvara->ob04_datacancelamentoreativacao = date('Y-m-d');
 
             /**
@@ -136,7 +136,7 @@ switch ($oParam->sExec) {
                 if ($oDAOObrasAlvaraHistorico->numrows > 0) {
                     $oHistorico = db_utils::fieldsMemory($rsHistorico, 0);
 
-                    if (strtotime($oDataInicial->convertTo(DBDate::DATA_EN)) < strtotime($oHistorico->ob35_datainicial)) {
+                    if (strtotime($oDataInicial->convertTo(DBDate::DATA_EN)) < strtotime((string) $oHistorico->ob35_datainicial)) {
                         throw new Exception(_M('tributario.projetos.pro1_obrasalvara.validacao_data_alvara'));
                     }
                 }

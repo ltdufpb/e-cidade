@@ -325,7 +325,7 @@ if (! $rsDiferenca) {
 }
 
 db_atutermometro(99,100,'termometro');
-fechaJanela("Processamento concluido com sucesso !");
+fechaJanela();
 
 function fechaJanela($sMensagem = "") {
 

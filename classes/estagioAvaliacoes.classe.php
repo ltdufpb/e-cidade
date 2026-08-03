@@ -27,7 +27,7 @@
 
 class estagioAvaliacao {
   
-  function estagioAvaliacao($iCodAvaliacao,$setSession=true){
+  function __construct($iCodAvaliacao,$setSession=true){
 
      if (!class_exists("rhestagioagendadata")){
          require_once modification("classes/db_rhestagioagendadata_classe.php");
@@ -117,13 +117,13 @@ class estagioAvaliacao {
       $objJson = new services_JSON();
       $strJson["status"]        = 1;
       $strJson["h57_regist"]    = $this->agendaData->dados->h57_regist;
-      $strJson["z01_nome"]      = urlencode($this->agendaData->dados->z01_nome);
+      $strJson["z01_nome"]      = urlencode((string) $this->agendaData->dados->z01_nome);
       $strJson["h64_data"]      = db_formatar($this->agendaData->dados->h64_data,"d");
       $strJson["h50_confobs"]   = $this->agendaData->dados->h50_confobs;
-      $strJson["nomeavaliador"] = urlencode($this->agendaData->dados->nomeavaliador);
+      $strJson["nomeavaliador"] = urlencode((string) $this->agendaData->dados->nomeavaliador);
       $strJson["h56_avaliador"] = $this->agendaData->dados->h56_avaliador;
       $strJson["h56_comissao"]  = $this->agendaData->dados->h56_rhestagiocomissao;
-      $strJson["h59_descr"]     = urlencode($this->agendaData->dados->h59_descr);
+      $strJson["h59_descr"]     = urlencode((string) $this->agendaData->dados->h59_descr);
       if ($iCodQuesito == null){
 
          $this->getQuesitos(null);
@@ -143,11 +143,11 @@ class estagioAvaliacao {
           $iTotRespostasDada = 0;
           $oQuesitos   = db_utils::fieldsMemory($this->rQuesitos,$i);
           if (isset($_SESSION["avaliacao"]["obs"][$oQuesitos->h51_sequencial])){
-             $sObsQuesito = urlencode($_SESSION["avaliacao"]["obs"][$oQuesitos->h51_sequencial]["obs"]);
-             $sRecQuesito = urlencode($_SESSION["avaliacao"]["obs"][$oQuesitos->h51_sequencial]["rec"]);
+             $sObsQuesito = urlencode((string) $_SESSION["avaliacao"]["obs"][$oQuesitos->h51_sequencial]["obs"]);
+             $sRecQuesito = urlencode((string) $_SESSION["avaliacao"]["obs"][$oQuesitos->h51_sequencial]["rec"]);
           }
           $strJson["quesitos"][$i]["h51_sequencial"] = $oQuesitos->h51_sequencial;
-          $strJson["quesitos"][$i]["h51_descr"]      = urlencode($oQuesitos->h51_descr);
+          $strJson["quesitos"][$i]["h51_descr"]      = urlencode((string) $oQuesitos->h51_descr);
           $strJson["quesitos"][$i]["obs"]            = $sObsQuesito;
           $strJson["quesitos"][$i]["rec"]            = $sRecQuesito;
           $strJson["quesitos"][$i]["respostaDadas"]  = 0;
@@ -157,7 +157,7 @@ class estagioAvaliacao {
               
               $oQuestoes = db_utils::fieldsMemory($this->rEstagioQuestao,$j);
               $strJson["quesitos"][$i]["questoes"][$j]["h53_sequencial"] = $oQuestoes->h53_sequencial;
-              $strJson["quesitos"][$i]["questoes"][$j]["h53_descr"]      = urlencode($oQuestoes->h53_descr);
+              $strJson["quesitos"][$i]["questoes"][$j]["h53_descr"]      = urlencode((string) $oQuestoes->h53_descr);
               $strJson["quesitos"][$i]["questoes"][$j]["numrespostas"]   = 0;
               $strJson["quesitos"][$i]["questoes"][$j]["respostadada"]   = '';
               $strJson["quesitos"][$i]["questoes"][$j]["obsquestao"]     = '';
@@ -167,19 +167,19 @@ class estagioAvaliacao {
                  $iTotRespostasDada++;
               }
               if (isset($_SESSION["avaliacao"]["obsquestoes"][$oQuestoes->h53_sequencial])){
-                 $strJson["quesitos"][$i]["questoes"][$j]["obsquestao"] = urlencode($_SESSION["avaliacao"]["obsquestoes"][$oQuestoes->h53_sequencial]["obs"]);
-                 $strJson["quesitos"][$i]["questoes"][$j]["obsrec"]     = urlencode($_SESSION["avaliacao"]["obsquestoes"][$oQuestoes->h53_sequencial]["rec"]);
+                 $strJson["quesitos"][$i]["questoes"][$j]["obsquestao"] = urlencode((string) $_SESSION["avaliacao"]["obsquestoes"][$oQuestoes->h53_sequencial]["obs"]);
+                 $strJson["quesitos"][$i]["questoes"][$j]["obsrec"]     = urlencode((string) $_SESSION["avaliacao"]["obsquestoes"][$oQuestoes->h53_sequencial]["rec"]);
               }
               if ($this->getQuestaoRespostas($oQuestoes->h53_sequencial)){
                  $strJson["quesitos"][$i]["questoes"][$j]["numrespostas"]   = $this->iTotRespostas;
                  for ($k = 0; $k < $this->iTotRespostas; $k++){
                     $oRespostas = db_utils::fieldsMemory($this->rEstagioResposta,$k);
-                    $strJson["quesitos"][$i]["questoes"][$j]["respostas"][] = array(
+                    $strJson["quesitos"][$i]["questoes"][$j]["respostas"][] = [
                                                                     "h54_sequencial" => $oRespostas->h54_sequencial,
-                                                                    "h54_descr"      => urlencode($oRespostas->h54_descr),
-                                                                    "h52_pontos"     => urlencode($oRespostas->h52_pontos),
-                                                                    "h52_descr"      => urlencode($oRespostas->h52_descr)
-                                                                   );
+                                                                    "h54_descr"      => urlencode((string) $oRespostas->h54_descr),
+                                                                    "h52_pontos"     => urlencode((string) $oRespostas->h52_pontos),
+                                                                    "h52_descr"      => urlencode((string) $oRespostas->h52_descr)
+                                                                   ];
                  
                  }
               }
@@ -199,7 +199,7 @@ class estagioAvaliacao {
         for ($i = 0; $i < $this->iTotquesitos; $i++){
           $totalRespostas     = 0;
           $oQuesitos          = db_utils::fieldsMemory($this->rQuesitos,$i);
-          $this->getQuestoesQuesito($oQuesitos->h51_sequencial,$i);
+          $this->getQuestoesQuesito($oQuesitos->h51_sequencial);
           $sSQLTot   = " select coalesce(count(*),0) as total";
           $sSQLTot  .= "   from rhestagioavaliacao";
           $sSQLTot  .= "        inner join rhestagioavaliacaoresposta on h56_sequencial               = h58_rhestagioavaliacao";
@@ -213,11 +213,11 @@ class estagioAvaliacao {
           if ($oTot->total == $this->iTotQuestoes){
              $totalResp = 1;
           }
-          $strJson["quesitos"][] = array (
+          $strJson["quesitos"][] =  [
                                           "h51_sequencial" => $oQuesitos->h51_sequencial,
-                                          "h51_descr"      => urlencode($oQuesitos->h51_descr),  
+                                          "h51_descr"      => urlencode((string) $oQuesitos->h51_descr),  
                                           "totalresp"      => $totalResp
-                                         );
+                                         ];
         }
       }
       if (!class_exists("services_json")){
@@ -237,16 +237,16 @@ class estagioAvaliacao {
              $_SESSION["avaliacao"]["questoes"]["$iQuestao"] = $iResposta;
              break;   
           case 2: //obs da questao
-             $_SESSION["avaliacao"]["obsquestoes"]["$iQuestao"] = array (
-                                                                         "obs" => urldecode(trim($sObservacao)),
-                                                                         "rec" => urldecode(trim($sRecomendacao)) 
-                                                                        );
+             $_SESSION["avaliacao"]["obsquestoes"]["$iQuestao"] =  [
+                                                                         "obs" => urldecode(trim((string) $sObservacao)),
+                                                                         "rec" => urldecode(trim((string) $sRecomendacao)) 
+                                                                        ];
              break;   
           case 3: //Obs do quesito 
-             $_SESSION["avaliacao"]["obs"]["$iQuestao"] = array(
-                                                               "obs" => urldecode(trim($sObservacao)),
-                                                               "rec" => urldecode(trim($sRecomendacao))
-                                                               );
+             $_SESSION["avaliacao"]["obs"]["$iQuestao"] = [
+                                                               "obs" => urldecode(trim((string) $sObservacao)),
+                                                               "rec" => urldecode(trim((string) $sRecomendacao))
+                                                               ];
              break;   
            
          }
@@ -259,7 +259,7 @@ class estagioAvaliacao {
    function gravarSessao(){
 
      unset($_SESSION["avaliacao"]) ;
-     $_SESSION["avaliacao"]["questoes"] = array();
+     $_SESSION["avaliacao"]["questoes"] = [];
      if (!class_exists("rhestagioavaliacao")){
         require_once(modification("classes/db_rhestagioavaliacao_classe.php"));
      }
@@ -440,9 +440,9 @@ class estagioAvaliacao {
          db_fim_transacao($this->lSqlErro);
          //db_fim_transacao(true);
          if ($this->lSqlErro){
-            $retorno = array("retorno" => 0,"mensagem" =>urlencode($this->sErroMsg),"pesquisar" => 0);
+            $retorno = ["retorno" => 0,"mensagem" =>urlencode((string) $this->sErroMsg),"pesquisar" => 0];
          }else{
-            $retorno = array("retorno" => 1,"mensagem" => "Avaliacao Salva com Sucesso.", "pesquisar" => 1);
+            $retorno = ["retorno" => 1,"mensagem" => "Avaliacao Salva com Sucesso.", "pesquisar" => 1];
          }
       }
       return $this->array2json($retorno);

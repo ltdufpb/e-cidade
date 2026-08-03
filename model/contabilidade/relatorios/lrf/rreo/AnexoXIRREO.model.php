@@ -111,12 +111,13 @@ class AnexoXIRREO extends RelatoriosLegaisBase implements AnexoRREO {
    *
    * @return array - Colecao de stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
      $oRetorno                        = new stdClass();
-     $oRetorno->quadroreceitas        = array();
-     $oRetorno->quadrodespesas        = array();
-     $oRetorno->quadrosaldofinanceiro = array();
+     $oRetorno->quadroreceitas        = [];
+     $oRetorno->quadrodespesas        = [];
+     $oRetorno->quadrosaldofinanceiro = [];
 
      /**
       * verificamos e somamos as linhas da receita, que atualmente são as linhas de 1-2 (na configuracao)
@@ -433,7 +434,7 @@ class AnexoXIRREO extends RelatoriosLegaisBase implements AnexoRREO {
     foreach ($aDados->quadroreceitas as $oQuadroReceita) {
 
       $this->oPdf->SetFont('arial', '', $iTamFonte);
-      $this->oPdf->Cell(64, $iAltCell, substr($oQuadroReceita->descricaolinha, 0, 70),        'R', 0, "L", 0);
+      $this->oPdf->Cell(64, $iAltCell, substr((string) $oQuadroReceita->descricaolinha, 0, 70),        'R', 0, "L", 0);
       $this->oPdf->Cell(42, $iAltCell, db_formatar($oQuadroReceita->previsaoatualizada, 'f'), 'RL', 0, "R", 0);
       $this->oPdf->Cell(49, $iAltCell, db_formatar($oQuadroReceita->receitaatualizada, 'f'),  'RL', 0, "R", 0);
       $this->oPdf->Cell(35, $iAltCell, db_formatar($oQuadroReceita->saldoaarealizar, 'f'),    'L', 1, "R", 0);
@@ -477,7 +478,7 @@ class AnexoXIRREO extends RelatoriosLegaisBase implements AnexoRREO {
     foreach ($aDados->quadrodespesas as $oQuadroDespesas) {
 
       $this->oPdf->SetFont('arial', '', $iTamFonte);
-      $this->oPdf->Cell(64, $iAltCell, substr($oQuadroDespesas->descricaolinha, 0, 70),        'R', 0, "L", 0);
+      $this->oPdf->Cell(64, $iAltCell, substr((string) $oQuadroDespesas->descricaolinha, 0, 70),        'R', 0, "L", 0);
       $this->oPdf->Cell(42, $iAltCell, db_formatar($oQuadroDespesas->dotacaoatualizada, 'f'),  'RL', 0, "R", 0);
       $this->oPdf->Cell(24.5, $iAltCell, db_formatar($oQuadroDespesas->despesaliquidada, 'f'), 'R', 0, "R", 0);
       $this->oPdf->Cell(24.5, $iAltCell, db_formatar($oQuadroDespesas->inscritasemrp, 'f'),    'L', 0, "R", 0);
@@ -496,7 +497,7 @@ class AnexoXIRREO extends RelatoriosLegaisBase implements AnexoRREO {
     foreach ($aDados->quadrosaldofinanceiro as $oQuadroSaldoFinanceiro) {
 
       $this->oPdf->SetFont('arial', '', $iTamFonte);
-      $this->oPdf->Cell(64, $iAltCell, substr($oQuadroSaldoFinanceiro->descricaolinha, 0, 70),       'TBR', 0, "L", 0);
+      $this->oPdf->Cell(64, $iAltCell, substr((string) $oQuadroSaldoFinanceiro->descricaolinha, 0, 70),       'TBR', 0, "L", 0);
       $this->oPdf->Cell(42, $iAltCell, db_formatar($oQuadroSaldoFinanceiro->exercicioanterior, 'f'), 'TBRL', 0, "R", 0);
       $this->oPdf->Cell(49, $iAltCell, db_formatar($oQuadroSaldoFinanceiro->valorexercicio, 'f'),    'TBRL', 0, "R", 0);
       $this->oPdf->Cell(35, $iAltCell, db_formatar($oQuadroSaldoFinanceiro->saldoatual, 'f'),        'TBL', 1, "R", 0);

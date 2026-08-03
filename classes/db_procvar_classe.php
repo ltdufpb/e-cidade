@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE procvar
 class cl_procvar { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p54_codigo = 0; 
-   var $p54_codcam = 0; 
-   var $p54_obrigatorio = 'f'; 
+   public $p54_codigo = 0; 
+   public $p54_codcam = 0; 
+   public $p54_obrigatorio = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p54_codigo = int4 = código do tipo 
                  p54_codcam = int4 = código 
                  p54_obrigatorio = bool = Obrigatório 
                  ";
    //funcao construtor da classe 
-   function cl_procvar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("procvar"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -120,7 +120,7 @@ class cl_procvar {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Variáveis do processo ($this->p54_codigo."-".$this->p54_codcam) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Variáveis do processo já Cadastrado";
@@ -149,13 +149,13 @@ class cl_procvar {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2444,'$this->p54_codigo','I')");
          $resac = db_query("insert into db_acountkey values($acount,2445,'$this->p54_codcam','I')");
-         $resac = db_query("insert into db_acount values($acount,398,2444,'','".AddSlashes(pg_result($resaco,0,'p54_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,398,2445,'','".AddSlashes(pg_result($resaco,0,'p54_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,398,1009250,'','".AddSlashes(pg_result($resaco,0,'p54_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,398,2444,'','".AddSlashes(pg_fetch_result($resaco,0,'p54_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,398,2445,'','".AddSlashes(pg_fetch_result($resaco,0,'p54_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,398,1009250,'','".AddSlashes(pg_fetch_result($resaco,0,'p54_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -165,10 +165,10 @@ class cl_procvar {
       $this->atualizacampos();
      $sql = " update procvar set ";
      $virgula = "";
-     if(trim($this->p54_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p54_codigo"])){ 
+     if(trim((string) $this->p54_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p54_codigo"])){ 
        $sql  .= $virgula." p54_codigo = $this->p54_codigo ";
        $virgula = ",";
-       if(trim($this->p54_codigo) == null ){ 
+       if(trim((string) $this->p54_codigo) == null ){ 
          $this->erro_sql = " Campo código do tipo nao Informado.";
          $this->erro_campo = "p54_codigo";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_procvar {
          return false;
        }
      }
-     if(trim($this->p54_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p54_codcam"])){ 
+     if(trim((string) $this->p54_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p54_codcam"])){ 
        $sql  .= $virgula." p54_codcam = $this->p54_codcam ";
        $virgula = ",";
-       if(trim($this->p54_codcam) == null ){ 
+       if(trim((string) $this->p54_codcam) == null ){ 
          $this->erro_sql = " Campo código nao Informado.";
          $this->erro_campo = "p54_codcam";
          $this->erro_banco = "";
@@ -191,10 +191,10 @@ class cl_procvar {
          return false;
        }
      }
-     if(trim($this->p54_obrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p54_obrigatorio"])){ 
+     if(trim((string) $this->p54_obrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p54_obrigatorio"])){ 
        $sql  .= $virgula." p54_obrigatorio = '$this->p54_obrigatorio' ";
        $virgula = ",";
-       if(trim($this->p54_obrigatorio) == null ){ 
+       if(trim((string) $this->p54_obrigatorio) == null ){ 
          $this->erro_sql = " Campo Obrigatório nao Informado.";
          $this->erro_campo = "p54_obrigatorio";
          $this->erro_banco = "";
@@ -221,16 +221,16 @@ class cl_procvar {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,2444,'$this->p54_codigo','A')");
            $resac = db_query("insert into db_acountkey values($acount,2445,'$this->p54_codcam','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["p54_codigo"]) || $this->p54_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,398,2444,'".AddSlashes(pg_result($resaco,$conresaco,'p54_codigo'))."','$this->p54_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,398,2444,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p54_codigo'))."','$this->p54_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["p54_codcam"]) || $this->p54_codcam != "")
-             $resac = db_query("insert into db_acount values($acount,398,2445,'".AddSlashes(pg_result($resaco,$conresaco,'p54_codcam'))."','$this->p54_codcam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,398,2445,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p54_codcam'))."','$this->p54_codcam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["p54_obrigatorio"]) || $this->p54_obrigatorio != "")
-             $resac = db_query("insert into db_acount values($acount,398,1009250,'".AddSlashes(pg_result($resaco,$conresaco,'p54_obrigatorio'))."','$this->p54_obrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,398,1009250,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p54_obrigatorio'))."','$this->p54_obrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -284,13 +284,13 @@ class cl_procvar {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,2444,'$p54_codigo','E')");
            $resac  = db_query("insert into db_acountkey values($acount,2445,'$p54_codcam','E')");
-           $resac  = db_query("insert into db_acount values($acount,398,2444,'','".AddSlashes(pg_result($resaco,$iresaco,'p54_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,398,2445,'','".AddSlashes(pg_result($resaco,$iresaco,'p54_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,398,1009250,'','".AddSlashes(pg_result($resaco,$iresaco,'p54_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,398,2444,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p54_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,398,2445,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p54_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,398,1009250,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p54_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -357,7 +357,7 @@ class cl_procvar {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:procvar";
@@ -372,7 +372,7 @@ class cl_procvar {
    function sql_query ( $p54_codigo=null,$p54_codcam=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,7 +405,7 @@ class cl_procvar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_procvar {
    function sql_query_file ( $p54_codigo=null,$p54_codcam=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_procvar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_procvar {
    function sql_query_varconteudo ($p55_codproc=null,$p54_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -491,7 +491,7 @@ class cl_procvar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

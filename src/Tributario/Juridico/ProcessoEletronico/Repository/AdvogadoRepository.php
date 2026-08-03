@@ -20,7 +20,7 @@ class AdvogadoRepository
 
         $oAdvog = new \cl_advog();
 
-        $aCampos = array(
+        $aCampos = [
             "v57_oab",
             "z01_nome",
             "z01_cgccpf",
@@ -32,7 +32,7 @@ class AdvogadoRepository
             "z01_compl",
             "z01_bairro",
             "v57_matriculaadvogado"
-        );
+        ];
 
         $sWhere = " v50_inicial = " . $inicial;
 

@@ -16,22 +16,17 @@ class EFDRetornoRefactor
     protected $data;
 
     /**
-     * Tipo de Layout
-     *
-     * @var string
-     */
-    protected $layout;
-
-    /**
      * Contrutor
      *
      * @param string $layout
      * @param \stdClass $data
      */
-    public function __construct($layout, \stdClass $data)
+    public function __construct(/**
+     * Tipo de Layout
+     */
+    protected $layout, \stdClass $data)
     {
         $this->data = $data;
-        $this->layout = $layout;
     }
 
     /**
@@ -42,17 +37,11 @@ class EFDRetornoRefactor
      */
     public function format()
     {
-        switch ($this->layout) {
-            case 'R-5001':
-                return $this->formatR5001();
-                break;
-            case 'R-5011':
-                return $this->fortmatR5011();
-                break;
-            default:
-                return $this->data;
-                break;
-        }
+        return match ($this->layout) {
+            'R-5001' => $this->formatR5001(),
+            'R-5011' => $this->fortmatR5011(),
+            default => $this->data,
+        };
     }
 
 
@@ -80,7 +69,7 @@ class EFDRetornoRefactor
                     $item->cnpjPrestador = preg_replace(
                         "/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/",
                         "\$1.\$2.\$3/\$4-\$5",
-                        $item->cnpjPrestador
+                        (string) $item->cnpjPrestador
                     );
 
                     unset($item->infoCRTom);
@@ -118,7 +107,7 @@ class EFDRetornoRefactor
             $rtom->cnpjPrestador = preg_replace(
                 "/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/",
                 "\$1.\$2.\$3/\$4-\$5",
-                $rtom->cnpjPrestador
+                (string) $rtom->cnpjPrestador
             );
 
             unset($rtom->infoCRTom);
@@ -146,7 +135,7 @@ class EFDRetornoRefactor
             return '0,00';
         }
 
-        $value = preg_replace('/\,/', '.', $value);
+        $value = preg_replace('/\,/', '.', (string) $value);
         $value = number_format($value, 2, ',', '.');
 
         return $value;

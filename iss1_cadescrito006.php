@@ -37,7 +37,7 @@ require_once(modification("classes/db_cadescritoresp_classe.php"));
 $clcadescrito     = new cl_cadescrito;
 $clcadescritoresp = new cl_cadescritoresp;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 

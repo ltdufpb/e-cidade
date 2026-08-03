@@ -141,7 +141,7 @@ $oRotuloConhist->label();
         <td><b><?=$Lc46_obrigatorio;?></b></td>
         <td colspan="4">
           <?php 
-            $aObrigatorio = array("f" => "Não", "t" => "Sim");
+            $aObrigatorio = ["f" => "Não", "t" => "Sim"];
             db_select('c46_obrigatorio', $aObrigatorio, true, $db_opcao);
           ?>
         </td>

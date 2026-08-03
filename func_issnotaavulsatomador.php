@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issnotaavulsatomador_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissnotaavulsatomador = new cl_issnotaavulsatomador;
 $clissnotaavulsatomador->rotulo->label("q53_sequencial");
 $clissnotaavulsatomador->rotulo->label("q53_issnotaavulsa");
@@ -98,9 +98,9 @@ $clissnotaavulsatomador->rotulo->label("q53_issnotaavulsa");
         }else{
            $sql = $clissnotaavulsatomador->sql_query("",$campos,"q53_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q53_issnotaavulsa)){
-          $repassa = array("chave_q53_sequencial"=>$chave_q53_sequencial,"chave_q53_issnotaavulsa"=>$chave_q53_issnotaavulsa);
+          $repassa = ["chave_q53_sequencial"=>$chave_q53_sequencial,"chave_q53_issnotaavulsa"=>$chave_q53_issnotaavulsa];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

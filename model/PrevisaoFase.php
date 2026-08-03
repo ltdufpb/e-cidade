@@ -58,7 +58,7 @@ class PrevisaoFase {
 		  	if ($this->getStatus() == "E") {
 		  		
 		  		  if ($this->getCodFase() != "") {
-		  		
+
 			  		  $sSql     = "UPDATE tarefaprevisaofase SET at82_ativo = 'f' WHERE at82_sequencial = {$this->getCodFase()}";
 			  			$rsUpdate = db_query($sSql); 
 			  			//echo $sSql."\n -----------------------------------------\n\n";	  			
@@ -78,7 +78,7 @@ class PrevisaoFase {
 		  		
 		  		if ($oPrevFase->erro_status == "1") {
 		  			
-		  			$oPrevRecu->at83_usuario            = $this->getCodUsuario()?$this->getCodUsuario():163;
+		  			$oPrevRecu->at83_usuario            = $this->getCodUsuario() ?: 163;
 		  			$oPrevRecu->at83_tarefaprevisaofase = $oPrevFase->at82_sequencial;
 		  			$oPrevRecu->incluir(null);
 		  			

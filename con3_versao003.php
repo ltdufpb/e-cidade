@@ -35,7 +35,7 @@ include(modification("classes/db_db_versaousu_classe.php"));
 include(modification("classes/db_db_versaoant_classe.php"));
 include(modification("classes/db_db_modulos_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 ?>
 <html>
 <head>
@@ -130,10 +130,10 @@ function js_troca_cor(idobj){
                     limit 1
                     ";
             $res = db_query($sql);
-            if(pg_numrows($res)>0){
+            if(pg_num_rows($res)>0){
    	 	      echo '<tr>';
               echo '<td>';
-              echo pg_result($res,0,0);
+              echo pg_fetch_result($res,0,0);
   	 	      echo '</td>';
               echo '</tr>';
             }
@@ -143,14 +143,14 @@ function js_troca_cor(idobj){
           echo '<td>';
 
           $item_anterior="";
-          if(trim($funcao)!=""){
+          if(trim((string) $funcao)!=""){
             $sql = "select db_menu.id_item, descricao
                     from db_menu
                          inner join db_itensmenu on db_menu.id_item = db_itensmenu.id_item
                     where id_item_filho = $db32_id_item limit 1";
             $res = db_query($sql);
-            if(pg_numrows($res)>0){
-              $item_anterior .= pg_result($res,0,1).":";
+            if(pg_num_rows($res)>0){
+              $item_anterior .= pg_fetch_result($res,0,1).":";
             }
  	 	  }else{
             $item_anterior="";

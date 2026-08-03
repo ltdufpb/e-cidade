@@ -116,7 +116,7 @@ try {
  */
 function buscarServidoresComFalta($parametros, PeriodoModel $periodo) {
 
-    $servidores = array();
+    $servidores = [];
 
     switch ($parametros->filtro) {
         case '1':
@@ -130,7 +130,7 @@ function buscarServidoresComFalta($parametros, PeriodoModel $periodo) {
 
         case '2':
 
-            $matriculas = explode(',', $parametros->matriculas);
+            $matriculas = explode(',', (string) $parametros->matriculas);
 
             foreach ($matriculas as $matricula) {
                 $servidores[] = \ServidorRepository::getInstanciaByCodigo($matricula);
@@ -151,7 +151,7 @@ function buscarServidoresComFalta($parametros, PeriodoModel $periodo) {
             break;
     }
 
-    $servidoresComFaltas = array();
+    $servidoresComFaltas = [];
     $datasIntervalo = \DBDate::getDatasNoIntervalo($periodo->getDataInicio(), $periodo->getDataFim());
 
     foreach ($servidores as $servidor) {
@@ -185,7 +185,7 @@ function buscarServidoresComFalta($parametros, PeriodoModel $periodo) {
             if(!isset($servidoresComFaltas[$servidor->getMatricula()])) {
                 $dadosServidor = new stdClass();
                 $dadosServidor->nome = $servidor->getCgm()->getNome();
-                $dadosServidor->faltas = array();
+                $dadosServidor->faltas = [];
 
                 $servidoresComFaltas[$servidor->getMatricula()] = $dadosServidor;
             }

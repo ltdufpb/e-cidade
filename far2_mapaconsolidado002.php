@@ -35,8 +35,8 @@ include(modification("classes/db_far_programa_classe.php"));
 include(modification("classes/db_far_farmacia_classe.php"));
 include(modification("classes/db_db_config_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 $clrotulo            = new rotulocampo;
 $clfar_programa      = new cl_far_programa;
 $clfar_retiradaitens = new cl_far_retiradaitens;
@@ -49,7 +49,7 @@ $dDatar              = date("d/m/y");
 
 function somardata($dData, $iDias= 0, $iMeses = 0, $iAno = 0) {
 
-  $aData     = explode("/", $dData);
+  $aData     = explode("/", (string) $dData);
   $dNovadata = date("d/m/Y", mktime(0, 0, 0, $aData[1] + $iMeses,   $aData[0] + $iDias, $aData[2] + $iAno) );
   return $dNovadata;
    
@@ -179,14 +179,14 @@ for ($iI = 0; $iI < 5; $iI++) {
 for ($iI = 0; $iI < $clfar_programa->numrows; $iI++) {
     
   db_fieldsmemory($rsResult, $iI);
-  $iLen    = strlen($fa12_c_descricao);
+  $iLen    = strlen((string) $fa12_c_descricao);
   $iLength = $iLen;
   while (true) {
   	
-  	if ($pdf->GetStringWidth(substr($fa12_c_descricao, 0, $iLength)) < ($iFator - 3)) {
+  	if ($pdf->GetStringWidth(substr((string) $fa12_c_descricao, 0, $iLength)) < ($iFator - 3)) {
 
       if ($iLen != $iLength) {
-  	    $fa12_c_descricao = substr($fa12_c_descricao, 0, $iLength)."..";
+  	    $fa12_c_descricao = substr((string) $fa12_c_descricao, 0, $iLength)."..";
   	  }
   	  break;
   	

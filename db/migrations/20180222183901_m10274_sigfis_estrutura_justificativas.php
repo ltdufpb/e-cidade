@@ -17,7 +17,7 @@ class M10274SigfisEstruturaJustificativas extends PostgresMigration
     public function down() {
 
         $linha = $this->fetchRow("select funcao from db_itensmenu where id_item = 10502");
-        $dadosFuncao = explode('=', $linha['funcao']);
+        $dadosFuncao = explode('=', (string) $linha['funcao']);
         $codigoRelatorioExcluir = $dadosFuncao[1];
         $this->execute("delete from db_relatorio where db63_sequencial = {$codigoRelatorioExcluir}");
 
@@ -78,18 +78,18 @@ DADOS_XML;
     private function criarMenu() {
 
         // Cria o item de MENU
-        $aColumns   =  array('id_item' ,'descricao' ,'help' ,'funcao' ,'itemativo' ,'manutencao' ,'desctec' ,'libcliente');
-        $aValues    =  array(
-            array(10501,'Justificativas do Empenho' ,'Justificativa para não vinculação com Contrato ou Licitação/Dispensa' ,'con4_justificativacontratolicitacaosigfis.php' ,'1' ,'1' ,'Cadastro de justificativas para não vinculação do empenho com Contrato ou Licitação/Dispensa. ' ,'true' ),
-        );
-        $table      = $this->table('db_itensmenu', array('schema' => 'configuracoes'));
+        $aColumns   =  ['id_item' ,'descricao' ,'help' ,'funcao' ,'itemativo' ,'manutencao' ,'desctec' ,'libcliente'];
+        $aValues    =  [
+            [10501,'Justificativas do Empenho' ,'Justificativa para não vinculação com Contrato ou Licitação/Dispensa' ,'con4_justificativacontratolicitacaosigfis.php' ,'1' ,'1' ,'Cadastro de justificativas para não vinculação do empenho com Contrato ou Licitação/Dispensa. ' ,'true' ],
+        ];
+        $table      = $this->table('db_itensmenu', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Víncula item de menu
-        $aColumns   =  array('id_item', 'id_item_filho', 'menusequencia', 'modulo');
-        $aValues    =  array( array(8997 ,10501 ,7 ,209) );
-        $table      =  $this->table('db_menu', array('schema' => 'configuracoes'));
+        $aColumns   =  ['id_item', 'id_item_filho', 'menusequencia', 'modulo'];
+        $aValues    =  [ [8997 ,10501 ,7 ,209] ];
+        $table      =  $this->table('db_menu', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
     }
@@ -163,93 +163,93 @@ SQL_UP_LAYOUT
     private function addDicionarioDados()
     {
         // Cadastro de Tabelas
-        $aColumns  = array('codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform');
-        $aValues   = array(
-            array(1010261, 'empenhojustificativacontratolicitacao', 'Guarda as justificativas do não vínculo do empenho com contratos e licitações.', 'e08', '2018-02-22', 'Justificativas', 0, 'f', 'f', 'f', 'f' ),
-        );
-        $table     = $this->table('db_sysarquivo', array('schema' => 'configuracoes'));
+        $aColumns  = ['codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform'];
+        $aValues   = [
+            [1010261, 'empenhojustificativacontratolicitacao', 'Guarda as justificativas do não vínculo do empenho com contratos e licitações.', 'e08', '2018-02-22', 'Justificativas', 0, 'f', 'f', 'f', 'f' ],
+        ];
+        $table     = $this->table('db_sysarquivo', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Vínculo da tabela com o módulo
-        $aColumns  =  array('codmod', 'codarq');
-        $aValues   =  array(
-            array(38,1010261)
-        );
-        $table     =  $this->table('db_sysarqmod', array('schema' => 'configuracoes'));
+        $aColumns  =  ['codmod', 'codarq'];
+        $aValues   =  [
+            [38,1010261]
+        ];
+        $table     =  $this->table('db_sysarqmod', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Cadastro de campos
-        $aColumns  = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-        $aValues   = array(
-            array(1009639,'e08_sequencial','int4','Código sequencial da tabela','0', 'Código',10,'f','f','f',1,'text','Código'),
-            array(1009640,'e08_empempenho','int4','Vínculo com Empenho','0', 'Código do Empenho',10,'f','f','f',1,'text','Código do Empenho'),
-            array(1009641,'e08_tipojustificativalicitacao','int4','Tipo Justificativa Licitação','0', 'Justificativa Licitação',10,'f','f','f',1,'text','Justificativa Licitação'),
-            array(1009642,'e08_tipojustificativacontrato','int4','Tipo de Justificativa do Contrato','0', 'Justificativa do Contrato',10,'t','f','f',1,'text','Justificativa do Contrato'),
-            array(1009643,'e08_descricaojustificativalicitacao','text','Descrição da Justificativa Licitação','', 'Descrição da Justificativa Licitação',1,'t','f','f',0,'text','Descrição da Justificativa Licitação'),
-            array(1009644,'e08_descricaojustificativacontrato','text','Descrição da Justificativa Contrato','', 'Descrição da Justificativa Contrato',1,'t','f','f',0,'text','Descrição da Justificativa Contrato')
-        );
-        $table     = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+        $aColumns  = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+        $aValues   = [
+            [1009639,'e08_sequencial','int4','Código sequencial da tabela','0', 'Código',10,'f','f','f',1,'text','Código'],
+            [1009640,'e08_empempenho','int4','Vínculo com Empenho','0', 'Código do Empenho',10,'f','f','f',1,'text','Código do Empenho'],
+            [1009641,'e08_tipojustificativalicitacao','int4','Tipo Justificativa Licitação','0', 'Justificativa Licitação',10,'f','f','f',1,'text','Justificativa Licitação'],
+            [1009642,'e08_tipojustificativacontrato','int4','Tipo de Justificativa do Contrato','0', 'Justificativa do Contrato',10,'t','f','f',1,'text','Justificativa do Contrato'],
+            [1009643,'e08_descricaojustificativalicitacao','text','Descrição da Justificativa Licitação','', 'Descrição da Justificativa Licitação',1,'t','f','f',0,'text','Descrição da Justificativa Licitação'],
+            [1009644,'e08_descricaojustificativacontrato','text','Descrição da Justificativa Contrato','', 'Descrição da Justificativa Contrato',1,'t','f','f',0,'text','Descrição da Justificativa Contrato']
+        ];
+        $table     = $this->table('db_syscampo', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Vínculo dos campos com a tabela
-        $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-        $aValues  = array(
-            array(1010261,1009639,1,0),
-            array(1010261,1009640,2,0),
-            array(1010261,1009642,3,0),
-            array(1010261,1009644,4,0),
-            array(1010261,1009641,5,0),
-            array(1010261,1009643,6,0),
-        );
-        $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+        $aValues  = [
+            [1010261,1009639,1,0],
+            [1010261,1009640,2,0],
+            [1010261,1009642,3,0],
+            [1010261,1009644,4,0],
+            [1010261,1009641,5,0],
+            [1010261,1009643,6,0],
+        ];
+        $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Cadastro da PK
-        $aColumns = array('codarq', 'codcam','sequen', 'camiden');
-        $aValues  = array(
-            array(1010261,1009639,1,1009639)
-        );
-        $table    = $this->table('db_sysprikey', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'codcam','sequen', 'camiden'];
+        $aValues  = [
+            [1010261,1009639,1,1009639]
+        ];
+        $table    = $this->table('db_sysprikey', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Cadastro da FK
-        $aColumns = array('codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel');
-        $aValues  = array(
-            array(1010261,1009640,1,889,0),
-        );
-        $table    = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel'];
+        $aValues  = [
+            [1010261,1009640,1,889,0],
+        ];
+        $table    = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // inclui os indices
-        $aColumns = array('codind', 'nomeind', 'codarq', 'campounico');
-        $aValues  = array(
-            array(1008255,'empenhojustificativacontratolicitacao_e08_empempenho_in',1010261,'0'),
-        );
-        $table    = $this->table('db_sysindices', array('schema' => 'configuracoes'));
+        $aColumns = ['codind', 'nomeind', 'codarq', 'campounico'];
+        $aValues  = [
+            [1008255,'empenhojustificativacontratolicitacao_e08_empempenho_in',1010261,'0'],
+        ];
+        $table    = $this->table('db_sysindices', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // vincula os indices
-        $aColumns = array('codind', 'codcam', 'sequen');
-        $aValues  = array(
-            array(1008255,1009640,1),
-        );
-        $table    = $this->table('db_syscadind', array('schema' => 'configuracoes'));
+        $aColumns = ['codind', 'codcam', 'sequen'];
+        $aValues  = [
+            [1008255,1009640,1],
+        ];
+        $table    = $this->table('db_syscadind', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // Cadastro de sequências
-        $aColumns   = array('codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq');
-        $aValues    = array(
-            array(1000718, 'empenhojustificativacontratolicitacao_e08_sequencial_seq', 1, 1, 9223372036854775807, 1, 1),
-        );
-        $table      =  $this->table('db_syssequencia', array('schema' => 'configuracoes'));
+        $aColumns   = ['codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq'];
+        $aValues    = [
+            [1000718, 'empenhojustificativacontratolicitacao_e08_sequencial_seq', 1, 1, 9223372036854775807, 1, 1],
+        ];
+        $table      =  $this->table('db_syssequencia', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
         $this->execute("update db_sysarqcamp set codsequencia = 1000718 where codarq = 1010261 and codcam = 1009639");

@@ -34,7 +34,7 @@ require_once(modification("classes/db_veicmotoristas_classe.php"));
 require_once(modification("classes/db_veicparam_classe.php"));
 require_once(modification("classes/db_veicmotoristascentral_classe.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clveicmotoristas        = new cl_veicmotoristas;
@@ -72,7 +72,7 @@ include(modification("forms/db_frmveicmotoristas.php"));
 
 if (isset($excluir)) {
   if ($clveicmotoristas->erro_status == "0" || $sqlerro == true) {
-    if (trim($erro_msg) != "") {
+    if (trim((string) $erro_msg) != "") {
       db_msgbox($erro_msg);
     }
     $clveicmotoristas->erro(true, false);

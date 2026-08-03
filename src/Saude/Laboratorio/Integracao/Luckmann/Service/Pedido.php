@@ -44,7 +44,7 @@ class Pedido
     /**
      * @var array
      */
-    private $dados = array(
+    private $dados = [
       'CodigoLis'      => '',
       'Nome'           => '',
       'Sexo'           => '',
@@ -57,8 +57,8 @@ class Pedido
       'Unidade'        => '',
       'OrigemMaterial' => '',
       'DadosClinicos'  => '',
-      'Exames'         => array(),
-    );
+      'Exames'         => [],
+    ];
 
     /**
      * @var array
@@ -103,7 +103,7 @@ class Pedido
         $cgs = $this->requisicaoLaboratorial->getCgs();
         $requisicao = $this->requisicaoLaboratorial;
 
-        $dadosClinicos = array();
+        $dadosClinicos = [];
 
         if ($requisicao->getMedicamento() !== '') {
             $dadosClinicos[] = $requisicao->getMedicamento();
@@ -137,7 +137,7 @@ class Pedido
     private function getExames()
     {
         $requisicoesExame = $this->requisicaoLaboratorial->getRequisicoesDeExames();
-        $amostrasMaterial = array();
+        $amostrasMaterial = [];
 
         foreach ($requisicoesExame as $requisicaoExame) {
             if (!in_array($requisicaoExame->getCodigo(), $this->itensRequisicao)) {
@@ -167,11 +167,11 @@ class Pedido
 
                 $numeroAmostra = $amostrasMaterial[$chaveCodigoColetaSetor];
 
-                $exame = array(
+                $exame = [
                   'Codigo'   => $requisicaoExame->getExame()->getSigla(),
                   'Amostra'  => $numeroAmostra,
                   'Material' => $material->material_coleta
-                );
+                ];
 
                 $this->dados['Exames'][] = $exame;
             }

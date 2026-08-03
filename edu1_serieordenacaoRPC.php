@@ -56,7 +56,7 @@ if($oPost->sAction == 'PesquisaDivisao') {
  $aResult = db_utils::getCollectionByRecord($result, false, false, true);
  $aResult1 = db_utils::getCollectionByRecord($result1, false, false, true);
  $oJson = new services_json();
- echo $oJson->encode(array($aResult,$aResult1));
+ echo $oJson->encode([$aResult,$aResult1]);
 }
 
 if($oPost->sAction == 'PesquisaSerie') {
@@ -65,11 +65,11 @@ if($oPost->sAction == 'PesquisaSerie') {
  $aResult = db_utils::getCollectionByRecord($result, false, false, true);
  $aResult1 = db_utils::getCollectionByRecord($result1, false, false, true);
  $oJson = new services_json();
- echo $oJson->encode(array($aResult,$aResult1));
+ echo $oJson->encode([$aResult,$aResult1]);
 }
 
 if($oPost->sAction == 'UpdateSerieRegime') {
- $codregistro = explode(",",$oPost->registros);
+ $codregistro = explode(",",(string) $oPost->registros);
  for($t=0;$t<count($codregistro);$t++){
   db_inicio_transacao();
   $clserieregimemat->ed223_i_ordenacao = ($t+1);
@@ -87,7 +87,7 @@ if($oPost->sAction == 'UpdateSerieRegime') {
 }
 
 if($oPost->sAction == 'UpdateSerie') {
- $codregistro = explode(",",$oPost->registros);
+ $codregistro = explode(",",(string) $oPost->registros);
  for($t=0;$t<count($codregistro);$t++){
   db_inicio_transacao();
   $clserie->ed11_i_sequencia = ($t+1);

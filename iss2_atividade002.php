@@ -52,7 +52,7 @@ include(modification("fpdf151/pdf.php"));
     $pdf->SetFillColor(235);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier','B',8);
     $linha = 60;
     $TotPag = 0;
@@ -70,10 +70,10 @@ include(modification("fpdf151/pdf.php"));
          $pdf->SetFont('Courier','B',8);
          $pdf->SetTextColor(0,0,0);
       }
-      $pdf->Cell(12,4,pg_result($result,$i,"q03_ativ"),"B",0,"C",0);
-      $pdf->Cell(80,4,pg_result($result,$i,"q03_descr"),"B",0,"L",0);
-      $pdf->Cell(60,4,pg_result($result,$i,"q12_descr"),"B",0,"L",0);
-      $pdf->Cell(120,4,pg_result($result,$i,"q81_descr"),"B",1,"L",0);
+      $pdf->Cell(12,4,pg_fetch_result($result,$i,"q03_ativ"),"B",0,"C",0);
+      $pdf->Cell(80,4,pg_fetch_result($result,$i,"q03_descr"),"B",0,"L",0);
+      $pdf->Cell(60,4,pg_fetch_result($result,$i,"q12_descr"),"B",0,"L",0);
+      $pdf->Cell(120,4,pg_fetch_result($result,$i,"q81_descr"),"B",1,"L",0);
       $TotPag += 1;
     }
 

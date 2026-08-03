@@ -51,41 +51,41 @@ require_once modification("libs/mail/mime.php");
 
 class SMTP extends MIME {
 
-	var $_smtpconn;
-	var $_subject;
-	var $_content;
-	var $_arrcon;
-	var $_arrenc;
+	public $_smtpconn;
+	public $_subject;
+	public $_content;
+	public $_arrcon;
+	public $_arrenc;
 
-	var $_crlf = "\r\n";
-	var $_port = 25;
-	var $_unique = 0;
-	var $_timeout = 30;
-	var $_chanklen = 70;
+	public $_crlf = "\r\n";
+	public $_port = 25;
+	public $_unique = 0;
+	public $_timeout = 30;
+	public $_chanklen = 70;
 
-	var $max_cl = 99;
-	var $max_sl = 1024;
-	var $result = 'unknown';
+	public $max_cl = 99;
+	public $max_sl = 1024;
+	public $result = 'unknown';
 
-	var $_header = false;
-	var $_attach = false;
+	public $_header = false;
+	public $_attach = false;
 
-	var $_toaddrs = false;
-	var $_ccaddrs = false;
-	var $_bccaddrs = false;
-	var $_fromaddr = false;
-	var $_fromhost = false;
+	public $_toaddrs = false;
+	public $_ccaddrs = false;
+	public $_bccaddrs = false;
+	public $_fromaddr = false;
+	public $_fromhost = false;
 
-	var $_relay = false;
-	var $_chunk = false;
-	var $_atext = false;
-	var $_ahtml = false;
-  var $sock   = false;
+	public $_relay = false;
+	public $_chunk = false;
+	public $_atext = false;
+	public $_ahtml = false;
+  public $sock   = false;
   
 	function __construct() {
-		$this->_smtpconn = array('local');
-		$this->_arrcon = array('local' => '', 'client' => '', 'relay' => '');
-		$this->_arrenc = array('7bit' => '', '8bit' => '', 'quoted-printable' => '', 'base64' => ''); // binary not alowed
+		$this->_smtpconn = ['local'];
+		$this->_arrcon = ['local' => '', 'client' => '', 'relay' => ''];
+		$this->_arrenc = ['7bit' => '', '8bit' => '', 'quoted-printable' => '', 'base64' => '']; // binary not alowed
 	}
 
 	function delivery($conn){
@@ -95,7 +95,7 @@ class SMTP extends MIME {
 			$conn = trim($conn);
 			if(FUNC::is_alpha($conn, false, '-')){
 				$exp = explode('-', $conn);
-				$rep = array();
+				$rep = [];
 				foreach($exp as $val){
 					$val = strtolower($val);
 					if(isset($this->_arrcon[$val])) $rep[] = $val;
@@ -137,7 +137,7 @@ class SMTP extends MIME {
 
 		$ret = false;
 		if(is_string($raddr)){
-			$raddr = FUNC::str_clear($raddr, array(' '));
+			$raddr = FUNC::str_clear($raddr, [' ']);
 			$raddr = trim(strtolower($raddr));
 			if($raddr != ""){
 				$ret = true;
@@ -205,7 +205,7 @@ class SMTP extends MIME {
 					throw new Exception('Invalid TLS/SSL type value, on class SMTP::relay()', 512);
 				}
 			}
-			$this->_relay = array('host' => $raddr, 'ip' => $rvip, 'user' => $ruser, 'pass' => $rpass, 'port' => $rport, 'auth' => $rauth, 'ssl' => $rvssl);
+			$this->_relay = ['host' => $raddr, 'ip' => $rvip, 'user' => $ruser, 'pass' => $rpass, 'port' => $rport, 'auth' => $rauth, 'ssl' => $rvssl];
 		}
 		return $ret;
 
@@ -215,7 +215,7 @@ class SMTP extends MIME {
 
 		$ret = false;
 		if(is_string($hname)){
-			$hname = FUNC::str_clear($hname, array(' '));
+			$hname = FUNC::str_clear($hname, [' ']);
 			$hname = trim($hname);
 			if($hname != ""){
 				if(is_string($hvalue)){
@@ -239,7 +239,7 @@ class SMTP extends MIME {
 						elseif($vname == "mime-version") throw new Exception('Can not set "MIME-Version" header value, this value is automaticaly set, on class SMTP::addheader()', 512);
 						else{
 							$ret = true;
-							$this->_header[] = array('name' => ucfirst($hname), 'value' => $hvalue);
+							$this->_header[] = ['name' => ucfirst($hname), 'value' => $hvalue];
 						}
 					}else throw new Exception('Invalid 2\'nd parameter value, on class SMTP::addheader()', 512);
 				}else throw new Exception('Invalid 2\'nd parameter type value, on class SMTP::addheader()', 512);
@@ -253,13 +253,13 @@ class SMTP extends MIME {
 
 		$ret = false;
 		if(is_string($hname)){
-			$hname = FUNC::str_clear($hname, array(' '));
+			$hname = FUNC::str_clear($hname, [' ']);
 			$hname = trim($hname);
 			if($hname != ""){
 				if($this->_header && count($this->_header) > 0){
-					$reparr = array();
+					$reparr = [];
 					foreach($this->_header as $harr){
-						if(strtolower($harr['name']) != strtolower($hname)) $reparr[] = $harr;
+						if(strtolower((string) $harr['name']) != strtolower($hname)) $reparr[] = $harr;
 						else $ret = true;
 					}
 					$this->_header = $reparr;
@@ -274,7 +274,7 @@ class SMTP extends MIME {
 
 		$ret = false;
 		if(is_string($adrr)){
-			$adrr = FUNC::str_clear($adrr, array(' '));
+			$adrr = FUNC::str_clear($adrr, [' ']);
 			$adrr = strtolower(trim($adrr));
 			if($adrr != "" && FUNC::is_mail($adrr)){
 				if(!isset($this->_toaddrs[$adrr])){
@@ -296,7 +296,7 @@ class SMTP extends MIME {
 
 		$ret = false;
 		if(is_string($adrr)){
-			$adrr = FUNC::str_clear($adrr, array(' '));
+			$adrr = FUNC::str_clear($adrr, [' ']);
 			$adrr = strtolower(trim($adrr));
 			if($adrr != ""){
 				if($adrr == "all"){
@@ -304,7 +304,7 @@ class SMTP extends MIME {
 					$ret = true;
 				}elseif(FUNC::is_mail($adrr)){
 					if(is_array($this->_toaddrs) && count($this->_toaddrs) > 0){
-						$reb = array();
+						$reb = [];
 						foreach($this->_toaddrs as $num => $val){
 							if($num != $adrr) $reb[$num] = $val;
 							else $ret = true;
@@ -322,7 +322,7 @@ class SMTP extends MIME {
 
 		$ret = false;
 		if(is_string($adrr)){
-			$adrr = FUNC::str_clear($adrr, array(' '));
+			$adrr = FUNC::str_clear($adrr, [' ']);
 			$adrr = strtolower(trim($adrr));
 			if($adrr != "" && FUNC::is_mail($adrr)){
 				if(!isset($this->_ccaddrs[$adrr])){
@@ -344,7 +344,7 @@ class SMTP extends MIME {
 
 		$ret = false;
 		if(is_string($adrr)){
-			$adrr = FUNC::str_clear($adrr, array(' '));
+			$adrr = FUNC::str_clear($adrr, [' ']);
 			$adrr = strtolower(trim($adrr));
 			if($adrr != ""){
 				if($adrr == "all"){
@@ -352,7 +352,7 @@ class SMTP extends MIME {
 					$ret = true;
 				}elseif(FUNC::is_mail($adrr)){
 					if(is_array($this->_ccaddrs) && count($this->_ccaddrs) > 0){
-						$reb = array();
+						$reb = [];
 						foreach($this->_ccaddrs as $num => $val){
 							if($num != $adrr) $reb[$num] = $val;
 							else $ret = true;
@@ -370,7 +370,7 @@ class SMTP extends MIME {
 
 		$ret = false;
 		if(is_string($adrr)){
-			$adrr = FUNC::str_clear($adrr, array(' '));
+			$adrr = FUNC::str_clear($adrr, [' ']);
 			$adrr = strtolower(trim($adrr));
 			if($adrr != "" && FUNC::is_mail($adrr)){
 				if(!isset($this->_bccaddrs[$adrr])){
@@ -387,7 +387,7 @@ class SMTP extends MIME {
 
 		$ret = false;
 		if(is_string($adrr)){
-			$adrr = FUNC::str_clear($adrr, array(' '));
+			$adrr = FUNC::str_clear($adrr, [' ']);
 			$adrr = strtolower(trim($adrr));
 			if($adrr != ""){
 				if($adrr == "all"){
@@ -395,7 +395,7 @@ class SMTP extends MIME {
 					$ret = true;
 				}elseif(FUNC::is_mail($adrr)){
 					if(is_array($this->_bccaddrs) && count($this->_bccaddrs) > 0){
-						$reb = array();
+						$reb = [];
 						foreach($this->_bccaddrs as $num => $val){
 							if($num != $adrr) $reb[$num] = $val;
 							else $ret = true;
@@ -413,15 +413,15 @@ class SMTP extends MIME {
 
 		$this->_fromaddr = $ret = false;
 		if(is_string($adrr)){
-			$adrr = FUNC::str_clear($adrr, array(' '));
+			$adrr = FUNC::str_clear($adrr, [' ']);
 			$adrr = strtolower(trim($adrr));
 			if($adrr != "" && FUNC::is_mail($adrr)){
 				$ret = true;
-				$this->_fromaddr = array('address' => $adrr, 'name' => '');
+				$this->_fromaddr = ['address' => $adrr, 'name' => ''];
 				if(is_string($name)){
 					$name = FUNC::str_clear($name);
 					$name = trim($name);
-					if($name != "") $this->_fromaddr = array('address' => $adrr, 'name' => $this->qpheader($name));
+					if($name != "") $this->_fromaddr = ['address' => $adrr, 'name' => $this->qpheader($name)];
 				}else throw new Exception('Invalid 2\'nd parameter type value, on class SMTP::from()', 512);
 			}else throw new Exception('Invalid mail address format, on class SMTP::from()', 512);
 		}else throw new Exception('Invalid first parameter type value, on class SMTP::from()', 512);
@@ -433,7 +433,7 @@ class SMTP extends MIME {
 
 		$this->_fromhost = $ret = $havemx = false;
 		if(is_string($server)){
-			$server = FUNC::str_clear($server, array(' '));
+			$server = FUNC::str_clear($server, [' ']);
 			$server = strtolower(trim($server));
 			if($server != ""){
 				$ret = true;
@@ -451,7 +451,7 @@ class SMTP extends MIME {
 
 		$this->_atext = $ret = false;
 		if(is_string($charset)){
-			$charset = FUNC::str_clear($charset, array(' '));
+			$charset = FUNC::str_clear($charset, [' ']);
 			$charset = trim($charset);
 			$charlen = strlen($charset);
 			if(!($charlen > 1 && $charlen < 60)){
@@ -463,7 +463,7 @@ class SMTP extends MIME {
 			throw new Exception('Invalid charset type value, on class SMTP::text()', 512);
 		}
 		if(is_string($encoding)){
-			$encoding = FUNC::str_clear($encoding, array(' '));
+			$encoding = FUNC::str_clear($encoding, [' ']);
 			$encoding = trim(strtolower($encoding));
 			if(!($encoding != "" && isset($this->_arrenc[$encoding]))){
 				$encoding = 'quoted-printable';
@@ -474,7 +474,7 @@ class SMTP extends MIME {
 			throw new Exception('Invalid encoding type value, on class SMTP::text()', 512);
 		}
 		if(is_string($disposition)){
-			$disposition = FUNC::str_clear($disposition, array(' '));
+			$disposition = FUNC::str_clear($disposition, [' ']);
 			$disposition = trim(strtolower($disposition));
 			if(!($disposition == "attachment" || $disposition == "inline")){
 				$disposition = 'inline';
@@ -490,7 +490,7 @@ class SMTP extends MIME {
 				$htext = 'Content-Type: text/plain;'.$this->_crlf."\t".'charset="'.$charset.'"'.$this->_crlf.
 					'Content-Transfer-Encoding: '.$encoding.$this->_crlf.
 					'Content-Disposition: '.$disposition;
-				$this->_atext = array($htext, $encoding, $text);
+				$this->_atext = [$htext, $encoding, $text];
 				$ret = true;
 			}else throw new Exception('Invalid text/plain value, on class SMTP::text()', 512);
 		}else throw new Exception('Invalid text/plain type value, on class SMTP::text()', 512);
@@ -502,7 +502,7 @@ class SMTP extends MIME {
 
 		$this->_ahtml = $ret = false;
 		if(is_string($charset)){
-			$charset = FUNC::str_clear($charset, array(' '));
+			$charset = FUNC::str_clear($charset, [' ']);
 			$charset = trim($charset);
 			$charlen = strlen($charset);
 			if(!($charlen > 1 && $charlen < 60)){
@@ -514,7 +514,7 @@ class SMTP extends MIME {
 			throw new Exception('Invalid charset type value, on class SMTP::html()', 512);
 		}
 		if(is_string($encoding)){
-			$encoding = FUNC::str_clear($encoding, array(' '));
+			$encoding = FUNC::str_clear($encoding, [' ']);
 			$encoding = trim(strtolower($encoding));
 			if(!($encoding != "" && isset($this->_arrenc[$encoding]))){
 				$encoding = 'quoted-printable';
@@ -525,7 +525,7 @@ class SMTP extends MIME {
 			throw new Exception('Invalid encoding type value, on class SMTP::html()', 512);
 		}
 		if(is_string($disposition)){
-			$disposition = FUNC::str_clear($disposition, array(' '));
+			$disposition = FUNC::str_clear($disposition, [' ']);
 			$disposition = trim(strtolower($disposition));
 			if(!($disposition == "attachment" || $disposition == "inline")){
 				$disposition = 'inline';
@@ -541,7 +541,7 @@ class SMTP extends MIME {
 				$hhtml = 'Content-Type: text/html;'.$this->_crlf."\t".'charset="'.$charset.'"'.$this->_crlf.
 					'Content-Transfer-Encoding: '.$encoding.$this->_crlf.
 					'Content-Disposition: '.$disposition;
-				$this->_ahtml = array($hhtml, $encoding, $html);
+				$this->_ahtml = [$hhtml, $encoding, $html];
 				$ret = true;
 			}else throw new Exception('Invalid text/html value, on class SMTP::html()', 512);
 		}else throw new Exception('Invalid text/html type value, on class SMTP::html()', 512);
@@ -560,25 +560,25 @@ class SMTP extends MIME {
 					$ret = true;
 					$mime = 'application/octet-stream';
 					if(is_string($mimetype)){
-						$mimetype = FUNC::str_clear($mimetype, array(' '));
+						$mimetype = FUNC::str_clear($mimetype, [' ']);
 						$mimetype = trim(strtolower($mimetype));
 						$mime = ($mimetype == "autodetect" || $mimetype == "") ? FUNC::mimetype($name) : $mimetype;
 					}
 					$disp = 'attachment';
 					if(is_string($disposition)){
-						$disposition = FUNC::str_clear($disposition, array(' '));
+						$disposition = FUNC::str_clear($disposition, [' ']);
 						$disposition = trim(strtolower($disposition));
 						if($disposition == "attachment" || $disposition == "inline") $disp = $disposition;
 						else throw new Exception('Invalid disposition value, on class SMTP::attachsource()', 512);
 					}else throw new Exception('Invalid disposition type value, on class SMTP::attachsource()', 512);
 					$encode = 'base64';
 					if(is_string($encoding)){
-						$encoding = FUNC::str_clear($encoding, array(' '));
+						$encoding = FUNC::str_clear($encoding, [' ']);
 						$encoding = trim(strtolower($encoding));
 						if($encoding != "" && isset($this->_arrenc[$encoding])) $encode = $encoding;
 						else throw new Exception('Invalid encoding value, on class SMTP::attachsource()', 512);
 					}else throw new Exception('Invalid encoding type value, on class SMTP::attachsource()', 512);
-					$this->_attach[] = array('name' => $name, 'mime' => $mime, 'disp' => $disp, 'encode' => $encode, 'source' => $source);
+					$this->_attach[] = ['name' => $name, 'mime' => $mime, 'disp' => $disp, 'encode' => $encode, 'source' => $source];
 				}else throw new Exception('Invalid name value, on class SMTP::attachsource()', 512);
 			}else throw new Exception('Invalid name type value, on class SMTP::attachsource()', 512);
 		}else throw new Exception('Invalid source value, on class SMTP::attachsource()', 512);
@@ -618,7 +618,7 @@ class SMTP extends MIME {
 			$name = trim($name);
 			if($name != ""){
 				if($this->_attach && count($this->_attach) > 0){
-					$rebatt = array();
+					$rebatt = [];
 					foreach($this->_attach as $attarr){
 						if($attarr['name'] != $name) $rebatt[] = $attarr;
 						else $ret = true;
@@ -635,23 +635,23 @@ class SMTP extends MIME {
 
 		$ret = $set = false;
 		if(is_int($level)){
-			if($level == 1) $set = array('1', 'High');
-			elseif($level == 3) $set = array('3', 'Normal');
-			elseif($level == 5) $set = array('5', 'Low');
+			if($level == 1) $set = ['1', 'High'];
+			elseif($level == 3) $set = ['3', 'Normal'];
+			elseif($level == 5) $set = ['5', 'Low'];
 			else throw new Exception('Invalid 1 parameter value, on class SMTP::priority()', 512);
 		}elseif(is_string($level)){
-			$level = FUNC::str_clear($level, array(' '));
+			$level = FUNC::str_clear($level, [' ']);
 			$level = trim(strtolower($level));
-			if($level == "high") $set = array('1', 'High');
-			elseif($level == "normal") $set = array('3', 'Normal');
-			elseif($level == "low") $set = array('5', 'Low');
+			if($level == "high") $set = ['1', 'High'];
+			elseif($level == "normal") $set = ['3', 'Normal'];
+			elseif($level == "low") $set = ['5', 'Low'];
 			else throw new Exception('Invalid 2 parameter value, on class SMTP::priority()', 512);
 		}else throw new Exception('Invalid parameter type value, on class SMTP::priority()', 512);
 		if($set){
 			$this->delheader('X-Priority');
 			$this->delheader('X-MSMail-Priority');
-			$this->_header[] = array('name' => 'X-Priority', 'value' => $set[0]);
-			$this->_header[] = array('name' => 'X-MSMail-Priority', 'value' => $set[1]);
+			$this->_header[] = ['name' => 'X-Priority', 'value' => $set[0]];
+			$this->_header[] = ['name' => 'X-MSMail-Priority', 'value' => $set[1]];
 			$ret = true;
 		}
 		return $ret;
@@ -680,14 +680,14 @@ class SMTP extends MIME {
 		while(!feof($sock)){
 			$loop++;
 			if($rcv = fgets($sock, $this->max_sl)){
-				if($loop == $this->max_cl || substr($rcv, 0, 4) != "220-") break;
+				if($loop == $this->max_cl || !str_starts_with($rcv, "220-")) break;
 			}else break;
 		}
 		if(!$rcv){
 			$this->result = 'Error 11: can\'t read';
 			 return false;
 		}
-		if(substr($rcv, 0, 4) != "220 "){
+		if(!str_starts_with($rcv, "220 ")){
 			$this->result = 'Error 12: '.$rcv;
 			 return false;
 		}
@@ -706,14 +706,14 @@ class SMTP extends MIME {
 				$loop++;
 				if($rcv = fgets($sock, $this->max_sl)){
 					$getinfo .= $rcv;
-					if($loop == $this->max_cl || substr($rcv, 0, 4) != "250-") break;
+					if($loop == $this->max_cl || !str_starts_with($rcv, "250-")) break;
 				}else break;
 			}
 			if(!$rcv){
 				$this->result = 'Error 21: can\'t read';
 				 return false;
 			}
-			if(substr($rcv, 0, 4) != "250 "){
+			if(!str_starts_with($rcv, "250 ")){
 				if(!FUNC::is_connection($sock)){
 					$this->result = 'Error 22: invalid resource connection';
 					 return false;
@@ -728,14 +728,14 @@ class SMTP extends MIME {
 					$loop++;
 					if($rcv = fgets($sock, $this->max_sl)){
 						$getinfo .= $rcv;
-						if($loop == $this->max_cl || substr($rcv, 0, 4) != "250-") break;
+						if($loop == $this->max_cl || !str_starts_with($rcv, "250-")) break;
 					}else break;
 				}
 				if(!$rcv){
 					$this->result = 'Error 24: can\'t read';
 					 return false;
 				}
-				if(substr($rcv, 0, 4) != "250 "){
+				if(!str_starts_with($rcv, "250 ")){
 					$this->result = 'Error 25: '.$rcv;
 					 return false;
 				}
@@ -763,7 +763,7 @@ class SMTP extends MIME {
 					$this->result = 'Error 271: can\'t read';
 					 return false;
 				}
-				if(substr($rcv, 0, 4) != "334 "){
+				if(!str_starts_with($rcv, "334 ")){
 					$this->result = 'Error 272: '.$rcv;
 					 return false;
 				}
@@ -771,7 +771,7 @@ class SMTP extends MIME {
 					$this->result = 'Error 273: invalid resource connection';
 					 return false;
 				}
-				if(!fputs($sock, base64_encode($this->_relay['user']).$this->_crlf)){
+				if(!fputs($sock, base64_encode((string) $this->_relay['user']).$this->_crlf)){
 					$this->result = 'Error 274: can\'t write';
 					 return false;
 				}
@@ -779,7 +779,7 @@ class SMTP extends MIME {
 					$this->result = 'Error 275: can\'t read';
 					 return false;
 				}
-				if(substr($rcv, 0, 4) != "334 "){
+				if(!str_starts_with($rcv, "334 ")){
 					$this->result = 'Error 276: '.$rcv;
 					 return false;
 				}
@@ -787,7 +787,7 @@ class SMTP extends MIME {
 					$this->result = 'Error 277: invalid resource connection';
 					 return false;
 				}
-				if(!fputs($sock, base64_encode($this->_relay['pass']).$this->_crlf)){
+				if(!fputs($sock, base64_encode((string) $this->_relay['pass']).$this->_crlf)){
 					$this->result = 'Error 278: can\'t write';
 					 return false;
 				}
@@ -795,7 +795,7 @@ class SMTP extends MIME {
 					$this->result = 'Error 279: can\'t read';
 					 return false;
 				}
-				if(substr($rcv, 0, 4) != "235 "){
+				if(!str_starts_with($rcv, "235 ")){
 					$this->result = 'Error 280: '.$rcv;
 					 return false;
 				}
@@ -812,7 +812,7 @@ class SMTP extends MIME {
 					$this->result = 'Error 283: can\'t read';
 					 return false;
 				}
-				if(substr($rcv, 0, 4) != "235 "){
+				if(!str_starts_with($rcv, "235 ")){
 					$this->result = 'Error 284: '.$rcv;
 					 return false;
 				}
@@ -826,14 +826,14 @@ class SMTP extends MIME {
 			while(!feof($sock)){
 				$loop++;
 				if(!$rcv = fgets($sock, $this->max_sl)){
-					if($loop == $this->max_cl || substr($rcv, 0, 4) != "250-") break;
+					if($loop == $this->max_cl || !str_starts_with($rcv, "250-")) break;
 				}else break;
 			}
 			if(!$rcv){
 				$this->result = 'Error 31: can\'t read';
 				 return false;
 			}
-			if(substr($rcv, 0, 4) != "250 "){
+			if(!str_starts_with($rcv, "250 ")){
 				if(!FUNC::is_connection($sock)){
 					$this->result = 'Error 32: invalid resource connection';
 					 return false;
@@ -846,14 +846,14 @@ class SMTP extends MIME {
 				while(!feof($sock)){
 					$loop++;
 					if(!$rcv = fgets($sock, $this->max_sl)){
-						if($loop == $this->max_cl || substr($rcv, 0, 4) != "250-") break;
+						if($loop == $this->max_cl || !str_starts_with($rcv, "250-")) break;
 					}else break;
 				}
 				if(!$rcv){
 					$this->result = 'Error 34: can\'t read';
 					 return false;
 				}
-				if(substr($rcv, 0, 4) != "250 "){
+				if(!str_starts_with($rcv, "250 ")){
 					$this->result = 'Error 35: '.$rcv;
 					 return false;
 				}
@@ -871,7 +871,7 @@ class SMTP extends MIME {
 			$this->result = 'Error 42: can\'t read';
 			 return false;
 		}
-		if(substr($rcv, 0, 4) != "250 "){
+		if(!str_starts_with($rcv, "250 ")){
 			$this->result = 'Error 43: '.$rcv;
 			 return false;
 		}
@@ -913,7 +913,7 @@ class SMTP extends MIME {
 			$this->result = 'Error 62: can\'t read';
 			 return false;
 		}
-		if(substr($rcv, 0, 4) != "354 "){
+		if(!str_starts_with($rcv, "354 ")){
 			$this->result = 'Error 63: '.$rcv;
 			 return false;
 		}
@@ -921,7 +921,7 @@ class SMTP extends MIME {
 			$this->result = 'Error 70: invalid resource connection';
 			 return false;
 		}
-		if(!fputs($sock, $this->_content['header']['client'])){
+		if(!fputs($sock, (string) $this->_content['header']['client'])){
 			$this->result = 'Error 71: can\'t write';
 			 return false;
 		}
@@ -932,7 +932,7 @@ class SMTP extends MIME {
 				$setver = false;
 				break;
 			}
-			if(!fputs($sock, $partmsg)){
+			if(!fputs($sock, (string) $partmsg)){
 				$this->result = 'Error 73: can\'t write';
 				$setver = false;
 				break;
@@ -951,7 +951,7 @@ class SMTP extends MIME {
 			$this->result = 'Error 82: can\'t read';
 			 return false;
 		}
-		if(substr($rcv, 0, 4) != "250 "){
+		if(!str_starts_with($rcv, "250 ")){
 			$this->result = 'Error 83: '.$rcv;
 			 return false;
 		}
@@ -959,7 +959,7 @@ class SMTP extends MIME {
 			if(fputs($sock, 'RSET'.$this->_crlf)){
 				if(FUNC::is_connection($sock)){
 					if($rcvr = @fgets($sock, $this->max_sl)){
-						if(substr($rcvr, 0, 3) == "250"){
+						if(str_starts_with($rcvr, "250")){
 							if(fputs($sock, 'QUIT'.$this->_crlf)){
 								if(FUNC::is_connection($sock)){
 									if($rcvq = @fgets($sock, $this->max_sl)) $rcv = $rcvq;
@@ -980,7 +980,7 @@ class SMTP extends MIME {
 
 		$ret = false;
 		if($hname == "localhost"){
-			$ret = mail($this->_content['header']['to'], $this->_subject, implode('', $this->_content['body']), $this->_content['header']['local']);
+			$ret = mail((string) $this->_content['header']['to'], (string) $this->_subject, implode('', $this->_content['body']), $this->_content['header']['local']);
 			if(!$ret) $ret = $this->_sendtoip('127.0.0.1', $arrto, $isrelay);
 		}else{
 			if($isrelay) $ret = $this->_sendtoip($hname, $arrto, $isrelay);
@@ -988,7 +988,7 @@ class SMTP extends MIME {
 				if(FUNC::is_ipv4($hname)) $ret = $this->_sendtoip($hname, $arrto, $isrelay);
 				else{
 					$resmx = FUNC::is_win() ? FUNC::getmxrr_win($hname, $mxhost) : getmxrr($hname, $mxhost);
-					$iparr = array();
+					$iparr = [];
 					if($resmx){
 						foreach($mxhost as $hostname){
 							$iphost = gethostbyname($hostname);
@@ -1010,10 +1010,10 @@ class SMTP extends MIME {
 
 	function _splitmsg($longmsg, $approx = 10240){
 
-		$longmsg = str_replace(array(".\r\n", ".\n", ".\r"), ". ".$this->_crlf, $longmsg);
+		$longmsg = str_replace([".\r\n", ".\n", ".\r"], ". ".$this->_crlf, $longmsg);
 		$msgarr  = explode($this->_crlf, $longmsg);
 		$addmsg  = "";
-		$arrmsg  = array();
+		$arrmsg  = [];
 		foreach($msgarr as $inline){
 			$addmsg .= $inline.$this->_crlf;
 			if(strlen($addmsg) >= $approx){
@@ -1033,7 +1033,7 @@ class SMTP extends MIME {
 
 	function _putcid($str, $ids){
 
-		$find1 = $repl1 = array();
+		$find1 = $repl1 = [];
 		foreach($ids as $name => $code){
 			$find1[] = "=\"".$name;
 			$repl1[] = "=\"cid:".$code;
@@ -1048,8 +1048,8 @@ class SMTP extends MIME {
 
 	function _encodemsg($src, $enc){
 		$res = '';
-		if($enc == "7bit" || $enc == "8bit") $res .= chunk_split($src, $this->_chanklen, $this->_crlf);
-		elseif($enc == "base64") $res .= chunk_split(base64_encode($src), $this->_chanklen, $this->_crlf);
+		if($enc == "7bit" || $enc == "8bit") $res .= chunk_split((string) $src, $this->_chanklen, $this->_crlf);
+		elseif($enc == "base64") $res .= chunk_split(base64_encode((string) $src), $this->_chanklen, $this->_crlf);
 		elseif($enc == "quoted-printable") $res .= $this->qpencode($src, $this->_chanklen, $this->_crlf);
 		return $res;
 	}
@@ -1066,7 +1066,7 @@ class SMTP extends MIME {
 				elseif(isset($_SERVER['SERVER_ADDR'])) $fromaddr = 'postmaster@'.$_SERVER['SERVER_ADDR'];
 				else $fromaddr = 'postmaster@localhost';
 			}
-			$this->_fromaddr = array('address' => $fromaddr, 'name' => '');
+			$this->_fromaddr = ['address' => $fromaddr, 'name' => ''];
 		}
 		if(!$this->_fromhost){
 			if(isset($_SERVER['SERVER_NAME']))     $this->_fromhost = $_SERVER['SERVER_NAME'];
@@ -1074,7 +1074,7 @@ class SMTP extends MIME {
 			elseif(isset($_SERVER['REMOTE_ADDR'])) $this->_fromhost = $_SERVER['REMOTE_ADDR'];
 			elseif(isset($_SERVER['SERVER_ADDR'])) $this->_fromhost = $_SERVER['SERVER_ADDR'];
 			else{
-				$fexp = explode('@', $this->_fromaddr['address']);
+				$fexp = explode('@', (string) $this->_fromaddr['address']);
 				$this->_fromhost = $fexp[1];
 			}
 		}
@@ -1097,24 +1097,24 @@ class SMTP extends MIME {
 		}
 		if($this->_fromaddr['name'] == "") $fromstr = $this->_fromaddr['address'];
 		else $fromstr = '"'.str_replace('"', '\\"', $this->_fromaddr['name']).'" <'.$this->_fromaddr['address'].'>';
-		$arrval1 = $arrval2 = array();
-		$arrval1[] = array('name' => 'From', 'value' => $fromstr);
-		$arrval2[] = array('name' => 'From', 'value' => $fromstr);
-		$arrval2[] = array('name' => 'To', 'value' => $tostr);
-		$arrval2[] = array('name' => 'Subject', 'value' => $this->_subject);
+		$arrval1 = $arrval2 = [];
+		$arrval1[] = ['name' => 'From', 'value' => $fromstr];
+		$arrval2[] = ['name' => 'From', 'value' => $fromstr];
+		$arrval2[] = ['name' => 'To', 'value' => $tostr];
+		$arrval2[] = ['name' => 'Subject', 'value' => $this->_subject];
 		if($ccstr != ""){
-			$arrval1[] = array('name' => 'Cc', 'value' => $ccstr);
-			$arrval2[] = array('name' => 'Cc', 'value' => $ccstr);
+			$arrval1[] = ['name' => 'Cc', 'value' => $ccstr];
+			$arrval2[] = ['name' => 'Cc', 'value' => $ccstr];
 		}
-		if($bccstr != "") $arrval1[] = array('name' => 'Bcc', 'value' => $bccstr);
-		$arrval2[] = array('name' => 'Date', 'value' => date('r'));
+		if($bccstr != "") $arrval1[] = ['name' => 'Bcc', 'value' => $bccstr];
+		$arrval2[] = ['name' => 'Date', 'value' => date('r')];
 		if($this->_header && count($this->_header) > 0){
 			foreach($this->_header as $hvarr){
 				$arrval1[] = $hvarr;
 				$arrval2[] = $hvarr;
 			}
 		}
-		$xmail = array('name' => base64_decode('WC1NYWlsZXI='), 'value' => base64_decode('WFBNMiB2LjAuMSA8d3d3LnhwZXJ0bWFpbGVyLmNvbT4='));
+		$xmail = ['name' => base64_decode('WC1NYWlsZXI='), 'value' => base64_decode('WFBNMiB2LjAuMSA8d3d3LnhwZXJ0bWFpbGVyLmNvbT4=')];
 		$arrval1[] = $xmail;
 		$arrval2[] = $xmail;
 		$hval1 = $hval2 = $bval = '';
@@ -1130,7 +1130,7 @@ class SMTP extends MIME {
 			$boundary3 = '=_'.$this->_getunique();
 			$haveatt = ($this->_attach && count($this->_attach) > 0) ? true : false;
 			$inline = $attachment = false;
-			$idarr = array();
+			$idarr = [];
 			if($haveatt){
 				foreach($this->_attach as $attdesc){
 					if($attdesc['disp'] == "inline"){
@@ -1312,7 +1312,7 @@ class SMTP extends MIME {
 				$bval  .= $this->_encodemsg($this->_ahtml[2], $this->_ahtml[1]);
 			}
 		}
-		return array('header' => array('to' => $hto, 'local' => $hval1, 'client' => $hval2.$this->_crlf.$this->_crlf), 'body' => $this->_splitmsg($bval));
+		return ['header' => ['to' => $hto, 'local' => $hval1, 'client' => $hval2.$this->_crlf.$this->_crlf], 'body' => $this->_splitmsg($bval)];
 
 	}
 
@@ -1335,7 +1335,7 @@ class SMTP extends MIME {
 				}
 				if($ver){
 					if($this->_ccaddrs && count($this->_ccaddrs) > 0){
-						$clearcc1 = array();
+						$clearcc1 = [];
 						foreach($this->_ccaddrs as $ccaddrs1 => $ccname1){
 							$vercc1 = true;
 							foreach($this->_toaddrs as $toaddrs1 => $toname1){
@@ -1347,7 +1347,7 @@ class SMTP extends MIME {
 						$this->_ccaddrs = $clearcc1;
 					}
 					if($this->_bccaddrs && count($this->_bccaddrs) > 0){
-						$clearbcc1 = array();
+						$clearbcc1 = [];
 						foreach($this->_bccaddrs as $bccaddrs1 => $bccname1){
 							$verbcc1 = true;
 							foreach($this->_toaddrs as $toaddrs2 => $toname2){
@@ -1359,7 +1359,7 @@ class SMTP extends MIME {
 						$this->_bccaddrs = $clearbcc1;
 					}
 					if($this->_bccaddrs && count($this->_bccaddrs) > 0 && $this->_ccaddrs && count($this->_ccaddrs) > 0){
-						$clearbcc2 = array();
+						$clearbcc2 = [];
 						foreach($this->_bccaddrs as $bccaddrs2 => $bccname2){
 							$verbcc2 = true;
 							foreach($this->_ccaddrs as $ccaddrs2 => $ccname2){
@@ -1370,22 +1370,22 @@ class SMTP extends MIME {
 						}
 						$this->_bccaddrs = $clearbcc2;
 					}
-					$group = $alldom = array();
+					$group = $alldom = [];
 					foreach($this->_toaddrs as $toaddrs3 => $toname3){
-						$exp1 = explode('@', $toaddrs3);
+						$exp1 = explode('@', (string) $toaddrs3);
 						$group[$exp1[1]][] = $toaddrs3;
 						$alldom[] = $toaddrs3;
 					}
 					if($this->_ccaddrs && count($this->_ccaddrs) > 0){
 						foreach($this->_ccaddrs as $ccaddrs3 => $ccname3){
-							$exp2 = explode('@', $ccaddrs3);
+							$exp2 = explode('@', (string) $ccaddrs3);
 							$group[$exp2[1]][] = $ccaddrs3;
 							$alldom[] = $ccaddrs3;
 						}
 					}
 					if($this->_bccaddrs && count($this->_bccaddrs) > 0){
 						foreach($this->_bccaddrs as $bccaddrs3 => $bccname3){
-							$exp3 = explode('@', $bccaddrs3);
+							$exp3 = explode('@', (string) $bccaddrs3);
 							$group[$exp3[1]][] = $bccaddrs3;
 							$alldom[] = $bccaddrs3;
 						}

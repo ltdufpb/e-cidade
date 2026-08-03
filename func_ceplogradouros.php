@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ceplogradouros_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clceplogradouros = new cl_ceplogradouros;
 $clceplogradouros->rotulo->label("cp06_codlogradouro");
 $clceplogradouros->rotulo->label("cp06_codlogradouro");
@@ -86,9 +86,9 @@ $clceplogradouros->rotulo->label("cp06_codlogradouro");
         }else{
            $sql = $clceplogradouros->sql_query("",$campos,"cp06_codlogradouro","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cp06_codlogradouro)){
-          $repassa = array("chave_cp06_codlogradouro"=>$chave_cp06_codlogradouro,"chave_cp06_codlogradouro"=>$chave_cp06_codlogradouro);
+          $repassa = ["chave_cp06_codlogradouro"=>$chave_cp06_codlogradouro,"chave_cp06_codlogradouro"=>$chave_cp06_codlogradouro];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

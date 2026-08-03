@@ -73,7 +73,7 @@ function js_emite(){
 	  <?php 
 
 
-$xy = array ('1A' => 'Órgão Até o Nível', '1B' => 'Órgão só o Nível', '2A' => 'Unidade Até o Nível', '2B' => 'Unidade só o Nível', '3A' => 'Função Até o Nível', '3B' => 'Função só o Nível', '4A' => 'Subfunção Até o Nível', '4B' => 'Subfunção só o Nível', '5A' => 'Programa Até o Nível', '5B' => 'Programa só o Nível', '6A' => 'Proj/Ativ Até o Nível', '6B' => 'Proj/Ativ só o Nível', '7A' => 'Elemento Até o Nível', '7B' => 'Elemento só o Nível', '8A' => 'Recurso Até o Nível', '9A' => 'Recurso Até o Nível - Completo', '8B' => 'Recurso só o Nível');
+$xy =  ['1A' => 'Órgão Até o Nível', '1B' => 'Órgão só o Nível', '2A' => 'Unidade Até o Nível', '2B' => 'Unidade só o Nível', '3A' => 'Função Até o Nível', '3B' => 'Função só o Nível', '4A' => 'Subfunção Até o Nível', '4B' => 'Subfunção só o Nível', '5A' => 'Programa Até o Nível', '5B' => 'Programa só o Nível', '6A' => 'Proj/Ativ Até o Nível', '6B' => 'Proj/Ativ só o Nível', '7A' => 'Elemento Até o Nível', '7B' => 'Elemento só o Nível', '8A' => 'Recurso Até o Nível', '9A' => 'Recurso Até o Nível - Completo', '8B' => 'Recurso só o Nível'];
 db_select('nivel', $xy, true, 2, "");
 $db_selinstit = db_getsession("DB_instit");
 db_input("db_selinstit",10,0,true,"hidden",3);
@@ -89,7 +89,7 @@ db_input("db_selinstit",10,0,true,"hidden",3);
 	<?php 
 
 
-$x = array ('N' => 'NÃO', 'S' => 'SIM');
+$x =  ['N' => 'NÃO', 'S' => 'SIM'];
 db_select('quebra_orgao', $x, true, 2, "");
 ?>
 	</td>
@@ -102,7 +102,7 @@ db_select('quebra_orgao', $x, true, 2, "");
 	<?php 
 
 
-$xx = array ('N' => 'NÃO', 'S' => 'SIM');
+$xx =  ['N' => 'NÃO', 'S' => 'SIM'];
 db_select('quebra_unidade', $xx, true, 2, "");
 ?>
 	</td>
@@ -113,7 +113,7 @@ db_select('quebra_unidade', $xx, true, 2, "");
 
 $sql = "select o50_subelem from orcparametro where o50_anousu = ".db_getsession("DB_anousu");
 $result1 = db_query($sql);
-$o50_subelem = pg_result($result1, 0, 0);
+$o50_subelem = pg_fetch_result($result1, 0, 0);
 if ($o50_subelem == 'f') {
 ?>
       
@@ -123,7 +123,7 @@ if ($o50_subelem == 'f') {
 	  <?php 
 
 
-	$xx = array ('N' => 'NÃO', 'S' => 'SIM');
+	$xx =  ['N' => 'NÃO', 'S' => 'SIM'];
 	db_select('lista_subeleme', $xx, true, 2, "");
 ?>
 	  </td>
@@ -156,11 +156,11 @@ if ($o50_subelem == 'f') {
   $dataini = $anousu."-".$dataini;
   $datafin = $anousu."-".$datafin;
       
-  $dt = split('-',$dataini);
+  $dt = preg_split('#\-#m',$dataini);
   $data_ini_dia   = $dt[2]; 
   $data_ini_mes = $dt[1];
   $data_ini_ano  = $dt[0];    
-  $dt = split('-',$datafin);
+  $dt = preg_split('#\-#m',$datafin);
   $data_fin_dia   = $dt[2]; 
   $data_fin_mes = $dt[1];
   $data_fin_ano  = $dt[0];

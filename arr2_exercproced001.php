@@ -34,8 +34,8 @@ include modification('classes/db_proced_classe.php');
 require_once modification('libs/db_utils.php');
 require_once modification('libs/db_libpostgres.php');
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $clpostgresqlutils = new PostgreSQLUtils();
 $clproced = new cl_proced();

@@ -130,7 +130,7 @@ if ($db_opcao == 1) {
                 </td>
                 <td>
                     <?php 
-                    $x = array("f" => "NAO", "t" => "SIM");
+                    $x = ["f" => "NAO", "t" => "SIM"];
                     db_select('x19_ativo', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -182,7 +182,7 @@ if ($db_opcao == 1) {
 		db_iframe_aguaconsumo.hide();
         <?php 
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
 	}

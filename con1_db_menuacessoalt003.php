@@ -32,13 +32,13 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_db_menupref_classe.php"));
 include(modification("classes/db_db_menuacesso_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $cldb_menuacesso = new cl_db_menuacesso;
 $cldb_menupref = new cl_db_menupref;
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $db_opcao = 3;
   $cldb_menuacesso->db06_idtipo = $chavepesquisa1;

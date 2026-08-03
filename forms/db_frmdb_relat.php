@@ -64,7 +64,7 @@ db_input('db91_descr',40,$Idb91_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('t'=>'Sim','f'=>'Não');
+$x = ['t'=>'Sim','f'=>'Não'];
 db_select('db91_quebra',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -75,7 +75,7 @@ db_select('db91_quebra',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('t'=>'Sim','f'=>'Não');
+$x = ['t'=>'Sim','f'=>'Não'];
 db_select('db91_todos',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -103,7 +103,7 @@ function js_preenchepesquisa(chave){
   db_iframe_db_relat.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

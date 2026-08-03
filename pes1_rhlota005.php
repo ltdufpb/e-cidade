@@ -101,7 +101,7 @@ if (isset($alterar)) {
         }
     }
 
-    if ($sqlerro == false && trim($rh64_calend) != "") {
+    if ($sqlerro == false && trim((string) $rh64_calend) != "") {
         $clrhlotacalend->rh64_lota = $r70_codigo;
         $clrhlotacalend->rh64_calend = $rh64_calend;
         $result_calend = $clrhlotacalend->sql_record($clrhlotacalend->sql_query($r70_codigo, "rh64_calend, rh53_descr"));

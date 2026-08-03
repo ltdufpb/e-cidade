@@ -58,7 +58,7 @@ $sSql = "select x01_matric,
 $rSql = db_query($sSql);
 
 
-if(pg_numrows($rSql) == 0) {
+if(pg_num_rows($rSql) == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado.');
 }
 

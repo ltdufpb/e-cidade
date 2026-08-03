@@ -38,7 +38,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('z01_nome');
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($bloqueado == "t") {
@@ -87,11 +87,11 @@ $total = 0;
 for($x = 0; $x < $clpcforne->numrows;$x++){
    db_fieldsmemory($result_forne,$x);
    $impagencia = $agencia;
-   if(trim($dig)!=""){
+   if(trim((string) $dig)!=""){
      $impagencia .= " / ".$dig;   
    }
    $impconta = $conta;
-   if(trim($condig)!=""){
+   if(trim((string) $condig)!=""){
      $impconta .= " / ".$condig;
    }
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){

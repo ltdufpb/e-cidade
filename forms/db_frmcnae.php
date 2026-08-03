@@ -49,7 +49,7 @@ if ($db_opcao==2) {
      <td align="left"><b>Tipo:</b></td>
        <td align="left" >
          <?php 
-           $arraymostra = array("" =>"- Selecione -", "S"=> "Sintética ", "A" => "Analítica ");
+           $arraymostra = ["" =>"- Selecione -", "S"=> "Sintética ", "A" => "Analítica "];
            db_select("Tipo",$arraymostra,1,1,"onchange='js_mostraVinculo(this.value)'");
          ?>
       </td>
@@ -152,7 +152,7 @@ db_input('q71_descr',80,$Iq71_descr,true,'text',$db_opcao2,"")
         ";
 
 		$result = db_query($sql);
-        $num = pg_numrows($result);
+        $num = pg_num_rows($result);
 		if ($num > 0) {
 		?>
 
@@ -174,10 +174,10 @@ db_input('q71_descr',80,$Iq71_descr,true,'text',$db_opcao2,"")
 						db_fieldsmemory($result,$i);
 						if (!empty($q178_data_fim)) {
 							// Formata data para mostrar na tabela de vínculos
-							$data_fim = strtotime($q178_data_fim);
+							$data_fim = strtotime((string) $q178_data_fim);
 							$data_fim = date('d/m/Y',$data_fim);
 
-							$q178_data_fim = strtotime($q178_data_fim);
+							$q178_data_fim = strtotime((string) $q178_data_fim);
 						} else {
 							$data_fim = "Sem Data";
 							$q178_data_fim = "";
@@ -222,7 +222,7 @@ function js_preenchepesquisa(chave, chave2){
 
   <?php
   if($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chave2='+chave2";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chave2='+chave2";
   }
   ?>
 }

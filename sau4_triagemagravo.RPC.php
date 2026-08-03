@@ -96,7 +96,7 @@ try{
         $oRetorno->iCid           = $oDados->s167_sau_cid;
         $oRetorno->sCid           = urlencode($sCid);
         $oRetorno->dtSintoma      = urlencode($sData);
-        $oRetorno->lGestante      = urlencode($oDados->s167_gestante);
+        $oRetorno->lGestante      = urlencode((string) $oDados->s167_gestante);
         $oRetorno->lTemAgravo     = true;
       }
 

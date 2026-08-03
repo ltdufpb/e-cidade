@@ -114,7 +114,7 @@ $clrotulo->label ( "s108_c_exame" );
 						</td>
 						<td>
 							<?php 
-							$x = array ('P' => 'Prefeitura', 'R' => 'Próprio', 'O' => 'Ônibus' );
+							$x =  ['P' => 'Prefeitura', 'R' => 'Próprio', 'O' => 'Ônibus' ];
 							db_select ( 's124_c_veiculo', $x, true, $db_opcao, "onChange='js_tipo( this.value )';" );
 							?>
 						</td>
@@ -175,7 +175,7 @@ $clrotulo->label ( "s108_c_exame" );
 				<td colspan="2">
 						<?php 
 							
-						$chavepri = array ("s124_i_codigo" => @$s124_i_codigo );
+						$chavepri =  ["s124_i_codigo" => @$s124_i_codigo ];
 						
 						$cliframe_alterar_excluir->chavepri = $chavepri;
 						@$cliframe_alterar_excluir->sql = $clsau_agendatransporte->sql_query_ext ( "", "

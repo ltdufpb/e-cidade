@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_marca_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clmarca = new cl_marca;
 $db_opcao = 22;
 $db_botao = false;
@@ -42,7 +42,7 @@ if(isset($alterar)){
  $ma01_c_nomeimagem = @$GLOBALS["HTTP_POST_VARS"]["ma01_o_imagem"];
  $ma01_o_imagem = "tmp/".@$GLOBALS["HTTP_POST_VARS"]["ma01_o_imagem"];
  if($ma01_c_nomeimagem!=""){
-  $oid_imagem = pg_loimport($ma01_o_imagem) or die("Erro(15) importando imagem");
+  $oid_imagem = pg_lo_import($ma01_o_imagem) or die("Erro(15) importando imagem");
   $ma01_o_imagem = $oid_imagem;
  }else{
   $oid_imagem = "0";

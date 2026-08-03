@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issarquivoretencaoregistroissbase_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissarquivoretencaoregistroissbase = new cl_issarquivoretencaoregistroissbase;
 $clissarquivoretencaoregistroissbase->rotulo->label("q128_sequencial");
 $clissarquivoretencaoregistroissbase->rotulo->label("q128_sequencial");
@@ -52,9 +52,9 @@ $clissarquivoretencaoregistroissbase->rotulo->label("q128_sequencial");
         }else{
            $sql = $clissarquivoretencaoregistroissbase->sql_query("",$campos,"q128_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q128_sequencial)){
-          $repassa = array("chave_q128_sequencial"=>$chave_q128_sequencial,"chave_q128_sequencial"=>$chave_q128_sequencial);
+          $repassa = ["chave_q128_sequencial"=>$chave_q128_sequencial,"chave_q128_sequencial"=>$chave_q128_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

@@ -23,16 +23,13 @@ class ComprasPublicasImportacao
     private $licitacao;
     
     private $dadosItens;
-
-    private $dadosFornecedores;
     
     private $dadosEventos;
 
-    public function __construct($codigoLicitacao, $itensRetornados, $dadosFornecedores)
+    public function __construct($codigoLicitacao, $itensRetornados, private $dadosFornecedores)
     {
         $this->dados             = $itensRetornados;
         $this->licitacao         = new licitacao($codigoLicitacao);
-        $this->dadosFornecedores = $dadosFornecedores;
     }
    
     /**

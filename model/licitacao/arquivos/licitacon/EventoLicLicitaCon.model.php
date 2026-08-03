@@ -34,7 +34,7 @@ class EventoLicLicitaCon extends ArquivoLicitaCon
     /**
      * @type stdClass[]
      */
-    private $aDadosLicitacao = array();
+    private $aDadosLicitacao = [];
 
     public function __construct(CabecalhoLicitaCon $oCabecalho)
     {
@@ -49,13 +49,13 @@ class EventoLicLicitaCon extends ArquivoLicitaCon
      */
     private function processarEventos()
     {
-        $aTipoResultado = array(
+        $aTipoResultado = [
             EventoLicitacao::RESULTADO_INDEFERIDO => 'I',
             EventoLicitacao::RESULTADO_DEFERIDO => 'D',
             EventoLicitacao::RESULTADO_PARCIALMENTE_DEFERIDO => 'P',
-        );
+        ];
 
-        $aCampos = array(
+        $aCampos = [
             'l20_codigo as codigo_licitacao',
             'l20_numero as numero_licitacao',
             'l46_fase as fase',
@@ -70,7 +70,7 @@ class EventoLicLicitaCon extends ArquivoLicitaCon
             'z01_numcgm',
             'l46_datajulgamento as data_julgamento',
             'l46_tiporesultado as tipo_resultado',
-        );
+        ];
 
         $aWhere = LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(),
             $this->oCabecalho->getDataGeracao());
@@ -117,7 +117,7 @@ class EventoLicLicitaCon extends ArquivoLicitaCon
             $oStdInformacoes->TP_DOCUMENTO_AUTOR = LicitanteLicitaCon::getTipoDocumentoPorCGM($oStdDados->z01_numcgm);
             $oStdInformacoes->NR_DOCUMENTO_AUTOR = LicitanteLicitaCon::getDocumentoPorCGM($oStdDados->z01_numcgm);
             $oStdInformacoes->DT_JULGAMENTO = $sDataJulgamento;
-            $oStdInformacoes->TP_RESULTADO = isset($aTipoResultado[$oStdDados->tipo_resultado]) ? $aTipoResultado[$oStdDados->tipo_resultado] : '';
+            $oStdInformacoes->TP_RESULTADO = $aTipoResultado[$oStdDados->tipo_resultado] ?? '';
             $oStdInformacoes->NR_LOTE = '';
             $oStdInformacoes->NR_ITEM = '';
             $this->aDadosLicitacao[] = $oStdInformacoes;

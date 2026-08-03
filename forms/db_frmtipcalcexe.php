@@ -150,7 +150,7 @@ if (isset($q83_cadvencdescsimples) && $q83_cadvencdescsimples != null) {
     <td valign="top"  align="center">  
     <?php 
 	     
-       $chavepri= array("q83_codigo" => @$q83_codigo);
+       $chavepri= ["q83_codigo" => @$q83_codigo];
 	     
 	     $cliframe_alterar_excluir->chavepri      = $chavepri;	 
 	     $cliframe_alterar_excluir->sql           = $cltipcalcexe->sql_query_venc(null, "*", "q83_anousu", "q83_tipcalc = {$q83_tipcalc}");

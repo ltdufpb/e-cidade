@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $db_botao=true;
 $db_opcao=2;
 $clrotulo = new rotulocampo;

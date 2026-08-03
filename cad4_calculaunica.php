@@ -35,7 +35,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_recibounica_classe.php"));
 
 $oDaoReciboUnica = new cl_recibounica();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $erro = false;
 $descricao_erro = false;
 $quantos = 0;
@@ -212,11 +212,11 @@ function js_verifica_campos(){
             <td height="25">
               <?php 
 	      $result=db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
-	      if(pg_numrows($result) > 0){
+	      if(pg_num_rows($result) > 0){
 		?>
 		<select name="anousu">
 		<?php 
-  	        for($i=0;$i<pg_numrows($result);$i++){
+  	        for($i=0;$i<pg_num_rows($result);$i++){
 		db_fieldsmemory($result,$i);
 	        ?>
 	        <option value='<?=$j18_anousu?>'><?=$j18_anousu?></option>

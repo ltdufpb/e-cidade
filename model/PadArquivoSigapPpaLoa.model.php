@@ -41,7 +41,7 @@ final class PadArquivoSigapPpaLoa extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "PpaLoa";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -61,7 +61,7 @@ final class PadArquivoSigapPpaLoa extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao  = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit  = db_getsession("DB_instit");
     $sDiaMesAno =  "{$iAno}-".str_pad($iMes, 2, "0", STR_PAD_LEFT)."-".str_pad($iDia, 2, "0", STR_PAD_LEFT);
@@ -109,7 +109,7 @@ final class PadArquivoSigapPpaLoa extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                          "ploCodigoEntidade",
                          "ploComplementacao",
                          "ploDataLDO",
@@ -138,7 +138,7 @@ final class PadArquivoSigapPpaLoa extends PadArquivoSigap {
                          "ploPercCreditoAntecipacao",
                          "ploPerOpCreditoExterno",
                          "ploPerOpCreditoIntermo"
-                       );
+                       ];
     return $aElementos;  
   }
   

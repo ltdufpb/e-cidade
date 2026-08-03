@@ -1,23 +1,23 @@
 <?php
 /* S-2300 - Trabalhador Sem Vínculo de Emprego/Estatutário - Início */
-return array(
-    'trabalhador' => array(
-        'properties' => array(
+return [
+    'trabalhador' => [
+        'properties' => [
             'cpfTrab',
             'nisTrab',
             'nmTrab',
             'sexo',
-            'racaCor' => array(
+            'racaCor' => [
               'type' => 'int'
-            ),
-            'estCiv' => array(
+            ],
+            'estCiv' => [
               'type' => 'int'
-            ),
+            ],
             'grauInstr'
-        ),
-        'groups' => array(
-            'nascimento' => array(
-                'properties' => array(
+        ],
+        'groups' => [
+            'nascimento' => [
+                'properties' => [
                     'dtNascto',
                     'codMunic',
                     'uf',
@@ -25,76 +25,76 @@ return array(
                     'paisNac',
                     'nmMae',
                     'nmPai'
-                )
-            ),
-            'documentos' => array(
-                'groups' => array(
-                    'CTPS' => array(
-                        'properties' => array(
+                ]
+            ],
+            'documentos' => [
+                'groups' => [
+                    'CTPS' => [
+                        'properties' => [
                             'nrCtps',
                             'serieCtps',
                             'ufCtps'
-                        )
-                    ),
-                    'RIC' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'RIC' => [
+                        'properties' => [
                             'nrRic',
                             'orgaoEmissor_Ric' =>'orgaoEmissor',
                             'dtExped_Ric' => 'dtExped'
-                        )
-                    ),
-                    'RG' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'RG' => [
+                        'properties' => [
                             'nrRg',
                             'orgaoEmissor_RG' => 'orgaoEmissor',
                             'dtExped_RG' => 'dtExped'
-                        )
-                    ),
-                    'RNE' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'RNE' => [
+                        'properties' => [
                             'nrRne',
                             'orgaoEmissor_RNE' => 'orgaoEmissor',
                             'dtExped_RNE' => 'dtExped',
-                        )
-                    ),
-                    'OC' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'OC' => [
+                        'properties' => [
                             'nrOc',
                             'orgaoEmissor_OC' => 'orgaoEmissor',
                             'dtExped_OC' => 'dtExped',
                             'dtValid_OC' => 'dtValid',
-                        )
-                    ),
-                    'CNH' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'CNH' => [
+                        'properties' => [
                             'nrRegCnh',
                             'dtExped_CNH' =>'dtExped',
                             'ufCnh',
                             'dtValid_CNH' =>'dtValid',
                             'dtPriHab',
                             'categoriaCnh',
-                        )
-                    ),
-                ),
-            ),
-            'endereco' => array(
-                'groups' => array(
-                    'brasil' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                ],
+            ],
+            'endereco' => [
+                'groups' => [
+                    'brasil' => [
+                        'properties' => [
                             'tpLograd_brasil' => 'tpLograd',
                             'dscLograd_brasil' => 'dscLograd',
                             'nrLograd_brasil' => 'nrLograd',
                             'complemento_brasil' => 'complemento',
                             'bairro_brasil' => 'bairro',
                             'cep_brasil' => 'cep',
-                            'codMunic_brasil' => array(
+                            'codMunic_brasil' => [
                                 'nome_api' => 'codMunic'
-                            ),
+                            ],
                             'uf_brasil' => 'uf'
-                        )
-                    ),
-                    'exterior' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'exterior' => [
+                        'properties' => [
                             'paisResid_exterior' => 'paisResid',
                             'dscLograd_exterior' => 'dscLograd',
                             'nrLograd_exterior' => 'nrLograd',
@@ -102,20 +102,20 @@ return array(
                             'bairro_exterior' => 'bairro',
                             'nmCid_exterior' => 'nmCid',
                             'codPostal_exterior' => 'codPostal'
-                        )
-                    ),
-                ),
-            ),
-            'trabEstrangeiro' => array(
-                'properties' => array(
+                        ]
+                    ],
+                ],
+            ],
+            'trabEstrangeiro' => [
+                'properties' => [
                     'dtChegada',
                     'classTrabEstrang',
                     'casadoBr',
                     'filhosBr',
-                )
-            ),
-            'infoDeficiencia' => array(
-                'properties' => array(
+                ]
+            ],
+            'infoDeficiencia' => [
+                'properties' => [
                     'defFisica',
                     'defVisual',
                     'defAuditiva',
@@ -123,13 +123,13 @@ return array(
                     'defIntelectual',
                     'reabReadap',
                     'observacao'
-                )
-            ),
-            'dependente_1' => array (
+                ]
+            ],
+            'dependente_1' =>  [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'dependente_1_tpDep' => 'tpDep',
                         'dependente_1_nmDep' => 'nmDep',
                         'dependente_1_dtNascto' => 'dtNascto',
@@ -137,14 +137,14 @@ return array(
                         'dependente_1_depIRRF' => 'depIRRF',
                         'dependente_1_depSF' => 'depSF',
                         'dependente_1_incTrab' => 'incTrab'
-                    )
-                )
-            ),
-            'dependente_2' => array (
+                    ]
+                ]
+            ],
+            'dependente_2' =>  [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'dependente_2_tpDep' => 'tpDep',
                         'dependente_2_nmDep' => 'nmDep',
                         'dependente_2_dtNascto' => 'dtNascto',
@@ -152,14 +152,14 @@ return array(
                         'dependente_2_depIRRF' => 'depIRRF',
                         'dependente_2_depSF' => 'depSF',
                         'dependente_2_incTrab' => 'incTrab'
-                    )
-                )
-            ),
-            'dependente_3' => array (
+                    ]
+                ]
+            ],
+            'dependente_3' =>  [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'dependente_3_tpDep' => 'tpDep',
                         'dependente_3_nmDep' => 'nmDep',
                         'dependente_3_dtNascto' => 'dtNascto',
@@ -167,14 +167,14 @@ return array(
                         'dependente_3_depIRRF' => 'depIRRF',
                         'dependente_3_depSF' => 'depSF',
                         'dependente_3_incTrab' => 'incTrab'
-                    )
-                )
-            ),
-            'dependente_4' => array (
+                    ]
+                ]
+            ],
+            'dependente_4' =>  [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'dependente_4_tpDep' => 'tpDep',
                         'dependente_4_nmDep' => 'nmDep',
                         'dependente_4_dtNascto' => 'dtNascto',
@@ -182,14 +182,14 @@ return array(
                         'dependente_4_depIRRF' => 'depIRRF',
                         'dependente_4_depSF' => 'depSF',
                         'dependente_4_incTrab' => 'incTrab'
-                    )
-                )
-            ),
-            'dependente_5' => array (
+                    ]
+                ]
+            ],
+            'dependente_5' =>  [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'dependente_5_tpDep' => 'tpDep',
                         'dependente_5_nmDep' => 'nmDep',
                         'dependente_5_dtNascto' => 'dtNascto',
@@ -197,14 +197,14 @@ return array(
                         'dependente_5_depIRRF' => 'depIRRF',
                         'dependente_5_depSF' => 'depSF',
                         'dependente_5_incTrab' => 'incTrab'
-                    )
-                )
-            ),
-            'dependente_6' => array (
+                    ]
+                ]
+            ],
+            'dependente_6' =>  [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'dependente_6_tpDep' => 'tpDep',
                         'dependente_6_nmDep' => 'nmDep',
                         'dependente_6_dtNascto' => 'dtNascto',
@@ -212,14 +212,14 @@ return array(
                         'dependente_6_depIRRF' => 'depIRRF',
                         'dependente_6_depSF' => 'depSF',
                         'dependente_6_incTrab' => 'incTrab'
-                    )
-                )
-            ),
-            'dependente_7' => array (
+                    ]
+                ]
+            ],
+            'dependente_7' =>  [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'dependente_7_tpDep' => 'tpDep',
                         'dependente_7_nmDep' => 'nmDep',
                         'dependente_7_dtNascto' => 'dtNascto',
@@ -227,14 +227,14 @@ return array(
                         'dependente_7_depIRRF' => 'depIRRF',
                         'dependente_7_depSF' => 'depSF',
                         'dependente_7_incTrab' => 'incTrab'
-                    )
-                )
-            ),
-            'dependente_8' => array (
+                    ]
+                ]
+            ],
+            'dependente_8' =>  [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'dependente_8_tpDep' => 'tpDep',
                         'dependente_8_nmDep' => 'nmDep',
                         'dependente_8_dtNascto' => 'dtNascto',
@@ -242,14 +242,14 @@ return array(
                         'dependente_8_depIRRF' => 'depIRRF',
                         'dependente_8_depSF' => 'depSF',
                         'dependente_8_incTrab' => 'incTrab'
-                    )
-                )
-            ),
-            'dependente_9' => array (
+                    ]
+                ]
+            ],
+            'dependente_9' =>  [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'dependente_9_tpDep' => 'tpDep',
                         'dependente_9_nmDep' => 'nmDep',
                         'dependente_9_dtNascto' => 'dtNascto',
@@ -257,14 +257,14 @@ return array(
                         'dependente_9_depIRRF' => 'depIRRF',
                         'dependente_9_depSF' => 'depSF',
                         'dependente_9_incTrab' => 'incTrab'
-                    )
-                )
-            ),
-            'dependente_10' => array (
+                    ]
+                ]
+            ],
+            'dependente_10' =>  [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'dependente_10_tpDep' => 'tpDep',
                         'dependente_10_nmDep' => 'nmDep',
                         'dependente_10_dtNascto' => 'dtNascto',
@@ -272,151 +272,151 @@ return array(
                         'dependente_10_depIRRF' => 'depIRRF',
                         'dependente_10_depSF' => 'depSF',
                         'dependente_10_incTrab' => 'incTrab'
-                    )
-                )
-            ),
-            'contato' => array(
-                'properties' => array(
+                    ]
+                ]
+            ],
+            'contato' => [
+                'properties' => [
                     'fonePrinc',
                     'foneAlternat',
                     'emailPrinc',
                     'emailAlternat'
-                )
-            )
-        )
-    ),
-    'infoTSVInicio' => array(
-        'properties' => array(
+                ]
+            ]
+        ]
+    ],
+    'infoTSVInicio' => [
+        'properties' => [
             'cadIni',
             'codCateg',
             'dtInicio',
-            'natAtividade' => array(
+            'natAtividade' => [
                 'type' => 'int'
-            )
-        ),
-        'groups' => array(
-            'infoComplementares' => array(
-                'groups' => array(
-                    'cargoFuncao' => array(
-                        'properties' => array(
+            ]
+        ],
+        'groups' => [
+            'infoComplementares' => [
+                'groups' => [
+                    'cargoFuncao' => [
+                        'properties' => [
                             'codCargo',
                             'codFuncao'
-                        )
-                    ),
-                    'remuneracao' => array(
-                        'properties' => array(
-                            'vrSalFx' => array(
+                        ]
+                    ],
+                    'remuneracao' => [
+                        'properties' => [
+                            'vrSalFx' => [
                                 'type' => 'float'
-                            ),
-                            'undSalFixo' => array(
+                            ],
+                            'undSalFixo' => [
                               'type' => 'int'
-                            ),
+                            ],
                             'dscSalVar'
-                        )
-                    ),
-                    'fgts' => array(
-                        'properties' => array(
-                            'opcFGTS' => array(
+                        ]
+                    ],
+                    'fgts' => [
+                        'properties' => [
+                            'opcFGTS' => [
                                 'type' => 'int'
-                            ),
+                            ],
                             'dtOpcFGTS',
-                        )
-                    ),
-                    'infoDirigenteSindical' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'infoDirigenteSindical' => [
+                        'properties' => [
                             'categOrig',
                             'cnpjOrigem',
                             'dtAdmOrig',
                             'matricOrig'
-                        )
-                    ),
-                    'infoTrabCedido' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'infoTrabCedido' => [
+                        'properties' => [
                             'categOrig',
                             'cnpjCednt',
                             'matricCed',
                             'dtAdmCed',
-                            'tpRegTrab' => array(
+                            'tpRegTrab' => [
                                 'type' => 'int'
-                            ),
-                            'tpRegPrev' => array(
+                            ],
+                            'tpRegPrev' => [
                                 'type' => 'int'
-                            ),
-                            'infOnus' => array(
+                            ],
+                            'infOnus' => [
                                 'type' => 'int'
-                            )
-                        )
-                    ),
-                    'infoEstagiario' => array(
-                        'properties' => array(
+                            ]
+                        ]
+                    ],
+                    'infoEstagiario' => [
+                        'properties' => [
                             'natEstagio',
-                            'nivEstagio' => array(
+                            'nivEstagio' => [
                                 'type' => 'int',
-                            ),
+                            ],
                             'areaAtuacao',
                             'nrApol',
-                            'vlrBolsa' => array(
+                            'vlrBolsa' => [
                                 'type' => 'float',
-                            ),
+                            ],
                             'dtPrevTerm'
-                        ),
-                        'groups' => array(
-                            'instEnsino' => array(
-                                'properties' => array(
+                        ],
+                        'groups' => [
+                            'instEnsino' => [
+                                'properties' => [
                                     'instEnsino_cnpjInstEnsino' => 'cnpjInstEnsino',
                                     'instEnsino_nmRazao' => 'nmRazao',
                                     'instEnsino_dscLograd' => 'dscLograd',
                                     'instEnsino_nrLograd' => 'nrLograd',
                                     'instEnsino_bairro' => 'bairro',
                                     'instEnsino_cep' => 'cep',
-                                    'instEnsino_codMunic' => array(
+                                    'instEnsino_codMunic' => [
                                         'nome_api' => 'codMunic'
-                                    ),
+                                    ],
                                     'instEnsino_uf' => 'uf',
-                                )
-                            ),
-                            'ageIntegracao' => array(
-                                'properties' => array(
+                                ]
+                            ],
+                            'ageIntegracao' => [
+                                'properties' => [
                                     'ageIntegracao_cnpjAgntInteg' => 'cnpjAgntInteg',
                                     'ageIntegracao_nmRazao' => 'nmRazao',
                                     'ageIntegracao_dscLograd' => 'dscLograd',
                                     'ageIntegracao_nrLograd' => 'nrLograd',
                                     'ageIntegracao_bairro' => 'bairro',
                                     'ageIntegracao_cep' => 'cep',
-                                    'ageIntegracao_codMunic' => array(
+                                    'ageIntegracao_codMunic' => [
                                         'nome_api' => 'codMunic'
-                                    ),
+                                    ],
                                     'ageIntegracao_uf' => 'uf',
-                                )
-                            ),
-                            'supervisorEstagio' => array(
-                                'properties' => array(
+                                ]
+                            ],
+                            'supervisorEstagio' => [
+                                'properties' => [
                                     'cpfSupervisor',
                                     'nmSuperv'
-                                )
-                            )
-                        )
-                    )
-                )
-            ),
-            'afastamento' => array(
-                'properties' => array(
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'afastamento' => [
+                'properties' => [
                     'dtIniAfast',
                     'codMotAfast'
-                )
-            ),
-            'termino' => array(
-                'properties' => array(
+                ]
+            ],
+            'termino' => [
+                'properties' => [
                     'dtTerm'
-                )
-            ),
-            'mudancaCPF' => array(
-                'properties' => array(
+                ]
+            ],
+            'mudancaCPF' => [
+                'properties' => [
                     'cpfAnt',
                     'dtAltCPF',
                     'mudancaCPF_observacao' => 'observacao'
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];

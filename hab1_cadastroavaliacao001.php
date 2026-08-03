@@ -35,10 +35,10 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $iCodigoAvaliacao = ''; 
-$aParametros      = db_stdClass::getParametro("habitparametro", array(db_getsession("DB_anousu")));
+$aParametros      = db_stdClass::getParametro("habitparametro", [db_getsession("DB_anousu")]);
 if (count($aParametros) > 0) {
   $iCodigoAvaliacao = $aParametros[0]->ht16_avaliacao;
 }

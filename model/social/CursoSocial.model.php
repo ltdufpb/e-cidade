@@ -93,22 +93,22 @@ class CursoSocial {
    * Array de stdClass
    * @var array
    */
-  private $aDiaSemanaCurso = array();
+  private $aDiaSemanaCurso = [];
 
   /**
    * Array contendo os dias de aula  do curso
    * Array de DBDate
    * @var array
    */
-  private $aDiasAula = array();
+  private $aDiasAula = [];
 
   /**
    * Array com os Cidadao matriculados no curso
    * @var array
    */
-  private $aMatriculas = array();
+  private $aMatriculas = [];
 
-  private $aMesesAbrangencia = array();
+  private $aMesesAbrangencia = [];
 
   public function __construct($iCodigoCurso = null) {
 
@@ -644,15 +644,15 @@ class CursoSocial {
   }
 
   /**
-   * Marcada esta função como deprecated pois se o curso abrangir mais de um ano, não vai retornar os dados corrétos 
-   * @deprecated 
+   * Marcada esta função como deprecated pois se o curso abrangir mais de um ano, não vai retornar os dados corrétos
    * @see $this->getDiasDeAulaPorMesAno
    * @param unknown $iMes
    * @return multitype:unknown
    */
+  #[\Deprecated]
   public function getDiasDeAulaPorMes ($iMes) {
 
-    $aDiasMes = array();
+    $aDiasMes = [];
     foreach ($this->getDiasDeAula() as $oDia) {
 
       if ((int) $oDia->oDataAula->getMes() == $iMes) {
@@ -671,7 +671,7 @@ class CursoSocial {
    */
   public function getDiasDeAulaPorMesAno ($iMes, $iAno) {
   
-    $aDiasMes = array();
+    $aDiasMes = [];
     foreach ($this->getDiasDeAula() as $oDia) {
   
       if ((int) $oDia->oDataAula->getMes() == $iMes && $oDia->oDataAula->getAno() == $iAno) {
@@ -687,7 +687,7 @@ class CursoSocial {
    */
   public function diasComAusencia () {
 
-    $aDiaComFalta = array();
+    $aDiaComFalta = [];
     $oDaoAusencia = new cl_cursosocialcidadaoausencia();
     $sWhere       = " as22_cursosocial = {$this->iCodigo} ";
     $sSqlAusencia = $oDaoAusencia->sql_query(null, "distinct as21_dataaula", "as21_dataaula", $sWhere);

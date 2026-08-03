@@ -158,13 +158,13 @@ function formataData($dData, $iTipo = 1) {
 
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
  
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
  return $dData;
 
@@ -247,13 +247,10 @@ $oPdf->Addpage('P');
 $oPdf->setfillcolor(223);
 
 
-novoCabecalho($oPdf, $oDadosCgs->z01_i_cgsund, $oDadosCgs->z01_v_nome, formataData($oDadosCgs->z01_d_nasc, 2), 
-              $oDadosCgs->z01_v_pai, $oDadosCgs->z01_v_mae, $oDadosCgs->z01_v_ender,
-              $oDadosCgs->z01_i_numero.' '.$oDadosCgs->z01_v_compl, $oDadosCgs->z01_v_munic,
-              $oDadosCgs->z01_v_uf
+novoCabecalho($oPdf
              );
 
-$aNasc           = explode('-', $oDadosCgs->z01_d_nasc);
+$aNasc           = explode('-', (string) $oDadosCgs->z01_d_nasc);
 //calculo o x inicial para posicionar os calendarios
 $iX              = (210 - ($iNumCalendarios * 45)) / 2;
 $iY = $iYini     = $oPdf->getY() + 1;

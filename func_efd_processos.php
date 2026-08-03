@@ -34,8 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 use ECidade\Integracao\Sped\Common\Configuracao\ConfiguracaoFactory;
 use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $dao = new cl_avaliacaogruporespostaefdprocesso();
 
 $rotulo = new rotulocampo;
@@ -46,10 +46,10 @@ $cgm = InstituicaoRepository::getInstituicaoSessao()->getCgm()->getCodigo();
 $configuracao = ConfiguracaoFactory::getInstance(Tipo::EFD_REINF);
 $avaliacao =  $configuracao->getFormulario(Tipo::EFD_PROCESSOS);
 
-$where = array(
+$where = [
     "efd02_cgm = {$cgm}",
     "efd02_avaliacao = {$avaliacao}"
-);
+];
 ?>
 <html>
 <head>
@@ -80,7 +80,7 @@ $where = array(
                     </td>
                     <td >
                         <?php
-                        $tipos = array(0 => 'Todos', 1 => 'Administrativo', 2 => 'Judicial');
+                        $tipos = [0 => 'Todos', 1 => 'Administrativo', 2 => 'Judicial'];
                         db_select('efd02_tipoprocesso', $tipos, true, 1, '', 'efd02_tipoprocesso');
                         ?>
                     </td>

@@ -47,7 +47,7 @@ $this->objpdf->Setfont("Times", "", 12);
 $this->objpdf->cell(75, 5, $this->z01_nome , 0, 1, 'L');
 if ($this->z01_cgccpf  != "") {
   $this->objpdf->Setfont("Times", "B", 11);
-  $this->objpdf->cell(35, 5, (strlen($this->z01_cgccpf ) == 11 ? "CPF: " : "CNPJ: "), 0, 0, 'L');
+  $this->objpdf->cell(35, 5, (strlen((string) $this->z01_cgccpf ) == 11 ? "CPF: " : "CNPJ: "), 0, 0, 'L');
   $this->objpdf->Setfont("Times", "", 12);
   $this->objpdf->cell(50, 5, $this->z01_cgccpf , 0, ($this->z01_telef  != "" ? 0 : 1), 'L');
 }
@@ -82,13 +82,13 @@ $this->objpdf->Setfont("Times", "", 11);
 
 // $this->objpdf->multicell(0, 5, mb_strtoupper(substr($this->p58_obs,0, 290)), 0, 1, 'L');
 
-$this->objpdf->cell(75, 5, mb_strtoupper(substr($this->p58_obs,0,60)), 0, 1, 'L'); 
-if( substr($this->p58_obs,0,75) != "" ) {
+$this->objpdf->cell(75, 5, mb_strtoupper(substr((string) $this->p58_obs,0,60)), 0, 1, 'L'); 
+if( substr((string) $this->p58_obs,0,75) != "" ) {
    //$this->objpdf->cell(50, 5, (" "), 0, 0, 'L');
-   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 60, 73)), 0, 1, 'L');
-   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 133, 73)), 0, 1, 'L');
-   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 206, 73)), 0, 1, 'L');
-   $this->objpdf->cell(170, 5, mb_strtoupper(substr($this->p58_obs, 279, 66)), 0, 1, 'L'); 
+   $this->objpdf->cell(170, 5, mb_strtoupper(substr((string) $this->p58_obs, 60, 73)), 0, 1, 'L');
+   $this->objpdf->cell(170, 5, mb_strtoupper(substr((string) $this->p58_obs, 133, 73)), 0, 1, 'L');
+   $this->objpdf->cell(170, 5, mb_strtoupper(substr((string) $this->p58_obs, 206, 73)), 0, 1, 'L');
+   $this->objpdf->cell(170, 5, mb_strtoupper(substr((string) $this->p58_obs, 279, 66)), 0, 1, 'L'); 
 }
 
 
@@ -170,15 +170,15 @@ $sql_doc = "select p81_doc,p56_descr from procprocessodoc
                inner join procdoc on p81_coddoc = p56_coddoc
 	        where p81_codproc=".$this->p58_codproc ;
 $result_doc = db_query($sql_doc);
-$numrows_doc = pg_numrows($result_doc);
+$numrows_doc = pg_num_rows($result_doc);
 if ($numrows_doc < 27 ) {
     $m = 1;
     $this->objpdf->cell(180, 2, '', 0, 1, "C");
     for ($y = 0; $y < $numrows_doc; $y ++) {
       $x = " ";
       $this->objpdf->Setfont("Times", "", 10);
-      $p81_doc=pg_result($result_doc,$y,0);
-      $p56_descr=pg_result($result_doc,$y,1);
+      $p81_doc=pg_fetch_result($result_doc,$y,0);
+      $p56_descr=pg_fetch_result($result_doc,$y,1);
       if ($p81_doc == 't') {
         $x = "X";
         $x = "";

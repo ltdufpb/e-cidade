@@ -46,11 +46,11 @@ $erro_msg = "";
 
 if (isset($incluir) || isset($alterar)) {
 
-  if (trim($t07_digseqplaca) == "" || $t07_digseqplaca == "0") {
+  if (trim((string) $t07_digseqplaca) == "" || $t07_digseqplaca == "0") {
     $t07_digseqplaca = 6;
   }
 
-  if (trim($t07_sequencial) == "" || $t07_sequencial == "0") {
+  if (trim((string) $t07_sequencial) == "" || $t07_sequencial == "0") {
     $t07_sequencial = 1;
   }
 
@@ -86,7 +86,7 @@ if(!$sqlerro) {
 
     $res_bensplaca = db_query($sql_bensplaca);
 
-    if (pg_numrows($res_bensplaca) > 0) {
+    if (pg_num_rows($res_bensplaca) > 0) {
 
       db_fieldsmemory($res_bensplaca, 0);
 

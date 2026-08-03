@@ -24,11 +24,11 @@ class ParametrosNumeroCadastral extends Model
       
         $numeroFormatado = "";
         $dados = $this->where('j180_instit', '=', $instit)->get()->first();
-        $configuracao = json_decode($dados->j180_configuracao);
+        $configuracao = json_decode((string) $dados->j180_configuracao);
       
         foreach ($configuracao as $indice => $valor) {
-            $campo = $this->buscaInformacaoCampo(trim($valor->campo), $matricula);
-            $campo = str_pad(substr($campo, -$valor->tamanho), $valor->tamanho, '0', STR_PAD_LEFT);
+            $campo = $this->buscaInformacaoCampo(trim((string) $valor->campo), $matricula);
+            $campo = str_pad(substr((string) $campo, -$valor->tamanho), $valor->tamanho, '0', STR_PAD_LEFT);
          
             if ($indice == 0) {
                 $numeroFormatado .= "{$campo}";

@@ -33,7 +33,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_db_documentotemplate_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
@@ -55,7 +55,7 @@ if (isset($oGet->oidarq)) {
 
     if ($cldb_documentotemplate->numrows > 0) {
         $oDocumentoTemplate = db_utils::fieldsMemory($rsDocumentoTemplate, 0);
-        $sNomeArquivo = strtolower(trim($oDocumentoTemplate->db82_descricao));
+        $sNomeArquivo = strtolower(trim((string) $oDocumentoTemplate->db82_descricao));
 
         header('Accept-Ranges: bytes');
         header('Keep-Alive: timeout=15, max=100');
@@ -73,7 +73,7 @@ if (isset($oGet->oidarq)) {
 if (isset($alterar)) {
     db_inicio_transacao();
 
-    $ext = array_reverse(explode('.', $_FILES['db82_arquivo']['name']));
+    $ext = array_reverse(explode('.', (string) $_FILES['db82_arquivo']['name']));
     $ext = $ext[0];
 
     if ($ext != 'sxw' && $ext != 'SXW' && $ext != 'docx' && $ext != 'DOCX') {

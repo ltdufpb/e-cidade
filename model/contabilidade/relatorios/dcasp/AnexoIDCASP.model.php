@@ -35,7 +35,8 @@ class AnexoIDCASP extends RelatoriosLegaisBase {
    * Busca os dados a serem impressos no relatório
    * @return array
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $this->aLinhasConsistencia = $this->getLinhasRelatorio();
     parent::executarBalancetesNecessarios();
@@ -71,7 +72,7 @@ class AnexoIDCASP extends RelatoriosLegaisBase {
       $aColunasProcessar = $this->processarColunasDaLinha($oLinha, 0);
       RelatoriosLegaisBase::calcularValorDaLinha($rsRestosPagar,
                                                  $oLinha,
-                                                 array($aColunasProcessar[0]),
+                                                 [$aColunasProcessar[0]],
                                                  RelatoriosLegaisBase::TIPO_CALCULO_RESTO
                                                 );
     }

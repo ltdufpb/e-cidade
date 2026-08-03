@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE cgmerradolog
 class cl_cgmerradolog { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $z12_codigo = 0; 
-   var $z12_numcgm = 0; 
-   var $z12_log = null; 
+   public $z12_codigo = 0; 
+   public $z12_numcgm = 0; 
+   public $z12_log = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  z12_codigo = int4 = Código 
                  z12_numcgm = int4 = Numcgm 
                  z12_log = text = Log do que foi feito durante o processamento 
                  ";
    //funcao construtor da classe 
-   function cl_cgmerradolog() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cgmerradolog"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -111,7 +111,7 @@ class cl_cgmerradolog {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Log do cgm errado ($this->z12_codigo."-".$this->z12_numcgm) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Log do cgm errado já Cadastrado";
@@ -135,13 +135,13 @@ class cl_cgmerradolog {
      $resaco = $this->sql_record($this->sql_query_file($this->z12_codigo,$this->z12_numcgm));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6258,'$this->z12_codigo','I')");
        $resac = db_query("insert into db_acountkey values($acount,6259,'$this->z12_numcgm','I')");
-       $resac = db_query("insert into db_acount values($acount,1015,6258,'','".AddSlashes(pg_result($resaco,0,'z12_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1015,6259,'','".AddSlashes(pg_result($resaco,0,'z12_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1015,5182,'','".AddSlashes(pg_result($resaco,0,'z12_log'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1015,6258,'','".AddSlashes(pg_fetch_result($resaco,0,'z12_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1015,6259,'','".AddSlashes(pg_fetch_result($resaco,0,'z12_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1015,5182,'','".AddSlashes(pg_fetch_result($resaco,0,'z12_log'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -150,10 +150,10 @@ class cl_cgmerradolog {
       $this->atualizacampos();
      $sql = " update cgmerradolog set ";
      $virgula = "";
-     if(trim($this->z12_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z12_codigo"])){ 
+     if(trim((string) $this->z12_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z12_codigo"])){ 
        $sql  .= $virgula." z12_codigo = $this->z12_codigo ";
        $virgula = ",";
-       if(trim($this->z12_codigo) == null ){ 
+       if(trim((string) $this->z12_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "z12_codigo";
          $this->erro_banco = "";
@@ -163,10 +163,10 @@ class cl_cgmerradolog {
          return false;
        }
      }
-     if(trim($this->z12_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z12_numcgm"])){ 
+     if(trim((string) $this->z12_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z12_numcgm"])){ 
        $sql  .= $virgula." z12_numcgm = $this->z12_numcgm ";
        $virgula = ",";
-       if(trim($this->z12_numcgm) == null ){ 
+       if(trim((string) $this->z12_numcgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "z12_numcgm";
          $this->erro_banco = "";
@@ -176,7 +176,7 @@ class cl_cgmerradolog {
          return false;
        }
      }
-     if(trim($this->z12_log)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z12_log"])){ 
+     if(trim((string) $this->z12_log)!="" || isset($GLOBALS["HTTP_POST_VARS"]["z12_log"])){ 
        $sql  .= $virgula." z12_log = '$this->z12_log' ";
        $virgula = ",";
      }
@@ -191,16 +191,16 @@ class cl_cgmerradolog {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6258,'$this->z12_codigo','A')");
          $resac = db_query("insert into db_acountkey values($acount,6259,'$this->z12_numcgm','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["z12_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1015,6258,'".AddSlashes(pg_result($resaco,$conresaco,'z12_codigo'))."','$this->z12_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1015,6258,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z12_codigo'))."','$this->z12_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["z12_numcgm"]))
-           $resac = db_query("insert into db_acount values($acount,1015,6259,'".AddSlashes(pg_result($resaco,$conresaco,'z12_numcgm'))."','$this->z12_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1015,6259,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z12_numcgm'))."','$this->z12_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["z12_log"]))
-           $resac = db_query("insert into db_acount values($acount,1015,5182,'".AddSlashes(pg_result($resaco,$conresaco,'z12_log'))."','$this->z12_log',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1015,5182,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'z12_log'))."','$this->z12_log',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -245,13 +245,13 @@ class cl_cgmerradolog {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6258,'$z12_codigo','E')");
          $resac = db_query("insert into db_acountkey values($acount,6259,'$z12_numcgm','E')");
-         $resac = db_query("insert into db_acount values($acount,1015,6258,'','".AddSlashes(pg_result($resaco,$iresaco,'z12_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1015,6259,'','".AddSlashes(pg_result($resaco,$iresaco,'z12_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1015,5182,'','".AddSlashes(pg_result($resaco,$iresaco,'z12_log'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1015,6258,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z12_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1015,6259,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z12_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1015,5182,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'z12_log'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cgmerradolog
@@ -317,7 +317,7 @@ class cl_cgmerradolog {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cgmerradolog";

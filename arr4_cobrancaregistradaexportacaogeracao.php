@@ -183,11 +183,11 @@ try {
   $oParametros = db_utils::postMemory($_GET);
 
   $iCodigoConvenio = $oParametros->codigo_convenio;
-  $iCodigoRemessa = isset($oParametros->codigo_remessa) ? $oParametros->codigo_remessa : null;
-  $sDebitos = isset($oParametros->sDebitos) ? $oParametros->sDebitos : null;
-  $aParcelas = array();
-  $sDataEmissao = isset($oParametros->dataemissao) ? $oParametros->dataemissao : null;
-  $sFiltrarDebitos = isset($oParametros->filtrarDebitos) ? $oParametros->filtrarDebitos : null;
+  $iCodigoRemessa = $oParametros->codigo_remessa ?? null;
+  $sDebitos = $oParametros->sDebitos ?? null;
+  $aParcelas = [];
+  $sDataEmissao = $oParametros->dataemissao ?? null;
+  $sFiltrarDebitos = $oParametros->filtrarDebitos ?? null;
 
   if (!isset($oParametros->parcela) && !isset($oParametros->unica)) {
       $sFiltrarDebitos = 0;
@@ -239,7 +239,7 @@ try {
 
   $oRemessaBuilder = new RemessaBuilder($oRemessaService, $oRemessaTemporaryService, $oRemessaArchive);
 
-  $aRecibosGerados = array();
+  $aRecibosGerados = [];
   $iPercentualAtual = null;
 
   $oRemessaArquivo = $oRemessaBuilder->processaArquivoRemessa(function($iRegistroAtual, $iCalculoPercentual) use(&$iPercentualAtual) {
@@ -268,12 +268,12 @@ try {
 
   setMessageLog("Remessa(s) gerada(s) com sucesso.");
 
-  showDownloader(array(
-    array(
+  showDownloader([
+    [
       'path' => $oRemessaArquivo->sArquivoNome,
       'name' => "Remessa Cobrança Registrada"
-    )
-  ));
+    ]
+  ]);
 
   db_fim_transacao(false);
 

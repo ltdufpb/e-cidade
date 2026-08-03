@@ -42,7 +42,7 @@ $result        = $clturma->sql_record( $sSqlTurma );
 
 if( $clturma->numrows > 0 ) {
 
-  $aCadDisciplinas = array();
+  $aCadDisciplinas = [];
   db_fieldsmemory( $result, 0 );
 
   //seleciona medias da turma escolhida
@@ -93,7 +93,7 @@ if( $clturma->numrows > 0 ) {
     $media_turma  = "";
     $soma_turma   = "";
     $sep          = "";
-    $aDisciplinas = array();
+    $aDisciplinas = [];
 
     for ($x = 0; $x < $linhas1; $x++) {
 
@@ -184,8 +184,8 @@ if( $clturma->numrows > 0 ) {
     $verde    = ImageColorAllocate($imagem, 0, 191, 96);
     $vermelho = ImageColorAllocate($imagem, 255, 0, 0);
 
-    $texto_linha    = array( "Média Turma {$ed57_c_descr}", "Média da Etapa {$ed11_c_descr}" );
-    $cores_linha    = array( $azul, $verde );
+    $texto_linha    = [ "Média Turma {$ed57_c_descr}", "Média da Etapa {$ed11_c_descr}" ];
+    $cores_linha    = [ $azul, $verde ];
     $texto_coluna   = explode( ",", $disc_turma );
     $valores        = explode( ",", $media_turma );
     $numero_linhas  = sizeof( $texto_linha );
@@ -196,7 +196,7 @@ if( $clturma->numrows > 0 ) {
     $y_maximo = $max - 5;
 
     // ------ calcula o intervalo de variação entre os pontos de y ----------
-    $fator = pow( 10, strlen( intval( $y_maximo ) ) - 1 );
+    $fator = 10 ** (strlen( intval( $y_maximo ) ) - 1);
 
     if( $y_maximo < 1 ) {
       $variacao = 0.1;
@@ -227,7 +227,7 @@ if( $clturma->numrows > 0 ) {
 
     // ------- Titulo ---------
     ImageString($imagem, 3, 10, 3, $titulo, $preto);
-    ImageString($imagem, 3, 10, 15, $subtitulo, $preto);
+    ImageString($imagem, 3, 10, 15, (string) $subtitulo, $preto);
 
     // ------- Eixos x e y ---------
     ImageLine($imagem, $inicio_grafico_x, $inicio_grafico_y, $inicio_grafico_x + $largura_eixo_x, $inicio_grafico_y, $preto);
@@ -239,9 +239,9 @@ if( $clturma->numrows > 0 ) {
 
     for( $i = 0; $i <= $num_pontos_eixo_y; $i++ ) {
 
-      $posx = $inicio_grafico_x - ( strlen( $valor ) + 2 ) * 6; // 6 da largura da fonte + 2 espaços
+      $posx = $inicio_grafico_x - ( strlen( (string) $valor ) + 2 ) * 6; // 6 da largura da fonte + 2 espaços
 
-      ImageString($imagem, 2, $posx, $posy - 7, $valor, $preto);
+      ImageString($imagem, 2, $posx, $posy - 7, (string) $valor, $preto);
       ImageLine($imagem, $inicio_grafico_x - 6, $posy, $inicio_grafico_x + $largura_eixo_x, $posy, $cinza);
 
       $valor += $variacao;

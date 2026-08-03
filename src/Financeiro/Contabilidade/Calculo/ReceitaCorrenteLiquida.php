@@ -41,27 +41,17 @@ class ReceitaCorrenteLiquida
     /**
      * @var array
      */
-    private $aMatrizAnoAnterior = array();
+    private $aMatrizAnoAnterior = [];
 
     /**
      * @var array
      */
-    private $aMatrizAno = array();
-
-    /**
-     * @var integer
-     */
-    private $iAno;
+    private $aMatrizAno = [];
 
     /**
      * @var string
      */
     private $sCodigoInstituicoes;
-
-    /**
-     * @var int
-     */
-    private $iCodigoRelatorio;
 
     /**
      * 6 - 1º BIMESTRE
@@ -76,59 +66,59 @@ class ReceitaCorrenteLiquida
      * 15 - 2º QUADRIMESTRE
      * 16 - 3º QUADRIMESTRE
      */
-    private $aRCL = array(
-        6 => array(
-            'anterior' => array('marco',
+    private $aRCL = [
+        6 => [
+            'anterior' => ['marco',
                 'abril',
                 'maio',
-                'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'),
-            'atual' => array('janeiro', 'fevereiro')
-        ),
-        7 => array(
-            'anterior' => array('maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'),
-            'atual' => array('janeiro', 'fevereiro', 'marco', 'abril')
-        ),
-        8 => array(
-            'anterior' => array('julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'),
-            'atual' => array('janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho')
-        ),
-        9 => array(
-            'anterior' => array('setembro', 'outubro', 'novembro', 'dezembro'),
-            'atual' => array('janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho', 'julho', 'agosto')
-        ),
-        10 => array(
-            'anterior' => array('novembro', 'dezembro'),
-            'atual' => array('janeiro', 'fevereiro', 'marco', 'abril', 'maio',
-                'junho', 'julho', 'agosto', 'setembro', 'outubro')
-        ),
-        11 => array(
-            'anterior' => array(),
-            'atual' => array('janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho', 'julho', 'agosto',
-                'setembro', 'outubro', 'novembro', 'dezembro')
-        ),
-        12 => array(
-            'anterior' => array('julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'),
-            'atual' => array('janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho')
-        ),
-        13 => array(
-            'anterior' => array(),
-            'atual' => array('janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho', 'julho', 'agosto',
-                'setembro', 'novembro', 'outubro', 'dezembro')
-        ),
-        14 => array(
-            'anterior' => array('maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'),
-            'atual' => array('janeiro', 'fevereiro', 'marco', 'abril')
-        ),
-        15 => array(
-            'anterior' => array('setembro', 'novembro', 'outubro', 'dezembro'),
-            'atual' => array('janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho', 'julho', 'agosto')
-        ),
-        16 => array(
-            'anterior' => array(),
-            'atual' => array('janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho', 'julho', 'agosto',
-                'setembro', 'novembro', 'outubro', 'dezembro')
-        )
-    );
+                'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+            'atual' => ['janeiro', 'fevereiro']
+        ],
+        7 => [
+            'anterior' => ['maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+            'atual' => ['janeiro', 'fevereiro', 'marco', 'abril']
+        ],
+        8 => [
+            'anterior' => ['julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+            'atual' => ['janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho']
+        ],
+        9 => [
+            'anterior' => ['setembro', 'outubro', 'novembro', 'dezembro'],
+            'atual' => ['janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho', 'julho', 'agosto']
+        ],
+        10 => [
+            'anterior' => ['novembro', 'dezembro'],
+            'atual' => ['janeiro', 'fevereiro', 'marco', 'abril', 'maio',
+                'junho', 'julho', 'agosto', 'setembro', 'outubro']
+        ],
+        11 => [
+            'anterior' => [],
+            'atual' => ['janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho', 'julho', 'agosto',
+                'setembro', 'outubro', 'novembro', 'dezembro']
+        ],
+        12 => [
+            'anterior' => ['julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+            'atual' => ['janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho']
+        ],
+        13 => [
+            'anterior' => [],
+            'atual' => ['janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho', 'julho', 'agosto',
+                'setembro', 'novembro', 'outubro', 'dezembro']
+        ],
+        14 => [
+            'anterior' => ['maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+            'atual' => ['janeiro', 'fevereiro', 'marco', 'abril']
+        ],
+        15 => [
+            'anterior' => ['setembro', 'novembro', 'outubro', 'dezembro'],
+            'atual' => ['janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho', 'julho', 'agosto']
+        ],
+        16 => [
+            'anterior' => [],
+            'atual' => ['janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho', 'julho', 'agosto',
+                'setembro', 'novembro', 'outubro', 'dezembro']
+        ]
+    ];
 
     /**
      *
@@ -136,23 +126,17 @@ class ReceitaCorrenteLiquida
      * @param Instituicao[] $aInstituicoes
      * @param integer $iCodigoRelatorio código referente ao relatório do RREO para o ano informado
      */
-    public function __construct($iAno, array $aInstituicoes = null, $iCodigoRelatorio = 81)
+    public function __construct(private $iAno, ?array $aInstituicoes = null, private $iCodigoRelatorio = 81)
     {
 
         if ($aInstituicoes === null) {
             $aInstituicoes = \InstituicaoRepository::getInstituicoes();
         }
 
-        $this->iAno = $iAno;
-
-        $aCodigos = array_map(function ($instituicao) {
-            return $instituicao instanceof Instituicao ? $instituicao->getCodigo() : $instituicao;
-        }, $aInstituicoes);
+        $aCodigos = array_map(fn($instituicao) => $instituicao instanceof Instituicao ? $instituicao->getCodigo() : $instituicao, $aInstituicoes);
 
         $this->sCodigoInstituicoes = implode(', ', $aCodigos);
-
-        $this->iCodigoRelatorio = $iCodigoRelatorio;
-        duplicaReceitaaCorrenteLiquida($this->iAno, $iCodigoRelatorio);
+        duplicaReceitaaCorrenteLiquida($this->iAno, $this->iCodigoRelatorio);
     }
 
     /**
@@ -239,7 +223,7 @@ class ReceitaCorrenteLiquida
         $iAnoDataInicio = $oDataInicio->getAno();
         $iAnoDataFinal = $oDataFim->getAno();
 
-        $aMatrizAno = array();
+        $aMatrizAno = [];
         if ($iAnoDataInicio == $iAnoDataFinal) {
             $aMatrizAno[$iAnoDataFinal] = $this->calcularRCL();
             return $aMatrizAno;

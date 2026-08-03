@@ -74,7 +74,7 @@ class ParcValor
             throw new Exception("Erro ao buscar débitos.");
         }
 
-        $arrArrecad = array();
+        $arrArrecad = [];
         while ($parcvalor = pg_fetch_array($rsParcValor)) {
             $campos = "sum(k00_valor) total,k00_receit,k00_numpre";
             $where  = "k00_numpre = ".$parcvalor['k189_numpre'];
@@ -166,11 +166,11 @@ class ParcValor
          * atualizar as datas de acordo com o calendário do triburário
          */
         while ($arrecad = pg_fetch_array($rsArrecad)) {
-            $data = new \DBDate(date("Y-m-d", strtotime($arrecad['k00_dtvenc'])));
+            $data = new \DBDate(date("Y-m-d", strtotime((string) $arrecad['k00_dtvenc'])));
             if ($cadTipoParc->getControlavencimento() == 't') {
-                $dLimite = new \DBDate(date("Y-12-t", strtotime($arrecad['k00_dtvenc'])));
+                $dLimite = new \DBDate(date("Y-12-t", strtotime((string) $arrecad['k00_dtvenc'])));
                 $dVencimento = self::getProximoDiaUtil($data);
-                if (strtotime($dVencimento->getDate()) > strtotime($dLimite->getDate())) {
+                if (strtotime((string) $dVencimento->getDate()) > strtotime($dLimite->getDate())) {
                     $dVencimento = self::getUltimoDiaUtil($data);
                 }
             } else {
@@ -205,7 +205,7 @@ class ParcValor
         ParcValor::deletaDebitos($termo->v07_numpre);
 
         foreach ($arrDados as $dado) {
-            if (strpos($dado['valor'], ',')) {
+            if (strpos((string) $dado['valor'], ',')) {
                 $valor = str_replace(',', '.', str_replace(".", "", $dado['valor']));
             } else {
                 $valor = $dado['valor'];

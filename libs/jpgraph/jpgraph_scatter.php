@@ -17,12 +17,12 @@
 // Description: Draw an arrow at (x,y) with angle a
 //===================================================
 class FieldArrow {
-    var $iSize=10;  // Length in pixels for  arrow
-    var $iArrowSize = 2;
-    var $iColor='black';
-    var $isizespec = array(
-	array(2,1),array(3,2),array(4,3),array(6,4),array(7,4),array(8,5),array(10,6),array(12,7),array(16,8),array(20,10));
-    function FieldArrow() {
+    public $iSize=10;  // Length in pixels for  arrow
+    public $iArrowSize = 2;
+    public $iColor='black';
+    public $isizespec = [
+	[2,1],[3,2],[4,3],[6,4],[7,4],[8,5],[10,6],[12,7],[16,8],[20,10]];
+    function __construct() {
     }
 
     function SetSize($aSize,$aArrowSize=2) {
@@ -39,11 +39,11 @@ class FieldArrow {
 	$old_a = $aImg->SetAngle(-$a);
 
 	$dx = round($this->iSize/2);
-	$c = array($x-$dx,$y,$x+$dx,$y);
+	$c = [$x-$dx,$y,$x+$dx,$y];
 	$x += $dx;
 
-	list($dx,$dy) = $this->isizespec[$this->iArrowSize];
-	$ca = array($x,$y,$x-$dx,$y-$dy,$x-$dx,$y+$dy,$x,$y);
+	[$dx, $dy] = $this->isizespec[$this->iArrowSize];
+	$ca = [$x,$y,$x-$dx,$y-$dy,$x-$dx,$y+$dy,$x,$y];
 
 	$aImg->SetColor($this->iColor);
 	$aImg->Polygon($c);
@@ -59,17 +59,17 @@ class FieldArrow {
 // Description: Render a field plot
 //===================================================
 class FieldPlot extends Plot {
-    var $iAngles;
-    var $iCallback='';
-    function FieldPlot($datay,$datax,$angles) {
+    public $iAngles;
+    public $iCallback='';
+    function __construct($datay,$datax,$angles) {
 	if( (count($datax) != count($datay)) )
-	    JpGraphError::Raise("Fieldplots must have equal number of X and Y points.");
+	    (new JpGraphError())->Raise("Fieldplots must have equal number of X and Y points.");
 	if( (count($datax) != count($angles)) )
-	    JpGraphError::Raise("Fieldplots must have an angle specified for each X and Y points.");
-	
+	    (new JpGraphError())->Raise("Fieldplots must have an angle specified for each X and Y points.");
+
 	$this->iAngles = $angles;
 
-	$this->Plot($datay,$datax);
+	\Plot::__construct($datay, $datax);
 	$this->value->SetAlign('center','center');
 	$this->value->SetMargin(15);
 
@@ -94,7 +94,7 @@ class FieldPlot extends Plot {
 
 	    $f = $this->iCallback;
 	    if( $f != "" ) {
-		list($cc,$cs,$cas) = call_user_func($f,$this->coords[1][$i],$this->coords[0][$i],$this->iAngles[$i]);
+		[$cc, $cs, $cas] = call_user_func($f,$this->coords[1][$i],$this->coords[0][$i],$this->iAngles[$i]);
 		// Fall back on global data if the callback isn't set
 		if( $cc  == "" ) $cc = $bc;
 		if( $cs  == "" ) $cs = $bs;
@@ -111,7 +111,7 @@ class FieldPlot extends Plot {
 	    $this->value->Stroke($img,$this->coords[0][$i],$xt,$yt);
 	}
     }
-	
+
     // Framework function
     function Legend(&$aGraph) {
 	if( $this->legend != "" ) {
@@ -126,14 +126,14 @@ class FieldPlot extends Plot {
 // Description: Render X and Y plots
 //===================================================
 class ScatterPlot extends Plot {
-    var $impuls = false;
-    var $linkpoints = false, $linkpointweight=1, $linkpointcolor="black";
+    public $impuls = false;
+    public $linkpoints = false, $linkpointweight=1, $linkpointcolor="black";
 //---------------
 // CONSTRUCTOR
-    function ScatterPlot($datay,$datax=false) {
+    function __construct($datay,$datax=false) {
 	if( (count($datax) != count($datay)) && is_array($datax))
-	    JpGraphError::Raise("Scatterplot must have equal number of X and Y points.");
-	$this->Plot($datay,$datax);
+	    (new JpGraphError())->Raise("Scatterplot must have equal number of X and Y points.");
+	\Plot::__construct($datay, $datax);
 	$this->mark = new PlotMark();
 	$this->mark->SetType(MARK_SQUARE);
 	$this->mark->SetColor($this->color);
@@ -161,7 +161,7 @@ class ScatterPlot extends Plot {
 	    $yzero=$yscale->Translate(0);
 	else
 	    $yzero=$yscale->scale_abs[0];
-	    
+
 	$this->csimareas = '';
 	for( $i=0; $i<$this->numpoints; ++$i ) {
 
@@ -187,12 +187,12 @@ class ScatterPlot extends Plot {
 		$img->SetLineWeight($this->weight);
 		$img->Line($xt,$yzero,$xt,$yt);
 	    }
-	
+
 	    if( !empty($this->csimtargets[$i]) ) {
 	        $this->mark->SetCSIMTarget($this->csimtargets[$i]);
 	        $this->mark->SetCSIMAlt($this->csimalts[$i]);
 	    }
-	    
+
 	    if( isset($this->coords[1]) ) {
 		$this->mark->SetCSIMAltVal($this->coords[0][$i],$this->coords[1][$i]);
 	    }
@@ -201,7 +201,7 @@ class ScatterPlot extends Plot {
 	    }
 
 	    $this->mark->Stroke($img,$xt,$yt);
-	
+
 	    $this->csimareas .= $this->mark->GetCSIMAreas();
 	    $this->value->Stroke($img,$this->coords[0][$i],$xt,$yt);
 
@@ -209,7 +209,7 @@ class ScatterPlot extends Plot {
 	    $yt_old = $yt;
 	}
     }
-	
+
     // Framework function
     function Legend(&$aGraph) {
 	if( $this->legend != "" ) {

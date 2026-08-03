@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_contricalc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcontricalc = new cl_contricalc;
 $clcontricalc->rotulo->label("d09_sequencial");
 $clcontricalc->rotulo->label("d09_matric");
@@ -98,9 +98,9 @@ $clcontricalc->rotulo->label("d09_matric");
         }else{
            $sql = $clcontricalc->sql_query("",$campos,"d09_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_d09_matric)){
-          $repassa = array("chave_d09_sequencial"=>$chave_d09_sequencial,"chave_d09_matric"=>$chave_d09_matric);
+          $repassa = ["chave_d09_sequencial"=>$chave_d09_sequencial,"chave_d09_matric"=>$chave_d09_matric];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

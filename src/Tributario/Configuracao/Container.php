@@ -8,7 +8,7 @@ final class Container extends ContainerAbstract
 {
     public function charge()
     {
-        $this->content = array(
+        $this->content = [
             'DbsysfuncoesRepository' => function ($container) {
 
                 $dataBase = $container->get('DataBase');
@@ -21,16 +21,13 @@ final class Container extends ContainerAbstract
 
                 return new \ECidade\Tributario\Configuracao\Entity\Repository\InstituicaoRepository($dataBase);
             },
-            'Workflow\Repository\Acoes' => function ($container) {
-
-                return new \ECidade\Configuracao\Workflow\Repository\Acao();
-            },
+            'Workflow\Repository\Acoes' => fn($container) => new \ECidade\Configuracao\Workflow\Repository\Acao(),
             'Workflow\Service\Transicao' => function ($container) {
 
                 $acaoRepository = $container->get('Workflow\Repository\Acoes');
 
                 return new \ECidade\Configuracao\Service\Transicao($acaoRepository);
             }
-        );
+        ];
     }
 }

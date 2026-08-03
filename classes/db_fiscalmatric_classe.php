@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE fiscalmatric
 class cl_fiscalmatric { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y35_codnoti = 0; 
-   var $y35_matric = 0; 
+   public $y35_codnoti = 0; 
+   public $y35_matric = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y35_codnoti = int8 = Código da Notificação 
                  y35_matric = int4 = Inscrição Imóvel 
                  ";
    //funcao construtor da classe 
-   function cl_fiscalmatric() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("fiscalmatric"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_fiscalmatric {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "fiscalmatric ($this->y35_codnoti) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "fiscalmatric já Cadastrado";
@@ -129,11 +129,11 @@ class cl_fiscalmatric {
      $resaco = $this->sql_record($this->sql_query_file($this->y35_codnoti));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4957,'$this->y35_codnoti','I')");
-       $resac = db_query("insert into db_acount values($acount,688,4957,'','".AddSlashes(pg_result($resaco,0,'y35_codnoti'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,688,4958,'','".AddSlashes(pg_result($resaco,0,'y35_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,688,4957,'','".AddSlashes(pg_fetch_result($resaco,0,'y35_codnoti'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,688,4958,'','".AddSlashes(pg_fetch_result($resaco,0,'y35_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_fiscalmatric {
       $this->atualizacampos();
      $sql = " update fiscalmatric set ";
      $virgula = "";
-     if(trim($this->y35_codnoti)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y35_codnoti"])){ 
+     if(trim((string) $this->y35_codnoti)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y35_codnoti"])){ 
        $sql  .= $virgula." y35_codnoti = $this->y35_codnoti ";
        $virgula = ",";
-       if(trim($this->y35_codnoti) == null ){ 
+       if(trim((string) $this->y35_codnoti) == null ){ 
          $this->erro_sql = " Campo Código da Notificação nao Informado.";
          $this->erro_campo = "y35_codnoti";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_fiscalmatric {
          return false;
        }
      }
-     if(trim($this->y35_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y35_matric"])){ 
+     if(trim((string) $this->y35_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y35_matric"])){ 
        $sql  .= $virgula." y35_matric = $this->y35_matric ";
        $virgula = ",";
-       if(trim($this->y35_matric) == null ){ 
+       if(trim((string) $this->y35_matric) == null ){ 
          $this->erro_sql = " Campo Inscrição Imóvel nao Informado.";
          $this->erro_campo = "y35_matric";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_fiscalmatric {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4957,'$this->y35_codnoti','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y35_codnoti"]))
-           $resac = db_query("insert into db_acount values($acount,688,4957,'".AddSlashes(pg_result($resaco,$conresaco,'y35_codnoti'))."','$this->y35_codnoti',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,688,4957,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y35_codnoti'))."','$this->y35_codnoti',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y35_matric"]))
-           $resac = db_query("insert into db_acount values($acount,688,4958,'".AddSlashes(pg_result($resaco,$conresaco,'y35_matric'))."','$this->y35_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,688,4958,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y35_matric'))."','$this->y35_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_fiscalmatric {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4957,'$y35_codnoti','E')");
-         $resac = db_query("insert into db_acount values($acount,688,4957,'','".AddSlashes(pg_result($resaco,$iresaco,'y35_codnoti'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,688,4958,'','".AddSlashes(pg_result($resaco,$iresaco,'y35_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,688,4957,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y35_codnoti'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,688,4958,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y35_matric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from fiscalmatric
@@ -291,7 +291,7 @@ class cl_fiscalmatric {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:fiscalmatric";
@@ -305,7 +305,7 @@ class cl_fiscalmatric {
    function sql_query ( $y35_codnoti=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -332,7 +332,7 @@ class cl_fiscalmatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -344,7 +344,7 @@ class cl_fiscalmatric {
    function sql_query_file ( $y35_codnoti=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -365,7 +365,7 @@ class cl_fiscalmatric {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

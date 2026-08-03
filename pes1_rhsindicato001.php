@@ -56,7 +56,7 @@ try {
         $sindicato->setMesDataBase($parametros->mes_data_base);
         $sindicato->setCodigo($parametros->rh116_codigo);
         $sindicato->setRazaoSocial($parametros->rh116_descricao);
-        $sindicato->setCnpj(str_replace(array('.', '/', '-'), '', $parametros->rh116_cnpj));
+        $sindicato->setCnpj(str_replace(['.', '/', '-'], '', $parametros->rh116_cnpj));
 
         SindicatoRepository::save($sindicato);
 

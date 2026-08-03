@@ -31,13 +31,13 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
   ${$key} = $value;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clsiopecategoria = new cl_siopecategoria;
 $clsiopecategoria->rotulo->label();
@@ -102,10 +102,10 @@ $clsiopecategoria->rotulo->label();
         }else{
             $sSql = $clsiopecategoria->sql_query(null, $campos, "si03_id");
         }
-        $repassa = array();
+        $repassa = [];
         
         if(isset($chave_descricao)){
-          $repassa = array("chave_id_siopecategoria"=>$chave_id_siopecategoria,"chave_descricao"=>$chave_descricao);
+          $repassa = ["chave_id_siopecategoria"=>$chave_id_siopecategoria,"chave_descricao"=>$chave_descricao];
         }
         
         db_lovrot($sSql, 15,"()", "", $funcao_js, "", "NoMe", $repassa);

@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if ( !isset($parcel) || $parcel == '' ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Parcelamento nÃ£o encontrado!');
   exit;
@@ -89,9 +89,9 @@ $sSql .= "        left join caixa.arreinscr  on arreinscr.k00_numpre  = v07_nump
 $sSql .= "  where v07_parcel in ( $parcels ) ";
 $sSql .= "    and ( k00_matric is not null or k00_inscr is not null) ";
 $rsVinculoMatriculaInscricao = db_query($sSql);
-if ( pg_numrows($rsVinculoMatriculaInscricao) > 1 ) {
+if ( pg_num_rows($rsVinculoMatriculaInscricao) > 1 ) {
   die("Erro! Parcelamento [$parcels] vinculado a mais de uma matricula ou inscrição!");
-} elseif ( pg_numrows($rsVinculoMatriculaInscricao) == 0 ) {
+} elseif ( pg_num_rows($rsVinculoMatriculaInscricao) == 0 ) {
   die("Erro! Parcelamento [$parcels] sem vinculação com matricula ou inscrição!");
 }
 $oDados = db_utils::fieldsmemory($rsVinculoMatriculaInscricao, 0);
@@ -128,7 +128,7 @@ if(!$rsVinculoMatriculaInscricao) {
   $bErro  = true;
   $sMsgErro = "Buscando dados da Origem 1";	
 }
-$iLinhasMatric = pg_numrows($rsVinculoMatriculaInscricao);
+$iLinhasMatric = pg_num_rows($rsVinculoMatriculaInscricao);
 
 echo "<br><br><br> iLinhasMatric: $iLinhasMatric <br><br><br>";
 
@@ -165,11 +165,11 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
   	$bErro  = true;
   	$sMsgErro = "Buscando dados da Origem 2";
   }
-  $iLinhasDivida = pg_numrows($rsDivida);
+  $iLinhasDivida = pg_num_rows($rsDivida);
 
-  $aParcelas   = array();
-  $aExercicios = array();
-  $aValores    = array();
+  $aParcelas   = [];
+  $aExercicios = [];
+  $aValores    = [];
   for ( $iCont = 0; $iCont < $iLinhasDivida; $iCont++ ) {
     $oTermo = db_utils::fieldsmemory($rsDivida, $iCont);
 
@@ -191,8 +191,8 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
       $bErro  = true;
       $sMsgErro = "Buscando dados da Origem 3";
     }
-    
-    if ( pg_numrows($rsPagTermo) > 0 ) {
+
+    if ( pg_num_rows($rsPagTermo) > 0 ) {
 //      echo "<br> achou pag(1)...<br>";
     }
 
@@ -211,15 +211,15 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
        $bErro  = true;
        $sMsgErro = "Buscando dados da Origem 4";
       }
-      
-      if ( pg_numrows($rsOrigem) > 0 ) {
-        for ( $iAnos=0; $iAnos < pg_numrows($rsOrigem); $iAnos++) {
+
+      if ( pg_num_rows($rsOrigem) > 0 ) {
+        for ( $iAnos=0; $iAnos < pg_num_rows($rsOrigem); $iAnos++) {
           $oOrigem = db_utils::fieldsmemory( $rsOrigem, $iAnos );
           if ( !isset($aExercicios[$oOrigem->v01_exerc][0]) or true ) {
             $aExercicios[$oOrigem->v01_exerc][0] = $oOrigem->v01_coddiv;
             $aExercicios[$oOrigem->v01_exerc][1] = $oOrigem->v01_vlrhis;
 
-            if ( pg_numrows($rsPagTermo) > 0 ) {
+            if ( pg_num_rows($rsPagTermo) > 0 ) {
               $oPagTermo  = db_utils::fieldsmemory( $rsPagTermo, 0 );
               $aParcelas[$iParcelOriginal][$iSequencial][$oOrigem->v01_exerc][$oOrigem->v01_coddiv][0] = $oPagTermo->quant_parcelas;
               $aParcelas[$iParcelOriginal][$iSequencial][$oOrigem->v01_exerc][$oOrigem->v01_coddiv][1] = $oPagTermo->k00_numtot;
@@ -269,14 +269,14 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
       	$bErro  = true;
       	$sMsgErro = "Buscando dados da Origem 5";
       }      
-      if ( pg_numrows($rsOrigem) > 0 ) {
-        for ( $iAnos=0; $iAnos < pg_numrows($rsOrigem); $iAnos++) {
+      if ( pg_num_rows($rsOrigem) > 0 ) {
+        for ( $iAnos=0; $iAnos < pg_num_rows($rsOrigem); $iAnos++) {
           $oOrigem = db_utils::fieldsmemory( $rsOrigem, $iAnos );
           if ( !isset($aExercicios[$oOrigem->v01_exerc][0]) or true ) {
             $aExercicios[$oOrigem->v01_exerc][0] = $oOrigem->v01_coddiv;
             $aExercicios[$oOrigem->v01_exerc][1] = $oOrigem->v01_vlrhis;
 
-            if ( pg_numrows($rsPagTermo) > 0 ) {
+            if ( pg_num_rows($rsPagTermo) > 0 ) {
               $oPagTermo  = db_utils::fieldsmemory( $rsPagTermo, 0 );
               $aParcelas[$iParcelOriginal][$iSequencial][$oOrigem->v01_exerc][$oOrigem->v01_coddiv][0] = $oPagTermo->quant_parcelas;
               $aParcelas[$iParcelOriginal][$iSequencial][$oOrigem->v01_exerc][$oOrigem->v01_coddiv][1] = $oPagTermo->k00_numtot;
@@ -312,13 +312,13 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
         echo "      termoreparc...<br>";
       }
 
-      if ( pg_numrows($rsPagTermo) > 0 or true ) {
+      if ( pg_num_rows($rsPagTermo) > 0 or true ) {
         if ( $iDebuga == 1 ) {
           echo "         termoreparc - encontrou pagamento...<br>";
         }
 
         $iParcelBusca = $oTermo->quant_termoreparc;
- 
+
         $lContinua = 1;
         while ( $lContinua == 1 ) {
 
@@ -335,12 +335,12 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
           	$bErro  = true;
           	$sMsgErro = "Buscando dados da Origem 6";
           }
-          $iLinhasParcelBusca = pg_numrows($rsParcelBusca);
+          $iLinhasParcelBusca = pg_num_rows($rsParcelBusca);
 
           $oParcelBusca = db_utils::fieldsmemory( $rsParcelBusca, 0 );
           $iParcelBusca = $oParcelBusca->v07_parcel;
 
-          for ( $iParcelamentos = 0; $iParcelamentos < pg_numrows($rsParcelBusca); $iParcelamentos++ ) {
+          for ( $iParcelamentos = 0; $iParcelamentos < pg_num_rows($rsParcelBusca); $iParcelamentos++ ) {
             $oParcelBusca = db_utils::fieldsmemory( $rsParcelBusca, $iParcelamentos );
 
             if ( $oParcelBusca->quant_termodiv > 0 ) {
@@ -359,14 +359,14 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
               	$sMsgErro = "Buscando dados da Origem 7";
               }              
 //              echo "<br><br><br> $sOrigem <br><br><br>";
-              if ( pg_numrows($rsOrigem) > 0 ) {
-                for ( $iAnos=0; $iAnos < pg_numrows($rsOrigem); $iAnos++) {
+              if ( pg_num_rows($rsOrigem) > 0 ) {
+                for ( $iAnos=0; $iAnos < pg_num_rows($rsOrigem); $iAnos++) {
                   $oOrigem = db_utils::fieldsmemory( $rsOrigem, $iAnos );
 
                   $aExercicios[$oOrigem->v01_exerc][0] = $oOrigem->v01_coddiv;
                   $aExercicios[$oOrigem->v01_exerc][1] = $oOrigem->v01_vlrhis;
 
-                  if ( pg_numrows($rsPagTermo) > 0 ) {
+                  if ( pg_num_rows($rsPagTermo) > 0 ) {
                     $oPagTermo  = db_utils::fieldsmemory( $rsPagTermo, 0 );
                     $aParcelas[$iParcelOriginal][$iSequencial][$oOrigem->v01_exerc][$oOrigem->v01_coddiv][0] = $oPagTermo->quant_parcelas;
                     $aParcelas[$iParcelOriginal][$iSequencial][$oOrigem->v01_exerc][$oOrigem->v01_coddiv][1] = $oPagTermo->k00_numtot;
@@ -387,7 +387,7 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
                     }
                   }
                   $iSequencial++;
-                  
+
                 }
 
               } else {
@@ -413,13 +413,13 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
               	$bErro  = true;
               	$sMsgErro = "Buscando dados da Origem 8";
               }
-              if ( pg_numrows($rsOrigem) > 0 ) {
-                for ( $iAnos=0; $iAnos < pg_numrows($rsOrigem); $iAnos++) {
+              if ( pg_num_rows($rsOrigem) > 0 ) {
+                for ( $iAnos=0; $iAnos < pg_num_rows($rsOrigem); $iAnos++) {
                   $oOrigem = db_utils::fieldsmemory( $rsOrigem, $iAnos );
                   $aExercicios[$oOrigem->v01_exerc][0] = $oOrigem->v01_coddiv;
                   $aExercicios[$oOrigem->v01_exerc][1] = $oOrigem->v01_vlrhis;
 
-                  if ( pg_numrows($rsPagTermo) > 0 ) {
+                  if ( pg_num_rows($rsPagTermo) > 0 ) {
                     $oPagTermo  = db_utils::fieldsmemory( $rsPagTermo, 0 );
                     $aParcelas[$iParcelOriginal][$iSequencial][$oOrigem->v01_exerc][$oOrigem->v01_coddiv][0] = $oPagTermo->quant_parcelas;
                     $aParcelas[$iParcelOriginal][$iSequencial][$oOrigem->v01_exerc][$oOrigem->v01_coddiv][1] = $oPagTermo->k00_numtot;
@@ -503,9 +503,9 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
   	$bErro  = true;
   	$sMsgErro = "Buscando dados da Origem 9";
   }    
-  $iLinhasArrecad = pg_numrows($rsArrecad);
+  $iLinhasArrecad = pg_num_rows($rsArrecad);
 
-  $aArrecad = array();
+  $aArrecad = [];
 
   for ( $iArrecad = 0; $iArrecad < $iLinhasArrecad; $iArrecad++ ) {
     $oArrecad = db_utils::fieldsmemory($rsArrecad, $iArrecad);
@@ -540,12 +540,12 @@ for ( $iMatric = 0; $iMatric < $iLinhasMatric; $iMatric++ ) {
           $bErro = true;
           $sMsgErro = "Buscando dados da Origem 10";	
         }
-        $iLinhasParcelBusca = pg_numrows($rsParcelBusca);
+        $iLinhasParcelBusca = pg_num_rows($rsParcelBusca);
 
         $oParcelBusca = db_utils::fieldsmemory( $rsParcelBusca, 0 );
         $iParcelBusca = $oParcelBusca->v07_parcel;
 
-        for ( $iParcelamentos = 0; $iParcelamentos < pg_numrows($rsParcelBusca); $iParcelamentos++ ) {
+        for ( $iParcelamentos = 0; $iParcelamentos < pg_num_rows($rsParcelBusca); $iParcelamentos++ ) {
           $oParcelBusca = db_utils::fieldsmemory( $rsParcelBusca, $iParcelamentos );
 
           if ( $oParcelBusca->quant_termodiv > 0 ) {
@@ -578,7 +578,7 @@ echo "<br><br><br> =============================================== <br><br><br>"
     
   }
 
-  $aParcelamentoComAno = array();
+  $aParcelamentoComAno = [];
 
   if ( true ) {
 
@@ -706,7 +706,7 @@ echo "<br><br><br> =============================================== <br><br><br>"
   	$bErro = true;
   	$sMsgErro = "Buscando dados da Origem 11";
   }  
-  $iLinhasDivida = pg_numrows($rsDivida);
+  $iLinhasDivida = pg_num_rows($rsDivida);
 
   if ( $iDebuga == 1) {
     echo "<br><br><br>";
@@ -750,7 +750,7 @@ echo "<br><br><br> =============================================== <br><br><br>"
       	$bErro = true;
       	$sMsgErro = "Buscando dados da Origem 12";
       }      
-      if ( pg_numrows($rsPagoDivida) > 0 ) {
+      if ( pg_num_rows($rsPagoDivida) > 0 ) {
 //        die("\n\n\n $sPagoDivida \n\n\n");
       }
 
@@ -769,7 +769,7 @@ echo "<br><br><br> =============================================== <br><br><br>"
         	$sMsgErro = "Buscando dados da Origem 13";
         }
 
-        if ( $nValorDiv > 0 and pg_numrows($rsPagoDivida ) == 0 ) {
+        if ( $nValorDiv > 0 and pg_num_rows($rsPagoDivida ) == 0 ) {
 
           $sArrecad  = " ";
           $sArrecad .= " insert into caixa.arrecad ";
@@ -819,7 +819,7 @@ echo "<br><br><br> =============================================== <br><br><br>"
         	$bErro = true;
         	$sMsgErro = "Buscando dados da Origem 17";
         }
-        if ( pg_numrows($rsPrescricao) > 0 ) {
+        if ( pg_num_rows($rsPrescricao) > 0 ) {
 
           if ( $iDebuga == 1 ) {
             echo "<br> prescricao do coddiv [$iCoddiv]<br>";
@@ -906,7 +906,7 @@ echo "<br><br><br> =============================================== <br><br><br>"
       	$bErro = true;
       	$sMsgErro = "Buscando dados da Origem 24";
       }
-      if ( pg_numrows($rsBusca) == 0 ) {
+      if ( pg_num_rows($rsBusca) == 0 ) {
         $sInsert  = " ";
         $sInsert .= " insert into divida.termoanu ( v09_sequencial, v09_parcel, v09_usuario, v09_data, v09_hora, v09_motivo ) ";
         $sInsert .= " select nextval('divida.termoanu_v09_sequencial_seq'), $oTermo->v07_parcel, 1, current_date, substr(current_time::text,1,5), 'MIGRACAO SITM'; ";

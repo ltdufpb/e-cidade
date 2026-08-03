@@ -237,7 +237,7 @@ function js_mostraveiccadcomb1(chave1,chave2){
       	<td>
       		<?php 
       			$rsQueryCentral = db_query($clveiccadcentral->sql_query(null," ve36_sequencial as id,descrdepto as depto",null,"instit = " . db_getsession("DB_instit")));
-      			$aValores = array();
+      			$aValores = [];
       			$aValores['0'] = "Todos";
       			if(pg_num_rows($rsQueryCentral)>0){
       				while ($rowQueryCentral = pg_fetch_object($rsQueryCentral)){
@@ -320,7 +320,7 @@ function js_mostraveiccadcomb1(chave1,chave2){
          <td nowrap align="right" title="Quebrar página"><b>Quebrar página por:</b></td>
          <td>
          <?php 
-            $x = array("0"=>"Nenhum","V"=>"Veiculo","T"=>"Tipo","M"=>"Marca","O"=>"Modelo","C"=>"Central de Veículo");
+            $x = ["0"=>"Nenhum","V"=>"Veiculo","T"=>"Tipo","M"=>"Marca","O"=>"Modelo","C"=>"Central de Veículo"];
             db_select("quebrar_por",$x,true,4);
          ?>
          </td>
@@ -329,7 +329,7 @@ function js_mostraveiccadcomb1(chave1,chave2){
          <td nowrap align="right" title="Situação"><b>Situação do Abastecimento:</b></td>
          <td>
          <?php 
-            $y = array("0"=>"Todos os abastecimentos","1"=>"Somente Ativos", "2"=>"Somente Anulados");
+            $y = ["0"=>"Todos os abastecimentos","1"=>"Somente Ativos", "2"=>"Somente Anulados"];
             db_select("situacao",$y,true,4);
          ?>
          </td>
@@ -338,7 +338,7 @@ function js_mostraveiccadcomb1(chave1,chave2){
          <td nowrap align="right" title="Quebrar página"><b>Listar:</b></td>
          <td>
          <?php 
-            $z = array("0"=>"Todos os abastecimentos","1"=>"Somente totalizadores");
+            $z = ["0"=>"Todos os abastecimentos","1"=>"Somente totalizadores"];
             db_select("listar_por",$z,true,4);
          ?>
          </td>

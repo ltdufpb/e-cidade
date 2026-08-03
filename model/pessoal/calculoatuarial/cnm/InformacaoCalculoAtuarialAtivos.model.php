@@ -760,7 +760,7 @@ class InformacaoCalculoAtuarialAtivos extends InformacaoCalculoAtuarial {
    */
   function toArray() {
 
-    $aRetorno   = array(); 
+    $aRetorno   = []; 
     $aRetorno[] = $this->getMatricula();
     $aRetorno[] = $this->getIdade();
     $aRetorno[] = $this->getSexo();

@@ -44,7 +44,7 @@ echo "  var iCodigoRelatorio = {$iCodigoRelatorio};\n";
 echo "  var aFiltros         = new Array();\n";
 if (isset($oGet->filtros) && $oGet->filtros != "") {
 
-  $aFiltros         = explode(",", $oGet->filtros);
+  $aFiltros         = explode(",", (string) $oGet->filtros);
   foreach ($aFiltros as $iFiltro => $sFiltro) {
     echo "aFiltros[$iFiltro] = '".trim($sFiltro)."';\n";
   }

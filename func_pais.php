@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pais_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpais = new cl_pais;
 $clpais->rotulo->label("ed228_i_codigo");
 $clpais->rotulo->label("ed228_c_descr");
@@ -94,9 +94,9 @@ $clpais->rotulo->label("ed228_c_descr");
     }else{
      $sql = $clpais->sql_query("",$campos,"ed228_c_descr","");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed228_i_codigo)){
-     $repassa = array("chave_ed228_i_codigo"=>$chave_ed228_i_codigo,"chave_ed228_c_descr"=>$chave_ed228_c_descr);
+     $repassa = ["chave_ed228_i_codigo"=>$chave_ed228_i_codigo,"chave_ed228_c_descr"=>$chave_ed228_c_descr];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

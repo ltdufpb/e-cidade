@@ -71,10 +71,10 @@ if(isset($imprime)){
 
   db_sel_instit(db_getsession("DB_instit"));
   $sqlerro = false;
-  if(trim($e87_codgera) != ""){
-    if(trim($deposito_dia) != "" && trim($deposito_mes) != "" && trim($deposito_ano) != ""){
+  if(trim((string) $e87_codgera) != ""){
+    if(trim((string) $deposito_dia) != "" && trim($deposito_mes) != "" && trim((string) $deposito_ano) != ""){
       $clempagegera->e87_dataproc = $deposito_ano."-".$deposito_mes."-".$deposito_dia;
-      if(trim($dtin_dia) != "" && trim($dtin_mes) != "" && trim($dtin_ano) != ""){
+      if(trim((string) $dtin_dia) != "" && trim($dtin_mes) != "" && trim((string) $dtin_ano) != ""){
         $clempagegera->e87_data = $dtin_ano."-".$dtin_mes."-".$dtin_dia;
       }
       $clempagegera->e87_hora    = db_hora();
@@ -273,7 +273,7 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 
 
   $result  =  @db_query($sqlMov);
-    $numrows =  @pg_numrows($result);
+    $numrows =  @pg_num_rows($result);
     if($numrows==0){
       $sqlerro =true;
       $erro_msg = "Erro. Contate suporte";
@@ -295,8 +295,8 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
       $pc63_banco = db_formatar($pc63_banco,'s','0',3,'e',0);
       if($codigomodelo==3 && $sqlerro == false){
 
-      $arr_data  = split('-',$e87_data);
-	    $arr_datap = split('-',$e87_dataproc);
+      $arr_data  = preg_split('#\-#m',(string) $e87_data);
+	    $arr_datap = preg_split('#\-#m',(string) $e87_dataproc);
     	$data    =  $arr_data[2].$arr_data[1].$arr_data[0];
 	    $dat_cred = $arr_datap[2].$arr_datap[1].$arr_datap[0];
 	    /// criar campo de sequencia do arquivo no empagetipo.
@@ -327,16 +327,16 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
     $conta_pre   = str_replace('.','',str_replace('-','',$c63_conta));
     $c63_conta = (int)$c63_conta;
 
-	  if(trim($c63_dvconta)!=""){
-	    $digitos = strlen($c63_dvconta);
+	  if(trim((string) $c63_dvconta)!=""){
+	    $digitos = strlen((string) $c63_dvconta);
 	    $dvconta_pre   = $c63_dvconta[0];
 	    if($digitos>1){
 	      $dvagconta_pre = $c63_dvconta[1];
 	    }
 	  }
 
-	  if(trim($c63_dvagencia)!=""){
-	    $digitos1 = strlen($c63_dvagencia);
+	  if(trim((string) $c63_dvagencia)!=""){
+	    $digitos1 = strlen((string) $c63_dvagencia);
 	    $dvagencia_pre   = $c63_dvagencia[0];
 	    if(isset($digitos) && $digitos==1){
 	      $dvagconta_pre = $c63_dvagencia[0];
@@ -359,30 +359,30 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 	    $cllayout_BBBS->BSheaderA_009_017 = str_repeat(' ',9);
 	    $cllayout_BBBS->BSheaderA_018_018 = "2";
 	    $cllayout_BBBS->BSheaderA_019_032 = $c63_identificador;
-	    $cllayout_BBBS->BSheaderA_033_037 = db_formatar(substr($convenio,0,5),'s','0',5,'e',0);
+	    $cllayout_BBBS->BSheaderA_033_037 = db_formatar(substr((string) $convenio,0,5),'s','0',5,'e',0);
 	    $cllayout_BBBS->BSheaderA_038_052 = str_repeat(' ',15);
 	    $cllayout_BBBS->BSheaderA_053_057 = $agencia_pre;
 	    $cllayout_BBBS->BSheaderA_058_058 = "0";
 	    $cllayout_BBBS->BSheaderA_059_061 = str_repeat('0',3);
 	    $cllayout_BBBS->BSheaderA_062_071 = $conta_pre;
 	    $cllayout_BBBS->BSheaderA_072_072 = "0";
-	    $cllayout_BBBS->BSheaderA_073_102 = db_translate(db_formatar(substr(strtoupper($nomeinst),0,30),'s',' ',30,'e',0));
-	    $cllayout_BBBS->BSheaderA_103_132 = db_translate(db_formatar(substr(strtoupper($dbanco),0,30),'s',' ',30,'e',0));
+	    $cllayout_BBBS->BSheaderA_073_102 = db_translate(db_formatar(substr(strtoupper((string) $nomeinst),0,30),'s',' ',30,'e',0));
+	    $cllayout_BBBS->BSheaderA_103_132 = db_translate(db_formatar(substr(strtoupper((string) $dbanco),0,30),'s',' ',30,'e',0));
 	    $cllayout_BBBS->BSheaderA_133_142 = str_repeat(' ',10);
 	    $cllayout_BBBS->BSheaderA_143_143 = "1";
 	    $cllayout_BBBS->BSheaderA_144_151 = $data;
 	    $cllayout_BBBS->BSheaderA_152_157 = date("H").date("i").date("s");
-	    $cllayout_BBBS->BSheaderA_158_163 = db_formatar(substr($e90_codgera,0,6),'s','0',6,'e',0);
+	    $cllayout_BBBS->BSheaderA_158_163 = db_formatar(substr((string) $e90_codgera,0,6),'s','0',6,'e',0);
 	    $cllayout_BBBS->BSheaderA_164_166 = "030";
 	    $cllayout_BBBS->BSheaderA_167_171 = str_repeat('0',5);
 	    $cllayout_BBBS->BSheaderA_172_191 = str_repeat(' ',20);
-	    $cllayout_BBBS->BSheaderA_192_211 = db_formatar(substr($e90_codgera,0,20),'s',' ',20,'e',0);
+	    $cllayout_BBBS->BSheaderA_192_211 = db_formatar(substr((string) $e90_codgera,0,20),'s',' ',20,'e',0);
 	    $cllayout_BBBS->BSheaderA_212_240 = str_repeat(' ',29);
 	    $cllayout_BBBS->geraHEADERArqBS();
 
 	  }else if($banco=="001"){
 
-	    $conveniobb  = db_formatar(trim($convenio),'s','0',9,'e',0);
+	    $conveniobb  = db_formatar(trim((string) $convenio),'s','0',9,'e',0);
       $conveniobb .= '0126';
 	    $conta_pre   = db_formatar(str_replace('.','',str_replace('-','',$c63_conta)),'s','0',12,'e',0);
 	    $cllayout_BBBS->BBheaderA_001_003 = $banco;
@@ -390,24 +390,24 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 	    $cllayout_BBBS->BBheaderA_008_008 = "0";
 	    $cllayout_BBBS->BBheaderA_009_017 = str_repeat(' ',9);
 	    $cllayout_BBBS->BBheaderA_018_018 = "2";
-	    $cllayout_BBBS->BBheaderA_019_032 = db_formatar(substr($c63_identificador,0,14),'s',' ',14,'d',0);
+	    $cllayout_BBBS->BBheaderA_019_032 = db_formatar(substr((string) $c63_identificador,0,14),'s',' ',14,'d',0);
 	    $cllayout_BBBS->BBheaderA_033_052 = db_formatar(substr($conveniobb,0,20),'s',' ',20,'d',0);
 	    $cllayout_BBBS->BBheaderA_053_057 = db_formatar(substr($agencia_pre,0,5),'s','0',5,'e',0);
-	    $cllayout_BBBS->BBheaderA_058_058 = db_formatar(substr($dvagencia_pre,0,1),'s','0',1,'e',0);
+	    $cllayout_BBBS->BBheaderA_058_058 = db_formatar(substr((string) $dvagencia_pre,0,1),'s','0',1,'e',0);
 	    $cllayout_BBBS->BBheaderA_059_070 = db_formatar(substr($conta_pre,0,12),'s','0',12,'e',0);
-	    $cllayout_BBBS->BBheaderA_071_071 = db_formatar(substr($dvconta_pre,0,1),'s','1',1,'e',0);
+	    $cllayout_BBBS->BBheaderA_071_071 = db_formatar(substr((string) $dvconta_pre,0,1),'s','1',1,'e',0);
 	    $cllayout_BBBS->BBheaderA_072_072 = ' ';
-	    $cllayout_BBBS->BBheaderA_073_102 = db_translate(db_formatar(substr(strtoupper($nomeinst),0,30),'s',' ',30,'e',0));
-	    $cllayout_BBBS->BBheaderA_103_132 = db_translate(db_formatar(substr(strtoupper($dbanco),0,30),'s',' ',30,'e',0));
+	    $cllayout_BBBS->BBheaderA_073_102 = db_translate(db_formatar(substr(strtoupper((string) $nomeinst),0,30),'s',' ',30,'e',0));
+	    $cllayout_BBBS->BBheaderA_103_132 = db_translate(db_formatar(substr(strtoupper((string) $dbanco),0,30),'s',' ',30,'e',0));
 	    $cllayout_BBBS->BBheaderA_133_142 = str_repeat(' ',10);
 	    $cllayout_BBBS->BBheaderA_143_143 = "1";
 	    $cllayout_BBBS->BBheaderA_144_151 = $data;
 	    $cllayout_BBBS->BBheaderA_152_157 = date("H").date("i").date("s");
-	    $cllayout_BBBS->BBheaderA_158_163 = db_formatar(substr($e90_codgera,0,6),'s','0',6,'e',0);
+	    $cllayout_BBBS->BBheaderA_158_163 = db_formatar(substr((string) $e90_codgera,0,6),'s','0',6,'e',0);
 	    $cllayout_BBBS->BBheaderA_164_166 = "030";
 	    $cllayout_BBBS->BBheaderA_167_171 = str_repeat('0',5);
 	    $cllayout_BBBS->BBheaderA_172_191 = str_repeat(' ',20);
-	    $cllayout_BBBS->BBheaderA_192_211 = db_formatar(substr($e90_codgera,0,20),'s',' ',20,'e',0);
+	    $cllayout_BBBS->BBheaderA_192_211 = db_formatar(substr((string) $e90_codgera,0,20),'s',' ',20,'e',0);
 	    $cllayout_BBBS->BBheaderA_212_222 = str_repeat(' ',11);
 	    $cllayout_BBBS->BBheaderA_223_225 = str_repeat(' ',3);
 	    $cllayout_BBBS->BBheaderA_226_228 = str_repeat('0',3);
@@ -417,12 +417,12 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 
 	  } else if ($banco == "104"){
 
-      $conveniobanco = substr($convenio,0,6);
-      $parametrotransmiss = substr($convenio,10,2);
+      $conveniobanco = substr((string) $convenio,0,6);
+      $parametrotransmiss = substr((string) $convenio,10,2);
       $ambientecliente = "P";
       $agenciaheader = $agencia_pre;
       $dvagenciaheader = $dvagencia_pre;
-      $contaheader = str_pad($c63_codigooperacao,4,"0",STR_PAD_LEFT).str_pad($conta_pre,8,"0",STR_PAD_LEFT);
+      $contaheader = str_pad((string) $c63_codigooperacao,4,"0",STR_PAD_LEFT).str_pad($conta_pre,8,"0",STR_PAD_LEFT);
       $dvcontaheader = $dvconta_pre;
       $datageracao = $e87_data;
       $horageracao = date("H").date("i").date("s");
@@ -546,17 +546,17 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 	      $dvconta_pre   = "0";
 	      $dvagconta_pre = "0";
 
-	      if (trim($c63_dvconta)!="") {
-		      $digitos = strlen($c63_dvconta);
+	      if (trim((string) $c63_dvconta)!="") {
+		      $digitos = strlen((string) $c63_dvconta);
 		      $dvconta_pre   = $c63_dvconta[0];
 		      if ($digitos>1) {
 		        $dvagconta_pre = $c63_dvconta[1];
 		      }
 	      }
 
-	      if (trim($c63_dvagencia)!="") {
+	      if (trim((string) $c63_dvagencia)!="") {
 
-		       $digitos1 = strlen($c63_dvagencia);
+		       $digitos1 = strlen((string) $c63_dvagencia);
 		       $dvagencia_pre   = $c63_dvagencia[0];
 
 		      if (isset($digitos) && $digitos==1) {
@@ -583,20 +583,20 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 		$cllayout_BBBS->BSheaderL_017_017 = ' ';
 		$cllayout_BBBS->BSheaderL_018_018 = '2';
 		$cllayout_BBBS->BSheaderL_019_032 = $c63_identificador;
-		$cllayout_BBBS->BSheaderL_033_037 = db_formatar(substr($convenio,0,5),'s','0',5,'e',0);
+		$cllayout_BBBS->BSheaderL_033_037 = db_formatar(substr((string) $convenio,0,5),'s','0',5,'e',0);
 		$cllayout_BBBS->BSheaderL_038_052 = str_repeat(' ',15);
 		$cllayout_BBBS->BSheaderL_053_057 = substr($agencia_pre,0,5);
 		$cllayout_BBBS->BSheaderL_058_061 = str_repeat('0',4);
 		$cllayout_BBBS->BSheaderL_062_071 = substr($conta_pre,0,10);
 		$cllayout_BBBS->BSheaderL_072_072 = ' ';
-		$cllayout_BBBS->BSheaderL_073_102 = db_translate(db_formatar(substr(strtoupper($nomeinst),0,30),'s',' ',30,'e',0));
+		$cllayout_BBBS->BSheaderL_073_102 = db_translate(db_formatar(substr(strtoupper((string) $nomeinst),0,30),'s',' ',30,'e',0));
 		$cllayout_BBBS->BSheaderL_103_142 = str_repeat(' ',40);
-		$cllayout_BBBS->BSheaderL_143_172 = db_translate(db_formatar(strtoupper(substr(trim($ender),0,30)),'s',' ',30,'d',0));
-		$cllayout_BBBS->BSheaderL_173_177 = db_formatar(substr($numero,0,5),'s',' ',5,'e',0);
+		$cllayout_BBBS->BSheaderL_143_172 = db_translate(db_formatar(strtoupper(substr(trim((string) $ender),0,30)),'s',' ',30,'d',0));
+		$cllayout_BBBS->BSheaderL_173_177 = db_formatar(substr((string) $numero,0,5),'s',' ',5,'e',0);
 		$cllayout_BBBS->BSheaderL_178_192 = str_repeat(' ',15);
-		$cllayout_BBBS->BSheaderL_193_212 = db_translate(db_formatar(strtoupper(substr(trim($munic),0,20)),'s',' ',20,'d',0));
+		$cllayout_BBBS->BSheaderL_193_212 = db_translate(db_formatar(strtoupper(substr(trim((string) $munic),0,20)),'s',' ',20,'d',0));
 		$cllayout_BBBS->BSheaderL_213_220 = db_formatar(substr(trim($cep),0,8),'s',' ',8,'e',0);
-		$cllayout_BBBS->BSheaderL_221_222 = db_formatar(strtoupper(substr($uf,0,2)),'s',' ',2,'d',0);
+		$cllayout_BBBS->BSheaderL_221_222 = db_formatar(strtoupper(substr((string) $uf,0,2)),'s',' ',2,'d',0);
 		$cllayout_BBBS->BSheaderL_223_224 = str_repeat(' ',2);
 		$cllayout_BBBS->BSheaderL_225_240 = str_repeat(' ',16);
 		$cllayout_BBBS->geraHEADERLoteBS();
@@ -609,7 +609,7 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 		  $cep = substr($cep,0,5);
 		}
 
-		$conveniobb  = db_formatar(trim($convenio),'s','0',9,'e',0);
+		$conveniobb  = db_formatar(trim((string) $convenio),'s','0',9,'e',0);
     $conveniobb .= '0126';
 		$cllayout_BBBS->BBheaderL_001_003 = $banco;
 		$cllayout_BBBS->BBheaderL_004_007 = db_formatar(substr($seq_header,0,4),'s','0',4,'e',0);
@@ -623,19 +623,19 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 		$cllayout_BBBS->BBheaderL_019_032 = $c63_identificador;
 		$cllayout_BBBS->BBheaderL_033_052 = db_formatar(substr($conveniobb,0,20),'s',' ',20,'d',0) ;
 		$cllayout_BBBS->BBheaderL_053_057 = substr($agencia_pre,0,5);
-		$cllayout_BBBS->BBheaderL_058_058 = substr($dvagencia_pre,0,1);
+		$cllayout_BBBS->BBheaderL_058_058 = substr((string) $dvagencia_pre,0,1);
 		$cllayout_BBBS->BBheaderL_059_070 = substr($conta_pre,0,12);
-		$cllayout_BBBS->BBheaderL_071_071 = substr($dvconta_pre,0,1);
+		$cllayout_BBBS->BBheaderL_071_071 = substr((string) $dvconta_pre,0,1);
 		$cllayout_BBBS->BBheaderL_072_072 = ' ';
-		$cllayout_BBBS->BBheaderL_073_102 = db_translate(db_formatar(substr(strtoupper(trim($nomeinst)),0,30),'s',' ',30,'e',0));
+		$cllayout_BBBS->BBheaderL_073_102 = db_translate(db_formatar(substr(strtoupper(trim((string) $nomeinst)),0,30),'s',' ',30,'e',0));
 		$cllayout_BBBS->BBheaderL_103_142 = str_repeat(' ',40);
-		$cllayout_BBBS->BBheaderL_143_172 = db_translate(db_formatar(strtoupper(substr(trim($ender),0,30)),'s',' ',30,'d',0));
-		$cllayout_BBBS->BBheaderL_173_177 = db_formatar(substr($numero,0,5),'s',' ',5,'e',0);
+		$cllayout_BBBS->BBheaderL_143_172 = db_translate(db_formatar(strtoupper(substr(trim((string) $ender),0,30)),'s',' ',30,'d',0));
+		$cllayout_BBBS->BBheaderL_173_177 = db_formatar(substr((string) $numero,0,5),'s',' ',5,'e',0);
 		$cllayout_BBBS->BBheaderL_178_192 = str_repeat(' ',15);
-		$cllayout_BBBS->BBheaderL_193_212 = db_translate(db_formatar(strtoupper(substr(trim($munic),0,20)),'s',' ',20,'d',0));
+		$cllayout_BBBS->BBheaderL_193_212 = db_translate(db_formatar(strtoupper(substr(trim((string) $munic),0,20)),'s',' ',20,'d',0));
 		$cllayout_BBBS->BBheaderL_213_217 = db_formatar(substr($cep,0,5),'s',' ',5,'e',0);
-		$cllayout_BBBS->BBheaderL_218_220 = substr($com,0,3);
-		$cllayout_BBBS->BBheaderL_221_222 = db_formatar(strtoupper(substr($uf,0,2)),'s',' ',2,'d',0);
+		$cllayout_BBBS->BBheaderL_218_220 = substr((string) $com,0,3);
+		$cllayout_BBBS->BBheaderL_221_222 = db_formatar(strtoupper(substr((string) $uf,0,2)),'s',' ',2,'d',0);
 		$cllayout_BBBS->BBheaderL_223_230 = str_repeat(' ',8);
 		$cllayout_BBBS->BBheaderL_231_240 = str_repeat(' ',10);
 		$cllayout_BBBS->geraHEADERLoteBB();
@@ -659,13 +659,13 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
          $formalancamento = "41";
        }
      }
-      $conveniobanco = substr($convenio,0,6);
+      $conveniobanco = substr((string) $convenio,0,6);
       $codigocompromisso = "{$e83_codigocompromisso}";
-      $parametrotransmiss = substr($convenio,10,2);
+      $parametrotransmiss = substr((string) $convenio,10,2);
       $tipocompromisso = "01";
       $agencialote = $agencia_pre;
       $dvagencialote = $dvagencia_pre;
-      $contalote = str_pad($c63_codigooperacao,4,"0",STR_PAD_LEFT).str_pad($c63_conta,8,"0",STR_PAD_LEFT);
+      $contalote = str_pad((string) $c63_codigooperacao,4,"0",STR_PAD_LEFT).str_pad($c63_conta,8,"0",STR_PAD_LEFT);
       $dvcontalote = $dvconta_pre;
       db_setaPropriedadesLayoutTxt($db_layouttxt,2);
 	  }
@@ -713,8 +713,8 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 	    $dvconta_fav   = "0";
 	    $dvagconta_fav = "0";
 
-	    if (trim($pc63_conta_dig)!="") {
-	      $digitos2 = strlen($pc63_conta_dig);
+	    if (trim((string) $pc63_conta_dig)!="") {
+	      $digitos2 = strlen((string) $pc63_conta_dig);
 	      $dvconta_fav   = $pc63_conta_dig[0];
 
 	      if ($digitos2>1) {
@@ -722,7 +722,7 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 	      }
 	    }
 
-	    if (trim($pc63_agencia_dig)!="") {
+	    if (trim((string) $pc63_agencia_dig)!="") {
 	      $dvagencia_fav   = $pc63_agencia_dig[0];
 	    }
 
@@ -741,9 +741,9 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
         // Para contas sem operação - preencher da posição 030 a 041 = 12 posições com o número da conta.
         // Retornado conforme recebido.
         if (empty($pc63_codigooperacao)) {
-          $conta_fav  = str_pad($conta_fav, 12, 0, STR_PAD_LEFT);
+          $conta_fav  = str_pad((string) $conta_fav, 12, 0, STR_PAD_LEFT);
         } else {
-          $conta_fav  = $pc63_codigooperacao . str_pad($conta_fav, 8, 0, STR_PAD_LEFT);
+          $conta_fav  = $pc63_codigooperacao . str_pad((string) $conta_fav, 8, 0, STR_PAD_LEFT);
         }
       }
 	    // REGISTROS
@@ -762,7 +762,7 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 	      $cllayout_BBBS->BSregist_029_029 = "0";
 	      $cllayout_BBBS->BSregist_030_042 = $conta_fav.$dvconta_fav;
 	      $cllayout_BBBS->BSregist_043_043 = " ";
-	      $cllayout_BBBS->BSregist_044_073 = db_translate(db_formatar(str_replace('-','',substr($z01_nome,0,30)),'s',' ',30,'d',0));
+	      $cllayout_BBBS->BSregist_044_073 = db_translate(db_formatar(str_replace('-','',substr((string) $z01_nome,0,30)),'s',' ',30,'d',0));
 	      $cllayout_BBBS->BSregist_074_088 = db_formatar($e90_codmov,'s','0',15,'d',0);
 	      $cllayout_BBBS->BSregist_089_093 = "00005";
 	      $cllayout_BBBS->BSregist_094_101 = $dat_cred;
@@ -801,7 +801,7 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 	      $cllayout_BBBS->BBregistA_030_041 = $conta_fav;
 	      $cllayout_BBBS->BBregistA_042_042 = $dvconta_fav;
 	      $cllayout_BBBS->BBregistA_043_043 = $dvagconta_fav;
-	      $cllayout_BBBS->BBregistA_044_073 = db_translate(db_formatar(str_replace('-','',substr($z01_nome,0,30)),'s',' ',30,'d',0));
+	      $cllayout_BBBS->BBregistA_044_073 = db_translate(db_formatar(str_replace('-','',substr((string) $z01_nome,0,30)),'s',' ',30,'d',0));
 	      $cllayout_BBBS->BBregistA_074_093 = db_formatar($e90_codmov,'s',' ',20,'d',0);
 	      $cllayout_BBBS->BBregistA_094_101 = $dat_cred;
 	      $cllayout_BBBS->BBregistA_102_104 = "BRL";
@@ -828,11 +828,11 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 	      $cllayout_BBBS->BBregistB_015_017 = str_repeat(' ',3);
 	      $cllayout_BBBS->BBregistB_018_018 = $conf;
 	      $cllayout_BBBS->BBregistB_019_032 = $cgccpf;
-        $cllayout_BBBS->BBregistB_033_062 = db_translate(db_formatar(substr($z01_ender,0,30),'s',' ',30,'d',0));
-        $cllayout_BBBS->BBregistB_063_067 = db_formatar(substr($z01_numero,0,5),'s','0',5,'e',0);
-        $cllayout_BBBS->BBregistB_068_082 = db_translate(db_formatar(substr($z01_compl,0,15),'s',' ',15,'d',0));
-        $cllayout_BBBS->BBregistB_083_097 = db_translate(db_formatar(substr($z01_bairro,0,15),'s',' ',15,'d',0));
-        $cllayout_BBBS->BBregistB_098_117 = db_translate(db_formatar(substr($z01_munic,0,20),'s',' ',20,'d',0));
+        $cllayout_BBBS->BBregistB_033_062 = db_translate(db_formatar(substr((string) $z01_ender,0,30),'s',' ',30,'d',0));
+        $cllayout_BBBS->BBregistB_063_067 = db_formatar(substr((string) $z01_numero,0,5),'s','0',5,'e',0);
+        $cllayout_BBBS->BBregistB_068_082 = db_translate(db_formatar(substr((string) $z01_compl,0,15),'s',' ',15,'d',0));
+        $cllayout_BBBS->BBregistB_083_097 = db_translate(db_formatar(substr((string) $z01_bairro,0,15),'s',' ',15,'d',0));
+        $cllayout_BBBS->BBregistB_098_117 = db_translate(db_formatar(substr((string) $z01_munic,0,20),'s',' ',20,'d',0));
         $cllayout_BBBS->BBregistB_118_122 = db_formatar(substr($z01_cep,0,5),'s',' ',5,'d',0);
         $cllayout_BBBS->BBregistB_123_125 = db_formatar(substr($z01_cep,5,3),'s',' ',3,'d',0);
         $cllayout_BBBS->BBregistB_126_127 = db_formatar($z01_uf,'s',' ',2,'d',0);
@@ -879,7 +879,7 @@ $sqlSlip  = "select distinct k153_slipoperacaotipo as codigo_operacao_slip,
 
         $numerocontrolemov    = $e90_codmov;
         $dataprocessamento    = $e87_dataproc;
-        $valordebito          = trim($valor);
+        $valordebito          = trim((string) $valor);
         $qtdparcelas          = "01";
         $indicabloq           = "N";
         $indicadorparc        = "1";

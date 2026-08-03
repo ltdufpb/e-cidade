@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE itbiformapagamentovalor
 class cl_itbiformapagamentovalor {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $it26_sequencial = 0;
-   var $it26_itbitransacaoformapag = 0;
-   var $it26_guia = 0;
-   var $it26_valor = 0;
+   public $it26_sequencial = 0;
+   public $it26_itbitransacaoformapag = 0;
+   public $it26_guia = 0;
+   public $it26_valor = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  it26_sequencial = int4 = Sequencial
                  it26_itbitransacaoformapag = int4 = Forma Pagamento Transação
                  it26_guia = int4 = Guia
                  it26_valor = float4 = Valor
                  ";
    //funcao construtor da classe
-   function cl_itbiformapagamentovalor() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiformapagamentovalor");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -119,10 +119,10 @@ class cl_itbiformapagamentovalor {
          $this->erro_status = "0";
          return false;
        }
-       $this->it26_sequencial = pg_result($result,0,0);
+       $this->it26_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from itbiformapagamentovalor_it26_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $it26_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $it26_sequencial)){
          $this->erro_sql = " Campo it26_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_itbiformapagamentovalor {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "itbiformapagamentovalor ($this->it26_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "itbiformapagamentovalor já Cadastrado";
@@ -180,13 +180,13 @@ class cl_itbiformapagamentovalor {
      $resaco = $this->sql_record($this->sql_query_file($this->it26_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13512,'$this->it26_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2363,13512,'','".AddSlashes(pg_result($resaco,0,'it26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2363,13513,'','".AddSlashes(pg_result($resaco,0,'it26_itbitransacaoformapag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2363,13514,'','".AddSlashes(pg_result($resaco,0,'it26_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2363,13515,'','".AddSlashes(pg_result($resaco,0,'it26_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2363,13512,'','".AddSlashes(pg_fetch_result($resaco,0,'it26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2363,13513,'','".AddSlashes(pg_fetch_result($resaco,0,'it26_itbitransacaoformapag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2363,13514,'','".AddSlashes(pg_fetch_result($resaco,0,'it26_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2363,13515,'','".AddSlashes(pg_fetch_result($resaco,0,'it26_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -195,10 +195,10 @@ class cl_itbiformapagamentovalor {
       $this->atualizacampos();
      $sql = " update itbiformapagamentovalor set ";
      $virgula = "";
-     if(trim($this->it26_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it26_sequencial"])){
+     if(trim((string) $this->it26_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it26_sequencial"])){
        $sql  .= $virgula." it26_sequencial = $this->it26_sequencial ";
        $virgula = ",";
-       if(trim($this->it26_sequencial) == null ){
+       if(trim((string) $this->it26_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "it26_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_itbiformapagamentovalor {
          return false;
        }
      }
-     if(trim($this->it26_itbitransacaoformapag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it26_itbitransacaoformapag"])){
+     if(trim((string) $this->it26_itbitransacaoformapag)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it26_itbitransacaoformapag"])){
        $sql  .= $virgula." it26_itbitransacaoformapag = $this->it26_itbitransacaoformapag ";
        $virgula = ",";
-       if(trim($this->it26_itbitransacaoformapag) == null ){
+       if(trim((string) $this->it26_itbitransacaoformapag) == null ){
          $this->erro_sql = " Campo Forma Pagamento Transação nao Informado.";
          $this->erro_campo = "it26_itbitransacaoformapag";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_itbiformapagamentovalor {
          return false;
        }
      }
-     if(trim($this->it26_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it26_guia"])){
+     if(trim((string) $this->it26_guia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it26_guia"])){
        $sql  .= $virgula." it26_guia = $this->it26_guia ";
        $virgula = ",";
-       if(trim($this->it26_guia) == null ){
+       if(trim((string) $this->it26_guia) == null ){
          $this->erro_sql = " Campo Guia nao Informado.";
          $this->erro_campo = "it26_guia";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_itbiformapagamentovalor {
          return false;
        }
      }
-     if(trim($this->it26_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it26_valor"])){
+     if(trim((string) $this->it26_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it26_valor"])){
        $sql  .= $virgula." it26_valor = $this->it26_valor ";
        $virgula = ",";
-       if(trim($this->it26_valor) == null ){
+       if(trim((string) $this->it26_valor) == null ){
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "it26_valor";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_itbiformapagamentovalor {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13512,'$this->it26_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it26_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2363,13512,'".AddSlashes(pg_result($resaco,$conresaco,'it26_sequencial'))."','$this->it26_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2363,13512,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it26_sequencial'))."','$this->it26_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it26_itbitransacaoformapag"]))
-           $resac = db_query("insert into db_acount values($acount,2363,13513,'".AddSlashes(pg_result($resaco,$conresaco,'it26_itbitransacaoformapag'))."','$this->it26_itbitransacaoformapag',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2363,13513,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it26_itbitransacaoformapag'))."','$this->it26_itbitransacaoformapag',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it26_guia"]))
-           $resac = db_query("insert into db_acount values($acount,2363,13514,'".AddSlashes(pg_result($resaco,$conresaco,'it26_guia'))."','$this->it26_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2363,13514,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it26_guia'))."','$this->it26_guia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["it26_valor"]))
-           $resac = db_query("insert into db_acount values($acount,2363,13515,'".AddSlashes(pg_result($resaco,$conresaco,'it26_valor'))."','$this->it26_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2363,13515,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it26_valor'))."','$this->it26_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_itbiformapagamentovalor {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13512,'$it26_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2363,13512,'','".AddSlashes(pg_result($resaco,$iresaco,'it26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2363,13513,'','".AddSlashes(pg_result($resaco,$iresaco,'it26_itbitransacaoformapag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2363,13514,'','".AddSlashes(pg_result($resaco,$iresaco,'it26_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2363,13515,'','".AddSlashes(pg_result($resaco,$iresaco,'it26_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2363,13512,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2363,13513,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it26_itbitransacaoformapag'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2363,13514,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it26_guia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2363,13515,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it26_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from itbiformapagamentovalor
@@ -376,7 +376,7 @@ class cl_itbiformapagamentovalor {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:itbiformapagamentovalor";
@@ -391,7 +391,7 @@ class cl_itbiformapagamentovalor {
    function sql_query ( $it26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_itbiformapagamentovalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -432,7 +432,7 @@ class cl_itbiformapagamentovalor {
    function sql_query_file ( $it26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,7 +453,7 @@ class cl_itbiformapagamentovalor {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

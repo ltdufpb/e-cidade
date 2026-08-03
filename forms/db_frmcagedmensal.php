@@ -77,7 +77,7 @@ $clrotulo->label("z01_nome");
             <td> 
               <?php 
               $alteracao = 1;
-              $arr_alteracao= array("1"=>"Nada a alterar","2"=>"Alterar dados cadastrais","3"=>"Encerramento de atividades");
+              $arr_alteracao= ["1"=>"Nada a alterar","2"=>"Alterar dados cadastrais","3"=>"Encerramento de atividades"];
               db_select('alteracao',$arr_alteracao,true,1,"");
               ?>
             </td>
@@ -89,7 +89,7 @@ $clrotulo->label("z01_nome");
             <td> 
               <?php 
               $primeiradeclaracao = 2;
-              $arr_primeiradeclaracao= array("1"=>"Primeira declaração","2"=>"Já informou");
+              $arr_primeiradeclaracao= ["1"=>"Primeira declaração","2"=>"Já informou"];
               db_select('primeiradeclaracao',$arr_primeiradeclaracao,true,1,"");
 	      ?>
             </td>
@@ -166,7 +166,7 @@ function js_preenchepesquisa(chave,chave1,chave2){
   db_iframe_codmovsefip.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2";
   }
   ?>
 }

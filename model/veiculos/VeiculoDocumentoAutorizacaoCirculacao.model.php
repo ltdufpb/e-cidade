@@ -56,12 +56,6 @@ class VeiculoDocumentoAutorizacaoCirculacao {
   private $oDepartamento;
 
   /**
-   *
-   * @var VeiculoAutorizacaoCirculacao
-   */
-  private $oAutorizacao;
-
-  /**
    * Altura total de uma via. Usada para saber se a próxima via irá caber na mesma página.
    * @var number
    */
@@ -82,11 +76,10 @@ class VeiculoDocumentoAutorizacaoCirculacao {
    *
    * @param VeiculoAutorizacaoCirculacao $oAutorizacao
    */
-  public function __construct(VeiculoAutorizacaoCirculacao $oAutorizacao) {
+  public function __construct(private readonly VeiculoAutorizacaoCirculacao $oAutorizacao) {
 
-    $this->oAutorizacao  = $oAutorizacao;
-    $this->oInstituicao  = $oAutorizacao->getInstituicao();
-    $this->oDepartamento = $oAutorizacao->getDepartamento();
+    $this->oInstituicao  = $this->oAutorizacao->getInstituicao();
+    $this->oDepartamento = $this->oAutorizacao->getDepartamento();
     $this->oPdf          = new PDFDocument();
     $this->iAltura       = 4;
     $this->iLargura      = $this->oPdf->getAvailWidth() - 10;

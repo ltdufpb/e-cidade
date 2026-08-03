@@ -38,7 +38,7 @@ include(modification("classes/db_inicialnumpre_classe.php"));
 include(modification("classes/db_arrecad_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clinicial = new cl_inicial;
 $clinicialcert = new cl_inicialcert;
@@ -106,7 +106,7 @@ function js_submit(){
       	<td><b>Agrupar por:</b></td>
       	<td>
       	<?php 
-      	$tipo_arr = array("mi"=>"Matricula e Inscrição","c"=>"CGM","n"=>"Não Agrupar");
+      	$tipo_arr = ["mi"=>"Matricula e Inscrição","c"=>"CGM","n"=>"Não Agrupar"];
       	db_select("agrupa",$tipo_arr,true,"text",1);
       	?>
       	</td>
@@ -328,7 +328,7 @@ if (isset($processar)) {
  			           ) as x {$order_by}";
 
 	$result  = db_query($sql);
-	$numrows = pg_numrows($result);
+	$numrows = pg_num_rows($result);
 
   $matric_ant = "";
 	$inscr_ant  = "";
@@ -491,7 +491,7 @@ if (isset($processar)) {
 							                   and v13_instit = ".db_getsession('DB_instit') ." ) as x ";
 
         $result_info  = db_query($sql_info);
-				$numrows_info = pg_numrows($result_info);
+				$numrows_info = pg_num_rows($result_info);
 
         for ($i = 0; $i < $numrows_info; $i++){
 

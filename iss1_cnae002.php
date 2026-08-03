@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_cnae_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clcnae = new cl_cnae;
 $clisscnaeanexos = new cl_isscnaeanexos;
 
@@ -71,7 +71,7 @@ if(isset($alterar)){
                 db_fieldsmemory($result,0);
 
                 // Se existir vínculo com data 'null'(ativo) altera o último registro com data 'null' para receber a data atual(hoje)
-                if (pg_numrows($result) > 0) {
+                if (pg_num_rows($result) > 0) {
                     $dataAtual = db_getsession('DB_datausu');
                     $dataAtualFormatada = str_replace('/', '-', date('Y/m/d',$dataAtual));
                     $clisscnaeanexos->q178_data_fim = $dataAtualFormatada;
@@ -96,7 +96,7 @@ if(isset($alterar)){
                 $sql = "SELECT * FROM issqn.isscnaeanexos WHERE q178_data_fim = '$clisscnaeanexos->q178_data_fim'";
                 $result = db_query($sql);
 
-                if (pg_numrows($result) > 0 ) {
+                if (pg_num_rows($result) > 0 ) {
                     db_msgbox("Vínculo já existente");
                 } else {
                     $clisscnaeanexos->incluir(null);
@@ -114,7 +114,7 @@ if(isset($alterar)){
 
             $result = db_query($sql);
 
-            if (pg_numrows($result) >0 ) {
+            if (pg_num_rows($result) >0 ) {
                 db_msgbox("Vínculo já existente");
             } else {
                 $clisscnaeanexos->alterar($q178_sequencial);

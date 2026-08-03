@@ -23,20 +23,19 @@ class EmpregadorObras extends ProcessamentoAbstract implements ProcessamentoInte
     /**
      * @var
      */
-    private $cgm;
-
-    /**
-     * @var
-     */
     private $layout;
 
     /**
      * ProcessamentoInterface constructor.
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $cgm
+    )
     {
-        $this->cgm = $cgm;
     }
 
     /**

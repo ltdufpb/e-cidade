@@ -26,21 +26,6 @@ class UnificacaoIniciaisRepository
     private $agrupamento = 1;
 
     /**
-     * @var integer
-     */
-    private $instituicao;
-
-    /**
-     * @var string
-     */
-    private $data;
-
-    /**
-     * @var integer
-     */
-    private $ano;
-
-    /**
      * @var array
      */
     private $filtros = [];
@@ -50,12 +35,12 @@ class UnificacaoIniciaisRepository
      * @param $iInstituicao
      * @param $sData
      * @param $iAno
+     * @param int $iInstituicao
+     * @param string $sData
+     * @param int $iAno
      */
-    public function __construct($iInstituicao, $sData, $iAno)
+    public function __construct(private $instituicao, private $data, private $ano)
     {
-        $this->instituicao = $iInstituicao;
-        $this->data = $sData;
-        $this->ano = $iAno;
     }
 
     /**

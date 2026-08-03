@@ -59,18 +59,16 @@ class cl_atualizacaoiptuschemamatricula extends DAOBasica {
       throw new DBException("Erro ao consultar matriculas no lote {$idBql} da importação {$sSchema}");
     }
     if (pg_num_rows($rsDadosMatriculas) == 0) {
-      return array();
+      return [];
     }
 
-    $matriculas = \db_utils::makeCollectionFromRecord($rsDadosMatriculas, function($dados) {
-       return $dados;
-    });
+    $matriculas = \db_utils::makeCollectionFromRecord($rsDadosMatriculas, fn($dados) => $dados);
     return $matriculas;
   }
 
   public function buscaSetoresQuadras( $sCampos, $sWhere, $sGroup, $sOrder, $sSchema = 'cadastro' ) {
 
-    $aSql = array();
+    $aSql = [];
     $aSql[] = "select {$sCampos} from atualizacaoiptuschemamatricula";
     $aSql[] = "inner join {$sSchema}.iptubase on {$sSchema}.iptubase.j01_matric = atualizacaoiptuschemamatricula.j144_matricula";
     $aSql[] = "inner join {$sSchema}.lote     on {$sSchema}.lote.j34_idbql      = {$sSchema}.iptubase.j01_idbql";
@@ -84,7 +82,7 @@ class cl_atualizacaoiptuschemamatricula extends DAOBasica {
   
   public function buscaSetoresQuadrasLotes( $sCampos, $sWhere, $sGroup, $sOrder, $sSchema = 'cadastro' ) {
     
-    $aSql = array();
+    $aSql = [];
     $aSql[] = "select {$sCampos} from atualizacaoiptuschemamatricula";
     $aSql[] = "inner join {$sSchema}.iptubase on {$sSchema}.iptubase.j01_matric = atualizacaoiptuschemamatricula.j144_matricula";
     $aSql[] = "inner join {$sSchema}.lote     on {$sSchema}.lote.j34_idbql      = {$sSchema}.iptubase.j01_idbql";
@@ -98,7 +96,7 @@ class cl_atualizacaoiptuschemamatricula extends DAOBasica {
 
   public function buscaMatriculasRejeitadas( $sCampos, $sWhere,  $sSchema = 'cadastro' )
   {
-      $aSql = array();
+      $aSql = [];
       $aSql[] = "select {$sCampos} from atualizacaoiptuschemamotivorejeicao";
       $aSql[] = "inner join {$sSchema}.atualizacaoiptuschemamatricula on {$sSchema}.atualizacaoiptuschemamatricula.j144_sequencial = atualizacaoiptuschemamotivorejeicao.j146_atualizacaoiptuschemamatricula";
       $aSql[] = "inner join {$sSchema}.civitasinfoscomplementar on {$sSchema}.civitasinfoscomplementar.matricula = {$sSchema}.atualizacaoiptuschemamatricula.j144_matricula";

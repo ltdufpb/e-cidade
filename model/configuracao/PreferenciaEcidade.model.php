@@ -46,6 +46,7 @@ class PreferenciaEcidade extends Preferencia{
     return $this->oPreferenciaTelaLogin;
   }
 
+  #[\Override]
   public function salvarPreferencias() {
 
     $this->oPreferencia->oPreferenciaTelaLogin = $this->oPreferenciaTelaLogin;

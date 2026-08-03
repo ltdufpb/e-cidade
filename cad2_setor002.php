@@ -28,8 +28,8 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ///////////////////////////////////////////////////////////////////////
 $head1 = "RELATÓRIO DE QUADRAS POR ZONAS FISCAIS";
@@ -59,8 +59,8 @@ if ($ordem == "Z"){
 	}
 }
 
-$sJ34Setor 	= "'".implode("','",explode(',',$j34_setor))."'";
-$sJ34Quadra = "'".implode("','",explode(',',$j34_quadra))."'";
+$sJ34Setor 	= "'".implode("','",explode(',',(string) $j34_setor))."'";
+$sJ34Quadra = "'".implode("','",explode(',',(string) $j34_quadra))."'";
 
 $sSql = " select distinct j34_setor,
 													j34_quadra,
@@ -86,9 +86,9 @@ if($iNumRows > 0){
 }
 
 $oTotal = new stdClass();
-$oTotal->zona = array();
-$oTotal->setor = array();
-$oTotal->quadra = array();
+$oTotal->zona = [];
+$oTotal->setor = [];
+$oTotal->quadra = [];
 //Conta o total de registros de cada um
 foreach ($oRelatorio as $oQuadra){
 	if(!isset($oTotal->zona[$oQuadra->j34_zona])) 								 $oTotal->zona[$oQuadra->j34_zona] 		= 1;

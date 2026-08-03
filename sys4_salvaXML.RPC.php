@@ -54,16 +54,16 @@ $oRetorno->message  = "";
 $sXml         = "";
 $iCodigo      = 0;
 $sFileNameXml = "";
-$sDescr = utf8_decode($_POST["sdescr"]);
+$sDescr = mb_convert_encoding($_POST["sdescr"], 'ISO-8859-1');
 
-if(isset($_POST["sxml"]) && trim($_POST["sxml"]) != ""){
+if(isset($_POST["sxml"]) && trim((string) $_POST["sxml"]) != ""){
   $sXml = db_stdClass::db_stripTagsJson($_POST["sxml"]);
   
 }
-if(isset($_POST["codigo"]) && trim($_POST["codigo"]) != ""){
+if(isset($_POST["codigo"]) && trim((string) $_POST["codigo"]) != ""){
   $iCodigo = $_POST["codigo"];
 }
-if(isset($_POST["sfilenamexml"]) && trim($_POST["sfilenamexml"]) != ""){
+if(isset($_POST["sfilenamexml"]) && trim((string) $_POST["sfilenamexml"]) != ""){
   $sFileNameXml = $_POST["sfilenamexml"];
 }
 

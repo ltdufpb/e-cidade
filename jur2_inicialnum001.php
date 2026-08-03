@@ -31,8 +31,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $aux 							  = new cl_arquivo_auxiliar;
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clrotulo           = new rotulocampo;
@@ -94,7 +94,7 @@ $clrotulo->label("v50_inicial");
         </td>
         <td>
           <?php 
-            $aTipo = array("todos"=>"Todos","foro"=>"Processos do Foro","semforo"=>"Processos sem Foro");
+            $aTipo = ["todos"=>"Todos","foro"=>"Processos do Foro","semforo"=>"Processos sem Foro"];
             db_select("tipo",$aTipo,true,1,"");
           ?>
         </td>
@@ -105,7 +105,7 @@ $clrotulo->label("v50_inicial");
         </td>
         <td>
           <?php 
-            $aSituacao = array("0"=>"Todas","1"=>"Ativa","2"=>"Anulada");
+            $aSituacao = ["0"=>"Todas","1"=>"Ativa","2"=>"Anulada"];
             db_select("selSituacao",$aSituacao,true,1,"");
           ?>
         </td>

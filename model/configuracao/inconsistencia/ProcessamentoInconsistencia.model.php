@@ -49,7 +49,7 @@ class ProcessamentoInconsistencia {
    * Array com todas as tabelas que possuem exceções para processamento das dependências
    * @var array
    */
-  private $aExcecoesDependencias = array();
+  private $aExcecoesDependencias = [];
 
   /**
    * Instancia da classe de log
@@ -150,7 +150,7 @@ class ProcessamentoInconsistencia {
       /**
        * Array com os registros processados
        */
-      $aRegistrosProcessados = array();
+      $aRegistrosProcessados = [];
 
       /**
        * cria header da inconsistencia no arquivo de log
@@ -270,7 +270,7 @@ class ProcessamentoInconsistencia {
      * remove espacos, tabs e linhas
      */
     $sSqlExecutado = preg_replace('/\s(?=\s)/', '', trim($sSqlExecutado));
-    $sErroBanco    = preg_replace('/[\n\r\t]/', ' ', preg_replace('/\s(?=\s)/', '', trim(pg_last_error())));
+    $sErroBanco    = preg_replace('/[\n\r\t]/', ' ', (string) preg_replace('/\s(?=\s)/', '', trim(pg_last_error())));
 
     $this->oDBLog->escreverLog("Erro ao atualizar tabela '{$sTabela}'", 2);
     $this->oDBLog->escreverLog("Sql executado: {$sSqlExecutado}", 2);

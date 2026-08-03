@@ -31,7 +31,7 @@ include("libs/db_sessoes.php");
 include("libs/db_usuariosonline.php");
 include("dbforms/db_funcoes.php");
 include("dbforms/db_classesgenericas.php");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 

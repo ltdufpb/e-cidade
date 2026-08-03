@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 $clliccomissao = new cl_liccomissao;
 $clliccomissaocgm = new cl_liccomissaocgm;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 33;
 $db_botao = false;

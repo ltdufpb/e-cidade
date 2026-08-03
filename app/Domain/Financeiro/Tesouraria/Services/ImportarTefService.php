@@ -12,22 +12,16 @@ use ECidade\Financeiro\Tesouraria\Repository\LinhaTefRepository;
 class ImportarTefService
 {
     /**
-     * @var string
-     */
-    private $fileName;
-    /**
-     * @var string
-     */
-    private $filePath;
-    /**
      * @var LinhaTefRepository
      */
     private $repository;
 
-    public function __construct($fileName, $filePath)
+    /**
+     * @param string $fileName
+     * @param string $filePath
+     */
+    public function __construct(private $fileName, private $filePath)
     {
-        $this->fileName = $fileName;
-        $this->filePath = $filePath;
         $this->repository = new LinhaTefRepository();
     }
 

@@ -18,13 +18,13 @@ class M5447CemiterioSepultamentos extends PostgresMigration
         $this->execute("insert into db_sysarqcamp values(1797,22426,22,0)");
 
         /* Adiciona campos a tabela sepultamentos*/
-        $this->table('sepultamentos',    array('schema'=>'cemiterio'))
-                ->addColumn('cm01_c_nomemedico', 'string', array('null' => true, 'default' => 'null', 'limit' => 60))
-                ->addColumn('cm01_c_nomehospital', 'string', array('null' => true, 'default' => 'null', 'limit' => 60))
-                ->addColumn('cm01_c_nomefuneraria', 'string', array('null' => true, 'default' => 'null', 'limit' => 60))
-                ->changeColumn('cm01_i_medico', 'integer', array('null' => true, 'default' => null))
-                ->changeColumn('cm01_i_hospital', 'integer', array('null' => true, 'default' => null))
-                ->changeColumn('cm01_i_funeraria', 'integer', array('null' => true, 'default' => null))
+        $this->table('sepultamentos',    ['schema'=>'cemiterio'])
+                ->addColumn('cm01_c_nomemedico', 'string', ['null' => true, 'default' => 'null', 'limit' => 60])
+                ->addColumn('cm01_c_nomehospital', 'string', ['null' => true, 'default' => 'null', 'limit' => 60])
+                ->addColumn('cm01_c_nomefuneraria', 'string', ['null' => true, 'default' => 'null', 'limit' => 60])
+                ->changeColumn('cm01_i_medico', 'integer', ['null' => true, 'default' => null])
+                ->changeColumn('cm01_i_hospital', 'integer', ['null' => true, 'default' => null])
+                ->changeColumn('cm01_i_funeraria', 'integer', ['null' => true, 'default' => null])
                 ->save();
 
         $this->execute("update db_syscampo set descricao = 'Ossário', rotulo = 'Ossário', rotulorel = 'Ossário' where nomecam = 'cm06_i_ossoario'");
@@ -49,7 +49,7 @@ class M5447CemiterioSepultamentos extends PostgresMigration
 
         $this->execute('DELETE FROM db_syscampo WHERE codcam IN (22424, 22425, 22426)');
 
-        $this->table('sepultamentos', array('schema' => 'cemiterio'))
+        $this->table('sepultamentos', ['schema' => 'cemiterio'])
                 ->removeColumn('cm01_c_nomemedico')
                 ->removeColumn('cm01_c_nomehospital')
                 ->removeColumn('cm01_c_nomefuneraria')

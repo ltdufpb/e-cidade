@@ -8,7 +8,7 @@ class M12227MigracaoRecursosLoa extends PostgresMigration
     /**
      * @var array
      */
-    private $estruturaisCadastrados = array();
+    private $estruturaisCadastrados = [];
 
     /**
      * @var integer
@@ -113,7 +113,7 @@ SQL_MIGRACAO_RECEITA
 
             $estrutural = $dadosRecurso['estrutural'];
 
-            $explodeEstrutural = explode('.', $estrutural);
+            $explodeEstrutural = explode('.', (string) $estrutural);
             if ( count($explodeEstrutural) !== 4 ) {
                 continue;
             }
@@ -151,7 +151,7 @@ SQL_MIGRACAO_RECEITA
 
     private function getDescricaoFinal($valor) {
 
-        $especificacao = array(
+        $especificacao = [
             '00' => 'Ordinários Não Provenientes de Impostos',
             '01' => 'Operações de Crédito',
             '02' => 'Recursos de Convênios',
@@ -176,7 +176,7 @@ SQL_MIGRACAO_RECEITA
             '83' => 'Recursos de Alienação de Bens e Direitos do Patrimônio Público',
             '90' => 'Recursos do Tesouro - a Definir',
             '99' => 'Recursos Extraorçamentários',
-        );
+        ];
         return !empty($especificacao[$valor]) ? $especificacao[$valor] :  '';
     }
 

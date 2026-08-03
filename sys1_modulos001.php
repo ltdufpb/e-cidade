@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 db_postmemory($_POST);
 db_postmemory($_GET);
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 if(isset($retorno)) {
   $sql = "select *,
                  to_char(dataincl,'DD') as dataincl_dia,
@@ -46,7 +46,7 @@ if(isset($retorno)) {
 }
 
 //////////INCLUIR/////////////
-if(isset($HTTP_POST_VARS["incluir"])) {
+if(isset($_POST["incluir"])) {
   db_postmemory($_POST);  
   if(!checkdate($dataincl_mes,$dataincl_dia,$dataincl_ano))
     db_erro("Data inválida(insert)");
@@ -55,7 +55,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   db_query($conn,"insert into db_sysmodulo values (nextval('db_sysmodulo_codmod_seq'),'$nomemod','$descricao','$data','$ativo')") or die("Erro inserindo em db_sysmodulos");
   db_redireciona();
 ////////////////ALTERAR////////////////  
-} else if(isset($HTTP_POST_VARS["alterar"])) {
+} else if(isset($_POST["alterar"])) {
   db_postmemory($_POST);
   if(!checkdate($dataincl_mes,$dataincl_dia,$dataincl_ano))
     db_erro("Data inválida(update)");
@@ -68,8 +68,8 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 	      	where codmod  =  $codmod") or die("Erro atualizando db_sysmodulo");
   db_redireciona();
 ////////////////EXCLUIR//////////////
-} else if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("delete from db_sysmodulo where codmod = ".$HTTP_POST_VARS["codmod"]) or die("Erro deletando tabela db_sysmodulo");
+} else if(isset($_POST["excluir"])) {
+  db_query("delete from db_sysmodulo where codmod = ".$_POST["codmod"]) or die("Erro deletando tabela db_sysmodulo");
  db_redireciona();
 }
 
@@ -150,14 +150,14 @@ $cl_modulo->label();
   <tr> 
     <td align="center" valign="top" bgcolor="#CCCCCC">
 	<?php 
-      if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
+      if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {
 	  
 	     $sql = "SELECT codmod    as db_codmod,
                       codmod    ,
                       nomemod   , 
                       descricao 
               FROM db_sysmodulo
-			  WHERE nomemod like '".$HTTP_POST_VARS["nomemod"]."%'
+			  WHERE nomemod like '".$_POST["nomemod"]."%'
               ORDER BY nomemod";
 //  		db_lov($sql,15,"sys1_modulos001.php");
       db_lovrot($sql,15,"()","","js_Voltar|codmod","","NoMe");
@@ -197,7 +197,7 @@ $cl_modulo->label();
             </td>
 	          <td>
 	          <?php 
-	            $xx = array("t"=>"SIM","f"=>"NAO");
+	            $xx = ["t"=>"SIM","f"=>"NAO"];
 	            db_select('ativo',$xx,true,1,"");
             ?>
 	          </td>

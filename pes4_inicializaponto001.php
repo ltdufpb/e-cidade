@@ -37,7 +37,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oCompetencia = new DBCompetencia(db_anofolha(),db_mesfolha());
 $aConfiguracoesAutomaticas = ConfiguracaoEventoFinanceiroAutomaticoRepository::getConfiguracoesPorMesInstituicao($oCompetencia);

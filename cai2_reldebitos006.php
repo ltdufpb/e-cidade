@@ -38,8 +38,8 @@ $clrotulo->label('juros');
 $clrotulo->label('desconto');
 $clrotulo->label('k01_descr');
 $clrotulo->label('k02_descr');
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $dbwhere = "";
 $dtini =  $dtini_ano."-".$dtini_mes."-".$dtini_dia; // operacao
 $dtfim =  $dtfim_ano."-".$dtfim_mes."-".$dtfim_dia;
@@ -218,7 +218,7 @@ if($modelo!="completo"){
 
 $result = @db_query($sql);
 if($result){
- $numrows = pg_numrows($result);
+ $numrows = pg_num_rows($result);
 }else{
  $numrows ='0';
 }
@@ -258,7 +258,7 @@ $pdf->cell(15,$alt,"Juros",1,0,"C",1);
 $pdf->cell(23,$alt,"Total",1,0,"C",1);
 $pdf->setfont('arial','',7);
 $pdf->ln();
-$arr_receit=array();
+$arr_receit=[];
 
 for ($i = 0;$i < $numrows;$i++){
   db_fieldsmemory($result,$i);
@@ -314,7 +314,7 @@ $pdf->cell(60,3,"Total de registros: $numrows",0,0,"L",0);
    ";
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_numrows($result);
+     $numrows = pg_num_rows($result);
    }else{
      $numrows ='0';
    }  
@@ -333,7 +333,7 @@ $pdf->cell(23,$alt,"Desconto",1,0,"C",1);
 $pdf->cell(23,$alt,"Total",1,0,"C",1);
 $pdf->setfont('arial','',8);
 $pdf->ln();
-$arr_receit=array();
+$arr_receit=[];
 
 $tot_vlrhis="";
 $tot_vlrcor="";
@@ -401,14 +401,14 @@ for ($i = 0;$i < $numrows;$i++){
   
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_numrows($result);
+     $numrows = pg_num_rows($result);
    }else{
      $numrows ='0';
    }  
 
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_numrows($result);
+     $numrows = pg_num_rows($result);
    }else{
      $numrows ='0';
    }  
@@ -428,7 +428,7 @@ $pdf->cell(23,$alt,"Desconto",1,0,"C",1);
 $pdf->cell(23,$alt,"Total",1,0,"C",1);
 $pdf->setfont('arial','',8);
 $pdf->ln();
-$arr_receit=array();
+$arr_receit=[];
 
 $tot_vlrhis="";
 $tot_vlrcor="";
@@ -496,14 +496,14 @@ for ($i = 0;$i < $numrows;$i++){
   
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_numrows($result);
+     $numrows = pg_num_rows($result);
    }else{
      $numrows ='0';
    }  
 
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_numrows($result);
+     $numrows = pg_num_rows($result);
    }else{
      $numrows ='0';
    }
@@ -524,7 +524,7 @@ $pdf->cell(23,$alt,"Desconto",1,0,"C",1);
 $pdf->cell(23,$alt,"Total",1,0,"C",1);
 $pdf->setfont('arial','',8);
 $pdf->ln();
-$arr_receit=array();
+$arr_receit=[];
 
 $tot_vlrhis="";
 $tot_vlrcor="";
@@ -591,7 +591,7 @@ for ($i = 0;$i < $numrows;$i++){
   
    $result = @db_query($sql);
    if($result){
-     $numrows = pg_numrows($result);
+     $numrows = pg_num_rows($result);
    }else{
      $numrows ='0';
    } 
@@ -611,7 +611,7 @@ $pdf->cell(23,$alt,"Desconto",1,0,"C",1);
 $pdf->cell(23,$alt,"Total",1,0,"C",1);
 $pdf->setfont('arial','',8);
 $pdf->ln();
-$arr_receit=array();
+$arr_receit=[];
 
 $tot_vlrhis="";
 $tot_vlrcor="";
@@ -681,7 +681,7 @@ if($historico != ""){
   $vir='';
   $consta=($selehist=='S'?"SOMENTE HISTÓRICO DE CÁLCULO(S)-> ":" SEM HISTÓRICO DE CÁLCULO(S)-> "); 
   $result = db_query("select k01_descr from histcalc where k01_codigo in ($historico)");
-  for($x=0;$x<pg_numrows($result);$x++){
+  for($x=0;$x<pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
     $cod .= $vir.$k01_descr;
     $vir=", ";
@@ -697,7 +697,7 @@ if($receitas != ""){
   $vir='';
   $consta=($selerec=='S'?"SOMENTE O(S) TIPO(S) DE RECEITA(S)-> ":" SEM O(S) TIPO(S) DE RECEITA(S)-> "); 
   $result = db_query("select k02_descr from tabrec where k02_codigo in ($receitas)");
-  for($x=0;$x<pg_numrows($result);$x++){
+  for($x=0;$x<pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
     $cod .= $vir.$k02_descr;
     $vir=", ";
@@ -713,7 +713,7 @@ if($debitos != ""){
   $vir='';
   $consta=($seledeb=='S'?"SOMENTE O(S) TIPO(S) DE DÉBITO(S)-> ":" SEM O(S) TIPO(S) DE DÉBITO(S)-> "); 
   $result = db_query("select k00_descr from arretipo where k00_tipo in ($debitos)");
-  for($x=0;$x<pg_numrows($result);$x++){
+  for($x=0;$x<pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
     $cod .= $vir.$k00_descr;
     $vir=", ";

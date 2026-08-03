@@ -67,7 +67,7 @@ try {
         throw new DBException("Houve um erro ao buscar os fonecedores da licitação selecionada.");
       }
 
-      $aFornecedores      = array();
+      $aFornecedores      = [];
       $iTotalFornecedores = pg_num_rows($rsFornecedoresLicitacao);
       for ($i = 0; $i < $iTotalFornecedores; $i++) {
         $aFornecedores[] = db_utils::fieldsMemory($rsFornecedoresLicitacao, $i, false, false, true);

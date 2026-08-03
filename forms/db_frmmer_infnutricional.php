@@ -88,7 +88,7 @@ $clrotulo->label("me08_i_grupoalimento");
        <?=($db_botao1 == false?"disabled":"")?>>
 <br><br>
   <?php 
-  $chavepri= array("me08_i_codigo"=>@$me08_i_codigo, "me08_f_quant"=>@$me08_f_quant, "me08_i_nutriente"=>@$me08_i_nutriente, "me09_c_descr"=>@$me09_c_descr);
+  $chavepri= ["me08_i_codigo"=>@$me08_i_codigo, "me08_f_quant"=>@$me08_f_quant, "me08_i_nutriente"=>@$me08_i_nutriente, "me09_c_descr"=>@$me09_c_descr];
   $cliframe_alterar_excluir->chavepri = $chavepri;
   if (isset($me08_i_alimento) && @$me08_i_alimento != "") {
   	$campos  = " me35_c_nomealimento,me09_c_descr,me08_i_nutriente,me08_f_quant,";

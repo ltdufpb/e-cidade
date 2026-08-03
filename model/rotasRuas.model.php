@@ -80,7 +80,7 @@ class rotasRuas {
    * Lista das ruas da rota definida
    * @var array
    */
-  protected $aRuas = array(); 
+  protected $aRuas = []; 
   
   /**
    * Define Codigo da Rora

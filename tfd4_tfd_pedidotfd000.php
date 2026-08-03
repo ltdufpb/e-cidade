@@ -49,10 +49,10 @@ $sArquivo = "tfd4_tfd_pedidotfd001.php";
 <div style="display: flex; margin-top: 0; align-items: flex-start;">
     <form name="formaba">
         <?php
-        $clcriaabas->identifica = array('a1' => 'Pedido', 'a2' => 'Tratamento');
-        $clcriaabas->src = array('a1' => $sArquivo, 'a2' => '');
-        $clcriaabas->sizecampo = array('a1' => 20, 'a2' => 20);
-        $clcriaabas->disabled = array('a1' => 'false', 'a2' => 'true');
+        $clcriaabas->identifica = ['a1' => 'Pedido', 'a2' => 'Tratamento'];
+        $clcriaabas->src = ['a1' => $sArquivo, 'a2' => ''];
+        $clcriaabas->sizecampo = ['a1' => 20, 'a2' => 20];
+        $clcriaabas->disabled = ['a1' => 'false', 'a2' => 'true'];
         $clcriaabas->iframe_width = '100%';
         $clcriaabas->cria_abas();
         ?>

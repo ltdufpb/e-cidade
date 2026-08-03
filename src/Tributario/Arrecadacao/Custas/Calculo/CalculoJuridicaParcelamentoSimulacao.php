@@ -33,14 +33,8 @@ use ECidade\Tributario\Juridico\ProcessoForo\ProcessoForo;
 
 final class CalculoJuridicaParcelamentoSimulacao extends CalculoColecao implements Interfaces\Calculo
 {
-    private $termo;
-
-    private $processo;
-
-    public function __construct(Termo $termo, ProcessoForo $processo)
+    public function __construct(private readonly Termo $termo, private readonly ProcessoForo $processo)
     {
-        $this->termo = $termo;
-        $this->processo = $processo;
     }
 
     public function calcular()
@@ -90,7 +84,7 @@ final class CalculoJuridicaParcelamentoSimulacao extends CalculoColecao implemen
     {
         $rows = pg_fetch_all($rs);
 
-        $valores = array();
+        $valores = [];
 
         foreach ($rows as $row) {
             $valores[$row["numpar"]] = $this->factory($row["valor"], 0, 0, 0);

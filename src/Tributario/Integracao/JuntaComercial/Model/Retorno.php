@@ -85,14 +85,14 @@ class Retorno
    * @field LICENCAS
    * @var Licenca[] $aLicencas
    */
-  private $aLicencas = array();
+  private $aLicencas = [];
 
   /**
    * Lista das áreas/secretarias da instituição e seu parecer de acordo com o processo.
    * @field ANALISES
    * @var Area[] $aAnalises
    */
-  private $aAnalises = array();
+  private $aAnalises = [];
 
   /**
    * XML de retorno

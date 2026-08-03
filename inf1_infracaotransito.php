@@ -100,7 +100,7 @@ $oRotulo->label("i05_sequencial");
               </td>
               <td >
                 <?php
-                  $aTipos = array(''=> 'Selecione', '0'=>'Nível 0', '1' => 'Nível 1', '2' => 'Nível 2', '3' => 'Nível 3', '4' => 'Nível 4');
+                  $aTipos = [''=> 'Selecione', '0'=>'Nível 0', '1' => 'Nível 1', '2' => 'Nível 2', '3' => 'Nível 3', '4' => 'Nível 4'];
                   db_select("i05_nivel", $aTipos, false, 1);
                 ?>
               </td>

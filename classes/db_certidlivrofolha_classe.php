@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE certidlivrofolha
 class cl_certidlivrofolha { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v26_sequencial = 0; 
-   var $v26_certidlivro = 0; 
-   var $v26_certid = 0; 
-   var $v26_numerofolha = 0; 
+   public $v26_sequencial = 0; 
+   public $v26_certidlivro = 0; 
+   public $v26_certid = 0; 
+   public $v26_numerofolha = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v26_sequencial = int4 = Código Sequencial 
                  v26_certidlivro = int4 = Código do livro 
                  v26_certid = int4 = Código da CDA 
                  v26_numerofolha = int4 = Número da Folha 
                  ";
    //funcao construtor da classe 
-   function cl_certidlivrofolha() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certidlivrofolha"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_certidlivrofolha {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v26_sequencial = pg_result($result,0,0); 
+       $this->v26_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from certidlivrofolha_v26_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v26_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v26_sequencial)){
          $this->erro_sql = " Campo v26_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_certidlivrofolha {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "certidlivrofolha ($this->v26_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "certidlivrofolha já Cadastrado";
@@ -180,13 +180,13 @@ class cl_certidlivrofolha {
      $resaco = $this->sql_record($this->sql_query_file($this->v26_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14839,'$this->v26_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2612,14839,'','".AddSlashes(pg_result($resaco,0,'v26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2612,14840,'','".AddSlashes(pg_result($resaco,0,'v26_certidlivro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2612,14841,'','".AddSlashes(pg_result($resaco,0,'v26_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2612,14842,'','".AddSlashes(pg_result($resaco,0,'v26_numerofolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2612,14839,'','".AddSlashes(pg_fetch_result($resaco,0,'v26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2612,14840,'','".AddSlashes(pg_fetch_result($resaco,0,'v26_certidlivro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2612,14841,'','".AddSlashes(pg_fetch_result($resaco,0,'v26_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2612,14842,'','".AddSlashes(pg_fetch_result($resaco,0,'v26_numerofolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_certidlivrofolha {
       $this->atualizacampos();
      $sql = " update certidlivrofolha set ";
      $virgula = "";
-     if(trim($this->v26_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v26_sequencial"])){ 
+     if(trim((string) $this->v26_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v26_sequencial"])){ 
        $sql  .= $virgula." v26_sequencial = $this->v26_sequencial ";
        $virgula = ",";
-       if(trim($this->v26_sequencial) == null ){ 
+       if(trim((string) $this->v26_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "v26_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_certidlivrofolha {
          return false;
        }
      }
-     if(trim($this->v26_certidlivro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v26_certidlivro"])){ 
+     if(trim((string) $this->v26_certidlivro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v26_certidlivro"])){ 
        $sql  .= $virgula." v26_certidlivro = $this->v26_certidlivro ";
        $virgula = ",";
-       if(trim($this->v26_certidlivro) == null ){ 
+       if(trim((string) $this->v26_certidlivro) == null ){ 
          $this->erro_sql = " Campo Código do livro nao Informado.";
          $this->erro_campo = "v26_certidlivro";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_certidlivrofolha {
          return false;
        }
      }
-     if(trim($this->v26_certid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v26_certid"])){ 
+     if(trim((string) $this->v26_certid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v26_certid"])){ 
        $sql  .= $virgula." v26_certid = $this->v26_certid ";
        $virgula = ",";
-       if(trim($this->v26_certid) == null ){ 
+       if(trim((string) $this->v26_certid) == null ){ 
          $this->erro_sql = " Campo Código da CDA nao Informado.";
          $this->erro_campo = "v26_certid";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_certidlivrofolha {
          return false;
        }
      }
-     if(trim($this->v26_numerofolha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v26_numerofolha"])){ 
+     if(trim((string) $this->v26_numerofolha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v26_numerofolha"])){ 
        $sql  .= $virgula." v26_numerofolha = $this->v26_numerofolha ";
        $virgula = ",";
-       if(trim($this->v26_numerofolha) == null ){ 
+       if(trim((string) $this->v26_numerofolha) == null ){ 
          $this->erro_sql = " Campo Número da Folha nao Informado.";
          $this->erro_campo = "v26_numerofolha";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_certidlivrofolha {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14839,'$this->v26_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v26_sequencial"]) || $this->v26_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2612,14839,'".AddSlashes(pg_result($resaco,$conresaco,'v26_sequencial'))."','$this->v26_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2612,14839,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v26_sequencial'))."','$this->v26_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v26_certidlivro"]) || $this->v26_certidlivro != "")
-           $resac = db_query("insert into db_acount values($acount,2612,14840,'".AddSlashes(pg_result($resaco,$conresaco,'v26_certidlivro'))."','$this->v26_certidlivro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2612,14840,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v26_certidlivro'))."','$this->v26_certidlivro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v26_certid"]) || $this->v26_certid != "")
-           $resac = db_query("insert into db_acount values($acount,2612,14841,'".AddSlashes(pg_result($resaco,$conresaco,'v26_certid'))."','$this->v26_certid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2612,14841,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v26_certid'))."','$this->v26_certid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v26_numerofolha"]) || $this->v26_numerofolha != "")
-           $resac = db_query("insert into db_acount values($acount,2612,14842,'".AddSlashes(pg_result($resaco,$conresaco,'v26_numerofolha'))."','$this->v26_numerofolha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2612,14842,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v26_numerofolha'))."','$this->v26_numerofolha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_certidlivrofolha {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14839,'$v26_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2612,14839,'','".AddSlashes(pg_result($resaco,$iresaco,'v26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2612,14840,'','".AddSlashes(pg_result($resaco,$iresaco,'v26_certidlivro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2612,14841,'','".AddSlashes(pg_result($resaco,$iresaco,'v26_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2612,14842,'','".AddSlashes(pg_result($resaco,$iresaco,'v26_numerofolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2612,14839,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2612,14840,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v26_certidlivro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2612,14841,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v26_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2612,14842,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v26_numerofolha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from certidlivrofolha
@@ -376,7 +376,7 @@ class cl_certidlivrofolha {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:certidlivrofolha";
@@ -391,7 +391,7 @@ class cl_certidlivrofolha {
    function sql_query ( $v26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -414,7 +414,7 @@ class cl_certidlivrofolha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,7 +427,7 @@ class cl_certidlivrofolha {
    function sql_query_file ( $v26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -448,7 +448,7 @@ class cl_certidlivrofolha {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -462,7 +462,7 @@ class cl_certidlivrofolha {
      
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -491,7 +491,7 @@ class cl_certidlivrofolha {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

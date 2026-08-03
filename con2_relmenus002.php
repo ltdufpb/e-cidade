@@ -28,8 +28,8 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("classes/db_db_versao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //echo "mod = $mod";
 
 $cldb_versao = new cl_db_versao;
@@ -56,7 +56,7 @@ $sql = "select m.id_item,nome_modulo
 
 $res = db_query($sql);
 
-$numrows = pg_numrows($res);
+$numrows = pg_num_rows($res);
 
 for($i=0;$i<$numrows;$i++){
     
@@ -64,8 +64,8 @@ for($i=0;$i<$numrows;$i++){
 
   $espacos = $id_item;
 
-  $matriz_item = array();
-  $matriz_item_seleciona = array();
+  $matriz_item = [];
+  $matriz_item_seleciona = [];
 
 
     $head3 = "Modulo: $nome_modulo";
@@ -75,16 +75,16 @@ for($i=0;$i<$numrows;$i++){
     $pdf->Cell(15,4,"Modulo: $nome_modulo",0,1,"L");
     $pdf->SetFont('Arial','',7);
  
-    $matriz_item_seleciona = array();
+    $matriz_item_seleciona = [];
 
-    $lista = array();
+    $lista = [];
     
     monta_menu($id_item,$id_item,$espacos,$lista);
     
-    $itens_listados = array("$id_item"=>"$id_item");
+    $itens_listados = ["$id_item"=>"$id_item"];
 
     for($x=0;$x<count($matriz_item_seleciona);$x++){
-      $impmat = split("-",$matriz_item_seleciona[$x]);
+      $impmat = preg_split("#\\-#m",$matriz_item_seleciona[$x]);
       for($imp=0;$imp<count($impmat);$imp++){
         if( ! isset($itens_listados[$impmat[$imp]])){
           
@@ -96,7 +96,7 @@ for($i=0;$i<$numrows;$i++){
           $resi = db_query($sql);
           $linhas = pg_num_rows($resi);
           if($linhas >0){
-            $descr = pg_result($resi,0,0);
+            $descr = pg_fetch_result($resi,0,0);
 	          //$pdf->Cell($imp*5,4,$matriz_item_seleciona[$x],0,0,"L");
 	          $pdf->Cell($imp*5,4,'',0,0,"L");
 	          

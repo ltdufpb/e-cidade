@@ -54,15 +54,15 @@ $clrotulo->label("c60_naturezasaldo");
 $clrotulo->label("c64_descr");
 
 $displayrecursoUniao = 'none';
-$tiposresultadoPrimario = array("0" => "selecione");
+$tiposresultadoPrimario = ["0" => "selecione"];
 if (FONTE_RECURSO_UNIAO) {
     $displayrecursoUniao = '';
-    $tiposresultadoPrimario = array (
+    $tiposresultadoPrimario =  [
         "1" => "Financeiro",
         "2" => "Primário",
         "3"  => "Primária Obrigatória",
         "4" =>  "Primária Discricionária"
-    );
+    ];
 }
 ?>
 <html>
@@ -144,10 +144,10 @@ if (FONTE_RECURSO_UNIAO) {
                                                 <td nowrap="nowrap" title="Tipo da conta"><b>Tipo de conta:</b></td>
                                                 <td>
                                                     <?php
-                                                    $aTiposConta = array (
+                                                    $aTiposConta =  [
                                                         'analitica' => 'Analítica',
                                                         'sintetica' => 'Sintética'
-                                                    );
+                                                    ];
                                                     db_select('sTipoConta', $aTiposConta, true, $db_opcao, 'onChange="js_selecionaTipoConta()"');
                                                     ?>
                                                 </td>
@@ -177,11 +177,11 @@ if (FONTE_RECURSO_UNIAO) {
                                                 <td nowrap="nowrap"><b>Natureza de Saldo:</b></td>
                                                 <td>
                                                     <?php
-                                                    $aTiposNaturezaSaldo = array (
+                                                    $aTiposNaturezaSaldo =  [
                                                         "1" => "Saldo Devedor",
                                                         "2" => "Saldo Credor",
                                                         "3" => "Ambos"
-                                                    );
+                                                    ];
                                                     db_select('c60_naturezasaldo', $aTiposNaturezaSaldo, true, $db_opcao);
                                                     ?>
                                                 </td>

@@ -140,9 +140,9 @@ $oRotulo->label('z01_v_nome');
           $sWhere .= "s113_d_exame = '{$data}'"; 
         }
         $sql = $oAgendaExames->sql_query(null, $campos,"z01_v_nome", $sWhere);
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_z01_i_cgsund)) { 
-          $repassa = array("chave_z01_i_cgsund"=>$chave_z01_i_cgsund);
+          $repassa = ["chave_z01_i_cgsund"=>$chave_z01_i_cgsund];
         }
         if (count($_POST) > 0) {
           db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

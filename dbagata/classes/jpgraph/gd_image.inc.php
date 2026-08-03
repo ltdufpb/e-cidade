@@ -13,449 +13,449 @@
 // Description: Color definitions as RGB triples
 //===================================================
 class RGB {
-    var $rgb_table;
-    var $img;
-    function RGB(&$aImg) {
+    public $rgb_table;
+    public $img;
+    function __construct(&$aImg) {
 	$this->img = &$aImg;
 		
 	// Conversion array between color names and RGB
-	$this->rgb_table = array(
-	    "aqua"=> array(0,255,255),		
-	    "lime"=> array(0,255,0),		
-	    "teal"=> array(0,128,128),
-	    "whitesmoke"=>array(245,245,245),
-	    "gainsboro"=>array(220,220,220),
-	    "oldlace"=>array(253,245,230),
-	    "linen"=>array(250,240,230),
-	    "antiquewhite"=>array(250,235,215),
-	    "papayawhip"=>array(255,239,213),
-	    "blanchedalmond"=>array(255,235,205),
-	    "bisque"=>array(255,228,196),
-	    "peachpuff"=>array(255,218,185),
-	    "navajowhite"=>array(255,222,173),
-	    "moccasin"=>array(255,228,181),
-	    "cornsilk"=>array(255,248,220),
-	    "ivory"=>array(255,255,240),
-	    "lemonchiffon"=>array(255,250,205),
-	    "seashell"=>array(255,245,238),
-	    "mintcream"=>array(245,255,250),
-	    "azure"=>array(240,255,255),
-	    "aliceblue"=>array(240,248,255),
-	    "lavender"=>array(230,230,250),
-	    "lavenderblush"=>array(255,240,245),
-	    "mistyrose"=>array(255,228,225),
-	    "white"=>array(255,255,255),
-	    "black"=>array(0,0,0),
-	    "darkslategray"=>array(47,79,79),
-	    "dimgray"=>array(105,105,105),
-	    "slategray"=>array(112,128,144),
-	    "lightslategray"=>array(119,136,153),
-	    "gray"=>array(190,190,190),
-	    "lightgray"=>array(211,211,211),
-	    "midnightblue"=>array(25,25,112),
-	    "navy"=>array(0,0,128),
-	    "cornflowerblue"=>array(100,149,237),
-	    "darkslateblue"=>array(72,61,139),
-	    "slateblue"=>array(106,90,205),
-	    "mediumslateblue"=>array(123,104,238),
-	    "lightslateblue"=>array(132,112,255),
-	    "mediumblue"=>array(0,0,205),
-	    "royalblue"=>array(65,105,225),
-	    "blue"=>array(0,0,255),
-	    "dodgerblue"=>array(30,144,255),
-	    "deepskyblue"=>array(0,191,255),
-	    "skyblue"=>array(135,206,235),
-	    "lightskyblue"=>array(135,206,250),
-	    "steelblue"=>array(70,130,180),
-	    "lightred"=>array(211,167,168),
-	    "lightsteelblue"=>array(176,196,222),
-	    "lightblue"=>array(173,216,230),
-	    "powderblue"=>array(176,224,230),
-	    "paleturquoise"=>array(175,238,238),
-	    "darkturquoise"=>array(0,206,209),
-	    "mediumturquoise"=>array(72,209,204),
-	    "turquoise"=>array(64,224,208),
-	    "cyan"=>array(0,255,255),
-	    "lightcyan"=>array(224,255,255),
-	    "cadetblue"=>array(95,158,160),
-	    "mediumaquamarine"=>array(102,205,170),
-	    "aquamarine"=>array(127,255,212),
-	    "darkgreen"=>array(0,100,0),
-	    "darkolivegreen"=>array(85,107,47),
-	    "darkseagreen"=>array(143,188,143),
-	    "seagreen"=>array(46,139,87),
-	    "mediumseagreen"=>array(60,179,113),
-	    "lightseagreen"=>array(32,178,170),
-	    "palegreen"=>array(152,251,152),
-	    "springgreen"=>array(0,255,127),
-	    "lawngreen"=>array(124,252,0),
-	    "green"=>array(0,255,0),
-	    "chartreuse"=>array(127,255,0),
-	    "mediumspringgreen"=>array(0,250,154),
-	    "greenyellow"=>array(173,255,47),
-	    "limegreen"=>array(50,205,50),
-	    "yellowgreen"=>array(154,205,50),
-	    "forestgreen"=>array(34,139,34),
-	    "olivedrab"=>array(107,142,35),
-	    "darkkhaki"=>array(189,183,107),
-	    "khaki"=>array(240,230,140),
-	    "palegoldenrod"=>array(238,232,170),
-	    "lightgoldenrodyellow"=>array(250,250,210),
-	    "lightyellow"=>array(255,255,200),
-	    "yellow"=>array(255,255,0),
-	    "gold"=>array(255,215,0),
-	    "lightgoldenrod"=>array(238,221,130),
-	    "goldenrod"=>array(218,165,32),
-	    "darkgoldenrod"=>array(184,134,11),
-	    "rosybrown"=>array(188,143,143),
-	    "indianred"=>array(205,92,92),
-	    "saddlebrown"=>array(139,69,19),
-	    "sienna"=>array(160,82,45),
-	    "peru"=>array(205,133,63),
-	    "burlywood"=>array(222,184,135),
-	    "beige"=>array(245,245,220),
-	    "wheat"=>array(245,222,179),
-	    "sandybrown"=>array(244,164,96),
-	    "tan"=>array(210,180,140),
-	    "chocolate"=>array(210,105,30),
-	    "firebrick"=>array(178,34,34),
-	    "brown"=>array(165,42,42),
-	    "darksalmon"=>array(233,150,122),
-	    "salmon"=>array(250,128,114),
-	    "lightsalmon"=>array(255,160,122),
-	    "orange"=>array(255,165,0),
-	    "darkorange"=>array(255,140,0),
-	    "coral"=>array(255,127,80),
-	    "lightcoral"=>array(240,128,128),
-	    "tomato"=>array(255,99,71),
-	    "orangered"=>array(255,69,0),
-	    "red"=>array(255,0,0),
-	    "hotpink"=>array(255,105,180),
-	    "deeppink"=>array(255,20,147),
-	    "pink"=>array(255,192,203),
-	    "lightpink"=>array(255,182,193),
-	    "palevioletred"=>array(219,112,147),
-	    "maroon"=>array(176,48,96),
-	    "mediumvioletred"=>array(199,21,133),
-	    "violetred"=>array(208,32,144),
-	    "magenta"=>array(255,0,255),
-	    "violet"=>array(238,130,238),
-	    "plum"=>array(221,160,221),
-	    "orchid"=>array(218,112,214),
-	    "mediumorchid"=>array(186,85,211),
-	    "darkorchid"=>array(153,50,204),
-	    "darkviolet"=>array(148,0,211),
-	    "blueviolet"=>array(138,43,226),
-	    "purple"=>array(160,32,240),
-	    "mediumpurple"=>array(147,112,219),
-	    "thistle"=>array(216,191,216),
-	    "snow1"=>array(255,250,250),
-	    "snow2"=>array(238,233,233),
-	    "snow3"=>array(205,201,201),
-	    "snow4"=>array(139,137,137),
-	    "seashell1"=>array(255,245,238),
-	    "seashell2"=>array(238,229,222),
-	    "seashell3"=>array(205,197,191),
-	    "seashell4"=>array(139,134,130),
-	    "AntiqueWhite1"=>array(255,239,219),
-	    "AntiqueWhite2"=>array(238,223,204),
-	    "AntiqueWhite3"=>array(205,192,176),
-	    "AntiqueWhite4"=>array(139,131,120),
-	    "bisque1"=>array(255,228,196),
-	    "bisque2"=>array(238,213,183),
-	    "bisque3"=>array(205,183,158),
-	    "bisque4"=>array(139,125,107),
-	    "peachPuff1"=>array(255,218,185),
-	    "peachpuff2"=>array(238,203,173),
-	    "peachpuff3"=>array(205,175,149),
-	    "peachpuff4"=>array(139,119,101),
-	    "navajowhite1"=>array(255,222,173),
-	    "navajowhite2"=>array(238,207,161),
-	    "navajowhite3"=>array(205,179,139),
-	    "navajowhite4"=>array(139,121,94),
-	    "lemonchiffon1"=>array(255,250,205),
-	    "lemonchiffon2"=>array(238,233,191),
-	    "lemonchiffon3"=>array(205,201,165),
-	    "lemonchiffon4"=>array(139,137,112),
-	    "ivory1"=>array(255,255,240),
-	    "ivory2"=>array(238,238,224),
-	    "ivory3"=>array(205,205,193),
-	    "ivory4"=>array(139,139,131),
-	    "honeydew"=>array(193,205,193),
-	    "lavenderblush1"=>array(255,240,245),
-	    "lavenderblush2"=>array(238,224,229),
-	    "lavenderblush3"=>array(205,193,197),
-	    "lavenderblush4"=>array(139,131,134),
-	    "mistyrose1"=>array(255,228,225),
-	    "mistyrose2"=>array(238,213,210),
-	    "mistyrose3"=>array(205,183,181),
-	    "mistyrose4"=>array(139,125,123),
-	    "azure1"=>array(240,255,255),
-	    "azure2"=>array(224,238,238),
-	    "azure3"=>array(193,205,205),
-	    "azure4"=>array(131,139,139),
-	    "slateblue1"=>array(131,111,255),
-	    "slateblue2"=>array(122,103,238),
-	    "slateblue3"=>array(105,89,205),
-	    "slateblue4"=>array(71,60,139),
-	    "royalblue1"=>array(72,118,255),
-	    "royalblue2"=>array(67,110,238),
-	    "royalblue3"=>array(58,95,205),
-	    "royalblue4"=>array(39,64,139),
-	    "dodgerblue1"=>array(30,144,255),
-	    "dodgerblue2"=>array(28,134,238),
-	    "dodgerblue3"=>array(24,116,205),
-	    "dodgerblue4"=>array(16,78,139),
-	    "steelblue1"=>array(99,184,255),
-	    "steelblue2"=>array(92,172,238),
-	    "steelblue3"=>array(79,148,205),
-	    "steelblue4"=>array(54,100,139),
-	    "deepskyblue1"=>array(0,191,255),
-	    "deepskyblue2"=>array(0,178,238),
-	    "deepskyblue3"=>array(0,154,205),
-	    "deepskyblue4"=>array(0,104,139),
-	    "skyblue1"=>array(135,206,255),
-	    "skyblue2"=>array(126,192,238),
-	    "skyblue3"=>array(108,166,205),
-	    "skyblue4"=>array(74,112,139),
-	    "lightskyblue1"=>array(176,226,255),
-	    "lightskyblue2"=>array(164,211,238),
-	    "lightskyblue3"=>array(141,182,205),
-	    "lightskyblue4"=>array(96,123,139),
-	    "slategray1"=>array(198,226,255),
-	    "slategray2"=>array(185,211,238),
-	    "slategray3"=>array(159,182,205),
-	    "slategray4"=>array(108,123,139),
-	    "lightsteelblue1"=>array(202,225,255),
-	    "lightsteelblue2"=>array(188,210,238),
-	    "lightsteelblue3"=>array(162,181,205),
-	    "lightsteelblue4"=>array(110,123,139),
-	    "lightblue1"=>array(191,239,255),
-	    "lightblue2"=>array(178,223,238),
-	    "lightblue3"=>array(154,192,205),
-	    "lightblue4"=>array(104,131,139),
-	    "lightcyan1"=>array(224,255,255),
-	    "lightcyan2"=>array(209,238,238),
-	    "lightcyan3"=>array(180,205,205),
-	    "lightcyan4"=>array(122,139,139),
-	    "paleturquoise1"=>array(187,255,255),
-	    "paleturquoise2"=>array(174,238,238),
-	    "paleturquoise3"=>array(150,205,205),
-	    "paleturquoise4"=>array(102,139,139),
-	    "cadetblue1"=>array(152,245,255),
-	    "cadetblue2"=>array(142,229,238),
-	    "cadetblue3"=>array(122,197,205),
-	    "cadetblue4"=>array(83,134,139),
-	    "turquoise1"=>array(0,245,255),
-	    "turquoise2"=>array(0,229,238),
-	    "turquoise3"=>array(0,197,205),
-	    "turquoise4"=>array(0,134,139),
-	    "cyan1"=>array(0,255,255),
-	    "cyan2"=>array(0,238,238),
-	    "cyan3"=>array(0,205,205),
-	    "cyan4"=>array(0,139,139),
-	    "darkslategray1"=>array(151,255,255),
-	    "darkslategray2"=>array(141,238,238),
-	    "darkslategray3"=>array(121,205,205),
-	    "darkslategray4"=>array(82,139,139),
-	    "aquamarine1"=>array(127,255,212),
-	    "aquamarine2"=>array(118,238,198),
-	    "aquamarine3"=>array(102,205,170),
-	    "aquamarine4"=>array(69,139,116),
-	    "darkseagreen1"=>array(193,255,193),
-	    "darkseagreen2"=>array(180,238,180),
-	    "darkseagreen3"=>array(155,205,155),
-	    "darkseagreen4"=>array(105,139,105),
-	    "seagreen1"=>array(84,255,159),
-	    "seagreen2"=>array(78,238,148),
-	    "seagreen3"=>array(67,205,128),
-	    "seagreen4"=>array(46,139,87),
-	    "palegreen1"=>array(154,255,154),
-	    "palegreen2"=>array(144,238,144),
-	    "palegreen3"=>array(124,205,124),
-	    "palegreen4"=>array(84,139,84),
-	    "springgreen1"=>array(0,255,127),
-	    "springgreen2"=>array(0,238,118),
-	    "springgreen3"=>array(0,205,102),
-	    "springgreen4"=>array(0,139,69),
-	    "chartreuse1"=>array(127,255,0),
-	    "chartreuse2"=>array(118,238,0),
-	    "chartreuse3"=>array(102,205,0),
-	    "chartreuse4"=>array(69,139,0),
-	    "olivedrab1"=>array(192,255,62),
-	    "olivedrab2"=>array(179,238,58),
-	    "olivedrab3"=>array(154,205,50),
-	    "olivedrab4"=>array(105,139,34),
-	    "darkolivegreen1"=>array(202,255,112),
-	    "darkolivegreen2"=>array(188,238,104),
-	    "darkolivegreen3"=>array(162,205,90),
-	    "darkolivegreen4"=>array(110,139,61),
-	    "khaki1"=>array(255,246,143),
-	    "khaki2"=>array(238,230,133),
-	    "khaki3"=>array(205,198,115),
-	    "khaki4"=>array(139,134,78),
-	    "lightgoldenrod1"=>array(255,236,139),
-	    "lightgoldenrod2"=>array(238,220,130),
-	    "lightgoldenrod3"=>array(205,190,112),
-	    "lightgoldenrod4"=>array(139,129,76),
-	    "yellow1"=>array(255,255,0),
-	    "yellow2"=>array(238,238,0),
-	    "yellow3"=>array(205,205,0),
-	    "yellow4"=>array(139,139,0),
-	    "gold1"=>array(255,215,0),
-	    "gold2"=>array(238,201,0),
-	    "gold3"=>array(205,173,0),
-	    "gold4"=>array(139,117,0),
-	    "goldenrod1"=>array(255,193,37),
-	    "goldenrod2"=>array(238,180,34),
-	    "goldenrod3"=>array(205,155,29),
-	    "goldenrod4"=>array(139,105,20),
-	    "darkgoldenrod1"=>array(255,185,15),
-	    "darkgoldenrod2"=>array(238,173,14),
-	    "darkgoldenrod3"=>array(205,149,12),
-	    "darkgoldenrod4"=>array(139,101,8),
-	    "rosybrown1"=>array(255,193,193),
-	    "rosybrown2"=>array(238,180,180),
-	    "rosybrown3"=>array(205,155,155),
-	    "rosybrown4"=>array(139,105,105),
-	    "indianred1"=>array(255,106,106),
-	    "indianred2"=>array(238,99,99),
-	    "indianred3"=>array(205,85,85),
-	    "indianred4"=>array(139,58,58),
-	    "sienna1"=>array(255,130,71),
-	    "sienna2"=>array(238,121,66),
-	    "sienna3"=>array(205,104,57),
-	    "sienna4"=>array(139,71,38),
-	    "burlywood1"=>array(255,211,155),
-	    "burlywood2"=>array(238,197,145),
-	    "burlywood3"=>array(205,170,125),
-	    "burlywood4"=>array(139,115,85),
-	    "wheat1"=>array(255,231,186),
-	    "wheat2"=>array(238,216,174),
-	    "wheat3"=>array(205,186,150),
-	    "wheat4"=>array(139,126,102),
-	    "tan1"=>array(255,165,79),
-	    "tan2"=>array(238,154,73),
-	    "tan3"=>array(205,133,63),
-	    "tan4"=>array(139,90,43),
-	    "chocolate1"=>array(255,127,36),
-	    "chocolate2"=>array(238,118,33),
-	    "chocolate3"=>array(205,102,29),
-	    "chocolate4"=>array(139,69,19),
-	    "firebrick1"=>array(255,48,48),
-	    "firebrick2"=>array(238,44,44),
-	    "firebrick3"=>array(205,38,38),
-	    "firebrick4"=>array(139,26,26),
-	    "brown1"=>array(255,64,64),
-	    "brown2"=>array(238,59,59),
-	    "brown3"=>array(205,51,51),
-	    "brown4"=>array(139,35,35),
-	    "salmon1"=>array(255,140,105),
-	    "salmon2"=>array(238,130,98),
-	    "salmon3"=>array(205,112,84),
-	    "salmon4"=>array(139,76,57),
-	    "lightsalmon1"=>array(255,160,122),
-	    "lightsalmon2"=>array(238,149,114),
-	    "lightsalmon3"=>array(205,129,98),
-	    "lightsalmon4"=>array(139,87,66),
-	    "orange1"=>array(255,165,0),
-	    "orange2"=>array(238,154,0),
-	    "orange3"=>array(205,133,0),
-	    "orange4"=>array(139,90,0),
-	    "darkorange1"=>array(255,127,0),
-	    "darkorange2"=>array(238,118,0),
-	    "darkorange3"=>array(205,102,0),
-	    "darkorange4"=>array(139,69,0),
-	    "coral1"=>array(255,114,86),
-	    "coral2"=>array(238,106,80),
-	    "coral3"=>array(205,91,69),
-	    "coral4"=>array(139,62,47),
-	    "tomato1"=>array(255,99,71),
-	    "tomato2"=>array(238,92,66),
-	    "tomato3"=>array(205,79,57),
-	    "tomato4"=>array(139,54,38),
-	    "orangered1"=>array(255,69,0),
-	    "orangered2"=>array(238,64,0),
-	    "orangered3"=>array(205,55,0),
-	    "orangered4"=>array(139,37,0),
-	    "deeppink1"=>array(255,20,147),
-	    "deeppink2"=>array(238,18,137),
-	    "deeppink3"=>array(205,16,118),
-	    "deeppink4"=>array(139,10,80),
-	    "hotpink1"=>array(255,110,180),
-	    "hotpink2"=>array(238,106,167),
-	    "hotpink3"=>array(205,96,144),
-	    "hotpink4"=>array(139,58,98),
-	    "pink1"=>array(255,181,197),
-	    "pink2"=>array(238,169,184),
-	    "pink3"=>array(205,145,158),
-	    "pink4"=>array(139,99,108),
-	    "lightpink1"=>array(255,174,185),
-	    "lightpink2"=>array(238,162,173),
-	    "lightpink3"=>array(205,140,149),
-	    "lightpink4"=>array(139,95,101),
-	    "palevioletred1"=>array(255,130,171),
-	    "palevioletred2"=>array(238,121,159),
-	    "palevioletred3"=>array(205,104,137),
-	    "palevioletred4"=>array(139,71,93),
-	    "maroon1"=>array(255,52,179),
-	    "maroon2"=>array(238,48,167),
-	    "maroon3"=>array(205,41,144),
-	    "maroon4"=>array(139,28,98),
-	    "violetred1"=>array(255,62,150),
-	    "violetred2"=>array(238,58,140),
-	    "violetred3"=>array(205,50,120),
-	    "violetred4"=>array(139,34,82),
-	    "magenta1"=>array(255,0,255),
-	    "magenta2"=>array(238,0,238),
-	    "magenta3"=>array(205,0,205),
-	    "magenta4"=>array(139,0,139),
-	    "mediumred"=>array(140,34,34),         
-	    "orchid1"=>array(255,131,250),
-	    "orchid2"=>array(238,122,233),
-	    "orchid3"=>array(205,105,201),
-	    "orchid4"=>array(139,71,137),
-	    "plum1"=>array(255,187,255),
-	    "plum2"=>array(238,174,238),
-	    "plum3"=>array(205,150,205),
-	    "plum4"=>array(139,102,139),
-	    "mediumorchid1"=>array(224,102,255),
-	    "mediumorchid2"=>array(209,95,238),
-	    "mediumorchid3"=>array(180,82,205),
-	    "mediumorchid4"=>array(122,55,139),
-	    "darkorchid1"=>array(191,62,255),
-	    "darkorchid2"=>array(178,58,238),
-	    "darkorchid3"=>array(154,50,205),
-	    "darkorchid4"=>array(104,34,139),
-	    "purple1"=>array(155,48,255),
-	    "purple2"=>array(145,44,238),
-	    "purple3"=>array(125,38,205),
-	    "purple4"=>array(85,26,139),
-	    "mediumpurple1"=>array(171,130,255),
-	    "mediumpurple2"=>array(159,121,238),
-	    "mediumpurple3"=>array(137,104,205),
-	    "mediumpurple4"=>array(93,71,139),
-	    "thistle1"=>array(255,225,255),
-	    "thistle2"=>array(238,210,238),
-	    "thistle3"=>array(205,181,205),
-	    "thistle4"=>array(139,123,139),
-	    "gray1"=>array(10,10,10),
-	    "gray2"=>array(40,40,30),
-	    "gray3"=>array(70,70,70),
-	    "gray4"=>array(100,100,100),
-	    "gray5"=>array(130,130,130),
-	    "gray6"=>array(160,160,160),
-	    "gray7"=>array(190,190,190),
-	    "gray8"=>array(210,210,210),
-	    "gray9"=>array(240,240,240),
-	    "darkgray"=>array(100,100,100),
-	    "darkblue"=>array(0,0,139),
-	    "darkcyan"=>array(0,139,139),
-	    "darkmagenta"=>array(139,0,139),
-	    "darkred"=>array(139,0,0),
-	    "silver"=>array(192, 192, 192),
-	    "eggplant"=>array(144,176,168),
-	    "lightgreen"=>array(144,238,144));		
+	$this->rgb_table = [
+	    "aqua"=> [0,255,255],		
+	    "lime"=> [0,255,0],		
+	    "teal"=> [0,128,128],
+	    "whitesmoke"=>[245,245,245],
+	    "gainsboro"=>[220,220,220],
+	    "oldlace"=>[253,245,230],
+	    "linen"=>[250,240,230],
+	    "antiquewhite"=>[250,235,215],
+	    "papayawhip"=>[255,239,213],
+	    "blanchedalmond"=>[255,235,205],
+	    "bisque"=>[255,228,196],
+	    "peachpuff"=>[255,218,185],
+	    "navajowhite"=>[255,222,173],
+	    "moccasin"=>[255,228,181],
+	    "cornsilk"=>[255,248,220],
+	    "ivory"=>[255,255,240],
+	    "lemonchiffon"=>[255,250,205],
+	    "seashell"=>[255,245,238],
+	    "mintcream"=>[245,255,250],
+	    "azure"=>[240,255,255],
+	    "aliceblue"=>[240,248,255],
+	    "lavender"=>[230,230,250],
+	    "lavenderblush"=>[255,240,245],
+	    "mistyrose"=>[255,228,225],
+	    "white"=>[255,255,255],
+	    "black"=>[0,0,0],
+	    "darkslategray"=>[47,79,79],
+	    "dimgray"=>[105,105,105],
+	    "slategray"=>[112,128,144],
+	    "lightslategray"=>[119,136,153],
+	    "gray"=>[190,190,190],
+	    "lightgray"=>[211,211,211],
+	    "midnightblue"=>[25,25,112],
+	    "navy"=>[0,0,128],
+	    "cornflowerblue"=>[100,149,237],
+	    "darkslateblue"=>[72,61,139],
+	    "slateblue"=>[106,90,205],
+	    "mediumslateblue"=>[123,104,238],
+	    "lightslateblue"=>[132,112,255],
+	    "mediumblue"=>[0,0,205],
+	    "royalblue"=>[65,105,225],
+	    "blue"=>[0,0,255],
+	    "dodgerblue"=>[30,144,255],
+	    "deepskyblue"=>[0,191,255],
+	    "skyblue"=>[135,206,235],
+	    "lightskyblue"=>[135,206,250],
+	    "steelblue"=>[70,130,180],
+	    "lightred"=>[211,167,168],
+	    "lightsteelblue"=>[176,196,222],
+	    "lightblue"=>[173,216,230],
+	    "powderblue"=>[176,224,230],
+	    "paleturquoise"=>[175,238,238],
+	    "darkturquoise"=>[0,206,209],
+	    "mediumturquoise"=>[72,209,204],
+	    "turquoise"=>[64,224,208],
+	    "cyan"=>[0,255,255],
+	    "lightcyan"=>[224,255,255],
+	    "cadetblue"=>[95,158,160],
+	    "mediumaquamarine"=>[102,205,170],
+	    "aquamarine"=>[127,255,212],
+	    "darkgreen"=>[0,100,0],
+	    "darkolivegreen"=>[85,107,47],
+	    "darkseagreen"=>[143,188,143],
+	    "seagreen"=>[46,139,87],
+	    "mediumseagreen"=>[60,179,113],
+	    "lightseagreen"=>[32,178,170],
+	    "palegreen"=>[152,251,152],
+	    "springgreen"=>[0,255,127],
+	    "lawngreen"=>[124,252,0],
+	    "green"=>[0,255,0],
+	    "chartreuse"=>[127,255,0],
+	    "mediumspringgreen"=>[0,250,154],
+	    "greenyellow"=>[173,255,47],
+	    "limegreen"=>[50,205,50],
+	    "yellowgreen"=>[154,205,50],
+	    "forestgreen"=>[34,139,34],
+	    "olivedrab"=>[107,142,35],
+	    "darkkhaki"=>[189,183,107],
+	    "khaki"=>[240,230,140],
+	    "palegoldenrod"=>[238,232,170],
+	    "lightgoldenrodyellow"=>[250,250,210],
+	    "lightyellow"=>[255,255,200],
+	    "yellow"=>[255,255,0],
+	    "gold"=>[255,215,0],
+	    "lightgoldenrod"=>[238,221,130],
+	    "goldenrod"=>[218,165,32],
+	    "darkgoldenrod"=>[184,134,11],
+	    "rosybrown"=>[188,143,143],
+	    "indianred"=>[205,92,92],
+	    "saddlebrown"=>[139,69,19],
+	    "sienna"=>[160,82,45],
+	    "peru"=>[205,133,63],
+	    "burlywood"=>[222,184,135],
+	    "beige"=>[245,245,220],
+	    "wheat"=>[245,222,179],
+	    "sandybrown"=>[244,164,96],
+	    "tan"=>[210,180,140],
+	    "chocolate"=>[210,105,30],
+	    "firebrick"=>[178,34,34],
+	    "brown"=>[165,42,42],
+	    "darksalmon"=>[233,150,122],
+	    "salmon"=>[250,128,114],
+	    "lightsalmon"=>[255,160,122],
+	    "orange"=>[255,165,0],
+	    "darkorange"=>[255,140,0],
+	    "coral"=>[255,127,80],
+	    "lightcoral"=>[240,128,128],
+	    "tomato"=>[255,99,71],
+	    "orangered"=>[255,69,0],
+	    "red"=>[255,0,0],
+	    "hotpink"=>[255,105,180],
+	    "deeppink"=>[255,20,147],
+	    "pink"=>[255,192,203],
+	    "lightpink"=>[255,182,193],
+	    "palevioletred"=>[219,112,147],
+	    "maroon"=>[176,48,96],
+	    "mediumvioletred"=>[199,21,133],
+	    "violetred"=>[208,32,144],
+	    "magenta"=>[255,0,255],
+	    "violet"=>[238,130,238],
+	    "plum"=>[221,160,221],
+	    "orchid"=>[218,112,214],
+	    "mediumorchid"=>[186,85,211],
+	    "darkorchid"=>[153,50,204],
+	    "darkviolet"=>[148,0,211],
+	    "blueviolet"=>[138,43,226],
+	    "purple"=>[160,32,240],
+	    "mediumpurple"=>[147,112,219],
+	    "thistle"=>[216,191,216],
+	    "snow1"=>[255,250,250],
+	    "snow2"=>[238,233,233],
+	    "snow3"=>[205,201,201],
+	    "snow4"=>[139,137,137],
+	    "seashell1"=>[255,245,238],
+	    "seashell2"=>[238,229,222],
+	    "seashell3"=>[205,197,191],
+	    "seashell4"=>[139,134,130],
+	    "AntiqueWhite1"=>[255,239,219],
+	    "AntiqueWhite2"=>[238,223,204],
+	    "AntiqueWhite3"=>[205,192,176],
+	    "AntiqueWhite4"=>[139,131,120],
+	    "bisque1"=>[255,228,196],
+	    "bisque2"=>[238,213,183],
+	    "bisque3"=>[205,183,158],
+	    "bisque4"=>[139,125,107],
+	    "peachPuff1"=>[255,218,185],
+	    "peachpuff2"=>[238,203,173],
+	    "peachpuff3"=>[205,175,149],
+	    "peachpuff4"=>[139,119,101],
+	    "navajowhite1"=>[255,222,173],
+	    "navajowhite2"=>[238,207,161],
+	    "navajowhite3"=>[205,179,139],
+	    "navajowhite4"=>[139,121,94],
+	    "lemonchiffon1"=>[255,250,205],
+	    "lemonchiffon2"=>[238,233,191],
+	    "lemonchiffon3"=>[205,201,165],
+	    "lemonchiffon4"=>[139,137,112],
+	    "ivory1"=>[255,255,240],
+	    "ivory2"=>[238,238,224],
+	    "ivory3"=>[205,205,193],
+	    "ivory4"=>[139,139,131],
+	    "honeydew"=>[193,205,193],
+	    "lavenderblush1"=>[255,240,245],
+	    "lavenderblush2"=>[238,224,229],
+	    "lavenderblush3"=>[205,193,197],
+	    "lavenderblush4"=>[139,131,134],
+	    "mistyrose1"=>[255,228,225],
+	    "mistyrose2"=>[238,213,210],
+	    "mistyrose3"=>[205,183,181],
+	    "mistyrose4"=>[139,125,123],
+	    "azure1"=>[240,255,255],
+	    "azure2"=>[224,238,238],
+	    "azure3"=>[193,205,205],
+	    "azure4"=>[131,139,139],
+	    "slateblue1"=>[131,111,255],
+	    "slateblue2"=>[122,103,238],
+	    "slateblue3"=>[105,89,205],
+	    "slateblue4"=>[71,60,139],
+	    "royalblue1"=>[72,118,255],
+	    "royalblue2"=>[67,110,238],
+	    "royalblue3"=>[58,95,205],
+	    "royalblue4"=>[39,64,139],
+	    "dodgerblue1"=>[30,144,255],
+	    "dodgerblue2"=>[28,134,238],
+	    "dodgerblue3"=>[24,116,205],
+	    "dodgerblue4"=>[16,78,139],
+	    "steelblue1"=>[99,184,255],
+	    "steelblue2"=>[92,172,238],
+	    "steelblue3"=>[79,148,205],
+	    "steelblue4"=>[54,100,139],
+	    "deepskyblue1"=>[0,191,255],
+	    "deepskyblue2"=>[0,178,238],
+	    "deepskyblue3"=>[0,154,205],
+	    "deepskyblue4"=>[0,104,139],
+	    "skyblue1"=>[135,206,255],
+	    "skyblue2"=>[126,192,238],
+	    "skyblue3"=>[108,166,205],
+	    "skyblue4"=>[74,112,139],
+	    "lightskyblue1"=>[176,226,255],
+	    "lightskyblue2"=>[164,211,238],
+	    "lightskyblue3"=>[141,182,205],
+	    "lightskyblue4"=>[96,123,139],
+	    "slategray1"=>[198,226,255],
+	    "slategray2"=>[185,211,238],
+	    "slategray3"=>[159,182,205],
+	    "slategray4"=>[108,123,139],
+	    "lightsteelblue1"=>[202,225,255],
+	    "lightsteelblue2"=>[188,210,238],
+	    "lightsteelblue3"=>[162,181,205],
+	    "lightsteelblue4"=>[110,123,139],
+	    "lightblue1"=>[191,239,255],
+	    "lightblue2"=>[178,223,238],
+	    "lightblue3"=>[154,192,205],
+	    "lightblue4"=>[104,131,139],
+	    "lightcyan1"=>[224,255,255],
+	    "lightcyan2"=>[209,238,238],
+	    "lightcyan3"=>[180,205,205],
+	    "lightcyan4"=>[122,139,139],
+	    "paleturquoise1"=>[187,255,255],
+	    "paleturquoise2"=>[174,238,238],
+	    "paleturquoise3"=>[150,205,205],
+	    "paleturquoise4"=>[102,139,139],
+	    "cadetblue1"=>[152,245,255],
+	    "cadetblue2"=>[142,229,238],
+	    "cadetblue3"=>[122,197,205],
+	    "cadetblue4"=>[83,134,139],
+	    "turquoise1"=>[0,245,255],
+	    "turquoise2"=>[0,229,238],
+	    "turquoise3"=>[0,197,205],
+	    "turquoise4"=>[0,134,139],
+	    "cyan1"=>[0,255,255],
+	    "cyan2"=>[0,238,238],
+	    "cyan3"=>[0,205,205],
+	    "cyan4"=>[0,139,139],
+	    "darkslategray1"=>[151,255,255],
+	    "darkslategray2"=>[141,238,238],
+	    "darkslategray3"=>[121,205,205],
+	    "darkslategray4"=>[82,139,139],
+	    "aquamarine1"=>[127,255,212],
+	    "aquamarine2"=>[118,238,198],
+	    "aquamarine3"=>[102,205,170],
+	    "aquamarine4"=>[69,139,116],
+	    "darkseagreen1"=>[193,255,193],
+	    "darkseagreen2"=>[180,238,180],
+	    "darkseagreen3"=>[155,205,155],
+	    "darkseagreen4"=>[105,139,105],
+	    "seagreen1"=>[84,255,159],
+	    "seagreen2"=>[78,238,148],
+	    "seagreen3"=>[67,205,128],
+	    "seagreen4"=>[46,139,87],
+	    "palegreen1"=>[154,255,154],
+	    "palegreen2"=>[144,238,144],
+	    "palegreen3"=>[124,205,124],
+	    "palegreen4"=>[84,139,84],
+	    "springgreen1"=>[0,255,127],
+	    "springgreen2"=>[0,238,118],
+	    "springgreen3"=>[0,205,102],
+	    "springgreen4"=>[0,139,69],
+	    "chartreuse1"=>[127,255,0],
+	    "chartreuse2"=>[118,238,0],
+	    "chartreuse3"=>[102,205,0],
+	    "chartreuse4"=>[69,139,0],
+	    "olivedrab1"=>[192,255,62],
+	    "olivedrab2"=>[179,238,58],
+	    "olivedrab3"=>[154,205,50],
+	    "olivedrab4"=>[105,139,34],
+	    "darkolivegreen1"=>[202,255,112],
+	    "darkolivegreen2"=>[188,238,104],
+	    "darkolivegreen3"=>[162,205,90],
+	    "darkolivegreen4"=>[110,139,61],
+	    "khaki1"=>[255,246,143],
+	    "khaki2"=>[238,230,133],
+	    "khaki3"=>[205,198,115],
+	    "khaki4"=>[139,134,78],
+	    "lightgoldenrod1"=>[255,236,139],
+	    "lightgoldenrod2"=>[238,220,130],
+	    "lightgoldenrod3"=>[205,190,112],
+	    "lightgoldenrod4"=>[139,129,76],
+	    "yellow1"=>[255,255,0],
+	    "yellow2"=>[238,238,0],
+	    "yellow3"=>[205,205,0],
+	    "yellow4"=>[139,139,0],
+	    "gold1"=>[255,215,0],
+	    "gold2"=>[238,201,0],
+	    "gold3"=>[205,173,0],
+	    "gold4"=>[139,117,0],
+	    "goldenrod1"=>[255,193,37],
+	    "goldenrod2"=>[238,180,34],
+	    "goldenrod3"=>[205,155,29],
+	    "goldenrod4"=>[139,105,20],
+	    "darkgoldenrod1"=>[255,185,15],
+	    "darkgoldenrod2"=>[238,173,14],
+	    "darkgoldenrod3"=>[205,149,12],
+	    "darkgoldenrod4"=>[139,101,8],
+	    "rosybrown1"=>[255,193,193],
+	    "rosybrown2"=>[238,180,180],
+	    "rosybrown3"=>[205,155,155],
+	    "rosybrown4"=>[139,105,105],
+	    "indianred1"=>[255,106,106],
+	    "indianred2"=>[238,99,99],
+	    "indianred3"=>[205,85,85],
+	    "indianred4"=>[139,58,58],
+	    "sienna1"=>[255,130,71],
+	    "sienna2"=>[238,121,66],
+	    "sienna3"=>[205,104,57],
+	    "sienna4"=>[139,71,38],
+	    "burlywood1"=>[255,211,155],
+	    "burlywood2"=>[238,197,145],
+	    "burlywood3"=>[205,170,125],
+	    "burlywood4"=>[139,115,85],
+	    "wheat1"=>[255,231,186],
+	    "wheat2"=>[238,216,174],
+	    "wheat3"=>[205,186,150],
+	    "wheat4"=>[139,126,102],
+	    "tan1"=>[255,165,79],
+	    "tan2"=>[238,154,73],
+	    "tan3"=>[205,133,63],
+	    "tan4"=>[139,90,43],
+	    "chocolate1"=>[255,127,36],
+	    "chocolate2"=>[238,118,33],
+	    "chocolate3"=>[205,102,29],
+	    "chocolate4"=>[139,69,19],
+	    "firebrick1"=>[255,48,48],
+	    "firebrick2"=>[238,44,44],
+	    "firebrick3"=>[205,38,38],
+	    "firebrick4"=>[139,26,26],
+	    "brown1"=>[255,64,64],
+	    "brown2"=>[238,59,59],
+	    "brown3"=>[205,51,51],
+	    "brown4"=>[139,35,35],
+	    "salmon1"=>[255,140,105],
+	    "salmon2"=>[238,130,98],
+	    "salmon3"=>[205,112,84],
+	    "salmon4"=>[139,76,57],
+	    "lightsalmon1"=>[255,160,122],
+	    "lightsalmon2"=>[238,149,114],
+	    "lightsalmon3"=>[205,129,98],
+	    "lightsalmon4"=>[139,87,66],
+	    "orange1"=>[255,165,0],
+	    "orange2"=>[238,154,0],
+	    "orange3"=>[205,133,0],
+	    "orange4"=>[139,90,0],
+	    "darkorange1"=>[255,127,0],
+	    "darkorange2"=>[238,118,0],
+	    "darkorange3"=>[205,102,0],
+	    "darkorange4"=>[139,69,0],
+	    "coral1"=>[255,114,86],
+	    "coral2"=>[238,106,80],
+	    "coral3"=>[205,91,69],
+	    "coral4"=>[139,62,47],
+	    "tomato1"=>[255,99,71],
+	    "tomato2"=>[238,92,66],
+	    "tomato3"=>[205,79,57],
+	    "tomato4"=>[139,54,38],
+	    "orangered1"=>[255,69,0],
+	    "orangered2"=>[238,64,0],
+	    "orangered3"=>[205,55,0],
+	    "orangered4"=>[139,37,0],
+	    "deeppink1"=>[255,20,147],
+	    "deeppink2"=>[238,18,137],
+	    "deeppink3"=>[205,16,118],
+	    "deeppink4"=>[139,10,80],
+	    "hotpink1"=>[255,110,180],
+	    "hotpink2"=>[238,106,167],
+	    "hotpink3"=>[205,96,144],
+	    "hotpink4"=>[139,58,98],
+	    "pink1"=>[255,181,197],
+	    "pink2"=>[238,169,184],
+	    "pink3"=>[205,145,158],
+	    "pink4"=>[139,99,108],
+	    "lightpink1"=>[255,174,185],
+	    "lightpink2"=>[238,162,173],
+	    "lightpink3"=>[205,140,149],
+	    "lightpink4"=>[139,95,101],
+	    "palevioletred1"=>[255,130,171],
+	    "palevioletred2"=>[238,121,159],
+	    "palevioletred3"=>[205,104,137],
+	    "palevioletred4"=>[139,71,93],
+	    "maroon1"=>[255,52,179],
+	    "maroon2"=>[238,48,167],
+	    "maroon3"=>[205,41,144],
+	    "maroon4"=>[139,28,98],
+	    "violetred1"=>[255,62,150],
+	    "violetred2"=>[238,58,140],
+	    "violetred3"=>[205,50,120],
+	    "violetred4"=>[139,34,82],
+	    "magenta1"=>[255,0,255],
+	    "magenta2"=>[238,0,238],
+	    "magenta3"=>[205,0,205],
+	    "magenta4"=>[139,0,139],
+	    "mediumred"=>[140,34,34],         
+	    "orchid1"=>[255,131,250],
+	    "orchid2"=>[238,122,233],
+	    "orchid3"=>[205,105,201],
+	    "orchid4"=>[139,71,137],
+	    "plum1"=>[255,187,255],
+	    "plum2"=>[238,174,238],
+	    "plum3"=>[205,150,205],
+	    "plum4"=>[139,102,139],
+	    "mediumorchid1"=>[224,102,255],
+	    "mediumorchid2"=>[209,95,238],
+	    "mediumorchid3"=>[180,82,205],
+	    "mediumorchid4"=>[122,55,139],
+	    "darkorchid1"=>[191,62,255],
+	    "darkorchid2"=>[178,58,238],
+	    "darkorchid3"=>[154,50,205],
+	    "darkorchid4"=>[104,34,139],
+	    "purple1"=>[155,48,255],
+	    "purple2"=>[145,44,238],
+	    "purple3"=>[125,38,205],
+	    "purple4"=>[85,26,139],
+	    "mediumpurple1"=>[171,130,255],
+	    "mediumpurple2"=>[159,121,238],
+	    "mediumpurple3"=>[137,104,205],
+	    "mediumpurple4"=>[93,71,139],
+	    "thistle1"=>[255,225,255],
+	    "thistle2"=>[238,210,238],
+	    "thistle3"=>[205,181,205],
+	    "thistle4"=>[139,123,139],
+	    "gray1"=>[10,10,10],
+	    "gray2"=>[40,40,30],
+	    "gray3"=>[70,70,70],
+	    "gray4"=>[100,100,100],
+	    "gray5"=>[130,130,130],
+	    "gray6"=>[160,160,160],
+	    "gray7"=>[190,190,190],
+	    "gray8"=>[210,210,210],
+	    "gray9"=>[240,240,240],
+	    "darkgray"=>[100,100,100],
+	    "darkblue"=>[0,0,139],
+	    "darkcyan"=>[0,139,139],
+	    "darkmagenta"=>[139,0,139],
+	    "darkred"=>[139,0,0],
+	    "silver"=>[192, 192, 192],
+	    "eggplant"=>[144,176,168],
+	    "lightgreen"=>[144,238,144]];		
     }
 //----------------
 // PUBLIC METHODS
@@ -497,15 +497,15 @@ class RGB {
 		$aColor = substr($aColor,0,$pos);
 	    }
 	    if( $adj < 0 )
-		JpGraphError::RaiseL(25077);//('Adjustment factor for color must be > 0');
+		(new JpGraphError())->RaiseL(25077);//('Adjustment factor for color must be > 0');
 
-	    if (substr($aColor, 0, 1) == "#") {
+	    if (str_starts_with($aColor, "#")) {
 		$r = hexdec(substr($aColor, 1, 2));
 		$g = hexdec(substr($aColor, 3, 2));
 		$b = hexdec(substr($aColor, 5, 2));
 	    } else {
       		if(!isset($this->rgb_table[$aColor]) )
-		    JpGraphError::RaiseL(25078,$aColor);//(" Unknown color: $aColor");
+		    (new JpGraphError())->RaiseL(25078, $aColor);//(" Unknown color: $aColor");
 		$tmp=$this->rgb_table[$aColor];
 		$r = $tmp[0];
 		$g = $tmp[1];
@@ -516,14 +516,14 @@ class RGB {
 	    // and adj=1 neutral and adj=0 black.
 	    if( $adj > 1 ) {
 		$m = ($adj-1.0)*(255-min(255,min($r,min($g,$b))));
-		return array(min(255,$r+$m), min(255,$g+$m), min(255,$b+$m),$alpha);
+		return [min(255,$r+$m), min(255,$g+$m), min(255,$b+$m),$alpha];
 	    }
 	    elseif( $adj < 1 ) {
 		$m = ($adj-1.0)*max(255,max($r,max($g,$b)));
-		return array(max(0,$r+$m), max(0,$g+$m), max(0,$b+$m),$alpha);
+		return [max(0,$r+$m), max(0,$g+$m), max(0,$b+$m),$alpha];
 	    }
 	    else {
-		return array($r,$g,$b,$alpha);
+		return [$r,$g,$b,$alpha];
 	    }
 
 	} elseif( is_array($aColor) ) {
@@ -535,7 +535,7 @@ class RGB {
 		return $aColor;
 	}
 	else
-	    JpGraphError::RaiseL(25079,$aColor,count($aColor));//(" Unknown color specification: $aColor , size=".count($aColor));
+	    (new JpGraphError())->RaiseL(25079, $aColor, count($aColor));//(" Unknown color specification: $aColor , size=".count($aColor));
     }
 	
     // Compare two colors
@@ -552,13 +552,13 @@ class RGB {
     // Allocate a new color in the current image
     // Return new color index, -1 if no more colors could be allocated
     function Allocate($aColor,$aAlpha=0.0) {
-	list ($r, $g, $b, $a) = $this->color($aColor);
+	[$r, $g, $b, $a] = $this->color($aColor);
 	// If alpha is specified in the color string then this
 	// takes precedence over the second argument
 	if( $a > 0 )
 	    $aAlpha = $a;
 	if( $aAlpha < 0 || $aAlpha > 1 ) {
-	    JpGraphError::RaiseL(25080);//('Alpha parameter for color must be between 0.0 and 1.0');
+	    (new JpGraphError())->RaiseL(25080);//('Alpha parameter for color must be between 0.0 and 1.0');
 	}
 	return imagecolorresolvealpha($this->img, $r, $g, $b, round($aAlpha * 127));
     }
@@ -571,37 +571,37 @@ class RGB {
 // Interface to low level image drawing routines.
 //===================================================
 class Image {
-    var $img_format;
-    var $expired=true;
-    var $img=null;
-    var $left_margin=30,$right_margin=20,$top_margin=20,$bottom_margin=30;
-    var $plotwidth=0,$plotheight=0;
-    var $rgb=null;
-    var $current_color,$current_color_name;
-    var $lastx=0, $lasty=0;
-    var $width=0, $height=0;
-    var $line_weight=1;
-    var $line_style=1;	// Default line style is solid
-    var $obs_list=array();
-    var $font_size=12,$font_family=FF_FONT1, $font_style=FS_NORMAL;
-    var $font_file='';
-    var $text_halign="left",$text_valign="bottom";
-    var $ttf=null;
-    var $use_anti_aliasing=false;
-    var $quality=null;
-    var $colorstack=array(),$colorstackidx=0;
-    var $canvascolor = 'white' ;
-    var $langconv = null ;
+    public $img_format;
+    public $expired=true;
+    public $img=null;
+    public $left_margin=30,$right_margin=20,$top_margin=20,$bottom_margin=30;
+    public $plotwidth=0,$plotheight=0;
+    public $rgb=null;
+    public $current_color,$current_color_name;
+    public $lastx=0, $lasty=0;
+    public $width=0, $height=0;
+    public $line_weight=1;
+    public $line_style=1;	// Default line style is solid
+    public $obs_list=[];
+    public $font_size=12,$font_family=FF_FONT1, $font_style=FS_NORMAL;
+    public $font_file='';
+    public $text_halign="left",$text_valign="bottom";
+    public $ttf=null;
+    public $use_anti_aliasing=false;
+    public $quality=null;
+    public $colorstack=[],$colorstackidx=0;
+    public $canvascolor = 'white' ;
+    public $langconv = null ;
 
     //---------------
     // CONSTRUCTOR
-    function Image($aWidth,$aHeight,$aFormat=DEFAULT_GFORMAT,$aSetAutoMargin=true) {
+    function __construct($aWidth,$aHeight,$aFormat=DEFAULT_GFORMAT,$aSetAutoMargin=true) {
 	$this->CreateImgCanvas($aWidth,$aHeight);
 	if( $aSetAutoMargin ) 
 	    $this->SetAutoMargin();		
 
 	if( !$this->SetImgFormat($aFormat) ) {
-	    JpGraphError::RaiseL(25081,$aFormat);//("JpGraph: Selected graphic format is either not supported or unknown [$aFormat]");
+	    (new JpGraphError())->RaiseL(25081, $aFormat);//("JpGraph: Selected graphic format is either not supported or unknown [$aFormat]");
 	}
 	$this->ttf = new TTF();
 	$this->langconv = new LanguageConv();
@@ -614,11 +614,11 @@ class Image {
 
     function CreateRawCanvas($aWidth=0,$aHeight=0) {
 	if( $aWidth <= 1 || $aHeight <= 1 ) {
-	    JpGraphError::RaiseL(25082,$aWidth,$aHeight);//("Illegal sizes specified for width or height when creating an image, (width=$aWidth, height=$aHeight)");
+	    (new JpGraphError())->RaiseL(25082, $aWidth, $aHeight);//("Illegal sizes specified for width or height when creating an image, (width=$aWidth, height=$aHeight)");
 	}
 	$this->img = @imagecreatetruecolor($aWidth, $aHeight);
 	if( $this->img < 1 ) {
-	    JpGraphError::RaiseL(25126);
+	    (new JpGraphError())->RaiseL(25126);
 	    //die("Can't create truecolor image. Check that you really have GD2 library installed.");
 	}
 	$this->SetAlphaBlending();
@@ -637,7 +637,7 @@ class Image {
     
     function CreateImgCanvas($aWidth=0,$aHeight=0) {
 
-	$old = array($this->img,$this->width,$this->height);
+	$old = [$this->img,$this->width,$this->height];
 	
 	$aWidth = round($aWidth);
 	$aHeight = round($aHeight);
@@ -693,11 +693,11 @@ class Image {
 		($fromHeight != -1 && ($fromHeight != $fromHeight)) ) {
 		// Create a new canvas that will hold the re-scaled original from image
 		if( $toWidth <= 1 || $toHeight <= 1 ) {
-		    JpGraphError::RaiseL(25083);//('Illegal image size when copying image. Size for copied to image is 1 pixel or less.');
+		    (new JpGraphError())->RaiseL(25083);//('Illegal image size when copying image. Size for copied to image is 1 pixel or less.');
 		}
 		$tmpimg = @imagecreatetruecolor($toWidth, $toHeight);
 		if( $tmpimg < 1 ) {
-		    JpGraphError::RaiseL(25084);//('Failed to create temporary GD canvas. Out of memory ?');
+		    (new JpGraphError())->RaiseL(25084);//('Failed to create temporary GD canvas. Out of memory ?');
 		}
 		$this->CopyCanvasH($tmpimg,$fromImg,0,0,0,0,
 				   $toWidth,$toHeight,$fromWidth,$fromHeight);
@@ -722,7 +722,7 @@ class Image {
     function CreateFromString($aStr) {
 	$img = @imagecreatefromstring($aStr);
 	if( $img === false ) {
-	    JpGraphError::RaiseL(25085);//('An image can not be created from the supplied string. It is either in a format not supported or the string is representing an corrupt image.');
+	    (new JpGraphError())->RaiseL(25085);//('An image can not be created from the supplied string. It is either in a format not supported or the string is representing an corrupt image.');
 	}
 	return $img;
     }
@@ -772,7 +772,7 @@ class Image {
 
 	    // Check that this PHP has support for TTF fonts
 	    if( !function_exists('imagettfbbox') ) {
-		JpGraphError::RaiseL(25087);//('This PHP build has not been configured with TTF support. You need to recompile your PHP installation with FreeType support.');
+		(new JpGraphError())->RaiseL(25087);//('This PHP build has not been configured with TTF support. You need to recompile your PHP installation with FreeType support.');
 	    }
 	    $this->font_file = $this->ttf->File($this->font_family,$this->font_style);
 	}
@@ -780,17 +780,17 @@ class Image {
 
     // Get the specific height for a text string
     function GetTextHeight($txt="",$angle=0) {
-	$tmp = split("\n",$txt);
+	$tmp = preg_split("#\n#m",(string) $txt);
 	$n = count($tmp);
 	$m=0;
 	for($i=0; $i< $n; ++$i)
-	    $m = max($m,strlen($tmp[$i]));
+	    $m = max($m,strlen((string) $tmp[$i]));
 
 	if( $this->font_family <= FF_FONT2+1 ) {
 	    if( $angle==0 ) {
 		$h = imagefontheight($this->font_family);
 		if( $h === false ) {
-		    JpGraphError::RaiseL(25088);//('You have a misconfigured GD font support. The call to imagefontwidth() fails.');
+		    (new JpGraphError())->RaiseL(25088);//('You have a misconfigured GD font support. The call to imagefontwidth() fails.');
 		}
 
 		return $n*$h;
@@ -798,7 +798,7 @@ class Image {
 	    else {
 		$w = @imagefontwidth($this->font_family);
 		if( $w === false ) {
-		    JpGraphError::RaiseL(25088);//('You have a misconfigured GD font support. The call to imagefontwidth() fails.');
+		    (new JpGraphError())->RaiseL(25088);//('You have a misconfigured GD font support. The call to imagefontwidth() fails.');
 		}
 
 		return $m*$w;
@@ -825,13 +825,13 @@ class Image {
     // Get actual width of text in absolute pixels
     function GetTextWidth($txt,$angle=0) {
 
-	$tmp = split("\n",$txt);
+	$tmp = preg_split("#\n#m",(string) $txt);
 	$n = count($tmp);
 	if( $this->font_family <= FF_FONT2+1 ) {
 
 	    $m=0;
 	    for($i=0; $i < $n; ++$i) {
-		$l=strlen($tmp[$i]);
+		$l=strlen((string) $tmp[$i]);
 		if( $l > $m ) {
 		    $m = $l;
 		}
@@ -840,7 +840,7 @@ class Image {
 	    if( $angle==0 ) {
 		$w = @imagefontwidth($this->font_family);
 		if( $w === false ) {
-		    JpGraphError::RaiseL(25088);//('You have a misconfigured GD font support. The call to imagefontwidth() fails.');
+		    (new JpGraphError())->RaiseL(25088);//('You have a misconfigured GD font support. The call to imagefontwidth() fails.');
 		}
 		return $m*$w;
 	    }
@@ -848,7 +848,7 @@ class Image {
 		// 90 degrees internal so height becomes width
 		$h = @imagefontheight($this->font_family); 
 		if( $h === false ) {
-		    JpGraphError::RaiseL(25089);//('You have a misconfigured GD font support. The call to imagefontheight() fails.');
+		    (new JpGraphError())->RaiseL(25089);//('You have a misconfigured GD font support. The call to imagefontheight() fails.');
 		}
 		return $n*$h;
 	    }
@@ -876,7 +876,7 @@ class Image {
 	if( !is_numeric($dir) ) {
 	    if( $dir=="h" ) $dir=0;
 	    elseif( $dir=="v" ) $dir=90;
-	    else JpGraphError::RaiseL(25090,$dir);//(" Unknown direction specified in call to StrokeBoxedText() [$dir]");
+	    else (new JpGraphError())->RaiseL(25090, $dir);//(" Unknown direction specified in call to StrokeBoxedText() [$dir]");
 	}
 		
 	if( $this->font_family >= FF_FONT0 && $this->font_family <= FF_FONT2+1) {	
@@ -933,8 +933,8 @@ class Image {
 	$v=$this->text_valign;
 	$this->SetTextAlign("left","top");
 	$this->StrokeText($x, $y, $txt, $dir, $paragraph_align);
-	$bb = array($x-$xmarg,$y+$height-$ymarg,$x+$width,$y+$height-$ymarg,
-		    $x+$width,$y-$ymarg,$x-$xmarg,$y-$ymarg);
+	$bb = [$x-$xmarg,$y+$height-$ymarg,$x+$width,$y+$height-$ymarg,
+		    $x+$width,$y-$ymarg,$x-$xmarg,$y-$ymarg];
 	$this->SetTextAlign($h,$v);
 
 	$this->SetAngle($olda);
@@ -949,10 +949,10 @@ class Image {
     }
 	
 
-    function _StrokeBuiltinFont($x,$y,$txt,$dir=0,$paragraph_align="left",&$aBoundingBox,$aDebug=false) {
+    function _StrokeBuiltinFont($x,$y,$txt,$dir=0,$paragraph_align="left",&$aBoundingBox = null,$aDebug=false) {
 
 	if( is_numeric($dir) && $dir!=90 && $dir!=0) 
-	    JpGraphError::RaiseL(25091);//(" Internal font does not support drawing text at arbitrary angle. Use TTF fonts instead.");
+	    (new JpGraphError())->RaiseL(25091);//(" Internal font does not support drawing text at arbitrary angle. Use TTF fonts instead.");
 
 	$h=$this->GetTextHeight($txt);
 	$fh=$this->GetFontHeight();
@@ -971,8 +971,8 @@ class Image {
 	    $y += $dir==0 ? $h/2 : $w/2;
 	
 	if( $dir==90 ) {
-	    imagestringup($this->img,$this->font_family,$x,$y,$txt,$this->current_color);
-	    $aBoundingBox = array(round($x),round($y),round($x),round($y-$w),round($x+$h),round($y-$w),round($x+$h),round($y));
+	    imagestringup($this->img,$this->font_family,$x,$y,(string) $txt,$this->current_color);
+	    $aBoundingBox = [round($x),round($y),round($x),round($y-$w),round($x+$h),round($y-$w),round($x+$h),round($y)];
             if( $aDebug ) {
 		// Draw bounding box
 		$this->PushColor('green');
@@ -981,30 +981,30 @@ class Image {
 	    }
 	}
 	else {
-	    if( ereg("\n",$txt) ) { 
-		$tmp = split("\n",$txt);
+	    if( preg_match("#\n#m",(string) $txt) ) { 
+		$tmp = preg_split("#\n#m",(string) $txt);
 		for($i=0; $i < count($tmp); ++$i) {
 		    $w1 = $this->GetTextWidth($tmp[$i]);
 		    if( $paragraph_align=="left" ) {
-			imagestring($this->img,$this->font_family,$x,$y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
+			imagestring($this->img,$this->font_family,$x,$y-$h+1+$i*$fh,(string) $tmp[$i],$this->current_color);
 		    }
 		    elseif( $paragraph_align=="right" ) {
 			imagestring($this->img,$this->font_family,$x+($w-$w1),
-				    $y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
+				    $y-$h+1+$i*$fh,(string) $tmp[$i],$this->current_color);
 		    }
 		    else {
 			imagestring($this->img,$this->font_family,$x+$w/2-$w1/2,
-				    $y-$h+1+$i*$fh,$tmp[$i],$this->current_color);
+				    $y-$h+1+$i*$fh,(string) $tmp[$i],$this->current_color);
 		    }
 		}
 	    } 
 	    else {
 		//Put the text
-		imagestring($this->img,$this->font_family,$x,$y-$h+1,$txt,$this->current_color);
+		imagestring($this->img,$this->font_family,$x,$y-$h+1,(string) $txt,$this->current_color);
 	    }
             if( $aDebug ) {
 		// Draw the bounding rectangle and the bounding box
-		$p1 = array(round($x),round($y),round($x),round($y-$h),round($x+$w),round($y-$h),round($x+$w),round($y));
+		$p1 = [round($x),round($y),round($x),round($y-$h),round($x+$w),round($y-$h),round($x+$w),round($y)];
 		
 		// Draw bounding box
 		$this->PushColor('green');
@@ -1012,7 +1012,7 @@ class Image {
 		$this->PopColor();
 
             }
-	    $aBoundingBox=array(round($x),round($y),round($x),round($y-$h),round($x+$w),round($y-$h),round($x+$w),round($y));
+	    $aBoundingBox=[round($x),round($y),round($x),round($y-$h),round($x+$w),round($y-$h),round($x+$w),round($y)];
 	}
     }
 
@@ -1021,7 +1021,7 @@ class Image {
 	// instead of '\n\t' we have to add '\r' since
 	// the width will be too muchy otherwise since when
 	// we print we stroke the individually lines by hand.
-	$e = explode("\n",$aTxt);
+	$e = explode("\n",(string) $aTxt);
 	$n = count($e);
 	for($i=0; $i<$n; ++$i) {
 	    $e[$i]=str_replace("\r","",$e[$i]);
@@ -1030,9 +1030,9 @@ class Image {
     }
 
     function GetTTFBBox($aTxt,$aAngle=0) {
-	$bbox = @ImageTTFBBox($this->font_size,$aAngle,$this->font_file,$aTxt);
+	$bbox = @ImageTTFBBox($this->font_size,$aAngle,$this->font_file,(string) $aTxt);
 	if( $bbox === false ) {
-	    JpGraphError::RaiseL(25092,$this->font_file);
+	    (new JpGraphError())->RaiseL(25092, $this->font_file);
 //("There is either a configuration problem with TrueType or a problem reading font file (".$this->font_file."). Make sure file exists and is in a readable place for the HTTP process. (If 'basedir' restriction is enabled in PHP then the font file must be located in the document root.). It might also be a wrongly installed FreeType library. Try uppgrading to at least FreeType 2.1.13 and recompile GD with the correct setup so it can find the new FT library.");
 	}
 	return $bbox;
@@ -1045,7 +1045,7 @@ class Image {
 	$aTxt = $this->AddTxtCR($aTxt);
 
 	if( !is_readable($this->font_file) ) {
-	    JpGraphError::RaiseL(25093,$this->font_file);
+	    (new JpGraphError())->RaiseL(25093, $this->font_file);
 //('Can not read font file ('.$this->font_file.') in call to Image::GetBBoxTTF. Please make sure that you have set a font before calling this method and that the font is installed in the TTF directory.');
 	}
 	$bbox = $this->GetTTFBBox($aTxt,$aAngle);
@@ -1054,38 +1054,38 @@ class Image {
 	    return $bbox;
 	if( $aAngle >= 0 ) {
 	    if(  $aAngle <= 90 ) { //<=0		
-		$bbox = array($bbox[6],$bbox[1],$bbox[2],$bbox[1],
-			      $bbox[2],$bbox[5],$bbox[6],$bbox[5]);
+		$bbox = [$bbox[6],$bbox[1],$bbox[2],$bbox[1],
+			      $bbox[2],$bbox[5],$bbox[6],$bbox[5]];
 	    }
 	    elseif(  $aAngle <= 180 ) { //<= 2
-		$bbox = array($bbox[4],$bbox[7],$bbox[0],$bbox[7],
-			      $bbox[0],$bbox[3],$bbox[4],$bbox[3]);
+		$bbox = [$bbox[4],$bbox[7],$bbox[0],$bbox[7],
+			      $bbox[0],$bbox[3],$bbox[4],$bbox[3]];
 	    }
 	    elseif(  $aAngle <= 270 )  { //<= 3
-		$bbox = array($bbox[2],$bbox[5],$bbox[6],$bbox[5],
-			      $bbox[6],$bbox[1],$bbox[2],$bbox[1]);
+		$bbox = [$bbox[2],$bbox[5],$bbox[6],$bbox[5],
+			      $bbox[6],$bbox[1],$bbox[2],$bbox[1]];
 	    }
 	    else {
-		$bbox = array($bbox[0],$bbox[3],$bbox[4],$bbox[3],
-			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]);
+		$bbox = [$bbox[0],$bbox[3],$bbox[4],$bbox[3],
+			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]];
 	    }
 	}
 	elseif(  $aAngle < 0 ) {
 	    if( $aAngle <= -270 ) { // <= -3
-		$bbox = array($bbox[6],$bbox[1],$bbox[2],$bbox[1],
-			      $bbox[2],$bbox[5],$bbox[6],$bbox[5]);
+		$bbox = [$bbox[6],$bbox[1],$bbox[2],$bbox[1],
+			      $bbox[2],$bbox[5],$bbox[6],$bbox[5]];
 	    }
 	    elseif( $aAngle <= -180 ) { // <= -2
-		$bbox = array($bbox[0],$bbox[3],$bbox[4],$bbox[3],
-			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]);
+		$bbox = [$bbox[0],$bbox[3],$bbox[4],$bbox[3],
+			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]];
 	    }
 	    elseif( $aAngle <= -90 ) { // <= -1
-		$bbox = array($bbox[2],$bbox[5],$bbox[6],$bbox[5],
-			      $bbox[6],$bbox[1],$bbox[2],$bbox[1]);
+		$bbox = [$bbox[2],$bbox[5],$bbox[6],$bbox[5],
+			      $bbox[6],$bbox[1],$bbox[2],$bbox[1]];
 	    }
 	    else {
-		$bbox = array($bbox[0],$bbox[3],$bbox[4],$bbox[3],
-			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]);
+		$bbox = [$bbox[0],$bbox[3],$bbox[4],$bbox[3],
+			      $bbox[4],$bbox[7],$bbox[0],$bbox[7]];
 	    }
 	}	
 	return $bbox;
@@ -1101,7 +1101,7 @@ class Image {
 	return $box[2]-$box[0]+1;	
     }
 
-    function _StrokeTTF($x,$y,$txt,$dir=0,$paragraph_align="left",&$aBoundingBox,$debug=false) {
+    function _StrokeTTF($x,$y,$txt,$dir=0,$paragraph_align="left",&$aBoundingBox = null,$debug=false) {
 
 	// Setupo default inter line margin for paragraphs to
 	// 25% of the font height.
@@ -1113,7 +1113,7 @@ class Image {
 	    $oy=$y;
 	}
 
-	if( !ereg("\n",$txt) || ($dir>0 && ereg("\n",$txt)) ) {
+	if( !preg_match("#\n#m",(string) $txt) || ($dir>0 && preg_match("#\n#m",(string) $txt)) ) {
 	    // Format a single line
 
 	    $txt = $this->AddTxtCR($txt);
@@ -1134,11 +1134,11 @@ class Image {
 	    elseif( $this->text_valign=="center" ) $y -= ($bbox[5]-$bbox[1])/2; 
 
 	    ImageTTFText ($this->img, $this->font_size, $dir, $x, $y, 
-			  $this->current_color,$this->font_file,$txt); 
+			  $this->current_color,$this->font_file,(string) $txt); 
 
 	    // Calculate and return the co-ordinates for the bounding box
-	    $box=@ImageTTFBBox($this->font_size,$dir,$this->font_file,$txt);
-	    $p1 = array();
+	    $box=@ImageTTFBBox($this->font_size,$dir,$this->font_file,(string) $txt);
+	    $p1 = [];
 
 
 	    for($i=0; $i < 4; ++$i) {
@@ -1152,9 +1152,9 @@ class Image {
 	    // same
             if( $debug ) {
 		// Draw the bounding rectangle and the bounding box
-		$box=@ImageTTFBBox($this->font_size,$dir,$this->font_file,$txt);
-		$p = array();
-		$p1 = array();
+		$box=@ImageTTFBBox($this->font_size,$dir,$this->font_file,(string) $txt);
+		$p = [];
+		$p1 = [];
 		for($i=0; $i < 4; ++$i) {
 		    $p[] = $bbox[$i*2]+$x;
 		    $p[] = $bbox[$i*2+1]+$y;
@@ -1189,7 +1189,7 @@ class Image {
 	    $w=$this->GetTextWidth($txt);
 
 	    $y -= $linemargin/2;
-	    $tmp = split("\n",$txt);
+	    $tmp = preg_split("#\n#m",(string) $txt);
 	    $nl = count($tmp);
 	    $h = $nl * $fh;
 
@@ -1216,7 +1216,7 @@ class Image {
 	    $standardbox = $this->GetTTFBBox('Gg',$dir);
 	    $yadj = $standardbox[1];
 	    $xadj = $standardbox[0];
-	    $aBoundingBox = array();
+	    $aBoundingBox = [];
 	    for($i=0; $i < $nl; ++$i) {
 		$wl = $this->GetTextWidth($tmp[$i]);
 		$bbox = $this->GetTTFBBox($tmp[$i],$dir);
@@ -1236,12 +1236,12 @@ class Image {
 		$xl = $xl - $xadj; 
 		ImageTTFText ($this->img, $this->font_size, $dir, 
 			      $xl, $yl-($h-$fh)+$fh*$i,
-			      $this->current_color,$this->font_file,$tmp[$i]); 
+			      $this->current_color,$this->font_file,(string) $tmp[$i]); 
 
 		if( $debug  ) {
 		    // Draw the bounding rectangle around each line
-		    $box=@ImageTTFBBox($this->font_size,$dir,$this->font_file,$tmp[$i]);
-		    $p = array();
+		    $box=@ImageTTFBBox($this->font_size,$dir,$this->font_file,(string) $tmp[$i]);
+		    $p = [];
 		    for($j=0; $j < 4; ++$j) {
 			$p[] = $bbox[$j*2]+$xl;
 			$p[] = $bbox[$j*2+1]+$yl-($h-$fh)+$fh*$i;
@@ -1282,7 +1282,7 @@ class Image {
 	$txt = $this->langconv->Convert($txt,$this->font_family);
 
 	if( !is_numeric($dir) )
-	    JpGraphError::RaiseL(25094);//(" Direction for text most be given as an angle between 0 and 90.");
+	    (new JpGraphError())->RaiseL(25094);//(" Direction for text most be given as an angle between 0 and 90.");
 			
 	if( $this->font_family >= FF_FONT0 && $this->font_family <= FF_FONT2+1) {	
 	    $this->_StrokeBuiltinFont($x,$y,$txt,$dir,$paragraph_align,$boundingbox,$debug);
@@ -1291,7 +1291,7 @@ class Image {
 	    $this->_StrokeTTF($x,$y,$txt,$dir,$paragraph_align,$boundingbox,$debug);
 	}
 	else
-	    JpGraphError::RaiseL(25095);//(" Unknown font font family specification. ");
+	    (new JpGraphError())->RaiseL(25095);//(" Unknown font font family specification. ");
 	return $boundingbox;
     }
 	
@@ -1304,7 +1304,7 @@ class Image {
 	$this->plotheight=$this->height - $this->top_margin-$this->bottom_margin ;
 	if( $this->width  > 0 && $this->height > 0 ) {
 	    if( $this->plotwidth < 0  || $this->plotheight < 0 )
-		JpGraphError::raise("Too small plot area. ($lm,$rm,$tm,$bm : $this->plotwidth x $this->plotheight). With the given image size and margins there is to little space left for the plot. Increase the plot size or reduce the margins.");
+		(new JpGraphError())->raise("Too small plot area. ($lm,$rm,$tm,$bm : $this->plotwidth x $this->plotheight). With the given image size and margins there is to little space left for the plot. Increase the plot size or reduce the margins.");
 	}
     }
 
@@ -1316,7 +1316,7 @@ class Image {
 	$this->current_color_name = $color;
 	$this->current_color=$this->rgb->allocate($color,$aAlpha);
 	if( $this->current_color == -1 ) {
-	    JpGraphError::RaiseL(25096);
+	    (new JpGraphError())->RaiseL(25096);
 //("Can't allocate any more colors."); 
 	}
 	return $this->current_color;
@@ -1330,13 +1330,13 @@ class Image {
 	    $this->SetColor($color);
 	}
 	else {
-	    JpGraphError::RaiseL(25097);//("Color specified as empty string in PushColor().");
+	    (new JpGraphError())->RaiseL(25097);//("Color specified as empty string in PushColor().");
 	}
     }
 	
     function PopColor() {
 	if($this->colorstackidx<1)
-	    JpGraphError::RaiseL(25098);//(" Negative Color stack index. Unmatched call to PopColor()");
+	    (new JpGraphError())->RaiseL(25098);//(" Negative Color stack index. Unmatched call to PopColor()");
 	$this->current_color=$this->colorstack[--$this->colorstackidx];
 	$this->current_color_name=$this->colorstack[--$this->colorstackidx];
     }
@@ -1490,7 +1490,7 @@ class Image {
 	$r = $f[0] + ($t[0]-$f[0])*$p;
 	$g = $f[1] + ($t[1]-$f[1])*$p;
 	$b = $f[2] + ($t[2]-$f[2])*$p;
-	return array($r,$g,$b);
+	return [$r,$g,$b];
     }
 
     // Anti-aliased line. 
@@ -1498,11 +1498,11 @@ class Image {
     function WuLine($x1,$y1,$x2,$y2) {
 	// Get foreground line color
 	$lc = imagecolorsforindex($this->img,$this->current_color);
-	$lc = array($lc["red"],$lc["green"],$lc["blue"]);
+	$lc = [$lc["red"],$lc["green"],$lc["blue"]];
 
 	$dx = $x2-$x1;
 	$dy = $y2-$y1;
-	
+
 	if( abs($dx) > abs($dy) ) {
 	    if( $dx<0 ) {
 		$dx = -$dx;$dy = -$dy;
@@ -1513,13 +1513,13 @@ class Image {
 	    $yinc = ($dy*65535)/$dx;
 	    $first=true;
 	    while( ($x >> 16) < $x2 ) {
-				
+
 		$bc = @imagecolorsforindex($this->img,imagecolorat($this->img,$x>>16,$y>>16));
 		if( $bc <= 0 ) {
-		    JpGraphError::RaiseL(25100);//('Problem with color palette and your GD setup. Please disable anti-aliasing or use GD2 with true-color. If you have GD2 library installed please make sure that you have set the USE_GD2 constant to true and that truecolor is enabled.');
+		    (new JpGraphError())->RaiseL(25100);//('Problem with color palette and your GD setup. Please disable anti-aliasing or use GD2 with true-color. If you have GD2 library installed please make sure that you have set the USE_GD2 constant to true and that truecolor is enabled.');
 		}
-		$bc=array($bc["red"],$bc["green"],$bc["blue"]);
-				
+		$bc=[$bc["red"],$bc["green"],$bc["blue"]];
+
 		$this->SetColor($this->lip($lc,$bc,($y & 0xFFFF)/65535));
 		imagesetpixel($this->img,$x>>16,$y>>16,$this->current_color);
 		$this->SetColor($this->lip($lc,$bc,(~$y & 0xFFFF)/65535));
@@ -1539,15 +1539,15 @@ class Image {
 	    $xinc = ($dx*65535)/$dy;	
 	    $first = true;
 	    while( ($y >> 16) < $y2 ) {
-				
+
 		$bc = @imagecolorsforindex($this->img,imagecolorat($this->img,$x>>16,$y>>16));
 		if( $bc <= 0 ) {
-		    JpGraphError::RaiseL(25100);//('Problem with color palette and your GD setup. Please disable anti-aliasing or use GD2 with true-color. If you have GD2 library installed please make sure that you have set the USE_GD2 constant to true and truecolor is enabled.');
+		    (new JpGraphError())->RaiseL(25100);//('Problem with color palette and your GD setup. Please disable anti-aliasing or use GD2 with true-color. If you have GD2 library installed please make sure that you have set the USE_GD2 constant to true and truecolor is enabled.');
 
 		}
 
-		$bc=array($bc["red"],$bc["green"],$bc["blue"]);				
-				
+		$bc=[$bc["red"],$bc["green"],$bc["blue"]];				
+
 		$this->SetColor($this->lip($lc,$bc,($x & 0xFFFF)/65535));
 		imagesetpixel($this->img,$x>>16,$y>>16,$this->current_color);
 		$this->SetColor($this->lip($lc,$bc,(~$x & 0xFFFF)/65535));
@@ -1566,17 +1566,17 @@ class Image {
     function SetLineStyle($s) {
 	if( is_numeric($s) ) {
 	    if( $s<1 || $s>4 ) 
-		JpGraphError::RaiseL(25101,$s);//(" Illegal numeric argument to SetLineStyle(): ($s)");
+		(new JpGraphError())->RaiseL(25101, $s);//(" Illegal numeric argument to SetLineStyle(): ($s)");
 	}
 	elseif( is_string($s) ) {
 	    if( $s == "solid" ) $s=1;
 	    elseif( $s == "dotted" ) $s=2;
 	    elseif( $s == "dashed" ) $s=3;
 	    elseif( $s == "longdashed" ) $s=4;
-	    else JpGraphError::RaiseL(25102,$s);//(" Illegal string argument to SetLineStyle(): $s");
+	    else (new JpGraphError())->RaiseL(25102, $s);//(" Illegal string argument to SetLineStyle(): $s");
 	}
 	else {
-	    JpGraphError::RaiseL(25103,$s);//(" Illegal argument to SetLineStyle $s");
+	    (new JpGraphError())->RaiseL(25103, $s);//(" Illegal argument to SetLineStyle $s");
 	}
 	$old = $this->line_style;
 	$this->line_style=$s;
@@ -1585,23 +1585,17 @@ class Image {
 	
     // Same as Line but take the line_style into account
     function StyleLine($x1,$y1,$x2,$y2) {
-	switch( $this->line_style ) {
-	    case 1:// Solid
-		$this->Line($x1,$y1,$x2,$y2);
-		break;
-	    case 2: // Dotted
-		$this->DashedLine($x1,$y1,$x2,$y2,1,6);
-		break;
-	    case 3: // Dashed
-		$this->DashedLine($x1,$y1,$x2,$y2,2,4);
-		break;
-	    case 4: // Longdashes
-		$this->DashedLine($x1,$y1,$x2,$y2,8,6);
-		break;
-	    default:
-		JpGraphError::RaiseL(25104,$this->line_style);//(" Unknown line style: $this->line_style ");
-		break;
-	}
+	match ($this->line_style) {
+        // Solid
+        1 => $this->Line($x1,$y1,$x2,$y2),
+        // Dotted
+        2 => $this->DashedLine($x1,$y1,$x2,$y2,1,6),
+        // Dashed
+        3 => $this->DashedLine($x1,$y1,$x2,$y2,2,4),
+        // Longdashes
+        4 => $this->DashedLine($x1,$y1,$x2,$y2,8,6),
+        default => (new JpGraphError())->RaiseL(25104, $this->line_style),
+    };
     }
 
     function Line($x1,$y1,$x2,$y2) {
@@ -1654,8 +1648,8 @@ class Image {
 	    $dx=(sin($a)*$this->line_weight/2);
 	    $dy=(cos($a)*$this->line_weight/2);
 
-	    $pnts = array(round($x2+$dx),round($y2+$dy),round($x2-$dx),round($y2-$dy),
-			  round($x1-$dx),round($y1-$dy),round($x1+$dx),round($y1+$dy));
+	    $pnts = [round($x2+$dx),round($y2+$dy),round($x2-$dx),round($y2-$dy),
+			  round($x1-$dx),round($y1-$dy),round($x1+$dx),round($y1+$dy)];
 	    imagefilledpolygon($this->img,$pnts,count($pnts)/2,$this->current_color);
 	}		
 	$this->lastx=$x2; $this->lasty=$y2;		
@@ -1690,7 +1684,7 @@ class Image {
     function FilledPolygon($pts) {
 	$n=count($pts);
 	if( $n == 0 ) {
-	    JpGraphError::RaiseL(25105);//('NULL data specified for a filled polygon. Check that your data is not NULL.');
+	    (new JpGraphError())->RaiseL(25105);//('NULL data specified for a filled polygon. Check that your data is not NULL.');
 	}
 	for($i=0; $i < $n; ++$i) 
 	    $pts[$i] = round($pts[$i]);
@@ -1698,11 +1692,11 @@ class Image {
     }
 	
     function Rectangle($xl,$yu,$xr,$yl) {
-	$this->Polygon(array($xl,$yu,$xr,$yu,$xr,$yl,$xl,$yl,$xl,$yu));
+	$this->Polygon([$xl,$yu,$xr,$yu,$xr,$yl,$xl,$yl,$xl,$yu]);
     }
 	
     function FilledRectangle($xl,$yu,$xr,$yl) {
-	$this->FilledPolygon(array($xl,$yu,$xr,$yu,$xr,$yl,$xl,$yl));
+	$this->FilledPolygon([$xl,$yu,$xr,$yu,$xr,$yl,$xl,$yl]);
     }
 
     function FilledRectangle2($xl,$yu,$xr,$yl,$color1,$color2,$style=1) {
@@ -1734,7 +1728,7 @@ class Image {
 	}
     }
 
-    function ShadowRectangle($xl,$yu,$xr,$yl,$fcolor=false,$shadow_width=3,$shadow_color=array(102,102,102)) {
+    function ShadowRectangle($xl,$yu,$xr,$yl,$fcolor=false,$shadow_width=3,$shadow_color=[102,102,102]) {
 	// This is complicated by the fact that we must also handle the case where
         // the reactangle has no fill color
 	$this->PushColor($shadow_color);
@@ -1851,7 +1845,7 @@ class Image {
     function FillToBorder($x,$y,$aBordColor) {
 	$bc = $this->rgb->allocate($aBordColor);
 	if( $bc == -1 ) {
-	    JpGraphError::RaiseL(25106);//('Image::FillToBorder : Can not allocate more colors');
+	    (new JpGraphError())->RaiseL(25106);//('Image::FillToBorder : Can not allocate more colors');
 	}
 	imagefilltoborder($this->img,round($x),round($y),$bc,$this->current_color);
     }
@@ -1864,7 +1858,7 @@ class Image {
 	$y2 = round($y2);
 
 	// Code based on, but not identical to, work by Ariel Garza and James Pine
-	$line_length = ceil (sqrt(pow(($x2 - $x1),2) + pow(($y2 - $y1),2)) );
+	$line_length = ceil (sqrt(($x2 - $x1) ** 2 + ($y2 - $y1) ** 2) );
 	$dx = ($line_length) ? ($x2 - $x1) / $line_length : 0;
 	$dy = ($line_length) ? ($y2 - $y1) / $line_length : 0;
 	$lastx = $x1; $lasty = $y1;
@@ -1938,12 +1932,12 @@ class Image {
 	    if( $aFile != "" ) {
 		$res = @$func($this->img,$aFile);
 		if( !$res )
-		    JpGraphError::RaiseL(25107,$aFile);//("Can't write to file '$aFile'. Check that the process running PHP has enough permission.");
+		    (new JpGraphError())->RaiseL(25107, $aFile);//("Can't write to file '$aFile'. Check that the process running PHP has enough permission.");
 	    }
 	    else {
 		$res = @$func($this->img);
 		if( !$res )
-		    JpGraphError::RaiseL(25108);//("Can't stream image. This is most likely due to a faulty PHP/GD setup. Try to recompile PHP and use the built-in GD library that comes with PHP.");
+		    (new JpGraphError())->RaiseL(25108);//("Can't stream image. This is most likely due to a faulty PHP/GD setup. Try to recompile PHP and use the built-in GD library that comes with PHP.");
 		
 	    }
 	}
@@ -1958,7 +1952,7 @@ class Image {
     // of PHP not all formats may be supported.
     function SetImgFormat($aFormat,$aQuality=75) {		
 	$this->quality = $aQuality;
-	$aFormat = strtolower($aFormat);
+	$aFormat = strtolower((string) $aFormat);
 	$tst = true;
 	$supported = imagetypes();
 	if( $aFormat=="auto" ) {
@@ -1973,7 +1967,7 @@ class Image {
 	    elseif( $supported & IMG_XPM )
 		$this->img_format="xpm";
 	    else
-		JpGraphError::RaiseL(25109);//("Your PHP (and GD-lib) installation does not appear to support any known graphic formats. You need to first make sure GD is compiled as a module to PHP. If you also want to use JPEG images you must get the JPEG library. Please see the PHP docs for details.");
+		(new JpGraphError())->RaiseL(25109);//("Your PHP (and GD-lib) installation does not appear to support any known graphic formats. You need to first make sure GD is compiled as a module to PHP. If you also want to use JPEG images you must get the JPEG library. Please see the PHP docs for details.");
 				
 	    return true;
 	}
@@ -1997,7 +1991,7 @@ class Image {
 	    else 
 		$tst=false;
 	    if( !$tst )
-		JpGraphError::RaiseL(25110,$aFormat);//(" Your PHP installation does not support the chosen graphic format: $aFormat");
+		(new JpGraphError())->RaiseL(25110, $aFormat);//(" Your PHP installation does not support the chosen graphic format: $aFormat");
 	}
     }	
 } // CLASS
@@ -2008,12 +2002,12 @@ class Image {
 // a specified angle around a specified rotation point.
 //===================================================
 class RotImage extends Image {
-    var $m=array();
-    var $a=0;
-    var $dx=0,$dy=0,$transx=0,$transy=0; 
+    public $m=[];
+    public $a=0;
+    public $dx=0,$dy=0,$transx=0,$transy=0; 
 	
-    function RotImage($aWidth,$aHeight,$a=0,$aFormat=DEFAULT_GFORMAT,$aSetAutoMargin=true) {
-	$this->Image($aWidth,$aHeight,$aFormat,$aSetAutoMargin);
+    function __construct($aWidth,$aHeight,$a=0,$aFormat=DEFAULT_GFORMAT,$aSetAutoMargin=true) {
+	\Image::__construct($aWidth, $aHeight, $aFormat, $aSetAutoMargin);
 	$this->dx=$this->left_margin+$this->plotwidth/2;
 	$this->dy=$this->top_margin+$this->plotheight/2;
 	$this->SetAngle($a);	
@@ -2025,11 +2019,11 @@ class RotImage extends Image {
 	$this->dx=$dx;
 	$this->dy=$dy;
 	$this->SetAngle($this->a);
-	return array($old_dx,$old_dy);
+	return [$old_dx,$old_dy];
     }
 	
     function SetTranslation($dx,$dy) {
-	$old = array($this->transx,$this->transy);
+	$old = [$this->transx,$this->transy];
 	$this->transx = $dx;
 	$this->transy = $dy;
 	return $old;
@@ -2055,31 +2049,36 @@ class RotImage extends Image {
 	return $tmp;
     }
 
+    #[\Override]
     function Circle($xc,$yc,$r) {
 	// Circle get's rotated through the Arc() call
 	// made in the parent class
 	parent::Circle($xc,$yc,$r);
     }
 
+    #[\Override]
     function FilledCircle($xc,$yc,$r) {
-	list($xc,$yc) = $this->Rotate($xc,$yc);
+	[$xc, $yc] = $this->Rotate($xc,$yc);
 	parent::FilledCircle($xc,$yc,$r);
     }
 	
+    #[\Override]
     function Arc($xc,$yc,$w,$h,$s,$e) {
-	list($xc,$yc) = $this->Rotate($xc,$yc);
+	[$xc, $yc] = $this->Rotate($xc,$yc);
 	$s += $this->a;
 	$e += $this->a;
 	parent::Arc($xc,$yc,$w,$h,$s,$e);
     }
 
-    function FilledArc($xc,$yc,$w,$h,$s,$e) {
-	list($xc,$yc) = $this->Rotate($xc,$yc);
+    #[\Override]
+    function FilledArc($xc,$yc,$w,$h,$s,$e, $style = "") {
+	[$xc, $yc] = $this->Rotate($xc,$yc);
 	$s += $this->a;
 	$e += $this->a;
 	parent::FilledArc($xc,$yc,$w,$h,$s,$e);
     }
 
+    #[\Override]
     function SetMargin($lm,$rm,$tm,$bm) {
 	parent::SetMargin($lm,$rm,$tm,$bm);
 	$this->dx=$this->left_margin+$this->plotwidth/2;
@@ -2090,17 +2089,18 @@ class RotImage extends Image {
     function Rotate($x,$y) {
 	// Optimization. Ignore rotation if Angle==0 || ANgle==360
 	if( $this->a == 0 || $this->a == 360 ) {
-	    return array($x + $this->transx, $y + $this->transy );
+	    return [$x + $this->transx, $y + $this->transy ];
 	}
 	else {
 	    $x1=round($this->m[0][0]*$x + $this->m[0][1]*$y,1) + $this->m[0][2] + $this->transx;
 	    $y1=round($this->m[1][0]*$x + $this->m[1][1]*$y,1) + $this->m[1][2] + $this->transy;
-	    return array($x1,$y1);
+	    return [$x1,$y1];
 	}
     }
 
+    #[\Override]
     function CopyMerge($fromImg,$toX,$toY,$fromX,$fromY,$toWidth,$toHeight,$fromWidth=-1,$fromHeight=-1,$aMix=100) {
-	list($toX,$toY) = $this->Rotate($toX,$toY);
+	[$toX, $toY] = $this->Rotate($toX,$toY);
 	parent::CopyMerge($fromImg,$toX,$toY,$fromX,$fromY,$toWidth,$toHeight,$fromWidth,$fromHeight,$aMix);
 
     }
@@ -2108,30 +2108,34 @@ class RotImage extends Image {
     function ArrRotate($pnts) {
 	$n = count($pnts)-1;
 	for($i=0; $i < $n; $i+=2) {
-	    list ($x,$y) = $this->Rotate($pnts[$i],$pnts[$i+1]);
+	    [$x, $y] = $this->Rotate($pnts[$i],$pnts[$i+1]);
 	    $pnts[$i] = $x; $pnts[$i+1] = $y;
 	}
 	return $pnts;
     }
 	
+    #[\Override]
     function Line($x1,$y1,$x2,$y2) {
-	list($x1,$y1) = $this->Rotate($x1,$y1);
-	list($x2,$y2) = $this->Rotate($x2,$y2);
+	[$x1, $y1] = $this->Rotate($x1,$y1);
+	[$x2, $y2] = $this->Rotate($x2,$y2);
 	parent::Line($x1,$y1,$x2,$y2);
     }
 
+    #[\Override]
     function Rectangle($x1,$y1,$x2,$y2) {
 	// Rectangle uses Line() so it will be rotated through that call
 	parent::Rectangle($x1,$y1,$x2,$y2);
     }
 	
+    #[\Override]
     function FilledRectangle($x1,$y1,$x2,$y2) {
 	if( $y1==$y2 || $x1==$x2 )
 	    $this->Line($x1,$y1,$x2,$y2);
 	else 
-	    $this->FilledPolygon(array($x1,$y1,$x2,$y1,$x2,$y2,$x1,$y2));
+	    $this->FilledPolygon([$x1,$y1,$x2,$y1,$x2,$y2,$x1,$y2]);
     }
 	
+    #[\Override]
     function Polygon($pnts,$closed=FALSE,$fast=false) {
 	// Polygon uses Line() so it will be rotated through that call unless
 	// fast drawing routines are used in which case a rotate is needed
@@ -2142,17 +2146,20 @@ class RotImage extends Image {
 	    parent::Polygon($pnts,$closed,$fast);
     }
 	
+    #[\Override]
     function FilledPolygon($pnts) {
 	parent::FilledPolygon($this->ArrRotate($pnts));
     }
 	
+    #[\Override]
     function Point($x,$y) {
-	list($xp,$yp) = $this->Rotate($x,$y);
+	[$xp, $yp] = $this->Rotate($x,$y);
 	parent::Point($xp,$yp);
     }
 	
+    #[\Override]
     function StrokeText($x,$y,$txt,$dir=0,$paragraph_align="left",$debug=false) {
-	list($xp,$yp) = $this->Rotate($x,$y);
+	[$xp, $yp] = $this->Rotate($x,$y);
 	return parent::StrokeText($xp,$yp,$txt,$dir,$paragraph_align,$debug);
     }
 }

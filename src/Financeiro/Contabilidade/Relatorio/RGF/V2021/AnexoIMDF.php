@@ -58,7 +58,8 @@ class AnexoIMDF extends AnexoI
      * @return \stdClass[]
      * @throws \ParameterException
      */
-    public function getDados()
+    #[\Override]
+    public function getDados($trazerConfiguracaoPadrao = true)
     {
         parent::getDados();
         $this->inicializaValoresDespesaPorLinhaMes();
@@ -76,6 +77,7 @@ class AnexoIMDF extends AnexoI
    * Dados preparados para serem emitidos no Anexo VI - Simplificado
    * @return \stdClass
    */
+    #[\Override]
     public function getDadosSimplificado()
     {
         $this->getDados();

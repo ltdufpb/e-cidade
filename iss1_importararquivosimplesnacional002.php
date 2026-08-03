@@ -94,7 +94,7 @@
     try {
 
       new DBDate("{$aData[1]}-{$aData[2]}-{$aData[3]}");
-    } catch (Exception $sException) {
+    } catch (Exception) {
 
       throw new BusinessException( _M( MENSAGEM . "nome_arquivo_invalido_data" ) );
     }

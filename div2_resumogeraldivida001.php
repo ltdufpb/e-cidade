@@ -110,7 +110,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 				  	<td>Data do Cálculo : </td>
 				  	<td>
 				  	 <?php
-				  	 	$aDatas    = array();
+				  	 	$aDatas    = [];
 				  	 	$iNroDatas = 0;
 				  	 	if ($lIndex) {
 
@@ -134,7 +134,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 				  	<td>Quebra por Tipo:</td>
 				  	<td>
 				  		<?php
-				  			$aQuebraTipo = array("s"=>"SIM","n"=>"NÃO");
+				  			$aQuebraTipo = ["s"=>"SIM","n"=>"NÃO"];
 				  			db_select('quebra',$aQuebraTipo,true,$db_opcao,'');
 				  		?>
 				  	</td>
@@ -143,7 +143,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 				  			if ( isset($oPost->dataDebitos) && trim($oPost->dataDebitos) != '' ) {
 				  				$dtDataDebitos = $oPost->dataDebitos;
 				  			} else if ( $iNroDatas > 0 ) {
-				  				$dtDataDebitos = pg_result($rsDataDebitos,0,'k115_data');
+				  				$dtDataDebitos = pg_fetch_result($rsDataDebitos,0,'k115_data');
 				  			} else {
 				  				$dtDataDebitos = '';
 				  			}

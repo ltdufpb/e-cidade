@@ -39,7 +39,7 @@ $dadosRelatorio     = unserialize(fgets($jsonDadosRelatorio));
 
 $lMostraObservacoes = $dadosRelatorio->mostraObservacoes;
 $lEmiteTodosAfastamentos = $dadosRelatorio->emiteTodosAfastamentos;
-$matriculasComErro       = array();
+$matriculasComErro       = [];
 
 $head2 = "ESPELHO PONTO";
 $head3 = "Período: {$dadosRelatorio->dataInicio} - {$dadosRelatorio->dataFim}";
@@ -100,7 +100,7 @@ while (!feof($jsonDadosRelatorio)) {
     $pdf->setFontSize(8);
 
     $sHorasJornada = '';
-    $aJornadasServidor = array();
+    $aJornadasServidor = [];
     $iLimiteObservacoesHorarios -= count($aJornadasServidor);
     $contadorHorasJornada = 0;
 
@@ -134,7 +134,7 @@ while (!feof($jsonDadosRelatorio)) {
 
     foreach ($espelhoPontoDados['datas'] as $indDatas => $oData) {
 
-        if ((!!preg_match('/^\d{1,2}\/(\d{1,2})\/\d{1,4}$/', $oData->data, $aMes)) !== true) {
+        if ((!!preg_match('/^\d{1,2}\/(\d{1,2})\/\d{1,4}$/', (string) $oData->data, $aMes)) !== true) {
             throw new BusinessException("Não foi possível identificar o mês.");
         }
 
@@ -239,11 +239,11 @@ while (!feof($jsonDadosRelatorio)) {
         $pdf->Cell(190, 5, 'Existe mais de uma ocorrência de Afastamento/Justificativas.', 0, 1, "L");
     }
 
-    $aObservacoesServidor = array();
+    $aObservacoesServidor = [];
     $lMostraObservacoesRescisao = false;
     foreach ($espelhoPontoDados['observacoes'] as $observacao) {
 
-        if (trim($observacao) === '' || trim($observacao) === ":") {
+        if (trim((string) $observacao) === '' || trim((string) $observacao) === ":") {
             continue;
         }
 
@@ -275,8 +275,8 @@ while (!feof($jsonDadosRelatorio)) {
                 break;
             }
 
-            if (strlen($sObservacao) > $iLimiteCarateresObservacoes) {
-                $sObservacao = substr($sObservacao, 0, $iLimiteCarateresObservacoes);
+            if (strlen((string) $sObservacao) > $iLimiteCarateresObservacoes) {
+                $sObservacao = substr((string) $sObservacao, 0, $iLimiteCarateresObservacoes);
                 $sObservacao .= '...';
             }
 
@@ -300,8 +300,8 @@ while (!feof($jsonDadosRelatorio)) {
         }
 
         foreach ($aObservacoesServidor as $sObservacao) {
-            if (strlen($sObservacao) > $iLimiteCarateresObservacoes) {
-                $sObservacao = substr($sObservacao, 0, $iLimiteCarateresObservacoes);
+            if (strlen((string) $sObservacao) > $iLimiteCarateresObservacoes) {
+                $sObservacao = substr((string) $sObservacao, 0, $iLimiteCarateresObservacoes);
                 $sObservacao .= '...';
             }
 
@@ -341,7 +341,7 @@ function escreverGrade(PDF $pdf, $dados, $lHeader = false, $marcacoes=false)
 
     $colunas = (array)$dados;
     $iMaximoDeLinhas = 5;
-    $aColunasNaoContar = array(
+    $aColunasNaoContar = [
         'afastamento',
         'oJornada',
         'data_dia',
@@ -351,7 +351,7 @@ function escreverGrade(PDF $pdf, $dados, $lHeader = false, $marcacoes=false)
         'data',
         'possuiEvento',
         'dadosEvento'
-    );
+    ];
 
     // Valida se vai imprimir todas as marcacoes
     // Caso sim, diminui a altura da celula, para tentar emitir o espelho em apenas 1 pagina
@@ -366,7 +366,7 @@ function escreverGrade(PDF $pdf, $dados, $lHeader = false, $marcacoes=false)
             continue;
         }
 
-        $iAlturaLinha = $pdf->NbLines(13, trim($coluna)) * $alturaBase;
+        $iAlturaLinha = $pdf->NbLines(13, trim((string) $coluna)) * $alturaBase;
 
             if ($iAlturaLinha > $iMaximoDeLinhas) {
                 $iMaximoDeLinhas = $iAlturaLinha;
@@ -438,11 +438,11 @@ function somarHora($horarios)
 
     $nTotalMinutos = 0;
     foreach ($horarios as $horario) {
-        if (is_null($horario) || $horario == '' || strpos($horario, ':') == false) {
+        if (is_null($horario) || $horario == '' || !str_contains((string) $horario, ':')) {
             continue;
         }
 
-        list($iHora, $iMinute) = explode(':', $horario);
+        [$iHora, $iMinute] = explode(':', (string) $horario);
         $nTotalMinutos += $iHora * 60;
         $nTotalMinutos += $iMinute;
     }
@@ -486,7 +486,7 @@ function montarMarcacao($marcacao, $mostrarAfastamento, $afastamento, &$mostrarL
         return 'FERIADO';
     }
 
-    $aDados = array();
+    $aDados = [];
     $iTotalAfastamento = 0;
     if ($afastamento->isAfastado && $afastamento->abreviacao) {
         $aDados[] = $afastamento->abreviacao;
@@ -526,14 +526,14 @@ function montarMarcacao($marcacao, $mostrarAfastamento, $afastamento, &$mostrarL
 
 function totalizarHorasServidor($espelhoPonto = null)
 {
-    $totalHoras = array(
+    $totalHoras = [
         'nTotalHorasNormais' => '0:00',
         'nTotalHorasFaltas' => '0:00',
         'nTotalHorasAtraso' => '0:00',
         'nTotalHorasExt50' => '0:00',
         'nTotalHorasExt100' => '0:00',
         'nTotalHorasAdicional' => '0:00',
-    );
+    ];
     
     if (empty($espelhoPonto)) {
         return $totalHoras;

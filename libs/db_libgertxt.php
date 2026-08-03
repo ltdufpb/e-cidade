@@ -35,96 +35,96 @@ class cl_layout_BBBS {
 /*
     CABEÇALHO ARQUIVO
 */ 
-    var  $BSheaderA_001_003 = null;
-    var  $BSheaderA_004_007 = null;
-    var  $BSheaderA_008_008 = null;
-    var  $BSheaderA_009_017 = null;
-    var  $BSheaderA_018_018 = null;
-    var  $BSheaderA_019_032 = null;
-    var  $BSheaderA_033_037 = null;
-    var  $BSheaderA_038_052 = null;
-    var  $BSheaderA_053_057 = null;
-    var  $BSheaderA_058_058 = null;
-    var  $BSheaderA_059_061 = null;
-    var  $BSheaderA_062_071 = null;
-    var  $BSheaderA_072_072 = null;
-    var  $BSheaderA_073_102 = null;
-    var  $BSheaderA_103_132 = null;
-    var  $BSheaderA_133_142 = null;
-    var  $BSheaderA_143_143 = null;
-    var  $BSheaderA_144_151 = null;
-    var  $BSheaderA_152_157 = null;
-    var  $BSheaderA_158_163 = null;
-    var  $BSheaderA_164_166 = null;
-    var  $BSheaderA_167_171 = null;
-    var  $BSheaderA_172_191 = null;
-    var  $BSheaderA_192_211 = null;
-    var  $BSheaderA_212_240 = null;
+    public $BSheaderA_001_003 = null;
+    public $BSheaderA_004_007 = null;
+    public $BSheaderA_008_008 = null;
+    public $BSheaderA_009_017 = null;
+    public $BSheaderA_018_018 = null;
+    public $BSheaderA_019_032 = null;
+    public $BSheaderA_033_037 = null;
+    public $BSheaderA_038_052 = null;
+    public $BSheaderA_053_057 = null;
+    public $BSheaderA_058_058 = null;
+    public $BSheaderA_059_061 = null;
+    public $BSheaderA_062_071 = null;
+    public $BSheaderA_072_072 = null;
+    public $BSheaderA_073_102 = null;
+    public $BSheaderA_103_132 = null;
+    public $BSheaderA_133_142 = null;
+    public $BSheaderA_143_143 = null;
+    public $BSheaderA_144_151 = null;
+    public $BSheaderA_152_157 = null;
+    public $BSheaderA_158_163 = null;
+    public $BSheaderA_164_166 = null;
+    public $BSheaderA_167_171 = null;
+    public $BSheaderA_172_191 = null;
+    public $BSheaderA_192_211 = null;
+    public $BSheaderA_212_240 = null;
 /*
     CABEÇALHO LOTE
 */ 
-    var  $BSheaderL_001_003 = null;
-    var  $BSheaderL_004_007 = null;
-    var  $BSheaderL_008_008 = null;
-    var  $BSheaderL_009_009 = null;
-    var  $BSheaderL_010_011 = null;
-    var  $BSheaderL_012_013 = null;
-    var  $BSheaderL_014_016 = null;
-    var  $BSheaderL_017_017 = null;
-    var  $BSheaderL_018_018 = null;
-    var  $BSheaderL_019_032 = null;
-    var  $BSheaderL_033_037 = null;
-    var  $BSheaderL_038_052 = null;
-    var  $BSheaderL_053_057 = null;
-    var  $BSheaderL_058_061 = null;
-    var  $BSheaderL_062_071 = null;
-    var  $BSheaderL_072_072 = null;
-    var  $BSheaderL_073_102 = null;
-    var  $BSheaderL_103_142 = null;
-    var  $BSheaderL_143_172 = null;
-    var  $BSheaderL_173_177 = null;
-    var  $BSheaderL_178_192 = null;
-    var  $BSheaderL_193_212 = null;
-    var  $BSheaderL_213_220 = null;
-    var  $BSheaderL_221_222 = null;
-    var  $BSheaderL_223_224 = null;
-    var  $BSheaderL_225_240 = null;
+    public $BSheaderL_001_003 = null;
+    public $BSheaderL_004_007 = null;
+    public $BSheaderL_008_008 = null;
+    public $BSheaderL_009_009 = null;
+    public $BSheaderL_010_011 = null;
+    public $BSheaderL_012_013 = null;
+    public $BSheaderL_014_016 = null;
+    public $BSheaderL_017_017 = null;
+    public $BSheaderL_018_018 = null;
+    public $BSheaderL_019_032 = null;
+    public $BSheaderL_033_037 = null;
+    public $BSheaderL_038_052 = null;
+    public $BSheaderL_053_057 = null;
+    public $BSheaderL_058_061 = null;
+    public $BSheaderL_062_071 = null;
+    public $BSheaderL_072_072 = null;
+    public $BSheaderL_073_102 = null;
+    public $BSheaderL_103_142 = null;
+    public $BSheaderL_143_172 = null;
+    public $BSheaderL_173_177 = null;
+    public $BSheaderL_178_192 = null;
+    public $BSheaderL_193_212 = null;
+    public $BSheaderL_213_220 = null;
+    public $BSheaderL_221_222 = null;
+    public $BSheaderL_223_224 = null;
+    public $BSheaderL_225_240 = null;
 /*
     FINAL CABEÇALHOS      
 */
 /*
     CORPO
 */
-    var  $BSregist_001_003 = null;
-    var  $BSregist_004_007 = null;
-    var  $BSregist_008_008 = null;
-    var  $BSregist_009_013 = null;
-    var  $BSregist_014_014 = null;
-    var  $BSregist_015_015 = null;
-    var  $BSregist_016_017 = null;
-    var  $BSregist_018_020 = null;
-    var  $BSregist_021_023 = null;
-    var  $BSregist_024_028 = null;
-    var  $BSregist_029_029 = null;
-    var  $BSregist_030_042 = null;
-    var  $BSregist_043_043 = null;
-    var  $BSregist_044_073 = null;
-    var  $BSregist_074_088 = null;
-    var  $BSregist_089_093 = null;
-    var  $BSregist_094_101 = null;
-    var  $BSregist_102_104 = null;
-    var  $BSregist_105_119 = null;
-    var  $BSregist_120_134 = null;
-    var  $BSregist_135_154 = null;
-    var  $BSregist_155_162 = null;
-    var  $BSregist_163_177 = null;
-    var  $BSregist_178_182 = null;
-    var  $BSregist_183_202 = null;
-    var  $BSregist_203_203 = null;
-    var  $BSregist_204_217 = null;
-    var  $BSregist_218_229 = null;
-    var  $BSregist_230_230 = null;
-    var  $BSregist_231_240 = null;
+    public $BSregist_001_003 = null;
+    public $BSregist_004_007 = null;
+    public $BSregist_008_008 = null;
+    public $BSregist_009_013 = null;
+    public $BSregist_014_014 = null;
+    public $BSregist_015_015 = null;
+    public $BSregist_016_017 = null;
+    public $BSregist_018_020 = null;
+    public $BSregist_021_023 = null;
+    public $BSregist_024_028 = null;
+    public $BSregist_029_029 = null;
+    public $BSregist_030_042 = null;
+    public $BSregist_043_043 = null;
+    public $BSregist_044_073 = null;
+    public $BSregist_074_088 = null;
+    public $BSregist_089_093 = null;
+    public $BSregist_094_101 = null;
+    public $BSregist_102_104 = null;
+    public $BSregist_105_119 = null;
+    public $BSregist_120_134 = null;
+    public $BSregist_135_154 = null;
+    public $BSregist_155_162 = null;
+    public $BSregist_163_177 = null;
+    public $BSregist_178_182 = null;
+    public $BSregist_183_202 = null;
+    public $BSregist_203_203 = null;
+    public $BSregist_204_217 = null;
+    public $BSregist_218_229 = null;
+    public $BSregist_230_230 = null;
+    public $BSregist_231_240 = null;
 /*
     FINAL CORPO
 */
@@ -138,124 +138,124 @@ class cl_layout_BBBS {
 /*
     CABEÇALHO ARQUIVO
 */
-    var  $BBheaderA_001_003 = null;
-    var  $BBheaderA_004_007 = null;
-    var  $BBheaderA_008_008 = null;
-    var  $BBheaderA_009_017 = null;
-    var  $BBheaderA_018_018 = null;
-    var  $BBheaderA_019_032 = null;
-    var  $BBheaderA_033_052 = null;
-    var  $BBheaderA_053_057 = null;
-    var  $BBheaderA_058_058 = null;
-    var  $BBheaderA_059_070 = null;
-    var  $BBheaderA_071_071 = null;
-    var  $BBheaderA_072_072 = null;
-    var  $BBheaderA_073_102 = null;
-    var  $BBheaderA_103_132 = null;
-    var  $BBheaderA_133_142 = null;
-    var  $BBheaderA_143_143 = null;
-    var  $BBheaderA_144_151 = null;
-    var  $BBheaderA_152_157 = null;
-    var  $BBheaderA_158_163 = null;
-    var  $BBheaderA_164_166 = null;
-    var  $BBheaderA_167_171 = null;
-    var  $BBheaderA_172_191 = null;
-    var  $BBheaderA_192_211 = null;
-    var  $BBheaderA_212_222 = null;
-    var  $BBheaderA_223_225 = null;
-    var  $BBheaderA_226_228 = null;
-    var  $BBheaderA_229_230 = null;
-    var  $BBheaderA_231_240 = null;
+    public $BBheaderA_001_003 = null;
+    public $BBheaderA_004_007 = null;
+    public $BBheaderA_008_008 = null;
+    public $BBheaderA_009_017 = null;
+    public $BBheaderA_018_018 = null;
+    public $BBheaderA_019_032 = null;
+    public $BBheaderA_033_052 = null;
+    public $BBheaderA_053_057 = null;
+    public $BBheaderA_058_058 = null;
+    public $BBheaderA_059_070 = null;
+    public $BBheaderA_071_071 = null;
+    public $BBheaderA_072_072 = null;
+    public $BBheaderA_073_102 = null;
+    public $BBheaderA_103_132 = null;
+    public $BBheaderA_133_142 = null;
+    public $BBheaderA_143_143 = null;
+    public $BBheaderA_144_151 = null;
+    public $BBheaderA_152_157 = null;
+    public $BBheaderA_158_163 = null;
+    public $BBheaderA_164_166 = null;
+    public $BBheaderA_167_171 = null;
+    public $BBheaderA_172_191 = null;
+    public $BBheaderA_192_211 = null;
+    public $BBheaderA_212_222 = null;
+    public $BBheaderA_223_225 = null;
+    public $BBheaderA_226_228 = null;
+    public $BBheaderA_229_230 = null;
+    public $BBheaderA_231_240 = null;
 /*
     CABEÇALHO LOTE
 */ 
-    var  $BBheaderL_001_003 = null;
-    var  $BBheaderL_004_007 = null;
-    var  $BBheaderL_008_008 = null;
-    var  $BBheaderL_009_009 = null;
-    var  $BBheaderL_010_011 = null;
-    var  $BBheaderL_012_013 = null;
-    var  $BBheaderL_014_016 = null;
-    var  $BBheaderL_017_017 = null;
-    var  $BBheaderL_018_018 = null;
-    var  $BBheaderL_019_032 = null;
-    var  $BBheaderL_033_052 = null;    
-    var  $BBheaderL_053_057 = null;
-    var  $BBheaderL_058_058 = null;
-    var  $BBheaderL_059_070 = null;
-    var  $BBheaderL_071_071 = null;    
-    var  $BBheaderL_072_072 = null;
-    var  $BBheaderL_073_102 = null;
-    var  $BBheaderL_103_142 = null;    
-    var  $BBheaderL_143_172 = null;
-    var  $BBheaderL_173_177 = null;
-    var  $BBheaderL_178_192 = null;
-    var  $BBheaderL_193_212 = null;
-    var  $BBheaderL_213_217 = null;
-    var  $BBheaderL_218_220 = null;
-    var  $BBheaderL_221_222 = null;
-    var  $BBheaderL_223_230 = null;
-    var  $BBheaderL_231_240 = null;
+    public $BBheaderL_001_003 = null;
+    public $BBheaderL_004_007 = null;
+    public $BBheaderL_008_008 = null;
+    public $BBheaderL_009_009 = null;
+    public $BBheaderL_010_011 = null;
+    public $BBheaderL_012_013 = null;
+    public $BBheaderL_014_016 = null;
+    public $BBheaderL_017_017 = null;
+    public $BBheaderL_018_018 = null;
+    public $BBheaderL_019_032 = null;
+    public $BBheaderL_033_052 = null;    
+    public $BBheaderL_053_057 = null;
+    public $BBheaderL_058_058 = null;
+    public $BBheaderL_059_070 = null;
+    public $BBheaderL_071_071 = null;    
+    public $BBheaderL_072_072 = null;
+    public $BBheaderL_073_102 = null;
+    public $BBheaderL_103_142 = null;    
+    public $BBheaderL_143_172 = null;
+    public $BBheaderL_173_177 = null;
+    public $BBheaderL_178_192 = null;
+    public $BBheaderL_193_212 = null;
+    public $BBheaderL_213_217 = null;
+    public $BBheaderL_218_220 = null;
+    public $BBheaderL_221_222 = null;
+    public $BBheaderL_223_230 = null;
+    public $BBheaderL_231_240 = null;
 /*         
     FINAL CBABEÇALHOS      
 */
 /*
     CORPO SEGMENTO A
 */
-    var  $BBregistA_001_003 = null;
-    var  $BBregistA_004_007 = null;
-    var  $BBregistA_008_008 = null;
-    var  $BBregistA_009_013 = null;
-    var  $BBregistA_014_014 = null;
-    var  $BBregistA_015_015 = null;
-    var  $BBregistA_016_017 = null;
-    var  $BBregistA_018_020 = null;
-    var  $BBregistA_021_023 = null;
-    var  $BBregistA_024_028 = null;
-    var  $BBregistA_029_029 = null;
-    var  $BBregistA_030_041 = null;
-    var  $BBregistA_042_042 = null;
-    var  $BBregistA_043_043 = null;
-    var  $BBregistA_044_073 = null;
-    var  $BBregistA_074_093 = null;
-    var  $BBregistA_094_101 = null;
-    var  $BBregistA_102_104 = null;
-    var  $BBregistA_105_119 = null;
-    var  $BBregistA_120_134 = null;
-    var  $BBregistA_135_154 = null;
-    var  $BBregistA_155_162 = null;
-    var  $BBregistA_163_177 = null;
-    var  $BBregistA_178_217 = null;
-    var  $BBregistA_218_229 = null;
-    var  $BBregistA_230_230 = null;
-    var  $BBregistA_231_240 = null;
+    public $BBregistA_001_003 = null;
+    public $BBregistA_004_007 = null;
+    public $BBregistA_008_008 = null;
+    public $BBregistA_009_013 = null;
+    public $BBregistA_014_014 = null;
+    public $BBregistA_015_015 = null;
+    public $BBregistA_016_017 = null;
+    public $BBregistA_018_020 = null;
+    public $BBregistA_021_023 = null;
+    public $BBregistA_024_028 = null;
+    public $BBregistA_029_029 = null;
+    public $BBregistA_030_041 = null;
+    public $BBregistA_042_042 = null;
+    public $BBregistA_043_043 = null;
+    public $BBregistA_044_073 = null;
+    public $BBregistA_074_093 = null;
+    public $BBregistA_094_101 = null;
+    public $BBregistA_102_104 = null;
+    public $BBregistA_105_119 = null;
+    public $BBregistA_120_134 = null;
+    public $BBregistA_135_154 = null;
+    public $BBregistA_155_162 = null;
+    public $BBregistA_163_177 = null;
+    public $BBregistA_178_217 = null;
+    public $BBregistA_218_229 = null;
+    public $BBregistA_230_230 = null;
+    public $BBregistA_231_240 = null;
 /*
     CORPO SEGMENTO B
 */
-    var  $BBregistB_001_003 = null;
-    var  $BBregistB_004_007 = null;
-    var  $BBregistB_008_008 = null;
-    var  $BBregistB_009_013 = null;
-    var  $BBregistB_014_014 = null;
-    var  $BBregistB_015_017 = null;
-    var  $BBregistB_018_018 = null;
-    var  $BBregistB_019_032 = null;
-    var  $BBregistB_033_062 = null;
-    var  $BBregistB_063_067 = null;
-    var  $BBregistB_068_082 = null;
-    var  $BBregistB_083_097 = null;
-    var  $BBregistB_098_117 = null;
-    var  $BBregistB_118_122 = null;
-    var  $BBregistB_123_125 = null;
-    var  $BBregistB_126_127 = null;
-    var  $BBregistB_128_135 = null;
-    var  $BBregistB_136_150 = null;
-    var  $BBregistB_151_165 = null;
-    var  $BBregistB_166_180 = null;
-    var  $BBregistB_181_195 = null;
-    var  $BBregistB_196_210 = null;
-    var  $BBregistB_211_225 = null;
-    var  $BBregistB_226_240 = null;
+    public $BBregistB_001_003 = null;
+    public $BBregistB_004_007 = null;
+    public $BBregistB_008_008 = null;
+    public $BBregistB_009_013 = null;
+    public $BBregistB_014_014 = null;
+    public $BBregistB_015_017 = null;
+    public $BBregistB_018_018 = null;
+    public $BBregistB_019_032 = null;
+    public $BBregistB_033_062 = null;
+    public $BBregistB_063_067 = null;
+    public $BBregistB_068_082 = null;
+    public $BBregistB_083_097 = null;
+    public $BBregistB_098_117 = null;
+    public $BBregistB_118_122 = null;
+    public $BBregistB_123_125 = null;
+    public $BBregistB_126_127 = null;
+    public $BBregistB_128_135 = null;
+    public $BBregistB_136_150 = null;
+    public $BBregistB_151_165 = null;
+    public $BBregistB_166_180 = null;
+    public $BBregistB_181_195 = null;
+    public $BBregistB_196_210 = null;
+    public $BBregistB_211_225 = null;
+    public $BBregistB_226_240 = null;
 /*
     FINAL CORPO
 */
@@ -269,33 +269,33 @@ class cl_layout_BBBS {
 /*
     TRAILLER LOTE
 */
-    var  $BBBStraillerL_001_003 = null;
-    var  $BBBStraillerL_004_007 = null;
-    var  $BBBStraillerL_008_008 = null;
-    var  $BBBStraillerL_009_017 = null;
-    var  $BBBStraillerL_018_023 = null;
-    var  $BBBStraillerL_024_041 = null;
-    var  $BBBStraillerL_042_059 = null;
-    var  $BBBStraillerL_060_230 = null;
-    var  $BBBStraillerL_231_240 = null;
+    public $BBBStraillerL_001_003 = null;
+    public $BBBStraillerL_004_007 = null;
+    public $BBBStraillerL_008_008 = null;
+    public $BBBStraillerL_009_017 = null;
+    public $BBBStraillerL_018_023 = null;
+    public $BBBStraillerL_024_041 = null;
+    public $BBBStraillerL_042_059 = null;
+    public $BBBStraillerL_060_230 = null;
+    public $BBBStraillerL_231_240 = null;
 /*
     TRAILLER ARQUIVO
 */
-    var  $BBBStraillerA_001_003 = null;
-    var  $BBBStraillerA_004_007 = null;
-    var  $BBBStraillerA_008_008 = null;
-    var  $BBBStraillerA_009_017 = null;
-    var  $BBBStraillerA_018_023 = null;
-    var  $BBBStraillerA_024_029 = null;
-    var  $BBBStraillerA_230_035 = null;
-    var  $BBBStraillerA_236_240 = null;
+    public $BBBStraillerA_001_003 = null;
+    public $BBBStraillerA_004_007 = null;
+    public $BBBStraillerA_008_008 = null;
+    public $BBBStraillerA_009_017 = null;
+    public $BBBStraillerA_018_023 = null;
+    public $BBBStraillerA_024_029 = null;
+    public $BBBStraillerA_230_035 = null;
+    public $BBBStraillerA_236_240 = null;
 /*
 	FINAL TRAILLERS
 */
 /***************************************************************************************************/
 
-   var $arquivo  = null;
-   var $nomearq  = '/tmp/modelo.txt';
+   public $arquivo  = null;
+   public $nomearq  = '/tmp/modelo.txt';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// MÉTODOS LAYOUT DO BANCO BANRISUL //////////////////////////////////

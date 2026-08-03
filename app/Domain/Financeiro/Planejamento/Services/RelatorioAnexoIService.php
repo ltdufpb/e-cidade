@@ -116,6 +116,7 @@ class RelatorioAnexoIService extends AnexosLDOService
         ];
     }
 
+    #[\Override]
     protected function processar()
     {
         parent::processar();

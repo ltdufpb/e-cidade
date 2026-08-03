@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if ( !isset($parcel) || $parcel == '' ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Parcelamento não Encontrado.');
   exit; 
@@ -61,7 +61,7 @@ $TPagina = 57;
 	where inicial.inicial = $xinicial
 ";
 $result=db_query($sql);
-if ( pg_numrows($result) == 0 ) {
+if ( pg_num_rows($result) == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Parcelamento no. '.$parcel. ' não Encontrado.');
   exit; 
 }
@@ -172,16 +172,16 @@ $sql = "select termodiv.*,
 	where parcel = $parcel";
 $result = db_query($sql);
 
-if ( pg_result($result,0,"matric") > 0 ) {
-   $nomedeb = 'Imposto Predial Territorial Urbano em débitos de '.pg_result($result,0,"nomematric");
-} else if ( pg_result($result,0,"inscr") > 0 ) {
-   $nomedeb = 'Dívida Ativa em débitos de '.pg_result($result,0,"nomeinscr");
-} else if ( pg_result($result,0,"contr") > 0 ) {
-      $nomedeb =  'Contribuição de Melhorias em débitos de '.pg_result($result,0,"nomecontr");
+if ( pg_fetch_result($result,0,"matric") > 0 ) {
+   $nomedeb = 'Imposto Predial Territorial Urbano em débitos de '.pg_fetch_result($result,0,"nomematric");
+} else if ( pg_fetch_result($result,0,"inscr") > 0 ) {
+   $nomedeb = 'Dívida Ativa em débitos de '.pg_fetch_result($result,0,"nomeinscr");
+} else if ( pg_fetch_result($result,0,"contr") > 0 ) {
+      $nomedeb =  'Contribuição de Melhorias em débitos de '.pg_fetch_result($result,0,"nomecontr");
 }
 $pdf->SetFont('Arial','B',11);
 $pdf->MultiCell(0,8,$nomedeb,0,1,0,0);
-$num = pg_numrows($result);
+$num = pg_num_rows($result);
 $linha = 20;
 //$pdf->Ln(4);
 $Tv01_vlrhis = 0;

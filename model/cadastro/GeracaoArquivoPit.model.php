@@ -84,30 +84,15 @@
      *        2 - 2º semestre
      */
     public static function getInstanceByArquivo($iTipoArquivo, $iAno, $iSemestre) {
-      switch ($iTipoArquivo) {
-
-        case GeracaoArquivoPit::IPTU:
-          return new GeracaoArquivoPitIptu($iAno, $iSemestre);
-          break;
-        case GeracaoArquivoPit::ITBI_URBANO:
-          return new GeracaoArquivoPitITBIUrbano($iAno, $iSemestre);
-          break;
-        case GeracaoArquivoPit::ITBI_RURAL:
-          return new GeracaoArquivoPitITBIRural($iAno, $iSemestre);
-          break;
-        case GeracaoArquivoPit::ITBI_PVR:
-          return new GeracaoArquivoPitITBIPVR($iAno, $iSemestre);
-          break;
-        case GeracaoArquivoPit::ITBI_PVU:
-          return new GeracaoArquivoPitITBIPVU($iAno, $iSemestre);
-          break;
-        case GeracaoArquivoPit::LOGRADOUROS:
-          return new GeracaoArquivoPitLogradouros($iAno, $iSemestre);
-          break;
-        default:
-          throw new BusinessException(_M(GeracaoArquivoPit::MENSAGENS . 'tipo_nao_cadastrado'));
-          break;
-      }
+      return match ($iTipoArquivo) {
+          GeracaoArquivoPit::IPTU => new GeracaoArquivoPitIptu($iAno, $iSemestre),
+          GeracaoArquivoPit::ITBI_URBANO => new GeracaoArquivoPitITBIUrbano($iAno, $iSemestre),
+          GeracaoArquivoPit::ITBI_RURAL => new GeracaoArquivoPitITBIRural($iAno, $iSemestre),
+          GeracaoArquivoPit::ITBI_PVR => new GeracaoArquivoPitITBIPVR($iAno, $iSemestre),
+          GeracaoArquivoPit::ITBI_PVU => new GeracaoArquivoPitITBIPVU($iAno, $iSemestre),
+          GeracaoArquivoPit::LOGRADOUROS => new GeracaoArquivoPitLogradouros($iAno, $iSemestre),
+          default => throw new BusinessException(_M(GeracaoArquivoPit::MENSAGENS . 'tipo_nao_cadastrado')),
+      };
     }
 
   }

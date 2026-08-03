@@ -39,7 +39,7 @@ require_once(modification("classes/db_recibounica_classe.php"));
 $oDaoReciboUnica = new cl_recibounica();
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $erro = false;
 $descricao_erro = false;
 $quantos = 0;
@@ -92,13 +92,13 @@ if(isset($calculaunica)){
 	                        where k00_numpre = $j20_numpre and k00_dtvenc = '$k00_dtvenc_ano-$k00_dtvenc_mes-$k00_dtvenc_dia'");
       $erro = true;
 	  $perc = 0;
-      if(pg_numrows($sqlunica)!=0){
-        $perc = pg_result($sqlunica,0,'k00_percdes');
+      if(pg_num_rows($sqlunica)!=0){
+        $perc = pg_fetch_result($sqlunica,0,'k00_percdes');
 	    $sqlresultunica = "delete from recibounica where k00_numpre = $j20_numpre and k00_dtvenc = '$k00_dtvenc_ano-$k00_dtvenc_mes-$k00_dtvenc_dia'";
 	    $resultunica = db_query($sqlresultunica );
         $descricao_erro = "Vencimento Excluído.";
       }
-      if(($perc!=$k00_percdes) || (pg_numrows($sqlunica)==0)){
+      if(($perc!=$k00_percdes) || (pg_num_rows($sqlunica)==0)){
       	
 		    //$sqlresultunica = "insert into recibounica values($j20_numpre,'$k00_dtvenc_ano-$k00_dtvenc_mes-$k00_dtvenc_dia','$k00_dtoper_ano-$k00_dtoper_mes-$k00_dtoper_dia',$k00_percdes)";
 		    //$resultunica = db_query($sqlresultunica );
@@ -229,11 +229,11 @@ function js_verifica_campos(){
             <td height="25">
               <?php 
 	      $result=db_query("select distinct j18_anousu from cfiptu order by j18_anousu desc");
-	      if(pg_numrows($result) > 0){
+	      if(pg_num_rows($result) > 0){
 		?>
 		<select name="anousu">
 		<?php 
-  	        for($i=0;$i<pg_numrows($result);$i++){
+  	        for($i=0;$i<pg_num_rows($result);$i++){
 		db_fieldsmemory($result,$i);
 	        ?>
 	        <option value='<?=$j18_anousu?>'><?=$j18_anousu?></option>
@@ -275,7 +275,7 @@ function js_verifica_campos(){
             <td height="25">Hist&oacute;rico:</td>
             <td height="25">
               <?php 
-			$k00_histtxt = trim(@$k00_histtxt);
+			$k00_histtxt = trim((string) @$k00_histtxt);
 			db_textarea('k00_histtxt',5,30,$Ik00_histtxt,true,'text',4);
 			?>
             </td>

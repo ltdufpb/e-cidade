@@ -38,7 +38,7 @@ $oRotulo->label('id');
 $oRotulo->label('pl26_codigo');
 $oRotulo->label('pl26_descricao ');
 
-$where = array();
+$where = [];
 
 $campos = "id as db_id, pl26_codigo, pl26_descricao";
 
@@ -98,9 +98,9 @@ if (!isset($pesquisa_chave)) {
         $sql .= "where " . implode(' and ', $where);
     }
 
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_pl26_descricao)) {
-        $repassa = array("chave_pl26_descricao" => $chave_pl26_descricao, "chave_pl26_descricao" => $chave_pl26_descricao);
+        $repassa = ["chave_pl26_descricao" => $chave_pl26_descricao, "chave_pl26_descricao" => $chave_pl26_descricao];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

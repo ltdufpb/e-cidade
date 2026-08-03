@@ -35,7 +35,7 @@ class cl_termoinscrreg
     public function __construct()
     {
         $this->rotulo = new rotulo("termoinscrreg"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -125,7 +125,7 @@ class cl_termoinscrreg
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "termoinscrreg () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "termoinscrreg já Cadastrado";
@@ -158,10 +158,10 @@ class cl_termoinscrreg
       $this->atualizacampos();
      $sql = " update termoinscrreg set ";
      $virgula = "";
-     if(trim($this->v93_termo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_termo"])){ 
+     if(trim((string) $this->v93_termo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_termo"])){ 
        $sql  .= $virgula." v93_termo = $this->v93_termo ";
        $virgula = ",";
-       if(trim($this->v93_termo) == null ){ 
+       if(trim((string) $this->v93_termo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "v93_termo";
          $this->erro_banco = "";
@@ -171,10 +171,10 @@ class cl_termoinscrreg
          return false;
        }
      }
-     if(trim($this->v93_coddiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_coddiv"])){ 
+     if(trim((string) $this->v93_coddiv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_coddiv"])){ 
        $sql  .= $virgula." v93_coddiv = $this->v93_coddiv ";
        $virgula = ",";
-       if(trim($this->v93_coddiv) == null ){ 
+       if(trim((string) $this->v93_coddiv) == null ){ 
          $this->erro_sql = " Campo Código dívida não informado.";
          $this->erro_campo = "v93_coddiv";
          $this->erro_banco = "";
@@ -184,10 +184,10 @@ class cl_termoinscrreg
          return false;
        }
      }
-     if(trim($this->v93_vlrhis)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrhis"])){ 
+     if(trim((string) $this->v93_vlrhis)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrhis"])){ 
        $sql  .= $virgula." v93_vlrhis = $this->v93_vlrhis ";
        $virgula = ",";
-       if(trim($this->v93_vlrhis) == null ){ 
+       if(trim((string) $this->v93_vlrhis) == null ){ 
          $this->erro_sql = " Campo valor historico não informado.";
          $this->erro_campo = "v93_vlrhis";
          $this->erro_banco = "";
@@ -197,10 +197,10 @@ class cl_termoinscrreg
          return false;
        }
      }
-     if(trim($this->v93_vlrcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrcor"])){ 
+     if(trim((string) $this->v93_vlrcor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrcor"])){ 
        $sql  .= $virgula." v93_vlrcor = $this->v93_vlrcor ";
        $virgula = ",";
-       if(trim($this->v93_vlrcor) == null ){ 
+       if(trim((string) $this->v93_vlrcor) == null ){ 
          $this->erro_sql = " Campo valor corrigido não informado.";
          $this->erro_campo = "v93_vlrcor";
          $this->erro_banco = "";
@@ -210,15 +210,15 @@ class cl_termoinscrreg
          return false;
        }
      }
-     if(trim($this->v93_vlrjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrjur"])){ 
-        if(trim($this->v93_vlrjur)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrjur"])){ 
+     if(trim((string) $this->v93_vlrjur)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrjur"])){ 
+        if(trim((string) $this->v93_vlrjur)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrjur"])){ 
            $this->v93_vlrjur = "0" ; 
         } 
        $sql  .= $virgula." v93_vlrjur = $this->v93_vlrjur ";
        $virgula = ",";
      }
-     if(trim($this->v93_vlrmul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrmul"])){ 
-        if(trim($this->v93_vlrmul)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrmul"])){ 
+     if(trim((string) $this->v93_vlrmul)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrmul"])){ 
+        if(trim((string) $this->v93_vlrmul)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v93_vlrmul"])){ 
            $this->v93_vlrmul = "0" ; 
         } 
        $sql  .= $virgula." v93_vlrmul = $this->v93_vlrmul ";
@@ -369,7 +369,7 @@ $sql .= "v93_coddiv = $v93_coddiv";     $result = db_query($sql);
       
       $sql = "select ";
       if($campos != "*" ){
-        $campos_sql = split("#",$campos);
+        $campos_sql = preg_split("#\\##m",$campos);
         $virgula = "";
         for($i=0;$i<sizeof($campos_sql);$i++){
           $sql .= $virgula.$campos_sql[$i];
@@ -406,7 +406,7 @@ $sql .= "v93_coddiv = $v93_coddiv";     $result = db_query($sql);
       $sql .= $sql2;
       if($ordem != null ){
         $sql .= " order by ";
-        $campos_sql = split("#",$ordem);
+        $campos_sql = preg_split("#\\##m",(string) $ordem);
         $virgula = "";
         for($i=0;$i<sizeof($campos_sql);$i++){
           $sql .= $virgula.$campos_sql[$i];

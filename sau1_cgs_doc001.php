@@ -33,7 +33,7 @@ include(modification("classes/db_cgs_classe.php"));
 include(modification("classes/db_cgs_und_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_stdlibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcgs = new cl_cgs;
 $clcgs_und = new cl_cgs_und;
 $db_opcao = 1;

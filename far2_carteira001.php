@@ -31,7 +31,7 @@ include(modification("classes/db_far_controle_classe.php"));
 include(modification("classes/db_far_controlemed_classe.php"));
 include(modification("classes/db_far_retiradaitens_classe.php"));
 include(modification("classes/db_cgs_und_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clfar_controle = new cl_far_controle;
 $clfar_controlemed = new cl_far_controlemed;
 $clfar_retiradaitens = new cl_far_retiradaitens;
@@ -159,11 +159,11 @@ for($s=0; $s < $clfar_controlemed->numrows; $s++){
 	  }  
   $pdf->setfont('arial','',7);	  
   $pdf->text( $pdf->getX()+98,  $altura, $fa10_i_codigo);
-  $pdf->text( $pdf->getX()+105, $altura,substr($m60_descr,0,26));
+  $pdf->text( $pdf->getX()+105, $altura,substr((string) $m60_descr,0,26));
   $pdf->text( $pdf->getX()+145, $altura,$fa10_i_quantidade);
-  $pdf->text( $pdf->getX()+152, $altura,substr($m61_descr,0,8));
+  $pdf->text( $pdf->getX()+152, $altura,substr((string) $m61_descr,0,8));
   $pdf->text( $pdf->getX()+165, $altura,$fa10_i_prazo);
-  $pdf->text( $pdf->getX()+173, $altura,substr($fa12_c_descricao,0,8));
+  $pdf->text( $pdf->getX()+173, $altura,substr((string) $fa12_c_descricao,0,8));
   $cont++;
   $altura+=3;
 } 	

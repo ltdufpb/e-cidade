@@ -35,6 +35,7 @@ class TotalicacaoPagamentosContingenciaFormatter extends Formatter
      * @param array $dados
      * @return array
      */
+    #[\Override]
     public function formatar($dados)
     {
         /**

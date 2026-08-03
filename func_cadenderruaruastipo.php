@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadenderruaruastipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcadenderruaruastipo = new cl_cadenderruaruastipo;
 $clcadenderruaruastipo->rotulo->label("db85_sequencial");
 $clcadenderruaruastipo->rotulo->label("db85_cadenderrua");
@@ -98,9 +98,9 @@ $clcadenderruaruastipo->rotulo->label("db85_cadenderrua");
         }else{
            $sql = $clcadenderruaruastipo->sql_query("",$campos,"db85_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db85_cadenderrua)){
-          $repassa = array("chave_db85_sequencial"=>$chave_db85_sequencial,"chave_db85_cadenderrua"=>$chave_db85_cadenderrua);
+          $repassa = ["chave_db85_sequencial"=>$chave_db85_sequencial,"chave_db85_cadenderrua"=>$chave_db85_cadenderrua];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

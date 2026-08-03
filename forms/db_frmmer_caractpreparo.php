@@ -56,7 +56,7 @@ $clrotulo->label("me01_i_codigo");
   </td>
   <td>
    <?php 
-   $x = array("1"=>"BAIXO","2"=>"MEDIO","3"=>"ALTO");
+   $x = ["1"=>"BAIXO","2"=>"MEDIO","3"=>"ALTO"];
    db_select('me06_c_graudificuldade',$x,true,$db_opcao,"");
    ?>
   </td>

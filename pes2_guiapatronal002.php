@@ -35,7 +35,7 @@ $clbasesr = new cl_basesr;
 
 $sql_in = $clbasesr->sql_query_file($ano,$mes,"B995",null,db_getsession("DB_instit"),"r09_rubric");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $sql_inst = "select * from db_config where codigo = ".db_getsession("DB_instit");
@@ -46,7 +46,7 @@ if (!$result_inst) {
 db_fieldsmemory($result_inst,0);
 
 $where = " ";
-if(trim($selecao) != ""){
+if(trim((string) $selecao) != ""){
   $result_selecao = $clselecao->sql_record($clselecao->sql_query_file($selecao,db_getsession("DB_instit")));
   if($clselecao->numrows > 0){
     db_fieldsmemory($result_selecao, 0);
@@ -71,7 +71,7 @@ if (!$res_nome) {
 
 $virg_nome = '';
 $descr_nome = '';
-for($inome=0;$inome<pg_numrows($res_nome);$inome++){
+for($inome=0;$inome<pg_num_rows($res_nome);$inome++){
  db_fieldsmemory($res_nome,$inome);
  $descr_nome .= $virg_nome.$r33_nome;
  $virg_nome   = ', ';
@@ -92,7 +92,7 @@ $dev      = 0;
 $desco    = 0;
 $patronal = 0;
 
-for($inome=0;$inome<pg_numrows($res_nome);$inome++){
+for($inome=0;$inome<pg_num_rows($res_nome);$inome++){
 
     db_fieldsmemory($res_nome, $inome);
     if($tipo == 's'){
@@ -289,7 +289,7 @@ for($inome=0;$inome<pg_numrows($res_nome);$inome++){
       db_redireciona('db_erros.php?fechar=true&db_erro=Erro ao buscar códigos cadastrados no período de '.$mes.' / '.$ano);
     }
 
-    $xxnum = pg_numrows($result);
+    $xxnum = pg_num_rows($result);
     if ($xxnum == 0){
       db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mes.' / '.$ano);
     }

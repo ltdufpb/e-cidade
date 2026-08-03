@@ -76,7 +76,7 @@ $clrotulo->label("z01_v_nome");
     </td>
     <td> 
       <?php 
-      $aX = array();
+      $aX = [];
       $sSql = $oDaotfd_formaaviso->sql_query_file(null, ' * ', ' tf20_i_codigo ');
       $rs = $oDaotfd_formaaviso->sql_record($sSql);
 
@@ -111,14 +111,14 @@ $clrotulo->label("z01_v_nome");
 	  <tr>
 		  <td valign="top"><br>
         <?php 
-				$aChavepri = array ('tf21_i_codigo' => @$tf21_i_codigo,
+				$aChavepri =  ['tf21_i_codigo' => @$tf21_i_codigo,
                             'tf21_i_pedidotfd' => @$tf21_i_pedidotfd, 
                             'tf21_i_formaaviso' => @$tf21_i_formaaviso, 
                             'tf21_i_login' => @$tf21_i_login, 
                             'tf21_t_obs' => @$tf21_t_obs,
                             'tf21_d_dataaviso' => @$tf21_d_dataaviso,
                             'tf21_c_horaaviso' => @$tf21_c_horaaviso,
-                            'tf01_i_cgsund' => @$tf01_i_cgsund);
+                            'tf01_i_cgsund' => @$tf01_i_cgsund];
 				$oIframeAE->chavepri = $aChavepri;
 
         $sCampos = 
@@ -159,7 +159,7 @@ $clrotulo->label("z01_v_nome");
 function js_cancelar() {
  
   <?php 
-  echo ' location.href = "'.basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]).'?tf21_i_pedidotfd='.
+  echo ' location.href = "'.basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]).'?tf21_i_pedidotfd='.
                           $tf21_i_pedidotfd.'&tf01_i_cgsund="'.
                           '+document.getElementById(\'tf01_i_cgsund\').value+"&z01_v_nome='.$z01_v_nome.'";'
   ?>

@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("classes/db_rhfopag_classe.php"));
 include(modification("classes/db_rhpesdoc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhfopag = new cl_rhfopag;
 $clrhpesdoc = new cl_rhpesdoc;
 $result = $clrhfopag->sql_record($clrhfopag->sql_query_file(null,null,"*",null,"rh66_instit = ".db_getsession("DB_instit")));  

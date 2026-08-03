@@ -146,10 +146,10 @@ try {
             );
             anexarDocumentosProcesso($processo, $dados->documentos);
 
-            $state = array(
+            $state = [
                 "q151_processo" => $processo->getCodProcesso(),
                 "q151_graurisco" => $parametro->grauRisco
-            );
+            ];
 
             $processoEletronicoGrauRisco = new ProcessoEletronicoGrauRisco();
             $processoEletronicoGrauRisco->fromState($state);

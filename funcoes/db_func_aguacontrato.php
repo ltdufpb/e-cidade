@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-$aCampos = array(
+$aCampos = [
   'aguacontrato.x54_sequencial',
   'aguacontrato.x54_aguabase',
   'aguacontrato.x54_datainicial',
@@ -42,6 +42,6 @@ $aCampos = array(
        'Não aplicável'
    end)::varchar as x54_responsavelpagamento
    ",
-);
+];
 
 $campos = implode(',', $aCampos);

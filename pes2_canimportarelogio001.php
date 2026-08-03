@@ -88,7 +88,7 @@ if(isset($gerar)){
         $matricula      = trim(substr($poslinha,  0,  4)) + 0;
         $rubrica        = trim(substr($poslinha,  4,  3)) + 0;
         $quantidade     = trim(substr($poslinha,  7,  5)) + 0;
- 
+
         if($quantidade == 0){
           continue;
         }
@@ -105,7 +105,7 @@ if(isset($gerar)){
                             where rh01_regist = $matricula
                            ";
         $res_pessoal = db_query($sql_pessoal);
-        $num_pessoal = pg_numrows($res_pessoal);
+        $num_pessoal = pg_num_rows($res_pessoal);
         if($num_pessoal > 0){
           db_fieldsmemory($res_pessoal,0);
 //echo "<br> entrou 4";
@@ -119,7 +119,7 @@ if(isset($gerar)){
                               and r10_regist = $matricula 
                               and r10_rubric = lpad($rubrica,4,'0')";
           $res_busca_rub = db_query($sql_busca_rub);
-          if(pg_numrows($res_busca_rub) > 0 ){
+          if(pg_num_rows($res_busca_rub) > 0 ){
 //echo "<br> entrou 5";
              db_fieldsmemory($res_busca_rub,0);
 //echo "<br> entrou 6";

@@ -8,12 +8,7 @@ use FpdfMultiCellBorder;
 
 class ControleEstoquePDF extends FpdfMultiCellBorder
 {
-    /**
-     * @var array
-     */
-    private $depositos;
-
-    public function __construct(array $depositos, $dadosCabecalho)
+    public function __construct(private readonly array $depositos, $dadosCabecalho)
     {
         parent::__construct('L');
         global $head1;
@@ -33,8 +28,6 @@ class ControleEstoquePDF extends FpdfMultiCellBorder
         } elseif (!empty($dadosCabecalho->dataFinal)) {
             $head4 = sprintf("Até %s", db_formatar($dadosCabecalho->dataFinal, 'd'));
         }
-
-        $this->depositos = $depositos;
     }
 
     protected function initPdf()

@@ -202,7 +202,7 @@ db_textarea('q62_obs',0,57,$Iq62_obs,true,'text',$db_opcao,"onkeyup='js_controla
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("q62_sequencial"=>$get->q51_sequencial);
+	 $chavepri= ["q62_sequencial"=>$get->q51_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clissnotaavulsaservico->sql_query_file(null,"*","q62_sequencial"
 	                                     ,"q62_issnotaavulsa=".$get->q51_sequencial);

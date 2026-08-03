@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE tipoassentamentoferias
 class cl_tipoassentamentoferias { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh168_sequencial = 0; 
-   var $rh168_tipoassentamentoferias = 0; 
-   var $rh168_tipoassentamentoabono = 0; 
+   public $rh168_sequencial = 0; 
+   public $rh168_tipoassentamentoferias = 0; 
+   public $rh168_tipoassentamentoabono = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh168_sequencial = int4 = Código Sequencial 
                  rh168_tipoassentamentoferias = int4 = Assentamento paraFérias 
                  rh168_tipoassentamentoabono = int4 = Assentamento para Abono 
                  ";
    //funcao construtor da classe 
-   function cl_tipoassentamentoferias() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipoassentamentoferias"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -69,10 +69,10 @@ class cl_tipoassentamentoferias {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh168_sequencial = pg_result($result,0,0); 
+       $this->rh168_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tipoassentamentoferias_rh168_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh168_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh168_sequencial)){
          $this->erro_sql = " Campo rh168_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -104,7 +104,7 @@ class cl_tipoassentamentoferias {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipos de Assentamentos para Férias ($this->rh168_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipos de Assentamentos para Férias já Cadastrado";
@@ -133,12 +133,12 @@ class cl_tipoassentamentoferias {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21573,'$this->rh168_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3872,21573,'','".AddSlashes(pg_result($resaco,0,'rh168_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3872,21574,'','".AddSlashes(pg_result($resaco,0,'rh168_tipoassentamentoferias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3872,21575,'','".AddSlashes(pg_result($resaco,0,'rh168_tipoassentamentoabono'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3872,21573,'','".AddSlashes(pg_fetch_result($resaco,0,'rh168_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3872,21574,'','".AddSlashes(pg_fetch_result($resaco,0,'rh168_tipoassentamentoferias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3872,21575,'','".AddSlashes(pg_fetch_result($resaco,0,'rh168_tipoassentamentoabono'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -148,10 +148,10 @@ class cl_tipoassentamentoferias {
       $this->atualizacampos();
      $sql = " update tipoassentamentoferias set ";
      $virgula = "";
-     if(trim($this->rh168_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh168_sequencial"])){ 
+     if(trim((string) $this->rh168_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh168_sequencial"])){ 
        $sql  .= $virgula." rh168_sequencial = $this->rh168_sequencial ";
        $virgula = ",";
-       if(trim($this->rh168_sequencial) == null ){ 
+       if(trim((string) $this->rh168_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "rh168_sequencial";
          $this->erro_banco = "";
@@ -161,15 +161,15 @@ class cl_tipoassentamentoferias {
          return false;
        }
      }
-     if(trim($this->rh168_tipoassentamentoferias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh168_tipoassentamentoferias"])){ 
-        if(trim($this->rh168_tipoassentamentoferias)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh168_tipoassentamentoferias"])){ 
+     if(trim((string) $this->rh168_tipoassentamentoferias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh168_tipoassentamentoferias"])){ 
+        if(trim((string) $this->rh168_tipoassentamentoferias)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh168_tipoassentamentoferias"])){ 
            $this->rh168_tipoassentamentoferias = "0" ; 
         } 
        $sql  .= $virgula." rh168_tipoassentamentoferias = $this->rh168_tipoassentamentoferias ";
        $virgula = ",";
      }
-     if(trim($this->rh168_tipoassentamentoabono)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh168_tipoassentamentoabono"])){ 
-        if(trim($this->rh168_tipoassentamentoabono)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh168_tipoassentamentoabono"])){ 
+     if(trim((string) $this->rh168_tipoassentamentoabono)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh168_tipoassentamentoabono"])){ 
+        if(trim((string) $this->rh168_tipoassentamentoabono)=="" && isset($GLOBALS["HTTP_POST_VARS"]["rh168_tipoassentamentoabono"])){ 
            $this->rh168_tipoassentamentoabono = "0" ; 
         } 
        $sql  .= $virgula." rh168_tipoassentamentoabono = $this->rh168_tipoassentamentoabono ";
@@ -189,15 +189,15 @@ class cl_tipoassentamentoferias {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21573,'$this->rh168_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh168_sequencial"]) || $this->rh168_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3872,21573,'".AddSlashes(pg_result($resaco,$conresaco,'rh168_sequencial'))."','$this->rh168_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3872,21573,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh168_sequencial'))."','$this->rh168_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh168_tipoassentamentoferias"]) || $this->rh168_tipoassentamentoferias != "")
-             $resac = db_query("insert into db_acount values($acount,3872,21574,'".AddSlashes(pg_result($resaco,$conresaco,'rh168_tipoassentamentoferias'))."','$this->rh168_tipoassentamentoferias',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3872,21574,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh168_tipoassentamentoferias'))."','$this->rh168_tipoassentamentoferias',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh168_tipoassentamentoabono"]) || $this->rh168_tipoassentamentoabono != "")
-             $resac = db_query("insert into db_acount values($acount,3872,21575,'".AddSlashes(pg_result($resaco,$conresaco,'rh168_tipoassentamentoabono'))."','$this->rh168_tipoassentamentoabono',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3872,21575,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh168_tipoassentamentoabono'))."','$this->rh168_tipoassentamentoabono',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -251,12 +251,12 @@ class cl_tipoassentamentoferias {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21573,'$rh168_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3872,21573,'','".AddSlashes(pg_result($resaco,$iresaco,'rh168_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3872,21574,'','".AddSlashes(pg_result($resaco,$iresaco,'rh168_tipoassentamentoferias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3872,21575,'','".AddSlashes(pg_result($resaco,$iresaco,'rh168_tipoassentamentoabono'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3872,21573,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh168_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3872,21574,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh168_tipoassentamentoferias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3872,21575,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh168_tipoassentamentoabono'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

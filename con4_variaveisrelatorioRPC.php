@@ -43,7 +43,7 @@ $oParam            = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno          = new stdClass;
 $oRetorno->status  = 1;
 $oRetorno->message = "";
-$oRetorno->itens   = array();
+$oRetorno->itens   = [];
 
 if ($oParam->exec == "save") {
   
@@ -59,7 +59,7 @@ if ($oParam->exec == "save") {
     foreach ($oParam->cols as $oColuna) {
       
       $oLinhaColuna = new linhaColunaRelatorio($oColuna->iCodigo);
-      $oRetorno->itens[] = $oLinhaColuna->save($oParam->iLinha, utf8_decode($oColuna->nValor), $oColuna->iPeriodo, 
+      $oRetorno->itens[] = $oLinhaColuna->save($oParam->iLinha, mb_convert_encoding($oColuna->nValor, 'ISO-8859-1'), $oColuna->iPeriodo, 
                                                $oColuna->iSeq, $iAnoUsu); 
     }
     $oRetorno->linha = $oParam->iLinha; 

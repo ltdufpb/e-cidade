@@ -43,16 +43,6 @@ use JSON;
 class ImportacaoResultado
 {
     /**
-     * @var IntegraResultados
-     */
-    private $integraResultados;
-
-    /**
-     * @var ImportacaoInconsistencia
-     */
-    private $importacaoInconsistencia;
-
-    /**
      * @var JSON
      */
     private $json;
@@ -74,12 +64,10 @@ class ImportacaoResultado
      * @param JSON $json
      */
     public function __construct(
-        IntegraResultados $integraResultados,
-        ImportacaoInconsistencia $importacaoInconsistencia,
+        private readonly IntegraResultados $integraResultados,
+        private readonly ImportacaoInconsistencia $importacaoInconsistencia,
         JSON $json
     ) {
-        $this->integraResultados = $integraResultados;
-        $this->importacaoInconsistencia = $importacaoInconsistencia;
         $this->json = $json;
         $this->service = new ImportacaoRequisicaoInconsistenciaService(
             new ImportacaoRequisicaoInconsistenciaRepository(new \cl_lab_importacaorequisicaoinconsistencia())

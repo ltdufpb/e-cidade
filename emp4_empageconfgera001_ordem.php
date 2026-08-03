@@ -33,7 +33,7 @@ $clempageforma    = new cl_empageforma;
 $clempagemovforma = new cl_empagemovforma;
 
 //echo ($HTTP_SERVER_VARS["QUERY_STRING"]);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //db_postmemory($HTTP_POST_VARS);
 $db_opcao = 1;
 $db_botao = false;
@@ -295,7 +295,7 @@ $numrows09= $clpagordem->numrows;
                 define("PAGFOR", "3");
 
                 $valortotal            = 0;
-                $arr_valtipo           = Array();
+                $arr_valtipo           = [];
                 $lMovimentosBloqueados = 'false';
 
                 $e25_empagetipotransmissao = null;
@@ -461,7 +461,7 @@ $numrows09= $clpagordem->numrows;
                     /**
                      * Configura se é TED ou DOC
                      */
-                    if ( trim($db_banco) == trim($banco) ) {
+                    if ( trim((string) $db_banco) == trim((string) $banco) ) {
                       $codigopagamento = "DEP";
                     }else if ( $e81_valor < 1000 /*3000*/ ){
                       $codigopagamento = "DOC";

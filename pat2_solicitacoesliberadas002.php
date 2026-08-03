@@ -104,9 +104,9 @@ $sCamposBuscaSolicitacoes .= " END AS aprovado";
  */
 $sWhereBuscaSolicitacoes   = "";
 
-if (trim($oGet->sDataInicial) != "") {
-  $oGet->sDataInicial       = implode('-', array_reverse(explode('/', $oGet->sDataInicial)));
-  $oGet->sDataFinal         = implode('-', array_reverse(explode('/', $oGet->sDataFinal)));
+if (trim((string) $oGet->sDataInicial) != "") {
+  $oGet->sDataInicial       = implode('-', array_reverse(explode('/', (string) $oGet->sDataInicial)));
+  $oGet->sDataFinal         = implode('-', array_reverse(explode('/', (string) $oGet->sDataFinal)));
   $sWhereBuscaSolicitacoes .= " pc10_data BETWEEN '{$oGet->sDataInicial}' AND '{$oGet->sDataFinal}' AND ";
 }
 
@@ -201,9 +201,9 @@ if ($oDaoSolicita->numrows > 0) {
     $oSolicitacao = db_utils::fieldsMemory($rsBuscaSolicitacoes, $i);
     $oPdf->setfont('arial', '', 7);
     $oPdf->cell(15, $iAlturaCelula, $oSolicitacao->pc10_numero, 0, 0, "R", 0);
-    $oPdf->cell(60, $iAlturaCelula, substr($oSolicitacao->pc10_depto, 0, 40), 0, 0, "L", 0);
+    $oPdf->cell(60, $iAlturaCelula, substr((string) $oSolicitacao->pc10_depto, 0, 40), 0, 0, "L", 0);
     $oPdf->cell(15, $iAlturaCelula, db_formatar($oSolicitacao->pc10_data, 'd'), 0, 0, "C", 0);
-    $oPdf->cell(85, $iAlturaCelula, substr($oSolicitacao->pc10_resumo, 0, 50)."...", 0, 0, "L", 0);
+    $oPdf->cell(85, $iAlturaCelula, substr((string) $oSolicitacao->pc10_resumo, 0, 50)."...", 0, 0, "L", 0);
     $oPdf->cell(15, $iAlturaCelula, $oSolicitacao->aprovado, 0, 1, "C", 0);
     unset($oSolicitacao);
   }

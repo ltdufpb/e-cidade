@@ -6,8 +6,8 @@
   $sSqlVerifParcel .= "   FROM arrecad                                                           ";
   $sSqlVerifParcel .= "        INNER JOIN termo ON termo.v07_numpre = arrecad.k00_numpre         ";
   $sSqlVerifParcel .= "                        AND (termo.v07_totpar - 1) = arrecad.k00_numpar   ";
-  $sSqlVerifParcel .= "  WHERE arrecad.k00_numpre = ".substr($this->descr9, 0, 8)."              ";
-  $sSqlVerifParcel .= "    AND arrecad.k00_numpar = ".(int)substr($this->descr9, 8, 11)."        ";
+  $sSqlVerifParcel .= "  WHERE arrecad.k00_numpre = ".substr((string) $this->descr9, 0, 8)."              ";
+  $sSqlVerifParcel .= "    AND arrecad.k00_numpar = ".(int)substr((string) $this->descr9, 8, 11)."        ";
   
   $resultVerifParcel = db_query($sSqlVerifParcel);
   
@@ -17,7 +17,7 @@
     
     $this->descr12_2 .= $sMensagemCarne;
     
-    if (strlen($this->descr4_2) <= 20) { 
+    if (strlen((string) $this->descr4_2) <= 20) { 
     
       $this->descr4_2  .= $sMensagemCarne;
     }

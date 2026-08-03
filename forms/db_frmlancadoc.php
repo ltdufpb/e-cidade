@@ -140,7 +140,7 @@ db_input('pc70_descr',40,$Ipc70_descr,true,'text',3,'')
     <td align="left"><b>Imprimir Objeto Social:</b></td>
     <td >
       <?php 
-      $db_matriz = array("0"=>'Sim',"1"=>"Não");
+      $db_matriz = ["0"=>'Sim',"1"=>"Não"];
       db_select('oSocial',$db_matriz,true,1); 
       ?>
     </td>
@@ -305,7 +305,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_pcforne.hide();
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
 

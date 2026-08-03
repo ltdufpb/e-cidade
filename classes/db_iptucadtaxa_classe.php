@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE iptucadtaxa
 class cl_iptucadtaxa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j07_iptucadtaxa = 0; 
-   var $j07_descr = null; 
+   public $j07_iptucadtaxa = 0; 
+   public $j07_descr = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j07_iptucadtaxa = int4 = Codigo da taxa 
                  j07_descr = varchar(40) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_iptucadtaxa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptucadtaxa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -95,10 +95,10 @@ class cl_iptucadtaxa {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j07_iptucadtaxa = pg_result($result,0,0); 
+       $this->j07_iptucadtaxa = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from iptucadtaxa_j07_iptucadtaxa_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j07_iptucadtaxa)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j07_iptucadtaxa)){
          $this->erro_sql = " Campo j07_iptucadtaxa maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -128,7 +128,7 @@ class cl_iptucadtaxa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de taxas para calculo de Iptu ($this->j07_iptucadtaxa) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de taxas para calculo de Iptu já Cadastrado";
@@ -152,11 +152,11 @@ class cl_iptucadtaxa {
      $resaco = $this->sql_record($this->sql_query_file($this->j07_iptucadtaxa));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9487,'$this->j07_iptucadtaxa','I')");
-       $resac = db_query("insert into db_acount values($acount,1628,9487,'','".AddSlashes(pg_result($resaco,0,'j07_iptucadtaxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1628,9488,'','".AddSlashes(pg_result($resaco,0,'j07_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1628,9487,'','".AddSlashes(pg_fetch_result($resaco,0,'j07_iptucadtaxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1628,9488,'','".AddSlashes(pg_fetch_result($resaco,0,'j07_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -165,10 +165,10 @@ class cl_iptucadtaxa {
       $this->atualizacampos();
      $sql = " update iptucadtaxa set ";
      $virgula = "";
-     if(trim($this->j07_iptucadtaxa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j07_iptucadtaxa"])){ 
+     if(trim((string) $this->j07_iptucadtaxa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j07_iptucadtaxa"])){ 
        $sql  .= $virgula." j07_iptucadtaxa = $this->j07_iptucadtaxa ";
        $virgula = ",";
-       if(trim($this->j07_iptucadtaxa) == null ){ 
+       if(trim((string) $this->j07_iptucadtaxa) == null ){ 
          $this->erro_sql = " Campo Codigo da taxa nao Informado.";
          $this->erro_campo = "j07_iptucadtaxa";
          $this->erro_banco = "";
@@ -178,10 +178,10 @@ class cl_iptucadtaxa {
          return false;
        }
      }
-     if(trim($this->j07_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j07_descr"])){ 
+     if(trim((string) $this->j07_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j07_descr"])){ 
        $sql  .= $virgula." j07_descr = '$this->j07_descr' ";
        $virgula = ",";
-       if(trim($this->j07_descr) == null ){ 
+       if(trim((string) $this->j07_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "j07_descr";
          $this->erro_banco = "";
@@ -199,13 +199,13 @@ class cl_iptucadtaxa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9487,'$this->j07_iptucadtaxa','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j07_iptucadtaxa"]))
-           $resac = db_query("insert into db_acount values($acount,1628,9487,'".AddSlashes(pg_result($resaco,$conresaco,'j07_iptucadtaxa'))."','$this->j07_iptucadtaxa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1628,9487,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j07_iptucadtaxa'))."','$this->j07_iptucadtaxa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j07_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1628,9488,'".AddSlashes(pg_result($resaco,$conresaco,'j07_descr'))."','$this->j07_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1628,9488,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j07_descr'))."','$this->j07_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -250,11 +250,11 @@ class cl_iptucadtaxa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9487,'$j07_iptucadtaxa','E')");
-         $resac = db_query("insert into db_acount values($acount,1628,9487,'','".AddSlashes(pg_result($resaco,$iresaco,'j07_iptucadtaxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1628,9488,'','".AddSlashes(pg_result($resaco,$iresaco,'j07_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1628,9487,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j07_iptucadtaxa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1628,9488,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j07_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from iptucadtaxa
@@ -314,7 +314,7 @@ class cl_iptucadtaxa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:iptucadtaxa";
@@ -328,7 +328,7 @@ class cl_iptucadtaxa {
    function sql_query ( $j07_iptucadtaxa=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -349,7 +349,7 @@ class cl_iptucadtaxa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_iptucadtaxa {
    function sql_query_file ( $j07_iptucadtaxa=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_iptucadtaxa {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

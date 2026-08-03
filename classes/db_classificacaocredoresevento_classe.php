@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE classificacaocredoresevento
 class cl_classificacaocredoresevento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cc35_sequencial = 0; 
-   var $cc35_classificacaocredores = 0; 
-   var $cc35_empprestatip = 0; 
+   public $cc35_sequencial = 0; 
+   public $cc35_classificacaocredores = 0; 
+   public $cc35_empprestatip = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cc35_sequencial = int4 = Código 
                  cc35_classificacaocredores = int4 = Classificação de Credores 
                  cc35_empprestatip = int4 = Tipo de Evento 
                  ";
    //funcao construtor da classe 
-   function cl_classificacaocredoresevento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("classificacaocredoresevento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_classificacaocredoresevento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->cc35_sequencial = pg_result($result,0,0); 
+       $this->cc35_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from classificacaocredoresevento_cc35_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cc35_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cc35_sequencial)){
          $this->erro_sql = " Campo cc35_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_classificacaocredoresevento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "classificacaocredoresevento ($this->cc35_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "classificacaocredoresevento já Cadastrado";
@@ -145,12 +145,12 @@ class cl_classificacaocredoresevento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21892,'$this->cc35_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3942,21892,'','".AddSlashes(pg_result($resaco,0,'cc35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3942,21893,'','".AddSlashes(pg_result($resaco,0,'cc35_classificacaocredores'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3942,21894,'','".AddSlashes(pg_result($resaco,0,'cc35_empprestatip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3942,21892,'','".AddSlashes(pg_fetch_result($resaco,0,'cc35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3942,21893,'','".AddSlashes(pg_fetch_result($resaco,0,'cc35_classificacaocredores'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3942,21894,'','".AddSlashes(pg_fetch_result($resaco,0,'cc35_empprestatip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_classificacaocredoresevento {
       $this->atualizacampos();
      $sql = " update classificacaocredoresevento set ";
      $virgula = "";
-     if(trim($this->cc35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc35_sequencial"])){ 
+     if(trim((string) $this->cc35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc35_sequencial"])){ 
        $sql  .= $virgula." cc35_sequencial = $this->cc35_sequencial ";
        $virgula = ",";
-       if(trim($this->cc35_sequencial) == null ){ 
+       if(trim((string) $this->cc35_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "cc35_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_classificacaocredoresevento {
          return false;
        }
      }
-     if(trim($this->cc35_classificacaocredores)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc35_classificacaocredores"])){ 
+     if(trim((string) $this->cc35_classificacaocredores)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc35_classificacaocredores"])){ 
        $sql  .= $virgula." cc35_classificacaocredores = $this->cc35_classificacaocredores ";
        $virgula = ",";
-       if(trim($this->cc35_classificacaocredores) == null ){ 
+       if(trim((string) $this->cc35_classificacaocredores) == null ){ 
          $this->erro_sql = " Campo Classificação de Credores não informado.";
          $this->erro_campo = "cc35_classificacaocredores";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_classificacaocredoresevento {
          return false;
        }
      }
-     if(trim($this->cc35_empprestatip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc35_empprestatip"])){ 
+     if(trim((string) $this->cc35_empprestatip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc35_empprestatip"])){ 
        $sql  .= $virgula." cc35_empprestatip = $this->cc35_empprestatip ";
        $virgula = ",";
-       if(trim($this->cc35_empprestatip) == null ){ 
+       if(trim((string) $this->cc35_empprestatip) == null ){ 
          $this->erro_sql = " Campo Tipo de Evento não informado.";
          $this->erro_campo = "cc35_empprestatip";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_classificacaocredoresevento {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21892,'$this->cc35_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cc35_sequencial"]) || $this->cc35_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3942,21892,'".AddSlashes(pg_result($resaco,$conresaco,'cc35_sequencial'))."','$this->cc35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3942,21892,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc35_sequencial'))."','$this->cc35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cc35_classificacaocredores"]) || $this->cc35_classificacaocredores != "")
-             $resac = db_query("insert into db_acount values($acount,3942,21893,'".AddSlashes(pg_result($resaco,$conresaco,'cc35_classificacaocredores'))."','$this->cc35_classificacaocredores',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3942,21893,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc35_classificacaocredores'))."','$this->cc35_classificacaocredores',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cc35_empprestatip"]) || $this->cc35_empprestatip != "")
-             $resac = db_query("insert into db_acount values($acount,3942,21894,'".AddSlashes(pg_result($resaco,$conresaco,'cc35_empprestatip'))."','$this->cc35_empprestatip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3942,21894,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc35_empprestatip'))."','$this->cc35_empprestatip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_classificacaocredoresevento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21892,'$cc35_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3942,21892,'','".AddSlashes(pg_result($resaco,$iresaco,'cc35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3942,21893,'','".AddSlashes(pg_result($resaco,$iresaco,'cc35_classificacaocredores'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3942,21894,'','".AddSlashes(pg_result($resaco,$iresaco,'cc35_empprestatip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3942,21892,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3942,21893,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc35_classificacaocredores'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3942,21894,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc35_empprestatip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

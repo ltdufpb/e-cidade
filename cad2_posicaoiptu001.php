@@ -72,7 +72,7 @@ function js_relatorio(){
 							<td> <b>Considerar:&nbsp;</b> </td>
 							<td> 
 							 <?php 
-									$x = array("a"=>"Ambos","p"=>"Predial","t"=>"Territorial");
+									$x = ["a"=>"Ambos","p"=>"Predial","t"=>"Territorial"];
 									db_select("considerar",$x,false,2,"");
 								?>
 						  </td>

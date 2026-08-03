@@ -27,7 +27,7 @@
 
 include(modification("libs/db_sql.php"));
 include(modification("fpdf151/pdf.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 if ( $d40_codigo == null ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Código da lista nao preenchido!');
 }
@@ -59,7 +59,7 @@ $pdf->AddPage();
 $sql = "select munic from db_config where codigo = ".db_getsession('DB_instit');
 $result = db_query($sql);
 db_fieldsmemory($result,0);
-if ( pg_numrows($result) == 0 ) {
+if ( pg_num_rows($result) == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Lista nao cadastrada!');
 }
 $pdf->SetFont('Arial','',8);
@@ -71,7 +71,7 @@ $sql="select
 	  where d41_codigo = $d40_codigo $dbwhere order by j40_refant";
 $result = db_query($sql);
 
-if ( pg_numrows($result) == 0 ) {
+if ( pg_num_rows($result) == 0 ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Lista nao cadastrada!');
 }
 
@@ -85,7 +85,7 @@ $totalsao1 = 0;
 if($opcao!=3){
   $pdf->SetFont('Arial','B',13);
   $pdf->Cell(167,10,($opcao == 1?"Lançamento em Contribuição de Melhoria":"ANEXO II"),1,1,"C",1);
-  $numrows03=pg_numrows($result);
+  $numrows03=pg_num_rows($result);
   $pdf->SetFont('Arial','',8);
   $pdf->Cell(70,$largura,'PROPRIETÁRIO',1,0,"C",1);
   $pdf->Cell(20,$largura,'NUMERO',1,0,"C",1);
@@ -137,7 +137,7 @@ if($opcao!=2){
   $pdf->ln(5);
   $pdf->SetFont('Arial','B',13);
   $pdf->Cell(167,10,($opcao == 1?"Pago ao empreiteiro":"ANEXO II"),1,1,"C",1);
-  $numrows03=pg_numrows($result);
+  $numrows03=pg_num_rows($result);
   $pdf->SetFont('Arial','',8);
   $pdf->Cell(70,$largura,'PROPRIETÁRIO',1,0,"C",1);
   $pdf->Cell(20,$largura,'NUMERO',1,0,"C",1);

@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -83,7 +83,7 @@ function js_valano(){
         </td>
         <td>
 		  <?php  
-			$arr_tipo = array("d"=>"Divida","p"=>"Parcelamento");
+			$arr_tipo = ["d"=>"Divida","p"=>"Parcelamento"];
 			db_select("tipocda",$arr_tipo,true,2,"onchange='document.form1.submit();'"); 
 		  ?>
         </td>
@@ -121,13 +121,13 @@ function js_valano(){
            <td>
                <?php
 
-               $aOrdenacao = array(
+               $aOrdenacao = [
                                    ''           => "Sem Ordenação",
                                    'v15_data'   => "Data de Anulação",
                                    'v15_certid' => "CDA",
                                    'v14_coddiv' => "Código da Dívida",
                                    'nome'       => "Nome"
-                                   );
+                                   ];
                  db_select('sOrdenacao', $aOrdenacao, true, 4 );
                ?>
            </td>

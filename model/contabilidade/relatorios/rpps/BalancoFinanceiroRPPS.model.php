@@ -50,7 +50,7 @@ class BalancoFinanceiroRPPS extends RelatoriosLegaisBase {
     }
 
     $aInstituicoesRetorno = db_utils::getCollectionByRecord($rsInstituicoesRPPS);
-    $aInstituicoes        = array();
+    $aInstituicoes        = [];
     foreach ($aInstituicoesRetorno as $oInstituicao) {
 
       $aInstituicoes[] = $oInstituicao->codigo;
@@ -64,14 +64,15 @@ class BalancoFinanceiroRPPS extends RelatoriosLegaisBase {
   /**
    * return array Linhas com os dados processados do relatorio
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $oDaoRestosAPagar = new cl_empresto();
 
 
-    $aLinhasUtilizamBalanceteReceita     = array(2, 3, 4, 5, 6);
-    $aLinhasUtilizamBalanceteDespesa     = array(14, 15);
-    $aLinhasUtilizamBalanceteVerificacao = array(8, 9, 17, 18, 11, 20);
+    $aLinhasUtilizamBalanceteReceita     = [2, 3, 4, 5, 6];
+    $aLinhasUtilizamBalanceteDespesa     = [14, 15];
+    $aLinhasUtilizamBalanceteVerificacao = [8, 9, 17, 18, 11, 20];
 
     $sWhereRestoPagar = " e60_instit in({$this->getInstituicoes()})";
     $sWhereReceita    = " o70_instit in({$this->getInstituicoes()})";
@@ -160,7 +161,7 @@ class BalancoFinanceiroRPPS extends RelatoriosLegaisBase {
         $oColuna->formula = '#saldo_arrecadado_acumulado';
         RelatoriosLegaisBase::calcularValorDaLinha($rsReceita,
                                                     $oLinha,
-                                                    array($oColuna),
+                                                    [$oColuna],
                                                     RelatoriosLegaisBase::TIPO_CALCULO_RECEITA
                                                   );
       }
@@ -172,7 +173,7 @@ class BalancoFinanceiroRPPS extends RelatoriosLegaisBase {
         $oColuna->formula = '#liquidado_acumulado';
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteDespesa,
                                                   $oLinha,
-                                                  array($oColuna),
+                                                  [$oColuna],
                                                   RelatoriosLegaisBase::TIPO_CALCULO_DESPESA
                                                 );
       }
@@ -208,7 +209,7 @@ class BalancoFinanceiroRPPS extends RelatoriosLegaisBase {
 
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteVerificacao,
                                                    $oLinha,
-                                                   array($oColuna),
+                                                   [$oColuna],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO
                                                   );
       }

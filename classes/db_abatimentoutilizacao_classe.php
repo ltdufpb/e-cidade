@@ -3,32 +3,32 @@
 //CLASSE DA ENTIDADE abatimentoutilizacao
 class cl_abatimentoutilizacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k157_sequencial = 0; 
-   var $k157_tipoutilizacao = null; 
-   var $k157_data_dia = null; 
-   var $k157_data_mes = null; 
-   var $k157_data_ano = null; 
-   var $k157_data = null; 
-   var $k157_valor = 0; 
-   var $k157_hora = null; 
-   var $k157_usuario = 0; 
-   var $k157_abatimento = 0; 
-   var $k157_observacao = null; 
+   public $k157_sequencial = 0; 
+   public $k157_tipoutilizacao = null; 
+   public $k157_data_dia = null; 
+   public $k157_data_mes = null; 
+   public $k157_data_ano = null; 
+   public $k157_data = null; 
+   public $k157_valor = 0; 
+   public $k157_hora = null; 
+   public $k157_usuario = 0; 
+   public $k157_abatimento = 0; 
+   public $k157_observacao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k157_sequencial = int4 = Código abatimento utilização 
                  k157_tipoutilizacao = char(1) = Tipo de utilização 
                  k157_data = date = Data 
@@ -39,10 +39,10 @@ class cl_abatimentoutilizacao {
                  k157_observacao = text =  
                  ";
    //funcao construtor da classe 
-   function cl_abatimentoutilizacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentoutilizacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -145,10 +145,10 @@ class cl_abatimentoutilizacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k157_sequencial = pg_result($result,0,0); 
+       $this->k157_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from abatimentoutilizacao_k157_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k157_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k157_sequencial)){
          $this->erro_sql = " Campo k157_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -190,7 +190,7 @@ class cl_abatimentoutilizacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Abatimento Utilização ($this->k157_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Abatimento Utilização já Cadastrado";
@@ -219,17 +219,17 @@ class cl_abatimentoutilizacao {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19606,'$this->k157_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3484,19606,'','".AddSlashes(pg_result($resaco,0,'k157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3484,19607,'','".AddSlashes(pg_result($resaco,0,'k157_tipoutilizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3484,19608,'','".AddSlashes(pg_result($resaco,0,'k157_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3484,19609,'','".AddSlashes(pg_result($resaco,0,'k157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3484,19610,'','".AddSlashes(pg_result($resaco,0,'k157_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3484,19611,'','".AddSlashes(pg_result($resaco,0,'k157_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3484,19631,'','".AddSlashes(pg_result($resaco,0,'k157_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3484,21580,'','".AddSlashes(pg_result($resaco,0,'k157_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3484,19606,'','".AddSlashes(pg_fetch_result($resaco,0,'k157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3484,19607,'','".AddSlashes(pg_fetch_result($resaco,0,'k157_tipoutilizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3484,19608,'','".AddSlashes(pg_fetch_result($resaco,0,'k157_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3484,19609,'','".AddSlashes(pg_fetch_result($resaco,0,'k157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3484,19610,'','".AddSlashes(pg_fetch_result($resaco,0,'k157_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3484,19611,'','".AddSlashes(pg_fetch_result($resaco,0,'k157_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3484,19631,'','".AddSlashes(pg_fetch_result($resaco,0,'k157_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3484,21580,'','".AddSlashes(pg_fetch_result($resaco,0,'k157_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -239,10 +239,10 @@ class cl_abatimentoutilizacao {
       $this->atualizacampos();
      $sql = " update abatimentoutilizacao set ";
      $virgula = "";
-     if(trim($this->k157_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_sequencial"])){ 
+     if(trim((string) $this->k157_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_sequencial"])){ 
        $sql  .= $virgula." k157_sequencial = $this->k157_sequencial ";
        $virgula = ",";
-       if(trim($this->k157_sequencial) == null ){ 
+       if(trim((string) $this->k157_sequencial) == null ){ 
          $this->erro_sql = " Campo Código abatimento utilização não informado.";
          $this->erro_campo = "k157_sequencial";
          $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_abatimentoutilizacao {
          return false;
        }
      }
-     if(trim($this->k157_tipoutilizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_tipoutilizacao"])){ 
+     if(trim((string) $this->k157_tipoutilizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_tipoutilizacao"])){ 
        $sql  .= $virgula." k157_tipoutilizacao = '$this->k157_tipoutilizacao' ";
        $virgula = ",";
-       if(trim($this->k157_tipoutilizacao) == null ){ 
+       if(trim((string) $this->k157_tipoutilizacao) == null ){ 
          $this->erro_sql = " Campo Tipo de utilização não informado.";
          $this->erro_campo = "k157_tipoutilizacao";
          $this->erro_banco = "";
@@ -265,10 +265,10 @@ class cl_abatimentoutilizacao {
          return false;
        }
      }
-     if(trim($this->k157_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k157_data_dia"] !="") ){ 
+     if(trim((string) $this->k157_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k157_data_dia"] !="") ){ 
        $sql  .= $virgula." k157_data = '$this->k157_data' ";
        $virgula = ",";
-       if(trim($this->k157_data) == null ){ 
+       if(trim((string) $this->k157_data) == null ){ 
          $this->erro_sql = " Campo Data não informado.";
          $this->erro_campo = "k157_data_dia";
          $this->erro_banco = "";
@@ -281,7 +281,7 @@ class cl_abatimentoutilizacao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k157_data_dia"])){ 
          $sql  .= $virgula." k157_data = null ";
          $virgula = ",";
-         if(trim($this->k157_data) == null ){ 
+         if(trim((string) $this->k157_data) == null ){ 
            $this->erro_sql = " Campo Data não informado.";
            $this->erro_campo = "k157_data_dia";
            $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_abatimentoutilizacao {
          }
        }
      }
-     if(trim($this->k157_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_valor"])){ 
+     if(trim((string) $this->k157_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_valor"])){ 
        $sql  .= $virgula." k157_valor = $this->k157_valor ";
        $virgula = ",";
-       if(trim($this->k157_valor) == null ){ 
+       if(trim((string) $this->k157_valor) == null ){ 
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "k157_valor";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_abatimentoutilizacao {
          return false;
        }
      }
-     if(trim($this->k157_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_hora"])){ 
+     if(trim((string) $this->k157_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_hora"])){ 
        $sql  .= $virgula." k157_hora = '$this->k157_hora' ";
        $virgula = ",";
-       if(trim($this->k157_hora) == null ){ 
+       if(trim((string) $this->k157_hora) == null ){ 
          $this->erro_sql = " Campo Hora não informado.";
          $this->erro_campo = "k157_hora";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_abatimentoutilizacao {
          return false;
        }
      }
-     if(trim($this->k157_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_usuario"])){ 
+     if(trim((string) $this->k157_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_usuario"])){ 
        $sql  .= $virgula." k157_usuario = $this->k157_usuario ";
        $virgula = ",";
-       if(trim($this->k157_usuario) == null ){ 
+       if(trim((string) $this->k157_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "k157_usuario";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_abatimentoutilizacao {
          return false;
        }
      }
-     if(trim($this->k157_abatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_abatimento"])){ 
+     if(trim((string) $this->k157_abatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_abatimento"])){ 
        $sql  .= $virgula." k157_abatimento = $this->k157_abatimento ";
        $virgula = ",";
-       if(trim($this->k157_abatimento) == null ){ 
+       if(trim((string) $this->k157_abatimento) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "k157_abatimento";
          $this->erro_banco = "";
@@ -344,7 +344,7 @@ class cl_abatimentoutilizacao {
          return false;
        }
      }
-     if(trim($this->k157_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_observacao"])){ 
+     if(trim((string) $this->k157_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k157_observacao"])){ 
        $sql  .= $virgula." k157_observacao = '$this->k157_observacao' ";
        $virgula = ",";
      }
@@ -362,25 +362,25 @@ class cl_abatimentoutilizacao {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19606,'$this->k157_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k157_sequencial"]) || $this->k157_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3484,19606,'".AddSlashes(pg_result($resaco,$conresaco,'k157_sequencial'))."','$this->k157_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3484,19606,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k157_sequencial'))."','$this->k157_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k157_tipoutilizacao"]) || $this->k157_tipoutilizacao != "")
-             $resac = db_query("insert into db_acount values($acount,3484,19607,'".AddSlashes(pg_result($resaco,$conresaco,'k157_tipoutilizacao'))."','$this->k157_tipoutilizacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3484,19607,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k157_tipoutilizacao'))."','$this->k157_tipoutilizacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k157_data"]) || $this->k157_data != "")
-             $resac = db_query("insert into db_acount values($acount,3484,19608,'".AddSlashes(pg_result($resaco,$conresaco,'k157_data'))."','$this->k157_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3484,19608,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k157_data'))."','$this->k157_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k157_valor"]) || $this->k157_valor != "")
-             $resac = db_query("insert into db_acount values($acount,3484,19609,'".AddSlashes(pg_result($resaco,$conresaco,'k157_valor'))."','$this->k157_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3484,19609,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k157_valor'))."','$this->k157_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k157_hora"]) || $this->k157_hora != "")
-             $resac = db_query("insert into db_acount values($acount,3484,19610,'".AddSlashes(pg_result($resaco,$conresaco,'k157_hora'))."','$this->k157_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3484,19610,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k157_hora'))."','$this->k157_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k157_usuario"]) || $this->k157_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,3484,19611,'".AddSlashes(pg_result($resaco,$conresaco,'k157_usuario'))."','$this->k157_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3484,19611,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k157_usuario'))."','$this->k157_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k157_abatimento"]) || $this->k157_abatimento != "")
-             $resac = db_query("insert into db_acount values($acount,3484,19631,'".AddSlashes(pg_result($resaco,$conresaco,'k157_abatimento'))."','$this->k157_abatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3484,19631,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k157_abatimento'))."','$this->k157_abatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k157_observacao"]) || $this->k157_observacao != "")
-             $resac = db_query("insert into db_acount values($acount,3484,21580,'".AddSlashes(pg_result($resaco,$conresaco,'k157_observacao'))."','$this->k157_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3484,21580,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k157_observacao'))."','$this->k157_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -434,17 +434,17 @@ class cl_abatimentoutilizacao {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19606,'$k157_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3484,19606,'','".AddSlashes(pg_result($resaco,$iresaco,'k157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3484,19607,'','".AddSlashes(pg_result($resaco,$iresaco,'k157_tipoutilizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3484,19608,'','".AddSlashes(pg_result($resaco,$iresaco,'k157_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3484,19609,'','".AddSlashes(pg_result($resaco,$iresaco,'k157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3484,19610,'','".AddSlashes(pg_result($resaco,$iresaco,'k157_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3484,19611,'','".AddSlashes(pg_result($resaco,$iresaco,'k157_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3484,19631,'','".AddSlashes(pg_result($resaco,$iresaco,'k157_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3484,21580,'','".AddSlashes(pg_result($resaco,$iresaco,'k157_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3484,19606,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k157_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3484,19607,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k157_tipoutilizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3484,19608,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k157_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3484,19609,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k157_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3484,19610,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k157_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3484,19611,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k157_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3484,19631,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k157_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3484,21580,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k157_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

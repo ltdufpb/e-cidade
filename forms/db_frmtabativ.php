@@ -105,7 +105,7 @@ db_input('q03_descr',40,$Iq03_descr,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$xq = array("f"=>"NÃO","t"=>"SIM");
+$xq = ["f"=>"NÃO","t"=>"SIM"];
  db_select('princ',$xq,true,$db_opcao);
 if(isset($pods) && $pods=="nops"){
  echo "<small><b>Não será possível alterar este campo.</b></small>";
@@ -132,7 +132,7 @@ db_input('q07_quant',6,$Iq07_quant,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$xe = array("t"=>"PERMANENTE","f"=>"PROVISÓRIO");
+$xe = ["t"=>"PERMANENTE","f"=>"PROVISÓRIO"];
 db_select('q07_perman',$xe,true,$db_opcao);
 ?>
     </td>

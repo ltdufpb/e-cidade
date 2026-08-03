@@ -98,7 +98,7 @@ try {
       $oPeriodoGozo->setDiasPecunia($oParametros->iDiasPecunia);
       $oPeriodoGozo->setPeriodoInicial($oDataPeriodoInicial) ;
       $oPeriodoGozo->setPeriodoFinal($oDataPeriodoFinal);
-      $oPeriodoGozo->setObservacao(pg_escape_string(urldecode($oParametros->sObservacao)));
+      $oPeriodoGozo->setObservacao(pg_escape_string(urldecode((string) $oParametros->sObservacao)));
       $oPeriodoGozo->setAnoPagamento(date('Y', $iCompetenciaPagamento)); // Será por default a competência anterior a competência de gozo.
       $oPeriodoGozo->setMesPagamento(date('m', $iCompetenciaPagamento)); //Será por default a competência anterior a competência de gozo.
       $oPeriodoGozo->setPagaTerco(true); // Será true como default
@@ -125,7 +125,7 @@ try {
        * Arary com os periodos do servidor
        * @var array
        */
-      $aPeriodosServidor = array();
+      $aPeriodosServidor = [];
 
       db_inicio_transacao();
 
@@ -191,7 +191,7 @@ try {
        * Array com servidores para regerar ponto
        * apos remover periodo de gozo
        */
-      $aServidoresRegerarPonto = array();
+      $aServidoresRegerarPonto = [];
 
       db_inicio_transacao();
 
@@ -270,7 +270,7 @@ try {
       if ( !$rsRhFerias ) {
 
         $sMensagemErro = MENSAGENS . 'erro_buscar_periodo_gozo';
-        $oCamposErro   = (object) array('sErroBanco' => pg_last_error());
+        $oCamposErro   = (object) ['sErroBanco' => pg_last_error()];
 
         throw new BusinessException(_M($sMensagemErro, $oCamposErro));
       }
@@ -283,8 +283,8 @@ try {
       }
 
       $oPeriodosAquisitivos = db_utils::getCollectionByRecord($rsRhFerias, true);
-      $aResultado           = array();
-      $aRetorno             = array();
+      $aResultado           = [];
+      $aRetorno             = [];
 
       foreach ( $oPeriodosAquisitivos as $oDados ) {
 

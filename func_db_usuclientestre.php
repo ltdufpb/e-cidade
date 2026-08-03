@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_clientesmodulosprocusu_classe.php"));
 include(modification("classes/db_db_usuclientes_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clclientesmodulosprocusu = new cl_clientesmodulosprocusu;
 $cldb_usuclientes  = new cl_db_usuclientes;
@@ -44,22 +44,22 @@ $cldb_usuclientes->rotulo->label("at10_codcli");
 if(isset($atualizar)){
 
     
-   reset($HTTP_POST_VARS);
+   reset($_POST);
 
    $clclientesmodulosprocusu->excluir(null," at76_seqproc = $at76_sequen ");
 
 
-   for($i=0;$i<count($HTTP_POST_VARS);$i++){
+   for($i=0;$i<count($_POST);$i++){
    
-      if( substr(key($HTTP_POST_VARS),0,4) == 'usu_' ){
-        $usuario = substr(key($HTTP_POST_VARS),4);
+      if( str_starts_with((string) key($_POST), 'usu_') ){
+        $usuario = substr((string) key($_POST),4);
         $clclientesmodulosprocusu->at76_sequen = 0;
         $clclientesmodulosprocusu->at76_seqproc = $at76_sequen;
         $clclientesmodulosprocusu->at76_usuario = $usuario;
         $clclientesmodulosprocusu->incluir(0);
              
       }
-      next($HTTP_POST_VARS);
+      next($_POST);
    }
 
 
@@ -104,7 +104,7 @@ function js_atualiza(codigo,nome){
 
 $result = $cldb_usuclientes->sql_record($cldb_usuclientes->sql_query(null,"at10_usuario,at10_login,at10_nome","at10_nome"," at10_codcli = $cliente "));
 echo "<table>";
-for($i=0;$i<pg_numrows($result);$i+=2){
+for($i=0;$i<pg_num_rows($result);$i+=2){
   db_fieldsmemory($result,$i);
 
   $res = $clclientesmodulosprocusu->sql_record($clclientesmodulosprocusu->sql_query_file(null,"*",null," at76_seqproc = $at76_sequen and at76_usuario = $at10_usuario"));
@@ -119,7 +119,7 @@ for($i=0;$i<pg_numrows($result);$i+=2){
   echo "<td><strong>$at10_login</strong></td>";
   echo "<td><strong>$at10_nome</strong></td>";
 
-  if($i+1 < pg_numrows($result)){
+  if($i+1 < pg_num_rows($result)){
     db_fieldsmemory($result,$i+1);
 
     $res = $clclientesmodulosprocusu->sql_record($clclientesmodulosprocusu->sql_query_file(null,"*",null," at76_seqproc = $at76_sequen and  at76_usuario = $at10_usuario"));

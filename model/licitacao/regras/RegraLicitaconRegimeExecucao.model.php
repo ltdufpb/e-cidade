@@ -28,7 +28,7 @@ class RegraLicitaconRegimeExecucao extends RegraLicitacon {
 
   protected $sMensagem = "O campo Regime de Execução é de preenchimento obrigatório para o Tipo de Objeto: Obras e Serviços de Engenharia (OSE) ou OUS (Outros Serviços).";
 
-  protected $aTiposObjeto = array('OSE', 'OUS');
+  protected $aTiposObjeto = ['OSE', 'OUS'];
 
   /**
    * @return array

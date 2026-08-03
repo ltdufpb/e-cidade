@@ -171,7 +171,7 @@ $clrotulo->label("tf12_descricao");
 	        <tr>
 		        <td valign="top"><br>
               <?php 
-				      $aChavepri = array ('tf14_i_codigo' => @$tf14_i_codigo,
+				      $aChavepri =  ['tf14_i_codigo' => @$tf14_i_codigo,
                                   'tf14_i_pedidotfd' => @$tf14_i_pedidotfd,
                                   'tf14_i_cgsretirou' => @$tf14_i_cgsretirou,
                                   'z01_v_nome2' => @$z01_v_nome2,
@@ -184,7 +184,7 @@ $clrotulo->label("tf12_descricao");
 				                          'tf15_observacao' => @$tf15_observacao,
                                   'tf12_f_valor' => @$tf12_f_valor,
 				                          'tf12_descricao' => @$tf12_descricao,
-                                  'tf01_i_cgsund' => @$tf01_i_cgsund);
+                                  'tf01_i_cgsund' => @$tf01_i_cgsund];
               $oIframeAE->chavepri = $aChavepri;
 
               $sCampos =
@@ -241,7 +241,7 @@ $clrotulo->label("tf12_descricao");
 
       } else {
 
-        $dTmp = explode('/', $tf14_d_datarecebimento);
+        $dTmp = explode('/', (string) $tf14_d_datarecebimento);
         if(count($dTmp) == 3) {
 
           $tf14_d_datarecebimento_dia = $dTmp[0];
@@ -263,7 +263,7 @@ $clrotulo->label("tf12_descricao");
 function js_cancelar() {
 
   <?php 
-  echo ' location.href = "'.basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]).'?tf14_i_pedidotfd='.
+  echo ' location.href = "'.basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]).'?tf14_i_pedidotfd='.
                           $tf14_i_pedidotfd.'&tf01_i_cgsund="'.
                           '+document.getElementById(\'tf01_i_cgsund\').value+"&z01_v_nome='.$z01_v_nome.'";'
   ?>

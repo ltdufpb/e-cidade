@@ -84,9 +84,9 @@ $clrhresponsavel->rotulo->label();
 					      </td>
 					      <td colspan="2"> 
 					        <?php 
-					          $aTipoFolha = array("0" => "Selecione",
+					          $aTipoFolha = ["0" => "Selecione",
 					                              "1" => "Salário", 
-					                              "5" => "13º Salário");             
+					                              "5" => "13º Salário"];             
 					          db_select("tipofolha", $aTipoFolha, true, 1, 
 					                    "onchange='js_desabilitaSelecionar();' style='width:100%;'"); 
 					        ?>

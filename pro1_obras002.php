@@ -114,14 +114,14 @@ if (isset($chavepesquisa)) {
         $ob01_processosistema = 'S';
     }
 
-    $campos = array(
+    $campos = [
         'tecnico_responsavel.ob15_crea as crea_responsavel',
         'cgm_responsavel.z01_nome as nome_responsavel',
         'ob01_arquitetoobra',
         'tecnico_arquiteto.ob15_crea as crea_arquiteto',
         'cgm_arquiteto.z01_nome as nome_arquiteto'
-    );
-    $sqlResponsavelArquiteto = $clobras->sqlResponsavelArquiteto($campos, array("ob01_codobra = {$chavepesquisa}"));
+    ];
+    $sqlResponsavelArquiteto = $clobras->sqlResponsavelArquiteto($campos, ["ob01_codobra = {$chavepesquisa}"]);
     $rsResponsavelArquiteto = db_query($sqlResponsavelArquiteto);
 
     if($rsResponsavelArquiteto && pg_num_rows($rsResponsavelArquiteto) > 0) {

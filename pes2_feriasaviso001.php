@@ -91,8 +91,8 @@ $mes = DBPessoal::getMesFolha();
                 </td>
                 <td align="left">
                     <?php 
-                    $tipo_ordem = array("numerica"=>"Numérica",
-                        "alfabetica"=>"Alfabética");
+                    $tipo_ordem = ["numerica"=>"Numérica",
+                        "alfabetica"=>"Alfabética"];
                     db_select('ordem',$tipo_ordem ,true,1);
                     ?>
                 </td>

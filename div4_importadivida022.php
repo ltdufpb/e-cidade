@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clarretipo         = new cl_arretipo;
@@ -227,7 +227,7 @@ function js_submit_form(){
 					<td nowrap>
 						<?php
 						  $lProcessoSistema = true;
-							db_select('lProcessoSistema', array(true=>'SIM', false=>'NÃO'), true, 1, "onchange='js_processoSistema()'")
+							db_select('lProcessoSistema', [true=>'SIM', false=>'NÃO'], true, 1, "onchange='js_processoSistema()'")
 						?>
 					</td>
 				</tr>
@@ -363,10 +363,10 @@ if ( isset($tipor) && isset($tipdes) &&
   $numpar  = "";
   $receita = "";
   $or      = "and ( ";
-  $info    = split('#',$chaves);
+  $info    = preg_split('#\##m',$chaves);
   for($w=0;$w<count($info);$w++){
 
-    $dados   = split('-',$info[$w]);
+    $dados   = preg_split('#\-#m',(string) $info[$w]);
     $numpre  = $dados[0];
     $numpar  = $dados[1];
     $receita = $dados[2];
@@ -389,7 +389,7 @@ if ( isset($tipor) && isset($tipdes) &&
     $lProcessoSistema = $oPost->lProcessoSistema;
     $iProcesso        = $oPost->v01_processoExterno;
     $sTitular         = $oPost->v01_titular;
-    $dDataProcesso    = implode("-", array_reverse(explode("/", $oPost->v01_dtprocesso)));
+    $dDataProcesso    = implode("-", array_reverse(explode("/", (string) $oPost->v01_dtprocesso)));
   }
 
   $oProcesso = new stdClass();

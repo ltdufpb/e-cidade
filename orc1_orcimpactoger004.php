@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcimpactoger_classe.php"));
 
 $clorcimpactoger = new cl_orcimpactoger;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $db_botao = true;
 if(isset($incluir)){
   $sqlerro=false;

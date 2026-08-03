@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcriaabas = new cl_criaabas;
 $lEnterByFrame = false;
@@ -57,7 +57,7 @@ if (isset($lInFrame)) {
     <tr>
         <td>
             <?php
-            $clcriaabas->identifica = array(
+            $clcriaabas->identifica = [
                 "tipoprocesso" => "Tipo de Processo",
                 "departamento" => "Departamentos",
                 "formreclamacao" => "Formas de Reclamação",
@@ -67,9 +67,9 @@ if (isset($lInFrame)) {
                 "mensagem" => "Mensagem",
                 "persona" => "Persona",
                 "atividades" => "Atividades de execução"
-            );
+            ];
 
-            $clcriaabas->title = array(
+            $clcriaabas->title = [
                 "tipoprocesso" => "Tipo de Processo",
                 "departamento" => "Departamentos",
                 "formreclamacao" => "Formas de Reclamação",
@@ -79,9 +79,9 @@ if (isset($lInFrame)) {
                 "mensagem" => "Mensagem",
                 "persona" => "Persona",
                 "atividades" => "Atividades de execução"
-            );
+            ];
 
-            $clcriaabas->src = array(
+            $clcriaabas->src = [
                 "tipoprocesso" => "ouv1_aba1tipoproc004.php?lFrame={$lEnterByFrame}",
                 "departamento" => "ouv1_aba2depto004.php?lFrame={$lEnterByFrame}",
                 "formreclamacao" => "ouv1_aba3formrecl004.php?lFrame={$lEnterByFrame}",
@@ -91,9 +91,9 @@ if (isset($lInFrame)) {
                 "mensagem" => "ouv1_abaMensagem004.php?lFrame={$lEnterByFrame}",
                 "persona" => "ouv1_abaPersona004.php?lFrame={$lEnterByFrame}",
                 "atividades" => "ouv1_abaAtividadesExecucao001.php"
-            );
+            ];
 
-            $clcriaabas->disabled = array(
+            $clcriaabas->disabled = [
                 "tipoprocesso" => "false",
                 "departamento" => "true",
                 "formreclamacao" => "true",
@@ -103,7 +103,7 @@ if (isset($lInFrame)) {
                 "mensagem" => "true",
                 "persona"=>"true",
                 "atividades" => "true"
-            );
+            ];
 
             $clcriaabas->cria_abas();
             ?>

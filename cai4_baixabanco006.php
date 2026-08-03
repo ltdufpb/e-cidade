@@ -167,7 +167,7 @@ $oGet = db_utils::postMemory($_GET);
 
     $lSucesso = false;
     $sRetorno = '';
-    $aErros   = array();
+    $aErros   = [];
 
     foreach ($aRetornoBaixa as $oRetorno) {
 
@@ -199,7 +199,7 @@ $oGet = db_utils::postMemory($_GET);
    } catch (Exception $oErro) {
 
    	db_fim_transacao(true);
-    $sErro = utf8_decode($oErro->getMessage());
+    $sErro = mb_convert_encoding($oErro->getMessage(), 'ISO-8859-1');
    	$sMsgRetorno  = "Erro durante o processamento da Classificação da Baixa de Banco!\\n\\n{$sErro}";
    	db_msgbox($sMsgRetorno);
 

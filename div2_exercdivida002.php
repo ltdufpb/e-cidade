@@ -42,7 +42,7 @@ $clrotulo->label('v03_descr');
 
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 //db_postmemory($HTTP_POST_VARS,2);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $head2 = 'RELATÓRIO DA DÍVIDA POR EXERCÍCIO';
 $head5 = '';
 $head6 = '';
@@ -87,7 +87,7 @@ if(isset($exerc)){
   $selexercicios = ' and v01_exerc > '.str_replace("-",",",$exerc).' ';
   $anos=str_replace("-",",",$exerc);
   $head4 = "Exercicíos Selecionados: $anos ";
-	$matanos=split("-",$exerc);
+	$matanos=preg_split("#\\-#m",$exerc);
 	$menorexerc=0;
 	$maiorexerc=0;
 	for ($contanos=0; $contanos < sizeof($matanos); $contanos++) {
@@ -389,7 +389,7 @@ if ($proced != "" or $agproced == "S") {
 }
 //die($sql_exe);
 $result = db_query($sql_exe);
-if(pg_numrows($result)==0){
+if(pg_num_rows($result)==0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem dividas em aberto. ($exercicios).');
 }
 //die ($sql);
@@ -407,7 +407,7 @@ $totalcor = 0;
 $totaljur = 0;
 $totalmul = 0;
 $totalval = 0;
-for ($x = 0 ; $x < pg_numrows($result);$x++){
+for ($x = 0 ; $x < pg_num_rows($result);$x++){
   db_fieldsmemory($result,$x);
   if (($pdf->gety() > $pdf->h - 30) || $pag == 1){
     if($agproced == "S"){
@@ -416,7 +416,7 @@ for ($x = 0 ; $x < pg_numrows($result);$x++){
       $pdf->addpage();
     }
      
-     $pdf->Cell(15,5,substr($$xmatric,0,10),1,0,"C",1);
+     $pdf->Cell(15,5,substr((string) ${$xmatric},0,10),1,0,"C",1);
      $pdf->Cell(63,5,$RLz01_nome,1,0,"C",1);
      if($agexerc == "S")
         $pdf->Cell(12,5,$RLv01_exerc,1,0,"C",1);
@@ -433,7 +433,7 @@ for ($x = 0 ; $x < pg_numrows($result);$x++){
      $pag = 0;
   }
   $pdf->SetFont('Arial','',7);
-  $pdf->Cell(15,5,trim($$matric),0,0,"C",0);
+  $pdf->Cell(15,5,trim((string) ${$matric}),0,0,"C",0);
   $pdf->Cell(63,5,$z01_nome,0,0,"L",0);
   if($agexerc == "S")
     $pdf->Cell(12,5,$k22_exerc,0,0,"C",0);
@@ -441,7 +441,7 @@ for ($x = 0 ; $x < pg_numrows($result);$x++){
     $pdf->Cell(20,5,$v01_proced,0,0,"C",0);
     $pdf->Cell(55,5,$v03_descr,0,0,"L",0);
   }
-  $cpfCnpj = strlen($z01_cgccpf) == 11 ? 'cpf' : 'cnpj'; 
+  $cpfCnpj = strlen((string) $z01_cgccpf) == 11 ? 'cpf' : 'cnpj'; 
   $pdf->cell(26,5,db_formatar($z01_cgccpf,$cpfCnpj),0,0,"C",0);
   $pdf->cell(16,5,db_formatar($k22_vlrhis,'f'),0,0,"R",0);
   $pdf->cell(17,5,db_formatar($k22_vlrcor,'f'),0,0,"R",0);

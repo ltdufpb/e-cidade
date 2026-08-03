@@ -63,12 +63,12 @@ class cronogramaFinanceiro {
    *
    * @var array
    */
-  protected $aInstituicoes = array();
+  protected $aInstituicoes = [];
 
   /**
    * @var array
    */
-  protected $aReceitas = array();
+  protected $aReceitas = [];
 
   /**
    * @var int
@@ -103,7 +103,7 @@ class cronogramaFinanceiro {
         $this->iAno         = $oDadosCronograma->o124_ano;
         $this->iPpaVersao   = $oDadosCronograma->o124_ppaversao;
         $this->iTipoPerspectiva = $oDadosCronograma->o124_tipo;
-        $this->setInstituicoes(array(db_getsession("DB_instit")));
+        $this->setInstituicoes([db_getsession("DB_instit")]);
 
       }
     }
@@ -166,7 +166,7 @@ class cronogramaFinanceiro {
      /**
       * Buscamos todas as Receitas do ano e das instituições Marcadas
       */
-    $aReceitas       = array();
+    $aReceitas       = [];
     $sInstituicoes   = implode(",", $this->getInstituicoes());
     $oDaoOrcReceita  = db_utils::getDao("orcreceita");
     $sListaCampos  = "o57_fonte,          ";
@@ -344,7 +344,7 @@ class cronogramaFinanceiro {
       $sWhere .= " and o70_codigo = {$iRecurso}";
     }
 
-    $aReceitas       = array();
+    $aReceitas       = [];
     $sInstituicoes   = implode(",", $this->getInstituicoes());
     $oDaoOrcReceita  = db_utils::getDao("cronogramaperspectivareceita");
     $sListaCampos  = "o57_fonte,          ";
@@ -365,8 +365,8 @@ class cronogramaFinanceiro {
       $oStdMensagem->ano = $this->getAno();
       throw new Exception(_M(self::MENSAGENS . "erro_sem_receitas_ano", $oStdMensagem));
     }
-    $aEstruturaisPai    = array();
-    $aReceitasDesdobrar = array();
+    $aEstruturaisPai    = [];
+    $aReceitasDesdobrar = [];
     for ($i = 0; $i < $oDaoOrcReceita->numrows; $i++) {
 
       $oReceita                 = db_utils::fieldsMemory($rsReceita, $i,false,false,true);
@@ -377,9 +377,9 @@ class cronogramaFinanceiro {
       $oReceita->iPerspectiva    = $this->getPerspectiva();
       $oReceita->iSequencial     = null;
       $oReceita->desdobra        = false;
-      $oReceita->aDesdobramentos = array();
-      $oReceita->aReceitas       = array();
-      $oReceita->aIndices        = array();
+      $oReceita->aDesdobramentos = [];
+      $oReceita->aReceitas       = [];
+      $oReceita->aIndices        = [];
       if ($oReceita->o70_codrec == "") {
 
         $oReceita->o70_valor  = 0;
@@ -406,7 +406,7 @@ class cronogramaFinanceiro {
         $aReceitas[$i]->iSequencial   = $oReceita->o126_sequencial;
         $aReceitas[$i]->aBases        = new stdClass();
         $aReceitas[$i]->valormedia    = 0;
-        $aReceitas[$i]->aBases->dados = array();
+        $aReceitas[$i]->aBases->dados = [];
         $aReceitas[$i]->aBases        = new cronogramaBaseReceita($aReceitas[$i]);
         $aReceitas[$i]->valormedia    = $aReceitas[$i]->aBases->getValorMedia();
         $aReceitas[$i]->aBases->dados = $aReceitas[$i]->aBases->getDadosBase();
@@ -429,8 +429,8 @@ class cronogramaFinanceiro {
       }
     }
     $iIndice          = 0;
-    $aReceitasRetorno = array();
-    $aEstruturaisPai  = array();
+    $aReceitasRetorno = [];
+    $aEstruturaisPai  = [];
     foreach ($aReceitas as $oReceita) {
 
       if ($oReceita->o70_codrec == "" && count($oReceita->aDesdobramentos) == 0){
@@ -490,7 +490,7 @@ class cronogramaFinanceiro {
       }
     }
 
-    $aReceitas       = array();
+    $aReceitas       = [];
     $sInstituicoes   = implode(",", $this->getInstituicoes());
     $oDaoOrcReceita  = db_utils::getDao("cronogramaperspectivareceita");
     $sListaCampos  = "o57_fonte,          ";
@@ -510,8 +510,8 @@ class cronogramaFinanceiro {
     $sSqlReceita  = $oDaoOrcReceita->sql_query_receitaplano(null,$sListaCampos, "o57_fonte,o70_concarpeculiar",$sWhere,
                                                             $this->getPerspectiva());
     $rsReceita    = $oDaoOrcReceita->sql_record($sSqlReceita);
-    $aEstruturaisPai    = array();
-    $aReceitasDesdobrar = array();
+    $aEstruturaisPai    = [];
+    $aReceitasDesdobrar = [];
     if ( $oDaoOrcReceita->numrows > 0) {
 
       for ($i = 0; $i < $oDaoOrcReceita->numrows; $i++) {
@@ -521,9 +521,9 @@ class cronogramaFinanceiro {
         $oReceita->iPerspectiva    = $this->getPerspectiva();
         $oReceita->iSequencial     = null;
         $oReceita->desdobra        = $oReceita->o60_codfon==''?false:true;
-        $oReceita->aDesdobramentos = array();
-        $oReceita->aReceitas       = array();
-        $oReceita->aIndices        = array();
+        $oReceita->aDesdobramentos = [];
+        $oReceita->aReceitas       = [];
+        $oReceita->aIndices        = [];
         if ($oReceita->o70_codrec == "") {
 
           $oReceita->o70_valor  = 0;
@@ -573,8 +573,8 @@ class cronogramaFinanceiro {
       }
     }
     $iIndice          = 0;
-    $aReceitasRetorno = array();
-    $aEstruturaisPai  = array();
+    $aReceitasRetorno = [];
+    $aEstruturaisPai  = [];
     foreach ($aReceitas as $oReceita) {
 
       if ($oReceita->o70_codrec == "" && count($oReceita->aDesdobramentos) == 0){
@@ -605,12 +605,12 @@ class cronogramaFinanceiro {
 
   private function getDespesas($sElemento='', $mRecurso = '') {
 
-    $aDespesas       = array();
+    $aDespesas       = [];
     $sInstituicoes   = implode(",", $this->getInstituicoes());
     $oDaoOrcDotacao  = db_utils::getDao("orcdotacao");
     $sWhere  = "o58_anousu = {$this->getAno()} ";
     $sWhere .= " and o58_instit in({$sInstituicoes})";
-    if (trim($sElemento) != "") {
+    if (trim((string) $sElemento) != "") {
       $sWhere .= " and o56_elemento ilike '{$sElemento}%'";
     }
     if (!empty($mRecurso)) {
@@ -751,7 +751,7 @@ class cronogramaFinanceiro {
        throw new Exception(_M(self::MENSAGENS . "erro_nivel_nao_definido", $oStdMensagem));
     }
 
-    $aDespesas       = array();
+    $aDespesas       = [];
     $sInstituicoes   = implode(",", $this->getInstituicoes());
     $oDaoOrcDotacao  = db_utils::getDao("orcdotacao");
     require_once(modification("libs/db_liborcamento.php"));
@@ -814,7 +814,7 @@ class cronogramaFinanceiro {
     $sSqlReceitas  .= " where o126_cronogramaperspectiva = {$this->getPerspectiva()}";
     $sSqlReceitas  .= $sWhere;
     $rsReceitas     = db_query(analiseQueryPlanoOrcamento($sSqlReceitas));
-    $aReceitas      = array();
+    $aReceitas      = [];
     $iTotalReceitas = pg_num_rows($rsReceitas);
     for ($i = 0; $i < $iTotalReceitas; $i++) {
 
@@ -845,7 +845,7 @@ class cronogramaFinanceiro {
   function criaContaMae($string) {
 
     $string = db_formatar($string,"sistema");
-    $iNivel = cronogramaFinanceiro::estruturalNivel($string);
+    $iNivel = $this->estruturalNivel($string);
     $stringnova = "";
     $aNiveis = explode(".", $string);
     for ($i = 0;  $i < $iNivel; $i++) {
@@ -857,9 +857,9 @@ class cronogramaFinanceiro {
 
   public function estruturalNivel($sEstrutural) {
 
-    $iNiveis = array();
+    $iNiveis = [];
     $iAux    = 1;
-    $iNiveis = explode(".", $sEstrutural);
+    $iNiveis = explode(".", (string) $sEstrutural);
     $iLaco   = count($iNiveis);
 
     for ($i = 1; $i < $iLaco; $i++) {

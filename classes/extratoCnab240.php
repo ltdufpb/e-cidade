@@ -28,24 +28,24 @@
 /* classe para manutencao do arquivo cnab240 */
 class cl_extratoCnab240 {
 
-  var $arquivo    = "";
-	var $arrArquivo = "";
-	var $numrows    = 0;
+  public $arquivo    = "";
+	public $arrArquivo = "";
+	public $numrows    = 0;
 
-	var $erromsg    = "";
-  var $erroOper   = false;
+	public $erromsg    = "";
+  public $erroOper   = false;
 
 	/* variaveis do header do arquivo */
-	var $codbco     = "";
-	var $dtproc     = "";
-	var $dtarq      = "";
-	var $convenio   = "";
-	var $seqarq     = "";
-	var $nomearq    = "";
-	var $conteudo   = "";
+	public $codbco     = "";
+	public $dtproc     = "";
+	public $dtarq      = "";
+	public $convenio   = "";
+	public $seqarq     = "";
+	public $nomearq    = "";
+	public $conteudo   = "";
 
 	// contrutor da classe
-  function cl_extratoCnab240($nome){
+  function __construct($nome){
 		$this->arquivo = "";
 		if (file_exists($nome)){
 		  $this->nomearq = $nome;
@@ -136,11 +136,11 @@ class cl_extratoCnab240 {
 	function setHeaderArqVars(){
 		$this->erroOper = false;
     if($this->isHeaderArquivo(0)){
-      $this->codbco    = substr($this->getLinha(0),0,3);
+      $this->codbco    = substr((string) $this->getLinha(0),0,3);
       // formato do arquivo : 29122007, formato de retorno do atributo 2007-12-29
-      $this->dtarq     = substr($this->getLinha(0),147,4)."-".substr($this->getLinha(0),145,2)."-".substr($this->getLinha(0),143,2);
-      $this->convenio  = substr($this->getLinha(0),32,20);
-      $this->seqarq    = substr($this->getLinha(0),157,6);
+      $this->dtarq     = substr((string) $this->getLinha(0),147,4)."-".substr((string) $this->getLinha(0),145,2)."-".substr((string) $this->getLinha(0),143,2);
+      $this->convenio  = substr((string) $this->getLinha(0),32,20);
+      $this->seqarq    = substr((string) $this->getLinha(0),157,6);
 		}else{
 			$this->erroOper = true;
 			$this->erromsg  = "Arquivo inconsistente, header de arquivo nao econtrado";
@@ -198,14 +198,14 @@ class cl_extratoCnab240 {
 
 	// retorna o tipo de registro da linha
 	function getRegistro($numeroLinha){
-		return substr($this->getLinha($numeroLinha),7,1);
+		return substr((string) $this->getLinha($numeroLinha),7,1);
 	}
 
   // retorna o tipo de operacao
 	function getTipoOper($numeroLinha){
     $this->erroOper = false;
 	  if ($this->isHeaderLote($numeroLinha)) {
-      return substr($this->getLinha($numeroLinha),8,1);
+      return substr((string) $this->getLinha($numeroLinha),8,1);
 		}else{
       $this->erroOper = true;
       $this->erromsg  = "Tipo de operacao nao econtrada";
@@ -231,11 +231,11 @@ class cl_extratoCnab240 {
 
   /* header de lote */
   function getLote($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),3,4);
+	  return substr((string) $this->getLinha($numeroLinha),3,4);
 	}
 
   function getLoteseq($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),173,5);
+	  return substr((string) $this->getLinha($numeroLinha),173,5);
 	}
 
 	function getConta($numeroLinha){
@@ -250,16 +250,16 @@ class cl_extratoCnab240 {
 		$sqlConta .= "  where lpad(db89_codagencia,5,'0') = '".$this->getAgencia($numeroLinha)."'";
 		$sqlConta .= "    and lpad(db83_conta,12,'0') = '".$this->getCc($numeroLinha)."' and db83_tipoconta <> 3 and db83_contaplano is true ";
 
-    if(trim($this->getDvAgencia($numeroLinha)) != ''){
+    if(trim((string) $this->getDvAgencia($numeroLinha)) != ''){
 		  $sqlConta .= "	  and db89_digito = '".$this->getDvAgencia($numeroLinha)."' ";
     }
-    if(trim($this->getDvCc($numeroLinha)) != ''){
+    if(trim((string) $this->getDvCc($numeroLinha)) != ''){
 		  $sqlConta .= "	  and db83_dvconta = '".$this->getDvCc($numeroLinha)."' ";
     }
 
     $rsConta = db_query($sqlConta);
-		if (pg_numrows($rsConta) > 0) {
-      $conta = pg_result($rsConta,0,0);
+		if (pg_num_rows($rsConta) > 0) {
+      $conta = pg_fetch_result($rsConta,0,0);
 		}else{
 			return false;
 		}
@@ -268,16 +268,16 @@ class cl_extratoCnab240 {
 
   /* codigo da agencia */
 	function getAgencia($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),52,5);
+	  return substr((string) $this->getLinha($numeroLinha),52,5);
 	}
 	/* digito verificador da agencia */
 	function getDvAgencia($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),57,1);
+	  return substr((string) $this->getLinha($numeroLinha),57,1);
 	}
 	/* codigo da conta corrente */
 	function getCc($numeroLinha){
 
-    $sCodigoConta = substr($this->getLinha($numeroLinha),58,12);
+    $sCodigoConta = substr((string) $this->getLinha($numeroLinha),58,12);
 
     /**
      * Validação para a CAIXA, este campo vem diferente quando é da CAIXA
@@ -292,78 +292,78 @@ class cl_extratoCnab240 {
 	}
 	/* digito verificador da conta corrente */
 	function getDvCc($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),70,1);
+	  return substr((string) $this->getLinha($numeroLinha),70,1);
 	}
 
 	/* detalhe de arquivo */
 	function getBancoHistmov($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),172,4);
+	  return substr((string) $this->getLinha($numeroLinha),172,4);
 	}
 
 	function getBancoHistmovDescr($numeroLinha){ //
-	  return substr($this->getLinha($numeroLinha),176,25);
+	  return substr((string) $this->getLinha($numeroLinha),176,25);
 	}
 
 	function getCodCategoria($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),169,3);
+	  return substr((string) $this->getLinha($numeroLinha),169,3);
 	}
 
 	function getDataLancamento($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),146,4)."-".substr($this->getLinha($numeroLinha),144,2)."-".substr($this->getLinha($numeroLinha),142,2);
+	  return substr((string) $this->getLinha($numeroLinha),146,4)."-".substr((string) $this->getLinha($numeroLinha),144,2)."-".substr((string) $this->getLinha($numeroLinha),142,2);
 	}
 
 	function getValorLancamento($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),150,16).".".substr($this->getLinha($numeroLinha),166,2);
+	  return substr((string) $this->getLinha($numeroLinha),150,16).".".substr((string) $this->getLinha($numeroLinha),166,2);
 	}
 
 	function getTipoLancamento($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),168,1);
+	  return substr((string) $this->getLinha($numeroLinha),168,1);
 	}
 
 	function getHistLancamento($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),176,25);
+	  return substr((string) $this->getLinha($numeroLinha),176,25);
 	}
 
 	function getDocumentoLancamento($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),201,20);
+	  return substr((string) $this->getLinha($numeroLinha),201,20);
 	}
 
   /* gets para trailer de lote */
 
 	function getDataSaldo($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),146,4)."-".substr($this->getLinha($numeroLinha),144,2)."-".substr($this->getLinha($numeroLinha),142,2);
+	  return substr((string) $this->getLinha($numeroLinha),146,4)."-".substr((string) $this->getLinha($numeroLinha),144,2)."-".substr((string) $this->getLinha($numeroLinha),142,2);
 	}
 
 	function getValorCredito($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),194,16).".".substr($this->getLinha($numeroLinha),210,2);
+	  return substr((string) $this->getLinha($numeroLinha),194,16).".".substr((string) $this->getLinha($numeroLinha),210,2);
 	}
 
 	function getValorDebito($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),176,16).".".substr($this->getLinha($numeroLinha),192,2);
+	  return substr((string) $this->getLinha($numeroLinha),176,16).".".substr((string) $this->getLinha($numeroLinha),192,2);
 	}
 
 	function getQtdRegistrosLote($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),170,6);
+	  return substr((string) $this->getLinha($numeroLinha),170,6);
 	}
 
 	function getPosicao($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),169,1);
+	  return substr((string) $this->getLinha($numeroLinha),169,1);
 	}
 
 	function getSituacao($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),168,1);
+	  return substr((string) $this->getLinha($numeroLinha),168,1);
 	}
 
 	function getSaldoBloqueado($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),125,16).".".substr($this->getLinha($numeroLinha),141,2);
+	  return substr((string) $this->getLinha($numeroLinha),125,16).".".substr((string) $this->getLinha($numeroLinha),141,2);
 	}
 
 	function getSaldoFinal($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),150,16).".".substr($this->getLinha($numeroLinha),166,2);
+	  return substr((string) $this->getLinha($numeroLinha),150,16).".".substr((string) $this->getLinha($numeroLinha),166,2);
 	}
 
 	function getLimite($numeroLinha){
-	  return substr($this->getLinha($numeroLinha),150,16).".".substr($this->getLinha($numeroLinha),166,2);
+	  return substr((string) $this->getLinha($numeroLinha),150,16).".".substr((string) $this->getLinha($numeroLinha),166,2);
 	}
 
 }

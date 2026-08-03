@@ -45,8 +45,8 @@ final class impressaoOS214_plus extends impressao {
 		$sLinha = substr($sLinha,0,23);
 		$sLinha = str_pad($sLinha,23,' ',STR_PAD_BOTH);
 
-		$sX = str_pad($sX,4,'0',STR_PAD_LEFT);
-		$sY = str_pad($sY,4,'0',STR_PAD_LEFT);
+		$sX = str_pad((string) $sX,4,'0',STR_PAD_LEFT);
+		$sY = str_pad((string) $sY,4,'0',STR_PAD_LEFT);
 
     $sLinha = "1211000{$sY}{$sX} {$sLinha}";
 		parent::addComando($sLinha);
@@ -59,10 +59,10 @@ final class impressaoOS214_plus extends impressao {
 	 */
 	public function imprimeCodigoBarras($sCodigo, $sX, $sY, $sType) {
 
-    $sLinha = str_pad(trim($sCodigo),7,'0',STR_PAD_LEFT);
-    $sCodigo = str_pad($sCodigo,10,'0',STR_PAD_LEFT);
-    $sX = str_pad($sX,4,'0',STR_PAD_LEFT);
-    $sY = str_pad($sY,4,'0',STR_PAD_LEFT);
+    $sLinha = str_pad(trim((string) $sCodigo),7,'0',STR_PAD_LEFT);
+    $sCodigo = str_pad((string) $sCodigo,10,'0',STR_PAD_LEFT);
+    $sX = str_pad((string) $sX,4,'0',STR_PAD_LEFT);
+    $sY = str_pad((string) $sY,4,'0',STR_PAD_LEFT);
 
     $sCodigoBarra = "1{$sType}20025{$sY}{$sX}A {$sCodigo}";
 		parent::addComando($sCodigoBarra);
@@ -96,7 +96,8 @@ final class impressaoOS214_plus extends impressao {
 	 * Método para finalizar os comandos
 	 * @param string $sFinalizadorCoamando
 	 */
-	public function rodarComandos(){
+	#[\Override]
+    public function rodarComandos(){
 		$sFinalizadorComando = chr(13);
 		parent::rodarComandos($sFinalizadorComando);
 

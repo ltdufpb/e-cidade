@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE abatimentoprocessoexterno
 class cl_abatimentoprocessoexterno { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k160_sequencial = 0; 
-   var $k160_abatimento = 0; 
-   var $k160_numeroprocesso = null; 
-   var $k160_data_dia = null; 
-   var $k160_data_mes = null; 
-   var $k160_data_ano = null; 
-   var $k160_data = null; 
-   var $k160_nometitular = null; 
+   public $k160_sequencial = 0; 
+   public $k160_abatimento = 0; 
+   public $k160_numeroprocesso = null; 
+   public $k160_data_dia = null; 
+   public $k160_data_mes = null; 
+   public $k160_data_ano = null; 
+   public $k160_data = null; 
+   public $k160_nometitular = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k160_sequencial = int8 = Código Processo 
                  k160_abatimento = int4 = Sequencial 
                  k160_numeroprocesso = varchar(50) = Número Processo 
@@ -59,10 +59,10 @@ class cl_abatimentoprocessoexterno {
                  k160_nometitular = varchar(50) = Nome Titular 
                  ";
    //funcao construtor da classe 
-   function cl_abatimentoprocessoexterno() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentoprocessoexterno"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_abatimentoprocessoexterno {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k160_sequencial = pg_result($result,0,0); 
+       $this->k160_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from abatimentoprocessoexterno_k160_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k160_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k160_sequencial)){
          $this->erro_sql = " Campo k160_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_abatimentoprocessoexterno {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "abatimentoprocessoexterno ($this->k160_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "abatimentoprocessoexterno já Cadastrado";
@@ -204,14 +204,14 @@ class cl_abatimentoprocessoexterno {
      $resaco = $this->sql_record($this->sql_query_file($this->k160_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19622,'$this->k160_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3488,19622,'','".AddSlashes(pg_result($resaco,0,'k160_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3488,19625,'','".AddSlashes(pg_result($resaco,0,'k160_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3488,19624,'','".AddSlashes(pg_result($resaco,0,'k160_numeroprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3488,19626,'','".AddSlashes(pg_result($resaco,0,'k160_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3488,19623,'','".AddSlashes(pg_result($resaco,0,'k160_nometitular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3488,19622,'','".AddSlashes(pg_fetch_result($resaco,0,'k160_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3488,19625,'','".AddSlashes(pg_fetch_result($resaco,0,'k160_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3488,19624,'','".AddSlashes(pg_fetch_result($resaco,0,'k160_numeroprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3488,19626,'','".AddSlashes(pg_fetch_result($resaco,0,'k160_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3488,19623,'','".AddSlashes(pg_fetch_result($resaco,0,'k160_nometitular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_abatimentoprocessoexterno {
       $this->atualizacampos();
      $sql = " update abatimentoprocessoexterno set ";
      $virgula = "";
-     if(trim($this->k160_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k160_sequencial"])){ 
+     if(trim((string) $this->k160_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k160_sequencial"])){ 
        $sql  .= $virgula." k160_sequencial = $this->k160_sequencial ";
        $virgula = ",";
-       if(trim($this->k160_sequencial) == null ){ 
+       if(trim((string) $this->k160_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Processo nao Informado.";
          $this->erro_campo = "k160_sequencial";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_abatimentoprocessoexterno {
          return false;
        }
      }
-     if(trim($this->k160_abatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k160_abatimento"])){ 
+     if(trim((string) $this->k160_abatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k160_abatimento"])){ 
        $sql  .= $virgula." k160_abatimento = $this->k160_abatimento ";
        $virgula = ",";
-       if(trim($this->k160_abatimento) == null ){ 
+       if(trim((string) $this->k160_abatimento) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k160_abatimento";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_abatimentoprocessoexterno {
          return false;
        }
      }
-     if(trim($this->k160_numeroprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k160_numeroprocesso"])){ 
+     if(trim((string) $this->k160_numeroprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k160_numeroprocesso"])){ 
        $sql  .= $virgula." k160_numeroprocesso = '$this->k160_numeroprocesso' ";
        $virgula = ",";
-       if(trim($this->k160_numeroprocesso) == null ){ 
+       if(trim((string) $this->k160_numeroprocesso) == null ){ 
          $this->erro_sql = " Campo Número Processo nao Informado.";
          $this->erro_campo = "k160_numeroprocesso";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_abatimentoprocessoexterno {
          return false;
        }
      }
-     if(trim($this->k160_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k160_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k160_data_dia"] !="") ){ 
+     if(trim((string) $this->k160_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k160_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k160_data_dia"] !="") ){ 
        $sql  .= $virgula." k160_data = '$this->k160_data' ";
        $virgula = ",";
-       if(trim($this->k160_data) == null ){ 
+       if(trim((string) $this->k160_data) == null ){ 
          $this->erro_sql = " Campo Data Processo nao Informado.";
          $this->erro_campo = "k160_data_dia";
          $this->erro_banco = "";
@@ -275,7 +275,7 @@ class cl_abatimentoprocessoexterno {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k160_data_dia"])){ 
          $sql  .= $virgula." k160_data = null ";
          $virgula = ",";
-         if(trim($this->k160_data) == null ){ 
+         if(trim((string) $this->k160_data) == null ){ 
            $this->erro_sql = " Campo Data Processo nao Informado.";
            $this->erro_campo = "k160_data_dia";
            $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_abatimentoprocessoexterno {
          }
        }
      }
-     if(trim($this->k160_nometitular)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k160_nometitular"])){ 
+     if(trim((string) $this->k160_nometitular)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k160_nometitular"])){ 
        $sql  .= $virgula." k160_nometitular = '$this->k160_nometitular' ";
        $virgula = ",";
-       if(trim($this->k160_nometitular) == null ){ 
+       if(trim((string) $this->k160_nometitular) == null ){ 
          $this->erro_sql = " Campo Nome Titular nao Informado.";
          $this->erro_campo = "k160_nometitular";
          $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_abatimentoprocessoexterno {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19622,'$this->k160_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k160_sequencial"]) || $this->k160_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3488,19622,'".AddSlashes(pg_result($resaco,$conresaco,'k160_sequencial'))."','$this->k160_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3488,19622,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k160_sequencial'))."','$this->k160_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k160_abatimento"]) || $this->k160_abatimento != "")
-           $resac = db_query("insert into db_acount values($acount,3488,19625,'".AddSlashes(pg_result($resaco,$conresaco,'k160_abatimento'))."','$this->k160_abatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3488,19625,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k160_abatimento'))."','$this->k160_abatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k160_numeroprocesso"]) || $this->k160_numeroprocesso != "")
-           $resac = db_query("insert into db_acount values($acount,3488,19624,'".AddSlashes(pg_result($resaco,$conresaco,'k160_numeroprocesso'))."','$this->k160_numeroprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3488,19624,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k160_numeroprocesso'))."','$this->k160_numeroprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k160_data"]) || $this->k160_data != "")
-           $resac = db_query("insert into db_acount values($acount,3488,19626,'".AddSlashes(pg_result($resaco,$conresaco,'k160_data'))."','$this->k160_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3488,19626,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k160_data'))."','$this->k160_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k160_nometitular"]) || $this->k160_nometitular != "")
-           $resac = db_query("insert into db_acount values($acount,3488,19623,'".AddSlashes(pg_result($resaco,$conresaco,'k160_nometitular'))."','$this->k160_nometitular',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3488,19623,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k160_nometitular'))."','$this->k160_nometitular',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_abatimentoprocessoexterno {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19622,'$k160_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3488,19622,'','".AddSlashes(pg_result($resaco,$iresaco,'k160_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3488,19625,'','".AddSlashes(pg_result($resaco,$iresaco,'k160_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3488,19624,'','".AddSlashes(pg_result($resaco,$iresaco,'k160_numeroprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3488,19626,'','".AddSlashes(pg_result($resaco,$iresaco,'k160_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3488,19623,'','".AddSlashes(pg_result($resaco,$iresaco,'k160_nometitular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3488,19622,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k160_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3488,19625,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k160_abatimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3488,19624,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k160_numeroprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3488,19626,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k160_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3488,19623,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k160_nometitular'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from abatimentoprocessoexterno
@@ -431,7 +431,7 @@ class cl_abatimentoprocessoexterno {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:abatimentoprocessoexterno";
@@ -446,7 +446,7 @@ class cl_abatimentoprocessoexterno {
    function sql_query ( $k160_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -471,7 +471,7 @@ class cl_abatimentoprocessoexterno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -484,7 +484,7 @@ class cl_abatimentoprocessoexterno {
    function sql_query_file ( $k160_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -505,7 +505,7 @@ class cl_abatimentoprocessoexterno {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

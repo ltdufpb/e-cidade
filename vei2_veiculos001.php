@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label("ve01_veiccadtipo");
 $clrotulo->label("ve20_descr");
@@ -170,7 +170,7 @@ db_inputdata('ve01_dtaquis1',@$ve01_dtaquis_dia,@$ve01_dtaquis_mes,@$ve01_dtaqui
         </td>
         <td>
 	  <?php  
-	  $tipo_busca = array("t"=>"Todos","b"=>"Baixados","n"=>"Não Baixados");
+	  $tipo_busca = ["t"=>"Todos","b"=>"Baixados","n"=>"Não Baixados"];
 	  db_select("busca",$tipo_busca,true,2); ?>
         </td>
       </tr> 

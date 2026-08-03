@@ -51,8 +51,8 @@ if ($encerramento && $competencia->getMes() == 12) {
 
 $where = " c132_ano = {$competencia->getAno()} and c132_mes = {$mesComparacao}";
 if ($oGet->estruturais != '') {
-    $aEstrutural = explode(",", $oGet->estruturais);
-    $aWhereEstrutural = array();
+    $aEstrutural = explode(",", (string) $oGet->estruturais);
+    $aWhereEstrutural = [];
     foreach ($aEstrutural as $sEstrutural) {
         $sEstrutural = trim($sEstrutural);
         if (empty($sEstrutural)) {
@@ -78,7 +78,7 @@ $sql .= "      inner join contabilidade.matriz_saldo_contabil on c132_sequencial
 $sql .= " where {$where}";
 $sql .= " order by c133_estrutural, c133_atributos";
 
-$contas = array();
+$contas = [];
 $dados = db_utils::makeCollectionFromRecord(db_query($sql), function ($dados) use (&$contas) {
 
     if (empty($contas[$dados->estrutural])) {
@@ -88,7 +88,7 @@ $dados = db_utils::makeCollectionFromRecord(db_query($sql), function ($dados) us
         $dadosConta->period_change_debit = 0;
         $dadosConta->period_change_credit = 0;
         $dadosConta->ending_balance = 0;
-        $dadosConta->atributos = array();
+        $dadosConta->atributos = [];
         $contas[$dados->estrutural] = $dadosConta;
     }
     $dadosConta = $contas[$dados->estrutural];
@@ -127,12 +127,12 @@ function emitirPdf($dados, $parametros, $encerramento)
     $oPdf->ln(2);
     $tamanhofonte = 10;
     $alturaLinha = 5;
-    cabecalho($oPdf, $tamanhofonte, $alturaLinha);
+    cabecalho($oPdf);
     $resumo = resumo($dados);
 
     foreach ($dados as $conta) {
         if ($oPdf->h - 25 < $oPdf->getY()) {
-            cabecalho($oPdf, $tamanhofonte, $alturaLinha);
+            cabecalho($oPdf);
         }
 
         $oPdf->cell(35, $alturaLinha, $conta->estrutural, "TB", 0, "C", 0);
@@ -144,7 +144,7 @@ function emitirPdf($dados, $parametros, $encerramento)
         foreach ($conta->atributos as $atributos) {
             if ($parametros->analitico) {
                 if ($oPdf->h - 25 < $oPdf->getY()) {
-                    cabecalho($oPdf, $tamanhofonte, $alturaLinha);
+                    cabecalho($oPdf);
                 }
                 $listaAtributos = formatarAtributos($atributos->atributos);
                 $oPdf->cell(35, $alturaLinha, '', "TB", 0, "C", 0);
@@ -196,7 +196,7 @@ function formatarAtributos($atributos)
 function resumo($contas)
 {
 
-    $descricoes = array(
+    $descricoes = [
         1 => "Total do Ativo",
         2 => "Total do Passivo",
         3 => "Total das Variações Patrimoniais Diminutivas",
@@ -205,18 +205,18 @@ function resumo($contas)
         6 => "Total dos Controles da Execução do Planejamento e Orçamento",
         7 => "Total dos Controles Devedores",
         8 => "Total dos Controles Credores"
-    );
+    ];
     foreach (range(1, 8) as $nivel) {
-        $totalizador[$nivel] = array(
+        $totalizador[$nivel] = [
                 'descricao' => $descricoes[$nivel],
                 'beginning_balance' => 0,
                 'period_change_debit' => 0,
                 'period_change_credit' => 0,
                 'ending_balance' => 0,
-        );
+        ];
     }
     foreach ($contas as $conta) {
-        $nivel1 = substr($conta->estrutural, 0, 1);
+        $nivel1 = substr((string) $conta->estrutural, 0, 1);
         $totalizador[$nivel1]["beginning_balance"] += $conta->beginning_balance;
         $totalizador[$nivel1]["period_change_debit"] += $conta->period_change_debit;
         $totalizador[$nivel1]["period_change_credit"] += $conta->period_change_credit;
@@ -246,41 +246,41 @@ function emitirCsv($sArquivoCSV, $dados, $parametros)
     $conteudo = "";
 
 
-    $aCabecalho = array(
+    $aCabecalho = [
         "Conta",
         "Informações Complementares",
         "Saldo Inicial",
         "Débitos",
         "Créditos",
         "Saldo Final"
-    );
+    ];
 
     $linha = implode(";", $aCabecalho) . "\n";
     $conteudo .= $linha;
 
     foreach ($dados as $conta) {
-        $aLinha = array(
-            trim($conta->estrutural),
+        $aLinha = [
+            trim((string) $conta->estrutural),
             "",
             trim(db_formatar($conta->beginning_balance, 'f')),
             trim(db_formatar($conta->period_change_debit, 'f')),
             trim(db_formatar($conta->period_change_credit, 'f')),
             trim(db_formatar($conta->ending_balance, 'f'))
-        );
+        ];
         $linha = implode(";", $aLinha) . "\n";
         $conteudo .= $linha;
 
         foreach ($conta->atributos as $atributos) {
             if ($parametros->analitico) {
                 $listaAtributos = formatarAtributos($atributos->atributos);
-                $aLinha = array(
+                $aLinha = [
                     '',
                     trim($listaAtributos),
                     trim(db_formatar($atributos->beginning_balance, 'f')),
                     trim(db_formatar($atributos->period_change_debit, 'f')),
                     trim(db_formatar($atributos->period_change_credit, 'f')),
                     trim(db_formatar($atributos->ending_balance, 'f'))
-                );
+                ];
                 $linha = implode(";", $aLinha) . "\n";
                 $conteudo .= $linha;
             }
@@ -289,25 +289,25 @@ function emitirCsv($sArquivoCSV, $dados, $parametros)
 
 
     $conteudo .= "\n";
-    $aCabecalho = array(
+    $aCabecalho = [
         "Nível",
         "Descrição",
         "Saldo Final",
         "Débitos",
         "Créditos",
         "Saldo Final"
-    );
+    ];
     $linha = implode(";", $aCabecalho) . "\n";
     $conteudo .= $linha;
     foreach ($resumo as $indice => $valor) {
-        $aLinha = array(
+        $aLinha = [
             $indice,
             $valor['descricao'],
             trim(db_formatar($valor['beginning_balance'], 'f')),
             trim(db_formatar($valor['period_change_debit'], 'f')),
             trim(db_formatar($valor['period_change_credit'], 'f')),
             trim(db_formatar($valor['ending_balance'], 'f'))
-        );
+        ];
         $linha = implode(";", $aLinha) . "\n";
         $conteudo .= $linha;
     }

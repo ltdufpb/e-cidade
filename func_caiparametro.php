@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_caiparametro_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcaiparametro = new cl_caiparametro;
 $clcaiparametro->rotulo->label("k29_instit");
 $clcaiparametro->rotulo->label("k29_instit");
@@ -98,9 +98,9 @@ $clcaiparametro->rotulo->label("k29_instit");
         }else{
            $sql = $clcaiparametro->sql_query("",$campos,"k29_instit","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k29_instit)){
-          $repassa = array("chave_k29_instit"=>$chave_k29_instit,"chave_k29_instit"=>$chave_k29_instit);
+          $repassa = ["chave_k29_instit"=>$chave_k29_instit,"chave_k29_instit"=>$chave_k29_instit];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

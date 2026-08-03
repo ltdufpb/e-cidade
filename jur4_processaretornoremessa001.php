@@ -47,8 +47,8 @@ require_once(modification("model/dbLayoutReader.model.php"));
 require_once(modification("model/dbLayoutLinha.model.php"));
 
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clcgm                = new cl_cgm;
 $cllista              = new cl_lista;
@@ -65,7 +65,7 @@ $oPost           = db_utils::postMemory($_POST);
 $oFile           = db_utils::postMemory($_FILES);
 $instit          = db_getsession("DB_instit");
 
-$aDados          = array();
+$aDados          = [];
 
 $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
@@ -103,18 +103,18 @@ if (isset($oPost->iArqRemessa) && isset($oFile->arquivo)) {
 			$sNomeLinha  = $oLinha->getNomeLinha();
 		  if ($sNomeLinha == 'fixo_1') {
 	      
-	      $iDtCitacaoDia = substr($oLinha->data_citacao,0,2);
-        $iDtCitacaoMes = substr($oLinha->data_citacao,2,2);
-        $iDtCitacaoAno = substr($oLinha->data_citacao,4,4);
+	      $iDtCitacaoDia = substr((string) $oLinha->data_citacao,0,2);
+        $iDtCitacaoMes = substr((string) $oLinha->data_citacao,2,2);
+        $iDtCitacaoAno = substr((string) $oLinha->data_citacao,4,4);
         $dData_citacao =  $iDtCitacaoAno . "-" . $iDtCitacaoMes . "-" . $iDtCitacaoDia;
 	      
 	    }
 	    		
 			if ($sNomeLinha == 'fixo_2') {
 				
-				$iDtDistribuicaoDia = substr($oLinha->data_distribuicao,0,2);
-        $iDtDistribuicaoMes = substr($oLinha->data_distribuicao,2,2);
-        $iDtDistribuicaoAno = substr($oLinha->data_distribuicao,4,4);
+				$iDtDistribuicaoDia = substr((string) $oLinha->data_distribuicao,0,2);
+        $iDtDistribuicaoMes = substr((string) $oLinha->data_distribuicao,2,2);
+        $iDtDistribuicaoAno = substr((string) $oLinha->data_distribuicao,4,4);
         $dDataDistribuicao  =  $iDtDistribuicaoAno . "-" . $iDtDistribuicaoMes . "-" . $iDtDistribuicaoDia;
 				
 				$aRegistros->v71_data         = $dData_citacao;  
@@ -125,7 +125,7 @@ if (isset($oPost->iArqRemessa) && isset($oFile->arquivo)) {
 				$aRegistros->v70_cartorio     = $oLinha->cartorio;
 	      $aRegistros->v70_observacao   = $oLinha->mensagem;
 	      			
-				$aCodigoProcesso              = explode('/', $oLinha->codigo_processo);
+				$aCodigoProcesso              = explode('/', (string) $oLinha->codigo_processo);
 	      $aRegistros->v71_inicial      = $aCodigoProcesso[0];
 	
 				$aDados[] = $aRegistros;

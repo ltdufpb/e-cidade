@@ -68,9 +68,9 @@ try {
             } else {
                 // busca preenchimento pela matricula e empregador
                 $dao = new cl_avaliacaogruporespostatertrabasemvinc();
-                $aCampos = array("distinct  eso24_avaliacaogruporesposta as preenchimento");
-                $aWhere  = array("eso24_rhpessoal = {$oParam->iMatricula} ", "eso24_cgmempregador = {$oParam->cgm}");
-                $aOrder  = array(" eso24_avaliacaogruporesposta desc limit 1");
+                $aCampos = ["distinct  eso24_avaliacaogruporesposta as preenchimento"];
+                $aWhere  = ["eso24_rhpessoal = {$oParam->iMatricula} ", "eso24_cgmempregador = {$oParam->cgm}"];
+                $aOrder  = [" eso24_avaliacaogruporesposta desc limit 1"];
                 $sql     = $dao->buscaPreenchimento($aCampos, $aWhere, $aOrder, $instituicaoSessao->getCodigo());
 
 
@@ -155,7 +155,7 @@ try {
                 $iCodigoGrupoPerguntas = $oParam->iCodigoGrupoPerguntas;
             }
 
-            $aParametros = array('matricula' => $oParam->iMatricula);
+            $aParametros = ['matricula' => $oParam->iMatricula];
 
             if (!empty($oParam->iCodigoPreenchimento)) {
                 $aParametros["iCodigoPreenchimento"] = $oParam->iCodigoPreenchimento;
@@ -211,9 +211,7 @@ try {
                 return $oStdMatricula;
             }, $aMatriculas);
 
-            usort($oRetorno->matriculas, function ($oMatricula, $oProximaMatricula) {
-                return ($oMatricula->matricula > $oProximaMatricula->matricula);
-            });
+            usort($oRetorno->matriculas, fn($oMatricula, $oProximaMatricula) => $oMatricula->matricula > $oProximaMatricula->matricula);
             break;
         case 'limparRespostas':
             if (empty($oParam->pergunta)) {
@@ -234,9 +232,7 @@ try {
                 break;
             }
 
-            $respostasApagar = db_utils::makeCollectionFromRecord($rsAvaliacaoResposta, function ($retorno) {
-                return $retorno->respostas;
-            });
+            $respostasApagar = db_utils::makeCollectionFromRecord($rsAvaliacaoResposta, fn($retorno) => $retorno->respostas);
 
             $oDaoAvaliacaoGrupoPerguntaResposta = new cl_avaliacaogrupoperguntaresposta();
 

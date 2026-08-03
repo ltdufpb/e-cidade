@@ -52,9 +52,9 @@ class Login extends GenericApplicationController implements ResourceInterface
 
         $validatedUser = pg_fetch_object($rs);
 
-        $data = array(
+        $data = [
             'idUsuario' => $validatedUser->id_usuario
-        );
+        ];
 
         return HashGenerator::encrypt($data, $client->getChave());
     }

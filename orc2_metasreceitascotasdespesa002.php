@@ -59,13 +59,13 @@ if (isset($oParams->recursos) && $oParams->recursos != "") {
 
 $iTipoAgrupamento  = $oParams->periodicidade;
 $oCronograma       = new cronogramaFinanceiro($oParams->o124_sequencial);
-$oCronograma->setInstituicoes(array(str_replace("-",",",$oParams->db_selinstit)));
+$oCronograma->setInstituicoes([str_replace("-",",",$oParams->db_selinstit)]);
 $aDadosMetaReceita = $oCronograma->getMetasReceita('', $aRecursos);
 
 /**
  * Percorremos os registros da Receita  agrupamos pelo recurso
  */ 
-$aReceitaAgrupadaPorRecurso = array();
+$aReceitaAgrupadaPorRecurso = [];
 foreach ($aDadosMetaReceita as $oReceita) {
 	
   if ($oReceita->o70_codrec == '') {
@@ -91,7 +91,7 @@ foreach ($aDadosMetaReceita as $oReceita) {
       $aReceitaAgrupadaPorRecurso[$oReceita->o70_codigo][9]->valor  += $oReceita->aMetas->dados[9]->valor;
       $aReceitaAgrupadaPorRecurso[$oReceita->o70_codigo][10]->valor += $oReceita->aMetas->dados[10]->valor;
       $aReceitaAgrupadaPorRecurso[$oReceita->o70_codigo][11]->valor += $oReceita->aMetas->dados[11]->valor;
-     
+
      /**
       * Agrupamento por bimestre
       */
@@ -144,7 +144,7 @@ foreach ($aDadosMetaReceita as $oReceita) {
   }
 }
 
-$aDespesaAgrupadaPorRecurso = array();
+$aDespesaAgrupadaPorRecurso = [];
 $aDadosMetaDespesa = $oCronograma->getMetasDespesa(8, $sWhereSelOrcDotacao);
 foreach ($aDadosMetaDespesa as $oDespesa) {
   
@@ -167,7 +167,7 @@ foreach ($aDadosMetaDespesa as $oDespesa) {
        $aDespesaAgrupadaPorRecurso[$oDespesa->codigo][9]->valor  += @$oDespesa->aMetas->dados[9]->valor;
        $aDespesaAgrupadaPorRecurso[$oDespesa->codigo][10]->valor += @$oDespesa->aMetas->dados[10]->valor;
        $aDespesaAgrupadaPorRecurso[$oDespesa->codigo][11]->valor += @$oDespesa->aMetas->dados[11]->valor;
-     
+
      /**
       * Agrupamento por bimestre
       */
@@ -241,7 +241,7 @@ foreach ($aDespesaAgrupadaPorRecurso as $iRecurso => $oDespesa) {
   }
 }
 
-$aLinhasRelatorio = array();
+$aLinhasRelatorio = [];
 if ($iTipoAgrupamento == 1) {
 
   $iTotalLinhas = 12;

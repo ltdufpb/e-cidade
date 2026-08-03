@@ -39,14 +39,14 @@ if($linhas!=0){
 
 <?php 
 if(isset($_POST["pesquisar"])){
- db_postmemory($HTTP_POST_VARS);
+ db_postmemory($_POST);
  if($z01_nome==""){
   db_msgbox("Digite algum termo para consulta!");
   ?><script>history.back();</script><?php 
   exit;
  }
  $where = " ( bi15_assunto like '%$z01_nome%' OR bi06_titulo like '%$z01_nome%' ";
- $exp_termos = explode(" ",trim($z01_nome));
+ $exp_termos = explode(" ",trim((string) $z01_nome));
  if(count($exp_termos)>1){
   for($i=0;$i<count($exp_termos);$i++){
    if(strlen($exp_termos[$i])>2){
@@ -78,8 +78,8 @@ if(isset($_POST["pesquisar"])){
     <b>
      Consulta de Acervo por Assunto<br>
      - Termos: <?=$z01_nome?><br>
-     - Tipo de Acervo: <?=$bi05_nome!=0?(pg_result($result1,0,"bi05_nome")):"TODOS"?><br>
-     - Classe Literária: <?=$bi03_classificacao!=0?(pg_result($result2,0,"bi03_classificacao")):"TODAS"?>
+     - Tipo de Acervo: <?=$bi05_nome!=0?(pg_fetch_result($result1,0,"bi05_nome")):"TODOS"?><br>
+     - Classe Literária: <?=$bi03_classificacao!=0?(pg_fetch_result($result2,0,"bi03_classificacao")):"TODAS"?>
     </b>
    </td>
   </tr>
@@ -146,7 +146,7 @@ if(isset($_POST["pesquisar"])){
 //$cor = cor que aparecerá na tela os termos digitados
 //$fonte = fonte que aparecerá na tela os termos digitados
 function TermoNegrito($termos,$texto,$cor,$fonte=null){
- $explode = explode(" ",$texto);
+ $explode = explode(" ",(string) $texto);
  for($r=0;$r<count($explode);$r++){
   if(strstr($explode[$r],".")){
    $ponto = ".";

@@ -48,7 +48,7 @@ class Partilha
         $result = db_query($sqlDebitoInicialForo);
 
         if (!$result || pg_num_rows($result) == 0) {
-            return array();
+            return [];
         }
 
         $sql = "select taxa.ar36_sequencial as taxa,

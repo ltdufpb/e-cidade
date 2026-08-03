@@ -87,7 +87,7 @@ $mes = DBPessoal::getMesFolha();
                 </td>
                 <td>
                     <?php
-                    $opcoes = array("Não", "Sim");
+                    $opcoes = ["Não", "Sim"];
                     db_select("servidorAfastado", $opcoes, true, 1);
                     ?>
                 </td>
@@ -106,7 +106,7 @@ $mes = DBPessoal::getMesFolha();
                                 </td>
                                 <td>
                                     <?php
-                                    $opcoes = array("Não", "Por Local de Trabalho");
+                                    $opcoes = ["Não", "Por Local de Trabalho"];
                                     db_select("quebrarPagina", $opcoes, true, 1);
                                     ?>
                                 </td>
@@ -117,12 +117,12 @@ $mes = DBPessoal::getMesFolha();
                                 </td>
                                 <td>
                                     <?php
-                                    $opcoes = array(
+                                    $opcoes = [
                                       "Alfabética (Local de Trabalho)",
                                       "Numérica",
                                       "Período aquisitivo inicial",
                                       "Período aquisitivo final"
-                                    );
+                                    ];
                                     db_select("tipoOrdem", $opcoes, true, 1);
                                     ?>
                                 </td>
@@ -133,7 +133,7 @@ $mes = DBPessoal::getMesFolha();
                                 </td>
                                 <td>
                                     <?php
-                                    $opcoes = array("PDF", "CSV");
+                                    $opcoes = ["PDF", "CSV"];
                                     db_select("formato", $opcoes, true, 1);
                                     ?>
                                 </td>

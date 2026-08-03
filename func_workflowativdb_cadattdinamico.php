@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_workflowativdb_cadattdinamico_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clworkflowativdb_cadattdinamico = new cl_workflowativdb_cadattdinamico;
 $clworkflowativdb_cadattdinamico->rotulo->label("db117_sequencial");
 $clworkflowativdb_cadattdinamico->rotulo->label("db117_sequencial");
@@ -98,9 +98,9 @@ $clworkflowativdb_cadattdinamico->rotulo->label("db117_sequencial");
         }else{
            $sql = $clworkflowativdb_cadattdinamico->sql_query("",$campos,"db117_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db117_sequencial)){
-          $repassa = array("chave_db117_sequencial"=>$chave_db117_sequencial,"chave_db117_sequencial"=>$chave_db117_sequencial);
+          $repassa = ["chave_db117_sequencial"=>$chave_db117_sequencial,"chave_db117_sequencial"=>$chave_db117_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

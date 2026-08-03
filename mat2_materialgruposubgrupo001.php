@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,16 +55,16 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1" => "Filtros",
+       $clcriaabas->identifica = ["g1" => "Filtros",
                                        "g2" => "Materiais",
-                                      );
-       $clcriaabas->title  = array("g1" => "Filtros Gerais",
+                                      ];
+       $clcriaabas->title  = ["g1" => "Filtros Gerais",
                                    "g2" => "Selecionar materiais",
-                                  );
-       $clcriaabas->src    = array("g1" => "mat2_materialgruposubgrupo011.php",
+                                  ];
+       $clcriaabas->src    = ["g1" => "mat2_materialgruposubgrupo011.php",
                                    "g2" => "mat2_saida002.php",
-                                 );
-       $clcriaabas->disabled   =  array("g4"=>"false");
+                                 ];
+       $clcriaabas->disabled   =  ["g4"=>"false"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

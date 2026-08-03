@@ -34,7 +34,7 @@ $clrotulo->label("it01_guia");
 $caracteristicas = $_GET['caracteristicas'];
 if (!empty($caracteristicas)) {
   $arrayCaracteristicas = explode('|', $caracteristicas);
-  $arrayAssociativo = array();
+  $arrayAssociativo = [];
 
   foreach ($arrayCaracteristicas as $caracteristica) {
     $arrayAuxiliar = explode('X', $caracteristica);
@@ -105,7 +105,7 @@ if (!empty($caracteristicas)) {
                for ( $iInd=0; $iInd < $iNumCaracter; $iInd++) {
 
                   $oCaraceter  = db_utils::fieldsMemory($rsCaracter,$iInd);
-                  $valor = $arrayAssociativo[$oCaraceter->j31_codigo] ? $arrayAssociativo[$oCaraceter->j31_codigo] : 0;
+                  $valor = $arrayAssociativo[$oCaraceter->j31_codigo] ?: 0;
 
                   echo " <tr>                                            ";
                   echo "   <td>                                          ";
@@ -133,7 +133,7 @@ if (!empty($caracteristicas)) {
 		 	       for ( $iInd=0; $iInd < $iNumCaracter; $iInd++) {
 
 		 	   	      $oCaraceter  = db_utils::fieldsMemory($rsCaracter,$iInd);
-                      $valor = $arrayAssociativo[$oCaraceter->j31_codigo] ? $arrayAssociativo[$oCaraceter->j31_codigo] : 0;
+                      $valor = $arrayAssociativo[$oCaraceter->j31_codigo] ?: 0;
 
 		            echo " <tr> 																	   	     ";
 	      		    echo "   <td>																	   	     ";

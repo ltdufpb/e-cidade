@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_prontproced_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprontproced = new cl_prontproced;
 $clprontproced->rotulo->label("sd29_i_codigo");
 $clprontproced->rotulo->label("sd29_i_prontuario");
@@ -98,9 +98,9 @@ $clprontproced->rotulo->label("sd29_i_prontuario");
         }else{
            $sql = $clprontproced->sql_query("",$campos,"sd29_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd29_i_prontuario)){
-          $repassa = array("chave_sd29_i_codigo"=>$chave_sd29_i_codigo,"chave_sd29_i_prontuario"=>$chave_sd29_i_prontuario);
+          $repassa = ["chave_sd29_i_codigo"=>$chave_sd29_i_codigo,"chave_sd29_i_prontuario"=>$chave_sd29_i_prontuario];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -32,9 +32,9 @@ try {
             $retorno->formulario = $avaliacaoAdapter->getObject();
             break;
         case 'salvar':
-            $where = array(
+            $where = [
                 "eso21_matricula = '{$parametros->matricula}'"
-            );
+            ];
 
             $dao = new cl_avaliacaogruporespostareintegracao();
             $sql = $dao->sql_query_file(null, 'eso21_avaliacaogruporesposta', null, implode(' AND ', $where));
@@ -86,7 +86,7 @@ try {
             $retorno->empregadores = db_utils::getCollectionByRecord($resultadoSqlCgm);
             break;
         case 'consultarServidores':
-            $where = array();
+            $where = [];
 
             if ($parametros->cpf !== '') {
                 $where[] = "z01_cgccpf = '{$parametros->cpf}'";
@@ -122,7 +122,7 @@ try {
                 throw new Exception('Nenhum registro encontrado para os filtros informados.');
             }
 
-            $retorno->resultados = array();
+            $retorno->resultados = [];
 
             while ($servidor = pg_fetch_object($rs)) {
                 $formato = strlen($servidor->cpf) === 11 ? 'CPF' : 'cnpj';
@@ -132,16 +132,16 @@ try {
 
             break;
         case 'consultarPreenchimentos':
-            $campos = array(
+            $campos = [
                 'cgm.z01_nome AS nome',
                 'cgm.z01_cgccpf AS cpf',
                 'cgm.z01_pis AS nis',
                 'rhpessoal.rh01_numcgm AS cgm',
                 'rhpessoal.rh01_regist AS matricula',
                 'avaliacaogruporespostareintegracao.eso21_avaliacaogruporesposta AS preenchimento'
-            );
+            ];
 
-            $where = array();
+            $where = [];
 
             if ($parametros->cpf !== '') {
                 $where[] = "rhpessoal.rh01_regist = '{$parametros->cpf}'";
@@ -176,7 +176,7 @@ try {
                 throw new Exception('Nenhum registro encontrado para os filtros informados.');
             }
 
-            $retorno->resultados = array();
+            $retorno->resultados = [];
 
             while ($preenchimento = pg_fetch_object($rs)) {
                 $formato = strlen($preenchimento->cpf) === 11 ? 'CPF' : 'cnpj';

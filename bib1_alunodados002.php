@@ -40,8 +40,8 @@ include(modification("classes/db_censomunic_classe.php"));
 include(modification("classes/db_censoorgemissrg_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $claluno = new cl_aluno;
 $clalunoaltera = new cl_alunoaltera;
 $clalunobairro = new cl_alunobairro;
@@ -56,7 +56,7 @@ $db_botao = false;
 function TiraEspacoNome($nome){
  $sep = "";
  $str = "";
- $parte=explode(" ",$nome);
+ $parte=explode(" ",(string) $nome);
  //echo print_r($parte);
  for($i=0;$i<count($parte);$i++){
   if(trim($parte[$i])!=""){
@@ -80,7 +80,7 @@ if(isset($alterar)){
      db_redireciona("bib1_alunodados002.php?leitor&chavepesquisa=$ed47_i_codigo");
      exit;
     }
-    if(trim($ed47_v_mae)==trim($maesim) && trim($ed47_v_mae)!="" && trim($maesim)!=""){
+    if(trim((string) $ed47_v_mae)==trim((string) $maesim) && trim((string) $ed47_v_mae)!="" && trim((string) $maesim)!=""){
      $erroconf=true;
      db_msgbox("Este nome ($ed47_v_nome) já possui cadastro (código $jatem) com o mesmo nome da mae digitado ($maesim)!");
      db_redireciona("bib1_alunodados002.php?leitor&chavepesquisa=$ed47_i_codigo");
@@ -91,11 +91,11 @@ if(isset($alterar)){
   if($erroconf==false){
    $db_opcao = 2;
    $db_opcao1 = 3;
-   $ed47_c_foto = @trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
-   $ed47_o_oid = "tmp/".@trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+   $ed47_c_foto = @trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+   $ed47_o_oid = "tmp/".@trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
    if($ed47_c_foto!=""){
     db_query("begin");
-    $oid_imagem = pg_loimport($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
+    $oid_imagem = pg_lo_import($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
     db_query("end");
     $ed47_o_oid = $oid_imagem;
    }else{
@@ -144,11 +144,11 @@ if(isset($alterar)){
  }else{
   $db_opcao = 2;
   $db_opcao1 = 3;
-  $ed47_c_foto = @trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
-  $ed47_o_oid = "tmp/".@trim($GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+  $ed47_c_foto = @trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
+  $ed47_o_oid = "tmp/".@trim((string) $GLOBALS["HTTP_POST_VARS"]["ed47_o_oid"]);
   if($ed47_c_foto!=""){
    db_query("begin");
-   $oid_imagem = pg_loimport($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
+   $oid_imagem = pg_lo_import($conn,$ed47_o_oid) or die("Erro(15) importando imagem");
    db_query("end");
    $ed47_o_oid = $oid_imagem;
   }else{

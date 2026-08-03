@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbiconstrpadraoconstrutivo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clitbiconstrpadraoconstrutivo = new cl_itbiconstrpadraoconstrutivo;
 $clitbiconstrpadraoconstrutivo->rotulo->label("it34_codigo");
 $clitbiconstrpadraoconstrutivo->rotulo->label("it34_caract");
@@ -109,9 +109,9 @@ $clitbiconstrpadraoconstrutivo->rotulo->label("it34_codigo");
         }else{
            $sql = $clitbiconstrpadraoconstrutivo->sql_query("","",$campos,"it34_codigo#it34_caract","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_it34_codigo)){
-          $repassa = array("chave_it34_codigo"=>$chave_it34_codigo,"chave_it34_codigo"=>$chave_it34_codigo);
+          $repassa = ["chave_it34_codigo"=>$chave_it34_codigo,"chave_it34_codigo"=>$chave_it34_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

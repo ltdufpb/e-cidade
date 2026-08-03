@@ -85,7 +85,7 @@ $cldbconfig = new cl_db_config;
     <td>
 		<label> <b> Listar bens: </b> </label>
     <?php 			
-      $aOpcoes = array("n" => "Não", "s"=> "Sim");
+      $aOpcoes = ["n" => "Não", "s"=> "Sim"];
       db_select("listabens", $aOpcoes, false, 2);
     ?>	
 	  </td>		

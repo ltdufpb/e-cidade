@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issmovalvara_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissmovalvara = new cl_issmovalvara;
 $clissmovalvara->rotulo->label("q120_sequencial");
 $clissmovalvara->rotulo->label("q120_sequencial");
@@ -98,9 +98,9 @@ $clissmovalvara->rotulo->label("q120_sequencial");
         }else{
            $sql = $clissmovalvara->sql_query("",$campos,"q120_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q120_sequencial)){
-          $repassa = array("chave_q120_sequencial"=>$chave_q120_sequencial,"chave_q120_sequencial"=>$chave_q120_sequencial);
+          $repassa = ["chave_q120_sequencial"=>$chave_q120_sequencial,"chave_q120_sequencial"=>$chave_q120_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

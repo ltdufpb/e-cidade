@@ -200,11 +200,11 @@ $db_opcao = 1;
       <td>
        <?php 
          $retornar = 3;
-         $aTipos = array(
+         $aTipos = [
                          1 => "Autorizados",
                          2 => "Não Autorizados",
                          3 => "Todas"
-                        );
+                        ];
         db_select("retornar", $aTipos, true, 1);
        ?>
      </td>

@@ -43,7 +43,7 @@ if ($oParametros->cc15_anousu ==  "" || $oParametros->cc15_mesusu == ""){
 $oDaoOrigens    = new cl_custoplanilhaorigem();
 $oDaoCustoPlano = new cl_custoplano();
 $oPlanilhaCusto = new custoPlanilha($oParametros->cc15_mesusu, $oParametros->cc15_anousu);
-$aHeadersCusto  = array();
+$aHeadersCusto  = [];
 $sSqlOrigens    = $oDaoOrigens->sql_query(null,"*", "cc14_sequencial");  
 $rsOrigens      = $oDaoOrigens->sql_record($sSqlOrigens);
 $aDadosOrigem   = db_utils::getCollectionByRecord($rsOrigens);
@@ -77,7 +77,7 @@ $sSqlCustoPlano = $oDaoCustoPlano->sql_query_analitica(null,
                                                   cc04_sequencial",
                                                   "cc01_estrutural");
 $rsCustoPlano   = $oDaoCustoPlano->sql_record($sSqlCustoPlano);
-$aPlanoCusto    = array();
+$aPlanoCusto    = [];
 for ($iPlano = 0; $iPlano < $oDaoCustoPlano->numrows; $iPlano++) {
   
   $oPlano = db_utils::fieldsMemory($rsCustoPlano, $iPlano);
@@ -91,7 +91,7 @@ for ($iPlano = 0; $iPlano < $oDaoCustoPlano->numrows; $iPlano++) {
  *      |_ Niveis 
  *            |_ Valores do Nivel
  */
-$aCustosProcessados = array();
+$aCustosProcessados = [];
 foreach ($aCustos as $oCusto) {
 
   if (isset($aPlanoCusto[$oCusto->cc01_estrutural]->aOrigens[$oCusto->$sCampoOrigem])) {
@@ -118,7 +118,7 @@ foreach ($aCustos as $oCusto) {
 function addValorContaPai($oConta, $iNivel, $nValor) {
   
   global $aPlanoCusto;
-  if (substr($oConta->contapai,0,2) > 0) {
+  if (substr((string) $oConta->contapai,0,2) > 0) {
     if (isset($aPlanoCusto[$oConta->contapai]->aOrigens[$iNivel])){
       $aPlanoCusto[$oConta->contapai]->aOrigens[$iNivel]->valor += $nValor;
     } else {
@@ -155,7 +155,7 @@ foreach ($aHeadersCusto as $iIndex  => $sDescricao) {
 }
 $sLinhaHeader  .= "Total\n";
 fputs($rArquivoCusto, $sLinhaHeader);
-$aTotais = array();
+$aTotais = [];
 /**
  * Percorremos os Custos
  */

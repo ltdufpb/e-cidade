@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_lab_atributo_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $cllab_atributo = new cl_lab_atributo;
 $cllab_atributo->rotulo->label("la25_i_codigo");
@@ -123,13 +123,13 @@ $cllab_atributo->rotulo->label("la25_c_descr");
                 }
             }
 
-            $repassa = array();
+            $repassa = [];
 
             if (isset($chave_la25_i_codigo)) {
-                $repassa = array(
+                $repassa = [
                   "chave_la25_i_codigo" => $chave_la25_i_codigo,
                   "chave_la25_c_descr"  => $chave_la25_c_descr
-                );
+                ];
             }
             db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
         } else {

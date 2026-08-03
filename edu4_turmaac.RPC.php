@@ -87,7 +87,7 @@ try {
             break;
 
         case 'vincularHorarioSemProfissional':
-            $aMapaDias = array(1 => 'DOMINGO', 2 => 'SEGUNDA', 3 => 'TERÇA', 4 => 'QUARTA', 5 => 'QUINTA', 6 => 'SEXTA', 7 => 'SABADO');
+            $aMapaDias = [1 => 'DOMINGO', 2 => 'SEGUNDA', 3 => 'TERÇA', 4 => 'QUARTA', 5 => 'QUINTA', 6 => 'SEXTA', 7 => 'SABADO'];
 
             $oDaoTurmaAc = new cl_turmaac();
             $sSqlAno = $oDaoTurmaAc->sql_query($oParam->iTurmaAc, " ed52_i_ano, ed268_i_escola ");
@@ -95,7 +95,7 @@ try {
             $iAnoTurma = db_utils::fieldsMemory($rsAno, 0)->ed52_i_ano;
             $iEscolaTurma = db_utils::fieldsMemory($rsAno, 0)->ed268_i_escola;
 
-            $aWhere = array();
+            $aWhere = [];
             $aWhere[] = " ed52_i_ano = {$iAnoTurma} ";
             $aWhere[] = " ed268_i_escola = {$iEscolaTurma} ";
             $aWhere[] = " (('{$oParam->sHoraInicial}'::time, '{$oParam->sHoraFinal}'::time) overlaps (ed176_horainicial::time, ed176_horafinal::time)) ";
@@ -104,7 +104,7 @@ try {
             $oDaoTurmaHorarioProfissionalSemRec = new cl_turmaachorarioprofissionalsemrec();
 
             $lTemConflito = false;
-            $aDiasConflito = array();
+            $aDiasConflito = [];
             db_inicio_transacao();
 
             foreach ($oParam->aDiaSemana as $iDiaSemana) {
@@ -141,7 +141,7 @@ try {
             $oRetorno->sMensagem = urlencode(_M(URL_MENSAGEM_TURMAAC_RPC . "profissional_vinculado"));
 
             if ($lTemConflito) {
-                $aDias = array();
+                $aDias = [];
                 foreach ($aDiasConflito as $iDia) {
                     $aDias[] = $aMapaDias[$iDia];
                 }
@@ -159,7 +159,7 @@ try {
 
             $iLinhas = $oDaoFuncaoAtividade->numrows;
 
-            $oRetorno->aFuncoes = array();
+            $oRetorno->aFuncoes = [];
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oDados = db_utils::fieldsMemory($rsFuncaoAtividade, $i, true);
 
@@ -198,18 +198,18 @@ try {
             $rsVinculos = $oDaoTurmaHorarioProfissional->sql_record($sSqlVinculos);
             $iLinhas = $oDaoTurmaHorarioProfissional->numrows;
 
-            $oRetorno->aVinculados = array();
+            $oRetorno->aVinculados = [];
 
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oDados = db_utils::fieldsMemory($rsVinculos, $i);
                 $oProfissional = new stdClass();
                 $oProfissional->iCodigo = $oDados->ed346_sequencial;
                 $oProfissional->iRecHumano = $oDados->ed20_i_codigo;
-                $oProfissional->sRecHumano = urlencode($oDados->profissional);
+                $oProfissional->sRecHumano = urlencode((string) $oDados->profissional);
                 $oProfissional->iAtividade = $oDados->ed119_sequencial;
-                $oProfissional->sAtividade = urlencode($oDados->ed119_descricao);
+                $oProfissional->sAtividade = urlencode((string) $oDados->ed119_descricao);
                 $oProfissional->iDia = $oDados->ed32_i_codigo;
-                $oProfissional->sDia = urlencode($oDados->ed32_c_descr);
+                $oProfissional->sDia = urlencode((string) $oDados->ed32_c_descr);
                 $oProfissional->sHoraInicial = $oDados->ed346_horainicial;
                 $oProfissional->sHoraFinal = $oDados->ed346_horafinal;
 
@@ -287,9 +287,9 @@ try {
 
             $periodos = $turma->getEscola()->getPeriodosEscola($turno);
             $horaInicio = array_shift($periodos)->getHoraInicio();
-            $timeInicio = strtotime($horaInicio);
+            $timeInicio = strtotime((string) $horaInicio);
             $horaFim = array_pop($periodos)->getHoraFim();
-            $timeFim = strtotime($horaFim);
+            $timeFim = strtotime((string) $horaFim);
             while ($horarioTurmaEspecial = pg_fetch_object($rsHorarios)) {
                 $horaInicioTurmaAc = strtotime($horarioTurmaEspecial->ed346_horainicial);
                 $horaFimTurmaAc = strtotime($horarioTurmaEspecial->ed346_horafinal);

@@ -7,11 +7,13 @@ use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Layouts\v2021\Decreto;
 
 class DecretoBuilder2021 extends DecretoBuilder2020
 {
+    #[\Override]
     protected function create()
     {
         $this->layout = new Decreto();
     }
 
+    #[\Override]
     protected function processar()
     {
         $alteracaoOrcamentaria = $this->identificaAlteracaoOrcamentaria($this->dados['tipo_suplementacao']);
@@ -43,6 +45,7 @@ class DecretoBuilder2021 extends DecretoBuilder2020
         }
     }
 
+    #[\Override]
     protected function identificaTipoCredito($tipoSuplementacao)
     {
         switch ($tipoSuplementacao) {
@@ -76,6 +79,7 @@ class DecretoBuilder2021 extends DecretoBuilder2020
         }
     }
 
+    #[\Override]
     protected function identificaOrigemRecursos($tipoSuplementacao, $entreEntidades)
     {
         if ($entreEntidades == 't') {
@@ -115,15 +119,11 @@ class DecretoBuilder2021 extends DecretoBuilder2020
 
     protected function identificaAlteracaoOrcamentaria($tipoSuplementacao)
     {
-        switch ($tipoSuplementacao) {
-            case 1014:
-                return 1;
-            case 1016:
-                return 2;
-            case 1015:
-                return 3;
-            default:
-                return 0;
-        }
+        return match ($tipoSuplementacao) {
+            1014 => 1,
+            1016 => 2,
+            1015 => 3,
+            default => 0,
+        };
     }
 }

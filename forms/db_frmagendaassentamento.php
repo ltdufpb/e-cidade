@@ -96,7 +96,7 @@ if ($db_opcao == 1) {
         <?php
 
           $iInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
-          $aChavePri    = array("chavepesquisa" => @$chavepesquisa);
+          $aChavePri    = ["chavepesquisa" => @$chavepesquisa];
 
           $sCampos  = "h82_sequencial as chavepesquisa,                  ";
           $sCampos .= "h12_descr as h82_tipoassentamento,                 ";

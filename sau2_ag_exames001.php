@@ -95,9 +95,9 @@ function js_abre(){
       	<td><b>Classificações:</b></td>
       	<td>
       	<?php  
-      		$aClass = array("1"=>"Por Prestadora / Grupo / Exames / Paciente",
+      		$aClass = ["1"=>"Por Prestadora / Grupo / Exames / Paciente",
       										 "2"=>"Por Prestadora / Exames / Pacientes",
-      										 "3"=>"Por Grupo / Prestadora / Exames / Paciente");
+      										 "3"=>"Por Grupo / Prestadora / Exames / Paciente"];
       		db_select('classificacao',$aClass,false,1);
       	?>
       	</td>
@@ -118,9 +118,9 @@ function js_abre(){
 				<td><b>Protocolados:</b></td>
 				<td>
 				<?php  
-      		$aProtocolados = array(	"1"=>"SIM",
+      		$aProtocolados = [	"1"=>"SIM",
       										 				"2"=>"NÂO",
-      													);
+      													];
       		db_select('protocolados',$aProtocolados,false,1);
       	?>
 				</td>
@@ -173,9 +173,9 @@ function js_abre(){
 				<td><b>Por Produção:</b></td>
 				<td>
 				<?php  
-      		$aProducao = array("1"=>"Nao",
+      		$aProducao = ["1"=>"Nao",
       						   "2"=>"Sim",
-      									);
+      									];
       		db_select('producao',$aProducao,false,1);
       	?>
 				</td>

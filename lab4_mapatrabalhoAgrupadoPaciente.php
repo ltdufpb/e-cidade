@@ -83,7 +83,7 @@ function novoPaciente(PDF $oPdf, $sNome, $iCgs, $iIdade, $sMedico, $dData, $aCod
             $x = $oPdf->getX();
             $y = $oPdf->getY();
 
-            $oPdf->multiCell($tamanhoQuadroAtributos, 6, $exames->getSigla() . "(" . substr($atributoExame->getNome(), 0, 5) . ")", 1, 'C',
+            $oPdf->multiCell($tamanhoQuadroAtributos, 6, $exames->getSigla() . "(" . substr((string) $atributoExame->getNome(), 0, 5) . ")", 1, 'C',
               1);
             $oPdf->setX($x);
             $oPdf->multicell($tamanhoQuadroAtributos, 14, "", 1, 'C', 0);
@@ -116,13 +116,13 @@ function formataData($dData, $iTipo = 1)
     }
 
     if ($iTipo == 1) {
-        $dData = explode('/', $dData);
+        $dData = explode('/', (string) $dData);
         $dData = $dData[2] . '-' . $dData[1] . '-' . $dData[0];
 
         return $dData;
     }
 
-    $dData = explode('-', $dData);
+    $dData = explode('-', (string) $dData);
     $dData = $dData[2] . '/' . $dData[1] . '/' . $dData[0];
 
     return $dData;
@@ -281,9 +281,9 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
     $sSqlExames = $oDaoLabExame->sql_query_exame_atributo(null, $sCamposExame, $sOrdemExame, $sWhereExame);
     $rsExames = db_query($sSqlExames);
 
-    $aNomeExames = array();
-    $aCodigoExames = array();
-    $aCodigoAtributos = array();
+    $aNomeExames = [];
+    $aCodigoExames = [];
+    $aCodigoAtributos = [];
 
     if ($rsExames && pg_num_rows($rsExames) > 0) {
         $iLinhasExame = pg_num_rows($rsExames);

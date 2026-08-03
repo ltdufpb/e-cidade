@@ -35,12 +35,12 @@ class Identifier
   /**
    * @var Array
    */
-    private $tables = array(
+    private $tables = [
     'avaliacao' => 'db101',
     'avaliacaogrupopergunta' => 'db102',
     'avaliacaopergunta' => 'db103',
     'avaliacaoperguntaopcao' => 'db104',
-    );
+    ];
 
   /**
    * Instancia da dao atual
@@ -55,19 +55,14 @@ class Identifier
     private $table;
 
   /**
-   * @var integer
-   */
-    private $id;
-
-  /**
-   * @param string $table
-   */
-    public function __construct($table, $id = null)
+     * @param string $table
+     * @param int $id
+     */
+    public function __construct($table, private $id = null)
     {
         $className = "\cl_$table";
         $this->dao = new $className;
         $this->table = $table;
-        $this->id = $id;
     }
 
   /**

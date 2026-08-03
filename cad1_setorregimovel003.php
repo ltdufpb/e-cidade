@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_setorregimovel_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clsetorregimovel = new cl_setorregimovel;
 $db_botao = false;
 $db_opcao = 33;
@@ -40,7 +40,7 @@ $mostramsg = false;
 if(isset($excluir)){
   $setor = " select * from iptubaseregimovel where j04_setorregimovel= $j69_sequencial";
   $resultsetor = db_query($setor);
-  $linhassetor = pg_numrows($resultsetor);
+  $linhassetor = pg_num_rows($resultsetor);
   if($linhassetor > 0){
     $mostramsg = true;
 	  

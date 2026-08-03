@@ -32,9 +32,9 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('j34_setor');
 $clrotulo->label('j34_quadra');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-$setor_arr = split(",",$setor);
+$setor_arr = preg_split("#,#m",(string) $setor);
 $sVirgula  = "";
 $sSetores  = "";
 
@@ -45,7 +45,7 @@ for($i=0;$i<count($setor_arr);$i++){
 }
 
 $result = db_query("select j34_setor,j34_quadra  from lote  where j34_setor in ($sSetores)");
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem quadras cadastrados.');
 }
 
@@ -65,7 +65,7 @@ $quadras  = "";
 $codigo   = "";
 $sVirgula = "";
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
 
    db_fieldsmemory($result,$x);
 
@@ -87,7 +87,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
      $iTotal++;
      $res = db_query("select distinct j34_quadra from lote where j34_setor = '$j34_setor' order by j34_quadra");
 
-     for($y=0;$y<pg_numrows($res);$y++){
+     for($y=0;$y<pg_num_rows($res);$y++){
 
        db_fieldsmemory($res,$y);
        $quadras .= $sVirgula . $j34_quadra;

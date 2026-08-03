@@ -36,7 +36,7 @@ $clrotulo->label('DBtxt16');
 $clrotulo->label('DBtxt17');
 $clrotulo->label('DBtxt18');
 $clrotulo->label('procdiver');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -88,11 +88,11 @@ $numpar    = $DBtxt18;
 			and j01_baixa is null";
 	$result = db_query($sql);
    	db_fieldsmemory($result,0);
-	for($i = 0;$i < pg_numrows($result);$i++) {
+	for($i = 0;$i < pg_num_rows($result);$i++) {
     	db_fieldsmemory($result,$i);
 		$valortotal = $numpar * $valpar;
-		$numpre = pg_result(db_query("select nextval('numpref_k03_numpre_seq')"),0);
-		$coddiver = pg_result(db_query("select nextval('diversos_coddiver_seq')"),0);
+		$numpre = pg_fetch_result(db_query("select nextval('numpref_k03_numpre_seq')"),0);
+		$coddiver = pg_fetch_result(db_query("select nextval('diversos_coddiver_seq')"),0);
    	$sqlins = "insert into diversos values($coddiver,$j01_numcgm,'".date('Y-m-d',db_getsession("DB_datausu"))."',".db_getsession("DB_anousu").",$numpre,1,1,0,$valortotal,$procdiver,'PARCELAMENTO DE LOTEAMENTO REFERENTE AO EXERCICIO - ".db_getsession("DB_anousu")."','$datpri','$datpri',$valortotal)";
    	db_query($sqlins);
     $sqlins3 = "insert into divermatric values($coddiver,$j01_matric)";

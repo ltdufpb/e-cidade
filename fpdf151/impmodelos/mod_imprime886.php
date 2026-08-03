@@ -27,7 +27,7 @@
 
 //verifica se algum item tem observação
 for ($j=0 ;$j<$this->linhasdositens;$j++){
-       $obs=trim(pg_result($this->recorddositens,$j,$this->robsdositens));
+       $obs=trim(pg_fetch_result($this->recorddositens,$j,$this->robsdositens));
        if ($obs != null){
            $cont_obs++;
        }
@@ -177,15 +177,15 @@ for ($i = 0;$i < $iVias;$i++){
     for ($ii = $comeco;$ii < $this->linhasdositens ;$ii++) {
         
        $cont++;
-       $dData  = trim(pg_result($this->recorddositens, $ii,$this->recorddata));
+       $dData  = trim(pg_fetch_result($this->recorddositens, $ii,$this->recorddata));
        $dData  = db_formatar($dData,"d");  
        $this->objpdf->setx($xcol+3+$maiscol);
-       $this->objpdf->cell(10,5,trim(pg_result($this->recorddositens,$ii,$this->rcodmaterial)),0,0,"L",0);
-	     $this->objpdf->cell(87,5,trim(pg_result($this->recorddositens,$ii,$this->rdescmaterial)),0,0,"L",0);
-	     $this->objpdf->cell(50,5,substr(trim(pg_result($this->recorddositens,$ii,$this->robsdositens)),0,40),0,0,"L",0);
+       $this->objpdf->cell(10,5,trim(pg_fetch_result($this->recorddositens,$ii,$this->rcodmaterial)),0,0,"L",0);
+	     $this->objpdf->cell(87,5,trim(pg_fetch_result($this->recorddositens,$ii,$this->rdescmaterial)),0,0,"L",0);
+	     $this->objpdf->cell(50,5,substr(trim(pg_fetch_result($this->recorddositens,$ii,$this->robsdositens)),0,40),0,0,"L",0);
        $this->objpdf->cell(25,5, $dData, 0, 0, "L",0);//linha a mais(data de cada devolucaoO)
-	     $this->objpdf->cell(10,5,trim(pg_result($this->recorddositens,$ii,$this->rquantdeitens)),0,0,"C",0);
-	     $this->objpdf->cell(5,5,trim(pg_result($this->recorddositens,$ii,$this->rquantatend)),0,1,"C",0);
+	     $this->objpdf->cell(10,5,trim(pg_fetch_result($this->recorddositens,$ii,$this->rquantdeitens)),0,0,"C",0);
+	     $this->objpdf->cell(5,5,trim(pg_fetch_result($this->recorddositens,$ii,$this->rquantatend)),0,1,"C",0);
      
        /*if (trim(pg_result($this->recorddositens,$ii,$this->robsdositens)) != ''){
          $obsitens=substr(trim(pg_result($this->recorddositens,$ii,$this->robsdositens)),0,110);
@@ -223,13 +223,13 @@ for ($i = 0;$i < $iVias;$i++){
 	  $this->objpdf->Setfont('Arial','b',8);
 	  $this->objpdf->text($xcol+2,$xlin+110,'Motivo:');
 	  $this->objpdf->Setfont('Arial','b',8);
-	  $this->objpdf->text($xcol+134,$xlin+120,strtoupper($this->municpref).', '.substr($this->emissao,8,2).' DE '.strtoupper(db_mes(substr($this->emissao,5,2))).' DE '.substr($this->emissao,0,4).'.');
+	  $this->objpdf->text($xcol+134,$xlin+120,strtoupper((string) $this->municpref).', '.substr((string) $this->emissao,8,2).' DE '.strtoupper(db_mes(substr((string) $this->emissao,5,2))).' DE '.substr((string) $this->emissao,0,4).'.');
 	  $this->objpdf->line($xcol+130,$xlin+110,$xcol+195,$xlin+110);
 	  $this->objpdf->text($xcol+152,$xlin+114,'RECEBEDOR');
 	  $this->objpdf->Setfont('Arial','',8);
 	  $this->objpdf->sety($xlin+110);
 	  $this->objpdf->setx($xcol+1);
-	  $this->objpdf->multicell(107,3,substr($this->Rresumo,0,450),0,"L");
+	  $this->objpdf->multicell(107,3,substr((string) $this->Rresumo,0,450),0,"L");
 	  
 	  if (($i % 2 ) == 0)
 	    $xlin = 169;

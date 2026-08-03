@@ -80,7 +80,7 @@ $oRotulo->label("ac50_descricao");
                 </td>
                 <td>
                   <?php
-                    $aFiltros = array(1 => "Acordo", 2 => "Departamento");
+                    $aFiltros = [1 => "Acordo", 2 => "Departamento"];
                     db_select("iAgrupamento", $aFiltros, true, 1, "class='select' onchange='js_verificaFiltro(this.value)'");
                   ?>
                 </td>
@@ -165,8 +165,8 @@ $oRotulo->label("ac50_descricao");
                 </td>
                 <td colspan="3">
                   <?php
-                    $aOrdem = array(1=>'Data de Vigência',
-                                    2=>'Contratado');
+                    $aOrdem = [1=>'Data de Vigência',
+                                    2=>'Contratado'];
                     db_select('ordem', $aOrdem, true, 1, "style='width: 100%;'");
                   ?>
                 </td>

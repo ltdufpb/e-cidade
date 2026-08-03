@@ -62,7 +62,7 @@ $db_opcao = 1;
         $clcriaabas->identifica["relrubmov"]    = "Rubricas";
         $clcriaabas->identifica["relrubcampos"] = "Dados Cadastrais";
 
-        $clcriaabas->src = Array("relrub" => "pes1_relrub006.php");
+        $clcriaabas->src = ["relrub" => "pes1_relrub006.php"];
 
         $clcriaabas->disabled["relrubmov"]    = "true"; 
         $clcriaabas->disabled["relrubcampos"] = "true"; 

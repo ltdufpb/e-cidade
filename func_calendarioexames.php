@@ -32,18 +32,18 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_sau_prestadorhorarios_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']); // ta com o globals desativado no php -- Crestani
+parse_str((string) $_SERVER['QUERY_STRING'], $result); // ta com o globals desativado no php -- Crestani
 
 class calendario {
 
-  var $sem;//Array com os dias da semana como índice
-  var $mes;//Array com os meses do ano
-  var $nome_objeto_data;
-  var $shutdown_function = "";
+  public $sem;//Array com os dias da semana como índice
+  public $mes;//Array com os meses do ano
+  public $nome_objeto_data;
+  public $shutdown_function = "";
 
   function inicializa() {//Atribui valores para $sem e $mes.
 
-    $this->sem = array(
+    $this->sem = [
       'Sun' => 1,
       'Mon' => 2,
       'Tue' => 3,
@@ -51,9 +51,9 @@ class calendario {
       'Thu' => 5,
       'Fri' => 6,
       'Sat' => 7
-    );
+    ];
 
-    $this->mes = array(
+    $this->mes = [
       '1'  => 'JANEIRO',
       '2'  => 'FEVEREIRO',
       '3'  => 'MARÇO',
@@ -66,7 +66,7 @@ class calendario {
       '10' => 'OUTUBRO',
       '11' => 'NOVEMBRO',
       '12' => 'DEZEMBRO'
-    );
+    ];
   }
 
   function aux($i) {//Complementa a tabela com espaços em branco
@@ -92,7 +92,7 @@ class calendario {
     return false;
   }
 
-  function cria($dia, $mes, $ano, $marca = 0, $s111_i_codigo, $fechar = false) {
+  function cria($dia, $mes, $ano, $marca = 0, $s111_i_codigo = null, $fechar = false) {
 
     $oDaoSauPrestadorHorarios = new cl_sau_prestadorhorarios();
     $oDaoAgendaExames         = new cl_sau_agendaexames();
@@ -227,7 +227,7 @@ class calendario {
 
     //Pega os dias da semana
     $strSql = $oDaoSauPrestadorHorarios->sql_query(null, "s112_i_diasemana", "s112_i_diasemana, s112_c_horaini", "{$sWhere}" );
-    $result_unidademedico = db_query( $strSql ) or die( "<p> $strSql<p>" . pg_errormessage() );
+    $result_unidademedico = db_query( $strSql ) or die( "<p> $strSql<p>" . pg_last_error() );
 
     for( $x = 0; $x < pg_num_rows( $result_unidademedico ); $x++) {
 
@@ -289,7 +289,7 @@ class calendario {
           $strSql  = $oDaoSauPrestadorHorarios->sql_query_grupo( null, $sCampos, null, $sWhere );
         }
 
-        $result_undmedhorario = db_query( $strSql ) or die( "ERRO: <p> $strSql <p>".pg_errormessage() );
+        $result_undmedhorario = db_query( $strSql ) or die( "ERRO: <p> $strSql <p>".pg_last_error() );
 
         if (pg_num_rows($result_undmedhorario) != 0 ) {
 
@@ -462,9 +462,7 @@ if( isset($s111_i_codigo) && (int) $s111_i_codigo != 0 ) {
     date("d",db_getsession("DB_datausu")),
     date("$mes_solicitado"),
     date("$ano_solicitado"),
-    1,
-    $s111_i_codigo,
-    $fechar
+    1
   );
 } else {
   echo "Não foi informado Profissional.";

@@ -43,8 +43,8 @@ include(modification("classes/db_inicialmov_classe.php"));
 include(modification("classes/db_inicialcodforo_classe.php"));
 include(modification("classes/db_termoini_classe.php"));
 include(modification("classes/db_arrecad_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $botao		= 3;
 $opcao    = 1;
@@ -227,7 +227,7 @@ if (isset ($excluir)) {
 	  
 	  db_msgbox(_M('tributario.juridico.db_frmemiteinicialexc.processo_realizado_sucesso'));
 	  db_redireciona("jur1_emiteinicial003.php");
-  } catch (Exception $oErro) {
+  } catch (Exception) {
     
     db_fim_transacao(true);
     db_msgbox($erro_msg); 

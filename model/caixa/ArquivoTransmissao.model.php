@@ -32,12 +32,6 @@ class ArquivoTransmissao {
   const TRANSMISSAO_PAGFOR = 3;
 
   /**
-   * Código da Remessa (codgera)
-   * @var integer
-   */
-  protected $iCodigoRemessa;
-
-  /**
    * Data da geração do arquivo
    * @var DBDate
    */
@@ -106,18 +100,20 @@ class ArquivoTransmissao {
 
   /**
    * ArquivoTransmissao.
-   * @param null $iCodigo
+   * @param null $iCodigoRemessa
    * @throws BusinessException
    */
-  public function __construct($iCodigo = null) {
+  public function __construct(/**
+   * Código da Remessa (codgera)
+   */
+  protected $iCodigoRemessa = null) {
 
-    $this->iCodigoRemessa = $iCodigo;
     if (empty($this->iCodigoRemessa)) {
       return;
     }
 
     $oDaoRemessa      = new cl_empagegera();
-    $sSqlBuscaRemessa = $oDaoRemessa->sql_query_file($iCodigo);
+    $sSqlBuscaRemessa = $oDaoRemessa->sql_query_file($this->iCodigoRemessa);
     $rsBuscaRemessa   = $oDaoRemessa->sql_record($sSqlBuscaRemessa);
     if (!$rsBuscaRemessa || $oDaoRemessa->numrows == 0) {
       throw new BusinessException("Não foi possível buscar os dados da remessa.");
@@ -154,7 +150,7 @@ class ArquivoTransmissao {
     }
 
     $iQtdMovimentacoes = pg_num_rows($rsMovimentacao);
-    $aMovimentos       = array();
+    $aMovimentos       = [];
 
     /**
      * Percorre as movimentações associadas ao arquivo de transmissão
@@ -317,7 +313,7 @@ class ArquivoTransmissao {
 
     if (empty($this->oInstituicao)) {
 
-      $aWhere           = array("e90_codgera = {$this->getCodigoRemessa()}");
+      $aWhere           = ["e90_codgera = {$this->getCodigoRemessa()}"];
       $oDaoMovimento    = new cl_empageconfgera();
       $sSqlMovimento    = $oDaoMovimento->sql_query_arq(null, null, "e80_instit", null, implode(' and ', $aWhere) . ' limit 1 ');
       $rsBuscaMovimento = db_query($sSqlMovimento);

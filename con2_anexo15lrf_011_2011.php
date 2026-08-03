@@ -104,7 +104,7 @@ function js_emite() {
                 <b>Período:&nbsp;</b>
                 <?php 
                   $aPeriodos         = $oRelatorio->getPeriodos();                  
-                  $aListaPeriodos    = array();
+                  $aListaPeriodos    = [];
                   $aListaPeriodos[0] = "Selecione";
                   foreach ($aPeriodos as $oPeriodo) {
                     $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;

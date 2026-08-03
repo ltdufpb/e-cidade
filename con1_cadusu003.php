@@ -32,26 +32,26 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
 //////////INCLUIR/////////////
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   $sql = "select u.login,u.usuarioativo
           from db_usuarios u
 	       left outer join db_usuacgm on db_usuacgm.id_usuario = u.id_usuario";
   $result = db_query($sql);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  for($x = 0;$x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
     if($login == $nomelogin){
       echo "<script>alert('Usuário já cadastrado!')</script>";
-      db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+      db_redireciona($_SERVER['PHP_SELF']);
       exit;		   
     }
   }
   $result = db_query("select max(id_usuario) + 1 from db_usuarios");
-  $id_usuario = pg_result($result,0,0);
+  $id_usuario = pg_fetch_result($result,0,0);
   $id_usuario = $id_usuario==""?"1":$id_usuario;
   db_query("BEGIN");
   for($i = 0;$i < sizeof($instit);$i++)
-   db_query("insert into db_userinst values(".$instit[$i].",$id_usuario)") or die("Erro(21)($i) inserindo em db_userinst: ".pg_errormessage());
+   db_query("insert into db_userinst values(".$instit[$i].",$id_usuario)") or die("Erro(21)($i) inserindo em db_userinst: ".pg_last_error());
    db_query("insert into db_usuarios (
                   id_usuario,
 		  nome,
@@ -68,29 +68,29 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 		   '1',
 		   '',
 		   2)")
-                   or die("Erro(23) inserindo em db_usuarios: ".pg_errormessage());
+                   or die("Erro(23) inserindo em db_usuarios: ".pg_last_error());
   db_query("COMMIT");
   echo "<script>alert('Inclusão efetuada com sucesso!')</script>";
-  db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+  db_redireciona($_SERVER['PHP_SELF']);
   exit;		   
 ////////////////ALTERAR////////////////  
-} else if(isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
+} else if(isset($_POST["alterar"])) {
+  db_postmemory($_POST);
   db_query("BEGIN");
-  db_query("delete from db_userinst where id_usuario = $id_usuario") or die("Erro(43) deletando db_userinst: ".pg_errormessage());
+  db_query("delete from db_userinst where id_usuario = $id_usuario") or die("Erro(43) deletando db_userinst: ".pg_last_error());
   for($i = 0;$i < sizeof($instit);$i++) {     
-    db_query("insert into db_userinst values(".$instit[$i].",$id_usuario)") or die("Erro(21)($i) inserindo em db_userinst: ".pg_errormessage());  
+    db_query("insert into db_userinst values(".$instit[$i].",$id_usuario)") or die("Erro(21)($i) inserindo em db_userinst: ".pg_last_error());  
   }
-  db_query("delete from db_usuacgm where id_usuario = $id_usuario") or die("Erro(43) deletando db_usuacgm: ".pg_errormessage());
+  db_query("delete from db_usuacgm where id_usuario = $id_usuario") or die("Erro(43) deletando db_usuacgm: ".pg_last_error());
   $sql = "select u.id_usuario as usuariocomp ,u.login as loginho
           from db_usuarios u
 	       where u.id_usuario <> $id_usuario";
   $result = db_query($sql);
-  for($x = 0;$x < pg_numrows($result);$x++){
+  for($x = 0;$x < pg_num_rows($result);$x++){
     db_fieldsmemory($result,$x);
     if($loginho == $nomelogin){
       echo "<script>alert('Usuário já cadastrado!')</script>";
-      db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+      db_redireciona($_SERVER['PHP_SELF']);
       exit;		   
     }
   }
@@ -101,24 +101,24 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 		     usuarioativo = '1',
 		     email = '',
 		     usuext = 2
-		   where id_usuario = $id_usuario") or die("Erro(38) alterando db_usuarios: ".pg_errormessage());
+		   where id_usuario = $id_usuario") or die("Erro(38) alterando db_usuarios: ".pg_last_error());
   db_query("COMMIT");
   echo "<script>alert('Alteração efetuada com sucesso!')</script>";
-  db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+  db_redireciona($_SERVER['PHP_SELF']);
 //  exit;		     
 ////////////////EXCLUIR//////////////
-} else if(isset($HTTP_POST_VARS["excluir"])) {
+} else if(isset($_POST["excluir"])) {
   db_query("BEGIN");
-  db_query("delete from db_userinst where id_usuario = ".$HTTP_POST_VARS["id_usuario"]) or die("Erro(58) excluindo db_userinst: ".pg_errormessage());
-  db_query("delete from db_usuacgm  where id_usuario = ".$HTTP_POST_VARS["id_usuario"]) or die("Erro(58) excluindo db_usuacgm: ".pg_errormessage());
-  db_query("delete from db_usuarios where id_usuario = ".$HTTP_POST_VARS["id_usuario"]) or die("Erro(43) excluindo db_usuarios: ".pg_errormessage());
+  db_query("delete from db_userinst where id_usuario = ".$_POST["id_usuario"]) or die("Erro(58) excluindo db_userinst: ".pg_last_error());
+  db_query("delete from db_usuacgm  where id_usuario = ".$_POST["id_usuario"]) or die("Erro(58) excluindo db_usuacgm: ".pg_last_error());
+  db_query("delete from db_usuarios where id_usuario = ".$_POST["id_usuario"]) or die("Erro(43) excluindo db_usuarios: ".pg_last_error());
   db_query("COMMIT");  
   echo "<script>alert('Exclusão efetuada com sucesso!')</script>";
-  db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+  db_redireciona($_SERVER['PHP_SELF']);
 //  exit;  
 }
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 if(isset($retorno)) {
   $sql = "select u.id_usuario,db_usuacgm.cgmlogin,u.nome,u.login,u.usuarioativo,u.email,u.senha ,u.usuext
           from db_usuarios u
@@ -181,13 +181,13 @@ input {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
         <?php 
-      if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
+      if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {
 	  
 	     $sql = "SELECT u.id_usuario as código,e.cgmlogin,nome,login,CASE WHEN usuarioativo = '1' THEN 'Ativo'::text ELSE 'Inativo'::text END as \"Usuário Ativo\", usuext
               FROM db_usuarios u
 	           left join db_usuacgm e on e.id_usuario = u.id_usuario
-			  WHERE upper(nome) like upper('".@$HTTP_POST_VARS["nome"]."%')
-			  AND login like '".@$HTTP_POST_VARS["login"]."%'
+			  WHERE upper(nome) like upper('".@$_POST["nome"]."%')
+			  AND login like '".@$_POST["login"]."%'
 			  AND usuext = 2
               ORDER BY login";
 		db_lov($sql,50,"con1_cadusu003.php"); 
@@ -218,9 +218,9 @@ input {
 		  } else {
 		    $result = db_query("select codigo,nomeinst from db_config");
 		  }
-		  for($i = 0;$i < pg_numrows($result);$i++) {
+		  for($i = 0;$i < pg_num_rows($result);$i++) {
 		    
-		    echo "<option ".($i==0?'selected':'')." value=\"".pg_result($result,$i,"codigo")."\" ".(pg_result($result,$i,"id_instit")==pg_result($result,$i,"codigo")?"selected":"").">".pg_result($result,$i,"nomeinst")."</option>\n";
+		    echo "<option ".($i==0?'selected':'')." value=\"".pg_fetch_result($result,$i,"codigo")."\" ".(pg_fetch_result($result,$i,"id_instit")==pg_fetch_result($result,$i,"codigo")?"selected":"").">".pg_fetch_result($result,$i,"nomeinst")."</option>\n";
 		  }
 	      ?>
                 </select> </td>

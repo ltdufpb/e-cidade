@@ -160,7 +160,7 @@ class Certidao
      */
     public function getNumpres()
     {
-        $data = array();
+        $data = [];
 
         foreach ($this->certidaoDividas as $certidaoDivida) {
             $data[] = $certidaoDivida->getDivida()->getNumpre();

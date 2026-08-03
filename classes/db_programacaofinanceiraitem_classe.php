@@ -30,35 +30,35 @@
 //CLASSE DA ENTIDADE programacaofinanceiraitem
 class cl_programacaofinanceiraitem {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $k175_sequencial = 0;
-   var $k175_item = 0;
-   var $k175_programaacaofinanceira = 0;
-   var $k175_valortotal = 0;
+   public $k175_sequencial = 0;
+   public $k175_item = 0;
+   public $k175_programaacaofinanceira = 0;
+   public $k175_valortotal = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  k175_sequencial = int4 = Código 
                  k175_item = int4 = Item 
                  k175_programaacaofinanceira = int4 = Programação Financeira 
                  k175_valortotal = float8 = Valor Total 
                  ";
    //funcao construtor da classe
-   function cl_programacaofinanceiraitem() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("programacaofinanceiraitem");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -120,10 +120,10 @@ class cl_programacaofinanceiraitem {
          $this->erro_status = "0";
          return false;
        }
-       $this->k175_sequencial = pg_result($result,0,0);
+       $this->k175_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from programacaofinanceiraitem_k175_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k175_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k175_sequencial)){
          $this->erro_sql = " Campo k175_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -157,7 +157,7 @@ class cl_programacaofinanceiraitem {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Programação Financeira Item ($this->k175_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Programação Financeira Item já Cadastrado";
@@ -186,13 +186,13 @@ class cl_programacaofinanceiraitem {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22412,'$this->k175_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,4034,22412,'','".AddSlashes(pg_result($resaco,0,'k175_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,4034,22413,'','".AddSlashes(pg_result($resaco,0,'k175_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,4034,22414,'','".AddSlashes(pg_result($resaco,0,'k175_programaacaofinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,4034,22415,'','".AddSlashes(pg_result($resaco,0,'k175_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4034,22412,'','".AddSlashes(pg_fetch_result($resaco,0,'k175_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4034,22413,'','".AddSlashes(pg_fetch_result($resaco,0,'k175_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4034,22414,'','".AddSlashes(pg_fetch_result($resaco,0,'k175_programaacaofinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,4034,22415,'','".AddSlashes(pg_fetch_result($resaco,0,'k175_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -202,10 +202,10 @@ class cl_programacaofinanceiraitem {
       $this->atualizacampos();
      $sql = " update programacaofinanceiraitem set ";
      $virgula = "";
-     if(trim($this->k175_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k175_sequencial"])){
+     if(trim((string) $this->k175_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k175_sequencial"])){
        $sql  .= $virgula." k175_sequencial = $this->k175_sequencial ";
        $virgula = ",";
-       if(trim($this->k175_sequencial) == null ){
+       if(trim((string) $this->k175_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "k175_sequencial";
          $this->erro_banco = "";
@@ -215,10 +215,10 @@ class cl_programacaofinanceiraitem {
          return false;
        }
      }
-     if(trim($this->k175_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k175_item"])){
+     if(trim((string) $this->k175_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k175_item"])){
        $sql  .= $virgula." k175_item = $this->k175_item ";
        $virgula = ",";
-       if(trim($this->k175_item) == null ){
+       if(trim((string) $this->k175_item) == null ){
          $this->erro_sql = " Campo Item não informado.";
          $this->erro_campo = "k175_item";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_programacaofinanceiraitem {
          return false;
        }
      }
-     if(trim($this->k175_programaacaofinanceira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k175_programaacaofinanceira"])){
+     if(trim((string) $this->k175_programaacaofinanceira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k175_programaacaofinanceira"])){
        $sql  .= $virgula." k175_programaacaofinanceira = $this->k175_programaacaofinanceira ";
        $virgula = ",";
-       if(trim($this->k175_programaacaofinanceira) == null ){
+       if(trim((string) $this->k175_programaacaofinanceira) == null ){
          $this->erro_sql = " Campo Programação Financeira não informado.";
          $this->erro_campo = "k175_programaacaofinanceira";
          $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_programacaofinanceiraitem {
          return false;
        }
      }
-     if(trim($this->k175_valortotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k175_valortotal"])){
+     if(trim((string) $this->k175_valortotal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k175_valortotal"])){
        $sql  .= $virgula." k175_valortotal = $this->k175_valortotal ";
        $virgula = ",";
-       if(trim($this->k175_valortotal) == null ){
+       if(trim((string) $this->k175_valortotal) == null ){
          $this->erro_sql = " Campo Valor Total não informado.";
          $this->erro_campo = "k175_valortotal";
          $this->erro_banco = "";
@@ -268,17 +268,17 @@ class cl_programacaofinanceiraitem {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22412,'$this->k175_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k175_sequencial"]) || $this->k175_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,4034,22412,'".AddSlashes(pg_result($resaco,$conresaco,'k175_sequencial'))."','$this->k175_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4034,22412,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k175_sequencial'))."','$this->k175_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k175_item"]) || $this->k175_item != "")
-             $resac = db_query("insert into db_acount values($acount,4034,22413,'".AddSlashes(pg_result($resaco,$conresaco,'k175_item'))."','$this->k175_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4034,22413,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k175_item'))."','$this->k175_item',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k175_programaacaofinanceira"]) || $this->k175_programaacaofinanceira != "")
-             $resac = db_query("insert into db_acount values($acount,4034,22414,'".AddSlashes(pg_result($resaco,$conresaco,'k175_programaacaofinanceira'))."','$this->k175_programaacaofinanceira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4034,22414,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k175_programaacaofinanceira'))."','$this->k175_programaacaofinanceira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k175_valortotal"]) || $this->k175_valortotal != "")
-             $resac = db_query("insert into db_acount values($acount,4034,22415,'".AddSlashes(pg_result($resaco,$conresaco,'k175_valortotal'))."','$this->k175_valortotal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,4034,22415,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k175_valortotal'))."','$this->k175_valortotal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -332,13 +332,13 @@ class cl_programacaofinanceiraitem {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22412,'$k175_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,4034,22412,'','".AddSlashes(pg_result($resaco,$iresaco,'k175_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,4034,22413,'','".AddSlashes(pg_result($resaco,$iresaco,'k175_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,4034,22414,'','".AddSlashes(pg_result($resaco,$iresaco,'k175_programaacaofinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,4034,22415,'','".AddSlashes(pg_result($resaco,$iresaco,'k175_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4034,22412,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k175_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4034,22413,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k175_item'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4034,22414,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k175_programaacaofinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,4034,22415,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k175_valortotal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

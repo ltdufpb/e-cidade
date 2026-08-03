@@ -56,27 +56,27 @@ $db_opcao   = 3;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
 	<?php 
-      $clcriaabas->identifica = array("veiculos"        => "Dados do veiculo",
+      $clcriaabas->identifica = ["veiculos"        => "Dados do veiculo",
                                       "veicitensobrig"  => "Itens obrigatório",
                                       "veicutilizacao"  => "Utilização",
-                                      "veiccentral"     => "Central de Veículos");
+                                      "veiccentral"     => "Central de Veículos"];
 
-      $clcriaabas->title      = array("veiculos"        => "Dados do veiculo",
+      $clcriaabas->title      = ["veiculos"        => "Dados do veiculo",
                                       "veicitensobrig"  => "Itens obrigatório",
                                       "veicutilizacao"  => "Utilização do veículo",
-                                      "veiccentral"     => "Central de Veículos");
+                                      "veiccentral"     => "Central de Veículos"];
 
-      $clcriaabas->src        = array("veiculos"        => "vei1_veiculos006.php");
+      $clcriaabas->src        = ["veiculos"        => "vei1_veiculos006.php"];
 
-      $clcriaabas->disabled   = array("veiculos"        => "false",
+      $clcriaabas->disabled   = ["veiculos"        => "false",
                                       "veicitensobrig"  => "true",
                                       "veicutilizacao"  => "true",    
-                                      "veiccentral"     => "false");
+                                      "veiccentral"     => "false"];
 
-      $clcriaabas->sizecampo  = array("veiculos"        => "23",
+      $clcriaabas->sizecampo  = ["veiculos"        => "23",
                                       "veicitensobrig"  => "23",
                                       "veicutilizacao"  => "23",
-                                      "veiccentral"     => "23");
+                                      "veiccentral"     => "23"];
 
       $clcriaabas->cria_abas();    
 	?>

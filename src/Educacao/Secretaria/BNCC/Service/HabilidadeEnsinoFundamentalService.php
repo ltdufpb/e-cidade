@@ -14,28 +14,15 @@ use Exception;
 class HabilidadeEnsinoFundamentalService
 {
     /**
-     * @var ParametrosGlobais
-     */
-    private $configuracao;
-
-    /**
-     * @var integer
-     */
-    private $ano;
-
-    /**
      * HabilidadeEnsinoFundamentalService constructor.
      * @param ParametrosGlobais $configuracao
      * @param null $ano
      */
-    public function __construct(ParametrosGlobais $configuracao, $ano = null)
+    public function __construct(private readonly ParametrosGlobais $configuracao, private $ano = null)
     {
-        $this->ano = $ano;
-        if (is_null($ano)) {
+        if (is_null($this->ano)) {
             $this->ano = date('Y');
         }
-
-        $this->configuracao = $configuracao;
     }
 
     /**

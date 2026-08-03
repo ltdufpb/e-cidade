@@ -35,7 +35,7 @@ require_once(modification("classes/db_db_config_classe.php"));
 require_once(modification("classes/db_gerfadi_classe.php"));
 require_once(modification("classes/db_rhrubelemento_classe.php"));
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 $clgerfadi       = new cl_gerfadi();
 $clrhrubelemento = new cl_rhrubelemento();
@@ -48,7 +48,7 @@ $sMsgFinal       = "";
  * $sMunicipio é passado por parâmetro pelo pes1_relrefeisul001.php
  */
 
-if ( trim($sMunicipio) == trim($sBaseSessao) ) {
+if ( trim((string) $sMunicipio) == trim($sBaseSessao) ) {
 
   db_msgbox("Esta rotina não pode ser executada na base de produção.");
   echo "<script>parent.db_iframe_relrefeisul.hide();</script>";

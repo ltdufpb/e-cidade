@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgmfisico_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcgmfisico = new cl_cgmfisico;
 $clcgmfisico->rotulo->label("z04_sequencial");
 $clcgmfisico->rotulo->label("z04_numcgm");
@@ -98,9 +98,9 @@ $clcgmfisico->rotulo->label("z04_numcgm");
         }else{
            $sql = $clcgmfisico->sql_query("",$campos,"z04_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_z04_numcgm)){
-          $repassa = array("chave_z04_sequencial"=>$chave_z04_sequencial,"chave_z04_numcgm"=>$chave_z04_numcgm);
+          $repassa = ["chave_z04_sequencial"=>$chave_z04_sequencial,"chave_z04_numcgm"=>$chave_z04_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

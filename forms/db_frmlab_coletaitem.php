@@ -44,7 +44,7 @@ $clrotulo->label("la21_d_entrega");
 function somardata($data, $dias = 0, $meses = 0, $ano = 0)
 {
 
-    $data = explode("/", $data);
+    $data = explode("/", (string) $data);
     $novadata = date("d/m/Y", mktime(0, 0, 0, $data[1] + $meses, $data[0] + $dias, $data[2] + $ano));
 
     return $novadata;
@@ -167,7 +167,7 @@ try {
                 <tr>
                   <td nowrap title="<?= @$Tla32_i_avisapaciente ?>" colspan="2">
                     <input type="checkbox" name="avisa" id="avisa">
-                      <?= substr(@$Lla32_i_avisapaciente, 8, -10) ?>
+                      <?= substr((string) @$Lla32_i_avisapaciente, 8, -10) ?>
                   </td>
                 </tr>
               </table>
@@ -507,7 +507,7 @@ try {
     db_iframe_lab_coletaitem.hide();
       <?php 
       if ($db_opcao != 1) {
-          echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+          echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
       }
       ?>
   }

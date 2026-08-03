@@ -36,7 +36,7 @@ $oDaoRelRubRelRubCampos = db_utils::getDao('relrubrelrubcampos', false);
 $clrelrub               = db_utils::getDao('relrub');
 $clrelrubmov            = db_utils::getDao('relrubmov');
 $clselecao              = db_utils::getDao('selecao');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 
@@ -52,7 +52,7 @@ if(isset($incluir)){
      throw new Exception($clrelrub->erro_msg);
     } 
 
-    foreach (array('1' => 54, '2' => 55) as $iOrdem => $iCampo) {
+    foreach (['1' => 54, '2' => 55] as $iOrdem => $iCampo) {
 
       $oDaoRelRubRelRubCampos = new cl_relrubrelrubcampos();
       $oDaoRelRubRelRubCampos->rh121_instit       = db_getsession('DB_instit');

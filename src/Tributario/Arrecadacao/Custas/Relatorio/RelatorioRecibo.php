@@ -110,7 +110,7 @@ class RelatorioRecibo
         $pdfEmissao->nome = "{$cgmExibido->getCodigo()} - {$cgmExibido->getNomeCompleto()}";
         $pdfEmissao->ender = "{$cgmExibido->getLogradouro()}, {$cgmExibido->getNumero()}"
             . "{$cgmExibido->getComplemento()}"
-            . (strlen($cgmExibido->getBairro()) > 0 ? "/" : "") . $cgmExibido->getBairro();
+            . (strlen((string) $cgmExibido->getBairro()) > 0 ? "/" : "") . $cgmExibido->getBairro();
         $pdfEmissao->munic = $cgmExibido->getMunicipio();
         $pdfEmissao->cep = $cgmExibido->getCep();
         $pdfEmissao->cgccpf = $cgmExibido->isJuridico() ? $cgmExibido->getCNPJ() : $cgmExibido->getCPF();
@@ -165,11 +165,11 @@ class RelatorioRecibo
         $pdfEmissao->codigo_barras = $oConvenio->getCodigoBarra();
         $pdfEmissao->texto = db_getsession('DB_login') . ' - ' . date("d-m-Y - H-i") . '   ' . db_getsession('DB_base');
 
-        $pdfEmissao->descr3_1 = $cgmExibido->getCodigo() . "-" . trim($cgmExibido->getNome());
+        $pdfEmissao->descr3_1 = $cgmExibido->getCodigo() . "-" . trim((string) $cgmExibido->getNome());
         $pdfEmissao->descr3_2 = "{$cgmExibido->getLogradouro()}, "
             . "{$cgmExibido->getNumero()} {$cgmExibido->getComplemento()}"
-            . (strlen($cgmExibido->getBairro()) > 0 ? "/" : "") . $cgmExibido->getBairro();
-        $pdfEmissao->predescr3_1 = trim($cgmExibido->getNome());
+            . (strlen((string) $cgmExibido->getBairro()) > 0 ? "/" : "") . $cgmExibido->getBairro();
+        $pdfEmissao->predescr3_1 = trim((string) $cgmExibido->getNome());
         $pdfEmissao->predescr3_2 = "{$cgmExibido->getLogradouro()}, {$cgmExibido->getNumero()}"
             . " {$cgmExibido->getComplemento()} "
             . (strlen($instituicao->getBairro()) > 0 ? "/" : "")
@@ -217,19 +217,19 @@ class RelatorioRecibo
             $msgBanco = $result['k03_msgbanco'];
         }
 
-        $pdfEmissao->descr16_1 = substr($msgBanco, 0, 50);
-        $pdfEmissao->descr16_2 = substr($msgBanco, 50, 50);
-        $pdfEmissao->descr16_3 = substr($msgBanco, 100, 50);
-        $pdfEmissao->predescr16_1 = substr($msgBanco, 0, 50);
-        $pdfEmissao->predescr16_2 = substr($msgBanco, 50, 50);
-        $pdfEmissao->predescr16_3 = substr($msgBanco, 100, 50);
+        $pdfEmissao->descr16_1 = substr((string) $msgBanco, 0, 50);
+        $pdfEmissao->descr16_2 = substr((string) $msgBanco, 50, 50);
+        $pdfEmissao->descr16_3 = substr((string) $msgBanco, 100, 50);
+        $pdfEmissao->predescr16_1 = substr((string) $msgBanco, 0, 50);
+        $pdfEmissao->predescr16_2 = substr((string) $msgBanco, 50, 50);
+        $pdfEmissao->predescr16_3 = substr((string) $msgBanco, 100, 50);
 
         $pdfEmissao->descr11_1 = $cgmExibido->getCodigo() . "-" . $cgmExibido->getNome();
         $pdfEmissao->descr11_2 = "";
         if ($cgmExibido->getLogradouro() != "") {
-            $pdfEmissao->descr11_2 = trim($cgmExibido->getLogradouro())
-                . ", " . trim($cgmExibido->getNumero())
-                . '  ' . trim($cgmExibido->getComplemento());
+            $pdfEmissao->descr11_2 = trim((string) $cgmExibido->getLogradouro())
+                . ", " . trim((string) $cgmExibido->getNumero())
+                . '  ' . trim((string) $cgmExibido->getComplemento());
         }
         $pdfEmissao->descr11_3 = $cgmExibido->getMunicipio();
         $pdfEmissao->uf = $cgmExibido->getUf();
@@ -247,9 +247,7 @@ class RelatorioRecibo
                          where k99_numpre_n = {$oRecibo->getNumpreRecibo()}";
 
         $resultmensagemdesconto = db_query($sqlmensagemdesconto);
-        $mensagens = db_utils::makeCollectionFromRecord($resultmensagemdesconto, function ($registro) {
-            return explode('#', $registro->k40_descr)[0];
-        });
+        $mensagens = db_utils::makeCollectionFromRecord($resultmensagemdesconto, fn($registro) => explode('#', (string) $registro->k40_descr)[0]);
         // Valida se existe mensagem de desconto
         if (empty($mensagens)) {
             $msgDesconto = "";
@@ -285,7 +283,7 @@ class RelatorioRecibo
                 db_redireciona("db_erros.php?fechar=true&db_erro=[15] - " . $eExeption->getMessage());
             }
 
-            if (in_array($oRecibo->getArretipo()->getTipo(), array(18, 12, 13))) {
+            if (in_array($oRecibo->getArretipo()->getTipo(), [18, 12, 13])) {
                 $pdfEmissao->aExercValor = CobrancaRegistrada::getDebitosRecibo(
                     $oRecibo->getNumpreRecibo(),
                     db_getsession("DB_instit")
@@ -323,7 +321,7 @@ class RelatorioRecibo
             // Mostrar o endereço da empresa
             $pdfEmissao->ender = "{$empresa->getLogradouro()}, {$empresa->getNumero()}"
             . "{$empresa->getComplemento()}"
-            . (strlen($empresa->getBairro()) > 0 ? "/" : "") . $empresa->getBairro();
+            . (strlen((string) $empresa->getBairro()) > 0 ? "/" : "") . $empresa->getBairro();
             $pdfEmissao->nomepri = $empresa->getLogradouro();
             $pdfEmissao->nomepriimo = $empresa->getLogradouro();
             $pdfEmissao->prenomepri = $empresa->getLogradouro();
@@ -421,7 +419,7 @@ class RelatorioRecibo
             limit 1";
         $rs   = db_query($sql);
 
-        if (pg_numrows($rs) > 0) {
+        if (pg_num_rows($rs) > 0) {
             $dados =  \db_utils::fieldsMemory($rs, 0);
             $pdf->nomepri = $dados->z01_ender;
             $pdf->prenomepri = $dados->j43_ender;

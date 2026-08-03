@@ -119,11 +119,11 @@ if ( isset($db_opcaoal) ) {
     </td>
     <td> 
 			<?php 
-			$aTipo = array('1' => 'Varchar',
+			$aTipo = ['1' => 'Varchar',
 			               '2' => 'Integer',
 			               '3' => 'Date',
 			               '4' => 'Float',
-			               '5' => 'Boolean');
+			               '5' => 'Boolean'];
 			db_select('db45_tipo', $aTipo, true, $db_opcao, "style='width:200px;'");
 			?>
     </td>
@@ -199,7 +199,7 @@ if ( isset($db_opcaoal) ) {
                 db45_valordefault,
                 db45_tamanho ";
    
-	 $chavepri= array("db45_sequencial"=>@$db45_sequencial);
+	 $chavepri= ["db45_sequencial"=>@$db45_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldocumentoatributo->sql_query_file(null,$sCampos,null,"db45_caddocumento=".$db45_caddocumento);
 	 $cliframe_alterar_excluir->campos  = "db45_sequencial, db45_descricao, db45_tipo, db45_valordefault, db45_tamanho"; //"db45_sequencial,db45_caddocumento,db45_codcam,db45_descricao,db45_valordefault,db45_tipo";

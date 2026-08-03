@@ -55,9 +55,9 @@ $db_opcao = 3;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("tarefaand"=>"Andamento","tarefalog"=>"Registros"); 
-	 $clcriaabas->src = array("tarefaand"=>"ate1_tarefalog006.php");
-	 $clcriaabas->disabled   =  array("tarefalog"=>"true"); 
+	 $clcriaabas->identifica = ["tarefaand"=>"Andamento","tarefalog"=>"Registros"]; 
+	 $clcriaabas->src = ["tarefaand"=>"ate1_tarefalog006.php"];
+	 $clcriaabas->disabled   =  ["tarefalog"=>"true"]; 
 	 $clcriaabas->cria_abas();
        ?> 
        </td>

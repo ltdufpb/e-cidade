@@ -55,7 +55,7 @@ $clveiculos->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label('');
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $head3 = "FICHA DO VEÍCULO";
 
@@ -132,7 +132,7 @@ $result_combustiveis = $clveiculoscomb->sql_record($sSqlCombustivel);
 if ($clveiculoscomb->numrows > 0) {
 
   $virgula   = "";
-  $vet_comb  = array(array("descr","padrao"));
+  $vet_comb  = [["descr","padrao"]];
   $cont_comb = 0;
 
   for($x = 0; $x < $clveiculoscomb->numrows; $x++) {
@@ -414,10 +414,10 @@ for($x = 0; $x < $clveiculos->numrows; $x++) {
         $pdf->cell(15, $alt, $ve60_codigo,                                    0, 0, "C", $p);
         $pdf->cell(15, $alt, db_formatar($ve60_datasaida,"d"),                0, 0, "C", $p);
         $pdf->cell(10, $alt, $ve60_horasaida,                                 0, 0, "C", $p);
-        $pdf->cell(55, $alt, substr($z01_nome,0,28),                          0, 0, "L", $p);
-        $pdf->cell(55, $alt, $ve60_coddepto . "-" . substr($descrdepto,0,20), 0, 0, "L", $p);
+        $pdf->cell(55, $alt, substr((string) $z01_nome,0,28),                          0, 0, "L", $p);
+        $pdf->cell(55, $alt, $ve60_coddepto . "-" . substr((string) $descrdepto,0,20), 0, 0, "L", $p);
         $pdf->cell(15, $alt, $ve60_medidasaida." ".$ve07_sigla,               0, 0, "C", $p);
-        $pdf->cell(50, $alt, substr($ve60_destino,0,28),                      0, 0, "L", $p);
+        $pdf->cell(50, $alt, substr((string) $ve60_destino,0,28),                      0, 0, "L", $p);
         $pdf->cell(15, $alt, $ve61_codigo,                                    0, 0, "C", $p);
         $pdf->cell(15, $alt, db_formatar($ve61_datadevol,"d"),                0, 0, "C", $p);
         $pdf->cell(15, $alt, $ve61_horadevol,                                 0, 0, "C", $p);
@@ -541,7 +541,7 @@ for($x = 0; $x < $clveiculos->numrows; $x++) {
     $result_manut     = $clveicmanut->sql_record($sSqlVeicmanut);
     $numrows_manut    = $clveicmanut->numrows;
 
-    $aManutencao      = array();
+    $aManutencao      = [];
 
     if ($numrows_manut > 0) {
 
@@ -561,7 +561,7 @@ for($x = 0; $x < $clveiculos->numrows; $x++) {
           $rsManutitem      = $clveicmanutitem->sql_record($sSqlManutitem);
 
           $iNumRownsManutitem = $clveicmanutitem->numrows;
-          $aItensMant         = array();
+          $aItensMant         = [];
 
           if ($iNumRownsManutitem > 0) {
 

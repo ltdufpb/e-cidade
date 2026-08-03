@@ -122,7 +122,7 @@ for($i = 0; $i < pg_num_rows($rsReceita);$i++){
 	
 	$oReceitaSaldo = db_utils::fieldsMemory($rsReceita,$i);
  	
-  if (substr($oReceitaSaldo->o57_fonte,0,3) == "410" && $oReceitaSaldo->o70_codigo == 0){
+  if (str_starts_with((string) $oReceitaSaldo->o57_fonte, "410") && $oReceitaSaldo->o70_codigo == 0){
     $iRecCorr += $oReceitaSaldo->saldo_arrecadado_acumulado;
   }
   
@@ -133,41 +133,41 @@ for($i = 0; $i < pg_num_rows($rsReceita);$i++){
    */
   if ($anousu >= 2010) {
     
-    if (substr($oReceitaSaldo->o57_fonte, 0, 3) == "910") {
+    if (str_starts_with((string) $oReceitaSaldo->o57_fonte, "910")) {
       $iRecCorr += $oReceitaSaldo->saldo_arrecadado_acumulado;
     }
   }
   
-  if (substr($oReceitaSaldo->o57_fonte,0,3) == "420" && $oReceitaSaldo->o70_codigo == 0){
+  if (str_starts_with((string) $oReceitaSaldo->o57_fonte, "420") && $oReceitaSaldo->o70_codigo == 0){
     $iRecCap  += $oReceitaSaldo->saldo_arrecadado_acumulado;
   }
 
   if ($anousu >= 2010) {
     
-    if (substr($oReceitaSaldo->o57_fonte, 0, 3) == "920") {
+    if (str_starts_with((string) $oReceitaSaldo->o57_fonte, "920")) {
       $iRecCap  += $oReceitaSaldo->saldo_arrecadado_acumulado;
     }
   }
   
-  if (substr($oReceitaSaldo->o57_fonte,0,3) == "470" && $oReceitaSaldo->o70_codigo == 0){
+  if (str_starts_with((string) $oReceitaSaldo->o57_fonte, "470") && $oReceitaSaldo->o70_codigo == 0){
     $iRecCorrIntr += $oReceitaSaldo->saldo_arrecadado_acumulado;
   }
   
   if ($anousu >= 2010) {
     
-    if (substr($oReceitaSaldo->o57_fonte, 0, 3) == "970") {
+    if (str_starts_with((string) $oReceitaSaldo->o57_fonte, "970")) {
       $iRecCorrIntr += $oReceitaSaldo->saldo_arrecadado_acumulado;
     }
   }
   
   
-  if (substr($oReceitaSaldo->o57_fonte,0,3) == "480" && $oReceitaSaldo->o70_codigo == 0){
+  if (str_starts_with((string) $oReceitaSaldo->o57_fonte, "480") && $oReceitaSaldo->o70_codigo == 0){
     $iRecCapIntr  += $oReceitaSaldo->saldo_arrecadado_acumulado;
   }
   
   if ($anousu >= 2010) {
     
-    if (substr($oReceitaSaldo->o57_fonte, 0, 3) == "980") {
+    if (str_starts_with((string) $oReceitaSaldo->o57_fonte, "980")) {
       $iRecCapIntr  += $oReceitaSaldo->saldo_arrecadado_acumulado;
     }
   }
@@ -179,9 +179,9 @@ for($i = 0; $i < pg_num_rows($rsBalancete); $i++){
 
 	$oBalancete = db_utils::fieldsMemory($rsBalancete,$i);
  
-  $aElementos = array($oBalancete->estrutural,$oInstit->codigo);
+  $aElementos = [$oBalancete->estrutural,$oInstit->codigo];
 	
-	if (substr($oBalancete->estrutural,0,3) == "612" && $oBalancete->c61_codcon != 0){
+	if (str_starts_with((string) $oBalancete->estrutural, "612") && $oBalancete->c61_codcon != 0){
  		$iOrcTransfRec  += $oBalancete->saldo_final;
   }
 
@@ -201,7 +201,7 @@ for($i = 0; $i < pg_num_rows($rsBalancete); $i++){
 		$iExtraOrcDisp     += $oBalancete->saldo_anterior_debito;
 	}
 
-	if((substr($oBalancete->estrutural,0,3) == "111" || substr($oBalancete->estrutural,0,3) == "115") && $oBalancete->c61_codcon != 0 ){ 
+	if((str_starts_with((string) $oBalancete->estrutural, "111") || str_starts_with((string) $oBalancete->estrutural, "115")) && $oBalancete->c61_codcon != 0 ){ 
 		if($oBalancete->sinal_anterior == "C"){
 			$iDispExeAnt -= $oBalancete->saldo_anterior; 
 	  }else if($oBalancete->sinal_anterior == "D"){
@@ -209,7 +209,7 @@ for($i = 0; $i < pg_num_rows($rsBalancete); $i++){
 		}
 	}  
 
-	if((substr($oBalancete->estrutural,0,3) == "111" || substr($oBalancete->estrutural,0,3) == "115") && $oBalancete->c61_codcon != 0 ){
+	if((str_starts_with((string) $oBalancete->estrutural, "111") || str_starts_with((string) $oBalancete->estrutural, "115")) && $oBalancete->c61_codcon != 0 ){
 		if($oBalancete->sinal_final == "C"){
 			$iDispExeSeg -= $oBalancete->saldo_final;
 	  }else if($oBalancete->sinal_final == "D"){
@@ -224,10 +224,10 @@ for($i = 0; $i < pg_num_rows($rsDespesa); $i++){
 	
 	$oDespesa = db_utils::fieldsMemory($rsDespesa,$i);
 	
-	if(substr($oDespesa->o58_elemento,0,2)== "33" ){
+	if(str_starts_with((string) $oDespesa->o58_elemento, "33") ){
 		 $iDespCorr += $oDespesa->liquidado_acumulado;
 	}
-	if(substr($oDespesa->o58_elemento,0,2)== "34" ){
+	if(str_starts_with((string) $oDespesa->o58_elemento, "34") ){
 		 $iDespCap  += $oDespesa->liquidado_acumulado;
 	}
 
@@ -403,7 +403,7 @@ $pdf->cell(25,$alt,db_formatar(($iSomaDesp + $iDispExeSeg),'f'),"TBL" ,1,"R",1);
 $pdf->Ln();
 $pdf->setfont('arial','',5);
 
-notasExplicativas(&$pdf,55,($oGet->mes>9?$oGet->mes:"0".$oGet->mes),190);
+notasExplicativas($pdf,55,($oGet->mes>9?$oGet->mes:"0".$oGet->mes),190);
 
 $pdf->Ln(25);
 $pdf->setfont('arial','',8);

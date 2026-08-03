@@ -13,11 +13,8 @@ use Illuminate\Support\Facades\Log;
 
 class RedesimController extends Controller
 {
-    private $redesimService;
-
-    public function __construct(RedesimService $redesimService)
+    public function __construct(private readonly RedesimService $redesimService)
     {
-        $this->redesimService = $redesimService;
     }
 
     public function incluirInscricao(Request $request, AtendimentoProcessoService $atendimentoProcessoService)
@@ -35,7 +32,7 @@ class RedesimController extends Controller
 
             $aErrorMessage = [$exception->getMessage(), $exception->getFile(), $exception->getLine()];
             return response()->json(
-                ["status" => "NOK", "descricao" => utf8_encode(implode(" - ", $aErrorMessage))],
+                ["status" => "NOK", "descricao" => mb_convert_encoding(implode(" - ", $aErrorMessage), 'UTF-8', 'ISO-8859-1')],
                 500
             );
         }

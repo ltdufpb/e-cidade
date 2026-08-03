@@ -27,7 +27,7 @@
 
 class LicitaConTipoDocumentoAcordo {
 
-  public static $aTipos = array(
+  public static $aTipos = [
     1  => "Anulação de ofício",
     2  => "Anulação por determinação judicial",
     3  => "Apostilamento",
@@ -48,9 +48,9 @@ class LicitaConTipoDocumentoAcordo {
     18 => "Termo de Indenização",
     19 => "Ata de Registro de Preços",
     20 => "Nota de Empenho"
-  );
+  ];
 
-  public static $aSiglas = array(
+  public static $aSiglas = [
      1 => 'AOC',
      2 => 'ADC',
      3 => 'APO',
@@ -71,7 +71,7 @@ class LicitaConTipoDocumentoAcordo {
     18 => 'TIN',
     19 => 'ARG',
     20 => 'NOE',
-  );
+  ];
 
   public static function getSiglas() {
     return self::$aSiglas;

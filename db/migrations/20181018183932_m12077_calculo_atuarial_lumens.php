@@ -6,7 +6,7 @@ class M12077CalculoAtuarialLumens extends PostgresMigration
 {
     public function up()
     {
-        $aSql = array();
+        $aSql = [];
 
         $aSql[] = "insert into db_itensmenu ( id_item, descricao, help, funcao, itemativo, manutencao, desctec, libcliente )
                                    values ( 10590 ,'Lumens', 'Rotina de cálculo atuarial para empresa Lumens',
@@ -22,7 +22,7 @@ class M12077CalculoAtuarialLumens extends PostgresMigration
 
     public function down()
     {
-        $aSql = array();
+        $aSql = [];
 
         $aSql[] = "delete from db_menu where id_item_filho = 10590 AND modulo = 952;";
         $aSql[] = "delete from db_itensmenu where  id_item = 10590;";

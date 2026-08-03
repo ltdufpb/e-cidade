@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefaanexos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltarefaanexos = new cl_tarefaanexos;
 if (isset($oid_arq)&&$oid_arq!=""){
 	
@@ -156,7 +156,7 @@ if (isset($oid_arq)&&$oid_arq!=""){
 $sql = "select distinct on (at80_tarefa, at80_arquivos, at80_versaocvs, at80_data, at80_hora) * from tarefa_arquivos where  at80_tarefa = $at25_tarefa ";
 
 $result = db_query($sql);
-if(pg_numrows($result)>0){
+if(pg_num_rows($result)>0){
   echo "<table>";
   echo "<tr>";
   echo "<td > <strong>Arquivos Manipulados: </strong> </td>";
@@ -169,7 +169,7 @@ if(pg_numrows($result)>0){
   echo "<td >Arquivos</td>";
   echo "</tr>";
 
-  for($i=0;$i<pg_numrows($result);$i++){
+  for($i=0;$i<pg_num_rows($result);$i++){
     db_fieldsmemory($result,$i);
     echo "<tr>";
     echo "<td >$at80_versaocvs</td>";

@@ -36,7 +36,7 @@
      * Collection de ContaOrcamento
      * @var array
      */
-    private $aContas = array();
+    private $aContas = [];
 
     /**
      * Instancia da classe
@@ -120,7 +120,7 @@
      * @param integer $iAno
      * @return ContaOrcamento
      */
-    public static function getContaPorEstrutural($sEstrutural, $iAno,  Instituicao $oInstituicao = null) {
+    public static function getContaPorEstrutural($sEstrutural, $iAno,  ?Instituicao $oInstituicao = null) {
 
       foreach (ContaOrcamentoRepository::getInstance()->aContas as $oConta) {
 

@@ -97,7 +97,7 @@ $clrotulo->label("me03_c_tipo");
 <input name="cancelar" type="button" id="cancelar" value="Cancelar" onclick="js_cancela();">
 <br><br>
 <?php 
- $chavepri= array("me23_i_codigo"=>@$me23_i_codigo);
+ $chavepri= ["me23_i_codigo"=>@$me23_i_codigo];
  $cliframe_alterar_excluir->chavepri=$chavepri;
  if (isset($me23_i_desperdicio)&&@$me23_i_desperdicio!="") {
    $cliframe_alterar_excluir->sql = $clmer_desper_und->sql_query(null,

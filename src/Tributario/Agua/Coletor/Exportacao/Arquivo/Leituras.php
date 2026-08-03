@@ -85,15 +85,15 @@ class Leituras extends Arquivo {
     }
 
     if (pg_num_rows($rsLeituras) == 0) {
-      return array();
+      return [];
     }
 
     $aAvisos = $this->getAvisos();
 
-    $aRegistros = array();
+    $aRegistros = [];
     while ($oLeitura = pg_fetch_object($rsLeituras)) {
 
-      $aRegistro = array(
+      $aRegistro = [
         'codigo'                      => $oLeitura->codigo,
         'codigo_leiturista'           => $oLeitura->codigo_leiturista,
         'codigo_rota'                 => $oLeitura->codigo_rota,
@@ -221,7 +221,7 @@ class Leituras extends Arquivo {
         'receita_8_parcela'           => '',
         'receita_8_valor'             => '',
         'receita_8_numpre'            => '',
-      );
+      ];
 
       // Busca Leituras Anteriores
       $aLeiturasAnteriores = $this->getLeiturasAnteriores(
@@ -300,7 +300,7 @@ class Leituras extends Arquivo {
    */
   private function getLeituras() {
 
-    $sCampos = implode(', ', array(
+    $sCampos = implode(', ', [
       'x50_sequencial        as codigo',
       'x50_rota              as codigo_rota',
       'x49_anousu            as ano',
@@ -338,20 +338,20 @@ class Leituras extends Arquivo {
       'x50_valordesconto     as valor_desconto',
       'x51_numcgm            as codigo_leiturista',
       'x50_vencimento        as dt_vencimento',
-    ));
+    ]);
 
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'INNER JOIN aguacoletorexportadados         ON x50_aguacoletorexporta = aguacoletorexporta.x49_sequencial',
       'INNER JOIN aguacoletorexportadadoscontrato ON x50_sequencial = x57_aguacoletorexportadados',
       'INNER JOIN aguacoletorexportadadosleitura  ON x50_sequencial = x51_aguacoletorexportadados',
       'INNER JOIN aguacontrato                    ON x54_sequencial = x57_aguacontrato',
       'INNER JOIN cgm                             ON aguacontrato.x54_cgm = cgm.z01_numcgm',
       'LEFT  JOIN aguacategoriaconsumo            ON x54_aguacategoriaconsumo = aguacategoriaconsumo.x13_sequencial'
-    ));
+    ]);
 
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       "x49_sequencial = {$this->getCodigoExportacao()}",
-    ));
+    ]);
 
     $sSqlAguaDadosExportacao = "select {$sCampos} from aguacoletorexporta {$sJoin} where {$sWhere} order by x50_ordem asc";
 
@@ -368,10 +368,10 @@ class Leituras extends Arquivo {
      */
     $oLibDocumento = new \libdocumento(32);
 
-    $aAvisos = array();
+    $aAvisos = [];
     foreach ($oLibDocumento->getDocParagrafos() as $oParagrafos) {
 
-      $sDescricao = strtolower($oParagrafos->oParag->db02_descr);
+      $sDescricao = strtolower((string) $oParagrafos->oParag->db02_descr);
       $aAvisos[$sDescricao] = $oParagrafos->oParag->db02_texto;
     }
 
@@ -414,14 +414,14 @@ class Leituras extends Arquivo {
   private function getReceitas($iCodigoLeitura) {
 
     $oDaoExportaDadosReceitas = new \cl_aguacoletorexportadadosreceita();
-    $sCampos = implode(', ', array(
+    $sCampos = implode(', ', [
       'x52_receita',
       'x52_descricao',
       'x52_numpar',
       'x52_numtot',
       'x52_valor',
       'x52_numpre'
-    ));
+    ]);
     $sWhere = "x52_aguacoletorexportadados = {$iCodigoLeitura} limit 8";
     $sSqlExportaDadosReceitas = $oDaoExportaDadosReceitas->sql_query_file(
       null, $sCampos, null, $sWhere

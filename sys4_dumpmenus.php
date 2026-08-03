@@ -52,7 +52,7 @@ include(modification("libs/db_usuariosonline.php"));
     <td>
     <center>
     <?php 
-    $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
+    $root = substr((string) $_SERVER['SCRIPT_FILENAME'],0,strrpos((string) $_SERVER['SCRIPT_FILENAME'],"/"));
     $arquivo = $root."/"."tmp/atualiza_menus.txt";
     $fd = fopen($arquivo,"w");
     fputs($fd,"<?php  \n");
@@ -60,8 +60,8 @@ include(modification("libs/db_usuariosonline.php"));
 	// itens dos menus 
 	$sql = "select * from db_itensmenu";
     $result = db_query($sql);
-	if(pg_numrows($result)!=0){
-	  for($i=0;$i<pg_numrows($result);$i++){
+	if(pg_num_rows($result)!=0){
+	  for($i=0;$i<pg_num_rows($result);$i++){
 	     db_fieldsmemory($result,$i);
 	     fputs($fd,'$sql = "delete from db_itensmenu where id_item = '.$id_item.'";'."\n");
 	     fputs($fd,'$result = db_query($sql);'."\n");
@@ -72,8 +72,8 @@ include(modification("libs/db_usuariosonline.php"));
 	// menus 
 	$sql = "select * from db_menu";
     $result = db_query($sql);
-	if(pg_numrows($result)!=0){
-	  for($i=0;$i<pg_numrows($result);$i++){
+	if(pg_num_rows($result)!=0){
+	  for($i=0;$i<pg_num_rows($result);$i++){
 	     db_fieldsmemory($result,$i);
 	     fputs($fd,'$sql = "delete from db_menu where id_item = '.$id_item.' and id_item_filho = '.$id_item.' and modulo = '.$modulo.'";'."\n");
 	     fputs($fd,'$result = db_query($sql);'."\n");
@@ -84,8 +84,8 @@ include(modification("libs/db_usuariosonline.php"));
 	// meodulos dos menus
 	$sql = "select * from db_modulo";
     $result = db_query($sql);
-	if(pg_numrows($result)!=0){
-	  for($i=0;$i<pg_numrows($result);$i++){
+	if(pg_num_rows($result)!=0){
+	  for($i=0;$i<pg_num_rows($result);$i++){
 	     db_fieldsmemory($result,$i);
 	     fputs($fd,'$sql = "delete from db_modulo where id_item = '.$id_item.'";'."\n");
 	     fputs($fd,'$result = db_query($sql);'."\n");
@@ -98,8 +98,8 @@ include(modification("libs/db_usuariosonline.php"));
     fputs($fd,'$result = db_query($sql);'."\n");
 	$sql = "select * from db_permissao where id_usuario = 1";
     $result = db_query($sql);
-	if(pg_numrows($result)!=0){
-	  for($i=0;$i<pg_numrows($result);$i++){
+	if(pg_num_rows($result)!=0){
+	  for($i=0;$i<pg_num_rows($result);$i++){
 	     db_fieldsmemory($result,$i);
 	     fputs($fd,'$sql = "insert into db_permissao(id_usuario,id_item,permissaoativa,anousu,id_instit,id_modulo) value ('.$id_usuario.",".$id_item.",'".$permissaoativa."',".$anousu.",".$id_instit.",".$id_modulo.")\";"."\n");
 	     fputs($fd,'$result = db_query($sql);'."\n");

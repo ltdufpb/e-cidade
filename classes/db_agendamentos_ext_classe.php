@@ -30,20 +30,20 @@
 require_once(modification("classes/db_agendamentos_classe.php"));
 class cl_agendamentos_ext extends cl_agendamentos  {
 	//
-	var $lancar_transf_individual = null;
-	var $lancar_transf_geral      = null;
-	var $gerar_faa                = null;
-	var $opcoes                   = null;
-	var $lado_transf              = null;
-	var $total_agendado           = 0;
-  var $lTrazerAnulados          = false;  // Determina se traz os anulados (e apenas os anulados) ou os não anulados (e apenas os não anulados)
-  var $lTrazerAusencias         = false; // Determina se traz ou nao agendamentos se houver alguma ausencia do profissional registrada no dia indicado
-  var $lMarcaTodasChekBox       = true;
+	public $lancar_transf_individual = null;
+	public $lancar_transf_geral      = null;
+	public $gerar_faa                = null;
+	public $opcoes                   = null;
+	public $lado_transf              = null;
+	public $total_agendado           = 0;
+  public $lTrazerAnulados          = false;  // Determina se traz os anulados (e apenas os anulados) ou os não anulados (e apenas os não anulados)
+  public $lTrazerAusencias         = false; // Determina se traz ou nao agendamentos se houver alguma ausencia do profissional registrada no dia indicado
+  public $lMarcaTodasChekBox       = true;
 	
 	function sql_query_ext ( $sd23_i_codigo=null,$campos="*",$ordem=null,$dbwhere="", $lFiltraAnulados = true){ 
 	     $sql = "select ";
 	     if($campos != "*" ){
-	       $campos_sql = split("#",$campos);
+	       $campos_sql = preg_split("#\\##m",$campos);
 	       $virgula = "";
 	       for($i=0;$i<sizeof($campos_sql);$i++){
 	         $sql .= $virgula.$campos_sql[$i];
@@ -108,7 +108,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 		 //           			  )";
 	     if($ordem != null ){
 	       $sql .= " order by ";
-	       $campos_sql = split("#",$ordem);
+	       $campos_sql = preg_split("#\\##m",(string) $ordem);
 	       $virgula = "";
 	       for($i=0;$i<sizeof($campos_sql);$i++){
 	         $sql .= $virgula.$campos_sql[$i];
@@ -121,7 +121,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 	function sql_query_ext2 ( $sd23_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
 	     $sql = "select ";
 	     if($campos != "*" ){
-	       $campos_sql = split("#",$campos);
+	       $campos_sql = preg_split("#\\##m",$campos);
 	       $virgula = "";
 	       for($i=0;$i<sizeof($campos_sql);$i++){
 	         $sql .= $virgula.$campos_sql[$i];
@@ -172,7 +172,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 	     
 	     if($ordem != null ){
 	       $sql .= " order by ";
-	       $campos_sql = split("#",$ordem);
+	       $campos_sql = preg_split("#\\##m",(string) $ordem);
 	       $virgula = "";
 	       for($i=0;$i<sizeof($campos_sql);$i++){
 	         $sql .= $virgula.$campos_sql[$i];
@@ -193,8 +193,8 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 		$str_query         = "select fc_totalagendado( '$sd23_d_consulta', $sd30_i_codigo ); ";
 		$res_agendamento   = db_query($str_query)or die($str_query);
 		$obj_agendamento   = db_utils::fieldsMemory($res_agendamento,0);
-		$arr_totalagendado = explode( ",", $obj_agendamento->fc_totalagendado );
-		$arr_valores       = array( 'V_FICHAS'=>0, 
+		$arr_totalagendado = explode( ",", (string) $obj_agendamento->fc_totalagendado );
+		$arr_valores       = [ 'V_FICHAS'=>0, 
 									'V_RESERVAS'=>1,
 									'V_HORAINI'=>2,
 									'V_HORAFIM'=>3,
@@ -202,7 +202,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 									'V_TOTALAGENDADO'=>5,
 									'V_DISPONIVEL'=>6,
 									'V_TIPOGRADE'=>7
-		);
+		];
 		//Calcula intervalo
 		$hora_ini           = trim($arr_totalagendado[ $arr_valores["V_HORAINI"] ]);
 		$hora_fim           = trim($arr_totalagendado[ $arr_valores["V_HORAFIM"] ]);
@@ -224,7 +224,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 			}
 		}
 
-		return substr($hora_ini,0,5);
+		return substr((string) $hora_ini,0,5);
 	}
 	/**
 	 * função retorno minutos  entre duas horas
@@ -247,10 +247,10 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 		if($decimal!=""){
 			$minutos_decimal = round(($decimal*60));
 			$explode = explode(".",$horas_trabalhadas);
-			$horas_finais = @str_pad($explode[0],2,0,str_pad_left).":".@str_pad($minutos_decimal,2,0,str_pad_left);
+			$horas_finais = @str_pad($explode[0],2,0,\STR_PAD_LEFT).":".@str_pad($minutos_decimal,2,0,\STR_PAD_LEFT);
 			$minutos_finais = $minutos_decimal + ( $explode[0] * 60 );
 		}else{
-			$horas_finais = @str_pad($horas_trabalhadas,2,0,str_pad_left).":00";
+			$horas_finais = @str_pad($horas_trabalhadas,2,0,\STR_PAD_LEFT).":00";
 			$minutos_finais = $horas_trabalhadas * 60;
 		}
 		$minutos_finais = $minutos_finais<0?$minutos_finais*(-1):$minutos_finais;
@@ -267,7 +267,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
    */
   function somahora($sHoraIni, $iMinutosSomar) {
 
-    $aHoraIni = explode(':', $sHoraIni);
+    $aHoraIni = explode(':', (string) $sHoraIni);
     $iHoraIni = $aHoraIni[0];
     $iMinIni  = $aHoraIni[1];
 
@@ -299,9 +299,9 @@ class cl_agendamentos_ext extends cl_agendamentos  {
   }
 
 	function cria_table_gera_FA($sd27_i_codigo, $chave_diasemana,$sd23_d_consulta,$clagendamentos,$clundmedhorario,$funcao_js){
-		$ano           = substr( $sd23_d_consulta, 6, 4 );
-		$mes           = substr( $sd23_d_consulta, 3, 2 );
-		$dia           = substr( $sd23_d_consulta, 0, 2 );
+		$ano           = substr( (string) $sd23_d_consulta, 6, 4 );
+		$mes           = substr( (string) $sd23_d_consulta, 3, 2 );
+		$dia           = substr( (string) $sd23_d_consulta, 0, 2 );
 		
 		$clsau_config  = db_utils::getDao("sau_config_ext");
 		$resSau_Config = $clsau_config->sql_record( $clsau_config->sql_query_ext() );
@@ -468,8 +468,8 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 		<?=$codigo==0?"disabled":"" ?>></td>
 					<?php  } ?>
 					<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=($h+1)?></td>
-	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=substr($hora_ini,0,5) ?></td>
-	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=substr($hora_fim,0,5) ?></td>
+	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=substr((string) $hora_ini,0,5) ?></td>
+	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=substr((string) $hora_fim,0,5) ?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$reservada ?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$obj_undmedhorario->sd30_c_tipograde=="I"?"Intervalo":"Período" ?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$cgs ?></td>
@@ -483,7 +483,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 		       				?>
 		       				<td class='corpo' nowrap align="center"><a
 		title='LANÇAR CONTEÚDO DA LINHA' href='#'
-		onclick="js_lancar(<?=($h+1)?>,'<?=substr($hora_ini,0,5) ?>',<?=$obj_undmedhorario->sd30_i_codigo?>,'<?=$funcao_js ?>');">&nbsp;Lançar&nbsp;</a>
+		onclick="js_lancar(<?=($h+1)?>,'<?=substr((string) $hora_ini,0,5) ?>',<?=$obj_undmedhorario->sd30_i_codigo?>,'<?=$funcao_js ?>');">&nbsp;Lançar&nbsp;</a>
 	</td>
 		       				<?php 
 						}
@@ -548,9 +548,9 @@ class cl_agendamentos_ext extends cl_agendamentos  {
     }
 
 
-		$ano           = substr( $sd23_d_consulta, 6, 4 );
-		$mes           = substr( $sd23_d_consulta, 3, 2 );
-		$dia           = substr( $sd23_d_consulta, 0, 2 );
+		$ano           = substr( (string) $sd23_d_consulta, 6, 4 );
+		$mes           = substr( (string) $sd23_d_consulta, 3, 2 );
+		$dia           = substr( (string) $sd23_d_consulta, 0, 2 );
 		
 		$result_undmedhorario = $clundmedhorario->sql_record( $clundmedhorario->sql_query_ext("","*","sd30_i_diasemana, sd30_c_horaini", 
 								"sd27_i_codigo = $sd27_i_codigo 
@@ -732,8 +732,8 @@ class cl_agendamentos_ext extends cl_agendamentos  {
   ?>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=($h+1)?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$codigo?></td>
-	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=substr($hora_ini,0,5) ?></td>
-	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=substr($hora_fim,0,5) ?></td>
+	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=substr((string) $hora_ini,0,5) ?></td>
+	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=substr((string) $hora_fim,0,5) ?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$reservada ?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$obj_undmedhorario->sd30_c_tipograde=="I"?"Intervalo":"Período" ?></td>
 	<td style="border: 1px solid #AACCCC;" class='corpo' align="center"><?=$cgs ?></td>
@@ -743,7 +743,7 @@ class cl_agendamentos_ext extends cl_agendamentos  {
 		       				?>
 		       				<td class='corpo' nowrap align="center"><a
 		title='LANÇAR CONTEÚDO DA LINHA' href='#'
-		onclick="js_lancar(<?=($h+1)?>,'<?=substr($hora_ini,0,5) ?>',<?=$obj_undmedhorario->sd30_i_codigo?>,'<?=$funcao_js ?>');">&nbsp;Lançar&nbsp;</a>
+		onclick="js_lancar(<?=($h+1)?>,'<?=substr((string) $hora_ini,0,5) ?>',<?=$obj_undmedhorario->sd30_i_codigo?>,'<?=$funcao_js ?>');">&nbsp;Lançar&nbsp;</a>
 	</td>
 		       				<?php 
 						}
@@ -827,8 +827,8 @@ function js_marcarTodos() {
 		$str_query         = "select fc_totalagendado( '$sd23_d_consulta', $sd30_i_codigo ); ";
 		$res_agendamento   = db_query($str_query)or die($str_query);
 		$obj_agendamento   = db_utils::fieldsMemory($res_agendamento,0);
-		$arr_totalagendado = explode( ",", $obj_agendamento->fc_totalagendado );
-		$arr_valores       = array( 'V_FICHAS'=>0, 
+		$arr_totalagendado = explode( ",", (string) $obj_agendamento->fc_totalagendado );
+		$arr_valores       = [ 'V_FICHAS'=>0, 
 									'V_RESERVAS'=>1,
 									'V_HORAINI'=>2,
 									'V_HORAFIM'=>3,
@@ -836,7 +836,7 @@ function js_marcarTodos() {
 									'V_TOTALAGENDADO'=>5,
 									'V_DISPONIVEL'=>6,
 									'V_TIPOGRADE'=>7
-		);
+		];
 		$intValor         = trim($arr_totalagendado[ $arr_valores[ $strVariavel ] ]);
 		return $intValor; 
 		

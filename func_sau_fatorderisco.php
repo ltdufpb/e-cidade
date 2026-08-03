@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_sau_fatorderisco_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsau_fatorderisco = new cl_sau_fatorderisco;
 $clsau_fatorderisco->rotulo->label("s105_i_codigo");
@@ -107,9 +107,9 @@ $clsau_fatorderisco->rotulo->label("s105_v_descricao");
            $sql = $clsau_fatorderisco->sql_query(null, $campos, 's105_i_codigo', '');
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_s105_i_codigo)) {
-          $repassa = array("chave_s105_i_codigo"=>$chave_s105_i_codigo,"chave_s105_i_codigo"=>$chave_s105_i_codigo);
+          $repassa = ["chave_s105_i_codigo"=>$chave_s105_i_codigo,"chave_s105_i_codigo"=>$chave_s105_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

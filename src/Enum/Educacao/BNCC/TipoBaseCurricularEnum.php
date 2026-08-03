@@ -22,11 +22,11 @@ class TipoBaseCurricularEnum extends Enum
      */
     public function name()
     {
-        $data = array(
+        $data = [
             self::BNCC_PADRAO => "BNCC Padrão",
             self::BNCC_COMENTADA => "BNCC Comentada",
             self::REFERENCIAL_CURRICULAR_ESTADUAL => "Referencial Curricular Estadual",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Tipo de base da BNCC não encontrado.');
@@ -41,15 +41,16 @@ class TipoBaseCurricularEnum extends Enum
      * @return array
      * @throws Exception
      */
+    #[\Override]
     public static function toArrayWithNames()
     {
         $tipos = self::values();
-        $return = array();
+        $return = [];
         foreach ($tipos as $tipo) {
-            $return[] = array(
+            $return[] = [
                 'value' => $tipo->value(),
                 'name' => $tipo->name()
-            );
+            ];
         }
 
         return $return;
@@ -61,9 +62,9 @@ class TipoBaseCurricularEnum extends Enum
      */
     public function toJson()
     {
-        return array(
+        return [
             'value' => $this->value(),
             'name' => $this->name()
-        );
+        ];
     }
 }

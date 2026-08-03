@@ -218,7 +218,7 @@ class Dependente
         }
         $state = pg_fetch_assoc($rsDependente, 0);
 
-        return self::fromState(empty($state) ? array() : $state);
+        return self::fromState(empty($state) ? [] : $state);
     }
 
     public static function findByServidorMatriculaDependenteCPF($matriculaServidor, $cpfDependente)
@@ -232,7 +232,7 @@ class Dependente
         $rsDependente = $DaoDependente->sql_record($sSqlDependente);
         $state = pg_fetch_assoc($rsDependente, 0);
 
-        return self::fromState(empty($state) ? array() : $state);
+        return self::fromState(empty($state) ? [] : $state);
     }
 
     /**
@@ -421,7 +421,7 @@ class Dependente
      */
     public function toArray()
     {
-        return array(
+        return [
             'codigo' => $this->getCodigo(),
             'matricula' => $this->getMatricula(),
             'nome' => $this->getNome(),
@@ -434,7 +434,7 @@ class Dependente
             'finsPrevidenciarios' => $this->isFinsPrevidenciarios(),
             'sexo' => $this->getSexo(),
             'instituicao' => $this->getInstituicao()
-        );
+        ];
     }
 
     /**

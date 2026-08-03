@@ -62,17 +62,17 @@ $iCodRel    = 76;
     <?php 
 
     
-    $clcriaabas->identifica = array( "relatorio" =>"Relatorio", 
-                                     "notas"     =>"Notas Explicativas");
+    $clcriaabas->identifica = [ "relatorio" =>"Relatorio", 
+                                     "notas"     =>"Notas Explicativas"];
     
-    $clcriaabas->title      = array( "relatorio" =>"Relatorio", 
-                                     "notas"     =>"Notas Explicativas");
+    $clcriaabas->title      = [ "relatorio" =>"Relatorio", 
+                                     "notas"     =>"Notas Explicativas"];
     
-    $clcriaabas->src  		  = array( "relatorio" =>"orc2_orcprevmensalrec011.php?iCodRel={$iCodRel}",
-                                     "notas"     =>"con2_conrelnotas.php?c83_codrel={$iCodRel}");
+    $clcriaabas->src  		  = [ "relatorio" =>"orc2_orcprevmensalrec011.php?iCodRel={$iCodRel}",
+                                     "notas"     =>"con2_conrelnotas.php?c83_codrel={$iCodRel}"];
     
-    $clcriaabas->sizecampo  = array( "relatorio" =>"23",
-                                     "notas"     =>"23");
+    $clcriaabas->sizecampo  = [ "relatorio" =>"23",
+                                     "notas"     =>"23"];
 
 
     $clcriaabas->cria_abas();    

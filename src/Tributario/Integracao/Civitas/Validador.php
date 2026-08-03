@@ -38,16 +38,10 @@ use \cl_setor as Setor;
 class Validador
 {
     /**
-     * @var array
-     */
-    private $aArquivos;
-
-    /**
      *@param array $aArquivos [Array de arquivos a serem validados]
      */
-    public function __construct($aArquivos = array())
+    public function __construct(private $aArquivos = [])
     {
-        $this->aArquivos = $aArquivos;
     }
 
     /**
@@ -184,7 +178,7 @@ class Validador
     {
         $oArquivo = new \SplFileObject($caminhoArquivo);
         $oArquivo->setFlags(\SplFileObject::READ_CSV);
-        $oArquivo->setCsvControl('|');
+        $oArquivo->setCsvControl('|', escape: '\\');
 
         return $oArquivo;
     }
@@ -197,7 +191,7 @@ class Validador
      */
     private function getDadosArquivo($oArquivo, $pos)
     {
-        $aDados = array();
+        $aDados = [];
 
         $aLinhasArquivo = new \LimitIterator($oArquivo, 1);
 
@@ -228,72 +222,72 @@ class Validador
      */
     private function getTabelaCampo($codigoCampo, $tipoArquivo)
     {
-        $tabelaCampo = array();
+        $tabelaCampo = [];
 
         if ($tipoArquivo == 1) {
             switch ($codigoCampo) {
                 case 1:
-                    $tabelaCampo = array('descr' => 'Matricula', 'tabela' => 'iptubase', 'campo' => 'j01_matric');
+                    $tabelaCampo = ['descr' => 'Matricula', 'tabela' => 'iptubase', 'campo' => 'j01_matric'];
                     break;
                 case 2:
-                    $tabelaCampo = array('descr' => 'Idbql', 'tabela' => 'lote', 'campo' => 'j34_idbql');
+                    $tabelaCampo = ['descr' => 'Idbql', 'tabela' => 'lote', 'campo' => 'j34_idbql'];
                     break;
                 case 3:
-                    $tabelaCampo = array('descr' => 'Setor', 'tabela' => 'lote', 'campo' => 'j34_setor');
+                    $tabelaCampo = ['descr' => 'Setor', 'tabela' => 'lote', 'campo' => 'j34_setor'];
                     break;
                 case 4:
-                    $tabelaCampo = array('descr' => 'Quadra', 'tabela' => 'lote', 'campo' => 'j34_quadra');
+                    $tabelaCampo = ['descr' => 'Quadra', 'tabela' => 'lote', 'campo' => 'j34_quadra'];
                     break;
                 case 5:
-                    $tabelaCampo = array('descr' => 'Lote', 'tabela' => 'lote', 'campo' => 'j34_lote');
+                    $tabelaCampo = ['descr' => 'Lote', 'tabela' => 'lote', 'campo' => 'j34_lote'];
                     break;
                 case 6:
-                    $tabelaCampo = array('descr' => 'Rua', 'tabela' => 'ruas', 'campo' => 'j14_codigo');
+                    $tabelaCampo = ['descr' => 'Rua', 'tabela' => 'ruas', 'campo' => 'j14_codigo'];
                     break;
                 case 8:
-                    $tabelaCampo = array('descr' => 'Bairro', 'tabela' => 'bairro', 'campo' => 'j13_codi');
+                    $tabelaCampo = ['descr' => 'Bairro', 'tabela' => 'bairro', 'campo' => 'j13_codi'];
                     break;
                 default:
                     if ($codigoCampo >= 14 && $codigoCampo < 32) {
-                        $tabelaCampo = array(
+                        $tabelaCampo = [
                         'descr'  => 'Característica',
                             'tabela' => 'caracter',
-                            'campo'  => ($codigoCampo % 2 == 0) ? 'j31_grupo' : 'j31_codigo');
+                            'campo'  => ($codigoCampo % 2 == 0) ? 'j31_grupo' : 'j31_codigo'];
                     }
                     break;
             }
         } else if ($tipoArquivo == 2) {
             switch ($codigoCampo) {
                 case 1:
-                    $tabelaCampo = array('descr' => 'Matricula', 'tabela' => 'iptubase', 'campo' => 'j01_matric');
+                    $tabelaCampo = ['descr' => 'Matricula', 'tabela' => 'iptubase', 'campo' => 'j01_matric'];
                     break;
                 case 2:
-                    $tabelaCampo = array('descr' => 'Idbql', 'tabela' => 'lote', 'campo' => 'j34_idbql');
+                    $tabelaCampo = ['descr' => 'Idbql', 'tabela' => 'lote', 'campo' => 'j34_idbql'];
                     break;
                 case 3:
-                    $tabelaCampo = array('descr' => 'Setor', 'tabela' => 'lote', 'campo' => 'j34_setor');
+                    $tabelaCampo = ['descr' => 'Setor', 'tabela' => 'lote', 'campo' => 'j34_setor'];
                     break;
                 case 4:
-                    $tabelaCampo = array('descr' => 'Quadra', 'tabela' => 'lote', 'campo' => 'j34_quadra');
+                    $tabelaCampo = ['descr' => 'Quadra', 'tabela' => 'lote', 'campo' => 'j34_quadra'];
                     break;
                 case 5:
-                    $tabelaCampo = array('descr' => 'Lote', 'tabela' => 'lote', 'campo' => 'j34_lote');
+                    $tabelaCampo = ['descr' => 'Lote', 'tabela' => 'lote', 'campo' => 'j34_lote'];
                     break;
                 case 6:
-                    $tabelaCampo = array('descr' => 'Rua', 'tabela' => 'ruas', 'campo' => 'j14_codigo');
+                    $tabelaCampo = ['descr' => 'Rua', 'tabela' => 'ruas', 'campo' => 'j14_codigo'];
                     break;
                 case 8:
-                    $tabelaCampo = array('descr' => 'Bairro', 'tabela' => 'bairro', 'campo' => 'j13_codi');
+                    $tabelaCampo = ['descr' => 'Bairro', 'tabela' => 'bairro', 'campo' => 'j13_codi'];
                     break;
                 case 9:
-                    $tabelaCampo = array('descr' => 'Construção', 'tabela' => 'iptuconstr', 'campo' => 'j39_idcons');
+                    $tabelaCampo = ['descr' => 'Construção', 'tabela' => 'iptuconstr', 'campo' => 'j39_idcons'];
                     break;
                 default:
                     if ($codigoCampo > 14 && $codigoCampo <= 53) {
-                        $tabelaCampo = array(
+                        $tabelaCampo = [
                             'descr'  => 'Característica',
                             'tabela' => 'caracter',
-                            'campo'  => ($codigoCampo % 2 > 0) ? 'j31_grupo' : 'j31_codigo');
+                            'campo'  => ($codigoCampo % 2 > 0) ? 'j31_grupo' : 'j31_codigo'];
                     }
                     break;
             }
@@ -321,9 +315,7 @@ class Validador
             $rs                = \db_query($sSql);
 
             if (!empty($aTabelaCampo['campo']) && $rs) {
-                $aDadosSistema = \db_utils::makeCollectionFromRecord($rs, function ($dados) use ($aTabelaCampo) {
-                    return $dados->{$aTabelaCampo['campo']};
-                });
+                $aDadosSistema = \db_utils::makeCollectionFromRecord($rs, fn($dados) => $dados->{$aTabelaCampo['campo']});
 
 
                 foreach ($aDadosColuna as $dado) {

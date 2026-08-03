@@ -43,7 +43,7 @@ $oRetorno          = new stdClass();
 $oRetorno->status  = 1;
 $oRetorno->erro    = false;
 $oRetorno->message = '';
-$oRetorno->itens   = array();
+$oRetorno->itens   = [];
 $dtDia             = date("Y-m-d", db_getsession("DB_datausu"));
 
 try {
@@ -109,7 +109,7 @@ try {
 
                 $oDaoPcorcamtroca->pc25_forneant  = $oParam->iFornecedorAntigo;
                 $oDaoPcorcamtroca->pc25_forneatu  = $oParam->iFornecedorNovo;
-                $oDaoPcorcamtroca->pc25_motivo    = addslashes($oParam->sMotivo);
+                $oDaoPcorcamtroca->pc25_motivo    = addslashes((string) $oParam->sMotivo);
                 $oDaoPcorcamtroca->pc25_orcamitem = $oParam->iItem;
                 $oDaoPcorcamtroca->incluir(null);
                 if ($oDaoPcorcamtroca->erro_status == "0") {
@@ -146,8 +146,8 @@ try {
             $sSql .= "where pc22_orcamitem = {$iItem} ";
 
             $rsFornecedores  = db_query($sSql);
-            $oRetorno->itens = array();
-            if (pg_numrows($rsFornecedores) > 0) {
+            $oRetorno->itens = [];
+            if (pg_num_rows($rsFornecedores) > 0) {
                 $oRetorno->itens = db_utils::getCollectionByRecord($rsFornecedores);
             }
 
@@ -158,7 +158,7 @@ try {
             $clpcorcamforne = new cl_pcorcamforne;
 
             $iLicitacao = $oParam->iLicitacao;
-            $aItens     = array();
+            $aItens     = [];
 
             $sCamposItens  = "l21_codigo,        ";
             $sCamposItens  = "l21_codpcprocitem, ";
@@ -197,8 +197,8 @@ try {
             $sSqlItens .= "where l21_codliclicita = {$iLicitacao}                                                             ";
 
             $rsItens = db_query($sSqlItens);
-            if (pg_numrows($rsItens) > 0) {
-                for ($iItem = 0; $iItem < pg_numrows($rsItens); $iItem++) {
+            if (pg_num_rows($rsItens) > 0) {
+                for ($iItem = 0; $iItem < pg_num_rows($rsItens); $iItem++) {
                     $oItem = db_utils::fieldsMemory($rsItens, $iItem);
                     $oDadosItens = new stdClass();
                     $oDadosItens->item           = $oItem->pc24_orcamitem;
@@ -222,11 +222,11 @@ try {
             break;
 
         case "getRegistrosdePreco":
-            $sWhereSituacoes = implode(',', array(
+            $sWhereSituacoes = implode(',', [
                 SituacaoLicitacao::SITUACAO_JULGADA,
                 SituacaoLicitacao::SITUACAO_HOMOLOGADA,
                 SituacaoLicitacao::SITUACAO_ADJUDICADA
-            ));
+            ]);
 
             $sSqlRegistro  = "select distinct l21_codliclicita as licitacao,";
             $sSqlRegistro .= "       pc22_codorc      as orcamento,";
@@ -319,7 +319,7 @@ try {
                 $oDaoMatUnid                 = db_utils::getDao("matunid");
                 $sSqlMatUnid                 = $oDaoMatUnid->sql_query_file($oItem->getUnidade());
                 $sUnidade                    = db_utils::fieldsMemory($oDaoMatUnid->sql_record($sSqlMatUnid), 0)->m61_descr;
-                $oItemRetono->descrunidade   = urlencode($sUnidade);
+                $oItemRetono->descrunidade   = urlencode((string) $sUnidade);
                 $oItemRetono->indice         = $iIndice;
                 $oItemRetono->ativo          = $oItem->isAtivo();
                 $oRetorno->itens[]           = $oItemRetono;
@@ -360,7 +360,7 @@ try {
 
         case "getVencedoresRegistro":
             $iNumeroCasasDecimais = 2;
-            $aParametrosEmpenho   = db_stdClass::getParametro("empparametro", array(db_getsession("DB_anousu")));
+            $aParametrosEmpenho   = db_stdClass::getParametro("empparametro", [db_getsession("DB_anousu")]);
             if (count($aParametrosEmpenho) > 0) {
                 $iNumeroCasasDecimais = $aParametrosEmpenho[0]->e30_numdec;
             }
@@ -379,12 +379,12 @@ try {
             * Apenas Salvamos os itens que o fornecedor marcou na sessao
             */
             if (!isset($_SESSION["RP_fornecedores"])) {
-                $_SESSION["RP_fornecedores"] = array();
+                $_SESSION["RP_fornecedores"] = [];
             }
 
             $oRetorno->lHabilitarBotao = false;
             unset($_SESSION["RP_fornecedores"][$oParam->iFornecedor]);
-            $_SESSION["RP_fornecedores"][$oParam->iFornecedor] = array();
+            $_SESSION["RP_fornecedores"][$oParam->iFornecedor] = [];
             foreach ($oParam->aItens as $oItem) {
                 $_SESSION["RP_fornecedores"][$oParam->iFornecedor][] = $oItem->iItemOrcamento;
             }
@@ -507,8 +507,8 @@ try {
                 $sLote = "";
                 $sSqlLote = " select * from liclicitemlote where l04_liclicitem = {$iLicLicitem} ";
                 $rsLote = db_query($sSqlLote);
-                if (pg_numrows($rsLote) > 0) {
-                    $sLote = urlencode(db_utils::fieldsMemory($rsLote, 0)->l04_descricao);
+                if (pg_num_rows($rsLote) > 0) {
+                    $sLote = urlencode((string) db_utils::fieldsMemory($rsLote, 0)->l04_descricao);
                 }
 
                 return $sLote;
@@ -548,20 +548,20 @@ try {
                 $iTotalLinhas = $oDaoLicLicitem->numrows;
             }
 
-            $aItensRetorno = array();
+            $aItensRetorno = [];
             for ($iLinhaItem = 0; $iLinhaItem < $iTotalLinhas; $iLinhaItem++) {
                 if ($lLog) {
                     $oStdDadoItem                     = new stdClass();
-                    $oStdDadoItem->iOrdem             = utf8_decode($oInfoLog->item[$i]->l21_ordem);
-                    $oStdDadoItem->iCodigo            = utf8_decode($oInfoLog->item[$i]->l21_codigo);
-                    $oStdDadoItem->sDescricaoMaterial = utf8_decode("{$oInfoLog->item[$i]->pc01_codmater} - {$oInfoLog->item[$i]->pc01_descrmater}");
+                    $oStdDadoItem->iOrdem             = mb_convert_encoding($oInfoLog->item[$i]->l21_ordem, 'ISO-8859-1');
+                    $oStdDadoItem->iCodigo            = mb_convert_encoding($oInfoLog->item[$i]->l21_codigo, 'ISO-8859-1');
+                    $oStdDadoItem->sDescricaoMaterial = mb_convert_encoding("{$oInfoLog->item[$i]->pc01_codmater} - {$oInfoLog->item[$i]->pc01_descrmater}", 'ISO-8859-1');
                     $oStdDadoItem->sLote              = getLote($oStdDadoItem->iCodigo);
                     $oStdDadoItem->sFornecedor        = "";
-                    $oStdDadoItem->iQuantidade        = utf8_decode($oInfoLog->item[$i]->pc23_quant==null?$oInfoLog->item[$i]->pc11_quant:$oInfoLog->item[$i]->pc23_quant);
-                    $oStdDadoItem->sUnidadeDeMedida   = utf8_decode($oInfoLog->item[$i]->m61_descr);
-                    $oStdDadoItem->nValorUnitario     = utf8_decode($oInfoLog->item[$i]->pc23_vlrun==null?$oInfoLog->item[$i]->pc11_vlrun:$oInfoLog->item[$i]->pc23_vlrun);
-                    $oStdDadoItem->sResumo            = utf8_decode($oInfoLog->item[$i]->pc11_resum);
-                    $oStdDadoItem->sObservacao        = utf8_decode($oInfoLog->item[$i]->pc23_obs);
+                    $oStdDadoItem->iQuantidade        = mb_convert_encoding($oInfoLog->item[$i]->pc23_quant==null?$oInfoLog->item[$i]->pc11_quant:$oInfoLog->item[$i]->pc23_quant, 'ISO-8859-1');
+                    $oStdDadoItem->sUnidadeDeMedida   = mb_convert_encoding($oInfoLog->item[$i]->m61_descr, 'ISO-8859-1');
+                    $oStdDadoItem->nValorUnitario     = mb_convert_encoding($oInfoLog->item[$i]->pc23_vlrun==null?$oInfoLog->item[$i]->pc11_vlrun:$oInfoLog->item[$i]->pc23_vlrun, 'ISO-8859-1');
+                    $oStdDadoItem->sResumo            = mb_convert_encoding($oInfoLog->item[$i]->pc11_resum, 'ISO-8859-1');
+                    $oStdDadoItem->sObservacao        = mb_convert_encoding($oInfoLog->item[$i]->pc23_obs, 'ISO-8859-1');
                     $aItensRetorno[]                  = $oStdDadoItem;
                 } else {
                     $oStdResultItem = db_utils::fieldsMemory($rsItensDaLicitacao, $iLinhaItem);
@@ -572,8 +572,8 @@ try {
                     $oStdDadoItem->sDescricaoMaterial = urlencode("{$oStdResultItem->pc01_codmater} - {$oStdResultItem->pc01_descrmater}");
                     $oStdDadoItem->sLote              = getLote($oStdDadoItem->iCodigo);
                     $oStdDadoItem->iQuantidade        = $oStdResultItem->pc23_quant==null?$oStdResultItem->pc11_quant:$oStdResultItem->pc23_quant;
-                    $oStdDadoItem->sUnidadeDeMedida   = urlencode($oStdResultItem->m61_descr);
-                    $oStdDadoItem->sFornecedor        = urlencode($oStdResultItem->z01_nome);
+                    $oStdDadoItem->sUnidadeDeMedida   = urlencode((string) $oStdResultItem->m61_descr);
+                    $oStdDadoItem->sFornecedor        = urlencode((string) $oStdResultItem->z01_nome);
                     $oStdDadoItem->nValorUnitario     = trim(db_formatar($oStdResultItem->pc23_vlrun==null?$oStdResultItem->pc11_vlrun:$oStdResultItem->pc23_vlrun, "f"));
                     if (isParaiba()) {
                         $oStdDadoItem->nValorUnitario     = trim(db_formatar(
@@ -585,8 +585,8 @@ try {
                             4
                         ));
                     }
-                    $oStdDadoItem->sResumo            = urlencode($oStdResultItem->pc11_resum);
-                    $oStdDadoItem->sObservacao        = urlencode($oStdResultItem->pc23_obs);
+                    $oStdDadoItem->sResumo            = urlencode((string) $oStdResultItem->pc11_resum);
+                    $oStdDadoItem->sObservacao        = urlencode((string) $oStdResultItem->pc23_obs);
                     $aItensRetorno[]                  = $oStdDadoItem;
                 }
             }
@@ -631,7 +631,7 @@ try {
             }
 
             $aAtributos          = $oParam->aAtributosValidar;
-            $aAtributosDinamicos = array();
+            $aAtributosDinamicos = [];
             $iCodigoLicitacao    = $oParam->codigo_licitacao;
 
             foreach ($aAtributos as $oAtributo) {

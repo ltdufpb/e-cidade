@@ -55,16 +55,11 @@ class FluxoCaixaFactory
      */
     public static function getModel($modelo, $ano, $codigoPeriodo)
     {
-        switch ($modelo) {
-            case self::MODELO_MCASP:
-                return self::getModeloMCASP($ano, $codigoPeriodo);
-                break;
-            case self::MODELO_IPC08:
-                return self::getModeloIPC08($ano, $codigoPeriodo);
-                break;
-            default:
-                throw new Exception("Classe de processamento do Fluxo de Caixa não encontrado.");
-        }
+        return match ($modelo) {
+            self::MODELO_MCASP => self::getModeloMCASP($ano, $codigoPeriodo),
+            self::MODELO_IPC08 => self::getModeloIPC08($ano, $codigoPeriodo),
+            default => throw new Exception("Classe de processamento do Fluxo de Caixa não encontrado."),
+        };
     }
 
     /**
@@ -76,16 +71,11 @@ class FluxoCaixaFactory
      */
     public static function getLayout($modelo, $ano, FluxoCaixa $relatorio)
     {
-        switch ($modelo) {
-            case self::MODELO_MCASP:
-                return self::getLayoutMCASP($ano, $relatorio);
-                break;
-            case self::MODELO_IPC08:
-                return self::getLayoutIPC08($ano, $relatorio);
-                break;
-            default:
-                throw new Exception("Classe de processamento do Fluxo de Caixa não encontrado.");
-        }
+        return match ($modelo) {
+            self::MODELO_MCASP => self::getLayoutMCASP($ano, $relatorio),
+            self::MODELO_IPC08 => self::getLayoutIPC08($ano, $relatorio),
+            default => throw new Exception("Classe de processamento do Fluxo de Caixa não encontrado."),
+        };
     }
 
     /**

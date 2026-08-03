@@ -52,15 +52,10 @@ class AnexoIV
             throw new Exception("Modelo exclusivo para o ano maior ou igual à 2017.");
         }
 
-        switch ($ano) {
-            case 2017:
-                return new Anexo2017($ano, $periodo);
-            case 2018:
-            case 2019:
-                return new Anexo2018($ano, $periodo);
-            case 2020:
-            default:
-                return new AnexoIV2020($ano, $periodo);
-        }
+        return match ($ano) {
+            2017 => new Anexo2017($ano, $periodo),
+            2018, 2019 => new Anexo2018($ano, $periodo),
+            default => new AnexoIV2020($ano, $periodo),
+        };
     }
 }

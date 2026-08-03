@@ -278,7 +278,7 @@ if (!empty($dtPagamento)) {
 // seleciona o nome do banco
 $sql = "select db90_descr from db_bancos where trim(db90_codban)= '$c63_banco'";
 $rbanco = db_query($sql);
-if (pg_numrows($rbanco) > 0 ){
+if (pg_num_rows($rbanco) > 0 ){
   db_fieldsmemory($rbanco,0);
 }
 
@@ -406,10 +406,10 @@ for ($i =0 ; $i < $numrows_empagegera;$i++) {
     }
   }
 
-  if (trim($pc63_agencia_dig)!="") {
+  if (trim((string) $pc63_agencia_dig)!="") {
     $pc63_agencia_dig = "-".$pc63_agencia_dig;
   }
-  if (trim($pc63_conta_dig)!="") {
+  if (trim((string) $pc63_conta_dig)!="") {
     $pc63_conta_dig = "-".$pc63_conta_dig;
   }
   $pdf->setfont('arial','',6);

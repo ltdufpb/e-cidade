@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conhistdocdocumentovariavel_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconhistdocdocumentovariavel = new cl_conhistdocdocumentovariavel;
 $clconhistdocdocumentovariavel->rotulo->label("c93_sequencial");
 $clconhistdocdocumentovariavel->rotulo->label("c93_descricao");
@@ -98,9 +98,9 @@ $clconhistdocdocumentovariavel->rotulo->label("c93_descricao");
         }else{
            $sql = $clconhistdocdocumentovariavel->sql_query("",$campos,"c93_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c93_descricao)){
-          $repassa = array("chave_c93_sequencial"=>$chave_c93_sequencial,"chave_c93_descricao"=>$chave_c93_descricao);
+          $repassa = ["chave_c93_sequencial"=>$chave_c93_sequencial,"chave_c93_descricao"=>$chave_c93_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

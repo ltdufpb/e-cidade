@@ -58,9 +58,9 @@ foreach ( $aListaExercicios as $iInd => $iExercicio ) {
 	
 }
 
-$aResumos          = array();
-$aResumoCurtoPrazo = array();
-$aResumoLongoPrazo = array();
+$aResumos          = [];
+$aResumoCurtoPrazo = [];
+$aResumoLongoPrazo = [];
 
 $aAgrupador['proced']      = 'v01_proced';
 $aAgrupador['receita']     = 'receit';
@@ -101,8 +101,8 @@ $sSqlResumoGeral    = $oDaoDivida->sql_queryProcessamentoResumoGeralDivida($dDat
 $rsResumoGeral      = $oDaoDivida->sql_record($sSqlResumoGeral);
 $iLinhasResumoGeral = $oDaoDivida->numrows;
  
-$aLongoPrazo = array();
-$aCurtoPrazo = array();
+$aLongoPrazo = [];
+$aCurtoPrazo = [];
 
 for ( $iInd=0; $iInd < $iLinhasResumoGeral; $iInd++ ) {
 	
@@ -110,7 +110,7 @@ for ( $iInd=0; $iInd < $iLinhasResumoGeral; $iInd++ ) {
 	
 	$dtDataLimite = ($oResumo->v01_exerc + 1)."-12-31";
 	
-	if (  in_array($oResumo->k03_tipo,array(5,15,18)) || ( in_array($oResumo->k03_tipo,array(6,13)) && $oResumo->dtvenc > $dtDataLimite ) ) {
+	if (  in_array($oResumo->k03_tipo,[5,15,18]) || ( in_array($oResumo->k03_tipo,[6,13]) && $oResumo->dtvenc > $dtDataLimite ) ) {
 	  
 		if ( isset($aLongoPrazo[$oResumo->k03_tipo][$oResumo->v01_proced]) ) {
 			$aLongoPrazo[$oResumo->k03_tipo][$oResumo->v01_proced]['nVlrHist']   += $oResumo->vlrhis;
@@ -127,7 +127,7 @@ for ( $iInd=0; $iInd < $iLinhasResumoGeral; $iInd++ ) {
       $aLongoPrazo[$oResumo->k03_tipo][$oResumo->v01_proced]['nTotal']      = $oResumo->total;			
 		}
 	  
-	} else if ( in_array($oResumo->k03_tipo,array(6,13)) && $oResumo->dtvenc <= $dtDataLimite ) {
+	} else if ( in_array($oResumo->k03_tipo,[6,13]) && $oResumo->dtvenc <= $dtDataLimite ) {
 		
 		if ( isset($aCurtoPrazo[$oResumo->k03_tipo][$oResumo->v01_proced]) ) {
 			$aCurtoPrazo[$oResumo->k03_tipo][$oResumo->v01_proced]['nVlrHist']   += $oResumo->vlrhis;
@@ -230,7 +230,7 @@ for ( $iInd=0; $iInd < $iLinhasResumoGeral; $iInd++ ) {
       $sDescricao = $oResumo->descrtipo;
     }  	
   	
-    if (  in_array($oResumo->k03_tipo,array(5,15,18)) || ( in_array($oResumo->k03_tipo,array(6,13)) && $oResumo->dtvenc > $dtDataLimite ) ) {
+    if (  in_array($oResumo->k03_tipo,[5,15,18]) || ( in_array($oResumo->k03_tipo,[6,13]) && $oResumo->dtvenc > $dtDataLimite ) ) {
       
       if ( isset($aResumoLongoPrazo[$sDescrAgrupa][$oResumo->$sCampo]) ) {
         $aResumoLongoPrazo[$sDescrAgrupa][$oResumo->$sCampo]['nVlrHist']   += $oResumo->vlrhis;
@@ -247,7 +247,7 @@ for ( $iInd=0; $iInd < $iLinhasResumoGeral; $iInd++ ) {
         $aResumoLongoPrazo[$sDescrAgrupa][$oResumo->$sCampo]['nTotal']      = $oResumo->total;      
       }
       
-    } else if ( in_array($oResumo->k03_tipo,array(6,13)) && $oResumo->dtvenc <= $dtDataLimite ) {
+    } else if ( in_array($oResumo->k03_tipo,[6,13]) && $oResumo->dtvenc <= $dtDataLimite ) {
       
       if ( isset($aResumoCurtoPrazo[$sDescrAgrupa][$oResumo->$sCampo]) ) {
         $aResumoCurtoPrazo[$sDescrAgrupa][$oResumo->$sCampo]['nVlrHist']   += $oResumo->vlrhis;
@@ -391,7 +391,7 @@ foreach ( $aCurtoPrazo as $iTipoDebito => $aDadosCurtoPrazo ) {
   $nTotalMulta = 0;
   $nTotalJuros = 0;
   $nTotal      = 0; 
-  $aResumoProcedencia = array();
+  $aResumoProcedencia = [];
   
   $oPdf->SetFont('Arial','B',$iFonte);
   $oPdf->Cell(50,$iAlt,$iTipoDebito." - ".$aDescrTipo[$iTipoDebito],0,1,'L',0);
@@ -502,7 +502,7 @@ foreach ( $aLongoPrazo as $iTipoDebito => $aDadosLongoPrazo ) {
 	$nTotalMulta = 0;
 	$nTotalJuros = 0;
 	$nTotal      = 0;	
-	$aResumoProcedencia = array();
+	$aResumoProcedencia = [];
 	
 	$oPdf->SetFont('Arial','B',$iFonte);
 	$oPdf->Cell(50,$iAlt,$iTipoDebito." - ".$aDescrTipo[$iTipoDebito],0,1,'L',0);
@@ -632,7 +632,7 @@ foreach ( $aAgrupador as $sTipoAgrupa => $sCampo ) {
     $sTituloAgrupa = "Tipo de Débito";
   }
   
-  $aTotalGeral = array();
+  $aTotalGeral = [];
   
   if ( isset($aResumoCurtoPrazo[$sTipoAgrupa]) ) {
 

@@ -35,8 +35,8 @@ include(modification("dbforms/db_funcoes.php"));
 
 $result = null;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $result);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cldb_bancos = new cl_db_bancos;
 $db_opcao    = 22;

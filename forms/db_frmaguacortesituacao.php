@@ -55,12 +55,12 @@ $claguacortesituacao->rotulo->label();
         </td>
         <td>
           <?php
-            $aRegras = array(
+            $aRegras = [
               0 => 'Normal',
               1 => 'Inicia Procedimento de Corte',
               2 => 'Finaliza Procedimento de Corte',
               3 => 'Bloqueia Corte'
-            );
+            ];
             db_select('x43_regra', $aRegras, true, $db_opcao, "");
           ?>
         </td>
@@ -75,7 +75,7 @@ $claguacortesituacao->rotulo->label();
             if (!isset($x43_realizacobranca) || $x43_realizacobranca == 't') {
               $x43_realizacobranca = 1;
             }
-            db_select('x43_realizacobranca', array(1 => 'Sim', 0 => 'Não'), true, $db_opcao);
+            db_select('x43_realizacobranca', [1 => 'Sim', 0 => 'Não'], true, $db_opcao);
           ?>
         </td>
       </tr>
@@ -104,7 +104,7 @@ $claguacortesituacao->rotulo->label();
     db_iframe_aguacortesituacao.hide();
     <?php
       if ($db_opcao != 1) {
-        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+        echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
       }
     ?>
   }

@@ -27,9 +27,9 @@ class DebugData extends Command
         $file = realpath($input->getArgument('path'));
         $raw = $input->getOption('raw');
 
-        $raw_outputs = array(
+        $raw_outputs = [
             'extension/modification/data/file/file-type-modification.data' => 'rawFileTypeModification',
-        );
+        ];
 
         if (empty($file)) {
             throw new \Exception("Arquivo não informado.");
@@ -41,8 +41,8 @@ class DebugData extends Command
 
         if ($raw) {
             foreach ($raw_outputs as $curr_path => $handler) {
-                if (strpos($file, $curr_path) !== false) {
-                    return call_user_func(array($this, $handler), $data);
+                if (str_contains($file, $curr_path)) {
+                    return call_user_func([$this, $handler], $data);
                 }
             }
         }

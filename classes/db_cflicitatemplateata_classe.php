@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE cflicitatemplateata
 class cl_cflicitatemplateata { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l37_sequencial = 0; 
-   var $l37_cflicita = 0; 
-   var $l37_db_documentotemplate = 0; 
+   public $l37_sequencial = 0; 
+   public $l37_cflicita = 0; 
+   public $l37_db_documentotemplate = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l37_sequencial = int4 = Sequencial 
                  l37_cflicita = int4 = Modalidade 
                  l37_db_documentotemplate = int4 = Temaplate Ata 
                  ";
    //funcao construtor da classe 
-   function cl_cflicitatemplateata() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cflicitatemplateata"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_cflicitatemplateata {
          $this->erro_status = "0";
          return false; 
        }
-       $this->l37_sequencial = pg_result($result,0,0); 
+       $this->l37_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cflicitatemplateata_l37_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l37_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l37_sequencial)){
          $this->erro_sql = " Campo l37_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_cflicitatemplateata {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cflicitatemplateata ($this->l37_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cflicitatemplateata já Cadastrado";
@@ -166,12 +166,12 @@ class cl_cflicitatemplateata {
      $resaco = $this->sql_record($this->sql_query_file($this->l37_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15617,'$this->l37_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2738,15617,'','".AddSlashes(pg_result($resaco,0,'l37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2738,15618,'','".AddSlashes(pg_result($resaco,0,'l37_cflicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2738,15619,'','".AddSlashes(pg_result($resaco,0,'l37_db_documentotemplate'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2738,15617,'','".AddSlashes(pg_fetch_result($resaco,0,'l37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2738,15618,'','".AddSlashes(pg_fetch_result($resaco,0,'l37_cflicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2738,15619,'','".AddSlashes(pg_fetch_result($resaco,0,'l37_db_documentotemplate'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_cflicitatemplateata {
       $this->atualizacampos();
      $sql = " update cflicitatemplateata set ";
      $virgula = "";
-     if(trim($this->l37_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l37_sequencial"])){ 
+     if(trim((string) $this->l37_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l37_sequencial"])){ 
        $sql  .= $virgula." l37_sequencial = $this->l37_sequencial ";
        $virgula = ",";
-       if(trim($this->l37_sequencial) == null ){ 
+       if(trim((string) $this->l37_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "l37_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_cflicitatemplateata {
          return false;
        }
      }
-     if(trim($this->l37_cflicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l37_cflicita"])){ 
+     if(trim((string) $this->l37_cflicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l37_cflicita"])){ 
        $sql  .= $virgula." l37_cflicita = $this->l37_cflicita ";
        $virgula = ",";
-       if(trim($this->l37_cflicita) == null ){ 
+       if(trim((string) $this->l37_cflicita) == null ){ 
          $this->erro_sql = " Campo Modalidade nao Informado.";
          $this->erro_campo = "l37_cflicita";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_cflicitatemplateata {
          return false;
        }
      }
-     if(trim($this->l37_db_documentotemplate)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l37_db_documentotemplate"])){ 
+     if(trim((string) $this->l37_db_documentotemplate)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l37_db_documentotemplate"])){ 
        $sql  .= $virgula." l37_db_documentotemplate = $this->l37_db_documentotemplate ";
        $virgula = ",";
-       if(trim($this->l37_db_documentotemplate) == null ){ 
+       if(trim((string) $this->l37_db_documentotemplate) == null ){ 
          $this->erro_sql = " Campo Temaplate Ata nao Informado.";
          $this->erro_campo = "l37_db_documentotemplate";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_cflicitatemplateata {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15617,'$this->l37_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l37_sequencial"]) || $this->l37_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2738,15617,'".AddSlashes(pg_result($resaco,$conresaco,'l37_sequencial'))."','$this->l37_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2738,15617,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l37_sequencial'))."','$this->l37_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l37_cflicita"]) || $this->l37_cflicita != "")
-           $resac = db_query("insert into db_acount values($acount,2738,15618,'".AddSlashes(pg_result($resaco,$conresaco,'l37_cflicita'))."','$this->l37_cflicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2738,15618,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l37_cflicita'))."','$this->l37_cflicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l37_db_documentotemplate"]) || $this->l37_db_documentotemplate != "")
-           $resac = db_query("insert into db_acount values($acount,2738,15619,'".AddSlashes(pg_result($resaco,$conresaco,'l37_db_documentotemplate'))."','$this->l37_db_documentotemplate',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2738,15619,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l37_db_documentotemplate'))."','$this->l37_db_documentotemplate',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_cflicitatemplateata {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15617,'$l37_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2738,15617,'','".AddSlashes(pg_result($resaco,$iresaco,'l37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2738,15618,'','".AddSlashes(pg_result($resaco,$iresaco,'l37_cflicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2738,15619,'','".AddSlashes(pg_result($resaco,$iresaco,'l37_db_documentotemplate'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2738,15617,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l37_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2738,15618,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l37_cflicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2738,15619,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l37_db_documentotemplate'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cflicitatemplateata
@@ -345,7 +345,7 @@ class cl_cflicitatemplateata {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cflicitatemplateata";
@@ -360,7 +360,7 @@ class cl_cflicitatemplateata {
    function sql_query ( $l37_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -387,7 +387,7 @@ class cl_cflicitatemplateata {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -400,7 +400,7 @@ class cl_cflicitatemplateata {
    function sql_query_file ( $l37_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_cflicitatemplateata {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -36,54 +36,54 @@ use Exception;
 final class BalancoOrcamentarioDCASP2017 extends RelatoriosLegaisBase
 {
 
-    const CODIGO_RELATORIO = 170;
+    const int CODIGO_RELATORIO = 170;
 
     /**
      * Código dos quadros
      */
-    const QUADRO_PRINCIPAL = 1;
-    const QUADRO_RESTOS_NAO_PROCESSADOS = 2;
-    const QUADRO_RESTOS_PROCESSADOS = 3;
+    const int QUADRO_PRINCIPAL = 1;
+    const int QUADRO_RESTOS_NAO_PROCESSADOS = 2;
+    const int QUADRO_RESTOS_PROCESSADOS = 3;
 
     /**
      * Linhas de início e fim de cada quadro
      */
-    const QUADRO_PRINCIPAL_INICIAL = 1;
-    const QUADRO_PRINCIPAL_FINAL = 51;
+    const int QUADRO_PRINCIPAL_INICIAL = 1;
+    const int QUADRO_PRINCIPAL_FINAL = 51;
 
-    const QUADRO_PRINCIPAL_RECEITAS_INICIO = 1;
-    const QUADRO_PRINCIPAL_RECEITAS_FIM = 30;
+    const int QUADRO_PRINCIPAL_RECEITAS_INICIO = 1;
+    const int QUADRO_PRINCIPAL_RECEITAS_FIM = 30;
 
-    const QUADRO_PRINCIPAL_DESPESAS_INICIO = 31;
-    const QUADRO_PRINCIPAL_DESPESAS_FIM = 51;
+    const int QUADRO_PRINCIPAL_DESPESAS_INICIO = 31;
+    const int QUADRO_PRINCIPAL_DESPESAS_FIM = 51;
 
-    const QUADRO_RESTOS_NAO_PROCESSADOS_INICIAL = 52;
-    const QUADRO_RESTOS_NAO_PROCESSADOS_FINAL = 60;
+    const int QUADRO_RESTOS_NAO_PROCESSADOS_INICIAL = 52;
+    const int QUADRO_RESTOS_NAO_PROCESSADOS_FINAL = 60;
 
-    const QUADRO_RESTOS_PROCESSADOS_INICIAL = 61;
-    const QUADRO_RESTOS_PROCESSADOS_FINAL = 69;
+    const int QUADRO_RESTOS_PROCESSADOS_INICIAL = 61;
+    const int QUADRO_RESTOS_PROCESSADOS_FINAL = 69;
 
     /**
      * Identifica quais linhas são totalizadoras.
      *
      * @var array
      */
-    private $aLinhasTotalizadoras = array(1, 10, 18, 21, 27, 31, 35, 42, 45, 52, 56, 61, 65, 94);
+    private $aLinhasTotalizadoras = [1, 10, 18, 21, 27, 31, 35, 42, 45, 52, 56, 61, 65, 94];
 
     /**
      * Linhas finais de cada quadro/seção
      *
      * @var array
      */
-    private $aLinhasFinais = array(30, 51, 60, 69);
+    private $aLinhasFinais = [30, 51, 60, 69];
 
     /**
      * Linhas que devem ficar em negrito
      *
      * @var array
      */
-    private $aLinhasNegrito = array(1, 10, 16, 17, 18, 21, 24, 25, 26, 27, 31, 35, 39, 40, 41, 42, 45, 48, 49, 50, 52,
-    56, 60, 61, 65, 69);
+    private $aLinhasNegrito = [1, 10, 16, 17, 18, 21, 24, 25, 26, 27, 31, 35, 39, 40, 41, 42, 45, 48, 49, 50, 52,
+    56, 60, 61, 65, 69];
 
     /**
      * @var PDFDocument
@@ -109,14 +109,14 @@ final class BalancoOrcamentarioDCASP2017 extends RelatoriosLegaisBase
      *
      * @var array
      */
-    private $aQuadroPrincipal = array();
+    private $aQuadroPrincipal = [];
 
     /**
      * Linhas do Quadro Execução de Restos a Pagar Não Processados
      *
      * @var array
      */
-    private $aQuadroRestosNaoProcessados = array();
+    private $aQuadroRestosNaoProcessados = [];
 
     /**
      * Linhas do Quadro Execução de Restos a Pagar Processados
@@ -124,14 +124,14 @@ final class BalancoOrcamentarioDCASP2017 extends RelatoriosLegaisBase
      *
      * @var array
      */
-    private $aQuadroRestosProcessados = array();
+    private $aQuadroRestosProcessados = [];
 
     /**
      * Quadros que serão exibidos no relatório
      *
      * @var array
      */
-    private $aRelatoriosExibir = array();
+    private $aRelatoriosExibir = [];
 
     /**
      * Largura da página
@@ -289,7 +289,7 @@ final class BalancoOrcamentarioDCASP2017 extends RelatoriosLegaisBase
         $this->aDados = $this->getDados();
 
         for ($iIndice = self::QUADRO_PRINCIPAL_INICIAL; $iIndice <= self::QUADRO_PRINCIPAL_FINAL; $iIndice++) {
-            $this->aQuadroPrincipal[] = $this->processarLinha($iIndice, self::QUADRO_PRINCIPAL_FINAL);
+            $this->aQuadroPrincipal[] = $this->processarLinha($iIndice);
         }
 
         $rpNProcIni = self::QUADRO_RESTOS_NAO_PROCESSADOS_INICIAL;
@@ -297,12 +297,12 @@ final class BalancoOrcamentarioDCASP2017 extends RelatoriosLegaisBase
 
         for ($iIndice = $rpNProcIni; $iIndice <= $rpNprocF; $iIndice++) {
             $this->aQuadroRestosNaoProcessados[] =
-              $this->processarLinha($iIndice, self::QUADRO_RESTOS_NAO_PROCESSADOS_FINAL);
+              $this->processarLinha($iIndice);
         }
 
         for ($iIndice = self::QUADRO_RESTOS_PROCESSADOS_INICIAL; $iIndice <=
           self::QUADRO_RESTOS_PROCESSADOS_FINAL; $iIndice++) {
-            $this->aQuadroRestosProcessados[] = $this->processarLinha($iIndice, self::QUADRO_RESTOS_PROCESSADOS_FINAL);
+            $this->aQuadroRestosProcessados[] = $this->processarLinha($iIndice);
         }
     }
 
@@ -506,20 +506,12 @@ final class BalancoOrcamentarioDCASP2017 extends RelatoriosLegaisBase
     {
         $this->oPdf->setBold(true);
 
-        switch ($iQuadro) {
-            case self::QUADRO_PRINCIPAL:
-                $this->escreverCabecalhoPrincipal();
-                break;
-            case self::QUADRO_RESTOS_NAO_PROCESSADOS:
-                $this->escreverCabecalhoRestosNaoProcessados();
-                break;
-            case self::QUADRO_RESTOS_PROCESSADOS:
-                $this->escreverCabecalhoRestosProcessados();
-                break;
-            default:
-                throw new Exception("Quadro inválido.");
-                break;
-        }
+        match ($iQuadro) {
+            self::QUADRO_PRINCIPAL => $this->escreverCabecalhoPrincipal(),
+            self::QUADRO_RESTOS_NAO_PROCESSADOS => $this->escreverCabecalhoRestosNaoProcessados(),
+            self::QUADRO_RESTOS_PROCESSADOS => $this->escreverCabecalhoRestosProcessados(),
+            default => throw new Exception("Quadro inválido."),
+        };
 
         $this->oPdf->setBold(false);
     }
@@ -584,7 +576,7 @@ final class BalancoOrcamentarioDCASP2017 extends RelatoriosLegaisBase
             /**
              * Demonstra somente Previsão Atualizada e Receitas Realizadas
              */
-            if (in_array($oLinha->ordem, array(29, 30))) {
+            if (in_array($oLinha->ordem, [29, 30])) {
                 $nPrevisaoInicial = '-';
                 $nSaldo = '-';
             }
@@ -710,20 +702,12 @@ final class BalancoOrcamentarioDCASP2017 extends RelatoriosLegaisBase
             $sBorda = 'B';
         }
 
-        switch ($iQuadro) {
-            case self::QUADRO_PRINCIPAL:
-                $this->escreverLinhaQuadroPrincipal($oLinha, $sBorda);
-                break;
-            case self::QUADRO_RESTOS_NAO_PROCESSADOS:
-                $this->escreverLinhaRestosNaoProcessados($oLinha, $sBorda);
-                break;
-            case self::QUADRO_RESTOS_PROCESSADOS:
-                $this->escreverLinhaRestosProcessados($oLinha, $sBorda);
-                break;
-            default:
-                throw new Exception("Quadro inválido.");
-                break;
-        }
+        match ($iQuadro) {
+            self::QUADRO_PRINCIPAL => $this->escreverLinhaQuadroPrincipal($oLinha, $sBorda),
+            self::QUADRO_RESTOS_NAO_PROCESSADOS => $this->escreverLinhaRestosNaoProcessados($oLinha, $sBorda),
+            self::QUADRO_RESTOS_PROCESSADOS => $this->escreverLinhaRestosProcessados($oLinha, $sBorda),
+            default => throw new Exception("Quadro inválido."),
+        };
 
         $this->oPdf->setBold(false);
     }
@@ -735,7 +719,7 @@ final class BalancoOrcamentarioDCASP2017 extends RelatoriosLegaisBase
     public function getDados()
     {
         $aLinhasConsistencia = parent::getDados();
-        foreach (array(25, 49) as $iLinha) {
+        foreach ([25, 49] as $iLinha) {
             $this->processaFormulasLinha($aLinhasConsistencia, $iLinha);
         }
         $this->processaTotalizadores($aLinhasConsistencia);

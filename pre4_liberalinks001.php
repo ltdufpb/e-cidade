@@ -30,10 +30,10 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST);
   $result = db_query("select max(m_codigo) from db_menupref");
-  $codigo = pg_result($result,0,0) == ""?"1":((integer)pg_result($result,0,0) + 1);
+  $codigo = pg_fetch_result($result,0,0) == ""?"1":((integer)pg_fetch_result($result,0,0) + 1);
   $ativo = @$ativo=="1"?"1":"0";
   $publico = @$publico=="f"?"f":"t";
   db_query("BEGIN");
@@ -43,7 +43,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 										  '$imgs',
 										  '$ativo',
 										  '$publico')");
-  if(pg_cmdtuples($result) > 0) {
+  if(pg_affected_rows($result) > 0) {
     db_query("COMMIT");
 	db_msgbox("Item Incluido");
   } else {
@@ -51,10 +51,10 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 	echo "Erro incluindo item em db_menupref.<br><a href=\"\" onclick=\"history.back();return false\">Voltar</a>\n";
 	exit;
   }
-} else if(isset($HTTP_POST_VARS["atualizar"])) {
+} else if(isset($_POST["atualizar"])) {
   db_query("BEGIN");
-  if($HTTP_POST_VARS["codigo"] != "") {
-      db_postmemory($HTTP_POST_VARS);
+  if($_POST["codigo"] != "") {
+      db_postmemory($_POST);
 	if(isset($ativo)){
 	  $ativo = "1";
 	}else{
@@ -73,20 +73,20 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 						 m_publico = '$publico'
 					   WHERE m_codigo = $codigo");
   }
-  $tam_vetor = sizeof($HTTP_POST_VARS);
-  reset($HTTP_POST_VARS);
+  $tam_vetor = sizeof($_POST);
+  reset($_POST);
   db_query("UPDATE db_menupref SET m_ativo = '0'");
   for($i = 0;$i < $tam_vetor;$i++) {
-    if(db_indexOf(key($HTTP_POST_VARS),"cb") > 0) {
-	  $ativo = $HTTP_POST_VARS[key($HTTP_POST_VARS)] != ""?"1":"0";
-	  $cod = $HTTP_POST_VARS[key($HTTP_POST_VARS)];
+    if(db_indexOf(key($_POST),"cb") > 0) {
+	  $ativo = $_POST[key($_POST)] != ""?"1":"0";
+	  $cod = $_POST[key($_POST)];
 	  db_query("UPDATE db_menupref SET m_ativo = '$ativo' WHERE m_codigo = $cod");
 	}
-    next($HTTP_POST_VARS);
+    next($_POST);
   }  
   db_query("COMMIT");
-} else if(isset($HTTP_POST_VARS["excluir"])) {
-  db_query("DELETE FROM db_menupref WHERE m_codigo = ".$HTTP_POST_VARS["codigo"]);
+} else if(isset($_POST["excluir"])) {
+  db_query("DELETE FROM db_menupref WHERE m_codigo = ".$_POST["codigo"]);
 }
 
 
@@ -196,19 +196,19 @@ function js_incluir() {
   <table border="0" cellspacing="0" cellpadding="0">
   <?php 
   $result = db_query("SELECT m_codigo as codigo,m_descricao as descricao,m_arquivo as arquivo,m_imgs as imgs,m_ativo as ativo,m_publico as publico FROM db_menupref ORDER BY m_codigo");
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
   $cor = "#33CCFF";
   for($i = 0;$i < $numrows;$i++) {
     $cor = $cor=="#33CCFF"?"#33CCCC":"#33CCFF";
-    $ativo = pg_result($result,$i,"ativo");
+    $ativo = pg_fetch_result($result,$i,"ativo");
     echo "<tr bgcolor=\"$cor\">
-	        <td><input type=\"checkbox\" name=\"cb".pg_result($result,$i,"codigo")."\" value=\"".pg_result($result,$i,"codigo")."\" ".($ativo=="1"?"checked":"")."></td>
-			<td style=\"cursor: hand\" id=\"C".pg_result($result,$i,"codigo")."\" onclick=\"js_valores('C".pg_result($result,$i,"codigo")."')\">".pg_result($result,$i,"descricao")."</td>
-			<td><input type=\"hidden\" id=\"C".pg_result($result,$i,"codigo")."Harq\" value=\"".pg_result($result,$i,"arquivo")."\"></td>
-			<td><input type=\"hidden\" id=\"C".pg_result($result,$i,"codigo")."Himgs\" value=\"".pg_result($result,$i,"imgs")."\"></td>
-			<td><input type=\"hidden\" id=\"C".pg_result($result,$i,"codigo")."Hcod\" value=\"".pg_result($result,$i,"codigo")."\"></td>
-			<td><input type=\"hidden\" id=\"C".pg_result($result,$i,"codigo")."Hat\" value=\"".pg_result($result,$i,"ativo")."\"></td>			
-			<td><input type=\"hidden\" id=\"C".pg_result($result,$i,"codigo")."Hpu\" value=\"".pg_result($result,$i,"publico")."\"></td>			
+	        <td><input type=\"checkbox\" name=\"cb".pg_fetch_result($result,$i,"codigo")."\" value=\"".pg_fetch_result($result,$i,"codigo")."\" ".($ativo=="1"?"checked":"")."></td>
+			<td style=\"cursor: hand\" id=\"C".pg_fetch_result($result,$i,"codigo")."\" onclick=\"js_valores('C".pg_fetch_result($result,$i,"codigo")."')\">".pg_fetch_result($result,$i,"descricao")."</td>
+			<td><input type=\"hidden\" id=\"C".pg_fetch_result($result,$i,"codigo")."Harq\" value=\"".pg_fetch_result($result,$i,"arquivo")."\"></td>
+			<td><input type=\"hidden\" id=\"C".pg_fetch_result($result,$i,"codigo")."Himgs\" value=\"".pg_fetch_result($result,$i,"imgs")."\"></td>
+			<td><input type=\"hidden\" id=\"C".pg_fetch_result($result,$i,"codigo")."Hcod\" value=\"".pg_fetch_result($result,$i,"codigo")."\"></td>
+			<td><input type=\"hidden\" id=\"C".pg_fetch_result($result,$i,"codigo")."Hat\" value=\"".pg_fetch_result($result,$i,"ativo")."\"></td>			
+			<td><input type=\"hidden\" id=\"C".pg_fetch_result($result,$i,"codigo")."Hpu\" value=\"".pg_fetch_result($result,$i,"publico")."\"></td>			
 		  </tr>\n";
   }
   ?>

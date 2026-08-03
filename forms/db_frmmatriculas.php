@@ -106,7 +106,7 @@ db_inputdata('ed09_d_inicio',@$ed09_d_inicio_dia,@$ed09_d_inicio_mes,@$ed09_d_in
     </td>
     <td> 
 <?php 
-$x = array('MATRICULADO'=>'MATRICULADO','NOVA MATRÍCULA'=>'NOVA MATRÍCULA');
+$x = ['MATRICULADO'=>'MATRICULADO','NOVA MATRÍCULA'=>'NOVA MATRÍCULA'];
 db_select('ed09_c_situacao',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -213,7 +213,7 @@ function js_preenchepesquisa(chave){
   db_iframe_matriculas.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

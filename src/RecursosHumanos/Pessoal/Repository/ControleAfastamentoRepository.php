@@ -20,7 +20,7 @@ class ControleAfastamentoRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * ControleAfastamentoRepository constructor.
@@ -131,12 +131,12 @@ class ControleAfastamentoRepository
      * @return ControleAfastamento[]
      * @throws BusinessException
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $sql = $this->dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $controlesAfastamentos = array();
+        $controlesAfastamentos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $controlesAfastamentos;
@@ -154,7 +154,7 @@ class ControleAfastamentoRepository
      */
     private function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
     }
 
     /**
@@ -170,7 +170,7 @@ class ControleAfastamentoRepository
             throw new Exception("Não foi possível buscar os vínculos dos afastamentos com as rúbricas.");
         }
 
-        $controlesAfastamentos = array();
+        $controlesAfastamentos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $controlesAfastamentos;
@@ -226,13 +226,13 @@ class ControleAfastamentoRepository
      */
     public function removeVinculoAfastamento($afastamento, $codigoTabela, Instituicao $instituicao, $ano, $mes)
     {
-        $where = array(
+        $where = [
             "rh231_afastamento = {$afastamento}",
             "rh231_tabelaprevidencia = {$codigoTabela}",
             "rh231_instituicao = {$instituicao->getCodigo()}",
             "rh231_ano = {$ano}",
             "rh231_mes = {$mes}"
-        );
+        ];
 
         $this->dao->excluir(null, implode(' AND ', $where));
 
@@ -250,7 +250,7 @@ class ControleAfastamentoRepository
      */
     public function saveAll(array $controleAfastamentosAtualizados)
     {
-        $controleAfastamentos = array();
+        $controleAfastamentos = [];
         foreach ($controleAfastamentosAtualizados as $controleAfastamentosAtualizado) {
             $controleAfastamentos[] = $this->save($controleAfastamentosAtualizado);
         }
@@ -267,11 +267,11 @@ class ControleAfastamentoRepository
      */
     public function excluirControleAfastamentoPorCompetencia(Instituicao $instituicao, $ano, $mes)
     {
-        $where = array(
+        $where = [
             "rh231_instituicao = {$instituicao->getCodigo()}",
             "rh231_ano = {$ano}",
             "rh231_mes = {$mes}"
-        );
+        ];
 
         $this->dao->excluir(null, implode(" AND ", $where));
 

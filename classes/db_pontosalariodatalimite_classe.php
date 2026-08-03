@@ -3,35 +3,35 @@
 //CLASSE DA ENTIDADE pontosalariodatalimite
 class cl_pontosalariodatalimite { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh183_sequencial = 0; 
-   var $rh183_rubrica = null; 
-   var $rh183_datainicio_dia = null; 
-   var $rh183_datainicio_mes = null; 
-   var $rh183_datainicio_ano = null; 
-   var $rh183_datainicio = null; 
-   var $rh183_datafim_dia = null; 
-   var $rh183_datafim_mes = null; 
-   var $rh183_datafim_ano = null; 
-   var $rh183_datafim = null; 
-   var $rh183_matricula = 0; 
-   var $rh183_quantidade = 0; 
-   var $rh183_instituicao = 0; 
-   var $rh183_valor = 0; 
+   public $rh183_sequencial = 0; 
+   public $rh183_rubrica = null; 
+   public $rh183_datainicio_dia = null; 
+   public $rh183_datainicio_mes = null; 
+   public $rh183_datainicio_ano = null; 
+   public $rh183_datainicio = null; 
+   public $rh183_datafim_dia = null; 
+   public $rh183_datafim_mes = null; 
+   public $rh183_datafim_ano = null; 
+   public $rh183_datafim = null; 
+   public $rh183_matricula = 0; 
+   public $rh183_quantidade = 0; 
+   public $rh183_instituicao = 0; 
+   public $rh183_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh183_sequencial = int4 = Código 
                  rh183_rubrica = varchar(5) = Rubrica 
                  rh183_datainicio = date = Data Início 
@@ -42,10 +42,10 @@ class cl_pontosalariodatalimite {
                  rh183_valor = float4 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_pontosalariodatalimite() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pontosalariodatalimite"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -152,10 +152,10 @@ class cl_pontosalariodatalimite {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh183_sequencial = pg_result($result,0,0); 
+       $this->rh183_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pontosalariodatalimite_rh183_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh183_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh183_sequencial)){
          $this->erro_sql = " Campo rh183_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -197,7 +197,7 @@ class cl_pontosalariodatalimite {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "pontosalariodatalimite ($this->rh183_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "pontosalariodatalimite já Cadastrado";
@@ -226,17 +226,17 @@ class cl_pontosalariodatalimite {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22112,'$this->rh183_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3980,22112,'','".AddSlashes(pg_result($resaco,0,'rh183_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3980,22095,'','".AddSlashes(pg_result($resaco,0,'rh183_rubrica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3980,22096,'','".AddSlashes(pg_result($resaco,0,'rh183_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3980,22097,'','".AddSlashes(pg_result($resaco,0,'rh183_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3980,22098,'','".AddSlashes(pg_result($resaco,0,'rh183_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3980,22110,'','".AddSlashes(pg_result($resaco,0,'rh183_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3980,22099,'','".AddSlashes(pg_result($resaco,0,'rh183_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3980,22111,'','".AddSlashes(pg_result($resaco,0,'rh183_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3980,22112,'','".AddSlashes(pg_fetch_result($resaco,0,'rh183_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3980,22095,'','".AddSlashes(pg_fetch_result($resaco,0,'rh183_rubrica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3980,22096,'','".AddSlashes(pg_fetch_result($resaco,0,'rh183_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3980,22097,'','".AddSlashes(pg_fetch_result($resaco,0,'rh183_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3980,22098,'','".AddSlashes(pg_fetch_result($resaco,0,'rh183_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3980,22110,'','".AddSlashes(pg_fetch_result($resaco,0,'rh183_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3980,22099,'','".AddSlashes(pg_fetch_result($resaco,0,'rh183_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3980,22111,'','".AddSlashes(pg_fetch_result($resaco,0,'rh183_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -246,10 +246,10 @@ class cl_pontosalariodatalimite {
       $this->atualizacampos();
      $sql = " update pontosalariodatalimite set ";
      $virgula = "";
-     if(trim($this->rh183_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_sequencial"])){ 
+     if(trim((string) $this->rh183_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_sequencial"])){ 
        $sql  .= $virgula." rh183_sequencial = $this->rh183_sequencial ";
        $virgula = ",";
-       if(trim($this->rh183_sequencial) == null ){ 
+       if(trim((string) $this->rh183_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "rh183_sequencial";
          $this->erro_banco = "";
@@ -259,14 +259,14 @@ class cl_pontosalariodatalimite {
          return false;
        }
      }
-     if(trim($this->rh183_rubrica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_rubrica"])){ 
+     if(trim((string) $this->rh183_rubrica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_rubrica"])){ 
        $sql  .= $virgula." rh183_rubrica = '$this->rh183_rubrica' ";
        $virgula = ",";
      }
-     if(trim($this->rh183_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh183_datainicio_dia"] !="") ){ 
+     if(trim((string) $this->rh183_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh183_datainicio_dia"] !="") ){ 
        $sql  .= $virgula." rh183_datainicio = '$this->rh183_datainicio' ";
        $virgula = ",";
-       if(trim($this->rh183_datainicio) == null ){ 
+       if(trim((string) $this->rh183_datainicio) == null ){ 
          $this->erro_sql = " Campo Data Início não informado.";
          $this->erro_campo = "rh183_datainicio_dia";
          $this->erro_banco = "";
@@ -279,7 +279,7 @@ class cl_pontosalariodatalimite {
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh183_datainicio_dia"])){ 
          $sql  .= $virgula." rh183_datainicio = null ";
          $virgula = ",";
-         if(trim($this->rh183_datainicio) == null ){ 
+         if(trim((string) $this->rh183_datainicio) == null ){ 
            $this->erro_sql = " Campo Data Início não informado.";
            $this->erro_campo = "rh183_datainicio_dia";
            $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_pontosalariodatalimite {
          }
        }
      }
-     if(trim($this->rh183_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh183_datafim_dia"] !="") ){ 
+     if(trim((string) $this->rh183_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["rh183_datafim_dia"] !="") ){ 
        $sql  .= $virgula." rh183_datafim = '$this->rh183_datafim' ";
        $virgula = ",";
-       if(trim($this->rh183_datafim) == null ){ 
+       if(trim((string) $this->rh183_datafim) == null ){ 
          $this->erro_sql = " Campo Data Final não informado.";
          $this->erro_campo = "rh183_datafim_dia";
          $this->erro_banco = "";
@@ -306,7 +306,7 @@ class cl_pontosalariodatalimite {
        if(isset($GLOBALS["HTTP_POST_VARS"]["rh183_datafim_dia"])){ 
          $sql  .= $virgula." rh183_datafim = null ";
          $virgula = ",";
-         if(trim($this->rh183_datafim) == null ){ 
+         if(trim((string) $this->rh183_datafim) == null ){ 
            $this->erro_sql = " Campo Data Final não informado.";
            $this->erro_campo = "rh183_datafim_dia";
            $this->erro_banco = "";
@@ -317,10 +317,10 @@ class cl_pontosalariodatalimite {
          }
        }
      }
-     if(trim($this->rh183_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_matricula"])){ 
+     if(trim((string) $this->rh183_matricula)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_matricula"])){ 
        $sql  .= $virgula." rh183_matricula = $this->rh183_matricula ";
        $virgula = ",";
-       if(trim($this->rh183_matricula) == null ){ 
+       if(trim((string) $this->rh183_matricula) == null ){ 
          $this->erro_sql = " Campo Matrícula não informado.";
          $this->erro_campo = "rh183_matricula";
          $this->erro_banco = "";
@@ -330,10 +330,10 @@ class cl_pontosalariodatalimite {
          return false;
        }
      }
-     if(trim($this->rh183_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_quantidade"])){ 
+     if(trim((string) $this->rh183_quantidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_quantidade"])){ 
        $sql  .= $virgula." rh183_quantidade = $this->rh183_quantidade ";
        $virgula = ",";
-       if(trim($this->rh183_quantidade) == null ){ 
+       if(trim((string) $this->rh183_quantidade) == null ){ 
          $this->erro_sql = " Campo Quantidade não informado.";
          $this->erro_campo = "rh183_quantidade";
          $this->erro_banco = "";
@@ -343,10 +343,10 @@ class cl_pontosalariodatalimite {
          return false;
        }
      }
-     if(trim($this->rh183_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_instituicao"])){ 
+     if(trim((string) $this->rh183_instituicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_instituicao"])){ 
        $sql  .= $virgula." rh183_instituicao = $this->rh183_instituicao ";
        $virgula = ",";
-       if(trim($this->rh183_instituicao) == null ){ 
+       if(trim((string) $this->rh183_instituicao) == null ){ 
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "rh183_instituicao";
          $this->erro_banco = "";
@@ -356,10 +356,10 @@ class cl_pontosalariodatalimite {
          return false;
        }
      }
-     if(trim($this->rh183_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_valor"])){ 
+     if(trim((string) $this->rh183_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh183_valor"])){ 
        $sql  .= $virgula." rh183_valor = $this->rh183_valor ";
        $virgula = ",";
-       if(trim($this->rh183_valor) == null ){ 
+       if(trim((string) $this->rh183_valor) == null ){ 
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "rh183_valor";
          $this->erro_banco = "";
@@ -383,25 +383,25 @@ class cl_pontosalariodatalimite {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22112,'$this->rh183_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh183_sequencial"]) || $this->rh183_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3980,22112,'".AddSlashes(pg_result($resaco,$conresaco,'rh183_sequencial'))."','$this->rh183_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3980,22112,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh183_sequencial'))."','$this->rh183_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh183_rubrica"]) || $this->rh183_rubrica != "")
-             $resac = db_query("insert into db_acount values($acount,3980,22095,'".AddSlashes(pg_result($resaco,$conresaco,'rh183_rubrica'))."','$this->rh183_rubrica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3980,22095,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh183_rubrica'))."','$this->rh183_rubrica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh183_datainicio"]) || $this->rh183_datainicio != "")
-             $resac = db_query("insert into db_acount values($acount,3980,22096,'".AddSlashes(pg_result($resaco,$conresaco,'rh183_datainicio'))."','$this->rh183_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3980,22096,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh183_datainicio'))."','$this->rh183_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh183_datafim"]) || $this->rh183_datafim != "")
-             $resac = db_query("insert into db_acount values($acount,3980,22097,'".AddSlashes(pg_result($resaco,$conresaco,'rh183_datafim'))."','$this->rh183_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3980,22097,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh183_datafim'))."','$this->rh183_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh183_matricula"]) || $this->rh183_matricula != "")
-             $resac = db_query("insert into db_acount values($acount,3980,22098,'".AddSlashes(pg_result($resaco,$conresaco,'rh183_matricula'))."','$this->rh183_matricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3980,22098,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh183_matricula'))."','$this->rh183_matricula',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh183_quantidade"]) || $this->rh183_quantidade != "")
-             $resac = db_query("insert into db_acount values($acount,3980,22110,'".AddSlashes(pg_result($resaco,$conresaco,'rh183_quantidade'))."','$this->rh183_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3980,22110,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh183_quantidade'))."','$this->rh183_quantidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh183_instituicao"]) || $this->rh183_instituicao != "")
-             $resac = db_query("insert into db_acount values($acount,3980,22099,'".AddSlashes(pg_result($resaco,$conresaco,'rh183_instituicao'))."','$this->rh183_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3980,22099,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh183_instituicao'))."','$this->rh183_instituicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh183_valor"]) || $this->rh183_valor != "")
-             $resac = db_query("insert into db_acount values($acount,3980,22111,'".AddSlashes(pg_result($resaco,$conresaco,'rh183_valor'))."','$this->rh183_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3980,22111,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh183_valor'))."','$this->rh183_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -455,17 +455,17 @@ class cl_pontosalariodatalimite {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22112,'$rh183_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3980,22112,'','".AddSlashes(pg_result($resaco,$iresaco,'rh183_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3980,22095,'','".AddSlashes(pg_result($resaco,$iresaco,'rh183_rubrica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3980,22096,'','".AddSlashes(pg_result($resaco,$iresaco,'rh183_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3980,22097,'','".AddSlashes(pg_result($resaco,$iresaco,'rh183_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3980,22098,'','".AddSlashes(pg_result($resaco,$iresaco,'rh183_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3980,22110,'','".AddSlashes(pg_result($resaco,$iresaco,'rh183_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3980,22099,'','".AddSlashes(pg_result($resaco,$iresaco,'rh183_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3980,22111,'','".AddSlashes(pg_result($resaco,$iresaco,'rh183_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3980,22112,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh183_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3980,22095,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh183_rubrica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3980,22096,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh183_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3980,22097,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh183_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3980,22098,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh183_matricula'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3980,22110,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh183_quantidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3980,22099,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh183_instituicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3980,22111,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh183_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

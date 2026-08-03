@@ -58,7 +58,7 @@
     $ed317_sequencial = "";
   }
 
-  $sDisabled = isset($sDisabled) ? $sDisabled : '';
+  $sDisabled ??= '';
 ?>
 <form name="form1" method="post" action="">
   <div style="display: table">
@@ -106,7 +106,7 @@
             </td>
             <td>
               <?php 
-                $x = array(1=>"BAIXO", 2=>"MEIO", 3=>"CIMA");
+                $x = [1=>"BAIXO", 2=>"MEIO", 3=>"CIMA"];
                 db_select('ed317_arredondar', $x, true, $db_opcao, $sDisabled);
               ?>
             </td>
@@ -125,7 +125,7 @@
           <tr>
             <td valign="top"  align="center">
               <?php 
-            	  $chavepri = array("ed317_sequencial" => @$ed317_sequencial);
+            	  $chavepri = ["ed317_sequencial" => @$ed317_sequencial];
             	  $cliframe_alterar_excluir->chavepri = $chavepri;
             	  $sWhere                             = " ed317_regraarredondamento = {$ed317_regraarredondamento}";
             	  $sCampos                            = " *, case when ed317_arredondar=cast(1 as varchar) then 'Baixo'";

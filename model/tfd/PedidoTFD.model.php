@@ -65,13 +65,13 @@ final class PedidoTFD {
    * Acompanhantes do paciente
    * @var Cgs[]
    */
-  protected $aAcompanhantes = array();
+  protected $aAcompanhantes = [];
 
   /**
    * Ajudas De Custo Adicionadas no Pedido
    * @var AjudaCusto[]
    */
-  protected $aAjudasDeCusto = array();
+  protected $aAjudasDeCusto = [];
 
   /**
    * Paciente do Pedido
@@ -399,7 +399,7 @@ final class PedidoTFD {
       return null;
     }
 
-    $aDadosSaida  = array();
+    $aDadosSaida  = [];
     $iTotalSaidas = pg_num_rows( $rsPedidoTFD );
 
     for( $iContador = 0; $iContador < $iTotalSaidas; $iContador++ ) {

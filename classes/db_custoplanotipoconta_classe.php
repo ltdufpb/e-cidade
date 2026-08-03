@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE custoplanotipoconta
 class cl_custoplanotipoconta { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cc03_sequencial = 0; 
-   var $cc03_custoplanoanalitica = 0; 
-   var $cc03_custotipoconta = 0; 
+   public $cc03_sequencial = 0; 
+   public $cc03_custoplanoanalitica = 0; 
+   public $cc03_custotipoconta = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cc03_sequencial = int4 = Sequencial 
                  cc03_custoplanoanalitica = int4 = Custo plano analítica 
                  cc03_custotipoconta = int4 = Custo do tipo de conta 
                  ";
    //funcao construtor da classe 
-   function cl_custoplanotipoconta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("custoplanotipoconta"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_custoplanotipoconta {
          $this->erro_status = "0";
          return false; 
        }
-       $this->cc03_sequencial = pg_result($result,0,0); 
+       $this->cc03_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from custoplanotipoconta_cc03_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cc03_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cc03_sequencial)){
          $this->erro_sql = " Campo cc03_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_custoplanotipoconta {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipo de conta ($this->cc03_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipo de conta já Cadastrado";
@@ -166,12 +166,12 @@ class cl_custoplanotipoconta {
      $resaco = $this->sql_record($this->sql_query_file($this->cc03_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12564,'$this->cc03_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2192,12564,'','".AddSlashes(pg_result($resaco,0,'cc03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2192,12565,'','".AddSlashes(pg_result($resaco,0,'cc03_custoplanoanalitica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2192,12566,'','".AddSlashes(pg_result($resaco,0,'cc03_custotipoconta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2192,12564,'','".AddSlashes(pg_fetch_result($resaco,0,'cc03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2192,12565,'','".AddSlashes(pg_fetch_result($resaco,0,'cc03_custoplanoanalitica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2192,12566,'','".AddSlashes(pg_fetch_result($resaco,0,'cc03_custotipoconta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_custoplanotipoconta {
       $this->atualizacampos();
      $sql = " update custoplanotipoconta set ";
      $virgula = "";
-     if(trim($this->cc03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc03_sequencial"])){ 
+     if(trim((string) $this->cc03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc03_sequencial"])){ 
        $sql  .= $virgula." cc03_sequencial = $this->cc03_sequencial ";
        $virgula = ",";
-       if(trim($this->cc03_sequencial) == null ){ 
+       if(trim((string) $this->cc03_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "cc03_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_custoplanotipoconta {
          return false;
        }
      }
-     if(trim($this->cc03_custoplanoanalitica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc03_custoplanoanalitica"])){ 
+     if(trim((string) $this->cc03_custoplanoanalitica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc03_custoplanoanalitica"])){ 
        $sql  .= $virgula." cc03_custoplanoanalitica = $this->cc03_custoplanoanalitica ";
        $virgula = ",";
-       if(trim($this->cc03_custoplanoanalitica) == null ){ 
+       if(trim((string) $this->cc03_custoplanoanalitica) == null ){ 
          $this->erro_sql = " Campo Custo plano analítica nao Informado.";
          $this->erro_campo = "cc03_custoplanoanalitica";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_custoplanotipoconta {
          return false;
        }
      }
-     if(trim($this->cc03_custotipoconta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc03_custotipoconta"])){ 
+     if(trim((string) $this->cc03_custotipoconta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cc03_custotipoconta"])){ 
        $sql  .= $virgula." cc03_custotipoconta = $this->cc03_custotipoconta ";
        $virgula = ",";
-       if(trim($this->cc03_custotipoconta) == null ){ 
+       if(trim((string) $this->cc03_custotipoconta) == null ){ 
          $this->erro_sql = " Campo Custo do tipo de conta nao Informado.";
          $this->erro_campo = "cc03_custotipoconta";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_custoplanotipoconta {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12564,'$this->cc03_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cc03_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2192,12564,'".AddSlashes(pg_result($resaco,$conresaco,'cc03_sequencial'))."','$this->cc03_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2192,12564,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc03_sequencial'))."','$this->cc03_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cc03_custoplanoanalitica"]))
-           $resac = db_query("insert into db_acount values($acount,2192,12565,'".AddSlashes(pg_result($resaco,$conresaco,'cc03_custoplanoanalitica'))."','$this->cc03_custoplanoanalitica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2192,12565,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc03_custoplanoanalitica'))."','$this->cc03_custoplanoanalitica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cc03_custotipoconta"]))
-           $resac = db_query("insert into db_acount values($acount,2192,12566,'".AddSlashes(pg_result($resaco,$conresaco,'cc03_custotipoconta'))."','$this->cc03_custotipoconta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2192,12566,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cc03_custotipoconta'))."','$this->cc03_custotipoconta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_custoplanotipoconta {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12564,'$cc03_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2192,12564,'','".AddSlashes(pg_result($resaco,$iresaco,'cc03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2192,12565,'','".AddSlashes(pg_result($resaco,$iresaco,'cc03_custoplanoanalitica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2192,12566,'','".AddSlashes(pg_result($resaco,$iresaco,'cc03_custotipoconta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2192,12564,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2192,12565,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc03_custoplanoanalitica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2192,12566,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cc03_custotipoconta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from custoplanotipoconta
@@ -346,7 +346,7 @@ class cl_custoplanotipoconta {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:custoplanotipoconta";
@@ -361,7 +361,7 @@ class cl_custoplanotipoconta {
    function sql_query ( $cc03_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_custoplanotipoconta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_custoplanotipoconta {
    function sql_query_file ( $cc03_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_custoplanotipoconta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

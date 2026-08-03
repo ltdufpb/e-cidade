@@ -96,25 +96,19 @@ class RegraLancamentoEncerramentoRP implements IRegraLancamentoContabil
         $mensagem .= "Lançamento: {$this->oLancamentoEventoContabil->getDescricao()}\n\n";
         $mensagem .= "Verifique o cadastro de transação.";
 
-        $regrasExercicioPosterior = array_values(array_filter($this->regras, function ($oRegra) use ($exercicioAtual) {
-            return $oRegra->getAnoUso() > $exercicioAtual;
-        }));
+        $regrasExercicioPosterior = array_values(array_filter($this->regras, fn($oRegra) => $oRegra->getAnoUso() > $exercicioAtual));
 
         if ($regrasExercicioPosterior) {
             throw new Exception("Não pode haver regra cadastrada para exercício posterior à {$exercicioAtual}.\n\n{$mensagem}");
         }
 
-        $this->regrasExercicioAtual = array_values(array_filter($this->regras, function ($oRegra) use ($exercicioAtual) {
-            return $oRegra->getAnoUso() == $exercicioAtual;
-        }));
+        $this->regrasExercicioAtual = array_values(array_filter($this->regras, fn($oRegra) => $oRegra->getAnoUso() == $exercicioAtual));
 
         if (empty($this->regrasExercicioAtual)) {
             throw new Exception("Não há regra cadastrada para o exercício de {$exercicioAtual}.\n\n{$mensagem}");
         }
 
-        $this->regrasExercicioAnterior = array_values(array_filter($this->regras, function ($oRegra) use ($exercicioAtual) {
-            return $oRegra->getAnoUso() < $exercicioAtual;
-        }));
+        $this->regrasExercicioAnterior = array_values(array_filter($this->regras, fn($oRegra) => $oRegra->getAnoUso() < $exercicioAtual));
 
         if (empty($this->regrasExercicioAnterior)) {
             throw new Exception("Não há regra cadastrada para exercícios anteriores à {$exercicioAtual}.\n\n{$mensagem}");

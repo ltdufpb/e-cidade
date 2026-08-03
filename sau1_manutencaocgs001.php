@@ -44,7 +44,7 @@ if (empty($db_acessado)) {
     <title>DBSeller Informática Ltda</title>
     <meta http-equiv="Expires" CONTENT="0">
     <?php
-      $assets = array(
+      $assets = [
         "scripts.js",
         "prototype.js",
         "estilos.css",
@@ -94,7 +94,7 @@ if (empty($db_acessado)) {
 
         "dbtextFieldData.widget.js"
 
-      );
+      ];
       db_app::load($assets);
     ?>
     <style type="text/css">

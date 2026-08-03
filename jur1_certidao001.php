@@ -30,11 +30,11 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["enviar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["enviar"])) {
+  db_postmemory($_POST);
   db_query($conn,"BEGIN");
   $result = db_query("select max(v56_codigo) + 1 from cerjur");
-  $v56_codigo = pg_result($result,0,0);
+  $v56_codigo = pg_fetch_result($result,0,0);
   $v56_codigo = $v56_codigo==""?"1":$v56_codigo;
   $data = "$data_ano-$data_mes-$data_dia";
   $data = $data=="--"?"null":"'$data'";

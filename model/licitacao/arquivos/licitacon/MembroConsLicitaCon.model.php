@@ -45,6 +45,6 @@ class MembroConsLicitaCon extends ArquivoLicitaCon {
    * @return array
    */
   public function getDados() {
-    return array();
+    return [];
   }
 }

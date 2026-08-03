@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cids_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcids = new cl_cids;
 $clcids->rotulo->label("sd22_c_codigo");
 $clcids->rotulo->label("sd22_v_descr");
@@ -98,9 +98,9 @@ $clcids->rotulo->label("sd22_v_descr");
         }else{
            $sql = $clcids->sql_query("",$campos,"sd22_c_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd22_c_codigo)){
-          $repassa = array("chave_sd22_c_codigo"=>$chave_sd22_c_codigo,"chave_sd22_v_descr"=>$chave_sd22_v_descr);
+          $repassa = ["chave_sd22_c_codigo"=>$chave_sd22_c_codigo,"chave_sd22_v_descr"=>$chave_sd22_v_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

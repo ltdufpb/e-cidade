@@ -45,8 +45,8 @@ $oFiltros = db_utils::postMemory($_GET);
 /**
  * Array para apresentar no cabecalho padrao do PDF os filtros selecionados 
  */
-$aCabecalho = array();
-$aWhere     = array();
+$aCabecalho = [];
+$aWhere     = [];
 $sWhere     = "";
 
 /**

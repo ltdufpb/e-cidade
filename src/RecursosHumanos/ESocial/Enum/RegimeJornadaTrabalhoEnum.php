@@ -8,37 +8,22 @@ namespace ECidade\RecursosHumanos\ESocial\Enum;
  */
 final class RegimeJornadaTrabalhoEnum
 {
-    /**
-     * @var int
-     */
-    const NENHUM = 0;
-    /**
-     * @var int
-     */
-    const SUBMETIDOS_A_HORARIO_DE_TRABALHO = 1;
-    /**
-     * @var int
-     */
-    const ATIVIDADE_EXTERNA = 2;
-    /**
-     * @var int
-     */
-    const FUNCOES = 3;
-    /**
-     * @var int
-     */
-    const TELETRABALHO = 4;
+    const int NENHUM = 0;
+    const int SUBMETIDOS_A_HORARIO_DE_TRABALHO = 1;
+    const int ATIVIDADE_EXTERNA = 2;
+    const int FUNCOES = 3;
+    const int TELETRABALHO = 4;
 
     /**
      * @var string[]
      */
-    private static $descricoes = array(
+    private static $descricoes = [
         self::NENHUM => 'Nenhum',
         self::SUBMETIDOS_A_HORARIO_DE_TRABALHO => '1 - Submetidos a Horário de Trabalho (Cap. II da CLT)',
         self::ATIVIDADE_EXTERNA => '2 - Atividade Externa especificada no Inciso I do Art. 62 da CLT',
         self::FUNCOES => '3 - Funções especificadas no Inciso II do Art. 62 da CLT',
         self::TELETRABALHO => '4 - Teletrabalho, previsto no Inciso III do Art. 62 da CLT'
-    );
+    ];
 
     /**
      * @param int $chave

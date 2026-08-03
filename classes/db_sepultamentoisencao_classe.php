@@ -29,39 +29,39 @@
 //CLASSE DA ENTIDADE sepultamentoisencao
 class cl_sepultamentoisencao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $cm33_sequencial = 0;
-   var $cm33_processo = 0;
-   var $cm33_sepultamento = 0;
-   var $cm33_isencao = 0;
-   var $cm33_datalanc_dia = null;
-   var $cm33_datalanc_mes = null;
-   var $cm33_datalanc_ano = null;
-   var $cm33_datalanc = null;
-   var $cm33_datainicio_dia = null;
-   var $cm33_datainicio_mes = null;
-   var $cm33_datainicio_ano = null;
-   var $cm33_datainicio = null;
-   var $cm33_datafim_dia = null;
-   var $cm33_datafim_mes = null;
-   var $cm33_datafim_ano = null;
-   var $cm33_datafim = null;
-   var $cm33_percentual = 0;
-   var $cm33_obs = null;
+   public $cm33_sequencial = 0;
+   public $cm33_processo = 0;
+   public $cm33_sepultamento = 0;
+   public $cm33_isencao = 0;
+   public $cm33_datalanc_dia = null;
+   public $cm33_datalanc_mes = null;
+   public $cm33_datalanc_ano = null;
+   public $cm33_datalanc = null;
+   public $cm33_datainicio_dia = null;
+   public $cm33_datainicio_mes = null;
+   public $cm33_datainicio_ano = null;
+   public $cm33_datainicio = null;
+   public $cm33_datafim_dia = null;
+   public $cm33_datafim_mes = null;
+   public $cm33_datafim_ano = null;
+   public $cm33_datafim = null;
+   public $cm33_percentual = 0;
+   public $cm33_obs = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  cm33_sequencial = int4 = Sequencial
                  cm33_processo = int4 = Processo
                  cm33_sepultamento = int4 = Sepultamento
@@ -73,10 +73,10 @@ class cl_sepultamentoisencao {
                  cm33_obs = text = Observação
                  ";
    //funcao construtor da classe
-   function cl_sepultamentoisencao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sepultamentoisencao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -182,10 +182,10 @@ class cl_sepultamentoisencao {
          $this->erro_status = "0";
          return false;
        }
-       $this->cm33_sequencial = pg_result($result,0,0);
+       $this->cm33_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from sepultamentoisencao_cm33_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cm33_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cm33_sequencial)){
          $this->erro_sql = " Campo cm33_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -229,7 +229,7 @@ class cl_sepultamentoisencao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "sepultamentoisencao ($this->cm33_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "sepultamentoisencao já Cadastrado";
@@ -253,18 +253,18 @@ class cl_sepultamentoisencao {
      $resaco = $this->sql_record($this->sql_query_file($this->cm33_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14602,'$this->cm33_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2567,14602,'','".AddSlashes(pg_result($resaco,0,'cm33_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2567,14603,'','".AddSlashes(pg_result($resaco,0,'cm33_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2567,14604,'','".AddSlashes(pg_result($resaco,0,'cm33_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2567,14605,'','".AddSlashes(pg_result($resaco,0,'cm33_isencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2567,14606,'','".AddSlashes(pg_result($resaco,0,'cm33_datalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2567,14607,'','".AddSlashes(pg_result($resaco,0,'cm33_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2567,14608,'','".AddSlashes(pg_result($resaco,0,'cm33_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2567,14609,'','".AddSlashes(pg_result($resaco,0,'cm33_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2567,14610,'','".AddSlashes(pg_result($resaco,0,'cm33_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2567,14602,'','".AddSlashes(pg_fetch_result($resaco,0,'cm33_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2567,14603,'','".AddSlashes(pg_fetch_result($resaco,0,'cm33_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2567,14604,'','".AddSlashes(pg_fetch_result($resaco,0,'cm33_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2567,14605,'','".AddSlashes(pg_fetch_result($resaco,0,'cm33_isencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2567,14606,'','".AddSlashes(pg_fetch_result($resaco,0,'cm33_datalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2567,14607,'','".AddSlashes(pg_fetch_result($resaco,0,'cm33_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2567,14608,'','".AddSlashes(pg_fetch_result($resaco,0,'cm33_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2567,14609,'','".AddSlashes(pg_fetch_result($resaco,0,'cm33_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2567,14610,'','".AddSlashes(pg_fetch_result($resaco,0,'cm33_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -273,10 +273,10 @@ class cl_sepultamentoisencao {
       $this->atualizacampos();
      $sql = " update sepultamentoisencao set ";
      $virgula = "";
-     if(trim($this->cm33_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_sequencial"])){
+     if(trim((string) $this->cm33_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_sequencial"])){
        $sql  .= $virgula." cm33_sequencial = $this->cm33_sequencial ";
        $virgula = ",";
-       if(trim($this->cm33_sequencial) == null ){
+       if(trim((string) $this->cm33_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "cm33_sequencial";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_sepultamentoisencao {
          return false;
        }
      }
-     if(trim($this->cm33_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_processo"])){
+     if(trim((string) $this->cm33_processo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_processo"])){
        $sql  .= $virgula." cm33_processo = $this->cm33_processo ";
        $virgula = ",";
-       if(trim($this->cm33_processo) == null ){
+       if(trim((string) $this->cm33_processo) == null ){
          $this->erro_sql = " Campo Processo nao Informado.";
          $this->erro_campo = "cm33_processo";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_sepultamentoisencao {
          return false;
        }
      }
-     if(trim($this->cm33_sepultamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_sepultamento"])){
+     if(trim((string) $this->cm33_sepultamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_sepultamento"])){
        $sql  .= $virgula." cm33_sepultamento = $this->cm33_sepultamento ";
        $virgula = ",";
-       if(trim($this->cm33_sepultamento) == null ){
+       if(trim((string) $this->cm33_sepultamento) == null ){
          $this->erro_sql = " Campo Sepultamento nao Informado.";
          $this->erro_campo = "cm33_sepultamento";
          $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_sepultamentoisencao {
          return false;
        }
      }
-     if(trim($this->cm33_isencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_isencao"])){
+     if(trim((string) $this->cm33_isencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_isencao"])){
        $sql  .= $virgula." cm33_isencao = $this->cm33_isencao ";
        $virgula = ",";
-       if(trim($this->cm33_isencao) == null ){
+       if(trim((string) $this->cm33_isencao) == null ){
          $this->erro_sql = " Campo Isenção nao Informado.";
          $this->erro_campo = "cm33_isencao";
          $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_sepultamentoisencao {
          return false;
        }
      }
-     if(trim($this->cm33_datalanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_datalanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm33_datalanc_dia"] !="") ){
+     if(trim((string) $this->cm33_datalanc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_datalanc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm33_datalanc_dia"] !="") ){
        $sql  .= $virgula." cm33_datalanc = '$this->cm33_datalanc' ";
        $virgula = ",";
-       if(trim($this->cm33_datalanc) == null ){
+       if(trim((string) $this->cm33_datalanc) == null ){
          $this->erro_sql = " Campo Data Lançamento nao Informado.";
          $this->erro_campo = "cm33_datalanc_dia";
          $this->erro_banco = "";
@@ -341,7 +341,7 @@ class cl_sepultamentoisencao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm33_datalanc_dia"])){
          $sql  .= $virgula." cm33_datalanc = null ";
          $virgula = ",";
-         if(trim($this->cm33_datalanc) == null ){
+         if(trim((string) $this->cm33_datalanc) == null ){
            $this->erro_sql = " Campo Data Lançamento nao Informado.";
            $this->erro_campo = "cm33_datalanc_dia";
            $this->erro_banco = "";
@@ -352,7 +352,7 @@ class cl_sepultamentoisencao {
          }
        }
      }
-     if(trim($this->cm33_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm33_datainicio_dia"] !="") ){
+     if(trim((string) $this->cm33_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm33_datainicio_dia"] !="") ){
        $sql  .= $virgula." cm33_datainicio = '$this->cm33_datainicio' ";
        $virgula = ",";
      }     else{
@@ -361,7 +361,7 @@ class cl_sepultamentoisencao {
          $virgula = ",";
        }
      }
-     if(trim($this->cm33_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm33_datafim_dia"] !="") ){
+     if(trim((string) $this->cm33_datafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_datafim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm33_datafim_dia"] !="") ){
        $sql  .= $virgula." cm33_datafim = '$this->cm33_datafim' ";
        $virgula = ",";
      }     else{
@@ -370,14 +370,14 @@ class cl_sepultamentoisencao {
          $virgula = ",";
        }
      }
-     if(trim($this->cm33_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_percentual"])){
-        if(trim($this->cm33_percentual)=="" && isset($GLOBALS["HTTP_POST_VARS"]["cm33_percentual"])){
+     if(trim((string) $this->cm33_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_percentual"])){
+        if(trim((string) $this->cm33_percentual)=="" && isset($GLOBALS["HTTP_POST_VARS"]["cm33_percentual"])){
            $this->cm33_percentual = "0" ;
         }
        $sql  .= $virgula." cm33_percentual = $this->cm33_percentual ";
        $virgula = ",";
      }
-     if(trim($this->cm33_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_obs"])){
+     if(trim((string) $this->cm33_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm33_obs"])){
        $sql  .= $virgula." cm33_obs = '$this->cm33_obs' ";
        $virgula = ",";
      }
@@ -389,27 +389,27 @@ class cl_sepultamentoisencao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14602,'$this->cm33_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm33_sequencial"]) || $this->cm33_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2567,14602,'".AddSlashes(pg_result($resaco,$conresaco,'cm33_sequencial'))."','$this->cm33_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2567,14602,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm33_sequencial'))."','$this->cm33_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm33_processo"]) || $this->cm33_processo != "")
-           $resac = db_query("insert into db_acount values($acount,2567,14603,'".AddSlashes(pg_result($resaco,$conresaco,'cm33_processo'))."','$this->cm33_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2567,14603,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm33_processo'))."','$this->cm33_processo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm33_sepultamento"]) || $this->cm33_sepultamento != "")
-           $resac = db_query("insert into db_acount values($acount,2567,14604,'".AddSlashes(pg_result($resaco,$conresaco,'cm33_sepultamento'))."','$this->cm33_sepultamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2567,14604,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm33_sepultamento'))."','$this->cm33_sepultamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm33_isencao"]) || $this->cm33_isencao != "")
-           $resac = db_query("insert into db_acount values($acount,2567,14605,'".AddSlashes(pg_result($resaco,$conresaco,'cm33_isencao'))."','$this->cm33_isencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2567,14605,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm33_isencao'))."','$this->cm33_isencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm33_datalanc"]) || $this->cm33_datalanc != "")
-           $resac = db_query("insert into db_acount values($acount,2567,14606,'".AddSlashes(pg_result($resaco,$conresaco,'cm33_datalanc'))."','$this->cm33_datalanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2567,14606,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm33_datalanc'))."','$this->cm33_datalanc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm33_datainicio"]) || $this->cm33_datainicio != "")
-           $resac = db_query("insert into db_acount values($acount,2567,14607,'".AddSlashes(pg_result($resaco,$conresaco,'cm33_datainicio'))."','$this->cm33_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2567,14607,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm33_datainicio'))."','$this->cm33_datainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm33_datafim"]) || $this->cm33_datafim != "")
-           $resac = db_query("insert into db_acount values($acount,2567,14608,'".AddSlashes(pg_result($resaco,$conresaco,'cm33_datafim'))."','$this->cm33_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2567,14608,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm33_datafim'))."','$this->cm33_datafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm33_percentual"]) || $this->cm33_percentual != "")
-           $resac = db_query("insert into db_acount values($acount,2567,14609,'".AddSlashes(pg_result($resaco,$conresaco,'cm33_percentual'))."','$this->cm33_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2567,14609,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm33_percentual'))."','$this->cm33_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm33_obs"]) || $this->cm33_obs != "")
-           $resac = db_query("insert into db_acount values($acount,2567,14610,'".AddSlashes(pg_result($resaco,$conresaco,'cm33_obs'))."','$this->cm33_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2567,14610,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm33_obs'))."','$this->cm33_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -454,18 +454,18 @@ class cl_sepultamentoisencao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14602,'$cm33_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2567,14602,'','".AddSlashes(pg_result($resaco,$iresaco,'cm33_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2567,14603,'','".AddSlashes(pg_result($resaco,$iresaco,'cm33_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2567,14604,'','".AddSlashes(pg_result($resaco,$iresaco,'cm33_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2567,14605,'','".AddSlashes(pg_result($resaco,$iresaco,'cm33_isencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2567,14606,'','".AddSlashes(pg_result($resaco,$iresaco,'cm33_datalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2567,14607,'','".AddSlashes(pg_result($resaco,$iresaco,'cm33_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2567,14608,'','".AddSlashes(pg_result($resaco,$iresaco,'cm33_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2567,14609,'','".AddSlashes(pg_result($resaco,$iresaco,'cm33_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2567,14610,'','".AddSlashes(pg_result($resaco,$iresaco,'cm33_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2567,14602,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm33_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2567,14603,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm33_processo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2567,14604,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm33_sepultamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2567,14605,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm33_isencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2567,14606,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm33_datalanc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2567,14607,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm33_datainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2567,14608,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm33_datafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2567,14609,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm33_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2567,14610,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm33_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sepultamentoisencao
@@ -525,7 +525,7 @@ class cl_sepultamentoisencao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sepultamentoisencao";
@@ -540,7 +540,7 @@ class cl_sepultamentoisencao {
    function sql_query ( $cm33_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -576,7 +576,7 @@ class cl_sepultamentoisencao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -589,7 +589,7 @@ class cl_sepultamentoisencao {
    function sql_query_file ( $cm33_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -610,7 +610,7 @@ class cl_sepultamentoisencao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

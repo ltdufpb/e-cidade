@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE cidadaotelefone
 class cl_cidadaotelefone { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ov07_sequencial = 0; 
-   var $ov07_seq = 0; 
-   var $ov07_cidadao = 0; 
-   var $ov07_numero = null; 
-   var $ov07_tipotelefone = 0; 
-   var $ov07_ddd = null; 
-   var $ov07_ramal = null; 
-   var $ov07_obs = null; 
-   var $ov07_principal = 'f'; 
+   public $ov07_sequencial = 0; 
+   public $ov07_seq = 0; 
+   public $ov07_cidadao = 0; 
+   public $ov07_numero = null; 
+   public $ov07_tipotelefone = 0; 
+   public $ov07_ddd = null; 
+   public $ov07_ramal = null; 
+   public $ov07_obs = null; 
+   public $ov07_principal = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ov07_sequencial = int4 = Sequencial 
                  ov07_seq = int4 = Sequencial 
                  ov07_cidadao = int4 = Cidadão 
@@ -64,10 +64,10 @@ class cl_cidadaotelefone {
                  ov07_principal = bool = Principal 
                  ";
    //funcao construtor da classe 
-   function cl_cidadaotelefone() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cidadaotelefone"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -150,10 +150,10 @@ class cl_cidadaotelefone {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ov07_sequencial = pg_result($result,0,0); 
+       $this->ov07_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cidadaotelefone_ov07_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ov07_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ov07_sequencial)){
          $this->erro_sql = " Campo ov07_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -197,7 +197,7 @@ class cl_cidadaotelefone {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de telefones do cidadao ($this->ov07_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de telefones do cidadao já Cadastrado";
@@ -223,18 +223,18 @@ class cl_cidadaotelefone {
        $resaco = $this->sql_record($this->sql_query_file($this->ov07_sequencial));
        if(($resaco!=false)||($this->numrows!=0)){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14749,'$this->ov07_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,2599,14749,'','".AddSlashes(pg_result($resaco,0,'ov07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2599,14750,'','".AddSlashes(pg_result($resaco,0,'ov07_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2599,14751,'','".AddSlashes(pg_result($resaco,0,'ov07_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2599,14752,'','".AddSlashes(pg_result($resaco,0,'ov07_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2599,14753,'','".AddSlashes(pg_result($resaco,0,'ov07_tipotelefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2599,14754,'','".AddSlashes(pg_result($resaco,0,'ov07_ddd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2599,14755,'','".AddSlashes(pg_result($resaco,0,'ov07_ramal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2599,14756,'','".AddSlashes(pg_result($resaco,0,'ov07_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2599,14859,'','".AddSlashes(pg_result($resaco,0,'ov07_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2599,14749,'','".AddSlashes(pg_fetch_result($resaco,0,'ov07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2599,14750,'','".AddSlashes(pg_fetch_result($resaco,0,'ov07_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2599,14751,'','".AddSlashes(pg_fetch_result($resaco,0,'ov07_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2599,14752,'','".AddSlashes(pg_fetch_result($resaco,0,'ov07_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2599,14753,'','".AddSlashes(pg_fetch_result($resaco,0,'ov07_tipotelefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2599,14754,'','".AddSlashes(pg_fetch_result($resaco,0,'ov07_ddd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2599,14755,'','".AddSlashes(pg_fetch_result($resaco,0,'ov07_ramal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2599,14756,'','".AddSlashes(pg_fetch_result($resaco,0,'ov07_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2599,14859,'','".AddSlashes(pg_fetch_result($resaco,0,'ov07_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -244,10 +244,10 @@ class cl_cidadaotelefone {
       $this->atualizacampos();
      $sql = " update cidadaotelefone set ";
      $virgula = "";
-     if(trim($this->ov07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_sequencial"])){ 
+     if(trim((string) $this->ov07_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_sequencial"])){ 
        $sql  .= $virgula." ov07_sequencial = $this->ov07_sequencial ";
        $virgula = ",";
-       if(trim($this->ov07_sequencial) == null ){ 
+       if(trim((string) $this->ov07_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ov07_sequencial";
          $this->erro_banco = "";
@@ -257,10 +257,10 @@ class cl_cidadaotelefone {
          return false;
        }
      }
-     if(trim($this->ov07_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_seq"])){ 
+     if(trim((string) $this->ov07_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_seq"])){ 
        $sql  .= $virgula." ov07_seq = $this->ov07_seq ";
        $virgula = ",";
-       if(trim($this->ov07_seq) == null ){ 
+       if(trim((string) $this->ov07_seq) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ov07_seq";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_cidadaotelefone {
          return false;
        }
      }
-     if(trim($this->ov07_cidadao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_cidadao"])){ 
+     if(trim((string) $this->ov07_cidadao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_cidadao"])){ 
        $sql  .= $virgula." ov07_cidadao = $this->ov07_cidadao ";
        $virgula = ",";
-       if(trim($this->ov07_cidadao) == null ){ 
+       if(trim((string) $this->ov07_cidadao) == null ){ 
          $this->erro_sql = " Campo Cidadão nao Informado.";
          $this->erro_campo = "ov07_cidadao";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_cidadaotelefone {
          return false;
        }
      }
-     if(trim($this->ov07_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_numero"])){ 
+     if(trim((string) $this->ov07_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_numero"])){ 
        $sql  .= $virgula." ov07_numero = '$this->ov07_numero' ";
        $virgula = ",";
-       if(trim($this->ov07_numero) == null ){ 
+       if(trim((string) $this->ov07_numero) == null ){ 
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "ov07_numero";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_cidadaotelefone {
          return false;
        }
      }
-     if(trim($this->ov07_tipotelefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_tipotelefone"])){ 
+     if(trim((string) $this->ov07_tipotelefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_tipotelefone"])){ 
        $sql  .= $virgula." ov07_tipotelefone = $this->ov07_tipotelefone ";
        $virgula = ",";
-       if(trim($this->ov07_tipotelefone) == null ){ 
+       if(trim((string) $this->ov07_tipotelefone) == null ){ 
          $this->erro_sql = " Campo Tipo Telefone nao Informado.";
          $this->erro_campo = "ov07_tipotelefone";
          $this->erro_banco = "";
@@ -309,22 +309,22 @@ class cl_cidadaotelefone {
          return false;
        }
      }
-     if(trim($this->ov07_ddd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_ddd"])){ 
+     if(trim((string) $this->ov07_ddd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_ddd"])){ 
        $sql  .= $virgula." ov07_ddd = '$this->ov07_ddd' ";
        $virgula = ",";
      }
-     if(trim($this->ov07_ramal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_ramal"])){ 
+     if(trim((string) $this->ov07_ramal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_ramal"])){ 
        $sql  .= $virgula." ov07_ramal = '$this->ov07_ramal' ";
        $virgula = ",";
      }
-     if(trim($this->ov07_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_obs"])){ 
+     if(trim((string) $this->ov07_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_obs"])){ 
        $sql  .= $virgula." ov07_obs = '$this->ov07_obs' ";
        $virgula = ",";
      }
-     if(trim($this->ov07_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_principal"])){ 
+     if(trim((string) $this->ov07_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov07_principal"])){ 
        $sql  .= $virgula." ov07_principal = '$this->ov07_principal' ";
        $virgula = ",";
-       if(trim($this->ov07_principal) == null ){ 
+       if(trim((string) $this->ov07_principal) == null ){ 
          $this->erro_sql = " Campo Principal nao Informado.";
          $this->erro_campo = "ov07_principal";
          $this->erro_banco = "";
@@ -345,27 +345,27 @@ class cl_cidadaotelefone {
        if($this->numrows>0){
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,14749,'$this->ov07_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov07_sequencial"]) || $this->ov07_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,2599,14749,'".AddSlashes(pg_result($resaco,$conresaco,'ov07_sequencial'))."','$this->ov07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2599,14749,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov07_sequencial'))."','$this->ov07_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov07_seq"]) || $this->ov07_seq != "")
-             $resac = db_query("insert into db_acount values($acount,2599,14750,'".AddSlashes(pg_result($resaco,$conresaco,'ov07_seq'))."','$this->ov07_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2599,14750,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov07_seq'))."','$this->ov07_seq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov07_cidadao"]) || $this->ov07_cidadao != "")
-             $resac = db_query("insert into db_acount values($acount,2599,14751,'".AddSlashes(pg_result($resaco,$conresaco,'ov07_cidadao'))."','$this->ov07_cidadao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2599,14751,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov07_cidadao'))."','$this->ov07_cidadao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov07_numero"]) || $this->ov07_numero != "")
-             $resac = db_query("insert into db_acount values($acount,2599,14752,'".AddSlashes(pg_result($resaco,$conresaco,'ov07_numero'))."','$this->ov07_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2599,14752,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov07_numero'))."','$this->ov07_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov07_tipotelefone"]) || $this->ov07_tipotelefone != "")
-             $resac = db_query("insert into db_acount values($acount,2599,14753,'".AddSlashes(pg_result($resaco,$conresaco,'ov07_tipotelefone'))."','$this->ov07_tipotelefone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2599,14753,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov07_tipotelefone'))."','$this->ov07_tipotelefone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov07_ddd"]) || $this->ov07_ddd != "")
-             $resac = db_query("insert into db_acount values($acount,2599,14754,'".AddSlashes(pg_result($resaco,$conresaco,'ov07_ddd'))."','$this->ov07_ddd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2599,14754,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov07_ddd'))."','$this->ov07_ddd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov07_ramal"]) || $this->ov07_ramal != "")
-             $resac = db_query("insert into db_acount values($acount,2599,14755,'".AddSlashes(pg_result($resaco,$conresaco,'ov07_ramal'))."','$this->ov07_ramal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2599,14755,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov07_ramal'))."','$this->ov07_ramal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov07_obs"]) || $this->ov07_obs != "")
-             $resac = db_query("insert into db_acount values($acount,2599,14756,'".AddSlashes(pg_result($resaco,$conresaco,'ov07_obs'))."','$this->ov07_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2599,14756,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov07_obs'))."','$this->ov07_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ov07_principal"]) || $this->ov07_principal != "")
-             $resac = db_query("insert into db_acount values($acount,2599,14859,'".AddSlashes(pg_result($resaco,$conresaco,'ov07_principal'))."','$this->ov07_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2599,14859,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov07_principal'))."','$this->ov07_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -414,18 +414,18 @@ class cl_cidadaotelefone {
        if(($resaco!=false)||($this->numrows!=0)){
          for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,14749,'$ov07_sequencial','E')");
-           $resac = db_query("insert into db_acount values($acount,2599,14749,'','".AddSlashes(pg_result($resaco,$iresaco,'ov07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2599,14750,'','".AddSlashes(pg_result($resaco,$iresaco,'ov07_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2599,14751,'','".AddSlashes(pg_result($resaco,$iresaco,'ov07_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2599,14752,'','".AddSlashes(pg_result($resaco,$iresaco,'ov07_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2599,14753,'','".AddSlashes(pg_result($resaco,$iresaco,'ov07_tipotelefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2599,14754,'','".AddSlashes(pg_result($resaco,$iresaco,'ov07_ddd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2599,14755,'','".AddSlashes(pg_result($resaco,$iresaco,'ov07_ramal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2599,14756,'','".AddSlashes(pg_result($resaco,$iresaco,'ov07_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac = db_query("insert into db_acount values($acount,2599,14859,'','".AddSlashes(pg_result($resaco,$iresaco,'ov07_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2599,14749,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov07_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2599,14750,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov07_seq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2599,14751,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov07_cidadao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2599,14752,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov07_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2599,14753,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov07_tipotelefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2599,14754,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov07_ddd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2599,14755,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov07_ramal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2599,14756,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov07_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2599,14859,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov07_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -486,7 +486,7 @@ class cl_cidadaotelefone {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cidadaotelefone";
@@ -501,7 +501,7 @@ class cl_cidadaotelefone {
    function sql_query ( $ov07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -526,7 +526,7 @@ class cl_cidadaotelefone {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -539,7 +539,7 @@ class cl_cidadaotelefone {
    function sql_query_file ( $ov07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -560,7 +560,7 @@ class cl_cidadaotelefone {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -572,7 +572,7 @@ class cl_cidadaotelefone {
    function sql_query_telefonetipo ( $ov07_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -594,7 +594,7 @@ class cl_cidadaotelefone {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

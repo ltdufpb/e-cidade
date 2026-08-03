@@ -85,7 +85,7 @@ try {
      */
     case 'buscaVinculosRealizados':
 
-      $oRetorno->aDados        = array();
+      $oRetorno->aDados        = [];
       $oDaoRegenciaHorario     = db_utils::getDao("regenciahorario");
       $sCamposRegenciaHorario  = "distinct ed58_i_regencia, ed58_i_rechumano, ed17_i_turno, ed59_i_disciplina";
       $sWhereRegenciaHorario   = "ed59_i_turma = {$oParam->iTurma} AND ed59_i_serie = {$oParam->iEtapa}";
@@ -108,9 +108,9 @@ try {
             continue;
           }
 
-          $oDadosVinculo->sRegente     = urlencode($oDocente->getNome());
+          $oDadosVinculo->sRegente     = urlencode((string) $oDocente->getNome());
           $oDisciplina                 = DisciplinaRepository::getDisciplinaByCodigo($oDadosRegenciaHorario->ed59_i_disciplina);
-          $oDadosVinculo->sDisciplina  = urlencode($oDisciplina->getNomeDisciplina());
+          $oDadosVinculo->sDisciplina  = urlencode((string) $oDisciplina->getNomeDisciplina());
           $oTurno                      = new Turno($oDadosRegenciaHorario->ed17_i_turno);
           $oDadosVinculo->sTurno       = urlencode($oTurno->getDescricao());
           $oDadosVinculo->lConselheiro = false;
@@ -168,7 +168,7 @@ try {
      */
     case 'buscaDisciplinasParaVincularComRegente':
 
-      $oRetorno->aDisciplinas = array();
+      $oRetorno->aDisciplinas = [];
 
       $oTurma     = TurmaRepository::getTurmaByCodigo($oParam->iTurma);
       $oEtapa     = EtapaRepository::getEtapaByCodigo($oParam->iEtapa);
@@ -185,7 +185,7 @@ try {
 
           $oDadosRegencia             = new stdClass();
           $oDadosRegencia->iRegencia  = $oRegencia->getCodigo();
-          $oDadosRegencia->sDescricao = urlencode($oRegencia->getDisciplina()->getNomeDisciplina());
+          $oDadosRegencia->sDescricao = urlencode((string) $oRegencia->getDisciplina()->getNomeDisciplina());
           $oRetorno->aDisciplinas[]   = $oDadosRegencia;
         }
       }
@@ -369,12 +369,12 @@ try {
 
       if (isset($oParam->iNumCgm) && !empty($oParam->iNumCgm)) {
 
-        $oRetorno->aAtividades = array();
+        $oRetorno->aAtividades = [];
         $oDocente              = DocenteRepository::getDocenteByCodigo($oParam->iNumCgm);
         $oEscola               = EscolaRepository::getEscolaByCodigo($iEscola);
         $aAtividades           = $oDocente->getAtividades($oEscola);
 
-        $aCodigo = array();
+        $aCodigo = [];
 
         foreach ($aAtividades as $oDocenteAtividade) {
 
@@ -382,7 +382,7 @@ try {
 
             $oDadosAtividade             = new stdClass();
             $oDadosAtividade->iCodigo    = $oDocenteAtividade->getAtividade()->getCodigo();
-            $oDadosAtividade->sDescricao = urlencode($oDocenteAtividade->getAtividade()->getDescricao());
+            $oDadosAtividade->sDescricao = urlencode((string) $oDocenteAtividade->getAtividade()->getDescricao());
             $oRetorno->aAtividades[]     = $oDadosAtividade;
 
             $aCodigo[] = $oDocenteAtividade->getAtividade()->getCodigo();
@@ -401,7 +401,7 @@ try {
         $iEscola = null;
       }
 
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = " ed01_c_regencia = 'S' ";
 
       if ( !empty($iEscola) ) {
@@ -432,7 +432,7 @@ try {
 
       $iLinhas = $oDaoRecHumano->numrows;
 
-      $oRetorno->aProfessores = array();
+      $oRetorno->aProfessores = [];
       for ($i = 0; $i < $iLinhas; $i++) {
 
         $oRetorno->aProfessores[] = db_utils::fieldsMemory($rsProfessores, $i, true, false, true);
@@ -453,7 +453,7 @@ try {
       $rsRecHumanoMovimentacao     = pg_query( $sSqlRecHumanoMovimentacao );
       $iLinhas                     = pg_num_rows( $rsRecHumanoMovimentacao );
 
-      $oRetorno->aMovimentacoes = array();
+      $oRetorno->aMovimentacoes = [];
       if ( $iLinhas > 0 ) {
 
         for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
@@ -464,7 +464,7 @@ try {
 
           $oDados->ed118_escola       = urlencode( $oEscola->getNome() );
           $oDados->ed118_usuario      = urlencode( $oUsuario->getNome() );
-          $oDados->ed118_resumo       =  urlencode( $oDados->ed118_resumo );
+          $oDados->ed118_resumo       =  urlencode( (string) $oDados->ed118_resumo );
           $oRetorno->aMovimentacoes[] = $oDados;
         }
       }

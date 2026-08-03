@@ -106,10 +106,10 @@ $oRotulo->label("pc80_codproc");
           </td>
           <td>
             <?php 
-              $x = array("0"=>"Todos",
+              $x = ["0"=>"Todos",
               					 "1"=>"Em Análise",
                          "2"=>"Autorizado",
-                         "3"=>"Não Autorizado");
+                         "3"=>"Não Autorizado"];
               db_select('situacao', $x, true, 1,"");
             ?>
           </td>

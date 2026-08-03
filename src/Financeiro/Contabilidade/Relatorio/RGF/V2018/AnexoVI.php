@@ -34,7 +34,7 @@ class AnexoVI extends AnexoAbstract
     private $exibirDemonstrativoOperacoesCredito;
     private $exibirDemonstrativoRestosPagar;
 
-    protected $linhas = array();
+    protected $linhas = [];
 
     private $valorReceitaCorrenteLiquida;
     private $valorReceitaCorrenteLiquidaAjustada;
@@ -450,15 +450,10 @@ class AnexoVI extends AnexoAbstract
             'DB_instit' => db_getsession('DB_instit')
         ];
 
-        switch (AnexoUmRgfFactory::getModelo($this->ano)) {
-            case 'in13':
-                $service = new AnexoUmInRsService($filtros);
-                break;
-            case 'mdf':
-            default:
-                $service = new AnexoUmMdfService($filtros);
-                break;
-        }
+        $service = match (AnexoUmRgfFactory::getModelo($this->ano)) {
+            'in13' => new AnexoUmInRsService($filtros),
+            default => new AnexoUmMdfService($filtros),
+        };
 
         return $service->processaLinhasSimplificado();
     }
@@ -506,9 +501,7 @@ class AnexoVI extends AnexoAbstract
     {
         if ($this->ano < 2022) {
             if (empty($this->simplificadoAnexoV)) {
-                $instituicoes = array_map(function ($instituicao) {
-                    return $instituicao->getCodigo();
-                }, $this->instituicoes);
+                $instituicoes = array_map(fn($instituicao) => $instituicao->getCodigo(), $this->instituicoes);
 
                 $anexo = AnexoVFactory::getInstance($this->ano, $this->periodo);
                 $anexo->setInstituicoes(implode(',', $instituicoes));
@@ -718,26 +711,22 @@ class AnexoVI extends AnexoAbstract
 
     protected function transformPeriodoEmPeriodoMensal()
     {
-        switch ($this->periodo->getCodigo()) {
-            case 12: //1º SEMESTRE
-                return 22;
-            case 13: //2º SEMESTRE
-            case 16: //3º QUADRIMESTRE
-                return 28;
-            case 14: //1º QUADRIMESTRE
-                return 20;
-            case 15: //2º QUADRIMESTRE
-                return 24;
-            default:
-                throw new \Exception("Período não mapeado");
-        }
+        return match ($this->periodo->getCodigo()) {
+            //1º SEMESTRE
+            12 => 22,
+            //3º QUADRIMESTRE
+            13, 16 => 28,
+            //1º QUADRIMESTRE
+            14 => 20,
+            //2º QUADRIMESTRE
+            15 => 24,
+            default => throw new \Exception("Período não mapeado"),
+        };
     }
 
     private function simplificadoAnexoIINovo()
     {
-        $instituicoes = array_map(function ($instituicao) {
-            return $instituicao->getCodigo();
-        }, $this->instituicoes);
+        $instituicoes = array_map(fn($instituicao) => $instituicao->getCodigo(), $this->instituicoes);
 
         $filtros = [
             'codigo_relatorio' => AnexoDoisRgfFactory::getCodigoRelatorio($this->ano),

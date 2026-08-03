@@ -34,8 +34,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_empempenho_classe.php"));
 
 //---  parser POST/GET
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 //---- instancia classes
 $clempempenho = new cl_empempenho;
@@ -138,7 +138,7 @@ if (!isset($testdt)){
         </td>
         <td>
   	      <?php 
-            $x = array("t"=>"Todas","c"=>"com Alvará","s"=>"sem Alvará");
+            $x = ["t"=>"Todas","c"=>"com Alvará","s"=>"sem Alvará"];
             db_select('alvara',$x,true,1,"onchange='js_testadata(this.value);'");
           ?>
 	      </td>

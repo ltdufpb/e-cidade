@@ -104,20 +104,20 @@ class SigfisArquivoLiquidacao extends SigfisArquivoBase implements iPadArquivoTX
         /**
          * extraindo o ano e o mês da data do estorno e transformando a data para o formato correto 
          */
-        $aData   = explode('-', $oLiquidacao->c70_data);
+        $aData   = explode('-', (string) $oLiquidacao->c70_data);
         $sData   = $aData[2].$aData[1].$aData[0];
         $sAnoMes = $aData[0].$aData[1];
         
     		$oDadosLinha = new stdClass();
 //    		$oDadosLinha->cd_UnidadeOrcamentaria  = str_pad($oLiquidacao->o58_orgao,     2, '0', STR_PAD_LEFT);
-    		$oDadosLinha->cd_UnidadeOrcamentaria  = str_pad($oLiquidacao->o58_unidade,   4, ' ', STR_PAD_LEFT);
-    		$oDadosLinha->nu_Empenho              = str_pad($oLiquidacao->e60_codemp,   10, ' ', STR_PAD_RIGHT);
-    		$oDadosLinha->cd_Unidade              = str_pad($this->sCodigoTribunal,      4, ' ', STR_PAD_LEFT);
+    		$oDadosLinha->cd_UnidadeOrcamentaria  = str_pad((string) $oLiquidacao->o58_unidade,   4, ' ', STR_PAD_LEFT);
+    		$oDadosLinha->nu_Empenho              = str_pad((string) $oLiquidacao->e60_codemp,   10, ' ', STR_PAD_RIGHT);
+    		$oDadosLinha->cd_Unidade              = str_pad((string) $this->sCodigoTribunal,      4, ' ', STR_PAD_LEFT);
     		$oDadosLinha->dt_Liquidacao           = $sData;
     		$oDadosLinha->vl_Liquidacao           = str_pad($iValorSemSeparador,        16, ' ', STR_PAD_LEFT);
-    		$oDadosLinha->dt_Ano                  = str_pad($oLiquidacao->e60_anousu,    4, ' ', STR_PAD_LEFT);
+    		$oDadosLinha->dt_Ano                  = str_pad((string) $oLiquidacao->e60_anousu,    4, ' ', STR_PAD_LEFT);
     		$oDadosLinha->dt_AnoMes               = $sAnoMes;
-    		$oDadosLinha->cd_Orgao                = str_pad($oLiquidacao->o58_orgao,     4, ' ', STR_PAD_LEFT);
+    		$oDadosLinha->cd_Orgao                = str_pad((string) $oLiquidacao->o58_orgao,     4, ' ', STR_PAD_LEFT);
     		$oDadosLinha->Reservado_tce           = str_pad('0',                        10, ' ', STR_PAD_RIGHT);
     		$oDadosLinha->codigolinha             = 415;
     		$this->aDados[]                       = $oDadosLinha;

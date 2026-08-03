@@ -40,7 +40,7 @@ class AgendaAssentamentoRepository {
    * @var Array
    * @access private
    */
-  static private $aColecao = array();
+  static private $aColecao = [];
 
   /**
    * Representa a instancia a classe
@@ -77,7 +77,7 @@ class AgendaAssentamentoRepository {
 
     if (empty(self::$oInstance)) {
 
-      $sClasse  = get_class();
+      $sClasse  = self::class;
       self::$oInstance = new AgendaAssentamentoRepository();
     }
 
@@ -198,7 +198,7 @@ class AgendaAssentamentoRepository {
 
           return $oRepository->aColecao[$iCodigo];
         }
-      } catch (Exception $oErro) {
+      } catch (Exception) {
       }
     }
   }

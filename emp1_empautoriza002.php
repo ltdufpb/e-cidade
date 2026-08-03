@@ -56,11 +56,11 @@ $db_opcao = 2;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica = array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","empautret"=>"Retenções","anulacao"=>"Anulação"); 
-       $clcriaabas->sizecampo =  array("anulacao"=>"20"); 
-       $clcriaabas->title      =  array("empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","empautret"=>"Retenções","anulacao"=>"Anulação de autorização"); 
-       $clcriaabas->src = array("empautoriza"=>"emp1_empautoriza005.php");
-       $clcriaabas->disabled   =  array("empautitem"=>true,"empautidot"=>"true","prazos"=>"true","empautret"=>"true","anulacao"=>"true"); 
+       $clcriaabas->identifica = ["empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","empautret"=>"Retenções","anulacao"=>"Anulação"]; 
+       $clcriaabas->sizecampo =  ["anulacao"=>"20"]; 
+       $clcriaabas->title      =  ["empautoriza"=>"Autorização","empautitem"=>"Itens","empautidot"=>"Dotação","prazos"=>"Prazos","empautret"=>"Retenções","anulacao"=>"Anulação de autorização"]; 
+       $clcriaabas->src = ["empautoriza"=>"emp1_empautoriza005.php"];
+       $clcriaabas->disabled   =  ["empautitem"=>true,"empautidot"=>"true","prazos"=>"true","empautret"=>"true","anulacao"=>"true"]; 
        $clcriaabas->cria_abas();    
      ?> 
      </td>

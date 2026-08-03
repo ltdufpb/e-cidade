@@ -154,7 +154,7 @@ db_inputdata('db33_data',@$db33_data_dia,@$db33_data_mes,@$db33_data_ano,true,'t
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("db33_codcpd"=>@$db33_codcpd);
+	 $chavepri= ["db33_codcpd"=>@$db33_codcpd];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $db33_codver=$db30_codver;
 	 $cliframe_alterar_excluir->sql     = $cldb_versaocpd->sql_query(null,"*","","db33_codver=$db30_codver");

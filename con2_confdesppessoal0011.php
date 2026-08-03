@@ -36,7 +36,7 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 $clrotulo = new rotulocampo;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>

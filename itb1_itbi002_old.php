@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='itb1_itbi005.php?db_opcao=2'</script>";
   exit;
@@ -39,8 +39,8 @@ include(modification("classes/db_itburbano_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbirural_classe.php"));
 include(modification("classes/db_itbiruralcaract_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clitbi = new cl_itbi;
 $clitburbano = new cl_itburbano;
 $clitbirural = new cl_itbirural;
@@ -48,7 +48,7 @@ $clitbiruralcaract = new cl_itbiruralcaract;
 $db_opcao = 22;
 $db_botao = false;
 global $tipo;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   db_inicio_transacao();
   $db_opcao = 2;
   $clitbi->alterar($it01_guia);
@@ -59,8 +59,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
     $clitbirural->it18_guia = $it01_guia;
     $clitbirural->alterar($it01_guia);
     if(isset($codigo) && isset($valor) && $codigo != "" && $valor != ""){
-      $cod = split(",",$codigo);
-      $val = split(",",$valor);
+      $cod = preg_split("#,#m",(string) $codigo);
+      $val = preg_split("#,#m",(string) $valor);
       for($i=0;$i<sizeof($cod);$i++){
         $clitbiruralcaract->it19_guia = $clitbi->it01_guia;
         $clitbiruralcaract->it19_codigo = $cod[$i];
@@ -141,7 +141,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clitbi->erro_status=="0"){
     $clitbi->erro(true,false);
     $db_botao=true;

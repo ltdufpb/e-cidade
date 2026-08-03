@@ -137,7 +137,7 @@ function js_mostraliclicita1(chave1, chave2){
 function js_atualizaDados(iValor) {
   
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+iValor";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+iValor";
   ?>
 }
 function js_validaAcao(iAcao) {

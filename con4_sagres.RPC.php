@@ -126,7 +126,7 @@ switch($oParam->exec) {
             $oRetorno->mensagem = "Arquivo gerado com sucesso!";
         } catch (Exception $e) {
             $oRetorno->erro   = true;
-            $oRetorno->message = utf8_encode($e->getMessage());
+            $oRetorno->message = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
         }
         
     break;
@@ -179,8 +179,8 @@ switch($oParam->exec) {
             $clResponsavelUnidadeOrcamentaria->c140_cgmsubstituto = $oParam->c140_substituto ? $oParam->c140_cgmsubstituto : null;
             $clResponsavelUnidadeOrcamentaria->c140_principal = $oParam->c140_principal;
             $clResponsavelUnidadeOrcamentaria->c140_substituto = $oParam->c140_substituto;
-            $clResponsavelUnidadeOrcamentaria->c140_datainicio = implode('-',array_reverse(explode('/',$oParam->c140_datainicio)));
-            $clResponsavelUnidadeOrcamentaria->c140_datafim = implode('-',array_reverse(explode('/',$oParam->c140_datafim)));
+            $clResponsavelUnidadeOrcamentaria->c140_datainicio = implode('-',array_reverse(explode('/',(string) $oParam->c140_datainicio)));
+            $clResponsavelUnidadeOrcamentaria->c140_datafim = implode('-',array_reverse(explode('/',(string) $oParam->c140_datafim)));
             $clResponsavelUnidadeOrcamentaria->c140_tipoatojuridico = $oParam->c140_tipoatojuridico;
             $clResponsavelUnidadeOrcamentaria->c140_idusuario = null;
             $clResponsavelUnidadeOrcamentaria->c140_ativo = 't';
@@ -192,12 +192,12 @@ switch($oParam->exec) {
                 throw new Exception($clResponsavelUnidadeOrcamentaria->erro_msg);
             }
 
-            $oRetorno->message = utf8_encode("Inclusão bem sucedida!");
+            $oRetorno->message = mb_convert_encoding("Inclusão bem sucedida!", 'UTF-8', 'ISO-8859-1');
             db_fim_transacao(false);
 
         } catch (Exception $e) {
             $oRetorno->erro   = true;
-            $oRetorno->message = utf8_encode($e->getMessage());
+            $oRetorno->message = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
         }
             
     break;
@@ -216,7 +216,7 @@ switch($oParam->exec) {
 
             $sSql = $clResponsavelUnidadeOrcamentaria->sql_query(null, $sCamposRowsResponsavel, "c140_ativo desc", implode(" and " , $aWhere));
             $rsRows = $clResponsavelUnidadeOrcamentaria->sql_record($sSql);
-            $oRetorno->rows = array();
+            $oRetorno->rows = [];
 
             if($rsRows) {   
                 $numrows = pg_num_rows($rsRows);
@@ -226,11 +226,11 @@ switch($oParam->exec) {
                     $obj = new StdClass;
                     $obj->sequencial = $oDados->c140_sequencial;
                     $obj->cgm = $oDados->c140_cgm;
-                    $obj->nome = utf8_encode($oDados->nome);
+                    $obj->nome = mb_convert_encoding($oDados->nome, 'UTF-8', 'ISO-8859-1');
                     $obj->principal = $oDados->c140_principal;
                     $obj->substituto = $oDados->c140_substituto;
                     $obj->cgmsub = $oDados->c140_cgmsubstituto;
-                    $obj->nomesub = utf8_encode($oDados->nomesubstituto);
+                    $obj->nomesub = mb_convert_encoding($oDados->nomesubstituto, 'UTF-8', 'ISO-8859-1');
                     $obj->ativo = $oDados->c140_ativo;
                     $obj->periodo = $oDados->datainicio;
                     if(!empty($oDados->datafim)) {
@@ -252,7 +252,7 @@ switch($oParam->exec) {
 
         } catch (Exception $e) {
             $oRetorno->erro   = true;
-            $oRetorno->message = utf8_encode($e->getMessage());
+            $oRetorno->message = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
         }
     break;
 
@@ -295,7 +295,7 @@ switch($oParam->exec) {
             db_fim_transacao(false);
         } catch (Exception $e) {
             $oRetorno->erro   = true;
-            $oRetorno->message = utf8_encode($e->getMessage());
+            $oRetorno->message = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
         }
     break;
 
@@ -337,8 +337,8 @@ switch($oParam->exec) {
             $clOrdenadorDespesa->c139_cgmsubstituto = $oParam->c139_cgmsubstituto;
             $clOrdenadorDespesa->c139_principal = $oParam->c139_principal;
             $clOrdenadorDespesa->c139_substituto = $oParam->c139_substituto;
-            $clOrdenadorDespesa->c139_datainicio = implode('-',array_reverse(explode('/',$oParam->c139_datainicio)));
-            $clOrdenadorDespesa->c139_datafim = implode('-',array_reverse(explode('/',$oParam->c139_datafim)));
+            $clOrdenadorDespesa->c139_datainicio = implode('-',array_reverse(explode('/',(string) $oParam->c139_datainicio)));
+            $clOrdenadorDespesa->c139_datafim = implode('-',array_reverse(explode('/',(string) $oParam->c139_datafim)));
             $clOrdenadorDespesa->c139_tipoatojuridico = $oParam->c139_tipoatojuridico;
             $clOrdenadorDespesa->c139_titulo = empty($oParam->c139_titulo) ? '' : $oParam->c139_titulo;
             $clOrdenadorDespesa->c139_ativo = 't';
@@ -349,12 +349,12 @@ switch($oParam->exec) {
                 throw new Exception($clOrdenadorDespesa->erro_msg);
             }
             
-            $oRetorno->message = utf8_encode("Inclusão bem sucedida!");
+            $oRetorno->message = mb_convert_encoding("Inclusão bem sucedida!", 'UTF-8', 'ISO-8859-1');
             db_fim_transacao(false);
 
         } catch (Exception $e) {
             $oRetorno->erro   = true;
-            $oRetorno->message = utf8_encode($e->getMessage());
+            $oRetorno->message = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
         }
             
     break;
@@ -371,7 +371,7 @@ switch($oParam->exec) {
 
             $sSql = $clOrdenadorDespesa->sql_query(null, $sCamposRowsOrdenador, "c139_ativo desc", implode(" and " , $aWhere));
             $rsRows = $clOrdenadorDespesa->sql_record($sSql);
-            $oRetorno->rows = array();
+            $oRetorno->rows = [];
 
             if($rsRows) {
                 $numrows = pg_num_rows($rsRows);
@@ -382,9 +382,9 @@ switch($oParam->exec) {
                     $obj->sequencial = $oDados->c139_sequencial;
                     $obj->instit = $oDados->c139_instit;
                     $obj->cgm = $oDados->c139_cgm;
-                    $obj->nome = utf8_encode($oDados->nome);
+                    $obj->nome = mb_convert_encoding($oDados->nome, 'UTF-8', 'ISO-8859-1');
                     $obj->cgmsub = $oDados->c139_cgmsubstituto;
-                    $obj->nomesub = utf8_encode($oDados->nomesubstituto);
+                    $obj->nomesub = mb_convert_encoding($oDados->nomesubstituto, 'UTF-8', 'ISO-8859-1');
                     $obj->principal = $oDados->c139_principal;
                     $obj->substituto = $oDados->c139_substituto;
                     $obj->periodo = $oDados->datainicio;
@@ -407,7 +407,7 @@ switch($oParam->exec) {
 
         } catch (Exception $e) {
             $oRetorno->erro   = true;
-            $oRetorno->message = utf8_encode($e->getMessage());
+            $oRetorno->message = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
         }
     break;
 
@@ -447,7 +447,7 @@ switch($oParam->exec) {
             db_fim_transacao(false);
         } catch (Exception $e) {
             $oRetorno->erro   = true;
-            $oRetorno->message = utf8_encode($e->getMessage());
+            $oRetorno->message = mb_convert_encoding($e->getMessage(), 'UTF-8', 'ISO-8859-1');
         }
     break;
 }
@@ -460,19 +460,19 @@ function convertDate($data, $format) {
       break;
       
       case 'Y-m-d':
-        $ano= substr($data, 6);
-        $mes= substr($data, 3,-5);
-        $dia= substr($data, 0,-8);
+        $ano= substr((string) $data, 6);
+        $mes= substr((string) $data, 3,-5);
+        $dia= substr((string) $data, 0,-8);
         return $ano."-".$mes."-".$dia;
       break;
       
       case 'dmY':
-        $timestamp = strtotime($data);
+        $timestamp = strtotime((string) $data);
         return date("dmY", $timestamp);
       break;
 
       case 'Y':
-        $timestamp = strtotime($data);
+        $timestamp = strtotime((string) $data);
         return date("Y", $timestamp);
       break;
     }

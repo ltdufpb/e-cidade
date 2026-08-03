@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -87,7 +87,7 @@ function js_emite(){
         <td> <font size="4"><strong>Totaliza por Banco :</strong></td>
         <td align="left">
            <?php 
-             $x = array("f"=>"NÃO","t"=>"SIM");
+             $x = ["f"=>"NÃO","t"=>"SIM"];
              db_select('simnao',$x,true,4,"");
            ?>
         </td>

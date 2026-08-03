@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oPost    = db_utils::postMemory($_POST);
 
@@ -87,19 +87,19 @@ $clinssirf = new cl_inssirf;
                                 <td>
                                     <?php
 
-                                    $aArquivo = array(
+                                    $aArquivo = [
                                         "1" => "Ativos",
                                         "2" => "Aposentados",
                                         "3" => "Pensionistas",
                                         "4" => "Inativos Tesouro",
                                         "5" => "Pensionistas Tesouro"
-                                    );
-                                    $aArquivo = array(
+                                    ];
+                                    $aArquivo = [
                                         'A' => 'Ativo',
                                         'I' => 'Inativos',
                                         'P' => 'Pensionistas',
                                         'E' => 'Exonerados'
-                                    );
+                                    ];
                                     db_select('iArquivo', $aArquivo, true, 4 );
                                     ?>
                                 </td>
@@ -194,7 +194,7 @@ if ( isset($oPost->gerar) ) {
 
     $iInstit          = db_getsession('DB_instit');
     $iDBinstit        = $iInstit;
-    $aWhere           = array(" 1 = 1 ");
+    $aWhere           = [" 1 = 1 "];
 
     $sDBdatausu       = date('Y-m-d',db_getsession("DB_datausu"));
     $ano              = $oPost->anofolha;
@@ -220,7 +220,7 @@ if ( isset($oPost->gerar) ) {
         $aWhere[]          = "$r44_where";
     }
 
-    $aCampos               = array();
+    $aCampos               = [];
     $sNomeArquivoProcessar = "";
 
     $sSql  = "select *, ";
@@ -580,7 +580,7 @@ if ( isset($oPost->gerar) ) {
     $sSql    = " select {$sCampos} from ({$sSql}) as dd ";
 
     $rsLista = db_query($sSql);
-    $iTotal  = pg_numrows($rsLista);
+    $iTotal  = pg_num_rows($rsLista);
 
     $sArquivo          = "arquivoatuarial_{$sNomeArquivoProcessar}_". date("dmY"). "_.csv";
     $sNomeArquivo      = "tmp/{$sArquivo}";

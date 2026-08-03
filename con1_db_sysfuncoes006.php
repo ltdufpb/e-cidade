@@ -38,7 +38,7 @@ $cldb_sysfuncoes = new cl_db_sysfuncoes;
   
 $cldb_sysfuncoesparam = new cl_db_sysfuncoesparam;
   
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

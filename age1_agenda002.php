@@ -29,28 +29,28 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 if(isset($retorno)) {
   $result = db_query("select * from db_contatos where id = $retorno");
   db_fieldsmemory($result,0);
 }
 
-if(isset($HTTP_POST_VARS["enviar"])) {
-  $id = $HTTP_POST_VARS["id"];
-  $organizacao = $HTTP_POST_VARS["organizacao"];
-  $nome = $HTTP_POST_VARS["nome"];
-  $rua = $HTTP_POST_VARS["rua"];
-  $bairro = $HTTP_POST_VARS["bairro"];
-  $cidade = $HTTP_POST_VARS["cidade"];
-  $uf = $HTTP_POST_VARS["uf"];
-  $cep = $HTTP_POST_VARS["cep"];
-  $telefone = $HTTP_POST_VARS["telefone"];
-  $fax = $HTTP_POST_VARS["fax"];
-  $celular = $HTTP_POST_VARS["celular"];
-  $obs = $HTTP_POST_VARS["obs"];
-  $email = $HTTP_POST_VARS["email"];
-  $pagina = $HTTP_POST_VARS["pagina"];
+if(isset($_POST["enviar"])) {
+  $id = $_POST["id"];
+  $organizacao = $_POST["organizacao"];
+  $nome = $_POST["nome"];
+  $rua = $_POST["rua"];
+  $bairro = $_POST["bairro"];
+  $cidade = $_POST["cidade"];
+  $uf = $_POST["uf"];
+  $cep = $_POST["cep"];
+  $telefone = $_POST["telefone"];
+  $fax = $_POST["fax"];
+  $celular = $_POST["celular"];
+  $obs = $_POST["obs"];
+  $email = $_POST["email"];
+  $pagina = $_POST["pagina"];
 
   db_query("BEGIN");
   $result = db_query("UPDATE db_contatos SET  organizacao = '$organizacao',
@@ -104,24 +104,24 @@ function js_submeter() {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
 	  <?php 
-	   if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
-	     db_postmemory($HTTP_POST_VARS);
+	   if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {
+	     db_postmemory($_POST);
          if(!empty($id)) {
            $result = db_query("select id from db_contatos where id = $id");
-	       if(pg_numrows($result) > 0) {
- 	         db_redireciona("age1_agenda002.php?".base64_encode("retorno=".pg_result($result,0,0)));
+	       if(pg_num_rows($result) > 0) {
+ 	         db_redireciona("age1_agenda002.php?".base64_encode("retorno=".pg_fetch_result($result,0,0)));
 	         exit;
 	       } else {             
              $filtro = base64_encode("id like '".$id."%' order by id");
 	       }
          } else {
 		   if(!empty($nome)) {
-             $filtro = base64_encode("upper(nome) like upper('".$HTTP_POST_VARS["nome"]."%') order by nome");
+             $filtro = base64_encode("upper(nome) like upper('".$_POST["nome"]."%') order by nome");
            } else
-             $filtro = base64_encode("upper(organizacao) like upper('".$HTTP_POST_VARS["organizacao"]."%') order by organizacao");
+             $filtro = base64_encode("upper(organizacao) like upper('".$_POST["organizacao"]."%') order by organizacao");
 	     }
-         if(isset($HTTP_POST_VARS["filtro"]))
-           $filtro = $HTTP_POST_VARS["filtro"];
+         if(isset($_POST["filtro"]))
+           $filtro = $_POST["filtro"];
          $sql = "select id as db_codigo,id as Código,nome,organizacao as Organização,email from db_contatos where ".base64_decode($filtro);
 	     echo "<center>";
          db_lov($sql,15,"age1_agenda002.php",$filtro);

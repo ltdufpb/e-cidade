@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_bo_classe.php"));
 include(modification("classes/db_bomov_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clbo    = new cl_bo;
 $clbomov = new cl_bomov;
 $db_opcao = 1;

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_rubrica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_rubrica = new cl_sau_rubrica;
 $clsau_rubrica->rotulo->label("sd64_i_codigo");
 $clsau_rubrica->rotulo->label("sd64_c_nome");
@@ -98,9 +98,9 @@ $clsau_rubrica->rotulo->label("sd64_c_nome");
         }else{
            $sql = $clsau_rubrica->sql_query("",$campos,"sd64_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd64_c_nome)){
-          $repassa = array("chave_sd64_i_codigo"=>$chave_sd64_i_codigo,"chave_sd64_c_nome"=>$chave_sd64_c_nome);
+          $repassa = ["chave_sd64_i_codigo"=>$chave_sd64_i_codigo,"chave_sd64_c_nome"=>$chave_sd64_c_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

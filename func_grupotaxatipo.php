@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_grupotaxatipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clgrupotaxatipo = new cl_grupotaxatipo;
 $clgrupotaxatipo->rotulo->label("ar38_sequencial");
 $clgrupotaxatipo->rotulo->label("ar38_descricao");
@@ -98,9 +98,9 @@ $clgrupotaxatipo->rotulo->label("ar38_descricao");
         }else{
            $sql = $clgrupotaxatipo->sql_query("",$campos,"ar38_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ar38_descricao)){
-          $repassa = array("chave_ar38_sequencial"=>$chave_ar38_sequencial,"chave_ar38_descricao"=>$chave_ar38_descricao);
+          $repassa = ["chave_ar38_sequencial"=>$chave_ar38_sequencial,"chave_ar38_descricao"=>$chave_ar38_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

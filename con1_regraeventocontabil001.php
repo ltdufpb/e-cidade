@@ -199,7 +199,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                                     </td>
                                     <td>
                                         <?php
-                                        $aOpcoesComparacao = array(
+                                        $aOpcoesComparacao = [
                                             "0" => "Não",
                                             "1" => "Débito",
                                             "10" => "Débito / Elemento",
@@ -218,7 +218,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                                             "15" => "Tipo de Retenção",
                                             "17" => "Origem do Recurso",
                                             "18" => "Tipo de Bem",
-                                        );
+                                        ];
                                         db_select('c47_compara', $aOpcoesComparacao, true, $db_opcao,
                                             "onchange='js_validaTipoComparacao(this.value);'");
                                         ?>
@@ -232,7 +232,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                                     </td>
                                     <td>
                                         <?php
-                                        $aTipoAquisicao = array();
+                                        $aTipoAquisicao = [];
                                         db_select('t45_sequencial', $aTipoAquisicao, true, $db_opcao, "");
                                         ?>
                                     </td>
@@ -244,7 +244,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                                     </td>
                                     <td>
                                         <?php
-                                        $aTipoBem = array();
+                                        $aTipoBem = [];
                                         db_select('t24_sequencial', $aTipoBem, true, $db_opcao, "");
                                         ?>
                                     </td>
@@ -257,7 +257,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                                     </td>
                                     <td>
                                         <?php
-                                        $aTipoBaixa = array();
+                                        $aTipoBaixa = [];
                                         db_select('t51_motivo', $aTipoBaixa, true, $db_opcao, "");
                                         ?>
                                     </td>
@@ -269,7 +269,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                                     </td>
                                     <td>
                                         <?php
-                                        db_select('c111_tiporeconhecimento', array(), true, $db_opcao, "");
+                                        db_select('c111_tiporeconhecimento', [], true, $db_opcao, "");
                                         ?>
                                     </td>
                                 </tr>
@@ -302,7 +302,7 @@ $c47_anousu = date("Y", db_getsession("DB_datausu"));
                                     </td>
                                     <td>
                                         <?php
-                                        $aTipoEvento = array();
+                                        $aTipoEvento = [];
                                         db_select('e44_tipo', $aTipoEvento, true, $db_opcao, "");
                                         ?>
                                     </td>

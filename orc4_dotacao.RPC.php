@@ -47,7 +47,7 @@ try {
 
         case  'getLinhasDePactoDoPlano':
 
-            $retorno->linhas = array();
+            $retorno->linhas = [];
             $daoPlanoOrcamentarioLinhaPacto = new cl_planoorcamentariolinhapacto();
             $sSqlQuery = $daoPlanoOrcamentarioLinhaPacto->sql_query(null,
                 "o156_sequencial as codigo, c07_titulo as descricao",

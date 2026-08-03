@@ -6,8 +6,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_tipoassedb_cadattdinamico_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $oDaoTipoassedb_cadattdinamico = new cl_tipoassedb_cadattdinamico;
 $db_botao    = false;
@@ -24,7 +24,7 @@ if (isset($excluir)) {
   $sPosScripts .= 'alert("' . $oDaoTipoassedb_cadattdinamico->erro_msg . '");' . "\n";
 
   if ($oDaoTipoassedb_cadattdinamico->erro_status != "0") {
-    $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
+    $sPosScripts .= "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
   }
 
 } else if(isset($chavepesquisa)) {

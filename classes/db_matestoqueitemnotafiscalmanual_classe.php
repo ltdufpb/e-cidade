@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE matestoqueitemnotafiscalmanual
 class cl_matestoqueitemnotafiscalmanual { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m79_sequencial = 0; 
-   var $m79_matestoqueitem = 0; 
-   var $m79_notafiscal = null; 
-   var $m79_data_dia = null; 
-   var $m79_data_mes = null; 
-   var $m79_data_ano = null; 
-   var $m79_data = null; 
+   public $m79_sequencial = 0; 
+   public $m79_matestoqueitem = 0; 
+   public $m79_notafiscal = null; 
+   public $m79_data_dia = null; 
+   public $m79_data_mes = null; 
+   public $m79_data_ano = null; 
+   public $m79_data = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m79_sequencial = int4 = Sequencial 
                  m79_matestoqueitem = int4 = Item 
                  m79_notafiscal = varchar(15) = Nota Fiscal 
                  m79_data = date = Data da Nota 
                  ";
    //funcao construtor da classe 
-   function cl_matestoqueitemnotafiscalmanual() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matestoqueitemnotafiscalmanual"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -129,10 +129,10 @@ class cl_matestoqueitemnotafiscalmanual {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m79_sequencial = pg_result($result,0,0); 
+       $this->m79_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from matestoqueitemnotafiscalmanual_m79_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m79_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m79_sequencial)){
          $this->erro_sql = " Campo m79_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_matestoqueitemnotafiscalmanual {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro da Nota Fiscal de um Item ($this->m79_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro da Nota Fiscal de um Item já Cadastrado";
@@ -190,13 +190,13 @@ class cl_matestoqueitemnotafiscalmanual {
      $resaco = $this->sql_record($this->sql_query_file($this->m79_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18807,'$this->m79_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3335,18807,'','".AddSlashes(pg_result($resaco,0,'m79_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3335,18808,'','".AddSlashes(pg_result($resaco,0,'m79_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3335,18809,'','".AddSlashes(pg_result($resaco,0,'m79_notafiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3335,18810,'','".AddSlashes(pg_result($resaco,0,'m79_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3335,18807,'','".AddSlashes(pg_fetch_result($resaco,0,'m79_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3335,18808,'','".AddSlashes(pg_fetch_result($resaco,0,'m79_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3335,18809,'','".AddSlashes(pg_fetch_result($resaco,0,'m79_notafiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3335,18810,'','".AddSlashes(pg_fetch_result($resaco,0,'m79_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -205,10 +205,10 @@ class cl_matestoqueitemnotafiscalmanual {
       $this->atualizacampos();
      $sql = " update matestoqueitemnotafiscalmanual set ";
      $virgula = "";
-     if(trim($this->m79_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m79_sequencial"])){ 
+     if(trim((string) $this->m79_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m79_sequencial"])){ 
        $sql  .= $virgula." m79_sequencial = $this->m79_sequencial ";
        $virgula = ",";
-       if(trim($this->m79_sequencial) == null ){ 
+       if(trim((string) $this->m79_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "m79_sequencial";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_matestoqueitemnotafiscalmanual {
          return false;
        }
      }
-     if(trim($this->m79_matestoqueitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m79_matestoqueitem"])){ 
+     if(trim((string) $this->m79_matestoqueitem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m79_matestoqueitem"])){ 
        $sql  .= $virgula." m79_matestoqueitem = $this->m79_matestoqueitem ";
        $virgula = ",";
-       if(trim($this->m79_matestoqueitem) == null ){ 
+       if(trim((string) $this->m79_matestoqueitem) == null ){ 
          $this->erro_sql = " Campo Item nao Informado.";
          $this->erro_campo = "m79_matestoqueitem";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_matestoqueitemnotafiscalmanual {
          return false;
        }
      }
-     if(trim($this->m79_notafiscal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m79_notafiscal"])){ 
+     if(trim((string) $this->m79_notafiscal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m79_notafiscal"])){ 
        $sql  .= $virgula." m79_notafiscal = '$this->m79_notafiscal' ";
        $virgula = ",";
-       if(trim($this->m79_notafiscal) == null ){ 
+       if(trim((string) $this->m79_notafiscal) == null ){ 
          $this->erro_sql = " Campo Nota Fiscal nao Informado.";
          $this->erro_campo = "m79_notafiscal";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_matestoqueitemnotafiscalmanual {
          return false;
        }
      }
-     if(trim($this->m79_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m79_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m79_data_dia"] !="") ){ 
+     if(trim((string) $this->m79_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m79_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["m79_data_dia"] !="") ){ 
        $sql  .= $virgula." m79_data = '$this->m79_data' ";
        $virgula = ",";
-       if(trim($this->m79_data) == null ){ 
+       if(trim((string) $this->m79_data) == null ){ 
          $this->erro_sql = " Campo Data da Nota nao Informado.";
          $this->erro_campo = "m79_data_dia";
          $this->erro_banco = "";
@@ -260,7 +260,7 @@ class cl_matestoqueitemnotafiscalmanual {
        if(isset($GLOBALS["HTTP_POST_VARS"]["m79_data_dia"])){ 
          $sql  .= $virgula." m79_data = null ";
          $virgula = ",";
-         if(trim($this->m79_data) == null ){ 
+         if(trim((string) $this->m79_data) == null ){ 
            $this->erro_sql = " Campo Data da Nota nao Informado.";
            $this->erro_campo = "m79_data_dia";
            $this->erro_banco = "";
@@ -279,17 +279,17 @@ class cl_matestoqueitemnotafiscalmanual {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18807,'$this->m79_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m79_sequencial"]) || $this->m79_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3335,18807,'".AddSlashes(pg_result($resaco,$conresaco,'m79_sequencial'))."','$this->m79_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3335,18807,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m79_sequencial'))."','$this->m79_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m79_matestoqueitem"]) || $this->m79_matestoqueitem != "")
-           $resac = db_query("insert into db_acount values($acount,3335,18808,'".AddSlashes(pg_result($resaco,$conresaco,'m79_matestoqueitem'))."','$this->m79_matestoqueitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3335,18808,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m79_matestoqueitem'))."','$this->m79_matestoqueitem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m79_notafiscal"]) || $this->m79_notafiscal != "")
-           $resac = db_query("insert into db_acount values($acount,3335,18809,'".AddSlashes(pg_result($resaco,$conresaco,'m79_notafiscal'))."','$this->m79_notafiscal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3335,18809,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m79_notafiscal'))."','$this->m79_notafiscal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m79_data"]) || $this->m79_data != "")
-           $resac = db_query("insert into db_acount values($acount,3335,18810,'".AddSlashes(pg_result($resaco,$conresaco,'m79_data'))."','$this->m79_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3335,18810,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m79_data'))."','$this->m79_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -334,13 +334,13 @@ class cl_matestoqueitemnotafiscalmanual {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18807,'$m79_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3335,18807,'','".AddSlashes(pg_result($resaco,$iresaco,'m79_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3335,18808,'','".AddSlashes(pg_result($resaco,$iresaco,'m79_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3335,18809,'','".AddSlashes(pg_result($resaco,$iresaco,'m79_notafiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3335,18810,'','".AddSlashes(pg_result($resaco,$iresaco,'m79_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3335,18807,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m79_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3335,18808,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m79_matestoqueitem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3335,18809,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m79_notafiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3335,18810,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m79_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from matestoqueitemnotafiscalmanual
@@ -400,7 +400,7 @@ class cl_matestoqueitemnotafiscalmanual {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matestoqueitemnotafiscalmanual";
@@ -415,7 +415,7 @@ class cl_matestoqueitemnotafiscalmanual {
    function sql_query ( $m79_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -438,7 +438,7 @@ class cl_matestoqueitemnotafiscalmanual {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_matestoqueitemnotafiscalmanual {
    function sql_query_file ( $m79_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,7 +472,7 @@ class cl_matestoqueitemnotafiscalmanual {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

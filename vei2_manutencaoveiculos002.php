@@ -56,11 +56,11 @@ try {
     throw new Exception("O período para emissão do relatório deve ser dentro do mesmo exercício.");
   }
 
-  $aVeiculo = array();
+  $aVeiculo = [];
   if (!empty($oGet->veiculos)) {
-    $aVeiculo = explode(",", $oGet->veiculos);
+    $aVeiculo = explode(",", (string) $oGet->veiculos);
   }
-  $aCombustivel = explode(",", $oGet->combustiveis);
+  $aCombustivel = explode(",", (string) $oGet->combustiveis);
 
   $oInstituicao  = new Instituicao(db_getsession('DB_instit'));
   $oDepartamento = new DBDepartamento(db_getsession('DB_coddepto'));

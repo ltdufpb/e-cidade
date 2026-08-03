@@ -290,7 +290,7 @@ class Alvara {
    */
   public function getMovimentacoes($iTipoMovimentacao = null) {
 
-    $aMovimentacoes     = array();
+    $aMovimentacoes     = [];
     $oDaoIssMovAlvara   = db_utils::getDAO("issmovalvara");
     $sWhereMovimentacao = "q120_issalvara = {$this->iCodigo}";
 

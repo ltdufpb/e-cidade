@@ -10,7 +10,7 @@ class DBFaq extends DBCentralAjuda {
     $oHttpRequest->send($sUri);
     $sRetorno = $oHttpRequest->getBody();
 
-    $aFaqs = json_decode($sRetorno);
+    $aFaqs = json_decode((string) $sRetorno);
 
     if (!empty($aFaqs->error)) {
       throw new BusinessException($aFaqs->message);

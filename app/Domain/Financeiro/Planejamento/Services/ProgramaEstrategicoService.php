@@ -202,35 +202,33 @@ class ProgramaEstrategicoService
                 }
             })
             ->get()
-            ->filter(function (ProgramaEstrategico $programaEstrategico) use ($instituicoes, $filtros) {
-                return $programaEstrategico
-                        ->iniciativas()
-                        ->when(!empty($filtros->iniciativa->valores), function (Builder $query) use ($filtros) {
-                            if ($filtros->iniciativa->contem) {
-                                $query->whereIn('pl12_orcprojativ', $filtros->iniciativa->valores);
-                            } else {
-                                $query->whereNotIn('pl12_orcprojativ', $filtros->iniciativa->valores);
-                            }
-                        })
-                        ->when(!empty($filtros->unidade->valores), function (Builder $query) use ($filtros) {
-                            $query->filtrarOrgaoUnidade($filtros->unidade->valores, $filtros->unidade->contem);
-                        })
-                        ->when(!empty($filtros->funcao->valores), function (Builder $query) use ($filtros) {
-                            $query->filtrarFuncao($filtros->funcao->valores, $filtros->funcao->contem);
-                        })
-                        ->when(!empty($filtros->subfuncao->valores), function (Builder $query) use ($filtros) {
-                            $query->filtrarSubFuncao($filtros->subfuncao->valores, $filtros->subfuncao->contem);
-                        })
-                        ->when(!empty($filtros->elemento->valores), function (Builder $query) use ($filtros) {
-                            $query->filtrarElemento($filtros->elemento->valores, $filtros->elemento->contem);
-                        })
-                        ->when(!empty($filtros->recurso->valores), function (Builder $query) use ($filtros) {
-                            $query->filtrarRecurso($filtros->recurso->valores, $filtros->recurso->contem);
-                        })
-                        ->filtrarInstituicoes($instituicoes)
-                        ->get()
-                        ->count() > 0;
-            });
+            ->filter(fn(ProgramaEstrategico $programaEstrategico) => $programaEstrategico
+                    ->iniciativas()
+                    ->when(!empty($filtros->iniciativa->valores), function (Builder $query) use ($filtros) {
+                        if ($filtros->iniciativa->contem) {
+                            $query->whereIn('pl12_orcprojativ', $filtros->iniciativa->valores);
+                        } else {
+                            $query->whereNotIn('pl12_orcprojativ', $filtros->iniciativa->valores);
+                        }
+                    })
+                    ->when(!empty($filtros->unidade->valores), function (Builder $query) use ($filtros) {
+                        $query->filtrarOrgaoUnidade($filtros->unidade->valores, $filtros->unidade->contem);
+                    })
+                    ->when(!empty($filtros->funcao->valores), function (Builder $query) use ($filtros) {
+                        $query->filtrarFuncao($filtros->funcao->valores, $filtros->funcao->contem);
+                    })
+                    ->when(!empty($filtros->subfuncao->valores), function (Builder $query) use ($filtros) {
+                        $query->filtrarSubFuncao($filtros->subfuncao->valores, $filtros->subfuncao->contem);
+                    })
+                    ->when(!empty($filtros->elemento->valores), function (Builder $query) use ($filtros) {
+                        $query->filtrarElemento($filtros->elemento->valores, $filtros->elemento->contem);
+                    })
+                    ->when(!empty($filtros->recurso->valores), function (Builder $query) use ($filtros) {
+                        $query->filtrarRecurso($filtros->recurso->valores, $filtros->recurso->contem);
+                    })
+                    ->filtrarInstituicoes($instituicoes)
+                    ->get()
+                    ->count() > 0);
 
         return $programas;
     }

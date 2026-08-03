@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE debcontapedidohistorico
 class cl_debcontapedidohistorico {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $d83_sequencial = null;
-   var $d83_debcontapedido = 0;
-   var $d83_instit = 0;
-   var $d83_banco = 0;
-   var $d83_agencia = null;
-   var $d83_conta = null;
-   var $d83_datalanc_dia = null;
-   var $d83_datalanc_mes = null;
-   var $d83_datalanc_ano = null;
-   var $d83_datalanc = null;
-   var $d83_horalanc = null;
-   var $d83_status = 0;
-   var $d83_acao = 0;
-   var $d83_idempresa = null;
-   var $d83_codret = 0;
+   public $d83_sequencial = null;
+   public $d83_debcontapedido = 0;
+   public $d83_instit = 0;
+   public $d83_banco = 0;
+   public $d83_agencia = null;
+   public $d83_conta = null;
+   public $d83_datalanc_dia = null;
+   public $d83_datalanc_mes = null;
+   public $d83_datalanc_ano = null;
+   public $d83_datalanc = null;
+   public $d83_horalanc = null;
+   public $d83_status = 0;
+   public $d83_acao = 0;
+   public $d83_idempresa = null;
+   public $d83_codret = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  d83_sequencial = int4 = Codigo sequencial
                  d83_debcontapedido = int4 = Codigo da DebcontaPedido
                  d83_instit = int4 = codigo da instituicao
@@ -73,10 +73,10 @@ class cl_debcontapedidohistorico {
                  d83_codret = int4 = Codigo do Arquivo Retorno
                  ";
    //funcao construtor da classe
-   function cl_debcontapedidohistorico() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("debcontapedidohistorico");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -236,7 +236,7 @@ class cl_debcontapedidohistorico {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Registro do historico debito em conta ($this->d83_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Registro do historico debito em conta já Cadastrado";
@@ -317,7 +317,7 @@ class cl_debcontapedidohistorico {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:debcontapedidohistorico";
@@ -332,7 +332,7 @@ class cl_debcontapedidohistorico {
    function sql_query ( $d83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -356,7 +356,7 @@ class cl_debcontapedidohistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -369,7 +369,7 @@ class cl_debcontapedidohistorico {
    function sql_query_file ( $d83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ class cl_debcontapedidohistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_debcontapedidohistorico {
    function sql_query_info ( $d83_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -432,7 +432,7 @@ class cl_debcontapedidohistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,7 +445,7 @@ class cl_debcontapedidohistorico {
   function sql_query_deb_conta($d83_sequencial=null,$campos="*",$ordem=null,$dbwhere="") {
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -469,7 +469,7 @@ class cl_debcontapedidohistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,7 +481,7 @@ class cl_debcontapedidohistorico {
 
   public function sql_query_pedido_agua($sCampos = '*', $sWhere = null, $sOrder = null)
   {
-    $aSql = array();
+    $aSql = [];
 
     $aSql[] = "select {$sCampos}";
     $aSql[] = "from debcontapedidohistorico";

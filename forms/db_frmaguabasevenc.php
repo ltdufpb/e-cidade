@@ -94,7 +94,7 @@ db_inputdata('x27_dtvenc',@$x27_dtvenc_dia,@$x27_dtvenc_mes,@$x27_dtvenc_ano,tru
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("x27_matric"=>@$x27_matric,"x27_parcela"=>@$x27_parcela);
+	 $chavepri= ["x27_matric"=>@$x27_matric,"x27_parcela"=>@$x27_parcela];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $claguabasevenc->sql_query_file($x27_matric);
 	 $cliframe_alterar_excluir->campos  ="x27_matric,x27_parcela,x27_dtvenc";

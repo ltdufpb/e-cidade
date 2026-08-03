@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_categoriapacto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcategoriapacto = new cl_categoriapacto;
 $clcategoriapacto->rotulo->label("o31_sequencial");
 $clcategoriapacto->rotulo->label("o31_descricao");
@@ -98,9 +98,9 @@ $clcategoriapacto->rotulo->label("o31_descricao");
         }else{
            $sql = $clcategoriapacto->sql_query("",$campos,"o31_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o31_descricao)){
-          $repassa = array("chave_o31_sequencial"=>$chave_o31_sequencial,"chave_o31_descricao"=>$chave_o31_descricao);
+          $repassa = ["chave_o31_sequencial"=>$chave_o31_sequencial,"chave_o31_descricao"=>$chave_o31_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

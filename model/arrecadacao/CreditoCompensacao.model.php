@@ -92,7 +92,7 @@ class CreditoCompensacao extends Credito {
   private $iRegraCompensacao;
 
   /** @var stdClass[] */
-  private $aDebitos = array();
+  private $aDebitos = [];
 
   /** @var integer */
   private $iCodigoHistorico;
@@ -151,10 +151,10 @@ class CreditoCompensacao extends Credito {
    */
   public function setRegraCompensacao($iRegraCompensacao) {
 
-    $aRegras = array(
+    $aRegras = [
       self::REGRA_COMPENSACAO_PROPORCIONAL,
       self::REGRA_COMPENSACAO_VENCIMENTO
-    );
+    ];
 
     if (!in_array($iRegraCompensacao, $aRegras)) {
       throw new ParameterException("Regra de Compensação não informada.");
@@ -212,7 +212,7 @@ class CreditoCompensacao extends Credito {
     $iCodigoCredito     = $this->getCodigoCredito();
     $sCampos = "";
 
-    if (pg_numrows($rsCorrecao)) {
+    if (pg_num_rows($rsCorrecao)) {
 
       $oUltimaCorrecao = db_utils::fieldsMemory($rsCorrecao, 0);
       $sCampos = "(
@@ -222,7 +222,7 @@ class CreditoCompensacao extends Credito {
       ";
     }
 
-    if (!pg_numrows($rsCorrecao)) {
+    if (!pg_num_rows($rsCorrecao)) {
       $sCampos = "(
         select fc_corre(recibo.k00_receit, abatimento.k125_datalanc, abatimento.k125_valordisponivel,
                         current_date, {$iAno}, abatimento.k125_datalanc
@@ -611,9 +611,7 @@ class CreditoCompensacao extends Credito {
         return $oDebito;
       }, $this->getDebitos());
 
-      usort($aDebitos, function ($oDebito1, $oDebito2) {
-        return $oDebito1->data_vencimento->getTimestamp() - $oDebito2->data_vencimento->getTimestamp();
-      });
+      usort($aDebitos, fn($oDebito1, $oDebito2) => $oDebito1->data_vencimento->getTimestamp() - $oDebito2->data_vencimento->getTimestamp());
 
       $nValorRestanteCompensacao = $this->getValorCompensacao();
       $nValorCreditoCorrigido    = $this->getValorDisponivelCorrigido();
@@ -997,7 +995,7 @@ class CreditoCompensacao extends Credito {
       throw new DBException("Não foi possível encontrar as informações de Parcelamento do Débito.");
     }
 
-    if (pg_numrows($rsArreckeyExiste) == 0) {
+    if (pg_num_rows($rsArreckeyExiste) == 0) {
 
       $oDaoArreckey = new cl_arreckey();
       $oDaoArreckey->k00_numpre = $oDebito->k00_numpre;
@@ -1063,7 +1061,7 @@ class CreditoCompensacao extends Credito {
 
     $rsTipoDebito = db_query($sSql);
 
-    if (!$rsTipoDebito || pg_numrows($rsTipoDebito) == 0) {
+    if (!$rsTipoDebito || pg_num_rows($rsTipoDebito) == 0) {
       throw new DBException("Não foi possível encontrar as informações do Tipo de Debito.");
     }
 
@@ -1104,6 +1102,7 @@ class CreditoCompensacao extends Credito {
    * Define o usuario que efetuou a transferência
    * @param integer $iUsuario
    */
+  #[\Override]
   public function setUsuario($iUsuario) {
     $this->iUsuario = $iUsuario;
   }
@@ -1112,6 +1111,7 @@ class CreditoCompensacao extends Credito {
    * Retorna o código do usuário que efetuou a tranferência
    * @return integer
    */
+  #[\Override]
   public function getUsuario() {
     return $this->iUsuario;
   }
@@ -1373,7 +1373,7 @@ class CreditoCompensacao extends Credito {
    * @return stdClass[]
    * @throws DBException
    */
-  public static function getDebitosCorrigido($iNumpre, $iNumpar, $iReceita = null, $iAno = null, DBDate $oDataOperacao = null, DBDate $oDataVencimento = null) {
+  public static function getDebitosCorrigido($iNumpre, $iNumpar, $iReceita = null, $iAno = null, ?DBDate $oDataOperacao = null, ?DBDate $oDataVencimento = null) {
 
     if (!$iAno) {
       $iAno = db_getsession("DB_anousu");
@@ -1406,10 +1406,10 @@ class CreditoCompensacao extends Credito {
 
     $oDaoDebito = new cl_arrecad();
 
-    $aWhere = array(
+    $aWhere = [
       "k00_numpre = {$iNumpre}",
       "k00_numpar = {$iNumpar}"
-    );
+    ];
 
     if ($iReceita) {
       $aWhere[] = "k00_receit = {$iReceita}";
@@ -1558,7 +1558,7 @@ class CreditoCompensacao extends Credito {
       throw new DBException("Não foi possível encontrar as informações do CGM.");
     }
 
-    if (pg_numrows($rsArrenumcgm) == 0) {
+    if (pg_num_rows($rsArrenumcgm) == 0) {
 
       $oDaoArrenumcgm = new cl_arrenumcgm();
       $oDaoArrenumcgm->incluir($iNumcgm, $iNovoNumpre);

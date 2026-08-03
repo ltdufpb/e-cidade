@@ -102,7 +102,7 @@ db_input('at40_descr',1,$Iat40_descr,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('0'=>'Planejada','1'=>'Não Planejada', '2'=>'Antecipada', '3'=>'Pendente');
+$x = ['0'=>'Planejada','1'=>'Não Planejada', '2'=>'Antecipada', '3'=>'Pendente'];
 db_select('at09_situacao',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -118,7 +118,7 @@ db_select('at09_situacao',$x,true,$db_opcao,"");
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("at09_sequencial"=>@$at09_sequencial);
+	 $chavepri= ["at09_sequencial"=>@$at09_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 
 	 $campos  = " at09_sequencial, ";

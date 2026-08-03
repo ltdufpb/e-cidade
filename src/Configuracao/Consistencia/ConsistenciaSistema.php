@@ -134,7 +134,7 @@ class ConsistenciaSistema
      * @return bool
      * @throws \Exception
      */
-    public function processar($registros = array())
+    public function processar($registros = [])
     {
         if (empty($registros)) {
             throw new \Exception("Não foi informado os dados.");

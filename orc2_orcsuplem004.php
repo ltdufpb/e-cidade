@@ -33,7 +33,7 @@
  $anousu = db_getsession("DB_anousu");
  $instit = db_getsession("DB_instit");
 
- parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+ parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
  if(isset($processados)){
 
@@ -86,8 +86,8 @@
 
   //////////////////////////////////
   $head4 = "Relatorio de Projetos";
-  $perini= split("-",$dt_ini);
-  $perfim= split("-",$dt_fim);
+  $perini= preg_split("#\\-#m",(string) $dt_ini);
+  $perfim= preg_split("#\\-#m",(string) $dt_fim);
   $head5 = "PERIODO : $perini[2]/$perini[1]/$perini[0]  à  $perfim[2]/$perfim[1]$perfim[0]";
    
   $pdf = new PDF();
@@ -119,7 +119,7 @@
         $pdf->Cell(15,4,"$o39_codproj",'T',0,"R",'0');    
         $pdf->Cell(30,4,"$data_proc",'T',0,"C",'0');    
         $pdf->Cell(45,4,"$o39_numero/$o39_data",'T',0,"L",'0');
-        $pdf->Cell(90,4,substr($o39_descr,0,45),'T',1,"L",'0');       
+        $pdf->Cell(90,4,substr((string) $o39_descr,0,45),'T',1,"L",'0');       
         /////// -----	
         $suplem   =0;  
 	$reduz    =0;  
@@ -160,10 +160,10 @@
 
          //---
 
-	 if (pg_numrows($result_suplem)!=0){
+	 if (pg_num_rows($result_suplem)!=0){
 	   $pdf->Cell(50,4,"",'0',0,"L",'0'); 
 	   $pdf->Cell(130,4,"Suplementações",'B',1,"L",'0'); 
-	   for ($yyy=0;$yyy<pg_numrows($result_suplem);$yyy++){
+	   for ($yyy=0;$yyy<pg_num_rows($result_suplem);$yyy++){
 	     db_fieldsmemory($result_suplem,$yyy);	  	     
 	     if ($pdf->gety() > $pdf->h - 30 || $pagina == 1 ){
 		$pagina=0;
@@ -187,10 +187,10 @@
 	   $pdf->Cell(50,4,"",'0',0,"L",'0'); 
 	   $pdf->Cell(130,4,"Total:".db_formatar($total_suplem,'f'),'T',1,"R",'0'); 
 	 }
-	 if (pg_numrows($result_reduz)!=0){
+	 if (pg_num_rows($result_reduz)!=0){
 	   $pdf->Cell(50,4,"",'0',0,"L",'0'); 
 	   $pdf->Cell(130,4,"Redução",'B',1,"L",'0'); 
-	   for ($yy=0;$yy < pg_numrows($result_reduz);$yy++){
+	   for ($yy=0;$yy < pg_num_rows($result_reduz);$yy++){
 	     db_fieldsmemory($result_reduz,$yy);	   
 	     if ($pdf->gety() > $pdf->h - 30 || $pagina == 1 ){
 		$pagina=0;
@@ -215,11 +215,11 @@
 	   $pdf->Cell(130,4,"Total:".db_formatar($total_reduz,'f'),'T',1,"R",'0'); 
 	 }
 	 
-         if (pg_numrows($result_superavit)!=0){
+         if (pg_num_rows($result_superavit)!=0){
 	    $pdf->Cell(50,4,"",'0',0,"L",'0'); 
 	    $pdf->Cell(130,4,"Superávit",'B',1,"L",'0'); 
 	    $total = 0; 
-	    for ($yy=0;$yy < pg_numrows($result_superavit);$yy++){
+	    for ($yy=0;$yy < pg_num_rows($result_superavit);$yy++){
 	       db_fieldsmemory($result_superavit,$yy);	   
 	       if ($pdf->gety() > $pdf->h - 30 || $pagina == 1 ){
 	  	  $pagina=0;

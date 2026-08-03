@@ -25,13 +25,13 @@
  *                                licenca/licenca_pt.txt
  */
 
-return array(
-    "ideRespInf" => array(
-        "properties" => array(
+return [
+    "ideRespInf" => [
+        "properties" => [
             "nmResp",
             "cpfResp",
             "telefone",
             "email",
-        )
-    ),
-);
+        ]
+    ],
+];

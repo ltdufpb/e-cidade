@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE ouvidoriaatendimentoretornotelefone
 class cl_ouvidoriaatendimentoretornotelefone { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ov14_sequencial = 0; 
-   var $ov14_ouvidoriaatendimento = 0; 
-   var $ov14_numero = null; 
-   var $ov14_tipotelefone = 0; 
-   var $ov14_ddd = null; 
-   var $ov14_ramal = null; 
-   var $ov14_obs = null; 
+   public $ov14_sequencial = 0; 
+   public $ov14_ouvidoriaatendimento = 0; 
+   public $ov14_numero = null; 
+   public $ov14_tipotelefone = 0; 
+   public $ov14_ddd = null; 
+   public $ov14_ramal = null; 
+   public $ov14_obs = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ov14_sequencial = int4 = Sequencial 
                  ov14_ouvidoriaatendimento = int4 = Atendimento 
                  ov14_numero = varchar(10) = Número 
@@ -60,10 +60,10 @@ class cl_ouvidoriaatendimentoretornotelefone {
                  ov14_obs = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_ouvidoriaatendimentoretornotelefone() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ouvidoriaatendimentoretornotelefone"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,10 +134,10 @@ class cl_ouvidoriaatendimentoretornotelefone {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ov14_sequencial = pg_result($result,0,0); 
+       $this->ov14_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from ouvidoriaatendimentoretornotelefone_ov14_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ov14_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ov14_sequencial)){
          $this->erro_sql = " Campo ov14_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -177,7 +177,7 @@ class cl_ouvidoriaatendimentoretornotelefone {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Telefones de Retorno do Atendimento da Ouvidoria ($this->ov14_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Telefones de Retorno do Atendimento da Ouvidoria já Cadastrado";
@@ -201,16 +201,16 @@ class cl_ouvidoriaatendimentoretornotelefone {
      $resaco = $this->sql_record($this->sql_query_file($this->ov14_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14802,'$this->ov14_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2605,14802,'','".AddSlashes(pg_result($resaco,0,'ov14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2605,14803,'','".AddSlashes(pg_result($resaco,0,'ov14_ouvidoriaatendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2605,14804,'','".AddSlashes(pg_result($resaco,0,'ov14_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2605,14805,'','".AddSlashes(pg_result($resaco,0,'ov14_tipotelefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2605,14806,'','".AddSlashes(pg_result($resaco,0,'ov14_ddd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2605,14807,'','".AddSlashes(pg_result($resaco,0,'ov14_ramal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2605,14808,'','".AddSlashes(pg_result($resaco,0,'ov14_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2605,14802,'','".AddSlashes(pg_fetch_result($resaco,0,'ov14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2605,14803,'','".AddSlashes(pg_fetch_result($resaco,0,'ov14_ouvidoriaatendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2605,14804,'','".AddSlashes(pg_fetch_result($resaco,0,'ov14_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2605,14805,'','".AddSlashes(pg_fetch_result($resaco,0,'ov14_tipotelefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2605,14806,'','".AddSlashes(pg_fetch_result($resaco,0,'ov14_ddd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2605,14807,'','".AddSlashes(pg_fetch_result($resaco,0,'ov14_ramal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2605,14808,'','".AddSlashes(pg_fetch_result($resaco,0,'ov14_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -219,10 +219,10 @@ class cl_ouvidoriaatendimentoretornotelefone {
       $this->atualizacampos();
      $sql = " update ouvidoriaatendimentoretornotelefone set ";
      $virgula = "";
-     if(trim($this->ov14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_sequencial"])){ 
+     if(trim((string) $this->ov14_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_sequencial"])){ 
        $sql  .= $virgula." ov14_sequencial = $this->ov14_sequencial ";
        $virgula = ",";
-       if(trim($this->ov14_sequencial) == null ){ 
+       if(trim((string) $this->ov14_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ov14_sequencial";
          $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_ouvidoriaatendimentoretornotelefone {
          return false;
        }
      }
-     if(trim($this->ov14_ouvidoriaatendimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_ouvidoriaatendimento"])){ 
+     if(trim((string) $this->ov14_ouvidoriaatendimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_ouvidoriaatendimento"])){ 
        $sql  .= $virgula." ov14_ouvidoriaatendimento = $this->ov14_ouvidoriaatendimento ";
        $virgula = ",";
-       if(trim($this->ov14_ouvidoriaatendimento) == null ){ 
+       if(trim((string) $this->ov14_ouvidoriaatendimento) == null ){ 
          $this->erro_sql = " Campo Atendimento nao Informado.";
          $this->erro_campo = "ov14_ouvidoriaatendimento";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_ouvidoriaatendimentoretornotelefone {
          return false;
        }
      }
-     if(trim($this->ov14_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_numero"])){ 
+     if(trim((string) $this->ov14_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_numero"])){ 
        $sql  .= $virgula." ov14_numero = '$this->ov14_numero' ";
        $virgula = ",";
-       if(trim($this->ov14_numero) == null ){ 
+       if(trim((string) $this->ov14_numero) == null ){ 
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "ov14_numero";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_ouvidoriaatendimentoretornotelefone {
          return false;
        }
      }
-     if(trim($this->ov14_tipotelefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_tipotelefone"])){ 
+     if(trim((string) $this->ov14_tipotelefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_tipotelefone"])){ 
        $sql  .= $virgula." ov14_tipotelefone = $this->ov14_tipotelefone ";
        $virgula = ",";
-       if(trim($this->ov14_tipotelefone) == null ){ 
+       if(trim((string) $this->ov14_tipotelefone) == null ){ 
          $this->erro_sql = " Campo Tipo Telefone nao Informado.";
          $this->erro_campo = "ov14_tipotelefone";
          $this->erro_banco = "";
@@ -271,15 +271,15 @@ class cl_ouvidoriaatendimentoretornotelefone {
          return false;
        }
      }
-     if(trim($this->ov14_ddd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_ddd"])){ 
+     if(trim((string) $this->ov14_ddd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_ddd"])){ 
        $sql  .= $virgula." ov14_ddd = '$this->ov14_ddd' ";
        $virgula = ",";
      }
-     if(trim($this->ov14_ramal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_ramal"])){ 
+     if(trim((string) $this->ov14_ramal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_ramal"])){ 
        $sql  .= $virgula." ov14_ramal = '$this->ov14_ramal' ";
        $virgula = ",";
      }
-     if(trim($this->ov14_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_obs"])){ 
+     if(trim((string) $this->ov14_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov14_obs"])){ 
        $sql  .= $virgula." ov14_obs = '$this->ov14_obs' ";
        $virgula = ",";
      }
@@ -291,23 +291,23 @@ class cl_ouvidoriaatendimentoretornotelefone {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14802,'$this->ov14_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov14_sequencial"]) || $this->ov14_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2605,14802,'".AddSlashes(pg_result($resaco,$conresaco,'ov14_sequencial'))."','$this->ov14_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2605,14802,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov14_sequencial'))."','$this->ov14_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov14_ouvidoriaatendimento"]) || $this->ov14_ouvidoriaatendimento != "")
-           $resac = db_query("insert into db_acount values($acount,2605,14803,'".AddSlashes(pg_result($resaco,$conresaco,'ov14_ouvidoriaatendimento'))."','$this->ov14_ouvidoriaatendimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2605,14803,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov14_ouvidoriaatendimento'))."','$this->ov14_ouvidoriaatendimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov14_numero"]) || $this->ov14_numero != "")
-           $resac = db_query("insert into db_acount values($acount,2605,14804,'".AddSlashes(pg_result($resaco,$conresaco,'ov14_numero'))."','$this->ov14_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2605,14804,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov14_numero'))."','$this->ov14_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov14_tipotelefone"]) || $this->ov14_tipotelefone != "")
-           $resac = db_query("insert into db_acount values($acount,2605,14805,'".AddSlashes(pg_result($resaco,$conresaco,'ov14_tipotelefone'))."','$this->ov14_tipotelefone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2605,14805,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov14_tipotelefone'))."','$this->ov14_tipotelefone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov14_ddd"]) || $this->ov14_ddd != "")
-           $resac = db_query("insert into db_acount values($acount,2605,14806,'".AddSlashes(pg_result($resaco,$conresaco,'ov14_ddd'))."','$this->ov14_ddd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2605,14806,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov14_ddd'))."','$this->ov14_ddd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov14_ramal"]) || $this->ov14_ramal != "")
-           $resac = db_query("insert into db_acount values($acount,2605,14807,'".AddSlashes(pg_result($resaco,$conresaco,'ov14_ramal'))."','$this->ov14_ramal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2605,14807,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov14_ramal'))."','$this->ov14_ramal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov14_obs"]) || $this->ov14_obs != "")
-           $resac = db_query("insert into db_acount values($acount,2605,14808,'".AddSlashes(pg_result($resaco,$conresaco,'ov14_obs'))."','$this->ov14_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2605,14808,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov14_obs'))."','$this->ov14_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -352,16 +352,16 @@ class cl_ouvidoriaatendimentoretornotelefone {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14802,'$ov14_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2605,14802,'','".AddSlashes(pg_result($resaco,$iresaco,'ov14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2605,14803,'','".AddSlashes(pg_result($resaco,$iresaco,'ov14_ouvidoriaatendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2605,14804,'','".AddSlashes(pg_result($resaco,$iresaco,'ov14_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2605,14805,'','".AddSlashes(pg_result($resaco,$iresaco,'ov14_tipotelefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2605,14806,'','".AddSlashes(pg_result($resaco,$iresaco,'ov14_ddd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2605,14807,'','".AddSlashes(pg_result($resaco,$iresaco,'ov14_ramal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2605,14808,'','".AddSlashes(pg_result($resaco,$iresaco,'ov14_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2605,14802,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov14_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2605,14803,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov14_ouvidoriaatendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2605,14804,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov14_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2605,14805,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov14_tipotelefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2605,14806,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov14_ddd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2605,14807,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov14_ramal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2605,14808,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov14_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from ouvidoriaatendimentoretornotelefone
@@ -421,7 +421,7 @@ class cl_ouvidoriaatendimentoretornotelefone {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:ouvidoriaatendimentoretornotelefone";
@@ -436,7 +436,7 @@ class cl_ouvidoriaatendimentoretornotelefone {
    function sql_query ( $ov14_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -465,7 +465,7 @@ class cl_ouvidoriaatendimentoretornotelefone {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -478,7 +478,7 @@ class cl_ouvidoriaatendimentoretornotelefone {
    function sql_query_file ( $ov14_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -499,7 +499,7 @@ class cl_ouvidoriaatendimentoretornotelefone {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

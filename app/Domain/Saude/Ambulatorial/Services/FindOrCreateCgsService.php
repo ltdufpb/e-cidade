@@ -11,18 +11,12 @@ use Exception;
 class FindOrCreateCgsService
 {
     /**
-     * @var CgsApiBuilder
-     */
-    private $builder;
-
-    /**
      * @var \Cgs
      */
     private $model;
 
-    public function __construct(CgsApiBuilder $builder, \Cgs $model)
+    public function __construct(private readonly CgsApiBuilder $builder, \Cgs $model)
     {
-        $this->builder = $builder;
         $this->model = $model;
     }
 
@@ -73,10 +67,10 @@ class FindOrCreateCgsService
 
         $cgs = null;
         if ($cpf) {
-            $cgs = CgsUnidade::cpf($cpf)->orderBy('z01_i_cgsund')->first();
+            $cgs = (new CgsUnidade())->cpf($cpf)->orderBy('z01_i_cgsund')->first();
         }
         if ($cgs === null && $cns) {
-            $cgs = CgsUnidade::cns($cns)->orderBy('z01_i_cgsund')->first();
+            $cgs = (new CgsUnidade())->cns($cns)->orderBy('z01_i_cgsund')->first();
         }
 
         return $cgs;
@@ -90,7 +84,7 @@ class FindOrCreateCgsService
      */
     private function findUnique($nome, $nomeMae, $dataNascimento)
     {
-        return CgsUnidade::nome($nome)
+        return (new CgsUnidade())->nome($nome)
             ->nomeMae($nomeMae)
             ->dataNascimento($dataNascimento)
             ->orderBy('z01_i_cgsund')

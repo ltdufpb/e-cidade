@@ -212,11 +212,11 @@ if (isset($oGet->chavepesquisa) && $oGet->chavepesquisa != "") {
 
         $e69_numero = $oNota->e69_numero;
         $e69_codnota = $oNota->e69_codnota;
-        $e69_dtnota = explode("-", $oNota->e69_dtnota);
+        $e69_dtnota = explode("-", (string) $oNota->e69_dtnota);
         $e69_dtnota_dia = $e69_dtnota[2];
         $e69_dtnota_mes = $e69_dtnota[1];
         $e69_dtnota_ano = $e69_dtnota[0];
-        $e69_dtrecebe = explode("-", $oNota->e69_dtrecebe);
+        $e69_dtrecebe = explode("-", (string) $oNota->e69_dtrecebe);
         $e69_dtrecebe_dia = $e69_dtrecebe[2];
         $e69_dtrecebe_mes = $e69_dtrecebe[1];
         $e69_dtrecebe_ano = $e69_dtrecebe[0];

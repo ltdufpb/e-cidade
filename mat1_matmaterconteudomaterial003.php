@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_matmaterconteudomaterial_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $oDaoConteudoMaterial = new cl_matmaterconteudomaterial;
@@ -50,7 +50,7 @@ if (isset($excluir)) {
   $sPosScripts .= 'alert("' . $oDaoConteudoMaterial->erro_msg . '");' . "\n";
 
   if ($oDaoConteudoMaterial->erro_status != "0") {
-    $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
+    $sPosScripts .= "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
   }
 
 } else if(isset($chavepesquisa)) {

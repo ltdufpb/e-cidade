@@ -33,7 +33,7 @@ include(modification("classes/db_rhpessoal_classe.php"));
 include(modification("classes/db_rhpessoalmov_classe.php"));
 include(modification("classes/db_rhregime_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrhpessoal = new cl_rhpessoal;
 $clrhpessoalmov = new cl_rhpessoalmov;
 $clrhregime = new cl_rhregime;
@@ -111,7 +111,7 @@ function js_emite(){
 	     </td>
 	     <td>
          <?php 
-           $x = array("f"=>"Não","t"=>"Sim");
+           $x = ["f"=>"Não","t"=>"Sim"];
            db_select('func',$x,true,4,"");
          ?>
 	     </td>
@@ -122,7 +122,7 @@ function js_emite(){
         </td>
         <td> 
         <?php 
-          $aEmitirLei = array("t"=>"Sim","f"=>"Não");
+          $aEmitirLei = ["t"=>"Sim","f"=>"Não"];
           db_select('emitirlei',$aEmitirLei,true,1,"");
         ?>
         </td>
@@ -133,7 +133,7 @@ function js_emite(){
       <td align="center" colspan="2">
         <?php 
           $result_regime = $clrhregime->sql_record($clrhregime->sql_query_file(null, "rh30_codreg,rh30_codreg || ' - ' ||  rh30_descr as rh30_descr", "rh30_codreg"," rh30_instit = ".db_getsession('DB_instit')  ));
-          db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, array(), 5, 250);
+          db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, [], 5, 250);
         ?>
       </td>
     </tr>

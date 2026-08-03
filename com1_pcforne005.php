@@ -41,7 +41,7 @@ $clpcforne = new cl_pcforne;
 $cltipoempresa = new cl_tipoempresa;
 $cl_cgmtipoempresa = new cl_cgmtipoempresa;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 
@@ -110,7 +110,7 @@ if (isset($alterar)) {
 </body>
 </html>
 <?php
-$pc60_numcgm = isset($pc60_numcgm) ? $pc60_numcgm : '';
+$pc60_numcgm ??= '';
 if(isset($alterar)){
   if($sqlerro==true){
     db_msgbox($erro_msg);

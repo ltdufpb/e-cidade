@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhcontasrec_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhcontasrec = new cl_rhcontasrec();
 $clrhcontasrec->rotulo->label("rh41_conta");
@@ -117,9 +117,9 @@ if (isset($chave_rh41_codigo) && !DBNumber::isInteger($chave_rh41_codigo)) {
            $sql = $clrhcontasrec->sql_query_contas("","", db_getsession("DB_instit"), db_getsession("DB_anousu"), $campos, "rh41_conta#rh41_codigo#rh41_instit#rh41_anousu","");
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_rh41_codigo)) {
-          $repassa = array("chave_rh41_conta" => $chave_rh41_conta, "chave_rh41_codigo" => $chave_rh41_codigo);
+          $repassa = ["chave_rh41_conta" => $chave_rh41_conta, "chave_rh41_codigo" => $chave_rh41_codigo];
         }
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
       } else {

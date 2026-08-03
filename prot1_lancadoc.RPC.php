@@ -62,14 +62,14 @@ try {
 	 */
 	if ( $oParam->sMethod == 'getDocumentosByCgm' ) {
 
-    $oRetorno->aDocumentos = array();     
+    $oRetorno->aDocumentos = [];     
     $iNumCgm = $oParam->iNumCgm;
-        
+
     $sSqlCgmDocumento = $clCgmDocumento->sql_query_file(null, "*", "", "z06_numcgm={$iNumCgm}");
     $rsCgmDocumento   = $clCgmDocumento->sql_record($sSqlCgmDocumento);
     $aCgmDocumento    = db_utils::getCollectionByRecord($rsCgmDocumento);
-       
-    $aDocumentos = array();
+
+    $aDocumentos = [];
 
     foreach ( $aCgmDocumento as $cgmDocumento ) {
 
@@ -78,18 +78,18 @@ try {
                                                                    caddocumento.db44_descricao",
                                                                   null,
                                                                   "db43_documento={$cgmDocumento->z06_documento}");
-      
+
       $rsCadAtributoValor    = $clCadAtributoValor->sql_record($sSqlCadAtributoValor);
       $clCadAtributoValor    = db_utils::fieldsMemory($rsCadAtributoValor,0);
-          
-      $clCadAtributoValor->db44_descricao  = urlencode($clCadAtributoValor->db44_descricao);
+
+      $clCadAtributoValor->db44_descricao  = urlencode((string) $clCadAtributoValor->db44_descricao);
       $clCadAtributoValor->db58_sequencial = $cgmDocumento->z06_documento; 
       $oRetorno->aDocumentos[] = $clCadAtributoValor;
-      
+
     }		
-  	
-    
-    
+
+
+
   /*
    * 
    * Inclui na tabela de ligação dos documentos apartir do código do documento informado
@@ -98,7 +98,7 @@ try {
   } else if ( $oParam->sMethod == 'incluirDocumento' ) {
 
   	db_inicio_transacao();
-  	
+
     $clCgmDocumento->z06_documento = $oParam->iCodDocumento;
    	$clCgmDocumento->z06_numcgm    = $oParam->iNumCgm;
    	$clCgmDocumento->incluir(null);
@@ -106,11 +106,11 @@ try {
    	if ($clCgmDocumento->erro_status == 0 ) {
    		throw new Exception($clCgmDocumento->erro_msg); 
    	}
-    
+
     db_fim_transacao(false);
-  	      
+
     $oRetorno->sMsg = urlencode('Documento incluído com sucesso!');
-    
+
 
   /**
    * 

@@ -52,20 +52,19 @@ class AlteraDadosCadastraisServidor extends ProcessamentoAbstract implements Pro
     /**
      * @var
      */
-    private $cgm;
-
-    /**
-     * @var
-     */
     private $instituicao;
 
     /**
      * Rubrica constructor.
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $cgm
+    )
     {
-        $this->cgm = $cgm;
     }
 
     /**
@@ -106,7 +105,7 @@ class AlteraDadosCadastraisServidor extends ProcessamentoAbstract implements Pro
                         $this->selecao,
                         $this->instituicao
                     );
-                } catch (Exception $e) {
+                } catch (Exception) {
                     throw new \DBException("Ocorrêu um erro ao buscar as informações da seleção informada.");
                 }
             } else {

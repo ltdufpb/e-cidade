@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_liborcamento.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -78,7 +78,7 @@ function js_emite(){
         <td align="left" title="Origem dos dados a serem gerados no relatório."><strong>Origem dos dados :</strong></td>
         <td>
           <?php 
-            $x = array("O"=>"Orçamento","B"=>"Balanço");
+            $x = ["O"=>"Orçamento","B"=>"Balanço"];
             db_select('origem',$x,true,2,"");
           ?>
         </td>

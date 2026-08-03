@@ -180,7 +180,7 @@ if(isset($oPost->alterar)){
     $divOrigem       = $oDadosTransf->divorigem;
     $divDestino      = $oDadosTransf->divdestino;
     $t93_codtran     = $oDadosTransf->t93_codtran;
-    $aData           = explode("-",$oDadosTransf->t93_data);
+    $aData           = explode("-",(string) $oDadosTransf->t93_data);
     $t93_data_ano    = $aData[0];
     $t93_data_mes    = $aData[1];
     $t93_data_dia    = $aData[2];

@@ -39,7 +39,7 @@ function atributosExame(scpdf $oPdf, $oDadosEstrutura)
     /**
      * Array com a posição do X a ser setada, de acordo com o nível do atributo
      */
-    $aPosicaoAtributos = array();
+    $aPosicaoAtributos = [];
     $aPosicaoAtributos[1] = 12;
     $aPosicaoAtributos[2] = 14;
     $aPosicaoAtributos[3] = 16;
@@ -140,7 +140,7 @@ function atributosExame(scpdf $oPdf, $oDadosEstrutura)
          */
         if (!empty($oDadosExame->aMedicamentosExame)) {
             $oPdf->SetFont('courier', 'b', 7);
-            $aMedicamentos = array();
+            $aMedicamentos = [];
 
             foreach ($oDadosExame->aMedicamentosExame as $oMedicamento) {
                 $aMedicamentos[] = $oMedicamento->getNome();
@@ -260,7 +260,7 @@ function montaCabecalho($oPdf, $oDadosEstrutura)
 
         $oPdf->SetFont("arial", "B", 8);
         $oPdf->Text(33, 9, $oDepartamento->getNomeDepartamento());
-        $oPdf->Text(33, 14, substr($oInstituicao->getDescricao(), 0, 42));
+        $oPdf->Text(33, 14, substr((string) $oInstituicao->getDescricao(), 0, 42));
         $oPdf->SetFont("arial", "", 8);
 
         $sEndereço = $oInstituicao->getLogradouro();
@@ -283,11 +283,11 @@ function montaCabecalho($oPdf, $oDadosEstrutura)
         }
 
         $oPdf->Text(33, 27, $sTelefoneCnpj);
-        $oPdf->Text(33, 31, substr($oInstituicao->getEmail(), 0, 48));
-        $oPdf->Text(33, 35, substr($oInstituicao->getSite(), 0, 50));
+        $oPdf->Text(33, 31, substr((string) $oInstituicao->getEmail(), 0, 48));
+        $oPdf->Text(33, 35, substr((string) $oInstituicao->getSite(), 0, 50));
 
 
-        $aSexo = array();
+        $aSexo = [];
         $aSexo["M"] = "MASCULINO";
         $aSexo["F"] = "FEMININO";
 

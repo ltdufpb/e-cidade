@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lab_setor_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_setor = new cl_lab_setor;
 $cllab_setor->rotulo->label("la23_i_codigo");
 $cllab_setor->rotulo->label("la23_c_descr");
@@ -83,7 +83,7 @@ $cllab_setor->rotulo->label("la23_c_descr");
   <tr> 
     <td align="center" valign="top"> 
       <?php 
-      $aWhere = array();
+      $aWhere = [];
       if (!empty($laboratorio)) {
 
         $sWhereLaboratorio  = " la23_i_codigo in (select la24_i_setor ";
@@ -102,16 +102,16 @@ $cllab_setor->rotulo->label("la23_c_descr");
            }
         }
 
-        if (!empty($chave_la23_i_codigo) && (trim($chave_la23_i_codigo)!="")) {
+        if (!empty($chave_la23_i_codigo) && (trim((string) $chave_la23_i_codigo)!="")) {
 	         $aWhere[] = "la23_i_codigo = {$chave_la23_i_codigo}";
         }
 
         if(isset($chave_la23_c_descr) && (trim($chave_la23_c_descr)!="") ){
           $aWhere[] = " la23_c_descr like '$chave_la23_c_descr%'";
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la23_i_codigo)){
-          $repassa = array("chave_la23_i_codigo"=>$chave_la23_i_codigo,"chave_la23_c_descr"=>$chave_la23_c_descr);
+          $repassa = ["chave_la23_i_codigo"=>$chave_la23_i_codigo,"chave_la23_c_descr"=>$chave_la23_c_descr];
         }
         $sWhere      = implode(" and " , $aWhere);
         $sSqlSetores = $cllab_setor->sql_query("", $campos,"la23_c_descr", $sWhere);

@@ -1,16 +1,16 @@
 <?php
-return array(
-    'ideFuncao' => array(
-        'properties' => array(
+return [
+    'ideFuncao' => [
+        'properties' => [
             'codFuncao',
             'iniValid',
             'fimValid'
-        )
-    ),
-    'dadosFuncao' => array(
-        'properties' => array(
+        ]
+    ],
+    'dadosFuncao' => [
+        'properties' => [
             'dscFuncao',
             'codCBO'
-        )
-    )
-);
+        ]
+    ]
+];

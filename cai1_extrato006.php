@@ -34,7 +34,7 @@ include(modification("classes/db_extrato_classe.php"));
 include(modification("classes/db_extratolinha_classe.php"));
 $clextrato = new cl_extrato;
 $clextratolinha = new cl_extratolinha;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

@@ -37,8 +37,8 @@ $clrotulo->label('z01_login');
 $clrotulo->label('z01_hora');
 
 
-db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_SERVER);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $txt_where="1=1";
 $info="Total";
@@ -109,7 +109,7 @@ $head4 = "$info1";
 $head5 = "$info2";
 $head6 = "$info3";
 
-if (pg_numrows($result)==0){
+if (pg_num_rows($result)==0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros cadastrados.');
 }
       
@@ -124,7 +124,7 @@ $alt = 4;
 $total = 0;
 $p=0;
 
-for($x = 0; $x <pg_numrows($result);$x++){
+for($x = 0; $x <pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage();

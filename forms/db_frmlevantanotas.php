@@ -276,7 +276,7 @@ db_input('y79_ordem',10,$Iy79_ordem,true,'hidden');
   <td valign="top">
    <?php
 
-	   $cliframe_alterar_excluir_html->colunas       = array("y79_ordem"=>$Ly79_ordem,"y79_documento"=>"$Ly79_documento","y79_valor"=>$Ly79_valor,"y79_data"=>$Ly79_data);
+	   $cliframe_alterar_excluir_html->colunas       = ["y79_ordem"=>$Ly79_ordem,"y79_documento"=>"$Ly79_documento","y79_valor"=>$Ly79_valor,"y79_data"=>$Ly79_data];
 	   $cliframe_alterar_excluir_html->iframe_width  = "375";
 	   $cliframe_alterar_excluir_html->iframe_nome   = "criatabela";
 	   $cliframe_alterar_excluir_html->iframe_height = "250";
@@ -296,9 +296,9 @@ db_input('y79_ordem',10,$Iy79_ordem,true,'hidden');
 function js_monta(){
 <?php 
 if(isset($notas)){
-  $matriz01=split('HHH',$notas);
+  $matriz01=preg_split('#HHH#m',$notas);
   for($i=0; $i<count($matriz01); $i++){
-    $matriz=split('_sep_',$matriz01[$i]);
+    $matriz=preg_split('#_sep_#m',(string) $matriz01[$i]);
     if($db_opcao==33){
       echo " js_incluirlinhas_disabled('".$matriz[3]."','".$matriz[0]."','".$matriz[1]."','".$matriz[2]."');\n\n  ";
     }else{

@@ -4,83 +4,83 @@ class LayoutBB {
     /*
         CABEÇALHO
     */
-    var $cabec01 = '9';
+    public $cabec01 = '9';
     //tipo do registro - informar :0(zero) 
 
-    var $cabec02 = '9';
+    public $cabec02 = '9';
     //código da remessa - informar :1
 
-    var $cabec03 = 'xxxxxxx';
+    public $cabec03 = 'xxxxxxx';
     //brancos
 
-    var $cabec04 = '99'; //12
+    public $cabec04 = '99'; //12
     //tipo de serviço -  informar:03
 
-    var $cabec05 = 'x';
+    public $cabec05 = 'x';
     //indicar cgc - informar:branco
 
-    var $cabec06 = '999-99';
+    public $cabec06 = '999-99';
     //valor da tarifa a ser cobrada pelo banco para cada lançamento 
     //efetuado informar "00000"
 
-    var $cabec07 = 'xxxxxxx';
+    public $cabec07 = 'xxxxxxx';
     //brancos
 
-    var $cabec08 = '9999';
+    public $cabec08 = '9999';
     //prefixo da agência do BB onde a empresa mantém a sua conta de depósitos
 
-    var $cabec09 = 'x';
+    public $cabec09 = 'x';
     //dígito  verificador do prefixo da agência (módulo 11 - ver capitulo "Cálculo do digito
     //verificador" )
 
-    var $cabec10 = '999999999';
+    public $cabec10 = '999999999';
     //numero de depósitos da empresa
 
-    var $cabec11 = 'x';
+    public $cabec11 = 'x';
     //digito verificador do numero da conta da empresa(modulo 11)
 
-    var $cabec12 = 'xxxxx';
+    public $cabec12 = 'xxxxx';
     //brancos
 
-    var $cabec13 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxx';
+    public $cabec13 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxx';
     //nome da empresa
 
-    var $cabec14 = '999';
+    public $cabec14 = '999';
     //código do BB - informar: 001
 
-    var $cabec15 = '999999';
+    public $cabec15 = '999999';
     //numero do convenio. Dado fornecido pelo banco, imprescindivel para
     //o processamento do arquivo 
 
-    var $cabec16 = 'xxx';
+    public $cabec16 = 'xxx';
     //tipo de retorno desejado. informar brancos. O tipo de estorno disponibilizado
     //deverá ser configurado no cadastramento do convênio junto ao banco.
     //Será identificado no retorno, nas posições 186 a 194
 
-    var $cabec17 = 'xxxxxxxxxx';
+    public $cabec17 = 'xxxxxxxxxx';
     //campo de livre uso do conveniente  
 
-    var $cabec18 = '99';
+    public $cabec18 = '99';
     //meio fisico de retorno.Informar zeros. O meio de retorno deverá ser 
     //configurado no cadastramento do convenio no sistema do banco . Pode ser por edi ouu mainframe 
 
-    var $cabec19 = '999';
+    public $cabec19 = '999';
     //de uso do banco, para controle de remessas por meio fisico de retorno edi ou mainframe
 
-    var $cabec20 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  //46 char 
+    public $cabec20 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  //46 char 
     //brancos
 
-    var $cabec21 = 'xxxxxxxxxxxxx';
+    public $cabec21 = 'xxxxxxxxxxxxx';
     //uso exclusivo do sistema
 
-    var $cabec22 = 'xxxx';
+    public $cabec22 = 'xxxx';
     //informar novo para possibilitar o recebimento de arquivo-retorno,
     //conforme campos 3,4 e 5 do detalhe  
 
-    var $cabec23 = 'xxxxxxxxxxx';
+    public $cabec23 = 'xxxxxxxxxxx';
     //brancos
 
-    var $cabec24 = 'xxxxxxxxx';
+    public $cabec24 = 'xxxxxxxxx';
     //No arquivo remessa: informar brancos
     //No arquivo retorno : tipo de retorno que esta sendo disponibilizado 
     //para o cliente, conforme informação do camo 16 no arquivo-remessa. Pode ser
@@ -88,7 +88,7 @@ class LayoutBB {
     //RETPROCES-retorno de processamento
     //RETCONSOL-retorno de confirmação de processamento
 
-    var $cabec25 = '999999';
+    public $cabec25 = '999999';
     //sequencial informar: 000001
 
     /*
@@ -98,96 +98,96 @@ class LayoutBB {
     /*
             CORPO
     */
-    var $corp01 = '9';  //pos: 001 a 001 
+    public $corp01 = '9';  //pos: 001 a 001 
     //tipo do registro - informar :1
 
-    var $corp02 = 'x';  //pos: 002 a 002 
+    public $corp02 = 'x';  //pos: 002 a 002 
     //brancos
 
-    var $corp03 = '9';  //pos: 003 a 003
+    public $corp03 = '9';  //pos: 003 a 003
     //indicador de conferência da agênci, conta e CPF/CGC do favorecido
 
-    var $corp04 = 'xxxxxxxxxxxx'; //pos:004 a 015 
+    public $corp04 = 'xxxxxxxxxxxx'; //pos:004 a 015 
     //CPF, CGC ou PIS/PASEP
 
-    var $corp05 = 'xx'; //pos:016 a 017 
+    public $corp05 = 'xx'; //pos:016 a 017 
     //digito verificador
 
-    var $corp06 = '9999'; //pos:018 a 021 
+    public $corp06 = '9999'; //pos:018 a 021 
     //Arquivo remessa, informar:0
     //Arquivo retorno, informar: prefixo da agencia BB
 
-    var $corp07 = 'x'; //pos:022 a 023
+    public $corp07 = 'x'; //pos:022 a 023
     //Arquivo remessa, informar:0
     //Arquivo retorno, informar: DV do prefixo da agencia BB
 
-    var $corp08 = '999999999'; //pos:023 a 031
+    public $corp08 = '999999999'; //pos:023 a 031
     //Arquivo remessa, informar:0
     //Arquivo retorno, informar: numero da conta do banco onde foi efetivado o credito
 
-    var $corp09 = 'x'; //pos:032 a 032
+    public $corp09 = 'x'; //pos:032 a 032
     //Arquivo remessa, informar:0
     //Arquivo retorno, informar: o DV do numero da conta onde foi efetivado o credito
 
-    var $corp10 = 'xxxxxxxxxx'; //pos: 033 a 042
+    public $corp10 = 'xxxxxxxxxx'; //pos: 033 a 042
     //livre uso do conveniente
 
-    var $corp11 = 'xxxxxxxx'; //043 a 050 
+    public $corp11 = 'xxxxxxxx'; //043 a 050 
     //BRANCOS  
 
-    var $corp12 = 'xxxxxx'; //pos: 051 a 056
+    public $corp12 = 'xxxxxx'; //pos: 051 a 056
     //numero identificador -  campo de livre uso do conveniente
 
-    var $corp13 = '999'; // pos: 057 a 059
+    public $corp13 = '999'; // pos: 057 a 059
     //código da camara de compensação
 
-    var $corp14 = 'xxx'; //pos:060 a 062
+    public $corp14 = 'xxx'; //pos:060 a 062
     //código do banco destinatario do crédito(brancos se for BB)
 
-    var $corp15 = 'xxxx'; //pos:063 a 066
+    public $corp15 = 'xxxx'; //pos:063 a 066
     //prefixo da agencia do favorecido
 
-    var $corp16 = 'x'; //pos 067 a 067
+    public $corp16 = 'x'; //pos 067 a 067
     //digito verificador - prefixo da agencia do favorecido 
     //em branco se for prefixo sem DV
 
-    var $corp17 = '999999999999'; //pos 068 a 079 
+    public $corp17 = '999999999999'; //pos 068 a 079 
     //numero da conta de depósito do favorecido
 
-    var $corp18 = 'X'; //pos 080 a 080 
+    public $corp18 = 'X'; //pos 080 a 080 
     //digito verificador  da conta do favorecido para creditos no BB
 
-    var $corp19 = 'XX'; //pos 081 a 082
+    public $corp19 = 'XX'; //pos 081 a 082
     //brancos
 
-    var $corp20 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; //pos 083 a 122 ----- 40 chars
+    public $corp20 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; //pos 083 a 122 ----- 40 chars
     //nome do favorecido
 
-    var $corp21 = '999999'; //pos 123 a 128 
+    public $corp21 = '999999'; //pos 123 a 128 
     //data do pagamento ddmmaa
 
-    var $corp22 = '99999999999-99'; //pos 129 a 141
+    public $corp22 = '99999999999-99'; //pos 129 a 141
     //valor do credito
 
-    var $corp23 = '999'; //pos 142 a 144
+    public $corp23 = '999'; //pos 142 a 144
     //codigo do servico
 
-    var $corp24 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; //pos 145 a 184  --- 40chars
+    public $corp24 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; //pos 145 a 184  --- 40chars
     //mensagem de livre uso da empresa
 
-    var $corp25 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; //pos 185 a 194  --- 10chars
+    public $corp25 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; //pos 185 a 194  --- 10chars
     //brancos
 
-    var $corp26 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; //pos 195 a 184  --- 6chars
+    public $corp26 = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; //pos 195 a 184  --- 6chars
     // sequencial do registro
     /*
       FINAL CORPO
     */
 
-    var $arquivo = null;
-    var $texto = null;
+    public $arquivo = null;
+    public $texto = null;
 
-    var $nomearq = '/tmp/modelo.txt';
+    public $nomearq = '/tmp/modelo.txt';
 
     function gera_cabecalho() {
         $this->arquivo = fopen($this->nomearq, "w");

@@ -121,21 +121,21 @@ final class Inclusao implements Service
      *    valor se a marcacao foi selecionada ou nao
      * @var array
      */
-    private $periodosJustificativa = array(1 => false, 2 => false, 3 => false);
+    private $periodosJustificativa = [1 => false, 2 => false, 3 => false];
 
     /**
      * Lista se assentamentos que geram afastamento na folha
      *  os assentamentos dessa lista sao configurados na tela de inclusao/alteracao dos tipos de assentamentos
      * @var array
      */
-    private $assentamentoGeraAfastamento = array();
+    private $assentamentoGeraAfastamento = [];
 
     /**
      * Alguns assentamentos possuem campos dinamicos exibidos na tela
      * Nesse array o indice representa o sequencial da pergunta e o valor a resposta da mesma
      * @var array
      */
-    private $atributosDinamicos = array();
+    private $atributosDinamicos = [];
 
     /**
      * Utilizado em assentamentos de ferias onde e necessario informar o periodo aquisitivo das ferias
@@ -754,7 +754,7 @@ final class Inclusao implements Service
                 $assentamentoAtributo->setCodigoGrupo($atributoGrupo->getSequencial());
                 AssentaAtribDinamicoRepository::incluir($assentamentoAtributo);
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return true;
     }
@@ -1140,7 +1140,7 @@ final class Inclusao implements Service
     {
         HoraExtraManualRepository::delete($assentamento->getCodigo());
 
-        $horasExtras = array(
+        $horasExtras = [
             BaseHora::HORAS_EXTRA50 => !empty($this->horaExtraManual50Diurna)
                 ? $this->horaExtraManual50Diurna
                 : null,
@@ -1159,7 +1159,7 @@ final class Inclusao implements Service
             BaseHora::HORAS_EXTRA100_NOTURNA => !empty($this->horaExtraManual100Noturna)
                 ? $this->horaExtraManual100Noturna
                 : null
-        );
+        ];
 
         foreach ($horasExtras as $tipo => $hora) {
             if (empty($hora)) {

@@ -40,7 +40,7 @@ $clbens = new cl_bens;
 $clrotulo = new rotulocampo;
 $clbens->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -162,7 +162,7 @@ function js_abre(botao) {
         </td>
         <td>
           <?php 
-            $matriz = array("N"=>"NÃO","S"=>"SIM"); 
+            $matriz = ["N"=>"NÃO","S"=>"SIM"]; 
             db_select("opcao_obs",$matriz,true,1);
           ?>
         </td>

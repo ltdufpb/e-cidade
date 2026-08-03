@@ -84,17 +84,17 @@ abstract class RelatorioLegal {
     /**
      * Variáveis para controle das celulas
      */
-    $aAlturaLinha = array();
+    $aAlturaLinha = [];
     foreach ($oLinha->aColunas as $oColuna) {
       $aAlturaLinha[] = $this->oPdf->NbLines($oColuna->w, $oColuna->value);
     }
-    $iLinhas      = array_reduce($aAlturaLinha, "DBNumber::maiorValor");
+    $iLinhas      = array_reduce($aAlturaLinha, DBNumber::maiorValor(...));
     $iAlturaLinha = $oLinha->iAlturaLinha * $iLinhas;
 
     $iYAntes = $this->oPdf->getY();
     $iX      = $this->oPdf->getX();
 
-    $aDadosBordas = array();
+    $aDadosBordas = [];
     foreach ($oLinha->aColunas as $oColuna) {
 
       $this->oPdf->SetXY($iX, $iYAntes);

@@ -35,7 +35,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -129,7 +129,7 @@ function js_emite(){
       <tr>
          <td align=right nowrap><b>Encerramento de exercício:</b></td>
          <td><?php 
-                      $m = array();
+                      $m = [];
                       $m['n'] ='NÂO';
                       $m['s'] ='SIM';                      
                       db_select('encerramento',$m,true,1);

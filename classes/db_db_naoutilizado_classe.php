@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE db_naoutilizado
 class cl_db_naoutilizado { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $at63_sequencial = 0; 
-   var $at63_projeto = 0; 
-   var $at63_grupo = 0; 
+   public $at63_sequencial = 0; 
+   public $at63_projeto = 0; 
+   public $at63_grupo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  at63_sequencial = int4 = Sequencial 
                  at63_projeto = int4 = Codigo do projeto 
                  at63_grupo = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_db_naoutilizado() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_naoutilizado"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_db_naoutilizado {
          $this->erro_status = "0";
          return false; 
        }
-       $this->at63_sequencial = pg_result($result,0,0); 
+       $this->at63_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_projetosgrupos_at63_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $at63_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $at63_sequencial)){
          $this->erro_sql = " Campo at63_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_db_naoutilizado {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Grupos de projetos ($this->at63_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Grupos de projetos já Cadastrado";
@@ -166,12 +166,12 @@ class cl_db_naoutilizado {
      $resaco = $this->sql_record($this->sql_query_file($this->at63_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8355,'$this->at63_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1413,8355,'','".AddSlashes(pg_result($resaco,0,'at63_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1413,8356,'','".AddSlashes(pg_result($resaco,0,'at63_projeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1413,8357,'','".AddSlashes(pg_result($resaco,0,'at63_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1413,8355,'','".AddSlashes(pg_fetch_result($resaco,0,'at63_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1413,8356,'','".AddSlashes(pg_fetch_result($resaco,0,'at63_projeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1413,8357,'','".AddSlashes(pg_fetch_result($resaco,0,'at63_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_db_naoutilizado {
       $this->atualizacampos();
      $sql = " update db_naoutilizado set ";
      $virgula = "";
-     if(trim($this->at63_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at63_sequencial"])){ 
+     if(trim((string) $this->at63_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at63_sequencial"])){ 
        $sql  .= $virgula." at63_sequencial = $this->at63_sequencial ";
        $virgula = ",";
-       if(trim($this->at63_sequencial) == null ){ 
+       if(trim((string) $this->at63_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "at63_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_db_naoutilizado {
          return false;
        }
      }
-     if(trim($this->at63_projeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at63_projeto"])){ 
+     if(trim((string) $this->at63_projeto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at63_projeto"])){ 
        $sql  .= $virgula." at63_projeto = $this->at63_projeto ";
        $virgula = ",";
-       if(trim($this->at63_projeto) == null ){ 
+       if(trim((string) $this->at63_projeto) == null ){ 
          $this->erro_sql = " Campo Codigo do projeto nao Informado.";
          $this->erro_campo = "at63_projeto";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_db_naoutilizado {
          return false;
        }
      }
-     if(trim($this->at63_grupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at63_grupo"])){ 
+     if(trim((string) $this->at63_grupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["at63_grupo"])){ 
        $sql  .= $virgula." at63_grupo = $this->at63_grupo ";
        $virgula = ",";
-       if(trim($this->at63_grupo) == null ){ 
+       if(trim((string) $this->at63_grupo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "at63_grupo";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_db_naoutilizado {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8355,'$this->at63_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at63_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1413,8355,'".AddSlashes(pg_result($resaco,$conresaco,'at63_sequencial'))."','$this->at63_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1413,8355,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at63_sequencial'))."','$this->at63_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at63_projeto"]))
-           $resac = db_query("insert into db_acount values($acount,1413,8356,'".AddSlashes(pg_result($resaco,$conresaco,'at63_projeto'))."','$this->at63_projeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1413,8356,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at63_projeto'))."','$this->at63_projeto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["at63_grupo"]))
-           $resac = db_query("insert into db_acount values($acount,1413,8357,'".AddSlashes(pg_result($resaco,$conresaco,'at63_grupo'))."','$this->at63_grupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1413,8357,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'at63_grupo'))."','$this->at63_grupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_db_naoutilizado {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8355,'$at63_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1413,8355,'','".AddSlashes(pg_result($resaco,$iresaco,'at63_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1413,8356,'','".AddSlashes(pg_result($resaco,$iresaco,'at63_projeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1413,8357,'','".AddSlashes(pg_result($resaco,$iresaco,'at63_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1413,8355,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at63_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1413,8356,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at63_projeto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1413,8357,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'at63_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_naoutilizado
@@ -345,7 +345,7 @@ class cl_db_naoutilizado {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_naoutilizado";

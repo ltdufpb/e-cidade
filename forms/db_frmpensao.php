@@ -68,12 +68,12 @@ $clrotulo->label("e21_descricao");
               <?php
               if(isset($r52_dtincl)){
                 if((strpos(strtoupper("#".$r52_dtincl),'-')+0) > 0 ){
-                  $arr_dtincl = split("-",$r52_dtincl);
+                  $arr_dtincl = preg_split("#\\-#m",$r52_dtincl);
       	          $r52_dtincl_dia = $arr_dtincl[2];
       	          $r52_dtincl_mes = $arr_dtincl[1];
       	          $r52_dtincl_ano = $arr_dtincl[0];
                 }else{
-              		$arr_dtincl = split("/",$r52_dtincl);
+              		$arr_dtincl = preg_split("#\\/#m",$r52_dtincl);
       	          $r52_dtincl_dia = $arr_dtincl[0];
       	          $r52_dtincl_mes = $arr_dtincl[1];
       	          $r52_dtincl_ano = $arr_dtincl[2];
@@ -207,7 +207,7 @@ $clrotulo->label("e21_descricao");
         </table>      
       
       
-      <input type="hidden" id="rh139_contabancaria" name="rh139_contabancaria" value="<?= (isset($rh139_contabancaria)) ? $rh139_contabancaria : null ?>" />
+      <input type="hidden" id="rh139_contabancaria" name="rh139_contabancaria" value="<?= $rh139_contabancaria ?? null ?>" />
       <div id="ctnContaBancariaServidor"></div>
        
       <fieldset>
@@ -219,7 +219,7 @@ $clrotulo->label("e21_descricao");
             </td>
             <td>
               <?php
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('r52_pag13',$x,true,$db_opcao," tabIndex='11' onchange='js_desabilita();' ");
               ?>
             </td>
@@ -228,7 +228,7 @@ $clrotulo->label("e21_descricao");
             </td>
             <td>
               <?php
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('r52_pagfer',$x,true,$db_opcao," tabIndex='12' ");
               ?>
             </td>
@@ -237,7 +237,7 @@ $clrotulo->label("e21_descricao");
             </td>
             <td>
               <?php
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('r52_pagcom',$x,true,$db_opcao," tabIndex='13' ");
               ?>
             </td>
@@ -248,7 +248,7 @@ $clrotulo->label("e21_descricao");
               </td>
               <td>
                 <?php
-                  $aSuplementar = array("f"=>"NAO", "t"=>"SIM");
+                  $aSuplementar = ["f"=>"NAO", "t"=>"SIM"];
                   db_select('r52_pagasuplementar',$aSuplementar,true,$db_opcao," tabIndex='15' onchange='js_desabilita();'");
                 ?>
               </td>
@@ -259,7 +259,7 @@ $clrotulo->label("e21_descricao");
             </td>
             <td>
               <?php
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('r52_pagres',$x,true,$db_opcao," tabIndex='14' ");
               ?>
             </td>
@@ -268,7 +268,7 @@ $clrotulo->label("e21_descricao");
             </td>
             <td>
               <?php
-                $aAdiantamento13 = array("f"=>"NAO", "t"=>"SIM");
+                $aAdiantamento13 = ["f"=>"NAO", "t"=>"SIM"];
                 db_select('r52_adiantamento13',$aAdiantamento13,true,$db_opcao," tabIndex='15' onchange='js_desabilita();' disabled ");
               ?>
             </td>
@@ -358,7 +358,7 @@ $sql = $clpensao->sql_query_dados(
                                   $dbwhere
                                  );
  
-$chavepri= array("r52_anousu"=>$r52_anousu,"r52_mesusu"=>$r52_mesusu,"r52_regist"=>$r52_regist,"r52_numcgm"=>$r52_numcgm);
+$chavepri= ["r52_anousu"=>$r52_anousu,"r52_mesusu"=>$r52_mesusu,"r52_regist"=>$r52_regist,"r52_numcgm"=>$r52_numcgm];
 $cliframe_alterar_excluir->chavepri = $chavepri;
 $cliframe_alterar_excluir->sql      = $sql;
 $cliframe_alterar_excluir->campos   = $sCampos;
@@ -609,7 +609,7 @@ function js_pesquisar_pensao(mostra){
 function js_preenchepesquisa(chave,chave1,chave2,chave3){
   db_iframe_pensao.hide();
   <?php
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3+'&db_opcaoal=".$db_opcaoal."&clicar=false&chave_r52_anousu=".$r52_anousu."&chave_r52_mesusu=".$r52_mesusu."'";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1+'&chavepesquisa2='+chave2+'&chavepesquisa3='+chave3+'&db_opcaoal=".$db_opcaoal."&clicar=false&chave_r52_anousu=".$r52_anousu."&chave_r52_mesusu=".$r52_mesusu."'";
   ?>
 }
 js_desabilita();

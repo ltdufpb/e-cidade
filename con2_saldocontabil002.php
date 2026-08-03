@@ -31,7 +31,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_libcontabilidade.php"));
 require_once(modification("classes/db_empresto_classe.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $anoSessao = db_getsession("DB_anousu");
 $instituicao = db_getsession("DB_instit");
@@ -41,7 +41,7 @@ $datafin = $data;
 
 $clempresto = new cl_empresto;
 
-$aux = explode("-", $_GET["recid"]);
+$aux = explode("-", (string) $_GET["recid"]);
 
 if ($_GET["recid"] == "") {
     db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum recurso selecionado!');
@@ -154,7 +154,7 @@ for ($cod = 0; $cod < count($aux); $cod++) {
 	               ) as xx ";
 
     $result = db_query($sql) or die($sql);
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
 
         db_fieldsmemory($result, 0);
         $saldo_bancos = $saldo;
@@ -178,7 +178,7 @@ for ($cod = 0; $cod < count($aux); $cod++) {
     $sql = $clempresto->sql_rp_novo($anousu, $sele_work, $dtini, $dtfim, $sele_work1, $sql_where_externo, $sql_order);
     $result = db_query($sql) or die($sql);
 
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
         $taliq = 0;
         $tliq = 0;
         $tvlranu = 0;
@@ -187,7 +187,7 @@ for ($cod = 0; $cod < count($aux); $cod++) {
         $total_liquidados_finais = 0;
         $total_geral_finais = 0;
 
-        for ($xx = 0; $xx < pg_numrows($result); $xx++) {
+        for ($xx = 0; $xx < pg_num_rows($result); $xx++) {
             db_fieldsmemory($result, $xx);
 
             $liquidado_anterior = ($e91_vlremp - $e91_vlranu - $e91_vlrliq) + ($e91_vlrliq - $e91_vlrpag);
@@ -221,7 +221,7 @@ for ($cod = 0; $cod < count($aux); $cod++) {
 
     $result = db_dotacaosaldo(8, 3, 4, true, $sele_work, $anousu, $dtini, $dtfim);
 
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
         db_fieldsmemory($result, 0);
         $naoliquidado = $atual_a_pagar;
         $atual_a_pagar_liquidado = $liquidado_acumulado - $pago_acumulado;
@@ -276,7 +276,7 @@ for ($cod = 0; $cod < count($aux); $cod++) {
 
     $result = db_query($sql);
     $reservado = 0;
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
         db_fieldsmemory($result, 0);
         $reservado = $reservadoaut + $reservadosol;
     }
@@ -297,7 +297,7 @@ for ($cod = 0; $cod < count($aux); $cod++) {
 
     $result = db_query($sql);
     $reservado_periodo = 0;
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
         db_fieldsmemory($result, 0);
         $reservado_periodo = $reservadoaut_periodo + $reservadosol_periodo;
     }
@@ -325,7 +325,7 @@ for ($cod = 0; $cod < count($aux); $cod++) {
     }
 
     //Valor das reservas do exercício para a instituição
-    $VlrReserva = pg_result(db_query("select round(sum(o80_valor),2)
+    $VlrReserva = pg_fetch_result(db_query("select round(sum(o80_valor),2)
                                       from orcreserva
 	     						                   inner join orcdotacao on o58_anousu = o80_anousu
                                                           and o58_coddot = o80_coddot

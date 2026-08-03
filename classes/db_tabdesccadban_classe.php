@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE tabdesccadban
 class cl_tabdesccadban { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k114_sequencial = 0; 
-   var $k114_tabdesc = 0; 
-   var $k114_codban = 0; 
+   public $k114_sequencial = 0; 
+   public $k114_tabdesc = 0; 
+   public $k114_codban = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k114_sequencial = int8 = Código sequencial 
                  k114_tabdesc = int8 = Código de Desconto 
                  k114_codban = int8 = Código da conta que será vinculada 
                  ";
    //funcao construtor da classe 
-   function cl_tabdesccadban() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabdesccadban"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_tabdesccadban {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k114_sequencial = pg_result($result,0,0); 
+       $this->k114_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tabdesccadban_k114_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k114_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k114_sequencial)){
          $this->erro_sql = " Campo k114_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_tabdesccadban {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Desconto Conta Bancária ($this->k114_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Desconto Conta Bancária já Cadastrado";
@@ -145,12 +145,12 @@ class cl_tabdesccadban {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20630,'$this->k114_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3716,20630,'','".AddSlashes(pg_result($resaco,0,'k114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3716,20631,'','".AddSlashes(pg_result($resaco,0,'k114_tabdesc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3716,20632,'','".AddSlashes(pg_result($resaco,0,'k114_codban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3716,20630,'','".AddSlashes(pg_fetch_result($resaco,0,'k114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3716,20631,'','".AddSlashes(pg_fetch_result($resaco,0,'k114_tabdesc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3716,20632,'','".AddSlashes(pg_fetch_result($resaco,0,'k114_codban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_tabdesccadban {
       $this->atualizacampos();
      $sql = " update tabdesccadban set ";
      $virgula = "";
-     if(trim($this->k114_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k114_sequencial"])){ 
+     if(trim((string) $this->k114_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k114_sequencial"])){ 
        $sql  .= $virgula." k114_sequencial = $this->k114_sequencial ";
        $virgula = ",";
-       if(trim($this->k114_sequencial) == null ){ 
+       if(trim((string) $this->k114_sequencial) == null ){ 
          $this->erro_sql = " Campo Código sequencial não informado.";
          $this->erro_campo = "k114_sequencial";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_tabdesccadban {
          return false;
        }
      }
-     if(trim($this->k114_tabdesc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k114_tabdesc"])){ 
+     if(trim((string) $this->k114_tabdesc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k114_tabdesc"])){ 
        $sql  .= $virgula." k114_tabdesc = $this->k114_tabdesc ";
        $virgula = ",";
-       if(trim($this->k114_tabdesc) == null ){ 
+       if(trim((string) $this->k114_tabdesc) == null ){ 
          $this->erro_sql = " Campo Código de Desconto não informado.";
          $this->erro_campo = "k114_tabdesc";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_tabdesccadban {
          return false;
        }
      }
-     if(trim($this->k114_codban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k114_codban"])){ 
+     if(trim((string) $this->k114_codban)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k114_codban"])){ 
        $sql  .= $virgula." k114_codban = $this->k114_codban ";
        $virgula = ",";
-       if(trim($this->k114_codban) == null ){ 
+       if(trim((string) $this->k114_codban) == null ){ 
          $this->erro_sql = " Campo Código da conta que será vinculada não informado.";
          $this->erro_campo = "k114_codban";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_tabdesccadban {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20630,'$this->k114_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["k114_sequencial"]) || $this->k114_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3716,20630,'".AddSlashes(pg_result($resaco,$conresaco,'k114_sequencial'))."','$this->k114_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3716,20630,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k114_sequencial'))."','$this->k114_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["k114_tabdesc"]) || $this->k114_tabdesc != "")
-             $resac = db_query("insert into db_acount values($acount,3716,20631,'".AddSlashes(pg_result($resaco,$conresaco,'k114_tabdesc'))."','$this->k114_tabdesc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3716,20631,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k114_tabdesc'))."','$this->k114_tabdesc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["k114_codban"]) || $this->k114_codban != "")
-             $resac = db_query("insert into db_acount values($acount,3716,20632,'".AddSlashes(pg_result($resaco,$conresaco,'k114_codban'))."','$this->k114_codban',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3716,20632,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k114_codban'))."','$this->k114_codban',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_tabdesccadban {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20630,'$k114_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3716,20630,'','".AddSlashes(pg_result($resaco,$iresaco,'k114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3716,20631,'','".AddSlashes(pg_result($resaco,$iresaco,'k114_tabdesc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3716,20632,'','".AddSlashes(pg_result($resaco,$iresaco,'k114_codban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3716,20630,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k114_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3716,20631,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k114_tabdesc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3716,20632,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k114_codban'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -341,7 +341,7 @@ class cl_tabdesccadban {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tabdesccadban";
@@ -356,7 +356,7 @@ class cl_tabdesccadban {
    function sql_query ( $k114_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -385,7 +385,7 @@ class cl_tabdesccadban {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -398,7 +398,7 @@ class cl_tabdesccadban {
    function sql_query_file ( $k114_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_tabdesccadban {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -309,7 +309,7 @@ class CobrancaRegistrada
         $iConvenio,
         $nValor,
         $lUsuarioExterno = false,
-        $aEmitirPor = array()
+        $aEmitirPor = []
     ) {
         $oDataSessao = new DateTime;
         $oDataSessao->setTimestamp(db_getsession('DB_datausu'));
@@ -330,31 +330,23 @@ class CobrancaRegistrada
 
         $oBancoAgencia = self::getBancoConvenio($iConvenio);
 
-        switch ($oBancoAgencia->db89_db_bancos) {
-            case ManutencaoBB::CODIGO_BANCO:
-                self::processarBB(
-                    $iNumpreRecibo,
-                    $iConvenio,
-                    $nValor,
-                    $lUsuarioExterno,
-                    $aEmitirPor
-                );
-                break;
-
-            case ManutencaoCEF::CODIGO_BANCO:
-                self::processarCEF(
-                    $iNumpreRecibo,
-                    $iConvenio,
-                    $nValor,
-                    $lUsuarioExterno,
-                    $aEmitirPor
-                );
-                break;
-
-            default:
-                throw new DBException("Erro ao selecionar banco para processar.");
-                break;
-        }
+        match ($oBancoAgencia->db89_db_bancos) {
+            ManutencaoBB::CODIGO_BANCO => self::processarBB(
+                $iNumpreRecibo,
+                $iConvenio,
+                $nValor,
+                $lUsuarioExterno,
+                $aEmitirPor
+            ),
+            ManutencaoCEF::CODIGO_BANCO => self::processarCEF(
+                $iNumpreRecibo,
+                $iConvenio,
+                $nValor,
+                $lUsuarioExterno,
+                $aEmitirPor
+            ),
+            default => throw new DBException("Erro ao selecionar banco para processar."),
+        };
 
         $cl_recibocobrancawebservice = new \cl_recibocobrancawebservice();
         $cl_recibocobrancawebservice->k199_sequencial = null;

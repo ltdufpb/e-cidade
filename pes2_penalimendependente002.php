@@ -36,7 +36,7 @@ require_once(modification("libs/db_app.utils.php"));
 $oDaoSelecao = new cl_selecao();
 $oDaoPensao  = new cl_pensao();
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if (!empty($iMesInicial) && !empty($iAnoInicial)) {
 
@@ -64,7 +64,7 @@ $sWhereData       = "";
 /**
 * Define a Seleção Selecionada
 */
-if ( trim ( $iSelecao ) != "" ) {
+if ( trim ( (string) $iSelecao ) != "" ) {
 
   $rsSelecao = $oDaoSelecao->sql_record ( $oDaoSelecao->sql_query_file ( $iSelecao, db_getsession("DB_instit") ) );
 
@@ -90,7 +90,7 @@ if ( trim ( $aMatriculas ) != "" ) {
   $sWhereMatriculas = "  and r52_regist in ({$aMatriculas}) ";
 }
 
-if ( (trim ($iAnoInicial) != "") and (trim ($iMesInicial) != "") ) {
+if ( (trim ((string) $iAnoInicial) != "") and (trim ((string) $iMesInicial) != "") ) {
     
     $sWhereData .= " and ( r52_anousu >= {$iAnoInicial} 
                            and case 
@@ -100,7 +100,7 @@ if ( (trim ($iAnoInicial) != "") and (trim ($iMesInicial) != "") ) {
                                end )   ";
 }
 
-if ( (trim ($iAnoFinal) != "") and (trim ($iMesFinal) != "") ) {
+if ( (trim ((string) $iAnoFinal) != "") and (trim ((string) $iMesFinal) != "") ) {
     
    $sWhereData  .= " and ( r52_anousu <= {$iAnoFinal} 
                            and case 

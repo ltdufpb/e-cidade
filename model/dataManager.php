@@ -29,16 +29,13 @@
 class tableDataManager {
 
   private $iPkLastReg       = 0;
-  private $iTamanhoBloco    = 1000;
   private $sTableName       = "";
-  private $sCampoPk         = "";
-  private $aData            = array();
-  private $aCopyRows        = array();
-  private $aTableProperties = array();
-  private $aLinhaAtual      = array();
+  private $aData            = [];
+  private $aCopyRows        = [];
+  private $aTableProperties = [];
+  private $aLinhaAtual      = [];
   private $pConexao         = null;
-  private $lAutoStore       = true;
-  private $aCampos          = array();
+  private $aCampos          = [];
   private $lUseSequence     = false;
   private $sSequenceName    = '';
 
@@ -47,7 +44,7 @@ class tableDataManager {
    * possuem um retorno vazio
    * @var array
    */
-  private $aTiposQueNaoPodeEntrarString = array('numeric', 'int4', 'date', 'timestamp');
+  private $aTiposQueNaoPodeEntrarString = ['numeric', 'int4', 'date', 'timestamp'];
 
   /**
    * Construtor da Classe
@@ -58,7 +55,7 @@ class tableDataManager {
    * @param  number    $iTamanhoBloco
    * @throws Exception
    */
-  function __construct($pConexao, $sTableName, $sCampoPk='', $lAutoStore=true, $iTamanhoBloco=1000, $sSequenceName = null) {
+  function __construct($pConexao, $sTableName, private $sCampoPk='', private $lAutoStore=true, private $iTamanhoBloco=1000, $sSequenceName = null) {
 
     if(!is_resource($pConexao) || empty($sTableName)) {
       throw new Exception("Conexao invalida [tableDataManager]");
@@ -70,17 +67,14 @@ class tableDataManager {
 
     $this->sTableName    = $sTableName;
     $this->pConexao      = $pConexao;
-    $this->iTamanhoBloco = $iTamanhoBloco;
-    $this->sCampoPk      = $sCampoPk;
-    $this->lAutoStore    = $lAutoStore;
 
     $this->getTableAtt();
 
-    if ( !empty($sCampoPk) ) {
+    if ( !empty($this->sCampoPk) ) {
 
       $this->setSequence( $sSequenceName );
       // metodo para buscar o ultimo valor do campo PK para setar o atributo $this->iPkLastReg
-      $this->iPkLastReg = $this->getMaxValueField($sCampoPk);
+      $this->iPkLastReg = $this->getMaxValueField($this->sCampoPk);
     }
   }
 
@@ -148,7 +142,7 @@ class tableDataManager {
       $sNomeCampo  = pg_field_name($rsTableProperties, $iCont);
       $sTipoCampo  = pg_field_type($rsTableProperties, $iCont);
 
-      $this->aTableProperties[$iCont] = array($sNomeCampo,$sTipoCampo);
+      $this->aTableProperties[$iCont] = [$sNomeCampo,$sTipoCampo];
 
     }
 
@@ -188,7 +182,7 @@ class tableDataManager {
         throw new Exception("[tableDataManager] Erro : Nao definido campo {$this->sTableName}.".$aTabela[0]);
       }
 
-      if (trim($aTabela[0]) == trim($this->sCampoPk)) {
+      if (trim((string) $aTabela[0]) == trim($this->sCampoPk)) {
         $sValor      = $this->getNextSequence();
       }else{
 
@@ -241,9 +235,9 @@ class tableDataManager {
       throw new Exception("[tableDataManager] :".pg_last_error($this->pConexao));
     }
 
-    $this->aData       = array();
-    $this->aLinha      = array();
-    $this->aLinhaAtual = array();
+    $this->aData       = [];
+    $this->aLinha      = [];
+    $this->aLinhaAtual = [];
 
     if ( $this->lUseSequence ) {
       $this->persistSequenceValue();//$rsSetVal   = pg_query("select setval('{$this->sSequenceName}', {$this->getLastPk()});");

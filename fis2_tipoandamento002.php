@@ -37,7 +37,7 @@ $clrotulo->label('y41_descr');
 $clrotulo->label('y41_obs');
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($ordem == "a") {

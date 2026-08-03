@@ -45,11 +45,11 @@ $iMatricula = 0;
 $oPost  = db_utils::postMemory($_POST);
 $oGet   = db_utils::postMemory($_GET);
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 $clcgm = new cl_cgm;
 $clcgm->rotulo->label();
@@ -260,13 +260,13 @@ $iMesImplantacao = $aImplantacao[1];
         <?php   
       $mensagem_semdebitos = false;
       $com_debitos = true;
-      if(isset($HTTP_POST_VARS["pesquisar"]) || isset($matricula) ) {
+      if(isset($_POST["pesquisar"]) || isset($matricula) ) {
           echo "<form id='formatu' name=\"formatu\" action=\"pes3_gerfinanc001.php".($lReadOnly ? "?lReadOnly=true" :"")."\" method=\"post\">\n";
           //aqui é pra se clicar no link da matricula em cai3_gerfinanc002.php
           if(isset($matricula) && !empty($matricula))
-          $HTTP_POST_VARS["r01_regist"] = $matricula;
+          $_POST["r01_regist"] = $matricula;
       
-        if(!empty($HTTP_POST_VARS["r01_regist"])) {
+        if(!empty($_POST["r01_regist"])) {
             $sql = "select rh02_regist as r01_regist,
                            rh01_numcgm as k00_numcgm,
                            z01_numcgm,
@@ -275,13 +275,13 @@ $iMesImplantacao = $aImplantacao[1];
                            inner join rhpessoal on rh01_regist = rh02_regist
                            inner join cgm on rh01_numcgm = z01_numcgm 
                 where 
-                           rh02_regist = ".$HTTP_POST_VARS["r01_regist"]."
+                           rh02_regist = ".$_POST["r01_regist"]."
                        and rh02_anousu = ".db_anofolha()."
                        and rh02_mesusu = ".db_mesfolha()."
                        and rh02_instit = ".db_getsession("DB_instit")." limit 1" ;
             // echo $sql;
           $result = db_query($sql);
-          if(pg_numrows($result) == 0) {
+          if(pg_num_rows($result) == 0) {
             echo "
                     <script>
                       alert('Funcionário sem cálculo')
@@ -291,16 +291,16 @@ $iMesImplantacao = $aImplantacao[1];
           } else {
             db_fieldsmemory($result,0);
             $resultaux = $result;
-              $arg = "matric=".$HTTP_POST_VARS["r01_regist"]; 
+              $arg = "matric=".$_POST["r01_regist"]; 
           }
     
-         $matricula = $HTTP_POST_VARS["r01_regist"];
+         $matricula = $_POST["r01_regist"];
             $iInstit   = db_getsession("DB_instit");
 
           ///////// VERIFICA SE A MATRÍCULA POSSUI SALÁRIO
 
           if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
-            $matricula = $HTTP_POST_VARS["r01_regist"];
+            $matricula = $_POST["r01_regist"];
             $iInstit   = db_getsession("DB_instit");
 
             $sSql      = "select rh143_rubrica as r14_rubric                                      ";
@@ -322,21 +322,21 @@ $iMesImplantacao = $aImplantacao[1];
 
             // die(pg_numrows($resultgerfsal));
 
-            if ($resultgerfsal && pg_numrows($resultgerfsal) != 0 ) {
+            if ($resultgerfsal && pg_num_rows($resultgerfsal) != 0 ) {
               $temsalario = true;
             } else {
               $temsalario = false;
             }
 
           } else {
-            $matricula = $HTTP_POST_VARS["r01_regist"];
+            $matricula = $_POST["r01_regist"];
             $resultgerfsal = db_query("select * 
                                     from gerfsal 
                                   where     r14_regist = $matricula 
                                             and r14_anousu = $ano 
                                             and r14_mesusu = $mes
                                             and r14_instit = ".db_getsession("DB_instit"));
-            if(pg_numrows($resultgerfsal) != 0){
+            if(pg_num_rows($resultgerfsal) != 0){
               $temsalario = true;
             }else{
               $temsalario = false;
@@ -358,7 +358,7 @@ $iMesImplantacao = $aImplantacao[1];
 
               $rsQuerySuplementar = db_query($sSql);
 
-              if ($rsQuerySuplementar && pg_numrows($rsQuerySuplementar) != 0 ) {
+              if ($rsQuerySuplementar && pg_num_rows($rsQuerySuplementar) != 0 ) {
                 $lTemSuplementar = true;
               }
             }
@@ -370,7 +370,7 @@ $iMesImplantacao = $aImplantacao[1];
                                       and r31_anousu = $ano 
                                       and r31_mesusu = $mes
                                        and r31_instit = ".db_getsession("DB_instit"));
-            if(pg_numrows($resultgerffer) != 0){
+            if(pg_num_rows($resultgerffer) != 0){
             $temferias = true;
           }else{
               $temferias = false;
@@ -382,7 +382,7 @@ $iMesImplantacao = $aImplantacao[1];
                                       and r20_anousu = $ano 
                                       and r20_mesusu = $mes
                                       and r20_instit = ".db_getsession("DB_instit"));
-            if(pg_numrows($resultgerfres) != 0){
+            if(pg_num_rows($resultgerfres) != 0){
             $temrescisao = true;
           }else{
               $temrescisao = false;
@@ -394,7 +394,7 @@ $iMesImplantacao = $aImplantacao[1];
                                       and r22_anousu = $ano 
                                       and r22_mesusu = $mes
                                       and r22_instit = ".db_getsession("DB_instit"));
-            if(pg_numrows($resultgerfadi) != 0){
+            if(pg_num_rows($resultgerfadi) != 0){
             $temadiantamento = true;
           }else{
               $temadiantamento = false;
@@ -406,7 +406,7 @@ $iMesImplantacao = $aImplantacao[1];
                                       and r35_anousu = $ano 
                                       and r35_mesusu = $mes
                                       and r35_instit = ".db_getsession("DB_instit"));
-            if(pg_numrows($resultgerfs13) != 0){
+            if(pg_num_rows($resultgerfs13) != 0){
             $tem13salario = true;
           }else{
               $tem13salario = false;
@@ -438,7 +438,7 @@ $iMesImplantacao = $aImplantacao[1];
                                     and r48_anousu = $ano 
                                     and r48_mesusu = $mes
                                     and r48_instit = ".db_getsession("DB_instit"));
-            if(pg_numrows($resultgerfcom) != 0){
+            if(pg_num_rows($resultgerfcom) != 0){
               $temcomplementar = true;
             }else{
               $temcomplementar = false;
@@ -452,7 +452,7 @@ $iMesImplantacao = $aImplantacao[1];
                                      and r53_anousu = $ano 
                                      and r53_mesusu = $mes
                                      and r53_instit = ".db_getsession("DB_instit"));
-            if(pg_numrows($resultgerffx) != 0){
+            if(pg_num_rows($resultgerffx) != 0){
             $tempontofixo = true;
           }else{
               $tempontofixo = false;
@@ -468,7 +468,7 @@ $iMesImplantacao = $aImplantacao[1];
                                                   and rh02_anousu = $ano 
                                                   and rh02_mesusu = $mes
                                                    and rh02_instit = ".db_getsession("DB_instit")." limit 1");
-            if(pg_numrows($resultpreviden) != 0){
+            if(pg_num_rows($resultpreviden) != 0){
             $temajustepreviden = true;
           }else{
               $temajustepreviden = false;
@@ -485,7 +485,7 @@ $iMesImplantacao = $aImplantacao[1];
                                               and rh02_anousu = $ano 
                                               and rh02_mesusu = $mes 
                                                and rh02_instit = ".db_getsession("DB_instit")." limit 1");
-            if(pg_numrows($resultajusteir) != 0){
+            if(pg_num_rows($resultajusteir) != 0){
             $temajusteir = true;
           }else{
               $temajusteir = false;
@@ -498,7 +498,7 @@ $iMesImplantacao = $aImplantacao[1];
                                       and r93_anousu = $ano 
                                       and r93_mesusu = $mes
                                       and r93_instit = ".db_getsession("DB_instit"));
-            if(pg_numrows($resultgerfprovfer) != 0){
+            if(pg_num_rows($resultgerfprovfer) != 0){
             $temgerfprovfer = true;
           }else{
               $temgerfprovfer = false;
@@ -510,7 +510,7 @@ $iMesImplantacao = $aImplantacao[1];
                                       and r94_anousu = $ano 
                                       and r94_mesusu = $mes
                                       and r94_instit = ".db_getsession("DB_instit"));
-            if(pg_numrows($resultgerfprovs13) != 0){
+            if(pg_num_rows($resultgerfprovs13) != 0){
             $temgerfprovs13 = true;
           }else{
               $temgerfprovs13 = false;
@@ -518,7 +518,7 @@ $iMesImplantacao = $aImplantacao[1];
         
         $sCampos = "z01_numcgm, z01_nome, z01_ender, z01_munic, z01_uf, z01_cgccpf, z01_ident, rh37_funcao, rh37_descr";  
         
-        $sWhere  = "     z01_numcgm  = " . pg_result($result,0,"k00_numcgm");
+        $sWhere  = "     z01_numcgm  = " . pg_fetch_result($result,0,"k00_numcgm");
         $sWhere .= " AND rh01_regist = " . $r01_regist;
         $sWhere .= " AND rh01_instit = " . db_getsession('DB_instit'); 
         
@@ -560,7 +560,7 @@ $iMesImplantacao = $aImplantacao[1];
                             <tr>
                               <td class="tabcols" title="Clique Aqui para ver os dados cadastrais." nowrap>  
                                 <?php 
-                                parse_str($arg);
+                                parse_str((string) $arg, $result);
                                 $Label = "<a href='' onclick='js_mostrapessoal();return false;'>$Lr01_regist</a>";
                                 echo "<strong style=\"color:blue\">$Label</strong>";
                                 ?>
@@ -629,16 +629,16 @@ $iMesImplantacao = $aImplantacao[1];
                           </table>  
                          </fieldset>
                          <?php
-                         if(isset($HTTP_POST_VARS["r01_regist"]) && !empty($HTTP_POST_VARS["r01_regist"]))
-                           echo "<input type=\"hidden\" name=\"r01_regist\"  value=\"".$HTTP_POST_VARS["r01_regist"]."\">";
-                         if(isset($HTTP_POST_VARS["q02_inscr"]) && !empty($HTTP_POST_VARS["q02_inscr"]))
-                           echo "<input type=\"hidden\" name=\"q02_inscr\"  value=\"".$HTTP_POST_VARS["q02_inscr"]."\">";
-                         if(isset($HTTP_POST_VARS["z01_numcgm"]) && !empty($HTTP_POST_VARS["z01_numcgm"]))
-                           echo "<input type=\"hidden\" name=\"z01_numcgm\"  value=\"".$HTTP_POST_VARS["z01_numcgm"]."\">";
-                         if(isset($HTTP_POST_VARS["v07_parcel"]) && !empty($HTTP_POST_VARS["v07_parcel"]))
-                           echo "<input type=\"hidden\" name=\"v07_parcel\"  value=\"".$HTTP_POST_VARS["v07_parcel"]."\">";
-                         if(isset($HTTP_POST_VARS["k00_numpre"]) && !empty($HTTP_POST_VARS["k00_numpre"]))
-                           echo "<input type=\"hidden\" name=\"k00_numpre\"  value=\"".$HTTP_POST_VARS["k00_numpre"]."\">";
+                         if(isset($_POST["r01_regist"]) && !empty($_POST["r01_regist"]))
+                           echo "<input type=\"hidden\" name=\"r01_regist\"  value=\"".$_POST["r01_regist"]."\">";
+                         if(isset($_POST["q02_inscr"]) && !empty($_POST["q02_inscr"]))
+                           echo "<input type=\"hidden\" name=\"q02_inscr\"  value=\"".$_POST["q02_inscr"]."\">";
+                         if(isset($_POST["z01_numcgm"]) && !empty($_POST["z01_numcgm"]))
+                           echo "<input type=\"hidden\" name=\"z01_numcgm\"  value=\"".$_POST["z01_numcgm"]."\">";
+                         if(isset($_POST["v07_parcel"]) && !empty($_POST["v07_parcel"]))
+                           echo "<input type=\"hidden\" name=\"v07_parcel\"  value=\"".$_POST["v07_parcel"]."\">";
+                         if(isset($_POST["k00_numpre"]) && !empty($_POST["k00_numpre"]))
+                           echo "<input type=\"hidden\" name=\"k00_numpre\"  value=\"".$_POST["k00_numpre"]."\">";
                          ?>
                        </form>
                        <!-- Informações Matricula / Fim--> 
@@ -656,7 +656,7 @@ $iMesImplantacao = $aImplantacao[1];
                                 <legend>Cálculos:</legend>
 
                                 <?php
-                                  $aCalculos = array();
+                                  $aCalculos = [];
                                   $xopcao    = '';
 
                                   if ( @$temsalario == true || @$lTemSuplementar) {
@@ -665,10 +665,10 @@ $iMesImplantacao = $aImplantacao[1];
                                       $xopcao = 'salario';
                                     }
 
-                                    $aCalculos['salario'] = array("sLabel" => "SALÁRIO");
+                                    $aCalculos['salario'] = ["sLabel" => "SALÁRIO"];
                                     
                                     if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()){
-                                      $aCalculos['salario'] = array("sLabel" => "SALÁRIO/SUPLEMENTAR");  
+                                      $aCalculos['salario'] = ["sLabel" => "SALÁRIO/SUPLEMENTAR"];  
                                     }
                                   }
 
@@ -677,7 +677,7 @@ $iMesImplantacao = $aImplantacao[1];
                                     if (empty($xopcao)) {
                                       $xopcao = 'rescisao';
                                     }
-                                    $aCalculos['rescisao'] = array("sLabel" => "RESCISÃO");
+                                    $aCalculos['rescisao'] = ["sLabel" => "RESCISÃO"];
                                   }
 
                                   if(@$temferias == true ){
@@ -685,7 +685,7 @@ $iMesImplantacao = $aImplantacao[1];
                                     if (empty($xopcao)) {
                                       $xopcao = 'ferias';
                                     }
-                                    $aCalculos['ferias'] = array("sLabel" => "FÉRIAS");
+                                    $aCalculos['ferias'] = ["sLabel" => "FÉRIAS"];
                                   }
 
                                   if (@$tem13salario == true ) {
@@ -693,7 +693,7 @@ $iMesImplantacao = $aImplantacao[1];
                                     if (empty($xopcao)) {
                                       $xopcao = '13salario';
                                     }                                      
-                                    $aCalculos['13salario'] = array("sLabel" => "13o. SALÁRIO");                                                                                
+                                    $aCalculos['13salario'] = ["sLabel" => "13o. SALÁRIO"];                                                                                
                                   }
 
                                   if (@$temadiantamento == true ) {
@@ -701,7 +701,7 @@ $iMesImplantacao = $aImplantacao[1];
                                     if (empty($xopcao)) {
                                       $xopcao = 'adiantamento';
                                     }
-                                    $aCalculos['adiantamento'] = array("sLabel" => "ADIANTAMENTO");
+                                    $aCalculos['adiantamento'] = ["sLabel" => "ADIANTAMENTO"];
                                   }
                                   
                                   if (@$temcomplementar == true ) {
@@ -709,7 +709,7 @@ $iMesImplantacao = $aImplantacao[1];
                                     if (empty($xopcao)) {
                                       $xopcao = 'complementar';
                                     }                                      
-                                    $aCalculos['complementar'] = array("sLabel" => "COMPLEMENTAR");
+                                    $aCalculos['complementar'] = ["sLabel" => "COMPLEMENTAR"];
                                   }
 
                                  if (@$tempontofixo == true ) {
@@ -717,7 +717,7 @@ $iMesImplantacao = $aImplantacao[1];
                                     if (empty($xopcao)) {
                                       $xopcao = 'fixo';
                                     }
-                                    $aCalculos['fixo'] = array("sLabel" => "PONTO FIXO");
+                                    $aCalculos['fixo'] = ["sLabel" => "PONTO FIXO"];
                                   }
 
                                   if (@$temgerfprovfer == true ) {
@@ -725,7 +725,7 @@ $iMesImplantacao = $aImplantacao[1];
                                     if (empty($xopcao)) {
                                       $xopcao = 'gerfprovfer';
                                     }
-                                    $aCalculos['gerfprovfer'] = array("sLabel" => "PROV. FÉRIAS");
+                                    $aCalculos['gerfprovfer'] = ["sLabel" => "PROV. FÉRIAS"];
                                   }
 
                                   if (@$temgerfprovs13 == true ){
@@ -733,7 +733,7 @@ $iMesImplantacao = $aImplantacao[1];
                                     if (empty($xopcao)) {
                                       $xopcao = 'gerfprovs13';
                                     }
-                                    $aCalculos['gerfprovs13'] = array("sLabel" => "PROV. 13o. SALÁRIO");
+                                    $aCalculos['gerfprovs13'] = ["sLabel" => "PROV. 13o. SALÁRIO"];
                                   }
 
                                   if (@$temajustepreviden == true ) {
@@ -741,7 +741,7 @@ $iMesImplantacao = $aImplantacao[1];
                                     if (empty($xopcao)) {
                                       $xopcao = 'previden';
                                     }
-                                    $aCalculos['previden'] = array("sLabel" => "AJUSTE PREVIDÊNCIA");
+                                    $aCalculos['previden'] = ["sLabel" => "AJUSTE PREVIDÊNCIA"];
                                   }
 
                                   if (@$temajusteir == true ) {
@@ -749,7 +749,7 @@ $iMesImplantacao = $aImplantacao[1];
                                     if (empty($xopcao)) {
                                       $xopcao = 'irf';
                                     }
-                                    $aCalculos['irf'] = array("sLabel" => "AJUSTE I.R.R.F");
+                                    $aCalculos['irf'] = ["sLabel" => "AJUSTE I.R.R.F"];
                                   }
                                 
                                   echo '<div class="box-calculos">';
@@ -787,8 +787,8 @@ $iMesImplantacao = $aImplantacao[1];
           <legend><strong>Pontos</strong></legend>
 
             <?php
-            $aPontos           = array();
-            $aPrevidencia      = array();
+            $aPontos           = [];
+            $aPrevidencia      = [];
 
             $iAnoUsu           = db_getsession('DB_anousu');
             $iMesusu           = DBPessoal::getMesFolha();
@@ -813,14 +813,14 @@ $iMesImplantacao = $aImplantacao[1];
               }
 
               $lPermiteManutecao             = (db_permissaomenu( $iAnoUsu, 952, 4506 ) == "true" && $lFolhaAberta) ;
-              $aPontos['salario']            = array("sLabel" => "SALÁRIO", "lPermiteManutencao" => $lPermiteManutecao);
+              $aPontos['salario']            = ["sLabel" => "SALÁRIO", "lPermiteManutencao" => $lPermiteManutecao];
             }
             
             if (isset($lTemSuplementar)) {
               
               $lFolhaAberta           = FolhaPagamentoSuplementar::hasFolhaAberta($oCompetenciaFolha);
               $lPermiteManutecao      = (db_permissaomenu( $iAnoUsu, 952, 4506 ) == "true" && $lFolhaAberta) ;
-              $aPontos['suplementar'] = array("sLabel" => "SUPLEMENTAR", "lPermiteManutencao" => $lPermiteManutecao);
+              $aPontos['suplementar'] = ["sLabel" => "SUPLEMENTAR", "lPermiteManutencao" => $lPermiteManutecao];
             }
               
             if ( @$temrescisao ) {
@@ -829,7 +829,7 @@ $iMesImplantacao = $aImplantacao[1];
                 $lFolhaAberta                = FolhaPagamentoRescisao::hasFolhaAberta($oCompetenciaFolha);
               }     
               $lPermiteManutecao             = db_permissaomenu( $iAnoUsu, 952, 4510 ) == "true" && $lFolhaAberta;
-              $aPontos['rescisao']           = array("sLabel" => "RESCISÃO", "lPermiteManutencao" => $lPermiteManutecao);
+              $aPontos['rescisao']           = ["sLabel" => "RESCISÃO", "lPermiteManutencao" => $lPermiteManutecao];
             }
             
             if ( @$temferias ) {
@@ -839,16 +839,16 @@ $iMesImplantacao = $aImplantacao[1];
                 if ( !FolhaPagamentoSalario::hasFolhaAberta($oCompetenciaFolha)
                   && !FolhaPagamentoComplementar::hasFolhaAberta($oCompetenciaFolha) ) {
 
-                  $aPontos['ferias'] = array("sLabel" => "FÉRIAS", "lPermiteManutencao" => false);
+                  $aPontos['ferias'] = ["sLabel" => "FÉRIAS", "lPermiteManutencao" => false];
                 } else {
 
                 $lPermiteManutecao = db_permissaomenu( $iAnoUsu, 952, 4509) == "true" && $lFolhaAberta;
-                $aPontos['ferias'] = array("sLabel" => "FÉRIAS", "lPermiteManutencao" => $lPermiteManutecao);
+                $aPontos['ferias'] = ["sLabel" => "FÉRIAS", "lPermiteManutencao" => $lPermiteManutecao];
                 }
               } else {
 
                 $lPermiteManutecao = db_permissaomenu( $iAnoUsu, 952, 4509) == "true" && $lFolhaAberta;
-                $aPontos['ferias'] = array("sLabel" => "FÉRIAS", "lPermiteManutencao" => $lPermiteManutecao);
+                $aPontos['ferias'] = ["sLabel" => "FÉRIAS", "lPermiteManutencao" => $lPermiteManutecao];
               }
             }
             
@@ -858,7 +858,7 @@ $iMesImplantacao = $aImplantacao[1];
                 $lFolhaAberta                = FolhaPagamento13o::hasFolhaAberta($oCompetenciaFolha);
               }
               $lPermiteManutecao             = db_permissaomenu( $iAnoUsu, 952, 4511 ) == "true" && $lFolhaAberta;
-              $aPontos['13salario']          = array("sLabel" => "13º SALÁRIO", "lPermiteManutencao" => $lPermiteManutecao);
+              $aPontos['13salario']          = ["sLabel" => "13º SALÁRIO", "lPermiteManutencao" => $lPermiteManutecao];
             }
             
             if ( @$temadiantamento ) {
@@ -867,7 +867,7 @@ $iMesImplantacao = $aImplantacao[1];
                 $lFolhaAberta                = FolhaPagamentoAdiantamento::hasFolhaAberta($oCompetenciaFolha);
               }
               $lPermiteManutecao             = db_permissaomenu( $iAnoUsu, 952, 4508 ) == "true" && $lFolhaAberta;
-              $aPontos['adiantamento']       = array("sLabel" => "ADIANTAMENTO", "lPermiteManutencao" => $lPermiteManutecao);
+              $aPontos['adiantamento']       = ["sLabel" => "ADIANTAMENTO", "lPermiteManutencao" => $lPermiteManutecao];
             }
             
             if ( @$temcomplementar ) {
@@ -877,7 +877,7 @@ $iMesImplantacao = $aImplantacao[1];
               }
               
               $lPermiteManutecao             = db_permissaomenu( $iAnoUsu, 952, 4512 ) == "true" && $lFolhaAberta;
-              $aPontos['complementar2']      = array("sLabel" => "COMPLEMENTAR", "lPermiteManutencao" => $lPermiteManutecao);
+              $aPontos['complementar2']      = ["sLabel" => "COMPLEMENTAR", "lPermiteManutencao" => $lPermiteManutecao];
             }
             
             if ( @$tempontofixo ) {
@@ -893,31 +893,31 @@ $iMesImplantacao = $aImplantacao[1];
               }
 
               $lPermiteManutecao             = db_permissaomenu( $iAnoUsu, 952, 4507 ) == "true" && $lFolhaAberta;
-              $aPontos['fixo']               = array("sLabel" => "PONTO FIXO", "lPermiteManutencao" => $lPermiteManutecao);
+              $aPontos['fixo']               = ["sLabel" => "PONTO FIXO", "lPermiteManutencao" => $lPermiteManutecao];
             }
 
             if ( @$temgerfprovfer ) {
 
               $lPermiteManutecao  = null;
-              $aPontos['provfer'] = array("sLabel" => "PROV. DE FÉRIAS", "lPermiteManutencao" => $lPermiteManutecao);
+              $aPontos['provfer'] = ["sLabel" => "PROV. DE FÉRIAS", "lPermiteManutencao" => $lPermiteManutecao];
             }
 
             if ( @$temgerfprovs13 ) {
 
               $lPermiteManutecao  = null;
-              $aPontos['provs13'] = array("sLabel" => "PROV. DE 13º", "lPermiteManutencao" => $lPermiteManutecao);
+              $aPontos['provs13'] = ["sLabel" => "PROV. DE 13º", "lPermiteManutencao" => $lPermiteManutecao];
             }
 
             if ( @$temajustepreviden ) {
 
               $lPermiteManutecao        = null;
-              $aPrevidencia['previden'] = array("sLabel" => "AJUSTE PREVIDÊNCIA", "lPermiteManutencao" => $lPermiteManutecao);
+              $aPrevidencia['previden'] = ["sLabel" => "AJUSTE PREVIDÊNCIA", "lPermiteManutencao" => $lPermiteManutecao];
             }
 
             if ( @$temajusteir ) {
 
               $lPermiteManutecao   = null;
-              $aPrevidencia['irf'] = array("sLabel" => "AJUSTE IRRF", "lPermiteManutencao" => $lPermiteManutecao);
+              $aPrevidencia['irf'] = ["sLabel" => "AJUSTE IRRF", "lPermiteManutencao" => $lPermiteManutecao];
             }
 
 
@@ -943,7 +943,7 @@ $iMesImplantacao = $aImplantacao[1];
                     /**
                      * Array com siglas por tipo de ponto 
                      */
-                    $aSiglasPonto = array(
+                    $aSiglasPonto = [
                       'salario'       => 'fs', 
                       'adiantamento'  => 'fa',    
                       'ferias'        => 'fe',    
@@ -952,7 +952,7 @@ $iMesImplantacao = $aImplantacao[1];
                       'complementar2' => 'com',   
                       'fixo'          => 'fx',
                       'suplementar'   => 'fs'         
-                    );
+                    ];
   
                     $sSiglaPonto = $aSiglasPonto[ $sTipoPonto ];
   
@@ -991,7 +991,7 @@ $iMesImplantacao = $aImplantacao[1];
                             db_selectmax( "diversos", "select * from pesdiver ".bb_condicaosubpes( "r07_" ));
                             for($Idiversos=0;$Idiversos<count($diversos);$Idiversos++){
                               $codigo = $diversos[$Idiversos]["r07_codigo"];
-                              global $$codigo;
+                              global ${$codigo};
                               eval('$$codigo = '.$diversos[$Idiversos]["r07_valor"].";");
                             }
                             $result_variaveis = db_retorno_variaveis($ano, $mes, $matricula);
@@ -1092,19 +1092,19 @@ $iMesImplantacao = $aImplantacao[1];
 
                 if(isset($sigla)){
                   // echo "<br><br>  sandro 1    sigla --> $sigla   xopcao --> $xopcao ";
-                  $arr_cond     = array();
-                  $arr_bases    = array();
-                  $arr_rub_base = array();
-                  $arr_formula  = array();
+                  $arr_cond     = [];
+                  $arr_bases    = [];
+                  $arr_rub_base = [];
+                  $arr_formula  = [];
                   $conta_base   = 1;
-                  $iRegistros   = $result ? pg_numrows($result) : 0;
+                  $iRegistros   = $result ? pg_num_rows($result) : 0;
                   $instituicao = db_getsession('DB_instit');
 
                   for ($x = 0; $x < $iRegistros; $x++) {
 
                     db_fieldsmemory($result,$x,true);
                     $strrubrica  = $sigla."rubric";
-                    $rubrica     = $$strrubrica;
+                    $rubrica     = ${$strrubrica};
                     $condicaoaux = " where rh27_rubric = ".db_sqlformat( $rubrica) . " AND rh27_instit = {$instituicao}";
                     global $rubr_;
                     db_selectmax( "rubr_", "select * from rhrubricas ".$condicaoaux );
@@ -1112,14 +1112,14 @@ $iMesImplantacao = $aImplantacao[1];
                     $r10_pd = ( 1 == $rubr_[0]["rh27_pd"] );
                     $formula = $rubr_[0]["rh27_form"];
                     $qual_form = 1;
-                    $cond = trim($rubr_[0]["rh27_cond2"]);
+                    $cond = trim((string) $rubr_[0]["rh27_cond2"]);
                     $cond = str_replace('$f','$F',$cond);
 
-                    $cond = trim($rubr_[0]["rh27_cond3"]);
+                    $cond = trim((string) $rubr_[0]["rh27_cond3"]);
                     $cond = str_replace('$f','$F',$cond);
 
                     $arr_cond[$rubrica]     = $rubrica.$qual_form;
-                    $arr_formula[$rubrica]  = $rubrica."|".trim($formula);
+                    $arr_formula[$rubrica]  = $rubrica."|".trim((string) $formula);
                     $pos_base               = strpos("#".$formula,"B")+0;
 
                     if( $pos_base > 0 && db_val(substr("#".$formula,$pos_base+1,3)) > 0 ){
@@ -1150,9 +1150,9 @@ $iMesImplantacao = $aImplantacao[1];
                       $arr_bases[$inssirf_[0]["r33_basfer"]] = $inssirf_[0]["r33_basfer"];
                     }
                   }
-                  $rub_cond    = implode($arr_cond,',');
-                  $rub_bases   = implode($arr_rub_base,',');
-                  $rub_formula = implode($arr_formula,',');
+                  $rub_cond    = implode(',', $arr_cond);
+                  $rub_bases   = implode(',', $arr_rub_base);
+                  $rub_formula = implode(',', $arr_formula);
                   if(isset($rub_cond)){
                     echo "<script> $('rub_cond').value = '".$rub_cond."';</script>";
                   }

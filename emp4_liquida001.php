@@ -89,8 +89,8 @@ $clconlancamord    = new cl_conlancamord;
 $clpagordemtiporec = new cl_pagordemtiporec;
 $clempenho         = new empenho; // rotinas para liquidação de empenho
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $op           = 1;
 $db_opcao     = 22;

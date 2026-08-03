@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_projetosativcli_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_projetosativcli = new cl_db_projetosativcli;
 $cldb_projetosativcli->rotulo->label("at64_sequencial");
 $cldb_projetosativcli->rotulo->label("at64_codproj");
@@ -98,9 +98,9 @@ $cldb_projetosativcli->rotulo->label("at64_codproj");
         }else{
            $sql = $cldb_projetosativcli->sql_query("",$campos,"at64_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at64_codproj)){
-          $repassa = array("chave_at64_sequencial"=>$chave_at64_sequencial,"chave_at64_codproj"=>$chave_at64_codproj);
+          $repassa = ["chave_at64_sequencial"=>$chave_at64_sequencial,"chave_at64_codproj"=>$chave_at64_codproj];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

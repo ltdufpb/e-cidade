@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if(isset($HTTP_POST_VARS["cadastrar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["cadastrar"])) {
+  db_postmemory($_POST);
   if(isset($itens))
     if(($itens == "" && $itens1 == "") || $menu == "" || $modulos == "") {
       db_erro("Erro. Todos os campos deverão estar selecionados!");
@@ -46,16 +46,16 @@ if(isset($HTTP_POST_VARS["cadastrar"])) {
   else
     $menu = db_strpos($menu,"##");
   $result = db_query("select id_item from db_menu where id_item = $itens and modulo = $modulos");
-  if(pg_numrows($result) > 0) {
+  if(pg_num_rows($result) > 0) {
     $result = db_query("select id_item_filho from db_menu where id_item_filho = $itens and modulo = $modulos");
-	if(pg_numrows($result) > 0) {
+	if(pg_num_rows($result) > 0) {
 	  db_erro("Erro. Um item principal, não pode ser filho de outro item");
 	}
   }
   $result = db_query("select max(menusequencia) + 1 from db_menu where id_item = $menu");
-  $Mseq = pg_result($result,0,0);
+  $Mseq = pg_fetch_result($result,0,0);
   $Mseq = $Mseq==""?"1":$Mseq;
-  db_query("insert into db_menu values($menu,$itens,$Mseq,$modulos)") or die("Erro(12) inserindo em db_menus: ".pg_errormessage());
+  db_query("insert into db_menu values($menu,$itens,$Mseq,$modulos)") or die("Erro(12) inserindo em db_menus: ".pg_last_error());
 
   /**
    * Limpa o cache dos menus
@@ -119,7 +119,7 @@ input {
         <form name="form1" method="post">
           <table border="0" cellspacing="0" cellpadding="3">
 		  <?php 
-		  if(!isset($HTTP_POST_VARS["selecionar"]) && !isset($HTTP_POST_VARS["ambiente"])) {
+		  if(!isset($_POST["selecionar"]) && !isset($_POST["ambiente"])) {
 		  ?>
 		  <tr>
               <td><strong>Pesquisa:</strong><br> <input name="procura3" type="text" id="procura3" onKeyUp="js_pesquisa(this.value.toLowerCase(),document.form1.modulos)" size="35"></td>		  
@@ -146,9 +146,9 @@ input {
                                                                          and  i.libcliente is true					   
 								   order by lower(m.nome_modulo)");
 			    }
-				$numrows = pg_numrows($result);
+				$numrows = pg_num_rows($result);
 				for($i = 0;$i < $numrows;$i++) {
-				  echo "<option value=\"".pg_result($result,$i,"id_item")."##".pg_result($result,$i,"descr_modulo")."||".pg_result($result,$i,"nome_modulo")."\">".pg_result($result,$i,"nome_modulo")."</option>\n";
+				  echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."##".pg_fetch_result($result,$i,"descr_modulo")."||".pg_fetch_result($result,$i,"nome_modulo")."\">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
 				}
 				?>
                </select>
@@ -164,9 +164,9 @@ input {
 			 <Td align="center" colspan="3">
 			   <strong>Módulo: </strong>
 			   <?php  
-			   $aux = $HTTP_POST_VARS["modulos"];
-			   echo substr(strstr($aux,"||"),2)."</strong><br>";
-			   echo "<font style=\"font-size:10px\">(".substr($aux,strpos($aux,"##")+2,strpos($aux,"||")-3).")</font>";
+			   $aux = $_POST["modulos"];
+			   echo substr(strstr((string) $aux,"||"),2)."</strong><br>";
+			   echo "<font style=\"font-size:10px\">(".substr((string) $aux,strpos((string) $aux,"##")+2,strpos((string) $aux,"||")-3).")</font>";
 			   ?>
 			 </Td>
 		   </tr>
@@ -174,10 +174,10 @@ input {
 			<tr style="display:none"> 
         <td colspan="3" align="center"><strong>Ambiente:</strong>
 
-			    <input type="hidden" name="modulos" value="<?=$HTTP_POST_VARS["modulos"]?>">
-			    <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="1"?"checked":""):"checked" ?>> 
+			    <input type="hidden" name="modulos" value="<?=$_POST["modulos"]?>">
+			    <input name="ambiente" type="radio" id="web" value="1" onClick="document.form1.submit()" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="1"?"checked":""):"checked" ?>> 
           <label for="web"><strong>Web</strong></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-          <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($HTTP_POST_VARS["ambiente"])?($HTTP_POST_VARS["ambiente"]=="0"?"checked":""):"" ?>>
+          <input type="radio" name="ambiente" id="caracter" onClick="document.form1.submit()" value="0" <?php  echo isset($_POST["ambiente"])?($_POST["ambiente"]=="0"?"checked":""):"" ?>>
           <label for="caracter"><strong>Caracter</strong></label>
 
 			  </td>
@@ -197,17 +197,17 @@ input {
 				$result = db_query("select distinct i.id_item,i.descricao, i.help,i.funcao,lower(i.descricao) 
 				                   from db_itensmenu i
 						        left join db_modulos modu on modu.id_item = i.id_item
-							left join db_menu    menm on menm.id_item_filho = i.id_item and menm.modulo = ".db_strpos($HTTP_POST_VARS["modulos"],"##")."
+							left join db_menu    menm on menm.id_item_filho = i.id_item and menm.modulo = ".db_strpos($_POST["modulos"],"##")."
 							left join db_menu    menu on menu.id_item_filho = i.id_item
-								   where i.itemativo = '".(!isset($HTTP_POST_VARS["ambiente"])?"1":$HTTP_POST_VARS["ambiente"])."' 
+								   where i.itemativo = '".(!isset($_POST["ambiente"])?"1":$_POST["ambiente"])."' 
 								         and modu.id_item is null
 									 and menm.id_item_filho is null
 									 and menu.id_item_filho is not null
                                                                          and i.libcliente is true
 								   order by lower(i.descricao)");
-				$numrows = pg_numrows($result);
+				$numrows = pg_num_rows($result);
 				for($i = 0;$i < $numrows;$i++) {
-				  echo "<option value=\"".pg_result($result,$i,"id_item")."##(".pg_result($result,$i,"id_item").") ".pg_result($result,$i,"help")." - ".pg_result($result,$i,"funcao")."\">".pg_result($result,$i,"descricao")." - ".pg_result($result,$i,"funcao")."</option>\n";
+				  echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."##(".pg_fetch_result($result,$i,"id_item").") ".pg_fetch_result($result,$i,"help")." - ".pg_fetch_result($result,$i,"funcao")."\">".pg_fetch_result($result,$i,"descricao")." - ".pg_fetch_result($result,$i,"funcao")."</option>\n";
 				}
 				?>
                 </select> 
@@ -219,17 +219,17 @@ input {
 				$result = db_query("select distinct i.id_item,i.descricao, i.help ,i.funcao,lower(i.descricao) 
 				                   from db_itensmenu i
 						        left join db_modulos modu on modu.id_item = i.id_item
-							left join db_menu    menm on menm.id_item_filho = i.id_item and menm.modulo = ".db_strpos($HTTP_POST_VARS["modulos"],"##")."
+							left join db_menu    menm on menm.id_item_filho = i.id_item and menm.modulo = ".db_strpos($_POST["modulos"],"##")."
 							left join db_menu    menu on menu.id_item_filho = i.id_item
-								   where i.itemativo = '".(!isset($HTTP_POST_VARS["ambiente"])?"1":$HTTP_POST_VARS["ambiente"])."' 
+								   where i.itemativo = '".(!isset($_POST["ambiente"])?"1":$_POST["ambiente"])."' 
 								         and modu.id_item is null
 									 and menm.id_item_filho is null
 									 and menu.id_item_filho is null
                                                                          and i.libcliente is true
 								   order by lower(i.descricao),i.id_item,i.help,i.funcao");
-				$numrows = pg_numrows($result);
+				$numrows = pg_num_rows($result);
 				for($i = 0;$i < $numrows;$i++) {
-				  echo "<option value=\"".pg_result($result,$i,"id_item")."##(".pg_result($result,$i,"id_item").") ".pg_result($result,$i,"descricao")." - ".pg_result($result,$i,"funcao")."\">".pg_result($result,$i,"descricao")." - ".pg_result($result,$i,"funcao")."</option>\n";
+				  echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."##(".pg_fetch_result($result,$i,"id_item").") ".pg_fetch_result($result,$i,"descricao")." - ".pg_fetch_result($result,$i,"funcao")."\">".pg_fetch_result($result,$i,"descricao")." - ".pg_fetch_result($result,$i,"funcao")."</option>\n";
 				}
 				?>
                 </select> 
@@ -243,15 +243,15 @@ input {
 				from db_itensmenu i
 				inner join db_menu m
 				on m.id_item_filho = i.id_item
-				where i.itemativo = '".(!isset($HTTP_POST_VARS["ambiente"])?"1":$HTTP_POST_VARS["ambiente"])."' 
-				and m.modulo = ".db_strpos($HTTP_POST_VARS["modulos"],"##")."
+				where i.itemativo = '".(!isset($_POST["ambiente"])?"1":$_POST["ambiente"])."' 
+				and m.modulo = ".db_strpos($_POST["modulos"],"##")."
 				and i.id_item not in(select id_item from db_modulos) 
 
 				order by lower(i.descricao),i.id_item,i.help,i.funcao");
-				$numrows = pg_numrows($result);
+				$numrows = pg_num_rows($result);
 				for($i = 0;$i < $numrows;$i++) {
-				  $menun = pg_result($result,$i,"id_item")."##".pg_result($result,$i,"help")." - ".pg_result($result,$i,"funcao");
-				  echo "<option value=\"".pg_result($result,$i,"id_item")."##(".pg_result($result,$i,"id_item").") ".pg_result($result,$i,"help")." - ".pg_result($result,$i,"funcao")."\"  ".(isset($menu)&&$menu_old==$menun?"selected":"")." >".pg_result($result,$i,"descricao")." - ".pg_result($result,$i,"funcao")."</option>\n";
+				  $menun = pg_fetch_result($result,$i,"id_item")."##".pg_fetch_result($result,$i,"help")." - ".pg_fetch_result($result,$i,"funcao");
+				  echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."##(".pg_fetch_result($result,$i,"id_item").") ".pg_fetch_result($result,$i,"help")." - ".pg_fetch_result($result,$i,"funcao")."\"  ".(isset($menu)&&$menu_old==$menun?"selected":"")." >".pg_fetch_result($result,$i,"descricao")." - ".pg_fetch_result($result,$i,"funcao")."</option>\n";
 				}
 				?>
                 </select>

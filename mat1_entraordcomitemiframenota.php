@@ -62,8 +62,8 @@ $clrotulo->label("pc01_descrmater");
 $clrotulo->label("e62_descr");
 $clrotulo->label("e70_valor");
     
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $vlitement = 0;
 $result_vlitement = $clmatordemitement->sql_record($clmatordemitement->sql_query_file());
@@ -189,10 +189,10 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
           
           $conitens ++;
           $valor  = "total_$i";
-          $$valor = db_formatar($vlto,"p");
+          ${$valor} = db_formatar($vlto,"p");
           echo "<tr>
           <td class='linhagrid' align='center'><small><a onClick=\"js_consemp($e60_numemp);\" id=\"cons_emp\" href=#>$e60_codemp</a></small></td>
-          <td class='linhagrid' nowrap align='left' title='$e62_descr'><small>".substr($pc01_descrmater, 0, 20)."&nbsp;</small></td>
+          <td class='linhagrid' nowrap align='left' title='$e62_descr'><small>".substr((string) $pc01_descrmater, 0, 20)."&nbsp;</small></td>
           <td class='linhagrid' nowrap align='left' title='$e62_descr'><small>".substr($e62_descr, 0, 30)."&nbsp;</small></td>
           <td class='linhagrid' align='right'><b><small>".db_formatar($valoruni, 'p', ' ', 4)."</small></b></td>";
           echo "    <td class='linhagrid' align='right'><b><small>";
@@ -205,13 +205,13 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
             $quant = "quant_$e62_codele"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i";
             if (isset ($zera)) {
               
-              $$val = db_formatar('0', 'p');
-              $$quant = '0';
+              ${$val} = db_formatar('0', 'p');
+              ${$quant} = '0';
               
             } else {
               
-              $$quant = trim($quantidade);
-              $$val = trim(db_formatar($vlto, 'p'));
+              ${$quant} = trim($quantidade);
+              ${$val} = trim(db_formatar($vlto, 'p'));
               
             }
             echo "<td class='linhagrid' align='center'><small>" . trim(db_formatar($quantidade, 'p')) . "</small></td>
@@ -229,13 +229,13 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
             $quant = "quant_$e62_codele"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i";
             if (isset ($zera)) {
               
-              $$val = db_formatar('0', 'p');
-              $$quant = '0';
+              ${$val} = db_formatar('0', 'p');
+              ${$quant} = '0';
               
             } else {
               
-              $$quant = trim($m52_quant);
-              $$val = trim(db_formatar($valortotal, 'p'));
+              ${$quant} = trim($m52_quant);
+              ${$val} = trim(db_formatar($valortotal, 'p'));
               
             }
             $quantidade = db_formatar($m52_quant, 'p');
@@ -249,33 +249,33 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
             echo "</small></td>";
           }
           $q = "controle_$i";
-          $$q = $m52_quant;
+          ${$q} = $m52_quant;
           db_input("controle_$i", 10, 0, true, 'hidden', 3);
           echo "<td class='linhagrid' style='text-align:left' align='left' nowrap ><small>";
           $result_unid = $clmatunid->sql_record($clmatunid->sql_query_file(null, "case when m61_usaquant is true then to_char(m61_codmatunid,'99999') || 't' else to_char(m61_codmatunid,'99999') || 'f' end as m61_codmatunid, m61_abrev", "m61_codmatunid"));
           $couni = "codunid_$i";
-          $$couni = '1f';
+          ${$couni} = '1f';
           $result_solicitem = $clsolicitem->sql_record($clsolicitem->sql_query_solunid(null, "pc17_unid,m61_usaquant,pc17_quant", null, "e62_sequen=$e62_sequen"));
           if ($clsolicitem->numrows > 0) {
             
             db_fieldsmemory($result_solicitem, 0);
-            $$couni = $pc17_unid.$m61_usaquant;
+            ${$couni} = $pc17_unid.$m61_usaquant;
             
           }
           echo " <select onChange='js_unid(this.value,$i);'  name='codunid_$i' id='codunid_$i'>";
           for ($y = 0; $y < $clmatunid->numrows; $y ++) {
             
             db_fieldsmemory($result_unid, $y);
-            echo "<option value=\"$m61_codmatunid\" ". (isset ($couni) ? ($$couni == $m61_codmatunid ? "selected" : "") : "").">$m61_abrev</option>\n";
+            echo "<option value=\"$m61_codmatunid\" ". (isset ($couni) ? (${$couni} == $m61_codmatunid ? "selected" : "") : "").">$m61_abrev</option>\n";
             
           }
           echo " </select>";
           //   db_selectrecord("codunid_$i",$result_unid,true,1,"onchange='js_unid(this.value,$i);'","","","","js_unid(this.value,$i);",1);
           echo "</small></td>";
           $mult = "qntmul_$i";
-          $$mult = 1;
+          ${$mult} = 1;
           if (isset ($pc17_quant) && $pc17_quant != "" && $m61_usaquant == 't') {
-            $$mult = $pc17_quant;
+            ${$mult} = $pc17_quant;
           }
           echo "<td class='linhagrid' align='left' nowrap ><small>";
           db_input("qntmul_$i", 6, 0, true, 'text', 1);
@@ -283,10 +283,10 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
           if ($clmatunid->numrows > 0) {
             
             db_fieldsmemory($result_unid, 0);
-            $tam = strlen($m61_codmatunid);
+            $tam = strlen((string) $m61_codmatunid);
             $tam = $tam -1;
             
-            if (substr($m61_codmatunid, $tam, 1) == 'f') {
+            if (substr((string) $m61_codmatunid, $tam, 1) == 'f') {
               echo "<script>eval(\"document.form1.qntmul_\"+$i+\".disabled=true\");</script>";
             }
           }
@@ -312,7 +312,7 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
           $e62_descr = addslashes($e62_descr);
           $e62_descr = str_replace(chr(10), " ", $e62_descr);
           echo " </small></td>";
-          $pc01_descrmater = addslashes($pc01_descrmater);
+          $pc01_descrmater = addslashes((string) $pc01_descrmater);
           $pc01_descrmater = str_replace(chr(10), " ", $pc01_descrmater);
           echo " <td class='linhagrid' align='center' nowrap ><small>
           <input name='Incluir' type='button' value='Incluir' onclick='js_novomatmater($pc01_codmater,$e62_numemp,$e62_sequen);' >
@@ -340,7 +340,7 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
               <td class='linhagrid' align='center' nowrap ><b> $m54_quantidade </b></td>
               <td class='linhagrid' align='center' nowrap ><b> ".trim(db_formatar($vltot, 'p'))." </b> </td>";
               $v = "val_$i";
-              $$v = "$vltot";
+              ${$v} = "$vltot";
               db_input("val_$i", 10, '', true, 'hidden', 3);
               echo "
               <td class='linhagrid' align='center' nowrap ><b> $m61_descr</b> </td>
@@ -375,11 +375,11 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
       if ($m52_quant != 0 || $clmatordemitement->numrows != 0) {
         $conitens ++;
         $valor  = "total_$i";
-        $$valor = db_formatar($valortotal,"p");
+        ${$valor} = db_formatar($valortotal,"p");
         
         echo "<tr>	    
         <td class='linhagrid' align='center'><small><a onClick=\"js_consemp($e60_numemp);\" id=\"cons_emp\" href=#>$e60_codemp</a></small></td>
-        <td class='linhagrid' nowrap align='left' title='$e62_descr'><small>".substr($pc01_descrmater, 0, 20)."&nbsp;</small></td>
+        <td class='linhagrid' nowrap align='left' title='$e62_descr'><small>".substr((string) $pc01_descrmater, 0, 20)."&nbsp;</small></td>
         <td class='linhagrid' nowrap align='left' title='$e62_descr'><small>".substr($e62_descr, 0, 30)."&nbsp;</small></td>
         <td class='linhagrid' align='right'><b><small>".db_formatar($valoruni, 'p', ' ', 4)."</small></b></td>";
         echo "  <td class='linhagrid' align='right'><b><small>";
@@ -388,20 +388,20 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
         echo "</small></b></td>
         <td class='linhagrid' align='center'><small>$m52_quant</small></td>";
         if ($pc01_servico == "f") {
-          
+
           $val = "valor_$i";
           $quant = "quant_$e62_codele"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i";
-          
+
           if (isset ($zera)) {
-            
-            $$val = db_formatar('0', 'p');
-            $$quant = '0';
-            
+
+            ${$val} = db_formatar('0', 'p');
+            ${$quant} = '0';
+
           } else {
-            
-            $$val = trim(db_formatar($valortotal, 'p'));
-            $$quant = trim($m52_quant);
-            
+
+            ${$val} = trim(db_formatar($valortotal, 'p'));
+            ${$quant} = trim($m52_quant);
+
           }
           echo "<td class='linhagrid' align='center'><small>";
           db_input("quant_$e62_codele"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i", 10, 0, true, 'text', 1, "onchange='js_verifica($m52_quant,this.value,this.name,$valoruni,$i);' ondblclick='js_zera(this.name,\"$i\")' onkeypress='return js_teclas(event)'");
@@ -417,13 +417,13 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
           $quant = "quant_$e62_codele"."_"."$m52_numemp"."_".$m52_codlanc."_"."$i";
           if (isset ($zera)) {
             
-            $$val   = db_formatar('0', 'p');
-            $$quant = '0';
+            ${$val}   = db_formatar('0', 'p');
+            ${$quant} = '0';
             
           } else {
             
-            $$val   = trim(db_formatar($valortotal, 'p'));
-            $$quant = trim($m52_quant);
+            ${$val}   = trim(db_formatar($valortotal, 'p'));
+            ${$quant} = trim($m52_quant);
             
           }
           
@@ -437,24 +437,24 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
           
         }
         $q  = "controle_$i";
-        $$q = $m52_quant;
+        ${$q} = $m52_quant;
         db_input("controle_$i", 10, 0, true, 'hidden', 3);
         echo "<td class='linhagrid' style='text-align:left' nowrap ><small>";
         $result_unid = $clmatunid->sql_record($clmatunid->sql_query_file(null, "case when m61_usaquant is true then to_char(m61_codmatunid,'99999') || 't' else to_char(m61_codmatunid,'99999') || 'f' end as m61_codmatunid, m61_abrev", "m61_codmatunid"));
         $couni  = "codunid_$i";
-        $$couni = '1f';
+        ${$couni} = '1f';
         $result_solicitem = $clsolicitem->sql_record($clsolicitem->sql_query_solunid(null, "pc17_unid,m61_usaquant,pc17_quant", null, "e62_sequen=$e62_sequen"));
         if ($clsolicitem->numrows > 0 ) {
           
           db_fieldsmemory($result_solicitem, 0);
-          $$couni = $pc17_unid.$m61_usaquant;
+          ${$couni} = $pc17_unid.$m61_usaquant;
           
         }
         echo " <select onChange='js_unid(this.value,$i);'  name='codunid_$i' id='codunid_$i'>";
         for ($y = 0; $y < $clmatunid->numrows; $y ++) {
           
           db_fieldsmemory($result_unid, $y);
-          echo "<option value=\"$m61_codmatunid\" ". (isset ($couni) ? ($$couni == $m61_codmatunid ? "selected" : "") : "").">$m61_abrev</option>\n";
+          echo "<option value=\"$m61_codmatunid\" ". (isset ($couni) ? (${$couni} == $m61_codmatunid ? "selected" : "") : "").">$m61_abrev</option>\n";
           
         }
         echo " </select>";
@@ -462,15 +462,15 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
         echo "</small></td>";
         echo "<td class='linhagrid' style='text-align:left' nowrap ><small>";
         $mult  = "qntmul_$i";
-        $$mult = 1;
+        ${$mult} = 1;
         if (isset ($pc17_quant) && $pc17_quant != "" && $m61_usaquant == 't') {
-          $$mult = $pc17_quant;
+          ${$mult} = $pc17_quant;
         }
         db_input("qntmul_$i", 6, 0, true, 'text', 1);
         if ($clmatunid->numrows > 0) {
           
           db_fieldsmemory($result_unid, 0);
-          $tam = strlen($m61_codmatunid);
+          $tam = strlen((string) $m61_codmatunid);
           $tam = $tam -1;
           
           if (isset ($pc17_quant) && $pc17_quant != "") {
@@ -478,7 +478,7 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
               echo "<script>eval(\"document.form1.qntmul_\"+$i+\".disabled=true\");</script>";
             }
           } else {
-            if (substr($m61_codmatunid, $tam, 1) == 'f') {
+            if (substr((string) $m61_codmatunid, $tam, 1) == 'f') {
               echo "<script>eval(\"document.form1.qntmul_\"+$i+\".disabled=true\");</script>";
             }
           }
@@ -505,7 +505,7 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
         <input name='lanc' type='button' value='Lançar' $disab  onclick='js_lanca($e62_codele,$m52_valor,$valoruni,$m52_numemp,$m52_codlanc,$i,$pc01_codmater);' >
         ";
         
-        $pc01_descrmater = addslashes($pc01_descrmater);
+        $pc01_descrmater = addslashes((string) $pc01_descrmater);
         $pc01_descrmater = str_replace(chr(10), " ", $pc01_descrmater);
         $e62_descr       = addslashes($e62_descr);
         $e62_descr       = str_replace(chr(10), " ", $e62_descr);
@@ -538,7 +538,7 @@ if (isset ($m51_codordem) && $m51_codordem != "") {
             <td class='linhagrid' align='center' nowrap ><b> $m54_quantidade </b></td>
             <td class='linhagrid' align='center' nowrap ><b> ".db_formatar($vltot, 'p')." </b> </td>";
             $v  = "val_$i";
-            $$v = "$vltot";
+            ${$v} = "$vltot";
             db_input("val_$i", 10, '', true, 'hidden', 3);
             echo "
             <td class='linhagrid' align='center' nowrap ><b> $m61_descr</b> </td>

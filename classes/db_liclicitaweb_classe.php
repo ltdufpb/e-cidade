@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE liclicitaweb
 class cl_liclicitaweb { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l29_sequencial = 0; 
-   var $l29_liclicita = 0; 
-   var $l29_datapublic_dia = null; 
-   var $l29_datapublic_mes = null; 
-   var $l29_datapublic_ano = null; 
-   var $l29_datapublic = null; 
-   var $l29_contato = null; 
-   var $l29_email = null; 
-   var $l29_telefone = null; 
-   var $l29_obs = null; 
-   var $l29_liberaedital = 0; 
+   public $l29_sequencial = 0; 
+   public $l29_liclicita = 0; 
+   public $l29_datapublic_dia = null; 
+   public $l29_datapublic_mes = null; 
+   public $l29_datapublic_ano = null; 
+   public $l29_datapublic = null; 
+   public $l29_contato = null; 
+   public $l29_email = null; 
+   public $l29_telefone = null; 
+   public $l29_obs = null; 
+   public $l29_liberaedital = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l29_sequencial = int4 = codigo sequencial 
                  l29_liclicita = int4 = codigo da licitação 
                  l29_datapublic = date = data para publicação 
@@ -65,10 +65,10 @@ class cl_liclicitaweb {
                  l29_liberaedital = int4 = l29_liberaedital 
                  ";
    //funcao construtor da classe 
-   function cl_liclicitaweb() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("liclicitaweb"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_liclicitaweb {
          $this->erro_status = "0";
          return false; 
        }
-       $this->l29_sequencial = pg_result($result,0,0); 
+       $this->l29_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from liclicitaweb_l29_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $l29_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $l29_sequencial)){
          $this->erro_sql = " Campo l29_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -186,7 +186,7 @@ class cl_liclicitaweb {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "liclicitaweb ($this->l29_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "liclicitaweb já Cadastrado";
@@ -210,17 +210,17 @@ class cl_liclicitaweb {
      $resaco = $this->sql_record($this->sql_query_file($this->l29_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9422,'$this->l29_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1618,9422,'','".AddSlashes(pg_result($resaco,0,'l29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1618,9428,'','".AddSlashes(pg_result($resaco,0,'l29_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1618,9423,'','".AddSlashes(pg_result($resaco,0,'l29_datapublic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1618,9424,'','".AddSlashes(pg_result($resaco,0,'l29_contato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1618,9426,'','".AddSlashes(pg_result($resaco,0,'l29_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1618,9425,'','".AddSlashes(pg_result($resaco,0,'l29_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1618,9427,'','".AddSlashes(pg_result($resaco,0,'l29_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1618,9414,'','".AddSlashes(pg_result($resaco,0,'l29_liberaedital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1618,9422,'','".AddSlashes(pg_fetch_result($resaco,0,'l29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1618,9428,'','".AddSlashes(pg_fetch_result($resaco,0,'l29_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1618,9423,'','".AddSlashes(pg_fetch_result($resaco,0,'l29_datapublic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1618,9424,'','".AddSlashes(pg_fetch_result($resaco,0,'l29_contato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1618,9426,'','".AddSlashes(pg_fetch_result($resaco,0,'l29_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1618,9425,'','".AddSlashes(pg_fetch_result($resaco,0,'l29_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1618,9427,'','".AddSlashes(pg_fetch_result($resaco,0,'l29_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1618,9414,'','".AddSlashes(pg_fetch_result($resaco,0,'l29_liberaedital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -229,10 +229,10 @@ class cl_liclicitaweb {
       $this->atualizacampos();
      $sql = " update liclicitaweb set ";
      $virgula = "";
-     if(trim($this->l29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_sequencial"])){ 
+     if(trim((string) $this->l29_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_sequencial"])){ 
        $sql  .= $virgula." l29_sequencial = $this->l29_sequencial ";
        $virgula = ",";
-       if(trim($this->l29_sequencial) == null ){ 
+       if(trim((string) $this->l29_sequencial) == null ){ 
          $this->erro_sql = " Campo codigo sequencial nao Informado.";
          $this->erro_campo = "l29_sequencial";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_liclicitaweb {
          return false;
        }
      }
-     if(trim($this->l29_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_liclicita"])){ 
+     if(trim((string) $this->l29_liclicita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_liclicita"])){ 
        $sql  .= $virgula." l29_liclicita = $this->l29_liclicita ";
        $virgula = ",";
-       if(trim($this->l29_liclicita) == null ){ 
+       if(trim((string) $this->l29_liclicita) == null ){ 
          $this->erro_sql = " Campo codigo da licitação nao Informado.";
          $this->erro_campo = "l29_liclicita";
          $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_liclicitaweb {
          return false;
        }
      }
-     if(trim($this->l29_datapublic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_datapublic_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l29_datapublic_dia"] !="") ){ 
+     if(trim((string) $this->l29_datapublic)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_datapublic_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["l29_datapublic_dia"] !="") ){ 
        $sql  .= $virgula." l29_datapublic = '$this->l29_datapublic' ";
        $virgula = ",";
-       if(trim($this->l29_datapublic) == null ){ 
+       if(trim((string) $this->l29_datapublic) == null ){ 
          $this->erro_sql = " Campo data para publicação nao Informado.";
          $this->erro_campo = "l29_datapublic_dia";
          $this->erro_banco = "";
@@ -271,7 +271,7 @@ class cl_liclicitaweb {
        if(isset($GLOBALS["HTTP_POST_VARS"]["l29_datapublic_dia"])){ 
          $sql  .= $virgula." l29_datapublic = null ";
          $virgula = ",";
-         if(trim($this->l29_datapublic) == null ){ 
+         if(trim((string) $this->l29_datapublic) == null ){ 
            $this->erro_sql = " Campo data para publicação nao Informado.";
            $this->erro_campo = "l29_datapublic_dia";
            $this->erro_banco = "";
@@ -282,26 +282,26 @@ class cl_liclicitaweb {
          }
        }
      }
-     if(trim($this->l29_contato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_contato"])){ 
+     if(trim((string) $this->l29_contato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_contato"])){ 
        $sql  .= $virgula." l29_contato = '$this->l29_contato' ";
        $virgula = ",";
      }
-     if(trim($this->l29_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_email"])){ 
+     if(trim((string) $this->l29_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_email"])){ 
        $sql  .= $virgula." l29_email = '$this->l29_email' ";
        $virgula = ",";
      }
-     if(trim($this->l29_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_telefone"])){ 
+     if(trim((string) $this->l29_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_telefone"])){ 
        $sql  .= $virgula." l29_telefone = '$this->l29_telefone' ";
        $virgula = ",";
      }
-     if(trim($this->l29_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_obs"])){ 
+     if(trim((string) $this->l29_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_obs"])){ 
        $sql  .= $virgula." l29_obs = '$this->l29_obs' ";
        $virgula = ",";
      }
-     if(trim($this->l29_liberaedital)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_liberaedital"])){ 
+     if(trim((string) $this->l29_liberaedital)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l29_liberaedital"])){ 
        $sql  .= $virgula." l29_liberaedital = $this->l29_liberaedital ";
        $virgula = ",";
-       if(trim($this->l29_liberaedital) == null ){ 
+       if(trim((string) $this->l29_liberaedital) == null ){ 
          $this->erro_sql = " Campo l29_liberaedital nao Informado.";
          $this->erro_campo = "l29_liberaedital";
          $this->erro_banco = "";
@@ -319,25 +319,25 @@ class cl_liclicitaweb {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9422,'$this->l29_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l29_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1618,9422,'".AddSlashes(pg_result($resaco,$conresaco,'l29_sequencial'))."','$this->l29_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1618,9422,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l29_sequencial'))."','$this->l29_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l29_liclicita"]))
-           $resac = db_query("insert into db_acount values($acount,1618,9428,'".AddSlashes(pg_result($resaco,$conresaco,'l29_liclicita'))."','$this->l29_liclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1618,9428,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l29_liclicita'))."','$this->l29_liclicita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l29_datapublic"]))
-           $resac = db_query("insert into db_acount values($acount,1618,9423,'".AddSlashes(pg_result($resaco,$conresaco,'l29_datapublic'))."','$this->l29_datapublic',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1618,9423,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l29_datapublic'))."','$this->l29_datapublic',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l29_contato"]))
-           $resac = db_query("insert into db_acount values($acount,1618,9424,'".AddSlashes(pg_result($resaco,$conresaco,'l29_contato'))."','$this->l29_contato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1618,9424,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l29_contato'))."','$this->l29_contato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l29_email"]))
-           $resac = db_query("insert into db_acount values($acount,1618,9426,'".AddSlashes(pg_result($resaco,$conresaco,'l29_email'))."','$this->l29_email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1618,9426,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l29_email'))."','$this->l29_email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l29_telefone"]))
-           $resac = db_query("insert into db_acount values($acount,1618,9425,'".AddSlashes(pg_result($resaco,$conresaco,'l29_telefone'))."','$this->l29_telefone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1618,9425,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l29_telefone'))."','$this->l29_telefone',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l29_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1618,9427,'".AddSlashes(pg_result($resaco,$conresaco,'l29_obs'))."','$this->l29_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1618,9427,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l29_obs'))."','$this->l29_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["l29_liberaedital"]))
-           $resac = db_query("insert into db_acount values($acount,1618,9414,'".AddSlashes(pg_result($resaco,$conresaco,'l29_liberaedital'))."','$this->l29_liberaedital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1618,9414,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'l29_liberaedital'))."','$this->l29_liberaedital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -382,17 +382,17 @@ class cl_liclicitaweb {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9422,'$l29_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1618,9422,'','".AddSlashes(pg_result($resaco,$iresaco,'l29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1618,9428,'','".AddSlashes(pg_result($resaco,$iresaco,'l29_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1618,9423,'','".AddSlashes(pg_result($resaco,$iresaco,'l29_datapublic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1618,9424,'','".AddSlashes(pg_result($resaco,$iresaco,'l29_contato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1618,9426,'','".AddSlashes(pg_result($resaco,$iresaco,'l29_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1618,9425,'','".AddSlashes(pg_result($resaco,$iresaco,'l29_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1618,9427,'','".AddSlashes(pg_result($resaco,$iresaco,'l29_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1618,9414,'','".AddSlashes(pg_result($resaco,$iresaco,'l29_liberaedital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1618,9422,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l29_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1618,9428,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l29_liclicita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1618,9423,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l29_datapublic'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1618,9424,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l29_contato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1618,9426,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l29_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1618,9425,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l29_telefone'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1618,9427,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l29_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1618,9414,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'l29_liberaedital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from liclicitaweb
@@ -452,7 +452,7 @@ class cl_liclicitaweb {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:liclicitaweb";
@@ -466,7 +466,7 @@ class cl_liclicitaweb {
    function sql_query ( $l29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -492,7 +492,7 @@ class cl_liclicitaweb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -504,7 +504,7 @@ class cl_liclicitaweb {
    function sql_query_file ( $l29_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -525,7 +525,7 @@ class cl_liclicitaweb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

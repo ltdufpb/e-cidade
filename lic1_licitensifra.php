@@ -39,8 +39,8 @@ require_once(modification("classes/db_pcparam_classe.php"));
 require_once(modification("classes/db_liclicitemlote_classe.php"));
 require_once(modification("classes/db_pcorcamitem_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clpcproc           = new cl_pcproc;
@@ -58,7 +58,7 @@ if (!empty($chaves) && isset($chaves)){
   $result_itens=$clpcprocitem->sql_record($clpcprocitem->sql_query_file(null,"*",null,"pc81_codproc=$codprocant"));
 
   if ($clpcprocitem->numrows>0){
-    $vet_pci  = array(array("pci"));
+    $vet_pci  = [["pci"]];
     $cont_pci = 0;
     for($w=0;$w<$clpcprocitem->numrows;$w++){
   	  db_fieldsmemory($result_itens,$w);
@@ -90,10 +90,10 @@ if (!empty($chaves) && isset($chaves)){
   }
 
   if (trim($cods) == ""){
-    $info = split('#',$chaves);
+    $info = preg_split('#\##m',$chaves);
     $vir  = "";
     for($xx = 0; $xx < count($info); $xx++){
-      if (trim($info[$xx]) != ""){
+      if (trim((string) $info[$xx]) != ""){
         $cods .= $vir.$info[$xx];
         $vir   = ",";
       }
@@ -127,12 +127,12 @@ if (!empty($chaves) && isset($chaves)){
            }
 
            if (strlen(trim($itens_incluidos)) > 0){
-                $arr_itens = split(",",$itens_incluidos);
+                $arr_itens = preg_split("#,#m",$itens_incluidos);
            }
       }
 
       $dbwhere = " ";
-      if (strlen(trim(@$itens_incluidos)) > 0){
+      if (strlen(trim((string) @$itens_incluidos)) > 0){
            $dbwhere = " and l21_codpcprocitem not in ($itens_incluidos)";
       }
 
@@ -146,7 +146,7 @@ if (!empty($chaves) && isset($chaves)){
 
     //echo "FIM ".$cods; exit;
     if ($sqlerro == false) {
-  	  $dados = split('#',$chaves);
+  	  $dados = preg_split('#\##m',$chaves);
       $sql_ult_ordem  = "select l21_ordem ";
       $sql_ult_ordem .= "from liclicitem ";
       $sql_ult_ordem .= "where l21_codliclicita=$licitacao ";
@@ -156,8 +156,8 @@ if (!empty($chaves) && isset($chaves)){
 
       $res_ult_ordem  = @db_query($sql_ult_ordem);
 
-      if (pg_numrows($res_ult_ordem) > 0){
-        $seq = pg_result($res_ult_ordem,0,"l21_ordem");
+      if (pg_num_rows($res_ult_ordem) > 0){
+        $seq = pg_fetch_result($res_ult_ordem,0,"l21_ordem");
         $seq++;
       } else {
         $seq = 1;
@@ -166,11 +166,11 @@ if (!empty($chaves) && isset($chaves)){
    // print_r($dados); exit;
 
     	for($w=0;$w<count($dados);$w++){
-    	  if (trim($dados[$w])!=""){
+    	  if (trim((string) $dados[$w])!=""){
     	  	if ($sqlerro==false){
             $achou = false;
             for($x = 0; $x < count(@$arr_itens); $x++){
-                 if (trim($arr_itens[$x]) == trim($dados[$w])){
+                 if (trim((string) $arr_itens[$x]) == trim((string) $dados[$w])){
                    $achou = true;
                    break;
                  }
@@ -256,7 +256,7 @@ if (!empty($chaves) && isset($chaves)){
         db_fieldsmemory($res_pcorcam,0);
 
    	    for($x = 0; $x < count($dados); $x++){
-    	    if (trim($dados[$x])!=""){
+    	    if (trim((string) $dados[$x])!=""){
     		    $clpcorcamitemlic->sql_record($clpcorcamitemlic->sql_query(null,"*",null,"pc81_codprocitem = ".$dados[$x]));
 
             if ($clpcorcamitemlic->numrows == 0){

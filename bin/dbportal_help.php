@@ -9,9 +9,9 @@ $br = '<br>';
 function db_formatar($str,$tipo,$caracter=" ",$quantidade=0,$TipoDePreenchimento="e",$casasdecimais=2) {
   switch($tipo) {
     case "cpf":
-       return substr($str,0,3).".".substr($str,3,3).".".substr($str,6,3)."/".substr($str,9,2);
+       return substr((string) $str,0,3).".".substr((string) $str,3,3).".".substr((string) $str,6,3)."/".substr((string) $str,9,2);
     case "cnpj":
-       return substr($str,0,2).".".substr($str,2,3).".".substr($str,5,3)."/".substr($str,8,4)."-".substr($str,12,2);
+       return substr((string) $str,0,2).".".substr((string) $str,2,3).".".substr((string) $str,5,3)."/".substr((string) $str,8,4)."-".substr((string) $str,12,2);
 	   //90.832.619/0001-55
     case "b":
       // boolean
@@ -35,29 +35,29 @@ function db_formatar($str,$tipo,$caracter=" ",$quantidade=0,$TipoDePreenchimento
     case "d":
      
       if($str!=""){
-        $data = split("-",$str);
+        $data = preg_split("#\\-#m",(string) $str);
         return $data[2]."/".$data[1]."/".$data[0];
       }else{
         return $str;
       }
     case "s":   	     
 	  if($TipoDePreenchimento == "e") {
-        return str_pad($str,$quantidade,$caracter,STR_PAD_LEFT);
+        return str_pad((string) $str,$quantidade,$caracter,STR_PAD_LEFT);
 	  } else if($TipoDePreenchimento == "d") {
-        return str_pad($str,$quantidade,$caracter,STR_PAD_RIGHT);
+        return str_pad((string) $str,$quantidade,$caracter,STR_PAD_RIGHT);
 	  } else if($TipoDePreenchimento == "a") {
-        return str_pad($str,$quantidade,$caracter,STR_PAD_BOTH);	  
+        return str_pad((string) $str,$quantidade,$caracter,STR_PAD_BOTH);	  
 	  }
 	case "v":
-	  if(strpos($str,",") != "") {
+	  if(strpos((string) $str,",") != "") {
 	    $str = str_replace(".","",$str);
 	    $str = str_replace(",",".",$str);
 		return $str;
-	  } else if(strpos($str,"-") != "") {
-        $str = split("-",$str);
+	  } else if(strpos((string) $str,"-") != "") {
+        $str = preg_split("#\\-#m",(string) $str);
 		return $str[2]."-".$str[1]."-".$str[0];
-	  } else if(strpos($str,"/") != "") {
-	    $str = split("/",$str);
+	  } else if(strpos((string) $str,"/") != "") {
+	    $str = preg_split("#\\/#m",(string) $str);
 		return $str[2]."-".$str[1]."-".$str[0];
 	  }
 	  break;
@@ -82,7 +82,7 @@ function gera_help($arquivo){
   $linhas = sizeof($dados);
   for($i=0;$i<$linhas;$i++){
     $conteudo = trim($dados[$i]);
-    if(substr($conteudo,0,8)=="//|00|//"){
+    if(str_starts_with($conteudo, "//|00|//")){
       $eclasse = true;
       fputs($fd, "$br");
       fputs($fd, "========= CLASSE PHP =========== $br");
@@ -104,15 +104,15 @@ function gera_help($arquivo){
       unset($listaretorno);
       
     }
-    if(substr($conteudo,0,8)=="//|XX|//"){
+    if(str_starts_with($conteudo, "//|XX|//")){
       unset($eclasse);
     }
      
-    if(substr($conteudo,0,8)=="//#00#//" || substr($conteudo,0,8)=="//#01#//"){
+    if(str_starts_with($conteudo, "//#00#//") || str_starts_with($conteudo, "//#01#//")){
       // nome da funcao
       if(!isset($eclasse)){
        
-	if(substr($conteudo,0,8)=="//#00#//" ){
+	if(str_starts_with($conteudo, "//#00#//") ){
 	  fputs($fd, "$br");
 	  fputs($fd, "===================================== FUNCAO PHP ================================================\n");
 	  fputs($fd, "$br");
@@ -144,7 +144,7 @@ function gera_help($arquivo){
 
      
     }
-    if(substr($conteudo,0,8)=="//#10#//" || substr($conteudo,0,8)=="//|10|//"){
+    if(str_starts_with($conteudo, "//#10#//") || str_starts_with($conteudo, "//|10|//")){
       // descricao da funcao    
       if(!isset($listafuncao) && !isset($clistafuncao)){
 	 $listafuncao = true;
@@ -157,7 +157,7 @@ function gera_help($arquivo){
 	 fputs($fd,  "                 ");
       fputs($fd, substr($conteudo,8)." $br");
     }
-    if(substr($conteudo,0,8)=="//#15#//" || substr($conteudo,0,8)=="//|15|//"){
+    if(str_starts_with($conteudo, "//#15#//") || str_starts_with($conteudo, "//|15|//")){
       // sintaxe da sintaxe    
       if(!isset($listasintaxe) && !isset($clistasintaxe)){
 	 $listasintaxe = true;
@@ -170,7 +170,7 @@ function gera_help($arquivo){
          fputs($fd,  "                 ");
       fputs($fd, substr($conteudo,8)."\n");
     }
-    if(substr($conteudo,0,8)=="//#20#//" || substr($conteudo,0,8)=="//|20|//"){
+    if(str_starts_with($conteudo, "//#20#//") || str_starts_with($conteudo, "//|20|//")){
       // Parametros da funcao    
       if(!isset($listaparametro) && !isset($clistaparametro)){
 	 $listaparametro = true;
@@ -183,7 +183,7 @@ function gera_help($arquivo){
          fputs($fd,  "                 ");
       fputs($fd, substr($conteudo,8)."$br");
     }
-    if(substr($conteudo,0,8)=="//#30#//" || substr($conteudo,0,8)=="//|30|//"){
+    if(str_starts_with($conteudo, "//#30#//") || str_starts_with($conteudo, "//|30|//")){
       // variavel da funcao ou propriedade da classe
       if(!isset($listavariavel) && !isset($clistavariavel)){
 	 $listavariavel = true;
@@ -199,7 +199,7 @@ function gera_help($arquivo){
          fputs($fd,  "                 ");
       fputs($fd, substr($conteudo,8)."$br");
     }
-    if(substr($conteudo,0,8)=="//#40#//" || substr($conteudo,0,8)=="//|40|//"){
+    if(str_starts_with($conteudo, "//#40#//") || str_starts_with($conteudo, "//|40|//")){
       // variavel do retorno
       if(!isset($listavariavel) && !isset($clistavariavel)){
 	 $listavariavel = true;
@@ -215,7 +215,7 @@ function gera_help($arquivo){
 
 
 
-    if(substr($conteudo,0,8)=="//#99#//" || substr($conteudo,0,8)=="//|99|//"){
+    if(str_starts_with($conteudo, "//#99#//") || str_starts_with($conteudo, "//|99|//")){
       // Parametros da funcao    
       if(!isset($listaobservacao) && !isset($listaobservacao)){
 	 $listaobservacao = true;
@@ -246,21 +246,21 @@ fputs($fd, "\n");
 fputs($fd, "================================= LISTA DOS CAMPOS CADASTRADOS ==================================\n");
 fputs($fd, "\n");
  
-for($i=0;$i<pg_numrows($result);$i++){
-  $codcam    = pg_result($result,$i,'codcam');
-  $nomecam   = pg_result($result,$i,'nomecam');
-  $conteudo  = pg_result($result,$i,'conteudo');
-  $descricao = pg_result($result,$i,'descricao');
-  $rotulo    = pg_result($result,$i,'rotulo');
-  $tamanho   = pg_result($result,$i,'tamanho');
-  $nulo      = pg_result($result,$i,'nulo');
-  $maiusculo = pg_result($result,$i,'maiusculo');
-  $autocompl = pg_result($result,$i,'autocompl');
-  $aceitatipo= pg_result($result,$i,'aceitatipo');
-  $rotulorel = pg_result($result,$i,'rotulorel');
+for($i=0;$i<pg_num_rows($result);$i++){
+  $codcam    = pg_fetch_result($result,$i,'codcam');
+  $nomecam   = pg_fetch_result($result,$i,'nomecam');
+  $conteudo  = pg_fetch_result($result,$i,'conteudo');
+  $descricao = pg_fetch_result($result,$i,'descricao');
+  $rotulo    = pg_fetch_result($result,$i,'rotulo');
+  $tamanho   = pg_fetch_result($result,$i,'tamanho');
+  $nulo      = pg_fetch_result($result,$i,'nulo');
+  $maiusculo = pg_fetch_result($result,$i,'maiusculo');
+  $autocompl = pg_fetch_result($result,$i,'autocompl');
+  $aceitatipo= pg_fetch_result($result,$i,'aceitatipo');
+  $rotulorel = pg_fetch_result($result,$i,'rotulorel');
   fputs($fd, "$br");
   fputs($fd, "Campo          : *".trim($nomecam)."* $br");
-  $linha = split("$br",$descricao);
+  $linha = preg_split("$br",$descricao);
   $tags .= trim($nomecam)."\tdb_phphelp.txt\t/*".trim($nomecam)."*$br";
   for($l=0;$l<sizeof($linha);$l++){
     if($l==0)
@@ -286,8 +286,8 @@ for($i=0;$i<pg_numrows($result);$i++){
 	              where c.codcam = ".$codcam."
 		      order by nomearq");
   $quaisarq = "";
-  for($l=0;$l<pg_numrows($resultc);$l++){
-    $quaisarq .= "|".trim(pg_result($resultc,$l,"nomearq"))."|  ";
+  for($l=0;$l<pg_num_rows($resultc);$l++){
+    $quaisarq .= "|".trim(pg_fetch_result($resultc,$l,"nomearq"))."|  ";
   }
   fputs($fd, "Arquivos       : ".$quaisarq."$br");
   fputs($fd, "$br");
@@ -303,16 +303,16 @@ $result = pg_exec("select a.codarq, nomearq, a.descricao, nomecam , p.descricao 
 			inner join db_syscampo p on p.codcam = c.codcam
 		   order by codarq,nomearq,c.seqarq");
 $codarqs = 0;
-for($i=0;$i<pg_numrows($result);$i++){
-  $codarq = pg_result($result,$i,'codarq');
+for($i=0;$i<pg_num_rows($result);$i++){
+  $codarq = pg_fetch_result($result,$i,'codarq');
   if($codarqs!=$codarq){
-    $nomearq = pg_result($result,$i,'nomearq');
-    $descricao = pg_result($result,$i,'descricao');
+    $nomearq = pg_fetch_result($result,$i,'nomearq');
+    $descricao = pg_fetch_result($result,$i,'descricao');
     $codarqs = $codarq;
     $listaarq = true;
     fputs($fd, "$br");
     fputs($fd, "Arquivo        : *".trim($nomearq)."* *cl".trim($nomearq)."*$br");
-    $linha = split("$br",$descricao);
+    $linha = preg_split("$br",$descricao);
     $tags .= trim($nomearq)."\tdb_phphelp.txt\t/*".trim($nomearq)."*$br";
     $tags .= "cl_".trim($nomearq)."\tdb_phphelp.txt\t/*cl_".trim($nomearq)."*$br";
     $tags .= "cl".trim($nomearq)."\tdb_phphelp.txt\t/*cl".trim($nomearq)."*$br";
@@ -329,10 +329,10 @@ for($i=0;$i<pg_numrows($result);$i++){
   }
   if($listaarq==true)
     fputs($fd, "Observação     : Campos do arquivo:$br");
-  $nomecam   = pg_result($result,$i,'nomecam');
-  $descrcampo  = pg_result($result,$i,'descrcampo');
-  $conteudo  = pg_result($result,$i,'conteudo');
-  $tamanho   = pg_result($result,$i,'tamanho');
+  $nomecam   = pg_fetch_result($result,$i,'nomecam');
+  $descrcampo  = pg_fetch_result($result,$i,'descrcampo');
+  $conteudo  = pg_fetch_result($result,$i,'conteudo');
+  $tamanho   = pg_fetch_result($result,$i,'tamanho');
   fputs($fd, "                 |".trim($nomecam)."|\t".$conteudo."\t".$tamanho."\t".$descrcampo."$br");
 }
 

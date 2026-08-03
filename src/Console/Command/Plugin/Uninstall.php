@@ -47,14 +47,14 @@ class Uninstall extends Command
 
     public function connect_db()
     {
-        $HTTP_SERVER_VARS['HTTP_HOST'] = '';
-        $HTTP_SERVER_VARS['PHP_SELF'] = '';
+        $_SERVER['HTTP_HOST'] = '';
+        $_SERVER['PHP_SELF'] = '';
         require_once ECIDADE_PATH . 'libs/db_conn.php';
         require_once ECIDADE_PATH . 'libs/db_stdlib.php';
 
         global $_SESSION;
         if (!isset($_SESSION)) {
-            $_SESSION = array();
+            $_SESSION = [];
         }
         $_SESSION['DB_desativar_account'] = true;
         $_SESSION['DB_id_usuario'] = 1;

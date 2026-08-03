@@ -76,7 +76,7 @@ if(!isset($datai_dia) &&
             </td>
             <td align="left">
               <?php 
-              $arr_adm_dem = array("a"=>"Admitidos","d"=>"Demitidos");
+              $arr_adm_dem = ["a"=>"Admitidos","d"=>"Demitidos"];
               db_select('adm_dem',$arr_adm_dem,true,4,"");
               ?>
             </td>
@@ -103,7 +103,7 @@ if(!isset($datai_dia) &&
             </td>
             <td align="left">
               <?php 
-              $arr_ordem = array("a"=>"Alfabética","n"=>"Numérica","d"=>"Admissão");
+              $arr_ordem = ["a"=>"Alfabética","n"=>"Numérica","d"=>"Admissão"];
               if(!isset($ordem)){
                 $ordem = "a";
               }
@@ -125,7 +125,7 @@ if(!isset($datai_dia) &&
             </td>
             <td align="left">
               <?php 
-              $arr_quebra = array("n"=>"Sem quebra","l"=>"Por lotação","c"=>"Por cargo");
+              $arr_quebra = ["n"=>"Sem quebra","l"=>"Por lotação","c"=>"Por cargo"];
               if(!isset($lota)){
                 $lota = "n";
               }
@@ -147,7 +147,7 @@ if(!isset($datai_dia) &&
             </td>
             <td align="left">
               <?php 
-              $arr_SouN = array("s"=>"Sim","n"=>"Não");
+              $arr_SouN = ["s"=>"Sim","n"=>"Não"];
               if(!isset($quebra)){
                 $quebra = "n";
               }
@@ -156,7 +156,7 @@ if(!isset($datai_dia) &&
             </td>
             <td align="left">
               <?php 
-              $arr_SouN = array("s"=>"Sim","n"=>"Não");
+              $arr_SouN = ["s"=>"Sim","n"=>"Não"];
               if(isset($listapens)){
                 $chk_listapens = "checked";
               }else{
@@ -172,7 +172,7 @@ if(!isset($datai_dia) &&
             </td>
             <td align="left">
               <?php 
-              $arr_SouN = array("r"=>"Regime","v"=>"Vínculos");
+              $arr_SouN = ["r"=>"Regime","v"=>"Vínculos"];
               if(!isset($tipo)){
                 $tipo = "r";
               }
@@ -197,10 +197,10 @@ if(!isset($datai_dia) &&
               <?php 
               if($tipo == "r"){
 	              $result_regime = $clrhcadregime->sql_record($clrhcadregime->sql_query_file(null,"rh52_regime,rh52_regime||' - '||rh52_descr as rh52_descr  "));
-                db_multiploselect("rh52_regime", "rh52_descr", "nselecionados", "sselecionados", $result_regime, array(), 5, 250);
+                db_multiploselect("rh52_regime", "rh52_descr", "nselecionados", "sselecionados", $result_regime, [], 5, 250);
               }else{
   	            $result_regime = $clrhregime->sql_record($clrhregime->sql_query_file(null,"rh30_codreg,rh30_codreg||' - '||rh30_descr as rh30_descr  ", null, "rh30_instit = ".db_getsession('DB_instit')));
-                db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, array(), 5, 250);
+                db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, [], 5, 250);
               }
               ?>
             </td>

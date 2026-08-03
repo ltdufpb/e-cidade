@@ -214,7 +214,7 @@ abstract class Transferencia
         $oContaPlano = new ContaPlanoPCASP(
             null,
             db_getsession('DB_anousu'),
-            in_array($iCodigoDocumento, array(161, 163)) ? $iCodigoContaCorrente : $iCodigoContaBancaria,
+            in_array($iCodigoDocumento, [161, 163]) ? $iCodigoContaCorrente : $iCodigoContaBancaria,
             db_getsession('DB_instit')
         );
 
@@ -365,7 +365,7 @@ abstract class Transferencia
             throw new Exception("Não foi possível realizar a autenticação.\nPossível causa: Conciliação da conta bancária pode estar fechada. Verifique.");
         }
         $sStringAutenticacao = db_utils::fieldsMemory($rsExecutaAutenticacao, 0)->fc_autenticacao;
-        if (substr($sStringAutenticacao, 0, 1) != 1) {
+        if (substr((string) $sStringAutenticacao, 0, 1) != 1) {
             throw new Exception("Não foi possível executar a autenticação.\n\n{$sStringAutenticacao}");
         }
 
@@ -374,7 +374,7 @@ abstract class Transferencia
 
         // @todo - verificar esta regra com o Leandro
         $this->setDataAutenticacao($dtSessao);
-        $this->setNumeroAutenticacao(substr($sStringAutenticacao, 1, 7));
+        $this->setNumeroAutenticacao(substr((string) $sStringAutenticacao, 1, 7));
         $this->setStringAutenticacao($sStringAutenticacao);
 
         /**
@@ -401,79 +401,27 @@ abstract class Transferencia
 
         $iTipoOperacao = $this->getTipoOperacaoPorInclusao();
         $iCodigoDocumento = 0;
-        switch ($iTipoOperacao) {
-            /**
-             * Transferencia Financeira
-             */
-            case 1:
-                $iCodigoDocumento = 120;
-                break;
-            case 2:
-                $iCodigoDocumento = 121;
-                break;
-            case 3:
-                $iCodigoDocumento = 130;
-                break;
-            case 4:
-                $iCodigoDocumento = 131;
-                break;
-
-            /**
-             * Transferencia Bancaria
-             */
-            case 5:
-            case 16:
-            case 17:
-                $iCodigoDocumento = 140;
-                break;
-            case 6:
-            case 18:
-                $iCodigoDocumento = 141;
-                break;
-            /**
-             * Caução
-             */
-            case 7:
-                $iCodigoDocumento = 150;
-                break;
-            case 8:
-                $iCodigoDocumento = 152;
-                break;
-            case 9:
-                $iCodigoDocumento = 151;
-                break;
-            case 10:
-                $iCodigoDocumento = 153;
-                break;
-
-            /**
-             * Depósito de Diversas Origens
-             */
-            case 11:
-                $iCodigoDocumento = 160;
-                break;
-            case 12:
-                $iCodigoDocumento = 162;
-                break;
-            case 13:
-                $iCodigoDocumento = 161;
-                break;
-            case 14:
-                $iCodigoDocumento = 163;
-                break;
-            case 500:
-                $iCodigoDocumento = 5000;
-                break;
-            case 501:
-                $iCodigoDocumento = 5001;
-                break;
-            case 502:
-                $iCodigoDocumento = 5002;
-                break;
-            case 503:
-                $iCodigoDocumento = 5003;
-                break;
-        }
+        $iCodigoDocumento = match ($iTipoOperacao) {
+            1 => 120,
+            2 => 121,
+            3 => 130,
+            4 => 131,
+            5, 16, 17 => 140,
+            6, 18 => 141,
+            7 => 150,
+            8 => 152,
+            9 => 151,
+            10 => 153,
+            11 => 160,
+            12 => 162,
+            13 => 161,
+            14 => 163,
+            500 => 5000,
+            501 => 5001,
+            502 => 5002,
+            503 => 5003,
+            default => $iCodigoDocumento,
+        };
         return $iCodigoDocumento;
     }
 
@@ -1441,7 +1389,7 @@ abstract class Transferencia
             ";
 
             $rsRetencao = db_query($sqlRetencaoSlip);
-            if (pg_numrows($rsRetencao) == 0 ) {
+            if (pg_num_rows($rsRetencao) == 0 ) {
                 return null;
             }
             $iRetencao = db_utils::fieldsMemory($rsRetencao, 0)->retencao ;

@@ -70,12 +70,12 @@ a:active {
 
 <?php 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sd02_i_codigo = db_getsession("DB_coddepto");
-$ano           = substr( $sd23_d_consulta, 6, 4 );
-$mes           = substr( $sd23_d_consulta, 3, 2 );
-$dia           = substr( $sd23_d_consulta, 0, 2 );
+$ano           = substr( (string) $sd23_d_consulta, 6, 4 );
+$mes           = substr( (string) $sd23_d_consulta, 3, 2 );
+$dia           = substr( (string) $sd23_d_consulta, 0, 2 );
 
 $oDaoagendamentos  = new cl_agendamentos_ext;
 $oDaoundmedhorario = new cl_undmedhorario_ext;

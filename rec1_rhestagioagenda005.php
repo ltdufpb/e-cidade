@@ -35,7 +35,7 @@ include(modification("classes/db_rhestagioagendadata_classe.php"));
 $clrhestagioagenda     = new cl_rhestagioagenda;
 $clrhestagioagendadata = new cl_rhestagioagendadata;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){

@@ -15,9 +15,9 @@
 // The class supports both parametric and regular functions.
 //===================================================
 class FuncGenerator {
-    var $iFunc='',$iXFunc='',$iMin,$iMax,$iStepSize;
+    public $iFunc='',$iXFunc='',$iMin,$iMax,$iStepSize;
 	
-    function FuncGenerator($aFunc,$aXFunc='') {
+    function __construct($aFunc,$aXFunc='') {
 	$this->iFunc = $aFunc;
 	$this->iXFunc = $aXFunc;
     }
@@ -32,16 +32,16 @@ class FuncGenerator {
 	elseif( $this->iFunc != '' )
 	    $t = 'for($x='.$aXMin.'; $x<='.$aXMax.'; $x += '.$this->iStepSize.') {$ya[]='.$this->iFunc.';$xa[]=$x;} $x='.$aXMax.';$ya[]='.$this->iFunc.';$xa[]=$x;';
 	else
-	    JpGraphError::RaiseL(24001);//('FuncGenerator : No function specified. ');
+	    (new JpGraphError())->RaiseL(24001);//('FuncGenerator : No function specified. ');
 			
 	@eval($t);
 		
 	// If there is an error in the function specifcation this is the only
 	// way we can discover that.
 	if( empty($xa) || empty($ya) )
-	    JpGraphError::RaiseL(24002);//('FuncGenerator : Syntax error in function specification ');
+	    (new JpGraphError())->RaiseL(24002);//('FuncGenerator : Syntax error in function specification ');
 				
-	return array($xa,$ya);
+	return [$xa,$ya];
     }
 }
 
@@ -53,56 +53,56 @@ class FuncGenerator {
 //=============================================================================
 class  SymChar {
     function Get($aSymb,$aCapital=FALSE) {
-        static $iSymbols = array(
+        static $iSymbols = [
     /* Greek */
-	array('alpha','03B1','0391'),
-	array('beta','03B2','0392'),
-	array('gamma','03B3','0393'),
-	array('delta','03B4','0394'),
-	array('epsilon','03B5','0395'),
-	array('zeta','03B6','0396'),
-	array('ny','03B7','0397'),
-	array('eta','03B8','0398'),
-	array('theta','03B8','0398'),
-	array('iota','03B9','0399'),
-	array('kappa','03BA','039A'),
-	array('lambda','03BB','039B'),
-	array('mu','03BC','039C'),
-	array('nu','03BD','039D'),
-	array('xi','03BE','039E'),
-	array('omicron','03BF','039F'),
-	array('pi','03C0','03A0'),
-	array('rho','03C1','03A1'),
-	array('sigma','03C3','03A3'),
-	array('tau','03C4','03A4'),
-	array('upsilon','03C5','03A5'),
-	array('phi','03C6','03A6'),
-	array('chi','03C7','03A7'),
-	array('psi','03C8','03A8'),
-	array('omega','03C9','03A9'),
+	['alpha','03B1','0391'],
+	['beta','03B2','0392'],
+	['gamma','03B3','0393'],
+	['delta','03B4','0394'],
+	['epsilon','03B5','0395'],
+	['zeta','03B6','0396'],
+	['ny','03B7','0397'],
+	['eta','03B8','0398'],
+	['theta','03B8','0398'],
+	['iota','03B9','0399'],
+	['kappa','03BA','039A'],
+	['lambda','03BB','039B'],
+	['mu','03BC','039C'],
+	['nu','03BD','039D'],
+	['xi','03BE','039E'],
+	['omicron','03BF','039F'],
+	['pi','03C0','03A0'],
+	['rho','03C1','03A1'],
+	['sigma','03C3','03A3'],
+	['tau','03C4','03A4'],
+	['upsilon','03C5','03A5'],
+	['phi','03C6','03A6'],
+	['chi','03C7','03A7'],
+	['psi','03C8','03A8'],
+	['omega','03C9','03A9'],
     /* Money */
-	array('euro','20AC'),
-	array('yen','00A5'),
-	array('pound','20A4'),
+	['euro','20AC'],
+	['yen','00A5'],
+	['pound','20A4'],
     /* Math */
-	array('approx','2248'),
-	array('neq','2260'),
-	array('not','2310'),
-	array('def','2261'),
-	array('inf','221E'),
-	array('sqrt','221A'),
-	array('int','222B'),
+	['approx','2248'],
+	['neq','2260'],
+	['not','2310'],
+	['def','2261'],
+	['inf','221E'],
+	['sqrt','221A'],
+	['int','222B'],
     /* Misc */
-	array('copy','00A9'),
-	array('para','00A7'),
-	array('tm','2122'),   /* Trademark symbol */
-	array('rtm','00AE')   /* Registered trademark */
-);
+	['copy','00A9'],
+	['para','00A7'],
+	['tm','2122'],   /* Trademark symbol */
+	['rtm','00AE']   /* Registered trademark */
+];
 
 	$n = count($iSymbols);
 	$i=0;
 	$found = false;
-	$aSymb = strtolower($aSymb);
+	$aSymb = strtolower((string) $aSymb);
 	while( $i < $n && !$found ) {
 	    $found = $aSymb === $iSymbols[$i++][0];
 	}
@@ -112,7 +112,7 @@ class  SymChar {
 		$s = $ca[2];
 	    else
 		$s = $ca[1];
-	    return sprintf('&#%04d;',hexdec($s));
+	    return sprintf('&#%04d;',hexdec((string) $s));
 	}
 	else
 	    return '';
@@ -141,11 +141,11 @@ DEFINE('DSUTILS_YEAR5',13); // Major ticks on a five-yearly basis
 
 
 class DateScaleUtils {
-    var $iMin=0, $iMax=0;
-    var $starthour,$startmonth, $startday, $startyear;
-    var $endmonth, $endyear, $endday;
-    var $tickPositions=array(),$minTickPositions=array();
-    var $iUseWeeks = true;
+    public $iMin=0, $iMax=0;
+    public $starthour,$startmonth, $startday, $startyear;
+    public $endmonth, $endyear, $endday;
+    public $tickPositions=[],$minTickPositions=[];
+    public $iUseWeeks = true;
 
     function UseWeekFormat($aFlg) {
 	$this->iUseWeeks = $aFlg;
@@ -385,7 +385,7 @@ class DateScaleUtils {
 	    $this->tickPositions[$i++] = mktime(0 ,0 ,0, $this->startmonth + 1, 1, $this->startyear);
 	} 
 
-	return array($this->tickPositions,$this->minTickPositions);
+	return [$this->tickPositions,$this->minTickPositions];
     }
 
     function GetTicks($aData,$aType=1,$aMinor=false,$aEndPoints=false) {
@@ -408,15 +408,15 @@ class DateScaleUtils {
 	// Decision table for suitable scales
 	// First value: Main decision point
 	// Second value: Array of formatting depending on divisor for wanted max number of ticks. <divisor><formatting><format-string>,..
-	$tt = array( 
-	    array($spw, array(1,DSUTILS_DAY1,'d M',2,DSUTILS_DAY2,'d M',-1,DSUTILS_DAY4,'d M')),
-	    array($spm, array(1,DSUTILS_DAY1,'d M',2,DSUTILS_DAY2,'d M',4,DSUTILS_DAY4,'d M',
-			      7,DSUTILS_WEEK1,$w,-1,DSUTILS_WEEK2,$w)),
-	    array($spy, array(1,DSUTILS_DAY1,'d M',2,DSUTILS_DAY2,'d M',4,DSUTILS_DAY4,'d M',
+	$tt = [ 
+	    [$spw, [1,DSUTILS_DAY1,'d M',2,DSUTILS_DAY2,'d M',-1,DSUTILS_DAY4,'d M']],
+	    [$spm, [1,DSUTILS_DAY1,'d M',2,DSUTILS_DAY2,'d M',4,DSUTILS_DAY4,'d M',
+			      7,DSUTILS_WEEK1,$w,-1,DSUTILS_WEEK2,$w]],
+	    [$spy, [1,DSUTILS_DAY1,'d M',2,DSUTILS_DAY2,'d M',4,DSUTILS_DAY4,'d M',
 			      7,DSUTILS_WEEK1,$w,14,DSUTILS_WEEK2,$w,
-			      30,DSUTILS_MONTH1,'M',60,DSUTILS_MONTH2,'M',-1,DSUTILS_MONTH3,'M')),
-	    array(-1, array(30,DSUTILS_MONTH1,'M-Y',60,DSUTILS_MONTH2,'M-Y',90,DSUTILS_MONTH3,'M-Y',
-			    180,DSUTILS_MONTH6,'M-Y',352,DSUTILS_YEAR1,'Y',704,DSUTILS_YEAR2,'Y',-1,DSUTILS_YEAR5,'Y')));
+			      30,DSUTILS_MONTH1,'M',60,DSUTILS_MONTH2,'M',-1,DSUTILS_MONTH3,'M']],
+	    [-1, [30,DSUTILS_MONTH1,'M-Y',60,DSUTILS_MONTH2,'M-Y',90,DSUTILS_MONTH3,'M-Y',
+			    180,DSUTILS_MONTH6,'M-Y',352,DSUTILS_YEAR1,'Y',704,DSUTILS_YEAR2,'Y',-1,DSUTILS_YEAR5,'Y']]];
 
 	$ntt = count($tt);
 	$nd = floor($diff/$spd);
@@ -428,8 +428,8 @@ class DateScaleUtils {
 		    if( $nd/$t[3*$j] <= $aMaxTicks || $j==$n-1) {
 			$type = $t[3*$j+1];
 			$fs = $t[3*$j+2];
-			list($tickPositions,$minTickPositions) = $this->GetTicksFromMinMax($aMin,$aMax,$type,$aMinor);
-			return array($fs,$tickPositions,$minTickPositions,$type);
+			[$tickPositions, $minTickPositions] = $this->GetTicksFromMinMax($aMin,$aMax,$type,$aMinor);
+			return [$fs,$tickPositions,$minTickPositions,$type];
 		    }
 		}
 	    }
@@ -460,7 +460,7 @@ class DateScaleUtils {
 	    $this->doYearly($aType,$aMinor);
 	}
 	else {
-	    JpGraphError::RaiseL(24003);
+	    (new JpGraphError())->RaiseL(24003);
 	}
 	// put a label at the very left data pos
 	if( $aEndPoints ) {
@@ -472,7 +472,7 @@ class DateScaleUtils {
 	    $tickPositions[$i] = $aData[$n-1];
 	}
 
-	return array($this->tickPositions,$this->minTickPositions);
+	return [$this->tickPositions,$this->minTickPositions];
     }
 
 }
@@ -498,18 +498,18 @@ Class ReadFileData {
 	$rh = fopen($aFile,'r');
 	if( $rh === false )
 	    return false;
-	$tmp = array();
-	$lineofdata = fgetcsv($rh, 1000, ',');
+	$tmp = [];
+	$lineofdata = fgetcsv($rh, 1000, ',', escape: '\\');
 	while ( $lineofdata !== FALSE) {
 	    $tmp = array_merge($tmp,$lineofdata);
-	    $lineofdata = fgetcsv($rh, $aMaxLineLength, $aSepChar);
+	    $lineofdata = fgetcsv($rh, $aMaxLineLength, $aSepChar, escape: '\\');
 	}
 	fclose($rh);
 
 	// Now make sure that all data is numeric. By default
 	// all data is read as strings
 	$n = count($tmp);
-	$aData = array();
+	$aData = [];
 	$cnt=0;
 	for($i=0; $i < $n; ++$i) {
 	    if( $tmp[$i] !== "" ) {

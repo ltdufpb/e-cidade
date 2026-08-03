@@ -59,8 +59,8 @@ $clrotulo->label('DBtxt25');
 			    <td>
 			     <?php 
 			     
-			       $aSigla = array( "m"=>"Mensal",
-					                    "d"=>"13o. Salário");
+			       $aSigla = [ "m"=>"Mensal",
+					                    "d"=>"13o. Salário"];
 			       
 			       db_select('ponto',$aSigla,true,4,"");
 			     ?>

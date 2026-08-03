@@ -34,7 +34,7 @@ class LicitacaoModalidadeRepository {
 	 * Array com as modalidades de licitação.
 	 * @var LicitacaoModalidade[]
 	 */
-	private $aModalidadesLicitacao = array();
+	private $aModalidadesLicitacao = [];
 
 	/**
 	 * Instância da classe

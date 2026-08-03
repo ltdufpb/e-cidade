@@ -96,8 +96,8 @@ $api->setParameter('$head4', "");
 $api->setParameter('$head5', "");
 $api->setParameter('$head6', "");
 
-$api->setParameter('$datainicial', implode("-",array_reverse(explode("/",$objGet->dataInicial))));
-$api->setParameter('$datafinal', implode("-",array_reverse(explode("/",$objGet->dataFinal))));
+$api->setParameter('$datainicial', implode("-",array_reverse(explode("/",(string) $objGet->dataInicial))));
+$api->setParameter('$datafinal', implode("-",array_reverse(explode("/",(string) $objGet->dataFinal))));
 
 
 $xml = $api->getReport();

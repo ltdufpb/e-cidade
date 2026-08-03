@@ -37,7 +37,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -110,7 +110,7 @@ function js_emite(){
     <td><b>Arquivo:</b</td>
     <td>
      <?php 
-       $x = array("r14"=>"Salário","r48"=>"Complementar","r35"=>"13o. Salário","r22"=>"Adiantamento");
+       $x = ["r14"=>"Salário","r48"=>"Complementar","r35"=>"13o. Salário","r22"=>"Adiantamento"];
        db_select('arquivo',$x,true,4,"onchange='document.form1.submit();'");
      ?>
     </td>

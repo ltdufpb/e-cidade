@@ -63,7 +63,7 @@ if ($db_opcao == 1) {
                 </td>
                 <td>
                     <?php
-                    $aInicialIptu = array('0' => 'Todos', '1' => 'Somente Proprietários', '2' => 'Somente Promitentes');
+                    $aInicialIptu = ['0' => 'Todos', '1' => 'Somente Proprietários', '2' => 'Somente Promitentes'];
                     db_select('v19_envolinicialiptu', $aInicialIptu, true, $db_opcao, "");
                     ?>
                 </td>
@@ -74,8 +74,8 @@ if ($db_opcao == 1) {
                 </td>
                 <td>
                     <?php
-                    $aInicialIss = array('0' => 'Não Vincular Sócios',
-                        '1' => 'Vincular Sócios');
+                    $aInicialIss = ['0' => 'Não Vincular Sócios',
+                        '1' => 'Vincular Sócios'];
                     db_select('v19_envolinicialiss', $aInicialIss, true, $db_opcao, "");
                     ?>
                 </td>
@@ -86,8 +86,8 @@ if ($db_opcao == 1) {
                 </td>
                 <td>
                     <?php
-                    $aPrincIptu = array("f" => "Não",
-                        "t" => "Sim");
+                    $aPrincIptu = ["f" => "Não",
+                        "t" => "Sim"];
                     db_select('v19_envolprinciptu', $aPrincIptu, true, $db_opcao, "");
                     ?>
                 </td>
@@ -108,7 +108,7 @@ if ($db_opcao == 1) {
                 </td>
                 <td>
                     <?php
-                    db_select('v19_consultaanaliticainicial', array('f' => 'Não', 't' => 'Sim'), "", $db_opcao);
+                    db_select('v19_consultaanaliticainicial', ['f' => 'Não', 't' => 'Sim'], "", $db_opcao);
                     ?>
                 </td>
             </tr>
@@ -118,7 +118,7 @@ if ($db_opcao == 1) {
                 </td>
                 <td>
                     <?php
-                    db_select('v19_partilha', array('t' => 'Sim', 'f' => 'Não'), "", $db_opcao,
+                    db_select('v19_partilha', ['t' => 'Sim', 'f' => 'Não'], "", $db_opcao,
                         " onChange='js_toggleWebService(this.value);'");
                     ?>
                 </td>
@@ -185,8 +185,8 @@ if ($db_opcao == 1) {
                 <td style="width: 200px"><strong>Petição de Inicial Quitada:</strong></td>
                 <td>
                     <?php
-                    $aTipoInicial = array('0' => 'Padrão do Sistema',
-                        '1' => 'Modelo do OpenOffice');
+                    $aTipoInicial = ['0' => 'Padrão do Sistema',
+                        '1' => 'Modelo do OpenOffice'];
                     db_select('tipoInicialQuitada',
                         $aTipoInicial,
                         "",
@@ -218,7 +218,7 @@ if ($db_opcao == 1) {
                 <td>
                     <?php
                     db_select('tipoParcelamento',
-                        array('0' => 'Padrão do Sistema', '1' => 'Modelo do OpenOffice'),
+                        ['0' => 'Padrão do Sistema', '1' => 'Modelo do OpenOffice'],
                         "",
                         $db_opcao,
                         "container='documentoTipoParcelamento'  onChange='js_toggleBuscaDocumentos(this);'");

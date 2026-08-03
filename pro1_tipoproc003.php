@@ -31,12 +31,12 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_tipoproc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $cltipoproc = new cl_tipoproc;
 $db_opcao = 33;
 $db_botao = false;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   $result = $cltipoproc->sql_record("select p58_codigo from protprocesso where p58_codigo = $p51_codigo limit 1");
   if($cltipoproc->numrows > 0){
    db_msgbox('Aviso:\nExclusão não permitida!\nEste Tipo de Processo possui processos vinculados.');   	

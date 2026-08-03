@@ -69,7 +69,7 @@ if($db_opcao==1){
 //			echo $sqlBuscaOrigem; 
       if ($v10_sequencial != '' || $chavepesquisa != '') {
 			  $rsBuscaOrigem = db_query($sqlBuscaOrigem);
-			  if(pg_numrows($rsBuscaOrigem) > 0){
+			  if(pg_num_rows($rsBuscaOrigem) > 0){
 				  db_fieldsmemory($rsBuscaOrigem,0);
 		  	}
 			}
@@ -83,7 +83,7 @@ if($db_opcao==1){
 	  	}
 //			echo $sqlNome;
       $rsNome = db_query($sqlNome);
-		  $intNumrows = pg_numrows($rsNome);
+		  $intNumrows = pg_num_rows($rsNome);
 		  if($intNumrows > 0){
   	    db_fieldsmemory($rsNome,0);
 	  	}else{
@@ -253,7 +253,7 @@ function js_preenchepesquisa(chave){
   db_iframe_isencao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

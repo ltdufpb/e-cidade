@@ -55,8 +55,8 @@ if (isset($oParam->dbOpcao)) {
 switch ($oParam->exec) {
     case "getBens" :
         try {
-            $aWhere = array();
-            $aDadosRetorno = array();
+            $aWhere = [];
+            $aDadosRetorno = [];
 
             // iniciamos o where onde a bensbaix(bens baixados) for nulo (somente os nao baixados)
             $aWhere[] = "t55_codbem is null and t52_instit = " . db_getsession("DB_instit");
@@ -111,10 +111,10 @@ switch ($oParam->exec) {
                 $oDadosRetorno = new stdClass();
 
                 $oDadosRetorno->iCodigoBem = $oDadosBem->t52_bem;
-                $oDadosRetorno->sPlaca = urlencode($oDadosBem->t52_ident);
-                $oDadosRetorno->sDescricao = urlencode($oDadosBem->t52_descr);
-                $oDadosRetorno->sClassificacao = urlencode($oDadosBem->t64_descr);
-                $oDadosRetorno->sDepartamento = urlencode($oDadosBem->descrdepto);
+                $oDadosRetorno->sPlaca = urlencode((string) $oDadosBem->t52_ident);
+                $oDadosRetorno->sDescricao = urlencode((string) $oDadosBem->t52_descr);
+                $oDadosRetorno->sClassificacao = urlencode((string) $oDadosBem->t64_descr);
+                $oDadosRetorno->sDepartamento = urlencode((string) $oDadosBem->descrdepto);
                 $oRetorno->aDadosRetorno[] = $oDadosRetorno;
             }
 
@@ -145,7 +145,7 @@ switch ($oParam->exec) {
         break;
     case "buscaDivisao";
         try {
-            $oRetorno->departamento = array();
+            $oRetorno->departamento = [];
             $oRetorno->divisaoselecionada = $oParam->divisaoselecionada;
             $oDepartamento = new DBDepartamento($oParam->departamento);
             $aDivisoes = $oDepartamento->getDivisoes();
@@ -153,7 +153,7 @@ switch ($oParam->exec) {
             foreach ($aDivisoes as $iDivisao => $oDivisao) {
                 $oDepartamento = new stdClass();
                 $oDepartamento->t30_codigo = $oDivisao->getCodigo();
-                $oDepartamento->t30_descr  = urlencode($oDivisao->getDescricao());
+                $oDepartamento->t30_descr  = urlencode((string) $oDivisao->getDescricao());
                 $oRetorno->departamento[]  = $oDepartamento;
             }
         } catch (Exception $oException) {
@@ -181,8 +181,8 @@ switch ($oParam->exec) {
 
                 if ($oBens->numrows > 0) {
                     $oRetorno->dados->libera = $lLiberaOrgao;
-                    $oRetorno->dados->o40_descr = urlencode(db_utils::fieldsMemory($rsBens, 0)->o40_descr);
-                    $oRetorno->dados->o41_descr = urlencode(db_utils::fieldsMemory($rsBens, 0)->o41_descr);
+                    $oRetorno->dados->o40_descr = urlencode((string) db_utils::fieldsMemory($rsBens, 0)->o40_descr);
+                    $oRetorno->dados->o41_descr = urlencode((string) db_utils::fieldsMemory($rsBens, 0)->o41_descr);
                 }
             }
         }
@@ -214,8 +214,8 @@ switch ($oParam->exec) {
                 $dtImplantacao = getDataImplantacaoDepreciacao();
 
                 if (!empty($dtImplantacao)) {
-                    list($iAnoImplantacao, $iMesImplantacao, $iDiaImplantacao) = explode("-", $dtImplantacao);
-                    list($iDiaAquisicao, $iMesAquisicao, $iAnoAquisicao) = explode("/", $oParam->t52_dtaqu);
+                    [$iAnoImplantacao, $iMesImplantacao, $iDiaImplantacao] = explode("-", $dtImplantacao);
+                    [$iDiaAquisicao, $iMesAquisicao, $iAnoAquisicao] = explode("/", (string) $oParam->t52_dtaqu);
 
                     $oHistoricoCalculo = getUltimoMesAnoHistoricoCalculoDepreciacao($lTipoManual);
 
@@ -266,7 +266,7 @@ switch ($oParam->exec) {
                  * SEQUENCIAL DIGITADO
                  */
                 if ($iParametroPlaca == BensParametroPlaca::PLACA_SEQUENCIAL_DIGITADO) {
-                    $oParam->t41_placa = mb_strtoupper($oParam->t41_placa);
+                    $oParam->t41_placa = mb_strtoupper((string) $oParam->t41_placa);
                     $oPlacaBem->setPlacaSeq($oParam->t41_placa);
                 } else {
                     /**
@@ -325,7 +325,7 @@ switch ($oParam->exec) {
                 }
             }
 
-            $oParam->obser = trim($oParam->obser);
+            $oParam->obser = trim((string) $oParam->obser);
             if (empty($oParam->obser)) {
                 throw new Exception("Informe a observação do lançamento.");
             }
@@ -444,10 +444,10 @@ switch ($oParam->exec) {
                 throw new Exception("Código da nota não informado.");
             }
 
-            $oParam->iCodigoItemNota = preg_replace("/[^0-9\,]/", '', $oParam->iCodigoItemNota);
+            $oParam->iCodigoItemNota = preg_replace("/[^0-9\,]/", '', (string) $oParam->iCodigoItemNota);
 
             $oDaoNotaItemBensPendentes = new cl_empnotaitembenspendente();
-            $aCampos = array(
+            $aCampos = [
               'e69_codnota',
               'e69_dtnota',
               'e69_numemp',
@@ -458,7 +458,7 @@ switch ($oParam->exec) {
               'e72_qtd',
               'pc01_codmater',
               'pc01_descrmater'
-            );
+            ];
 
             $aCampos[] = 'e69_numero as nota_fiscal';
             $aCampos[] = 'm52_codordem as ordem_compra';
@@ -473,10 +473,10 @@ switch ($oParam->exec) {
 
             $rsBuscaDadosBem = $oDaoNotaItemBensPendentes->sql_record($sSqlBuscaDadosBem);
 
-            $oRetorno->aNotas = array();
+            $oRetorno->aNotas = [];
             for ($iRow = 0; $iRow < $oDaoNotaItemBensPendentes->numrows; $iRow++) {
                 $oDadoItem = db_utils::fieldsMemory($rsBuscaDadosBem, $iRow);
-                $oRetorno->aNotas[] = (object)array(
+                $oRetorno->aNotas[] = (object)[
                   'e69_codnota'     => $oDadoItem->e69_codnota,
                   'e69_dtnota'      => date("Y-m-d", db_getsession('DB_datausu')),
                   'dataAquisicao'   => date("Y-m-d", db_getsession('DB_datausu')),
@@ -488,9 +488,9 @@ switch ($oParam->exec) {
                   'e72_qtd'         => $oDadoItem->e72_qtd,
                   'pc01_codmater'   => $oDadoItem->pc01_codmater,
                   'pc01_descrmater' => $oDadoItem->pc01_descrmater,
-                  'nota_fiscal'     => urlencode($oDadoItem->nota_fiscal),
+                  'nota_fiscal'     => urlencode((string) $oDadoItem->nota_fiscal),
                   'ordem_compra'    => $oDadoItem->ordem_compra
-                );
+                ];
             }
 
         } catch (Exception $eErro) {
@@ -503,8 +503,8 @@ switch ($oParam->exec) {
     case 'verificaVinculoBens':
         $oBem = new Bem($oParam->iCodigoBem);
         $aNotas = $oBem->getNotasFiscais();
-        $oRetorno->aOutrosBensVinculados = array();
-        $aCodigosBens = array();
+        $oRetorno->aOutrosBensVinculados = [];
+        $aCodigosBens = [];
 
         foreach ($aNotas as $oNota) {
             if (!empty($oNota)) {
@@ -528,9 +528,9 @@ switch ($oParam->exec) {
                             }
 
                             $oBemBaixar = new stdClass();
-                            $oBemBaixar->sDescricao = urlencode($oBemVinculado->getDescricao());
-                            $oBemBaixar->iCodigo = urlencode($oBemVinculado->getCodigoBem());
-                            $oBemBaixar->dtAquisicao = urlencode($oBemVinculado->getDataAquisicao());
+                            $oBemBaixar->sDescricao = urlencode((string) $oBemVinculado->getDescricao());
+                            $oBemBaixar->iCodigo = urlencode((string) $oBemVinculado->getCodigoBem());
+                            $oBemBaixar->dtAquisicao = urlencode((string) $oBemVinculado->getDataAquisicao());
 
                             $aCodigosBens[] = $oBemVinculado->getCodigoBem();
                             $oRetorno->aOutrosBensVinculados[] = $oBemBaixar;
@@ -561,16 +561,16 @@ switch ($oParam->exec) {
     case "getDadosBaixaBem":
         $oBem = new Bem($oParam->codigo_bem);
         $oRetorno->oDadosBaixa = $oBem->getDadosBaixa();
-        $oRetorno->oDadosBaixa->observacao = urlencode($oRetorno->oDadosBaixa->observacao);
+        $oRetorno->oDadosBaixa->observacao = urlencode((string) $oRetorno->oDadosBaixa->observacao);
 
         $documentPath = $oBem->getCaminhoDocumentoBaixa();
         $extension = '';
         if (!empty($documentPath)) {
-            $mimeExtensions = array(
+            $mimeExtensions = [
                 'application/msword' => 'doc',
                 'application/pdf' => 'pdf',
                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx'
-            );
+            ];
 
             $extension = $mimeExtensions[mime_content_type($documentPath)];
 
@@ -595,7 +595,7 @@ switch ($oParam->exec) {
             $oRetorno->erro = true;
             $oRetorno->message = 'Não foi localizado a descrição do motivo da baixa.';
         } else {
-            $oRetorno->oDadosBaixa->descricao_motivo = urlencode(db_utils::fieldsMemory($rsMotivoBaixa, 0)->t51_descr);
+            $oRetorno->oDadosBaixa->descricao_motivo = urlencode((string) db_utils::fieldsMemory($rsMotivoBaixa, 0)->t51_descr);
         }
 
         break;
@@ -624,23 +624,23 @@ function buscaDadosBem($iCodigoBem)
     $sDescricaoAquisicao = "";
     if ($oBem->getTipoAquisicao() != null) {
         $iCodigoAquisicao = $oBem->getTipoAquisicao()->getCodigo();
-        $sDescricaoAquisicao = urlencode($oBem->getTipoAquisicao()->getDescricao());
+        $sDescricaoAquisicao = urlencode((string) $oBem->getTipoAquisicao()->getDescricao());
     }
 
     $oDadosBem->t52_ident = $oBem->getIdentificacao();
     $oDadosBem->t52_dtaqu = db_formatar($oBem->getDataAquisicao(), 'd');
     $oDadosBem->t52_dtinclusao = db_formatar($oBem->getDataInclusao(), 'd');
     $oDadosBem->t52_descr = urlencode($oBem->getDescricao());
-    $oDadosBem->t64_class = urlencode($oBem->getClassificacao()->getClassificacao());
+    $oDadosBem->t64_class = urlencode((string) $oBem->getClassificacao()->getClassificacao());
     $oDadosBem->t64_codcla = $oBem->getClassificacao()->getCodigo();
-    $oDadosBem->t64_descr = urlencode($oBem->getClassificacao()->getDescricao());
+    $oDadosBem->t64_descr = urlencode((string) $oBem->getClassificacao()->getDescricao());
     $oDadosBem->t52_numcgm = $oBem->getFornecedor()->getCodigo();
-    $oDadosBem->z01_nome = urlencode($oBem->getFornecedor()->getNome());
+    $oDadosBem->z01_nome = urlencode((string) $oBem->getFornecedor()->getNome());
     $oDadosBem->t45_sequencial = $iCodigoAquisicao;
     $oDadosBem->t45_descricao = $sDescricaoAquisicao;
     $oDadosBem->t52_depart = $oBem->getDepartamento();
     $oDadosBem->t52_foto = $oBem->getFoto();
-    $oDadosBem->descrdepto = urlencode(buscaDescricaoDepartamento($oDadosBem->t52_depart));
+    $oDadosBem->descrdepto = urlencode((string) buscaDescricaoDepartamento($oDadosBem->t52_depart));
 
     $oDadosBem->divisao = $oBem->getDivisao();
     $oDadosBem->t04_sequencial = '';
@@ -648,18 +648,18 @@ function buscaDadosBem($iCodigoBem)
 
     if ($oBem->getCedente() != null) {
         $oDadosBem->t04_sequencial = $oBem->getCedente()->getCodigo();
-        $oDadosBem->z01_nome_convenio = urlencode($oBem->getCedente()->getCedente()->getNome());
+        $oDadosBem->z01_nome_convenio = urlencode((string) $oBem->getCedente()->getCedente()->getNome());
     }
 
     $iCodigoDepreciacao = "";
     $sDescricaoDepreciacao = "";
     if ($oBem->getTipoDepreciacao() != null) {
         $iCodigoDepreciacao = $oBem->getTipoDepreciacao()->getCodigo();
-        $sDescricaoDepreciacao = urlencode($oBem->getTipoDepreciacao()->getDescricao());
+        $sDescricaoDepreciacao = urlencode((string) $oBem->getTipoDepreciacao()->getDescricao());
     }
 
     $oDadosBem->t56_situac = $oBem->getSituacaoBem();
-    $oDadosBem->t70_descr = urlencode(buscaDescricaoSituacao($oDadosBem->t56_situac));
+    $oDadosBem->t70_descr = urlencode((string) buscaDescricaoSituacao($oDadosBem->t56_situac));
     $oDadosBem->vlAquisicao = $oBem->getValorAquisicao();
     $oDadosBem->vlResidual = $oBem->getValorResidual();
     $oDadosBem->vlTotal = $oBem->getValorAtual();
@@ -683,7 +683,7 @@ function buscaDadosBem($iCodigoBem)
     if ($oBem->isBaixado()) {
         $oDadosBem->databaixa = $oDadosBaixa->databaixa;
         $oDadosBem->motivo = $oDadosBaixa->motivo;
-        $oDadosBem->observacao = urlencode($oDadosBaixa->observacao);
+        $oDadosBem->observacao = urlencode((string) $oDadosBaixa->observacao);
         $oDadosBem->documento = $oDadosBaixa->documento;
     }
     $oDadosBem->hasDepreciacao = false;

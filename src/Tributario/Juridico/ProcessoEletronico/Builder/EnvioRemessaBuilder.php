@@ -49,7 +49,7 @@ class EnvioRemessaBuilder
      */
     public static function createCertidoes($oDocument,  array $data, $nValorUFIR) 
     {   
-        $oDocument->certidoes  = array();
+        $oDocument->certidoes  = [];
         foreach ($data as $oCertidao) {
 
             $dadosCertidao = new \stdClass();
@@ -98,24 +98,24 @@ class EnvioRemessaBuilder
     {
 
         $oDocument->polo = "PA"; 
-        $oDocument->nome = str_pad($oDevedor->getNome(), 60, " ", STR_PAD_RIGHT);
-        $oDocument->cpf = preg_replace("[./-]", "", trim($oDevedor->getCgccpf()));
-        $oDocument->sexo = strtoupper($oDevedor->getGenero());
-        $oDocument->nome_genitor = str_pad(substr(trim($oDevedor->getPai()), 0, 40), 60, " ",
+        $oDocument->nome = str_pad((string) $oDevedor->getNome(), 60, " ", STR_PAD_RIGHT);
+        $oDocument->cpf = preg_replace("[./-]", "", trim((string) $oDevedor->getCgccpf()));
+        $oDocument->sexo = strtoupper((string) $oDevedor->getGenero());
+        $oDocument->nome_genitor = str_pad(substr(trim((string) $oDevedor->getPai()), 0, 40), 60, " ",
             STR_PAD_RIGHT);
-        $oDocument->nome_genitora = str_pad(substr(trim($oDevedor->getMae()), 0, 40), 60, " ",
+        $oDocument->nome_genitora = str_pad(substr(trim((string) $oDevedor->getMae()), 0, 40), 60, " ",
             STR_PAD_RIGHT);
         $oDocument->data_nascimento = $oDevedor->getDataNascimento();
         $oDocument->tipo_pessoa = $oDevedor->getTipoPessoa();
-        $oDocument->cidade_natural = substr($oDevedor->getNaturalidade(), 0, 100);
+        $oDocument->cidade_natural = substr((string) $oDevedor->getNaturalidade(), 0, 100);
 
-        $oDocument->cep = substr($oDevedor->getCep(), 0, 8);
-        $oDocument->logradouro = substr($oDevedor->getEndereco(), 0, 60);
-        $oDocument->numero_end = substr($oDevedor->getNumero(), 0, 10);
-        $oDocument->complemento = substr($oDevedor->getComplemento(), 0, 40);
-        $oDocument->bairro = substr($oDevedor->getBairro(), 0, 40);
-        $oDocument->munic = substr($oDevedor->getMunicipio(), 0, 40);
-        $oDocument->uf = substr($oDevedor->getUf(), 0, 2);
+        $oDocument->cep = substr((string) $oDevedor->getCep(), 0, 8);
+        $oDocument->logradouro = substr((string) $oDevedor->getEndereco(), 0, 60);
+        $oDocument->numero_end = substr((string) $oDevedor->getNumero(), 0, 10);
+        $oDocument->complemento = substr((string) $oDevedor->getComplemento(), 0, 40);
+        $oDocument->bairro = substr((string) $oDevedor->getBairro(), 0, 40);
+        $oDocument->munic = substr((string) $oDevedor->getMunicipio(), 0, 40);
+        $oDocument->uf = substr((string) $oDevedor->getUf(), 0, 2);
         $oDocument->pais = self::PAIS_DEFAULT;
              
     }
@@ -127,14 +127,14 @@ class EnvioRemessaBuilder
     public static function createAdvogado($oDocument,  $oAdvog)
     {
         $oDocument->nome_advog = $oAdvog->getNome();
-        $oDocument->cpf_advog = substr(preg_replace("[./-]", "", trim($oAdvog->getCgccpf())), 0, 11);
-        $oDocument->cep_advog = substr($oAdvog->getCep(), 0, 8);
-        $oDocument->logradouro_advog = substr($oAdvog->getEndereco(), 0, 60);
-        $oDocument->numero_advog = substr($oAdvog->getNumero(), 0, 10);
-        $oDocument->complemento_advog = substr($oAdvog->getComplemento(), 0, 40);
-        $oDocument->bairro_advog = substr($oAdvog->getBairro(), 0, 40);
-        $oDocument->cidade_advog = substr($oAdvog->getMunicipio(), 0, 40);
-        $oDocument->uf_advog = substr($oAdvog->getUf(), 0, 40);
+        $oDocument->cpf_advog = substr((string) preg_replace("[./-]", "", trim((string) $oAdvog->getCgccpf())), 0, 11);
+        $oDocument->cep_advog = substr((string) $oAdvog->getCep(), 0, 8);
+        $oDocument->logradouro_advog = substr((string) $oAdvog->getEndereco(), 0, 60);
+        $oDocument->numero_advog = substr((string) $oAdvog->getNumero(), 0, 10);
+        $oDocument->complemento_advog = substr((string) $oAdvog->getComplemento(), 0, 40);
+        $oDocument->bairro_advog = substr((string) $oAdvog->getBairro(), 0, 40);
+        $oDocument->cidade_advog = substr((string) $oAdvog->getMunicipio(), 0, 40);
+        $oDocument->uf_advog = substr((string) $oAdvog->getUf(), 0, 40);
         $oDocument->oab_advog = $oAdvog->getOab();
         $oDocument->matricula_advogado = $oAdvog->getMatriculaadvogado();
 
@@ -149,17 +149,17 @@ class EnvioRemessaBuilder
     {
 
         $oDocument->numero_inscricao        = $data->origem;
-        $oDocument->nome_devedor            = substr($oDevedor->getNome(), 0, 90);
+        $oDocument->nome_devedor            = substr((string) $oDevedor->getNome(), 0, 90);
         $oDocument->codigo_tipo_log_devedor = $oDevedor->getCodigoLogradouro();
 
-        $oDocument->cep_logradouro          = substr($oDevedor->getCep(), 0, 8);
+        $oDocument->cep_logradouro          = substr((string) $oDevedor->getCep(), 0, 8);
         $oDocument->tipo_logradouro         = $oDevedor->getTipoLogradouro();
-        $oDocument->nome_logradouro         = substr($oDevedor->getEndereco(), 0, 60);
-        $oDocument->numero_logradouro       = substr($oDevedor->getNumero(), 0, 10);
-        $oDocument->complemento_logradouro  = substr($oDevedor->getComplemento(), 0, 40);
-        $oDocument->bairro_logradouro       = substr($oDevedor->getBairro(), 0, 40);
-        $oDocument->cidade_logradouro       = substr($oDevedor->getMunicipio(), 0, 40);
-        $oDocument->uf_logradouro           = substr($oDevedor->getUf(), 0, 2);
+        $oDocument->nome_logradouro         = substr((string) $oDevedor->getEndereco(), 0, 60);
+        $oDocument->numero_logradouro       = substr((string) $oDevedor->getNumero(), 0, 10);
+        $oDocument->complemento_logradouro  = substr((string) $oDevedor->getComplemento(), 0, 40);
+        $oDocument->bairro_logradouro       = substr((string) $oDevedor->getBairro(), 0, 40);
+        $oDocument->cidade_logradouro       = substr((string) $oDevedor->getMunicipio(), 0, 40);
+        $oDocument->uf_logradouro           = substr((string) $oDevedor->getUf(), 0, 2);
         $oDocument->pais = self::PAIS_DEFAULT;
     }
 

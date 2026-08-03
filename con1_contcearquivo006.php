@@ -36,7 +36,7 @@ $clcontcearquivo = new cl_contcearquivo;
   /*
 $clcontcearquivoresp = new cl_contcearquivoresp;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

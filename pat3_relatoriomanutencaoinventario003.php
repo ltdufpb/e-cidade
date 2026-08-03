@@ -96,7 +96,7 @@ switch ($oParam->exec) {
       }
       $sTituloArquivo  .= "vida_util";
       
-      $aLinhasArquivo   = array();
+      $aLinhasArquivo   = [];
       $aLinhasArquivo[] = $sTituloArquivo;
       for ($iRowBem = 0; $iRowBem < $iTotalRegistros; $iRowBem++) {
         

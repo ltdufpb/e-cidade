@@ -34,8 +34,8 @@ require_once(modification("model/configuracao/DBEstruturaValor.model.php"));
 
 $oGet          = db_utils::postMemory($_GET);
 $iInstituicao  = db_getsession("DB_instit");
-$dtDataInicial = implode("/",array_reverse(explode('-', $oGet->dtDataInicial)));
-$dtDataFinal   = implode("/",array_reverse(explode('-', $oGet->dtDataFinal)));
+$dtDataInicial = implode("/",array_reverse(explode('-', (string) $oGet->dtDataInicial)));
+$dtDataFinal   = implode("/",array_reverse(explode('-', (string) $oGet->dtDataFinal)));
 
 /**
  * Busca os dados relativos a instituição
@@ -56,7 +56,7 @@ if ($oDaoMaterialTipoGrupoVinculo->numrows == 0) {
   exit;
 }
 
-$aContasBuscar = array();
+$aContasBuscar = [];
 $iTotalLinhas  = $oDaoMaterialTipoGrupoVinculo->numrows;
 for ($iGrupo = 0; $iGrupo < $iTotalLinhas; $iGrupo++) {
   
@@ -70,7 +70,7 @@ if (count($aContasBuscar) == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro={$sMsg}");
   exit;
 }
-$aWhereBuscaMaterial   = array();
+$aWhereBuscaMaterial   = [];
 $aWhereBuscaMaterial[] = "m65_db_estruturavalor in (".implode(', ',$aContasBuscar).")";
 
 $sWhereBuscaMaterial  = implode("and ", $aWhereBuscaMaterial);
@@ -142,12 +142,12 @@ if ($iTotalMaterial == 0 || !$rsBuscaMaterial) {
  * Configuro o objeto com mais duas propriedades para serem impressas no relatório
  * valor unitario e quantidade do inventario
  */
-$aDadosImprimir = array();
+$aDadosImprimir = [];
 for ($iRowMaterial = 0; $iRowMaterial < $iTotalMaterial; $iRowMaterial++) {
 
 
   $oDadoMaterial   = db_utils::fieldsMemory($rsBuscaMaterial, $iRowMaterial);
-  $rsQueryCalculos = pg_execute("smtMovimentacaoItem", array($oDadoMaterial->codigo_material));
+  $rsQueryCalculos = pg_execute("smtMovimentacaoItem", [$oDadoMaterial->codigo_material]);
   if ($rsQueryCalculos) {
 
     $oDadosCalculo = db_utils::fieldsMemory($rsQueryCalculos, 0);
@@ -232,18 +232,18 @@ foreach ($aDadosImprimir as $iIndiceContas => $oConta) {
     if (!$lImprime) {
       imprimirRodape($oPdf, $iAlturalinha, $nValorAcumuladoTotal);
     }
-    
-    imprimirCabecalho($oPdf, $iAlturalinha, $dtDataInicial, $dtDataFinal);
+
+    imprimirCabecalho($oPdf, $iAlturalinha, $dtDataInicial);
     $lImprime = false;
   }
 
   //Acumula valor total
   $nValorAcumuladoTotal  += ($oConta->valor_financeiro);
-  
+
   //Imprime colunas com valores do StdClass
   $oPdf->setfont('arial','',6);                                                                                   
   $oPdf->cell(20 ,  $iAlturalinha, $oConta->codigo_material                    , 1, 0, "C", 0); //Código de Classificaçãoo    
-  $oPdf->cell(70 ,  $iAlturalinha, substr($oConta->descricao_material,0 , 40)  , 1, 0, "L", 0); //Especificação          
+  $oPdf->cell(70 ,  $iAlturalinha, substr((string) $oConta->descricao_material,0 , 40)  , 1, 0, "L", 0); //Especificação          
   $oPdf->cell(20 ,  $iAlturalinha, $oConta->descricao_unidade                  , 1, 0, "C", 0); //Unidade de Medida         
   $oPdf->cell(30 ,  $iAlturalinha, $oConta->saldo_anterior                     , 1, 0, "C", 0); //Saldo Periodo Anterior (quantidade) 
   $oPdf->cell(25 ,  $iAlturalinha, $oConta->quantidade_entrada                 , 1, 0, "C", 0); //Entradas Periodo       
@@ -285,7 +285,7 @@ $oPdf->Output();
 function imprimirCabecalho ($oPdf, $iAlturalinha,$dtDataInicial, $dtDataFinal) {
 
   $oPdf->AddPage("L");
-  
+
   //Primeira linha cabeçalho
   $oPdf->setfont('arial','b',8);
   $oPdf->cell(20 ,  $iAlturalinha, ""              , "LTR" ,  0, "C", 1);  //Código de Classificação     
@@ -295,7 +295,7 @@ function imprimirCabecalho ($oPdf, $iAlturalinha,$dtDataInicial, $dtDataFinal) {
   $oPdf->cell(50 ,  $iAlturalinha, "Movimento de"  , "LTR" ,  0, "C", 1);  //Movimento de _/_/_ a _/_/_  
   $oPdf->cell(30 ,  $iAlturalinha, ""              , "LTR" ,  0, "C", 1);  //Quantidade
   $oPdf->cell(60 ,  $iAlturalinha, ""              , "LTR" ,  1, "C", 1);  //Valor
-  
+
   //Segunda Linha cabeçalho
   $oPdf->cell(20 ,  $iAlturalinha, "Código da"       , "LR" ,  0, "C", 1); //Código de Classificação   
   $oPdf->cell(70 ,  $iAlturalinha, "Especificação"   , "LR" ,  0, "C", 1); //Especificação             
@@ -304,7 +304,7 @@ function imprimirCabecalho ($oPdf, $iAlturalinha,$dtDataInicial, $dtDataFinal) {
   $oPdf->cell(50 ,  $iAlturalinha, "{$dtDataInicial} a {$dtDataFinal}" , "LR" ,  0, "C", 1); //Movimento de _/_/_ a _/_/_
   $oPdf->cell(30 ,  $iAlturalinha, "Quantidade"      , "LR" ,  0, "C", 1); //Quantidade                
   $oPdf->cell(60 ,  $iAlturalinha, "Valor R$"        , "LR" ,  1, "C", 1); //Valor                     
-  
+
   //Terceira Linha cabeçalho
   $oPdf->cell(20 ,  $iAlturalinha, "Classificação"   , "LR" ,  0, "C", 1); //Código de Classificação
   $oPdf->cell(70 ,  $iAlturalinha, ""                , "LR" ,  0, "C", 1); //Especificação

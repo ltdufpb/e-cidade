@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE tfd_acompanhantes
 class cl_tfd_acompanhantes {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $tf13_i_codigo = 0;
-   var $tf13_i_cgsund = 0;
-   var $tf13_i_motivoacompanhamento = 0;
-   var $tf13_i_pedidotfd = 0;
-   var $tf13_i_anulado = 0;
+   public $tf13_i_codigo = 0;
+   public $tf13_i_cgsund = 0;
+   public $tf13_i_motivoacompanhamento = 0;
+   public $tf13_i_pedidotfd = 0;
+   public $tf13_i_anulado = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  tf13_i_codigo = int4 = Código
                  tf13_i_cgsund = int4 = CGS
                  tf13_i_motivoacompanhamento = int4 = Motivo do Acompanhamento
@@ -56,10 +56,10 @@ class cl_tfd_acompanhantes {
                  tf13_i_anulado = int4 = Anulado
                  ";
    //funcao construtor da classe
-   function cl_tfd_acompanhantes() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tfd_acompanhantes");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -131,10 +131,10 @@ class cl_tfd_acompanhantes {
          $this->erro_status = "0";
          return false;
        }
-       $this->tf13_i_codigo = pg_result($result,0,0);
+       $this->tf13_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from tfd_acompanhantes_tf13_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tf13_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tf13_i_codigo)){
          $this->erro_sql = " Campo tf13_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_tfd_acompanhantes {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tfd_acompanhantes ($this->tf13_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tfd_acompanhantes já Cadastrado";
@@ -194,14 +194,14 @@ class cl_tfd_acompanhantes {
      $resaco = $this->sql_record($this->sql_query_file($this->tf13_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16379,'$this->tf13_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2869,16379,'','".AddSlashes(pg_result($resaco,0,'tf13_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2869,16380,'','".AddSlashes(pg_result($resaco,0,'tf13_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2869,16381,'','".AddSlashes(pg_result($resaco,0,'tf13_i_motivoacompanhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2869,16382,'','".AddSlashes(pg_result($resaco,0,'tf13_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2869,16383,'','".AddSlashes(pg_result($resaco,0,'tf13_i_anulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2869,16379,'','".AddSlashes(pg_fetch_result($resaco,0,'tf13_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2869,16380,'','".AddSlashes(pg_fetch_result($resaco,0,'tf13_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2869,16381,'','".AddSlashes(pg_fetch_result($resaco,0,'tf13_i_motivoacompanhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2869,16382,'','".AddSlashes(pg_fetch_result($resaco,0,'tf13_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2869,16383,'','".AddSlashes(pg_fetch_result($resaco,0,'tf13_i_anulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -210,10 +210,10 @@ class cl_tfd_acompanhantes {
       $this->atualizacampos();
      $sql = " update tfd_acompanhantes set ";
      $virgula = "";
-     if(trim($this->tf13_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_codigo"])){
+     if(trim((string) $this->tf13_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_codigo"])){
        $sql  .= $virgula." tf13_i_codigo = $this->tf13_i_codigo ";
        $virgula = ",";
-       if(trim($this->tf13_i_codigo) == null ){
+       if(trim((string) $this->tf13_i_codigo) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "tf13_i_codigo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_tfd_acompanhantes {
          return false;
        }
      }
-     if(trim($this->tf13_i_cgsund)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_cgsund"])){
+     if(trim((string) $this->tf13_i_cgsund)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_cgsund"])){
        $sql  .= $virgula." tf13_i_cgsund = $this->tf13_i_cgsund ";
        $virgula = ",";
-       if(trim($this->tf13_i_cgsund) == null ){
+       if(trim((string) $this->tf13_i_cgsund) == null ){
          $this->erro_sql = " Campo CGS nao Informado.";
          $this->erro_campo = "tf13_i_cgsund";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_tfd_acompanhantes {
          return false;
        }
      }
-     if(trim($this->tf13_i_motivoacompanhamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_motivoacompanhamento"])){
+     if(trim((string) $this->tf13_i_motivoacompanhamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_motivoacompanhamento"])){
        $sql  .= $virgula." tf13_i_motivoacompanhamento = $this->tf13_i_motivoacompanhamento ";
        $virgula = ",";
-       if(trim($this->tf13_i_motivoacompanhamento) == null ){
+       if(trim((string) $this->tf13_i_motivoacompanhamento) == null ){
          $this->erro_sql = " Campo Motivo do Acompanhamento nao Informado.";
          $this->erro_campo = "tf13_i_motivoacompanhamento";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_tfd_acompanhantes {
          return false;
        }
      }
-     if(trim($this->tf13_i_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_pedidotfd"])){
+     if(trim((string) $this->tf13_i_pedidotfd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_pedidotfd"])){
        $sql  .= $virgula." tf13_i_pedidotfd = $this->tf13_i_pedidotfd ";
        $virgula = ",";
-       if(trim($this->tf13_i_pedidotfd) == null ){
+       if(trim((string) $this->tf13_i_pedidotfd) == null ){
          $this->erro_sql = " Campo Pedido nao Informado.";
          $this->erro_campo = "tf13_i_pedidotfd";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_tfd_acompanhantes {
          return false;
        }
      }
-     if(trim($this->tf13_i_anulado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_anulado"])){
+     if(trim((string) $this->tf13_i_anulado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_anulado"])){
        $sql  .= $virgula." tf13_i_anulado = $this->tf13_i_anulado ";
        $virgula = ",";
-       if(trim($this->tf13_i_anulado) == null ){
+       if(trim((string) $this->tf13_i_anulado) == null ){
          $this->erro_sql = " Campo Anulado nao Informado.";
          $this->erro_campo = "tf13_i_anulado";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_tfd_acompanhantes {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16379,'$this->tf13_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_codigo"]) || $this->tf13_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2869,16379,'".AddSlashes(pg_result($resaco,$conresaco,'tf13_i_codigo'))."','$this->tf13_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2869,16379,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf13_i_codigo'))."','$this->tf13_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_cgsund"]) || $this->tf13_i_cgsund != "")
-           $resac = db_query("insert into db_acount values($acount,2869,16380,'".AddSlashes(pg_result($resaco,$conresaco,'tf13_i_cgsund'))."','$this->tf13_i_cgsund',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2869,16380,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf13_i_cgsund'))."','$this->tf13_i_cgsund',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_motivoacompanhamento"]) || $this->tf13_i_motivoacompanhamento != "")
-           $resac = db_query("insert into db_acount values($acount,2869,16381,'".AddSlashes(pg_result($resaco,$conresaco,'tf13_i_motivoacompanhamento'))."','$this->tf13_i_motivoacompanhamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2869,16381,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf13_i_motivoacompanhamento'))."','$this->tf13_i_motivoacompanhamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_pedidotfd"]) || $this->tf13_i_pedidotfd != "")
-           $resac = db_query("insert into db_acount values($acount,2869,16382,'".AddSlashes(pg_result($resaco,$conresaco,'tf13_i_pedidotfd'))."','$this->tf13_i_pedidotfd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2869,16382,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf13_i_pedidotfd'))."','$this->tf13_i_pedidotfd',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tf13_i_anulado"]) || $this->tf13_i_anulado != "")
-           $resac = db_query("insert into db_acount values($acount,2869,16383,'".AddSlashes(pg_result($resaco,$conresaco,'tf13_i_anulado'))."','$this->tf13_i_anulado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2869,16383,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tf13_i_anulado'))."','$this->tf13_i_anulado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_tfd_acompanhantes {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16379,'$tf13_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2869,16379,'','".AddSlashes(pg_result($resaco,$iresaco,'tf13_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2869,16380,'','".AddSlashes(pg_result($resaco,$iresaco,'tf13_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2869,16381,'','".AddSlashes(pg_result($resaco,$iresaco,'tf13_i_motivoacompanhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2869,16382,'','".AddSlashes(pg_result($resaco,$iresaco,'tf13_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2869,16383,'','".AddSlashes(pg_result($resaco,$iresaco,'tf13_i_anulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2869,16379,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf13_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2869,16380,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf13_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2869,16381,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf13_i_motivoacompanhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2869,16382,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf13_i_pedidotfd'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2869,16383,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tf13_i_anulado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tfd_acompanhantes
@@ -407,7 +407,7 @@ class cl_tfd_acompanhantes {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tfd_acompanhantes";
@@ -422,7 +422,7 @@ class cl_tfd_acompanhantes {
    function sql_query ( $tf13_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,7 +455,7 @@ class cl_tfd_acompanhantes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_tfd_acompanhantes {
    function sql_query_file ( $tf13_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,7 +489,7 @@ class cl_tfd_acompanhantes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_tfd_acompanhantes {
   function sql_query_acompanhantes_cgs ( $tf13_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,7 +530,7 @@ class cl_tfd_acompanhantes {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

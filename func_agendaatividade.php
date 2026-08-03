@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_agendaatividade_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clagendaatividade = new cl_agendaatividade;
 $clagendaatividade->rotulo->label("ed129_codigo");
 $clagendaatividade->rotulo->label("ed129_codigo");
@@ -52,9 +52,9 @@ $clagendaatividade->rotulo->label("ed129_codigo");
         }else{
            $sql = $clagendaatividade->sql_query("",$campos,"ed129_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed129_codigo)){
-          $repassa = array("chave_ed129_codigo"=>$chave_ed129_codigo,"chave_ed129_codigo"=>$chave_ed129_codigo);
+          $repassa = ["chave_ed129_codigo"=>$chave_ed129_codigo,"chave_ed129_codigo"=>$chave_ed129_codigo];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

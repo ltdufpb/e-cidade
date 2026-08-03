@@ -66,7 +66,7 @@ $cltecnico        = new cl_tecnico;
 $cltarefa_agenda  = new cl_tarefa_agenda;
 $cltarefa_aut     = new cl_tarefa_aut;
 $cltarefa_lanc    = new cl_tarefa_lanc;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 11;
 $db_botao = true;
 

@@ -53,9 +53,9 @@ if (!empty($clrhparam->numrows)) {
   $tipoColetiva = $parametroRH->h36_modportariacoletiva;
 }
 
-$sequencialPortaria = $clportaria->h31_sequencial ? $clportaria->h31_sequencial : $h31_sequencial;
-$numeroPortaria = $clportaria->h31_numero ? $clportaria->h31_numero : $h31_numero;
-$anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
+$sequencialPortaria = $clportaria->h31_sequencial ?: $h31_sequencial;
+$numeroPortaria = $clportaria->h31_numero ?: $h31_numero;
+$anoPortaria = $clportaria->h31_anousu ?: $h31_anousu;
 
 ?>
 <center>
@@ -96,7 +96,7 @@ $anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
         </td>
       </tr>
     <?php 
-    if (!isset($h31_usuario) && trim(@$h31_usuario)==""){
+    if (!isset($h31_usuario) && trim((string) @$h31_usuario)==""){
          $h31_usuario = db_getsession('DB_id_usuario');
     }
     db_input('h31_usuario',10,$Ih31_usuario,true,'hidden',3);
@@ -110,7 +110,7 @@ $anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
           <?php db_input('h31_numero',10,$Ih31_numero,true,'text',$db_opcao_numero," onChange='js_configuraNumeroAto();'") ?>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=@$Lh31_anousu?>
           <?php
-            if (!isset($h31_anousu) && trim(@$h31_anousu)==""){
+            if (!isset($h31_anousu) && trim((string) @$h31_anousu)==""){
                  $h31_anousu = db_getsession('DB_anousu');
             }
             db_input('h31_anousu',4,$Ih31_anousu,true,'text',$db_opcao_numero," onChange='js_configuraNumeroAto();'")
@@ -186,7 +186,7 @@ $anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
     <legend align="left"><b>Dados de assentamento:</b></Legend>
     <table border="0" class="form-container">
       <?php 
-      if (($db_opcao == 1 || $db_opcao == 11) && !isset($h31_sequencial) && trim(@$h31_sequencial)==""){
+      if (($db_opcao == 1 || $db_opcao == 11) && !isset($h31_sequencial) && trim((string) @$h31_sequencial)==""){
            $db_opcao_assenta = 1;
       } else {
            $db_opcao_assenta = $db_opcao;
@@ -302,7 +302,7 @@ $anoPortaria = $clportaria->h31_anousu ? $clportaria->h31_anousu : $h31_anousu;
              </td>
              <td>
                <?php
-                 $aOpcaoAssentamento = array(2=>'Histórico Funcional');
+                 $aOpcaoAssentamento = [2=>'Histórico Funcional'];
                  $sOpcaoAssentamento = 2;
                  db_select('sOpcaoAssentamento', $aOpcaoAssentamento, true, 3, "", "", "") ?>
              </td>
@@ -461,7 +461,7 @@ function js_preenchepesquisa(chave){
   db_iframe_portaria.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($_SERVER["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $_SERVER["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }
@@ -698,7 +698,7 @@ function js_configuraNumeroAto(){
 }
 
 function js_reLoad(){
- <?php echo " location.href = '".basename($_SERVER["REQUEST_URI"])."';"; ?>
+ <?php echo " location.href = '".basename((string) $_SERVER["REQUEST_URI"])."';"; ?>
 }
 
 js_configuraNumeroAto();

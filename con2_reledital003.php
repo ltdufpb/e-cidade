@@ -38,7 +38,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("d01_codedi");
 $clrotulo->label("d01_descr");
 $db_opcao = 1;
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 ?>
 <html>
 <head>
@@ -89,9 +89,9 @@ function js_relatorio1() {
         <td colspan="2" height="25">
            <strong>Ordem: </strong>
             <?php 
-              $aOrdem = array(0 => "Matrícula",
+              $aOrdem = [0 => "Matrícula",
                               1 => "Nome",
-                              2 => "Nome e Matrícula");
+                              2 => "Nome e Matrícula"];
               db_select("ordem", $aOrdem, true, $db_opcao);
             ?>
         </td>

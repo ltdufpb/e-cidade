@@ -231,7 +231,7 @@ $requisicaoAutorizada = $la22_i_autoriza == 2;
               </td>
               <td>
                 <?php
-                  $aOptions=array("0"=>"Selecione::");
+                  $aOptions=["0"=>"Selecione::"];
                   db_select( "la09_i_codigo", $aOptions, $Ila09_i_codigo, $db_opcao, "onchange=\"js_LoadSetorExame(this.value);\"");
                 ?>
               </td>

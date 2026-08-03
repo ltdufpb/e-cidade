@@ -33,7 +33,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
 
     private $iCodigoEscola = null;
 
-    function __construct($iAnoEscolhido, $iCodigoInepEscola = null, $iCodigoLayout)
+    function __construct($iAnoEscolhido, $iCodigoInepEscola = null, $iCodigoLayout = null)
     {
 
         parent::__construct($iAnoEscolhido, $iCodigoInepEscola, $iCodigoLayout);
@@ -55,6 +55,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      *
      * @param DBLayoutLinha $oLinha
      */
+    #[\Override]
     public function atualizaDadosEscola(DBLayoutLinha $oLinha)
     {
         $oDadosEscola = new DadosCensoEscola2015($this->iEscola, null, null);
@@ -66,6 +67,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      * @param DBLayoutLinha $oLinha
      * @return bool|null
      */
+    #[\Override]
     public function atualizaDadosAluno(DBLayoutLinha $oLinha)
     {
         if (!$this->lImportarAluno) {
@@ -80,7 +82,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
 
                 if ($this->lImportarAlunoAtivo) {
 
-                    if (trim($oDadosAluno->vinculo_escola) != trim($this->iCodigoInepEscola)) {
+                    if (trim((string) $oDadosAluno->vinculo_escola) != trim($this->iCodigoInepEscola)) {
 
                         if ($this->lInepEscola) {
 
@@ -97,7 +99,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
                 if ($this->lModuloEscola) {
 
                     $oAlunoCenso = new DadosCensoAluno2015($oDadosAluno->ed47_i_codigo, null);
-                    $oAlunoCenso->atualizarDados($oLinha, $oDadosAluno);
+                    $oAlunoCenso->atualizarDados($oLinha);
                 }
 
             }
@@ -122,12 +124,13 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      * @param DBLayoutLinha $oLinha linha com os dados do registro 60 do censo escolar
      * @return stdClass
      */
+    #[\Override]
     public function getDadosAluno(DBLayoutLinha $oLinha, $lPesquisaInep = false, $lValidaCodigo = true)
     {
 
         $oDaoAluno = new cl_aluno();
         $sCamposAluno = "aluno.*, ed228_i_paisonu, escola.ed18_c_codigoinep as vinculo_escola";
-        $aWhereAluno = array();
+        $aWhereAluno = [];
 
         if ($lPesquisaInep && !empty($oLinha->identificacao_unica_aluno)) {
             $aWhereAluno[] = " ed47_c_codigoinep = '" . $oLinha->identificacao_unica_aluno . "'";
@@ -180,7 +183,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
 
         foreach ($aLinhasArquivo as $iIndLinha => $oLinha) {
 
-            if (!in_array($oLinha->{$this->sCampoChave}, array(20, 30, 60))) {
+            if (!in_array($oLinha->{$this->sCampoChave}, [20, 30, 60])) {
                 continue;
             }
 
@@ -213,7 +216,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
          * 2 - Unidade de internação socioeducativa
          * 3 - Unidade prisional
          */
-        if (in_array(trim($oLinha->tipo_atendimento), array(0, 1, 2, 3))) {
+        if (in_array(trim($oLinha->tipo_atendimento), [0, 1, 2, 3])) {
 
             $oTurma = $this->validaTurma($oLinha);
             if ($oTurma && trim($this->iCodigoInepEscola) != "") {
@@ -234,7 +237,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
          * 4 - Atividade complementar
          * 5 - Atendimento Educacional Especializado (AEE)
          */
-        if (in_array(trim($oLinha->tipo_atendimento), array(4, 5))) {
+        if (in_array(trim($oLinha->tipo_atendimento), [4, 5])) {
 
             $oTurma = $this->validarTurmaEspecial($oLinha);
             if ($oTurma && trim($this->iCodigoInepEscola) != "") {
@@ -262,9 +265,9 @@ class importacaoCenso2015 extends ImportacaoCenso2012
     protected function validaTurma(DBLayoutLinha $oLinha)
     {
 
-        $sNomeTurmaCensoNovo = str_replace(array('ª', 'º'), array('', ''), trim($oLinha->nome_turma));
+        $sNomeTurmaCensoNovo = str_replace(['ª', 'º'], ['', ''], trim($oLinha->nome_turma));
 
-        $aWhere = array();
+        $aWhere = [];
         if (!empty($oLinha->codigo_turma_entidade_escola)) {
             $aWhere[] = " ed57_i_codigo = {$oLinha->codigo_turma_entidade_escola} ";
         } else {
@@ -304,9 +307,9 @@ class importacaoCenso2015 extends ImportacaoCenso2012
     protected function validarTurmaEspecial(DBLayoutLinha $oLinha)
     {
 
-        $sNomeTurmaCensoNovo = str_replace(array('ª', 'º'), array('', ''), trim($oLinha->nome_turma));
+        $sNomeTurmaCensoNovo = str_replace(['ª', 'º'], ['', ''], trim($oLinha->nome_turma));
 
-        $aWhere = array();
+        $aWhere = [];
         if (!empty($oLinha->codigo_turma_entidade_escola)) {
             $aWhere[] = " ed268_i_codigo = {$oLinha->codigo_turma_entidade_escola} ";
         } else {
@@ -396,7 +399,7 @@ class importacaoCenso2015 extends ImportacaoCenso2012
 
                 $oDaoAluno = new cl_aluno();
                 if (!empty($oLinha->identificacao_unica_aluno)) {
-                    $oDaoAluno->ed47_c_codigoinep = trim($oLinha->identificacao_unica_aluno);
+                    $oDaoAluno->ed47_c_codigoinep = trim((string) $oLinha->identificacao_unica_aluno);
                 }
 
                 $oDaoAluno->ed47_i_codigo = $oDadosAluno->ed47_i_codigo;
@@ -422,11 +425,12 @@ class importacaoCenso2015 extends ImportacaoCenso2012
      * @throws Exception
      * @return boolean
      */
+    #[\Override]
     protected function validaAnoArquivo($aLinha)
     {
 
         $sData = $aLinha[7];
-        $aData = explode("/", $sData);
+        $aData = explode("/", (string) $sData);
 
         if ($this->iAnoEscolhido != $aData[2]) {
 

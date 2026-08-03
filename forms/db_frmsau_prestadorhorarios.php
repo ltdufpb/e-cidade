@@ -84,7 +84,7 @@ $clrotulo->label("s111_procedimento");
                               <td nowrap title="<?=$Ts112_c_tipograde?>"><?=$Ls112_c_tipograde?></td>
                               <td>
                                 <?php
-                                $x = array( 'I' => 'Intervalo', 'P' => 'Período' );
+                                $x = [ 'I' => 'Intervalo', 'P' => 'Período' ];
                                 db_select('s112_c_tipograde',$x,true,$db_opcao,"");
                                 ?>
                               </td>
@@ -229,7 +229,7 @@ $clrotulo->label("s111_procedimento");
                 if ( !empty($s112_i_codigo) ) {
                   $iPrestadorHorario = $s112_i_codigo;
                 }
-                $chavepri    = array( "s111_procedimento" => $iProcedimento, "s112_i_codigo" => $iPrestadorHorario );
+                $chavepri    = [ "s111_procedimento" => $iProcedimento, "s112_i_codigo" => $iPrestadorHorario ];
                 $sCamposSql  = "s112_i_codigo, s111_procedimento, sd63_c_procedimento, sd63_c_nome, s112_d_valinicial";
                 $sCamposSql .= ", s112_d_valfinal, case s112_c_tipograde ";
                 $sCamposSql .= "                        when 'I' ";

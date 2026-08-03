@@ -33,7 +33,7 @@ include(modification("libs/db_liborcamento.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -117,7 +117,7 @@ $aux = new cl_arquivo_auxiliar;
              </td>
              <td align="left">
 	             <?php  
-	               $tipo_que = array("N"=>"Não","S"=>"Sim");
+	               $tipo_que = ["N"=>"Não","S"=>"Sim"];
 	               db_select("quebra",$tipo_que,true,2,"onchange='js_testord(this.value);'"); 
 	             ?>
             </td>
@@ -129,7 +129,7 @@ $aux = new cl_arquivo_auxiliar;
              </td>
              <td>  
 	               <?php  
-	                 $tipo_ordem = array("c"=>"Alfabética","a"=>"Codigo","b"=>"Departamento");
+	                 $tipo_ordem = ["c"=>"Alfabética","a"=>"Codigo","b"=>"Departamento"];
 	                 db_select("ordem",$tipo_ordem,true,2); 
 	               ?>
             </td>
@@ -140,7 +140,7 @@ $aux = new cl_arquivo_auxiliar;
              </td>   
 	           <td>
 	             <?php  
-	               $tipo_est = array("N"=>"Não", "S"=>"Sim");
+	               $tipo_est = ["N"=>"Não", "S"=>"Sim"];
 	               db_select("list_zera",$tipo_est,true,2); 
 	             ?>   
             </td>
@@ -151,7 +151,7 @@ $aux = new cl_arquivo_auxiliar;
              </td>
              <td>  
 	             <?php  
-	               $somente_serv = array("M"=>"Materiais", "T"=>"Todos", "S"=>"Serviços");
+	               $somente_serv = ["M"=>"Materiais", "T"=>"Todos", "S"=>"Serviços"];
 	               db_select("listar_serv",$somente_serv,true,2);
 		           ?>
             </td>
@@ -162,7 +162,7 @@ $aux = new cl_arquivo_auxiliar;
              </td>
              <td>  
 	             <?php  
-	               $tipo_rel = array("S"=>"Sintético","A"=>"Analítico","C"=>"Conferência");
+	               $tipo_rel = ["S"=>"Sintético","A"=>"Analítico","C"=>"Conferência"];
 	               db_select("tipo",$tipo_rel,true,2); 
 	             ?>
             </td>

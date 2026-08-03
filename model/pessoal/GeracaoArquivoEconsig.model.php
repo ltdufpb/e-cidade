@@ -118,19 +118,19 @@ class GeracaoArquivoEconsig{
       $sMargem = $oMargem->margem_rescisao;
     }
 
-    $sLinha  = str_pad($oMargem->rh02_regist, 10, 0, STR_PAD_LEFT);                    // Matricula 10 caracteres
-    $sLinha .= str_pad($oMargem->z01_cgccpf,  11, ' ', STR_PAD_LEFT);                    // CPF 11 caracteres
+    $sLinha  = str_pad((string) $oMargem->rh02_regist, 10, 0, STR_PAD_LEFT);                    // Matricula 10 caracteres
+    $sLinha .= str_pad((string) $oMargem->z01_cgccpf,  11, ' ', STR_PAD_LEFT);                    // CPF 11 caracteres
     $sLinha .= str_pad(DBString::removerAcentuacao($oMargem->z01_nome)   , 40, ' ', STR_PAD_RIGHT);                 // Nome Servidor 40 caracteres
     $sLinha .= str_pad(db_getsession('DB_instit'), 3, 0, STR_PAD_LEFT);                // Código da instituição 3 caracteres
-    $sLinha .= str_pad($oMargem->nomeinst   , 80, ' ', STR_PAD_RIGHT);                 // Instituicao Servidor 80 caracteres
+    $sLinha .= str_pad((string) $oMargem->nomeinst   , 80, ' ', STR_PAD_RIGHT);                 // Instituicao Servidor 80 caracteres
     $sLinha .= str_pad(DBString::removerAcentuacao($oMargem->o40_descr)  , 50, ' ', STR_PAD_RIGHT);                 // Orgão Servidor 50 caracteres
-    $sLinha .= str_pad($sMargem             , 10, 0  , STR_PAD_LEFT);                  // Margem 10 Caracteres
+    $sLinha .= str_pad((string) $sMargem             , 10, 0  , STR_PAD_LEFT);                  // Margem 10 Caracteres
     $sLinha .= str_pad(str_replace('/', '', $sDataNascimento), 8, ' ', STR_PAD_LEFT);  // Data NAscimento 8 caracteres
     $sLinha .= str_pad(str_replace('/', '', $sDataAdmissao  ), 8, ' ', STR_PAD_LEFT);  // Data Admissao 8 caracteres
     $sLinha .= str_pad(str_replace('/', '', $sDataRescisao  ), 8, ' ', STR_PAD_LEFT);  // Data Rescisao 8 caracteres
     $sLinha .= str_pad(DBString::removerAcentuacao($oMargem->rh30_descr) , 40 , ' ', STR_PAD_RIGHT);                // Regime de traalho 40 caracteres
     $sLinha .= str_pad(DBString::removerAcentuacao($oMargem->r70_descr)  , 50, ' ' , STR_PAD_RIGHT);                // Lotacao 50 caracteres
-    $sLinha .= str_pad($oMargem->z01_ident  , 25, 0   , STR_PAD_LEFT);                 // RG 15 Caracteres
+    $sLinha .= str_pad((string) $oMargem->z01_ident  , 25, 0   , STR_PAD_LEFT);                 // RG 15 Caracteres
     $sLinha .= str_pad(DBString::removerAcentuacao($oMargem->afastamento), 40, ' ' , STR_PAD_RIGHT);                // Afastamento 40 caracteres
     $sLinha .= "\n" ;
 
@@ -166,7 +166,7 @@ class GeracaoArquivoEconsig{
 
     if (pg_num_rows($rsGerfSal) == 0) {
 
-      $aCompetencia = array("iAno" => $this->iAnoUsu, "iMes" => $this->iMesUsu);
+      $aCompetencia = ["iAno" => $this->iAnoUsu, "iMes" => $this->iMesUsu];
       throw new BusinessException(_M(self::MENSAGEM . "erro_calculo", (object) $aCompetencia));
     }
 

@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("iptunaogeracarne"=>"Principal","iptunaogeracarnecgm"=>"Cgm's","iptunaogeracarnesetqua"=>"Setor/Quadra"); 
-	 $clcriaabas->src = array("iptunaogeracarne"=>"cad1_iptunaogeracarne005.php");
-	 $clcriaabas->disabled   =  array("iptunaogeracarnecgm"=>"true","iptunaogeracarnesetqua"=>"true"); 
+	 $clcriaabas->identifica = ["iptunaogeracarne"=>"Principal","iptunaogeracarnecgm"=>"Cgm's","iptunaogeracarnesetqua"=>"Setor/Quadra"]; 
+	 $clcriaabas->src = ["iptunaogeracarne"=>"cad1_iptunaogeracarne005.php"];
+	 $clcriaabas->disabled   =  ["iptunaogeracarnecgm"=>"true","iptunaogeracarnesetqua"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

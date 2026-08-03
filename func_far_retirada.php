@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_retirada_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_retirada = new cl_far_retirada;
 $clfar_retirada->rotulo->label("fa04_i_codigo");
 $clfar_retirada->rotulo->label("fa04_i_codigo");
@@ -98,9 +98,9 @@ $clfar_retirada->rotulo->label("fa04_i_codigo");
         }else{
            $sql = $clfar_retirada->sql_query("",$campos,"fa04_i_codigo","fa04_i_codigo=$func");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa04_i_codigo)){
-          $repassa = array("chave_fa04_i_codigo"=>$chave_fa04_i_codigo,"chave_fa04_i_codigo"=>$chave_fa04_i_codigo);
+          $repassa = ["chave_fa04_i_codigo"=>$chave_fa04_i_codigo,"chave_fa04_i_codigo"=>$chave_fa04_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

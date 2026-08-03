@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE db_relatselecionados
 class cl_db_relatselecionados { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db93_codigo = 0; 
-   var $db93_codrel = 0; 
-   var $db93_codcam = 0; 
+   public $db93_codigo = 0; 
+   public $db93_codrel = 0; 
+   public $db93_codcam = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db93_codigo = int8 = Código do campo 
                  db93_codrel = int8 = Código do relatório 
                  db93_codcam = int4 = Código 
                  ";
    //funcao construtor da classe 
-   function cl_db_relatselecionados() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_relatselecionados"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_db_relatselecionados {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db93_codigo = pg_result($result,0,0); 
+       $this->db93_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_relatselecionados_db93_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db93_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db93_codigo)){
          $this->erro_sql = " Campo db93_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_db_relatselecionados {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de campos selecionados ($this->db93_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de campos selecionados já Cadastrado";
@@ -166,12 +166,12 @@ class cl_db_relatselecionados {
      $resaco = $this->sql_record($this->sql_query_file($this->db93_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8284,'$this->db93_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1397,8284,'','".AddSlashes(pg_result($resaco,0,'db93_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1397,8285,'','".AddSlashes(pg_result($resaco,0,'db93_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1397,8286,'','".AddSlashes(pg_result($resaco,0,'db93_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1397,8284,'','".AddSlashes(pg_fetch_result($resaco,0,'db93_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1397,8285,'','".AddSlashes(pg_fetch_result($resaco,0,'db93_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1397,8286,'','".AddSlashes(pg_fetch_result($resaco,0,'db93_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_db_relatselecionados {
       $this->atualizacampos();
      $sql = " update db_relatselecionados set ";
      $virgula = "";
-     if(trim($this->db93_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db93_codigo"])){ 
+     if(trim((string) $this->db93_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db93_codigo"])){ 
        $sql  .= $virgula." db93_codigo = $this->db93_codigo ";
        $virgula = ",";
-       if(trim($this->db93_codigo) == null ){ 
+       if(trim((string) $this->db93_codigo) == null ){ 
          $this->erro_sql = " Campo Código do campo nao Informado.";
          $this->erro_campo = "db93_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_db_relatselecionados {
          return false;
        }
      }
-     if(trim($this->db93_codrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db93_codrel"])){ 
+     if(trim((string) $this->db93_codrel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db93_codrel"])){ 
        $sql  .= $virgula." db93_codrel = $this->db93_codrel ";
        $virgula = ",";
-       if(trim($this->db93_codrel) == null ){ 
+       if(trim((string) $this->db93_codrel) == null ){ 
          $this->erro_sql = " Campo Código do relatório nao Informado.";
          $this->erro_campo = "db93_codrel";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_db_relatselecionados {
          return false;
        }
      }
-     if(trim($this->db93_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db93_codcam"])){ 
+     if(trim((string) $this->db93_codcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db93_codcam"])){ 
        $sql  .= $virgula." db93_codcam = $this->db93_codcam ";
        $virgula = ",";
-       if(trim($this->db93_codcam) == null ){ 
+       if(trim((string) $this->db93_codcam) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "db93_codcam";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_db_relatselecionados {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8284,'$this->db93_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db93_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1397,8284,'".AddSlashes(pg_result($resaco,$conresaco,'db93_codigo'))."','$this->db93_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1397,8284,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db93_codigo'))."','$this->db93_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db93_codrel"]))
-           $resac = db_query("insert into db_acount values($acount,1397,8285,'".AddSlashes(pg_result($resaco,$conresaco,'db93_codrel'))."','$this->db93_codrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1397,8285,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db93_codrel'))."','$this->db93_codrel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db93_codcam"]))
-           $resac = db_query("insert into db_acount values($acount,1397,8286,'".AddSlashes(pg_result($resaco,$conresaco,'db93_codcam'))."','$this->db93_codcam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1397,8286,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db93_codcam'))."','$this->db93_codcam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_db_relatselecionados {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8284,'$db93_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1397,8284,'','".AddSlashes(pg_result($resaco,$iresaco,'db93_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1397,8285,'','".AddSlashes(pg_result($resaco,$iresaco,'db93_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1397,8286,'','".AddSlashes(pg_result($resaco,$iresaco,'db93_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1397,8284,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db93_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1397,8285,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db93_codrel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1397,8286,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db93_codcam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_relatselecionados
@@ -345,7 +345,7 @@ class cl_db_relatselecionados {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_relatselecionados";
@@ -359,7 +359,7 @@ class cl_db_relatselecionados {
    function sql_query ( $db93_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -382,7 +382,7 @@ class cl_db_relatselecionados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_db_relatselecionados {
    function sql_query_file ( $db93_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_db_relatselecionados {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

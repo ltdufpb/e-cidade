@@ -99,7 +99,7 @@ class ReciboPago {
     $sSqlWhereFiltros = null;
 
     if(!empty($this->iCodigoArrecadacao)){
-      $sSqlWhereFiltros = " where codigoarrecadacao = '".substr($this->iCodigoArrecadacao, 0, 11)."' ";
+      $sSqlWhereFiltros = " where codigoarrecadacao = '".substr((string) $this->iCodigoArrecadacao, 0, 11)."' ";
     }
 
     if(!empty($this->iTipoDebito)){
@@ -1051,15 +1051,15 @@ class ReciboPago {
 
     } else if ($aDadosBoletoOrigem->carne_caixa_normal) {
 
-      $sSql = $this->getSqlDadosBoletoCarneCaixaNormal($iNumpre, $iNumpar, $iReceit);
+      $sSql = $this->getSqlDadosBoletoCarneCaixaNormal($iNumpre, $iNumpar);
 
     } else if ($aDadosBoletoOrigem->recibo_avulso_baixa_normal) {
 
-      $sSql = $this->getSqlDadosBoletoReciboAvulsoBaixaNormal($iNumpre, $iNumpar, $iReceit);
+      $sSql = $this->getSqlDadosBoletoReciboAvulsoBaixaNormal($iNumpre, $iNumpar);
       
     } else if ($aDadosBoletoOrigem->recibo_avulso_caixa_normal) {
 
-      $sSql = $this->getSqlDadosBoletoReciboAvulsoCaixaNormal($iNumpre, $iNumpar, $iReceit);
+      $sSql = $this->getSqlDadosBoletoReciboAvulsoCaixaNormal($iNumpre, $iNumpar);
     } else if ($aDadosBoletoOrigem->carne) {
 
       $sSql = $this->getSqlDadosBoletoCarne($iNumpre, $iNumpar, $iReceit);

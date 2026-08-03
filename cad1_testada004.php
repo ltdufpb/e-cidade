@@ -74,7 +74,7 @@ $sSqlOrientacao = $oDaoOrientacao->sql_query ( null, "*", "j64_sequencial");
 $rsOrientacao = $oDaoOrientacao->sql_record($sSqlOrientacao);
 if ($oDaoOrientacao->numrows > 0) {
 
-	$aOrientacao = array();
+	$aOrientacao = [];
 	for ($i = 0; $i < $oDaoOrientacao->numrows; $i++) {
 
 		$oDados = db_utils::fieldsMemory($rsOrientacao, $i);
@@ -83,8 +83,8 @@ if ($oDaoOrientacao->numrows > 0) {
 
 }
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 if (isset ($enviar)) {
 
@@ -101,7 +101,7 @@ if (isset ($enviar)) {
 		$j15_numero = "j15_numero".$i;
 		$j15_compl = "j15_compl".$i;
 
-		$caracte .= $car.$j37_face."||".$j14_codigo."||".$$j36_testad."||".$$j36_testle."||".$$j15_numero."||".$$j15_compl. "||" . $$j36_orientacao;
+		$caracte .= $car.$j37_face."||".$j14_codigo."||".${$j36_testad}."||".${$j36_testle}."||".${$j15_numero}."||".${$j15_compl}. "||" . ${$j36_orientacao};
 		$car = "x";
 
   }
@@ -261,7 +261,7 @@ if (!isset($digita_testada)) {
 			$temvalor = false;
 			if (isset ($matrizvolta)) {
 				for ($f = 0; $f < sizeof($matrizvolta); $f ++) {
-					$matrizdados = explode("||", $matrizvolta[$f]);
+					$matrizdados = explode("||", (string) $matrizvolta[$f]);
 					if ($matrizdados[0] == $j37_face) {
 						$temvalor = true;
 						break;
@@ -324,14 +324,14 @@ if (!isset($digita_testada)) {
 
 			}
 			$x = "j36_testad".$fq;
-			$$x = $j36_testad;
+			${$x} = $j36_testad;
 
 			db_input('j36_testad', 16, $Ij36_testad, true, 'text', '','onchange="js_checa2(\''.$fq.'\');js_numcompl(\''.$fq.'\',false,this.value);"', 'j36_testad'.$fq);
 			
 			echo "</td>";
 			echo "<td>";
 			$x = "j36_testle".$fq;
-			$$x = $j36_testle;
+			${$x} = $j36_testle;
 			db_input('j36_testle', 16, $Ij36_testad, true, 'text', '','onchange="js_numcompl(\''.$fq.'\',false,this.value);"', 'j36_testle'.$fq);
 			echo "</td>";
 
@@ -339,13 +339,13 @@ if (!isset($digita_testada)) {
 			//==========================================================================
 			echo "<td>";
 			$x = "j15_numero".$fq;
-			$$x = @$j15_numero;
+			${$x} = @$j15_numero;
 			db_input('j15_numero', 5, $Ij15_numero, true, 'text', '', '', 'j15_numero'.$fq);
 			echo "</td>";
 			//==========================================================================
 			echo "<td>";
 			$x = "j15_compl".$fq;
-			$$x = @$j15_compl;
+			${$x} = @$j15_compl;
       db_input('j15_compl', 20, $Ij15_compl, true, 'text', '', '','j15_compl'.$fq);
       echo "</td>";
 			echo "<script>document.form1.j15_numero$fq.disabled = true;</script>";
@@ -353,12 +353,12 @@ if (!isset($digita_testada)) {
 	        if(isset($j15_numero)){ 
 	            echo "<script>document.form1.j15_numero$fq.value = $j15_numero;</script>";
 	        }
-			
+
 			//==========================================================================
           }
 
 		    $x = "j36_orientacao".$fq;
-		    $$x = $j36_orientacao;
+		    ${$x} = $j36_orientacao;
 		    echo "<td>";
 		    db_select("j36_orientacao$fq", $aOrientacao, true, 1);
 		    echo "</td>";

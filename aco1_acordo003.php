@@ -55,30 +55,30 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	     $clcriaabas->identifica = array("acordo"                 => "Acordo",
+	     $clcriaabas->identifica = ["acordo"                 => "Acordo",
 	                                     "acordoitem"             => "Acordo Item",
 	                                     "acordoacordogarantia"   => "Acordo acordogarantia",
 	                                     "acordoacordopenalidade" => "acordoacordopenalidade"
-	                                    );
+	                                    ];
 	      
-       $clcriaabas->identifica  = array("acordo"                => "Acordo", 
+       $clcriaabas->identifica  = ["acordo"                => "Acordo", 
                                         "acordoitem"            => "Itens",
                                         "acordogarantia"        => "Garantias", 
                                         "acordopenalidade"      => "Penalidades",
-                                       ); 
+                                       ]; 
 	                                    
-	     $clcriaabas->src        = array("acordo"                 => "aco1_acordo006.php");
+	     $clcriaabas->src        = ["acordo"                 => "aco1_acordo006.php"];
 	     
-       $clcriaabas->sizecampo  = array("acordo"                 => "23",
+       $clcriaabas->sizecampo  = ["acordo"                 => "23",
                                        "acordoitem"             => "23",
                                        "acordogarantia"         => "23",
                                        "acordopenalidade"       => "23",
-                                      );
+                                      ];
 	     
-	     $clcriaabas->disabled   = array("acordoitem"             => "true",
+	     $clcriaabas->disabled   = ["acordoitem"             => "true",
 	                                     "acordoacordogarantia"   => "true",
 	                                     "acordoacordopenalidade" => "true"
-	                                    ); 
+	                                    ]; 
 	     $clcriaabas->cria_abas(); 
      ?> 
     </td>

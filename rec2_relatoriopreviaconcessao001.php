@@ -85,10 +85,10 @@ try {
     
     $rh504_seqassentconf = $object->rh500_sequencial;
 
-    $datainicio = explode("/", $object->datainicio);
+    $datainicio = explode("/", (string) $object->datainicio);
     $datainicio = $datainicio[2] . '-' . $datainicio[1] . '-' . $datainicio[0];
 
-    $datafinal = explode("/", $object->datafinal);
+    $datafinal = explode("/", (string) $object->datafinal);
     $datafinal = $datafinal[2] . '-' . $datafinal[1] . '-' . $datafinal[0];
     $valido = true;
 
@@ -115,7 +115,7 @@ try {
         $assentam = $assent['rh500_condede'];
         $concede = false;
         $naoconcede = false;
-        $data = explode("-", $value['data']);
+        $data = explode("-", (string) $value['data']);
         $dataportaria = $data[2] . '/' . $data[1] . '/' . $data[0];
         $dataassentamento = $data[2] . '/' . $data[1] . '/' . $data[0];
         $concede = false;
@@ -186,13 +186,13 @@ try {
                         $calculo = ($dias) . $assentconcedeconf['rh503_condicao'];
                         $c = 0;
                         eval('$c = ' . $calculo . ';');
-                        $dataassentamento = date('d/m/Y', strtotime('+' . $c . ' days', strtotime($value['data'])));
+                        $dataassentamento = date('d/m/Y', strtotime('+' . $c . ' days', strtotime((string) $value['data'])));
                     } else { // + Meses
                         $dias += $ass->h16_quant; // soma os dias
                         $calculo = ($dias * 30) . $assentconcedeconf->rh503_condicao;
                         $c = 0;
                         eval('$c = ' . $calculo . ';');
-                        $dataassentamento = date('d/m/Y', strtotime('+' . $c . ' days', strtotime($value['data'])));
+                        $dataassentamento = date('d/m/Y', strtotime('+' . $c . ' days', strtotime((string) $value['data'])));
                     }
                 }
             }
@@ -208,7 +208,7 @@ try {
 
         $admissao = ConcessaoAssentRelatorio::admissao($value['matricula'])[0];
 
-        if (strtotime($admissao['rh01_admiss']) > strtotime($value['data'])) {
+        if (strtotime((string) $admissao['rh01_admiss']) > strtotime((string) $value['data'])) {
             $portariatipo = 'Tempo Averbado';
             $dataassentamento = $dataportaria;
         } else {
@@ -216,7 +216,7 @@ try {
         }
 
         $oPdf->Cell(17, 4, $value['matricula'], 'BRLT', 0, 'C', 0);
-        $oPdf->Cell(60, 4, mb_strimwidth($value['nome'], 0, 35, "..."), 'BRLT', 0, 'L', 0);
+        $oPdf->Cell(60, 4, mb_strimwidth((string) $value['nome'], 0, 35, "..."), 'BRLT', 0, 'L', 0);
         $oPdf->Cell(12, 4, $value['ordem'], 'BRLT', 0, 'C', 0);
         $oPdf->Cell(20, 4, $value['percentual'] . ' %', 'BRLT', 0, 'C', 0);
         $oPdf->Cell(22, 4, $dataportaria, 'BRLT', 0, 'C', 0);

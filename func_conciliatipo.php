@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conciliatipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconciliatipo = new cl_conciliatipo;
 $clconciliatipo->rotulo->label("k65_sequencial");
 $clconciliatipo->rotulo->label("k65_descricao");
@@ -98,9 +98,9 @@ $clconciliatipo->rotulo->label("k65_descricao");
         }else{
            $sql = $clconciliatipo->sql_query("",$campos,"k65_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k65_descricao)){
-          $repassa = array("chave_k65_sequencial"=>$chave_k65_sequencial,"chave_k65_descricao"=>$chave_k65_descricao);
+          $repassa = ["chave_k65_sequencial"=>$chave_k65_sequencial,"chave_k65_descricao"=>$chave_k65_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

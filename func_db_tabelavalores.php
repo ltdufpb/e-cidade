@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_tabelavalores_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_tabelavalores = new cl_db_tabelavalores;
 $cldb_tabelavalores->rotulo->label("db149_sequencial");
 $cldb_tabelavalores->rotulo->label("db149_descricao");
@@ -52,9 +52,9 @@ $cldb_tabelavalores->rotulo->label("db149_descricao");
         }else{
            $sql = $cldb_tabelavalores->sql_query("",$campos,"db149_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db149_descricao)){
-          $repassa = array("chave_db149_sequencial"=>$chave_db149_sequencial,"chave_db149_descricao"=>$chave_db149_descricao);
+          $repassa = ["chave_db149_sequencial"=>$chave_db149_sequencial,"chave_db149_descricao"=>$chave_db149_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

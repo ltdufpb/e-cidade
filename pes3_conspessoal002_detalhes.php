@@ -141,7 +141,7 @@ $clgera_sql_folha = new cl_gera_sql_folha;
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
 <?php
-  db_postmemory($HTTP_GET_VARS,0);
+  db_postmemory($_GET,0);
   if ($solicitacao == "Ferias") {
     $sql_cadferia = $clcadferia->sql_query_file(null,"*","r30_perai","r30_anousu = ".$ano." and r30_mesusu = ".$mes." and r30_regist = ".$parametro);
     $result = $clcadferia->sql_record($sql_cadferia);
@@ -377,7 +377,7 @@ oHint  = new oDbHint("oHint");
 	  </tr>
 	  <?php
           $bordas = "bordasCor1";
-	  for($i=0; $i<pg_numrows($result); $i++){
+	  for($i=0; $i<pg_num_rows($result); $i++){
             db_fieldsmemory($result, $i);
 	  ?>
 	  <tr>
@@ -654,7 +654,7 @@ oHint  = new oDbHint("oHint");
 	      $result_cgccpf = $clrhpessoal->sql_record($clrhpessoal->sql_query_cgm($rh16_regist,"z01_cgccpf,z01_ident"));
 	      if($clrhpessoal->numrows > 0){
                 db_fieldsmemory($result_cgccpf, 0);
-		if(strlen($z01_cgccpf) == 11){
+		if(strlen((string) $z01_cgccpf) == 11){
 		  echo db_formatar($z01_cgccpf,"cpf");
 		}else{
 		  echo db_formatar($z01_cgccpf,"cnpj");
@@ -686,9 +686,9 @@ oHint  = new oDbHint("oHint");
       $result = $clrhpessoal->sql_record($sql);
       if($clrhpessoal->numrows > 0){
     	 db_fieldsmemory($result, 0);
-	     $arr_tipsal = array('M'=>'Mensal','Q'=>'Quinzenal','D'=>'Diário','H'=>'Hora');
-	     $arr_folha = array('M'=>'Mensal','S'=>'Semanal','Q'=>'Quinzenal');
-	     $arr_sexo = array('M'=>'Masculino','F'=>'Feminino');
+	     $arr_tipsal = ['M'=>'Mensal','Q'=>'Quinzenal','D'=>'Diário','H'=>'Hora'];
+	     $arr_folha = ['M'=>'Mensal','S'=>'Semanal','Q'=>'Quinzenal'];
+	     $arr_sexo = ['M'=>'Masculino','F'=>'Feminino'];
     ?>
 <table  border="0" align="center" cellpadding="0" cellspacing="2">
   <tr>
@@ -762,7 +762,7 @@ oHint  = new oDbHint("oHint");
   <tr>
     <td>
       <fieldset><legend><b>Observações</b></legend>
-      <div style="height: 100%;" class="bordasCor1"><?=nl2br($rh01_observacao)?></div>
+      <div style="height: 100%;" class="bordasCor1"><?=nl2br((string) $rh01_observacao)?></div>
       </fieldset>
     </td>
   </tr>
@@ -774,7 +774,7 @@ oHint  = new oDbHint("oHint");
 
     db_sel_cfpess($ano, $mes);
 
-    $arr_SorN = array('t'=>'Sim','f'=>'Não');
+    $arr_SorN = ['t'=>'Sim','f'=>'Não'];
     $bordas = "bordasCor1";
 
     $campo_quantidade = "";
@@ -1133,7 +1133,7 @@ if ($solicitacao == "temposervico") {
           <?php
             $aTotalizacao["dl_quantidade_dias"] = "dl_quantidade_dias";
             $aTotalizacao["totalgeral"]         = "dl_tempo";
-            db_lovrot($sSqlTempoServicoAnterior, 20, "", "", "" , "", "NoMe", array(), false, $aTotalizacao);
+            db_lovrot($sSqlTempoServicoAnterior, 20, "", "", "" , "", "NoMe", [], false, $aTotalizacao);
           ?>
         </fieldset>
       </td>

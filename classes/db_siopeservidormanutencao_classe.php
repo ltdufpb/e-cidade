@@ -56,7 +56,7 @@ class cl_siopeservidormanutencao
     public function __construct()
     {
         $this->rotulo = new rotulo("siopeservidormanutencao"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -135,7 +135,7 @@ class cl_siopeservidormanutencao
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "siopeservidormanutencao ($this->si06_servidor) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "siopeservidormanutencao já Cadastrado";
@@ -164,13 +164,13 @@ class cl_siopeservidormanutencao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,214654101,'$this->si06_servidor','I')");
-         $resac = db_query("insert into db_acount values($acount,268151922,214654101,'','".AddSlashes(pg_result($resaco,0,'si06_servidor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,268151922,305693204,'','".AddSlashes(pg_result($resaco,0,'si06_categoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,268151922,210820919,'','".AddSlashes(pg_result($resaco,0,'si06_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,268151922,164388043,'','".AddSlashes(pg_result($resaco,0,'si06_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,268151922,214654101,'','".AddSlashes(pg_fetch_result($resaco,0,'si06_servidor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,268151922,305693204,'','".AddSlashes(pg_fetch_result($resaco,0,'si06_categoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,268151922,210820919,'','".AddSlashes(pg_fetch_result($resaco,0,'si06_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,268151922,164388043,'','".AddSlashes(pg_fetch_result($resaco,0,'si06_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -181,10 +181,10 @@ class cl_siopeservidormanutencao
       $this->atualizacampos();
      $sql = " update siopeservidormanutencao set ";
      $virgula = "";
-     if(trim($this->si06_servidor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si06_servidor"])){ 
+     if(trim((string) $this->si06_servidor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si06_servidor"])){ 
        $sql  .= $virgula." si06_servidor = $this->si06_servidor ";
        $virgula = ",";
-       if(trim($this->si06_servidor) == null ){ 
+       if(trim((string) $this->si06_servidor) == null ){ 
          $this->erro_sql = " Campo Matricula do servidor não informado.";
          $this->erro_campo = "si06_servidor";
          $this->erro_banco = "";
@@ -194,10 +194,10 @@ class cl_siopeservidormanutencao
          return false;
        }
      }
-     if(trim($this->si06_categoria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si06_categoria"])){ 
+     if(trim((string) $this->si06_categoria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si06_categoria"])){ 
        $sql  .= $virgula." si06_categoria = $this->si06_categoria ";
        $virgula = ",";
-       if(trim($this->si06_categoria) == null ){ 
+       if(trim((string) $this->si06_categoria) == null ){ 
          $this->erro_sql = " Campo Categoria do Servidor não informado.";
          $this->erro_campo = "si06_categoria";
          $this->erro_banco = "";
@@ -207,10 +207,10 @@ class cl_siopeservidormanutencao
          return false;
        }
      }
-     if(trim($this->si06_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si06_situacao"])){ 
+     if(trim((string) $this->si06_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si06_situacao"])){ 
        $sql  .= $virgula." si06_situacao = $this->si06_situacao ";
        $virgula = ",";
-       if(trim($this->si06_situacao) == null ){ 
+       if(trim((string) $this->si06_situacao) == null ){ 
          $this->erro_sql = " Campo Situação do Servidor não informado.";
          $this->erro_campo = "si06_situacao";
          $this->erro_banco = "";
@@ -220,10 +220,10 @@ class cl_siopeservidormanutencao
          return false;
        }
      }
-     if(trim($this->si06_segmento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si06_segmento"])){ 
+     if(trim((string) $this->si06_segmento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["si06_segmento"])){ 
        $sql  .= $virgula." si06_segmento = $this->si06_segmento ";
        $virgula = ",";
-       if(trim($this->si06_segmento) == null ){ 
+       if(trim((string) $this->si06_segmento) == null ){ 
          $this->erro_sql = " Campo Segmento de Atuação do Servidor não informado.";
          $this->erro_campo = "si06_segmento";
          $this->erro_banco = "";
@@ -247,17 +247,17 @@ class cl_siopeservidormanutencao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,214654101,'$this->si06_servidor','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["si06_servidor"]) || $this->si06_servidor != "")
-             $resac = db_query("insert into db_acount values($acount,268151922,214654101,'".AddSlashes(pg_result($resaco,$conresaco,'si06_servidor'))."','$this->si06_servidor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,268151922,214654101,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'si06_servidor'))."','$this->si06_servidor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["si06_categoria"]) || $this->si06_categoria != "")
-             $resac = db_query("insert into db_acount values($acount,268151922,305693204,'".AddSlashes(pg_result($resaco,$conresaco,'si06_categoria'))."','$this->si06_categoria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,268151922,305693204,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'si06_categoria'))."','$this->si06_categoria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["si06_situacao"]) || $this->si06_situacao != "")
-             $resac = db_query("insert into db_acount values($acount,268151922,210820919,'".AddSlashes(pg_result($resaco,$conresaco,'si06_situacao'))."','$this->si06_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,268151922,210820919,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'si06_situacao'))."','$this->si06_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["si06_segmento"]) || $this->si06_segmento != "")
-             $resac = db_query("insert into db_acount values($acount,268151922,164388043,'".AddSlashes(pg_result($resaco,$conresaco,'si06_segmento'))."','$this->si06_segmento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,268151922,164388043,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'si06_segmento'))."','$this->si06_segmento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -311,13 +311,13 @@ class cl_siopeservidormanutencao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,214654101,'$si06_servidor','E')");
-           $resac  = db_query("insert into db_acount values($acount,268151922,214654101,'','".AddSlashes(pg_result($resaco,$iresaco,'si06_servidor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,268151922,305693204,'','".AddSlashes(pg_result($resaco,$iresaco,'si06_categoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,268151922,210820919,'','".AddSlashes(pg_result($resaco,$iresaco,'si06_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,268151922,164388043,'','".AddSlashes(pg_result($resaco,$iresaco,'si06_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,268151922,214654101,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'si06_servidor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,268151922,305693204,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'si06_categoria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,268151922,210820919,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'si06_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,268151922,164388043,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'si06_segmento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -56,18 +56,6 @@ class ProcessamentoArquivoEConsig {
    */
   private $oCompetencia;
 
-  /**
-   * Instituicao do arquivo
-   * @var Instituicao
-   */
-  private $oInstituicao;
-
-  /**
-   * Caminho do arquivo a ser importado
-   * @var String $sCaminhoArqwuivo
-   */
-  private $sCaminhoArquivo;
-
 
   /**
    * Objeto do arquivo econsig
@@ -83,15 +71,20 @@ class ProcessamentoArquivoEConsig {
 
   /**
    * Construtor da classe
-   * 
+   *
    * @param String        $sCaminhoArquvo    Arquivo com os dados para importação
    * @param DBCompetencia $oCompetencia Competência a ser importada
+   * @param string $sCaminhoArquivo
    */
-  public function __construct($sCaminhoArquivo, DBCompetencia $oCompetencia, Instituicao $oInstituicao) {
+  public function __construct(/**
+   * Caminho do arquivo a ser importado
+   */
+  private $sCaminhoArquivo, DBCompetencia $oCompetencia, /**
+   * Instituicao do arquivo
+   */
+  private readonly Instituicao $oInstituicao) {
     
-    $this->oInstituicao    = $oInstituicao;
-    $this->sCaminhoArquivo = $sCaminhoArquivo;
-    $this->rArquivo        = fopen($sCaminhoArquivo, 'r');
+    $this->rArquivo        = fopen($this->sCaminhoArquivo, 'r');
     $this->oCompetencia    = $oCompetencia;
     $this->validarArquivo();
   }
@@ -103,7 +96,7 @@ class ProcessamentoArquivoEConsig {
    */
   private function getUltimoRegistro(stdClass $oRegistro) {
 
-    $aRetorno             = array();
+    $aRetorno             = [];
     $iMatricula           = (int)$oRegistro->iMatricula;
     $oDaoEConsigMovimento = new cl_econsigmovimento;
     $sSql                 = $oDaoEConsigMovimento->sql_pesquisa_servidor(
@@ -132,7 +125,7 @@ class ProcessamentoArquivoEConsig {
 
           $this->logModificacoes($oRegistro->iLinha,$iMatricula,$oRegistro->sNome, _M(self::MENSAGEM  . 'servidor_adicionado')); 
           return;
-         } catch ( BusinessException $eException ) {
+         } catch ( BusinessException ) {
            return;
          }
       }
@@ -159,7 +152,7 @@ class ProcessamentoArquivoEConsig {
    */
   private function getUltimosRegistrosArquivo() {
 
-    $aRetorno             = array();
+    $aRetorno             = [];
     $oDaoEConsigMovimento = new cl_econsigmovimento;
     $sSql                 = $oDaoEConsigMovimento->sql_pesquisa_servidor(
                                                                           null, 
@@ -257,7 +250,7 @@ class ProcessamentoArquivoEConsig {
    */
   private function validarNome(){
 
-    $sNomeArquivo = basename($this->sCaminhoArquivo);
+    $sNomeArquivo = basename((string) $this->sCaminhoArquivo);
 
     if (!preg_match('/.*\.txt$/i', $sNomeArquivo)) {
       throw new Exception( _M(self::MENSAGEM . 'extensao_invalida') );
@@ -300,16 +293,12 @@ class ProcessamentoArquivoEConsig {
         $oRegistro->iMotivo = ArquivoEConsig::MOTIVO_SERVIDOR_INVALIDO;
       }
 
-      if ($oServidor && trim(DBString::removerAcentuacao($oServidor->getCgm()->getNome())) != trim($oRegistro->sNome))  {
+      if ($oServidor && trim(DBString::removerAcentuacao($oServidor->getCgm()->getNome())) != trim((string) $oRegistro->sNome))  {
   
         $this->log($oRegistro->iLinha, $oRegistro->iMatricula, $oRegistro->sNome, _M(self::MENSAGEM  . 'nome_servidor_invalido'));
         $oRegistro->iMotivo = ArquivoEConsig::MOTIVO_SERVIDOR_INVALIDO;
       }
-    } catch( BusinessException $eErro ) {
-
-      $this->log($oRegistro->iLinha, $oRegistro->iMatricula, $oRegistro->sNome, $eErro->getMessage());
-      $oRegistro->iMotivo = ArquivoEConsig::MOTIVO_SERVIDOR_INVALIDO;
-    } catch ( Exception $eErro ) {
+    } catch ( BusinessException|Exception $eErro ) {
 
       $this->log($oRegistro->iLinha, $oRegistro->iMatricula, $oRegistro->sNome, $eErro->getMessage());
       $oRegistro->iMotivo = ArquivoEConsig::MOTIVO_SERVIDOR_INVALIDO;
@@ -325,7 +314,7 @@ class ProcessamentoArquivoEConsig {
       $this->log($oRegistro->iLinha, $oRegistro->iMatricula, $oRegistro->sNome, $eErro->getMessage());
     }
     
-    if ( !is_numeric($oRegistro->fValor) || strpos($oRegistro->fValor, ".") === false) {
+    if ( !is_numeric($oRegistro->fValor) || !str_contains($oRegistro->fValor, ".")) {
       $oRegistro->iMotivo = ArquivoEConsig::MOTIVO_OUTROS_MOTIVOS;
       $oRegistro->fValor = 0;
       $this->log($oRegistro->iLinha, $oRegistro->iMatricula, $oRegistro->sNome, _M(self::MENSAGEM  . 'valor_invalido'));
@@ -409,7 +398,7 @@ class ProcessamentoArquivoEConsig {
 
     try { 
       $oRubrica = RubricaRepository::getInstanciaByCodigo( $oRegistro->sRubrica, $this->oInstituicao->getSequencial());
-    } catch ( BusinessException $eException ) {
+    } catch ( BusinessException ) {
 
       $oRubrica = new Rubrica();
       $oRubrica->setCodigo( $oRegistro->sRubrica );
@@ -441,11 +430,11 @@ class ProcessamentoArquivoEConsig {
 
     $this->oArquivoEConsig->setCompetencia($this->oCompetencia);
     $this->oArquivoEConsig->setInstituicao($this->oInstituicao);
-    $this->oArquivoEConsig->setNome(basename($this->sCaminhoArquivo));
+    $this->oArquivoEConsig->setNome(basename((string) $this->sCaminhoArquivo));
 
-    $aArquivoNovo        = array();
-    $aArquivoAnterior    = array();
-    $aRegistrosRemovidos = array();
+    $aArquivoNovo        = [];
+    $aArquivoAnterior    = [];
+    $aRegistrosRemovidos = [];
 
     $iLinha   = 2;
     
@@ -465,7 +454,7 @@ class ProcessamentoArquivoEConsig {
       }
 
       $oRegistro = $this->montarRegistro($sRegistro, $iLinha++);      
-      $aArquivoNovo[$oRegistro->getServidor()->getMatricula()] = trim($oRegistro->getNome());
+      $aArquivoNovo[$oRegistro->getServidor()->getMatricula()] = trim((string) $oRegistro->getNome());
       $this->oArquivoEConsig->adicionarRegistro($oRegistro);
     }
 
@@ -524,8 +513,8 @@ class ProcessamentoArquivoEConsig {
 
     $oMensagem             = new stdClass();
     $oMensagem->iMatricula = (int)$iMatricula;
-    $oMensagem->sNome      = utf8_encode($sNome);
-    $oMensagem->sMotivo    = utf8_encode($sMotivo);
+    $oMensagem->sNome      = mb_convert_encoding($sNome, 'UTF-8', 'ISO-8859-1');
+    $oMensagem->sMotivo    = mb_convert_encoding($sMotivo, 'UTF-8', 'ISO-8859-1');
     $oMensagem->iLinha     = $iLinha;
     $this->oLog->escreverLog($oMensagem,  DBLog::LOG_ERROR);
     return;
@@ -541,8 +530,8 @@ class ProcessamentoArquivoEConsig {
 
     $oMensagemModificacao             = new stdClass();
     $oMensagemModificacao->iMatricula = (int)$iMatricula;
-    $oMensagemModificacao->sNome      = utf8_encode($sNome);
-    $oMensagemModificacao->sDescricao = utf8_encode($sDescricao);
+    $oMensagemModificacao->sNome      = mb_convert_encoding($sNome, 'UTF-8', 'ISO-8859-1');
+    $oMensagemModificacao->sDescricao = mb_convert_encoding($sDescricao, 'UTF-8', 'ISO-8859-1');
     $oMensagemModificacao->iLinha     = $iLinha;
     $this->oLogModificacoes->escreverLog($oMensagemModificacao,  DBLog::LOG_ERROR);
     return;
@@ -585,7 +574,7 @@ class ProcessamentoArquivoEConsig {
       if ($oRegistroVelho->rubrica && ($oRegistroVelho->rubrica != $oRegistroNovo->sRubrica)) {
         $this->logModificacoes($oRegistroNovo->iLinha, $oRegistroNovo->iMatricula,$oRegistroNovo->sNome, _M(self::MENSAGEM  . 'rubrica_excluida_adicionada', $oVariaveisJson)); 
       }
-    } catch ( BusinessException $eErro ) {
+    } catch ( BusinessException ) {
 
       if ($oRegistroVelho->rubrica == '') {
         return;
@@ -654,7 +643,7 @@ class ProcessamentoArquivoEConsig {
         $lBackground = !$lBackground;     
         $oPdf->Cell(20, 4, $oMatricula->iMatricula           , true, 0, 'C', $lBackground);
         $oPdf->Cell(75, 4, $oMatricula->sNome                , true, 0, 'L', $lBackground);
-        $oPdf->Cell(76, 4, utf8_decode($oMatricula->sMotivo) , true, 0, 'L', $lBackground);
+        $oPdf->Cell(76, 4, mb_convert_encoding($oMatricula->sMotivo, 'ISO-8859-1') , true, 0, 'L', $lBackground);
         $oPdf->Cell(22, 4, $oMatricula->iLinha               , true, 1, 'C', $lBackground);
       }
   
@@ -677,7 +666,7 @@ class ProcessamentoArquivoEConsig {
         $lBackground = !$lBackground;     
         $oPdf->Cell(20, 4, $oMatriculaModificada->iMatricula              , true, 0, 'C', $lBackground);
         $oPdf->Cell(75, 4, $oMatriculaModificada->sNome                   , true, 0, 'L', $lBackground);
-        $oPdf->Cell(76, 4, utf8_decode($oMatriculaModificada->sDescricao) , true, 0, 'L', $lBackground);
+        $oPdf->Cell(76, 4, mb_convert_encoding($oMatriculaModificada->sDescricao, 'ISO-8859-1') , true, 0, 'L', $lBackground);
         $oPdf->Cell(22, 4, $oMatriculaModificada->iLinha                  , true, 1, 'C', $lBackground);
       }
     }
@@ -702,7 +691,7 @@ class ProcessamentoArquivoEConsig {
   private function organizarRegistroPonto() {
 
     $aResgistroPonto       = $this->oArquivoEConsig->getRegistros();
-    $aRegistrosOrganizados = array();
+    $aRegistrosOrganizados = [];
 
     for ($iRegistroPonto = 0; $iRegistroPonto < count($aResgistroPonto); $iRegistroPonto++) {
 

@@ -63,7 +63,7 @@ $clcgmalt           = new cl_cgmalt;
 $cldb_pcforneconpad = new cl_pcforneconpad;
 $clempempitem       = new cl_empempitem;
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
 $head3 = "CADASTRO DE CÓDIGOS";
@@ -84,12 +84,12 @@ if(isset($e60_numemp) && $e60_numemp != ''){
   $dbwhere     = " e60_numemp = $e60_numemp ";
   $sql         = "select e60_anousu as anousu from empempenho where $dbwhere";
   $res_empenho = @db_query($sql);
-  $numrows_empenho = @pg_numrows($res_empenho);
+  $numrows_empenho = @pg_num_rows($res_empenho);
   if ($numrows_empenho != 0){
     db_fieldsmemory($res_empenho,0);
   }
 } else if (isset($e60_codemp) && $e60_codemp !=''){
-  $arr = explode("/",$e60_codemp);
+  $arr = explode("/",(string) $e60_codemp);
   if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
     $dbwhere_ano = " and e60_anousu = ".$arr[1];
     $anousu = $arr[1];
@@ -111,7 +111,7 @@ if(isset($e60_numemp) && $e60_numemp != ''){
 
 
 
-$aWhere = array();
+$aWhere = [];
 $iAnoInicial = null;
 $iAnoFinal = null;
 
@@ -122,8 +122,8 @@ if ( (isset($e60_numemp) && !empty($e60_numemp) ) && (  isset($e60_numemp_fim) &
 
 if (  ( isset($e60_codemp) && !empty($e60_codemp) ) && (  isset($e60_codemp_fim) && !empty($e60_codemp_fim) )  ) {
 
-    $aCodEmpIni = explode("/", $e60_codemp);
-    $aCodEmpFim = explode("/", $e60_codemp_fim);
+    $aCodEmpIni = explode("/", (string) $e60_codemp);
+    $aCodEmpFim = explode("/", (string) $e60_codemp_fim);
 
     if ($iAnoInicial != $iAnoFinal) {
 
@@ -229,7 +229,7 @@ $sqlemp = "
 
 $result = db_query($sqlemp);
 //db_criatabela($result);exit;
-if (pg_numrows($result)==0){
+if (pg_num_rows($result)==0){
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado !  ");
 }
 
@@ -259,7 +259,7 @@ $pdf1->dadosbancoemprenho = $e30_dadosbancoempenho;
 
 //db_criatabela($result); exit;
 
-for ($i = 0;$i < pg_numrows($result);$i++) {
+for ($i = 0;$i < pg_num_rows($result);$i++) {
 
   db_fieldsmemory($result,$i);
 
@@ -422,7 +422,7 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
    $pdf1->dotacao              = $estrutural;
    $pdf1->num_licitacao        = $e60_numerol;
    $pdf1->cod_concarpeculiar   = $e60_concarpeculiar;
-   $pdf1->descr_concarpeculiar = substr($c58_descr,0,34);
+   $pdf1->descr_concarpeculiar = substr((string) $c58_descr,0,34);
    $pdf1->logo                 = $logo;
    $pdf1->SdescrPacto          = $o74_descricao;
    $pdf1->iPlanoPacto          = $o78_pactoplano;
@@ -468,7 +468,7 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
 
 
    $Sresumo = $pdf1->resumo;
-   $vresumo = explode("\n",$Sresumo);
+   $vresumo = explode("\n",(string) $Sresumo);
 
    if (count($vresumo) > 1){
      $Sresumo   = "";
@@ -500,8 +500,8 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
 
      //  system("echo '".$sqllic."\n' >> tmp/logsql.txt");
 
-     if (pg_numrows($rpc) > 0 ){
-       $pdf1->descr_licitacao = pg_result($rpc,0,0);
+     if (pg_num_rows($rpc) > 0 ){
+       $pdf1->descr_licitacao = pg_fetch_result($rpc,0,0);
      } else {
        $pdf1->descr_licitacao = $pc50_descr;
 
@@ -515,7 +515,7 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
    //$pdf1->resumo           = $e60_resumo;
    $pdf1->licitacao        = $e60_codtipo;
    $pdf1->recorddositens   = $resultitem;
-   $pdf1->linhasdositens   = pg_numrows($resultitem);
+   $pdf1->linhasdositens   = pg_num_rows($resultitem);
    $pdf1->quantitem        = "e62_quant";
    $pdf1->valoritem        = "e62_vltot";
    $pdf1->valor            = "e62_vlrun";
@@ -534,7 +534,7 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
    $pdf1->funcao           = $o58_funcao;
    $pdf1->descr_funcao     = $o52_descr;
    $pdf1->subfuncao        = $o58_subfuncao;
-   $pdf1->descr_subfuncao  = substr($o53_descr, 0, 46);
+   $pdf1->descr_subfuncao  = substr((string) $o53_descr, 0, 46);
    $pdf1->programa         = $o58_programa;
    $pdf1->descr_programa   = $o54_descr;
    $pdf1->projativ         = $o58_projativ;
@@ -549,7 +549,7 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
    $pdf1->banco            = null;
    $pdf1->agencia          = null;
    $pdf1->conta            = null;
-   $pdf1->finalidade_pagto = (strlen($e151_codigo) > 0 && strlen($e151_codigo) > 0) ? $e151_codigo." - ".$e151_descricao : '';
+   $pdf1->finalidade_pagto = (strlen((string) $e151_codigo) > 0 && strlen((string) $e151_codigo) > 0) ? $e151_codigo." - ".$e151_descricao : '';
    $pdf1->fax              = $z01_fax;
 
    $sql  = "select c61_codcon, c61_reduz
@@ -564,7 +564,7 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
    //system("echo '".$sql."\n' >> tmp/logsql.txt");
 
 	 //die ($sql);
-   if ($result_conta != false && (pg_numrows($result_conta) == 1)) {
+   if ($result_conta != false && (pg_num_rows($result_conta) == 1)) {
 
      db_fieldsmemory($result_conta,0);
      $sqlconta     = "select * from conplanoconta where c63_reduz = {$c61_reduz} and c63_codcon = $c61_codcon and c63_anousu = ".db_getsession("DB_anousu");
@@ -572,7 +572,7 @@ for ($i = 0;$i < pg_numrows($result);$i++) {
 
      //   system("echo '".$sqlconta."\n' >> tmp/logsql.txt");
 
-     if (pg_result($result_conta,0) == 1) {
+     if (pg_fetch_result($result_conta,0) == 1) {
 
        db_fieldsmemory($result_conta,0);
        $pdf1->banco            = $c63_banco;
@@ -605,7 +605,7 @@ if ($oConfiguracaoGed->utilizaGED()) {
     $oStdDadosGED->tipo  = "NUMERO";
     $oStdDadosGED->valor = $e60_numemp;
     $pdf1->objpdf->Output("tmp/{$sTipoDocumento}_{$e60_numemp}.pdf");
-    $oGerenciador->moverArquivo(array($oStdDadosGED));
+    $oGerenciador->moverArquivo([$oStdDadosGED]);
 
 
   } catch (Exception $eErro) {

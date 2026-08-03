@@ -114,7 +114,7 @@ $clrotulo->label("z01_nome");
           </td>
           <td>
            <?php 
-           $x = array('' => 'Selecione...', '1'=>'NÃO SABE LER / ESCREVER','10'=>'MESTRADO','11'=>'DOUTORADO','2'=>'ALFABETIZADO','3'=>'1° GRAU INCOMPLETO','4'=>'1° GRAU COMPLETO','5'=>'2° GRAU INCOMPLETO','6'=>'2° GRAU COMPLETO','7'=>'SUPERIOR INCOMPLETO','8'=>'SUPERIOR COMPLETO','9'=>'ESPECIALIZAÇÃO / RESIDÊNCIA');
+           $x = ['' => 'Selecione...', '1'=>'NÃO SABE LER / ESCREVER','10'=>'MESTRADO','11'=>'DOUTORADO','2'=>'ALFABETIZADO','3'=>'1° GRAU INCOMPLETO','4'=>'1° GRAU COMPLETO','5'=>'2° GRAU INCOMPLETO','6'=>'2° GRAU COMPLETO','7'=>'SUPERIOR INCOMPLETO','8'=>'SUPERIOR COMPLETO','9'=>'ESPECIALIZAÇÃO / RESIDÊNCIA'];
            db_select('z02_i_escolaridade',$x,true,$db_opcao,"");
            ?>
           </td>
@@ -131,7 +131,7 @@ $clrotulo->label("z01_nome");
           </td>
           <td>
            <?php 
-           $x = array('91'=>'CERTIDÃO DE NASCIMENTO','92'=>'CERTIDÃO DE CASAMENTO','93'=>'CERTIDÃO DE SEPARAÇÃO / DIVÓRCIO','94'=>'CERTIDÃO DE SEPARAÇÃO JUDICIAL');
+           $x = ['91'=>'CERTIDÃO DE NASCIMENTO','92'=>'CERTIDÃO DE CASAMENTO','93'=>'CERTIDÃO DE SEPARAÇÃO / DIVÓRCIO','94'=>'CERTIDÃO DE SEPARAÇÃO JUDICIAL'];
            db_select('z02_i_certidaotipo',$x,true,$db_opcao,"");
            ?>
           </td>
@@ -260,7 +260,7 @@ $clrotulo->label("z01_nome");
       <?php db_input('z01_cnh',15,$Iz01_cnh,true,'text',3,"");?>
       <?=@$Lz01_categoria?>
       <?php 
-      $y = array(""=>"","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E","AB"=>"AB","AC"=>"AC","AD"=>"AD","AE"=>"AE");
+      $y = [""=>"","A"=>"A","B"=>"B","C"=>"C","D"=>"D","E"=>"E","AB"=>"AB","AC"=>"AC","AD"=>"AD","AE"=>"AE"];
       db_select('z01_categoria',$y,true,3);
       ?>
      </td>

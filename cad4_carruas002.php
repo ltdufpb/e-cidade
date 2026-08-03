@@ -34,7 +34,7 @@ include(modification("classes/db_ruas_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 $clcargrup = new cl_cargrup;
 $clruas = new cl_ruas;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $result33=$clruas->sql_record($clruas->sql_query_file($j14_codigo,"j14_nome"));
 db_fieldsmemory($result33,0);

@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_jsplibwebseller.php"));
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 db_postmemory($_POST);
 
 $clcgs     = new cl_cgs;
@@ -55,7 +55,7 @@ if( isset( $alterar ) ) {
 
   if( isset( $localrecebefoto ) && trim($localrecebefoto) != "" ) {
 
-    $clcgs_und->z01_o_oid  = pg_loimport( $conn, $localrecebefoto ) or die("Erro(15) importando imagem");
+    $clcgs_und->z01_o_oid  = pg_lo_import( $conn, $localrecebefoto ) or die("Erro(15) importando imagem");
     $clcgs_und->z01_c_foto = trim($localrecebefoto);
   }
 

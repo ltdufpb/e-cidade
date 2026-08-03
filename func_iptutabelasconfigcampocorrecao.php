@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptutabelasconfigcampocorrecao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptutabelasconfigcampocorrecao = new cl_iptutabelasconfigcampocorrecao;
 $cliptutabelasconfigcampocorrecao->rotulo->label("j123_sequencial");
 $cliptutabelasconfigcampocorrecao->rotulo->label("j123_sequencial");
@@ -98,9 +98,9 @@ $cliptutabelasconfigcampocorrecao->rotulo->label("j123_sequencial");
         }else{
            $sql = $cliptutabelasconfigcampocorrecao->sql_query("",$campos,"j123_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j123_sequencial)){
-          $repassa = array("chave_j123_sequencial"=>$chave_j123_sequencial,"chave_j123_sequencial"=>$chave_j123_sequencial);
+          $repassa = ["chave_j123_sequencial"=>$chave_j123_sequencial,"chave_j123_sequencial"=>$chave_j123_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

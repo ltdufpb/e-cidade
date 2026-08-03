@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 require_once(modification('libs/db_utils.php'));
 require_once(modification("libs/db_libpostgres.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $clpostgresqlutils = new PostgreSQLUtils;
 $clrotulo          = new rotulocampo;
@@ -119,7 +119,7 @@ function js_emite(tiporel) {
 	    </td>
 	    <td>
 	      <?php 
-	        $xx = array("a"=>"Alfabética","n"=>"Numérica",'t'=>'Notificação');
+	        $xx = ["a"=>"Alfabética","n"=>"Numérica",'t'=>'Notificação'];
 	        db_select('ordem',$xx,true,$db_opcao,"");
 	      ?>
 	    </td>
@@ -130,7 +130,7 @@ function js_emite(tiporel) {
 	    </td>
 	    <td>
 	      <?php 
-	        $xx = array('1'=>'CBR454', '2'=>'IGC702' ,'3' => "Gráfica" );
+	        $xx = ['1'=>'CBR454', '2'=>'IGC702' ,'3' => "Gráfica" ];
 	        db_select('modelo',$xx,true,$db_opcao,"");
 	      ?>
 	    </td>
@@ -141,7 +141,7 @@ function js_emite(tiporel) {
 	    </td>
 	    <td>
 	      <?php 
-	        $xx = array('t'=>'Teste', 'f'=>'Final');
+	        $xx = ['t'=>'Teste', 'f'=>'Final'];
 	        db_select('tipo',$xx,true,$db_opcao,"");
 	      ?>
 	    </td>

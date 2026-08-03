@@ -39,7 +39,7 @@ if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
   require_once(modification("classes/db_orcparamrelnota_classe.php"));
   require_once(modification("model/relatorioContabil.model.php"));
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
   db_postmemory($_POST);
 
   $classinatura = new cl_assinatura;
@@ -50,7 +50,7 @@ if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
 $clempresto   = new cl_empresto;
 if (!isset($arqinclude)) { // se este arquivo no esta incluido por outro
 
-  $xinstit    = split("-",$db_selinstit);
+  $xinstit    = preg_split("#\\-#m",(string) $db_selinstit);
   $rsMunic    = db_query("select munic, uf, codigo,nomeinst,nomeinstabrev from db_config where prefeitura is true");
   $oMunic     = db_utils::fieldsMemory($rsMunic,0);
   $descr_inst = '';
@@ -80,14 +80,14 @@ if (!isset($arqinclude)) { // se este arquivo no esta incluido por outro
       $descr_inst = substr($descr_inst,0,100);
     }
   }
-  $bimestre = substr($periodo,0,1); // bimestre do exercicio atual
+  $bimestre = substr((string) $periodo,0,1); // bimestre do exercicio atual
 
   $head2  = "MUNICÍPIO DE {$oMunic->munic} - {$oMunic->uf}";
   $head3  = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
   $head4  = "DEMONSTRATIVO DOS RESTOS A PAGAR POR PODER E ÓRGÃO";
   $head5  = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
   $txt    = strtoupper(db_mes('01'));
-  $dt     = split("-",$dt_fin);
+  $dt     = preg_split("#\\-#m",(string) $dt_fin);
   $txt   .= " A ".strtoupper(db_mes($dt[1]));
   $txt   .= "  / ".$anousu;
   switch($bimestre){
@@ -130,7 +130,7 @@ $head6 = "$txt";
 
 }
 
-$Param_NotaLiquidacao = pg_result(db_query("select e30_notaliquidacao from empparametro where e39_anousu = ".db_getsession("DB_anousu")),0,0);
+$Param_NotaLiquidacao = pg_fetch_result(db_query("select e30_notaliquidacao from empparametro where e39_anousu = ".db_getsession("DB_anousu")),0,0);
 
 $sqlperiodo = $clempresto->sql_rp2(db_getsession("DB_anousu"), $instit, $perini, $perfin, $where,$order);
 
@@ -321,7 +321,7 @@ $nTotintraNPCancelados                = 0;
 $nTotintraNPPagos                     = 0;
 $nTotintraNPAPAgar                    = 0;
 $nTotalIntraValorLiquidado            = 0;
-$aTotInstitIntra = array();
+$aTotInstitIntra = [];
 for ($iInd = 0; $iInd < pg_num_rows($result_intra); $iInd++){
 
    $pago_nao_processado = 0;
@@ -482,7 +482,7 @@ $pdf->cell(18,$alt,db_formatar(abs($nTotNintraNPAPAgar),'f'),"L", 0,"RL",0);
 $pdf->cell(18,$alt,db_formatar(abs($nTotNintraNPAPAgar) + abs($nTotNintraApagar),'f'), "L",1,"R",0);
 $pdf->setfont('arial','',6);
 //db_criatabela($result);exit;
-for ($x=0;$x<pg_numrows($result);$x++){
+for ($x=0;$x<pg_num_rows($result);$x++){
 
   if ($pdf->getY() > $pdf->h - 20){
 
@@ -563,7 +563,7 @@ for ($x=0;$x<pg_numrows($result);$x++){
   // -----------------------------------------------------
   if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
 
-    $pdf->cell(62, $alt,'     '.$o58_orgao .'-'.substr($o40_descr,0,40), "R", 0, "L", 0);
+    $pdf->cell(62, $alt,'     '.$o58_orgao .'-'.substr((string) $o40_descr,0,40), "R", 0, "L", 0);
     // anterior ao exercicio de inscrio
     $pdf->cell(18, $alt,db_formatar($inscricao_ant,'f'),"LR",0,"R",0);      // processados
     $pdf->cell(18, $alt,db_formatar($valor_processado,'f'),"R",0,"R",0);    // o cancelamento sempre ocorre com os no liquidados, porque sempre ocorre o estorno de liquidao para depois o estorno de rp
@@ -696,8 +696,8 @@ $pdf->cell(18,$alt,db_formatar(abs($nTotintraNPAPAgar),'f'),"L", 0,"R",0);
 $pdf->cell(18,$alt,db_formatar(abs($nTotintraNPAPAgar) + abs($nTotintraApagar),'f'),"L",1,"R",0);
 $pdf->setfont('arial','',6);
 
-$aInstituicoes = array();
-for ($x=0;$x<pg_numrows($result_intra);$x++) {
+$aInstituicoes = [];
+for ($x=0;$x<pg_num_rows($result_intra);$x++) {
 
   extract((array) db_utils::fieldsMemory($result_intra, $x));
 
@@ -715,7 +715,7 @@ for ($x=0;$x<pg_numrows($result_intra);$x++) {
   }
 
   if (!isset($aInstituicoes[$oResultadoIntra->db21_tipoinstit])) {
-    $aInstituicoes[$oResultadoIntra->db21_tipoinstit] = array();
+    $aInstituicoes[$oResultadoIntra->db21_tipoinstit] = [];
   }
 
   if (!in_array($e60_instit, $aInstituicoes[$oResultadoIntra->db21_tipoinstit])) {
@@ -792,7 +792,7 @@ for ($x=0;$x<pg_numrows($result_intra);$x++) {
 
    // $pdf->setY($posicao);
 
-    $pdf->cell(62,$alt,'  '.$o58_orgao .'-'.substr($o40_descr,0,40), "R", 0, "L", 0);
+    $pdf->cell(62,$alt,'  '.$o58_orgao .'-'.substr((string) $o40_descr,0,40), "R", 0, "L", 0);
     $pdf->cell(18, $alt,db_formatar($inscricao_ant,'f'),"LR",0,"R",0);      // processados
 
   }

@@ -32,8 +32,8 @@ include(modification("classes/db_db_versaousutarefa_classe.php"));
 include(modification("classes/db_db_config_classe.php"));
 include(modification("classes/db_clientes_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cldb_versao = new cl_db_versao;
 $cldb_versaoant = new cl_db_versaoant;
@@ -159,7 +159,7 @@ $sql .= "
 
 $res = db_query($sql);
 
-$numrows = pg_numrows($res);
+$numrows = pg_num_rows($res);
 
 
 for($i=0;$i<$numrows;$i++){
@@ -168,8 +168,8 @@ for($i=0;$i<$numrows;$i++){
 
   $espacos = $modulo;
 
-  $matriz_item = array();
-  $matriz_item_seleciona = array();
+  $matriz_item = [];
+  $matriz_item_seleciona = [];
 
   $resultx = $cldb_versao->sql_record($cldb_versao->sql_query(null,'distinct db30_codversao, db30_codrelease,db32_id_item ','db30_codversao,db30_codrelease'," db30_codver >= $versao_inicial  and not db32_obs is null and db32_id_item in (select distinct id_item from db_menu where modulo = $modulo union select distinct id_item_filho from db_menu where modulo = $modulo) "));
 
@@ -181,19 +181,19 @@ for($i=0;$i<$numrows;$i++){
     $pdf->Cell(15,4,"Módulo: $nome_modulo",0,1,"L");
     $pdf->SetFont('Arial','',7);
  
-    for($ii=0;$ii<pg_numrows($resultx);$ii++){
-      $x = pg_result($resultx,$ii,2);
+    for($ii=0;$ii<pg_num_rows($resultx);$ii++){
+      $x = pg_fetch_result($resultx,$ii,2);
       $lista[$x]= $x;
     }
 
-    $matriz_item_seleciona = array();
+    $matriz_item_seleciona = [];
 
     monta_menu($modulo,$modulo,$espacos,$lista);
     
-    $itens_listados = array();//("$id_item"=>"$id_item");
+    $itens_listados = [];//("$id_item"=>"$id_item");
 
     for($x=0;$x<count($matriz_item_seleciona);$x++){
-      $impmat = split("-",$matriz_item_seleciona[$x]);
+      $impmat = preg_split("#\\-#m",$matriz_item_seleciona[$x]);
       for($imp=0;$imp<count($impmat);$imp++){
         if( ! isset($itens_listados[$impmat[$imp]])){
           
@@ -205,7 +205,7 @@ for($i=0;$i<$numrows;$i++){
                     $filtra_cliente
                     and db32_id_item = ".$impmat[$imp];
           $resid = db_query($sql);
-          if( pg_numrows($resid) > 0 ){
+          if( pg_num_rows($resid) > 0 ){
 
 
             $itens_listados[$impmat[$imp]] = $impmat[$imp] ;
@@ -213,7 +213,7 @@ for($i=0;$i<$numrows;$i++){
                   from db_itensmenu
                   where id_item = ".$impmat[$imp];
             $resi = db_query($sql);
-            $descr = pg_result($resi,0,0);
+            $descr = pg_fetch_result($resi,0,0);
 
             //$pdf->Cell($imp*5,4,$matriz_item_seleciona[$x],0,0,"L");
             $pdf->Cell($imp*5,4,'',0,0,"L");
@@ -229,10 +229,10 @@ for($i=0;$i<$numrows;$i++){
   
     // lista as descricoes
 
-    $itens_listados = array();
+    $itens_listados = [];
     for($x=0;$x<count($matriz_item_seleciona);$x++){
       $contador = 0;
-      $impmat = split("-",$matriz_item_seleciona[$x]);
+      $impmat = preg_split("#\\-#m",$matriz_item_seleciona[$x]);
       for($imp=0;$imp<count($impmat);$imp++){
         $contador += 1;
         if( ! isset($itens_listados[$impmat[$imp]])){
@@ -245,14 +245,14 @@ for($i=0;$i<$numrows;$i++){
                     $filtra_cliente
                     and db32_id_item = ".$impmat[$imp];
           $resid = db_query($sql);
-          if( pg_numrows($resid) > 0 ){
+          if( pg_num_rows($resid) > 0 ){
           
             $itens_listados[$impmat[$imp]] = $impmat[$imp] ;
             $sql = "select descricao 
                   from db_itensmenu
                   where id_item = ".$impmat[$imp];
             $resi = db_query($sql);
-            $descr = pg_result($resi,0,0);
+            $descr = pg_fetch_result($resi,0,0);
 
             //$pdf->Cell($imp*5,4,$matriz_item_seleciona[$x],0,0,"L");
             $pdf->Cell($contador*5,4,'',0,0,"L");
@@ -262,7 +262,7 @@ for($i=0;$i<$numrows;$i++){
             $pdf->Cell(60,4,$descr,0,1,"L");
             $pdf->SetFont('Arial','',7);
 
-            for($o=0;$o<pg_numrows($resid);$o++){
+            for($o=0;$o<pg_num_rows($resid);$o++){
             
               db_fieldsmemory($resid,$o);
           
@@ -278,11 +278,11 @@ for($i=0;$i<$numrows;$i++){
                     $filtra_cliente
                     and db32_id_item = ".$impmat[$imp];
               $residu = db_query($sql);
-              if( pg_numrows($residu) > 0 ){
+              if( pg_num_rows($residu) > 0 ){
                 $tarefas = 'Tarefa(s): ';
                 $separador = "";
                 $inusu = "";
-                for($codu=0;$codu<pg_numrows($residu);$codu++){
+                for($codu=0;$codu<pg_num_rows($residu);$codu++){
                   db_fieldsmemory($residu,$codu);
                   $inusu .= $separador.$db32_codusu;
                   $separador = ",";
@@ -328,8 +328,8 @@ for($i=0;$i<$numrows;$i++){
     
     }else{
     
-      $nomearq = split(" ",$at01_nomecli);
-      $nomearq = strtolower($nomearq[0])."_".$versao.".pdf";
+      $nomearq = preg_split("# #m",(string) $at01_nomecli);
+      $nomearq = strtolower((string) $nomearq[0])."_".$versao.".pdf";
     
       system("mv ".$pdf->arquivo_retorno." ".$dirpadrao."/$nomearq");    
       $arquivo_gerado .= $separador_download."$dirpadrao/".$nomearq."#Arquivo Gerado em: $dirpadrao/".$nomearq;

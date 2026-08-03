@@ -56,14 +56,14 @@ class FluxoCaixaDCASP2017IPC8 extends RelatoriosLegaisBase
      *
      * @var array
      */
-    protected $aLinhasTotalizadoras = array(9, 18, 29, 42, 49, 57, 86, 90);
+    protected $aLinhasTotalizadoras = [9, 18, 29, 42, 49, 57, 86, 90];
 
     /**
      * Linhas que não devem exibir valor
      *
      * @var array
      */
-    protected $aLinhasSemValor = array(1, 10, 19, 42, 50);
+    protected $aLinhasSemValor = [1, 10, 19, 42, 50];
 
     /**
      * @var PDFDocument
@@ -131,7 +131,7 @@ class FluxoCaixaDCASP2017IPC8 extends RelatoriosLegaisBase
      *
      * @var array
      */
-    protected $aRelatoriosExibir = array();
+    protected $aRelatoriosExibir = [];
 
     /**
      * @param integer $iAnoUsu          Ano da emissão do relatório.
@@ -147,8 +147,8 @@ class FluxoCaixaDCASP2017IPC8 extends RelatoriosLegaisBase
         $this->iAltura = 4;
         $this->iLargura = $this->oPdf->getAvailWidth() - 10;
         if ($iCodigoRelatorio == 189) {
-            $this->aLinhasSemValor = array(1, 12, 22, 35,45, 54);
-            $this->aLinhasTotalizadoras = array(11, 21, 31, 44, 53, 61, 90, 94);
+            $this->aLinhasSemValor = [1, 12, 22, 35,45, 54];
+            $this->aLinhasTotalizadoras = [11, 21, 31, 44, 53, 61, 90, 94];
         }
         
     }
@@ -177,7 +177,8 @@ class FluxoCaixaDCASP2017IPC8 extends RelatoriosLegaisBase
      *
      * @return array
      */
-    public function getDados()
+    #[\Override]
+    public function getDados($trazerConfiguracaoPadrao = \true)
     {
 
         /**
@@ -253,7 +254,7 @@ class FluxoCaixaDCASP2017IPC8 extends RelatoriosLegaisBase
                 RelatoriosLegaisBase::TIPO_CALCULO_DESPESA);
 
             $oLinha->vlrexanter = 0;
-            $aColunas = $this->getColunasPorLinha($oLinha, array(1));
+            $aColunas = $this->getColunasPorLinha($oLinha, [1]);
             RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteDespesaAnterior,
                 $oLinha,
                 $aColunas,
@@ -317,7 +318,7 @@ class FluxoCaixaDCASP2017IPC8 extends RelatoriosLegaisBase
 //            $this->calculaLinhaAdministrativa($linha, $oDataInicialAnterior, $oDataFinalAnterior);
 //        }
 
-        $linhasCalculo = array(7, 8, 15, 16, 17, 26, 27, 55, 87, 88, 89);
+        $linhasCalculo = [7, 8, 15, 16, 17, 26, 27, 55, 87, 88, 89];
         for ($linha = 58; $linha <= 85; $linha++) {
             $linhasCalculo[] = $linha;
         }
@@ -330,7 +331,7 @@ class FluxoCaixaDCASP2017IPC8 extends RelatoriosLegaisBase
         /**
          * Recalcula o valor das linhas que vem de outros quadros
          */
-        foreach (array(3, 4, 6, 7, 8) as $iLinha) {
+        foreach ([3, 4, 6, 7, 8] as $iLinha) {
             $oLinha = $this->processaFormulasLinha($this->aLinhasConsistencia, $iLinha);
         }
 

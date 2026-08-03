@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ppadotacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clppadotacao = new cl_ppadotacao;
 $clppadotacao->rotulo->label("o08_sequencial");
 $clppadotacao->rotulo->label("o08_elemento");
@@ -109,9 +109,9 @@ $clppadotacao->rotulo->label("o08_elemento");
         }else{
            $sql = $clppadotacao->sql_query_estimativa("",$campos,"o08_sequencial",$sWhere );
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o08_elemento)){
-          $repassa = array("chave_o08_sequencial"=>$chave_o08_sequencial,"chave_o08_elemento"=>$chave_o08_elemento);
+          $repassa = ["chave_o08_sequencial"=>$chave_o08_sequencial,"chave_o08_elemento"=>$chave_o08_elemento];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

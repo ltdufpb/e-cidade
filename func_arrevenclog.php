@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_arrevenclog_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clarrevenclog = new cl_arrevenclog;
 $clarrevenclog->rotulo->label("k75_sequencial");
 $clarrevenclog->rotulo->label("k75_usuario");
@@ -100,9 +100,9 @@ $clarrevenclog->rotulo->label("k75_usuario");
 				$where
 				order by k75_sequencial desc";
 				
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k75_usuario)){
-          $repassa = array("chave_k75_sequencial"=>$chave_k75_sequencial,"chave_k75_usuario"=>$chave_k75_usuario);
+          $repassa = ["chave_k75_sequencial"=>$chave_k75_sequencial,"chave_k75_usuario"=>$chave_k75_usuario];
         }
 				//die($sql);
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

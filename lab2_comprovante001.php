@@ -33,13 +33,13 @@ require_once(modification("dbforms/db_funcoes.php"));
 function imprimir(\ECidade\Pdf\Pdf $pdf, $dadosRequisicao)
 {
     $pdf->SetFont('arial', '', 8);
-    cabecalho($pdf, $dadosRequisicao);
+    cabecalho($pdf);
     $yAntesImprimirExames = $pdf->GetY();
     cabecalhoExames($pdf, $dadosRequisicao);
     foreach ($dadosRequisicao->exames as $exame) {
         if ($pdf->GetY() >= ($pdf->getH() - 15)) {
             $pdf->addPage();
-            cabecalho($pdf, $dadosRequisicao);
+            cabecalho($pdf);
             cabecalhoExames($pdf, $dadosRequisicao);
         }
 
@@ -221,14 +221,14 @@ try {
             ];
         }
         $setor = $exameRequisitado->getLaboratorioSetor();
-        $dadosRequisicao->laboratorios[$id]->exames[] = (object) array(
+        $dadosRequisicao->laboratorios[$id]->exames[] = (object) [
             'setor' => $setor->getDescricao(),
             'exame' => $exameRequisitado->getExame()->getNome(),
             'quantidade' => $exameRequisitado->getQuantidade(),
             'data_coleta' => $exameRequisitado->getData()->convertTo(DBDate::DATA_PTBR),
             'hora_coleta' => $exameRequisitado->getHoraColeta(),
             'data_entrega' => $exameRequisitado->getDataEntrega()->convertTo(DBDate::DATA_PTBR),
-        );
+        ];
 
         $sqlRequisitos = "
          select distinct la20_t_descr
@@ -240,7 +240,7 @@ try {
           where la22_i_codigo = {$requisicao->getCodigo()}
         ";
         $rs = db_query($sqlRequisitos);
-        $dadosRequisicao->laboratorios[$id]->requisitos = array();
+        $dadosRequisicao->laboratorios[$id]->requisitos = [];
         if (!$rs) {
             throw new Exception("Erro ao buscar requisitos para executar o exâme.");
         }

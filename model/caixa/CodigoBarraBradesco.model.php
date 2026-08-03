@@ -27,11 +27,6 @@
 class CodigoBarraBradesco {
 
   /**
-   * @var CodigoBarra
-   */
-  private $oCodigoBarra;
-
-  /**
    * @var int
    */
   private $iAgenciaCedente;
@@ -61,9 +56,8 @@ class CodigoBarraBradesco {
    *
    * @param CodigoBarra $oCodigoBarra
    */
-  public function __construct(CodigoBarra $oCodigoBarra) {
+  public function __construct(private readonly CodigoBarra $oCodigoBarra) {
 
-    $this->oCodigoBarra = $oCodigoBarra;
     $this->processaCodigoBarra();
   }
 

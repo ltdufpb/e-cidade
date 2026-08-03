@@ -43,8 +43,8 @@
   require_once(modification("classes/db_cgmfisico_classe.php"));
   require_once(modification("classes/db_cgmjuridico_classe.php"));
   
-  db_postmemory($HTTP_SERVER_VARS);
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_SERVER);
+  db_postmemory($_POST);
   
   $db_opcao = 1;
   
@@ -81,7 +81,7 @@
 
   $db_botao = false;
   
-  if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] =="Incluir") {
+  if (isset($_POST["db_opcao"]) && $_POST["db_opcao"] =="Incluir") {
     
     $cgccpf = "";
     if (isset($z01_cgc) || isset($z01_cpf)) {
@@ -111,13 +111,13 @@
             else "; 
          if (isset($testanome)) {
            
-          $camp = split("\|",$valores);
+          $camp = preg_split("#\\|#m",$valores);
           $vals = "";
           $vir = "";
           
           for ($f=1;$f<count($camp);$f++) {
             
-             $vals .= $vir.$$camp[$f];
+             $vals .= $vir.${$camp}[$f];
              $vir = ",";
            }
            if ($z01_cgc == "" && $z01_cpf == "") {
@@ -133,7 +133,7 @@
         exit;
       }
     }
-    $HTTP_POST_VARS["z01_cgccpf"] = ($z01_cgc==""?$z01_cpf:$z01_cgc);
+    $_POST["z01_cgccpf"] = ($z01_cgc==""?$z01_cpf:$z01_cgc);
     db_inicio_transacao();
      /*if(isset($z01_cpf)){
      if($z01_cpf == '00000000000'){
@@ -144,7 +144,7 @@
    $clcgm->z01_hora = db_hora();
    $clcgm->incluir($z01_numcgm);
    
-   if (strlen($z01_cgccpf) <= 11) {
+   if (strlen((string) $z01_cgccpf) <= 11) {
     
     $oDaoCgmFisico->z04_numcgm            = $clcgm->z01_numcgm;
     $oDaoCgmFisico->z04_rhcbo             = $rh70_sequencial;
@@ -219,7 +219,7 @@
     $clcidadaocgm->incluir(null);
       
     if ($clcidadaocgm->erro_status == '0') {
-        
+
       db_query("rollback");
       $clcgm->erro_msg    = $clcidadaocgm->erro_msg;
       $clcgm->erro_status = "0";
@@ -231,7 +231,7 @@
     $clcidadao->alterar_where($ov02_sequencial,$ov02_seq,"ov02_sequencial = $ov02_sequencial and ov02_seq = $ov02_seq");
     
     if ($clcidadao->erro_status == '0') {
-        
+
       db_query("rollback");
       $clcgm->erro_msg    = $clcidadao->erro_msg;
       $clcgm->erro_status = "0";
@@ -242,11 +242,11 @@
    } // ------------------------ FIM NÃO ENTRA -----------------------------------------------   
    
    if (isset($testanome)) {
-     $camp = split("\|",$valores);
+     $camp = preg_split("#\\|#m",$valores);
      $vals = "";
      $vir = "";
      for ($f=1;$f<count($camp);$f++) {
-       $vals .= $vir.$$camp[$f];
+       $vals .= $vir.${$camp}[$f];
        $vir = ",";
      }
      $clcgm->erro(true,false);
@@ -295,28 +295,28 @@
               z01_emailc
               ) 
               values ($z01_numcgm ,
-                '".$HTTP_POST_VARS["z01_cgccpf"]."',
-                '".$HTTP_POST_VARS["z01_nome"]."',  
-                '".$HTTP_POST_VARS["z01_ender"].",".$HTTP_POST_VARS["z01_numero"]."', 
-                '".$HTTP_POST_VARS["z01_munic"]."' ,
-                '".$HTTP_POST_VARS["z01_uf"]."'   , 
-                '".$HTTP_POST_VARS["z01_cep"]."'   ,
-                '".$HTTP_POST_VARS["z01_telef"]."' ,
-                '".$HTTP_POST_VARS["z01_ident"]."' ,
-                '".$HTTP_POST_VARS["z01_digito"]."',
-                '".$HTTP_POST_VARS["z01_login"]."' ,
-                '".$HTTP_POST_VARS["z01_bairro"]."',
-                '".$HTTP_POST_VARS["z01_incest"]."',
-                '".$HTTP_POST_VARS["z01_telcel"]."',
-                '".$HTTP_POST_VARS["z01_email"]."' ,
-                '".$HTTP_POST_VARS["z01_endcon"]."',
-                '".$HTTP_POST_VARS["z01_muncon"]."',
-                '".$HTTP_POST_VARS["z01_baicon"]."',
-                '".$HTTP_POST_VARS["z01_ufcon"]."' ,
-                '".$HTTP_POST_VARS["z01_cepcon"]."',
-                '".$HTTP_POST_VARS["z01_telcon"]."',
-                '".$HTTP_POST_VARS["z01_celcon"]."',
-                '".$HTTP_POST_VARS["z01_emailc"]."'
+                '".$_POST["z01_cgccpf"]."',
+                '".$_POST["z01_nome"]."',  
+                '".$_POST["z01_ender"].",".$_POST["z01_numero"]."', 
+                '".$_POST["z01_munic"]."' ,
+                '".$_POST["z01_uf"]."'   , 
+                '".$_POST["z01_cep"]."'   ,
+                '".$_POST["z01_telef"]."' ,
+                '".$_POST["z01_ident"]."' ,
+                '".$_POST["z01_digito"]."',
+                '".$_POST["z01_login"]."' ,
+                '".$_POST["z01_bairro"]."',
+                '".$_POST["z01_incest"]."',
+                '".$_POST["z01_telcel"]."',
+                '".$_POST["z01_email"]."' ,
+                '".$_POST["z01_endcon"]."',
+                '".$_POST["z01_muncon"]."',
+                '".$_POST["z01_baicon"]."',
+                '".$_POST["z01_ufcon"]."' ,
+                '".$_POST["z01_cepcon"]."',
+                '".$_POST["z01_telcon"]."',
+                '".$_POST["z01_celcon"]."',
+                '".$_POST["z01_emailc"]."'
                )
               ";
              

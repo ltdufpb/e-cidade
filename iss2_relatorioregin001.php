@@ -63,7 +63,7 @@ require_once modification("dbforms/db_funcoes.php");
              <label for="acao" class="bold">Ação:</label>
            </td>
            <td>
-             <?php db_select('acao', array(0 => 'Todos', 1 => 'Constituição', 2 => 'Alteração'), true, 1); ?>
+             <?php db_select('acao', [0 => 'Todos', 1 => 'Constituição', 2 => 'Alteração'], true, 1); ?>
            </td>
          </tr>
          </tbody>

@@ -35,12 +35,6 @@
 class LancamentoContabilPartida {
 
   /**
-   * Código da partida/contra-partida executada
-   * @var integer
-   */
-  protected $iCodigo;
-
-  /**
    * Código agrupador dos lançamentos
    * @var integer
    */
@@ -99,9 +93,11 @@ class LancamentoContabilPartida {
    * @param integer $iCodigo
    * @throws BusinessException
    */
-  public function __construct($iCodigo = null) {
+  public function __construct(/**
+   * Código da partida/contra-partida executada
+   */
+  protected $iCodigo = null) {
 
-    $this->iCodigo = $iCodigo;
     if (!empty($this->iCodigo)) {
 
       $oDaoConLancamVal = db_utils::getDao('conlancamval');

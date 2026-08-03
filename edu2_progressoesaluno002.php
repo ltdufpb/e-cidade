@@ -47,7 +47,7 @@ $iTotalProgressoes = count( $aProgressoes );
 $oConfig                 = new stdClass();
 $oConfig->iLarguraMaxima = 290;
 $oConfig->iAlturaLinha   = 4;
-$oConfig->aSituacoes     = array( 0 => "TODAS", 1 => "ATIVA", 2 => "INATIVA", 3 => "CONCLUÍDA" );
+$oConfig->aSituacoes     = [ 0 => "TODAS", 1 => "ATIVA", 2 => "INATIVA", 3 => "CONCLUÍDA" ];
 
 $oPdf = new PDF();
 $oPdf->Open();
@@ -102,7 +102,7 @@ foreach( $aProgressoes as $oProgressao ) {
     $sEscolaMatricula = "Escola de Matrícula: {$sEscola}";
     $sAno             = "Ano: {$oProgressaoParcialVinculoDisciplina->getAno()}";
     $sTurma           = "Turma: {$oProgressaoParcialVinculoDisciplina->getRegencia()->getTurma()->getDescricao()}";
-    $sAproveitamento  = "Aproveitamento: " . substr( $oProgressaoParcialVinculoDisciplina->getResultadoFinal()->getNota(), 0, 29 );
+    $sAproveitamento  = "Aproveitamento: " . substr( (string) $oProgressaoParcialVinculoDisciplina->getResultadoFinal()->getNota(), 0, 29 );
     $sResultado       = "";
 
     if( $oProgressaoParcialVinculoDisciplina->getResultadoFinal()->getResultado() != "" ) {

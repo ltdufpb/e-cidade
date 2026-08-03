@@ -35,7 +35,7 @@ $clrotulo->label("nomeinst");
 $clrotulo->label("p51_descr");
 $clrotulo->label("db82_descricao");
 
-$aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
+$aOpcaoLogica = ['f'=>'Não', 't'=>'Sim'];
 ?>
 <form name="form1" method="post" action="">
   <fieldset>
@@ -76,7 +76,7 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
         </td>
         <td>
           <?php
-            $aOpcoes = array('1'=>'AIDOF Padrão', '2'=>'AIDOF sem Pedido');
+            $aOpcoes = ['1'=>'AIDOF Padrão', '2'=>'AIDOF sem Pedido'];
             db_select('y32_modaidof',$aOpcoes, true,$db_opcao);
           ?>
         </td>
@@ -122,7 +122,7 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
           <td>
             <?php
 
-              $aProcProtBaixaAuto = array('1'=>'Sim', '2'=>'Não');
+              $aProcProtBaixaAuto = ['1'=>'Sim', '2'=>'Não'];
               db_select('y32_procprotbaixaauto',$aProcProtBaixaAuto,true,$db_opcao,"");
             ?>
           </td>
@@ -133,7 +133,7 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
         <td align="left">
           <?php
 
-            $aOpcoes = array( "0" => "Sim", "1" =>"Não");
+            $aOpcoes = [ "0" => "Sim", "1" =>"Não"];
             db_select("utilizadocpadrao",$aOpcoes,true,$db_opcao, "onchange='js_templateAutodeInfracao(this.value);'");
           ?>
         <td>
@@ -221,10 +221,10 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
           <td>
             <?php
 
-              $aOpcoes = array(
+              $aOpcoes = [
                   '1' => 'Data operação igual a data de vencimento',
                   '2' => 'Data operação igual a data do levantamento',
-                );
+                ];
 
               db_select('y32_tipodataoperacao', $aOpcoes, true, $db_opcao, "");
             ?>
@@ -238,10 +238,10 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
           <td>
             <?php
 
-              $aOpcoes = array(
+              $aOpcoes = [
                   '1' => 'Utiliza data de vencimento do levantamento',
                   '2' => 'Utiliza data de vencimento do auto de infração',
-                );
+                ];
 
               db_select('y32_tipodatavencimento', $aOpcoes, true, $db_opcao, "");
             ?>
@@ -295,11 +295,11 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
           <td>
             <?php
 
-              $aOpcoes = array(
+              $aOpcoes = [
                   '1' => 'Metade A4',
                   '2' => 'A4',
                   '3' => 'Documento Template'
-                );
+                ];
 
               db_select('y32_modalvara', $aOpcoes, true, $db_opcao, "onchange=\"js_verificaTemplate()\"");
             ?>
@@ -364,7 +364,7 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
           </td>
           <td>
             <?php
-              $aOpcoes = array('0'=>'Não', '1'=>'Sim');
+              $aOpcoes = ['0'=>'Não', '1'=>'Sim'];
               db_select('y32_sanidepto',$aOpcoes,true,$db_opcao,"");
             ?>
           </td>
@@ -376,7 +376,7 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
           </td>
           <td>
             <?php
-              $aOpcoes = array('0'=>'Não', '1'=>'Sim');
+              $aOpcoes = ['0'=>'Não', '1'=>'Sim'];
               db_select('y32_sanbaixadiv',$aOpcoes,true,$db_opcao,"");
             ?>
           </td>
@@ -405,7 +405,7 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
           </td>
           <td>
             <?php
-              $x = array('f'=>'Não','t'=>'Sim');
+              $x = ['f'=>'Não','t'=>'Sim'];
               db_select('y32_calcvistanosanteriores',$x,true,$db_opcao,"");
             ?>
           </td>
@@ -418,7 +418,7 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
           <td>
             <?php
 
-              $aUtilizaCalculoPorteAtividade = array('t'=>'Sim', 'f'=>'Não');
+              $aUtilizaCalculoPorteAtividade = ['t'=>'Sim', 'f'=>'Não'];
               db_select('y32_utilizacalculoporteatividade', $aUtilizaCalculoPorteAtividade, true, $db_opcao, "");
             ?>
           </td>
@@ -431,7 +431,7 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
           <td>
             <?php
 
-              $aCalculaVistoriaMei = array('t'=>'Sim', 'f'=>'Não');
+              $aCalculaVistoriaMei = ['t'=>'Sim', 'f'=>'Não'];
               db_select('y32_calculavistoriamei', $aCalculaVistoriaMei, true, $db_opcao);
             ?>
           </td>
@@ -772,7 +772,7 @@ $aOpcaoLogica = array('f'=>'Não', 't'=>'Sim');
     db_iframe_parfiscal.hide();
     <?php
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
     ?>
   }

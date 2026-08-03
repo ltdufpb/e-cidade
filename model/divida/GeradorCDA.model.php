@@ -217,7 +217,7 @@ class GeradorCDA
 
             $rsDadosInicial = db_query($sSqlDadosInicial);
 
-            if (pg_numrows($rsDadosInicial) > 0) {
+            if (pg_num_rows($rsDadosInicial) > 0) {
 
                 $oDadosInicial = db_utils::fieldsMemory($rsDadosInicial, 0);
                 $this->oDocumento->processoforo = $oDadosInicial->processoforo;
@@ -231,7 +231,7 @@ class GeradorCDA
 
             foreach ($oDocumentoAgrupador->aParagrafos as $oParagrafo) {
 
-                switch (trim(strtolower($oParagrafo->db02_descr))) {
+                switch (trim(strtolower((string) $oParagrafo->db02_descr))) {
 
                     case "dados_devedor" :
 
@@ -438,7 +438,7 @@ class GeradorCDA
 
         $pdf->setfont('arial', '', 10);
 
-        $aCgcCpf = array();
+        $aCgcCpf = [];
         $aDadosDevedor = $oCertidao->getDevedoresEnvolvidos($lTipoOrdem);
 
         foreach ($aDadosDevedor->aDevedores as $oDevedor) {
@@ -447,7 +447,7 @@ class GeradorCDA
 
             $pdf->setfont('arial', '', 8);
             $pdf->Ln(1);
-            $pdf->cell(30, 3, substr($oDevedor->tipo, 0, 15), 0, 0, "L", 0);
+            $pdf->cell(30, 3, substr((string) $oDevedor->tipo, 0, 15), 0, 0, "L", 0);
             $pdf->Cell(110, 3, $oDevedor->nome, 0, 0, "L", 0);
             $pdf->Cell(20, 3, $oDevedor->numcgm, 0, 0, "L", 0);
             $pdf->Cell(30, 3, $oDevedor->cgcCpf, 0, 1, "L", 0);
@@ -500,25 +500,25 @@ class GeradorCDA
             $pdf->Ln(3);
             if ($tipo == 1) {
                 $pdf->setfont('arial', '', 8);
-                $pdf->cell(120, 3, 'ENDEREÇO: ' . (isset($oOrigem->endereco) ? $oOrigem->endereco : ""), 0, 1, "l", 0);
-                $pdf->cell(105, 3, 'BAIRRO : ' . (isset($oOrigem->bairro) ? $oOrigem->bairro : ""), 0, 0, "l", 0);
-                $pdf->cell(40, 3, 'CEP : ' . (isset($oOrigem->cep) ? $oOrigem->cep : ""), 0, 1, "l", 0);
-                $pdf->cell(35, 3, 'SETOR  : ' . (isset($oOrigem->setor) ? $oOrigem->setor : ""), 0, 0, "l", 0);
-                $pdf->cell(35, 3, 'QUADRA : ' . (isset($oOrigem->quadra) ? $oOrigem->quadra : ""), 0, 0, "l", 0);
-                $pdf->cell(35, 3, 'LOTE : ' . (isset($oOrigem->lote) ? $oOrigem->lote : ""), 0, 0, "l", 0);
-                $pdf->cell(55, 3, 'MATRÍCULA : ' . (isset($oOrigem->matricula) ? $oOrigem->matricula : ""), 0, 1, "l", 0);
-                $pdf->cell(120, 3, (isset($GLOBALS['RLj40_refant'])?mb_strtoupper($GLOBALS['RLj40_refant']):"REF. ANTERIOR").": " .
-                (isset($oOrigem->refanterior) ? $oOrigem->refanterior : ""), 0, 0, "l", 0);
-				$pdf->cell(40, 3, 'MATRÍCULA REG.IMÓVEL: ' . (isset($oOrigem->refanterior) ? $oOrigem->refanterior : ""), 0, 1, "l",
+                $pdf->cell(120, 3, 'ENDEREÇO: ' . ($oOrigem->endereco ?? ""), 0, 1, "l", 0);
+                $pdf->cell(105, 3, 'BAIRRO : ' . ($oOrigem->bairro ?? ""), 0, 0, "l", 0);
+                $pdf->cell(40, 3, 'CEP : ' . ($oOrigem->cep ?? ""), 0, 1, "l", 0);
+                $pdf->cell(35, 3, 'SETOR  : ' . ($oOrigem->setor ?? ""), 0, 0, "l", 0);
+                $pdf->cell(35, 3, 'QUADRA : ' . ($oOrigem->quadra ?? ""), 0, 0, "l", 0);
+                $pdf->cell(35, 3, 'LOTE : ' . ($oOrigem->lote ?? ""), 0, 0, "l", 0);
+                $pdf->cell(55, 3, 'MATRÍCULA : ' . ($oOrigem->matricula ?? ""), 0, 1, "l", 0);
+                $pdf->cell(120, 3, (isset($GLOBALS['RLj40_refant'])?mb_strtoupper((string) $GLOBALS['RLj40_refant']):"REF. ANTERIOR").": " .
+                ($oOrigem->refanterior ?? ""), 0, 0, "l", 0);
+				$pdf->cell(40, 3, 'MATRÍCULA REG.IMÓVEL: ' . ($oOrigem->refanterior ?? ""), 0, 1, "l",
                     0);
 
                 if ($oCfiptu->j18_utilizaloc == 't') {
 
                     $pdf->cell(60, 5,
-                        'DADOS DE LOCALIZACAO: SETOR  : ' . (isset($oOrigem->setorloc) ? $oOrigem->setorloc : "") . '-'
-                        . (isset($oOrigem->descrsetorloc) ? $oOrigem->descrsetorloc : "") .
-                        ' QUADRA : ' . (isset($oOrigem->quadraloc) ? $oOrigem->quadraloc : "") .
-                        ' - LOTE : ' . (isset($oOrigem->loteloc) ? $oOrigem->loteloc : ""), 0, 0, "l", 0);
+                        'DADOS DE LOCALIZACAO: SETOR  : ' . ($oOrigem->setorloc ?? "") . '-'
+                        . ($oOrigem->descrsetorloc ?? "") .
+                        ' QUADRA : ' . ($oOrigem->quadraloc ?? "") .
+                        ' - LOTE : ' . ($oOrigem->loteloc ?? ""), 0, 0, "l", 0);
                     $pdf->ln();
                 }
 
@@ -530,25 +530,25 @@ class GeradorCDA
             } else {
                 if ($tipo == 2) {
                     $pdf->setfont('arial', '', 8);
-                    $pdf->cell(120, 3, 'ENDEREÇO: ' . (isset($oOrigem->endereco) ? $oOrigem->endereco : ""), 0, 0, "l", 0);
-                    $pdf->cell(40, 3, 'BAIRRO : ' . (isset($oOrigem->bairro) ? $oOrigem->bairro : ""), 0, 1, "l", 0);
-                    $pdf->cell(120, 3, 'CIDADE : ' . (isset($oOrigem->cidade) ? $oOrigem->cidade : ""), 0, 0, "l", 0);
-                    $pdf->cell(40, 3, 'CEP : ' . (isset($oOrigem->cep) ? $oOrigem->cep : ""), 0, 1, "l", 0);
-                    $pdf->cell(40, 3, 'SETOR  : ' . (isset($oOrigem->setor) ? $oOrigem->setor : ""), 0, 0, "l", 0);
-                    $pdf->cell(40, 3, 'QUADRA : ' . (isset($oOrigem->quadra) ? $oOrigem->quadra : ""), 0, 0, "l", 0);
-                    $pdf->cell(40, 3, 'LOTE : ' . (isset($oOrigem->lote) ? $oOrigem->lote : ""), 0, 0, "l", 0);
-                    $pdf->cell(45, 3, 'MATRÍCULA : ' . (isset($oOrigem->matricula) ? $oOrigem->matricula : ""), 0, 1, "l", 0);
-                    $pdf->cell(120, 3, (isset($GLOBALS['RLj40_refant'])?mb_strtoupper($GLOBALS['RLj40_refant']):"REF. ANTERIOR").": " .
-                    (isset($oOrigem->refanterior) ? $oOrigem->refanterior : ""), 0, 0, "l", 0);
-                    $pdf->cell(40, 3, 'MATRÍCULA REG.IMÓVEL: ' . (isset($oOrigem->matricula_ri) ? $oOrigem->matricula_ri : ""), 0, 1, "l",
+                    $pdf->cell(120, 3, 'ENDEREÇO: ' . ($oOrigem->endereco ?? ""), 0, 0, "l", 0);
+                    $pdf->cell(40, 3, 'BAIRRO : ' . ($oOrigem->bairro ?? ""), 0, 1, "l", 0);
+                    $pdf->cell(120, 3, 'CIDADE : ' . ($oOrigem->cidade ?? ""), 0, 0, "l", 0);
+                    $pdf->cell(40, 3, 'CEP : ' . ($oOrigem->cep ?? ""), 0, 1, "l", 0);
+                    $pdf->cell(40, 3, 'SETOR  : ' . ($oOrigem->setor ?? ""), 0, 0, "l", 0);
+                    $pdf->cell(40, 3, 'QUADRA : ' . ($oOrigem->quadra ?? ""), 0, 0, "l", 0);
+                    $pdf->cell(40, 3, 'LOTE : ' . ($oOrigem->lote ?? ""), 0, 0, "l", 0);
+                    $pdf->cell(45, 3, 'MATRÍCULA : ' . ($oOrigem->matricula ?? ""), 0, 1, "l", 0);
+                    $pdf->cell(120, 3, (isset($GLOBALS['RLj40_refant'])?mb_strtoupper((string) $GLOBALS['RLj40_refant']):"REF. ANTERIOR").": " .
+                    ($oOrigem->refanterior ?? ""), 0, 0, "l", 0);
+                    $pdf->cell(40, 3, 'MATRÍCULA REG.IMÓVEL: ' . ($oOrigem->matricula_ri ?? ""), 0, 1, "l",
                     0);
 
                     if ($oCfiptu->j18_utilizaloc == 't') {
                         $pdf->cell(60, 5,
-                            'DADOS DE LOCALIZACAO: SETOR  : ' . (isset($oOrigem->setorloc) ? $oOrigem->setorloc : "") . '-'
-                            . (isset($oOrigem->descrsetorloc) ? $oOrigem->descrsetorloc : "") .
-                            ' QUADRA : ' . (isset($oOrigem->quadraloc) ? $oOrigem->quadraloc : "") .
-                            ' - LOTE : ' . (isset($oOrigem->loteloc) ? $oOrigem->loteloc : ""), 0, 0, "l", 0);
+                            'DADOS DE LOCALIZACAO: SETOR  : ' . ($oOrigem->setorloc ?? "") . '-'
+                            . ($oOrigem->descrsetorloc ?? "") .
+                            ' QUADRA : ' . ($oOrigem->quadraloc ?? "") .
+                            ' - LOTE : ' . ($oOrigem->loteloc ?? ""), 0, 0, "l", 0);
                         $pdf->ln();
                     }
 
@@ -582,17 +582,17 @@ class GeradorCDA
                 }
 
                 $pdf->cell(35, 5, 'INSCRIÇÃO: ', 0, 0, "L", 0);
-                $pdf->cell(80, 5, (isset($oOrigem->inscricao) ? $oOrigem->inscricao : ""), 0, 0, "L", 0);
-                $pdf->cell(60, 5, (isset($GLOBALS['RLq02_inscmu'])?mb_strtoupper($GLOBALS['RLq02_inscmu']):"INSCRIÇÃO ANTERIOR" )." : ".(isset($oOrigem->inscmu) ? $oOrigem->inscmu : ""), 0, 0, "L", 0);
+                $pdf->cell(80, 5, ($oOrigem->inscricao ?? ""), 0, 0, "L", 0);
+                $pdf->cell(60, 5, (isset($GLOBALS['RLq02_inscmu'])?mb_strtoupper((string) $GLOBALS['RLq02_inscmu']):"INSCRIÇÃO ANTERIOR" )." : ".($oOrigem->inscmu ?? ""), 0, 0, "L", 0);
                 $pdf->ln();
                 $pdf->cell(35, 5, 'REF. AO ALVARÁ : ', 0, 0, "L", 0);
-                $pdf->cell(80, 5, (isset($oOrigem->endereco) ? $oOrigem->endereco : ""), 0, 1, "L", 0);
+                $pdf->cell(80, 5, ($oOrigem->endereco ?? ""), 0, 1, "L", 0);
                 $pdf->cell(35, 5, 'BAIRRO : ', 0, 0, "l", 0);
-                $pdf->cell(80, 5, (isset($oOrigem->bairro) ? $oOrigem->bairro : ""), 0, 1, "l", 0);
+                $pdf->cell(80, 5, ($oOrigem->bairro ?? ""), 0, 1, "l", 0);
                 $pdf->cell(35, 5, 'CIDADE : ', 0, 0, "l", 0);
-                $pdf->cell(80, 5, (isset($oOrigem->cidade) ? $oOrigem->cidade : ""), 0, 0, "l", 0);
+                $pdf->cell(80, 5, ($oOrigem->cidade ?? ""), 0, 0, "l", 0);
                 $pdf->cell(15, 5, 'CEP : ', 0, 0, "l", 0);
-                $pdf->cell(80, 5, (isset($oOrigem->cep) ? $oOrigem->cep : ""), 0, 1, "l", 0);
+                $pdf->cell(80, 5, ($oOrigem->cep ?? ""), 0, 1, "l", 0);
                 $pdf->cell(190, 0.7, '', "TB", 1, "L", 0);
                 $pdf->Ln(3);
             }
@@ -723,7 +723,7 @@ class GeradorCDA
      * @param pdf3 $pdf
      * @param cda $oCertidao
      */
-    private function drawDebitos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza = false, $lReemissao, $tipo)
+    private function drawDebitos(pdf3 $pdf, cda $oCertidao, $oPardiv, $lTotaliza = false, $lReemissao = null, $tipo = null)
     {
 
         $aDebitos = $oCertidao->getDebitos($lReemissao);
@@ -787,9 +787,9 @@ class GeradorCDA
         } else {
             if ($tipo == 2) {
 
-                $aDebitosOrdenado = array();
-                $aTotaisAno = array();
-                $oTotalGeral = array();
+                $aDebitosOrdenado = [];
+                $aTotaisAno = [];
+                $oTotalGeral = [];
 
                 foreach ($aDebitos as $oDebito) {
 
@@ -923,7 +923,7 @@ class GeradorCDA
                         $pdf->Cell(10, 5, $oDebito->exercicio, 1, 0, "C", 0);
                         $pdf->Cell(8, 5, $oDebito->numpar, 1, 0, "C", 0);
                         $pdf->Cell(10, 5, $oDebito->livro . "/" . $oDebito->folha, 1, 0, "C", 0);
-                        $pdf->Cell(15, 5, ucfirst($oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
+                        $pdf->Cell(15, 5, ucfirst((string) $oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
                         $pdf->Cell(30, 5, $oDebito->procedencia, 1, 0, "L", 0);
                         $pdf->Cell(18, 5, $oDebito->origemdebito, 1, 0, "C", 0);
                         $pdf->Cell(15, 5, db_formatar($oDebito->datainscricao, 'd'), 1, 0, "C", 0);
@@ -948,9 +948,9 @@ class GeradorCDA
                             $pdf->SetFont('', 'I', 5);
                             $pdf->setX(10);
 
-                            $pdf->SetAligns(array('J'));
-                            $pdf->SetWidths(array(194));
-                            $pdf->Row_multicell(array("Observação: {$oDebito->observacao}"), 4, true, 4, 0, true, true,
+                            $pdf->SetAligns(['J']);
+                            $pdf->SetWidths([194]);
+                            $pdf->Row_multicell(["Observação: {$oDebito->observacao}"], 4, true, 4, 0, true, true,
                                 3, 3);
 
                             $pdf->SetFont('', '', 6);
@@ -1014,10 +1014,10 @@ class GeradorCDA
         cda $oCertidao,
         $oPardiv,
         $lTotaliza = false,
-        $lReemissao,
+        $lReemissao = null,
         $lComposicao = false,
         $lCorrigido = false,
-        $tipo
+        $tipo = null
     ) {
 
         $nTotalGeral = 0;
@@ -1093,9 +1093,9 @@ class GeradorCDA
         cda $oCertidao,
         $oPardiv,
         $lTotaliza = false,
-        $lReemissao,
-        $lCorrigido,
-        $tipo
+        $lReemissao = null,
+        $lCorrigido = null,
+        $tipo = null
     ) {
 
         $oCertidao->setComposicao(false);
@@ -1108,9 +1108,9 @@ class GeradorCDA
             $aDebitos = $oCertidao->getDebitos($lReemissao);
         }
 
-        $aDebitosOrdenado = array();
-        $aTotaisAno = array();
-        $oTotalGeral = array();
+        $aDebitosOrdenado = [];
+        $aTotaisAno = [];
+        $oTotalGeral = [];
 
         foreach ($aDebitos as $oDebito) {
 
@@ -1284,7 +1284,7 @@ class GeradorCDA
                 $pdf->Cell(9, 5, $oDebito->exercicio, 1, 0, "C", 0);
                 $pdf->Cell(6, 5, $oDebito->numpar, 1, 0, "C", 0);
                 $pdf->Cell(10, 5, $oDebito->livro . "/" . $oDebito->folha, 1, 0, "C", 0);
-                $pdf->Cell(12, 5, ucfirst($oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
+                $pdf->Cell(12, 5, ucfirst((string) $oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
                 $pdf->Cell(27, 5, $oDebito->procedencia, 1, 0, "L", 0);
                 $pdf->Cell(17, 5, $oDebito->origemdebito, 1, 0, "C", 0);
                 $pdf->Cell(12, 5, db_formatar($oDebito->datainscricao, 'd'), 1, 0, "C", 0);
@@ -1309,9 +1309,9 @@ class GeradorCDA
                     $pdf->SetFont('', 'I', 5);
                     $pdf->setX(10);
 
-                    $pdf->SetAligns(array('J'));
-                    $pdf->SetWidths(array(194));
-                    $pdf->Row_multicell(array("Observação: {$oDebito->observacao}"), 4, true, 4, 0, true, true, 3, 3);
+                    $pdf->SetAligns(['J']);
+                    $pdf->SetWidths([194]);
+                    $pdf->Row_multicell(["Observação: {$oDebito->observacao}"], 4, true, 4, 0, true, true, 3, 3);
 
                     $pdf->SetFont('', '', 6);
                 }
@@ -1354,9 +1354,9 @@ class GeradorCDA
         cda $oCertidao,
         $oPardiv,
         $lTotaliza = false,
-        $lReemissao,
-        $lCorrigido,
-        $tipo
+        $lReemissao = null,
+        $lCorrigido = null,
+        $tipo = null
     ) {
 
         $oCertidao->setComposicao(false);
@@ -1369,9 +1369,9 @@ class GeradorCDA
             $aDebitos = $oCertidao->getDebitos($lReemissao);
         }
 
-        $aDebitosOrdenado = array();
-        $aTotaisAno = array();
-        $oTotalGeral = array();
+        $aDebitosOrdenado = [];
+        $aTotaisAno = [];
+        $oTotalGeral = [];
 
         foreach ($aDebitos as $oDebito) {
 
@@ -1531,7 +1531,7 @@ class GeradorCDA
                 $pdf->Cell(9, 5, $oDebito->exercicio, 1, 0, "C", 0);
                 $pdf->Cell(20, 5, $oDebito->numpar, 1, 0, "C", 0);
                 $pdf->Cell(15, 5, $oDebito->livro . "/" . $oDebito->folha, 1, 0, "C", 0);
-                $pdf->Cell(12, 5, ucfirst($oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
+                $pdf->Cell(12, 5, ucfirst((string) $oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
                 $pdf->Cell(30, 5, $oDebito->procedencia, 1, 0, "L", 0);
                 $pdf->Cell(20, 5, $oDebito->origemdebito, 1, 0, "C", 0);
                 $pdf->Cell(12, 5, db_formatar($oDebito->datainscricao, 'd'), 1, 0, "C", 0);
@@ -1555,9 +1555,9 @@ class GeradorCDA
                     $pdf->SetFont('', 'I', 5);
                     $pdf->setX(10);
 
-                    $pdf->SetAligns(array('J'));
-                    $pdf->SetWidths(array(194));
-                    $pdf->Row_multicell(array("Observação: {$oDebito->observacao}"), 4, true, 4, 0, true, true, 3, 3);
+                    $pdf->SetAligns(['J']);
+                    $pdf->SetWidths([194]);
+                    $pdf->Row_multicell(["Observação: {$oDebito->observacao}"], 4, true, 4, 0, true, true, 3, 3);
 
                     $pdf->SetFont('', '', 6);
                 }
@@ -1606,9 +1606,9 @@ class GeradorCDA
         cda $oCertidao,
         $oPardiv,
         $lTotaliza = false,
-        $lReemissao,
-        $lCorrigido,
-        $tipo
+        $lReemissao = null,
+        $lCorrigido = null,
+        $tipo = null
     ) {
 
         $oCertidao->setComposicao(false);
@@ -1621,9 +1621,9 @@ class GeradorCDA
             $aDebitos = $oCertidao->getDebitos($lReemissao);
         }
 
-        $aDebitosOrdenado = array();
-        $aTotaisAno = array();
-        $oTotalGeral = array();
+        $aDebitosOrdenado = [];
+        $aTotaisAno = [];
+        $oTotalGeral = [];
 
         foreach ($aDebitos as $oDebito) {
 
@@ -1803,9 +1803,9 @@ class GeradorCDA
                     $pdf->SetFont('', 'I', 5);
                     $pdf->setX(10);
 
-                    $pdf->SetAligns(array('J'));
-                    $pdf->SetWidths(array(194));
-                    $pdf->Row_multicell(array("Observação: {$oDebito->observacao}"), 4, true, 4, 0, true, true, 3, 3);
+                    $pdf->SetAligns(['J']);
+                    $pdf->SetWidths([194]);
+                    $pdf->Row_multicell(["Observação: {$oDebito->observacao}"], 4, true, 4, 0, true, true, 3, 3);
 
                     $pdf->SetFont('', '', 6);
                 }
@@ -1854,9 +1854,9 @@ class GeradorCDA
         cda $oCertidao,
         $oPardiv,
         $lTotaliza = false,
-        $lReemissao,
-        $lCorrigido,
-        $tipo
+        $lReemissao = null,
+        $lCorrigido = null,
+        $tipo = null
     ) {
 
         if ($tipo == 2) {
@@ -1865,9 +1865,9 @@ class GeradorCDA
             $aDebitos = $oCertidao->getDebitos($lReemissao);
         }
 
-        $aDebitosOrdenado = array();
-        $aTotaisAno = array();
-        $oTotalGeral = array();
+        $aDebitosOrdenado = [];
+        $aTotaisAno = [];
+        $oTotalGeral = [];
 
         foreach ($aDebitos as $oDebito) {
 
@@ -2015,7 +2015,7 @@ class GeradorCDA
                 $pdf->Cell(9, 5, $oDebito->exercicio, 1, 0, "C", 0);
                 $pdf->Cell(6, 5, $oDebito->numpar, 1, 0, "C", 0);
                 $pdf->Cell(10, 5, $oDebito->livro . "/" . $oDebito->folha, 1, 0, "C", 0);
-                $pdf->Cell(12, 5, ucfirst($oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
+                $pdf->Cell(12, 5, ucfirst((string) $oDebito->origem) . "/{$oDebito->codigoorigem}", 1, 0, "C", 0);
                 $pdf->Cell(27, 5, $oDebito->procedencia, 1, 0, "L", 0);
                 $pdf->Cell(17, 5, $oDebito->origemdebito, 1, 0, "C", 0);
                 $pdf->Cell(12, 5, db_formatar($oDebito->datainscricao, 'd'), 1, 0, "C", 0);
@@ -2040,9 +2040,9 @@ class GeradorCDA
                     $pdf->SetFont('', 'I', 5);
                     $pdf->setX(10);
 
-                    $pdf->SetAligns(array('J'));
-                    $pdf->SetWidths(array(194));
-                    $pdf->Row_multicell(array("Observação: {$oDebito->observacao}"), 4, true, 4, 0, true, true, 3, 3);
+                    $pdf->SetAligns(['J']);
+                    $pdf->SetWidths([194]);
+                    $pdf->Row_multicell(["Observação: {$oDebito->observacao}"], 4, true, 4, 0, true, true, 3, 3);
 
                     $pdf->SetFont('', '', 6);
                 }
@@ -2099,15 +2099,15 @@ class GeradorCDA
         cda $oCertidao,
         $oPardiv,
         $lTotaliza = false,
-        $lReemissao,
-        $oDadosCertidao,
-        $lCorrigido,
+        $lReemissao = null,
+        $oDadosCertidao = null,
+        $lCorrigido = null,
         $sPosicao = "vertical",
-        $sData,
-        $tipo
+        $sData = null,
+        $tipo = null
     ) {
 
-        $oTotalGeral = array();
+        $oTotalGeral = [];
         $oTotalGeral['nVlrHistorico'] = 0;
         $oTotalGeral['nVlrCorrecao'] = 0;
         $oTotalGeral['nVlrMulta'] = 0;
@@ -2154,10 +2154,10 @@ class GeradorCDA
                                        from arreold
                                       where k00_numpre = {$oNumpre->v07_numpre}");
 
-                    if (pg_numrows($result_arreold) > 0) {
+                    if (pg_num_rows($result_arreold) > 0) {
 
                         $rsDebitos = debitos_numpre_old($oDadosCertidao->v07_numpre, 0, 0, $dataemis, $anoemis, 0);
-                        $iTotalDebitos = pg_numrows($rsDebitos);
+                        $iTotalDebitos = pg_num_rows($rsDebitos);
 
                     } else {
 
@@ -2241,14 +2241,14 @@ class GeradorCDA
 
         if ($lReemissao) {
 
-            $dataemis = mktime(0, 0, 0, substr($sData, 5, 2),
-                substr($sData, 8, 2),
-                substr($sData, 0, 4)
+            $dataemis = mktime(0, 0, 0, substr((string) $sData, 5, 2),
+                substr((string) $sData, 8, 2),
+                substr((string) $sData, 0, 4)
             );
-            $anoemis = substr($sData, 0, 4);
-            $xmes = substr($sData, 5, 2);
-            $xdia = substr($sData, 8, 2);
-            $xano = substr($sData, 0, 4);
+            $anoemis = substr((string) $sData, 0, 4);
+            $xmes = substr((string) $sData, 5, 2);
+            $xdia = substr((string) $sData, 8, 2);
+            $xano = substr((string) $sData, 0, 4);
 
         } else {
 
@@ -2345,14 +2345,14 @@ class GeradorCDA
 
             $sData = $this->oDataRecalculoJurosMulta->getDate();
 
-            $dataemis = mktime(0, 0, 0, substr($sData, 5, 2),
-                substr($sData, 8, 2),
-                substr($sData, 0, 4)
+            $dataemis = mktime(0, 0, 0, substr((string) $sData, 5, 2),
+                substr((string) $sData, 8, 2),
+                substr((string) $sData, 0, 4)
             );
-            $anoemis = substr($sData, 0, 4);
-            $xmes = substr($sData, 5, 2);
-            $xdia = substr($sData, 8, 2);
-            $xano = substr($sData, 0, 4);
+            $anoemis = substr((string) $sData, 0, 4);
+            $xmes = substr((string) $sData, 5, 2);
+            $xdia = substr((string) $sData, 8, 2);
+            $xano = substr((string) $sData, 0, 4);
         } else {
 
             if ($lReemissao) {
@@ -2394,10 +2394,10 @@ class GeradorCDA
             } else {
 
                 $result_arreold = db_query("select * from arreold where k00_numpre={$oNumpre->v07_numpre}");
-                if (pg_numrows($result_arreold) > 0) {
+                if (pg_num_rows($result_arreold) > 0) {
 
                     $rsDebitos = debitos_numpre_old($oNumpre->v07_numpre, 0, 0, $dataemis, $anoemis, 0);
-                    $iTotalDebitos = pg_numrows($rsDebitos);
+                    $iTotalDebitos = pg_num_rows($rsDebitos);
 
                 } else {
                     $sqlprocuraarreforo = " select k00_numpre,
@@ -2485,7 +2485,7 @@ class GeradorCDA
                 $pdf->SetFont('', '', 7);
 
                 $pdf->Cell(15, 5, $oDebito->k00_numpre, 1, 0, "C", 0);
-                $pdf->Cell(50, 5, substr($oDebito->k02_drecei, 0, 34), 1, 0, "L", 0);
+                $pdf->Cell(50, 5, substr((string) $oDebito->k02_drecei, 0, 34), 1, 0, "L", 0);
                 $pdf->Cell(8, 5, db_formatar($oDebito->k00_numpar, 's', '0', 2, 'e'), 1, 0, "C", 0);
                 $pdf->Cell(15, 5, db_formatar($oDebito->k00_dtvenc, 'd'), 1, 0, "C", 0);
                 $pdf->Cell(20, 5, db_formatar($oDebito->vlrhis, 'f'), 1, 0, "R", 0);
@@ -2808,14 +2808,14 @@ class GeradorCDA
         $sMunic = db_stdClass::getDadosInstit()->munic;
         if ($lCorrigir) {
 
-            $dataemis = mktime(0, 0, 0, substr($sData, 5, 2),
-                substr($sData, 8, 2),
-                substr($sData, 0, 4)
+            $dataemis = mktime(0, 0, 0, substr((string) $sData, 5, 2),
+                substr((string) $sData, 8, 2),
+                substr((string) $sData, 0, 4)
             );
-            $anoemis = substr($sData, 0, 4);
-            $xmes = substr($sData, 5, 2);
-            $xdia = substr($sData, 8, 2);
-            $xano = substr($sData, 0, 4);
+            $anoemis = substr((string) $sData, 0, 4);
+            $xmes = substr((string) $sData, 5, 2);
+            $xdia = substr((string) $sData, 8, 2);
+            $xano = substr((string) $sData, 0, 4);
 
         } else {
 
@@ -2851,7 +2851,7 @@ class GeradorCDA
         foreach ($aAssinaturas as $oAssinaturas) {
 
             if ($oAssinaturas->db02_descr == "ASSINATURAS_CODIGOPHP") {
-                $assinaturas_php = trim($oAssinaturas->db02_texto);
+                $assinaturas_php = trim((string) $oAssinaturas->db02_texto);
             }
             if ($oAssinaturas->db04_ordem == '4') {
                 $asssec = $oAssinaturas->db02_texto;
@@ -2963,10 +2963,10 @@ class GeradorCDA
 
                 $result_arreold = db_query("select * from arreold where k00_numpre={$oNumpre->v07_numpre}");
 
-                if (pg_numrows($result_arreold) > 0) {
+                if (pg_num_rows($result_arreold) > 0) {
 
                     $rsDebitos = debitos_numpre_old($oDadosCertidao->v07_numpre, 0, 0, $dataemis, $anoemis, 0);
-                    $iTotalDebitos = pg_numrows($rsDebitos);
+                    $iTotalDebitos = pg_num_rows($rsDebitos);
 
                 } else {
 
@@ -3000,7 +3000,7 @@ class GeradorCDA
             }
 
             $aDebitosNumpre = db_utils::getCollectionByRecord($rsDebitos);
-            $aListaDebitos = array();
+            $aListaDebitos = [];
 
             foreach ($aDebitosNumpre as $iInd => $oDebitosNumpre) {
                 if (!isset($aListaDebitos[$oDebitosNumpre->k00_numpre][$oDebitosNumpre->k00_numpar][$oDebitosNumpre->k00_receit])) {
@@ -3122,7 +3122,7 @@ class GeradorCDA
                         $pdf->SetFont('', '', 7);
 
                         $pdf->Cell(15, 5, $oDebito->k00_numpre, 1, 0, "C", 0);
-                        $pdf->Cell(30, 5, substr($oDebito->k02_drecei, 0, 18), 1, 0, "L",
+                        $pdf->Cell(30, 5, substr((string) $oDebito->k02_drecei, 0, 18), 1, 0, "L",
                             0);//de 50 para 30 a largura da linha
                         $pdf->Cell(8, 5, db_formatar($oDebito->k00_numpar, 's', '0', 2, 'e'), 1, 0, "C", 0);
                         $pdf->Cell(15, 5, db_formatar($oDebito->k00_dtvenc, 'd'), 1, 0, "C", 0);
@@ -3313,9 +3313,9 @@ class GeradorCDA
         } else {
             if ($tipo == 2) {
 
-                $aDebitosOrdenado = array();
-                $aTotaisAno = array();
-                $oTotalGeral = array();
+                $aDebitosOrdenado = [];
+                $aTotaisAno = [];
+                $oTotalGeral = [];
 
                 foreach ($aDebitos as $oDebito) {
 
@@ -3400,7 +3400,7 @@ class GeradorCDA
                     $iY = 0;
                     foreach ($aTipo as $oDebito) {
 
-                        $sSqlVlrInfla = "select fc_vlinf from fc_vlinf('" . strtoupper($sInflator) . "','{$oDebito->datainscricao}');";
+                        $sSqlVlrInfla = "select fc_vlinf from fc_vlinf('" . strtoupper((string) $sInflator) . "','{$oDebito->datainscricao}');";
                         $rsVlrInfla = db_query($sSqlVlrInfla);
                         $nVlrInfla = db_utils::fieldsMemory($rsVlrInfla, 0)->fc_vlinf;
 

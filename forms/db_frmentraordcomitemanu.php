@@ -39,8 +39,8 @@ include(modification("classes/db_pcmater_classe.php"));
 include(modification("classes/db_matmater_classe.php"));
 include(modification("classes/db_matunid_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clmatestoqueitem = new cl_matestoqueitem;
 $clmatestoqueitemnota = new cl_matestoqueitemnota;
@@ -146,12 +146,12 @@ if (isset($m51_codordem) && $m51_codordem!= "") {
     $m52_quant=$m52_quant-$soma_quant;
     
     $valor  = "total_$i";
-    $$valor = db_formatar($m71_valor,"f");
+    ${$valor} = db_formatar($m71_valor,"f");
     
     echo "<tr>	    
     <td class='bordas_corp' align='center'><small>$e60_codemp </small></td>
-    <td class='bordas_corp' nowrap align='left' title='$pc01_descrmater'><small>".substr($pc01_descrmater,0,20)."&nbsp;</small></td>
-    <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr($e62_descr,0,20)."&nbsp;</small></td>  
+    <td class='bordas_corp' nowrap align='left' title='$pc01_descrmater'><small>".substr((string) $pc01_descrmater,0,20)."&nbsp;</small></td>
+    <td class='bordas_corp' nowrap align='left' title='$e62_descr'><small>".substr((string) $e62_descr,0,20)."&nbsp;</small></td>  
     <td class='bordas_corp' align='right'><b><small>".db_formatar($valoruni,'v',' ',4)."</small></b></td>";
     echo "  <td class='bordas_corp' align='right'><b><small>";
     db_input("total_$i",10, 0, true, 'text', 3);  // Alterado por Tarcisio
@@ -171,11 +171,11 @@ if (isset($m51_codordem) && $m51_codordem!= "") {
     echo "<td class='bordas_corp' align='left' nowrap ><small>";
     $result_unid=$clmatunid->sql_record($clmatunid->sql_query_file(null,"case when m61_usaquant is true then to_char(m61_codmatunid,'99999') || 't' else to_char(m61_codmatunid,'99999') || 'f' end as m61_codmatunid, m61_abrev","m61_abrev"));
     $couni="codunid_$i";
-    $$couni=$m75_codmatunid.$m61_usaquant;
+    ${$couni}=$m75_codmatunid.$m61_usaquant;
     echo " <select onChange='js_unid(this.value,$i);'  name='codunid_$i' id='codunid_$i'>";
     for($y=0;$y<$clmatunid->numrows;$y++){
       db_fieldsmemory($result_unid,$y);
-      echo "<option value=\"$m61_codmatunid\" ".(isset($couni)?($$couni==$m61_codmatunid?"selected":""):"").">$m61_abrev</option>\n";
+      echo "<option value=\"$m61_codmatunid\" ".(isset($couni)?(${$couni}==$m61_codmatunid?"selected":""):"").">$m61_abrev</option>\n";
     }
     echo " </select>";
     
@@ -183,7 +183,7 @@ if (isset($m51_codordem) && $m51_codordem!= "") {
     echo "</small></td>";
     echo "<td class='bordas_corp' align='left' nowrap ><small>";
     $mult="qntmul_$i";
-    $$mult=$m75_quantmult;
+    ${$mult}=$m75_quantmult;
     db_input("qntmul_$i",6,0,true,'text',1);
     if ($m61_usaquant=='f'){
       echo "<script>eval(\"document.form1.qntmul_\"+$i+\".disabled=true\");</script>";		 
@@ -194,7 +194,7 @@ if (isset($m51_codordem) && $m51_codordem!= "") {
 		
 		echo "<td>";
 		$var = "qantigas_$m71_codlanc"."_"."$i";
-		$$var = $m75_quant;
+		${$var} = $m75_quant;
     db_input($var,10,'',true,'hidden',3);
 		echo "</td>";
 

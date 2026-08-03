@@ -106,7 +106,7 @@ class Calculo {
   /**
    * @var array
    */
-  private $aNumpres = array();
+  private $aNumpres = [];
 
   /**
    * @var Recalculo
@@ -298,12 +298,12 @@ class Calculo {
       throw new ParameterException('Contrato não informado.');
     }
 
-    $sWhereReceitas = implode(' and ', array(
+    $sWhereReceitas = implode(' and ', [
       "x22_aguacontrato = {$this->oContrato->getCodigo()}",
       "x22_exerc = {$this->iAno}",
       "x22_mes = {$iMes}",
       "x22_numpre = k00_numpre",
-    ));
+    ]);
     $rsReceitas = db_query("delete from arrecad using aguacalc where {$sWhereReceitas}");
     if (!$rsReceitas) {
       throw new DBException("Não foi possível excluir os registros de receitas de {$iMes}/{$this->getAno()}");
@@ -319,23 +319,23 @@ class Calculo {
    */
   private function apagarCalculos($iMes) {
 
-    $sWhereCalculoValores = implode(' and ', array(
+    $sWhereCalculoValores = implode(' and ', [
       "x22_aguacontrato = {$this->oContrato->getCodigo()}",
       "x22_exerc = {$this->iAno}",
       "x22_mes = {$iMes}",
       "x23_codcalc = x22_codcalc",
-    ));
+    ]);
 
     $rsCalculo = db_query("delete from aguacalcval using aguacalc where {$sWhereCalculoValores}");
     if (!$rsCalculo) {
       throw new DBException('Não foi possível excluir os registros de cálculo.');
     }
 
-    $sWhereCalculo = implode(' and ', array(
+    $sWhereCalculo = implode(' and ', [
       "x22_aguacontrato = {$this->oContrato->getCodigo()}",
       "x22_exerc = {$this->iAno}",
       "x22_mes = {$iMes}",
-    ));
+    ]);
 
     $rsCalculo = db_query("delete from aguacalc where {$sWhereCalculo}");
     if (!$rsCalculo) {
@@ -476,11 +476,11 @@ class Calculo {
    */
   private function getCalculo($iMes, $iCodigoEconomia = null) {
 
-    $aFiltros = array(
+    $aFiltros = [
       "x22_exerc = {$this->iAno}",
       "x22_mes = {$iMes}",
       "x22_aguacontrato = {$this->oContrato->getCodigo()}",
-    );
+    ];
 
     if ($iCodigoEconomia) {
       $aFiltros[] = "x22_aguacontratoeconomia = {$iCodigoEconomia}";
@@ -711,7 +711,7 @@ class Calculo {
 
       $oTipoConsumo = new AguaTipoConsumo($oDadosReceita->tipo_consumo);
       $iNumpre = $this->getNumpre($oDadosReceita->mes, $oDadosReceita->ano, $oDadosReceita->contrato, $oDadosReceita->economia);
-      $oDebito = (object) array(
+      $oDebito = (object) [
         'codigo_processamento' => $iNumpre,
         'data_vencimento'      => $this->oContrato->getDataVencimento($this->iAno, $iMes),
         'codigo_receita'       => $oTipoConsumo->getCodigoReceita(),
@@ -719,7 +719,7 @@ class Calculo {
         'codigo_responsavel'   => $iCodigoResponsavel,
         'parcela'              => $iMes,
         'valor'                => $oDadosReceita->valor,
-      );
+      ];
       $this->persistirReceita($oDebito);
       $sEconomia = $oDadosReceita->economia ? " and x22_aguacontratoeconomia = {$oDadosReceita->economia} " : null;
       $sUpdate = "
@@ -770,7 +770,7 @@ class Calculo {
       $oCalculo->setCodigoEconomia($iCodigoEconomia);
       $oCalculo->setCodigoMatricula($this->oContrato->getCodigoMatricula());
       $oCalculo->setManual((string) AguaContrato::RESPONSAVEL_PAGAMENTO_CONTRATO);
-      $oCalculo->setValores(array());
+      $oCalculo->setValores([]);
 
       if ($this->oContrato->isCondominio()) {
         $oCalculo->setManual($this->oContrato->getResponsavelPagamento());

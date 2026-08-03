@@ -19,9 +19,9 @@ try {
                 throw new Exception("Nenhum arquivo para ser visualizado!");
             }
             if (!empty($parametros->descricoes)) {
-                $descricoes = explode(',', $parametros->descricoes);
+                $descricoes = explode(',', (string) $parametros->descricoes);
             }
-            $codigos = explode(',', $parametros->fileIds);
+            $codigos = explode(',', (string) $parametros->fileIds);
 
             $service = new VisualizadorDocumentosService();
             $imagens = $service->getImages($codigos);

@@ -32,7 +32,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_orcfuncao_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -86,9 +86,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clorcfuncao->sql_query("",$campos,"o52_funcao","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o52_descr)){
-          $repassa = array("chave_o52_funcao"=>$chave_o52_funcao,"chave_o52_descr"=>$chave_o52_descr);
+          $repassa = ["chave_o52_funcao"=>$chave_o52_funcao,"chave_o52_descr"=>$chave_o52_descr];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

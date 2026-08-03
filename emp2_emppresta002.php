@@ -42,7 +42,7 @@ $clrotulo->label('e44_descr');
 $clrotulo->label('z01_nome');
 $clrotulo->label('e60_codemp');
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $valortotal = 0; 
@@ -201,7 +201,7 @@ for($x = 0; $x < pg_num_rows($result);$x++){
      $pdf->setfont('arial','',7);
      $pdf->cell(15,$alt,$e46_codigo,0,0,"C",0);
      $pdf->cell(20,$alt,$e46_nota,0,0,"C",0);
-     $pdf->cell(50,$alt,substr($e46_descr,0,27),0,0,"L",0);
+     $pdf->cell(50,$alt,substr((string) $e46_descr,0,27),0,0,"L",0);
      if ($e46_cnpj != ""){
        $pdf->cell(25,$alt,$e46_cnpj,0,0,"R",0); 
      }else{

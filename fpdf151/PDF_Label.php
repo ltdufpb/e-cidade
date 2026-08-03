@@ -45,8 +45,8 @@ if(!defined('DB_BIBLIOT')){
   require(modification("libs/db_conecta.php"));
   include(modification("libs/db_sessoes.php"));
   include(modification("libs/db_usuariosonline.php"));
-  db_postmemory($HTTP_POST_VARS);
-  db_postmemory($HTTP_SERVER_VARS);
+  db_postmemory($_POST);
+  db_postmemory($_SERVER);
 
   define('FPDF_FONTPATH','font/');
   require(modification('fpdf151/fpdf.php'));
@@ -55,35 +55,34 @@ if(!defined('DB_BIBLIOT')){
 class PDF_Label extends FPDF {
 
 	// Private properties
-	var $_Avery_Name	= '';				// Name of format
-	var $_Margin_Left	= 0;				// Left margin of labels
-	var $_Margin_Top	= 0;				// Top margin of labels
-	var $_X_Space 		= 0;				// Horizontal space between 2 labels
-	var $_Y_Space 		= 0;				// Vertical space between 2 labels
-	var $_X_Number 		= 0;				// Number of labels horizontally
-	var $_Y_Number 		= 0;				// Number of labels vertically
-	var $_Width 		= 0;				// Width of label
-	var $_Height 		= 0;				// Height of label
-	var $_Char_Size		= 10;				// Character size
-	var $_Line_Height	= 10;				// Default line height
-	var $_Metric 		= 'mm';				// Type of metric for labels.. Will help to calculate good values
-	var $_Metric_Doc 	= 'mm';				// Type of metric for the document
-	var $_Font_Name		= 'Arial';			// Name of the font
+	public $_Avery_Name	= '';				// Name of format
+	public $_Margin_Left	= 0;				// Left margin of labels
+	public $_Margin_Top	= 0;				// Top margin of labels
+	public $_X_Space 		= 0;				// Horizontal space between 2 labels
+	public $_Y_Space 		= 0;				// Vertical space between 2 labels
+	public $_X_Number 		= 0;				// Number of labels horizontally
+	public $_Y_Number 		= 0;				// Number of labels vertically
+	public $_Width 		= 0;				// Width of label
+	public $_Height 		= 0;				// Height of label
+	public $_Char_Size		= 10;				// Character size
+	public $_Line_Height	= 10;				// Default line height
+	public $_Metric 		= 'mm';				// Type of metric for the document
+	public $_Font_Name		= 'Arial';			// Name of the font
 
-	var $_COUNTX = 1;
-	var $_COUNTY = 1;
+	public $_COUNTX = 1;
+	public $_COUNTY = 1;
 
 
 	// Listing of labels size
-	var $_Avery_Labels = array (
-		'5160'=>array('name'=>'5160',	'paper-size'=>'letter',	'metric'=>'mm',	'marginLeft'=>1.762,	'marginTop'=>10.7,		'NX'=>3,	'NY'=>10,	'SpaceX'=>3.175,	'SpaceY'=>0,	'width'=>66.675,	'height'=>25.4,		'font-size'=>8),
-		'5161'=>array('name'=>'5161',	'paper-size'=>'letter',	'metric'=>'mm',	'marginLeft'=>0.967,	'marginTop'=>10.7,		'NX'=>2,	'NY'=>10,	'SpaceX'=>3.967,	'SpaceY'=>0,	'width'=>101.6,		'height'=>25.4,		'font-size'=>8),
-		'5162'=>array('name'=>'5162',	'paper-size'=>'letter',	'metric'=>'mm',	'marginLeft'=>0.97,		'marginTop'=>20.224,	'NX'=>2,	'NY'=>7,	'SpaceX'=>4.762,	'SpaceY'=>0,	'width'=>100.807,	'height'=>35.72,	'font-size'=>8),
-		'5163'=>array('name'=>'5163',	'paper-size'=>'letter',	'metric'=>'mm',	'marginLeft'=>1.762,	'marginTop'=>10.7, 		'NX'=>2,	'NY'=>5,	'SpaceX'=>3.175,	'SpaceY'=>0,	'width'=>101.6,		'height'=>50.8,		'font-size'=>8),
-		'5164'=>array('name'=>'5164',	'paper-size'=>'letter',	'metric'=>'in',	'marginLeft'=>0.148,	'marginTop'=>0.5, 		'NX'=>2,	'NY'=>3,	'SpaceX'=>0.2031,	'SpaceY'=>0,	'width'=>4.0,		'height'=>3.33,		'font-size'=>12),
-		'8600'=>array('name'=>'8600',	'paper-size'=>'letter',	'metric'=>'mm',	'marginLeft'=>7.1, 		'marginTop'=>19, 		'NX'=>3, 	'NY'=>10, 	'SpaceX'=>9.5, 		'SpaceY'=>3.1, 	'width'=>66.6, 		'height'=>25.4,		'font-size'=>8),
-		'L7163'=>array('name'=>'L7163',	'paper-size'=>'A4',		'metric'=>'mm',	'marginLeft'=>5,		'marginTop'=>15, 		'NX'=>2,	'NY'=>7,	'SpaceX'=>25,		'SpaceY'=>0,	'width'=>99.1,		'height'=>38.1,		'font-size'=>9)
-	);
+	public $_Avery_Labels =  [
+		'5160'=>['name'=>'5160',	'paper-size'=>'letter',	'metric'=>'mm',	'marginLeft'=>1.762,	'marginTop'=>10.7,		'NX'=>3,	'NY'=>10,	'SpaceX'=>3.175,	'SpaceY'=>0,	'width'=>66.675,	'height'=>25.4,		'font-size'=>8],
+		'5161'=>['name'=>'5161',	'paper-size'=>'letter',	'metric'=>'mm',	'marginLeft'=>0.967,	'marginTop'=>10.7,		'NX'=>2,	'NY'=>10,	'SpaceX'=>3.967,	'SpaceY'=>0,	'width'=>101.6,		'height'=>25.4,		'font-size'=>8],
+		'5162'=>['name'=>'5162',	'paper-size'=>'letter',	'metric'=>'mm',	'marginLeft'=>0.97,		'marginTop'=>20.224,	'NX'=>2,	'NY'=>7,	'SpaceX'=>4.762,	'SpaceY'=>0,	'width'=>100.807,	'height'=>35.72,	'font-size'=>8],
+		'5163'=>['name'=>'5163',	'paper-size'=>'letter',	'metric'=>'mm',	'marginLeft'=>1.762,	'marginTop'=>10.7, 		'NX'=>2,	'NY'=>5,	'SpaceX'=>3.175,	'SpaceY'=>0,	'width'=>101.6,		'height'=>50.8,		'font-size'=>8],
+		'5164'=>['name'=>'5164',	'paper-size'=>'letter',	'metric'=>'in',	'marginLeft'=>0.148,	'marginTop'=>0.5, 		'NX'=>2,	'NY'=>3,	'SpaceX'=>0.2031,	'SpaceY'=>0,	'width'=>4.0,		'height'=>3.33,		'font-size'=>12],
+		'8600'=>['name'=>'8600',	'paper-size'=>'letter',	'metric'=>'mm',	'marginLeft'=>7.1, 		'marginTop'=>19, 		'NX'=>3, 	'NY'=>10, 	'SpaceX'=>9.5, 		'SpaceY'=>3.1, 	'width'=>66.6, 		'height'=>25.4,		'font-size'=>8],
+		'L7163'=>['name'=>'L7163',	'paper-size'=>'A4',		'metric'=>'mm',	'marginLeft'=>5,		'marginTop'=>15, 		'NX'=>2,	'NY'=>7,	'SpaceX'=>25,		'SpaceY'=>0,	'width'=>99.1,		'height'=>38.1,		'font-size'=>9]
+	];
 
 	// convert units (in to mm, mm to in)
 	// $src and $dest must be 'in' or 'mm'
@@ -100,7 +99,7 @@ class PDF_Label extends FPDF {
 	// Give the height for a char size given.
 	function _Get_Height_Chars($pt) {
 		// Array matching character sizes and line heights
-		$_Table_Hauteur_Chars = array(6=>2, 7=>2.5, 8=>3, 9=>4, 10=>5, 11=>6, 12=>7, 13=>8, 14=>9, 15=>10);
+		$_Table_Hauteur_Chars = [6=>2, 7=>2.5, 8=>3, 9=>4, 10=>5, 11=>6, 12=>7, 13=>8, 14=>9, 15=>10];
 		if (in_array($pt, array_keys($_Table_Hauteur_Chars))) {
 			return $_Table_Hauteur_Chars[$pt];
 		} else {
@@ -123,7 +122,7 @@ class PDF_Label extends FPDF {
 	}
 
 	// Constructor
-	function PDF_Label ($format, $unit='mm', $posX=1, $posY=1) {
+	function __construct ($format, public $_Metric_Doc='mm', $posX=1, $posY=1) {
 		if (is_array($format)) {
 			// Custom format
 			$Tformat = $format;
@@ -136,9 +135,7 @@ class PDF_Label extends FPDF {
 		$this->_Set_Format($Tformat);
 		$this->Set_Font_Name('Arial');
 		$this->SetMargins(0,0); 
-		$this->SetAutoPageBreak(false); 
-
-		$this->_Metric_Doc = $unit;
+		$this->SetAutoPageBreak(false);
 		// Start at the given label position
 		if ($posX > 1) $posX--; else $posX=0;
 		if ($posY > 1) $posY--; else $posY=0;

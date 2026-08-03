@@ -8,7 +8,7 @@
  */
 class SecretariaEstruturalNotaRepository {
 
-  private $aEstruturalNota = array();
+  private $aEstruturalNota = [];
 
   private static $oInstance;
 
@@ -85,6 +85,6 @@ class SecretariaEstruturalNotaRepository {
   public static function removeAll() {
 
     unset(self::getInstance()->aEstruturalNota);
-    self::getInstance()->aEstruturalNota = array();
+    self::getInstance()->aEstruturalNota = [];
   }
 }

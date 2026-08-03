@@ -32,7 +32,7 @@ require_once(modification("fpdf151/pdf.php"));
 $head5 = "Relatório de Imóveis";
 if(isset($par)){
 
-  $parametro = split("_",$par);
+  $parametro = preg_split("#_#m",$par);
   $tipo = 2;
   $geracalculo = true;
 }
@@ -53,7 +53,7 @@ $sql = "
   where j01_matric = $parametro[$totalRegistos] limit 1
 ";
 $matriculaSelecionada = db_query($sql);
-$numMatriculaSelecionada = pg_numrows($matriculaSelecionada);
+$numMatriculaSelecionada = pg_num_rows($matriculaSelecionada);
   if ($numMatriculaSelecionada == 0) {
 
     $pdf->SetFont('Arial','B',9);
@@ -84,7 +84,7 @@ $numMatriculaSelecionada = pg_numrows($matriculaSelecionada);
     $pdf->SetFont('Arial','',9);
     $pdf->Cell(20,4,"Endereço :","",0,"L",0);
     $pdf->SetFont('Arial','B',9);
-	$ender = substr($z01_ender,0,30);
+	$ender = substr((string) $z01_ender,0,30);
     $pdf->Cell(70,4,"$ender","",1,"L",0);
 
 	$pdf->setX(5);

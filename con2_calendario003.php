@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 include(modification("fpdf151/pdf.php"));
 
@@ -47,28 +47,28 @@ $cruzamento = db_getsession("cruzamento");
 
 $result = db_query($cruzamento." between '2006-01-01' and '2006-12-31'");
 
-if($result == false || pg_numrows($result)==0){
+if($result == false || pg_num_rows($result)==0){
   db_redireciona("db_erros.php?fechar=true&error='teste'");
 }
 
 
 
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
 
   if($pdf->gety()>$pdf->h-30 || $i == 0){
  
-    for($c=0;$c<pg_numfields($result);$c++){
-      $pdf->cell(20,$alt,pg_fieldname($result,$c),1,0,1);   
+    for($c=0;$c<pg_num_fields($result);$c++){
+      $pdf->cell(20,$alt,pg_field_name($result,$c),1,0,1);   
     }
     $pdf->cell(1,$alt,'',0,1);   
  
   }
 
   db_fieldsmemory($result,$i);
-  for($c=0;$c<pg_numfields($result);$c++){
-  	$variavel = pg_fieldname($result,$c);
-    $pdf->cell(40,$alt,$$variavel,1,0,1);   
+  for($c=0;$c<pg_num_fields($result);$c++){
+  	$variavel = pg_field_name($result,$c);
+    $pdf->cell(40,$alt,${$variavel},1,0,1);   
   }
   $pdf->cell(1,$alt,'',0,1);   
 

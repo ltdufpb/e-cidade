@@ -65,12 +65,12 @@ try {
 
       if($oParam->iTentativasLogin == 0) {
 
-        throw new Exception(_M("{$sMensagens}.valida_zero", (Object) array( "sCampo" => "Tentativas de Login")));      
+        throw new Exception(_M("{$sMensagens}.valida_zero", (Object) [ "sCampo" => "Tentativas de Login"]));      
       }
       
       if($oParam->iDiasExpiraToken == 0) {
         
-        throw new Exception(_M("{$sMensagens}.valida_zero", (Object) array( "sCampo" => "Dias para expirar link de ativação")));       
+        throw new Exception(_M("{$sMensagens}.valida_zero", (Object) [ "sCampo" => "Dias para expirar link de ativação"]));       
       }  
       if(!$oPreferenciaCliente->salvarPreferencias()) {
 
@@ -99,7 +99,7 @@ try {
             $lSalvo                    = file_put_contents(PreferenciaUsuario::CAMINHO_ARQUIVO . $sFile, json_encode($oPreferenciaUsuario));
             if(!$lSalvo) {
 
-              throw new Exception(_M("{$sMensagens}.alteracao_nao_efetuada", (Object) array("sArquivo" => $sFile)));
+              throw new Exception(_M("{$sMensagens}.alteracao_nao_efetuada", (Object) ["sArquivo" => $sFile]));
             }
           }
         }

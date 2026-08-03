@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_valorpassagem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clvalorpassagem = new cl_valorpassagem;
 $clvalorpassagem->rotulo->label("ed230_i_codigo");
 $clvalorpassagem->rotulo->label("ed230_f_valor");
@@ -98,9 +98,9 @@ $clvalorpassagem->rotulo->label("ed230_f_valor");
         }else{
            $sql = $clvalorpassagem->sql_query("",$campos,"ed230_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed230_i_codigo)){
-          $repassa = array("chave_ed230_i_codigo"=>$chave_ed230_i_codigo,"chave_ed230_i_codigo"=>$chave_ed230_i_codigo);
+          $repassa = ["chave_ed230_i_codigo"=>$chave_ed230_i_codigo,"chave_ed230_i_codigo"=>$chave_ed230_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

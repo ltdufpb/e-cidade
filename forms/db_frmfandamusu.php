@@ -95,7 +95,7 @@ db_textarea('y40_obs',3,50,$Iy40_obs,true,'text',$db_opcao,"")
     <td align="top" colspan="2">
    <?php 
     $db_opcao = 1;
-    $chavepri= array("y40_codandam"=>@$y40_codandam,"y40_id_usuario"=>@$y40_id_usuario);
+    $chavepri= ["y40_codandam"=>@$y40_codandam,"y40_id_usuario"=>@$y40_id_usuario];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->opcoes=2;
     $cliframe_alterar_excluir->campos="y40_codandam,y40_id_usuario,y40_obs,nome";
@@ -160,7 +160,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_fandamusu.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 +"&chavepesquisa1="+chave1}

@@ -57,7 +57,7 @@ try {
                 throw new DBException("Ocorreu um erro ao consultar o plano de contas.");
             }
 
-            $contasRetorno = array();
+            $contasRetorno = [];
             $totalRegistros = pg_num_rows($buscaContas);
             for ($row = 0; $row < $totalRegistros; $row++) {
                 $stdDados = db_utils::fieldsMemory($buscaContas, $row);

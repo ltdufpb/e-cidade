@@ -59,11 +59,11 @@ $clcriaabas     = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("orcsuplem"=>"Suplementos");//nome do iframe e o label    
-       $clcriaabas->title      = array("orcsupelm"=>"Descrição dos Suplementos");//nome do iframe e o label    
-       $clcriaabas->src = array("orcsuplem"=>"orc1_orcsuplem006.php");  //nome do iframe e SRC  
-       $clcriaabas->sizecampo= array("orcsuplem"=>"23");    
-       $clcriaabas->disabled= array("orcsuplemval"=>"true");    // desabilita segunda aba
+       $clcriaabas->identifica = ["orcsuplem"=>"Suplementos"];//nome do iframe e o label    
+       $clcriaabas->title      = ["orcsupelm"=>"Descrição dos Suplementos"];//nome do iframe e o label    
+       $clcriaabas->src = ["orcsuplem"=>"orc1_orcsuplem006.php"];  //nome do iframe e SRC  
+       $clcriaabas->sizecampo= ["orcsuplem"=>"23"];    
+       $clcriaabas->disabled= ["orcsuplemval"=>"true"];    // desabilita segunda aba
        $clcriaabas->cria_abas();    
      ?> 
      </td>

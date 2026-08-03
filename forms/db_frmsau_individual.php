@@ -180,7 +180,7 @@ function js_limpadados(){
 		focoInclusao.focus();
 
 		if( $('db_opcao').name == 'alterar' ){
-			//location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?idarq=<?=$idarq?>&chavepesquisalote='+$F('sd58_i_codigo');
+			//location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?idarq=<?=$idarq?>&chavepesquisalote='+$F('sd58_i_codigo');
 		}else{
 			$('db_opcao').name       = "incluir";
 			$('db_opcao').value      = "Incluir FAA";
@@ -531,7 +531,7 @@ function js_pesquisafaa(chave){
 function js_preenchepesquisafaa(chave){
 	db_iframe_prontuarios.hide();
 	<?php 
-		echo " location.href = '" . basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?idarq=" . @$idarq . "&db_botao=true&chavepesquisaprontuario='+chave";
+		echo " location.href = '" . basename ( (string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] ) . "?idarq=" . @$idarq . "&db_botao=true&chavepesquisaprontuario='+chave";
 	?>
 }
 

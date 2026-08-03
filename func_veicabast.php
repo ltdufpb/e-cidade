@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veicabast_classe.php"));
 include(modification("classes/db_veiccadcentraldepart_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveicabast            = new cl_veicabast;
 $clveiccadcentraldepart = new cl_veiccadcentraldepart;
@@ -117,9 +117,9 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
         }else {
            $sql = $clveicabast->sql_query_posto("","distinct $campos","","$dbwhere");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve70_codigo)){
-          $repassa = array("chave_ve70_codigo"=>$chave_ve70_codigo);
+          $repassa = ["chave_ve70_codigo"=>$chave_ve70_codigo];
         }
 
         //echo $sql;

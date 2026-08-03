@@ -89,17 +89,15 @@ class RegraEmissaoReciboCustaRepository extends Repository
             throw new Exception("Erro ao buscar regras de emissão.");
         }
 
-        if (pg_numrows($rs) == 0) {
+        if (pg_num_rows($rs) == 0) {
             throw new BusinessException("Nenhuma regra de emissão configurada para o modelo {$tipoModelo}.");
         }
 
-        $regras = \db_utils::makeCollectionFromRecord($rs, function ($dado) {
-            return $dado;
-        });
+        $regras = \db_utils::makeCollectionFromRecord($rs, fn($dado) => $dado);
         // Verificando se a regra é especifica ou não
         // Logica extraida da geral financeira
-        $aRegraGeral = array();
-        $aRegraEspecifica = array();
+        $aRegraGeral = [];
+        $aRegraEspecifica = [];
 
         foreach ($regras as $regra) {
             if (!empty($regra->tipo) || !empty($regra->ip)) {

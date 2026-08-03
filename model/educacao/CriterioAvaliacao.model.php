@@ -63,19 +63,19 @@ class CriterioAvaliacao {
    * Array das turmas na qual o Critério de Avaliação está vinculado
    * @var array
    */
-  private $aTurmas = array();
+  private $aTurmas = [];
 
   /**
    * Array das disciplinas na qual o Critério de Avaliação está vinculado
    * @var array
    */
-  private $aDisciplinas = array();
+  private $aDisciplinas = [];
 
   /**
    * Array de Períodos de Avaliação no qual o Critério está vinculado
    * @var array
    */
-  private $aPeriodosAvaliacao = array();
+  private $aPeriodosAvaliacao = [];
 
   /**
    * Variavél que armazena a última ordem inserida no banco
@@ -483,7 +483,7 @@ class CriterioAvaliacao {
    */
   public function getTurmasVinculadasDisciplina( Disciplina $oDisciplina ) {
 
-    $aTurmasDisciplina = array();
+    $aTurmasDisciplina = [];
     foreach ( $this->getTurmasVinculadas() as $oTurma ) {
       
       foreach ( $oTurma->getDisciplinas() as $oRegencia ) {

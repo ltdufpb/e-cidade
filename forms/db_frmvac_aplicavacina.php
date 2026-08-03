@@ -46,15 +46,15 @@ function verificaEstado($oCgs, $oVacinaDose) {
   $oDados->iEstado     = 0;
   $oDados->sIdadeIdeal = "";
 
-  $aNasc               = explode("-", $oCgs->z01_d_nasc);
-  $aVet                = explode("-", $oVacinaDose->faixa_final);
+  $aNasc               = explode("-", (string) $oCgs->z01_d_nasc);
+  $aVet                = explode("-", (string) $oVacinaDose->faixa_final);
 
   /* Cálculo da data de vencimento (último dia em que é permitido tomar a vacina)*/
   $dVencimento         = somaDataDiaMesAno($aNasc[2], $aNasc[1], $aNasc[0],
                                            $aVet[0] + $oVacinaDose->atrasado,
                                            $aVet[1], $aVet[2]
                                           );
-  $aIni                = explode("-", $oVacinaDose->faixa_inicial);
+  $aIni                = explode("-", (string) $oVacinaDose->faixa_inicial);
   $oDados->sIdadeIdeal = $aIni[2]." ano  ".$aIni[1]." mes  ".$aIni[0]." dia ";
 
   /* Cálculo do primeiro dia em que é possível tomar a vacina */
@@ -93,8 +93,8 @@ function verificaEstado($oCgs, $oVacinaDose) {
     if ($oVacAplica->numrows > 0) {
       
       $oUltimaAplicada     = db_utils::fieldsmemory($rsUtimaAplicada, 0);
-      $aAplicada           = explode("-", $oUltimaAplicada->vc16_d_dataaplicada);
-      $aVet                = explode("-", $oVacinaDose->faixa_periodica);
+      $aAplicada           = explode("-", (string) $oUltimaAplicada->vc16_d_dataaplicada);
+      $aVet                = explode("-", (string) $oVacinaDose->faixa_periodica);
 
       //Data aplicada mais o periodo até a proxima aplicação
       $dValiadeAplicacao   = somaDataDiaMesAno($aAplicada[2], $aAplicada[1], $aAplicada[0],
@@ -141,7 +141,7 @@ function verificaEstado($oCgs, $oVacinaDose) {
       $oUltimaAplicada     = db_utils::fieldsmemory($rsUtimaAplicada, 0);
 
       //Calcula o timestamp da Data ideal da aplicação da dose anterior
-      $aIniAnt             = explode("-", $oUltimaAplicada->faixa_inicial);
+      $aIniAnt             = explode("-", (string) $oUltimaAplicada->faixa_inicial);
       $dIdealAnt           = somaDataDiaMesAno($aNasc[2], $aNasc[1], $aNasc[0],
                                                $aIniAnt[0], $aIniAnt[1], $aIniAnt[2]
                                               );
@@ -149,7 +149,7 @@ function verificaEstado($oCgs, $oVacinaDose) {
       $tIdealAnt           = adodb_mktime(0, 0, 0, $aIdealAnt[1], $aIdealAnt[0], $aIdealAnt[2]);
 
       //Calcula o timestamp da data que realmente foi aplicada a dose anterior
-      $aDataAplicada       = explode("-",$oUltimaAplicada->vc16_d_dataaplicada);
+      $aDataAplicada       = explode("-",(string) $oUltimaAplicada->vc16_d_dataaplicada);
       $tDataAplicada       = adodb_mktime(0, 0, 0, $aDataAplicada[1], $aDataAplicada[2], $aDataAplicada[0]);
 
       //Calcula a diferença da data da aplicação menos a data que deveria ser aplicada
@@ -347,7 +347,7 @@ if ($clvac_calendario->numrows > 0) {
 
              if ($oVacinaDose->data_ultima_aplica != "") {
 
-               $aVet = explode("-", $oVacinaDose->data_ultima_aplica);
+               $aVet = explode("-", (string) $oVacinaDose->data_ultima_aplica);
                echo" $sFontini <br>Data ult.:".$aVet[2]."/".$aVet[1]."/".$aVet[0]."$sFontfim ";
 
              } else {

@@ -46,7 +46,7 @@
             </td>
             <td>
               <?php
-                $aOpcoes = array("1" => "Valor", "2" => "Quantidade");
+                $aOpcoes = ["1" => "Valor", "2" => "Quantidade"];
                 db_select('rh165_tipolancamento', $aOpcoes, $Irh165_tipolancamento, $db_opcao);
               ?>
             </td>
@@ -84,7 +84,7 @@
         <?php
 
           $iInstituicao = InstituicaoRepository::getInstituicaoSessao()->getCodigo();
-          $aChavePri    = array("rh165_sequencial" => @$rh165_sequencial);
+          $aChavePri    = ["rh165_sequencial" => @$rh165_sequencial];
 
           $sCampos  = "rh165_sequencial,";
           $sCampos .= "h12_descr as rh165_tipoasse,     ";

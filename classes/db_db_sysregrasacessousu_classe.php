@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE db_sysregrasacessousu
 class cl_db_sysregrasacessousu { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db47_idacesso = 0; 
-   var $db47_id_usuario = 0; 
+   public $db47_idacesso = 0; 
+   public $db47_id_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db47_idacesso = int4 = Código da Regra 
                  db47_id_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_db_sysregrasacessousu() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_sysregrasacessousu"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,7 +105,7 @@ class cl_db_sysregrasacessousu {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Acesso Cadastrados para o Usuário ($this->db47_idacesso) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Acesso Cadastrados para o Usuário já Cadastrado";
@@ -129,11 +129,11 @@ class cl_db_sysregrasacessousu {
      $resaco = $this->sql_record($this->sql_query_file($this->db47_idacesso));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10268,'$this->db47_idacesso','I')");
-       $resac = db_query("insert into db_acount values($acount,1773,10268,'','".AddSlashes(pg_result($resaco,0,'db47_idacesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1773,10269,'','".AddSlashes(pg_result($resaco,0,'db47_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1773,10268,'','".AddSlashes(pg_fetch_result($resaco,0,'db47_idacesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1773,10269,'','".AddSlashes(pg_fetch_result($resaco,0,'db47_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -142,10 +142,10 @@ class cl_db_sysregrasacessousu {
       $this->atualizacampos();
      $sql = " update db_sysregrasacessousu set ";
      $virgula = "";
-     if(trim($this->db47_idacesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db47_idacesso"])){ 
+     if(trim((string) $this->db47_idacesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db47_idacesso"])){ 
        $sql  .= $virgula." db47_idacesso = $this->db47_idacesso ";
        $virgula = ",";
-       if(trim($this->db47_idacesso) == null ){ 
+       if(trim((string) $this->db47_idacesso) == null ){ 
          $this->erro_sql = " Campo Código da Regra nao Informado.";
          $this->erro_campo = "db47_idacesso";
          $this->erro_banco = "";
@@ -155,10 +155,10 @@ class cl_db_sysregrasacessousu {
          return false;
        }
      }
-     if(trim($this->db47_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db47_id_usuario"])){ 
+     if(trim((string) $this->db47_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db47_id_usuario"])){ 
        $sql  .= $virgula." db47_id_usuario = $this->db47_id_usuario ";
        $virgula = ",";
-       if(trim($this->db47_id_usuario) == null ){ 
+       if(trim((string) $this->db47_id_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "db47_id_usuario";
          $this->erro_banco = "";
@@ -176,13 +176,13 @@ class cl_db_sysregrasacessousu {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10268,'$this->db47_idacesso','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db47_idacesso"]))
-           $resac = db_query("insert into db_acount values($acount,1773,10268,'".AddSlashes(pg_result($resaco,$conresaco,'db47_idacesso'))."','$this->db47_idacesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1773,10268,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db47_idacesso'))."','$this->db47_idacesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db47_id_usuario"]))
-           $resac = db_query("insert into db_acount values($acount,1773,10269,'".AddSlashes(pg_result($resaco,$conresaco,'db47_id_usuario'))."','$this->db47_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1773,10269,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db47_id_usuario'))."','$this->db47_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -227,11 +227,11 @@ class cl_db_sysregrasacessousu {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10268,'$db47_idacesso','E')");
-         $resac = db_query("insert into db_acount values($acount,1773,10268,'','".AddSlashes(pg_result($resaco,$iresaco,'db47_idacesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1773,10269,'','".AddSlashes(pg_result($resaco,$iresaco,'db47_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1773,10268,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db47_idacesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1773,10269,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db47_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_sysregrasacessousu
@@ -291,7 +291,7 @@ class cl_db_sysregrasacessousu {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_sysregrasacessousu";
@@ -305,7 +305,7 @@ class cl_db_sysregrasacessousu {
    function sql_query ( $db47_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -328,7 +328,7 @@ class cl_db_sysregrasacessousu {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -340,7 +340,7 @@ class cl_db_sysregrasacessousu {
    function sql_query_file ( $db47_idacesso=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -361,7 +361,7 @@ class cl_db_sysregrasacessousu {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

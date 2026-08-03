@@ -33,7 +33,7 @@ $clvarfix->rotulo->label();
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $data=date("d-m-Y",db_getsession("DB_datausu"));
-$data=split('-',$data);
+$data=preg_split('#\-#m',$data);
 $dia=$data[0];
 $mes=$data[1];
 $ano=$data[2];
@@ -91,7 +91,7 @@ db_input('q81_descr',40,$Iz01_nome,true,'text',3,"","","#E6E4F1");
     </td>
     <td> 
 <?php 
-$x = array('e'=>'Estimado','a'=>'Arbitrado');
+$x = ['e'=>'Estimado','a'=>'Arbitrado'];
 db_select('q33_tiporeg',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -123,7 +123,7 @@ db_select('q33_tiporeg',$x,true,$db_opcao,"");
 if(empty($q34_mes)){
  $q34_mes=date("m",db_getsession('DB_datausu'));
 } 
-$resultw=array("1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+$resultw=["1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
   db_select("q34_mes",$resultw,true,$db_opcao02,"","","","","");
 ?>
 	    </td>
@@ -132,7 +132,7 @@ $resultw=array("1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"M
 	    </td>
 	    <td> 
 <?php 
-$anos=array();
+$anos=[];
 $anoatual=date("Y",db_getsession("DB_datausu"));
 for($i=$anoatual; $i>($anoatual-10); $i--){
  $anos[$i]=$i;
@@ -202,7 +202,7 @@ if(isset($opcao)){
      <?php 
 //                                   die ($clvarfixval->sql_query_file(null,"q34_codigo,q34_mes,q34_ano,q34_valor,q34_inflat,q34_dtval",null," q34_codigo = $q33_codigo"));
       $cliframe_alterar_excluir->sql     = $clvarfixval->sql_query_file(null,"q34_codigo,q34_mes,q34_ano,q34_valor,q34_inflat,q34_dtval","q34_mes"," q34_codigo = $q33_codigo");
-      $chavepri= array("q34_codigo"=>$q33_codigo,"q34_mes"=>@$q34_mes,"q34_ano"=>@$q34_ano);
+      $chavepri= ["q34_codigo"=>$q33_codigo,"q34_mes"=>@$q34_mes,"q34_ano"=>@$q34_ano];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       $cliframe_alterar_excluir->campos  ="q34_mes,q34_ano,q34_valor,q34_inflat,q34_dtval";
       $cliframe_alterar_excluir->legenda="VALORES DE LANÇADOS";
@@ -300,7 +300,7 @@ function js_preenchepesquisa(chave){
   db_iframe_varfix.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

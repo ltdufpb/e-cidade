@@ -117,7 +117,7 @@ db_input('at25_tarefa',10,$Iat25_tarefa,true,'text',3," onchange='js_pesquisaat2
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("at25_sequencial"=>@$at25_sequencial);
+	 $chavepri= ["at25_sequencial"=>@$at25_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cltarefaanexos->sql_query_file(null,"*",null,"at25_tarefa=$at25_tarefa");
 	 $cliframe_alterar_excluir->campos  ="at25_nomearq,at25_obs";

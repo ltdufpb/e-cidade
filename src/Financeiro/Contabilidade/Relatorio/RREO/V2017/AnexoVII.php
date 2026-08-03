@@ -85,22 +85,22 @@ class AnexoVII
   /**
    * @var \stdClass[]
    */
-    private $aPoderLegislativo = array();
+    private $aPoderLegislativo = [];
 
   /**
    * @var \stdClass[]
    */
-    private $aPoderExecutivo = array();
+    private $aPoderExecutivo = [];
 
   /**
    * @var \stdClass[]
    */
-    private $aMinisterioPublico = array();
+    private $aMinisterioPublico = [];
 
   /**
    * @var \stdClass[]
    */
-    private $aPoderJudiciario = array();
+    private $aPoderJudiciario = [];
 
   /**
    * @var LinhaAnexoVII[]
@@ -146,7 +146,7 @@ class AnexoVII
     public function adicionarInstituicao(\Instituicao $oInstituicao)
     {
 
-        $aInstituicoes = array();
+        $aInstituicoes = [];
         $this->aInstituicao[$oInstituicao->getCodigo()] = $oInstituicao;
         foreach ($this->aInstituicao as $iCodigo => $oInstituicao) {
             $aInstituicoes[] = $iCodigo;
@@ -183,12 +183,12 @@ class AnexoVII
     private function construirValores($lIntraOrcamentario, LinhaAnexoVII &$oLinha)
     {
 
-        $aPoderesParaPercorrer = array(
+        $aPoderesParaPercorrer = [
           $this->aPoderExecutivo,
           $this->aPoderLegislativo,
           $this->aPoderJudiciario,
           $this->aMinisterioPublico
-        );
+        ];
 
         foreach ($aPoderesParaPercorrer as $iIndice => $aLinhaPoder) {
           /* Caso não exista valores lançados para o tipo de poder */
@@ -385,11 +385,11 @@ class AnexoVII
    */
     private function processar()
     {
-        $this->aPoderLegislativo  = array();
-        $this->aPoderJudiciario   = array();
-        $this->aMinisterioPublico = array();
-        $this->aPoderExecutivo    = array();
-        $this->aLinhas = array();
+        $this->aPoderLegislativo  = [];
+        $this->aPoderJudiciario   = [];
+        $this->aMinisterioPublico = [];
+        $this->aPoderExecutivo    = [];
+        $this->aLinhas = [];
 
         $this->agruparPorPoderes($this->getRestosAPagarExcetoIntraOrcamentarios(), false);
         $this->agruparPorPoderes($this->getRestosAPagarIntraOrcamentarios(), true);
@@ -584,32 +584,21 @@ class AnexoVII
     {
 
         $this->processar();
-        $aLinhasPorPoder = array();
+        $aLinhasPorPoder = [];
 
         foreach ($this->aLinhas as $iIndice => $oLinhaSintetica) {
-            if (in_array($iIndice, array(3,4))) {
+            if (in_array($iIndice, [3,4])) {
                 continue;
             }
 
             foreach ($oLinhaSintetica->getLinhas() as $oLinhaAnalitica) {
-                switch ($oLinhaAnalitica->getTipo()) {
-                    case LinhaAnexoVII::PODER_EXECUTIVO:
-                        $sDescricao = "Poder Executivo";
-                        break;
-
-                    case LinhaAnexoVII::PODER_LEGISLATIVO:
-                        $sDescricao = "Poder Legislativo";
-                        break;
-
-                    case LinhaAnexoVII::PODER_JUDICIARIO:
-                        $sDescricao = "Poder Judiciário";
-                        break;
-                    case LinhaAnexoVII::MINISTERIO_PUBLICO:
-                        $sDescricao = "Ministério Público";
-                        break;
-                    default:
-                        throw new \Exception("O tipo de linha {$oLinhaAnalitica->getTipo()} não foi encontrado.");
-                }
+                $sDescricao = match ($oLinhaAnalitica->getTipo()) {
+                    LinhaAnexoVII::PODER_EXECUTIVO => "Poder Executivo",
+                    LinhaAnexoVII::PODER_LEGISLATIVO => "Poder Legislativo",
+                    LinhaAnexoVII::PODER_JUDICIARIO => "Poder Judiciário",
+                    LinhaAnexoVII::MINISTERIO_PUBLICO => "Ministério Público",
+                    default => throw new \Exception("O tipo de linha {$oLinhaAnalitica->getTipo()} não foi encontrado."),
+                };
 
 
                 if (empty($aLinhasPorPoder[$oLinhaAnalitica->getTipo()])) {
@@ -619,7 +608,7 @@ class AnexoVII
             }
         }
 
-        $aLinhaImpressao = array();
+        $aLinhaImpressao = [];
         $oStdProcessado = new \stdClass();
         $oStdProcessado->sDescricao           = 'RESTOS À PAGAR PROCESSADOS';
         $oStdProcessado->nProcessadoInscrito  = 0;

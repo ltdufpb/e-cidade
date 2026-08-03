@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE atividadeimpactoporte
 class cl_atividadeimpactoporte { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $am04_sequencial = 0; 
-   var $am04_atividadeimpacto = 0; 
-   var $am04_porteatividadeimpacto = 0; 
+   public $am04_sequencial = 0; 
+   public $am04_atividadeimpacto = 0; 
+   public $am04_porteatividadeimpacto = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  am04_sequencial = int4 = Porte 
                  am04_atividadeimpacto = int4 = Atividade 
                  am04_porteatividadeimpacto = int4 = Porte 
                  ";
    //funcao construtor da classe 
-   function cl_atividadeimpactoporte() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atividadeimpactoporte"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_atividadeimpactoporte {
          $this->erro_status = "0";
          return false; 
        }
-       $this->am04_sequencial = pg_result($result,0,0); 
+       $this->am04_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from atividadeimpactoporte_am04_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $am04_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $am04_sequencial)){
          $this->erro_sql = " Campo am04_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_atividadeimpactoporte {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Relação Atividade e Porte ($this->am04_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Relação Atividade e Porte já Cadastrado";
@@ -171,12 +171,12 @@ class cl_atividadeimpactoporte {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20778,'$this->am04_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3740,20778,'','".AddSlashes(pg_result($resaco,0,'am04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3740,20779,'','".AddSlashes(pg_result($resaco,0,'am04_atividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3740,20780,'','".AddSlashes(pg_result($resaco,0,'am04_porteatividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3740,20778,'','".AddSlashes(pg_fetch_result($resaco,0,'am04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3740,20779,'','".AddSlashes(pg_fetch_result($resaco,0,'am04_atividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3740,20780,'','".AddSlashes(pg_fetch_result($resaco,0,'am04_porteatividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_atividadeimpactoporte {
       $this->atualizacampos();
      $sql = " update atividadeimpactoporte set ";
      $virgula = "";
-     if(trim($this->am04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am04_sequencial"])){ 
+     if(trim((string) $this->am04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am04_sequencial"])){ 
        $sql  .= $virgula." am04_sequencial = $this->am04_sequencial ";
        $virgula = ",";
-       if(trim($this->am04_sequencial) == null ){ 
+       if(trim((string) $this->am04_sequencial) == null ){ 
          $this->erro_sql = " Campo Porte não informado.";
          $this->erro_campo = "am04_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_atividadeimpactoporte {
          return false;
        }
      }
-     if(trim($this->am04_atividadeimpacto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am04_atividadeimpacto"])){ 
+     if(trim((string) $this->am04_atividadeimpacto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am04_atividadeimpacto"])){ 
        $sql  .= $virgula." am04_atividadeimpacto = $this->am04_atividadeimpacto ";
        $virgula = ",";
-       if(trim($this->am04_atividadeimpacto) == null ){ 
+       if(trim((string) $this->am04_atividadeimpacto) == null ){ 
          $this->erro_sql = " Campo Atividade não informado.";
          $this->erro_campo = "am04_atividadeimpacto";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_atividadeimpactoporte {
          return false;
        }
      }
-     if(trim($this->am04_porteatividadeimpacto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am04_porteatividadeimpacto"])){ 
+     if(trim((string) $this->am04_porteatividadeimpacto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am04_porteatividadeimpacto"])){ 
        $sql  .= $virgula." am04_porteatividadeimpacto = $this->am04_porteatividadeimpacto ";
        $virgula = ",";
-       if(trim($this->am04_porteatividadeimpacto) == null ){ 
+       if(trim((string) $this->am04_porteatividadeimpacto) == null ){ 
          $this->erro_sql = " Campo Porte não informado.";
          $this->erro_campo = "am04_porteatividadeimpacto";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_atividadeimpactoporte {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20778,'$this->am04_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am04_sequencial"]) || $this->am04_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3740,20778,'".AddSlashes(pg_result($resaco,$conresaco,'am04_sequencial'))."','$this->am04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3740,20778,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am04_sequencial'))."','$this->am04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am04_atividadeimpacto"]) || $this->am04_atividadeimpacto != "")
-             $resac = db_query("insert into db_acount values($acount,3740,20779,'".AddSlashes(pg_result($resaco,$conresaco,'am04_atividadeimpacto'))."','$this->am04_atividadeimpacto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3740,20779,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am04_atividadeimpacto'))."','$this->am04_atividadeimpacto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am04_porteatividadeimpacto"]) || $this->am04_porteatividadeimpacto != "")
-             $resac = db_query("insert into db_acount values($acount,3740,20780,'".AddSlashes(pg_result($resaco,$conresaco,'am04_porteatividadeimpacto'))."','$this->am04_porteatividadeimpacto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3740,20780,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am04_porteatividadeimpacto'))."','$this->am04_porteatividadeimpacto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_atividadeimpactoporte {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20778,'$am04_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3740,20778,'','".AddSlashes(pg_result($resaco,$iresaco,'am04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3740,20779,'','".AddSlashes(pg_result($resaco,$iresaco,'am04_atividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3740,20780,'','".AddSlashes(pg_result($resaco,$iresaco,'am04_porteatividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3740,20778,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3740,20779,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am04_atividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3740,20780,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am04_porteatividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

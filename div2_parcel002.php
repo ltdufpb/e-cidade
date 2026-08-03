@@ -35,9 +35,9 @@ $clrotulo->label('v07_totpar');
 $clrotulo->label('v07_numcgm');
 $clrotulo->label('z01_nome  ');
 $clrotulo->label('x01_matric  ');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 db_sel_instit(null, "db21_usasisagua, db21_regracgmiptu, db21_regracgmiss");
 
@@ -71,20 +71,12 @@ if (($data!="--")&&($data1!="--")) {
 if ($situacao != 0) {
   $where   .= " and v07_situacao = $situacao ";		
 }
-switch ($situacao){
-   case 1: 
-      $head6 = "Situação: Ativo";
-	    break;
-   case 2: 
-      $head6 = "Situação: Anulado";
-	    break;
-   case 1: 
-      $head6 = "Situação: Reparcelado";
-	    break;
- 	 default:
-     $head6 = "Situação: todos";
-	   break;
-}
+$head6 = match ($situacao) {
+    1 => "Situação: Ativo",
+    2 => "Situação: Anulado",
+    1 => "Situação: Reparcelado",
+    default => "Situação: todos",
+};
 
 
 
@@ -148,7 +140,7 @@ $sql .= " where v07_instit = ".db_getsession('DB_instit')." $where $order_by ";
 
 $result = db_query($sql);
 
-if (pg_numrows($result) == 0){
+if (pg_num_rows($result) == 0){
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem parcelamentos.');
 }
 
@@ -224,7 +216,7 @@ $totValorContribAtivo          = 0;
 
 $corcab      = '210';
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
   db_fieldsmemory($result,$x);
   
   if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
@@ -298,7 +290,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
 		$sqlOutrosNomes .= "  where k00_numpre = $v07_numpre ";
 		$sqlOutrosNomes .= "    and k00_numcgm <> $v07_numcgm ";
 		$rsOutrosNomes   = db_query($sqlOutrosNomes);
-		$intNumrows      = pg_numrows($rsOutrosNomes);
+		$intNumrows      = pg_num_rows($rsOutrosNomes);
 	
 		if($intNumrows > 1){
 	    $pdf->cell(60,$alt,'',0,0,"L",1);

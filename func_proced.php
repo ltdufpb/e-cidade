@@ -32,7 +32,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_proced_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clproced = new cl_proced;
 $clproced->rotulo->label("v03_codigo");
@@ -84,7 +84,7 @@ $clproced->rotulo->label("v03_descr");
   <tr>
     <td align="center" valign="top">
       <?php
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = "v03_instit = " . db_getsession("DB_instit");
       $sQuery   = !isset($sTiposDebitos) ? "sql_query" : "sql_query_arretipo";
 
@@ -113,12 +113,12 @@ $clproced->rotulo->label("v03_descr");
 
         $sql = $clproced->{$sQuery}("", $campos, "v03_codigo", implode(' AND ', $aWhere));
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v03_descr)){
-          $repassa = array(
+          $repassa = [
             "chave_v03_codigo" => $chave_v03_codigo,
             "chave_v03_descr"  => $chave_v03_descr
-          );
+          ];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

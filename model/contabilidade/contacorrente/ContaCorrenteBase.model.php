@@ -53,18 +53,6 @@ abstract class ContaCorrenteBase {
   protected $dDataLancamento;
 
   /**
-   * Código do lançamento (conlancamval)
-   * @var integer
-   */
-  protected $iCodigoLancamento;
-
-  /**
-   * Código reduzido da conta no plano de contas PCASP
-   * @var integer
-   */
-  protected $iCodigoReduzido;
-
-  /**
    * Lançamento auxiliar do lançamento contábil
    * @var ILancamentoAuxiliar - Objeto que implemente a interface de Lançamento Auxiliar
    */
@@ -123,10 +111,14 @@ abstract class ContaCorrenteBase {
    * @param ILancamentoAuxiliar|LancamentoAuxiliarArrecadacaoReceita|LancamentoAuxiliarArrecadacaoReceitaExtraOrcamentaria|LancamentoAuxiliarContaCorrente|LancamentoAuxiliarEmpenho $oLancamentoAuxiliar
    * @throws BusinessException
    */
-  public function __construct($iCodigoLancamento, $iCodigoReduzido, ILancamentoAuxiliar $oLancamentoAuxiliar) {
+  public function __construct(/**
+   * Código do lançamento (conlancamval)
+   */
+  protected $iCodigoLancamento, /**
+   * Código reduzido da conta no plano de contas PCASP
+   */
+  protected $iCodigoReduzido, ILancamentoAuxiliar $oLancamentoAuxiliar) {
 
-    $this->iCodigoLancamento     = $iCodigoLancamento;
-    $this->iCodigoReduzido       = $iCodigoReduzido;
     $this->oLancamentoAuxiliar   = $oLancamentoAuxiliar;
     $this->oContaCorrenteDetalhe = $oLancamentoAuxiliar->getContaCorrenteDetalhe();
 
@@ -139,7 +131,7 @@ abstract class ContaCorrenteBase {
     $this->setInstituicao(InstituicaoRepository::getInstituicaoByCodigo($iInstituicaoSessao));
     $this->setContaPlano(ContaPlanoPCASPRepository::getContaByCodigo(null,
                                                                      $iAnoSessao,
-                                                                     $iCodigoReduzido,
+                                                                     $this->iCodigoReduzido,
                                                                      $iInstituicaoSessao
                                                                     )
                         );
@@ -196,7 +188,7 @@ abstract class ContaCorrenteBase {
       $dtLancamento = date("Y-m-d", db_getsession("DB_datausu"));
     }
 
-    list($iAno, $iMes, $iDia) = explode("-", $dtLancamento);
+    [$iAno, $iMes, $iDia] = explode("-", $dtLancamento);
 
     $oDaoContaCorrenteSaldo = db_utils::getDao("contacorrentesaldo");
 
@@ -316,7 +308,7 @@ abstract class ContaCorrenteBase {
   public static function atualizarSaldoContaCorrenteReprocessamento($oStdConLancamVal) {
 
     $oDaoContaCorrenteSaldo   = db_utils::getDao("contacorrentesaldo");
-    list($iAno, $iMes, $iDia) = explode("-", $oStdConLancamVal->c69_data);
+    [$iAno, $iMes, $iDia] = explode("-", (string) $oStdConLancamVal->c69_data);
     $sCampos                  = "c29_sequencial, c28_tipo, c29_debito, c29_credito";
     $sWhere                   = "     c69_sequen = {$oStdConLancamVal->c69_sequen} ";
     $sWhere                  .= " and c29_mesusu = {$iMes} ";

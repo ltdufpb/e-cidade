@@ -32,9 +32,9 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ossoariojazigo_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clossoariojazigo = new cl_ossoariojazigo;
 $clossoariojazigo->rotulo->label("cm25_i_codigo");
@@ -115,7 +115,7 @@ $clossoariojazigo->rotulo->label("cm25_i_lotecemit");
 
                     if (empty($tipo)) {
 
-                      $x = array('' => 'Selecione', 'O' => 'Ossário', 'J' => 'Jazigo');
+                      $x = ['' => 'Selecione', 'O' => 'Ossário', 'J' => 'Jazigo'];
                       db_select('cm25_c_tipo', $x, true, 1, "");
                     }
                   ?>
@@ -191,10 +191,10 @@ $clossoariojazigo->rotulo->label("cm25_i_lotecemit");
                 $sql = $clossoariojazigo->sql_query("", $campos, "cm25_i_codigo", $where);
               }
 
-      		    $repassa = array();
+      		    $repassa = [];
 
               if(isset($chave_cm25_i_codigo)) {
-                $repassa = array("chave_cm25_i_codigo" => $chave_cm25_i_codigo, "chave_cm25_i_codigo" => $chave_cm25_i_codigo);
+                $repassa = ["chave_cm25_i_codigo" => $chave_cm25_i_codigo, "chave_cm25_i_codigo" => $chave_cm25_i_codigo];
               }
 
               db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orccenarioeconomicoparam_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorccenarioeconomicoparam = new cl_orccenarioeconomicoparam;
 $clorccenarioeconomicoparam->rotulo->label("o03_sequencial");
 $clorccenarioeconomicoparam->rotulo->label("o03_descricao");
@@ -117,9 +117,9 @@ $clorccenarioeconomicoparam->rotulo->label("o03_anoreferencia");
         }else{
            $sql = $clorccenarioeconomicoparam->sql_query("",$campos,"o03_sequencial", $sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o03_descricao)){
-          $repassa = array("chave_o03_sequencial"=>$chave_o03_sequencial,"chave_o03_descricao"=>$chave_o03_descricao);
+          $repassa = ["chave_o03_sequencial"=>$chave_o03_sequencial,"chave_o03_descricao"=>$chave_o03_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

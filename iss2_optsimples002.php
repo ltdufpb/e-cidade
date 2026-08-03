@@ -34,14 +34,14 @@ $clIssCadSimples = new cl_isscadsimples();
 
 $oGet = db_utils::postMemory($_GET);
 
-$aListaHead    = Array();
-$aWhereSimples = Array();
+$aListaHead    = [];
+$aWhereSimples = [];
 
-$sDataIncSimplesIni   = implode("-",array_reverse(explode("/",$oGet->dataincini)));
-$sDataIncSimplesFin   = implode("-",array_reverse(explode("/",$oGet->dataincfin)));
+$sDataIncSimplesIni   = implode("-",array_reverse(explode("/",(string) $oGet->dataincini)));
+$sDataIncSimplesFin   = implode("-",array_reverse(explode("/",(string) $oGet->dataincfin)));
 
-$sDataBaixaSimplesIni = implode("-",array_reverse(explode("/",$oGet->databaixaini)));
-$sDataBaixaSimplesFin = implode("-",array_reverse(explode("/",$oGet->databaixafin)));
+$sDataBaixaSimplesIni = implode("-",array_reverse(explode("/",(string) $oGet->databaixaini)));
+$sDataBaixaSimplesFin = implode("-",array_reverse(explode("/",(string) $oGet->databaixafin)));
 
 if ( trim($sDataIncSimplesIni) != '' ) {
 	$aWhereSimples[] = " isscadsimples.q38_dtinicial >= '{$sDataIncSimplesIni}' ";
@@ -59,15 +59,15 @@ if ( trim($sDataBaixaSimplesFin) != '' ) {
   $aWhereSimples[] = " isscadsimplesbaixa.q39_dtbaixa <= '{$sDataBaixaSimplesFin}' ";
 }
 
-if ( trim($oGet->situacao) == '1' ) {
+if ( trim((string) $oGet->situacao) == '1' ) {
   $aWhereSimples[] = " issbase.q02_dtbaix is null ";
   $aListaHead[]    = " Somente Inscrições Ativas";
-} else if ( trim($oGet->situacao) == '2' ) {
+} else if ( trim((string) $oGet->situacao) == '2' ) {
 	$aWhereSimples[] = " issbase.q02_dtbaix is not null ";
 	$aListaHead[]    = " Somente Inscrições Baixadas";
 }
 
-if ( trim($oGet->categoria) != '0' ) {
+if ( trim((string) $oGet->categoria) != '0' ) {
   $aWhereSimples[] = " isscadsimples.q38_categoria = {$oGet->categoria} ";
 }
 
@@ -132,13 +132,13 @@ switch ($oGet->categoria) {
   break;
 }
 
-if ( trim($oGet->dataincini) != '' || trim($oGet->dataincfin) != '' ) {
+if ( trim((string) $oGet->dataincini) != '' || trim((string) $oGet->dataincfin) != '' ) {
 
 	$sHeadPeriodoInscr = " Inscrições Incluídas no Simples";
 
-	if ( trim($oGet->dataincini) == '' || trim($oGet->dataincfin) == '' ) {
+	if ( trim((string) $oGet->dataincini) == '' || trim((string) $oGet->dataincfin) == '' ) {
 
-		if ( trim($oGet->dataincini) != '' ) {
+		if ( trim((string) $oGet->dataincini) != '' ) {
 			$sHeadPeriodoInscr .= " a partir de {$oGet->dataincini}";
 		} else {
 			$sHeadPeriodoInscr .= " até {$oGet->dataincfin}";
@@ -151,13 +151,13 @@ if ( trim($oGet->dataincini) != '' || trim($oGet->dataincfin) != '' ) {
 	$aListaHead[] = $sHeadPeriodoInscr;
 }
 
-if ( trim($oGet->databaixaini) != '' || trim($oGet->databaixafin) != '' ) {
+if ( trim((string) $oGet->databaixaini) != '' || trim((string) $oGet->databaixafin) != '' ) {
 
   $sHeadPeriodoBaixa = " Inscrições Baixadas do Simples";
 
-  if ( trim($oGet->databaixaini) == '' || trim($oGet->databaixafin) == '' ) {
+  if ( trim((string) $oGet->databaixaini) == '' || trim((string) $oGet->databaixafin) == '' ) {
 
-    if ( trim($oGet->databaixaini) != '' ) {
+    if ( trim((string) $oGet->databaixaini) != '' ) {
       $sHeadPeriodoBaixa .= " a partir de {$oGet->databaixaini}";
     } else {
       $sHeadPeriodoBaixa .= " até {$oGet->databaixafin}";
@@ -186,7 +186,7 @@ $iFonte    = 6;
 $iAlt      = 4;
 $iPreenche = 1;
 
-imprimirCabecalho($oPdf, $iAlt, $iFonte, true);
+imprimirCabecalho($oPdf, $iAlt, $iFonte);
 
 for($iInd = 0; $iInd < $iLinhasSimples; $iInd++){
 

@@ -36,7 +36,7 @@ final class PadArquivoSigapOrgao extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "Orgao";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   public function gerarDados() {
@@ -52,7 +52,7 @@ final class PadArquivoSigapOrgao extends PadArquivoSigap {
      * Separamos a data do em ano, mes, dia
      */
     $sWhereInstit = " and o58_instit = ".db_getsession("DB_instit");
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     
     $sSqlOrgaos  = "select distinct    "; 
     $sSqlOrgaos .= "       o40_anousu, ";
@@ -73,7 +73,7 @@ final class PadArquivoSigapOrgao extends PadArquivoSigap {
       $oOrgaoRetorno->orgCodigoEntidade   = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oOrgaoRetorno->orgMesAnoMovimento  = $sDiaMesAno;
       $oOrgaoRetorno->orgExercicio        = $oOrgao->o40_anousu;
-      $oOrgaoRetorno->orgCodigoOrgao      = str_pad($oOrgao->o40_orgao, 2, "0", STR_PAD_LEFT);
+      $oOrgaoRetorno->orgCodigoOrgao      = str_pad((string) $oOrgao->o40_orgao, 2, "0", STR_PAD_LEFT);
       $oOrgaoRetorno->orgNomeOrgao        = $oOrgao->o40_descr;
       
       array_push($this->aDados, $oOrgaoRetorno);
@@ -83,13 +83,13 @@ final class PadArquivoSigapOrgao extends PadArquivoSigap {
   
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "orgCodigoEntidade",
                         "orgMesAnoMovimento",
                         "orgExercicio",
                         "orgCodigoOrgao",
                         "orgNomeOrgao"
-                       );
+                       ];
     return $aElementos;  
   }
   

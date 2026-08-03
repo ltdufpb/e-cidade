@@ -33,7 +33,7 @@ include(modification("classes/db_tarefaclientes_classe.php"));
 include(modification("classes/db_tarefaenvol_classe.php"));
 include(modification("classes/db_clientesenvol_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 $cltarefaclientes = new cl_tarefaclientes;
 $cltarefaenvol = new cl_tarefaenvol;

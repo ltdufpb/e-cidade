@@ -38,7 +38,7 @@ require_once(modification("classes/db_obraspropri_classe.php"));
 require_once(modification("classes/db_obrashabite_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-$oPost = db_utils::postMemory($HTTP_POST_VARS);
+$oPost = db_utils::postMemory($_POST);
 
 $cliptubase        = new cl_iptubase;
 $clobraslote       = new cl_obraslote;
@@ -47,7 +47,7 @@ $clobrashabite     = new cl_obrashabite;
 $clobraspropri     = new cl_obraspropri;
 $objJSON           = new Services_JSON();
 
-$aRetorno    = array();
+$aRetorno    = [];
 $lEmpty      = false;
 $sSaidaDebug = '';
 

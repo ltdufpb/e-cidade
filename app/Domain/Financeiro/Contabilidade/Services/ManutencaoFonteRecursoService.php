@@ -100,9 +100,7 @@ abstract class ManutencaoFonteRecursoService
     {
         $this->buscarRecursos();
 
-        return $this->recursos->map(function (Recurso $recurso) {
-            return $recurso->getComplemento();
-        });
+        return $this->recursos->map(fn(Recurso $recurso) => $recurso->getComplemento());
     }
     /**
      * @param FormRequest $request
@@ -125,9 +123,7 @@ abstract class ManutencaoFonteRecursoService
             }
 
             $item = \JSON::create()->parse($item);
-            $recursos = array_filter($item->recursos, function ($recurso) use ($item) {
-                return $item->complemento == $recurso->complemento->codigo;
-            });
+            $recursos = array_filter($item->recursos, fn($recurso) => $item->complemento == $recurso->complemento->codigo);
 
             if (empty($recursos)) {
                 throw new Exception("Erro ao identificar o recurso.", 406);

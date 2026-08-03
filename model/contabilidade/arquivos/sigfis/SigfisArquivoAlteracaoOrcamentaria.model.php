@@ -197,7 +197,7 @@ class SigfisArquivoAlteracaoOrcamentaria extends SigfisArquivoBase implements iP
           
           $sDescricao           = str_replace("\n", " ", $oDadosSuplementacao->descricao);
           $sDescricao           = str_replace("\r", " ", $sDescricao);
-          $UnidadeOrcamentaria = str_pad($oDadosSuplementacao->unidade, 4, ' ', STR_PAD_LEFT);
+          $UnidadeOrcamentaria = str_pad((string) $oDadosSuplementacao->unidade, 4, ' ', STR_PAD_LEFT);
           
           $dtDataLei            = $this->formataData($oDadosSuplementacao->data_lei);
           $dtDataDecreto        = $this->formataData($oDadosSuplementacao->data_decreto);
@@ -206,36 +206,36 @@ class SigfisArquivoAlteracaoOrcamentaria extends SigfisArquivoBase implements iP
           $nValorSuplementacao  = abs( $this->formataValor($oDadosSuplementacao->valor_suplementado) );
           
           $oSuplementacao->codigolinha             = 408;
-          $oSuplementacao->cd_Unidade              = str_pad($this->sCodigoTribunal,             4, '0', STR_PAD_LEFT); 
-          $oSuplementacao->nu_ProjetoAtividade     = str_pad($oDadosSuplementacao->projativ,     4, "0", STR_PAD_LEFT);
-          $oSuplementacao->tp_ProjetoAtividade     = str_pad($oDadosSuplementacao->tipo_projeto, 1, "0", STR_PAD_LEFT);
+          $oSuplementacao->cd_Unidade              = str_pad((string) $this->sCodigoTribunal,             4, '0', STR_PAD_LEFT); 
+          $oSuplementacao->nu_ProjetoAtividade     = str_pad((string) $oDadosSuplementacao->projativ,     4, "0", STR_PAD_LEFT);
+          $oSuplementacao->tp_ProjetoAtividade     = str_pad((string) $oDadosSuplementacao->tipo_projeto, 1, "0", STR_PAD_LEFT);
           $oSuplementacao->tp_Fundamento           = 1;
-          $oSuplementacao->tp_Alteracao            = str_pad($iTipoSuplementacao, 2, ' ', STR_PAD_LEFT);
-          $oSuplementacao->nu_Fundamento           = str_pad(substr($oDadosSuplementacao->num_decreto,0,16), 16, ' ', STR_PAD_RIGHT);
+          $oSuplementacao->tp_Alteracao            = str_pad((string) $iTipoSuplementacao, 2, ' ', STR_PAD_LEFT);
+          $oSuplementacao->nu_Fundamento           = str_pad(substr((string) $oDadosSuplementacao->num_decreto,0,16), 16, ' ', STR_PAD_RIGHT);
           $oSuplementacao->cd_UnidadeOrcamentaria  = str_pad($UnidadeOrcamentaria,4, ' ', STR_PAD_LEFT);
-          $oSuplementacao->cd_Elemento             = str_pad(substr($oDadosSuplementacao->elemento, 1, 8), 8, ' ', 
+          $oSuplementacao->cd_Elemento             = str_pad(substr((string) $oDadosSuplementacao->elemento, 1, 8), 8, ' ', 
                                                              STR_PAD_LEFT); 
-          $oSuplementacao->cd_FonteRecurso         = str_pad($oDadosSuplementacao->recurso,   4, ' ', STR_PAD_LEFT);
-          $oSuplementacao->cd_Funcao               = str_pad($oDadosSuplementacao->funcao,    2, ' ', STR_PAD_LEFT);
+          $oSuplementacao->cd_FonteRecurso         = str_pad((string) $oDadosSuplementacao->recurso,   4, ' ', STR_PAD_LEFT);
+          $oSuplementacao->cd_Funcao               = str_pad((string) $oDadosSuplementacao->funcao,    2, ' ', STR_PAD_LEFT);
           $oSuplementacao->dt_Ano                  = $this->iAnoUso; 
-          $oSuplementacao->cd_Programa             = str_pad($oDadosSuplementacao->subfuncao, 4, ' ', STR_PAD_LEFT);
-          $oSuplementacao->cd_SubPrograma          = str_pad($oDadosSuplementacao->programa,  4, ' ', STR_PAD_LEFT);
+          $oSuplementacao->cd_Programa             = str_pad((string) $oDadosSuplementacao->subfuncao, 4, ' ', STR_PAD_LEFT);
+          $oSuplementacao->cd_SubPrograma          = str_pad((string) $oDadosSuplementacao->programa,  4, ' ', STR_PAD_LEFT);
           $oSuplementacao->dt_Alteracao            = $dtDataAlteracao;
           $oSuplementacao->vl_Alteracao            = str_pad($nValorSuplementacao,  16, '0', STR_PAD_LEFT);
           $oSuplementacao->dt_AnoMes               = $oDadosSuplementacao->competencia;
           $oSuplementacao->dt_Fundamento           = $dtDataDecreto;
-          $oSuplementacao->de_LeisAutorizativas    = str_pad(substr($oDadosSuplementacao->descricao_lei,0,100), 100, ' ',
+          $oSuplementacao->de_LeisAutorizativas    = str_pad(substr((string) $oDadosSuplementacao->descricao_lei,0,100), 100, ' ',
                                                              STR_PAD_RIGHT);
-          $oSuplementacao->nu_leiautorizativa      = str_pad($oDadosSuplementacao->num_lei, 10, ' ', STR_PAD_RIGHT);
+          $oSuplementacao->nu_leiautorizativa      = str_pad((string) $oDadosSuplementacao->num_lei, 10, ' ', STR_PAD_RIGHT);
           $oSuplementacao->dt_leiautorizativa      = $dtDataLei;
-          $oSuplementacao->cd_Orgao                = str_pad($oDadosSuplementacao->orgao, 4, ' ', STR_PAD_LEFT);
+          $oSuplementacao->cd_Orgao                = str_pad((string) $oDadosSuplementacao->orgao, 4, ' ', STR_PAD_LEFT);
           $oSuplementacao->nu_DiarioOficial        = $dtDataAlteracao;
   
           $this->aDados[] = $oSuplementacao;
         } else {
           
-          $sErroLog  = "Dotação ". str_pad($oDadosSuplementacao->dotacao, 6, ' ', STR_PAD_LEFT) ;
-          $sErroLog .= " de Recurso ". str_pad($oDadosSuplementacao->recurso, 6, ' ', STR_PAD_LEFT) ;
+          $sErroLog  = "Dotação ". str_pad((string) $oDadosSuplementacao->dotacao, 6, ' ', STR_PAD_LEFT) ;
+          $sErroLog .= " de Recurso ". str_pad((string) $oDadosSuplementacao->recurso, 6, ' ', STR_PAD_LEFT) ;
           $sErroLog .= " não possui vínculo com os recursos do Sigfis. \n";
           $this->addLog($sErroLog);
         }

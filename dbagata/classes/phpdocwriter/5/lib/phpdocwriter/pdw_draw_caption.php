@@ -26,11 +26,10 @@ import('phpdocwriter.pdw_drawing');
 class pdw_draw_caption extends pdw_drawing
 {
 
-function pdw_draw_caption(&$obj,$params)
+function __construct(&$obj,$params)
 {
 	$this->parent =& $obj;
-	$this->params =& $params; 
-	parent::pdw_drawing();
+	$this->params =& $params;
 	
 	$this->office = new XMLBranch('draw:caption');
 	$this->office->setTagAttribute('draw:style-name', 'gr'.$this->grno);

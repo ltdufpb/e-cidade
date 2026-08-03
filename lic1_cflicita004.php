@@ -36,7 +36,7 @@ require_once(modification("classes/db_pctipocompratribunal_classe.php"));
 require_once(modification("classes/db_pccflicitapar_classe.php"));
 require_once(modification("model/licitacao/LicitacaoModalidade.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcflicita             = new cl_cflicita;
 $clpctipocompratribunal = new cl_pctipocompratribunal;

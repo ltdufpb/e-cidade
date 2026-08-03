@@ -52,11 +52,11 @@ $clcriaabas = new cl_criaabas;
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica    = array("a1"=>"Paciente",
-                                      "a2"=>"Vacinações");
-   $clcriaabas->src           = array("a1"=>"vac4_vac_aplica004.php","a2"=>"");
-   $clcriaabas->sizecampo     = array("a1"=>20,"a2"=>20);
-   $clcriaabas->disabled      = array("a1"=>"false","a2"=>"true");
+   $clcriaabas->identifica    = ["a1"=>"Paciente",
+                                      "a2"=>"Vacinações"];
+   $clcriaabas->src           = ["a1"=>"vac4_vac_aplica004.php","a2"=>""];
+   $clcriaabas->sizecampo     = ["a1"=>20,"a2"=>20];
+   $clcriaabas->disabled      = ["a1"=>"false","a2"=>"true"];
    $clcriaabas->scrolling     = "no";
    $clcriaabas->iframe_height = "600";
    $clcriaabas->iframe_width  = "100%";

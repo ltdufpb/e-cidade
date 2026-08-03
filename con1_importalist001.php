@@ -42,7 +42,7 @@ $clprojmelhoriasresp = new cl_projmelhoriasresp;
 $clrotulo = new rotulocampo;
 $clrotulo->label("d40_codigo");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (isset($incluir)){
   db_inicio_transacao();

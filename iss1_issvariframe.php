@@ -27,7 +27,7 @@
 
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $db_botao=1;
 $db_opcao=1;
 $clrotulo = new rotulocampo;

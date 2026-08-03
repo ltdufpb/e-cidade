@@ -52,7 +52,7 @@ $clslipnum = new cl_slipnum;
 $clsliprecurso = new cl_sliprecurso;
 $clempparamentro = new cl_empparametro;
 
- db_postmemory($HTTP_POST_VARS);
+ db_postmemory($_POST);
 // parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 
 $db_erro = "";
@@ -64,12 +64,12 @@ if (isset($confirma) && !empty($confirma)) {
 
   $sqlerro = false;
   db_inicio_transacao();
-  if (trim($debito) == "") {
+  if (trim((string) $debito) == "") {
     $db_erro = "Conta a Debitar(Receber) não Informada";
     $sqlerro = true;
   }
 
-  if (trim($credito) == "" and $sqlerro == false) {
+  if (trim((string) $credito) == "" and $sqlerro == false) {
     $db_erro = "Conta a Creditar(Pagar) não Informada";
     $sqlerro = true;
   }
@@ -109,7 +109,7 @@ if (isset($confirma) && !empty($confirma)) {
      * Procuramos se a conta credito do slip é uma conta pagadora no caixa.
      * caso for. setamos essa conta como conta pagadora na agenda.
      */
-    $oParametroAgenda = (db_stdClass::getParametro("empparametro",array(db_getsession('DB_anousu')),"e30_agendaautomatico"));
+    $oParametroAgenda = (db_stdClass::getParametro("empparametro",[db_getsession('DB_anousu')],"e30_agendaautomatico"));
     if ($oParametroAgenda[0]->e30_agendaautomatico == "t" ) {
       if ($credito != 0 ) {
         $oDaoEmpAgeTipo = db_utils::getDao("empagetipo");
@@ -143,7 +143,7 @@ if (isset($confirma) && !empty($confirma)) {
 
   if ($sqlerro == false) {
     // pega a variavel chaves e desmebra-a em pares chave=>valor
-    $ch = split('#',$chaves);
+    $ch = preg_split('#\##m',$chaves);
 
     foreach($ch as $key => $value) {
       // echo "Chave: $key; Valor: $value<br />\n";
@@ -313,7 +313,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_slip.hide();
   <?php 
-    echo "window.document.location.href='".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo "window.document.location.href='".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
 	?>
 }
 </script>

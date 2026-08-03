@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE matordemprocesso
 class cl_matordemprocesso { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m08_sequencial = 0; 
-   var $m08_matordem = 0; 
-   var $m08_numeroprocesso = null; 
+   public $m08_sequencial = 0; 
+   public $m08_matordem = 0; 
+   public $m08_numeroprocesso = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m08_sequencial = int4 = sequencial 
                  m08_matordem = int4 = matordem 
                  m08_numeroprocesso = varchar(15) = numero processo 
                  ";
    //funcao construtor da classe 
-   function cl_matordemprocesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matordemprocesso"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -72,10 +72,10 @@ class cl_matordemprocesso {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m08_sequencial = pg_result($result,0,0); 
+       $this->m08_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from matordemprocesso_m08_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m08_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m08_sequencial)){
          $this->erro_sql = " Campo m08_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -107,7 +107,7 @@ class cl_matordemprocesso {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "matordemprocesso ($this->m08_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "matordemprocesso já Cadastrado";
@@ -136,12 +136,12 @@ class cl_matordemprocesso {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20627,'$this->m08_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3715,20627,'','".AddSlashes(pg_result($resaco,0,'m08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3715,20628,'','".AddSlashes(pg_result($resaco,0,'m08_matordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3715,20629,'','".AddSlashes(pg_result($resaco,0,'m08_numeroprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3715,20627,'','".AddSlashes(pg_fetch_result($resaco,0,'m08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3715,20628,'','".AddSlashes(pg_fetch_result($resaco,0,'m08_matordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3715,20629,'','".AddSlashes(pg_fetch_result($resaco,0,'m08_numeroprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -151,10 +151,10 @@ class cl_matordemprocesso {
       $this->atualizacampos();
      $sql = " update matordemprocesso set ";
      $virgula = "";
-     if(trim($this->m08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_sequencial"])){ 
+     if(trim((string) $this->m08_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_sequencial"])){ 
        $sql  .= $virgula." m08_sequencial = $this->m08_sequencial ";
        $virgula = ",";
-       if(trim($this->m08_sequencial) == null ){ 
+       if(trim((string) $this->m08_sequencial) == null ){ 
          $this->erro_sql = " Campo sequencial não informado.";
          $this->erro_campo = "m08_sequencial";
          $this->erro_banco = "";
@@ -164,10 +164,10 @@ class cl_matordemprocesso {
          return false;
        }
      }
-     if(trim($this->m08_matordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_matordem"])){ 
+     if(trim((string) $this->m08_matordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_matordem"])){ 
        $sql  .= $virgula." m08_matordem = $this->m08_matordem ";
        $virgula = ",";
-       if(trim($this->m08_matordem) == null ){ 
+       if(trim((string) $this->m08_matordem) == null ){ 
          $this->erro_sql = " Campo matordem não informado.";
          $this->erro_campo = "m08_matordem";
          $this->erro_banco = "";
@@ -177,7 +177,7 @@ class cl_matordemprocesso {
          return false;
        }
      }
-     if(trim($this->m08_numeroprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_numeroprocesso"])){ 
+     if(trim((string) $this->m08_numeroprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m08_numeroprocesso"])){ 
        $sql  .= $virgula." m08_numeroprocesso = '$this->m08_numeroprocesso' ";
        $virgula = ",";
      }
@@ -195,15 +195,15 @@ class cl_matordemprocesso {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20627,'$this->m08_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["m08_sequencial"]) || $this->m08_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3715,20627,'".AddSlashes(pg_result($resaco,$conresaco,'m08_sequencial'))."','$this->m08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3715,20627,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m08_sequencial'))."','$this->m08_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["m08_matordem"]) || $this->m08_matordem != "")
-             $resac = db_query("insert into db_acount values($acount,3715,20628,'".AddSlashes(pg_result($resaco,$conresaco,'m08_matordem'))."','$this->m08_matordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3715,20628,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m08_matordem'))."','$this->m08_matordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["m08_numeroprocesso"]) || $this->m08_numeroprocesso != "")
-             $resac = db_query("insert into db_acount values($acount,3715,20629,'".AddSlashes(pg_result($resaco,$conresaco,'m08_numeroprocesso'))."','$this->m08_numeroprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3715,20629,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m08_numeroprocesso'))."','$this->m08_numeroprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -257,12 +257,12 @@ class cl_matordemprocesso {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20627,'$m08_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3715,20627,'','".AddSlashes(pg_result($resaco,$iresaco,'m08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3715,20628,'','".AddSlashes(pg_result($resaco,$iresaco,'m08_matordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3715,20629,'','".AddSlashes(pg_result($resaco,$iresaco,'m08_numeroprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3715,20627,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m08_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3715,20628,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m08_matordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3715,20629,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m08_numeroprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -323,7 +323,7 @@ class cl_matordemprocesso {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matordemprocesso";
@@ -338,7 +338,7 @@ class cl_matordemprocesso {
    function sql_query ( $m08_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -362,7 +362,7 @@ class cl_matordemprocesso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -375,7 +375,7 @@ class cl_matordemprocesso {
    function sql_query_file ( $m08_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,7 +396,7 @@ class cl_matordemprocesso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

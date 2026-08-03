@@ -137,7 +137,7 @@ try {
             $dadosUnidade->coddepto      = $oUnidadeGestora->getDepartamento()->getCodigo();
             $dadosUnidade->nome_depto    = $oUnidadeGestora->getDepartamento()->getNomeDepartamento();
             $aRecolhimentos              = $oTipoRecolhimentoRepository->getTiposRecolhimentoDaUnidadeGestora($oUnidadeGestora);
-            $dadosUnidade->recolhimentos = array();
+            $dadosUnidade->recolhimentos = [];
             foreach ($aRecolhimentos as $oRecolhimento) {
 
                 $dadosRecolhimento                      = new \stdClass();
@@ -148,13 +148,13 @@ try {
                 $dadosUnidade->recolhimentos[]          = $dadosRecolhimento;
             }
             $departamentos = $oDepartamentoUnidadeRepository->getPorUnidadeGestora($oUnidadeGestora);
-            $dadosUnidade->departamentos = array();
+            $dadosUnidade->departamentos = [];
             foreach ($departamentos as $departamento) {
 
-                $dadosUnidade->departamentos[] = (object)array(
+                $dadosUnidade->departamentos[] = (object)[
                     'codigo' => $departamento->getCodigo(),
                     'nome'   => $departamento->getNomeDepartamento()
-                );
+                ];
             }
 
             $oRetorno->unidade = $dadosUnidade;
@@ -196,7 +196,7 @@ try {
 
             if (!empty($oParam->departamentos)) {
 
-                $departamentosNaoVinculados = array();
+                $departamentosNaoVinculados = [];
                 foreach ($oParam->departamentos as $stdDepartamento) {
 
                     /*

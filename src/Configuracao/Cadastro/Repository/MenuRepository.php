@@ -17,7 +17,7 @@ class MenuRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * DiversosRepository constructor.
@@ -52,7 +52,7 @@ class MenuRepository
             throw new Exception("Não foi possível buscar os menus.");
         }
 
-        $menus = array();
+        $menus = [];
 
         if (pg_num_rows($rs) === 0) {
             return $menus;

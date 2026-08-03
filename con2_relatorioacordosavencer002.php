@@ -80,8 +80,8 @@ if (isset($oPost->ac16_datainicio) && isset($oPost->ac16_datafim)) {
   	
   	$sDataInicio = $oPost->ac16_datainicio;
   	$sDataFim    = $oPost->ac16_datafim;
-  	$dtIni       = implode("-",array_reverse(explode("/",$sDataInicio)));
-  	$dtFim       = implode("-",array_reverse(explode("/",$sDataFim)));
+  	$dtIni       = implode("-",array_reverse(explode("/",(string) $sDataInicio)));
+  	$dtFim       = implode("-",array_reverse(explode("/",(string) $sDataFim)));
   	
     $sWhere .= "{$sAnd} acordo.ac16_datafim between '{$dtIni}' and '{$dtFim}' ";
     $sAnd    = " and "; 
@@ -107,9 +107,9 @@ if (!empty($oPost->listacontratado)) {
 
 if (!empty($oPost->ordem)) {
     
-    if (trim($oPost->ordem) == 1) {
+    if (trim((string) $oPost->ordem) == 1) {
       $sOrder = 'acordo.ac16_datafim';
-    } else if (trim($oPost->ordem) == 2) {
+    } else if (trim((string) $oPost->ordem) == 2) {
       $sOrder = 'acordo.ac16_contratado';
     }
 }
@@ -131,7 +131,7 @@ if ( $clacordo->numrows == 0  ) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado!");
 }
  
-$aDadosAcordo = array();
+$aDadosAcordo = [];
 for ($iInd = 0; $iInd < $clacordo->numrows; $iInd++) {
 
   $oAcordoCompleto = db_utils::fieldsMemory($rsSqlAcordo, $iInd);
@@ -187,11 +187,11 @@ foreach ($aDadosAcordo as $oDadoAcordo) {
   $oPdf->SetFont('Arial','',$iFonte-1);
   $oPdf->Cell(40 ,$iAlt,$oDadoAcordo->getCodigo                                                ,'TBR',0,'C',$iCorFundo);
   $oPdf->Cell(40 ,$iAlt,$oDadoAcordo->getTipoAcordo                                                ,1,0,'L',$iCorFundo);
-  $oPdf->Cell(78 ,$iAlt,substr($oDadoAcordo->getContratado, 0, 46)                                 ,1,0,'L',$iCorFundo);
+  $oPdf->Cell(78 ,$iAlt,substr((string) $oDadoAcordo->getContratado, 0, 46)                                 ,1,0,'L',$iCorFundo);
   $oPdf->Cell(40 ,$iAlt,$oDadoAcordo->getAssinatura                                                ,1,0,'C',$iCorFundo);
   $oPdf->Cell(40 ,$iAlt,$oDadoAcordo->getVigencia                                                  ,1,0,'C',$iCorFundo);
   $oPdf->Cell(40 ,$iAlt,trim(db_formatar($oDadoAcordo->getValorTotal, 'f'))                    ,'TBL',1,'R',$iCorFundo);
-  $oPdf->MultiCell(278,$iAlt,urldecode($oDadoAcordo->getResumoObjeto)                             ,'TB','L',$iCorFundo);
+  $oPdf->MultiCell(278,$iAlt,urldecode((string) $oDadoAcordo->getResumoObjeto)                             ,'TB','L',$iCorFundo);
   
 }
   

@@ -96,7 +96,7 @@ db_input('dono',40,$Iz01_nome,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("j44_matric"=>@$j44_matric);
+	 $chavepri= ["j44_matric"=>@$j44_matric];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $climobil->sql_query(null,"j44_matric,a.z01_nome","j44_matric","j44_numcgm=".@$j44_numcgm);	 
 	 $cliframe_alterar_excluir->campos  ="j44_matric,z01_nome";
@@ -173,7 +173,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cadimobil.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

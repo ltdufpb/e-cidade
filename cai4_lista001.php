@@ -69,8 +69,8 @@ db_sel_instit(null, "db21_usasisagua, db21_regracgmiptu, db21_regracgmiss");
     //caso não utilize o modulo agua não monta as abas 
     if (isset($db21_usasisagua) && $db21_usasisagua == 't') {
       
-      $clcriaabas->identifica = array("dadosdalista"=>" Dados da Lista ", "filtroimoveis"=>" Filtro/Imóveis ");
-      $clcriaabas->src        = array("dadosdalista"=>"cai4_lista003.php", "filtroimoveis"=>"cai4_lista004.php");
+      $clcriaabas->identifica = ["dadosdalista"=>" Dados da Lista ", "filtroimoveis"=>" Filtro/Imóveis "];
+      $clcriaabas->src        = ["dadosdalista"=>"cai4_lista003.php", "filtroimoveis"=>"cai4_lista004.php"];
       $clcriaabas->cria_abas();
       
     } else {

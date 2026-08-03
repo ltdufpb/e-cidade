@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_progressaoparcialalunoresultadofinal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprogressaoparcialalunoresultadofinal = new cl_progressaoparcialalunoresultadofinal;
 $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_sequencial");
 $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_progressaoparcialalunomatricula");
@@ -98,9 +98,9 @@ $clprogressaoparcialalunoresultadofinal->rotulo->label("ed121_progressaoparciala
         }else{
            $sql = $clprogressaoparcialalunoresultadofinal->sql_query("",$campos,"ed121_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed121_progressaoparcialalunomatricula)){
-          $repassa = array("chave_ed121_sequencial"=>$chave_ed121_sequencial,"chave_ed121_progressaoparcialalunomatricula"=>$chave_ed121_progressaoparcialalunomatricula);
+          $repassa = ["chave_ed121_sequencial"=>$chave_ed121_sequencial,"chave_ed121_progressaoparcialalunomatricula"=>$chave_ed121_progressaoparcialalunomatricula];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

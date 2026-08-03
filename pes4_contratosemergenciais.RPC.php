@@ -67,14 +67,14 @@ try {
         throw new DBException(_M(MENSAGEM . 'erro_buscar_contratos'));
       }
 
-      $aRenovacoes = Array();
+      $aRenovacoes = [];
 
       for ($iRenovacao = 0; $iRenovacao < pg_num_rows($rsContratoEmergencialRenovacao); $iRenovacao++) {
         $oRenovacao   = new stdClass();
         $oRenovacao->iMatricula           = $oParam->iMatricula;
         $oRenovacao->iSequencialContrato  = db_utils::fieldsMemory($rsContratoEmergencialRenovacao,$iRenovacao)->rh164_contratoemergencial;
         $oRenovacao->iSequencialRenovacao = db_utils::fieldsMemory($rsContratoEmergencialRenovacao,$iRenovacao)->rh164_sequencial;
-        $oRenovacao->sDescricao           = urlencode(db_utils::fieldsMemory($rsContratoEmergencialRenovacao,$iRenovacao)->rh164_descricao);
+        $oRenovacao->sDescricao           = urlencode((string) db_utils::fieldsMemory($rsContratoEmergencialRenovacao,$iRenovacao)->rh164_descricao);
         $oRenovacao->sDataInicio          = db_utils::fieldsMemory($rsContratoEmergencialRenovacao,$iRenovacao)->rh164_datainicio;
         $oRenovacao->sDataFim             = db_utils::fieldsMemory($rsContratoEmergencialRenovacao,$iRenovacao)->rh164_datafim;
 
@@ -112,7 +112,7 @@ try {
        * Verifica se a competencia atual é maior que o vencimento da última renovação, 
        * se for não é permitido alterar.
        */
-      $aDataAtual = split('-', $oParam->sDataFimAtual);
+      $aDataAtual = preg_split('#\-#m', (string) $oParam->sDataFimAtual);
       $iAnoAtual  = $aDataAtual[0];
       $iMesAtual  = $aDataAtual[1];
 
@@ -128,7 +128,7 @@ try {
        * Validamos se a nova data não é menor que a 
        * competencia atual, se fgor não é permitido alterar
        */
-      $aDataNova = split('-', $oParam->sDataFimNova);
+      $aDataNova = preg_split('#\-#m', (string) $oParam->sDataFimNova);
       $iAnoNova  = $aDataNova[0];
       $iMesNova  = $aDataNova[1];
 
@@ -182,12 +182,12 @@ try {
        * Verifica se a competencia atual é maior que o vencimento da última renovação, 
        * se for não é permitido incluir.
        */
-      $aDataUltimaRenovacao = split('-', $oParam->sDataUltimaRenovacao);
+      $aDataUltimaRenovacao = preg_split('#\-#m', (string) $oParam->sDataUltimaRenovacao);
       $iAnoUltimaRenovacao  = $aDataUltimaRenovacao[0];
       $iMesUltimaRenovacao  = $aDataUltimaRenovacao[1];
       $oUltimaRenovacao     = new DBCompetencia($iAnoUltimaRenovacao, $iMesUltimaRenovacao);
 
-      $aDataNovaRenovacao = split('-', $oParam->sDataFim);
+      $aDataNovaRenovacao = preg_split('#\-#m', (string) $oParam->sDataFim);
       $iAnoNovaRenovacao  = $aDataNovaRenovacao[0];
       $iMesNovaRenovacao  = $aDataNovaRenovacao[1];
       $oNovaRenovacao     = new DBCompetencia($iAnoNovaRenovacao, $iMesNovaRenovacao);
@@ -201,7 +201,7 @@ try {
        * Validamos se a nova data não é menor que a 
        * competencia atual, se fgor não é permitido incluir
        */
-      $aDataNova = split('-', $oParam->sDataFim);
+      $aDataNova = preg_split('#\-#m', (string) $oParam->sDataFim);
       $iAnoNova  = $aDataNova[0];
       $iMesNova  = $aDataNova[1];
 
@@ -245,7 +245,7 @@ try {
        * Verifica se a competencia atual é maior que o vencimento da última renovação, 
        * se for não é permitido excluir.
        */
-      $aDataAtual = split('-', $oParam->sDataFimAtual);
+      $aDataAtual = preg_split('#\-#m', (string) $oParam->sDataFimAtual);
       $iAnoAtual  = $aDataAtual[0];
       $iMesAtual  = $aDataAtual[1];
 

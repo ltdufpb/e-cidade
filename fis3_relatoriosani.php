@@ -83,35 +83,35 @@ $pdf->Cell(70,6,$RLy80_data.': '.db_formatar(@$y80_data,'d'),1,0,"J",1);
  */
 $pdf->Cell(120,6,$RLy80_area.': '.@$y80_area,1,1,"J",1);
 
-$aObs    = split("\n",@$y80_obs);
+$aObs    = preg_split("#\n#m",(string) @$y80_obs);
 $iTotaObsln = count($aObs);
 $sObs = "";
 
-$aTexto    = split("\n",@$y80_texto);
+$aTexto    = preg_split("#\n#m",(string) @$y80_texto);
 $iTotaTextoln = count($aTexto);
 $sTexto = "";
 
-$pdf->SetWidths(array(25, 165));
-$pdf->SetAligns(array('L', 'L'));
+$pdf->SetWidths([25, 165]);
+$pdf->SetAligns(['L', 'L']);
 
 if ($iTotaObsln < 6) {
-  $pdf->Row(array("Observação :", @$y80_obs), 6, true, 7, 2, true);
+  $pdf->Row(["Observação :", @$y80_obs], 6, true, 7, 2, true);
 } else {
 
   for ($iObs = 0; $iObs < 5; $iObs ++) {
     $sObs = $sObs.$aObs[$iObs]."\n";
   }
-  $pdf->Row(array("Observação :", $sObs), 6, true, 7, 2, true);
+  $pdf->Row(["Observação :", $sObs], 6, true, 7, 2, true);
 }
 
 if ($iTotaTextoln < 6) {
-  $pdf->Row(array("Texto :", @$y80_texto), 6, true, 7, 2, true);
+  $pdf->Row(["Texto :", @$y80_texto], 6, true, 7, 2, true);
 } else {
 
   for ($iTexto = 0; $iTexto < 5; $iTexto ++) {
     $sTexto = $sTexto.$aTexto[$iTexto]."\n";
   }
-  $pdf->Row(array("Texto :", $sTexto), 6, true, 7, 2, true);
+  $pdf->Row(["Texto :", $sTexto], 6, true, 7, 2, true);
 }
 
 $pdf->Ln(12);
@@ -131,8 +131,8 @@ if($clsaniatividade->numrows > 1){
   for($i=0;$i<$clsaniatividade->numrows;$i++){
     db_fieldsmemory($resultativid,$i);
 
-    $pontos = (strlen($q03_descr)>20) ? '...' : '';
-    $q03_descr = substr($q03_descr, 0, 20).$pontos;
+    $pontos = (strlen((string) $q03_descr)>20) ? '...' : '';
+    $q03_descr = substr((string) $q03_descr, 0, 20).$pontos;
     $pdf->Cell(20,6,''.$y83_seq,1,0,"C",0);
     $pdf->Cell(45,6,''.($y83_dtini != ""?db_formatar($y83_dtini,'d'):''),1,0,"C",0);
     $pdf->Cell(45,6,''.($y83_dtfim != ""?db_formatar($y83_dtfim,'d'):''),1,0,"C",0);
@@ -151,8 +151,8 @@ if($clsaniatividade->numrows > 1){
     $pdf->Cell(25,6,$RLy83_area.'',1,1,"C",1);
     db_fieldsmemory($resultativid,0);
 
-    $pontos = (strlen($q03_descr)>20) ? '...' : '';
-    $q03_descr = substr($q03_descr, 0, 20).$pontos;
+    $pontos = (strlen((string) $q03_descr)>20) ? '...' : '';
+    $q03_descr = substr((string) $q03_descr, 0, 20).$pontos;
     $pdf->Cell(20,6,''.$y83_seq,1,0,"C",0);
     $pdf->Cell(45,6,''.($y83_dtini != ""?db_formatar($y83_dtini,'d'):''),1,0,"C",0);
     $pdf->Cell(45,6,''.($y83_dtfim != ""?db_formatar($y83_dtfim,'d'):''),1,0,"C",0);

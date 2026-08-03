@@ -214,10 +214,10 @@
         </td>
         <td> 
           <?php 
-            $oRetornoPesquisa = array("-"=>"---------",
+            $oRetornoPesquisa = ["-"=>"---------",
                                       "D"=>"DIREITA",
                                       "E"=>"ESQUERDA",
-                                      "S"=>"SUL");
+                                      "S"=>"SUL"];
             
             db_select('x01_orientacao',$oRetornoPesquisa,true,$db_opcao, "onchange='js_retorna_orientacao_rua()'");
           ?>
@@ -239,7 +239,7 @@
         </td>
         <td>
           <?php 
-            $x = array("f"=>"NAO","t"=>"SIM");
+            $x = ["f"=>"NAO","t"=>"SIM"];
             db_select('x01_multiplicador', $x, true, $db_opcao, "");
           ?>
         </td>
@@ -641,7 +641,7 @@
     db_iframe_aguabase.hide();
     <?php 
       if ($db_opcao != 1) {
-        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+        echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
       }
     ?>
   }

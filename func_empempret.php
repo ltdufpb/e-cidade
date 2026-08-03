@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empempret_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempempret = new cl_empempret;
 $clempempret->rotulo->label("e67_numemp");
 $clempempret->rotulo->label("e67_seqretencao");
@@ -109,9 +109,9 @@ $clempempret->rotulo->label("e67_numemp");
         }else{
            $sql = $clempempret->sql_query("","",$campos,"e67_numemp#e67_seqretencao","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e67_numemp)){
-          $repassa = array("chave_e67_numemp"=>$chave_e67_numemp,"chave_e67_numemp"=>$chave_e67_numemp);
+          $repassa = ["chave_e67_numemp"=>$chave_e67_numemp,"chave_e67_numemp"=>$chave_e67_numemp];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

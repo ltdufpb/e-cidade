@@ -29,8 +29,8 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $sWhereUsuario = "";
 if (db_getsession('DB_id_usuario') != 1) {
@@ -100,11 +100,11 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
                           order by nome_modulo ";
 
       $result  = db_query( $sSqlModulos );
-      $numrows = pg_numrows($result);
+      $numrows = pg_num_rows($result);
 
       echo "<select onDblClick=\"document.form1.mod.click()\" name=\"modulos\" size=\"18\"  >";
       for($i = 0;$i < $numrows;$i++) {
-        echo "<option value=\"".pg_result($result,$i,"id_item")."\">".pg_result($result,$i,"nome_modulo")."</option>\n";
+        echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."\">".pg_fetch_result($result,$i,"nome_modulo")."</option>\n";
       }
     ?>
         </select>
@@ -118,8 +118,8 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
     <?php 
     } else {
         $result = db_query("select nome_modulo,descr_modulo from db_modulos where id_item = ".$modulos);
-        $mod = pg_result($result,0,0);
-        $des = pg_result($result,0,1);
+        $mod = pg_fetch_result($result,0,0);
+        $des = pg_fetch_result($result,0,1);
     ?>
 <table border="1" cellspacing="0" cellpadding="0">
 <tr><td>
@@ -162,11 +162,11 @@ function js_pesquisaitemcad(jsvalor,jsmodulos){
        $SQL .= "    and db_permissao.id_modulo   = $modulos ";
 
        $result = db_query($SQL);
-       for($i = 0;$i < pg_numrows($result);$i++) {
-         $valor = pg_result($result,$i,"id_item_filho");
+       for($i = 0;$i < pg_num_rows($result);$i++) {
+         $valor = pg_fetch_result($result,$i,"id_item_filho");
          echo "<td id=\"col$i\" valign=\"top\" nowrap>\n<input size=\"1\" type=\"button\" onclick=\"parent.js_CadastrarMenu('$valor','".$modulos."')\" id=\"ID$valor\" name=\"CHECK$valor\" value=\"$valor\" >
-               <label for=\"ID$valor\"> ".pg_result($result,$i,"descricao")."</label><br>\n";
-              submenus(pg_result($result,$i,"pai"),"col".$i,db_strpos($modulos,"##"));
+               <label for=\"ID$valor\"> ".pg_fetch_result($result,$i,"descricao")."</label><br>\n";
+              submenus(pg_fetch_result($result,$i,"pai"),"col".$i,db_strpos($modulos,"##"));
          echo "</td>\n";
        }
        ?>
@@ -220,7 +220,7 @@ function submenus($item,$id,$mod) {
     $sHtml = "";
     for($x = 0;$x < $iNumRows;$x++) {
 
-      $valor = pg_result($rsSubMenus,$x,"id_item_filho");
+      $valor = pg_fetch_result($rsSubMenus,$x,"id_item_filho");
       $sHtml .= "<img src=\"imagens/alinha.gif\" ";
       $sHtml .= "     height=\"5\" ";
       $sHtml .= "     id=\"Img".$conta."\" ";
@@ -231,7 +231,7 @@ function submenus($item,$id,$mod) {
       $sHtml .= "       id=\"ID$valor\" ";
       $sHtml .= "       name=\"CHECK$valor\" ";
       $sHtml .= "       value=\"$valor\" > ";
-      $sHtml .= "<label for=\"ID$valor\">".pg_result($rsSubMenus,$x,"descricao")."</label><br>\n";
+      $sHtml .= "<label for=\"ID$valor\">".pg_fetch_result($rsSubMenus,$x,"descricao")."</label><br>\n";
 
       echo $sHtml;
 
@@ -239,7 +239,7 @@ function submenus($item,$id,$mod) {
 
       $wid += 15;
       $conta++;
-      submenus(pg_result($rsSubMenus,$x,"id_item_filho"),$id,$mod);
+      submenus(pg_fetch_result($rsSubMenus,$x,"id_item_filho"),$id,$mod);
       $wid -= 15;
 
     }

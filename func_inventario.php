@@ -31,9 +31,9 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_inventario_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_GET);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clinventario = new cl_inventario;
 $clinventario->rotulo->label("t75_sequencial");
 $clinventario->rotulo->label("t75_sequencial");
@@ -128,10 +128,10 @@ if (isset($lApenasComItens)) {
 
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t75_sequencial)){
 
-          $repassa = array("chave_t75_sequencial"=>$chave_t75_sequencial,"chave_t75_sequencial"=>$chave_t75_sequencial);
+          $repassa = ["chave_t75_sequencial"=>$chave_t75_sequencial,"chave_t75_sequencial"=>$chave_t75_sequencial];
 
         }
 

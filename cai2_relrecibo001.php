@@ -116,7 +116,7 @@ function js_mostratabrec1(chave1,chave2){
     <td>
       <br>
       <?php  
-      $tipo_ordem = array("n"=>"Nome","d"=>"Data de operação","e"=>"Data de pagamento");
+      $tipo_ordem = ["n"=>"Nome","d"=>"Data de operação","e"=>"Data de pagamento"];
       db_select("ordem",$tipo_ordem,true,2); 
       ?>
     </td>
@@ -129,7 +129,7 @@ function js_mostratabrec1(chave1,chave2){
     <td>
       <br>
       <?php  
-      $tipo_busca = array("t"=>"Todos","p"=>"Pagos","n"=>"Não Pagos");
+      $tipo_busca = ["t"=>"Todos","p"=>"Pagos","n"=>"Não Pagos"];
       db_select("busca",$tipo_busca,true,2); 
       ?>
     </td>

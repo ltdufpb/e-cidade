@@ -71,7 +71,7 @@ class AcordoComissao {
 	 *
 	 * @var Array of AcordoComissaoMembros
 	 */
-	protected $aMembros = array();
+	protected $aMembros = [];
 	
 	/**
    * Método construtor da classe AcordoCOmissao
@@ -130,18 +130,18 @@ class AcordoComissao {
    * @return Boolean
    */
   function addMembro(AcordoComissaoMembro $membro) {
-  	
+
   	$this->aMembros[$membro->getCodigoCgm()] = $membro;
-  	
+
   	/*
   	$this->aMembros[] = $membro;
-  	
+
   	if (!$this->getMembroByCgm($membro->getCodigoCgm())) {
-  		
+
   		$this->aMembros[$membro->getCodigoCgm()] = $membro;
   		return true;
   	} else {
-  		
+
   		throw new Exception("O membro {$membro->getCodigoCgm()} ja está cadastrado nesta Comissão.");  		
   	}
     */

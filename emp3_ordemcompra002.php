@@ -97,7 +97,7 @@ if(isset($m51_codordem) && $m51_codordem!=''){
       //die($sql); 
      
      $result = db_query($sql); 
-     if (pg_numrows($result)==0){
+     if (pg_num_rows($result)==0){
           db_redireciona('db_erros.php?fechar=true&db_erro=Este registro não possui ordem de compra.');
      
      }
@@ -161,9 +161,9 @@ if(isset($m51_codordem) && $m51_codordem!=''){
           <td nowrap align="right" title="<?=@$Tm53_data?>"><b>Data da anula&ccedil;&atilde;o:</b></td>
           <td> 
 	    <?php 		
-       $ano=substr(@$m53_data,0,4);
-	     $mes=substr(@$m53_data,5,2);
-	     $dia=substr(@$m53_data,8,2);
+       $ano=substr((string) @$m53_data,0,4);
+	     $mes=substr((string) @$m53_data,5,2);
+	     $dia=substr((string) @$m53_data,8,2);
 	     db_inputdata('dataemis',"$dia","$mes","$ano",true,'text',3);
 	    ?>
           </td>
@@ -173,9 +173,9 @@ if(isset($m51_codordem) && $m51_codordem!=''){
           <td nowrap align="right" title="<?=@$Tm51_data?>"><b>Data da emiss&atilde;o:</b></td>
           <td> 
 	    <?php 
-             $ano=substr($m51_data,0,4);
-	     $mes=substr($m51_data,5,2);
-	     $dia=substr($m51_data,8,2);
+             $ano=substr((string) $m51_data,0,4);
+	     $mes=substr((string) $m51_data,5,2);
+	     $dia=substr((string) $m51_data,8,2);
 	    db_inputdata('dataemis',"$dia","$mes","$ano",true,'text',3);
             ?>
           </td>

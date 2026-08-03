@@ -87,11 +87,11 @@ $clrotulo->label("ve62_veiculos");
                     <td><label class="bold" for="situacao"><?= $Lve62_situacao?></label> </td>
                     <td>
                       <?php
-                      $aSituacoes = array(
+                      $aSituacoes = [
                       ""                                    =>  "Todos",
                       VeiculoManutencao::SITUACAO_REALIZADO => "Realizado",
                       VeiculoManutencao::SITUACAO_PENDENTE  => "Pendente"
-                      );
+                      ];
                       db_select("situacao", $aSituacoes, true, 2, 'class="field-size2"');
                       ?>
                     </td>

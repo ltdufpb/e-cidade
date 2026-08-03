@@ -71,7 +71,7 @@ if (isset($incluir)){
        for ($i = 0; $i < $iNumRows; $i++){
           $oPeriodo = db_utils::fieldsMemory($rsPeriodo,$i);
           $iMeses   = 0;
-          $dataAdmAux = explode("/",$post->rh01_admiss); 
+          $dataAdmAux = explode("/",(string) $post->rh01_admiss); 
           $data = mktime(0,0,0,$dataAdmAux[1]+$oPeriodo->h66_mes,$dataAdmAux[0],$dataAdmAux[2]);
           $clrhestagioagendadata->h64_data          = date("Y-m-d",$data);
           $clrhestagioagendadata->h64_estagioagenda = $clrhestagioagenda->h57_sequencial;

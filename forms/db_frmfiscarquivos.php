@@ -34,8 +34,8 @@ $clfiscarquivos->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("y30_data");
 $clrotulo->label("db02_descr");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_artigos.location.href='fis1_fiscarquivos002.php?chavepesquisa=$y26_codnoti&chavepesquisa1=$y26_idparag'</script>";
 }
@@ -95,7 +95,7 @@ db_input('db02_descr',40,$Idb02_descr,true,'text',3,'')
   <tr>
     <td align="top" colspan="2">
    <?php 
-    $chavepri= array("y26_codnoti"=>$y26_codnoti,"y26_idparag"=>@$y26_idparag);
+    $chavepri= ["y26_codnoti"=>$y26_codnoti,"y26_idparag"=>@$y26_idparag];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y26_codnoti,y26_idparag,db02_descr";
     $cliframe_alterar_excluir->sql=$clfiscarquivos->sql_query("","","*",""," y26_codnoti = $y26_codnoti");

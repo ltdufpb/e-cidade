@@ -33,8 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_orcdotacao_classe.php"));
 require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("classes/db_orcparametro_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcdotacao = new cl_orcdotacao;
 $clorcdotacao->rotulo->label("o58_anousu");
 $clorcdotacao->rotulo->label("o58_coddot");
@@ -91,7 +91,7 @@ $clorcparametro = new cl_orcparametro;
           if(isset($chave_o58_coddot) && (trim($chave_o58_coddot)!="") ){
             $dbwhere=" and o58_coddot=$chave_o58_coddot";
           }else if(isset($o50_estrutdespesa) && ($o50_estrutdespesa!="") ){
-            $matriz=split('\.',$o50_estrutdespesa);
+            $matriz=preg_split('#\.#m',(string) $o50_estrutdespesa);
             for($i=0; $i<count($matriz); $i++){
               switch($i){
                 case 0://orgao

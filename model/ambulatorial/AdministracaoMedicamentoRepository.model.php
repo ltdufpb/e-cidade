@@ -13,7 +13,7 @@ class AdministracaoMedicamentoRepository {
    *
    * @var array
    */
-  private $aItens = array();
+  private $aItens = [];
   /**
    * Instancia da classe
    *
@@ -114,7 +114,7 @@ class AdministracaoMedicamentoRepository {
     if (!$rsAdministracoesMedicamento) {
       throw new Exception("Erro ao consultar dados da administração");
     }
-    $aAdministracoesNAFaa = array();
+    $aAdministracoesNAFaa = [];
     $iTotalLinhas = pg_num_rows($rsAdministracoesMedicamento);
     for ($iAdministracao = 0; $iAdministracao < $iTotalLinhas; $iAdministracao++) {
 

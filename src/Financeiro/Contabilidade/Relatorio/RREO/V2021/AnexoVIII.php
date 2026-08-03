@@ -43,8 +43,8 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     const CODIGO_RELATORIO = 245;
 
 
-    const LINHAS_IGNORAR_DESPESA = array();
-    const LINHAS_IGNORAR_RECEITA = array();
+    const LINHAS_IGNORAR_DESPESA = [];
+    const LINHAS_IGNORAR_RECEITA = [];
 
 
 
@@ -59,11 +59,11 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     {
 
         parent::__construct($iAnoSessao, static::CODIGO_RELATORIO, $iCodigoPeriodo);
-        $aTiposInstituicoes = array(\Instituicao::TIPO_RPPS_EXCETO_AUTARQUIA, \Instituicao::TIPO_AUTARQUIA_RPPS);
+        $aTiposInstituicoes = [\Instituicao::TIPO_RPPS_EXCETO_AUTARQUIA, \Instituicao::TIPO_AUTARQUIA_RPPS];
         $this->aInstituicoesRPPS = \InstituicaoRepository::getInstituicoesPorTipo($aTiposInstituicoes);
         if (count($this->aInstituicoesRPPS) == 0) {
             $aItensTiposInstituicoes = \InstituicaoRepository::getTiposIntituicao($aTiposInstituicoes);
-            $aDescricoesTiposInstituicoes = array();
+            $aDescricoesTiposInstituicoes = [];
             foreach ($aItensTiposInstituicoes as $itemTipoInstituicao) {
                 $aDescricoesTiposInstituicoes[] = $itemTipoInstituicao->db21_codtipo
                     . ' - ' . $itemTipoInstituicao->db21_nome;
@@ -71,10 +71,10 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
 
             $sDescricaoTiposInstituicoes = implode("\n", $aDescricoesTiposInstituicoes);
 
-            $oStdMensagem = (object)array('descricao' => $sDescricaoTiposInstituicoes);
+            $oStdMensagem = (object)['descricao' => $sDescricaoTiposInstituicoes];
             throw new \BusinessException(_M(self::MENSAGEM . 'tipo_instituicao_nao_encontrado', $oStdMensagem));
         }
-        $aCodigosInstituicoes = array();
+        $aCodigosInstituicoes = [];
         foreach ($this->aInstituicoesRPPS as $oInstituicao) {
             $aCodigosInstituicoes[] = $oInstituicao->getCodigo();
         }
@@ -336,12 +336,12 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
     protected function getAjustaDisponibilidadeFinanceira()
     {
 
-        $aLinhas = array(
+        $aLinhas = [
             106 ,
             107 ,
             113 ,
             114
-        );
+        ];
 
         foreach ($aLinhas as $iLinha) {
             $this->getValorDisponibildade($this->aLinhasConsistencia[$iLinha]);
@@ -356,12 +356,12 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
 
         $iLinha = $oLinha->ordem;
 
-        $aDocumentos = array(140, 141, 160, 163, 150, 153, 130, 121);
+        $aDocumentos = [140, 141, 160, 163, 150, 153, 130, 121];
         $sCreditoDebito = "c69_debito";
 
         if ($iLinha == 107 || $iLinha == 114) {
             $sCreditoDebito = "c69_credito";
-            $aDocumentos = array(140, 141, 120, 161,151, 162, 152, 131);
+            $aDocumentos = [140, 141, 120, 161,151, 162, 152, 131];
         }
 
         $dataInicial = $this->getDataInicial()->getDate();
@@ -394,7 +394,7 @@ class AnexoVIII extends \RelatoriosLegaisBase implements InterfaceRelatorioLegal
 
             $nValor = $oLinha->valor;
             $rsValor = db_query($sSqlValor);
-        if (pg_numrows($rsValor) > 0) {
+        if (pg_num_rows($rsValor) > 0) {
             $nValor = \db_utils::fieldsMemory($rsValor, 0)->valor;
         }
 

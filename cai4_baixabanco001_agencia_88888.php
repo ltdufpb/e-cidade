@@ -8,11 +8,11 @@ $sqlverresult .= "        inner join arrematric on arrematric.k00_matric = numpr
 $sqlverresult .= "  where numpremigra.k00_numpre = $convenio                                      ";
 $verresult     = db_query($sqlverresult);
 
-if (pg_numrows($verresult) != false) {
+if (pg_num_rows($verresult) != false) {
 
-  $numpre_migra = pg_result($verresult, 0, 0);
-  $numpar       = pg_result($verresult, 0, 1);
-  $matric       = pg_result($verresult, 0, 2);
+  $numpre_migra = pg_fetch_result($verresult, 0, 0);
+  $numpar       = pg_fetch_result($verresult, 0, 1);
+  $matric       = pg_fetch_result($verresult, 0, 2);
 }
 
 $sqlverresult  = " select k00_numpar                         ";
@@ -20,7 +20,7 @@ $sqlverresult .= "   from numpremigra                        ";
 $sqlverresult .= "  where numpremigra.k00_numpre = $convenio ";
 $verresult     = db_query($sqlverresult);
 
-if (pg_result($verresult, 0) == "0") {
+if (pg_fetch_result($verresult, 0) == "0") {
 
   /**
    * UNICA
@@ -51,26 +51,26 @@ if (pg_result($verresult, 0) == "0") {
 }
 
 $verresult = db_query($sqlverresult);
-if (pg_numrows($verresult) != false) {
-  $numpre = pg_result($verresult, 0, 0);
+if (pg_num_rows($verresult) != false) {
+  $numpre = pg_fetch_result($verresult, 0, 0);
 }
 
-if (pg_numrows($verresult) > 0) {
+if (pg_num_rows($verresult) > 0) {
 
-  for ($xresult = 0; $xresult < pg_numrows($verresult); $xresult ++) {
-    $xtotal += pg_result($verresult, $xresult, 2);
+  for ($xresult = 0; $xresult < pg_num_rows($verresult); $xresult ++) {
+    $xtotal += pg_fetch_result($verresult, $xresult, 2);
   }
   $xxtotal = 0;
 
-  for ($xresult = 0; $xresult < pg_numrows($verresult); $xresult ++) {
+  for ($xresult = 0; $xresult < pg_num_rows($verresult); $xresult ++) {
 
-    $xpago      = pg_result($verresult, $xresult, 2);
-    $numpre     = pg_result($verresult, $xresult, 0);
-    $numpar     = pg_result($verresult, $xresult, 1);
+    $xpago      = pg_fetch_result($verresult, $xresult, 2);
+    $numpre     = pg_fetch_result($verresult, $xresult, 0);
+    $numpar     = pg_fetch_result($verresult, $xresult, 1);
     $vlrpagonew = round($vlrpago * ($xpago / $xtotal), 2);
     $xxtotal   += $vlrpagonew;
 
-    if ($xresult == pg_numrows($verresult) - 1) {
+    if ($xresult == pg_num_rows($verresult) - 1) {
 
       $diferenca   = $vlrpago - $xxtotal;
       $vlrpagonew += $diferenca;
@@ -142,7 +142,7 @@ if (pg_numrows($verresult) > 0) {
   $sqlverresult   = "group by arrecant.k00_numpre, arrecant.k00_numpar                                ";
   $verresult      = db_query($sqlverresult);
 
-  if (pg_numrows($verresult) > 0) {
+  if (pg_num_rows($verresult) > 0) {
     echo "<br/>passou arrecant... xxtotal: $xxtotal - convenio: $convenio - numpre_migra: $numpre_migra - numpar: $numpar - matric: $matric<br/>";
   }
 }

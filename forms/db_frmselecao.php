@@ -41,7 +41,7 @@ $clselecao->rotulo->tlabel();
 $oDaoGrupoSelecao = db_utils::getDao('gruposelecao');
 $sSqlGrupoSelecao = $oDaoGrupoSelecao->sql_query_file(null, '*', 'rh122_sequencial');
 $rsGrupoSelecao   = db_query($sSqlGrupoSelecao);
-$aGrupoSelecao    = array();
+$aGrupoSelecao    = [];
 
 if ( pg_num_rows($rsGrupoSelecao) > 0 ) {
 
@@ -123,7 +123,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_selecao.hide();
   <?php
   if ( $db_opcao != 1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

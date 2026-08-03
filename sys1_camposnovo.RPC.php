@@ -56,7 +56,7 @@ try {
 
       $rsCampos = $oDaoTabela->sql_record($sSql);
 
-      $oRetorno->oCampos = array();
+      $oRetorno->oCampos = [];
 
       if ($oDaoTabela->numrows > 0) {
         $oRetorno->oCampos = db_utils::getCollectionByRecord($rsCampos, false, false, true);
@@ -85,7 +85,7 @@ try {
 
       case "findField":
 
-        $oRetorno = array();
+        $oRetorno = [];
         $sString = $oParam->sField;
 
         $oDaoTabela = db_utils::getDao("db_syscampo");
@@ -119,25 +119,25 @@ try {
         $aCampos = $oParam->aCampos;
         $iTabela = $oParam->iTabela;
 
-        $aCamposCadastrados = array();
+        $aCamposCadastrados = [];
 
         foreach ($aCampos as $iIndex => $oCampo) {
 
           $oDaoCampo->codcam       = $oCampo->codigo_campo;
-          $oDaoCampo->nomecam      = utf8_decode($oCampo->nome_campo);
+          $oDaoCampo->nomecam      = mb_convert_encoding($oCampo->nome_campo, 'ISO-8859-1');
           $oDaoCampo->conteudo     = $oCampo->tipo_campo;
-          $oDaoCampo->descricao    = utf8_decode($oCampo->descricao);
-          $oDaoCampo->valorinicial = utf8_decode($oCampo->default);
-          $oDaoCampo->rotulo       = utf8_decode($oCampo->label_form);
+          $oDaoCampo->descricao    = mb_convert_encoding($oCampo->descricao, 'ISO-8859-1');
+          $oDaoCampo->valorinicial = mb_convert_encoding($oCampo->default, 'ISO-8859-1');
+          $oDaoCampo->rotulo       = mb_convert_encoding($oCampo->label_form, 'ISO-8859-1');
           $oDaoCampo->tamanho      = $oCampo->tamanho;
           $oDaoCampo->nulo         = $oCampo->aceita_nulo    ? 'true' : 'false';
           $oDaoCampo->maiusculo    = $oCampo->maiusculo      ? 'true' : 'false';
           $oDaoCampo->autocompl    = $oCampo->auto_completar ? 'true' : 'false';
           $oDaoCampo->aceitatipo   = $oCampo->tipo_validacao;
           $oDaoCampo->tipoobj      = "text";
-          $oDaoCampo->rotulorel    = utf8_decode($oCampo->label_rel);
+          $oDaoCampo->rotulorel    = mb_convert_encoding($oCampo->label_rel, 'ISO-8859-1');
 
-          if (in_array($oDaoCampo->conteudo, array("char", "varchar")) ) {
+          if (in_array($oDaoCampo->conteudo, ["char", "varchar"]) ) {
             $oDaoCampo->conteudo .= "(".$oDaoCampo->tamanho.")";
           }
 
@@ -172,7 +172,7 @@ try {
             $oDaoCampoDef->excluir($oDaoCampo->codcam);
             foreach ($oCampo->valores_default as $sValorDefault) {
 
-              $aValorDefault = explode("#&", $sValorDefault);
+              $aValorDefault = explode("#&", (string) $sValorDefault);
 
               $oDaoCampoDef->codcam    = $oDaoCampo->codcam;
               $oDaoCampoDef->defcampo  = $aValorDefault[0];
@@ -232,7 +232,7 @@ try {
         $sSql = $oDaoSysArqCamp->sql_query($iTabela, null, null, "db_sysarqcamp.codcam", "seqarq", $sWhereToDelete);
         $rsToDelete = $oDaoSysArqCamp->sql_record($sSql);
 
-        $aCamposParaDeletar = array();
+        $aCamposParaDeletar = [];
         if ($oDaoSysArqCamp->erro_status != "0") {
           /**
            * Pega os ids dos campos para deletar

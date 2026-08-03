@@ -38,7 +38,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('j14_nome');
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $dbwhere="";
 $and="";
 
@@ -55,8 +55,8 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',10);
 //echo $numrows01;
 
-$pdf->SetWidths(array(140,140));
-$pdf->SetAligns(array('J','J'));
+$pdf->SetWidths([140,140]);
+$pdf->SetAligns(['J','J']);
 
 for($x=0; $x<$numrows01; $x++){
   db_fieldsmemory($result01,$x); 
@@ -87,13 +87,13 @@ for($x=0; $x<$numrows01; $x++){
 	$pdf->setfont('arial','b',9);
 	$pdf->cell(140,6,"OBJETIVOS:",1,0,"L",0);
 	$pdf->cell(140,6,"META:",1,0,"L",0);
-	
+
 	$pdf->setfont('arial','',8);
 	$pdf->ln();
     }  
   //  $pdf->cell(140,6,"$o23_programa-$o23_programatxt",1,0,"L",0);
 //    $pdf->cell(140,6,"$o23_acao-$o23_acaotxt",1,0,"L",0);
-    $pdf->Row(array("$o23_programa-$o23_programatxt","$o23_acao-$o23_acaotxt"),3,true,4);
+    $pdf->Row(["$o23_programa-$o23_programatxt","$o23_acao-$o23_acaotxt"],3,true,4);
   //  $pdf->ln();
   }
   

@@ -29,7 +29,7 @@ $clmer_nutricionistaescola->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
 $clrotulo->label("me02_i_codigo");
-$z01_nome = stripslashes($z01_nome);
+$z01_nome = stripslashes((string) $z01_nome);
 ?>
 <table border="0">
   <tr colspan="4">

@@ -38,19 +38,6 @@ class Processamento
 
 
     /**
-     * @var \DateTime
-     */
-    private $datainicial;
-    /**
-     * @var \DateTime
-     */
-    private $dataFinal;
-    /**
-     * @var ContaCorrente
-     */
-    private $contaCorrente;
-
-    /**
      * filtros para pesquisar
      * @var null
      */
@@ -60,13 +47,13 @@ class Processamento
      * Colunas Visiveis no relatório
      * @var array
      */
-    private $colunas = array();
+    private $colunas = [];
 
     /**
      * filtros da consulta por atributos
      * @var array
      */
-    private $filtroAtributos = array();
+    private $filtroAtributos = [];
 
 
     /**
@@ -87,19 +74,15 @@ class Processamento
      */
     public function __construct(
         $instituicao,
-        \DateTime $datainicial,
-        \DateTime $dataFinal,
-        ContaCorrente $contaCorrente = null
+        private readonly \DateTime $datainicial,
+        private readonly \DateTime $dataFinal,
+        private readonly ?\ECidade\Financeiro\Contabilidade\ContaCorrente\Model\ContaCorrente $contaCorrente = null
     ) {
-        $this->datainicial = $datainicial;
-        $this->dataFinal = $dataFinal;
-        $this->contaCorrente = $contaCorrente;
-
         $this->filtros = new \stdClass();
-        $this->filtros->contas = array();
-        $this->filtros->documentos = array();
+        $this->filtros->contas = [];
+        $this->filtros->documentos = [];
         if (!is_array($instituicao)) {
-            $instituicao = array($instituicao);
+            $instituicao = [$instituicao];
         }
         $this->instituicao = $instituicao;
     }
@@ -112,11 +95,9 @@ class Processamento
     private function montarFiltros()
     {
 
-        $codigoInstituicoes = array_map(function ($instituicao) {
-            return $instituicao->getCodigo();
-        }, $this->instituicao);
+        $codigoInstituicoes = array_map(fn($instituicao) => $instituicao->getCodigo(), $this->instituicao);
 
-        $where = array("c61_instit in(".implode(", ", $codigoInstituicoes).")");
+        $where = ["c61_instit in(".implode(", ", $codigoInstituicoes).")"];
         if (count($this->filtros->contas) > 0) {
             $where[] = "c61_reduz in (".implode(", ", $this->filtros->contas).")";
         }
@@ -135,7 +116,7 @@ class Processamento
 
 
         if (!empty($this->filtros->atributos)) {
-            $this->filtroAtributos = array();
+            $this->filtroAtributos = [];
             foreach ($this->filtros->atributos as $filtroAtributo) {
                 $this->filtroAtributos[] = "(atributos ilike '%{$filtroAtributo->valor}#{$filtroAtributo->atributo}%')";
             }
@@ -167,7 +148,7 @@ class Processamento
         $iReduzido = $oFiltros->reduzido;
         $iAno = $oFiltros->conta_contabil_ano;
 
-        $aFiltros = array();
+        $aFiltros = [];
         if ($iConplano != null) {
             $aFiltros[] = "c120_conplano = {$iConplano}";
         }
@@ -191,9 +172,9 @@ class Processamento
          * precisamos saber as colunas que não estao nos filtros
          */
         $aColunas = $this->getColunas();
-        $aAtributosFiltros = array();
-        $aSiglas = array();
-        $aColunasFiltrar = array();
+        $aAtributosFiltros = [];
+        $aSiglas = [];
+        $aColunasFiltrar = [];
 
         foreach ($oFiltros->atributos as $oFiltro) {
             $aAtributosFiltros[] = $oFiltro->atributo;
@@ -219,7 +200,7 @@ class Processamento
         $sFiltroAtributos = "";
 
         if (count($oFiltros->atributos) > 0) {
-            $aPares = array();
+            $aPares = [];
             foreach ($oFiltros->atributos as $oFiltro) {
                 if (in_array($oFiltro->atributo, $aColunas)) {
                     $aPares[] = "(sigla_atributo = '{$oFiltro->atributo}' and valor_atributo = '{$oFiltro->valor}')";
@@ -243,7 +224,7 @@ class Processamento
         }
         $sFiltros = implode(" and ", $aFiltros);
 
-        $FiltroMacro = array();
+        $FiltroMacro = [];
         $sFiltroMacro = "";
         if (count($oFiltros->atributos) > 0) {
             foreach ($oFiltros->atributos as $oAtributos) {
@@ -610,7 +591,7 @@ class Processamento
     protected function getListaDeAtributos($listaAtributos)
     {
 
-        $atributosRetorno = array();
+        $atributosRetorno = [];
         $atributos = explode("|", $listaAtributos);
         foreach ($atributos as $atributo) {
             $campos = explode("#", $atributo);

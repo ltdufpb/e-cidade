@@ -35,7 +35,7 @@ include(modification("classes/db_face_classe.php"));
 include(modification("classes/db_testada_classe.php"));
 include(modification("classes/db_lotesetorfiscal_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cliframe_seleciona = new cl_iframe_seleciona;
 $cllote = new cl_lote;
 $clface = new cl_face;
@@ -50,15 +50,15 @@ $clrotulo->label("j90_codigo");
 $db_opcao=1;
 $db_botao=true;		
 if (isset($Incluir)){
-	$arr_dados = split("#",$dados);
+	$arr_dados = preg_split("#\\##m",$dados);
 	$sqlerro=false;
 	db_inicio_transacao();
 	for($w=0;$w<count($arr_dados);$w++){
-		$arr_info  = split("_",$arr_dados[$w]);
+		$arr_info  = preg_split("#_#m",(string) $arr_dados[$w]);
 		$face      = $arr_info[0];
 		$setor     = $arr_info[1];
 		$var_zona  = "zonas_$face";
-		$zona      = $$var_zona;		
+		$zona      = ${$var_zona};		
 		/*
 		if ($setor=="0"){
 			continue;
@@ -308,13 +308,13 @@ function js_dados(){
                  <td class='bordas_corp' align='center'><small>$j34_setor</small></td>
 				 <td class='bordas_corp' align='center'><small>$j34_quadra</small></td>				   				
 				";
-		   $setores=array();
+		   $setores=[];
 		   $sep="";
 		   $result_exist=db_query("select  distinct j90_codigo as cod,j90_descr as descr from testada
 											inner join lotesetorfiscal on j91_idbql = j36_idbql
 											inner join setorfiscal on j90_codigo = j91_codigo
 		    				      where j36_face = $j36_face");
-           for($i=0;$i<pg_numrows($result_exist);$i++){
+           for($i=0;$i<pg_num_rows($result_exist);$i++){
            	db_fieldsmemory($result_exist,$i);
            	array_push($setores, $descr );           	
            }		    				                 							

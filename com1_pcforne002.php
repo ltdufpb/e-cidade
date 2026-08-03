@@ -55,22 +55,22 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array(
+	 $clcriaabas->identifica = [
                                          "pcforne"=>"Fornecedor",
                                          "pcfornecon"=>"Contas Banco",
                                          "pcfornemov"=>"Movimento",
                                          "subgrupo"=>"Subgrupo",
                                          "pcfornereprlegal"=>"Representantes Legais",
                                          "pcforneidentificacaocredor" => "Identificação do Fornecedor"
-                                        ); 
-	 $clcriaabas->src = array("pcforne"=>"com1_pcforne005.php");
-	 $clcriaabas->disabled   =  array("pcfornecon"=>"true","pcfornemov"=>"true","subgrupo"=>"true","pcfornereprlegal"=>"true"); 
-	 $clcriaabas->sizecampo  = array("pcforne"=>20,
+                                        ]; 
+	 $clcriaabas->src = ["pcforne"=>"com1_pcforne005.php"];
+	 $clcriaabas->disabled   =  ["pcfornecon"=>"true","pcfornemov"=>"true","subgrupo"=>"true","pcfornereprlegal"=>"true"]; 
+	 $clcriaabas->sizecampo  = ["pcforne"=>20,
                                    "pcfornecon"=>15,
                                    "pcfornemov"=>15,
                                    "subgrupo"=>15,
                                    "pcfornereprlegal"=>25,
-	                                 "pcforneidentificacaocredor" => 25); 
+	                                 "pcforneidentificacaocredor" => 25]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

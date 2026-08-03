@@ -85,7 +85,7 @@ db_input('o56_elemento',40,$Io56_elemento,true,'text',3,'')
   <tr>
     <td colspan='2' align ='center'>
 <?php   
-      $chavepri= array("pc06_codtipo"=>$pc06_codtipo,"pc06_codele"=>@$pc06_codele);
+      $chavepri= ["pc06_codtipo"=>$pc06_codtipo,"pc06_codele"=>@$pc06_codele];
       $cliframe_alterar_excluir->chavepri=$chavepri;
       $cliframe_alterar_excluir->sql     = $clpctipoelemento->sql_query(null,null,"pc06_codtipo,pc06_codele,o56_descr","pc06_codele","pc06_codtipo=$pc06_codtipo");
       $cliframe_alterar_excluir->campos  ="pc06_codele,o56_descr";
@@ -166,7 +166,7 @@ function js_preenchepesquisa(chave){
   db_iframe_pctipoelemento.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

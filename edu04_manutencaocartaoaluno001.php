@@ -109,7 +109,7 @@ $oLabel->label("ed57_c_descr");
                  $sSqlSituacoesCarteirao = $oDaoSituacaoCarteira->sql_query(null, "*", "ed307_sequencial");
                  $rsSituacaoCartao       = $oDaoSituacaoCarteira->sql_record($sSqlSituacoesCarteirao);
                  $aSituacoes             = db_utils::getCollectionByRecord($rsSituacaoCartao);
-                 $aSituacoesFiltro       = array();
+                 $aSituacoesFiltro       = [];
                  $aSituacoesFiltro[0]    = "Selecione";
                  foreach ($aSituacoes as $oSituacao) {
                    $aSituacoesFiltro[$oSituacao->ed307_sequencial] = $oSituacao->ed307_descricao;

@@ -119,7 +119,7 @@ class DependenteRepository
      * @param  Dependente|null $dependente
      * @throws BusinessException
      */
-    public function delete(Dependente $dependente = null)
+    public function delete(?Dependente $dependente = null)
     {
         $id = $dependente instanceof Dependente ? $dependente->getSequencial() : null;
 
@@ -138,7 +138,7 @@ class DependenteRepository
      * @return bool| Dependente
      * @throws BusinessException
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessodependente;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

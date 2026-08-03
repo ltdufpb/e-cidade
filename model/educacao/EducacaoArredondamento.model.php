@@ -38,7 +38,7 @@ class EducacaoArredondamento {
    * conjunto de Regras para realizar o arredondamento
    * @var array
    */
-  protected $aConjuntoRegras = array();
+  protected $aConjuntoRegras = [];
 
   protected $iCodigoRegra;
 
@@ -138,7 +138,7 @@ class EducacaoArredondamento {
    */
   public function getFaixasDeArredondamento($iAno) {
 
-    $aRegras = array();
+    $aRegras = [];
     if (isset($this->aConjuntoRegras[$iAno]->aRegras)) {
       $aRegras = $this->aConjuntoRegras[$iAno]->aRegras;
     }

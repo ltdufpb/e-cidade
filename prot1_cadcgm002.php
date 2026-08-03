@@ -46,9 +46,9 @@
   require_once(modification("classes/db_cidadao_classe.php"));
   require_once(modification("model/logCgm.model.php"));
 
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-  db_postmemory($HTTP_POST_VARS);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
+  db_postmemory($_POST);
+  db_postmemory($_SERVER);
 
   $oPost = db_utils::postMemory($_POST);
   $oGet  = db_utils::postMemory($_GET);
@@ -92,7 +92,7 @@
   }
 
 
-  if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar") {
+  if (isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar") {
 
   $cgm_alt             = $z01_numcgm;
   $result_cgm          = $clcgm->sql_record($clcgm->sql_query_file($cgm_alt));
@@ -163,11 +163,11 @@
 						 </script>";
     if(isset($testanome) && !isset($inconsistenciaSimples)){
 
-	     $camp = split("\|",$valores);
+	     $camp = preg_split("#\\|#m",$valores);
 	     $vals = "";
 	     $vir = "";
 	     for($f=1;$f<count($camp);$f++){
-	       $vals .= $vir.$$camp[$f];
+	       $vals .= $vir.${$camp}[$f];
 	       $vir = ",";
 	     }
 	     if ( !isset($inconsistenciaSimples)){
@@ -188,7 +188,7 @@
   }
 
   $cgccpf = (@$z01_cgc==""?@$z01_cpf:@$z01_cgc);
-  $HTTP_POST_VARS["z01_cgccpf"] = (@$z01_cgc==""?@$z01_cpf:@$z01_cgc);
+  $_POST["z01_cgccpf"] = (@$z01_cgc==""?@$z01_cpf:@$z01_cgc);
   // grava base anterior
 
    $sWhere       = "q02_numcgm = {$z01_numcgm}";
@@ -209,7 +209,7 @@
 
        if (isset($oPost->z01_nome) && !empty($oPost->z01_nome)) {
 
-       	 if (trim($oPost->z01_nome) != trim($sNomeAntigo)) {
+       	 if (trim((string) $oPost->z01_nome) != trim((string) $sNomeAntigo)) {
        	   $cllogcgm->identificaAlteracao($oIssBase->q02_inscr,2,8,$oPost->z01_nome,$sNomeAntigo,"","");
        	 }
        }
@@ -221,7 +221,7 @@
 
        if (isset($oPost->z01_ender) && !empty($oPost->z01_ender)) {
 
-       	 if (trim($oPost->z01_ender) != trim($sEnderecoAntigo)) {
+       	 if (trim((string) $oPost->z01_ender) != trim((string) $sEnderecoAntigo)) {
        	   $cllogcgm->identificaAlteracao($oIssBase->q02_inscr,2,2,"","",$oPost->z01_ender,$sEnderecoAntigo);
        	 }
        }
@@ -248,7 +248,7 @@
  	  * Nova funcionalidade de alteração de cgmfisico e cgmjuridico
  	  */
 
- 	 if (strlen($cgccpf) <= 11) {
+ 	 if (strlen((string) $cgccpf) <= 11) {
 
  	   $oDaoCgmFisico->excluir(null, "z04_numcgm = {$z01_numcgm}");
  	   if ($oDaoCgmFisico->erro_status == "0") {
@@ -338,7 +338,7 @@
 
 	 if($j14_codigo!=""){
            $result = $cldb_cgmruas->sql_record($cldb_cgmruas->sql_query($cldb_cgmruas->z01_numcgm,"*",""," db_cgmruas.z01_numcgm = ".$clcgm->z01_numcgm.""));
-	   $HTTP_POST_VARS['j14_codigo'] = $j14_codigo;
+	   $_POST['j14_codigo'] = $j14_codigo;
 	   if($cldb_cgmruas->numrows > 0){
              $cldb_cgmruas->alterar($clcgm->z01_numcgm);
   	     //$cldb_cgmruas->erro(true,true);
@@ -348,14 +348,14 @@
 	   }
 	 } else {
      $result = $cldb_cgmruas->sql_record($cldb_cgmruas->sql_query($cldb_cgmruas->z01_numcgm,"*",""," db_cgmruas.z01_numcgm = ".$clcgm->z01_numcgm.""));
-	   $HTTP_POST_VARS['j14_codigo'] = $j14_codigo;
+	   $_POST['j14_codigo'] = $j14_codigo;
 	   if($cldb_cgmruas->numrows > 0){
              $cldb_cgmruas->excluir($clcgm->z01_numcgm);
   	     //$cldb_cgmruas->erro(true,true);
 	   }
 	 }
 	 if($j13_codi!=""){
-	   $HTTP_POST_VARS['j13_codi'] = $j13_codi;
+	   $_POST['j13_codi'] = $j13_codi;
            $result = $cldb_cgmbairro->sql_record($cldb_cgmbairro->sql_query($cldb_cgmbairro->z01_numcgm,"*",""," db_cgmbairro.z01_numcgm = ".$clcgm->z01_numcgm.""));
 	   if($cldb_cgmbairro->numrows > 0){
 	     $cldb_cgmbairro->alterar($clcgm->z01_numcgm);
@@ -365,7 +365,7 @@
   	     //$cldb_cgmbairro->erro(true,true);
 	   }
 	 }else{
-	   $HTTP_POST_VARS['j13_codi'] = $j13_codi;
+	   $_POST['j13_codi'] = $j13_codi;
            $result = $cldb_cgmbairro->sql_record($cldb_cgmbairro->sql_query($cldb_cgmbairro->z01_numcgm,"*",""," db_cgmbairro.z01_numcgm = ".$clcgm->z01_numcgm.""));
 	   if($cldb_cgmbairro->numrows > 0){
 	     $cldb_cgmbairro->excluir($clcgm->z01_numcgm);
@@ -403,11 +403,11 @@
        }
      }
      if(isset($testanome)){
-       $camp = split("\|",@$valores);
+       $camp = preg_split("#\\|#m",(string) @$valores);
        $vals = "";
        $vir = "";
        for($f=1;$f<count($camp);$f++){
-         $vals .= $vir.$$camp[$f];
+         $vals .= $vir.${$camp}[$f];
 	 $vir = ",";
        }
        db_fim_transacao(); //descomentar
@@ -436,8 +436,8 @@
 	 	if($clcgm->erro_status=="0"){
          }else{
 	   echo "<script>
-             parent.document.form1.p58_requer.value='" . $HTTP_POST_VARS["z01_nome"] . "';
-	           parent.document.form1.z01_nome.value='" . $HTTP_POST_VARS["z01_nome"] . "';
+             parent.document.form1.p58_requer.value='" . $_POST["z01_nome"] . "';
+	           parent.document.form1.z01_nome.value='" . $_POST["z01_nome"] . "';
              parent.document.form1.alterou.value=1;
              parent.db_iframe_altcgm.hide();
 		       </script>";

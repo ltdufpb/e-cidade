@@ -26,18 +26,18 @@ try {
 
             $oFiltros = $oParam->aFiltros;
 
-            $aWhere = array();
+            $aWhere = [];
 
             if (!empty($oParam->aFiltros)) {
 
                 if (!empty($oFiltros->dataInicio)) {
 
-                    $dataIni =  implode('-', array_reverse(explode('/',  $oFiltros->dataInicio)));
+                    $dataIni =  implode('-', array_reverse(explode('/',  (string) $oFiltros->dataInicio)));
                     $aWhere[] = "rq01_dataenvio >= '{$dataIni}'";
                 }
 
                 if (!empty($oFiltros->dataFinal)) {
-                    $dataFim =  implode('-', array_reverse(explode('/',  $oFiltros->dataFinal)));
+                    $dataFim =  implode('-', array_reverse(explode('/',  (string) $oFiltros->dataFinal)));
                     $aWhere[] = "rq01_dataenvio <= '{$dataFim}'";
                 }
             }
@@ -87,13 +87,13 @@ try {
 
             $aEnvios = pg_fetch_all($rsSqlCivitasEnvio);
 
-            $aDados = array();
+            $aDados = [];
 
             foreach ($aEnvios as  $aEnvio) {
 
 
                 if (!empty($aEnvio['rq01_descricao'])) {
-                    $json = json_decode($aEnvio['rq01_descricao'],true);
+                    $json = json_decode((string) $aEnvio['rq01_descricao'],true);
                     if (!empty($json) && is_array($json)) {
                         foreach ($json as $value) {
                             $item = new stdClass();

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE obrascaractarqsisobra
 class cl_obrascaractarqsisobra { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ob23_sequencial = 0; 
-   var $ob23_caractdestino = 0; 
-   var $ob23_caractorigem = 0; 
+   public $ob23_sequencial = 0; 
+   public $ob23_caractdestino = 0; 
+   public $ob23_caractorigem = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ob23_sequencial = int4 = Sequencial 
                  ob23_caractdestino = int4 = Destino 
                  ob23_caractorigem = int4 = Origem 
                  ";
    //funcao construtor da classe 
-   function cl_obrascaractarqsisobra() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("obrascaractarqsisobra"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_obrascaractarqsisobra {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ob23_sequencial = pg_result($result,0,0); 
+       $this->ob23_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from obrascaractarqsisobra_ob23_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ob23_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ob23_sequencial)){
          $this->erro_sql = " Campo ob23_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_obrascaractarqsisobra {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "obrascaractarqsisobra ($this->ob23_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "obrascaractarqsisobra já Cadastrado";
@@ -166,12 +166,12 @@ class cl_obrascaractarqsisobra {
      $resaco = $this->sql_record($this->sql_query_file($this->ob23_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11862,'$this->ob23_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2049,11862,'','".AddSlashes(pg_result($resaco,0,'ob23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2049,11863,'','".AddSlashes(pg_result($resaco,0,'ob23_caractdestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2049,11864,'','".AddSlashes(pg_result($resaco,0,'ob23_caractorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2049,11862,'','".AddSlashes(pg_fetch_result($resaco,0,'ob23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2049,11863,'','".AddSlashes(pg_fetch_result($resaco,0,'ob23_caractdestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2049,11864,'','".AddSlashes(pg_fetch_result($resaco,0,'ob23_caractorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_obrascaractarqsisobra {
       $this->atualizacampos();
      $sql = " update obrascaractarqsisobra set ";
      $virgula = "";
-     if(trim($this->ob23_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob23_sequencial"])){ 
+     if(trim((string) $this->ob23_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob23_sequencial"])){ 
        $sql  .= $virgula." ob23_sequencial = $this->ob23_sequencial ";
        $virgula = ",";
-       if(trim($this->ob23_sequencial) == null ){ 
+       if(trim((string) $this->ob23_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ob23_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_obrascaractarqsisobra {
          return false;
        }
      }
-     if(trim($this->ob23_caractdestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob23_caractdestino"])){ 
+     if(trim((string) $this->ob23_caractdestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob23_caractdestino"])){ 
        $sql  .= $virgula." ob23_caractdestino = $this->ob23_caractdestino ";
        $virgula = ",";
-       if(trim($this->ob23_caractdestino) == null ){ 
+       if(trim((string) $this->ob23_caractdestino) == null ){ 
          $this->erro_sql = " Campo Destino nao Informado.";
          $this->erro_campo = "ob23_caractdestino";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_obrascaractarqsisobra {
          return false;
        }
      }
-     if(trim($this->ob23_caractorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob23_caractorigem"])){ 
+     if(trim((string) $this->ob23_caractorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob23_caractorigem"])){ 
        $sql  .= $virgula." ob23_caractorigem = $this->ob23_caractorigem ";
        $virgula = ",";
-       if(trim($this->ob23_caractorigem) == null ){ 
+       if(trim((string) $this->ob23_caractorigem) == null ){ 
          $this->erro_sql = " Campo Origem nao Informado.";
          $this->erro_campo = "ob23_caractorigem";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_obrascaractarqsisobra {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11862,'$this->ob23_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ob23_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2049,11862,'".AddSlashes(pg_result($resaco,$conresaco,'ob23_sequencial'))."','$this->ob23_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2049,11862,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob23_sequencial'))."','$this->ob23_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ob23_caractdestino"]))
-           $resac = db_query("insert into db_acount values($acount,2049,11863,'".AddSlashes(pg_result($resaco,$conresaco,'ob23_caractdestino'))."','$this->ob23_caractdestino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2049,11863,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob23_caractdestino'))."','$this->ob23_caractdestino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ob23_caractorigem"]))
-           $resac = db_query("insert into db_acount values($acount,2049,11864,'".AddSlashes(pg_result($resaco,$conresaco,'ob23_caractorigem'))."','$this->ob23_caractorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2049,11864,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ob23_caractorigem'))."','$this->ob23_caractorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_obrascaractarqsisobra {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11862,'$ob23_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2049,11862,'','".AddSlashes(pg_result($resaco,$iresaco,'ob23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2049,11863,'','".AddSlashes(pg_result($resaco,$iresaco,'ob23_caractdestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2049,11864,'','".AddSlashes(pg_result($resaco,$iresaco,'ob23_caractorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2049,11862,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2049,11863,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob23_caractdestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2049,11864,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ob23_caractorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from obrascaractarqsisobra
@@ -345,7 +345,7 @@ class cl_obrascaractarqsisobra {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:obrascaractarqsisobra";
@@ -359,7 +359,7 @@ class cl_obrascaractarqsisobra {
    function sql_query ( $ob23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_obrascaractarqsisobra {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,7 +396,7 @@ class cl_obrascaractarqsisobra {
    function sql_query_file ( $ob23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_obrascaractarqsisobra {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

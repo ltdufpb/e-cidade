@@ -1,24 +1,24 @@
 <?php
-return array(
-    'trabalhador' => array(
-        'properties' => array(
+return [
+    'trabalhador' => [
+        'properties' => [
             'cpfTrab',
             'nisTrab',
             'nmTrab',
             'sexo',
-            'racaCor' => array(
+            'racaCor' => [
                 'type' => 'int'
-            ),
-            'estCiv' => array(
+            ],
+            'estCiv' => [
                 'type' => 'int'
-            ),
+            ],
             'grauInstr',
             'indPriEmpr',
             'nmSoc',
-        ),
-        'groups' => array(
-            'nascimento' => array(
-                'properties' => array(
+        ],
+        'groups' => [
+            'nascimento' => [
+                'properties' => [
                     'dtNascto',
                     'codMunic',
                     'uf',
@@ -26,79 +26,79 @@ return array(
                     'paisNac',
                     'nmMae',
                     'nmPai'
-                )
-            ),
+                ]
+            ],
 
-            'documentos' => array(
-                'groups' => array(
-                    'CTPS' => array(
-                        'properties' => array(
+            'documentos' => [
+                'groups' => [
+                    'CTPS' => [
+                        'properties' => [
                             'nrCtps',
                             'serieCtps',
                             'ufCtps'
-                        )
-                    ),
-                    'RIC' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'RIC' => [
+                        'properties' => [
                             'nrRic',
                             'orgaoEmissor',
                             'dtExped'
-                        )
-                    ),
-                    'RG' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'RG' => [
+                        'properties' => [
                             'nrRg',
                             'orgaoEmissor',
                             'dtExped'
-                        )
-                    ),
-                    'RNE' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'RNE' => [
+                        'properties' => [
                             'nrRne',
                             'orgaoEmissor',
                             'dtExped',
-                        )
-                    ),
-                    'OC' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'OC' => [
+                        'properties' => [
                             'nrOc',
                             'orgaoEmissor',
                             'dtExped',
                             'dtValid',
-                        )
-                    ),
-                    'CNH' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'CNH' => [
+                        'properties' => [
                             'nrRegCnh',
                             'dtExped',
                             'ufCnh',
                             'dtValid',
                             'dtPriHab',
                             'categoriaCnh',
-                        )
-                    ),
-                ),
-            ),
+                        ]
+                    ],
+                ],
+            ],
 
-            'endereco' => array(
+            'endereco' => [
                 'label' => 'Endereços',
-                'groups' => array(
-                    'brasil' => array(
-                        'properties' => array(
+                'groups' => [
+                    'brasil' => [
+                        'properties' => [
                             'tpLograd',
                             'dscLograd',
                             'nrLograd',
                             'complemento',
                             'bairro',
                             'cep',
-                            'codMunic' => array(
+                            'codMunic' => [
                                 'type' => 'int'
-                            ),
+                            ],
                             'uf'
-                        )
-                    ),
-                    'exterior' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'exterior' => [
+                        'properties' => [
                             'paisResid',
                             'dscLograd',
                             'nrLograd',
@@ -106,24 +106,24 @@ return array(
                             'bairro',
                             'nmCid',
                             'codPostal'
-                        )
-                    ),
-                ),
-            ),
+                        ]
+                    ],
+                ],
+            ],
 
 
-            'trabEstrangeiro' => array(
-                'properties' => array(
+            'trabEstrangeiro' => [
+                'properties' => [
                     'dtChegada',
-                    'classTrabEstrang' => array(
+                    'classTrabEstrang' => [
                         'type' => 'int'
-                    ),
+                    ],
                     'casadoBr',
                     'filhosBr',
-                )
-            ),
-            'infoDeficiencia' => array(
-                'properties' => array(
+                ]
+            ],
+            'infoDeficiencia' => [
+                'properties' => [
                     'defFisica',
                     'defVisual',
                     'defAuditiva',
@@ -132,27 +132,27 @@ return array(
                     'reabReadap',
                     'infoCota',
                     'observacao'
-                )
-            ),
-            'aposentadoria' => array(
-                'properties' => array(
+                ]
+            ],
+            'aposentadoria' => [
+                'properties' => [
                     'trabAposent'
-                )
-            ),
-            'contato' => array(
-                'properties' => array(
+                ]
+            ],
+            'contato' => [
+                'properties' => [
                     'fonePrinc',
                     'foneAlternat',
                     'emailPrinc',
                     'emailAlternat',
-                )
-            ),
-            'dependente_1' => array(
+                ]
+            ],
+            'dependente_1' => [
                 'type' => 'array',
                 'nome_api' => 'dependente',
                 'label' => 'Dependentes',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'tpDep_1' => 'tpDep',
                         'nmDep_1' => 'nmDep',
                         'dtNascto_1' => 'dtNascto',
@@ -161,14 +161,14 @@ return array(
                         'depSF_1' => 'depSF',
                         'incTrab_1' => 'incTrab',
                         'depFinsPrev_1' => 'depFinsPrev'
-                    )
-                )
-            ),
-            'dependente_2' => array(
+                    ]
+                ]
+            ],
+            'dependente_2' => [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'tpDep_2' => 'tpDep',
                         'nmDep_2' => 'nmDep',
                         'dtNascto_2' => 'dtNascto',
@@ -177,14 +177,14 @@ return array(
                         'depSF_2' => 'depSF',
                         'incTrab_2' => 'incTrab',
                         'depFinsPrev_2' => 'depFinsPrev'
-                    )
-                )
-            ),
-            'dependente_3' => array(
+                    ]
+                ]
+            ],
+            'dependente_3' => [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'tpDep_3' => 'tpDep',
                         'nmDep_3' => 'nmDep',
                         'dtNascto_3' => 'dtNascto',
@@ -193,14 +193,14 @@ return array(
                         'depSF_3' => 'depSF',
                         'incTrab_3' => 'incTrab',
                         'depFinsPrev_3' => 'depFinsPrev'
-                    )
-                )
-            ),
-            'dependente_4' => array(
+                    ]
+                ]
+            ],
+            'dependente_4' => [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'tpDep_4' => 'tpDep',
                         'nmDep_4' => 'nmDep',
                         'dtNascto_4' => 'dtNascto',
@@ -209,14 +209,14 @@ return array(
                         'depSF_4' => 'depSF',
                         'incTrab_4' => 'incTrab',
                         'depFinsPrev_4' => 'depFinsPrev'
-                    )
-                )
-            ),
-            'dependente_5' => array(
+                    ]
+                ]
+            ],
+            'dependente_5' => [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'tpDep_5' => 'tpDep',
                         'nmDep_5' => 'nmDep',
                         'dtNascto_5' => 'dtNascto',
@@ -225,14 +225,14 @@ return array(
                         'depSF_5' => 'depSF',
                         'incTrab_5' => 'incTrab',
                         'depFinsPrev_5' => 'depFinsPrev'
-                    )
-                )
-            ),
-            'dependente_6' => array(
+                    ]
+                ]
+            ],
+            'dependente_6' => [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'tpDep_6' => 'tpDep',
                         'nmDep_6' => 'nmDep',
                         'dtNascto_6' => 'dtNascto',
@@ -241,14 +241,14 @@ return array(
                         'depSF_6' => 'depSF',
                         'incTrab_6' => 'incTrab',
                         'depFinsPrev_6' => 'depFinsPrev'
-                    )
-                )
-            ),
-            'dependente_7' => array(
+                    ]
+                ]
+            ],
+            'dependente_7' => [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'tpDep_7' => 'tpDep',
                         'nmDep_7' => 'nmDep',
                         'dtNascto_7' => 'dtNascto',
@@ -257,14 +257,14 @@ return array(
                         'depSF_7' => 'depSF',
                         'incTrab_7' => 'incTrab',
                         'depFinsPrev_7' => 'depFinsPrev'
-                    )
-                )
-            ),
-            'dependente_8' => array(
+                    ]
+                ]
+            ],
+            'dependente_8' => [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'tpDep_8' => 'tpDep',
                         'nmDep_8' => 'nmDep',
                         'dtNascto_8' => 'dtNascto',
@@ -273,14 +273,14 @@ return array(
                         'depSF_8' => 'depSF',
                         'incTrab_8' => 'incTrab',
                         'depFinsPrev_8' => 'depFinsPrev'
-                    )
-                )
-            ),
-            'dependente_9' => array(
+                    ]
+                ]
+            ],
+            'dependente_9' => [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'tpDep_9' => 'tpDep',
                         'nmDep_9' => 'nmDep',
                         'dtNascto_9' => 'dtNascto',
@@ -289,14 +289,14 @@ return array(
                         'depSF_9' => 'depSF',
                         'incTrab_9' => 'incTrab',
                         'depFinsPrev_9' => 'depFinsPrev'
-                    )
-                )
-            ),
-            'dependente_10' => array(
+                    ]
+                ]
+            ],
+            'dependente_10' => [
                 'type' => 'array',
                 'nome_api' => 'dependente',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'tpDep_10' => 'tpDep',
                         'nmDep_10' => 'nmDep',
                         'dtNascto_10' => 'dtNascto',
@@ -305,654 +305,654 @@ return array(
                         'depSF_10' => 'depSF',
                         'incTrab_10' => 'incTrab',
                         'depFinsPrev_10' => 'depFinsPrev'
-                    )
-                )
-            )
-        )
-    ),
-    'vinculo' => array(
-        'properties' => array(
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'vinculo' => [
+        'properties' => [
             'matricula',
-            'tpRegTrab' => array(
+            'tpRegTrab' => [
                 'type' => 'int'
-            ),
-            'tpRegPrev' => array(
+            ],
+            'tpRegPrev' => [
                 'type' => 'int'
-            ),
+            ],
             'nrRecInfPrelim',
             'cadIni',
-        ),
+        ],
 
-        'groups' => array(
+        'groups' => [
 
-            'infoRegimeTrab' => array(
+            'infoRegimeTrab' => [
 
-                'groups' => array(
-                    'infoCeletista' => array(
-                        'properties' => array(
+                'groups' => [
+                    'infoCeletista' => [
+                        'properties' => [
                             "dtAdm",
-                            "tpAdmissao" => array(
+                            "tpAdmissao" => [
                                 "type" => "int"
-                            ),
-                            "indAdmissao" => array(
+                            ],
+                            "indAdmissao" => [
                                 "type" => "int"
-                            ),
-                            "tpRegJor" => array(
+                            ],
+                            "tpRegJor" => [
                                 "type" => "int"
-                            ),
-                            "natAtividade" => array(
+                            ],
+                            "natAtividade" => [
                                 "type" => "int"
-                            ),
-                            "dtBase" => array(
+                            ],
+                            "dtBase" => [
                                 'type' => 'int'
-                            ),
+                            ],
                             "cnpjSindCategProf"
-                        ),
-                        "groups" => array(
-                            "FGTS" => array(
-                                "properties" => array(
-                                    "opcFGTS" => array(
+                        ],
+                        "groups" => [
+                            "FGTS" => [
+                                "properties" => [
+                                    "opcFGTS" => [
                                         'type' => 'int'
-                                    ),
+                                    ],
                                     "dtOpcFGTS",
-                                )
-                            ),
-                            "trabTemporario" => array(
-                                "properties" => array(
-                                    "hipLeg" => array(
+                                ]
+                            ],
+                            "trabTemporario" => [
+                                "properties" => [
+                                    "hipLeg" => [
                                         "type" => "int"
-                                    ),
+                                    ],
                                     "justContr",
-                                    "tpInclContr" => array(
+                                    "tpInclContr" => [
                                         "type" => "int"
-                                    )
-                                ),
-                                "groups" => array(
-                                    "ideTomadorServ" => array(
-                                        "properties" => array(
-                                            "tpInsc" => array(
+                                    ]
+                                ],
+                                "groups" => [
+                                    "ideTomadorServ" => [
+                                        "properties" => [
+                                            "tpInsc" => [
                                                 "type" => "int"
-                                            ),
+                                            ],
                                             "nrInsc"
-                                        ),
-                                        "groups" => array(
-                                            "ideEstabVinc" => array(
-                                                "properties" => array(
-                                                    "tpInsc" => array(
+                                        ],
+                                        "groups" => [
+                                            "ideEstabVinc" => [
+                                                "properties" => [
+                                                    "tpInsc" => [
                                                         "type" => "int"
-                                                    ),
+                                                    ],
                                                     "nrInsc"
-                                                )
-                                            )
-                                        )
-                                    ),
-                                    "ideTrabSubstituido" => array(
+                                                ]
+                                            ]
+                                        ]
+                                    ],
+                                    "ideTrabSubstituido" => [
                                         'type' => 'array',
-                                        'items' => array(
-                                            'properties' => array(
+                                        'items' => [
+                                            'properties' => [
                                                 'cpfTrabSubst'
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            "aprend" => array(
-                                'properties' => array(
-                                    "tpInsc" => array(
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            "aprend" => [
+                                'properties' => [
+                                    "tpInsc" => [
                                         "type" => "int"
-                                    ),
+                                    ],
                                     "nrInsc"
-                                )
-                            )
-                        )
-                    ),
-                    'infoEstatutario' => array(
-                        'properties' => array(
-                            'indProvim' => array(
+                                ]
+                            ]
+                        ]
+                    ],
+                    'infoEstatutario' => [
+                        'properties' => [
+                            'indProvim' => [
                                 'type' => 'int'
-                            ),
-                            'tpProv' => array(
+                            ],
+                            'tpProv' => [
                                 'type' => 'int'
-                            ),
+                            ],
                             'dtNomeacao',
                             'dtPosse',
                             'dtExercicio',
-                            'tpPlanRP' => array(
+                            'tpPlanRP' => [
                                 'type' => 'int'
-                            ),
-                        ),
-                        'groups' => array(
-                            'infoDecJud' => array(
-                                'properties' => array(
+                            ],
+                        ],
+                        'groups' => [
+                            'infoDecJud' => [
+                                'properties' => [
                                     'nrProcJud'
-                                )
-                            )
-                        )
-                    ),
-                ),
+                                ]
+                            ]
+                        ]
+                    ],
+                ],
 
-            ),
+            ],
 
-            "infoContrato" => array(
-                "properties" => array(
+            "infoContrato" => [
+                "properties" => [
                     "codCargo",
                     "codFuncao",
-                    "codCateg" => array(
+                    "codCateg" => [
                         "type" => "int"
-                    ),
+                    ],
                     "codCarreira",
                     "dtIngrCarr"
-                ),
-                "groups" => array(
-                    "remuneracao" => array(
-                        "properties" => array(
-                            "vrSalFx" => array(
+                ],
+                "groups" => [
+                    "remuneracao" => [
+                        "properties" => [
+                            "vrSalFx" => [
                                 "type" => "float"
-                            ),
-                            "undSalFixo" => array(
+                            ],
+                            "undSalFixo" => [
                                 "type" => "int"
-                            ),
+                            ],
                             "dscSalVar"
-                        )
-                    ),
-                    "duracao" => array(
-                        "properties" => array(
-                            "tpContr" => array(
+                        ]
+                    ],
+                    "duracao" => [
+                        "properties" => [
+                            "tpContr" => [
                                 "type" => "int"
-                            ),
+                            ],
                             "dtTerm",
                             "clauAssec",
                             "objDet"
-                        )
-                    ),
+                        ]
+                    ],
 
-                    'localTrabalho' => array(
-                        'groups' => array(
-                            "localTrabGeral" => array(
-                                "properties" => array(
-                                    "tpInsc" => array(
+                    'localTrabalho' => [
+                        'groups' => [
+                            "localTrabGeral" => [
+                                "properties" => [
+                                    "tpInsc" => [
                                         "type" => "int"
-                                    ),
+                                    ],
                                     "nrInsc",
                                     "descComp"
-                                )
-                            ),
-                            "localTrabDom" => array(
-                                "properties" => array(
+                                ]
+                            ],
+                            "localTrabDom" => [
+                                "properties" => [
                                     "tpLograd",
                                     "dscLograd",
                                     "nrLograd",
                                     "complemento",
                                     "bairro",
                                     "cep",
-                                    "codMunic" => array(
+                                    "codMunic" => [
                                         "type" => "int"
-                                    ),
+                                    ],
                                     "uf",
-                                )
-                            ),
-                        ),
-                    ),
+                                ]
+                            ],
+                        ],
+                    ],
 
-                    "horContratual" => array(
-                        "properties" => array(
-                            "qtdHrsSem" => array(
+                    "horContratual" => [
+                        "properties" => [
+                            "qtdHrsSem" => [
                                 "type" => "int"
-                            ),
-                            "tpJornada" => array(
+                            ],
+                            "tpJornada" => [
                                 "type" => "int"
-                            ),
+                            ],
                             "dscTpJorn",
-                            "tmpParc" => array(
+                            "tmpParc" => [
                                 "type" => "int"
-                            ),
-                        ),
-                        'groups' => array(
-                            'horario_codHorContrat_1' => array(
+                            ],
+                        ],
+                        'groups' => [
+                            'horario_codHorContrat_1' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => "Segunda-Feira",
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_1' => 'codHorContrat',
                                         'dia_1' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_2' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_2' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => "Terça-Feira",
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_2' => 'codHorContrat',
                                         'dia_2' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_3' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_3' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Quarta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_3' => 'codHorContrat',
                                         'dia_3' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_4' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_4' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Quinta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_4' => 'codHorContrat',
                                         'dia_4' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_5' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_5' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Sexta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_5' => 'codHorContrat',
                                         'dia_5' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_6' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_6' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Sábado',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_6' => 'codHorContrat',
                                         'dia_6' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_7' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_7' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Domingo',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_7' => 'codHorContrat',
                                         'dia_7' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_8' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_8' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Dia Variável',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_8' => 'codHorContrat',
                                         'dia_8' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_9' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_9' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => "Segunda-Feira",
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_9' => 'codHorContrat',
                                         'dia_9' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_10' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_10' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => "Terça-Feira",
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_10' => 'codHorContrat',
                                         'dia_10' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_11' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_11' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Quarta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_11' => 'codHorContrat',
                                         'dia_11' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_12' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_12' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Quinta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_12' => 'codHorContrat',
                                         'dia_12' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_13' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_13' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Sexta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_13' => 'codHorContrat',
                                         'dia_13' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_14' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_14' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Sábado',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_14' => 'codHorContrat',
                                         'dia_14' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_15' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_15' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Domingo',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_15' => 'codHorContrat',
                                         'dia_15' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_16' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_16' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Dia Variável',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_16' => 'codHorContrat',
                                         'dia_16' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_17' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_17' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => "Segunda-Feira",
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_17' => 'codHorContrat',
                                         'dia_17' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_18' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_18' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => "Terça-Feira",
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_18' => 'codHorContrat',
                                         'dia_18' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_19' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_19' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Quarta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_19' => 'codHorContrat',
                                         'dia_19' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_20' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_20' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Quinta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_20' => 'codHorContrat',
                                         'dia_20' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_21' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_21' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Sexta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_21' => 'codHorContrat',
                                         'dia_21' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_22' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_22' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Sábado',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_22' => 'codHorContrat',
                                         'dia_22' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_23' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_23' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Domingo',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_23' => 'codHorContrat',
                                         'dia_23' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_24' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_24' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Dia Variável',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_24' => 'codHorContrat',
                                         'dia_24' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_25' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_25' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => "Segunda-Feira",
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_25' => 'codHorContrat',
                                         'dia_25' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_26' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_26' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => "Terça-Feira",
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_26' => 'codHorContrat',
                                         'dia_26' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_27' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_27' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Quarta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_27' => 'codHorContrat',
                                         'dia_27' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_28' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_28' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Quinta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_28' => 'codHorContrat',
                                         'dia_28' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_29' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_29' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Sexta-Feira',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_29' => 'codHorContrat',
                                         'dia_29' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_30' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_30' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Sábado',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_30' => 'codHorContrat',
                                         'dia_30' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_31' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_31' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Domingo',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_31' => 'codHorContrat',
                                         'dia_31' => 'dia'
-                                    )
-                                )
-                            ),
-                            'horario_codHorContrat_32' => array(
+                                    ]
+                                ]
+                            ],
+                            'horario_codHorContrat_32' => [
                                 'type' => 'array',
                                 'nome_api' => 'horario',
                                 'label' => 'Horário',
-                                'items' => array(
+                                'items' => [
                                     'label' => 'Dia Variável',
-                                    'properties' => array(
+                                    'properties' => [
                                         'horario_codHorContrat_32' => 'codHorContrat',
                                         'dia_32' => 'dia'
-                                    )
-                                )
-                            ),
-                            'filiacaoSindical' => array(
+                                    ]
+                                ]
+                            ],
+                            'filiacaoSindical' => [
                                 'type' => 'array',
-                                'items' => array(
-                                    'properties' => array(
+                                'items' => [
+                                    'properties' => [
                                         'cnpjSindTrab'
-                                    )
+                                    ]
 
-                                )
-                            ),
-                            "alvaraJudicial" => array(
-                                "properties" => array(
+                                ]
+                            ],
+                            "alvaraJudicial" => [
+                                "properties" => [
                                     "nrProcJud"
-                                )
-                            ),
-                            'observacoes' => array(
+                                ]
+                            ],
+                            'observacoes' => [
                                 'type' => 'array',
-                                'items' => array(
-                                    'properties' => array(
+                                'items' => [
+                                    'properties' => [
                                         'observacao'
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-                    ),
-                    'sucessaoVinc' => array(
-                        'properties' => array(
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+                    ],
+                    'sucessaoVinc' => [
+                        'properties' => [
                             'tpInscAnt',
                             'cnpjEmpregAnt',
                             'matricAnt',
                             'sucessaoVinc_dtTransf' => 'dtTransf',
                             'sucessaoVinc_observacao' => 'observacao'
-                        )
-                    ),
-                    'transfDom' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'transfDom' => [
+                        'properties' => [
                             'cpfSubstituido',
                             'transfDom_matricAnt' => 'matricAnt',
                             'dtTransf'
-                        )
-                    ),
-                    'mudancaCPF' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'mudancaCPF' => [
+                        'properties' => [
                             'cpfAnt',
                             'matricAnt',
                             'dtAltCPF',
                             'mudancaCPF_observacao' => 'observacao',
-                        )
-                    ),
-                    'afastamento' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'afastamento' => [
+                        'properties' => [
                             'dtIniAfast',
                             'codMotAfast'
-                        )
-                    ),
-                    'desligamento' => array(
-                        'properties' => array(
+                        ]
+                    ],
+                    'desligamento' => [
+                        'properties' => [
                             'dtDeslig'
-                    )
-            )
-        )
-    )
-);
+                    ]
+            ]
+        ]
+    ]
+];

@@ -29,16 +29,16 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-if(isset($HTTP_POST_VARS["retornar"])){
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["retornar"])){
+  db_postmemory($_POST);
   db_redireciona("con4_orgitens002.php?mod=$modulos&modulos=$modulos");
   exit;
 }
-if(isset($HTTP_POST_VARS["campos"])){
+if(isset($_POST["campos"])){
   //
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
   // atualiza ordem do menu
   //
   db_query("begin");
@@ -130,7 +130,7 @@ function js_selecionar() {
                      m.libcliente is true
 	       order by d.menusequencia";
        $result = db_query($sql);
-       if($result!=false && pg_numrows($result)>0){
+       if($result!=false && pg_num_rows($result)>0){
          db_fieldsmemory($result,0);
          //
          $sql = "select m.id_item,m.descricao
@@ -142,7 +142,7 @@ function js_selecionar() {
 	       order by d.menusequencia";
          $result = db_query($sql);
        }
-       if($result==false || pg_numrows($result)==0){
+       if($result==false || pg_num_rows($result)==0){
          ?>
          <table>
 	 <tr>
@@ -171,8 +171,8 @@ function js_selecionar() {
 	 <td>
          <select name="campos[]" id="campos" size="17" style="width:250px" multiple >
          <?php 
-         for($i = 0;$i < pg_numrows($result);$i++) {
-	    echo "<option value=\"".pg_result($result,$i,"id_item")."\">".pg_result($result,$i,"descricao")."</option>\n";
+         for($i = 0;$i < pg_num_rows($result);$i++) {
+	    echo "<option value=\"".pg_fetch_result($result,$i,"id_item")."\">".pg_fetch_result($result,$i,"descricao")."</option>\n";
 	 }
          ?>
          </select>

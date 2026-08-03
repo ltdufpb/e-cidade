@@ -50,7 +50,7 @@ $db_botao = true;
 
 $sd58_i_login   = DB_getsession("DB_id_usuario");
 $login          = DB_getsession("DB_login");
-$sd24_i_unidade = isset($sd24_i_unidade)?$sd24_i_unidade:DB_getsession("DB_coddepto");
+$sd24_i_unidade ??= DB_getsession("DB_coddepto");
 
 //Sau_Config
 $resSau_config = $clsau_config->sql_record($clsau_config->sql_query_ext());

@@ -39,7 +39,7 @@ class Dirf2012 extends Dirf {
    * @var array
    * @access private
    */
-  private $aOrdensInconsistentes = array();
+  private $aOrdensInconsistentes = [];
 
   /**
    * Construtor da classe
@@ -80,12 +80,13 @@ class Dirf2012 extends Dirf {
    * @access public
    * @return void
    */
+  #[\Override]
   public function geraArquivoInconsistencias() {
 
     /**
      * Array com arquivos de inconsistencias gerados
      */
-    $aArquivos   = array();
+    $aArquivos   = [];
     $aArquivos[] = parent::geraArquivoInconsistencias();
 
     global $head2;
@@ -146,6 +147,7 @@ class Dirf2012 extends Dirf {
    * @access public
    * @return void
    */
+  #[\Override]
   public function processarDadosContabilidade() {
 
     $sSqlDadosContabilidade  = " SELECT z01_numcgm,                                                                                   ";
@@ -231,7 +233,7 @@ class Dirf2012 extends Dirf {
       throw new Exception("Erro ao buscar informações na contabilidade.\n\n" . pg_last_error());
     }
 
-    $aDadosDirfAtualizado = array();
+    $aDadosDirfAtualizado = [];
 
     /**
      * processa as anulações de empenho reduzindo os valores de pagamentos anteriores.
@@ -296,7 +298,7 @@ class Dirf2012 extends Dirf {
       unset($oPagamento);
     }
 
-    $aDadosDirf    = array();
+    $aDadosDirf    = [];
 
     foreach ($aDadosDirfAtualizado as $oDadosDirfAtualizado => $oContribuinte) {
 
@@ -309,8 +311,8 @@ class Dirf2012 extends Dirf {
         $oDeclaracaoDirf  = new stdClass();
         $oDeclaracaoDirf->cnpj         = $oContribuinte->z01_cgccpf;
         $oDeclaracaoDirf->nome         = $oContribuinte->z01_nome;
-        $oDeclaracaoDirf->valores      = array();
-        $oDeclaracaoDirf->retencaomes  = array();
+        $oDeclaracaoDirf->valores      = [];
+        $oDeclaracaoDirf->retencaomes  = [];
         $aDadosDirf[$oContribuinte->z01_numcgm] = $oDeclaracaoDirf;
       }
 
@@ -424,7 +426,7 @@ class Dirf2012 extends Dirf {
      */
     foreach ($aDadosDirf as $iNumCgm => $oDirf) {
 
-      if ( trim($oDirf->cnpj) == "" ) {
+      if ( trim((string) $oDirf->cnpj) == "" ) {
 
         $this->addInconsistente($iNumCgm,$oDirf->nome,'CPF Inválido');
         continue;
@@ -473,6 +475,7 @@ class Dirf2012 extends Dirf {
     $this->processarPagamentosSemRetencao();
   }
 
+  #[\Override]
   public function gerarArquivo($oDados, $lGerarContabil=true) {
 
     /**
@@ -508,7 +511,7 @@ class Dirf2012 extends Dirf {
   public function processarPagamentosSemRetencao() {
 
     $sDesdobramentos = null;
-    $aPagamentos     = array();
+    $aPagamentos     = [];
 
     $aDesdobramentos = $this->getDesdobramentos();
 
@@ -691,7 +694,7 @@ class Dirf2012 extends Dirf {
     for ($iIndice = 0; $iIndice < $iDesdobramentos; $iIndice++ ) {
 
       $oPagamento = db_utils::fieldsMemory($rsDesdobramentos, $iIndice);
-      $iCnpj      =  trim($oPagamento->z01_cgccpf);
+      $iCnpj      =  trim((string) $oPagamento->z01_cgccpf);
 
       if ( $iCnpj == "" ) {
 
@@ -752,7 +755,8 @@ class Dirf2012 extends Dirf {
     return true;
   }
 
-  public function calculaValoresMensaisTipo($iCodigoDirf, $oPessoa, $iTipoIRRF,$lSemRetencao=true, $naoCalcularTipos=array()) {
+  #[\Override]
+  public function calculaValoresMensaisTipo($iCodigoDirf, $oPessoa, $iTipoIRRF,$lSemRetencao=true, $naoCalcularTipos=[]) {
 
     $sSqlPagamentos  = " select rh98_rhdirftipovalor,                 ";
     $sSqlPagamentos .= "        sum(rh98_valor) as valor,             ";
@@ -801,7 +805,7 @@ class Dirf2012 extends Dirf {
          ) {
 
         if (!isset($oPessoa->pagamentos[$oPagamento->rh98_rhdirftipovalor])) {
-          $oPessoa->pagamentos[$oPagamento->rh98_rhdirftipovalor] = array();
+          $oPessoa->pagamentos[$oPagamento->rh98_rhdirftipovalor] = [];
         }
 
         $oPessoa->pagamentos[$oPagamento->rh98_rhdirftipovalor][] = $oPagamento;
@@ -846,7 +850,7 @@ class Dirf2012 extends Dirf {
       for ($iPensao = 0; $iPensao < $iTotalPensoes; $iPensao++) {
 
         $oDadosPensao  = db_utils::fieldsMemory($rsTotalPensoes, $iPensao);
-        $aPartesNome   = explode(" ", $oDadosPensao->z01_nome);
+        $aPartesNome   = explode(" ", (string) $oDadosPensao->z01_nome);
         $sValor = trim(db_formatar($oDadosPensao->valor, 'f'));
 
         if ($buscaCpf) {
@@ -876,8 +880,8 @@ class Dirf2012 extends Dirf {
     $sWhereBaseRubricas .= "   and r09_base    = 'B932'                       ";
     $sWhereBaseRubricas .= "   and r09_instit  = " . db_getsession("DB_instit");
 
-    $aTabelasCalculo         = array('gerfsal' => 'r14', 'gerfcom' => 'r48', 'gerfres' => 'r20', 'gerffer' => 'r31');
-    $aQueryCalculoFinanceiro = array();
+    $aTabelasCalculo         = ['gerfsal' => 'r14', 'gerfcom' => 'r48', 'gerfres' => 'r20', 'gerffer' => 'r31'];
+    $aQueryCalculoFinanceiro = [];
 
     foreach ($aTabelasCalculo as $sTabela => $sSigla) {
 
@@ -893,7 +897,7 @@ class Dirf2012 extends Dirf {
       $aQueryCalculoFinanceiro[] = $sSqlCalculoFinanceiro;
     }
 
-    $sSqlBaseInfPlanoSaude = implode($aQueryCalculoFinanceiro, 'union');
+    $sSqlBaseInfPlanoSaude = implode('union', $aQueryCalculoFinanceiro);
     $rsBaseInfPlanoSaude   = db_query($sSqlBaseInfPlanoSaude);
 
     if ($rsBaseInfPlanoSaude && pg_num_rows($rsBaseInfPlanoSaude) > 0) {
@@ -901,7 +905,7 @@ class Dirf2012 extends Dirf {
       for ($iRubricaPlano = 0; $iRubricaPlano < pg_num_rows($rsBaseInfPlanoSaude); $iRubricaPlano++) {
 
         $oRubricaPlanoSaude       = db_utils::fieldsMemory($rsBaseInfPlanoSaude, $iRubricaPlano);
-        $aNomeRubrica             = explode(" ", $oRubricaPlanoSaude->rh27_descr);
+        $aNomeRubrica             = explode(" ", (string) $oRubricaPlanoSaude->rh27_descr);
         $sInformacaoComplementar .= "{$aNomeRubrica[0]}(".trim(db_formatar($oRubricaPlanoSaude->valor, 'f')).")";
       }
     }

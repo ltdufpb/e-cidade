@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE cursosocial
 class cl_cursosocial { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $as19_sequencial = 0; 
-   var $as19_nome = null; 
-   var $as19_detalhamento = null; 
-   var $as19_tabcurritipo = 0; 
-   var $as19_inicio_dia = null; 
-   var $as19_inicio_mes = null; 
-   var $as19_inicio_ano = null; 
-   var $as19_inicio = null; 
-   var $as19_fim_dia = null; 
-   var $as19_fim_mes = null; 
-   var $as19_fim_ano = null; 
-   var $as19_fim = null; 
-   var $as19_horaaulasdia = 0; 
-   var $as19_ministrante = 0; 
-   var $as19_responsavel = 0; 
+   public $as19_sequencial = 0; 
+   public $as19_nome = null; 
+   public $as19_detalhamento = null; 
+   public $as19_tabcurritipo = 0; 
+   public $as19_inicio_dia = null; 
+   public $as19_inicio_mes = null; 
+   public $as19_inicio_ano = null; 
+   public $as19_inicio = null; 
+   public $as19_fim_dia = null; 
+   public $as19_fim_mes = null; 
+   public $as19_fim_ano = null; 
+   public $as19_fim = null; 
+   public $as19_horaaulasdia = 0; 
+   public $as19_ministrante = 0; 
+   public $as19_responsavel = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  as19_sequencial = int4 = Código 
                  as19_nome = varchar(70) = Nome do Curso 
                  as19_detalhamento = text = Resumo 
@@ -70,10 +70,10 @@ class cl_cursosocial {
                  as19_responsavel = int4 = Responsável 
                  ";
    //funcao construtor da classe 
-   function cl_cursosocial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cursosocial"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -199,10 +199,10 @@ class cl_cursosocial {
          $this->erro_status = "0";
          return false; 
        }
-       $this->as19_sequencial = pg_result($result,0,0); 
+       $this->as19_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cursosocial_as19_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $as19_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $as19_sequencial)){
          $this->erro_sql = " Campo as19_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -246,7 +246,7 @@ class cl_cursosocial {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Curso Social ($this->as19_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Curso Social já Cadastrado";
@@ -275,18 +275,18 @@ class cl_cursosocial {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19961,'$this->as19_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3578,19961,'','".AddSlashes(pg_result($resaco,0,'as19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3578,19962,'','".AddSlashes(pg_result($resaco,0,'as19_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3578,19963,'','".AddSlashes(pg_result($resaco,0,'as19_detalhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3578,19964,'','".AddSlashes(pg_result($resaco,0,'as19_tabcurritipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3578,19965,'','".AddSlashes(pg_result($resaco,0,'as19_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3578,19966,'','".AddSlashes(pg_result($resaco,0,'as19_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3578,19967,'','".AddSlashes(pg_result($resaco,0,'as19_horaaulasdia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3578,19968,'','".AddSlashes(pg_result($resaco,0,'as19_ministrante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3578,19969,'','".AddSlashes(pg_result($resaco,0,'as19_responsavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3578,19961,'','".AddSlashes(pg_fetch_result($resaco,0,'as19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3578,19962,'','".AddSlashes(pg_fetch_result($resaco,0,'as19_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3578,19963,'','".AddSlashes(pg_fetch_result($resaco,0,'as19_detalhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3578,19964,'','".AddSlashes(pg_fetch_result($resaco,0,'as19_tabcurritipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3578,19965,'','".AddSlashes(pg_fetch_result($resaco,0,'as19_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3578,19966,'','".AddSlashes(pg_fetch_result($resaco,0,'as19_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3578,19967,'','".AddSlashes(pg_fetch_result($resaco,0,'as19_horaaulasdia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3578,19968,'','".AddSlashes(pg_fetch_result($resaco,0,'as19_ministrante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3578,19969,'','".AddSlashes(pg_fetch_result($resaco,0,'as19_responsavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -296,10 +296,10 @@ class cl_cursosocial {
       $this->atualizacampos();
      $sql = " update cursosocial set ";
      $virgula = "";
-     if(trim($this->as19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_sequencial"])){ 
+     if(trim((string) $this->as19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_sequencial"])){ 
        $sql  .= $virgula." as19_sequencial = $this->as19_sequencial ";
        $virgula = ",";
-       if(trim($this->as19_sequencial) == null ){ 
+       if(trim((string) $this->as19_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "as19_sequencial";
          $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_cursosocial {
          return false;
        }
      }
-     if(trim($this->as19_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_nome"])){ 
+     if(trim((string) $this->as19_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_nome"])){ 
        $sql  .= $virgula." as19_nome = '$this->as19_nome' ";
        $virgula = ",";
-       if(trim($this->as19_nome) == null ){ 
+       if(trim((string) $this->as19_nome) == null ){ 
          $this->erro_sql = " Campo Nome do Curso nao Informado.";
          $this->erro_campo = "as19_nome";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_cursosocial {
          return false;
        }
      }
-     if(trim($this->as19_detalhamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_detalhamento"])){ 
+     if(trim((string) $this->as19_detalhamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_detalhamento"])){ 
        $sql  .= $virgula." as19_detalhamento = '$this->as19_detalhamento' ";
        $virgula = ",";
-       if(trim($this->as19_detalhamento) == null ){ 
+       if(trim((string) $this->as19_detalhamento) == null ){ 
          $this->erro_sql = " Campo Resumo nao Informado.";
          $this->erro_campo = "as19_detalhamento";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_cursosocial {
          return false;
        }
      }
-     if(trim($this->as19_tabcurritipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_tabcurritipo"])){ 
+     if(trim((string) $this->as19_tabcurritipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_tabcurritipo"])){ 
        $sql  .= $virgula." as19_tabcurritipo = $this->as19_tabcurritipo ";
        $virgula = ",";
-       if(trim($this->as19_tabcurritipo) == null ){ 
+       if(trim((string) $this->as19_tabcurritipo) == null ){ 
          $this->erro_sql = " Campo Tipo de curso nao Informado.";
          $this->erro_campo = "as19_tabcurritipo";
          $this->erro_banco = "";
@@ -348,10 +348,10 @@ class cl_cursosocial {
          return false;
        }
      }
-     if(trim($this->as19_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_inicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as19_inicio_dia"] !="") ){ 
+     if(trim((string) $this->as19_inicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_inicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as19_inicio_dia"] !="") ){ 
        $sql  .= $virgula." as19_inicio = '$this->as19_inicio' ";
        $virgula = ",";
-       if(trim($this->as19_inicio) == null ){ 
+       if(trim((string) $this->as19_inicio) == null ){ 
          $this->erro_sql = " Campo Início nao Informado.";
          $this->erro_campo = "as19_inicio_dia";
          $this->erro_banco = "";
@@ -364,7 +364,7 @@ class cl_cursosocial {
        if(isset($GLOBALS["HTTP_POST_VARS"]["as19_inicio_dia"])){ 
          $sql  .= $virgula." as19_inicio = null ";
          $virgula = ",";
-         if(trim($this->as19_inicio) == null ){ 
+         if(trim((string) $this->as19_inicio) == null ){ 
            $this->erro_sql = " Campo Início nao Informado.";
            $this->erro_campo = "as19_inicio_dia";
            $this->erro_banco = "";
@@ -375,10 +375,10 @@ class cl_cursosocial {
          }
        }
      }
-     if(trim($this->as19_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as19_fim_dia"] !="") ){ 
+     if(trim((string) $this->as19_fim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_fim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as19_fim_dia"] !="") ){ 
        $sql  .= $virgula." as19_fim = '$this->as19_fim' ";
        $virgula = ",";
-       if(trim($this->as19_fim) == null ){ 
+       if(trim((string) $this->as19_fim) == null ){ 
          $this->erro_sql = " Campo Encerramento nao Informado.";
          $this->erro_campo = "as19_fim_dia";
          $this->erro_banco = "";
@@ -391,7 +391,7 @@ class cl_cursosocial {
        if(isset($GLOBALS["HTTP_POST_VARS"]["as19_fim_dia"])){ 
          $sql  .= $virgula." as19_fim = null ";
          $virgula = ",";
-         if(trim($this->as19_fim) == null ){ 
+         if(trim((string) $this->as19_fim) == null ){ 
            $this->erro_sql = " Campo Encerramento nao Informado.";
            $this->erro_campo = "as19_fim_dia";
            $this->erro_banco = "";
@@ -402,10 +402,10 @@ class cl_cursosocial {
          }
        }
      }
-     if(trim($this->as19_horaaulasdia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_horaaulasdia"])){ 
+     if(trim((string) $this->as19_horaaulasdia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_horaaulasdia"])){ 
        $sql  .= $virgula." as19_horaaulasdia = $this->as19_horaaulasdia ";
        $virgula = ",";
-       if(trim($this->as19_horaaulasdia) == null ){ 
+       if(trim((string) $this->as19_horaaulasdia) == null ){ 
          $this->erro_sql = " Campo Horas por dia nao Informado.";
          $this->erro_campo = "as19_horaaulasdia";
          $this->erro_banco = "";
@@ -415,10 +415,10 @@ class cl_cursosocial {
          return false;
        }
      }
-     if(trim($this->as19_ministrante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_ministrante"])){ 
+     if(trim((string) $this->as19_ministrante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_ministrante"])){ 
        $sql  .= $virgula." as19_ministrante = $this->as19_ministrante ";
        $virgula = ",";
-       if(trim($this->as19_ministrante) == null ){ 
+       if(trim((string) $this->as19_ministrante) == null ){ 
          $this->erro_sql = " Campo Ministrante nao Informado.";
          $this->erro_campo = "as19_ministrante";
          $this->erro_banco = "";
@@ -428,10 +428,10 @@ class cl_cursosocial {
          return false;
        }
      }
-     if(trim($this->as19_responsavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_responsavel"])){ 
+     if(trim((string) $this->as19_responsavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as19_responsavel"])){ 
        $sql  .= $virgula." as19_responsavel = $this->as19_responsavel ";
        $virgula = ",";
-       if(trim($this->as19_responsavel) == null ){ 
+       if(trim((string) $this->as19_responsavel) == null ){ 
          $this->erro_sql = " Campo Responsável nao Informado.";
          $this->erro_campo = "as19_responsavel";
          $this->erro_banco = "";
@@ -455,27 +455,27 @@ class cl_cursosocial {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19961,'$this->as19_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as19_sequencial"]) || $this->as19_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3578,19961,'".AddSlashes(pg_result($resaco,$conresaco,'as19_sequencial'))."','$this->as19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3578,19961,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as19_sequencial'))."','$this->as19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as19_nome"]) || $this->as19_nome != "")
-             $resac = db_query("insert into db_acount values($acount,3578,19962,'".AddSlashes(pg_result($resaco,$conresaco,'as19_nome'))."','$this->as19_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3578,19962,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as19_nome'))."','$this->as19_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as19_detalhamento"]) || $this->as19_detalhamento != "")
-             $resac = db_query("insert into db_acount values($acount,3578,19963,'".AddSlashes(pg_result($resaco,$conresaco,'as19_detalhamento'))."','$this->as19_detalhamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3578,19963,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as19_detalhamento'))."','$this->as19_detalhamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as19_tabcurritipo"]) || $this->as19_tabcurritipo != "")
-             $resac = db_query("insert into db_acount values($acount,3578,19964,'".AddSlashes(pg_result($resaco,$conresaco,'as19_tabcurritipo'))."','$this->as19_tabcurritipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3578,19964,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as19_tabcurritipo'))."','$this->as19_tabcurritipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as19_inicio"]) || $this->as19_inicio != "")
-             $resac = db_query("insert into db_acount values($acount,3578,19965,'".AddSlashes(pg_result($resaco,$conresaco,'as19_inicio'))."','$this->as19_inicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3578,19965,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as19_inicio'))."','$this->as19_inicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as19_fim"]) || $this->as19_fim != "")
-             $resac = db_query("insert into db_acount values($acount,3578,19966,'".AddSlashes(pg_result($resaco,$conresaco,'as19_fim'))."','$this->as19_fim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3578,19966,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as19_fim'))."','$this->as19_fim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as19_horaaulasdia"]) || $this->as19_horaaulasdia != "")
-             $resac = db_query("insert into db_acount values($acount,3578,19967,'".AddSlashes(pg_result($resaco,$conresaco,'as19_horaaulasdia'))."','$this->as19_horaaulasdia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3578,19967,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as19_horaaulasdia'))."','$this->as19_horaaulasdia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as19_ministrante"]) || $this->as19_ministrante != "")
-             $resac = db_query("insert into db_acount values($acount,3578,19968,'".AddSlashes(pg_result($resaco,$conresaco,'as19_ministrante'))."','$this->as19_ministrante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3578,19968,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as19_ministrante'))."','$this->as19_ministrante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as19_responsavel"]) || $this->as19_responsavel != "")
-             $resac = db_query("insert into db_acount values($acount,3578,19969,'".AddSlashes(pg_result($resaco,$conresaco,'as19_responsavel'))."','$this->as19_responsavel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3578,19969,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as19_responsavel'))."','$this->as19_responsavel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -529,18 +529,18 @@ class cl_cursosocial {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19961,'$as19_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3578,19961,'','".AddSlashes(pg_result($resaco,$iresaco,'as19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3578,19962,'','".AddSlashes(pg_result($resaco,$iresaco,'as19_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3578,19963,'','".AddSlashes(pg_result($resaco,$iresaco,'as19_detalhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3578,19964,'','".AddSlashes(pg_result($resaco,$iresaco,'as19_tabcurritipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3578,19965,'','".AddSlashes(pg_result($resaco,$iresaco,'as19_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3578,19966,'','".AddSlashes(pg_result($resaco,$iresaco,'as19_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3578,19967,'','".AddSlashes(pg_result($resaco,$iresaco,'as19_horaaulasdia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3578,19968,'','".AddSlashes(pg_result($resaco,$iresaco,'as19_ministrante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3578,19969,'','".AddSlashes(pg_result($resaco,$iresaco,'as19_responsavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3578,19961,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3578,19962,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as19_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3578,19963,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as19_detalhamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3578,19964,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as19_tabcurritipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3578,19965,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as19_inicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3578,19966,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as19_fim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3578,19967,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as19_horaaulasdia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3578,19968,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as19_ministrante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3578,19969,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as19_responsavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -601,7 +601,7 @@ class cl_cursosocial {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cursosocial";
@@ -616,7 +616,7 @@ class cl_cursosocial {
    function sql_query ( $as19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -639,7 +639,7 @@ class cl_cursosocial {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -652,7 +652,7 @@ class cl_cursosocial {
    function sql_query_file ( $as19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -673,7 +673,7 @@ class cl_cursosocial {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -688,7 +688,7 @@ class cl_cursosocial {
     $sql = "select ";
     if ($campos != "*") {
       
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula    = "";
       
       for ($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -716,7 +716,7 @@ class cl_cursosocial {
     if ($ordem != null) {
       
       $sql       .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula    = "";
       
       for ($i = 0; $i < sizeof($campos_sql); $i++) {

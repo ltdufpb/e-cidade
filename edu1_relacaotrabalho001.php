@@ -36,7 +36,7 @@ db_postmemory( $_POST );
 
 
 $oGet        = db_utils::postMemory($_GET);
-$oGet->sNome = base64_decode($oGet->sNome);
+$oGet->sNome = base64_decode((string) $oGet->sNome);
 
 ?>
 <html>

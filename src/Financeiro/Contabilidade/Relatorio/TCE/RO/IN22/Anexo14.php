@@ -70,7 +70,7 @@ class Anexo14 extends Base implements In22
         $whereFiltro = $this->getFiltrosConfigurados();
 
         if (empty($whereFiltro)) {
-            return array();
+            return [];
         }
         $campoProjeto = "lpad(o58_orgao::varchar, 2 , '0') || '.'||lpad(o58_unidade::varchar, 2 , '0') || '.' ||";
         $campoProjeto .= "lpad(o58_funcao::varchar, 3, '0') || '.'|| ";

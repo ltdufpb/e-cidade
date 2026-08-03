@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_lab_setor_classe.php"));
 require_once(modification("classes/db_lab_requisicao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oRotulo = new rotulocampo;
 $oRotulo->label("la24_i_setor");
@@ -150,10 +150,10 @@ $oDaoLabRequisicao = db_utils::getdao('lab_requisicao');
                       <?php 
                       if (isset($modeloselect)) {
                         
-                        @$ini  = substr(@$la22_d_ini, 6, 4)."-".substr(@$la22_d_ini, 3, 2)."-";
-                        @$ini .= substr(@$la22_d_ini, 0, 2);
-                        @$fim  = substr(@$la22_d_fim, 6, 4)."-".substr(@$la22_d_fim, 3, 2)."-";
-                        @$fim .= substr(@$la22_d_fim, 0, 2);         
+                        @$ini  = substr((string) @$la22_d_ini, 6, 4)."-".substr((string) @$la22_d_ini, 3, 2)."-";
+                        @$ini .= substr((string) @$la22_d_ini, 0, 2);
+                        @$fim  = substr((string) @$la22_d_fim, 6, 4)."-".substr((string) @$la22_d_fim, 3, 2)."-";
+                        @$fim .= substr((string) @$la22_d_fim, 0, 2);         
                         $sWhere = "";
                         $sSep   = "";
                         if ($la02_i_codigo != "") {
@@ -178,7 +178,7 @@ $oDaoLabRequisicao = db_utils::getdao('lab_requisicao');
        
                             db_fieldsmemory($rsResult, 0);
                             $la08_i_codigo = $la08_i_codigo;
-                            $la08_c_descr  = substr($la08_c_descr, 0, 40) ;
+                            $la08_c_descr  = substr((string) $la08_c_descr, 0, 40) ;
                             $z01_v_nome    = $z01_v_nome ;
                             for ($iI = 0; $iI < $oDaoLabRequisicao->numrows; $iI++) {
 

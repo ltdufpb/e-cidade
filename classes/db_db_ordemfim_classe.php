@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE db_ordemfim
 class cl_db_ordemfim { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $codordem = null; 
-   var $id_usuario = 0; 
-   var $dtfim_dia = null; 
-   var $dtfim_mes = null; 
-   var $dtfim_ano = null; 
-   var $dtfim = null; 
+   public $codordem = null; 
+   public $id_usuario = 0; 
+   public $dtfim_dia = null; 
+   public $dtfim_mes = null; 
+   public $dtfim_ano = null; 
+   public $dtfim = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  codordem = varchar(15) = Código 
                  id_usuario = int4 = Cod. Usuário 
                  dtfim = date = Data Final 
                  ";
    //funcao construtor da classe 
-   function cl_db_ordemfim() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_ordemfim"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -128,7 +128,7 @@ class cl_db_ordemfim {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "ordem_fim () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "ordem_fim já Cadastrado";
@@ -155,10 +155,10 @@ class cl_db_ordemfim {
       $this->atualizacampos();
      $sql = " update db_ordemfim set ";
      $virgula = "";
-     if(trim($this->codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codordem"])){ 
+     if(trim((string) $this->codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codordem"])){ 
        $sql  .= $virgula." codordem = '$this->codordem' ";
        $virgula = ",";
-       if(trim($this->codordem) == null ){ 
+       if(trim((string) $this->codordem) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "codordem";
          $this->erro_banco = "";
@@ -168,10 +168,10 @@ class cl_db_ordemfim {
          return false;
        }
      }
-     if(trim($this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
+     if(trim((string) $this->id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_usuario"])){ 
        $sql  .= $virgula." id_usuario = $this->id_usuario ";
        $virgula = ",";
-       if(trim($this->id_usuario) == null ){ 
+       if(trim((string) $this->id_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "id_usuario";
          $this->erro_banco = "";
@@ -181,10 +181,10 @@ class cl_db_ordemfim {
          return false;
        }
      }
-     if(trim($this->dtfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dtfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dtfim_dia"] !="") ){ 
+     if(trim((string) $this->dtfim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dtfim_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dtfim_dia"] !="") ){ 
        $sql  .= $virgula." dtfim = '$this->dtfim' ";
        $virgula = ",";
-       if(trim($this->dtfim) == null ){ 
+       if(trim((string) $this->dtfim) == null ){ 
          $this->erro_sql = " Campo Data Final nao Informado.";
          $this->erro_campo = "dtfim_dia";
          $this->erro_banco = "";
@@ -197,7 +197,7 @@ class cl_db_ordemfim {
        if(isset($GLOBALS["HTTP_POST_VARS"]["dtfim_dia"])){ 
          $sql  .= $virgula." dtfim = null ";
          $virgula = ",";
-         if(trim($this->dtfim) == null ){ 
+         if(trim((string) $this->dtfim) == null ){ 
            $this->erro_sql = " Campo Data Final nao Informado.";
            $this->erro_campo = "dtfim_dia";
            $this->erro_banco = "";
@@ -289,7 +289,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_ordemfim";

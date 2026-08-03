@@ -40,7 +40,7 @@ $cldb_sysregrasacessocanc = new cl_db_sysregrasacessocanc;
 $cldb_sysregrasacessousu = new cl_db_sysregrasacessousu;
 $cldb_sysregrasacessoip = new cl_db_sysregrasacessoip;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){

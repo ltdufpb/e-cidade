@@ -116,7 +116,7 @@ class Formulario
     {
         //Busca os formulários da versão configurada
         $formulariosVersao = ConfiguracaoFactory::getFormulariosVersaoAtual();
-        $formularios = array();
+        $formularios = [];
         foreach ($formulariosVersao as $formulario) {
             $formularios[] = self::getById($formulario->formulario);
         }

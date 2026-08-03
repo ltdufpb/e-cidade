@@ -252,7 +252,7 @@ for($i=0;$i<$numrows_matordemitem;$i++){
       break;
     }
     $codmatmater = $clmatmater->m60_codmater;
- 
+
     /**
      *
      * Inclui a unidade de saída do material
@@ -265,7 +265,7 @@ for($i=0;$i<$numrows_matordemitem;$i++){
       $sqlerro  = true;
       break;
     }
- 
+
     /**
      *
      * Liga material no almoxarifado à tabela de materias do compras
@@ -526,7 +526,7 @@ if($mostrar_dados_incluidos == true){
     $res1 = db_query("select * from matordemitem where m52_numemp = $e60_numemp;");
     db_fieldsmemory($res1, 0);
     db_criatabela($res1);
-    
+
     echo "matordem";
     $res1 = db_query("select * from matordem where m51_codordem = $m52_codordem");
     db_criatabela($res1);
@@ -549,16 +549,16 @@ if($mostrar_dados_incluidos == true){
     $res1 = db_query("select * from matestoqueitemoc where m73_codmatestoqueitem = $m71_codlanc");
     db_fieldsmemory($res1, 0);
     db_criatabela($res1);
-    
+
     echo "matestoqueitem";
     $res1 = db_query("select * from matordemitem where m52_codlanc = $m73_codmatordemitem;");
     db_fieldsmemory($res1, 0);
     db_criatabela($res1);
-    
+
     echo "matordem";
     $res1 = db_query("select * from matordem where m51_codordem = $m52_codordem");
     db_criatabela($res1);
-    
+
     echo "empnotaord";
     $res1 = db_query("select * from empnotaord where m72_codordem = $m52_codordem and m72_codnota = $e69_codnota");
     db_criatabela($res1);
@@ -571,12 +571,12 @@ if($mostrar_dados_incluidos == true){
     echo "empnota";
     $res1 = db_query("select * from empnota where e69_codnota = $e69_codnota");
     db_criatabela($res1);
-    
+
     echo "matestoqueinimei";
     $res1 = db_query("select * from matestoqueinimei where m82_matestoqueitem = $m71_codlanc");
     db_fieldsmemory($res1, 0);
     db_criatabela($res1);
-    
+
     echo "matestoqueini";
     $res1 = db_query("select * from matestoqueini where m80_codigo = $m82_matestoqueini");
     db_criatabela($res1);

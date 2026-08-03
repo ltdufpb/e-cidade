@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sepultamentoisencao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsepultamentoisencao = new cl_sepultamentoisencao;
 $clsepultamentoisencao->rotulo->label("cm33_sequencial");
 $clsepultamentoisencao->rotulo->label("cm33_sepultamento");
@@ -98,9 +98,9 @@ $clsepultamentoisencao->rotulo->label("cm33_sepultamento");
         }else{
            $sql = $clsepultamentoisencao->sql_query("",$campos,"cm33_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cm33_sepultamento)){
-          $repassa = array("chave_cm33_sequencial"=>$chave_cm33_sequencial,"chave_cm33_sepultamento"=>$chave_cm33_sepultamento);
+          $repassa = ["chave_cm33_sequencial"=>$chave_cm33_sequencial,"chave_cm33_sepultamento"=>$chave_cm33_sepultamento];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

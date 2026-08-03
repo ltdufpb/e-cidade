@@ -163,7 +163,7 @@ class Banrisul extends PixInfo implements PixBanco
         ];
 
         $body["devedor"] = [];
-        $body["devedor"]["nome"] = utf8_encode($this->cgm->z01_nome);
+        $body["devedor"]["nome"] = mb_convert_encoding($this->cgm->z01_nome, 'UTF-8', 'ISO-8859-1');
 
         if (strlen($this->buildCpfCnpj()) < 13) {
             $body["devedor"]["cpf"] = $this->buildCpfCnpj();
@@ -178,7 +178,7 @@ class Banrisul extends PixInfo implements PixBanco
             ],
             [
                 "nome" => "descricao",
-                "valor" => utf8_encode("Arrecadação Pix")
+                "valor" => mb_convert_encoding("Arrecadação Pix", 'UTF-8', 'ISO-8859-1')
             ]
         ];
 
@@ -219,7 +219,7 @@ class Banrisul extends PixInfo implements PixBanco
      */
     private function parseHttpResponseBody($httpResponse)
     {
-        return json_decode($httpResponse->getBody());
+        return json_decode((string) $httpResponse->getBody());
     }
 
     /**

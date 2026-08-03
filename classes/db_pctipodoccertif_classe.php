@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE pctipodoccertif
 class cl_pctipodoccertif { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc72_codigo = 0; 
-   var $pc72_pctipocertif = 0; 
-   var $pc72_pcdoccertif = 0; 
-   var $pc72_obrigatorio = 'f'; 
+   public $pc72_codigo = 0; 
+   public $pc72_pctipocertif = 0; 
+   public $pc72_pcdoccertif = 0; 
+   public $pc72_obrigatorio = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc72_codigo = int4 = Código 
                  pc72_pctipocertif = int4 = Cod. Tipo Certificado 
                  pc72_pcdoccertif = int4 = Cod. Documento 
                  pc72_obrigatorio = bool = Obrigatório 
                  ";
    //funcao construtor da classe 
-   function cl_pctipodoccertif() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pctipodoccertif"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_pctipodoccertif {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc72_codigo = pg_result($result,0,0); 
+       $this->pc72_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pctipodoccertif_pc72_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc72_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc72_codigo)){
          $this->erro_sql = " Campo pc72_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_pctipodoccertif {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "documentos de um determinado grupo de certificado ($this->pc72_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "documentos de um determinado grupo de certificado já Cadastrado";
@@ -180,13 +180,13 @@ class cl_pctipodoccertif {
      $resaco = $this->sql_record($this->sql_query_file($this->pc72_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7790,'$this->pc72_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1298,7790,'','".AddSlashes(pg_result($resaco,0,'pc72_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1298,7791,'','".AddSlashes(pg_result($resaco,0,'pc72_pctipocertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1298,7793,'','".AddSlashes(pg_result($resaco,0,'pc72_pcdoccertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1298,7794,'','".AddSlashes(pg_result($resaco,0,'pc72_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1298,7790,'','".AddSlashes(pg_fetch_result($resaco,0,'pc72_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1298,7791,'','".AddSlashes(pg_fetch_result($resaco,0,'pc72_pctipocertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1298,7793,'','".AddSlashes(pg_fetch_result($resaco,0,'pc72_pcdoccertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1298,7794,'','".AddSlashes(pg_fetch_result($resaco,0,'pc72_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_pctipodoccertif {
       $this->atualizacampos();
      $sql = " update pctipodoccertif set ";
      $virgula = "";
-     if(trim($this->pc72_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc72_codigo"])){ 
+     if(trim((string) $this->pc72_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc72_codigo"])){ 
        $sql  .= $virgula." pc72_codigo = $this->pc72_codigo ";
        $virgula = ",";
-       if(trim($this->pc72_codigo) == null ){ 
+       if(trim((string) $this->pc72_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "pc72_codigo";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_pctipodoccertif {
          return false;
        }
      }
-     if(trim($this->pc72_pctipocertif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc72_pctipocertif"])){ 
+     if(trim((string) $this->pc72_pctipocertif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc72_pctipocertif"])){ 
        $sql  .= $virgula." pc72_pctipocertif = $this->pc72_pctipocertif ";
        $virgula = ",";
-       if(trim($this->pc72_pctipocertif) == null ){ 
+       if(trim((string) $this->pc72_pctipocertif) == null ){ 
          $this->erro_sql = " Campo Cod. Tipo Certificado nao Informado.";
          $this->erro_campo = "pc72_pctipocertif";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_pctipodoccertif {
          return false;
        }
      }
-     if(trim($this->pc72_pcdoccertif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc72_pcdoccertif"])){ 
+     if(trim((string) $this->pc72_pcdoccertif)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc72_pcdoccertif"])){ 
        $sql  .= $virgula." pc72_pcdoccertif = $this->pc72_pcdoccertif ";
        $virgula = ",";
-       if(trim($this->pc72_pcdoccertif) == null ){ 
+       if(trim((string) $this->pc72_pcdoccertif) == null ){ 
          $this->erro_sql = " Campo Cod. Documento nao Informado.";
          $this->erro_campo = "pc72_pcdoccertif";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_pctipodoccertif {
          return false;
        }
      }
-     if(trim($this->pc72_obrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc72_obrigatorio"])){ 
+     if(trim((string) $this->pc72_obrigatorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc72_obrigatorio"])){ 
        $sql  .= $virgula." pc72_obrigatorio = '$this->pc72_obrigatorio' ";
        $virgula = ",";
-       if(trim($this->pc72_obrigatorio) == null ){ 
+       if(trim((string) $this->pc72_obrigatorio) == null ){ 
          $this->erro_sql = " Campo Obrigatório nao Informado.";
          $this->erro_campo = "pc72_obrigatorio";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_pctipodoccertif {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7790,'$this->pc72_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc72_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1298,7790,'".AddSlashes(pg_result($resaco,$conresaco,'pc72_codigo'))."','$this->pc72_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1298,7790,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc72_codigo'))."','$this->pc72_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc72_pctipocertif"]))
-           $resac = db_query("insert into db_acount values($acount,1298,7791,'".AddSlashes(pg_result($resaco,$conresaco,'pc72_pctipocertif'))."','$this->pc72_pctipocertif',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1298,7791,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc72_pctipocertif'))."','$this->pc72_pctipocertif',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc72_pcdoccertif"]))
-           $resac = db_query("insert into db_acount values($acount,1298,7793,'".AddSlashes(pg_result($resaco,$conresaco,'pc72_pcdoccertif'))."','$this->pc72_pcdoccertif',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1298,7793,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc72_pcdoccertif'))."','$this->pc72_pcdoccertif',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc72_obrigatorio"]))
-           $resac = db_query("insert into db_acount values($acount,1298,7794,'".AddSlashes(pg_result($resaco,$conresaco,'pc72_obrigatorio'))."','$this->pc72_obrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1298,7794,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc72_obrigatorio'))."','$this->pc72_obrigatorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_pctipodoccertif {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7790,'$pc72_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1298,7790,'','".AddSlashes(pg_result($resaco,$iresaco,'pc72_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1298,7791,'','".AddSlashes(pg_result($resaco,$iresaco,'pc72_pctipocertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1298,7793,'','".AddSlashes(pg_result($resaco,$iresaco,'pc72_pcdoccertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1298,7794,'','".AddSlashes(pg_result($resaco,$iresaco,'pc72_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1298,7790,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc72_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1298,7791,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc72_pctipocertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1298,7793,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc72_pcdoccertif'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1298,7794,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc72_obrigatorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pctipodoccertif
@@ -376,7 +376,7 @@ class cl_pctipodoccertif {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pctipodoccertif";
@@ -390,7 +390,7 @@ class cl_pctipodoccertif {
    function sql_query ( $pc72_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_pctipodoccertif {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_pctipodoccertif {
    function sql_query_file ( $pc72_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_pctipodoccertif {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -33,9 +33,9 @@ include(modification("classes/db_sepultamentos_classe.php"));
 include(modification("classes/db_renovacoes_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clsepultamentos = new cl_sepultamentos;
 $clrenovacoes 	 = new cl_renovacoes;
@@ -102,10 +102,10 @@ $sMsgErro        = "AVISO!\\nCGM informado já Sepultado.";
   }
 
  //resgata os valores
- $clsepultamentos->cm01_i_medico        = (isset($cm01_i_medico) ? $cm01_i_medico : null);
- $clsepultamentos->cm01_c_nomemedico    = (isset($cm32_nome) ? $cm32_nome : null);
- $clsepultamentos->cm01_c_nomehospital  = (isset($nome_hospital) ? $nome_hospital : null);
- $clsepultamentos->cm01_c_nomefuneraria = (isset($nome_funeraria) ? $nome_funeraria : null);
+ $clsepultamentos->cm01_i_medico        = ($cm01_i_medico ?? null);
+ $clsepultamentos->cm01_c_nomemedico    = ($cm32_nome ?? null);
+ $clsepultamentos->cm01_c_nomehospital  = ($nome_hospital ?? null);
+ $clsepultamentos->cm01_c_nomefuneraria = ($nome_funeraria ?? null);
  $clsepultamentos->cm01_i_cemiterio     = $cm01_i_cemiterio;
  $clsepultamentos->cm01_c_conjuge       = $cm01_c_conjuge;
  $clsepultamentos->cm01_c_cor           = $cm01_c_cor;

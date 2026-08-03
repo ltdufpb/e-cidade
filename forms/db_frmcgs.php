@@ -81,7 +81,7 @@ db_input('sd01_c_siasus',18,$Isd01_c_siasus,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('TITULAR'=>'TITULAR','ESPOSO(A)'=>'ESPOSO(A)','COMPANHEIRO(A)'=>'COMPANHEIRO(A)','FILHO(A)'=>'FILHO(A)','PAI'=>'PAI','MÃE'=>'MÃE','SOGRO(A)'=>'SOGRO(A)','FILHO(A) ADOTIVO(A)'=>'FILHO(A) ADOTIVO(A)','OUTROS'=>'OUTROS');
+$x = ['TITULAR'=>'TITULAR','ESPOSO(A)'=>'ESPOSO(A)','COMPANHEIRO(A)'=>'COMPANHEIRO(A)','FILHO(A)'=>'FILHO(A)','PAI'=>'PAI','MÃE'=>'MÃE','SOGRO(A)'=>'SOGRO(A)','FILHO(A) ADOTIVO(A)'=>'FILHO(A) ADOTIVO(A)','OUTROS'=>'OUTROS'];
 db_select('sd01_c_parentesco',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -92,7 +92,7 @@ db_select('sd01_c_parentesco',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('A+'=>'A+','A-'=>'A-','O+'=>'O+','O-'=>'O-','AB'=>'AB');
+$x = ['A+'=>'A+','A-'=>'A-','O+'=>'O+','O-'=>'O-','AB'=>'AB'];
 db_select('sd01_c_sangue',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -113,7 +113,7 @@ db_input('sd01_i_familia',8,$Isd01_i_familia,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('t'=>'SIM','f'=>'NÃO');
+$x = ['t'=>'SIM','f'=>'NÃO'];
 db_select('sd01_c_alfabetizado',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -124,7 +124,7 @@ db_select('sd01_c_alfabetizado',$x,true,$db_opcao,"");
     </td>
     <td> 
 <?php 
-$x = array('t'=>'SIM','f'=>'NÃO');
+$x = ['t'=>'SIM','f'=>'NÃO'];
 db_select('sd01_c_escola',$x,true,$db_opcao,"");
 ?>
     </td>

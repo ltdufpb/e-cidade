@@ -443,11 +443,11 @@ class ParecerTecnico {
 
     try {
 
-      $aTiposEmissao = array(
-          TIPO_EMISSAO_NOVA        => utf8_encode("Nova"),
-          TIPO_EMISSAO_PRORROGACAO => utf8_encode("Prorrogação"),
-          TIPO_EMISSAO_RENOVACAO   => utf8_encode("Renovação")
-        );
+      $aTiposEmissao = [
+          TIPO_EMISSAO_NOVA        => mb_convert_encoding("Nova", 'UTF-8', 'ISO-8859-1'),
+          TIPO_EMISSAO_PRORROGACAO => mb_convert_encoding("Prorrogação", 'UTF-8', 'ISO-8859-1'),
+          TIPO_EMISSAO_RENOVACAO   => mb_convert_encoding("Renovação", 'UTF-8', 'ISO-8859-1')
+        ];
 
       if ($iTipoLicenca == TIPO_LICENCA_PREVIA || $iTipoLicenca == TIPO_LICENCA_INSTALACAO) {
         unset($aTiposEmissao[TIPO_EMISSAO_RENOVACAO]);

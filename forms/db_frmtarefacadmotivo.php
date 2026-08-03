@@ -57,7 +57,7 @@ db_input('at54_descr',40,$Iat54_descr,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('1'=>'usa no atendimento','2'=>'não usa no atendimento','6'=>'Administração');
+$x = ['1'=>'usa no atendimento','2'=>'não usa no atendimento','6'=>'Administração'];
 db_select('at54_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -85,7 +85,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tarefacadmotivo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

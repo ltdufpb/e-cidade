@@ -347,7 +347,7 @@ class ServidorMovimentacao
         ? $this->getDataPermanenciaAbonada()->format('d/m/Y')
         : null;
 
-        return array(
+        return [
         'instituicao' => $this->getInstituicao() instanceof Instituicao ? $this->getInstituicao()->toArray() : null,
         'sequencial' => $this->getSequencial(),
         'ano' => $this->getAno(),
@@ -385,7 +385,7 @@ class ServidorMovimentacao
         'regimeJornadaTrabalho' => $this->getRegimeJornadaTrabalho(),
         'descricaoInstrumento' => $this->getDescricaoInstrumento(),
         'pensaoJudicial' => $this->isPensaoJudicial()
-        );
+        ];
     }
 
     /**

@@ -128,9 +128,9 @@ $clunidades->rotulo->label();
   <td valign="top">
    <?php 
    $clcriaabas->abas_top   = "175";
-   $clcriaabas->identifica = array("b1"=>"Nível de Atenção","b2"=>"Atendimento Prestado");
-   $clcriaabas->sizecampo  = array("b1"=>"30","b2"=>"30");
-   $clcriaabas->src        = array("b1"=>"sau1_sau_gestaoativ001.php?sd47_i_unidade=$sd02_i_codigo&descrdepto=$descrdepto","b2"=>"sau1_sau_atendprestund001.php?sd48_i_unidade=$sd02_i_codigo&descrdepto=$descrdepto");
+   $clcriaabas->identifica = ["b1"=>"Nível de Atenção","b2"=>"Atendimento Prestado"];
+   $clcriaabas->sizecampo  = ["b1"=>"30","b2"=>"30"];
+   $clcriaabas->src        = ["b1"=>"sau1_sau_gestaoativ001.php?sd47_i_unidade=$sd02_i_codigo&descrdepto=$descrdepto","b2"=>"sau1_sau_atendprestund001.php?sd48_i_unidade=$sd02_i_codigo&descrdepto=$descrdepto"];
    $clcriaabas->iframe_height= "350";
    $clcriaabas->iframe_width= "90%";
    $clcriaabas->scrolling     = "no";

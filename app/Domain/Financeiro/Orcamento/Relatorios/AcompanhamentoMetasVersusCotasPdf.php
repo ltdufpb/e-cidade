@@ -6,6 +6,7 @@ use App\Domain\Financeiro\Planejamento\Relatorios\MetasVersusCotasPdf;
 
 class AcompanhamentoMetasVersusCotasPdf extends MetasVersusCotasPdf
 {
+    #[\Override]
     public function headers($titulo)
     {
         $this->addTitulo($titulo);

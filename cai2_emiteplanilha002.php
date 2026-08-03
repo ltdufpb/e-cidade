@@ -172,7 +172,7 @@ for ( $iInd=0; $iInd < $iLinhasPlaCaixa; $iInd++ ) {
 	   if ($reduz==0){
 	      $oPdf->cell(45,$iAlt,"* REVISAR CADASTRO ",0,0,"L",0);
 	   } else {
-	      $oPdf->cell(45,$iAlt,substr($oRec->k02_drecei,0,20),0,0,"L",0);
+	      $oPdf->cell(45,$iAlt,substr((string) $oRec->k02_drecei,0,20),0,0,"L",0);
 	   }
 	   $oPdf->cell($oPdf->getAvailWidth(), $iAlt,db_formatar($oRec->k81_valor,'f'),0,1,"R",0);
 

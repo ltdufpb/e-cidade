@@ -32,10 +32,10 @@ include_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-$aFiltro = array(
+$aFiltro = [
   'S'=>'Seleção',
   'M'=>'Matrícula'
-);
+];
 
 ?>
 <html>

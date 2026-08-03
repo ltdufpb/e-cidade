@@ -81,7 +81,7 @@ $modelos = ModeloImpressao::getCodigosDescricoes();
           </td>
           <td>
               <?php
-              $aX = array('2' => 'NÃO', '1' => 'SIM');
+              $aX = ['2' => 'NÃO', '1' => 'SIM'];
               db_select('la49_i_exameduplo', $aX, true, $db_opcao);
               ?>
           </td>
@@ -103,7 +103,7 @@ $modelos = ModeloImpressao::getCodigosDescricoes();
           </td>
           <td>
               <?php
-              $habilitado = array('f' => 'NÃO', 't' => 'SIM');
+              $habilitado = ['f' => 'NÃO', 't' => 'SIM'];
               db_select('la49_habilitarabsurdo', $habilitado, true, $db_opcao);
               ?>
           </td>
@@ -127,7 +127,7 @@ $modelos = ModeloImpressao::getCodigosDescricoes();
           </td>
           <td>
               <?php
-              $autorizarExamesAoConfirmar = array('f' => 'Não', 't' => 'Sim');
+              $autorizarExamesAoConfirmar = ['f' => 'Não', 't' => 'Sim'];
               db_select('la49_autorizarexamesaoconfirmar', $autorizarExamesAoConfirmar, true, $db_opcao);
               ?>
           </td>
@@ -139,7 +139,7 @@ $modelos = ModeloImpressao::getCodigosDescricoes();
           </td>
           <td>
               <?php
-              $habilitarNumeroControleInterno = array('f' => 'Não', 't' => 'Sim');
+              $habilitarNumeroControleInterno = ['f' => 'Não', 't' => 'Sim'];
               db_select('la49_numerocontroleinterno', $habilitarNumeroControleInterno, true, $db_opcao);
               ?>
           </td>
@@ -151,7 +151,7 @@ $modelos = ModeloImpressao::getCodigosDescricoes();
           </td>
           <td>
               <?php
-              $habilitarGrupoExames = array('f' => 'Não', 't' => 'Sim');
+              $habilitarGrupoExames = ['f' => 'Não', 't' => 'Sim'];
               db_select('la49_habilitargrupo', $habilitarGrupoExames, true, $db_opcao);
               ?>
           </td>

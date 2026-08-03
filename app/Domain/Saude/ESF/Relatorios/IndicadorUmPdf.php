@@ -10,16 +10,9 @@ use ECidade\Pdf\Pdf;
  */
 class IndicadorUmPdf extends Pdf implements IndicadorDesempenhoPdf
 {
-    /**
-     * @var array
-     */
-    private $dados;
-
-    public function __construct(array $dados)
+    public function __construct(private readonly array $dados)
     {
         parent::__construct();
-
-        $this->dados = $dados;
         $this->addTitulo('Relatório de Desempenho: Indicador 01');
         $titulo = sprintf(
             '%s, %s.',

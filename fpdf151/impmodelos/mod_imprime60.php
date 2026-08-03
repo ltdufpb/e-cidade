@@ -22,24 +22,24 @@
 
 	//$this->objpdf->text(165,$xlin-7,$this->coddepto."-".$this->descrdepto);
 
-  $tamdepto = strlen(trim($this->descrdepto));
+  $tamdepto = strlen(trim((string) $this->descrdepto));
 
   $linpc = $tamdepto>20?1:4;
 
-	$this->objpdf->text(165,$xlin-7,$this->coddepto."-".substr($this->descrdepto,0,20));
+	$this->objpdf->text(165,$xlin-7,$this->coddepto."-".substr((string) $this->descrdepto,0,20));
 
   if($tamdepto>20) {
-    $this->objpdf->text(165,$xlin-4,substr($this->descrdepto,20,$tamdepto));
+    $this->objpdf->text(165,$xlin-4,substr((string) $this->descrdepto,20,$tamdepto));
   }
 
 	//$this->objpdf->text(130,$xlin-4,'PROCESSO DE COMPRA N'.CHR(176));
 	//$this->objpdf->text(165,$xlin-4,db_formatar(pg_result($this->recorddositens,0,$this->Snumeroproc),'s','0',6,'e'));
 
 	$this->objpdf->text(130,$xlin-$linpc,'PROCESSO DE COMPRA N'.CHR(176));
-	$this->objpdf->text(165,$xlin-$linpc,db_formatar(pg_result($this->recorddositens,0,$this->Snumeroproc),'s','0',6,'e'));
+	$this->objpdf->text(165,$xlin-$linpc,db_formatar(pg_fetch_result($this->recorddositens,0,$this->Snumeroproc),'s','0',6,'e'));
 
 	 $this->objpdf->text(130, ($xlin+2.5) - $linpc, 'TIPO DA COMPRA: ');
-  $this->objpdf->text(165, ($xlin+2.5) - $linpc, db_formatar(pg_result($this->recorddositens, 0,
+  $this->objpdf->text(165, ($xlin+2.5) - $linpc, db_formatar(pg_fetch_result($this->recorddositens, 0,
                                                  $this->sTipoCompra), 's' , '0', 6, 'e'));
 
 	$this->objpdf->Setfont('Arial','B',9);
@@ -59,7 +59,7 @@
 	$this->objpdf->Setfont('Arial','B',8);
 	$this->objpdf->text($xcol+110,$xlin+5,'E-mail');
 	$this->objpdf->text($xcol+110,$xlin+8.5,'Numcgm');
-	$this->objpdf->text($xcol+150,$xlin+8.5,(strlen($this->cnpj) == 11?'CPF':'CNPJ'));
+	$this->objpdf->text($xcol+150,$xlin+8.5,(strlen((string) $this->cnpj) == 11?'CPF':'CNPJ'));
 	$this->objpdf->text($xcol+  2,$xlin+8.5,'Nome');
 	$this->objpdf->text($xcol+  2,$xlin+12.5,'Endereço');
 	$this->objpdf->text($xcol+110,$xlin+12.5,'Número');
@@ -100,10 +100,10 @@
 
 	$sqltexto = "select * from db_textos where id_instit = " . db_getsession("DB_instit") . " and ( descrtexto like 'ordemdecompra%')";
 	$resulttexto = db_query($sqltexto);
-	for( $xx = 0;$xx < pg_numrows($resulttexto);$xx ++ ){
+	for( $xx = 0;$xx < pg_num_rows($resulttexto);$xx ++ ){
 	  db_fieldsmemory($resulttexto,$xx,true);
 	  $text  = $descrtexto;
-	  $$text = db_geratexto($conteudotexto);
+	  ${$text} = db_geratexto($conteudotexto);
 	}
 
 	$texto1 = @$ordemdecompra1;
@@ -114,7 +114,7 @@
 														inner join db_depart on db_depart.coddepto = db_departender.coddepto
 														inner join ruas on j14_codigo = codlograd
 														inner join bairro on j13_codi = codbairro where db_departender.coddepto = " . $this->depto);
-	if (pg_numrows($result_endent) > 0) {
+	if (pg_num_rows($result_endent) > 0) {
   	  db_fieldsmemory($result_endent,0,true);
 	  global $j14_nome_almox;
 	  global $numero_almox;
@@ -137,8 +137,8 @@
           $this->objpdf->sety($xlin+24);
 	  $posicao_atual=$this->objpdf->gety();
 	  $this->objpdf->multicell(202,4,"PRAZO DE ENTREGA: " . $this->prazoent. " DIAS A CONTAR DA DATA DO RECEBIMENTO DESTA ORDEM DE COMPRA",1);
-	  $this->objpdf->multicell(202,4,"CONDICOES DE PAGAMENTO: ". pg_result($this->recorddositens,0,$this->condpag),1);
-	  $this->objpdf->multicell(202,4,"DESTINO: ". pg_result($this->recorddositens,0,$this->destino),1);
+	  $this->objpdf->multicell(202,4,"CONDICOES DE PAGAMENTO: ". pg_fetch_result($this->recorddositens,0,$this->condpag),1);
+	  $this->objpdf->multicell(202,4,"DESTINO: ". pg_fetch_result($this->recorddositens,0,$this->destino),1);
 	  $posicao_depois=$this->objpdf->gety();
           $xlin+=$posicao_depois-$posicao_atual+2;
 
@@ -197,7 +197,7 @@
 
     $resparag = @db_query($sqlparag);
 
-    if (@pg_numrows($resparag) > 0) {
+    if (@pg_num_rows($resparag) > 0) {
          db_fieldsmemory($resparag,0);
 
          eval($db02_texto);
@@ -210,7 +210,7 @@
          $sqlparagpadrao .= " where db60_tipodoc = 1502 order by db62_ordem";
 
          $resparagpadrao = @db_query($sqlparagpadrao);
-         if (@pg_numrows($resparagpadrao) > 0) {
+         if (@pg_num_rows($resparagpadrao) > 0) {
               db_fieldsmemory($resparagpadrao,0);
 
               eval($db61_texto);
@@ -223,8 +223,8 @@
 	$this->objpdf->text($xcol+ 120,290,'___________________________________________');
 */
 
-	$this->objpdf->SetWidths(array(12,16,13,101,30,30));  //$this->objpdf->SetWidths(array(12,16,10,104,30,30));
-	$this->objpdf->SetAligns(array('C','C','R','L','R','R'));
+	$this->objpdf->SetWidths([12,16,13,101,30,30]);  //$this->objpdf->SetWidths(array(12,16,10,104,30,30));
+	$this->objpdf->SetAligns(['C','C','R','L','R','R']);
 
 	$this->objpdf->setleftmargin(4);
 	$this->objpdf->sety($xlin+32);
@@ -236,18 +236,18 @@
 	     db_fieldsmemory($this->recorddositens,$ii);
 	     $this->objpdf->Setfont('Arial','',7);
 
-       $sUnidade = pg_result($this->recorddositens, $ii, 'unidade');
-	     $descricaoitem = pg_result($this->recorddositens,$ii,$this->descricaoitem);
+       $sUnidade = pg_fetch_result($this->recorddositens, $ii, 'unidade');
+	     $descricaoitem = pg_fetch_result($this->recorddositens,$ii,$this->descricaoitem);
        if (!empty($sUnidade)) {
         $descricaoitem .= " (Unidade: {$sUnidade})";
        }
 
-             if(pg_result($this->recorddositens,$ii,$this->Snumero)!=""){
-                     $descricaoitem .= "\n\n".'SOLICITAÇÃO: '.pg_result($this->recorddositens,$ii,$this->Snumero);
+             if(pg_fetch_result($this->recorddositens,$ii,$this->Snumero)!=""){
+                     $descricaoitem .= "\n\n".'SOLICITAÇÃO: '.pg_fetch_result($this->recorddositens,$ii,$this->Snumero);
 	     }
 
-       $obsitem  = pg_result($this->recorddositens,$ii,$this->observacaoitem);
-	     $obsitem .= "\n\n".pg_result($this->recorddositens,$ii,$this->obs_ordcom_orcamval);
+       $obsitem  = pg_fetch_result($this->recorddositens,$ii,$this->observacaoitem);
+	     $obsitem .= "\n\n".pg_fetch_result($this->recorddositens,$ii,$this->obs_ordcom_orcamval);
        $sObsItem = $obsitem;
  /////// troca de pagina
 	  if( ( $this->objpdf->gety() > $this->objpdf->h - 85 && $pagina == 1 ) || ( $this->objpdf->gety() > $this->objpdf->h - 50 && $pagina != 1 )){
@@ -341,18 +341,18 @@
     }
 
    if ($iVoltaImp == 0){
-      $this->objpdf->Row(array(pg_result($this->recorddositens,$ii,$this->codmater),
-	                           pg_result($this->recorddositens,$ii,$this->empempenho)."/".pg_result($this->recorddositens,$ii,$this->anousuemp),
-	                           pg_result($this->recorddositens,$ii,$this->quantitem),
+      $this->objpdf->Row([pg_fetch_result($this->recorddositens,$ii,$this->codmater),
+	                           pg_fetch_result($this->recorddositens,$ii,$this->empempenho)."/".pg_fetch_result($this->recorddositens,$ii,$this->anousuemp),
+	                           pg_fetch_result($this->recorddositens,$ii,$this->quantitem),
 				               $descricaoitem."\n",
-				               db_formatar(pg_result($this->recorddositens,$ii,$this->vlrunitem),'v'," ",$this->numdec),
-  			                   db_formatar(pg_result($this->recorddositens,$ii,$this->valoritem),'f')),
+				               db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->vlrunitem),'v'," ",$this->numdec),
+  			                   db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->valoritem),'f')],
   			                   3,
   			                   false,
   			                   4,
   			                   0,
   			                   true);
-       $xtotal += pg_result($this->recorddositens,$ii,$this->valoritem);
+       $xtotal += pg_fetch_result($this->recorddositens,$ii,$this->valoritem);
     }else if ($iVoltaImp == 1){
       $sObsItem = $sTextoaImprimir; //resto do texto
     }
@@ -365,11 +365,11 @@
      //   $sObsItem        = substr($sObsItem,0,1895);
      // }
      if ($iVoltaImp == 0){
-       $sObsItem = $this->objpdf->Row_multicell(array('','','',stripslashes($sObsItem),'',''),3,false,5,0,true,true,3,($this->objpdf->h - 80));
+       $sObsItem = $this->objpdf->Row_multicell(['','','',stripslashes((string) $sObsItem),'',''],3,false,5,0,true,true,3,($this->objpdf->h - 80));
 
      } else {
 
-       $sObsItem = $this->objpdf->Row_multicell(array('','','',stripslashes($sObsItem),'',''),3,false,5,0,true,true,3,($this->objpdf->h - 75));
+       $sObsItem = $this->objpdf->Row_multicell(['','','',stripslashes((string) $sObsItem),'',''],3,false,5,0,true,true,3,($this->objpdf->h - 75));
 
      }
       //$iVoltaImp = 0;

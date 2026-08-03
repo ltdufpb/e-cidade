@@ -133,7 +133,7 @@ db_input('db78_descr',40,$Idb78_descr,true,'text',$db_opcao02);
     <tr>
       <td valign="top"  align='center'>  
        <?php 
-	$chavepri= array("db78_codestrut"=>$db78_codestrut,"db78_nivel"=>@$db78_nivel);
+	$chavepri= ["db78_codestrut"=>$db78_codestrut,"db78_nivel"=>@$db78_nivel];
 	$cliframe_alterar_excluir->chavepri      =$chavepri;
 	$cliframe_alterar_excluir->sql           = $cldb_estruturanivel->sql_query_file($db78_codestrut,null,"db78_codestrut,db78_nivel,db78_descr,db78_tamanho,db78_inicio","db78_nivel");
 	$cliframe_alterar_excluir->campos        ="db78_nivel,db78_descr,db78_tamanho,db78_inicio";

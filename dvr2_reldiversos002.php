@@ -54,7 +54,7 @@ $lProcessaPago          = false;
 $lProcessaNaoPago       = false;
 $lProcessaCancelado     = false;
 
-$aOpcoesDebito  = explode("|",$situacaodebito);
+$aOpcoesDebito  = explode("|",(string) $situacaodebito);
 foreach($aOpcoesDebito as $i => $sOpcao ) {
   switch ($sOpcao) {
     case 'pago':
@@ -121,7 +121,7 @@ $head2 = $peri;
 if ($sFiltroOrigem != "") {
   $head3 = $sFiltroOrigem;
 }
-if ($descrproced != "" && trim($descrproced) != '-') {  
+if ($descrproced != "" && trim((string) $descrproced) != '-') {  
   $head4 = $descrproced;
 }
 if ($coddiver != "") {
@@ -299,7 +299,7 @@ $sd        = "0";
 $total     = 0;
 
 //db_criatabela($rsDiversos);exit;
-$aTotalizadores = array();
+$aTotalizadores = [];
 $aTotalizadores['Inconsistente']['total'] = 0;
 $aTotalizadores['Pago']['total']          = 0;
 $aTotalizadores['Devido']['total']        = 0;
@@ -319,19 +319,19 @@ for($i=0;$i<$numrows01;$i++) {
   db_fieldsmemory($rsDiversos,$i);
 
   $result02 = debitos_numpre($dv05_numpre,0,0,db_getsession("DB_datausu"),db_getsession("DB_anousu"),0);
-  if($result02 != false && pg_numrows($result02) > 0){
+  if($result02 != false && pg_num_rows($result02) > 0){
     $total_ant = 0;
-    for($j = 0;$j < pg_numrows($result02);$j++) {
+    for($j = 0;$j < pg_num_rows($result02);$j++) {
 
-      $k00_dtvenc =  pg_result($result02,$j,"k00_dtvenc");
-      $total_ant  += pg_result($result02,$j,"total");
+      $k00_dtvenc =  pg_fetch_result($result02,$j,"k00_dtvenc");
+      $total_ant  += pg_fetch_result($result02,$j,"total");
 
     }
     $total = $total_ant;
   }
 
   $result03= db_query("select count(distinct k00_numpar) as parcelaspagas, sum(k00_valor) from arrepaga where k00_numpre = $dv05_numpre");
-  if(pg_numrows($result03)>0){
+  if(pg_num_rows($result03)>0){
     db_fieldsmemory($result03,0);
   }else{
     $sum=0; 	
@@ -377,7 +377,7 @@ for($i=0;$i<$numrows01;$i++) {
   }  
 
   $pdf->Cell("20",5,"$dv05_coddiver",'BTR',0,"C",1);
-  $pdf->Cell("80",5,substr($z01_nome,0,55),1,0,"L",1);
+  $pdf->Cell("80",5,substr((string) $z01_nome,0,55),1,0,"L",1);
   $pdf->Cell("25",5,"$k00_tipo $val",1,0,"L",1);
   $pdf->Cell("25",5,db_formatar($dv05_valor,'f'),1,0,"R",1);
   $pdf->Cell("25",5,db_formatar($total_ant,'f'),1,0,"R",1);

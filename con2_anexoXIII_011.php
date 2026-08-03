@@ -169,7 +169,7 @@ function js_naoconsolidado() {
               <td width="200">
                 <?php 
                   $aPeriodos         = $oRelatorio->getPeriodos();                  
-                  $aListaPeriodos    = array();
+                  $aListaPeriodos    = [];
                   $aListaPeriodos[0] = "Selecione";
                   
                   foreach ($aPeriodos as $oPeriodo) {
@@ -186,7 +186,7 @@ function js_naoconsolidado() {
               </td>
               <td>
                 <?php 
-                  $aConsolidado = array (2 => 'Não', 1 => 'Sim');
+                  $aConsolidado =  [2 => 'Não', 1 => 'Sim'];
                   db_select('emiteconsolidado', $aConsolidado, true, 1, 'onchange=js_marcainstituicoes()' );
                 ?>
               </td>

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_convocacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconvocacao = new cl_convocacao;
 $clconvocacao->rotulo->label("ed111_i_codigo");
 $clconvocacao->rotulo->label("ed111_c_titulo");
@@ -99,9 +99,9 @@ $clconvocacao->rotulo->label("ed111_i_ano");
     }else{
      $sql = $clconvocacao->sql_query("",$campos,"ed111_i_ano desc,ed111_d_data desc"," ed111_d_data > '$data_inicio'");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed111_i_codigo)){
-     $repassa = array("chave_ed111_i_codigo"=>$chave_ed111_i_codigo,"chave_ed111_c_titulo"=>$chave_ed111_c_titulo,"chave_ed111_i_ano"=>$chave_ed111_i_ano);
+     $repassa = ["chave_ed111_i_codigo"=>$chave_ed111_i_codigo,"chave_ed111_c_titulo"=>$chave_ed111_c_titulo,"chave_ed111_i_ano"=>$chave_ed111_i_ano];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

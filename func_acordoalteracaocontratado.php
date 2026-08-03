@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_acordoalteracaocontratado_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -58,9 +58,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clacordoalteracaocontratado->sql_query("",$campos,"ac60_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ac60_sequencial)){
-          $repassa = array("chave_ac60_sequencial"=>$chave_ac60_sequencial,"chave_ac60_sequencial"=>$chave_ac60_sequencial);
+          $repassa = ["chave_ac60_sequencial"=>$chave_ac60_sequencial,"chave_ac60_sequencial"=>$chave_ac60_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

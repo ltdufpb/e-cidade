@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguarota_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claguarota = new cl_aguarota;
 $claguarota->rotulo->label("x06_codrota");
 $claguarota->rotulo->label("x06_descr");
@@ -98,9 +98,9 @@ $claguarota->rotulo->label("x06_descr");
         }else{
            $sql = $claguarota->sql_query("",$campos,"x06_codrota","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_x06_descr)){
-          $repassa = array("chave_x06_codrota"=>$chave_x06_codrota,"chave_x06_descr"=>$chave_x06_descr);
+          $repassa = ["chave_x06_codrota"=>$chave_x06_codrota,"chave_x06_descr"=>$chave_x06_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

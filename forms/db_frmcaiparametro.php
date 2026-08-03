@@ -57,7 +57,7 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                 </td>
                 <td>
                     <?php
-                    $x = array("f" => "NAO", "t" => "SIM");
+                    $x = ["f" => "NAO", "t" => "SIM"];
                     db_select('k29_boletimzerado', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -68,7 +68,7 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                 </td>
                 <td>
                     <?php
-                    $x = array('36' => 'Normal/2 partes', '37' => 'Com assinaturas/1 parte');
+                    $x = ['36' => 'Normal/2 partes', '37' => 'Com assinaturas/1 parte'];
                     db_select('k29_modslipnormal', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -79,7 +79,7 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                 </td>
                 <td>
                     <?php
-                    $x = array('36' => 'Normal/2 partes', '37' => '2 partes/com assinatura');
+                    $x = ['36' => 'Normal/2 partes', '37' => '2 partes/com assinatura'];
                     db_select('k29_modsliptransf', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -100,7 +100,7 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                 </td>
                 <td>
                     <?php
-                    $x = array('1' => 'Sim', '2' => 'Não');
+                    $x = ['1' => 'Sim', '2' => 'Não'];
                     db_select('k29_saldoemitechq', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -124,7 +124,7 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                 </td>
                 <td>
                     <?php
-                    $x = array('f' => 'Não', 't' => 'Sim');
+                    $x = ['f' => 'Não', 't' => 'Sim'];
                     db_select('k29_trazdatacheque', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -135,7 +135,7 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                 </td>
                 <td>
                     <?php
-                    $x = array('f' => 'Não', 't' => 'Sim');
+                    $x = ['f' => 'Não', 't' => 'Sim'];
                     db_select('k29_contassemmovimento', $x, true, $db_opcao, "");
                     ?>
                 </td>
@@ -178,7 +178,7 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                     </td>
                     <td>
                         <?php 
-                        $x = array("f" => "NAO", "t" => "SIM");
+                        $x = ["f" => "NAO", "t" => "SIM"];
                         db_select('k29_chqduplicado', $x, true, $db_opcao, "");
                         ?>
                     </td>
@@ -209,7 +209,7 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                     </td>
                     <td>
                         <?php
-                        $x = array("f" => "NAO", "t" => "SIM");
+                        $x = ["f" => "NAO", "t" => "SIM"];
                         db_select('k29_gerarslipautomaticoreceitaretencao', $x, true, $db_opcao, "");
                         ?>
                     </td>
@@ -220,7 +220,7 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
                     </td>
                     <td>
                         <?php
-                        $x = array("f" => "NAO", "t" => "SIM");
+                        $x = ["f" => "NAO", "t" => "SIM"];
                         db_select('k29_validadatacreditobaixabanco', $x, true, $db_opcao, "");
                         ?>
                     </td>
@@ -311,7 +311,7 @@ $sConvenioBanco = $oParametrosCaixa->getConvenioBanco();
         db_iframe_caiparametro.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
     }

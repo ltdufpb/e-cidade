@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_microarea_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmicroarea = new cl_microarea;
 $clmicroarea->rotulo->label("sd34_i_codigo");
 $clmicroarea->rotulo->label("sd34_v_descricao");
@@ -98,9 +98,9 @@ $clmicroarea->rotulo->label("sd34_v_descricao");
         }else{
            $sql = $clmicroarea->sql_query("",$campos,"sd34_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd34_i_codigo)){
-          $repassa = array("chave_sd34_i_codigo"=>$chave_sd34_i_codigo,"chave_sd34_i_codigo"=>$chave_sd34_i_codigo);
+          $repassa = ["chave_sd34_i_codigo"=>$chave_sd34_i_codigo,"chave_sd34_i_codigo"=>$chave_sd34_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

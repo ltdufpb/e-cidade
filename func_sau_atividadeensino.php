@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_atividadeensino_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_atividadeensino = new cl_sau_atividadeensino;
 $clsau_atividadeensino->rotulo->label("sd38_i_cod_ativid");
 $clsau_atividadeensino->rotulo->label("sd38_v_descricao");
@@ -98,9 +98,9 @@ $clsau_atividadeensino->rotulo->label("sd38_v_descricao");
         }else{
            $sql = $clsau_atividadeensino->sql_query("",$campos,"sd38_v_descricao","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd38_i_cod_ativid)){
-          $repassa = array("chave_sd38_i_cod_ativid"=>$chave_sd38_i_cod_ativid,"chave_sd38_v_descricao"=>$chave_sd38_v_descricao);
+          $repassa = ["chave_sd38_i_cod_ativid"=>$chave_sd38_i_cod_ativid,"chave_sd38_v_descricao"=>$chave_sd38_v_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

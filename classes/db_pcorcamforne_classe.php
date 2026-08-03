@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE pcorcamforne
 class cl_pcorcamforne {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $pc21_orcamforne = 0;
-   var $pc21_codorc = 0;
-   var $pc21_numcgm = 0;
-   var $pc21_importado = 'f';
-   var $pc21_prazoent_dia = null;
-   var $pc21_prazoent_mes = null;
-   var $pc21_prazoent_ano = null;
-   var $pc21_prazoent = null;
-   var $pc21_validadorc_dia = null;
-   var $pc21_validadorc_mes = null;
-   var $pc21_validadorc_ano = null;
-   var $pc21_validadorc = null;
-   var $pc21_taxaestimadaglobal = null;
+   public $pc21_orcamforne = 0;
+   public $pc21_codorc = 0;
+   public $pc21_numcgm = 0;
+   public $pc21_importado = 'f';
+   public $pc21_prazoent_dia = null;
+   public $pc21_prazoent_mes = null;
+   public $pc21_prazoent_ano = null;
+   public $pc21_prazoent = null;
+   public $pc21_validadorc_dia = null;
+   public $pc21_validadorc_mes = null;
+   public $pc21_validadorc_ano = null;
+   public $pc21_validadorc = null;
+   public $pc21_taxaestimadaglobal = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  pc21_orcamforne = int8 = Código do orcamento deste fornecedor
                  pc21_codorc = int4 = Código do orçamento
                  pc21_numcgm = int4 = Numcgm
@@ -66,10 +66,10 @@ class cl_pcorcamforne {
                  pc21_taxaestimadaglobal = float4 = Taxa Estimada Global 
                  ";
    //funcao construtor da classe
-   function cl_pcorcamforne() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcorcamforne");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -157,10 +157,10 @@ class cl_pcorcamforne {
          $this->erro_status = "0";
          return false;
        }
-       $this->pc21_orcamforne = pg_result($result,0,0);
+       $this->pc21_orcamforne = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from pcorcamforne_pc21_orcamforne_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc21_orcamforne)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc21_orcamforne)){
          $this->erro_sql = " Campo pc21_orcamforne maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -200,7 +200,7 @@ class cl_pcorcamforne {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Fornecedores do orçamento ($this->pc21_orcamforne) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Fornecedores do orçamento já Cadastrado";
@@ -229,16 +229,16 @@ class cl_pcorcamforne {
      if(($resaco!=false)||($this->numrows!=0)){
 
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6377,'$this->pc21_orcamforne','I')");
-       $resac = db_query("insert into db_acount values($acount,858,6377,'','".AddSlashes(pg_result($resaco,0,'pc21_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,858,5512,'','".AddSlashes(pg_result($resaco,0,'pc21_codorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,858,5513,'','".AddSlashes(pg_result($resaco,0,'pc21_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,858,6760,'','".AddSlashes(pg_result($resaco,0,'pc21_importado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,858,9204,'','".AddSlashes(pg_result($resaco,0,'pc21_prazoent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,858,9203,'','".AddSlashes(pg_result($resaco,0,'pc21_validadorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,858,1009491,'','".AddSlashes(pg_result($resaco,0,'pc21_taxaestimadaglobal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,858,6377,'','".AddSlashes(pg_fetch_result($resaco,0,'pc21_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,858,5512,'','".AddSlashes(pg_fetch_result($resaco,0,'pc21_codorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,858,5513,'','".AddSlashes(pg_fetch_result($resaco,0,'pc21_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,858,6760,'','".AddSlashes(pg_fetch_result($resaco,0,'pc21_importado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,858,9204,'','".AddSlashes(pg_fetch_result($resaco,0,'pc21_prazoent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,858,9203,'','".AddSlashes(pg_fetch_result($resaco,0,'pc21_validadorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,858,1009491,'','".AddSlashes(pg_fetch_result($resaco,0,'pc21_taxaestimadaglobal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -248,10 +248,10 @@ class cl_pcorcamforne {
       $this->atualizacampos();
      $sql = " update pcorcamforne set ";
      $virgula = "";
-     if(trim($this->pc21_orcamforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_orcamforne"])){
+     if(trim((string) $this->pc21_orcamforne)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_orcamforne"])){
        $sql  .= $virgula." pc21_orcamforne = $this->pc21_orcamforne ";
        $virgula = ",";
-       if(trim($this->pc21_orcamforne) == null ){
+       if(trim((string) $this->pc21_orcamforne) == null ){
          $this->erro_sql = " Campo Código do orcamento deste fornecedor não informado.";
          $this->erro_campo = "pc21_orcamforne";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_pcorcamforne {
          return false;
        }
      }
-     if(trim($this->pc21_codorc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_codorc"])){
+     if(trim((string) $this->pc21_codorc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_codorc"])){
        $sql  .= $virgula." pc21_codorc = $this->pc21_codorc ";
        $virgula = ",";
-       if(trim($this->pc21_codorc) == null ){
+       if(trim((string) $this->pc21_codorc) == null ){
          $this->erro_sql = " Campo Código do Orçamento não informado.";
          $this->erro_campo = "pc21_codorc";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_pcorcamforne {
          return false;
        }
      }
-     if(trim($this->pc21_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_numcgm"])){
+     if(trim((string) $this->pc21_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_numcgm"])){
        $sql  .= $virgula." pc21_numcgm = $this->pc21_numcgm ";
        $virgula = ",";
-       if(trim($this->pc21_numcgm) == null ){
+       if(trim((string) $this->pc21_numcgm) == null ){
          $this->erro_sql = " Campo Numcgm não informado.";
          $this->erro_campo = "pc21_numcgm";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_pcorcamforne {
          return false;
        }
      }
-     if(trim($this->pc21_importado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_importado"])){
+     if(trim((string) $this->pc21_importado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_importado"])){
        $sql  .= $virgula." pc21_importado = '$this->pc21_importado' ";
        $virgula = ",";
-       if(trim($this->pc21_importado) == null ){
+       if(trim((string) $this->pc21_importado) == null ){
          $this->erro_sql = " Campo Importado não informado.";
          $this->erro_campo = "pc21_importado";
          $this->erro_banco = "";
@@ -300,7 +300,7 @@ class cl_pcorcamforne {
          return false;
        }
      }
-     if(trim($this->pc21_prazoent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_prazoent_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc21_prazoent_dia"] !="") ){
+     if(trim((string) $this->pc21_prazoent)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_prazoent_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc21_prazoent_dia"] !="") ){
        $sql  .= $virgula." pc21_prazoent = '$this->pc21_prazoent' ";
        $virgula = ",";
      }     else{
@@ -309,7 +309,7 @@ class cl_pcorcamforne {
          $virgula = ",";
        }
      }
-     if(trim($this->pc21_validadorc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_validadorc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc21_validadorc_dia"] !="") ){
+     if(trim((string) $this->pc21_validadorc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_validadorc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["pc21_validadorc_dia"] !="") ){
        $sql  .= $virgula." pc21_validadorc = '$this->pc21_validadorc' ";
        $virgula = ",";
      }     else{
@@ -318,8 +318,8 @@ class cl_pcorcamforne {
          $virgula = ",";
        }
      }
-     if(trim($this->pc21_taxaestimadaglobal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_taxaestimadaglobal"])){ 
-        if(trim($this->pc21_taxaestimadaglobal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc21_taxaestimadaglobal"])){ 
+     if(trim((string) $this->pc21_taxaestimadaglobal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc21_taxaestimadaglobal"])){ 
+        if(trim((string) $this->pc21_taxaestimadaglobal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["pc21_taxaestimadaglobal"])){ 
            $this->pc21_taxaestimadaglobal = "null" ; 
         } 
        $sql  .= $virgula." pc21_taxaestimadaglobal = $this->pc21_taxaestimadaglobal ";
@@ -339,23 +339,23 @@ class cl_pcorcamforne {
        for($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6377,'$this->pc21_orcamforne','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc21_orcamforne"]) || $this->pc21_orcamforne != "")
-           $resac = db_query("insert into db_acount values($acount,858,6377,'".AddSlashes(pg_result($resaco,$conresaco,'pc21_orcamforne'))."','$this->pc21_orcamforne',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,858,6377,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc21_orcamforne'))."','$this->pc21_orcamforne',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if (isset($GLOBALS["HTTP_POST_VARS"]["pc21_codorc"]) || $this->pc21_codorc != "")
-             $resac = db_query("insert into db_acount values($acount,858,5512,'".AddSlashes(pg_result($resaco,$conresaco,'pc21_codorc'))."','$this->pc21_codorc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,858,5512,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc21_codorc'))."','$this->pc21_codorc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc21_numcgm"]) || $this->pc21_numcgm != "")
-             $resac = db_query("insert into db_acount values($acount,858,5513,'".AddSlashes(pg_result($resaco,$conresaco,'pc21_numcgm'))."','$this->pc21_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,858,5513,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc21_numcgm'))."','$this->pc21_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc21_importado"]) || $this->pc21_importado != "")
-             $resac = db_query("insert into db_acount values($acount,858,6760,'".AddSlashes(pg_result($resaco,$conresaco,'pc21_importado'))."','$this->pc21_importado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,858,6760,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc21_importado'))."','$this->pc21_importado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc21_prazoent"]) || $this->pc21_prazoent != "")
-             $resac = db_query("insert into db_acount values($acount,858,9204,'".AddSlashes(pg_result($resaco,$conresaco,'pc21_prazoent'))."','$this->pc21_prazoent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,858,9204,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc21_prazoent'))."','$this->pc21_prazoent',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc21_validadorc"]) || $this->pc21_validadorc != "")
-             $resac = db_query("insert into db_acount values($acount,858,9203,'".AddSlashes(pg_result($resaco,$conresaco,'pc21_validadorc'))."','$this->pc21_validadorc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,858,9203,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc21_validadorc'))."','$this->pc21_validadorc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc21_taxaestimadaglobal"]) || $this->pc21_taxaestimadaglobal != "")
-             $resac = db_query("insert into db_acount values($acount,858,1009491,'".AddSlashes(pg_result($resaco,$conresaco,'pc21_taxaestimadaglobal'))."','$this->pc21_taxaestimadaglobal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,858,1009491,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc21_taxaestimadaglobal'))."','$this->pc21_taxaestimadaglobal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -409,16 +409,16 @@ class cl_pcorcamforne {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,6377,'$pc21_orcamforne','E')");
-           $resac  = db_query("insert into db_acount values($acount,858,6377,'','".AddSlashes(pg_result($resaco,$iresaco,'pc21_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,858,5512,'','".AddSlashes(pg_result($resaco,$iresaco,'pc21_codorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,858,5513,'','".AddSlashes(pg_result($resaco,$iresaco,'pc21_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,858,6760,'','".AddSlashes(pg_result($resaco,$iresaco,'pc21_importado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,858,9204,'','".AddSlashes(pg_result($resaco,$iresaco,'pc21_prazoent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,858,9203,'','".AddSlashes(pg_result($resaco,$iresaco,'pc21_validadorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,858,1009491,'','".AddSlashes(pg_result($resaco,$iresaco,'pc21_taxaestimadaglobal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,858,6377,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc21_orcamforne'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,858,5512,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc21_codorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,858,5513,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc21_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,858,6760,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc21_importado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,858,9204,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc21_prazoent'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,858,9203,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc21_validadorc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,858,1009491,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc21_taxaestimadaglobal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -534,7 +534,7 @@ class cl_pcorcamforne {
    function sql_query_fornec ( $pc21_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -564,7 +564,7 @@ class cl_pcorcamforne {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -576,7 +576,7 @@ class cl_pcorcamforne {
    function sql_query_orcitem ( $pc21_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -599,7 +599,7 @@ class cl_pcorcamforne {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -611,7 +611,7 @@ class cl_pcorcamforne {
    function sql_query_solsugforne ( $pc21_orcamforne=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -637,7 +637,7 @@ class cl_pcorcamforne {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        }
      return $sql;
@@ -656,7 +656,7 @@ class cl_pcorcamforne {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -681,7 +681,7 @@ class cl_pcorcamforne {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",$ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

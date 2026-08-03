@@ -39,8 +39,8 @@ $cldb_syscampo->rotulocl->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("descricao");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cods = str_replace("XX",",",$segundo);
 $db_opcao=3;
@@ -50,27 +50,27 @@ $db_opcao_radio = 5;
 if(isset($atualizar)){
   $sqlerro=false;
   db_inicio_transacao();
-  $arr_atucamp =array();
+  $arr_atucamp =[];
 
-  $arr_dados = $HTTP_POST_VARS;
+  $arr_dados = $_POST;
   reset($arr_dados);
   
   while($dad = key($arr_dados)){
-   if(substr($dad,0,3)=="ver"){
-     $campo = substr($dad,4);
+   if(str_starts_with((string) $dad, "ver")){
+     $campo = substr((string) $dad,4);
      $val   = "an_".$campo;
-     if($$val=="f"){
-       $$val="false";
-     }else if($$val=="f"){
-       $$val="true";
+     if(${$val}=="f"){
+       ${$val}="false";
+     }else if(${$val}=="f"){
+       ${$val}="true";
      }  
-     $cldb_syscampo->$campo = $$val;
+     $cldb_syscampo->$campo = ${$val};
    }
    next($arr_dados);
   }
   
   
-  $arr_chaves = split("#",$chaves);
+  $arr_chaves = preg_split("#\\##m",$chaves);
   $num_chaves = sizeof($arr_chaves);
   for($i=0; $i<$num_chaves; $i++ ){
     $cldb_syscampo->codcam = $arr_chaves[$i];
@@ -150,7 +150,7 @@ db_fim_transacao($sqlerro);
           </td>
           <td> 
             <?php 
-               $x = array("varchar"=>"Varchar","text"=>"Text","oid"=>"Oid","int4"=>"Int4","int8"=>"Int8","float4"=>"Float4","float8"=>"Float8","bool"=>"Lógico","char"=>"Char","date"=>"Data");
+               $x = ["varchar"=>"Varchar","text"=>"Text","oid"=>"Oid","int4"=>"Int4","int8"=>"Int8","float4"=>"Float4","float8"=>"Float8","bool"=>"Lógico","char"=>"Char","date"=>"Data"];
                db_select('an_conteudo',$x,true,$db_opcao);
             ?>
           </td>
@@ -162,7 +162,7 @@ db_fim_transacao($sqlerro);
           </td>
           <td align='left' width='13%'> 
             <?php 
-               $x = array("t"=>"Sim","f"=>"Não");
+               $x = ["t"=>"Sim","f"=>"Não"];
                db_select('an_autocompl',$x,true,$db_opcao);
             ?>
           </td>
@@ -200,7 +200,7 @@ db_fim_transacao($sqlerro);
           </td>
           <td> 
             <?php 
-               $x = array("t"=>"Sim","f"=>"Não");
+               $x = ["t"=>"Sim","f"=>"Não"];
                db_select('an_nulo',$x,true,$db_opcao);
             ?>
           </td>
@@ -216,7 +216,7 @@ db_fim_transacao($sqlerro);
           </td>
           <td> 
             <?php 
-               $x = array("0"=>"Não Valida Campo","1"=>"Somente Números","2"=>"Somente Letras","3"=>"Números e letras","4"=>"Números Casa Dec.","5"=>"Verdadeiro/Falso");
+               $x = ["0"=>"Não Valida Campo","1"=>"Somente Números","2"=>"Somente Letras","3"=>"Números e letras","4"=>"Números Casa Dec.","5"=>"Verdadeiro/Falso"];
                db_select('an_aceitatipo',$x,true,$db_opcao);
             ?>
           </td>
@@ -239,7 +239,7 @@ db_fim_transacao($sqlerro);
           </td>
           <td> 
             <?php 
-               $x = array("t"=>"Sim","f"=>"Não");
+               $x = ["t"=>"Sim","f"=>"Não"];
                db_select('an_maiusculo',$x,true,$db_opcao);
             ?>
           </td>
@@ -253,7 +253,7 @@ db_fim_transacao($sqlerro);
           </td>
           <td valign='top'> 
             <?php 
-               $x = array("text"=>"Input Text","checkbox"=>"Input Checkbox","radiobutton"=>"Input Radio Button","image"=>"Input Imagem","textarea"=>"TextArea","select"=>"Select","multiple"=>"Select Multiple");
+               $x = ["text"=>"Input Text","checkbox"=>"Input Checkbox","radiobutton"=>"Input Radio Button","image"=>"Input Imagem","textarea"=>"TextArea","select"=>"Select","multiple"=>"Select Multiple"];
                db_select('an_tipoobj',$x,true,$db_opcao);
             ?>
           </td>

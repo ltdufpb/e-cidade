@@ -22,8 +22,8 @@ $this->objpdf->rect($xcol -2, $xlin -18, 206, 292, 2, 'DF', '1234');
 
 $sTipo            = "TIPO";
 $sDescricaoTipo   = 'SOLICITAÇÃO DE COMPRA N:  ';
-$sRodapeCabecalho = ":".substr($this->StipoSolicitacao, 1, 40);
-$iLicitacaoTipo   = substr($this->StipoSolicitacao, 0, 1);
+$sRodapeCabecalho = ":".substr((string) $this->StipoSolicitacao, 1, 40);
+$iLicitacaoTipo   = substr((string) $this->StipoSolicitacao, 0, 1);
 $lImprimeTipo     = false;
 $lImprimeCompilacao = false;
 
@@ -33,7 +33,7 @@ switch ($iLicitacaoTipo) {
     case '4':
     case '6':
 
-        $sDescricaoTipo   = substr($this->StipoSolicitacao, 1, 40);
+        $sDescricaoTipo   = substr((string) $this->StipoSolicitacao, 1, 40);
         $sDescricaoTipo   = mb_convert_case(str_replace('ã','Ã',$sDescricaoTipo), MB_CASE_UPPER, "ISO-8859-1");
         $sDescricaoTipo   = mb_convert_case(str_replace('ç','Ç',$sDescricaoTipo), MB_CASE_UPPER, "ISO-8859-1");
         $sRodapeCabecalho = 'SOLICITAÇÃO DE COMPRA N:  ';
@@ -61,11 +61,11 @@ if ($lImprimeCompilacao) {
 
 $this->objpdf->Setfont('Arial', 'B', 7);
 $this->objpdf->text(130, $xlin -7, 'ORGÃO');
-$this->objpdf->text(142, $xlin -7, ': '.substr($this->Sorgao, 0, 40));
+$this->objpdf->text(142, $xlin -7, ': '.substr((string) $this->Sorgao, 0, 40));
 $this->objpdf->text(130, $xlin -4, 'UNIDADE');
-$this->objpdf->text(142, $xlin -4, ': '.substr($this->Sunidade, 0, 40));
+$this->objpdf->text(142, $xlin -4, ': '.substr((string) $this->Sunidade, 0, 40));
 $this->objpdf->text(130, $xlin -1, 'USUÁRIO');
-$this->objpdf->text(142, $xlin -1, ': '.substr($this->Susuarioger, 0, 40));
+$this->objpdf->text(142, $xlin -1, ': '.substr((string) $this->Susuarioger, 0, 40));
 
 if ( isset($this->StipoSolicitacao) && !$lImprimeTipo ) {
 
@@ -124,7 +124,7 @@ $this->objpdf->setxy($xcol +22, $xlin +24);
 $this->objpdf->cell(3, 4, ':  ', 0, 0, "L", 0);
 $this->objpdf->setxy($xcol +24.5, $xlin +24);
 $posini = $this->objpdf->gety();
-$this->objpdf->multicell(175, 4, trim(AddSlashes($this->Sresumo)), 0, "j");
+$this->objpdf->multicell(175, 4, trim(AddSlashes((string) $this->Sresumo)), 0, "j");
 $setaut = $this->objpdf->gety();
 
 $oldsetaut = $setaut;
@@ -191,18 +191,18 @@ if ($this->linhasdosfornec > 0) {
     $this->objpdf->setx($xcol);
     $this->objpdf->setleftmargin(4);
     $this->objpdf->Setfont('Arial', '', 7);
-    $this->objpdf->SetAligns(array ('C', 'L', 'L', 'L', 'C'));
-    $this->objpdf->SetWidths(array (15, 64, 63, 40, 20));
+    $this->objpdf->SetAligns( ['C', 'L', 'L', 'L', 'C']);
+    $this->objpdf->SetWidths( [15, 64, 63, 40, 20]);
     for ($i = 0; $i < $this->linhasdosfornec; $i ++) {
         db_fieldsmemory($this->recorddosfornec, $i);
-        $cgmforn  = trim(pg_result($this->recorddosfornec, $i, $this->cgmforn));
-        $nomeforn  = trim(pg_result($this->recorddosfornec, $i, $this->nomeforn));
-        $enderforn = trim(pg_result($this->recorddosfornec, $i, $this->enderforn));
-        $numforn   = trim(pg_result($this->recorddosfornec, $i, $this->numforn));
-        $municforn = trim(pg_result($this->recorddosfornec, $i, $this->municforn));
-        $foneforn  = trim(pg_result($this->recorddosfornec, $i, $this->foneforn));
-        $cgccpf    = trim(pg_result($this->recorddosfornec, $i, $this->cgccpf));
-        $this->objpdf->Row(array ($cgmforn, $nomeforn."\n"."CNPJ/CPF: ".$cgccpf, $enderforn.", ".$numforn, $municforn, $foneforn), 4, false, 4);
+        $cgmforn  = trim(pg_fetch_result($this->recorddosfornec, $i, $this->cgmforn));
+        $nomeforn  = trim(pg_fetch_result($this->recorddosfornec, $i, $this->nomeforn));
+        $enderforn = trim(pg_fetch_result($this->recorddosfornec, $i, $this->enderforn));
+        $numforn   = trim(pg_fetch_result($this->recorddosfornec, $i, $this->numforn));
+        $municforn = trim(pg_fetch_result($this->recorddosfornec, $i, $this->municforn));
+        $foneforn  = trim(pg_fetch_result($this->recorddosfornec, $i, $this->foneforn));
+        $cgccpf    = trim(pg_fetch_result($this->recorddosfornec, $i, $this->cgccpf));
+        $this->objpdf->Row( [$cgmforn, $nomeforn."\n"."CNPJ/CPF: ".$cgccpf, $enderforn.", ".$numforn, $municforn, $foneforn], 4, false, 4);
         break;
     }
     if($this->linhasdosfornec > 1){
@@ -213,7 +213,7 @@ if ($this->linhasdosfornec > 0) {
 } else {
     $getdoy += 4.8;
     if (($oldsetaut +8) > 64) {
-        $getdoy += ($this->objpdf->NbLines(175,trim(AddSlashes($this->Sresumo)))*4)-12;
+        $getdoy += ($this->objpdf->NbLines(175,trim(AddSlashes((string) $this->Sresumo)))*4)-12;
     }
 }
 
@@ -273,8 +273,8 @@ $xtotal = 0;
 $muda_pag = false;
 $index = 0;
 
-$arr_antigadotac = Array ();
-$arr_antigaestru = Array ();
+$arr_antigadotac =  [];
+$arr_antigaestru =  [];
 $elementoant = "";
 $resumOriginal = '';
 $primeiroLaco = true;
@@ -284,7 +284,7 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
     // verifica se é Paty
     if (isset($this->casadec_medicamentos)) {
         // verifica se é medicamento
-        $codigo_material = pg_result($this->recorddasdotac, $i, $this->scodpcmater);
+        $codigo_material = pg_fetch_result($this->recorddasdotac, $i, $this->scodpcmater);
         // verifica se é medicamento
         $classe_pcmater = new cl_pcmater();
         $sSqlMedicamento = $classe_pcmater->sql_query_grupo($codigo_material);
@@ -299,24 +299,24 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
 
       }
       
-    if ($i == 1 && strlen($resumOriginal) > 5000 && $primeiroLaco) {
+    if ($i == 1 && strlen((string) $resumOriginal) > 5000 && $primeiroLaco) {
         $i = 0;
         $primeiroLaco = false;
     }
 
     db_fieldsmemory($this->recorddasdotac, $i);
-    $danousu    = pg_result($this->recorddasdotac, $i, $this->danousu);
-    $dotacao    = pg_result($this->recorddasdotac, $i, $this->dcoddot);
-    $estrutu    = pg_result($this->recorddasdotac, $i, $this->delemento);
-    $descrunid  = pg_result($this->recorddasdotac, $i, $this->descrunid);
-    $dcprojativ = pg_result($this->recorddasdotac, $i, $this->dcprojativ);
-    $dctiporec  = pg_result($this->recorddasdotac, $i, $this->dctiporec);
-    $dprojativ  = pg_result($this->recorddasdotac, $i, $this->dprojativ);
-    $dtiporec   = pg_result($this->recorddasdotac, $i, $this->dtiporec);
-    $ddescrest  = pg_result($this->recorddasdotac, $i, $this->ddescrest);
+    $danousu    = pg_fetch_result($this->recorddasdotac, $i, $this->danousu);
+    $dotacao    = pg_fetch_result($this->recorddasdotac, $i, $this->dcoddot);
+    $estrutu    = pg_fetch_result($this->recorddasdotac, $i, $this->delemento);
+    $descrunid  = pg_fetch_result($this->recorddasdotac, $i, $this->descrunid);
+    $dcprojativ = pg_fetch_result($this->recorddasdotac, $i, $this->dcprojativ);
+    $dctiporec  = pg_fetch_result($this->recorddasdotac, $i, $this->dctiporec);
+    $dprojativ  = pg_fetch_result($this->recorddasdotac, $i, $this->dprojativ);
+    $dtiporec   = pg_fetch_result($this->recorddasdotac, $i, $this->dtiporec);
+    $ddescrest  = pg_fetch_result($this->recorddasdotac, $i, $this->ddescrest);
 
-    $this->objpdf->SetWidths(array (10, 30, 30, 100, 30));
-    $this->objpdf->SetAligns(array ('C', 'C', 'C', 'J', 'R'));
+    $this->objpdf->SetWidths( [10, 30, 30, 100, 30]);
+    $this->objpdf->SetAligns( ['C', 'C', 'C', 'J', 'R']);
 
     if(trim($dotacao) != ""){
         if(!in_array($dotacao.$danousu, $arr_antigadotac)){
@@ -341,64 +341,64 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
             $mais = $this->objpdf->NbLines(95,"Dotação: ".$dotacao."/".$danousu.$estrutu);
             $mostra = $xlin;
             $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
-            $this->objpdf->Row(array ('', '', '', "Dotação: ".$dotacao."/".$danousu.$estrutu, ''), 3, false, 3);
+            $this->objpdf->Row( ['', '', '', "Dotação: ".$dotacao."/".$danousu.$estrutu, ''], 3, false, 3);
 
             $mais = $this->objpdf->NbLines(95,"Unidade Orçamentária: ".$descrunid);
             $mostra = $xlin;
             $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
-            $this->objpdf->Row(array ('', '', '', "Unidade Orçamentária: ".$descrunid, ''), 3, false, 3);
+            $this->objpdf->Row( ['', '', '', "Unidade Orçamentária: ".$descrunid, ''], 3, false, 3);
 
             $mais = $this->objpdf->NbLines(95,"Proj/Ativ: $dcprojativ - ".$dprojativ);
             $mostra = $xlin;
             $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
-            $this->objpdf->Row(array ('', '', '', "Proj/Ativ: $dcprojativ - ".$dprojativ, ''), 3, false, 3, 0, 0, true);
+            $this->objpdf->Row( ['', '', '', "Proj/Ativ: $dcprojativ - ".$dprojativ, ''], 3, false, 3, 0, 0, true);
 
             $mais = $this->objpdf->NbLines(95,"Elemento: ".$ddescrest);
             $mostra = $xlin;
             $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
-            $this->objpdf->Row(array ('', '', '', "Elemento: ".$ddescrest, ''), 3, false, 3, 0, 0, true);
+            $this->objpdf->Row( ['', '', '', "Elemento: ".$ddescrest, ''], 3, false, 3, 0, 0, true);
 
             $mais = $this->objpdf->NbLines(95,"Recurso: $dctiporec - ".$dtiporec);
             $mostra = $xlin;
             $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
-            $this->objpdf->Row(array ('', '', '', "Recurso: $dctiporec - ".$dtiporec, ''), 3, false, 3, 0, 0, true);
+            $this->objpdf->Row( ['', '', '', "Recurso: $dctiporec - ".$dtiporec, ''], 3, false, 3, 0, 0, true);
         }
     } else {
         $mais = $this->objpdf->NbLines(95,"ITEM SEM DOTAÇÃO");
         $mostra = $xlin;
         $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
         $this->objpdf->Setfont('Arial', 'B', 8);
-        $this->objpdf->Row(array ('', '', '', "ITEM SEM DOTAÇÃO", ''), 3, false, 3);
+        $this->objpdf->Row( ['', '', '', "ITEM SEM DOTAÇÃO", ''], 3, false, 3);
     }
 
-    $codigo        = pg_result($this->recorddasdotac, $i, "pc11_codigo");
-    $item          = pg_result($this->recorddasdotac, $i, $this->item);
-    $descricaoitem = pg_result($this->recorddasdotac, $i, $this->descricaoitem);
-    $quantitem     = pg_result($this->recorddasdotac, $i, $this->quantitem);
-    $quantitemmin  = pg_result($this->recorddasdotac, $i, $this->quantitemmin);
-    $quantitemmax  = pg_result($this->recorddasdotac, $i, $this->quantitemmax);
-    $valoritem     = pg_result($this->recorddositens, $i, $this->valor);
-    $valtot        = pg_result($this->recorddasdotac, $i, $this->svalortot);
+    $codigo        = pg_fetch_result($this->recorddasdotac, $i, "pc11_codigo");
+    $item          = pg_fetch_result($this->recorddasdotac, $i, $this->item);
+    $descricaoitem = pg_fetch_result($this->recorddasdotac, $i, $this->descricaoitem);
+    $quantitem     = pg_fetch_result($this->recorddasdotac, $i, $this->quantitem);
+    $quantitemmin  = pg_fetch_result($this->recorddasdotac, $i, $this->quantitemmin);
+    $quantitemmax  = pg_fetch_result($this->recorddasdotac, $i, $this->quantitemmax);
+    $valoritem     = pg_fetch_result($this->recorddositens, $i, $this->valor);
+    $valtot        = pg_fetch_result($this->recorddasdotac, $i, $this->svalortot);
     $valimp        = $valtot;
-    $prazo         = str_replace("\\n", "\n",pg_result($this->recorddasdotac, $i, $this->sprazo));
-    $pgto          = str_replace("\\n", "\n",pg_result($this->recorddasdotac, $i, $this->spgto));
-    $resum         = str_replace("\\n", "\n",pg_result($this->recorddasdotac, $i, $this->sresum));
+    $prazo         = str_replace("\\n", "\n",pg_fetch_result($this->recorddasdotac, $i, $this->sprazo));
+    $pgto          = str_replace("\\n", "\n",pg_fetch_result($this->recorddasdotac, $i, $this->spgto));
+    $resum         = str_replace("\\n", "\n",pg_fetch_result($this->recorddasdotac, $i, $this->sresum));
 
-    if (strlen($resumOriginal) > 5000) {
-        $resum = substr($resumOriginal, 4500);
+    if (strlen((string) $resumOriginal) > 5000) {
+        $resum = substr((string) $resumOriginal, 4500);
     }
-    $just          = str_replace("\\n", "\n",pg_result($this->recorddasdotac, $i, $this->sjust));
-    $unid          = pg_result($this->recorddasdotac, $i, $this->sunidade);
-    $abrevunid     = pg_result($this->recorddasdotac, $i, $this->sabrevunidade);
-    $servico       = pg_result($this->recorddasdotac, $i, $this->sservico);
-    $quantunid     = pg_result($this->recorddasdotac, $i, $this->squantunid);
-    $susaquant     = pg_result($this->recorddasdotac, $i, $this->susaquant);
-    $scodpcmater   = pg_result($this->recorddasdotac, $i, $this->scodpcmater);
-    $selemento     = pg_result($this->recorddasdotac, $i, $this->selemento);
-    $sdelemento    = pg_result($this->recorddasdotac, $i, $this->sdelemento);
-    $dquant        = pg_result($this->recorddasdotac, $i, $this->dquant);
-    $dvalor        = pg_result($this->recorddasdotac, $i, $this->dvalor);
-    $dvaltot       = number_format(pg_result($this->recorddasdotac, $i, $this->dvalortot), $this->casadec, ",", ".");
+    $just          = str_replace("\\n", "\n",pg_fetch_result($this->recorddasdotac, $i, $this->sjust));
+    $unid          = pg_fetch_result($this->recorddasdotac, $i, $this->sunidade);
+    $abrevunid     = pg_fetch_result($this->recorddasdotac, $i, $this->sabrevunidade);
+    $servico       = pg_fetch_result($this->recorddasdotac, $i, $this->sservico);
+    $quantunid     = pg_fetch_result($this->recorddasdotac, $i, $this->squantunid);
+    $susaquant     = pg_fetch_result($this->recorddasdotac, $i, $this->susaquant);
+    $scodpcmater   = pg_fetch_result($this->recorddasdotac, $i, $this->scodpcmater);
+    $selemento     = pg_fetch_result($this->recorddasdotac, $i, $this->selemento);
+    $sdelemento    = pg_fetch_result($this->recorddasdotac, $i, $this->sdelemento);
+    $dquant        = pg_fetch_result($this->recorddasdotac, $i, $this->dquant);
+    $dvalor        = pg_fetch_result($this->recorddasdotac, $i, $this->dvalor);
+    $dvaltot       = number_format(pg_fetch_result($this->recorddasdotac, $i, $this->dvalortot), $this->casadec, ",", ".");
 
     if((isset ($descricaoitem) && (trim($descricaoitem) == "" || $descricaoitem == null)) || !isset ($descricaoitem)){
         $descricaoitem = $resum;
@@ -466,7 +466,7 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
 
     $xtotal   += $valimp;
     $valimp    = number_format($valimp, $this->casadec, ",", ".");
-    $valoritem = number_format(pg_result($this->recorddositens, $i, $this->valor), $this->casadec, ",", ".");
+    $valoritem = number_format(pg_fetch_result($this->recorddositens, $i, $this->valor), $this->casadec, ",", ".");
 
     $this->objpdf->Setfont('Arial', 'B', 7);
 
@@ -476,13 +476,13 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
         $mais   = $this->objpdf->NbLines(95,db_formatar($selemento, 'elemento')." - ".$sdelemento);
         $mostra = $xlin;
         $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
-        $this->objpdf->Row(array ('', '', '', db_formatar($selemento, 'elemento')." - ".$sdelemento, ''), 3, false, 3);
+        $this->objpdf->Row( ['', '', '', db_formatar($selemento, 'elemento')." - ".$sdelemento, ''], 3, false, 3);
     }
 
     $mais = $this->objpdf->NbLines(95,$scodpcmater.$descricaoitem);
     $mostra = $xlin;
     $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
-    $this->objpdf->Row(array ($item, $quantitemmin ." -- ".$quantitemmax, $unid, $scodpcmater.$descricaoitem, $valimp), 3, false, $distanciar, 0, 0, true);
+    $this->objpdf->Row( [$item, $quantitemmin ." -- ".$quantitemmax, $unid, $scodpcmater.$descricaoitem, $valimp], 3, false, $distanciar, 0, 0, true);
 
     $dist = 2.7;
 
@@ -500,7 +500,7 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
         $mais = $this->objpdf->NbLines(95,"RESERVA: ".$ddvalor);
         $mostra = $xlin;
         $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
-        $this->objpdf->Row(array ('', '', '', "RESERVA: ".$ddvalor, ''), 3, false, $dist, 0, 0, true);
+        $this->objpdf->Row( ['', '', '', "RESERVA: ".$ddvalor, ''], 3, false, $dist, 0, 0, true);
     }
 
     $mostraunid = false;
@@ -510,14 +510,14 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
         $mais   = $this->objpdf->NbLines(95,$prazo);
         $mostra = $xlin;
         $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
-        $this->objpdf->Row(array ('', '', '', $prazo, ''), 3, false, $dist, 0, 0, true);
+        $this->objpdf->Row( ['', '', '', $prazo, ''], 3, false, $dist, 0, 0, true);
     }
 
     if(isset ($pgto) && $pgto != ""){
         $mais = $this->objpdf->NbLines(95,$pgto);
         $mostra = $xlin;
         $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
-        $this->objpdf->Row(array ('', '', '', $pgto, ''), 3, false, $dist, 0, 0, true);
+        $this->objpdf->Row( ['', '', '', $pgto, ''], 3, false, $dist, 0, 0, true);
     }
 
     if(isset ($resum) && $resum != "" && (isset ($scodpcmater) && trim($scodpcmater) != "")){
@@ -525,9 +525,9 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
         $mostra = $xlin;
 
         $resumOriginal = $resum;
-        $resum = strlen($resum) > 5000 ? substr($resum, 0, 4500) . "(...)" : $resum;
-        $this->objpdf->Row(array ('', '', '', $resum, ''), 3, false, $dist, 0, 0, true);
-        if (strlen($resum) > 200 && empty($just)) {
+        $resum = strlen((string) $resum) > 5000 ? substr((string) $resum, 0, 4500) . "(...)" : $resum;
+        $this->objpdf->Row( ['', '', '', $resum, ''], 3, false, $dist, 0, 0, true);
+        if (strlen((string) $resum) > 200 && empty($just)) {
             $this->objpdf->ln(7);
         }
 
@@ -543,7 +543,7 @@ for ($i = 0; $i < $this->linhasdasdotac; $i ++) {
         $mais = $this->objpdf->NbLines(95,$just);
         $mostra = $xlin;
         $x = $this->muda_pag($pagina,$mostra,$xcol,"false",$contapagina,$mais,2);
-        $this->objpdf->Row(array ('', '', '', $just, ''), 3, false, $dist, 0, 0, true);
+        $this->objpdf->Row( ['', '', '', $just, ''], 3, false, $dist, 0, 0, true);
     }
     $this->objpdf->ln(1.5);
 }
@@ -566,7 +566,7 @@ if ($contapagina == 1) {
 
     $resparag = @db_query($sqlparag);
 
-    if (@pg_numrows($resparag) > 0) {
+    if (@pg_num_rows($resparag) > 0) {
         db_fieldsmemory($resparag,0);
 
         eval($db02_texto);
@@ -579,7 +579,7 @@ if ($contapagina == 1) {
         $sqlparagpadrao .= " where db60_tipodoc = 1400 and db60_instit = " . db_getsession("DB_instit")." order by db62_ordem";
 
         $resparagpadrao = @db_query($sqlparagpadrao);
-        if (@pg_numrows($resparagpadrao) > 0) {
+        if (@pg_num_rows($resparagpadrao) > 0) {
             db_fieldsmemory($resparagpadrao,0);
 
             eval($db61_texto);

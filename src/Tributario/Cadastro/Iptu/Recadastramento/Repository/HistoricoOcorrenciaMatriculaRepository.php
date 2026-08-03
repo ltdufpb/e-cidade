@@ -31,11 +31,11 @@ class HistoricoOcorrenciaMatriculaRepository
      */
     public function persist(HistoricoOcorrenciaMatricula $oHistoricoOcorrenciaMat)
     {
-        $params = array(
+        $params = [
             'ar25_sequencial' => $oHistoricoOcorrenciaMat->getSequencial(),
             'ar25_matric' => $oHistoricoOcorrenciaMat->getMatric(),
             'ar25_histocorrencia' => $oHistoricoOcorrenciaMat->getHistocorrencia(),
-        );
+        ];
 
         if (empty($params['ar25_sequencial'])) {
             $sSql = $this->insert($params);
@@ -60,11 +60,7 @@ class HistoricoOcorrenciaMatriculaRepository
     {
         $params = array_filter($params);
 
-        $params = array_map(function($value) {
-
-            return "'".$value."'";
-
-        }, $params);
+        $params = array_map(fn($value) => "'".$value."'", $params);
 
         $params['ar25_sequencial'] = "nextval('" . self::SEQUENCE_NAME . "')";
         $filds  = implode(",", array_keys($params));

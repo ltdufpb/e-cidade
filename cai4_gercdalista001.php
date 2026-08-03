@@ -55,8 +55,8 @@ $clrotulo->label('k60_descr');
 $clrotulo->label('k51_procede');
 $clrotulo->label('k51_descr');
 $instit = db_getsession("DB_instit");
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 ?>
 
@@ -97,9 +97,9 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
             </td>
             <td>
               <?php 
-                $aTipoLista = array("lista"       => "Somente gerados na lista",
+                $aTipoLista = ["lista"       => "Somente gerados na lista",
                                     "notificados" => "Somente notificados",
-                                    "noticonf"    => "Somente notificados e confirmados");
+                                    "noticonf"    => "Somente notificados e confirmados"];
                 db_select("tipolista", $aTipoLista, true, 1, "");
               ?>
             </td>
@@ -111,8 +111,8 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
             </td>
             <td>
               <?php 
-                $aOpcoes = array("todos" => "Por CGM/Inscrição/Matricula",
-                                 "cgm"   => "Por CGM");
+                $aOpcoes = ["todos" => "Por CGM/Inscrição/Matricula",
+                                 "cgm"   => "Por CGM"];
                 db_select("opcoes", $aOpcoes, true, 1, "");
               ?>
             </td>
@@ -124,8 +124,8 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
             </td>
             <td>
               <?php 
-                $aAgrupa = array("n" => "Não",
-                                 "s" => "Sim");
+                $aAgrupa = ["n" => "Não",
+                                 "s" => "Sim"];
                 db_select("agrupa", $aAgrupa, true, 1, "");
               ?>
             </td>
@@ -191,7 +191,7 @@ $mostrabotao = 'f';
 $count       = 0;
 $count6      = 0;
 $todascda    = "CDA(s) Geradas : ";
-$aCertidoes  = array();
+$aCertidoes  = [];
 //**************************************************************************************************************************************
 
 if (isset ($geracda)) {
@@ -209,7 +209,7 @@ if (isset ($geracda)) {
 	  $sqlperm .= "   and k60_instit = {$instit}                          ";
 
 	  $resultperm = db_query($sqlperm);
-	  $linhasperm = pg_numrows($resultperm);
+	  $linhasperm = pg_num_rows($resultperm);
 	  if ($linhasperm > 0) {
 	    throw new Exception("Lista com tipos de débitos não permitidos !");
 	  }
@@ -221,7 +221,7 @@ if (isset ($geracda)) {
     $sqltipo .= " where k60_codigo = {$k60_codigo}                         ";
     $sqltipo .= "   and k60_instit = {$instit}                             ";
     $resulttipo = db_query($sqltipo);
-    $linhastipo = pg_numrows($resulttipo);
+    $linhastipo = pg_num_rows($resulttipo);
     if ($linhastipo == 0) {
       throw new Exception("Sem tipos de débitos definidos na lista !");
     }
@@ -306,7 +306,7 @@ if (isset ($geracda)) {
                         order by  k00_tipo, {$campos} ; ";
 
     $rsResult = db_query($sql);
-    $mat      = pg_numrows($rsResult);
+    $mat      = pg_num_rows($rsResult);
 
     if ($mat == 0){
       throw new Exception("Voce não pode gerar CDA para esta lista !");
@@ -343,9 +343,9 @@ if (isset ($geracda)) {
 	        }
 
 	        if($opcoes=="cgm") {
-	          $chave = str_pad($k00_numcgm, 10, "0", STR_PAD_LEFT);
+	          $chave = str_pad((string) $k00_numcgm, 10, "0", STR_PAD_LEFT);
 	        } else {
-	          $chave = str_pad($k00_matric, 10, "0", STR_PAD_LEFT).str_pad($k00_inscr, 10, "0", STR_PAD_LEFT).str_pad($k00_numcgm, 10, "0", STR_PAD_LEFT);
+	          $chave = str_pad((string) $k00_matric, 10, "0", STR_PAD_LEFT).str_pad((string) $k00_inscr, 10, "0", STR_PAD_LEFT).str_pad((string) $k00_numcgm, 10, "0", STR_PAD_LEFT);
 	        }
 
 	        if (  $newchave != $chave ||
@@ -377,9 +377,9 @@ if (isset ($geracda)) {
 	          $todascda .= $v13_certid." - ";
 
 	          if($opcoes=="cgm") {
-	            $newchave = str_pad($k00_numcgm, 10, "0", STR_PAD_LEFT);
+	            $newchave = str_pad((string) $k00_numcgm, 10, "0", STR_PAD_LEFT);
 	          } else {
-	            $newchave = str_pad($k00_matric, 10, "0", STR_PAD_LEFT).str_pad($k00_inscr, 10, "0", STR_PAD_LEFT).str_pad($k00_numcgm, 10, "0", STR_PAD_LEFT);
+	            $newchave = str_pad((string) $k00_matric, 10, "0", STR_PAD_LEFT).str_pad((string) $k00_inscr, 10, "0", STR_PAD_LEFT).str_pad((string) $k00_numcgm, 10, "0", STR_PAD_LEFT);
 	          }
 
 	          if ($k03_tipo == 5 && (isset($agrupa) && $agrupa == "s")) {

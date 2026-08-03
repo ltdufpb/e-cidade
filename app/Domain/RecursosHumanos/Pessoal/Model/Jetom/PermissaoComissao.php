@@ -49,7 +49,7 @@ class PermissaoComissao extends Model
      * @param array|null $options
      * @return bool
      */
-    public function callSave(array $options = null)
+    public function callSave(?array $options = null)
     {
         $next_id = \DB::select("select nextval('pessoal.jetompermissao_rh251_sequencial_seq')");
         

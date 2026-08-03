@@ -27,7 +27,7 @@
 
 require_once(modification("agu3_conscadastro_002_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if( !isset($cod_matricula) ) {
   $matriculaSelecionada = 0;

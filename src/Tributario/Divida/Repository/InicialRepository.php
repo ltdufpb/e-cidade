@@ -19,7 +19,7 @@ class InicialRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * InicialRepository constructor.
@@ -65,7 +65,7 @@ class InicialRepository
             throw new Exception("Não foi possível buscar os débitos.");
         }
 
-        $arrInicial = array();
+        $arrInicial = [];
 
         if (pg_num_rows($rs) === 0) {
             return $arrInicial;
@@ -112,7 +112,7 @@ class InicialRepository
             throw new Exception("Não foi possível buscar os débitos.");
         }
 
-        $arrInicial = array();
+        $arrInicial = [];
 
         if (pg_num_rows($rs) === 0) {
             return $arrInicial;

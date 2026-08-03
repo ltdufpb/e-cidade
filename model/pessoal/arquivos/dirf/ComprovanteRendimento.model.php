@@ -38,7 +38,7 @@ class ComprovanteRendimento {
   /**
    * @var Servidor[]
    */
-  protected $matriculas = array();
+  protected $matriculas = [];
 
   /**
    * Fonte pagadora
@@ -247,7 +247,7 @@ class ComprovanteRendimento {
   /**
    * @var DetalhamentoRubricas[]
    */
-  protected $detalhamentoRubricas = array();
+  protected $detalhamentoRubricas = [];
 
   /**
    * @return CgmFisico|CgmJuridico

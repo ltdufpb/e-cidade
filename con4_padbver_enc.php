@@ -36,11 +36,11 @@ class bver_enc
 
         umask(74);
         $this->arq = fopen("tmp/BVER_ENC.TXT", 'w+');
-        fputs($this->arq, $header);
+        fputs($this->arq, (string) $header);
         fputs($this->arq, "\r\n");
     }
 
-    function processa($instit = 1, $data_ini = "", $data_fim = "", $tribinst, $subelemento = "")
+    function processa($instit = 1, $data_ini = "", $data_fim = "", $tribinst = null, $subelemento = "")
     {
         global $instituicoes, $contador, $nomeinst, $sinal_anterior, $sinal_final;
 
@@ -61,28 +61,28 @@ class bver_enc
 
         $contador = 0;
 
-        $instituicoesParaProcessamento = array();
-        foreach (explode(",", $instit) as $codigoInstituicao) {
+        $instituicoesParaProcessamento = [];
+        foreach (explode(",", (string) $instit) as $codigoInstituicao) {
             $instituicoesParaProcessamento[] = InstituicaoRepository::getInstituicaoByCodigo($codigoInstituicao);
         }
 
-        $array_reduzidos_quebra_linha = array();
-        $array_teste = array();
-        $array_erro = array();
+        $array_reduzidos_quebra_linha = [];
+        $array_teste = [];
+        $array_erro = [];
 
         $iTotalRegistros = pg_num_rows($result);
-        $estruturalProcessado = array();
+        $estruturalProcessado = [];
         for ($x = 0; $x < $iTotalRegistros; $x++) {
             global $instituicoes, $c61_instit, $c61_reduz, $nivel, $estrutural, $saldo_anterior, $saldo_anterior_debito, $saldo_anterior_credito, $saldo_final, $c60_descr, $c61_codigo;
             db_fieldsmemory($result, $x);
-            $aLinhaArquivo = array();
-            $aLinhasDisponibilidadeRecurso = array();
+            $aLinhaArquivo = [];
+            $aLinhasDisponibilidadeRecurso = [];
             $oRecurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($c61_codigo);
-            $aEstruturalDisponibilidade = array('82111', '82110', '82100', '82000', '80000');
-            if (in_array(substr($estrutural, 0, 5), $aEstruturalDisponibilidade) && empty($c61_reduz)) {
+            $aEstruturalDisponibilidade = ['82111', '82110', '82100', '82000', '80000'];
+            if (in_array(substr((string) $estrutural, 0, 5), $aEstruturalDisponibilidade) && empty($c61_reduz)) {
                 $nSaldoBalancete = $saldo_anterior;
                 $nSaldoImplantadoCredito = 0;
-                if ((substr($estrutural, 0, 5) == '82111' && $saldo_anterior == 0)) {
+                if ((str_starts_with((string) $estrutural, '82111') && $saldo_anterior == 0)) {
                     $nSaldoImplantadoCredito = bal_ver::getValorImplantadoDisponibilidadeRecurso($oDataInicial);
                 }
                 $saldo_anterior = ($nSaldoBalancete + $nSaldoImplantadoCredito);
@@ -98,7 +98,7 @@ class bver_enc
                 }
             }
 
-            if (substr($estrutural, 0, 5) == '82111' && !empty($c61_reduz)) {
+            if (str_starts_with((string) $estrutural, '82111') && !empty($c61_reduz)) {
                 $instituicaoDaVez = InstituicaoRepository::getInstituicaoByCodigo($c61_instit);
                 if (!in_array($estrutural.$c61_instit, $estruturalProcessado)) {
                     $oStdDadosVerificacao = db_utils::fieldsMemory($result, $x);
@@ -107,15 +107,15 @@ class bver_enc
                         $oStdDadosVerificacao,
                         $oDataInicial,
                         $oDataFinal,
-                        array($instituicaoDaVez)
+                        [$instituicaoDaVez]
                     );
                     if (!$aLinhasDisponibilidadeRecurso) {
-                        $aLinhasDisponibilidadeRecurso = array();
+                        $aLinhasDisponibilidadeRecurso = [];
                     }
                     unset($oStdDadosVerificacao);
                 }
             } else {
-                $aLinhaArquivo[] = formatar($estrutural, 20, 'n');
+                $aLinhaArquivo[] = formatar($estrutural, 20);
                 if ($c61_instit == 0 || empty($c61_instit)) {
                     $aLinhaArquivo[] = "0000";
                 } else {
@@ -128,32 +128,32 @@ class bver_enc
 
                 $saldo_anterior = abs($saldo_anterior);
                 if ($sinal_anterior == 'D') {
-                    $aLinhaArquivo[] = formatar($saldo_anterior, 13, 'v');
-                    $aLinhaArquivo[] = formatar(0, 13, 'v');
+                    $aLinhaArquivo[] = formatar($saldo_anterior, 13);
+                    $aLinhaArquivo[] = formatar(0, 13);
                 } else {
-                    $aLinhaArquivo[] = formatar(0, 13, 'v');
-                    $aLinhaArquivo[] = formatar($saldo_anterior, 13, 'v');
+                    $aLinhaArquivo[] = formatar(0, 13);
+                    $aLinhaArquivo[] = formatar($saldo_anterior, 13);
                 }
                 $saldo_anterior_debito = abs($saldo_anterior_debito);
                 $saldo_anterior_credito = abs($saldo_anterior_credito);
-                $aLinhaArquivo[] = formatar($saldo_anterior_debito, 13, 'v');
-                $aLinhaArquivo[] = formatar($saldo_anterior_credito, 13, 'v');
+                $aLinhaArquivo[] = formatar($saldo_anterior_debito, 13);
+                $aLinhaArquivo[] = formatar($saldo_anterior_credito, 13);
 
                 $saldo_final = abs($saldo_final);
                 if ($sinal_final == 'D') {
-                    $aLinhaArquivo[] = formatar(dbround_php_52($saldo_final, 2), 13, 'v');
-                    $aLinhaArquivo[] = formatar(0, 13, 'v');
+                    $aLinhaArquivo[] = formatar(dbround_php_52($saldo_final, 2), 13);
+                    $aLinhaArquivo[] = formatar(0, 13);
                 } else {
-                    $aLinhaArquivo[] = formatar(0, 13, 'v');
-                    $aLinhaArquivo[] = formatar(dbround_php_52($saldo_final, 2), 13, 'v');
+                    $aLinhaArquivo[] = formatar(0, 13);
+                    $aLinhaArquivo[] = formatar(dbround_php_52($saldo_final, 2), 13);
                 }
 
-                if (!(gettype(strpos($c60_descr, "\n")) == "boolean")) {
+                if (!(gettype(strpos((string) $c60_descr, "\n")) == "boolean")) {
                     $array_reduzidos_quebra_linha[] = $c61_reduz;
                     $c60_descr = str_replace("\n", ' ', $c60_descr);
                 }
 
-                $aLinhaArquivo[] = formatar($c60_descr, 148, 'c');
+                $aLinhaArquivo[] = formatar($c60_descr, 148);
                 $aLinhaArquivo[] = ($c61_reduz == 0 ? 'S' : 'A');
 
                 // pesquisa nivel da conta
@@ -167,7 +167,7 @@ class bver_enc
                 if (!empty($c61_reduz)) {
                     $recurso = $oRecurso->getFonteDeRecurso();
                 }
-                $aLinhaArquivo[] = str_pad($recurso, 4, '0', STR_PAD_LEFT);
+                $aLinhaArquivo[] = str_pad((string) $recurso, 4, '0', STR_PAD_LEFT);
 
 
                 if (db_getsession("DB_anousu") >= 2020) {
@@ -177,7 +177,7 @@ class bver_enc
                         $complementoFonteRecurso = $complemento->isTribunal() ? $complemento->getCodigo() : 0;
                     }
 
-                    $aLinhaArquivo[] = str_pad($complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
+                    $aLinhaArquivo[] = str_pad((string) $complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
                 }
 
             }
@@ -287,7 +287,7 @@ class bver_enc
             echo "<font size='1' color='red'><br><b>AVISO: reduzidos de contas com descrição contendo quebras de linha: $linha_reduzidos<br>O sistema retirou as quebras de linha na geracao do TXT, mas você deve acertar isso para não ter problemas com outras rotinas, acessando o cadastro do plano de contas em Contabilidade->Cadastros->Plano de Contas->Alteração.</b><br></font>";
         }
         //  trailer
-        $contador = espaco(10 - (strlen($contador)), '0') . $contador;
+        $contador = espaco(10 - (strlen($contador))) . $contador;
         $line = "FINALIZADOR" . $contador;
         fputs($this->arq, $line);
         fputs($this->arq, "\r\n");

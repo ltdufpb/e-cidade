@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_averbagrupo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claverbagrupo = new cl_averbagrupo;
 $claverbagrupo->rotulo->label("j105_sequencial");
 $claverbagrupo->rotulo->label("j105_descr");
@@ -98,9 +98,9 @@ $claverbagrupo->rotulo->label("j105_descr");
         }else{
            $sql = $claverbagrupo->sql_query("",$campos,"j105_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j105_descr)){
-          $repassa = array("chave_j105_sequencial"=>$chave_j105_sequencial,"chave_j105_descr"=>$chave_j105_descr);
+          $repassa = ["chave_j105_sequencial"=>$chave_j105_sequencial,"chave_j105_descr"=>$chave_j105_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

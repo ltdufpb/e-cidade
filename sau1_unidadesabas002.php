@@ -54,10 +54,10 @@ $db_opcao = 1;
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica = array("a1"=>"Identificação","a2"=>"Caracterização","a3"=>"Convênios / Vigilância");
-   $clcriaabas->sizecampo  = array("a1"=>"25","a2"=>"25","a3"=>"25");
-   $clcriaabas->src        = array("a1"=>"sau1_unidades002.php","a2"=>"","a3"=>"");
-   $clcriaabas->disabled   = array("a2"=>"true","a3"=>"true");
+   $clcriaabas->identifica = ["a1"=>"Identificação","a2"=>"Caracterização","a3"=>"Convênios / Vigilância"];
+   $clcriaabas->sizecampo  = ["a1"=>"25","a2"=>"25","a3"=>"25"];
+   $clcriaabas->src        = ["a1"=>"sau1_unidades002.php","a2"=>"","a3"=>""];
+   $clcriaabas->disabled   = ["a2"=>"true","a3"=>"true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->scrolling = "no";
    $clcriaabas->iframe_height= "600";

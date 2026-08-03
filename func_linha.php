@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_linha_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllinha = new cl_linha;
 $cllinha->rotulo->label("ed217_i_codigo");
 $cllinha->rotulo->label("ed217_c_origem");
@@ -98,9 +98,9 @@ $cllinha->rotulo->label("ed217_c_origem");
         }else{
            $sql = $cllinha->sql_query("",$campos,"ed217_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed217_i_codigo)){
-          $repassa = array("chave_ed217_i_codigo"=>$chave_ed217_i_codigo,"chave_ed217_i_codigo"=>$chave_ed217_i_codigo);
+          $repassa = ["chave_ed217_i_codigo"=>$chave_ed217_i_codigo,"chave_ed217_i_codigo"=>$chave_ed217_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

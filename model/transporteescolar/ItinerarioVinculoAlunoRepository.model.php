@@ -36,7 +36,7 @@ class ItinerarioVinculoAlunoRepository {
    * Collection de ItinerarioVinculoAluno
    * @var array
    */
-  private $aItinerarioVinculoAluno = array();
+  private $aItinerarioVinculoAluno = [];
 
   /**
    * Instancia da classe
@@ -110,7 +110,7 @@ class ItinerarioVinculoAlunoRepository {
    */
   public static function getItinerarioVinculoAlunoPorPontoParada(ItinerarioPontoParada $oItinerarioPontoParada ) {
 
-    $aVinculoAlunoPontoParada = array();
+    $aVinculoAlunoPontoParada = [];
     $sWhere                   = "tre12_linhatransportepontoparada = {$oItinerarioPontoParada->getCodigo()}";
     $oDaoVinculoAluno         = new cl_linhatransportepontoparadaaluno();
     $sSql                     = $oDaoVinculoAluno->sql_query_file(null, "tre12_sequencial", null, $sWhere);

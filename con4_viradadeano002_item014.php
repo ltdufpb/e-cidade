@@ -360,7 +360,7 @@ if ($sqlerro==false) {
       $oDocumentoContabilRegra->setCodigoDocumento($oDadosDocumento->c92_conhistdoc);
       $oDocumentoContabilRegra->setAno($anodestino);
       $oDocumentoContabilRegra->setDescricao($oDadosDocumento->c92_descricao);
-      $oDocumentoContabilRegra->setRegra(addslashes($oDadosDocumento->c92_regra));
+      $oDocumentoContabilRegra->setRegra(addslashes((string) $oDadosDocumento->c92_regra));
       $oDocumentoContabilRegra->salvar();  
     } catch (Exception $oErro) {
       

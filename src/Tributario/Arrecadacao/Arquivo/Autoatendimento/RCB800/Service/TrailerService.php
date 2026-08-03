@@ -12,11 +12,8 @@ use ECidade\Tributario\Arrecadacao\Repository\Convenio as ConvenioRepository;
 
 final class TrailerService extends Service
 {
-    private $dataBase;
-
-    public function __construct(DataBase $dataBase)
+    public function __construct(private readonly DataBase $dataBase)
     {
-        $this->dataBase = $dataBase;
     }
 
     public function execute($quantidade)

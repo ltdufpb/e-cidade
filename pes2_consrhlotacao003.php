@@ -29,8 +29,8 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_lotacao_classe.php"));
 include(modification("classes/db_rhlota_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $clrhlota  = new cl_rhlota;
 
@@ -102,7 +102,7 @@ $troca = 1;
 $p = 1;
 $alt = 4;
 
-for($x = 0; $x < pg_numrows($result_funcionarios); $x ++) {
+for($x = 0; $x < pg_num_rows($result_funcionarios); $x ++) {
   db_fieldsmemory($result_funcionarios, $x);
   if($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
     $pdf->addpage();

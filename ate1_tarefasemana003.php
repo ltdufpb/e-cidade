@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("tarefasemana"=>"Semana","tarefaexecucao"=>"Tarefas"); 
-	 $clcriaabas->src = array("tarefasemana"=>"ate1_tarefasemana006.php");
-	 $clcriaabas->disabled   =  array("tarefaexecucao"=>"true"); 
+	 $clcriaabas->identifica = ["tarefasemana"=>"Semana","tarefaexecucao"=>"Tarefas"]; 
+	 $clcriaabas->src = ["tarefasemana"=>"ate1_tarefasemana006.php"];
+	 $clcriaabas->disabled   =  ["tarefaexecucao"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

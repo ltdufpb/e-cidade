@@ -53,7 +53,7 @@ class RefactorImpressaoBoleto {
   /**
    * variaveis o array $aDados
    */
-  private $aDebitosSelecionados = array();
+  private $aDebitosSelecionados = [];
 
   /**
    * Array com string contendo informacoes do numpre como numpar e receita
@@ -185,7 +185,7 @@ class RefactorImpressaoBoleto {
   public function set($sVariavel, $valor) {
 
     if ( !property_exists($this, $sVariavel) ) {
-      throw new Exception(__CLASS__ . ": Propriedade {$sVariavel} não encontrada.");
+      throw new Exception(self::class . ": Propriedade {$sVariavel} não encontrada.");
     }
 
     $this->{$sVariavel} = $valor;
@@ -268,8 +268,8 @@ class RefactorImpressaoBoleto {
     // recibo
     $numcgmrecibo     = $z01_numcgm = $this->ver_numcgm;
     $exerc            = '';
-    $aProcessoForo    = array();
-    $aCodProcessoForo = array();
+    $aProcessoForo    = [];
+    $aCodProcessoForo = [];
 
     $iModeloRecibo = $this->iModeloRecibo;
     $DB_DATACALC   = $this->DB_DATACALC;
@@ -393,16 +393,16 @@ class RefactorImpressaoBoleto {
         $tam = sizeof($vt);
         reset($vt);
         $numpres = "";
-        $meses= array();
-        $arretipos = array();
-        $aParcelasSemInflatores = array();
+        $meses= [];
+        $arretipos = [];
+        $aParcelasSemInflatores = [];
 
         for($i = 0;$i < $tam;$i++) {
 
           if(db_indexOf(key($vt) ,"CHECK") > 0){
 
             $numpres .= "N" . $vt[key($vt)];
-            $matnumpres = split("N", $vt[key($vt)]);
+            $matnumpres = preg_split("#N#m", (string) $vt[key($vt)]);
 
             if (!isset($inicial)) {
 
@@ -417,9 +417,9 @@ class RefactorImpressaoBoleto {
                 /**
                  * Numpre e numpar
                  */
-                $resultado = split("P",$numprecerto);
-                $numpar    = split("P",$resultado[1]);
-                $numpar    = split("R",$numpar[0]);
+                $resultado = preg_split("#P#m",(string) $numprecerto);
+                $numpar    = preg_split("#P#m",(string) $resultado[1]);
+                $numpar    = preg_split("#R#m",(string) $numpar[0]);
 
                 $sSqlInflatores  = " select distinct   ";
                 $sSqlInflatores .= "        k00_numpar, ";
@@ -484,8 +484,8 @@ class RefactorImpressaoBoleto {
                   $mesagrupa     = $oDadosAgrupa->mesagrupa;
                   $anoagrupa     = $oDadosAgrupa->anoagrupa;
 
-                  if (!in_array(str_pad($mesagrupa,2,"0") . $anoagrupa, $meses)) {
-                    $meses[] = str_pad($mesagrupa,2,"0",STR_PAD_LEFT) . $anoagrupa;
+                  if (!in_array(str_pad((string) $mesagrupa,2,"0") . $anoagrupa, $meses)) {
+                    $meses[] = str_pad((string) $mesagrupa,2,"0",STR_PAD_LEFT) . $anoagrupa;
                   }
 
                   if (!in_array($descrarretipo, $arretipos)) {
@@ -560,7 +560,7 @@ class RefactorImpressaoBoleto {
 
           if ($this->marcarvencidas == 'true' && $this->marcartodas == 'false') {
 
-            $aNumpres   = split("N",$numpres);
+            $aNumpres   = preg_split("#N#m",$numpres);
             $numpres   = "";
             $sNumPreAnt = "";
             $sAuxiliar  = "";
@@ -570,9 +570,9 @@ class RefactorImpressaoBoleto {
                 continue;
               }
 
-              $iNumpre = split("P",$aNumpres[$iInd]);
-              $iNumpar = split("P", strstr($aNumpres[$iInd],"P"));
-              $iNumpar = split("R",$iNumpar[1]);
+              $iNumpre = preg_split("#P#m",(string) $aNumpres[$iInd]);
+              $iNumpar = preg_split("#P#m", strstr((string) $aNumpres[$iInd],"P"));
+              $iNumpar = preg_split("#R#m",(string) $iNumpar[1]);
               $iReceit = $iNumpar[1];
               $iNumpar = $iNumpar[0];
               $iNumpre = $iNumpre[0];
@@ -606,12 +606,12 @@ class RefactorImpressaoBoleto {
 
         }
 
-        $numpres   = split("N",$numpres);
+        $numpres   = preg_split("#N#m",$numpres);
 
         $totalregistrospassados=0;
 
         for($iii = 0;$iii < sizeof($numpres);$iii++) {
-          $valores = split("P",$numpres[$iii]);
+          $valores = preg_split("#P#m",(string) $numpres[$iii]);
           if ($numpres[$iii] <> "") {
             if(!isset($inicial)) {
               $totalregistrospassados+=sizeof($valores)-1;
@@ -648,10 +648,10 @@ class RefactorImpressaoBoleto {
           $whereloteador = " and k40_forma = 3";
         }
 
-        $aRegTodasMarc = array();
+        $aRegTodasMarc = [];
         $iNumpreAnt    = 0;
         $iNumparAnt    = 0;
-        $aDebitosRecibo = array();
+        $aDebitosRecibo = [];
 
         for($ii = 1;$ii < sizeof($numpres);$ii++) {
 
@@ -659,7 +659,7 @@ class RefactorImpressaoBoleto {
             continue;
           }
 
-          $valores = split("P",$numpres[$ii]);
+          $valores = preg_split("#P#m",(string) $numpres[$ii]);
 
           if (isset($inicial)) {
 
@@ -691,11 +691,11 @@ class RefactorImpressaoBoleto {
                 $desconto = 0;
               }
 
-              if ( in_array(array($k00_numpre,$k00_numpar),$aDebitosRecibo) ) {
+              if ( in_array([$k00_numpre,$k00_numpar],$aDebitosRecibo) ) {
                 continue;
               }
 
-              $aDebitosRecibo[] = array($k00_numpre,$k00_numpar);
+              $aDebitosRecibo[] = [$k00_numpre,$k00_numpar];
 
               try {
 
@@ -711,13 +711,13 @@ class RefactorImpressaoBoleto {
 
           } else {
 
-            $numpar = split("R", $valores[1]);
+            $numpar = preg_split("#R#m", (string) $valores[1]);
 
-            if ( in_array(array($valores[0],$numpar[0]),$aDebitosRecibo) ) {
+            if ( in_array([$valores[0],$numpar[0]],$aDebitosRecibo) ) {
               continue;
             }
 
-            $aDebitosRecibo[] = array($valores[0],$numpar[0]);
+            $aDebitosRecibo[] = [$valores[0],$numpar[0]];
 
             if ($processarDescontoRecibo == 'true') {
 
@@ -788,7 +788,7 @@ class RefactorImpressaoBoleto {
 
         }
 
-        $exerc = substr($minvenc,0,4);
+        $exerc = substr((string) $minvenc,0,4);
 
         /* se o menor vencimento do numpre for menor que a data para pagamento(data informada na CGF) menor vencimento = data para pagamento */
         if ($minvenc < date("Y-m-d",$DB_DATACALC)) {
@@ -806,7 +806,7 @@ class RefactorImpressaoBoleto {
         $oRecibo->setNumBco($oRegraEmissao->getCodConvenioCobranca());
         $oRecibo->setDataRecibo($minvenc);
         $oRecibo->setDataVencimentoRecibo($minvenc);
-        $oRecibo->setExercicioRecibo(substr($minvenc,0,4));
+        $oRecibo->setExercicioRecibo(substr((string) $minvenc,0,4));
         $oRecibo->emiteRecibo();
         $k03_numpre = $oRecibo->getNumpreRecibo();
 
@@ -911,8 +911,8 @@ class RefactorImpressaoBoleto {
 
           $sqlvenc  = " select min(k00_dtvenc) as k00_dtvenc ";
           $sqlvenc .= "   from arrecad                       ";
-          $sqlvenc .= "  where k00_numpre = " . pg_result($resultrecibo,$conta,"k99_numpre");
-          $sqlvenc .= "    and k00_numpar = " . pg_result($resultrecibo,$conta,"k99_numpar");
+          $sqlvenc .= "  where k00_numpre = " . pg_fetch_result($resultrecibo,$conta,"k99_numpre");
+          $sqlvenc .= "    and k00_numpar = " . pg_fetch_result($resultrecibo,$conta,"k99_numpar");
           $resultvenc = db_query($sqlvenc);
 
           if ( !$resultvenc ) {
@@ -929,7 +929,7 @@ class RefactorImpressaoBoleto {
           }
         }
 
-        $exerc = substr($minvenc,0,4);
+        $exerc = substr((string) $minvenc,0,4);
         /* se o menor vencimento do numpre for menor que a data para pagamento(data informada na CGF) menor vencimento = data para pagamento */
         if ($minvenc < date("Y-m-d",$DB_DATACALC)) {
           $minvenc = date("Y-m-d",$DB_DATACALC);
@@ -1110,20 +1110,20 @@ class RefactorImpressaoBoleto {
       echo "problemas ao gerar recibo! Contate suporte";
       exit;
     }
-    $datavencimento = pg_result($DadosPagamento,0,"k00_dtpaga");
+    $datavencimento = pg_fetch_result($DadosPagamento,0,"k00_dtpaga");
     $total_recibo = 0;
     $sHistoricoDesconto = '';
     $iMostra = 0;
     for($i = 0;$i < pg_num_rows($DadosPagamento);$i++) {
-      $total_recibo += pg_result($DadosPagamento,$i,"valor");
+      $total_recibo += pg_fetch_result($DadosPagamento,$i,"valor");
 
       if(($k03_tipo == 20) and
-      (pg_result($DadosPagamento,$i,"k00_histtxt") <> '') and
-      (pg_result($DadosPagamento,$i,"valor") < 0) and
-      (pg_result($DadosPagamento,$i,"k00_receit") == '401002') and
+      (pg_fetch_result($DadosPagamento,$i,"k00_histtxt") <> '') and
+      (pg_fetch_result($DadosPagamento,$i,"valor") < 0) and
+      (pg_fetch_result($DadosPagamento,$i,"k00_receit") == '401002') and
       ($iMostra == 0)) {
-        $sHistoricoDesconto .= pg_result($DadosPagamento,$i,"k00_histtxt");
-        $sHistoricoDesconto .= '=>RECEITA:'.pg_result($DadosPagamento,$i,"k00_receit");
+        $sHistoricoDesconto .= pg_fetch_result($DadosPagamento,$i,"k00_histtxt");
+        $sHistoricoDesconto .= '=>RECEITA:'.pg_fetch_result($DadosPagamento,$i,"k00_receit");
         $iMostra = 1;
       }
 
@@ -1145,8 +1145,8 @@ class RefactorImpressaoBoleto {
                  where k00_numnov= {$k03_numpre}
                  group by arrecad.k00_tipo limit 1";
     $resultdtop   = db_query($sqldtop);
-    $mindatop     = pg_result($resultdtop,0,"mindatop");
-    $valor_origem = pg_result($resultdtop,0,"valor_origem");
+    $mindatop     = pg_fetch_result($resultdtop,0,"mindatop");
+    $valor_origem = pg_fetch_result($resultdtop,0,"valor_origem");
 
     //seleciona da tabela db_config, o numero do banco e a taxa bancaria e concatena em variavel
     $sSqlDadosInstit = "select db12_uf,
@@ -1172,16 +1172,16 @@ class RefactorImpressaoBoleto {
                         where k00_instit = ".db_getsession("DB_instit")."
                         and k00_tipo = $tipo";
     $sqlArretipo_tx_banc = db_query($sSqlTxBancaria);
-    $taxabancaria = pg_result($sqlArretipo_tx_banc,0,"tx_banc");
-    $src = pg_result($DadosInstit,0,'logo');
-    $db_nomeinst = pg_result($DadosInstit,0,'nomeinst');
-    $db_ender    = pg_result($DadosInstit,0,'ender');
-    $db_munic    = pg_result($DadosInstit,0,'munic');
-    $db_uf       = pg_result($DadosInstit,0,'uf');
-    $db_telef    = pg_result($DadosInstit,0,'telef');
-    $db_cgc      = pg_result($DadosInstit,0,'cgc');
-    $db_email    = pg_result($DadosInstit,0,'email');
-    $db_logo     = pg_result($DadosInstit,0,'logo');
+    $taxabancaria = pg_fetch_result($sqlArretipo_tx_banc,0,"tx_banc");
+    $src = pg_fetch_result($DadosInstit,0,'logo');
+    $db_nomeinst = pg_fetch_result($DadosInstit,0,'nomeinst');
+    $db_ender    = pg_fetch_result($DadosInstit,0,'ender');
+    $db_munic    = pg_fetch_result($DadosInstit,0,'munic');
+    $db_uf       = pg_fetch_result($DadosInstit,0,'uf');
+    $db_telef    = pg_fetch_result($DadosInstit,0,'telef');
+    $db_cgc      = pg_fetch_result($DadosInstit,0,'cgc');
+    $db_email    = pg_fetch_result($DadosInstit,0,'email');
+    $db_logo     = pg_fetch_result($DadosInstit,0,'logo');
 
     $total_recibo += $taxabancaria;
     if ( $total_recibo == 0 ){
@@ -1419,11 +1419,11 @@ class RefactorImpressaoBoleto {
         if (pg_num_rows($result)!=false) {
           $exercv = "0000";
           for($xy=0;$xy<pg_num_rows($result);$xy++){
-            if( $exercv != pg_result($result,$xy,0)){
-              $exercv = pg_result($result,$xy,0);
-              $histparcela .= pg_result($result,$xy,0).":";
+            if( $exercv != pg_fetch_result($result,$xy,0)){
+              $exercv = pg_fetch_result($result,$xy,0);
+              $histparcela .= pg_fetch_result($result,$xy,0).":";
             }
-            $histparcela .= pg_result($result,$xy,1)."-";
+            $histparcela .= pg_fetch_result($result,$xy,1)."-";
           }
         }
 
@@ -1437,8 +1437,8 @@ class RefactorImpressaoBoleto {
         if (pg_num_rows($result) > 0) {
           $histparcela .= "\nOBS: ";
           for($xy=0;$xy<pg_num_rows($result);$xy++){
-            if (ltrim(rtrim(pg_result($result,$xy,0))) != "") {
-              $histparcela .= ltrim(rtrim(pg_result($result,$xy,0)));
+            if (ltrim(rtrim(pg_fetch_result($result,$xy,0))) != "") {
+              $histparcela .= ltrim(rtrim(pg_fetch_result($result,$xy,0)));
             }
           }
         }
@@ -1458,11 +1458,11 @@ class RefactorImpressaoBoleto {
         if(pg_num_rows($result)!=false){
           $exercv = "0000";
           for($xy=0;$xy<pg_num_rows($result);$xy++){
-            if( $exercv != pg_result($result,$xy,0)){
-              $exercv = pg_result($result,$xy,0);
-              $histparcela .= "  ".pg_result($result,$xy,0).": Parc:";
+            if( $exercv != pg_fetch_result($result,$xy,0)){
+              $exercv = pg_fetch_result($result,$xy,0);
+              $histparcela .= "  ".pg_fetch_result($result,$xy,0).": Parc:";
             }
-            $histparcela .= "-".pg_result($result,$xy,1);
+            $histparcela .= "-".pg_fetch_result($result,$xy,1);
           }
         }
 
@@ -1485,19 +1485,19 @@ class RefactorImpressaoBoleto {
 
           for ($xy=0;$xy<pg_num_rows($result);$xy++) {
 
-            if ( $exercv != pg_result($result,$xy,0)) {
-              $exercv = pg_result($result,$xy,0);
-              $histparcela .= "  ".pg_result($result,$xy,0).": Mês:";
+            if ( $exercv != pg_fetch_result($result,$xy,0)) {
+              $exercv = pg_fetch_result($result,$xy,0);
+              $histparcela .= "  ".pg_fetch_result($result,$xy,0).": Mês:";
             }
-            $histparcela .= "-".pg_result($result,$xy,1);
+            $histparcela .= "-".pg_fetch_result($result,$xy,1);
 
-            if (pg_result($result,$xy,1) != "") {
+            if (pg_fetch_result($result,$xy,1) != "") {
               $sqlhistor = "select distinct
                                    q05_histor
                               from db_reciboweb
                                    inner join issvar on q05_numpre = k99_numpre
                                                     and q05_numpar = k99_numpar
-                             where k99_numpre_n = $k03_numpre and q05_numpar = " . pg_result($result,$xy,2);
+                             where k99_numpre_n = $k03_numpre and q05_numpar = " . pg_fetch_result($result,$xy,2);
               $resulthistor = db_query($sqlhistor);
 
               if (pg_num_rows($resulthistor) > 0) {
@@ -1530,11 +1530,11 @@ class RefactorImpressaoBoleto {
         if(pg_num_rows($result)!=false){
 
           for ($xy=0;$xy<pg_num_rows($result);$xy++) {
-            if (pg_result($result,$xy,0) != $parcelamento){
-              $histparcela .= "\nParcelamento" . ($k03_tipo == 13?" do foro":"") . ': '.pg_result($result,$xy,0)." - ";
+            if (pg_fetch_result($result,$xy,0) != $parcelamento){
+              $histparcela .= "\nParcelamento" . ($k03_tipo == 13?" do foro":"") . ': '.pg_fetch_result($result,$xy,0)." - ";
             }
-            $histparcela .= pg_result($result,$xy,1).", ";
-            $parcelamento = pg_result($result,$xy,0);
+            $histparcela .= pg_fetch_result($result,$xy,1).", ";
+            $parcelamento = pg_fetch_result($result,$xy,0);
           }
         }
 
@@ -1616,11 +1616,11 @@ class RefactorImpressaoBoleto {
         if(pg_num_rows($result)!=false){
           $exercv = "0000";
           for($xy=0;$xy<pg_num_rows($result);$xy++){
-            if( $exercv != pg_result($result,$xy,0)){
-              $exercv = pg_result($result,$xy,0);
-              $histparcela .= pg_result($result,$xy,0).":";
+            if( $exercv != pg_fetch_result($result,$xy,0)){
+              $exercv = pg_fetch_result($result,$xy,0);
+              $histparcela .= pg_fetch_result($result,$xy,0).":";
             }
-            $histparcela .= pg_result($result,$xy,1)."-";
+            $histparcela .= pg_fetch_result($result,$xy,1)."-";
           }
         }
 
@@ -1633,8 +1633,8 @@ class RefactorImpressaoBoleto {
         if (pg_num_rows($result) > 0) {
           $histparcela .= "OBS: ";
           for($xy=0;$xy<pg_num_rows($result);$xy++){
-            if (ltrim(rtrim(pg_result($result,$xy,0))) != "") {
-              $histparcela .= ltrim(rtrim(pg_result($result,$xy,0)));
+            if (ltrim(rtrim(pg_fetch_result($result,$xy,0))) != "") {
+              $histparcela .= ltrim(rtrim(pg_fetch_result($result,$xy,0)));
             }
           }
         }
@@ -1712,7 +1712,7 @@ class RefactorImpressaoBoleto {
           $oDadosAuto   = db_utils::fieldsmemory($rsDadosHist,0);
           $sObsAuto     = "";
 
-          $aObs = split("\n",$oDadosAuto->y50_obs);
+          $aObs = preg_split("#\n#m",(string) $oDadosAuto->y50_obs);
           if (count($aObs) > 3) {
             $sObsAuto = $aObs[0]."\n".$aObs[1]."\n".$aObs[2];
           } else {
@@ -1756,16 +1756,16 @@ class RefactorImpressaoBoleto {
           throw new Exception(pg_last_error());
         }
 
-        $histant = pg_result($result,0,"k00_origem") . "-" . pg_result($result,0,"k00_descr");
-        $histparcela .=  pg_result($result,0,"k00_descr") . "=>" . pg_result($result,0,"k00_origem") . " / P: ";
+        $histant = pg_fetch_result($result,0,"k00_origem") . "-" . pg_fetch_result($result,0,"k00_descr");
+        $histparcela .=  pg_fetch_result($result,0,"k00_descr") . "=>" . pg_fetch_result($result,0,"k00_origem") . " / P: ";
 
         for ($xy=0;$xy<pg_num_rows($result);$xy++) {
 
-          if (pg_result($result,$xy,"k00_origem") . "-" . pg_result($result,$xy,"k00_descr") <> $histant) {
-            $histparcela .= "-" . pg_result($result,$xy,"k00_descr") . "=>" . pg_result($result,$xy,"k00_origem") . " / P: ";
-            $histant = pg_result($result,$xy,"k00_origem") . "-" . pg_result($result,$xy,"k00_descr");
+          if (pg_fetch_result($result,$xy,"k00_origem") . "-" . pg_fetch_result($result,$xy,"k00_descr") <> $histant) {
+            $histparcela .= "-" . pg_fetch_result($result,$xy,"k00_descr") . "=>" . pg_fetch_result($result,$xy,"k00_origem") . " / P: ";
+            $histant = pg_fetch_result($result,$xy,"k00_origem") . "-" . pg_fetch_result($result,$xy,"k00_descr");
           }
-          $histparcela .= pg_result($result,$xy,"k99_numpar") . " ";
+          $histparcela .= pg_fetch_result($result,$xy,"k99_numpar") . " ";
 
         }
 
@@ -1858,14 +1858,14 @@ class RefactorImpressaoBoleto {
     $pdf1->telefpref        = $db_telef;
     $pdf1->cgcpref          = $db_cgc;
     $pdf1->emailpref        = @$db_email;
-    $pdf1->nome             = trim(pg_result($Identificacao,0,"z01_numcgm")) . "-" . trim(pg_result($Identificacao,0,"z01_nome"));
-    $pdf1->ender            = trim(pg_result($Identificacao,0,"z01_ender")).', '.pg_result($Identificacao,0,"z01_numero").' '.trim(pg_result($Identificacao,0,"z01_compl")) . (strlen(trim(pg_result($Identificacao,0,"z01_bairro"))) > 0?"/":"") . trim(pg_result($Identificacao,0,"z01_bairro"));
-    $pdf1->munic            = trim(pg_result($Identificacao,0,"z01_munic"));
-    $pdf1->cep              = trim(pg_result($Identificacao,0,"z01_cep"));
-    $pdf1->cgccpf           = trim(@pg_result($Identificacao,0,"z01_cgccpf"));
+    $pdf1->nome             = trim(pg_fetch_result($Identificacao,0,"z01_numcgm")) . "-" . trim(pg_fetch_result($Identificacao,0,"z01_nome"));
+    $pdf1->ender            = trim(pg_fetch_result($Identificacao,0,"z01_ender")).', '.pg_fetch_result($Identificacao,0,"z01_numero").' '.trim(pg_fetch_result($Identificacao,0,"z01_compl")) . (strlen(trim(pg_fetch_result($Identificacao,0,"z01_bairro"))) > 0?"/":"") . trim(pg_fetch_result($Identificacao,0,"z01_bairro"));
+    $pdf1->munic            = trim(pg_fetch_result($Identificacao,0,"z01_munic"));
+    $pdf1->cep              = trim(pg_fetch_result($Identificacao,0,"z01_cep"));
+    $pdf1->cgccpf           = trim(@pg_fetch_result($Identificacao,0,"z01_cgccpf"));
     $pdf1->tipoinscr        = $tipoidentificacao;
     $pdf1->nrinscr          = $numero;
-    $pdf1->ufcgm            = trim(@pg_result($Identificacao,0,"z01_uf"));
+    $pdf1->ufcgm            = trim(@pg_fetch_result($Identificacao,0,"z01_uf"));
     $pdf1->ip               = db_getsession("DB_ip");
     $pdf1->identifica_dados = $ident_tipo_ii;
     $pdf1->tipolograd       = 'Logradouro:';
@@ -1893,7 +1893,7 @@ class RefactorImpressaoBoleto {
 
     }
 
-    if (trim($j13_descr) != trim($z01_bairro)) {
+    if (trim((string) $j13_descr) != trim((string) $z01_bairro)) {
       $pdf1->bairropri = $j13_descr; //$z01_bairro;
     } else {
       $pdf1->bairropri = "";
@@ -1927,7 +1927,7 @@ class RefactorImpressaoBoleto {
 
       if (pg_num_rows($rsObs) > 0){
 
-        $historico = pg_result($rsObs, 0, 0);
+        $historico = pg_fetch_result($rsObs, 0, 0);
       }
 
     } else {
@@ -1953,18 +1953,18 @@ class RefactorImpressaoBoleto {
     $pdf1->codigobarras   = $codigobarras;
     $pdf1->texto          = db_getsession('DB_login').' - '.date("d-m-Y - H-i").'   '.db_base_ativa();
 
-    $pdf1->descr3_1       = trim(pg_result($Identificacao,0,"z01_numcgm")) . "-" . trim(pg_result($Identificacao,0,"z01_nome")); // contribuinte
-    $pdf1->descr3_2       = trim(pg_result($Identificacao,0,"z01_ender")).', '.pg_result($Identificacao,0,"z01_numero").' '.trim(pg_result($Identificacao,0,"z01_compl")) . (strlen(trim(pg_result($Identificacao,0,"z01_bairro"))) > 0?"/":"") . trim(pg_result($Identificacao,0,"z01_bairro"));// endereco
-    $pdf1->predescr3_1    = trim(pg_result($Identificacao,0,"z01_nome")); // contribuinte
-    $pdf1->predescr3_2    = trim(pg_result($Identificacao,0,"z01_ender")).', '.pg_result($Identificacao,0,"z01_numero").' '.trim(pg_result($Identificacao,0,"z01_compl"));// endereco
+    $pdf1->descr3_1       = trim(pg_fetch_result($Identificacao,0,"z01_numcgm")) . "-" . trim(pg_fetch_result($Identificacao,0,"z01_nome")); // contribuinte
+    $pdf1->descr3_2       = trim(pg_fetch_result($Identificacao,0,"z01_ender")).', '.pg_fetch_result($Identificacao,0,"z01_numero").' '.trim(pg_fetch_result($Identificacao,0,"z01_compl")) . (strlen(trim(pg_fetch_result($Identificacao,0,"z01_bairro"))) > 0?"/":"") . trim(pg_fetch_result($Identificacao,0,"z01_bairro"));// endereco
+    $pdf1->predescr3_1    = trim(pg_fetch_result($Identificacao,0,"z01_nome")); // contribuinte
+    $pdf1->predescr3_2    = trim(pg_fetch_result($Identificacao,0,"z01_ender")).', '.pg_fetch_result($Identificacao,0,"z01_numero").' '.trim(pg_fetch_result($Identificacao,0,"z01_compl"));// endereco
     $pdf1->bairropri      = $j13_descr;    // municipio
-    $pdf1->munic          = trim(pg_result($Identificacao,0,"z01_munic"));    // bairro
-    $pdf1->premunic       = trim(pg_result($Identificacao,0,"z01_munic"));    // bairro
+    $pdf1->munic          = trim(pg_fetch_result($Identificacao,0,"z01_munic"));    // bairro
+    $pdf1->premunic       = trim(pg_fetch_result($Identificacao,0,"z01_munic"));    // bairro
 
-    $pdf1->cep            = trim(pg_result($Identificacao,0,"z01_cep"));
-    $pdf1->precep         = trim(pg_result($Identificacao,0,"z01_cep"));
-    $pdf1->cgccpf         = trim(@pg_result($Identificacao,0,"z01_cgccpf"));
-    $pdf1->precgccpf      = trim(@pg_result($Identificacao,0,"z01_cgccpf"));
+    $pdf1->cep            = trim(pg_fetch_result($Identificacao,0,"z01_cep"));
+    $pdf1->precep         = trim(pg_fetch_result($Identificacao,0,"z01_cep"));
+    $pdf1->cgccpf         = trim(@pg_fetch_result($Identificacao,0,"z01_cgccpf"));
+    $pdf1->precgccpf      = trim(@pg_fetch_result($Identificacao,0,"z01_cgccpf"));
 
     $pdf1->titulo5        = "";                 // titulo parcela
     $pdf1->descr5         = "";                 // descr parcela
@@ -2079,22 +2079,22 @@ class RefactorImpressaoBoleto {
       $k03_msgbanco = '';
     }
 
-    $pdf1->descr16_1           = substr($k03_msgbanco, 0, 50);
-    $pdf1->descr16_2           = substr($k03_msgbanco, 50, 50);
-    $pdf1->descr16_3           = substr($k03_msgbanco, 100, 50);
-    $pdf1->predescr16_1        = substr($k03_msgbanco, 0, 50);
-    $pdf1->predescr16_2        = substr($k03_msgbanco, 50, 50);
-    $pdf1->predescr16_3        = substr($k03_msgbanco, 100, 50);
+    $pdf1->descr16_1           = substr((string) $k03_msgbanco, 0, 50);
+    $pdf1->descr16_2           = substr((string) $k03_msgbanco, 50, 50);
+    $pdf1->descr16_3           = substr((string) $k03_msgbanco, 100, 50);
+    $pdf1->predescr16_1        = substr((string) $k03_msgbanco, 0, 50);
+    $pdf1->predescr16_2        = substr((string) $k03_msgbanco, 50, 50);
+    $pdf1->predescr16_3        = substr((string) $k03_msgbanco, 100, 50);
 
-    $pdf1->descr11_1           = trim(pg_result($Identificacao,0,"z01_numcgm")) . "-" . trim(pg_result($Identificacao,0,"z01_nome"));
-    if(trim(pg_result($Identificacao,0,"z01_ender")) != ""){
-      $pdf1->descr11_2           = trim(pg_result($Identificacao,0,"z01_ender")).", ".trim(pg_result($Identificacao,0,"z01_numero")).'  '.trim(pg_result($Identificacao,0,"z01_compl"));
+    $pdf1->descr11_1           = trim(pg_fetch_result($Identificacao,0,"z01_numcgm")) . "-" . trim(pg_fetch_result($Identificacao,0,"z01_nome"));
+    if(trim(pg_fetch_result($Identificacao,0,"z01_ender")) != ""){
+      $pdf1->descr11_2           = trim(pg_fetch_result($Identificacao,0,"z01_ender")).", ".trim(pg_fetch_result($Identificacao,0,"z01_numero")).'  '.trim(pg_fetch_result($Identificacao,0,"z01_compl"));
     } else {
       $pdf1->descr11_2           = "";
     }
-    $pdf1->descr11_3           = trim(pg_result($Identificacao,0,"z01_munic"));
-    $pdf1->cep                 = trim(pg_result($Identificacao,0,"z01_cep"));
-    $pdf1->uf                  = trim(pg_result($Identificacao,0,"z01_uf"));
+    $pdf1->descr11_3           = trim(pg_fetch_result($Identificacao,0,"z01_munic"));
+    $pdf1->cep                 = trim(pg_fetch_result($Identificacao,0,"z01_cep"));
+    $pdf1->uf                  = trim(pg_fetch_result($Identificacao,0,"z01_uf"));
     $pdf1->tipoinscr           = $tipoidentificacao;
     $pdf1->nrinscr             = $numero;
 
@@ -2122,7 +2122,7 @@ class RefactorImpressaoBoleto {
       $k99_desconto = $oDadosDesconto->k99_desconto;
       $k40_descr    = $oDadosDesconto->k40_descr;
 
-      $descrlei = split("#",$k40_descr);
+      $descrlei = preg_split("#\\##m",(string) $k40_descr);
       $k00_mensagemdesconto .= $descrlei[0] . ($mensdesc == pg_num_rows($resultmensagemdesconto)?"":"-");
       $temdesconto = true;
     }
@@ -2182,7 +2182,7 @@ class RefactorImpressaoBoleto {
         $aProcessoForo                  = array_unique($aProcessoForo);
         $aCodProcessoForo               = array_unique($aCodProcessoForo);
         $nTotalTaxas                    = 0;
-        $aTaxas                         = array();
+        $aTaxas                         = [];
         $aDadosPartilha                 = null;
         $aDadosPartilha->ar37_descricao = null;
 
@@ -2480,7 +2480,7 @@ class RefactorImpressaoBoleto {
 
     $sql_cgc = "select cgc, db21_codcli from db_config where codigo = ".db_getsession("DB_instit");
     $rs_cgc = db_query($sql_cgc);
-    $oConfig->cgc = pg_result($rs_cgc,0,0);
+    $oConfig->cgc = pg_fetch_result($rs_cgc,0,0);
 
     /* testa se está em dia com IPTU */
     $iTemDesconto = 1;
@@ -2495,7 +2495,7 @@ class RefactorImpressaoBoleto {
       }
 
       if ( pg_num_rows($rsIptuAberto) > 0 ) {
-        $iQuantAberto = pg_result($rsIptuAberto,0,0);
+        $iQuantAberto = pg_fetch_result($rsIptuAberto,0,0);
         if ( $iQuantAberto > 2 ) {
           $iTemDesconto = 0;
         }

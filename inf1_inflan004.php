@@ -36,7 +36,7 @@ $clinflan = new cl_inflan;
   /*
 $clinfla = new cl_infla;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){

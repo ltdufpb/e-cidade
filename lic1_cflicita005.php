@@ -36,7 +36,7 @@ require_once(modification("classes/db_pctipocompratribunal_classe.php"));
 require_once(modification("classes/db_pccflicitapar_classe.php"));
 require_once(modification("model/licitacao/LicitacaoModalidade.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clcflicita             = new cl_cflicita;
 $clpctipocompratribunal = new cl_pctipocompratribunal;
@@ -50,11 +50,11 @@ if (isset($alterar)) {
   $sqlerro = false;
 
   $oModalidade = new LicitacaoModalidade($l03_codigo);
-  $sTipo  = strtoupper($l03_tipo);
+  $sTipo  = strtoupper((string) $l03_tipo);
   if (LicitacaoModalidade::possuiTipoCadastrado($l03_tipo) && $oModalidade->getSigla() <> $sTipo) {
 
     $sqlerro = true;
-    $erro_msg = "Tipo da Licitação [".strtoupper($l03_tipo)."] já cadastrado no sistema.";
+    $erro_msg = "Tipo da Licitação [".strtoupper((string) $l03_tipo)."] já cadastrado no sistema.";
 
   } else {
 

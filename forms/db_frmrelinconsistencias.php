@@ -56,7 +56,7 @@ $clrotulo->label("q49_tipo");
            <td>
            <?php
 
-             $array = array(1 => "Inconsistências",2 => "Avisos",3 => "Inconsistências e Avisos");
+             $array = [1 => "Inconsistências",2 => "Avisos",3 => "Inconsistências e Avisos"];
              db_select("q49_tipo",$array,true,1);
            ?>
           </td>

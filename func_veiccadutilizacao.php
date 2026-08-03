@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadutilizacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveiccadutilizacao = new cl_veiccadutilizacao;
 $clveiccadutilizacao->rotulo->label("ve14_sequencial");
 $clveiccadutilizacao->rotulo->label("ve14_descr");
@@ -98,9 +98,9 @@ $clveiccadutilizacao->rotulo->label("ve14_descr");
         }else{
            $sql = $clveiccadutilizacao->sql_query("",$campos,"ve14_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve14_descr)){
-          $repassa = array("chave_ve14_sequencial"=>$chave_ve14_sequencial,"chave_ve14_descr"=>$chave_ve14_descr);
+          $repassa = ["chave_ve14_sequencial"=>$chave_ve14_sequencial,"chave_ve14_descr"=>$chave_ve14_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

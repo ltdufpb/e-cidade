@@ -61,7 +61,7 @@ try {
 
     $oRetorno->erro                     = true;
     $oRetorno->message                  = urlencode($oErro->getMessage());
-    $oRetorno->messagemValidacaoLimites = urlencode($oRetorno->messagemValidacaoLimites);
+    $oRetorno->messagemValidacaoLimites = urlencode((string) $oRetorno->messagemValidacaoLimites);
 }
 
 db_fim_transacao(false);

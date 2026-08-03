@@ -43,10 +43,10 @@ $aDadosSumarioGeral = $oAnexoSumario->getDados();
 
 
 
-$aFases         = array(1 => "Orçamento", 
+$aFases         = [1 => "Orçamento", 
                         2 => "Empenhado", 
                         3 => "Liquidado", 
-                        4 => "Pago");
+                        4 => "Pago"];
 $rsInstituicoes = db_query("select codigo, nomeinst, nomeinstabrev 
                              from db_config 
                             where codigo in ({$sInstit}) ");
@@ -56,7 +56,7 @@ $lAbrevia              = false;
 for ($iInstit = 0; $iInstit < pg_num_rows($rsInstituicoes); $iInstit++) {
   
   $oInstit = db_utils::fieldsmemory($rsInstituicoes, $iInstit);
-  if (strlen(trim($oInstit->nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $oInstit->nomeinstabrev)) > 0) {
     
     $sDescricaoInstitucoes .= $sVirg.$oInstit->nomeinstabrev;
     $lAbrevia               = true;
@@ -174,7 +174,7 @@ foreach ($aDadosSumarioGeral as $iIdLinha => $oRelatorio) {
         
         $oPdf->setX(100);
         $oPdf->setfont('arial',$sBold, $iFonte);
-        $oPdf->cell($iColunaDescr, $iAlt, "  ".str_pad($iIdFuncao, 2, "0", STR_PAD_LEFT)." - ". $oFuncao->descricao, 0, 0, "L", 0,'','.');
+        $oPdf->cell($iColunaDescr, $iAlt, "  ".str_pad((string) $iIdFuncao, 2, "0", STR_PAD_LEFT)." - ". $oFuncao->descricao, 0, 0, "L", 0,'','.');
         $oPdf->cell($iColunaValor, $iAlt, db_formatar($oFuncao->total, 'f'), 0, 1, "R", 0);
       }
     }

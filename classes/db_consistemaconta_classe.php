@@ -56,7 +56,7 @@ class cl_consistemaconta
     public function __construct()
     {
         $this->rotulo = new rotulo("consistemaconta"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -111,10 +111,10 @@ class cl_consistemaconta
          $this->erro_status = "0";
          return false; 
        }
-       $this->c65_sequencial = pg_result($result,0,0); 
+       $this->c65_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from consistemaconta_c65_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c65_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c65_sequencial)){
          $this->erro_sql = " Campo c65_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -146,7 +146,7 @@ class cl_consistemaconta
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "consistemaconta ($this->c65_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "consistemaconta já Cadastrado";
@@ -175,12 +175,12 @@ class cl_consistemaconta
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18494,'$this->c65_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3269,18494,'','".AddSlashes(pg_result($resaco,0,'c65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3269,18495,'','".AddSlashes(pg_result($resaco,0,'c65_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3269,1010335,'','".AddSlashes(pg_result($resaco,0,'c65_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3269,18494,'','".AddSlashes(pg_fetch_result($resaco,0,'c65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3269,18495,'','".AddSlashes(pg_fetch_result($resaco,0,'c65_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3269,1010335,'','".AddSlashes(pg_fetch_result($resaco,0,'c65_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -191,10 +191,10 @@ class cl_consistemaconta
       $this->atualizacampos();
      $sql = " update consistemaconta set ";
      $virgula = "";
-     if(trim($this->c65_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c65_sequencial"])){ 
+     if(trim((string) $this->c65_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c65_sequencial"])){ 
        $sql  .= $virgula." c65_sequencial = $this->c65_sequencial ";
        $virgula = ",";
-       if(trim($this->c65_sequencial) == null ){ 
+       if(trim((string) $this->c65_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sub-sistema não informado.";
          $this->erro_campo = "c65_sequencial";
          $this->erro_banco = "";
@@ -204,10 +204,10 @@ class cl_consistemaconta
          return false;
        }
      }
-     if(trim($this->c65_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c65_descricao"])){ 
+     if(trim((string) $this->c65_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c65_descricao"])){ 
        $sql  .= $virgula." c65_descricao = '$this->c65_descricao' ";
        $virgula = ",";
-       if(trim($this->c65_descricao) == null ){ 
+       if(trim((string) $this->c65_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição do Sub-sistema não informado.";
          $this->erro_campo = "c65_descricao";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_consistemaconta
          return false;
        }
      }
-     if(trim($this->c65_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c65_sigla"])){ 
+     if(trim((string) $this->c65_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c65_sigla"])){ 
        $sql  .= $virgula." c65_sigla = '$this->c65_sigla' ";
        $virgula = ",";
-       if(trim($this->c65_sigla) == null ){ 
+       if(trim((string) $this->c65_sigla) == null ){ 
          $this->erro_sql = " Campo Sigla não informado.";
          $this->erro_campo = "c65_sigla";
          $this->erro_banco = "";
@@ -244,15 +244,15 @@ class cl_consistemaconta
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,18494,'$this->c65_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c65_sequencial"]) || $this->c65_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3269,18494,'".AddSlashes(pg_result($resaco,$conresaco,'c65_sequencial'))."','$this->c65_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3269,18494,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c65_sequencial'))."','$this->c65_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c65_descricao"]) || $this->c65_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3269,18495,'".AddSlashes(pg_result($resaco,$conresaco,'c65_descricao'))."','$this->c65_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3269,18495,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c65_descricao'))."','$this->c65_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c65_sigla"]) || $this->c65_sigla != "")
-             $resac = db_query("insert into db_acount values($acount,3269,1010335,'".AddSlashes(pg_result($resaco,$conresaco,'c65_sigla'))."','$this->c65_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3269,1010335,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c65_sigla'))."','$this->c65_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -306,12 +306,12 @@ class cl_consistemaconta
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,18494,'$c65_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3269,18494,'','".AddSlashes(pg_result($resaco,$iresaco,'c65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3269,18495,'','".AddSlashes(pg_result($resaco,$iresaco,'c65_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3269,1010335,'','".AddSlashes(pg_result($resaco,$iresaco,'c65_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3269,18494,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c65_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3269,18495,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c65_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3269,1010335,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c65_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

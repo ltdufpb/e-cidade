@@ -108,13 +108,13 @@ switch ($oParam->exec) {
 	  	$oRetorno->iAnoUso          = $iAnoUsoSessao;
 	  	$oRetorno->iTransacao       = $oEventoContabil->getSequencialTransacao();
 	  	$aLancamentos               = $oEventoContabil->getEventoContabilLancamento();
-	  	$oRetorno->aLancamentos     = array();
+	  	$oRetorno->aLancamentos     = [];
 	  	foreach ($aLancamentos as $oLancamento) {
 	  		
 	  		$oStdClass = new stdClass();
             $oStdClass->c46_seqtranslan = $oLancamento->getSequencialLancamento();
 	  		$oStdClass->c46_seqtrans    = $oEventoContabil->getSequencialTransacao();
-	  		$oStdClass->c46_descricao   =	urlencode($oLancamento->getDescricao());
+	  		$oStdClass->c46_descricao   =	urlencode((string) $oLancamento->getDescricao());
 	  		$oStdClass->c46_ordem       = $oLancamento->getOrdem();
 	  		$oStdClass->c45_coddoc      = $oParam->iCodigoDocumento;
 	  		$oRetorno->aLancamentos[]   = $oStdClass;

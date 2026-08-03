@@ -42,8 +42,8 @@ $iCodigoRelatorio  = $oGet->codrel;
 $sListaInstituicao = str_replace('-', ', ', $oGet->db_selinstit);  
 
 $rsDadosInstituicoes = db_query("select codigo, nomeinst, nomeinstabrev from db_config where codigo in ({$sListaInstituicao}) ");
-$aCodigoInstituicoes = array();
-$aDescricaoInstituicoes = array();
+$aCodigoInstituicoes = [];
+$aDescricaoInstituicoes = [];
 
 $aDadosInstituicao = db_utils::getCollectionByRecord($rsDadosInstituicoes);
 

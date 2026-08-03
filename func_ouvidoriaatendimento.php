@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ouvidoriaatendimento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clouvidoriaatendimento = new cl_ouvidoriaatendimento;
 $clouvidoriaatendimento->rotulo->label("ov01_sequencial");
 $clouvidoriaatendimento->rotulo->label("ov01_numero");
@@ -122,9 +122,9 @@ $campos .= "ov01_solicitacao";
         }else{
            $sql = $clouvidoriaatendimento->sql_query("",$campos,"ov01_sequencial",$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov01_numero)){
-          $repassa = array("chave_ov01_sequencial"=>$chave_ov01_sequencial,"chave_ov01_numero"=>$chave_ov01_numero);
+          $repassa = ["chave_ov01_sequencial"=>$chave_ov01_sequencial,"chave_ov01_numero"=>$chave_ov01_numero];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
         
@@ -133,7 +133,7 @@ $campos .= "ov01_solicitacao";
         
         if($pesquisa_chave!=null && $pesquisa_chave!="") {
           
-          $aAtendimento = explode("/", $pesquisa_chave);
+          $aAtendimento = explode("/", (string) $pesquisa_chave);
           $sWhere      .= "and ov01_numero = {$aAtendimento[0]}";
           $iAnoAtendimento = db_getsession("DB_anousu");  
           if (count($aAtendimento) > 1) {

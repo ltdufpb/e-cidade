@@ -35,7 +35,7 @@ require_once(modification("classes/db_solicita_classe.php"));
 $clsolicita = new cl_solicita;
 $clrotulo = new rotulocampo;
 $clsolicita->rotulo->label();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

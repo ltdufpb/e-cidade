@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atendimento_top_classe.php"));
 include(modification("classes/db_db_usuclientes_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatendimento_top = new cl_atendimento_top;
 $cldb_usuclientes  = new cl_db_usuclientes;
 $cldb_usuclientes->rotulo->label("at10_codigo");
@@ -150,7 +150,7 @@ function js_atualiza(codigo,nome){
                        cargo::varchar(50) as dl_cargo,
                         localtrabalho as dl_local
                        from ($sql) as x left join acesso_clientes_dados on at10_login = login  and cliente = at10_codcli";
-        db_lovrot($sql,15,"()","",$funcao_js, "Atualiza|js_atualiza", "NoMe", array (), false);
+        db_lovrot($sql,15,"()","",$funcao_js, "Atualiza|js_atualiza", "NoMe",  [], false);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
           $result = $cldb_usuclientes->sql_record($cldb_usuclientes->sql_query(null,"*","at10_nome","at10_usuario=$pesquisa_chave and $where"));

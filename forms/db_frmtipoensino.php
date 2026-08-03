@@ -87,7 +87,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("ed36_i_codigo"=>@$ed36_i_codigo,"ed36_c_descr"=>@$ed36_c_descr,"ed36_c_abrev"=>@$ed36_c_abrev);
+   $chavepri= ["ed36_i_codigo"=>@$ed36_i_codigo,"ed36_c_descr"=>@$ed36_c_descr,"ed36_c_abrev"=>@$ed36_c_abrev];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $cltipoensino->sql_query($ed36_i_codigo,"*","ed36_i_codigo");
    $cliframe_alterar_excluir->campos  ="ed36_i_codigo,ed36_c_descr,ed36_c_abrev";

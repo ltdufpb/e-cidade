@@ -33,8 +33,8 @@ $qunidade = 0;
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 
 
@@ -67,11 +67,11 @@ if ($clselorcdotacao->recurso!="")
   $sele_work .=" and o26_codigo in  ".$clselorcdotacao->recurso;
 
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
     $descr_inst .= $xvirg.$nomeinst ;
     $xvirg = ', ';
@@ -92,7 +92,7 @@ if($origem == "O"){
   if($opcao == 3)
     $head6 = "PERÍODO : ".db_formatar($perini,'d')." A ".db_formatar($perfin,'d') ;
   else
-    $head6 = "PERÍODO : ".strtoupper(db_mes(substr($perini,5,2)))." A ".strtoupper(db_mes(substr($perfin,5,2)));
+    $head6 = "PERÍODO : ".strtoupper(db_mes(substr((string) $perini,5,2)))." A ".strtoupper(db_mes(substr((string) $perfin,5,2)));
 }
 $head2 = "RELATÓRIO DO PPA";
 $head3 = "ORGÃO/UNIDADE/FUNCÇÃO/SUBFUNÇÃO ";
@@ -262,7 +262,7 @@ $projativ  = 0;
 $elemento  = 0;
 $recurso   = 0;
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
 
   db_fieldsmemory($result,$i);
   

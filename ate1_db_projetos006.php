@@ -40,7 +40,7 @@ $cldb_projetosclientes = new cl_db_projetosclientes;
 $cldb_projetosgrupos = new cl_db_projetosgrupos;
 $cldb_projetosusu = new cl_db_projetosusu;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

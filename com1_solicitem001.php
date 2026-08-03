@@ -130,13 +130,13 @@ $clsolicitalog     = new cl_solicitalog;
 $clliclicita       = new cl_liclicita;
 $clliclicitemlote  = new cl_liclicitemlote;
 $iPactoPlano       = null;
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $post = $_POST;
 $get = $_GET;
 
-$aParametrosOrcamento = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+$aParametrosOrcamento = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -209,7 +209,7 @@ if (isset($incluir) || isset($alterar)) {
       $sqlerro  = true;
       $erro_msg = "Justificativa para compra não informada.";
     } else {
-      if (strlen(trim($pc11_just)) < $pc30_mincar) {
+      if (strlen(trim((string) $pc11_just)) < $pc30_mincar) {
         $naodig   = true;
         $sqlerro  = true;
         $erro_msg = "Justificativa para compra deve ter no mínimo $pc30_mincar caracteres.";
@@ -250,10 +250,10 @@ if (isset($incluir) && $sqlerro == false) {
     $clsolicitem->pc11_seq      = $pc11_seq;
     $clsolicitem->pc11_vlrun    = $pc11_vlrun;
     $clsolicitem->pc11_liberado = "f";
-    $clsolicitem->pc11_prazo    = addslashes(stripslashes(trim($pc11_prazo)));
-    $clsolicitem->pc11_pgto     = addslashes(stripslashes(trim($pc11_pgto)));
-    $clsolicitem->pc11_resum    = addslashes(stripslashes(trim($sResumoRegistro)));
-    $clsolicitem->pc11_just     = addslashes(stripslashes(trim($pc11_just)));
+    $clsolicitem->pc11_prazo    = addslashes(stripslashes(trim((string) $pc11_prazo)));
+    $clsolicitem->pc11_pgto     = addslashes(stripslashes(trim((string) $pc11_pgto)));
+    $clsolicitem->pc11_resum    = addslashes(stripslashes(trim((string) $sResumoRegistro)));
+    $clsolicitem->pc11_just     = addslashes(stripslashes(trim((string) $pc11_just)));
     $clsolicitem->incluir(empty($pc11_codigo) ? null : $pc11_codigo);
     $pc11_codigo = $clsolicitem->pc11_codigo;
     $erro_msg    = $clsolicitem->erro_msg;
@@ -364,8 +364,8 @@ if (isset($incluir) && $sqlerro == false) {
                                                                                                         "l04_liclicitem=$codliclicitem"));
                   if ($clliclicitemlote->numrows > 0) {
                     db_fieldsmemory($res_liclicitemlote, 0);
-                    if (substr(trim($descr_lote), 0, 9) == "AUTO_LOTE") {
-                      $sequencial = intval(substr(trim($descr_lote), 11, 5)) + 1;
+                    if (str_starts_with(trim((string) $descr_lote), "AUTO_LOTE")) {
+                      $sequencial = intval(substr(trim((string) $descr_lote), 11, 5)) + 1;
                       $descr_lote = "AUTO_LOTE_" . db_formatar($sequencial, "s", "0", 5, "e", 0);
                     }
                   } else {
@@ -631,7 +631,7 @@ db_fieldsmemory($result_pcparam1, 0);
 
   if (!isset($pc16_codmater) || (isset($pc16_codmater) && $pc16_codmater == "")) {
 
-    if (($digitouresumo == "false" && trim($pc11_resum) == "") || (isset($pc11_resum) && $pc11_resum == "")) {
+    if (($digitouresumo == "false" && trim((string) $pc11_resum) == "") || (isset($pc11_resum) && $pc11_resum == "")) {
 
       $naodig                = true;
       $sqlerro               = true;
@@ -653,7 +653,7 @@ db_fieldsmemory($result_pcparam1, 0);
     }
     $clsolicitem->pc11_codigo = $pc11_codigo;
     $clsolicitem->pc11_quant  = $pc11_quant;
-    if (trim($pc11_vlrun) == "") {
+    if (trim((string) $pc11_vlrun) == "") {
       $pc11_vlrun = 0;
     }
     $pc11_vlrun = str_replace(",", ".", $pc11_vlrun);
@@ -664,10 +664,10 @@ db_fieldsmemory($result_pcparam1, 0);
     }
     $clsolicitem->pc11_vlrun    = $pc11_vlrun;
     $clsolicitem->pc11_liberado = $pc11_liberado;
-    $clsolicitem->pc11_prazo    = AddSlashes(chop($pc11_prazo));
-    $clsolicitem->pc11_pgto     = AddSlashes(chop($pc11_pgto));
-    $clsolicitem->pc11_resum    = AddSlashes(chop($pc11_resum));
-    $clsolicitem->pc11_just     = AddSlashes(chop($pc11_just));
+    $clsolicitem->pc11_prazo    = AddSlashes(chop((string) $pc11_prazo));
+    $clsolicitem->pc11_pgto     = AddSlashes(chop((string) $pc11_pgto));
+    $clsolicitem->pc11_resum    = AddSlashes(chop((string) $pc11_resum));
+    $clsolicitem->pc11_just     = AddSlashes(chop((string) $pc11_just));
 
     // Alteracao para verificar se Item jah empenhado nao pode ser alterado
     if (isset($param) && trim($param) != "") {
@@ -815,7 +815,7 @@ e55_sequen is not null and e54_anulad is null"));
       $numrows_pcdotac = $clpcdotac->numrows;
       if ($numrows_pcdotac > 0) {
         $soma        = 0;
-        $arr_gerarel = array();
+        $arr_gerarel = [];
         for ($i = 0; $i < $numrows_pcdotac; $i++) {
           db_fieldsmemory($result_vlrun, $i);
           if ($pc30_gerareserva == "t") {
@@ -1160,7 +1160,7 @@ from pcorcam
 inner join pcorcamitem on pcorcamitem.pc22_codorc = pcorcam.pc20_codorc
 where pc20_codorc = $codorc";
               $result_pcorcam = @db_query($sql_pcorcam);
-              if (@pg_numrows($result_pcorcam) == 0) {
+              if (@pg_num_rows($result_pcorcam) == 0) {
                 $clpcorcam->excluir($codorc);
                 if ($clpcorcam->erro_status == 0) {
                   $sqlerro  = true;
@@ -1313,7 +1313,7 @@ from pcorcam
 inner join pcorcamitem on pcorcamitem.pc22_codorc = pcorcam.pc20_codorc
 where pc20_codorc = $codorc";
                 $result_pcorcam = @db_query($sql_pcorcam);
-                if (@pg_numrows($result_pcorcam) == 0) {
+                if (@pg_num_rows($result_pcorcam) == 0) {
                   $clpcorcam->excluir($codorc);
                   if ($clpcorcam->erro_status == 0) {
                     $sqlerro  = true;
@@ -1363,7 +1363,7 @@ where pc20_codorc = $codorc";
         if ($sqlerro == false) {
           $sql_pcproc    = "select * from pcprocitem where pc81_codproc = $codproc";
           $result_pcproc = @db_query($sql_pcproc);
-          if (@pg_numrows($result_pcproc) == 0) {
+          if (@pg_num_rows($result_pcproc) == 0) {
             $clpcproc->excluir($codproc);
             if ($clpcproc->erro_status == 0) {
               $sqlerro  = true;
@@ -1640,7 +1640,7 @@ where pc20_codorc = $codorc";
           $clsolicitem->pc11_vlrun = $vlrun_item;
           $clsolicitem->pc11_prazo = $prazo_item;
           $clsolicitem->pc11_pgto = $pgto_item;
-          $clsolicitem->pc11_resum = addslashes(stripslashes(trim($resum_item)));
+          $clsolicitem->pc11_resum = addslashes(stripslashes(trim((string) $resum_item)));
           $clsolicitem->pc11_just = $just_item;
           $clsolicitem->pc11_liberado = $liberado_item;
           $clsolicitem->pc11_servicoquantidade = $servicoquantidade_item;

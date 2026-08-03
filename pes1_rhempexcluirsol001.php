@@ -36,8 +36,8 @@ include(modification("dbforms/db_solicitafolha.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_rhempfolha_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhempfolha = new cl_rhempfolha;
 $clrhsolicita = new cl_rhsolicita;
@@ -50,7 +50,7 @@ if (isset($solicitacoes) && trim($solicitacoes) != ""){
   db_inicio_transacao();
 
   $sqlerro          = false;
-  $vet_solicitacoes = split("_",$solicitacoes);
+  $vet_solicitacoes = preg_split("#_#m",$solicitacoes);
 
   $solicitacao      = "";
   $virgula          = "";

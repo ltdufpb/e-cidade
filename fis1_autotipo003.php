@@ -39,8 +39,8 @@ require_once(modification("classes/db_fandamusu_classe.php"));
 require_once(modification("classes/db_fiscalprocrec_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clautotipo      = new cl_autotipo;
 $clautoandam     = new cl_autoandam;
@@ -55,7 +55,7 @@ $db_opcao = 33;
 global $y59_codauto;
 $y59_codauto = @$y50_codauto;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 
   db_inicio_transacao();
   $db_opcao = 3;
@@ -121,7 +121,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 js_tabulacaoforms("form1","db_opcao",true,1,"db_opcao",true);
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clautotipo->erro_status=="0"){
     $clautotipo->erro(true,false);
   }else{

@@ -15,7 +15,7 @@ class cl_assinatura {
            from db_usuarios
            where id_usuario = ".db_getsession("DB_id_usuario")
           );
-    $nome = pg_result($result,0,"nome");
+    $nome = pg_fetch_result($result,0,"nome");
     return $nome;
   }
 function assinatura($codigo,$default='',$pos_paragrafo=""){
@@ -39,11 +39,11 @@ function assinatura($codigo,$default='',$pos_paragrafo=""){
                     ");
         //db_criatabela($result);exit;
        $ass =  $default;
-       if(pg_numrows($result) > 0){
+       if(pg_num_rows($result) > 0){
          $ass = '';
          $ar = "";
-         for($i=0;$i<pg_numrows($result);$i++){
-             $db02_texto = pg_result($result,$i,"db02_texto");
+         for($i=0;$i<pg_num_rows($result);$i++){
+             $db02_texto = pg_fetch_result($result,$i,"db02_texto");
              $ass .= $ar.$db02_texto;
              $ar = "\r\n";
          }
@@ -53,8 +53,8 @@ function assinatura($codigo,$default='',$pos_paragrafo=""){
            */
            if ($pos_paragrafo!=""){
                $ass = '';
-               if (pg_numrows($result) > $pos_paragrafo){
-                    $db02_texto = pg_result($result,$pos_paragrafo,"db02_texto"); // retorna da posição paragrafo
+               if (pg_num_rows($result) > $pos_paragrafo){
+                    $db02_texto = pg_fetch_result($result,$pos_paragrafo,"db02_texto"); // retorna da posição paragrafo
                     $ass = $db02_texto;
                }
            }

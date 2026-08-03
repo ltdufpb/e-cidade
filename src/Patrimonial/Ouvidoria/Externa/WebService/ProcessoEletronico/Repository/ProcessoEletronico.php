@@ -105,7 +105,7 @@ class ProcessoEletronico
             ];
         } catch (\Exception $e) {
             Log::debug($e->getMessage()." FILE: ".$e->getFile()." Line:".$e->getLine());
-            $response->status = utf8_encode(urldecode(($e->getMessage())));
+            $response->status = mb_convert_encoding(urldecode(($e->getMessage())), 'UTF-8', 'ISO-8859-1');
         }
 
         return $response;

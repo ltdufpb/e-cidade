@@ -3,38 +3,38 @@
 //CLASSE DA ENTIDADE taxavaloresreferencia
 class cl_taxavaloresreferencia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y121_sequencial = 0; 
-   var $y121_descricao = null; 
-   var $y121_valor = 0; 
-   var $y121_data_base_dia = null; 
-   var $y121_data_base_mes = null; 
-   var $y121_data_base_ano = null; 
-   var $y121_data_base = null; 
+   public $y121_sequencial = 0; 
+   public $y121_descricao = null; 
+   public $y121_valor = 0; 
+   public $y121_data_base_dia = null; 
+   public $y121_data_base_mes = null; 
+   public $y121_data_base_ano = null; 
+   public $y121_data_base = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y121_sequencial = int4 = Sequencial 
                  y121_descricao = varchar(100) = Descrição 
                  y121_valor = float8 = Valor Base 
                  y121_data_base = date = Data Base 
                  ";
    //funcao construtor da classe 
-   function cl_taxavaloresreferencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("taxavaloresreferencia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -103,10 +103,10 @@ class cl_taxavaloresreferencia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->y121_sequencial = pg_result($result,0,0); 
+       $this->y121_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from taxavaloresreferencia_y121_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $y121_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $y121_sequencial)){
          $this->erro_sql = " Campo y121_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -140,7 +140,7 @@ class cl_taxavaloresreferencia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Valores de Referência das taxas ($this->y121_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Valores de Referência das taxas já Cadastrado";
@@ -169,13 +169,13 @@ class cl_taxavaloresreferencia {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22070,'$this->y121_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3975,22070,'','".AddSlashes(pg_result($resaco,0,'y121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3975,22071,'','".AddSlashes(pg_result($resaco,0,'y121_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3975,22072,'','".AddSlashes(pg_result($resaco,0,'y121_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3975,22091,'','".AddSlashes(pg_result($resaco,0,'y121_data_base'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3975,22070,'','".AddSlashes(pg_fetch_result($resaco,0,'y121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3975,22071,'','".AddSlashes(pg_fetch_result($resaco,0,'y121_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3975,22072,'','".AddSlashes(pg_fetch_result($resaco,0,'y121_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3975,22091,'','".AddSlashes(pg_fetch_result($resaco,0,'y121_data_base'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -185,10 +185,10 @@ class cl_taxavaloresreferencia {
       $this->atualizacampos();
      $sql = " update taxavaloresreferencia set ";
      $virgula = "";
-     if(trim($this->y121_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y121_sequencial"])){ 
+     if(trim((string) $this->y121_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y121_sequencial"])){ 
        $sql  .= $virgula." y121_sequencial = $this->y121_sequencial ";
        $virgula = ",";
-       if(trim($this->y121_sequencial) == null ){ 
+       if(trim((string) $this->y121_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "y121_sequencial";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_taxavaloresreferencia {
          return false;
        }
      }
-     if(trim($this->y121_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y121_descricao"])){ 
+     if(trim((string) $this->y121_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y121_descricao"])){ 
        $sql  .= $virgula." y121_descricao = '$this->y121_descricao' ";
        $virgula = ",";
-       if(trim($this->y121_descricao) == null ){ 
+       if(trim((string) $this->y121_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "y121_descricao";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_taxavaloresreferencia {
          return false;
        }
      }
-     if(trim($this->y121_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y121_valor"])){ 
+     if(trim((string) $this->y121_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y121_valor"])){ 
        $sql  .= $virgula." y121_valor = $this->y121_valor ";
        $virgula = ",";
-       if(trim($this->y121_valor) == null ){ 
+       if(trim((string) $this->y121_valor) == null ){ 
          $this->erro_sql = " Campo Valor Base não informado.";
          $this->erro_campo = "y121_valor";
          $this->erro_banco = "";
@@ -224,10 +224,10 @@ class cl_taxavaloresreferencia {
          return false;
        }
      }
-     if(trim($this->y121_data_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y121_data_base_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y121_data_base_dia"] !="") ){ 
+     if(trim((string) $this->y121_data_base)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y121_data_base_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["y121_data_base_dia"] !="") ){ 
        $sql  .= $virgula." y121_data_base = '$this->y121_data_base' ";
        $virgula = ",";
-       if(trim($this->y121_data_base) == null ){ 
+       if(trim((string) $this->y121_data_base) == null ){ 
          $this->erro_sql = " Campo Data Base não informado.";
          $this->erro_campo = "y121_data_base_dia";
          $this->erro_banco = "";
@@ -240,7 +240,7 @@ class cl_taxavaloresreferencia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["y121_data_base_dia"])){ 
          $sql  .= $virgula." y121_data_base = null ";
          $virgula = ",";
-         if(trim($this->y121_data_base) == null ){ 
+         if(trim((string) $this->y121_data_base) == null ){ 
            $this->erro_sql = " Campo Data Base não informado.";
            $this->erro_campo = "y121_data_base_dia";
            $this->erro_banco = "";
@@ -265,17 +265,17 @@ class cl_taxavaloresreferencia {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22070,'$this->y121_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y121_sequencial"]) || $this->y121_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3975,22070,'".AddSlashes(pg_result($resaco,$conresaco,'y121_sequencial'))."','$this->y121_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3975,22070,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y121_sequencial'))."','$this->y121_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y121_descricao"]) || $this->y121_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3975,22071,'".AddSlashes(pg_result($resaco,$conresaco,'y121_descricao'))."','$this->y121_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3975,22071,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y121_descricao'))."','$this->y121_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y121_valor"]) || $this->y121_valor != "")
-             $resac = db_query("insert into db_acount values($acount,3975,22072,'".AddSlashes(pg_result($resaco,$conresaco,'y121_valor'))."','$this->y121_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3975,22072,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y121_valor'))."','$this->y121_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["y121_data_base"]) || $this->y121_data_base != "")
-             $resac = db_query("insert into db_acount values($acount,3975,22091,'".AddSlashes(pg_result($resaco,$conresaco,'y121_data_base'))."','$this->y121_data_base',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3975,22091,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y121_data_base'))."','$this->y121_data_base',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -329,13 +329,13 @@ class cl_taxavaloresreferencia {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22070,'$y121_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3975,22070,'','".AddSlashes(pg_result($resaco,$iresaco,'y121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3975,22071,'','".AddSlashes(pg_result($resaco,$iresaco,'y121_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3975,22072,'','".AddSlashes(pg_result($resaco,$iresaco,'y121_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3975,22091,'','".AddSlashes(pg_result($resaco,$iresaco,'y121_data_base'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3975,22070,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3975,22071,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y121_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3975,22072,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y121_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3975,22091,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y121_data_base'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

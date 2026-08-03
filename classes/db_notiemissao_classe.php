@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE notiemissao
 class cl_notiemissao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k136_sequencial = 0; 
-   var $k136_notificatipogeracao = 0; 
-   var $k136_recibo = 'f'; 
-   var $k136_data_dia = null; 
-   var $k136_data_mes = null; 
-   var $k136_data_ano = null; 
-   var $k136_data = null; 
-   var $k136_usuario = 0; 
+   public $k136_sequencial = 0; 
+   public $k136_notificatipogeracao = 0; 
+   public $k136_recibo = 'f'; 
+   public $k136_data_dia = null; 
+   public $k136_data_mes = null; 
+   public $k136_data_ano = null; 
+   public $k136_data = null; 
+   public $k136_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k136_sequencial = int4 = Sequencial 
                  k136_notificatipogeracao = int4 = Tipos de Geração de Notificação 
                  k136_recibo = bool = Recibo 
@@ -59,10 +59,10 @@ class cl_notiemissao {
                  k136_usuario = int4 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_notiemissao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("notiemissao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_notiemissao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k136_sequencial = pg_result($result,0,0); 
+       $this->k136_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from notiemissao_k136_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k136_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k136_sequencial)){
          $this->erro_sql = " Campo k136_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_notiemissao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Emissão de Notificações ($this->k136_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Emissão de Notificações já Cadastrado";
@@ -204,14 +204,14 @@ class cl_notiemissao {
      $resaco = $this->sql_record($this->sql_query_file($this->k136_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18545,'$this->k136_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3282,18545,'','".AddSlashes(pg_result($resaco,0,'k136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3282,18548,'','".AddSlashes(pg_result($resaco,0,'k136_notificatipogeracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3282,18551,'','".AddSlashes(pg_result($resaco,0,'k136_recibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3282,18549,'','".AddSlashes(pg_result($resaco,0,'k136_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3282,18550,'','".AddSlashes(pg_result($resaco,0,'k136_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3282,18545,'','".AddSlashes(pg_fetch_result($resaco,0,'k136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3282,18548,'','".AddSlashes(pg_fetch_result($resaco,0,'k136_notificatipogeracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3282,18551,'','".AddSlashes(pg_fetch_result($resaco,0,'k136_recibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3282,18549,'','".AddSlashes(pg_fetch_result($resaco,0,'k136_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3282,18550,'','".AddSlashes(pg_fetch_result($resaco,0,'k136_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_notiemissao {
       $this->atualizacampos();
      $sql = " update notiemissao set ";
      $virgula = "";
-     if(trim($this->k136_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k136_sequencial"])){ 
+     if(trim((string) $this->k136_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k136_sequencial"])){ 
        $sql  .= $virgula." k136_sequencial = $this->k136_sequencial ";
        $virgula = ",";
-       if(trim($this->k136_sequencial) == null ){ 
+       if(trim((string) $this->k136_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k136_sequencial";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_notiemissao {
          return false;
        }
      }
-     if(trim($this->k136_notificatipogeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k136_notificatipogeracao"])){ 
+     if(trim((string) $this->k136_notificatipogeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k136_notificatipogeracao"])){ 
        $sql  .= $virgula." k136_notificatipogeracao = $this->k136_notificatipogeracao ";
        $virgula = ",";
-       if(trim($this->k136_notificatipogeracao) == null ){ 
+       if(trim((string) $this->k136_notificatipogeracao) == null ){ 
          $this->erro_sql = " Campo Tipos de Geração de Notificação nao Informado.";
          $this->erro_campo = "k136_notificatipogeracao";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_notiemissao {
          return false;
        }
      }
-     if(trim($this->k136_recibo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k136_recibo"])){ 
+     if(trim((string) $this->k136_recibo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k136_recibo"])){ 
        $sql  .= $virgula." k136_recibo = '$this->k136_recibo' ";
        $virgula = ",";
-       if(trim($this->k136_recibo) == null ){ 
+       if(trim((string) $this->k136_recibo) == null ){ 
          $this->erro_sql = " Campo Recibo nao Informado.";
          $this->erro_campo = "k136_recibo";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_notiemissao {
          return false;
        }
      }
-     if(trim($this->k136_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k136_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k136_data_dia"] !="") ){ 
+     if(trim((string) $this->k136_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k136_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k136_data_dia"] !="") ){ 
        $sql  .= $virgula." k136_data = '$this->k136_data' ";
        $virgula = ",";
-       if(trim($this->k136_data) == null ){ 
+       if(trim((string) $this->k136_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "k136_data_dia";
          $this->erro_banco = "";
@@ -275,7 +275,7 @@ class cl_notiemissao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k136_data_dia"])){ 
          $sql  .= $virgula." k136_data = null ";
          $virgula = ",";
-         if(trim($this->k136_data) == null ){ 
+         if(trim((string) $this->k136_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "k136_data_dia";
            $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_notiemissao {
          }
        }
      }
-     if(trim($this->k136_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k136_usuario"])){ 
+     if(trim((string) $this->k136_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k136_usuario"])){ 
        $sql  .= $virgula." k136_usuario = $this->k136_usuario ";
        $virgula = ",";
-       if(trim($this->k136_usuario) == null ){ 
+       if(trim((string) $this->k136_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "k136_usuario";
          $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_notiemissao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18545,'$this->k136_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k136_sequencial"]) || $this->k136_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3282,18545,'".AddSlashes(pg_result($resaco,$conresaco,'k136_sequencial'))."','$this->k136_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3282,18545,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k136_sequencial'))."','$this->k136_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k136_notificatipogeracao"]) || $this->k136_notificatipogeracao != "")
-           $resac = db_query("insert into db_acount values($acount,3282,18548,'".AddSlashes(pg_result($resaco,$conresaco,'k136_notificatipogeracao'))."','$this->k136_notificatipogeracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3282,18548,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k136_notificatipogeracao'))."','$this->k136_notificatipogeracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k136_recibo"]) || $this->k136_recibo != "")
-           $resac = db_query("insert into db_acount values($acount,3282,18551,'".AddSlashes(pg_result($resaco,$conresaco,'k136_recibo'))."','$this->k136_recibo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3282,18551,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k136_recibo'))."','$this->k136_recibo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k136_data"]) || $this->k136_data != "")
-           $resac = db_query("insert into db_acount values($acount,3282,18549,'".AddSlashes(pg_result($resaco,$conresaco,'k136_data'))."','$this->k136_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3282,18549,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k136_data'))."','$this->k136_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k136_usuario"]) || $this->k136_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3282,18550,'".AddSlashes(pg_result($resaco,$conresaco,'k136_usuario'))."','$this->k136_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3282,18550,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k136_usuario'))."','$this->k136_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_notiemissao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18545,'$k136_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3282,18545,'','".AddSlashes(pg_result($resaco,$iresaco,'k136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3282,18548,'','".AddSlashes(pg_result($resaco,$iresaco,'k136_notificatipogeracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3282,18551,'','".AddSlashes(pg_result($resaco,$iresaco,'k136_recibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3282,18549,'','".AddSlashes(pg_result($resaco,$iresaco,'k136_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3282,18550,'','".AddSlashes(pg_result($resaco,$iresaco,'k136_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3282,18545,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3282,18548,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k136_notificatipogeracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3282,18551,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k136_recibo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3282,18549,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k136_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3282,18550,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k136_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from notiemissao
@@ -431,7 +431,7 @@ class cl_notiemissao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:notiemissao";
@@ -446,7 +446,7 @@ class cl_notiemissao {
    function sql_query ( $k136_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_notiemissao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,7 +481,7 @@ class cl_notiemissao {
    function sql_query_file ( $k136_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_notiemissao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

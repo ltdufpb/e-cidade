@@ -47,11 +47,11 @@ class AnexoXII
     /**
      * @var array
      */
-    protected $linhas = array();
+    protected $linhas = [];
 
-    protected $linhasRestosPagar = array();
+    protected $linhasRestosPagar = [];
 
-    protected $controleRestosAPagar = array();
+    protected $controleRestosAPagar = [];
 
     const LINHA_INICIO_RECEITAS = 1;
     const LINHA_FIM_RECEITAS = 18;
@@ -277,7 +277,7 @@ class AnexoXII
     protected function escreverDespesaSaude()
     {
         $titulo = "DESPESAS COM SAÚDE (Por grupo de natureza da despesa)";
-        $formulas = array(" (e)", " (f)", " (f/e) x 100", " (g)", " (g/e) x 100");
+        $formulas = [" (e)", " (f)", " (f/e) x 100", " (g)", " (g/e) x 100"];
         $this->cabecalhoDespesas($titulo, $formulas);
         $this->imprimirLinhaDespesa(self::LINHA_INICIO_DESPESAS_SAUDE, self::LINHA_FIM_DESPESAS_SAUDE);
     }
@@ -285,7 +285,7 @@ class AnexoXII
     protected function escreverDespesaSaudeNaoComputada()
     {
         $titulo = "DESPESAS COM SAÚDE NÃO COMPUTADAS PARA FINS DE APURAÇÃO DO PERCENTUAL MÍNIMO";
-        $formulas = array("", " (h)", " (h/IVf) x 100", " (i)", " (i/IVg) x 100");
+        $formulas = ["", " (h)", " (h/IVf) x 100", " (i)", " (i/IVg) x 100"];
         $this->cabecalhoDespesas($titulo, $formulas);
         $this->imprimirLinhaDespesa(self::LINHA_INICIO_DESPESAS_SAUDE_NAO_COMPUTADAS, self::LINHA_FIM_DESPESAS_SAUDE_NAO_COMPUTADAS);
     }
@@ -293,7 +293,7 @@ class AnexoXII
     protected function escreverDespesaSaudeSubFuncao()
     {
         $titulo = "DESPESAS COM SAÚDE (Por subfunção)";
-        $formulas = array("", " (l)", " (l/total l) x 100", " (m)", " (m/total m) x 100");
+        $formulas = ["", " (l)", " (l/total l) x 100", " (m)", " (m/total m) x 100"];
         $this->cabecalhoDespesas($titulo, $formulas);
         $this->imprimirLinhaDespesa(self::LINHA_INICIO_DESPESAS_POR_SUBFUNCAO, self::LINHA_FIM_DESPESAS_POR_SUBFUNCAO);
     }

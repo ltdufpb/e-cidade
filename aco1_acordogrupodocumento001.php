@@ -37,8 +37,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clacordogrupodocumento = new cl_acordogrupodocumento;
 $clacordogrupo          = new cl_acordogrupo;

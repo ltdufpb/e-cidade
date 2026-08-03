@@ -38,8 +38,8 @@ include(modification("classes/db_concarpeculiar_classe.php"));
 
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clorcpparec      = new cl_orcpparec;
 $clorcppa         = new cl_orcppa;
@@ -55,7 +55,7 @@ if(isset($incluir)){
   $sqlerro = false;
   db_inicio_transacao();
 
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
 
@@ -63,15 +63,15 @@ if(isset($incluir)){
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
 //    echo "if(".substr($chave,0,9)."==o27_valor && ".current($vt)." != ''){<br>";
-    if(substr($chave,0,9)=="o27_valor" && current($vt) != ''){
-      $ano   =  substr($chave,10);
+    if(str_starts_with((string) $chave, "o27_valor") && current($vt) != ''){
+      $ano   =  substr((string) $chave,10);
       $valor = current($vt);
       $fonte = $vt["o57_fonte_$ano"];
       $obs   = $vt["o27_obs_$ano"];
       $sequen= $vt["o27_sequen_$ano"];
       $perc   = $vt["o27_perc_$ano"];
-      
-      if (trim($vt["o27_concarpeculiar_$ano"]) == ""){
+
+      if (trim((string) $vt["o27_concarpeculiar_$ano"]) == ""){
         $o27_concarpeculiar = "0";
       } else {
         $o27_concarpeculiar = $vt["o27_concarpeculiar_$ano"];
@@ -87,7 +87,7 @@ if(isset($incluir)){
 	db_fieldsmemory($result,0);
       }
      //---------------------------------------------------------------------------------------------
-       
+
       //-------PROCESSO DE INLCUÃO-----------------------------------------------------------------------
 	if(empty($proces)){
 	  $proces = '0';
@@ -112,7 +112,7 @@ if(isset($incluir)){
 	   $seq  = $clorcpparec->o27_sequen;
 	}  	
      //------------------------------------------------------------------------------------------   
-   
+
      //alterar-----------------------------------------------------
 	if($sqlerro == false && $priproces == true){
 	    $priproces = false;
@@ -139,22 +139,22 @@ if(isset($incluir)){
   $sqlerro = false;
   db_inicio_transacao();
 
-  $vt=$HTTP_POST_VARS;
+  $vt=$_POST;
   $ta=sizeof($vt);
   reset($vt);
   
   $priproces = true;
   for($i=0; $i<$ta; $i++){
     $chave=key($vt);
-    if(substr($chave,0,9)=="o27_valor"){
-      $ano    =  substr($chave,10);
+    if(str_starts_with((string) $chave, "o27_valor")){
+      $ano    =  substr((string) $chave,10);
       $valor  = current($vt);
       $fonte  = $vt["o57_fonte_$ano"];
       $obs    = $vt["o27_obs_$ano"];
       $sequen = $vt["o27_sequen_$ano"];
       $perc   = $vt["o27_perc_$ano"];
 
-      if (trim($vt["o27_concarpeculiar_$ano"]) == ""){
+      if (trim((string) $vt["o27_concarpeculiar_$ano"]) == ""){
         $o27_concarpeculiar = "0";
       } else {
         $o27_concarpeculiar = $vt["o27_concarpeculiar_$ano"];
@@ -172,8 +172,8 @@ if(isset($incluir)){
 	  db_fieldsmemory($result,0);
 	}
        //---------------------------------------------------------------------------------------------
-	 
-	
+
+
 	//-------PROCESSO DE ALTERAÇÃO---------------------------------------------------------------------
 	  if($sqlerro == false){ 
 	    $clorcpparec->o27_proces         = $o27_proces;

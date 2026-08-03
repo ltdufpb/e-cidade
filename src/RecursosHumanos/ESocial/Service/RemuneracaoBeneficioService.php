@@ -169,7 +169,7 @@ class RemuneracaoBeneficioService
          * 2 - CalculoFolha::CALCULO_13
          * 3 - CalculoFolha::CALCULO_RESCISAO
          */
-        $pagamentos = array();
+        $pagamentos = [];
 
         foreach ($calculoFinanceiroSalario->getEventosFinanceiros() as $eventoFinanceiro) {
             $pagamentos[self::TIPOSALARIO][] = $this->geraEventoESocial($eventoFinanceiro, self::SALARIO);

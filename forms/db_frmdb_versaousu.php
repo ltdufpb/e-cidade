@@ -137,7 +137,7 @@ db_inputdata('db32_data',@$db32_data_dia,@$db32_data_mes,@$db32_data_ano,true,'t
     <td valign="top"  align="center">  
     <?php 
 //echo $cldb_versaousu->sql_query(null,"*","","db32_codver=$db30_codver");
-	 $chavepri= array("db32_codusu"=>@$db32_codusu);
+	 $chavepri= ["db32_codusu"=>@$db32_codusu];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 //	 echo ' codver '.$db32_codver."\n";
 	 $cliframe_alterar_excluir->sql     = $cldb_versaousu->sql_query(null,"*","","db32_codver=$db30_codver");

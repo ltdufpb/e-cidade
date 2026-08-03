@@ -38,7 +38,7 @@ class EscolaProcedenciaRepository {
    * Collection de EscolaProcedencia
    * @var array
    */
-  private $aEscolas = array();
+  private $aEscolas = [];
 
   /**
    * Instancia da classe

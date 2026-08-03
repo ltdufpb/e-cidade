@@ -34,7 +34,7 @@ require_once(modification("classes/db_ruas_classe.php"));
 require_once(modification("classes/db_cgm_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clagualeitura = new cl_agualeitura;
 $clruas = new cl_ruas;
@@ -62,7 +62,7 @@ if(isset($lancar) || isset($incluir)) {
 
   if (!isset($nmesanter)) {
 
-    $x21_saldo = isset($x21_saldo) ? $x21_saldo : null;
+    $x21_saldo ??= null;
     $dtleitura = $x21_dtleitura_ano . '-' . $x21_dtleitura_mes . '-' . $x21_dtleitura_dia;
     if(trim($dtleitura) == "--"){
       $dtleitura = "";

@@ -17,19 +17,19 @@
 class Spline {
     // 3:rd degree polynom approximation
 
-    var $xdata,$ydata;   // Data vectors
-    var $y2;		 // 2:nd derivate of ydata	
-    var $n=0;
+    public $xdata,$ydata;   // Data vectors
+    public $y2;		 // 2:nd derivate of ydata	
+    public $n=0;
 
-    function Spline($xdata,$ydata) {
-	$this->y2 = array();
+    function __construct($xdata,$ydata) {
+	$this->y2 = [];
 	$this->xdata = $xdata;
 	$this->ydata = $ydata;
 
 	$n = count($ydata);
 	$this->n = $n;
 	if( $this->n !== count($xdata) ) {
-	    JpGraphError::RaiseL(19001);
+	    (new JpGraphError())->RaiseL(19001);
 //('Spline: Number of X and Y coordinates must be the same');
 	}
 
@@ -42,7 +42,7 @@ class Spline {
 	for($i=1; $i < $n-1; ++$i) {
 	    $d = ($xdata[$i+1]-$xdata[$i-1]);
 	    if( $d == 0  ) {
-		JpGraphError::RaiseL(19002);
+		(new JpGraphError())->RaiseL(19002);
 //('Invalid input data for spline. Two or more consecutive input X-values are equal. Each input X-value must differ since from a mathematical point of view it must be a one-to-one mapping, i.e. each X-value must correspond to exactly one Y-value.');
 	    }
 	    $s = ($xdata[$i]-$xdata[$i-1])/$d;
@@ -63,15 +63,15 @@ class Spline {
     function Get($num=50) {
 	$n = $this->n ;
 	$step = ($this->xdata[$n-1]-$this->xdata[0]) / ($num-1);
-	$xnew=array();
-	$ynew=array();
+	$xnew=[];
+	$ynew=[];
 	$xnew[0] = $this->xdata[0];
 	$ynew[0] = $this->ydata[0];
 	for( $j=1; $j < $num; ++$j ) {
 	    $xnew[$j] = $xnew[0]+$j*$step;
 	    $ynew[$j] = $this->Interpolate($xnew[$j]);
 	}
-	return array($xnew,$ynew);
+	return [$xnew,$ynew];
     }
 
     // Return a single interpolated Y-value from an x value
@@ -93,7 +93,7 @@ class Spline {
 	$h = $this->xdata[$max]-$this->xdata[$min];
 
 	if( $h == 0  ) {
-	    JpGraphError::RaiseL(19002);
+	    (new JpGraphError())->RaiseL(19002);
 //('Invalid input data for spline. Two or more consecutive input X-values are equal. Each input X-value must differ since from a mathematical point of view it must be a one-to-one mapping, i.e. each X-value must correspond to exactly one Y-value.');
 	}
 
@@ -117,15 +117,15 @@ class Bezier {
  * computed from control points data sets, based on Paul Bourke algorithm :
  * http://astronomy.swin.edu.au/~pbourke/curves/bezier/
  */
-    var $datax = array();
-    var $datay = array();
-    var $n=0;
- 
-    function Bezier($datax, $datay, $attraction_factor = 1) {
+    public $datax = [];
+    public $datay = [];
+    public $n=0;
+
+    function __construct($datax, $datay, $attraction_factor = 1) {
 	// Adding control point multiple time will raise their attraction power over the curve   
 	$this->n = count($datax);
 	if( $this->n !== count($datay) ) {
-	    JpGraphError::RaiseL(19003);
+	    (new JpGraphError())->RaiseL(19003);
 //('Bezier: Number of X and Y coordinates must be the same');
 	}
 	$idx=0;
@@ -144,20 +144,20 @@ class Bezier {
     }
 
     function Get($steps) {
-	$datax = array();
-	$datay = array();
+	$datax = [];
+	$datay = [];
 	for ($i = 0; $i < $steps; $i++) {
-	    list($datumx, $datumy) = $this->GetPoint((double) $i / (double) $steps);       
+	    [$datumx, $datumy] = $this->GetPoint((double) $i / (double) $steps);       
 	    $datax[] = $datumx;
 	    $datay[] = $datumy;
 	}
-   
+
 	$datax[] = end($this->datax);
 	$datay[] = end($this->datay);
-   
-	return array($datax, $datay);
+
+	return [$datax, $datay];
     }
- 
+
     function GetPoint($mu) {
 	$n = $this->n - 1;
 	$k = 0;
@@ -169,7 +169,7 @@ class Bezier {
 	$newy = 0.0;
 
 	$muk = 1.0;
-	$munk = (double) pow(1-$mu,(double) $n);
+	$munk = (double) (1 - $mu) ** (double) $n;
 
 	for ($k = 0; $k <= $n; $k++) {
 	    $nn = $n;
@@ -194,7 +194,7 @@ class Bezier {
 	    $newy += $this->datay[$k] * $blend;
 	}
 
-	return array($newx, $newy);
+	return [$newx, $newy];
     }
 }
 

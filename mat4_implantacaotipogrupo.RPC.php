@@ -96,7 +96,7 @@ switch ($oParam->exec) {
       $rsBuscaConta            = $oDaoMaterialGrupoConta->sql_record($sSqlBuscaConta);
       $iCodigoConta            = db_utils::fieldsMemory($rsBuscaConta, 0)->m66_codcon;      
       
-      $aNovasEstruturas   = array("001" => "Bens de Consumo", "002" => "Materiais de Consumo", "003" => "Bens Permanentes");
+      $aNovasEstruturas   = ["001" => "Bens de Consumo", "002" => "Materiais de Consumo", "003" => "Bens Permanentes"];
       $iCodigoBensConsumo = null;
       foreach ($aNovasEstruturas as $sIndice => $sDescricaoGrupo) {
         

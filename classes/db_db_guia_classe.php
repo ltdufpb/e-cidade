@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE db_guia
 class cl_db_guia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s_codigo = 0; 
-   var $s_localid = null; 
-   var $s_servico = null; 
-   var $s_nome = null; 
-   var $s_endereco = null; 
-   var $s_fone = null; 
-   var $s_email = null; 
+   public $s_codigo = 0; 
+   public $s_localid = null; 
+   public $s_servico = null; 
+   public $s_nome = null; 
+   public $s_endereco = null; 
+   public $s_fone = null; 
+   public $s_email = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s_codigo = int4 = Código 
                  s_localid = varchar(100) = Localidade 
                  s_servico = varchar(30) = Serviço 
@@ -60,10 +60,10 @@ class cl_db_guia {
                  s_email = varchar(50) = Email 
                  ";
    //funcao construtor da classe 
-   function cl_db_guia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_guia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -174,7 +174,7 @@ class cl_db_guia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Guia () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Guia já Cadastrado";
@@ -201,10 +201,10 @@ class cl_db_guia {
       $this->atualizacampos();
      $sql = " update db_guia set ";
      $virgula = "";
-     if(trim($this->s_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_codigo"])){ 
+     if(trim((string) $this->s_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_codigo"])){ 
        $sql  .= $virgula." s_codigo = $this->s_codigo ";
        $virgula = ",";
-       if(trim($this->s_codigo) == null ){ 
+       if(trim((string) $this->s_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "s_codigo";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_db_guia {
          return false;
        }
      }
-     if(trim($this->s_localid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_localid"])){ 
+     if(trim((string) $this->s_localid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_localid"])){ 
        $sql  .= $virgula." s_localid = '$this->s_localid' ";
        $virgula = ",";
-       if(trim($this->s_localid) == null ){ 
+       if(trim((string) $this->s_localid) == null ){ 
          $this->erro_sql = " Campo Localidade nao Informado.";
          $this->erro_campo = "s_localid";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_db_guia {
          return false;
        }
      }
-     if(trim($this->s_servico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_servico"])){ 
+     if(trim((string) $this->s_servico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_servico"])){ 
        $sql  .= $virgula." s_servico = '$this->s_servico' ";
        $virgula = ",";
-       if(trim($this->s_servico) == null ){ 
+       if(trim((string) $this->s_servico) == null ){ 
          $this->erro_sql = " Campo Serviço nao Informado.";
          $this->erro_campo = "s_servico";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_db_guia {
          return false;
        }
      }
-     if(trim($this->s_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_nome"])){ 
+     if(trim((string) $this->s_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_nome"])){ 
        $sql  .= $virgula." s_nome = '$this->s_nome' ";
        $virgula = ",";
-       if(trim($this->s_nome) == null ){ 
+       if(trim((string) $this->s_nome) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "s_nome";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_db_guia {
          return false;
        }
      }
-     if(trim($this->s_endereco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_endereco"])){ 
+     if(trim((string) $this->s_endereco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_endereco"])){ 
        $sql  .= $virgula." s_endereco = '$this->s_endereco' ";
        $virgula = ",";
-       if(trim($this->s_endereco) == null ){ 
+       if(trim((string) $this->s_endereco) == null ){ 
          $this->erro_sql = " Campo Endereço nao Informado.";
          $this->erro_campo = "s_endereco";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_db_guia {
          return false;
        }
      }
-     if(trim($this->s_fone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_fone"])){ 
+     if(trim((string) $this->s_fone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_fone"])){ 
        $sql  .= $virgula." s_fone = '$this->s_fone' ";
        $virgula = ",";
-       if(trim($this->s_fone) == null ){ 
+       if(trim((string) $this->s_fone) == null ){ 
          $this->erro_sql = " Campo Telefone nao Informado.";
          $this->erro_campo = "s_fone";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_db_guia {
          return false;
        }
      }
-     if(trim($this->s_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_email"])){ 
+     if(trim((string) $this->s_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_email"])){ 
        $sql  .= $virgula." s_email = '$this->s_email' ";
        $virgula = ",";
-       if(trim($this->s_email) == null ){ 
+       if(trim((string) $this->s_email) == null ){ 
          $this->erro_sql = " Campo Email nao Informado.";
          $this->erro_campo = "s_email";
          $this->erro_banco = "";
@@ -373,7 +373,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_guia";

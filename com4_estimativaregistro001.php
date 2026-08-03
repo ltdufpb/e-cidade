@@ -34,7 +34,7 @@
   require_once(modification("classes/db_pcparam_classe.php"));
   require_once(modification("std/db_stdClass.php"));
   require_once(modification("libs/db_utils.php"));
-  db_postmemory($HTTP_GET_VARS);
+  db_postmemory($_GET);
 
   $clpcparam  = new cl_pcparam;
   $clcriaabas = new cl_criaabas;
@@ -50,7 +50,7 @@
   }
   
   $lTemParametroRegistro  = false;
-  $aParametrosRegistro = db_stdClass::getParametro('registroprecoparam', array(db_getsession("DB_instit")));
+  $aParametrosRegistro = db_stdClass::getParametro('registroprecoparam', [db_getsession("DB_instit")]);
   if (count($aParametrosRegistro) > 0) {
     $lTemParametroRegistro = true;
   }
@@ -78,11 +78,11 @@
      <td>
      <?php 
      
-     $clcriaabas->identifica = array("registro" => "Estimativa","itens"=>"Itens");//nome do iframe e o label    
-     $clcriaabas->src        = array("registro" => "com4_estimativaregistro011.php", 
-                                     "itens"    => "com4_solicitaestimativaitens.php");    
-     $clcriaabas->title      = array("registro" => "Estimativa","itens"=>"Itens");//nome do iframe e o label    
-     $clcriaabas->sizecampo  = array("registro" => "20","itens"=>"20");
+     $clcriaabas->identifica = ["registro" => "Estimativa","itens"=>"Itens"];//nome do iframe e o label    
+     $clcriaabas->src        = ["registro" => "com4_estimativaregistro011.php", 
+                                     "itens"    => "com4_solicitaestimativaitens.php"];    
+     $clcriaabas->title      = ["registro" => "Estimativa","itens"=>"Itens"];//nome do iframe e o label    
+     $clcriaabas->sizecampo  = ["registro" => "20","itens"=>"20"];
      $clcriaabas->cria_abas();
                 
      ?> 

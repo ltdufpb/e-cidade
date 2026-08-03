@@ -34,7 +34,7 @@ include(modification("libs/db_liborcamento.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -182,7 +182,7 @@ function js_limpa(){
              <td align="right" ><strong>Filtro :</strong></td>
              <td align="left">
         <?php 
-          $xy = array('1A'=>'Órgão','2A'=>'Unidade','3A'=>'Função','4A'=>'Subfunção','5A'=>'Programa','6A'=>'Proj/Ativ','7A'=>'Elemento','8A'=>'Recurso');
+          $xy = ['1A'=>'Órgão','2A'=>'Unidade','3A'=>'Função','4A'=>'Subfunção','5A'=>'Programa','6A'=>'Proj/Ativ','7A'=>'Elemento','8A'=>'Recurso'];
           db_select('nivel',$xy,true,2,"");
         ?>
              <td align="left">
@@ -193,7 +193,7 @@ function js_limpa(){
              <td align="right" ><strong>Agrupar Por :</strong></td>
              <td align="left">
               <?php 
-                $z = array("1"=>"Geral","2"=>"Órgão","3"=>"Unidade");
+                $z = ["1"=>"Geral","2"=>"Órgão","3"=>"Unidade"];
                 db_select('tipo_agrupa',$z,true,2,"");
               ?>
              </td>

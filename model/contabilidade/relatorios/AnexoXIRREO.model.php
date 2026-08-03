@@ -109,11 +109,12 @@ class AnexoXIRREO extends RelatoriosLegaisBase  {
    * 
    * @return array - Colecao de stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
   	
      $oRetorno                     = new stdClass();
-     $oRetorno->quadroreceitas     = array();
-     $oRetorno->quadrodespesas     = array();
+     $oRetorno->quadroreceitas     = [];
+     $oRetorno->quadrodespesas     = [];
      $oRetorno->resultadoregraouro = new stdClass();
      
      
@@ -146,10 +147,10 @@ class AnexoXIRREO extends RelatoriosLegaisBase  {
        $oLinhaRelatorio->setPeriodo($this->iCodigoPeriodo);
        $aValoresColunasLinhas = $oLinhaRelatorio->getValoresColunas(null, null, $this->getInstituicoes(), $this->iAnoUsu);
        foreach ($aValoresColunasLinhas as $oColuna) {
-       	 
+
          $oLinha->previsaoatualizada += $oColuna->colunas[0]->o117_valor;
          $oLinha->receitaatualizada  += $oColuna->colunas[1]->o117_valor;
-         
+
          /**
           * soma no totalizador 1
           */

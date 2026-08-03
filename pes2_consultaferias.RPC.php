@@ -61,7 +61,7 @@ try {
           throw new BusinessException(_M( MENSAGENS . 'nenhuma_periodo_encontrado'));
         }
       
-        $oRetorno->aPeriodosAquisitivos = array();
+        $oRetorno->aPeriodosAquisitivos = [];
         
         foreach ($aPeriodosAquisitivos as $oPeriodo){
           
@@ -109,7 +109,7 @@ try {
 				  throw new BusinessException(_M( MENSAGENS . 'nenhuma_periodo_encontrado'));
 			  }
     
-        $oRetorno->aPeriodosGozo        = array();
+        $oRetorno->aPeriodosGozo        = [];
 
         foreach ( $aPeriodosGozo as $oPeriodoGozo ) {
 
@@ -145,7 +145,7 @@ try {
     		 
     		try{
     	
-    			$oRetorno->aRegistrosPonto = array();
+    			$oRetorno->aRegistrosPonto = [];
     			$iCodigoPeriodoGozo	       = $oParametros->iCodigoPeriodoGozo;
     			$oPeriodoGozo 			       = new PeriodoGozoFerias($iCodigoPeriodoGozo);
     			$aRegistrosPonto           = $oPeriodoGozo->getComposicao()->getRegistros();
@@ -158,7 +158,7 @@ try {
     				
     				$oDadosRetorno                    = new stdClass();
     				$oDadosRetorno->sRubrica          = $oRegistroPonto->getRubrica()->getCodigo();
-    				$oDadosRetorno->sDescricaoRubrica = urlencode($oRegistroPonto->getRubrica()->getDescricao());	
+    				$oDadosRetorno->sDescricaoRubrica = urlencode((string) $oRegistroPonto->getRubrica()->getDescricao());	
     				$oDadosRetorno->nQuantidade       = $oRegistroPonto->getQuantidade();
     				$oDadosRetorno->nValor            = $oRegistroPonto->getValor();
     				$oRetorno->aRegistrosPonto[]      = $oDadosRetorno;

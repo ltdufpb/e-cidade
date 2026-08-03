@@ -9,15 +9,13 @@ use ECidade\Tributario\Cadastro\IPTU\Arquivo\Layout\Layout;
 abstract class Converter
 {
     protected $format;
-    protected $layout;
 
     /**
      * @todo - layout resebeu remoção de type e default null para migração de classes legadas
      */
-    public function __construct(Format $format, $layout = null)
+    public function __construct(Format $format, protected $layout = null)
     {
         $this->format = $format;
-        $this->layout = $layout;
     }
 
     abstract public function get(Entity $entity);

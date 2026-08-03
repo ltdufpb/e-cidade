@@ -63,7 +63,7 @@ if ( $db_opcao == 2 ) {
         </td>
         <td>
           <?php
-            db_select('bi26_leitorbarra', array('N'=>'NÃO','S'=>'SIM'), true, $db_opcao);
+            db_select('bi26_leitorbarra', ['N'=>'NÃO','S'=>'SIM'], true, $db_opcao);
           ?>
         </td>
       </tr>
@@ -73,7 +73,7 @@ if ( $db_opcao == 2 ) {
         </td>
         <td>
           <?php
-            $aImpressora = array(1 => 'Papel A4', 2 => 'Papel 80mm');
+            $aImpressora = [1 => 'Papel A4', 2 => 'Papel 80mm'];
             db_select('bi26_impressora', $aImpressora, true, $db_opcao);
           ?>
         </td>

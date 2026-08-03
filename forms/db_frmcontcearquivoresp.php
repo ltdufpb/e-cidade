@@ -123,7 +123,7 @@ db_input('c12_nrodoc',10,$Ic12_nrodoc,true,'text',$db_opcao,"onKeyup = \"js_Vali
     </td>
     <td> 
 <?php 
-$x = array('1'=>'CPF','2'=>'CRC');
+$x = ['1'=>'CPF','2'=>'CRC'];
 db_select('c12_tipodoc',$x,true,$db_opcao,"onchange='js_mudatipo();'");
 ?>
     </td>
@@ -134,7 +134,7 @@ db_select('c12_tipodoc',$x,true,$db_opcao,"onchange='js_mudatipo();'");
     </td>
     <td> 
 <?php 
-$x = array('1'=>'Titular Reponsável','2'=>'Responsável da Época','3'=>'Responsável Geração dos Dados','4'=>'Contador Reponsável pelas Informações ','5'=>'Responsável Controle Interno');
+$x = ['1'=>'Titular Reponsável','2'=>'Responsável da Época','3'=>'Responsável Geração dos Dados','4'=>'Contador Reponsável pelas Informações ','5'=>'Responsável Controle Interno'];
 db_select('c12_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -161,7 +161,7 @@ db_select('c12_tipo',$x,true,$db_opcao,"");
    $sCampos .= "   when c12_tipo = 4 then 'Contador Responsável pelas Informações' ";
    $sCampos .= "   when c12_tipo = 5 then 'Responsável Controle Interno' ";
    $sCampos .= " end as c12_tipo ";   
-	 $chavepri                                = array("c12_sequencial"=>@$c12_sequencial,"c12_contcearquivo" => @$c12_contcearquivo);
+	 $chavepri                                = ["c12_sequencial"=>@$c12_sequencial,"c12_contcearquivo" => @$c12_contcearquivo];
    $cliframe_alterar_excluir->alignlegenda  = 'left';
 	 $cliframe_alterar_excluir->chavepri      = $chavepri;	 
 	 $cliframe_alterar_excluir->sql           = $clcontcearquivoresp->sql_query_file(null,$sCampos,null,"c12_contcearquivo = {$c12_contcearquivo}");

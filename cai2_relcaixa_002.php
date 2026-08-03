@@ -108,7 +108,7 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $sql = "select * from ($sql) as x where (o70_instit = " . db_getsession("DB_instit") . " or c61_instit = " . db_getsession("DB_instit") . ")" . $where;
     //  echo $sql;exit;
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $linha = 0;
     $TPagina = 27;
     $preenc = 0;
@@ -137,11 +137,11 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
             $preenc = 0;
         }
         $pdf->SetFont('Courier', '', 7);
-        $pdf->Cell(12, 5, pg_result($result, $i, "k02_codigo"), 0, 0, "R", $preenc);
-        $pdf->Cell(3, 5, pg_result($result, $i, "k02_tipo"), 0, 0, "R", $preenc);
-        $pdf->Cell(10, 5, pg_result($result, $i, "k02_codrec"), 0, 0, "R", $preenc);
-        $k02_estorc = pg_result($result, $i, "k02_estorc");
-        $k02_estpla = pg_result($result, $i, "k02_estpla");
+        $pdf->Cell(12, 5, pg_fetch_result($result, $i, "k02_codigo"), 0, 0, "R", $preenc);
+        $pdf->Cell(3, 5, pg_fetch_result($result, $i, "k02_tipo"), 0, 0, "R", $preenc);
+        $pdf->Cell(10, 5, pg_fetch_result($result, $i, "k02_codrec"), 0, 0, "R", $preenc);
+        $k02_estorc = pg_fetch_result($result, $i, "k02_estorc");
+        $k02_estpla = pg_fetch_result($result, $i, "k02_estpla");
         if (trim($k02_estorc) != "") {
             $pdf->Cell(25, 5, $k02_estorc, 0, 0, "R", $preenc);
         } else if (trim($k02_estpla)) {
@@ -149,11 +149,11 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
         } else {
             $pdf->Cell(25, 5, '', 0, 0, "R", $preenc);
         }
-        $pdf->Cell(25, 5, pg_result($result, $i, "k02_descr"), 0, 0, "L", $preenc);
-        $pdf->Cell(60, 5, pg_result($result, $i, "k02_drecei"), 0, 0, "L", $preenc);
-        $pdf->Cell(16, 5, db_formatar(pg_result($result, $i, "k02_limite"), 'd'), 0, 0, "L", $preenc);
-        $pdf->Cell(15, 5, pg_result($result, $i, "k02_recjur"), 0, 0, "R", $preenc);
-        $pdf->Cell(15, 5, pg_result($result, $i, "k02_recmul"), 0, 1, "R", $preenc);
+        $pdf->Cell(25, 5, pg_fetch_result($result, $i, "k02_descr"), 0, 0, "L", $preenc);
+        $pdf->Cell(60, 5, pg_fetch_result($result, $i, "k02_drecei"), 0, 0, "L", $preenc);
+        $pdf->Cell(16, 5, db_formatar(pg_fetch_result($result, $i, "k02_limite"), 'd'), 0, 0, "L", $preenc);
+        $pdf->Cell(15, 5, pg_fetch_result($result, $i, "k02_recjur"), 0, 0, "R", $preenc);
+        $pdf->Cell(15, 5, pg_fetch_result($result, $i, "k02_recmul"), 0, 1, "R", $preenc);
         $Total += 1;
 
     }
@@ -192,15 +192,15 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(80, 4, "Descricao", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 
     for ($i = 0; $i < $num; $i++) {
         $pdf->SetTextColor(0, 0, 0);
-        $pdf->Cell(14, 4, pg_result($result, $i, "k02_codjm"), $borda, 0, "C", $preenc);
-        $pdf->Cell(14, 4, pg_result($result, $i, "k02_corr"), $borda, 0, "C", $preenc);
-        $pdf->Cell(80, 4, substr(pg_result($result, $i, "i01_descr"), 0, 35), $borda, 1, "L", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k02_codjm"), $borda, 0, "C", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k02_corr"), $borda, 0, "C", $preenc);
+        $pdf->Cell(80, 4, substr(pg_fetch_result($result, $i, "i01_descr"), 0, 35), $borda, 1, "L", $preenc);
         if ($linha++ > $TPagina) {
             $linha = 0;
             $pdf->AddPage();
@@ -259,7 +259,7 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(85, 4, "Recurso", "LTB", 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Arial', '', 7);
     $linha = 0;
 
@@ -321,14 +321,14 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(80, 4, "Nome do Banco", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 
     for ($i = 0; $i < $num; $i++) {
-        $pdf->Cell(14, 4, pg_result($result, $i, "k15_codbco"), $borda, 0, "C", $preenc);
-        $pdf->Cell(14, 4, pg_result($result, $i, "k15_codage"), $borda, 0, "C", $preenc);
-        $pdf->Cell(80, 4, substr(pg_result($result, $i, "z01_nome"), 0, 40), $borda, 1, "L", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k15_codbco"), $borda, 0, "C", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k15_codage"), $borda, 0, "C", $preenc);
+        $pdf->Cell(80, 4, substr(pg_fetch_result($result, $i, "z01_nome"), 0, 40), $borda, 1, "L", $preenc);
         if ($linha++ > $TPagina) {
             $linha = 0;
             $pdf->AddPage();
@@ -368,12 +368,12 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(80, 4, "Descricao", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
     for ($i = 0; $i < $num; $i++) {
-        $pdf->Cell(14, 4, pg_result($result, $i, "k00_tipo"), $borda, 0, "C", $preenc);
-        $pdf->Cell(80, 4, substr(pg_result($result, $i, "k00_descr"), 0, 40), $borda, 1, "L", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k00_tipo"), $borda, 0, "C", $preenc);
+        $pdf->Cell(80, 4, substr(pg_fetch_result($result, $i, "k00_descr"), 0, 40), $borda, 1, "L", $preenc);
         $Total += 1;
         if ($linha++ > $TPagina) {
             $linha = 0;
@@ -417,16 +417,16 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(14, 4, "Tipo", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 
     // k01_codigo,k01_descr, k01_tipo
 
     for ($i = 0; $i < $num; $i++) {
-        $pdf->Cell(14, 4, pg_result($result, $i, "k01_codigo"), $borda, 0, "C", $preenc);
-        $pdf->Cell(80, 4, substr(pg_result($result, $i, "k01_descr"), 0, 40), $borda, 0, "L", $preenc);
-        $pdf->Cell(14, 4, pg_result($result, $i, "k01_tipo"), $borda, 1, "C", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k01_codigo"), $borda, 0, "C", $preenc);
+        $pdf->Cell(80, 4, substr(pg_fetch_result($result, $i, "k01_descr"), 0, 40), $borda, 0, "L", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k01_tipo"), $borda, 1, "C", $preenc);
         $Total += 1;
         if ($linha++ > $TPagina) {
             $linha = 0;
@@ -472,14 +472,14 @@ if ($opcaoRelatorio == "todas" || $opcaoRelatorio == "k02_estorc" || $opcaoRelat
     $pdf->Cell(20, 4, "Local", $bordat, 1, "C", $preenc);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier', 'B', 9);
     $linha = 0;
 
     for ($i = 0; $i < $num; $i++) {
-        $pdf->Cell(14, 4, pg_result($result, $i, "k11_id"), $borda, 0, "C", $preenc);
-        $pdf->Cell(40, 4, pg_result($result, $i, "k11_ipterm"), $borda, 0, "L", $preenc);
-        $pdf->Cell(20, 4, pg_result($result, $i, "k11_local"), $borda, 1, "L", $preenc);
+        $pdf->Cell(14, 4, pg_fetch_result($result, $i, "k11_id"), $borda, 0, "C", $preenc);
+        $pdf->Cell(40, 4, pg_fetch_result($result, $i, "k11_ipterm"), $borda, 0, "L", $preenc);
+        $pdf->Cell(20, 4, pg_fetch_result($result, $i, "k11_local"), $borda, 1, "L", $preenc);
         if ($linha++ > $TPagina) {
             $linha = 0;
             $pdf->AddPage();

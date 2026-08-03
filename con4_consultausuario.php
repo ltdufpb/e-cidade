@@ -38,19 +38,12 @@ $sqlusu = "select * from db_usuarios
 $resultusu = db_query($sqlusu);
 db_fieldsmemory($resultusu,0);
 
-switch($usuarioativo) {
-  case 1:
-    $usuarioativo = "Ativo";
-    break;
-  case 2:
-    $usuarioativo = "Bloqueado";
-    break;
-  case 3:
-    $usuarioativo = "Aguardando Ativação";
-    break;
-  default:
-    $usuarioativo = "Inativo";
-}
+$usuarioativo = match ($usuarioativo) {
+    1 => "Ativo",
+    2 => "Bloqueado",
+    3 => "Aguardando Ativação",
+    default => "Inativo",
+};
 
 ?>
 <html>

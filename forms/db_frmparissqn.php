@@ -176,7 +176,7 @@ fieldset fieldset table tr td:first-child {
         </td>
         <td>
           <?php 
-     				$aCampoUtilCalc = array('1' => 'Area', '2' => 'Quantidade de funcionarios', '3' => 'Pontuação');
+     				$aCampoUtilCalc = ['1' => 'Area', '2' => 'Quantidade de funcionarios', '3' => 'Pontuação'];
             db_select('q60_campoutilcalc',$aCampoUtilCalc, true, $db_opcao);
           ?>
         </td>
@@ -196,7 +196,7 @@ fieldset fieldset table tr td:first-child {
         </td>
         <td>
   	      <?php 
-    	      $aIntegracaoSanitario = array('0'=>'Nenhuma','1'=>'Inscrições com porte para pessoa juridica','2'=>'Integração por classe');
+    	      $aIntegracaoSanitario = ['0'=>'Nenhuma','1'=>'Inscrições com porte para pessoa juridica','2'=>'Integração por classe'];
     	      db_select('q60_integrasani', $aIntegracaoSanitario, true, $db_opcao);
           ?>
         </td>
@@ -208,7 +208,7 @@ fieldset fieldset table tr td:first-child {
         </td>
         <td>
           <?php 
-          	$aPermissao = array('0'=>'Não utiliza controle de permissão', '1'=>'Liberado com permissão para alterar alvará com cnpj.');
+          	$aPermissao = ['0'=>'Não utiliza controle de permissão', '1'=>'Liberado com permissão para alterar alvará com cnpj.'];
           	db_select('q60_tipopermalvara', $aPermissao, true, $db_opcao);
           ?>
         </td>
@@ -250,7 +250,7 @@ fieldset fieldset table tr td:first-child {
 				</td>
 				<td>
 				  <?php 
-				    $aAlvaraDivida = array('0'=>'Não','1'=>'Sim');
+				    $aAlvaraDivida = ['0'=>'Não','1'=>'Sim'];
 				    db_select('q60_alvbaixadiv',$aAlvaraDivida, true, $db_opcao);
 				  ?>
 				</td>
@@ -269,7 +269,7 @@ fieldset fieldset table tr td:first-child {
 					      </td>
 					      <td>
 								  <?php 
-									  $aImprimeCodigoAtividade = array('f'=>'NÃO','t'=>'SIM');
+									  $aImprimeCodigoAtividade = ['f'=>'NÃO','t'=>'SIM'];
 									  db_select('q60_impcodativ',$aImprimeCodigoAtividade, true, $db_opcao);
 								  ?>
 					      </td>
@@ -281,7 +281,7 @@ fieldset fieldset table tr td:first-child {
   					    </td>
   					    <td>
   								<?php 
-  									$aImprimeObservacoesAtividade = array('f'=>'NÃO','t'=>'SIM');
+  									$aImprimeObservacoesAtividade = ['f'=>'NÃO','t'=>'SIM'];
   									db_select('q60_impobsativ',$aImprimeObservacoesAtividade, true, $db_opcao);
   								?>
   					    </td>
@@ -293,7 +293,7 @@ fieldset fieldset table tr td:first-child {
 								</td>
 								<td>
 								  <?php 
-								    $aImprimeDatas = array('f'=>'NÃO','t'=>'SIM');
+								    $aImprimeDatas = ['f'=>'NÃO','t'=>'SIM'];
 								    db_select('q60_impdatas', $aImprimeDatas, true, $db_opcao);
 								  ?>
 								</td>
@@ -305,7 +305,7 @@ fieldset fieldset table tr td:first-child {
 								</td>
 								<td>
 								  <?php 
-    								$aImprimeObservacoesIssqn = array('f'=>'NÃO','t'=>'SIM');
+    								$aImprimeObservacoesIssqn = ['f'=>'NÃO','t'=>'SIM'];
     								db_select('q60_impobsissqn',$aImprimeObservacoesIssqn, true, $db_opcao);
   								?>
 								</td>
@@ -317,7 +317,7 @@ fieldset fieldset table tr td:first-child {
 								</td>
 								<td>
 								  <?php 
-    								$aModeloAlvara = array('1'=>'A5',
+    								$aModeloAlvara = ['1'=>'A5',
                       								     '2'=>'A4',
                       								     '3'=>'Pré-impresso',
                       								     '4'=>'A4 fonte reduzida',
@@ -325,7 +325,7 @@ fieldset fieldset table tr td:first-child {
                       								     '6'=> 'Pré-impresso A4 com código cnae',
                       								     '7'=> 'A4 Frente/Verso',
                       								     '8'=> 'A4 Processo/Área',
-                      								     '9'=> 'Documento Alvará');
+                      								     '9'=> 'Documento Alvará'];
 
     								db_select('q60_modalvara', $aModeloAlvara, true, $db_opcao, "onchange='js_trtemplatealvara();'");
   								?>
@@ -365,7 +365,7 @@ fieldset fieldset table tr td:first-child {
 				</td>
 				<td>
 				  <?php 
-				    $aNotaFiscalAvulsaPerjur = array("f"=>"NÃO","t"=>"SIM");
+				    $aNotaFiscalAvulsaPerjur = ["f"=>"NÃO","t"=>"SIM"];
 				    db_select('q60_notaavulsapesjur', $aNotaFiscalAvulsaPerjur, true, $db_opcao);
 				  ?>
 				</td>
@@ -440,7 +440,7 @@ fieldset fieldset table tr td:first-child {
         </td>
         <td>
           <?php 
-            $aNumeracaoCertidaoBaixa = array('1'=>'Utiliza número do processo','2'=>'Sequencial','3'=>'Sequencial por exercício');
+            $aNumeracaoCertidaoBaixa = ['1'=>'Utiliza número do processo','2'=>'Sequencial','3'=>'Sequencial por exercício'];
             db_select('q60_tiponumcertbaixa', $aNumeracaoCertidaoBaixa, true, $db_opcao, " onchange='js_habilitaTemplateCertidao();'");
           ?>
         </td>
@@ -465,9 +465,9 @@ fieldset fieldset table tr td:first-child {
         </td>
         <td>
           <?php 
-            $aBloqueioEmissaoCertidao = array(1 => 'Nunca bloqueia',
+            $aBloqueioEmissaoCertidao = [1 => 'Nunca bloqueia',
                                               2 => 'Avisa que tem débito e não bloqueia',
-                                              3 => 'Avisa que tem debito e bloqueia');
+                                              3 => 'Avisa que tem debito e bloqueia'];
             db_select('q60_bloqemiscertbaixa', $aBloqueioEmissaoCertidao, true, $db_opcao);
           ?>
         </td>
@@ -813,7 +813,7 @@ function js_preenchepesquisa(chave){
   db_iframe_parissqn.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

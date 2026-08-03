@@ -147,7 +147,7 @@ function js_isnumber(campo,nome){
           <td align="right"> <strong>Opção de Seleção :<strong></td>
           <td align="left">&nbsp;&nbsp;&nbsp;
             <?php 
-            $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
+            $xxx = ["S"=>"Somente Selecionados","N"=>"Menos os Selecionados"];
             db_select('param',$xxx,true,2);
             ?>
 	  </td>

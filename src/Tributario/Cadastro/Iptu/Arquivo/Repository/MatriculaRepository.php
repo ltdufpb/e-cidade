@@ -6,6 +6,7 @@ use ECidade\Tributario\Cadastro\Entity\Repository\MatriculaRepository as BaseMat
 
 final class MatriculaRepository extends BaseMatriculaRepository
 {
+    #[\Override]
     public function findAll($ano, $quantidade = null, $matriculas = null, $quantidadeParcela = null)
     {
         $sql = "

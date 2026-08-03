@@ -22,9 +22,9 @@ class R1000 extends EventoAbstract
     {
         $dao = new cl_avaliacaogruporespostacontribuinte();
 
-        $where = array(
+        $where = [
             "eso27_cgm = {$this->cgm->getCodigo()}"
-        );
+        ];
 
         $sql = $dao->sql_query_file(null, "*", 'eso27_sequencial DESC', implode(' AND ', $where));
         $rs = db_query($sql);
@@ -46,7 +46,7 @@ class R1000 extends EventoAbstract
      * @return int
      * @throws Exception
      */
-    public function persistir(Avaliacao $avaliacao, array $parametros = array())
+    public function persistir(Avaliacao $avaliacao, array $parametros = [])
     {
         $dao = new cl_avaliacaogruporespostacontribuinte();
         $whereVinculo = "eso27_cgm = {$this->cgm->getCodigo()}";

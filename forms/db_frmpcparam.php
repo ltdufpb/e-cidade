@@ -98,7 +98,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_obrigajust?>"><?=@$Lpc30_obrigajust?></td>
                                         <td>
                                         <?php
-                                          $x = array("f"=>"NAO","t"=>"SIM");
+                                          $x = ["f"=>"NAO","t"=>"SIM"];
                                           db_select('pc30_obrigajust', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -107,7 +107,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_obrigamat?>"><?=@$Lpc30_obrigamat?></td>
                                         <td>
                                         <?php
-                                          $x = array("f"=>"NAO","t"=>"SIM");
+                                          $x = ["f"=>"NAO","t"=>"SIM"];
                                           db_select('pc30_obrigamat', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -116,7 +116,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_gerareserva?>"><?=@$Lpc30_gerareserva?> </td>
                                         <td>
                                         <?php
-                                          $x = array("f"=>"NAO","t"=>"SIM");
+                                          $x = ["f"=>"NAO","t"=>"SIM"];
                                           db_select('pc30_gerareserva', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -125,7 +125,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                             <td nowrawp title ="<?=@$Tpc30_mostrasaldo?>"><?=@$Lpc30_mostrasaldo?></td>
                                             <td>
                                              <?php
-                                                $opcoes = array("f" =>"NAO","t"=>"SIM");
+                                                $opcoes = ["f" =>"NAO","t"=>"SIM"];
                                                 db_select('pc30_mostrasaldo', $opcoes, true, $db_opcao, "");
                                                 ?>
                                             </td>
@@ -134,7 +134,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_seltipo?>"><?=@$Lpc30_seltipo?></td>
                                         <td>
                                         <?php
-                                          $x = array("f"=>"NAO","t"=>"SIM");
+                                          $x = ["f"=>"NAO","t"=>"SIM"];
                                           db_select('pc30_seltipo', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -143,7 +143,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_sugforn?>"><?=@$Lpc30_sugforn?></td>
                                         <td>
                                         <?php
-                                          $x = array("f"=>"NAO","t"=>"SIM");
+                                          $x = ["f"=>"NAO","t"=>"SIM"];
                                           db_select('pc30_sugforn', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -160,7 +160,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_permsemdotac?>"><?=@$Lpc30_permsemdotac?> </td>
                                         <td>
                                         <?php
-                                          $x = array("f"=>"NAO","t"=>"SIM");
+                                          $x = ["f"=>"NAO","t"=>"SIM"];
                                           db_select('pc30_permsemdotac', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -169,7 +169,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_passadepart?>"><?=@$Lpc30_passadepart?> </td>
                                         <td>
                                         <?php
-                                          $x = array("f"=>"NAO","t"=>"SIM");
+                                          $x = ["f"=>"NAO","t"=>"SIM"];
                                           db_select('pc30_passadepart', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -178,7 +178,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_digval?>"><?=@$Lpc30_digval?></td>
                                         <td>
                                         <?php
-                                          $x = array("f"=>"NAO","t"=>"SIM");
+                                          $x = ["f"=>"NAO","t"=>"SIM"];
                                           db_select('pc30_digval', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -187,7 +187,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_tipoemiss?>"><?=@$Lpc30_tipoemiss?></td>
                                         <td>
                                         <?php
-                                          $x = array("f"=>"NAO","t"=>"SIM");
+                                          $x = ["f"=>"NAO","t"=>"SIM"];
                                           db_select('pc30_tipoemiss', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -196,7 +196,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_comsaldo?>"><?=@$Lpc30_comsaldo?></td>
                                         <td>
                                         <?php
-                                          $x = array("f"=>"NAO","t"=>"SIM");
+                                          $x = ["f"=>"NAO","t"=>"SIM"];
                                           db_select('pc30_comsaldo', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -205,7 +205,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_contrandsol?>"><?=@$Lpc30_contrandsol?> </td>
                                         <td>
                                         <?php
-                                          $x = array('f'=>'Não','t'=>'Sim');
+                                          $x = ['f'=>'Não','t'=>'Sim'];
                                           db_select('pc30_contrandsol', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -214,7 +214,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_ultdotac?>"><?=@$Lpc30_ultdotac?></td>
                                         <td>
                                         <?php
-                                          $x = array('f'=>'NÂO','t'=>'SIM');
+                                          $x = ['f'=>'NÂO','t'=>'SIM'];
                                           db_select('pc30_ultdotac', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -223,7 +223,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                         <td nowrap title="<?=@$Tpc30_dotacaopordepartamento?>"><?=@$Lpc30_dotacaopordepartamento?> </td>
                                         <td>
                                         <?php
-                                          $x = array("f"=>"NAO","t"=>"SIM");
+                                          $x = ["f"=>"NAO","t"=>"SIM"];
                                           db_select('pc30_dotacaopordepartamento', $x, true, $db_opcao, "");
                                         ?>
                                         </td>
@@ -243,9 +243,9 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                           </td>
                           <td>
                           <?php
-                            $x = array("0"=>"Todos departamentos",
+                            $x = ["0"=>"Todos departamentos",
                                        "1"=>"Departamentos do usuário",
-                                       "2"=>"Departamento logado");
+                                       "2"=>"Departamento logado"];
                             db_select('pc30_consultarelatoriodepartamento', $x, true, $db_opcao, "");
                             ?>
                           </td>
@@ -306,7 +306,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                 </td>
                                 <td>
                                 <?php
-                                  $x = array('13'=>'Modelo 1','58'=>'Modelo 2','61'=>'Modelo 3');
+                                  $x = ['13'=>'Modelo 1','58'=>'Modelo 2','61'=>'Modelo 3'];
                                   db_select('pc30_modeloorcsol', $x, true, $db_opcao, "");
                                 ?>
                                 </td>
@@ -315,7 +315,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                 <td nowrap title="<?=@$Tpc30_modeloorc?>"><?=@$Lpc30_modeloorc?></td>
                                 <td>
                                 <?php
-                                  $x = array('13'=>'Modelo 1','54'=>'Modelo 2','62'=>'Modelo 3');
+                                  $x = ['13'=>'Modelo 1','54'=>'Modelo 2','62'=>'Modelo 3'];
                                   db_select('pc30_modeloorc', $x, true, $db_opcao, "");
                                 ?>
                                 </td>
@@ -325,7 +325,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                              </td>
                              <td>
                                <?php
-                                 $tipojulgamento = array(1 => "Menor Preço", 2 => "Média Orçada");
+                                 $tipojulgamento = [1 => "Menor Preço", 2 => "Média Orçada"];
                                  db_select('pc30_tipojulgamentoorcamento', $tipojulgamento, true, $db_opcao);
                                 ?>
                              </td>
@@ -347,7 +347,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                     <td title="<?=@$Tpc30_valoraproximadoautomatico?>"><?=@$Lpc30_valoraproximadoautomatico?> </td>
                                     <td>
                                     <?php
-                                      $x = array("f"=>"NAO","t"=>"SIM");
+                                      $x = ["f"=>"NAO","t"=>"SIM"];
                                       db_select('pc30_valoraproximadoautomatico', $x, true, $db_opcao, "style='width:100%'");
                                     ?>
                                     </td>
@@ -399,9 +399,9 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                       </td>
                                       <td>
                                       <?php
-                                        $aFornecDeb = array('1' => 'Permitir sem avisar',
+                                        $aFornecDeb = ['1' => 'Permitir sem avisar',
                                                             '2' => 'Permitir com aviso',
-                                                            '3' => 'Não permitir com aviso');
+                                                            '3' => 'Não permitir com aviso'];
                                         db_select('pc30_fornecdeb', $aFornecDeb, true, $db_opcao, " onchange='js_vericaparamfornecdeb();'");
                                         ?>
                                       </td>
@@ -412,8 +412,8 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                       </td>
                                       <td>
                                       <?php
-                                        $aPermitirGerarNotifDebitos = array('t' => 'SIM',
-                                                                            'f' => 'NAO');
+                                        $aPermitirGerarNotifDebitos = ['t' => 'SIM',
+                                                                            'f' => 'NAO'];
                                         db_select('pc30_permitirgerarnotifdebitos', $aPermitirGerarNotifDebitos, true, $db_opcao, "style='width:45%'");
                                         ?>
                                       </td>
@@ -460,7 +460,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                     <td nowrap title="<?=@$Tpc30_liberaitem?>" style="width: 275px;"><?=@$Lpc30_liberaitem?></td>
                                     <td>
                                     <?php
-                                      $x = array("f"=>"NAO","t"=>"SIM");
+                                      $x = ["f"=>"NAO","t"=>"SIM"];
                                       db_select('pc30_liberaitem', $x, true, $db_opcao, "");
                                     ?>
                                     </td>
@@ -469,7 +469,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                     <td nowrap title="<?=@$Tpc30_liberado?>"><?=@$Lpc30_liberado?></td>
                                     <td>
                                     <?php
-                                      $x = array("f"=>"NAO","t"=>"SIM");
+                                      $x = ["f"=>"NAO","t"=>"SIM"];
                                       db_select('pc30_liberado', $x, true, $db_opcao, "");
                                     ?>
                                     </td>
@@ -478,7 +478,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                     <td nowrap title="<?=@$Tpc30_libdotac?>"><?=@$Lpc30_libdotac?></td>
                                     <td>
                                     <?php
-                                      $x = array("f"=>"NAO","t"=>"SIM");
+                                      $x = ["f"=>"NAO","t"=>"SIM"];
                                       db_select('pc30_libdotac', $x, true, $db_opcao, "");
                                     ?>
                                     </td>
@@ -495,7 +495,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                     <td nowrap title="<?=@$Tpc30_itenslibaut?>" style="width: 275px;"><?=@$Lpc30_itenslibaut?></td>
                                     <td>
                                     <?php
-                                      $x = array('f'=>'Não','t'=>'Sim');
+                                      $x = ['f'=>'Não','t'=>'Sim'];
                                       db_select('pc30_itenslibaut', $x, true, $db_opcao, "");
                                     ?>
                                     </td>
@@ -504,7 +504,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                     <td nowrap title="<?=@$Tpc30_comobs?>"><?=@$Lpc30_comobs?></td>
                                     <td>
                                     <?php
-                                      $x = array('f'=>'Não','t'=>'Sim');
+                                      $x = ['f'=>'Não','t'=>'Sim'];
                                       db_select('pc30_comobs', $x, true, $db_opcao, "");
                                     ?>
                                     </td>
@@ -513,7 +513,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                     <td nowrap title="<?=@$Tpc30_emiteemail?>"><?=@$Lpc30_emiteemail?> </td>
                                     <td>
                                     <?php
-                                      $x = array("f"=>"NAO","t"=>"SIM");
+                                      $x = ["f"=>"NAO","t"=>"SIM"];
                                       db_select('pc30_emiteemail', $x, true, $db_opcao, "");
                                     ?>
                                     </td>
@@ -522,7 +522,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                     <td nowrap title="<?=@$Tpc30_modeloordemcompra?>"><?=@$Lpc30_modeloordemcompra?> </td>
                                     <td>
                                     <?php
-                                      $y = array('10'=>'Modelo 1','57'=>'Modelo 2','60'=>'Modelo 3');
+                                      $y = ['10'=>'Modelo 1','57'=>'Modelo 2','60'=>'Modelo 3'];
                                       db_select('pc30_modeloordemcompra', $y, true, $db_opcao, "");
                                     ?>
                                     </td>
@@ -533,10 +533,10 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                     <?php
                                       db_input('pc30_validadepadraocertificado', 6, $Ipc30_validadepadraocertificado, true, 'text', $db_opcao, "");
 
-                                      $x = array(0=>"Selecione...",
+                                      $x = [0=>"Selecione...",
                                                  1=>"Dias",
                                                  2=>"Meses",
-                                                 3=>"Anos");
+                                                 3=>"Anos"];
                                       db_select('pc30_tipovalidade', $x, true, $db_opcao, "");
                                         ?>
                                     </td>
@@ -545,7 +545,7 @@ if (isset($pc30_instit) && $pc30_instit !="") {
                                     <td nowrap title="<?=@$Tpc30_importaresumoemp?>"><?=@$Lpc30_importaresumoemp?> </td>
                                     <td>
                                     <?php
-                                      $z = array('t'=>"Sim", 'f'=>'N&atilde;o');
+                                      $z = ['t'=>"Sim", 'f'=>'N&atilde;o'];
                                       db_select('pc30_importaresumoemp', $z, true, $db_opcao);
                                     ?>
                                     </td>

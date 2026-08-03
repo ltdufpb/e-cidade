@@ -140,7 +140,7 @@ if ($this->impobsativ == 't'){
     $this->objpdf->setx(15);
     $obs = $this->obsativ;
     $this->objpdf->Cell(15,4,"",0,0,"C",0);
-    $this->objpdf->Cell(164,4,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,1,"L",0);
+    $this->objpdf->Cell(164,4,"OBS: ".substr((string) $obs,0,65).(strlen((string) $obs) > 65 ? "...":""),0,1,"L",0);
   }else{
     $this->objpdf->setx(15);
     $this->objpdf->Cell(15,4,"",0,0,"C",0);
@@ -224,7 +224,7 @@ if(isset($this->impobslanc) && $this->impobslanc == 't'){
   }
 }
 $data= date("Y-m-d",db_getsession("DB_datausu"));
-$dataex = split("-",$data);
+$dataex = preg_split("#\\-#m",$data);
 $dia= $dataex[2];
 $mes= $dataex[1];
 $ano= $dataex[0];
@@ -253,7 +253,7 @@ $resultass = db_query($sqlass);
 $linhasass = pg_num_rows($resultass);
 if ($linhasass>0){
   //db_fieldsmemory($resultass,0);
-  $ass= pg_result($resultass,0,'db02_texto');
+  $ass= pg_fetch_result($resultass,0,'db02_texto');
   eval($ass);
 }else{
   // QUANDO NÃO TIVER "ASSINATURAS_CODIGOPHP" CADASTRADAS NA DB_DOCUMENTOS pegar o modo antigo.
@@ -268,11 +268,11 @@ if ($linhasass>0){
     order by db04_ordem ";
   $resparag = db_query($sqlparag);
 
-  if (pg_numrows($resparag) == 0) {
+  if (pg_num_rows($resparag) == 0) {
     db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do alvara!');
     exit;
   }
-  $numrows = pg_numrows($resparag);
+  $numrows = pg_num_rows($resparag);
 
   $linha  = $this->objpdf->getY()+10;
   $colpri = $coluna;

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veiccadmarca_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveiccadmarca = new cl_veiccadmarca;
 $clveiccadmarca->rotulo->label("ve21_codigo");
 $clveiccadmarca->rotulo->label("ve21_descr");
@@ -98,9 +98,9 @@ $clveiccadmarca->rotulo->label("ve21_descr");
         }else{
            $sql = $clveiccadmarca->sql_query("",$campos,"ve21_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve21_codigo)){
-          $repassa = array("chave_ve21_codigo"=>$chave_ve21_codigo,"chave_ve21_codigo"=>$chave_ve21_codigo);
+          $repassa = ["chave_ve21_codigo"=>$chave_ve21_codigo,"chave_ve21_codigo"=>$chave_ve21_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

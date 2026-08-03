@@ -55,7 +55,7 @@ insert into orcparamseq (
 SQLUP
         );
 
-        $colunas = array(201,179,177,189,202,300,301,303,304);
+        $colunas = [201,179,177,189,202,300,301,303,304];
         for ($linha = 1; $linha <= 16; $linha++) {
 
             foreach ($colunas as $indice => $codigoColuna) {
@@ -76,12 +76,12 @@ SQLUP
             }
         }
 
-        $nomeColunas = array('disp_caixa', 'exanterior', 'vlrexatual', 'rp_nprocexant', 'financeira',
+        $nomeColunas = ['disp_caixa', 'exanterior', 'vlrexatual', 'rp_nprocexant', 'financeira',
             'insuficiencia_financeira', 'disp_caixa_liquida', 'rp_empenhado_nao_processado', 'empenho_nao_liquidado_cancelado'
-        );
+        ];
         foreach ($nomeColunas as $indiceColuna => $nomeColuna) {
 
-            $formula = array();
+            $formula = [];
             for ($linha = 2; $linha <= 13; $linha++) {
                 $formula[] = "L[{$linha}]->{$nomeColuna}";
             }

@@ -166,7 +166,7 @@ class Window extends Controller
             $model = new ModelWindow();
 
             if ($post->has('data')) {
-                $data = implode('-', array_reverse(explode('/', $post->get('data'))));
+                $data = implode('-', array_reverse(explode('/', (string) $post->get('data'))));
 
                 if (strtotime($data) > time()) {
                     throw new \Exception('Data do Sistema não pode ser maior que data do servidor.');
@@ -191,13 +191,13 @@ class Window extends Controller
 
 
             // atualiza sesao global, usada como base para criar as proximas janelas
-            Session::update(Session::MAIN_NAME, array(
+            Session::update(Session::MAIN_NAME, [
                 'DB_datausu' => $this->request->session()->get('DB_datausu'),
                 'DB_anousu' => $this->request->session()->get('DB_anousu'),
                 'DB_coddepto' => $this->request->session()->get('DB_coddepto'),
                 'DB_nomedepto' => $this->request->session()->get('DB_nomedepto'),
                 'DB_visualizarEmOutraJanela' => $this->request->session()->get("DB_visualizarEmOutraJanela")
-            ));
+            ]);
             return true;
         }
 
@@ -291,6 +291,6 @@ class Window extends Controller
         $this->request->session()->destroy();
         Session::destroyAll();
 
-        return array('session' => 'dead');
+        return ['session' => 'dead'];
     }
 }

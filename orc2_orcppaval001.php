@@ -105,7 +105,7 @@ function js_emite(){
     <td align="right" ><strong>Nível :</strong></td>
     <td>
       <?php 
-       $xy = array('1'=>'Órgão','2'=>'Unidade','3'=>'Função','4'=>'Subfunção','5'=>'Programa','6'=>'Ação','8'=>'Recurso');
+       $xy = ['1'=>'Órgão','2'=>'Unidade','3'=>'Função','4'=>'Subfunção','5'=>'Programa','6'=>'Ação','8'=>'Recurso'];
        db_select('nivel',$xy,true,2,"");
       ?>
     </td>
@@ -117,7 +117,7 @@ function js_emite(){
     <td>
     <?php 
     $result_anosescolha = $clorcppalei->sql_record($clorcppalei->sql_query_file(@$o21_codleippa,"o21_anoini,o21_anofim"));
-    $arr_indexdescr = Array();
+    $arr_indexdescr = [];
 
     echo "<select name=exercicio>";
     echo "<option value=0>Todos</option>";
@@ -136,7 +136,7 @@ function js_emite(){
     <td><b>Imprimir Valores Zerados:</b></td>
     <td>
     <?php 
-       $x = array("n"=>"NÃO","s"=>"SIM");
+       $x = ["n"=>"NÃO","s"=>"SIM"];
 
        db_select("impzero",$x,true,4);
     ?>

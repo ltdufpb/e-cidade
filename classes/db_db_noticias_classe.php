@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE db_noticias
 class cl_db_noticias { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s_codigo = 0; 
-   var $s_tit = null; 
-   var $s_data_dia = null; 
-   var $s_data_mes = null; 
-   var $s_data_ano = null; 
-   var $s_data = null; 
-   var $s_texto = null; 
-   var $s_im_men = 0; 
-   var $s_im_mai = 0; 
+   public $s_codigo = 0; 
+   public $s_tit = null; 
+   public $s_data_dia = null; 
+   public $s_data_mes = null; 
+   public $s_data_ano = null; 
+   public $s_data = null; 
+   public $s_texto = null; 
+   public $s_im_men = 0; 
+   public $s_im_mai = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s_codigo = int4 = Código 
                  s_tit = varchar(300) = Título 
                  s_data = date = Data 
@@ -61,10 +61,10 @@ class cl_db_noticias {
                  s_im_mai = oid = Imagem maior 
                  ";
    //funcao construtor da classe 
-   function cl_db_noticias() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_noticias"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -170,7 +170,7 @@ class cl_db_noticias {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Notícias () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Notícias já Cadastrado";
@@ -197,10 +197,10 @@ class cl_db_noticias {
       $this->atualizacampos();
      $sql = " update db_noticias set ";
      $virgula = "";
-     if(trim($this->s_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_codigo"])){ 
+     if(trim((string) $this->s_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_codigo"])){ 
        $sql  .= $virgula." s_codigo = $this->s_codigo ";
        $virgula = ",";
-       if(trim($this->s_codigo) == null ){ 
+       if(trim((string) $this->s_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "s_codigo";
          $this->erro_banco = "";
@@ -210,10 +210,10 @@ class cl_db_noticias {
          return false;
        }
      }
-     if(trim($this->s_tit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_tit"])){ 
+     if(trim((string) $this->s_tit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_tit"])){ 
        $sql  .= $virgula." s_tit = '$this->s_tit' ";
        $virgula = ",";
-       if(trim($this->s_tit) == null ){ 
+       if(trim((string) $this->s_tit) == null ){ 
          $this->erro_sql = " Campo Título nao Informado.";
          $this->erro_campo = "s_tit";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_db_noticias {
          return false;
        }
      }
-     if(trim($this->s_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s_data_dia"] !="") ){ 
+     if(trim((string) $this->s_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s_data_dia"] !="") ){ 
        $sql  .= $virgula." s_data = '$this->s_data' ";
        $virgula = ",";
-       if(trim($this->s_data) == null ){ 
+       if(trim((string) $this->s_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "s_data_dia";
          $this->erro_banco = "";
@@ -239,7 +239,7 @@ class cl_db_noticias {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s_data_dia"])){ 
          $sql  .= $virgula." s_data = null ";
          $virgula = ",";
-         if(trim($this->s_data) == null ){ 
+         if(trim((string) $this->s_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "s_data_dia";
            $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_db_noticias {
          }
        }
      }
-     if(trim($this->s_texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_texto"])){ 
+     if(trim((string) $this->s_texto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_texto"])){ 
        $sql  .= $virgula." s_texto = '$this->s_texto' ";
        $virgula = ",";
-       if(trim($this->s_texto) == null ){ 
+       if(trim((string) $this->s_texto) == null ){ 
          $this->erro_sql = " Campo Texto nao Informado.";
          $this->erro_campo = "s_texto";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_db_noticias {
          return false;
        }
      }
-     if(trim($this->s_im_men)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_im_men"])){ 
+     if(trim((string) $this->s_im_men)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_im_men"])){ 
        $sql  .= $virgula." s_im_men = $this->s_im_men ";
        $virgula = ",";
-       if(trim($this->s_im_men) == null ){ 
+       if(trim((string) $this->s_im_men) == null ){ 
          $this->erro_sql = " Campo Imagem menor nao Informado.";
          $this->erro_campo = "s_im_men";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_db_noticias {
          return false;
        }
      }
-     if(trim($this->s_im_mai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_im_mai"])){ 
+     if(trim((string) $this->s_im_mai)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_im_mai"])){ 
        $sql  .= $virgula." s_im_mai = $this->s_im_mai ";
        $virgula = ",";
-       if(trim($this->s_im_mai) == null ){ 
+       if(trim((string) $this->s_im_mai) == null ){ 
          $this->erro_sql = " Campo Imagem maior nao Informado.";
          $this->erro_campo = "s_im_mai";
          $this->erro_banco = "";
@@ -370,7 +370,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_noticias";

@@ -310,7 +310,7 @@ $intNumrows    = $clcorrente->numrows;
 
 if ($intNumrows > 0){
 
-  $arrayObj = array();
+  $arrayObj = [];
 	for($i = 0; $i < $intNumrows; $i++ ) {
 
     db_fieldsmemory($rsAutentica,$i);
@@ -334,44 +334,23 @@ if ($intNumrows > 0){
   $retornoJSON = $objJSON->encode($arrayObj);
 	echo '1|||'.$objJSON->encode($arrayObj);//$retornoJSON;
 }else{
-  echo '2|||'.$objJSON->encode(array());
+  echo '2|||'.$objJSON->encode([]);
 }
 
 class Autenticacoes {
 
-  // Propriedades
-  var $id               = '';
-  var $status           = '';
-  var $numeroCheque     = '';
-  var $detalhe          = '';
-  var $caixa            = '';
-  var $autent           = '';
-  var $arquivo          = '';
-  var $data             = '';
-  var $valorDebito      = '';
-  var $valorCredito     = '';
-  var $credor           = '';
-  var $classe           = '';
-  var $itemconciliacao  = '';
-  var $justificativa    = '';
+  public $numeroCheque     = '';
+  public $detalhe          = '';
+  public $credor           = '';
+  public $justificativa    = '';
 
   // Construtor
-  function Autenticacoes ($pid=null,$pstatus=null,$pnumeroCheque=null,$pdetalhe=null,$pcaixa=null,$pautent=null,$parquivo=null,$pdata=null,$pvalorDebito=null,$pvalorCredito=null,$pcredor=null,$pclasse='normal',$pitemconciliacao=null, $sJustificativa = ''){
+  function __construct (public $id=null,public $status=null,$pnumeroCheque=null,$pdetalhe=null,public $caixa=null,public $autent=null,public $arquivo=null,public $data=null,public $valorDebito=null,public $valorCredito=null,$pcredor=null,public $classe='normal',public $itemconciliacao=null, $sJustificativa = ''){
 
-  	$this->id               = $pid;
-    $this->status           = $pstatus;
-    $this->numeroCheque     = urlencode($pnumeroCheque);
-    $this->detalhe          = utf8_encode(str_replace("\r","",str_replace("\n","",$pdetalhe)));
-    $this->caixa            = $pcaixa;
-    $this->autent           = $pautent;
-    $this->arquivo          = $parquivo;
-    $this->data             = $pdata;
-    $this->valorDebito      = $pvalorDebito;
-    $this->valorCredito     = $pvalorCredito;
-    $this->credor           = urlencode($pcredor);
-    $this->classe           = $pclasse;
-    $this->itemconciliacao  = $pitemconciliacao;
-    $this->justificativa    = rawurlencode($sJustificativa);
+  	$this->numeroCheque     = urlencode((string) $pnumeroCheque);
+    $this->detalhe          = mb_convert_encoding(str_replace("\r","",str_replace("\n","",$pdetalhe)), 'UTF-8', 'ISO-8859-1');
+    $this->credor           = urlencode((string) $pcredor);
+    $this->justificativa    = rawurlencode((string) $sJustificativa);
   }
 }
 

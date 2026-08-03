@@ -32,7 +32,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_libsys.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']); 
+parse_str((string) $_SERVER['QUERY_STRING'], $result); 
 
 # Include AgataAPI class
 

@@ -56,11 +56,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	   $clcriaabas->identifica = array("matpedido"=>"Solicitação de Transferência","matpedidoitem"=>"Itens");
-	   $clcriaabas->sizecampo  = array("matpedido"=>"40","matpedidoitem"=>"20");
-	   $clcriaabas->title      = array("matpedido"=>"Solicitação de Transferência","matpedidoitem"=>"Itens Requisitados");
-	   $clcriaabas->src        = array("matpedido"=>"mat4_matpedido001.php","matpedidoitem"=>"mat1_matpedidoitem001.php");
-	   $clcriaabas->disabled   =  array("matpedidoitem"=>"true"); 
+	   $clcriaabas->identifica = ["matpedido"=>"Solicitação de Transferência","matpedidoitem"=>"Itens"];
+	   $clcriaabas->sizecampo  = ["matpedido"=>"40","matpedidoitem"=>"20"];
+	   $clcriaabas->title      = ["matpedido"=>"Solicitação de Transferência","matpedidoitem"=>"Itens Requisitados"];
+	   $clcriaabas->src        = ["matpedido"=>"mat4_matpedido001.php","matpedidoitem"=>"mat1_matpedidoitem001.php"];
+	   $clcriaabas->disabled   =  ["matpedidoitem"=>"true"]; 
 	   $clcriaabas->cria_abas(); 
 	 ?> 
 	 </td>

@@ -35,7 +35,7 @@ class ConfiguracaoDesdobramentoPatrimonio {
   
   static $oInstance;
   
-  protected $aListaDesdobramentos = array();
+  protected $aListaDesdobramentos = [];
   
   /**
    * Método construtor

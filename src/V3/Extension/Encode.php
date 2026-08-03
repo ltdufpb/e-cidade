@@ -20,11 +20,11 @@ class Encode {
   }
 
   static public function bin2hex($string) {
-    return bin2hex($string);
+    return bin2hex((string) $string);
   }
 
   static public function hex2bin($string) {
-    return hex2bin($string);
+    return hex2bin((string) $string);
   }
 
 }

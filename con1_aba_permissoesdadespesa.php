@@ -59,8 +59,8 @@ require_once(modification("dbforms/db_funcoes.php"));
             <tr>
                 <td><label for="id_usuario" id="ancora_usuario">Usuário: </label></td>
                 <td>
-                    <input type="text" id="id_usuario" value="<?= isset($id_usuario) ? $id_usuario : '' ?>"/>
-                    <input type="text" id="nome" value="<?= isset($nome) ? $nome : '' ?>"/>
+                    <input type="text" id="id_usuario" value="<?= $id_usuario ?? '' ?>"/>
+                    <input type="text" id="nome" value="<?= $nome ?? '' ?>"/>
                 </td>
             </tr>
             <tr>

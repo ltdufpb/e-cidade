@@ -32,7 +32,7 @@ try {
     $instituicaoSessao = InstituicaoRepository::getInstituicaoSessao();
     $anoSessao = db_getsession('DB_anousu');
 
-    parse_str($_SERVER['QUERY_STRING'], $queryString);
+    parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
     foreach ($queryString as $key => $value) {
         ${$key} = $value;
@@ -110,7 +110,7 @@ try {
     $saldo_dia_credito = 0;
     $saldo_dia_debito = 0;
 
-    $aContas = array();
+    $aContas = [];
 
     $numrows = pg_num_rows($resultcontasmovimento);
     for ($linha = 0; $linha < $numrows; $linha++) {
@@ -733,7 +733,7 @@ SQL;
         $quebra_data = '';
         $saldo_dia_final = $anterior;
 
-        $aContas[$k13_reduz]->data = array();
+        $aContas[$k13_reduz]->data = [];
         $iInd = -1;
         $saldo_dia_debito = 0;
         $saldo_dia_credito = 0;
@@ -781,7 +781,7 @@ SQL;
                     }
 
                     $aContas[$k13_reduz]->data[$iInd]->data = $data;
-                    $aContas[$k13_reduz]->data[$iInd]->movimentacoes = array();
+                    $aContas[$k13_reduz]->data[$iInd]->movimentacoes = [];
                 }
 
                 $oMovimentacao = new stdClass();
@@ -901,8 +901,8 @@ SQL;
     }
 
     if ($agrupapor != 1 || $receitaspor == 2) {
-        $aMovimentacao = array();
-        $aContasNovas = array();
+        $aMovimentacao = [];
+        $aContasNovas = [];
         foreach ($aContas as $key2 => $oConta) {
             $aContasNovas[$key2] = $oConta;
             foreach ($oConta->data as $key1 => $oData) {
@@ -1090,15 +1090,15 @@ SQL;
                     }
                 }
                 $aContasNovas[$oConta->k13_reduz]->data[$key1]->movimentacoes = $aMovimentacao;
-                $aMovimentacao = array();
+                $aMovimentacao = [];
             }
         }
 
         $aContas = $aContasNovas;
     } else {
         if ($agrupapor == 1 && $pagempenhos == 2) {
-            $aMovimentacao = array();
-            $aContasNovas = array();
+            $aMovimentacao = [];
+            $aContasNovas = [];
 
             foreach ($aContas as $key2 => $oConta) {
                 $aContasNovas[$key2] = $oConta;
@@ -1134,7 +1134,7 @@ SQL;
                         }
                     }
                     $aContasNovas[$oConta->k13_reduz]->data[$key1]->movimentacoes = $aMovimentacao;
-                    $aMovimentacao = array();
+                    $aMovimentacao = [];
                 }
             }
             $aContas = $aContasNovas;
@@ -1280,7 +1280,7 @@ SQL;
 
                                 $pdf->Cell(20, 5, "", 0, 0, "C", 0);
                                 $pdf->Cell(30, 5, "Autenticação mecânica:", "", 0, "L", 0);
-                                $pdf->Cell(150, 5, trim($oMovimento->k12_codautent), "", 0, "L", 0);
+                                $pdf->Cell(150, 5, trim((string) $oMovimento->k12_codautent), "", 0, "L", 0);
                                 $pdf->Ln();
                                 if ($pdf->GetY() > $pdf->h - 25) {
                                     $pdf->AddPage("L");
@@ -1334,14 +1334,14 @@ SQL;
                                         } else {
                                             $pdf->Cell(25, 5, "", "", 0, "L", 0);
                                         }
-                                        $oMovimento->historico = $pdf->Row_multicell(array(
+                                        $oMovimento->historico = $pdf->Row_multicell([
                                             '',
                                             '',
                                             '',
                                             $oMovimento->historico,
                                             '',
                                             ''
-                                        ), 5, false, 5, 0, true, true, 3, ($pdf->h - 25), 180);
+                                        ], 5, false, 5, 0, true, true, 3, ($pdf->h - 25), 180);
                                     }
                                 }
                             }
@@ -1418,7 +1418,7 @@ SQL;
                         imprimeCabecalhoTxt($fp);
                         $lQuebra_Historico = false;
                     }
-                    $aLinhaDados = array();
+                    $aLinhaDados = [];
                     $aLinhaDados[0] = db_formatar($oData->data, 'd');
                     $aLinhaDados[1] = $oMovimento->contrapartida;
                     $aLinhaDados[2] = $oMovimento->planilha;
@@ -1432,24 +1432,24 @@ SQL;
                         "f"
                     );
 
-                    fputcsv($fp, $aLinhaDados, ',', '"');
+                    fputcsv($fp, $aLinhaDados, ',', '"', escape: '\\');
 
                     //Demais detalhes quando analitica
                     if ($imprime_analitico == 'a') {
                         if (!isset($oMovimento->agrupado)) {
-                            $aLinhaDados = array();
+                            $aLinhaDados = [];
                             $aLinhaDados[0] = '';
                             $aLinhaDados[1] = "Autenticação mecânica:";
                             $aLinhaDados[2] = '';
                             $aLinhaDados[3] = '';
-                            $aLinhaDados[4] = trim($oMovimento->k12_codautent);
+                            $aLinhaDados[4] = trim((string) $oMovimento->k12_codautent);
                             $aLinhaDados[5] = '';
                             $aLinhaDados[6] = '';
                             $aLinhaDados[7] = '';
                             $aLinhaDados[8] = '';
-                            fputcsv($fp, $aLinhaDados, ',', '"');
+                            fputcsv($fp, $aLinhaDados, ',', '"', escape: '\\');
 
-                            $aLinhaDados = array();
+                            $aLinhaDados = [];
                             $aLinhaDados[0] = '';
                             $aLinhaDados[1] = "Classificação de baixa bancária:";
                             $aLinhaDados[2] = '';
@@ -1459,9 +1459,9 @@ SQL;
                             $aLinhaDados[6] = '';
                             $aLinhaDados[7] = '';
                             $aLinhaDados[8] = '';
-                            fputcsv($fp, $aLinhaDados, ',', '"');
+                            fputcsv($fp, $aLinhaDados, ',', '"', escape: '\\');
 
-                            $aLinhaDados = array();
+                            $aLinhaDados = [];
                             $aLinhaDados[0] = '';
                             $aLinhaDados[1] = "Nome/Razão Social:";
                             $aLinhaDados[2] = '';
@@ -1471,12 +1471,12 @@ SQL;
                             $aLinhaDados[6] = '';
                             $aLinhaDados[7] = '';
                             $aLinhaDados[8] = '';
-                            fputcsv($fp, $aLinhaDados, ',', '"');
+                            fputcsv($fp, $aLinhaDados, ',', '"', escape: '\\');
 
                             $lQuebra_Historico = false;
 
                             if ($oMovimento->historico != '' && $imprime_historico == 's') {
-                                $aLinhaDados = array();
+                                $aLinhaDados = [];
                                 $aLinhaDados[0] = '';
                                 $aLinhaDados[1] = "Histórico:";
                                 $aLinhaDados[2] = '';
@@ -1486,7 +1486,7 @@ SQL;
                                 $aLinhaDados[6] = '';
                                 $aLinhaDados[7] = '';
                                 $aLinhaDados[8] = '';
-                                fputcsv($fp, $aLinhaDados, ',', '"');
+                                fputcsv($fp, $aLinhaDados, ',', '"', escape: '\\');
                             }
                         }
                     }
@@ -1628,7 +1628,7 @@ function imprimeTotalMovConta(PDF $pdf, $saldoDebitado, $saldoCreditado, $saldoA
  */
 function imprimeContaTxt($handle, $codigo, $descricao, $debito, $credito, $lImprimeSaldo)
 {
-    $fields = array();
+    $fields = [];
     $fields[0] = '';
     $fields[1] = '';
     $fields[2] = '';
@@ -1639,9 +1639,9 @@ function imprimeContaTxt($handle, $codigo, $descricao, $debito, $credito, $lImpr
     $fields[7] = '';
     $fields[8] = '';
 
-    fputcsv($handle, $fields, ',', '"');
+    fputcsv($handle, $fields, ',', '"', escape: '\\');
 
-    $fields = array();
+    $fields = [];
     $fields[0] = 'CONTA';
     $fields[1] = $codigo . " - " . $descricao;
     $fields[2] = '';
@@ -1656,7 +1656,7 @@ function imprimeContaTxt($handle, $codigo, $descricao, $debito, $credito, $lImpr
         $fields[7] = $debito == 0 ? "" : db_formatar($debito, 'f');
         $fields[8] = $credito == 0 ? "" : db_formatar($credito, 'f');
     }
-    fputcsv($handle, $fields, ',', '"');
+    fputcsv($handle, $fields, ',', '"', escape: '\\');
 }
 
 /**
@@ -1664,7 +1664,7 @@ function imprimeContaTxt($handle, $codigo, $descricao, $debito, $credito, $lImpr
  */
 function imprimeCabecalhoTxt($handle)
 {
-    $fields = array();
+    $fields = [];
     $fields[0] = "DATA";
     $fields[1] = "CONTRAPARTIDA";
     $fields[2] = "PLANILHA";
@@ -1675,9 +1675,9 @@ function imprimeCabecalhoTxt($handle)
     $fields[7] = "DÉBITO";
     $fields[8] = "CRÉDITO";
 
-    fputcsv($handle, $fields, ',', '"');
+    fputcsv($handle, $fields, ',', '"', escape: '\\');
 
-    $fields = array();
+    $fields = [];
     $fields[0] = '';
     $fields[1] = "INFORMAÇÕES COMPLEMENTARES";
     $fields[2] = '';
@@ -1687,7 +1687,7 @@ function imprimeCabecalhoTxt($handle)
     $fields[6] = '';
     $fields[7] = '';
     $fields[8] = '';
-    fputcsv($handle, $fields, ',', '"');
+    fputcsv($handle, $fields, ',', '"', escape: '\\');
 }
 
 /**
@@ -1698,7 +1698,7 @@ function imprimeCabecalhoTxt($handle)
  */
 function imprimeTotalMovDiaTxt($handle, $saldoDiaDebito, $saldoDiaCredito, $saldoDiaFinal)
 {
-    $fields = array();
+    $fields = [];
     $fields[0] = '';
     $fields[1] = '';
     $fields[2] = '';
@@ -1708,9 +1708,9 @@ function imprimeTotalMovDiaTxt($handle, $saldoDiaDebito, $saldoDiaCredito, $sald
     $fields[6] = "TOTAIS DA MOVIMENTAÇÃO NO DIA:";
     $fields[7] = $saldoDiaDebito == 0 ? "" : db_formatar($saldoDiaDebito, 'f');
     $fields[8] = $saldoDiaCredito == 0 ? "" : db_formatar($saldoDiaCredito, 'f');
-    fputcsv($handle, $fields, ',', '"');
+    fputcsv($handle, $fields, ',', '"', escape: '\\');
 
-    $fields = array();
+    $fields = [];
     $fields[0] = '';
     $fields[1] = '';
     $fields[2] = '';
@@ -1720,7 +1720,7 @@ function imprimeTotalMovDiaTxt($handle, $saldoDiaDebito, $saldoDiaCredito, $sald
     $fields[6] = "SALDO NO DIA:";
     $fields[7] = '';
     $fields[8] = $saldoDiaFinal == 0 ? "" : db_formatar($saldoDiaFinal, 'f');
-    fputcsv($handle, $fields, ',', '"');
+    fputcsv($handle, $fields, ',', '"', escape: '\\');
 }
 
 /**
@@ -1731,7 +1731,7 @@ function imprimeTotalMovDiaTxt($handle, $saldoDiaDebito, $saldoDiaCredito, $sald
  */
 function imprimeTotalMovContaTxt($handle, $saldoDebitado, $saldoCreditado, $saldoAtual)
 {
-    $fields = array();
+    $fields = [];
     $fields[0] = '';
     $fields[1] = '';
     $fields[2] = '';
@@ -1741,9 +1741,9 @@ function imprimeTotalMovContaTxt($handle, $saldoDebitado, $saldoCreditado, $sald
     $fields[6] = "TOTAIS DA MOVIMENTAÇÃO 2:";
     $fields[7] = $saldoDebitado == 0 ? "" : db_formatar($saldoDebitado, 'f');
     $fields[8] = $saldoCreditado == 0 ? "" : db_formatar($saldoCreditado, 'f');
-    fputcsv($handle, $fields, ',', '"');
+    fputcsv($handle, $fields, ',', '"', escape: '\\');
 
-    $fields = array();
+    $fields = [];
     $fields[0] = '';
     $fields[1] = '';
     $fields[2] = '';
@@ -1753,5 +1753,5 @@ function imprimeTotalMovContaTxt($handle, $saldoDebitado, $saldoCreditado, $sald
     $fields[6] = "SALDO FINAL:";
     $fields[7] = '';
     $fields[8] = $saldoAtual == 0 ? "" : db_formatar($saldoAtual, 'f');
-    fputcsv($handle, $fields, ',', '"');
+    fputcsv($handle, $fields, ',', '"', escape: '\\');
 }

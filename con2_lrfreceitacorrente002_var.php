@@ -37,8 +37,8 @@ $classinatura = new cl_assinatura;
 $orcparamrel = new cl_orcparamrel;
 $clconrelinfo = new cl_conrelinfo;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 // variaveis 
 $anousu = db_getsession("DB_anousu");
@@ -67,14 +67,14 @@ $datafin = $anousu.''.$dt_fin;
 $dt_ini = $dataini;
 $dt_fin = $datafin;
 // -------------------------------------dt_fin
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
          $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     }else{
@@ -90,18 +90,18 @@ $dt_fin= $dt[1]; // data final do período
 $head2 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTARIA";
 $head3 = "DEMONSTRATIVO DA RECEITA CORRENTE LIQUIDA";
 $head4 = "ORÇAMENTO FICAL E DA SEGURIDADE SOCIAL ";
-$dt1d = array();
-$dt2d = array();
-$dtd1 = split('-',$dt_ini);
-$dtd2 = split('-',$dt_fin);
+$dt1d = [];
+$dt2d = [];
+$dtd1 = preg_split('#\-#m',(string) $dt_ini);
+$dtd2 = preg_split('#\-#m',(string) $dt_fin);
 $dt1 = "$dtd1[2]/$dtd1[1]/$dtd1[0]";
 $dt2 = "$dtd2[2]/$dtd2[1]/$dtd2[0]";
 $txt = strtoupper(db_mes('01'));
-$dt  = split("-",$dt_fin);
+$dt  = preg_split("#\\-#m",(string) $dt_fin);
 $txt.= " À ".strtoupper(db_mes($dt[1]))." $anousu/BIMESTRE ";;
-$dt  = split("-",$dt_ini);
+$dt  = preg_split("#\\-#m",(string) $dt_ini);
 $txt.= strtoupper(db_mes($dt[1]))."-";
-$dt  = split("-",$dt_fin);
+$dt  = preg_split("#\\-#m",(string) $dt_fin);
 $txt.= strtoupper(db_mes($dt[1]));
 $head5 = "$txt";
 

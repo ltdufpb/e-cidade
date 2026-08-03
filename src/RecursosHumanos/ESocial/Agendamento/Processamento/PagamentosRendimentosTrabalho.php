@@ -46,8 +46,6 @@ use ParametrosPessoalRepository;
  */
 class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements ProcessamentoInterface
 {
-    private $cgm;
-
     private $mes;
     private $ano;
 
@@ -71,12 +69,11 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
         $this->ano = $ano;
     }
 
-    public function __construct($cgm)
+    public function __construct(private $cgm)
     {
         $this->competenciaAnterior = DBPessoal::getCompetenciaFolha()->getCompetenciaAnterior();
         $this->mes = $this->competenciaAnterior->getMes();
         $this->ano = $this->competenciaAnterior->getAno();
-        $this->cgm = $cgm;
     }
 
     /**
@@ -146,9 +143,9 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
                 switch ($dado->tipo_evento_id) {
                     case TIPO::S2299_API:
                     case TIPO::S2399_API:
-                        $dado->referencia = substr($dado->referencia, 0, $quantidadeCompetencia);
+                        $dado->referencia = substr((string) $dado->referencia, 0, $quantidadeCompetencia);
                         if (!\ServidorRepository::isMatriculaValida($dado->referencia)) {
-                            continue;
+                            break;
                         }
                         $servidor = ServidorRepository::getInstanciaByCodigo(
                             $dado->referencia,
@@ -164,17 +161,17 @@ class PagamentosRendimentosTrabalho extends ProcessamentoAbstract implements Pro
                         unset($servidor);
                         break;
                     case TIPO::S1207_API:
-                        $referencia = explode('_', $dado->referencia);
+                        $referencia = explode('_', (string) $dado->referencia);
                         $dado->referencia = $referencia[0];
                         $dadoCgm->cgm = CgmRepository::getByCodigo($dado->referencia);
                         break;
                     case TIPO::S1202_API:
-                        $referencia = explode('-', $dado->referencia);
+                        $referencia = explode('-', (string) $dado->referencia);
                         $dado->referencia = $referencia[0];
                         $dadoCgm->cgm = CgmRepository::getByCodigo($dado->referencia);
                         break;
                     default:
-                        $dado->referencia = substr($dado->referencia, 0, -7);
+                        $dado->referencia = substr((string) $dado->referencia, 0, -7);
                         $dadoCgm->cgm = CgmRepository::getByCodigo($dado->referencia);
                         break;
                 }

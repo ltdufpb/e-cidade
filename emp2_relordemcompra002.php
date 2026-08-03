@@ -30,7 +30,7 @@ include(modification("libs/db_sql.php"));
 include(modification("classes/db_matordem_classe.php"));
 include(modification("classes/db_matordemitem_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clmatordem = new cl_matordem;
 $clmatordemitem = new cl_matordemitem;
@@ -356,7 +356,7 @@ if ($itens=="true"){
 		  left join matordemanu on m53_codordem=m51_codordem  
 	   where $where $txt_where $where1 group by pc01_descrmater,pc01_codmater";
     $result_totitens=db_query($sql);	   
-    for($y = 0; $y < pg_numrows($result_totitens);$y++){
+    for($y = 0; $y < pg_num_rows($result_totitens);$y++){
       db_fieldsmemory($result_totitens,$y);
       if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
 	$pdf->addpage('L');

@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE materialtipogrupovinculo
 class cl_materialtipogrupovinculo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m04_sequencial = 0; 
-   var $m04_materialtipogrupo = 0; 
-   var $m04_materialestoquegrupo = 0; 
+   public $m04_sequencial = 0; 
+   public $m04_materialtipogrupo = 0; 
+   public $m04_materialestoquegrupo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m04_sequencial = int4 = Codigo Sequencial 
                  m04_materialtipogrupo = int4 = Tipo do Grupo 
                  m04_materialestoquegrupo = int4 = Grupo 
                  ";
    //funcao construtor da classe 
-   function cl_materialtipogrupovinculo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("materialtipogrupovinculo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_materialtipogrupovinculo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m04_sequencial = pg_result($result,0,0); 
+       $this->m04_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from materialtipogrupovinculo_m04_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m04_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m04_sequencial)){
          $this->erro_sql = " Campo m04_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_materialtipogrupovinculo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tipos de Grupo do Material Vinculo ($this->m04_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tipos de Grupo do Material Vinculo já Cadastrado";
@@ -171,12 +171,12 @@ class cl_materialtipogrupovinculo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19159,'$this->m04_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3404,19159,'','".AddSlashes(pg_result($resaco,0,'m04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3404,19160,'','".AddSlashes(pg_result($resaco,0,'m04_materialtipogrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3404,20818,'','".AddSlashes(pg_result($resaco,0,'m04_materialestoquegrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3404,19159,'','".AddSlashes(pg_fetch_result($resaco,0,'m04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3404,19160,'','".AddSlashes(pg_fetch_result($resaco,0,'m04_materialtipogrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3404,20818,'','".AddSlashes(pg_fetch_result($resaco,0,'m04_materialestoquegrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_materialtipogrupovinculo {
       $this->atualizacampos();
      $sql = " update materialtipogrupovinculo set ";
      $virgula = "";
-     if(trim($this->m04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m04_sequencial"])){ 
+     if(trim((string) $this->m04_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m04_sequencial"])){ 
        $sql  .= $virgula." m04_sequencial = $this->m04_sequencial ";
        $virgula = ",";
-       if(trim($this->m04_sequencial) == null ){ 
+       if(trim((string) $this->m04_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo Sequencial não informado.";
          $this->erro_campo = "m04_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_materialtipogrupovinculo {
          return false;
        }
      }
-     if(trim($this->m04_materialtipogrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m04_materialtipogrupo"])){ 
+     if(trim((string) $this->m04_materialtipogrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m04_materialtipogrupo"])){ 
        $sql  .= $virgula." m04_materialtipogrupo = $this->m04_materialtipogrupo ";
        $virgula = ",";
-       if(trim($this->m04_materialtipogrupo) == null ){ 
+       if(trim((string) $this->m04_materialtipogrupo) == null ){ 
          $this->erro_sql = " Campo Tipo do Grupo não informado.";
          $this->erro_campo = "m04_materialtipogrupo";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_materialtipogrupovinculo {
          return false;
        }
      }
-     if(trim($this->m04_materialestoquegrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m04_materialestoquegrupo"])){ 
+     if(trim((string) $this->m04_materialestoquegrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m04_materialestoquegrupo"])){ 
        $sql  .= $virgula." m04_materialestoquegrupo = $this->m04_materialestoquegrupo ";
        $virgula = ",";
-       if(trim($this->m04_materialestoquegrupo) == null ){ 
+       if(trim((string) $this->m04_materialestoquegrupo) == null ){ 
          $this->erro_sql = " Campo Grupo não informado.";
          $this->erro_campo = "m04_materialestoquegrupo";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_materialtipogrupovinculo {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19159,'$this->m04_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m04_sequencial"]) || $this->m04_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3404,19159,'".AddSlashes(pg_result($resaco,$conresaco,'m04_sequencial'))."','$this->m04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3404,19159,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m04_sequencial'))."','$this->m04_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m04_materialtipogrupo"]) || $this->m04_materialtipogrupo != "")
-             $resac = db_query("insert into db_acount values($acount,3404,19160,'".AddSlashes(pg_result($resaco,$conresaco,'m04_materialtipogrupo'))."','$this->m04_materialtipogrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3404,19160,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m04_materialtipogrupo'))."','$this->m04_materialtipogrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["m04_materialestoquegrupo"]) || $this->m04_materialestoquegrupo != "")
-             $resac = db_query("insert into db_acount values($acount,3404,20818,'".AddSlashes(pg_result($resaco,$conresaco,'m04_materialestoquegrupo'))."','$this->m04_materialestoquegrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3404,20818,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m04_materialestoquegrupo'))."','$this->m04_materialestoquegrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_materialtipogrupovinculo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19159,'$m04_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3404,19159,'','".AddSlashes(pg_result($resaco,$iresaco,'m04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3404,19160,'','".AddSlashes(pg_result($resaco,$iresaco,'m04_materialtipogrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3404,20818,'','".AddSlashes(pg_result($resaco,$iresaco,'m04_materialestoquegrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3404,19159,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m04_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3404,19160,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m04_materialtipogrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3404,20818,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m04_materialestoquegrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

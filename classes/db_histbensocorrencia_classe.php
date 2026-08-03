@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE histbensocorrencia
 class cl_histbensocorrencia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t69_sequencial = 0; 
-   var $t69_codbem = 0; 
-   var $t69_ocorrenciasbens = 0; 
-   var $t69_obs = null; 
-   var $t69_dthist_dia = null; 
-   var $t69_dthist_mes = null; 
-   var $t69_dthist_ano = null; 
-   var $t69_dthist = null; 
-   var $t69_hora = null; 
+   public $t69_sequencial = 0; 
+   public $t69_codbem = 0; 
+   public $t69_ocorrenciasbens = 0; 
+   public $t69_obs = null; 
+   public $t69_dthist_dia = null; 
+   public $t69_dthist_mes = null; 
+   public $t69_dthist_ano = null; 
+   public $t69_dthist = null; 
+   public $t69_hora = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t69_sequencial = int4 = Sequêncial 
                  t69_codbem = int4 = Cód Bem 
                  t69_ocorrenciasbens = int4 = Cód Ocorrência 
@@ -61,10 +61,10 @@ class cl_histbensocorrencia {
                  t69_hora = char(5) = Hora da Ocorrência 
                  ";
    //funcao construtor da classe 
-   function cl_histbensocorrencia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("histbensocorrencia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -153,10 +153,10 @@ class cl_histbensocorrencia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->t69_sequencial = pg_result($result,0,0); 
+       $this->t69_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from histbensocorrencia_t69_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $t69_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $t69_sequencial)){
          $this->erro_sql = " Campo t69_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -194,7 +194,7 @@ class cl_histbensocorrencia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Histórico de Ocorrências do Bem ($this->t69_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Histórico de Ocorrências do Bem já Cadastrado";
@@ -218,15 +218,15 @@ class cl_histbensocorrencia {
      $resaco = $this->sql_record($this->sql_query_file($this->t69_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,13856,'$this->t69_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2424,13856,'','".AddSlashes(pg_result($resaco,0,'t69_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2424,13857,'','".AddSlashes(pg_result($resaco,0,'t69_codbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2424,13858,'','".AddSlashes(pg_result($resaco,0,'t69_ocorrenciasbens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2424,13861,'','".AddSlashes(pg_result($resaco,0,'t69_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2424,13859,'','".AddSlashes(pg_result($resaco,0,'t69_dthist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2424,13860,'','".AddSlashes(pg_result($resaco,0,'t69_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2424,13856,'','".AddSlashes(pg_fetch_result($resaco,0,'t69_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2424,13857,'','".AddSlashes(pg_fetch_result($resaco,0,'t69_codbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2424,13858,'','".AddSlashes(pg_fetch_result($resaco,0,'t69_ocorrenciasbens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2424,13861,'','".AddSlashes(pg_fetch_result($resaco,0,'t69_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2424,13859,'','".AddSlashes(pg_fetch_result($resaco,0,'t69_dthist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2424,13860,'','".AddSlashes(pg_fetch_result($resaco,0,'t69_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -235,10 +235,10 @@ class cl_histbensocorrencia {
       $this->atualizacampos();
      $sql = " update histbensocorrencia set ";
      $virgula = "";
-     if(trim($this->t69_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_sequencial"])){ 
+     if(trim((string) $this->t69_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_sequencial"])){ 
        $sql  .= $virgula." t69_sequencial = $this->t69_sequencial ";
        $virgula = ",";
-       if(trim($this->t69_sequencial) == null ){ 
+       if(trim((string) $this->t69_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequêncial nao Informado.";
          $this->erro_campo = "t69_sequencial";
          $this->erro_banco = "";
@@ -248,10 +248,10 @@ class cl_histbensocorrencia {
          return false;
        }
      }
-     if(trim($this->t69_codbem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_codbem"])){ 
+     if(trim((string) $this->t69_codbem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_codbem"])){ 
        $sql  .= $virgula." t69_codbem = $this->t69_codbem ";
        $virgula = ",";
-       if(trim($this->t69_codbem) == null ){ 
+       if(trim((string) $this->t69_codbem) == null ){ 
          $this->erro_sql = " Campo Cód Bem nao Informado.";
          $this->erro_campo = "t69_codbem";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_histbensocorrencia {
          return false;
        }
      }
-     if(trim($this->t69_ocorrenciasbens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_ocorrenciasbens"])){ 
+     if(trim((string) $this->t69_ocorrenciasbens)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_ocorrenciasbens"])){ 
        $sql  .= $virgula." t69_ocorrenciasbens = $this->t69_ocorrenciasbens ";
        $virgula = ",";
-       if(trim($this->t69_ocorrenciasbens) == null ){ 
+       if(trim((string) $this->t69_ocorrenciasbens) == null ){ 
          $this->erro_sql = " Campo Cód Ocorrência nao Informado.";
          $this->erro_campo = "t69_ocorrenciasbens";
          $this->erro_banco = "";
@@ -274,10 +274,10 @@ class cl_histbensocorrencia {
          return false;
        }
      }
-     if(trim($this->t69_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_obs"])){ 
+     if(trim((string) $this->t69_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_obs"])){ 
        $sql  .= $virgula." t69_obs = '$this->t69_obs' ";
        $virgula = ",";
-       if(trim($this->t69_obs) == null ){ 
+       if(trim((string) $this->t69_obs) == null ){ 
          $this->erro_sql = " Campo Observação nao Informado.";
          $this->erro_campo = "t69_obs";
          $this->erro_banco = "";
@@ -287,10 +287,10 @@ class cl_histbensocorrencia {
          return false;
        }
      }
-     if(trim($this->t69_dthist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_dthist_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t69_dthist_dia"] !="") ){ 
+     if(trim((string) $this->t69_dthist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_dthist_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["t69_dthist_dia"] !="") ){ 
        $sql  .= $virgula." t69_dthist = '$this->t69_dthist' ";
        $virgula = ",";
-       if(trim($this->t69_dthist) == null ){ 
+       if(trim((string) $this->t69_dthist) == null ){ 
          $this->erro_sql = " Campo Data do Histórico nao Informado.";
          $this->erro_campo = "t69_dthist_dia";
          $this->erro_banco = "";
@@ -303,7 +303,7 @@ class cl_histbensocorrencia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["t69_dthist_dia"])){ 
          $sql  .= $virgula." t69_dthist = null ";
          $virgula = ",";
-         if(trim($this->t69_dthist) == null ){ 
+         if(trim((string) $this->t69_dthist) == null ){ 
            $this->erro_sql = " Campo Data do Histórico nao Informado.";
            $this->erro_campo = "t69_dthist_dia";
            $this->erro_banco = "";
@@ -314,10 +314,10 @@ class cl_histbensocorrencia {
          }
        }
      }
-     if(trim($this->t69_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_hora"])){ 
+     if(trim((string) $this->t69_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t69_hora"])){ 
        $sql  .= $virgula." t69_hora = '$this->t69_hora' ";
        $virgula = ",";
-       if(trim($this->t69_hora) == null ){ 
+       if(trim((string) $this->t69_hora) == null ){ 
          $this->erro_sql = " Campo Hora da Ocorrência nao Informado.";
          $this->erro_campo = "t69_hora";
          $this->erro_banco = "";
@@ -335,21 +335,21 @@ class cl_histbensocorrencia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13856,'$this->t69_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t69_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2424,13856,'".AddSlashes(pg_result($resaco,$conresaco,'t69_sequencial'))."','$this->t69_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2424,13856,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t69_sequencial'))."','$this->t69_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t69_codbem"]))
-           $resac = db_query("insert into db_acount values($acount,2424,13857,'".AddSlashes(pg_result($resaco,$conresaco,'t69_codbem'))."','$this->t69_codbem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2424,13857,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t69_codbem'))."','$this->t69_codbem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t69_ocorrenciasbens"]))
-           $resac = db_query("insert into db_acount values($acount,2424,13858,'".AddSlashes(pg_result($resaco,$conresaco,'t69_ocorrenciasbens'))."','$this->t69_ocorrenciasbens',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2424,13858,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t69_ocorrenciasbens'))."','$this->t69_ocorrenciasbens',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t69_obs"]))
-           $resac = db_query("insert into db_acount values($acount,2424,13861,'".AddSlashes(pg_result($resaco,$conresaco,'t69_obs'))."','$this->t69_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2424,13861,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t69_obs'))."','$this->t69_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t69_dthist"]))
-           $resac = db_query("insert into db_acount values($acount,2424,13859,'".AddSlashes(pg_result($resaco,$conresaco,'t69_dthist'))."','$this->t69_dthist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2424,13859,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t69_dthist'))."','$this->t69_dthist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["t69_hora"]))
-           $resac = db_query("insert into db_acount values($acount,2424,13860,'".AddSlashes(pg_result($resaco,$conresaco,'t69_hora'))."','$this->t69_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2424,13860,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'t69_hora'))."','$this->t69_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,15 +394,15 @@ class cl_histbensocorrencia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13856,'$t69_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2424,13856,'','".AddSlashes(pg_result($resaco,$iresaco,'t69_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2424,13857,'','".AddSlashes(pg_result($resaco,$iresaco,'t69_codbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2424,13858,'','".AddSlashes(pg_result($resaco,$iresaco,'t69_ocorrenciasbens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2424,13861,'','".AddSlashes(pg_result($resaco,$iresaco,'t69_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2424,13859,'','".AddSlashes(pg_result($resaco,$iresaco,'t69_dthist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2424,13860,'','".AddSlashes(pg_result($resaco,$iresaco,'t69_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2424,13856,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t69_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2424,13857,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t69_codbem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2424,13858,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t69_ocorrenciasbens'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2424,13861,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t69_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2424,13859,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t69_dthist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2424,13860,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'t69_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from histbensocorrencia
@@ -462,7 +462,7 @@ class cl_histbensocorrencia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:histbensocorrencia";
@@ -477,7 +477,7 @@ class cl_histbensocorrencia {
    function sql_query ( $t69_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -507,7 +507,7 @@ class cl_histbensocorrencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -520,7 +520,7 @@ class cl_histbensocorrencia {
    function sql_query_file ( $t69_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -541,7 +541,7 @@ class cl_histbensocorrencia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

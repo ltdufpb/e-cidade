@@ -157,7 +157,7 @@ $Smesfinal   = "O mês final";
             <td>
               <?php
 
-              $aAtosLegais = array(
+              $aAtosLegais = [
                                      "2"  => "Decreto",
                                      "1"  => "Constituição Federal",
                                      "3"  => "Decreto Legislativo",
@@ -172,7 +172,7 @@ $Smesfinal   = "O mês final";
                                      "12" => "Parecer",
                                      "13" => "Orientação Normativa",
                                      "99" => "Outros"
-                                  );
+                                  ];
 
               db_select('TipoAto', $aAtosLegais, true, 4, "rel=\"ignore-css\""); ?>
             </td>

@@ -47,8 +47,8 @@ $clrotulo->label("vc01_i_unidade");
                                                          $sWhere
                                                         );
                   $rsUnidades = $oDaoUnidades->sql_record($sSql);
-                  $aOptions   = array();
-                  $aOptions2  = array();
+                  $aOptions   = [];
+                  $aOptions2  = [];
                   for ($iInd=0; $iInd < $oDaoUnidades->numrows; $iInd++) {
                      
                    $oUnidade                  = db_utils::fieldsmemory($rsUnidades,$iInd);
@@ -74,7 +74,7 @@ $clrotulo->label("vc01_i_unidade");
                     </td>
                     <td>
                       <?php 
-                        $aOptions = array();
+                        $aOptions = [];
                         for ($iMes=1; $iMes <= 12; $iMes++) {
 
                           $sMes            = db_mes($iMes,2);

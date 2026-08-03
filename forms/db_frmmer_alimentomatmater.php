@@ -54,7 +54,7 @@ if (isset($opcao) && $opcao == "alterar") {
   }
 } 
 ?>
-<form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" >
+<form name="form1" method="post" action="<?=basename((string) $_SERVER['PHP_SELF'])?>" >
 <table border="0" cellspacing="0" cellpadding="0">
  <br><br>
  <tr>
@@ -112,12 +112,12 @@ if (isset($opcao) && $opcao == "alterar") {
   <tr>
     <td valign="top"> 
     <?php 
-     $chavepri                                = array("me36_i_codigo"=>@$me36_i_codigo,
+     $chavepri                                = ["me36_i_codigo"=>@$me36_i_codigo,
                                                       "me36_i_alimento"=>@$me36_i_alimento, 
                                                       "me35_c_nomealimento"=>@$me35_c_nomealimento,
                                                       "m60_codmater"=>@$m60_codmater,
                                                       "m60_descr"=>@$m60_descr
-                                                     );
+                                                     ];
      $cliframe_alterar_excluir->chavepri      = $chavepri;      
      $cliframe_alterar_excluir->sql           = $clmer_alimentomatmater->sql_query(null,
                                                                                    '*',

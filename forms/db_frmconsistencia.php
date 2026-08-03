@@ -31,7 +31,7 @@
 <strong>Arquivos do:</strong>
 <?php  
 
-$periodo = array("1"=> " 1 - Janeiro          ",
+$periodo = ["1"=> " 1 - Janeiro          ",
 "2"=> " 2 - Fevereiro (1 Bim)",
 "3"=> " 3 - Março            ",
 "4"=> " 4 - Abril     (2 Bim)",
@@ -42,7 +42,7 @@ $periodo = array("1"=> " 1 - Janeiro          ",
 "9"=> " 9 - Setembro         ",
 "10"=>"10 - Outubro   (5 Bim)",
 "11"=>"11 - Novembro         ",
-"12"=>"12 - Dezembro  (6 Bim)");
+"12"=>"12 - Dezembro  (6 Bim)"];
 global $periodopad;
 $periodopad = date("m",db_getsession("DB_datausu"))-1;
 if(db_getsession("DB_anousu") != date("Y",db_getsession("DB_datausu"))){

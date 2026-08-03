@@ -89,7 +89,7 @@ try {
       $oDaoProcessoApensado->incluir(null);
 
       $oRetorno->status = 2;
-      $oRetorno->message = urlencode($oDaoProcessoApensado->erro_msg);
+      $oRetorno->message = urlencode((string) $oDaoProcessoApensado->erro_msg);
       if ($oDaoProcessoApensado->erro_status != 0) {
 
         $mProcessos = buscaProcessosApensados($oParam->principal);
@@ -112,7 +112,7 @@ try {
       $oDaoProcessoApensado->excluir(null, $sWhere);
 
       $oRetorno->status = 2;
-      $oRetorno->message = urlencode($oDaoProcessoApensado->erro_msg);
+      $oRetorno->message = urlencode((string) $oDaoProcessoApensado->erro_msg);
       if ($oDaoProcessoApensado->erro_status != 0) {
 
         $oRetorno->status = 1;

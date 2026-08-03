@@ -9,6 +9,7 @@ class Update extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -39,38 +40,39 @@ class Update extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "q170_codigo.required"           => utf8_encode("Código não informado."),
-            "q170_codigo.filled"             => utf8_encode("Código informada está vazio."),
-            "q170_codigo.integer"            => utf8_encode("Código inválido."),
+            "q170_codigo.required"           => mb_convert_encoding("Código não informado.", 'UTF-8', 'ISO-8859-1'),
+            "q170_codigo.filled"             => mb_convert_encoding("Código informada está vazio.", 'UTF-8', 'ISO-8859-1'),
+            "q170_codigo.integer"            => mb_convert_encoding("Código inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "q170_tipoalvara.required"       => utf8_encode("Tipo de alvará não informado."),
-            "q170_tipoalvara.filled"         => utf8_encode("Tipo de alvará informado está vazia."),
-            "q170_tipoalvara.integer"        => utf8_encode("Tipo de alvará inválido."),
+            "q170_tipoalvara.required"       => mb_convert_encoding("Tipo de alvará não informado.", 'UTF-8', 'ISO-8859-1'),
+            "q170_tipoalvara.filled"         => mb_convert_encoding("Tipo de alvará informado está vazia.", 'UTF-8', 'ISO-8859-1'),
+            "q170_tipoalvara.integer"        => mb_convert_encoding("Tipo de alvará inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "q170_ordemservico.required"     => utf8_encode("Ordem de serviço não informada."),
-            "q170_ordemservico.filled"       => utf8_encode("Ordem de serviço informada está vazia."),
-            "q170_ordemservico.integer"      => utf8_encode("Ordem de serviço inválida."),
-            "q170_ordemservico.unique"       => utf8_encode("Ordem de serviço já vinculada com outro alvará."),
+            "q170_ordemservico.required"     => mb_convert_encoding("Ordem de serviço não informada.", 'UTF-8', 'ISO-8859-1'),
+            "q170_ordemservico.filled"       => mb_convert_encoding("Ordem de serviço informada está vazia.", 'UTF-8', 'ISO-8859-1'),
+            "q170_ordemservico.integer"      => mb_convert_encoding("Ordem de serviço inválida.", 'UTF-8', 'ISO-8859-1'),
+            "q170_ordemservico.unique"       => mb_convert_encoding("Ordem de serviço já vinculada com outro alvará.", 'UTF-8', 'ISO-8859-1'),
 
-            "q170_certidaobombeiro.required" => utf8_encode("Certidão de bombeiros não informada."),
-            "q170_certidaobombeiro.filled"   => utf8_encode("Certidão de bombeiros informada está vazia."),
-            "q170_certidaobombeiro.string"   => utf8_encode("Certidão de bombeiros inválida."),
+            "q170_certidaobombeiro.required" => mb_convert_encoding("Certidão de bombeiros não informada.", 'UTF-8', 'ISO-8859-1'),
+            "q170_certidaobombeiro.filled"   => mb_convert_encoding("Certidão de bombeiros informada está vazia.", 'UTF-8', 'ISO-8859-1'),
+            "q170_certidaobombeiro.string"   => mb_convert_encoding("Certidão de bombeiros inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "q170_dataemissao.date"          => utf8_encode("Data de emissao inválida."),
+            "q170_dataemissao.date"          => mb_convert_encoding("Data de emissao inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "q170_observacao.required"       => utf8_encode("Observação não informada."),
-            "q170_observacao.filled"         => utf8_encode("Observação informada está vazia."),
-            "q170_observacao.string"         => utf8_encode("Observação inválida."),
+            "q170_observacao.required"       => mb_convert_encoding("Observação não informada.", 'UTF-8', 'ISO-8859-1'),
+            "q170_observacao.filled"         => mb_convert_encoding("Observação informada está vazia.", 'UTF-8', 'ISO-8859-1'),
+            "q170_observacao.string"         => mb_convert_encoding("Observação inválida.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

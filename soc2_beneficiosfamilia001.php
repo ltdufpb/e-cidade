@@ -39,10 +39,10 @@ $oRotulo->label("as04_sequencial");
 $oRotulo->label("as15_codigofamiliarcadastrounico");
 $oRotulo->label("ov02_nome");
 
-$aAlfabeto = array("A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J",
+$aAlfabeto = ["A"=>"A", "B"=>"B", "C"=>"C", "D"=>"D", "E"=>"E", "F"=>"F", "G"=>"G", "H"=>"H", "I"=>"I", "J"=>"J",
     "K"=>"K", "L"=>"L", "M"=>"M", "N"=>"N","O"=>"O","P"=>"P","Q"=>"Q","R"=>"R","S"=>"S","T"=>"T","U"=>"U",
-    "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z");
-$aMesCompetencia = array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 11=>11, 12=>12);
+    "V"=>"V", "W"=>"W", "X"=>"X", "Y"=>"Y", "Z"=>"Z"];
+$aMesCompetencia = [1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 11=>11, 12=>12];
 $sAnoCompetencia = "";
 
 ?>

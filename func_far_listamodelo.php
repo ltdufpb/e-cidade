@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_far_listamodelo_classe.php"));
 include(modification("classes/db_far_modelolivro_classe.php"));
 include(modification("classes/db_far_listacontrolado_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clfar_listamodelo = new cl_far_listamodelo;
 $clfar_modelolivro = new cl_far_modelolivro;
 $clfar_listacontrolado = new cl_far_listacontrolado;
@@ -102,9 +102,9 @@ $clfar_modelolivro->rotulo->label("fa16_c_nome");
         }else{
            $sql = $clfar_listamodelo->sql_query("",$campos,"fa17_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_fa17_i_codigo)){
-          $repassa = array("chave_fa17_i_codigo"=>$chave_fa17_i_codigo,"chave_fa17_i_codigo"=>$chave_fa17_i_codigo);
+          $repassa = ["chave_fa17_i_codigo"=>$chave_fa17_i_codigo,"chave_fa17_i_codigo"=>$chave_fa17_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

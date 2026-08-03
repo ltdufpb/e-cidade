@@ -35,7 +35,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
 require_once(modification("libs/db_dbf_class.php"));
 include_once(modification('dbforms/db_layouttxt.php'));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoVacAplicalote    = db_utils::getdao('vac_aplicalote');
 $oDaoVacSala          = db_utils::getdao('vac_sala');
 $db_opcao             = 1;
@@ -132,11 +132,11 @@ if (isset($confirma)) {
   $sSql                 = $oDaoUnidades->sql_query($iDepartamento);
   $rsResult             = $oDaoUnidades->sql_record($sSql);
   $oDados               = db_utils::fieldsMemory($rsResult,0);
-  $aVet                 = array(1=>"r",2=>"c");
+  $aVet                 = [1=>"r",2=>"c"];
   $sT                   = $aVet[$estrategia];
   $sL                   = "m";
-  $sUF                  = strtolower($oDados->z01_uf);
-  $sX                   = strtolower($oDados->sd02_i_cidade);
+  $sUF                  = strtolower((string) $oDados->z01_uf);
+  $sX                   = strtolower((string) $oDados->sd02_i_cidade);
   if($mes < 10){
     $sM = $mes;
   } elseif ($mes == 10) {
@@ -256,7 +256,7 @@ if (isset($confirma)) {
       $sSql      = $oDaoVacAplicalote->sql_query2(null,$sCampos,null,$sWhere);
       $rsVacina  = $oDaoVacAplicalote->sql_record($sSql);
 
-      $aAplicaLote = array();
+      $aAplicaLote = [];
       $iVacinas = $oDaoVacAplicalote->numrows;
       for ($iX = 0; $iX < $iVacinas; $iX++) {
 
@@ -288,7 +288,7 @@ if (isset($confirma)) {
         }
         db_atutermometro ($iX, $iVacinas, 'termometro' );
         $iRegistro = 1;
-        $aDados = Array($oRegistro->cod_ub,
+        $aDados = [$oRegistro->cod_ub,
                         $oRegistro->mes_vac,
                         $oRegistro->imuno,
                         $oRegistro->dose,
@@ -301,7 +301,7 @@ if (isset($confirma)) {
                         $oRegistro->qt_fe07,
                         $oRegistro->qt_fe08,
                         $oRegistro->qt_fe09,
-                        $oRegistro->qt_fe10);
+                        $oRegistro->qt_fe10];
         $oBanco->addRegistro($aDados);
 
       }
@@ -316,7 +316,7 @@ if (isset($confirma)) {
   }  
   if ($oDaoVacArquivopni->erro_status != "0") {
   	
-  	$aDados = Array('HEAD9.9','0','R','A',0,0,0,0,0,0,0,0,0,0);
+  	$aDados = ['HEAD9.9','0','R','A',0,0,0,0,0,0,0,0,0,0];
     $oBanco->addRegistro($aDados);
   	$oBanco->criar($dHoje);
     db_inicio_transacao ();

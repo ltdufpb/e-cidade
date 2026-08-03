@@ -3,26 +3,26 @@
 //CLASSE DA ENTIDADE previsaodespesalinhaspacto
 class cl_previsaodespesalinhaspacto { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c41_sequencial = 0; 
-   var $c41_previsaodespesa = 0; 
-   var $c41_linhaspacto = 0; 
-   var $c41_previsaodespesaplano = 0; 
-   var $c41_valorlinha = 0; 
+   public $c41_sequencial = 0; 
+   public $c41_previsaodespesa = 0; 
+   public $c41_linhaspacto = 0; 
+   public $c41_previsaodespesaplano = 0; 
+   public $c41_valorlinha = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c41_sequencial = int4 = Código 
                  c41_previsaodespesa = int4 = Previsão despesa 
                  c41_linhaspacto = int4 = LInhas pacto 
@@ -30,10 +30,10 @@ class cl_previsaodespesalinhaspacto {
                  c41_valorlinha = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_previsaodespesalinhaspacto() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("previsaodespesalinhaspacto"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -105,10 +105,10 @@ class cl_previsaodespesalinhaspacto {
          $this->erro_status = "0";
          return false; 
        }
-       $this->c41_sequencial = pg_result($result,0,0); 
+       $this->c41_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from previsaodespesalinhaspacto_c41_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c41_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c41_sequencial)){
          $this->erro_sql = " Campo c41_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -144,7 +144,7 @@ class cl_previsaodespesalinhaspacto {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "previsaodespesalinhaspacto ($this->c41_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "previsaodespesalinhaspacto já Cadastrado";
@@ -173,14 +173,14 @@ class cl_previsaodespesalinhaspacto {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1009878,'$this->c41_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010302,1009878,'','".AddSlashes(pg_result($resaco,0,'c41_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010302,1009879,'','".AddSlashes(pg_result($resaco,0,'c41_previsaodespesa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010302,1009880,'','".AddSlashes(pg_result($resaco,0,'c41_linhaspacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010302,1009885,'','".AddSlashes(pg_result($resaco,0,'c41_previsaodespesaplano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010302,1009886,'','".AddSlashes(pg_result($resaco,0,'c41_valorlinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010302,1009878,'','".AddSlashes(pg_fetch_result($resaco,0,'c41_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010302,1009879,'','".AddSlashes(pg_fetch_result($resaco,0,'c41_previsaodespesa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010302,1009880,'','".AddSlashes(pg_fetch_result($resaco,0,'c41_linhaspacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010302,1009885,'','".AddSlashes(pg_fetch_result($resaco,0,'c41_previsaodespesaplano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010302,1009886,'','".AddSlashes(pg_fetch_result($resaco,0,'c41_valorlinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -190,10 +190,10 @@ class cl_previsaodespesalinhaspacto {
       $this->atualizacampos();
      $sql = " update previsaodespesalinhaspacto set ";
      $virgula = "";
-     if(trim($this->c41_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c41_sequencial"])){ 
+     if(trim((string) $this->c41_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c41_sequencial"])){ 
        $sql  .= $virgula." c41_sequencial = $this->c41_sequencial ";
        $virgula = ",";
-       if(trim($this->c41_sequencial) == null ){ 
+       if(trim((string) $this->c41_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "c41_sequencial";
          $this->erro_banco = "";
@@ -203,10 +203,10 @@ class cl_previsaodespesalinhaspacto {
          return false;
        }
      }
-     if(trim($this->c41_previsaodespesa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c41_previsaodespesa"])){ 
+     if(trim((string) $this->c41_previsaodespesa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c41_previsaodespesa"])){ 
        $sql  .= $virgula." c41_previsaodespesa = $this->c41_previsaodespesa ";
        $virgula = ",";
-       if(trim($this->c41_previsaodespesa) == null ){ 
+       if(trim((string) $this->c41_previsaodespesa) == null ){ 
          $this->erro_sql = " Campo Previsão despesa não informado.";
          $this->erro_campo = "c41_previsaodespesa";
          $this->erro_banco = "";
@@ -216,10 +216,10 @@ class cl_previsaodespesalinhaspacto {
          return false;
        }
      }
-     if(trim($this->c41_linhaspacto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c41_linhaspacto"])){ 
+     if(trim((string) $this->c41_linhaspacto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c41_linhaspacto"])){ 
        $sql  .= $virgula." c41_linhaspacto = $this->c41_linhaspacto ";
        $virgula = ",";
-       if(trim($this->c41_linhaspacto) == null ){ 
+       if(trim((string) $this->c41_linhaspacto) == null ){ 
          $this->erro_sql = " Campo LInhas pacto não informado.";
          $this->erro_campo = "c41_linhaspacto";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_previsaodespesalinhaspacto {
          return false;
        }
      }
-     if(trim($this->c41_previsaodespesaplano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c41_previsaodespesaplano"])){ 
+     if(trim((string) $this->c41_previsaodespesaplano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c41_previsaodespesaplano"])){ 
        $sql  .= $virgula." c41_previsaodespesaplano = $this->c41_previsaodespesaplano ";
        $virgula = ",";
-       if(trim($this->c41_previsaodespesaplano) == null ){ 
+       if(trim((string) $this->c41_previsaodespesaplano) == null ){ 
          $this->erro_sql = " Campo Plano orçamentário não informado.";
          $this->erro_campo = "c41_previsaodespesaplano";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_previsaodespesalinhaspacto {
          return false;
        }
      }
-     if(trim($this->c41_valorlinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c41_valorlinha"])){ 
+     if(trim((string) $this->c41_valorlinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c41_valorlinha"])){ 
        $sql  .= $virgula." c41_valorlinha = $this->c41_valorlinha ";
        $virgula = ",";
-       if(trim($this->c41_valorlinha) == null ){ 
+       if(trim((string) $this->c41_valorlinha) == null ){ 
          $this->erro_sql = " Campo Valor não informado.";
          $this->erro_campo = "c41_valorlinha";
          $this->erro_banco = "";
@@ -269,19 +269,19 @@ class cl_previsaodespesalinhaspacto {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1009878,'$this->c41_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c41_sequencial"]) || $this->c41_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010302,1009878,'".AddSlashes(pg_result($resaco,$conresaco,'c41_sequencial'))."','$this->c41_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010302,1009878,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c41_sequencial'))."','$this->c41_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c41_previsaodespesa"]) || $this->c41_previsaodespesa != "")
-             $resac = db_query("insert into db_acount values($acount,1010302,1009879,'".AddSlashes(pg_result($resaco,$conresaco,'c41_previsaodespesa'))."','$this->c41_previsaodespesa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010302,1009879,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c41_previsaodespesa'))."','$this->c41_previsaodespesa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c41_linhaspacto"]) || $this->c41_linhaspacto != "")
-             $resac = db_query("insert into db_acount values($acount,1010302,1009880,'".AddSlashes(pg_result($resaco,$conresaco,'c41_linhaspacto'))."','$this->c41_linhaspacto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010302,1009880,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c41_linhaspacto'))."','$this->c41_linhaspacto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c41_previsaodespesaplano"]) || $this->c41_previsaodespesaplano != "")
-             $resac = db_query("insert into db_acount values($acount,1010302,1009885,'".AddSlashes(pg_result($resaco,$conresaco,'c41_previsaodespesaplano'))."','$this->c41_previsaodespesaplano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010302,1009885,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c41_previsaodespesaplano'))."','$this->c41_previsaodespesaplano',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c41_valorlinha"]) || $this->c41_valorlinha != "")
-             $resac = db_query("insert into db_acount values($acount,1010302,1009886,'".AddSlashes(pg_result($resaco,$conresaco,'c41_valorlinha'))."','$this->c41_valorlinha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010302,1009886,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c41_valorlinha'))."','$this->c41_valorlinha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -335,14 +335,14 @@ class cl_previsaodespesalinhaspacto {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1009878,'$c41_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010302,1009878,'','".AddSlashes(pg_result($resaco,$iresaco,'c41_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010302,1009879,'','".AddSlashes(pg_result($resaco,$iresaco,'c41_previsaodespesa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010302,1009880,'','".AddSlashes(pg_result($resaco,$iresaco,'c41_linhaspacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010302,1009885,'','".AddSlashes(pg_result($resaco,$iresaco,'c41_previsaodespesaplano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010302,1009886,'','".AddSlashes(pg_result($resaco,$iresaco,'c41_valorlinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010302,1009878,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c41_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010302,1009879,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c41_previsaodespesa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010302,1009880,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c41_linhaspacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010302,1009885,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c41_previsaodespesaplano'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010302,1009886,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c41_valorlinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

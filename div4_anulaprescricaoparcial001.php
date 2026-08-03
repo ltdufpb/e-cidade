@@ -39,7 +39,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('k60_codigo');
 $clrotulo->label('k60_descr');
 $clrotulo->label('k31_obs');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS);
 
 $db_opcao = 1;

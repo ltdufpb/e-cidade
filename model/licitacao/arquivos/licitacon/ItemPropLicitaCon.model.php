@@ -62,19 +62,19 @@ class ItemPropLicitaCon extends ArquivoLicitaCon
      */
     public function getDados()
     {
-        $aSituacoes = array(
+        $aSituacoes = [
           SituacaoLicitacao::SITUACAO_JULGADA,
           SituacaoLicitacao::SITUACAO_ADJUDICADA,
           SituacaoLicitacao::SITUACAO_HOMOLOGADA
-        );
+        ];
 
         $oDaoLicitacao = new cl_liclicita;
 
-        $sTipos = implode(',', array(
+        $sTipos = implode(',', [
           licitacao::TIPO_JULGAMENTO_POR_ITEM,
           licitacao::TIPO_JULGAMENTO_GLOBAL,
-        ));
-        $aCampos = array(
+        ]);
+        $aCampos = [
           'l20_codigo',
           'z01_numcgm',
           'l20_numero AS nr_licitacao',
@@ -110,7 +110,7 @@ class ItemPropLicitaCon extends ArquivoLicitaCon
           'pc21_orcamforne',
           'pc23_orcamforne',
           'pc22_orcamitem'
-        );
+        ];
 
         $aWhere = LicitacaoLicitaCon::getWhereLicitacao($this->oCabecalho->getInstituicao(),
           $this->oCabecalho->getDataGeracao());
@@ -129,7 +129,7 @@ class ItemPropLicitaCon extends ArquivoLicitaCon
             throw new DBException($sMsgErro);
         }
 
-        $aLicitacoes = array();
+        $aLicitacoes = [];
         $iTotalLotes = pg_num_rows($rsLotes);
         for ($iLinha = 0; $iLinha < $iTotalLotes; $iLinha++) {
             $oLinha = db_utils::fieldsMemory($rsLotes, $iLinha);
@@ -276,7 +276,7 @@ class ItemPropLicitaCon extends ArquivoLicitaCon
             $aLicitacoes[$oLinha->l20_codigo][$oLinha->z01_numcgm][$oLinha->lote][] = $oStdItem;
         }
 
-        $aItens = array();
+        $aItens = [];
         foreach ($aLicitacoes as $iCodigoLicitacao => $aLicitante) {
             foreach ($aLicitante as $aLote) {
                 foreach ($aLote as $sDescricaoLote => $aItem) {

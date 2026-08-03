@@ -39,7 +39,7 @@ $this->objpdf->Setfont("Times", "", 12);
 $this->objpdf->cell(75, 5, $this->z01_nome , 0, 1, 'L');
 if ($this->z01_cgccpf  != "") {
   $this->objpdf->Setfont("Times", "B", 14);
-  $this->objpdf->cell(50, 5, (strlen($this->z01_cgccpf ) == 11 ? "CPF: " : "CNPJ: "), 0, 0, 'L');
+  $this->objpdf->cell(50, 5, (strlen((string) $this->z01_cgccpf ) == 11 ? "CPF: " : "CNPJ: "), 0, 0, 'L');
   $this->objpdf->Setfont("Times", "", 12);
   $this->objpdf->cell(40, 5, $this->z01_cgccpf , 0, ($this->z01_telef  != "" ? 0 : 1), 'L');
 }
@@ -49,7 +49,7 @@ if ($this->z01_telef  != "") {
   $this->objpdf->Setfont("Times", "", 12);
   $this->objpdf->cell(30, 5, $this->z01_telef , 0, 1, 'L');
 }
-if (trim($this->p58_requer ) != trim($this->z01_nome )) {
+if (trim((string) $this->p58_requer ) != trim((string) $this->z01_nome )) {
   $this->objpdf->Setfont("Times", "B", 14);
   $this->objpdf->cell(50, 5, "REQUERENTE: ", 0, 0, 'L');
   $this->objpdf->Setfont("Times", "", 12);
@@ -78,8 +78,8 @@ if ($this->p58_dtproc  != "") {
   $this->objpdf->cell(75, 5, db_formatar($this->p58_dtproc , 'd'), 0, 1, 'L');
 }
 $result_impusu = db_query("select p90_impusuproc from protparam where p90_instit = ".db_getsession("DB_instit"));
-if (pg_numrows($result_impusu) > 0) {
-  $p90_impusuproc = pg_result($result_impusu,0,0);
+if (pg_num_rows($result_impusu) > 0) {
+  $p90_impusuproc = pg_fetch_result($result_impusu,0,0);
   if ($p90_impusuproc == 't') {
     if ($this->nome  != "") {
       $this->objpdf->Setfont("Times", "B", 14);
@@ -97,14 +97,14 @@ $sqlproc = "select coddepto,descrdepto,p51_descr
         ";
 $resproc = db_query($sqlproc);
 if (pg_num_rows($resproc)) {
-  $coddepto   = pg_result($resproc,0,0);
-  $descrdepto = pg_result($resproc,0,1);
-  $p51_descr = pg_result($resproc,0,2);
+  $coddepto   = pg_fetch_result($resproc,0,0);
+  $descrdepto = pg_fetch_result($resproc,0,1);
+  $p51_descr = pg_fetch_result($resproc,0,2);
   $this->objpdf->setfillcolor(235);
   $this->objpdf->Setfont("Times", "B", 8);
 $sqldepto = "select p90_impdepto from protparam where p90_instit = ".db_getsession('DB_instit');
   $resultdepto = db_query($sqldepto);
-  $impdepto = pg_result($resultdepto,0,0);
+  $impdepto = pg_fetch_result($resultdepto,0,0);
   if ($impdepto == 't') {
         $this->objpdf->cell(180, 6, "DEPARTAMENTO PADRÃO: $coddepto - $descrdepto", 0, 1, 'L', 1);
   }
@@ -123,20 +123,20 @@ $this->objpdf->multicell(185, 5,$texto,0,1,"L");
 
 // Variaveis
 if ($this->result_vars != ""){
-  $numrows     = pg_numrows($this->result_vars);
+  $numrows     = pg_num_rows($this->result_vars);
   $result_vars = $this->result_vars;
   $imprime_str = "";
   $separador   = " - ";
   for ($i = 0; $i < $numrows; $i++){
-	   $rotulo   = pg_result($result_vars,$i,0);
-	   $conteudo = pg_result($result_vars,$i,1);
+	   $rotulo   = pg_fetch_result($result_vars,$i,0);
+	   $conteudo = pg_fetch_result($result_vars,$i,1);
 	   if (($i+1) == $numrows){
 	     $separador = "";
 	   }
 	   $imprime_str .= ucfirst($rotulo).": ".$conteudo.$separador;
   }
 
-  $linha = split("-",$imprime_str);
+  $linha = preg_split("#\\-#m",$imprime_str);
   $this->objpdf->multicell(185, 5, $imprime_str,0,1,"L");
 }
 
@@ -152,7 +152,7 @@ $sql_doc = "select p81_doc,p56_descr from procprocessodoc
                inner join procdoc on p81_coddoc = p56_coddoc
 	        where p81_codproc=".$this->p58_codproc ;
 $result_doc = db_query($sql_doc);
-$numrows_doc = pg_numrows($result_doc);
+$numrows_doc = pg_num_rows($result_doc);
 if ($numrows_doc > 0) {
    if($numrows_doc < 13){
     $m = 0;
@@ -160,8 +160,8 @@ if ($numrows_doc > 0) {
     for ($y = 0; $y < $numrows_doc; $y ++) {
       $x = " ";
       $this->objpdf->Setfont("Times", "", 10);
-      $p81_doc=pg_result($result_doc,$y,0);
-      $p56_descr=pg_result($result_doc,$y,1);
+      $p81_doc=pg_fetch_result($result_doc,$y,0);
+      $p56_descr=pg_fetch_result($result_doc,$y,1);
       if ($p81_doc == 't') {
         $x = "X";
       }
@@ -186,7 +186,7 @@ $this->objpdf->roundedrect(107, 217, 93, 50, 2, 'df', 1234);
 $this->objpdf->roundedrect(107, 217, 93, 7, 2, 'df', 12);
 $this->objpdf->Text(25, 222, "ASSINATURA DO REQUERENTE");
 $this->objpdf->Text(112, 222, "ASSINATURA RETIRADA DE DOCUMENTOS");
-$this->objpdf->Text(13, 257, substr($this->p58_requer,0, 35));
+$this->objpdf->Text(13, 257, substr((string) $this->p58_requer,0, 35));
 $this->objpdf->Text(150, 229, "DATA: ____/____/_______");
 $this->objpdf->Text(112, 252, "NOME:");
 $this->objpdf->Text(112, 259, "CPF/CI:");
@@ -215,8 +215,8 @@ if($numrows_doc > 12){
  for ($y = 0; $y < $numrows_doc; $y ++) {
    $x = " ";
    $this->objpdf->Setfont("Times", "", 10);
-   $p81_doc=pg_result($result_doc,$y,0);
-   $p56_descr=pg_result($result_doc,$y,1);
+   $p81_doc=pg_fetch_result($result_doc,$y,0);
+   $p56_descr=pg_fetch_result($result_doc,$y,1);
    if ($p81_doc == 't') {
      $x = "X";
    }

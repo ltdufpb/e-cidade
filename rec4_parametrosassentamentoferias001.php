@@ -153,7 +153,7 @@ if ($oDaoFeriasConfiguracao->numrows > 0) {
             <td>
 
                 <?php
-                $aOpcoes = array('f' => 'Somente o último', 't' =>'Todos períodos');
+                $aOpcoes = ['f' => 'Somente o último', 't' =>'Todos períodos'];
                 db_select("rh168_ultimoperiodoaquisitivo", $aOpcoes, true, 2);
                 ?>
             </td>

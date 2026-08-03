@@ -48,18 +48,18 @@ $oRotulo->label("e69_codnota");
 $oRotulo->label("e69_numero");
 
 
-$aDocumentos          = array();
-$aCodigoDocumentos    = array();
+$aDocumentos          = [];
+$aCodigoDocumentos    = [];
 //$iTipoReprocessamento = null;
 $sTitulo              = null;
 $db_opcao             = 1;
 $oGet                 = db_utils::postMemory($_GET);
 $sTitulo              = 'Movimentação Patrimonial';
-$aCodigoDocumentos    = array(
+$aCodigoDocumentos    = [
     204, 205, 206, 207, 208, 210, 211, 212, 213,
     400, 401, 402, 403, 404,
     700, 701, 702, 703, 704
-  );
+  ];
 
 $sDocumentos = implode(', ', $aCodigoDocumentos);
 
@@ -72,7 +72,7 @@ $rsDocumentos         = $oDaoConhistdoc->sql_record($sSqlDocumentos);
 
 if ( $oDaoConhistdoc->numrows > 0 ) {
 
-  $aDocumentos = array();
+  $aDocumentos = [];
   for ($iRowDocumento = 0; $iRowDocumento < $oDaoConhistdoc->numrows; $iRowDocumento++) {
 
     $oStdDadoDocumento = db_utils::fieldsMemory($rsDocumentos, $iRowDocumento);

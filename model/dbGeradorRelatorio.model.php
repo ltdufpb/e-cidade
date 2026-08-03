@@ -29,16 +29,16 @@ class dbGeradorRelatorio {
 
   private $iCodRelatorio    = null;
   private $oXmlWriter       = null;
-  private $aPropriedades    = array();
+  private $aPropriedades    = [];
   private $sCabecalho       = "";
   private $sRodape          = "";
-  public  $aVariaveis       = array();
-  public  $aColunas         = array();
-  public  $aSqlFrom         = array();
-  public  $aConsulta        = array();
-  public  $aFiltros         = array();
-  public  $aOrdem           = array();
-  private $aAgrupamento     = array();
+  public  $aVariaveis       = [];
+  public  $aColunas         = [];
+  public  $aSqlFrom         = [];
+  public  $aConsulta        = [];
+  public  $aFiltros         = [];
+  public  $aOrdem           = [];
+  private $aAgrupamento     = [];
   private $iOrigemRelatorio = null;
   private $sBuffer          = "";
   private $sBufferAgt       = "";
@@ -106,16 +106,16 @@ class dbGeradorRelatorio {
 
         $oPropriedades = new dbPropriedadeRelatorio();
 
-        $oPropriedades->setVersao    (utf8_decode($oXMLPropriedades->getAttribute('versao')));
-        $oPropriedades->setFormato   (utf8_decode($oXMLPropriedades->getAttribute('formato')));
-        $oPropriedades->setLayout    (utf8_decode($oXMLPropriedades->getAttribute('layout')));
-        $oPropriedades->setMargemDir (utf8_decode($oXMLPropriedades->getAttribute('margemdir')));
-        $oPropriedades->setMargemEsq (utf8_decode($oXMLPropriedades->getAttribute('margemesq')));
-        $oPropriedades->setMargemInf (utf8_decode($oXMLPropriedades->getAttribute('margeminf')));
-        $oPropriedades->setMargemSup (utf8_decode($oXMLPropriedades->getAttribute('margemsup')));
-        $oPropriedades->setNome      (utf8_decode($oXMLPropriedades->getAttribute('nome')));
-        $oPropriedades->setOrientacao(utf8_decode($oXMLPropriedades->getAttribute('orientacao')));
-        $oPropriedades->setTipoSaida (utf8_decode($oXMLPropriedades->getAttribute('tiposaida')));
+        $oPropriedades->setVersao    (mb_convert_encoding($oXMLPropriedades->getAttribute('versao'), 'ISO-8859-1'));
+        $oPropriedades->setFormato   (mb_convert_encoding($oXMLPropriedades->getAttribute('formato'), 'ISO-8859-1'));
+        $oPropriedades->setLayout    (mb_convert_encoding($oXMLPropriedades->getAttribute('layout'), 'ISO-8859-1'));
+        $oPropriedades->setMargemDir (mb_convert_encoding($oXMLPropriedades->getAttribute('margemdir'), 'ISO-8859-1'));
+        $oPropriedades->setMargemEsq (mb_convert_encoding($oXMLPropriedades->getAttribute('margemesq'), 'ISO-8859-1'));
+        $oPropriedades->setMargemInf (mb_convert_encoding($oXMLPropriedades->getAttribute('margeminf'), 'ISO-8859-1'));
+        $oPropriedades->setMargemSup (mb_convert_encoding($oXMLPropriedades->getAttribute('margemsup'), 'ISO-8859-1'));
+        $oPropriedades->setNome      (mb_convert_encoding($oXMLPropriedades->getAttribute('nome'), 'ISO-8859-1'));
+        $oPropriedades->setOrientacao(mb_convert_encoding($oXMLPropriedades->getAttribute('orientacao'), 'ISO-8859-1'));
+        $oPropriedades->setTipoSaida (mb_convert_encoding($oXMLPropriedades->getAttribute('tiposaida'), 'ISO-8859-1'));
 
         $this->addPropriedades($oPropriedades);
 
@@ -144,12 +144,12 @@ class dbGeradorRelatorio {
     if (!empty($aVariavel)){
       foreach ( $aVariavel as $oXMLVariavel ){
         $oVariavel = new dbVariaveisRelatorio();
-        $oVariavel->setNome    (utf8_decode($oXMLVariavel->getAttribute('nome')));
-        $oVariavel->setLabel   (utf8_decode($oXMLVariavel->getAttribute('label')));
-        $oVariavel->setValor   (utf8_decode($oXMLVariavel->getAttribute('valor')));
-        $oVariavel->setTipoDado(utf8_decode($oXMLVariavel->getAttribute('tipodado')));
-        $oVariavel->setSql     (utf8_decode($oXMLVariavel->getAttribute('sql')));
-        $this->addVariavel(utf8_decode($oXMLVariavel->getAttribute('nome')),$oVariavel);
+        $oVariavel->setNome    (mb_convert_encoding($oXMLVariavel->getAttribute('nome'), 'ISO-8859-1'));
+        $oVariavel->setLabel   (mb_convert_encoding($oXMLVariavel->getAttribute('label'), 'ISO-8859-1'));
+        $oVariavel->setValor   (mb_convert_encoding($oXMLVariavel->getAttribute('valor'), 'ISO-8859-1'));
+        $oVariavel->setTipoDado(mb_convert_encoding($oXMLVariavel->getAttribute('tipodado'), 'ISO-8859-1'));
+        $oVariavel->setSql     (mb_convert_encoding($oXMLVariavel->getAttribute('sql'), 'ISO-8859-1'));
+        $this->addVariavel(mb_convert_encoding($oXMLVariavel->getAttribute('nome'), 'ISO-8859-1'),$oVariavel);
       }
     }
 
@@ -169,13 +169,13 @@ class dbGeradorRelatorio {
                 $oCampo = new dbColunaRelatorio();
 
                 $oCampo->setId            ($oXMLCampo->getAttribute('id'));
-                $oCampo->setNome          (utf8_decode($oXMLCampo->getAttribute('nome')));
-                $oCampo->setAlias         (utf8_decode($oXMLCampo->getAttribute('alias')));
-                $oCampo->setAlinhamento   (utf8_decode($oXMLCampo->getAttribute('alinhamento')));
-                $oCampo->setAlinhamentoCab(utf8_decode($oXMLCampo->getAttribute('alinhamentocab')));
-                $oCampo->setLargura       (utf8_decode($oXMLCampo->getAttribute('largura')));
-                $oCampo->setMascara       (utf8_decode($oXMLCampo->getAttribute('mascara')));
-                $oCampo->setTotalizar     (utf8_decode($oXMLCampo->getAttribute('totalizar')));
+                $oCampo->setNome          (mb_convert_encoding($oXMLCampo->getAttribute('nome'), 'ISO-8859-1'));
+                $oCampo->setAlias         (mb_convert_encoding($oXMLCampo->getAttribute('alias'), 'ISO-8859-1'));
+                $oCampo->setAlinhamento   (mb_convert_encoding($oXMLCampo->getAttribute('alinhamento'), 'ISO-8859-1'));
+                $oCampo->setAlinhamentoCab(mb_convert_encoding($oXMLCampo->getAttribute('alinhamentocab'), 'ISO-8859-1'));
+                $oCampo->setLargura       (mb_convert_encoding($oXMLCampo->getAttribute('largura'), 'ISO-8859-1'));
+                $oCampo->setMascara       (mb_convert_encoding($oXMLCampo->getAttribute('mascara'), 'ISO-8859-1'));
+                $oCampo->setTotalizar     (mb_convert_encoding($oXMLCampo->getAttribute('totalizar'), 'ISO-8859-1'));
                 if ( $oXMLCampo->hasAttribute('quebra') ) {
                   $oCampo->setQuebra($oXMLCampo->getAttribute('quebra'));
                 } else {
@@ -193,10 +193,10 @@ class dbGeradorRelatorio {
       $aWhere  = $oXMLConsulta->getElementsByTagName('Filtro');
       foreach ($aWhere as $oXMLWhere){
         $oFiltro = new dbFiltroRelatorio();
-        $oFiltro->setOperador(utf8_decode($oXMLWhere->getAttribute('operador')));
-        $oFiltro->setCampo   (utf8_decode($oXMLWhere->getAttribute('campo')));
-        $oFiltro->setCondicao(utf8_decode($oXMLWhere->getAttribute('condicao')));
-        $oFiltro->setValor   (utf8_decode($oXMLWhere->getAttribute('valor')));
+        $oFiltro->setOperador(mb_convert_encoding($oXMLWhere->getAttribute('operador'), 'ISO-8859-1'));
+        $oFiltro->setCampo   (mb_convert_encoding($oXMLWhere->getAttribute('campo'), 'ISO-8859-1'));
+        $oFiltro->setCondicao(mb_convert_encoding($oXMLWhere->getAttribute('condicao'), 'ISO-8859-1'));
+        $oFiltro->setValor   (mb_convert_encoding($oXMLWhere->getAttribute('valor'), 'ISO-8859-1'));
         $this->addFiltro($oFiltro,$oXMLConsulta->getAttribute('tipo'));
       }
 
@@ -208,9 +208,9 @@ class dbGeradorRelatorio {
       foreach ($aOrder as $oXMLOrder){
         $oOrdem = new dbOrdemRelatorio();
         $oOrdem->setId     ($oXMLOrder->getAttribute('id'));
-        $oOrdem->setNome   (utf8_decode($oXMLOrder->getAttribute('nome')));
-        $oOrdem->setAscDesc(utf8_decode($oXMLOrder->getAttribute('ascdesc')));
-        $oOrdem->setAlias  (utf8_decode($oXMLOrder->getAttribute('alias')));
+        $oOrdem->setNome   (mb_convert_encoding($oXMLOrder->getAttribute('nome'), 'ISO-8859-1'));
+        $oOrdem->setAscDesc(mb_convert_encoding($oXMLOrder->getAttribute('ascdesc'), 'ISO-8859-1'));
+        $oOrdem->setAlias  (mb_convert_encoding($oXMLOrder->getAttribute('alias'), 'ISO-8859-1'));
         $this->addOrdem($oOrdem,$oXMLConsulta->getAttribute('tipo'));
       }
 
@@ -232,7 +232,7 @@ class dbGeradorRelatorio {
 
     db_inicio_transacao();
 
-    $aRetornaCampos = array();
+    $aRetornaCampos = [];
 
     if ( $this->getOrigemRelatorio() == 1 ) {
 
@@ -305,7 +305,7 @@ class dbGeradorRelatorio {
 
           $oRetornoCampo = new stdClass();
 
-          if ( trim($oCampos->codcam) == "") {
+          if ( trim((string) $oCampos->codcam) == "") {
             $iId = ++$iMaxCodCam;
           } else {
             $iId = $oCampos->codcam;
@@ -313,7 +313,7 @@ class dbGeradorRelatorio {
 
           if ($oCampos->conteudo == "float4" || $oCampos->conteudo == "float8" ) {
             $sAlinhamento = "r";
-          } else if ( substr(trim($oCampos->conteudo),0,7) == "varchar"  ) {
+          } else if ( str_starts_with(trim((string) $oCampos->conteudo), "varchar")  ) {
             $sAlinhamento = "l";
           } else {
             $sAlinhamento = "c";
@@ -441,7 +441,7 @@ class dbGeradorRelatorio {
 
   public function addSqlFrom( $sSqlFrom="", $sTipoRel="Principal") {
 
-    if ( trim($sSqlFrom) == "" ) {
+    if ( trim((string) $sSqlFrom) == "" ) {
       throw new Exception("Inclusão de consulta abortada, valor nulo ou vazio.");
     }
 
@@ -465,11 +465,11 @@ class dbGeradorRelatorio {
 
     foreach ($aFrom as $sTipoRel => $sSql) {
 
-      $aPalavrasFrom = split("[\n ]+",trim($sSql));
+      $aPalavrasFrom = preg_split("#[\n ]+#m",trim((string) $sSql));
 
       foreach ($aPalavrasFrom as $iInd => $sValor) {
-        $sPalavra = trim($sValor);
-        if ( isset($sPalavra{0}) && $sPalavra{0} == '$' ){
+        $sPalavra = trim((string) $sValor);
+        if ( isset($sPalavra[0]) && $sPalavra[0] == '$' ){
           $oVariavel = new dbVariaveisRelatorio($sPalavra,"","","varchar");
           if (!isset($this->aVariaveis[$sPalavra])) {
             $this->addVariavel($sPalavra,$oVariavel);
@@ -566,10 +566,10 @@ class dbGeradorRelatorio {
 
   public function addConsulta( $sTipoRel="Principal" ) {
 
-    $aConsulta    = array();
-    $aFiltro      = array();
-    $aOrdem       = array();
-    $aAgrupamento = array();
+    $aConsulta    = [];
+    $aFiltro      = [];
+    $aOrdem       = [];
+    $aAgrupamento = [];
 
     if (empty($this->aColunas[$sTipoRel])) {
       throw new Exception("Inclusão de consulta abortada, nenhum coluna definida.");
@@ -724,7 +724,7 @@ class dbGeradorRelatorio {
           case "From":
 
             if (is_string($aValores) && !db_utils::isUTF8($aValores)) {
-              $aValores = utf8_encode($aValores);
+              $aValores = mb_convert_encoding($aValores, 'UTF-8', 'ISO-8859-1');
             }
             $this->oXmlWriter->writeElement("From",$aValores);
           break;
@@ -931,12 +931,12 @@ class dbGeradorRelatorio {
       //Properties
       $oXmlWriter->startElement("Properties");
       $oXmlWriter->writeElement("Description","");
-      $oXmlWriter->writeElement("Title",utf8_decode($oPropriedades->getAttribute('nome')));
+      $oXmlWriter->writeElement("Title",mb_convert_encoding($oPropriedades->getAttribute('nome'), 'ISO-8859-1'));
       $oXmlWriter->writeElement("Author","");
       $oXmlWriter->writeElement("Keywords","");
       $oXmlWriter->writeElement("Date","");
       $oXmlWriter->writeElement("FrameSize","");
-      $oXmlWriter->writeElement("Layout",utf8_decode($oPropriedades->getAttribute('layout')));
+      $oXmlWriter->writeElement("Layout",mb_convert_encoding($oPropriedades->getAttribute('layout'), 'ISO-8859-1'));
       $oXmlWriter->writeElement("UseTemplates","");
       $oXmlWriter->endElement();//Properties
     }
@@ -960,7 +960,7 @@ class dbGeradorRelatorio {
     if(!empty($aVariavel)){
       $oXmlWriter->startElement("Parameters");
       foreach ($aVariavel as $oVariavel){
-        $oXmlWriter->startElement(str_replace("$","",utf8_decode($oVariavel->getAttribute('nome'))));
+        $oXmlWriter->startElement(str_replace("$","",mb_convert_encoding($oVariavel->getAttribute('nome'), 'ISO-8859-1')));
         $oXmlWriter->writeElement("mask","");
         $oXmlWriter->writeElement("value","");
         $oXmlWriter->writeElement("source","");
@@ -970,8 +970,8 @@ class dbGeradorRelatorio {
       $oXmlWriter->endElement();//Parameters
     }
 
-    $aQuebra = array();
-    $sOrder  = array();
+    $aQuebra = [];
+    $sOrder  = [];
 
     foreach ($aConsulta as $oConsulta) {
 
@@ -992,7 +992,7 @@ class dbGeradorRelatorio {
         }
       }
 
-      $aTotalizador = array();
+      $aTotalizador = [];
       $iIndiceCampo = 1;
 
       foreach ($aCampo as $oCampo){
@@ -1025,7 +1025,7 @@ class dbGeradorRelatorio {
           }
         }
 
-        $sGroup = array();
+        $sGroup = [];
         foreach ($aGroup as $oGroup){
 
           $aCampoGroup = $oGroup->getElementsByTagName('Campo');
@@ -1052,7 +1052,7 @@ class dbGeradorRelatorio {
       }
 
 
-      $sWhere = array();
+      $sWhere = [];
       foreach ($aWhere as $oWhere){
         $aCampoFiltro = $oWhere->getElementsByTagName('Filtro');
         foreach ($aCampoFiltro as $oCampoFiltro){
@@ -1066,9 +1066,9 @@ class dbGeradorRelatorio {
             $sOperador = "";
           }
 
-          if ( trim($sValor)!= "" && is_string($sValor) && $sValor{0} != "$" ){
+          if ( trim((string) $sValor)!= "" && is_string($sValor) && $sValor[0] != "$" ){
             $sWhere[]  = $sOperador." \"".$sNomeCampo."\" ".$sCondicao." '".$sValor."' ";
-          } else if (trim($sCondicao) == "in") {
+          } else if (trim((string) $sCondicao) == "in") {
             $sWhere[]  = $sOperador." \"".$sNomeCampo."\" ".$sCondicao." (".$sValor.") ";
           } else {
             $sWhere[]  = $sOperador." \"".$sNomeCampo."\" ".$sCondicao." ".$sValor." ";
@@ -1089,11 +1089,11 @@ class dbGeradorRelatorio {
 
       $oXmlWriter->startElement("Query");
 
-      $oXmlWriter->writeElement("Select" ,utf8_decode(implode(",",$sSelect)));
-      $oXmlWriter->writeElement("From"   ,utf8_decode($sFrom));
-      $oXmlWriter->writeElement("Where"  ,utf8_decode(implode(" ",$sWhere)));
-      $oXmlWriter->writeElement("GroupBy",utf8_decode(implode(",",$sGroup)));
-      $oXmlWriter->writeElement("OrderBy",utf8_decode(implode(",",$sOrder)));
+      $oXmlWriter->writeElement("Select" ,mb_convert_encoding(implode(",",$sSelect), 'ISO-8859-1'));
+      $oXmlWriter->writeElement("From"   ,mb_convert_encoding($sFrom, 'ISO-8859-1'));
+      $oXmlWriter->writeElement("Where"  ,mb_convert_encoding(implode(" ",$sWhere), 'ISO-8859-1'));
+      $oXmlWriter->writeElement("GroupBy",mb_convert_encoding(implode(",",$sGroup), 'ISO-8859-1'));
+      $oXmlWriter->writeElement("OrderBy",mb_convert_encoding(implode(",",$sOrder), 'ISO-8859-1'));
 
       $oXmlWriter->startElement("Config");
       $oXmlWriter->writeElement("Distinct","0");
@@ -1341,7 +1341,7 @@ class dbGeradorRelatorio {
     $sCaminhoRelatorio = "tmp/".$sArquivoAgt;
     $rsRelatorioTemp   = fopen($sCaminhoRelatorio,"w");
 
-    fputs($rsRelatorioTemp ,$this->sBufferAgt);
+    fputs($rsRelatorioTemp ,(string) $this->sBufferAgt);
     fclose($rsRelatorioTemp );
 
     return $sCaminhoRelatorio;
@@ -1367,10 +1367,10 @@ class dbGeradorRelatorio {
     $iCodigo                 = $oDb_Relatorio->db63_sequencial;
     $iCodigoGrupo            = $oDb_Relatorio->db63_db_gruporelatorio;
     $iCodigoTipoRelatorio    = $oDb_Relatorio->db63_db_tiporelatorio;
-    $sNomeRelatorio          = urlencode($oDb_Relatorio->db63_nomerelatorio);
+    $sNomeRelatorio          = urlencode((string) $oDb_Relatorio->db63_nomerelatorio);
     $sVersaoXML              = $oDb_Relatorio->db63_versao_xml;
     $dDataCriacao            = $oDb_Relatorio->db63_data;
-    $sEstruturaXML           = base64_encode($oDb_Relatorio->db63_xmlestruturarel);
+    $sEstruturaXML           = base64_encode((string) $oDb_Relatorio->db63_xmlestruturarel);
     $iCodigoOrigem           = $oDb_Relatorio->db63_db_relatorioorigem;
 
     $oXMLRelatorioExportacao = new DOMDocument('1.0', 'ISO-8859-1');
@@ -1453,7 +1453,7 @@ class dbGeradorRelatorio {
 
     $oDaoDb_relatorio = db_utils::getDao('db_relatorio');
 
-    $aCampos = array();
+    $aCampos = [];
 
     foreach ($oRelatorio->getElementsByTagName('campo') as $oCampo) {
       $aCampos[$oCampo->getAttribute('id')] = $oCampo->nodeValue;
@@ -1461,10 +1461,10 @@ class dbGeradorRelatorio {
 
     $oDaoDb_relatorio->db63_db_gruporelatorio  = $iGrupoRelatorio;
     $oDaoDb_relatorio->db63_db_tiporelatorio   = $iTipoRelatorio;
-    $oDaoDb_relatorio->db63_nomerelatorio      = urldecode($aCampos['nome_relatorio']);
+    $oDaoDb_relatorio->db63_nomerelatorio      = urldecode((string) $aCampos['nome_relatorio']);
     $oDaoDb_relatorio->db63_versao_xml         = $aCampos['versao_xml'];
     $oDaoDb_relatorio->db63_data               = $aCampos['data_criacao'];
-    $oDaoDb_relatorio->db63_xmlestruturarel    = pg_escape_string(base64_decode($aCampos['estrutura_xml']));
+    $oDaoDb_relatorio->db63_xmlestruturarel    = pg_escape_string(base64_decode((string) $aCampos['estrutura_xml']));
 
     $oDaoDb_relatorio->db63_db_relatorioorigem = $aCampos['codigo_origem'];
     $oDaoDb_relatorio->incluir(null);
@@ -1519,7 +1519,7 @@ class dbGeradorRelatorio {
    *                             aParametros   : [{"sNome":"$aluno","sValor":"123"}]
    * @return string              o caminho para o arquivo informado
    */
-  public function gerarRelatorio( $sNomeArquivo = null, $aParametros = array()) {
+  public function gerarRelatorio( $sNomeArquivo = null, $aParametros = []) {
 
     ini_set("error_reporting","E_ALL & ~NOTICE");
 
@@ -1541,7 +1541,7 @@ class dbGeradorRelatorio {
     $aOrdem = $this->getOrdem();
     if (!empty($aOrdem)) {
 
-      $aNomeOrdem = array();
+      $aNomeOrdem = [];
 
       foreach ($aOrdem as $iInd1 => $aOrdem2){
 
@@ -1555,7 +1555,7 @@ class dbGeradorRelatorio {
         $sNomeOrdem = implode(", ",$aNomeOrdem);
         $iLinha     = 2;
 
-        for($iIni=0; $iIni < strlen($sNomeOrdem); $iIni++ ){
+        for($iIni=0; $iIni < strlen((string) $sNomeOrdem); $iIni++ ){
 
           $iFim = 52;
 
@@ -1566,7 +1566,7 @@ class dbGeradorRelatorio {
             $sPrefix = "";
           }
 
-          $oAgataApi->setParameter('$head'.$iLinha, $sPrefix.(substr($sNomeOrdem,$iIni,$iFim)));
+          $oAgataApi->setParameter('$head'.$iLinha, $sPrefix.(substr((string) $sNomeOrdem,$iIni,$iFim)));
           $iLinha++;
           $iIni += $iFim;
 
@@ -1589,11 +1589,11 @@ class dbGeradorRelatorio {
           if ( $oParamentro->sNome == $oVariavelGerador->getNome()) {
 
             if ( $oVariavelGerador->getTipoDado() == 'date') {
-              $sValor = implode('-',array_reverse(explode('/',$oParamentro->sValor)));
+              $sValor = implode('-',array_reverse(explode('/',(string) $oParamentro->sValor)));
             } else {
               $sValor = $oParamentro->sValor;
             }
-            $oAgataApi->setParameter($oParamentro->sNome, utf8_decode($sValor));
+            $oAgataApi->setParameter($oParamentro->sNome, mb_convert_encoding($sValor, 'ISO-8859-1'));
           }
         }
       }

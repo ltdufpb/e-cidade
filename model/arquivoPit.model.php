@@ -44,7 +44,7 @@ abstract class arquivoPit {
    *
    * @var unknown_type
    */
-  protected $aNotasMes  = array();
+  protected $aNotasMes  = [];
   
   /**
    * Data da Criaçao do Arquivo
@@ -334,7 +334,7 @@ abstract class arquivoPit {
     
     $oArquivoLayout->setCampoTipoLinha(1);
     $oArquivoLayout->setCampo("tipodocumento",'00');
-    $oArquivoLayout->setCampo("codigomunicipio",str_pad($oDadosPref->db21_codigomunicipoestado,3,"0",STR_PAD_LEFT));
+    $oArquivoLayout->setCampo("codigomunicipio",str_pad((string) $oDadosPref->db21_codigomunicipoestado,3,"0",STR_PAD_LEFT));
     $oArquivoLayout->setCampo("brancos",str_repeat(" ",224));
     $oArquivoLayout->geraDadosLinha();
     
@@ -364,8 +364,8 @@ abstract class arquivoPit {
     $oDadosPref = db_stdClass::getDadosInstit();
     $oArquivoLayout->setCampoTipoLinha(3);
     $oArquivoLayout->setCampo("tipodocumento" , $this->iTipoDocumento);
-    $oArquivoLayout->setCampo("cnpjemitente"  , trim($oDados->z01_cgccpf));
-    $oArquivoLayout->setCampo("ieemitente"    , str_replace("/","",trim($oDados->z01_incest)));
+    $oArquivoLayout->setCampo("cnpjemitente"  , trim((string) $oDados->z01_cgccpf));
+    $oArquivoLayout->setCampo("ieemitente"    , str_replace("/","",trim((string) $oDados->z01_incest)));
     $oArquivoLayout->setCampo("serie"         , $oDados->e11_seriefiscal);
     $oArquivoLayout->setCampo("numero"        , $oDados->e69_numero);
     $oArquivoLayout->setCampo("ufemitente"    , $oDados->z01_uf);

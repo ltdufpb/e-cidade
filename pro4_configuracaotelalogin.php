@@ -43,7 +43,7 @@ if (isset($oPost->enviar)) {
 	  $pUploadFile   = trim($sUploadDir.trim($oPost->nomearquivo).".php");
     $pUploadFile   = trim(str_replace(' ','',$pUploadFile));
 	  
-    $sExtensao     = array_reverse( explode('.',$_FILES['arquivotemplatelogin']['name'] ));
+    $sExtensao     = array_reverse( explode('.',(string) $_FILES['arquivotemplatelogin']['name'] ));
     $sExtensao     = $sExtensao[0];
     
     if ($sExtensao == 'php' || $sExtensao == 'html') {

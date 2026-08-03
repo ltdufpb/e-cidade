@@ -47,7 +47,7 @@ db_app::import("exceptions.*");
 
 
 $oGet          = db_utils::postMemory($_GET);
-$aDeficiencias = explode(",", $oGet->sDeficiencias);
+$aDeficiencias = explode(",", (string) $oGet->sDeficiencias);
 
 $oFiltroAvaliacao = new FiltroAvaliacao();
 $aAvaliacoes      = $oFiltroAvaliacao->daAvaliacao('AvaliacaoCadastroUnicoCidadao')
@@ -59,8 +59,8 @@ $aAvaliacoes      = $oFiltroAvaliacao->daAvaliacao('AvaliacaoCadastroUnicoCidada
 if (count($aAvaliacoes) == 0) {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhuma Cidadão com deficiência encontrada.");
 }
-$aCidadaos = array();
-$aFamilia  = array();
+$aCidadaos = [];
+$aFamilia  = [];
 foreach ($aAvaliacoes as $oAvaliacao) {
   
   $oDaoCidadaoAvaliacao = db_utils::getDao("cidadaoavaliacao");
@@ -117,7 +117,7 @@ foreach ($aAvaliacoes as $oAvaliacao) {
       $oFamilia->codigoFamiliar  = $oFamiliaDoCidadao->getCodigoFamiliarCadastroUnico();
       $oFamilia->nisresponsavel  = $oFamiliaDoCidadao->getResponsavel()->getNis();
       $oFamilia->nomeresponsavel = $oFamiliaDoCidadao->getResponsavel()->getNome();
-      $oFamilia->cadastrosUnicos = array();
+      $oFamilia->cadastrosUnicos = [];
       $aFamilia[$iCodigoFamilia] = $oFamilia; 
     }
     $sVirgula = '';
@@ -146,9 +146,9 @@ function ordernarFamilias($aArrayAtual, $aProximoArray){
   if (isset($aArrayAtual->nome)) {
     $sField = 'nome';
   }
-  return strcasecmp($aArrayAtual->{$sField}, $aProximoArray->{$sField});
+  return strcasecmp((string) $aArrayAtual->{$sField}, (string) $aProximoArray->{$sField});
 }
-uasort($aFamilia, "ordernarFamilias");
+uasort($aFamilia, ordernarFamilias(...));
 
 $iHeigth        = 4;
 $lPrimeiroLaco  = true;
@@ -181,7 +181,7 @@ foreach ($aFamilia as $oFamilia) {
   $oPdf->Cell(25, $iHeigth, $oFamilia->codigoFamiliar, "TBRL",0, "L", 1);
   $oPdf->Cell(110, $iHeigth, $oFamilia->nomeresponsavel, "TBRL",0, 'L', 1);
   $oPdf->Cell(30, $iHeigth, $oFamilia->rendafamiliar, "TBL", 1,'R', 1);
-  uasort($oFamilia->cadastrosUnicos, "ordernarFamilias");
+  uasort($oFamilia->cadastrosUnicos, ordernarFamilias(...));
   foreach ($oFamilia->cadastrosUnicos as $oDeficiente) {
     
     if ($oPdf->gety() > $oPdf->h - 15 || $lPrimeiroLaco) {
@@ -225,7 +225,7 @@ function setHeader($oPdf, $iHeigth) {
 
 function ajustaResposta($sResposta) {
   
-  $sResposta = urldecode($sResposta);
+  $sResposta = urldecode((string) $sResposta);
   $iInicio   = strpos($sResposta, "-");
   $iInicio   = $iInicio === false ? 0 : $iInicio + 1;
   $sResposta = trim(substr($sResposta, $iInicio));

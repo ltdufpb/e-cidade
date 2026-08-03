@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label("l20_codigo");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $action   = "lic1_liclicitemcancanu002.php";
 

@@ -166,7 +166,7 @@ class ServidorOutrosVinculos
      */
     public function toArray()
     {
-        return array(
+        return [
           'sequencial'       => $this->getSequencial(),
           'tipoContribuicao' => $this->getTipoContribuicao(),
           'tipoInscricao'    => $this->getTipoInscricao(),
@@ -177,7 +177,7 @@ class ServidorOutrosVinculos
           'ano'              => $this->getAno(),
           'mes'              => $this->getMes(),
           'servidor'         => $this->getServidor()->toArray()
-        );
+        ];
     }
 
     public function getSequencial()

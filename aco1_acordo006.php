@@ -40,7 +40,7 @@ $clacordoacordogarantia = new cl_acordoacordogarantia;
 $clacordoacordopenalidade = new cl_acordoacordopenalidade;
 $clacordoitem = new cl_acordoitem;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

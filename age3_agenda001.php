@@ -108,28 +108,28 @@ table {
 	$cor1 = "#B2B3B7";
     $cor2 = "#E7E7E7";	
 	
-	if(isset($HTTP_POST_VARS["pesquisar_x"]) && isset($HTTP_POST_VARS["filtro"])) {
-	  $queryAux = base64_decode($HTTP_POST_VARS["filtro"]);
+	if(isset($_POST["pesquisar_x"]) && isset($_POST["filtro"])) {
+	  $queryAux = base64_decode($_POST["filtro"]);
 	  $prim = substr($queryAux,0,strpos($queryAux,"like"));
 	  $seg = substr($queryAux,strpos($queryAux,"ORDER"));
-	  $HTTP_POST_VARS["filtro"] = base64_encode("$prim like upper('".$HTTP_POST_VARS["texto_pesquisa"]."%') $seg");
-      $HTTP_POST_VARS["offsetNoMe"] = "0";
-      $HTTP_POST_VARS["totregNoMe"] = "";
+	  $_POST["filtro"] = base64_encode("$prim like upper('".$_POST["texto_pesquisa"]."%') $seg");
+      $_POST["offsetNoMe"] = "0";
+      $_POST["totregNoMe"] = "";
 	}
-    if(isset($HTTP_POST_VARS["filtro"])) {
-	  db_lov(base64_decode($HTTP_POST_VARS["filtro"]),20,"",$HTTP_POST_VARS["filtro"],$aonde="_self",$mensagem="Clique Aqui",$NomeForm="NoMe");	  	
-	} else if(isset($HTTP_POST_VARS["pesquisar_x"])) {
+    if(isset($_POST["filtro"])) {
+	  db_lov(base64_decode($_POST["filtro"]),20,"",$_POST["filtro"],$aonde="_self",$mensagem="Clique Aqui",$NomeForm="NoMe");	  	
+	} else if(isset($_POST["pesquisar_x"])) {
       $query = "SELECT g01_id as Código, ";
-      reset($HTTP_POST_VARS);
-      for($i = 0;$i < sizeof($HTTP_POST_VARS);$i++) {
-        if(substr(key($HTTP_POST_VARS),0,2) == "sc")
-	      if(pos($HTTP_POST_VARS) != "")
-	        $query .= pos($HTTP_POST_VARS).",";
-	    next($HTTP_POST_VARS);
+      reset($_POST);
+      for($i = 0;$i < sizeof($_POST);$i++) {
+        if(str_starts_with((string) key($_POST), "sc"))
+	      if(pos($_POST) != "")
+	        $query .= pos($_POST).",";
+	    next($_POST);
       }
       $query[strlen($query) - 1] = " ";
-      $query .= " FROM db_contatos WHERE upper(".$HTTP_POST_VARS["PesquisarPor"].") like upper('%".$HTTP_POST_VARS["texto_pesquisa"]."%')";
-      $query .= " ORDER BY ".$HTTP_POST_VARS["ordenar"]." ".$HTTP_POST_VARS["ascdesc"];
+      $query .= " FROM db_contatos WHERE upper(".$_POST["PesquisarPor"].") like upper('%".$_POST["texto_pesquisa"]."%')";
+      $query .= " ORDER BY ".$_POST["ordenar"]." ".$_POST["ascdesc"];
 	  db_lov($query,20,"",base64_encode($query),$aonde="_self",$mensagem="Clique Aqui",$NomeForm="NoMe");
 	} else {
 	?>

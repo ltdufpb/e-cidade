@@ -27,7 +27,7 @@
 
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_POST_VARS,2);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 if ($folha == 'r14'){
@@ -126,7 +126,7 @@ $erroajuda = "";
 
 if($sel != 0){
   $result_sel = db_query("select r44_where from selecao where r44_selec = {$sel} and r44_instit = ". db_getsession('DB_instit'));
-  if(pg_numrows($result_sel) > 0){
+  if(pg_num_rows($result_sel) > 0){
     db_fieldsmemory($result_sel, 0, 1);
     $wherepes .= " and ".$r44_where;
     $erroajuda = " ou seleção informada é inválida";
@@ -186,7 +186,7 @@ $result = db_query($sql);
 
 //db_criatabela($result);exit;
 
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos no período de '.$mes.' / '.$ano.$erroajuda.".");
 
@@ -206,7 +206,7 @@ $desc_g      = 0;
 $total_func_g= 0;
 $troca       = 1;
 
-for($x = 0;$x < pg_numrows($result);$x++){
+for($x = 0;$x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
      $pdf->addpage();
@@ -234,7 +234,7 @@ for($x = 0;$x < pg_numrows($result);$x++){
        }
        $quebra = $codigo;
        $pdf->ln(2);
-       $pdf->cell(155,5,$codigo." - ".strtoupper($descr),0,1,"L",1);
+       $pdf->cell(155,5,$codigo." - ".strtoupper((string) $descr),0,1,"L",1);
      }
    }
    $pdf->setfont('arial','',8);

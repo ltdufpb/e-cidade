@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('z01_nome');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -76,7 +76,7 @@ function js_emite(){
 
         <td nowrap>
 	<?php 
-          $x = array("n"=>"Numérica","a"=>"Alfabética");
+          $x = ["n"=>"Numérica","a"=>"Alfabética"];
           db_select("ordem",$x,true,2); 
 	?>
         </td>
@@ -87,7 +87,7 @@ function js_emite(){
         </td>
         <td nowrap>
 	<?php 
-          $y = array("a"=>"Ascendente","d"=>"Descendente");
+          $y = ["a"=>"Ascendente","d"=>"Descendente"];
           db_select("tipo_ordem",$y,true,2); 
 	?>
         </td>

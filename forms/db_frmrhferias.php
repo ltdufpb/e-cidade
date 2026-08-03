@@ -89,8 +89,8 @@
         	</td>
         	<td colspan="3">
         	  <?php
-              $aOptionsApuracaoMedia = array('N' => 'Período Aquisitivo Normal', 
-                                             'E' => 'Período Aquisitivo Específico');
+              $aOptionsApuracaoMedia = ['N' => 'Período Aquisitivo Normal', 
+                                             'E' => 'Período Aquisitivo Específico'];
               db_select('lDireitoApuracaoMedia', $aOptionsApuracaoMedia, true, 
                         $db_opcao, " style='width:456px;' onchange=js_alteraApuracaoMedia();");
             ?>
@@ -147,7 +147,7 @@
           </td>
           <td clospan="3"> 
             <?php
-              $aOptionsDireitoFerias = array('S' => 'SIM', 'N' => 'NÃO');
+              $aOptionsDireitoFerias = ['S' => 'SIM', 'N' => 'NÃO'];
               db_select('lDireitoFerias', $aOptionsDireitoFerias, true, $db_opcao, "onchange=js_semDireitoFerias();");
             ?>
           </td>
@@ -217,7 +217,7 @@
         	</td>
         	<td>
         		<?php
-        		  $aOptionsTipoPonto = array('S' => 'Salário', 'C' => 'Complementar');
+        		  $aOptionsTipoPonto = ['S' => 'Salário', 'C' => 'Complementar'];
               db_select('rh110_tipoponto', $aOptionsTipoPonto, true, $db_opcao, "");
             ?>
         	</td>
@@ -226,7 +226,7 @@
         	</td>
         	<td>
         		<?php
-              $aOptionsPagaTerco = array('false' => 'NÃO', 'true' => 'SIM');
+              $aOptionsPagaTerco = ['false' => 'NÃO', 'true' => 'SIM'];
               db_select('rh110_pagaterco', $aOptionsPagaTerco, true, $db_opcao, "");
             ?>
         	</td>
@@ -1020,7 +1020,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_rhferias.hide();
   <?php
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

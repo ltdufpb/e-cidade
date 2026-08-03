@@ -40,8 +40,8 @@ use ECidade\Tributario\Arrecadacao\Model\TaxaEspecifica as TaxaEspecificaModel;
 use ECidade\Tributario\Caixa\Repository\RecibopagaRepository;
 use ECidade\Tributario\Library\DataBase;
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $tipotxt = $arq;
 
@@ -52,15 +52,15 @@ set_time_limit(0);
 
 $erro = false;
 $descricao_erro = false;
-$unicas = array();
+$unicas = [];
 $ordena = "";
 
 if ($selunica != "") {
 
-    $vt = split("U", $selunica);
+    $vt = preg_split("#U#m", (string) $selunica);
     foreach ($vt as $i => $v) {
 
-        $check = split("=", $v);
+        $check = preg_split("#=#m", $v);
         if (isset($check) && $check != "") {
             array_push($unicas, $check[0] . "-" . $check[1] . "-" . $check[2]) . "#";
         }
@@ -90,7 +90,7 @@ $sQuebraLinha = "\r\n";
   </body>
   </html>
 <?php
-$aNumpres = array("L" => "", "S" => "");
+$aNumpres = ["L" => "", "S" => ""];
 try {
     $oRegraEmissao = new regraEmissao($k00_tipo, 9, db_getsession('DB_instit'),
       date("Y-m-d", db_getsession("DB_datausu")), db_getsession('DB_ip'));
@@ -377,8 +377,8 @@ if ($result == false || pg_num_rows($result) == 0) {
 
     $iTotalLinhas20 = 0;
     $nTotalParcelas20 = 0;
-    $parcelasTaxaExpedienteLayout = array();
-    $unicasTaxaExpedienteLayout = array();
+    $parcelasTaxaExpedienteLayout = [];
+    $unicasTaxaExpedienteLayout = [];
 
     /**
      * Executa o laço duas vezes
@@ -394,14 +394,14 @@ if ($result == false || pg_num_rows($result) == 0) {
         }
 
         $anousu = db_getsession("DB_anousu");
-        $nomedoarquivo = "tmp/" . $gerar . "_" . $tipo . "_tipdeb_" . str_pad($tipodebitoarrecad, 4, "0",
+        $nomedoarquivo = "tmp/" . $gerar . "_" . $tipo . "_tipdeb_" . str_pad((string) $tipodebitoarrecad, 4, "0",
             STR_PAD_LEFT) . "_issqn" . $anousu . "_" . date("Y-m-d_His", db_getsession("DB_datausu")) . ".txt";
         $arqnomes .= $nomedoarquivo . "# Download do Arquivo - " . $nomedoarquivo . "|";
 
         $clabre_arquivo = new cl_abre_arquivo($nomedoarquivo);
 
         if ($clabre_arquivo->arquivo != false) {
-            $quantidade = pg_numrows($result);
+            $quantidade = pg_num_rows($result);
 
             global $contador;
             $contador = 0;
@@ -415,14 +415,14 @@ if ($result == false || pg_num_rows($result) == 0) {
                 $buscarReceitaTaxaExpediente = true;
                 $valorTaxaExpediente = 0;
                 $receitaTaxaExpediente = null;
-                $parcelasTaxaExpediente = array();
+                $parcelasTaxaExpediente = [];
 
                 db_fieldsmemory($result, $i);
                 db_atutermometro($i, $quantidade, 'termometro');
 
                 $resultiss = $clissbase->empresa_record($clissbase->empresa_query($q01_inscr));
 
-                if ($resultiss == false or pg_numrows($resultiss) == 0) {
+                if ($resultiss == false or pg_num_rows($resultiss) == 0) {
                     continue;
                 }
 
@@ -458,7 +458,7 @@ if ($result == false || pg_num_rows($result) == 0) {
 
                 $sqvalorMax = "select max(k00_numpar) as parcelamaxima, sum(k00_valor) as total_debito from arrecad where k00_numpre = $q01_numpre";
                 $rsValorMax = db_query($sqvalorMax) or die($sqvalorMax);
-                $intNumrowsValorMax = pg_numrows($rsValorMax);
+                $intNumrowsValorMax = pg_num_rows($rsValorMax);
                 $parcelamaxima = 0;
                 if ($intNumrowsValorMax > 0) {
                     db_fieldsmemory($rsValorMax, 0);
@@ -505,7 +505,7 @@ if ($result == false || pg_num_rows($result) == 0) {
                 $sqlVistorias .= "   and ( select count(*) from arrecad where arrecad.k00_numpre = vistorianumpre.y69_numpre ) > 0 ";
 
                 $rsVistorias = db_query($sqlVistorias) or die($sqlVistorias);
-                $intNumrowsVistorias = pg_numrows($rsVistorias);
+                $intNumrowsVistorias = pg_num_rows($rsVistorias);
 
                 if ($k03_tipo == 5 and $intNumrowsVistorias == 0) {
                     continue;
@@ -528,7 +528,7 @@ if ($result == false || pg_num_rows($result) == 0) {
                         }
                     }
 
-                    if ($tipo == "fixo" and pg_result($resultarr, 0, 'k00_tipo') == $tipodebitoarrecad) {
+                    if ($tipo == "fixo" and pg_fetch_result($resultarr, 0, 'k00_tipo') == $tipodebitoarrecad) {
                         if ($gerar == "dados") {
                             $tipo_geracao = "ISSQN FIXO";
                             if ($tipotxt == "txt") {
@@ -536,7 +536,7 @@ if ($result == false || pg_num_rows($result) == 0) {
                             }
                         }
                     } else {
-                        if ($tipo == "variavel" and pg_result($resultarr, 0, 'k00_tipo') == $tipodebitoarrecad) {
+                        if ($tipo == "variavel" and pg_fetch_result($resultarr, 0, 'k00_tipo') == $tipodebitoarrecad) {
                             if ($gerar == "dados") {
                                 $tipo_geracao = "ISSQN VARIAVEL";
                                 if ($tipotxt == "txt") {
@@ -567,37 +567,37 @@ if ($result == false || pg_num_rows($result) == 0) {
                     }
 
                     if ($gerar == "layout") {
-                        fputs($clabre_arquivo->arquivo, db_contador("TIPO", "TIPO", $contador, 30));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("TIPO", "TIPO", $contador, 30));
                     }
 
                     if ($gerar == "dados") {
                         if ($tipotxt == "txt") {
                             fputs($clabre_arquivo->arquivo, str_pad($quantos, 10));
                             fputs($clabre_arquivo->arquivo, str_pad(db_getsession("DB_anousu"), 10));
-                            fputs($clabre_arquivo->arquivo, str_pad($q02_inscr, 10));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $q02_inscr, 10));
                             fputs($clabre_arquivo->arquivo, db_formatar($q01_valor, 'f', ' ', 18));
 
-                            fputs($clabre_arquivo->arquivo, str_pad($q02_numcgm, 10));
-                            fputs($clabre_arquivo->arquivo, str_pad($z01_nome, 40));
-                            fputs($clabre_arquivo->arquivo, substr(str_pad($z01_nomefanta, 50), 0, 50));
-                            fputs($clabre_arquivo->arquivo, str_pad($z01_cgccpf, 20));
-                            fputs($clabre_arquivo->arquivo, str_pad($z01_incest, 20));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $q02_numcgm, 10));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $z01_nome, 40));
+                            fputs($clabre_arquivo->arquivo, substr(str_pad((string) $z01_nomefanta, 50), 0, 50));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $z01_cgccpf, 20));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $z01_incest, 20));
 
                             fputs($clabre_arquivo->arquivo, str_pad(db_formatar($q02_dtcada, 'd'), 10));
                             fputs($clabre_arquivo->arquivo, str_pad(db_formatar($q02_dtinic, 'd'), 10));
                             fputs($clabre_arquivo->arquivo, str_pad(db_formatar($q02_dtbaix, 'd'), 10));
 
-                            fputs($clabre_arquivo->arquivo, str_pad($j14_tipo, 20));
-                            fputs($clabre_arquivo->arquivo, str_pad($z01_ender, 40));
-                            fputs($clabre_arquivo->arquivo, str_pad($z01_numero, 10));
-                            fputs($clabre_arquivo->arquivo, substr(str_pad($z01_compl, 20), 0, 20));
-                            fputs($clabre_arquivo->arquivo, str_pad($z01_cxpostal, 20));
-                            fputs($clabre_arquivo->arquivo, str_pad($z01_bairro, 50));
-                            fputs($clabre_arquivo->arquivo, str_pad($z01_munic, 20));
-                            fputs($clabre_arquivo->arquivo, str_pad($z01_uf, 2));
-                            fputs($clabre_arquivo->arquivo, str_pad($z01_cep, 8));
-                            fputs($clabre_arquivo->arquivo, str_pad($z01_telef, 20));
-                            fputs($clabre_arquivo->arquivo, str_pad($q01_numpre, 8, "0", STR_PAD_LEFT));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $j14_tipo, 20));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $z01_ender, 40));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $z01_numero, 10));
+                            fputs($clabre_arquivo->arquivo, substr(str_pad((string) $z01_compl, 20), 0, 20));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $z01_cxpostal, 20));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $z01_bairro, 50));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $z01_munic, 20));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $z01_uf, 2));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $z01_cep, 8));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $z01_telef, 20));
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $q01_numpre, 8, "0", STR_PAD_LEFT));
                         } elseif ($tipotxt == "bsjtxt") {
                             if ($quantos == 1) {
                                 $sCedente = "2141"; // ###falta###
@@ -612,11 +612,11 @@ if ($result == false || pg_num_rows($result) == 0) {
                                 $linha00 .= "ISS " . substr($anousu, 2, 2);
                                 $linha00 .= str_repeat(" ", 255);
 
-                                fputs($clabre_arquivo->arquivo, db_contador_bsj($linha00, "", $contador, 288));
+                                fputs($clabre_arquivo->arquivo, (string) db_contador_bsj($linha00, "", $contador, 288));
                             }
 
                             $quantunica_linha10 = 0;
-                            
+
                             if (isset($unicas) && sizeof($unicas) > 0 && $unicas[0] != "--") {
                                 for ($unica = 0; $unica < sizeof($unicas); $unica++) {
                                     $vencunica = substr($unicas[$unica], 0, 10);
@@ -646,7 +646,7 @@ $sqlFindUnica .= " ) as unica                                                   
                                     $resultfin1 = db_query($sqlFindUnica);
 
                                     if ($resultfin1 != false) {
-                                        if (pg_numrows($resultfin1) > 0) {
+                                        if (pg_num_rows($resultfin1) > 0) {
                                             $quantunica_linha10 = 1;
                                         }
                                     }
@@ -654,22 +654,22 @@ $sqlFindUnica .= " ) as unica                                                   
                             }
 
                             $linha10 = "BSJR10";
-                            $linha10 .= substr(str_pad(addslashes($z01_nome), 40, " ", STR_PAD_RIGHT), 0, 40);
+                            $linha10 .= substr(str_pad(addslashes((string) $z01_nome), 40, " ", STR_PAD_RIGHT), 0, 40);
 
-                            if (trim($z01_cxpostal) != "" and $z01_cxpostal > 0) {
+                            if (trim((string) $z01_cxpostal) != "" and $z01_cxpostal > 0) {
                                 $linha10 .= str_pad("CAIXA POSTAL: $z01_cxpostal", 40, " ", STR_PAD_RIGHT);
                             } else {
-                                if (strlen(trim($z01_ender)) >= 40) {
-                                    $z01_ender = substr($z01_ender, 0, 34);
+                                if (strlen(trim((string) $z01_ender)) >= 40) {
+                                    $z01_ender = substr((string) $z01_ender, 0, 34);
                                 }
-                                $linha10 .= substr(str_pad(substr(addslashes($z01_ender) . (strlen(trim($z01_numero)) > 0 ? ", " : "") . trim($z01_numero) . (strlen(trim($z01_compl)) > 0 ? "/" : "") . trim($z01_compl) . "-" . $z01_bairro,
+                                $linha10 .= substr(str_pad(substr(addslashes((string) $z01_ender) . (strlen(trim((string) $z01_numero)) > 0 ? ", " : "") . trim((string) $z01_numero) . (strlen(trim((string) $z01_compl)) > 0 ? "/" : "") . trim((string) $z01_compl) . "-" . $z01_bairro,
                                   0, 40), 40, " ", STR_PAD_RIGHT), 0, 40);
                             }
-                            $linha10 .= substr(str_pad(addslashes($z01_munic), 20, " ", STR_PAD_RIGHT), 0, 40);
-                            $linha10 .= str_pad(substr($z01_cep, 0, 5), 5);
-                            $linha10 .= str_pad($z01_uf, 2, " ", STR_PAD_RIGHT);
+                            $linha10 .= substr(str_pad(addslashes((string) $z01_munic), 20, " ", STR_PAD_RIGHT), 0, 40);
+                            $linha10 .= str_pad(substr((string) $z01_cep, 0, 5), 5);
+                            $linha10 .= str_pad((string) $z01_uf, 2, " ", STR_PAD_RIGHT);
                             $linha10 .= str_repeat(" ", 17);
-                            if (strlen(trim($q02_escrit)) > 0 and false) {
+                            if (strlen(trim((string) $q02_escrit)) > 0 and false) {
                                 $linha10 .= str_pad(substr("ESCRITORIO CONTABIL: $q02_escrit", 0, 80), 80, " ",
                                   STR_PAD_RIGHT);
                             } else {
@@ -678,16 +678,16 @@ $sqlFindUnica .= " ) as unica                                                   
                             $linha10 .= str_pad($anousu, 4, "0", STR_PAD_LEFT) . " ";
 
                             // testar se for variavel as parcelas em aberto tem que fechar com parcela maxima, senao dá erro no banco (ocorreu erro em 2012) - variavel
-                            $linha10 .= str_pad($parcelamaxima + $quantunica_linha10, 2, "0", STR_PAD_LEFT);
+                            $linha10 .= str_pad((string) ($parcelamaxima + $quantunica_linha10), 2, "0", STR_PAD_LEFT);
                             $linha10 .= str_repeat("0", 15);
                             $linha10 .= str_repeat("0", 5);
                             $linha10 .= str_repeat("0", 2);
                             $linha10 .= ($mensagemdebitosanosanteriores == "" ? "N" : "S");
                             $linha10 .= ($quantunica_linha10 == 0 ? "N" : "S");
-                            $linha10 .= str_pad(substr($z01_cep, 0, 8), 8, "0", STR_PAD_LEFT);
+                            $linha10 .= str_pad(substr((string) $z01_cep, 0, 8), 8, "0", STR_PAD_LEFT);
                             $linha10 .= str_pad($parcelamaxima, 2, "0", STR_PAD_LEFT);
                             $linha10 .= str_repeat(" ", 37);
-                            fputs($clabre_arquivo->arquivo, db_contador_bsj($linha10, "", $contador, 288));
+                            fputs($clabre_arquivo->arquivo, (string) db_contador_bsj($linha10, "", $contador, 288));
 
                             // parte 1
                             $linha31 = "BSJR30";
@@ -704,7 +704,7 @@ $sqlFindUnica .= " ) as unica                                                   
 
                             $linha31 .= str_repeat(" ", 24);
 
-                            fputs($clabre_arquivo->arquivo, db_contador_bsj($linha31, "", $contador, 288));
+                            fputs($clabre_arquivo->arquivo, (string) db_contador_bsj($linha31, "", $contador, 288));
 
                             // parte 2
                             $linha31 = "BSJR30";
@@ -721,7 +721,7 @@ $sqlFindUnica .= " ) as unica                                                   
 
                             $linha31 .= str_repeat(" ", 24);
 
-                            fputs($clabre_arquivo->arquivo, db_contador_bsj($linha31, "", $contador, 288));
+                            fputs($clabre_arquivo->arquivo, (string) db_contador_bsj($linha31, "", $contador, 288));
 
                             // parte 3
                             $linha31 = "BSJR30";
@@ -738,17 +738,17 @@ $sqlFindUnica .= " ) as unica                                                   
 
                             $linha31 .= str_repeat(" ", 24);
 
-                            fputs($clabre_arquivo->arquivo, db_contador_bsj($linha31, "", $contador, 288));
+                            fputs($clabre_arquivo->arquivo, (string) db_contador_bsj($linha31, "", $contador, 288));
 
                             // parte 4
                             $linha31 = "BSJR30";
 
                             $imp_linha31 = " ";
                             if ($k03_tipo == 3) {
-                                $imp_linha31 .= trim(strtoupper($k00_descr)) . " - Despesas extras: " . trim(db_formatar($taxa_bancaria,
+                                $imp_linha31 .= trim(strtoupper((string) $k00_descr)) . " - Despesas extras: " . trim(db_formatar($taxa_bancaria,
                                     'f', ' ', 18));
                             } else {
-                                $imp_linha31 .= trim(strtoupper($k00_descr)) . ": " . trim(db_formatar($total_debito,
+                                $imp_linha31 .= trim(strtoupper((string) $k00_descr)) . ": " . trim(db_formatar($total_debito,
                                     'f', ' ', 18)) . " - Despesas extras: " . trim(db_formatar($taxa_bancaria, 'f', ' ',
                                     18));
                             }
@@ -757,50 +757,50 @@ $sqlFindUnica .= " ) as unica                                                   
                             $imp_linha31 = " ";
                             $linha31 .= str_pad($imp_linha31, 86, " ", STR_PAD_RIGHT);
 
-                            if (strlen(trim($q02_escrit)) > 0) {
+                            if (strlen(trim((string) $q02_escrit)) > 0) {
                                 $imp_linha31 .= substr("ESCRITORIO CONTABIL: $q02_escrit", 0, 80);
                             }
                             $linha31 .= str_pad($imp_linha31, 86, " ", STR_PAD_RIGHT);
 
                             $linha31 .= str_repeat(" ", 24);
 
-                            fputs($clabre_arquivo->arquivo, db_contador_bsj($linha31, "", $contador, 288));
+                            fputs($clabre_arquivo->arquivo, (string) db_contador_bsj($linha31, "", $contador, 288));
                         }
                     } else {
-                        fputs($clabre_arquivo->arquivo, db_contador("CONTADOR", "CONTADOR", $contador, 10));
-                        fputs($clabre_arquivo->arquivo, db_contador("EXERCICIO", "EXERCICIO", $contador, 10));
-                        fputs($clabre_arquivo->arquivo, db_contador("INSCRICAO", "INSCRICAO", $contador, 10));
-                        fputs($clabre_arquivo->arquivo, db_contador("VALORCALCULADO", "VALOR", $contador, 18));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("CONTADOR", "CONTADOR", $contador, 10));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("EXERCICIO", "EXERCICIO", $contador, 10));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("INSCRICAO", "INSCRICAO", $contador, 10));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("VALORCALCULADO", "VALOR", $contador, 18));
 
-                        fputs($clabre_arquivo->arquivo, db_contador("CGM", "CGM", $contador, 10));
-                        fputs($clabre_arquivo->arquivo, db_contador("NOME", "NOME", $contador, 40));
-                        fputs($clabre_arquivo->arquivo, db_contador("NOMEFANTASIA", "NOME FANTASIA", $contador, 50));
-                        fputs($clabre_arquivo->arquivo, db_contador("CNPJCPF", "CNPJ/CPF", $contador, 20));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("CGM", "CGM", $contador, 10));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("NOME", "NOME", $contador, 40));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("NOMEFANTASIA", "NOME FANTASIA", $contador, 50));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("CNPJCPF", "CNPJ/CPF", $contador, 20));
                         fputs($clabre_arquivo->arquivo,
-                          db_contador("INSCRICAOESTADUAL", "INSCRICAO ESTADUAL", $contador, 20));
+                          (string) db_contador("INSCRICAOESTADUAL", "INSCRICAO ESTADUAL", $contador, 20));
 
-                        fputs($clabre_arquivo->arquivo, db_contador("DATACADASTRO", "DATA DO CADASTRO", $contador, 10));
-                        fputs($clabre_arquivo->arquivo, db_contador("DATAINICIO", "DATA DE INICIO", $contador, 10));
-                        fputs($clabre_arquivo->arquivo, db_contador("DATABAIXA", "DATA DA BAIXA", $contador, 10));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("DATACADASTRO", "DATA DO CADASTRO", $contador, 10));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("DATAINICIO", "DATA DE INICIO", $contador, 10));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("DATABAIXA", "DATA DA BAIXA", $contador, 10));
 
                         fputs($clabre_arquivo->arquivo,
-                          db_contador("TIPOLOGRADOURO", "TIPO DO LOGRADOURO", $contador, 20));
-                        fputs($clabre_arquivo->arquivo, db_contador("ENDERECO", "ENDERECO", $contador, 40));
-                        fputs($clabre_arquivo->arquivo, db_contador("NUMERO", "NUMERO", $contador, 10));
-                        fputs($clabre_arquivo->arquivo, db_contador("COMPLEMENTO", "COMPLEMENTO", $contador, 20));
-                        fputs($clabre_arquivo->arquivo, db_contador("CAIXAPOSTAL", "CAIXA POSTAL", $contador, 20));
-                        fputs($clabre_arquivo->arquivo, db_contador("BAIRRO", "BAIRRO", $contador, 50));
-                        fputs($clabre_arquivo->arquivo, db_contador("MUNICIPIO", "MUNICIPIO", $contador, 20));
-                        fputs($clabre_arquivo->arquivo, db_contador("UF", "UF", $contador, 2));
-                        fputs($clabre_arquivo->arquivo, db_contador("CEP", "CEP", $contador, 8));
-                        fputs($clabre_arquivo->arquivo, db_contador("TELEFONE", "TELEFONE", $contador, 20));
-                        fputs($clabre_arquivo->arquivo, db_contador("NUMPRE", "NUMPRE", $contador, 8));
+                          (string) db_contador("TIPOLOGRADOURO", "TIPO DO LOGRADOURO", $contador, 20));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("ENDERECO", "ENDERECO", $contador, 40));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("NUMERO", "NUMERO", $contador, 10));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("COMPLEMENTO", "COMPLEMENTO", $contador, 20));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("CAIXAPOSTAL", "CAIXA POSTAL", $contador, 20));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("BAIRRO", "BAIRRO", $contador, 50));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("MUNICIPIO", "MUNICIPIO", $contador, 20));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("UF", "UF", $contador, 2));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("CEP", "CEP", $contador, 8));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("TELEFONE", "TELEFONE", $contador, 20));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("NUMPRE", "NUMPRE", $contador, 8));
                     }
 
                     $linha20 = "BSJR20";
 
                     if (isset($unicas) && sizeof($unicas) > 0 && $unicas[0] != "--") {
-                        $aNumpres = array("L" => "", "S" => "");
+                        $aNumpres = ["L" => "", "S" => ""];
 
                         if (!empty($q01_numpre) && $numpre_sanitario == $q01_numpre) {
                             $aNumpres["L"] = $y69_numpre; //indice L para localizacao
@@ -811,7 +811,7 @@ $sqlFindUnica .= " ) as unica                                                   
                         if (!empty($numpre_sanitario)) {
                             $aNumpres["S"] = $numpre_sanitario;  //indice S para sanitario
                         }
-                        
+
                         foreach ($aNumpres as $sChave => $numpre_vistoria) {
                             for ($unica = 0; $unica < sizeof($unicas); $unica++) {
                                 $vencunica = substr($unicas[$unica], 0, 10);
@@ -851,15 +851,15 @@ $sqlFindUnica .= " ) as unica                                                   
                                     }
                                 } else {
                                     fputs($clabre_arquivo->arquivo,
-                                      db_contador("EXPRESSAO", "EXPRESSAO", $contador, 17));
+                                      (string) db_contador("EXPRESSAO", "EXPRESSAO", $contador, 17));
                                 }
 
                                 if ($resultfin1 != false) {
                                     /**
                                      * Gera fincanceiro
                                      */
-                                    if (pg_numrows($resultfin1) > 0) {
-                                        for ($unicontParc1 = 0; $unicontParc1 < pg_numrows($resultfin1); $unicontParc1++) {
+                                    if (pg_num_rows($resultfin1) > 0) {
+                                        for ($unicontParc1 = 0; $unicontParc1 < pg_num_rows($resultfin1); $unicontParc1++) {
                                             db_fieldsmemory($resultfin1, $unicontParc1);
 
                                             if ($gerar == "dados") { // if orginal
@@ -969,8 +969,8 @@ $sqlFindUnica .= " ) as unica                                                   
                                                     $linha20 .= str_pad($oConvenio->getNossoNumero(), 13, " ",
                                                       STR_PAD_LEFT);
                                                     $linha20 .= "00";
-                                                    $linha20 .= substr($dtvencunic, 8, 2) . substr($dtvencunic, 5,
-                                                        2) . substr($dtvencunic, 2, 2);
+                                                    $linha20 .= substr((string) $dtvencunic, 8, 2) . substr((string) $dtvencunic, 5,
+                                                        2) . substr((string) $dtvencunic, 2, 2);
 
                                                     $k00_valor_imprimir = $utotal + $taxa_bancaria;
 
@@ -996,7 +996,7 @@ $sqlFindUnica .= " ) as unica                                                   
                                                     $linha20 .= str_repeat("0", 166);
 
                                                     fputs($clabre_arquivo->arquivo,
-                                                      db_contador_bsj($linha20, "", $contador, 288));
+                                                      (string) db_contador_bsj($linha20, "", $contador, 288));
                                                     $iTotalLinhas20++;
                                                     $nTotalParcelas20 += $k00_valor_imprimir;
 
@@ -1019,14 +1019,14 @@ $sqlFindUnica .= " ) as unica                                                   
                                                     $imp_linha50 = "";
                                                     $competencia = $anousu;
                                                     if ($k03_tipo == 3) {
-                                                        $competencia = str_pad($k00_numpar, 2, "0",
+                                                        $competencia = str_pad((string) $k00_numpar, 2, "0",
                                                             STR_PAD_LEFT) . "/" . $anousu;
                                                         $imp_linha50 .= "ALIQ: $aliquota" . "%" . " - COMPET: $competencia";
                                                     } elseif ($k03_tipo == 2) {
                                                         $sqltipcalc = "select q81_descr from ativtipo inner join tipcalc on q81_codigo = q80_tipcal where q80_ativ = $q07_ativ and q81_cadcalc = 2";
                                                         $resulttipcalc = db_query($sqltipcalc) or die($sqltipcalc);
-                                                        if (pg_numrows($resulttipcalc) > 0) {
-                                                            $q81_descr = pg_result($resulttipcalc, 0, 0);
+                                                        if (pg_num_rows($resulttipcalc) > 0) {
+                                                            $q81_descr = pg_fetch_result($resulttipcalc, 0, 0);
                                                         } else {
                                                             $q81_descr = "";
                                                         }
@@ -1045,13 +1045,13 @@ $sqlFindUnica .= " ) as unica                                                   
 
                                                     // parte 5
                                                     $linha50 .= str_repeat(" ", 62);
-                                                    fputs($arquivo, db_contador_bsj($linha50, "", $contador, 288));
+                                                    fputs($arquivo, (string) db_contador_bsj($linha50, "", $contador, 288));
 
                                                     // linha 2
                                                     // parte 1
                                                     $sqlmsg = "select k00_msgparc from arretipo where k00_tipo = $tipodebitoarrecad";
                                                     $result_mesg = db_query($sqlmsg) or die($sqlmsg);
-                                                    $msg = substr(str_pad(pg_result($result_mesg, 0, 0), 281, " ",
+                                                    $msg = substr(str_pad(pg_fetch_result($result_mesg, 0, 0), 281, " ",
                                                       STR_PAD_RIGHT), 0, 281);
 
                                                     $imp_linha50 = "BSJR50";
@@ -1061,34 +1061,34 @@ $sqlFindUnica .= " ) as unica                                                   
 
                                                     $linha50 = substr(str_pad($imp_linha50, 288, " ", STR_PAD_RIGHT), 0,
                                                       288);
-                                                    fputs($arquivo, db_contador_bsj($linha50, "", $contador, 288));
+                                                    fputs($arquivo, (string) db_contador_bsj($linha50, "", $contador, 288));
 
                                                     break;
                                                 }
                                             } else {
                                                 fputs($clabre_arquivo->arquivo,
-                                                  db_contador("VENCIMENTOUNICA" . $percunica,
+                                                  (string) db_contador("VENCIMENTOUNICA" . $percunica,
                                                     "VENCIMENTO UNICA $percunica", $contador, 10));
                                                 fputs($clabre_arquivo->arquivo,
-                                                  db_contador("PERCENTUALDESCONTOUNICA" . $percunica,
+                                                  (string) db_contador("PERCENTUALDESCONTOUNICA" . $percunica,
                                                     "PERCENTUAL DE DESCONTO UNICA $percunica", $contador, 6));
                                                 fputs($clabre_arquivo->arquivo,
-                                                  db_contador("VALORHISTORICOUNICA" . $percunica,
+                                                  (string) db_contador("VALORHISTORICOUNICA" . $percunica,
                                                     "VALOR HISTORICO UNICA $percunica", $contador, 15));
                                                 fputs($clabre_arquivo->arquivo,
-                                                  db_contador("VALORDESCONTOUNICA" . $percunica,
+                                                  (string) db_contador("VALORDESCONTOUNICA" . $percunica,
                                                     "VALOR DO DESCONTO UNICA $percunica", $contador, 15));
                                                 fputs($clabre_arquivo->arquivo,
-                                                  db_contador("TOTALLIQUIDOUNICA" . $percunica,
+                                                  (string) db_contador("TOTALLIQUIDOUNICA" . $percunica,
                                                     "TOTAL LIQUIDO UNICA $percunica", $contador, 15));
                                                 fputs($clabre_arquivo->arquivo,
-                                                  db_contador("CODIGODEARRECADACAOUNICA" . $percunica,
+                                                  (string) db_contador("CODIGODEARRECADACAOUNICA" . $percunica,
                                                     "CODIGO DE ARRECADACAO UNICA $percunica", $contador, 11));
                                                 fputs($clabre_arquivo->arquivo,
-                                                  db_contador("NOSSO_NUMERO_PARC{$percunica}",
+                                                  (string) db_contador("NOSSO_NUMERO_PARC{$percunica}",
                                                     "NOSSO NUMERO UNICA {$percunica}", $contador, $iTamNossoNumero));
                                                 fputs($clabre_arquivo->arquivo,
-                                                  db_contador("DG_NOSSO_NUMERO_PARC{$percunica}",
+                                                  (string) db_contador("DG_NOSSO_NUMERO_PARC{$percunica}",
                                                     "DIGITO DO NOSSO NUMERO UNICA {$percunica}", $contador, 1));
                                             }
 
@@ -1112,7 +1112,7 @@ $sqlFindUnica .= " ) as unica                                                   
                                                 }
                                             } else {
                                                 fputs($clabre_arquivo->arquivo,
-                                                  db_contador("CODIGOFEBRABANUNICA" . $percunica,
+                                                  (string) db_contador("CODIGOFEBRABANUNICA" . $percunica,
                                                     "CODIGO FEBRABAN UNICA $percunica", $contador, 101));
                                             }
                                         }
@@ -1129,38 +1129,38 @@ $sqlFindUnica .= " ) as unica                                                   
                                             }
 
                                             fputs($clabre_arquivo->arquivo,
-                                              db_contador("{$sDescricaoTipoVistoria}_VENCIMENTOUNICA" . $percunica,
+                                              (string) db_contador("{$sDescricaoTipoVistoria}_VENCIMENTOUNICA" . $percunica,
                                                 "$sDescricaoTipoVistoria VENCIMENTO UNICA $percunica", $contador, 10));
                                             fputs($clabre_arquivo->arquivo,
-                                              db_contador("{$sDescricaoTipoVistoria}_PERCENTUALDESCONTOUNICA" . $percunica,
+                                              (string) db_contador("{$sDescricaoTipoVistoria}_PERCENTUALDESCONTOUNICA" . $percunica,
                                                 "$sDescricaoTipoVistoria PERCENTUAL DE DESCONTO UNICA $percunica",
                                                 $contador, 6));
                                             fputs($clabre_arquivo->arquivo,
-                                              db_contador("{$sDescricaoTipoVistoria}_VALORHISTORICOUNICA" . $percunica,
+                                              (string) db_contador("{$sDescricaoTipoVistoria}_VALORHISTORICOUNICA" . $percunica,
                                                 "$sDescricaoTipoVistoria VALOR HISTORICO UNICA $percunica", $contador,
                                                 15));
                                             fputs($clabre_arquivo->arquivo,
-                                              db_contador("{$sDescricaoTipoVistoria}_VALORDESCONTOUNICA" . $percunica,
+                                              (string) db_contador("{$sDescricaoTipoVistoria}_VALORDESCONTOUNICA" . $percunica,
                                                 "$sDescricaoTipoVistoria VALOR DO DESCONTO UNICA $percunica", $contador,
                                                 15));
                                             fputs($clabre_arquivo->arquivo,
-                                              db_contador("{$sDescricaoTipoVistoria}_TOTALLIQUIDOUNICA" . $percunica,
+                                              (string) db_contador("{$sDescricaoTipoVistoria}_TOTALLIQUIDOUNICA" . $percunica,
                                                 "$sDescricaoTipoVistoria TOTAL LIQUIDO UNICA $percunica", $contador,
                                                 15));
                                             fputs($clabre_arquivo->arquivo,
-                                              db_contador("{$sDescricaoTipoVistoria}_CODIGODEARRECADACAOUNICA" . $percunica,
+                                              (string) db_contador("{$sDescricaoTipoVistoria}_CODIGODEARRECADACAOUNICA" . $percunica,
                                                 "$sDescricaoTipoVistoria CODIGO DE ARRECADACAO UNICA $percunica",
                                                 $contador, 11));
                                             fputs($clabre_arquivo->arquivo,
-                                              db_contador("{$sDescricaoTipoVistoria}_NOSSO_NUMERO_PARC{$percunica}",
+                                              (string) db_contador("{$sDescricaoTipoVistoria}_NOSSO_NUMERO_PARC{$percunica}",
                                                 "$sDescricaoTipoVistoria NOSSO NUMERO UNICA {$percunica}", $contador,
                                                 $iTamNossoNumero));
                                             fputs($clabre_arquivo->arquivo,
-                                              db_contador("{$sDescricaoTipoVistoria}_DG_NOSSO_NUMERO_PARC{$percunica}",
+                                              (string) db_contador("{$sDescricaoTipoVistoria}_DG_NOSSO_NUMERO_PARC{$percunica}",
                                                 "$sDescricaoTipoVistoria DIGITO DO NOSSO NUMERO UNICA {$percunica}",
                                                 $contador, 1));
                                             fputs($clabre_arquivo->arquivo,
-                                              db_contador("{$sDescricaoTipoVistoria}_CODIGOFEBRABANUNICA" . $percunica,
+                                              (string) db_contador("{$sDescricaoTipoVistoria}_CODIGOFEBRABANUNICA" . $percunica,
                                                 "$sDescricaoTipoVistoria CODIGO FEBRABAN UNICA $percunica", $contador,
                                                 101));
                                         }
@@ -1174,7 +1174,7 @@ $sqlFindUnica .= " ) as unica                                                   
                                 fputs($clabre_arquivo->arquivo, "#FIMDASUNICAS#");
                             }
                         } else {
-                            fputs($clabre_arquivo->arquivo, db_contador("EXPRESSAO", "EXPRESSAO", $contador, 14));
+                            fputs($clabre_arquivo->arquivo, (string) db_contador("EXPRESSAO", "EXPRESSAO", $contador, 14));
                         }
                     } // Fim das unicas
 
@@ -1241,11 +1241,11 @@ $sqlFindUnica .= " ) as unica                                                   
 
                     if ($gerar == "dados") {
                         if ($tipotxt == "txt") {
-                            fputs($clabre_arquivo->arquivo, str_pad(substr($q03_descr, 0, 40), 40));
+                            fputs($clabre_arquivo->arquivo, str_pad(substr((string) $q03_descr, 0, 40), 40));
                         }
                     } else {
                         fputs($clabre_arquivo->arquivo,
-                          db_contador("ATIVIDADEPRINCIPAL", "DESCRICAO DA ATIVIDADE PRINCIPAL", $contador, 40));
+                          (string) db_contador("ATIVIDADEPRINCIPAL", "DESCRICAO DA ATIVIDADE PRINCIPAL", $contador, 40));
                     }
 
                     /**
@@ -1257,7 +1257,7 @@ $sqlFindUnica .= " ) as unica                                                   
                         }
                     } else {
                         if ($lGerarVistorias) {
-                            fputs($clabre_arquivo->arquivo, db_contador("EXPRESSAO", "EXPRESSAO", $contador, 27));
+                            fputs($clabre_arquivo->arquivo, (string) db_contador("EXPRESSAO", "EXPRESSAO", $contador, 27));
                         }
                     }
 
@@ -1269,29 +1269,29 @@ $sqlFindUnica .= " ) as unica                                                   
 
                                     if ($tipotxt == "txt") {
                                         fputs($clabre_arquivo->arquivo,
-                                          str_pad($y70_codvist, 10));                   // codigo da vistoria
+                                          str_pad((string) $y70_codvist, 10));                   // codigo da vistoria
                                         fputs($clabre_arquivo->arquivo, str_pad(db_formatar($y70_data, 'd'),
                                           10));                   // data da vistoria
                                         fputs($clabre_arquivo->arquivo,
-                                          str_pad($y70_hora, 5));                    // hora da vistoria
+                                          str_pad((string) $y70_hora, 5));                    // hora da vistoria
                                         fputs($clabre_arquivo->arquivo,
-                                          str_pad($y70_contato, 50));                   // contato da vistoria
+                                          str_pad((string) $y70_contato, 50));                   // contato da vistoria
                                         fputs($clabre_arquivo->arquivo,
-                                          str_pad($y70_tipovist, 10));                   // codigo do tipo de vistoria
-                                        fputs($clabre_arquivo->arquivo, str_pad($y77_descricao,
+                                          str_pad((string) $y70_tipovist, 10));                   // codigo do tipo de vistoria
+                                        fputs($clabre_arquivo->arquivo, str_pad((string) $y77_descricao,
                                           50));                   // descricao do tipo de vistoria
-                                        fputs($clabre_arquivo->arquivo, str_pad($y70_id_usuario,
+                                        fputs($clabre_arquivo->arquivo, str_pad((string) $y70_id_usuario,
                                           10));                   // codigo do usuario que digitou a vistoria
-                                        fputs($clabre_arquivo->arquivo, str_pad($nome,
+                                        fputs($clabre_arquivo->arquivo, str_pad((string) $nome,
                                           50));                   // nome do usuario que digitou a vistoria
-                                        fputs($clabre_arquivo->arquivo, str_pad($y70_coddepto,
+                                        fputs($clabre_arquivo->arquivo, str_pad((string) $y70_coddepto,
                                           10));                   // codigo do departamento que digitou a vistoria
-                                        fputs($clabre_arquivo->arquivo, str_pad($descrdepto,
+                                        fputs($clabre_arquivo->arquivo, str_pad((string) $descrdepto,
                                           50));                   // nome do departamento que digitou a vistoria
                                         fputs($clabre_arquivo->arquivo,
-                                          str_pad($y70_numbloco, 20));                   // numero do bloco da vistoria
+                                          str_pad((string) $y70_numbloco, 20));                   // numero do bloco da vistoria
                                         fputs($clabre_arquivo->arquivo,
-                                          str_pad($y69_numpre, 8, "0", STR_PAD_LEFT)); //  numpre da vistoria
+                                          str_pad((string) $y69_numpre, 8, "0", STR_PAD_LEFT)); //  numpre da vistoria
                                     }
 
                                     for ($imaxparcelas = 1; $imaxparcelas <= $maiornumparvist; $imaxparcelas++) {
@@ -1329,33 +1329,33 @@ $sqlFindUnica .= " ) as unica                                                   
                             $y77_descricao = "";
 
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("CODIGOVISTORIA", "CODIGO DA VISTORIA", $contador, 10));
+                              (string) db_contador("CODIGOVISTORIA", "CODIGO DA VISTORIA", $contador, 10));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("DATAVISTORIA", "DATA DA VISTORIA", $contador, 10));
+                              (string) db_contador("DATAVISTORIA", "DATA DA VISTORIA", $contador, 10));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("HORAVISTORIA", "HORA DA VISTORIA", $contador, 5));
+                              (string) db_contador("HORAVISTORIA", "HORA DA VISTORIA", $contador, 5));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("CONTATOVISTORIA", "CONTATO DA VISTORIA", $contador, 50));
+                              (string) db_contador("CONTATOVISTORIA", "CONTATO DA VISTORIA", $contador, 50));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("CODIGOTIPOVISTORIA", "CODIGO DO TIPO DE VISTORIA", $contador, 10));
+                              (string) db_contador("CODIGOTIPOVISTORIA", "CODIGO DO TIPO DE VISTORIA", $contador, 10));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("DESCRICAOTIPOVISTORIA", "DESCRICAO DO TIPO DE VISTORIA", $contador, 50));
+                              (string) db_contador("DESCRICAOTIPOVISTORIA", "DESCRICAO DO TIPO DE VISTORIA", $contador, 50));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("CODIGOUSUARIOVISTORIA", "CODIGO DO USUARIO QUE DIGITOU A VISTORIA",
+                              (string) db_contador("CODIGOUSUARIOVISTORIA", "CODIGO DO USUARIO QUE DIGITOU A VISTORIA",
                                 $contador, 10));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("NOMEUSUARIOVISTORIA", "NOME DO USUARIO QUE DIGITOU A VISTORIA", $contador,
+                              (string) db_contador("NOMEUSUARIOVISTORIA", "NOME DO USUARIO QUE DIGITOU A VISTORIA", $contador,
                                 50));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("CODIGODEPARTVISTORIA", "CODIGO DO DEPARTAMENTO QUE DIGITOU A VISTORIA",
+                              (string) db_contador("CODIGODEPARTVISTORIA", "CODIGO DO DEPARTAMENTO QUE DIGITOU A VISTORIA",
                                 $contador, 10));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("NOMEDEPARTVISTORIA", "NOME DO DEPARTAMENTO QUE DIGITOU A VISTORIA",
+                              (string) db_contador("NOMEDEPARTVISTORIA", "NOME DO DEPARTAMENTO QUE DIGITOU A VISTORIA",
                                 $contador, 50));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("NUMEROBLOCO", "NUMERO DO BLOCO DA VISTORIA", $contador, 20));
+                              (string) db_contador("NUMEROBLOCO", "NUMERO DO BLOCO DA VISTORIA", $contador, 20));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("NUMPREVISTORIA", "NUMPRE DA VISTORIA", $contador, 8));
+                              (string) db_contador("NUMPREVISTORIA", "NUMPRE DA VISTORIA", $contador, 8));
 
                             for ($imaxparcelas = 1; $imaxparcelas <= $maiornumparvist; $imaxparcelas++) {
                                 geraArrecad($clabre_arquivo->arquivo, $y69_numpre, $imaxparcelas, $contador, $gerar,
@@ -1374,7 +1374,7 @@ $sqlFindUnica .= " ) as unica                                                   
                         }
                     } else {
                         if ($lGerarVistorias) {
-                            fputs($clabre_arquivo->arquivo, db_contador("EXPRESSAO", "EXPRESSAO", $contador, 25));
+                            fputs($clabre_arquivo->arquivo, (string) db_contador("EXPRESSAO", "EXPRESSAO", $contador, 25));
                         }
                     }
 
@@ -1412,7 +1412,7 @@ $sqlFindUnica .= " ) as unica                                                   
                     $sqlSanitario .= "   and (select count(*) from arrecad where arrecad.k00_numpre = vistorianumpre.y69_numpre) > 0";
 
                     $rsSanitario = db_query($sqlSanitario);
-                    $intNumrowsSanitario = pg_numrows($rsSanitario);
+                    $intNumrowsSanitario = pg_num_rows($rsSanitario);
 
                     if ($lGerarVistorias) {
                         if ($gerar == "dados") {
@@ -1422,29 +1422,29 @@ $sqlFindUnica .= " ) as unica                                                   
 
                                     if ($tipotxt == "txt") {
                                         fputs($clabre_arquivo->arquivo,
-                                          str_pad($y70_codvist, 10));                   //  "CODIGO DA VISTORIA",
+                                          str_pad((string) $y70_codvist, 10));                   //  "CODIGO DA VISTORIA",
                                         fputs($clabre_arquivo->arquivo,
                                           str_pad(db_formatar($y70_data, 'd'), 10));     //  "DATA DA VISTORIA",
                                         fputs($clabre_arquivo->arquivo,
-                                          str_pad($y70_hora, 5));                       //  "HORA DA VISTORIA",
+                                          str_pad((string) $y70_hora, 5));                       //  "HORA DA VISTORIA",
                                         fputs($clabre_arquivo->arquivo,
-                                          str_pad($y70_contato, 50));                   //  "CONTATO DA VISTORIA",
+                                          str_pad((string) $y70_contato, 50));                   //  "CONTATO DA VISTORIA",
                                         fputs($clabre_arquivo->arquivo,
-                                          str_pad($y70_tipovist, 10));                  //  "CODIGO DO TIPO DE VISTORIA"
-                                        fputs($clabre_arquivo->arquivo, str_pad($y77_descricao,
+                                          str_pad((string) $y70_tipovist, 10));                  //  "CODIGO DO TIPO DE VISTORIA"
+                                        fputs($clabre_arquivo->arquivo, str_pad((string) $y77_descricao,
                                           50));                 //  "DESCRICAO DO TIPO DE VISTORIA"
-                                        fputs($clabre_arquivo->arquivo, str_pad($y70_id_usuario,
+                                        fputs($clabre_arquivo->arquivo, str_pad((string) $y70_id_usuario,
                                           10));                //  "CODIGO DO USUARIO QUE DIGITOU A VISTORIA"
-                                        fputs($clabre_arquivo->arquivo, str_pad($nome,
+                                        fputs($clabre_arquivo->arquivo, str_pad((string) $nome,
                                           50));                          //  "NOME DO USUARIO QUE DIGITOU A VISTORIA"
-                                        fputs($clabre_arquivo->arquivo, str_pad($y70_coddepto,
+                                        fputs($clabre_arquivo->arquivo, str_pad((string) $y70_coddepto,
                                           10));                  //  "CODIGO DO DEPARTAMENTO QUE DIGITOU A VISTORIA"
-                                        fputs($clabre_arquivo->arquivo, str_pad($descrdepto,
+                                        fputs($clabre_arquivo->arquivo, str_pad((string) $descrdepto,
                                           50));                    //  "NOME DO DEPARTAMENTO QUE DIGITOU A VISTORIA"
-                                        fputs($clabre_arquivo->arquivo, str_pad($y70_numbloco,
+                                        fputs($clabre_arquivo->arquivo, str_pad((string) $y70_numbloco,
                                           20));                  //  "NUMERO DO BLOCO DA VISTORIA"
                                         fputs($clabre_arquivo->arquivo,
-                                          str_pad($y69_numpre, 8, "0", STR_PAD_LEFT)); //  "NUMPRE DA VISTORIA"
+                                          str_pad((string) $y69_numpre, 8, "0", STR_PAD_LEFT)); //  "NUMPRE DA VISTORIA"
                                     }
 
                                     for ($imaxparcelassani = 1; $imaxparcelassani <= $maiornumparsani; $imaxparcelassani++) {
@@ -1472,32 +1472,32 @@ $sqlFindUnica .= " ) as unica                                                   
                              * Geração layout
                              */
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("CODIGOVISTORIASANITARIO", "CODIGO DA VISTORIA SANITARIO", $contador, 10));
+                              (string) db_contador("CODIGOVISTORIASANITARIO", "CODIGO DA VISTORIA SANITARIO", $contador, 10));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("DATAVISTORIASANITARIO", "DATA DA VISTORIA SANITARIO", $contador, 10));
+                              (string) db_contador("DATAVISTORIASANITARIO", "DATA DA VISTORIA SANITARIO", $contador, 10));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("HORAVISTORIASANITARIO", "HORA DA VISTORIA SANITARIO", $contador, 5));
+                              (string) db_contador("HORAVISTORIASANITARIO", "HORA DA VISTORIA SANITARIO", $contador, 5));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("CONTATOVISTORIASANITARIO", "CONTATO DA VISTORIA SANITARIO", $contador, 50));
+                              (string) db_contador("CONTATOVISTORIASANITARIO", "CONTATO DA VISTORIA SANITARIO", $contador, 50));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("CODIGOTIPOVISTORIASANITARIO", "CODIGO DO TIPO DE VISTORIA SANITARIO",
+                              (string) db_contador("CODIGOTIPOVISTORIASANITARIO", "CODIGO DO TIPO DE VISTORIA SANITARIO",
                                 $contador, 10));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("DESCRICAOTIPOVISTORIASANITARIO", "DESCRICAO DO TIPO DE VISTORIA SANITARIO",
+                              (string) db_contador("DESCRICAOTIPOVISTORIASANITARIO", "DESCRICAO DO TIPO DE VISTORIA SANITARIO",
                                 $contador, 50));
-                            fputs($clabre_arquivo->arquivo, db_contador("CODIGOUSUARIOVISTORIASANITARIO",
+                            fputs($clabre_arquivo->arquivo, (string) db_contador("CODIGOUSUARIOVISTORIASANITARIO",
                               "CODIGO DO USUARIO QUE DIGITOU A VISTORIA SANITARIO", $contador, 10));
-                            fputs($clabre_arquivo->arquivo, db_contador("NOMEUSUARIOVISTORIASANITARIO",
+                            fputs($clabre_arquivo->arquivo, (string) db_contador("NOMEUSUARIOVISTORIASANITARIO",
                               "NOME DO USUARIO QUE DIGITOU A VISTORIA SANITARIO", $contador, 50));
-                            fputs($clabre_arquivo->arquivo, db_contador("CODIGODEPARTVISTORIASANITARIO",
+                            fputs($clabre_arquivo->arquivo, (string) db_contador("CODIGODEPARTVISTORIASANITARIO",
                               "CODIGO DO DEPARTAMENTO QUE DIGITOU A VISTORIA SANITARIO", $contador, 10));
-                            fputs($clabre_arquivo->arquivo, db_contador("NOMEDEPARTVISTORIASANITARIO",
+                            fputs($clabre_arquivo->arquivo, (string) db_contador("NOMEDEPARTVISTORIASANITARIO",
                               "NOME DO DEPARTAMENTO QUE DIGITOU A VISTORIA SANITARIO", $contador, 50));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("NUMEROBLOCOVISTORIASANITARIO", "NUMERO DO BLOCO DA VISTORIA SANITARIO",
+                              (string) db_contador("NUMEROBLOCOVISTORIASANITARIO", "NUMERO DO BLOCO DA VISTORIA SANITARIO",
                                 $contador, 20));
                             fputs($clabre_arquivo->arquivo,
-                              db_contador("NUMPREVISTORIASANITARIO", "NUMPRE DA VISTORIA SANITARIO", $contador, 8));
+                              (string) db_contador("NUMPREVISTORIASANITARIO", "NUMPRE DA VISTORIA SANITARIO", $contador, 8));
 
                             for ($imaxparcelassani = 1; $imaxparcelassani <= $maiornumparsani; $imaxparcelassani++) {
                                 geraArrecad($clabre_arquivo->arquivo, $y69_numpre, $imaxparcelassani, $contador, $gerar,
@@ -1512,38 +1512,38 @@ $sqlFindUnica .= " ) as unica                                                   
 
                     if ($gerar == "dados") {
                         if ($tipotxt == "txt") {
-                            fputs($clabre_arquivo->arquivo, $sAgencia, 5);
-                            fputs($clabre_arquivo->arquivo, $sDigAgencia, 1);
-                            fputs($clabre_arquivo->arquivo, $sOperacao, 3);
-                            fputs($clabre_arquivo->arquivo, $sCedente, $iTamCedente);
-                            fputs($clabre_arquivo->arquivo, $sDigCedente, 1);
-                            fputs($clabre_arquivo->arquivo, $sCarteira, $iTamCarteira);
-                            fputs($clabre_arquivo->arquivo, $sConvenio, $iTamConvenio);
+                            fputs($clabre_arquivo->arquivo, (string) $sAgencia, 5);
+                            fputs($clabre_arquivo->arquivo, (string) $sDigAgencia, 1);
+                            fputs($clabre_arquivo->arquivo, (string) $sOperacao, 3);
+                            fputs($clabre_arquivo->arquivo, (string) $sCedente, $iTamCedente);
+                            fputs($clabre_arquivo->arquivo, (string) $sDigCedente, 1);
+                            fputs($clabre_arquivo->arquivo, (string) $sCarteira, $iTamCarteira);
+                            fputs($clabre_arquivo->arquivo, (string) $sConvenio, $iTamConvenio);
                             fputs($clabre_arquivo->arquivo, date('d/m/Y', db_getsession('DB_datausu')), 10);
                             fputs($clabre_arquivo->arquivo,
                               str_pad($oRegraEmissao->getNomeConvenio(), 50, " ", STR_PAD_RIGHT), 50);
                         }
                     } else {
-                        fputs($clabre_arquivo->arquivo, db_contador("AGENCIA", "AGENCIA DO CONVENIO", $contador, 5));
-                        fputs($clabre_arquivo->arquivo, db_contador("DG_AGENCIA", "DIGITO DA AGENCIA", $contador, 1));
-                        fputs($clabre_arquivo->arquivo, db_contador("OPERACAO", "OPERACAO DO CONVENIO", $contador, 3));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("AGENCIA", "AGENCIA DO CONVENIO", $contador, 5));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("DG_AGENCIA", "DIGITO DA AGENCIA", $contador, 1));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("OPERACAO", "OPERACAO DO CONVENIO", $contador, 3));
                         fputs($clabre_arquivo->arquivo,
-                          db_contador("CEDENTE", "CEDENTE DO CONVENIO", $contador, $iTamCedente));
-                        fputs($clabre_arquivo->arquivo, db_contador("DG_CEDENTE", "DIGITO DO CEDENTE", $contador, 1));
+                          (string) db_contador("CEDENTE", "CEDENTE DO CONVENIO", $contador, $iTamCedente));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("DG_CEDENTE", "DIGITO DO CEDENTE", $contador, 1));
                         fputs($clabre_arquivo->arquivo,
-                          db_contador("CARTEIRA", "CARTEIRA DO CONVENIO", $contador, $iTamCarteira));
-                        fputs($clabre_arquivo->arquivo, db_contador("CONVENIO", "CONVENIO", $contador, $iTamConvenio));
+                          (string) db_contador("CARTEIRA", "CARTEIRA DO CONVENIO", $contador, $iTamCarteira));
+                        fputs($clabre_arquivo->arquivo, (string) db_contador("CONVENIO", "CONVENIO", $contador, $iTamConvenio));
                         fputs($clabre_arquivo->arquivo,
-                          db_contador("DATA_PROCESSAMENTO", "DATA DO PROCESSAMENTO", $contador, 10));
+                          (string) db_contador("DATA_PROCESSAMENTO", "DATA DO PROCESSAMENTO", $contador, 10));
                         fputs($clabre_arquivo->arquivo,
-                          db_contador("DESCRICAO_CONVENIO", "DESCRICAO DO CONVENIO", $contador, 50));
+                          (string) db_contador("DESCRICAO_CONVENIO", "DESCRICAO DO CONVENIO", $contador, 50));
                     }
 
                     foreach ($unicasTaxaExpedienteLayout as $indice => $unica) {
                         if ($gerar === 'layout') {
                             fputs(
                               $clabre_arquivo->arquivo,
-                              db_contador(
+                              (string) db_contador(
                                 "TAXAEXPEDUNICAPARCELA" . str_pad($indice, 3, '0', STR_PAD_LEFT),
                                 "PARCELA {$indice} DA UNICA REFERENTE A TAXA DE EXPEDIENTE",
                                 $contador,
@@ -1553,7 +1553,7 @@ $sqlFindUnica .= " ) as unica                                                   
 
                             fputs(
                               $clabre_arquivo->arquivo,
-                              db_contador(
+                              (string) db_contador(
                                 "TAXAEXPEDUNICAVALORPARCELA" . str_pad($indice, 3, '0', STR_PAD_LEFT),
                                 "VALOR DA TAXA DE EXPEDIENTE DA PARCELA {$indice} DA UNICA",
                                 $contador,
@@ -1572,8 +1572,8 @@ $sqlFindUnica .= " ) as unica                                                   
                         if ($gerar === 'layout') {
                             fputs(
                               $clabre_arquivo->arquivo,
-                              db_contador(
-                                "TAXAEXPEDPARCELA" . str_pad($indice, 3, '0', STR_PAD_LEFT),
+                              (string) db_contador(
+                                "TAXAEXPEDPARCELA" . str_pad((string) $indice, 3, '0', STR_PAD_LEFT),
                                 "PARCELA {$indice} REFERENTE A TAXA DE EXPEDIENTE",
                                 $contador,
                                 3
@@ -1582,8 +1582,8 @@ $sqlFindUnica .= " ) as unica                                                   
 
                             fputs(
                               $clabre_arquivo->arquivo,
-                              db_contador(
-                                "TAXAEXPEDVALORPARCELA" . str_pad($indice, 3, '0', STR_PAD_LEFT),
+                              (string) db_contador(
+                                "TAXAEXPEDVALORPARCELA" . str_pad((string) $indice, 3, '0', STR_PAD_LEFT),
                                 "VALOR DA TAXA DE EXPEDIENTE DA PARCELA {$indice}",
                                 $contador,
                                 10
@@ -1592,7 +1592,7 @@ $sqlFindUnica .= " ) as unica                                                   
                         }
 
                         if ($gerar === 'dados') {
-                            fputs($clabre_arquivo->arquivo, str_pad($indice, 3, '0', STR_PAD_LEFT), 3);
+                            fputs($clabre_arquivo->arquivo, str_pad((string) $indice, 3, '0', STR_PAD_LEFT), 3);
                             fputs($clabre_arquivo->arquivo, str_pad(trim(db_formatar($parcela, 'f')), 10, '0', STR_PAD_LEFT), 10);
                         }
                     }
@@ -1622,7 +1622,7 @@ $sqlFindUnica .= " ) as unica                                                   
                 $linha90 .= str_pad(0, 15, "0", STR_PAD_LEFT);
                 $linha90 .= str_repeat(" ", 238);
 
-                fputs($clabre_arquivo->arquivo, db_contador_bsj($linha90, "", $contador, 288));
+                fputs($clabre_arquivo->arquivo, (string) db_contador_bsj($linha90, "", $contador, 288));
             }
 
             fclose($clabre_arquivo->arquivo);
@@ -1652,7 +1652,7 @@ function db_contador($apelido, $expressao, $contador, $valor)
     $contadorant = $contador + 1;
     $contador += $valor;
 
-    return str_pad($apelido, 50) . " - " . str_pad($expressao, 90) . " - " . str_pad($valor, 4, "0",
+    return str_pad((string) $apelido, 50) . " - " . str_pad((string) $expressao, 90) . " - " . str_pad((string) $valor, 4, "0",
         STR_PAD_LEFT) . " - " . str_pad($contadorant, 4, "0", STR_PAD_LEFT) . " - " . str_pad($contador, 4, "0",
         STR_PAD_LEFT) . "{$sQuebraLinha}";
 }
@@ -1664,7 +1664,7 @@ function db_contador_bsj($apelido, $expressao, $contador, $valor)
     $contadorant = $contador + 1;
     $contador += $valor;
 
-    return str_pad($apelido, 30) . "{$sQuebraLinha}";
+    return str_pad((string) $apelido, 30) . "{$sQuebraLinha}";
 }
 
 function geraArrecad(
@@ -1771,9 +1771,9 @@ function geraArrecad(
         $resultfin = db_query($sqlGeraArrecad) or die($sqlGeraArrecad);
 
         if ($resultfin) {
-            if (pg_numrows($resultfin) > 0) {
+            if (pg_num_rows($resultfin) > 0) {
                 if ($tipotxt == "txt") {
-                    fputs($arquivo, str_pad($numpar, 3, "0", STR_PAD_LEFT));
+                    fputs($arquivo, str_pad((string) $numpar, 3, "0", STR_PAD_LEFT));
                 }
                 db_fieldsmemory($resultfin, 0);
 
@@ -1821,7 +1821,7 @@ function geraArrecad(
 
                 $k00_valor += $valorTaxaExpediente;
 
-                $numpre = db_numpre($novo_numpre) . str_pad($k00_numpar, 3, "0", STR_PAD_LEFT);
+                $numpre = db_numpre($novo_numpre) . str_pad((string) $k00_numpar, 3, "0", STR_PAD_LEFT);
                 $numpref = db_numpre($novo_numpre) . str_pad(0, 3, "0", STR_PAD_LEFT);
 
                 $vlrbar = db_formatar(str_replace('.', '',
@@ -1908,7 +1908,7 @@ function geraArrecad(
 
                     // Convênio BSJ,BDL
                 } else {
-                    if (in_array($iTipoConvenio, array(1, 2))) {
+                    if (in_array($iTipoConvenio, [1, 2])) {
                         if ($tipotxt == "txt") { // ###falta###
                             $iTamCarteira = 6;
 
@@ -1919,7 +1919,7 @@ function geraArrecad(
                             $rsCendete = db_query($sSqlCedente) or die($sSqlCedente);
 
                             if (pg_num_rows($rsCendete) > 0) {
-                                $iTamCedente = strlen(pg_result($rsCendete, 'ar13_cedente', 0));
+                                $iTamCedente = strlen(pg_fetch_result($rsCendete, 'ar13_cedente', 0));
                             } else {
                                 $iTamCedente = 7;
                             }
@@ -1968,8 +1968,8 @@ function geraArrecad(
                     $linha21 = "BSJR20";
                     $linha21 .= str_pad($k00_numpre . $k00_numpar, 25, " ", STR_PAD_RIGHT);
                     $linha21 .= str_pad($oConvenio->getNossoNumero(), 13, " ", STR_PAD_LEFT);
-                    $linha21 .= str_pad($k00_numpar, 2, "0", STR_PAD_LEFT);
-                    $linha21 .= substr($k00_dtvenc, 8, 2) . substr($k00_dtvenc, 5, 2) . substr($k00_dtvenc, 2, 2);
+                    $linha21 .= str_pad((string) $k00_numpar, 2, "0", STR_PAD_LEFT);
+                    $linha21 .= substr((string) $k00_dtvenc, 8, 2) . substr((string) $k00_dtvenc, 5, 2) . substr((string) $k00_dtvenc, 2, 2);
 
                     $k00_valor_imprimir = $k00_valor;
                     if ($k03_tipo != 3) {
@@ -1993,7 +1993,7 @@ function geraArrecad(
 
                     $linha21 .= str_repeat("0", 165);
 
-                    fputs($arquivo, db_contador_bsj($linha21, "", $contador, 288));
+                    fputs($arquivo, (string) db_contador_bsj($linha21, "", $contador, 288));
                     $iTotalLinhas20++;
                     $nTotalParcelas20 += $k00_valor_imprimir;
 
@@ -2014,13 +2014,13 @@ function geraArrecad(
                     $imp_linha50 = "";
                     $competencia = $anousu;
                     if ($k03_tipo == 3) {
-                        $competencia = str_pad($k00_numpar, 2, "0", STR_PAD_LEFT) . "/" . $anousu;
+                        $competencia = str_pad((string) $k00_numpar, 2, "0", STR_PAD_LEFT) . "/" . $anousu;
                         $imp_linha50 .= "ALIQ: $aliquota" . "%" . " - COMPET: $competencia";
                     } elseif ($k03_tipo == 2) {
                         $sqltipcalc = "select q81_descr from ativtipo inner join tipcalc on q81_codigo = q80_tipcal where q80_ativ = $q07_ativ and q81_cadcalc = 2";
                         $resulttipcalc = db_query($sqltipcalc) or die($sqltipcalc);
-                        if (pg_numrows($resulttipcalc) > 0) {
-                            $q81_descr = pg_result($resulttipcalc, 0, 0);
+                        if (pg_num_rows($resulttipcalc) > 0) {
+                            $q81_descr = pg_fetch_result($resulttipcalc, 0, 0);
                         } else {
                             $q81_descr = "";
                         }
@@ -2036,13 +2036,13 @@ function geraArrecad(
 
                     // parte 5
                     $linha50 .= str_repeat(" ", 62);
-                    fputs($arquivo, db_contador_bsj($linha50, "", $contador, 288));
+                    fputs($arquivo, (string) db_contador_bsj($linha50, "", $contador, 288));
 
                     // linha 2
                     // parte 1
                     $sqlmsg = "select k00_msgparc from arretipo where k00_tipo = $tipodebitoarrecad";
                     $result_mesg = db_query($sqlmsg) or die($sqlmsg);
-                    $msg = substr(str_pad(pg_result($result_mesg, 0, 0), 281, " ", STR_PAD_RIGHT), 0, 281);
+                    $msg = substr(str_pad(pg_fetch_result($result_mesg, 0, 0), 281, " ", STR_PAD_RIGHT), 0, 281);
 
                     $imp_linha50 = "BSJR50";
                     $imp_linha50 .= $msg;
@@ -2050,7 +2050,7 @@ function geraArrecad(
                     $imp_linha50 .= " ";
 
                     $linha50 = substr(str_pad($imp_linha50, 288, " ", STR_PAD_RIGHT), 0, 288);
-                    fputs($arquivo, db_contador_bsj($linha50, "", $contador, 288));
+                    fputs($arquivo, (string) db_contador_bsj($linha50, "", $contador, 288));
                 }
             } else {
                 if ($tipotxt == "txt") {
@@ -2059,20 +2059,20 @@ function geraArrecad(
             }
         }
     } else {
-        fputs($arquivo, db_contador("PARCELA$numpar", "PARCELA $numpar", $dbcont, 3));
-        fputs($arquivo, db_contador("VENCIMENTO" . $complementoidentificador . $numpar,
+        fputs($arquivo, (string) db_contador("PARCELA$numpar", "PARCELA $numpar", $dbcont, 3));
+        fputs($arquivo, (string) db_contador("VENCIMENTO" . $complementoidentificador . $numpar,
           "VENCIMENTO DA PARCELA" . $complementoidentificador . $numpar, $dbcont, 10));
-        fputs($arquivo, db_contador("VALOR" . $complementoidentificador . $numpar,
+        fputs($arquivo, (string) db_contador("VALOR" . $complementoidentificador . $numpar,
           "VALOR DA PARCELA" . $complementoidentificador . $numpar, $dbcont, 18));
-        fputs($arquivo, db_contador("CODIGODEARRECADACAO" . $complementoidentificador . $numpar,
+        fputs($arquivo, (string) db_contador("CODIGODEARRECADACAO" . $complementoidentificador . $numpar,
           "CODIGO DE ARRECADACAO DA PARCELA " . $complementoidentificador . $numpar, $dbcont, 11));
-        fputs($arquivo, db_contador("LINHADIGITAVELCODIGODEBARRAS" . $complementoidentificador . $numpar,
+        fputs($arquivo, (string) db_contador("LINHADIGITAVELCODIGODEBARRAS" . $complementoidentificador . $numpar,
           "LINHA DIGITAVEL E CODIGO DE BARRAS DA PARCELA " . $complementoidentificador . $numpar, $dbcont, $maxcols));
         fputs($arquivo,
-          db_contador("NOSSO_NUMERO_PARC{$numpar}", "NOSSO NUMERO PARCELA {$numpar}", $dbcont, $iTamNossoNumero));
+          (string) db_contador("NOSSO_NUMERO_PARC{$numpar}", "NOSSO NUMERO PARCELA {$numpar}", $dbcont, $iTamNossoNumero));
         fputs($arquivo,
-          db_contador("DG_NOSSO_NUMERO_PARC{$numpar}", "DIGITO DO NOSSO NUMERO PARCELA {$numpar}", $dbcont, 1));
-        fputs($arquivo, db_contador("EXPRESSAO", "EXPRESSAO", $dbcont, 16));
+          (string) db_contador("DG_NOSSO_NUMERO_PARC{$numpar}", "DIGITO DO NOSSO NUMERO PARCELA {$numpar}", $dbcont, 1));
+        fputs($arquivo, (string) db_contador("EXPRESSAO", "EXPRESSAO", $dbcont, 16));
     }
 }
 
@@ -2084,7 +2084,7 @@ function geraArrecad(
 function getValorTaxaExpediente($numnov)
 {
     $repository = new RecibopagaRepository(DataBase::getInstance(), new \cl_recibopaga());
-    $where = array("k00_numnov = {$numnov}", "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO);
+    $where = ["k00_numnov = {$numnov}", "k00_hist = " . TaxaEspecificaModel::CODIGO_HISTORICO];
     $reciboPaga = $repository->findAll(implode(' AND ', $where))->get(0);
 
     return $reciboPaga->getValor();
@@ -2098,8 +2098,8 @@ function getValorTaxaExpediente($numnov)
 function getReceitaTaxaExpediente($numnov)
 {
     $dao = new \cl_recibopaga();
-    $campos = array('tabdesc.k07_codigo as receita');
-    $where = array("recibopaga.k00_numnov = {$numnov}");
+    $campos = ['tabdesc.k07_codigo as receita'];
+    $where = ["recibopaga.k00_numnov = {$numnov}"];
 
     $sql = $dao->sqlTaxaEspecifica($campos, $where);
     $rs = db_query($sql);

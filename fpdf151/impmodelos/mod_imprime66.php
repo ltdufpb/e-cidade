@@ -24,7 +24,7 @@ $this->objpdf->setfillcolor(255,255,255);
 $this->objpdf->Setfont('Arial','B',11);
 $this->objpdf->text(160, $xlin-13,'RECIBO DO SACADO ');
 
-if (substr($this->dtparapag,4,1)=='-' || substr($this->dtparapag,7,1)=='/') {
+if (substr((string) $this->dtparapag,4,1)=='-' || substr((string) $this->dtparapag,7,1)=='/') {
     $this->dtparapag =  db_formatar($this->dtparapag,'d');
 }
 $this->objpdf->Setfont('Arial','B',9);
@@ -35,7 +35,7 @@ $this->objpdf->Setfont('Arial','B',8);
 
 $this->objpdf->Image('imagens/files/'.$this->logo,15,@$xlin-17,12);
 $this->objpdf->Setfont('Arial','B',9);
-$this->objpdf->text(40, $xlin-15, $this->prefeitura.' - '.db_formatar($this->cgcpref,(strlen($this->cgcpref)<12?'cpf':'cnpj')));
+$this->objpdf->text(40, $xlin-15, $this->prefeitura.' - '.db_formatar($this->cgcpref,(strlen((string) $this->cgcpref)<12?'cpf':'cnpj')));
 $this->objpdf->Setfont('Arial','',9);
 
 $this->objpdf->text(40, $xlin-11,$this->enderpref);
@@ -59,7 +59,7 @@ $this->objpdf->text($xcol+17, $xlin+19, $this->munic);
 $this->objpdf->text($xcol+75, $xlin+15, 'CEP : ');
 $this->objpdf->text($xcol+83, $xlin+15, $this->cep);
 $this->objpdf->text($xcol+75, $xlin+19, 'CNPJ/CPF:');
-$this->objpdf->text($xcol+90, $xlin+19, db_formatar(@$this->cgccpf,(strlen(@$this->cgccpf)<12?'cpf':'cnpj')));
+$this->objpdf->text($xcol+90, $xlin+19, db_formatar(@$this->cgccpf,(strlen((string) @$this->cgccpf)<12?'cpf':'cnpj')));
 $this->objpdf->Setfont('Arial','',6);
 
 $this->objpdf->Roundedrect(@$xcol+126,@$xlin+2,76,20,2,'DF','1234');
@@ -99,7 +99,7 @@ if ( $this->k03_tipo != 13 ) {
 
 if ((int)$this->k03_tipo === 13) {
 
-    $numpreRecibo = isset($get->k03_numnov) ? $get->k03_numnov : $this->numnov_recibo;
+    $numpreRecibo = $get->k03_numnov ?? $this->numnov_recibo;
 
     $buscaDados = db_query("
 select termo.v07_parcel,
@@ -125,7 +125,7 @@ select termo.v07_parcel,
     $this->objpdf->cell(20, 3, "Valor Total"   , 0, 1, "R", 0);
     $this->objpdf->Setfont('Arial', '', 6);
 
-    $parcelamentos = array();
+    $parcelamentos = [];
     $totalBoleto = 0;
     $totalValorHistorico = 0;
     $totalValorJuros     = 0;
@@ -136,9 +136,9 @@ select termo.v07_parcel,
 
         $stdParcelamento = db_utils::fieldsMemory($buscaDados, $row);
 
-        $parcelas = explode('#', $stdParcelamento->colecao_numpar);
+        $parcelas = explode('#', (string) $stdParcelamento->colecao_numpar);
         $totalParcelas = count($parcelas);
-        $parcelamentoConfigurado = array();
+        $parcelamentoConfigurado = [];
 
         foreach ($parcelas as $parcela) {
             $aParcelas = explode(',', $parcela);
@@ -305,8 +305,8 @@ if (count($this->aCustas) > 0 ) {
       $column = $this->objpdf->GetY(130);
       /*total de custas */
       $iTotalCustas = count($this->aCustas);
-      $tipoCustas = array('1' => "Custas a pagar", '2' => "Custas Pagas", '3' => "Custas Isentas");
-      $aTiposEscritos = array();
+      $tipoCustas = ['1' => "Custas a pagar", '2' => "Custas Pagas", '3' => "Custas Isentas"];
+      $aTiposEscritos = [];
       $iEspacoEntreLinhas = ($iTotalCustas < 6 ? 5 : 3);
 
       if ((int)$this->k03_tipo === 13) {

@@ -32,8 +32,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_autor_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clautor = new cl_autor;
 $clautor->rotulo->label("bi01_codigo");
 $clautor->rotulo->label("bi01_nome");
@@ -99,9 +99,9 @@ $clautor->rotulo->label("bi01_nome");
         }else{
            $sql = $clautor->sql_query("",$campos,"bi01_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_bi01_nome)){
-          $repassa = array("chave_bi01_codigo"=>$chave_bi01_codigo,"chave_bi01_nome"=>$chave_bi01_nome);
+          $repassa = ["chave_bi01_codigo"=>$chave_bi01_codigo,"chave_bi01_nome"=>$chave_bi01_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

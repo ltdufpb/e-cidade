@@ -34,7 +34,7 @@ include(modification("classes/db_db_almox_classe.php"));
 include(modification("classes/db_db_almoxdepto_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_GET_VARS);
 
 $cldb_depart     = new cl_db_depart;

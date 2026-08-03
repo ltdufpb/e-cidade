@@ -50,15 +50,6 @@ use ECidade\Tributario\Arrecadacao\Repository\ArreforoRepository as ArreforoRepo
 final class Desmembramento
 {
     /**
-     * @var DesmembramentoRepository
-     */
-    private $desmembramentoRepository;
-
-    /**
-     * @var HistoricoDesmembramentoRepository
-     */
-    private $historicoDesmembramentoRepositorio;
-    /**
      * @var array
      */
     private $iniciaisCriadas;
@@ -68,12 +59,8 @@ final class Desmembramento
      * @param DesmembramentoRepository $desmembramentoRepository
      * @param HistoricoDesmembramentoRepository $historicoDesmembramentoRepositorio
      */
-    public function __construct(
-        DesmembramentoRepository $desmembramentoRepository,
-        HistoricoDesmembramentoRepository $historicoDesmembramentoRepositorio
-    ) {
-        $this->desmembramentoRepository = $desmembramentoRepository;
-        $this->historicoDesmembramentoRepositorio = $historicoDesmembramentoRepositorio;
+    public function __construct(private readonly DesmembramentoRepository $desmembramentoRepository, private readonly HistoricoDesmembramentoRepository $historicoDesmembramentoRepositorio)
+    {
     }
 
     /**
@@ -101,11 +88,11 @@ final class Desmembramento
         }
 
         if (empty($dados)) {
-            return array();
+            return [];
         }
 
-        $iniciaisAgrupadas = array();
-        $cdasAgrupadas = array();
+        $iniciaisAgrupadas = [];
+        $cdasAgrupadas = [];
 
         foreach ($dados as $registro) {
 
@@ -114,9 +101,9 @@ final class Desmembramento
             $chave = "{$registro->sequencial_processo}#{$registro->codigo_inicial}#{$registro->codigo_certidao}#{$registro->exercicio_divida}";
 
             if (empty($cdasAgrupadas[$registro->codigo_inicial])) {
-                $cdasAgrupadas[$registro->codigo_inicial] = array(
+                $cdasAgrupadas[$registro->codigo_inicial] = [
                     $registro->codigo_certidao
-                );
+                ];
             } else {
                 $cdasAgrupadas[$registro->codigo_inicial][] = $registro->codigo_certidao;
             }
@@ -129,9 +116,9 @@ final class Desmembramento
                 $debito->inicial = $registro->codigo_inicial;
                 $debito->exercicio = $registro->exercicio_divida;
                 $debito->cda = $registro->codigo_certidao;
-                $debito->procedencias = array();
+                $debito->procedencias = [];
                 $debito->valor = 0;
-                $debito->dividas = array();
+                $debito->dividas = [];
 
                 $iniciaisAgrupadas[$chave] = $debito;
             }
@@ -143,7 +130,7 @@ final class Desmembramento
         // remove iniciais que possui apenas 1 certidão e 1 divida.
         foreach ($iniciaisAgrupadas as $key => $inicial) {
 
-            $numpres = array();
+            $numpres = [];
 
             foreach ($inicial->dividas as $divida) {
                 foreach ($divida->infos as $info) {
@@ -183,14 +170,14 @@ final class Desmembramento
             $debito->procedencias[] = $registro->nome_procedencia;
         }
 
-        $valores = explode(',', str_replace(array('(', ')'), '', $registro->valores));
+        $valores = explode(',', str_replace(['(', ')'], '', $registro->valores));
 
         $divida = $this->getRegistroDivida($registro->codigo_divida, $debito);
 
         if (empty($divida)) {
             $divida = new \stdClass();
             $divida->divida = $registro->codigo_divida;
-            $divida->infos = array();
+            $divida->infos = [];
             $debito->dividas[] = $divida;
         }
 
@@ -243,12 +230,12 @@ final class Desmembramento
 
         $iniciais = $this->desmembramentoRepository->getIniciaisPorDividas($dividas);        
 
-        $certidaoRepository = CertidaoRepository::getInstance();
+        $certidaoRepository = (new CertidaoRepository())->getInstance();
         $certidaoRepository->setReturnFullItem(true);
         $certidaoRepository->setPersistPropagation(true);
 
-        $inicialRepository = InicialRepository::getInstance();
-        $processoForoRepository = ProcessoForoRepository::getInstance();
+        $inicialRepository = (new InicialRepository())->getInstance();
+        $processoForoRepository = (new ProcessoForoRepository())->getInstance();
         $usuario = db_getsession('DB_id_usuario');
 
         foreach ($iniciais as $inicial => $certidoes) {
@@ -304,8 +291,8 @@ final class Desmembramento
                     $inicialNumpre->setInicial($inicialEntity->getCodigo());
 
                     $inicialNumpreRepository = new InicialNumpreRepository();
-                    $inicialNumpreRepository->where(array('v59_inicial', '=', $inicialAntiga->getCodigo()))
-                        ->where(array('v59_numpre', '=', $numpre))
+                    $inicialNumpreRepository->where(['v59_inicial', '=', $inicialAntiga->getCodigo()])
+                        ->where(['v59_numpre', '=', $numpre])
                         ->save($inicialNumpre);
                 }
 
@@ -323,12 +310,12 @@ final class Desmembramento
 
             $this->iniciaisCriadas[] = $inicialEntity->getCodigo();
 
-            $initials = array(
+            $initials = [
                 $inicialAntiga->getCodigo(),
                 $inicialEntity->getCodigo()
-            );
+            ];
 
-            $inicialNomeRepository = InicialNomeRepository::getInstance();
+            $inicialNomeRepository = (new InicialNomeRepository())->getInstance();
 
             foreach ($initials as $initial) {
                 $inicialNomeRepository->deleteByInitial($initial);
@@ -343,7 +330,7 @@ final class Desmembramento
                     ->setProcessoForo($processoForo->getCodigo())
                     ->setAnulado(false);
 
-                ProcessoForoInicialRepository::getInstance()->persist($processForoInicial);
+                (new ProcessoForoInicialRepository())->getInstance()->persist($processForoInicial);
             }
 
             foreach ($certidaoEntity->getNumpres() as $numpre) {
@@ -378,7 +365,7 @@ final class Desmembramento
      */
     public function getQuantidadeDeDividasPorInicial(array $iniciais)
     {
-        $quantidadeDividasPorInicial = array();
+        $quantidadeDividasPorInicial = [];
 
         array_map(function ($inicial) use (&$quantidadeDividasPorInicial) {
             $quantidadeDividasPorInicial[$inicial->inicial] = array_key_exists($inicial->inicial, $quantidadeDividasPorInicial)
@@ -405,7 +392,7 @@ final class Desmembramento
      */
     private function persistInicialPartilha($inicialOld, $inicial)
     {
-        $inicialPartilhaRepository = InicialPartilhaRepository::getInstance();
+        $inicialPartilhaRepository = (new InicialPartilhaRepository())->getInstance();
 
         /** @var InicialPartilhaEntity[] $inicialPartilhas */
         $inicialPartilhas = array_merge(

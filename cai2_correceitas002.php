@@ -101,9 +101,7 @@ if ($recurso != "") {
     db_fieldsmemory($res_tiporec, 0);
     $head5 = "Recurso: " . $o15_descr;
 
-    $recursos = db_utils::makeCollectionFromRecord($res_tiporec, function($dado) {
-        return $dado->o15_codigo;
-    });
+    $recursos = db_utils::makeCollectionFromRecord($res_tiporec, fn($dado) => $dado->o15_codigo);
 
     $inner_sql = "
         left outer join orcreceita  on o70_codrec = o.k02_codrec
@@ -305,7 +303,7 @@ $sql .= " ) as xxx
 }
 
 $result = db_query($sql) or die("Erro realizando consulta : ".$sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0) {
 	db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos para a receita '.$codrec.' no período de '.db_formatar($datai, 'd').' a '.db_formatar($dataf, 'd'));
 }
@@ -314,7 +312,7 @@ $pre = 0;
 $total_reco = 0;
 $total_rece = 0;
 $pagina = 0;
-$valatu = array (); /// array que guarda o recursos
+$valatu =  []; /// array que guarda o recursos
 if ($sinana == 'S1' or $sinana == 'S3') {
 	// relatório sintético ( sem histórico )
 
@@ -354,9 +352,9 @@ if ($sinana == 'S1' or $sinana == 'S3') {
 												      inner join orcfontesdes on o60_anousu = o70_anousu and o60_codfon = o70_codfon
 												 where o70_anousu = ".db_getsession("DB_anousu")." and o70_codrec = $codrec";
 					$result1 = db_query($sql) or die($sql);
-					if ($result1 != false && pg_numrows($result1) > 0) {
-						$fonte = pg_result($result1, 0, 0);
-						$o70_codigo = pg_result($result1, 0, 1);
+					if ($result1 != false && pg_num_rows($result1) > 0) {
+						$fonte = pg_fetch_result($result1, 0, 0);
+						$o70_codigo = pg_fetch_result($result1, 0, 1);
 						$contamae = db_le_mae_rec_sin($fonte, false);
 
 						if ($o70_codigo == 1) {
@@ -370,7 +368,7 @@ if ($sinana == 'S1' or $sinana == 'S3') {
 																			 and orcreceita.o70_anousu =".db_getsession("DB_anousu")."
 																 order by o57_fonte";
 							$result1 = db_query($sql);
-							if ($result1 != false && pg_numrows($result1) > 0) {
+							if ($result1 != false && pg_num_rows($result1) > 0) {
 								$tem_desdobramento = true;
 							}
 						}
@@ -394,7 +392,7 @@ if ($sinana == 'S1' or $sinana == 'S3') {
 			$pdf->cell(10, 4, $k02_codigo, 1, 0, "C", $pre);
 			$pdf->cell(10, 4, $codrec, 1, 0, "C", $pre);
 			$pdf->cell(40, 4, $estrutural, 1, 0, "C", $pre);
-			$pdf->cell(100, 4, strtoupper($k02_drecei), 1, 0, "L", $pre);
+			$pdf->cell(100, 4, strtoupper((string) $k02_drecei), 1, 0, "L", $pre);
       if ($sinana == 'S3') {
         $pdf->cell(15, 4, $c61_reduz, 1, 0, "C", $pre);
         $pdf->cell(60, 4, $c60_descr, 1, 0, "L", $pre);
@@ -416,7 +414,7 @@ if ($sinana == 'S1' or $sinana == 'S3') {
 					$multiplica = true;
 					$valor = $valor * -1;
 				}
-				for ($recc = 0; $recc < pg_numrows($result1); $recc ++) {
+				for ($recc = 0; $recc < pg_num_rows($result1); $recc ++) {
 					db_fieldsmemory($result1, $recc);
 					// aplica o percentual sobre o valor
 					if($o60_perc==0)
@@ -454,7 +452,7 @@ if ($sinana == 'S1' or $sinana == 'S3') {
 				for ($d = 0; $d < sizeof($dbrec); $d ++) {
 					$pdf->cell(20, 4, '', 1, 0, "C", $pre);
 					$pdf->cell(30, 4, $dbreces[key($dbrec)], 1, 0, "C", $pre);
-					$pdf->cell(80, 4, substr(strtoupper($dbrecde[key($dbrec)]).'-'.$dbcodigo[key($dbrec)].'-'.$dbdescr[key($dbrec)],0,50), 1, 0, "L", $pre);
+					$pdf->cell(80, 4, substr(strtoupper((string) $dbrecde[key($dbrec)]).'-'.$dbcodigo[key($dbrec)].'-'.$dbdescr[key($dbrec)],0,50), 1, 0, "L", $pre);
 					$aa = $dbrec[key($dbrec)];
 					if ($aa < 0)
 						$aa = $aa * -1;
@@ -531,7 +529,7 @@ if ($sinana == 'S1' or $sinana == 'S3') {
 			$pdf->cell(10, 4, $k02_codigo, 1, 0, "C", $pre);
 			$pdf->cell(10, 4, $codrec, 1, 0, "C", $pre);
 			$pdf->cell(40, 4, $estrutural, 1, 0, "C", $pre);
-			$pdf->cell(100, 4, strtoupper($k02_drecei), 1, 0, "L", $pre);
+			$pdf->cell(100, 4, strtoupper((string) $k02_drecei), 1, 0, "L", $pre);
       if ($sinana == 'S3') {
         $pdf->cell(15, 4, $c61_reduz, 1, 0, "C", $pre);
         $pdf->cell(60, 4, $c60_descr, 1, 0, "L", $pre);
@@ -560,17 +558,17 @@ if ($sinana == 'S1' or $sinana == 'S3') {
 	$pdf->cell(110, 4, "DEMONSTRATIVO DO DESDOBRAMENTO DA RECEITA LIVRE", 1, 1, "L", 0);
 
 	$totalrecursos=0;
-	while (list ($key, $valor) = each($valatu)) {
-		$totalrecursos += $valor;
-	}
+	foreach ($valatu as $key => $valor) {
+        $totalrecursos += $valor;
+    }
 
   reset($valatu);
 
-	while (list ($key, $valor) = each($valatu)) {
-		$pdf->cell(70, 5, $key, 0, 0, "L", 0, 0, ".");
-		$pdf->cell(20, 5, db_formatar($valor, 'f'), 0, 0, "R", 0);
-		$pdf->cell(20, 5, db_formatar($valor / $totalrecursos * 100, 'p') . "%", 0, 1, "R", 0);
-	}
+	foreach ($valatu as $key => $valor) {
+        $pdf->cell(70, 5, $key, 0, 0, "L", 0, 0, ".");
+        $pdf->cell(20, 5, db_formatar($valor, 'f'), 0, 0, "R", 0);
+        $pdf->cell(20, 5, db_formatar($valor / $totalrecursos * 100, 'p') . "%", 0, 1, "R", 0);
+    }
 	$pdf->setfont('arial', 'B', 7);
 	$pdf->cell(110, 5, db_formatar($totalrecursos, 'f'), 1, 1, "R", 0);
 
@@ -663,11 +661,11 @@ if ($sinana == 'S1' or $sinana == 'S3') {
 			$pdf->Cell(15, 4, $sData, 1, 0, "C", $pre);
 			$pdf->Cell(15, 4, $k12_numpre, 1, 0, "C", $pre);
 			$pdf->cell(25, 4, $estrutural, 1, 0, "C", $pre);
-			$pdf->cell(80, 4, strtoupper($k02_drecei), 1, 0, "L", $pre);
+			$pdf->cell(80, 4, strtoupper((string) $k02_drecei), 1, 0, "L", $pre);
 			$pdf->cell(25, 4, db_formatar($valor, 'f'), 1, 0, "R", $pre);
 			$pdf->cell(15, 4, $c61_reduz, 1, 0, "C", $pre);
 			$pdf->cell(65, 4, $c60_descr, 1, 1, "L", $pre);
-			if (trim($k00_histtxt) != '') {
+			if (trim((string) $k00_histtxt) != '') {
 				$pdf->multicell(245, 4, 'HISTÓRICO :  '.$k00_histtxt, 1, "L", $pre);
 			}
 			$total_reco += $valor;
@@ -718,7 +716,7 @@ if ($sinana == 'S1' or $sinana == 'S3') {
 			$pdf->cell(10, 4, $codrec, 1, 0, "C", $pre);
 			$pdf->Cell(15, 4, $sData, 1, 0, "C", $pre);
 			$pdf->cell(40, 4, $estrutural, 1, 0, "C", $pre);
-			$pdf->cell(100, 4, strtoupper($k02_drecei), 1, 0, "L", $pre);
+			$pdf->cell(100, 4, strtoupper((string) $k02_drecei), 1, 0, "L", $pre);
 			$pdf->cell(25, 4, db_formatar($valor, 'f'), 1, 0, "R", $pre);
 			$pdf->multicell(0, 4, $k00_histtxt, 1, "L", $pre);
 			$total_rece += $valor;

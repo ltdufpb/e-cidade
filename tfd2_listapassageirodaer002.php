@@ -39,7 +39,7 @@ if (isset($codveiculo) && $codveiculo != '') {
     $sWhere .= " and tf18_i_veiculo = {$codveiculo}";
 }
 
-$dDataSaida = substr($datasaida, 6, 4) . '-' . substr($datasaida, 3, 2) . '-' . substr($datasaida, 0, 2);
+$dDataSaida = substr((string) $datasaida, 6, 4) . '-' . substr((string) $datasaida, 3, 2) . '-' . substr((string) $datasaida, 0, 2);
 $sWhere .= " and tf18_d_datasaida = '{$dDataSaida}' ";
 $sWhere .= " and tf18_c_horasaida = '{$hora}'";
 
@@ -296,17 +296,7 @@ $oPassageiro = db_utils::fieldsmemory($rs, 0);
 
 imprimeRodape(
     $oPdf,
-    $oPassageiro->nomeempresa,
-    $oPassageiro->ve01_placa,
-    db_formatar($oPassageiro->tf18_d_datasaida, 'd'),
-    $oPassageiro->tf18_c_horasaida,
-    db_formatar($oPassageiro->tf18_d_dataretorno, 'd'),
-    $oPassageiro->tf18_c_horaretorno,
-    $oDadosConfig->munic,
-    $oPassageiro->tf03_c_descr,
-    $oPassageiro->tf17_c_localsaida,
-    $oPassageiro->tf03_f_distancia . ' ' . $oPassageiro->tf24_c_descr,
-    $oPassageiro->ve02_numcgm
+    $oPassageiro->nomeempresa
 );
 
 /**
@@ -379,7 +369,7 @@ function imprimePassageiro(
 
         $oPdf->setfont('arial', '', 7);
         $oPdf->cell(23, $iTam, $sRg, 1, 0, 'L', 0);
-        $oPdf->cell(61, $iTam, substr($sDestino, 0, 38), 1, 0, 'L', 0);
+        $oPdf->cell(61, $iTam, substr((string) $sDestino, 0, 38), 1, 0, 'L', 0);
         $oPdf->cell(10, $iTam, $sHora, 1, 0, 'L', 0);
         $oPdf->cell(20, $iTam, $sTelefone, 1, 1, 'L', 0);
     }

@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE inicialdoc
 class cl_inicialdoc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v59_codigo = 0; 
-   var $v59_inicial = 0; 
-   var $v59_docum = 0; 
-   var $v59_objtexto = 0; 
-   var $v59_dtemissao_dia = null; 
-   var $v59_dtemissao_mes = null; 
-   var $v59_dtemissao_ano = null; 
-   var $v59_dtemissao = null; 
-   var $v59_id_usuario = 0; 
+   public $v59_codigo = 0; 
+   public $v59_inicial = 0; 
+   public $v59_docum = 0; 
+   public $v59_objtexto = 0; 
+   public $v59_dtemissao_dia = null; 
+   public $v59_dtemissao_mes = null; 
+   public $v59_dtemissao_ano = null; 
+   public $v59_dtemissao = null; 
+   public $v59_id_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v59_codigo = int4 = Código 
                  v59_inicial = int4 = Inicial Numero 
                  v59_docum = int4 = Código 
@@ -58,10 +58,10 @@ class cl_inicialdoc {
                  v59_id_usuario = int4 = Cod. Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_inicialdoc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("inicialdoc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -150,10 +150,10 @@ class cl_inicialdoc {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v59_codigo = pg_result($result,0,0); 
+       $this->v59_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = @db_query("select last_value from inicialdoc_v59_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v59_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v59_codigo)){
          $this->erro_sql = " Campo v59_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -190,7 +190,7 @@ class cl_inicialdoc {
                       )");
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Petições das iniciais ($this->v59_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Petições das iniciais já Cadastrado";
@@ -212,14 +212,14 @@ class cl_inicialdoc {
      $resaco = $this->sql_record($this->sql_query_file($this->v59_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,4660,'$this->v59_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,611,4660,'','".pg_result($resaco,0,'v59_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,611,4661,'','".pg_result($resaco,0,'v59_inicial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,611,4665,'','".pg_result($resaco,0,'v59_docum')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,611,4663,'','".pg_result($resaco,0,'v59_objtexto')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,611,4662,'','".pg_result($resaco,0,'v59_dtemissao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,611,4664,'','".pg_result($resaco,0,'v59_id_usuario')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,611,4660,'','".pg_fetch_result($resaco,0,'v59_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,611,4661,'','".pg_fetch_result($resaco,0,'v59_inicial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,611,4665,'','".pg_fetch_result($resaco,0,'v59_docum')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,611,4663,'','".pg_fetch_result($resaco,0,'v59_objtexto')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,611,4662,'','".pg_fetch_result($resaco,0,'v59_dtemissao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,611,4664,'','".pg_fetch_result($resaco,0,'v59_id_usuario')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -228,13 +228,13 @@ class cl_inicialdoc {
       $this->atualizacampos();
      $sql = " update inicialdoc set ";
      $virgula = "";
-     if(trim($this->v59_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_codigo"])){ 
-        if(trim($this->v59_codigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v59_codigo"])){ 
+     if(trim((string) $this->v59_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_codigo"])){ 
+        if(trim((string) $this->v59_codigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v59_codigo"])){ 
            $this->v59_codigo = "0" ; 
         } 
        $sql  .= $virgula." v59_codigo = $this->v59_codigo ";
        $virgula = ",";
-       if(trim($this->v59_codigo) == null ){ 
+       if(trim((string) $this->v59_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "v59_codigo";
          $this->erro_banco = "";
@@ -244,13 +244,13 @@ class cl_inicialdoc {
          return false;
        }
      }
-     if(trim($this->v59_inicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_inicial"])){ 
-        if(trim($this->v59_inicial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v59_inicial"])){ 
+     if(trim((string) $this->v59_inicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_inicial"])){ 
+        if(trim((string) $this->v59_inicial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v59_inicial"])){ 
            $this->v59_inicial = "0" ; 
         } 
        $sql  .= $virgula." v59_inicial = $this->v59_inicial ";
        $virgula = ",";
-       if(trim($this->v59_inicial) == null ){ 
+       if(trim((string) $this->v59_inicial) == null ){ 
          $this->erro_sql = " Campo Inicial Numero nao Informado.";
          $this->erro_campo = "v59_inicial";
          $this->erro_banco = "";
@@ -260,13 +260,13 @@ class cl_inicialdoc {
          return false;
        }
      }
-     if(trim($this->v59_docum)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_docum"])){ 
-        if(trim($this->v59_docum)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v59_docum"])){ 
+     if(trim((string) $this->v59_docum)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_docum"])){ 
+        if(trim((string) $this->v59_docum)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v59_docum"])){ 
            $this->v59_docum = "0" ; 
         } 
        $sql  .= $virgula." v59_docum = $this->v59_docum ";
        $virgula = ",";
-       if(trim($this->v59_docum) == null ){ 
+       if(trim((string) $this->v59_docum) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "v59_docum";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_inicialdoc {
          return false;
        }
      }
-     if(trim($this->v59_objtexto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_objtexto"])){ 
+     if(trim((string) $this->v59_objtexto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_objtexto"])){ 
        $sql  .= $virgula." v59_objtexto = $this->v59_objtexto ";
        $virgula = ",";
-       if(trim($this->v59_objtexto) == null ){ 
+       if(trim((string) $this->v59_objtexto) == null ){ 
          $this->erro_sql = " Campo Petição nao Informado.";
          $this->erro_campo = "v59_objtexto";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_inicialdoc {
          return false;
        }
      }
-     if(trim($this->v59_dtemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_dtemissao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v59_dtemissao_dia"] !="") ){ 
+     if(trim((string) $this->v59_dtemissao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_dtemissao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v59_dtemissao_dia"] !="") ){ 
        $sql  .= $virgula." v59_dtemissao = '$this->v59_dtemissao' ";
        $virgula = ",";
-       if(trim($this->v59_dtemissao) == null ){ 
+       if(trim((string) $this->v59_dtemissao) == null ){ 
          $this->erro_sql = " Campo Data da emissão nao Informado.";
          $this->erro_campo = "v59_dtemissao_dia";
          $this->erro_banco = "";
@@ -305,7 +305,7 @@ class cl_inicialdoc {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v59_dtemissao_dia"])){ 
          $sql  .= $virgula." v59_dtemissao = null ";
          $virgula = ",";
-         if(trim($this->v59_dtemissao) == null ){ 
+         if(trim((string) $this->v59_dtemissao) == null ){ 
            $this->erro_sql = " Campo Data da emissão nao Informado.";
            $this->erro_campo = "v59_dtemissao_dia";
            $this->erro_banco = "";
@@ -316,13 +316,13 @@ class cl_inicialdoc {
          }
        }
      }
-     if(trim($this->v59_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_id_usuario"])){ 
-        if(trim($this->v59_id_usuario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v59_id_usuario"])){ 
+     if(trim((string) $this->v59_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v59_id_usuario"])){ 
+        if(trim((string) $this->v59_id_usuario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["v59_id_usuario"])){ 
            $this->v59_id_usuario = "0" ; 
         } 
        $sql  .= $virgula." v59_id_usuario = $this->v59_id_usuario ";
        $virgula = ",";
-       if(trim($this->v59_id_usuario) == null ){ 
+       if(trim((string) $this->v59_id_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "v59_id_usuario";
          $this->erro_banco = "";
@@ -336,20 +336,20 @@ class cl_inicialdoc {
 ";
      $resaco = $this->sql_record($this->sql_query_file($this->v59_codigo));
      if($this->numrows>0){       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,4660,'$this->v59_codigo','A')");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v59_codigo"]))
-         $resac = db_query("insert into db_acount values($acount,611,4660,'".pg_result($resaco,0,'v59_codigo')."','$this->v59_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,611,4660,'".pg_fetch_result($resaco,0,'v59_codigo')."','$this->v59_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v59_inicial"]))
-         $resac = db_query("insert into db_acount values($acount,611,4661,'".pg_result($resaco,0,'v59_inicial')."','$this->v59_inicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,611,4661,'".pg_fetch_result($resaco,0,'v59_inicial')."','$this->v59_inicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v59_docum"]))
-         $resac = db_query("insert into db_acount values($acount,611,4665,'".pg_result($resaco,0,'v59_docum')."','$this->v59_docum',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,611,4665,'".pg_fetch_result($resaco,0,'v59_docum')."','$this->v59_docum',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v59_objtexto"]))
-         $resac = db_query("insert into db_acount values($acount,611,4663,'".pg_result($resaco,0,'v59_objtexto')."','$this->v59_objtexto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,611,4663,'".pg_fetch_result($resaco,0,'v59_objtexto')."','$this->v59_objtexto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v59_dtemissao"]))
-         $resac = db_query("insert into db_acount values($acount,611,4662,'".pg_result($resaco,0,'v59_dtemissao')."','$this->v59_dtemissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,611,4662,'".pg_fetch_result($resaco,0,'v59_dtemissao')."','$this->v59_dtemissao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["v59_id_usuario"]))
-         $resac = db_query("insert into db_acount values($acount,611,4664,'".pg_result($resaco,0,'v59_id_usuario')."','$this->v59_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,611,4664,'".pg_fetch_result($resaco,0,'v59_id_usuario')."','$this->v59_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @db_query($sql);
      if($result==false){ 
@@ -386,14 +386,14 @@ class cl_inicialdoc {
      $resaco = $this->sql_record($this->sql_query_file($this->v59_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
-       $resac = db_query("insert into db_acountkey values($acount,4660,'".pg_result($resaco,$iresaco,'v59_codigo')."','E')");
-       $resac = db_query("insert into db_acount values($acount,611,4660,'','".pg_result($resaco,0,'v59_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,611,4661,'','".pg_result($resaco,0,'v59_inicial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,611,4665,'','".pg_result($resaco,0,'v59_docum')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,611,4663,'','".pg_result($resaco,0,'v59_objtexto')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,611,4662,'','".pg_result($resaco,0,'v59_dtemissao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,611,4664,'','".pg_result($resaco,0,'v59_id_usuario')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $acount = pg_fetch_result($resac,0,0);
+       $resac = db_query("insert into db_acountkey values($acount,4660,'".pg_fetch_result($resaco,$iresaco,'v59_codigo')."','E')");
+       $resac = db_query("insert into db_acount values($acount,611,4660,'','".pg_fetch_result($resaco,0,'v59_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,611,4661,'','".pg_fetch_result($resaco,0,'v59_inicial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,611,4665,'','".pg_fetch_result($resaco,0,'v59_docum')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,611,4663,'','".pg_fetch_result($resaco,0,'v59_objtexto')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,611,4662,'','".pg_fetch_result($resaco,0,'v59_dtemissao')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,611,4664,'','".pg_fetch_result($resaco,0,'v59_id_usuario')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $sql = " delete from inicialdoc
                     where ";
@@ -445,7 +445,7 @@ class cl_inicialdoc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Dados do Grupo nao Encontrado";
@@ -460,7 +460,7 @@ class cl_inicialdoc {
    function sql_query ( $v59_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -486,7 +486,7 @@ class cl_inicialdoc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -499,7 +499,7 @@ class cl_inicialdoc {
    function sql_query_file ( $v59_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -520,7 +520,7 @@ class cl_inicialdoc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

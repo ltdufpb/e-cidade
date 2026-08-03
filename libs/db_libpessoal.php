@@ -27,9 +27,9 @@
 
 
 function db_sel_pessal($tabela,$cmp_=null,$where=null){
-  global $$tabela;
+  global ${$tabela};
 
-  $campos = array();
+  $campos = [];
 
   $campos["R01_INSTIT"] = "RH01_INSTIT";
   $campos["R01_ANOUSU"] = "RH02_ANOUSU";
@@ -110,16 +110,16 @@ function db_sel_pessal($tabela,$cmp_=null,$where=null){
 
   $vircula = "";
   if($cmp_ != null || $cmp_ != ""){
-     $cmp_ =  strtoupper(split(",",$cmp_));
+     $cmp_ =  strtoupper(preg_split("#,#m",(string) $cmp_));
      for($index=0; $index<$count($cmp_); $index++){
        $cmp .= $vircula." ".$campos[$cmp_[$index]]." AS ".$cmp_[$index];
        $vircula = ",";
      }
   }else {
      reset($campos);
-     while (list($key, $val) = each($campos)) {
-       $cmp .= $vircula." ".$key." AS ".$val;
-       $vircula = ",";
+     foreach ($campos as $key => $val) {
+         $cmp .= $vircula." ".$key." AS ".$val;
+         $vircula = ",";
      }
   }      
   $cmp =  str_replace(";",",",$cmp);
@@ -127,8 +127,8 @@ function db_sel_pessal($tabela,$cmp_=null,$where=null){
   if($where == null || $where == ""){
     $where = "";
   }else{
-     while (list($key, $val) = each($campos)) {
-       $where =  str_replace($key,$val,$where);
+     foreach ($campos as $key => $val) {
+         $where =  str_replace($key,$val,$where);
      }
     
   }
@@ -214,7 +214,7 @@ function db_verifica_dias_trabalhados($regist, $ano, $mes, $dias_trab = false){
   $dias_mes = db_dias_mes($ano, $mes);
   if($dias_trab == false){
     $result_testa_ferias = db_query("select dias_gozo_ferias(".$regist.",".$ano.",".$mes.",".$dias_mes.",".db_getsession("DB_instit").") as dias_ferias");
-    if(pg_numrows($result_testa_ferias) > 0){
+    if(pg_num_rows($result_testa_ferias) > 0){
       db_fieldsmemory($result_testa_ferias, 0);
       global $dias_ferias;
       if($dias_ferias != "" && $dias_ferias > 0){
@@ -223,7 +223,7 @@ function db_verifica_dias_trabalhados($regist, $ano, $mes, $dias_trab = false){
     }
  
     $result_testa_afasta = db_query("select conta_dias_afasta(".$regist.",".$ano.",".$mes.",".$dias_mes.",".db_getsession("DB_instit").") as  dias_afasta");
-    if(pg_numrows($result_testa_afasta) > 0){
+    if(pg_num_rows($result_testa_afasta) > 0){
       db_fieldsmemory($result_testa_afasta, 0);
       global $dias_afasta;
       if($dias_afasta > 0){
@@ -238,14 +238,14 @@ function db_verifica_dias_trabalhados($regist, $ano, $mes, $dias_trab = false){
                                                 and rh02_mesusu = ".$mes." 
                                                 and rh02_regist = ".$regist."
                                                 and rh02_instit = ".db_getsession("DB_instit"));
-    if(pg_numrows($result_testa_rescis) > 0){
+    if(pg_num_rows($result_testa_rescis) > 0){
       db_fieldsmemory($result_testa_rescis, 0);
       global $data_recis;
       $retorno = true;
     }
   }else{
     $result_dias_trab = db_query("select fc_dias_trabalhados(".$regist.",".$ano.",".$mes.",true,".db_getsession("DB_instit").") as dias_pagamento");
-    if(pg_numrows($result_dias_trab) > 0){
+    if(pg_num_rows($result_dias_trab) > 0){
       db_fieldsmemory($result_dias_trab, 0);
       global $dias_pagamento;
       $retorno = true;
@@ -258,7 +258,7 @@ function db_verifica_dias_trabalhados($regist, $ano, $mes, $dias_trab = false){
                                            inner join cgm on cgm.z01_numcgm = rhpessoal.rh01_numcgm
                                       where rh01_regist = " . $regist
                                     );
-  if(pg_numrows($result_nome_funcionario) > 0){
+  if(pg_num_rows($result_nome_funcionario) > 0){
     db_fieldsmemory($result_nome_funcionario, 0);
     global $matric, $nomefc;
   }
@@ -274,13 +274,13 @@ function db_alerta_dados_func($opcao, $regist, $ano, $mes){
   $emRescis   = "";
   if($retorno == true){
     global $dias_ferias, $dias_afasta, $data_recis, $matric, $nomefc;
-    if(isset($dias_ferias) && $dias_ferias > 0 && strpos($opcao,"f") !== false){
+    if(isset($dias_ferias) && $dias_ferias > 0 && str_contains((string) $opcao,"f")){
       $emFerias = "\\n* Férias cadastradas.";
     }
-    if(isset($dias_afasta) && $dias_afasta > 0 && strpos($opcao,"a") !== false){
+    if(isset($dias_afasta) && $dias_afasta > 0 && str_contains((string) $opcao,"a")){
       $emAfasta = "\\n* Afastamento cadastrado.";
     }
-    if(isset($data_recis) && $data_recis != "" && strpos($opcao,"r") !== false){
+    if(isset($data_recis) && $data_recis != "" && str_contains((string) $opcao,"r")){
       $emRescis = "\\n* Rescisão.";
     }
     if($emFerias != "" || $emAfasta != "" || $emRescis != ""){
@@ -333,30 +333,30 @@ function db_retorno_variaveis($ano, $mes, $registro){
   if($resultvar == false){
     return false;
   }else{
-    $num_rows = pg_numrows($resultvar);
+    $num_rows = pg_num_rows($resultvar);
     if($num_rows > 0){
-      $num_cols = pg_numfields($resultvar);
+      $num_cols = pg_num_fields($resultvar);
       for($index=0; $index<$num_cols; $index++){
-        $nam_campo = pg_fieldname($resultvar, $index);
-        $unam_campo = strtoupper(pg_fieldname($resultvar, $index));
-        global $$nam_campo,$$unam_campo;
-        $$nam_campo = pg_result($resultvar, 0, $nam_campo);
-        $$unam_campo = pg_result($resultvar, 0, $nam_campo);
+        $nam_campo = pg_field_name($resultvar, $index);
+        $unam_campo = strtoupper(pg_field_name($resultvar, $index));
+        global ${$nam_campo},${$unam_campo};
+        ${$nam_campo} = pg_fetch_result($resultvar, 0, $nam_campo);
+        ${$unam_campo} = pg_fetch_result($resultvar, 0, $nam_campo);
       }
     }
   }
 
-  return pg_numrows($resultvar);
+  return pg_num_rows($resultvar);
 }
 
 //Cria variaveis globais para o ano e mes passados
 //Se ano e mes não forem passados, buscará dados do ano e mes correntes da folha
 //Retorna false se tiver problemas na execução do sql e numrows caso sql esteja correto (0 se não encontrar registros e 1 caso encontre)
 function db_sel_cfpess($anofolha=null, $mesfolha=null, $campos=" * "){
-  if($anofolha == null || trim($anofolha) == ""){
+  if($anofolha == null || trim((string) $anofolha) == ""){
     $anofolha = db_anofolha();
   }
-  if($mesfolha == null || trim($mesfolha) == ""){
+  if($mesfolha == null || trim((string) $mesfolha) == ""){
     $mesfolha = db_mesfolha();
   }
   if(trim($campos) == ""){
@@ -366,13 +366,13 @@ function db_sel_cfpess($anofolha=null, $mesfolha=null, $campos=" * "){
   if($record_cfpess == false){
     return false;
   }else{
-    $num_cols = pg_numfields($record_cfpess);
-    $num_rows = pg_numrows($record_cfpess);
+    $num_cols = pg_num_fields($record_cfpess);
+    $num_rows = pg_num_rows($record_cfpess);
     for($index=0; $index<$num_cols; $index++){
-      $nam_campo = pg_fieldname($record_cfpess, $index);
-      global $$nam_campo;
+      $nam_campo = pg_field_name($record_cfpess, $index);
+      global ${$nam_campo};
 //      echo "<BR> nam_campo --> $nam_campo";
-      $$nam_campo = @pg_result($record_cfpess, 0, $nam_campo);
+      ${$nam_campo} = @pg_fetch_result($record_cfpess, 0, $nam_campo);
     }
     return $num_rows;
   }
@@ -382,9 +382,9 @@ function db_foto($numcgm,$db_opcao = 3,$javascript = "",$width="95",$height="120
 
   global $oid;
 
-  if(trim($numcgm) != "" && $numcgm != null){
+  if(trim((string) $numcgm) != "" && $numcgm != null){
     $result_foto = db_query("select rh50_oid as oid from rhfotos where rh50_numcgm = $numcgm");
-    if(pg_numrows($result_foto) > 0){
+    if(pg_num_rows($result_foto) > 0){
       db_fieldsmemory($result_foto, 0);
     }
   }
@@ -404,7 +404,7 @@ function db_empty($string){
      $string == '    /  /  ' || $string == '    -  -  ' || $string == '()' ) {
     return true;
   }
-  $string = trim($string);
+  $string = trim((string) $string);
   if(empty($string)){
     return true;
   }else{
@@ -415,7 +415,7 @@ function db_empty($string){
 }
 function db_emptydata($string){
 
-  $string = trim($string);
+  $string = trim((string) $string);
   if(empty($string)){
     return true;
   }else{
@@ -441,7 +441,7 @@ function db_dtoc($string=null){
   // 0123456789                0123456789
   // 2006-12-01 transforma em  01-12-2006
   
-  return substr($string,8,2)."-".substr($string,5,2)."-".substr($string,0,4);
+  return substr((string) $string,8,2)."-".substr((string) $string,5,2)."-".substr((string) $string,0,4);
 }
 
 function db_dow($string=null){
@@ -458,7 +458,7 @@ function db_ctod($string=null){
  // 0123456789               0123456789
  // 01-12-2006 transforma em 2006-12-01
  
-  return substr($string,6,4)."-".substr($string,3,2)."-".substr($string,0,2);
+  return substr((string) $string,6,4)."-".substr((string) $string,3,2)."-".substr((string) $string,0,2);
 }
 function db_mktime($string=null){
   
@@ -467,30 +467,30 @@ function db_mktime($string=null){
   // 0123456789                       
   // 2006-12-01 
   
-  if(trim(substr($string,5,2)) != ""){
+  if(trim(substr((string) $string,5,2)) != ""){
     return  db_strtotime($string);
   }else{
     return 0;
   }
 }
 function db_year($string=null){
-    $year = substr($string,0,4);
+    $year = substr((string) $string,0,4);
     return intval($year);
 }
 
 function db_month($string=null){
-    $month = substr($string,5,2);
+    $month = substr((string) $string,5,2);
     return intval($month);
 }
 
 function db_day($string=null){
-    $day = substr($string,8,2);
+    $day = substr((string) $string,8,2);
     return intval($day);
 }
 
 function db_datedif($pmktime=null,$smktime=null, $tipo='d'){
   if($tipo == 'd'){
-    return pg_result(db_query("select '$pmktime'::date - '$smktime'::date as d"),0,'d');
+    return pg_fetch_result(db_query("select '$pmktime'::date - '$smktime'::date as d"),0,'d');
 //    return ceil((( mktime(0,0,0,substr($pmktime,5,2),substr($pmktime,8,2),substr($pmktime,0,4)) -
   //                  mktime(0,0,0,substr($smktime,5,2),substr($smktime,8,2),substr($smktime,0,4)))/86400));
   }else if($tipo == 'm'){
@@ -498,8 +498,8 @@ function db_datedif($pmktime=null,$smktime=null, $tipo='d'){
   }else if($tipo == 'y'){
     return 0;
   }else{
-    return ceil((( mktime(0,0,0,substr($pmktime,5,2),substr($pmktime,8,2),substr($pmktime,0,4)) -
-                    mktime(0,0,0,substr($smktime,5,2),substr($smktime,8,2),substr($smktime,0,4)))/86400));
+    return ceil((( mktime(0,0,0,substr((string) $pmktime,5,2),substr((string) $pmktime,8,2),substr((string) $pmktime,0,4)) -
+                    mktime(0,0,0,substr((string) $smktime,5,2),substr((string) $smktime,8,2),substr((string) $smktime,0,4)))/86400));
   }
 
 }
@@ -513,7 +513,7 @@ function db_val($string=0){
 }
 function db_str($str,$quantidade=0,$digitos=0,$caracter= ' '){
   
- return str_pad($str, $quantidade, $caracter,0);
+ return str_pad((string) $str, $quantidade, $caracter,0);
 }
 
 function db_substr($string=null,$posini=null,$quant=null){
@@ -526,14 +526,14 @@ function db_substr($string=null,$posini=null,$quant=null){
 function db_at($string_a_pesquisar=null,$string_pesquisa=null){
 
    if(!db_empty($string_a_pesquisar)){
-     return strpos(strtoupper("#".$string_pesquisa),strtoupper($string_a_pesquisar))+0 ;
+     return strpos(strtoupper("#".$string_pesquisa),strtoupper((string) $string_a_pesquisar))+0 ;
    }else{
      return 0;
    }
 }
 
 function db_sqlformat($variavel=null){
-   if((is_string($variavel) && $variavel <> 'null') || trim($variavel) == ''){
+   if((is_string($variavel) && $variavel <> 'null') || trim((string) $variavel) == ''){
        return "'".$variavel."'";
     }else if( is_bool($variavel)){
        if( $variavel == true ) {
@@ -556,13 +556,13 @@ function bb_condicaosubpes($prefixo=null, $sNomeTabela = null) {
   $retorno  = " where ".$prefixo."anousu = ".db_substr($subpes,1,4);
   $retorno .= "  and  ".$prefixo."mesusu = ".db_substr($subpes,6,2);
   
-  if(db_at(strtoupper($prefixo),"R45_R61_R30_R51_R05_R12_R03_R27_R57_R42_R25_R28_R41_R52_R63_R17_R60_R64_R65_R37_R66_R67_") == 0 ){    
+  if(db_at(strtoupper((string) $prefixo),"R45_R61_R30_R51_R05_R12_R03_R27_R57_R42_R25_R28_R41_R52_R63_R17_R60_R64_R65_R37_R66_R67_") == 0 ){    
     $retorno .= "  and  ".$prefixo."instit = ".DB_getsession("DB_instit");
   }
   
   if ($sNomeTabela != null) {
     
-    $aSiglasMatricula = array("cv01","h07","h09","h10","h16","h18","h22","h57","h60","h72","r01","r03","r10","r14","r17","r18","r19","r20","r21","r22","r26","r28","r29","r30","r31","r34","r35","r36","r38","r40","r45","r47","r48","r51","r52","r53","r54","r57","r58","r60","r61","r63","r64","r69","r90","r91","r92","r93","r94","rh01","rh02","rh09","rh10","rh101","rh108","rh109","rh11","rh112","rh118","rh126","rh134","rh139","rh143","rh144","rh15","rh16","rh17","rh19","rh21","rh31","rh49","rh54","rh57","rh61","rh62","rh66","rh67","rh77","rh85","rh93","rh96","rh99");
+    $aSiglasMatricula = ["cv01","h07","h09","h10","h16","h18","h22","h57","h60","h72","r01","r03","r10","r14","r17","r18","r19","r20","r21","r22","r26","r28","r29","r30","r31","r34","r35","r36","r38","r40","r45","r47","r48","r51","r52","r53","r54","r57","r58","r60","r61","r63","r64","r69","r90","r91","r92","r93","r94","rh01","rh02","rh09","rh10","rh101","rh108","rh109","rh11","rh112","rh118","rh126","rh134","rh139","rh143","rh144","rh15","rh16","rh17","rh19","rh21","rh31","rh49","rh54","rh57","rh61","rh62","rh66","rh67","rh77","rh85","rh93","rh96","rh99"];
     
     if (DBPessoal::verificarUtilizacaoEstruturaSuplementar() && in_array($prefixo, $aSiglasMatricula)) {
   
@@ -583,9 +583,9 @@ function bb_condicaosubpesproc($prefixo=null,$subpes_procesamento=null){
 //  $retorno  = " where "+$prefixo+ "anousu = "+db_anofolha();
 //  $retorno .= "  and  "+$prefixo+ "mesusu = "+db_mesfolha();
   
-  $retorno  = " where ".$prefixo."anousu = '".substr($subpes_procesamento,0,4)."'";
-  $retorno .= "  and  ".$prefixo."mesusu = '".substr($subpes_procesamento,5,2)."'";
-  if(db_at(strtoupper($prefixo),"R45_R61_R30_R51_R05_R12_R03_R27_R57_R42_R25_R28_R41_R52_R63_R17_R60_R64_R65_R37_R66_R67_") == 0 ){
+  $retorno  = " where ".$prefixo."anousu = '".substr((string) $subpes_procesamento,0,4)."'";
+  $retorno .= "  and  ".$prefixo."mesusu = '".substr((string) $subpes_procesamento,5,2)."'";
+  if(db_at(strtoupper((string) $prefixo),"R45_R61_R30_R51_R05_R12_R03_R27_R57_R42_R25_R28_R41_R52_R63_R17_R60_R64_R65_R37_R66_R67_") == 0 ){
      $retorno .= "  and  ".$prefixo."instit = ".DB_getsession("DB_instit");
   }   
   return $retorno;
@@ -598,7 +598,7 @@ function bb_condicaosubpesatual($prefixo=null){
  $subano = db_anofolha();
 
  $retorno = " where ".$prefixo."anousu = ".$subano." and ".$prefixo."mesusu = ".$submes;
- if(db_at(strtoupper($prefixo),"R45_R61_R30_R51_R05_R12_R03_R27_R57_R42_R25_R28_R41_R52_R63_R17_R60_R64_R65_R37_R66_R67_") == 0 ){
+ if(db_at(strtoupper((string) $prefixo),"R45_R61_R30_R51_R05_R12_R03_R27_R57_R42_R25_R28_R41_R52_R63_R17_R60_R64_R65_R37_R66_R67_") == 0 ){
     $retorno .= "  and  ".$prefixo."instit = ".DB_getsession("DB_instit");
  }   
  return $retorno;
@@ -617,7 +617,7 @@ function bb_condicaosubpesanterior($prefixo=null){
    $subano -= 1;
  }
  $retorno = " where ".$prefixo."anousu = ".$subano." and ".$prefixo."mesusu = ".$submes;
- if(db_at(strtoupper($prefixo),"R45_R61_R30_R51_R05_R12_R03_R27_R57_R42_R25_R28_R41_R52_R63_R17_R60_R64_R65_R37_R66_R67_") == 0 ){
+ if(db_at(strtoupper((string) $prefixo),"R45_R61_R30_R51_R05_R12_R03_R27_R57_R42_R25_R28_R41_R52_R63_R17_R60_R64_R65_R37_R66_R67_") == 0 ){
     $retorno .= "  and  ".$prefixo."instit = ".DB_getsession("DB_instit");
  }   
  return $retorno;
@@ -630,42 +630,42 @@ function db_selectmax($matriz=null,$query=null, $tabela = "", $campos=" * ", $or
   //echo "Select $matriz  - $query\n";
 // system("echo psql -h 192.168.0.37 -U postgres auto_sap_2605 -c explain \"$query;\" >>/tmp/reis");
 
-  if($query == null || trim($query) == ""){
+  if($query == null || trim((string) $query) == ""){
     if($campos == null || trim($campos) == ""){
       $campos = " * ";
     }
     $query = " select ".$campos." from ".$tabela;
-    if($where != null && trim($where) != ""){
+    if($where != null && trim((string) $where) != ""){
       $query .= " where ".$where;
     }
-    if($group != null && trim($group) != ""){
+    if($group != null && trim((string) $group) != ""){
       $query .= " group by ".$group;
     }
-    if($order != null && trim($order) != ""){
+    if($order != null && trim((string) $order) != ""){
       $query .= " order by $order";
     }
 
   }
-  global $$matriz;
-  $aChavesCachear = array('rubr_', 'basesr', 'bases');
+  global ${$matriz};
+  $aChavesCachear = ['rubr_', 'basesr', 'bases'];
   $sNomeChave = $matriz;
   $indice = md5($sNomeChave."#".str_replace(" ", "_", $query));
   if (in_array($sNomeChave, $aChavesCachear)) {
 
     $chave = DBRegistry::get($indice);
     if (DBRegistry::has($indice)) {
-      $$matriz = $chave;
+      ${$matriz} = $chave;
       return true;
     }
   }
   $result = @db_query($query);
   //db_criatabela($result);
-  global $$matriz;
-  if($result!=false && pg_numrows($result)>0){
+  global ${$matriz};
+  if($result!=false && pg_num_rows($result)>0){
     
    // echo $matriz."[0]["";
     $dados   = pg_fetch_all($result);
-    $$matriz = $dados;
+    ${$matriz} = $dados;
     if (in_array($sNomeChave, $aChavesCachear)) {
       DBRegistry::add($indice, $dados);
     }
@@ -678,7 +678,7 @@ function db_selectmax($matriz=null,$query=null, $tabela = "", $campos=" * ", $or
       echo "Erro no query:  $query ";
       exit;
     }else{
-      $$matriz = null;
+      ${$matriz} = null;
       return false;
     }
   }
@@ -749,8 +749,8 @@ function db_update($tabela,$mat_campos,$mat_valores,$condicao_a){
      $virgula = ",";
   }
 
-  if($condicao_a != null && trim($condicao_a) != ""){
-    if(strpos($condicao_a,"where") === false){
+  if($condicao_a != null && trim((string) $condicao_a) != ""){
+    if(!str_contains((string) $condicao_a,"where")){
       $condicao_a = " where ".$condicao_a;
     }
   }
@@ -774,7 +774,7 @@ function db_delete($tabela=null,$condicao_deleta=null,$sem_condicao=null){
 
 //  echo "<BR><BR><BR>"."delete from ".$tabela." ".$condicao_deleta.";<BR><BR>";
 
-  if(strpos($condicao_deleta, "where") === false){
+  if(!str_contains((string) $condicao_deleta, "where")){
     $condicao_deleta = " where " . $condicao_deleta;
   }
 
@@ -874,7 +874,7 @@ function bb_space($numero){
   return str_pad(" ",$numero);
 }
 
-function db_dias_pagto($registro=null,$r45_dtreto,$r45_dtafas){
+function db_dias_pagto($registro=null,$r45_dtreto = null,$r45_dtafas = null){
   
   global $dias_pagamento, $data_afastamento, $dtfim,$subpes,$r45_situac;
   $dias_mes = ndias(db_substr($subpes,-2)."/".db_substr($subpes,1,4));
@@ -1112,7 +1112,7 @@ function ferias($registro,$cfuncao = ""){
             //echo "<BR> 1.12 - F019 --> $F019";
             $F020 = 0 ;
             $F021 = $F019;
-            if( strtolower($cfpess[0]["r11_fersal"]) == 's' && !db_boolean( $cfpess[0]["r11_recalc"] )){
+            if( strtolower((string) $cfpess[0]["r11_fersal"]) == 's' && !db_boolean( $cfpess[0]["r11_recalc"] )){
                $F019 = 0;
                $F021 = 0;
             }
@@ -1121,12 +1121,12 @@ function ferias($registro,$cfuncao = ""){
 
             $s_data2 = db_substr(db_dtoc($cadferia[0]["r30_per1i"]),7,4).'-'.db_substr(db_dtoc($cadferia[0]["r30_per1i"]),4,2).'-'.$maxdiac;
             $s_data1 = $cadferia[0]["r30_per1i"];
-            $F019 = pg_result(db_query("select '$s_data2'::date - '$s_data1'::date as d"),0,'d') + 1;
+            $F019 = pg_fetch_result(db_query("select '$s_data2'::date - '$s_data1'::date as d"),0,'d') + 1;
 
             //echo "<BR> 1.12 - F019 --> $F019";
             $F020 = $cadferia[0]["r30_abono"];
             $F021 = $F019;
-            if( strtolower($cfpess[0]["r11_fersal"]) == 's' 
+            if( strtolower((string) $cfpess[0]["r11_fersal"]) == 's' 
                 && !db_boolean( $cfpess[0]["r11_recalc"] ) 
                 && db_month( $cadferia[0]["r30_per1i"] ) == 2 
                 && db_year($cadferia[0]["r30_per1i"]) == db_substr($subpes,1,4)
@@ -1189,24 +1189,24 @@ function ferias($registro,$cfuncao = ""){
                         //echo "<BR> 1.12 - F019 --> $F019";
                         $F020 = 0 ;
                         $F021 = $F019;
-                        if( strtolower($cfpess[0]["r11_fersal"]) == 's' && !db_boolean( $cfpess[0]["r11_recalc"] )){
+                        if( strtolower((string) $cfpess[0]["r11_fersal"]) == 's' && !db_boolean( $cfpess[0]["r11_recalc"] )){
                            $F019 = 0;
                            $F021 = 0;
                         }
               }else if( db_substr(db_dtos($cadferia[0]["r30_per2i"]),1,6) == $anomes && 
                         db_substr(db_dtos($cadferia[0]["r30_per2f"]),1,6) > $anomes ){
-        
+
                   $dias2_   = ndias(db_substr(db_dtoc($cadferia[0]["r30_per2i"]),4,7));
                   $maxdiac2 = db_str($dias2_,2,0,"0")         ;
-              
+
                   $s_data2 = db_substr(db_dtoc($cadferia[0]["r30_per2i"]),7,4).'-'.db_substr(db_dtoc($cadferia[0]["r30_per2i"]),4,2).'-'.$maxdiac2;
                   $s_data1 = $cadferia[0]["r30_per2i"];
-                  $F019 = pg_result(db_query("select '$s_data2'::date - '$s_data1'::date as d"),0,'d') + 1;
-              
+                  $F019 = pg_fetch_result(db_query("select '$s_data2'::date - '$s_data1'::date as d"),0,'d') + 1;
+
                   //echo "<BR> 1.12 - F019 --> $F019";
                   $F020 = $cadferia[0]["r30_abono"];
                   $F021 = $F019;
-                  if( strtolower($cfpess[0]["r11_fersal"]) == 's' 
+                  if( strtolower((string) $cfpess[0]["r11_fersal"]) == 's' 
                       && !db_boolean( $cfpess[0]["r11_recalc"] ) 
                       && db_month( $cadferia[0]["r30_per2i"] ) == 2 
                       && db_year($cadferia[0]["r30_per2i"]) == db_substr($subpes,1,4)
@@ -1265,8 +1265,8 @@ function ferias($registro,$cfuncao = ""){
                 $perai = $cadferia[0]["r30_perai"];
                 $condicaoaux  = " and r30_regist = ".db_sqlformat( $registro );
                 $condicaoaux .= " and r30_perai = ".db_sqlformat( $perai );
-                $matriz1 = array();
-                $matriz2 = array();
+                $matriz1 = [];
+                $matriz2 = [];
                 $matriz1[1] = "r30_proc2d";
                 $matriz2[1] = $subpes;
                 db_update( "cadferia", $matriz1,$matriz2, bb_condicaosubpes( "r30_" ).$condicaoaux )                 ;
@@ -1374,13 +1374,13 @@ function numero_faltas($registro, $data_inicio, $data_final ){
 }
 
 /**
- * @deprecated
  * @see DBPessoal::getQuantidadeAvos
  * @param unknown $r30_perai
  * @param unknown $r30_peraf_ant
  * @param unknown $r30_peraf
  * @return number
  */
+#[\Deprecated]
 function retorna_avos($r30_perai,$r30_peraf_ant,$r30_peraf){
 
 
@@ -1592,7 +1592,7 @@ function afas_periodo_aquisitivo ($periodoi, $periodof ){
 
 function db_nulldata($string){
 
-  $string = trim($string);
+  $string = trim((string) $string);
   if(empty($string) || trim($string) == "--"){
     return 'null';
   }else{
@@ -1639,7 +1639,7 @@ function salario_base($pessoal,$Ipessoal,$cfuncao = ""){
   $diversominimo = "    ";
   if( !db_empty($pessoal[$Ipessoal]["r01_salari"])){
      $F007 = $pessoal[$Ipessoal]["r01_salari"];
-     
+
      $F010 = $pessoal[$Ipessoal]["r01_salari"];
 //echo "<BR> 1 F010 --> $F010";   
  } else {
@@ -1651,14 +1651,14 @@ function salario_base($pessoal,$Ipessoal,$cfuncao = ""){
     if (empty($padroes)) {
 
        $lPadrao = db_selectmax( "padroes", "select * from padroes ".bb_condicaosubpes( "r02_" ).$condicaoaux );
-       DBRegistry::add($sChavePadrao, array());
+       DBRegistry::add($sChavePadrao, []);
        if ($lPadrao) {
          DBRegistry::add($sChavePadrao, $padroes);
        }
      }
      if (!empty($padroes)) {
 
-       if (strtolower($padroes[0]["r02_tipo"]) == "h") {
+       if (strtolower((string) $padroes[0]["r02_tipo"]) == "h") {
          $valor_padrao = bb_round($padroes[0]["r02_valor"]*$F008,2);
        } else {
          $valor_padrao = $padroes[0]["r02_valor"];
@@ -1680,7 +1680,7 @@ function salario_base($pessoal,$Ipessoal,$cfuncao = ""){
     }
   }
 
-  if ( strtolower($pessoal[$Ipessoal]["r01_progr"]) == "s"  && db_empty($pessoal[$Ipessoal]["r01_salari"])) {
+  if ( strtolower((string) $pessoal[$Ipessoal]["r01_progr"]) == "s"  && db_empty($pessoal[$Ipessoal]["r01_salari"])) {
 
      $condicaoaux  = " and r24_regime = ".db_sqlformat( $pessoal[$Ipessoal]["r01_regime"] );
      $condicaoaux .= " and r24_padrao = ".db_sqlformat( $pessoal[$Ipessoal]["r01_padrao"] );
@@ -1688,13 +1688,13 @@ function salario_base($pessoal,$Ipessoal,$cfuncao = ""){
      global $progress;
      if( db_selectmax( "progress", "select * from progress ".bb_condicaosubpes( "r24_" ).$condicaoaux )){
   $valor_progress = 0;
-  if( $cfuncao == "gerfres" && strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) == "a"){
+  if( $cfuncao == "gerfres" && strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) == "a"){
       $data_base = $pessoal[$Ipessoal]["r01_recis"];
   }else{
-      $data_base = (strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) == "a" ? $cfpess[0]["r11_dataf"] : $pessoal[$Ipessoal]["r01_admiss"]);
+      $data_base = (strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) == "a" ? $cfpess[0]["r11_dataf"] : $pessoal[$Ipessoal]["r01_admiss"]);
   }
   $data_progr = (db_empty($pessoal[$Ipessoal]["r01_anter"]) ? $pessoal[$Ipessoal]["r01_admiss"] : $pessoal[$Ipessoal]["r01_anter"]);
-  if( $cfuncao == "gerfres" && strtolower($pessoal[$Ipessoal]["r01_tpvinc"]) == "a"){
+  if( $cfuncao == "gerfres" && strtolower((string) $pessoal[$Ipessoal]["r01_tpvinc"]) == "a"){
     $anos = bb_round( ( db_year($data_base) - db_year($data_progr) ) * 12,2);
   }else{
     $anos = $F024;
@@ -1710,7 +1710,7 @@ function salario_base($pessoal,$Ipessoal,$cfuncao = ""){
   if( $valor_progress > 0){
      $F010 = $valor_progress;
 //echo "<BR> 2 F010 --> $F010";   
-     if( strtolower($padroes[0]["r02_tipo"]) == "h"){
+     if( strtolower((string) $padroes[0]["r02_tipo"]) == "h"){
         $F010 = $F010 * $F008;
 //echo "<BR> 3 F010 --> $F010";   
      }
@@ -1790,7 +1790,7 @@ function funcionarioferiasvencidas ($sDataVencimento, $sWhere = '') {
    *        |-> Funcionarios
    *                       |-> Dados das Férias abertas
    */
-  $aFuncionarios  = array();
+  $aFuncionarios  = [];
   $iTotalFuncionarios = pg_num_rows($rsFuncionarios); 
   for ($i = 0; $i < $iTotalFuncionarios; $i++) {
   
@@ -1805,7 +1805,7 @@ function funcionarioferiasvencidas ($sDataVencimento, $sWhere = '') {
     $oFuncionario->periodogozadofinal   = '';
     $oFuncionario->periodoaquisitivoini = '';
     $oFuncionario->periodoaquisitivofim = '';
-    $oFuncionario->periodosvencidos     = array();
+    $oFuncionario->periodosvencidos     = [];
     
     /**
      * Último período de férias gozados pelo funcionário
@@ -1886,7 +1886,7 @@ function funcionarioferiasvencidas ($sDataVencimento, $sWhere = '') {
           $oPeriodo->diasgozados = $oDadosFerias->diasgozados;
           $oPeriodo->datainicial = $oDadosFerias->r30_perai; 
           $oPeriodo->datafinal   = $oDadosFerias->r30_peraf; 
-          $aDataFinal  = explode("-", $oPeriodo->datafinal);
+          $aDataFinal  = explode("-", (string) $oPeriodo->datafinal);
           $sDataLimite = date("Y-m-d", mktime(0, 0, 0, $aDataFinal[1], $aDataFinal[2]-30, $aDataFinal[0]+1)); 
           $oPeriodo->limite      = $sDataLimite; 
           $oFuncionario->periodosvencidos[] = $oPeriodo;
@@ -1895,7 +1895,7 @@ function funcionarioferiasvencidas ($sDataVencimento, $sWhere = '') {
     }
     if ($oFuncionario->periodoaquisitivofim != "") {
   
-      $aDataFinal  = explode("-", $oFuncionario->periodoaquisitivofim);
+      $aDataFinal  = explode("-", (string) $oFuncionario->periodoaquisitivofim);
       $sDataLimite = date("Y-m-d", mktime(0, 0, 0, $aDataFinal[1], $aDataFinal[2]+1, $aDataFinal[0])); 
       $sDataInicial = $oFuncionario->periodoaquisitivofim;     
     }
@@ -1909,7 +1909,7 @@ function funcionarioferiasvencidas ($sDataVencimento, $sWhere = '') {
       $oPeriodo->diasgozo    = 30;
       $oPeriodo->diasgozados = '';
       $oPeriodo->datainicial  = $sDataInicial;
-      $aDataInicial   = explode("-", $sDataInicial);
+      $aDataInicial   = explode("-", (string) $sDataInicial);
       $sUltimaData    = date("Y-m-d", mktime(0, 0, 0, $aDataInicial[1]+12, $aDataInicial[2]-1, $aDataInicial[0]));
       $oPeriodo->datafinal   = $sUltimaData;
       $aDataFinal   = explode("-", $oPeriodo->datafinal);
@@ -1929,15 +1929,15 @@ function funcionarioferiasvencidas ($sDataVencimento, $sWhere = '') {
 }
 
 /**
- * Retorna as Competencias da Folha de Pagamento Tendo Base intervalo de duas datas 
- * 
- * @deprecated
+ * Retorna as Competencias da Folha de Pagamento Tendo Base intervalo de duas datas
+ *
  * @see DBPessoal::getCompetenciasIntervalo
- * @param DBDate $oDataInicial 
- * @param DBDate $oDataFinal 
+ * @param DBDate $oDataInicial
+ * @param DBDate $oDataFinal
  * @access public
  * @return array
  */
+#[\Deprecated]
 function retornaCompetenciasByPeriodo ( DBDate $oDataInicial, DBDate $oDataFinal ) {
  
   /**
@@ -1959,7 +1959,7 @@ function retornaCompetenciasByPeriodo ( DBDate $oDataInicial, DBDate $oDataFinal
     throw new Exception('Data inicial não pode ser maior que a final');    
   }
   
-  $aRetorno = array();
+  $aRetorno = [];
  
   $iAnoCalculado = $iAnoInicio;
   $iMesCalculado = $iMesInicio;
@@ -2015,7 +2015,7 @@ function retornaCompetenciasByPeriodo ( DBDate $oDataInicial, DBDate $oDataFinal
 
 function validarPadraoSalarioServidor($padrao, $padraoPai, $regime, $instituicao) {
 
-  if(trim($padrao) == trim($padraoPai)) {
+  if(trim((string) $padrao) == trim((string) $padraoPai)) {
     return 'O padrão informado como pai já está cadastrado como sucessor do padrão atual.';
   }
 

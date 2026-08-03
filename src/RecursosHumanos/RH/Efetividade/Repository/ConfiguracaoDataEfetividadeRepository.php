@@ -12,7 +12,7 @@ class ConfiguracaoDataEfetividadeRepository
     /**
      * @var array
      */
-    protected $scopes = array();
+    protected $scopes = [];
 
     /**
      * @param Instituicao $instituicao
@@ -31,7 +31,7 @@ class ConfiguracaoDataEfetividadeRepository
      * @return ConfiguracaoDataEfetividade[]
      * @throws Exception
      */
-    public function get($columns = array('*'), $order = array())
+    public function get($columns = ['*'], $order = [])
     {
         $dao = new cl_configuracoesdatasefetividade;
 
@@ -50,7 +50,7 @@ class ConfiguracaoDataEfetividadeRepository
             );
         }
 
-        $registros = array();
+        $registros = [];
 
         if (pg_num_rows($resultado) === 0) {
             return $registros;
@@ -68,7 +68,7 @@ class ConfiguracaoDataEfetividadeRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
 
         return $this;
     }

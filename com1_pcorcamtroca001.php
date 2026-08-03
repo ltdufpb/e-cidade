@@ -38,8 +38,8 @@ $clpcorcamitemproc = new cl_pcorcamitemproc;
 
 $clpcorcam->rotulo->label();
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $rsVerificaAut = $clpcorcamitemproc->sql_record($clpcorcamitemproc->sql_query_solicitem(null,null," distinct pc81_codproc ","","pc22_codorc=".$pc20_codorc."and e54_autori is not null and e54_anulad is null"));
 

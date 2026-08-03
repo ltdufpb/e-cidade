@@ -226,7 +226,7 @@ db_input('descrdepto',43,$Im60_descr,true,"text",3,"","descrdepartamentoorigem")
   
        $sql = $clmatestoqueinimei->sql_query_matestoque(null,"matestoqueini.m80_codigo,m60_codmater,m60_descr,sum(m82_quant) as m82_quant","m80_codigo"," matestoqueini.m80_coddepto= ".@$departamentoorigem." and m83_coddepto=".@$departamentodestino." $where_opcao and matestoqueini.m80_codtipo<>8 and matestoqueinill.m87_matestoqueini is null and matestoqueini.m80_codigo=".@$valores." group by matestoqueini.m80_codigo,m60_codmater,m60_descr ");
 	   //echo "$sql<br>";
-       $chavepri= array("m80_codigo"=>@$m80_codigo ,"m60_codmater"=>@$m60_codmater);
+       $chavepri= ["m80_codigo"=>@$m80_codigo ,"m60_codmater"=>@$m60_codmater];
        $cliframe_alterar_excluir->chavepri= $chavepri;
        $cliframe_alterar_excluir->sql     = $sql;
        $cliframe_alterar_excluir->campos  = "m80_codigo,m60_codmater,m60_descr,m82_quant";

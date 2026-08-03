@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_layouttxt.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("libs/db_sql.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -85,13 +85,13 @@ db_postmemory($HTTP_POST_VARS);
   $geraform->tipofol = true;                      // NOME DO CAMPO PARA TIPO DE FOLHA
   $geraform->filtropadrao = "s";                  // TIPO DE FILTRO PADRÃO
   $geraform->resumopadrao = "m";                  // TIPO DE RESUMO PADRÃO
-  $geraform->arr_tipofol = array(
+  $geraform->arr_tipofol = [
                                "salario"=>"Salário",
                                "complementar"=>"Complementar",
                                "rescisao"=>"Rescisão",
                                "13salario"=>"13o. Salário",
                                "adiantamento"=>"Adiantamento"
-                              );
+                              ];
   $geraform->complementar = "complementar";                // VALUE DA COMPLEMENTAR PARA BUSCAR SEMEST 
 
   $geraform->campo_auxilio_regi = "faixa_regis";  // NOME DO DAS MATRÍCULAS SELECIONADOS
@@ -105,7 +105,7 @@ db_postmemory($HTTP_POST_VARS);
     <td ><b>Tipo</b></td>
     <td >
     <?php 
-     $xv = array("d"=>"Demais Funcionários","e"=>"Educação");
+     $xv = ["d"=>"Demais Funcionários","e"=>"Educação"];
      db_select('tipo',$xv,true,4,"");
     ?>
     </td>
@@ -306,7 +306,7 @@ if(isset($emite2)){
                                          );
 // echo "select * from ($sqlDentro) as x order by $ordenacao";exit; 
   $res = db_query("select * from ($sqlDentro) as x order by $ordenacao");
-  $num = pg_numrows($res);
+  $num = pg_num_rows($res);
   if($num == 0){
     $erro_msg = "Não existe cálculo no período de $mesfolha / $anofolha";
     $sqlerro = true;
@@ -444,13 +444,13 @@ if(isset($emite2)){
               $totalproventos = "";
               $totaldescontos = "";
               $totalprovdesc  = "";
-              db_setaPropriedadesLayoutTxt(&$db_layouttxt,RODAPEARQUIVO);
+              db_setaPropriedadesLayoutTxt($db_layouttxt,RODAPEARQUIVO);
               $contapaginas ++;
             }
             $periodo = "01/$mesfolha/$anofolha a ".db_dias_mes($anofolha,$mesfolha)."/$mesfolha/$anofolha";
             $matricula = $rh01_regist."-".db_CalculaDV($rh01_regist);
             $contabancaria = $rh44_conta;
-            db_setaPropriedadesLayoutTxt(&$db_layouttxt,CABECALHOARQUIVO);
+            db_setaPropriedadesLayoutTxt($db_layouttxt,CABECALHOARQUIVO);
           }
 
           if($provdesc != "B"){
@@ -462,7 +462,7 @@ if(isset($emite2)){
               $valorprov = trim(db_formatar($valorrubrica,"f"));
               $valordesc = "";
             }
-            db_setaPropriedadesLayoutTxt(&$db_layouttxt,REGISTROSARQUIVO);
+            db_setaPropriedadesLayoutTxt($db_layouttxt,REGISTROSARQUIVO);
           }
         }
 
@@ -474,7 +474,7 @@ if(isset($emite2)){
         $multiplic -= $linhas;
         $db_layouttxt->quebraLinha($multiplic);
        
-        db_setaPropriedadesLayoutTxt(&$db_layouttxt,RODAPEARQUIVO);
+        db_setaPropriedadesLayoutTxt($db_layouttxt,RODAPEARQUIVO);
       }
 
     }

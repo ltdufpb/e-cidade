@@ -38,7 +38,7 @@ require_once(modification("classes/db_pcparam_classe.php"));
 require_once(modification("model/CgmFactory.model.php"));
 require_once(modification("model/fornecedor.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clpcsugforn = new cl_pcsugforn;
 $clsolicitem = new cl_solicitem;

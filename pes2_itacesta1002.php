@@ -170,7 +170,7 @@ $iTroca             = 1;
 $iAltura            = 4;
 $iTotalFuncionarios = 0;
 
-for ($iContador = 0; $iContador < pg_numrows($rsResult); $iContador++) {
+for ($iContador = 0; $iContador < pg_num_rows($rsResult); $iContador++) {
 	
    $oCestaBasica = db_utils::fieldsMemory($rsResult, $iContador);
    

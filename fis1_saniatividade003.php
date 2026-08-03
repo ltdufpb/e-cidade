@@ -32,13 +32,13 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_saniatividade_classe.php"));
 include(modification("classes/db_sanitario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clsaniatividade = new cl_saniatividade;
 $clsanitario = new cl_sanitario;
 $db_botao = false;
 $db_opcao = 33;
-if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Excluir"){
+if((isset($_POST["opcaoExec"]) && $_POST["opcaoExec"])=="Excluir"){
   
   db_inicio_transacao();
   $sqlerro=false;
@@ -138,7 +138,7 @@ if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Exclu
 </body>
 </html>
 		<?php 
-		if((isset($HTTP_POST_VARS["opcaoExec"]) && $HTTP_POST_VARS["opcaoExec"])=="Excluir"){
+		if((isset($_POST["opcaoExec"]) && $_POST["opcaoExec"])=="Excluir"){
 		  if($clsaniatividade->erro_status=="0"&&$sqlerro==true){
 		    $clsaniatividade->erro(true,false);
 		    echo"<script>parent.iframe_saniatividade.location.href='fis1_saniatividade001.php?y83_codsani=".$y83_codsani."&abas=1'</script>;\n";

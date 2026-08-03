@@ -295,9 +295,9 @@ class Geral {
 
     $this->oLogger->escreverLog('Emissão Geral Concluída.');
 
-    return array(
+    return [
       'arquivo' => $sArquivo,
       'layout' => $sArquivoLayout
-    );
+    ];
   }
 }

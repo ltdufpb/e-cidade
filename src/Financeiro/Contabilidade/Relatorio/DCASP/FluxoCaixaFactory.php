@@ -20,11 +20,9 @@ class FluxoCaixaFactory
     private $codigoRelatorio;
     private $fluxoCaixa;
     private $ano;
-    private $periodo;
 
-    public function __construct($periodo = null)
+    public function __construct(private $periodo = null)
     {
-        $this->periodo = $periodo;
         $this->ano = db_getsession('DB_anousu');
         $this->processador = 'con2_fluxocaixaDCASP002.php';
         $this->configurar();

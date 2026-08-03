@@ -65,7 +65,7 @@ class RegraFactory {
     /**
      * Regra de Penalidade
      */
-    $aLeiturasCalculadas = array();
+    $aLeiturasCalculadas = [];
     foreach ($aResumosMensais as $oResumoMensal) {
 
       $lLeituraMediaCalculada = ($oResumoMensal->getRegra() == Situacao::REGRA_MEDIA_ULTIMOS_MESES);

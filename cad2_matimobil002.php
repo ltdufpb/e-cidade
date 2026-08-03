@@ -36,7 +36,7 @@ $climobil->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label('z01_nome');
 $clrotulo->label('j01_matric');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $where = "";
 if ($lista != "") {
 	if (isset ($ver) and $ver == "com") {

@@ -41,7 +41,7 @@ $oJson              = new services_json();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
 
 $oRetorno           = new stdClass();
-$oRetorno->dados    = array();
+$oRetorno->dados    = [];
 $oRetorno->status   = 1;
 
 
@@ -92,7 +92,7 @@ switch ($oParam->exec) {
       $oDadosDocumentoTemplate        = db_utils::fieldsMemory($rsDocumentoTemplate, $i);
       $oDocumentoTemplate             = new stdClass();
       $oDocumentoTemplate->iCodigo    = $oDadosDocumentoTemplate->db82_sequencial;
-      $oDocumentoTemplate->sDescricao = urlencode($oDadosDocumentoTemplate->db82_descricao);
+      $oDocumentoTemplate->sDescricao = urlencode((string) $oDadosDocumentoTemplate->db82_descricao);
       $oDocumentoTemplate->iTemplate  = $oDadosDocumentoTemplate->db82_templatetipo;
       $oRetorno->dados[]              = $oDocumentoTemplate;
     }

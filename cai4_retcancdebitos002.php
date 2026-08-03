@@ -36,7 +36,7 @@ include(modification("classes/db_cancdebitos_classe.php"));
 include(modification("classes/db_cancdebitosreg_classe.php"));
 include(modification("classes/db_cancdebitosproc_classe.php"));
 include(modification("classes/db_cancdebitosprocreg_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clarrecant           = new cl_arrecant;
 $clarrehist           = new cl_arrehist;
 $clcancdebitos        = new cl_cancdebitos;

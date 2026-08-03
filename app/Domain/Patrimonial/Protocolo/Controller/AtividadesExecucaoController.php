@@ -29,10 +29,8 @@ class AtividadesExecucaoController extends Controller
         $ordemExcluir = $request->get('ordem'); // 3
 
         $novosVinculos = $tipoProcesso->atividades->filter(
-            function ($atividadeVinculada) use ($atividadeExcluir, $ordemExcluir) {
-                return !($atividadeVinculada->p114_codigo == $atividadeExcluir &&
-                    $atividadeVinculada->pivot->p115_ordem == $ordemExcluir);
-            }
+            fn($atividadeVinculada) => !($atividadeVinculada->p114_codigo == $atividadeExcluir &&
+                $atividadeVinculada->pivot->p115_ordem == $ordemExcluir)
         );
 
         $ordem = 1;

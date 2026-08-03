@@ -67,19 +67,19 @@ switch($oParam->exec) {
 
     if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim == "") {
 
-      $sWhere     .= " and e50_data = '".implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)))."'";
-      $sWhereSlip .= " and k17_data = '".implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)))."'";
+      $sWhere     .= " and e50_data = '".implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataIni)))."'";
+      $sWhereSlip .= " and k17_data = '".implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataIni)))."'";
 
     } else if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim != "") {
 
-      $dtDataIni   = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)));
-      $dtDataFim   = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+      $dtDataIni   = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataIni)));
+      $dtDataFim   = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataFim)));
       $sWhere     .= " and e50_data between '{$dtDataIni}' and '{$dtDataFim}'";
       $sWhereSlip .= " and k17_data between '{$dtDataIni}' and '{$dtDataFim}'";
 
     } else if ($oParam->params[0]->dtDataIni == "" && $oParam->params[0]->dtDataFim != "") {
 
-       $dtDataFim   = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+       $dtDataFim   = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataFim)));
        $sWhere     .= " and e50_data <= '{$dtDataFim}'";
        $sWhereSlip .= " and k17_data <= '{$dtDataFim}'";
     }
@@ -87,9 +87,9 @@ switch($oParam->exec) {
     //Filtro para Empenho
     if ($oParam->params[0]->iCodEmp!= '') {
 
-      if (strpos($oParam->params[0]->iCodEmp,"/")) {
+      if (strpos((string) $oParam->params[0]->iCodEmp,"/")) {
 
-        $aEmpenho = explode("/",$oParam->params[0]->iCodEmp);
+        $aEmpenho = explode("/",(string) $oParam->params[0]->iCodEmp);
         $sWhere .= " and e60_codemp = '{$aEmpenho[0]}' and e60_anousu={$aEmpenho[1]}";
 
       } else {
@@ -119,7 +119,7 @@ switch($oParam->exec) {
     }
     if ($oParam->params[0]->sDtAut != "") {
 
-      $sDtAut   = implode("-", array_reverse(explode("/", $oParam->params[0]->sDtAut)));
+      $sDtAut   = implode("-", array_reverse(explode("/", (string) $oParam->params[0]->sDtAut)));
       $sWhere .= " and e42_dtpagamento = '{$sDtAut}'";
 
     }
@@ -220,7 +220,7 @@ switch($oParam->exec) {
       $aInfoCheques = null;
     }
 
-    echo $oJson->encode(array("status" => $iStatus, "message"=>urlencode($sMessage), "aInfoCheques"=> $aInfoCheques));
+    echo $oJson->encode(["status" => $iStatus, "message"=>urlencode($sMessage), "aInfoCheques"=> $aInfoCheques]);
     break;
 
   case "imprimirFrenteCheque" :
@@ -244,7 +244,7 @@ switch($oParam->exec) {
 
       if ($oDadosImpressora->k11_tipautent == "2") {
 
-        echo $oJson->encode(array("status"=> 1 ,"message"=> null));
+        echo $oJson->encode(["status"=> 1 ,"message"=> null]);
         exit;
       }
       $sSqlCodigoBanco  = $oDaoEmpAgeTipo->sql_query_conplanoconta($oParam->params[0]->iCodTipo);
@@ -264,13 +264,13 @@ switch($oParam->exec) {
       $oImpressaoCheque->setsCodBanco($iCodigoBanco);
       $oImpressaoCheque->setNomePrefeito($oPref->prefeito);
       $oImpressaoCheque->setNomeTesoureiro($oDadosImpressora->tesoureiro);
-      $oImpressaoCheque->setSCredor(urldecode($oParam->params[0]->sCredor));
+      $oImpressaoCheque->setSCredor(urldecode((string) $oParam->params[0]->sCredor));
       $oImpressaoCheque->montaImpressao();
       $oImpressaoCheque->imprimir();
-      echo $oJson->encode(array("status"=> 1 ,"message"=> null));
+      echo $oJson->encode(["status"=> 1 ,"message"=> null]);
 
     } catch (Exception $eErro) {
-      echo $oJson->encode(array("status"=>2,"message"=> urlencode($eErro->getMessage())));
+      echo $oJson->encode(["status"=>2,"message"=> urlencode($eErro->getMessage())]);
     }
     break;
 
@@ -279,7 +279,7 @@ switch($oParam->exec) {
     $oAgenda = new agendaPagamento();
     $oAgenda->setUrlEncode(true);
     //echo $oParam->params[0]->sStringVerso;
-    $sStringVerso       = str_replace('/n',"\n",urlDecode($oParam->params[0]->sStringVerso));
+    $sStringVerso       = str_replace('/n',"\n",urlDecode((string) $oParam->params[0]->sStringVerso));
     $oDaoConfig         = db_utils::getDao("db_config");
     $rsPref             = $oDaoConfig->sql_record($oDaoConfig->sql_query_file(db_getsession("DB_instit"),
                                                                              "pref as prefeito,munic as municipio"));
@@ -317,7 +317,7 @@ switch($oParam->exec) {
 
           if ($oMovimento->iCodOrdem != $iOPAtual) {
 
-            if ( isset($oMovimento->iCodOrdem) && trim($oMovimento->iCodOrdem) != '' )  {
+            if ( isset($oMovimento->iCodOrdem) && trim((string) $oMovimento->iCodOrdem) != '' )  {
 
               if ($sVirgula == "") {
                 $sListaOps .= $oMovimento->iCodOrdem;
@@ -331,7 +331,7 @@ switch($oParam->exec) {
 //        "ENDOSSO"
 
         $sConta   = $oBanco->c63_conta;
-        if (trim($oBanco->c63_dvconta) != "") {
+        if (trim((string) $oBanco->c63_dvconta) != "") {
           $sConta .= "-{$oBanco->c63_dvconta}";
         }
         $sStringVerso .= "\n\n Cheque: {$oParam->params[0]->iCheque} ";
@@ -347,7 +347,7 @@ switch($oParam->exec) {
       if ($oDadosImpressora->k11_tipoimpcheque == 5) {
 
         $aImpressaoParts = explode("\n", $sStringVerso);
-        if (strtoupper($oPref->municipio) != "SAPIRANGA") {
+        if (strtoupper((string) $oPref->municipio) != "SAPIRANGA") {
           $sStringVerso  =  chr(27).chr(119).'1';
         }
         for($i =0; $i< count($aImpressaoParts); $i++){
@@ -360,7 +360,7 @@ switch($oParam->exec) {
 
           }
         }
-        if (strtoupper($oPref->municipio ) != "SAPIRANGA") {
+        if (strtoupper((string) $oPref->municipio ) != "SAPIRANGA") {
           $sStringVerso  .=  chr(27).chr(119).'0';
         }
         //echo $sStringVerso;
@@ -378,7 +378,7 @@ switch($oParam->exec) {
           }
         }
 
-        $sStringVerso .= str_repeat(chr(0),10).str_replace('/n',"\n",urlDecode($oParam->params[0]->sStringVerso)).chr(10);
+        $sStringVerso .= str_repeat(chr(0),10).str_replace('/n',"\n",urlDecode((string) $oParam->params[0]->sStringVerso)).chr(10);
         $sStringVerso .= str_repeat(chr(0),10)." Cheque: {$oParam->params[0]->iCheque} "                         .chr(10);
         $sStringVerso .= str_repeat(chr(0),10)." Banco: {$oBanco->c63_banco} cta:{$sConta}"                      .chr(10);
         $sStringVerso .= str_repeat(chr(0),10)." Reduz {$oBanco->c61_reduz} - {$sListaOps} "                     .chr(10);
@@ -389,13 +389,13 @@ switch($oParam->exec) {
       }
       $oImpressao->setPorta($oDadosImpressora->k11_portaimpcheque);
       $oImpressao->imprimir($sStringVerso);
-      echo $oJson->encode(array("status"=>1,"message"=>""));
+      echo $oJson->encode(["status"=>1,"message"=>""]);
 
 
     }
 
     catch (Exception $eErro) {
-      echo $oJson->encode(array("status"=>2,"message"=> urlencode($eErro->getMessage())));
+      echo $oJson->encode(["status"=>2,"message"=> urlencode($eErro->getMessage())]);
     }
     break;
 

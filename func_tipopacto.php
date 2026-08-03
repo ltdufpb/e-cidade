@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tipopacto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltipopacto = new cl_tipopacto;
 $cltipopacto->rotulo->label("o29_sequencial");
 $cltipopacto->rotulo->label("o29_descricao");
@@ -98,9 +98,9 @@ $cltipopacto->rotulo->label("o29_descricao");
         }else{
            $sql = $cltipopacto->sql_query("",$campos,"o29_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o29_descricao)){
-          $repassa = array("chave_o29_sequencial"=>$chave_o29_sequencial,"chave_o29_descricao"=>$chave_o29_descricao);
+          $repassa = ["chave_o29_sequencial"=>$chave_o29_sequencial,"chave_o29_descricao"=>$chave_o29_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

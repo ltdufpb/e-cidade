@@ -45,8 +45,8 @@ try {
 
     switch ($oParam->exec) {
         case "buscaVericulosTFD":
-            $oRetorno->aVeiculosComPedido = array();
-            $oRetorno->aVeiculosSemPedido = array();
+            $oRetorno->aVeiculosComPedido = [];
+            $oRetorno->aVeiculosSemPedido = [];
 
             $oDaoVeiculoAgenda = new cl_tfd_veiculodestino();
 
@@ -65,9 +65,9 @@ try {
             $iLinhas = pg_num_rows($rsAgenda);
             for ($i = 0; $i < $iLinhas; $i++) {
                 $oDados = db_utils::fieldsMemory($rsAgenda, $i);
-                $oDados->destino = urlencode($oDados->destino);
-                $oDados->modelo = urlencode($oDados->modelo);
-                $oDados->motorista = urlencode($oDados->motorista);
+                $oDados->destino = urlencode((string) $oDados->destino);
+                $oDados->modelo = urlencode((string) $oDados->modelo);
+                $oDados->motorista = urlencode((string) $oDados->motorista);
 
                 $oRetorno->aVeiculosComPedido [] = $oDados;
             }
@@ -90,7 +90,7 @@ try {
             $iLinhasSemPedido = pg_num_rows($rsLivres);
             for ($i = 0; $i < $iLinhasSemPedido; $i++) {
                 $oSemPedido = db_utils::fieldsMemory($rsLivres, $i);
-                $oSemPedido->modelo = urlencode($oSemPedido->modelo);
+                $oSemPedido->modelo = urlencode((string) $oSemPedido->modelo);
 
                 $oRetorno->aVeiculosSemPedido[] = $oSemPedido;
             }

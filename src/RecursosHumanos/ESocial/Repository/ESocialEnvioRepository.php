@@ -29,7 +29,7 @@ class ESocialEnvioRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * Tamanho maximo de consulta na api por particao
@@ -50,7 +50,7 @@ class ESocialEnvioRepository
      * @param array $columns
      * @return bool|ESocialEnvio
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new \cl_esocialenvio();
         $sql = $dao->sql_query_status($id, implode(', ', $columns));
@@ -73,7 +73,7 @@ class ESocialEnvioRepository
      * @param array $columns
      * @return bool|ESocialEnvio
      */
-    public static function getDados($id, $columns = array('*'))
+    public static function getDados($id, $columns = ['*'])
     {
         $dao = new \cl_esocialenvio();
         $sql = $dao->sql_query_status($id, implode(', ', $columns));
@@ -123,7 +123,7 @@ class ESocialEnvioRepository
         $consultaSituacao->referencias = [];
         $consultaSituacao->idEventos = [];
 
-        $whereArray = array();
+        $whereArray = [];
         // adicionada variavel de campos para ecomonizar recurso de memoria em grande quantidade de registros
         $campos = "rh213_sequencial, rh213_evento, rh213_responsavelpreenchimento, rh213_data, rh214_sequencial, "
             . "rh214_descricao, rh214_situacao";
@@ -150,13 +150,13 @@ class ESocialEnvioRepository
 
         if (!empty($dataInicio)) {
             $whereArray[] = "rh213_data >= '{$dataInicio}'";
-            $dataInicio = new \DBDate(substr($dataInicio, 0, 10));
+            $dataInicio = new \DBDate(substr((string) $dataInicio, 0, 10));
             $consultaSituacao->dataInicio = ($dataInicio->convertTo("Y-m-d")). ' 00:00';
         }
 
         if (!empty($dataFinal)) {
             $whereArray[] = "rh213_data <= '{$dataFinal}'";
-            $dataFinal = new \DBDate(substr($dataFinal, 0, 10));
+            $dataFinal = new \DBDate(substr((string) $dataFinal, 0, 10));
             $consultaSituacao->dataFinal = ($dataFinal->convertTo("Y-m-d")). ' 23:59';
         }
 
@@ -201,7 +201,7 @@ class ESocialEnvioRepository
 
 
         // array de armazenagem de dados
-        $dados = array();
+        $dados = [];
         // variavel de controle de quantidade dentro da particao
         $contador = 0;
         // numero da particao
@@ -255,7 +255,7 @@ class ESocialEnvioRepository
             $dados[$esocialSituacao->getEvento()][$esocialSituacao->getResponsavelPreenchimento()] = $esocialSituacao;
         }
         unset($esocialEnvios);
-        $dadosFiltrados = array();
+        $dadosFiltrados = [];
 
         $situacoes = [];
         $consultaSituacao->statusRecibo = $statusRecibo;
@@ -301,8 +301,8 @@ class ESocialEnvioRepository
                                         $errorFormatter = new FormatterError($dado->getEvento());
                                         $labels = $errorFormatter->extractLabels($ocorrencia->localizacao);
                                         $ocorrencia->localizacao = str_replace(
-                                            array("<br />", "</b>", "<b>"),
-                                            array("\n", "", ""),
+                                            ["<br />", "</b>", "<b>"],
+                                            ["\n", "", ""],
                                             $errorFormatter->formatLabels($labels, "%s")
                                         );
                                     }
@@ -391,7 +391,7 @@ class ESocialEnvioRepository
             throw new Exception("Não foi possível os envios do esocial.\nContate o suporte.");
         }
 
-        $esocialEnvios = array();
+        $esocialEnvios = [];
 
         if (pg_num_rows($rs) === 0) {
             return $esocialEnvios;

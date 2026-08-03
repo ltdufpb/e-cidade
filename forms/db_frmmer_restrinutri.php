@@ -80,7 +80,7 @@ $clrotulo->label("me14_i_aluno");
        onclick="js_cancela();"  <?=($db_botao==false?"disabled":"")?> >
 <br><br>
 <?php 
-$chavepri= array("me26_i_codigo"=>@$me26_i_codigo);
+$chavepri= ["me26_i_codigo"=>@$me26_i_codigo];
 $cliframe_alterar_excluir->chavepri=$chavepri;
 if (isset($me26_i_restricao)&&@$me26_i_restricao!="") {
  @$cliframe_alterar_excluir->sql = $clmer_restrinutri->sql_query(null,'*',null," me26_i_restricao = $me26_i_restricao");

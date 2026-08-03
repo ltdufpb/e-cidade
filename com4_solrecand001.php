@@ -40,8 +40,8 @@ include(modification("classes/db_solandpadrao_classe.php"));
 include(modification("classes/db_solandpadraodepto_classe.php"));
 include(modification("classes/db_solordemtransf_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $clprocandam = new cl_procandam;
 $clproctransfer = new cl_proctransfer;
 $clprotprocesso = new cl_protprocesso;
@@ -56,7 +56,7 @@ $rotulo = new rotulocampo();
 $rotulo->label("p63_codtran");
 $db_opcao = 1;
 $db_botao = true;
-if ((isset ($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
 	db_inicio_transacao();
 	$sqlerro = false;
 	$sql = "select * 
@@ -77,8 +77,8 @@ if ((isset ($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Inc
 
 			$rsproc = db_query($sqlproc);
 			//inclui o andamento
-			$despach = pg_result($rsproc, 0, "p58_despacho");
-			$publico = pg_result($rsproc, 0, "p58_publico");
+			$despach = pg_fetch_result($rsproc, 0, "p58_despacho");
+			$publico = pg_fetch_result($rsproc, 0, "p58_publico");
 			$despach = str_replace("'", "", $despach);
 			$publico = str_replace("'", "", $publico);
 

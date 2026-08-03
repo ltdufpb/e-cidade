@@ -44,25 +44,25 @@ class slipFolha {
       throw new Exception("{$sMsgErro}, nenhuma transação encontrada!");
     }
 
-    if ( trim($iRecurso) == '' ) {
+    if ( trim((string) $iRecurso) == '' ) {
       throw new Exception("{$sMsgErro}, \n Recurso não informado!");
     }
-    if ( trim($iContaDebito) == '' ) {
+    if ( trim((string) $iContaDebito) == '' ) {
       throw new Exception("{$sMsgErro}, \n Conta Débito não informado! ");
     }
-    if ( trim($iContaCredito) == '' ) {
+    if ( trim((string) $iContaCredito) == '' ) {
       throw new Exception("{$sMsgErro}, \n Conta Crédito não informado!");
     }
-    if ( trim($nValor) == '' ) {
+    if ( trim((string) $nValor) == '' ) {
       throw new Exception("{$sMsgErro}, \n Valor não informado!");
     }
-    if ( trim($iCodFolhaSlip) == '' ) {
+    if ( trim((string) $iCodFolhaSlip) == '' ) {
       throw new Exception("{$sMsgErro}, \n Código do SLIP da folha não informado!");
     }
-    if ( trim($iInstit) == '' ) {
+    if ( trim((string) $iInstit) == '' ) {
       $iInstit = db_getsession('DB_instit');
     }
-    if ( trim($iRetencao) == '' ) {
+    if ( trim((string) $iRetencao) == '' ) {
       throw new Exception("{$sMsgErro}, \n Código da retenção não informada!");
     }
 
@@ -76,7 +76,7 @@ class slipFolha {
   	$oDaoCfPess                  = db_utils::getDao('cfpess');
   	$oDaoConHist                 = db_utils::getDao('conhist');
 
-    if ( trim($iNumCgm) == '' ) {
+    if ( trim((string) $iNumCgm) == '' ) {
     	$rsCgmInstit   = $oDaoDBConfig->sql_record($oDaoDBConfig->sql_query_file($iInstit,"numcgm"));
     	$oDaoCgmInstit = db_utils::fieldsMemory($rsCgmInstit,0);
     	$iNumCgm       = $oDaoCgmInstit->numcgm;
@@ -143,7 +143,7 @@ class slipFolha {
       * Procuramos se a conta credito do slip é uma conta pagadora no caixa.
       * caso for. setamos essa conta como conta pagadora na agenda.
       */
-    $oParametroAgenda = (db_stdClass::getParametro("empparametro",array(db_getsession('DB_anousu')),"e30_agendaautomatico"));
+    $oParametroAgenda = (db_stdClass::getParametro("empparametro",[db_getsession('DB_anousu')],"e30_agendaautomatico"));
     if ($oParametroAgenda[0]->e30_agendaautomatico == "t" ) {
 
        $oDaoEmpAgeTipo = db_utils::getDao("empagetipo");
@@ -190,7 +190,7 @@ class slipFolha {
      */
     if (USE_PCASP) {
 
-      $aTipo = array(1, 2);
+      $aTipo = [1, 2];
 
       foreach ($aTipo as $iTipo) {
 
@@ -208,7 +208,7 @@ class slipFolha {
       $tipooperacao   = 13;
       $contaContabil  = $iContaDebito;
       $oContaContabil = new ContaPlanoPCASP(null, $anoUso, $contaContabil);
-      if ( substr($oContaContabil->getEstrutural(), 0, 4) != '2188' ) {
+      if ( !str_starts_with($oContaContabil->getEstrutural(), '2188') ) {
           $tipooperacao = 9;
       }
       $oDAOVinculo = db_utils::getDao("sliptipooperacaovinculo");
@@ -223,10 +223,10 @@ class slipFolha {
     return $iCodSlip;
   }
 
-  public function geraSlipFolhaLote( $aDadosSlip = array(),$iInstit=''){
+  public function geraSlipFolhaLote( $aDadosSlip = [],$iInstit=''){
 
     $sMsgErro    = 'Geração de SLIP em lote abortada';
-    $aListaSlip = array();
+    $aListaSlip = [];
 
     if ( !db_utils::inTransaction() ){
       throw new Exception("{$sMsgErro}, nenhuma transação encontrada!");
@@ -236,7 +236,7 @@ class slipFolha {
     	throw new Exception("{$sMsgErro}, dados não informados!");
     }
 
-    if ( trim($iInstit) == '' ) {
+    if ( trim((string) $iInstit) == '' ) {
       $iInstit = db_getsession('DB_instit');
     }
     foreach ( $aDadosSlip as $oSlip ){
@@ -270,7 +270,7 @@ class slipFolha {
   		throw new Exception("{$sMsgErro}, nenhum slip informado!");
   	}
 
-  	if ( trim($iInstit) == '' ) {
+  	if ( trim((string) $iInstit) == '' ) {
   		$iInstit = db_getsession('DB_instit');
   	}
     $iAnousu = db_getsession("DB_anousu");
@@ -424,7 +424,7 @@ class slipFolha {
 
 	        if (!$lSlipGerado ) {
 
-  	        $aTipo = array(1, 2);
+  	        $aTipo = [1, 2];
 
   	        foreach ($aTipo as $iTipo) {
 

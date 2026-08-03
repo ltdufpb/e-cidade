@@ -32,7 +32,7 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 
 $oRotulo = new rotulocampo();
@@ -74,7 +74,7 @@ $iEscola = db_getsession('DB_coddepto');
 
     $sCampos  = "ed47_i_codigo, trim(ed47_v_nome) as ed47_v_nome, to_char(ed137_data, 'DD/MM/YYYY HH24:MI:SS')::varchar as ed137_data, ";
     $sCampos .= " ed60_i_codigo as db_ed60_i_codigo, ed137_sequencial as db_transferencia ";
-    $aWhere   = array();
+    $aWhere   = [];
 
     $sSql  = " select {$sCampos} ";
     $sSql .= "   from ( select max(ed60_i_codigo) , ed60_i_aluno ";
@@ -102,9 +102,9 @@ $iEscola = db_getsession('DB_coddepto');
       }
       $sSql .= $sOrdem;
 
-      $repassa = array();
+      $repassa = [];
       if ( isset($chave_ed47_v_nome) ) {
-        $repassa = array("chave_ed47_i_codigo" => $chave_ed47_i_codigo, "chave_ed47_v_nome" => $chave_ed47_v_nome);
+        $repassa = ["chave_ed47_i_codigo" => $chave_ed47_i_codigo, "chave_ed47_v_nome" => $chave_ed47_v_nome];
       }
       echo '<div class="container">';
       echo '  <fieldset>';

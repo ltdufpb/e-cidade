@@ -94,16 +94,16 @@ class SigfisArquivoItemDespesa extends SigfisArquivoBase implements iPadArquivoT
         if ($iDadoNivelConta == 1 || $iDadoNivelConta == 2) {
           continue;
         }
-        if (substr($oDadosQuery->o56_elemento, 1, 8) == "00000000" ||
-            substr($oDadosQuery->o56_elemento, 2, 7) == "0000000") {
+        if (substr((string) $oDadosQuery->o56_elemento, 1, 8) == "00000000" ||
+            substr((string) $oDadosQuery->o56_elemento, 2, 7) == "0000000") {
           continue;
         }
         
         $oDados                     = new stdClass();
-        $oDados->cd_Unidade         = str_pad($this->sCodigoTribunal,                     4, ' ', STR_PAD_LEFT);
-        $oDados->cd_ElementoGestor  = str_pad(substr($oDadosQuery->o56_elemento, 1, 8),   8, ' ', STR_PAD_LEFT);
-        $oDados->cd_Elemento        = str_pad($oElementoTCE->despesatce,                  8, ' ', STR_PAD_LEFT);
-        $oDados->de_ElementoGestor  = str_pad(substr($oDadosQuery->o56_descr,  0, 100), 100, ' ', STR_PAD_RIGHT);
+        $oDados->cd_Unidade         = str_pad((string) $this->sCodigoTribunal,                     4, ' ', STR_PAD_LEFT);
+        $oDados->cd_ElementoGestor  = str_pad(substr((string) $oDadosQuery->o56_elemento, 1, 8),   8, ' ', STR_PAD_LEFT);
+        $oDados->cd_Elemento        = str_pad((string) $oElementoTCE->despesatce,                  8, ' ', STR_PAD_LEFT);
+        $oDados->de_ElementoGestor  = str_pad(substr((string) $oDadosQuery->o56_descr,  0, 100), 100, ' ', STR_PAD_RIGHT);
         $oDados->dt_ano             = $oDadosQuery->o56_anousu;
         $oDados->Cd_receblanc       = $oDadosQuery->reduz;
         

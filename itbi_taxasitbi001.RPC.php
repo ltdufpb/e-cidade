@@ -41,7 +41,7 @@ use ECidade\Tributario\Arrecadacao\Repository\TaxasLancadasRepository;
 $post = db_utils::postMemory($_REQUEST);
 $post->json = str_replace("\\", "", $post->json);
 $parametro = JSON::create()->parse($post->json);
-$retorno = (object)array('erro' => false, 'mensagem' => '');
+$retorno = (object)['erro' => false, 'mensagem' => ''];
 
 try {
     db_inicio_transacao();
@@ -73,20 +73,18 @@ try {
                 $taxasitbitaxa->setTaxasitbi($parametro->it36_sequencial);
                 $aTaxas = $taxasitbitaxaRepository->getTaxas($taxasitbitaxa);
 
-                $aTaxas = array_map(function ($oTaxa){
-                    return (object) array(
-                        "codigo" => $oTaxa->it37_taxaslancadas,
-                        "descricao" => $oTaxa->ar44_descricao,
-                        "calculaSobre" => $oTaxa->it37_calculasobre,
-                        "tipo" => $oTaxa->ar44_tipo,
-                        "inicioFaixa" => number_format($oTaxa->it37_iniciofaixa, 2, ",", "."),
-                        "fimFaixa" => number_format($oTaxa->it37_fimfaixa, 2, ",", "."),
-                        "faixa" => (object) array(
-                            "valorInicio" => number_format($oTaxa->it37_iniciofaixa, 2, ",", "."),
-                            "valorFim" => number_format($oTaxa->it37_fimfaixa, 2, ",", ".")
-                        )
-                    );
-                }, $aTaxas);
+                $aTaxas = array_map(fn($oTaxa) => (object) [
+                    "codigo" => $oTaxa->it37_taxaslancadas,
+                    "descricao" => $oTaxa->ar44_descricao,
+                    "calculaSobre" => $oTaxa->it37_calculasobre,
+                    "tipo" => $oTaxa->ar44_tipo,
+                    "inicioFaixa" => number_format($oTaxa->it37_iniciofaixa, 2, ",", "."),
+                    "fimFaixa" => number_format($oTaxa->it37_fimfaixa, 2, ",", "."),
+                    "faixa" => (object) [
+                        "valorInicio" => number_format($oTaxa->it37_iniciofaixa, 2, ",", "."),
+                        "valorFim" => number_format($oTaxa->it37_fimfaixa, 2, ",", ".")
+                    ]
+                ], $aTaxas);
 
                 $retorno->aTaxas = $aTaxas;
                 $retorno->oTipo = $oTipo;
@@ -161,9 +159,7 @@ try {
                     $aIptuCale = \db_utils::getCollectionByRecord($rIptucale);
 
                     if (count($aIptuCale)) {
-                        $aValorConstrucao = array_map(function ($oIptucale) {
-                            return floatval($oIptucale->j22_valor);
-                        }, $aIptuCale);
+                        $aValorConstrucao = array_map(fn($oIptucale) => floatval($oIptucale->j22_valor), $aIptuCale);
 
                         $valorVenalConstrucao = array_sum($aValorConstrucao);
                     }
@@ -176,7 +172,7 @@ try {
                 $aTaxas = $taxasitbitaxaRepository->getTaxas($taxasitbitaxa);
 
                 $taxasLancadasRepository = TaxasLancadasRepository::getInstance();
-                $aTaxaLancada = array();
+                $aTaxaLancada = [];
 
                 foreach ($aTaxas as $oTaxa) {
                     $oTaxaLancada = $taxasLancadasRepository->getTaxa($oTaxa->ar44_sequencial);
@@ -212,7 +208,7 @@ try {
             }
             $dadosCgmDoParametro = \db_utils::fieldsMemory($rDadosCgmDoParametro,0);
 
-            $dadosCgm = array();
+            $dadosCgm = [];
             $dadosCgm = $dadosCgmDoParametro;
 
             $retorno->dadosDoCgm = $dadosCgm;

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_isstipoalvaradepto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clisstipoalvaradepto = new cl_isstipoalvaradepto;
 $clisstipoalvaradepto->rotulo->label("q99_sequencial");
 $clisstipoalvaradepto->rotulo->label("q99_sequencial");
@@ -98,9 +98,9 @@ $clisstipoalvaradepto->rotulo->label("q99_sequencial");
         }else{
            $sql = $clisstipoalvaradepto->sql_query("",$campos,"q99_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q99_sequencial)){
-          $repassa = array("chave_q99_sequencial"=>$chave_q99_sequencial,"chave_q99_sequencial"=>$chave_q99_sequencial);
+          $repassa = ["chave_q99_sequencial"=>$chave_q99_sequencial,"chave_q99_sequencial"=>$chave_q99_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

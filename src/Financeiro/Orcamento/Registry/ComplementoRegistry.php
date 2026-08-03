@@ -16,7 +16,7 @@ class ComplementoRegistry
     /**
      * @var Complemento[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Complemento $complemento

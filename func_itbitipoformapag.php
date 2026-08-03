@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbitipoformapag_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clitbitipoformapag = new cl_itbitipoformapag;
 $clitbitipoformapag->rotulo->label("it28_sequencial");
 $clitbitipoformapag->rotulo->label("it28_avista");
@@ -98,9 +98,9 @@ $clitbitipoformapag->rotulo->label("it28_avista");
         }else{
            $sql = $clitbitipoformapag->sql_query("",$campos,"it28_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_it28_avista)){
-          $repassa = array("chave_it28_sequencial"=>$chave_it28_sequencial,"chave_it28_avista"=>$chave_it28_avista);
+          $repassa = ["chave_it28_sequencial"=>$chave_it28_sequencial,"chave_it28_avista"=>$chave_it28_avista];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

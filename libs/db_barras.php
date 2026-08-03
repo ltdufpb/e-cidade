@@ -28,9 +28,9 @@
 function db_calcula_dac($d_digitavel){
   $a = 2;
   $tot_x = 0;
-  $totv = strlen($d_digitavel)-1;
+  $totv = strlen((string) $d_digitavel)-1;
   for($i=$totv;$i>-1;$i--){
-    $total_x = (substr($d_digitavel,$i,1)*$a);
+    $total_x = (substr((string) $d_digitavel,$i,1)*$a);
     if( $total_x > 9)
       $total_x = $total_x - 9;
     $tot_x = $tot_x + $total_x;
@@ -45,7 +45,7 @@ function db_calcula_dac($d_digitavel){
     $resto = 10 - $resto;
   return $resto;
 }
-function db_barras($banco,$moeda,$valortit,$nossonumero,$codcedente,$agencia="",$carteira="",$dtvenc){
+function db_barras($banco,$moeda,$valortit,$nossonumero,$codcedente,$agencia="",$carteira="",$dtvenc = null){
 global $linhadigitavel;
 global $codigobarras;
 if($banco == 104){
@@ -77,13 +77,13 @@ if($banco == 104){
         // $valortit = db_sqlformatar($valortit*100,14,"0");
 		// echo $valortit."<br>";
 	  }
-	   
+
    if($dtvenc < date("d/m/a",mktime(0,0,0,7,3,2000)))
      $favorecido = "1000";
    else
      $favorecido = db_sqlformatar($dtvenc-date("d/m/a",mktime(0,0,0,10,7,1997)),4,"0");
 
-   $barras = db_sqlformatar($banco,3," ","0") . $moeda . $valortit . substr($nossonumero,0,10) . $agencia . $carteira ;
+   $barras = db_sqlformatar($banco,3," ","0") . $moeda . $valortit . substr((string) $nossonumero,0,10) . $agencia . $carteira ;
 
   $y=4;
   $tot_x=0;
@@ -97,7 +97,7 @@ if($banco == 104){
      $digito = 11 - $digito;
      if($digito < 2 || $digito > 9)
         $digito = 1;
-   
+
      if($digito == "0"){
         $digito = "1";
      }
@@ -105,8 +105,8 @@ if($banco == 104){
    // codigocedente = 00600000094
    // banco = 104
    // moeda = 2
-   
-   $codigobarras = db_sqlformatar($banco,3,"0") . $moeda . $digito . $valortit . substr($nossonumero,0,10) . "$agencia" . "$carteira" ;
+
+   $codigobarras = db_sqlformatar($banco,3,"0") . $moeda . $digito . $valortit . substr((string) $nossonumero,0,10) . "$agencia" . "$carteira" ;
    //$digito1 = db_calcula_mod10($banco.$moeda.substr($barras,20,5));
    //$digito2 = db_calcula_mod10($banco.$moeda.substr($barras,25,10));
    //$digito3 = db_calcula_mod10($banco.$moeda.substr($barras,30,10));

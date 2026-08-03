@@ -45,10 +45,10 @@ $rsInstituicoes = db_query("select codigo, nomeinst, nomeinstabrev
 $descr_inst = '';
 $xvirg      = '';
 $flag_abrev = false;
-for ($xins = 0; $xins < pg_numrows($rsInstituicoes); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($rsInstituicoes); $xins++) {
 
   db_fieldsmemory($rsInstituicoes, $xins);
-  if (strlen(trim($nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $nomeinstabrev)) > 0) {
 
     $descr_inst .= $xvirg.$nomeinstabrev;
     $flag_abrev  = true;
@@ -108,7 +108,7 @@ $oPdf->setfillcolor(235);
 $lPrimeiraVoltaReceita = true;
 $lPrimeiraVoltaDespesa = true;
 
-$aLinhasComBordaEspecial = array("62" => 'TB',
+$aLinhasComBordaEspecial = ["62" => 'TB',
                                  "70" => 'TB',
                                  "71" => 'TB',
                                  "73" => 'TB',
@@ -117,7 +117,7 @@ $aLinhasComBordaEspecial = array("62" => 'TB',
                                  "94" => 'T',
                                  "95" => 'TB',
                                  "96" => 'TB'
-                                );
+                                ];
 foreach ($aLinhas as $oLinha) {
 
   $sBorda = '';
@@ -188,7 +188,7 @@ $oPdf->setfont('arial', '', 6);
 $oRelatorioContabil->assinatura($oPdf, 'BG');
 
 $oPdf->output();
-function escreverCabecalhoReceita(PDF $oPdf, $lForcar = false, $iAlturaLinha) {
+function escreverCabecalhoReceita(PDF $oPdf, $lForcar = false, $iAlturaLinha = null) {
 
   if ($oPdf->getY() > $oPdf->h - 25 || $lForcar) {
 
@@ -206,7 +206,7 @@ function escreverCabecalhoReceita(PDF $oPdf, $lForcar = false, $iAlturaLinha) {
   }
 }
 
-function escreverCabecalhoDespesa(PDF $oPdf, $lForcar = false, $iAlturaLinha) {
+function escreverCabecalhoDespesa(PDF $oPdf, $lForcar = false, $iAlturaLinha = null) {
 
   if ($oPdf->getY() > $oPdf->h - 25 || $lForcar) {
 

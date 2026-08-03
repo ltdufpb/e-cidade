@@ -48,7 +48,7 @@ class PDF extends FPDF
         $xc = $x+$w-$r;
         $yc = $y+$r;
         $this->_out(sprintf('%.2f %.2f l', $xc*$k,($hp-$y)*$k ));
-        if (strpos($angle, '2')===false)
+        if (!str_contains((string) $angle, '2'))
             $this->_out(sprintf('%.2f %.2f l', ($x+$w)*$k,($hp-$y)*$k ));
         else
             //$this->_Arc($xc + $r*$MyArc, $yc - $r, $xc + $r, $yc - $r*$MyArc, $xc + $r, $yc);
@@ -56,7 +56,7 @@ class PDF extends FPDF
         $xc = $x+$w-$r;
         $yc = $y+$h-$r;
         $this->_out(sprintf('%.2f %.2f l',($x+$w)*$k,($hp-$yc)*$k));
-        if (strpos($angle, '3')===false)
+        if (!str_contains((string) $angle, '3'))
             $this->_out(sprintf('%.2f %.2f l',($x+$w)*$k,($hp-($y+$h))*$k));
         else
             //$this->_Arc($xc + $r, $yc + $r*$MyArc, $xc + $r*$MyArc, $yc + $r, $xc, $yc + $r);
@@ -64,7 +64,7 @@ class PDF extends FPDF
         $xc = $x+$r;
         $yc = $y+$h-$r;
         $this->_out(sprintf('%.2f %.2f l',$xc*$k,($hp-($y+$h))*$k));
-        if (strpos($angle, '4')===false)
+        if (!str_contains((string) $angle, '4'))
             $this->_out(sprintf('%.2f %.2f l',($x)*$k,($hp-($y+$h))*$k));
         else
             //$this->_Arc($xc - $r*$MyArc, $yc + $r, $xc - $r, $yc + $r*$MyArc, $xc - $r, $yc);
@@ -72,7 +72,7 @@ class PDF extends FPDF
         $xc = $x+$r ;
         $yc = $y+$r;
         $this->_out(sprintf('%.2f %.2f l',($x)*$k,($hp-$yc)*$k ));
-        if (strpos($angle, '1')===false)
+        if (!str_contains((string) $angle, '1'))
         {
             $this->_out(sprintf('%.2f %.2f l',($x)*$k,($hp-$y)*$k ));
             $this->_out(sprintf('%.2f %.2f l',($x+$r)*$k,($hp-$y)*$k ));

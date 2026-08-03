@@ -61,7 +61,7 @@ switch ($oParam->exec) {
                 $oDado = db_utils::fieldsMemory($rs, $i);
                 $oDados = new stdClass();
                 $oDados->codigo = $oDado->codigo;
-                $oDados->descricao = utf8_encode($oDado->descricao);
+                $oDados->descricao = mb_convert_encoding($oDado->descricao, 'UTF-8', 'ISO-8859-1');
                 $oRetorno->procedimentos[] = $oDados;
             }
         } catch (Exception $eErro) {

@@ -74,7 +74,7 @@ a:active {
 <?php 
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clagendamentos  = new cl_agendamentos_ext;
 $clundmedhorario = new cl_undmedhorario_ext;

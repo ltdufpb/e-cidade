@@ -38,7 +38,7 @@ class RelatorioGradeAproveitamento extends PDFGradeAproveitamento {
 
   private $oGradeAproveitamento;
 
-  private $aObservacoes = array();
+  private $aObservacoes = [];
 
   public $lMargin;
 
@@ -147,6 +147,7 @@ class RelatorioGradeAproveitamento extends PDFGradeAproveitamento {
    * Escreve as legendas no pdf
    * @param  integer $iTipo
    */
+  #[\Override]
   public function imprimirLegendas($iTipo = 1) {
 
     $sFrequencia = "AD - Aulas Dadas";
@@ -154,7 +155,7 @@ class RelatorioGradeAproveitamento extends PDFGradeAproveitamento {
       $sFrequencia = "DL - Dias Letivos";
     }
 
-    $aLegendas    = array();
+    $aLegendas    = [];
     $aLegendas[1] = "TF - Total Faltas | {$sFrequencia} | FA - Faltas Abonadas";
     $aLegendas[2] = "FT - Faltas | TF - Total Faltas | {$sFrequencia} | FA - Faltas Abonadas | Freq. - Percentual de Frequência | Aprov. - Aproveitamento";
 
@@ -176,7 +177,7 @@ class RelatorioGradeAproveitamento extends PDFGradeAproveitamento {
   public function imprimirNiveis() {
 
     $aResultados          = $this->oGradeAproveitamento->getProcedimentoAvaliacao()->getResultados();
-    $listaNiveisDescricao = array();
+    $listaNiveisDescricao = [];
 
     foreach ($aResultados as $oResultado) {
 
@@ -258,7 +259,7 @@ class RelatorioGradeAproveitamento extends PDFGradeAproveitamento {
    */
   public function getAmparosPorConvencao() {
 
-    $aConvencoes  = array();
+    $aConvencoes  = [];
     $oDiario      = $this->oGradeAproveitamento->getMatricula()->getDiarioDeClasse();
     $aDisciplinas = $oDiario->getDisciplinas();
     foreach ($aDisciplinas as $oDisciplina) {

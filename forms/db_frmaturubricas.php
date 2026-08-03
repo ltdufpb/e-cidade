@@ -46,7 +46,7 @@ $TRTDF = "
 $tagaf = true;
 
 if(isset($valores_campos_rel)){
-	$arr_pontos = split(",",$valores_campos_rel);
+	$arr_pontos = preg_split("#,#m",$valores_campos_rel);
 	$pontosselecionados = "<table cellspacing='10' width='100%'>";
 	for($ii=0; $ii<count($arr_pontos); $ii++){
 		$ponto = $arr_pontos[$ii];
@@ -183,7 +183,7 @@ if($clrhrubricas->numrows > 0){
 	db_fieldsmemory($result_rubrica,0);
 }
 
-$arr_opcao = array('so' => 'Somar','su'=>'Subtrair');
+$arr_opcao = ['so' => 'Somar','su'=>'Subtrair'];
 ?>
 <form name="form1" method="post" action="">
 <table border="0" cellspacing="8" cellpadding="0">

@@ -49,7 +49,7 @@ $iDepart = db_getsession('DB_coddepto');
                     </td>
                     <td>
                         <?php
-                        $aX = array('1' => 'SIM', '2' => 'NÃO');
+                        $aX = ['1' => 'SIM', '2' => 'NÃO'];
                         db_select('tf11_i_utilizagradehorario', $aX, true, $db_opcao, '');
                         db_input('tf11_i_codigo',10,$Itf11_i_codigo,true,'hidden',3,"");
                         ?>
@@ -71,7 +71,7 @@ $iDepart = db_getsession('DB_coddepto');
                     </td>
                     <td>
                         <?php
-                        $aX = array('1' => 'CGS', '2' => 'CARTÃO SUS', '3' => 'ENCAMINHAMENTO', '4' => 'FAA');
+                        $aX = ['1' => 'CGS', '2' => 'CARTÃO SUS', '3' => 'ENCAMINHAMENTO', '4' => 'FAA'];
                         db_select('tf11_i_campofoco', $aX, true, $db_opcao, '');
                         ?>
                     </td>

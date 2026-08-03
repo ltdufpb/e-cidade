@@ -32,12 +32,12 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_autor_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clautor = new cl_autor;
 $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
- $result = $clautor->sql_record($clautor->sql_query("","bi01_nome as verifica",""," trim(bi01_nome) = '".trim($bi01_nome)."'"));
+ $result = $clautor->sql_record($clautor->sql_query("","bi01_nome as verifica",""," trim(bi01_nome) = '".trim((string) $bi01_nome)."'"));
  if($clautor->numrows>0){
   db_fieldsmemory($result,0);
   $clautor->erro_status = "0";
@@ -50,7 +50,7 @@ if(isset($incluir)){
 }
 if(isset($alterar)){
  $db_opcao = 2;
- $result = $clautor->sql_record($clautor->sql_query("","bi01_nome as verifica",""," trim(bi01_nome) = '".trim($bi01_nome)."' AND bi01_codigo != $bi01_codigo"));
+ $result = $clautor->sql_record($clautor->sql_query("","bi01_nome as verifica",""," trim(bi01_nome) = '".trim((string) $bi01_nome)."' AND bi01_codigo != $bi01_codigo"));
  if($clautor->numrows>0){
   db_fieldsmemory($result,0);
   $clautor->erro_status = "0";

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,10 +55,10 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Departamentos","g2"=>"Materiais","g3"=>"Usuários","g4"=>"Órgãos");
-       $clcriaabas->title = array("g1"=>"Selecionar Departamentos","g2"=>"Selecionar materiais","g3"=>"Selecionar usuários","g4"=>"Selecionar órgão");
-       $clcriaabas->src = array("g1"=>"mat2_saida001.php","g2"=>"mat2_saida002.php","g3"=>"mat2_saida003.php","g4"=>"mat2_saida004.php");
-       $clcriaabas->disabled   =  array("g4"=>"false");
+       $clcriaabas->identifica = ["g1"=>"Departamentos","g2"=>"Materiais","g3"=>"Usuários","g4"=>"Órgãos"];
+       $clcriaabas->title = ["g1"=>"Selecionar Departamentos","g2"=>"Selecionar materiais","g3"=>"Selecionar usuários","g4"=>"Selecionar órgão"];
+       $clcriaabas->src = ["g1"=>"mat2_saida001.php","g2"=>"mat2_saida002.php","g3"=>"mat2_saida003.php","g4"=>"mat2_saida004.php"];
+       $clcriaabas->disabled   =  ["g4"=>"false"];
        $clcriaabas->cria_abas();    
      ?> 
      </td>

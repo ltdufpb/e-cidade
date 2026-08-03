@@ -35,10 +35,10 @@ use ECidade\Tributario\Agua\Calculo\Consumo as CalculoConsumo;
 use ECidade\Tributario\Agua\Repository\Leitura as LeituraRepository;
 
 $oParametros = JSON::create()->parse(str_replace('\\', '', $_POST['json']));
-$oRetorno = (object) array(
+$oRetorno = (object) [
   'mensagem' => null,
   'erro' => false,
-);
+];
 
 try {
 

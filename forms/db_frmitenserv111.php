@@ -108,7 +108,7 @@ db_inputdata('cm10_d_data',@$cm10_d_data_dia,@$cm10_d_data_mes,@$cm10_d_data_ano
        $clrotulo->label("cm11_f_valor");
 
        $result2 = $cltaxaserv->sql_record($cltaxaserv->sql_query());
-       $tx=array();
+       $tx=[];
        $tx[0]="Selecione";
        for($q=0; $q < $cltaxaserv->numrows; $q++){
         db_fieldsmemory($result2,$q);
@@ -264,7 +264,7 @@ function js_preenchepesquisa(chave){
   db_iframe_itenserv.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

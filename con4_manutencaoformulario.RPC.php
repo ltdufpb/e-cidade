@@ -62,7 +62,7 @@ try {
                 $avaliacao->setCodigoGrupoResposta($oParam->codigo_resposta);
             }
             $oRetorno->oFormulario = $avaliacao->getObject();
-            $oRetorno->aVinculos = array();
+            $oRetorno->aVinculos = [];
             $arquivoJsonVinculo = \JSON::create()->parse(file_get_contents($arquivoJsonVinculoCaminho));
             if(!empty($arquivoJsonVinculo)) {
                 foreach ($arquivoJsonVinculo as $codigoResposta => $item) {
@@ -78,7 +78,7 @@ try {
             $oFormulario = \ECidade\Configuracao\Formulario\Repository\Formulario::getById($oParam->formulario);
             $aPerguntas = getPerguntas($oParam->aPerguntasRespostas);
             $aPerguntasChave = $oFormulario->getPerguntasIdentificadoras();
-            $aCampos = array();
+            $aCampos = [];
 
             /**
              * Adicionado vinculo de descrição dos campos de autocomplete
@@ -125,7 +125,7 @@ try {
                             }
                         }
                     }
-                    $aCampos[] = array("pergunta" => $pergunta, "resposta" => $valorResposta);
+                    $aCampos[] = ["pergunta" => $pergunta, "resposta" => $valorResposta];
                 }
             }
 
@@ -264,7 +264,7 @@ echo $oJson->stringify($oRetorno);
 function getPerguntas($aPerguntasRespostas)
 {
 
-    $perguntas = array();
+    $perguntas = [];
     foreach ($aPerguntasRespostas->grupos as $grupos) {
         foreach ($grupos->perguntas as $pergunta) {
             $perguntas[] = $pergunta;
@@ -282,7 +282,7 @@ function getPerguntas($aPerguntasRespostas)
 function getRespostasDaPerguntas($pergunta)
 {
 
-    $respostas = array();
+    $respostas = [];
     foreach ($pergunta->respostas as $resposta) {
         $respostas[] = $resposta;
     }

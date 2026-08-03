@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_orcparamseqinfocomplementar_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -96,12 +96,12 @@ if (isset($pesquisa_chave) === false) {
                                 $sql = $clorcparamseqinfocomplementar->sql_query("", $campos, "o157_sequencial", "");
                             }
                         }
-                        $repassa = array();
+                        $repassa = [];
                         if (isset($chave_o157_sequencial)) {
-                            $repassa = array(
+                            $repassa = [
             "chave_o157_sequencial" => $chave_o157_sequencial,
             "chave_o157_sequencial" => $chave_o157_sequencial
-        );
+        ];
                         }
                         echo '<div class="container">';
                         echo '  <fieldset>';

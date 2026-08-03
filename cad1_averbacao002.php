@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("averbacao"=>"Averbação","averbacgm"=>"Cgm"); 
-	 $clcriaabas->src = array("averbacao"=>"cad1_averbacao005.php");
-	 $clcriaabas->disabled   =  array("averbacgm"=>"true"); 
+	 $clcriaabas->identifica = ["averbacao"=>"Averbação","averbacgm"=>"Cgm"]; 
+	 $clcriaabas->src = ["averbacao"=>"cad1_averbacao005.php"];
+	 $clcriaabas->disabled   =  ["averbacgm"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

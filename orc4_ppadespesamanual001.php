@@ -55,10 +55,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("ppadotacao"=>"Ação","ppadotacaoele"=>"Detalhamentos da Ação"); 
-	 $clcriaabas->src = array("ppadotacao"=>"orc4_ppadespesamanual004.php");
-	 $clcriaabas->disabled   =  array("ppadotacaoele"=>"true"); 
-	 $clcriaabas->sizecampo  =  array("ppadotacaoele"=>"35"); 
+	 $clcriaabas->identifica = ["ppadotacao"=>"Ação","ppadotacaoele"=>"Detalhamentos da Ação"]; 
+	 $clcriaabas->src = ["ppadotacao"=>"orc4_ppadespesamanual004.php"];
+	 $clcriaabas->disabled   =  ["ppadotacaoele"=>"true"]; 
+	 $clcriaabas->sizecampo  =  ["ppadotacaoele"=>"35"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

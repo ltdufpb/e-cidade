@@ -100,12 +100,12 @@ function formataData($dData, $iTipo = 1) {
 
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   }
 
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = $dData[2].'/'.$dData[1].'/'.$dData[0];
  return $dData;
 }
@@ -256,25 +256,25 @@ $oPdf->setfont('arial','',8);
 
 // novoTitulo($oPdf, formataData($dData_inicio, 2), formataData($dData_fim, 2));
 
-$exames = array();
+$exames = [];
 for ($iCont = 0; $iCont < $iLinhas; $iCont ++) {
 
   $oDadosExame   = db_utils::fieldsMemory($rs, $iCont);
   
-  $paciente = (object)array(
+  $paciente = (object)[
     'nome'  => $oDadosExame->z01_v_nome,
     'idade' => $oDadosExame->idade,    
     'sexo' =>  $oDadosExame->z01_v_sexo,
     'cgsund' => $oDadosExame->z01_i_cgsund,
     'requisicao' => $oDadosExame->la22_i_codigo
-  );
+  ];
   
   if (empty($exames[$oDadosExame->la08_i_codigo]->pacientes)) {
-    $exames[$oDadosExame->la08_i_codigo] = (object)array(
+    $exames[$oDadosExame->la08_i_codigo] = (object)[
       'codigo'    => $oDadosExame->la08_i_codigo,
       'tipoExame' => $oDadosExame->la08_c_descr,
-      'pacientes' => array($paciente),
-    );
+      'pacientes' => [$paciente],
+    ];
   } else {
     $exames[$oDadosExame->la08_i_codigo]->pacientes[] = $paciente;
   }

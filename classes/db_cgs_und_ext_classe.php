@@ -58,17 +58,18 @@ class cl_cgs_und_ext extends cl_cgs_und
         }
         $sql .= $sql2;
         if ($ordem != null) {
-            $ordem = implode(', ', explode("#", $ordem));
+            $ordem = implode(', ', explode("#", (string) $ordem));
             $sql .= " order by {$ordem}";
         }
 
         return $sql;
     }
 
+    #[\Override]
     function sql_query_cgs_profissional(
       $z01_i_cgsund = null,
-      $sd04_i_medico,
-      $sd04_i_unidade,
+      $sd04_i_medico = null,
+      $sd04_i_unidade = null,
       $campos = "*",
       $ordem = null,
       $dbwhere = ""
@@ -102,7 +103,7 @@ class cl_cgs_und_ext extends cl_cgs_und
         }
         $sql .= $sql2;
         if ($ordem != null) {
-            $ordem = implode(', ', explode("#", $ordem));
+            $ordem = implode(', ', explode("#", (string) $ordem));
             $sql .= " order by {$ordem}";
         }
 
@@ -110,6 +111,7 @@ class cl_cgs_und_ext extends cl_cgs_und
     }
 
 
+    #[\Override]
     function sql_query_prontuarios($z01_i_cgsund = null, $campos = "*", $ordem = null, $dbwhere = "")
     {
 
@@ -139,7 +141,7 @@ class cl_cgs_und_ext extends cl_cgs_und
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

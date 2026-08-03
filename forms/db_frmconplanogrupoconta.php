@@ -110,7 +110,7 @@ $clrotulo->label("c64_descr");
          $c21_anousu = $anousu;
        }
 
-	     $chavepri = array ("c21_sequencial"=>@$c21_sequencial,"c21_anousu"=>$c21_anousu,"c21_congrupo"=>$c21_congrupo);
+	     $chavepri =  ["c21_sequencial"=>@$c21_sequencial,"c21_anousu"=>$c21_anousu,"c21_congrupo"=>$c21_congrupo];
        $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->sql = $clconplanogrupo->sql_query(null,"*","c60_estrut","c21_congrupo=$c21_congrupo and c21_anousu=$c21_anousu");
        $cliframe_alterar_excluir->campos = "c21_codcon,c21_anousu,c60_estrut,c60_descr,c60_codsis,c52_descr,c60_codcla,c51_descr";
@@ -175,7 +175,7 @@ function js_preenchepesquisa(chave){
   db_iframe_conplano.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }

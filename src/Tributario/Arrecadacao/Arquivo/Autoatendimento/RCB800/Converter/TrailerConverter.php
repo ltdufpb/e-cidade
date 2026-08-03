@@ -8,7 +8,7 @@ use ECidade\Tributario\Library\Entity;
 
 final class TrailerConverter extends Converter
 {
-    const IDENTIFICACAO_ARQUIVO = "RCB800";
+    const string IDENTIFICACAO_ARQUIVO = "RCB800";
 
     /**
      * @param Entity $entity
@@ -25,7 +25,7 @@ final class TrailerConverter extends Converter
         //Espaços em branco
         $size         = $this->layout->getSize(Trailer::RESERVADO);
         $defaultValue = $this->layout->getDefault(Trailer::RESERVADO);
-        $header      .= str_repeat($defaultValue, $size);
+        $header      .= str_repeat((string) $defaultValue, $size);
        
         $size         = $this->layout->getSize(Trailer::SEQUENCIAL);
         $header      .= substr(str_pad($entity->getSequencial(),           $size, '0', STR_PAD_LEFT), ($size * -1));

@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 $clrotulo->label('r44_selec');
 $clrotulo->label('r44_descr');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -99,7 +99,7 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $xxx = array("b"=>"Banco do Brasil","c"=>"CEF", "t"=>"Todos");
+      $xxx = ["b"=>"Banco do Brasil","c"=>"CEF", "t"=>"Todos"];
       db_select('xbanco',$xxx,true,1);
       ?>
     </td>
@@ -110,7 +110,7 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $xcc = array("cc"=>"Com Conta","sc"=>"Sem Conta", "t"=>"Todos");
+      $xcc = ["cc"=>"Com Conta","sc"=>"Sem Conta", "t"=>"Todos"];
       db_select('xconta',$xcc,true,1);
       ?>
     </td>
@@ -121,10 +121,10 @@ db_postmemory($HTTP_POST_VARS);
     </td>
     <td align="left">
       <?php 
-      $xarq = array("s"=>"Salário",
+      $xarq = ["s"=>"Salário",
                     "c"=>"Complementar", 
                     "d"=>"13o. Salário"
-                   );
+                   ];
       db_select('arquivo',$xarq,true,1);
       ?>
     </td>
@@ -133,7 +133,7 @@ db_postmemory($HTTP_POST_VARS);
     <td align="center" colspan="2">
       <?php 
       $result_local = $clrhlocaltrab->sql_record($clrhlocaltrab->sql_query_file(null,db_getsession('DB_instit'), "rh55_codigo, rh55_codigo||'-'||rh55_descr as rh55_descr", "rh55_descr" ));
-      db_multiploselect("rh55_codigo", "rh55_descr", "nselecionados", "sselecionados", $result_local, array(), 9, 250);
+      db_multiploselect("rh55_codigo", "rh55_descr", "nselecionados", "sselecionados", $result_local, [], 9, 250);
       ?>
     </td>
   </tr>

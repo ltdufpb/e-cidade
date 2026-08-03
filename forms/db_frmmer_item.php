@@ -93,7 +93,7 @@ $clrotulo->label("me20_i_unidade");
     </td>
     <td> 
    <?php      
-     $xx = array("t"=>"SIM","f"=>"NAO");
+     $xx = ["t"=>"SIM","f"=>"NAO"];
      db_select('me10_c_ativo',$xx,true,$db_opcao,"");
    ?>
     </td>
@@ -204,7 +204,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_mer_item.hide();
   <?php 
   if ($db_opcao!=1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

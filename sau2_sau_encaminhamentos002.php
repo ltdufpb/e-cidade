@@ -76,7 +76,7 @@ function finalizaBox($oPDF) {
 function boxIdentificacaoPaciente($oPDF, $sNome, $iCgs, $dDtNasc, $sSexo, $sCartaoSus, $sCpf, $sRg,
                                   $sRua, $iNum, $sBairro, $sCidade, $sCep, $sTelefone, $sNomeMae, $sNaturalidade) {
  
-  novoCabecalho($oPDF, converteCodificacao('Identificação do Paciente'));
+  novoCabecalho($oPDF);
   $lCor = false;
   $oPDF->setFont('arial','',10);
 
@@ -119,7 +119,7 @@ function boxProcedimentos($oPDF, $oProcedimentos) {
 
     $oPDF->cell(5,4,'','L',0,'L',$lCor);
     $oPDF->cell(180,4,@$oProcedimentos[$iCont]->sProcedimento. ' - '.
-                substr(urldecode(@$oProcedimentos[$iCont]->sDescr),0,90),1,0,'L',$lCor);
+                substr(urldecode((string) @$oProcedimentos[$iCont]->sDescr),0,90),1,0,'L',$lCor);
     $oPDF->cell(5,4,'','R',1,'L',$lCor);
 
   }
@@ -133,7 +133,7 @@ function boxProcedimentos($oPDF, $oProcedimentos) {
 function boxDadosEncaminhamento($oPDF, $dEncaminhamento, $dValidade, $dRetorno, $sTipo, $sDadosClinicos, $iProntuario,
                                 $sUnidOrig, $sUnidDest, $sPrestadora, $sEspecialidade, $oProcedimentos, $iCodigo) {
  
-  novoCabecalho($oPDF, 'Dados do Encaminhamento'); // Conversao de codificacao para nao dar problema na acentuacao
+  novoCabecalho($oPDF); // Conversao de codificacao para nao dar problema na acentuacao
   $lCor = false;
   $oPDF->setFont('arial','',10);
 
@@ -159,7 +159,7 @@ function boxDadosEncaminhamento($oPDF, $dEncaminhamento, $dValidade, $dRetorno, 
 */
 function boxSituacaoCaso($oPDF) {
  
-  novoCabecalho($oPDF, converteCodificacao('Situação do Caso'));
+  novoCabecalho($oPDF);
   $lCor = false;
   $oPDF->setFont('arial','',10);
 
@@ -176,7 +176,7 @@ function boxSituacaoCaso($oPDF) {
 
 function boxSolicitante($oPDF, $sSolicitante) {
  
-  novoCabecalho($oPDF,converteCodificacao('Identificação do Solicitante'));
+  novoCabecalho($oPDF);
   $lCor = false;
   $oPDF->setFont('arial','',10);
 
@@ -210,7 +210,7 @@ function boxReferencia($oPDF) {
 */
 function boxContraReferencia($oPDF) {
  
-  novoCabecalho($oPDF,converteCodificacao('Informação de Contra-Referência'));
+  novoCabecalho($oPDF);
   $lCor = false;
   $oPDF->setFont('arial','',10);
   linhaPreenchimento($oPDF, 3);
@@ -228,13 +228,13 @@ function formataData($dData, $iTipo = 1) {
 
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
  
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = $dData[2].'/'.$dData[1].'/'.$dData[0];
  return $dData;
 
@@ -321,7 +321,7 @@ if(!empty($oDados->s142_i_prontuario)) { // Pega a unidade de origem
   $sUnidOrig = $oDadosProntuarios->descrdepto;
 
 } else {
-  
+
   $sSql = $oDaoUnidades->sql_query(db_getsession('DB_coddepto'), ' coddepto || \' - \' || descrdepto as descrdepto');
   $rsUnidades = $oDaoUnidades->sql_record($sSql);
   $oDadosUnidades = db_utils::fieldsmemory($rsUnidades, 0);
@@ -383,19 +383,19 @@ if($oDados->z01_v_cep == '0') {
   $oDados->z01_v_cep = '';
 }
 
-boxIdentificacaoPaciente($oPDF, substr($oDados->z01_v_nome,0,56), $oDados->z01_i_cgsund, formataData($oDados->z01_d_nasc, 2), 
-                         empty($oDados->z01_v_sexo) ? '' : $oDados->z01_v_sexo == 'M' ? 'Masculino' : 'Feminino',
+boxIdentificacaoPaciente($oPDF, substr((string) $oDados->z01_v_nome,0,56), $oDados->z01_i_cgsund, formataData($oDados->z01_d_nasc, 2), 
+                         (empty($oDados->z01_v_sexo) ? '' : $oDados->z01_v_sexo == 'M') ? 'Masculino' : 'Feminino',
                          $sCartaoSus, $oDados->z01_v_cgccpf, $oDados->z01_v_ident, 
-                         substr($oDados->z01_v_ender,0,60), $oDados->z01_i_numero, substr($oDados->z01_v_bairro,0,74),
-                         substr($oDados->z01_v_munic,0,62), $oDados->z01_v_cep, $oDados->z01_v_telef,
-                         substr($oDados->z01_v_mae,0,42), substr($oDados->z01_c_naturalidade,0,18)
+                         substr((string) $oDados->z01_v_ender,0,60), $oDados->z01_i_numero, substr((string) $oDados->z01_v_bairro,0,74),
+                         substr((string) $oDados->z01_v_munic,0,62), $oDados->z01_v_cep, $oDados->z01_v_telef,
+                         substr((string) $oDados->z01_v_mae,0,42), substr((string) $oDados->z01_c_naturalidade,0,18)
                         );
 
 
 boxDadosEncaminhamento($oPDF, formataData($oDados->s142_d_encaminhamento, 2), formataData($oDados->s142_d_validade, 2),
                        formataData($oDados->s142_d_retorno, 2), $oDados->stipo, $oDados->s142_t_dadosclinicos,
                        $oDados->s142_i_prontuario, $sUnidOrig, $oDados->descrdepto,
-                       substr($oDados->sprestadora,0,68),substr($oDados->sespecialidade,0,71), $oProcedimentos, $oDados->s142_i_codigo
+                       substr((string) $oDados->sprestadora,0,68),substr((string) $oDados->sespecialidade,0,71), $oProcedimentos, $oDados->s142_i_codigo
                       );
 
 boxSituacaoCaso($oPDF);

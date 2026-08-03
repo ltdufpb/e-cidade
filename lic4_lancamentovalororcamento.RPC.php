@@ -51,8 +51,8 @@ try {
         throw new ParameterException('Não existem fornecedores lançados para esta licitação.');
       }
 
-      $oRetorno->fornecedores = array();
-      $oRetorno->itens        = array();
+      $oRetorno->fornecedores = [];
+      $oRetorno->itens        = [];
       $oRetorno->temcotacao   = false;
 
       $oOrcamento    = new OrcamentoCompra($oParam->codigo_orcamento);
@@ -63,7 +63,7 @@ try {
 
         $oDadosFornecedor         = new stdClass();
         $oDadosFornecedor->codigo = $oFornecedores->getCodigo();
-        $oDadosFornecedor->nome   = urlencode($oFornecedores->getNome());
+        $oDadosFornecedor->nome   = urlencode((string) $oFornecedores->getNome());
         $oRetorno->fornecedores[] = $oDadosFornecedor;
       }
 
@@ -98,16 +98,14 @@ try {
           $oGrupo = new DBAttDinamicoGrupo( db_utils::fieldsMemory($rsGrupo, 0)->l16_cadattdinamicovalorgrupo );
           $oRetorno->obrasengenharia = ($oGrupo->getValor("tipoobjeto") == "OSE");
 
-          $aTiposLicitacao = array(
+          $aTiposLicitacao = [
             "MCA", "MOQ", "MOT", "MPP", "MTC", "MTO", "MTT", "TPR"
-          );
+          ];
           $oRetorno->temnotatecnica = in_array($oGrupo->getValor("tipolicitacao"), $aTiposLicitacao);
         }
       }
 
-      usort($oRetorno->itens, function($oItem1, $oItem2) {
-        return $oItem1->ordem > $oItem2->ordem;
-      });
+      usort($oRetorno->itens, fn($oItem1, $oItem2) => $oItem1->ordem > $oItem2->ordem);
 
       break;
 
@@ -120,7 +118,7 @@ try {
       $aItens               = $oOrcamento->getItens();
 
       $oRetorno->temcotacao        = $oOrcamento->temCotacao();
-      $oRetorno->cotacoes          = array();
+      $oRetorno->cotacoes          = [];
       $oRetorno->prazoentrega      = '';
       $oRetorno->validadeorcamento = '';
 

@@ -43,7 +43,7 @@ abstract class ArquivoEConsigRepository {
   * 
   * @var ArquvivoEConsig[]
   */
- private static $aArquivos = array();
+ private static $aArquivos = [];
 
  /**
   * Adiciona uma instancia do objeto na memória
@@ -185,7 +185,7 @@ abstract class ArquivoEConsigRepository {
    
    $aRegistros           = $oArquivo->getRegistros();
    $iQuantidadeRegistros = count($aRegistros);
-   $aServidores          = array();
+   $aServidores          = [];
 
    /**
     * Pré-processa os dados dos registros passados para melhor adaptação da estrutura
@@ -205,62 +205,58 @@ abstract class ArquivoEConsigRepository {
     * Percorre os servidores da matriz criada e insere na tabela, para que, com os códigos gerados sejam incluidas as 
     * rubricas.
     */
-   while ( list($iMatricula, $aRegistros) = each($aServidores) ) {
-
-    foreach ($aRegistros['aRegistros'] as $oItemRegistro) {
-
-      $iMotivo = $oItemRegistro->getMotivo();
-
-      $oDaoEconsigMovimentoServidor->rh134_sequencial       = null;
-      $oDaoEconsigMovimentoServidor->rh134_regist           = (!empty($iMatricula)) ? $iMatricula : "0";
-      $oDaoEconsigMovimentoServidor->rh134_nome             = $oItemRegistro->getNome();
-      $oDaoEconsigMovimentoServidor->rh134_econsigmovimento = $oArquivo->getCodigo();
-      $oDaoEconsigMovimentoServidor->rh134_econsigmotivo    = (empty($iMotivo) ? 'null' : $iMotivo);
-
-      if( isset($aRegistros['aRubricasInconsistentes']) && is_array($aRegistros['aRubricasInconsistentes']) 
-          && in_array($oItemRegistro->getRubrica()->getCodigo(), $aRegistros['aRubricasInconsistentes']) ){
-
-        $oDaoEconsigMovimentoServidor->incluir(null);
-    
-        if ($oDaoEconsigMovimentoServidor->erro_status == "0") {
-          throw new DBException(_M(self::MENSAGEM."erro_incluir_servidor"));
+   foreach ($aServidores as $iMatricula => $aRegistros) {
+       foreach ($aRegistros['aRegistros'] as $oItemRegistro) {
+   
+         $iMotivo = $oItemRegistro->getMotivo();
+   
+         $oDaoEconsigMovimentoServidor->rh134_sequencial       = null;
+         $oDaoEconsigMovimentoServidor->rh134_regist           = (!empty($iMatricula)) ? $iMatricula : "0";
+         $oDaoEconsigMovimentoServidor->rh134_nome             = $oItemRegistro->getNome();
+         $oDaoEconsigMovimentoServidor->rh134_econsigmovimento = $oArquivo->getCodigo();
+         $oDaoEconsigMovimentoServidor->rh134_econsigmotivo    = (empty($iMotivo) ? 'null' : $iMotivo);
+   
+         if( isset($aRegistros['aRubricasInconsistentes']) && is_array($aRegistros['aRubricasInconsistentes']) 
+             && in_array($oItemRegistro->getRubrica()->getCodigo(), $aRegistros['aRubricasInconsistentes']) ){
+   
+           $oDaoEconsigMovimentoServidor->incluir(null);
+       
+           if ($oDaoEconsigMovimentoServidor->erro_status == "0") {
+             throw new DBException(_M(self::MENSAGEM."erro_incluir_servidor"));
+           }
+           
+           $aRegistros['aRubricasInconsistentes'][$oItemRegistro->getRubrica()->getCodigo()] = $oDaoEconsigMovimentoServidor->rh134_sequencial;
+   
+         } elseif( !isset($lSalvouMovimentoServidorConsistente) || $lSalvouMovimentoServidorConsistente == false) {
+           $lSalvouMovimentoServidorConsistente = true;
+           $oDaoEconsigMovimentoServidor->incluir(null);
+           $iSequencialServidorSemInconsitencias = $oDaoEconsigMovimentoServidor->rh134_sequencial;
+         }
+       }
+       $lSalvouMovimentoServidorConsistente = false;
+       /**
+        * Percorre os dados das rubricas persistindos
+        */
+       for ($iRegistroServidor = 0; $iRegistroServidor < count($aRegistros['aRegistros']); $iRegistroServidor++) {
+        $oRegistro                                                   = $aRegistros['aRegistros'][$iRegistroServidor];
+        if ($oRegistro->getMotivo() == 0) {
+          $iSequencialServidor = $iSequencialServidorSemInconsitencias;
+        }else{
+          $iSequencialServidor = $aRegistros['aRubricasInconsistentes'][$oRegistro->getRubrica()->getCodigo()];
         }
-        
-        $aRegistros['aRubricasInconsistentes'][$oItemRegistro->getRubrica()->getCodigo()] = $oDaoEconsigMovimentoServidor->rh134_sequencial;
-
-      } elseif( !isset($lSalvouMovimentoServidorConsistente) || $lSalvouMovimentoServidorConsistente == false) {
-        $lSalvouMovimentoServidorConsistente = true;
-        $oDaoEconsigMovimentoServidor->incluir(null);
-        $iSequencialServidorSemInconsitencias = $oDaoEconsigMovimentoServidor->rh134_sequencial;
+  
+        $sRubrica                                                    = $oRegistro->getRubrica()->getCodigo();
+        $oDaoEconsigMovimentoRubrica->rh135_sequencial               = null;
+        $oDaoEconsigMovimentoRubrica->rh135_econsigmovimentoservidor = $iSequencialServidor;
+        $oDaoEconsigMovimentoRubrica->rh135_rubrica                  = $sRubrica;
+        $oDaoEconsigMovimentoRubrica->rh135_instit                   = $oArquivo->getInstituicao()->getSequencial();
+        $oDaoEconsigMovimentoRubrica->rh135_valor                    = $oRegistro->getValor();
+        $oDaoEconsigMovimentoRubrica->incluir(null);
+  
+        if ($oDaoEconsigMovimentoRubrica->erro_status == "0") {
+         throw new DBException(_M(self::MENSAGEM."erro_incluir_rubrica"));
+        }
       }
-    }
-    $lSalvouMovimentoServidorConsistente = false;
-
-
-    /**
-     * Percorre os dados das rubricas persistindos
-     */
-     for ($iRegistroServidor = 0; $iRegistroServidor < count($aRegistros['aRegistros']); $iRegistroServidor++) {
-      $oRegistro                                                   = $aRegistros['aRegistros'][$iRegistroServidor];
-      if ($oRegistro->getMotivo() == 0) {
-        $iSequencialServidor = $iSequencialServidorSemInconsitencias;
-      }else{
-        $iSequencialServidor = $aRegistros['aRubricasInconsistentes'][$oRegistro->getRubrica()->getCodigo()];
-      }
-
-      $sRubrica                                                    = $oRegistro->getRubrica()->getCodigo();
-      $oDaoEconsigMovimentoRubrica->rh135_sequencial               = null;
-      $oDaoEconsigMovimentoRubrica->rh135_econsigmovimentoservidor = $iSequencialServidor;
-      $oDaoEconsigMovimentoRubrica->rh135_rubrica                  = $sRubrica;
-      $oDaoEconsigMovimentoRubrica->rh135_instit                   = $oArquivo->getInstituicao()->getSequencial();
-      $oDaoEconsigMovimentoRubrica->rh135_valor                    = $oRegistro->getValor();
-      $oDaoEconsigMovimentoRubrica->incluir(null);
-
-      if ($oDaoEconsigMovimentoRubrica->erro_status == "0") {
-       throw new DBException(_M(self::MENSAGEM."erro_incluir_rubrica"));
-      }
-    }
-
    }
  } 
 

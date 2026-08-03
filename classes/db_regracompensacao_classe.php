@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE regracompensacao
 class cl_regracompensacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k155_sequencial = 0; 
-   var $k155_tiporegracompensacao = 0; 
-   var $k155_descricao = null; 
-   var $k155_arretipoorigem = 0; 
-   var $k155_arretipodestino = null; 
-   var $k155_percmaxuso = 0; 
-   var $k155_tempovalidade = null; 
-   var $k155_automatica = 'f'; 
-   var $k155_permitetransferencia = 'f'; 
-   var $k155_instit = 0; 
-   var $k155_database_dia = null;
-   var $k155_database_mes = null;
-   var $k155_database_ano = null;
-   var $k155_database = null;
+   public $k155_sequencial = 0; 
+   public $k155_tiporegracompensacao = 0; 
+   public $k155_descricao = null; 
+   public $k155_arretipoorigem = 0; 
+   public $k155_arretipodestino = null; 
+   public $k155_percmaxuso = 0; 
+   public $k155_tempovalidade = null; 
+   public $k155_automatica = 'f'; 
+   public $k155_permitetransferencia = 'f'; 
+   public $k155_instit = 0; 
+   public $k155_database_dia = null;
+   public $k155_database_mes = null;
+   public $k155_database_ano = null;
+   public $k155_database = null;
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k155_sequencial = int4 = Código 
                  k155_tiporegracompensacao = int4 = Código Tipo Regra 
                  k155_descricao = varchar(50) = Descrição 
@@ -71,10 +71,10 @@ class cl_regracompensacao {
                  k155_database = date = Data base 
                  ";
    //funcao construtor da classe 
-   function cl_regracompensacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("regracompensacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -189,10 +189,10 @@ class cl_regracompensacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k155_sequencial = pg_result($result,0,0); 
+       $this->k155_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from regracompensacao_k155_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k155_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k155_sequencial)){
          $this->erro_sql = " Campo k155_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -240,7 +240,7 @@ class cl_regracompensacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "regracompensacao ($this->k155_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "regracompensacao já Cadastrado";
@@ -264,20 +264,20 @@ class cl_regracompensacao {
      $resaco = $this->sql_record($this->sql_query_file($this->k155_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19555,'$this->k155_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3476,19555,'','".AddSlashes(pg_result($resaco,0,'k155_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3476,19556,'','".AddSlashes(pg_result($resaco,0,'k155_tiporegracompensacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3476,19576,'','".AddSlashes(pg_result($resaco,0,'k155_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3476,19558,'','".AddSlashes(pg_result($resaco,0,'k155_arretipoorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3476,19560,'','".AddSlashes(pg_result($resaco,0,'k155_arretipodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3476,19562,'','".AddSlashes(pg_result($resaco,0,'k155_percmaxuso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3476,19564,'','".AddSlashes(pg_result($resaco,0,'k155_tempovalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3476,19568,'','".AddSlashes(pg_result($resaco,0,'k155_automatica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3476,19575,'','".AddSlashes(pg_result($resaco,0,'k155_permitetransferencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3476,19569,'','".AddSlashes(pg_result($resaco,0,'k155_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3476,1010005,'','".AddSlashes(pg_result($resaco,0,'k155_database'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3476,19555,'','".AddSlashes(pg_fetch_result($resaco,0,'k155_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3476,19556,'','".AddSlashes(pg_fetch_result($resaco,0,'k155_tiporegracompensacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3476,19576,'','".AddSlashes(pg_fetch_result($resaco,0,'k155_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3476,19558,'','".AddSlashes(pg_fetch_result($resaco,0,'k155_arretipoorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3476,19560,'','".AddSlashes(pg_fetch_result($resaco,0,'k155_arretipodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3476,19562,'','".AddSlashes(pg_fetch_result($resaco,0,'k155_percmaxuso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3476,19564,'','".AddSlashes(pg_fetch_result($resaco,0,'k155_tempovalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3476,19568,'','".AddSlashes(pg_fetch_result($resaco,0,'k155_automatica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3476,19575,'','".AddSlashes(pg_fetch_result($resaco,0,'k155_permitetransferencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3476,19569,'','".AddSlashes(pg_fetch_result($resaco,0,'k155_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3476,1010005,'','".AddSlashes(pg_fetch_result($resaco,0,'k155_database'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -286,10 +286,10 @@ class cl_regracompensacao {
       $this->atualizacampos();
      $sql = " update regracompensacao set ";
      $virgula = "";
-     if(trim($this->k155_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_sequencial"])){ 
+     if(trim((string) $this->k155_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_sequencial"])){ 
        $sql  .= $virgula." k155_sequencial = $this->k155_sequencial ";
        $virgula = ",";
-       if(trim($this->k155_sequencial) == null ){ 
+       if(trim((string) $this->k155_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "k155_sequencial";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_tiporegracompensacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_tiporegracompensacao"])){ 
+     if(trim((string) $this->k155_tiporegracompensacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_tiporegracompensacao"])){ 
        $sql  .= $virgula." k155_tiporegracompensacao = $this->k155_tiporegracompensacao ";
        $virgula = ",";
-       if(trim($this->k155_tiporegracompensacao) == null ){ 
+       if(trim((string) $this->k155_tiporegracompensacao) == null ){ 
          $this->erro_sql = " Campo Código Tipo Regra nao Informado.";
          $this->erro_campo = "k155_tiporegracompensacao";
          $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_descricao"])){ 
+     if(trim((string) $this->k155_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_descricao"])){ 
        $sql  .= $virgula." k155_descricao = '$this->k155_descricao' ";
        $virgula = ",";
-       if(trim($this->k155_descricao) == null ){ 
+       if(trim((string) $this->k155_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "k155_descricao";
          $this->erro_banco = "";
@@ -325,10 +325,10 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_arretipoorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_arretipoorigem"])){ 
+     if(trim((string) $this->k155_arretipoorigem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_arretipoorigem"])){ 
        $sql  .= $virgula." k155_arretipoorigem = $this->k155_arretipoorigem ";
        $virgula = ",";
-       if(trim($this->k155_arretipoorigem) == null ){ 
+       if(trim((string) $this->k155_arretipoorigem) == null ){ 
          $this->erro_sql = " Campo Tipo de Débito Origem nao Informado.";
          $this->erro_campo = "k155_arretipoorigem";
          $this->erro_banco = "";
@@ -338,14 +338,14 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_arretipodestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_arretipodestino"])){ 
+     if(trim((string) $this->k155_arretipodestino)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_arretipodestino"])){ 
        $sql  .= $virgula." k155_arretipodestino = '$this->k155_arretipodestino' ";
        $virgula = ",";
      }
-     if(trim($this->k155_percmaxuso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_percmaxuso"])){ 
+     if(trim((string) $this->k155_percmaxuso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_percmaxuso"])){ 
        $sql  .= $virgula." k155_percmaxuso = $this->k155_percmaxuso ";
        $virgula = ",";
-       if(trim($this->k155_percmaxuso) == null ){ 
+       if(trim((string) $this->k155_percmaxuso) == null ){ 
          $this->erro_sql = " Campo Percentual Máximo de Uso nao Informado.";
          $this->erro_campo = "k155_percmaxuso";
          $this->erro_banco = "";
@@ -355,14 +355,14 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_tempovalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_tempovalidade"])){ 
+     if(trim((string) $this->k155_tempovalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_tempovalidade"])){ 
        $sql  .= $virgula." k155_tempovalidade = '$this->k155_tempovalidade' ";
        $virgula = ",";
      }
-     if(trim($this->k155_automatica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_automatica"])){ 
+     if(trim((string) $this->k155_automatica)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_automatica"])){ 
        $sql  .= $virgula." k155_automatica = '$this->k155_automatica' ";
        $virgula = ",";
-       if(trim($this->k155_automatica) == null ){ 
+       if(trim((string) $this->k155_automatica) == null ){ 
          $this->erro_sql = " Campo Crédito Automático nao Informado.";
          $this->erro_campo = "k155_automatica";
          $this->erro_banco = "";
@@ -372,10 +372,10 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_permitetransferencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_permitetransferencia"])){ 
+     if(trim((string) $this->k155_permitetransferencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_permitetransferencia"])){ 
        $sql  .= $virgula." k155_permitetransferencia = '$this->k155_permitetransferencia' ";
        $virgula = ",";
-       if(trim($this->k155_permitetransferencia) == null ){ 
+       if(trim((string) $this->k155_permitetransferencia) == null ){ 
          $this->erro_sql = " Campo Permite Transferência nao Informado.";
          $this->erro_campo = "k155_permitetransferencia";
          $this->erro_banco = "";
@@ -385,10 +385,10 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_instit"])){ 
+     if(trim((string) $this->k155_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_instit"])){ 
        $sql  .= $virgula." k155_instit = $this->k155_instit ";
        $virgula = ",";
-       if(trim($this->k155_instit) == null ){ 
+       if(trim((string) $this->k155_instit) == null ){ 
          $this->erro_sql = " Campo Código Instituição nao Informado.";
          $this->erro_campo = "k155_instit";
          $this->erro_banco = "";
@@ -398,7 +398,7 @@ class cl_regracompensacao {
          return false;
        }
      }
-     if(trim($this->k155_database)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_database_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k155_database_dia"] !="") ){
+     if(trim((string) $this->k155_database)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k155_database_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k155_database_dia"] !="") ){
        $sql  .= $virgula." k155_database = '$this->k155_database' ";
        $virgula = ",";
      }     else{
@@ -415,31 +415,31 @@ class cl_regracompensacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19555,'$this->k155_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k155_sequencial"]) || $this->k155_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3476,19555,'".AddSlashes(pg_result($resaco,$conresaco,'k155_sequencial'))."','$this->k155_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3476,19555,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k155_sequencial'))."','$this->k155_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k155_tiporegracompensacao"]) || $this->k155_tiporegracompensacao != "")
-           $resac = db_query("insert into db_acount values($acount,3476,19556,'".AddSlashes(pg_result($resaco,$conresaco,'k155_tiporegracompensacao'))."','$this->k155_tiporegracompensacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3476,19556,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k155_tiporegracompensacao'))."','$this->k155_tiporegracompensacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k155_descricao"]) || $this->k155_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,3476,19576,'".AddSlashes(pg_result($resaco,$conresaco,'k155_descricao'))."','$this->k155_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3476,19576,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k155_descricao'))."','$this->k155_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k155_arretipoorigem"]) || $this->k155_arretipoorigem != "")
-           $resac = db_query("insert into db_acount values($acount,3476,19558,'".AddSlashes(pg_result($resaco,$conresaco,'k155_arretipoorigem'))."','$this->k155_arretipoorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3476,19558,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k155_arretipoorigem'))."','$this->k155_arretipoorigem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k155_arretipodestino"]) || $this->k155_arretipodestino != "")
-           $resac = db_query("insert into db_acount values($acount,3476,19560,'".AddSlashes(pg_result($resaco,$conresaco,'k155_arretipodestino'))."','$this->k155_arretipodestino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3476,19560,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k155_arretipodestino'))."','$this->k155_arretipodestino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k155_percmaxuso"]) || $this->k155_percmaxuso != "")
-           $resac = db_query("insert into db_acount values($acount,3476,19562,'".AddSlashes(pg_result($resaco,$conresaco,'k155_percmaxuso'))."','$this->k155_percmaxuso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3476,19562,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k155_percmaxuso'))."','$this->k155_percmaxuso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k155_tempovalidade"]) || $this->k155_tempovalidade != "")
-           $resac = db_query("insert into db_acount values($acount,3476,19564,'".AddSlashes(pg_result($resaco,$conresaco,'k155_tempovalidade'))."','$this->k155_tempovalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3476,19564,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k155_tempovalidade'))."','$this->k155_tempovalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k155_automatica"]) || $this->k155_automatica != "")
-           $resac = db_query("insert into db_acount values($acount,3476,19568,'".AddSlashes(pg_result($resaco,$conresaco,'k155_automatica'))."','$this->k155_automatica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3476,19568,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k155_automatica'))."','$this->k155_automatica',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k155_permitetransferencia"]) || $this->k155_permitetransferencia != "")
-           $resac = db_query("insert into db_acount values($acount,3476,19575,'".AddSlashes(pg_result($resaco,$conresaco,'k155_permitetransferencia'))."','$this->k155_permitetransferencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3476,19575,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k155_permitetransferencia'))."','$this->k155_permitetransferencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k155_instit"]) || $this->k155_instit != "")
-           $resac = db_query("insert into db_acount values($acount,3476,19569,'".AddSlashes(pg_result($resaco,$conresaco,'k155_instit'))."','$this->k155_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3476,19569,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k155_instit'))."','$this->k155_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["k155_database"]) || $this->k155_database != "")
-               $resac = db_query("insert into db_acount values($acount,3476,1010005,'".AddSlashes(pg_result($resaco,$conresaco,'k155_database'))."','$this->k155_database',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+               $resac = db_query("insert into db_acount values($acount,3476,1010005,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k155_database'))."','$this->k155_database',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -484,20 +484,20 @@ class cl_regracompensacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19555,'$k155_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3476,19555,'','".AddSlashes(pg_result($resaco,$iresaco,'k155_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3476,19556,'','".AddSlashes(pg_result($resaco,$iresaco,'k155_tiporegracompensacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3476,19576,'','".AddSlashes(pg_result($resaco,$iresaco,'k155_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3476,19558,'','".AddSlashes(pg_result($resaco,$iresaco,'k155_arretipoorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3476,19560,'','".AddSlashes(pg_result($resaco,$iresaco,'k155_arretipodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3476,19562,'','".AddSlashes(pg_result($resaco,$iresaco,'k155_percmaxuso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3476,19564,'','".AddSlashes(pg_result($resaco,$iresaco,'k155_tempovalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3476,19568,'','".AddSlashes(pg_result($resaco,$iresaco,'k155_automatica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3476,19575,'','".AddSlashes(pg_result($resaco,$iresaco,'k155_permitetransferencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3476,19569,'','".AddSlashes(pg_result($resaco,$iresaco,'k155_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac  = db_query("insert into db_acount values($acount,3476,1010005,'','".AddSlashes(pg_result($resaco,$iresaco,'k155_database'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3476,19555,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k155_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3476,19556,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k155_tiporegracompensacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3476,19576,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k155_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3476,19558,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k155_arretipoorigem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3476,19560,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k155_arretipodestino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3476,19562,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k155_percmaxuso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3476,19564,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k155_tempovalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3476,19568,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k155_automatica'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3476,19575,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k155_permitetransferencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3476,19569,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k155_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac  = db_query("insert into db_acount values($acount,3476,1010005,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k155_database'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from regracompensacao
@@ -557,7 +557,7 @@ class cl_regracompensacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:regracompensacao";
@@ -572,7 +572,7 @@ class cl_regracompensacao {
    function sql_query ( $k155_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -603,7 +603,7 @@ class cl_regracompensacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -616,7 +616,7 @@ class cl_regracompensacao {
    function sql_query_file ( $k155_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -637,7 +637,7 @@ class cl_regracompensacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

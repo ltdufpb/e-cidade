@@ -29,7 +29,7 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_corrente_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clcorrente = new cl_corrente;
 $clrotulo   = new rotulocampo;
@@ -45,31 +45,31 @@ $clrotulo->label("pc63_agencia");
 $dbwhere = "where 1=1 and k12_instit = " . db_getsession("DB_instit");
 $data    = str_replace("/", "-", $lista_data);
 
-$vet_data = split(",", $data);
+$vet_data = preg_split("#,#m", $data);
 $virgula  = "";
 $data     = "";
 for ($i = 0; $i < sizeof($vet_data); $i++){
-    $datas = split("-",$vet_data[$i]);
-    $data .= $virgula . "'" . trim($datas[2]) . "-" . trim($datas[1]) . "-" . trim($datas[0]) . "'";
+    $datas = preg_split("#\\-#m",(string) $vet_data[$i]);
+    $data .= $virgula . "'" . trim((string) $datas[2]) . "-" . trim((string) $datas[1]) . "-" . trim((string) $datas[0]) . "'";
     $virgula = ", ";
 }
 
-$vet_estorn = split(",", $lista_estorn);
+$vet_estorn = preg_split("#,#m", (string) $lista_estorn);
 $virgula = "";
 $estorno = "";
 for ($i=0; $i < sizeof($vet_estorn); $i++){
-    $estorno .= $virgula."'".trim($vet_estorn[$i])."'";
+    $estorno .= $virgula."'".trim((string) $vet_estorn[$i])."'";
     $virgula  = ", ";
 }
 
 $lista_estorn = $estorno;
 
 if (isset($lista_nfs)&&trim($lista_nfs)!=""){
-     $vet_nfs = split(",",$lista_nfs);
+     $vet_nfs = preg_split("#,#m",$lista_nfs);
      $virgula = "";
      $notas   = "";
      for($i=0; $i < sizeof($vet_nfs); $i++){
-          $notas   .= $virgula."'".trim($vet_nfs[$i])."'";
+          $notas   .= $virgula."'".trim((string) $vet_nfs[$i])."'";
           $virgula  = ", ";
      }
 
@@ -337,7 +337,7 @@ if( pg_num_rows($resultado) == 0 ){
           $pdf->setfont('arial', 'b', 8);
           $pdf->cell(70, $alt, $RLz01_cgccpf.": ",      0, 0, "R", 0);
           $pdf->setfont('arial', '', 8);
-          if(strlen($z01_cgccpf) < 14){
+          if(strlen((string) $z01_cgccpf) < 14){
              $cgccpf = db_formatar($z01_cgccpf,"cpf");
           } else {
              $cgccpf = db_formatar($z01_cgccpf,"cnpj");
@@ -350,7 +350,7 @@ if( pg_num_rows($resultado) == 0 ){
           $pdf->setfont('arial', 'b', 8);
           $pdf->cell(15, $alt, $RLz01_ender.": ", 0, 0, "L", 0);
           $pdf->setfont('arial', '', 8);
-          $pdf->cell(52, $alt, substr($z01_ender,0,50), 0, 0, "L", 0);
+          $pdf->cell(52, $alt, substr((string) $z01_ender,0,50), 0, 0, "L", 0);
           $pdf->setfont('arial', 'b', 8);
           $pdf->cell(30, $alt, $RLz01_numero.": ", 0, 0, "R", 0);
           $pdf->setfont('arial', '', 8);

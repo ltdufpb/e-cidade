@@ -118,7 +118,7 @@ if (isset($oGet->db_opcaoal)){
   <tr>
     <td valign="top"  align="center">  
     <?php 
-			 $chavepri= array("r73_sequencial"=>@$r73_sequencial);
+			 $chavepri= ["r73_sequencial"=>@$r73_sequencial];
 			 $cliframe_alterar_excluir->chavepri      = $chavepri;
 			 $cliframe_alterar_excluir->sql           = $clselecaopontorubricas->sql_query(null,"*",null,"r73_selecaoponto = ".@$r73_selecaoponto);
 			 $cliframe_alterar_excluir->campos        = "r73_sequencial,r73_rubric,rh27_descr,r74_descricao,r73_valor";

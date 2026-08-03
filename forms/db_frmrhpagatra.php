@@ -193,7 +193,7 @@ $funcionario_na_justica = false;
         $dbwhere.= " and rh58_codigo <> ".$rh58_codigo;
       }
       $sql = $clrhpagocor->sql_query(null," rh58_codigo, rh58_seq, rh58_tipoocor, rh59_descr, case when rh59_tipo = 'S' then 'Somar' else 'Subtrair' end as rh59_tipo, rh58_valor, rh58_data ","rh58_data",$dbwhere);
-      $chavepri= array("rh58_codigo"=>@$rh58_codigo);
+      $chavepri= ["rh58_codigo"=>@$rh58_codigo];
       $cliframe_alterar_excluir->chavepri = $chavepri;
       $cliframe_alterar_excluir->sql    = $sql;
       $cliframe_alterar_excluir->campos = "rh59_descr, rh59_tipo, rh58_valor, rh58_data";
@@ -242,7 +242,7 @@ $funcionario_na_justica = false;
                                                $dbhaving
                                               );
       // die($sql);
-      $chavepri= array("rh57_seq"=>@$rh57_seq,"rh57_regist"=>$rh57_regist,"rh57_ano"=>@$rh57_ano,"rh57_mes"=>@$rh57_mes);
+      $chavepri= ["rh57_seq"=>@$rh57_seq,"rh57_regist"=>$rh57_regist,"rh57_ano"=>@$rh57_ano,"rh57_mes"=>@$rh57_mes];
       $cliframe_alterar_excluir->chavepri = $chavepri;
       $cliframe_alterar_excluir->sql    = $sql;
       $cliframe_alterar_excluir->campos = "rh57_ano, rh57_mes, rh57_regist, rh57_valorini, rh57_saldo";
@@ -260,7 +260,7 @@ $funcionario_na_justica = false;
     <td align="right"><b>Mostrar:</b></td>
     <td>
       <?php 
-      $arr_mostrar = Array("s"=>"Somente com saldo","t"=>"Todos atrasos");
+      $arr_mostrar = ["s"=>"Somente com saldo","t"=>"Todos atrasos"];
       db_select("mostrarsaldo", $arr_mostrar, true, $db_opcao, "onchange='document.form1.submit();'");
       ?>
     </td>
@@ -389,7 +389,7 @@ function js_preenchepesquisa(chave){
   db_iframe_rhpagatra.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -65,7 +65,7 @@ if (!empty($opcao) && $opcao=="alterar"){
   $db_opcao = 1;
 }
 
-if (!empty($db_opcao)&&trim($db_opcao)==4){
+if (!empty($db_opcao)&&trim((string) $db_opcao)==4){
   $db_opcao = 3;
 }
 
@@ -90,7 +90,7 @@ if (!empty($m98_matmater)&&$db_opcao==1&&!empty($incluir)){
   }
 }
 ?>
-<form name="form1" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" >
+<form name="form1" method="post" action="<?=basename((string) $_SERVER['PHP_SELF'])?>" >
   <table border="0" cellspacing="0" cellpadding="0">
     <tr>
       <td nowrap title="<?=@$Tm97_sequencial?>">
@@ -242,7 +242,7 @@ if (!empty($m98_matmater)&&$db_opcao==1&&!empty($incluir)){
     <tr>
       <td valign="top">
         <?php 
-        $chavepri= array("m97_sequencial"=>@$m97_sequencial,"m98_sequencial"=>@$m98_sequencial,"m98_obs"=>@$m98_obs,"m98_quant"=>@$m98_quant,"m98_matunid"=>@$m98_matunid,"m61_descr"=>@$m61_descr,"m98_matmater"=>@$m98_matmater,"m60_descr"=>@$m60_descr);
+        $chavepri= ["m97_sequencial"=>@$m97_sequencial,"m98_sequencial"=>@$m98_sequencial,"m98_obs"=>@$m98_obs,"m98_quant"=>@$m98_quant,"m98_matunid"=>@$m98_matunid,"m61_descr"=>@$m61_descr,"m98_matmater"=>@$m98_matmater,"m60_descr"=>@$m60_descr];
         $cliframe_alterar_excluir->chavepri=$chavepri;
 
         if ( !empty($m97_sequencial) ){

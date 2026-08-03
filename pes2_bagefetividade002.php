@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $head3 = "EFETIVIDADE REFERENTE A ".$mes." / ".$ano;
 $head5 = "INTERVALO: ".$secini." até ".$secfin;
@@ -69,7 +69,7 @@ $sSql .= "  and rh30_vinculo = 'A'                                  ";
 $sSql .= "order by o40_orgao, z01_nome                              ";
 
 $result = db_query($sSql);
-$xxnum  = pg_numrows($result);
+$xxnum  = pg_num_rows($result);
 
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem funcionários cadastrados no intervalo para o período de '.$mes.' / '.$ano);
@@ -87,7 +87,7 @@ $pdf->setleftmargin(5);
 
 $orgao 	= 0;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($orgao != $o40_orgao){
    	  if($x != 0){
@@ -152,7 +152,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
 
    $alt = 5;
    $pdf->cell(20,$alt,'','BLR',0,"C",0);
-   $pdf->cell(60,$alt,substr($rh37_descr,0,25).'-'.$rh30_regime,'BLR',0,"L",0);
+   $pdf->cell(60,$alt,substr((string) $rh37_descr,0,25).'-'.$rh30_regime,'BLR',0,"L",0);
    $pdf->cell(28,$alt,'','BLR',0,"L",0);
    $pdf->cell(18,$alt,'','BLR',0,"L",0);
    $pdf->cell(18,$alt,'','BLR',0,"L",0);

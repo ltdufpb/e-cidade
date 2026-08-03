@@ -18,7 +18,7 @@ class Mailgrid
     /**
      * @var array
      */
-    private $config = array(
+    private $config = [
         'host_smtp' => "cloud79.mailgrid.net.br",
         'usuario_smtp' => "smtp1@dbseller.com.br",
         'senha_smtp' => "dsaj73nem34",
@@ -28,28 +28,28 @@ class Mailgrid
         'assunto' => null,
         'mensagem' => null,
         'output' => "json",
-    );
+    ];
 
     /**
      * @var string[]
      */
-    private $camposValidados = array(
+    private $camposValidados = [
         'emailRemetente' => 'email',
         'emailDestino' => 'email',
         'assunto' => 'obrigatorio',
         'mensagem' => 'obrigatorio',
-    );
+    ];
 
     /**
      * @var string[]
      */
-    private $response = array(
+    private $response = [
         "status" => "error",
         "codigo_status" => "0",
         "mensagem_erro" => "",
         "criptokey" => "",
         "to" => ""
-    );
+    ];
 
     /**
      * @param $emailRemetente
@@ -253,14 +253,14 @@ class Mailgrid
 
 
         $dados = http_build_query($this->config);
-        $contexto = stream_context_create(array(
-            'http' => array(
+        $contexto = stream_context_create([
+            'http' => [
                 'method' => 'POST',
                 'content' => $dados,
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n"
                     . "Content-Length: " . strlen($dados) . "\r\n",
-            )
-        ));
+            ]
+        ]);
 
         $result = file_get_contents($this->url, null, $contexto);
         $result = json_decode($result)[0];

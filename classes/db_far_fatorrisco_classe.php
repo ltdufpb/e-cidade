@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE far_fatorrisco
 class cl_far_fatorrisco { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $fa44_i_codigo = 0; 
-   var $fa44_c_descr = null; 
-   var $fa44_i_codrisco = 0; 
+   public $fa44_i_codigo = 0; 
+   public $fa44_c_descr = null; 
+   public $fa44_i_codrisco = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  fa44_i_codigo = int4 = Código 
                  fa44_c_descr = varchar(45) = Descrição 
                  fa44_i_codrisco = int4 = Fator de Risco 
                  ";
    //funcao construtor da classe 
-   function cl_far_fatorrisco() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_fatorrisco"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_far_fatorrisco {
          $this->erro_status = "0";
          return false; 
        }
-       $this->fa44_i_codigo = pg_result($result,0,0); 
+       $this->fa44_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from far_fatorrisco_fa44_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa44_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa44_i_codigo)){
          $this->erro_sql = " Campo fa44_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_far_fatorrisco {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "far_fatorrisco ($this->fa44_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "far_fatorrisco já Cadastrado";
@@ -166,12 +166,12 @@ class cl_far_fatorrisco {
      $resaco = $this->sql_record($this->sql_query_file($this->fa44_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17233,'$this->fa44_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,3046,17233,'','".AddSlashes(pg_result($resaco,0,'fa44_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3046,17234,'','".AddSlashes(pg_result($resaco,0,'fa44_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3046,17235,'','".AddSlashes(pg_result($resaco,0,'fa44_i_codrisco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3046,17233,'','".AddSlashes(pg_fetch_result($resaco,0,'fa44_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3046,17234,'','".AddSlashes(pg_fetch_result($resaco,0,'fa44_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3046,17235,'','".AddSlashes(pg_fetch_result($resaco,0,'fa44_i_codrisco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_far_fatorrisco {
       $this->atualizacampos();
      $sql = " update far_fatorrisco set ";
      $virgula = "";
-     if(trim($this->fa44_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa44_i_codigo"])){ 
+     if(trim((string) $this->fa44_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa44_i_codigo"])){ 
        $sql  .= $virgula." fa44_i_codigo = $this->fa44_i_codigo ";
        $virgula = ",";
-       if(trim($this->fa44_i_codigo) == null ){ 
+       if(trim((string) $this->fa44_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "fa44_i_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_far_fatorrisco {
          return false;
        }
      }
-     if(trim($this->fa44_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa44_c_descr"])){ 
+     if(trim((string) $this->fa44_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa44_c_descr"])){ 
        $sql  .= $virgula." fa44_c_descr = '$this->fa44_c_descr' ";
        $virgula = ",";
-       if(trim($this->fa44_c_descr) == null ){ 
+       if(trim((string) $this->fa44_c_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "fa44_c_descr";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_far_fatorrisco {
          return false;
        }
      }
-     if(trim($this->fa44_i_codrisco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa44_i_codrisco"])){ 
+     if(trim((string) $this->fa44_i_codrisco)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa44_i_codrisco"])){ 
        $sql  .= $virgula." fa44_i_codrisco = $this->fa44_i_codrisco ";
        $virgula = ",";
-       if(trim($this->fa44_i_codrisco) == null ){ 
+       if(trim((string) $this->fa44_i_codrisco) == null ){ 
          $this->erro_sql = " Campo Fator de Risco nao Informado.";
          $this->erro_campo = "fa44_i_codrisco";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_far_fatorrisco {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17233,'$this->fa44_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa44_i_codigo"]) || $this->fa44_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3046,17233,'".AddSlashes(pg_result($resaco,$conresaco,'fa44_i_codigo'))."','$this->fa44_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3046,17233,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa44_i_codigo'))."','$this->fa44_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa44_c_descr"]) || $this->fa44_c_descr != "")
-           $resac = db_query("insert into db_acount values($acount,3046,17234,'".AddSlashes(pg_result($resaco,$conresaco,'fa44_c_descr'))."','$this->fa44_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3046,17234,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa44_c_descr'))."','$this->fa44_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa44_i_codrisco"]) || $this->fa44_i_codrisco != "")
-           $resac = db_query("insert into db_acount values($acount,3046,17235,'".AddSlashes(pg_result($resaco,$conresaco,'fa44_i_codrisco'))."','$this->fa44_i_codrisco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3046,17235,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa44_i_codrisco'))."','$this->fa44_i_codrisco',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_far_fatorrisco {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17233,'$fa44_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,3046,17233,'','".AddSlashes(pg_result($resaco,$iresaco,'fa44_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3046,17234,'','".AddSlashes(pg_result($resaco,$iresaco,'fa44_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3046,17235,'','".AddSlashes(pg_result($resaco,$iresaco,'fa44_i_codrisco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3046,17233,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa44_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3046,17234,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa44_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3046,17235,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa44_i_codrisco'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from far_fatorrisco
@@ -345,7 +345,7 @@ class cl_far_fatorrisco {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:far_fatorrisco";
@@ -360,7 +360,7 @@ class cl_far_fatorrisco {
    function sql_query ( $fa44_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -381,7 +381,7 @@ class cl_far_fatorrisco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -394,7 +394,7 @@ class cl_far_fatorrisco {
    function sql_query_file ( $fa44_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -415,7 +415,7 @@ class cl_far_fatorrisco {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

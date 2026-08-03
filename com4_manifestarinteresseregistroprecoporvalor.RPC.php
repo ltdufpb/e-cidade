@@ -69,15 +69,15 @@ try {
         foreach ($oAberturaRegistroPreco->getEstimativas() as $oEstimativa) {
 
           if ($oEstimativa->getCodigoDepartamento() == db_getsession("DB_coddepto") && !$oEstimativa->isAnulada()) {
-            throw new Exception( _M($sMensagens . "abertura_possui_estimativa", (object) array( 'iAbertura' => $oParam->iAbertura,
-                                                                                                'iEstimativa' => $oEstimativa->getCodigoSolicitacao() )) );
+            throw new Exception( _M($sMensagens . "abertura_possui_estimativa", (object) [ 'iAbertura' => $oParam->iAbertura,
+                                                                                                'iEstimativa' => $oEstimativa->getCodigoSolicitacao() ]) );
           }
         }
       } else {
         $oAberturaRegistroPreco = new estimativaRegistroPreco($oParam->iEstimativa);
       }
 
-      $oRetorno->aItens = array();
+      $oRetorno->aItens = [];
 
       $aItens = $oAberturaRegistroPreco->getItens();
       if (count($aItens) == 0) {
@@ -86,13 +86,13 @@ try {
 
       foreach ($aItens as $oItem) {
 
-        $oRetorno->aItens[] = array(
+        $oRetorno->aItens[] = [
             'codigo'    => $oItem->getCodigoMaterial(),
             'descricao' => $oItem->getDescricaoMaterial(),
             'valor'     => $oItem->getValorTotal(),
             'resumo'    => $oItem->getResumo(),
             'marcado'   => ($oItem->getLiberado() && !empty($oParam->iEstimativa))
-          );
+          ];
       }
 
       break;

@@ -65,7 +65,7 @@ class GeracaoArquivoPitITBIRural {
   /**
    * Inconsistencias encontradas durante a geração do XML
    */
-  private $erros = array();
+  private $erros = [];
 
   public function __construct($iAno, $iPeriodo) {
 
@@ -84,16 +84,16 @@ class GeracaoArquivoPitITBIRural {
     $this->iAno     = $iAno;
     $this->iPeriodo = $iPeriodo;
 
-    $aPeriodo = array(
-      1 => array(
+    $aPeriodo = [
+      1 => [
         'inicio' => "{$iAno}-01-01",
         'fim' => "{$iAno}-06-30"
-      ),
-      2 => array(
+      ],
+      2 => [
         'inicio' => "{$iAno}-07-01",
         'fim' => "{$iAno}-12-31"
-      )
-    );
+      ]
+    ];
 
     $this->dtInicio = $aPeriodo[$iPeriodo]['inicio'];
     $this->dtFim    = $aPeriodo[$iPeriodo]['fim'];
@@ -106,7 +106,7 @@ class GeracaoArquivoPitITBIRural {
    */
   public function geraArquivo() {
 
-    $this->erros = array();
+    $this->erros = [];
 
     $this->oDomDocument             = new DOMDocument('1.0', 'iso-8859-1');
     $this->oDomDocument->standalone = true;
@@ -142,7 +142,7 @@ class GeracaoArquivoPitITBIRural {
       $oImovelTag->setAttribute( 'matricula',     $oImovelDados->matricula );
       $oImovelTag->setAttribute( 'zona',          $oImovelDados->zona );
       $oImovelTag->setAttribute( 'nro_guia_ITBI', $oImovelDados->nro_guia_itbi );
-      $oImovelTag->setAttribute( 'utilizacao',    utf8_encode($oImovelDados->utilizacao) );
+      $oImovelTag->setAttribute( 'utilizacao',    mb_convert_encoding($oImovelDados->utilizacao, 'UTF-8', 'ISO-8859-1') );
 
       /**
        * Adiciona o nó TRANSMITENTES
@@ -264,7 +264,7 @@ class GeracaoArquivoPitITBIRural {
     $oDadosMunicipio = $this->getDadosMunicipio();
 
     $oMunicipio->setAttribute( 'codigo',   $oDadosMunicipio->codigo );
-    $oMunicipio->setAttribute( 'nome',     utf8_encode($oDadosMunicipio->nome) );
+    $oMunicipio->setAttribute( 'nome',     mb_convert_encoding($oDadosMunicipio->nome, 'UTF-8', 'ISO-8859-1') );
     $oMunicipio->setAttribute( 'ano',      $this->iAno );
     $oMunicipio->setAttribute( 'semestre', $this->iPeriodo );
 
@@ -305,7 +305,7 @@ class GeracaoArquivoPitITBIRural {
 
       if ($lRegistroValido) {
 
-        $oTransmitenteTag->setAttribute( 'nome',     utf8_encode($oTransmitenteDados->nome) );
+        $oTransmitenteTag->setAttribute( 'nome',     mb_convert_encoding($oTransmitenteDados->nome, 'UTF-8', 'ISO-8859-1') );
         $oTransmitenteTag->setAttribute( 'cpf_cnpj', $oTransmitenteDados->cpfcnpj );
 
         $oTransmitentesContainer->appendChild($oTransmitenteTag);
@@ -348,7 +348,7 @@ class GeracaoArquivoPitITBIRural {
       }
 
       if ($lRegistroValido) {
-        $oAdquirenteTag->setAttribute( 'nome',     utf8_encode($oAdquirenteDados->nome) );
+        $oAdquirenteTag->setAttribute( 'nome',     mb_convert_encoding($oAdquirenteDados->nome, 'UTF-8', 'ISO-8859-1') );
         $oAdquirenteTag->setAttribute( 'cpf_cnpj', $oAdquirenteDados->cpfcnpj );
 
         $oAdquirentesContainer->appendChild($oAdquirenteTag);
@@ -387,11 +387,11 @@ class GeracaoArquivoPitITBIRural {
 
     if ($lRegistroValido) {
 
-      $oEndereco->setAttribute( 'localidade',    utf8_encode($oEnderecoDados->localidade) );
-      $oEndereco->setAttribute( 'distrito',      utf8_encode($oEnderecoDados->distrito ) );
+      $oEndereco->setAttribute( 'localidade',    mb_convert_encoding($oEnderecoDados->localidade, 'UTF-8', 'ISO-8859-1') );
+      $oEndereco->setAttribute( 'distrito',      mb_convert_encoding($oEnderecoDados->distrito, 'UTF-8', 'ISO-8859-1' ) );
       $oEndereco->setAttribute( 'lote',          $oEnderecoDados->lote );
-      $oEndereco->setAttribute( 'compl',         utf8_encode($oEnderecoDados->compl) );
-      $oEndereco->setAttribute( 'confrontacoes', utf8_encode($oEnderecoDados->confrontacoes) );
+      $oEndereco->setAttribute( 'compl',         mb_convert_encoding($oEnderecoDados->compl, 'UTF-8', 'ISO-8859-1') );
+      $oEndereco->setAttribute( 'confrontacoes', mb_convert_encoding($oEnderecoDados->confrontacoes, 'UTF-8', 'ISO-8859-1') );
     }
 
 
@@ -443,8 +443,8 @@ class GeracaoArquivoPitITBIRural {
       $oTerra->setAttribute( 'codigo_situacao_terra', $oTerraDados->codigo_situacao_terra );
       $oTerra->setAttribute( 'valor_declarado',       number_format($oTerraDados->valor_declarado, 2, ',', '') );
       $oTerra->setAttribute( 'valor_avaliado',        number_format($oTerraDados->valor_avaliado, 2, ',', '') );
-      $oTerra->setAttribute( 'data_avaliacao',        date("d/m/Y", strtotime( $oTerraDados->data_avaliacao )) );
-      $oTerra->setAttribute( 'tipo_utilizacao',       utf8_encode($oTerraDados->tipo_utilizacao) );
+      $oTerra->setAttribute( 'data_avaliacao',        date("d/m/Y", strtotime( (string) $oTerraDados->data_avaliacao )) );
+      $oTerra->setAttribute( 'tipo_utilizacao',       mb_convert_encoding($oTerraDados->tipo_utilizacao, 'UTF-8', 'ISO-8859-1') );
     }
 
     return $lRegistroValido ? $oTerra : false;
@@ -532,7 +532,7 @@ class GeracaoArquivoPitITBIRural {
         $oBenfeitoria->setAttribute( 'ano_construcao',            $oBenfeitoriaDados->ano_construcao );
         $oBenfeitoria->setAttribute( 'valor_declarado',           number_format( $oBenfeitoriaDados->valor_declarado, 2, ',', '') );
         $oBenfeitoria->setAttribute( 'valor_avaliado',            number_format( $oBenfeitoriaDados->valor_avaliado, 2, ',', '') );
-        $oBenfeitoria->setAttribute( 'data_avaliacao',            date("d/m/Y", strtotime( $oBenfeitoriaDados->data_avaliacao )) );
+        $oBenfeitoria->setAttribute( 'data_avaliacao',            date("d/m/Y", strtotime( (string) $oBenfeitoriaDados->data_avaliacao )) );
 
         $oBenfeitoriasContainer->appendChild( $oBenfeitoria );
       }
@@ -596,7 +596,7 @@ class GeracaoArquivoPitITBIRural {
     }
 
     if (pg_num_rows($rsImoveis) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::getCollectionByRecord($rsImoveis);
@@ -623,7 +623,7 @@ class GeracaoArquivoPitITBIRural {
     }
 
     if (pg_num_rows($rsTransmitentes) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::getCollectionByRecord($rsTransmitentes);
@@ -650,7 +650,7 @@ class GeracaoArquivoPitITBIRural {
     }
 
     if (pg_num_rows($rsAdquirentes) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::getCollectionByRecord($rsAdquirentes);
@@ -680,7 +680,7 @@ class GeracaoArquivoPitITBIRural {
     }
 
     if (pg_num_rows($rsEndereco) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::fieldsMemory($rsEndereco, 0);
@@ -717,7 +717,7 @@ class GeracaoArquivoPitITBIRural {
     }
 
     if (pg_num_rows($rsTerra) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::fieldsMemory($rsTerra, 0);
@@ -767,7 +767,7 @@ class GeracaoArquivoPitITBIRural {
     }
 
     if (pg_num_rows($rsBenfeitorias) == 0) {
-      return array();
+      return [];
     }
 
     return db_utils::getCollectionByRecord($rsBenfeitorias);

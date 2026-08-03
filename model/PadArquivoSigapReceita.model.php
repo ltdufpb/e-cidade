@@ -41,7 +41,7 @@ final class PadArquivoSigapReceita extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "Receita";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -61,7 +61,7 @@ final class PadArquivoSigapReceita extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit  = db_getsession("DB_instit");
     $oReceitaMes = new cl_receita_saldo_mes;
@@ -89,13 +89,13 @@ final class PadArquivoSigapReceita extends PadArquivoSigap {
        */
       if ($oReceita->o70_anousu > 2007) {
         
-        if (db_conplano_grupo($oReceita->o70_anousu,substr($oReceita->o57_fonte,0,1)."%", 9000) == false) {
-          $oReceita->o57_fonte = str_pad(substr($oReceita->o57_fonte,1,14), 20, '0', STR_PAD_RIGHT); // recompisoção
+        if (db_conplano_grupo($oReceita->o70_anousu,substr((string) $oReceita->o57_fonte,0,1)."%", 9000) == false) {
+          $oReceita->o57_fonte = str_pad(substr((string) $oReceita->o57_fonte,1,14), 20, '0', STR_PAD_RIGHT); // recompisoção
         } else {
-          $oReceita->o57_fonte  = str_pad(substr($oReceita->o57_fonte,0,15), 20, '0', STR_PAD_RIGHT); // recompisoção
+          $oReceita->o57_fonte  = str_pad(substr((string) $oReceita->o57_fonte,0,15), 20, '0', STR_PAD_RIGHT); // recompisoção
         }
       } else {
-        $oReceita->o57_fonte = str_pad(substr($oReceita->o57_fonte,1,14), 20, '0', STR_PAD_RIGHT); // recompisoção
+        $oReceita->o57_fonte = str_pad(substr((string) $oReceita->o57_fonte,1,14), 20, '0', STR_PAD_RIGHT); // recompisoção
       }
       /**
        * AJuste no mes de dezemro, quando conta de Deducao
@@ -116,9 +116,9 @@ final class PadArquivoSigapReceita extends PadArquivoSigap {
       $oReceitaRetorno->recCodigoEntidade                 = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oReceitaRetorno->recMesAnoMovimento                = $sDiaMesAno;
       $oReceitaRetorno->recCodigoContaReceita             = str_pad($oReceita->o57_fonte, 20, 0, STR_PAD_RIGHT);
-      $oReceitaRetorno->recDescricaoContaReceita          = substr($oReceita->o57_descr, 0, 255);
+      $oReceitaRetorno->recDescricaoContaReceita          = substr((string) $oReceita->o57_descr, 0, 255);
       
-      $iTamanhoCampo = strlen($oInstituicao->codtrib);
+      $iTamanhoCampo = strlen((string) $oInstituicao->codtrib);
       if ($iTamanhoCampo != 4) {
         
         $sMsg  = "Identificação do Orgão/Unidade da instituição ({$oInstituicao->codtrib}) está incorreto. \\n ";
@@ -128,12 +128,12 @@ final class PadArquivoSigapReceita extends PadArquivoSigap {
         throw new Exception($sMsg);
       }
       
-      $sOrgao                                             = substr($oInstituicao->codtrib, 0, 2);
-      $sUnidade                                           = substr($oInstituicao->codtrib, 2, 2);
+      $sOrgao                                             = substr((string) $oInstituicao->codtrib, 0, 2);
+      $sUnidade                                           = substr((string) $oInstituicao->codtrib, 2, 2);
       $oReceitaRetorno->recCodigoOrgao                    = str_pad($sOrgao, 2, "0", STR_PAD_LEFT);
       $oReceitaRetorno->recCodigoUnidadeOrcamentaria      = str_pad($sUnidade, 2, "0", STR_PAD_LEFT);
       
-      $oReceitaRetorno->recCaracteristicaPeculiar         = str_pad($iCaracteristicaPeculiar, 3, "0", STR_PAD_LEFT);
+      $oReceitaRetorno->recCaracteristicaPeculiar         = str_pad((string) $iCaracteristicaPeculiar, 3, "0", STR_PAD_LEFT);
       $oReceitaRetorno->recRealizadaJaneiro               = $this->corrigeValor($oReceita->janeiro, 13);
       $oReceitaRetorno->recRealizadaFevereiro             = $this->corrigeValor($oReceita->fevereiro, 13);
       $oReceitaRetorno->recRealizadaMarco                 = $this->corrigeValor($oReceita->marco, 13);
@@ -170,7 +170,7 @@ final class PadArquivoSigapReceita extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                          "recCodigoEntidade",
                          "recMesAnoMovimento",
                          "recCodigoContaReceita",
@@ -196,7 +196,7 @@ final class PadArquivoSigapReceita extends PadArquivoSigap {
                          "recMetaArrecadacao5oBimestre",
                          "recMetaArrecadacao6oBimestre",
                          "recCaracteristicaPeculiar"
-                       );
+                       ];
                        
     return $aElementos;  
   }

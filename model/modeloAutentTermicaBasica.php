@@ -34,35 +34,24 @@ abstract class modeloAutentTermicaBasica {
 	protected $oImpressora = null;
 	private   $oInstit     = null;
 	public    $oCorrente   = null;
-	public    $sPorta      = null;
-	public    $sIp         = null;
 	public    $lEstorno    = false;
 	public    $nValorTotal = 0;
-  public    $iId         = "";
-  public    $sData       = "";
-  public    $iAutent     = "";
 	
   /**
    * Classe que implementa a estrutura basica do modelo de autenticacao
    */
-  function __construct($sIp,$sPorta,$iId,$sData,$iAutent) {
+  function __construct(public $sIp,public $sPorta,public $iId,public $sData,public $iAutent) {
   	
-    $this->sIp     = $sIp;
-    $this->sPorta  = $sPorta;
-    $this->iId     = $iId;
-    $this->sData   = $sData;
-    $this->iAutent = $iAutent;
-    
-    $this->oImpressora = new impressaoMP2100TH($sIp,$sPorta);
+    $this->oImpressora = new impressaoMP2100TH($this->sIp,$this->sPorta);
   	
   	$sSqlCorrente  = "select * ";
     $sSqlCorrente .= "  from corrente ";
-    $sSqlCorrente .= " where k12_data   = '{$sData}'";
-    $sSqlCorrente .= "   and k12_id     = {$iId}";
-    $sSqlCorrente .= "   and k12_autent = {$iAutent}";    
+    $sSqlCorrente .= " where k12_data   = '{$this->sData}'";
+    $sSqlCorrente .= "   and k12_id     = {$this->iId}";
+    $sSqlCorrente .= "   and k12_autent = {$this->iAutent}";    
     $rsCorrente    = db_query($sSqlCorrente);
     if (pg_num_rows($rsCorrente) == 0) {
-      throw new Exception("Autenticacao nao encontrada ID:{$iId} DATA:{$sData} AUTENT:{$iAutent}");     
+      throw new Exception("Autenticacao nao encontrada ID:{$this->iId} DATA:{$this->sData} AUTENT:{$this->iAutent}");     
     }
     $this->oCorrente = db_utils::fieldsMemory($rsCorrente,0);
     
@@ -86,7 +75,7 @@ abstract class modeloAutentTermicaBasica {
   	/**
   	 * Cabecalho padrao
   	 */
-  	$sStr  = "\n".db_formatar($this->oCorrente->k12_data,'d').str_pad($this->oInstit->nomeinst,33,' ',STR_PAD_BOTH);
+  	$sStr  = "\n".db_formatar($this->oCorrente->k12_data,'d').str_pad((string) $this->oInstit->nomeinst,33,' ',STR_PAD_BOTH);
     $sStr .= "\n<b>Conta:</b> {$this->oCorrente->k12_conta} CNPJ: ".db_formatar($this->oInstit->cgc,'cnpj')." <b>Term:</b>".$this->oCorrente->k12_id;
     $sStr .= "\n".str_pad("",48,'=',STR_PAD_BOTH);
     /**
@@ -116,12 +105,12 @@ abstract class modeloAutentTermicaBasica {
     $sMsgAutent  = db_utils::fieldsmemory($rsNumpref,0)->k03_msgautent;
     
     $sStr .= "\n".str_pad("",48,'=',STR_PAD_BOTH);
-		$sStr .= "\n<b>".str_pad("Login:</b>",14,' ',STR_PAD_RIGHT)."</b>{$oUsuario->id_usuario} - ".substr($oUsuario->nome,0,32);
+		$sStr .= "\n<b>".str_pad("Login:</b>",14,' ',STR_PAD_RIGHT)."</b>{$oUsuario->id_usuario} - ".substr((string) $oUsuario->nome,0,32);
 		$sStr .= "\n<b>".str_pad("Departamento:",14,' ',STR_PAD_RIGHT)."</b>{$oDepartamento->coddepto} - $oDepartamento->descrdepto";
 		$sStr .= "\n<b>".str_pad("IP Terminal:",14,' ',STR_PAD_RIGHT)."</b>{$this->sIp}";
 		$sStr .= "\n<b>".str_pad("Data:",14,' ',STR_PAD_RIGHT)."</b>".trim(db_formatar($this->sData,'d'))."<b>".str_pad("Hora:"."</b> ".trim(db_hora()),28,' ',STR_PAD_LEFT);
 		
-		if (trim($sMsgAutent) != '') {
+		if (trim((string) $sMsgAutent) != '') {
 			$sStr .= "\n\n<b>".$sMsgAutent;
 		}
     

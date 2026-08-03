@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE habitprogramaconcedente
 class cl_habitprogramaconcedente { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ht19_sequencial = 0; 
-   var $ht19_habitprograma = 0; 
-   var $ht19_numcgm = 0; 
+   public $ht19_sequencial = 0; 
+   public $ht19_habitprograma = 0; 
+   public $ht19_numcgm = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ht19_sequencial = int4 = Sequencial 
                  ht19_habitprograma = int4 = Programa 
                  ht19_numcgm = int4 = Cgm 
                  ";
    //funcao construtor da classe 
-   function cl_habitprogramaconcedente() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("habitprogramaconcedente"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_habitprogramaconcedente {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ht19_sequencial = pg_result($result,0,0); 
+       $this->ht19_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from habitprogramaconcedente_ht19_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ht19_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ht19_sequencial)){
          $this->erro_sql = " Campo ht19_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_habitprogramaconcedente {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Concedente do Programa de Habitação ($this->ht19_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Concedente do Programa de Habitação já Cadastrado";
@@ -166,12 +166,12 @@ class cl_habitprogramaconcedente {
      $resaco = $this->sql_record($this->sql_query_file($this->ht19_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17030,'$this->ht19_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3007,17030,'','".AddSlashes(pg_result($resaco,0,'ht19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3007,17031,'','".AddSlashes(pg_result($resaco,0,'ht19_habitprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3007,17032,'','".AddSlashes(pg_result($resaco,0,'ht19_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3007,17030,'','".AddSlashes(pg_fetch_result($resaco,0,'ht19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3007,17031,'','".AddSlashes(pg_fetch_result($resaco,0,'ht19_habitprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3007,17032,'','".AddSlashes(pg_fetch_result($resaco,0,'ht19_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_habitprogramaconcedente {
       $this->atualizacampos();
      $sql = " update habitprogramaconcedente set ";
      $virgula = "";
-     if(trim($this->ht19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht19_sequencial"])){ 
+     if(trim((string) $this->ht19_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht19_sequencial"])){ 
        $sql  .= $virgula." ht19_sequencial = $this->ht19_sequencial ";
        $virgula = ",";
-       if(trim($this->ht19_sequencial) == null ){ 
+       if(trim((string) $this->ht19_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ht19_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_habitprogramaconcedente {
          return false;
        }
      }
-     if(trim($this->ht19_habitprograma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht19_habitprograma"])){ 
+     if(trim((string) $this->ht19_habitprograma)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht19_habitprograma"])){ 
        $sql  .= $virgula." ht19_habitprograma = $this->ht19_habitprograma ";
        $virgula = ",";
-       if(trim($this->ht19_habitprograma) == null ){ 
+       if(trim((string) $this->ht19_habitprograma) == null ){ 
          $this->erro_sql = " Campo Programa nao Informado.";
          $this->erro_campo = "ht19_habitprograma";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_habitprogramaconcedente {
          return false;
        }
      }
-     if(trim($this->ht19_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht19_numcgm"])){ 
+     if(trim((string) $this->ht19_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ht19_numcgm"])){ 
        $sql  .= $virgula." ht19_numcgm = $this->ht19_numcgm ";
        $virgula = ",";
-       if(trim($this->ht19_numcgm) == null ){ 
+       if(trim((string) $this->ht19_numcgm) == null ){ 
          $this->erro_sql = " Campo Cgm nao Informado.";
          $this->erro_campo = "ht19_numcgm";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_habitprogramaconcedente {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17030,'$this->ht19_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht19_sequencial"]) || $this->ht19_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3007,17030,'".AddSlashes(pg_result($resaco,$conresaco,'ht19_sequencial'))."','$this->ht19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3007,17030,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht19_sequencial'))."','$this->ht19_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht19_habitprograma"]) || $this->ht19_habitprograma != "")
-           $resac = db_query("insert into db_acount values($acount,3007,17031,'".AddSlashes(pg_result($resaco,$conresaco,'ht19_habitprograma'))."','$this->ht19_habitprograma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3007,17031,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht19_habitprograma'))."','$this->ht19_habitprograma',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ht19_numcgm"]) || $this->ht19_numcgm != "")
-           $resac = db_query("insert into db_acount values($acount,3007,17032,'".AddSlashes(pg_result($resaco,$conresaco,'ht19_numcgm'))."','$this->ht19_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3007,17032,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ht19_numcgm'))."','$this->ht19_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_habitprogramaconcedente {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17030,'$ht19_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3007,17030,'','".AddSlashes(pg_result($resaco,$iresaco,'ht19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3007,17031,'','".AddSlashes(pg_result($resaco,$iresaco,'ht19_habitprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3007,17032,'','".AddSlashes(pg_result($resaco,$iresaco,'ht19_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3007,17030,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht19_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3007,17031,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht19_habitprograma'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3007,17032,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ht19_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from habitprogramaconcedente
@@ -345,7 +345,7 @@ class cl_habitprogramaconcedente {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:habitprogramaconcedente";
@@ -360,7 +360,7 @@ class cl_habitprogramaconcedente {
    function sql_query ( $ht19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -384,7 +384,7 @@ class cl_habitprogramaconcedente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -397,7 +397,7 @@ class cl_habitprogramaconcedente {
    function sql_query_file ( $ht19_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_habitprogramaconcedente {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

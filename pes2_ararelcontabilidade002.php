@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($ponto == 's'){
@@ -201,7 +201,7 @@ order by rh27_rubric
 
 $result2_fps = db_query($sql2_fps);
 //db_criatabela($result2_fps);exit;
-if(pg_numrows($result2_fps) > 0){
+if(pg_num_rows($result2_fps) > 0){
   db_fieldsmemory($result2_fps,0);
 }
 
@@ -286,7 +286,7 @@ $pdf->cell(30,$alt,'VALOR',1,1,"C",1);
 
 $total_consig = 0;
 $pdf->setfont('arial','',8);
-for($x = 0; $x < pg_numrows($result2_fps);$x++){
+for($x = 0; $x < pg_num_rows($result2_fps);$x++){
   db_fieldsmemory($result2_fps,$x);
   $pdf->cell(80,$alt,$rh27_descr,1,0,"L",0);
   $pdf->cell(15,$alt,$rh27_rubric,1,0,"C",0);
@@ -592,7 +592,7 @@ order by rh27_rubric
 //echo $sql;exit;
 $result4_outras = db_query($sql4_outras);
 //db_criatabela($result4_outras);exit;
-$xxnum = pg_numrows($result4_outras);
+$xxnum = pg_num_rows($result4_outras);
 if($result4_outras == false){
   db_redireciona('db_erros.php?fechar=true&db_erro=1 - Não nenhum registro encontrado no período de '.$mes.' / '.$ano);
 }
@@ -756,7 +756,7 @@ $pdf->cell(30,$alt,'VALOR',1,1,"C",1);
 
 $total_consig = 0;
 $pdf->setfont('arial','',8);
-for($x = 0; $x < pg_numrows($result4_outras);$x++){
+for($x = 0; $x < pg_num_rows($result4_outras);$x++){
   db_fieldsmemory($result4_outras,$x);
   $pdf->cell(80,$alt,$rh27_descr,1,0,"L",0);
   $pdf->cell(15,$alt,$rh27_rubric,1,0,"C",0);
@@ -962,7 +962,7 @@ $pdf->cell(30,$alt,'VALOR',1,1,"C",1);
 
 $total_consig = 0;
 $pdf->setfont('arial','',8);
-for($x = 0; $x < pg_numrows($result2_edu_pma);$x++){
+for($x = 0; $x < pg_num_rows($result2_edu_pma);$x++){
   db_fieldsmemory($result2_edu_pma,$x);
   $pdf->cell(80,$alt,$rh27_descr,1,0,"L",0);
   $pdf->cell(15,$alt,$rh27_rubric,1,0,"C",0);
@@ -1300,7 +1300,7 @@ $pdf->cell(30,$alt,'VALOR',1,1,"C",1);
 
 $total_consig = 0;
 $pdf->setfont('arial','',8);
-for($x = 0; $x < pg_numrows($result3_saude);$x++){
+for($x = 0; $x < pg_num_rows($result3_saude);$x++){
   db_fieldsmemory($result3_saude,$x);
   $pdf->cell(80,$alt,$rh27_descr,1,0,"L",0);
   $pdf->cell(15,$alt,$rh27_rubric,1,0,"C",0);
@@ -1466,7 +1466,7 @@ $total_q_fundeb_sc = 0;
 $total_v_fundeb_pen_sc = 0;
 $total_q_fundeb_pen_sc = 0;
 
-for($xx=0;$xx<pg_numrows($result1_fundeb);$xx++ ){
+for($xx=0;$xx<pg_num_rows($result1_fundeb);$xx++ ){
   db_fieldsmemory($result1_fundeb,$xx);
   $pdf->cell(55,$alt,'FOLHA '.$fundeb_folha,1,0,"C",0);
   $pdf->cell(15,$alt,$fundeb_func_bb_cc,1,0,"C",0);
@@ -1489,7 +1489,7 @@ $pdf->cell(15,$alt,$total_q_fundeb_cc + $total_q_fundeb_sc ,1,0,"C",0);
 $pdf->cell(30,$alt,db_formatar( $total_v_fundeb_cc + $total_v_fundeb_sc ,'f'),1,1,"R",0);
 $pdf->ln(4);
 
-for($xy=0;$xy<pg_numrows($result1_fundeb);$xy++ ){
+for($xy=0;$xy<pg_num_rows($result1_fundeb);$xy++ ){
   db_fieldsmemory($result1_fundeb,$xy);
   $pdf->cell(55,$alt,'PENSÃO FOLHA '.$fundeb_folha,1,0,"C",0);
   $pdf->cell(15,$alt,'',1,0,"C",0);
@@ -1540,7 +1540,7 @@ $pdf->cell(30,$alt,'VALOR',1,1,"C",1);
 $total_consig = 0;
 $pdf->setfont('arial','',8);
 
-for($x = 0; $x < pg_numrows($result2_fundeb);$x++){
+for($x = 0; $x < pg_num_rows($result2_fundeb);$x++){
   db_fieldsmemory($result2_fundeb,$x);
   $pdf->cell(80,$alt,$rh27_descr,1,0,"L",0);
   $pdf->cell(15,$alt,$rh27_rubric,1,0,"C",0);
@@ -1685,7 +1685,7 @@ $total_q_conv_sc = 0;
 $total_v_conv_pen_sc = 0;
 $total_q_conv_pen_sc = 0;
 
-for($xx=0;$xx<pg_numrows($result1_conv);$xx++ ){
+for($xx=0;$xx<pg_num_rows($result1_conv);$xx++ ){
   db_fieldsmemory($result1_conv,$xx);
   if($conv_bb_liquido_cc + $conv_liquido_sem_conta != 0 ){
     $pdf->cell(55,$alt,$conv_localtrab,1,0,"C",0);
@@ -1702,9 +1702,9 @@ for($xx=0;$xx<pg_numrows($result1_conv);$xx++ ){
   }
 }
 $pdf->ln(4);
-for($xy=0;$xy<pg_numrows($result1_conv);$xy++ ){
+for($xy=0;$xy<pg_num_rows($result1_conv);$xy++ ){
   db_fieldsmemory($result1_conv,$xy);
-  $pdf->cell(55,$alt,'PENSÃO FOLHA '.substr($conv_localtrab,0,18),1,0,"C",0);
+  $pdf->cell(55,$alt,'PENSÃO FOLHA '.substr((string) $conv_localtrab,0,18),1,0,"C",0);
   $pdf->cell(15,$alt,'',1,0,"C",0);
   $pdf->cell(30,$alt,'',1,0,"R",0);
   $pdf->cell(15,$alt,$conv_tot_pensao,1,0,"C",0);
@@ -2007,7 +2007,7 @@ $total_q_fundeb_sc = 0;
 $total_v_fundeb_pen_sc = 0;
 $total_q_fundeb_pen_sc = 0;
 
-for($xx=0;$xx<pg_numrows($result1_fundeb);$xx++ ){
+for($xx=0;$xx<pg_num_rows($result1_fundeb);$xx++ ){
   db_fieldsmemory($result1_fundeb,$xx);
   $pdf->cell(55,$alt,'FOLHA '.$fundeb_folha,1,0,"C",0);
   $pdf->cell(15,$alt,$fundeb_func_cef,1,0,"C",0);
@@ -2059,7 +2059,7 @@ $total_q_conv_sc = 0;
 $total_v_conv_pen_sc = 0;
 $total_q_conv_pen_sc = 0;
 
-for($xx=0;$xx<pg_numrows($result1_conv);$xx++ ){
+for($xx=0;$xx<pg_num_rows($result1_conv);$xx++ ){
   db_fieldsmemory($result1_conv,$xx);
   if($conv_cef_liquido != 0 ){
     $pdf->cell(55,$alt,$conv_localtrab,1,0,"C",0);

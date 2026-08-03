@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_classificacaorisco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clclassificacaorisco = new cl_classificacaorisco;
 $clclassificacaorisco->rotulo->label("sd78_codigo");
 $clclassificacaorisco->rotulo->label("sd78_descricao");
@@ -52,9 +52,9 @@ $clclassificacaorisco->rotulo->label("sd78_descricao");
         }else{
            $sql = $clclassificacaorisco->sql_query("",$campos,"sd78_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd78_descricao)){
-          $repassa = array("chave_sd78_codigo"=>$chave_sd78_codigo,"chave_sd78_descricao"=>$chave_sd78_descricao);
+          $repassa = ["chave_sd78_codigo"=>$chave_sd78_codigo,"chave_sd78_descricao"=>$chave_sd78_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

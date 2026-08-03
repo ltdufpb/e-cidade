@@ -66,9 +66,9 @@ class Service
 
             RequestLogger::log(
                 RequestLogger::INFO,
-                'civitas_carga', $data[0] , '' ,  array(
+                'civitas_carga', $data[0] , '' ,  [
                 'xml' =>  $arquivoXml
-            ));
+            ]);
 
 
             if (!empty($edificacoes)) {
@@ -89,33 +89,33 @@ class Service
             $nomeArquivoTestadas    = "testadas" . time() . ".csv";
             file_put_contents(self::FILE_PATH . $nomeArquivoTestadas, base64_decode($testadas));
 
-            $arquivos = array();
+            $arquivos = [];
 
             if (!empty($nomeArquivoLotes) ) {
-                $arquivos[] = array(
+                $arquivos[] = [
                     "Nome" => $nomeArquivoLotes,
                     "TipoArquivo" => 1,
                     "Data" => $data,
                     "Caminho" => self::FILE_PATH
-                );
+                ];
             }
 
             if (!empty($nomeArquivoEdificacoes)) {
-                $arquivos[] = array(
+                $arquivos[] = [
                     "Nome" => $nomeArquivoEdificacoes,
                     "TipoArquivo" => 2,
                     "Data" => $data,
                     "Caminho" => self::FILE_PATH
-                );
+                ];
             }
 
             if (!empty($nomeArquivoTestadas)) {
-                $arquivos[] = array(
+                $arquivos[] = [
                     "Nome" => $nomeArquivoTestadas,
                     "TipoArquivo" => 3,
                     "Data" => $data,
                     "Caminho" => self::FILE_PATH
-                );
+                ];
             }
 
             db_inicio_transacao();
@@ -162,7 +162,7 @@ class Service
 
             $retorno = new \stdClass();
             $retorno->situacao = ImportadorRepository::CODIGO_ERRO;
-            $retorno->erros = array($exception->getMessage());
+            $retorno->erros = [$exception->getMessage()];
             $retornoMontado = $this->montarRetorno($retorno);
 
             ImportadorRepository::atualizarSituacao(ImportadorRepository::CODIGO_ERRO,$sequencialRequisicao, $data[0]);
@@ -186,9 +186,9 @@ class Service
 
             RequestLogger::log(
                 RequestLogger::INFO,
-                'civitas_exportacaoEcidade', $oXml->parametros->data , '' ,  array(
+                'civitas_exportacaoEcidade', $oXml->parametros->data , '' ,  [
                 'xml' =>  $arquivoXml
-            ));
+            ]);
 
 
             $oData = new \DBDate($oXml->parametros->data);
@@ -222,7 +222,7 @@ class Service
 
             $retorno = new \stdClass();
             $retorno->situacao = ImportadorRepository::CODIGO_ERRO;
-            $retorno->erros    = array($exception->getMessage());
+            $retorno->erros    = [$exception->getMessage()];
 
             $xmlRetorno = $this->montarRetorno($retorno);
         }
@@ -240,9 +240,9 @@ class Service
 
         RequestLogger::log(
             RequestLogger::INFO,
-            'civitas_getToken', '' , '' ,  array(
+            'civitas_getToken', '' , '' ,  [
             'xml' =>  $arquivoXml
-        ));
+        ]);
 
 
         try {
@@ -275,7 +275,7 @@ class Service
 
             $retorno = new \stdClass();
             $retorno->situacao = 2;
-            $retorno->erros = array($exception->getMessage());
+            $retorno->erros = [$exception->getMessage()];
             $xmlRetorno = $this->montarRetorno($retorno);
         }
 
@@ -385,7 +385,7 @@ class Service
      */
     private function getHashSha256($chave)
     {
-        return hash('sha256', $chave);
+        return hash('sha256', (string) $chave);
     }
 
     /**
@@ -407,7 +407,7 @@ class Service
             $erros = $documento->createElement("erros");
 
             foreach ($retorno->erros as $erroRetorno) {
-                $erro  = $documento->createElement("erro", urlencode($erroRetorno));
+                $erro  = $documento->createElement("erro", urlencode((string) $erroRetorno));
                 $erros->appendChild($erro);
             }
 

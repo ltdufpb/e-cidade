@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE conplanoexesaldo
 class cl_conplanoexesaldo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $c68_anousu = 0; 
-   var $c68_reduz = 0; 
-   var $c68_mes = 0; 
-   var $c68_debito = 0; 
-   var $c68_credito = 0; 
+   public $c68_anousu = 0; 
+   public $c68_reduz = 0; 
+   public $c68_mes = 0; 
+   public $c68_debito = 0; 
+   public $c68_credito = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  c68_anousu = int4 = Exercício 
                  c68_reduz = int4 = Reduzido 
                  c68_mes = int4 = Mês 
@@ -56,10 +56,10 @@ class cl_conplanoexesaldo {
                  c68_credito = float8 = Valor Crédito 
                  ";
    //funcao construtor da classe 
-   function cl_conplanoexesaldo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoexesaldo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -149,7 +149,7 @@ class cl_conplanoexesaldo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Saldos das contas por exercicio e mes ($this->c68_anousu."-".$this->c68_reduz."-".$this->c68_mes) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Saldos das contas por exercicio e mes já Cadastrado";
@@ -173,16 +173,16 @@ class cl_conplanoexesaldo {
      $resaco = $this->sql_record($this->sql_query_file($this->c68_anousu,$this->c68_reduz,$this->c68_mes));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6246,'$this->c68_anousu','I')");
        $resac = db_query("insert into db_acountkey values($acount,6247,'$this->c68_reduz','I')");
        $resac = db_query("insert into db_acountkey values($acount,6248,'$this->c68_mes','I')");
-       $resac = db_query("insert into db_acount values($acount,1013,6246,'','".AddSlashes(pg_result($resaco,0,'c68_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1013,6247,'','".AddSlashes(pg_result($resaco,0,'c68_reduz'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1013,6248,'','".AddSlashes(pg_result($resaco,0,'c68_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1013,6249,'','".AddSlashes(pg_result($resaco,0,'c68_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1013,6250,'','".AddSlashes(pg_result($resaco,0,'c68_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1013,6246,'','".AddSlashes(pg_fetch_result($resaco,0,'c68_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1013,6247,'','".AddSlashes(pg_fetch_result($resaco,0,'c68_reduz'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1013,6248,'','".AddSlashes(pg_fetch_result($resaco,0,'c68_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1013,6249,'','".AddSlashes(pg_fetch_result($resaco,0,'c68_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1013,6250,'','".AddSlashes(pg_fetch_result($resaco,0,'c68_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -191,10 +191,10 @@ class cl_conplanoexesaldo {
       $this->atualizacampos();
      $sql = " update conplanoexesaldo set ";
      $virgula = "";
-     if(trim($this->c68_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c68_anousu"])){ 
+     if(trim((string) $this->c68_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c68_anousu"])){ 
        $sql  .= $virgula." c68_anousu = $this->c68_anousu ";
        $virgula = ",";
-       if(trim($this->c68_anousu) == null ){ 
+       if(trim((string) $this->c68_anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "c68_anousu";
          $this->erro_banco = "";
@@ -204,10 +204,10 @@ class cl_conplanoexesaldo {
          return false;
        }
      }
-     if(trim($this->c68_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c68_reduz"])){ 
+     if(trim((string) $this->c68_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c68_reduz"])){ 
        $sql  .= $virgula." c68_reduz = $this->c68_reduz ";
        $virgula = ",";
-       if(trim($this->c68_reduz) == null ){ 
+       if(trim((string) $this->c68_reduz) == null ){ 
          $this->erro_sql = " Campo Reduzido nao Informado.";
          $this->erro_campo = "c68_reduz";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_conplanoexesaldo {
          return false;
        }
      }
-     if(trim($this->c68_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c68_mes"])){ 
+     if(trim((string) $this->c68_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c68_mes"])){ 
        $sql  .= $virgula." c68_mes = $this->c68_mes ";
        $virgula = ",";
-       if(trim($this->c68_mes) == null ){ 
+       if(trim((string) $this->c68_mes) == null ){ 
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "c68_mes";
          $this->erro_banco = "";
@@ -230,10 +230,10 @@ class cl_conplanoexesaldo {
          return false;
        }
      }
-     if(trim($this->c68_debito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c68_debito"])){ 
+     if(trim((string) $this->c68_debito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c68_debito"])){ 
        $sql  .= $virgula." c68_debito = $this->c68_debito ";
        $virgula = ",";
-       if(trim($this->c68_debito) == null ){ 
+       if(trim((string) $this->c68_debito) == null ){ 
          $this->erro_sql = " Campo Valor Débito nao Informado.";
          $this->erro_campo = "c68_debito";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_conplanoexesaldo {
          return false;
        }
      }
-     if(trim($this->c68_credito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c68_credito"])){ 
+     if(trim((string) $this->c68_credito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c68_credito"])){ 
        $sql  .= $virgula." c68_credito = $this->c68_credito ";
        $virgula = ",";
-       if(trim($this->c68_credito) == null ){ 
+       if(trim((string) $this->c68_credito) == null ){ 
          $this->erro_sql = " Campo Valor Crédito nao Informado.";
          $this->erro_campo = "c68_credito";
          $this->erro_banco = "";
@@ -270,21 +270,21 @@ class cl_conplanoexesaldo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6246,'$this->c68_anousu','A')");
          $resac = db_query("insert into db_acountkey values($acount,6247,'$this->c68_reduz','A')");
          $resac = db_query("insert into db_acountkey values($acount,6248,'$this->c68_mes','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c68_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,1013,6246,'".AddSlashes(pg_result($resaco,$conresaco,'c68_anousu'))."','$this->c68_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1013,6246,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c68_anousu'))."','$this->c68_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c68_reduz"]))
-           $resac = db_query("insert into db_acount values($acount,1013,6247,'".AddSlashes(pg_result($resaco,$conresaco,'c68_reduz'))."','$this->c68_reduz',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1013,6247,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c68_reduz'))."','$this->c68_reduz',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c68_mes"]))
-           $resac = db_query("insert into db_acount values($acount,1013,6248,'".AddSlashes(pg_result($resaco,$conresaco,'c68_mes'))."','$this->c68_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1013,6248,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c68_mes'))."','$this->c68_mes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c68_debito"]))
-           $resac = db_query("insert into db_acount values($acount,1013,6249,'".AddSlashes(pg_result($resaco,$conresaco,'c68_debito'))."','$this->c68_debito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1013,6249,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c68_debito'))."','$this->c68_debito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["c68_credito"]))
-           $resac = db_query("insert into db_acount values($acount,1013,6250,'".AddSlashes(pg_result($resaco,$conresaco,'c68_credito'))."','$this->c68_credito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1013,6250,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c68_credito'))."','$this->c68_credito',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -329,16 +329,16 @@ class cl_conplanoexesaldo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6246,'$c68_anousu','E')");
          $resac = db_query("insert into db_acountkey values($acount,6247,'$c68_reduz','E')");
          $resac = db_query("insert into db_acountkey values($acount,6248,'$c68_mes','E')");
-         $resac = db_query("insert into db_acount values($acount,1013,6246,'','".AddSlashes(pg_result($resaco,$iresaco,'c68_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1013,6247,'','".AddSlashes(pg_result($resaco,$iresaco,'c68_reduz'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1013,6248,'','".AddSlashes(pg_result($resaco,$iresaco,'c68_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1013,6249,'','".AddSlashes(pg_result($resaco,$iresaco,'c68_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1013,6250,'','".AddSlashes(pg_result($resaco,$iresaco,'c68_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1013,6246,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c68_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1013,6247,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c68_reduz'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1013,6248,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c68_mes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1013,6249,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c68_debito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1013,6250,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c68_credito'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from conplanoexesaldo
@@ -410,7 +410,7 @@ class cl_conplanoexesaldo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conplanoexesaldo";

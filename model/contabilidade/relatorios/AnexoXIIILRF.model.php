@@ -53,9 +53,10 @@ class AnexoXIIILRF extends RelatoriosLegaisBase  {
    * 
    * @return array - Colecao de stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
   	
-     $aRetorno        = array();
+     $aRetorno        = [];
      $oLinhaRelatorio = new linhaRelatorioContabil($this->iCodigoRelatorio, 1);
      $oLinhaRelatorio->setPeriodo($this->iCodigoPeriodo);
      $aValoresColunasLinhas = $oLinhaRelatorio->getValoresColunas(null, null, $this->getInstituicoes(), $this->iAnoUsu);

@@ -34,7 +34,7 @@ include(modification("classes/db_mer_subitem_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_subitem = new cl_mer_subitem;
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $escola= db_getsession("DB_coddepto");
@@ -88,9 +88,9 @@ if (isset($incluir)) {
  }
  $hoje   = date("d/m/Y",db_getsession("DB_datausu"));
  $hoje   = mktime(0,0,0,substr($hoje,3,2),substr($hoje,0,2),substr($hoje,6,4));
- $dat    = explode("/",$me29_d_inicio);
+ $dat    = explode("/",(string) $me29_d_inicio);
  $inicio = mktime(0,0,0,$dat[1],$dat[0],$dat[2]);
- $dat    = explode("/",$me29_d_fim);
+ $dat    = explode("/",(string) $me29_d_fim);
  $fim    = mktime(0,0,0,$dat[1],$dat[0],$dat[2]);
  if ($fim>=$inicio) {
  	
@@ -110,9 +110,9 @@ if (isset($alterar)) {
   $db_opcao = 2; 
   $hoje     = date("d/m/Y",db_getsession("DB_datausu"));
   $oje      = mktime(0,0,0,substr($hoje,3,2),substr($hoje,0,2),substr($hoje,6,4));
-  $at       = explode("/",$me29_d_inicio);
+  $at       = explode("/",(string) $me29_d_inicio);
   $inicio   = mktime(0,0,0,$dat[1],$dat[0],$dat[2]);
-  $dat      = explode("/",$me29_d_fim);
+  $dat      = explode("/",(string) $me29_d_fim);
   $fim      = mktime(0,0,0,$dat[1],$dat[0],$dat[2]);
   if ($inicio<$hoje) {
   	
@@ -136,9 +136,9 @@ if (isset($excluir)) {
   $db_opcao1 = 3;
   $hoje      = date("d/m/Y",db_getsession("DB_datausu"));
   $hoje      = mktime(0,0,0,substr($hoje,3,2),substr($hoje,0,2),substr($hoje,6,4));
-  $dat       = explode("/",$me29_d_inicio);
+  $dat       = explode("/",(string) $me29_d_inicio);
   $inicio    = mktime(0,0,0,$dat[1],$dat[0],$dat[2]);
-  $dat       = explode("/",$me29_d_fim);
+  $dat       = explode("/",(string) $me29_d_fim);
   $fim       = mktime(0,0,0,$dat[1],$dat[0],$dat[2]);
   if ($inicio<$hoje) {
   	

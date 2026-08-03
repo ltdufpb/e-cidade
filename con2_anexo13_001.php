@@ -42,12 +42,12 @@ $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas    = array();
-$titulos = array();
-$fontes  = array();
-$sizecp  = array();
+$abas    = [];
+$titulos = [];
+$fontes  = [];
+$sizecp  = [];
 
 $codrel = 11; // balanço patrimonial
 
@@ -79,21 +79,21 @@ $codrel = 11; // balanço patrimonial
      * pdrao LRF
      */
     	$codrel = 113;
-	    $clcriaabas->identifica = array("relatorio"=>"Relatorio",
+	    $clcriaabas->identifica = ["relatorio"=>"Relatorio",
 	                                    "parametro"=>"Parametros",
-	                                    "notas"    =>"Fonte/Notas Explicativas");
+	                                    "notas"    =>"Fonte/Notas Explicativas"];
 	    
-	    $clcriaabas->title      = array("relatorio"=>"Relatorio",
+	    $clcriaabas->title      = ["relatorio"=>"Relatorio",
 	                                    "parametro"=>"Parametros",
-	                                    "notas"    =>"Fonte/Notas Explicativas");
+	                                    "notas"    =>"Fonte/Notas Explicativas"];
 	    
-	    $clcriaabas->src        = array("relatorio"=>"con2_anexoXIII_011.php?codrel={$codrel}",
+	    $clcriaabas->src        = ["relatorio"=>"con2_anexoXIII_011.php?codrel={$codrel}",
 	                                    "parametro"=>"con4_parametrosrelatorioslegais001.php?c83_codrel={$codrel}",
-	                                    "notas"    =>"con2_conrelnotas.php?c83_codrel={$codrel}");
+	                                    "notas"    =>"con2_conrelnotas.php?c83_codrel={$codrel}"];
 	    
-	    $clcriaabas->sizecampo  = array("relatorio"=>"23",
+	    $clcriaabas->sizecampo  = ["relatorio"=>"23",
 	                                    "parametro"=>"23",
-	                                    "notas"    =>"23");
+	                                    "notas"    =>"23"];
     
     $clcriaabas->cria_abas();
     ?>

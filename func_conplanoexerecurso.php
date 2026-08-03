@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplanoexerecurso_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconplanoexerecurso = new cl_conplanoexerecurso;
 $clconplanoexerecurso->rotulo->label("c89_anousu");
 $clconplanoexerecurso->rotulo->label("c89_recurso");
@@ -110,9 +110,9 @@ $clconplanoexerecurso->rotulo->label("c89_recurso");
         }else{
            $sql = $clconplanoexerecurso->sql_query(db_getsession('DB_anousu'),"","",$campos,"c89_anousu#c89_recurso#c89_reduz","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c89_recurso)){
-          $repassa = array("chave_c89_anousu"=>$chave_c89_anousu,"chave_c89_recurso"=>$chave_c89_recurso);
+          $repassa = ["chave_c89_anousu"=>$chave_c89_anousu,"chave_c89_recurso"=>$chave_c89_recurso];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

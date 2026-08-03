@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE progressaoparcialalunoencerradodiario
 class cl_progressaoparcialalunoencerradodiario { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ed151_sequencial = 0; 
-   var $ed151_progressaoparcialaluno = 0; 
-   var $ed151_diariofinal = 0; 
+   public $ed151_sequencial = 0; 
+   public $ed151_progressaoparcialaluno = 0; 
+   public $ed151_diariofinal = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ed151_sequencial = int4 = Código Sequencial 
                  ed151_progressaoparcialaluno = int4 = Código da Progressao Parcial 
                  ed151_diariofinal = int8 = Código Diario Final 
                  ";
    //funcao construtor da classe 
-   function cl_progressaoparcialalunoencerradodiario() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("progressaoparcialalunoencerradodiario"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_progressaoparcialalunoencerradodiario {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ed151_sequencial = pg_result($result,0,0); 
+       $this->ed151_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from progressaoparcialalunoencerradodiario_ed151_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ed151_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ed151_sequencial)){
          $this->erro_sql = " Campo ed151_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_progressaoparcialalunoencerradodiario {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Resultado  Final do diario ($this->ed151_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Resultado  Final do diario já Cadastrado";
@@ -171,12 +171,12 @@ class cl_progressaoparcialalunoencerradodiario {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19682,'$this->ed151_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3497,19682,'','".AddSlashes(pg_result($resaco,0,'ed151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3497,19683,'','".AddSlashes(pg_result($resaco,0,'ed151_progressaoparcialaluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3497,19684,'','".AddSlashes(pg_result($resaco,0,'ed151_diariofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3497,19682,'','".AddSlashes(pg_fetch_result($resaco,0,'ed151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3497,19683,'','".AddSlashes(pg_fetch_result($resaco,0,'ed151_progressaoparcialaluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3497,19684,'','".AddSlashes(pg_fetch_result($resaco,0,'ed151_diariofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_progressaoparcialalunoencerradodiario {
       $this->atualizacampos();
      $sql = " update progressaoparcialalunoencerradodiario set ";
      $virgula = "";
-     if(trim($this->ed151_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed151_sequencial"])){ 
+     if(trim((string) $this->ed151_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed151_sequencial"])){ 
        $sql  .= $virgula." ed151_sequencial = $this->ed151_sequencial ";
        $virgula = ",";
-       if(trim($this->ed151_sequencial) == null ){ 
+       if(trim((string) $this->ed151_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "ed151_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_progressaoparcialalunoencerradodiario {
          return false;
        }
      }
-     if(trim($this->ed151_progressaoparcialaluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed151_progressaoparcialaluno"])){ 
+     if(trim((string) $this->ed151_progressaoparcialaluno)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed151_progressaoparcialaluno"])){ 
        $sql  .= $virgula." ed151_progressaoparcialaluno = $this->ed151_progressaoparcialaluno ";
        $virgula = ",";
-       if(trim($this->ed151_progressaoparcialaluno) == null ){ 
+       if(trim((string) $this->ed151_progressaoparcialaluno) == null ){ 
          $this->erro_sql = " Campo Código da Progressao Parcial não informado.";
          $this->erro_campo = "ed151_progressaoparcialaluno";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_progressaoparcialalunoencerradodiario {
          return false;
        }
      }
-     if(trim($this->ed151_diariofinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed151_diariofinal"])){ 
+     if(trim((string) $this->ed151_diariofinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ed151_diariofinal"])){ 
        $sql  .= $virgula." ed151_diariofinal = $this->ed151_diariofinal ";
        $virgula = ",";
-       if(trim($this->ed151_diariofinal) == null ){ 
+       if(trim((string) $this->ed151_diariofinal) == null ){ 
          $this->erro_sql = " Campo Código Diario Final não informado.";
          $this->erro_campo = "ed151_diariofinal";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_progressaoparcialalunoencerradodiario {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19682,'$this->ed151_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed151_sequencial"]) || $this->ed151_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3497,19682,'".AddSlashes(pg_result($resaco,$conresaco,'ed151_sequencial'))."','$this->ed151_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3497,19682,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed151_sequencial'))."','$this->ed151_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed151_progressaoparcialaluno"]) || $this->ed151_progressaoparcialaluno != "")
-             $resac = db_query("insert into db_acount values($acount,3497,19683,'".AddSlashes(pg_result($resaco,$conresaco,'ed151_progressaoparcialaluno'))."','$this->ed151_progressaoparcialaluno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3497,19683,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed151_progressaoparcialaluno'))."','$this->ed151_progressaoparcialaluno',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["ed151_diariofinal"]) || $this->ed151_diariofinal != "")
-             $resac = db_query("insert into db_acount values($acount,3497,19684,'".AddSlashes(pg_result($resaco,$conresaco,'ed151_diariofinal'))."','$this->ed151_diariofinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3497,19684,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed151_diariofinal'))."','$this->ed151_diariofinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_progressaoparcialalunoencerradodiario {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19682,'$ed151_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3497,19682,'','".AddSlashes(pg_result($resaco,$iresaco,'ed151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3497,19683,'','".AddSlashes(pg_result($resaco,$iresaco,'ed151_progressaoparcialaluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3497,19684,'','".AddSlashes(pg_result($resaco,$iresaco,'ed151_diariofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3497,19682,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3497,19683,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed151_progressaoparcialaluno'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3497,19684,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed151_diariofinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -367,7 +367,7 @@ class cl_progressaoparcialalunoencerradodiario {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:progressaoparcialalunoencerradodiario";
@@ -382,7 +382,7 @@ class cl_progressaoparcialalunoencerradodiario {
    function sql_query ( $ed151_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -411,7 +411,7 @@ class cl_progressaoparcialalunoencerradodiario {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -424,7 +424,7 @@ class cl_progressaoparcialalunoencerradodiario {
    function sql_query_file ( $ed151_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,7 +445,7 @@ class cl_progressaoparcialalunoencerradodiario {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -458,7 +458,7 @@ class cl_progressaoparcialalunoencerradodiario {
   function sql_query_diariofinal ( $ed151_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -482,7 +482,7 @@ class cl_progressaoparcialalunoencerradodiario {
           $sql .= $sql2;
           if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = preg_split("#\\##m",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
               $sql .= $virgula.$campos_sql[$i];

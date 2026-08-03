@@ -46,16 +46,16 @@ $clcriaabas = new cl_criaabas;
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#CCCCCC">
 <div>
     <?php
-    $clcriaabas->identifica = array(
+    $clcriaabas->identifica = [
         'a1' => 'Parâmetros',
         'a2' => 'Tipo de Receita Padrão'
-    );
-    $clcriaabas->src = array(
+    ];
+    $clcriaabas->src = [
         'a1' => 'far1_far_parametros001.php',
         'a2' => 'far4_far_tiporeceitapadrao001.php'
-    );
-    $clcriaabas->sizecampo = array('a1' => 25, 'a2' => 25);
-    $clcriaabas->disabled = array('a1' => 'false', 'a2' => 'false');
+    ];
+    $clcriaabas->sizecampo = ['a1' => 25, 'a2' => 25];
+    $clcriaabas->disabled = ['a1' => 'false', 'a2' => 'false'];
     $clcriaabas->cria_abas();
     ?>
 </div>

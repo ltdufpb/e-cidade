@@ -44,7 +44,7 @@ $iMaxSemestre = maxSemestre($iAnoFolha, $iMesFolha);
 $oRetorno     = new stdClass();
 $oRetorno->status         = 1;
 $oRetorno->message        = '';
-$oRetorno->aListaServidor = array();
+$oRetorno->aListaServidor = [];
 switch ($oParam->exec) {
   
   case "clearSession":

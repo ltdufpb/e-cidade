@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_notidebitosreg_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clnotidebitosreg = new cl_notidebitosreg();
 
@@ -107,10 +107,10 @@ $clnotidebitosreg->rotulo->label("k43_numpre");
            $sql = $clnotidebitosreg->sql_query("",$campos,"k43_sequencial","");
         }
         
-        $repassa = array();
+        $repassa = [];
         
         if(isset($chave_k43_numpre)){
-          $repassa = array("chave_k43_sequencial"=>$chave_k43_sequencial,"chave_k43_numpre"=>$chave_k43_numpre);
+          $repassa = ["chave_k43_sequencial"=>$chave_k43_sequencial,"chave_k43_numpre"=>$chave_k43_numpre];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

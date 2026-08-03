@@ -99,9 +99,9 @@
                <tr>
                  <td>
 
-                  <?php if(pg_numrows($rsInstituicoes) == 1 and !$tem_atualizacoes) { ?>
+                  <?php if(pg_num_rows($rsInstituicoes) == 1 and !$tem_atualizacoes) { ?>
 
-                    <input type="hidden" name="instit" value="<?php echo pg_result($rsInstituicoes, 0, "codigo"); ?>">
+                    <input type="hidden" name="instit" value="<?php echo pg_fetch_result($rsInstituicoes, 0, "codigo"); ?>">
                     <script>document.form1.submit()</script>
 
                   <?php }else{ ?>
@@ -115,27 +115,27 @@
                               /**
                                * Define path do diretorio de imagens
                                */
-                              $aCaminhoImagem = pathinfo( $_SERVER["SCRIPT_FILENAME"] );
+                              $aCaminhoImagem = pathinfo( (string) $_SERVER["SCRIPT_FILENAME"] );
                               $sCaminhoImagem = $aCaminhoImagem["dirname"] . "/";
 
-                              for($i = 0;$i < pg_numrows($rsInstituicoes);$i++) {
+                              for($i = 0;$i < pg_num_rows($rsInstituicoes);$i++) {
 
-                                $sLogoImagem   = "imagens/files/".pg_result($rsInstituicoes,$i,"figura");
+                                $sLogoImagem   = "imagens/files/".pg_fetch_result($rsInstituicoes,$i,"figura");
 
                                 /**
                                  * Quando não encontrar imagem configurada deve setar a imagem default
                                  */
                                 if( !file_exists( $sCaminhoImagem . $sLogoImagem ) ){
-                                  $sLogoImagem = "skins/img.php?file=TiposInstituicao/".pg_result($rsInstituicoes,$i,"db21_tipoinstit").".png";
+                                  $sLogoImagem = "skins/img.php?file=TiposInstituicao/".pg_fetch_result($rsInstituicoes,$i,"db21_tipoinstit").".png";
                                 }
 
                                 echo "<td class=\"bordas\">
                                         <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
                                           <tr>
-                                            <td align=\"center\" valign=\"middle\"><a href=\"corpo.php?".base64_encode("instit=".pg_result($rsInstituicoes,$i,"codigo"))."\"><img src=\"".$sLogoImagem."\" alt=\"".pg_result($rsInstituicoes,$i,"nomeinst")."\" onmouseover=\"js_msg_status(this.alt)\" onmouseout=\"js_lmp_status()\" border=\"0\" width=\"100\" height=\"100\"></a></td>
+                                            <td align=\"center\" valign=\"middle\"><a href=\"corpo.php?".base64_encode("instit=".pg_fetch_result($rsInstituicoes,$i,"codigo"))."\"><img src=\"".$sLogoImagem."\" alt=\"".pg_fetch_result($rsInstituicoes,$i,"nomeinst")."\" onmouseover=\"js_msg_status(this.alt)\" onmouseout=\"js_lmp_status()\" border=\"0\" width=\"100\" height=\"100\"></a></td>
                                           </tr>
                                           <tr>
-                                            <td align=\"center\" valign=\"middle\"><a href=\"corpo.php?".base64_encode("instit=".pg_result($rsInstituicoes,$i,"codigo"))."\" title=\"".pg_result($rsInstituicoes,$i,"nomeinst")."\"  onmouseover=\"js_msg_status(this.title)\" onmouseout=\"js_lmp_status()\">".pg_result($rsInstituicoes,$i,"nomeinst")."</a></td>
+                                            <td align=\"center\" valign=\"middle\"><a href=\"corpo.php?".base64_encode("instit=".pg_fetch_result($rsInstituicoes,$i,"codigo"))."\" title=\"".pg_fetch_result($rsInstituicoes,$i,"nomeinst")."\"  onmouseover=\"js_msg_status(this.title)\" onmouseout=\"js_lmp_status()\">".pg_fetch_result($rsInstituicoes,$i,"nomeinst")."</a></td>
                                           </tr>
                                         </table>
                                      </td>\n";

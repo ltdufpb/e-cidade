@@ -36,7 +36,7 @@ require_once(modification("classes/db_rechumano_classe.php"));
 require_once(modification("classes/db_regencia_classe.php"));
 
 db_postmemory($_POST);
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clrechumano = new cl_rechumano;
 $clregencia  = new cl_regencia;
@@ -132,7 +132,7 @@ for (iln = 0; iln < len; iln++)
             $sCampos .= "         else 'NÃO'                               ";
             $sCampos .= "     end as ed75_c_simultaneo                     ";
 
-            $data = urldecode($data);
+            $data = urldecode((string) $data);
             $where = (!empty($regencia) && !empty($data)) ? " ed58_i_regencia = {$regencia} and '{$data}'::date between ed58_datainicio and ed58_datafim " : '';
 
             $sql = $regencihorario->sql_query_diario_classe_periodo(null, $sCampos, null, $where);
@@ -214,9 +214,9 @@ for (iln = 0; iln < len; iln++)
 
         if (!isset($pesquisa_chave)) {
 
-          $repassa = array();
+          $repassa = [];
           if (isset($chave_ed20_i_codigo)) {
-            $repassa = array("chave_ed20_i_codigo"=>$chave_ed20_i_codigo,"chave_ed20_i_codigo"=>$chave_ed20_i_codigo);
+            $repassa = ["chave_ed20_i_codigo"=>$chave_ed20_i_codigo,"chave_ed20_i_codigo"=>$chave_ed20_i_codigo];
           }
 
           $sql .= " ORDER BY z01_nome";

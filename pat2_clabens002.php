@@ -42,7 +42,7 @@ $clrotulo->label('t64_obs');
 $clrotulo->label('t64_analitica');
 $clrotulo->label('c61_reduz');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($ordem == "a"){
@@ -111,7 +111,7 @@ for($x = 0; $x < $clclabens->numrows;$x++){
    $pdf->cell(15,$alt,$c60_codcon,0,0,"C",$p);
    $pdf->cell(15,$alt,$c61_reduz,0,0,"C",$p);
    $pdf->cell(25,$alt,$c60_estrut,0,0,"C",$p);
-   $pdf->cell(60,$alt,substr($c60_descr,0,40),0,0,"L",$p);
+   $pdf->cell(60,$alt,substr((string) $c60_descr,0,40),0,0,"L",$p);
    $pdf->multicell(0,$alt,$t64_obs,0,"L",$p);
    $total++;
 }

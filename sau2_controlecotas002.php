@@ -205,13 +205,13 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont++) {
   }
 
   novaLinha($oPdf, $oDados->upssolic, $oDados->nomesolic, $oDados->s163_i_quantidade, 
-            $oDados->qtdeagend, $oDados->qtdeatend, $oDados->qtdeaus, $oDados->s163_i_codigo, $dIni, $dFim
+            $oDados->qtdeagend, $oDados->qtdeatend, $oDados->qtdeaus
            );
 
   if ($oPdf->getY() >$oPdf->h - 30) {
 
     $oPdf->Addpage('P');
-    novoCabecalho($oPdf, $lProfissional);
+    novoCabecalho($oPdf);
 
   }
 

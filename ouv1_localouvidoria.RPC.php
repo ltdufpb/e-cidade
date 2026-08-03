@@ -65,10 +65,10 @@ if ( $oPost->sMethod == 'incluirLocal') {
   db_inicio_transacao();
 
   
-  $clOuvidoriaCadLocal->ov25_descricao = utf8_decode($oLocal->ov25_descricao);
+  $clOuvidoriaCadLocal->ov25_descricao = mb_convert_encoding($oLocal->ov25_descricao, 'ISO-8859-1');
   
-  if ( trim($oLocal->ov25_validade) != '' ) {
-    $clOuvidoriaCadLocal->ov25_validade  = implode("-",array_reverse(explode("/",$oLocal->ov25_validade)));
+  if ( trim((string) $oLocal->ov25_validade) != '' ) {
+    $clOuvidoriaCadLocal->ov25_validade  = implode("-",array_reverse(explode("/",(string) $oLocal->ov25_validade)));
   } else {
   	$clOuvidoriaCadLocal->ov25_validade  = "null";
   }
@@ -84,7 +84,7 @@ if ( $oPost->sMethod == 'incluirLocal') {
   	
     if ( $oLocal->sTipoLocal == 'g' ) {
     	
-    	$clOuvidoriaCadLocalGeral->ov28_descricao         = utf8_decode($oLocal->ov28_descricao);
+    	$clOuvidoriaCadLocalGeral->ov28_descricao         = mb_convert_encoding($oLocal->ov28_descricao, 'ISO-8859-1');
     	$clOuvidoriaCadLocalGeral->ov28_ouvidoriacadlocal = $clOuvidoriaCadLocal->ov25_sequencial;
     	$clOuvidoriaCadLocalGeral->incluir(null);
 
@@ -97,9 +97,9 @@ if ( $oPost->sMethod == 'incluirLocal') {
 
     	$clOuvidoriaCadLocalEnder->ov26_ruas              = $oLocal->ov26_ruas;
     	$clOuvidoriaCadLocalEnder->ov26_numero            = $oLocal->ov26_numero;
-    	$clOuvidoriaCadLocalEnder->ov26_complemento       = utf8_decode($oLocal->ov26_complemento);
+    	$clOuvidoriaCadLocalEnder->ov26_complemento       = mb_convert_encoding($oLocal->ov26_complemento, 'ISO-8859-1');
     	$clOuvidoriaCadLocalEnder->ov26_ouvidoriacadlocal = $clOuvidoriaCadLocal->ov25_sequencial;
-    	$clOuvidoriaCadLocalEnder->ov26_observacao        = utf8_decode($oLocal->ov26_observacao);
+    	$clOuvidoriaCadLocalEnder->ov26_observacao        = mb_convert_encoding($oLocal->ov26_observacao, 'ISO-8859-1');
     	$clOuvidoriaCadLocalEnder->incluir(null);
     	
       if ( $clOuvidoriaCadLocalEnder->erro_status == 0 ) {
@@ -130,8 +130,8 @@ if ( $oPost->sMethod == 'incluirLocal') {
      $sMsgErro = "Inclusão feita com sucesso!";
   }
   
-  $aRetorno = array("lErro"=>$lErro,
-                    "sMsg" =>urlencode($sMsgErro));   
+  $aRetorno = ["lErro"=>$lErro,
+                    "sMsg" =>urlencode($sMsgErro)];   
 
   echo $oJson->encode($aRetorno);
   
@@ -143,10 +143,10 @@ if ( $oPost->sMethod == 'incluirLocal') {
   db_inicio_transacao();
   
   $clOuvidoriaCadLocal->ov25_sequencial = $oLocal->ov25_sequencial;
-  $clOuvidoriaCadLocal->ov25_descricao  = utf8_decode("{$oLocal->ov25_descricao}");
+  $clOuvidoriaCadLocal->ov25_descricao  = mb_convert_encoding("{$oLocal->ov25_descricao}", 'ISO-8859-1');
   
-  if ( trim($oLocal->ov25_validade) != '' ) {
-    $clOuvidoriaCadLocal->ov25_validade = implode("-",array_reverse(explode("/",$oLocal->ov25_validade)));
+  if ( trim((string) $oLocal->ov25_validade) != '' ) {
+    $clOuvidoriaCadLocal->ov25_validade = implode("-",array_reverse(explode("/",(string) $oLocal->ov25_validade)));
   } else {
   	$clOuvidoriaCadLocal->ov25_validade = "null";
   }
@@ -214,7 +214,7 @@ if ( $oPost->sMethod == 'incluirLocal') {
     
     if ( $oLocal->sTipoLocal == 'g' ) {
       
-      $clOuvidoriaCadLocalGeral->ov28_descricao         = utf8_decode($oLocal->ov28_descricao);
+      $clOuvidoriaCadLocalGeral->ov28_descricao         = mb_convert_encoding($oLocal->ov28_descricao, 'ISO-8859-1');
       $clOuvidoriaCadLocalGeral->ov28_ouvidoriacadlocal = $clOuvidoriaCadLocal->ov25_sequencial;
       
       if ( $lAltera ) {
@@ -233,9 +233,9 @@ if ( $oPost->sMethod == 'incluirLocal') {
       
       $clOuvidoriaCadLocalEnder->ov26_ruas              = $oLocal->ov26_ruas;
       $clOuvidoriaCadLocalEnder->ov26_numero            = $oLocal->ov26_numero;
-      $clOuvidoriaCadLocalEnder->ov26_complemento       = utf8_decode($oLocal->ov26_complemento);
+      $clOuvidoriaCadLocalEnder->ov26_complemento       = mb_convert_encoding($oLocal->ov26_complemento, 'ISO-8859-1');
       $clOuvidoriaCadLocalEnder->ov26_ouvidoriacadlocal = $clOuvidoriaCadLocal->ov25_sequencial;
-      $clOuvidoriaCadLocalEnder->ov26_observacao         = utf8_decode($oLocal->ov26_observacao);
+      $clOuvidoriaCadLocalEnder->ov26_observacao         = mb_convert_encoding($oLocal->ov26_observacao, 'ISO-8859-1');
 
       if ( $lAltera ) {
       	$clOuvidoriaCadLocalEnder->ov26_sequencial = $oDadosTipo->codlocal;
@@ -278,8 +278,8 @@ if ( $oPost->sMethod == 'incluirLocal') {
      $sMsgErro = "Alteração feita com sucesso!";
   }
   
-  $aRetorno = array("lErro"=>$lErro,
-                    "sMsg" =>urlencode($sMsgErro));   
+  $aRetorno = ["lErro"=>$lErro,
+                    "sMsg" =>urlencode($sMsgErro)];   
 
   echo $oJson->encode($aRetorno);
   
@@ -331,8 +331,8 @@ if ( $oPost->sMethod == 'incluirLocal') {
      $sMsgErro = "Exclusão feita com sucesso!";
   }
   
-  $aRetorno = array("lErro"=>$lErro,
-                    "sMsg" =>urlencode($sMsgErro));   
+  $aRetorno = ["lErro"=>$lErro,
+                    "sMsg" =>urlencode($sMsgErro)];   
 
   echo $oJson->encode($aRetorno);
   

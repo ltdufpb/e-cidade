@@ -47,7 +47,7 @@ include(modification("fpdf151/pdf.php"));
     $pdf->SetFillColor(24,135,18);
 
     $result = db_query($sql);
-    $num = pg_numrows($result);
+    $num = pg_num_rows($result);
     $pdf->SetFont('Courier','B',8);
     $linha = 60;
     $TotPag = 0;
@@ -75,14 +75,14 @@ include(modification("fpdf151/pdf.php"));
          $pdf->Cell(10,4,"Fixado","LRB",0,"C",0);
          $pdf->Cell(10,4,"Calculo","LRB",1,"C",0);
       }
-      $pdf->Cell(12,4,pg_result($result,$i,"q85_codigo"),"0",0,"C",0);
-      $pdf->Cell(80,4,pg_result($result,$i,"q85_descr"),"0",0,"L",0);
-      $pdf->Cell(18,4,number_format(pg_result($result,$i,"q85_uniref"),2,",","."),"0",0,"R",0);
-      $pdf->Cell(20,4,db_formatar(pg_result($result,$i,"q85_dtoper"),"d"),"0",0,"C",0);
-      $pdf->Cell(10,4,number_format(pg_result($result,$i,"q85_codven"),0,",","."),"0",0,"C",0);
-      $pdf->Cell( 6,4,pg_result($result,$i,"q85var"),"0",0,"C",0);
-      $pdf->Cell(10,4,pg_result($result,$i,"q85fixmes"),"0",0,"C",0);
-      $pdf->Cell(10,4,number_format(pg_result($result,$i,"q85_forcal"),0,",","."),"0",1,"C",0);
+      $pdf->Cell(12,4,pg_fetch_result($result,$i,"q85_codigo"),"0",0,"C",0);
+      $pdf->Cell(80,4,pg_fetch_result($result,$i,"q85_descr"),"0",0,"L",0);
+      $pdf->Cell(18,4,number_format(pg_fetch_result($result,$i,"q85_uniref"),2,",","."),"0",0,"R",0);
+      $pdf->Cell(20,4,db_formatar(pg_fetch_result($result,$i,"q85_dtoper"),"d"),"0",0,"C",0);
+      $pdf->Cell(10,4,number_format(pg_fetch_result($result,$i,"q85_codven"),0,",","."),"0",0,"C",0);
+      $pdf->Cell( 6,4,pg_fetch_result($result,$i,"q85var"),"0",0,"C",0);
+      $pdf->Cell(10,4,pg_fetch_result($result,$i,"q85fixmes"),"0",0,"C",0);
+      $pdf->Cell(10,4,number_format(pg_fetch_result($result,$i,"q85_forcal"),0,",","."),"0",1,"C",0);
       $TotPag += 1;
     }
 

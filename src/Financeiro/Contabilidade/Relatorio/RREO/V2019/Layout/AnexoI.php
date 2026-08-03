@@ -39,19 +39,17 @@ class AnexoI extends LayoutAnexoI2018
     const LINHARECEITAINTRAFIM = 168;
     const LINHADESPESAINTRAINICIO = 169;
     const LINHADESPESAINTRAFIM = 178;
-
-    protected $sessao = null;
     /**
      * @var int
      */
     private $codigoRelatorio;
 
-    public function __construct($iAno, \Periodo $oPeriodo, $sInstituicao, $sessao = [])
+    public function __construct($iAno, \Periodo $oPeriodo, $sInstituicao, protected $sessao = [])
     {
-        $this->sessao = $sessao;
         parent::__construct($iAno, $oPeriodo, $sInstituicao);
     }
 
+    #[\Override]
     protected function processar()
     {
         $this->codigoRelatorio = Relatorio::CODIGO_RELATORIO;
@@ -77,13 +75,14 @@ class AnexoI extends LayoutAnexoI2018
         return $this->codigoRelatorio;
     }
 
+    #[\Override]
     protected function formataValor($linha)
     {
-        $linhasCondicao = array(
+        $linhasCondicao = [
             Relatorio::LINHA_DEFICIT_VI,
             Relatorio::LINHA_SUPERAVIT_FINANCEIRO_UTILIZADO_CREDITOS_ADICIONAIS,
             Relatorio::LINHA_SUPERAVIT_XIII
-        );
+        ];
 
         if (in_array($linha->ordem, $linhasCondicao)) {
             array_map(function ($coluna) use ($linha) {
@@ -98,6 +97,7 @@ class AnexoI extends LayoutAnexoI2018
         }
     }
 
+    #[\Override]
     protected function adicionarLegendas()
     {
         if ($this->oPdf->gety() > $this->oPdf->h - 35) {
@@ -117,6 +117,7 @@ class AnexoI extends LayoutAnexoI2018
      * Imprime as linhas da Receita
      * @param bool $lIntra
      */
+    #[\Override]
     protected function imprimeReceitas($lIntra = false)
     {
         $iInicio = static::LINHARECEITAINICIO;
@@ -147,6 +148,7 @@ class AnexoI extends LayoutAnexoI2018
      * Imprime as linhas da despesa
      * @param bool $lIntra
      */
+    #[\Override]
     protected function imprimeDespesas($lIntra = false)
     {
 

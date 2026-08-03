@@ -76,7 +76,7 @@ final class dbVariaveisRelatorio  implements iGeradorRelatorio {
   public function getLabel() {
 
    if (db_utils::isUTF8($this->sLabel)) {
-     return utf8_decode($this->sLabel);
+     return mb_convert_encoding($this->sLabel, 'ISO-8859-1');
    } else {
      return $this->sLabel;
    }
@@ -98,7 +98,7 @@ final class dbVariaveisRelatorio  implements iGeradorRelatorio {
   public function getValor() {
 
     if (db_utils::isUTF8($this->sValor)) {
-      return utf8_decode($this->sValor);
+      return mb_convert_encoding($this->sValor, 'ISO-8859-1');
     } else {
       return $this->sValor;
     }
@@ -153,11 +153,11 @@ final class dbVariaveisRelatorio  implements iGeradorRelatorio {
 
   	$oXmlWriter->startElement('Variavel');
 
-  	$oXmlWriter->writeAttribute('nome' ,    utf8_encode($this->sNome));
-  	$oXmlWriter->writeAttribute('label',    utf8_encode($this->sLabel));
-  	$oXmlWriter->writeAttribute('tipodado', utf8_encode($this->sTipoDado));
-  	$oXmlWriter->writeAttribute('valor',    utf8_encode($this->sValor));
-  	$oXmlWriter->writeAttribute('sql',    utf8_encode($this->sSql));
+  	$oXmlWriter->writeAttribute('nome' ,    mb_convert_encoding($this->sNome, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('label',    mb_convert_encoding($this->sLabel, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('tipodado', mb_convert_encoding($this->sTipoDado, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('valor',    mb_convert_encoding($this->sValor, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('sql',    mb_convert_encoding($this->sSql, 'UTF-8', 'ISO-8859-1'));
 
   	$oXmlWriter->endElement();
 

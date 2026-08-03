@@ -31,7 +31,7 @@ class Log {
 
   static private $oInstancia = null;
   static private $iIndiceLog = 0;
-  static private $aLog       = array();
+  static private $aLog       = [];
   private $sCaminho;
   /**
    *  Contrutor privado da Classe
@@ -67,7 +67,7 @@ class Log {
     }
 
     $iIndiceLog = self::$iIndiceLog++;
-    $aPartes    = explode("\n", $sMensagem);
+    $aPartes    = explode("\n", (string) $sMensagem);
     $aRastros   = debug_backtrace();
     $iLinha     = $aRastros[0]['line'];
     $sArquivo   = explode("/",$aRastros[0]['file']);

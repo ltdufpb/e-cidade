@@ -14,7 +14,7 @@ class Bootstrap extends \ECidade\V3\Event\Handler {
     $controller = $params[0];
     
     $controller->getView()->document->addScript(
-      ECIDADE_REQUEST_PATH . 'extension/DBug/assets/js/dbug.js', array('type' => 'text/javascript')
+      ECIDADE_REQUEST_PATH . 'extension/DBug/assets/js/dbug.js', ['type' => 'text/javascript']
     );
 
     $controller->getRequest()->session()->set('DB_DEBUG', true);

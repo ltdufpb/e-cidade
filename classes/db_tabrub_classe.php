@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE tabrub
 class cl_tabrub { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h21_rubric = null; 
-   var $h21_codigo = 0; 
+   public $h21_rubric = null; 
+   public $h21_codigo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h21_rubric = varchar(4) = Código da Rúbrica 
                  h21_codigo = int4 = Codigo 
                  ";
    //funcao construtor da classe 
-   function cl_tabrub() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabrub"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_tabrub {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de rubricas das 36 contribuicoes          ($this->h21_rubric."-".$this->h21_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de rubricas das 36 contribuicoes          já Cadastrado";
@@ -130,12 +130,12 @@ class cl_tabrub {
      $resaco = $this->sql_record($this->sql_query_file($this->h21_rubric,$this->h21_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4496,'$this->h21_rubric','I')");
        $resac = db_query("insert into db_acountkey values($acount,4497,'$this->h21_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,595,4496,'','".AddSlashes(pg_result($resaco,0,'h21_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,595,4497,'','".AddSlashes(pg_result($resaco,0,'h21_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,595,4496,'','".AddSlashes(pg_fetch_result($resaco,0,'h21_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,595,4497,'','".AddSlashes(pg_fetch_result($resaco,0,'h21_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_tabrub {
       $this->atualizacampos();
      $sql = " update tabrub set ";
      $virgula = "";
-     if(trim($this->h21_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h21_rubric"])){ 
+     if(trim((string) $this->h21_rubric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h21_rubric"])){ 
        $sql  .= $virgula." h21_rubric = '$this->h21_rubric' ";
        $virgula = ",";
-       if(trim($this->h21_rubric) == null ){ 
+       if(trim((string) $this->h21_rubric) == null ){ 
          $this->erro_sql = " Campo Código da Rúbrica nao Informado.";
          $this->erro_campo = "h21_rubric";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_tabrub {
          return false;
        }
      }
-     if(trim($this->h21_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h21_codigo"])){ 
+     if(trim((string) $this->h21_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h21_codigo"])){ 
        $sql  .= $virgula." h21_codigo = $this->h21_codigo ";
        $virgula = ",";
-       if(trim($this->h21_codigo) == null ){ 
+       if(trim((string) $this->h21_codigo) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "h21_codigo";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_tabrub {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4496,'$this->h21_rubric','A')");
          $resac = db_query("insert into db_acountkey values($acount,4497,'$this->h21_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h21_rubric"]))
-           $resac = db_query("insert into db_acount values($acount,595,4496,'".AddSlashes(pg_result($resaco,$conresaco,'h21_rubric'))."','$this->h21_rubric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,595,4496,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h21_rubric'))."','$this->h21_rubric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["h21_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,595,4497,'".AddSlashes(pg_result($resaco,$conresaco,'h21_codigo'))."','$this->h21_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,595,4497,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h21_codigo'))."','$this->h21_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_tabrub {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4496,'$h21_rubric','E')");
          $resac = db_query("insert into db_acountkey values($acount,4497,'$h21_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,595,4496,'','".AddSlashes(pg_result($resaco,$iresaco,'h21_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,595,4497,'','".AddSlashes(pg_result($resaco,$iresaco,'h21_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,595,4496,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h21_rubric'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,595,4497,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h21_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tabrub
@@ -304,7 +304,7 @@ class cl_tabrub {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tabrub";

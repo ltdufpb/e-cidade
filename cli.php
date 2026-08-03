@@ -17,7 +17,7 @@ Registry::set('app.request', $fakeRequest);
 
 // OLD FrontIntegracaoExterna.php code
 
-$options = getopt('e:d:', array('executable:', 'dir:'));
+$options = getopt('e:d:', ['executable:', 'dir:']);
 $myArgs = $argv;
 
 $path = ECIDADE_PATH;

@@ -33,7 +33,7 @@ class cl_bnccetapas
     public function __construct()
     {
         $this->rotulo = new rotulo('bnccetapas');
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -85,10 +85,10 @@ class cl_bnccetapas
                 $this->erro_status = "0";
                 return false;
             }
-            $this->ed152_sequencial = pg_result($result, 0, 0);
+            $this->ed152_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("SELECT last_value FROM bnccetapas_ed152_sequencial_seq");
-            if ($result && pg_result($result, 0, 0) < $ed152_sequencial) {
+            if ($result && pg_fetch_result($result, 0, 0) < $ed152_sequencial) {
                 $this->erro_sql = " Campo ed152_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -121,7 +121,7 @@ class cl_bnccetapas
      $result = db_query($sql);
      if ($result == false) { 
        $this->erro_banco = str_replace("\n", "", @pg_last_error());
-       if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+       if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
          $this->erro_sql = " () não Incluído. Inclusão Abortada.";
          $this->erro_msg = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já cadastrado";
@@ -148,12 +148,12 @@ class cl_bnccetapas
        $resaco = $this->sql_record($this->sql_query_file($this->ed152_sequencial  ));
        if ($resaco != false || $this->numrows != 0) {
          $resac = db_query("SELECT nextval('db_acount_id_acount_seq') AS acount");
-         $acount = pg_result($resac, 0, 0);
+         $acount = pg_fetch_result($resac, 0, 0);
          $resac = db_query("INSERT INTO db_acountacesso VALUES ($acount, " . db_getsession("DB_acessado") . ")");
          $resac = db_query("INSERT INTO db_acountkey VALUES ($acount,1010927,'$this->ed152_sequencial','I')");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010505,1010927,'','" . AddSlashes(pg_result($resaco,0,'ed152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010505,1010928,'','" . AddSlashes(pg_result($resaco,0,'ed152_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010505,1010929,'','" . AddSlashes(pg_result($resaco,0,'ed152_ensino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010505,1010927,'','" . AddSlashes(pg_fetch_result($resaco,0,'ed152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010505,1010928,'','" . AddSlashes(pg_fetch_result($resaco,0,'ed152_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("INSERT INTO db_acount VALUES ($acount,1010505,1010929,'','" . AddSlashes(pg_fetch_result($resaco,0,'ed152_ensino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -194,15 +194,15 @@ class cl_bnccetapas
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1010927,'$this->ed152_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed152_sequencial"]) || $this->ed152_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010505,1010927,'".AddSlashes(pg_result($resaco,$conresaco,'ed152_sequencial'))."','$this->ed152_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010505,1010927,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed152_sequencial'))."','$this->ed152_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed152_etapa"]) || $this->ed152_etapa != "")
-             $resac = db_query("insert into db_acount values($acount,1010505,1010928,'".AddSlashes(pg_result($resaco,$conresaco,'ed152_etapa'))."','$this->ed152_etapa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010505,1010928,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed152_etapa'))."','$this->ed152_etapa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["ed152_ensino"]) || $this->ed152_ensino != "")
-             $resac = db_query("insert into db_acount values($acount,1010505,1010929,'".AddSlashes(pg_result($resaco,$conresaco,'ed152_ensino'))."','$this->ed152_ensino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010505,1010929,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ed152_ensino'))."','$this->ed152_ensino',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -256,12 +256,12 @@ class cl_bnccetapas
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1010927,'$ed152_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010505,1010927,'','".AddSlashes(pg_result($resaco,$iresaco,'ed152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010505,1010928,'','".AddSlashes(pg_result($resaco,$iresaco,'ed152_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010505,1010929,'','".AddSlashes(pg_result($resaco,$iresaco,'ed152_ensino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010505,1010927,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed152_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010505,1010928,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed152_etapa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010505,1010929,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ed152_ensino'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

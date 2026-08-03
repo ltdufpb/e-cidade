@@ -142,8 +142,8 @@ if (isset($oPost->l20_codigo) && trim($oPost->l20_codigo) != '') {
 								   $lInicialGerada = true;
 								 }
 					       
-                 $aPosicaoInicial = array("f" => "Atualizada",
-                                          "t" => "Inicial");    
+                 $aPosicaoInicial = ["f" => "Atualizada",
+                                          "t" => "Inicial"];    
                  db_select("l39_posicaoinicial", $aPosicaoInicial, true, "text", " onchange='js_modeloposicao();'");
                ?>
 					     </td>

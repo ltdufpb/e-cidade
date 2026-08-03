@@ -121,7 +121,7 @@ class RecursoService
             }
         } else {
             $recurso = new Recurso();
-            $recurso->o15_descr = substr($dados['descricao'], 0, 100);
+            $recurso->o15_descr = substr((string) $dados['descricao'], 0, 100);
             $recurso->o15_codigo = $dados['codigo'];
             $recurso->o15_codtri = $dados['recursoGestao'];
             $recurso->o15_tipo = $dados['tipoRecurso'];
@@ -296,7 +296,7 @@ SQL;
     {
         $recurso = Recurso::find($idOrctiporec);
         $fonteRecurso = $recurso->fonteRecurso($exercicio);
-        $codigoSiconfi = substr($fonteRecurso->codigo_siconfi, 1);
+        $codigoSiconfi = substr((string) $fonteRecurso->codigo_siconfi, 1);
         $recurso->invalido = is_null(FontesSiconfi::find($codigoSiconfi));
         $recurso->fonte_recurso = $fonteRecurso;
         $recurso->codigo_siconfi = $codigoSiconfi;

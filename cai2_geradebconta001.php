@@ -46,7 +46,7 @@ $cldb_config = new cl_db_config;
 $clrotulo = new rotulocampo;
 $clrotulo->label("d72_data");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -103,11 +103,11 @@ function js_geraarquivo() {
                    where   k00_instit = ".db_getsession("DB_instit")."    
 									order by d66_arretipo desc");
                  
-                if (pg_numrows($resulttipodebito) > 0) {
+                if (pg_num_rows($resulttipodebito) > 0) {
                   ?>
                   <select name="tipodebito" onChange='document.form1.submit()'>
                   <?php 
-                  for ($i = 0; $i < pg_numrows($resulttipodebito); $i ++) {
+                  for ($i = 0; $i < pg_num_rows($resulttipodebito); $i ++) {
                     db_fieldsmemory($resulttipodebito, $i);
                     ?>
                     <option value='<?=$d66_arretipo?>'><?=$k00_descr?></option>
@@ -143,11 +143,11 @@ function js_geraarquivo() {
                    order by k00_numpar";
                  $resultnumpar = db_query($sqlnumpar);
 
-                 if (pg_numrows($resultnumpar) > 0) {
+                 if (pg_num_rows($resultnumpar) > 0) {
                    ?>
                    <select name="numpar">
                    <?php 
-                   for ($i = 0; $i < pg_numrows($resultnumpar); $i ++) {
+                   for ($i = 0; $i < pg_num_rows($resultnumpar); $i ++) {
                      db_fieldsmemory($resultnumpar, $i);
                      ?>
                      <option value='<?=$k00_numpar?>'><?=$k00_numpar?></option>
@@ -184,7 +184,7 @@ function js_geraarquivo() {
 	          <td height="25"><strong>Mes do Vencimento:</strong></td>
             <td height="25">
              <?php 
-               $meses = array( "01" => "Janeiro",
+               $meses = [ "01" => "Janeiro",
                                "02" => "Fevereiro",
                                "03" => "Marco",
                                "04" => "Abril",
@@ -195,7 +195,7 @@ function js_geraarquivo() {
                                "09" => "Setembro",
                                "10" => "Outubro",
                                "11" => "Novembro",
-                               "12" => "Dezembro" );
+                               "12" => "Dezembro" ];
                $mesvenc = date("m", db_getsession("DB_datausu") );
                db_select("mesvenc", $meses, true, 1);
                
@@ -215,7 +215,7 @@ function js_geraarquivo() {
                          inner join bancos on codbco = d62_banco
                    where d62_instituicao =  ".db_getsession("DB_instit"));
 
-                if (pg_numrows($resultbanco) > 0) {
+                if (pg_num_rows($resultbanco) > 0) {
 	                /*?>
 	                <select name="banco">
 	                <?php 
@@ -240,8 +240,8 @@ function js_geraarquivo() {
 	          <td height="25"><strong> Formato Arquivo:</strong></td>
             <td height="25">
              <?php 
-               $formato = array( "U" => "UNIX",
-                                 "D" => "DOS");
+               $formato = [ "U" => "UNIX",
+                                 "D" => "DOS"];
                db_select("formatoArq", $formato, true, 1);
                
              ?>

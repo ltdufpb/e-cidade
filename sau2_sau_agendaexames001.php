@@ -34,7 +34,7 @@ include(modification("classes/db_cgm_classe.php"));
 include(modification("classes/db_sau_agendaexames_ext_classe.php"));
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 set_time_limit(0);
 
 $clsau_agendaexames = new cl_sau_agendaexames_ext;
@@ -62,19 +62,19 @@ $obj_dbconfig    = db_utils::fieldsMemory($res_dbconfig,0);
 
 $obj_agendaexames = db_utils::fieldsMemory($res_agendaexames,0); 
 
-$dia = substr($obj_agendaexames->z01_d_nasc,8,2);
-$mes = substr($obj_agendaexames->z01_d_nasc,5,2);
-$ano = substr($obj_agendaexames->z01_d_nasc,0,4);
+$dia = substr((string) $obj_agendaexames->z01_d_nasc,8,2);
+$mes = substr((string) $obj_agendaexames->z01_d_nasc,5,2);
+$ano = substr((string) $obj_agendaexames->z01_d_nasc,0,4);
 
 $idade = calcage( $dia, $mes, $ano, date("d"), date("m"), date("Y") );
 
-$dia_con = substr($obj_agendaexames->s113_d_exame,8,2);
-$mes_con = substr($obj_agendaexames->s113_d_exame,5,2);
-$ano_con = substr($obj_agendaexames->s113_d_exame,0,4);
+$dia_con = substr((string) $obj_agendaexames->s113_d_exame,8,2);
+$mes_con = substr((string) $obj_agendaexames->s113_d_exame,5,2);
+$ano_con = substr((string) $obj_agendaexames->s113_d_exame,0,4);
 
-$dia_atd = substr($obj_agendaexames->s113_d_agendamento,8,2);
-$mes_atd = substr($obj_agendaexames->s113_d_agendamento,5,2);
-$ano_atd = substr($obj_agendaexames->s113_d_agendamento,0,4);
+$dia_atd = substr((string) $obj_agendaexames->s113_d_agendamento,8,2);
+$mes_atd = substr((string) $obj_agendaexames->s113_d_agendamento,5,2);
+$ano_atd = substr((string) $obj_agendaexames->s113_d_agendamento,0,4);
 
 $pdf = new SCPDF();
 $pdf->Open();
@@ -101,7 +101,7 @@ $pdf->cell(20,4,"Hora",0,1,"L",0);
 $pdf->setfont('times','',8);
 $pdf->cell(20,4,$s113_i_codigo,0,0,"L",0);
 $pdf->cell(40,4,"$dia_con/$mes_con/$ano_con",0,0,"L",0);
-$pdf->cell(40,4,utf8_decode($diasemana) ,0,0,"L",0);
+$pdf->cell(40,4,mb_convert_encoding($diasemana, 'ISO-8859-1') ,0,0,"L",0);
 $pdf->cell(20,4,"$obj_agendaexames->s113_c_hora",0,1,"L",0);
 
 $pdf->setfont('times','b',8);
@@ -127,7 +127,7 @@ $pdf->cell(20,4,"" ,0,1,"L",0);
 
 $pdf->cell(190,4,str_repeat("-",200),0,1,"L",0);
 
-$sHora = substr( $obj_agendaexames->s113_c_cadastro, 0, 8 );
+$sHora = substr( (string) $obj_agendaexames->s113_c_cadastro, 0, 8 );
 
 $pdf->setfont('times','b',8);
 $pdf->cell(100,4,"Atendente",0,0,"L",0);

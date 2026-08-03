@@ -81,7 +81,7 @@ db_input('k07_descr',50,$Ik07_descr,true,'text',3,'')
                                    and k07_instit = ".db_getsession("DB_instit")."
               where k08_taxagrupo = $k08_taxagrupo ";
 //   echo $sql."<br></br>"; 
-	 $chavepri = array("k08_taxagruporeg"=>@$k08_taxagruporeg,"k08_taxagrupo"=>@$k08_taxagrupo,"k08_codsubrec"=>@$k08_codsubrec,"k07_descr"=>@$k07_descr);
+	 $chavepri = ["k08_taxagruporeg"=>@$k08_taxagruporeg,"k08_taxagrupo"=>@$k08_taxagrupo,"k08_codsubrec"=>@$k08_codsubrec,"k07_descr"=>@$k07_descr];
 //   print_r($chavepri); 
 	 $cliframe_alterar_excluir->chavepri      = $chavepri;
 	 $cliframe_alterar_excluir->opcoes        = 3;
@@ -177,7 +177,7 @@ function js_preenchepesquisa(chave){
   db_iframe_taxagruporeg.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -32,9 +32,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 if(!isset($pesquisar))
-   parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+   parse_str((string) $_SERVER["QUERY_STRING"]);
 $clcgm = new cl_cgm;
 $clrotulo = new rotulocampo;
 $clcgm->rotulo->label("z01_numcgm");
@@ -48,7 +48,7 @@ if(isset($script) && $script != ""){
 <?php 
   $vals = "";
   $vir = "";
-  $camp = split(",",$valores);
+  $camp = preg_split("#,#m",$valores);
   for($f=0;$f<count($camp);$f++){
     $vals .= $vir."'".$camp[$f]."'";
     $vir = ",";
@@ -60,7 +60,7 @@ if(isset($script) && $script != ""){
 exit;
 }
 if(isset($testanome) && !isset($pesquisa_chave)){
-  $funmat = split("\|",$funcao_js);
+  $funmat = preg_split("#\\|#m",$funcao_js);
   $func_antes = $funmat[0];
   $valores = "";
   $camp = "";
@@ -221,7 +221,7 @@ if(!isset($pesquisa_chave)){
   $clnome = new cl_cgm;
   $condicao = " and exists( select * from db_cgmcpf where db_cgmcpf.z01_numcgm = cgm.z01_numcgm)";
   if (isset($nomeDigitadoParaPesquisa) && ($nomeDigitadoParaPesquisa!="") ){
-    $nomeDigitadoParaPesquisa = strtoupper($nomeDigitadoParaPesquisa);
+    $nomeDigitadoParaPesquisa = strtoupper((string) $nomeDigitadoParaPesquisa);
     $sql = $clnome->sql_query("",$campos,"z01_nome"," to_ascii(z01_nome) like '".(TiraAcento($nomeDigitadoParaPesquisa))."%' $condicao");
   }else if(isset($numcgmDigitadoParaPesquisa) && $numcgmDigitadoParaPesquisa != ""){
     $sql = $clnome->sql_query("",$campos,"z01_nome"," z01_numcgm = $numcgmDigitadoParaPesquisa $condicao");

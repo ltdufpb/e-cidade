@@ -95,8 +95,8 @@ try {
           throw new Exception(_M( MENSAGENS . 'data_vencimento_obrigatorio'));
         }
 
-        $aDataEmissao    = explode("/", $oParametros->sDataEmissao);
-        $aDataVencimento = explode("/", $oParametros->sDataVencimento);
+        $aDataEmissao    = explode("/", (string) $oParametros->sDataEmissao);
+        $aDataVencimento = explode("/", (string) $oParametros->sDataVencimento);
 
         if ($aDataEmissao[2] > $aDataVencimento[2]) {
           throw new Exception( _M( MENSAGENS . 'datas_invalidas' ) );
@@ -194,11 +194,11 @@ try {
         $iCodigoLicencaEmpreendimento = $oLicencaEmpreendimento->getSequencial();
       }
 
-      $aParametrosDocumento = array( 'iCodigoParecerTecnico'      => $iCodigoParecerTecnico,
+      $aParametrosDocumento = [ 'iCodigoParecerTecnico'      => $iCodigoParecerTecnico,
                                      '$sCondicionantesVinculadas' => "{$sCondicionantesVinculadas}",
                                      'numero_licenca_ambiental'   => $iCodigoLicencaEmpreendimento,
                                      'iCodigoLicenciamento'       => $iCodigoLicencaEmpreendimento
-                              );
+                              ];
 
       /**
        * Verficamos o Parecer para setarmos o template a ser gerado
@@ -385,11 +385,11 @@ try {
       $rsRecord  = $oDaoParecerTecnico->sql_record($sSql);
       $aLicencas = db_utils::getCollectionByRecord($rsRecord);
 
-      $aTiposLicenca = array(
-          TIPO_LICENCA_PREVIA     => utf8_encode("Prévia"),
-          TIPO_LICENCA_INSTALACAO => utf8_encode("Instalação"),
-          TIPO_LICENCA_OPERACAO   => utf8_encode("Operação")
-      );
+      $aTiposLicenca = [
+          TIPO_LICENCA_PREVIA     => mb_convert_encoding("Prévia", 'UTF-8', 'ISO-8859-1'),
+          TIPO_LICENCA_INSTALACAO => mb_convert_encoding("Instalação", 'UTF-8', 'ISO-8859-1'),
+          TIPO_LICENCA_OPERACAO   => mb_convert_encoding("Operação", 'UTF-8', 'ISO-8859-1')
+      ];
 
       foreach ($aLicencas as $oLicenca) {
 
@@ -418,11 +418,11 @@ try {
         throw new Exception(_M( MENSAGENS . 'tipo_licenca_obrigatorio'));
       }
 
-      $aTiposEmissao = array(
-          TIPO_EMISSAO_NOVA        => utf8_encode("Nova"),
-          TIPO_EMISSAO_PRORROGACAO => utf8_encode("Prorrogação"),
-          TIPO_EMISSAO_RENOVACAO   => utf8_encode("Renovação")
-        );
+      $aTiposEmissao = [
+          TIPO_EMISSAO_NOVA        => mb_convert_encoding("Nova", 'UTF-8', 'ISO-8859-1'),
+          TIPO_EMISSAO_PRORROGACAO => mb_convert_encoding("Prorrogação", 'UTF-8', 'ISO-8859-1'),
+          TIPO_EMISSAO_RENOVACAO   => mb_convert_encoding("Renovação", 'UTF-8', 'ISO-8859-1')
+        ];
 
       if ($oParametros->iTipoLicenca == TIPO_LICENCA_PREVIA || $oParametros->iTipoLicenca == TIPO_LICENCA_INSTALACAO) {
         unset($aTiposEmissao[TIPO_EMISSAO_RENOVACAO]);
@@ -475,8 +475,8 @@ try {
         break;
       }
 
-      $oRetorno->sNomeEmpreendedor = utf8_encode( $oEmpreendimento->getCgm()->getNome() );
-      $oRetorno->sNomeFantasia     = utf8_encode( $oEmpreendimento->getNomeFantasia() );
+      $oRetorno->sNomeEmpreendedor = mb_convert_encoding( $oEmpreendimento->getCgm()->getNome(), 'UTF-8', 'ISO-8859-1' );
+      $oRetorno->sNomeFantasia     = mb_convert_encoding( $oEmpreendimento->getNomeFantasia(), 'UTF-8', 'ISO-8859-1' );
       $oRetorno->iCNPJ             = $oEmpreendimento->getCnpj();
       break;
   }

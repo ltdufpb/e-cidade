@@ -43,7 +43,7 @@ $oDaoPais    = new cl_pais;
 $sCamposPais = "ed228_i_codigo,ed228_c_descr";
 $sSqlPais    = $oDaoPais->sql_query_file( "", $sCamposPais, "ed228_c_descr", "" );
 $rsPais      = db_query( $sSqlPais );
-$aPaises     = array();
+$aPaises     = [];
 
 if ( $rsPais && pg_num_rows($rsPais) > 0 ) {
 
@@ -58,8 +58,8 @@ if ( !isset($z01_registromunicipio)) {
   $z01_registromunicipio = 't';
 }
 
-$retornacgs  = isset( $retornacgs ) ? $retornacgs : "";
-$retornanome = isset( $retornanome ) ? $retornanome : "";
+$retornacgs ??= "";
+$retornanome ??= "";
 $oSaudeConfiguracao = new SaudeConfiguracao();
 $lObrigarCns        = $oSaudeConfiguracao->obrigarCns();
 
@@ -79,7 +79,7 @@ $z01_d_falecimento_ano = '';
 
 if ( isset($z01_d_falecimento) && !empty($z01_d_falecimento) ) {
 
-  $iDataFalecimento      = strtotime($z01_d_falecimento);
+  $iDataFalecimento      = strtotime((string) $z01_d_falecimento);
   $z01_d_falecimento_dia = date("d",$iDataFalecimento);
   $z01_d_falecimento_mes = date("m",$iDataFalecimento);
   $z01_d_falecimento_ano = date("Y",$iDataFalecimento);
@@ -137,7 +137,7 @@ if ( isset($z01_b_descnomemae) && $z01_b_descnomemae == 't' ) {
           </td>
           <td>
             <?php
-              $x = array( 't' => "SIM", 'f' => "NÃO");
+              $x = [ 't' => "SIM", 'f' => "NÃO"];
               db_select('z01_registromunicipio',$x,true,$db_opcao,'onChange="js_zerac(this.value);"');
             ?>
           </td>
@@ -229,12 +229,12 @@ if ( isset($z01_b_descnomemae) && $z01_b_descnomemae == 't' ) {
           </td>
           <td>
             <?php
-            $x = array("1"=>"Solteiro",
+            $x = ["1"=>"Solteiro",
                 "2"=>"Casado",
                 "3"=>"Viúvo",
                 "4"=>"Separado ",
                 "5"=>"União C.",
-                "9"=>"Ignorado");
+                "9"=>"Ignorado"];
             db_select('z01_i_estciv',$x,true,$db_opcao);
             ?>
           </td>
@@ -289,7 +289,7 @@ if ( isset($z01_b_descnomemae) && $z01_b_descnomemae == 't' ) {
           </td>
           <td>
             <?php
-            $sex = array("M"=>"Masculino","F"=>"Feminino");
+            $sex = ["M"=>"Masculino","F"=>"Feminino"];
             db_select('z01_v_sexo',$sex,true,$db_opcao);
             ?>
           </td>
@@ -311,7 +311,7 @@ if ( isset($z01_b_descnomemae) && $z01_b_descnomemae == 't' ) {
           </td>
           <td>
             <?php
-            $x = array("D"=>"Definitivo","P"=>"Provisório");
+            $x = ["D"=>"Definitivo","P"=>"Provisório"];
             db_select('s115_c_tipo',$x,true,$db_opcao);
             ?>
           </td>
@@ -568,7 +568,7 @@ function js_pesquisa() {
 function js_preenchepesquisa( chave, chave1 ) {
 
   db_iframe_cgs_und.hide();
-  location.href = "<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisa="+chave+"&retornacgs=<?=$retornacgs?>&retornanome=<?=$retornanome?>&sCartaoSus="+chave1;
+  location.href = "<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>?chavepesquisa="+chave+"&retornacgs=<?=$retornacgs?>&retornanome=<?=$retornanome?>&sCartaoSus="+chave1;
 }
 
 function js_novo() {

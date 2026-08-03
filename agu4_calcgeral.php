@@ -32,9 +32,9 @@ require_once modification("dbforms/db_funcoes.php");
 
 db_postmemory($_POST);
 $oPost = db_utils::postMemory($_POST);
-$aAnos = array(
+$aAnos = [
 	db_getsession('DB_anousu') => db_getsession('DB_anousu')
-);
+];
 
 ?>
 <html>
@@ -92,7 +92,7 @@ $aAnos = array(
 				throw new DBException("Não foi possível encontrar informações das Matrículas.");
 			}
 
-			$iTotalMatriculas = pg_numrows($rsAguaBase);
+			$iTotalMatriculas = pg_num_rows($rsAguaBase);
 			if ($iTotalMatriculas == 0) {
 				throw new DBException("Nenhuma Matrícula foi encontrada para realizar o calculo.");
 			}

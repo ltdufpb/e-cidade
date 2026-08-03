@@ -8,11 +8,9 @@ class ESocialPreenchimentoValidatorFactory
 {
     public static function getByIdentificador($tipo)
     {
-        switch ($tipo) {
-            case 's22002190v23':
-                return new ServidorPreenchimentoValidator();
-        }
-
-        return null;
+        return match ($tipo) {
+            's22002190v23' => new ServidorPreenchimentoValidator(),
+            default => null,
+        };
     }
 }

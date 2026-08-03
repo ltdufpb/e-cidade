@@ -41,7 +41,7 @@ $head8 = "";
 include(modification("fpdf151/pdf.php"));
 require(modification("libs/db_sql.php"));
 
-$DB_DATACALC = mktime(0,0,0,substr($db_datausu,5,2),substr($db_datausu,8,2),substr($db_datausu,0,4));
+$DB_DATACALC = mktime(0,0,0,substr((string) $db_datausu,5,2),substr((string) $db_datausu,8,2),substr((string) $db_datausu,0,4));
 $head9 = "Débitos Calculados até: ".db_formatar($db_datausu,'d');
 
   if($tipo == 3) {
@@ -113,7 +113,7 @@ $pdf->SetFillColor(220);
 //Dados
 $dados = db_query("select z01_numcgm,z01_nome,z01_ender,z01_munic,z01_uf,z01_cgccpf,z01_ident 
                   from cgm 
-				  where z01_numcgm = ".pg_result($result,0,"k00_numcgm"));
+				  where z01_numcgm = ".pg_fetch_result($result,0,"k00_numcgm"));
 $X = 10;
 $Y = 38;
 $pdf->SetFont('Arial','B',8);
@@ -126,17 +126,17 @@ $pdf->Text($X,$Y + 12,"Endereço:");
 $pdf->Text($X,$Y + 16,"Município:");	
 $pdf->Text($X + 55,$Y + 16,"UF:");
 $pdf->SetFont('Arial','I',8);
-$pdf->Text($X + 18,$Y,pg_result($dados,0,"z01_numcgm"));
-$pdf->Text($X + 18,$Y + 4,pg_result($dados,0,"z01_nome"));
-$pdf->Text($X + 18,$Y + 8,db_cgccpf(pg_result($dados,0,"z01_cgccpf")));
-$pdf->Text($X + 18 + 45,$Y + 8,pg_result($dados,0,"z01_ident"));
-$pdf->Text($X + 18,$Y + 12,pg_result($dados,0,"z01_ender"));
-$pdf->Text($X + 18,$Y + 16,pg_result($dados,0,"z01_munic"));		
-$pdf->Text($X + 18 + 45,$Y + 16,pg_result($dados,0,"z01_uf"));	
+$pdf->Text($X + 18,$Y,pg_fetch_result($dados,0,"z01_numcgm"));
+$pdf->Text($X + 18,$Y + 4,pg_fetch_result($dados,0,"z01_nome"));
+$pdf->Text($X + 18,$Y + 8,db_cgccpf(pg_fetch_result($dados,0,"z01_cgccpf")));
+$pdf->Text($X + 18 + 45,$Y + 8,pg_fetch_result($dados,0,"z01_ident"));
+$pdf->Text($X + 18,$Y + 12,pg_fetch_result($dados,0,"z01_ender"));
+$pdf->Text($X + 18,$Y + 16,pg_fetch_result($dados,0,"z01_munic"));		
+$pdf->Text($X + 18 + 45,$Y + 16,pg_fetch_result($dados,0,"z01_uf"));	
 
 //DEBITOS
 $pdf->SetXY(10,60);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 $TamMatric = 10;
 $TamNumpar = 4;
@@ -182,8 +182,8 @@ $totmultap = 0;
 $totdescontop = 0;
 $tottotalp = 0;
 
-$xnumpre = pg_result($result,0,"k00_numpre");
-$xnumtot = pg_result($result,0,"k00_tipo");
+$xnumpre = pg_fetch_result($result,0,"k00_numpre");
+$xnumtot = pg_fetch_result($result,0,"k00_tipo");
 
 $valhis = 0;
 $valcor = 0;
@@ -214,7 +214,7 @@ for($i = 0;$i < $numrows;$i++) {
      $pdf->Cell($TamTotal + 6,5,"TOTAL",1,1,"C",0);
      $pdf->SetFont('arial','',6);
   }
-  if ( $xnumpre != pg_result($result,$i,"k00_numpre")){ 
+  if ( $xnumpre != pg_fetch_result($result,$i,"k00_numpre")){ 
 	$pdf->SetFont('arial','B',8);
     $pdf->Cell($TamNumpar+$TamNumtot+17+17+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO NUMPRE ".$xnumpre,"T",0,"L",1);
     $pdf->Cell($TamVlrhis + 6,5,db_formatar($tothisp,'f'),1,0,"R",1);
@@ -232,10 +232,10 @@ for($i = 0;$i < $numrows;$i++) {
     $tottotalp = 0;
   }
 
-  if ( $xnumtot != pg_result($result,$i,"k00_tipo")){ 
+  if ( $xnumtot != pg_fetch_result($result,$i,"k00_tipo")){ 
     $sql1 = " select k00_descr from arretipo where k00_tipo = $xnumtot and k00_instit = ".db_getsession('DB_instit') ;
     $pdf->SetFont('arial','B',8);
-    $pdf->Cell($TamNumpar+$TamNumtot+17+17+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO TIPO : ".$xnumtot." - ".pg_result(db_query($sql1),0,"k00_descr"),"T",0,"L",1);
+    $pdf->Cell($TamNumpar+$TamNumtot+17+17+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO TIPO : ".$xnumtot." - ".pg_fetch_result(db_query($sql1),0,"k00_descr"),"T",0,"L",1);
     $pdf->Cell($TamVlrhis + 6,5,db_formatar($tothis,'f'),1,0,"R",1);
     $pdf->Cell($TamVlrcor + 6,5,db_formatar($totcor,'f'),1,0,"R",1);
     $pdf->Cell($TamVlrjuros + 6,5,db_formatar($totjuros,'f'),1,0,"R",1);
@@ -252,47 +252,47 @@ for($i = 0;$i < $numrows;$i++) {
     $tottotal = 0;
   }
   $pdf->SetFont('arial','',6);
-  $pdf->Cell($TamNumpar,4,pg_result($result,$i,"k00_numpar"),"LR",0,"C",0);
-  $pdf->Cell($TamNumtot,4,pg_result($result,$i,"k00_numtot"),"R",0,"C",0);
-  $dtoper = pg_result($result,$i,"k00_dtoper");
+  $pdf->Cell($TamNumpar,4,pg_fetch_result($result,$i,"k00_numpar"),"LR",0,"C",0);
+  $pdf->Cell($TamNumtot,4,pg_fetch_result($result,$i,"k00_numtot"),"R",0,"C",0);
+  $dtoper = pg_fetch_result($result,$i,"k00_dtoper");
   $dtoper = mktime(0,0,0,substr($dtoper,5,2),substr($dtoper,8,2),substr($dtoper,0,4));
   $pdf->Cell(17,4,date("d-m-Y",$dtoper),"R",0,"C",0);
-  $dtvenc = pg_result($result,$i,"k00_dtvenc");
+  $dtvenc = pg_fetch_result($result,$i,"k00_dtvenc");
   $dtvenc = mktime(0,0,0,substr($dtvenc,5,2),substr($dtvenc,8,2),substr($dtvenc,0,4));
   $pdf->Cell(17,4,date("d-m-Y",$dtvenc),"R",0,"C",0);
-  $pdf->Cell($TamK01_descr,4,substr(trim(pg_result($result,$i,"k01_descr")),0,20),"R",0,"L",0);
-  $pdf->Cell($TamReceit,4,pg_result($result,$i,"k00_receit"),"R",0,"C",0);
-  $pdf->Cell($TamK02_descr,4,substr(trim(pg_result($result,$i,"k02_descr")),0,15),"R",0,"L",0);
+  $pdf->Cell($TamK01_descr,4,substr(trim(pg_fetch_result($result,$i,"k01_descr")),0,20),"R",0,"L",0);
+  $pdf->Cell($TamReceit,4,pg_fetch_result($result,$i,"k00_receit"),"R",0,"C",0);
+  $pdf->Cell($TamK02_descr,4,substr(trim(pg_fetch_result($result,$i,"k02_descr")),0,15),"R",0,"L",0);
   $pdf->SetFont('arial','',8);
-  $pdf->Cell($TamVlrhis + 6,4,db_formatar(pg_result($result,$i,"vlrhis"),'f'),"R",0,"R",0);
-  $pdf->Cell($TamVlrcor + 6,4,db_formatar(pg_result($result,$i,"vlrcor"),'f'),"R",0,"R",0);
-  $pdf->Cell($TamVlrjuros + 6,4,db_formatar(pg_result($result,$i,"vlrjuros"),'f'),"R",0,"R",0);
-  $pdf->Cell($TamVlrmulta + 6,4,db_formatar(pg_result($result,$i,"vlrmulta"),'f'),"R",0,"R",0);
-  $pdf->Cell($TamVlrdesconto + 6,4,db_formatar(pg_result($result,$i,"vlrdesconto"),'f'),"R",0,"R",0);
-  $pdf->Cell($TamTotal + 6,4,db_formatar(pg_result($result,$i,"total"),'f'),"R",0,"R",0);
+  $pdf->Cell($TamVlrhis + 6,4,db_formatar(pg_fetch_result($result,$i,"vlrhis"),'f'),"R",0,"R",0);
+  $pdf->Cell($TamVlrcor + 6,4,db_formatar(pg_fetch_result($result,$i,"vlrcor"),'f'),"R",0,"R",0);
+  $pdf->Cell($TamVlrjuros + 6,4,db_formatar(pg_fetch_result($result,$i,"vlrjuros"),'f'),"R",0,"R",0);
+  $pdf->Cell($TamVlrmulta + 6,4,db_formatar(pg_fetch_result($result,$i,"vlrmulta"),'f'),"R",0,"R",0);
+  $pdf->Cell($TamVlrdesconto + 6,4,db_formatar(pg_fetch_result($result,$i,"vlrdesconto"),'f'),"R",0,"R",0);
+  $pdf->Cell($TamTotal + 6,4,db_formatar(pg_fetch_result($result,$i,"total"),'f'),"R",0,"R",0);
   $pdf->Cell(1,4,"",0,1,0,0);
-  $tothisp += pg_result($result,$i,"vlrhis");
-  $totcorp += pg_result($result,$i,"vlrcor");
-  $totjurosp += pg_result($result,$i,"vlrjuros");
-  $totmultap += pg_result($result,$i,"vlrmulta");
-  $totdescontop += pg_result($result,$i,"vlrdesconto");
-  $tottotalp += pg_result($result,$i,"total");
-  $xnumpre = pg_result($result,$i,"k00_numpre");
+  $tothisp += pg_fetch_result($result,$i,"vlrhis");
+  $totcorp += pg_fetch_result($result,$i,"vlrcor");
+  $totjurosp += pg_fetch_result($result,$i,"vlrjuros");
+  $totmultap += pg_fetch_result($result,$i,"vlrmulta");
+  $totdescontop += pg_fetch_result($result,$i,"vlrdesconto");
+  $tottotalp += pg_fetch_result($result,$i,"total");
+  $xnumpre = pg_fetch_result($result,$i,"k00_numpre");
 
-  $tothis += pg_result($result,$i,"vlrhis");
-  $totcor += pg_result($result,$i,"vlrcor");
-  $totjuros += pg_result($result,$i,"vlrjuros");
-  $totmulta += pg_result($result,$i,"vlrmulta");
-  $totdesconto += pg_result($result,$i,"vlrdesconto");
-  $tottotal += pg_result($result,$i,"total");
-  $xnumtot = pg_result($result,$i,"k00_tipo");
+  $tothis += pg_fetch_result($result,$i,"vlrhis");
+  $totcor += pg_fetch_result($result,$i,"vlrcor");
+  $totjuros += pg_fetch_result($result,$i,"vlrjuros");
+  $totmulta += pg_fetch_result($result,$i,"vlrmulta");
+  $totdesconto += pg_fetch_result($result,$i,"vlrdesconto");
+  $tottotal += pg_fetch_result($result,$i,"total");
+  $xnumtot = pg_fetch_result($result,$i,"k00_tipo");
 
-  $valhis += pg_result($result,$i,"vlrhis");
-  $valcor += pg_result($result,$i,"vlrcor");
-  $valjuros += pg_result($result,$i,"vlrjuros");
-  $valmulta += pg_result($result,$i,"vlrmulta");
-  $valdesconto += pg_result($result,$i,"vlrdesconto");
-  $valtotal += pg_result($result,$i,"total");
+  $valhis += pg_fetch_result($result,$i,"vlrhis");
+  $valcor += pg_fetch_result($result,$i,"vlrcor");
+  $valjuros += pg_fetch_result($result,$i,"vlrjuros");
+  $valmulta += pg_fetch_result($result,$i,"vlrmulta");
+  $valdesconto += pg_fetch_result($result,$i,"vlrdesconto");
+  $valtotal += pg_fetch_result($result,$i,"total");
 }
 
 $pdf->SetFont('arial','B',8);
@@ -305,7 +305,7 @@ $pdf->Cell($TamVlrdesconto + 6,5,db_formatar($totdescontop,'f'),1,0,"R",1);
 $pdf->Cell($TamTotal + 6,5,db_formatar($tottotalp,'f'),1,1,"R",1);
 
 $sql1 = " select k00_descr from arretipo where k00_tipo = $xnumtot and k00_instit = ".db_getsession('DB_instit') ;
-$pdf->Cell($TamNumpar+$TamNumtot+17+17+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO TIPO : ".$xnumtot." - ".pg_result(db_query($sql1),0,"k00_descr"),"T",0,"L",1);
+$pdf->Cell($TamNumpar+$TamNumtot+17+17+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL DO TIPO : ".$xnumtot." - ".pg_fetch_result(db_query($sql1),0,"k00_descr"),"T",0,"L",1);
 $pdf->Cell($TamVlrhis + 6,5,db_formatar($tothis,'f'),1,0,"R",1);
 $pdf->Cell($TamVlrcor + 6,5,db_formatar($totcor,'f'),1,0,"R",1);
 $pdf->Cell($TamVlrjuros + 6,5,db_formatar($totjuros,'f'),1,0,"R",1);
@@ -317,7 +317,7 @@ $pdf->Ln(3);
 
 //TOTAL
 //$pdf->SetFont('arial','B',6);
-$pdf->Cell($TamNumpar+$TamNumtot+17+17+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL GERAL : ".$xnumtot." - ".pg_result(db_query($sql1),0,"k00_descr"),"T",0,"L",1);
+$pdf->Cell($TamNumpar+$TamNumtot+17+17+$TamK01_descr+$TamReceit+$TamK02_descr,5,"TOTAL GERAL : ".$xnumtot." - ".pg_fetch_result(db_query($sql1),0,"k00_descr"),"T",0,"L",1);
 $pdf->Cell($TamVlrhis + 6,5,db_formatar($valhis,'f'),1,0,"R",1);
 $pdf->Cell($TamVlrcor + 6,5,db_formatar($valcor,'f'),1,0,"R",1);
 $pdf->Cell($TamVlrjuros + 6,5,db_formatar($valjuros,'f'),1,0,"R",1);

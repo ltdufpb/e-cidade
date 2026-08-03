@@ -71,7 +71,7 @@ class ConfiguracaoFactory
      * @return \stdClass|null
      * @throws \Exception
      */
-    public static function getFormularioDoTipoNaVersaoAtual($integracao = Tipo::ESOCIAL, $tipoFormulario)
+    public static function getFormularioDoTipoNaVersaoAtual($integracao = Tipo::ESOCIAL, $tipoFormulario = null)
     {
         if ($integracao === Tipo::ESOCIAL) {
             return ConfiguracaoESocial::getFormularioDoTipoNaVersaoAtual($tipoFormulario);

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_tipoatend_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_tipoatend = new cl_sau_tipoatend;
 $clsau_tipoatend->rotulo->label("sd45_i_codigo");
 $clsau_tipoatend->rotulo->label("sd45_v_descricao");
@@ -98,9 +98,9 @@ $clsau_tipoatend->rotulo->label("sd45_v_descricao");
         }else{
            $sql = $clsau_tipoatend->sql_query("",$campos,"sd45_v_descricao"," sd45_i_programa = $programa");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd45_i_codigo)){
-          $repassa = array("chave_sd45_i_codigo"=>$chave_sd45_i_codigo,"chave_sd45_i_codigo"=>$chave_sd45_i_codigo);
+          $repassa = ["chave_sd45_i_codigo"=>$chave_sd45_i_codigo,"chave_sd45_i_codigo"=>$chave_sd45_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

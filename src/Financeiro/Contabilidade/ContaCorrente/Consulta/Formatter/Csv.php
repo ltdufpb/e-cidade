@@ -15,23 +15,23 @@ class Csv implements ConsultaInterface
      * lista de dados
      * @var array
      */
-    protected $dados = array();
+    protected $dados = [];
 
     /**
      * Linhas do csv
      * @var array
      */
-    protected $linhas = array();
+    protected $linhas = [];
 
     /**
      * Colunas da consulta
      * @var array
      */
-    protected $colunas = array();
+    protected $colunas = [];
 
     protected $separador = ";";
 
-    protected $totalizadores = array();
+    protected $totalizadores = [];
 
     /**
      * @var Visao
@@ -86,7 +86,7 @@ class Csv implements ConsultaInterface
         $totalSaldoFinal = 0;
         foreach ($this->dados as $dados) {
 
-            $linha = array($this->encodeCsvString($dados->estrutural), $this->encodeCsvString($dados->nome_conta));
+            $linha = [$this->encodeCsvString($dados->estrutural), $this->encodeCsvString($dados->nome_conta)];
 
             if ($this->agruparPorDocumento) {
                 $linha[] = $dados->documento;
@@ -133,7 +133,7 @@ class Csv implements ConsultaInterface
             $this->escreverCabecalhoVisao($arquivo);
             return;
         }
-        $cabecalho = array();
+        $cabecalho = [];
         $cabecalho[] = "Estrutural";
         $cabecalho[] = "Conta";
         $this->totalizadores[] = $this->encodeCsvString('Total:');
@@ -169,7 +169,7 @@ class Csv implements ConsultaInterface
     {
         $dadosCabecalho = $this->visao->getFiltros();
 
-        $cabecalho = array();
+        $cabecalho = [];
         if ($dadosCabecalho->configuracaoGrid->estrutural->visible) {
             $cabecalho[] = $dadosCabecalho->configuracaoGrid->estrutural->label;
             $this->totalizadores[] = 'Total:';
@@ -222,7 +222,7 @@ class Csv implements ConsultaInterface
         $dadosCabecalho = $this->visao->getFiltros()->configuracaoGrid;
         foreach ($this->dados as $dados) {
 
-            $linha = array();
+            $linha = [];
             if ($dadosCabecalho->estrutural->visible) {
                 $linha[] = $this->encodeCsvString($dados->estrutural);
             }

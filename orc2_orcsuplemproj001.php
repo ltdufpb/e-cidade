@@ -41,7 +41,7 @@ $clrotulo->label("o39_codlei");
 $clrotulo->label("o45_numlei");
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao=1;
 ?>
 

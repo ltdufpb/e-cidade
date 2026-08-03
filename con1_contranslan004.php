@@ -43,7 +43,7 @@ $clcontranslan = new cl_contranslan;
 $clconhistdoc = new cl_conhistdoc;
 $clcontrans = new cl_contrans;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 if(isset($c53_coddoc)){
   $db_opcao = 1;
   $db_botao = true;

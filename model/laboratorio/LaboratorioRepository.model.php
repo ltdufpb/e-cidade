@@ -36,7 +36,7 @@ class LaboratorioRepository {
    * Collection de Laboratorio 
    * @var array
    */    
-  private $aLaboratorio = array();
+  private $aLaboratorio = [];
   
   /**
    * Instancia da classe 

@@ -12,7 +12,7 @@ final class TEFService
         $operacoesrealizadastef = new Operacoesrealizadastef();
 
         if (!empty($oDados->sequencial)) {
-            $operacoesrealizadastef = (new OperacoesrealizadastefRepository())->getBySequencial($oDados->sequencial);
+            $operacoesrealizadastef = new OperacoesrealizadastefRepository()->getBySequencial($oDados->sequencial);
         }
 
         if (isset($oDados->numnov) && !empty($oDados->numnov)) {

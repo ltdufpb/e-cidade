@@ -99,13 +99,13 @@ class CompetenciaAtendimento implements ICompetenciaSaude {
    * Procedimentos realizado para $oCompetencia
    * @var array
    */
-  private $aProcedimentos = array();
+  private $aProcedimentos = [];
 
   /**
    * Coleção de filtros que serão usados no where do sql que buscará os procedimentos
    * @var array
    */
-  private $aFiltrosProcedimentos = array();
+  private $aFiltrosProcedimentos = [];
 
   /**
    * Construtor

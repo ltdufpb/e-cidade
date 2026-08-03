@@ -9,12 +9,12 @@ final class TotalUnica extends Layout
 {
     public function __construct ()
     {
-        $this->fields = array(
-            'TTOTAL_UNICAS' => array(
+        $this->fields = [
+            'TTOTAL_UNICAS' => [
                 'name'         => 'TOTUNICAS'
                 ,'description' => 'TOTAL DE PARCELA UNICA'
                 ,'size'        => 3
-            )
-        );
+            ]
+        ];
     }
 }

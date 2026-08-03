@@ -64,14 +64,14 @@ class ClassificacaoCredor {
    * 333903016000000
    * @type array
    */
-  public static $aSextoSetimoNivelDispensados = array(47, 16, 93);
+  public static $aSextoSetimoNivelDispensados = [47, 16, 93];
 
   /**
    * Primeiros três niveis desconsiderados
    * 331
    * @type array
    */
-  public static $aInicialElementos = array(331);
+  public static $aInicialElementos = [331];
 
   /**
    * @type EmpenhoFinanceiro
@@ -80,12 +80,14 @@ class ClassificacaoCredor {
 
 
   /**
-   * @deprecated
-   * Define o tipo de classificação de credor para o empenho
    * @param EmpenhoFinanceiro $oEmpenho
    * @param EmpenhoFinanceiro $oEmpenho
    * @return int
    */
+  #[\Deprecated(message: <<<'TXT'
+  
+  Define o tipo de classificação de credor para o empenho
+  TXT)]
   public static function getClassificacaoCredorPorEmpenho(EmpenhoFinanceiro $oEmpenho) {
 
     if ($oEmpenho->isPrestacaoContas()) {
@@ -95,13 +97,13 @@ class ClassificacaoCredor {
   }
 
   /**
-   * @deprecated
    * @param AutorizacaoEmpenho $oAutorizacao
    *
    * @return int
    * @throws BusinessException
    * @throws Exception
    */
+  #[\Deprecated]
   public static function getClassificacaoPorAutorizacao(AutorizacaoEmpenho $oAutorizacao) {
 
     $oDotacao = $oAutorizacao->getDotacaoOrcamentaria();
@@ -132,41 +134,29 @@ class ClassificacaoCredor {
   }
 
   /**
-   * @deprecated
    * @param $iClassificacao
    * @return string
    */
+  #[\Deprecated]
   public static function getDescricaoDaClassificacao($iClassificacao) {
 
     $sDescricao = '';
-    switch ($iClassificacao) {
-
-      case self::DISPENSA:
-        $sDescricao = 'Dispensa';
-        break;
-
-      case self::MATERIAL_SERVICO:
-        $sDescricao = 'Material e Serviço';
-        break;
-
-      case self::PEQUENO_VALOR:
-        $sDescricao = 'Pequeno Valor';
-        break;
-
-      case self::RECURSO_VINCULADO:
-        $sDescricao = 'Recurso Vinculado';
-        break;
-    }
+    $sDescricao = match ($iClassificacao) {
+        self::DISPENSA => 'Dispensa',
+        self::MATERIAL_SERVICO => 'Material e Serviço',
+        self::PEQUENO_VALOR => 'Pequeno Valor',
+        self::RECURSO_VINCULADO => 'Recurso Vinculado',
+        default => $sDescricao,
+    };
 
     return $sDescricao;
   }
 
   /**
-   * @deprecated
    * @param $iClassificacao
-   *
    * @return int
    */
+  #[\Deprecated]
   public static function getQuantidadeDiasPorClassificacao($iClassificacao) {
 
     switch ($iClassificacao) {
@@ -181,10 +171,10 @@ class ClassificacaoCredor {
   }
 
   /**
-   * @deprecated
    * @param NotaLiquidacao $oNota
    * @return DBDate
    */
+  #[\Deprecated]
   public static function getDataDeVencimentoPorNota(NotaLiquidacao $oNota) {
 
     $iClassificacao  = $oNota->getEmpenho()->getClassificacaoCredor();
@@ -193,23 +183,21 @@ class ClassificacaoCredor {
   }
 
   /**
-   * @deprecated
    * @param DBDate $oData
    * @param        $iClassificacao
-   *
    * @return DBDate
    */
+  #[\Deprecated]
   public static function getDataDeVencimentoPorData(DBDate $oData, $iClassificacao) {
     return self::verificaDataVencimento($oData, $iClassificacao);
   }
 
   /**
-   * @deprecated
    * @param DBDate $oData
    * @param        $iClassificacao
-   *
    * @return DBDate
    */
+  #[\Deprecated]
   private static function verificaDataVencimento(DBDate $oData, $iClassificacao) {
 
     $iDias = 0;
@@ -262,15 +250,14 @@ class ClassificacaoCredor {
   /**
    * Método que valida os parâmetros necessários para a nota do Empenho.
    *
-   * @deprecated
    * @param EmpenhoFinanceiro $oEmpenho          Empenho para o qual a nota está sendo criada.
    * @param string            $sDataNota         Data da nota.
    * @param string            $sDataRecebimento  Data de recebimento data nota.
    * @param string            $sDataVencimento   Data de vencimento da nota.
    * @param string            $sLocalRecebimento Local de recebimento da nota.
-   *
    * @throws ParameterException caso algum valor seja inválido para o empenho informado.
    */
+  #[\Deprecated]
   public static function validaParametros($oEmpenho, $sDataNota, $sDataRecebimento, $sDataVencimento, $sLocalRecebimento) {
 
     $iClassificacaoCredor = $oEmpenho->getClassificacaoCredor();
@@ -296,15 +283,14 @@ class ClassificacaoCredor {
   /**
    * Método que realiza a validação das datas necessárias para a nota do Empenho.
    *
-   * @deprecated
    * @param EmpenhoFinanceiro $oEmpenho         Empenho para o qual a nota está sendo criada.
    * @param DBDate            $oDataNota        Data da nota.
    * @param DBDate            $oDataRecebimento Data de recebimento da nota.
    * @param DBDate            $oDataVencimento  Data de vencimento da nota.
    * @param string            $sMensagem        Caminho da mensagem de validação da data de vencimento.
-   *
    * @throws BusinessException caso alguma data seja inválida para o empenho informado.
    */
+  #[\Deprecated]
   public static function validaDatas($oEmpenho, $oDataNota, $oDataRecebimento, $oDataVencimento = null, $sMensagem = null) {
 
     $iClassificacaoCredor = $oEmpenho->getClassificacaoCredor();
@@ -327,10 +313,10 @@ class ClassificacaoCredor {
 
       $iQuantidadeDias = ClassificacaoCredor::getQuantidadeDiasPorClassificacao($iClassificacaoCredor);
       $sClassificacao  = ClassificacaoCredor::getDescricaoDaClassificacao($iClassificacaoCredor);
-      $aParametrosMensagem = array(
+      $aParametrosMensagem = [
         'sClassificacao'  => $sClassificacao,
         'iQuantidadeDias' => $iQuantidadeDias,
-      );
+      ];
       if ($sMensagem === null) {
         $sMensagem = 'data_vencimento_invalida';
       }

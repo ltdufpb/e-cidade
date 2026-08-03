@@ -34,7 +34,7 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
@@ -128,7 +128,7 @@ group by o15_codigo,recurso
 }
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mes.' / '.$ano);
 
@@ -146,7 +146,7 @@ $total = 0;
 $funcion = 0;
 $totalregist = 0;
 if ($tipo_rel=="a"){
-  for($x = 0; $x < pg_numrows($result);$x++){
+  for($x = 0; $x < pg_num_rows($result);$x++){
      db_fieldsmemory($result,$x);
      if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
 	$pdf->addpage("L");
@@ -175,7 +175,7 @@ if ($tipo_rel=="a"){
   $pdf->setfont('arial','b',8);
   $pdf->cell(150,$alt,'TOTAL '.$funcion.' FUNCIONÁRIOS',"T",0,"L",0);
 }else if($tipo_rel=="s"){
-  for($x = 0; $x < pg_numrows($result);$x++){
+  for($x = 0; $x < pg_num_rows($result);$x++){
      db_fieldsmemory($result,$x);
      if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
 	$pdf->addpage("L");

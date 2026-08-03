@@ -96,7 +96,7 @@ if (isset($oGet->iInicialIni) && isset($oGet->iInicialFim)) {
                 <td>Valor Atualizado:</td>
                 <td>
                     <?php
-                    $x = array("s" => "Sim", "n" => "Não");
+                    $x = ["s" => "Sim", "n" => "Não"];
                     db_select('atualiza', $x, true, 4, "");
                     ?>
                 </td>
@@ -114,7 +114,7 @@ if (isset($oGet->iInicialIni) && isset($oGet->iInicialFim)) {
                 <td>Imprime Número da Pagina:</td>
                 <td>
                     <?php
-                    $y = array("s" => "Sim", "n" => "Não");
+                    $y = ["s" => "Sim", "n" => "Não"];
                     db_select('numeropg', $y, true, 4, "");
                     ?>
                 </td>
@@ -132,7 +132,7 @@ if (isset($oGet->iInicialIni) && isset($oGet->iInicialFim)) {
                 <td nowrap title="Reemissão">Reemissão:</td>
                 <td>
                     <?php
-                    $x = array("t" => "Sim", "f" => "Não");
+                    $x = ["t" => "Sim", "f" => "Não"];
                     db_select('DBtxt14', $x, true, 4, "");
                     ?>
                 </td>
@@ -142,7 +142,7 @@ if (isset($oGet->iInicialIni) && isset($oGet->iInicialFim)) {
                 <td nowrap title="">Totaliza por exercício:</td>
                 <td>
                     <?php
-                    $x = array("f" => "Não", "t" => "Sim");
+                    $x = ["f" => "Não", "t" => "Sim"];
                     db_select('totexe', $x, true, 4, "");
                     ?>
                 </td>
@@ -158,7 +158,7 @@ if (isset($oGet->iInicialIni) && isset($oGet->iInicialFim)) {
                     if ($v04_ordemendcda == 2) {
                         $endaimp = "c";
                     }
-                    $x = array("o" => "Origem", "c" => "CGM");
+                    $x = ["o" => "Origem", "c" => "CGM"];
                     db_select('endaimp', $x, true, 4, "");
                     ?>
                 </td>

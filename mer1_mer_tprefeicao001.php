@@ -34,7 +34,7 @@ include(modification("libs/db_jsplibwebseller.php"));
 include(modification("classes/db_mer_tprefeicao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_libdicionario.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_tprefeicao = new cl_mer_tprefeicao;
 $db_opcao         = 1;
 $db_botao         = true;
@@ -44,7 +44,7 @@ $me03_i_escola    = $codescola;
 $ed18_c_nome      = $nomeescola;
 if (isset($atualizar)) {
 	
-  $vet = explode(",",$lista);
+  $vet = explode(",",(string) $lista);
   for ($x=0; $x<count($vet); $x++) {
   	
     $sql    = "update mer_tprefeicao set me03_i_orden=".($x+1)." where me03_i_codigo=$vet[$x]";

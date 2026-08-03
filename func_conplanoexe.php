@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conplanoexe_classe.php"));
 include(modification("classes/db_conplano_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clconplanoexe = new cl_conplanoexe;
 $clconplano = new cl_conplano;
@@ -129,7 +129,7 @@ if (isset($db_instit) && $db_instit!=''){
             $sWherePadrao = "c62_reduz=$pesquisa_chave and c62_anousu = $anousu and c61_instit= $instit ";
             if (!empty($lEstrutural) && $lEstrutural == "true") {
 
-              $pesquisa_chave = str_pad($pesquisa_chave, 15, '0', STR_PAD_RIGHT);
+              $pesquisa_chave = str_pad((string) $pesquisa_chave, 15, '0', STR_PAD_RIGHT);
               $sWherePadrao = "c60_estrut = '$pesquisa_chave' and c62_anousu = $anousu and c61_instit= $instit";
             }
 

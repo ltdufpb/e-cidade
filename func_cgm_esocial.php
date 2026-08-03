@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhpessoalmov = new cl_rhpessoalmov();
 $rotulo = new rotulocampo();
@@ -86,7 +86,7 @@ $rotulo->label("z01_nome");
           <?php
           $filtrosInformados = false;
           $campos = 'z01_numcgm, rh01_regist, z01_nome as dl_Nome';
-          $where = array();
+          $where = [];
           $instituicao = db_getsession('DB_instit');
           $ordem = 'z01_nome, z01_numcgm';
 
@@ -116,12 +116,12 @@ $rotulo->label("z01_nome");
 
               $sql = $clrhpessoalmov->sql_query_matricula_cgm(null, $instituicao, $campos, $ordem, implode(' AND ', $where));
 
-              $repassa = array();
+              $repassa = [];
               if(isset($chave_z01_numcgm) && isset($chave_z01_nome)) {
-                  $repassa = array(
+                  $repassa = [
                     "chave_z01_numcgm" => $chave_z01_numcgm,
                     "chave_z01_nome" => $chave_z01_nome
-                  );
+                  ];
               }
               if ($filtrosInformados) {
                   echo '<div class="container" style="min-width: 750px;">';

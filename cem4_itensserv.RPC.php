@@ -46,7 +46,7 @@ switch ($oParam->exec) {
 
   case "listarTaxaServicos":
 
-  	$dtLancamento       = implode("-",array_reverse(explode("/",$oParam->dtlancamento)));
+  	$dtLancamento       = implode("-",array_reverse(explode("/",(string) $oParam->dtlancamento)));
 
     $sSqlTaxaServVal    = "  select cm35_taxaserv,                                                                    ";
     $sSqlTaxaServVal   .= "         cm35_valor as valortaxa                                                           ";
@@ -69,8 +69,8 @@ switch ($oParam->exec) {
 
   case "calcularValores":
 
-		$dtLancamento        = implode("-",array_reverse(explode("/",$oParam->dtlancamento)));
-		$dtVencimento        = implode("-",array_reverse(explode("/",$oParam->dtvencimento)));
+		$dtLancamento        = implode("-",array_reverse(explode("/",(string) $oParam->dtlancamento)));
+		$dtVencimento        = implode("-",array_reverse(explode("/",(string) $oParam->dtvencimento)));
     $oParam->vlcorrigido = str_replace(".","",$oParam->vlcorrigido);
 		$iVlCorrigido        = str_replace(",",".",$oParam->vlcorrigido);
 		$iAnoUsu             = db_getsession('DB_anousu');

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -69,7 +69,7 @@ $aux = new cl_arquivo_auxiliar;
            <td colspan=2  align="left">
                 <strong>&nbsp;&nbsp;&nbsp;&nbsp;Listar:</strong>
            <?php 
-	      $matriz = array("A"=>"Ativo","I"=>"Inativo","T"=>"Todos");
+	      $matriz = ["A"=>"Ativo","I"=>"Inativo","T"=>"Todos"];
 	      db_select("opcao_material",$matriz,true,1);
 	   ?>
           </td>

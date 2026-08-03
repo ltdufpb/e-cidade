@@ -226,9 +226,9 @@ class EspelhoPontoCache {
             throw new \DBException('Não foi possível buscar as matriculas com cache inválido.');
         }
 
-        $matriculasValidas = array();
+        $matriculasValidas = [];
         \db_utils::makeCollectionFromRecord($rs, function ($retorno) use (&$matriculasValidas, $retornaDados) {
-            $matriculasValidas[$retorno->rh197_matricula][$retorno->rh197_data] = $retornaDados ? unserialize(stripslashes($retorno->rh197_espelho_ponto_cache)) : true;
+            $matriculasValidas[$retorno->rh197_matricula][$retorno->rh197_data] = $retornaDados ? unserialize(stripslashes((string) $retorno->rh197_espelho_ponto_cache)) : true;
         });
 
         return $matriculasValidas;

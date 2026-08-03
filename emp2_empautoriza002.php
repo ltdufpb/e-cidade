@@ -59,8 +59,8 @@ $clrotulo->label("e55_sequen");
 $clrotulo->label("e55_quant");
 $clrotulo->label("e55_vltot");
 $clempautoriza->rotulo->label();
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 //parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 $and    = "";
 $where  = "";
@@ -70,7 +70,7 @@ function monta_where($inp="",$par="",$cod="",$descr_inp=""){
   $param_autoriza = "";
   $where_autorizacao = "";
   if(isset($cod) && trim($cod)!=""){
-    $cod_autoriza = split("-",$cod);
+    $cod_autoriza = preg_split("#\\-#m",$cod);
     $ini_autoriza = $cod_autoriza[0];
     $fim_autoriza = $cod_autoriza[1];
     if($ini_autoriza!="NaN" && $fim_autoriza!="NaN"){
@@ -96,7 +96,7 @@ function monta_where($inp="",$par="",$cod="",$descr_inp=""){
   return $where_autorizacao;
 }
 
-$autori = monta_where($inp_autoriza ,$par_autoriza ,$cod_autoriza ," e54_autori ");
+$autori = monta_where($inp_autoriza ,$par_autoriza ,$cod_autoriza);
 $dt_ini = "";
 $dt_fim = "";
 if(isset($e54_emissINI_dia) && trim($e54_emissINI_dia)!="" && isset($e54_emissINI_mes) && trim($e54_emissINI_mes)!="" && isset($e54_emissINI_ano) && trim($e54_emissINI_ano)!=""){
@@ -115,11 +115,11 @@ if(isset($dt_ini) && trim($dt_ini)!="" || isset($dt_fim) && trim($dt_fim)!=""){
   }
   $and = " and ";
 }
-$cgm    = monta_where($inp_cgm      ,$par_cgm      ,$cod_cgm      ," e54_numcgm ");
-$usuari = monta_where($inp_usuarios ,$par_usuarios ,$cod_usuarios ," e54_login  ");
-$tipcom = monta_where($inp_tipcompra,$par_tipcompra,$cod_tipcompra," e54_codcom ");
-$config = monta_where($inp_config   ,$par_config   ,$cod_config   ," e54_instit ");
-$depart = monta_where($inp_depart   ,$par_depart   ,$cod_depart   ," e54_depto ");
+$cgm    = monta_where($inp_cgm      ,$par_cgm      ,$cod_cgm);
+$usuari = monta_where($inp_usuarios ,$par_usuarios ,$cod_usuarios);
+$tipcom = monta_where($inp_tipcompra,$par_tipcompra,$cod_tipcompra);
+$config = monta_where($inp_config   ,$par_config   ,$cod_config);
+$depart = monta_where($inp_depart   ,$par_depart   ,$cod_depart);
 if(isset($autori) && trim($autori)!=""){
   $where .= $autori;
 }
@@ -264,8 +264,8 @@ for($i=0;$i<$numrows;$i++){
   $pdf->setfont('arial','b',7);
   $pdf->cell(25,$alt,@$e54_autori             ,0,0,"C",$c);
   $pdf->cell(25,$alt,@$e54_emiss              ,0,0,"C",$c);
-  $pdf->cell(75,$alt,substr(@$z01_nome,0,31)  ,0,0,"L",$c);
-  $pdf->cell(50,$alt,substr(@$pc50_descr,0,31),0,0,"L",$c);
+  $pdf->cell(75,$alt,substr((string) @$z01_nome,0,31)  ,0,0,"L",$c);
+  $pdf->cell(50,$alt,substr((string) @$pc50_descr,0,31),0,0,"L",$c);
   $pdf->cell(25,$alt,@$codemp                 ,0,0,"C",$c);
   $result_valortot=$clempautitem->sql_record($clempautitem->sql_query_file($e54_autori));
   $nempautitem = $clempautitem->numrows;
@@ -282,7 +282,7 @@ for($i=0;$i<$numrows;$i++){
     db_fieldsmemory($result_pcprocitem,0);
     $sql_solicita = "select fc_solproc($pc81_codproc)";
     $result_solicita = db_query($sql_solicita);
-    if (pg_numrows($result_solicita) > 0) {
+    if (pg_num_rows($result_solicita) > 0) {
       db_fieldsmemory($result_solicita,0);
       $pdf->cell(25,$alt,$fc_solproc          ,0,0,"C",$c);
     } else {
@@ -301,7 +301,7 @@ for($i=0;$i<$numrows;$i++){
   $pdf->cell(25,$alt,db_formatar(@$valortot,'f'),0,1,"R",$c);
   $totalzao+=$valortot;
   
-  $arr_estrutural = split("\.",$estrutural);
+  $arr_estrutural = preg_split("#\\.#m",(string) $estrutural);
   $estrut_pesquisa= $arr_estrutural[6];
   $result_estruturalautori = $clorcelemento->sql_record($clorcelemento->sql_query_file(null,null,"o56_descr as elementoautori",""," o56_elemento='$estrut_pesquisa' and o56_anousu = $e54_anousu"));
   if($clorcelemento->numrows>0){
@@ -313,10 +313,10 @@ for($i=0;$i<$numrows;$i++){
     db_fieldsmemory($result_secretaria,0);
   }
   $pdf->cell(53,$alt,$estrutural                  ,0,0,"C",$c);
-  $pdf->cell(60,$alt,substr(@$elementoautori,0,38),0,0,"L",$c);
-  $pdf->cell(60,$alt,substr(@$secretaria,0,38)    ,0,0,"L",$c);
-  $pdf->cell(60,$alt,substr(@$departamento,0,38)  ,0,0,"L",$c);
-  $pdf->cell(42,$alt,substr(@$nome,0,25)          ,0,1,"L",$c);
+  $pdf->cell(60,$alt,substr((string) @$elementoautori,0,38),0,0,"L",$c);
+  $pdf->cell(60,$alt,substr((string) @$secretaria,0,38)    ,0,0,"L",$c);
+  $pdf->cell(60,$alt,substr((string) @$departamento,0,38)  ,0,0,"L",$c);
+  $pdf->cell(42,$alt,substr((string) @$nome,0,25)          ,0,1,"L",$c);
 
   //------------------
   if ($listar=='s'){
@@ -363,11 +363,11 @@ for($i=0;$i<$numrows;$i++){
       db_fieldsmemory($result_elementoitem,0);
       $pdf->setfont('arial','',7);
       $pdf->cell(15,$alt,$e55_item                    ,0,0,"C",$c);
-      $pdf->cell(58,$alt,substr($pc01_descrmater,0,35),0,0,"L",$c);
-      $pdf->cell(58,$alt,substr($e55_descr,0,35)      ,0,0,"L",$c);
+      $pdf->cell(58,$alt,substr((string) $pc01_descrmater,0,35),0,0,"L",$c);
+      $pdf->cell(58,$alt,substr((string) $e55_descr,0,35)      ,0,0,"L",$c);
       $pdf->cell(14,$alt,$e55_codele                  ,0,0,"C",$c);
       $pdf->cell(22,$alt,db_formatar($elementoitem,"elemento"),0,0,"C",$c);
-      $pdf->cell(58,$alt,substr(@$o56_descr,0,35)     ,0,0,"L",$c); 
+      $pdf->cell(58,$alt,substr((string) @$o56_descr,0,35)     ,0,0,"L",$c); 
       $pdf->cell(15,$alt,$e55_sequen                  ,0,0,"C",$c);
       $pdf->cell(15,$alt,$e55_quant                   ,0,0,"C",$c);
       $pdf->cell(20,$alt,db_formatar($e55_vltot,'f')  ,0,1,"R",$c);
@@ -518,7 +518,7 @@ if(isset($inp_usuarios) && trim($inp_usuarios)!=""){
       //dados empautoriza
       $pdf->setfont('arial','',7);
       $pdf->cell(20,$alt,@$id_usuario,"L",0,"C",$c);
-      $pdf->cell(70,$alt,substr(@$nome,0,45),"R",1,"L",$c);
+      $pdf->cell(70,$alt,substr((string) @$nome,0,45),"R",1,"L",$c);
       $total_usuarios++;
     }
     $pdf->setfont('arial','b',8);
@@ -553,7 +553,7 @@ if(isset($inp_tipcompra) && trim($inp_tipcompra)!=""){
       //dados empautoriza
       $pdf->setfont('arial','',7);
       $pdf->cell(20,$alt,@$pc50_codcom,"L",0,"C",$c);
-      $pdf->cell(70,$alt,substr(@$pc50_descr,0,45),"R",1,"L",$c);
+      $pdf->cell(70,$alt,substr((string) @$pc50_descr,0,45),"R",1,"L",$c);
       $total_tipcompra++;
     }
     $pdf->setfont('arial','b',8);
@@ -588,7 +588,7 @@ if(isset($inp_config) && trim($inp_config)!=""){
       //dados empautoriza
       $pdf->setfont('arial','',7);
       $pdf->cell(20,$alt,@$codigo,"L",0,"C",$c);
-      $pdf->cell(70,$alt,substr(@$nomeinst,0,45),"R",1,"L",$c);
+      $pdf->cell(70,$alt,substr((string) @$nomeinst,0,45),"R",1,"L",$c);
       $total_config++;
     }
     $pdf->setfont('arial','b',8);

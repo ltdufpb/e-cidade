@@ -54,37 +54,37 @@ $db_opcao   = 1;
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica = array("a1"=>"Refeição",
+   $clcriaabas->identifica = ["a1"=>"Refeição",
                                    "a2"=>"Itens da Refeição",
                                    "a3"=>"Modo de Preparo",
                                    "a4"=>"Característica do Preparo",
                                    "a5"=>"Alunos com Restições Alimentares",
                                    "a6"=>"Escolas Atendidas",  
                                    "a7"=>"Nutricionista"
-                                   );
-   $clcriaabas->sizecampo  = array("a1"=>"15",
+                                   ];
+   $clcriaabas->sizecampo  = ["a1"=>"15",
                                    "a2"=>"25",
                                    "a3"=>"15",
                                    "a4"=>"25",
                                    "a5"=>"35",
                                    "a6"=>"25",
                                    "a7"=>"25"
-                                   );
-   $clcriaabas->src        = array("a1"=>"mer1_mer_cardapio001.php",
+                                   ];
+   $clcriaabas->src        = ["a1"=>"mer1_mer_cardapio001.php",
                                    "a2"=>"",
                                    "a3"=>"",
                                    "a4"=>"",
                                    "a5"=>"",
                                    "a6"=>"",
                                    "a7"=>""
-                                   );
-   $clcriaabas->disabled   = array("a2"=>"true",
+                                   ];
+   $clcriaabas->disabled   = ["a2"=>"true",
                                    "a3"=>"true",
                                    "a4"=>"true",
                                    "a5"=>"true",
                                    "a6"=>"true",
                                    "a7"=>"true"
-                                   );
+                                   ];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->scrolling = "no";
    $clcriaabas->iframe_height= "600";

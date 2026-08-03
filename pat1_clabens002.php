@@ -40,8 +40,8 @@ require_once(modification("model/contabilidade/planoconta/ContaCorrente.model.ph
 require_once(modification("classes/db_clabens_classe.php"));
 require_once(modification("classes/db_clabensconplano_classe.php"));
 
-$oPost = db_utils::postMemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+$oPost = db_utils::postMemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clclabens = new cl_clabens;
 $cldb_estrut = new cl_db_estrut;
 $clcfpatri = new cl_cfpatri;

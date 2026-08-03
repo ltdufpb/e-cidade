@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhempenhofolhaexcecaorubrica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhempenhofolhaexcecaorubrica = new cl_rhempenhofolhaexcecaorubrica;
 $clrhempenhofolhaexcecaorubrica->rotulo->label("rh74_sequencial");
 $clrhempenhofolhaexcecaorubrica->rotulo->label("rh74_rubric");
@@ -98,9 +98,9 @@ $clrhempenhofolhaexcecaorubrica->rotulo->label("rh74_rubric");
         }else{
            $sql = $clrhempenhofolhaexcecaorubrica->sql_query("",$campos,"rh74_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh74_rubric)){
-          $repassa = array("chave_rh74_sequencial"=>$chave_rh74_sequencial,"chave_rh74_rubric"=>$chave_rh74_rubric);
+          $repassa = ["chave_rh74_sequencial"=>$chave_rh74_sequencial,"chave_rh74_rubric"=>$chave_rh74_rubric];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -48,8 +48,8 @@
 
     $sql = "";
     $union = " ";
-    for($i=0;$i<pg_numrows($result);$i++){
-       $ano = pg_result($result,$i,'o58_anousu');
+    for($i=0;$i<pg_num_rows($result);$i++){
+       $ano = pg_fetch_result($result,$i,'o58_anousu');
        $sql .= $union;
        $sql .= " select distinct $ano as o58_anousu,'00'||o56_elemento as o56_elemento,o56_descr,case when o58_coddot > 0 then 'A' else 'S' end as tipo,fc_nivel_plano2005(o56_elemento||'00') as nivel
                   from orcelemento
@@ -64,24 +64,24 @@
     $result = db_query($sql);
     //db_criatabela($result);
 
-    for($i=0;$i<pg_numrows($result);$i++){
+    for($i=0;$i<pg_num_rows($result);$i++){
        db_fieldsmemory($result,$i);
        $contador ++;
   
-       $line  = formatar($o58_anousu,4,'n');
+       $line  = formatar($o58_anousu,4);
        if ($o56_elemento[0]=="4")
 	  $o56_elemento[0]="3";
-       $line .= formatar($o56_elemento,15,'c');
-       $line .= formatar($o56_descr,110,'c');
+       $line .= formatar($o56_elemento,15);
+       $line .= formatar($o56_descr,110);
        $line .= $tipo;
-       $line .= formatar($nivel,2,'n');
+       $line .= formatar($nivel,2);
   
        fputs($this->arq,$line);
        fputs($this->arq,"\r\n");
   
     }
     //  trailer
-    $contador = espaco(10-(strlen($contador)),'0').$contador;
+    $contador = espaco(10-(strlen($contador))).$contador;
     $line = "FINALIZADOR".$contador;
     fputs($this->arq,$line);
     fputs($this->arq,"\r\n");

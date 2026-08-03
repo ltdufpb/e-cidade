@@ -50,7 +50,7 @@ if (isset($incluir)) {
   $result = $cldb_usuarios->sql_record($cldb_usuarios->sql_query_file(null,"senha",null,"login = '$login'"));
   if($cldb_usuarios->numrows > 0){
       echo "<script>alert('Usuario ja cadastrado.');</script>";
-      db_redireciona($HTTP_SERVER_VARS['PHP_SELF']);
+      db_redireciona($_SERVER['PHP_SELF']);
   }
 
   if (isset($senha) && strlen(trim(@$senha)) == 0 && isset($enviaemail) && $enviaemail == "sim"){
@@ -91,7 +91,7 @@ if (isset($incluir)) {
       db_fieldsmemory($res_instit,0);
     }
 
-    if (strlen(trim($url)) == 0){
+    if (strlen(trim((string) $url)) == 0){
       $url = null;
     }
     if ( !empty($email) ) {

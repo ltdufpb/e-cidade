@@ -40,8 +40,8 @@ include(modification("classes/db_conlancamdoc_classe.php"));
 include_once(modification("classes/db_conplano_classe.php"));
 include_once(modification("libs/db_menu_estrutural.php")); // teste carlos
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clconplano     = new cl_conplano;
 $clconlancamval = new cl_conlancamval;

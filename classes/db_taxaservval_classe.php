@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE taxaservval
 class cl_taxaservval { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cm35_sequencial = 0; 
-   var $cm35_taxaserv = 0; 
-   var $cm35_dataini_dia = null; 
-   var $cm35_dataini_mes = null; 
-   var $cm35_dataini_ano = null; 
-   var $cm35_dataini = null; 
-   var $cm35_datafin_dia = null; 
-   var $cm35_datafin_mes = null; 
-   var $cm35_datafin_ano = null; 
-   var $cm35_datafin = null; 
-   var $cm35_valor = 0; 
+   public $cm35_sequencial = 0; 
+   public $cm35_taxaserv = 0; 
+   public $cm35_dataini_dia = null; 
+   public $cm35_dataini_mes = null; 
+   public $cm35_dataini_ano = null; 
+   public $cm35_dataini = null; 
+   public $cm35_datafin_dia = null; 
+   public $cm35_datafin_mes = null; 
+   public $cm35_datafin_ano = null; 
+   public $cm35_datafin = null; 
+   public $cm35_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cm35_sequencial = int4 = Sequencial 
                  cm35_taxaserv = int4 = Taxa Serviço 
                  cm35_dataini = date = Data Inicial 
@@ -62,10 +62,10 @@ class cl_taxaservval {
                  cm35_valor = float8 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_taxaservval() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("taxaservval"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -151,10 +151,10 @@ class cl_taxaservval {
          $this->erro_status = "0";
          return false; 
        }
-       $this->cm35_sequencial = pg_result($result,0,0); 
+       $this->cm35_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from taxaservval_cm35_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $cm35_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $cm35_sequencial)){
          $this->erro_sql = " Campo cm35_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -190,7 +190,7 @@ class cl_taxaservval {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Taxa Serviço ($this->cm35_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Taxa Serviço já Cadastrado";
@@ -214,14 +214,14 @@ class cl_taxaservval {
      $resaco = $this->sql_record($this->sql_query_file($this->cm35_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15581,'$this->cm35_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2732,15581,'','".AddSlashes(pg_result($resaco,0,'cm35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2732,15582,'','".AddSlashes(pg_result($resaco,0,'cm35_taxaserv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2732,15583,'','".AddSlashes(pg_result($resaco,0,'cm35_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2732,15584,'','".AddSlashes(pg_result($resaco,0,'cm35_datafin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2732,15585,'','".AddSlashes(pg_result($resaco,0,'cm35_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2732,15581,'','".AddSlashes(pg_fetch_result($resaco,0,'cm35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2732,15582,'','".AddSlashes(pg_fetch_result($resaco,0,'cm35_taxaserv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2732,15583,'','".AddSlashes(pg_fetch_result($resaco,0,'cm35_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2732,15584,'','".AddSlashes(pg_fetch_result($resaco,0,'cm35_datafin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2732,15585,'','".AddSlashes(pg_fetch_result($resaco,0,'cm35_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -230,10 +230,10 @@ class cl_taxaservval {
       $this->atualizacampos();
      $sql = " update taxaservval set ";
      $virgula = "";
-     if(trim($this->cm35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm35_sequencial"])){ 
+     if(trim((string) $this->cm35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm35_sequencial"])){ 
        $sql  .= $virgula." cm35_sequencial = $this->cm35_sequencial ";
        $virgula = ",";
-       if(trim($this->cm35_sequencial) == null ){ 
+       if(trim((string) $this->cm35_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "cm35_sequencial";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_taxaservval {
          return false;
        }
      }
-     if(trim($this->cm35_taxaserv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm35_taxaserv"])){ 
+     if(trim((string) $this->cm35_taxaserv)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm35_taxaserv"])){ 
        $sql  .= $virgula." cm35_taxaserv = $this->cm35_taxaserv ";
        $virgula = ",";
-       if(trim($this->cm35_taxaserv) == null ){ 
+       if(trim((string) $this->cm35_taxaserv) == null ){ 
          $this->erro_sql = " Campo Taxa Serviço nao Informado.";
          $this->erro_campo = "cm35_taxaserv";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_taxaservval {
          return false;
        }
      }
-     if(trim($this->cm35_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm35_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm35_dataini_dia"] !="") ){ 
+     if(trim((string) $this->cm35_dataini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm35_dataini_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm35_dataini_dia"] !="") ){ 
        $sql  .= $virgula." cm35_dataini = '$this->cm35_dataini' ";
        $virgula = ",";
-       if(trim($this->cm35_dataini) == null ){ 
+       if(trim((string) $this->cm35_dataini) == null ){ 
          $this->erro_sql = " Campo Data Inicial nao Informado.";
          $this->erro_campo = "cm35_dataini_dia";
          $this->erro_banco = "";
@@ -272,7 +272,7 @@ class cl_taxaservval {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm35_dataini_dia"])){ 
          $sql  .= $virgula." cm35_dataini = null ";
          $virgula = ",";
-         if(trim($this->cm35_dataini) == null ){ 
+         if(trim((string) $this->cm35_dataini) == null ){ 
            $this->erro_sql = " Campo Data Inicial nao Informado.";
            $this->erro_campo = "cm35_dataini_dia";
            $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_taxaservval {
          }
        }
      }
-     if(trim($this->cm35_datafin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm35_datafin_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm35_datafin_dia"] !="") ){ 
+     if(trim((string) $this->cm35_datafin)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm35_datafin_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm35_datafin_dia"] !="") ){ 
        $sql  .= $virgula." cm35_datafin = '$this->cm35_datafin' ";
        $virgula = ",";
-       if(trim($this->cm35_datafin) == null ){ 
+       if(trim((string) $this->cm35_datafin) == null ){ 
          $this->erro_sql = " Campo Data Final nao Informado.";
          $this->erro_campo = "cm35_datafin_dia";
          $this->erro_banco = "";
@@ -299,7 +299,7 @@ class cl_taxaservval {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm35_datafin_dia"])){ 
          $sql  .= $virgula." cm35_datafin = null ";
          $virgula = ",";
-         if(trim($this->cm35_datafin) == null ){ 
+         if(trim((string) $this->cm35_datafin) == null ){ 
            $this->erro_sql = " Campo Data Final nao Informado.";
            $this->erro_campo = "cm35_datafin_dia";
            $this->erro_banco = "";
@@ -310,10 +310,10 @@ class cl_taxaservval {
          }
        }
      }
-     if(trim($this->cm35_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm35_valor"])){ 
+     if(trim((string) $this->cm35_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm35_valor"])){ 
        $sql  .= $virgula." cm35_valor = $this->cm35_valor ";
        $virgula = ",";
-       if(trim($this->cm35_valor) == null ){ 
+       if(trim((string) $this->cm35_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "cm35_valor";
          $this->erro_banco = "";
@@ -331,19 +331,19 @@ class cl_taxaservval {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15581,'$this->cm35_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm35_sequencial"]) || $this->cm35_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2732,15581,'".AddSlashes(pg_result($resaco,$conresaco,'cm35_sequencial'))."','$this->cm35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2732,15581,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm35_sequencial'))."','$this->cm35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm35_taxaserv"]) || $this->cm35_taxaserv != "")
-           $resac = db_query("insert into db_acount values($acount,2732,15582,'".AddSlashes(pg_result($resaco,$conresaco,'cm35_taxaserv'))."','$this->cm35_taxaserv',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2732,15582,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm35_taxaserv'))."','$this->cm35_taxaserv',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm35_dataini"]) || $this->cm35_dataini != "")
-           $resac = db_query("insert into db_acount values($acount,2732,15583,'".AddSlashes(pg_result($resaco,$conresaco,'cm35_dataini'))."','$this->cm35_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2732,15583,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm35_dataini'))."','$this->cm35_dataini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm35_datafin"]) || $this->cm35_datafin != "")
-           $resac = db_query("insert into db_acount values($acount,2732,15584,'".AddSlashes(pg_result($resaco,$conresaco,'cm35_datafin'))."','$this->cm35_datafin',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2732,15584,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm35_datafin'))."','$this->cm35_datafin',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cm35_valor"]) || $this->cm35_valor != "")
-           $resac = db_query("insert into db_acount values($acount,2732,15585,'".AddSlashes(pg_result($resaco,$conresaco,'cm35_valor'))."','$this->cm35_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2732,15585,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm35_valor'))."','$this->cm35_valor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -388,14 +388,14 @@ class cl_taxaservval {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15581,'$cm35_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2732,15581,'','".AddSlashes(pg_result($resaco,$iresaco,'cm35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2732,15582,'','".AddSlashes(pg_result($resaco,$iresaco,'cm35_taxaserv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2732,15583,'','".AddSlashes(pg_result($resaco,$iresaco,'cm35_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2732,15584,'','".AddSlashes(pg_result($resaco,$iresaco,'cm35_datafin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2732,15585,'','".AddSlashes(pg_result($resaco,$iresaco,'cm35_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2732,15581,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2732,15582,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm35_taxaserv'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2732,15583,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm35_dataini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2732,15584,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm35_datafin'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2732,15585,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm35_valor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from taxaservval
@@ -455,7 +455,7 @@ class cl_taxaservval {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:taxaservval";
@@ -470,7 +470,7 @@ class cl_taxaservval {
    function sql_query ( $cm35_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -496,7 +496,7 @@ class cl_taxaservval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_taxaservval {
    function sql_query_file ( $cm35_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -530,7 +530,7 @@ class cl_taxaservval {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

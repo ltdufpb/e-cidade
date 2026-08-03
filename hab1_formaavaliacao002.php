@@ -56,19 +56,19 @@ $db_opcao    = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php       
-       $clcriaabas->identifica  = array("formaavaliacao"=>"Dados Forma de Avaliação",
-                                        "formaavaliacaousuario"=>"Usuários");
+       $clcriaabas->identifica  = ["formaavaliacao"=>"Dados Forma de Avaliação",
+                                        "formaavaliacaousuario"=>"Usuários"];
        
-       $clcriaabas->title       = array("formaavaliacao"=>"Dados Forma de Avaliação",
-                                        "formaavaliacaousuario"=>"Usuários");
+       $clcriaabas->title       = ["formaavaliacao"=>"Dados Forma de Avaliação",
+                                        "formaavaliacaousuario"=>"Usuários"];
         
-       $clcriaabas->src         = array("formaavaliacao"=>"hab1_formaavaliacao005.php");
+       $clcriaabas->src         = ["formaavaliacao"=>"hab1_formaavaliacao005.php"];
        
-       $clcriaabas->sizecampo   = array("formaavaliacao"=>"23",
-                                        "formaavaliacaousuario"=>"23");
+       $clcriaabas->sizecampo   = ["formaavaliacao"=>"23",
+                                        "formaavaliacaousuario"=>"23"];
        
-       $clcriaabas->disabled    = array("formaavaliacao"=>"true",
-                                        "formaavaliacaousuario"=>"true");
+       $clcriaabas->disabled    = ["formaavaliacao"=>"true",
+                                        "formaavaliacaousuario"=>"true"];
         
        $clcriaabas->cria_abas(); 
      ?> 

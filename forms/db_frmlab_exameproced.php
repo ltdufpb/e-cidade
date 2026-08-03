@@ -87,7 +87,7 @@ $clrotulo->label("la08_i_codigo");
               Valor SUS:
               </b>
               <?php
-                $valorsus = isset($valorsus) ? $valorsus : 0;
+                $valorsus ??= 0;
                 db_input('valorsus', 10, '', true, 'text', 3, '');
               ?>
               <b>
@@ -95,7 +95,7 @@ $clrotulo->label("la08_i_codigo");
               </b>
               <?php
                 echo $Lla53_n_acrescimo;
-                $la53_n_acrescimo = isset($la53_n_acrescimo) ? $la53_n_acrescimo : 0;
+                $la53_n_acrescimo ??= 0;
                 db_input('la53_n_acrescimo', 10, $Ila53_n_acrescimo, true, 'text', $db_opcao,
                          'onchange="js_calculaValorProcedimento();"'
                         );
@@ -105,7 +105,7 @@ $clrotulo->label("la08_i_codigo");
               Total:
               </b>
               <?php
-                $valortotal = isset($valortotal) ? $valortotal : 0;
+                $valortotal ??= 0;
                 db_input('valortotal', 10, '', true, 'text', 3, '');
               ?>
             </td>
@@ -121,7 +121,7 @@ $clrotulo->label("la08_i_codigo");
     </td>
     <td>
       <?php
-        $x = array('1'=>'SIM','2'=>'NÃO');
+        $x = ['1'=>'SIM','2'=>'NÃO'];
         db_select('la53_i_ativo',$x,true,$db_opcao,"");
       ?>
     </td>
@@ -135,7 +135,7 @@ $clrotulo->label("la08_i_codigo");
 	<tr>
 		<td valign="top"><br>
       <?php
-		  $chavepri = array ('la08_i_codigo'       => @$la08_i_codigo,
+		  $chavepri =  ['la08_i_codigo'       => @$la08_i_codigo,
                          'la08_c_descr'        => @$la08_c_descr,
                          "la53_i_codigo"       => @$la53_i_codigo,
                          "la53_i_procedimento" => @$la53_i_procedimento,
@@ -144,7 +144,7 @@ $clrotulo->label("la08_i_codigo");
                          "la53_i_ativo"        => @$la53_i_ativo,
                          "sd63_c_nome"         => @$sd63_c_nome,
                          "sd63_c_procedimento" => @$sd63_c_procedimento
-                        );
+                        ];
 		  $cliframe_alterar_excluir->chavepri = $chavepri;
 		  $sCampos  = ' la08_i_codigo, la08_c_descr, la53_i_codigo, la53_i_procedimento,';
       $sCampos .= ' la53_i_exame,la53_i_ativo,sd63_c_nome, sd63_c_procedimento, la53_n_acrescimo ';

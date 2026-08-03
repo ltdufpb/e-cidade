@@ -53,7 +53,7 @@ class SigfisArquivoDiaria extends SigfisArquivoBase implements iPadArquivoTXTBas
     $iAnoSessao         = db_getsession('DB_anousu');
     $iInstituicaoSessao = db_getsession('DB_instit');
     $iCodigoLinha       = self::getLinhaLayout();
-    $aCampos            = array();
+    $aCampos            = [];
 
     $aCampos['nu_Empenho']             = "e60_codemp";
     $aCampos['dt_PagamentoEmpenho']    = "e50_data";
@@ -88,29 +88,29 @@ class SigfisArquivoDiaria extends SigfisArquivoBase implements iPadArquivoTXTBas
        * Busca informações das diárias 
        */
       $oDadosDiarias = self::getDadosDiariasPorMovimento($oLinhaEmpenho->e81_codmov);
-      $sMotivoDiaria = str_replace(array("\n", "\r", "<br>"), " ", trim($oDadosDiarias->motivo));
+      $sMotivoDiaria = str_replace(["\n", "\r", "<br>"], " ", trim((string) $oDadosDiarias->motivo));
 
       $oDadosLinha = new stdClass();
       
-      $oDadosLinha->cd_Unidade              = str_pad($this->sCodigoTribunal,4, ' ', STR_PAD_LEFT);
-      $oDadosLinha->cd_UnidadeOrcamentaria  = str_pad($oLinhaEmpenho->o58_unidade,4   ,' ', STR_PAD_LEFT);
-      $oDadosLinha->nu_Empenho              = str_pad($oLinhaEmpenho->e60_codemp,10  ,' ', STR_PAD_LEFT);
+      $oDadosLinha->cd_Unidade              = str_pad((string) $this->sCodigoTribunal,4, ' ', STR_PAD_LEFT);
+      $oDadosLinha->cd_UnidadeOrcamentaria  = str_pad((string) $oLinhaEmpenho->o58_unidade,4   ,' ', STR_PAD_LEFT);
+      $oDadosLinha->nu_Empenho              = str_pad((string) $oLinhaEmpenho->e60_codemp,10  ,' ', STR_PAD_LEFT);
       $oDadosLinha->dt_PagamentoEmpenho     = str_replace('/', '', db_formatar($oLinhaEmpenho->e50_data,"d"));
-      $oDadosLinha->nu_MatriculaFuncionario = str_pad($oDadosDiarias->matricula,10  ,' ', STR_PAD_LEFT);
-      $oDadosLinha->dt_Ano                  = str_pad($oLinhaEmpenho->e60_anousu,4   ,' ', STR_PAD_LEFT);
-      $oDadosLinha->nm_Funcionario          = str_pad(substr($oDadosDiarias->nome,0,50),50  ,' ', STR_PAD_LEFT);
+      $oDadosLinha->nu_MatriculaFuncionario = str_pad((string) $oDadosDiarias->matricula,10  ,' ', STR_PAD_LEFT);
+      $oDadosLinha->dt_Ano                  = str_pad((string) $oLinhaEmpenho->e60_anousu,4   ,' ', STR_PAD_LEFT);
+      $oDadosLinha->nm_Funcionario          = str_pad(substr((string) $oDadosDiarias->nome,0,50),50  ,' ', STR_PAD_LEFT);
       $oDadosLinha->Reservado_tce           = str_repeat(' ', 100);
       $oDadosLinha->de_MotivoViagem         = str_pad($sMotivoDiaria,200 ,' ', STR_PAD_RIGHT);
       $oDadosLinha->dt_Saida                = str_replace('/', '', db_formatar($oDadosDiarias->dtentrada,"d"));
       $oDadosLinha->Reservado_tce_1         = str_repeat(' ', 5);
       $oDadosLinha->dt_Retorno              = str_replace('/', '', db_formatar($oDadosDiarias->dtretorno,"d"));
       $oDadosLinha->Reservado_tce_2         = str_repeat(' ', 5);
-      $oDadosLinha->qt_Diarias              = str_pad($fQuantidadeDiaria,3   ,' ', STR_PAD_LEFT);
+      $oDadosLinha->qt_Diarias              = str_pad((string) $fQuantidadeDiaria,3   ,' ', STR_PAD_LEFT);
       $oDadosLinha->vl_TotalDiarias         = str_pad($fValorDiaria,16  ,' ', STR_PAD_LEFT);
       $oDadosLinha->dt_AnoMes               = str_pad(substr(str_replace('-', '', $oLinhaEmpenho->e50_data),0,6),6   ,' ', STR_PAD_LEFT);
-      $oDadosLinha->cd_Orgao                = str_pad($oLinhaEmpenho->o58_orgao,4   ,' ', STR_PAD_LEFT);
-      $oDadosLinha->nu_EmpenhoSup           = str_pad($oLinhaEmpenho->e60_codemp,10  ,' ', STR_PAD_LEFT);
-      $oDadosLinha->Nu_Diaria               = str_pad($oLinhaEmpenho->e81_codmov,9   ,' ', STR_PAD_LEFT);
+      $oDadosLinha->cd_Orgao                = str_pad((string) $oLinhaEmpenho->o58_orgao,4   ,' ', STR_PAD_LEFT);
+      $oDadosLinha->nu_EmpenhoSup           = str_pad((string) $oLinhaEmpenho->e60_codemp,10  ,' ', STR_PAD_LEFT);
+      $oDadosLinha->Nu_Diaria               = str_pad((string) $oLinhaEmpenho->e81_codmov,9   ,' ', STR_PAD_LEFT);
       
       $oDadosLinha->codigolinha             = $iCodigoLinha;
 

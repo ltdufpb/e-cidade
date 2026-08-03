@@ -57,30 +57,30 @@ class AnexoII extends ProcessamentoRelatorioLegal {
   private $iLarguraColunaDescricao         = 78;
   private $iLarguraColunaExercicioAnterior = 28;
 
-  private $aTipoBorda = array(
-    1 => array("R", "LR", "L"),
-    2 => array("TBR", "1", "TBL")
-  );
+  private $aTipoBorda = [
+    1 => ["R", "LR", "L"],
+    2 => ["TBR", "1", "TBL"]
+  ];
 
-  private $aColunaRecalcularPeriodo = array (
+  private $aColunaRecalcularPeriodo =  [
     12 => 1,
     13 => 2,
     14 => 1,
     15 => 2,
     16 => 3,
-  );
+  ];
 
 
   /**
    * Mapeia os períodos do RCL que devem ser calculado de acordo com o Período selecionado   *
    */
-  private $aPeriodoCalcular = array(
-    12 => array(12),
-    13 => array(12, 13),
-    14 => array(14),
-    15 => array(14, 15),
-    16 => array(14, 15, 16),
-  );
+  private $aPeriodoCalcular = [
+    12 => [12],
+    13 => [12, 13],
+    14 => [14],
+    15 => [14, 15],
+    16 => [14, 15, 16],
+  ];
 
   private $oDataInicio;
 
@@ -97,15 +97,13 @@ class AnexoII extends ProcessamentoRelatorioLegal {
 
     $aInstituicoes = \InstituicaoRepository::getInstituicoes();
 
-    $aInstituicoes = array_filter($aInstituicoes, function($oInstiuicao) {
-      return ($oInstiuicao->getTipo() != 5 && $oInstiuicao->getTipo() != 6);
-    });
+    $aInstituicoes = array_filter($aInstituicoes, fn($oInstiuicao) => $oInstiuicao->getTipo() != 5 && $oInstiuicao->getTipo() != 6);
 
     parent::__construct($iAno, $oPeriodo, self::CODIGO_RELATORIO, $aInstituicoes);
 
     $this->oRCL = new ReceitaCorrenteLiquida($iAno, null);
 
-    if ( in_array($oPeriodo->getCodigo(), array(12, 13)) )  {
+    if ( in_array($oPeriodo->getCodigo(), [12, 13]) )  {
       $this->iNumeroDePeriodos = 2;
     }
 
@@ -157,7 +155,7 @@ class AnexoII extends ProcessamentoRelatorioLegal {
       }
     }
 
-    $aLinhaProcessarManual = array (11, 8, 4, 3, 1, 21, 20, 25, 27, 28, 29, 30);
+    $aLinhaProcessarManual =  [11, 8, 4, 3, 1, 21, 20, 25, 27, 28, 29, 30];
 
     foreach ($aLinhaProcessarManual as $key => $aLinha) {
       $this->processarFormulaDaLinha($aLinha);
@@ -221,7 +219,7 @@ class AnexoII extends ProcessamentoRelatorioLegal {
 
     $oPdf->line($oPdf->getX(), $oPdf->getY(), 200, $oPdf->getY());
     $oPdf->ln(1);
-    $this->notaExplicativa( $oPdf, array($oPdf, 'addPage'), 20 );
+    $this->notaExplicativa( $oPdf, [$oPdf, 'addPage'], 20 );
 
     $oPdf->ln($oPdf->getAvailHeight() - 10);
     $oDaoAssinatura = new \cl_assinatura();
@@ -302,9 +300,9 @@ class AnexoII extends ProcessamentoRelatorioLegal {
    */
   private function getSaldoDoExercicio($oLinha) {
 
-    $aSaldoPeriodo = array();
+    $aSaldoPeriodo = [];
 
-    if ( in_array($this->oPeriodo->getCodigo(), array(12, 13) ) ) {
+    if ( in_array($this->oPeriodo->getCodigo(), [12, 13] ) ) {
 
       $aSaldoPeriodo[] = $oLinha->primeiro_periodo;
       $aSaldoPeriodo[] = $oLinha->segundo_periodo;
@@ -370,7 +368,7 @@ class AnexoII extends ProcessamentoRelatorioLegal {
    * @param  integer $iFill                   [description]
    * @param  integer $iTipoBorda              [description]
    */
-  private function adicionaLinha($sDescricao, $nSaldoExercicioAnterior = null, $aSaldoPeriodo, $iFill = 0, $iTipoBorda = 1) {
+  private function adicionaLinha($sDescricao, $nSaldoExercicioAnterior = null, $aSaldoPeriodo = null, $iFill = 0, $iTipoBorda = 1) {
 
     $nSaldoExercicioAnterior = db_formatar($nSaldoExercicioAnterior, 'f');
 

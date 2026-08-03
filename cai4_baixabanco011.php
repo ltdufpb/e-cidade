@@ -71,7 +71,7 @@ if ($opcao == 'erros') {
 $sSql .= " order by idret, numpre, k00_numpar ";
 
 $result = db_query($sSql) or die($sSql);
-$num    = pg_numrows($result);
+$num    = pg_num_rows($result);
 
 $sSqlInstituicao = " select disarq.*, nome
                        from disarq
@@ -275,7 +275,7 @@ $linhasrec = pg_num_rows($resultrec);
     exit();
   }
 
-  $aNumbco = array();
+  $aNumbco = [];
   $oDados  = db_utils::getCollectionByRecord($rsDuplicados);
 
   foreach ($oDados as $oNumbcoDuplicado) {

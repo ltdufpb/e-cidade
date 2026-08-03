@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_predio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpredio = new cl_predio;
 $clpredio->rotulo->label("j111_sequencial");
 $clpredio->rotulo->label("j111_nome");
@@ -98,9 +98,9 @@ $clpredio->rotulo->label("j111_nome");
         }else{
            $sql = $clpredio->sql_query("",$campos,"j111_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j111_nome)){
-          $repassa = array("chave_j111_sequencial"=>$chave_j111_sequencial,"chave_j111_nome"=>$chave_j111_nome);
+          $repassa = ["chave_j111_sequencial"=>$chave_j111_sequencial,"chave_j111_nome"=>$chave_j111_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

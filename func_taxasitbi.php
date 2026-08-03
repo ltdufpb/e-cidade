@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("it36_sequencial");
@@ -93,13 +93,13 @@ $clrotulo->label("it36_descricao");
                     if (!isset($pesquisa_chave)) {
                         $sql = $cl_taxasitbi->sql_query_file("", "", "it36_sequencial", $sWhere);
 
-                        $repassa = array();
+                        $repassa = [];
 
                         if (isset($chave_it36_descricao)) {
-                            $repassa = array(
+                            $repassa = [
                                 "chave_it36_sequencial" => $chave_it36_sequencial,
                                 "chave_it36_descricao" => $chave_it36_descricao
-                            );
+                            ];
                         }
 
                         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

@@ -32,7 +32,7 @@ $host = null;
 if (isset($_SERVER['HTTP_HOST'])) {
 
     $protocol = 'http://';
-    if (isset($_SERVER['HTTPS']) && strtoupper($_SERVER['HTTPS']) == 'ON') {
+    if (isset($_SERVER['HTTPS']) && strtoupper((string) $_SERVER['HTTPS']) == 'ON') {
         $protocol = 'https://';
     }
 
@@ -42,7 +42,7 @@ if (isset($_SERVER['HTTP_HOST'])) {
 // diretorio raiz para requisicoes: http:/localhost/e-cidade/
 // @todo - achar um metodo mais eficiente
 define('ECIDADE_REQUEST_ROOT',
-    str_replace(array('extension/index.php', 'FrontController.php'), '', $_SERVER['SCRIPT_NAME'])
+    str_replace(['extension/index.php', 'FrontController.php'], '', $_SERVER['SCRIPT_NAME'])
 );
 
 define('ECIDADE_REQUEST_PATH', $host . ECIDADE_REQUEST_ROOT);

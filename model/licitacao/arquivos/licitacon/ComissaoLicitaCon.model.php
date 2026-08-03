@@ -37,14 +37,14 @@ class ComissaoLicitaCon extends ArquivoLicitaCon {
    *
    * Código E-Cidade -> Código LicitaCon
    */
-  public static $aTipos = array(
+  public static $aTipos = [
     1 => 'P',
     2 => 'E',
     3 => 'G',
     4 => 'S',
     5 => 'L',
     6 => 'C',
-  );
+  ];
 
   public function __construct(CabecalhoLicitaCon $oCabecalho) {
 
@@ -81,13 +81,13 @@ class ComissaoLicitaCon extends ArquivoLicitaCon {
    */
   public function getDados() {
 
-    $aComissoes  = array();
+    $aComissoes  = [];
     $rsComissoes = $this->getComissoes();
     for ($iComissao = 0; $iComissao < pg_num_rows($rsComissoes); $iComissao++) {
 
       $oDadosComissao = db_utils::fieldsMemory($rsComissoes, $iComissao);
 
-      $iNumero             = preg_replace('/[^0-9]/', '', $oDadosComissao->l30_portaria);
+      $iNumero             = preg_replace('/[^0-9]/', '', (string) $oDadosComissao->l30_portaria);
       $oDataDesignacao     = new DBDate($oDadosComissao->l30_data);
       $oDataInicioVigencia = new DBDate($oDadosComissao->l30_data);
       $sTipo               = str_replace(array_keys(self::$aTipos), array_values(self::$aTipos), $oDadosComissao->l30_tipo);

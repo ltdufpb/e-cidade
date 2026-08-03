@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -76,7 +76,7 @@ $aux = new cl_arquivo_auxiliar;
         <strong>&nbsp;&nbsp;&nbsp;Listar:</strong>
       
 	  <?php  
-	  $tipo = array("t"=>"Todas Receitas","o"=>"Receitas Orcamentárias","e"=>"Receitas Extra-orçamentárias");
+	  $tipo = ["t"=>"Todas Receitas","o"=>"Receitas Orcamentárias","e"=>"Receitas Extra-orçamentárias"];
 	  db_select("listar",$tipo,true,2,"onchange='document.form1.submit();'"); ?>
         </td>
       </tr>

@@ -50,9 +50,9 @@ try {
 
         case 'consulta':
 
-            $filtros = array(
+            $filtros = [
                 "o58_anousu = {$anoSessao}",
-            );
+            ];
             if (!empty($parametros->orgao)) {
                 $filtros[] = "o58_orgao = {$parametros->orgao}";
             }
@@ -72,11 +72,11 @@ try {
                 $filtros[] = "o58_projativ = {$parametros->projeto}";
             }
 
-            $campos = implode(', ', array(
+            $campos = implode(', ', [
                 'o58_coddot as dotacao',
                 'fc_estruturaldotacao(o58_anousu, o58_coddot) as estrutural',
                 'o58_esferaorcamentaria as esfera_orcamentaria',
-            ));
+            ]);
 
             $where = implode(' and ', $filtros);
             $daoDotacao = new cl_orcdotacao();

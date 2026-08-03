@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issnotaavulsa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissnotaavulsa = new cl_issnotaavulsa;
 $clrotulo = new rotulocampo;
 $clrotulo->label("q02_inscr");
@@ -110,9 +110,9 @@ $clissnotaavulsa->rotulo->label("q51_numnota");
         }else{
            $sql = $clissnotaavulsa->sql_query_cancelados("",$campos,"q51_numnota","$where2");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q51_sequencial)){
-          $repassa = array("chave_q51_numnota"=>$chave_q51_numnota,"chave_q02_inscr"=>$chave_q02_inscr);
+          $repassa = ["chave_q51_numnota"=>$chave_q51_numnota,"chave_q02_inscr"=>$chave_q02_inscr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

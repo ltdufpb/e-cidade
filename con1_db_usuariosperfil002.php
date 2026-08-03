@@ -38,7 +38,7 @@ $cldb_usuarios = new cl_db_usuarios;
 $cldb_userinst = new cl_db_userinst;
 $cldb_config   = new cl_db_config;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 22;
 $db_botao = true;
@@ -124,7 +124,7 @@ if(isset($alterar)){
 </html>
 <?php 
 if(isset($alterar)){
-  if (trim(@$erro_msg)!=""){
+  if (trim((string) @$erro_msg)!=""){
        db_msgbox($erro_msg);
   }
   if($sqlerro==true){

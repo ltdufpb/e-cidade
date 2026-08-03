@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -112,7 +112,7 @@ function js_gerar(){
   $geraform->mostord = true;
   $geraform->tipordem = "Imprimir cadastro de funcionário";
   $geraform->mornome  = "formaimpr";
-  $geraform->arr_mostord = Array("s"=>"Sim", "n"=>"Não");
+  $geraform->arr_mostord = ["s"=>"Sim", "n"=>"Não"];
   $geraform->jsgerar = "js_gerar()";
   $geraform->gera_form($anofolha,$mesfolha);
   ?>

@@ -71,10 +71,10 @@ a:active {
 </head>
 <body>
 <?php 
-db_postmemory($HTTP_POST_VARS);
-$ano           = substr( $pdia, 6, 4 );
-$mes           = substr( $pdia, 3, 2 );
-$dia           = substr( $pdia, 0, 2 );
+db_postmemory($_POST);
+$ano           = substr( (string) $pdia, 6, 4 );
+$mes           = substr( (string) $pdia, 3, 2 );
+$dia           = substr( (string) $pdia, 0, 2 );
 $data = $ano."-".$mes."-".$dia;
 $tipoagenda= $s118_c_tipoagenda;
 if($tipoagenda=="C"){

@@ -64,7 +64,7 @@ try {
   }
 
   if (!empty($oGet->sRecursos)) {
-    $oRelatorio->setRecursos(explode(",", $oGet->sRecursos));
+    $oRelatorio->setRecursos(explode(",", (string) $oGet->sRecursos));
   }
 
   if (!empty($oGet->iReduzido)) {

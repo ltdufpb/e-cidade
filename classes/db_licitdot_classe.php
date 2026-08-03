@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE licitdot
 class cl_licitdot { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $l06_tipo = null; 
-   var $l06_numero = null; 
-   var $l06_item = null; 
-   var $l06_quant = 0; 
-   var $l06_orcam = 0; 
-   var $l06_valor = 0; 
+   public $l06_tipo = null; 
+   public $l06_numero = null; 
+   public $l06_item = null; 
+   public $l06_quant = 0; 
+   public $l06_orcam = 0; 
+   public $l06_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  l06_tipo = char(     1) = Tipo de Licitacao 
                  l06_numero = char(     8) = Numero da Licitacao 
                  l06_item = char(     7) = Codigo do Item (material) 
@@ -58,10 +58,10 @@ class cl_licitdot {
                  l06_valor = float8 = valor do item 
                  ";
    //funcao construtor da classe 
-   function cl_licitdot() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("licitdot"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -160,7 +160,7 @@ class cl_licitdot {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro das dotacoes de cada item                 () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro das dotacoes de cada item                 já Cadastrado";
@@ -187,10 +187,10 @@ class cl_licitdot {
       $this->atualizacampos();
      $sql = " update licitdot set ";
      $virgula = "";
-     if(trim($this->l06_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_tipo"])){ 
+     if(trim((string) $this->l06_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_tipo"])){ 
        $sql  .= $virgula." l06_tipo = '$this->l06_tipo' ";
        $virgula = ",";
-       if(trim($this->l06_tipo) == null ){ 
+       if(trim((string) $this->l06_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo de Licitacao nao Informado.";
          $this->erro_campo = "l06_tipo";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_licitdot {
          return false;
        }
      }
-     if(trim($this->l06_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_numero"])){ 
+     if(trim((string) $this->l06_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_numero"])){ 
        $sql  .= $virgula." l06_numero = '$this->l06_numero' ";
        $virgula = ",";
-       if(trim($this->l06_numero) == null ){ 
+       if(trim((string) $this->l06_numero) == null ){ 
          $this->erro_sql = " Campo Numero da Licitacao nao Informado.";
          $this->erro_campo = "l06_numero";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_licitdot {
          return false;
        }
      }
-     if(trim($this->l06_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_item"])){ 
+     if(trim((string) $this->l06_item)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_item"])){ 
        $sql  .= $virgula." l06_item = '$this->l06_item' ";
        $virgula = ",";
-       if(trim($this->l06_item) == null ){ 
+       if(trim((string) $this->l06_item) == null ){ 
          $this->erro_sql = " Campo Codigo do Item (material) nao Informado.";
          $this->erro_campo = "l06_item";
          $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_licitdot {
          return false;
        }
      }
-     if(trim($this->l06_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_quant"])){ 
+     if(trim((string) $this->l06_quant)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_quant"])){ 
        $sql  .= $virgula." l06_quant = $this->l06_quant ";
        $virgula = ",";
-       if(trim($this->l06_quant) == null ){ 
+       if(trim((string) $this->l06_quant) == null ){ 
          $this->erro_sql = " Campo Qtda lancada na dotacao nao Informado.";
          $this->erro_campo = "l06_quant";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_licitdot {
          return false;
        }
      }
-     if(trim($this->l06_orcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_orcam"])){ 
+     if(trim((string) $this->l06_orcam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_orcam"])){ 
        $sql  .= $virgula." l06_orcam = $this->l06_orcam ";
        $virgula = ",";
-       if(trim($this->l06_orcam) == null ){ 
+       if(trim((string) $this->l06_orcam) == null ){ 
          $this->erro_sql = " Campo Codigo reduzido da Dotacao nao Informado.";
          $this->erro_campo = "l06_orcam";
          $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_licitdot {
          return false;
        }
      }
-     if(trim($this->l06_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_valor"])){ 
+     if(trim((string) $this->l06_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["l06_valor"])){ 
        $sql  .= $virgula." l06_valor = $this->l06_valor ";
        $virgula = ",";
-       if(trim($this->l06_valor) == null ){ 
+       if(trim((string) $this->l06_valor) == null ){ 
          $this->erro_sql = " Campo valor do item nao Informado.";
          $this->erro_campo = "l06_valor";
          $this->erro_banco = "";
@@ -346,7 +346,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:licitdot";

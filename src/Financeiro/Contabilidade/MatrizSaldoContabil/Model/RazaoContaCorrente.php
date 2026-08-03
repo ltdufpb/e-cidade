@@ -36,11 +36,6 @@ class RazaoContaCorrente
     private $hashAtributos;
 
     /**
-     * @var integer
-     */
-    private $reduzido;
-
-    /**
      * @var int
      */
     private $codigoRecurso;
@@ -96,11 +91,6 @@ class RazaoContaCorrente
     private $naturezaSaldoFilnal;
 
     /**
-     * @var int
-     */
-    private $codigoDocumento;
-
-    /**
      * @var string
      */
     private $descricaoDocumento;
@@ -118,13 +108,15 @@ class RazaoContaCorrente
     /**
      * @var array
      */
-    private $atributos = array('PO'=> null, 'FP'=> null, 'FR'=> null, 'FS'=> null, 'DC'=> null, 'NR'=> null, 'ND'=> null);
+    private $atributos = ['PO'=> null, 'FP'=> null, 'FR'=> null, 'FS'=> null, 'DC'=> null, 'NR'=> null, 'ND'=> null];
 
-    public function __construct($reduzido, $codigoDocumento, \DBDate $dataMovimentacao, $hashAtributos)
+    /**
+     * @param int $reduzido
+     * @param int $codigoDocumento
+     */
+    public function __construct(private $reduzido, private $codigoDocumento, \DBDate $dataMovimentacao, $hashAtributos)
     {
         $this->dataMovimentacao = $dataMovimentacao;
-        $this->reduzido = $reduzido;
-        $this->codigoDocumento = $codigoDocumento;
         $this->movimentacaoCredito = 0.0;
         $this->movimentacaoDebito = 0.0;
         $this->saldoAnterior = 0.0;

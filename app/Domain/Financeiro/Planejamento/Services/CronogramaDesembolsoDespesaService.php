@@ -83,9 +83,7 @@ class CronogramaDesembolsoDespesaService extends CronogramaDesembolsoService
     public function recalcular($dados)
     {
         $detalhamento = DetalhamentoDespesa::find($dados['detalhamentoiniciativa_id']);
-        $valores = $detalhamento->getValores()->filter(function (Valor $valor) use ($dados) {
-            return in_array($valor->pl10_ano, $dados['anos']);
-        });
+        $valores = $detalhamento->getValores()->filter(fn(Valor $valor) => in_array($valor->pl10_ano, $dados['anos']));
 
         $cronogramas = $valores->map(function (Valor $valor) use ($dados, $detalhamento) {
             $cronograma = $this->getCronograma($dados['detalhamentoiniciativa_id'], $valor->pl10_ano);
@@ -199,16 +197,12 @@ class CronogramaDesembolsoDespesaService extends CronogramaDesembolsoService
                     /**
                      * @var DetalhamentoDespesa $detalhamentoDespesa
                      */
-                    $valorBase = $detalhamentoDespesa->getValores()->filter(function (Valor $valor) use ($exercicio) {
-                        return $valor->pl10_ano === $exercicio;
-                    })->shift();
+                    $valorBase = $detalhamentoDespesa->getValores()->filter(fn(Valor $valor) => $valor->pl10_ano === $exercicio)->shift();
                     /**
                      * @var CronogramaDesembolsoDespesa $cronograma
                      */
                     $cronograma = $detalhamentoDespesa->cronogramaDesembolso->filter(
-                        function (CronogramaDesembolsoDespesa $cronograma) use ($exercicio) {
-                            return $cronograma->exercicio === $exercicio;
-                        }
+                        fn(CronogramaDesembolsoDespesa $cronograma) => $cronograma->exercicio === $exercicio
                     )->shift();
 
                     $data = (object)$cronograma->toArray();

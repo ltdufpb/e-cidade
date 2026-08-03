@@ -30,8 +30,8 @@ require_once("libs/db_conecta.php");
 require_once("libs/db_sessoes.php");
 require_once("libs/db_usuariosonline.php");
 require_once("dbforms/db_classesgenericas.php");
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clcriaabas     = new cl_criaabas;
 $sChavePesquisa = "";
 if (isset($chave_pesquisa)) {
@@ -60,17 +60,17 @@ if (isset($chave_pesquisa)) {
      <td>
      <?php 
      
-     $clcriaabas->identifica = array("taxa"       => "Cadastro de Taxas / Custas",
+     $clcriaabas->identifica = ["taxa"       => "Cadastro de Taxas / Custas",
                                      "favorecido" => "Favorecidos"
-                                    );//nome do iframe e o label    
-     $clcriaabas->title      = array("taxa"       => "Cadastro de Taxas / Custas",
+                                    ];//nome do iframe e o label    
+     $clcriaabas->title      = ["taxa"       => "Cadastro de Taxas / Custas",
                                      "favorecido" => "Favorecidos"
-                                    );//nome do iframe e o label    
-     $clcriaabas->src        = array("taxa"       => "arr1_taxa002.php", 
+                                    ];//nome do iframe e o label    
+     $clcriaabas->src        = ["taxa"       => "arr1_taxa002.php", 
                                      "favorecido" => "arr1_taxaFavorecido001.php"
-                                    );  //nome do iframe e SRC  
-     $clcriaabas->sizecampo  = array("taxa"       => "30" );    
-     $clcriaabas->disabled   = array("favorecido" => "false");    
+                                    ];  //nome do iframe e SRC  
+     $clcriaabas->sizecampo  = ["taxa"       => "30" ];    
+     $clcriaabas->disabled   = ["favorecido" => "false"];    
      $clcriaabas->cria_abas();          
      ?> 
      </td>

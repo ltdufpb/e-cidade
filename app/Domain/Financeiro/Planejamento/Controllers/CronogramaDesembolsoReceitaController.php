@@ -10,14 +10,8 @@ use Illuminate\Http\Request;
 
 class CronogramaDesembolsoReceitaController extends Controller
 {
-    /**
-     * @var CronogramaDesembolsoReceitaService
-     */
-    private $service;
-
-    public function __construct(CronogramaDesembolsoReceitaService $service)
+    public function __construct(private readonly CronogramaDesembolsoReceitaService $service)
     {
-        $this->service = $service;
     }
 
     public function buscar(CronogramaRequest $request)

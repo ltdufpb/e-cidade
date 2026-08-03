@@ -63,7 +63,7 @@ include(modification("dbforms/db_funcoes.php"));
      <td>
       &nbsp;&nbsp;&nbsp;
       <?php 
-      $tipo = array("Todos"=>"Todos","Cancelamentos"=>"Cancelamentos","Reativações"=>"Reativações");
+      $tipo = ["Todos"=>"Todos","Cancelamentos"=>"Cancelamentos","Reativações"=>"Reativações"];
       db_select("escolha",$tipo,true,2);
       ?>
      </td>

@@ -46,7 +46,7 @@ $clautonumpre= new cl_autonumpre;
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <?php 
-db_postmemory($HTTP_GET_VARS,0);
+db_postmemory($_GET,0);
 $pesquisaLocalizada = false;
 if ($solicitacao == "Proced") {
   $sql=$clfiscaltipo->sql_query(null,null,"y31_codtipo,y29_descr,y29_descr_obs",""," y31_codnoti = $fiscal");
@@ -64,7 +64,7 @@ if ($solicitacao == "Proced") {
 }
 if ($pesquisaLocalizada==true) {
   $result = db_query($sql);
-  if(pg_numrows($result) == 0){
+  if(pg_num_rows($result) == 0){
     echo "<br><br><b>Nenhum Registro Cadastrado!!<b>";
   }else{
   	

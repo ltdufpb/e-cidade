@@ -9,7 +9,7 @@ use Exception;
 class ImpressaoMatricialMapaColeta extends ImpressaoEpson
 {
 
-    private $dados = array();
+    private $dados = [];
 
     const TAMANHO_REQUISICAO = 20;
     const TAMANHO_DATA = 17;
@@ -28,12 +28,12 @@ class ImpressaoMatricialMapaColeta extends ImpressaoEpson
         $padCabecalhoPrefeitura = 55;
 
         $this->dados->cabecalho->laboratorio = str_pad(
-            substr($this->dados->cabecalho->laboratorio, 0, $subCabecalhoPrefeitura),
+            substr((string) $this->dados->cabecalho->laboratorio, 0, $subCabecalhoPrefeitura),
             $padCabecalhoPrefeitura
         );
 
         $this->dados->cabecalho->enderecoLaboratorio = str_pad(
-            substr($this->dados->cabecalho->enderecoLaboratorio, 0, $subCabecalhoPrefeitura),
+            substr((string) $this->dados->cabecalho->enderecoLaboratorio, 0, $subCabecalhoPrefeitura),
             $padCabecalhoPrefeitura
         );
 
@@ -54,12 +54,12 @@ class ImpressaoMatricialMapaColeta extends ImpressaoEpson
         );
 
         $this->dados->cabecalho->emailDepartamento = str_pad(
-            substr($this->dados->cabecalho->emailDepartamento, 0, $subCabecalhoPrefeitura),
+            substr((string) $this->dados->cabecalho->emailDepartamento, 0, $subCabecalhoPrefeitura),
             $padCabecalhoPrefeitura
         );
 
         $this->dados->cabecalho->siteDepartamento = str_pad(
-            substr($this->dados->cabecalho->siteDepartamento, 0, $subCabecalhoPrefeitura),
+            substr((string) $this->dados->cabecalho->siteDepartamento, 0, $subCabecalhoPrefeitura),
             $padCabecalhoPrefeitura
         );
 
@@ -89,7 +89,7 @@ class ImpressaoMatricialMapaColeta extends ImpressaoEpson
      */
     public function getCabecalho()
     {
-        $setor = $this->dados->cabecalho->nomeSetor ? $this->dados->cabecalho->nomeSetor : 'TODOS';
+        $setor = $this->dados->cabecalho->nomeSetor ?: 'TODOS';
 
         $this->tratarDadosDepartamento();
         $conteudo  = $this->arrCodigos[self::FONT_12_CPI];
@@ -109,15 +109,15 @@ class ImpressaoMatricialMapaColeta extends ImpressaoEpson
         $conteudo .= $this->arrCodigos[self::TAB] . $this->arrCodigos[self::QUEBRA_LINHA];
         $this->adicionaLinhas(8);
 
-        $cabecalho = array(
+        $cabecalho = [
             str_pad("REQUISICAO", self::TAMANHO_REQUISICAO),
             str_pad("NOME", self::TAMANHO_NOME),
             str_pad("DATA REQUISICAO", self::TAMANHO_DATA),
             str_pad("EXAMES", self::TAMANHO_EXAMES)
-        );
+        ];
 
         $conteudo .= $this->arrCodigos[self::HABILITAR_NEGRITO];
-        $conteudo .= implode($cabecalho, '| ');
+        $conteudo .= implode('| ', $cabecalho);
         $conteudo .= $this->arrCodigos[self::DESABILITAR_NEGRITO];
         $conteudo .= $this->arrCodigos[self::TAB] . $this->arrCodigos[self::QUEBRA_LINHA];
         $conteudo .= str_repeat('-', $this->tamanhoLinha);
@@ -169,15 +169,15 @@ class ImpressaoMatricialMapaColeta extends ImpressaoEpson
             }
             $exames .= $this->arrCodigos[self::QUEBRA_LINHA];
 
-            $corpo = array(
-                str_pad($coleta->requisicao, self::TAMANHO_REQUISICAO),
-                str_pad($coleta->nome, self::TAMANHO_NOME),
-                str_pad($coleta->dataRequisicao, self::TAMANHO_DATA),
+            $corpo = [
+                str_pad((string) $coleta->requisicao, self::TAMANHO_REQUISICAO),
+                str_pad((string) $coleta->nome, self::TAMANHO_NOME),
+                str_pad((string) $coleta->dataRequisicao, self::TAMANHO_DATA),
                 $exames
-            );
+            ];
             $this->adicionaLinhas(1);
 
-            $conteudo = implode($corpo, '| ');
+            $conteudo = implode('| ', $corpo);
             $this->validaQuebraPagina($conteudo)
                 ->adicionaConteudo($conteudo)
                 ->adicionaConteudo($this->arrCodigos[self::TAB] . $this->arrCodigos[self::QUEBRA_LINHA]);

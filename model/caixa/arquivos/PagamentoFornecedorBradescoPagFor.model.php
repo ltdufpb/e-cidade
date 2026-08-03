@@ -59,7 +59,7 @@ class PagamentoFornecedorBradescoPagFor extends PagamentoFornecedorTXTBase imple
    *
    * @var array
    */
-  private static $aCodigosAgendamento = array('BD', 'FS', 'GU', 'HA', 'HF', 'JH', 'KS', 'LA', 'ME', 'TR');
+  private static $aCodigosAgendamento = ['BD', 'FS', 'GU', 'HA', 'HF', 'JH', 'KS', 'LA', 'ME', 'TR'];
 
   /**
    * @return boolean
@@ -74,7 +74,7 @@ class PagamentoFornecedorBradescoPagFor extends PagamentoFornecedorTXTBase imple
 
     $oDados = new stdClass();
     $oDados->header = new stdClass();
-    $oDados->registros = array();
+    $oDados->registros = [];
 
     foreach ($aLinhas as $oLinha) {
 

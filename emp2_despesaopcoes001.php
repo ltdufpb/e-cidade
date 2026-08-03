@@ -34,14 +34,14 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcdotacao_classe.php"));
 include(modification("classes/db_orcelemento_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_SERVER);
 
 // recebe a variavel db_input_retorno com o nome do objeto que será atualizado com os dados selecionados
 
 if (isset($instit) && $instit!=""){
   // recebeu instituição
-  $array_instit = split(',',$instit);
+  $array_instit = preg_split('#,#m',(string) $instit);
 } else {
   $array_instit[0]= db_getsession("DB_instit");
   $instit= db_getsession("DB_instit");
@@ -442,17 +442,17 @@ function js_atualiza_variavel_retorno(objeto){
     <?php 
      $ind = 0;
      $result = $clorcdotacao->sql_record($clorcdotacao->sql_query(null,null," distinct o56_codele,o56_elemento,orcelemento.o56_descr","o56_elemento"," o58_anousu = ".db_getsession("DB_anousu")." and $sel_orgaos "));
-     $tipodesp = array() ;
+     $tipodesp = [] ;
      $tipod = "";
      for($i=0;$i<$clorcdotacao->numrows;$i++){
        db_fieldsmemory($result,$i);
-       $ele = substr($o56_elemento,0,3);
+       $ele = substr((string) $o56_elemento,0,3);
        $tipodd = " o56_elemento = '$ele'";
        if(array_search($ele,$tipodesp)==0){
 	 $srec = $clorcelemento->sql_record($clorcelemento->sql_query_file(null,null,'o56_descr',null," o56_anousu=".db_getsession("DB_anousu")." and o56_elemento = '".$ele."0000000000' order by o56_elemento limit 1 "));
 	 if($clorcelemento->numrows!=0){
            db_fieldsmemory($srec,0);
-	   $tipodesp["$ele"] = substr($o56_descr,0,20);
+	   $tipodesp["$ele"] = substr((string) $o56_descr,0,20);
 	 }
        }
        $tipod = " and ";

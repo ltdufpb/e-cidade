@@ -39,7 +39,7 @@ $clrotulo->label("v01_folha");
 $clrotulo->label("v01_livro");
 //$clrotulo->label("v01_dtoper");
 $db_opcao = 1;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -91,7 +91,7 @@ function js_preenchelivro(livro,folha){
 	  <td>Complementar:</td>
 	  <td>
 	    <?php 
-	      $arr=array("nao"=>"Não","sim"=>"Sim");
+	      $arr=["nao"=>"Não","sim"=>"Sim"];
 	      db_select("complementar",$arr,true,1,"onchange='js_trocalivro(this.value)'");
 	    ?>
 	  </td>
@@ -103,7 +103,7 @@ function js_preenchelivro(livro,folha){
 		  $sSqlDivida = $cldivida->sql_query_file(null, "distinct v01_exerc",""," coalesce(v01_livro,0) = 0");
 		  $result     = $cldivida->sql_record($sSqlDivida);
 		  $numrows    = $cldivida->numrows;
-		  $matriz     = array();
+		  $matriz     = [];
 		  
 		  if (isset($v01_exerc)){
 		    $exerc_sel = $v01_exerc;
@@ -192,7 +192,7 @@ function js_preenchelivro(livro,folha){
 	  <td>Opção de Seleção:</td>
 	  <td>
 		<?php 
-		  $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
+		  $xxx = ["S"=>"Somente Selecionados","N"=>"Menos os Selecionados"];
 		  db_select('sele',$xxx,true,2);
 		?>
 	  </td>
@@ -303,7 +303,7 @@ if(isset($processar)){
   $resdropindex = @db_query("DROP IF EXISTS INDEX divida_livro_in;");
 
   $result     = $cldivida->sql_record($cldivida->sql_query_file(null,"v01_coddiv","","$dbwhere $data"));
-  $count_div  = pg_result(db_query("select count(*) as count_div from divida where v01_livro=".$v01_livro." and v01_folha=".$v01_folha." and  v01_instit = ".db_getsession('DB_instit')),0,0); 
+  $count_div  = pg_fetch_result(db_query("select count(*) as count_div from divida where v01_livro=".$v01_livro." and v01_folha=".$v01_folha." and  v01_instit = ".db_getsession('DB_instit')),0,0); 
   $numrows=$cldivida->numrows;
   if ($numrows != 0) {
     db_inicio_transacao();

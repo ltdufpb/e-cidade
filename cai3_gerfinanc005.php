@@ -31,13 +31,13 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_termoprotprocesso_classe.php"));
 
-$mat_numpre = explode("#", base64_decode(@$HTTP_SERVER_VARS['QUERY_STRING']));
+$mat_numpre = explode("#", base64_decode((string) @$_SERVER['QUERY_STRING']));
 
 $iTipo = $mat_numpre[0];
 $numpre = $mat_numpre[1];
 $numpar = $mat_numpre[2];
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sSql = "select k03_tipo from arretipo where k00_tipo = {$iTipo} and k00_instit = " . db_getsession('DB_instit');
 $rsResult = db_query($sSql) or die($sSql);
@@ -170,7 +170,7 @@ if ($oDaoParJuridico->numrows > 0) {
     $sSqlReparcelamento .= " where v07_numpre = $numpre and v07_instit = " . db_getsession('DB_instit');
 
     $rsReparc = db_query($sSqlReparcelamento);
-    $intNumrows = pg_numrows($rsReparc);
+    $intNumrows = pg_num_rows($rsReparc);
 
 
     if ($intNumrows > 0) {

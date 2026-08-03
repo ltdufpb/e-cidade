@@ -43,7 +43,7 @@
 </script>
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <?php 
-  if (isset($HTTP_POST_VARS["anexar"])) {
+  if (isset($_POST["anexar"])) {
     db_postmemory($_FILES["arquivo"]);
 ?>
 

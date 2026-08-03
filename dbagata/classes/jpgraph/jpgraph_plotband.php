@@ -21,9 +21,9 @@ DEFINE("BAND_DIAGCROSS",8); // Diagonal crosses
 
 // Utility class to hold coordinates for a rectangle
 class Rectangle {
-    var $x,$y,$w,$h;
-    var $xe, $ye;
-    function Rectangle($aX,$aY,$aWidth,$aHeight) {
+    public $x,$y,$w,$h;
+    public $xe, $ye;
+    function __construct($aX,$aY,$aWidth,$aHeight) {
 	$this->x=$aX;
 	$this->y=$aY;
 	$this->w=$aWidth;
@@ -41,16 +41,13 @@ class Rectangle {
 // for drawing the pattern onto the graph.
 //=====================================================================
 class RectPattern {
-    var $color;
-    var $weight;
-    var $rect=null;
-    var $doframe=true;
-    var $linespacing;	// Line spacing in pixels
-    var $iBackgroundColor=-1;  // Default is no background fill
+    public $rect=null;
+    public $doframe=true;
+    public $linespacing;	// Line spacing in pixels
+    public $iBackgroundColor=-1;  // Default is no background fill
 	
-    function RectPattern($aColor,$aWeight=1) {
-	$this->color = $aColor;
-	$this->weight = $aWeight;		
+    function __construct(public $color, public $weight=1)
+    {
     }
 
     function SetBackground($aBackgroundColor) {
@@ -67,7 +64,7 @@ class RectPattern {
 
     function SetDensity($aDens) {
 	if( $aDens < 1 || $aDens > 100 )
-	    JpGraphError::RaiseL(16001,$aDens);
+	    (new JpGraphError())->RaiseL(16001, $aDens);
 //(" Desity for pattern must be between 1 and 100. (You tried $aDens)");
 	// 1% corresponds to linespacing=50
 	// 100 % corresponds to linespacing 1
@@ -77,7 +74,7 @@ class RectPattern {
 
     function Stroke(&$aImg) {
 	if( $this->rect == null )
-	    JpGraphError::RaiseL(16002);
+	    (new JpGraphError())->RaiseL(16002);
 //(" No positions specified for pattern.");
 
 	if( !(is_numeric($this->iBackgroundColor) && $this->iBackgroundColor==-1) ) {
@@ -105,8 +102,8 @@ class RectPattern {
 //=====================================================================
 class RectPatternSolid extends RectPattern {
 
-    function RectPatternSolid($aColor="black",$aWeight=1) {
-	parent::RectPattern($aColor,$aWeight);
+    function __construct($aColor="black", $aWeight=1)
+    {
     }
 
     function DoPattern(&$aImg) {
@@ -122,8 +119,7 @@ class RectPatternSolid extends RectPattern {
 //=====================================================================
 class RectPatternHor extends RectPattern {
 		
-    function RectPatternHor($aColor="black",$aWeight=1,$aLineSpacing=7) {
-	parent::RectPattern($aColor,$aWeight);
+    function __construct($aColor="black",$aWeight=1,$aLineSpacing=7) {
 	$this->linespacing = $aLineSpacing;
     }
 		
@@ -143,11 +139,10 @@ class RectPatternHor extends RectPattern {
 // Implements vertical line pattern
 //=====================================================================
 class RectPatternVert extends RectPattern {
-    var $linespacing=10;	// Line spacing in pixels
+    // Line spacing in pixels
 		
-    function RectPatternVert($aColor="black",$aWeight=1,$aLineSpacing=7) {
-	parent::RectPattern($aColor,$aWeight);
-	$this->linespacing = $aLineSpacing;
+    function __construct($aColor="black", $aWeight=1, public $linespacing=7)
+    {
     }
 
     //--------------------
@@ -170,11 +165,10 @@ class RectPatternVert extends RectPattern {
 // Implements right diagonal pattern
 //=====================================================================
 class RectPatternRDiag extends RectPattern {
-    var $linespacing;	// Line spacing in pixels
+    // Line spacing in pixels
 		
-    function RectPatternRDiag($aColor="black",$aWeight=1,$aLineSpacing=12) {
-	parent::RectPattern($aColor,$aWeight);
-	$this->linespacing = $aLineSpacing;
+    function __construct($aColor="black", $aWeight=1, public $linespacing=12)
+    {
     }
 
     function DoPattern(&$aImg) {
@@ -240,11 +234,10 @@ class RectPatternRDiag extends RectPattern {
 // Implements left diagonal pattern
 //=====================================================================
 class RectPatternLDiag extends RectPattern {
-    var $linespacing;	// Line spacing in pixels
+    // Line spacing in pixels
 		
-    function RectPatternLDiag($aColor="black",$aWeight=1,$aLineSpacing=12) {
-	$this->linespacing = $aLineSpacing;
-	parent::RectPattern($aColor,$aWeight);
+    function __construct($aColor="black", $aWeight=1, public $linespacing=12)
+    {
     }
 
     function DoPattern(&$aImg) {
@@ -305,13 +298,12 @@ class RectPatternLDiag extends RectPattern {
 // Implements "3D" plane pattern
 //=====================================================================
 class RectPattern3DPlane extends RectPattern {
-    var $alpha=50;  // Parameter that specifies the distance
+    public $alpha=50;  // Parameter that specifies the distance
     // to "simulated" horizon in pixel from the
     // top of the band. Specifies how fast the lines
     // converge.
 
-    function RectPattern3DPlane($aColor="black",$aWeight=1) {
-	parent::RectPattern($aColor,$aWeight);
+    function __construct($aColor="black",$aWeight=1) {
 	$this->SetDensity(10);  // Slightly larger default
     }
 
@@ -422,10 +414,9 @@ class RectPattern3DPlane extends RectPattern {
 // Vert/Hor crosses
 //=====================================================================
 class RectPatternCross extends RectPattern {
-    var $vert=null;
-    var $hor=null;
-    function RectPatternCross($aColor="black",$aWeight=1) {
-	parent::RectPattern($aColor,$aWeight);
+    public $vert=null;
+    public $hor=null;
+    function __construct($aColor="black",$aWeight=1) {
 	$this->vert = new RectPatternVert($aColor,$aWeight);
 	$this->hor  = new RectPatternHor($aColor,$aWeight);
     }
@@ -435,12 +426,14 @@ class RectPatternCross extends RectPattern {
 	$this->hor->SetOrder($aDepth);
     }
 
+    #[\Override]
     function SetPos(&$aRect) {
 	parent::SetPos($aRect);
 	$this->vert->SetPos($aRect);
 	$this->hor->SetPos($aRect);
     }
 
+    #[\Override]
     function SetDensity($aDens) {
 	$this->vert->SetDensity($aDens);
 	$this->hor->SetDensity($aDens);
@@ -458,10 +451,9 @@ class RectPatternCross extends RectPattern {
 //=====================================================================
 
 class RectPatternDiagCross extends RectPattern {
-    var $left=null;
-    var $right=null;
-    function RectPatternDiagCross($aColor="black",$aWeight=1) {
-	parent::RectPattern($aColor,$aWeight);
+    public $left=null;
+    public $right=null;
+    function __construct($aColor="black",$aWeight=1) {
 	$this->right = new RectPatternRDiag($aColor,$aWeight);
 	$this->left  = new RectPatternLDiag($aColor,$aWeight);
     }
@@ -471,12 +463,14 @@ class RectPatternDiagCross extends RectPattern {
 	$this->right->SetOrder($aDepth);
     }
 
+    #[\Override]
     function SetPos(&$aRect) {
 	parent::SetPos($aRect);
 	$this->left->SetPos($aRect);
 	$this->right->SetPos($aRect);
     }
 
+    #[\Override]
     function SetDensity($aDens) {
 	$this->left->SetDensity($aDens);
 	$this->right->SetDensity($aDens);
@@ -494,7 +488,7 @@ class RectPatternDiagCross extends RectPattern {
 // Factory class for rectangular pattern 
 //=====================================================================
 class RectPatternFactory {
-    function RectPatternFactory() {
+    function __construct() {
 	// Empty
     }
     function Create($aPattern,$aColor,$aWeight=1) {
@@ -524,7 +518,7 @@ class RectPatternFactory {
 		$obj =  new RectPatternDiagCross($aColor,$aWeight);
 		break;
 	    default:
-		JpGraphError::RaiseL(16003,$aPattern);
+		(new JpGraphError())->RaiseL(16003, $aPattern);
 //(" Unknown pattern specification ($aPattern)");
 	}
 	return $obj;
@@ -539,20 +533,18 @@ class RectPatternFactory {
 // concrete class.
 //=====================================================================
 class PlotBand {
-    var $prect=null;
-    var $depth;
-    var $dir, $min, $max;
+    public $prect=null;
+    public $dir, $min, $max;
 
-    function PlotBand($aDir,$aPattern,$aMin,$aMax,$aColor="black",$aWeight=1,$aDepth=DEPTH_BACK) {
+    function __construct($aDir,$aPattern,$aMin,$aMax,$aColor="black",$aWeight=1,public $depth=DEPTH_BACK) {
 	$f =  new RectPatternFactory();
 	$this->prect = $f->Create($aPattern,$aColor,$aWeight);
 	if( is_numeric($aMin) && is_numeric($aMax) && ($aMin > $aMax) ) 
-	    JpGraphError::RaiseL(16004);
+	    (new JpGraphError())->RaiseL(16004);
 //('Min value for plotband is larger than specified max value. Please correct.');
 	$this->dir = $aDir;
 	$this->min = $aMin;
 	$this->max = $aMax;
-	$this->depth=$aDepth;
     }
 	
     // Set position. aRect contains absolute image coordinates

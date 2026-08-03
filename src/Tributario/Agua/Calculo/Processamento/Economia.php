@@ -20,7 +20,7 @@ class Economia extends Processamento {
   /**
    * @var Estrutura[]
    */
-  private $aEstruturasFinalCalculo = array();
+  private $aEstruturasFinalCalculo = [];
 
   public function __construct() {
     $this->oResultadoCollection = new ResultadoCollection;
@@ -161,11 +161,11 @@ class Economia extends Processamento {
     $this->calcularIsencao();
     $this->calcularPercentuais();
 
-    return array(
-      array(
+    return [
+      [
         'responsavel' => null,
         'resultado' => $this->oResultadoCollection,
-      ),
-    );
+      ],
+    ];
   }
 }

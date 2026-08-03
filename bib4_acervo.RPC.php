@@ -120,7 +120,7 @@ try {
 
         case 'emprestimosAbertos':
 
-            $aWhere = array('not exists (SELECT * FROM devolucaoacervo WHERE devolucaoacervo.bi21_codigo = emprestimoacervo.bi19_codigo )');
+            $aWhere = ['not exists (SELECT * FROM devolucaoacervo WHERE devolucaoacervo.bi21_codigo = emprestimoacervo.bi19_codigo )'];
 
             if (!empty($oParam->iAcervo)) {
                 $aWhere[] = " bi06_seq = {$oParam->iAcervo} ";
@@ -144,7 +144,7 @@ try {
                 throw new DBException("Erro ao buscar os emprestimos.");
             }
 
-            $oRetorno->aEmprestimos = array();
+            $oRetorno->aEmprestimos = [];
 
             $oData = new DBDate(date('Y-m-d'));
             $iLinhas = pg_num_rows($rsEmprestimos);
@@ -177,7 +177,7 @@ try {
                 throw new DBException(_M(MSG_BIB4_ACERVORPC . "erro_buscar_assunto"));
             }
 
-            $aAssuntos = array();
+            $aAssuntos = [];
             if (pg_num_rows($rsAssunto) > 0) {
                 $aAssuntos = db_utils::getCollectionByRecord($rsAssunto);
             }

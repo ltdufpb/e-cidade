@@ -37,8 +37,8 @@ include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clorcimpactorecmov     = new cl_orcimpactorecmov;
 ?>
@@ -92,7 +92,7 @@ $clorcimpactorecmov     = new cl_orcimpactorecmov;
 		    echo "</script>";
 		}   
 		    
-	       $chavepri= array("o69_codperiodo"=>@$o69_codperiodo,"o69_proces"=>@$o69_proces);
+	       $chavepri= ["o69_codperiodo"=>@$o69_codperiodo,"o69_proces"=>@$o69_proces];
 
 
                $cliframe_alterar_excluir->chavepri=$chavepri;

@@ -53,7 +53,7 @@ try {
                 throw new Exception('Não foi encontrado nenhum registro usando o filtro informado.');
             }
 
-            $unidadesOrcamentarias = array();
+            $unidadesOrcamentarias = [];
             $unidadeOrcamentariaAuxiliar = '';
 
             while ($linha = pg_fetch_array($rs)) {
@@ -74,8 +74,8 @@ try {
                 throw new Exception('Não foi encontrado nenhum registro usando o filtro informado.');
             }
 
-            $linhas = array(
-                array(
+            $linhas = [
+                [
                     'Unidade Orçamentária',
                     'Natureza de Receita',
                     'Esfera',
@@ -87,15 +87,15 @@ try {
                     'Real 2017',
                     'Provável 2018',
                     'Previsão 2019',
-                )
-            );
+                ]
+            ];
 
             $caminho = 'tmp/conferencia_previsao_receita_LOA_2019.csv';
             $arquivo = fopen($caminho, 'w');
 
             foreach ($unidadesOrcamentarias as $unidadeOrcamentaria => $contas) {
                 foreach ($contas as $descricao => $preenchimento) {
-                    $linhas[] = array(
+                    $linhas[] = [
                         $unidadeOrcamentaria,
                         $descricao,
                         valor($preenchimento, 'esferaOrcamentaria'),
@@ -107,12 +107,12 @@ try {
                         array_key_exists('previsaoReal2017', $preenchimento) ? moeda($preenchimento['previsaoReal2017']) : '',
                         array_key_exists('previsaoProvavel2018', $preenchimento) ? moeda($preenchimento['previsaoProvavel2018']) : '',
                         array_key_exists('previsaoPrevisao2019', $preenchimento) ? moeda($preenchimento['previsaoPrevisao2019']) : '',
-                    );
+                    ];
                 }
             }
 
             foreach ($linhas as $linha) {
-                fputcsv($arquivo, $linha, ';');
+                fputcsv($arquivo, $linha, ';', escape: '\\');
             }
 
             fclose($arquivo);

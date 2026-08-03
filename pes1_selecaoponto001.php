@@ -57,15 +57,15 @@ $db_opcao   = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
       <?php 
-			  $clcriaabas->identifica = array("selecaoponto"        =>"Seleção",
-			                                  "selecaopontorubricas"=>"Rubricas");
+			  $clcriaabas->identifica = ["selecaoponto"        =>"Seleção",
+			                                  "selecaopontorubricas"=>"Rubricas"];
 			  
-			  $clcriaabas->sizecampo  = array("selecaoponto"        =>"20",
-                                        "selecaopontorubricas"=>"20");
+			  $clcriaabas->sizecampo  = ["selecaoponto"        =>"20",
+                                        "selecaopontorubricas"=>"20"];
 			  
-			  $clcriaabas->src        = array("selecaoponto"        =>"pes1_selecaoponto004.php");
+			  $clcriaabas->src        = ["selecaoponto"        =>"pes1_selecaoponto004.php"];
 			  
-			  $clcriaabas->disabled   = array("selecaopontorubricas"=>"true");
+			  $clcriaabas->disabled   = ["selecaopontorubricas"=>"true"];
 			  
 			  $clcriaabas->cria_abas(); 
       ?> 

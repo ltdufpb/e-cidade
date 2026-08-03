@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE calfolha
 class cl_calfolha { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $r51_anousu = 0; 
-   var $r51_mesusu = 0; 
-   var $r51_regist = 0; 
+   public $r51_anousu = 0; 
+   public $r51_mesusu = 0; 
+   public $r51_regist = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  r51_anousu = int4 = Ano do Exercicio 
                  r51_mesusu = int4 = Mes do Exercicio 
                  r51_regist = int4 = Codigo do Funcionario 
                  ";
    //funcao construtor da classe 
-   function cl_calfolha() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("calfolha"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -121,7 +121,7 @@ class cl_calfolha {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "arq.auxiliar do calculo da folha                   ($this->r51_anousu."-".$this->r51_mesusu."-".$this->r51_regist) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "arq.auxiliar do calculo da folha                   já Cadastrado";
@@ -145,14 +145,14 @@ class cl_calfolha {
      $resaco = $this->sql_record($this->sql_query_file($this->r51_anousu,$this->r51_mesusu,$this->r51_regist));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,3743,'$this->r51_anousu','I')");
        $resac = db_query("insert into db_acountkey values($acount,3744,'$this->r51_mesusu','I')");
        $resac = db_query("insert into db_acountkey values($acount,3745,'$this->r51_regist','I')");
-       $resac = db_query("insert into db_acount values($acount,534,3743,'','".AddSlashes(pg_result($resaco,0,'r51_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,534,3744,'','".AddSlashes(pg_result($resaco,0,'r51_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,534,3745,'','".AddSlashes(pg_result($resaco,0,'r51_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,534,3743,'','".AddSlashes(pg_fetch_result($resaco,0,'r51_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,534,3744,'','".AddSlashes(pg_fetch_result($resaco,0,'r51_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,534,3745,'','".AddSlashes(pg_fetch_result($resaco,0,'r51_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -161,10 +161,10 @@ class cl_calfolha {
       $this->atualizacampos();
      $sql = " update calfolha set ";
      $virgula = "";
-     if(trim($this->r51_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r51_anousu"])){ 
+     if(trim((string) $this->r51_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r51_anousu"])){ 
        $sql  .= $virgula." r51_anousu = $this->r51_anousu ";
        $virgula = ",";
-       if(trim($this->r51_anousu) == null ){ 
+       if(trim((string) $this->r51_anousu) == null ){ 
          $this->erro_sql = " Campo Ano do Exercicio nao Informado.";
          $this->erro_campo = "r51_anousu";
          $this->erro_banco = "";
@@ -174,10 +174,10 @@ class cl_calfolha {
          return false;
        }
      }
-     if(trim($this->r51_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r51_mesusu"])){ 
+     if(trim((string) $this->r51_mesusu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r51_mesusu"])){ 
        $sql  .= $virgula." r51_mesusu = $this->r51_mesusu ";
        $virgula = ",";
-       if(trim($this->r51_mesusu) == null ){ 
+       if(trim((string) $this->r51_mesusu) == null ){ 
          $this->erro_sql = " Campo Mes do Exercicio nao Informado.";
          $this->erro_campo = "r51_mesusu";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_calfolha {
          return false;
        }
      }
-     if(trim($this->r51_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r51_regist"])){ 
+     if(trim((string) $this->r51_regist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r51_regist"])){ 
        $sql  .= $virgula." r51_regist = $this->r51_regist ";
        $virgula = ",";
-       if(trim($this->r51_regist) == null ){ 
+       if(trim((string) $this->r51_regist) == null ){ 
          $this->erro_sql = " Campo Codigo do Funcionario nao Informado.";
          $this->erro_campo = "r51_regist";
          $this->erro_banco = "";
@@ -214,17 +214,17 @@ class cl_calfolha {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3743,'$this->r51_anousu','A')");
          $resac = db_query("insert into db_acountkey values($acount,3744,'$this->r51_mesusu','A')");
          $resac = db_query("insert into db_acountkey values($acount,3745,'$this->r51_regist','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r51_anousu"]))
-           $resac = db_query("insert into db_acount values($acount,534,3743,'".AddSlashes(pg_result($resaco,$conresaco,'r51_anousu'))."','$this->r51_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,534,3743,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r51_anousu'))."','$this->r51_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r51_mesusu"]))
-           $resac = db_query("insert into db_acount values($acount,534,3744,'".AddSlashes(pg_result($resaco,$conresaco,'r51_mesusu'))."','$this->r51_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,534,3744,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r51_mesusu'))."','$this->r51_mesusu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r51_regist"]))
-           $resac = db_query("insert into db_acount values($acount,534,3745,'".AddSlashes(pg_result($resaco,$conresaco,'r51_regist'))."','$this->r51_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,534,3745,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r51_regist'))."','$this->r51_regist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -269,14 +269,14 @@ class cl_calfolha {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,3743,'$r51_anousu','E')");
          $resac = db_query("insert into db_acountkey values($acount,3744,'$r51_mesusu','E')");
          $resac = db_query("insert into db_acountkey values($acount,3745,'$r51_regist','E')");
-         $resac = db_query("insert into db_acount values($acount,534,3743,'','".AddSlashes(pg_result($resaco,$iresaco,'r51_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,534,3744,'','".AddSlashes(pg_result($resaco,$iresaco,'r51_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,534,3745,'','".AddSlashes(pg_result($resaco,$iresaco,'r51_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,534,3743,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r51_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,534,3744,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r51_mesusu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,534,3745,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r51_regist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from calfolha
@@ -348,7 +348,7 @@ class cl_calfolha {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:calfolha";

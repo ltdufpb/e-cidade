@@ -60,21 +60,21 @@ $clcriaabas = new cl_criaabas;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-      $clcriaabas->identifica = array("relatorio" => "Relatorio",
+      $clcriaabas->identifica = ["relatorio" => "Relatorio",
 		                                  "notas"     => "Fonte/Notas Explicativas",
-		                                  "parametro" => "Parametros");
+		                                  "parametro" => "Parametros"];
 		  
-		  $clcriaabas->title      = array("relatorio" => "Relatorio",
+		  $clcriaabas->title      = ["relatorio" => "Relatorio",
 		                                  "notas"     => "Fonte/Notas Explicativas",
-		                                  "parametro" => "Parametros");
+		                                  "parametro" => "Parametros"];
 		  
-		  $clcriaabas->src        = array("relatorio" => "con2_anexo15lrf_011_2011.php?codrel=111",
+		  $clcriaabas->src        = ["relatorio" => "con2_anexo15lrf_011_2011.php?codrel=111",
 		                                  "notas"     => "con2_conrelnotas.php?c83_codrel=111",  
-		                                  "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel=111");
+		                                  "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel=111"];
 		  
-		  $clcriaabas->sizecampo  = array("relatorio" => "23",
+		  $clcriaabas->sizecampo  = ["relatorio" => "23",
 		                                  "notas"     => "23",
-		                                  "parametro" => "23");
+		                                  "parametro" => "23"];
 		  
       $clcriaabas->cria_abas();    
     ?>

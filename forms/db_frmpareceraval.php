@@ -74,7 +74,7 @@ if($clpareceraval->numrows>0){
     }
     ?>
     <tr bgcolor="<?=$cor?>">
-     <td align="center" ><input type="checkbox" name="<?=$ed92_i_codigo?>" value="ativo" <?=$checked?> onclick="js_desab(this,'ed93_i_parecerlegenda<?=$x?>')" <?=trim(@$encerrado)=="S"?"disabled":""?> style="width:12px;"></td>
+     <td align="center" ><input type="checkbox" name="<?=$ed92_i_codigo?>" value="ativo" <?=$checked?> onclick="js_desab(this,'ed93_i_parecerlegenda<?=$x?>')" <?=trim((string) @$encerrado)=="S"?"disabled":""?> style="width:12px;"></td>
      <td align="center" class='aluno'><?=$ed92_i_sequencial==""?"&nbsp;":$ed92_i_sequencial?></td>
      <td class='aluno'><?=$ed92_c_descr?></td>
      <td>
@@ -85,7 +85,7 @@ if($clpareceraval->numrows>0){
       for($y=0;$y<$clparecerlegenda->numrows;$y++){
        db_fieldsmemory($result_leg,$y);
        ?>
-        <option value="<?=$ed91_i_codigo?>" <?=@$ed93_i_parecerlegenda==$ed91_i_codigo?"selected":""?>><?=trim($ed91_c_descr)?></option>
+        <option value="<?=$ed91_i_codigo?>" <?=@$ed93_i_parecerlegenda==$ed91_i_codigo?"selected":""?>><?=trim((string) $ed91_c_descr)?></option>
        <?php 
       }
       ?>

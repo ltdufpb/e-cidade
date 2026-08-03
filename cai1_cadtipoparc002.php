@@ -55,10 +55,10 @@ $db_opcao = 1;
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-     $clcriaabas->identifica = array("cadtipoparc"=>"Parcelamento","tipoparc"=>"Tipo de Parcelamento","cadtipoparcdeb"=>"Tipo de Débito","cadtipoparcrec"=>"Tipo de Receita");
-     $clcriaabas->sizecampo  = array("cadtipoparc"=>"20","tipoparc"=>"25","cadtipoparcdeb"=>"25","cadtipoparcrec"=>"25");
-     $clcriaabas->src = array("cadtipoparc"=>"cai1_cadtipoparc005.php");
-     $clcriaabas->disabled   =  array("tipoparc"=>"true","cadtipoparcdeb"=>"true","cadtipoparcrec"=>"true");
+     $clcriaabas->identifica = ["cadtipoparc"=>"Parcelamento","tipoparc"=>"Tipo de Parcelamento","cadtipoparcdeb"=>"Tipo de Débito","cadtipoparcrec"=>"Tipo de Receita"];
+     $clcriaabas->sizecampo  = ["cadtipoparc"=>"20","tipoparc"=>"25","cadtipoparcdeb"=>"25","cadtipoparcrec"=>"25"];
+     $clcriaabas->src = ["cadtipoparc"=>"cai1_cadtipoparc005.php"];
+     $clcriaabas->disabled   =  ["tipoparc"=>"true","cadtipoparcdeb"=>"true","cadtipoparcrec"=>"true"];
      $clcriaabas->cria_abas();
        ?>
        </td>

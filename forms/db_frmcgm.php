@@ -199,7 +199,7 @@ exit;
 						</td>
 						<td align="left">
 										<?php 
-										$x = array("t"=>"SIM","f"=>"NÃO");
+										$x = ["t"=>"SIM","f"=>"NÃO"];
 										db_select('municipio',$x,true,$db_opcao);
 										?>
 						</td>

@@ -9,7 +9,7 @@ require_once modification('classes/db_conplanosistema_classe.php');
 
 $get = db_utils::postMemory($_GET);
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clconplanosistema = new cl_conplanosistema();
 $clconplanosistema->rotulo->label('c122_sequencial');
 $clconplanosistema->rotulo->label('c122_descricao');
@@ -48,7 +48,7 @@ if (isset($pesquisa_chave) === false) {
 
 
     $campos = "conplanosistema.c122_sequencial, conplanosistema.c122_descricao";
-    $where = array();
+    $where = [];
     if (!empty($get->tipo)) {
         $where[] = "c122_tipo = {$get->tipo}";
     }
@@ -66,9 +66,9 @@ if (isset($pesquisa_chave) === false) {
     else{
         $sql = $clconplanosistema->sql_query("",$campos,"c122_sequencial", implode(' and ', $where));
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_c122_sequencial)){
-        $repassa = array("chave_c122_sequencial"=>$chave_c122_sequencial,"chave_c122_descricao"=>$chave_c122_descricao);
+        $repassa = ["chave_c122_sequencial"=>$chave_c122_sequencial,"chave_c122_descricao"=>$chave_c122_descricao];
     }
     echo '<div class="container">';
     echo '  <fieldset>';
@@ -79,7 +79,7 @@ if (isset($pesquisa_chave) === false) {
 } else {
     if ($pesquisa_chave != null && $pesquisa_chave != "") {
 
-        $where = array("c122_sequencial = {$pesquisa_chave}");
+        $where = ["c122_sequencial = {$pesquisa_chave}"];
         if (!empty($get->tipo)) {
             $where[] = "c122_tipo = {$get->tipo}";
         }

@@ -74,7 +74,7 @@
 		$pdf->text(40,$xlin-5,'(051)5994499');
 		$pdf->text(40,$xlin-2,'prefeitura@sapiranga.rs.gov.br');
 //		$pdf->setfillcolor(245);
-	
+
 		$pdf->Roundedrect($xcol,$xlin+2,$xcol+119,20,2,'DF','1234');
 		$pdf->Setfont('Arial','',6);
 		$pdf->text($xcol+2,$xlin+4,'Para:');
@@ -95,7 +95,7 @@
 		$pdf->text($xcol+75,$xlin+19,'IP :');
 		$pdf->text($xcol+82,$xlin+19,$this->ip);
 		$pdf->Setfont('Arial','',6);
-	
+
 		$pdf->Roundedrect($xcol+126,$xlin+2,76,20,2,'DF','1234');
 		$pdf->text($xcol+128,$xlin+7,$this->tipoinscr);
 		$pdf->text($xcol+145,$xlin+7,$this->nrinscr);
@@ -117,13 +117,13 @@
                       $pdf->sety($yy);
                    }
 	   	   $pdf->setx($xcol+3+$maiscol);
-	   	   $pdf->cell(5,3,trim(pg_result($this->recorddadospagto,$ii,$this->receita)),0,0,"R",0);
-           	   if ( trim(pg_result($this->recorddadospagto,$ii,$this->ddreceita) ) == ''){
-     		      $pdf->cell(70,3,trim(pg_result($this->recorddadospagto,$ii,$this->dreceita)),0,0,"L",0);
+	   	   $pdf->cell(5,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->receita)),0,0,"R",0);
+           	   if ( trim(pg_fetch_result($this->recorddadospagto,$ii,$this->ddreceita) ) == ''){
+     		      $pdf->cell(70,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->dreceita)),0,0,"L",0);
            	   }else{ 
-	  	      $pdf->cell(70,3,trim(pg_result($this->recorddadospagto,$ii,$this->ddreceita)),0,0,"L",0);
+	  	      $pdf->cell(70,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->ddreceita)),0,0,"L",0);
         	   }
- 		   $pdf->cell(15,3,db_formatar(pg_result($this->recorddadospagto,$ii,$this->valor),'f'),0,1,"R",0);
+ 		   $pdf->cell(15,3,db_formatar(pg_fetch_result($this->recorddadospagto,$ii,$this->valor),'f'),0,1,"R",0);
 		}
 		$pdf->Roundedrect($xcol,$xlin+71,202,30,2,'DF','1234');
 		$pdf->SetY($xlin+72);

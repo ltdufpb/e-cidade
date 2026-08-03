@@ -14,19 +14,13 @@ use ECidade\Tributario\Cadastro\Iptu\Arquivo\Entity\Unica;
 
 final class ReciboCotaUnicaService extends Service
 {
-    private $recibounicaRepository;
-
-    private $reciboService;
-
-    public function __construct(RecibounicaRepository $recibounicaRepository, ReciboService $reciboService)
+    public function __construct(private readonly RecibounicaRepository $recibounicaRepository, private readonly ReciboService $reciboService)
     {
-        $this->recibounicaRepository = $recibounicaRepository;
-        $this->reciboService = $reciboService;
     }
 
     public function execute(Debito $debito, $datalista, $datavigfinal)
     {
-        $recibos = array();
+        $recibos = [];
 
         $where = "k00_numpre = {$debito->getNumpre()} AND k00_dtvenc > '{$datalista}' ";
         $unicas = $this->recibounicaRepository->findAll($where);

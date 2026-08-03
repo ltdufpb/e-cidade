@@ -50,17 +50,16 @@ require_once(modification('libs/db_stdlib.php'));
 class TrabalhadorSemVinculoTermino extends ProcessamentoAbstract implements ProcessamentoInterface
 {
     /**
-     * @var
-     */
-    private $cgm;
-
-    /**
      * Rubrica constructor.
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $cgm
+    )
     {
-        $this->cgm = $cgm;
     }
 
     /**
@@ -100,7 +99,7 @@ class TrabalhadorSemVinculoTermino extends ProcessamentoAbstract implements Proc
                         $this->selecao,
                         $codigoInstituicao
                     );
-                } catch (Exception $e) {
+                } catch (Exception) {
                     throw new \DBException("Ocorrêu um erro ao buscar as informações da seleção informada.");
                 }
             } else {

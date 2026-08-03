@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_vac_vacinadose_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clvac_vacinadose = new cl_vac_vacinadose;
 $clvac_vacinadose->rotulo->label("vc07_i_codigo");
 $clvac_vacinadose->rotulo->label("vc07_c_nome");
@@ -98,9 +98,9 @@ $clvac_vacinadose->rotulo->label("vc07_c_nome");
         } else {
           $sql = $clvac_vacinadose->sql_query("",$campos,"vc07_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_vc07_i_codigo)) {
-          $repassa = array("chave_vc07_i_codigo"=>$chave_vc07_i_codigo,"chave_vc07_i_codigo"=>$chave_vc07_i_codigo);
+          $repassa = ["chave_vc07_i_codigo"=>$chave_vc07_i_codigo,"chave_vc07_i_codigo"=>$chave_vc07_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
 

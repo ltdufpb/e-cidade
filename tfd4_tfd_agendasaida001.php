@@ -116,7 +116,7 @@ if ($oDaoTfdParametros->numrows > 0) {
         <meta http-equiv="Expires" CONTENT="0">
         <?php
 
-        $aAssets = array(
+        $aAssets = [
             "grid.style.css",
             "scripts.js",
             "prototype.js",
@@ -124,7 +124,7 @@ if ($oDaoTfdParametros->numrows > 0) {
             "strings.js",
             "datagrid.widget.js",
             "DBInputHora.widget.js",
-        );
+        ];
 
         db_app::load(implode(', ', $aAssets));
         ?>

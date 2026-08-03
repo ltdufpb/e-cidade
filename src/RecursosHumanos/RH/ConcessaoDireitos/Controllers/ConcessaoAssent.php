@@ -97,17 +97,17 @@ class ConcessaoAssent
         $clportaria->h31_portariatipo = (string)$h31_portariatipo;
         $clportaria->h31_usuario = (string)$h31_usuario;
         $clportaria->h31_anousu = (string) $h31_anousu;
-        $dtportaria = explode('-', $h31_dtportaria);
+        $dtportaria = explode('-', (string) $h31_dtportaria);
         $clportaria->h31_dtportaria_dia = (string)$dtportaria[2];
         $clportaria->h31_dtportaria_mes = (string)$dtportaria[1];
         $clportaria->h31_dtportaria_ano = (string)$dtportaria[0];
         $clportaria->h31_dtportaria = (string)$h31_dtportaria;
-        $dtportaria = explode('-', $h31_dtinicio);
+        $dtportaria = explode('-', (string) $h31_dtinicio);
         $clportaria->h31_dtinicio_dia = (string)$dtportaria[2];
         $clportaria->h31_dtinicio_mes = (string)$dtportaria[1];
         $clportaria->h31_dtinicio_ano = (string)$dtportaria[0];
         $clportaria->h31_dtinicio = (string)$h31_dtinicio;
-        $dtportaria = explode('-', $h31_dtlanc);
+        $dtportaria = explode('-', (string) $h31_dtlanc);
         $clportaria->h31_dtlanc_dia = (string)$dtportaria[2];
         $clportaria->h31_dtlanc_mes = (string)$dtportaria[1];
         $clportaria->h31_dtlanc_ano = (string)$dtportaria[0];
@@ -209,7 +209,7 @@ class ConcessaoAssent
             DBPessoal::getCompetenciaFolha()
         );
         if (is_array($aListaInformacoesExternas)) {
-            $aTiposAssentamentoConfigurados = array();
+            $aTiposAssentamentoConfigurados = [];
             foreach ($aListaInformacoesExternas as $oInformacoesExternas) {
                 $aTiposAssentamentoConfigurados[] = $oInformacoesExternas->getTipoAssentamento()->getCodigo();
             }
@@ -451,14 +451,14 @@ class ConcessaoAssent
             }
 
 
-            $aRetorno = array(
+            $aRetorno = [
                 "aParametros"   => $aRetornoParametros,
                 "iModIndividual" => $sRetornoTipoIndividual,
                 "iModColetiva"  => $sRetornoTipoColetiva,
                 "erro"          => false
-            );
+            ];
         } else {
-            $aRetorno = array("msg" => urlencode("Nenhuma portaria cadastrada!"), "erro" => true);
+            $aRetorno = ["msg" => urlencode("Nenhuma portaria cadastrada!"), "erro" => true];
         }
 
         //Fim da Consulta/////////////////////////////////

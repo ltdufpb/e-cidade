@@ -44,7 +44,7 @@ class HorariosTurma extends Controller
 
         try {
             $url = $relatorio->emitir();
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception("Erro ao emitir relatório.");
         }
         return new DBJsonResponse($url);

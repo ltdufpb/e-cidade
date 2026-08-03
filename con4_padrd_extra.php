@@ -27,12 +27,12 @@
 use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
 
 class rd_extra {
-    var $arq=null;
+    public $arq=null;
 
-  function rd_extra($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/RD_EXTRA.TXT",'w+');
-     fputs($this->arq,$header);
+     fputs($this->arq,(string) $header);
      fputs($this->arq,"\r\n");
 
   }
@@ -44,7 +44,7 @@ class rd_extra {
      $perini = $data_ini;
      $perfin = $data_fim;
 
-     if  (substr($perfin,5,2) == '12'){
+     if  (substr((string) $perfin,5,2) == '12'){
 
      $where = " c61_instit in ($instit) and c60_codsis=7";
      $result = db_planocontassaldo_matriz(db_getsession("DB_anousu"),$data_ini,$data_fim,false,$where,'',false,'true');
@@ -52,7 +52,7 @@ class rd_extra {
      $contador=0;
 
      // este arquivo gera somente no sexto bimestre
-       for($x = 0; $x < pg_numrows($result);$x++){
+       for($x = 0; $x < pg_num_rows($result);$x++){
           db_fieldsmemory($result,$x);
 
           // pegar somente as analiticas
@@ -60,18 +60,18 @@ class rd_extra {
 
           $contador ++;
 
-          $line  = formatar($estrutural,20,'n');
+          $line  = formatar($estrutural,20);
           if($c61_instit == 0 || empty($c61_instit))
             $line .= "0000";
           else
             $line .= $instituicoes[$c61_instit];    // aqui é o codtrib, da tabela db_config
 
           // valor,13:[25-37]
-          $line .= formatar(dbround_php_52($saldo_final,2),13,'v');
+          $line .= formatar(dbround_php_52($saldo_final,2),13);
 
           // identificador 'D'-despesa-extra ou 'R'-receita-extra
           // consistema=7, D-xxxx, R-1xxxx
-          if (substr($estrutural,0,1)==1)
+          if (substr((string) $estrutural,0,1)==1)
 	     $line.='R';
 	  else
              $line.='D';
@@ -84,7 +84,7 @@ class rd_extra {
 
            if (db_getsession("DB_anousu") >= 2020) {
                $oRecurso = \ECidade\Financeiro\Orcamento\Repository\RecursoRepository::getByCodigo($c61_codigo);
-               $line .= str_pad($oRecurso->getFonteDeRecurso(), 4, '0', STR_PAD_LEFT);
+               $line .= str_pad((string) $oRecurso->getFonteDeRecurso(), 4, '0', STR_PAD_LEFT);
            }
 
           fputs($this->arq,$line);
@@ -94,7 +94,7 @@ class rd_extra {
      }
 
      //  trailer
-     $contador = espaco(10-(strlen($contador)),'0').$contador;
+     $contador = espaco(10-(strlen((string) $contador))).$contador;
      $line = "FINALIZADOR".$contador;
      fputs($this->arq,$line);
      fputs($this->arq,"\r\n");

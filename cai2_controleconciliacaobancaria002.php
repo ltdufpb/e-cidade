@@ -48,7 +48,7 @@ if ($iData == '') {
     $iData = date("d-m-Y");
 }
 
-$iData = substr($iData, 6, 4)."-".substr($iData, 3, 2)."-".substr($iData, 0, 2) ;
+$iData = substr((string) $iData, 6, 4)."-".substr((string) $iData, 3, 2)."-".substr((string) $iData, 0, 2) ;
 
 $dia = substr($iData, 8, 2);
 $mes = substr($iData, 5, 2);
@@ -365,14 +365,14 @@ if (!$rs) {
     throw new Exception("Erro ao consultar informações");
 }
 
-if (pg_numrows($rs) <= 0) {
+if (pg_num_rows($rs) <= 0) {
     db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum Registro Encontrado.");
     exit;
 }
 
-$aDados = array();
+$aDados = [];
 
-for ($i = 0; $i <  pg_numrows($rs); $i++) {
+for ($i = 0; $i <  pg_num_rows($rs); $i++) {
     $oDados = db_utils::fieldsMemory($rs, $i);
     $oValores = new stdClass();
 

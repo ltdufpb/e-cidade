@@ -30,31 +30,31 @@
 //CLASSE DA ENTIDADE recparprocdiver
 class cl_recparprocdiver { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $procdiver = 0; 
-   var $receita = 0; 
+   public $procdiver = 0; 
+   public $receita = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  procdiver = int4 = Procedência 
                  receita = int4 = Receita de Parcelamento 
                  ";
    //funcao construtor da classe 
-   function cl_recparprocdiver() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recparprocdiver"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_recparprocdiver {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "receita de parcelamento dos diversos ($this->procdiver) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "receita de parcelamento dos diversos já Cadastrado";
@@ -130,11 +130,11 @@ class cl_recparprocdiver {
      $resaco = $this->sql_record($this->sql_query_file($this->procdiver));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7288,'$this->procdiver','I')");
-       $resac = db_query("insert into db_acount values($acount,1208,7288,'','".AddSlashes(pg_result($resaco,0,'procdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1208,2335,'','".AddSlashes(pg_result($resaco,0,'receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1208,7288,'','".AddSlashes(pg_fetch_result($resaco,0,'procdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1208,2335,'','".AddSlashes(pg_fetch_result($resaco,0,'receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -143,10 +143,10 @@ class cl_recparprocdiver {
       $this->atualizacampos();
      $sql = " update recparprocdiver set ";
      $virgula = "";
-     if(trim($this->procdiver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["procdiver"])){ 
+     if(trim((string) $this->procdiver)!="" || isset($GLOBALS["HTTP_POST_VARS"]["procdiver"])){ 
        $sql  .= $virgula." procdiver = $this->procdiver ";
        $virgula = ",";
-       if(trim($this->procdiver) == null ){ 
+       if(trim((string) $this->procdiver) == null ){ 
          $this->erro_sql = " Campo Procedência nao Informado.";
          $this->erro_campo = "procdiver";
          $this->erro_banco = "";
@@ -156,10 +156,10 @@ class cl_recparprocdiver {
          return false;
        }
      }
-     if(trim($this->receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["receita"])){ 
+     if(trim((string) $this->receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["receita"])){ 
        $sql  .= $virgula." receita = $this->receita ";
        $virgula = ",";
-       if(trim($this->receita) == null ){ 
+       if(trim((string) $this->receita) == null ){ 
          $this->erro_sql = " Campo Receita de Parcelamento nao Informado.";
          $this->erro_campo = "receita";
          $this->erro_banco = "";
@@ -177,13 +177,13 @@ class cl_recparprocdiver {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7288,'$this->procdiver','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["procdiver"]))
-           $resac = db_query("insert into db_acount values($acount,1208,7288,'".AddSlashes(pg_result($resaco,$conresaco,'procdiver'))."','$this->procdiver',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1208,7288,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'procdiver'))."','$this->procdiver',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["receita"]))
-           $resac = db_query("insert into db_acount values($acount,1208,2335,'".AddSlashes(pg_result($resaco,$conresaco,'receita'))."','$this->receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1208,2335,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'receita'))."','$this->receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -228,11 +228,11 @@ class cl_recparprocdiver {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7288,'$procdiver','E')");
-         $resac = db_query("insert into db_acount values($acount,1208,7288,'','".AddSlashes(pg_result($resaco,$iresaco,'procdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1208,2335,'','".AddSlashes(pg_result($resaco,$iresaco,'receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1208,7288,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'procdiver'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1208,2335,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from recparprocdiver
@@ -292,7 +292,7 @@ class cl_recparprocdiver {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:recparprocdiver";
@@ -306,7 +306,7 @@ class cl_recparprocdiver {
    function sql_query ( $procdiver=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -334,7 +334,7 @@ class cl_recparprocdiver {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -346,7 +346,7 @@ class cl_recparprocdiver {
    function sql_query_file ( $procdiver=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -367,7 +367,7 @@ class cl_recparprocdiver {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

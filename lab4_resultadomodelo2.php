@@ -70,7 +70,7 @@ function imprimirAtributosExame($oPdf, $oExame, $oDadosEstrutura)
         $oAtributo->iAlturaLinhaComplemento = 4;
         $oPdf->SetFont("arial", "", 8);
 
-        if (validaQuebraPagina($oPdf, $oAtributo)) {
+        if (validaQuebraPagina($oPdf)) {
             rodape($oPdf, $oDadosEstrutura);
             montaCabecalho($oPdf, $oDadosEstrutura->iDepartamento);
         }
@@ -221,7 +221,7 @@ function montaCabecalho($oPdf, $departamento)
 
         $oPdf->SetFont("arial", "B", 8);
         $oPdf->Text(33, 9, $oDepartamento->getNomeDepartamento());
-        $oPdf->Text(33, 14, substr($oInstituicao->getDescricao(), 0, 42));
+        $oPdf->Text(33, 14, substr((string) $oInstituicao->getDescricao(), 0, 42));
         $oPdf->SetFont("arial", "", 8);
 
         $sEndereço = $oInstituicao->getLogradouro();
@@ -244,10 +244,10 @@ function montaCabecalho($oPdf, $departamento)
         }
 
         $oPdf->Text(33, 27, $sTelefoneCnpj);
-        $oPdf->Text(33, 31, substr($oInstituicao->getEmail(), 0, 48));
-        $oPdf->Text(33, 35, substr($oInstituicao->getSite(), 0, 50));
+        $oPdf->Text(33, 31, substr((string) $oInstituicao->getEmail(), 0, 48));
+        $oPdf->Text(33, 35, substr((string) $oInstituicao->getSite(), 0, 50));
 
-        $aSexo = array();
+        $aSexo = [];
         $aSexo["M"] = "MASCULINO";
         $aSexo["F"] = "FEMININO";
 

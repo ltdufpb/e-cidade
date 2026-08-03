@@ -173,7 +173,7 @@ $sql = $oDaoBens->getSqlValoresAtuaisBem($oBem->getCodigoBem());
 $rsAux = db_query($sql);
 $aux = pg_fetch_object($rsAux, 0);
 
-$valorAtual = $aux->t58_valoratual ? $aux->t58_valoratual : round($aux->t44_valoratual + $aux->t44_valorresidual, 2);
+$valorAtual = $aux->t58_valoratual ?: round($aux->t44_valoratual + $aux->t44_valorresidual, 2);
 $saldoDepreciavel = $valorAtual - $aux->t44_valorresidual;
 
 ?>

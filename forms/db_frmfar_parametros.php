@@ -108,7 +108,7 @@ if ($oDados->total == 0) {
                                         </td>
                                         <td>
                                             <?php
-                                            $aX = array("S" => "SIM", "N" => "NÃO");
+                                            $aX = ["S" => "SIM", "N" => "NÃO"];
                                             db_select('fa02_c_digitacao', $aX, true, $db_opcao);
                                             ?>
                                         </td>
@@ -119,7 +119,7 @@ if ($oDados->total == 0) {
                                         </td>
                                         <td>
                                             <?php
-                                            $aX = array("f" => "NÃO", "t" => "SIM");
+                                            $aX = ["f" => "NÃO", "t" => "SIM"];
                                             db_select('fa02_b_numestoque', $aX, true, $iLibera);
                                             ?>
                                         </td>
@@ -130,7 +130,7 @@ if ($oDados->total == 0) {
                                         </td>
                                         <td>
                                             <?php
-                                            $aX = array("f" => "NÃO", "t" => "SIM");
+                                            $aX = ["f" => "NÃO", "t" => "SIM"];
                                             db_select('fa02_b_novaretirada', $aX, true, $db_opcao);
                                             ?>
                                         </td>
@@ -141,7 +141,7 @@ if ($oDados->total == 0) {
                                         </td>
                                         <td>
                                             <?php
-                                            $aX = array('1' => 'SIM', '2' => 'NÃO');
+                                            $aX = ['1' => 'SIM', '2' => 'NÃO'];
                                             db_select('fa02_i_origemreceita', $aX, true, $db_opcao);
                                             ?>
                                         </td>
@@ -152,7 +152,7 @@ if ($oDados->total == 0) {
                                         </td>
                                         <td>
                                             <?php
-                                            $aX = array('1' => 'SIM', '2' => 'N&Atilde;O');
+                                            $aX = ['1' => 'SIM', '2' => 'N&Atilde;O'];
                                             db_select('fa02_i_acumularsaldocontinuado', $aX, true, 1);
                                             ?>
                                         </td>
@@ -163,7 +163,7 @@ if ($oDados->total == 0) {
                                         </td>
                                         <td>
                                             <?php
-                                            $aX = array('1' => 'CGS', '2' => 'Cartão SUS', '3' => 'Nome');
+                                            $aX = ['1' => 'CGS', '2' => 'Cartão SUS', '3' => 'Nome'];
                                             db_select('fa02_i_cursor', $aX, true, 1);
                                             ?>
                                         </td>
@@ -174,7 +174,7 @@ if ($oDados->total == 0) {
                                         </td>
                                         <td>
                                             <?php
-                                            $aX = array('2' => 'NÃO', '1' => 'SIM');
+                                            $aX = ['2' => 'NÃO', '1' => 'SIM'];
                                             db_select('fa02_i_validalote', $aX, true, 1);
                                             ?>
                                         </td>
@@ -185,11 +185,11 @@ if ($oDados->total == 0) {
                                         </td>
                                         <td>
                                             <?php
-                                            $aX = array(
+                                            $aX = [
                                                 '1' => 'Não validar',
                                                 '2' => 'Somente alertar',
                                                 '3' => 'Alertar e Bloquear'
-                                            );
+                                            ];
                                             db_select('fa02_i_validavencimento', $aX, true, 1);
                                             ?>
                                         </td>
@@ -248,7 +248,7 @@ if ($oDados->total == 0) {
                                         </td>
                                         <td>
                                             <?php
-                                            $aX = array('2' => 'NÃO', '1' => 'SIM');
+                                            $aX = ['2' => 'NÃO', '1' => 'SIM'];
                                             db_select('fa02_i_verificapacientehiperdia', $aX, true, 1);
                                             ?>
                                         </td>
@@ -332,7 +332,7 @@ if ($oDados->total == 0) {
                                         </td>
                                         <td>
                                             <?php
-                                            $aX = array("f" => "NÃO", "t" => "SIM");
+                                            $aX = ["f" => "NÃO", "t" => "SIM"];
                                             db_select('fa02_b_comprovante', $aX, true, $db_opcao);
                                             ?>
                                         </td>
@@ -347,7 +347,7 @@ if ($oDados->total == 0) {
                                                 $fa02_utilizaimpressoratermica = $fa02_utilizaimpressoratermica == 't'
                                                     ? 'true' : 'false';
                                             }
-                                            $aUtilizaImpressora = array('false' => 'NÃO', 'true' => 'SIM');
+                                            $aUtilizaImpressora = ['false' => 'NÃO', 'true' => 'SIM'];
                                             db_select('fa02_utilizaimpressoratermica', $aUtilizaImpressora, true, 1);
                                             ?>
                                         </td>

@@ -84,7 +84,7 @@ $aCartorios = $cartorioExtraTipoRepository->setOuterCondition("j168_tiposcartori
     <table width="720px;">
       <tr align="center">
         <td>
-          <strong>I.T.B.I. <?php echo strtoupper($oGet->tipo); ?></strong>
+          <strong>I.T.B.I. <?php echo strtoupper((string) $oGet->tipo); ?></strong>
         </td>
       </tr>
       <tr>
@@ -865,7 +865,7 @@ function js_frenteLogradouro(sValor){
       return false;
     }
 
-    <?php if (strtolower($oGet->tipo) <> 'rural') : ?>
+    <?php if (strtolower((string) $oGet->tipo) <> 'rural') : ?>
        if( doc.it01_areatrans.value <= 0) {
 
          alert("Valor da área transmitida deve ser maior que zero");

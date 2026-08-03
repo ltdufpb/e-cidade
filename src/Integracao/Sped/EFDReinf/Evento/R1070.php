@@ -41,10 +41,10 @@ class R1070 extends EventoAbstract
     const ADMINISTRATIVO = 1;
     const JURIDICO = 2;
 
-    private $tipos = array(
+    private $tipos = [
         self::ADMINISTRATIVO => 'Adminstrativo',
         self::JURIDICO => 'Juridico'
-    );
+    ];
 
     /**
      * @param stdClass $parametros
@@ -56,9 +56,9 @@ class R1070 extends EventoAbstract
         }
 
         $dao = new cl_avaliacaogruporespostaefdprocesso();
-        $where = array(
+        $where = [
             "efd02_avaliacaogruporesposta = $parametros->preenchimento"
-        );
+        ];
 
         $sql = $dao->sql_query_file(null, "*", 'efd02_sequencial DESC', implode(' AND ', $where));
         $rs = db_query($sql);
@@ -80,7 +80,7 @@ class R1070 extends EventoAbstract
      * @return int
      * @throws Exception
      */
-    public function persistir(Avaliacao $avaliacao, array $parametros = array())
+    public function persistir(Avaliacao $avaliacao, array $parametros = [])
     {
         $dao = new cl_avaliacaogruporespostaefdprocesso();
         if (!empty($parametros['preenchimento'])) {
@@ -92,11 +92,11 @@ class R1070 extends EventoAbstract
         $numero = $parametros['nrProc'];
         $cgm = $this->getCgm()->getCodigo();
 
-        $where = array(
+        $where = [
             "efd02_cgm = {$cgm}",
             "efd02_processo = '{$numero}'",
             "efd02_tipoprocesso = {$tipo}",
-        );
+        ];
 
         $sql = $dao->sql_query_file(null, "*", null, implode(' and ', $where));
         $rs = db_query($sql);

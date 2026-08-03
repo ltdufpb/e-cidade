@@ -84,7 +84,7 @@ $db_opcao = 1;
           </td>
           <td>
             <?php
-              $aOpcoes = array("1" => "Soma", "0" => "Diminui");
+              $aOpcoes = ["1" => "Soma", "0" => "Diminui"];
               db_select('rh126_soma', $aOpcoes,true, $db_opcao);
             ?>
           </td>

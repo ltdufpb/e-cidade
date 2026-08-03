@@ -72,7 +72,7 @@ include(modification("libs/db_sql.php"));
 
 $clorctiporec = new cl_orctiporec;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 $pdf = new PDF(); 
 $pdf->Open(); 
@@ -115,7 +115,7 @@ order by g.k02_tipo desc ,g.k02_codigo
 //echo $sql;exit;
 
 $result = db_query($sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
   //db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos para a receita '.$codrec.' no período de '.db_formatar($datai,'d').' a '.db_formatar($dataf,'d'));
   
@@ -126,7 +126,7 @@ $total_reco = 0;
 $total_rece = 0;
 $pagina = 0;
 
-$aRecurso = array();
+$aRecurso = [];
 
 if($tipo=='T' || $tipo =='O'){
   $pdf->ln(2);
@@ -152,49 +152,49 @@ if($tipo=='T' || $tipo =='O'){
 		}
     
 		if (1==2) {
-			if(substr($estrutural,1,10) == '1112020001'){
+			if(substr((string) $estrutural,1,10) == '1112020001'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1112043101'){
+			}elseif(substr((string) $estrutural,1,10) == '1112043101'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1112043106'){
+			}elseif(substr((string) $estrutural,1,10) == '1112043106'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1112080200'){
+			}elseif(substr((string) $estrutural,1,10) == '1112080200'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1113050201'){
+			}elseif(substr((string) $estrutural,1,10) == '1113050201'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1113050202'){
+			}elseif(substr((string) $estrutural,1,10) == '1113050202'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1721010202'){
+			}elseif(substr((string) $estrutural,1,10) == '1721010202'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1721090102'){
+			}elseif(substr((string) $estrutural,1,10) == '1721090102'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1722010102'){
+			}elseif(substr((string) $estrutural,1,10) == '1722010102'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1722010202'){
+			}elseif(substr((string) $estrutural,1,10) == '1722010202'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1722010402'){
+			}elseif(substr((string) $estrutural,1,10) == '1722010402'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1911380200'){
+			}elseif(substr((string) $estrutural,1,10) == '1911380200'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1913130200'){
+			}elseif(substr((string) $estrutural,1,10) == '1913130200'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1931110200'){
+			}elseif(substr((string) $estrutural,1,10) == '1931110200'){
 				$imprime = true;
 				$perc    = 25; 
-			}elseif(substr($estrutural,1,10) == '1931130200'){
+			}elseif(substr((string) $estrutural,1,10) == '1931130200'){
 				$imprime = true;
 				$perc    = 25; 
 			}else{
@@ -219,8 +219,8 @@ if($tipo=='T' || $tipo =='O'){
         inner join orcfontesdes on o60_anousu = o70_anousu and o60_codfon = o70_codfon
         where o70_anousu = ".db_getsession("DB_anousu")." and o70_codrec = $k02_codrec";
         $result1 = db_query($sql);
-        if($result1!=false && pg_numrows($result1) > 0){
-          $fonte = pg_result($result1,0,0);
+        if($result1!=false && pg_num_rows($result1) > 0){
+          $fonte = pg_fetch_result($result1,0,0);
           $contamae = db_le_mae_rec_sin($fonte,false);
           
           $sql = "select o70_codrec,o57_fonte,o57_descr,o60_perc,o70_codigo
@@ -230,7 +230,7 @@ if($tipo=='T' || $tipo =='O'){
           where o57_fonte like '$contamae%' and o70_anousu = ".db_getsession("DB_anousu") . "
           order by o57_fonte";
           $result1 = db_query($sql);
-          if($result1!=false && pg_numrows($result1) > 0){
+          if($result1!=false && pg_num_rows($result1) > 0){
             $tem_desdobramento = true;
           }
         }
@@ -248,8 +248,8 @@ if($tipo=='T' || $tipo =='O'){
     $pdf->setfont('arial','',7);
     $pdf->cell(20,4,$k02_codigo,1,0,"C",$pre);
     $pdf->cell(30,4,$estrutural,1,0,"C",$pre);
-    $pdf->cell(80,4,strtoupper($k02_drecei),1,0,"L",$pre);
-    $pdf->cell(20,4,str_pad($o70_codigo,4,"0",STR_PAD_LEFT),1,0,"L",$pre);
+    $pdf->cell(80,4,strtoupper((string) $k02_drecei),1,0,"L",$pre);
+    $pdf->cell(20,4,str_pad((string) $o70_codigo,4,"0",STR_PAD_LEFT),1,0,"L",$pre);
     $pdf->cell(25,4,db_formatar($valor,'f'),1,1,"R",$pre);
     $total_reco +=$valor;
     
@@ -265,7 +265,7 @@ if($tipo=='T' || $tipo =='O'){
         $multiplica = true;
         $valor = $valor * -1;
       }
-      for($recc=0;$recc<pg_numrows($result1);$recc++){
+      for($recc=0;$recc<pg_num_rows($result1);$recc++){
         db_fieldsmemory($result1,$recc);
         // aplica o percentual sobre o valor
         $vlrperc = db_formatar(($valor * ($o60_perc/100)),'p')+0;
@@ -300,8 +300,8 @@ if($tipo=='T' || $tipo =='O'){
 
         $pdf->cell(024,4,'',0,0,"C",0);
         $pdf->cell(036,4,$dbreces[key($dbrec)],1,0,"C",1);
-        $pdf->cell(80,4,strtoupper($dbrecde[key($dbrec)]),1,0,"L",1);
-        $pdf->cell(20,4,str_pad($cod_recurso,4,"0",STR_PAD_LEFT),1,0,"L",1);
+        $pdf->cell(80,4,strtoupper((string) $dbrecde[key($dbrec)]),1,0,"L",1);
+        $pdf->cell(20,4,str_pad((string) $cod_recurso,4,"0",STR_PAD_LEFT),1,0,"L",1);
         $pdf->cell(031,4,db_formatar($dbrec[key($dbrec)],'f'),1,1,"R",1);
 
         if (!isset($aRecurso[$cod_recurso])) {
@@ -342,7 +342,7 @@ foreach( $aRecurso as $a => $b ) {
   $oRecurso   = db_utils::fieldsMemory($rsRecurso, 0);
   $sDescricao = $oRecurso->o15_descr;
 
-  $pdf->cell(20,4,str_pad($a,4,"0",STR_PAD_LEFT),1,0,"L",0);
+  $pdf->cell(20,4,str_pad((string) $a,4,"0",STR_PAD_LEFT),1,0,"L",0);
   $pdf->cell(60,4,$sDescricao,1,0,"L",0);
   $pdf->cell(20,4,db_formatar($b,'f'),1,1,"R",0);
   

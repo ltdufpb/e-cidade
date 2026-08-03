@@ -80,7 +80,7 @@ $oDaoTurno->rotulo->label("ed15_c_nome");
   <div class="container">
     <?php 
       $iEscola = db_getsession("DB_coddepto");
-      $aWhere  = array();
+      $aWhere  = [];
 
       $aWhere[] = "exists(select * from periodoescola where ed17_i_escola = {$iEscola} and ed17_i_turno = ed15_i_codigo)";
       $aWhere[] = "ed85_i_escola = {$iEscola} ";

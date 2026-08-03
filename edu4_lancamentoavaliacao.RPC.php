@@ -40,7 +40,7 @@ $iEscola = db_getsession("DB_coddepto");
 $oJson = new Services_JSON();
 $oParam = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 $oRetorno = new stdClass();
-$oRetorno->dados = array();
+$oRetorno->dados = [];
 $oRetorno->status = 1;
 $oRetorno->message = '';
 
@@ -109,8 +109,8 @@ try {
 
             EducacaoSessionManager::limpar();
 
-            $aCalendarios = array();
-            $aTurmas = array();
+            $aCalendarios = [];
+            $aTurmas = [];
 
             if (isset($oParam->lValidarProfessorLogado) && $oParam->lValidarProfessorLogado && $lProfessorLogado) {
                 if($maiorPermissao == 0) {
@@ -186,10 +186,10 @@ try {
                 if (!$lTemCalendario) {
                     $oCalendario = new stdClass();
                     $oCalendario->iCalendario = $oCalendarioTurma->getCodigo();
-                    $oCalendario->sDescricaoCalendario = urlencode($oCalendarioTurma->getDescricao());
+                    $oCalendario->sDescricaoCalendario = urlencode((string) $oCalendarioTurma->getDescricao());
                     $oCalendario->iAnoCalendario = $oCalendarioTurma->getAnoExecucao();
-                    $oCalendario->sIdCalendario = md5(uniqid(rand()));
-                    $oCalendario->aEnsinos = array();
+                    $oCalendario->sIdCalendario = md5(uniqid(random_int(0, mt_getrandmax())));
+                    $oCalendario->aEnsinos = [];
                     $aCalendarios[] = $oCalendario;
                 }
 
@@ -212,9 +212,9 @@ try {
                     $oEnsino = new stdClass();
                     $oEnsino->iEnsino = $oEnsinoTurma->getCodigo();
                     $oEnsino->iOrdem = $oEnsinoTurma->getOrdem();
-                    $oEnsino->sDescricaoEnsino = urlencode($oEnsinoTurma->getNome());
-                    $oEnsino->sIdEnsino = md5(uniqid(rand()));
-                    $oEnsino->aBases = array();
+                    $oEnsino->sDescricaoEnsino = urlencode((string) $oEnsinoTurma->getNome());
+                    $oEnsino->sIdEnsino = md5(uniqid(random_int(0, mt_getrandmax())));
+                    $oEnsino->aBases = [];
                     $oCalendario->aEnsinos[$oEnsinoTurma->getOrdem() . "#" . $oEnsinoTurma->getCodigo()] = $oEnsino;
                 }
 
@@ -236,10 +236,10 @@ try {
                 if (!$lTemBase) {
                     $oBaseCurricular = new stdClass();
                     $oBaseCurricular->iBase = $oBaseTurma->getCodigoSequencial();
-                    $oBaseCurricular->sDescricaoBase = urlencode($oBaseTurma->getDescricao());
-                    $oBaseCurricular->aEtapas = array();
+                    $oBaseCurricular->sDescricaoBase = urlencode((string) $oBaseTurma->getDescricao());
+                    $oBaseCurricular->aEtapas = [];
                     $oEnsino->aBases[] = $oBaseCurricular;
-                    $oBaseCurricular->sIdBase = md5(uniqid(rand()));
+                    $oBaseCurricular->sIdBase = md5(uniqid(random_int(0, mt_getrandmax())));
                 }
 
                 /*
@@ -265,9 +265,9 @@ try {
                     if (!$lTemEtapa) {
                         $oEtapa = new stdClass();
                         $oEtapa->iEtapa = $oEtapaTurma->getCodigo();
-                        $oEtapa->sDescricaoEtapa = urlencode($oEtapaTurma->getNome());
-                        $oEtapa->aTurmas = array();
-                        $oEtapa->sIdEtapa = md5(uniqid(rand()));
+                        $oEtapa->sDescricaoEtapa = urlencode((string) $oEtapaTurma->getNome());
+                        $oEtapa->aTurmas = [];
+                        $oEtapa->sIdEtapa = md5(uniqid(random_int(0, mt_getrandmax())));
                         $oBaseCurricular->aEtapas[] = $oEtapa;
                     }
 
@@ -292,8 +292,8 @@ try {
                     if (!$lTemTurma) {
                         $oTurmaAdicionar = new stdClass();
                         $oTurmaAdicionar->iTurma = $oTurma->getCodigo();
-                        $oTurmaAdicionar->sDescricaoTurma = urlEncode($oTurma->getDescricao());
-                        $oTurmaAdicionar->sIdTurma = md5(uniqid(rand()));
+                        $oTurmaAdicionar->sDescricaoTurma = urlEncode((string) $oTurma->getDescricao());
+                        $oTurmaAdicionar->sIdTurma = md5(uniqid(random_int(0, mt_getrandmax())));
                         $oTurmaAdicionar->lEncerrada = $oTurma->encerradaNaEtapa($oEtapaTurma);
                         $oTurmaAdicionar->lEncerradaParcial = $oTurma->encerradaParcial($oEtapaTurma);
                         $oTurmaAdicionar->lClassificada = $oTurma->isClassificada();
@@ -328,7 +328,7 @@ try {
             unset($_SESSION["oMatricula"]);
             $oAlunosMatriculados = new Turma($oParam->iCodigoTurma);
             $aAlunosMatriculados = $oAlunosMatriculados->getAlunosMatriculadosNaTurmaPorSerie(new Etapa($oParam->iEtapa));
-            $aDadosMatricula = array();
+            $aDadosMatricula = [];
             foreach ($aAlunosMatriculados as $oMatricula) {
                 if (isset($oParam->iMostrarTrocaTurma) && $oParam->iMostrarTrocaTurma == 1) {
                     if ($oMatricula->getSituacao() == "TROCA DE TURMA") {
@@ -341,9 +341,9 @@ try {
                 $oDadosMatricula->iEtapa = $oMatricula->getEtapaDeOrigem()->getCodigo();
                 $oDadosMatricula->iMatricula = $oMatricula->getMatricula();
                 $oDadosMatricula->iOrdem = $oMatricula->getNumeroOrdemAluno();
-                $oDadosMatricula->sNome = urlencode($oMatricula->getAluno()->getNome());
+                $oDadosMatricula->sNome = urlencode((string) $oMatricula->getAluno()->getNome());
                 $oDadosMatricula->dtDataMatricula = $oMatricula->getDataMatricula()->convertTo(DBDate::DATA_PTBR);
-                $oDadosMatricula->sSituacao = urlencode($oMatricula->getSituacao());
+                $oDadosMatricula->sSituacao = urlencode((string) $oMatricula->getSituacao());
                 $oDadosMatricula->lAvaliadoParecer = $oMatricula->isAvaliadoPorParecer();
                 $aDadosMatricula[] = $oDadosMatricula;
             }
@@ -352,7 +352,7 @@ try {
             break;
 
         case 'periodosAvaliacao':
-            $aPeriodosAvaliacaoRetorno = array();
+            $aPeriodosAvaliacaoRetorno = [];
 
             db_inicio_transacao();
             unset($_SESSION["oMatricula"]);
@@ -371,7 +371,7 @@ try {
             /**
              * Buscamos os dados da Matricula do aluno
              */
-            $oRetorno->sNomeAluno = urlencode($oMatricula->getAluno()->getNome());
+            $oRetorno->sNomeAluno = urlencode((string) $oMatricula->getAluno()->getNome());
             $oRetorno->iCodigoAluno = $oMatricula->getAluno()->getCodigoAluno();
             $oRetorno->sSituacaoAluno = $oMatricula->getSituacao();
             $oRetorno->iCodigoTurma = $oMatricula->getTurma()->getCodigo();
@@ -382,11 +382,11 @@ try {
             if ($oMatricula->getDataEncerramento() != "") {
                 $oRetorno->dtSaida = $oMatricula->getDataEncerramento()->convertTo(DBDate::DATA_PTBR);
             }
-            $oRetorno->sCalendario = urlencode($oMatricula->getTurma()->getCalendario()->getDescricao());
-            $oRetorno->sTurma = urlencode($oMatricula->getTurma()->getDescricao());
+            $oRetorno->sCalendario = urlencode((string) $oMatricula->getTurma()->getCalendario()->getDescricao());
+            $oRetorno->sTurma = urlencode((string) $oMatricula->getTurma()->getDescricao());
             $oRetorno->iTabIndex = db_utils::fieldsMemory($rsParametro, 0)->ed233_deslocamentocursor;
             $oRetorno->sMascaraFormatacao = ArredondamentoNota::getMascara($iAno);
-            $oRetorno->sFormaAvaliacaoTurma = urlencode($sFormaAvaliacaoTurma);
+            $oRetorno->sFormaAvaliacaoTurma = urlencode((string) $sFormaAvaliacaoTurma);
             $oRetorno->iMaiorPermissao = $maiorPermissao;
             /**
              * Buscamos as etapas da turma
@@ -422,7 +422,7 @@ try {
                             break;
 
                         case 'NIVEL':
-                            $oPeriodosAvaliacao->aConceitos = array();
+                            $oPeriodosAvaliacao->aConceitos = [];
                             foreach ($oAvaliacao->getFormaDeAvaliacao()->getConceitos() as $oConceito) {
                                 $oDadoConceito = new stdClass();
                                 $oDadoConceito->iCodigoConceito = $oConceito->iCodigo;
@@ -439,8 +439,8 @@ try {
 
                     if ($oAvaliacao instanceof ResultadoAvaliacao) {
                         $oTipoResultado = $oAvaliacao->getTipoResultado();
-                        $oPeriodosAvaliacao->sDescricaoPeriodo = urlencode($oTipoResultado->getDescricao());
-                        $oPeriodosAvaliacao->sDescricaoPeriodoAbreviado = urlencode($oTipoResultado->getDescricaoAbreviada());
+                        $oPeriodosAvaliacao->sDescricaoPeriodo = urlencode((string) $oTipoResultado->getDescricao());
+                        $oPeriodosAvaliacao->sDescricaoPeriodoAbreviado = urlencode((string) $oTipoResultado->getDescricaoAbreviada());
                         $oPeriodosAvaliacao->sTipoAvaliacao = "R";
                         $oPeriodosAvaliacao->geraResultadoFinal = $oAvaliacao->geraResultadoFinal();
                         $oPeriodosAvaliacao->sFormaObtencao = $oAvaliacao->getFormaDeObtencao();
@@ -448,8 +448,8 @@ try {
 
                     if ($oAvaliacao instanceof AvaliacaoPeriodica) {
                         $oPeriodo = $oAvaliacao->getPeriodoAvaliacao();
-                        $oPeriodosAvaliacao->sDescricaoPeriodo = urlencode($oPeriodo->getDescricao());
-                        $oPeriodosAvaliacao->sDescricaoPeriodoAbreviado = urlencode($oPeriodo->getDescricaoAbreviada());
+                        $oPeriodosAvaliacao->sDescricaoPeriodo = urlencode((string) $oPeriodo->getDescricao());
+                        $oPeriodosAvaliacao->sDescricaoPeriodoAbreviado = urlencode((string) $oPeriodo->getDescricaoAbreviada());
                         $oPeriodosAvaliacao->sTipoAvaliacao = 'A';
                         $oPeriodosAvaliacao->iLimiteReprovacao = $oAvaliacao->quantidadeMaximaDisciplinasParaRecuperacao();
                         if ($oAvaliacao->getElementoAvaliacaoVinculado() != "") {
@@ -475,7 +475,7 @@ try {
             $rsTurma = $oDaoTurma->sql_record($sSqlTUrma);
 
             if ($oDaoTurma->numrows > 0) {
-                $oRetorno->aTermos = array();
+                $oRetorno->aTermos = [];
                 $iContadorTermos = 1;
                 $iCodigoEnsino = db_utils::fieldsMemory($rsTurma, 0)->ed10_i_codigo;
 
@@ -491,9 +491,9 @@ try {
                         $oRetorno->aTermos[0] = clone($oTermoEncerramento);
                         foreach ($aTermos as $oTermo) {
                             $oAuxTermoEncerramento = clone($oTermoEncerramento);
-                            $oAuxTermoEncerramento->sReferencia = urlencode($oTermo->sReferencia);
-                            $oAuxTermoEncerramento->sDescricao = urlencode($oTermo->sDescricao);
-                            $oAuxTermoEncerramento->sAbreviatura = urlencode($oTermo->sAbreviatura);
+                            $oAuxTermoEncerramento->sReferencia = urlencode((string) $oTermo->sReferencia);
+                            $oAuxTermoEncerramento->sDescricao = urlencode((string) $oTermo->sDescricao);
+                            $oAuxTermoEncerramento->sAbreviatura = urlencode((string) $oTermo->sAbreviatura);
                             $oRetorno->aTermos[$iContadorTermos] = $oAuxTermoEncerramento;
                             $iContadorTermos++;
                         }
@@ -546,8 +546,8 @@ try {
                 $oDadosAproveitamento = $oDiario->getDisciplinasPorRegencia($oRegencia);
                 $oDadosRegencias = new stdClass();
                 $oDadosRegencias->iCodigoRegencia = $oRegencia->getCodigo();
-                $oDadosRegencias->sDescricao = urlencode($oRegencia->getDisciplina()->getNomeDisciplina());
-                $oDadosRegencias->aAproveitamentos = array();
+                $oDadosRegencias->sDescricao = urlencode((string) $oRegencia->getDisciplina()->getNomeDisciplina());
+                $oDadosRegencias->aAproveitamentos = [];
                 $oDadosRegencias->sFrequenciaGlobal = $oRegencia->getFrequenciaGlobal();
                 $oDadosRegencias->lEncerrada = $oDadosAproveitamento->isEncerrado();
                 $oDadosRegencias->iTotalFaltas = $oDadosAproveitamento->getTotalFaltas() -
@@ -581,7 +581,7 @@ try {
                             $oAvaliacao->getElementoAvaliacao()->getPeriodoAvaliacao()
                         );
                     }
-                    $oDadosAvaliacao->lNotaBloqueada = (trim($nNota) != "" && $lProfessorLogado && $lBloqueiaAlteracaoAvaliacao);
+                    $oDadosAvaliacao->lNotaBloqueada = (trim((string) $nNota) != "" && $lProfessorLogado && $lBloqueiaAlteracaoAvaliacao);
                     if ($oAvaliacao->isAmparado()) {
                         $oDadosAvaliacao->lNotaBloqueada = true;
                         $oDadosAvaliacao->lFaltaBloqueada = true;
@@ -671,7 +671,7 @@ try {
             $oParecer = LancamentoAvaliacaoAluno::getParecer($_SESSION["oMatricula"],
                 RegenciaRepository::getRegenciaByCodigo($oParam->iRegencia),
                 $oParam->iOrdem);
-            $oRetorno->sParecerPadronizado = urlencode($oParecer->sParecerPadronizado);
+            $oRetorno->sParecerPadronizado = urlencode((string) $oParecer->sParecerPadronizado);
             $oRetorno->sParecer = urlencode(str_replace('\n', "\n", $oParecer->sParecer));
             db_fim_transacao();
 
@@ -700,7 +700,7 @@ try {
             $oParecer = LancamentoAvaliacaoAluno::getParecerComplementar($oMatricula,
                 RegenciaRepository::getRegenciaByCodigo($oParam->iRegencia),
                 $oParam->iOrdem);
-            $oRetorno->sParecerPadronizado = urlencode($oParecer->sParecerPadronizado);
+            $oRetorno->sParecerPadronizado = urlencode((string) $oParecer->sParecerPadronizado);
             $oRetorno->sParecer = urlencode(str_replace('\n', "\n", $oParecer->sParecer));
 
             if (isset($_SESSION["oTurma"]) && $_SESSION["oTurma"] instanceof Turma) {
@@ -761,27 +761,19 @@ try {
 
             $oEtapa = EtapaRepository::getEtapaByCodigo($oParam->iEtapa);
             $aAlunosVinculados = $oTurma->getAlunosProgressaoParcial($oEtapa);
-            $aDadosMatricula = array();
+            $aDadosMatricula = [];
             foreach ($aAlunosVinculados as $oVinculo) {
 
                 $aVinculosNaTurma = $oVinculo->getVinculosNaTurma($oTurma, $oEtapa);
-                $lEncontrado = false;
-
-                foreach ($aDadosMatricula as $oMatricula) {
-
-                    if ($oMatricula->iMatricula == $oVinculo->getAluno()->getCodigoAluno()) {
-                        $lEncontrado = true;
-                        break;
-                    }
-                }
+                $lEncontrado = array_any($aDadosMatricula, fn($oMatricula) => $oMatricula->iMatricula == $oVinculo->getAluno()->getCodigoAluno());
 
                 if (!$lEncontrado) {
                     $oDadosMatricula = new stdClass();
-                    $oDadosMatricula->iCodigo = array();
+                    $oDadosMatricula->iCodigo = [];
                     $oDadosMatricula->iMatricula = $oVinculo->getAluno()->getCodigoAluno();
                     $oDadosMatricula->iOrdem = '';
-                    $oDadosMatricula->aDisciplina = array();
-                    $oDadosMatricula->sNome = urlencode($oVinculo->getAluno()->getNome());
+                    $oDadosMatricula->aDisciplina = [];
+                    $oDadosMatricula->sNome = urlencode((string) $oVinculo->getAluno()->getNome());
                     $oDadosMatricula->dtDataMatricula = $aVinculosNaTurma[0]->getDataVinculo()->convertTo(DBDate::DATA_PTBR);
                     $oDadosMatricula->sSituacao = urlencode("DEPENDÊNCIA EM: ");
                     $aDadosMatricula[] = $oDadosMatricula;
@@ -789,14 +781,14 @@ try {
                 foreach ($aVinculosNaTurma as $oVinculoTurma) {
 
                     $oDadosMatricula->iCodigo[] = $oVinculoTurma->getCodigoProgressao();
-                    $oDadosMatricula->aDisciplina[] = urlencode($oVinculo->getDisciplina()->getAbreviatura());
+                    $oDadosMatricula->aDisciplina[] = urlencode((string) $oVinculo->getDisciplina()->getAbreviatura());
                 }
             }
             $oRetorno->dados = $aDadosMatricula;
             break;
 
         case 'getDadosVinculoAluno':
-            $aPeriodosAvaliacaoRetorno = array();
+            $aPeriodosAvaliacaoRetorno = [];
 
 
             db_inicio_transacao();
@@ -808,14 +800,14 @@ try {
             /**
              * Buscamos os dados da Matricula do aluno
              */
-            $oRetorno->sNomeAluno = urlencode($oProgressaoParcial->getAluno()->getNome());
+            $oRetorno->sNomeAluno = urlencode((string) $oProgressaoParcial->getAluno()->getNome());
             $oRetorno->iCodigoAluno = $oProgressaoParcial->getAluno()->getCodigoAluno();
             $oRetorno->sSituacaoAluno = "";
             $oRetorno->iCodigoTurma = $oTurma->getCodigo();
             $oRetorno->dtMatricula = $aVinculos[0]->getDataVinculo()->convertTo(DBDate::DATA_PTBR);
-            $oRetorno->sCalendario = urlencode($oTurma->getCalendario()->getDescricao());
-            $oRetorno->sTurma = urlencode($oTurma->getDescricao());
-            $aDisciplinas = array();
+            $oRetorno->sCalendario = urlencode((string) $oTurma->getCalendario()->getDescricao());
+            $oRetorno->sTurma = urlencode((string) $oTurma->getDescricao());
+            $aDisciplinas = [];
             $iAnoCalendario = $oTurma->getCalendario()->getAnoExecucao();
 
             foreach ($oParam->aVinculos as $iCodigoVinculo) {
@@ -826,20 +818,20 @@ try {
 
                 $oDisciplina = new stdClass();
                 $oDisciplina->lEncerrada = $oVinculo->isEncerrado();
-                $oDisciplina->sDisciplina = urlEncode($oVinculo->getRegencia()
+                $oDisciplina->sDisciplina = urlEncode((string) $oVinculo->getRegencia()
                     ->getDisciplina()
                     ->getNomeDisciplina()
                 );
 
                 $oResultadoFinal = $oVinculo->getResultadoFinal();
                 $oDisciplina->iCodigoProgressao = $oVinculo->getCodigoProgressao();
-                $oDisciplina->iNota = urlencode($oResultadoFinal->getNota());
+                $oDisciplina->iNota = urlencode((string) $oResultadoFinal->getNota());
                 $oDisciplina->iFalta = $oResultadoFinal->getTotalFalta();
                 $oDisciplina->sResultadoFinal = $oResultadoFinal->getResultado();
                 $aDisciplinas[] = $oDisciplina;
             }
 
-            usort($aDisciplinas, "ordernarDisciplinas");
+            usort($aDisciplinas, ordernarDisciplinas(...));
             $oRetorno->aDisciplinas = $aDisciplinas;
 
             /**
@@ -853,7 +845,7 @@ try {
 
             if ($oDaoTurma->numrows > 0) {
 
-                $oRetorno->aTermos = array();
+                $oRetorno->aTermos = [];
                 $iContadorTermos = 1;
                 $iCodigoEnsino = db_utils::fieldsMemory($rsTurma, 0)->ed10_i_codigo;
 
@@ -870,8 +862,8 @@ try {
                         foreach ($aTermos as $oTermo) {
 
                             $oRetorno->aTermos[$iContadorTermos] = clone $oReferencia;
-                            $oRetorno->aTermos[$iContadorTermos]->sReferencia = urlencode($oTermo->sReferencia);
-                            $oRetorno->aTermos[$iContadorTermos]->sDescricao = urlencode($oTermo->sDescricao);
+                            $oRetorno->aTermos[$iContadorTermos]->sReferencia = urlencode((string) $oTermo->sReferencia);
+                            $oRetorno->aTermos[$iContadorTermos]->sDescricao = urlencode((string) $oTermo->sDescricao);
                             $iContadorTermos++;
                         }
                     } else {
@@ -959,7 +951,7 @@ try {
 
 function ordernarDisciplinas($aArrayAtual, $aProximoArray)
 {
-    return strcasecmp(urldecode($aArrayAtual->sDisciplina), urldecode($aProximoArray->sDisciplina));
+    return strcasecmp(urldecode((string) $aArrayAtual->sDisciplina), urldecode((string) $aProximoArray->sDisciplina));
 }
 
 /**

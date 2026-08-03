@@ -150,7 +150,7 @@ $oPdf->SetY(249);
 $oPdf->Setfont('Arial', 'B', 8);
 $oPdf->cell(8, 4,'Observação', 0, 1);
 $oPdf->Setfont('Arial', '', 7);
-$oPdf->MultiCell(91, 3.5, substr($oDadosRequisicao->sObservacao, 0, 550), 0);
+$oPdf->MultiCell(91, 3.5, substr((string) $oDadosRequisicao->sObservacao, 0, 550), 0);
 
 //Assinatura, Local e Data.
 $oPdf->Setfont('Arial', 'B', 8);

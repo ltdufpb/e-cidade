@@ -29,41 +29,41 @@
 //CLASSE DA ENTIDADE formareclamacao
 class cl_formareclamacao {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $p42_sequencial = 0;
-   var $p42_descricao = null;
-   var $p42_dtinicio_dia = null;
-   var $p42_dtinicio_mes = null;
-   var $p42_dtinicio_ano = null;
-   var $p42_dtinicio = null;
-   var $p42_dtfim_dia = null;
-   var $p42_dtfim_mes = null;
-   var $p42_dtfim_ano = null;
-   var $p42_dtfim = null;
+   public $p42_sequencial = 0;
+   public $p42_descricao = null;
+   public $p42_dtinicio_dia = null;
+   public $p42_dtinicio_mes = null;
+   public $p42_dtinicio_ano = null;
+   public $p42_dtinicio = null;
+   public $p42_dtfim_dia = null;
+   public $p42_dtfim_mes = null;
+   public $p42_dtfim_ano = null;
+   public $p42_dtfim = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  p42_sequencial = int4 = Sequencial
                  p42_descricao = varchar(100) = Descrição
                  p42_dtinicio = date = Data Inicio
                  p42_dtfim = date = Data Fim
                  ";
    //funcao construtor da classe
-   function cl_formareclamacao() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("formareclamacao");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -139,10 +139,10 @@ class cl_formareclamacao {
          $this->erro_status = "0";
          return false;
        }
-       $this->p42_sequencial = pg_result($result,0,0);
+       $this->p42_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from formareclamacao_p42_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p42_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p42_sequencial)){
          $this->erro_sql = " Campo p42_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -176,7 +176,7 @@ class cl_formareclamacao {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Formas de Reclamação ($this->p42_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Formas de Reclamação já Cadastrado";
@@ -200,13 +200,13 @@ class cl_formareclamacao {
      $resaco = $this->sql_record($this->sql_query_file($this->p42_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14710,'$this->p42_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2587,14710,'','".AddSlashes(pg_result($resaco,0,'p42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2587,14711,'','".AddSlashes(pg_result($resaco,0,'p42_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2587,14712,'','".AddSlashes(pg_result($resaco,0,'p42_dtinicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2587,14713,'','".AddSlashes(pg_result($resaco,0,'p42_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2587,14710,'','".AddSlashes(pg_fetch_result($resaco,0,'p42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2587,14711,'','".AddSlashes(pg_fetch_result($resaco,0,'p42_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2587,14712,'','".AddSlashes(pg_fetch_result($resaco,0,'p42_dtinicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2587,14713,'','".AddSlashes(pg_fetch_result($resaco,0,'p42_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -215,10 +215,10 @@ class cl_formareclamacao {
       $this->atualizacampos();
      $sql = " update formareclamacao set ";
      $virgula = "";
-     if(trim($this->p42_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p42_sequencial"])){
+     if(trim((string) $this->p42_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p42_sequencial"])){
        $sql  .= $virgula." p42_sequencial = $this->p42_sequencial ";
        $virgula = ",";
-       if(trim($this->p42_sequencial) == null ){
+       if(trim((string) $this->p42_sequencial) == null ){
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "p42_sequencial";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_formareclamacao {
          return false;
        }
      }
-     if(trim($this->p42_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p42_descricao"])){
+     if(trim((string) $this->p42_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p42_descricao"])){
        $sql  .= $virgula." p42_descricao = '$this->p42_descricao' ";
        $virgula = ",";
-       if(trim($this->p42_descricao) == null ){
+       if(trim((string) $this->p42_descricao) == null ){
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "p42_descricao";
          $this->erro_banco = "";
@@ -304,17 +304,17 @@ class cl_formareclamacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14710,'$this->p42_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p42_sequencial"]) || $this->p42_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2587,14710,'".AddSlashes(pg_result($resaco,$conresaco,'p42_sequencial'))."','$this->p42_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2587,14710,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p42_sequencial'))."','$this->p42_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p42_descricao"]) || $this->p42_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,2587,14711,'".AddSlashes(pg_result($resaco,$conresaco,'p42_descricao'))."','$this->p42_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2587,14711,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p42_descricao'))."','$this->p42_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p42_dtinicio"]) || $this->p42_dtinicio != "")
-           $resac = db_query("insert into db_acount values($acount,2587,14712,'".AddSlashes(pg_result($resaco,$conresaco,'p42_dtinicio'))."','$this->p42_dtinicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2587,14712,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p42_dtinicio'))."','$this->p42_dtinicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p42_dtfim"]) || $this->p42_dtfim != "")
-           $resac = db_query("insert into db_acount values($acount,2587,14713,'".AddSlashes(pg_result($resaco,$conresaco,'p42_dtfim'))."','$this->p42_dtfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2587,14713,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p42_dtfim'))."','$this->p42_dtfim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -359,13 +359,13 @@ class cl_formareclamacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14710,'$p42_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2587,14710,'','".AddSlashes(pg_result($resaco,$iresaco,'p42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2587,14711,'','".AddSlashes(pg_result($resaco,$iresaco,'p42_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2587,14712,'','".AddSlashes(pg_result($resaco,$iresaco,'p42_dtinicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2587,14713,'','".AddSlashes(pg_result($resaco,$iresaco,'p42_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2587,14710,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2587,14711,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p42_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2587,14712,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p42_dtinicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2587,14713,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p42_dtfim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from formareclamacao
@@ -425,7 +425,7 @@ class cl_formareclamacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:formareclamacao";
@@ -440,7 +440,7 @@ class cl_formareclamacao {
    function sql_query ( $p42_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,7 +461,7 @@ class cl_formareclamacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_formareclamacao {
    function sql_query_file ( $p42_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -495,7 +495,7 @@ class cl_formareclamacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

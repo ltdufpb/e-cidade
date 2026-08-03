@@ -78,7 +78,7 @@ try {
                 Throw new \Exception("Ocorreu algo inesperado ao incluir multa para o processo.");
             }
 
-            $itensParaIncluir = array();
+            $itensParaIncluir = [];
             $totalProcessos = pg_num_rows($rsMultasDoProcesso);
 
             $deleteReceitaDeMulta = <<<DELETE

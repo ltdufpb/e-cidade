@@ -41,7 +41,7 @@ final class PadArquivoSigapRecurso extends PadArquivoSigap {
   public function __construct() {
 
     $this->sNomeArquivo = "RecursoVinculado";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
 
   /**
@@ -62,7 +62,7 @@ final class PadArquivoSigapRecurso extends PadArquivoSigap {
      * Separamos a data do em ano, mes, dia
      */
     $sWhereInstit = " and o58_instit = ".db_getsession("DB_instit");
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
 
     $sSqlRecurso  = "select o15_codigo as codigo, ";
     $sSqlRecurso .= "       o15_descr  as nome,";
@@ -82,11 +82,11 @@ final class PadArquivoSigapRecurso extends PadArquivoSigap {
       $oRecursoRetorno                                = new stdClass();
       $oRecursoRetorno->recCodigoEntidade             = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oRecursoRetorno->recMesAnoMovimento            = $sDiaMesAno;
-      $oRecursoRetorno->recCodigoRecursoVinculado     = str_pad($oRecurso->codigo, 8, "0", STR_PAD_LEFT);
-      $oRecursoRetorno->recNomeRecursoVinculado       = substr($oRecurso->nome, 0, 80);
+      $oRecursoRetorno->recCodigoRecursoVinculado     = str_pad((string) $oRecurso->codigo, 8, "0", STR_PAD_LEFT);
+      $oRecursoRetorno->recNomeRecursoVinculado       = substr((string) $oRecurso->nome, 0, 80);
       $oRecursoRetorno->recFinalidadeRecursoVinculado = substr(str_replace("\n"," ", $oRecurso->finalidade), 0, 160);
       if (db_getsession("DB_anousu") >= 2011) {
-        $oRecursoRetorno->recCodigoRecursoVinculado     = str_pad($oRecurso->codigorecurso, 8, "0", STR_PAD_LEFT);
+        $oRecursoRetorno->recCodigoRecursoVinculado     = str_pad((string) $oRecurso->codigorecurso, 8, "0", STR_PAD_LEFT);
       }
       array_push($this->aDados, $oRecursoRetorno);
 
@@ -102,20 +102,20 @@ final class PadArquivoSigapRecurso extends PadArquivoSigap {
    */
   public function getNomeElementos() {
 
-    $aElementos = array(
+    $aElementos = [
                         "recCodigoEntidade",
                         "recMesAnoMovimento",
                         "recCodigoRecursoVinculado",
                         "recNomeRecursoVinculado",
                         "recFinalidadeRecursoVinculado"
-                       );
+                       ];
     if (db_getsession("DB_anousu") >= 2011) {
 
-      $aElementos = array(
+      $aElementos = [
                         "recCodigoEntidade",
                         "recMesAnoMovimento",
                         "recCodigoRecursoVinculado",
-                       );
+                       ];
     }
     return $aElementos;
   }

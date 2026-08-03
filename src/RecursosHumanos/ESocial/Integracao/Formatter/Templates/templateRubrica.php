@@ -1,62 +1,62 @@
 <?php
-return array(
-    'ideRubrica' => array(
-        'properties' => array(
+return [
+    'ideRubrica' => [
+        'properties' => [
             'codRubr',
             'ideTabRubr',
             'iniValid',
             'fimValid'
-        )
-    ),
-    'dadosRubrica' => array(
-        'properties' => array(
+        ]
+    ],
+    'dadosRubrica' => [
+        'properties' => [
             'dscRubr',
-            'natRubr' => array(
+            'natRubr' => [
                 'type' => 'int'
-            ),
-            'tpRubr' => array(
+            ],
+            'tpRubr' => [
                 'type' => 'int'
-            ),
+            ],
             'codIncCP',
             'codIncIRRF',
             'codIncFGTS',
             'codIncCPRP',
             'tetoRemun',
             'observacao',
-        ),
-        'groups' => array(
-            'ideProcessoCP' => array(
+        ],
+        'groups' => [
+            'ideProcessoCP' => [
                 'type' => 'array',
-                'items' => array(
-                    'properties' => array(
-                        'tpProc' => array(
+                'items' => [
+                    'properties' => [
+                        'tpProc' => [
                             'type' => 'int'
-                        ),
+                        ],
                         'nrProc',
-                        'extDecisao' => array(
+                        'extDecisao' => [
                             'type' => 'int'
-                        ),
+                        ],
                         'codSusp'
-                    )
-                )
-            ),
-            'ideProcessoIRRF' => array(
+                    ]
+                ]
+            ],
+            'ideProcessoIRRF' => [
                 'type' => 'array',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'nrProc',
                         'codSusp'
-                    )
-                )
-            ),
-            'ideProcessoFGTS' => array(
+                    ]
+                ]
+            ],
+            'ideProcessoFGTS' => [
                 'type' => 'array',
-                'items' => array(
-                    'properties' => array(
+                'items' => [
+                    'properties' => [
                         'nrProc'
-                    )
-                )
-            )
-        )
-    )
-);
+                    ]
+                ]
+            ]
+        ]
+    ]
+];

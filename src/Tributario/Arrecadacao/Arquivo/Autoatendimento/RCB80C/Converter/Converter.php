@@ -13,11 +13,9 @@ use ECidade\Tributario\Arrecadacao\Arquivo\Autoatendimento\Layout\Layout;
 abstract class Converter
 {
     protected $layout;
-    protected $format;
 
-    public function __construct(Layout $layout, $format = null)
+    public function __construct(Layout $layout, protected $format = null)
     {
         $this->layout = $layout;
-        $this->format = $format;
     }
 }

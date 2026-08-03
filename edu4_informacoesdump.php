@@ -49,7 +49,7 @@ for ( $x=0; $x<$cleduinfotable->numrows; $x++ ){
      db_fieldsmemory( $result_table, $x );
      $sql = "select * from pg_class where relname = '".$e200_c_tabela."' ";
      $result = db_query( $sql );
-     if( pg_numrows( $result ) == 0 ){
+     if( pg_num_rows( $result ) == 0 ){
           echo "\nTabela não encontrada em 'pg_class' [$e200_c_tabela]\n";
           $erro = true;
           break;
@@ -67,7 +67,7 @@ if( $erro == false ){
           fputs( $fd, "\nTABELA|$e200_c_tabela" );
           $sql = "select * from $e200_c_tabela";
           $result = db_query( $sql );
-          
+
           //pega colunas
           fputs( $fd, "\nCOLUNAS|" );
           $separator="";

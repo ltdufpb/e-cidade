@@ -31,7 +31,7 @@ require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_libtributario.php"));
 require_once(modification("classes/db_arreprescr_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $clarreprescr = new cl_arreprescr;
 $where = " WHERE arreprescr.k30_anulado is false ";

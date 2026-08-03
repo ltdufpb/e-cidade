@@ -33,8 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_almox_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postmemory($_POST,0);
 $oGet  = db_utils::postmemory($_GET,0);
@@ -105,17 +105,17 @@ $cldb_almox->rotulo->label("m91_depto");
         $instit = db_getsession("DB_instit");
 
         // se apenas o campo m91_codigo foi preenchido no formulário
-        if (isset($chave_m91_codigo) && (trim($chave_m91_codigo) != "") && trim($m91_depto) == null) {
+        if (isset($chave_m91_codigo) && (trim($chave_m91_codigo) != "") && trim((string) $m91_depto) == null) {
           $sql = $cldb_almox->sql_query("",$campos,"m91_codigo"," m91_codigo like '$chave_m91_codigo%' and db_depart.instit = $instit");
         }
 
         // se apenas o campo depto foi preenchido como parametro para busca
-        else if (isset($m91_depto) && (trim($m91_depto) != "") && trim($chave_m91_codigo) == null) {
+        else if (isset($m91_depto) && (trim($m91_depto) != "") && trim((string) $chave_m91_codigo) == null) {
           $sql = $cldb_almox->sql_query("",$campos,"m91_codigo","m91_depto = $m91_depto and db_depart.instit = $instit");
         }
 
         // se os dois campos de busca foram preenchidos
-        else if (isset($chave_m91_codigo) && (trim($chave_m91_codigo) != "") && (trim($m91_depto) != "")) {
+        else if (isset($chave_m91_codigo) && (trim($chave_m91_codigo) != "") && (trim((string) $m91_depto) != "")) {
           $sql = $cldb_almox->sql_query("",$campos,"m91_codigo","m91_codigo = $chave_m91_codigo and m91_depto = $m91_depto and db_depart.instit = $instit ");
         }
 

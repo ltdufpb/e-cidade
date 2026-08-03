@@ -55,18 +55,18 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array (
+	 $clcriaabas->identifica =  [
 	 																  "orcparamrel"         => "Parâmetros do Relatório",
 	 																  "orcparamrelperiodos" => "Períodos do Relatório"
-																	 );
+																	 ];
 																	
-	 $clcriaabas->sizecampo = array (
+	 $clcriaabas->sizecampo =  [
 	 																	"orcparamrel"         => "23",
 																		"orcparamrelperiodos" => "23"
-																	);
+																	];
 																																		 
-	 $clcriaabas->src       = array("orcparamrel"=>"orc1_orcparamrel006.php");
-	 $clcriaabas->disabled  = array("orcparamrelperiodos"=>"true"); 
+	 $clcriaabas->src       = ["orcparamrel"=>"orc1_orcparamrel006.php"];
+	 $clcriaabas->disabled  = ["orcparamrelperiodos"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

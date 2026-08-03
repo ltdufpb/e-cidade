@@ -49,7 +49,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 	public $code_attr_on_pre = false;
 
 	# Predefined abbreviations.
-	public $predef_abbr = array();
+	public $predef_abbr = [];
 
 	### Parser Implementation ###
 
@@ -63,21 +63,21 @@ class MarkdownExtra extends \Michelf\Markdown {
 		
 		# Insert extra document, block, and span transformations. 
 		# Parent constructor will do the sorting.
-		$this->document_gamut += array(
+		$this->document_gamut += [
 			"doFencedCodeBlocks" => 5,
 			"stripFootnotes"     => 15,
 			"stripAbbreviations" => 25,
 			"appendFootnotes"    => 50,
-			);
-		$this->block_gamut += array(
+			];
+		$this->block_gamut += [
 			"doFencedCodeBlocks" => 5,
 			"doTables"           => 15,
 			"doDefLists"         => 45,
-			);
-		$this->span_gamut += array(
+			];
+		$this->span_gamut += [
 			"doFootnotes"        => 5,
 			"doAbbreviations"    => 70,
-			);
+			];
 		
 		$this->enhanced_ordered_list = true;
 		parent::__construct();
@@ -85,11 +85,11 @@ class MarkdownExtra extends \Michelf\Markdown {
 	
 	
 	# Extra variables used during extra transformations.
-	protected $footnotes = array();
-	protected $footnotes_ordered = array();
-	protected $footnotes_ref_count = array();
-	protected $footnotes_numbers = array();
-	protected $abbr_desciptions = array();
+	protected $footnotes = [];
+	protected $footnotes_ordered = [];
+	protected $footnotes_ref_count = [];
+	protected $footnotes_numbers = [];
+	protected $abbr_desciptions = [];
 	protected $abbr_word_re = '';
 	
 	# Give the current footnote number.
@@ -102,19 +102,19 @@ class MarkdownExtra extends \Michelf\Markdown {
 	#
 		parent::setup();
 		
-		$this->footnotes = array();
-		$this->footnotes_ordered = array();
-		$this->footnotes_ref_count = array();
-		$this->footnotes_numbers = array();
-		$this->abbr_desciptions = array();
+		$this->footnotes = [];
+		$this->footnotes_ordered = [];
+		$this->footnotes_ref_count = [];
+		$this->footnotes_numbers = [];
+		$this->abbr_desciptions = [];
 		$this->abbr_word_re = '';
 		$this->footnote_counter = 1;
 		
 		foreach ($this->predef_abbr as $abbr_word => $abbr_desc) {
 			if ($this->abbr_word_re)
 				$this->abbr_word_re .= '|';
-			$this->abbr_word_re .= preg_quote($abbr_word);
-			$this->abbr_desciptions[$abbr_word] = trim($abbr_desc);
+			$this->abbr_word_re .= preg_quote((string) $abbr_word);
+			$this->abbr_desciptions[$abbr_word] = trim((string) $abbr_desc);
 		}
 	}
 	
@@ -122,11 +122,11 @@ class MarkdownExtra extends \Michelf\Markdown {
 	#
 	# Clearing Extra-specific variables.
 	#
-		$this->footnotes = array();
-		$this->footnotes_ordered = array();
-		$this->footnotes_ref_count = array();
-		$this->footnotes_numbers = array();
-		$this->abbr_desciptions = array();
+		$this->footnotes = [];
+		$this->footnotes_ordered = [];
+		$this->footnotes_ref_count = [];
+		$this->footnotes_numbers = [];
+		$this->abbr_desciptions = [];
 		$this->abbr_word_re = '';
 		
 		parent::teardown();
@@ -140,7 +140,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 	# Expression to use when parsing in a context when no capture is desired
 	protected $id_class_attr_nocatch_re = '\{(?>[ ]*[#.a-z][-_:a-zA-Z0-9=]+){1,}[ ]*\}';
 
-	protected function doExtraAttributes($tag_name, $attr, $defaultIdValue = null, $classes = array()) {
+	protected function doExtraAttributes($tag_name, $attr, $defaultIdValue = null, $classes = []) {
 	#
 	# Parse attributes caught by the $this->id_class_attr_catch_re expression
 	# and return the HTML-formatted list of attributes.
@@ -153,16 +153,16 @@ class MarkdownExtra extends \Michelf\Markdown {
 		if (empty($attr) && !$defaultIdValue && empty($classes)) return "";
 		
 		# Split on components
-		preg_match_all('/[#.a-z][-_:a-zA-Z0-9=]+/', $attr, $matches);
+		preg_match_all('/[#.a-z][-_:a-zA-Z0-9=]+/', (string) $attr, $matches);
 		$elements = $matches[0];
 
 		# handle classes and ids (only first id taken into account)
-		$attributes = array();
+		$attributes = [];
 		$id = false;
 		foreach ($elements as $element) {
-			if ($element{0} == '.') {
+			if ($element[0] == '.') {
 				$classes[] = substr($element, 1);
-			} else if ($element{0} == '#') {
+			} else if ($element[0] == '#') {
 				if ($id === false) $id = substr($element, 1);
 			} else if (strpos($element, '=') > 0) {
 				$parts = explode('=', $element, 2);
@@ -218,12 +218,12 @@ class MarkdownExtra extends \Michelf\Markdown {
 					(?:[ ]* '.$this->id_class_attr_catch_re.' )?  # $5 = extra id & class attr
 							(?:\n+|\Z)
 			}xm',
-			array($this, '_stripLinkDefinitions_callback'),
-			$text);
+			$this->_stripLinkDefinitions_callback(...),
+			(string) $text);
 		return $text;
 	}
 	protected function _stripLinkDefinitions_callback($matches) {
-		$link_id = strtolower($matches[1]);
+		$link_id = strtolower((string) $matches[1]);
 		$url = $matches[2] == '' ? $matches[3] : $matches[2];
 		$this->urls[$link_id] = $url;
 		$this->titles[$link_id] =& $matches[4];
@@ -304,7 +304,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 	#
 	# Returns an array of that form: ( processed text , remaining text )
 	#
-		if ($text === '') return array('', '');
+		if ($text === '') return ['', ''];
 
 		# Regex to check for the presense of newlines around a block tag.
 		$newline_before_re = '/(?:^\n?|\n\n)*$/';
@@ -384,7 +384,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 			# pattern will be at the end, and between will be any catches made 
 			# by the pattern.
 			#
-			$parts = preg_split($block_tag_re, $text, 2, 
+			$parts = preg_split($block_tag_re, (string) $text, 2, 
 								PREG_SPLIT_DELIM_CAPTURE);
 			
 			# If in Markdown span mode, add a empty-string span-level hash 
@@ -431,7 +431,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 			#
 			# Check for: Indented code block.
 			#
-			else if ($tag{0} == "\n" || $tag{0} == " ") {
+			else if ($tag[0] == "\n" || $tag[0] == " ") {
 				# Indented code block: pass it unchanged, will be handled 
 				# later.
 				$parsed .= $tag;
@@ -440,7 +440,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 			# Check for: Code span marker
 			# Note: need to check this after backtick fenced code blocks
 			#
-			else if ($tag{0} == "`") {
+			else if ($tag[0] == "`") {
 				# Find corresponding end marker.
 				$tag_re = preg_quote($tag);
 				if (preg_match('{^(?>.+?|\n(?!\n))*?(?<!`)'.$tag_re.'(?!`)}',
@@ -467,7 +467,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 				)
 			{
 				# Need to parse tag and following text using the HTML parser.
-				list($block_text, $text) = 
+				[$block_text, $text] = 
 					$this->_hashHTMLBlocks_inHTML($tag . $text, "hashBlock", true);
 				
 				# Make sure it stays outside of any paragraph by adding newlines.
@@ -478,11 +478,11 @@ class MarkdownExtra extends \Michelf\Markdown {
 			#            HTML Comments, processing instructions.
 			#
 			else if (preg_match('{^<(?:'.$this->clean_tags_re.')\b}', $tag) ||
-				$tag{1} == '!' || $tag{1} == '?')
+				$tag[1] == '!' || $tag[1] == '?')
 			{
 				# Need to parse tag and following text using the HTML parser.
 				# (don't check for markdown attribute)
-				list($block_text, $text) = 
+				[$block_text, $text] = 
 					$this->_hashHTMLBlocks_inHTML($tag . $text, "hashClean", false);
 				
 				$parsed .= $block_text;
@@ -497,8 +497,8 @@ class MarkdownExtra extends \Michelf\Markdown {
 				#
 				# Increase/decrease nested tag count.
 				#
-				if ($tag{1} == '/')						$depth--;
-				else if ($tag{strlen($tag)-2} != '/')	$depth++;
+				if ($tag[1] == '/')						$depth--;
+				else if ($tag[strlen($tag)-2] != '/')	$depth++;
 
 				if ($depth < 0) {
 					#
@@ -516,7 +516,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 			}
 		} while ($depth >= 0);
 		
-		return array($parsed, $text);
+		return [$parsed, $text];
 	}
 	protected function _hashHTMLBlocks_inHTML($text, $hash_method, $md_attr) {
 	#
@@ -529,7 +529,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 	#
 	# Returns an array of that form: ( processed text , remaining text )
 	#
-		if ($text === '') return array('', '');
+		if ($text === '') return ['', ''];
 		
 		# Regex to match `markdown` attribute inside of a tag.
 		$markdown_attr_re = '
@@ -580,7 +580,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 		# Get the name of the starting tag.
 		# (This pattern makes $base_tag_name_re safe without quoting.)
 		#
-		if (preg_match('/^<([\w:$]*)\b/', $text, $matches))
+		if (preg_match('/^<([\w:$]*)\b/', (string) $text, $matches))
 			$base_tag_name_re = $matches[1];
 
 		#
@@ -593,7 +593,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 			# pattern will be at the end, and between will be any catches made 
 			# by the pattern.
 			#
-			$parts = preg_split($tag_re, $text, 2, PREG_SPLIT_DELIM_CAPTURE);
+			$parts = preg_split($tag_re, (string) $text, 2, PREG_SPLIT_DELIM_CAPTURE);
 			
 			if (count($parts) < 3) {
 				#
@@ -602,7 +602,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 				# first character as filtered to prevent an infinite loop in the 
 				# parent function.
 				#
-				return array($original_text{0}, substr($original_text, 1));
+				return [$original_text[0], substr((string) $original_text, 1)];
 			}
 			
 			$block_text .= $parts[0]; # Text before current tag.
@@ -614,7 +614,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 			#			 Comments and Processing Instructions.
 			#
 			if (preg_match('{^</?(?:'.$this->auto_close_tags_re.')\b}', $tag) ||
-				$tag{1} == '!' || $tag{1} == '?')
+				$tag[1] == '!' || $tag[1] == '?')
 			{
 				# Just add the tag to the block as if it was text.
 				$block_text .= $tag;
@@ -625,8 +625,8 @@ class MarkdownExtra extends \Michelf\Markdown {
 				# the tag's name match base tag's.
 				#
 				if (preg_match('{^</?'.$base_tag_name_re.'\b}', $tag)) {
-					if ($tag{1} == '/')						$depth--;
-					else if ($tag{strlen($tag)-2} != '/')	$depth++;
+					if ($tag[1] == '/')						$depth--;
+					else if ($tag[strlen($tag)-2] != '/')	$depth++;
 				}
 				
 				#
@@ -642,7 +642,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 					# Check if text inside this tag must be parsed in span mode.
 					$this->mode = $attr_m[2] . $attr_m[3];
 					$span_mode = $this->mode == 'span' || $this->mode != 'block' &&
-						preg_match('{^<(?:'.$this->contain_span_tags_re.')\b}', $tag);
+						preg_match('{^<(?:'.$this->contain_span_tags_re.')\b}', (string) $tag);
 					
 					# Calculate indent before tag.
 					if (preg_match('/(?:^|\n)( *?)(?! ).*?$/', $block_text, $matches)) {
@@ -658,18 +658,18 @@ class MarkdownExtra extends \Michelf\Markdown {
 					
 					# Get enclosing tag name for the ParseMarkdown function.
 					# (This pattern makes $tag_name_re safe without quoting.)
-					preg_match('/^<([\w:$]*)\b/', $tag, $matches);
+					preg_match('/^<([\w:$]*)\b/', (string) $tag, $matches);
 					$tag_name_re = $matches[1];
 					
 					# Parse the content using the HTML-in-Markdown parser.
-					list ($block_text, $text)
+					[$block_text, $text]
 						= $this->_hashHTMLBlocks_inMarkdown($text, $indent, 
 							$tag_name_re, $span_mode);
 					
 					# Outdent markdown text.
 					if ($indent > 0) {
 						$block_text = preg_replace("/^[ ]{1,$indent}/m", "", 
-													$block_text);
+													(string) $block_text);
 					}
 					
 					# Append tag content to parsed text.
@@ -689,7 +689,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 		#
 		$parsed .= $this->$hash_method($block_text);
 		
-		return array($parsed, $text);
+		return [$parsed, $text];
 	}
 
 
@@ -727,7 +727,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 			  \]
 			)
 			}xs',
-			array($this, '_doAnchors_reference_callback'), $text);
+			$this->_doAnchors_reference_callback(...), (string) $text);
 
 		#
 		# Next, inline-style links: [link text](url "optional title")
@@ -755,7 +755,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 			  (?:[ ]? '.$this->id_class_attr_catch_re.' )?	 # $8 = id/class attributes
 			)
 			}xs',
-			array($this, '_doAnchors_inline_callback'), $text);
+			$this->_doAnchors_inline_callback(...), $text);
 
 		#
 		# Last, handle reference-style shortcuts: [link text]
@@ -769,7 +769,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 			  \]
 			)
 			}xs',
-			array($this, '_doAnchors_reference_callback'), $text);
+			$this->_doAnchors_reference_callback(...), $text);
 
 		$this->in_anchor = false;
 		return $text;
@@ -785,7 +785,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 		}
 		
 		# lower-case and turn embedded newlines into spaces
-		$link_id = strtolower($link_id);
+		$link_id = strtolower((string) $link_id);
 		$link_id = preg_replace('{[ ]?\n}', ' ', $link_id);
 
 		if (isset($this->urls[$link_id])) {
@@ -861,7 +861,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 
 			)
 			}xs', 
-			array($this, '_doImages_reference_callback'), $text);
+			$this->_doImages_reference_callback(...), (string) $text);
 
 		#
 		# Next, handle inline images:  ![alt text](url "optional title")
@@ -891,17 +891,17 @@ class MarkdownExtra extends \Michelf\Markdown {
 			  (?:[ ]? '.$this->id_class_attr_catch_re.' )?	 # $8 = id/class attributes
 			)
 			}xs',
-			array($this, '_doImages_inline_callback'), $text);
+			$this->_doImages_inline_callback(...), $text);
 
 		return $text;
 	}
 	protected function _doImages_reference_callback($matches) {
 		$whole_match = $matches[1];
 		$alt_text    = $matches[2];
-		$link_id     = strtolower($matches[3]);
+		$link_id     = strtolower((string) $matches[3]);
 
 		if ($link_id == "") {
-			$link_id = strtolower($alt_text); # for shortcut links like ![this][].
+			$link_id = strtolower((string) $alt_text); # for shortcut links like ![this][].
 		}
 
 		$alt_text = $this->encodeAttribute($alt_text);
@@ -963,7 +963,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 				(?:[ ]+ '.$this->id_class_attr_catch_re.' )?	 # $3 = id/class attributes
 				[ ]*\n(=+|-+)[ ]*\n+				# $3: Header footer
 			}mx',
-			array($this, '_doHeaders_callback_setext'), $text);
+			$this->_doHeaders_callback_setext(...), (string) $text);
 
 		# atx-style headers:
 		#	# Header 1        {#header1}
@@ -982,15 +982,15 @@ class MarkdownExtra extends \Michelf\Markdown {
 				[ ]*
 				\n+
 			}xm',
-			array($this, '_doHeaders_callback_atx'), $text);
+			$this->_doHeaders_callback_atx(...), $text);
 
 		return $text;
 	}
 	protected function _doHeaders_callback_setext($matches) {
-		if ($matches[3] == '-' && preg_match('{^- }', $matches[1]))
+		if ($matches[3] == '-' && preg_match('{^- }', (string) $matches[1]))
 			return $matches[0];
 
-		$level = $matches[3]{0} == '=' ? 1 : 2;
+		$level = $matches[3][0] == '=' ? 1 : 2;
 
 		$defaultId = is_callable($this->header_id_func) ? call_user_func($this->header_id_func, $matches[1]) : null;
 
@@ -999,7 +999,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 		return "\n" . $this->hashBlock($block) . "\n\n";
 	}
 	protected function _doHeaders_callback_atx($matches) {
-		$level = strlen($matches[1]);
+		$level = strlen((string) $matches[1]);
 
 		$defaultId = is_callable($this->header_id_func) ? call_user_func($this->header_id_func, $matches[2]) : null;
 		$attr  = $this->doExtraAttributes("h$level", $dummy =& $matches[3], $defaultId);
@@ -1039,7 +1039,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 				)
 				(?=\n|\Z)					# Stop at final double newline.
 			}xm',
-			array($this, '_doTable_leadingPipe_callback'), $text);
+			$this->_doTable_leadingPipe_callback(...), (string) $text);
 		
 		#
 		# Find tables without leading pipe.
@@ -1065,7 +1065,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 				)
 				(?=\n|\Z)					# Stop at final double newline.
 			}xm',
-			array($this, '_DoTable_callback'), $text);
+			$this->_DoTable_callback(...), $text);
 
 		return $text;
 	}
@@ -1075,9 +1075,9 @@ class MarkdownExtra extends \Michelf\Markdown {
 		$content	= $matches[3];
 		
 		# Remove leading pipe for each row.
-		$content	= preg_replace('/^ *[|]/m', '', $content);
+		$content	= preg_replace('/^ *[|]/m', '', (string) $content);
 		
-		return $this->_doTable_callback(array($matches[0], $head, $underline, $content));
+		return $this->_doTable_callback([$matches[0], $head, $underline, $content]);
 	}
 	protected function _doTable_makeAlignAttr($alignname)
 	{
@@ -1093,9 +1093,9 @@ class MarkdownExtra extends \Michelf\Markdown {
 		$content	= $matches[3];
 
 		# Remove any tailing pipes for each line.
-		$head		= preg_replace('/[|] *$/m', '', $head);
-		$underline	= preg_replace('/[|] *$/m', '', $underline);
-		$content	= preg_replace('/[|] *$/m', '', $content);
+		$head		= preg_replace('/[|] *$/m', '', (string) $head);
+		$underline	= preg_replace('/[|] *$/m', '', (string) $underline);
+		$content	= preg_replace('/[|] *$/m', '', (string) $content);
 		
 		# Reading alignement from header underline.
 		$separators	= preg_split('/ *[|] */', $underline);
@@ -1141,7 +1141,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 			
 			$text .= "<tr>\n";
 			foreach ($row_cells as $n => $cell)
-				$text .= "  <td$attr[$n]>".$this->runSpanGamut(trim($cell))."</td>\n";
+				$text .= "  <td$attr[$n]>".$this->runSpanGamut(trim((string) $cell))."</td>\n";
 			$text .= "</tr>\n";
 		}
 		$text .= "</tbody>\n";
@@ -1189,7 +1189,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 				(?>\A\n?|(?<=\n\n))
 				'.$whole_list_re.'
 			}mx',
-			array($this, '_doDefLists_callback'), $text);
+			$this->_doDefLists_callback(...), (string) $text);
 
 		return $text;
 	}
@@ -1199,7 +1199,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 		
 		# Turn double returns into triple returns, so that we can make a
 		# paragraph for the last item in a list, if necessary:
-		$result = trim($this->processDefListItems($list));
+		$result = trim((string) $this->processDefListItems($list));
 		$result = "<dl>\n" . $result . "\n</dl>";
 		return $this->hashBlock($result) . "\n\n";
 	}
@@ -1213,7 +1213,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 		$less_than_tab = $this->tab_width - 1;
 		
 		# trim trailing blank lines:
-		$list_str = preg_replace("/\n{2,}\\z/", "\n", $list_str);
+		$list_str = preg_replace("/\n{2,}\\z/", "\n", (string) $list_str);
 
 		# Process definition terms.
 		$list_str = preg_replace_callback('{
@@ -1227,7 +1227,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 			(?=\n?[ ]{0,3}:[ ])				# lookahead for following line feed 
 											#   with a definition mark.
 			}xm',
-			array($this, '_processDefListItems_callback_dt'), $list_str);
+			$this->_processDefListItems_callback_dt(...), $list_str);
 
 		# Process actual definitions.
 		$list_str = preg_replace_callback('{
@@ -1244,12 +1244,12 @@ class MarkdownExtra extends \Michelf\Markdown {
 				)						
 			)					
 			}xm',
-			array($this, '_processDefListItems_callback_dd'), $list_str);
+			$this->_processDefListItems_callback_dd(...), $list_str);
 
 		return $list_str;
 	}
 	protected function _processDefListItems_callback_dt($matches) {
-		$terms = explode("\n", trim($matches[1]));
+		$terms = explode("\n", trim((string) $matches[1]));
 		$text = '';
 		foreach ($terms as $term) {
 			$term = $this->runSpanGamut(trim($term));
@@ -1262,14 +1262,14 @@ class MarkdownExtra extends \Michelf\Markdown {
 		$marker_space	= $matches[2];
 		$def			= $matches[3];
 
-		if ($leading_line || preg_match('/\n{2,}/', $def)) {
+		if ($leading_line || preg_match('/\n{2,}/', (string) $def)) {
 			# Replace marker with the appropriate whitespace indentation
-			$def = str_repeat(' ', strlen($marker_space)) . $def;
+			$def = str_repeat(' ', strlen((string) $marker_space)) . $def;
 			$def = $this->runBlockGamut($this->outdent($def . "\n\n"));
 			$def = "\n". $def ."\n";
 		}
 		else {
-			$def = rtrim($def);
+			$def = rtrim((string) $def);
 			$def = $this->runSpanGamut($this->outdent($def));
 		}
 
@@ -1314,7 +1314,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 				# Closing marker.
 				\1 [ ]* (?= \n )
 			}xm',
-			array($this, '_doFencedCodeBlocks_callback'), $text);
+			$this->_doFencedCodeBlocks_callback(...), (string) $text);
 
 		return $text;
 	}
@@ -1326,16 +1326,16 @@ class MarkdownExtra extends \Michelf\Markdown {
 		if ($this->code_block_content_func) {
 			$codeblock = call_user_func($this->code_block_content_func, $codeblock, $classname);
 		} else {
-			$codeblock = htmlspecialchars($codeblock, ENT_NOQUOTES);
+			$codeblock = htmlspecialchars((string) $codeblock, ENT_NOQUOTES);
 		}
 
 		$codeblock = preg_replace_callback('/^\n+/',
-			array($this, '_doFencedCodeBlocks_newlines'), $codeblock);
+			$this->_doFencedCodeBlocks_newlines(...), (string) $codeblock);
 
-		$classes = array();
+		$classes = [];
 		if ($classname != "") {
-			if ($classname{0} == '.')
-				$classname = substr($classname, 1);
+			if ($classname[0] == '.')
+				$classname = substr((string) $classname, 1);
 			$classes[] = $this->code_class_prefix.$classname;
 		}
 		$attr_str = $this->doExtraAttributes($this->code_attr_on_pre ? "pre" : "code", $attrs, null, $classes);
@@ -1347,7 +1347,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 	}
 	protected function _doFencedCodeBlocks_newlines($matches) {
 		return str_repeat("<br$this->empty_element_suffix", 
-			strlen($matches[0]));
+			strlen((string) $matches[0]));
 	}
 
 
@@ -1355,21 +1355,21 @@ class MarkdownExtra extends \Michelf\Markdown {
 	# Redefining emphasis markers so that emphasis by underscore does not
 	# work in the middle of a word.
 	#
-	protected $em_relist = array(
+	protected $em_relist = [
 		''  => '(?:(?<!\*)\*(?!\*)|(?<![a-zA-Z0-9_])_(?!_))(?![\.,:;]?\s)',
 		'*' => '(?<![\s*])\*(?!\*)',
 		'_' => '(?<![\s_])_(?![a-zA-Z0-9_])',
-		);
-	protected $strong_relist = array(
+		];
+	protected $strong_relist = [
 		''   => '(?:(?<!\*)\*\*(?!\*)|(?<![a-zA-Z0-9_])__(?!_))(?![\.,:;]?\s)',
 		'**' => '(?<![\s*])\*\*(?!\*)',
 		'__' => '(?<![\s_])__(?![a-zA-Z0-9_])',
-		);
-	protected $em_strong_relist = array(
+		];
+	protected $em_strong_relist = [
 		''    => '(?:(?<!\*)\*\*\*(?!\*)|(?<![a-zA-Z0-9_])___(?!_))(?![\.,:;]?\s)',
 		'***' => '(?<![\s*])\*\*\*(?!\*)',
 		'___' => '(?<![\s_])___(?![a-zA-Z0-9_])',
-		);
+		];
 
 
 	protected function formParagraphs($text) {
@@ -1378,7 +1378,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 	#		$text - string to process with html <p> tags
 	#
 		# Strip leading and trailing lines:
-		$text = preg_replace('/\A\n+|\n+\z/', '', $text);
+		$text = preg_replace('/\A\n+|\n+\z/', '', (string) $text);
 		
 		$grafs = preg_split('/\n{2,}/', $text, -1, PREG_SPLIT_NO_EMPTY);
 
@@ -1433,8 +1433,8 @@ class MarkdownExtra extends \Michelf\Markdown {
 				)*
 			)		
 			}xm',
-			array($this, '_stripFootnotes_callback'),
-			$text);
+			$this->_stripFootnotes_callback(...),
+			(string) $text);
 		return $text;
 	}
 	protected function _stripFootnotes_callback($matches) {
@@ -1450,7 +1450,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 	# which will be replaced by the actual footnote marker in appendFootnotes.
 	#
 		if (!$this->in_anchor) {
-			$text = preg_replace('{\[\^(.+?)\]}', "F\x1Afn:\\1\x1A:", $text);
+			$text = preg_replace('{\[\^(.+?)\]}', "F\x1Afn:\\1\x1A:", (string) $text);
 		}
 		return $text;
 	}
@@ -1461,7 +1461,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 	# Append footnote list to text.
 	#
 		$text = preg_replace_callback('{F\x1Afn:(.*?)\x1A:}', 
-			array($this, '_appendFootnotes_callback'), $text);
+			$this->_appendFootnotes_callback(...), (string) $text);
 	
 		if (!empty($this->footnotes_ordered)) {
 			$text .= "\n\n";
@@ -1494,7 +1494,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 				$footnote .= "\n"; # Need to append newline before parsing.
 				$footnote = $this->runBlockGamut("$footnote\n");				
 				$footnote = preg_replace_callback('{F\x1Afn:(.*?)\x1A:}', 
-					array($this, '_appendFootnotes_callback'), $footnote);
+					$this->_appendFootnotes_callback(...), $footnote);
 				
 				$attr = str_replace("%%", ++$num, $attr);
 				$note_id = $this->encodeAttribute($note_id);
@@ -1577,8 +1577,8 @@ class MarkdownExtra extends \Michelf\Markdown {
 			^[ ]{0,'.$less_than_tab.'}\*\[(.+?)\][ ]?:	# abbr_id = $1
 			(.*)					# text = $2 (no blank lines allowed)	
 			}xm',
-			array($this, '_stripAbbreviations_callback'),
-			$text);
+			$this->_stripAbbreviations_callback(...),
+			(string) $text);
 		return $text;
 	}
 	protected function _stripAbbreviations_callback($matches) {
@@ -1586,8 +1586,8 @@ class MarkdownExtra extends \Michelf\Markdown {
 		$abbr_desc = $matches[2];
 		if ($this->abbr_word_re)
 			$this->abbr_word_re .= '|';
-		$this->abbr_word_re .= preg_quote($abbr_word);
-		$this->abbr_desciptions[$abbr_word] = trim($abbr_desc);
+		$this->abbr_word_re .= preg_quote((string) $abbr_word);
+		$this->abbr_desciptions[$abbr_word] = trim((string) $abbr_desc);
 		return ''; # String that will replace the block
 	}
 	
@@ -1604,7 +1604,7 @@ class MarkdownExtra extends \Michelf\Markdown {
 				'(?:'.$this->abbr_word_re.')'.
 				'(?![\w\x1A])'.
 				'}', 
-				array($this, '_doAbbreviations_callback'), $text);
+				$this->_doAbbreviations_callback(...), (string) $text);
 		}
 		return $text;
 	}

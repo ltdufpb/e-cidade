@@ -70,7 +70,7 @@ $iNumRowsArquivo = pg_num_rows($rsQueryArquivo);
            	db_msgbox("usuário:\\n\\n Erro ao reemitir Arquivo PIT");    	
            }else{
              
-             fputs($fp,$oArquivo->e14_corpoarquivo);
+             fputs($fp,(string) $oArquivo->e14_corpoarquivo);
              fclose($fp);
              $lArquivoGerado = true;   	
            }

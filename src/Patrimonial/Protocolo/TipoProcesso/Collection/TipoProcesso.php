@@ -38,7 +38,7 @@ class TipoProcesso
     /**
      * @var TipoProcessoModel[]
      */
-    private $colecao = array();
+    private $colecao = [];
 
     /**
      * @param TipoProcessoModel $tipoProcesso

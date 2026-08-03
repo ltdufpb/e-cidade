@@ -36,7 +36,7 @@ include(modification("classes/db_loteloc_classe.php"));
 include(modification("libs/db_app.utils.php"));
 
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptubase = new cl_iptubase;
 $cliptubase->rotulo->label("j01_matric");
 
@@ -176,13 +176,13 @@ db_input("z01_nome",40,$Iz01_nome,true,'text',4)
 <?php 
 $txt_where="";
 if (isset($chave_j34_setor)&& $chave_j34_setor!=""){
-  $txt_where.="  and lote.j34_setor='" . str_pad($chave_j34_setor,4,"0",STR_PAD_LEFT) . "'";
+  $txt_where.="  and lote.j34_setor='" . str_pad((string) $chave_j34_setor,4,"0",STR_PAD_LEFT) . "'";
 }
 if (isset($chave_j34_quadra)&& $chave_j34_quadra!=""){
-  $txt_where.="  and lote.j34_quadra='" . str_pad($chave_j34_quadra,4,"0",STR_PAD_LEFT) . "'";
+  $txt_where.="  and lote.j34_quadra='" . str_pad((string) $chave_j34_quadra,4,"0",STR_PAD_LEFT) . "'";
 }
 if (isset($chave_j34_lote)&& $chave_j34_lote!=""){
-  $txt_where.="  and lote.j34_lote='" . str_pad($chave_j34_lote,4,"0",STR_PAD_LEFT) . "'";
+  $txt_where.="  and lote.j34_lote='" . str_pad((string) $chave_j34_lote,4,"0",STR_PAD_LEFT) . "'";
 }
 
 if(!isset($pesquisa_chave)){
@@ -232,7 +232,7 @@ if(!isset($pesquisa_chave)){
     $sql2 = "";
   }
   if($sql2!="" || isset($dblov)){
-    $repassa = array('dblov'=>'0');
+    $repassa = ['dblov'=>'0'];
     db_lovrot(@$sql.@$sql2,15,"()","",$funcao_js,"","NoMe",$repassa);
   }
 }else{

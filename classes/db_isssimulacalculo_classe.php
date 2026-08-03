@@ -29,43 +29,43 @@
 //CLASSE DA ENTIDADE isssimulacalculo
 class cl_isssimulacalculo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q130_sequencial = 0; 
-   var $q130_cnpjcpf = null; 
-   var $q130_razaosocial = null; 
-   var $q130_email = null; 
-   var $q130_logradouro = 0; 
-   var $q130_bairro = 0; 
-   var $q130_numero = 0; 
-   var $q130_complemento = null; 
-   var $q130_zona = 0; 
-   var $q130_empregados = 0; 
-   var $q130_area = 0; 
-   var $q130_datainicio_dia = null; 
-   var $q130_datainicio_mes = null; 
-   var $q130_datainicio_ano = null; 
-   var $q130_datainicio = null; 
-   var $q130_telefone = null; 
-   var $q130_cadescrito = 0; 
-   var $q130_multiplicador = 0; 
-   var $q130_datacalculo_dia = null; 
-   var $q130_datacalculo_mes = null; 
-   var $q130_datacalculo_ano = null; 
-   var $q130_datacalculo = null; 
+   public $q130_sequencial = 0; 
+   public $q130_cnpjcpf = null; 
+   public $q130_razaosocial = null; 
+   public $q130_email = null; 
+   public $q130_logradouro = 0; 
+   public $q130_bairro = 0; 
+   public $q130_numero = 0; 
+   public $q130_complemento = null; 
+   public $q130_zona = 0; 
+   public $q130_empregados = 0; 
+   public $q130_area = 0; 
+   public $q130_datainicio_dia = null; 
+   public $q130_datainicio_mes = null; 
+   public $q130_datainicio_ano = null; 
+   public $q130_datainicio = null; 
+   public $q130_telefone = null; 
+   public $q130_cadescrito = 0; 
+   public $q130_multiplicador = 0; 
+   public $q130_datacalculo_dia = null; 
+   public $q130_datacalculo_mes = null; 
+   public $q130_datacalculo_ano = null; 
+   public $q130_datacalculo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q130_sequencial = int4 = Sequencial 
                  q130_cnpjcpf = varchar(14) = CNPJ/CPF 
                  q130_razaosocial = varchar(150) = Razão social 
@@ -84,10 +84,10 @@ class cl_isssimulacalculo {
                  q130_datacalculo = date = Data Calculo 
                  ";
    //funcao construtor da classe 
-   function cl_isssimulacalculo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("isssimulacalculo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -238,10 +238,10 @@ class cl_isssimulacalculo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q130_sequencial = pg_result($result,0,0); 
+       $this->q130_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from isssimulacalculo_q130_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q130_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q130_sequencial)){
          $this->erro_sql = " Campo q130_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -299,7 +299,7 @@ class cl_isssimulacalculo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Simulação calculo ISSQN ($this->q130_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Simulação calculo ISSQN já Cadastrado";
@@ -327,10 +327,10 @@ class cl_isssimulacalculo {
       $this->atualizacampos();
      $sql = " update isssimulacalculo set ";
      $virgula = "";
-     if(trim($this->q130_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_sequencial"])){ 
+     if(trim((string) $this->q130_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_sequencial"])){ 
        $sql  .= $virgula." q130_sequencial = $this->q130_sequencial ";
        $virgula = ",";
-       if(trim($this->q130_sequencial) == null ){ 
+       if(trim((string) $this->q130_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "q130_sequencial";
          $this->erro_banco = "";
@@ -340,10 +340,10 @@ class cl_isssimulacalculo {
          return false;
        }
      }
-     if(trim($this->q130_cnpjcpf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_cnpjcpf"])){ 
+     if(trim((string) $this->q130_cnpjcpf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_cnpjcpf"])){ 
        $sql  .= $virgula." q130_cnpjcpf = '$this->q130_cnpjcpf' ";
        $virgula = ",";
-       if(trim($this->q130_cnpjcpf) == null ){ 
+       if(trim((string) $this->q130_cnpjcpf) == null ){ 
          $this->erro_sql = " Campo CNPJ/CPF nao Informado.";
          $this->erro_campo = "q130_cnpjcpf";
          $this->erro_banco = "";
@@ -353,10 +353,10 @@ class cl_isssimulacalculo {
          return false;
        }
      }
-     if(trim($this->q130_razaosocial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_razaosocial"])){ 
+     if(trim((string) $this->q130_razaosocial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_razaosocial"])){ 
        $sql  .= $virgula." q130_razaosocial = '$this->q130_razaosocial' ";
        $virgula = ",";
-       if(trim($this->q130_razaosocial) == null ){ 
+       if(trim((string) $this->q130_razaosocial) == null ){ 
          $this->erro_sql = " Campo Razão social nao Informado.";
          $this->erro_campo = "q130_razaosocial";
          $this->erro_banco = "";
@@ -366,14 +366,14 @@ class cl_isssimulacalculo {
          return false;
        }
      }
-     if(trim($this->q130_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_email"])){ 
+     if(trim((string) $this->q130_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_email"])){ 
        $sql  .= $virgula." q130_email = '$this->q130_email' ";
        $virgula = ",";
      }
-     if(trim($this->q130_logradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_logradouro"])){ 
+     if(trim((string) $this->q130_logradouro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_logradouro"])){ 
        $sql  .= $virgula." q130_logradouro = $this->q130_logradouro ";
        $virgula = ",";
-       if(trim($this->q130_logradouro) == null ){ 
+       if(trim((string) $this->q130_logradouro) == null ){ 
          $this->erro_sql = " Campo Logradouro nao Informado.";
          $this->erro_campo = "q130_logradouro";
          $this->erro_banco = "";
@@ -383,10 +383,10 @@ class cl_isssimulacalculo {
          return false;
        }
      }
-     if(trim($this->q130_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_bairro"])){ 
+     if(trim((string) $this->q130_bairro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_bairro"])){ 
        $sql  .= $virgula." q130_bairro = $this->q130_bairro ";
        $virgula = ",";
-       if(trim($this->q130_bairro) == null ){ 
+       if(trim((string) $this->q130_bairro) == null ){ 
          $this->erro_sql = " Campo Bairro nao Informado.";
          $this->erro_campo = "q130_bairro";
          $this->erro_banco = "";
@@ -396,21 +396,21 @@ class cl_isssimulacalculo {
          return false;
        }
      }
-     if(trim($this->q130_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_numero"])){ 
-        if(trim($this->q130_numero)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q130_numero"])){ 
+     if(trim((string) $this->q130_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_numero"])){ 
+        if(trim((string) $this->q130_numero)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q130_numero"])){ 
            $this->q130_numero = "0" ; 
         } 
        $sql  .= $virgula." q130_numero = $this->q130_numero ";
        $virgula = ",";
      }
-     if(trim($this->q130_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_complemento"])){ 
+     if(trim((string) $this->q130_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_complemento"])){ 
        $sql  .= $virgula." q130_complemento = '$this->q130_complemento' ";
        $virgula = ",";
      }
-     if(trim($this->q130_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_zona"])){ 
+     if(trim((string) $this->q130_zona)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_zona"])){ 
        $sql  .= $virgula." q130_zona = $this->q130_zona ";
        $virgula = ",";
-       if(trim($this->q130_zona) == null ){ 
+       if(trim((string) $this->q130_zona) == null ){ 
          $this->erro_sql = " Campo Zona nao Informado.";
          $this->erro_campo = "q130_zona";
          $this->erro_banco = "";
@@ -420,10 +420,10 @@ class cl_isssimulacalculo {
          return false;
        }
      }
-     if(trim($this->q130_empregados)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_empregados"])){ 
+     if(trim((string) $this->q130_empregados)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_empregados"])){ 
        $sql  .= $virgula." q130_empregados = $this->q130_empregados ";
        $virgula = ",";
-       if(trim($this->q130_empregados) == null ){ 
+       if(trim((string) $this->q130_empregados) == null ){ 
          $this->erro_sql = " Campo Empregados nao Informado.";
          $this->erro_campo = "q130_empregados";
          $this->erro_banco = "";
@@ -433,10 +433,10 @@ class cl_isssimulacalculo {
          return false;
        }
      }
-     if(trim($this->q130_area)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_area"])){ 
+     if(trim((string) $this->q130_area)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_area"])){ 
        $sql  .= $virgula." q130_area = $this->q130_area ";
        $virgula = ",";
-       if(trim($this->q130_area) == null ){ 
+       if(trim((string) $this->q130_area) == null ){ 
          $this->erro_sql = " Campo Área nao Informado.";
          $this->erro_campo = "q130_area";
          $this->erro_banco = "";
@@ -446,10 +446,10 @@ class cl_isssimulacalculo {
          return false;
        }
      }
-     if(trim($this->q130_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q130_datainicio_dia"] !="") ){ 
+     if(trim((string) $this->q130_datainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_datainicio_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q130_datainicio_dia"] !="") ){ 
        $sql  .= $virgula." q130_datainicio = '$this->q130_datainicio' ";
        $virgula = ",";
-       if(trim($this->q130_datainicio) == null ){ 
+       if(trim((string) $this->q130_datainicio) == null ){ 
          $this->erro_sql = " Campo Data de inicio nao Informado.";
          $this->erro_campo = "q130_datainicio_dia";
          $this->erro_banco = "";
@@ -462,7 +462,7 @@ class cl_isssimulacalculo {
        if(isset($GLOBALS["HTTP_POST_VARS"]["q130_datainicio_dia"])){ 
          $sql  .= $virgula." q130_datainicio = null ";
          $virgula = ",";
-         if(trim($this->q130_datainicio) == null ){ 
+         if(trim((string) $this->q130_datainicio) == null ){ 
            $this->erro_sql = " Campo Data de inicio nao Informado.";
            $this->erro_campo = "q130_datainicio_dia";
            $this->erro_banco = "";
@@ -473,21 +473,21 @@ class cl_isssimulacalculo {
          }
        }
      }
-     if(trim($this->q130_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_telefone"])){ 
+     if(trim((string) $this->q130_telefone)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_telefone"])){ 
        $sql  .= $virgula." q130_telefone = '$this->q130_telefone' ";
        $virgula = ",";
      }
-     if(trim($this->q130_cadescrito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_cadescrito"])){ 
-        if(trim($this->q130_cadescrito)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q130_cadescrito"])){ 
+     if(trim((string) $this->q130_cadescrito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_cadescrito"])){ 
+        if(trim((string) $this->q130_cadescrito)=="" && isset($GLOBALS["HTTP_POST_VARS"]["q130_cadescrito"])){ 
            $this->q130_cadescrito = "0" ; 
         } 
        $sql  .= $virgula." q130_cadescrito = $this->q130_cadescrito ";
        $virgula = ",";
      }
-     if(trim($this->q130_multiplicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_multiplicador"])){ 
+     if(trim((string) $this->q130_multiplicador)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_multiplicador"])){ 
        $sql  .= $virgula." q130_multiplicador = $this->q130_multiplicador ";
        $virgula = ",";
-       if(trim($this->q130_multiplicador) == null ){ 
+       if(trim((string) $this->q130_multiplicador) == null ){ 
          $this->erro_sql = " Campo Multiplicador nao Informado.";
          $this->erro_campo = "q130_multiplicador";
          $this->erro_banco = "";
@@ -497,7 +497,7 @@ class cl_isssimulacalculo {
          return false;
        }
      }
-     if(trim($this->q130_datacalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_datacalculo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q130_datacalculo_dia"] !="") ){ 
+     if(trim((string) $this->q130_datacalculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q130_datacalculo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q130_datacalculo_dia"] !="") ){ 
        $sql  .= $virgula." q130_datacalculo = '$this->q130_datacalculo' ";
        $virgula = ",";
      }     else{ 
@@ -601,7 +601,7 @@ class cl_isssimulacalculo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:isssimulacalculo";
@@ -616,7 +616,7 @@ class cl_isssimulacalculo {
    function sql_query ( $q130_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -643,7 +643,7 @@ class cl_isssimulacalculo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -656,7 +656,7 @@ class cl_isssimulacalculo {
    function sql_query_file ( $q130_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -677,7 +677,7 @@ class cl_isssimulacalculo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

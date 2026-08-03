@@ -38,7 +38,7 @@ $cldb_sysfuncoescliente = new cl_db_sysfuncoescliente;
   /*
 $cldb_sysfuncoesparam = new cl_db_sysfuncoesparam;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){

@@ -116,7 +116,7 @@ if ( $oDaoAbatimentoRegraCompensacao->numrows > 0 ) {
 
 if ($iDiasTempoValidade > 0) {
   
-  $aDataLancamento = explode("-", $oCredito->k125_datalanc);
+  $aDataLancamento = explode("-", (string) $oCredito->k125_datalanc);
   $dDataVencimento = date("d/m/Y", strtotime("+{$iDiasTempoValidade} days", mktime(0, 0, 0, $aDataLancamento[1], $aDataLancamento[2], $aDataLancamento[0]))); 
 }
 

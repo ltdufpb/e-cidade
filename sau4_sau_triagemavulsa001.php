@@ -35,7 +35,7 @@ require_once(modification("classes/db_sau_triagemavulsa_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oIframeAE                      = new cl_iframe_alterar_excluir();
 $oSauConfig                     = loadConfig('sau_config');
@@ -269,7 +269,7 @@ if (isset($incluir) || isset($alterar)) {
          * Buscamos todos os procedimentos de triagem configurados, para incluir um novo registro para cada na tabela
          * prontproced, e armazenamos em um array com os codigos
          */
-        $aProcedimentosTriagem     = array();
+        $aProcedimentosTriagem     = [];
         $oDaoProcedimentoTriagem   = db_utils::getDao("parametroprocedimentotriagem");
         $sSqlProcedimentoTriagem   = $oDaoProcedimentoTriagem->sql_query(null, "s166_sau_procedimento");
         $rsProcedimentoTriagem     = $oDaoProcedimentoTriagem->sql_record($sSqlProcedimentoTriagem);
@@ -325,7 +325,7 @@ if (isset($incluir) || isset($alterar)) {
     } else {
 
       if ($s152_i_login      == DB_getsession("DB_id_usuario") &&
-          s152_d_datasistema == date("Y-m-d",db_getsession("DB_datausu"))
+          \S152_D_DATASISTEMA == date("Y-m-d",db_getsession("DB_datausu"))
          ) {
 
         $oDaoSauTriagemAvulsa->s152_i_codigo = $s152_i_codigo;

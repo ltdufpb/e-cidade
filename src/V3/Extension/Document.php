@@ -9,8 +9,8 @@ class Document {
 	private $title;
   private $base;
   private $charset = 'UTF-8';
-	private $links = array();
-	private $scripts = array();
+	private $links = [];
+	private $scripts = [];
 
 	public function setTitle($title) {
 		$this->title = $title;
@@ -29,14 +29,14 @@ class Document {
   }
 
   public function setBase($path) {
-    $this->base = rtrim($path, DS) . DS;
+    $this->base = rtrim((string) $path, DS) . DS;
   }
 
   public function getBase() {
     return $this->base;
   }
 
-  public function addLink($href, array $data = array()) {
+  public function addLink($href, array $data = []) {
     $data['href'] = $href;
     $this->links[$href] = $data;
   }
@@ -45,7 +45,7 @@ class Document {
 		return $this->links;
 	}
 
-  public function addScript($src, array $data = array()) {
+  public function addScript($src, array $data = []) {
     $data['src'] = $src;
     $this->scripts[$src] = $data;
   }

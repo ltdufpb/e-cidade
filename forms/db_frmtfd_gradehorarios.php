@@ -107,7 +107,7 @@ $clrotulo->label("tf03_c_descr");
                       <?php 
                       if(isset($tf02_d_validadeini) && !empty($tf02_d_validadeini)) {
 
-                        $dTmp = explode('/', $tf02_d_validadeini);
+                        $dTmp = explode('/', (string) $tf02_d_validadeini);
                         if(count($dTmp) == 3) {
                    
                           $tf02_d_validadeini_dia = $dTmp[0];
@@ -127,7 +127,7 @@ $clrotulo->label("tf03_c_descr");
                       <?php 
                       if(isset($tf02_d_validadefim) && !empty($tf02_d_validadefim)) {
 
-                        $dTmp = explode('/', $tf02_d_validadefim);
+                        $dTmp = explode('/', (string) $tf02_d_validadefim);
                         if(count($dTmp) == 3) {
                    
                           $tf02_d_validadefim_dia = $dTmp[0];
@@ -169,7 +169,7 @@ $clrotulo->label("tf03_c_descr");
        	  <tr>
 		        <td valign="top"><br>
               <?php 
-			       	$aChavepri = array ('tf02_i_codigo' => @$tf02_i_codigo,
+			       	$aChavepri =  ['tf02_i_codigo' => @$tf02_i_codigo,
                                   'tf02_i_diasemana' => @$tf02_i_diasemana, 
                                   'tf02_i_destino' => @$tf02_i_destino, 
                                   'tf02_i_lotacao' => @$tf02_i_lotacao, 
@@ -177,7 +177,7 @@ $clrotulo->label("tf03_c_descr");
                                   'tf02_d_validadeini' => @$tf02_d_validadeini, 
                                   'tf02_d_validadefim' => @$tf02_d_validadefim,
                                   'tf02_c_localsaida' => @$tf02_c_localsaida,
-                                  'tf03_c_descr' => @$tf03_c_descr);
+                                  'tf03_c_descr' => @$tf03_c_descr];
        			  $oIframeAE->chavepri = $aChavepri;
 
               $sCampos = 
@@ -224,7 +224,7 @@ $clrotulo->label("tf03_c_descr");
 function js_cancelar() {
 
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
   ?>
 
 }
@@ -374,7 +374,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tfd_gradehorarios.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -44,7 +44,7 @@ $db_opcao = 22;
 $db_botao = false;
 $sqlerro  = false;
 
-$aExtensoesBloqueadas = array('exe', 'com', 'bat', 'sh','php');
+$aExtensoesBloqueadas = ['exe', 'com', 'bat', 'sh','php'];
 
 if (isset($oPost->incluir)) {
 
@@ -52,7 +52,7 @@ if (isset($oPost->incluir)) {
 
   if ( isset($_FILES['l43_arquivo']['name']) && $_FILES['l43_arquivo']['name'] != "" ) {
 
-    $ext = array_reverse( explode('.',$_FILES['l43_arquivo']['name']));
+    $ext = array_reverse( explode('.',(string) $_FILES['l43_arquivo']['name']));
     $ext = strtolower(trim($ext[0]));
 
     if(in_array($ext, $aExtensoesBloqueadas)) {
@@ -64,7 +64,7 @@ if (isset($oPost->incluir)) {
     $oidgrava     = db_geraArquivoOid("l43_arquivo", "", 1, $conn);
     try {
       $sNomeArquivo = File::cutName($_FILES['l43_arquivo']['name'], 50);
-    } catch (Exception $oErro) {
+    } catch (Exception) {
 
       $sqlerro = true;
       $erro_msg = 'O arquivo selecionado tem uma extensão inválida.';
@@ -101,7 +101,7 @@ if (isset($oPost->incluir)) {
 
     if ( isset($_FILES['l43_arquivo']['name']) && $_FILES['l43_arquivo']['name'] != "" ) {
 
-      $ext = array_reverse( explode('.',$_FILES['l43_arquivo']['name']));
+      $ext = array_reverse( explode('.',(string) $_FILES['l43_arquivo']['name']));
       $ext = strtolower(trim($ext[0]));
 
       if(in_array($ext, $aExtensoesBloqueadas)) {
@@ -113,7 +113,7 @@ if (isset($oPost->incluir)) {
       $oidgrava     = db_geraArquivoOid("l43_arquivo", "", 1, $conn);
       try {
         $sNomeArquivo = File::cutName($_FILES['l43_arquivo']['name'], 50);
-      } catch (Exception $oErro) {
+      } catch (Exception) {
 
         $sqlerro = true;
         $erro_msg = 'O arquivo selecionado tem uma extensão inválida.';

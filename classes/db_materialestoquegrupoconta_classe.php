@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE materialestoquegrupoconta
 class cl_materialestoquegrupoconta {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $m66_sequencial = 0;
-   var $m66_materialestoquegrupo = 0;
-   var $m66_codcon = 0;
-   var $m66_anousu = 0;
-   var $m66_codconvpd = 0;
+   public $m66_sequencial = 0;
+   public $m66_materialestoquegrupo = 0;
+   public $m66_codcon = 0;
+   public $m66_anousu = 0;
+   public $m66_codconvpd = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  m66_sequencial = int4 = Código Sequencial
                  m66_materialestoquegrupo = int4 = Código do Grupo
                  m66_codcon = int4 = Código da conta do plano de contas
@@ -56,10 +56,10 @@ class cl_materialestoquegrupoconta {
                  m66_codconvpd = int4 = Conta VPD
                  ";
    //funcao construtor da classe
-   function cl_materialestoquegrupoconta() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("materialestoquegrupoconta");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -131,10 +131,10 @@ class cl_materialestoquegrupoconta {
          $this->erro_status = "0";
          return false;
        }
-       $this->m66_sequencial = pg_result($result,0,0);
+       $this->m66_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from materialestoquegrupoconta_m66_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m66_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m66_sequencial)){
          $this->erro_sql = " Campo m66_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_materialestoquegrupoconta {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Conta Contabil do Grupo do material ($this->m66_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Conta Contabil do Grupo do material já Cadastrado";
@@ -199,10 +199,10 @@ class cl_materialestoquegrupoconta {
       $this->atualizacampos();
      $sql = " update materialestoquegrupoconta set ";
      $virgula = "";
-     if(trim($this->m66_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m66_sequencial"])){
+     if(trim((string) $this->m66_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m66_sequencial"])){
        $sql  .= $virgula." m66_sequencial = $this->m66_sequencial ";
        $virgula = ",";
-       if(trim($this->m66_sequencial) == null ){
+       if(trim((string) $this->m66_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "m66_sequencial";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_materialestoquegrupoconta {
          return false;
        }
      }
-     if(trim($this->m66_materialestoquegrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m66_materialestoquegrupo"])){
+     if(trim((string) $this->m66_materialestoquegrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m66_materialestoquegrupo"])){
        $sql  .= $virgula." m66_materialestoquegrupo = $this->m66_materialestoquegrupo ";
        $virgula = ",";
-       if(trim($this->m66_materialestoquegrupo) == null ){
+       if(trim((string) $this->m66_materialestoquegrupo) == null ){
          $this->erro_sql = " Campo Código do Grupo nao Informado.";
          $this->erro_campo = "m66_materialestoquegrupo";
          $this->erro_banco = "";
@@ -225,10 +225,10 @@ class cl_materialestoquegrupoconta {
          return false;
        }
      }
-     if(trim($this->m66_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m66_codcon"])){
+     if(trim((string) $this->m66_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m66_codcon"])){
        $sql  .= $virgula." m66_codcon = $this->m66_codcon ";
        $virgula = ",";
-       if(trim($this->m66_codcon) == null ){
+       if(trim((string) $this->m66_codcon) == null ){
          $this->erro_sql = " Campo Código da conta do plano de contas nao Informado.";
          $this->erro_campo = "m66_codcon";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_materialestoquegrupoconta {
          return false;
        }
      }
-     if(trim($this->m66_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m66_anousu"])){
+     if(trim((string) $this->m66_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m66_anousu"])){
        $sql  .= $virgula." m66_anousu = $this->m66_anousu ";
        $virgula = ",";
-       if(trim($this->m66_anousu) == null ){
+       if(trim((string) $this->m66_anousu) == null ){
          $this->erro_sql = " Campo Ano da Conta nao Informado.";
          $this->erro_campo = "m66_anousu";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_materialestoquegrupoconta {
          return false;
        }
      }
-     if(trim($this->m66_codconvpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m66_codconvpd"])){
+     if(trim((string) $this->m66_codconvpd)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m66_codconvpd"])){
        $sql  .= $virgula." m66_codconvpd = $this->m66_codconvpd ";
        $virgula = ",";
-       if(trim($this->m66_codconvpd) == null ){
+       if(trim((string) $this->m66_codconvpd) == null ){
          $this->erro_sql = " Campo Conta VPD nao Informado.";
          $this->erro_campo = "m66_codconvpd";
          $this->erro_banco = "";
@@ -361,7 +361,7 @@ class cl_materialestoquegrupoconta {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:materialestoquegrupoconta";
@@ -376,7 +376,7 @@ class cl_materialestoquegrupoconta {
    function sql_query ( $m66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -403,7 +403,7 @@ class cl_materialestoquegrupoconta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_materialestoquegrupoconta {
    function sql_query_file ( $m66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -437,7 +437,7 @@ class cl_materialestoquegrupoconta {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

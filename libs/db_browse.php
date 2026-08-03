@@ -43,7 +43,7 @@ include(modification("libs/db_usuariosonline.php"));
   <tr> 
     <td align="left" valign="top" bgcolor="#CCCCCC"> 
       <?php 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //$query ,$numlinhas,$arquivo="",$filtro="%",$aonde="_self",$mensagem="Clique Aqui",$NomeForm="NoMe" 
 
 echo $query;
@@ -57,46 +57,46 @@ echo $query;
   global $cor2;
   $cor1 = $cor1==""?"#97B5E6":$cor1;
   $cor2 = $cor2==""?"#E796A4":$cor2;
-  global $HTTP_POST_VARS;
+  global $_POST;
   $tot_registros = "tot_registros".$NomeForm;
   $offset = "offset".$NomeForm;
   //recebe os valores do campo hidden
-  $$tot_registros = $HTTP_POST_VARS["totreg".$NomeForm];
-  $$offset = $HTTP_POST_VARS["offset".$NomeForm];  
+  ${$tot_registros} = $_POST["totreg".$NomeForm];
+  ${$offset} = $_POST["offset".$NomeForm];  
   // se for a primeira vez que é rodado, pega o total de registros e guarda no campo hidden
-  if(empty($$tot_registros)) {
+  if(empty(${$tot_registros})) {
     $Dd1 = "disabled";
     //$tot = db_query("select count(*) from ($query) as temp");  
-	$$tot_registros = 100;
+	${$tot_registros} = 100;
 	//pg_result($tot,0,0);
   }
   // testa qual botao foi pressionado
-  if(isset($HTTP_POST_VARS["pri".$NomeForm])) {
-    $$offset = 0;
+  if(isset($_POST["pri".$NomeForm])) {
+    ${$offset} = 0;
 	$Dd1 = "disabled";
-  } else if(isset($HTTP_POST_VARS["ant".$NomeForm])) {
-    if($$offset <= $numlinhas) {
-	  $$offset = 0;
+  } else if(isset($_POST["ant".$NomeForm])) {
+    if(${$offset} <= $numlinhas) {
+	  ${$offset} = 0;
 	  $Dd1 = "disabled";
 	} else
-      $$offset = $$offset - $numlinhas;
-  } else if(isset($HTTP_POST_VARS["prox".$NomeForm])) {
-    if($numlinhas >= ($$tot_registros - $$offset - $numlinhas)) {
-	  $$offset = $$tot_registros - $numlinhas;
+      ${$offset} = ${$offset} - $numlinhas;
+  } else if(isset($_POST["prox".$NomeForm])) {
+    if($numlinhas >= (${$tot_registros} - ${$offset} - $numlinhas)) {
+	  ${$offset} = ${$tot_registros} - $numlinhas;
 	  $Dd2 = "disabled";
 	} else 
-      $$offset = $$offset + $numlinhas;
-  } else if(isset($HTTP_POST_VARS["ult".$NomeForm])) {
-    $$offset = $$tot_registros - $numlinhas;  
+      ${$offset} = ${$offset} + $numlinhas;
+  } else if(isset($_POST["ult".$NomeForm])) {
+    ${$offset} = ${$tot_registros} - $numlinhas;  
 	$Dd2 = "disabled";
   } else {
-    $$offset = $HTTP_POST_VARS["offset".$NomeForm]==""?0:$HTTP_POST_VARS["offset".$NomeForm];
+    ${$offset} = $_POST["offset".$NomeForm]==""?0:$_POST["offset".$NomeForm];
   }
   // executa a query e cria a tabela
-  $query .= " limit $numlinhas offset ".$$offset;
+  $query .= " limit $numlinhas offset ".${$offset};
   $result = db_query($query);  
-  $NumRows = pg_numrows($result);
-  $NumFields = pg_numfields($result);
+  $NumRows = pg_num_rows($result);
+  $NumFields = pg_num_fields($result);
   if($NumRows < $numlinhas)
     $Dd1 = $Dd2 = "disabled";
   echo "<table id=\"TabDbLov\" border=\"1\" cellspacing=\"1\" cellpadding=\"0\">\n";
@@ -108,8 +108,8 @@ echo $query;
     <input type=\"submit\" name=\"prox".$NomeForm."\" value=\">\" $Dd2>
     <input type=\"submit\" name=\"ult".$NomeForm."\" value=\">>\" $Dd2>
 	<input type=\"button\" name=\"fecha\" value=\"Fecha\" onclick=\"MM_showHideLayersValor('Lista<?=$chave1.$chave2?>','','hide')\" >
-	<input type=\"hidden\" name=\"offset".$NomeForm."\" value=\"".$$offset."\">
-	<input type=\"hidden\" name=\"totreg".$NomeForm."\" value=\"".$$tot_registros."\">
+	<input type=\"hidden\" name=\"offset".$NomeForm."\" value=\"".${$offset}."\">
+	<input type=\"hidden\" name=\"totreg".$NomeForm."\" value=\"".${$tot_registros}."\">
 	<input type=\"hidden\" name=\"filtro\" value=\"$filtro\">
   </form>
   </td></tr>";
@@ -118,8 +118,8 @@ echo $query;
   if($NumRows > 0) {
     echo "<tr>\n";
     for($i = 0;$i < $NumFields;$i++) {
-      if(strlen(strstr(pg_fieldname($result,$i),"db")) == 0)
-        echo "<td nowrap bgcolor=\"$db_corcabec\"  style=\"font-size:13px\" align=\"center\"><b><u>".ucfirst(pg_fieldname($result,$i))."</u></b></td>\n";
+      if(strlen(strstr(pg_field_name($result,$i),"db")) == 0)
+        echo "<td nowrap bgcolor=\"$db_corcabec\"  style=\"font-size:13px\" align=\"center\"><b><u>".ucfirst(pg_field_name($result,$i))."</u></b></td>\n";
     }
     echo "</tr>\n";
   }
@@ -129,10 +129,10 @@ echo $query;
   	echo "<tr>\n";
     $cor = $cor==$cor1?$cor2:$cor1;
     for($j = 0;$j < $NumFields;$j++) {
-	  if(strlen(strstr(pg_fieldname($result,$j),"db")) == 0)
+	  if(strlen(strstr(pg_field_name($result,$j),"db")) == 0)
         echo "<td id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;font-size:13px\" bgcolor=\"$cor\" nowrap>
-	       ".($arquivo!=""?"<a title=\"$mensagem\" style=\"text-decoration:none;color:#000000;font-size:13px\" href=\"\" ".($arquivo=="()"?"OnClick=\"js_retornaValor('I".$i.$j."');return false\">":"onclick=\"JanBrowse = window.open('".$arquivo."?".base64_encode("retorno=".($BrowSe==1?$i:trim(pg_result($result,$i,0))))."','$aonde','width=800,height=600');return false\">")
-		   .(trim(pg_result($result,$i,$j))==""?"&nbsp;":trim(pg_result($result,$i,$j)))."</a>":(trim(pg_result($result,$i,$j))==""?"&nbsp;":trim(pg_result($result,$i,$j))))."</td>\n";  
+	       ".($arquivo!=""?"<a title=\"$mensagem\" style=\"text-decoration:none;color:#000000;font-size:13px\" href=\"\" ".($arquivo=="()"?"OnClick=\"js_retornaValor('I".$i.$j."');return false\">":"onclick=\"JanBrowse = window.open('".$arquivo."?".base64_encode("retorno=".($BrowSe==1?$i:trim(pg_fetch_result($result,$i,0))))."','$aonde','width=800,height=600');return false\">")
+		   .(trim(pg_fetch_result($result,$i,$j))==""?"&nbsp;":trim(pg_fetch_result($result,$i,$j)))."</a>":(trim(pg_fetch_result($result,$i,$j))==""?"&nbsp;":trim(pg_fetch_result($result,$i,$j))))."</td>\n";  
     }
 	echo "</tr>\n";
   }

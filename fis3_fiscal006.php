@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -34,7 +34,7 @@ include(modification("classes/db_fiscal_classe.php"));
 include(modification("classes/db_fiscalocal_classe.php"));
 include(modification("classes/db_fiscexec_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clfiscal     = new cl_fiscal;
 $clfiscalocal  = new cl_fiscalocal;
 $clfiscexec = new cl_fiscexec;

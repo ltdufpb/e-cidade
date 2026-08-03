@@ -57,7 +57,7 @@ class Prontuario {
    * Administrações realizados dentro da FAA
    * @var AdministracaoMedicamento[]
    */
-  private $aAdministracoes = array();
+  private $aAdministracoes = [];
 
   /**
    * Data em que o paciente foi atendimento na recepção
@@ -167,7 +167,7 @@ class Prontuario {
       return;
     }
 
-    $aTriagens                   = array();
+    $aTriagens                   = [];
     $oDaoTriagemAvulsaProntuario = new cl_sau_triagemavulsaprontuario();
     $sCamposTriagem              = "s155_i_triagemavulsa";
     $sOrderBy                    = "1 desc";

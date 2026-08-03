@@ -459,7 +459,7 @@ if($db_opcao==1){
   	if (isset($z01_numcgm)&&$z01_numcgm!=""){
   		$sql_cgm = "select z01_munic from cgm where z01_numcgm = $z01_numcgm";
   		$result_cgm = db_query($sql_cgm);
-  		if (pg_numrows($result_cgm)>0){
+  		if (pg_num_rows($result_cgm)>0){
 				db_fieldsmemory($result_cgm,0);
 				$sql_munic = "select munic from db_config";
 				$result_munic = db_query($sql_munic);

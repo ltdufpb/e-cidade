@@ -101,8 +101,8 @@ $oRotuloCampos->label("e42_dtpagamento");
                   <td><strong>Filtro de Listagem:</strong></td>
                   <td>
                       <?php
-                           $opcoes = array("1" => "Todos...",
-                                           "2" => "Pendentes de Pagamento");
+                           $opcoes = ["1" => "Todos...",
+                                           "2" => "Pendentes de Pagamento"];
                            db_select("filtroListagem", $opcoes, true,1)
                       ?>
                   </td>

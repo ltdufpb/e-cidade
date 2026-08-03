@@ -32,8 +32,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpessoal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhpessoal = new cl_rhpessoal;
 $clrotulo = new rotulocampo;
 $clrhpessoal->rotulo->label("rh01_regist");
@@ -135,7 +135,7 @@ if(netscape)
                                            and rh30_instit  = rh02_instit
            ";
     if(isset($chave_rh01_regist)){
-     $repassa = array("chave_rh01_regist"=>$chave_rh01_regist,"chave_rh01_numcgm"=>$chave_rh01_numcgm,"chave_z01_nome"=>$chave_z01_nome);
+     $repassa = ["chave_rh01_regist"=>$chave_rh01_regist,"chave_rh01_numcgm"=>$chave_rh01_numcgm,"chave_z01_nome"=>$chave_z01_nome];
     }
     if(isset($chave_rh01_regist) && (trim($chave_rh01_regist)!="") ){
       $sql .= " $where AND rh01_regist = $chave_rh01_regist ORDER BY z01_nome";

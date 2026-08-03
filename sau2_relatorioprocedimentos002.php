@@ -113,19 +113,19 @@ function formataData($dData, $iTipo = 1) {
 
   if ($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
-  $dData = explode('-',$dData);
+  $dData = explode('-',(string) $dData);
   $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
   return $dData;
 
 }
 
 $aDatas   = explode(',', $sDatas);
-$aDatas2  = array(formataData($aDatas[0]), formataData($aDatas[1]));
+$aDatas2  = [formataData($aDatas[0]), formataData($aDatas[1])];
 
 $sOrderBy = $iAgrupar == 1 ? ' coddepto ' : ' z01_nome ';
 if ($iOrdem == 1) {
@@ -160,7 +160,7 @@ $sSql     = 'declare pCursor cursor for '.$sSql;
 db_query('begin');
 db_query($sSql);
 $rs      = db_query('fetch forward 1000 from pCursor;');
-$iLinhas = pg_numrows($rs);
+$iLinhas = pg_num_rows($rs);
 if ($iLinhas == 0) {
   
   ?>
@@ -234,7 +234,7 @@ while($iLinhas > 0) {
           if ($iCont >= $iLinhas) {
   
             $rs      = db_query('fetch forward 1000 from pCursor;');
-            $iLinhas = pg_numrows($rs);
+            $iLinhas = pg_num_rows($rs);
             $iCont   = 0;
             if ($iLinhas == 0) {
 
@@ -302,7 +302,7 @@ while($iLinhas > 0) {
   if ($iLinhas != 0) {
 
     $rs      = db_query('fetch forward 1000 from pCursor;');
-    $iLinhas = pg_numrows($rs);
+    $iLinhas = pg_num_rows($rs);
 
   }
   

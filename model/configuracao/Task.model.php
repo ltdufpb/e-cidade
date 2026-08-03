@@ -81,7 +81,7 @@ abstract class Task {
    * Construtor da Classe
    */
   public function __construct(){
-    register_shutdown_function(array($this, 'shutdown'));
+    register_shutdown_function([$this, 'shutdown']);
   }
 
   /**
@@ -179,7 +179,7 @@ abstract class Task {
         $path = sprintf(
             '%s%s-%s-%s-%s',
             self::CAMINHO_LOG,
-            get_class($this),
+            static::class,
             $this->oTarefa->getNome(),
             $this->iPIDTask,
             date("Ymd_His")

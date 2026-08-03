@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE conplanoexerecurso
 class cl_conplanoexerecurso {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $c89_anousu = 0;
-   var $c89_recurso = 0;
-   var $c89_reduz = 0;
-   var $c89_vlrcre = 0;
-   var $c89_vlrdeb = 0;
+   public $c89_anousu = 0;
+   public $c89_recurso = 0;
+   public $c89_reduz = 0;
+   public $c89_vlrcre = 0;
+   public $c89_vlrdeb = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  c89_anousu = int4 = Exercício
                  c89_recurso = int4 = Codigo do Recurso
                  c89_reduz = int4 = Reduzido
@@ -56,10 +56,10 @@ class cl_conplanoexerecurso {
                  c89_vlrdeb = float8 = Saldo Abertura a Débito
                  ";
    //funcao construtor da classe
-   function cl_conplanoexerecurso() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoexerecurso");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -149,7 +149,7 @@ class cl_conplanoexerecurso {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->c89_anousu."-".$this->c89_recurso."-".$this->c89_reduz) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -179,10 +179,10 @@ class cl_conplanoexerecurso {
       $this->atualizacampos();
      $sql = " update conplanoexerecurso set ";
      $virgula = "";
-     if(trim($this->c89_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c89_anousu"])){
+     if(trim((string) $this->c89_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c89_anousu"])){
        $sql  .= $virgula." c89_anousu = $this->c89_anousu ";
        $virgula = ",";
-       if(trim($this->c89_anousu) == null ){
+       if(trim((string) $this->c89_anousu) == null ){
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "c89_anousu";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_conplanoexerecurso {
          return false;
        }
      }
-     if(trim($this->c89_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c89_recurso"])){
+     if(trim((string) $this->c89_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c89_recurso"])){
        $sql  .= $virgula." c89_recurso = $this->c89_recurso ";
        $virgula = ",";
-       if(trim($this->c89_recurso) == null ){
+       if(trim((string) $this->c89_recurso) == null ){
          $this->erro_sql = " Campo Codigo do Recurso nao Informado.";
          $this->erro_campo = "c89_recurso";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_conplanoexerecurso {
          return false;
        }
      }
-     if(trim($this->c89_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c89_reduz"])){
+     if(trim((string) $this->c89_reduz)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c89_reduz"])){
        $sql  .= $virgula." c89_reduz = $this->c89_reduz ";
        $virgula = ",";
-       if(trim($this->c89_reduz) == null ){
+       if(trim((string) $this->c89_reduz) == null ){
          $this->erro_sql = " Campo Reduzido nao Informado.";
          $this->erro_campo = "c89_reduz";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_conplanoexerecurso {
          return false;
        }
      }
-     if(trim($this->c89_vlrcre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c89_vlrcre"])){
+     if(trim((string) $this->c89_vlrcre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c89_vlrcre"])){
        $sql  .= $virgula." c89_vlrcre = $this->c89_vlrcre ";
        $virgula = ",";
-       if(trim($this->c89_vlrcre) == null ){
+       if(trim((string) $this->c89_vlrcre) == null ){
          $this->erro_sql = " Campo Saldo Abertura a Credito nao Informado.";
          $this->erro_campo = "c89_vlrcre";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_conplanoexerecurso {
          return false;
        }
      }
-     if(trim($this->c89_vlrdeb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c89_vlrdeb"])){
+     if(trim((string) $this->c89_vlrdeb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c89_vlrdeb"])){
        $sql  .= $virgula." c89_vlrdeb = $this->c89_vlrdeb ";
        $virgula = ",";
-       if(trim($this->c89_vlrdeb) == null ){
+       if(trim((string) $this->c89_vlrdeb) == null ){
          $this->erro_sql = " Campo Saldo Abertura a Débito nao Informado.";
          $this->erro_campo = "c89_vlrdeb";
          $this->erro_banco = "";
@@ -364,7 +364,7 @@ class cl_conplanoexerecurso {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conplanoexerecurso";
@@ -378,7 +378,7 @@ class cl_conplanoexerecurso {
    function sql_query ( $c89_anousu=null,$c89_recurso=null,$c89_reduz=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -419,7 +419,7 @@ class cl_conplanoexerecurso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -431,7 +431,7 @@ class cl_conplanoexerecurso {
    function sql_query_file ( $c89_anousu=null,$c89_recurso=null,$c89_reduz=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_conplanoexerecurso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

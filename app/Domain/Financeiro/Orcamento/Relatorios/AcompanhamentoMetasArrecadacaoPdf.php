@@ -11,6 +11,7 @@ class AcompanhamentoMetasArrecadacaoPdf extends MetasArrecadacaoPdf
      */
     protected $exercicio;
 
+    #[\Override]
     public function setDados(array $dados)
     {
         $this->dados = $dados;
@@ -25,6 +26,7 @@ class AcompanhamentoMetasArrecadacaoPdf extends MetasArrecadacaoPdf
         $this->tipoAgrupador = $this->dados['filtros']['agruparPor'];
     }
 
+    #[\Override]
     public function headers($titulo)
     {
         $this->addTitulo($titulo);
@@ -52,6 +54,7 @@ class AcompanhamentoMetasArrecadacaoPdf extends MetasArrecadacaoPdf
         $this->wDescricaoReceita = $this->wReceita - $this->wValor;
     }
 
+    #[\Override]
     public function emitir()
     {
         $this->headers('ACOMPANHAMENTO DAS METAS DE ARRECADAÇÃO DA RECEITA');
@@ -68,6 +71,7 @@ class AcompanhamentoMetasArrecadacaoPdf extends MetasArrecadacaoPdf
         ];
     }
 
+    #[\Override]
     protected function capa($titulo)
     {
         $this->AddPage();

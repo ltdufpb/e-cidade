@@ -44,7 +44,7 @@ $oJson              = new services_json();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
 
 $oRetorno           = new stdClass();
-$oRetorno->message  = array();
+$oRetorno->message  = [];
 $oRetorno->status   = 1;
 
 $iInstituicaoSessao = db_getsession("DB_instit");

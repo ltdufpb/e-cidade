@@ -44,7 +44,7 @@ class PadraoRepository {
    *
    * @var array
    */
-  private $aCollection = array();
+  private $aCollection = [];
 
   /**
    * Evita com que o repositório seja contruido fora dele mesmo(singleton)
@@ -95,7 +95,7 @@ class PadraoRepository {
    * @param DBCompetencia $oCompetencia
    * @param Instituicao $oInstituicao
    */
-  public static function getByChave($sCodigo, Regime $oRegime, DBCompetencia $oCompetencia = null, Instituicao $oInstituicao= null) {
+  public static function getByChave($sCodigo, Regime $oRegime, ?DBCompetencia $oCompetencia = null, ?Instituicao $oInstituicao= null) {
 
     $oRepository = self::getInstance();
 
@@ -150,15 +150,15 @@ class PadraoRepository {
 
     return db_utils::makeFromRecord($rsQuery, function($oDados) {
 
-      $sCodigo      = trim($oDados->r02_codigo);
+      $sCodigo      = trim((string) $oDados->r02_codigo);
       $oRegime      = RegimeRepository::getInstanciaPorCodigo($oDados->r02_regime);
       $oCompetencia = new DBCompetencia($oDados->r02_anousu, $oDados->r02_mesusu);
       $oInstituicao = InstituicaoRepository::getInstituicaoByCodigo($oDados->r02_instit);
       $oPadrao      = new Padrao($sCodigo, $oRegime, $oCompetencia, $oInstituicao);
       $oPadrao->setValor($oDados->r02_valor);
-      $oPadrao->setDescricao(trim($oDados->r02_descr));
-      $oPadrao->setFormula(trim($oDados->r02_form));
-      $oPadrao->setTipo(trim($oDados->r02_tipo));
+      $oPadrao->setDescricao(trim((string) $oDados->r02_descr));
+      $oPadrao->setFormula(trim((string) $oDados->r02_form));
+      $oPadrao->setTipo(trim((string) $oDados->r02_tipo));
       return $oPadrao;
     });
 
@@ -177,7 +177,7 @@ class PadraoRepository {
     $iAnoCompetencia     = $oCompetencia->getAno();
     $iMesCompetencia     = $oCompetencia->getMes();
     $iCodigoRegime       = $oRegime->getCodigo();
-    $iCodigoPadrao       = trim($sCodigo);
+    $iCodigoPadrao       = trim((string) $sCodigo);
     $iCodigoInstituicao  = $oInstituicao->getCodigo();
 
     return md5(

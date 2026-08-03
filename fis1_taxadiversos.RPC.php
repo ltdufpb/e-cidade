@@ -35,7 +35,7 @@ require_once modification("libs/JSON.php");
 $oPost       = db_utils::postMemory($_REQUEST);
 $oPost->json = str_replace("\\","",$oPost->json);
 $oParametro  = JSON::create()->parse($oPost->json);
-$oRetorno    = (object)array( 'lErro' => false, 'sMessage'=> '', 'erro' => false);
+$oRetorno    = (object)[ 'lErro' => false, 'sMessage'=> '', 'erro' => false];
 
 $oDaoTaxadiversos           = new cl_taxadiversos;
 $oDaoLancamentoTaxaDiversos = new cl_lancamentotaxadiversos();
@@ -49,7 +49,7 @@ try {
 
     case "getTaxas":
 
-    	$oRetorno->aTaxas = array();
+    	$oRetorno->aTaxas = [];
 
       if(!empty($oParametro->iGrupo)) {
 
@@ -182,19 +182,11 @@ try {
 
         $oRetorno->oConfiguracaoTaxa = db_utils::makeFromRecord($rsTaxadiversos, function($oTaxa) {
 
-          switch ($oTaxa->y119_tipo_periodo) {
-            case 'A':
-              $tipoPeriodo = 'Anual';
-              break;
-            
-            case 'M':
-              $tipoPeriodo = 'Mensal';
-              break;
-
-            default:
-              $tipoPeriodo = 'Diária';
-              break;
-          }
+          $tipoPeriodo = match ($oTaxa->y119_tipo_periodo) {
+              'A' => 'Anual',
+              'M' => 'Mensal',
+              default => 'Diária',
+          };
 
           $oConfiguracaoTaxa = new stdClass();
 
@@ -212,7 +204,7 @@ try {
 
     case 'calcularTaxasGeral':
 
-      $oRetorno->aTaxas     = array();
+      $oRetorno->aTaxas     = [];
       $aLancamentosCalcular = $oParametro->aTaxas;
 
       $oRetorno->sMessage = 'Cálculo processado.';
@@ -221,7 +213,7 @@ try {
         throw new BusinessException("Não há lançamentos para cálculo geral.");
       }
       
-      $aLancamentos = array();
+      $aLancamentos = [];
 
       foreach ($aLancamentosCalcular as $oLancamentoItem) {
 
@@ -257,12 +249,12 @@ try {
           $lErroCalculo        = true;
         }
 
-        $oRetorno->aTaxas[] = montaObjetoRetorno(array(
+        $oRetorno->aTaxas[] = montaObjetoRetorno([
           'lancamento'         =>$oLancamento,
           'mensagemStatus'     =>$sMensagemStatus,
           'hintMensagemStatus' =>$sHintMensagemStatus,
           'calculou'           =>true,
-        ));
+        ]);
       }
 
       /**
@@ -279,7 +271,7 @@ try {
       $iNatureza              = $oParametro->natureza != 'T' ? $oParametro->natureza : null;
       $iGrupo                 = $oParametro->iGrupo != 'T' ? $oParametro->iGrupo : null;
       $aLancamentos           = LancamentoTaxaDiversosRepository::getLancamentosParaCalculoGeral($iNatureza, $iGrupo);
-      $oRetorno->aLancamentos = array();
+      $oRetorno->aLancamentos = [];
 
       foreach ($aLancamentos as $oLancamento) {
 
@@ -294,12 +286,12 @@ try {
           $sHintMensagemStatus = 'Data do último cálculo: ' . $oLancamento->getDataUltimoCalculoGeral()->getDate(DBDate::DATA_PTBR);
         }
 
-        $oRetorno->aLancamentos[] = montaObjetoRetorno(array(
+        $oRetorno->aLancamentos[] = montaObjetoRetorno([
           'lancamento'         => $oLancamento,
           'calculou'           => $lCalculou,
           'mensagemStatus'     => $sMensagemStatus,
           'hintMensagemStatus' => $sHintMensagemStatus
-        ));
+        ]);
       }
 
       break;
@@ -327,11 +319,9 @@ try {
       /** 
        * Armazena os lançamentos verificados para exclui-los
        */
-      $aLancamentosDiversos = array();
+      $aLancamentosDiversos = [];
       if(pg_num_rows($rsVerificaLancamentosDiversos) > 0) {
-        $aLancamentosDiversos = db_utils::makeCollectionFromRecord($rsVerificaLancamentosDiversos, function ($oDadosLancamentoDiversos) {
-          return $oDadosLancamentoDiversos->dv14_diversos;
-        });
+        $aLancamentosDiversos = db_utils::makeCollectionFromRecord($rsVerificaLancamentosDiversos, fn($oDadosLancamentoDiversos) => $oDadosLancamentoDiversos->dv14_diversos);
       }
 
       /**
@@ -345,12 +335,10 @@ try {
       /**
        * Armazena os numpres dos débitos para informar o usuário no caso de não terem sido cancelados
        */
-      $aNumpresDebitosLancamento = array();
+      $aNumpresDebitosLancamento = [];
       if(pg_num_rows($rsVerificaDebitosLancamento) > 0) {
 
-        $aNumpresDebitosLancamento = db_utils::makeCollectionFromRecord($rsVerificaDebitosLancamento, function ($oDadosDebitosLancamentos) {
-          return $oDadosDebitosLancamentos->numpre;
-        });
+        $aNumpresDebitosLancamento = db_utils::makeCollectionFromRecord($rsVerificaDebitosLancamento, fn($oDadosDebitosLancamentos) => $oDadosDebitosLancamentos->numpre);
       }
 
       if(!empty($aNumpresDebitosLancamento)) {
@@ -403,7 +391,7 @@ try {
       $oNaturezaPadrao            = new stdClass();
       $oNaturezaPadrao->codigo    = 'T';
       $oNaturezaPadrao->descricao = 'Todas';
-      $aNaturezaPadrao            = array();
+      $aNaturezaPadrao            = [];
       $aNaturezaPadrao[]          = $oNaturezaPadrao;
 
       $oRetorno->aNaturezas = db_utils::makeCollectionFromRecord($rsNaturezas, function($oRetornoNatureza) {
@@ -475,7 +463,7 @@ echo JSON::create()->stringify($oRetorno);
  */
 function getUnidades($indice = null)
 {
-  $unidades = array(
+  $unidades = [
     '-------',
     'm',
     'm²',
@@ -489,7 +477,7 @@ function getUnidades($indice = null)
     'Milheiro',
     'Veículo',
     'Unidade'
-  );
+  ];
 
   if(!empty($indice) || $indice === 0 || $indice === '0') {
     return $unidades[$indice];
@@ -533,7 +521,7 @@ function calcularTaxas($oLancamento, $sObservacao = '', $lCalculoGeral = true)
   $oDados->dia_data_proximo_vencimento     = $oDataVencimento->getDia();
   $oDados->codigo_instituicao              = db_getsession("DB_instit");
   
-  if(trim($oLancamento->getInscricaoMunicipal()) != '') {
+  if(trim((string) $oLancamento->getInscricaoMunicipal()) != '') {
     $oDados->inscricao_municipal = $oLancamento->getInscricaoMunicipal();
   }
 
@@ -559,7 +547,7 @@ function montaObjetoRetorno($aPropriedades)
    $sUnidade .= ' / '. getUnidades($oLancamento->getNaturezaTaxa()->getUnidade());
   }
 
-  return (object)array(
+  return (object)[
     'codigo'              => $oLancamento->getCodigo(),
     'cgm'                 => $oLancamento->getCgm()->getCodigo(),
     'cgm_nome'            => $oLancamento->getCgm()->getNome(),
@@ -571,5 +559,5 @@ function montaObjetoRetorno($aPropriedades)
     'status'              => $sMensagemStatus,
     'status_hint'         => $sHintMensagemStatus,
     'calculou'            => $lCalculou
-  );
+  ];
 }

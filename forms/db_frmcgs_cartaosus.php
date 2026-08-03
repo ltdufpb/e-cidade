@@ -74,7 +74,7 @@ $clrotulo->label("z01_v_nome");
         </td>
         <td nowrap='nowrap'>
           <?php
-          $x = array( 'D' => 'Definitivo', 'P' => 'Provisório' );
+          $x = [ 'D' => 'Definitivo', 'P' => 'Provisório' ];
           db_select( 's115_c_tipo', $x, true, $db_opcao );
           ?>
         </td>
@@ -85,7 +85,7 @@ $clrotulo->label("z01_v_nome");
   <input type="button" name="sinc" id="sinc" value="Atualizar" onclick="js_atualizar();">
 <br>
 <?php 
-$chavepri = array( "s115_i_codigo" => @$s115_i_codigo );
+$chavepri = [ "s115_i_codigo" => @$s115_i_codigo ];
 $cliframe_alterar_excluir->chavepri = $chavepri;
 
 if( isset( $s115_i_cgs ) && @$s115_i_cgs != "" ) {
@@ -169,7 +169,7 @@ function js_preenchepesquisa( chave ) {
   db_iframe_cgs_cartaosus.hide();
   <?php
   if( $db_opcao != 1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

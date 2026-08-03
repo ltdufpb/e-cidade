@@ -54,7 +54,7 @@ $cldb_depart->rotulo->label();
 $clrotulo->label("t64_class");
 //classificação
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
@@ -206,7 +206,7 @@ if (isset($dtaquini) && isset($dtaquifim)) {
    
   if ($dtaquini != ""  && $dtaquifim == "") {
     
-    $sdtIni = implode("-", array_reverse(explode("/", $dtaquini)));
+    $sdtIni = implode("-", array_reverse(explode("/", (string) $dtaquini)));
     if ($where != "") {
       $where .= " and ";
     }
@@ -214,8 +214,8 @@ if (isset($dtaquini) && isset($dtaquifim)) {
     $where .= " t52_dtaqu >= '{$sdtIni}'";
   } else if ($dtaquini != ""  && $dtaquifim != "") {
     
-    $sdtIni = implode("-", array_reverse(explode("/", $dtaquini)));
-    $sdtFim = implode("-", array_reverse(explode("/", $dtaquifim)));
+    $sdtIni = implode("-", array_reverse(explode("/", (string) $dtaquini)));
+    $sdtFim = implode("-", array_reverse(explode("/", (string) $dtaquifim)));
     if ($where != "") {
       $where .= " and ";
     }
@@ -413,13 +413,13 @@ for ($x = 0; $x<$numrows; $x++) {
   $bPeriodoBaixa = false;
   if(($t52_baixainicio != '') and ($t52_baixafim != '')) {
     
-    $dBaixaInicio    = implode('-', array_reverse(explode('/', $t52_baixainicio)));
-    $dBaixaFim       = implode('-', array_reverse(explode('/', $t52_baixafim)));
+    $dBaixaInicio    = implode('-', array_reverse(explode('/', (string) $t52_baixainicio)));
+    $dBaixaFim       = implode('-', array_reverse(explode('/', (string) $t52_baixafim)));
     $bPeriodoBaixa   = true;
       
   } elseif($t52_baixainicio != '' and $t52_baixafim == '') {
     
-    $dBaixaInicio    = implode('-', array_reverse(explode('/', $t52_baixainicio)));
+    $dBaixaInicio    = implode('-', array_reverse(explode('/', (string) $t52_baixainicio)));
     $dBaixaFim       = date('Y-m-d', db_getsession('DB_datausu'));
     $bPeriodoBaixa   = true;
     
@@ -427,7 +427,7 @@ for ($x = 0; $x<$numrows; $x++) {
     
     $result_bensbaix = $clbensbaix->sql_record($clbensbaix->sql_query_file(null, 't55_baixa as t52_baixainicio', 't55_baixa', null). ' limit 1');
     $dBaixaInicio    = $clbensbaix->numrows > 0 ? db_fieldsmemory($result_bensbaix, 0) : date('Y-m-d', db_getsession('DB_datausu'));
-    $dBaixaFim       = implode('-', array_reverse(explode('/', $t52_baixafim)));
+    $dBaixaFim       = implode('-', array_reverse(explode('/', (string) $t52_baixafim)));
     $bPeriodoBaixa   = true;
       
   }
@@ -506,7 +506,7 @@ for ($x = 0; $x<$numrows; $x++) {
     $troca = 0;
   }
   
-  if ($t30_codigo != $t30_codigo_ant && trim($t30_codigo) != "") {
+  if ($t30_codigo != $t30_codigo_ant && trim((string) $t30_codigo) != "") {
     if ($x != 0) {
       if ($flag_valor == true){
         $pdf->cell((110-$cols),$alt,'Total da Classificação  : '.$totalclas,"T",0,"L",0);
@@ -603,7 +603,7 @@ for ($x = 0; $x<$numrows; $x++) {
   } else {
 //    if ($flag_todos == 1) {
       if ($depto_ant!=$t52_depart) {
-      	
+
       	 $sQueryOrgao  = "select db01_orgao,
                           db01_unidade,
                           o40_descr,
@@ -616,7 +616,7 @@ for ($x = 0; $x<$numrows; $x++) {
                                           and db01_anousu  = o41_anousu  
                     where db01_coddepto in ($t52_depart) 
                       and db01_anousu   = ".db_getsession("DB_anousu");
-		   
+
 		   	$resQueryOrgao = db_query($sQueryOrgao);
 		   	if(pg_num_rows($resQueryOrgao)>0){
 		   		db_fieldsmemory($resQueryOrgao,0);
@@ -677,11 +677,11 @@ for ($x = 0; $x<$numrows; $x++) {
         $pdf->cell(20, $alt,"Definição",1,0,"C",1);
         $pdf->cell(30, $alt,"Bem",1,1,"C",1);
         //$pdf->cell(15,$alt,"Pl. Indent.",1,1,"C",1);
-        
+
         if ($opcao_obs == "S") {
           $pdf->cell((195-$cols),$alt,"Características adicionais do bem",1,1,"L",1);
         }
-        
+
         $pdf->setfont('arial','b',7);
         $pdf->cell((195-$cols),$alt,$t64_class.' - '.$t64_descr,"T",1,"L",0);
       }
@@ -708,8 +708,8 @@ for ($x = 0; $x<$numrows; $x++) {
   }
 
   // Mostra BENS SEM DIVISAO quando bens nao esta vinculada a divisao de departamento
-  if (trim($t30_codigo)=="") {
-       if (trim($t30_codigo_ant)!=""){
+  if (trim((string) $t30_codigo)=="") {
+       if (trim((string) $t30_codigo_ant)!=""){
             if ($x != 0) {
                  if ($flag_valor == true){
                    $pdf->cell((110-$cols),$alt,'Total da Classificação  : '.$totalclas,"T",0,"L",0);
@@ -756,7 +756,7 @@ for ($x = 0; $x<$numrows; $x++) {
   }
 
   $pdf->cell(20,$alt,$t52_ident,0,0,"L",0);
-  $pdf->cell(65,$alt,substr($t52_descr,0,50),0,0,"L",0);
+  $pdf->cell(65,$alt,substr((string) $t52_descr,0,50),0,0,"L",0);
   $pdf->cell(15,$alt,db_formatar($t52_dtaqu,"d"),0,0,"C",0);
 
   if ($flag_valor == true){

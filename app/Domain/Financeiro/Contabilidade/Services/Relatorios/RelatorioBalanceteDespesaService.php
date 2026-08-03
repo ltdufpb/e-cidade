@@ -262,7 +262,7 @@ class RelatorioBalanceteDespesaService extends BalanceteDespesaService
             $dados,
             $dadosDespesa->orgao,
             $dadosDespesa->descricao_orgao,
-            str_pad($dadosDespesa->orgao, 2, '0', STR_PAD_LEFT),
+            str_pad((string) $dadosDespesa->orgao, 2, '0', STR_PAD_LEFT),
             'orgao',
             'filho'
         );
@@ -284,7 +284,7 @@ class RelatorioBalanceteDespesaService extends BalanceteDespesaService
             $unidades,
             $id,
             $dadosDespesa->descricao_unidade,
-            str_pad($dadosDespesa->unidade, 2, '0', STR_PAD_LEFT),
+            str_pad((string) $dadosDespesa->unidade, 2, '0', STR_PAD_LEFT),
             'unidade',
             'filho'
         );
@@ -304,7 +304,7 @@ class RelatorioBalanceteDespesaService extends BalanceteDespesaService
             $funcoes,
             $dadosDespesa->funcao,
             $dadosDespesa->descricao_funcao,
-            str_pad($dadosDespesa->funcao, 2, '0', STR_PAD_LEFT),
+            str_pad((string) $dadosDespesa->funcao, 2, '0', STR_PAD_LEFT),
             'funcao',
             'filho'
         );
@@ -323,7 +323,7 @@ class RelatorioBalanceteDespesaService extends BalanceteDespesaService
             $subfuncoes,
             $dadosDespesa->subfuncao,
             $dadosDespesa->descricao_subfuncao,
-            str_pad($dadosDespesa->subfuncao, 3, '0', STR_PAD_LEFT),
+            str_pad((string) $dadosDespesa->subfuncao, 3, '0', STR_PAD_LEFT),
             'subfuncao',
             'filho'
         );
@@ -343,7 +343,7 @@ class RelatorioBalanceteDespesaService extends BalanceteDespesaService
             $programas,
             $dadosDespesa->programa,
             $dadosDespesa->descricao_programa,
-            str_pad($dadosDespesa->programa, 4, '0', STR_PAD_LEFT),
+            str_pad((string) $dadosDespesa->programa, 4, '0', STR_PAD_LEFT),
             'programa',
             'filho'
         );
@@ -363,7 +363,7 @@ class RelatorioBalanceteDespesaService extends BalanceteDespesaService
             $projetos,
             $dadosDespesa->projeto,
             $dadosDespesa->descricao_projeto,
-            str_pad($dadosDespesa->projeto, 4, '0', STR_PAD_LEFT),
+            str_pad((string) $dadosDespesa->projeto, 4, '0', STR_PAD_LEFT),
             'projeto',
             'filho'
         );

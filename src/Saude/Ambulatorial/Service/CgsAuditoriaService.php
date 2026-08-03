@@ -8,16 +8,10 @@ class CgsAuditoriaService
 {
     private $CgsAuditoriaRepository;
 
-    private $numCgs;
-    private $paramCgs;
-
-    public function __construct($numCgs, $paramCgs)
+    public function __construct(private $numCgs, private $paramCgs)
     {
 
         $this->CgsAuditoriaRepository = new CgsAuditoriaRepository();
-        
-        $this->numCgs = $numCgs;
-        $this->paramCgs = $paramCgs;
     }
 
     public function salvar()

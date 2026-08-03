@@ -60,7 +60,7 @@ function buscarInformacoes($conta, $sinal)
     $anoSessao = db_getsession('DB_anousu');
     $instituicaoSessao = db_getsession('DB_instit');
 
-    $campos = implode(',', array(
+    $campos = implode(',', [
         'c60_codcon as codigo_conta',
         'c61_reduz as codigo_reduzido',
         'c60_descr as descricao_conta',
@@ -77,7 +77,7 @@ function buscarInformacoes($conta, $sinal)
         'c120_infocomplementar as atributo',
         "'{$sinal}' as sinal_conta",
         'complementofonterecurso.o200_sequencial as complemento'
-    ));
+    ]);
 
     $sqlBuscaInformacoes = "
         select distinct {$campos}
@@ -134,17 +134,11 @@ function getValorAtributoMSC($conta, $sigla, $recursoLinha)
             return $conta->codigo_sistema == 9 ? '0' : '1';
             break;
         case 'FP':
-            switch ($conta->identificador_financeiro) {
-                case 'F':
-                    $valor = '1';
-                    break;
-                case 'P':
-                    $valor = '2';
-                    break;
-                default:
-                    $valor = '';
-                    break;
-            }
+            $valor = match ($conta->identificador_financeiro) {
+                'F' => '1',
+                'P' => '2',
+                default => '',
+            };
             return $valor;
             break;
         case 'CO':
@@ -229,11 +223,11 @@ function getAtributosPadraoContaCorrente($conta, $sigla, $recursoLinha)
             break;
         case "ORG":
             $instituicao = InstituicaoRepository::getInstituicaoSessao();
-            $valor = substr($instituicao->getCodigoTribunal(), 0, 2);
+            $valor = substr((string) $instituicao->getCodigoTribunal(), 0, 2);
             break;
         case "UO":
             $instituicao = InstituicaoRepository::getInstituicaoSessao();
-            $valor = substr($instituicao->getCodigoTribunal(), 2, 2);
+            $valor = substr((string) $instituicao->getCodigoTribunal(), 2, 2);
             break;
         case "IRP":
             $valor = "F";
@@ -325,7 +319,7 @@ try {
                 }
 
                 // Preparação dos atributos
-                $arrayAtributos = array();
+                $arrayAtributos = [];
                 $dadosContaDebito = buscarInformacoes($conta72111, 'D');
                 $dadosContaCredito = buscarInformacoes($conta82111, 'C');
 
@@ -356,7 +350,7 @@ try {
 
                 // Adequação ao formato esperado
                 $i = 0;
-                $controleCodigoConta = array();
+                $controleCodigoConta = [];
 
                 foreach ($lista as $atrib) {
                     if (!isset($controleCodigoConta[$atrib->codigo_conta])) {
@@ -364,12 +358,12 @@ try {
 
                         $objConta = new stdClass();
                         $objConta->sinal = $atrib->sinal_conta;
-                        $objConta->conta_contabil = (object)array(
+                        $objConta->conta_contabil = (object)[
                             'codigo' => $atrib->codigo_conta,
                             'reduzido' => $atrib->codigo_reduzido,
                             'estrutural' => $atrib->estrutural_conta,
                             'descricao' => $atrib->descricao_conta
-                        );
+                        ];
 
                         $arrayAtributos[][$i] = $objConta;
                         $controleCodigoConta[$atrib->codigo_conta] = 'ok';
@@ -476,11 +470,11 @@ try {
                 // Tratamento de atributos
                 $recurso = null;
                 foreach ($arrayAtributos as $indice => $atributo) {
-                    if (strpos($atributo[0]->conta_contabil->estrutural, '72111') === 0) {
+                    if (str_starts_with((string) $atributo[0]->conta_contabil->estrutural, '72111')) {
                         $atributoDebito = $natureza72111 === 'D';
                     }
 
-                    if (strpos($atributo[0]->conta_contabil->estrutural, '82111') === 0) {
+                    if (str_starts_with((string) $atributo[0]->conta_contabil->estrutural, '82111')) {
                         $atributoDebito = $natureza82111 !== 'C';
                     }
 
@@ -490,7 +484,7 @@ try {
                                 if (empty($dadosContaCorrente)) {
                                     continue;
                                 }
-                                $atributosDebitoIndexado = array();
+                                $atributosDebitoIndexado = [];
                                 foreach ($dadosContaCorrente->atributos as $dadosAtributos) {
                                     $atributosDebitoIndexado[$dadosAtributos->sigla] = $dadosAtributos->valor;
                                     if ($dadosAtributos->sigla === "FR") {

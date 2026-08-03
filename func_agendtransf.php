@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_agendtransf_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clagendtransf = new cl_agendtransf;
 $clagendtransf->rotulo->label("sd31_i_codigo");
 $clagendtransf->rotulo->label("sd31_d_dataorigem");
@@ -98,9 +98,9 @@ $clagendtransf->rotulo->label("sd31_d_dataorigem");
         }else{
            $sql = $clagendtransf->sql_query("",$campos,"sd31_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sd31_d_dataorigem)){
-          $repassa = array("chave_sd31_i_codigo"=>$chave_sd31_i_codigo,"chave_sd31_d_dataorigem"=>$chave_sd31_d_dataorigem);
+          $repassa = ["chave_sd31_i_codigo"=>$chave_sd31_i_codigo,"chave_sd31_d_dataorigem"=>$chave_sd31_d_dataorigem];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

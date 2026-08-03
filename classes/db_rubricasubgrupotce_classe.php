@@ -31,7 +31,7 @@ class cl_rubricasubgrupotce
     public function __construct()
     {
         $this->rotulo = new rotulo("rubricasubgrupotce"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -96,10 +96,10 @@ class cl_rubricasubgrupotce
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh263_sequencial = pg_result($result,0,0); 
+       $this->rh263_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rubricasubgrupotce_rh263_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh263_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh263_sequencial)){
          $this->erro_sql = " Campo rh263_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -133,7 +133,7 @@ class cl_rubricasubgrupotce
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Subgrupo da Rubrica ($this->rh263_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Subgrupo da Rubrica já Cadastrado";
@@ -162,13 +162,13 @@ class cl_rubricasubgrupotce
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1014218,'$this->rh263_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010945,1014218,'','".AddSlashes(pg_result($resaco,0,'rh263_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010945,1014219,'','".AddSlashes(pg_result($resaco,0,'rh263_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010945,1014220,'','".AddSlashes(pg_result($resaco,0,'rh263_subgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010945,1014221,'','".AddSlashes(pg_result($resaco,0,'rh263_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010945,1014218,'','".AddSlashes(pg_fetch_result($resaco,0,'rh263_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010945,1014219,'','".AddSlashes(pg_fetch_result($resaco,0,'rh263_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010945,1014220,'','".AddSlashes(pg_fetch_result($resaco,0,'rh263_subgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010945,1014221,'','".AddSlashes(pg_fetch_result($resaco,0,'rh263_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -179,10 +179,10 @@ class cl_rubricasubgrupotce
       $this->atualizacampos();
      $sql = " update rubricasubgrupotce set ";
      $virgula = "";
-     if(trim($this->rh263_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh263_sequencial"])){ 
+     if(trim((string) $this->rh263_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh263_sequencial"])){ 
        $sql  .= $virgula." rh263_sequencial = $this->rh263_sequencial ";
        $virgula = ",";
-       if(trim($this->rh263_sequencial) == null ){ 
+       if(trim((string) $this->rh263_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "rh263_sequencial";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_rubricasubgrupotce
          return false;
        }
      }
-     if(trim($this->rh263_grupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh263_grupo"])){ 
+     if(trim((string) $this->rh263_grupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh263_grupo"])){ 
        $sql  .= $virgula." rh263_grupo = '$this->rh263_grupo' ";
        $virgula = ",";
-       if(trim($this->rh263_grupo) == null ){ 
+       if(trim((string) $this->rh263_grupo) == null ){ 
          $this->erro_sql = " Campo Natureza do subgrupo não informado.";
          $this->erro_campo = "rh263_grupo";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_rubricasubgrupotce
          return false;
        }
      }
-     if(trim($this->rh263_subgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh263_subgrupo"])){ 
+     if(trim((string) $this->rh263_subgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh263_subgrupo"])){ 
        $sql  .= $virgula." rh263_subgrupo = '$this->rh263_subgrupo' ";
        $virgula = ",";
-       if(trim($this->rh263_subgrupo) == null ){ 
+       if(trim((string) $this->rh263_subgrupo) == null ){ 
          $this->erro_sql = " Campo Subgrupo da Natureza não informado.";
          $this->erro_campo = "rh263_subgrupo";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_rubricasubgrupotce
          return false;
        }
      }
-     if(trim($this->rh263_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh263_descricao"])){ 
+     if(trim((string) $this->rh263_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh263_descricao"])){ 
        $sql  .= $virgula." rh263_descricao = '$this->rh263_descricao' ";
        $virgula = ",";
-       if(trim($this->rh263_descricao) == null ){ 
+       if(trim((string) $this->rh263_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "rh263_descricao";
          $this->erro_banco = "";
@@ -245,17 +245,17 @@ class cl_rubricasubgrupotce
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1014218,'$this->rh263_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh263_sequencial"]) || $this->rh263_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010945,1014218,'".AddSlashes(pg_result($resaco,$conresaco,'rh263_sequencial'))."','$this->rh263_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010945,1014218,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh263_sequencial'))."','$this->rh263_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh263_grupo"]) || $this->rh263_grupo != "")
-             $resac = db_query("insert into db_acount values($acount,1010945,1014219,'".AddSlashes(pg_result($resaco,$conresaco,'rh263_grupo'))."','$this->rh263_grupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010945,1014219,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh263_grupo'))."','$this->rh263_grupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh263_subgrupo"]) || $this->rh263_subgrupo != "")
-             $resac = db_query("insert into db_acount values($acount,1010945,1014220,'".AddSlashes(pg_result($resaco,$conresaco,'rh263_subgrupo'))."','$this->rh263_subgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010945,1014220,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh263_subgrupo'))."','$this->rh263_subgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["rh263_descricao"]) || $this->rh263_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,1010945,1014221,'".AddSlashes(pg_result($resaco,$conresaco,'rh263_descricao'))."','$this->rh263_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010945,1014221,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh263_descricao'))."','$this->rh263_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -309,13 +309,13 @@ class cl_rubricasubgrupotce
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1014218,'$rh263_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010945,1014218,'','".AddSlashes(pg_result($resaco,$iresaco,'rh263_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010945,1014219,'','".AddSlashes(pg_result($resaco,$iresaco,'rh263_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010945,1014220,'','".AddSlashes(pg_result($resaco,$iresaco,'rh263_subgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010945,1014221,'','".AddSlashes(pg_result($resaco,$iresaco,'rh263_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010945,1014218,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh263_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010945,1014219,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh263_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010945,1014220,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh263_subgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010945,1014221,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh263_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

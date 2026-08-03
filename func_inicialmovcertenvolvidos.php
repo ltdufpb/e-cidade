@@ -68,7 +68,7 @@ if(!empty($oDaoInicialNumpre->erro_banco)){
 }
 
 $aDebitosNumpres  = db_utils::getCollectionByRecord( $rsInicialNumpre );
-$aSubQuery = array();
+$aSubQuery = [];
 
 foreach ($aDebitosNumpres as $aDebitoNumpre) {
 

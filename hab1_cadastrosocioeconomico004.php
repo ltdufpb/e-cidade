@@ -83,10 +83,10 @@ unset($_SESSION["oCandidatoHabitacao"]);
                    <td>
                      <?php 
                      
-                       $aSituacaoCPF = array('0'=>'Selecione ...',
+                       $aSituacaoCPF = ['0'=>'Selecione ...',
                                              '1'=>'Regular',
                                              '2'=>'Irregular',
-                                             '3'=>'Suspenso');
+                                             '3'=>'Suspenso'];
                        
                        db_select('situacaocpf',$aSituacaoCPF,true,1);
                      ?>

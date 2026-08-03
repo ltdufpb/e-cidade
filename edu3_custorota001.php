@@ -41,8 +41,8 @@ include(modification("classes/db_alunopossib_classe.php"));
 include(modification("classes/db_linha_classe.php"));
 include(modification("classes/db_cursoescola_classe.php"));
 include(modification("classes/db_rotamov_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claluno = new cl_aluno;
 $clserie = new cl_serie;
 $cllinha = new cl_linha;
@@ -126,9 +126,9 @@ function js_redireciona(chave){
           FROM escolaproc
          ";
       $result_escola = db_query($sql);
-      $linhas= pg_numrows($result_escola);
+      $linhas= pg_num_rows($result_escola);
       if($linhas==0){
-      $x = array(''=>'');
+      $x = [''=>''];
       db_select('ed56_i_escola',$x,true,1,"style='width:300px;'");
       }
       else{
@@ -157,7 +157,7 @@ function js_redireciona(chave){
      </td>
      <td>
       <?php 
-      $codescola = isset($codescola)?$codescola:0;
+      $codescola ??= 0;
       $disabled = $codescola!=0?"":"disabled";
       if(@$tipoescola=="M"){
           $sql = "SELECT distinct ed29_i_codigo,ed29_c_descr
@@ -173,9 +173,9 @@ function js_redireciona(chave){
          ";
       }
       $result_curso = db_query($sql);
-      $linhas= pg_numrows($result_curso);
+      $linhas= pg_num_rows($result_curso);
       if($linhas==0){
-       $x = array(''=>'');
+       $x = [''=>''];
        db_select('ed31_i_curso',$x,true,1," $disabled style='width:300px;'");
       }else{
        ?>
@@ -201,11 +201,11 @@ function js_redireciona(chave){
      </td>
      <td>
       <?php 
-      $codcurso = isset($codcurso)?$codcurso:0;
+      $codcurso ??= 0;
       $disabled1 = $codcurso!=0?"":"disabled";
       $result_serie = $clalunopossib->sql_record($clalunopossib->sql_query("","DISTINCT ed11_i_codigo,ed11_c_descr,ed11_i_sequencia",""," ed31_i_curso = $codcurso AND ed56_i_escola = $codescola"));
       if($clalunopossib->numrows==0){
-       $x = array(''=>'');
+       $x = [''=>''];
        db_select('ed57_i_serie',$x,true,1," $disabled1 style='width:300px;'");
       }else{
        ?>
@@ -268,7 +268,7 @@ function js_redireciona(chave){
             left join aluno on aluno.ed47_i_codigo= rotaaluno.ed219_i_aluno
             $where";
     if(isset($ed217_i_codigo)){
-     $repassa = array("ed217_i_codigo"=>$ed217_i_codigo);
+     $repassa = ["ed217_i_codigo"=>$ed217_i_codigo];
     }
     $sql .= " WHERE ed217_i_codigo > 0 ";
     if(isset($ed217_c_origem) && (trim($ed217_c_origem)!="") ){

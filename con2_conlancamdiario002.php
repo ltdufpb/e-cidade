@@ -31,7 +31,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_utils.php"));
 
 $classinatura = new cl_assinatura;
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_GET);
 
 $instituicao = str_replace('-',',',$db_selinstit);
 
@@ -74,7 +74,7 @@ $sSql .= "where c69_data between '{$data_ini}' and '{$data_fim}'                
 $sSql .= "order by c69_data, c69_codlan                                               ";
 
 $rsLancamentos     = db_query($sSql);
-$iQtdLancamentos   = pg_numrows($rsLancamentos);
+$iQtdLancamentos   = pg_num_rows($rsLancamentos);
 if ($rsLancamentos==false){
  db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado');     
 }
@@ -87,7 +87,7 @@ $rsInstituicoes = db_query($sSqlInstituicoes);
 
 $sDescricaoInstituicoes = '';
 $sVirgula = '';
-for($xins = 0; $xins < pg_numrows($rsInstituicoes); $xins++){
+for($xins = 0; $xins < pg_num_rows($rsInstituicoes); $xins++){
     $oDadosInstit = db_utils::fieldsMemory($rsInstituicoes,$xins);
     $sDescricaoInstituicoes .= $sVirgula.$oDadosInstit->nomeinst ;
     $sVirgula = ',';
@@ -220,9 +220,9 @@ for ($iInd=0;$iInd <$iQtdLancamentos;$iInd++) {
    $oPdf->Cell(20, 4, db_formatar($oDadosLancamento->c69_data,"d") , "0", 0, "C", $iPreenchimentoCelula);
    $oPdf->Cell(40, 4, $oDadosLancamento->c50_descr                 , "0", 0, "L", $iPreenchimentoCelula);
    $oPdf->Cell(20, 4, $oDadosLancamento->c69_debito                , "0", 0, "R", $iPreenchimentoCelula);
-   $oPdf->Cell(55, 4, substr($oDadosLancamento->debito_descr,0,40) , "0", 0, "L", $iPreenchimentoCelula);
+   $oPdf->Cell(55, 4, substr((string) $oDadosLancamento->debito_descr,0,40) , "0", 0, "L", $iPreenchimentoCelula);
    $oPdf->Cell(20, 4, $oDadosLancamento->c69_credito               , "0", 0, "R", $iPreenchimentoCelula);
-   $oPdf->Cell(55, 4, substr($oDadosLancamento->credito_descr,0,40), "0", 0, "L", $iPreenchimentoCelula);
+   $oPdf->Cell(55, 4, substr((string) $oDadosLancamento->credito_descr,0,40), "0", 0, "L", $iPreenchimentoCelula);
    $oPdf->Cell(30, 4, db_formatar($oDadosLancamento->c69_valor,"f"), "0", 1, "R", $iPreenchimentoCelula);
 	
 	 if ($oDadosLancamento->c72_complem != ''){

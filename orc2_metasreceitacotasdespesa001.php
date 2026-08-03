@@ -63,10 +63,10 @@ db_app::load("estilos.css");
 </table>
 <?php 
 
-  $clcriaabas->identifica = array("g1"=>"Principal","notas"=>"Notas Explicativas");
-  $clcriaabas->title      = array("g1"=>"Principal","notas"=>"Notas Explicativas");
-  $clcriaabas->src        = array("g1"=>"orc2_metasreceitacotasdespesa011.php","notas"=>"con2_conrelnotas.php?c83_codrel={$iCodRel}");
-  $clcriaabas->sizecampo  = array("g1"=>"20","notas"=>"40");
+  $clcriaabas->identifica = ["g1"=>"Principal","notas"=>"Notas Explicativas"];
+  $clcriaabas->title      = ["g1"=>"Principal","notas"=>"Notas Explicativas"];
+  $clcriaabas->src        = ["g1"=>"orc2_metasreceitacotasdespesa011.php","notas"=>"con2_conrelnotas.php?c83_codrel={$iCodRel}"];
+  $clcriaabas->sizecampo  = ["g1"=>"20","notas"=>"40"];
   $clcriaabas->cria_abas();
    
   db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));

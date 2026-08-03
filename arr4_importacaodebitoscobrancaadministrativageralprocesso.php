@@ -116,11 +116,11 @@ try {
 
     if ((bool)$parametros->processoSistema === false) {
 
-        $importacao->setProcesso((object)array(
+        $importacao->setProcesso((object)[
             'codigo' => $parametros->codigoProcesso,
             'titular' => $parametros->titularProcesso,
             'data' => $parametros->dataProcesso,
-        ));
+        ]);
     }
 
     $importacao->setListaDebitos($parametros->listaDebitos);
@@ -134,11 +134,11 @@ try {
         }
     }
 
-    $dados = explode(',', $parametros->dados);
+    $dados = explode(',', (string) $parametros->dados);
 
     foreach ($dados as $dado) {
 
-        list($codigoProcedencia, $codigoReceita) = explode(':', $dado);
+        [$codigoProcedencia, $codigoReceita] = explode(':', $dado);
 
         $procedencia = new ProcedenciaDivida($codigoProcedencia);
         $importacao->adicionarReceitaProcedencia($codigoReceita, $procedencia);

@@ -23,12 +23,12 @@ class TermoInscricaoService
             }
             $v92_termo = $termoInscricao->v92_termo;
         }
-          
+
         $dt_venc_data = $oDivida->v01_dtvenc;
         $dataInsc = $oDivida->v01_dtinsc;
         $val = $oDivida->v01_vlrhis;
         $dt_oper_data = $oDivida->v01_dtoper;
-        $data = strtotime($oDivida->v01_dtinsc);
+        $data = strtotime((string) $oDivida->v01_dtinsc);
         $ano = date("Y", $data);
 
         if ($receita == '') {
@@ -48,10 +48,10 @@ class TermoInscricaoService
             divida
         where
             v01_coddiv = $oDivida->v01_coddiv";
-                                    
+
         $rsDebitosTermo = db_query($sqlDebitosTermo);
         $oDadosTermo = \db_utils::fieldsMemory($rsDebitosTermo, 0);
-        
+
         $valorMulta = $oDadosTermo->valor_corrigido * $oDadosTermo->multa;
         $valorJuros = $oDadosTermo->valor_corrigido * $oDadosTermo->juros;
 
@@ -61,7 +61,7 @@ class TermoInscricaoService
         $termoInscricaoRegra->v93_vlrcor   = $oDadosTermo->valor_corrigido;
         $termoInscricaoRegra->v93_vlrjur   = $valorJuros;
         $termoInscricaoRegra->v93_vlrmul   = $valorMulta;
-        
+
         $termoInscricaoRegra->incluir(null);
 
         return true;

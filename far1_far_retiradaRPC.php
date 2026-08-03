@@ -209,7 +209,7 @@ from (
             db_fieldsmemory($result_lote, 0);
             $label_lote = $m77_lote;
             $lote = $m71_codlanc;
-            $aVet = explode("-", $m77_dtvalidade);
+            $aVet = explode("-", (string) $m77_dtvalidade);
             $validade = $aVet[2] . '/' . $aVet[1] . '/' . $aVet[0];
         } else {
             $lote = "";
@@ -229,9 +229,7 @@ from (
         $rs = $daoEstoque->sql_record($sql);
 
         if ($daoEstoque->numrows > 0) {
-            $objRetorno->localizacao[] = db_utils::makeFromRecord($rs, function ($estoque) {
-                return $estoque->m64_localizacao;
-            });
+            $objRetorno->localizacao[] = db_utils::makeFromRecord($rs, fn($estoque) => $estoque->m64_localizacao);
         }
         $objRetorno->localizacao = implode(', ', $objRetorno->localizacao);
     }
@@ -345,7 +343,7 @@ from (
 
                         $validade = $oItemMaterial->m77_dtvalidade;
                         if ($validade != '') {
-                            $validade = (new DateTime($validade))->format('d/m/Y');
+                            $validade = new DateTime($validade)->format('d/m/Y');
                         }
                         $objRetorno->itens[$x]->validade = $validade;
                     }
@@ -385,9 +383,7 @@ from (
                 $rs = $daoEstoque->sql_record($sql);
 
                 if ($daoEstoque->numrows > 0) {
-                    $objRetorno->itens[$x]->localizacao[] = db_utils::makeFromRecord($rs, function ($estoque) {
-                        return $estoque->m64_localizacao;
-                    });
+                    $objRetorno->itens[$x]->localizacao[] = db_utils::makeFromRecord($rs, fn($estoque) => $estoque->m64_localizacao);
                 }
                 $objRetorno->itens[$x]->localizacao = implode(', ', $objRetorno->itens[$x]->localizacao);
             }
@@ -408,17 +404,17 @@ from (
         db_inicio_transacao();
 
         //Carregadno dados do grid
-        $remedio = array();
-        $nome = array();
-        $quant = array();
-        $posologia = array();
-        $lote = array();
-        $validade = array();
-        $continuado = array();
+        $remedio = [];
+        $nome = [];
+        $quant = [];
+        $posologia = [];
+        $lote = [];
+        $validade = [];
+        $continuado = [];
         $iTam = count($objParam->aMedicamentos);
 
         for ($iX = 0; $iX < $iTam; $iX++) {
-            $aItemMed = explode("_|_", $objParam->aMedicamentos[$iX]);
+            $aItemMed = explode("_|_", (string) $objParam->aMedicamentos[$iX]);
             $remedio[] = $aItemMed[1];
             $nome[] = $aItemMed[2];
             $quant[] = $aItemMed[11];
@@ -717,14 +713,14 @@ from (
                     null,
                     'fa40_i_codigo',
                     null,
-                    ' fa40_c_descr = \'' . strtoupper($objParam->sOrigemReceita) . '\''
+                    ' fa40_c_descr = \'' . strtoupper((string) $objParam->sOrigemReceita) . '\''
                 );
                 $rs = $oDaofar_origemreceita->sql_record($sSqlOrig);
                 if ($oDaofar_origemreceita->numrows > 0) {
                     $oOrig = db_utils::fieldsmemory($rs, 0);
                     $iOrig = $oOrig->fa40_i_codigo;
                 } else {
-                    $oDaofar_origemreceita->fa40_c_descr = strtoupper($objParam->sOrigemReceita);
+                    $oDaofar_origemreceita->fa40_c_descr = strtoupper((string) $objParam->sOrigemReceita);
                     $oDaofar_origemreceita->fa40_d_validade = null;
                     $oDaofar_origemreceita->incluir(null);
 
@@ -762,7 +758,7 @@ from (
         db_fim_transacao($sqlerro == "S");
         if ($sqlerro == "S") {
             $objRetorno->status = 2;
-            $objRetorno->message = urlencode($erro_msg);
+            $objRetorno->message = urlencode((string) $erro_msg);
         } else {
             $objRetorno->iRetirada = $clfar_retirada->fa04_i_codigo;
         }
@@ -783,7 +779,7 @@ from (
         if ($oDaocgs_cartaosus->numrows > 0) { // se encontrou o cgs
             $oDadosCgs_cartaosus = db_utils::fieldsmemory($rsCgs_cartaosus, 0);
             $objRetorno->z01_i_cgsund = $oDadosCgs_cartaosus->z01_i_cgsund;
-            $objRetorno->z01_v_nome = urlencode($oDadosCgs_cartaosus->z01_v_nome);
+            $objRetorno->z01_v_nome = urlencode((string) $oDadosCgs_cartaosus->z01_v_nome);
         } else {
             $objRetorno->z01_i_cgsund = '';
             $objRetorno->z01_v_nome = '';

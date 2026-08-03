@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_sau_agendaexterna_classe.php"));
 include(modification("classes/db_sau_agendaveiculo_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clsau_agendaexterna = new cl_sau_agendaexterna;
 $clsau_agendaveiculo = new cl_sau_agendaveiculo;
 $db_opcao = 1;

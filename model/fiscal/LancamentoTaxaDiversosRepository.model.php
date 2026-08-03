@@ -86,7 +86,7 @@ class LancamentoTaxaDiversosRepository extends BaseClassRepository {
                                       order by dv14_sequencial desc 
                                          limit 1) as dv14_data_calculo
                                       ";
-    $aWhereLancamentoTaxadiversos   = array();
+    $aWhereLancamentoTaxadiversos   = [];
     $aWhereLancamentoTaxadiversos[] = "y119_tipo_calculo = 'G'";
     $aWhereLancamentoTaxadiversos[] = "(y120_datafim is null or extract(year from y120_datafim) >= {$sAnoAtual})";
 
@@ -100,7 +100,7 @@ class LancamentoTaxaDiversosRepository extends BaseClassRepository {
 
     $sSqlLancamentoTaxadiversos = $oDaoLancamentoTaxadiversos->sql_query(null, $sCamposLancamentoTaxaDiversos, null, implode(" and ", $aWhereLancamentoTaxadiversos));
     $rsLancamentoTaxadiversos   = db_query($sSqlLancamentoTaxadiversos);
-    $aLancamentos               = array();
+    $aLancamentos               = [];
 
     if(!$rsLancamentoTaxadiversos) {
       throw new DBException("Ocorreu um erro ao buscar o lançamento de taxa de diversos.");
@@ -136,7 +136,7 @@ class LancamentoTaxaDiversosRepository extends BaseClassRepository {
    * @return string
    * @throws DBException
    */
-  public static function getObservacoesTaxas($iNumcgm = null, $iNumnov, $iInscricao = null) {
+  public static function getObservacoesTaxas($iNumcgm = null, $iNumnov = null, $iInscricao = null) {
 
     $oDaoDiversos     = new cl_diversoslancamentotaxa();
     $sCamposDiversos  = "y119_unidade, y120_datainicio, y120_datafim, y118_descricao, y119_tipo_periodo, y120_periodo";
@@ -158,7 +158,7 @@ class LancamentoTaxaDiversosRepository extends BaseClassRepository {
       return '';
     }
 
-    $aPeriodo          = array('D' => 'Dias', 'M' => 'Meses', 'A' => 'Meses');
+    $aPeriodo          = ['D' => 'Dias', 'M' => 'Meses', 'A' => 'Meses'];
     $oRetornoDiversos  = db_utils::fieldsMemory($rsDiversos, 0);
     $sUnidade          = LancamentoTaxaDiversos::getDescricaoUnidade($oRetornoDiversos->y119_unidade);
 

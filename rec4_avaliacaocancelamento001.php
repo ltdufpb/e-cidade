@@ -30,7 +30,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clrotulo = new rotulocampo;
 $clrotulo->label('rh01_regist');
 $clrotulo->label('z01_nome');

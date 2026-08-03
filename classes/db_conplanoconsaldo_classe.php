@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE conplanoconsaldo
 class cl_conplanoconsaldo {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $c59_anoexe = 0;
-   var $c59_codcon = 0;
-   var $c59_instit = 0;
-   var $c59_mes = 0;
-   var $c59_debito = 0;
-   var $c59_credito = 0;
+   public $c59_anoexe = 0;
+   public $c59_codcon = 0;
+   public $c59_instit = 0;
+   public $c59_mes = 0;
+   public $c59_debito = 0;
+   public $c59_credito = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  c59_anoexe = int4 = Exercicío
                  c59_codcon = int4 = Código
                  c59_instit = int4 = codigo da instituicao
@@ -58,10 +58,10 @@ class cl_conplanoconsaldo {
                  c59_credito = float8 = Crédito
                  ";
    //funcao construtor da classe
-   function cl_conplanoconsaldo() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("conplanoconsaldo");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -164,7 +164,7 @@ class cl_conplanoconsaldo {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "conplanoconsaldo ($this->c59_anoexe."-".$this->c59_codcon."-".$this->c59_instit."-".$this->c59_mes) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "conplanoconsaldo já Cadastrado";
@@ -193,10 +193,10 @@ class cl_conplanoconsaldo {
       $this->atualizacampos();
      $sql = " update conplanoconsaldo set ";
      $virgula = "";
-     if(trim($this->c59_anoexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_anoexe"])){
+     if(trim((string) $this->c59_anoexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_anoexe"])){
        $sql  .= $virgula." c59_anoexe = $this->c59_anoexe ";
        $virgula = ",";
-       if(trim($this->c59_anoexe) == null ){
+       if(trim((string) $this->c59_anoexe) == null ){
          $this->erro_sql = " Campo Exercicío nao Informado.";
          $this->erro_campo = "c59_anoexe";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_conplanoconsaldo {
          return false;
        }
      }
-     if(trim($this->c59_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_codcon"])){
+     if(trim((string) $this->c59_codcon)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_codcon"])){
        $sql  .= $virgula." c59_codcon = $this->c59_codcon ";
        $virgula = ",";
-       if(trim($this->c59_codcon) == null ){
+       if(trim((string) $this->c59_codcon) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "c59_codcon";
          $this->erro_banco = "";
@@ -219,10 +219,10 @@ class cl_conplanoconsaldo {
          return false;
        }
      }
-     if(trim($this->c59_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_instit"])){
+     if(trim((string) $this->c59_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_instit"])){
        $sql  .= $virgula." c59_instit = $this->c59_instit ";
        $virgula = ",";
-       if(trim($this->c59_instit) == null ){
+       if(trim((string) $this->c59_instit) == null ){
          $this->erro_sql = " Campo codigo da instituicao nao Informado.";
          $this->erro_campo = "c59_instit";
          $this->erro_banco = "";
@@ -232,10 +232,10 @@ class cl_conplanoconsaldo {
          return false;
        }
      }
-     if(trim($this->c59_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_mes"])){
+     if(trim((string) $this->c59_mes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_mes"])){
        $sql  .= $virgula." c59_mes = $this->c59_mes ";
        $virgula = ",";
-       if(trim($this->c59_mes) == null ){
+       if(trim((string) $this->c59_mes) == null ){
          $this->erro_sql = " Campo Mês nao Informado.";
          $this->erro_campo = "c59_mes";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_conplanoconsaldo {
          return false;
        }
      }
-     if(trim($this->c59_debito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_debito"])){
+     if(trim((string) $this->c59_debito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_debito"])){
        $sql  .= $virgula." c59_debito = $this->c59_debito ";
        $virgula = ",";
-       if(trim($this->c59_debito) == null ){
+       if(trim((string) $this->c59_debito) == null ){
          $this->erro_sql = " Campo Débito nao Informado.";
          $this->erro_campo = "c59_debito";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_conplanoconsaldo {
          return false;
        }
      }
-     if(trim($this->c59_credito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_credito"])){
+     if(trim((string) $this->c59_credito)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c59_credito"])){
        $sql  .= $virgula." c59_credito = $this->c59_credito ";
        $virgula = ",";
-       if(trim($this->c59_credito) == null ){
+       if(trim((string) $this->c59_credito) == null ){
          $this->erro_sql = " Campo Crédito nao Informado.";
          $this->erro_campo = "c59_credito";
          $this->erro_banco = "";
@@ -399,7 +399,7 @@ class cl_conplanoconsaldo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:conplanoconsaldo";
@@ -413,7 +413,7 @@ class cl_conplanoconsaldo {
    function sql_query ( $c59_anoexe=null,$c59_codcon=null,$c59_instit=null,$c59_mes=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -462,7 +462,7 @@ class cl_conplanoconsaldo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_conplanoconsaldo {
    function sql_query_file ( $c59_anoexe=null,$c59_codcon=null,$c59_instit=null,$c59_mes=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -519,7 +519,7 @@ class cl_conplanoconsaldo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -32,8 +32,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_materialestoquegrupo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmaterialestoquegrupo = new cl_materialestoquegrupo();
 $clrotulo               = new rotulocampo();
 $clrotulo->label("m65_sequencial");
@@ -124,10 +124,10 @@ $iAnousu = db_getsession("DB_anousu");
           $sql = $clmaterialestoquegrupo->sql_query_conta("","distinct ".$campos,"dl_Grupo",$sWhere);
         }
 
-        $repassa = array();
+        $repassa = [];
         
         if(isset($chave_db121_estrutural)){
-          $repassa = array("chave_m65_sequencial"=>$chave_m65_sequencial,"chave_db121_estrutural"=>$chave_db121_estrutural);
+          $repassa = ["chave_m65_sequencial"=>$chave_m65_sequencial,"chave_db121_estrutural"=>$chave_db121_estrutural];
         }
         
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

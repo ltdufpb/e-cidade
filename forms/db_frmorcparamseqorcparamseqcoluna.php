@@ -183,7 +183,7 @@ $clrotulo->label('o115_descricao');
                         <select name="o116_periodo[]" id="o116_periodo" multiple>
                             <?php
                             $aPeriodos = $oRelatorio->getPeriodos();
-                            $aListaPeriodos = array();
+                            $aListaPeriodos = [];
                             $aListaPeriodos[0] = "Selecione";
                             foreach ($aPeriodos as $oPeriodo) {
                                 $sSelected = '';

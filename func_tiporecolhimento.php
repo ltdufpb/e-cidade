@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tiporecolhimento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltiporecolhimento = new cl_tiporecolhimento;
 $cltiporecolhimento->rotulo->label("k172_sequencial");
 $cltiporecolhimento->rotulo->label("k172_nome");
@@ -52,9 +52,9 @@ $cltiporecolhimento->rotulo->label("k172_nome");
         }else{
            $sql = $cltiporecolhimento->sql_query("",$campos,"k172_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k172_nome)){
-          $repassa = array("chave_k172_sequencial"=>$chave_k172_sequencial,"chave_k172_nome"=>$chave_k172_nome);
+          $repassa = ["chave_k172_sequencial"=>$chave_k172_sequencial,"chave_k172_nome"=>$chave_k172_nome];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

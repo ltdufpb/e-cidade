@@ -14,11 +14,6 @@ use ECidade\Saude\Laboratorio\Integracao\Luckmann\Builder\ImportacaoInconsistenc
 class ImportacaoRequisicaoInconsistenciaService
 {
     /**
-     * @var ImportacaoRequisicaoInconsistenciaRepository
-     */
-    private $repository;
-
-    /**
      * @var ImportacaoInconsistencia
      */
     private $importacaoInconsistencia;
@@ -32,9 +27,8 @@ class ImportacaoRequisicaoInconsistenciaService
      * ImportacaoRequisicaoInconsistenciaService constructor.
      * @param ImportacaoRequisicaoInconsistenciaRepository $repository
      */
-    public function __construct(ImportacaoRequisicaoInconsistenciaRepository $repository)
+    public function __construct(private readonly ImportacaoRequisicaoInconsistenciaRepository $repository)
     {
-        $this->repository = $repository;
         $this->importacaoInconsistencia = ImportacaoInconsistencia::getInstance();
         $this->jsonObject = JSON::create();
     }
@@ -63,7 +57,7 @@ class ImportacaoRequisicaoInconsistenciaService
 
         try {
             $this->repository->save($inconsistenciaImportacao);
-        } catch (Exception $e) {
+        } catch (Exception) {
             throw new Exception('Não foi possível vincular as Inconsistências a Requisição.');
         }
 
@@ -88,7 +82,7 @@ class ImportacaoRequisicaoInconsistenciaService
 
         try {
             $inconsistenciaRequisicao = $this->repository->scopeRequisicao($parametros->requisicao)->get();
-        } catch (Exception $e) {
+        } catch (Exception) {
             $flagInconsistenciaRequisicao = false;
         }
 
@@ -99,7 +93,7 @@ class ImportacaoRequisicaoInconsistenciaService
                         $inconsistenciaRequisicao
                     )
                 );
-            } catch (Exception $e) {
+            } catch (Exception) {
                 throw new Exception('Não foi possível excluir as Inconsistências da Requisição.');
             }
         }
@@ -129,7 +123,7 @@ class ImportacaoRequisicaoInconsistenciaService
     {
         try {
             $rsInconsistencias = $this->repository->getInconsistenciasByLaboratorioSetor($idLaboratorio, $idSetor);
-            $inconsistencias = array();
+            $inconsistencias = [];
 
             /**
              * Usa a requisição como chave do array para evitar repetições
@@ -157,7 +151,7 @@ class ImportacaoRequisicaoInconsistenciaService
     private function filterInconsistenciasJSONByLaboratorioSetor($inconsistencias, $idLaboratorio, $idSetor = null)
     {
         $jsonObject = JSON::create();
-        $filteredJson = $dados = array();
+        $filteredJson = $dados = [];
 
         foreach ($inconsistencias as $inconsistencia) {
             $jsonInconsistencia = $jsonObject->parse(
@@ -178,9 +172,9 @@ class ImportacaoRequisicaoInconsistenciaService
                     }
 
                     if (empty($filteredJson[$idRequisicao])) {
-                        $filteredJson[$idRequisicao] = array();
+                        $filteredJson[$idRequisicao] = [];
                         $filteredJson[$idRequisicao]['requisicao'] = $idRequisicao;
-                        $filteredJson[$idRequisicao]['exames'] = array();
+                        $filteredJson[$idRequisicao]['exames'] = [];
                     }
 
                     $filteredJson[$idRequisicao]['exames'][$idExame] = $exame;

@@ -38,7 +38,7 @@ include(modification("classes/db_db_config_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_libcaixa.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
 $clrotulo->label("z01_numcgm");
@@ -152,7 +152,7 @@ if (isset($emite)){
         </td>
         <td >
         <?php 
-        $xxx=array("f"=>"Não","t"=>"Sim"); 
+        $xxx=["f"=>"Não","t"=>"Sim"]; 
         db_select ("k12_nominal",$xxx,true,"text",1);
         ?>  &nbsp;&nbsp;</td>
         <td align="right"><strong>N° Cheque:</strong></td>

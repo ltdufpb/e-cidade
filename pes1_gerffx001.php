@@ -30,8 +30,8 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clrhpessoal   = new cl_rhpessoal;
 $clpessoal     = new cl_pessoal;
 $clgerfsal     = new cl_gerfsal;
@@ -51,7 +51,7 @@ if(!isset($r14_mesusu) || (isset($r14_mesusu) && trim($r14_mesusu) == "")){
   $r14_mesusu = db_mesfolha();
 }
 ////////////
-$aFolhasComNovaEstrutura = array("fs", "supl","com");
+$aFolhasComNovaEstrutura = ["fs", "supl","com"];
 if ( DBPessoal::verificarUtilizacaoEstruturaSuplementar() && in_array($gerf, $aFolhasComNovaEstrutura) ) {
   require_once(modification("pes4_implantacaoponto001.php"));
   exit;
@@ -130,11 +130,11 @@ if(isset($incluir) && !isset($alertconfirma)){
   $valor_em_branco = false;
   $quant_em_branco = false;
 
-  if(trim($r14_quant) == ""){
+  if(trim((string) $r14_quant) == ""){
     $r14_quant = "0";
     $quant_em_branco = true;
   }
-  if(trim($r14_valor) == ""){
+  if(trim((string) $r14_valor) == ""){
     $r14_valor = "0";
     $valor_em_branco = true;
   }
@@ -242,11 +242,11 @@ if(isset($incluir) && !isset($alertconfirma)){
   $valor_em_branco = false;
   $quant_em_branco = false;
 
-  if(trim($r14_quant) == ""){
+  if(trim((string) $r14_quant) == ""){
     $r14_quant = "0";
     $quant_em_branco = true;
   }
-  if(trim($r14_valor) == ""){
+  if(trim((string) $r14_valor) == ""){
     $r14_valor = "0";
     $valor_em_branco = true;
   }

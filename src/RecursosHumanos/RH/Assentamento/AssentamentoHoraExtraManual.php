@@ -38,7 +38,7 @@ class AssentamentoHoraExtraManual extends \Assentamento {
   /**
    * @var array
    */
-  private $horasExtras = array();
+  private $horasExtras = [];
 
   /**
    * AssentamentoHoraExtraManual constructor.
@@ -66,7 +66,7 @@ class AssentamentoHoraExtraManual extends \Assentamento {
       throw new \BusinessException("Assentamento de hora extra manual ({$iCodigo}) não encontrado no sistema.");
     }
 
-    $horasExtras = array();
+    $horasExtras = [];
 
     \db_utils::makeCollectionFromRecord($rsHoraExtraManual, function($oRetornoHorasExtrasManuais) use (&$horasExtras){
       $horasExtras[$oRetornoHorasExtrasManuais->h17_tipo] = $oRetornoHorasExtrasManuais->h17_hora;
@@ -102,7 +102,7 @@ class AssentamentoHoraExtraManual extends \Assentamento {
    * @return Boolean
    */
   public static function existeAssentamentoHoraExtraEfetividadeNaData(\DBDate $dataHoraExtraManual, \Servidor $servidor) {
-    return AssentamentoHoraExtraManual::create()->setServidor($servidor)->validarExistenciaAssentamentoHoraExtraNaData($dataHoraExtraManual, false);
+    return $this->create()->setServidor($servidor)->validarExistenciaAssentamentoHoraExtraNaData($dataHoraExtraManual, false);
   }
   
   /**
@@ -111,7 +111,7 @@ class AssentamentoHoraExtraManual extends \Assentamento {
    * @return Boolean
    */
   public static function existeAssentamentoHoraExtraHistoricoFuncionalNaData(\DBDate $dataHoraExtraManual, \Servidor $servidor) {
-    return AssentamentoHoraExtraManual::create()->setServidor($servidor)->validarExistenciaAssentamentoHoraExtraNaData($dataHoraExtraManual, true);
+    return $this->create()->setServidor($servidor)->validarExistenciaAssentamentoHoraExtraNaData($dataHoraExtraManual, true);
   }
 
   /**

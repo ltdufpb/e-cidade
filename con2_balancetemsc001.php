@@ -96,7 +96,7 @@ $clrotulo->label('DBtxt22');
                                 </td>
                                 <td colspan="3">
                                     <?php
-                                    $opcoes = array('n' => "Não", 's' => "Sim");
+                                    $opcoes = ['n' => "Não", 's' => "Sim"];
                                     db_select('encerramento', $opcoes, true, 1);
                                     ?>
                                 </td>
@@ -107,7 +107,7 @@ $clrotulo->label('DBtxt22');
                                 </td>
                                 <td colspan="3">
                                     <?php
-                                    $opcoes = array('a' => "Analítico", 's' => "Sintético");
+                                    $opcoes = ['a' => "Analítico", 's' => "Sintético"];
                                     db_select('tipoemissao', $opcoes, true, 1);
                                     ?>
                                 </td>
@@ -118,7 +118,7 @@ $clrotulo->label('DBtxt22');
                                 </td>
                                 <td colspan="3">
                                     <?php
-                                    $formatos = array('pdf' => "PDF", 'csv' => "CSV");
+                                    $formatos = ['pdf' => "PDF", 'csv' => "CSV"];
                                     db_select('formato', $formatos, true, 1);
                                     ?>
                                 </td>

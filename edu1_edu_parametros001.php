@@ -34,7 +34,7 @@ include(modification("libs/db_libdicionario.php"));
 include(modification("classes/db_edu_parametros_classe.php"));
 include(modification("classes/db_db_depart_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cledu_parametros = new cl_edu_parametros;
 $cldb_depart = new cl_db_depart;
 $db_botao = true;

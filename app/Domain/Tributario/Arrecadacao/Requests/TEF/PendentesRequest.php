@@ -35,26 +35,26 @@ class PendentesRequest extends FormRequest
 
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     public function messages()
     {
         return [
-            "dataInicio.required"           => utf8_encode("Data Inicio não informada."),
-            "dataInicio.date"               => utf8_encode("Data Inicio inválida."),
+            "dataInicio.required"           => mb_convert_encoding("Data Inicio não informada.", 'UTF-8', 'ISO-8859-1'),
+            "dataInicio.date"               => mb_convert_encoding("Data Inicio inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "dataFim.required"              => utf8_encode("Data Fim não informada."),
-            "dataFim.date"                  => utf8_encode("Data Fim inválida."),
+            "dataFim.required"              => mb_convert_encoding("Data Fim não informada.", 'UTF-8', 'ISO-8859-1'),
+            "dataFim.date"                  => mb_convert_encoding("Data Fim inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "terminal.integer"              => utf8_encode("Terminal inválido."),
+            "terminal.integer"              => mb_convert_encoding("Terminal inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_modulo.required"            => utf8_encode("Módulo não informado."),
-            "DB_modulo.integer"             => utf8_encode("Módulo inválido."),
+            "DB_modulo.required"            => mb_convert_encoding("Módulo não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_modulo.integer"             => mb_convert_encoding("Módulo inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_itemmenu_acessado.required" => utf8_encode("Menu não informado."),
-            "DB_itemmenu_acessado.integer"  => utf8_encode("Menu inválido.")
+            "DB_itemmenu_acessado.required" => mb_convert_encoding("Menu não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_itemmenu_acessado.integer"  => mb_convert_encoding("Menu inválido.", 'UTF-8', 'ISO-8859-1')
         ];
     }
 }

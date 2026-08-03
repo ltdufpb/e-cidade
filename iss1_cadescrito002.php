@@ -47,10 +47,10 @@ $db_opcao = 1;
     <tr>
       <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
      <?php
-	     $clcriaabas->identifica = array("cadescrito"=>"Escritório Contábil","cadescritoresp"=>"Responsável");
-	     $clcriaabas->src = array("cadescrito"=>"iss1_cadescrito005.php");
-	     $clcriaabas->disabled   =  array("cadescritoresp"=>"true");
-	     $clcriaabas->sizecampo = array("cadescrito"=>20,"cadescritoresp"=>20);
+	     $clcriaabas->identifica = ["cadescrito"=>"Escritório Contábil","cadescritoresp"=>"Responsável"];
+	     $clcriaabas->src = ["cadescrito"=>"iss1_cadescrito005.php"];
+	     $clcriaabas->disabled   =  ["cadescritoresp"=>"true"];
+	     $clcriaabas->sizecampo = ["cadescrito"=>20,"cadescritoresp"=>20];
 	     $clcriaabas->cria_abas();
      ?>
    </td>

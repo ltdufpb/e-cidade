@@ -110,7 +110,7 @@
             </td>
             <td>
               <?php
-                db_select('q142_cnae', array(), '', 1, "");
+                db_select('q142_cnae', [], '', 1, "");
               ?>         
             </td>
           </tr>

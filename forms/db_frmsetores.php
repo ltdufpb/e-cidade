@@ -84,8 +84,8 @@ $clsetor->rotulo->label();
 <script>
 function js_preenche(chave){
   func_setores.hide();
-//  alert('<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave);
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+//  alert('<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave);
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 function js_func_nome(){
   func_setores.jan.location.href = 'func_setores.php?nomeSetor='+document.form1.j30_descr.value+'&funcao_js=parent.js_preenche|0';

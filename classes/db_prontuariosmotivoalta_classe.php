@@ -3,30 +3,30 @@
 //CLASSE DA ENTIDADE prontuariosmotivoalta
 class cl_prontuariosmotivoalta { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd25_codigo = 0; 
-   var $sd25_motivoalta = 0; 
-   var $sd25_prontuarios = 0; 
-   var $sd25_data_dia = null; 
-   var $sd25_data_mes = null; 
-   var $sd25_data_ano = null; 
-   var $sd25_data = null; 
-   var $sd25_hora = null; 
-   var $sd25_db_usuarios = 0; 
+   public $sd25_codigo = 0; 
+   public $sd25_motivoalta = 0; 
+   public $sd25_prontuarios = 0; 
+   public $sd25_data_dia = null; 
+   public $sd25_data_mes = null; 
+   public $sd25_data_ano = null; 
+   public $sd25_data = null; 
+   public $sd25_hora = null; 
+   public $sd25_db_usuarios = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd25_codigo = int4 = Código 
                  sd25_motivoalta = int4 = Motivo de alta 
                  sd25_prontuarios = int4 = Prontuarios 
@@ -35,10 +35,10 @@ class cl_prontuariosmotivoalta {
                  sd25_db_usuarios = int4 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_prontuariosmotivoalta() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontuariosmotivoalta"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -127,10 +127,10 @@ class cl_prontuariosmotivoalta {
          $this->erro_status = "0";
          return false; 
        }
-       $this->sd25_codigo = pg_result($result,0,0); 
+       $this->sd25_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from prontuariosmotivoalta_sd25_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $sd25_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $sd25_codigo)){
          $this->erro_sql = " Campo sd25_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -168,7 +168,7 @@ class cl_prontuariosmotivoalta {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Alta de prontuarios ($this->sd25_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Alta de prontuarios já Cadastrado";
@@ -197,15 +197,15 @@ class cl_prontuariosmotivoalta {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20907,'$this->sd25_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,3762,20907,'','".AddSlashes(pg_result($resaco,0,'sd25_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3762,20908,'','".AddSlashes(pg_result($resaco,0,'sd25_motivoalta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3762,20909,'','".AddSlashes(pg_result($resaco,0,'sd25_prontuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3762,20910,'','".AddSlashes(pg_result($resaco,0,'sd25_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3762,20912,'','".AddSlashes(pg_result($resaco,0,'sd25_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3762,20913,'','".AddSlashes(pg_result($resaco,0,'sd25_db_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3762,20907,'','".AddSlashes(pg_fetch_result($resaco,0,'sd25_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3762,20908,'','".AddSlashes(pg_fetch_result($resaco,0,'sd25_motivoalta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3762,20909,'','".AddSlashes(pg_fetch_result($resaco,0,'sd25_prontuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3762,20910,'','".AddSlashes(pg_fetch_result($resaco,0,'sd25_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3762,20912,'','".AddSlashes(pg_fetch_result($resaco,0,'sd25_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3762,20913,'','".AddSlashes(pg_fetch_result($resaco,0,'sd25_db_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -215,10 +215,10 @@ class cl_prontuariosmotivoalta {
       $this->atualizacampos();
      $sql = " update prontuariosmotivoalta set ";
      $virgula = "";
-     if(trim($this->sd25_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_codigo"])){ 
+     if(trim((string) $this->sd25_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_codigo"])){ 
        $sql  .= $virgula." sd25_codigo = $this->sd25_codigo ";
        $virgula = ",";
-       if(trim($this->sd25_codigo) == null ){ 
+       if(trim((string) $this->sd25_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "sd25_codigo";
          $this->erro_banco = "";
@@ -228,10 +228,10 @@ class cl_prontuariosmotivoalta {
          return false;
        }
      }
-     if(trim($this->sd25_motivoalta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_motivoalta"])){ 
+     if(trim((string) $this->sd25_motivoalta)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_motivoalta"])){ 
        $sql  .= $virgula." sd25_motivoalta = $this->sd25_motivoalta ";
        $virgula = ",";
-       if(trim($this->sd25_motivoalta) == null ){ 
+       if(trim((string) $this->sd25_motivoalta) == null ){ 
          $this->erro_sql = " Campo Motivo de alta não informado.";
          $this->erro_campo = "sd25_motivoalta";
          $this->erro_banco = "";
@@ -241,10 +241,10 @@ class cl_prontuariosmotivoalta {
          return false;
        }
      }
-     if(trim($this->sd25_prontuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_prontuarios"])){ 
+     if(trim((string) $this->sd25_prontuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_prontuarios"])){ 
        $sql  .= $virgula." sd25_prontuarios = $this->sd25_prontuarios ";
        $virgula = ",";
-       if(trim($this->sd25_prontuarios) == null ){ 
+       if(trim((string) $this->sd25_prontuarios) == null ){ 
          $this->erro_sql = " Campo Prontuarios não informado.";
          $this->erro_campo = "sd25_prontuarios";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_prontuariosmotivoalta {
          return false;
        }
      }
-     if(trim($this->sd25_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd25_data_dia"] !="") ){ 
+     if(trim((string) $this->sd25_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["sd25_data_dia"] !="") ){ 
        $sql  .= $virgula." sd25_data = '$this->sd25_data' ";
        $virgula = ",";
-       if(trim($this->sd25_data) == null ){ 
+       if(trim((string) $this->sd25_data) == null ){ 
          $this->erro_sql = " Campo Data não informado.";
          $this->erro_campo = "sd25_data_dia";
          $this->erro_banco = "";
@@ -270,7 +270,7 @@ class cl_prontuariosmotivoalta {
        if(isset($GLOBALS["HTTP_POST_VARS"]["sd25_data_dia"])){ 
          $sql  .= $virgula." sd25_data = null ";
          $virgula = ",";
-         if(trim($this->sd25_data) == null ){ 
+         if(trim((string) $this->sd25_data) == null ){ 
            $this->erro_sql = " Campo Data não informado.";
            $this->erro_campo = "sd25_data_dia";
            $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_prontuariosmotivoalta {
          }
        }
      }
-     if(trim($this->sd25_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_hora"])){ 
+     if(trim((string) $this->sd25_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_hora"])){ 
        $sql  .= $virgula." sd25_hora = '$this->sd25_hora' ";
        $virgula = ",";
-       if(trim($this->sd25_hora) == null ){ 
+       if(trim((string) $this->sd25_hora) == null ){ 
          $this->erro_sql = " Campo Hora não informado.";
          $this->erro_campo = "sd25_hora";
          $this->erro_banco = "";
@@ -294,10 +294,10 @@ class cl_prontuariosmotivoalta {
          return false;
        }
      }
-     if(trim($this->sd25_db_usuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_db_usuarios"])){ 
+     if(trim((string) $this->sd25_db_usuarios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd25_db_usuarios"])){ 
        $sql  .= $virgula." sd25_db_usuarios = $this->sd25_db_usuarios ";
        $virgula = ",";
-       if(trim($this->sd25_db_usuarios) == null ){ 
+       if(trim((string) $this->sd25_db_usuarios) == null ){ 
          $this->erro_sql = " Campo Usuário não informado.";
          $this->erro_campo = "sd25_db_usuarios";
          $this->erro_banco = "";
@@ -321,21 +321,21 @@ class cl_prontuariosmotivoalta {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20907,'$this->sd25_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd25_codigo"]) || $this->sd25_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3762,20907,'".AddSlashes(pg_result($resaco,$conresaco,'sd25_codigo'))."','$this->sd25_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3762,20907,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd25_codigo'))."','$this->sd25_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd25_motivoalta"]) || $this->sd25_motivoalta != "")
-             $resac = db_query("insert into db_acount values($acount,3762,20908,'".AddSlashes(pg_result($resaco,$conresaco,'sd25_motivoalta'))."','$this->sd25_motivoalta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3762,20908,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd25_motivoalta'))."','$this->sd25_motivoalta',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd25_prontuarios"]) || $this->sd25_prontuarios != "")
-             $resac = db_query("insert into db_acount values($acount,3762,20909,'".AddSlashes(pg_result($resaco,$conresaco,'sd25_prontuarios'))."','$this->sd25_prontuarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3762,20909,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd25_prontuarios'))."','$this->sd25_prontuarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd25_data"]) || $this->sd25_data != "")
-             $resac = db_query("insert into db_acount values($acount,3762,20910,'".AddSlashes(pg_result($resaco,$conresaco,'sd25_data'))."','$this->sd25_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3762,20910,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd25_data'))."','$this->sd25_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd25_hora"]) || $this->sd25_hora != "")
-             $resac = db_query("insert into db_acount values($acount,3762,20912,'".AddSlashes(pg_result($resaco,$conresaco,'sd25_hora'))."','$this->sd25_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3762,20912,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd25_hora'))."','$this->sd25_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd25_db_usuarios"]) || $this->sd25_db_usuarios != "")
-             $resac = db_query("insert into db_acount values($acount,3762,20913,'".AddSlashes(pg_result($resaco,$conresaco,'sd25_db_usuarios'))."','$this->sd25_db_usuarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3762,20913,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd25_db_usuarios'))."','$this->sd25_db_usuarios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -389,15 +389,15 @@ class cl_prontuariosmotivoalta {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20907,'$sd25_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3762,20907,'','".AddSlashes(pg_result($resaco,$iresaco,'sd25_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3762,20908,'','".AddSlashes(pg_result($resaco,$iresaco,'sd25_motivoalta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3762,20909,'','".AddSlashes(pg_result($resaco,$iresaco,'sd25_prontuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3762,20910,'','".AddSlashes(pg_result($resaco,$iresaco,'sd25_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3762,20912,'','".AddSlashes(pg_result($resaco,$iresaco,'sd25_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3762,20913,'','".AddSlashes(pg_result($resaco,$iresaco,'sd25_db_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3762,20907,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd25_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3762,20908,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd25_motivoalta'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3762,20909,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd25_prontuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3762,20910,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd25_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3762,20912,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd25_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3762,20913,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd25_db_usuarios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

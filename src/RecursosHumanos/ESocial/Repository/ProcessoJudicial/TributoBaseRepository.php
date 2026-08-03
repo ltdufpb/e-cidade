@@ -160,7 +160,7 @@ class TributoBaseRepository
      * @param TributoBase|null $tributoBase
      * @throws Exception
      */
-    public function delete(TributoBase $tributoBase = null)
+    public function delete(?TributoBase $tributoBase = null)
     {
         $id = $tributoBase instanceof TributoBase ? $tributoBase->getSequencial() : null;
 
@@ -179,7 +179,7 @@ class TributoBaseRepository
      * @return bool|TributoBase
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessotributobase;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("rhestagioquesitopergunta"=>"Perguntas","rhestagioquesitoresposta"=>"Respostas"); 
-	 $clcriaabas->src = array("rhestagioquesitopergunta"=>"rec1_rhestagioquesitopergunta004.php");
-	 $clcriaabas->disabled   =  array("rhestagioquesitoresposta"=>"true"); 
+	 $clcriaabas->identifica = ["rhestagioquesitopergunta"=>"Perguntas","rhestagioquesitoresposta"=>"Respostas"]; 
+	 $clcriaabas->src = ["rhestagioquesitopergunta"=>"rec1_rhestagioquesitopergunta004.php"];
+	 $clcriaabas->disabled   =  ["rhestagioquesitoresposta"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

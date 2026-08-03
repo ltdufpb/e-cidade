@@ -35,112 +35,33 @@ class Factory
 {
     public function getModalidadeDepara($iModalidade)
     {
-        switch ($iModalidade) {
-            case 29:
-                return new PRI();
-            break;
-
-            case 30:
-                return new CNV();
-            break;
-      
-            case 31:
-                return new TMP();
-            break;
-
-            case 32:
-                return new CNC();
-            break;
-
-            case 33:
-                return new PRP();
-            break;
-      
-            case 34:
-                return new PRE();
-            break;
-
-            case 35:
-                return new RIN();
-            break;
-
-            case 48:
-                return new CNS();
-            break;
-      
-            case 49:
-                return new RDC();
-            break;
-      
-            case 50:
-                return new RPO();
-            break;
-
-            case 28:
-            case 51:
-            case 52:
-                return new PRD();
-            break;
-
-            case 53:
-                return new CHP();
-            break;
-
-            case 54:
-                return new CPC();
-            break;
-      
-            case 55:
-                return new LEI();
-            break;
-      
-            case 56:
-                return new MAI();
-            break;
-      
-            case 57:
-                return new ESE();
-            break;
-      
-            case 58:
-                return new EST();
-            break;
-      
-            case 59:
-                return new LEE();
-            break;
-      
-            case 60:
-                return new RDE();
-            break;
-
-            case 62:
-                return new PDE();
-            break;
-      
-            case 61:
-                return new CPP();
-            break;
-
-            case 63:
-                return new CCP();
-            break;
-
-            case 64:
-                return new CCE();
-            break;
-
-            case 65:
-                return new PCE();
-            break;
-
-            case 66:
-                return new PCP();
-            break;
-
-            default:
-                throw new ParameterException("A Modalidade informada não tem Fundamentações.");
-            break;
-        }
+        return match ($iModalidade) {
+            29 => new PRI(),
+            30 => new CNV(),
+            31 => new TMP(),
+            32 => new CNC(),
+            33 => new PRP(),
+            34 => new PRE(),
+            35 => new RIN(),
+            48 => new CNS(),
+            49 => new RDC(),
+            50 => new RPO(),
+            28, 51, 52 => new PRD(),
+            53 => new CHP(),
+            54 => new CPC(),
+            55 => new LEI(),
+            56 => new MAI(),
+            57 => new ESE(),
+            58 => new EST(),
+            59 => new LEE(),
+            60 => new RDE(),
+            62 => new PDE(),
+            61 => new CPP(),
+            63 => new CCP(),
+            64 => new CCE(),
+            65 => new PCE(),
+            66 => new PCP(),
+            default => throw new ParameterException("A Modalidade informada não tem Fundamentações."),
+        };
     }
 }

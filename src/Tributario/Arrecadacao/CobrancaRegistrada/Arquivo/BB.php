@@ -38,19 +38,21 @@ class BB extends BaseAbstract
   const CODIGO_BANCO = '001';
   const VERSAO_LAYOUT_ARQUIVO = '083';
 
+  #[\Override]
   protected function gerarHeader()
   {
     $oHeader = parent::gerarHeader();
     $oHeader->codigo_banco = self::CODIGO_BANCO;
     $oHeader->codigo_convenio_banco = $this->gerarCodigoConvenioBanco();
     // Passa o digito para maiusculo caso seja um caracter alfabetico
-    $oHeader->dv_agencia = (ctype_alpha($oHeader->dv_agencia) ? strtoupper($oHeader->dv_agencia) : $oHeader->dv_agencia);
+    $oHeader->dv_agencia = (ctype_alpha((string) $oHeader->dv_agencia) ? strtoupper((string) $oHeader->dv_agencia) : $oHeader->dv_agencia);
     $oHeader->exclusivo_banco_1 = $this->gerarExclusivoBancoHeader();
     $oHeader->versao_layout = self::VERSAO_LAYOUT_ARQUIVO;
 
     return $oHeader;
   }
 
+  #[\Override]
   protected function gerarHeaderLote()
   {
     $oHeaderLote = parent::gerarHeaderLote();
@@ -58,7 +60,7 @@ class BB extends BaseAbstract
     $oHeaderLote->codigo_banco = self::CODIGO_BANCO;
     $oHeaderLote->versao_layout = '042';
     $oHeaderLote->codigo_convenio_banco = $this->gerarCodigoConvenioBanco();
-    $oHeaderLote->dv_agencia = (ctype_alpha($oHeaderLote->dv_agencia) ? strtoupper($oHeaderLote->dv_agencia) : $oHeaderLote->dv_agencia);
+    $oHeaderLote->dv_agencia = (ctype_alpha((string) $oHeaderLote->dv_agencia) ? strtoupper((string) $oHeaderLote->dv_agencia) : $oHeaderLote->dv_agencia);
     $oHeaderLote->exclusivo_banco_1 = $this->gerarExclusivoBancoHeader();
     // $oHeaderLote->mensagem1 = str_pad('', 40, ' ');
     // $oHeaderLote->mensagem2 = str_pad('', 40, ' ');
@@ -67,12 +69,13 @@ class BB extends BaseAbstract
     return $oHeaderLote;
   }
 
+  #[\Override]
   protected function gerarSegmentoP(Registro $oRegistro)
   {
     $oSegmentoP = parent::gerarSegmentoP($oRegistro);
 
     $oSegmentoP->codigo_banco      = self::CODIGO_BANCO;
-    $oSegmentoP->dv_agencia        = (ctype_alpha($oSegmentoP->dv_agencia) ? strtoupper($oSegmentoP->dv_agencia) : $oSegmentoP->dv_agencia);
+    $oSegmentoP->dv_agencia        = (ctype_alpha((string) $oSegmentoP->dv_agencia) ? strtoupper((string) $oSegmentoP->dv_agencia) : $oSegmentoP->dv_agencia);
     $oSegmentoP->exclusivo_banco_1 = $this->gerarExclusivoBancoHeader();
 
     $oSegmentoP->exclusivo_banco_2 = str_pad($oRegistro->getNossoNumero(), 20, ' ', STR_PAD_RIGHT);
@@ -88,6 +91,7 @@ class BB extends BaseAbstract
     return $oSegmentoP;
   }
 
+  #[\Override]
   protected function gerarSegmentoQ(Registro $oRegistro)
   {
     $oSegmentoQ = parent::gerarSegmentoQ($oRegistro);
@@ -96,6 +100,7 @@ class BB extends BaseAbstract
     return $oSegmentoQ;
   }
 
+  #[\Override]
   protected function gerarTrailerLote()
   {
     $oTrailerLote = parent::gerarTrailerLote();
@@ -104,6 +109,7 @@ class BB extends BaseAbstract
     return $oTrailerLote;
   }
 
+  #[\Override]
   protected function gerarTrailer()
   {
     $oTrailer = parent::gerarTrailer();
@@ -122,13 +128,13 @@ class BB extends BaseAbstract
     $oConvenio = $this->oHeader->getConvenio();
 
     /* Monta parte do numero do convenio de cobranca com 9 digitos completados a esquerda com 0 */
-    $sCodigoConvenioBanco .= str_pad($oConvenio->numero_convenio, 9, '0', STR_PAD_LEFT);
+    $sCodigoConvenioBanco .= str_pad((string) $oConvenio->numero_convenio, 9, '0', STR_PAD_LEFT);
     /* Monta parte cobranca cedente */
     $sCodigoConvenioBanco .= '0014'; //str_pad($oConvenio->cedente, 4, '0', STR_PAD_LEFT);
     /* Monta carteira de cobranca */
     $sCodigoConvenioBanco .= $oConvenio->carteira;
     /* Monta variacao da carteira de cobranca */
-    $sCodigoConvenioBanco .= str_pad($oConvenio->variacao, 3, '0', STR_PAD_LEFT);
+    $sCodigoConvenioBanco .= str_pad((string) $oConvenio->variacao, 3, '0', STR_PAD_LEFT);
     /* Identificao de remessa de testes 2 digitos preencher com espacos ou TS para testes */
     $sCodigoConvenioBanco .= '  ';
 
@@ -144,11 +150,11 @@ class BB extends BaseAbstract
     /*
      * Adiciona a conta corrente completando com 0 ate 12 caracteres
      */
-    $sExclusivoBancoHeader  = str_pad($this->oHeader->getContaBancaria()->getNumeroConta(), 12, '0', STR_PAD_LEFT);
+    $sExclusivoBancoHeader  = str_pad((string) $this->oHeader->getContaBancaria()->getNumeroConta(), 12, '0', STR_PAD_LEFT);
 
     /* Adiciona o digito verificador da conta, tratando se for uma letra */
-    if (ctype_alpha($this->oHeader->getContaBancaria()->getDVConta())) {
-      $sExclusivoBancoHeader .= strtoupper($this->oHeader->getContaBancaria()->getDVConta());
+    if (ctype_alpha((string) $this->oHeader->getContaBancaria()->getDVConta())) {
+      $sExclusivoBancoHeader .= strtoupper((string) $this->oHeader->getContaBancaria()->getDVConta());
     } else {
       $sExclusivoBancoHeader .= $this->oHeader->getContaBancaria()->getDVConta();
     }

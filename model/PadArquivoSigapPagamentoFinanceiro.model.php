@@ -42,7 +42,7 @@ final class PadArquivoSigapPagamentoFinanceiro extends PadArquivoSigap {
   public function __construct() {
 
     $this->sNomeArquivo = "PagamentoFinanceiro";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
 
   /**
@@ -62,7 +62,7 @@ final class PadArquivoSigapPagamentoFinanceiro extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $sListaInstit = db_getsession("DB_instit");
     $sWhere          =  " and e60_instit in ({$sListaInstit})";
     $sSqlPagamentos  = "select e60_anousu as ano, ";
@@ -217,10 +217,10 @@ final class PadArquivoSigapPagamentoFinanceiro extends PadArquivoSigap {
       $oPagamentoRetorno                              = new stdClass();
       $oPagamentoRetorno->pfiCodigoEntidade           = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oPagamentoRetorno->pfiMesAnoMovimento          = $sDiaMesAno;
-      $sNumeroEmpenho  = str_pad($oPagamento->e60_codemp, 16, "0", STR_PAD_LEFT);
+      $sNumeroEmpenho  = str_pad((string) $oPagamento->e60_codemp, 16, "0", STR_PAD_LEFT);
       $oPagamentoRetorno->pfiEmpenhoNumero            = $oPagamento->ano.$sNumeroEmpenho;
       $oPagamentoRetorno->pfiNumeroPagamento          = $oPagamento->c75_codlan;
-      $oPagamentoRetorno->pfiNumeroLiquidacao         = str_pad($oPagamento->c80_codord, 20, '0', STR_PAD_LEFT);
+      $oPagamentoRetorno->pfiNumeroLiquidacao         = str_pad((string) $oPagamento->c80_codord, 20, '0', STR_PAD_LEFT);
       $oPagamentoRetorno->pfiDataDocumento            = $oPagamento->c75_data;
       $oPagamentoRetorno->pfiValorPagamento           = number_format($oPagamento->c70_valor,2,".","");
       $oPagamentoRetorno->pfiSinalPagamento           = $oPagamento->sinal;
@@ -234,7 +234,7 @@ final class PadArquivoSigapPagamentoFinanceiro extends PadArquivoSigap {
       $sSqlContaPagadora .= "  where c61_reduz = ".$oPagamento->conta_pagadora;
       $rsContaPagadora     = db_query($sSqlContaPagadora);
       if (pg_num_rows($rsContaPagadora) > 0) {
-       $iContaPagadora  = str_pad(pg_result($rsContaPagadora,0,"c60_estrut"), 20,'0', STR_PAD_RIGHT);
+       $iContaPagadora  = str_pad(pg_fetch_result($rsContaPagadora,0,"c60_estrut"), 20,'0', STR_PAD_RIGHT);
       }
       $iContaCredito = $iContaPagadora;
       $oPagamentoRetorno->pfiCodigoContaBalancete = $iContaCredito;
@@ -253,7 +253,7 @@ final class PadArquivoSigapPagamentoFinanceiro extends PadArquivoSigap {
    */
   public function getNomeElementos() {
 
-    $aElementos = array(
+    $aElementos = [
                         "pfiCodigoEntidade",
                         "pfiMesAnoMovimento",
                         "pfiCodigoContaBalancete",
@@ -265,7 +265,7 @@ final class PadArquivoSigapPagamentoFinanceiro extends PadArquivoSigap {
                         "pfiDataDocumento",
                         "pfiTipoDocumento",
                         "pfiValorPagamento"
-                       );
+                       ];
     return $aElementos;
   }
 

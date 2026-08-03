@@ -70,7 +70,7 @@ if (isset($liberaaba) && $liberaaba) {
       $sql = $classociadovalorservico->sql_query($_POST['fm13_codigo'], $sCampos);
       $result = $classociadovalorservico->sql_record($sql);
 
-      if ($result && pg_numrows($result) > 0) {
+      if ($result && pg_num_rows($result) > 0) {
           db_fieldsmemory($result, 0);   
           $db_opcao = 2;
           $db_botao = true;
@@ -93,7 +93,7 @@ if (isset($liberaaba) && $liberaaba) {
       $sql = $classociadoservicos->sql_query($opcaobusca, $sCampos);
       $result = $classociadoservicos->sql_record($sql);
        
-      if ($result && pg_numrows($result) > 0) {
+      if ($result && pg_num_rows($result) > 0) {
          db_fieldsmemory($result, 0);
       }
 
@@ -114,7 +114,7 @@ function validaDataVigencia($classociadovalorservico, $iservico, $dVigencia, $iC
    $sMsgRetorno = pg_last_error();
 
    if (empty($sMsgRetorno)) {
-      if ($result && pg_numrows($result) > 0) {
+      if ($result && pg_num_rows($result) > 0) {
          $sWhere .= " and (";
 
          if ($iCodigo > 0) {
@@ -125,7 +125,7 @@ function validaDataVigencia($classociadovalorservico, $iservico, $dVigencia, $iC
          $sql = $classociadovalorservico->sql_query_file(null, "fm13_codigo", null, $sWhere);
          $result = $classociadovalorservico->sql_record($sql);
          
-         if ($result && pg_numrows($result) > 0) {
+         if ($result && pg_num_rows($result) > 0) {
             return false;
          } else {
             return true;
@@ -150,7 +150,7 @@ if (isset($incluir)) {
          $lSqlErro = true;
       }
    } else {
-      $fm13_valor = preg_replace("/[^0-9]/", "", $fm13_valor);
+      $fm13_valor = preg_replace("/[^0-9]/", "", (string) $fm13_valor);
       $fm13_valor = ($fm13_valor / 100);
 
       db_inicio_transacao();
@@ -178,7 +178,7 @@ if (isset($alterar)) {
       $lSqlErro = true;
       $sErroMsg = $sMsgVigencia;
    } else {
-      $fm13_valor = preg_replace("/[^0-9]/", "", $fm13_valor);
+      $fm13_valor = preg_replace("/[^0-9]/", "", (string) $fm13_valor);
       $fm13_valor = ($fm13_valor / 100);
 
       db_inicio_transacao();
@@ -213,7 +213,7 @@ if (isset($opcao) && $opcao == 'excluir') {
 
    $sql = $clprestador->sql_query($fm07_prestador);
    $result = $clprestador->sql_record($sql);
-   if (pg_numrows($result) > 0) {
+   if (pg_num_rows($result) > 0) {
       db_fieldsmemory($result, 0);
    }  
    $db_opcao = 1;

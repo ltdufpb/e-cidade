@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_far_programa_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_stdlibwebseller.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clfar_programa = new cl_far_programa;
 $db_opcao = 1;
 $db_botao = true;

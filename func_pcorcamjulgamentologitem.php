@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcorcamjulgamentologitem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpcorcamjulgamentologitem = new cl_pcorcamjulgamentologitem;
 $clpcorcamjulgamentologitem->rotulo->label("pc93_sequencial");
 $clpcorcamjulgamentologitem->rotulo->label("pc93_sequencial");
@@ -98,9 +98,9 @@ $clpcorcamjulgamentologitem->rotulo->label("pc93_sequencial");
         }else{
            $sql = $clpcorcamjulgamentologitem->sql_query("",$campos,"pc93_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_pc93_sequencial)){
-          $repassa = array("chave_pc93_sequencial"=>$chave_pc93_sequencial,"chave_pc93_sequencial"=>$chave_pc93_sequencial);
+          $repassa = ["chave_pc93_sequencial"=>$chave_pc93_sequencial,"chave_pc93_sequencial"=>$chave_pc93_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

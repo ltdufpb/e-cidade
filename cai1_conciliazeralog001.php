@@ -38,8 +38,8 @@ include(modification("classes/db_conciliacor_classe.php"));
 include(modification("classes/db_conciliaextrato_classe.php"));
 include(modification("classes/db_conciliaitem_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clcontabancaria = new cl_contabancaria;
 $db_opcao = 1;
 $db_botao = false;

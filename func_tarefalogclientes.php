@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefalogclientes_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltarefalogclientes = new cl_tarefalogclientes;
 $cltarefalogclientes->rotulo->label("at68_sequen");
 $cltarefalogclientes->rotulo->label("at68_codmov");
@@ -98,9 +98,9 @@ $cltarefalogclientes->rotulo->label("at68_codmov");
         }else{
            $sql = $cltarefalogclientes->sql_query("",$campos,"at68_sequen","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at68_codmov)){
-          $repassa = array("chave_at68_sequen"=>$chave_at68_sequen,"chave_at68_codmov"=>$chave_at68_codmov);
+          $repassa = ["chave_at68_sequen"=>$chave_at68_sequen,"chave_at68_codmov"=>$chave_at68_codmov];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

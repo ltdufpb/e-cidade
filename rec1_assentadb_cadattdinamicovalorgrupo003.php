@@ -6,8 +6,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_assentadb_cadattdinamicovalorgrupo_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $oDaoAssentadb_cadattdinamicovalorgrupo = new cl_assentadb_cadattdinamicovalorgrupo;
 $db_botao    = false;
@@ -24,7 +24,7 @@ if (isset($excluir)) {
   $sPosScripts .= 'alert("' . $oDaoAssentadb_cadattdinamicovalorgrupo->erro_msg . '");' . "\n";
 
   if ($oDaoAssentadb_cadattdinamicovalorgrupo->erro_status != "0") {
-    $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
+    $sPosScripts .= "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
   }
 
 } else if(isset($chavepesquisa)) {

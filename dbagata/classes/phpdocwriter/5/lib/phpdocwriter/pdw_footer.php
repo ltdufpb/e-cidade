@@ -25,12 +25,12 @@ require_once('pdw_document.php');
 
 class pdw_footer extends pdw_document
 {
-var $tempname;
-var $parent;
+public $tempname;
+public $parent;
 
-function pdw_footer(&$obj, $tempname)
+function __construct(&$obj, $tempname)
 {
-	if (is_object($obj) && get_class($obj)=='pdw_document')
+	if (is_object($obj) && $obj::class=='pdw_document')
 	{
 		$this->parent=& $obj;
 // 		$this->frameno = $this->parent->frameno++;

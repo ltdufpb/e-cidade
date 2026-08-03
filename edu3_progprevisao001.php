@@ -43,8 +43,8 @@ include(modification("classes/db_convocacao_classe.php"));
 include(modification("classes/db_opcaoquestao_classe.php"));
 include(modification("classes/db_progclasse_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clprogmatricula = new cl_progmatricula;
 $clprogconfig = new cl_progconfig;
@@ -143,12 +143,12 @@ db_fieldsmemory($result,0);
        }else{
         $cor = $cor1;
        }
-       $ed112_d_database_dia = substr($ed112_d_database,8,2);
-       $ed112_d_database_mes = substr($ed112_d_database,5,2);
-       $ed112_d_database_ano = substr($ed112_d_database,0,4);
-       $ed112_d_datainicio_dia = substr($ed112_d_datainicio,8,2);
-       $ed112_d_datainicio_mes = substr($ed112_d_datainicio,5,2);
-       $ed112_d_datainicio_ano = substr($ed112_d_datainicio,0,4);
+       $ed112_d_database_dia = substr((string) $ed112_d_database,8,2);
+       $ed112_d_database_mes = substr((string) $ed112_d_database,5,2);
+       $ed112_d_database_ano = substr((string) $ed112_d_database,0,4);
+       $ed112_d_datainicio_dia = substr((string) $ed112_d_datainicio,8,2);
+       $ed112_d_datainicio_mes = substr((string) $ed112_d_datainicio,5,2);
+       $ed112_d_datainicio_ano = substr((string) $ed112_d_datainicio,0,4);
        $total_dias_prog = $ed110_i_intervalo*365;
        $ed112_d_dataprevisao = strftime("%Y-%m-%d",mktime(0,0,0,$ed112_d_datainicio_mes,$ed112_d_datainicio_dia+$total_dias_prog,$ed112_d_datainicio_ano));
        $ed112_d_dataprevisao_dia = substr($ed112_d_dataprevisao,8,2);
@@ -160,8 +160,8 @@ db_fieldsmemory($result,0);
         for($x=0;$x<$clproglicencamatr->numrows;$x++){
          $dias_licenca = 0;
          db_fieldsmemory($result3,$x);
-         $data_inicio = mktime(0,0,0,substr($ed122_d_inicio,5,2),substr($ed122_d_inicio,8,2),substr($ed122_d_inicio,0,4));
-         $data_final = mktime(0,0,0,substr($ed122_d_final,5,2),substr($ed122_d_final,8,2),substr($ed122_d_final,0,4));
+         $data_inicio = mktime(0,0,0,substr((string) $ed122_d_inicio,5,2),substr((string) $ed122_d_inicio,8,2),substr((string) $ed122_d_inicio,0,4));
+         $data_final = mktime(0,0,0,substr((string) $ed122_d_final,5,2),substr((string) $ed122_d_final,8,2),substr((string) $ed122_d_final,0,4));
          $data_entre = $data_final - $data_inicio;
          $dias = ceil($data_entre/86400);
          if($ed121_i_tempolimite>0){

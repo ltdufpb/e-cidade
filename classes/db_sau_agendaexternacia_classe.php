@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE sau_agendaexternacia
 class cl_sau_agendaexternacia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s123_i_codigo = 0; 
-   var $s123_i_agendaveiculocgs = 0; 
-   var $s123_v_acompanhante = null; 
-   var $s123_v_tipodoc = null; 
-   var $s123_v_documento = null; 
+   public $s123_i_codigo = 0; 
+   public $s123_i_agendaveiculocgs = 0; 
+   public $s123_v_acompanhante = null; 
+   public $s123_v_tipodoc = null; 
+   public $s123_v_documento = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s123_i_codigo = int4 = Código 
                  s123_i_agendaveiculocgs = int4 = Agenda Veículo CGS 
                  s123_v_acompanhante = varchar(40) = Acompanhante 
@@ -56,10 +56,10 @@ class cl_sau_agendaexternacia {
                  s123_v_documento = varchar(10) = Documento 
                  ";
    //funcao construtor da classe 
-   function cl_sau_agendaexternacia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_agendaexternacia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_sau_agendaexternacia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->s123_i_codigo = pg_result($result,0,0); 
+       $this->s123_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from sau_agendaexternacia_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $s123_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $s123_i_codigo)){
          $this->erro_sql = " Campo s123_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_sau_agendaexternacia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Agenda Externa CIA ($this->s123_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Agenda Externa CIA já Cadastrado";
@@ -194,14 +194,14 @@ class cl_sau_agendaexternacia {
      $resaco = $this->sql_record($this->sql_query_file($this->s123_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14308,'$this->s123_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2517,14308,'','".AddSlashes(pg_result($resaco,0,'s123_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2517,14309,'','".AddSlashes(pg_result($resaco,0,'s123_i_agendaveiculocgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2517,14310,'','".AddSlashes(pg_result($resaco,0,'s123_v_acompanhante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2517,14311,'','".AddSlashes(pg_result($resaco,0,'s123_v_tipodoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2517,14312,'','".AddSlashes(pg_result($resaco,0,'s123_v_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2517,14308,'','".AddSlashes(pg_fetch_result($resaco,0,'s123_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2517,14309,'','".AddSlashes(pg_fetch_result($resaco,0,'s123_i_agendaveiculocgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2517,14310,'','".AddSlashes(pg_fetch_result($resaco,0,'s123_v_acompanhante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2517,14311,'','".AddSlashes(pg_fetch_result($resaco,0,'s123_v_tipodoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2517,14312,'','".AddSlashes(pg_fetch_result($resaco,0,'s123_v_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_sau_agendaexternacia {
       $this->atualizacampos();
      $sql = " update sau_agendaexternacia set ";
      $virgula = "";
-     if(trim($this->s123_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s123_i_codigo"])){ 
+     if(trim((string) $this->s123_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s123_i_codigo"])){ 
        $sql  .= $virgula." s123_i_codigo = $this->s123_i_codigo ";
        $virgula = ",";
-       if(trim($this->s123_i_codigo) == null ){ 
+       if(trim((string) $this->s123_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "s123_i_codigo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_sau_agendaexternacia {
          return false;
        }
      }
-     if(trim($this->s123_i_agendaveiculocgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s123_i_agendaveiculocgs"])){ 
+     if(trim((string) $this->s123_i_agendaveiculocgs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s123_i_agendaveiculocgs"])){ 
        $sql  .= $virgula." s123_i_agendaveiculocgs = $this->s123_i_agendaveiculocgs ";
        $virgula = ",";
-       if(trim($this->s123_i_agendaveiculocgs) == null ){ 
+       if(trim((string) $this->s123_i_agendaveiculocgs) == null ){ 
          $this->erro_sql = " Campo Agenda Veículo CGS nao Informado.";
          $this->erro_campo = "s123_i_agendaveiculocgs";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_sau_agendaexternacia {
          return false;
        }
      }
-     if(trim($this->s123_v_acompanhante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s123_v_acompanhante"])){ 
+     if(trim((string) $this->s123_v_acompanhante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s123_v_acompanhante"])){ 
        $sql  .= $virgula." s123_v_acompanhante = '$this->s123_v_acompanhante' ";
        $virgula = ",";
-       if(trim($this->s123_v_acompanhante) == null ){ 
+       if(trim((string) $this->s123_v_acompanhante) == null ){ 
          $this->erro_sql = " Campo Acompanhante nao Informado.";
          $this->erro_campo = "s123_v_acompanhante";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_sau_agendaexternacia {
          return false;
        }
      }
-     if(trim($this->s123_v_tipodoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s123_v_tipodoc"])){ 
+     if(trim((string) $this->s123_v_tipodoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s123_v_tipodoc"])){ 
        $sql  .= $virgula." s123_v_tipodoc = '$this->s123_v_tipodoc' ";
        $virgula = ",";
-       if(trim($this->s123_v_tipodoc) == null ){ 
+       if(trim((string) $this->s123_v_tipodoc) == null ){ 
          $this->erro_sql = " Campo Tipo Documento nao Informado.";
          $this->erro_campo = "s123_v_tipodoc";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_sau_agendaexternacia {
          return false;
        }
      }
-     if(trim($this->s123_v_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s123_v_documento"])){ 
+     if(trim((string) $this->s123_v_documento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s123_v_documento"])){ 
        $sql  .= $virgula." s123_v_documento = '$this->s123_v_documento' ";
        $virgula = ",";
-       if(trim($this->s123_v_documento) == null ){ 
+       if(trim((string) $this->s123_v_documento) == null ){ 
          $this->erro_sql = " Campo Documento nao Informado.";
          $this->erro_campo = "s123_v_documento";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_sau_agendaexternacia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14308,'$this->s123_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s123_i_codigo"]) || $this->s123_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2517,14308,'".AddSlashes(pg_result($resaco,$conresaco,'s123_i_codigo'))."','$this->s123_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2517,14308,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s123_i_codigo'))."','$this->s123_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s123_i_agendaveiculocgs"]) || $this->s123_i_agendaveiculocgs != "")
-           $resac = db_query("insert into db_acount values($acount,2517,14309,'".AddSlashes(pg_result($resaco,$conresaco,'s123_i_agendaveiculocgs'))."','$this->s123_i_agendaveiculocgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2517,14309,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s123_i_agendaveiculocgs'))."','$this->s123_i_agendaveiculocgs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s123_v_acompanhante"]) || $this->s123_v_acompanhante != "")
-           $resac = db_query("insert into db_acount values($acount,2517,14310,'".AddSlashes(pg_result($resaco,$conresaco,'s123_v_acompanhante'))."','$this->s123_v_acompanhante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2517,14310,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s123_v_acompanhante'))."','$this->s123_v_acompanhante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s123_v_tipodoc"]) || $this->s123_v_tipodoc != "")
-           $resac = db_query("insert into db_acount values($acount,2517,14311,'".AddSlashes(pg_result($resaco,$conresaco,'s123_v_tipodoc'))."','$this->s123_v_tipodoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2517,14311,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s123_v_tipodoc'))."','$this->s123_v_tipodoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s123_v_documento"]) || $this->s123_v_documento != "")
-           $resac = db_query("insert into db_acount values($acount,2517,14312,'".AddSlashes(pg_result($resaco,$conresaco,'s123_v_documento'))."','$this->s123_v_documento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2517,14312,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s123_v_documento'))."','$this->s123_v_documento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_sau_agendaexternacia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14308,'$s123_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2517,14308,'','".AddSlashes(pg_result($resaco,$iresaco,'s123_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2517,14309,'','".AddSlashes(pg_result($resaco,$iresaco,'s123_i_agendaveiculocgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2517,14310,'','".AddSlashes(pg_result($resaco,$iresaco,'s123_v_acompanhante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2517,14311,'','".AddSlashes(pg_result($resaco,$iresaco,'s123_v_tipodoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2517,14312,'','".AddSlashes(pg_result($resaco,$iresaco,'s123_v_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2517,14308,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s123_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2517,14309,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s123_i_agendaveiculocgs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2517,14310,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s123_v_acompanhante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2517,14311,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s123_v_tipodoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2517,14312,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s123_v_documento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sau_agendaexternacia
@@ -407,7 +407,7 @@ class cl_sau_agendaexternacia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sau_agendaexternacia";
@@ -422,7 +422,7 @@ class cl_sau_agendaexternacia {
    function sql_query ( $s123_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_sau_agendaexternacia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_sau_agendaexternacia {
    function sql_query_file ( $s123_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -480,7 +480,7 @@ class cl_sau_agendaexternacia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

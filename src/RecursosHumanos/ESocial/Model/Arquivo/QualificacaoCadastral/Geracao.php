@@ -35,12 +35,12 @@ use \PDF;
  */
 class Geracao
 {   
-    private $qualificacoesCadastrais = array();
-    private $arquivos = array();
+    private $qualificacoesCadastrais = [];
+    private $arquivos = [];
     private $arquivo;
-    private $inconsistencias = array();
+    private $inconsistencias = [];
 
-    public function __construct($selecao = null, $matriculas = array())
+    public function __construct($selecao = null, $matriculas = [])
     {   
         $qualificacaoCadastralRepository = new QualificacaoCadastralRepository();
 
@@ -167,12 +167,12 @@ class Geracao
         $nome = \DBString::removerAcentuacao($qualificacaoCadastral->getNome());
         $dataNascimento = str_replace( "/", "", $qualificacaoCadastral->getDataNascimento());
 
-        $dados = array(
+        $dados = [
             $qualificacaoCadastral->getCPF(),
             $qualificacaoCadastral->getNIS(),
             $nome,
             $dataNascimento
-        );
+        ];
         fwrite($this->arquivo, implode(";", $dados));
         fwrite($this->arquivo, "\n");
     }

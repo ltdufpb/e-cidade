@@ -41,7 +41,7 @@ $clrhrubelemento          = new cl_rhrubelemento();
 $clrhrubretencao          = new cl_rhrubretencao();
 $clrhrubricasadiantamento = new cl_rhrubricasadiantamento();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 22;
 $db_botao = false;
@@ -59,10 +59,10 @@ if(isset($alterar) || isset($novasrubricas)){
   $clrhrubricas->rh27_formq = str_replace("\\","",$rh27_formq);
 //$clrhrubricas->rh27_cond2 = str_replace("\\","",$rh27_cond2);
 //$clrhrubricas->rh27_cond3 = str_replace("\\","",$rh27_cond3);
-  $clrhrubricas->rh27_cond2 = stripslashes($rh27_cond2);
-  $clrhrubricas->rh27_cond3 = stripslashes($rh27_cond3);
-  $clrhrubricas->rh27_cond2 = addslashes($rh27_cond2);
-  $clrhrubricas->rh27_cond3 = addslashes($rh27_cond3);
+  $clrhrubricas->rh27_cond2 = stripslashes((string) $rh27_cond2);
+  $clrhrubricas->rh27_cond3 = stripslashes((string) $rh27_cond3);
+  $clrhrubricas->rh27_cond2 = addslashes((string) $rh27_cond2);
+  $clrhrubricas->rh27_cond3 = addslashes((string) $rh27_cond3);
   $clrhrubricas->rh27_obs   = str_replace("\\","",$rh27_obs);
 
   if(!isset($novasrubricas)){
@@ -93,7 +93,7 @@ if(isset($alterar) || isset($novasrubricas)){
       }
     }
   }else{
-    $arr_codigos = split(",",$novasrubricas);
+    $arr_codigos = preg_split("#,#m",$novasrubricas);
     for($i=0; $i<count($arr_codigos); $i++){
       $rubricainclui = $arr_codigos[$i];
       if($i == 0){
@@ -180,8 +180,8 @@ if(isset($alterar) || isset($novasrubricas)){
     $rh27_rubric = $clrhrubricas->rh27_rubric;
     if($clrhrubricas->erro_status==0){
       $sqlerro = true;
-      $rh27_cond2 = stripslashes($rh27_cond2);
-      $rh27_cond3 = stripslashes($rh27_cond3);
+      $rh27_cond2 = stripslashes((string) $rh27_cond2);
+      $rh27_cond3 = stripslashes((string) $rh27_cond3);
     }
     if( !$sqlerro ){
       // <!-- ContratosPADRS: tipo de rubrica alterar -->
@@ -248,8 +248,8 @@ if(isset($alterar) || isset($novasrubricas)){
   $result = $clrhrubricas->sql_record($clrhrubricas->sql_query($chavepesquisa,db_getsession("DB_instit"),$sCampos));
   db_fieldsmemory($result,0);
 
-  $rh27_cond2 = stripslashes($rh27_cond2);
-  $rh27_cond3 = stripslashes($rh27_cond3);
+  $rh27_cond2 = stripslashes((string) $rh27_cond2);
+  $rh27_cond3 = stripslashes((string) $rh27_cond3);
 
   $sWhereRhrubelemento    = "      rhrubelemento.rh23_rubric = '{$chavepesquisa}'";
   $sWhereRhrubelemento   .= " and rhrubelemento.rh23_instit = ". db_getsession("DB_instit");
@@ -434,7 +434,7 @@ if(isset($chavepesquisa)){
             parent.document.formaba.rhbases.disabled=false;
             (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_rhbases.location.href='pes1_rhbases004.php?r09_rubric=".@$rh27_rubric."';
             parent.document.formaba.esocialrubricas.disabled=false;
-            (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_esocialrubricas.location.href='pes1_esocialrhrubricas001.php?codigoRubrica=".$rh27_rubric."&descricaoRubrica=".urlencode(utf8_encode($rh27_descr))."';
+            (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_esocialrubricas.location.href='pes1_esocialrhrubricas001.php?codigoRubrica=".$rh27_rubric."&descricaoRubrica=".urlencode(mb_convert_encoding($rh27_descr, 'UTF-8', 'ISO-8859-1'))."';
        ";
   if(isset($liberaaba)){
     echo "  parent.mo_camada('rhbases');";

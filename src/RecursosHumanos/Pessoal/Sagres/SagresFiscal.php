@@ -42,19 +42,9 @@ class SagresFiscal
     protected $periodo;
 
     /**
-     * @var
-     */
-    protected $ano;
-
-    /**
      * @var array
      */
     protected $codigoInstituicoes = [];
-
-    /**
-     * @var integer
-     */
-    protected $codigoTCE;
 
     /**
      * Arquivos gerados pelo sistema
@@ -74,19 +64,18 @@ class SagresFiscal
      * @param array $instituicoes
      * @param integer $ano
      * @param $codigoTCE
+     * @param int $codigoTCE
      */
     public function __construct(
         $params,
         DBDepartamento $departamento,
         array $instituicoes,
-        $ano,
-        $codigoTCE
+        protected $ano,
+        protected $codigoTCE
     ) {
         $this->params = $params;
         $this->departamento = $departamento;
-        $this->ano = $ano;
         $this->codigoInstituicoes = $instituicoes;
-        $this->codigoTCE = $codigoTCE;
     }
 
     public function processarArquivos($arquivos, $oParam)
@@ -137,7 +126,7 @@ class SagresFiscal
     {
         $arquivos = [];
         foreach ($this->arquivos as $key => $path) {
-            $aNomeArquivo = explode('.', $key);
+            $aNomeArquivo = explode('.', (string) $key);
             if (strlen($aNomeArquivo[0]) > 45) {
                 $key = substr($aNomeArquivo[0], 0, 45).'.'.$aNomeArquivo[1];
             }

@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
   <head>
@@ -76,7 +76,7 @@ db_postmemory($HTTP_POST_VARS);
                     <td align="left"nowrap>
                       <b>Listar Pacientes:</b>
                       <?php 
-                      $aX = array('1' => 'SIM', '2' => 'NÃO');
+                      $aX = ['1' => 'SIM', '2' => 'NÃO'];
                       db_select('pacientes', $aX, true, 1, 'onchange="js_filtraOrden(this.value)"');
                       ?>
                     </td>
@@ -84,7 +84,7 @@ db_postmemory($HTTP_POST_VARS);
                       &nbsp;
                       <b>Ordem:</b>
                       <?php 
-                      $aX = array('1' => 'DATA ATENDIMENTO', '2' => 'NOME PACIENTE');
+                      $aX = ['1' => 'DATA ATENDIMENTO', '2' => 'NOME PACIENTE'];
                       db_select('ordem', $aX, true, 1, '');
                       ?>
                     </td>
@@ -92,7 +92,7 @@ db_postmemory($HTTP_POST_VARS);
                       &nbsp;
                       <b>Agrupar:</b>
                       <?php 
-                      $aX = array('1' => 'UNIDADE x PROFISSIONAL', '2' => 'PROFISSIONAL x UNIDADE');
+                      $aX = ['1' => 'UNIDADE x PROFISSIONAL', '2' => 'PROFISSIONAL x UNIDADE'];
                       db_select('agrupar', $aX, true, 1, '');
                       ?>
                     </td>

@@ -22,7 +22,7 @@ class LinhaInformacaoComplementarRepositorio extends Repositorio
      * @return bool|LinhaInformacaoComplementar
      * @throws Exception
      */
-    public static function find($key, $columns = array('*'))
+    public static function find($key, $columns = ['*'])
     {
         $dao = new cl_orcparamseqinfocomplementar();
         $sql = $dao->sql_query($key, implode(', ', $columns));
@@ -215,7 +215,7 @@ class LinhaInformacaoComplementarRepositorio extends Repositorio
             throw new Exception("Não foi possível buscar a configuração das linhas.\nContate o suporte.");
         }
 
-        $configuracoes = array();
+        $configuracoes = [];
 
         if (pg_num_rows($resultado) === 0) {
             return $configuracoes;
@@ -232,7 +232,7 @@ class LinhaInformacaoComplementarRepositorio extends Repositorio
      * @param LinhaInformacaoComplementar|null $linhaColunaValorInformacaoComplementar
      * @throws Exception
      */
-    public function delete(LinhaInformacaoComplementar $linhaColunaValorInformacaoComplementar = null)
+    public function delete(?LinhaInformacaoComplementar $linhaColunaValorInformacaoComplementar = null)
     {
         $id = $linhaColunaValorInformacaoComplementar instanceof LinhaInformacaoComplementar
             ? $linhaColunaValorInformacaoComplementar->getSequencial()

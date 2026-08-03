@@ -59,7 +59,7 @@ class Importador
      * @param array $aArquivos
      * @return ImportadorModel
      */
-    public static function getImportador($aArquivos = array())
+    public static function getImportador($aArquivos = [])
     {
         return new ImportadorModel($aArquivos);
     }
@@ -96,7 +96,7 @@ class Importador
      * @return mixed|null
      * @throws \DBException
      */
-    public static function atualizarSituacao($situacao, $sequecialRequisicao = null,  $data)
+    public static function atualizarSituacao($situacao, $sequecialRequisicao = null,  $data = null)
     {
 
         $daoRequisicao = new \cl_requisicaocivitas();

@@ -34,14 +34,8 @@ use \Exception;
 
 final class CalculoJuridicaParcelamentoDocumento extends CalculoColecao implements Interfaces\Calculo
 {
-    private $termo;
-
-    private $processo;
-
-    public function __construct(Termo $termo, ProcessoForo $processo)
+    public function __construct(private readonly Termo $termo, private readonly ProcessoForo $processo)
     {
-        $this->termo = $termo;
-        $this->processo = $processo;
     }
 
     public function calcular()
@@ -99,7 +93,7 @@ final class CalculoJuridicaParcelamentoDocumento extends CalculoColecao implemen
 
             $rsProcessoForoDebitos = db_query($sSqlProcessoForoDebitos);
 
-            if (pg_numrows($rsProcessoForoDebitos) > 0) {
+            if (pg_num_rows($rsProcessoForoDebitos) > 0) {
                 $nValor = \db_utils::fieldsMemory($rsProcessoForoDebitos, 0)->valor;
                 if ($nValor > 0) {
                     $sql =  $sSqlProcessoForoDebitos;
@@ -108,7 +102,7 @@ final class CalculoJuridicaParcelamentoDocumento extends CalculoColecao implemen
 
             $rs = db_query($sql);
 
-            if (!$rs || pg_numrows($rs) <= 0) {
+            if (!$rs || pg_num_rows($rs) <= 0) {
                 throw new Exception("Não foi possivel consultar o valor base de calculo das custas.");
             }
         } catch (Exception $exception) {
@@ -123,7 +117,7 @@ final class CalculoJuridicaParcelamentoDocumento extends CalculoColecao implemen
     {
         $rows = pg_fetch_all($rs);
 
-        $valores = array();
+        $valores = [];
 
         foreach ($rows as $row) {
             $valores[$row["numpar"]] = $this->factory($row["valor"], 0, 0, 0);

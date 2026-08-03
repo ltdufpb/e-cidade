@@ -40,7 +40,7 @@ $oRotulo->label("pc01_descrmater");
 $oDaoUnidades  = new cl_matunid();
 $sSqlUnidades  = $oDaoUnidades->sql_query_file(null, "m61_codmatunid, m61_descr", "m61_descr");
 $rsUnidades    = $oDaoUnidades->sql_record($sSqlUnidades);
-$aUnidades = array();
+$aUnidades = [];
 for ($i = 0; $i < $oDaoUnidades->numrows; $i++) {
 
  $oUnidade = db_utils::fieldsMemory($rsUnidades, $i);

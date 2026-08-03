@@ -47,7 +47,7 @@ $oRetorno = new stdClass();
 $oRetorno->iStatus = 1;
 $oRetorno->sMensagem = '';
 $iInstituicaoSessao = db_getsession("DB_instit");
-$aDadosRetorno = array();
+$aDadosRetorno = [];
 $sCaminhoMensagem = "financeiro.contabilidade.con4_reprocessalancamentos001.";
 
 /**
@@ -236,7 +236,7 @@ try {
             for ($iRowLancamento = 0; $iRowLancamento < $oDaoConlancam->numrows; $iRowLancamento++) {
 
                 $oStdBuscaLancamento = db_utils::fieldsMemory($rsConlancam, $iRowLancamento);
-                $aItens = array();
+                $aItens = [];
                 $oDaoEmpNotaItem = new cl_empnotaitem();
                 $sSqlBuscaItemNota = $oDaoEmpNotaItem->sql_query_empenho_item(null, "e62_numemp, e62_sequen, e72_valor",
                     null, "e72_codnota = {$oStdBuscaLancamento->m72_codnota}");
@@ -254,11 +254,11 @@ try {
                     $oStdDadosItem = db_utils::fieldsMemory($rsBuscaItemNota, $iRowItem);
 
                     $oDaoItemOC = new cl_matestoqueitemoc();
-                    $aWhereItemOc = array(
+                    $aWhereItemOc = [
                         "matordemitem.m52_numemp = {$oStdDadosItem->e62_numemp}"
                         ,
                         "matordemitem.m52_sequen = {$oStdDadosItem->e62_sequen}"
-                    );
+                    ];
 
                     $sSqlBuscaItemOC = $oDaoItemOC->sql_query(null, null, "m70_codmatmater, m51_codordem", "m52_sequen",
                         implode(' and ', $aWhereItemOc));
@@ -340,7 +340,7 @@ try {
 
             db_fim_transacao(false);
             $oRetorno->sMensagem = _M($sCaminhoMensagem . "processado",
-                (object)array('total_registro' => $iTotalRegistrosProcessados));
+                (object)['total_registro' => $iTotalRegistrosProcessados]);
 
             break;
 
@@ -384,7 +384,7 @@ try {
             $sCamposConLancam .= " m72_codnota,   ";
             $sCamposConLancam .= " extract(year from c70_data) as anolancamento ";
 
-            if (in_array($iDocumento, array(700, 701, 702, 703, 704))) {
+            if (in_array($iDocumento, [700, 701, 702, 703, 704])) {
                 $sSqlConlancam = $oDaoConlancam->sql_query_reprocessaMovimentacaoBensPatrimonial(null,
                     $sCamposConLancam, 'c70_codlan', $sWhereConlancam);
                 $rsConlancam = $oDaoConlancam->sql_record($sSqlConlancam);
@@ -460,7 +460,7 @@ try {
                 /**
                  * Não reprocessa lancamentos de bens que não foram baixados
                  */
-                if (in_array($iDocumento, array(701, 702)) && !$oLancamentoAuxiliar->getBem()->isBaixado()) {
+                if (in_array($iDocumento, [701, 702]) && !$oLancamentoAuxiliar->getBem()->isBaixado()) {
                     continue;
                 }
 
@@ -598,7 +598,7 @@ try {
 function excluirLancamentos($iCodigoLancamento)
 {
 
-    $aTabelas = array(
+    $aTabelas = [
         'c130_conlancam' => 'conlancamrecurso',
         'c128_conlancam' => 'conlancamdepartamento',
         'c44_conlancam'  => 'conencerramentolancam',
@@ -638,7 +638,7 @@ function excluirLancamentos($iCodigoLancamento)
         'c03_codlan'     => 'conlancamordem',
         'c69_codlan'     => 'conlancamval',
         'c70_codlan'     => 'conlancam',
-    );
+    ];
 
     /**
      * Excluimos os lançamentos contábeis contacorrentedetalheconlancamval para então incluirmos nas contas corretas

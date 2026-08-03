@@ -41,7 +41,7 @@ $departamento    = db_getsession("DB_coddepto");
 
 $str        = $_POST["string"];
 $str2       = crossUrlDecode($str);
-$sName      = html_entity_decode($str2);
+$sName      = html_entity_decode((string) $str2);
 //echo"str = [$str] -> [$str2] -> [$sName]";
 $tipo       = $_GET["tipo"];
 $where      = $_GET["where"];
@@ -132,13 +132,13 @@ echo $objJson->encode($array);
 function crossUrlDecode($source) {
     $decodedStr = '';
     $pos = 0;
-    $len = strlen($source);
+    $len = strlen((string) $source);
 
     while ($pos < $len) {
-        $charAt = substr ($source, $pos, 1);
+        $charAt = substr ((string) $source, $pos, 1);
         if ($charAt == 'Ã') {
-            $char2 = substr($source, $pos, 2);
-            $decodedStr .= htmlentities(utf8_decode($char2),ENT_QUOTES,'ISO-8859-1');
+            $char2 = substr((string) $source, $pos, 2);
+            $decodedStr .= htmlentities(mb_convert_encoding($char2, 'ISO-8859-1'),ENT_QUOTES,'ISO-8859-1');
             $pos += 2;
         }
         elseif(ord($charAt) > 127) {
@@ -147,17 +147,17 @@ function crossUrlDecode($source) {
         }
         elseif($charAt == '%') {
             $pos++;
-            $hex2 = substr($source, $pos, 2);
+            $hex2 = substr((string) $source, $pos, 2);
             $dechex = chr(hexdec($hex2));
             if($dechex == 'Ã') {
                 $pos += 2;
-                if(substr($source, $pos, 1) == '%') {
+                if(substr((string) $source, $pos, 1) == '%') {
                     $pos++;
-                    $char2a = chr(hexdec(substr($source, $pos, 2)));
-                    $decodedStr .= htmlentities(utf8_decode($dechex . $char2a),ENT_QUOTES,'ISO-8859-1');
+                    $char2a = chr(hexdec(substr((string) $source, $pos, 2)));
+                    $decodedStr .= htmlentities(mb_convert_encoding($dechex . $char2a, 'ISO-8859-1'),ENT_QUOTES,'ISO-8859-1');
                 }
                 else {
-                    $decodedStr .= htmlentities(utf8_decode($dechex));
+                    $decodedStr .= htmlentities(mb_convert_encoding($dechex, 'ISO-8859-1'));
                 }
             }
             else {

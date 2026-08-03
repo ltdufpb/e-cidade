@@ -29,30 +29,30 @@
 //CLASSE DA ENTIDADE veiculos_env
 class cl_veiculos_env { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $tr08_id = 0; 
-   var $tr08_idveiculo = 0; 
-   var $tr08_municipio = 0; 
-   var $tr08_placa = null; 
-   var $tr08_idacidente = 0; 
-   var $tr08_condnome = null; 
-   var $tr08_idhabilitacao = 0; 
-   var $tr08_sexo = null; 
-   var $tr08_idade = 0; 
+   public $tr08_id = 0; 
+   public $tr08_idveiculo = 0; 
+   public $tr08_municipio = 0; 
+   public $tr08_placa = null; 
+   public $tr08_idacidente = 0; 
+   public $tr08_condnome = null; 
+   public $tr08_idhabilitacao = 0; 
+   public $tr08_sexo = null; 
+   public $tr08_idade = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  tr08_id = int8 = Código do veiculo 
                  tr08_idveiculo = int4 = Tipo do veiculo 
                  tr08_municipio = int8 = Municipio do veiculo 
@@ -64,10 +64,10 @@ class cl_veiculos_env {
                  tr08_idade = int4 = Idade 
                  ";
    //funcao construtor da classe 
-   function cl_veiculos_env() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiculos_env"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -149,10 +149,10 @@ class cl_veiculos_env {
          $this->erro_status = "0";
          return false; 
        }
-       $this->tr08_id = pg_result($result,0,0); 
+       $this->tr08_id = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from veiculos_env_tr08_id_seq");
-       if(($result != false) && (pg_result($result,0,0) < $tr08_id)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $tr08_id)){
          $this->erro_sql = " Campo tr08_id maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -196,7 +196,7 @@ class cl_veiculos_env {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Veiculos envolvidos no acidente ($this->tr08_id) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Veiculos envolvidos no acidente já Cadastrado";
@@ -220,18 +220,18 @@ class cl_veiculos_env {
      $resaco = $this->sql_record($this->sql_query_file($this->tr08_id));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5633,'$this->tr08_id','I')");
-       $resac = db_query("insert into db_acount values($acount,875,5633,'','".AddSlashes(pg_result($resaco,0,'tr08_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,875,5637,'','".AddSlashes(pg_result($resaco,0,'tr08_idveiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,875,5638,'','".AddSlashes(pg_result($resaco,0,'tr08_municipio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,875,5639,'','".AddSlashes(pg_result($resaco,0,'tr08_placa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,875,5634,'','".AddSlashes(pg_result($resaco,0,'tr08_idacidente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,875,5631,'','".AddSlashes(pg_result($resaco,0,'tr08_condnome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,875,5636,'','".AddSlashes(pg_result($resaco,0,'tr08_idhabilitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,875,5616,'','".AddSlashes(pg_result($resaco,0,'tr08_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,875,5635,'','".AddSlashes(pg_result($resaco,0,'tr08_idade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,875,5633,'','".AddSlashes(pg_fetch_result($resaco,0,'tr08_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,875,5637,'','".AddSlashes(pg_fetch_result($resaco,0,'tr08_idveiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,875,5638,'','".AddSlashes(pg_fetch_result($resaco,0,'tr08_municipio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,875,5639,'','".AddSlashes(pg_fetch_result($resaco,0,'tr08_placa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,875,5634,'','".AddSlashes(pg_fetch_result($resaco,0,'tr08_idacidente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,875,5631,'','".AddSlashes(pg_fetch_result($resaco,0,'tr08_condnome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,875,5636,'','".AddSlashes(pg_fetch_result($resaco,0,'tr08_idhabilitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,875,5616,'','".AddSlashes(pg_fetch_result($resaco,0,'tr08_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,875,5635,'','".AddSlashes(pg_fetch_result($resaco,0,'tr08_idade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -240,10 +240,10 @@ class cl_veiculos_env {
       $this->atualizacampos();
      $sql = " update veiculos_env set ";
      $virgula = "";
-     if(trim($this->tr08_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_id"])){ 
+     if(trim((string) $this->tr08_id)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_id"])){ 
        $sql  .= $virgula." tr08_id = $this->tr08_id ";
        $virgula = ",";
-       if(trim($this->tr08_id) == null ){ 
+       if(trim((string) $this->tr08_id) == null ){ 
          $this->erro_sql = " Campo Código do veiculo nao Informado.";
          $this->erro_campo = "tr08_id";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_veiculos_env {
          return false;
        }
      }
-     if(trim($this->tr08_idveiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_idveiculo"])){ 
+     if(trim((string) $this->tr08_idveiculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_idveiculo"])){ 
        $sql  .= $virgula." tr08_idveiculo = $this->tr08_idveiculo ";
        $virgula = ",";
-       if(trim($this->tr08_idveiculo) == null ){ 
+       if(trim((string) $this->tr08_idveiculo) == null ){ 
          $this->erro_sql = " Campo Tipo do veiculo nao Informado.";
          $this->erro_campo = "tr08_idveiculo";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_veiculos_env {
          return false;
        }
      }
-     if(trim($this->tr08_municipio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_municipio"])){ 
+     if(trim((string) $this->tr08_municipio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_municipio"])){ 
        $sql  .= $virgula." tr08_municipio = $this->tr08_municipio ";
        $virgula = ",";
-       if(trim($this->tr08_municipio) == null ){ 
+       if(trim((string) $this->tr08_municipio) == null ){ 
          $this->erro_sql = " Campo Municipio do veiculo nao Informado.";
          $this->erro_campo = "tr08_municipio";
          $this->erro_banco = "";
@@ -279,14 +279,14 @@ class cl_veiculos_env {
          return false;
        }
      }
-     if(trim($this->tr08_placa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_placa"])){ 
+     if(trim((string) $this->tr08_placa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_placa"])){ 
        $sql  .= $virgula." tr08_placa = '$this->tr08_placa' ";
        $virgula = ",";
      }
-     if(trim($this->tr08_idacidente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_idacidente"])){ 
+     if(trim((string) $this->tr08_idacidente)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_idacidente"])){ 
        $sql  .= $virgula." tr08_idacidente = $this->tr08_idacidente ";
        $virgula = ",";
-       if(trim($this->tr08_idacidente) == null ){ 
+       if(trim((string) $this->tr08_idacidente) == null ){ 
          $this->erro_sql = " Campo codigo do acidente nao Informado.";
          $this->erro_campo = "tr08_idacidente";
          $this->erro_banco = "";
@@ -296,21 +296,21 @@ class cl_veiculos_env {
          return false;
        }
      }
-     if(trim($this->tr08_condnome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_condnome"])){ 
+     if(trim((string) $this->tr08_condnome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_condnome"])){ 
        $sql  .= $virgula." tr08_condnome = '$this->tr08_condnome' ";
        $virgula = ",";
      }
-     if(trim($this->tr08_idhabilitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_idhabilitacao"])){ 
-        if(trim($this->tr08_idhabilitacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tr08_idhabilitacao"])){ 
+     if(trim((string) $this->tr08_idhabilitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_idhabilitacao"])){ 
+        if(trim((string) $this->tr08_idhabilitacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tr08_idhabilitacao"])){ 
            $this->tr08_idhabilitacao = "0" ; 
         } 
        $sql  .= $virgula." tr08_idhabilitacao = $this->tr08_idhabilitacao ";
        $virgula = ",";
      }
-     if(trim($this->tr08_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_sexo"])){ 
+     if(trim((string) $this->tr08_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_sexo"])){ 
        $sql  .= $virgula." tr08_sexo = '$this->tr08_sexo' ";
        $virgula = ",";
-       if(trim($this->tr08_sexo) == null ){ 
+       if(trim((string) $this->tr08_sexo) == null ){ 
          $this->erro_sql = " Campo Sexo nao Informado.";
          $this->erro_campo = "tr08_sexo";
          $this->erro_banco = "";
@@ -320,8 +320,8 @@ class cl_veiculos_env {
          return false;
        }
      }
-     if(trim($this->tr08_idade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_idade"])){ 
-        if(trim($this->tr08_idade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tr08_idade"])){ 
+     if(trim((string) $this->tr08_idade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tr08_idade"])){ 
+        if(trim((string) $this->tr08_idade)=="" && isset($GLOBALS["HTTP_POST_VARS"]["tr08_idade"])){ 
            $this->tr08_idade = "0" ; 
         } 
        $sql  .= $virgula." tr08_idade = $this->tr08_idade ";
@@ -335,27 +335,27 @@ class cl_veiculos_env {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5633,'$this->tr08_id','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr08_id"]))
-           $resac = db_query("insert into db_acount values($acount,875,5633,'".AddSlashes(pg_result($resaco,$conresaco,'tr08_id'))."','$this->tr08_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,875,5633,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr08_id'))."','$this->tr08_id',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr08_idveiculo"]))
-           $resac = db_query("insert into db_acount values($acount,875,5637,'".AddSlashes(pg_result($resaco,$conresaco,'tr08_idveiculo'))."','$this->tr08_idveiculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,875,5637,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr08_idveiculo'))."','$this->tr08_idveiculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr08_municipio"]))
-           $resac = db_query("insert into db_acount values($acount,875,5638,'".AddSlashes(pg_result($resaco,$conresaco,'tr08_municipio'))."','$this->tr08_municipio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,875,5638,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr08_municipio'))."','$this->tr08_municipio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr08_placa"]))
-           $resac = db_query("insert into db_acount values($acount,875,5639,'".AddSlashes(pg_result($resaco,$conresaco,'tr08_placa'))."','$this->tr08_placa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,875,5639,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr08_placa'))."','$this->tr08_placa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr08_idacidente"]))
-           $resac = db_query("insert into db_acount values($acount,875,5634,'".AddSlashes(pg_result($resaco,$conresaco,'tr08_idacidente'))."','$this->tr08_idacidente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,875,5634,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr08_idacidente'))."','$this->tr08_idacidente',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr08_condnome"]))
-           $resac = db_query("insert into db_acount values($acount,875,5631,'".AddSlashes(pg_result($resaco,$conresaco,'tr08_condnome'))."','$this->tr08_condnome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,875,5631,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr08_condnome'))."','$this->tr08_condnome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr08_idhabilitacao"]))
-           $resac = db_query("insert into db_acount values($acount,875,5636,'".AddSlashes(pg_result($resaco,$conresaco,'tr08_idhabilitacao'))."','$this->tr08_idhabilitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,875,5636,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr08_idhabilitacao'))."','$this->tr08_idhabilitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr08_sexo"]))
-           $resac = db_query("insert into db_acount values($acount,875,5616,'".AddSlashes(pg_result($resaco,$conresaco,'tr08_sexo'))."','$this->tr08_sexo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,875,5616,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr08_sexo'))."','$this->tr08_sexo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["tr08_idade"]))
-           $resac = db_query("insert into db_acount values($acount,875,5635,'".AddSlashes(pg_result($resaco,$conresaco,'tr08_idade'))."','$this->tr08_idade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,875,5635,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'tr08_idade'))."','$this->tr08_idade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -400,18 +400,18 @@ class cl_veiculos_env {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5633,'$tr08_id','E')");
-         $resac = db_query("insert into db_acount values($acount,875,5633,'','".AddSlashes(pg_result($resaco,$iresaco,'tr08_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,875,5637,'','".AddSlashes(pg_result($resaco,$iresaco,'tr08_idveiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,875,5638,'','".AddSlashes(pg_result($resaco,$iresaco,'tr08_municipio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,875,5639,'','".AddSlashes(pg_result($resaco,$iresaco,'tr08_placa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,875,5634,'','".AddSlashes(pg_result($resaco,$iresaco,'tr08_idacidente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,875,5631,'','".AddSlashes(pg_result($resaco,$iresaco,'tr08_condnome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,875,5636,'','".AddSlashes(pg_result($resaco,$iresaco,'tr08_idhabilitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,875,5616,'','".AddSlashes(pg_result($resaco,$iresaco,'tr08_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,875,5635,'','".AddSlashes(pg_result($resaco,$iresaco,'tr08_idade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,875,5633,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr08_id'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,875,5637,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr08_idveiculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,875,5638,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr08_municipio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,875,5639,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr08_placa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,875,5634,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr08_idacidente'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,875,5631,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr08_condnome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,875,5636,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr08_idhabilitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,875,5616,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr08_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,875,5635,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'tr08_idade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from veiculos_env
@@ -471,7 +471,7 @@ class cl_veiculos_env {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:veiculos_env";
@@ -485,7 +485,7 @@ class cl_veiculos_env {
    function sql_query ( $tr08_id=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -517,7 +517,7 @@ class cl_veiculos_env {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -529,7 +529,7 @@ class cl_veiculos_env {
    function sql_query_file ( $tr08_id=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -550,7 +550,7 @@ class cl_veiculos_env {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

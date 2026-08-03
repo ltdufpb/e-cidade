@@ -71,7 +71,7 @@ if ($clturma->numrows == 0) {
   
 }
 
-$ano_calendario    = pg_result($result, 0, 'ed52_i_ano');
+$ano_calendario    = pg_fetch_result($result, 0, 'ed52_i_ano');
 $result_parametros = $cledu_parametros->sql_record($cledu_parametros->sql_query("",
                                                                                 "ed233_c_database,ed233_c_limitemov",
                                                                                 "",
@@ -81,7 +81,7 @@ $result_parametros = $cledu_parametros->sql_record($cledu_parametros->sql_query(
 if ($cledu_parametros->numrows > 0) {
 	
 	db_fieldsmemory ( $result_parametros, 0 );
-	if (!strstr($ed233_c_database, "/") || !strstr($ed233_c_limitemov, "/")) {
+	if (!strstr((string) $ed233_c_database, "/") || !strstr((string) $ed233_c_limitemov, "/")) {
 				
 		?>
       <table width='100%'>
@@ -91,9 +91,9 @@ if ($cledu_parametros->numrows > 0) {
 		  (Procedimentos->Parâmetros)<br>
 		  devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2)<br><br>
           Valor atual do parâmetro Dia/Mês Limite da Movimentação: 
-           <?=trim($ed233_c_limitemov) == "" ? "Não informado" : $ed233_c_limitemov?><br>
+           <?=trim((string) $ed233_c_limitemov) == "" ? "Não informado" : $ed233_c_limitemov?><br>
           Valor atual do parâmetro Data Base para Cálculo da Idade: 
-           <?=trim($ed233_c_database) == "" ? "Não informado" : $ed233_c_database?><br>
+           <?=trim((string) $ed233_c_database) == "" ? "Não informado" : $ed233_c_database?><br>
 		  <br></b> 
 		  <input type='button' value='Fechar' onclick='window.close()'> </font>
 		</td>
@@ -103,8 +103,8 @@ if ($cledu_parametros->numrows > 0) {
 	  exit ();
 	  
 	}
-	$database      = explode("/", $ed233_c_database);
-	$limitemov     = explode("/", $ed233_c_limitemov);
+	$database      = explode("/", (string) $ed233_c_database);
+	$limitemov     = explode("/", (string) $ed233_c_limitemov);
 	$dia_database  = $database [0];
 	$mes_database  = $database [1];
 	$dia_limitemov = $limitemov [0];
@@ -121,9 +121,9 @@ if ($cledu_parametros->numrows > 0) {
 		   devem estar no formato dd/mm ou d/m (Exemplo: 02/02 ou 2/2) e devem
 		   ser uma data válida.<br><br>
            Valor atual do parâmetro Dia/Mês Limite da Movimentação: 
-           <?=trim($ed233_c_limitemov) == "" ? "Não informado" : $ed233_c_limitemov?><br>
+           <?=trim((string) $ed233_c_limitemov) == "" ? "Não informado" : $ed233_c_limitemov?><br>
            Valor atual do parâmetro Data Base para Cálculo da Idade: 
-           <?=trim($ed233_c_database) == "" ? "Não informado" : $ed233_c_database?><br>
+           <?=trim((string) $ed233_c_database) == "" ? "Não informado" : $ed233_c_database?><br>
 		   <br>
            Data Limite da Movimentação: <?=$dia_limitemov . "/" . $mes_limitemov . "/" . $ano_calendario?> 
            <?=@!checkdate($mes_limitemov, $dia_limitemov, $ano_calendario) ? "(Data Inválida)" : "(Data Válida)"?><br>
@@ -151,7 +151,7 @@ if ($cledu_parametros->numrows > 0) {
 
 if ($diretor != "") {
     
-  $arr_diretor   = explode("|",$diretor);
+  $arr_diretor   = explode("|",(string) $diretor);
   $nomediretor   = $arr_diretor[1];
   $funcaodiretor = $arr_diretor[0].(trim($arr_diretor[2]) != ""?" ($arr_diretor[2])":"");
   
@@ -164,7 +164,7 @@ if ($diretor != "") {
 
 if ($secretario != "") {
     
-  $arr_secretario   = explode("|",$secretario);
+  $arr_secretario   = explode("|",(string) $secretario);
   $nomesecretario   = $arr_secretario[1];
   $funcaosecretario = $arr_secretario[0].(trim($arr_secretario[2]) != ""?" ($arr_secretario[2])":"");
   
@@ -203,9 +203,9 @@ for ($x = 0; $x < $linhas; $x ++) {
 	
   }
   $pdf->setfillcolor(223);
-  $dia      = substr($ed52_d_resultfinal, 8, 2);
-  $mes      = db_mes(substr($ed52_d_resultfinal, 5, 2));
-  $ano      = substr($ed52_d_resultfinal, 0, 4);
+  $dia      = substr((string) $ed52_d_resultfinal, 8, 2);
+  $mes      = db_mes(substr((string) $ed52_d_resultfinal, 5, 2));
+  $ano      = substr((string) $ed52_d_resultfinal, 0, 4);
   $result11 = $clescola->sql_record($clescola->sql_query("", "ed261_c_nome", "", " ed18_i_codigo = $escola"));
   db_fieldsmemory($result11, 0);
   $head1  = "ATA DE RESULTADOS FINAIS";
@@ -335,7 +335,7 @@ for ($x = 0; $x < $linhas; $x ++) {
 	db_fieldsmemory($result4, $z);
 	if ($datasaida != "") {
 		
-	  $comp_datasaida = explode("/", $datasaida);
+	  $comp_datasaida = explode("/", (string) $datasaida);
 	  $comp_datasaida = $comp_datasaida [2] . $comp_datasaida [1] . $comp_datasaida [0];
 	  
 	} else {
@@ -384,7 +384,7 @@ for ($x = 0; $x < $linhas; $x ++) {
 		$naomatric = false;
 		if ($datasaida == "" or ($datasaida != "" and $comp_datasaida > $comp_datalimitemov)) {
 			
-		  if (trim($ed60_c_situacao) != "MATRICULADO") {
+		  if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
 		  	
 			$aproveitamento = trim(Situacao($ed60_c_situacao, $ed60_i_codigo)) . " em " . db_formatar($ed60_d_datasaida, 'd');
 			$naomatric = true;
@@ -398,7 +398,7 @@ for ($x = 0; $x < $linhas; $x ++) {
 			
 		  } else {
 		  	
-			if (trim($ed81_c_todoperiodo) == "S") {
+			if (trim((string) $ed81_c_todoperiodo) == "S") {
 				
 			  if ($ed81_i_justificativa) {
 				$aproveitamento = "AMPARO";
@@ -408,7 +408,7 @@ for ($x = 0; $x < $linhas; $x ++) {
 			  
 			} else {
 				
-			  if (trim($ed37_c_tipo) == "NOTA") {
+			  if (trim((string) $ed37_c_tipo) == "NOTA") {
 			  	
 				if ($resultedu == 'S') {
 				  $aproveitamento = number_format($ed74_c_valoraprov, 2, ".", ".");
@@ -416,13 +416,13 @@ for ($x = 0; $x < $linhas; $x ++) {
 				  $aproveitamento = number_format($ed74_c_valoraprov, 0, ".", ".");
 				}
 				
-			  } else if (trim($ed37_c_tipo) == "PARECER") {
+			  } else if (trim((string) $ed37_c_tipo) == "PARECER") {
 				$aproveitamento = "Parec";
 			  } else {
 				$aproveitamento = $ed74_c_valoraprov;
 			  }
 			}
-			if (trim($ed59_c_freqglob) == "F") {
+			if (trim((string) $ed59_c_freqglob) == "F") {
 			  $aproveitamento = $ed74_i_percfreq . "%";
             }
 			$pdf->cell(11, 4, $aproveitamento, "LR", 0, "C", $cor);
@@ -460,7 +460,7 @@ for ($x = 0; $x < $linhas; $x ++) {
     $sql6   .= "      AND ed74_c_resultadofinal != 'A' ";		
 	$result6 = db_query($sql6);
 	$linhas6 = pg_num_rows($result6);	
-	if (trim($ed60_c_situacao) != "MATRICULADO") {
+	if (trim((string) $ed60_c_situacao) != "MATRICULADO") {
 	  $rf = "";
 	} else {
 		

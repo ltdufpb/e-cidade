@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tabcurri_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltabcurri = new cl_tabcurri;
 $cltabcurri->rotulo->label("h01_codigo");
 $cltabcurri->rotulo->label("h01_descr");
@@ -98,9 +98,9 @@ $cltabcurri->rotulo->label("h01_descr");
         }else{
            $sql = $cltabcurri->sql_query("",$campos,"h01_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h01_descr)){
-          $repassa = array("chave_h01_codigo"=>$chave_h01_codigo,"chave_h01_descr"=>$chave_h01_descr);
+          $repassa = ["chave_h01_codigo"=>$chave_h01_codigo,"chave_h01_descr"=>$chave_h01_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

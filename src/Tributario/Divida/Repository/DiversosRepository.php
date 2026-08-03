@@ -21,7 +21,7 @@ class DiversosRepository implements TermoRepositoryInterface
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * DiversosRepository constructor.
@@ -67,7 +67,7 @@ class DiversosRepository implements TermoRepositoryInterface
             throw new Exception("Não foi possível buscar os débitos.");
         }
 
-        $diversos = array();
+        $diversos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $diversos;

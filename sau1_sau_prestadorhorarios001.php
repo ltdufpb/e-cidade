@@ -32,7 +32,7 @@ require_once(modification("libs/db_jsplibwebseller.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 db_postmemory( $_POST );
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
@@ -112,7 +112,7 @@ if( isset( $excluir ) ) {
   $sql   .= " where s113_i_prestadorhorarios = {$s112_i_codigo} ";
 	$result = db_query( $sql );
 
-	if( pg_numrows( $result ) > 0 ) {
+	if( pg_num_rows( $result ) > 0 ) {
 		echo "<script>alert('Prestadora tem agendamentos efetuadas posteriormente, não sendo permitida a exclusão do horário')</script>";
 	} else {
 

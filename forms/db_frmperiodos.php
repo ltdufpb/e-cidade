@@ -94,7 +94,7 @@ db_inputdata('ed23_d_fim',@$ed23_d_fim_dia,@$ed23_d_fim_mes,@$ed23_d_fim_ano,tru
     </td>
     <td> 
 <?php 
-$x = array('f'=>'Não','t'=>'Não');
+$x = ['f'=>'Não','t'=>'Não'];
 db_select('ed23_c_encerrado',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -135,7 +135,7 @@ function js_preenchepesquisa(chave){
   db_iframe_periodos.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

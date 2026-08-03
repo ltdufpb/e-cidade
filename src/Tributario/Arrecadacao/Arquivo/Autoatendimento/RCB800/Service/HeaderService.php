@@ -16,12 +16,10 @@ use ECidade\Tributario\Arrecadacao\Repository\Convenio as ConvenioRepository;
 
 final class HeaderService extends Service
 {
-    private $dataBase;
     private $codigoArquivoautoatendimento;
 
-    public function __construct(DataBase $dataBase)
+    public function __construct(private readonly DataBase $dataBase)
     {
-        $this->dataBase = $dataBase;
     }
 
     public function execute(Filtro $filtro)
@@ -55,10 +53,10 @@ final class HeaderService extends Service
 
     public function getNumero($tipo, $ano)
     {
-        $where = array(
+        $where = [
              "k182_tipo = '{$tipo}'"
             ,"k182_ano  = {$ano}"
-        );
+        ];
 
         $daoArquivoautoatendimento = new cl_arquivoautoatendimento();
         $sql = $daoArquivoautoatendimento->sql_query_file(

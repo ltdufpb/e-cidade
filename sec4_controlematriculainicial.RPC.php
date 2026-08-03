@@ -65,7 +65,7 @@ try {
         throw new DBException( _M(MENSAGEM_CONTROLEMATRICULAINICIAL_RPC . "erro_busca_controle_matriculas_iniciais") );
       }
 
-      $oRetorno->aControlesMatriculas = array();
+      $oRetorno->aControlesMatriculas = [];
       $iTotalLinhas = pg_num_rows( $rsControleMatricula );
 
       for ( $iContador = 0; $iContador < $iTotalLinhas; $iContador++ ) {

@@ -15,7 +15,7 @@
   global $logo;
   $resinst = $cldb_config->sql_record($cldb_config->sql_query_file(db_getsession("DB_instit"), 'logo'));
 	db_fieldsmemory($resinst,0);
-  $logofundo = substr($logo,0,strpos($logo,"."));
+  $logofundo = substr((string) $logo,0,strpos((string) $logo,"."));
 
 	/*   F U N D O   D O   D O C U M E N T O  */
   		
@@ -132,7 +132,7 @@
 	  $this->objpdf->Cell(10,3,"",0,0,"C",0);
 	}
 	$iPosInicioDescrAtividadePrimaria  = $this->objpdf->getY();
-  $iLinhasDescricaoAtividadePrimaria = (round((strlen($this->descrativ)/73),2)*4);
+  $iLinhasDescricaoAtividadePrimaria = (round((strlen((string) $this->descrativ)/73),2)*4);
 
 	$this->objpdf->MultiCell(73,3,$this->descrativ,0,"L");
 
@@ -157,7 +157,7 @@
 	     $this->objpdf->setx(45);
 	     $obs = $this->obsativ;
 	     $this->objpdf->Cell(10,3,"",0,0,"C",0);
-	     $this->objpdf->Cell(113,3,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,1,"L",0);
+	     $this->objpdf->Cell(113,3,"OBS: ".substr((string) $obs,0,65).(strlen((string) $obs) > 65 ? "...":""),0,1,"L",0);
 	   } else {
 		   $this->objpdf->setx(45);
 		   $this->objpdf->Cell(10,3,"",0,0,"C",0);
@@ -182,16 +182,16 @@
 	$iPos       = $y;
 	
   if ($num_outras >0) {
-    
+
     $x = $x + 4;
 		reset($this->outrasativs); 
 		$this->objpdf->setxy(45, $y);
 	  $yyy = $this->objpdf->gety() + 7;
 		$this->objpdf->SetFont('Arial','B',8);
     $this->objpdf->Cell(83,5,"ATIVIDADE" . ($num_outras > 1?"S":"") . " SECUNDÁRIA" . ($num_outras > 1?"S":"") . ":",0,0,"L",0);
-    
+
 	  if ($this->impdatas == 't') {
-	    
+
 	    $this->objpdf->Cell(20,5,"INÍCIO",0,0,"C",0);
 	    if ($this->permanente == 'f') {
 	      $this->objpdf->Cell(20,5,"FINAL",0,1,"C",0);
@@ -199,7 +199,7 @@
 	      $this->objpdf->Cell(20,5,"",0,1,"C",0);
 	    }
 	  } else {
-	    
+
 	    $this->objpdf->Cell(20,5,"",0,0,"C",0);
 	    $this->objpdf->Cell(20,5,"",0,1,"C",0);
 	  }
@@ -209,69 +209,69 @@
 	  //define em qual celula vai quebrar a linha
 	  $count            = 0;
 	  $iAlturaRetangulo = 0;
-	  
+
 	  for ($i = 0; $i < $num_outras; $i++) {
-	  	
+
 	    $yyy   = $this->objpdf->gety();
 		  $chave = key($this->outrasativs);
 		  $this->objpdf->SetFont('Arial','',7);
 		  $this->objpdf->setx(45);
-		  
+
 		  if ($this->impcodativ == 't') {
-		    
+
 			  $codativ = $this->outrasativs[$i]["codativ"];
 			  $this->objpdf->Cell(10,3,$codativ,0,0,"C",0);
 		  } else {
 		    $this->objpdf->Cell(10,3,"",0,0,"C",0);
 		  }
-		  
+
 		  $descr           = $this->outrasativs[$i]["descr"];
 		  $iAlturaAnterior = $this->objpdf->gety();
-		  $this->objpdf->MultiCell(70, 3, mb_strtoupper($descr));
-		  
+		  $this->objpdf->MultiCell(70, 3, mb_strtoupper((string) $descr));
+
 		  $iAlturaPos        = $this->objpdf->gety();
 		  $iAlturaRetangulo += ($iAlturaPos - $iAlturaAnterior) / 3;
 
 		  $this->objpdf->SetY($iAlturaAnterior);
 		  $this->objpdf->SetX(128);
-		  
+
 		  if ($this->impdatas == 't') {
-		    
+
 			  $datain = $this->outrasativs[$i]["datain"];
 			  $this->objpdf->Cell(20,3,db_formatar($datain,'d'),0,0,"C",0);
 			  if ($this->permanente == 'f') {
-			    
+
 			   $datafi = $this->outrasativs[$i]["datafi"];
 			    $this->objpdf->Cell(20,3,db_formatar($datafi,'d'),0,1,"C",0);
 			  } else {
 			    $this->objpdf->Cell(20,3,"",0,1,"C",0);
 			  }
 		  } else {
-		    
+
 		    $this->objpdf->Cell(20,3,"",0,0,"C",0);
 	      $this->objpdf->Cell(20,3,"",0,1,"C",0);
 		  }
-		  
+
 		  $this->objpdf->SetY($iAlturaPos);
 		  $this->objpdf->SetX(128);
-		  
+
 		  if ($this->impobsativ == 't') {
-		    
+
 		    $linha += 3;
 		    if (isset($this->q03_atmemo[$descr])) {
-		      
+
 		      $this->objpdf->setx(45);
 			    $obs = $this->q03_atmemo[$descr];
 			    $this->objpdf->Cell(10,3,"",0,0,"C",0);
 				 $this->objpdf->Cell(114,3,"OBS: ".substr($obs,0,62).(strlen($obs) > 62 ? "...":""),0,1,"L",0);
 			  } else {
-			    
+
 			    $this->objpdf->setx(45);
 			    $this->objpdf->Cell(10,3,"",0,0,"C",0);
 			    $this->objpdf->Cell(114,3,"OBS: Sem observações ...",0,1,"L",0);
 			 }
 		  }
-		  
+
 		  $linha += 5;
 		  $x      = $x+2;
 		  next($this->outrasativs);
@@ -279,16 +279,16 @@
 		  if ($yyyatual >= 200){ 
 		     break;
 		  }
-		  
+
       $count++;
 		  if ($count > 13) {
-		    
+
 		  	 $count++;
 		  	 $this->objpdf->Cell(40,4,"e outras ...",0,1,"L",0);
 		  	 break;
 		  }
 		}
-		
+
 		/*
 		 * Calculo para altura do quadro das atividades secundárias
 		 * Multiplicamos a quantidade de atividades impressas por 3 que representa a altura da linha de cada registro
@@ -297,7 +297,7 @@
 		 * (Qtd de Atividades mostradas * 3 (altura da linha das atividades)) + 6 (Altura da linha da expressão "ATIVIDADES SECUNDARIAS" (5)+1(espaço do quadro))
 		 */ 
 		$altura = ($count * 3) + (($iAlturaRetangulo - $count) * 3) + 6;
-		
+
 		$this->objpdf->roundedrect(42, $y, 127, $altura, 2, '1234'); // descricao da atividade secundaria
   } else {
     

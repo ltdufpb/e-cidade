@@ -56,7 +56,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ), db_getsession ( "DB_modulo" ), db_g
 	<tr>
 		<td valign="middle" align="center"><strong>Tipo de Folha: </strong>
 <?php 
-$aOpcoes = array( 
+$aOpcoes = [ 
                   ''            => 'Selecione',
                   'gerfsal'     => 'Salário',
                   'gerfcom'     => 'Complementar',
@@ -65,7 +65,7 @@ $aOpcoes = array(
                   'gerfadi'     => 'Adiantamento',
                   'gerfprovfer' => 'Provisão de Férias',
                   'gerfprovs13' => 'Provisão 13º Salário'
-                );
+                ];
 
 db_select("sTipoFolha", $aOpcoes, "",1);
 echo "<BR><BR>"; 

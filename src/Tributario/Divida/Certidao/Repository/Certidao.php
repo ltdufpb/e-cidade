@@ -128,7 +128,7 @@ class Certidao extends \BaseClassRepository
             return null;
         }
 
-        $certidoes = array();
+        $certidoes = [];
         foreach (pg_fetch_all($result) as $item) {
             $certidoes[] = $this->make((object) $item);
         }
@@ -182,9 +182,9 @@ class Certidao extends \BaseClassRepository
         }
 
         if ($this->isPersistPropagation() && $certidao->getCertidaoDividas()) {
-            $dividaRepository = DividaRepository::getInstance();
+            $dividaRepository = (new DividaRepository())->getInstance();
 
-            $certidaoDividaRepository = CertidaoDividaRepository::getInstance();
+            $certidaoDividaRepository = (new CertidaoDividaRepository())->getInstance();
             $certidaoDividaRepository->setPersistPropagation(true);
 
             foreach ($certidao->getCertidaoDividas() as $certidaoDivida) {
@@ -213,7 +213,7 @@ class Certidao extends \BaseClassRepository
 
         if (empty($certidao->v14_parcel)) {
             if ($this->isReturnFullItem()) {
-                $certidaoDividaRepository = CertidaoDividaRepository::getInstance();
+                $certidaoDividaRepository = (new CertidaoDividaRepository())->getInstance();
                 $certidaoDividaRepository->setReturnFullItem(true);
    
                 $certidaoDivida = $certidaoDividaRepository->getByCode($certidao->v13_certid);
@@ -287,7 +287,7 @@ class Certidao extends \BaseClassRepository
 
         $result = \db_query($sql);
 
-        $certidoes = array();
+        $certidoes = [];
         foreach (pg_fetch_all($result) as $item) {
             $certidoes[] = $this->make((object) $item);
         }

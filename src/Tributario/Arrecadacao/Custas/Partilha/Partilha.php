@@ -38,8 +38,6 @@ use ECidade\Tributario\Juridico\ProcessoForo\Repository\ProcessoForo;
 
 abstract class Partilha
 {
-    private $calculo;
-
     private $codigoProcessoForo;
 
     protected $iniciais;
@@ -47,9 +45,8 @@ abstract class Partilha
     /** @var Repository\Taxa */
     protected $taxaRepository;
 
-    public function __construct(Calculo $calculo)
+    public function __construct(private readonly Calculo $calculo)
     {
-        $this->calculo = $calculo;
         $this->taxaRepository = Repository\Taxa::getInstance();
     }
 
@@ -97,7 +94,7 @@ abstract class Partilha
             if (!empty($this->codigoProcessoForo)) {
                 $iCodigoProcessoForo = $this->codigoProcessoForo->getCodigo();
 
-                $processoForo = ProcessoForo::getInstance();
+                $processoForo = (new ProcessoForo())->getInstance();
                 $isParcelamento = $processoForo->isParcelamento($iCodigoProcessoForo);
                 $nValorProcessoForoDebitos = $this->getValorProcessoForoDebitos($iCodigoProcessoForo);
                 if (!empty($nValorProcessoForoDebitos)) {
@@ -125,7 +122,7 @@ abstract class Partilha
 
     public function processaRemocaoTaxaPaga(array $taxas, array $partilhas)
     {
-        $taxasRemover = array();
+        $taxasRemover = [];
 
         foreach ($partilhas as $inicialPartilha) {
             foreach ($inicialPartilha->getCustas() as $inicialPartilhaCusta) {
@@ -158,7 +155,7 @@ abstract class Partilha
         $inicialNumpreRepository = new InicialNumpreRepository();
 
         foreach ($aIniciais as $inicial) {
-            $numpres = array();
+            $numpres = [];
             $inicialNumpreRepository->scopeInicial($inicial->v71_inicial);
 
             $aNumpres = $inicialNumpreRepository->get();
@@ -181,7 +178,7 @@ abstract class Partilha
     {
         $where = "v71_processoforo = {$this->codigoProcessoForo} AND v71_anulado = 'f' and v50_situacao = 1 ";
 
-        return ProcessoForoInicial::getInstance()->find($where, "processoforoinicial.v71_inicial");
+        return (new ProcessoForoInicial())->getInstance()->find($where, "processoforoinicial.v71_inicial");
     }
 
     /**
@@ -346,12 +343,12 @@ abstract class Partilha
 
         $valorTotalParcelamento = 0;
         $aIniciais = $this->verificaIniciaisVinculadasProcesso();
-        $numpres = array();
+        $numpres = [];
         
         $inicialNumpreRepository = new InicialNumpreRepository();
 
         foreach ($aIniciais as $inicial) {
-            $numpres = array();
+            $numpres = [];
             $inicialNumpreRepository->scopeInicial($inicial->v71_inicial);
 
             $aNumpres = $inicialNumpreRepository->get();

@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_liborcamento.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -91,7 +91,7 @@ function js_emite() {
             </td>
             <td>
               <?php                  
-                $aListaPeriodos = array();
+                $aListaPeriodos = [];
                 $aListaPeriodos[0] = "Selecione";
                 $aListaPeriodos[1] = "Anual";
                 $aListaPeriodos[2] = "1º Semestre";

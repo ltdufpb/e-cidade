@@ -92,7 +92,7 @@ $oPdf->SetFillColor(235);
 $iTamFonte = 5;
 $iAltCell  = 3;
 
-imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, true);
+imprimirCabecalho($oPdf, $iAltCell, $iTamFonte);
 
 $nTotalDisponibilidadeI      = 0;
 $nTotalObrigacaoFinanceiraI  = 0;
@@ -101,7 +101,7 @@ foreach ($aDadosAnexoV->recursosVinculados as $oRecursoVinculado) {
 
   $oPdf->SetFont('arial', '', $iTamFonte);
   $oPdf->Cell(85, $iAltCell, "    ".$oRecursoVinculado->codigo.
-                             " - ".substr($oRecursoVinculado->descricao, 0, 50),                     'R', 0, "L", 0);
+                             " - ".substr((string) $oRecursoVinculado->descricao, 0, 50),                     'R', 0, "L", 0);
   $oPdf->Cell(35, $iAltCell, db_formatar(round($oRecursoVinculado->disponibilidadebruta, 2), 'f'),   'RL', 0, "R", 0);
   $oPdf->Cell(35, $iAltCell, db_formatar(round($oRecursoVinculado->obrigacoesfinanceiras, 2), 'f'),  'RL', 0, "R", 0);
   $oPdf->Cell(35, $iAltCell, db_formatar(round($oRecursoVinculado->disponibilidadeliquida, 2), 'f'), 'L', 1, "R", 0);
@@ -110,8 +110,8 @@ foreach ($aDadosAnexoV->recursosVinculados as $oRecursoVinculado) {
 	$nTotalObrigacaoFinanceiraI  += round($oRecursoVinculado->obrigacoesfinanceiras, 2);
 	$nTotalDisponibilidadeCaixaI += round($oRecursoVinculado->disponibilidadeliquida, 2);
 
-  imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, false);
-  imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte, false, false);
+  imprimirCabecalho($oPdf, $iAltCell, $iTamFonte);
+  imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte);
 }
 
 $oPdf->SetFont('arial', 'b', $iTamFonte);
@@ -129,7 +129,7 @@ foreach ($aDadosAnexoV->recursosNaoVinculados as $oRecursoNaoVinculado) {
 
   $oPdf->SetFont('arial', '', $iTamFonte);
   $oPdf->Cell(85, $iAltCell, "    ".$oRecursoNaoVinculado->codigo.
-                             " - ".substr($oRecursoNaoVinculado->descricao, 0, 50),                     'R', 0, "L", 0);
+                             " - ".substr((string) $oRecursoNaoVinculado->descricao, 0, 50),                     'R', 0, "L", 0);
   $oPdf->Cell(35, $iAltCell, db_formatar(round($oRecursoNaoVinculado->disponibilidadebruta, 2), 'f'),   'RL', 0, "R", 0);
   $oPdf->Cell(35, $iAltCell, db_formatar(round($oRecursoNaoVinculado->obrigacoesfinanceiras, 2), 'f'),  'RL', 0, "R", 0);
   $oPdf->Cell(35, $iAltCell, db_formatar(round($oRecursoNaoVinculado->disponibilidadeliquida, 2), 'f'), 'L', 1, "R", 0);
@@ -138,8 +138,8 @@ foreach ($aDadosAnexoV->recursosNaoVinculados as $oRecursoNaoVinculado) {
   $nTotalObrigacaoFinanceiraII  += round($oRecursoNaoVinculado->obrigacoesfinanceiras, 2);
   $nTotalDisponibilidadeCaixaII += round($oRecursoNaoVinculado->disponibilidadeliquida, 2);
 
-  imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, false);
-  imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte, false, false);
+  imprimirCabecalho($oPdf, $iAltCell, $iTamFonte);
+  imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte);
 }
 
 $oPdf->SetFont('arial', 'b', $iTamFonte);
@@ -199,7 +199,7 @@ function imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, $lImprime) {
     if ( !$lImprime ) {
 
     	$oPdf->AddPage("P");
-      imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte, true);
+      imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte);
     } else {
 
 			$oPdf->Cell(130, $iAltCell, 'RGF - ANEXO V(LRF, art. 55, Inciso III, alínea "a")', 'B', 0, "L", 0);
@@ -246,7 +246,7 @@ function imprimeInfoProxPagina($oPdf, $iAltCell, $iTamFonte, $lImprime, $lCabeca
 	  } else {
 
 	  	$oPdf->Cell(190, ($iAltCell*3), 'Continua na página '.($oPdf->PageNo()+1)."/{nb}",    'T', 1, "R", 0);
-	  	imprimirCabecalho($oPdf, $iAltCell, $iTamFonte, false);
+	  	imprimirCabecalho($oPdf, $iAltCell, $iTamFonte);
 	  }
 	}
 }

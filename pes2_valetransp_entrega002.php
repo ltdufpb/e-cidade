@@ -35,7 +35,7 @@ $clrotulo->label('r16_descr');
 $clrotulo->label('r17_codigo');
 $clrotulo->label('r17_quant');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
@@ -97,7 +97,7 @@ if(isset($lotaci) && trim($lotaci) != "" && isset($lotacf) && trim($lotacf) != "
   $xwhere .= " and r70_estrut <= '".$lotacf."' ";
 }else if(isset($sellotac) && $sellotac != ''){
 	
-	 $aSellotac = explode(',', $sellotac);
+	 $aSellotac = explode(',', (string) $sellotac);
 	 $sVirgula  = '';
 	 $sLotacoes = '';
 	 foreach ($aSellotac as $sLotac) {
@@ -182,7 +182,7 @@ $sql = "
 
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mesfolha.' / '.$anofolha);
 
@@ -200,10 +200,10 @@ $matric = '';
 $tot_vale = 0;
 $lota = 0;
 $quant = 0;
-$arr_v = array();
-$arr_t = array();
+$arr_v = [];
+$arr_t = [];
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if($lota <> $r70_estrut && $tipo == 'l'){
      $pdf->setfont('arial','b',8);
@@ -217,7 +217,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
         $pdf->cell(60,4,$key,0,0,"L",0);
         $pdf->cell(10,4,$value,0,1,"R",0);
      }
-     $arr_v = array();
+     $arr_v = [];
    }  
    if($lota <> $rh55_estrut && $tipo == 't'){
      $pdf->setfont('arial','b',8);
@@ -231,7 +231,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
         $pdf->cell(60,4,$key,0,0,"L",0);
         $pdf->cell(10,4,$value,0,1,"R",0);
      }
-     $arr_v = array();
+     $arr_v = [];
    }  
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage();
@@ -301,7 +301,7 @@ if( $tipo == 'l'){
         $pdf->cell(60,4,$key,0,0,"L",0);
         $pdf->cell(10,4,$value,0,1,"R",0);
      }
-     $arr_v = array();
+     $arr_v = [];
 }elseif( $tipo == 't'){
   $pdf->cell(100,4,'TOTAL DA LOCAL : '.$quant,1,1,"L",1);
      ksort($arr_v);
@@ -310,7 +310,7 @@ if( $tipo == 'l'){
         $pdf->cell(60,4,$key,0,0,"L",0);
         $pdf->cell(10,4,$value,0,1,"R",0);
      }
-     $arr_v = array();
+     $arr_v = [];
 }
 $pdf->cell(133,$alt,'TOTAL :    '.$total.'   Funcionários',"T",0,"L",0);
 $pdf->cell(10,$alt,$tot_vale,"T",0,"R",0);

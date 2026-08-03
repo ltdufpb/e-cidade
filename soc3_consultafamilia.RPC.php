@@ -48,7 +48,7 @@ db_app::import("AvaliacaoPergunta");
 $oJson              = new Services_JSON();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno           = new stdClass();
-$oRetorno->dados    = array();
+$oRetorno->dados    = [];
 $oRetorno->status   = 1;
 
 switch ($oParam->exec){
@@ -79,8 +79,8 @@ switch ($oParam->exec){
 				$oMembro->iNis = $oMembroFamilia->getNis();
 			}
 		
-			$oMembro->sNome           = urlencode($oMembroFamilia->getNome());
-			$oMembro->sGrauParentesco = urlencode($oMembroFamilia->getTipoFamilia());
+			$oMembro->sNome           = urlencode((string) $oMembroFamilia->getNome());
+			$oMembro->sGrauParentesco = urlencode((string) $oMembroFamilia->getTipoFamilia());
 			$oMembro->iCodigoCidadao  = $oMembroFamilia->getCodigo();
 			$oRetorno->dados[]        = $oMembro;
 		}
@@ -102,8 +102,8 @@ switch ($oParam->exec){
 				
 			$oBeneficio = new stdClass();
 				
-			$oBeneficio->beneficio   = urlencode($oListaBeneficio->beneficio);
-			$oBeneficio->situacao    = urlencode($oListaBeneficio->situacao);
+			$oBeneficio->beneficio   = urlencode((string) $oListaBeneficio->beneficio);
+			$oBeneficio->situacao    = urlencode((string) $oListaBeneficio->situacao);
 			$oBeneficio->quantidade  = $oListaBeneficio->quantidade;
 				
 			$oRetorno->dados[]       = $oBeneficio;
@@ -129,7 +129,7 @@ switch ($oParam->exec){
 	  
 	  if (isset($oParam->iFamilia)) {
 	    
-	    $oRetorno->aVisitas = array();
+	    $oRetorno->aVisitas = [];
 	    $oFamilia           = FamiliaRepository::getFamiliaByCodigo($oParam->iFamilia);
 	    
 	    if (count($oFamilia->getVisitas()) > 0) {
@@ -137,12 +137,12 @@ switch ($oParam->exec){
 	      foreach ($oFamilia->getVisitas() as $oVisitas) {
 	        
 	        $oDadosVisita = new stdClass();
-	        $oDadosVisita->dtVisita = urlencode($oVisitas->getDataVisita());
-	        $oDadosVisita->sHora    = urlencode($oVisitas->getHoraVisita());
+	        $oDadosVisita->dtVisita = urlencode((string) $oVisitas->getDataVisita());
+	        $oDadosVisita->sHora    = urlencode((string) $oVisitas->getHoraVisita());
 	        
 	        $oProfissional               = CgmFactory::getInstanceByCgm($oVisitas->getProfissionalVisita());
-	        $oDadosVisita->sProfissional = urlencode($oProfissional->getNome());
-	        $oDadosVisita->sObservacao   = urlencode($oVisitas->getObservacao());
+	        $oDadosVisita->sProfissional = urlencode((string) $oProfissional->getNome());
+	        $oDadosVisita->sObservacao   = urlencode((string) $oVisitas->getObservacao());
 	        $oRetorno->aVisitas[]        = $oDadosVisita;
 	      }
 	    }
@@ -154,7 +154,7 @@ switch ($oParam->exec){
 	  
 	  if (isset($oParam->iFamilia)) {
 	    
-	    $oRetorno->aHistorico = array();
+	    $oRetorno->aHistorico = [];
 	    $oFamilia             = FamiliaRepository::getFamiliaByCodigo($oParam->iFamilia);
 	    
 	    if (count($oFamilia->getHistoricoAtendimentos()) > 0) {
@@ -162,13 +162,13 @@ switch ($oParam->exec){
 	      foreach ($oFamilia->getHistoricoAtendimentos() as $oHistorico) {
 	        
 	        $oDadosHistorico                 = new stdClass();
-	        $oDadosHistorico->sIdentificador = urlencode($oHistorico->getLocalAtendimentoSocial()->getIdentificadorUnico());
-	        $oDadosHistorico->sCrasCreas     = urlencode($oHistorico->getLocalAtendimentoSocial()->getDescricao());
-	        $oDadosHistorico->dtInicio       = urlencode($oHistorico->getDataVinculo()->getDate(DBDate::DATA_PTBR));
+	        $oDadosHistorico->sIdentificador = urlencode((string) $oHistorico->getLocalAtendimentoSocial()->getIdentificadorUnico());
+	        $oDadosHistorico->sCrasCreas     = urlencode((string) $oHistorico->getLocalAtendimentoSocial()->getDescricao());
+	        $oDadosHistorico->dtInicio       = urlencode((string) $oHistorico->getDataVinculo()->getDate(DBDate::DATA_PTBR));
 	        $oDadosHistorico->dtFim          = urlencode('');
 	        
 	        if ($oHistorico->getFimAtendimento() != '') {
-	          $oDadosHistorico->dtFim = urlencode($oHistorico->getFimAtendimento()->getDate(DBDate::DATA_PTBR));
+	          $oDadosHistorico->dtFim = urlencode((string) $oHistorico->getFimAtendimento()->getDate(DBDate::DATA_PTBR));
 	        }
 	        
 	        $oDadosHistorico->sSituacao = $oHistorico->isAtivo() ? urlencode("Ativo") : urlencode("Inativo");

@@ -100,7 +100,7 @@ final class dbPropriedadeRelatorio implements iGeradorRelatorio {
   public function getNome() {
   	
     if (db_utils::isUTF8($this->sNome)) {
-      return utf8_decode($this->sNome);
+      return mb_convert_encoding($this->sNome, 'ISO-8859-1');
     } else {
       return $this->sNome;
     }  	
@@ -247,16 +247,16 @@ final class dbPropriedadeRelatorio implements iGeradorRelatorio {
     		
   	$oXmlWriter->startElement('Propriedades');
   	
-  	$oXmlWriter->writeAttribute('versao'	,utf8_encode($this->iVersao));
-  	$oXmlWriter->writeAttribute('nome'	    ,utf8_encode($this->sNome));
-  	$oXmlWriter->writeAttribute('layout'	,utf8_encode($this->sLayout));
-  	$oXmlWriter->writeAttribute('formato'	,utf8_encode($this->sFormato));
-  	$oXmlWriter->writeAttribute('orientacao',utf8_encode($this->sOrientacao));
-  	$oXmlWriter->writeAttribute('margemsup' ,utf8_encode($this->iMargemSup));
-  	$oXmlWriter->writeAttribute('margeminf' ,utf8_encode($this->iMargemInf));
-  	$oXmlWriter->writeAttribute('margemesq' ,utf8_encode($this->iMargemEsq));
-  	$oXmlWriter->writeAttribute('margemdir' ,utf8_encode($this->iMargemDir));
-    $oXmlWriter->writeAttribute('tiposaida', utf8_encode($this->sTipoSaida));
+  	$oXmlWriter->writeAttribute('versao'	,mb_convert_encoding($this->iVersao, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('nome'	    ,mb_convert_encoding($this->sNome, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('layout'	,mb_convert_encoding($this->sLayout, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('formato'	,mb_convert_encoding($this->sFormato, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('orientacao',mb_convert_encoding($this->sOrientacao, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('margemsup' ,mb_convert_encoding($this->iMargemSup, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('margeminf' ,mb_convert_encoding($this->iMargemInf, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('margemesq' ,mb_convert_encoding($this->iMargemEsq, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('margemdir' ,mb_convert_encoding($this->iMargemDir, 'UTF-8', 'ISO-8859-1'));
+    $oXmlWriter->writeAttribute('tiposaida', mb_convert_encoding($this->sTipoSaida, 'UTF-8', 'ISO-8859-1'));
   	  	  	  	  	  	
   	$oXmlWriter->endElement();
   	

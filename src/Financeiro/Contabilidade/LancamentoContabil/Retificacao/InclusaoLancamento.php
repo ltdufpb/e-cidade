@@ -28,7 +28,7 @@ class InclusaoLancamento
         $anoSessao = db_getsession('DB_anousu');
         $instituicaoSessao = db_getsession('DB_instit');
 
-        $where = array("c71_coddoc = {$parametros->documento}");
+        $where = ["c71_coddoc = {$parametros->documento}"];
         $where[] = "c02_instit = {$instituicaoSessao}";
         $where[] = "c70_anousu = {$anoSessao}";
 
@@ -46,14 +46,14 @@ class InclusaoLancamento
             $where[] = "c70_data <= '{$dataFinal->getDate()}'";
         }
 
-        $campos = array(
+        $campos = [
             'c70_codlan as codigo_lancamento',
             'c70_data as data',
             'c70_valor as valor',
             '(select count(c69_sequen) from conlancamval clv where clv.c69_codlan = c70_codlan) as total_executado',
             'array_to_string(
                array_accum(c69_ordem||\'#\'||c69_sequen order by c69_ordem, c69_sequen) , \',\') as executados'
-        );
+        ];
 
         $daoConlancamval = new \cl_conlancamval();
         $consultaRegistros = $daoConlancamval->sql_query_lancamentos(
@@ -72,23 +72,23 @@ class InclusaoLancamento
         $lancamentos = $eventoContabil->getEventoContabilLancamento();
         $totalLancamentos = count($lancamentos);
         $retorno = new \stdClass();
-        $retorno->lancamentos = array();
-        $retorno->lancamentosEvento = array();
+        $retorno->lancamentos = [];
+        $retorno->lancamentosEvento = [];
         $retorno->totalLancamentosEvento = $totalLancamentos;
         foreach ($lancamentos as $lancamento) {
             if ((int)$lancamento->getOrdem() === 1) {
                 continue;
             }
-            $retorno->lancamentosEvento[] = (object)array(
+            $retorno->lancamentosEvento[] = (object)[
                 'codigo' => $lancamento->getSequencialLancamento(),
                 'ordem' => $lancamento->getOrdem(),
                 'descricao' => $lancamento->getDescricao(),
-            );
+            ];
         }
 
         for ($row = 0; $row < $totalRegistros; $row++) {
             $stdLancamento = \db_utils::fieldsMemory($resultConsulta, $row);
-            $ordenarExecutados = explode(',', $stdLancamento->executados);
+            $ordenarExecutados = explode(',', (string) $stdLancamento->executados);
             sort($ordenarExecutados);
             $stdLancamento->executados = implode('|', $ordenarExecutados);
             $retorno->lancamentos[] = $stdLancamento;
@@ -142,7 +142,7 @@ class InclusaoLancamento
 
         $regra = $regrasDoLancamento[0];
         $totalRegistrosProcessados = 0;
-        $logRegistros = array();
+        $logRegistros = [];
         try {
             db_inicio_transacao();
 

@@ -239,9 +239,9 @@ function js_emite() {
 			            <td align="left"><b>Inscrições:</b></td>
 			            <td align="left">
 			              <?php  
-			                $aInscricao = array("T"   => "Todas",
+			                $aInscricao = ["T"   => "Todas",
 			                                    "BA"  => "Baixadas",
-			                                    "NBA" => "Não Baixadas");
+			                                    "NBA" => "Não Baixadas"];
 			                db_select("inscricao", $aInscricao, true, 2); 
 			              ?>
 			            </td>
@@ -255,7 +255,7 @@ function js_emite() {
                       $sSqlDataDebitos  = $cldatadebitos->sql_query_file(null, $sCampos, $sOrderBy, $sWhere);
                       $rsSqlDataDebitos = $cldatadebitos->sql_record($sSqlDataDebitos);
                       
-                      $aDataDebitos     = array();
+                      $aDataDebitos     = [];
 				              for ( $i = 0; $i < $cldatadebitos->numrows; $i++ ) {
 				              	
 				                $oDataDebitos                           = db_utils::fieldsMemory($rsSqlDataDebitos, $i);
@@ -269,10 +269,10 @@ function js_emite() {
 			            <td align="left"><b>Ordenar por:</b></td>
 			            <td align="left">
 			              <?php  
-			                $aOrdenar = array("A" => "Atividades",
+			                $aOrdenar = ["A" => "Atividades",
 			                                  "I" => "Inscrição",
 			                                  "L" => "Logradouro",
-                                        "N" => "Logradouro/Número");
+                                        "N" => "Logradouro/Número"];
 			                db_select("ordenar", $aOrdenar, true, 2); 
 			              ?>
 			            </td>

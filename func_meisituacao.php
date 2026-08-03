@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_meisituacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmeisituacao = new cl_meisituacao;
 $clmeisituacao->rotulo->label("q116_sequencial");
 $clmeisituacao->rotulo->label("q116_descricao");
@@ -98,9 +98,9 @@ $clmeisituacao->rotulo->label("q116_descricao");
         }else{
            $sql = $clmeisituacao->sql_query("",$campos,"q116_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q116_descricao)){
-          $repassa = array("chave_q116_sequencial"=>$chave_q116_sequencial,"chave_q116_descricao"=>$chave_q116_descricao);
+          $repassa = ["chave_q116_sequencial"=>$chave_q116_sequencial,"chave_q116_descricao"=>$chave_q116_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

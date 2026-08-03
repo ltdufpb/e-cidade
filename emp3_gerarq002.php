@@ -35,7 +35,7 @@ $clempagegera = new cl_empagegera;
 $clrotulo = new rotulocampo;
 $clempagegera->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 if(isset($e83_codtipo) && $e83_codtipo!="0"){
   $e87_codgera = "select distinct e90_codgera 
                   from empageconfgera 

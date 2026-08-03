@@ -22,11 +22,6 @@ abstract class ExercicioContabil
     protected $nomeLog;
 
     /**
-     * @var integer
-     */
-    protected $ano;
-
-    /**
      * @var \DBDate
      */
     protected $data;
@@ -46,10 +41,10 @@ abstract class ExercicioContabil
      * @param $ano
      * @param \DBDate $data
      * @param \Instituicao $instituicao
+     * @param int $ano
      */
-    public function __construct($ano, \DBDate $data, \Instituicao $instituicao)
+    public function __construct(protected $ano, \DBDate $data, \Instituicao $instituicao)
     {
-        $this->ano = $ano;
         $this->data = $data;
         $this->instituicao = $instituicao;
         $this->logger = new Logger("tmp/{$this->nomeLog}", Logger::DEBUG_5);

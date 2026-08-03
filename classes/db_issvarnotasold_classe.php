@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE issvarnotasold
 class cl_issvarnotasold { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q16_codigo = 0; 
-   var $q16_seq = 0; 
-   var $q16_nota = null; 
-   var $q16_valor = 0; 
+   public $q16_codigo = 0; 
+   public $q16_seq = 0; 
+   public $q16_nota = null; 
+   public $q16_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q16_codigo = int8 = Codigo da Arrecadaçao 
                  q16_seq = int4 = Código da complementar 
                  q16_nota = varchar(100) = Número da Nota 
                  q16_valor = float4 = Valor da Nota 
                  ";
    //funcao construtor da classe 
-   function cl_issvarnotasold() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issvarnotasold"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -132,7 +132,7 @@ class cl_issvarnotasold {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "complementar () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "complementar já Cadastrado";
@@ -159,10 +159,10 @@ class cl_issvarnotasold {
       $this->atualizacampos();
      $sql = " update issvarnotasold set ";
      $virgula = "";
-     if(trim($this->q16_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q16_codigo"])){ 
+     if(trim((string) $this->q16_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q16_codigo"])){ 
        $sql  .= $virgula." q16_codigo = $this->q16_codigo ";
        $virgula = ",";
-       if(trim($this->q16_codigo) == null ){ 
+       if(trim((string) $this->q16_codigo) == null ){ 
          $this->erro_sql = " Campo Codigo da Arrecadaçao nao Informado.";
          $this->erro_campo = "q16_codigo";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_issvarnotasold {
          return false;
        }
      }
-     if(trim($this->q16_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q16_seq"])){ 
+     if(trim((string) $this->q16_seq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q16_seq"])){ 
        $sql  .= $virgula." q16_seq = $this->q16_seq ";
        $virgula = ",";
-       if(trim($this->q16_seq) == null ){ 
+       if(trim((string) $this->q16_seq) == null ){ 
          $this->erro_sql = " Campo Código da complementar nao Informado.";
          $this->erro_campo = "q16_seq";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_issvarnotasold {
          return false;
        }
      }
-     if(trim($this->q16_nota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q16_nota"])){ 
+     if(trim((string) $this->q16_nota)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q16_nota"])){ 
        $sql  .= $virgula." q16_nota = '$this->q16_nota' ";
        $virgula = ",";
-       if(trim($this->q16_nota) == null ){ 
+       if(trim((string) $this->q16_nota) == null ){ 
          $this->erro_sql = " Campo Número da Nota nao Informado.";
          $this->erro_campo = "q16_nota";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_issvarnotasold {
          return false;
        }
      }
-     if(trim($this->q16_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q16_valor"])){ 
+     if(trim((string) $this->q16_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q16_valor"])){ 
        $sql  .= $virgula." q16_valor = $this->q16_valor ";
        $virgula = ",";
-       if(trim($this->q16_valor) == null ){ 
+       if(trim((string) $this->q16_valor) == null ){ 
          $this->erro_sql = " Campo Valor da Nota nao Informado.";
          $this->erro_campo = "q16_valor";
          $this->erro_banco = "";
@@ -292,7 +292,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:issvarnotasold";
@@ -306,7 +306,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="issvarnotasold.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -327,7 +327,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -339,7 +339,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -357,7 +357,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -91,7 +91,7 @@ switch ($oPost->tipo) {
 
 			if (isset($oPost->listlotacoes) && !empty($oPost->listlotacoes)) {
 
-			  $sLotacoes = implode("', '", explode(",", $oPost->listlotacoes));
+			  $sLotacoes = implode("', '", explode(",", (string) $oPost->listlotacoes));
 			  $sWhere   .= " and r70_estrut in ('{$sLotacoes}') ";
 			}
   	} else {
@@ -123,7 +123,7 @@ switch ($oPost->tipo) {
 
 			if (isset($oPost->listmatriculas) && !empty($oPost->listmatriculas)) {
 
-			  $sMatriculas = implode(",", explode(",", $oPost->listmatriculas));
+			  $sMatriculas = implode(",", explode(",", (string) $oPost->listmatriculas));
 			  $sWhere     .= " and rh99_regist in ({$sMatriculas}) ";
 			}
     } else {
@@ -462,7 +462,7 @@ for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
   $oRendimento = db_utils::fieldsMemory($rsSqlRendimento, $iInd);
   $nome_pens   = $oDirf->getInformacoesComplementares($oRendimento->rh96_numcgm, true);
   $sMatricula  = str_replace('}','',str_replace('{','',$oRendimento->regist));
-  $aRubricas   = array();
+  $aRubricas   = [];
 
   $sSqlRubricasBase  = "SELECT array_to_string(array_agg('\'' || r09_rubric || '\''), ',') as rubricas ";
   $sSqlRubricasBase .= " FROM rhrubricas ";

@@ -32,7 +32,7 @@ require_once modification('libs/db_usuariosonline.php');
 require_once modification('dbforms/db_funcoes.php');
 require_once modification('model/relatorioContabil.model.php');
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;

@@ -31,12 +31,12 @@
   include(modification("libs/db_usuariosonline.php"));
   include(modification("dbforms/db_funcoes.php"));
   include(modification("classes/db_editaltipo_classe.php"));
-  db_postmemory($HTTP_SERVER_VARS);
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_SERVER);
+  db_postmemory($_POST);
   $db_opcao = 3;
   $cleditaltipo = new cl_editaltipo;
   $db_botao = false;
-  if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Excluir"){
+  if (isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Excluir"){
   	 $cleditaltipo->excluir($d03_tipos);
   }else if(isset($chavepesquisa)){
  	 $result = $cleditaltipo->sql_record($cleditaltipo->sql_query($chavepesquisa)); 

@@ -72,7 +72,7 @@ if (isset($chavepesquisa)) {
     $db_opcao = 2;
     $db_botao = true;
     $oCgm = db_utils::fieldsMemory($result, 0);
-    if (!empty($oCgm->z01_cgccpf) && strlen($oCgm->z01_cgccpf) == 14) {
+    if (!empty($oCgm->z01_cgccpf) && strlen((string) $oCgm->z01_cgccpf) == 14) {
       $lPessoaFisica = false;
     }
   }

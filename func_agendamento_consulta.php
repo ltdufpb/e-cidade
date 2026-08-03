@@ -94,11 +94,11 @@ a:active {
 <?php 
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$ano           = substr( $sd23_d_consulta, 6, 4 );
-$mes           = substr( $sd23_d_consulta, 3, 2 );
-$dia           = substr( $sd23_d_consulta, 0, 2 );
+$ano           = substr( (string) $sd23_d_consulta, 6, 4 );
+$mes           = substr( (string) $sd23_d_consulta, 3, 2 );
+$dia           = substr( (string) $sd23_d_consulta, 0, 2 );
 
 $clagendamentos  = new cl_agendamentos_ext;
 $clundmedhorario = new cl_undmedhorario_ext;
@@ -247,7 +247,7 @@ if( $clausencias->numrows > 0 ){
 		$mi_interva2 = 1;
 
 		?>
-			<tr class='cabec' id="<?=trim($obj_undmedhorario->sd30_i_codigo)?>">
+			<tr class='cabec' id="<?=trim((string) $obj_undmedhorario->sd30_i_codigo)?>">
 				<td colspan="8" align="left">
 					<img src="skins/img.php?file=Controles/seta_down.png" onclick="js_ocultar(this,<?=$obj_undmedhorario->sd30_i_codigo ?>)">
 					<?=$obj_undmedhorario->sd30_i_codigo." - ".$obj_undmedhorario->sd101_c_descr ?>
@@ -307,14 +307,14 @@ if( $clausencias->numrows > 0 ){
 			?>
 			<tr style="display:<?=$codigo!=0&&(($linhas-1)>$h)?'none':'' ?>" id="<?=$codigo!=0?($obj_undmedhorario->sd30_i_codigo.'_'.$h):'' ?>" >
 				<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=($h+1)?></td>
-				<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=substr($hora_ini,0,5) ?></td>
+				<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=substr((string) $hora_ini,0,5) ?></td>
 				<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=substr($hora_fim,0,5) ?></td>
 				<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$reservada ?></td>
 				<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$obj_undmedhorario->sd30_c_tipograde=="I"?"Intervalo":"Período" ?></td>
 				<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$cgs ?></td>
 				<td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$paciente ?></td>
 				<td class='opcoes' nowrap>
-					<!-- <a title='Lançar conteúdo da linha'  href='#' onclick="js_lancar(<?=$codigo?>,<?=$obj_undmedhorario->sd30_i_codigo?>,'<?=$ano?>','<?=$mes?>','<?=$dia?>',<?=($h+1)?>,'<?=substr($hora_ini,0,5) ?>','<?=substr($hora_fim,0,5) ?>');">&nbsp;L&nbsp;</a>
+					<!-- <a title='Lançar conteúdo da linha'  href='#' onclick="js_lancar(<?=$codigo?>,<?=$obj_undmedhorario->sd30_i_codigo?>,'<?=$ano?>','<?=$mes?>','<?=$dia?>',<?=($h+1)?>,'<?=substr((string) $hora_ini,0,5) ?>','<?=substr($hora_fim,0,5) ?>');">&nbsp;L&nbsp;</a>
 					&nbsp;&nbsp; -->
 					<a title='Anular conteúdo da linha' href='#' onclick='js_excluir(<?=$codigo?>);return false;'>&nbsp;A&nbsp;</a>
 					&nbsp;&nbsp;

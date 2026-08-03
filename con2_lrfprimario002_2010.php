@@ -39,8 +39,8 @@ if (!isset($arqinclude)) {
   require_once(modification("model/linhaRelatorioContabil.model.php"));
   require_once(modification("model/relatorioContabil.model.php"));
   
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
   
   $clconrelinfo = new cl_conrelinfo;
   
@@ -78,11 +78,11 @@ if (!isset($arqinclude)) {
     $dt_ini = $dtini;
     $dt_fin = $dtfin;
     
-    $dt = split('-',$dt_ini);
+    $dt = preg_split('#\-#m',(string) $dt_ini);
     $dt_ini_ant = ($anousu-1).'-'.$dt[1].'-'.$dt[2];
     $dt1 = $dt[2]."/".$dt[1]."/".$dt[0];
 
-    $dt = split('-',$dt_fin);
+    $dt = preg_split('#\-#m',(string) $dt_fin);
 
     // Caso a Data Fim seja 31/12
     // seta $ultimo_periodo como true, caso contrario false
@@ -161,7 +161,7 @@ if (!isset($arqinclude)) {
 $sele_work = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
 $result_desp = db_dotacaosaldo(7, 1, 4, true, $sele_work, $anousu, $dt_ini, $dt_fin);
 
-$m_desp=array();
+$m_desp=[];
 for ($x=1; $x <=10; $x++) {
   
   $m_desp[$x][0]  = new linhaRelatorioContabil($iCodigoRelatorio, $x+21);
@@ -190,7 +190,7 @@ for ($x=1; $x <=10; $x++) {
 //db_criatabela($result_desp); die();
 
 
-for ($i=0; $i<pg_numrows($result_desp); $i++) {
+for ($i=0; $i<pg_num_rows($result_desp); $i++) {
   
   $oDespesa = db_utils::fieldsmemory($result_desp,$i);
   $estrutural = $oDespesa->o58_elemento;
@@ -217,7 +217,7 @@ if (!isset($lInResumido)) {
   $sele_work = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
   $result_desp = db_dotacaosaldo(7,1,4,true,$sele_work,($anousu-1),$dt_ini_ant,$dt_fin_ant);
   
-  for ($i=0; $i<pg_numrows($result_desp); $i++) {
+  for ($i=0; $i<pg_num_rows($result_desp); $i++) {
     
     $oDespesa   = db_utils::fieldsmemory($result_desp,$i);
     $estrutural = $oDespesa->o58_elemento;
@@ -242,12 +242,12 @@ if (!isset($lInResumido)) {
 $instituicao = str_replace("-",",",$db_selinstit);
 
 // carrega matriz c/ parametros
-$m_rec     = array();
-$m_rec_ant = array();
+$m_rec     = [];
+$m_rec_ant = [];
 // vetor de receitas de exercicio anterior devido as deducoes mudarem de 497(2007) p/ 917(2008)
 for ($x=1; $x<=21; $x++) {
-  
-  
+
+
   $m_rec[$x][0]     = new linhaRelatorioContabil($iCodigoRelatorio, $x);
   $m_rec[$x][0]->setPeriodo($iCodigoPeriodo);
   $m_rec[$x][0]->oParametros = $m_rec[$x][0]->getParametros($anousu);
@@ -275,7 +275,7 @@ $db_filtro  = ' o70_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
 $result_rec = db_receitasaldo(11,1,3,true,$db_filtro,$anousu,$dt_ini,$dt_fin,false);
 @db_query("drop table work_receita");
 
-for ($x=0; $x< pg_numrows($result_rec); $x++) {
+for ($x=0; $x< pg_num_rows($result_rec); $x++) {
   
   $oReceita =  db_utils::fieldsmemory($result_rec, $x);
   $elemento = $oReceita->o57_fonte;
@@ -307,7 +307,7 @@ if (!isset($lInResumido)) {
   $db_filtro  = ' o70_instit in (' . str_replace('-',', ',$db_selinstit) . ')';
   $result_rec = db_receitasaldo(11,1,3,true,$db_filtro,$anousu_ant,$dt_ini_ant,$dt_fin_ant,false);
   @db_query("drop table work_receita");
-  for ($x=0; $x< pg_numrows($result_rec); $x++) {
+  for ($x=0; $x< pg_num_rows($result_rec); $x++) {
     $oReceitaSaldo = db_utils::fieldsmemory($result_rec,$x);
     $elemento      = $oReceitaSaldo->o57_fonte;
     for ($aa = 1; $aa <= 21; $aa++) {
@@ -317,7 +317,7 @@ if (!isset($lInResumido)) {
         
         $oVerificacao = $m_rec[$aa][0]->match($oEstrutural, $oParametro->orcamento, $oReceitaSaldo, 1);
         if ($oVerificacao->match) {
-          
+
           if ($oVerificacao->exclusao) {
             $oReceitaSaldo->saldo_arrecadado_acumulado *= -1;
           }
@@ -337,7 +337,7 @@ if (!isset($lInResumido)) {
 
 if (!isset($arqinclude)) {
   
-  $xinstit = split("-",$db_selinstit);
+  $xinstit = preg_split("#\\-#m",(string) $db_selinstit);
   $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
   db_fieldsmemory($resultinst,0);
   $descr_inst = $munic;
@@ -348,10 +348,10 @@ if (!isset($arqinclude)) {
   $head5 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
   
   $dados  = data_periodo($anousu,$sSiglaPeriodo);
-  $perini = split("-",$dados[0]);
-  $perfin = split("-",$dados[1]);
+  $perini = preg_split("#\\-#m",(string) $dados[0]);
+  $perfin = preg_split("#\\-#m",(string) $dados[1]);
   
-  $txtper = strtoupper($dados["periodo"]);
+  $txtper = strtoupper((string) $dados["periodo"]);
   $mesini = strtoupper(db_mes($perini[1]));
   $mesfin = strtoupper(db_mes($perfin[1]));
   
@@ -395,7 +395,7 @@ for ($x=1; $x<=15; $x++) {
     continue;
     // temos que subtrair a linha 9
   }
-  
+
   $receita_primaria_total[1] += $m_rec[$x][1];
   // previsão atualizada
   $receita_primaria_total[2] += $m_rec[$x][2];
@@ -404,7 +404,7 @@ for ($x=1; $x<=15; $x++) {
   // arrecadado ate o bimestre
   $receita_primaria_total[4] += $m_rec[$x][4];
   // reservado para período no exercicio anterior
-  
+
   $receita_primaria[1] += $m_rec[$x][1];
   // previsão atualizada
   $receita_primaria[2] += $m_rec[$x][2];
@@ -791,18 +791,18 @@ if (!isset($arqinclude)) {
     $pdf->setX(102);
 
     if ($tipo_emissao=='periodo') {
-      $txtper = ucfirst(strtolower($txtper));
+      $txtper = ucfirst(strtolower((string) $txtper));
       $pdf->cell($tam_col3, $alt, "No ".$txtper,    '1',  0, "C", 0);
       $pdf->cell($tam_col4, $alt, "Até o ".$txtper, '1',  0, "C", 0);
 
       $pdf->setX(102+$tam_col3+$tam_col4+$tam_col6);
       $pdf->cell($tam_col4, $alt, "Até o ".$txtper, '1',  0, "C", 0);
     } else {
-      $pdf->cell($tam_col3, $alt, substr($dt1,0,5)." à ".substr($dt2,0,5), '1',  0, "C", 0);
-      $pdf->cell($tam_col4, $alt, "Até ".substr($dt2,0,5),   '1',  0, "C", 0);
+      $pdf->cell($tam_col3, $alt, substr((string) $dt1,0,5)." à ".substr((string) $dt2,0,5), '1',  0, "C", 0);
+      $pdf->cell($tam_col4, $alt, "Até ".substr((string) $dt2,0,5),   '1',  0, "C", 0);
 
       $pdf->setX(102+$tam_col3+$tam_col4+$tam_col6);
-      $pdf->cell($tam_col4, $alt, "Até ".substr($dt2_ant,0,5), '1',  0, "C", 0);
+      $pdf->cell($tam_col4, $alt, "Até ".substr((string) $dt2_ant,0,5), '1',  0, "C", 0);
     }
 
 
@@ -1134,11 +1134,11 @@ if (!isset($arqinclude)) {
   
   $pdf->Ln();
   $oRelatorioContabil = new relatorioContabil($iCodigoRelatorio, false);
-  $oRelatorioContabil->getNotaExplicativa(&$pdf, $iCodigoPeriodo);
+  $oRelatorioContabil->getNotaExplicativa($pdf, $iCodigoPeriodo);
   
   $pdf->Ln(14);
   
-  assinaturas(&$pdf,&$classinatura,'LRF');
+  assinaturas($pdf,$classinatura,'LRF');
   
   $pdf->Output();
   

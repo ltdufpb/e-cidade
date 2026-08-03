@@ -73,7 +73,7 @@ if(isset($db_atualizar)){
  if($estrutural  ==  ""){
        $tot='0';
  }else{
-   $matriz=split('\.',$estrutural); 
+   $matriz=preg_split('#\.#m',(string) $estrutural); 
    $tot=count($matriz);
  }
  
@@ -486,9 +486,9 @@ function js_novo(){
          parent.document.formaba.orcimpactovalmov.disabled=true;
   <?php 
   if(isset($o63_codimpmov)){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o63_codimpger=$o63_codimpger&tipo=".@$tipo."&chave_nova=$o63_codimpmov';";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o63_codimpger=$o63_codimpger&tipo=".@$tipo."&chave_nova=$o63_codimpmov';";
   }else{
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o63_codimpger=$o63_codimpger&tipo=".@$tipo."';";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o63_codimpger=$o63_codimpger&tipo=".@$tipo."';";
   }  
   ?>  
 }
@@ -671,7 +671,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave,tipo){
     db_iframe_orcimpactomov.hide();
     <?php 
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o63_codimpger=$o63_codimpger&tipo='+tipo+'&chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o63_codimpger=$o63_codimpger&tipo='+tipo+'&chavepesquisa='+chave";
     ?>
 }
 

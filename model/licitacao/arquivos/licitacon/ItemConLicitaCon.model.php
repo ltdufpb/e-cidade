@@ -36,19 +36,19 @@ class ItemConLicitaCon extends ArquivoLicitaCon
     /**
      * @type stdClass[]
      */
-    private $aItens = array();
+    private $aItens = [];
 
     /**
      * Mapeia chave do item com a posição no array $aItens para evitar repetição dos itens.
      * @type integer[]
      */
-    private $mapItens = array();
+    private $mapItens = [];
 
     /**
      * Campos utilizados nas querys dos métodos
      * @type array
      */
-    private static $aCampos = array(
+    private static $aCampos = [
       "distinct (select min(coalesce(case when l20_tipojulg in(1,2) then 1 else lcll.l04_codigo end, 1)) from liclicitemlote as lcll inner join liclicitem as lcl on lcll.l04_liclicitem = lcl.l21_codigo where lcl.l21_codliclicita = liclicitem.l21_codliclicita and lcll.l04_descricao = liclicitemlote.l04_descricao) as nr_lote",
       "l21_codliclicita",
       "ac16_numero",
@@ -66,7 +66,7 @@ class ItemConLicitaCon extends ArquivoLicitaCon
       "l20_codigo",
       "pc23_bdi",
       "pc23_encargossociais"
-    );
+    ];
 
     /**
      * ItemConLicitaCon constructor.
@@ -87,7 +87,7 @@ class ItemConLicitaCon extends ArquivoLicitaCon
      */
     public function getDados()
     {
-        $this->aItens = array();
+        $this->aItens = [];
         $this->carregarItensOrigemLicitacao();
         $this->carregarItensOrigemManual();
         $this->carregarItensOrigemProcessoDeCompras();
@@ -105,14 +105,14 @@ class ItemConLicitaCon extends ArquivoLicitaCon
      */
     public function carregarItensOrigemLicitacao()
     {
-        $sWhere = implode(" and ", array(
+        $sWhere = implode(" and ", [
           'ac16_origem = ' . Acordo::ORIGEM_LICITACAO,
           "ac26_acordoposicaotipo = " . AcordoPosicao::TIPO_INCLUSAO,
           "ac16_dataassinatura >= '2016-05-02'",
           "(ac58_acordo is null or ac58_data >= '{$this->oCabecalho->getDataGeracao()->getDate()}')",
           "pc24_pontuacao = 1",
           "ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()}",
-        ));
+        ]);
 
         $rsItens = LoteConLicitaCon::getItens(implode(',', self::$aCampos), $sWhere);
 
@@ -144,14 +144,14 @@ class ItemConLicitaCon extends ArquivoLicitaCon
      */
     public function carregarItensOrigemManual()
     {
-        $sWhere = implode(" and ", array(
+        $sWhere = implode(" and ", [
           'ac16_origem = ' . Acordo::ORIGEM_MANUAL,
           "ac26_acordoposicaotipo = " . AcordoPosicao::TIPO_INCLUSAO,
           "ac16_dataassinatura >= '2016-05-02'",
           "(ac58_acordo is null or ac58_data >= '{$this->oCabecalho->getDataGeracao()->getDate()}')",
           "pc24_pontuacao = 1",
           "ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()}",
-        ));
+        ]);
 
         $rsItens = LoteConLicitaCon::getItens(implode(',', self::$aCampos), $sWhere);
 
@@ -182,14 +182,14 @@ class ItemConLicitaCon extends ArquivoLicitaCon
      */
     private function carregarItensOrigemProcessoDeCompras()
     {
-        $sWhere = implode(" and ", array(
+        $sWhere = implode(" and ", [
           'ac16_origem = ' . Acordo::ORIGEM_PROCESSO_COMPRAS,
           "ac26_acordoposicaotipo = " . AcordoPosicao::TIPO_INCLUSAO,
           "ac16_dataassinatura >= '2016-05-02'",
           "(ac58_acordo is null or ac58_data >= '{$this->oCabecalho->getDataGeracao()->getDate()}')",
           "pc24_pontuacao = 1",
           "ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()}",
-        ));
+        ]);
 
         $oDaoItemProcesso = new cl_solicitemvinculo();
         $sSqlBuscaItens = $oDaoItemProcesso->sql_query_item_licitacon(implode(', ', self::$aCampos), $sWhere);

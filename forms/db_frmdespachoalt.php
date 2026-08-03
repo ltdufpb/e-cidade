@@ -51,14 +51,14 @@ $dtproc=db_formatar($p58_dtproc,'d');
  * Tipos de despachos
  * padrao: 1 - Despacho
  */
-$aTipos = array(1 => 'Despacho');
+$aTipos = [1 => 'Despacho'];
 $oDaoTipoDespacho = new cl_tipodespacho();
 $sSqlTIpos = $oDaoTipoDespacho->sql_query_file();
 $rsTipos = $oDaoTipoDespacho->sql_record($sSqlTIpos);
 
 if ($oDaoTipoDespacho->numrows > 1) {
 
-  $aTipos = array();
+  $aTipos = [];
 
   for ($iRow = 0; $iRow < $oDaoTipoDespacho->numrows; $iRow++) {
 
@@ -182,7 +182,7 @@ if ($oDaoTipoDespacho->numrows > 1) {
     </td>
     <td>
          <?php 
-               $x = array("t"=>"Sim","f"=>"Não");
+               $x = ["t"=>"Sim","f"=>"Não"];
                db_select('p78_publico',$x,true,1,"");
          
                ?>
@@ -221,7 +221,7 @@ if ($oDaoTipoDespacho->numrows > 1) {
              $despachoob = true;
            }
 
-           if (isset($p90_minchardesp) && $p90_minchardesp != "") {			
+           if (isset($p90_minchardesp) && $p90_minchardesp != 0) {			
              echo "<br><b>*Mínimo de {$p90_minchardesp} caracteres para o despacho.</b>";
            } 
          }

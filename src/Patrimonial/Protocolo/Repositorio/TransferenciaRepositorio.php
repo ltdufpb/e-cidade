@@ -50,7 +50,7 @@ class TransferenciaRepositorio
             );
         }
 
-        $processos = array();
+        $processos = [];
 
         if (pg_num_rows($rs) > 0) {
             while ($processo = pg_fetch_object($rs)) {

@@ -93,13 +93,13 @@ db_input('at01_nomecli',40,$Iat01_nomecli,true,'text',3,'')
     <td valign="top"  align="center">  
     <?php 
 	 if(isset($db_opcao)&&$db_opcao==2) {
-	 	$chavepri= array("at50_proced"=>@$at50_proced);
+	 	$chavepri= ["at50_proced"=>@$at50_proced];
 	 }
 	 else if(isset($db_opcao)&&$db_opcao==3) {
-	 	$chavepri= array("at50_proced"=>@$at50_proced);
+	 	$chavepri= ["at50_proced"=>@$at50_proced];
 	 }
      else if(isset($db_opcao)&&$db_opcao==1) {
-	 	$chavepri= array("at50_sequencial"=>@$at50_sequencial,"at50_proced"=>@$at50_proced);
+	 	$chavepri= ["at50_sequencial"=>@$at50_sequencial,"at50_proced"=>@$at50_proced];
 	 }
 
 	 $cliframe_alterar_excluir->chavepri=$chavepri;

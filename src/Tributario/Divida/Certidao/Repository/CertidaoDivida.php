@@ -220,7 +220,7 @@ class CertidaoDivida extends \BaseClassRepository
 
         if ($this->isReturnFullItem()) {
             $entity->setDivida(
-                DividaRepository::getInstance()->make($certidaoDivida)
+                (new DividaRepository())->getInstance()->make($certidaoDivida)
             );
         }
 
@@ -234,7 +234,7 @@ class CertidaoDivida extends \BaseClassRepository
      */
     private function makeCollection($result)
     {
-        $data = array();
+        $data = [];
         foreach (pg_fetch_all($result) as $item) {
             $data[] = $this->make((object) $item);
         }

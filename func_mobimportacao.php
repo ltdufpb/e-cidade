@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mobimportacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmobimportacao = new cl_mobimportacao;
 $clmobimportacao->rotulo->label("j95_codimporta");
 $clmobimportacao->rotulo->label("j95_pda");
@@ -98,9 +98,9 @@ $clmobimportacao->rotulo->label("j95_pda");
         }else{
            $sql = $clmobimportacao->sql_query("",$campos,"j95_codimporta","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_j95_pda)){
-          $repassa = array("chave_j95_codimporta"=>$chave_j95_codimporta,"chave_j95_pda"=>$chave_j95_pda);
+          $repassa = ["chave_j95_codimporta"=>$chave_j95_codimporta,"chave_j95_pda"=>$chave_j95_pda];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -150,7 +150,7 @@ function js_AbreJanelaRelatorio() {
         </td>
         <td>
             <?php
-                $aOrigem = array("0" => "Selecione..","1" => "CGM", "2" => "Matrícula", "3" => "Inscrição");
+                $aOrigem = ["0" => "Selecione..","1" => "CGM", "2" => "Matrícula", "3" => "Inscrição"];
                 db_select("origem", $aOrigem, true, 4, "onchange='js_pesquisaOrigem()'");
                 db_input('origemcod', 10, 0, true, 'text', 1, 'onchange="js_pesquisaOrigem(false);"');
                 db_input("origemdescr", 34, 1, true, "text", 3, 'onchange="js_pesquisaOrigem(false);document.form1.origemdescr1.value=this.value"');
@@ -181,7 +181,7 @@ function js_AbreJanelaRelatorio() {
             </td>
           <td>
             <?php
-              $aReemissao = array("false" => "Não", "true" => "Sim");
+              $aReemissao = ["false" => "Não", "true" => "Sim"];
               db_select("DBtxt14", $aReemissao, true, 4, "");
             ?>
           </td>
@@ -191,7 +191,7 @@ function js_AbreJanelaRelatorio() {
           <td class="field-size4 hide"><label for="totexe">Totaliza por exercício:</label></td >
           <td class="field-size4 hide">
             <?php
-              $aTotaliza = array("f" => "Não", "t" => "Sim");
+              $aTotaliza = ["f" => "Não", "t" => "Sim"];
               db_select("totexe", $aTotaliza, true, 4, "");
             ?>
           </td>

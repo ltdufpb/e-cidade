@@ -35,7 +35,7 @@ $objJSON = new Services_JSON();
 $aContas = db_getsession("aContas");
 db_destroysession('aContas');
 
-$sDataArquivo = implode('/', array_reverse( explode("-",$dataarq) ) );
+$sDataArquivo = implode('/', array_reverse( explode("-",(string) $dataarq) ) );
 
 $head1 = "INCONSISTÊNCIAS DA CARGA DO EXTRATO ";
 $head2 = "";

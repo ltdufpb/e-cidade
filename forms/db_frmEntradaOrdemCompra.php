@@ -69,9 +69,9 @@ $sData = date("d/m/Y", db_getsession("DB_datausu"));
 if (isset($atualiza)) {
     $e70_valor = trim(db_formatar($e7_valor, 'p'));
 }
-$aParamKeys = array(
+$aParamKeys = [
     db_getsession("DB_anousu")
-);
+];
 $aParametrosCustos = db_stdClass::getParametro("parcustos", $aParamKeys);
 
 $iTipoControleCustos = 0;
@@ -80,17 +80,17 @@ $iControlaPit = 0;
 if (count($aParametrosCustos) > 0) {
     $iTipoControleCustos = $aParametrosCustos[0]->cc09_tipocontrole;
 }
-$aParamKeys = array(
+$aParamKeys = [
     db_getsession("DB_instit")
-);
+];
 $aParametrosPit = db_stdClass::getParametro("matparaminstit", $aParamKeys);
 if (count($aParametrosPit) > 0) {
     $iControlaPit = $aParametrosPit[0]->m10_controlapit;
 }
 
-$aParamKeys = array(
+$aParamKeys = [
     db_getsession("DB_anousu")
-);
+];
 $aParametrosEmpenho = db_stdClass::getParametro("empparametro", $aParamKeys);
 $iNumeroCasasDecimas = 2;
 if (count($aParametrosEmpenho) > 0) {
@@ -402,7 +402,7 @@ try {
                                 <?php
                                 $oDaoUnid = new cl_matunid();
                                 $rsUnidades = $oDaoUnid->sql_record($oDaoUnid->sql_query_file(null, "*", "m61_descr"));
-                                $aUnidades = array();
+                                $aUnidades = [];
                                 for ($i = 0; $i < $oDaoUnid->numrows; $i++) {
 
                                     $oItens = db_utils::fieldsMemory($rsUnidades, $i);

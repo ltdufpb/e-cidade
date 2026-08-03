@@ -101,7 +101,7 @@ db_input('z01_nome',80,$Iz01_nome,true,'text',3,'')
       </td>
       <td>
               <?php 
-                 $x = array("A"=>"Ativo","D"=>"Desativado");
+                 $x = ["A"=>"Ativo","D"=>"Desativado"];
                  db_select('sd04_c_situacao',$x,true,$db_opcao, "","",2);
               ?>
 
@@ -117,7 +117,7 @@ db_input('z01_nome',80,$Iz01_nome,true,'text',3,'')
   <?php 
    $x = "<script>parent.iframe_a1.document.form1.sd04_i_unidade.value</script>";
    $x = $sd04_i_unidade;
-   $chavepri= array("sd04_i_codigo"=>@$sd04_i_codigo,"sd04_i_unidade"=>@$sd04_i_unidade,"sd04_i_medico"=>@$sd04_i_medico,"z01_nome"=>@$z01_nome, "sd04_c_situacao"=>@$sd04_c_situacao);
+   $chavepri= ["sd04_i_codigo"=>@$sd04_i_codigo,"sd04_i_unidade"=>@$sd04_i_unidade,"sd04_i_medico"=>@$sd04_i_medico,"z01_nome"=>@$z01_nome, "sd04_c_situacao"=>@$sd04_c_situacao];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    @$cliframe_alterar_excluir->sql = $clunidademedicos->sql_query($sd04_i_codigo,"sd04_i_codigo,sd04_i_unidade,sd04_i_medico,z01_nome,sd04_c_situacao","z01_nome","sd04_i_unidade = $x" );
    $cliframe_alterar_excluir->campos  ="sd04_i_medico,z01_nome,sd04_c_situacao";
@@ -192,7 +192,7 @@ function js_preenchepesquisa(chave){
   db_iframe_unidademedicos.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

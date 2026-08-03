@@ -39,7 +39,7 @@ require_once(modification("classes/db_numpref_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_tabrecarretipo_classe.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
@@ -61,7 +61,7 @@ if (isset($incluir)) {
     db_inicio_transacao();
 
     $sqlerro = false;
-    if (trim($k02_codigo) == "") {
+    if (trim((string) $k02_codigo) == "") {
         $result = $cltabrec->sql_record($cltabrec->atualiza_sequencia());
         db_fieldsmemory($result, 0);
     }
@@ -97,7 +97,7 @@ if (isset($incluir)) {
         }
     }
 
-    if ($sqlerro == false && strtoupper($k02_tipo) == "E") {
+    if ($sqlerro == false && strtoupper((string) $k02_tipo) == "E") {
         $cltabplan->k02_codigo = $k02_codigo;
         $cltabplan->k02_anousu = db_getsession("DB_anousu");
         $cltabplan->k02_reduz = $codigo;

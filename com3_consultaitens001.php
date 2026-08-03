@@ -74,8 +74,8 @@ $clsolicitempcmater->rotulo->label();
 $clsolicitemunid->rotulo->label();
 $clliclicita->rotulo->label();
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 ?>
 <html>
 <head>
@@ -295,7 +295,7 @@ db_postmemory($HTTP_POST_VARS);
                             }
                             $antigoforn = $z01_numcgm;
                         }
-                        if ($julgar == false && trim($pc24_pontuacao) != "") {
+                        if ($julgar == false && trim((string) $pc24_pontuacao) != "") {
                             $julgar = true;
                         }
                     }
@@ -312,7 +312,7 @@ db_postmemory($HTTP_POST_VARS);
                                 echo "  <tr>\n";
                                 echo "    <td colspan='4' nowrap='nowrap' align='left' bgcolor='#DEB887'><strong>Item no orçamento: </strong><font color='#333333'>$pc22_orcamitem - $pc01_descrmater</font></td>\n";
                                 echo "  </tr>\n";
-                                if (trim($pc17_codigo) != "") {
+                                if (trim((string) $pc17_codigo) != "") {
                                     echo "  <tr>\n";
                                     echo "    <td colspan='4' nowrap='nowrap' align='left' bgcolor='#DEB887'>
 		            <strong>Referência: </strong>
@@ -417,7 +417,7 @@ db_postmemory($HTTP_POST_VARS);
                             echo "    <td colspan='1' nowrap='nowrap' align='left' bgcolor='#CCCCCC'><strong>Item proc.: </strong></td>\n";
                             echo "    <td colspan='1' nowrap='nowrap' align='left' bgcolor='#DEB887'><font color='#333333'>$pc81_codprocitem</font></td>\n";
                             echo "    <td colspan='1' nowrap='nowrap' align='left' bgcolor='#CCCCCC'><strong>Autorização: </strong></td>\n";
-                            if (trim($e54_autori) != "" && trim($e54_anulad) == "") {
+                            if (trim((string) $e54_autori) != "" && trim((string) $e54_anulad) == "") {
                                 echo "    <td colspan='1' nowrap='nowrap' align='left' bgcolor='#DEB887'><font color='#333333'>$e54_autori</font></td>\n";
                             } else {
                                 echo "    <td colspan='1' nowrap='nowrap' align='left' bgcolor='#DEB887'><font color='#333333'>Não gerada</font></td>\n";
@@ -435,7 +435,7 @@ db_postmemory($HTTP_POST_VARS);
 			<font color='#333333'>" . db_formatar($o56_elemento, "elemento") . " - $o56_descr</font>
 		      </td>\n";
                             echo "  </tr>\n";
-                            if (trim($pc17_codigo) != "") {
+                            if (trim((string) $pc17_codigo) != "") {
                                 echo "  <tr>\n";
                                 echo "    <td colspan='1' nowrap='nowrap' align='left' bgcolor='#CCCCCC'><strong>Referência: </strong></td>";
                                 echo "    <td colspan='5' nowrap='nowrap' align='left' bgcolor='#FFFFFF'>";
@@ -477,14 +477,14 @@ db_postmemory($HTTP_POST_VARS);
                     }
                 } else if ($solicitacao == "5") {
                     $countaut = 0;
-                    $arr_aut = array();
+                    $arr_aut = [];
                     if ($numrows_processos > 0) {
                         echo "<fieldset>";
                         echo "<legend><strong>Autorizações de empenho</strong></legend>";
                         echo "<table width='70%' border='0' >\n";
                         for ($i = 0; $i < $numrows_processos; $i++) {
                             db_fieldsmemory($result_processos, $i);
-                            if (trim($e54_autori) != "") {
+                            if (trim((string) $e54_autori) != "") {
                                 $countaut++;
                                 if ($countaut == 1) {
                                     echo "  <tr>\n";
@@ -495,14 +495,14 @@ db_postmemory($HTTP_POST_VARS);
                                 if (!in_array($e54_autori . "_" . $e60_numemp, $arr_aut)) {
                                     $arr_aut[$e54_autori . "_" . $e60_numemp] = $e54_autori . "_" . $e60_numemp;
                                     echo "  <tr>\n";
-                                    if (trim($e54_anulad) == "") {
+                                    if (trim((string) $e54_anulad) == "") {
                                         echo "    <td colspan='2' width='50%' align='center' bgcolor='#FFFFFF'><font color='#333333'><strong>";
                                         db_ancora("$e54_autori", "js_pesquisaaut($e54_autori);", 1);
                                         echo "</strong></font></td>\n";
                                     } else {
                                         echo "    <td colspan='2' width='50%' align='center' bgcolor='#FFFFFF'><font color='#333333'><strong>$e54_autori (anulada)</strong></font></td>\n";
                                     }
-                                    if (trim($e60_numemp) != "") {
+                                    if (trim((string) $e60_numemp) != "") {
                                         echo "    <td colspan='2' width='50%' align='center' bgcolor='#FFFFFF'><font color='#333333'><strong>";
                                         db_ancora("$e60_codemp/$e60_anousu", "js_pesquisaemp($e60_numemp);", 1);
                                         echo "</strong></font></td>\n";
@@ -559,9 +559,9 @@ db_postmemory($HTTP_POST_VARS);
                                 <td nowrap="nowrap"><b><?= @$Ll20_datacria ?></b>&nbsp;</td>
                                 <td nowrap="nowrap">
                                     <?php
-                                    $ano = substr(@$l20_datacria, 0, 4);
-                                    $mes = substr(@$l20_datacria, 5, 2);
-                                    $dia = substr(@$l20_datacria, 8, 2);
+                                    $ano = substr((string) @$l20_datacria, 0, 4);
+                                    $mes = substr((string) @$l20_datacria, 5, 2);
+                                    $dia = substr((string) @$l20_datacria, 8, 2);
                                     db_inputdata('l20_datacria', "$dia", "$mes", "$ano", true, 'text', 3, "", "", "#FFFFFF");
                                     ?>
                                 </td>
@@ -576,9 +576,9 @@ db_postmemory($HTTP_POST_VARS);
                                 <td nowrap="nowrap"><b><?= @$Ll20_dataaber ?></b>&nbsp;</td>
                                 <td nowrap="nowrap">
                                     <?php
-                                    $ano1 = substr(@$l20_dataaber, 0, 4);
-                                    $mes1 = substr(@$l20_dataaber, 5, 2);
-                                    $dia1 = substr(@$l20_dataaber, 8, 2);
+                                    $ano1 = substr((string) @$l20_dataaber, 0, 4);
+                                    $mes1 = substr((string) @$l20_dataaber, 5, 2);
+                                    $dia1 = substr((string) @$l20_dataaber, 8, 2);
                                     db_inputdata('l20_dataaber', "$dia1", "$mes1", "$ano1", true, 'text', 3, "", "", "#FFFFFF");
                                     ?>
                                 </td>
@@ -593,9 +593,9 @@ db_postmemory($HTTP_POST_VARS);
                                 <td nowrap="nowrap"><b><?= @$Ll20_dtpublic ?></b>&nbsp;</td>
                                 <td nowrap="nowrap">
                                     <?php
-                                    $ano2 = substr($l20_dtpublic, 0, 4);
-                                    $mes2 = substr($l20_dtpublic, 5, 2);
-                                    $dia2 = substr($l20_dtpublic, 8, 2);
+                                    $ano2 = substr((string) $l20_dtpublic, 0, 4);
+                                    $mes2 = substr((string) $l20_dtpublic, 5, 2);
+                                    $dia2 = substr((string) $l20_dtpublic, 8, 2);
                                     db_inputdata('l20_dtpublic', "$dia2", "$mes2", "$ano2", true, 'text', 3, "", "", "#FFFFFF");
                                     ?>
                                 </td>

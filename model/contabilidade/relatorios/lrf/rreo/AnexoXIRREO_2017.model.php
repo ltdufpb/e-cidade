@@ -239,7 +239,7 @@ class AnexoXIRREO_2017 extends RelatoriosLegaisBase implements AnexoRREO
         $iAlturaAssinatura = 26;
 
         $this->oPdf->SetAutoPageBreak(true, 10);
-        $this->notaExplicativa($this->oPdf, array($this->oPdf, 'AddPage'), $iAlturaAssinatura);
+        $this->notaExplicativa($this->oPdf, [$this->oPdf, 'AddPage'], $iAlturaAssinatura);
         $this->oPdf->SetAutoPageBreak(false, 10);
         $this->oRelatorioLegal->assinatura($this->oPdf, 'LRF', false);
 
@@ -253,7 +253,7 @@ class AnexoXIRREO_2017 extends RelatoriosLegaisBase implements AnexoRREO
     private function processarFormulaColunaSaldo()
     {
 
-        $linhasProcessar = array(6, 7, 8, 10);
+        $linhasProcessar = [6, 7, 8, 10];
         foreach ($linhasProcessar as $codigoLinha) {
 
             $stdLinha = $this->aLinhas[$codigoLinha];
@@ -268,6 +268,7 @@ class AnexoXIRREO_2017 extends RelatoriosLegaisBase implements AnexoRREO
     /**
      * @return stdClass[]
      */
+    #[\Override]
     public function getDados($trazerConfiguracaoPadrao = true)
     {
         $this->aLinhas = $this->carregarLinhasRelatorio();
@@ -284,12 +285,12 @@ class AnexoXIRREO_2017 extends RelatoriosLegaisBase implements AnexoRREO
     private function processarColunaRestosAPagar()
     {
 
-        $linhasDespesa = array();
+        $linhasDespesa = [];
         for ($linhaDespesa = self::LINHA_INICIO_DESPESAS; $linhaDespesa <= self::LINHA_FIM_DESPESAS; $linhaDespesa++) {
 
             $this->aLinhas[$linhaDespesa]->rp_apagar = 0;
 
-            if (in_array($linhaDespesa, array(6,7,8,10))) {
+            if (in_array($linhaDespesa, [6,7,8,10])) {
                 $this->aLinhas[$linhaDespesa]->colunas[5]->o116_formula= "(#vlrpag + #vlrpagnproc)";
                 $linhasDespesa[] = $linhaDespesa;
                 $this->processaValorManualPorLinhaEColuna($linhaDespesa, 5);
@@ -318,7 +319,7 @@ class AnexoXIRREO_2017 extends RelatoriosLegaisBase implements AnexoRREO
         $oStdDespesa->sDescricao = "Aplicação dos Recursos da Alienação de Ativos";
         $oStdDespesa->nAteBimestre = $this->aLinhasConsistencia[4]->recatebim;
         $oStdDespesa->nSaldoRealizar = $this->aLinhasConsistencia[4]->saldo;
-        return array($oStdReceita, $oStdDespesa);
+        return [$oStdReceita, $oStdDespesa];
     }
 
     /**

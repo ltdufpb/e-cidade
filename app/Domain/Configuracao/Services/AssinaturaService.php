@@ -7,11 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class AssinaturaService
 {
-    private $idInstituicao;
-
-    public function __construct($idInstituicao)
+    public function __construct(private $idInstituicao)
     {
-        $this->idInstituicao = $idInstituicao;
     }
 
     /**
@@ -29,9 +26,7 @@ class AssinaturaService
                and db03_instit = {$this->idInstituicao}
              order by db04_ordem
         ");
-        return array_map(function ($dado) {
-            return $dado->db02_texto;
-        }, $dados);
+        return array_map(fn($dado) => $dado->db02_texto, $dados);
     }
 
 

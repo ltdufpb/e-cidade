@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cltabativbaixa = new cl_tabativbaixa;
 $cltabativ      = new cl_tabativ;
 $clativprinc    = new cl_ativprinc;
@@ -117,7 +117,7 @@ if(isset($cancelar)){
     $sql02 = "SELECT fc_issqn($q07_inscr,'".$data."',".$ano.",null,'true','false',".$instit.",'".$seqs."') AS RETORNO";
     $result02=@db_query($sql02);
     @db_fieldsmemory($result02,0);
-    if(isset($retorno) && (substr($retorno,0,2) == "01" or substr($retorno,0,2) == "24")){
+    if(isset($retorno) && (str_starts_with($retorno, "01") or str_starts_with($retorno, "24"))){
       $trans_calculo=true;
     }else{
       $trans_calculo=false;

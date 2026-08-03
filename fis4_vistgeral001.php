@@ -89,7 +89,7 @@ if (isset($processa) && $processa == 't') {
   $where = " where 1=1";
 
   $rsTipovist  = db_query("select y77_diasgeral, y77_mesgeral from tipovistorias where y77_codtipo = $tipo");
-  $numrowstipo = pg_numrows($rsTipovist);
+  $numrowstipo = pg_num_rows($rsTipovist);
   if ($numrowstipo == 0){
 
     db_msgbox("Verifique o cadastro e configure corretamente o tipo de vistoria selecionado");
@@ -173,7 +173,7 @@ if (isset($processa) && $processa == 't') {
   }
 
   $rsResult = db_query($sSql) or die($sSql);
-  $numrows  = pg_numrows($rsResult);
+  $numrows  = pg_num_rows($rsResult);
 
   if($numrows == 0){
     db_msgbox("O filtro selecionado não retornou nenhum registro");
@@ -267,7 +267,7 @@ if (isset($processa) && $processa == 't') {
       if ($origemori != 1){
 
         $rsSanitario     = db_query(" select extract(year from y80_data) as anosani from sanitario where y80_codsani = $y80_codsani ");
-        $intNumsanitario = pg_numrows($rsSanitario);
+        $intNumsanitario = pg_num_rows($rsSanitario);
         if($intNumsanitario > 0){
 
           db_fieldsmemory($rsSanitario,0);
@@ -367,7 +367,7 @@ if (isset($processa) && $processa == 't') {
       db_fieldsmemory($result,0);
 
       $iCodigoRetorno     = substr($fc_vistorias, 0, 2);
-      $aRetornosIgnorados = array("08", "09", "25");
+      $aRetornosIgnorados = ["08", "09", "25"];
 
       if(!in_array($iCodigoRetorno, $aRetornosIgnorados)){
 

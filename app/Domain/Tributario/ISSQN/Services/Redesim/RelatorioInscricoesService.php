@@ -7,6 +7,7 @@ use App\Domain\Tributario\ISSQN\Reports\RelatorioInscricoes;
 
 class RelatorioInscricoesService extends RelatorioInscricoes
 {
+    #[\Override]
     public function gerar()
     {
         $this->buscarDados();

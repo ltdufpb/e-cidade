@@ -14,6 +14,7 @@ class BaseLegalContratacao2018Estrategia extends BaseLegalContratacaoEstrategia
      * @return string
      * @throws Exception
      */
+    #[\Override]
     public function getValor()
     {
         if ($this->empenho) {

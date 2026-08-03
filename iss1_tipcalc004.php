@@ -36,7 +36,7 @@ require_once(modification("classes/db_tipcalcexe_classe.php"));
 $cltipcalc    = new cl_tipcalc;  
 $cltipcalcexe = new cl_tipcalcexe;  
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;

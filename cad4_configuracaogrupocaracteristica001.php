@@ -55,7 +55,7 @@
 			 */
 			$rsTipoUtilizacaoIPTU       = db_query( $oDaoCargrup->sql_query(null, '*', null, "j32_tipo in ('L', 'C') and j32_grupo = {$oPost->db144_tipoutilizacaoiptu}       ") );
 			if ($rsTipoUtilizacaoIPTU && pg_num_rows($rsTipoUtilizacaoIPTU) == 0) {
-				throw new BusinessException(_M( MENSAGENS . "grupo_invalido", (object)(array('sCampo' => 'Tipo Utilização IPTU', 'iGrupo' => $oPost->db144_tipoutilizacaoiptu)) ));
+				throw new BusinessException(_M( MENSAGENS . "grupo_invalido", (object)(['sCampo' => 'Tipo Utilização IPTU', 'iGrupo' => $oPost->db144_tipoutilizacaoiptu]) ));
 			}
 
 			db_inicio_transacao();

@@ -72,10 +72,10 @@ require_once modification("dbforms/db_funcoes.php");
               </td>
               <td>
                 <?php
-                  $aOpcoes = array(
+                  $aOpcoes = [
                       TipoGrupo::MATERIAL_CONSUMO => 'Consumo',
                       TipoGrupo::BEM_PERMANENTE => 'Permanente'
-                    );
+                    ];
                   db_select('tipo_material', $aOpcoes, true, 1);
                 ?>
               </td>

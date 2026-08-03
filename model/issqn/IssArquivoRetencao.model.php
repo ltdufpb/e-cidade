@@ -242,14 +242,14 @@ class IssArquivoRetencao{
         $oDaoIssArquivoRetencaoRegistro->q91_issarquivoretencao      = $this->getSequencial();
         $oDaoIssArquivoRetencaoRegistro->q91_sequencialregistro      = (integer) $oArquivo->sequencial_registro;
         $oDaoIssArquivoRetencaoRegistro->q91_dataemissaodocumento    = $oArquivo->data_emissao_documento;
-          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaodocumento_dia = substr($oArquivo->data_emissao_documento, 0, 4);
-          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaodocumento_mes = substr($oArquivo->data_emissao_documento, 4, 2);
-          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaodocumento_ano = substr($oArquivo->data_emissao_documento, 6, 2);
+          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaodocumento_dia = substr((string) $oArquivo->data_emissao_documento, 0, 4);
+          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaodocumento_mes = substr((string) $oArquivo->data_emissao_documento, 4, 2);
+          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaodocumento_ano = substr((string) $oArquivo->data_emissao_documento, 6, 2);
 
         $oDaoIssArquivoRetencaoRegistro->q91_datavencimento          = $oArquivo->data_vencimento_documento;
-          $oDaoIssArquivoRetencaoRegistro->q91_datavencimento_dia    = substr($oArquivo->data_vencimento_documento, 0, 4);
-          $oDaoIssArquivoRetencaoRegistro->q91_datavencimento_mes    = substr($oArquivo->data_vencimento_documento, 4, 2);
-          $oDaoIssArquivoRetencaoRegistro->q91_datavencimento_ano    = substr($oArquivo->data_vencimento_documento, 6, 2);
+          $oDaoIssArquivoRetencaoRegistro->q91_datavencimento_dia    = substr((string) $oArquivo->data_vencimento_documento, 0, 4);
+          $oDaoIssArquivoRetencaoRegistro->q91_datavencimento_mes    = substr((string) $oArquivo->data_vencimento_documento, 4, 2);
+          $oDaoIssArquivoRetencaoRegistro->q91_datavencimento_ano    = substr((string) $oArquivo->data_vencimento_documento, 6, 2);
 
         $oDaoIssArquivoRetencaoRegistro->q91_numerodocumento         = $oArquivo->numero_ducumento;
         $oDaoIssArquivoRetencaoRegistro->q91_cnpjtomador             = $oArquivo->cnpj_unidade_tomadora;
@@ -258,8 +258,8 @@ class IssArquivoRetencao{
         $oDaoIssArquivoRetencaoRegistro->q91_codigomunicipionota     = $oArquivo->codigo_municipio_nota_fiscal;
         $oDaoIssArquivoRetencaoRegistro->q91_esferareceita           = $oArquivo->esfera_receita;
 
-        $oDaoIssArquivoRetencaoRegistro->q91_anousu                  = substr($oArquivo->competencia, 0, 4);
-        $oDaoIssArquivoRetencaoRegistro->q91_mesusu                  = substr($oArquivo->competencia, 4, 2);
+        $oDaoIssArquivoRetencaoRegistro->q91_anousu                  = substr((string) $oArquivo->competencia, 0, 4);
+        $oDaoIssArquivoRetencaoRegistro->q91_mesusu                  = substr((string) $oArquivo->competencia, 4, 2);
 
         $oDaoIssArquivoRetencaoRegistro->q91_valorprincipal          = db_formatar($oArquivo->valor_principal, 'p', '', 2) / 100;
         $oDaoIssArquivoRetencaoRegistro->q91_valormulta              = db_formatar($oArquivo->valor_multa, 'p', '', 2) / 100;
@@ -269,9 +269,9 @@ class IssArquivoRetencao{
         $oDaoIssArquivoRetencaoRegistro->q91_subserienotafiscal      = $oArquivo->subserie_nota_fiscal;
 
         $oDaoIssArquivoRetencaoRegistro->q91_dataemissaonotafiscal   = $oArquivo->data_emissao_nota_fiscal_recibo;
-          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaonotafiscal_dia = substr($oArquivo->data_emissao_nota_fiscal_recibo, 0, 4);
-          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaonotafiscal_mes = substr($oArquivo->data_emissao_nota_fiscal_recibo, 4, 2);
-          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaonotafiscal_ano = substr($oArquivo->data_emissao_nota_fiscal_recibo, 6, 2);
+          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaonotafiscal_dia = substr((string) $oArquivo->data_emissao_nota_fiscal_recibo, 0, 4);
+          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaonotafiscal_mes = substr((string) $oArquivo->data_emissao_nota_fiscal_recibo, 4, 2);
+          $oDaoIssArquivoRetencaoRegistro->q91_dataemissaonotafiscal_ano = substr((string) $oArquivo->data_emissao_nota_fiscal_recibo, 6, 2);
 
         $nAliquota = $oArquivo->aliquota;
         if( (float)$oArquivo->aliquota > 1000){

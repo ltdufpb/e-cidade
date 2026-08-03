@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE certidlivro
 class cl_certidlivro { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $v25_sequencial = 0; 
-   var $v25_usuario = 0; 
-   var $v25_datainc_dia = null; 
-   var $v25_datainc_mes = null; 
-   var $v25_datainc_ano = null; 
-   var $v25_datainc = null; 
-   var $v25_hora = null; 
-   var $v25_numero = 0; 
-   var $v25_instit = 0; 
-   var $v25_tipolivro = 0; 
+   public $v25_sequencial = 0; 
+   public $v25_usuario = 0; 
+   public $v25_datainc_dia = null; 
+   public $v25_datainc_mes = null; 
+   public $v25_datainc_ano = null; 
+   public $v25_datainc = null; 
+   public $v25_hora = null; 
+   public $v25_numero = 0; 
+   public $v25_instit = 0; 
+   public $v25_tipolivro = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  v25_sequencial = int4 = Código Sequencial 
                  v25_usuario = int4 = Usuário 
                  v25_datainc = date = Data de Inclusão 
@@ -63,10 +63,10 @@ class cl_certidlivro {
                  v25_tipolivro = int4 = Tipo do Livro 
                  ";
    //funcao construtor da classe 
-   function cl_certidlivro() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certidlivro"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_certidlivro {
          $this->erro_status = "0";
          return false; 
        }
-       $this->v25_sequencial = pg_result($result,0,0); 
+       $this->v25_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from certidlivro_v25_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v25_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v25_sequencial)){
          $this->erro_sql = " Campo v25_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_certidlivro {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Livro de CDA ($this->v25_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Livro de CDA já Cadastrado";
@@ -232,16 +232,16 @@ class cl_certidlivro {
      $resaco = $this->sql_record($this->sql_query_file($this->v25_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14833,'$this->v25_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2611,14833,'','".AddSlashes(pg_result($resaco,0,'v25_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2611,14834,'','".AddSlashes(pg_result($resaco,0,'v25_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2611,14835,'','".AddSlashes(pg_result($resaco,0,'v25_datainc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2611,14836,'','".AddSlashes(pg_result($resaco,0,'v25_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2611,14837,'','".AddSlashes(pg_result($resaco,0,'v25_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2611,14856,'','".AddSlashes(pg_result($resaco,0,'v25_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2611,14857,'','".AddSlashes(pg_result($resaco,0,'v25_tipolivro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2611,14833,'','".AddSlashes(pg_fetch_result($resaco,0,'v25_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2611,14834,'','".AddSlashes(pg_fetch_result($resaco,0,'v25_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2611,14835,'','".AddSlashes(pg_fetch_result($resaco,0,'v25_datainc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2611,14836,'','".AddSlashes(pg_fetch_result($resaco,0,'v25_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2611,14837,'','".AddSlashes(pg_fetch_result($resaco,0,'v25_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2611,14856,'','".AddSlashes(pg_fetch_result($resaco,0,'v25_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2611,14857,'','".AddSlashes(pg_fetch_result($resaco,0,'v25_tipolivro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,10 +250,10 @@ class cl_certidlivro {
       $this->atualizacampos();
      $sql = " update certidlivro set ";
      $virgula = "";
-     if(trim($this->v25_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_sequencial"])){ 
+     if(trim((string) $this->v25_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_sequencial"])){ 
        $sql  .= $virgula." v25_sequencial = $this->v25_sequencial ";
        $virgula = ",";
-       if(trim($this->v25_sequencial) == null ){ 
+       if(trim((string) $this->v25_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "v25_sequencial";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_certidlivro {
          return false;
        }
      }
-     if(trim($this->v25_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_usuario"])){ 
+     if(trim((string) $this->v25_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_usuario"])){ 
        $sql  .= $virgula." v25_usuario = $this->v25_usuario ";
        $virgula = ",";
-       if(trim($this->v25_usuario) == null ){ 
+       if(trim((string) $this->v25_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "v25_usuario";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_certidlivro {
          return false;
        }
      }
-     if(trim($this->v25_datainc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_datainc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v25_datainc_dia"] !="") ){ 
+     if(trim((string) $this->v25_datainc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_datainc_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v25_datainc_dia"] !="") ){ 
        $sql  .= $virgula." v25_datainc = '$this->v25_datainc' ";
        $virgula = ",";
-       if(trim($this->v25_datainc) == null ){ 
+       if(trim((string) $this->v25_datainc) == null ){ 
          $this->erro_sql = " Campo Data de Inclusão nao Informado.";
          $this->erro_campo = "v25_datainc_dia";
          $this->erro_banco = "";
@@ -292,7 +292,7 @@ class cl_certidlivro {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v25_datainc_dia"])){ 
          $sql  .= $virgula." v25_datainc = null ";
          $virgula = ",";
-         if(trim($this->v25_datainc) == null ){ 
+         if(trim((string) $this->v25_datainc) == null ){ 
            $this->erro_sql = " Campo Data de Inclusão nao Informado.";
            $this->erro_campo = "v25_datainc_dia";
            $this->erro_banco = "";
@@ -303,10 +303,10 @@ class cl_certidlivro {
          }
        }
      }
-     if(trim($this->v25_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_hora"])){ 
+     if(trim((string) $this->v25_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_hora"])){ 
        $sql  .= $virgula." v25_hora = '$this->v25_hora' ";
        $virgula = ",";
-       if(trim($this->v25_hora) == null ){ 
+       if(trim((string) $this->v25_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "v25_hora";
          $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_certidlivro {
          return false;
        }
      }
-     if(trim($this->v25_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_numero"])){ 
+     if(trim((string) $this->v25_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_numero"])){ 
        $sql  .= $virgula." v25_numero = $this->v25_numero ";
        $virgula = ",";
-       if(trim($this->v25_numero) == null ){ 
+       if(trim((string) $this->v25_numero) == null ){ 
          $this->erro_sql = " Campo Livro nao Informado.";
          $this->erro_campo = "v25_numero";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_certidlivro {
          return false;
        }
      }
-     if(trim($this->v25_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_instit"])){ 
+     if(trim((string) $this->v25_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_instit"])){ 
        $sql  .= $virgula." v25_instit = $this->v25_instit ";
        $virgula = ",";
-       if(trim($this->v25_instit) == null ){ 
+       if(trim((string) $this->v25_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "v25_instit";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_certidlivro {
          return false;
        }
      }
-     if(trim($this->v25_tipolivro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_tipolivro"])){ 
+     if(trim((string) $this->v25_tipolivro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v25_tipolivro"])){ 
        $sql  .= $virgula." v25_tipolivro = $this->v25_tipolivro ";
        $virgula = ",";
-       if(trim($this->v25_tipolivro) == null ){ 
+       if(trim((string) $this->v25_tipolivro) == null ){ 
          $this->erro_sql = " Campo Tipo do Livro nao Informado.";
          $this->erro_campo = "v25_tipolivro";
          $this->erro_banco = "";
@@ -363,23 +363,23 @@ class cl_certidlivro {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14833,'$this->v25_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v25_sequencial"]) || $this->v25_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2611,14833,'".AddSlashes(pg_result($resaco,$conresaco,'v25_sequencial'))."','$this->v25_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2611,14833,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v25_sequencial'))."','$this->v25_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v25_usuario"]) || $this->v25_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,2611,14834,'".AddSlashes(pg_result($resaco,$conresaco,'v25_usuario'))."','$this->v25_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2611,14834,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v25_usuario'))."','$this->v25_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v25_datainc"]) || $this->v25_datainc != "")
-           $resac = db_query("insert into db_acount values($acount,2611,14835,'".AddSlashes(pg_result($resaco,$conresaco,'v25_datainc'))."','$this->v25_datainc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2611,14835,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v25_datainc'))."','$this->v25_datainc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v25_hora"]) || $this->v25_hora != "")
-           $resac = db_query("insert into db_acount values($acount,2611,14836,'".AddSlashes(pg_result($resaco,$conresaco,'v25_hora'))."','$this->v25_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2611,14836,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v25_hora'))."','$this->v25_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v25_numero"]) || $this->v25_numero != "")
-           $resac = db_query("insert into db_acount values($acount,2611,14837,'".AddSlashes(pg_result($resaco,$conresaco,'v25_numero'))."','$this->v25_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2611,14837,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v25_numero'))."','$this->v25_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v25_instit"]) || $this->v25_instit != "")
-           $resac = db_query("insert into db_acount values($acount,2611,14856,'".AddSlashes(pg_result($resaco,$conresaco,'v25_instit'))."','$this->v25_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2611,14856,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v25_instit'))."','$this->v25_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v25_tipolivro"]) || $this->v25_tipolivro != "")
-           $resac = db_query("insert into db_acount values($acount,2611,14857,'".AddSlashes(pg_result($resaco,$conresaco,'v25_tipolivro'))."','$this->v25_tipolivro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2611,14857,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v25_tipolivro'))."','$this->v25_tipolivro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,16 +424,16 @@ class cl_certidlivro {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14833,'$v25_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2611,14833,'','".AddSlashes(pg_result($resaco,$iresaco,'v25_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2611,14834,'','".AddSlashes(pg_result($resaco,$iresaco,'v25_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2611,14835,'','".AddSlashes(pg_result($resaco,$iresaco,'v25_datainc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2611,14836,'','".AddSlashes(pg_result($resaco,$iresaco,'v25_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2611,14837,'','".AddSlashes(pg_result($resaco,$iresaco,'v25_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2611,14856,'','".AddSlashes(pg_result($resaco,$iresaco,'v25_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2611,14857,'','".AddSlashes(pg_result($resaco,$iresaco,'v25_tipolivro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2611,14833,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v25_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2611,14834,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v25_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2611,14835,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v25_datainc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2611,14836,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v25_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2611,14837,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v25_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2611,14856,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v25_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2611,14857,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v25_tipolivro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from certidlivro
@@ -493,7 +493,7 @@ class cl_certidlivro {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:certidlivro";
@@ -508,7 +508,7 @@ class cl_certidlivro {
    function sql_query ( $v25_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_certidlivro {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -545,7 +545,7 @@ class cl_certidlivro {
    function sql_query_file ( $v25_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -566,7 +566,7 @@ class cl_certidlivro {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -579,7 +579,7 @@ class cl_certidlivro {
  function sql_query_livro ( $v25_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -607,7 +607,7 @@ class cl_certidlivro {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

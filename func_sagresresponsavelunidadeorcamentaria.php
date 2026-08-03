@@ -8,7 +8,7 @@ require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_sagresresponsavelunidadeorcamentaria_classe.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -62,9 +62,9 @@ if (isset($pesquisa_chave) === false) {
         }else{
            $sql = $clsagresresponsavelunidadeorcamentaria->sql_query("",$campos,"c140_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c140_cgm)){
-          $repassa = array("chave_c140_sequencial"=>$chave_c140_sequencial,"chave_c140_cgm"=>$chave_c140_cgm);
+          $repassa = ["chave_c140_sequencial"=>$chave_c140_sequencial,"chave_c140_cgm"=>$chave_c140_cgm];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

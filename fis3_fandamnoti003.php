@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='fis3_fandamnoti005.php?db_opcao=3'</script>";
   exit;
@@ -44,7 +44,7 @@ include(modification("classes/db_fiscalrua_classe.php"));
 include(modification("classes/db_fiscbairro_classe.php"));
 include(modification("classes/db_fiscalusuario_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo        = new rotulocampo;
 $clfiscal     = new cl_fiscal;
 $clfiscaltipo = new cl_fiscaltipo;
@@ -59,7 +59,7 @@ $clrotulo->label("y39_codandam");
 $clrotulo->label("y30_codnoti");
 $db_botao = false;
 $pesqandam = 1;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $db_opcao = 3;
   $db_botao = false;
@@ -166,7 +166,7 @@ if($clfiscalultandam->numrows > 0){
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clfandam->erro_status=="0"){
     $clfandam->erro(true,false);
   }else{

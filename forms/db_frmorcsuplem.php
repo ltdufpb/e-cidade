@@ -89,7 +89,7 @@ $clrotulo->label("o39_texto");
         <?php  
            @$ro = $clorcprojeto->sql_record($clorcprojeto->sql_query_file($o46_codlei,"o39_texto"));	   
 	   //db_criatabela($ro);
-	   if (@pg_numrows($ro)>0){
+	   if (@pg_num_rows($ro)>0){
              @db_fieldsmemory($ro,0);
  	   }  
 	   if ($o39_texto ==""){
@@ -146,7 +146,7 @@ function js_mostraorcprojeto1(chave1,chave2){
   document.form1.o39_descr.value = chave2; 
   db_iframe_orcprojeto.hide();
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o46_codlei='+chave1+'&o39_descr='+chave2+'&passou=true'";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o46_codlei='+chave1+'&o39_descr='+chave2+'&passou=true'";
   ?>
 
 }
@@ -158,7 +158,7 @@ function js_preenchepesquisa(chave){
   db_iframe_orcsuplem.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

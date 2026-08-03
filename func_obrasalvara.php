@@ -34,7 +34,7 @@ require_once(modification("classes/db_obrasalvara_classe.php"));
 
 $get = db_postmemory($_GET);
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if(isset($ob04_ativo) && $ob04_ativo == 't'){
   $get->somenteAtivos = 't';
@@ -84,9 +84,9 @@ $clobrasalvara->rotulo->label("ob04_ativo");
             </td>
             <td width="96%" align="left" nowrap>
                 <?php
-                    $aAtivo = array ('t' => 'Ativo',
+                    $aAtivo =  ['t' => 'Ativo',
                                      'f' => 'Cancelado'
-                                    );
+                                    ];
                     db_select('ob04_ativo', $aAtivo, true, 1);
                 ?>
             </td>
@@ -107,7 +107,7 @@ $clobrasalvara->rotulo->label("ob04_ativo");
   <tr>
     <td align="center" valign="top">
         <?php
-        $where = array();
+        $where = [];
 
         if (!isset($pesquisa_chave)) {
             $campos = "obrasalvara.ob04_codobra,

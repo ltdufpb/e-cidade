@@ -203,7 +203,7 @@ class AguaContrato {
    * @param DateTime|null $oDataAtual
    * @return bool
    */
-  public function isValido(DateTime $oDataAtual = null) {
+  public function isValido(?DateTime $oDataAtual = null) {
 
     if (!$oDataAtual) {
       $oDataAtual = new DateTime(date('Y-m-d'));
@@ -249,10 +249,10 @@ class AguaContrato {
 
     $oDaoAguaContrato = new cl_aguacontrato;
     $oDataAtual = new DBDate(date('Y-m-d', db_getsession('DB_datausu')));
-    $aWhereVerificacao = array(
+    $aWhereVerificacao = [
       "(x54_datafinal is null or x54_datafinal <= '{$oDataAtual->getDate()}')",
       "x55_aguahidromatric = {$iCodigoHidrometro}",
-    );
+    ];
     $sSqlVerificacao = $oDaoAguaContrato->sql_query_hidrometros('x54_sequencial', implode(' and ', $aWhereVerificacao));
     $rsVerificacao   = db_query($sSqlVerificacao);
 
@@ -423,7 +423,7 @@ class AguaContrato {
   public function adicionarHidrometro(AguaHidrometro $oHidrometro) {
 
     if (!$this->aHidrometros) {
-      $this->aHidrometros = array();
+      $this->aHidrometros = [];
     }
 
     $this->aHidrometros[$oHidrometro->getCodigo()] = $oHidrometro;
@@ -533,8 +533,8 @@ class AguaContrato {
   /**
    * @return AguaHidrometro[] $aHidrometros
    * @throws DBException
-   * @deprecated Use getHidrometro.
    */
+  #[\Deprecated(message: 'Use getHidrometro.')]
   public function getHidrometros() {
 
     if ($this->iCodigo && $this->aHidrometros === null) {
@@ -596,7 +596,7 @@ class AguaContrato {
 
     $oEconomias  = pg_fetch_object($rsEconomias);
 
-    return ($oEconomias->total ? $oEconomias->total : 1);
+    return ($oEconomias->total ?: 1);
   }
 
   /**
@@ -617,7 +617,7 @@ class AguaContrato {
         throw new DBException('Não foi possível buscar as economias.');
       }
 
-      $this->aEconomias = array();
+      $this->aEconomias = [];
       $iQuantidadeEconomias = pg_num_rows($rsEconomias);
       for ($iEconomia = 0; $iEconomia < $iQuantidadeEconomias; $iEconomia++) {
 
@@ -825,16 +825,16 @@ class AguaContrato {
    */
   private function hasCaracteristica($iCodigoCaracteristica) {
 
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'inner join aguacontrato on x54_aguabase = x01_matric',
       'inner join aguabasecar on x30_matric = x01_matric',
       'inner join caracter on j31_codigo = x30_codigo'
-    ));
+    ]);
 
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       "x54_aguabase = {$this->getCodigoMatricula()}",
       "j31_codigo = {$iCodigoCaracteristica}",
-    ));
+    ]);
 
     $sSqlServicoEsgoto = "select x54_sequencial from aguabase {$sJoin} where {$sWhere} limit 1";
     $rsServicoEsgoto = db_query($sSqlServicoEsgoto);
@@ -852,10 +852,10 @@ class AguaContrato {
    */
   public function hasConstrucao() {
 
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'inner join aguabase   on x01_matric = x54_aguabase',
       'inner join aguaconstr on x11_matric = x01_matric',
-    ));
+    ]);
 
     $sWhere = "x54_sequencial = {$this->iCodigo}";
     $sSql = "select x54_sequencial from aguacontrato {$sJoin} where {$sWhere} limit 1";
@@ -896,15 +896,15 @@ class AguaContrato {
 
     $sCampos = 'aguacortesituacao.*';
 
-    $sJoin = implode(' ', array(
+    $sJoin = implode(' ', [
       'inner join aguacortemat     on x42_codcortemat = x41_codcortemat',
       'inner join aguacortesituacao on x42_codsituacao = x43_codsituacao'
-    ));
+    ]);
 
-    $sOrderBy = implode(', ', array(
+    $sOrderBy = implode(', ', [
       'x42_data desc',
       'x42_codmov desc'
-    ));
+    ]);
 
     $sWhere = "x41_matric = {$this->getCodigoMatricula()}";
     $sSql = "select {$sCampos} from aguacortematmov {$sJoin} where {$sWhere} order by {$sOrderBy} limit 1";
@@ -965,16 +965,16 @@ class AguaContrato {
    */
   public function getUltimaLeituraAtiva() {
 
-    $sWhere = implode(' and ', array(
+    $sWhere = implode(' and ', [
       "x55_aguacontrato = {$this->iCodigo}",
       "x21_status = " . AguaLeitura::STATUS_ATIVA,
-    ));
+    ]);
 
     $sJoin = 'inner join aguacontratoligacao on x21_codhidrometro = x55_aguahidromatric';
-    $sOrderBy = implode(', ', array(
+    $sOrderBy = implode(', ', [
       'x21_exerc desc',
       'x21_mes desc'
-    ));
+    ]);
 
     $sSql = "select x21_codleitura from agualeitura {$sJoin} where {$sWhere} order by {$sOrderBy} limit 1";
     $rsLeitura = db_query($sSql);

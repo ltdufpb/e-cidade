@@ -135,7 +135,7 @@ class ProcessoEletronico extends \BaseClassRepository
     protected function make($processo)
     {
 
-        $inicialRepository = Inicial::getInstance();
+        $inicialRepository = (new Inicial())->getInstance();
         $inicialRepository->setReturnFullItem(true);
 
         $processoEletronico = new ProcessoEletronicoModel();
@@ -186,7 +186,7 @@ class ProcessoEletronico extends \BaseClassRepository
             return false;
         }
 
-        $list = array();   
+        $list = [];   
         foreach ($dadosProcesso as $value) {
            $obj   =  (object) $value;
            $list[] =  self::getInstance()->make($obj);

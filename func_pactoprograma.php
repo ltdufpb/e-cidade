@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pactoprograma_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpactoprograma = new cl_pactoprograma;
 $clpactoprograma->rotulo->label("o107_sequencial");
 $clpactoprograma->rotulo->label("o107_descricao");
@@ -98,9 +98,9 @@ $clpactoprograma->rotulo->label("o107_descricao");
         }else{
            $sql = $clpactoprograma->sql_query("",$campos,"o107_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o107_descricao)){
-          $repassa = array("chave_o107_sequencial"=>$chave_o107_sequencial,"chave_o107_descricao"=>$chave_o107_descricao);
+          $repassa = ["chave_o107_sequencial"=>$chave_o107_sequencial,"chave_o107_descricao"=>$chave_o107_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

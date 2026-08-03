@@ -48,8 +48,8 @@ if (isset($oGet->coddpto) && !empty($oGet->coddpto)) {
 	}
 }
 
-$dtInicial = implode("-", array_reverse(explode("/", $oGet->dtInicial)));
-$dtFinal   = implode("-", array_reverse(explode("/", $oGet->dtFinal)));
+$dtInicial = implode("-", array_reverse(explode("/", (string) $oGet->dtInicial)));
+$dtFinal   = implode("-", array_reverse(explode("/", (string) $oGet->dtFinal)));
 
 $sSql  = "    select m80_data,                                                                                        ";
 $sSql .= "           m52_codordem,                                                                                    ";
@@ -79,7 +79,7 @@ $sSql .= "       and instit = {$iInstit}                                        
 $sSql .= "  order by m70_coddepto,m80_data,m52_codordem                                                               ";
 
 $rsSql = db_query($sSql);
-$iRows = pg_numrows($rsSql);
+$iRows = pg_num_rows($rsSql);
 
 if ($iRows == 0){
   $sMsg = "Nenhum registro encontrado.";
@@ -98,7 +98,7 @@ $pdf->SetTextColor(0,0,0);
 $pdf->SetFillColor(235);
 $pdf->SetFont('arial','b',8);
 
-$aDadosMatEstoque    = array();
+$aDadosMatEstoque    = [];
 $lImprime            = true;
 $nTotalItens         = 0;
 $nTotalGeralQuant    = 0;

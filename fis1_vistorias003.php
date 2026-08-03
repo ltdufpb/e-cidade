@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='fis1_vistorias005.php?db_opcao=3&inscr=1'</script>";
   exit;
@@ -49,8 +49,8 @@ include(modification("classes/db_vistlocal_classe.php"));
 include(modification("classes/db_vistexec_classe.php"));
 include(modification("classes/db_vistestem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clvistorias      = new cl_vistorias;
 $clvistorianumpre = new cl_vistorianumpre;
@@ -73,7 +73,7 @@ $db_botao = false;
 $db_opcao = 33;
 
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 
   $rsCalculo = $clvistorianumpre->sql_record($clvistorianumpre->sql_query_file($y70_codvist));
   if ($clvistorianumpre->numrows > 0) {
@@ -168,7 +168,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 			$erromsg =  "VISTUSUARIO - ".$clvistusuario->erro_msg;		
 			$sqlerro = true;
 			db_msgbox($erromsg);
-			break;
+			return;
 		}
 
 		$clvistoriaandam->excluir($y70_codvist,$y70_ultandam);
@@ -176,7 +176,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 			$erromsg =  "VISTORIAANDAM - ".$clvistoriaandam->erro_msg;		
 			$sqlerro = true;
 			db_msgbox($erromsg);
-			break;
+			return;
 		}
 
 		$clvistorias->excluir($y70_codvist);
@@ -245,7 +245,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 js_tabulacaoforms("form1","db_opcao",true,1,"db_opcao",true);
 </script>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clvistorias->erro_status=="0"){
     $clvistorias->erro(true,false);
   }else{

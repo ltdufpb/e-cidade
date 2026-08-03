@@ -53,7 +53,7 @@ if($oParam->exec == 'getCgsFaa') {
   } else {
 
     $oRetorno->iCgs  = $oTmp->sd24_i_numcgs;
-    $oRetorno->sNome = urlencode( $oTmp->z01_v_nome );
+    $oRetorno->sNome = urlencode( (string) $oTmp->z01_v_nome );
   }
 } else if($oParam->exec == 'getUnidadesMedico') {
   
@@ -65,7 +65,7 @@ if($oParam->exec == 'getCgsFaa') {
   
   $oRetorno->sProcedimento = $oParam->sProcedimento;
   $oTmp = $oEncaminhamentos->getProcedimento($oParam->sProcedimento,$oParam->iEspecialidade,
-                                             isset($oParam->iUnidade) ? $oParam->iUnidade : 0);
+                                             $oParam->iUnidade ?? 0);
   if(empty($oTmp)) {
      
     $oRetorno->iStatus = 2;
@@ -74,7 +74,7 @@ if($oParam->exec == 'getCgsFaa') {
     $oRetorno->sProcedimento = '';
   } else {
 
-    $oRetorno->sDescrProcedimento = urlencode($oTmp->sd63_c_nome);
+    $oRetorno->sDescrProcedimento = urlencode((string) $oTmp->sd63_c_nome);
     $oRetorno->iCodProcedimento = $oTmp->sd96_i_procedimento;
   }
 } else if($oParam->exec == 'getEspecialidadeMedico' || $oParam->exec == 'getEspecialidade') {
@@ -95,7 +95,7 @@ if($oParam->exec == 'getCgsFaa') {
   } else {
 
     $oRetorno->iCodEspecialidade = $oTmp->rh70_sequencial;
-    $oRetorno->sDescrEspecialidade = urlencode($oTmp->rh70_descr);
+    $oRetorno->sDescrEspecialidade = urlencode((string) $oTmp->rh70_descr);
   }
 } else if($oParam->exec == 'getProcedimentosEncaminhamento') {
   

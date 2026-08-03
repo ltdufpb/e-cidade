@@ -39,8 +39,8 @@ $clrotulo->label("DBtxtmes");
 $clrotulo->label("DBtxtmesacumulado");
 $clrotulo->label("DBtxtperiodoini");
 $clrotulo->label("DBtxtperiodofim");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 //-------------------------------------------------------------
 if (isset($anousu) and $anousu != "") {
@@ -91,7 +91,7 @@ if (isset($dt_ini)) {
 } else {
     $result = db_receitasaldo(11, 1, $tipo_saldo, true, " o70_codrec= $codrec ", $anousu, date("Y-m-d", db_getsession("DB_datausu")), date("Y-m-d", db_getsession("DB_datausu")));
 }
-if (pg_numrows($result) > 0) {
+if (pg_num_rows($result) > 0) {
     db_fieldsmemory($result, 1);
 } else {
     // quando não encontra receita
@@ -149,7 +149,7 @@ if (pg_numrows($result) > 0) {
                     </tr>
 
                     <?php
-                    for ($i = 0; $i < pg_numrows($result); $i++) {
+                    for ($i = 0; $i < pg_num_rows($result); $i++) {
                         db_fieldsmemory($result, $i);
                         ?>
                         <tr>

@@ -28,21 +28,6 @@
 class RelatorioLegalModeloXVII {
 
   /**
-   * @var DBDepartamento
-   */
-  private $oDepartamento;
-
-  /**
-   * @var integer
-   */
-  private $iAno;
-
-  /**
-   * @var integer
-   */
-  private $iMes;
-
-  /**
    * @var PDFDocument
    */
   private $oPdf;
@@ -57,11 +42,8 @@ class RelatorioLegalModeloXVII {
    * @param integer $iMes
    * @param integer $iAno
    */
-  public function __construct(DBDepartamento $oDepartamento, $iMes, $iAno) {
-
-    $this->oDepartamento = $oDepartamento;
-    $this->iMes = $iMes;
-    $this->iAno = $iAno;
+  public function __construct(private readonly DBDepartamento $oDepartamento, private $iMes, private $iAno)
+  {
   }
 
   /**
@@ -82,12 +64,12 @@ class RelatorioLegalModeloXVII {
    * Tamanho das colunas
    * @var array
    */
-  private $aCells = array(
+  private $aCells = [
       0.12,
       0.1,
       0.4,
       0.1
-    );
+    ];
 
   /**
    * Gera o relatório

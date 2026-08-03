@@ -32,8 +32,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ruas_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clruas = new cl_ruas;
 $clruas->rotulo->label("j14_codigo");
@@ -101,8 +101,8 @@ $clruas->rotulo->label("j14_nome");
           $result_dbconfig = db_query($query_dbconfig);
           db_fieldsmemory($result_dbconfig,0);
 
-              $muni = strtoupper($munic);
-              $sigla     = strtoupper($uf);
+              $muni = strtoupper((string) $munic);
+              $sigla     = strtoupper((string) $uf);
 
               $query_ceploca = "select cp05_cepinicial from ceplocalidades where cp05_localidades = '$muni' and cp05_sigla = '$sigla'";
 

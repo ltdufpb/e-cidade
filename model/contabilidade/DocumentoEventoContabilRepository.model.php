@@ -33,7 +33,7 @@ class DocumentoEventoContabilRepository {
   /**
    * @var DocumentoEventoContabil[]
    */
-  private $aDocumentos = array();
+  private $aDocumentos = [];
 
   /**
    * @var DocumentoEventoContabilRepository

@@ -92,35 +92,35 @@ $clrotulo->label("cc01_estrutural");
          <?php 
 
         if ( ($db_opcao == 22 or $db_opcao == 2) && ( isset($db_opcao) ) && isset($cc01_sequencial) ) {
-        	
+
 	    /*
 	    * verifica se a conta é analitica, se for sintética o array recebe a ordem do select padrão,
 		* se não for analítica o array recebe o valor de false e bloqueia a aba conforme o tipo de seleção 
 		* (analítica ou sitética)
         */
    	    $clcustoplanoanalitica->sql_record($clcustoplanoanalitica->sql_query_file(null, "cc04_sequencial", null ,"cc04_custoplano = {$cc01_sequencial}"));
-   	    
+
    	      // se maior que zero indica que é analítica
 	      if ($clcustoplanoanalitica->numrows > 0) {
-     
-		    $aAnalitica = array("s"=>"Sim","n"=>"Não");
+
+		    $aAnalitica = ["s"=>"Sim","n"=>"Não"];
    	        echo "<script> js_db_libera(true); </script> \n";
 
    	      // se não conta não é analítica   
           } else {
 
-            $aAnalitica = array("n"=>"Não","s"=>"Sim");
+            $aAnalitica = ["n"=>"Não","s"=>"Sim"];
 		    echo "<script> js_db_libera(false); </script> \n";
-		   
+
           } 
-         
+
 	      // carrega opções conforme array   
  		  db_select("analitico", $aAnalitica,"true",$db_opcao,"onchange='js_esconder_campos();'");
 
  	   // se a conta estiver sendo incluída exibe valores padrões   
 	   } else {	 	
 	   	
-		  $aAnalitica = array("s"=>"Sim","n"=>"Não");
+		  $aAnalitica = ["s"=>"Sim","n"=>"Não"];
 		  db_select("analitico", $aAnalitica,"true",$db_opcao,"onchange='js_esconder_campos();'");
 		  echo "<script> js_db_libera(false); </script> \n";
 		  
@@ -181,7 +181,7 @@ $clrotulo->label("cc01_estrutural");
               } else {
               	
                 db_msgbox("É necessário inserir uma identificação para a conta antes de continuar!");
-                $aOpcao = array("valorNulo"=>"");
+                $aOpcao = ["valorNulo"=>""];
 		        db_select("ident", $aOpcao, "true", $db_opcao, "onchange='js_esconder_depart();'");
               	$db_botao = false;
               }
@@ -258,7 +258,7 @@ $clrotulo->label("cc01_estrutural");
           db_iframe_custoplano.hide();
           <?php 
           if($db_opcao!=1){
-            echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+            echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
           }
           ?>
         }

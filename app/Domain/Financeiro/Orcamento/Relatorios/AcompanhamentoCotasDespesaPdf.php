@@ -11,6 +11,7 @@ class AcompanhamentoCotasDespesaPdf extends CotasDespesaPdf
      */
     protected $exercicio;
 
+    #[\Override]
     public function setDados(array $dados)
     {
         $this->dados = $dados;
@@ -26,6 +27,7 @@ class AcompanhamentoCotasDespesaPdf extends CotasDespesaPdf
         $this->yCapa = 90;
     }
 
+    #[\Override]
     public function emitir()
     {
         $this->headers('ACOMPANHAMENTO DAS COTAS MENSAIS DA DESPESA');
@@ -42,6 +44,7 @@ class AcompanhamentoCotasDespesaPdf extends CotasDespesaPdf
         ];
     }
 
+    #[\Override]
     public function headers($titulo)
     {
         $this->addTitulo($titulo);
@@ -57,6 +60,7 @@ class AcompanhamentoCotasDespesaPdf extends CotasDespesaPdf
         $this->addTitulo($periocidade);
     }
 
+    #[\Override]
     protected function capa($titulo)
     {
         $this->AddPage();

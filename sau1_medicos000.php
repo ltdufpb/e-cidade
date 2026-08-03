@@ -61,22 +61,22 @@ if ($db_opcao==1) {
   <tr>
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
       <?php 
-      $oCriaAbas->identifica    = array('a1' => 'Dados Pessoais',
+      $oCriaAbas->identifica    = ['a1' => 'Dados Pessoais',
                                         'a2' => 'Outros Dados',
                                         'a3' => 'Vínculo',
                                         'a4' => 'Horários',
                                         'a5' => 'Ausências',
                                         'a6' => 'Procedimentos'
-                                       );
-      $oCriaAbas->src           = array('a1' => $sArquivo,
+                                       ];
+      $oCriaAbas->src           = ['a1' => $sArquivo,
                                         'a2' => 'pro1_cgmdoc001.php',
                                         'a3' => 'sau1_unidademedicos001.php',
                                         'a4' => '',
                                         'a5' => '',
                                         'a6' => ''
-                                       );
-      $oCriaAbas->sizecampo     = array('a1' => 20, 'a2' => 20, 'a3' => 20, 'a5' => 20, 'a5' => 20, 'a6' => 20);
-      $oCriaAbas->disabled      = array('a2' => 'true', 'a3' => 'true', 'a4' => true, 'a5' => true, 'a6' => true);
+                                       ];
+      $oCriaAbas->sizecampo     = ['a1' => 20, 'a2' => 20, 'a3' => 20, 'a5' => 20, 'a5' => 20, 'a6' => 20];
+      $oCriaAbas->disabled      = ['a2' => 'true', 'a3' => 'true', 'a4' => true, 'a5' => true, 'a6' => true];
       $oCriaAbas->scrolling     = 'no';
       $oCriaAbas->iframe_height = '600';
       $oCriaAbas->iframe_width  = '100%';

@@ -35,7 +35,7 @@ include(modification("classes/db_exemplar_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 include(modification("classes/db_bib_parametros_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clbaixabib = new cl_baixabib;
 $clexemplar = new cl_exemplar;
 $clcgm = new cl_cgm;
@@ -109,7 +109,7 @@ if($linhas!=0){
        <table border="0">
         <tr>
          <td nowrap title="<?=@$Tbi23_codbarras?>">
-          <label for="bi23_codbarras"><?php db_ancora(@$$ancora,"js_pesquisabi23_codbarras(true);",$db_opcao);?></label>
+          <label for="bi23_codbarras"><?php db_ancora(@${$ancora},"js_pesquisabi23_codbarras(true);",$db_opcao);?></label>
          </td>
          <td>
           <?php db_input('bi23_codigo',10,@$Ibi23_codigo,true,$tipocampo1,$db_opcao,"")?>

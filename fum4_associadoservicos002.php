@@ -50,16 +50,16 @@ $db_botao = true;
     <td> 
      <?php
 
-	    $clcriaabas->identifica = array( "servico"        =>"Servico",
-	                                     "valorservico"   =>"Valor do Servico");
+	    $clcriaabas->identifica = [ "servico"        =>"Servico",
+	                                     "valorservico"   =>"Valor do Servico"];
 
-	    $clcriaabas->src        = array( "servico"        =>"fum4_associadoservicos004.php?db_opcao=2",
-                                       "valorservico"   =>"fum4_associadoservicos005.php?db_opcao=2");
+	    $clcriaabas->src        = [ "servico"        =>"fum4_associadoservicos004.php?db_opcao=2",
+                                       "valorservico"   =>"fum4_associadoservicos005.php?db_opcao=2"];
 
-      $clcriaabas->sizecampo  = array( "servico"        =>"23",
-                                       "valorservico"   =>"23");
+      $clcriaabas->sizecampo  = [ "servico"        =>"23",
+                                       "valorservico"   =>"23"];
 
-	    $clcriaabas->disabled   = array( "valorservico"   =>"false");
+	    $clcriaabas->disabled   = [ "valorservico"   =>"false"];
 
 	    $clcriaabas->cria_abas(); 
 

@@ -82,7 +82,7 @@ db_textarea('o56_finali',0,40,$Io56_finali,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$matriz = array("t"=>"SIM","f"=>'Não');
+$matriz = ["t"=>"SIM","f"=>'Não'];
 db_select('o56_orcado',$matriz,true,'text',$db_opcao,"")
 ?>
     </td>
@@ -111,7 +111,7 @@ function js_preenchepesquisa(chave){
   db_iframe_orcelemento.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

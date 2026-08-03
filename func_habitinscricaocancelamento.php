@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitinscricaocancelamento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabitinscricaocancelamento = new cl_habitinscricaocancelamento;
 $clhabitinscricaocancelamento->rotulo->label("ht22_sequencial");
 $clhabitinscricaocancelamento->rotulo->label("ht22_sequencial");
@@ -98,9 +98,9 @@ $clhabitinscricaocancelamento->rotulo->label("ht22_sequencial");
         }else{
            $sql = $clhabitinscricaocancelamento->sql_query("",$campos,"ht22_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ht22_sequencial)){
-          $repassa = array("chave_ht22_sequencial"=>$chave_ht22_sequencial,"chave_ht22_sequencial"=>$chave_ht22_sequencial);
+          $repassa = ["chave_ht22_sequencial"=>$chave_ht22_sequencial,"chave_ht22_sequencial"=>$chave_ht22_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -20,6 +20,7 @@ class DecretoBuilder2020 extends PadBuilder
         $this->layout = new Decreto();
     }
 
+    #[\Override]
     public function build()
     {
         $this->create();

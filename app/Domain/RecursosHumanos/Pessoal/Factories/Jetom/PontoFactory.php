@@ -27,16 +27,12 @@ class PontoFactory
      */
     public static function getRepository($tipo)
     {
-        switch ($tipo) {
-            case self::PONTO_SALARIO:
-                return new PontoSalarioRepository();
-            case self::PONTO_FIXO:
-                return new PontoFixoRepository();
-            case self::PONTO_COMPLEMENTAR:
-                return new PontoComplementarRepository();
-            default:
-                throw new Exception('Tabela não implementada.');
-        }
+        return match ($tipo) {
+            self::PONTO_SALARIO => new PontoSalarioRepository(),
+            self::PONTO_FIXO => new PontoFixoRepository(),
+            self::PONTO_COMPLEMENTAR => new PontoComplementarRepository(),
+            default => throw new Exception('Tabela não implementada.'),
+        };
     }
 
     /**
@@ -46,15 +42,11 @@ class PontoFactory
      */
     public static function getModel($tipo)
     {
-        switch ($tipo) {
-            case self::PONTO_SALARIO:
-                return new PontoSalario();
-            case self::PONTO_FIXO:
-                return new PontoFixo();
-            case self::PONTO_COMPLEMENTAR:
-                return new PontoComplementar();
-            default:
-                throw new Exception("Nenhuma tabela de ponto foi selecionada!");
-        }
+        return match ($tipo) {
+            self::PONTO_SALARIO => new PontoSalario(),
+            self::PONTO_FIXO => new PontoFixo(),
+            self::PONTO_COMPLEMENTAR => new PontoComplementar(),
+            default => throw new Exception("Nenhuma tabela de ponto foi selecionada!"),
+        };
     }
 }

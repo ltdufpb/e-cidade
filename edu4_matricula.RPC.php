@@ -83,7 +83,7 @@ try {
     case "alterarTurnoMatricula":
 
       $oMatricula = null;
-      $aMapaTurnoReferente = array(1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE');
+      $aMapaTurnoReferente = [1 => 'MANHÃ', 2 => 'TARDE', 3 => 'NOITE'];
 
       if ( isset( $oParam->iAluno ) ) {
 
@@ -95,8 +95,8 @@ try {
         $oMatricula = MatriculaRepository::getMatriculaByCodigo( $oParam->iMatricula );
       }
 
-      $aTurnoReferenteAntigo = array();
-      $aTurnoReferenteNovo   = array();
+      $aTurnoReferenteAntigo = [];
+      $aTurnoReferenteNovo   = [];
 
       foreach ($oMatricula->getTurnosVinculados() as $oTurmaTurnoReferenteAntigo ) {
         $aTurnoReferenteAntigo[] = $aMapaTurnoReferente[$oTurmaTurnoReferenteAntigo->ed336_turnoreferente];
@@ -146,7 +146,7 @@ try {
 
       $oMatricula    = EducacaoSessionManager::carregarMatricula($oParam->iMatricula);
       $oDiarioClasse = $oMatricula->getDiarioDeClasse();
-      $aDiarios      = array();
+      $aDiarios      = [];
 
       $iAno = $oMatricula->getTurma()->getCalendario()->getAnoExecucao();
 

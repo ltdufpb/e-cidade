@@ -44,7 +44,7 @@ $clrotulo->label('nome');
 $clrotulo->label('coddepto');
 $clrotulo->label('descrdepto');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 //echo $HTTP_SERVER_VARS['QUERY_STRING'];
@@ -124,19 +124,12 @@ if (isset($id_usuario)) {
       
       if ($listar==0) {
 
-        switch ($usuarioativo) {
-          case 1:
-            $sSituacao = "ATIVO";
-            break;
-          case 2:
-            $sSituacao = "BLOQUEADO";
-            break;
-          case 3:
-            $sSituacao = "AGUARDANDO ATIVA플O";
-            break;
-          default:
-            $sSituacao = "INATIVO";
-        }
+        $sSituacao = match ($usuarioativo) {
+            1 => "ATIVO",
+            2 => "BLOQUEADO",
+            3 => "AGUARDANDO ATIVA플O",
+            default => "INATIVO",
+        };
 
         $pdf->cell(30, $alt, $sSituacao, 0, 0, "C", 0);
       }
@@ -203,19 +196,12 @@ if (isset($depto)) {
 
     if ($listar == 0) {
 
-      switch ($usuarioativo) {
-        case 1:
-          $sSituacao = "ATIVO";
-          break;
-        case 2:
-          $sSituacao = "BLOQUEADO";
-          break;
-        case 3:
-          $sSituacao = "AGUARDANDO ATIVA플O";
-          break;
-        default:
-          $sSituacao = "INATIVO";
-      }
+      $sSituacao = match ($usuarioativo) {
+          1 => "ATIVO",
+          2 => "BLOQUEADO",
+          3 => "AGUARDANDO ATIVA플O",
+          default => "INATIVO",
+      };
 
       $pdf->cell(30, $alt, $sSituacao, 0, 0, "C", 0);
     }
@@ -274,19 +260,12 @@ if (empty($id_usuario) and empty($depto)) {
 
       if($listar==0) {
 
-        switch ($usuarioativo) {
-          case 1:
-            $sSituacao = "ATIVO";
-            break;
-          case 2:
-            $sSituacao = "BLOQUEADO";
-            break;
-          case 3:
-            $sSituacao = "AGUARDANDO ATIVA플O";
-            break;
-          default:
-            $sSituacao = "INATIVO";
-        }
+        $sSituacao = match ($usuarioativo) {
+            1 => "ATIVO",
+            2 => "BLOQUEADO",
+            3 => "AGUARDANDO ATIVA플O",
+            default => "INATIVO",
+        };
 
         $pdf->cell(30, $alt, $sSituacao, 0, 0, "C", 0);
       }

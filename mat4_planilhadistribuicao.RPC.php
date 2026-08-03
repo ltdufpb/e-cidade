@@ -49,7 +49,7 @@ try {
 
     case 'salvar':
 
-      $oParam->descricao = trim($oParam->descricao);
+      $oParam->descricao = trim((string) $oParam->descricao);
       if (empty($oParam->descricao)) {
         throw new Exception("O campo Descrição é de preenchimento obrigatório.");
       }
@@ -89,22 +89,22 @@ try {
       $aDepartamentosAtendidos = $oPlanilha->getDepartamentosAtendidos();
       $oRetorno->codigo    = $oPlanilha->getCodigo();
       $oRetorno->descricao = urlencode($oPlanilha->getDescricao());
-      $oRetorno->materiais = array();
+      $oRetorno->materiais = [];
       foreach ($oPlanilha->getMateriais() as $oMaterial) {
 
         $oStdMaterial = new stdClass();
         $oStdMaterial->codigo    = $oMaterial->getCodigo();
-        $oStdMaterial->descricao = urlencode($oMaterial->getDescricao());
+        $oStdMaterial->descricao = urlencode((string) $oMaterial->getDescricao());
         $oStdMaterial->ativo     = $oMaterial->ativo();
         $oRetorno->materiais[]   = $oStdMaterial;
       }
 
-      $oRetorno->departamentos = array();
+      $oRetorno->departamentos = [];
       foreach ($oPlanilha->getDepartamentos() as $oDepartamento) {
 
         $oStdDepartamento = new stdClass();
         $oStdDepartamento->codigo    = $oDepartamento->getCodigo();
-        $oStdDepartamento->descricao = urlencode($oDepartamento->getNomeDepartamento());
+        $oStdDepartamento->descricao = urlencode((string) $oDepartamento->getNomeDepartamento());
         $oStdDepartamento->atendido  = in_array($oDepartamento->getCodigo(), $aDepartamentosAtendidos);
         $oRetorno->departamentos[]   = $oStdDepartamento;
       }

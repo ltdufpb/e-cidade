@@ -34,14 +34,8 @@ use App\Http\Controllers\Controller;
 
 class CalcularValoresSinteticosController extends Controller
 {
-    /**
-     * @var CalcularValoresSinteticosService
-     */
-    private $service;
-
-    public function __construct(CalcularValoresSinteticosService $service)
+    public function __construct(private readonly CalcularValoresSinteticosService $service)
     {
-        $this->service = $service;
     }
 
     public function calcular(CalcularValoresSinteticosRequest $request)

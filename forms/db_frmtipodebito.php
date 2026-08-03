@@ -105,8 +105,8 @@
             <?php 
 		$sql = "select codmodelo as a_codmodelo,nomemodelo from db_carnesimg";
 		$result = db_query($sql);
-		if(pg_numrows($result)!=0){
-		  for($i=0;$i<pg_numrows($result);$i++){
+		if(pg_num_rows($result)!=0){
+		  for($i=0;$i<pg_num_rows($result);$i++){
 		     db_fieldsmemory($result,$i);
 		     echo "<option value='".$a_codmodelo."' ".($codmodelo==$a_codmodelo?"selected":"").">".$a_codmodelo." -> ".$nomemodelo."</option>";
 		  }
@@ -136,8 +136,8 @@
             <?php 
 		$sql = "select k03_tipo as tipo,k03_descr from cadtipo order by k03_tipo";
 		$result = db_query($sql);
-		if(pg_numrows($result)!=0){
-		  for($i=0;$i<pg_numrows($result);$i++){
+		if(pg_num_rows($result)!=0){
+		  for($i=0;$i<pg_num_rows($result);$i++){
 		     db_fieldsmemory($result,$i);
 		     echo "<option value='".$tipo."' ".($k03_tipo==$tipo?"selected":"").">".$tipo." -> ".$k03_descr."</option>";
 		  }

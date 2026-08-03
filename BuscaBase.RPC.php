@@ -32,7 +32,7 @@ require_once modification("std/DBString.php");
 require_once modification("libs/db_utils.php");
 $oJson     = new services_json();
 $sBaseName = $_POST["string"];
-$aBases    = array();
+$aBases    = [];
 
 /*
  * Caso seja informado um servidor específico para pesquisa
@@ -41,13 +41,13 @@ $aBases    = array();
 if (isset($servidor)) {
   $Con    = @pg_connect("host=".$DB_CONEXAO[$servidor]["SERVIDOR"]." dbname=template1 port=".$DB_CONEXAO[$servidor]["PORTA"]." user=".$DB_CONEXAO[$servidor]["USUARIO"]." password=".$DB_CONEXAO[$servidor]["SENHA"]);
   if ($Con) {
-	  $sSql   = "select '".$DB_CONEXAO[$servidor]["SERVIDOR"].":'||'".$DB_CONEXAO[$servidor]["PORTA"].":'||'".base64_encode($DB_CONEXAO[$servidor]["USUARIO"]).":'||'".base64_encode($DB_CONEXAO[$servidor]["SENHA"]).":'||datname as cod,
+	  $sSql   = "select '".$DB_CONEXAO[$servidor]["SERVIDOR"].":'||'".$DB_CONEXAO[$servidor]["PORTA"].":'||'".base64_encode((string) $DB_CONEXAO[$servidor]["USUARIO"]).":'||'".base64_encode((string) $DB_CONEXAO[$servidor]["SENHA"]).":'||datname as cod,
 	                      '".$DB_CONEXAO[$servidor]["SERVIDOR"].":'||'".$DB_CONEXAO[$servidor]["PORTA"].":'||datname as label
 	                 FROM pg_database
 	                where datname ilike '%".$sBaseName."%' ORDER BY datname";
 	  $rsBase = db_query($Con,$sSql);
-	  if (pg_numrows($rsBase) > 0) {
-	    for ($i=0; $i<pg_numrows($rsBase); $i++) {
+	  if (pg_num_rows($rsBase) > 0) {
+	    for ($i=0; $i<pg_num_rows($rsBase); $i++) {
 	       $oBase = db_utils::fieldsMemory($rsBase, $i, false, false, true);
 	       $aBases[] = $oBase;
 	    }
@@ -64,13 +64,13 @@ if (isset($servidor)) {
 	  if(!$Con){
 	  	continue;
 	  }
-	  $sSql   = "select '".$DB_CONEXAO[$x]["SERVIDOR"].":'||'".$DB_CONEXAO[$x]["PORTA"].":'||'".base64_encode($DB_CONEXAO[$x]["USUARIO"]).":'||'".base64_encode($DB_CONEXAO[$x]["SENHA"]).":'||datname as cod,
+	  $sSql   = "select '".$DB_CONEXAO[$x]["SERVIDOR"].":'||'".$DB_CONEXAO[$x]["PORTA"].":'||'".base64_encode((string) $DB_CONEXAO[$x]["USUARIO"]).":'||'".base64_encode((string) $DB_CONEXAO[$x]["SENHA"]).":'||datname as cod,
 	                    '".$DB_CONEXAO[$x]["SERVIDOR"].":'||'".$DB_CONEXAO[$x]["PORTA"].":'||datname as label
 	               FROM pg_database
 	              where datname ilike '%".$sBaseName."%' ORDER BY datname";
 	  $rsBase = db_query($Con,$sSql);
-	  if (pg_numrows($rsBase) > 0) {
-	     for ($i=0; $i<pg_numrows($rsBase); $i++) {
+	  if (pg_num_rows($rsBase) > 0) {
+	     for ($i=0; $i<pg_num_rows($rsBase); $i++) {
 	         $oBase = db_utils::fieldsMemory($rsBase, $i, false, false, true);
 	         $aBases[] = $oBase;
 	     }
@@ -81,7 +81,7 @@ if (isset($servidor)) {
 
 if (count($aBases) == 0 ) {
 	//retorna erro devido a não encontrar nenhuma base de dados
-	$oBases = array("cod"=>"0", "label"=>"Nenhuma base de dados encontrada!");
+	$oBases = ["cod"=>"0", "label"=>"Nenhuma base de dados encontrada!"];
 	$aBases[] = $oBases;
 }
 echo $oJson->encode($aBases);

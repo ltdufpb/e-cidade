@@ -31,11 +31,6 @@
 class MensageriaLicencaUsuario {
 
   /**
-   * @var integer
-   */
-  private $iCodigo;
-
-  /**
    * Código do Usuario
    * @var integer
    */
@@ -60,15 +55,14 @@ class MensageriaLicencaUsuario {
    * @param null $iCodigo
    * @throws BusinessException
    */
-  public function __construct($iCodigo = null) {
+  public function __construct(private $iCodigo = null) {
 
-    $this->iCodigo = $iCodigo;
-    if (empty($iCodigo)) {
+    if (empty($this->iCodigo)) {
       return;
     }
 
     $oDaoMensageriaUsuario = db_utils::getDao('mensagerialicenca_db_usuarios');
-    $sSqlBuscaUsuario      = $oDaoMensageriaUsuario->sql_query_file($iCodigo);
+    $sSqlBuscaUsuario      = $oDaoMensageriaUsuario->sql_query_file($this->iCodigo);
     $rsBuscaUsuario        = $oDaoMensageriaUsuario->sql_record($sSqlBuscaUsuario);
     if (!$rsBuscaUsuario || $oDaoMensageriaUsuario->numrows == 0) {
       throw new BusinessException(_M(self::CAMINHO_MENSAGEM.'destinatario_nao_encontrado'));

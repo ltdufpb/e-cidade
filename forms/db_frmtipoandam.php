@@ -67,7 +67,7 @@ db_textarea('y41_obs',0,48,$Iy41_obs,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array('t'=>'Sim','f'=>'Não');
+$x = ['t'=>'Sim','f'=>'Não'];
 db_select('y41_permcalc',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -85,7 +85,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tipoandam.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

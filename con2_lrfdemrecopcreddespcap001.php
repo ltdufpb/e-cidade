@@ -48,22 +48,22 @@ $iCodigoRelatorio = $oRelatorio::CODIGO_RELATORIO;
 </head>
 <body class="body-default abas">
     <?php 
-	    $clcriaabas->identifica = array("relatorio" => "Relatório",
+	    $clcriaabas->identifica = ["relatorio" => "Relatório",
 	                                    "notas"     => "Fonte/Notas Explicativas",
-	                                    "parametro" => "Parâmetros");
+	                                    "parametro" => "Parâmetros"];
 
-	    $clcriaabas->title      = array("relatorio" => "Relatório",
+	    $clcriaabas->title      = ["relatorio" => "Relatório",
 	                                    "notas"     => "Fonte/Notas Explicativas",
-	                                    "parametro" => "Parâmetros");
+	                                    "parametro" => "Parâmetros"];
 
-      $clcriaabas->src        = array("relatorio" => "con2_lrfdemrecopcreddespcap002.php?codrel={$iCodigoRelatorio}",
+      $clcriaabas->src        = ["relatorio" => "con2_lrfdemrecopcreddespcap002.php?codrel={$iCodigoRelatorio}",
                                       "notas"     => "con2_conrelnotas.php?c83_codrel={$iCodigoRelatorio}",
                                       "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel={$iCodigoRelatorio}"
-                               );
+                               ];
 
-	    $clcriaabas->sizecampo  = array("relatorio" => "25",
+	    $clcriaabas->sizecampo  = ["relatorio" => "25",
 	                                    "notas"     => "25",
-	                                    "parametro" => "25");
+	                                    "parametro" => "25"];
 	    $clcriaabas->cria_abas();
     ?>
 <?php 

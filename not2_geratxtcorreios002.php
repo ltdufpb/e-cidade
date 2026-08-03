@@ -49,7 +49,7 @@ $oGet             = db_utils::postMemory($_GET);
 /**
  * Carateres a serem escapados nos textos de mensagem
  */
-$aEscape         = array("\r\n", "\n", "\r", ";","\t");
+$aEscape         = ["\r\n", "\n", "\r", ";","\t"];
                 
 $clNotificacao   = new cl_notificacao();
 $clArretipo      = new cl_notificacao();
@@ -70,9 +70,9 @@ $iTipoFonte          = $oGet->fonte;
 $nEspacamento        = $oGet->espacamento;
 $sEstiloFonte        = $oGet->estilofonte;
 $iTamanhoFonte       = $oGet->tamanhofonte;
-$lServicoAr          = isset($oGet->lServAr) ? $oGet->lServAr : '';
+$lServicoAr          = $oGet->lServAr ?? '';
 $lGeraBoleto         = $oGet->lBoleto == 1 ? true : false;
-$dtDtVencimento      = isset($oGet->datavenc) ? $oGet->datavenc : date('Y-m-d', db_getsession('DB_datausu'));
+$dtDtVencimento      = $oGet->datavenc ?? date('Y-m-d', db_getsession('DB_datausu'));
 $dtDtVencimentoBanco = implode("-",array_reverse(explode("/",$dtDtVencimento)));
 $dtOperacao          = date('d/m/Y', db_getsession('DB_datausu'));
 $sLocalPagamento     = $oGet->localpgto;
@@ -439,7 +439,7 @@ if($rsNotificacao && pg_num_rows($rsNotificacao) > 0) {
         $oRegistro_9->aceite                 = 'N';
        
         if ( $oDadosBoleto->iCadTipoConvenio == 5 ) {
-          $aNossoNumero                      = explode("-",$oDadosBoleto->iNossoNumero);
+          $aNossoNumero                      = explode("-",(string) $oDadosBoleto->iNossoNumero);
           $oRegistro_9->nosso_numero         = $aNossoNumero[0];
           $oRegistro_9->nosso_numero_dv      = $aNossoNumero[1];
         } else {
@@ -541,7 +541,7 @@ function geraBoleto($iCodigoNotificacao, $aDebitosNotificacao, $dtVenvimento) {
   $oRecibo->setNumBco              ($oRegraEmissao->getCodConvenioCobranca());
   $oRecibo->setDataRecibo          ($dtVenvimento);
   $oRecibo->setDataVencimentoRecibo($dtVenvimento);
-  $oRecibo->setExercicioRecibo     (substr($dtVenvimento, 0, 4) );
+  $oRecibo->setExercicioRecibo     (substr((string) $dtVenvimento, 0, 4) );
   $oRecibo->emiteRecibo            ();
  
  

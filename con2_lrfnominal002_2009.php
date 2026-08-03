@@ -27,7 +27,7 @@
 
 
 if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
-  
+
   include(modification("fpdf151/pdf.php"));
   include(modification("fpdf151/assinatura.php"));
   include(modification("libs/db_sql.php"));
@@ -37,30 +37,30 @@ if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
   include(modification("dbforms/db_funcoes.php"));
   include(modification("classes/db_orcparamrel_classe.php"));
   include(modification("classes/db_conrelinfo_classe.php"));
-  
+
   $classinatura = new cl_assinatura;
   $orcparamrel = new cl_orcparamrel;
   $clconrelinfo = new cl_conrelinfo;
-  
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
-  
+
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
+
   //-----------------------------------
   $tipo_emissao='periodo';
-  
+
   $anousu      = db_getsession("DB_anousu");
   $anousu_ant  = db_getsession("DB_anousu")-1;
-  
+
   $dt = data_periodo($anousu,$periodo); // no dbforms/db_funcoes.php
   $dt_ini= $anousu.'-01-01'; // data inicial do perodo
   $dt_fin= $dt[1]; // data final do perodo
   $texto = $dt['texto'];
   $txtper = $dt['periodo'];
-  
+
 }   // end !include
 
 // verifica periodo anterior ( bimestre anterior )
-$per = substr($periodo,0,1);
+$per = substr((string) $periodo,0,1);
 if ($per >1 ){
   $periodo_ant= ($per -1).'B';
 } else {
@@ -139,13 +139,13 @@ $somador_IX_bim      = 0;
 
 $db_selinstit_sem_rpps = "";
 
-$xinstit    = split("-",$db_selinstit);
+$xinstit    = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,munic,db21_tipoinstit from db_config where codigo in (".str_replace('-',', ',$db_selinstit).")");
 $descr_inst = '';
 $xvirgi     = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
-  
+
   if($db21_tipoinstit != 5 && $db21_tipoinstit != 6 ){
     $db_selinstit_sem_rpps .= $xvirgi.$codigo;
     $xvirgi       = ', ';
@@ -157,7 +157,7 @@ db_fieldsmemory($resultinst,0);
 $descr_inst = $munic;
 
 if (!isset($arqinclude)){
-  
+
   ///////////////////////////////
   $head2  = "MUNICÍPIO DE ".$descr_inst;
   $head3  = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
@@ -165,10 +165,10 @@ if (!isset($arqinclude)){
   $head5  = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 
   $dados  = data_periodo($anousu,$periodo);
-  $perini = split("-",$dados[0]);
-  $perfin = split("-",$dados[1]);
+  $perini = preg_split("#\\-#m",(string) $dados[0]);
+  $perfin = preg_split("#\\-#m",(string) $dados[1]);
 
-  $txtper = strtoupper($dados["periodo"]);
+  $txtper = strtoupper((string) $dados["periodo"]);
   $mesini = strtoupper(db_mes($perini[1]));
   $mesfin = strtoupper(db_mes($perfin[1]));
 
@@ -190,49 +190,49 @@ $result = db_planocontassaldo_matriz(db_getsession("DB_anousu"),$dt_ini,$dt_fin,
 //////////////////////////
 
 if (!isset($arqinclude)){ // se este arquivo no esta incluido por outro
-  
+
   $pdf = new PDF(); 
   $pdf->Open(); 
   $pdf->AliasNbPages(); 
   $pdf->setfillcolor(235);
   $alt            = 4;
   $pagina         = 1;
-  
+
   $pdf->addpage();
   $pdf->setfont('arial','',8);
-  
+
   $pdf->ln();
   $pdf->cell(70,$alt,"RREO - ANEXO VI(LRF, art. 53, inciso III)",'0',0,"L",0);
   $pdf->cell(120,$alt,"R$ 1,00",0,"R",0);
-  
+
   $pdf->ln();
   $pdf->cell(70,($alt*2),"DÍVIDA FISCAL LÍQUIDA",'TBR',0,"C",0);
   $pdf->cell(120,($alt),"SALDO",'TB',1,"C",0);      // br
   $pdf->setX(80);
   $pdf->cell(40,$alt,"Em 31/Dez/".($anousu_ant-1)." (a)",'1',0,"C",0);
-  $dt = split("-",$dt_fin_ant);
+  $dt = preg_split("#\\-#m",(string) $dt_fin_ant);
   $dt = $dt[2]."/".db_mes($dt[1])."/".$dt[0];
   $pdf->cell(40,$alt,"Em $dt (b)",'1',0,"C",0);
-  
-  $dt = split("-",$dt_fin);
+
+  $dt = preg_split("#\\-#m",(string) $dt_fin);
   $dt = $dt[2]."/".db_mes($dt[1])."/".$dt[0];
   $pdf->cell(40,$alt,"Em $dt (c)",'TB',0,"C",0);
   $pdf->Ln();
-  
+
 } // end !include
 
 //---------------
 $tot_ant =0;
 $tot_biant=0;
 $tot_bi =0;
-for($i=0;$i< pg_numrows($result);$i++){
+for($i=0;$i< pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   if (in_array($estrutural,$m_divida_consolidada)){
     $tot_ant += $saldo_anterior;
     $tot_bi  += $saldo_final;
   }
 }
-for($i=0;$i< pg_numrows($result_peranterior);$i++) {
+for($i=0;$i< pg_num_rows($result_peranterior);$i++) {
   db_fieldsmemory($result_peranterior,$i);
   if (in_array($estrutural,$m_divida_consolidada)){
     $tot_biant += $saldo_final;
@@ -242,14 +242,14 @@ for($i=0;$i< pg_numrows($result_peranterior);$i++) {
 //echo "Aqui"; exit;
 
 if (!isset($arqinclude)){
-  
+
   $pdf->setfont('arial','',7);
   $pdf->cell(70,$alt,"DÍVIDA CONSOLIDADA (I)",'R',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($tot_ant,'f'),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($tot_biant,'f'),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($tot_bi,'f'),'0',0,"R",0);
   $pdf->Ln();
-  
+
 }
 
 $somador_I_ant    +=$tot_ant;
@@ -258,7 +258,7 @@ $somador_I_bim    +=$tot_bi;
 
 // -- dedudoes
 if (!isset($arqinclude)){
-  
+
   $pos_deducao = $pdf->getY();
   $pdf->setfont('arial','',7);
   $pdf->cell(70,$alt,"DEDUÇÕES (II)",'R',0,"L",0);
@@ -266,7 +266,7 @@ if (!isset($arqinclude)){
   $pdf->cell(40,$alt,'','R',0,"R",0);
   $pdf->cell(40,$alt,'','0',0,"R",0);
   $pdf->Ln();
-  
+
 } // end !include
 
 // -----------
@@ -274,7 +274,7 @@ $tot_ant =0;
 $tot_biant=0;
 $tot_bi =0;
 
-for($i=0;$i< pg_numrows($result);$i++) {
+for($i=0;$i< pg_num_rows($result);$i++) {
   db_fieldsmemory($result,$i);
   if (in_array($estrutural,$m_r_ativo_disp)){
     $tot_ant += $saldo_anterior;
@@ -284,9 +284,9 @@ for($i=0;$i< pg_numrows($result);$i++) {
     $tot_ant += $saldo_anterior;
     $tot_bi  += $saldo_final;
   }
-  
+
 }
-for($i=0;$i< pg_numrows($result_peranterior);$i++) {
+for($i=0;$i< pg_num_rows($result_peranterior);$i++) {
   db_fieldsmemory($result_peranterior,$i);
   if (in_array($estrutural,$m_r_ativo_disp)){
     $tot_biant += $saldo_final;
@@ -294,18 +294,18 @@ for($i=0;$i< pg_numrows($result_peranterior);$i++) {
   if (in_array($estrutural,$m_rpps_investimentos)){
     $tot_biant += $saldo_final;
   }
-  
+
 }
 
 if (!isset($arqinclude)) {
-  
+
   $pdf->setfont('arial','',7);
   $pdf->cell(70,$alt,espaco($n1)."Ativo Disponível",'R',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($tot_ant,'f'),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($tot_biant,'f'),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($tot_bi,'f'),'0',0,"R",0);
   $pdf->Ln();
-  
+
 }
 
 $somador_II_ant    += $tot_ant;
@@ -316,14 +316,14 @@ $somador_II_bim    += $tot_bi;
 $tot_ant =0;
 $tot_biant=0;
 $tot_bi =0;
-for($i=0;$i< pg_numrows($result);$i++) {
+for($i=0;$i< pg_num_rows($result);$i++) {
   db_fieldsmemory($result,$i);
   if (in_array($estrutural,$m_r_haveres_financeiro)){
     $tot_ant += $saldo_anterior;
     $tot_bi  += $saldo_final;
   }
 }
-for($i=0;$i< pg_numrows($result_peranterior);$i++) {
+for($i=0;$i< pg_num_rows($result_peranterior);$i++) {
   db_fieldsmemory($result_peranterior,$i);
   if (in_array($estrutural,$m_r_haveres_financeiro)){
     $tot_biant += $saldo_final;
@@ -331,7 +331,7 @@ for($i=0;$i< pg_numrows($result_peranterior);$i++) {
 }
 
 if (!isset($arqinclude)){
-  
+
   $pdf->setfont('arial','',7);
   $pdf->cell(70,$alt,espaco($n1)."Haveres Financeiros",'R',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($tot_ant,'f'),'R',0,"R",0);
@@ -348,14 +348,14 @@ $somador_II_bim    += $tot_bi;
 $tot_ant =0;
 $tot_biant=0;
 $tot_bi =0;
-for($i=0;$i< pg_numrows($result);$i++) {
+for($i=0;$i< pg_num_rows($result);$i++) {
   db_fieldsmemory($result,$i);
   if (in_array($estrutural,$m_r_rp_processados)){
     $tot_ant += $saldo_anterior;
     $tot_bi  += $saldo_final;
   }
 }
-for($i=0;$i< pg_numrows($result_peranterior);$i++) {
+for($i=0;$i< pg_num_rows($result_peranterior);$i++) {
   db_fieldsmemory($result_peranterior,$i);
   if (in_array($estrutural,$m_r_rp_processados)){
     $tot_biant += $saldo_final;
@@ -363,7 +363,7 @@ for($i=0;$i< pg_numrows($result_peranterior);$i++) {
 }
 
 if (!isset($arqinclude)){
-  
+
   $pdf->setfont('arial','',7);
   $pdf->cell(70,$alt,espaco($n1)."(-) Restos a Pagar Processados",'R',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($tot_ant,'f'),'R',0,"R",0);
@@ -379,18 +379,18 @@ $somador_II_bim    -= $tot_bi;
 // imprime la em cima o total das deducoes
 
 if (!isset($arqinclude)){
-  
+
   $pos_atu = $pdf->y; // posio atual
   // sobe, escreve e desce
   $pdf->setY($pos_deducao);
   $pdf->setX(80);
-  
+
   $pdf->cell(40,$alt,($somador_II_ant < 0    ?"-":db_formatar($somador_II_ant,'f')),'R',0,"R",0);
   $pdf->cell(40,$alt,($somador_II_antbim < 0?"-":db_formatar($somador_II_antbim,'f')),'R',0,"R",0);
   $pdf->cell(40,$alt,($somador_II_bim < 0?   "-":db_formatar($somador_II_bim,'f')),'0',0,"R",0);
-  
+
   $pdf->setY($pos_atu); // desce novamente at aki 
-  
+
 }
 
 if ($somador_II_ant < 0) {
@@ -423,21 +423,21 @@ if (!isset($arqinclude)){
 $tot_ant =0;
 $tot_biant=0;
 $tot_bi =0;
-for($i=0;$i< pg_numrows($result);$i++){
+for($i=0;$i< pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   if (in_array($estrutural,$m_privatizacao)){
     $tot_ant += $saldo_anterior;
     $tot_bi  += $saldo_final;
   }
 }
-for($i=0;$i< pg_numrows($result_peranterior);$i++) {
+for($i=0;$i< pg_num_rows($result_peranterior);$i++) {
   db_fieldsmemory($result_peranterior,$i);
   if (in_array($estrutural,$m_privatizacao)){
     $tot_biant += $saldo_final;
   }
 }
 if (!isset($arqinclude)){
-  
+
   $pdf->setfont('arial','',7);
   $pdf->cell(70,$alt,"RECEITA DE PRIVATIZAÇÕES (IV)",'R',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($tot_ant,'f'),'R',0,"R",0);
@@ -454,14 +454,14 @@ $somador_IV_bim    +=$tot_bi;
 $tot_ant =0;
 $tot_biant=0;
 $tot_bi =0;
-for($i=0;$i< pg_numrows($result);$i++){
+for($i=0;$i< pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   if (in_array($estrutural,$m_passivos)){
     $tot_ant += $saldo_anterior;
     $tot_bi  += $saldo_final;
   }
 }
-for($i=0;$i< pg_numrows($result_peranterior);$i++) {
+for($i=0;$i< pg_num_rows($result_peranterior);$i++) {
   db_fieldsmemory($result_peranterior,$i);
   if (in_array($estrutural,$m_passivos)){
     $tot_biant += $saldo_final;
@@ -492,14 +492,14 @@ $tot_bi    = (($somador_III_bim  + $somador_IV_bim) - $somador_V_bim );
 $TOTAL_ANTERIOR = (($somador_III_ant + $somador_IV_ant) - $somador_V_ant);
 
 if (!isset($arqinclude)){
-  
+
   $pdf->setfont('arial','',7);
   $pdf->cell(70,$alt,"DÍVIDA FISCAL LÍQUIDA(VI) = (III+IV-V)",'TBR',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($tot_ant,'f'),'TBR',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($tot_biant,'f'),'TBR',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($tot_bi,'f'),'TB',0,"R",0);
   $pdf->Ln();
-  
+
   //-------------- // ----------- // --------------
   // imprime resultado nominal
   $pdf->Ln(4);
@@ -510,7 +510,7 @@ if (!isset($arqinclude)){
   $pdf->cell(60,$alt,"No Bimestre (c-b)",'1',0,"C",0);
   $pdf->cell(60,$alt,"Até o Bimestre (c-a)",'TB',0,"C",0);
   $pdf->Ln();
-  
+
   //
   $pdf->cell(70,$alt,"VALOR",'TBR',0,"L",0);
   if ($tot_bi < 0 && $tot_biant <0){
@@ -526,21 +526,21 @@ if (!isset($arqinclude)){
     $pdf->cell(60,$alt,db_formatar(($tot_bi-$tot_ant),'f'),'TB',0,"R",0);
   }  
   $pdf->ln(4);
-  
+
   // imprime meta fiscal
   $pdf->ln(4);
   $pdf->cell(130,$alt,"DISCRIMINAÇÃO DA META FISCAL",'TBR',0,"C",0);
   $pdf->cell(60,$alt,"VALOR CORRENTE",'TB',1,"C",0);
-  
+
   $pdf->cell(130,$alt,"META DE RESULTADO NOMINAL FIXADA NO ANEXO DE METAS FISCAIS",'R',0,"L",0);
   $pdf->cell(60,$alt,db_formatar($META_NOMINAL,'f'),'0',0,"R",0);
-  
+
   $pdf->Ln();
   $pdf->cell(130,$alt,"DA LDO P/ O EXERCÍCIO DE REFERÊNCIA",'BR',0,"L",0);
   $pdf->cell(60,$alt,'','TB',1,"R",0);
-  
+
   //echo "Antes RPPS"; exit;
-  
+
 }
 
 // RPPS ///////////////////////////////////////////////////////////////////////
@@ -550,7 +550,7 @@ $sql    = "select codigo  from db_config where db21_tipoinstit in (5,6) ";
 $resultinst = db_query($sql);
 $instit ='0';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   $instit     .= $xvirg.$codigo; // salva insituio
   $xvirg       = ', ';		  
@@ -567,37 +567,37 @@ $result = db_planocontassaldo_matriz(db_getsession("DB_anousu"),$dt_ini,$dt_fin,
 //echo "Depois RPPS"; exit;
 
 if (!isset($arqinclude)){
-  
+
   $pdf->ln();
   $pdf->cell(190,$alt,"REGIME PREVIDENCIÁRIO",'TB',1,"C",0);
   $pdf->cell(70,($alt*2),"DÍVIDA FISCAL LÍQUIDA PREVIDENCIÁRIA",'TBR',0,"C",0);
   $pdf->cell(120,($alt),"SALDO",'TB',1,"C",0);      // br
   $pdf->setX(80);
   $pdf->cell(40,$alt,"Em 31/Dez/".($anousu_ant-1)." (a)",'1',0,"C",0);
-  $dt = split("-",$dt_fin_ant);
+  $dt = preg_split("#\\-#m",(string) $dt_fin_ant);
   $dt = $dt[2]."/".db_mes($dt[1])."/".$dt[0];
   $pdf->cell(40,$alt,"Em $dt (b)",'1',0,"C",0);
-  
-  $dt = split("-",$dt_fin);
+
+  $dt = preg_split("#\\-#m",(string) $dt_fin);
   $dt = $dt[2]."/".db_mes($dt[1])."/".$dt[0];
   $pdf->cell(40,$alt,"Em $dt (c)",'TB',0,"C",0);
   $pdf->Ln();
-  
-  
+
+
 }
 
 //---------------
 $tot_ant =0;
 $tot_biant=0;
 $tot_bi =0;
-for($i=0;$i< pg_numrows($result);$i++){
+for($i=0;$i< pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   if (in_array($estrutural,$m_divida_consolidada)){
     $tot_ant += $saldo_anterior;
     $tot_bi  += $saldo_final;
   }
 }
-for($i=0;$i< pg_numrows($result_peranterior);$i++) {
+for($i=0;$i< pg_num_rows($result_peranterior);$i++) {
   db_fieldsmemory($result_peranterior,$i);
   if (in_array($estrutural,$m_divida_consolidada)){
     $tot_biant += $saldo_final;
@@ -631,14 +631,14 @@ if (!isset($arqinclude)){
 $tot_ant =0;
 $tot_biant=0;
 $tot_bi =0;
-for($i=0;$i< pg_numrows($result);$i++) {
+for($i=0;$i< pg_num_rows($result);$i++) {
   db_fieldsmemory($result,$i);
   if (in_array($estrutural,$m_r_ativo_disp)){
     $tot_ant += $saldo_anterior;
     $tot_bi  += $saldo_final;
   }
 }
-for($i=0;$i< pg_numrows($result_peranterior);$i++) {
+for($i=0;$i< pg_num_rows($result_peranterior);$i++) {
   db_fieldsmemory($result_peranterior,$i);
   if (in_array($estrutural,$m_r_ativo_disp)){
     $tot_biant += $saldo_final;
@@ -661,14 +661,14 @@ $somador_VII_bim    += $tot_bi;
 $tot_ant =0;
 $tot_biant=0;
 $tot_bi =0;
-for($i=0;$i< pg_numrows($result);$i++) {
+for($i=0;$i< pg_num_rows($result);$i++) {
   db_fieldsmemory($result,$i);
   if (in_array($estrutural,$m_rpps_investimentos)){
     $tot_ant += $saldo_anterior;
     $tot_bi  += $saldo_final;
   }
 }
-for($i=0;$i< pg_numrows($result_peranterior);$i++) {
+for($i=0;$i< pg_num_rows($result_peranterior);$i++) {
   db_fieldsmemory($result_peranterior,$i);
   if (in_array($estrutural,$m_rpps_investimentos)){
     $tot_biant += $saldo_final;
@@ -692,14 +692,14 @@ $somador_VII_bim    += $tot_bi;
 $tot_ant =0;
 $tot_biant=0;
 $tot_bi =0;
-for($i=0;$i< pg_numrows($result);$i++) {
+for($i=0;$i< pg_num_rows($result);$i++) {
   db_fieldsmemory($result,$i);
   if (in_array($estrutural,$m_r_haveres_financeiro)){
     $tot_ant += $saldo_anterior;
     $tot_bi  += $saldo_final;
   }
 }
-for($i=0;$i< pg_numrows($result_peranterior);$i++) {
+for($i=0;$i< pg_num_rows($result_peranterior);$i++) {
   db_fieldsmemory($result_peranterior,$i);
   if (in_array($estrutural,$m_r_haveres_financeiro)){
     $tot_biant += $saldo_final;
@@ -722,14 +722,14 @@ $somador_VII_bim    += $tot_bi;
 $tot_ant =0;
 $tot_biant=0;
 $tot_bi =0;
-for($i=0;$i< pg_numrows($result);$i++) {
+for($i=0;$i< pg_num_rows($result);$i++) {
   db_fieldsmemory($result,$i);
   if (in_array($estrutural,$m_r_rp_processados)){
     $tot_ant += $saldo_anterior;
     $tot_bi  += $saldo_final;
   }
 }
-for($i=0;$i< pg_numrows($result_peranterior);$i++) {
+for($i=0;$i< pg_num_rows($result_peranterior);$i++) {
   db_fieldsmemory($result_peranterior,$i);
   if (in_array($estrutural,$m_r_rp_processados)){
     $tot_biant += $saldo_final;
@@ -759,7 +759,7 @@ if (!isset($arqinclude)){
   $pdf->cell(40,$alt,($somador_VII_ant    < 0?"-":db_formatar($somador_VII_ant,'f')),'R',0,"R",0);
   $pdf->cell(40,$alt,($somador_VII_antbim < 0?"-":db_formatar($somador_VII_antbim,'f')),'R',0,"R",0);
   $pdf->cell(40,$alt,($somador_VII_bim    < 0?"-":db_formatar($somador_VII_bim,'f')),'0',0,"R",0);
-  
+
 }
 if ($somador_VII_ant < 0) {
   $somador_VII_ant = 0;
@@ -790,7 +790,7 @@ if (!isset($arqinclude)){
   $pdf->cell(40,$alt,db_formatar($somador_VIII_antbim,'f'),'R',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($somador_VIII_bim,'f'),'0',0,"R",0);
   $pdf->Ln();
-  
+
   $pdf->setfont('arial','',7);
   $pdf->cell(70,$alt,"PASSIVOS RECONHECIDOS(X)",'BR',0,"L",0);
   $pdf->cell(40,$alt,db_formatar($somador_IX_ant,'f'),'BR',0,"R",0);
@@ -808,18 +808,18 @@ if (!isset($arqinclude)){
   $pdf->cell(40,$alt,db_formatar($tot_ant,'f'),'BR',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($tot_biant,'f'),'BR',0,"R",0);
   $pdf->cell(40,$alt,db_formatar($tot_bi,'f'),'TB',0,"R",0);
-  
+
   ///////////////////////////////////////////////////////////////////////////////
   $pdf->Ln();
 
   notasExplicativas($pdf,16,"{$periodo}",190);
-  
+
   $pdf->Ln(24);
-  
+
   assinaturas($pdf, $classinatura,'LRF');
-  
+
   $pdf->Output();
-  
+
 }  // end !include
 
 ?>

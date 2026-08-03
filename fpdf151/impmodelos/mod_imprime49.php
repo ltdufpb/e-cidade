@@ -45,7 +45,7 @@ for ($j = 0;$j < $confNumRows;$j++){
     $this->objpdf->Setfont('Arial', 'B', 5);
     $this->objpdf->text(12,$xlin+17,'ENDERECO');
     $this->objpdf->Setfont('Arial', '',7 );
-    $this->dadosPrestador->z01_ender = trim($this->dadosPrestador->z01_ender);
+    $this->dadosPrestador->z01_ender = trim((string) $this->dadosPrestador->z01_ender);
     $this->objpdf->text(14,$xlin+19,"{$this->dadosPrestador->z01_ender}, {$this->dadosPrestador->z01_numero}" );
     $this->objpdf->line(10,$xlin+20,200,$xlin+20);
     //Municipio
@@ -114,7 +114,7 @@ for ($j = 0;$j < $confNumRows;$j++){
     $this->objpdf->Setfont('Arial', 'B', 5);
     $this->objpdf->text(12,$xlin+17,'ENDERECO');
     $this->objpdf->Setfont('Arial', '',7 );
-    $this->dadosTomador->z01_ender = trim($this->dadosTomador->z01_ender);
+    $this->dadosTomador->z01_ender = trim((string) $this->dadosTomador->z01_ender);
     $this->objpdf->text(14,$xlin+19.2,"{$this->dadosTomador->z01_ender}, {$this->dadosTomador->z01_numero}");
     $this->objpdf->line(10,$xlin+20,200,$xlin+20);
     //Municipio
@@ -191,7 +191,7 @@ for ($j = 0;$j < $confNumRows;$j++){
     $this->objpdf->line(10,$iYinicio,200,$iYinicio);
     $totlinha = 0;
     for ($i = 0; $i < pg_num_rows($this->rsServico); $i++){
- 
+
         $this->objpdf->sety($cellYnew);
         $oItensServico     = db_utils::fieldsmemory($this->rsServico,$i);
         $totalLinha        = ($oItensServico->q62_qtd*$oItensServico->q62_vlruni);  

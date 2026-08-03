@@ -213,7 +213,7 @@ function js_escondeFieldsetMaterial(){
         $fj = "";
         if ($t07_confplaca == SEQUENCIAL_AUTOMATICO || $t07_confplaca == 2 || $db_opcao != 1) {
           
-          if (trim(@$t52_ident) == "") {
+          if (trim((string) @$t52_ident) == "") {
             $opc = $db_opcao;
           } else { 
             
@@ -826,7 +826,7 @@ function js_mostrarbem(chave){
     } else {
         $global = "";
     }
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?codbem='+chave+'&importar=true<?=$global?>'";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?codbem='+chave+'&importar=true<?=$global?>'";
 ?>
 }
 function js_pesquisa_texto(){
@@ -1095,7 +1095,7 @@ function js_preenchepesquisa(chave){
   db_iframe_bens.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

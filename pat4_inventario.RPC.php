@@ -64,7 +64,7 @@ $oRetorno               = new stdClass();
 $oRetorno->iStatus      = 1;
 $oRetorno->sMessage     = '';
 
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 try {
 
   switch ($oParam->exec) {
@@ -140,13 +140,13 @@ try {
 
     	$oInventario = new Inventario($oParam->iInventario);
     	$aBens       = $oInventario->getBens();
-    	$aValoresBem = array();
+    	$aValoresBem = [];
     	foreach ($aBens as $oDadosBem){
 
     	  $oValores = new stdClass();
     	  $oValores->t52_bem   = $oDadosBem->getBem()->getCodigoBem();
-    	  $oValores->t52_descr = urlencode($oDadosBem->getBem()->getDescricao());
-    	  $oValores->t41_placa = urlencode($oDadosBem->getBem()->getPlaca()->getNumeroPlaca());
+    	  $oValores->t52_descr = urlencode((string) $oDadosBem->getBem()->getDescricao());
+    	  $oValores->t41_placa = urlencode((string) $oDadosBem->getBem()->getPlaca()->getNumeroPlaca());
     	  $aValoresBem[] = $oValores;
     	}
 
@@ -164,7 +164,7 @@ try {
 
     	db_inicio_transacao();
 
-    	$aBensSelecionados = explode(",", $oParam->sListaBens);
+    	$aBensSelecionados = explode(",", (string) $oParam->sListaBens);
     	$oInventario       = new Inventario($oParam->iInventario);
     	foreach ($aBensSelecionados as $oBem) {
     		$oInventario->desvincularBens($oBem);
@@ -178,7 +178,7 @@ try {
 
       $lFiltros  = $oParam->lFiltros;
 
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = "t55_codbem is null";
       $aWhere[] = "t52_instit = ". db_getsession("DB_instit");
 
@@ -265,7 +265,7 @@ try {
       $oDaoBens     = new cl_bens();
       $sSqlBens     = $oDaoBens->$sMetodo(null, "distinct t52_bem", null, $sWhereBens);
       $rsBuscaBens  = $oDaoBens->sql_record($sSqlBens);
-      $aBensRetorno = array();
+      $aBensRetorno = [];
       $iTotalDeBens = $oDaoBens->numrows;
 
       if ($iTotalDeBens > 2000) {
@@ -304,7 +304,7 @@ try {
           $oStdBem                              = new stdClass();
           $oStdBem->codigo_bem                  = $oBem->getCodigoBem();
           $oStdBem->descricao                   = urlencode($oBem->getDescricao());
-          $oStdBem->placa                       = urlencode($oBem->getPlaca()->getNumeroPlaca());
+          $oStdBem->placa                       = urlencode((string) $oBem->getPlaca()->getNumeroPlaca());
           $oStdBem->codigo_departamento_bem     = $oBem->getDepartamento();
           $oStdBem->descricao_departamento_bem  = urlencode($oDBDepartamento->getNomeDepartamento());
           $oStdBem->codigo_divisao_bem          = $oDBDivisao->getCodigo();
@@ -355,12 +355,12 @@ try {
     	$oDaoDepartamento= db_utils::getDao('db_depart');
     	$sSqlDepartamento= $oDaoDepartamento->sql_query_file();
     	$rsDepartamento  = $oDaoDepartamento->sql_record($sSqlDepartamento, "coddepto, descrdepto");
-    	$aDepartamento   = array();
+    	$aDepartamento   = [];
     	if ($oDaoDepartamento->numrows > 0) {
     		$aDepartamento = db_utils::getCollectionByRecord($rsDepartamento, false, false, true);
     	}
 
-    	$aDivisaoDepartamento = array();
+    	$aDivisaoDepartamento = [];
     	foreach ($aDepartamento as $oStdDepartamento ) {
 
     		if (!isset($aDivisaoDepartamento[$oStdDepartamento->coddepto])) {
@@ -381,7 +381,7 @@ try {
     	$oDaoSituacaoBens = db_utils::getDao('situabens');
     	$sSqlSituacaoBens = $oDaoSituacaoBens->sql_query_file();
     	$rsSituacaoBens   = $oDaoSituacaoBens->sql_record($sSqlSituacaoBens);
-    	$aSituacao        = array();
+    	$aSituacao        = [];
     	if ($oDaoSituacaoBens->numrows > 0) {
     		$aSituacao = db_utils::getCollectionByRecord($rsSituacaoBens, false, false, true);
     	}
@@ -392,7 +392,7 @@ try {
     case "getDivisaoPorDepartamento":
 
       if (!isset($_SESSION["aDivisaoPorDepartamento"])) {
-        $_SESSION["aDivisaoPorDepartamento"] = array();
+        $_SESSION["aDivisaoPorDepartamento"] = [];
       }
 
       if (!isset($_SESSION["aDivisaoPorDepartamento"][$oParam->iCodigoDepartamento])) {
@@ -400,7 +400,7 @@ try {
         $oDaoDepartamento = db_utils::getDao('db_depart');
         $sSqlBuscaDivisao = $oDaoDepartamento->sql_query_departamento_divisao($oParam->iCodigoDepartamento, "t30_codigo,t30_descr");
         $rsBuscaDivisao   = $oDaoDepartamento->sql_record($sSqlBuscaDivisao);
-        $aDivisao         = array();
+        $aDivisao         = [];
         if ($oDaoDepartamento->numrows > 0) {
           $aDivisao = db_utils::getCollectionByRecord($rsBuscaDivisao, false, false, true);
         }

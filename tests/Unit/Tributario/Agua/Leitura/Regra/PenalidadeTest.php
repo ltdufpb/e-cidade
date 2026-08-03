@@ -18,7 +18,7 @@ class PenalidadeTest extends TestCase
      */
     public function testDeveInstanciarAPenalidade()
     {
-        $penalidade = new Penalidade(array());
+        $penalidade = new Penalidade([]);
         $this->assertInstanceOf(Penalidade::class, $penalidade);
     }
 
@@ -75,14 +75,14 @@ class PenalidadeTest extends TestCase
      */
     public function testCalcularDeveRetornarUmaMediaPorConsumoAlemDoJaCobrado()
     {
-        $resumosMensais = array();
+        $resumosMensais = [];
 
         /* Leituras 5/2016 */
         $leitura = new stdClass();
         $leitura->leitura = 100;
         $leitura->consumo = 10;
         $leitura->regra = Situacao::REGRA_NORMAL;
-        $resumoMensal = $this->criaLeitura(5, 2016, array($leitura));
+        $resumoMensal = $this->criaLeitura(5, 2016, [$leitura]);
         $resumosMensais[] = $resumoMensal;
 
         /* Leituras 6/2016 */
@@ -90,7 +90,7 @@ class PenalidadeTest extends TestCase
         $leitura->leitura = 100;
         $leitura->consumo = 10;
         $leitura->regra = Situacao::REGRA_MEDIA_ULTIMOS_MESES;
-        $resumoMensal = $this->criaLeitura(6, 2016, array($leitura));
+        $resumoMensal = $this->criaLeitura(6, 2016, [$leitura]);
         $resumosMensais[] = $resumoMensal;
 
 
@@ -99,7 +99,7 @@ class PenalidadeTest extends TestCase
         $leitura->leitura = 150;
         $leitura->consumo = 5;
         $leitura->regra = Situacao::REGRA_NORMAL;
-        $resumoMensal = $this->criaLeitura(7, 2016, array($leitura));
+        $resumoMensal = $this->criaLeitura(7, 2016, [$leitura]);
         $resumosMensais[] = $resumoMensal;
 
         $resumosMensais = array_reverse($resumosMensais);
@@ -159,14 +159,14 @@ class PenalidadeTest extends TestCase
      */
     public function testCalcularDeveRetornarUmaMediaPorConsumoMenosDoQueJaCobrado()
     {
-        $resumosMensais = array();
+        $resumosMensais = [];
 
         /* Leituras 5/2016 */
         $leitura = new stdClass();
         $leitura->leitura = 100;
         $leitura->consumo = 10;
         $leitura->regra = Situacao::REGRA_NORMAL;
-        $resumoMensal = $this->criaLeitura(5, 2016, array($leitura));
+        $resumoMensal = $this->criaLeitura(5, 2016, [$leitura]);
         $resumosMensais[] = $resumoMensal;
 
 
@@ -175,7 +175,7 @@ class PenalidadeTest extends TestCase
         $leitura->leitura = 100;
         $leitura->consumo = 10;
         $leitura->regra = Situacao::REGRA_MEDIA_ULTIMOS_MESES;
-        $resumoMensal = $this->criaLeitura(6, 2016, array($leitura));
+        $resumoMensal = $this->criaLeitura(6, 2016, [$leitura]);
         $resumosMensais[] = $resumoMensal;
 
         /* Leituras 7/2016 */
@@ -183,7 +183,7 @@ class PenalidadeTest extends TestCase
         $leitura->leitura = 100;
         $leitura->consumo = 10;
         $leitura->regra = Situacao::REGRA_MEDIA_ULTIMOS_MESES;
-        $resumoMensal = $this->criaLeitura(7, 2016, array($leitura));
+        $resumoMensal = $this->criaLeitura(7, 2016, [$leitura]);
         $resumosMensais[] = $resumoMensal;
 
         /* Leituras 8/2016 */
@@ -191,7 +191,7 @@ class PenalidadeTest extends TestCase
         $leitura->leitura = 100;
         $leitura->consumo = 10;
         $leitura->regra = Situacao::REGRA_MEDIA_ULTIMOS_MESES;
-        $resumoMensal = $this->criaLeitura(8, 2016, array($leitura));
+        $resumoMensal = $this->criaLeitura(8, 2016, [$leitura]);
         $resumosMensais[] = $resumoMensal;
 
         /* Leituras 9/2016 */
@@ -199,7 +199,7 @@ class PenalidadeTest extends TestCase
         $leitura->leitura = 100;
         $leitura->consumo = 10;
         $leitura->regra = Situacao::REGRA_MEDIA_ULTIMOS_MESES;
-        $resumoMensal = $this->criaLeitura(9, 2016, array($leitura));
+        $resumoMensal = $this->criaLeitura(9, 2016, [$leitura]);
         $resumosMensais[] = $resumoMensal;
 
         /* Leituras 10/2016 */
@@ -207,7 +207,7 @@ class PenalidadeTest extends TestCase
         $leitura->leitura = 150;
         $leitura->consumo = 5;
         $leitura->regra = Situacao::REGRA_NORMAL;
-        $resumoMensal = $this->criaLeitura(10, 2016, array($leitura));
+        $resumoMensal = $this->criaLeitura(10, 2016, [$leitura]);
         $resumosMensais[] = $resumoMensal;
 
         $resumosMensais = array_reverse($resumosMensais);

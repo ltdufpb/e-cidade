@@ -23,11 +23,11 @@ class EnsinoEnum extends Enum
      */
     public function name()
     {
-        $data = array(
+        $data = [
             self::ENSINO_INFANTIL => "Ensino Infantil",
             self::ENSINO_FUNDAMENTAL => "Ensino Fundamental",
             self::ENSINO_MEDIO => "Ensino Médio",
-        );
+        ];
 
         if (empty($data[$this->getValue()])) {
             throw new Exception('Ensino não encontrado.');
@@ -42,18 +42,11 @@ class EnsinoEnum extends Enum
      */
     public function getTipoEnsino()
     {
-        switch ($this->value) {
-            case self::ENSINO_INFANTIL:
-                return new TipoEnsinoEnum(TipoEnsinoEnum::ENSINO_INFANTIL);
-                break;
-            case self::ENSINO_FUNDAMENTAL:
-                return new TipoEnsinoEnum(TipoEnsinoEnum::ENSINO_FUNDAMENTAL);
-                break;
-            case self::ENSINO_MEDIO:
-                return new TipoEnsinoEnum(TipoEnsinoEnum::ENSINO_MEDIO);
-                break;
-        }
-
-        throw new Exception("Ensino não mapeado.");
+        return match ($this->value) {
+            self::ENSINO_INFANTIL => new TipoEnsinoEnum(TipoEnsinoEnum::ENSINO_INFANTIL),
+            self::ENSINO_FUNDAMENTAL => new TipoEnsinoEnum(TipoEnsinoEnum::ENSINO_FUNDAMENTAL),
+            self::ENSINO_MEDIO => new TipoEnsinoEnum(TipoEnsinoEnum::ENSINO_MEDIO),
+            default => throw new Exception("Ensino não mapeado."),
+        };
     }
 }

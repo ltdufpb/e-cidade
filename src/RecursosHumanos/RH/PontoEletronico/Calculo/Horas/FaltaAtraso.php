@@ -258,10 +258,11 @@ class FaltaAtraso extends BaseHora implements Horas
      * Percorre cada minuto da marcação, caso seja maior que o horário da jornada, verificando se está dentro do período
      * diurno ou noturno( neste caso, convertendo para cálculo de horas noturnas )
      *
-     * @deprecated
      * @param \DateTime $marcacao
      * @param \DateTime $horaJornada
      */
+    #[\Override]
+    #[\Deprecated]
     public function percorreMinutoAMinuto(\DateTime $marcacao, \DateTime $horaJornada)
     {
         if ($marcacao->getTimestamp() <= $horaJornada->getTimestamp()) {
@@ -329,7 +330,7 @@ class FaltaAtraso extends BaseHora implements Horas
                 $debug = '-- Hora do assentamento de abono......:' . $this->horaAssentamentoAbonoFalta;
                 $this->logger->debug($debug);
 
-                list($hora, $minuto) = explode(':', $this->horaAssentamentoAbonoFalta);
+                [$hora, $minuto] = explode(':', $this->horaAssentamentoAbonoFalta);
                 $intervaloSubtrair = new \DateInterval("PT{$hora}H{$minuto}M");
                 $horasSubtrair = \DateTime::createFromFormat('H:i', "{$hora}:{$minuto}");
                 $horasSubtrair->setDate(

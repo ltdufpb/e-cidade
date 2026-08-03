@@ -39,8 +39,8 @@ include(modification("classes/db_db_config_classe.php"));
 
 $cldb_config = new cl_db_config;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_SERVER);
 
 $clempresto = new cl_empresto();
 
@@ -75,13 +75,13 @@ if (isset($instit) && trim(@$instit)=="") {
         }
     }
 
-     $array_instit = array();
+     $array_instit = [];
      $sep = '';
      $instit = '';
     if ($usa_instit == true) {
          $instit= db_getsession("DB_instit");
         // recebeu instituição
-         $array_instit = split(',', $instit);
+         $array_instit = preg_split('#,#m', $instit);
     } else {
        // todas instituições
         $rr = $cldb_config->sql_record($cldb_config->sql_query_file(null, "codigo"));
@@ -97,7 +97,7 @@ if (isset($instit) && trim(@$instit)=="") {
 
 $instit = str_replace("-", ",", @$instit);
 $instit = (!isset($instit)||trim($instit)=='')?'NULL':$instit;
-$array_instit = split(',', $instit);
+$array_instit = preg_split('#,#m', $instit);
 $sel_orgaos = " o58_instit in ($instit) ";
 
 $porgao   = "";
@@ -112,7 +112,7 @@ $ploaespecificacao = "";
 // caso seja informado dotação na tela, o sistema pesquisa a dotação
 if (isset($codigo_dot) && $codigo_dot!="") {
     $res = db_dotacaosaldo(8, 2, 3, true, "o58_coddot=$codigo_dot", db_getsession("DB_anousu"), db_getsession("DB_anousu").'-01-01', db_getsession("DB_anousu").'-01-01');
-    if (pg_numrows($res)>0) {
+    if (pg_num_rows($res)>0) {
         db_fieldsmemory($res, 0);
         $porgao   = $o58_orgao;
         $punidade = $o58_unidade;
@@ -136,13 +136,13 @@ $clpermusuario_dotacao =  new cl_permusuario_dotacao(
     $instit
 );
 
-$orgaos_liberados = array();
+$orgaos_liberados = [];
 
 if ($clpermusuario_dotacao->sql!="") {
        $result = db_query($clpermusuario_dotacao->orgaos);
       // db_criatabela($result);
-    if (pg_numrows($result)>0) {
-        for ($x=0; $x < pg_numrows($result); $x++) {
+    if (pg_num_rows($result)>0) {
+        for ($x=0; $x < pg_num_rows($result); $x++) {
               db_fieldsmemory($result, $x);
               $orgaos_liberados[$o40_orgao]=$o40_orgao;
         }
@@ -640,18 +640,18 @@ function js_atualiza_variavel_retorno(objeto){
     );
     $result = $clorcdotacao->sql_record($sql);
 
-     $tipodesp = array() ;
+     $tipodesp = [] ;
      $tipod = "";
      // db_criatabela($result);
     for ($i=0; $i<$clorcdotacao->numrows; $i++) {
         db_fieldsmemory($result, $i);
-        $ele = substr($o56_elemento, 0, 3);
+        $ele = substr((string) $o56_elemento, 0, 3);
         $tipodd = " o56_elemento = '$ele'";
         if (array_search($ele, $tipodesp)==0) {
             $srec = $clorcelemento->sql_record($clorcelemento->sql_query_file(null, null, 'o56_descr', null, " o56_anousu = ".db_getsession("DB_anousu")." and  o56_elemento = '".$ele."0000000000' order by o56_elemento limit 1 "));
             if ($clorcelemento->numrows!=0) {
                 db_fieldsmemory($srec, 0);
-                $tipodesp["$ele"] = substr($o56_descr, 0, 20);
+                $tipodesp["$ele"] = substr((string) $o56_descr, 0, 20);
             }
         }
         $tipod = " and ";

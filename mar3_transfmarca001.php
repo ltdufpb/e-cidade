@@ -66,7 +66,7 @@ $cltransfmarca->rotulo->label('ma02_i_marca');
      <td>
       &nbsp;&nbsp;&nbsp;
       <?php 
-      $tipo = array("Todas"=>"Todas","Por Marca"=>"Por Marca");
+      $tipo = ["Todas"=>"Todas","Por Marca"=>"Por Marca"];
       db_select("escolha",$tipo,true,2,"onchange=\"js_opcao(this.value)\"");
       ?>
       <input name="pesquisar" type="button" id="pesquisar" value="Pesquisar" onclick="js_pesquisa();">

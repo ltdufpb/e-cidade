@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE aguadescarrehist
 class cl_aguadescarrehist { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x36_numpre = 0; 
-   var $x36_numpar = 0; 
-   var $x36_hist = 0; 
-   var $x36_dtoper_dia = null; 
-   var $x36_dtoper_mes = null; 
-   var $x36_dtoper_ano = null; 
-   var $x36_dtoper = null; 
-   var $x36_hora = null; 
-   var $x36_id_usuario = 0; 
-   var $x36_histtxt = null; 
-   var $x36_limithist_dia = null; 
-   var $x36_limithist_mes = null; 
-   var $x36_limithist_ano = null; 
-   var $x36_limithist = null; 
-   var $x36_idhist = 0; 
+   public $x36_numpre = 0; 
+   public $x36_numpar = 0; 
+   public $x36_hist = 0; 
+   public $x36_dtoper_dia = null; 
+   public $x36_dtoper_mes = null; 
+   public $x36_dtoper_ano = null; 
+   public $x36_dtoper = null; 
+   public $x36_hora = null; 
+   public $x36_id_usuario = 0; 
+   public $x36_histtxt = null; 
+   public $x36_limithist_dia = null; 
+   public $x36_limithist_mes = null; 
+   public $x36_limithist_ano = null; 
+   public $x36_limithist = null; 
+   public $x36_idhist = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x36_numpre = int4 = Numpre 
                  x36_numpar = int4 = Numpar 
                  x36_hist = int4 = Histórico 
@@ -67,10 +67,10 @@ class cl_aguadescarrehist {
                  x36_idhist = int4 = Sequencia 
                  ";
    //funcao construtor da classe 
-   function cl_aguadescarrehist() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguadescarrehist"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -212,7 +212,7 @@ class cl_aguadescarrehist {
                       )");
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "aguadescarrehist () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "aguadescarrehist já Cadastrado";
@@ -237,13 +237,13 @@ class cl_aguadescarrehist {
       $this->atualizacampos();
      $sql = " update aguadescarrehist set ";
      $virgula = "";
-     if(trim($this->x36_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_numpre"])){ 
-        if(trim($this->x36_numpre)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x36_numpre"])){ 
+     if(trim((string) $this->x36_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_numpre"])){ 
+        if(trim((string) $this->x36_numpre)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x36_numpre"])){ 
            $this->x36_numpre = "0" ; 
         } 
        $sql  .= $virgula." x36_numpre = $this->x36_numpre ";
        $virgula = ",";
-       if(trim($this->x36_numpre) == null ){ 
+       if(trim((string) $this->x36_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "x36_numpre";
          $this->erro_banco = "";
@@ -253,13 +253,13 @@ class cl_aguadescarrehist {
          return false;
        }
      }
-     if(trim($this->x36_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_numpar"])){ 
-        if(trim($this->x36_numpar)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x36_numpar"])){ 
+     if(trim((string) $this->x36_numpar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_numpar"])){ 
+        if(trim((string) $this->x36_numpar)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x36_numpar"])){ 
            $this->x36_numpar = "0" ; 
         } 
        $sql  .= $virgula." x36_numpar = $this->x36_numpar ";
        $virgula = ",";
-       if(trim($this->x36_numpar) == null ){ 
+       if(trim((string) $this->x36_numpar) == null ){ 
          $this->erro_sql = " Campo Numpar nao Informado.";
          $this->erro_campo = "x36_numpar";
          $this->erro_banco = "";
@@ -269,13 +269,13 @@ class cl_aguadescarrehist {
          return false;
        }
      }
-     if(trim($this->x36_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_hist"])){ 
-        if(trim($this->x36_hist)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x36_hist"])){ 
+     if(trim((string) $this->x36_hist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_hist"])){ 
+        if(trim((string) $this->x36_hist)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x36_hist"])){ 
            $this->x36_hist = "0" ; 
         } 
        $sql  .= $virgula." x36_hist = $this->x36_hist ";
        $virgula = ",";
-       if(trim($this->x36_hist) == null ){ 
+       if(trim((string) $this->x36_hist) == null ){ 
          $this->erro_sql = " Campo Histórico nao Informado.";
          $this->erro_campo = "x36_hist";
          $this->erro_banco = "";
@@ -285,10 +285,10 @@ class cl_aguadescarrehist {
          return false;
        }
      }
-     if(trim($this->x36_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x36_dtoper_dia"] !="") ){ 
+     if(trim((string) $this->x36_dtoper)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_dtoper_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x36_dtoper_dia"] !="") ){ 
        $sql  .= $virgula." x36_dtoper = '$this->x36_dtoper' ";
        $virgula = ",";
-       if(trim($this->x36_dtoper) == null ){ 
+       if(trim((string) $this->x36_dtoper) == null ){ 
          $this->erro_sql = " Campo Data Operação nao Informado.";
          $this->erro_campo = "x36_dtoper_dia";
          $this->erro_banco = "";
@@ -301,7 +301,7 @@ class cl_aguadescarrehist {
        if(isset($GLOBALS["HTTP_POST_VARS"]["x36_dtoper_dia"])){ 
          $sql  .= $virgula." x36_dtoper = null ";
          $virgula = ",";
-         if(trim($this->x36_dtoper) == null ){ 
+         if(trim((string) $this->x36_dtoper) == null ){ 
            $this->erro_sql = " Campo Data Operação nao Informado.";
            $this->erro_campo = "x36_dtoper_dia";
            $this->erro_banco = "";
@@ -312,10 +312,10 @@ class cl_aguadescarrehist {
          }
        }
      }
-     if(trim($this->x36_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_hora"])){ 
+     if(trim((string) $this->x36_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_hora"])){ 
        $sql  .= $virgula." x36_hora = '$this->x36_hora' ";
        $virgula = ",";
-       if(trim($this->x36_hora) == null ){ 
+       if(trim((string) $this->x36_hora) == null ){ 
          $this->erro_sql = " Campo Hora do Cadastro nao Informado.";
          $this->erro_campo = "x36_hora";
          $this->erro_banco = "";
@@ -325,13 +325,13 @@ class cl_aguadescarrehist {
          return false;
        }
      }
-     if(trim($this->x36_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_id_usuario"])){ 
-        if(trim($this->x36_id_usuario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x36_id_usuario"])){ 
+     if(trim((string) $this->x36_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_id_usuario"])){ 
+        if(trim((string) $this->x36_id_usuario)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x36_id_usuario"])){ 
            $this->x36_id_usuario = "0" ; 
         } 
        $sql  .= $virgula." x36_id_usuario = $this->x36_id_usuario ";
        $virgula = ",";
-       if(trim($this->x36_id_usuario) == null ){ 
+       if(trim((string) $this->x36_id_usuario) == null ){ 
          $this->erro_sql = " Campo Código Usuário nao Informado.";
          $this->erro_campo = "x36_id_usuario";
          $this->erro_banco = "";
@@ -341,10 +341,10 @@ class cl_aguadescarrehist {
          return false;
        }
      }
-     if(trim($this->x36_histtxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_histtxt"])){ 
+     if(trim((string) $this->x36_histtxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_histtxt"])){ 
        $sql  .= $virgula." x36_histtxt = '$this->x36_histtxt' ";
        $virgula = ",";
-       if(trim($this->x36_histtxt) == null ){ 
+       if(trim((string) $this->x36_histtxt) == null ){ 
          $this->erro_sql = " Campo Texto para Observação nao Informado.";
          $this->erro_campo = "x36_histtxt";
          $this->erro_banco = "";
@@ -354,7 +354,7 @@ class cl_aguadescarrehist {
          return false;
        }
      }
-     if(trim($this->x36_limithist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_limithist_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x36_limithist_dia"] !="") ){ 
+     if(trim((string) $this->x36_limithist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_limithist_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["x36_limithist_dia"] !="") ){ 
        $sql  .= $virgula." x36_limithist = '$this->x36_limithist' ";
        $virgula = ",";
      }     else{ 
@@ -363,13 +363,13 @@ class cl_aguadescarrehist {
          $virgula = ",";
        }
      }
-     if(trim($this->x36_idhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_idhist"])){ 
-        if(trim($this->x36_idhist)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x36_idhist"])){ 
+     if(trim((string) $this->x36_idhist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x36_idhist"])){ 
+        if(trim((string) $this->x36_idhist)=="" && isset($GLOBALS["HTTP_POST_VARS"]["x36_idhist"])){ 
            $this->x36_idhist = "0" ; 
         } 
        $sql  .= $virgula." x36_idhist = $this->x36_idhist ";
        $virgula = ",";
-       if(trim($this->x36_idhist) == null ){ 
+       if(trim((string) $this->x36_idhist) == null ){ 
          $this->erro_sql = " Campo Sequencia nao Informado.";
          $this->erro_campo = "x36_idhist";
          $this->erro_banco = "";
@@ -451,7 +451,7 @@ class cl_aguadescarrehist {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Dados do Grupo nao Encontrado";
@@ -466,7 +466,7 @@ class cl_aguadescarrehist {
    function sql_query ( $oid = null,$campos="aguadescarrehist.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,7 +489,7 @@ class cl_aguadescarrehist {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_aguadescarrehist {
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -520,7 +520,7 @@ class cl_aguadescarrehist {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

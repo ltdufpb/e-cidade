@@ -12,12 +12,12 @@ class R2099 extends Sugestao
 
     private $mesFechamento;
 
-    protected $deParaCamposSimples = array(
+    protected $deParaCamposSimples = [
         'nmctt' => 'nmResp',
         'cpfctt' => 'cpfResp',
         'fonefixo' => 'telefone',
         'email' => 'email'
-    );
+    ];
 
     public function __construct($parametros)
     {

@@ -141,12 +141,12 @@ $oRotulo->label('tf19_i_cgsund');
   <tr>
 	  <td valign="top"><br>
       <?php 
-			$aChavepri                = array ('tf31_i_codigo' => @$tf31_i_codigo,
+			$aChavepri                =  ['tf31_i_codigo' => @$tf31_i_codigo,
                                          'tf31_i_passageiroveiculo' => @$tf31_i_passageiroveiculo, 
                                          'tf31_i_veiculodestino' => @$tf31_i_veiculodestino, 
                                          'tf19_i_cgsund' => @$tf19_i_cgsund, 
                                          'z01_v_nome' => @$z01_v_nome
-                                        );
+                                        ];
 			$oIframeAE->chavepri      = $aChavepri;
 
       $sCampos                  = ' tf31_i_codigo, tf31_i_passageiroveiculo, tf31_i_veiculodestino,';
@@ -205,7 +205,7 @@ function js_ajax(oParam, jsRetorno) {
 function js_cancelar() {
 
   <?php 
-  echo " location.href = '".basename($GLOBALS['HTTP_SERVER_VARS']['PHP_SELF']).
+  echo " location.href = '".basename((string) $GLOBALS['HTTP_SERVER_VARS']['PHP_SELF']).
        "?tf31_i_veiculodestino=$tf31_i_veiculodestino'";
   ?>
 

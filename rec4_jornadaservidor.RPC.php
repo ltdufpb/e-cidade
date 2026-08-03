@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 $oPost       = db_utils::postMemory($_REQUEST);
 $oPost->json = str_replace("\\","",$oPost->json);
 $oParametro  = JSON::create()->parse($oPost->json);
-$oRetorno    = (object)array( 'erro' => false, 'mensagem'=> '');
+$oRetorno    = (object)[ 'erro' => false, 'mensagem'=> ''];
 
 try {
 
@@ -59,7 +59,7 @@ try {
 
       if(!empty($oParametro->matricula)) {
 
-        $matriculas = array($oParametro->matricula);
+        $matriculas = [$oParametro->matricula];
 
       } else {
 
@@ -72,7 +72,7 @@ try {
         }
       }
 
-      $datas = array();
+      $datas = [];
 
       if(!empty($oParametro->dataFim)) {
 
@@ -80,9 +80,9 @@ try {
 
       } else {
 
-        $datas = array(
+        $datas = [
           new DBDate($oParametro->dataInicio)
-        );
+        ];
       }
 
       foreach ($matriculas as $matricula) {
@@ -91,10 +91,10 @@ try {
 
           $oDaoJornadaservidor = new cl_jornadaservidor();
 
-          $whereExcluir = array(
+          $whereExcluir = [
             " rh212_data      = '{$data->getDate()}'",
             " rh212_matricula = {$matricula}"
-          );
+          ];
 
           if(!$oDaoJornadaservidor->excluir(null, implode(' AND ', $whereExcluir))) {
             throw new DBException($oDaoJornadaservidor->erro_msg);;
@@ -142,19 +142,19 @@ try {
 
         $data = new DBDate($dados->rh212_data);
 
-        return (object)array(
+        return (object)[
           'sequencial'  => $dados->rh212_sequencial,
-          'jornada'     => (object)array(
+          'jornada'     => (object)[
                               'codigo'    => $dados->rh212_jornada,
                               'descricao' => $dados->rh188_descricao,
                               'tipo'      => $dados->rh188_tipo,
-                            ),
+                            ],
           'data'        => $data->getDate(DBDate::DATA_PTBR),
-          'servidor'    => (object)array(
+          'servidor'    => (object)[
                               'matricula' => $dados->rh212_matricula,
                               'nome'      => $dados->nome
-                            )
-        );
+                            ]
+        ];
       });
       break;
 

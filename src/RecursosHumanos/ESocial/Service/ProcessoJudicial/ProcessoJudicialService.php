@@ -67,12 +67,12 @@ class ProcessoJudicialService
                 '. Favor revisar.');
         }
 
-        if (strlen($parametros->numeroProcesso) <= 14) {
+        if (strlen((string) $parametros->numeroProcesso) <= 14) {
             throw new BusinessException('É necessário informar o "Número do Processo" com 15 ou 20 caracteres ' .
                 $complemento . ' Favor revisar.');
         }
 
-        if (strlen($parametros->numeroProcesso) != 15 && strlen($parametros->numeroProcesso) <= 19) {
+        if (strlen((string) $parametros->numeroProcesso) != 15 && strlen((string) $parametros->numeroProcesso) <= 19) {
             throw new BusinessException('É necessário informar o "Número do Processo" com 15 ou 20 caracteres ' .
             $complemento . '. Favor revisar.');
         }
@@ -138,7 +138,7 @@ class ProcessoJudicialService
                     '. Favor revisar.');
             }
 
-            if (strlen(trim($parametros->codigoMunicipio)) != 7) {
+            if (strlen(trim((string) $parametros->codigoMunicipio)) != 7) {
                 throw new BusinessException('É necessário informar o "Cód. Município (IBGE)" com 7 caracteres ' .
                     $complemento . '. Favor revisar.');
             }
@@ -148,14 +148,14 @@ class ProcessoJudicialService
                     '. Favor revisar.');
             }
 
-            $dataSentenca = explode('-', $parametros->dataSentenca);
+            $dataSentenca = explode('-', (string) $parametros->dataSentenca);
             if (!checkdate($dataSentenca[1], $dataSentenca[2], $dataSentenca[0])) {
                 throw new BusinessException('Data de Sentença(' . $parametros->dataSentenca . ') em formato errado em' .
                     $complemento . '. Favor revisar.');
             }
 
             $dataAtual =  date('Y-m-d');
-            if (strtotime($dataAtual) < strtotime($parametros->dataSentenca)) {
+            if (strtotime($dataAtual) < strtotime((string) $parametros->dataSentenca)) {
                 throw new BusinessException('Data de Sentença(' . $parametros->dataSentenca . ') ' .
                 'é maior que a data atual(' . $dataAtual . ') em' . $complemento . '. Favor revisar.');
             }
@@ -183,7 +183,7 @@ class ProcessoJudicialService
             }
 
             if (!empty($parametros->cnpjCCP)) {
-                if (strlen(trim($parametros->cnpjCCP)) != 14) {
+                if (strlen(trim((string) $parametros->cnpjCCP)) != 14) {
                     throw new BusinessException('É necessário informar a indicação "CNPJ do Sindicato Representativo" '
                         . ' com 14 dígitos e somente números ' . $complemento . '. Favor revisar.');
                 }
@@ -194,14 +194,14 @@ class ProcessoJudicialService
                 }
             }
 
-            $dataAcordo = explode('-', $parametros->dataAcordo);
+            $dataAcordo = explode('-', (string) $parametros->dataAcordo);
             if (!checkdate($dataAcordo[1], $dataAcordo[2], $dataAcordo[0])) {
                 throw new BusinessException('Data de Acordo(' . $parametros->dataAcordo .') em formato errado em' .
                     $complemento . '. Favor revisar.');
             }
 
             $dataAtual =  date('Y-m-d');
-            if (strtotime($dataAtual) < strtotime($parametros->dataAcordo)) {
+            if (strtotime($dataAtual) < strtotime((string) $parametros->dataAcordo)) {
                 throw new BusinessException('Data de Acordo(' . $parametros->dataAcordo .
                 ') é maior que a data atual(' . $dataAtual . ') em' . $complemento . '. Favor revisar.');
             }
@@ -270,12 +270,12 @@ class ProcessoJudicialService
         $cnpj = preg_replace('/[^0-9]/is', '', $document);
 
         // Valida tamanho
-        if (strlen($cnpj) != 14) {
+        if (strlen((string) $cnpj) != 14) {
             return false;
         }
 
         // Verifica sequência de digitos repetidos. Ex: 11.111.111/111-11
-        if (preg_match('/(\d)\1{13}/', $cnpj)) {
+        if (preg_match('/(\d)\1{13}/', (string) $cnpj)) {
             return false;
         }
 

@@ -35,7 +35,7 @@ $clapolice = new cl_apolice;
 $clrotulo = new rotulocampo;
 $clapolice->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
 <head>

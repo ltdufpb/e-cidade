@@ -39,15 +39,15 @@ $clarrematric    = new cl_arrematric;
 $clarreinscr     = new cl_arreinscr;
 $clarrecad       = new cl_arrecad;
 $cldisbancodiver = new cl_disbancodiver;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $sql="select x33_dtvenc as datavenc from aguaconfvenc where x33_exerc = ".db_getsession("DB_anousu")." and x33_parcela = $parcela"; 
 $result = db_query($sql);
 db_fieldsmemory($result, 0);
 
-$data = split("-",$datavenc);
+$data = preg_split("#\\-#m",(string) $datavenc);
 $dia = $data[2];
-$historico = base64_decode($historico);
+$historico = base64_decode((string) $historico);
 //echo " codret = $codret <br> data  = $datavenc <br> dia = $dia";
 $sqlerro = false;
 echo "<br>";
@@ -298,7 +298,7 @@ where arrecant.k00_numpre = $k00_numpre";
       $result09 = db_query("select fc_geraarrecad(7,$nextval,true,2) as retorno") ;
       if (pg_num_rows($result09) > 0 ) {
         db_fieldsmemory($result09,0);
-        $iRetorno = substr(trim($retorno),0,1);
+        $iRetorno = substr(trim((string) $retorno),0,1);
         if ($iRetorno != '9') {
           $cldiversos->erro_msg = $retorno;
           $sqlerro=true;

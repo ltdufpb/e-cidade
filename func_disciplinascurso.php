@@ -67,7 +67,7 @@ $oRotuloCampo->label( "ed232_c_descr" );
         <td align="center" valign="top"> 
           <?php 
           
-            $aWhere     = array();
+            $aWhere     = [];
             $sWhere     = "";
             $sCampos    = "distinct ed12_i_codigo, ed232_c_descr, ed29_c_descr";
             $sOrdenacao = "ed12_i_codigo";
@@ -91,7 +91,7 @@ $oRotuloCampo->label( "ed232_c_descr" );
                 $aWhere[] = "ed232_c_descr ilike '{$chave_ed232_c_descr}%'";
               }
               
-              $repassa = array();
+              $repassa = [];
       
               $sWhere = implode( " and ",  $aWhere);
               $sSql   = $oDaoBaseMps->sql_query_basemps_escola( null, $sCampos, $sOrdenacao, $sWhere );

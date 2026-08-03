@@ -77,7 +77,7 @@ class Inicial implements Interfaces\ParcelamentoHonorario
     private $inicialNumpres;
 
     /** @var InicialPartilha[] */
-    private $inicialPartilhas = array();
+    private $inicialPartilhas = [];
 
     /** @var integer parcelasHonorarios */
     private $parcelasHonorarios;
@@ -454,14 +454,12 @@ class Inicial implements Interfaces\ParcelamentoHonorario
         }
 
         if (pg_num_rows($rs) == 0) {
-            return array(0);
+            return [0];
         }
 
         $exercicios = \db_utils::makeCollectionFromRecord(
             $rs,
-            function ($oItem) {
-                return (int) $oItem->exercicio;
-            }
+            fn($oItem) => (int) $oItem->exercicio
         );
         return $exercicios;
     }

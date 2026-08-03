@@ -34,7 +34,7 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($ponto == 's'){
@@ -304,7 +304,7 @@ $pdf->addpage();
 
 
 $result1 = db_query($sql1);
-$xxnum = pg_numrows($result1);
+$xxnum = pg_num_rows($result1);
 $pdf->cell(0,$alt,'CC FORA DO LOCAL DE TRABALHO',1,1,"C",1);
 $pdf->ln(3);
 $total = 0;
@@ -341,7 +341,7 @@ $pdf->ln(6);
 
 
 $result2 = db_query($sql2);
-$xxnum = pg_numrows($result2);
+$xxnum = pg_num_rows($result2);
 $pdf->cell(0,$alt,'AUXILIO DOENCA/MATERNIDADE COM SALARIO',1,1,"C",1);
 $pdf->ln(3);
 $total = 0;
@@ -376,7 +376,7 @@ $pdf->ln(6);
 
 
 $result3 = db_query($sql3);
-$xxnum = pg_numrows($result3);
+$xxnum = pg_num_rows($result3);
 $pdf->cell(0,$alt,'EDUCACAO SEM LETRA CADASTRADA',1,1,"C",1);
 $pdf->ln(3);
 $total = 0;
@@ -410,7 +410,7 @@ $pdf->ln(6);
 
 
 $result4 = db_query($sql4);
-$xxnum = pg_numrows($result4);
+$xxnum = pg_num_rows($result4);
 $pdf->cell(0,$alt,'INATIVO/PENSIONISTA COM SALARIO',1,1,"C",1);
 $pdf->ln(3);
 $total = 0;
@@ -444,7 +444,7 @@ $pdf->ln(6);
 
 
 $result7 = db_query($sql7);
-$xxnum = pg_numrows($result7);
+$xxnum = pg_num_rows($result7);
 $pdf->cell(0,$alt,'INATIVO/PENSIONISTAS FORA DO LOCAL DE TRABALHO',1,1,"C",1);
 $pdf->ln(3);
 $total = 0;
@@ -481,7 +481,7 @@ $pdf->ln(6);
 
 
 $result5 = db_query($sql5);
-$xxnum = pg_numrows($result5);
+$xxnum = pg_num_rows($result5);
 $pdf->cell(0,$alt,'FUNCIONARIO SEM LOCAL DE TRABALHO',1,1,"C",1);
 $pdf->ln(3);
 $total = 0;
@@ -515,7 +515,7 @@ $pdf->ln(6);
 
 
 $result6 = db_query($sql6);
-$xxnum = pg_numrows($result6);
+$xxnum = pg_num_rows($result6);
 $pdf->cell(0,$alt,'FUNCIONARIO SEM SALARIO',1,1,"C",1);
 $pdf->ln(3);
 $total = 0;
@@ -549,7 +549,7 @@ $pdf->ln(6);
 
 
 $result8 = db_query($sql8);
-$xxnum = pg_numrows($result8);
+$xxnum = pg_num_rows($result8);
 $pdf->cell(0,$alt,'LOCAL = FUNDO E LOTACAO <> FUNDO',1,1,"C",1);
 $pdf->ln(3);
 $total = 0;
@@ -583,7 +583,7 @@ $pdf->ln(6);
 
 
 $result9 = db_query($sql9);
-$xxnum = pg_numrows($result9);
+$xxnum = pg_num_rows($result9);
 $pdf->cell(0,$alt,'LOTACAO = FUNDO E LOCAL DE TRABALHO <> FUNDO',1,1,"C",1);
 $pdf->ln(3);
 $total = 0;

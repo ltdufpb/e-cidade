@@ -45,9 +45,7 @@ class RgfDemonstrativoSimplificado extends ArquivoSigapFiscal
 
     protected function processar()
     {
-        $instituicoes = array_map(function ($codigo) {
-            return \InstituicaoRepository::getInstituicaoByCodigo($codigo);
-        }, $this->codigoInstituicoes);
+        $instituicoes = array_map(fn($codigo) => \InstituicaoRepository::getInstituicaoByCodigo($codigo), $this->codigoInstituicoes);
 
         $this->quadrimestre = PeriodoDePara::quadrimestre($this->periodo);
         $deParaQuadrimestre = [

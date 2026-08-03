@@ -98,7 +98,7 @@ db_inputdata('bi18_devolucao',@$bi18_devolucao_dia,@$bi18_devolucao_mes,@$bi18_d
  <br><br>
   <?php 
   if(!empty($bi18_codigo)){
-    $chavepri= array("bi19_codigo"=>@$bi19_codigo,"bi06_seq"=>@$bi06_seq,"bi06_codbarras"=>@$bi06_codbarras,"bi06_titulo"=>@$bi06_titulo);
+    $chavepri= ["bi19_codigo"=>@$bi19_codigo,"bi06_seq"=>@$bi06_seq,"bi06_codbarras"=>@$bi06_codbarras,"bi06_titulo"=>@$bi06_titulo];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     @$cliframe_alterar_excluir->sql     = $clemprestimoacervo->sql_query("","bi19_codigo,bi06_seq,bi06_codbarras,bi06_titulo","","bi19_emprestimo = $bi18_codigo");
     $cliframe_alterar_excluir->campos  ="bi19_codigo,bi06_seq,bi06_codbarras,bi06_titulo";
@@ -149,7 +149,7 @@ function js_preenchepesquisa(chave){
   db_iframe_emprestimo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

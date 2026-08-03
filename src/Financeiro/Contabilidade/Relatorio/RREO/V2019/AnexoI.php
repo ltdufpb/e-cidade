@@ -24,6 +24,7 @@ class AnexoI extends AnexoI2018
     const LINHA_TOTAL_XIV = 103;
     const LINHA_RESERVA_RPPS = 104;
 
+    #[\Override]
     protected function processar()
     {
         parent::processar();
@@ -37,12 +38,12 @@ class AnexoI extends AnexoI2018
     private function processarDadosPorAno()
     {
         if ($this->iAnoUsu >= 2020) {
-            $dadosSobreescreve = array(
+            $dadosSobreescreve = [
                 74 => 'TOTAL DAS RECEITAS (V) = (III + IV)',
                 76 => 'TOTAL COM DÉFICIT (VII) = (V + VI)',
                 101 => 'TOTAL DAS DESPESAS (XII) = (X + XI)',
                 103 => 'TOTAL COM SUPERÁVIT (XIV) = (XII + XIII)',
-            );
+            ];
             foreach ($dadosSobreescreve as $linha => $novaDescricao) {
                 $this->aLinhasConsistencia[$linha]->descricao = $novaDescricao;
             }
@@ -50,6 +51,7 @@ class AnexoI extends AnexoI2018
     }
 
 
+    #[\Override]
     protected function calcularSuperavitDeficit()
     {
         parent::calcularSuperavitDeficit();
@@ -90,14 +92,15 @@ class AnexoI extends AnexoI2018
         $this->aLinhasConsistencia[static::LINHA_SUPERAVIT_FINANCEIRO_UTILIZADO_CREDITOS_ADICIONAIS]->recnobim = '-';
     }
 
+    #[\Override]
     protected function calcularSuplementacao()
     {
         $oDaoOrcSuplem = new \cl_orcsuplem();
-        $aWhereCreditos = array(
+        $aWhereCreditos = [
             "o46_tiposup in (1012, 1013)",
             "o49_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'",
             "o46_instit in ({$this->getInstituicoes()})"
-        );
+        ];
         $sSqlBuscaCreditos = $oDaoOrcSuplem->sql_query_suplementacoes(
             null,
             "coalesce(sum(o47_valor), 0) as total",
@@ -126,6 +129,7 @@ class AnexoI extends AnexoI2018
      * Retorna Os dados simplificados do Relatorio
      * @return \stdClass
      */
+    #[\Override]
     public function getDadosSimplificado()
     {
 

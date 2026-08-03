@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("classes/db_marca_classe.php"));
 include(modification("classes/db_cancmarca_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clmarca = new cl_marca;
 $clcancmarca = new cl_cancmarca;
 $clmarca->rotulo->label();

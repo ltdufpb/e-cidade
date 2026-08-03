@@ -56,9 +56,7 @@ class Certidao
             throw new \DBException("Erro ao buscar CDA(s) da inicial " . $inicial . ".");
         }
 
-        $retorno = \db_utils::makeCollectionFromRecord($record, function ($object) {
-            return $object;
-        });
+        $retorno = \db_utils::makeCollectionFromRecord($record, fn($object) => $object);
 
         return $retorno;
     }

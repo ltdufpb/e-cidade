@@ -103,7 +103,7 @@ $result_tipoassent = $classenta->sql_record($classenta->sql_query_tipo(null, "h1
         </td>
         <td align="left">
           <?php 
-            $arr_ordem = array("a"=>"Alfabetica","n"=>"Numerica","c"=>"Cargo","d"=>"Data");
+            $arr_ordem = ["a"=>"Alfabetica","n"=>"Numerica","c"=>"Cargo","d"=>"Data"];
             db_select('ordem',$arr_ordem,true,4,"");
 	        ?>
 	      </td>
@@ -113,7 +113,7 @@ $result_tipoassent = $classenta->sql_record($classenta->sql_query_tipo(null, "h1
         </td>
         <td align="left">
           <?php 
-            $arr_descr = array("n"=>"Nao","s"=>"Sim");
+            $arr_descr = ["n"=>"Nao","s"=>"Sim"];
             db_select('descr',$arr_descr,true,4,"");
 	        ?>
 	      </td>
@@ -121,8 +121,8 @@ $result_tipoassent = $classenta->sql_record($classenta->sql_query_tipo(null, "h1
   <tr>
     <td nowrap colspan="2">
     <?php 
-    $arr_tipoassent_inicial = Array();
-    $arr_tipoassent_final   = Array();
+    $arr_tipoassent_inicial = [];
+    $arr_tipoassent_final   = [];
     if(isset($classenta->numrows)){
       for($i=0; $i<$classenta->numrows; $i++){
         db_fieldsmemory($result_tipoassent, $i);

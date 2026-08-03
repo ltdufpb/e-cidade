@@ -16,14 +16,8 @@ use Exception;
 
 class RecursoController
 {
-    /**
-     * @var RecursoService
-     */
-    private $service;
-
-    public function __construct(RecursoService $recursoService)
+    public function __construct(private readonly RecursoService $service)
     {
-        $this->service = $recursoService;
     }
     public function salvar(RecursosSalvarRequest $request)
     {

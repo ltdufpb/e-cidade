@@ -29,21 +29,21 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-$aTiposOrigem = array(
+$aTiposOrigem = [
   "numcgm" => "Numcgm",
   "matric" => "Matrícula",
   "inscr" => "Inscrição"
-);
+];
 
-$aOrdenador = array(
+$aOrdenador = [
   "id" => "Identificador",
   "nome" => "Nome"
-);
+];
 
-$aOrdenacao = array(
+$aOrdenacao = [
   "asc" => "Ascendente",
   "desc" => "Descendente"
-);
+];
 
 ?>
 <html>

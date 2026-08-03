@@ -35,7 +35,7 @@ require_once(modification("libs/db_app.utils.php"));
 
 require_once(modification("classes/db_empagegera_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clempagegera     = new cl_empagegera;
 $clrotulo         = new rotulocampo;
 $clempagegera->rotulo->label();

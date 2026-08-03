@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_cgm_classe.php"));
 include(modification("classes/db_issbase_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -117,7 +117,7 @@ if(isset($q02_numcgm)){
   <tr>
      <td>
      <?php 
-       $clcriaabas->identifica = array( "issbase"    => "Inscrição",
+       $clcriaabas->identifica = [ "issbase"    => "Inscrição",
                                         "observacao" => "Observações",
                                         "atividades" => "Atividades",
        																  "socios"     => "Sócios",
@@ -125,9 +125,9 @@ if(isset($q02_numcgm)){
                                         "documentos" => "Documentos",
                                         "liberacao"  => "Liberação",
 																				"caracteristicas" => "Informações Complementares"
-                                       );//nome do iframe e o label
+                                       ];//nome do iframe e o label
 
-       $clcriaabas->title      = array( "issbase"    => "Manutenção de inscrição",
+       $clcriaabas->title      = [ "issbase"    => "Manutenção de inscrição",
                                         "observacao" => "Manutenção de Observações",
        																  "atividades" => "Manutenção de atividades",
        													        "socios"     => "Sócios cadastrados",
@@ -135,7 +135,7 @@ if(isset($q02_numcgm)){
                                         "documentos" => "Documentos",
                                         "liberacao"  => "Liberação",
                                         "caracteristicas" => "Informações Complementares"
-                                       );//nome do iframe e o label
+                                       ];//nome do iframe e o label
 
        // $clcriaabas->corfundo   = array("atividades"=>"green");// nome do iframe e a cor do iframe
        // $clcriaabas->cortexto   = array("atividades"=>"yellow");// nome do iframe e a cor do iframe
@@ -171,7 +171,7 @@ if($db_opcao==1){
          </script>
        ";
 }else if($db_opcao==2){
-  $z01_nome = addslashes($z01_nome);
+  $z01_nome = addslashes((string) $z01_nome);
 
   /** Extensao : Inicio [integracao-icad] */
   echo "
@@ -220,12 +220,12 @@ if($db_opcao==1){
        ";
 }
 function db_verificapermissao($cgccpf,$tipo){
-  $tam = strlen($cgccpf);
+  $tam = strlen((string) $cgccpf);
   if($tam == 14){
     //verifica parametro
     $sqlParissqn = "select q60_tipopermalvara from parissqn";
     $rsParissqn = db_query($sqlParissqn);
-    $q60_tipopermalvara = pg_result($rsParissqn,"q60_tipopermalvara");
+    $q60_tipopermalvara = pg_fetch_result($rsParissqn,"q60_tipopermalvara");
    // db_fieldsmemory($rsParissqn,0);
     if($q60_tipopermalvara==1){
       //verifica se tem permissão para alterar alvara com CNPJ

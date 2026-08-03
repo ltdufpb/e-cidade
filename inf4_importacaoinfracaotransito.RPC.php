@@ -70,7 +70,7 @@ try {
             $oRetorno->arquivoMultas = 'tmp/multas_nao_cadastradas_' . str_replace(" ", "_", $sArquivoNome) . ".json";
             $oImportacaoInfracoes->processar();
             if ($oImportacaoInfracoes->temMultasNaoProcessadas()) {
-                $multas = array();
+                $multas = [];
                 $oRetorno->multasNaoProcessadas = true;
 
                 foreach ($oImportacaoInfracoes->getMultasNaoCadastradas() as $multaNaoCadastrada) {
@@ -89,15 +89,7 @@ try {
     }
 
     db_fim_transacao(false);
-} catch (BusinessException $oErro) {
-    db_fim_transacao(true);
-    $oRetorno->iStatus = 2;
-    $oRetorno->sMessage = $oErro->getMessage();
-} catch (DBException $oErro) {
-    db_fim_transacao(true);
-    $oRetorno->iStatus = 2;
-    $oRetorno->sMessage = $oErro->getMessage();
-} catch (Exception $oErro) {
+} catch (BusinessException|DBException|Exception $oErro) {
     db_fim_transacao(true);
     $oRetorno->iStatus = 2;
     $oRetorno->sMessage = $oErro->getMessage();

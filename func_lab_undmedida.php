@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lab_undmedida_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_undmedida = new cl_lab_undmedida;
 $cllab_undmedida->rotulo->label("la13_i_codigo");
 $cllab_undmedida->rotulo->label("la13_c_descr");
@@ -98,9 +98,9 @@ $cllab_undmedida->rotulo->label("la13_c_descr");
         }else{
            $sql = $cllab_undmedida->sql_query("",$campos,"la13_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la13_i_codigo)){
-          $repassa = array("chave_la13_i_codigo"=>$chave_la13_i_codigo,"chave_la13_c_descr"=>$chave_la13_c_descr);
+          $repassa = ["chave_la13_i_codigo"=>$chave_la13_i_codigo,"chave_la13_c_descr"=>$chave_la13_c_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

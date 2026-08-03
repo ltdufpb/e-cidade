@@ -54,7 +54,7 @@ class DotacaoCon extends BaseAbstract {
 			return true;
 		}
 
-		$aValoresNaoMostrar = array('CON', 'PER', 'ALB');
+		$aValoresNaoMostrar = ['CON', 'PER', 'ALB'];
 
 		$oAttDinamico = new \LicitacaoAtributosDinamicos($iLicitacao);
 		$sTipoObjeto = $oAttDinamico->getAtributo('tipoobjeto', null);

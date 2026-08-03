@@ -217,7 +217,7 @@ class ReciboAvulsoFunCrianca {
       $iInstituicao = db_getsession('DB_instit');
       $rsInstituicao = db_query($sSql);
 
-      if (pg_numrows($rsInstituicao)>0){
+      if (pg_num_rows($rsInstituicao)>0){
         $iInstituicao = db_utils:: fieldsMemory($rsInstituicao,0)->c61_instit;
       }
 
@@ -397,7 +397,7 @@ class ReciboAvulsoFunCrianca {
       // Identificações recibo
       $oPdf->datacalc	      	  = date('d-m-Y',$dDataUsu);
       $oPdf->predatacalc	   	  = date('d-m-Y',$dDataUsu);
-      $oPdf->linhasdadospagto   = pg_numrows($rsDadosPagamento);
+      $oPdf->linhasdadospagto   = pg_num_rows($rsDadosPagamento);
       $oPdf->recorddadospagto   = $rsDadosPagamento;
       $oPdf->receita		        = 'k00_receit';
       $oPdf->receitared	        = 'codreduz';
@@ -427,11 +427,11 @@ class ReciboAvulsoFunCrianca {
       throw new Exception(print_r($eErro->getMessage(), true));
     }
 
-    $resultado = array(
+    $resultado = [
       'numpre'         => $oRecibo->getNumpreRecibo(),
       'codarrecadacao' => $iNumpreFormatado,
       'pdf'            => $sBoletoGerado
-    );
+    ];
 
     return $resultado;
   }

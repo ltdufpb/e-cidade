@@ -20,7 +20,7 @@ DEFINE('FLAGSIZE4',4);
 
 class FlagImages {
 
-    var $iCountryNameMap = array(
+    public $iCountryNameMap = [
     'Afghanistan' => 'afgh',
     'Republic of Angola' => 'agla',
     'Republic of Albania' => 'alba',
@@ -249,27 +249,27 @@ class FlagImages {
     'Bolivarian Republic of Venezuela' => 'venz',
     'Republic of Yemen' => 'yemn',
     'Democratic Republic of Congo' => 'zare',
-    'Republic of Zimbabwe' => 'zbwe' ) ;
+    'Republic of Zimbabwe' => 'zbwe' ] ;
 
 
-    var $iFlagCount = -1;
-    var $iFlagSetMap = array(
+    public $iFlagCount = -1;
+    public $iFlagSetMap = [
 	FLAGSIZE1 => 'flags_thumb35x35',
 	FLAGSIZE2 => 'flags_thumb60x60',
 	FLAGSIZE3 => 'flags_thumb100x100',
 	FLAGSIZE4 => 'flags'
-	);
+	];
 
-    var $iFlagData ;
-    var $iOrdIdx=array();
+    public $iFlagData ;
+    public $iOrdIdx=[];
 
-    function FlagImages($aSize=FLAGSIZE1) {
+    function __construct($aSize=FLAGSIZE1) {
 	switch($aSize) {
 	    case FLAGSIZE1 :
 	    case FLAGSIZE2 :
 	    case FLAGSIZE3 :
 	    case FLAGSIZE4 :
-		$file = dirname(__FILE__).'/'.$this->iFlagSetMap[$aSize].'.dat';
+		$file = __DIR__.'/'.$this->iFlagSetMap[$aSize].'.dat';
 		$fp = fopen($file,'rb');
 		$rawdata = fread($fp,filesize($file));
 		$this->iFlagData = unserialize($rawdata);
@@ -305,11 +305,11 @@ class FlagImages {
 	$n = count($this->iOrdIdx);
 	if( $n == 0 ) {
 	    reset($this->iCountryNameMap);
-	    $this->iOrdIdx=array();
+	    $this->iOrdIdx=[];
 	    $i=0;
-	    while( list($key,$val) = each($this->iCountryNameMap) ) {
-		$this->iOrdIdx[$i++] = array($val,$key);
-	    }
+	    foreach ($this->iCountryNameMap as $key => $val) {
+            $this->iOrdIdx[$i++] = [$val,$key];
+        }
 	    $tmp=$this->iOrdIdx[$aOrd];
 	    $outFullName = $tmp[1];
 	    return $tmp[0];
@@ -333,17 +333,17 @@ class FlagImages {
 	}
 
 	$found=false;
-	$aName = strtolower($aName);
+	$aName = strtolower((string) $aName);
 	$nlen = strlen($aName);
 	reset($this->iCountryNameMap);
 	// Match partial full country name or exact idx name
-	while( list($key,$val) = each($this->iCountryNameMap) ) {
-	    if( strpos(strtolower($key), $aName) !== false || 
-                ($nlen == strlen($val) && $val == $aName) ) {
+	foreach ($this->iCountryNameMap as $key => $val) {
+        if( str_contains(strtolower((string) $key), $aName) || 
+                ($nlen == strlen((string) $val) && $val == $aName) ) {
 		$found=true;
 		break;
 	    }
-	}
+    }
 	if( $found ) {
 	    $outFullName = $key;
 	    return $val;   

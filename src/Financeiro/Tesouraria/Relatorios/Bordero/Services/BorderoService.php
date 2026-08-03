@@ -23,10 +23,6 @@ class BorderoService
      * @var string
      */
     private $conta;
-    /**
-     * @var integer
-     */
-    private $instituicao;
 
     /**
      * @return DBDate
@@ -56,10 +52,6 @@ class BorderoService
      * @var DBDate
      */
     private $dataFinal;
-    /**
-     * @var integer
-     */
-    private $tipoRelatorio;
 
     /**
      * BorderoServices constructor.
@@ -68,13 +60,13 @@ class BorderoService
      * @param $tipoRelatorio
      * @param $instituicao
      * @param string $conta
+     * @param int $instituicao
+     * @param int $tipoRelatorio
      */
-    public function __construct(DBDate $dataInicial, DBDate $dataFinal, $tipoRelatorio, $instituicao, $conta = '')
+    public function __construct(DBDate $dataInicial, DBDate $dataFinal, private $tipoRelatorio, private $instituicao, $conta = '')
     {
-        $this->instituicao = $instituicao;
         $this->dataInicial = $dataInicial;
         $this->dataFinal = $dataFinal;
-        $this->tipoRelatorio = $tipoRelatorio;
         if (!empty($conta)) {
             $this->conta = $conta;
         }

@@ -57,7 +57,7 @@ class Tutorial {
 
     // caso nao tenha etapa atual, utiliza a primeira etapa
     $etapas = $this->getEtapas();
-    $this->etapaAtual = isset($etapas[0]) ? $etapas[0] : new TutorialEtapa();
+    $this->etapaAtual = $etapas[0] ?? new TutorialEtapa();
 
     return $this->etapaAtual;
   }
@@ -77,7 +77,7 @@ class Tutorial {
       $this->etapas = TutorialEtapaRepository::getByTutorial($this);
     }
 
-    return $this->etapas ?: array();
+    return $this->etapas ?: [];
   }
 
   public function toObject() {
@@ -88,7 +88,7 @@ class Tutorial {
     $objTutorial->descricao = $this->getDescricao();
     $objTutorial->etapaAtual = $this->getEtapaAtual()->toObject();
 
-    $objTutorial->etapas = array();
+    $objTutorial->etapas = [];
 
     foreach($this->getEtapas() as $etapa) {
       $objTutorial->etapas[] = $etapa->toObject();
@@ -107,7 +107,7 @@ class Tutorial {
     $daoTutorial->setSalvarAccount(false);
 
     // id com etapas ja salvas
-    $etapasSalvas = array();
+    $etapasSalvas = [];
     $alteracao = !empty($daoTutorial->id);
 
     if ($alteracao) {

@@ -61,7 +61,8 @@ class AnexoQuadroDotacaoGoverno extends RelatoriosLegaisBase {
    *
    * @return array $aRetorno
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $oDaoPeriodo      = db_utils::getDao("periodo");
     $sSqlDadosPeriodo = $oDaoPeriodo->sql_query_file($this->iCodigoPeriodo);
@@ -73,7 +74,7 @@ class AnexoQuadroDotacaoGoverno extends RelatoriosLegaisBase {
     $sWhereDespesa    = " o58_instit in ({$this->getInstituicoes()}) ";
     
     $rsDespesa     = db_dotacaosaldo(7, 2, 2, true, $sWhereDespesa, $this->iAnoUsu, $sDataInicial, $sDataFinal);
-    $aRetorno      = array();
+    $aRetorno      = [];
     
     /**
      * Percorre o ResultSet organizando os dados dentro do array $aRetorno
@@ -129,7 +130,7 @@ class AnexoQuadroDotacaoGoverno extends RelatoriosLegaisBase {
         $oOrgao->despesacorrente = 0;
         $oOrgao->despesacapital  = 0;
         $oOrgao->total           = 0;
-        $oOrgao->unidades        = array();
+        $oOrgao->unidades        = [];
         
         $aRetorno[$oDespesa->o58_orgao] = $oOrgao;
       } else {
@@ -155,13 +156,13 @@ class AnexoQuadroDotacaoGoverno extends RelatoriosLegaisBase {
       /**
        * Soma os valores de acordo com o elemento da dotação
        */
-      if (substr($oDespesa->o58_elemento, 0, 2) == '33') {
+      if (str_starts_with((string) $oDespesa->o58_elemento, '33')) {
         
         $oOrgao->despesacorrente   += $nValorTotal;
         $oOrgao->total             += $nValorTotal;
         $oUnidade->despesacorrente += $nValorTotal;
         $oUnidade->total           += $nValorTotal;
-      } else if (substr($oDespesa->o58_elemento, 0, 2) != '33') {
+      } else if (!str_starts_with((string) $oDespesa->o58_elemento, '33')) {
         
         $oOrgao->despesacapital   += $nValorTotal;
         $oOrgao->total            += $nValorTotal;

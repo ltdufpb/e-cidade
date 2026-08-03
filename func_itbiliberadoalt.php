@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_itbi_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clitbi = new cl_itbi;
 $clitbi->rotulo->label("it01_guia");
 $clitbi->rotulo->label("it01_guia");
@@ -119,7 +119,7 @@ $clitbi->rotulo->label("it01_guia");
 
         }
 	//die ($sql);
-        db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",array (),false);
+        db_lovrot($sql,15,"()","",$funcao_js,"","NoMe", [],false);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
         		 

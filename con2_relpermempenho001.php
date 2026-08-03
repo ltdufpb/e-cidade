@@ -58,23 +58,23 @@ $clcriaabas = new cl_criaabas;
      <td>
      <?php 
      
-       $clcriaabas->identifica = array("g1" =>"Relatório", 
-                                       "filtros"    =>"Filtros");
+       $clcriaabas->identifica = ["g1" =>"Relatório", 
+                                       "filtros"    =>"Filtros"];
        
-       $clcriaabas->title      = array("g1" =>"Relatório", 
-                                       "filtros"    =>"Filtros");
+       $clcriaabas->title      = ["g1" =>"Relatório", 
+                                       "filtros"    =>"Filtros"];
            
-       $clcriaabas->src        = array("g1" =>"func_conspermissaoempenho.php?relpermempenho=t",
-                                       "filtros"    =>"func_selorcdotacao_aba.php");    
+       $clcriaabas->src        = ["g1" =>"func_conspermissaoempenho.php?relpermempenho=t",
+                                       "filtros"    =>"func_selorcdotacao_aba.php"];    
      
-       $clcriaabas->funcao_js  = array("g1" =>"",
-                                       "filtros"    =>"js_atualizar_instit();");
+       $clcriaabas->funcao_js  = ["g1" =>"",
+                                       "filtros"    =>"js_atualizar_instit();"];
        
-       $clcriaabas->sizecampo  = array("g1" =>"20",
-                                       "filtros"    =>"20");
+       $clcriaabas->sizecampo  = ["g1" =>"20",
+                                       "filtros"    =>"20"];
        
-       $clcriaabas->disabled   = array("g1" =>"false",
-                                       "filtros"    =>"false"); 
+       $clcriaabas->disabled   = ["g1" =>"false",
+                                       "filtros"    =>"false"]; 
        
        $clcriaabas->cria_abas();    
      ?> 

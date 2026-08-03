@@ -51,61 +51,61 @@ class IncluirOperacaoRequest extends FormRequest
 
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     public function messages()
     {
         return [
-            "numnov.required"         => utf8_encode("Número do recibo não informado."),
-            "numnov.integer"          => utf8_encode("Número do recibo inválido."),
+            "numnov.required"         => mb_convert_encoding("Número do recibo não informado.", 'UTF-8', 'ISO-8859-1'),
+            "numnov.integer"          => mb_convert_encoding("Número do recibo inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "valor.required"          => utf8_encode("Valor do recibo não informado."),
-            "valor.numeric"           => utf8_encode("Valor do recibo inválido."),
+            "valor.required"          => mb_convert_encoding("Valor do recibo não informado.", 'UTF-8', 'ISO-8859-1'),
+            "valor.numeric"           => mb_convert_encoding("Valor do recibo inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "nsu.integer"             => utf8_encode("NSU do CTF inválido."),
+            "nsu.integer"             => mb_convert_encoding("NSU do CTF inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "operacaotef.required"    => utf8_encode("Operação não informada."),
-            "operacaotef.integer"     => utf8_encode("Operação inválida."),
+            "operacaotef.required"    => mb_convert_encoding("Operação não informada.", 'UTF-8', 'ISO-8859-1'),
+            "operacaotef.integer"     => mb_convert_encoding("Operação inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "bandeira.string"         => utf8_encode("Bandeira inválido."),
+            "bandeira.string"         => mb_convert_encoding("Bandeira inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "parcela.integer"          => utf8_encode("Parcela inválido."),
+            "parcela.integer"          => mb_convert_encoding("Parcela inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "confirmado.string"       => utf8_encode("Confirmado inválido."),
+            "confirmado.string"       => mb_convert_encoding("Confirmado inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "mensagemretorno.string"  => utf8_encode("Mensagem de Retorno inválida."),
+            "mensagemretorno.string"  => mb_convert_encoding("Mensagem de Retorno inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "desfeito.string"         => utf8_encode("Desfeito inválido."),
+            "desfeito.string"         => mb_convert_encoding("Desfeito inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "codigoaprovacao.string"  => utf8_encode("Código de Aprovação inválido."),
+            "codigoaprovacao.string"  => mb_convert_encoding("Código de Aprovação inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "nsuautorizadora.integer" => utf8_encode("NSU da Autorizadora inválido."),
+            "nsuautorizadora.integer" => mb_convert_encoding("NSU da Autorizadora inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "cartao.string"           => utf8_encode("Formato cartão inválido."),
+            "cartao.string"           => mb_convert_encoding("Formato cartão inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "retorno.string"          => utf8_encode("Retorno do CTFClient inválido."),
+            "retorno.string"          => mb_convert_encoding("Retorno do CTFClient inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "grupo.required"          => utf8_encode("Grupo não informado."),
-            "grupo.string"            => utf8_encode("Grupo inválido."),
+            "grupo.required"          => mb_convert_encoding("Grupo não informado.", 'UTF-8', 'ISO-8859-1'),
+            "grupo.string"            => mb_convert_encoding("Grupo inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "terminal.required"       => utf8_encode("Terminal não informado."),
-            "terminal.string"         => utf8_encode("Terminal inválido."),
+            "terminal.required"       => mb_convert_encoding("Terminal não informado.", 'UTF-8', 'ISO-8859-1'),
+            "terminal.string"         => mb_convert_encoding("Terminal inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "confirmadoautorizadora.boolean" => utf8_encode("Confirmação da Autorizadora inválida."),
+            "confirmadoautorizadora.boolean" => mb_convert_encoding("Confirmação da Autorizadora inválida.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_instit.required"      => utf8_encode("Código da instituição não informado."),
-            "DB_instit.integer"       => utf8_encode("Código da instituição inválido."),
+            "DB_instit.required"      => mb_convert_encoding("Código da instituição não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_instit.integer"       => mb_convert_encoding("Código da instituição inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_coddepto.required"    => utf8_encode("Código do departamentro não informado."),
-            "DB_coddepto.integer"     => utf8_encode("Código do departamentro inválido."),
+            "DB_coddepto.required"    => mb_convert_encoding("Código do departamentro não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_coddepto.integer"     => mb_convert_encoding("Código do departamentro inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_id_usuario.required"  => utf8_encode("Código do usuário não informado."),
-            "DB_id_usuario.integer"   => utf8_encode("Código do usuário inválido."),
+            "DB_id_usuario.required"  => mb_convert_encoding("Código do usuário não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_id_usuario.integer"   => mb_convert_encoding("Código do usuário inválido.", 'UTF-8', 'ISO-8859-1'),
 
-            "DB_datausu.required"     => utf8_encode("Data do sistema não informada não informado."),
-            "DB_datausu.integer"      => utf8_encode("Data do sistema não informada inválido.")
+            "DB_datausu.required"     => mb_convert_encoding("Data do sistema não informada não informado.", 'UTF-8', 'ISO-8859-1'),
+            "DB_datausu.integer"      => mb_convert_encoding("Data do sistema não informada inválido.", 'UTF-8', 'ISO-8859-1')
         ];
     }
 }

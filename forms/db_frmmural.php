@@ -64,7 +64,7 @@ db_input('z01_nome',40,$z01_nome,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array('AGENDA DE PROVAS'=>'AGENDA DE PROVAS','AVISO'=>'AVISO','EVENTO'=>'EVENTO');
+$x = ['AGENDA DE PROVAS'=>'AGENDA DE PROVAS','AVISO'=>'AVISO','EVENTO'=>'EVENTO'];
 db_select('ed20_c_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -135,7 +135,7 @@ function js_preenchepesquisa(chave){
   db_iframe_mural.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

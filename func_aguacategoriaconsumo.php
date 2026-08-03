@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_aguacategoriaconsumo_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claguacategoriaconsumo = new cl_aguacategoriaconsumo;
 $claguacategoriaconsumo->rotulo->label("x13_sequencial");
 $claguacategoriaconsumo->rotulo->label("x13_sequencial");
@@ -75,9 +75,9 @@ $claguacategoriaconsumo->rotulo->label("x13_sequencial");
         }else{
            $sql = $claguacategoriaconsumo->sql_query("",$campos,"x13_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_x13_sequencial)){
-          $repassa = array("chave_x13_sequencial"=>$chave_x13_sequencial,"chave_x13_sequencial"=>$chave_x13_sequencial);
+          $repassa = ["chave_x13_sequencial"=>$chave_x13_sequencial,"chave_x13_sequencial"=>$chave_x13_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

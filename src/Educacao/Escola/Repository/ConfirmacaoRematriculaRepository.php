@@ -21,7 +21,7 @@ class ConfirmacaoRematriculaRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param Escola $escola
@@ -129,7 +129,7 @@ class ConfirmacaoRematriculaRepository
             throw new Exception("Não foi possível buscar as confirmações de rematrícula.\nContate o suporte.");
         }
 
-        $confirmacoes = array();
+        $confirmacoes = [];
 
         if (pg_num_rows($rs) === 0) {
             return $confirmacoes;

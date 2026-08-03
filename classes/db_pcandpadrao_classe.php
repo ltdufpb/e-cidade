@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE pcandpadrao
 class cl_pcandpadrao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $pc45_codigo = 0; 
-   var $pc45_ordem = 0; 
-   var $pc45_dias = 0; 
-   var $pc45_pctipoandam = 0; 
-   var $pc45_instit = 0; 
+   public $pc45_codigo = 0; 
+   public $pc45_ordem = 0; 
+   public $pc45_dias = 0; 
+   public $pc45_pctipoandam = 0; 
+   public $pc45_instit = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  pc45_codigo = int4 = Código Seq. 
                  pc45_ordem = int4 = Ordem 
                  pc45_dias = int4 = Dias Aprox. 
@@ -56,10 +56,10 @@ class cl_pcandpadrao {
                  pc45_instit = int4 = codigo da instituicao 
                  ";
    //funcao construtor da classe 
-   function cl_pcandpadrao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pcandpadrao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_pcandpadrao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc45_codigo = pg_result($result,0,0); 
+       $this->pc45_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pcandpadrao_pc45_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc45_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc45_codigo)){
          $this->erro_sql = " Campo pc45_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_pcandpadrao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Andamento Padrão da Solicitação ($this->pc45_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Andamento Padrão da Solicitação já Cadastrado";
@@ -194,14 +194,14 @@ class cl_pcandpadrao {
      $resaco = $this->sql_record($this->sql_query_file($this->pc45_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7834,'$this->pc45_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1312,7834,'','".AddSlashes(pg_result($resaco,0,'pc45_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1312,7835,'','".AddSlashes(pg_result($resaco,0,'pc45_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1312,7836,'','".AddSlashes(pg_result($resaco,0,'pc45_dias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1312,7839,'','".AddSlashes(pg_result($resaco,0,'pc45_pctipoandam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1312,7838,'','".AddSlashes(pg_result($resaco,0,'pc45_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1312,7834,'','".AddSlashes(pg_fetch_result($resaco,0,'pc45_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1312,7835,'','".AddSlashes(pg_fetch_result($resaco,0,'pc45_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1312,7836,'','".AddSlashes(pg_fetch_result($resaco,0,'pc45_dias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1312,7839,'','".AddSlashes(pg_fetch_result($resaco,0,'pc45_pctipoandam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1312,7838,'','".AddSlashes(pg_fetch_result($resaco,0,'pc45_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -210,10 +210,10 @@ class cl_pcandpadrao {
       $this->atualizacampos();
      $sql = " update pcandpadrao set ";
      $virgula = "";
-     if(trim($this->pc45_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc45_codigo"])){ 
+     if(trim((string) $this->pc45_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc45_codigo"])){ 
        $sql  .= $virgula." pc45_codigo = $this->pc45_codigo ";
        $virgula = ",";
-       if(trim($this->pc45_codigo) == null ){ 
+       if(trim((string) $this->pc45_codigo) == null ){ 
          $this->erro_sql = " Campo Código Seq. nao Informado.";
          $this->erro_campo = "pc45_codigo";
          $this->erro_banco = "";
@@ -223,10 +223,10 @@ class cl_pcandpadrao {
          return false;
        }
      }
-     if(trim($this->pc45_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc45_ordem"])){ 
+     if(trim((string) $this->pc45_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc45_ordem"])){ 
        $sql  .= $virgula." pc45_ordem = $this->pc45_ordem ";
        $virgula = ",";
-       if(trim($this->pc45_ordem) == null ){ 
+       if(trim((string) $this->pc45_ordem) == null ){ 
          $this->erro_sql = " Campo Ordem nao Informado.";
          $this->erro_campo = "pc45_ordem";
          $this->erro_banco = "";
@@ -236,10 +236,10 @@ class cl_pcandpadrao {
          return false;
        }
      }
-     if(trim($this->pc45_dias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc45_dias"])){ 
+     if(trim((string) $this->pc45_dias)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc45_dias"])){ 
        $sql  .= $virgula." pc45_dias = $this->pc45_dias ";
        $virgula = ",";
-       if(trim($this->pc45_dias) == null ){ 
+       if(trim((string) $this->pc45_dias) == null ){ 
          $this->erro_sql = " Campo Dias Aprox. nao Informado.";
          $this->erro_campo = "pc45_dias";
          $this->erro_banco = "";
@@ -249,10 +249,10 @@ class cl_pcandpadrao {
          return false;
        }
      }
-     if(trim($this->pc45_pctipoandam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc45_pctipoandam"])){ 
+     if(trim((string) $this->pc45_pctipoandam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc45_pctipoandam"])){ 
        $sql  .= $virgula." pc45_pctipoandam = $this->pc45_pctipoandam ";
        $virgula = ",";
-       if(trim($this->pc45_pctipoandam) == null ){ 
+       if(trim((string) $this->pc45_pctipoandam) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "pc45_pctipoandam";
          $this->erro_banco = "";
@@ -262,10 +262,10 @@ class cl_pcandpadrao {
          return false;
        }
      }
-     if(trim($this->pc45_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc45_instit"])){ 
+     if(trim((string) $this->pc45_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc45_instit"])){ 
        $sql  .= $virgula." pc45_instit = $this->pc45_instit ";
        $virgula = ",";
-       if(trim($this->pc45_instit) == null ){ 
+       if(trim((string) $this->pc45_instit) == null ){ 
          $this->erro_sql = " Campo codigo da instituicao nao Informado.";
          $this->erro_campo = "pc45_instit";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_pcandpadrao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7834,'$this->pc45_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc45_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1312,7834,'".AddSlashes(pg_result($resaco,$conresaco,'pc45_codigo'))."','$this->pc45_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1312,7834,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc45_codigo'))."','$this->pc45_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc45_ordem"]))
-           $resac = db_query("insert into db_acount values($acount,1312,7835,'".AddSlashes(pg_result($resaco,$conresaco,'pc45_ordem'))."','$this->pc45_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1312,7835,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc45_ordem'))."','$this->pc45_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc45_dias"]))
-           $resac = db_query("insert into db_acount values($acount,1312,7836,'".AddSlashes(pg_result($resaco,$conresaco,'pc45_dias'))."','$this->pc45_dias',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1312,7836,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc45_dias'))."','$this->pc45_dias',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc45_pctipoandam"]))
-           $resac = db_query("insert into db_acount values($acount,1312,7839,'".AddSlashes(pg_result($resaco,$conresaco,'pc45_pctipoandam'))."','$this->pc45_pctipoandam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1312,7839,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc45_pctipoandam'))."','$this->pc45_pctipoandam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["pc45_instit"]))
-           $resac = db_query("insert into db_acount values($acount,1312,7838,'".AddSlashes(pg_result($resaco,$conresaco,'pc45_instit'))."','$this->pc45_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1312,7838,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc45_instit'))."','$this->pc45_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_pcandpadrao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7834,'$pc45_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1312,7834,'','".AddSlashes(pg_result($resaco,$iresaco,'pc45_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1312,7835,'','".AddSlashes(pg_result($resaco,$iresaco,'pc45_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1312,7836,'','".AddSlashes(pg_result($resaco,$iresaco,'pc45_dias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1312,7839,'','".AddSlashes(pg_result($resaco,$iresaco,'pc45_pctipoandam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1312,7838,'','".AddSlashes(pg_result($resaco,$iresaco,'pc45_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1312,7834,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc45_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1312,7835,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc45_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1312,7836,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc45_dias'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1312,7839,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc45_pctipoandam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1312,7838,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc45_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pcandpadrao
@@ -407,7 +407,7 @@ class cl_pcandpadrao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pcandpadrao";
@@ -421,7 +421,7 @@ class cl_pcandpadrao {
    function sql_query ( $pc45_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -445,7 +445,7 @@ class cl_pcandpadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -457,7 +457,7 @@ class cl_pcandpadrao {
    function sql_query_depto ( $pc45_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -483,7 +483,7 @@ class cl_pcandpadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -495,7 +495,7 @@ class cl_pcandpadrao {
    function sql_query_file ( $pc45_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -516,7 +516,7 @@ class cl_pcandpadrao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

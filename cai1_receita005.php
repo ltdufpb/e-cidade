@@ -50,7 +50,7 @@ $db_opcao = 22;
 $db_botao = false;
 $anousu = db_getsession("DB_anousu");
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $encontroureceita = true;

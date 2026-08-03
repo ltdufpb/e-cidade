@@ -51,7 +51,7 @@ $clempageconf  = new cl_empageconf;
 $clslip       = new cl_slip;
 $clslipnum    = new cl_slipnum;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
 $db_opcao = 1;
@@ -173,7 +173,7 @@ function js_padrao(val){
 	  for($i=0; $i<$numrows; $i++){
 	    db_fieldsmemory($result,$i,true);
 
-        if( substr($k17_data,6,4) != db_getsession("DB_anousu")){
+        if( substr((string) $k17_data,6,4) != db_getsession("DB_anousu")){
           continue;
         }
 
@@ -181,16 +181,16 @@ function js_padrao(val){
 	     
 	    $result05  = $clempagetipo->sql_record($clempagetipo->sql_query(null,"e83_codtipo as codtipo,e83_descr","e83_descr"," k13_conta=$k17_credito "));
 	    $numrows05 = $clempagetipo->numrows;
-	    $arr = Array();
+	    $arr = [];
 	    $x= "e83_codtipo_$k17_codigo";
 	    $xd = "descr_$k17_codigo";
 	    if($numrows05>0){
 	      db_fieldsmemory($result05,0);
-	      $$x = $codtipo;
-              $$xd = $e83_descr;
+	      ${$x} = $codtipo;
+              ${$xd} = $e83_descr;
 	    }else{
-	      $$x = '';
-              $$xd = '';
+	      ${$x} = '';
+              ${$xd} = '';
 	    }
 
 	    
@@ -200,7 +200,7 @@ function js_padrao(val){
          
 	   //coloca o valor com campo
 	    $x= "valor_$k17_codigo";
-	    $$x = number_format($k17_valor,"2",".","");
+	    ${$x} = number_format($k17_valor,"2",".","");
             db_input("valor_$k17_codigo",6,'',true,'hidden',1,1);
            //------------ 
 
@@ -227,7 +227,7 @@ function js_padrao(val){
           <td class='bordas' align='right'><small > <?=$k17_codigo?></small></td>
           <td class='bordas' align='right'><small > <?=$k17_credito?></small></td>
           <td class='bordas' align='right'><small > <?=$k17_debito?></small></td>
-          <td class='bordas' align='left' nowrap ><small > <?=(substr($c60_descr,0,20))?></small></td>
+          <td class='bordas' align='left' nowrap ><small > <?=(substr((string) $c60_descr,0,20))?></small></td>
           <td class='bordas' align='right'><small > <?=$e40_descr?></small></td>
           <td class='bordas' align='right'><small > <?=$k17_data?></small></td>
           <td class='bordas' align='right'><small > <?=$k17_valor?></small></td>

@@ -26,9 +26,8 @@
  */
 
 class PostgreSQLUtils {
-	var $_conexao;
-	var $_sql;
-	var $_numrows;
+	public $_sql;
+	public $_numrows;
 
   function query($sql) {
 		$this->_sql = $sql;
@@ -45,8 +44,7 @@ class PostgreSQLUtils {
 		return $this->_numrows;
 	}
 
-	function PostgreSQLUtils($conexao=null) {
-		$this->_conexao = $conexao;
+	function __construct(public $_conexao=null) {
 		$this->_numrows = 0;
 		$this->_sql     = "";
 	}
@@ -57,22 +55,22 @@ class PostgreSQLUtils {
 		$resultVersao = $this->query($sqlVersao);
 		
 		if($this->getNumRows() > 0) {
-			return pg_result($resultVersao, 0, 0);
+			return pg_fetch_result($resultVersao, 0, 0);
 		}
 		return '';
 	}
 
 	function getPid() {
-		$versao = $this->getVersion($this->_conexao);
+		$versao = $this->getVersion();
 
 	  if( ($this->_conexao != null) ) {
 			return pg_get_pid($this->_conexao);
 		}
 
-		if( strpos($versao, "8.1") ) {
+		if( strpos((string) $versao, "8.1") ) {
 			$sqlPid = "select pg_backend_pid();";
 			$resultPid = $this->query($sqlPid);
-			return pg_result($resultPid, 0, 0);
+			return pg_fetch_result($resultPid, 0, 0);
 		}
 
 		return 0;
@@ -81,11 +79,11 @@ class PostgreSQLUtils {
 	function cancelQuery($pid=0) {
 		$versao = $this->getVersion();
 
-		if( strpos($versao, "8.1") ) {
+		if( strpos((string) $versao, "8.1") ) {
       if(($pid != 0) || ($pid != '')) {
 			  $sqlCancel = "select pg_cancel_backend($pid);";
 			  $resultCancel = db_query($sqlCancel);
-			  return pg_result($resultCancel, 0, 0)=='t'?true:false;
+			  return pg_fetch_result($resultCancel, 0, 0)=='t'?true:false;
 			}
 		}
 
@@ -130,7 +128,7 @@ class PostgreSQLUtils {
   	
   	$sSqlTableIndex  = "select indexname from pg_indexes where tablename = '{$sNomeTabela}'";
   	$rsSqlTableIndex = db_query($sSqlTableIndex);
-  	$aIndexes        = array();
+  	$aIndexes        = [];
   	$iNumRows        = pg_num_rows($rsSqlTableIndex);
   	for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
   		

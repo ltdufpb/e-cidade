@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='fis3_fandamauto005.php?db_opcao=3'</script>";
   exit;
@@ -44,7 +44,7 @@ include(modification("classes/db_autolocal_classe.php"));
 include(modification("classes/db_autoexec_classe.php"));
 include(modification("classes/db_autousu_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo        = new rotulocampo;
 $clauto     = new cl_auto;
 $clautotipo = new cl_autotipo;
@@ -59,7 +59,7 @@ $clrotulo->label("y39_codandam");
 $clrotulo->label("y50_codauto");
 $db_botao = false;
 $auto=1;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   db_inicio_transacao();
   $db_opcao = 3;
   $db_botao = false;
@@ -169,7 +169,7 @@ if($clautoultandam->numrows > 0){
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clfandam->erro_status=="0"){
     $clfandam->erro(true,false);
   }else{

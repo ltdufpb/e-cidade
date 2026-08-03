@@ -36,7 +36,7 @@ $oGet = db_utils::postMemory($_GET);
 
 $oDaoPedidoTFD = new cl_tfd_pedidotfd();
 $sSqlAndamento = $oDaoPedidoTFD->sql_query_andamento_pedido($oGet->iPedido);
-$aAndamentos = array();
+$aAndamentos = [];
 $sMsgErro    = null;
 
 try {
@@ -56,9 +56,9 @@ try {
     }
 
     $oUsuario             = UsuarioSistemaRepository::getPorCodigo($oDados->usuario);
-    $oDados->sNomeUsuario = utf8_encode($oUsuario->getCGM()->getNome());
-    $oDados->observacao   = utf8_encode($oDados->observacao);
-    $oDados->situacao     = utf8_encode($oDados->situacao);
+    $oDados->sNomeUsuario = mb_convert_encoding($oUsuario->getCGM()->getNome(), 'UTF-8', 'ISO-8859-1');
+    $oDados->observacao   = mb_convert_encoding($oDados->observacao, 'UTF-8', 'ISO-8859-1');
+    $oDados->situacao     = mb_convert_encoding($oDados->situacao, 'UTF-8', 'ISO-8859-1');
     $aAndamentos[]        = $oDados;
   }
 

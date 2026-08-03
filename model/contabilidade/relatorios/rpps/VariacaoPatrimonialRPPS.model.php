@@ -50,7 +50,7 @@ class VariacaoPatrimonialRPPS extends RelatoriosLegaisBase {
     }
 
     $aInstituicoesRetorno = db_utils::getCollectionByRecord($rsInstituicoesRPPS);
-    $aInstituicoes        = array();
+    $aInstituicoes        = [];
     foreach ($aInstituicoesRetorno as $oInstituicao) {
 
       $aInstituicoes[] = $oInstituicao->codigo;
@@ -64,11 +64,12 @@ class VariacaoPatrimonialRPPS extends RelatoriosLegaisBase {
   /**
    * return array Linhas com os dados processados do relatorio
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
-    $aLinhasUtilizamBalanceteReceita     = array(3, 4, 5, 6);
-    $aLinhasUtilizamBalanceteDespesa     = array(26, 27, 28, 29);
-    $aLinhasUtilizamBalanceteVerificacao = array();
+    $aLinhasUtilizamBalanceteReceita     = [3, 4, 5, 6];
+    $aLinhasUtilizamBalanceteDespesa     = [26, 27, 28, 29];
+    $aLinhasUtilizamBalanceteVerificacao = [];
     
     $sWhereReceita    = " o70_instit in({$this->getInstituicoes()})";
     $sWhereDespesa    = " o58_instit in({$this->getInstituicoes()})";
@@ -120,7 +121,7 @@ class VariacaoPatrimonialRPPS extends RelatoriosLegaisBase {
         $oColuna->formula = '#saldo_arrecadado_acumulado';
         RelatoriosLegaisBase::calcularValorDaLinha($rsReceita,
                                                     $oLinha,
-                                                    array($oColuna),
+                                                    [$oColuna],
                                                     RelatoriosLegaisBase::TIPO_CALCULO_RECEITA
                                                   );
         continue;
@@ -133,7 +134,7 @@ class VariacaoPatrimonialRPPS extends RelatoriosLegaisBase {
         $oColuna->formula = '#liquidado_acumulado';
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteDespesa,
                                                   $oLinha,
-                                                  array($oColuna),
+                                                  [$oColuna],
                                                   RelatoriosLegaisBase::TIPO_CALCULO_DESPESA
                                                 );
         continue;
@@ -145,7 +146,7 @@ class VariacaoPatrimonialRPPS extends RelatoriosLegaisBase {
 
       RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteVerificacao,
                                                  $oLinha,
-                                                 array($oColuna),
+                                                 [$oColuna],
                                                  RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO
                                                 );
     }

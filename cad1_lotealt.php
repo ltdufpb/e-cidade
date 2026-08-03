@@ -36,8 +36,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 // phpcs:enable
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 if (isset($y60_proces) && !empty($y60_proces)) {
     db_query("select fc_putsession('PROCESSO_LOG', '$y60_proces')");
@@ -121,7 +121,7 @@ $clrotulo->label("j34_areapreservada");
 $cllotedist->rotulo->tlabel();
 $trans_erro = false;
 
-$tipoImovel = isset($tipoImovel) ? $tipoImovel : 1;
+$tipoImovel ??= 1;
 
 if ($tipoImovel == "2") {
     $j34_idbql = 1000000000;
@@ -235,7 +235,7 @@ if (isset($incluir) || isset($alterar)) {
     }
 }
 if (isset($outrolote) && $outrolote != "") {
-    $$outrolote = "ok";
+    ${$outrolote} = "ok";
 }
 if ($replote == true) {
 } elseif (isset($j34_setor) && !isset($incluir) && !isset($alterar)) {
@@ -244,7 +244,7 @@ if ($replote == true) {
     $selface = true;
 } elseif (isset($incluir)) {
     if ($liberaCalculoRetroativo) {
-        $sequences = array();
+        $sequences = [];
 
         for ($anoMatricula = $anoRetroativoMatricula; $anoMatricula <= $anousu; $anoMatricula++) {
             $schema = "";
@@ -271,7 +271,7 @@ if ($replote == true) {
         }
 
         db_inicio_transacao();
-        $j34_lote = str_pad($j34_lote, 4, "0", STR_PAD_LEFT);
+        $j34_lote = str_pad((string) $j34_lote, 4, "0", STR_PAD_LEFT);
         $cllote->j34_lote = $j34_lote;
         $cllote->j34_areapreservada = $j34_areapreservada;
         if ($cllote->incluir(null) == true) {
@@ -294,17 +294,17 @@ if ($replote == true) {
 
         /*============ TESTADAS INTERNAS ============== */
 
-        $matriztesinter = explode("X", $testadainter);
+        $matriztesinter = explode("X", (string) $testadainter);
 
         foreach ($matriztesinter as $valor) {
             $dadosTestadaInterna = explode("-", $valor);
             $idbqlInterLote = $dadosTestadaInterna[0];
             $j39_idbql = $cllote->j34_idbql;
-            $j39_orientacao = (isset($dadosTestadaInterna[1]) ? $dadosTestadaInterna[1] : "");
-            $j39_testad = (isset($dadosTestadaInterna[2]) ? $dadosTestadaInterna[2] : "0");
-            $j39_testle = (isset($dadosTestadaInterna[3]) ? $dadosTestadaInterna[3] : "0");
-            $j84_tesintertipo = (isset($dadosTestadaInterna[4]) ? $dadosTestadaInterna[4] : "");
-            $j84_observacao = (isset($dadosTestadaInterna[5]) ? $dadosTestadaInterna[5] : "");
+            $j39_orientacao = ($dadosTestadaInterna[1] ?? "");
+            $j39_testad = ($dadosTestadaInterna[2] ?? "0");
+            $j39_testle = ($dadosTestadaInterna[3] ?? "0");
+            $j84_tesintertipo = ($dadosTestadaInterna[4] ?? "");
+            $j84_observacao = ($dadosTestadaInterna[5] ?? "");
 
             if (((isset($idbqlInterLote) && $idbqlInterLote != 0 && $idbqlInterLote != "") ||
                 (isset($j84_tesintertipo) && $j84_tesintertipo != 0 && $j84_tesintertipo != ""))) {
@@ -333,7 +333,7 @@ if ($replote == true) {
                 } elseif (isset($j84_tesintertipo) && $j84_tesintertipo != '0') {
                     $cltesinteroutros->j84_tesintertipo = $j84_tesintertipo;
                     $cltesinteroutros->j84_tesinter = $cltesinter->j39_sequencial;
-                    $cltesinteroutros->j84_observacao = (isset($j84_observacao))?$j84_observacao:'';
+                    $cltesinteroutros->j84_observacao = $j84_observacao ?? '';
                     $cltesinteroutros->incluir();
                     if ($cltesinteroutros->erro_status == 0) {
                         db_msgbox("TESINTEROUTROS INC1:" . $cltesinteroutros->erro_msg);
@@ -346,12 +346,12 @@ if ($replote == true) {
         //=============================================
 
         $resultado = db_query("select * from face where j37_face = $cartestpri");
-        $j37_codigo = pg_result($resultado, 0, 3);
+        $j37_codigo = pg_fetch_result($resultado, 0, 3);
         $cltestpri->j49_face = $cartestpri;
         $cltestpri->j49_codigo = $j37_codigo;
 
         $cltestpri->incluir($cllote->j34_idbql, $cartestpri);
-        $matriztesta = explode("x", $cartestada);
+        $matriztesta = explode("x", (string) $cartestada);
         for ($i = 0; $i < sizeof($matriztesta); $i++) {
             $dados = $matriztesta[$i];
             $matrizdados = explode("||", $dados);
@@ -401,7 +401,7 @@ if ($replote == true) {
 
         $j34_idbql = $cllote->j34_idbql;
         $clcarlote->j35_idbql = $j34_idbql;
-        $matriz = explode("X", $caracteristica);
+        $matriz = explode("X", (string) $caracteristica);
         for ($i = 0; $i < sizeof($matriz); $i++) {
             $j35_caract = $matriz[$i];
             if ($j35_caract != "") {
@@ -463,10 +463,10 @@ if ($replote == true) {
 
     $_SESSION['PROCESSO_LOG'] = $y60_proces;
 } elseif (isset($alterar)) {
-    $anoLimiteReplicaDados = (isset($anoLimiteReplicaDados) ? $anoLimiteReplicaDados : $anoRetroativoMatricula);
+    $anoLimiteReplicaDados ??= $anoRetroativoMatricula;
 
     if ($liberaCalculoRetroativo) {
-        $sequences = array();
+        $sequences = [];
 
         for ($anoMatricula = $anoRetroativoMatricula; $anoMatricula <= $anousu; $anoMatricula++) {
             $schema = "";
@@ -565,7 +565,7 @@ if ($replote == true) {
             $cliptubase->alterar($idmatricu);
         }
 
-        $j34_lote = str_pad($j34_lote, 4, "0", STR_PAD_LEFT);
+        $j34_lote = str_pad((string) $j34_lote, 4, "0", STR_PAD_LEFT);
         $cllote->j34_lote = $j34_lote;
         $cllote->j34_areapreservada = $j34_areapreservada;
         $cllote->alterar($j34_idbql);
@@ -582,7 +582,7 @@ if ($replote == true) {
 
             /*========================================================================================================*/
 
-            $matriztesinterdel = explode("X", $testadainter);
+            $matriztesinterdel = explode("X", (string) $testadainter);
             $matriztesinterdel = array_unique($matriztesinterdel);
 
             $sListaTesinterDel = "";
@@ -640,7 +640,7 @@ if ($replote == true) {
 
             /*============ TESTADAS INTERNAS ============== */
 
-            $matriztesinter = explode("X", $testadainter);
+            $matriztesinter = explode("X", (string) $testadainter);
             $matriztesinter = array_unique($matriztesinter);
 
             if (count($matriztesinter) >= 1 && $testadainter != "") {
@@ -649,11 +649,11 @@ if ($replote == true) {
                     $idbqlInterLote = $dadosTestadaInterna[0];
                     $j39_idbql = $cllote->j34_idbql;
                     $j39_orientacao = $dadosTestadaInterna[1];
-                    $j39_testad = (isset($dadosTestadaInterna[2]) ? $dadosTestadaInterna[2] : "0");
-                    $j39_testle = (isset($dadosTestadaInterna[3]) ? $dadosTestadaInterna[3] : "0");
+                    $j39_testad = ($dadosTestadaInterna[2] ?? "0");
+                    $j39_testle = ($dadosTestadaInterna[3] ?? "0");
                     $j84_tesintertipo = $dadosTestadaInterna[4];
-                    $j84_observacao = (isset($dadosTestadaInterna[5]) ? $dadosTestadaInterna[5] : "");
-                    $tesinter_excluida = (isset($dadosTestadaInterna[6]) ? $dadosTestadaInterna[6] : "0");
+                    $j84_observacao = ($dadosTestadaInterna[5] ?? "");
+                    $tesinter_excluida = ($dadosTestadaInterna[6] ?? "0");
                     $j39_sequencial = $dadosTestadaInterna[7];
 
                     //
@@ -668,7 +668,7 @@ if ($replote == true) {
                                     j39_sequencial";
                         $sSqlTesinter = $cltesinter->sql_query_file($j39_sequencial, $sCampos);
                         $rsTesinter = $cltesinter->sql_record($sSqlTesinter);
-      
+
                         if ($cltesinter->numrows > 0) {
                             db_fieldsmemory($rsTesinter, 0);
                             $tesinterExiste = true;
@@ -727,7 +727,7 @@ if ($replote == true) {
                                     $cltesinteroutros->j84_tesinter = $j39_sequencial;
                                     $cltesinteroutros->alterar($oid_tesinteroutros);
                                 }
-                                
+
                             }
                         } else {
                             if (((isset($idbqlInterLote) && $idbqlInterLote != 0 && $idbqlInterLote != "") ||
@@ -735,13 +735,13 @@ if ($replote == true) {
                                 && $tesinterExiste == false && $tesinter_excluida != "1") {
                                 $j39_idbql = $cllote->j34_idbql;
                                 $j39_orientacao = $dadosTestadaInterna[1];
-                                $j39_testad = (isset($dadosTestadaInterna[2]) ? $dadosTestadaInterna[2] : "0");
-                                $j39_testle = (isset($dadosTestadaInterna[3]) ? $dadosTestadaInterna[3] : "0");
+                                $j39_testad = ($dadosTestadaInterna[2] ?? "0");
+                                $j39_testle = ($dadosTestadaInterna[3] ?? "0");
                                 $j84_tesintertipo = $dadosTestadaInterna[4];
-                                $j84_observacao = (isset($dadosTestadaInterna[5]) ? $dadosTestadaInterna[5] : "");
-                                $tesinter_excluida = (isset($dadosTestadaInterna[6]) ? $dadosTestadaInterna[6] : "0");
+                                $j84_observacao = ($dadosTestadaInterna[5] ?? "");
+                                $tesinter_excluida = ($dadosTestadaInterna[6] ?? "0");
                                 $j39_sequencial = $dadosTestadaInterna[7];
-                                
+
                                 if (!empty($j39_sequencial)) {
                                     //se não existe no exercício mas existe na matriz então replica
                                     if (!isset($j39_orientacao) || $j39_orientacao == "") {
@@ -769,7 +769,7 @@ if ($replote == true) {
                                         }
                                     } elseif (isset($j84_tesintertipo) && $j84_tesintertipo != '0') {
                                         $cltesinteroutros->j84_tesintertipo = $j84_tesintertipo;
-                                        $cltesinteroutros->j84_observacao = (isset($j84_observacao))?$j84_observacao:'';
+                                        $cltesinteroutros->j84_observacao = $j84_observacao ?? '';
                                         $cltesinteroutros->j84_tesinter = $cltesinter->j39_sequencial;
                                         $cltesinteroutros->incluir();
                                         if ($cltesinteroutros->erro_status == 0) {
@@ -804,7 +804,7 @@ if ($replote == true) {
                                     } elseif (isset($j84_tesintertipo) && $j84_tesintertipo != '0') {
                                         $cltesinteroutros->j84_tesintertipo = $j84_tesintertipo;
                                         $cltesinteroutros->j84_tesinter = $cltesinter->j39_sequencial;
-                                        $cltesinteroutros->j84_observacao=(isset($j84_observacao))?$j84_observacao:'';
+                                        $cltesinteroutros->j84_observacao=$j84_observacao ?? '';
                                         $cltesinteroutros->incluir();
                                         if ($cltesinteroutros->erro_status == 0) {
                                             db_msgbox("TESINTEROUTROS INC3:" . $cltesinteroutros->erro_msg);
@@ -845,9 +845,9 @@ if ($replote == true) {
                 }
             }
 
-            $matriztesta = explode("x", $cartestada);
-            $sobraTestada1 = array();
-            $sobraTestada2 = array();
+            $matriztesta = explode("x", (string) $cartestada);
+            $sobraTestada1 = [];
+            $sobraTestada2 = [];
 
             for ($i = 0; $i < sizeof($matriztesta); $i++) {
                 $dados = $matriztesta[$i];
@@ -1025,7 +1025,7 @@ if ($replote == true) {
             //============================================================================
             $j34_idbql = $cllote->j34_idbql;
             $clcarlote->j35_idbql = $j34_idbql;
-            $matriz = explode("X", $caracteristica);
+            $matriz = explode("X", (string) $caracteristica);
 
             for ($i = 1; $i < sizeof($matriz); $i++) {
                 if ($matriz[$i] != '') {

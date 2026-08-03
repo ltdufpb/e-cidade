@@ -38,7 +38,7 @@ $cldivida = new cl_divida;
 $clrotulo->label("v01_livro");
 $clrotulo->label("v01_dtoper");
 $db_opcao = 1;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
  <head>
@@ -62,7 +62,7 @@ db_postmemory($HTTP_POST_VARS);
 	      </td>
 	      <td>
 	       <?php  
-	        $tipo = array("r"=>"Resumido","c"=>"Completo");
+	        $tipo = ["r"=>"Resumido","c"=>"Completo"];
 	        db_select("tipo",$tipo,true,2); 
 	       ?>
 	      </td>
@@ -71,7 +71,7 @@ db_postmemory($HTTP_POST_VARS);
           <td>Complementar:</td>
 	      <td>
 	       <?php 
-            $arr = array("nao" => "Não", "sim" => "Sim");
+            $arr = ["nao" => "Não", "sim" => "Sim"];
             db_select("complementar", $arr, true, 1, "");
        	   ?>
 	   	  </td>

@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE db_systriggers
 class cl_db_systriggers { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $codtrigger = 0; 
-   var $nometrigger = null; 
-   var $quandotrigger = null; 
-   var $erro = null; 
-   var $codfuncao = 0; 
-   var $codarq = 0; 
-   var $eventotrigger = null; 
+   public $codtrigger = 0; 
+   public $nometrigger = null; 
+   public $quandotrigger = null; 
+   public $erro = null; 
+   public $codfuncao = 0; 
+   public $codarq = 0; 
+   public $eventotrigger = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  codtrigger = int4 = Código 
                  nometrigger = varchar(50) = Nome 
                  quandotrigger = varchar(6) = Quando 
@@ -60,10 +60,10 @@ class cl_db_systriggers {
                  eventotrigger = varchar(40) = Evento 
                  ";
    //funcao construtor da classe 
-   function cl_db_systriggers() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_systriggers"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -155,10 +155,10 @@ class cl_db_systriggers {
          $this->erro_status = "0";
          return false; 
        }
-       $this->codtrigger = pg_result($result,0,0); 
+       $this->codtrigger = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_systriggers_codtrigger_seq");
-       if(($result != false) && (pg_result($result,0,0) < $codtrigger)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $codtrigger)){
          $this->erro_sql = " Campo codtrigger maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -198,7 +198,7 @@ class cl_db_systriggers {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Triggers (Gatilhos) ($this->codtrigger) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Triggers (Gatilhos) já Cadastrado";
@@ -222,16 +222,16 @@ class cl_db_systriggers {
      $resaco = $this->sql_record($this->sql_query_file($this->codtrigger));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,779,'$this->codtrigger','I')");
-       $resac = db_query("insert into db_acount values($acount,151,779,'','".AddSlashes(pg_result($resaco,0,'codtrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,151,780,'','".AddSlashes(pg_result($resaco,0,'nometrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,151,781,'','".AddSlashes(pg_result($resaco,0,'quandotrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,151,10738,'','".AddSlashes(pg_result($resaco,0,'erro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,151,774,'','".AddSlashes(pg_result($resaco,0,'codfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,151,759,'','".AddSlashes(pg_result($resaco,0,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,151,782,'','".AddSlashes(pg_result($resaco,0,'eventotrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,151,779,'','".AddSlashes(pg_fetch_result($resaco,0,'codtrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,151,780,'','".AddSlashes(pg_fetch_result($resaco,0,'nometrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,151,781,'','".AddSlashes(pg_fetch_result($resaco,0,'quandotrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,151,10738,'','".AddSlashes(pg_fetch_result($resaco,0,'erro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,151,774,'','".AddSlashes(pg_fetch_result($resaco,0,'codfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,151,759,'','".AddSlashes(pg_fetch_result($resaco,0,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,151,782,'','".AddSlashes(pg_fetch_result($resaco,0,'eventotrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -240,10 +240,10 @@ class cl_db_systriggers {
       $this->atualizacampos();
      $sql = " update db_systriggers set ";
      $virgula = "";
-     if(trim($this->codtrigger)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codtrigger"])){ 
+     if(trim((string) $this->codtrigger)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codtrigger"])){ 
        $sql  .= $virgula." codtrigger = $this->codtrigger ";
        $virgula = ",";
-       if(trim($this->codtrigger) == null ){ 
+       if(trim((string) $this->codtrigger) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "codtrigger";
          $this->erro_banco = "";
@@ -253,10 +253,10 @@ class cl_db_systriggers {
          return false;
        }
      }
-     if(trim($this->nometrigger)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nometrigger"])){ 
+     if(trim((string) $this->nometrigger)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nometrigger"])){ 
        $sql  .= $virgula." nometrigger = '$this->nometrigger' ";
        $virgula = ",";
-       if(trim($this->nometrigger) == null ){ 
+       if(trim((string) $this->nometrigger) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "nometrigger";
          $this->erro_banco = "";
@@ -266,10 +266,10 @@ class cl_db_systriggers {
          return false;
        }
      }
-     if(trim($this->quandotrigger)!="" || isset($GLOBALS["HTTP_POST_VARS"]["quandotrigger"])){ 
+     if(trim((string) $this->quandotrigger)!="" || isset($GLOBALS["HTTP_POST_VARS"]["quandotrigger"])){ 
        $sql  .= $virgula." quandotrigger = '$this->quandotrigger' ";
        $virgula = ",";
-       if(trim($this->quandotrigger) == null ){ 
+       if(trim((string) $this->quandotrigger) == null ){ 
          $this->erro_sql = " Campo Quando nao Informado.";
          $this->erro_campo = "quandotrigger";
          $this->erro_banco = "";
@@ -279,10 +279,10 @@ class cl_db_systriggers {
          return false;
        }
      }
-     if(trim($this->erro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["erro"])){ 
+     if(trim((string) $this->erro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["erro"])){ 
        $sql  .= $virgula." erro = '$this->erro' ";
        $virgula = ",";
-       if(trim($this->erro) == null ){ 
+       if(trim((string) $this->erro) == null ){ 
          $this->erro_sql = " Campo Erro nao Informado.";
          $this->erro_campo = "erro";
          $this->erro_banco = "";
@@ -292,10 +292,10 @@ class cl_db_systriggers {
          return false;
        }
      }
-     if(trim($this->codfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codfuncao"])){ 
+     if(trim((string) $this->codfuncao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codfuncao"])){ 
        $sql  .= $virgula." codfuncao = $this->codfuncao ";
        $virgula = ",";
-       if(trim($this->codfuncao) == null ){ 
+       if(trim((string) $this->codfuncao) == null ){ 
          $this->erro_sql = " Campo Código Função nao Informado.";
          $this->erro_campo = "codfuncao";
          $this->erro_banco = "";
@@ -305,10 +305,10 @@ class cl_db_systriggers {
          return false;
        }
      }
-     if(trim($this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){ 
+     if(trim((string) $this->codarq)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codarq"])){ 
        $sql  .= $virgula." codarq = $this->codarq ";
        $virgula = ",";
-       if(trim($this->codarq) == null ){ 
+       if(trim((string) $this->codarq) == null ){ 
          $this->erro_sql = " Campo Codigo Arquivo nao Informado.";
          $this->erro_campo = "codarq";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_db_systriggers {
          return false;
        }
      }
-     if(trim($this->eventotrigger)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eventotrigger"])){ 
+     if(trim((string) $this->eventotrigger)!="" || isset($GLOBALS["HTTP_POST_VARS"]["eventotrigger"])){ 
        $sql  .= $virgula." eventotrigger = '$this->eventotrigger' ";
        $virgula = ",";
-       if(trim($this->eventotrigger) == null ){ 
+       if(trim((string) $this->eventotrigger) == null ){ 
          $this->erro_sql = " Campo Evento nao Informado.";
          $this->erro_campo = "eventotrigger";
          $this->erro_banco = "";
@@ -339,23 +339,23 @@ class cl_db_systriggers {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,779,'$this->codtrigger','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codtrigger"]))
-           $resac = db_query("insert into db_acount values($acount,151,779,'".AddSlashes(pg_result($resaco,$conresaco,'codtrigger'))."','$this->codtrigger',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,151,779,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codtrigger'))."','$this->codtrigger',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["nometrigger"]))
-           $resac = db_query("insert into db_acount values($acount,151,780,'".AddSlashes(pg_result($resaco,$conresaco,'nometrigger'))."','$this->nometrigger',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,151,780,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'nometrigger'))."','$this->nometrigger',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["quandotrigger"]))
-           $resac = db_query("insert into db_acount values($acount,151,781,'".AddSlashes(pg_result($resaco,$conresaco,'quandotrigger'))."','$this->quandotrigger',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,151,781,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'quandotrigger'))."','$this->quandotrigger',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["erro"]))
-           $resac = db_query("insert into db_acount values($acount,151,10738,'".AddSlashes(pg_result($resaco,$conresaco,'erro'))."','$this->erro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,151,10738,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'erro'))."','$this->erro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codfuncao"]))
-           $resac = db_query("insert into db_acount values($acount,151,774,'".AddSlashes(pg_result($resaco,$conresaco,'codfuncao'))."','$this->codfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,151,774,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codfuncao'))."','$this->codfuncao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codarq"]))
-           $resac = db_query("insert into db_acount values($acount,151,759,'".AddSlashes(pg_result($resaco,$conresaco,'codarq'))."','$this->codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,151,759,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codarq'))."','$this->codarq',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["eventotrigger"]))
-           $resac = db_query("insert into db_acount values($acount,151,782,'".AddSlashes(pg_result($resaco,$conresaco,'eventotrigger'))."','$this->eventotrigger',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,151,782,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'eventotrigger'))."','$this->eventotrigger',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -400,16 +400,16 @@ class cl_db_systriggers {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,779,'$codtrigger','E')");
-         $resac = db_query("insert into db_acount values($acount,151,779,'','".AddSlashes(pg_result($resaco,$iresaco,'codtrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,151,780,'','".AddSlashes(pg_result($resaco,$iresaco,'nometrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,151,781,'','".AddSlashes(pg_result($resaco,$iresaco,'quandotrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,151,10738,'','".AddSlashes(pg_result($resaco,$iresaco,'erro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,151,774,'','".AddSlashes(pg_result($resaco,$iresaco,'codfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,151,759,'','".AddSlashes(pg_result($resaco,$iresaco,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,151,782,'','".AddSlashes(pg_result($resaco,$iresaco,'eventotrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,151,779,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codtrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,151,780,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'nometrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,151,781,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'quandotrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,151,10738,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'erro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,151,774,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codfuncao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,151,759,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codarq'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,151,782,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'eventotrigger'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_systriggers
@@ -469,7 +469,7 @@ class cl_db_systriggers {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_systriggers";

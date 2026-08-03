@@ -44,7 +44,7 @@ $oRetorno               = new stdClass();
 $oRetorno->iStatus      = 1;
 $oRetorno->sMessage     = '';
 
-$aDocumentosPermitidos  = array(400, 401, 404);
+$aDocumentosPermitidos  = [400, 401, 404];
 
 try{
 
@@ -56,7 +56,7 @@ try{
 
     	$oDaoConlancamVal = db_utils::getDao("conlancamval");
       $iTotalRequisicoes = count($oParametro->aRequisicoes);
-      $aCodigoRequisicao = array();
+      $aCodigoRequisicao = [];
       $oParametro->aRequisicoes;
       if (isset($oParametro->aRequisicoes) && $iTotalRequisicoes > 0) {
 
@@ -76,7 +76,7 @@ try{
       }
 
       $sRequisicoes   = implode(", ", $aCodigoRequisicao);
-      $aWhereSaidas   = array();
+      $aWhereSaidas   = [];
       $aWhereSaidas[] = "conlancamdoc.c71_coddoc = {$oParametro->iCodigoDocumento}";
       if (!empty($oParametro->dtInicial) && !empty($oParametro->dtFinal)) {
         $aWhereSaidas[] = "conlancam.c70_data between '{$oParametro->dtInicial}' and '{$oParametro->dtFinal}'";

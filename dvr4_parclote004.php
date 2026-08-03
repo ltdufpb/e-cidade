@@ -35,7 +35,7 @@ include(modification("dbforms/db_funcoes.php"));
 //$loteam = 45;
 //$DB_anousu = 2004;
 //$DB_datausu = date();
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $sql = "select  b.j01_matric,
 			b.j01_numcgm ,
         	d.*,
@@ -71,7 +71,7 @@ for($k = 148;$k < 298;$k++) {
    $matric = $j01_matric;
    $ver_matric = $j01_matric;
    $totpar = db_query("select k00_numpre,k00_numpar,k00_numtot from arrecad where k00_numpre = $k00_numpre ");
-for($volta = 0;$volta < pg_numrows($totpar);$volta++) {
+for($volta = 0;$volta < pg_num_rows($totpar);$volta++) {
    db_fieldsmemory($totpar,$volta);
   //gera um nuvo numpre. "numnov"
   $result = db_query("select k00_descr,k00_codbco,k00_codage,k00_txban,k00_rectx,k00_hist1,k00_hist2,
@@ -99,19 +99,19 @@ for($volta = 0;$volta < pg_numrows($totpar);$volta++) {
   $DadosPagamento = db_query($sql);
 
   $k00_valor = 0;
-  for($i=0;$i<pg_numrows($DadosPagamento);$i++){
-    $k00_valor  += pg_result($DadosPagamento,$i,"valor");
+  for($i=0;$i<pg_num_rows($DadosPagamento);$i++){
+    $k00_valor  += pg_fetch_result($DadosPagamento,$i,"valor");
   } 
   //faz um somatorio do valor
- $k00_receit = trim(pg_result($DadosPagamento,0,"k00_receit"));
- $k00_numpre = trim(pg_result($DadosPagamento,0,"k00_numpre"));
- $k00_numpar = trim(pg_result($DadosPagamento,0,"k00_numpar"));
- $k00_numtot = trim(pg_result($DadosPagamento,0,"k00_numtot"));
- $k00_dtvenc = pg_result($DadosPagamento,0,"k00_dtoper");
-  if($k00_dtvenc < pg_result($DadosPagamento,0,"k00_dtvenc")){
-     $k00_dtvenc = pg_result($DadosPagamento,0,"k00_dtvenc");
+ $k00_receit = trim(pg_fetch_result($DadosPagamento,0,"k00_receit"));
+ $k00_numpre = trim(pg_fetch_result($DadosPagamento,0,"k00_numpre"));
+ $k00_numpar = trim(pg_fetch_result($DadosPagamento,0,"k00_numpar"));
+ $k00_numtot = trim(pg_fetch_result($DadosPagamento,0,"k00_numtot"));
+ $k00_dtvenc = pg_fetch_result($DadosPagamento,0,"k00_dtoper");
+  if($k00_dtvenc < pg_fetch_result($DadosPagamento,0,"k00_dtvenc")){
+     $k00_dtvenc = pg_fetch_result($DadosPagamento,0,"k00_dtvenc");
   }
-  
+
   $k00_dtvenc = db_formatar($k00_dtvenc,'d');
    $vlrbar = db_formatar(str_replace('.','',str_pad(number_format($k00_valor,2,"","."),11,"0",STR_PAD_LEFT)),'s','0',11,'e');
 //   $vlrbar = "0".str_replace('.','',str_pad(number_format($k00_valor,2,"","."),11,"0",STR_PAD_LEFT));
@@ -120,9 +120,9 @@ for($volta = 0;$volta < pg_numrows($totpar);$volta++) {
    db_fieldsmemory($resultnumbco,0) ;// deve ser tirado do db_config
 
    $numpre = db_numpre($k03_numpre).db_formatar($k00_numpar,'s',"0",3,"e");
-   
+
    $datavencimento = $k00_dtvenc;
-   
+
    if ($formvencfebraban == 1) {
      $db_dtvenc = str_replace("-","",$datavencimento);
      $vencbar = $db_dtvenc . '000000';
@@ -141,14 +141,14 @@ for($volta = 0;$volta < pg_numrows($totpar);$volta++) {
      exit;
    }
 
-   $codigo_barras   = substr($fc_febraban,0,strpos($fc_febraban,','));
-   $linha_digitavel = substr($fc_febraban,strpos($fc_febraban,',')+1);
+   $codigo_barras   = substr((string) $fc_febraban,0,strpos((string) $fc_febraban,','));
+   $linha_digitavel = substr((string) $fc_febraban,strpos((string) $fc_febraban,',')+1);
 
   //seleciona dados de identificacao. Verifica se é inscr ou matric e da o respectivo select
   //essa variavel vem do cai3_gerfinanc002.php, pelo window open, criada por parse_str
 /*
   if($ver_matric != '') {
-     
+
     $numero = $ver_matric;
 
     $Identificacao = db_query("select *
@@ -175,7 +175,7 @@ for($volta = 0;$volta < pg_numrows($totpar);$volta++) {
                      from cgm
 					 where z01_numcgm = $numero");
   } 
-  
+
   db_fieldsmemory($Identificacao,0);
 */	
   //verifica divida ativa
@@ -191,7 +191,7 @@ for($volta = 0;$volta < pg_numrows($totpar);$volta++) {
 			     inner join arrecad r on a.k00_numpre = r.k00_numpre 
 			where k00_matric = $j01_matric and k00_dtvenc < '".date('Y-m-d',db_getsession("DB_datausu"))."'::date limit 1";
 	$result = db_query($sql);
-    if(pg_numrows($result)!=0){
+    if(pg_num_rows($result)!=0){
 	   $temdivida = "Existem Débitos Pendente. Verifique sua Situação.";
 	}else{    
 	   $temdivida = "";
@@ -208,7 +208,7 @@ for($volta = 0;$volta < pg_numrows($totpar);$volta++) {
   		                j22_matric = $j01_matric) e
 			where j23_matric = $j01_matric and j23_anousu = ".db_getsession("DB_anousu");
 	$result = db_query($sql);
-    if(pg_numrows($result)==0){
+    if(pg_num_rows($result)==0){
 	   echo "Carne nao gerado para este Imóvel.";
 	   exit;
 	}
@@ -223,12 +223,12 @@ for($volta = 0;$volta < pg_numrows($totpar);$volta++) {
 				   from cadban
                    where k15_codbco = $k00_codbco and
 				   k15_codage = '$k00_codage'");
-  if(pg_numrows($result) > 0) {	
-    $k15_local=pg_result($result,0,0);
-    $k15_aceite=pg_result($result,0,1);
-    $k15_carte=pg_result($result,0,2);
-    $k15_espec=pg_result($result,0,3);
-    $k15_ageced=pg_result($result,0,4);
+  if(pg_num_rows($result) > 0) {	
+    $k15_local=pg_fetch_result($result,0,0);
+    $k15_aceite=pg_fetch_result($result,0,1);
+    $k15_carte=pg_fetch_result($result,0,2);
+    $k15_espec=pg_fetch_result($result,0,3);
+    $k15_ageced=pg_fetch_result($result,0,4);
     $fc_numbco=$fc_numbco;
     $dt_hoje = date('Y-m-d',db_getsession("DB_datausu"));
   }
@@ -242,7 +242,7 @@ for($volta = 0;$volta < pg_numrows($totpar);$volta++) {
   db_fieldsmemory($result,0);
     if($volta+1 % 6  == 0) {
 	  $pdf->AddPage();
-          
+
     } else if($volta == 0) {
          $pdf->AddPage();
     }

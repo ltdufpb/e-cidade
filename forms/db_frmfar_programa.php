@@ -63,7 +63,7 @@ db_input('fa12_c_descricao',40,$Ifa12_c_descricao,true,'text',$db_opcao,"")
     </td>
     <td> 
      <?php 
-      $y = array("0"=>"","1"=>"Federal","2"=>"Estadual","3"=>"Municipal","4"=>"Particular","5"=>"Outros");
+      $y = ["0"=>"","1"=>"Federal","2"=>"Estadual","3"=>"Municipal","4"=>"Particular","5"=>"Outros"];
       db_select('fa12_c_depadmin',$y,true,$db_opcao,"");
       ?>
     </td>
@@ -77,7 +77,7 @@ db_input('fa12_c_descricao',40,$Ifa12_c_descricao,true,'text',$db_opcao,"")
       $sql="select s148_i_codigo,s148_c_sigla,s148_c_descr from sau_tipoacaoprog";
       $result=db_query($sql);
       $linhas=pg_num_rows($result);
-      $vet= array("0"=>"");
+      $vet= ["0"=>""];
       for($x=0;$x<$linhas;$x++){
           db_fieldsmemory($result,$x);
           $vet[$s148_i_codigo] = converteCodificacao("$s148_c_sigla - $s148_c_descr");
@@ -106,7 +106,7 @@ function js_preenchepesquisa(chave){
   db_iframe_far_programa.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

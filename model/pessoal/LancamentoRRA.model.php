@@ -618,7 +618,7 @@ class LancamentoRRA {
    */
   public function adicionarPensionista(CgmFisico $cgmFisico, $valor) {
 
-    $aPensionistas = array();
+    $aPensionistas = [];
     if (!$this->iCodigo == '') {
       $aPensionistas = $this->getPensionistas();
     }

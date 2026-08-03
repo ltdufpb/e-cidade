@@ -28,13 +28,13 @@
 // CLASSE PARA GERAR FORM PARA RELATÓRIOS CONFIGURÁVEIS
 class cl_formulario_relcampos {
 
-  var $sqltabelas = ""; // SQL com quais tabelas devem aparecer no SELECT
-  var $urlproxarq = ""; // Arquivo que receberá URL
-  var $varcodigo = "";  // Nome da variável que será o value do SELECT
-  var $vardescri = "";  // Nome da variável que será a descrição do SELECT
-  var $nomecampo = "seleciona";  // Nome do campo SELECT
-  var $arr_alter = Array();      // Array com tabelas para quando o usuário for alterar algum relatório.
-  var $cam_alter = "";           // String com tabelas para quando o usuário for alterar algum relatório.
+  public $sqltabelas = ""; // SQL com quais tabelas devem aparecer no SELECT
+  public $urlproxarq = ""; // Arquivo que receberá URL
+  public $varcodigo = "";  // Nome da variável que será o value do SELECT
+  public $vardescri = "";  // Nome da variável que será a descrição do SELECT
+  public $nomecampo = "seleciona";  // Nome do campo SELECT
+  public $arr_alter = [];      // Array com tabelas para quando o usuário for alterar algum relatório.
+  public $cam_alter = "";           // String com tabelas para quando o usuário for alterar algum relatório.
 
   function cl_formulario_rel_pes(){
   	$this->rotulo = new rotulocampo;
@@ -45,12 +45,12 @@ class cl_formulario_relcampos {
 	  $valcam = $this->nomecampo;
 		$codigo = $this->varcodigo;
 		$descri = $this->vardescri;
-   	global $$codigo,$$descri,$$valcam;
-   	if(!isset($$valcam)){
-   		$$valcam = 0;
+   	global ${$codigo},${$descri},${$valcam};
+   	if(!isset(${$valcam})){
+   		${$valcam} = 0;
    	}
 
-    if(trim($this->sqltabelas) != "" || count($this->arr_alter) > 0){
+    if(trim((string) $this->sqltabelas) != "" || count($this->arr_alter) > 0){
     	if(count($this->arr_alter) <= 0){
 	    	$result_tabelas = @db_query($this->sqltabelas);
     	}else{
@@ -62,18 +62,18 @@ class cl_formulario_relcampos {
     		exit;
     	}
 
-      $arr_tabless = Array();
-    	$arr_tabelas = Array("0"=>"Selecione um arquivo");
+      $arr_tabless = [];
+    	$arr_tabelas = ["0"=>"Selecione um arquivo"];
 	    $colunas = pg_num_fields($result_tabelas);
 
-	    for($i=0; $i<pg_numrows($result_tabelas); $i++){
+	    for($i=0; $i<pg_num_rows($result_tabelas); $i++){
 	    	db_fieldsmemory($result_tabelas, $i);
-	    	$arr_tabless[$$codigo] = $$codigo;
-	   	  $arr_tabelas[$$codigo] = $$descri;
+	    	$arr_tabless[${$codigo}] = ${$codigo};
+	   	  $arr_tabelas[${$codigo}] = ${$descri};
 	    }
      
       if(count($arr_tabelas) == 2){
-      	$$valcam = $$codigo;
+      	${$valcam} = ${$codigo};
       }
 
       echo "
@@ -94,8 +94,8 @@ class cl_formulario_relcampos {
 	            </tr>
            ";
 
-      if($$valcam != 0){
-      	$sql_camposTABLES = "select distinct codarq as codigodatabela, sigla as sigladoarquivo from db_sysarquivo where db_sysarquivo.codarq = ".$$valcam;
+      if(${$valcam} != 0){
+      	$sql_camposTABLES = "select distinct codarq as codigodatabela, sigla as sigladoarquivo from db_sysarquivo where db_sysarquivo.codarq = ".${$valcam};
       	$result_camposTABLES = @db_query($sql_camposTABLES);
         if($result_camposTABLES == false){
         	db_msgbox("Erro ao buscar campos da tabela escolhida");
@@ -113,7 +113,7 @@ class cl_formulario_relcampos {
 								                                     left  join db_sysforkey   on  db_sysforkey.codarq = db_sysarquivo.codarq
 								                              where     trim(rotulo) <> ''
 								                                    and rotulo is not null
-								                                    and db_sysarquivo.codarq = ".$$valcam."
+								                                    and db_sysarquivo.codarq = ".${$valcam}."
                                              ) x on x.arquivo = codarq
                              where     trim(rotulo) <> ''
                                    and rotulo is not null
@@ -134,7 +134,7 @@ class cl_formulario_relcampos {
 										                                      left  join  db_sysarquivo  on  db_sysarquivo.codarq = db_sysforkey.referen
 										                               where      trim(rotulo) <> ''
 										                                      and rotulo is not null
-				      			                                      and db_sysforkey.referen = ".$$valcam."
+				      			                                      and db_sysforkey.referen = ".${$valcam}."
 		                                              ) x on x.arquivo = codarq
 		                              where     trim(rotulo) <> ''
 	 	                                    and rotulo is not null
@@ -146,22 +146,22 @@ class cl_formulario_relcampos {
         	exit;
         }
 
-        $arr_camposTIPO = Array();
-        $arr_camposUSAR = Array();
+        $arr_camposTIPO = [];
+        $arr_camposUSAR = [];
 
-        $arr_camposUSARSoma = Array();
+        $arr_camposUSARSoma = [];
 
-        $arr_camposSSEL = Array();
-        $arr_camposNSEL = Array();
+        $arr_camposSSEL = [];
+        $arr_camposNSEL = [];
 
-        $arr_tables = Array();
-        $arr_campos = Array();
-        $arr_camposSEL = Array();
+        $arr_tables = [];
+        $arr_campos = [];
+        $arr_camposSEL = [];
         global $codcam, $rotulo, $conteudo, $arquivo, $siglaarq;
         global $campo_auxilio_codigorel, $campo_auxilio_tabelasel, $campo_auxilio_nselecion, $campo_auxilio_sselecion, $campo_seleciona_filtros, $campo_tipodados_filtros, $campo_camposfks_filtros;
         global $filtro1, $filtro2, $filtro3, $campo_camporecb_filtro1, $campo_camporecb_filtro2, $campo_camporecb_filtro3, $qbratod, $qbrapag, $gerafon;
         global $campo_camporecb_cabecal, $campo_camporecb_comple1, $campo_camporecb_comple2, $campo_camporecb_comple3, $campo_camporecb_comple4, $campo_camporecb_comple5, $campo_camporecb_comple6;
-        for($i=0; $i<pg_numrows($result_camposFKPRIN); $i++){
+        for($i=0; $i<pg_num_rows($result_camposFKPRIN); $i++){
         	db_fieldsmemory($result_camposFKPRIN, $i);
         	$where = "";
         	if(isset($campo_auxilio_sselecion) && trim($campo_auxilio_sselecion) != ""){
@@ -169,7 +169,7 @@ class cl_formulario_relcampos {
         	}
         	if(!isset($arr_tables[$arquivo])){
         		$result_campos = @db_query("select db_syscampo.codcam, rotulo, conteudo from db_syscampo inner join db_sysarqcamp on db_sysarqcamp.codcam = db_syscampo.codcam where codarq = ".$arquivo.$where);
-        		for($ii=0; $ii<pg_numrows($result_campos); $ii++){
+        		for($ii=0; $ii<pg_num_rows($result_campos); $ii++){
         			db_fieldsmemory($result_campos, $ii);
         			$arr_campos[$codcam] = $rotulo;
               $arr_camposNSEL[$codcam] = $codcam;
@@ -184,7 +184,7 @@ class cl_formulario_relcampos {
         	}
         	if(!isset($arr_tables[$codarq])){
         		$result_campos = @db_query("select db_syscampo.codcam, rotulo, conteudo from db_syscampo inner join db_sysarqcamp on db_sysarqcamp.codcam = db_syscampo.codcam where codarq = ".$codarq.$where);
-        		for($ii=0; $ii<pg_numrows($result_campos); $ii++){
+        		for($ii=0; $ii<pg_num_rows($result_campos); $ii++){
         			db_fieldsmemory($result_campos, $ii);
         			$arr_campos[$codcam] = $rotulo;
               $arr_camposNSEL[$codcam] = $codcam;
@@ -198,7 +198,7 @@ class cl_formulario_relcampos {
         		$arr_tables[$codarq] = $codarq;
         	}
         }
-        for($i=0; $i<pg_numrows($result_camposFKSECN); $i++){
+        for($i=0; $i<pg_num_rows($result_camposFKSECN); $i++){
         	db_fieldsmemory($result_camposFKSECN, $i);
         	$where = "";
         	if(isset($campo_auxilio_sselecion) && trim($campo_auxilio_sselecion) != ""){
@@ -206,7 +206,7 @@ class cl_formulario_relcampos {
         	}
         	if(!isset($arr_tables[$arquivo])){
         		$result_campos = @db_query("select db_syscampo.codcam, rotulo, conteudo from db_syscampo inner join db_sysarqcamp on db_sysarqcamp.codcam = db_syscampo.codcam where codarq = ".$arquivo.$where);
-        		for($ii=0; $ii<pg_numrows($result_campos); $ii++){
+        		for($ii=0; $ii<pg_num_rows($result_campos); $ii++){
         			db_fieldsmemory($result_campos, $ii);
         			$arr_campos[$codcam] = $rotulo;
               $arr_camposNSEL[$codcam] = $codcam;
@@ -221,7 +221,7 @@ class cl_formulario_relcampos {
         	}
         	if(!isset($arr_tables[$codarq])){
         		$result_campos = @db_query("select db_syscampo.codcam, rotulo, conteudo from db_syscampo inner join db_sysarqcamp on db_sysarqcamp.codcam = db_syscampo.codcam where codarq = ".$codarq.$where);
-        		for($ii=0; $ii<pg_numrows($result_campos); $ii++){
+        		for($ii=0; $ii<pg_num_rows($result_campos); $ii++){
         			db_fieldsmemory($result_campos, $ii);
         			$arr_campos[$codcam] = $rotulo;
               $arr_camposNSEL[$codcam] = $codcam;
@@ -236,11 +236,11 @@ class cl_formulario_relcampos {
         	}
         }
         if(isset($campo_auxilio_sselecion) && $campo_auxilio_sselecion != ""){
-          $arr_selecionados = split(",",$campo_auxilio_sselecion);
+          $arr_selecionados = preg_split("#,#m",(string) $campo_auxilio_sselecion);
           for($i=0; $i<count($arr_selecionados); $i++){
         		$result_campos = @db_query("select db_syscampo.codcam, rotulo, conteudo from db_syscampo where codcam in (".$campo_auxilio_sselecion.") ");
         		if($result_campos != false){
-	        		for($ii=0; $ii<pg_numrows($result_campos); $ii++){
+	        		for($ii=0; $ii<pg_num_rows($result_campos); $ii++){
 	        			db_fieldsmemory($result_campos, $ii);
 	        			$arr_camposSEL[$codcam] = $rotulo;
                 $arr_camposSSEL[$codcam] = $codcam;
@@ -255,11 +255,11 @@ class cl_formulario_relcampos {
           }
         }
 
-      	$arr_camposFORK = Array();
+      	$arr_camposFORK = [];
         if(trim(implode(",",$arr_camposUSAR)) != ""){
         	$result_camposfiltro = @db_query("select distinct db_syscampo.codcam, conteudo from db_syscampo left join db_sysforkey on db_sysforkey.codcam = db_syscampo.codcam left join db_sysprikey on db_sysprikey.codcam = db_syscampo.codcam where (db_sysforkey.codcam is not null or db_sysprikey.codcam is not null) and db_syscampo.codcam in (".implode(",",$arr_camposUSAR).")");
         	if($result_camposfiltro != false){
-	        	for($ifil=0; $ifil<pg_numrows($result_camposfiltro); $ifil++){
+	        	for($ifil=0; $ifil<pg_num_rows($result_camposfiltro); $ifil++){
 	        		db_fieldsmemory($result_camposfiltro, $ifil);
 	            $arr_camposFORK[$codcam] = $codcam;
         		}
@@ -501,7 +501,7 @@ class cl_formulario_relcampos {
               }
 							function js_preenchepesquisa(chave){
 							  db_iframe_db_relat.hide();
-							  location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;
+							  location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;
 							}
               function js_nomearquivo(){
                 if(document.form1.gerafon.checked == true){

@@ -32,7 +32,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_passagemdestino_classe.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clpassagemdestino = new cl_passagemdestino;
 $clpassagemdestino->rotulo->label("tf37_sequencial");
@@ -95,12 +95,12 @@ $clpassagemdestino->rotulo->label("tf37_destino");
           $sql = $clpassagemdestino->sql_query( "", $campos, "tf37_sequencial", "" );
         }
 
-        $repassa = array();
+        $repassa = [];
         if( isset( $chave_tf37_destino ) ) {
-          $repassa = array(
+          $repassa = [
                             "chave_tf37_sequencial" => $chave_tf37_sequencial,
                             "chave_tf37_destino"    => $chave_tf37_destino
-                          );
+                          ];
         }
 
         echo '<div class="container">';

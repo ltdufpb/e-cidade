@@ -46,22 +46,22 @@ class AnexoIBalancoOrcamentario extends RelatoriosLegaisBase  {
   /**
    * @type stdClass[]
    */
-  private $aDespesas = array();
+  private $aDespesas = [];
 
   /**
    * @type stdClass[]
    */
-  private $aDespesasIntra = array();
+  private $aDespesasIntra = [];
 
   /**
    * @type stdClass[]
    */
-  private $aReceitas = array();
+  private $aReceitas = [];
 
   /**
    * @type stdClass[]
    */
-  private $aReceitasIntra = array();
+  private $aReceitasIntra = [];
 
   /**
    * Linha Inicial referente a Receita
@@ -115,7 +115,7 @@ class AnexoIBalancoOrcamentario extends RelatoriosLegaisBase  {
    * Linhas que são totalizadoras no relatório
    * @type array
    */
-  private static $aLinhasTotalizadoras = array(63, 71, 72, 73, 89, 97, 98, 99);
+  private static $aLinhasTotalizadoras = [63, 71, 72, 73, 89, 97, 98, 99];
 
   /**
    * @param integer $iAnoUsu ano de emissao do relatorio
@@ -176,15 +176,16 @@ class AnexoIBalancoOrcamentario extends RelatoriosLegaisBase  {
    * Carrega os dados para emissão do relatório
    * @return array
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     parent::getDados();
-    $aReservaRPPS        = array();
-    $aReservaContigencia = array();
+    $aReservaRPPS        = [];
+    $aReservaContigencia = [];
     $aInstituicao        = $this->getInstituicoes(true);
     foreach ($aInstituicao as $oInstituicao) {
 
-      if (in_array($oInstituicao->getTipo(), array(5 , 6))) {
+      if (in_array($oInstituicao->getTipo(), [5 , 6])) {
         $aReservaRPPS[$oInstituicao->getCodigo()] = $oInstituicao->getCodigo();
       } else {
         $aReservaContigencia[$oInstituicao->getCodigo()] = $oInstituicao->getCodigo();
@@ -321,11 +322,11 @@ class AnexoIBalancoOrcamentario extends RelatoriosLegaisBase  {
    */
   private function processarExerciciosAnteriores() {
 
-    $aWhereSuperavit = array(
+    $aWhereSuperavit = [
       "o46_tiposup in (1008, 1003)",
       "o49_data between '{$this->iAnoUsu}-01-01' and '{$this->getDataFinal()->getDate()}'",
       "o46_instit in ({$this->getInstituicoes()})"
-    );
+    ];
     $oDaoOrcSuplem      = new cl_orcsuplem();
     $sSqlBuscaSuperavit = $oDaoOrcSuplem->sql_query_suplementacoes(null, "coalesce(sum(o47_valor), 0) as total", null, implode(" and ", $aWhereSuperavit));
     $rsBuscaSuperavit   = db_query($sSqlBuscaSuperavit);
@@ -334,11 +335,11 @@ class AnexoIBalancoOrcamentario extends RelatoriosLegaisBase  {
     }
 
 
-    $aWhereCreditos = array(
+    $aWhereCreditos = [
       "o46_tiposup in (1012, 1013)",
       "o49_data between '{$this->getDataInicial()->getDate()}' and '{$this->getDataFinal()->getDate()}'",
       "o46_instit in ({$this->getInstituicoes()})"
-    );
+    ];
     $sSqlBuscaCreditos = $oDaoOrcSuplem->sql_query_suplementacoes(null, "coalesce(sum(o47_valor), 0) as total", null, implode(" and ", $aWhereCreditos));
     $rsBuscaCreditos   = db_query($sSqlBuscaCreditos);
     if (!$rsBuscaCreditos) {
@@ -404,7 +405,7 @@ class AnexoIBalancoOrcamentario extends RelatoriosLegaisBase  {
       $oStdRetorno->saldo                 = '-';
     }
 
-    if (in_array($oStdRetorno->ordem, array(74, 75, 76))) {
+    if (in_array($oStdRetorno->ordem, [74, 75, 76])) {
 
       $oStdRetorno->previsao_inicial      = '-';
       $oStdRetorno->receita_no_bimestre   = '-';
@@ -676,7 +677,7 @@ class AnexoIBalancoOrcamentario extends RelatoriosLegaisBase  {
    * @return string
    */
   private function getBordaLinha($iLinha) {
-    return in_array($iLinha,  array(63, 71, 72, 73, 89, 97, 98, 99)) ?  "TB" : "";
+    return in_array($iLinha,  [63, 71, 72, 73, 89, 97, 98, 99]) ?  "TB" : "";
   }
 
 

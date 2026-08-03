@@ -249,7 +249,7 @@ class Solicitacao
 
         $response = ProcessoEletronicoRepository::getInstancia()->salvar($processoEletronicoModel);
         if ($response->sucesso === true) {
-            $response->status = utf8_encode(urldecode($tipoProcessoRepository->getMensagem()));
+            $response->status = mb_convert_encoding(urldecode((string) $tipoProcessoRepository->getMensagem()), 'UTF-8', 'ISO-8859-1');
         }
         Log::debug("caiu em sucesso".json_encode($response));
         return $response;

@@ -82,11 +82,11 @@ foreach ($aDadosJulgamentoLicitacao as $oJulgamentoLicitacao) {
     $lPrimeiroLaco = false;
   }
   
-  $sUsuario    = str_pad($oJulgamentoLicitacao->pc92_usuario, 3, " ", STR_PAD_RIGHT);
+  $sUsuario    = str_pad((string) $oJulgamentoLicitacao->pc92_usuario, 3, " ", STR_PAD_RIGHT);
   $sUsuario   .= " - {$oJulgamentoLicitacao->usuario}";
   $sUsuario    = substr($sUsuario, 0, 31);
-  $sFornecedor = substr($oJulgamentoLicitacao->fornecedor, 0, 37);
-  $sMaterial   = substr($oJulgamentoLicitacao->pc01_descrmater, 0, 42);
+  $sFornecedor = substr((string) $oJulgamentoLicitacao->fornecedor, 0, 37);
+  $sMaterial   = substr((string) $oJulgamentoLicitacao->pc01_descrmater, 0, 42);
    
   $oPdf->setfont('arial', '', 8);
   

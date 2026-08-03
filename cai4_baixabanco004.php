@@ -29,8 +29,8 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $iInstit = db_getsession("DB_instit");
 ?>
@@ -48,7 +48,7 @@ $iInstit = db_getsession("DB_instit");
 if(isset($acertabanco)){
   $sqlbanco = "select * from disbanco where codret = $codret and classi is true and instit = {$iInstit}";
   $resultbanco = db_query($sqlbanco);
-  if (pg_numrows($resultbanco) == 0 ){
+  if (pg_num_rows($resultbanco) == 0 ){
      echo "<script>alert('Este banco ainda não foi classificado. Verifique!')</script>";
   }else{
      db_query("begin");

@@ -34,8 +34,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_itbinomecgm_classe.php"));
 require_once(modification("classes/db_cgm_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_POST);
+db_postmemory($_SERVER);
 
 $clitbinome    = new cl_itbinome;
 $clitbinomecgm = new cl_itbinomecgm;
@@ -57,9 +57,9 @@ if( isset($mostraitbinomecgm) && $mostraitbinomecgm != "" ){
       $it03_nome     = $z01_nome;
       $it03_sexo     = $z01_sexo == 'M' ? 'm' : 'f';
       if($it03_sexo == 'M'){
-        $aOptionsSexo = array('m'=>'Masculino');
+        $aOptionsSexo = ['m'=>'Masculino'];
       }else{
-        $aOptionsSexo = array('f'=>'Feminino');
+        $aOptionsSexo = ['f'=>'Feminino'];
       }
       $it03_cpfcnpj  = str_replace('-', '', str_replace('.', '', $z01_cgccpf));
       $it03_endereco = $z01_ender;
@@ -75,7 +75,7 @@ if( isset($mostraitbinomecgm) && $mostraitbinomecgm != "" ){
   }
 }
 
-if((isset($HTTP_POST_VARS["bt_opcao"]) && $HTTP_POST_VARS["bt_opcao"])=="Incluir"){
+if((isset($_POST["bt_opcao"]) && $_POST["bt_opcao"])=="Incluir"){
 
   db_inicio_transacao();
   $clitbinome->it03_tipo = "C";
@@ -125,7 +125,7 @@ if((isset($HTTP_POST_VARS["bt_opcao"]) && $HTTP_POST_VARS["bt_opcao"])=="Incluir
 </body>
 </html>
 <?php
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 
   if($clitbinome->erro_status=="0"){
 

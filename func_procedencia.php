@@ -32,18 +32,18 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_proced_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oRotulos    = new rotulocampo;
 $oRotulos->label("v03_codigo");
 $oRotulos->label("v03_descr");
 $oRotulos->label("v03_dcomp");
 
-$aTiposProcedencia = array(
+$aTiposProcedencia = [
   ""   => "Todas",
   "DI" => "Diversos",
   "DA" => "Dívida Ativa"
-);
+];
 
 $sCamposBaseProcedencias  = " codigo as sequencial,                              ";
 $sCamposBaseProcedencias .= " descricao_abreviada as dl_Descrição_Abrevidada,    ";
@@ -153,7 +153,7 @@ $sSqlBaseProcedencias .= "   arretipo on arretipo.k00_tipo = procedarretipo.v06_
   <tr>
     <td align="center" valign="top">
       <?php
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = "instituicao = " . db_getsession("DB_instit");
 
       if(!empty($sTiposDebitos)) {
@@ -184,7 +184,7 @@ $sSqlBaseProcedencias .= "   arretipo on arretipo.k00_tipo = procedarretipo.v06_
           $sql .= " WHERE ". implode(' AND ', $aWhere);
         }
 
-        $repassa = array();
+        $repassa = [];
         
         if(isset($chave_descricao)){
           $repassa["sequencial"] = $chave_codigo;

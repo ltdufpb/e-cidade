@@ -23,7 +23,7 @@ class LerCsv extends Csv
     public function read()
     {
         while (!feof($this->file)) {
-            yield fgetcsv($this->file, 0, $this->delimiter, $this->enclosure);
+            yield fgetcsv($this->file, 0, $this->delimiter, $this->enclosure, escape: '\\');
         }
     }
 

@@ -35,7 +35,7 @@ include(modification("classes/db_orcsuplemtipo_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("classes/db_orcprojeto_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcsuplem = new cl_orcsuplem;
 $clorcprojeto = new cl_orcprojeto;
@@ -74,9 +74,9 @@ if (isset($codsup) && $codsup !=""){
   db_fim_transacao($erro);
 }
 
-$identifica = array();
-$src        = array();
-$sizecampo  = array();
+$identifica = [];
+$src        = [];
+$sizecampo  = [];
 
 
 if ((isset($o48_coddocsup) && $o48_coddocsup > 0) && ($tiposup != 1050) ){

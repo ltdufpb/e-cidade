@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE veiccadconvenio
 class cl_veiccadconvenio { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ve17_sequencial = 0; 
-   var $ve17_descr = null; 
-   var $ve17_obs = null; 
+   public $ve17_sequencial = 0; 
+   public $ve17_descr = null; 
+   public $ve17_obs = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ve17_sequencial = int4 = Cód. Sequencial 
                  ve17_descr = varchar(40) = Descrição 
                  ve17_obs = text = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_veiccadconvenio() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiccadconvenio"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_veiccadconvenio {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ve17_sequencial = pg_result($result,0,0); 
+       $this->ve17_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from veiccadconvenio_ve17_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ve17_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ve17_sequencial)){
          $this->erro_sql = " Campo ve17_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_veiccadconvenio {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Convenios de veiculos ($this->ve17_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Convenios de veiculos já Cadastrado";
@@ -166,12 +166,12 @@ class cl_veiccadconvenio {
      $resaco = $this->sql_record($this->sql_query_file($this->ve17_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,11117,'$this->ve17_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1917,11117,'','".AddSlashes(pg_result($resaco,0,'ve17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1917,11118,'','".AddSlashes(pg_result($resaco,0,'ve17_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1917,11119,'','".AddSlashes(pg_result($resaco,0,'ve17_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1917,11117,'','".AddSlashes(pg_fetch_result($resaco,0,'ve17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1917,11118,'','".AddSlashes(pg_fetch_result($resaco,0,'ve17_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1917,11119,'','".AddSlashes(pg_fetch_result($resaco,0,'ve17_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_veiccadconvenio {
       $this->atualizacampos();
      $sql = " update veiccadconvenio set ";
      $virgula = "";
-     if(trim($this->ve17_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve17_sequencial"])){ 
+     if(trim((string) $this->ve17_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve17_sequencial"])){ 
        $sql  .= $virgula." ve17_sequencial = $this->ve17_sequencial ";
        $virgula = ",";
-       if(trim($this->ve17_sequencial) == null ){ 
+       if(trim((string) $this->ve17_sequencial) == null ){ 
          $this->erro_sql = " Campo Cód. Sequencial nao Informado.";
          $this->erro_campo = "ve17_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_veiccadconvenio {
          return false;
        }
      }
-     if(trim($this->ve17_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve17_descr"])){ 
+     if(trim((string) $this->ve17_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve17_descr"])){ 
        $sql  .= $virgula." ve17_descr = '$this->ve17_descr' ";
        $virgula = ",";
-       if(trim($this->ve17_descr) == null ){ 
+       if(trim((string) $this->ve17_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "ve17_descr";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_veiccadconvenio {
          return false;
        }
      }
-     if(trim($this->ve17_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve17_obs"])){ 
+     if(trim((string) $this->ve17_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve17_obs"])){ 
        $sql  .= $virgula." ve17_obs = '$this->ve17_obs' ";
        $virgula = ",";
-       if(trim($this->ve17_obs) == null ){ 
+       if(trim((string) $this->ve17_obs) == null ){ 
          $this->erro_sql = " Campo Observações nao Informado.";
          $this->erro_campo = "ve17_obs";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_veiccadconvenio {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11117,'$this->ve17_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ve17_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1917,11117,'".AddSlashes(pg_result($resaco,$conresaco,'ve17_sequencial'))."','$this->ve17_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1917,11117,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ve17_sequencial'))."','$this->ve17_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ve17_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1917,11118,'".AddSlashes(pg_result($resaco,$conresaco,'ve17_descr'))."','$this->ve17_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1917,11118,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ve17_descr'))."','$this->ve17_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ve17_obs"]))
-           $resac = db_query("insert into db_acount values($acount,1917,11119,'".AddSlashes(pg_result($resaco,$conresaco,'ve17_obs'))."','$this->ve17_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1917,11119,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ve17_obs'))."','$this->ve17_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_veiccadconvenio {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,11117,'$ve17_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1917,11117,'','".AddSlashes(pg_result($resaco,$iresaco,'ve17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1917,11118,'','".AddSlashes(pg_result($resaco,$iresaco,'ve17_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1917,11119,'','".AddSlashes(pg_result($resaco,$iresaco,'ve17_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1917,11117,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ve17_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1917,11118,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ve17_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1917,11119,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ve17_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from veiccadconvenio
@@ -345,7 +345,7 @@ class cl_veiccadconvenio {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:veiccadconvenio";
@@ -359,7 +359,7 @@ class cl_veiccadconvenio {
    function sql_query ( $ve17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -380,7 +380,7 @@ class cl_veiccadconvenio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -392,7 +392,7 @@ class cl_veiccadconvenio {
    function sql_query_file ( $ve17_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -413,7 +413,7 @@ class cl_veiccadconvenio {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

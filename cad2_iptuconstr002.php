@@ -27,8 +27,8 @@
 
 require_once(modification("fpdf151/pdf.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $head4 = "CARACTERÍSTICAS DE CONSTRUÇÕES";
 $oPdf  = new PDF();
@@ -48,14 +48,14 @@ if(isset($relatorio1)){
   // $chaves = são as caracteristicas da aba com as caracteristicas
   if(isset($chaves) && $chaves != ""){
 
-    $chaves = split("#",$chaves);
+    $chaves = preg_split("#\\##m",$chaves);
     for($i=0;$i<sizeof($chaves);$i++){
 
       // concatena na $codigo o código das caracteristicas selecionadas
       if($codigo == ""){
-        $codigo .= substr($chaves[$i],0,(strpos($chaves[$i],"-")));
+        $codigo .= substr((string) $chaves[$i],0,(strpos((string) $chaves[$i],"-")));
       }else{
-        $codigo .= ",".substr($chaves[$i],0,(strpos($chaves[$i],"-")));
+        $codigo .= ",".substr((string) $chaves[$i],0,(strpos((string) $chaves[$i],"-")));
       }
     }
     $where .= " and j48_caract in ($codigo)";
@@ -198,8 +198,8 @@ if(isset($setor) && $setor != ""){
     $quadra1 = $quadra;
     if(isset($setor) && $setor != ""){
 
-      $chaves  = split(",",$setor);
-      $chaves1 = split(",",$quadra);
+      $chaves  = preg_split("#,#m",(string) $setor);
+      $chaves1 = preg_split("#,#m",(string) $quadra);
       $and     = "";
       $setor   = "";
       $and     = "";
@@ -464,7 +464,7 @@ $sql = "select *,
             $pontuacao $ordem $order ";
 
 $result  = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 if($numrows == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem registros para o filtro selecionado.');
@@ -625,7 +625,7 @@ if(isset($j14_comruas) && $j14_comruas != "" && empty($j14_semruas)){
   $sSql    = "select j14_nome from ruas where j14_codigo in ($j14_comruas)";
   $result1 = db_query($sSql) or die($sSql);
 
-  for($x=0;$x<pg_numrows($result1);$x++){
+  for($x=0;$x<pg_num_rows($result1);$x++){
 
     db_fieldsmemory($result1,$x);
     $cod .= $vir.$j14_nome;
@@ -642,7 +642,7 @@ if(isset($j14_semruas) && $j14_semruas != "" && empty($j14_comruas)){
   $sSql    = "select j14_nome from ruas where j14_codigo in ($j14_semruas)";
   $result1 = db_query($sSql) or die($sSql);
 
-  for($x=0;$x<pg_numrows($result1);$x++){
+  for($x=0;$x<pg_num_rows($result1);$x++){
 
     db_fieldsmemory($result1,$x);
     $cod .= $vir.$j14_nome;
@@ -665,7 +665,7 @@ if (isset($listadas) and $listadas != "") {
   $sSql    = "select distinct j31_descr, j31_codigo from carconstr inner join caracter on j48_caract = j31_codigo {$sWhere}";
   $result1 = db_query($sSql) or die($sSql);
 
-  for($x=0;$x<pg_numrows($result1);$x++){
+  for($x=0;$x<pg_num_rows($result1);$x++){
     db_fieldsmemory($result1,$x);
     $cod .= $vir.$j31_codigo." - ".$j31_descr;
     $vir=", ";
@@ -681,7 +681,7 @@ if(isset($chaves_caract) && $chaves_caract != ""){
 
   $sSql    = "select distinct j31_descr, j31_codigo from carconstr inner join caracter on j48_caract = j31_codigo  where j31_codigo in ($chaves_caract)";
   $result1 = db_query($sSql) or die($sSql);
-  for($x=0;$x<pg_numrows($result1);$x++){
+  for($x=0;$x<pg_num_rows($result1);$x++){
     db_fieldsmemory($result1,$x);
     $cod .= $vir.$j31_codigo." - ".$j31_descr;
     $vir=",";
@@ -743,8 +743,8 @@ if(isset($setores) && $setores != ""){
 
   if(isset($setor) && $setor != ""){
 
-    $chaves  = split(",",$setores);
-    $chaves1 = split(",",$quadra);
+    $chaves  = preg_split("#,#m",$setores);
+    $chaves1 = preg_split("#,#m",(string) $quadra);
     $and     = "";
     $setores = "";
 
@@ -777,7 +777,7 @@ if(isset($grupo) && $grupo != ""){
   $oPdf->Cell(40,05,"QUANTIDADE",1,0,"C",1);
   $oPdf->Cell(40,05,"ÀREA ",1,1,"C",1);
 
-  for($i=0;$i<pg_numrows($res);$i++){
+  for($i=0;$i<pg_num_rows($res);$i++){
 
     db_fieldsmemory($res,$i);
     $oPdf->Cell(80,05,"".$j31_descr,1,0,"C");

@@ -32,8 +32,8 @@ require_once(modification("classes/db_setor_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("classes/db_sanitario_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clsetor = new cl_setor;
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clsetor->rotulo->label();
@@ -127,7 +127,7 @@ $clrotulo->label("z01_nome");
           <td colspan=3 align='left' >
 	          <?php
 
-	            $tipo_t = array("T"=>"Todos","B"=>"Territorial","P"=>"Predial");
+	            $tipo_t = ["T"=>"Todos","B"=>"Territorial","P"=>"Predial"];
 	            db_select("terreno",$tipo_t,true,2);
 	          ?>
 	        </td>
@@ -150,7 +150,7 @@ $clrotulo->label("z01_nome");
 	        </td>
           <td colspan=3 align='left' >
 	          <?php
-	            $tipo_m = array("n"=>"Não","s"=>"Sim");
+	            $tipo_m = ["n"=>"Não","s"=>"Sim"];
 	            db_select("mostra",$tipo_m,true,2);
 	          ?>
 	        </td>

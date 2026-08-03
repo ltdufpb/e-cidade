@@ -43,8 +43,6 @@ use ECidade\RecursosHumanos\ESocial\Model\Formulario\Tipo;
  */
 class BeneficioTermino extends ProcessamentoAbstract implements ProcessamentoInterface
 {
-    private $cgm;
-
     private $mes;
     private $ano;
 
@@ -69,9 +67,8 @@ class BeneficioTermino extends ProcessamentoAbstract implements ProcessamentoInt
         }
     }
 
-    public function __construct($cgm)
+    public function __construct(private $cgm)
     {
-        $this->cgm = $cgm;
     }
 
     /**

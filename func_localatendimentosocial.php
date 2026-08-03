@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_localatendimentosocial_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllocalatendimentosocial = new cl_localatendimentosocial;
 $cllocalatendimentosocial->rotulo->label("as16_sequencial");
 $cllocalatendimentosocial->rotulo->label("as16_descricao");
@@ -98,9 +98,9 @@ $cllocalatendimentosocial->rotulo->label("as16_descricao");
         }else{
            $sql = $cllocalatendimentosocial->sql_query("",$campos,"as16_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_as16_descricao)){
-          $repassa = array("chave_as16_sequencial"=>$chave_as16_sequencial,"chave_as16_descricao"=>$chave_as16_descricao);
+          $repassa = ["chave_as16_sequencial"=>$chave_as16_sequencial,"chave_as16_descricao"=>$chave_as16_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

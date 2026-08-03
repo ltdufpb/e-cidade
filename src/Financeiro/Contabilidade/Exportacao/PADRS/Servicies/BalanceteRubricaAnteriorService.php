@@ -13,19 +13,13 @@ class BalanceteRubricaAnteriorService extends PadService
     protected $fileName = 'BRUB_ANT.TXT';
 
     /**
-     * @var int
-     */
-    protected $ano;
-
-    /**
      * BalanceteReceitaAnteriorService constructor.
      * @param Instituicao[] $instituicoes
      * @param integer $ano para calculo
      */
-    public function __construct(array $instituicoes, $ano)
+    public function __construct(array $instituicoes, protected $ano)
     {
         $this->instituicoes = $instituicoes;
-        $this->ano = $ano;
     }
 
     /**
@@ -195,12 +189,9 @@ class BalanceteRubricaAnteriorService extends PadService
     protected function getBuilder()
     {
         $ano = $this->ano + 1;
-        switch ($ano) {
-            case 2020:
-            case 2021:
-                return new BalanceteRubricaAnteriorBuilder2020();
-            default:
-                throw new Exception("Layout {$this->fileName} não foi implementado para o ano {$ano}.");
-        }
+        return match ($ano) {
+            2020, 2021 => new BalanceteRubricaAnteriorBuilder2020(),
+            default => throw new Exception("Layout {$this->fileName} não foi implementado para o ano {$ano}."),
+        };
     }
 }

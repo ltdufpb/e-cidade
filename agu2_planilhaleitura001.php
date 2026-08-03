@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $rotulo = new rotulocampo();
 $rotulo->label("x21_exerc");
@@ -122,7 +122,7 @@ function js_emite(){
 		<td align="right"><strong>Tipo de Emiss&atilde;o:</strong></td>
 		<td>
 		<?php 
-			$aTipoArquivo	=	array('1'=>'Relat&oacute;rio PDF', '2'=>'Arquivo CSV');
+			$aTipoArquivo	=	['1'=>'Relat&oacute;rio PDF', '2'=>'Arquivo CSV'];
 			db_select('tipoArquivo', $aTipoArquivo, true, 1, 'style="width: 200px;"')
 		?>
 		</td>
@@ -132,7 +132,7 @@ function js_emite(){
       </td>
       <td>
       <?php 
-         $x = array('1'=>'Todos os Logradouros', '2'=>'Somente logradouros não exportados para o coletor.');
+         $x = ['1'=>'Todos os Logradouros', '2'=>'Somente logradouros não exportados para o coletor.'];
          db_select("filtro", $x, true, 1);
       ?>
       </td>

@@ -32,8 +32,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_biblioteca_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbiblioteca = new cl_biblioteca;
 $clrotulo = new rotulocampo;
 $clrotulo->label("bi06_seq");
@@ -147,9 +147,9 @@ if($clbiblioteca->numrows!=0){
                  ) as x
            ) as x
            ";
-   $repassa = array();
+   $repassa = [];
    if(isset($chave_bi23_codigo)){
-    $repassa = array("chave_bi06_seq"=>$chave_bi06_seq,"chave_bi06_titulo"=>$chave_bi06_titulo,"reserva"=>$reserva);
+    $repassa = ["chave_bi06_seq"=>$chave_bi06_seq,"chave_bi06_titulo"=>$chave_bi06_titulo,"reserva"=>$reserva];
    }
    if(!isset($pesquisa_chave)){
     $sql .= " ORDER BY bi18_devolucao DESC";

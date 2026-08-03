@@ -15,7 +15,7 @@
   
   $rsSqlCarteiraConvenio = db_query($sSqlCarteiraConvenio);
   $oCarteiraConvenio     = db_utils::fieldsMemory($rsSqlCarteiraConvenio,0);
-  $this->carteira        = $oCarteiraConvenio->ar13_carteira."/".str_pad($oCarteiraConvenio->ar13_variacao,3,'0',STR_PAD_LEFT);
+  $this->carteira        = $oCarteiraConvenio->ar13_carteira."/".str_pad((string) $oCarteiraConvenio->ar13_variacao,3,'0',STR_PAD_LEFT);
  
   $this->ufcgm           = "";
   $this->descr11_2       = "";

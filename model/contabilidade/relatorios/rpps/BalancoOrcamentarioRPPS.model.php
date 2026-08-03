@@ -46,7 +46,7 @@ class BalancoOrcamentarioRPPS extends RelatoriosLegaisBase {
     }
 
     $aInstituicoesRetorno = db_utils::getCollectionByRecord($rsInstituicoesRPPS);
-    $aInstituicoes        = array();
+    $aInstituicoes        = [];
     foreach ($aInstituicoesRetorno as $oInstituicao) {
       $aInstituicoes[] = $oInstituicao->codigo;
     }
@@ -58,13 +58,14 @@ class BalancoOrcamentarioRPPS extends RelatoriosLegaisBase {
    * Retorna as linhas processadas do relatorio
    * @return array lista de linhas processadas do relatorio
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
     $sWhereReceita = " o70_instit in ({$this->getInstituicoes()}) ";
     $sWhereDespesa = " o58_instit in ({$this->getInstituicoes()}) ";
 
-    $aLinhasComReceita = array(2, 3, 4, 6, 7, 8, 10, 11, 12, 14, 15, 16);
-    $aLinhasComDespesa = array(23, 24, 26, 27, 28, 31,33, 34, 38, 39, 41, 42, 43, 46, 48, 49);
+    $aLinhasComReceita = [2, 3, 4, 6, 7, 8, 10, 11, 12, 14, 15, 16];
+    $aLinhasComDespesa = [23, 24, 26, 27, 28, 31,33, 34, 38, 39, 41, 42, 43, 46, 48, 49];
     $rsBalanceteReceita = db_receitasaldo(11, 1, 3, true,
                                           $sWhereReceita,
                                           $this->iAnoUsu,
@@ -108,7 +109,7 @@ class BalancoOrcamentarioRPPS extends RelatoriosLegaisBase {
         $oDiferenca->formula = "($oPrevisao->formula) - ($oExecucao->formula)";
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteReceita,
                                                    $oLinha,
-                                                   array($oPrevisao, $oExecucao, $oDiferenca),
+                                                   [$oPrevisao, $oExecucao, $oDiferenca],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_RECEITA
                                                   );
 
@@ -133,7 +134,7 @@ class BalancoOrcamentarioRPPS extends RelatoriosLegaisBase {
         $oDiferenca->formula = "($oFixacao->formula) - ($oExecucao->formula)";
         RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteDespesa,
                                                    $oLinha,
-                                                   array($oFixacao, $oExecucao, $oDiferenca),
+                                                   [$oFixacao, $oExecucao, $oDiferenca],
                                                    RelatoriosLegaisBase::TIPO_CALCULO_DESPESA
                                                   );
 

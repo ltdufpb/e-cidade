@@ -40,7 +40,7 @@ class LayoutTxt
     private $idLayout;
     private $filePath;
     private $formUsesDataLoad = false;
-    private $log = array();
+    private $log = [];
 
     public function setIdForm($idForm)
     {
@@ -85,7 +85,7 @@ class LayoutTxt
         $lines = $layout->getLines();
         $keys = $this->mapKeys();
 
-        $dataParse = array();
+        $dataParse = [];
         foreach ($lines as $i => $line) {
             $propriedades = $line->getProperties();
 
@@ -94,18 +94,18 @@ class LayoutTxt
                     continue;
                 }
 
-                $value = trim($line->{$campo});
+                $value = trim((string) $line->{$campo});
                 if (array_key_exists($propriedade['id'], $keys)) {
                     $this->addIdentifiers($dataParse, $i, $keys[$propriedade['id']], $value);
                     continue;
                 }
 
-                $dataParse[$i][] = (object)array(
+                $dataParse[$i][] = (object)[
                     'id_campo' => $propriedade['id'],
                     'nome_campo' => $propriedade[6],
                     'identificador' => $campo,
                     'resposta' => $value
-                );
+                ];
             }
         }
 
@@ -130,19 +130,19 @@ class LayoutTxt
         }
 
         if (pg_num_rows($rs) > 0) {
-            $keys = array();
+            $keys = [];
             \db_utils::makeCollectionFromRecord($rs, function ($data) use (&$keys) {
-                $keys[$data->layoutcampo] = (object) array(
+                $keys[$data->layoutcampo] = (object) [
                     'layoutcampo' =>$data->layoutcampo,
                     'tabela' =>$data->tabela,
                     'campo' =>$data->campo,
-                );
+                ];
             });
 
             return $keys;
         }
 
-        return array();
+        return [];
     }
 
 
@@ -168,7 +168,7 @@ class LayoutTxt
      */
     private function preparingFillForm($fromToFormFields, array $dataParse)
     {
-        $fills = array();
+        $fills = [];
 
 
         // cada objeto $dataToFill representará um preenchimento
@@ -246,10 +246,10 @@ class LayoutTxt
      */
     private function addIdentifiers(&$dataParse, $line, $object, $value)
     {
-        $dataParse[$line]['identifiers'][$object->tabela][] = (object) array (
+        $dataParse[$line]['identifiers'][$object->tabela][] = (object)  [
             'campo' => $object->campo,
             'valor' => $value
-        );
+        ];
     }
 
     public function fazAMao()

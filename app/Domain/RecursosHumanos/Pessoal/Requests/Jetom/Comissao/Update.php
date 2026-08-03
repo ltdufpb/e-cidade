@@ -11,6 +11,7 @@ class Update extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -23,7 +24,7 @@ class Update extends BaseFormRequest
     {
 
         // dd($this->request->all());
-        return $this->preValidacaoRule() ? $this->preValidacaoRule() : [
+        return $this->preValidacaoRule() ?: [
             'id' => 'required|integer|exists:jetomcomissao,rh242_sequencial',
             'instituicao' => [
                 'required',
@@ -52,25 +53,26 @@ class Update extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "id.required" => utf8_encode("Código da comissão não informado."),
-            "id.integer" => utf8_encode("Código inválido da comissão."),
-            "id.exists" => utf8_encode("Comissão não encontrada."),
-            "descricao.required" => utf8_encode("Descrição da comissão não informada."),
-            "descricao.string" => utf8_encode("Descrição inválida da comissão."),
-            "descricao.unique" => utf8_encode("Encontrada outra comissão com o mesmo nome na instituição."),
-            "descricao.max" => utf8_encode("Excedido o limite máximo de 50 caracteres para a descrição da comissão."),
-            "instituicao.required" => utf8_encode("Instituição da comissão não informada."),
-            "instituicao.integer" => utf8_encode("Instituição inválida da comissão."),
+            "id.required" => mb_convert_encoding("Código da comissão não informado.", 'UTF-8', 'ISO-8859-1'),
+            "id.integer" => mb_convert_encoding("Código inválido da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "id.exists" => mb_convert_encoding("Comissão não encontrada.", 'UTF-8', 'ISO-8859-1'),
+            "descricao.required" => mb_convert_encoding("Descrição da comissão não informada.", 'UTF-8', 'ISO-8859-1'),
+            "descricao.string" => mb_convert_encoding("Descrição inválida da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "descricao.unique" => mb_convert_encoding("Encontrada outra comissão com o mesmo nome na instituição.", 'UTF-8', 'ISO-8859-1'),
+            "descricao.max" => mb_convert_encoding("Excedido o limite máximo de 50 caracteres para a descrição da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "instituicao.required" => mb_convert_encoding("Instituição da comissão não informada.", 'UTF-8', 'ISO-8859-1'),
+            "instituicao.integer" => mb_convert_encoding("Instituição inválida da comissão.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

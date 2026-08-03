@@ -68,7 +68,7 @@
   
   if ($oDaoParametros->numrows > 0) {
   	
-  	if (!strstr($sDataBase, "/")) {
+  	if (!strstr((string) $sDataBase, "/")) {
   		
   	  echo('<table style="width:90%;">');
   	  echo('  <tr> ');
@@ -87,7 +87,7 @@
   		
   	} 
   	
-  	$aDataBase = explode("/", $sDataBase);
+  	$aDataBase = explode("/", (string) $sDataBase);
   	
   	$iDiaDB    = $aDataBase[0];
   	$iMesDB    = $aDataBase[1];
@@ -286,7 +286,7 @@
   	  
   	  for ($iContMeses = 0; $iContMeses < count($aMeses); $iContMeses++) {
   	  	
-  	  	$aDiaMes = explode(",", $aMeses[$iContMeses]);
+  	  	$aDiaMes = explode(",", (string) $aMeses[$iContMeses]);
   	  	$oPdf->Cell($iLargIndividual * $aDiaMes[1], 4, $aDiaMes[0], 1, 0, "C", 0);
   	  	
   	  }
@@ -310,7 +310,7 @@
 
       for ($iContDias = 0; $iContDias < count($aDias); $iContDias++) {
 
-        $iDia = explode("-", $aDias[$iContDias]);
+        $iDia = explode("-", (string) $aDias[$iContDias]);
         $oPdf->Cell($iLargIndividual, 4, $iDia[0], 1, 0, "C", 0);
 
       }
@@ -402,10 +402,10 @@
 
       } else {
 
-        if (trim($oDadosMatricula->ed60_c_situacao) != "MATRICULADO") {
+        if (trim((string) $oDadosMatricula->ed60_c_situacao) != "MATRICULADO") {
 
           $oPdf->SetFont('Arial', 'b', 11);
-          $oPdf->Cell($iLargIndividual * $iColunas, 4, trim($oDadosMatricula->ed60_c_situacao), 1, 0, "C", 0);
+          $oPdf->Cell($iLargIndividual * $iColunas, 4, trim((string) $oDadosMatricula->ed60_c_situacao), 1, 0, "C", 0);
           $oPdf->SetFont('Arial', 'b', 8);
 
         } else {
@@ -449,7 +449,7 @@
 
           for ($iContMeses = 0; $iContMeses < count($aMeses); $iContMeses++) {
 
-            $iMes = explode("-", $aMeses[$iContMeses]);
+            $iMes = explode("-", (string) $aMeses[$iContMeses]);
             $oPdf->Cell($iLargIndividual * $iMes[1], 4, $iMes[0], 1, 0, "C", 0);
 
           }
@@ -473,7 +473,7 @@
 
           for ($iContDias = 0; $iContDias < count($aDias); $iContDias++) {
 
-            $iDia = explode("-", $aDias[$iContDias]);
+            $iDia = explode("-", (string) $aDias[$iContDias]);
             $oPdf->Cell($iLargIndividual, 4, $iDia[0], 1, 0, "C", 0);
 
           }
@@ -611,7 +611,7 @@
           	
     }
   
-    $oPdf->Cell(10, 4, substr($oDadosProcAval->ed37_c_tipo, 0, 5), 1, 0, "C", 0);
+    $oPdf->Cell(10, 4, substr((string) $oDadosProcAval->ed37_c_tipo, 0, 5), 1, 0, "C", 0);
     $oPdf->Cell(5, 4, "F", 1, 0, "C", 0);
   
     if ($oGet->lAbono == "true") {
@@ -716,17 +716,17 @@
   	
   	  $lCor = $lCor == true ? false : true;
   	
-  	  if (trim($oDadosProcAval->ed37_c_tipo) == "NOTA") {
+  	  if (trim((string) $oDadosProcAval->ed37_c_tipo) == "NOTA") {
   	  
   	    $sCampoAval  = " ed72_i_valornota IS NULL ";
   	    $sCampoAval2 = " ed72_i_valornota IS NOT NULL ";	
   		
-  	  } elseif (trim($oDadosProcAval->ed37_c_tipo) == "NIVEL") {
+  	  } elseif (trim((string) $oDadosProcAval->ed37_c_tipo) == "NIVEL") {
   	  
   	    $sCampoAval  = " ed72_c_valorconceito = '' ";
   	    $sCampoAval2 = " ed72_c_valorconceito != '' ";
   		
-  	  } elseif (trim($oDadosProcAval->ed37_c_tipo) == "PARECER") {
+  	  } elseif (trim((string) $oDadosProcAval->ed37_c_tipo) == "PARECER") {
   		
   	    $sCampoAval  = " ed72_t_parecer = '' ";
   	    $sCampoAval2 = " ed72_t_parecer != '' ";
@@ -754,7 +754,7 @@
   	
   	  $oPdf->SetFont('Arial', '', 8);
   	  $oPdf->Cell(5, 4, $oDadosMatricula2->ed60_i_numaluno, 1, 0, "C", $lCor);
-  	  $oPdf->Cell(40, 4, substr($oDadosMatricula2->ed47_v_nome, 0, 23), 1, 0, "L", $lCor);
+  	  $oPdf->Cell(40, 4, substr((string) $oDadosMatricula2->ed47_v_nome, 0, 23), 1, 0, "L", $lCor);
   	
   	  if ($oGet->lSexo == "true") {
   	    $oPdf->Cell(5, 4, $oDadosMatricula2->ed47_v_sexo, 1, 0, "C", $lCor);
@@ -773,7 +773,7 @@
   	    $oPdf->Cell(5, 4, substr($aInfoAnterior[1], 0, 1), 1, 0, "C", $lCor);
   	  }
   	
-  	  if (trim($oDadosMatricula2->ed60_c_situacao) == "MATRICULADO") {
+  	  if (trim((string) $oDadosMatricula2->ed60_c_situacao) == "MATRICULADO") {
   	  
   	    $sCamposDiario  = " ed37_c_minimoaprov as minperiodo,ed72_i_procavaliacao,ed72_c_valorconceito, ";
   	    $sCamposDiario .= " ed72_i_valornota,ed72_c_amparo,ed37_c_tipo,ed72_i_escola,ed72_c_tipo, ";
@@ -828,7 +828,7 @@
   	  	  	    $fAprov = "";
   	  	  	  }
   	  	  	
-  	  	  	  if (trim($oDadosDiario->ed37_c_tipo) == "NOTA" && $fAprov < $oDadosDiario->minperiodo) {
+  	  	  	  if (trim((string) $oDadosDiario->ed37_c_tipo) == "NOTA" && $fAprov < $oDadosDiario->minperiodo) {
   	  	  	  
   	  	  	    $oPdf->SetFont('Arial', 'b', 10);
   	  	  	    $oPdf->Cell(10, 4, $sNE.$fAprov, 1, 0, "C", $lCor);	
@@ -892,7 +892,7 @@
   	            || $oDadosProcResult->obtencao == "MP"
   	            || $oDadosProcResult->obtencao == "SO")) {
   	  	
-  	      if (trim($oDadosDiario->ed37_c_tipo) == "NOTA") {
+  	      if (trim((string) $oDadosDiario->ed37_c_tipo) == "NOTA") {
   	    	
   	        if ($oDadosProcResult->obtencao == "ME") {
   	      	
@@ -1144,10 +1144,10 @@
   	      	
   	        }
   	      
-  	        $sResFinal      = trim($oDadosMatricula2->ed60_c_situacao) != "MATRICULADO" 
+  	        $sResFinal      = trim((string) $oDadosMatricula2->ed60_c_situacao) != "MATRICULADO" 
   	                          || $oDadosAvaliacao->aprvto == "" ? "" : $sResFinal;
   	                        
-  	        $sNotaProjetada = trim($oDadosMatricula2->ed60_c_situacao) != "MATRICULADO" 
+  	        $sNotaProjetada = trim((string) $oDadosMatricula2->ed60_c_situacao) != "MATRICULADO" 
   	                          || $iProjetada == "" ? "" : $sNotaProjetada;
   	                        
   	        if ($iLinhasDiarioAval2 == 0) {
@@ -1159,7 +1159,7 @@
   	      
   	        if (($iPriAval + 2) <= $oDadosProcAval->ed41_i_sequencia) {
   	      	
-  	      	  if (trim($oDadosDiario->ed37_c_tipo) == "NOTA" 
+  	      	  if (trim((string) $oDadosDiario->ed37_c_tipo) == "NOTA" 
   	      	      && $sResFinal < @$oDadosProcResult->minimoaprovres) {
   	      		
   	      	    $oPdf->SetFont('Arial', 'b', 10);
@@ -1275,7 +1275,7 @@
   	  	  	  $sAprovAtual = "";
   	  	    }
   	  	  
-  	  	    if (trim($oDadosDiarioAval2->ed37_c_tipo) == "NOTA"
+  	  	    if (trim((string) $oDadosDiarioAval2->ed37_c_tipo) == "NOTA"
   	  	        && $sAprovAtual < @$oDadosProcResult->minimoaprovres) {
   	  	  	
   	  	      $oPdf->SetFont('Arial', 'b', 10);
@@ -1345,7 +1345,7 @@
   	  }
   	
   	  if ($oDadosMatricula2->ed60_c_situacao != "MATRICULADO") {
-  	    $oPdf->Cell(18 + ($iQuadros * 5), 4, trim($oDadosMatricula2->ed60_c_situacao), 1, 1, "C", $lCor);
+  	    $oPdf->Cell(18 + ($iQuadros * 5), 4, trim((string) $oDadosMatricula2->ed60_c_situacao), 1, 1, "C", $lCor);
   	  } else {
   	  
   	    if ($amparo == "S") {
@@ -1506,7 +1506,7 @@
   	          	
   	    }
   	  
-  	    $oPdf->Cell(10, 4, substr($oDadosDiario->ed37_c_tipo, 0, 5), 1, 0, "C", 0);
+  	    $oPdf->Cell(10, 4, substr((string) $oDadosDiario->ed37_c_tipo, 0, 5), 1, 0, "C", 0);
   	    $oPdf->Cell(5, 4, "F", 1, 0, "C", 0);
   	  
   	    if ($oGet->lAbono == "true") {

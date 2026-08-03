@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE sau_prestadorhorarios
 class cl_sau_prestadorhorarios {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $s112_i_codigo = 0;
-   var $s112_i_prestadorvinc = 0;
-   var $s112_i_diasemana = 0;
-   var $s112_c_horaini = null;
-   var $s112_c_horafim = null;
-   var $s112_i_fichas = 0;
-   var $s112_i_reservas = 0;
-   var $s112_c_tipograde = null;
-   var $s112_i_tipoficha = 0;
-   var $s112_d_valinicial_dia = null;
-   var $s112_d_valinicial_mes = null;
-   var $s112_d_valinicial_ano = null;
-   var $s112_d_valinicial = null;
-   var $s112_d_valfinal_dia = null;
-   var $s112_d_valfinal_mes = null;
-   var $s112_d_valfinal_ano = null;
-   var $s112_d_valfinal = null;
+   public $s112_i_codigo = 0;
+   public $s112_i_prestadorvinc = 0;
+   public $s112_i_diasemana = 0;
+   public $s112_c_horaini = null;
+   public $s112_c_horafim = null;
+   public $s112_i_fichas = 0;
+   public $s112_i_reservas = 0;
+   public $s112_c_tipograde = null;
+   public $s112_i_tipoficha = 0;
+   public $s112_d_valinicial_dia = null;
+   public $s112_d_valinicial_mes = null;
+   public $s112_d_valinicial_ano = null;
+   public $s112_d_valinicial = null;
+   public $s112_d_valfinal_dia = null;
+   public $s112_d_valfinal_mes = null;
+   public $s112_d_valfinal_ano = null;
+   public $s112_d_valfinal = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  s112_i_codigo = int4 = Código
                  s112_i_prestadorvinc = int4 = Prestador Vinculo
                  s112_i_diasemana = int4 = Dia da Semana
@@ -74,10 +74,10 @@ class cl_sau_prestadorhorarios {
                  s112_d_valfinal = date = Validade Final
                  ";
    //funcao construtor da classe
-   function cl_sau_prestadorhorarios() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_prestadorhorarios");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -211,10 +211,10 @@ class cl_sau_prestadorhorarios {
          $this->erro_status = "0";
          return false;
        }
-       $this->s112_i_codigo = pg_result($result,0,0);
+       $this->s112_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from sau_prestadorhorarios_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $s112_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $s112_i_codigo)){
          $this->erro_sql = " Campo s112_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -262,7 +262,7 @@ class cl_sau_prestadorhorarios {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Prestador Horários ($this->s112_i_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Prestador Horários já Cadastrado";
@@ -291,20 +291,20 @@ class cl_sau_prestadorhorarios {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,13576,'$this->s112_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,2375,13576,'','".AddSlashes(pg_result($resaco,0,'s112_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2375,13577,'','".AddSlashes(pg_result($resaco,0,'s112_i_prestadorvinc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2375,13578,'','".AddSlashes(pg_result($resaco,0,'s112_i_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2375,13579,'','".AddSlashes(pg_result($resaco,0,'s112_c_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2375,13580,'','".AddSlashes(pg_result($resaco,0,'s112_c_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2375,13581,'','".AddSlashes(pg_result($resaco,0,'s112_i_fichas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2375,13582,'','".AddSlashes(pg_result($resaco,0,'s112_i_reservas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2375,13583,'','".AddSlashes(pg_result($resaco,0,'s112_c_tipograde'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2375,13584,'','".AddSlashes(pg_result($resaco,0,'s112_i_tipoficha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2375,13585,'','".AddSlashes(pg_result($resaco,0,'s112_d_valinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2375,13586,'','".AddSlashes(pg_result($resaco,0,'s112_d_valfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2375,13576,'','".AddSlashes(pg_fetch_result($resaco,0,'s112_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2375,13577,'','".AddSlashes(pg_fetch_result($resaco,0,'s112_i_prestadorvinc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2375,13578,'','".AddSlashes(pg_fetch_result($resaco,0,'s112_i_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2375,13579,'','".AddSlashes(pg_fetch_result($resaco,0,'s112_c_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2375,13580,'','".AddSlashes(pg_fetch_result($resaco,0,'s112_c_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2375,13581,'','".AddSlashes(pg_fetch_result($resaco,0,'s112_i_fichas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2375,13582,'','".AddSlashes(pg_fetch_result($resaco,0,'s112_i_reservas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2375,13583,'','".AddSlashes(pg_fetch_result($resaco,0,'s112_c_tipograde'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2375,13584,'','".AddSlashes(pg_fetch_result($resaco,0,'s112_i_tipoficha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2375,13585,'','".AddSlashes(pg_fetch_result($resaco,0,'s112_d_valinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2375,13586,'','".AddSlashes(pg_fetch_result($resaco,0,'s112_d_valfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -314,10 +314,10 @@ class cl_sau_prestadorhorarios {
       $this->atualizacampos();
      $sql = " update sau_prestadorhorarios set ";
      $virgula = "";
-     if(trim($this->s112_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_codigo"])){
+     if(trim((string) $this->s112_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_codigo"])){
        $sql  .= $virgula." s112_i_codigo = $this->s112_i_codigo ";
        $virgula = ",";
-       if(trim($this->s112_i_codigo) == null ){
+       if(trim((string) $this->s112_i_codigo) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "s112_i_codigo";
          $this->erro_banco = "";
@@ -327,10 +327,10 @@ class cl_sau_prestadorhorarios {
          return false;
        }
      }
-     if(trim($this->s112_i_prestadorvinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_prestadorvinc"])){
+     if(trim((string) $this->s112_i_prestadorvinc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_prestadorvinc"])){
        $sql  .= $virgula." s112_i_prestadorvinc = $this->s112_i_prestadorvinc ";
        $virgula = ",";
-       if(trim($this->s112_i_prestadorvinc) == null ){
+       if(trim((string) $this->s112_i_prestadorvinc) == null ){
          $this->erro_sql = " Campo Prestador Vinculo não informado.";
          $this->erro_campo = "s112_i_prestadorvinc";
          $this->erro_banco = "";
@@ -340,10 +340,10 @@ class cl_sau_prestadorhorarios {
          return false;
        }
      }
-     if(trim($this->s112_i_diasemana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_diasemana"])){
+     if(trim((string) $this->s112_i_diasemana)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_diasemana"])){
        $sql  .= $virgula." s112_i_diasemana = $this->s112_i_diasemana ";
        $virgula = ",";
-       if(trim($this->s112_i_diasemana) == null ){
+       if(trim((string) $this->s112_i_diasemana) == null ){
          $this->erro_sql = " Campo Dia da Semana não informado.";
          $this->erro_campo = "s112_i_diasemana";
          $this->erro_banco = "";
@@ -353,10 +353,10 @@ class cl_sau_prestadorhorarios {
          return false;
        }
      }
-     if(trim($this->s112_c_horaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_c_horaini"])){
+     if(trim((string) $this->s112_c_horaini)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_c_horaini"])){
        $sql  .= $virgula." s112_c_horaini = '$this->s112_c_horaini' ";
        $virgula = ",";
-       if(trim($this->s112_c_horaini) == null ){
+       if(trim((string) $this->s112_c_horaini) == null ){
          $this->erro_sql = " Campo Hora Inicial não informado.";
          $this->erro_campo = "s112_c_horaini";
          $this->erro_banco = "";
@@ -366,10 +366,10 @@ class cl_sau_prestadorhorarios {
          return false;
        }
      }
-     if(trim($this->s112_c_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_c_horafim"])){
+     if(trim((string) $this->s112_c_horafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_c_horafim"])){
        $sql  .= $virgula." s112_c_horafim = '$this->s112_c_horafim' ";
        $virgula = ",";
-       if(trim($this->s112_c_horafim) == null ){
+       if(trim((string) $this->s112_c_horafim) == null ){
          $this->erro_sql = " Campo Hora Final não informado.";
          $this->erro_campo = "s112_c_horafim";
          $this->erro_banco = "";
@@ -379,10 +379,10 @@ class cl_sau_prestadorhorarios {
          return false;
        }
      }
-     if(trim($this->s112_i_fichas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_fichas"])){
+     if(trim((string) $this->s112_i_fichas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_fichas"])){
        $sql  .= $virgula." s112_i_fichas = $this->s112_i_fichas ";
        $virgula = ",";
-       if(trim($this->s112_i_fichas) == null ){
+       if(trim((string) $this->s112_i_fichas) == null ){
          $this->erro_sql = " Campo Fichas não informado.";
          $this->erro_campo = "s112_i_fichas";
          $this->erro_banco = "";
@@ -392,10 +392,10 @@ class cl_sau_prestadorhorarios {
          return false;
        }
      }
-     if(trim($this->s112_i_reservas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_reservas"])){
+     if(trim((string) $this->s112_i_reservas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_reservas"])){
        $sql  .= $virgula." s112_i_reservas = $this->s112_i_reservas ";
        $virgula = ",";
-       if(trim($this->s112_i_reservas) == null ){
+       if(trim((string) $this->s112_i_reservas) == null ){
          $this->erro_sql = " Campo Reservas não informado.";
          $this->erro_campo = "s112_i_reservas";
          $this->erro_banco = "";
@@ -405,10 +405,10 @@ class cl_sau_prestadorhorarios {
          return false;
        }
      }
-     if(trim($this->s112_c_tipograde)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_c_tipograde"])){
+     if(trim((string) $this->s112_c_tipograde)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_c_tipograde"])){
        $sql  .= $virgula." s112_c_tipograde = '$this->s112_c_tipograde' ";
        $virgula = ",";
-       if(trim($this->s112_c_tipograde) == null ){
+       if(trim((string) $this->s112_c_tipograde) == null ){
          $this->erro_sql = " Campo Tipo Grade não informado.";
          $this->erro_campo = "s112_c_tipograde";
          $this->erro_banco = "";
@@ -418,10 +418,10 @@ class cl_sau_prestadorhorarios {
          return false;
        }
      }
-     if(trim($this->s112_i_tipoficha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_tipoficha"])){
+     if(trim((string) $this->s112_i_tipoficha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_i_tipoficha"])){
        $sql  .= $virgula." s112_i_tipoficha = $this->s112_i_tipoficha ";
        $virgula = ",";
-       if(trim($this->s112_i_tipoficha) == null ){
+       if(trim((string) $this->s112_i_tipoficha) == null ){
          $this->erro_sql = " Campo Tipo Ficha não informado.";
          $this->erro_campo = "s112_i_tipoficha";
          $this->erro_banco = "";
@@ -431,7 +431,7 @@ class cl_sau_prestadorhorarios {
          return false;
        }
      }
-     if(trim($this->s112_d_valinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_d_valinicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s112_d_valinicial_dia"] !="") ){
+     if(trim((string) $this->s112_d_valinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_d_valinicial_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s112_d_valinicial_dia"] !="") ){
        $sql  .= $virgula." s112_d_valinicial = '$this->s112_d_valinicial' ";
        $virgula = ",";
      }     else{
@@ -440,7 +440,7 @@ class cl_sau_prestadorhorarios {
          $virgula = ",";
        }
      }
-     if(trim($this->s112_d_valfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_d_valfinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s112_d_valfinal_dia"] !="") ){
+     if(trim((string) $this->s112_d_valfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s112_d_valfinal_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s112_d_valfinal_dia"] !="") ){
        $sql  .= $virgula." s112_d_valfinal = '$this->s112_d_valfinal' ";
        $virgula = ",";
      }     else{
@@ -463,31 +463,31 @@ class cl_sau_prestadorhorarios {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,13576,'$this->s112_i_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s112_i_codigo"]) || $this->s112_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,2375,13576,'".AddSlashes(pg_result($resaco,$conresaco,'s112_i_codigo'))."','$this->s112_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2375,13576,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s112_i_codigo'))."','$this->s112_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s112_i_prestadorvinc"]) || $this->s112_i_prestadorvinc != "")
-             $resac = db_query("insert into db_acount values($acount,2375,13577,'".AddSlashes(pg_result($resaco,$conresaco,'s112_i_prestadorvinc'))."','$this->s112_i_prestadorvinc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2375,13577,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s112_i_prestadorvinc'))."','$this->s112_i_prestadorvinc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s112_i_diasemana"]) || $this->s112_i_diasemana != "")
-             $resac = db_query("insert into db_acount values($acount,2375,13578,'".AddSlashes(pg_result($resaco,$conresaco,'s112_i_diasemana'))."','$this->s112_i_diasemana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2375,13578,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s112_i_diasemana'))."','$this->s112_i_diasemana',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s112_c_horaini"]) || $this->s112_c_horaini != "")
-             $resac = db_query("insert into db_acount values($acount,2375,13579,'".AddSlashes(pg_result($resaco,$conresaco,'s112_c_horaini'))."','$this->s112_c_horaini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2375,13579,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s112_c_horaini'))."','$this->s112_c_horaini',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s112_c_horafim"]) || $this->s112_c_horafim != "")
-             $resac = db_query("insert into db_acount values($acount,2375,13580,'".AddSlashes(pg_result($resaco,$conresaco,'s112_c_horafim'))."','$this->s112_c_horafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2375,13580,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s112_c_horafim'))."','$this->s112_c_horafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s112_i_fichas"]) || $this->s112_i_fichas != "")
-             $resac = db_query("insert into db_acount values($acount,2375,13581,'".AddSlashes(pg_result($resaco,$conresaco,'s112_i_fichas'))."','$this->s112_i_fichas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2375,13581,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s112_i_fichas'))."','$this->s112_i_fichas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s112_i_reservas"]) || $this->s112_i_reservas != "")
-             $resac = db_query("insert into db_acount values($acount,2375,13582,'".AddSlashes(pg_result($resaco,$conresaco,'s112_i_reservas'))."','$this->s112_i_reservas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2375,13582,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s112_i_reservas'))."','$this->s112_i_reservas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s112_c_tipograde"]) || $this->s112_c_tipograde != "")
-             $resac = db_query("insert into db_acount values($acount,2375,13583,'".AddSlashes(pg_result($resaco,$conresaco,'s112_c_tipograde'))."','$this->s112_c_tipograde',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2375,13583,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s112_c_tipograde'))."','$this->s112_c_tipograde',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s112_i_tipoficha"]) || $this->s112_i_tipoficha != "")
-             $resac = db_query("insert into db_acount values($acount,2375,13584,'".AddSlashes(pg_result($resaco,$conresaco,'s112_i_tipoficha'))."','$this->s112_i_tipoficha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2375,13584,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s112_i_tipoficha'))."','$this->s112_i_tipoficha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s112_d_valinicial"]) || $this->s112_d_valinicial != "")
-             $resac = db_query("insert into db_acount values($acount,2375,13585,'".AddSlashes(pg_result($resaco,$conresaco,'s112_d_valinicial'))."','$this->s112_d_valinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2375,13585,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s112_d_valinicial'))."','$this->s112_d_valinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["s112_d_valfinal"]) || $this->s112_d_valfinal != "")
-             $resac = db_query("insert into db_acount values($acount,2375,13586,'".AddSlashes(pg_result($resaco,$conresaco,'s112_d_valfinal'))."','$this->s112_d_valfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2375,13586,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s112_d_valfinal'))."','$this->s112_d_valfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -541,20 +541,20 @@ class cl_sau_prestadorhorarios {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,13576,'$s112_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,2375,13576,'','".AddSlashes(pg_result($resaco,$iresaco,'s112_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2375,13577,'','".AddSlashes(pg_result($resaco,$iresaco,'s112_i_prestadorvinc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2375,13578,'','".AddSlashes(pg_result($resaco,$iresaco,'s112_i_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2375,13579,'','".AddSlashes(pg_result($resaco,$iresaco,'s112_c_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2375,13580,'','".AddSlashes(pg_result($resaco,$iresaco,'s112_c_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2375,13581,'','".AddSlashes(pg_result($resaco,$iresaco,'s112_i_fichas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2375,13582,'','".AddSlashes(pg_result($resaco,$iresaco,'s112_i_reservas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2375,13583,'','".AddSlashes(pg_result($resaco,$iresaco,'s112_c_tipograde'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2375,13584,'','".AddSlashes(pg_result($resaco,$iresaco,'s112_i_tipoficha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2375,13585,'','".AddSlashes(pg_result($resaco,$iresaco,'s112_d_valinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2375,13586,'','".AddSlashes(pg_result($resaco,$iresaco,'s112_d_valfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2375,13576,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s112_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2375,13577,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s112_i_prestadorvinc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2375,13578,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s112_i_diasemana'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2375,13579,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s112_c_horaini'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2375,13580,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s112_c_horafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2375,13581,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s112_i_fichas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2375,13582,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s112_i_reservas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2375,13583,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s112_c_tipograde'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2375,13584,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s112_i_tipoficha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2375,13585,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s112_d_valinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2375,13586,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s112_d_valfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

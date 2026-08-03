@@ -27,7 +27,7 @@ class cl_associadosituacao
     public function __construct()
     {
         $this->rotulo = new rotulo("associadosituacao"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -72,10 +72,10 @@ class cl_associadosituacao
          $this->erro_status = "0";
          return false; 
        }
-       $this->fm02_situacao = pg_result($result,0,0); 
+       $this->fm02_situacao = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from associadosituacao_fm02_situacao_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fm02_situacao)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fm02_situacao)){
          $this->erro_sql = " Campo fm02_situacao maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -105,7 +105,7 @@ class cl_associadosituacao
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "associadosituacao ($this->fm02_situacao) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "associadosituacao já Cadastrado";
@@ -134,11 +134,11 @@ class cl_associadosituacao
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,314877146,'$this->fm02_situacao','I')");
-         $resac = db_query("insert into db_acount values($acount,117368930,314877146,'','".AddSlashes(pg_result($resaco,0,'fm02_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,117368930,121617388,'','".AddSlashes(pg_result($resaco,0,'fm02_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,117368930,314877146,'','".AddSlashes(pg_fetch_result($resaco,0,'fm02_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,117368930,121617388,'','".AddSlashes(pg_fetch_result($resaco,0,'fm02_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -149,10 +149,10 @@ class cl_associadosituacao
       $this->atualizacampos();
      $sql = " update associadosituacao set ";
      $virgula = "";
-     if(trim($this->fm02_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm02_situacao"])){ 
+     if(trim((string) $this->fm02_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm02_situacao"])){ 
        $sql  .= $virgula." fm02_situacao = $this->fm02_situacao ";
        $virgula = ",";
-       if(trim($this->fm02_situacao) == null ){ 
+       if(trim((string) $this->fm02_situacao) == null ){ 
          $this->erro_sql = " Campo Código Situação do Associado não informado.";
          $this->erro_campo = "fm02_situacao";
          $this->erro_banco = "";
@@ -162,10 +162,10 @@ class cl_associadosituacao
          return false;
        }
      }
-     if(trim($this->fm02_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm02_descricao"])){ 
+     if(trim((string) $this->fm02_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fm02_descricao"])){ 
        $sql  .= $virgula." fm02_descricao = '$this->fm02_descricao' ";
        $virgula = ",";
-       if(trim($this->fm02_descricao) == null ){ 
+       if(trim((string) $this->fm02_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição Situação não informado.";
          $this->erro_campo = "fm02_descricao";
          $this->erro_banco = "";
@@ -189,13 +189,13 @@ class cl_associadosituacao
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,314877146,'$this->fm02_situacao','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fm02_situacao"]) || $this->fm02_situacao != "")
-             $resac = db_query("insert into db_acount values($acount,117368930,314877146,'".AddSlashes(pg_result($resaco,$conresaco,'fm02_situacao'))."','$this->fm02_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,117368930,314877146,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fm02_situacao'))."','$this->fm02_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fm02_descricao"]) || $this->fm02_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,117368930,121617388,'".AddSlashes(pg_result($resaco,$conresaco,'fm02_descricao'))."','$this->fm02_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,117368930,121617388,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fm02_descricao'))."','$this->fm02_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -249,11 +249,11 @@ class cl_associadosituacao
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,314877146,'$fm02_situacao','E')");
-           $resac  = db_query("insert into db_acount values($acount,117368930,314877146,'','".AddSlashes(pg_result($resaco,$iresaco,'fm02_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,117368930,121617388,'','".AddSlashes(pg_result($resaco,$iresaco,'fm02_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,117368930,314877146,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fm02_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,117368930,121617388,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fm02_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

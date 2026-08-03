@@ -3,30 +3,30 @@
 //CLASSE DA ENTIDADE agendaassentamento
 class cl_agendaassentamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h82_sequencial = 0; 
-   var $h82_tipoassentamento = 0; 
-   var $h82_formulainicio = 0; 
-   var $h82_formulacondicao = 0; 
-   var $h82_selecao = 0; 
-   var $h82_instit = 0; 
-   var $h82_formulafim = 0; 
-   var $h82_formulafaltasperiodo = 0; 
-   var $h82_formulaprorrogafim = 0; 
+   public $h82_sequencial = 0; 
+   public $h82_tipoassentamento = 0; 
+   public $h82_formulainicio = 0; 
+   public $h82_formulacondicao = 0; 
+   public $h82_selecao = 0; 
+   public $h82_instit = 0; 
+   public $h82_formulafim = 0; 
+   public $h82_formulafaltasperiodo = 0; 
+   public $h82_formulaprorrogafim = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h82_sequencial = int4 = Sequencial da tabela 
                  h82_tipoassentamento = int4 = Tipo de Assentamento 
                  h82_formulainicio = int4 = Formula de Início 
@@ -38,10 +38,10 @@ class cl_agendaassentamento {
                  h82_formulaprorrogafim = int4 = Fórmula de Prorrogação do Fim 
                  ";
    //funcao construtor da classe 
-   function cl_agendaassentamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agendaassentamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -135,10 +135,10 @@ class cl_agendaassentamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->h82_sequencial = pg_result($result,0,0); 
+       $this->h82_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from agendaassentamento_h82_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $h82_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $h82_sequencial)){
          $this->erro_sql = " Campo h82_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -182,7 +182,7 @@ class cl_agendaassentamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Agenda de Assentamentos ($this->h82_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Agenda de Assentamentos já Cadastrado";
@@ -211,18 +211,18 @@ class cl_agendaassentamento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21279,'$this->h82_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3835,21279,'','".AddSlashes(pg_result($resaco,0,'h82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3835,21280,'','".AddSlashes(pg_result($resaco,0,'h82_tipoassentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3835,21281,'','".AddSlashes(pg_result($resaco,0,'h82_formulainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3835,21282,'','".AddSlashes(pg_result($resaco,0,'h82_formulacondicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3835,21283,'','".AddSlashes(pg_result($resaco,0,'h82_selecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3835,21284,'','".AddSlashes(pg_result($resaco,0,'h82_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3835,21801,'','".AddSlashes(pg_result($resaco,0,'h82_formulafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3835,21802,'','".AddSlashes(pg_result($resaco,0,'h82_formulafaltasperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3835,21954,'','".AddSlashes(pg_result($resaco,0,'h82_formulaprorrogafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3835,21279,'','".AddSlashes(pg_fetch_result($resaco,0,'h82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3835,21280,'','".AddSlashes(pg_fetch_result($resaco,0,'h82_tipoassentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3835,21281,'','".AddSlashes(pg_fetch_result($resaco,0,'h82_formulainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3835,21282,'','".AddSlashes(pg_fetch_result($resaco,0,'h82_formulacondicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3835,21283,'','".AddSlashes(pg_fetch_result($resaco,0,'h82_selecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3835,21284,'','".AddSlashes(pg_fetch_result($resaco,0,'h82_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3835,21801,'','".AddSlashes(pg_fetch_result($resaco,0,'h82_formulafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3835,21802,'','".AddSlashes(pg_fetch_result($resaco,0,'h82_formulafaltasperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3835,21954,'','".AddSlashes(pg_fetch_result($resaco,0,'h82_formulaprorrogafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -232,10 +232,10 @@ class cl_agendaassentamento {
       $this->atualizacampos();
      $sql = " update agendaassentamento set ";
      $virgula = "";
-     if(trim($this->h82_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_sequencial"])){ 
+     if(trim((string) $this->h82_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_sequencial"])){ 
        $sql  .= $virgula." h82_sequencial = $this->h82_sequencial ";
        $virgula = ",";
-       if(trim($this->h82_sequencial) == null ){ 
+       if(trim((string) $this->h82_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial da tabela não informado.";
          $this->erro_campo = "h82_sequencial";
          $this->erro_banco = "";
@@ -245,10 +245,10 @@ class cl_agendaassentamento {
          return false;
        }
      }
-     if(trim($this->h82_tipoassentamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_tipoassentamento"])){ 
+     if(trim((string) $this->h82_tipoassentamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_tipoassentamento"])){ 
        $sql  .= $virgula." h82_tipoassentamento = $this->h82_tipoassentamento ";
        $virgula = ",";
-       if(trim($this->h82_tipoassentamento) == null ){ 
+       if(trim((string) $this->h82_tipoassentamento) == null ){ 
          $this->erro_sql = " Campo Tipo de Assentamento não informado.";
          $this->erro_campo = "h82_tipoassentamento";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_agendaassentamento {
          return false;
        }
      }
-     if(trim($this->h82_formulainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_formulainicio"])){ 
+     if(trim((string) $this->h82_formulainicio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_formulainicio"])){ 
        $sql  .= $virgula." h82_formulainicio = $this->h82_formulainicio ";
        $virgula = ",";
-       if(trim($this->h82_formulainicio) == null ){ 
+       if(trim((string) $this->h82_formulainicio) == null ){ 
          $this->erro_sql = " Campo Formula de Início não informado.";
          $this->erro_campo = "h82_formulainicio";
          $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_agendaassentamento {
          return false;
        }
      }
-     if(trim($this->h82_formulacondicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_formulacondicao"])){ 
+     if(trim((string) $this->h82_formulacondicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_formulacondicao"])){ 
        $sql  .= $virgula." h82_formulacondicao = $this->h82_formulacondicao ";
        $virgula = ",";
-       if(trim($this->h82_formulacondicao) == null ){ 
+       if(trim((string) $this->h82_formulacondicao) == null ){ 
          $this->erro_sql = " Campo Fórmula de Condição não informado.";
          $this->erro_campo = "h82_formulacondicao";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_agendaassentamento {
          return false;
        }
      }
-     if(trim($this->h82_selecao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_selecao"])){ 
+     if(trim((string) $this->h82_selecao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_selecao"])){ 
        $sql  .= $virgula." h82_selecao = $this->h82_selecao ";
        $virgula = ",";
-       if(trim($this->h82_selecao) == null ){ 
+       if(trim((string) $this->h82_selecao) == null ){ 
          $this->erro_sql = " Campo Seleção não informado.";
          $this->erro_campo = "h82_selecao";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_agendaassentamento {
          return false;
        }
      }
-     if(trim($this->h82_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_instit"])){ 
+     if(trim((string) $this->h82_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_instit"])){ 
        $sql  .= $virgula." h82_instit = $this->h82_instit ";
        $virgula = ",";
-       if(trim($this->h82_instit) == null ){ 
+       if(trim((string) $this->h82_instit) == null ){ 
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "h82_instit";
          $this->erro_banco = "";
@@ -310,22 +310,22 @@ class cl_agendaassentamento {
          return false;
        }
      }
-     if(trim($this->h82_formulafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_formulafim"])){ 
-        if(trim($this->h82_formulafim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h82_formulafim"])){ 
+     if(trim((string) $this->h82_formulafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_formulafim"])){ 
+        if(trim((string) $this->h82_formulafim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h82_formulafim"])){ 
            $this->h82_formulafim = "null" ;
         } 
        $sql  .= $virgula." h82_formulafim = $this->h82_formulafim ";
        $virgula = ",";
      }
-     if(trim($this->h82_formulafaltasperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_formulafaltasperiodo"])){ 
-        if(trim($this->h82_formulafaltasperiodo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h82_formulafaltasperiodo"])){ 
+     if(trim((string) $this->h82_formulafaltasperiodo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_formulafaltasperiodo"])){ 
+        if(trim((string) $this->h82_formulafaltasperiodo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h82_formulafaltasperiodo"])){ 
            $this->h82_formulafaltasperiodo = "null" ;
         } 
        $sql  .= $virgula." h82_formulafaltasperiodo = $this->h82_formulafaltasperiodo ";
        $virgula = ",";
      }
-     if(trim($this->h82_formulaprorrogafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_formulaprorrogafim"])){ 
-        if(trim($this->h82_formulaprorrogafim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h82_formulaprorrogafim"])){ 
+     if(trim((string) $this->h82_formulaprorrogafim)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h82_formulaprorrogafim"])){ 
+        if(trim((string) $this->h82_formulaprorrogafim)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h82_formulaprorrogafim"])){ 
            $this->h82_formulaprorrogafim = "null" ;
         } 
        $sql  .= $virgula." h82_formulaprorrogafim = $this->h82_formulaprorrogafim ";
@@ -345,27 +345,27 @@ class cl_agendaassentamento {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21279,'$this->h82_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h82_sequencial"]) || $this->h82_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3835,21279,'".AddSlashes(pg_result($resaco,$conresaco,'h82_sequencial'))."','$this->h82_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3835,21279,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h82_sequencial'))."','$this->h82_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h82_tipoassentamento"]) || $this->h82_tipoassentamento != "")
-             $resac = db_query("insert into db_acount values($acount,3835,21280,'".AddSlashes(pg_result($resaco,$conresaco,'h82_tipoassentamento'))."','$this->h82_tipoassentamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3835,21280,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h82_tipoassentamento'))."','$this->h82_tipoassentamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h82_formulainicio"]) || $this->h82_formulainicio != "")
-             $resac = db_query("insert into db_acount values($acount,3835,21281,'".AddSlashes(pg_result($resaco,$conresaco,'h82_formulainicio'))."','$this->h82_formulainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3835,21281,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h82_formulainicio'))."','$this->h82_formulainicio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h82_formulacondicao"]) || $this->h82_formulacondicao != "")
-             $resac = db_query("insert into db_acount values($acount,3835,21282,'".AddSlashes(pg_result($resaco,$conresaco,'h82_formulacondicao'))."','$this->h82_formulacondicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3835,21282,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h82_formulacondicao'))."','$this->h82_formulacondicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h82_selecao"]) || $this->h82_selecao != "")
-             $resac = db_query("insert into db_acount values($acount,3835,21283,'".AddSlashes(pg_result($resaco,$conresaco,'h82_selecao'))."','$this->h82_selecao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3835,21283,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h82_selecao'))."','$this->h82_selecao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h82_instit"]) || $this->h82_instit != "")
-             $resac = db_query("insert into db_acount values($acount,3835,21284,'".AddSlashes(pg_result($resaco,$conresaco,'h82_instit'))."','$this->h82_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3835,21284,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h82_instit'))."','$this->h82_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h82_formulafim"]) || $this->h82_formulafim != "")
-             $resac = db_query("insert into db_acount values($acount,3835,21801,'".AddSlashes(pg_result($resaco,$conresaco,'h82_formulafim'))."','$this->h82_formulafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3835,21801,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h82_formulafim'))."','$this->h82_formulafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h82_formulafaltasperiodo"]) || $this->h82_formulafaltasperiodo != "")
-             $resac = db_query("insert into db_acount values($acount,3835,21802,'".AddSlashes(pg_result($resaco,$conresaco,'h82_formulafaltasperiodo'))."','$this->h82_formulafaltasperiodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3835,21802,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h82_formulafaltasperiodo'))."','$this->h82_formulafaltasperiodo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h82_formulaprorrogafim"]) || $this->h82_formulaprorrogafim != "")
-             $resac = db_query("insert into db_acount values($acount,3835,21954,'".AddSlashes(pg_result($resaco,$conresaco,'h82_formulaprorrogafim'))."','$this->h82_formulaprorrogafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3835,21954,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h82_formulaprorrogafim'))."','$this->h82_formulaprorrogafim',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -419,18 +419,18 @@ class cl_agendaassentamento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21279,'$h82_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3835,21279,'','".AddSlashes(pg_result($resaco,$iresaco,'h82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3835,21280,'','".AddSlashes(pg_result($resaco,$iresaco,'h82_tipoassentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3835,21281,'','".AddSlashes(pg_result($resaco,$iresaco,'h82_formulainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3835,21282,'','".AddSlashes(pg_result($resaco,$iresaco,'h82_formulacondicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3835,21283,'','".AddSlashes(pg_result($resaco,$iresaco,'h82_selecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3835,21284,'','".AddSlashes(pg_result($resaco,$iresaco,'h82_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3835,21801,'','".AddSlashes(pg_result($resaco,$iresaco,'h82_formulafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3835,21802,'','".AddSlashes(pg_result($resaco,$iresaco,'h82_formulafaltasperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3835,21954,'','".AddSlashes(pg_result($resaco,$iresaco,'h82_formulaprorrogafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3835,21279,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h82_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3835,21280,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h82_tipoassentamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3835,21281,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h82_formulainicio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3835,21282,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h82_formulacondicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3835,21283,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h82_selecao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3835,21284,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h82_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3835,21801,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h82_formulafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3835,21802,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h82_formulafaltasperiodo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3835,21954,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h82_formulaprorrogafim'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

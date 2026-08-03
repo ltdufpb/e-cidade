@@ -107,12 +107,12 @@ $db_opcao = 1;
   </td>
   <td>
    <?php 
-   $x = array(''=>'','1'=>'1 - A','2'=>'2 -B','3'=>'3 - AB','4'=>'4 - O');
+   $x = [''=>'','1'=>'1 - A','2'=>'2 -B','3'=>'3 - AB','4'=>'4 - O'];
    db_select('tiposangue',$x,true,$db_opcao,"");
    ?>
    <b>Fator RH:</b>
    <?php 
-   $x = array(''=>'','1'=>'Positivo','2'=>'Negativo');
+   $x = [''=>'','1'=>'Positivo','2'=>'Negativo'];
    db_select('fatorrh',$x,true,$db_opcao,"");
    ?>
    <b>Cartao SUS:</b>

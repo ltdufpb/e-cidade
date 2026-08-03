@@ -75,7 +75,7 @@ final class CertidaoTermo extends Repository
 
         if ($this->isReturnFullItem()) {
             $model->setDivida(
-                DividaRepository::getInstance()->make($object)
+                (new DividaRepository())->getInstance()->make($object)
             );
         }
 
@@ -84,7 +84,7 @@ final class CertidaoTermo extends Repository
 
     private function makeCollection($array)
     {
-        $collection = array();
+        $collection = [];
 
         if (empty($array)) {
             return $collection;

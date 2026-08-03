@@ -146,11 +146,11 @@ td {
               <td>
 					      <?php 
 					        $tipo        = 'g';
-					        $aTipoResumo = array('g'  => 'Geral',
+					        $aTipoResumo = ['g'  => 'Geral',
 					                             'l'  => 'Lotação',
 					                             'm'  => 'Matricula',
 					                             'pf' => 'Autônomos/Fornecedores PF',
-					                             'pj' => 'Pessoas Jurídicas');
+					                             'pj' => 'Pessoas Jurídicas'];
 					        db_select("tipo", $aTipoResumo, true, 1, " onchange='js_tiporesumo();' ");
 					      ?>
               </td>
@@ -162,9 +162,9 @@ td {
               <td>
                 <?php 
                   $tipofiltro  = 'null';
-                  $aTipoFiltro = array('null' => 'Selecione',
+                  $aTipoFiltro = ['null' => 'Selecione',
                                        'i'    => 'Intervalo',
-                                       's'    => 'Selecionados');
+                                       's'    => 'Selecionados'];
                   db_select("tipofiltro", $aTipoFiltro, true, 1, " onchange='js_tiporesumo();' ");
                 ?>
               </td>
@@ -298,8 +298,8 @@ td {
               </td>
               <td>
                 <?php 
-                  $aOrdem = array('a' => 'Alfabética',
-                                  'n' => 'Numérica');
+                  $aOrdem = ['a' => 'Alfabética',
+                                  'n' => 'Numérica'];
                   db_select("ordem", $aOrdem, true, 1, "");
                 ?>
               </td>
@@ -310,8 +310,8 @@ td {
               </td>
               <td>
                 <?php 
-                  $aSemRetencao = array('s' => 'Sim',
-                                        'n' => 'Não');
+                  $aSemRetencao = ['s' => 'Sim',
+                                        'n' => 'Não'];
                   db_select("semirf", $aSemRetencao, true, 1, "");
                 ?>
               </td>

@@ -153,7 +153,7 @@ class Recibo {
    * @throws \DBException
    * @internal param null $where
    */
-  public function getGuiasParaMovimentacaoNoDepartamento(UnidadeGestoraModel $unidadeGestora, \DBDepartamento $DBDepartamento, $ativas = true, $where) {
+  public function getGuiasParaMovimentacaoNoDepartamento(UnidadeGestoraModel $unidadeGestora, \DBDepartamento $DBDepartamento, $ativas = true, $where = null) {
 
     $oDaoRecibo    = new \cl_guiarecolhimento();
     $whereUnidade  = "k171_sequencial = {$unidadeGestora->getCodigo()}";

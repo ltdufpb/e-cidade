@@ -75,7 +75,7 @@ try {
     }
 
     if (!empty($parametros->matriculas)) {
-        $instanciaClasse->setMatriculas(explode(',', $parametros->matriculas));
+        $instanciaClasse->setMatriculas(explode(',', (string) $parametros->matriculas));
     }
 
     if (!empty($parametros->localTrabalho)) {

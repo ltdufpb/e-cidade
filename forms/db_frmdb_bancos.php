@@ -142,14 +142,14 @@ $cldb_bancos->rotulo->label();
                                     disabled
                                     type="text"
                                     id="fake_db90_codban"
-                                    value="<?= (isset($GLOBALS["db90_codban"]) ? $GLOBALS["db90_codban"] : "") ?>"
+                                    value="<?= ($GLOBALS["db90_codban"] ?? "") ?>"
                                     style="width: 80px;"
                                 >
                                 <input 
                                     disabled
                                     type="text" 
                                     id="fake_db90_descr"
-                                    value="<?= (isset($GLOBALS["db90_descr"]) ? $GLOBALS["db90_descr"] : "") ?>"
+                                    value="<?= ($GLOBALS["db90_descr"] ?? "") ?>"
                                     style="width: 200px;"
                                 >
                             </td>
@@ -470,7 +470,7 @@ $cldb_bancos->rotulo->label();
         <?php
             if ($db_opcao != 1)
             {
-                echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+                echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
             }
         ?>
     }

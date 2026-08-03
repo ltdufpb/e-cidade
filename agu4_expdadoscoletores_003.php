@@ -53,7 +53,7 @@ if (isset ( $cancelar )) {
   
   db_inicio_transacao ();
   
-  if (trim ( $x48_motivo ) == null) {
+  if (trim ( (string) $x48_motivo ) == null) {
     $x48_motivo = "Cancelamento";
   }
   

@@ -79,10 +79,10 @@
             </td>
             <td colspan="2">
             <?php 
-                $aStatus = array('0' => 'Todas',
+                $aStatus = ['0' => 'Todas',
                                  '1' => 'Ativas',
                                  '2' => 'Anuladas',
-                                 '3' => 'Anuladas Automaticamente');
+                                 '3' => 'Anuladas Automaticamente'];
                 db_select('status', $aStatus, true, 1);
               ?>
             </td>
@@ -93,11 +93,11 @@
             </td>
             <td>
               <?php 
-                $aOrigens = array(''           => 'Selecione',
+                $aOrigens = [''           => 'Selecione',
                                   'somentecgm' => 'Somente CGM',
                                   'cgm'        => 'CGM Geral',
                                   'matric'     => 'Matrícula',
-                                  'inscr'      => 'Inscrição');
+                                  'inscr'      => 'Inscrição'];
                 db_select('origem', $aOrigens, true, 1);
               ?>
             </td>
@@ -130,9 +130,9 @@
             </td>
             <td>
             <?php 
-                $aTipo = array(''  => 'Selecione',
+                $aTipo = [''  => 'Selecione',
                                'A' => 'Analítico',
-                               'S' => 'Sintético');
+                               'S' => 'Sintético'];
                 db_select('tipo', $aTipo, true, 1);
               ?>
             </td>

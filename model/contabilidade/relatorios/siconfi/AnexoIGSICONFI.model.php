@@ -58,19 +58,11 @@ class AnexoIGSICONFI extends RelatoriosLegaisBase implements AnexoSICONFI {
   public function gerar($sFormato) {
 
     $this->prepararDados();
-    switch ($sFormato) {
-
-      case AnexoSICONFI::TIPO_PDF:
-        $this->gerarPDF();
-        break;
-
-      case AnexoSICONFI::TIPO_CSV:
-        $this->gerarCSV();
-        break;
-
-      default:
-        throw new Exception("Formato {$sFormato} inválido.");
-    }
+    match ($sFormato) {
+        AnexoSICONFI::TIPO_PDF => $this->gerarPDF(),
+        AnexoSICONFI::TIPO_CSV => $this->gerarCSV(),
+        default => throw new Exception("Formato {$sFormato} inválido."),
+    };
     return $this->oArquivoGerado->getFilePath();
   }
 
@@ -80,28 +72,28 @@ class AnexoIGSICONFI extends RelatoriosLegaisBase implements AnexoSICONFI {
    */
   public function gerarCSV() {
 
-    $aRelatorioCSV = array(
+    $aRelatorioCSV = [
       'Despesa Por Função',
       'RP Não Processado Pago',
       'RP Não Processado Cancelado',
       'RP Processado Pago',
       'RP Processado Cancelado'
-    );
+    ];
 
     $sNomeArquivo = str_replace(" ", '', "tmp/".self::NOME_RELATORIO.'.csv');
     $hArquivoCSV  = fopen($sNomeArquivo, 'w+');
-    fputcsv($hArquivoCSV, $aRelatorioCSV, ';');
+    fputcsv($hArquivoCSV, $aRelatorioCSV, ';', escape: '\\');
     foreach ($this->aLinhasConsistencia as $oStdLinha) {
 
       $sEspacamento = relatorioContabil::getIdentacao($oStdLinha->nivel);
-      $aLinhaCSV = array(
+      $aLinhaCSV = [
         $sEspacamento . $oStdLinha->descricao,
         trim(db_formatar($oStdLinha->rp_naoproc_pago, 'f')),
         trim(db_formatar($oStdLinha->rp_naoproc_cancelado, 'f')),
         trim(db_formatar($oStdLinha->rp_proc_pago, 'f')),
         trim(db_formatar($oStdLinha->rp_proc_cancelado, 'f'))
-      );
-      fputcsv($hArquivoCSV, $aLinhaCSV, ';');
+      ];
+      fputcsv($hArquivoCSV, $aLinhaCSV, ';', escape: '\\');
     }
     $this->oArquivoGerado = new File($sNomeArquivo);
   }

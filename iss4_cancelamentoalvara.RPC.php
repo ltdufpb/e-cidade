@@ -71,12 +71,12 @@ switch ($oParam->exec) {
       $oDadosTipoMovimentacao     = db_utils::fieldsMemory($rsTipoMovimentacao, 0);
       $sDescricaoTipoMovimentacao = $oDadosTipoMovimentacao->q121_descr;
 
-      $oRetorno->aUltimaMovimentacao = array(
+      $oRetorno->aUltimaMovimentacao = [
         "q121_descr"            => $sDescricaoTipoMovimentacao,
         "q120_dtmov"            => $oMovimentacao->getDataMovimentacao(),
         "q120_sequencial"       => $oMovimentacao->getCodigo(),
         "q120_isstipomovalvara" => $oMovimentacao->getTipoMovimentacao()
-      );
+      ];
 
     } catch (ErrorException $eErro){
 

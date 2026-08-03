@@ -62,7 +62,7 @@ $cltipoisen->rotulo->label();
         </td>
         <td>
           <?php
-            $aOpcoes = array("0" => "Isento", "1" => "Imune", "2" => "Não Incidente");
+            $aOpcoes = ["0" => "Isento", "1" => "Imune", "2" => "Não Incidente"];
             db_select('j45_tipis', $aOpcoes, true, $db_opcao );
           ?>
         </td>
@@ -73,7 +73,7 @@ $cltipoisen->rotulo->label();
         </td>
         <td>
           <?php
-            $aOpcoes = array("f" => "Não", "t" => "Sim");
+            $aOpcoes = ["f" => "Não", "t" => "Sim"];
             db_select('j45_taxas', $aOpcoes, true, $db_opcao);
           ?>
         </td>
@@ -108,7 +108,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tipoisen.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

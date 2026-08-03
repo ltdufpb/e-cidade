@@ -43,13 +43,13 @@ class HorusDispensacaoMedicamento extends HorusArquivoBase implements iArquivosH
 
   protected $iCodigoTipo = 3;
 
-  protected $aMedicamentos = array();
+  protected $aMedicamentos = [];
 
   /**
    * Lista de campos do arquivo xml
    * @var array
    */
-  static $aCampos = array("nuproduto"               => "nuProduto",
+  static $aCampos = ["nuproduto"               => "nuProduto",
                           "tpproduto"               => "tpProduto",
                           "vlitem"                  => "vlItem",
                           "dtvalidade"              => "dtValidade",
@@ -57,7 +57,7 @@ class HorusDispensacaoMedicamento extends HorusArquivoBase implements iArquivosH
                           "qtmedicamentodispensada" => "qtMedicamentoDispensada",
                           "dtdispensacao"           => "dtDispensacao",
                           "nucnspaciente"           => "nuCnsPaciente"
-                          );
+                          ];
 
   /**
    * Busca todos medicamentos que foram dispensados/entregues ao paciente (cgs)
@@ -126,10 +126,11 @@ class HorusDispensacaoMedicamento extends HorusArquivoBase implements iArquivosH
    * @throws DBException
    * @throws BusinessException
    */
+  #[\Override]
   public function preProcessar() {
 
     parent::preProcessar();
-    $this->getCodigoIntegracaoCompetencia(self::ARQUIVO_DISPENSACAO);
+    $this->getCodigoIntegracaoCompetencia();
     $this->consistirDadosCompetencia();
 
   }
@@ -248,7 +249,7 @@ class HorusDispensacaoMedicamento extends HorusArquivoBase implements iArquivosH
    * @return boolean
    * @throws DBException
    */
-  private function salvarDadosCompetencia($iCodigoDadosCompetencia = null, $oDadosDispensacao, $lEnviar){
+  private function salvarDadosCompetencia($iCodigoDadosCompetencia = null, $oDadosDispensacao = null, $lEnviar = null){
 
     $oDaoDadosCompetencia = new cl_dadoscompetenciadispensacao();
 
@@ -291,7 +292,7 @@ class HorusDispensacaoMedicamento extends HorusArquivoBase implements iArquivosH
   private function getDadosCompetencia() {
 
     $oDaoDadosCompetencia      = new cl_dadoscompetenciadispensacao();
-    $iCodigoArquivoDispensacao = $this->getCodigoIntegracaoCompetencia(self::ARQUIVO_DISPENSACAO);
+    $iCodigoArquivoDispensacao = $this->getCodigoIntegracaoCompetencia();
 
     $sCampos  = "  fa61_sequencial  as codigo ";
     $sCampos .= " ,fa61_catmat      as nuproduto ";

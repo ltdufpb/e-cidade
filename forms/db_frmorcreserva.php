@@ -210,7 +210,7 @@ if (!empty($o80_codres) && !empty($o80_planoorcamentariolinhapacto)) {
           <td>  </td>
         </tr>
           <?php
-          $planosOrcamentarios = array("" => "Selecione");
+          $planosOrcamentarios = ["" => "Selecione"];
           if (!empty($o80_coddot)) {
               $daoOrcDotacaPlanoOrcamento = new cl_orcdotacaoplanoorcamentario();
               $where = "o155_coddot = {$o80_coddot} and o155_anousu = " . db_getsession("DB_anousu");
@@ -399,7 +399,7 @@ if (!empty($o80_codres) && !empty($o80_planoorcamentariolinhapacto)) {
     db_iframe_orcreserva.hide();
     <?php 
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
     ?>
   }

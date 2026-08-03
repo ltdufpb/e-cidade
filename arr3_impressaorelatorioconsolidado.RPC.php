@@ -67,7 +67,7 @@ try {
 
       $rsConsolidacaoDebitosRegistros     = $oConsolidacaoDebitosRegistros->sql_record($sSqlConsolidacaoDebitosRegistros);
        
-      $aRelatorios = array();
+      $aRelatorios = [];
       
       for ($iIndice = 0; $iIndice < $oConsolidacaoDebitosRegistros->numrows; $iIndice++) {
          

@@ -29,37 +29,37 @@
 //CLASSE DA ENTIDADE tabplansaldorecurso
 class cl_tabplansaldorecurso { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k111_sequencial = 0; 
-   var $k111_tabplan = 0; 
-   var $k111_recurso = 0; 
-   var $k111_dataimplantacao_dia = null; 
-   var $k111_dataimplantacao_mes = null; 
-   var $k111_dataimplantacao_ano = null; 
-   var $k111_dataimplantacao = null; 
-   var $k111_creditoinicial = 0; 
-   var $k111_debitoinicial = 0; 
-   var $k111_anousu = 0; 
-   var $k111_dataatualizacao_dia = null; 
-   var $k111_dataatualizacao_mes = null; 
-   var $k111_dataatualizacao_ano = null; 
-   var $k111_dataatualizacao = null; 
-   var $k111_creditoatualizado = 0; 
-   var $k111_debitoatualizado = 0; 
+   public $k111_sequencial = 0; 
+   public $k111_tabplan = 0; 
+   public $k111_recurso = 0; 
+   public $k111_dataimplantacao_dia = null; 
+   public $k111_dataimplantacao_mes = null; 
+   public $k111_dataimplantacao_ano = null; 
+   public $k111_dataimplantacao = null; 
+   public $k111_creditoinicial = 0; 
+   public $k111_debitoinicial = 0; 
+   public $k111_anousu = 0; 
+   public $k111_dataatualizacao_dia = null; 
+   public $k111_dataatualizacao_mes = null; 
+   public $k111_dataatualizacao_ano = null; 
+   public $k111_dataatualizacao = null; 
+   public $k111_creditoatualizado = 0; 
+   public $k111_debitoatualizado = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k111_sequencial = int4 = Código Sequencial 
                  k111_tabplan = int4 = Receita Extra 
                  k111_recurso = int4 = Recurso 
@@ -72,10 +72,10 @@ class cl_tabplansaldorecurso {
                  k111_debitoatualizado = float8 = Débito Atualizado 
                  ";
    //funcao construtor da classe 
-   function cl_tabplansaldorecurso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tabplansaldorecurso"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -211,10 +211,10 @@ class cl_tabplansaldorecurso {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k111_sequencial = pg_result($result,0,0); 
+       $this->k111_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tabplansaldorecurso_k111_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k111_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k111_sequencial)){
          $this->erro_sql = " Campo k111_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -260,7 +260,7 @@ class cl_tabplansaldorecurso {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Saldos dos recursos ($this->k111_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Saldos dos recursos já Cadastrado";
@@ -284,19 +284,19 @@ class cl_tabplansaldorecurso {
      $resaco = $this->sql_record($this->sql_query_file($this->k111_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14522,'$this->k111_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2559,14522,'','".AddSlashes(pg_result($resaco,0,'k111_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2559,14523,'','".AddSlashes(pg_result($resaco,0,'k111_tabplan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2559,14524,'','".AddSlashes(pg_result($resaco,0,'k111_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2559,14525,'','".AddSlashes(pg_result($resaco,0,'k111_dataimplantacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2559,14526,'','".AddSlashes(pg_result($resaco,0,'k111_creditoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2559,14527,'','".AddSlashes(pg_result($resaco,0,'k111_debitoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2559,14528,'','".AddSlashes(pg_result($resaco,0,'k111_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2559,14529,'','".AddSlashes(pg_result($resaco,0,'k111_dataatualizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2559,14531,'','".AddSlashes(pg_result($resaco,0,'k111_creditoatualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2559,14530,'','".AddSlashes(pg_result($resaco,0,'k111_debitoatualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2559,14522,'','".AddSlashes(pg_fetch_result($resaco,0,'k111_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2559,14523,'','".AddSlashes(pg_fetch_result($resaco,0,'k111_tabplan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2559,14524,'','".AddSlashes(pg_fetch_result($resaco,0,'k111_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2559,14525,'','".AddSlashes(pg_fetch_result($resaco,0,'k111_dataimplantacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2559,14526,'','".AddSlashes(pg_fetch_result($resaco,0,'k111_creditoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2559,14527,'','".AddSlashes(pg_fetch_result($resaco,0,'k111_debitoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2559,14528,'','".AddSlashes(pg_fetch_result($resaco,0,'k111_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2559,14529,'','".AddSlashes(pg_fetch_result($resaco,0,'k111_dataatualizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2559,14531,'','".AddSlashes(pg_fetch_result($resaco,0,'k111_creditoatualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2559,14530,'','".AddSlashes(pg_fetch_result($resaco,0,'k111_debitoatualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -305,10 +305,10 @@ class cl_tabplansaldorecurso {
       $this->atualizacampos();
      $sql = " update tabplansaldorecurso set ";
      $virgula = "";
-     if(trim($this->k111_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_sequencial"])){ 
+     if(trim((string) $this->k111_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_sequencial"])){ 
        $sql  .= $virgula." k111_sequencial = $this->k111_sequencial ";
        $virgula = ",";
-       if(trim($this->k111_sequencial) == null ){ 
+       if(trim((string) $this->k111_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "k111_sequencial";
          $this->erro_banco = "";
@@ -318,10 +318,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_tabplan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_tabplan"])){ 
+     if(trim((string) $this->k111_tabplan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_tabplan"])){ 
        $sql  .= $virgula." k111_tabplan = $this->k111_tabplan ";
        $virgula = ",";
-       if(trim($this->k111_tabplan) == null ){ 
+       if(trim((string) $this->k111_tabplan) == null ){ 
          $this->erro_sql = " Campo Receita Extra nao Informado.";
          $this->erro_campo = "k111_tabplan";
          $this->erro_banco = "";
@@ -331,10 +331,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_recurso"])){ 
+     if(trim((string) $this->k111_recurso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_recurso"])){ 
        $sql  .= $virgula." k111_recurso = $this->k111_recurso ";
        $virgula = ",";
-       if(trim($this->k111_recurso) == null ){ 
+       if(trim((string) $this->k111_recurso) == null ){ 
          $this->erro_sql = " Campo Recurso nao Informado.";
          $this->erro_campo = "k111_recurso";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_dataimplantacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao_dia"] !="") ){ 
+     if(trim((string) $this->k111_dataimplantacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao_dia"] !="") ){ 
        $sql  .= $virgula." k111_dataimplantacao = '$this->k111_dataimplantacao' ";
        $virgula = ",";
-       if(trim($this->k111_dataimplantacao) == null ){ 
+       if(trim((string) $this->k111_dataimplantacao) == null ){ 
          $this->erro_sql = " Campo Data da Implantação do Saldo nao Informado.";
          $this->erro_campo = "k111_dataimplantacao_dia";
          $this->erro_banco = "";
@@ -360,7 +360,7 @@ class cl_tabplansaldorecurso {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao_dia"])){ 
          $sql  .= $virgula." k111_dataimplantacao = null ";
          $virgula = ",";
-         if(trim($this->k111_dataimplantacao) == null ){ 
+         if(trim((string) $this->k111_dataimplantacao) == null ){ 
            $this->erro_sql = " Campo Data da Implantação do Saldo nao Informado.";
            $this->erro_campo = "k111_dataimplantacao_dia";
            $this->erro_banco = "";
@@ -371,10 +371,10 @@ class cl_tabplansaldorecurso {
          }
        }
      }
-     if(trim($this->k111_creditoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_creditoinicial"])){ 
+     if(trim((string) $this->k111_creditoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_creditoinicial"])){ 
        $sql  .= $virgula." k111_creditoinicial = $this->k111_creditoinicial ";
        $virgula = ",";
-       if(trim($this->k111_creditoinicial) == null ){ 
+       if(trim((string) $this->k111_creditoinicial) == null ){ 
          $this->erro_sql = " Campo Crédito Inicial da Conta nao Informado.";
          $this->erro_campo = "k111_creditoinicial";
          $this->erro_banco = "";
@@ -384,10 +384,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_debitoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_debitoinicial"])){ 
+     if(trim((string) $this->k111_debitoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_debitoinicial"])){ 
        $sql  .= $virgula." k111_debitoinicial = $this->k111_debitoinicial ";
        $virgula = ",";
-       if(trim($this->k111_debitoinicial) == null ){ 
+       if(trim((string) $this->k111_debitoinicial) == null ){ 
          $this->erro_sql = " Campo Débito Inicial nao Informado.";
          $this->erro_campo = "k111_debitoinicial";
          $this->erro_banco = "";
@@ -397,10 +397,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_anousu"])){ 
+     if(trim((string) $this->k111_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_anousu"])){ 
        $sql  .= $virgula." k111_anousu = $this->k111_anousu ";
        $virgula = ",";
-       if(trim($this->k111_anousu) == null ){ 
+       if(trim((string) $this->k111_anousu) == null ){ 
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "k111_anousu";
          $this->erro_banco = "";
@@ -410,10 +410,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_dataatualizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao_dia"] !="") ){ 
+     if(trim((string) $this->k111_dataatualizacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao_dia"] !="") ){ 
        $sql  .= $virgula." k111_dataatualizacao = '$this->k111_dataatualizacao' ";
        $virgula = ",";
-       if(trim($this->k111_dataatualizacao) == null ){ 
+       if(trim((string) $this->k111_dataatualizacao) == null ){ 
          $this->erro_sql = " Campo Data da Atualização do Saldo nao Informado.";
          $this->erro_campo = "k111_dataatualizacao_dia";
          $this->erro_banco = "";
@@ -426,7 +426,7 @@ class cl_tabplansaldorecurso {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao_dia"])){ 
          $sql  .= $virgula." k111_dataatualizacao = null ";
          $virgula = ",";
-         if(trim($this->k111_dataatualizacao) == null ){ 
+         if(trim((string) $this->k111_dataatualizacao) == null ){ 
            $this->erro_sql = " Campo Data da Atualização do Saldo nao Informado.";
            $this->erro_campo = "k111_dataatualizacao_dia";
            $this->erro_banco = "";
@@ -437,10 +437,10 @@ class cl_tabplansaldorecurso {
          }
        }
      }
-     if(trim($this->k111_creditoatualizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_creditoatualizado"])){ 
+     if(trim((string) $this->k111_creditoatualizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_creditoatualizado"])){ 
        $sql  .= $virgula." k111_creditoatualizado = $this->k111_creditoatualizado ";
        $virgula = ",";
-       if(trim($this->k111_creditoatualizado) == null ){ 
+       if(trim((string) $this->k111_creditoatualizado) == null ){ 
          $this->erro_sql = " Campo Crédito Atualizado nao Informado.";
          $this->erro_campo = "k111_creditoatualizado";
          $this->erro_banco = "";
@@ -450,10 +450,10 @@ class cl_tabplansaldorecurso {
          return false;
        }
      }
-     if(trim($this->k111_debitoatualizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_debitoatualizado"])){ 
+     if(trim((string) $this->k111_debitoatualizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k111_debitoatualizado"])){ 
        $sql  .= $virgula." k111_debitoatualizado = $this->k111_debitoatualizado ";
        $virgula = ",";
-       if(trim($this->k111_debitoatualizado) == null ){ 
+       if(trim((string) $this->k111_debitoatualizado) == null ){ 
          $this->erro_sql = " Campo Débito Atualizado nao Informado.";
          $this->erro_campo = "k111_debitoatualizado";
          $this->erro_banco = "";
@@ -471,29 +471,29 @@ class cl_tabplansaldorecurso {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14522,'$this->k111_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k111_sequencial"]) || $this->k111_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2559,14522,'".AddSlashes(pg_result($resaco,$conresaco,'k111_sequencial'))."','$this->k111_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2559,14522,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k111_sequencial'))."','$this->k111_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k111_tabplan"]) || $this->k111_tabplan != "")
-           $resac = db_query("insert into db_acount values($acount,2559,14523,'".AddSlashes(pg_result($resaco,$conresaco,'k111_tabplan'))."','$this->k111_tabplan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2559,14523,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k111_tabplan'))."','$this->k111_tabplan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k111_recurso"]) || $this->k111_recurso != "")
-           $resac = db_query("insert into db_acount values($acount,2559,14524,'".AddSlashes(pg_result($resaco,$conresaco,'k111_recurso'))."','$this->k111_recurso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2559,14524,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k111_recurso'))."','$this->k111_recurso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k111_dataimplantacao"]) || $this->k111_dataimplantacao != "")
-           $resac = db_query("insert into db_acount values($acount,2559,14525,'".AddSlashes(pg_result($resaco,$conresaco,'k111_dataimplantacao'))."','$this->k111_dataimplantacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2559,14525,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k111_dataimplantacao'))."','$this->k111_dataimplantacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k111_creditoinicial"]) || $this->k111_creditoinicial != "")
-           $resac = db_query("insert into db_acount values($acount,2559,14526,'".AddSlashes(pg_result($resaco,$conresaco,'k111_creditoinicial'))."','$this->k111_creditoinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2559,14526,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k111_creditoinicial'))."','$this->k111_creditoinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k111_debitoinicial"]) || $this->k111_debitoinicial != "")
-           $resac = db_query("insert into db_acount values($acount,2559,14527,'".AddSlashes(pg_result($resaco,$conresaco,'k111_debitoinicial'))."','$this->k111_debitoinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2559,14527,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k111_debitoinicial'))."','$this->k111_debitoinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k111_anousu"]) || $this->k111_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,2559,14528,'".AddSlashes(pg_result($resaco,$conresaco,'k111_anousu'))."','$this->k111_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2559,14528,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k111_anousu'))."','$this->k111_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k111_dataatualizacao"]) || $this->k111_dataatualizacao != "")
-           $resac = db_query("insert into db_acount values($acount,2559,14529,'".AddSlashes(pg_result($resaco,$conresaco,'k111_dataatualizacao'))."','$this->k111_dataatualizacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2559,14529,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k111_dataatualizacao'))."','$this->k111_dataatualizacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k111_creditoatualizado"]) || $this->k111_creditoatualizado != "")
-           $resac = db_query("insert into db_acount values($acount,2559,14531,'".AddSlashes(pg_result($resaco,$conresaco,'k111_creditoatualizado'))."','$this->k111_creditoatualizado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2559,14531,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k111_creditoatualizado'))."','$this->k111_creditoatualizado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k111_debitoatualizado"]) || $this->k111_debitoatualizado != "")
-           $resac = db_query("insert into db_acount values($acount,2559,14530,'".AddSlashes(pg_result($resaco,$conresaco,'k111_debitoatualizado'))."','$this->k111_debitoatualizado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2559,14530,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k111_debitoatualizado'))."','$this->k111_debitoatualizado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -538,19 +538,19 @@ class cl_tabplansaldorecurso {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14522,'$k111_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2559,14522,'','".AddSlashes(pg_result($resaco,$iresaco,'k111_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2559,14523,'','".AddSlashes(pg_result($resaco,$iresaco,'k111_tabplan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2559,14524,'','".AddSlashes(pg_result($resaco,$iresaco,'k111_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2559,14525,'','".AddSlashes(pg_result($resaco,$iresaco,'k111_dataimplantacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2559,14526,'','".AddSlashes(pg_result($resaco,$iresaco,'k111_creditoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2559,14527,'','".AddSlashes(pg_result($resaco,$iresaco,'k111_debitoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2559,14528,'','".AddSlashes(pg_result($resaco,$iresaco,'k111_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2559,14529,'','".AddSlashes(pg_result($resaco,$iresaco,'k111_dataatualizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2559,14531,'','".AddSlashes(pg_result($resaco,$iresaco,'k111_creditoatualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2559,14530,'','".AddSlashes(pg_result($resaco,$iresaco,'k111_debitoatualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2559,14522,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k111_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2559,14523,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k111_tabplan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2559,14524,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k111_recurso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2559,14525,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k111_dataimplantacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2559,14526,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k111_creditoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2559,14527,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k111_debitoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2559,14528,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k111_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2559,14529,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k111_dataatualizacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2559,14531,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k111_creditoatualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2559,14530,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k111_debitoatualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from tabplansaldorecurso
@@ -610,7 +610,7 @@ class cl_tabplansaldorecurso {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:tabplansaldorecurso";
@@ -625,7 +625,7 @@ class cl_tabplansaldorecurso {
    function sql_query ( $k111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -649,7 +649,7 @@ class cl_tabplansaldorecurso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -662,7 +662,7 @@ class cl_tabplansaldorecurso {
    function sql_query_file ( $k111_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -683,7 +683,7 @@ class cl_tabplansaldorecurso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -33,25 +33,20 @@ class tce_4111
      * @var stdClass
      */
     private $cabecalho;
-    /**
-     * @var string
-     */
-    private $header;
 
     /**
      * Método construtor
-     * @param string $linhaCabecalho
+     * @param string $header
      */
-    public function __construct($linhaCabecalho)
+    public function __construct(private $header)
     {
 
-        $this->header = $linhaCabecalho;
         $this->cabecalho = new stdClass();
-        $this->cabecalho->cnpjsetorgoverno = substr($linhaCabecalho, 0, 14);
-        $this->cabecalho->datainicialinformacao = substr($linhaCabecalho, 14, 8);
-        $this->cabecalho->datafinalinformacao = substr($linhaCabecalho, 22, 8);
-        $this->cabecalho->datageracaoarquivo = substr($linhaCabecalho, 30, 8);
-        $this->cabecalho->nomesetorgoverno = substr($linhaCabecalho, 38);
+        $this->cabecalho->cnpjsetorgoverno = substr($this->header, 0, 14);
+        $this->cabecalho->datainicialinformacao = substr($this->header, 14, 8);
+        $this->cabecalho->datafinalinformacao = substr($this->header, 22, 8);
+        $this->cabecalho->datageracaoarquivo = substr($this->header, 30, 8);
+        $this->cabecalho->nomesetorgoverno = substr($this->header, 38);
 
     }
 
@@ -67,8 +62,8 @@ class tce_4111
      */
     public function processa(
         $codigosInstituicoes = 1,
-        $dataInicio,
-        $dataFim,
+        $dataInicio = null,
+        $dataFim = null,
         $instituicaoTributaria = null,
         $subelemento = null
     ) {

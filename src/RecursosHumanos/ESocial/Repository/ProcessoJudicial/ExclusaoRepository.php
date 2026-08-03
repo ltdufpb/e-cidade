@@ -136,7 +136,7 @@ class ExclusaoRepository
      * @param ContratoProcessual|null $contrato
      * @throws Exception
      */
-    public function delete(ExclusaoProcessual $contrato = null)
+    public function delete(?ExclusaoProcessual $contrato = null)
     {
         $id = $contrato instanceof ExclusaoProcessual ? $contrato->getSequencial() : null;
 
@@ -154,7 +154,7 @@ class ExclusaoRepository
      * @return bool|ProcessoJudicial
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessoexclusao;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);
@@ -306,7 +306,7 @@ class ExclusaoRepository
      * @return bool|ExclusaoProcessual
      * @throws Exception
      */
-    public static function getListaContratosProcesso($sequencialProcessoServidor, $columns = array('*'))
+    public static function getListaContratosProcesso($sequencialProcessoServidor, $columns = ['*'])
     {
         $dao = new cl_rhprocessoexclusao;
         $where = " rh300_sequencialprocessoservidor = {$sequencialProcessoServidor}";

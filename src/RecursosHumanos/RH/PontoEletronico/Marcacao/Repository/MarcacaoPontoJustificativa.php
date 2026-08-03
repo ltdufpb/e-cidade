@@ -59,8 +59,8 @@ class MarcacaoPontoJustificativa {
    */
   public function getTodasJustificativasDiaTrabalho(\Servidor $oServidor, \DBDate $oData) {
 
-    $aCampos = array('pontoeletronicoregistrojustificativa.*');
-    $aWhere  = array("rh197_data = '{$oData->getDate()}'", "rh197_matricula = {$oServidor->getMatricula()}");
+    $aCampos = ['pontoeletronicoregistrojustificativa.*'];
+    $aWhere  = ["rh197_data = '{$oData->getDate()}'", "rh197_matricula = {$oServidor->getMatricula()}"];
 
     $sSql = $this->oDao->sqlJustificativasData($aCampos, '', $aWhere);
     $rs   = db_query($sSql);

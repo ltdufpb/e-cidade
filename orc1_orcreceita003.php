@@ -35,7 +35,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("classes/db_orcparametro_classe.php"));
 require_once(modification("classes/db_orcfontes_classe.php"));
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 $clorcreceita = new cl_orcreceita;
 $clorcfontes = new cl_orcfontes;
@@ -85,8 +85,8 @@ if (isset($excluir)) {
         db_fieldsmemory($result, 0);
         if (!empty($o70_orcorgao)) {
 
-            $unidadeOrcamentaria = str_pad($o70_orcorgao, 2, "0", STR_PAD_LEFT);
-            $unidadeOrcamentaria .= str_pad($o70_orcunidade, 2, "0", STR_PAD_LEFT);
+            $unidadeOrcamentaria = str_pad((string) $o70_orcorgao, 2, "0", STR_PAD_LEFT);
+            $unidadeOrcamentaria .= str_pad((string) $o70_orcunidade, 2, "0", STR_PAD_LEFT);
             $unidadeOrcamentariaDescricao = $o41_descr;
         }
         $sql = $clorcfontes->sql_query_file(

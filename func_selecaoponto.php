@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_selecaoponto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clselecaoponto = new cl_selecaoponto;
 $clselecaoponto->rotulo->label("r72_sequencial");
 $clselecaoponto->rotulo->label("r72_descricao");
@@ -98,9 +98,9 @@ $clselecaoponto->rotulo->label("r72_descricao");
         }else{
            $sql = $clselecaoponto->sql_query("",$campos,"r72_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_r72_descricao)){
-          $repassa = array("chave_r72_sequencial"=>$chave_r72_sequencial,"chave_r72_descricao"=>$chave_r72_descricao);
+          $repassa = ["chave_r72_sequencial"=>$chave_r72_sequencial,"chave_r72_descricao"=>$chave_r72_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

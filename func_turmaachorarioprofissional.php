@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_turmaachorarioprofissional_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clturmaachorarioprofissional = new cl_turmaachorarioprofissional;
 $clturmaachorarioprofissional->rotulo->label("ed346_sequencial");
 $clturmaachorarioprofissional->rotulo->label("ed346_turmaac");
@@ -72,9 +72,9 @@ $clturmaachorarioprofissional->rotulo->label("ed346_turmaac");
         }else{
            $sql = $clturmaachorarioprofissional->sql_query("",$campos,"ed346_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed346_turmaac)){
-          $repassa = array("chave_ed346_sequencial"=>$chave_ed346_sequencial,"chave_ed346_turmaac"=>$chave_ed346_turmaac);
+          $repassa = ["chave_ed346_sequencial"=>$chave_ed346_sequencial,"chave_ed346_turmaac"=>$chave_ed346_turmaac];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -51,13 +51,13 @@ class ProcessaArquivoRetencao{
    * Array de registros do arquivo de retençao
    * @var array
    */
-  private $aRegistrosRetencao = array();
+  private $aRegistrosRetencao = [];
 
   /**
    * Array de registros inconsistentes do arquivo de retençao
    * @var array
    */
-  private $aRegistrosInconsistentes = array();
+  private $aRegistrosInconsistentes = [];
 
   /**
    * Metodo construtor
@@ -103,9 +103,9 @@ class ProcessaArquivoRetencao{
        */
       if (CgmFactory::getInstanceByCnpjCpf($oRegistroRetencao->q91_cnpjtomador) == false) {
 
-        $this->aRegistrosInconsistentes[] = array( "sequencial_registro" => $oRegistroRetencao->q91_sequencialregistro,
+        $this->aRegistrosInconsistentes[] = [ "sequencial_registro" => $oRegistroRetencao->q91_sequencialregistro,
                                                    "registro"            => $oRegistroRetencao->q91_cnpjtomador,
-                                                   "erro"                => self::TOMADOR_SEM_CGM );
+                                                   "erro"                => self::TOMADOR_SEM_CGM ];
       }
     }
   }

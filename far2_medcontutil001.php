@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oRotulo = new rotulocampo;
 $oRotulo->label("fa04_i_unidadess");
@@ -106,7 +106,7 @@ $oRotulo->label("fa06_i_matersaude");
          </td>
          <td>
            <?php 
-           $aDisp = array("1" => "PENDENTE", "2" => "NÃO CONSTA");
+           $aDisp = ["1" => "PENDENTE", "2" => "NÃO CONSTA"];
            db_select('iDispensacao', $aDisp, true, ""); 
            ?>
          </td>
@@ -117,9 +117,9 @@ $oRotulo->label("fa06_i_matersaude");
          </td>
          <td>
            <?php 
-           $aX = array('1' => 'Apresentar junto com os outros', '2' => 'Não apresente os pacientes', 
+           $aX = ['1' => 'Apresentar junto com os outros', '2' => 'Não apresente os pacientes', 
                        '3' => 'Apresentar somente os sem movimentação'
-                      );
+                      ];
            db_select('iMovimentacao', $aX, true, ""); 
            ?>
          </td>

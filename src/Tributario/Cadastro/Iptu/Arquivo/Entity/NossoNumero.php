@@ -6,8 +6,8 @@ use ECidade\Tributario\Library\Entity;
 
 final class NossoNumero extends Entity
 {
-    const NOSSO_NUMERO_PARCELA        = 'NOSSONUMEROPARCELA';
-    const DIGITO_NOSSO_NUMERO_PARCELA = 'DIGITONOSSONUMEROPARCELA';
+    const string NOSSO_NUMERO_PARCELA        = 'NOSSONUMEROPARCELA';
+    const string DIGITO_NOSSO_NUMERO_PARCELA = 'DIGITONOSSONUMEROPARCELA';
     
     /**
      * @var integer

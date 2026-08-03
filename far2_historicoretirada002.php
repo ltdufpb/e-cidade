@@ -95,12 +95,12 @@ function novaLinha(
     $oPdf->cell(16, $iTam, $dData, 1, 0, 'C', $lCor);
     $oPdf->cell(29, $iTam, $sTipo, 1, 0, 'L', $lCor);
     $oPdf->cell(10, $iTam, $sCampo1, 1, 0, 'C', $lCor);
-    $oPdf->cell(98, $iTam, substr($sCampo2, 0, 52), 1, 0, 'L', $lCor);
+    $oPdf->cell(98, $iTam, substr((string) $sCampo2, 0, 52), 1, 0, 'L', $lCor);
     $oPdf->cell(10, $iTam, $iQuantidade, 1, 0, 'C', $lCor);
     $oPdf->cell(15, $iTam, $iLote, 1, 0, 'L', $lCor);
     $oPdf->cell(20, $iTam, $dValidade, 1, 0, 'C', $lCor);
     $oPdf->cell(20, $iTam, $iRequisicao, 1, 0, 'C', $lCor);
-    $oPdf->cell(40, $iTam, substr($sMotivo, 0, 24), 1, 0, 'L', $lCor);
+    $oPdf->cell(40, $iTam, substr((string) $sMotivo, 0, 24), 1, 0, 'L', $lCor);
     $oPdf->cell(20, $iTam, $sLogin, 1, 1, 'L', $lCor);
 }
 
@@ -154,12 +154,12 @@ function formataData($dData, $iTipo = 1)
     }
 
     if ($iTipo == 1) {
-        $dData = explode('/', $dData);
+        $dData = explode('/', (string) $dData);
         $dData = $dData[2] . '-' . $dData[1] . '-' . $dData[0];
         return $dData;
     }
 
-    $dData = explode('-', $dData);
+    $dData = explode('-', (string) $dData);
     $dData = @$dData[2] . '/' . @$dData[1] . '/' . @$dData[0];
     return $dData;
 }
@@ -330,7 +330,7 @@ if ($iTipo == 1) { // quebra por CGS
 
 if ($somenteTotalizadores === "false") {
     $oPdf->Addpage('L'); // P retrato
-    novoCabecalho($oPdf, $sLabel3, $sLabel4);
+    novoCabecalho($oPdf);
     $oDados = db_utils::fieldsmemory($rs, 0);
 
     /* codigo que identifica quando é feita uma nova quebra, pois recebe o código do campo que vai determinar a quebra e
@@ -350,7 +350,7 @@ if ($somenteTotalizadores === "false") {
         $sCartaoSus = $oCgs->getCartaoSusAtivo();
 
         if ($iCodigoTotal != $oDados->{$sCampo3} || $idRetirada != $oDados->id) { // novo total retirado
-            novoTotal($oPdf, $iTotalRetirado, $iTotalDevolvido, $oDados->m61_descr);
+            novoTotal($oPdf, $iTotalRetirado, $iTotalDevolvido);
             $iTotalRetirado = 0;
             $iTotalDevolvido = 0;
             $iCodigoTotal = $oDados->$sCampo3;
@@ -362,7 +362,7 @@ if ($somenteTotalizadores === "false") {
 
         if ($oPdf->getY() > $oPdf->getH() - 30) {
             $oPdf->Addpage('L'); // L deitado
-            novoCabecalho($oPdf, $sLabel3, $sLabel4);
+            novoCabecalho($oPdf);
         }
 
         if ($iCodigoQuebra != $oDados->{$sCampo1}) { // novo paciente ou medicamento, dependendo do tipo de quebra
@@ -382,12 +382,7 @@ if ($somenteTotalizadores === "false") {
             $oDados->{$sCampo4},
             $oDados->fa09_f_quant,
             $oDados->m77_lote,
-            formataData($oDados->m77_dtvalidade, 2),
-            $oDados->fa07_i_matrequi,
-            $oDados->login,
-            $oDados->stipo,
-            $oDados->fa23_c_motivo,
-            $oDados->tipo
+            formataData($oDados->m77_dtvalidade, 2)
         );
 
         // retirada
@@ -403,7 +398,7 @@ if ($somenteTotalizadores === "false") {
         }
     }
 
-    novoTotal($oPdf, $iTotalRetirado, $iTotalDevolvido, $oDados->m61_descr);
+    novoTotal($oPdf, $iTotalRetirado, $iTotalDevolvido);
     $oPdf->setfont('arial', '', 7);
     $oPdf->cell(115, 5, $receita, 'RBT', 1, 'L');
     $oPdf->setfont('arial', 'B', 8);

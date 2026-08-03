@@ -102,7 +102,7 @@ db_input('nomearq',50,$Inomearq,true,'text',3,'')
 	   $dbwhere .= " and sequencial <> ".$sequencial;
 	 }
          $sql = $cldb_sysprocedarq->sql_query(null,"sequencial, db_sysarquivo.codarq, sigla, nomearq, descricao","db_sysarquivo.codarq",$dbwhere);
-	 $chavepri= array("sequencial"=>@$sequencial);
+	 $chavepri= ["sequencial"=>@$sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $sql;
 	 $cliframe_alterar_excluir->campos  ="codarq,sigla,nomearq,descricao";

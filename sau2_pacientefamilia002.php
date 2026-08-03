@@ -49,7 +49,7 @@ if(isset($Processar)){
 
    $campos=" z01_i_cgsund,z01_v_nome,sd24_i_codigo ";
 	 $sql=$cl_cgs_und->sql_query_pontuarios("",$campos,""," z01_i_familiamicroarea = $z01_i_familiamicroarea ");
-   $repassa = array("chave_z01_i_cgsund"=>@$chave_z01_i_cgsund);
+   $repassa = ["chave_z01_i_cgsund"=>@$chave_z01_i_cgsund];
    db_lovrot($sql,15,"()","","js_prontuarios|sd24_i_codigo");
     
 }

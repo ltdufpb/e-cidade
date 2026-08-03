@@ -53,9 +53,10 @@ class AnexoXVBalancoGeral extends RelatoriosLegaisBase  {
    * 
    * @return array - Colecao de stdClass
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
   	
-     $aLinhas                   = array();
+     $aLinhas                   = [];
      
      /**
       * montamos as datas, e processamos o balancete de verificação
@@ -70,7 +71,7 @@ class AnexoXVBalancoGeral extends RelatoriosLegaisBase  {
      $sWherePlano      = " c61_instit in ({$this->getInstituicoes()}) ";
      $sWhereReceita    = " o70_instit in ({$this->getInstituicoes()}) ";
      $sWhereDespesa    = " o58_instit in ({$this->getInstituicoes()}) ";
-     $aLinhasUsamPlano = array(22, 23, 24, 25, 26, 27, 42, 43, 45, 46, 47);
+     $aLinhasUsamPlano = [22, 23, 24, 25, 26, 27, 42, 43, 45, 46, 47];
      /**
       * processa o balancete de verificação
       */
@@ -102,12 +103,12 @@ class AnexoXVBalancoGeral extends RelatoriosLegaisBase  {
        
        $aLinhasRelatorio[$iLinha]->setPeriodo($this->iCodigoPeriodo);
        $aColunasRelatorio  = $aLinhasRelatorio[$iLinha]->getCols($this->iCodigoPeriodo);
-       $aColunaslinha      = array();
+       $aColunaslinha      = [];
        $oLinha             = new stdClass();
        $oLinha->totalizar  = $aLinhasRelatorio[$iLinha]->isTotalizador();
        $oLinha->descricao  = $aLinhasRelatorio[$iLinha]->getDescricaoLinha();
        $oLinha->colunas    = $aColunasRelatorio; 
-       $oLinha->contas     = array(); 
+       $oLinha->contas     = []; 
        $oLinha->desdobrar  = false; 
        $oLinha->nivellinha = $aLinhasRelatorio[$iLinha]->getNivel();
        $aParametros        = $aLinhasRelatorio[$iLinha]->getParametros($this->iAnoUsu, $this->getInstituicoes());
@@ -213,7 +214,7 @@ class AnexoXVBalancoGeral extends RelatoriosLegaisBase  {
 
          foreach ($oLinha->colunas as $iColuna => $oColuna) {
            
-           if (trim($oColuna->o116_formula) != "") {
+           if (trim((string) $oColuna->o116_formula) != "") {
              
              $sFormulaOriginal = ($oColuna->o116_formula);
              $sFormula         = $this->oRelatorioLegal->parseFormula('aLinhas', $sFormulaOriginal, $iColuna, $aLinhas);

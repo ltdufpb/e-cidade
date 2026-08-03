@@ -61,13 +61,13 @@ class IptucalcpadraoIPTU implements iViradaIPTU {
    * Campos chave configurados na tabela iptutabelasconfigcampochave
    * @var array
    */
-  private $aCampoChave    = array();
+  private $aCampoChave    = [];
   
   /**
    * Campos correcao configurados na tabela iptutabelasconfigcampocorrecao
    * @var array
    */
-  private $aCampoCorrecao = array();
+  private $aCampoCorrecao = [];
   
   /**
    * @return $this->iAnoAtual
@@ -310,7 +310,7 @@ class IptucalcpadraoIPTU implements iViradaIPTU {
           	
             $oDaoIptuCalcPadrao->$sNomeCampoIptuCalcPadrao = $oDadosIptuCalcPadrao->$sNomeCampoIptuCalcPadrao;
             
-          	if (trim($sNomeCampoIptuCalcPadrao) == 'j10_anousu') {
+          	if (trim((string) $sNomeCampoIptuCalcPadrao) == 'j10_anousu') {
           		$oDaoIptuCalcPadrao->$sNomeCampoIptuCalcPadrao = $this->getAnoNovo();
           	}
             

@@ -10,6 +10,7 @@ class Sequencial extends BaseFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;
@@ -31,20 +32,21 @@ class Sequencial extends BaseFormRequest
      */
     public function response(array $errors)
     {
-        $mensagem = utf8_decode($errors[array_keys($errors)[0]][0]);
+        $mensagem = mb_convert_encoding($errors[array_keys($errors)[0]][0], 'ISO-8859-1');
         return new DBJsonResponse($errors, $mensagem, 406);
     }
 
     /**
      * @return array
      */
+    #[\Override]
     public function messages()
     {
         return [
-            "id.required" => utf8_encode("Código não informado da configuração da rubrica da comissão."),
-            "id.filled" => utf8_encode("Código inválido da configuração da rubrica da comissão."),
-            "id.integer" => utf8_encode("Código inválido da configuração da rubrica da comissão."),
-            "id.exists" => utf8_encode("Não foi encontrada a configuração da rubrica da comissão."),
+            "id.required" => mb_convert_encoding("Código não informado da configuração da rubrica da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "id.filled" => mb_convert_encoding("Código inválido da configuração da rubrica da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "id.integer" => mb_convert_encoding("Código inválido da configuração da rubrica da comissão.", 'UTF-8', 'ISO-8859-1'),
+            "id.exists" => mb_convert_encoding("Não foi encontrada a configuração da rubrica da comissão.", 'UTF-8', 'ISO-8859-1'),
         ];
     }
 }

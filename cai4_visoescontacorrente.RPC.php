@@ -49,7 +49,7 @@ try {
 
         case "salvar":
 
-            $propriedadesInvalidas = array();
+            $propriedadesInvalidas = [];
             if (empty($parametros->dados->nome)) {
                 $propriedadesInvalidas[] = 'nome';
             }
@@ -126,27 +126,27 @@ try {
                 }
             }
 
-            $retorno->dados = (object)array(
+            $retorno->dados = (object)[
                 'codigo' => $visaoRepository->getCodigo(),
                 'nome' => $visaoRepository->getNome(),
                 'menu' => $menuEncontrado,
                 'dadosJson' => $filtros
-            );
+            ];
 
             break;
 
         case 'getVisoes':
 
             $todasVisoes = VisaoRepository::getTodos();
-            $retorno->dados = array();
+            $retorno->dados = [];
             foreach ( $todasVisoes as $visao ) {
 
                 $menuEncontrado = getMenu($visao->getCodigoItemMenu());
-                $retorno->dados[] = (object)array(
+                $retorno->dados[] = (object)[
                     'codigo' => $visao->getCodigo(),
                     'nome' => $visao->getNome(),
                     'menu' => $menuEncontrado
-                );
+                ];
             }
 
             break;
@@ -236,7 +236,7 @@ function getMenu( $iIdMenu, $idModulo=0 )
             return false;
         }
         $s = $menuEncontrado;
-        $menu_sem_modulo = substr($s,strpos($s, " > "), strlen($s));
+        $menu_sem_modulo = substr((string) $s,strpos((string) $s, " > "), strlen((string) $s));
         $menuEncontrado  = db_utils::fieldsMemory($modulo, 0)->nome_modulo.$menu_sem_modulo;
         return $menuEncontrado;
 

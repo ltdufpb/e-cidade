@@ -30,11 +30,11 @@ namespace ECidade\RecursosHumanos\ESocial\Mapeadores\Tabelas;
 class OnusCedencia implements TabelasInterface
 {
 
-    protected $onus = array(
+    protected $onus = [
         'N' => 1,
         'S' => 2,
         'X' => 3
-    );
+    ];
 
     /**
      * Retorna o valor da tabela do esocial equivalente ao valor de um dado no e-cidade
@@ -43,6 +43,6 @@ class OnusCedencia implements TabelasInterface
      */
     public function getValue($valor)
     {
-        return $this->onus[mb_strtoupper($valor)];
+        return $this->onus[mb_strtoupper((string) $valor)];
     }
 }

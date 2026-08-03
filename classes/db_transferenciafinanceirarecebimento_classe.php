@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE transferenciafinanceirarecebimento
 class cl_transferenciafinanceirarecebimento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k151_sequencial = 0; 
-   var $k151_transferenciafinanceira = 0; 
-   var $k151_slip = 0; 
-   var $k151_db_usuario = 0; 
-   var $k151_hora = null; 
-   var $k151_data_dia = null; 
-   var $k151_data_mes = null; 
-   var $k151_data_ano = null; 
-   var $k151_data = null; 
-   var $k151_estornado = 'f'; 
+   public $k151_sequencial = 0; 
+   public $k151_transferenciafinanceira = 0; 
+   public $k151_slip = 0; 
+   public $k151_db_usuario = 0; 
+   public $k151_hora = null; 
+   public $k151_data_dia = null; 
+   public $k151_data_mes = null; 
+   public $k151_data_ano = null; 
+   public $k151_data = null; 
+   public $k151_estornado = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k151_sequencial = int4 = Sequencial 
                  k151_transferenciafinanceira = int4 = Codigo da Transferencia 
                  k151_slip = int4 = Código Slip 
@@ -63,10 +63,10 @@ class cl_transferenciafinanceirarecebimento {
                  k151_estornado = bool = Estornado 
                  ";
    //funcao construtor da classe 
-   function cl_transferenciafinanceirarecebimento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("transferenciafinanceirarecebimento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_transferenciafinanceirarecebimento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k151_sequencial = pg_result($result,0,0); 
+       $this->k151_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from transferenciafinanceirarecebimento_k151_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k151_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k151_sequencial)){
          $this->erro_sql = " Campo k151_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_transferenciafinanceirarecebimento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "transferenciafinanceirarecebimento ($this->k151_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "transferenciafinanceirarecebimento já Cadastrado";
@@ -232,16 +232,16 @@ class cl_transferenciafinanceirarecebimento {
      $resaco = $this->sql_record($this->sql_query_file($this->k151_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19229,'$this->k151_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3415,19229,'','".AddSlashes(pg_result($resaco,0,'k151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3415,19241,'','".AddSlashes(pg_result($resaco,0,'k151_transferenciafinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3415,19230,'','".AddSlashes(pg_result($resaco,0,'k151_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3415,19231,'','".AddSlashes(pg_result($resaco,0,'k151_db_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3415,19232,'','".AddSlashes(pg_result($resaco,0,'k151_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3415,19233,'','".AddSlashes(pg_result($resaco,0,'k151_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3415,19234,'','".AddSlashes(pg_result($resaco,0,'k151_estornado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3415,19229,'','".AddSlashes(pg_fetch_result($resaco,0,'k151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3415,19241,'','".AddSlashes(pg_fetch_result($resaco,0,'k151_transferenciafinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3415,19230,'','".AddSlashes(pg_fetch_result($resaco,0,'k151_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3415,19231,'','".AddSlashes(pg_fetch_result($resaco,0,'k151_db_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3415,19232,'','".AddSlashes(pg_fetch_result($resaco,0,'k151_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3415,19233,'','".AddSlashes(pg_fetch_result($resaco,0,'k151_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3415,19234,'','".AddSlashes(pg_fetch_result($resaco,0,'k151_estornado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,10 +250,10 @@ class cl_transferenciafinanceirarecebimento {
       $this->atualizacampos();
      $sql = " update transferenciafinanceirarecebimento set ";
      $virgula = "";
-     if(trim($this->k151_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_sequencial"])){ 
+     if(trim((string) $this->k151_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_sequencial"])){ 
        $sql  .= $virgula." k151_sequencial = $this->k151_sequencial ";
        $virgula = ",";
-       if(trim($this->k151_sequencial) == null ){ 
+       if(trim((string) $this->k151_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k151_sequencial";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_transferenciafinanceirarecebimento {
          return false;
        }
      }
-     if(trim($this->k151_transferenciafinanceira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_transferenciafinanceira"])){ 
+     if(trim((string) $this->k151_transferenciafinanceira)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_transferenciafinanceira"])){ 
        $sql  .= $virgula." k151_transferenciafinanceira = $this->k151_transferenciafinanceira ";
        $virgula = ",";
-       if(trim($this->k151_transferenciafinanceira) == null ){ 
+       if(trim((string) $this->k151_transferenciafinanceira) == null ){ 
          $this->erro_sql = " Campo Codigo da Transferencia nao Informado.";
          $this->erro_campo = "k151_transferenciafinanceira";
          $this->erro_banco = "";
@@ -276,10 +276,10 @@ class cl_transferenciafinanceirarecebimento {
          return false;
        }
      }
-     if(trim($this->k151_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_slip"])){ 
+     if(trim((string) $this->k151_slip)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_slip"])){ 
        $sql  .= $virgula." k151_slip = $this->k151_slip ";
        $virgula = ",";
-       if(trim($this->k151_slip) == null ){ 
+       if(trim((string) $this->k151_slip) == null ){ 
          $this->erro_sql = " Campo Código Slip nao Informado.";
          $this->erro_campo = "k151_slip";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_transferenciafinanceirarecebimento {
          return false;
        }
      }
-     if(trim($this->k151_db_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_db_usuario"])){ 
+     if(trim((string) $this->k151_db_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_db_usuario"])){ 
        $sql  .= $virgula." k151_db_usuario = $this->k151_db_usuario ";
        $virgula = ",";
-       if(trim($this->k151_db_usuario) == null ){ 
+       if(trim((string) $this->k151_db_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "k151_db_usuario";
          $this->erro_banco = "";
@@ -302,10 +302,10 @@ class cl_transferenciafinanceirarecebimento {
          return false;
        }
      }
-     if(trim($this->k151_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_hora"])){ 
+     if(trim((string) $this->k151_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_hora"])){ 
        $sql  .= $virgula." k151_hora = '$this->k151_hora' ";
        $virgula = ",";
-       if(trim($this->k151_hora) == null ){ 
+       if(trim((string) $this->k151_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "k151_hora";
          $this->erro_banco = "";
@@ -315,10 +315,10 @@ class cl_transferenciafinanceirarecebimento {
          return false;
        }
      }
-     if(trim($this->k151_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k151_data_dia"] !="") ){ 
+     if(trim((string) $this->k151_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k151_data_dia"] !="") ){ 
        $sql  .= $virgula." k151_data = '$this->k151_data' ";
        $virgula = ",";
-       if(trim($this->k151_data) == null ){ 
+       if(trim((string) $this->k151_data) == null ){ 
          $this->erro_sql = " Campo Data do recebimento nao Informado.";
          $this->erro_campo = "k151_data_dia";
          $this->erro_banco = "";
@@ -331,7 +331,7 @@ class cl_transferenciafinanceirarecebimento {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k151_data_dia"])){ 
          $sql  .= $virgula." k151_data = null ";
          $virgula = ",";
-         if(trim($this->k151_data) == null ){ 
+         if(trim((string) $this->k151_data) == null ){ 
            $this->erro_sql = " Campo Data do recebimento nao Informado.";
            $this->erro_campo = "k151_data_dia";
            $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_transferenciafinanceirarecebimento {
          }
        }
      }
-     if(trim($this->k151_estornado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_estornado"])){ 
+     if(trim((string) $this->k151_estornado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k151_estornado"])){ 
        $sql  .= $virgula." k151_estornado = '$this->k151_estornado' ";
        $virgula = ",";
-       if(trim($this->k151_estornado) == null ){ 
+       if(trim((string) $this->k151_estornado) == null ){ 
          $this->erro_sql = " Campo Estornado nao Informado.";
          $this->erro_campo = "k151_estornado";
          $this->erro_banco = "";
@@ -363,23 +363,23 @@ class cl_transferenciafinanceirarecebimento {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19229,'$this->k151_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k151_sequencial"]) || $this->k151_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3415,19229,'".AddSlashes(pg_result($resaco,$conresaco,'k151_sequencial'))."','$this->k151_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3415,19229,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k151_sequencial'))."','$this->k151_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k151_transferenciafinanceira"]) || $this->k151_transferenciafinanceira != "")
-           $resac = db_query("insert into db_acount values($acount,3415,19241,'".AddSlashes(pg_result($resaco,$conresaco,'k151_transferenciafinanceira'))."','$this->k151_transferenciafinanceira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3415,19241,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k151_transferenciafinanceira'))."','$this->k151_transferenciafinanceira',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k151_slip"]) || $this->k151_slip != "")
-           $resac = db_query("insert into db_acount values($acount,3415,19230,'".AddSlashes(pg_result($resaco,$conresaco,'k151_slip'))."','$this->k151_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3415,19230,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k151_slip'))."','$this->k151_slip',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k151_db_usuario"]) || $this->k151_db_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3415,19231,'".AddSlashes(pg_result($resaco,$conresaco,'k151_db_usuario'))."','$this->k151_db_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3415,19231,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k151_db_usuario'))."','$this->k151_db_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k151_hora"]) || $this->k151_hora != "")
-           $resac = db_query("insert into db_acount values($acount,3415,19232,'".AddSlashes(pg_result($resaco,$conresaco,'k151_hora'))."','$this->k151_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3415,19232,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k151_hora'))."','$this->k151_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k151_data"]) || $this->k151_data != "")
-           $resac = db_query("insert into db_acount values($acount,3415,19233,'".AddSlashes(pg_result($resaco,$conresaco,'k151_data'))."','$this->k151_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3415,19233,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k151_data'))."','$this->k151_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k151_estornado"]) || $this->k151_estornado != "")
-           $resac = db_query("insert into db_acount values($acount,3415,19234,'".AddSlashes(pg_result($resaco,$conresaco,'k151_estornado'))."','$this->k151_estornado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3415,19234,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k151_estornado'))."','$this->k151_estornado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,16 +424,16 @@ class cl_transferenciafinanceirarecebimento {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19229,'$k151_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3415,19229,'','".AddSlashes(pg_result($resaco,$iresaco,'k151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3415,19241,'','".AddSlashes(pg_result($resaco,$iresaco,'k151_transferenciafinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3415,19230,'','".AddSlashes(pg_result($resaco,$iresaco,'k151_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3415,19231,'','".AddSlashes(pg_result($resaco,$iresaco,'k151_db_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3415,19232,'','".AddSlashes(pg_result($resaco,$iresaco,'k151_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3415,19233,'','".AddSlashes(pg_result($resaco,$iresaco,'k151_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3415,19234,'','".AddSlashes(pg_result($resaco,$iresaco,'k151_estornado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3415,19229,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k151_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3415,19241,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k151_transferenciafinanceira'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3415,19230,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k151_slip'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3415,19231,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k151_db_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3415,19232,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k151_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3415,19233,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k151_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3415,19234,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k151_estornado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from transferenciafinanceirarecebimento
@@ -493,7 +493,7 @@ class cl_transferenciafinanceirarecebimento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:transferenciafinanceirarecebimento";
@@ -508,7 +508,7 @@ class cl_transferenciafinanceirarecebimento {
    function sql_query ( $k151_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -535,7 +535,7 @@ class cl_transferenciafinanceirarecebimento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -548,7 +548,7 @@ class cl_transferenciafinanceirarecebimento {
    function sql_query_file ( $k151_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -569,7 +569,7 @@ class cl_transferenciafinanceirarecebimento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

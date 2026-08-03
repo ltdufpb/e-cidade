@@ -92,7 +92,7 @@ if ($rsPedido && pg_num_rows($rsPedido) > 0) {
   }
 
 }
-$assets = array("estilos.css","scripts.js","strings.js","prototype.js");
+$assets = ["estilos.css","scripts.js","strings.js","prototype.js"];
 ?>
 <html>
   <head>

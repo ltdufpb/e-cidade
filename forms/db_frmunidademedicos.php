@@ -159,7 +159,7 @@ if(isset($opcao) && $opcao=="alterar"){
                         </td>
                         <td width="42%">
                          <?php 
-                         $x = array('A'=>'Ativo','D'=>'Desativado');
+                         $x = ['A'=>'Ativo','D'=>'Desativado'];
                          db_select('sd27_c_situacao',$x,true,$db_opcao,"");
                          ?>
                         </td>
@@ -171,7 +171,7 @@ if(isset($opcao) && $opcao=="alterar"){
                         </td>
                         <td>
                          <?php 
-                         $x = array('N'=>'Não','S'=>'Sim');
+                         $x = ['N'=>'Não','S'=>'Sim'];
                          db_select('sd04_c_sus',$x,true,$db_opcao,"");
                          ?>
                         </td>
@@ -259,7 +259,7 @@ if(isset($opcao) && $opcao=="alterar"){
          </td>
          <td>
             <?php 
-            $x = array('f'=>'Não','t'=>'Sim');
+            $x = ['f'=>'Não','t'=>'Sim'];
             db_select('sd27_b_principal',$x,true,$db_opcao,"");
             ?>
          </td>
@@ -273,7 +273,7 @@ if(isset($opcao) && $opcao=="alterar"){
            <?php 
            $sSql = $oDaoFarCbos->sql_query_file();
            $rs   = $oDaoFarCbos->sql_record($sSql);
-           $aX   = array();
+           $aX   = [];
            if ($oDaoFarCbos->numrows > 0) {
             
              for ($iCont = 0; $iCont < $oDaoFarCbos->numrows; $iCont++) {
@@ -344,7 +344,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top"><br>
   <?php 
-   $chavepri= array("sd27_i_codigo"=>@$sd27_i_codigo );
+   $chavepri= ["sd27_i_codigo"=>@$sd27_i_codigo ];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    //echo $clespecmedico->sql_query("","*",""," sd04_i_medico = $sd04_i_medico");
    //@$cliframe_alterar_excluir->sql = $clunidademedicos->sql_query("","*",""," sd04_i_medico = $sd04_i_medico");
@@ -569,7 +569,7 @@ function js_preenchepesquisa(chave){
   db_iframe_unidademedicos.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

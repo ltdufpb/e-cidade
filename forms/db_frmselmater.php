@@ -35,7 +35,7 @@ $queryele = "";
 if(isset($pc16_solicitem) && trim($pc16_solicitem)!=""){
   $result_pcdotac = $clpcdotac->sql_record($clpcdotac->sql_query_descrdot($pc16_solicitem,null,null,"o56_elemento"));
   $numrows_pcdotac = $clpcdotac->numrows;
-  $arr_pcdotac = Array();
+  $arr_pcdotac = [];
   for($i=0;$i<$numrows_pcdotac;$i++){
   	db_fieldsmemory($result_pcdotac,$i);
   	if(!in_array($o56_elemento,$arr_pcdotac)){
@@ -82,8 +82,8 @@ if(isset($pc16_solicitem) && trim($pc16_solicitem)!=""){
   </tr>
   <?php 
   if($db_opcao==1){
-    $arr_elementos = Array();
-  	$where_elemento = " substr(o56_elemento,1,7)='".substr($elemento,0,7)."' and substr(o56_elemento,7,6)::int > 0 ";
+    $arr_elementos = [];
+  	$where_elemento = " substr(o56_elemento,1,7)='".substr((string) $elemento,0,7)."' and substr(o56_elemento,7,6)::int > 0 ";
   	// echo($clorcelemento->sql_query_file(null,null," distinct o56_codele,o56_descr,o56_elemento","o56_descr","o56_anousu = ".db_getsession("DB_anousu")." and  ".$where_elemento));
   	
   	//////// Select que estava executando antes

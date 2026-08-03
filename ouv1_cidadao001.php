@@ -36,7 +36,7 @@ include(modification("classes/db_cidadaotelefone_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_app.utils.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //$clcidadao 					= new cl_cidadao;
 //$clcidadaoemail 		= new cl_cidadaoemail;
 //$clcidadaotelefone 	= new cl_cidadaotelefone;

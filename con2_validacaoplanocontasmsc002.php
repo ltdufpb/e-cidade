@@ -34,7 +34,7 @@ const FONT = 'Arial';
 const HEIGHT = 4;
 
 $relatorio = new stdClass;
-$relatorio->contas = array();
+$relatorio->contas = [];
 $relatorio->ano = $_GET['ano'];
 
 try {

@@ -13,15 +13,12 @@ class Paginator implements PaginatorInterface
      */
     protected $paginator;
 
-    protected $data;
-
     /**
      * @return void
      */
-    public function __construct(Page $paginator, $data)
+    public function __construct(Page $paginator, protected $data)
     {
         $this->paginator = $paginator;
-        $this->data = $data;
     }
 
     /**

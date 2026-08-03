@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_regenciahorario_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clregenciahorario = new cl_regenciahorario;
 $clregenciahorario->rotulo->label("ed58_i_codigo");
 $clregenciahorario->rotulo->label("ed58_i_codigo");
@@ -98,9 +98,9 @@ $clregenciahorario->rotulo->label("ed58_i_codigo");
         }else{
            $sql = $clregenciahorario->sql_query("",$campos,"ed58_i_codigo"," ed58_ativo is true  ");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed58_i_codigo)){
-          $repassa = array("chave_ed58_i_codigo"=>$chave_ed58_i_codigo,"chave_ed58_i_codigo"=>$chave_ed58_i_codigo);
+          $repassa = ["chave_ed58_i_codigo"=>$chave_ed58_i_codigo,"chave_ed58_i_codigo"=>$chave_ed58_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

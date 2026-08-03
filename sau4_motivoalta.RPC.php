@@ -78,7 +78,7 @@ try {
         throw new DBException( _M( MENSAGENS_MOTIVOALTA_RPC . 'erro_buscar_motivos_alta', $oErro ) );
       }
 
-      $oRetorno->aMotivosAlta = array();
+      $oRetorno->aMotivosAlta = [];
       $iTotalMotivoAlta       = pg_num_rows( $rsMotivoAlta );
 
       for( $iContador = 0; $iContador < $iTotalMotivoAlta; $iContador++ ) {
@@ -86,7 +86,7 @@ try {
         $oDadosMotivoAlta             = new stdClass();
         $oRetornoMotivoAlta           = db_utils::fieldsMemory( $rsMotivoAlta, $iContador );
         $oDadosMotivoAlta->iCodigo    = $oRetornoMotivoAlta->sd01_codigo;
-        $oDadosMotivoAlta->sDescricao = urlencode( $oRetornoMotivoAlta->sd01_descricao );
+        $oDadosMotivoAlta->sDescricao = urlencode( (string) $oRetornoMotivoAlta->sd01_descricao );
         $oDadosMotivoAlta->iCodigoSus = $oRetornoMotivoAlta->sd01_codigosus;
 
         $oRetorno->aMotivosAlta[] = $oDadosMotivoAlta;
@@ -160,7 +160,7 @@ try {
       }
 
       $oProntuario             = new Prontuario( $oParam->iProntuario );
-      $oRetorno->sNomePaciente = urlencode( $oProntuario->getCGS()->getNome() );
+      $oRetorno->sNomePaciente = urlencode( (string) $oProntuario->getCGS()->getNome() );
 
       if( $oProntuario->isFinalizado() ) {
 

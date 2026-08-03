@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE discla
 class cl_discla {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $codcla = 0;
-   var $codret = 0;
-   var $dtcla_dia = null;
-   var $dtcla_mes = null;
-   var $dtcla_ano = null;
-   var $dtcla = null;
-   var $dtaute_dia = null;
-   var $dtaute_mes = null;
-   var $dtaute_ano = null;
-   var $dtaute = null;
-   var $instit = 0;
+   public $codcla = 0;
+   public $codret = 0;
+   public $dtcla_dia = null;
+   public $dtcla_mes = null;
+   public $dtcla_ano = null;
+   public $dtcla = null;
+   public $dtaute_dia = null;
+   public $dtaute_mes = null;
+   public $dtaute_ano = null;
+   public $dtaute = null;
+   public $instit = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  codcla = int4 = CodCla
                  codret = int4 = Código
                  dtcla = date = Data Classificação
@@ -62,10 +62,10 @@ class cl_discla {
                  instit = int4 = Instituição
                  ";
    //funcao construtor da classe
-   function cl_discla() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("discla");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -151,10 +151,10 @@ class cl_discla {
          $this->erro_status = "0";
          return false;
        }
-       $this->codcla = pg_result($result,0,0);
+       $this->codcla = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from discla_codcla_seq");
-       if(($result != false) && (pg_result($result,0,0) < $codcla)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $codcla)){
          $this->erro_sql = " Campo codcla maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -190,7 +190,7 @@ class cl_discla {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Dados classificacao receita ($this->codcla) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Dados classificacao receita já Cadastrado";
@@ -214,14 +214,14 @@ class cl_discla {
      $resaco = $this->sql_record($this->sql_query_file($this->codcla));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1198,'$this->codcla','I')");
-       $resac = db_query("insert into db_acount values($acount,215,1198,'','".AddSlashes(pg_result($resaco,0,'codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,215,1179,'','".AddSlashes(pg_result($resaco,0,'codret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,215,1194,'','".AddSlashes(pg_result($resaco,0,'dtcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,215,1196,'','".AddSlashes(pg_result($resaco,0,'dtaute'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,215,9996,'','".AddSlashes(pg_result($resaco,0,'instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,215,1198,'','".AddSlashes(pg_fetch_result($resaco,0,'codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,215,1179,'','".AddSlashes(pg_fetch_result($resaco,0,'codret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,215,1194,'','".AddSlashes(pg_fetch_result($resaco,0,'dtcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,215,1196,'','".AddSlashes(pg_fetch_result($resaco,0,'dtaute'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,215,9996,'','".AddSlashes(pg_fetch_result($resaco,0,'instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -230,10 +230,10 @@ class cl_discla {
       $this->atualizacampos();
      $sql = " update discla set ";
      $virgula = "";
-     if(trim($this->codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcla"])){
+     if(trim((string) $this->codcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codcla"])){
        $sql  .= $virgula." codcla = $this->codcla ";
        $virgula = ",";
-       if(trim($this->codcla) == null ){
+       if(trim((string) $this->codcla) == null ){
          $this->erro_sql = " Campo CodCla nao Informado.";
          $this->erro_campo = "codcla";
          $this->erro_banco = "";
@@ -243,10 +243,10 @@ class cl_discla {
          return false;
        }
      }
-     if(trim($this->codret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codret"])){
+     if(trim((string) $this->codret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codret"])){
        $sql  .= $virgula." codret = $this->codret ";
        $virgula = ",";
-       if(trim($this->codret) == null ){
+       if(trim((string) $this->codret) == null ){
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "codret";
          $this->erro_banco = "";
@@ -256,10 +256,10 @@ class cl_discla {
          return false;
        }
      }
-     if(trim($this->dtcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dtcla_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dtcla_dia"] !="") ){
+     if(trim((string) $this->dtcla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dtcla_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dtcla_dia"] !="") ){
        $sql  .= $virgula." dtcla = '$this->dtcla' ";
        $virgula = ",";
-       if(trim($this->dtcla) == null ){
+       if(trim((string) $this->dtcla) == null ){
          $this->erro_sql = " Campo Data Classificação nao Informado.";
          $this->erro_campo = "dtcla_dia";
          $this->erro_banco = "";
@@ -272,7 +272,7 @@ class cl_discla {
        if(isset($GLOBALS["HTTP_POST_VARS"]["dtcla_dia"])){
          $sql  .= $virgula." dtcla = null ";
          $virgula = ",";
-         if(trim($this->dtcla) == null ){
+         if(trim((string) $this->dtcla) == null ){
            $this->erro_sql = " Campo Data Classificação nao Informado.";
            $this->erro_campo = "dtcla_dia";
            $this->erro_banco = "";
@@ -283,7 +283,7 @@ class cl_discla {
          }
        }
      }
-     if(trim($this->dtaute)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dtaute_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dtaute_dia"] !="") ){
+     if(trim((string) $this->dtaute)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dtaute_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dtaute_dia"] !="") ){
 
        if($this->dtaute == "null") {
           $sql  .= $virgula." dtaute = null ";
@@ -292,7 +292,7 @@ class cl_discla {
           $sql  .= $virgula." dtaute = '$this->dtaute' ";
           $virgula = ",";
        }
-       if(trim($this->dtaute) == null ){
+       if(trim((string) $this->dtaute) == null ){
          $this->erro_sql = " Campo Data Autenticação nao Informado.";
          $this->erro_campo = "dtaute_dia";
          $this->erro_banco = "";
@@ -305,7 +305,7 @@ class cl_discla {
        if(isset($GLOBALS["HTTP_POST_VARS"]["dtaute_dia"])){
          $sql  .= $virgula." dtaute = null ";
          $virgula = ",";
-         if(trim($this->dtaute) == null ){
+         if(trim((string) $this->dtaute) == null ){
            $this->erro_sql = " Campo Data Autenticação nao Informado.";
            $this->erro_campo = "dtaute_dia";
            $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_discla {
          }
        }
      }
-     if(trim($this->instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["instit"])){
+     if(trim((string) $this->instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["instit"])){
        $sql  .= $virgula." instit = $this->instit ";
        $virgula = ",";
-       if(trim($this->instit) == null ){
+       if(trim((string) $this->instit) == null ){
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "instit";
          $this->erro_banco = "";
@@ -337,19 +337,19 @@ class cl_discla {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1198,'$this->codcla','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codcla"]) || $this->codcla != "")
-           $resac = db_query("insert into db_acount values($acount,215,1198,'".AddSlashes(pg_result($resaco,$conresaco,'codcla'))."','$this->codcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,215,1198,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codcla'))."','$this->codcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["codret"]) || $this->codret != "")
-           $resac = db_query("insert into db_acount values($acount,215,1179,'".AddSlashes(pg_result($resaco,$conresaco,'codret'))."','$this->codret',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,215,1179,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'codret'))."','$this->codret',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dtcla"]) || $this->dtcla != "")
-           $resac = db_query("insert into db_acount values($acount,215,1194,'".AddSlashes(pg_result($resaco,$conresaco,'dtcla'))."','$this->dtcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,215,1194,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dtcla'))."','$this->dtcla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dtaute"]) || $this->dtaute != "")
-           $resac = db_query("insert into db_acount values($acount,215,1196,'".AddSlashes(pg_result($resaco,$conresaco,'dtaute'))."','$this->dtaute',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,215,1196,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dtaute'))."','$this->dtaute',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["instit"]) || $this->instit != "")
-           $resac = db_query("insert into db_acount values($acount,215,9996,'".AddSlashes(pg_result($resaco,$conresaco,'instit'))."','$this->instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,215,9996,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'instit'))."','$this->instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -394,14 +394,14 @@ class cl_discla {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1198,'$codcla','E')");
-         $resac = db_query("insert into db_acount values($acount,215,1198,'','".AddSlashes(pg_result($resaco,$iresaco,'codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,215,1179,'','".AddSlashes(pg_result($resaco,$iresaco,'codret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,215,1194,'','".AddSlashes(pg_result($resaco,$iresaco,'dtcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,215,1196,'','".AddSlashes(pg_result($resaco,$iresaco,'dtaute'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,215,9996,'','".AddSlashes(pg_result($resaco,$iresaco,'instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,215,1198,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,215,1179,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'codret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,215,1194,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dtcla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,215,1196,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dtaute'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,215,9996,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from discla
@@ -461,7 +461,7 @@ class cl_discla {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:discla";
@@ -476,7 +476,7 @@ class cl_discla {
    function sql_query ( $codcla=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -504,7 +504,7 @@ class cl_discla {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -517,7 +517,7 @@ class cl_discla {
    function sql_query_file ( $codcla=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -538,7 +538,7 @@ class cl_discla {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -551,7 +551,7 @@ class cl_discla {
   function sql_query_classificacao ( $codcla=null,$campos="*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -574,7 +574,7 @@ class cl_discla {
           $sql .= $sql2;
           if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = preg_split("#\\##m",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
               $sql .= $virgula.$campos_sql[$i];

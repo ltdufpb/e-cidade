@@ -36,10 +36,10 @@ include(modification("classes/db_orcppalei_classe.php"));
 $clorcppaval = new cl_orcppaval;
 $clorcppalei = new cl_orcppalei;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_POST_VARS,2);exit;
 
-$anosql = Array();
+$anosql = [];
 $index  = 0;
 
 
@@ -202,7 +202,7 @@ $valor3 = 0;
 $valor4 = 0;
 $valor5 = 0;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage('L');

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_alunopassagemqtd_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clalunopassagemqtd = new cl_alunopassagemqtd;
 $clalunopassagemqtd->rotulo->label("ed227_i_codigo");
 $clalunopassagemqtd->rotulo->label("ed227_i_qtde");
@@ -98,9 +98,9 @@ $clalunopassagemqtd->rotulo->label("ed227_i_qtde");
         }else{
            $sql = $clalunopassagemqtd->sql_query("",$campos,"ed227_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed227_i_usuario)){
-          $repassa = array("chave_ed227_i_codigo"=>$chave_ed227_i_codigo,"chave_ed227_i_usuario"=>$chave_ed227_i_usuario);
+          $repassa = ["chave_ed227_i_codigo"=>$chave_ed227_i_codigo,"chave_ed227_i_usuario"=>$chave_ed227_i_usuario];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

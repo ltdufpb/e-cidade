@@ -44,7 +44,7 @@ $cllab_laboratorio->rotulo->label();
            <?=@$Lla02_i_tipo?>
        </td>
        <td Colspan="3"> 
-           <?php $y = array("0"=>"Selecione:::","1"=>"Interno","2"=>"Externo");
+           <?php $y = ["0"=>"Selecione:::","1"=>"Interno","2"=>"Externo"];
            db_select('la02_i_tipo',$y,true,($db_opcao==2)?@$iBloqueioTipo:$db_opcao," onchange='js_tipo(this.value);'");?>
        </td>
   </tr>
@@ -158,7 +158,7 @@ function js_preenchepesquisa(chave){
   db_iframe_lab_laboratorio.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

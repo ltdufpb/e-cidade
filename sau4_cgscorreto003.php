@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str ( $HTTP_SERVER_VARS ["QUERY_STRING"] );
+parse_str ( (string) $_SERVER ["QUERY_STRING"], $result );
 if (! isset ( $abas )) {
 	echo "<script>location.href='sau4_cgscorreto004.php?db_opcao=3'</script>";
     /**
@@ -42,15 +42,15 @@ include(modification("classes/db_sau_cgscorreto_classe.php"));
 include(modification("classes/db_sau_cgserrado_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str ( $HTTP_SERVER_VARS ["QUERY_STRING"] );
-db_postmemory ( $HTTP_POST_VARS );
+parse_str ( (string) $_SERVER ["QUERY_STRING"], $result );
+db_postmemory ( $_POST );
 
 $clcgscorreto = new cl_sau_cgscorreto ( );
 $clcgserrado = new cl_sau_cgserrado ( );
 $db_botao = false;
 
 $db_opcao = 33;
-if ((isset ( $HTTP_POST_VARS ["db_opcao"] ) && $HTTP_POST_VARS ["db_opcao"]) == "Excluir") {
+if ((isset ( $_POST ["db_opcao"] ) && $_POST ["db_opcao"]) == "Excluir") {
 	
 	$sql1 = "select * from sau_cgscorreto where s127_i_codigo = $s127_i_codigo";
 	$result1 = db_query ( $sql1 );
@@ -107,7 +107,7 @@ if ((isset ( $HTTP_POST_VARS ["db_opcao"] ) && $HTTP_POST_VARS ["db_opcao"]) == 
 </body>
 </html>
 <?php 
-if ((isset ( $HTTP_POST_VARS ["db_opcao"] ) && $HTTP_POST_VARS ["db_opcao"]) == "Excluir") {
+if ((isset ( $_POST ["db_opcao"] ) && $_POST ["db_opcao"]) == "Excluir") {
 	if ($clcgscorreto->erro_status == "0") {
 		$clcgscorreto->erro ( true, false );
 	} else {

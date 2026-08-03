@@ -26,7 +26,7 @@
  */
 use ECidade\Pdf\Pdf;
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
@@ -212,7 +212,7 @@ $larguraUtil = ($pdf->w - $pdf->rMargin - $pdf->lMargin);
 $larguraUtilMetade = $larguraUtil / 2 ;
 $x = $pdf->getX();
 
-$cpfCnpj = strlen($oCgm->z01_cgccpf) == 11
+$cpfCnpj = strlen((string) $oCgm->z01_cgccpf) == 11
             ? db_formatar($oCgm->z01_cgccpf, 'CPF')
             : db_formatar($oCgm->z01_cgccpf, 'cnpj');
 
@@ -221,7 +221,7 @@ $pdf->SetFont('Arial', '', 7);
 $y = $pdf->getY();
 $pdf->SetXY($x, $y);
 
-$pdf->MultiCell($larguraUtilMetade, 4, 'NOME EMPRESARIAL'."\n\n".substr($oCgm->z01_nome, 0, 62), 1, "L", 0);
+$pdf->MultiCell($larguraUtilMetade, 4, 'NOME EMPRESARIAL'."\n\n".substr((string) $oCgm->z01_nome, 0, 62), 1, "L", 0);
 
 $pdf->SetXY(105.1, $y);
 $pdf->MultiCell($larguraUtilMetade, 4, 'CNPJ'."\n\n".$cpfCnpj, 1, "L", 0);
@@ -260,7 +260,7 @@ while ($dados = pg_fetch_object($result)) {
         $rsBuscaOrdemNota   = $daoPagOrdemNota->sql_record($sqlBuscaOrdemNota);
         $totalOrdemNota    = $daoPagOrdemNota->numrows;
         if ($daoPagOrdemNota->numrows > 0) {
-                $notasEncontradas  = array();
+                $notasEncontradas  = [];
             for ($iRowOrdem = 0; $iRowOrdem < $totalOrdemNota; $iRowOrdem++) {
                 $iNumeroOrdem        = db_utils::fieldsMemory($rsBuscaOrdemNota, $iRowOrdem)->e69_numero;
                 $notasEncontradas[] = $iNumeroOrdem;
@@ -288,7 +288,7 @@ $posicaoX = $pdf->GetX();
 
 $pdf->SetFont('Arial', '', 7);
 if (strlen($informacoes_complementares) > 0) {
-    $pdf->MultiCell($larguraUtil, 4, utf8_decode($informacoes_complementares), 1, "L", 0);
+    $pdf->MultiCell($larguraUtil, 4, mb_convert_encoding($informacoes_complementares, 'ISO-8859-1'), 1, "L", 0);
 } else {
     $pdf->MultiCell($larguraUtil, 4, "\n\n\n\n", 1, "L", 0);
 }

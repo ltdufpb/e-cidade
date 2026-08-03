@@ -53,7 +53,7 @@ switch ($oParam->exec) {
                                                                          );
       $rsMensagemComprovante   = $oDaoMensagemComprovante->sql_record($sSqlMensagem);
       if ($oDaoMensagemComprovante->numrows > 0) {
-        $oRetorno->mensagemcomprovante = urlencode(db_utils::fieldsMemory($rsMensagemComprovante, 0)->fa57_mensagem);
+        $oRetorno->mensagemcomprovante = urlencode((string) db_utils::fieldsMemory($rsMensagemComprovante, 0)->fa57_mensagem);
       }
     }
     break;
@@ -69,7 +69,7 @@ switch ($oParam->exec) {
         throw new Exception($oDaoMensagemComprovante->erro_msg);  
       }
   
-      if (trim($oParam->sMensagem) != "") {
+      if (trim((string) $oParam->sMensagem) != "") {
         
         $oDaoMensagemComprovante->fa57_coddepto = $oParam->iDepartamento;
         $oDaoMensagemComprovante->fa57_mensagem = db_stdClass::normalizeStringJson($oParam->sMensagem);

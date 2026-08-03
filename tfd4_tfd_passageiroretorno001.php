@@ -34,7 +34,7 @@ require_once(modification("classes/db_tfd_passageiroretorno_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoTfdPassageiroRetorno = new cl_tfd_passageiroretorno;
 $oDaoTfdParametros        = db_utils::getdao('tfd_parametros');

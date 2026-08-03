@@ -34,8 +34,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_leitor_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 include(modification("classes/db_aluno_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clleitor = new cl_leitor;
 $clcgm = new cl_cgm;
 $claluno = new cl_aluno;
@@ -164,9 +164,9 @@ $claluno->rotulo->label("ed47_i_codigo");
            ORDER BY dl_nome
           ";
 		  }
-   $repassa = array();
+   $repassa = [];
    if(isset($chave_z01_cgccpf)){
-    $repassa = array("chave_z01_cgccpf"=>$chave_z01_cgccpf,"chave_z01_nome"=>$chave_z01_nome);
+    $repassa = ["chave_z01_cgccpf"=>$chave_z01_cgccpf,"chave_z01_nome"=>$chave_z01_nome];
    }
    if(isset($chave_z01_cgccpf) && (trim($chave_z01_cgccpf)!="") ){
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

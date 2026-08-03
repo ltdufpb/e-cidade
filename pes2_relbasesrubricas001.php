@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -151,7 +151,7 @@ function js_mostrabase011(chave1,chave2){
         </td>
         <td align="left">
           <?php 
-            $arr_tipo = array("r"=>"Rubricas Marcadas na Base","b"=>"Base em Fórmulas");
+            $arr_tipo = ["r"=>"Rubricas Marcadas na Base","b"=>"Base em Fórmulas"];
             db_select('tipo',$arr_tipo,true,4,"");
 	        ?>
 	      </td>
@@ -161,7 +161,7 @@ function js_mostrabase011(chave1,chave2){
         </td>
         <td align="left">
           <?php 
-            $arr_ativos = array("t"=>"Ativas","f"=>"Inativas","i"=>"Todas");
+            $arr_ativos = ["t"=>"Ativas","f"=>"Inativas","i"=>"Todas"];
             db_select('ativos',$arr_ativos,true,4,"");
 	        ?>
 	      </td>

@@ -68,7 +68,7 @@ $oRotulo->label("sd61_c_nome");
                     $oDaoDbDepart = new cl_db_depart;
                     $sSql = $oDaoDbDepart->sql_query_file(null, 'coddepto, descrdepto', 'coddepto');
                     $rs = $oDaoDbDepart->sql_record($sSql);
-                    $aX = array();
+                    $aX = [];
                     for ($iCont = 0; $iCont < $oDaoDbDepart->numrows; $iCont++) {
                         $oDados = db_utils::fieldsmemory($rs, $iCont);
                         $aX[$oDados->coddepto] = $oDados->coddepto . ' - ' . $oDados->descrdepto;
@@ -92,7 +92,7 @@ $oRotulo->label("sd61_c_nome");
                     $oDaoLabLaboratorio = new cl_lab_laboratorio;
                     $sSql = $oDaoLabLaboratorio->sql_query_file(null, 'la02_i_codigo, la02_c_descr');
                     $rs = $oDaoLabLaboratorio->sql_record($sSql);
-                    $aX = array();
+                    $aX = [];
                     for ($iCont = 0; $iCont < $oDaoLabLaboratorio->numrows; $iCont++) {
                         $oDados = db_utils::fieldsmemory($rs, $iCont);
                         $aX[$oDados->la02_i_codigo] = $oDados->la02_c_descr;

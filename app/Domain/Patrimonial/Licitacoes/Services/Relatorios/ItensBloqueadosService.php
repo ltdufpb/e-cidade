@@ -109,13 +109,13 @@ class ItensBloqueadosService
 
     public function buscarItensBloqueados($solicitacao)
     {
-        $ultimosMovimentos = array();
+        $ultimosMovimentos = [];
         
         $ultimosMovimentos = DB::table('registroprecomovimentacao')
             ->where('pc58_solicita', '=', "{$solicitacao}")
             ->where('pc58_situacao', '=', 1)
             ->pluck('pc58_sequencial')->each(function ($dados) {
-                $retorno = array();
+                $retorno = [];
                 $retorno[] = $dados;
                 return $retorno;
             });
@@ -151,9 +151,7 @@ class ItensBloqueadosService
                         ON solicitemunid.pc17_unid = matunid.m61_codmatunid
                         WHERE pc66_registroprecomovimentacao = {$codigo}";
             
-            $resp = array_map(function ($resp) {
-                return get_object_vars($resp);
-            }, DB::select($sql));
+            $resp = array_map(get_object_vars(...), DB::select($sql));
             $retorno[] = $resp;
         }
     

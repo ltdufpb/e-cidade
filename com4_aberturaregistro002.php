@@ -35,7 +35,7 @@
   include(modification("dbforms/db_classesgenericas.php"));
   include(modification("classes/db_pcparam_classe.php"));
 
-  db_postmemory($HTTP_GET_VARS);
+  db_postmemory($_GET);
 
   $clpcparam  = new cl_pcparam;
   $clcriaabas = new cl_criaabas;
@@ -50,7 +50,7 @@
       $erro = true;
   }
   $lTemParametroRegistro  = false;
-  $aParametrosRegistro = db_stdClass::getParametro('registroprecoparam', array(db_getsession("DB_instit")));
+  $aParametrosRegistro = db_stdClass::getParametro('registroprecoparam', [db_getsession("DB_instit")]);
   if (count($aParametrosRegistro) > 0) {
     $lTemParametroRegistro = true;
   }
@@ -79,10 +79,10 @@
      <?php 
      if ($lTemParametroRegistro) {
        
-       $clcriaabas->identifica = array("registro" => "Abertura","itens"=>"Itens");//nome do iframe e o label    
-       $clcriaabas->src        = array("registro" => "com4_aberturaregistro011.php?alterar=true");    
-       $clcriaabas->title      = array("registro" => "Abertura","itens"=>"Itens");//nome do iframe e o label    
-       $clcriaabas->sizecampo  = array("registro" => "20","itens"=>"20");
+       $clcriaabas->identifica = ["registro" => "Abertura","itens"=>"Itens"];//nome do iframe e o label    
+       $clcriaabas->src        = ["registro" => "com4_aberturaregistro011.php?alterar=true"];    
+       $clcriaabas->title      = ["registro" => "Abertura","itens"=>"Itens"];//nome do iframe e o label    
+       $clcriaabas->sizecampo  = ["registro" => "20","itens"=>"20"];
        $clcriaabas->cria_abas();
      
      }

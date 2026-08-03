@@ -202,9 +202,9 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 		<tr>
 		  <td valign="top"  align="center">  
 		    <?php 
-			  $aChavePri = array( "o18_sequencial"  => @$o18_sequencial,
+			  $aChavePri = [ "o18_sequencial"  => @$o18_sequencial,
 			  					  "o18_orcprograma" => @$o18_orcprograma,
-			  					  "o18_orcindica" 	=> @$o18_orcindica );
+			  					  "o18_orcindica" 	=> @$o18_orcindica ];
 			  
 			  $sWhere  = " 	   o18_orcprograma = ".@$o18_orcprograma;
 			  $sWhere .= " and o18_anousu  	   = ".@$o18_anousu;

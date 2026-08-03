@@ -269,16 +269,16 @@ class OperationTest extends PHPUnit_Framework_TestCase
      */
     public function provideMultipleContents()
     {
-        return array(
-        array('search', bin2hex('search')),
-        array('áááàààsearchéééèèè', bin2hex('search')),
-        array(mb_convert_encoding('áàíìésearchèóòúù', 'ISO-8859-1'), bin2hex('search')),
-        array('áàíìésearchèóòúù', bin2hex('search')),
-        array(mb_convert_encoding('çÇãÃẽẼsearchĩĨõÕũŨ', 'ISO-8859-1'), bin2hex('search')),
-        array('çÇãÃẽẼsearchĩĨõÕũŨ', bin2hex('search')),
-        array(mb_convert_encoding('ẃẂẀẁýÝsearchỲỳṕṔŕŔ', 'ISO-8859-1'), bin2hex('search')),
-        array('ẃẂẀẁýÝsearchỲỳṕṔŕŔ', bin2hex('search'))
-        );
+        return [
+        ['search', bin2hex('search')],
+        ['áááàààsearchéééèèè', bin2hex('search')],
+        [mb_convert_encoding('áàíìésearchèóòúù', 'ISO-8859-1'), bin2hex('search')],
+        ['áàíìésearchèóòúù', bin2hex('search')],
+        [mb_convert_encoding('çÇãÃẽẼsearchĩĨõÕũŨ', 'ISO-8859-1'), bin2hex('search')],
+        ['çÇãÃẽẼsearchĩĨõÕũŨ', bin2hex('search')],
+        [mb_convert_encoding('ẃẂẀẁýÝsearchỲỳṕṔŕŔ', 'ISO-8859-1'), bin2hex('search')],
+        ['ẃẂẀẁýÝsearchỲỳṕṔŕŔ', bin2hex('search')]
+        ];
     }
 
     /**
@@ -299,14 +299,14 @@ class OperationTest extends PHPUnit_Framework_TestCase
      */
     public function provideStringToConvertEncoding()
     {
-        return array(
-        array('áàíìéèóòúù', mb_convert_encoding('áàíìéèóòúù', 'ISO-8859-1')),
-        array(mb_convert_encoding('áàíìéèóòúù', 'ISO-8859-1'), mb_convert_encoding('áàíìéèóòúù', 'ISO-8859-1')),
-        array('çÇãÃẽẼĩĨõÕũŨ', mb_convert_encoding('çÇãÃẽẼĩĨõÕũŨ', 'ISO-8859-1')),
-        array(mb_convert_encoding('çÇãÃẽẼĩĨõÕũŨ', 'ISO-8859-1'), mb_convert_encoding('çÇãÃẽẼĩĨõÕũŨ', 'ISO-8859-1')),
-        array('ẃẂẀẁýÝỲỳṕṔŕŔ', mb_convert_encoding('ẃẂẀẁýÝỲỳṕṔŕŔ', 'ISO-8859-1')),
-        array(mb_convert_encoding('ẃẂẀẁýÝỲỳṕṔŕŔ', 'ISO-8859-1'), mb_convert_encoding('ẃẂẀẁýÝỲỳṕṔŕŔ', 'ISO-8859-1')),
-        );
+        return [
+        ['áàíìéèóòúù', mb_convert_encoding('áàíìéèóòúù', 'ISO-8859-1')],
+        [mb_convert_encoding('áàíìéèóòúù', 'ISO-8859-1'), mb_convert_encoding('áàíìéèóòúù', 'ISO-8859-1')],
+        ['çÇãÃẽẼĩĨõÕũŨ', mb_convert_encoding('çÇãÃẽẼĩĨõÕũŨ', 'ISO-8859-1')],
+        [mb_convert_encoding('çÇãÃẽẼĩĨõÕũŨ', 'ISO-8859-1'), mb_convert_encoding('çÇãÃẽẼĩĨõÕũŨ', 'ISO-8859-1')],
+        ['ẃẂẀẁýÝỲỳṕṔŕŔ', mb_convert_encoding('ẃẂẀẁýÝỲỳṕṔŕŔ', 'ISO-8859-1')],
+        [mb_convert_encoding('ẃẂẀẁýÝỲỳṕṔŕŔ', 'ISO-8859-1'), mb_convert_encoding('ẃẂẀẁýÝỲỳṕṔŕŔ', 'ISO-8859-1')],
+        ];
     }
 
     /**
@@ -369,21 +369,21 @@ class OperationTest extends PHPUnit_Framework_TestCase
 
       // testa search
         $search = $operation->search();
-        $expectedSearch = (object) array(
+        $expectedSearch = (object) [
         'regex' => false,
         'flag' => '',
         'offset' => '',
         'limit' => '',
         'content' => ''
-        );
+        ];
         $this->assertEquals($expectedSearch, $search, "objeto search");
 
       // testa add
         $add = $operation->add();
-        $expectedAdd = (object) array(
+        $expectedAdd = (object) [
         'position' => '',
         'content' => ''
-        );
+        ];
         $this->assertEquals($expectedAdd, $add, "objeto add");
 
       //testa ignore

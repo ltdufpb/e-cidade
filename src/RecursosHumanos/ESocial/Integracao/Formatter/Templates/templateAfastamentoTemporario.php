@@ -1,88 +1,88 @@
 <?php
-return array(
-    'ideVinculo' => array(
-        'properties' => array(
+return [
+    'ideVinculo' => [
+        'properties' => [
             'cpfTrab',
-            'nisTrab' => array(
+            'nisTrab' => [
                 'required' => false,
-            ),
-            'matricula' => array(
+            ],
+            'matricula' => [
                 'required' => false,
-            ),
-            'codCateg' => array(
+            ],
+            'codCateg' => [
                 'required' => false,
-            )
-        )
-    ),
-    'infoAfastamento' => array(
-        'groups' => array(
-            'iniAfastamento' => array(
-                'properties' => array(
+            ]
+        ]
+    ],
+    'infoAfastamento' => [
+        'groups' => [
+            'iniAfastamento' => [
+                'properties' => [
                     'dtIniAfast',
                     'codMotAfast',
-                    'infoMesmoMtv' => array(
+                    'infoMesmoMtv' => [
                         'required' => false,
-                    ),
-                    'tpAcidTransito' => array(
+                    ],
+                    'tpAcidTransito' => [
                         'required' => false,
-                    ),
-                    'observacao' => array(
+                    ],
+                    'observacao' => [
                         'required' => false,
-                    ),
-                ),
-                'groups' => array(
-                    'perAquis' => array(
+                    ],
+                ],
+                'groups' => [
+                    'perAquis' => [
                         'required' => false,
-                        'properties' => array(
-                            'dtInicio' => array(
+                        'properties' => [
+                            'dtInicio' => [
                                 'required' => true,
-                            ),
-                            'dtFim' => array(
+                            ],
+                            'dtFim' => [
                                 'required' => false
-                            )
-                        )
-                    ),
-                    'infoCessao' => array(
+                            ]
+                        ]
+                    ],
+                    'infoCessao' => [
                         'required' => false,
-                        'properties' => array(
+                        'properties' => [
                             'cnpjCess',
-                            'infOnus' => array(
+                            'infOnus' => [
                                 'type' => 'int'
-                            )
-                        )
-                    ),
-                    'infoMandSind' => array(
+                            ]
+                        ]
+                    ],
+                    'infoMandSind' => [
                         'required' => false,
-                        'properties' => array(
+                        'properties' => [
                             'cnpjSind',
-                            'infOnusRemun' => array(
+                            'infOnusRemun' => [
                                 'type' => 'int'
-                            )
-                        )
-                    )
-                )
-            ),
-            'infoRetif' => array(
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            'infoRetif' => [
                 'required' => false,
-                'properties' => array(
-                    'origRetif' => array(
+                'properties' => [
+                    'origRetif' => [
                         'type' => 'int'
-                    ),
-                    'tpProc' => array(
+                    ],
+                    'tpProc' => [
                         'required' => false,
                         'type' => 'int'
-                    ),
-                    'nrProc' => array(
+                    ],
+                    'nrProc' => [
                         'required' => false,
-                    )
-                )
-            ),
-            'fimAfastamento' => array(
+                    ]
+                ]
+            ],
+            'fimAfastamento' => [
                 'required' => false,
-                'properties' => array(
+                'properties' => [
                     'dtTermAfast'
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];

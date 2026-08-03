@@ -138,12 +138,12 @@ class CgsUnidade extends Model
 
     public function scopeNome(Builder $query, $nome)
     {
-        return $query->where('z01_v_nome', 'ILIKE', trim($nome));
+        return $query->where('z01_v_nome', 'ILIKE', trim((string) $nome));
     }
 
     public function scopeNomeMae(Builder $query, $nome)
     {
-        return $query->where('z01_v_mae', 'ILIKE', trim($nome));
+        return $query->where('z01_v_mae', 'ILIKE', trim((string) $nome));
     }
 
     public function scopeDataNascimento(Builder $query, $data)

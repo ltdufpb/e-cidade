@@ -2,6 +2,7 @@
 
 class DBHelpSistemaModificacao extends DBHelpSistema {
 
+  #[\Override]
   public function load() {
 
     parent::load();
@@ -10,18 +11,18 @@ class DBHelpSistemaModificacao extends DBHelpSistema {
 
     if (empty($oHelp->helps_releases)) {
 
-      $oHelp = (object) array(
-        'helps_releases' => (object) array(
-          'group' => (object) array(
+      $oHelp = (object) [
+        'helps_releases' => (object) [
+          'group' => (object) [
             'id' => null,
             'parent_id' => null,
             'title' => null,
             'content' => null, 
-            'fields' => array(),
-            'groups' => array(),
-          ),
-        )
-      ); 
+            'fields' => [],
+            'groups' => [],
+          ],
+        ]
+      ]; 
     }
 
     foreach ($this->getPlugins() as $oPlugin) {
@@ -50,7 +51,7 @@ class DBHelpSistemaModificacao extends DBHelpSistema {
    */
   private function getPlugins() {
 
-    $aPlugins = array();
+    $aPlugins = [];
 
     foreach (static::getPluginsMenu($this->getIdItemMenu()) as $sNomePlugin) {
       
@@ -69,7 +70,7 @@ class DBHelpSistemaModificacao extends DBHelpSistema {
    */
   public static function getPluginsMenu($iIdItemMenu) {
 
-    $aPlugins = array();
+    $aPlugins = [];
     $aArquivos = glob('plugins/*/helps/' . $iIdItemMenu . '.json');
 
     foreach ($aArquivos as $sArquivo) {
@@ -84,7 +85,7 @@ class DBHelpSistemaModificacao extends DBHelpSistema {
    */
   public static function extrairNomePlugin($sArquivo) {
 
-    $lResult = preg_match('/^plugins\/(.*)\/helps.*/', $sArquivo, $aMatches);
+    $lResult = preg_match('/^plugins\/(.*)\/helps.*/', (string) $sArquivo, $aMatches);
     return $lResult ? $aMatches[1] : false;
   }
 

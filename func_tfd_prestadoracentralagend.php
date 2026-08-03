@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_tfd_prestadoracentralagend_classe.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $oDaotfd_prestadoracentralagend = new cl_tfd_prestadoracentralagend;
 $oRotulo = new rotulocampo;
@@ -180,9 +180,9 @@ $oRotulo->label('tf10_i_prestadora');
           }
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_tf10_i_codigo)){
-          $repassa = array("chave_tf10_i_codigo"=>$chave_tf10_i_codigo,"chave_tf10_i_codigo"=>$chave_tf10_i_codigo);
+          $repassa = ["chave_tf10_i_codigo"=>$chave_tf10_i_codigo,"chave_tf10_i_codigo"=>$chave_tf10_i_codigo];
         }
 
         db_lovrot($sSql,15,"()","",$funcao_js,"","NoMe",$repassa);

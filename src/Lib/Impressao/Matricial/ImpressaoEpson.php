@@ -96,7 +96,7 @@ abstract class ImpressaoEpson
     public function __construct()
     {
 
-        $this->arrCodigos = array(
+        $this->arrCodigos = [
             self::QUEBRA_LINHA => "\n",
             self::TAB => "\r",
             self::QUEBRA_PAGINA => chr(12),
@@ -108,7 +108,7 @@ abstract class ImpressaoEpson
             self::SEPARADOR => str_repeat("-", 110),
             self::FONT_12_CPI => chr(27) . chr(77),
             self::FONT_15_CPI => chr(27) . chr(103)
-        );
+        ];
     }
 
     /**
@@ -236,7 +236,7 @@ abstract class ImpressaoEpson
      */
     public function validaQuebraPagina($texto)
     {
-        $this->linhas += ceil(strlen($texto) / $this->tamanhoLinha);
+        $this->linhas += ceil(strlen((string) $texto) / $this->tamanhoLinha);
 
         if ($this->linhas > $this->tamanhoPagina) {
             $this->quebrarPagina();

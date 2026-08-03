@@ -31,7 +31,7 @@ abstract class Processamento {
   /**
    * @var array
    */
-  protected $aEconomias = array();
+  protected $aEconomias = [];
 
   /**
    * @param AguaCategoriaConsumo $oCategoriaConsumo

@@ -51,7 +51,7 @@ try {
 
             $oAtividade = new AtividadeEscolar($oParam->iAtividade);
 
-            $oRetorno->aTiposHora = array();
+            $oRetorno->aTiposHora = [];
             foreach (TipoHoraTrabalhoRepository::getByAtividade($oAtividade) as $oTipoHora) {
 
                 if (!$oTipoHora->isAtivo()) {
@@ -61,14 +61,14 @@ try {
                 $oDados = new stdClass();
                 $oDados->iCodigo = $oTipoHora->getCodigo();
                 $oDados->iEfetividade = $oTipoHora->getEfetividade();
-                $oDados->sDescricao = urlencode($oTipoHora->getDescricao());
+                $oDados->sDescricao = urlencode((string) $oTipoHora->getDescricao());
 
                 $oRetorno->aTiposHora[] = $oDados;
             }
 
             break;
         case 'buscaAtividadesProfissional':
-            $oRetorno->aAtividades = array();
+            $oRetorno->aAtividades = [];
             $oProfissional = ProfissionalEscolaRepository::getByCodigo($oParam->iVinculoEscola);
 
             foreach ($oProfissional->getAtividades() as $oAtividade) {
@@ -79,7 +79,7 @@ try {
                 $oDadosAtividade = new stdClass();
                 $oDadosAtividade->iCodigo = $oAtividade->getCodigo();
                 $oDadosAtividade->iCodigoAtividade = $oAtividade->getAtividadeEscolar()->getCodigo();
-                $oDadosAtividade->sDescricao = utf8_encode($oAtividade->getAtividadeEscolar()->getDescricao());
+                $oDadosAtividade->sDescricao = mb_convert_encoding($oAtividade->getAtividadeEscolar()->getDescricao(), 'UTF-8', 'ISO-8859-1');
                 $oDadosAtividade->dataInicio = $oAtividade->getDataInicio()->getDate(DBDate::DATA_PTBR);
                 $oDadosAtividade->dataFim = '';
                 if (!is_null($oAtividade->getDataFim())) {
@@ -94,24 +94,24 @@ try {
                 $oDadosAtividade->sDescricaoAto = "";
                 if (!is_null($oAtoLegal)) {
                     $oDadosAtividade->iCodigoAto = $oAtividade->getAtoLegal()->getCodigoAtoLegal();
-                    $oDadosAtividade->sDescricaoAto = utf8_encode($oAtividade->getAtoLegal()->getFinalidade());
+                    $oDadosAtividade->sDescricaoAto = mb_convert_encoding($oAtividade->getAtoLegal()->getFinalidade(), 'UTF-8', 'ISO-8859-1');
                 }
 
-                $oDadosAtividade->aResumoTurno = array();
-                $oDadosAtividade->aAgendas = array();
+                $oDadosAtividade->aResumoTurno = [];
+                $oDadosAtividade->aAgendas = [];
 
                 foreach ($oAtividade->getAgenda() as $oAgenda) {
                     $oDadosAgenda = new stdClass();
                     $oDadosAgenda->iCodigo = $oAgenda->getCodigo();
                     $oDadosAgenda->iDiaSemana = $oAgenda->getDiaSemana();
-                    $oDadosAgenda->sDiaSemana = utf8_encode($oAgenda->getNomeDiaSemana());
+                    $oDadosAgenda->sDiaSemana = mb_convert_encoding($oAgenda->getNomeDiaSemana(), 'UTF-8', 'ISO-8859-1');
                     $oDadosAgenda->iTurno = $oAgenda->getTurnoReferente();
-                    $oDadosAgenda->sTurno = utf8_encode($oAgenda->getDescricaoTurno());
+                    $oDadosAgenda->sTurno = mb_convert_encoding($oAgenda->getDescricaoTurno(), 'UTF-8', 'ISO-8859-1');
                     $oDadosAgenda->sHoraInicio = $oAgenda->getHoraInicio();
                     $oDadosAgenda->sHoraFim = $oAgenda->getHoraFim();
 
                     $oDadosAgenda->iTipoHoraTrabalho = $oAgenda->getTipoHoraTrabalho()->getCodigo();
-                    $oDadosAgenda->sTipoHoraTrabalho = utf8_encode($oAgenda->getTipoHoraTrabalho()->getDescricao());
+                    $oDadosAgenda->sTipoHoraTrabalho = mb_convert_encoding($oAgenda->getTipoHoraTrabalho()->getDescricao(), 'UTF-8', 'ISO-8859-1');
 
                     $oDadosAtividade->aAgendas[] = $oDadosAgenda;
 
@@ -159,7 +159,7 @@ try {
 
         case 'salvarAtividade':
             $oProfisonal = ProfissionalEscolaRepository::getByCodigo($oParam->iVinculoEscola);
-            $aConflitos = array();
+            $aConflitos = [];
 
             $iEscolaProfissional = $oProfisonal->getEscola()->getCodigo();
             $aTodasAgendas = buscaTodasAgendasProfissional($oParam->iVinculoEscola);
@@ -216,7 +216,7 @@ try {
              * Monta a mensagens de conflito em outra escola.
              */
             if (count($aConflitos) > 0) {
-                $aMsg = array();
+                $aMsg = [];
                 $sMsgErro = _M(EDU4_RECHUMANOATIVIDADERPC . "msg_conflito_salvar") . "\n";
                 foreach ($aConflitos as $oDadosErro) {
                     $aMsg[] = _M(EDU4_RECHUMANOATIVIDADERPC . "dados_conflito_escola", $oDadosErro);
@@ -368,7 +368,7 @@ function buscaTodasAgendasProfissional($iVinculoEscola)
         throw new Exception(_M(EDU4_RECHUMANOATIVIDADERPC . "erro_buscar_agendas_profissional", $oMsgErro));
     }
 
-    $aAgendaAtividade = array();
+    $aAgendaAtividade = [];
     $iLinhas = pg_num_rows($rsValidaConflito);
     for ($i = 0; $i < $iLinhas; $i++) {
         $aAgendaAtividade[] = db_utils::fieldsMemory($rsValidaConflito, $i);

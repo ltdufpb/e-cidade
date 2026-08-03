@@ -34,8 +34,8 @@ include(modification("classes/db_solicita_classe.php"));
 include(modification("classes/db_solicitem_classe.php"));
 include(modification("classes/db_pcproc_classe.php"));
 include(modification("classes/db_pcparam_classe.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clsolicita = new cl_solicita;
 $clsolicitem = new cl_solicitem;
 $clpcproc= new cl_pcproc;
@@ -80,7 +80,7 @@ function js_submit(codsol){
     $result_solicita=$clsolicita->sql_record($clsolicita->sql_query_prot(null,"distinct pc10_numero","pc10_numero","pc49_solicitem is not null and p58_coddepto = ".db_getsession("DB_coddepto")." and p61_codandam is null and p63_codproc is null"));    
     if (isset($codsol)&&$codsol!=""){
       $couni="codsol";
-	  $$couni=$codsol;
+	  ${$couni}=$codsol;
     }else{
     	$nome="";
     	$descrdepto="";
@@ -93,7 +93,7 @@ function js_submit(codsol){
 	echo "<option value=''>Selecione uma solicitação</option>\n";
 	for($y=0;$y<$clsolicita->numrows;$y++){
  	  db_fieldsmemory($result_solicita,$y);
- 	  echo "<option value=$pc10_numero ".(isset($couni)?($$couni==$pc10_numero?"selected":""):"")." >$pc10_numero</option>\n";
+ 	  echo "<option value=$pc10_numero ".(isset($couni)?(${$couni}==$pc10_numero?"selected":""):"")." >$pc10_numero</option>\n";
    	}
     echo " </select>";
 	    //  

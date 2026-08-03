@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE empnotadadospit
 class cl_empnotadadospit { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e11_sequencial = 0; 
-   var $e11_cfop = 0; 
-   var $e11_seriefiscal = null; 
-   var $e11_basecalculoicms = 0; 
-   var $e11_inscricaosubstitutofiscal = 0; 
-   var $e11_valoricms = 0; 
-   var $e11_basecalculosubstitutotrib = 0; 
-   var $e11_valoricmssubstitutotrib = 0; 
+   public $e11_sequencial = 0; 
+   public $e11_cfop = 0; 
+   public $e11_seriefiscal = null; 
+   public $e11_basecalculoicms = 0; 
+   public $e11_inscricaosubstitutofiscal = 0; 
+   public $e11_valoricms = 0; 
+   public $e11_basecalculosubstitutotrib = 0; 
+   public $e11_valoricmssubstitutotrib = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e11_sequencial = int4 = Código 
                  e11_cfop = int4 = Código 
                  e11_seriefiscal = varchar(3) = Serie Fiscal 
@@ -62,10 +62,10 @@ class cl_empnotadadospit {
                  e11_valoricmssubstitutotrib = float4 = Valor ICMS Substituto Trib 
                  ";
    //funcao construtor da classe 
-   function cl_empnotadadospit() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empnotadadospit"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -128,10 +128,10 @@ class cl_empnotadadospit {
          $this->erro_status = "0";
          return false; 
        }
-       $this->e11_sequencial = pg_result($result,0,0); 
+       $this->e11_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from empnotadadospit_e11_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $e11_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $e11_sequencial)){
          $this->erro_sql = " Campo e11_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -173,7 +173,7 @@ class cl_empnotadadospit {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "empnotadadospit ($this->e11_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "empnotadadospit já Cadastrado";
@@ -197,17 +197,17 @@ class cl_empnotadadospit {
      $resaco = $this->sql_record($this->sql_query_file($this->e11_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14648,'$this->e11_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2577,14648,'','".AddSlashes(pg_result($resaco,0,'e11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2577,14650,'','".AddSlashes(pg_result($resaco,0,'e11_cfop'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2577,14651,'','".AddSlashes(pg_result($resaco,0,'e11_seriefiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2577,14663,'','".AddSlashes(pg_result($resaco,0,'e11_basecalculoicms'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2577,14652,'','".AddSlashes(pg_result($resaco,0,'e11_inscricaosubstitutofiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2577,14653,'','".AddSlashes(pg_result($resaco,0,'e11_valoricms'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2577,14654,'','".AddSlashes(pg_result($resaco,0,'e11_basecalculosubstitutotrib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2577,14655,'','".AddSlashes(pg_result($resaco,0,'e11_valoricmssubstitutotrib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2577,14648,'','".AddSlashes(pg_fetch_result($resaco,0,'e11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2577,14650,'','".AddSlashes(pg_fetch_result($resaco,0,'e11_cfop'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2577,14651,'','".AddSlashes(pg_fetch_result($resaco,0,'e11_seriefiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2577,14663,'','".AddSlashes(pg_fetch_result($resaco,0,'e11_basecalculoicms'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2577,14652,'','".AddSlashes(pg_fetch_result($resaco,0,'e11_inscricaosubstitutofiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2577,14653,'','".AddSlashes(pg_fetch_result($resaco,0,'e11_valoricms'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2577,14654,'','".AddSlashes(pg_fetch_result($resaco,0,'e11_basecalculosubstitutotrib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2577,14655,'','".AddSlashes(pg_fetch_result($resaco,0,'e11_valoricmssubstitutotrib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -216,10 +216,10 @@ class cl_empnotadadospit {
       $this->atualizacampos();
      $sql = " update empnotadadospit set ";
      $virgula = "";
-     if(trim($this->e11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_sequencial"])){ 
+     if(trim((string) $this->e11_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_sequencial"])){ 
        $sql  .= $virgula." e11_sequencial = $this->e11_sequencial ";
        $virgula = ",";
-       if(trim($this->e11_sequencial) == null ){ 
+       if(trim((string) $this->e11_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "e11_sequencial";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_empnotadadospit {
          return false;
        }
      }
-     if(trim($this->e11_cfop)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_cfop"])){ 
+     if(trim((string) $this->e11_cfop)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_cfop"])){ 
        $sql  .= $virgula." e11_cfop = $this->e11_cfop ";
        $virgula = ",";
-       if(trim($this->e11_cfop) == null ){ 
+       if(trim((string) $this->e11_cfop) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "e11_cfop";
          $this->erro_banco = "";
@@ -242,40 +242,40 @@ class cl_empnotadadospit {
          return false;
        }
      }
-     if(trim($this->e11_seriefiscal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_seriefiscal"])){ 
+     if(trim((string) $this->e11_seriefiscal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_seriefiscal"])){ 
        $sql  .= $virgula." e11_seriefiscal = '$this->e11_seriefiscal' ";
        $virgula = ",";
      }
-     if(trim($this->e11_basecalculoicms)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_basecalculoicms"])){ 
-        if(trim($this->e11_basecalculoicms)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e11_basecalculoicms"])){ 
+     if(trim((string) $this->e11_basecalculoicms)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_basecalculoicms"])){ 
+        if(trim((string) $this->e11_basecalculoicms)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e11_basecalculoicms"])){ 
            $this->e11_basecalculoicms = "0" ; 
         } 
        $sql  .= $virgula." e11_basecalculoicms = $this->e11_basecalculoicms ";
        $virgula = ",";
      }
-     if(trim($this->e11_inscricaosubstitutofiscal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_inscricaosubstitutofiscal"])){ 
-        if(trim($this->e11_inscricaosubstitutofiscal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e11_inscricaosubstitutofiscal"])){ 
+     if(trim((string) $this->e11_inscricaosubstitutofiscal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_inscricaosubstitutofiscal"])){ 
+        if(trim((string) $this->e11_inscricaosubstitutofiscal)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e11_inscricaosubstitutofiscal"])){ 
            $this->e11_inscricaosubstitutofiscal = "0" ; 
         } 
        $sql  .= $virgula." e11_inscricaosubstitutofiscal = $this->e11_inscricaosubstitutofiscal ";
        $virgula = ",";
      }
-     if(trim($this->e11_valoricms)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_valoricms"])){ 
-        if(trim($this->e11_valoricms)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e11_valoricms"])){ 
+     if(trim((string) $this->e11_valoricms)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_valoricms"])){ 
+        if(trim((string) $this->e11_valoricms)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e11_valoricms"])){ 
            $this->e11_valoricms = "0" ; 
         } 
        $sql  .= $virgula." e11_valoricms = $this->e11_valoricms ";
        $virgula = ",";
      }
-     if(trim($this->e11_basecalculosubstitutotrib)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_basecalculosubstitutotrib"])){ 
-        if(trim($this->e11_basecalculosubstitutotrib)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e11_basecalculosubstitutotrib"])){ 
+     if(trim((string) $this->e11_basecalculosubstitutotrib)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_basecalculosubstitutotrib"])){ 
+        if(trim((string) $this->e11_basecalculosubstitutotrib)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e11_basecalculosubstitutotrib"])){ 
            $this->e11_basecalculosubstitutotrib = "0" ; 
         } 
        $sql  .= $virgula." e11_basecalculosubstitutotrib = $this->e11_basecalculosubstitutotrib ";
        $virgula = ",";
      }
-     if(trim($this->e11_valoricmssubstitutotrib)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_valoricmssubstitutotrib"])){ 
-        if(trim($this->e11_valoricmssubstitutotrib)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e11_valoricmssubstitutotrib"])){ 
+     if(trim((string) $this->e11_valoricmssubstitutotrib)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e11_valoricmssubstitutotrib"])){ 
+        if(trim((string) $this->e11_valoricmssubstitutotrib)=="" && isset($GLOBALS["HTTP_POST_VARS"]["e11_valoricmssubstitutotrib"])){ 
            $this->e11_valoricmssubstitutotrib = "0" ; 
         } 
        $sql  .= $virgula." e11_valoricmssubstitutotrib = $this->e11_valoricmssubstitutotrib ";
@@ -289,25 +289,25 @@ class cl_empnotadadospit {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14648,'$this->e11_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e11_sequencial"]) || $this->e11_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2577,14648,'".AddSlashes(pg_result($resaco,$conresaco,'e11_sequencial'))."','$this->e11_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2577,14648,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e11_sequencial'))."','$this->e11_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e11_cfop"]) || $this->e11_cfop != "")
-           $resac = db_query("insert into db_acount values($acount,2577,14650,'".AddSlashes(pg_result($resaco,$conresaco,'e11_cfop'))."','$this->e11_cfop',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2577,14650,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e11_cfop'))."','$this->e11_cfop',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e11_seriefiscal"]) || $this->e11_seriefiscal != "")
-           $resac = db_query("insert into db_acount values($acount,2577,14651,'".AddSlashes(pg_result($resaco,$conresaco,'e11_seriefiscal'))."','$this->e11_seriefiscal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2577,14651,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e11_seriefiscal'))."','$this->e11_seriefiscal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e11_basecalculoicms"]) || $this->e11_basecalculoicms != "")
-           $resac = db_query("insert into db_acount values($acount,2577,14663,'".AddSlashes(pg_result($resaco,$conresaco,'e11_basecalculoicms'))."','$this->e11_basecalculoicms',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2577,14663,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e11_basecalculoicms'))."','$this->e11_basecalculoicms',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e11_inscricaosubstitutofiscal"]) || $this->e11_inscricaosubstitutofiscal != "")
-           $resac = db_query("insert into db_acount values($acount,2577,14652,'".AddSlashes(pg_result($resaco,$conresaco,'e11_inscricaosubstitutofiscal'))."','$this->e11_inscricaosubstitutofiscal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2577,14652,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e11_inscricaosubstitutofiscal'))."','$this->e11_inscricaosubstitutofiscal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e11_valoricms"]) || $this->e11_valoricms != "")
-           $resac = db_query("insert into db_acount values($acount,2577,14653,'".AddSlashes(pg_result($resaco,$conresaco,'e11_valoricms'))."','$this->e11_valoricms',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2577,14653,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e11_valoricms'))."','$this->e11_valoricms',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e11_basecalculosubstitutotrib"]) || $this->e11_basecalculosubstitutotrib != "")
-           $resac = db_query("insert into db_acount values($acount,2577,14654,'".AddSlashes(pg_result($resaco,$conresaco,'e11_basecalculosubstitutotrib'))."','$this->e11_basecalculosubstitutotrib',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2577,14654,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e11_basecalculosubstitutotrib'))."','$this->e11_basecalculosubstitutotrib',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e11_valoricmssubstitutotrib"]) || $this->e11_valoricmssubstitutotrib != "")
-           $resac = db_query("insert into db_acount values($acount,2577,14655,'".AddSlashes(pg_result($resaco,$conresaco,'e11_valoricmssubstitutotrib'))."','$this->e11_valoricmssubstitutotrib',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2577,14655,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e11_valoricmssubstitutotrib'))."','$this->e11_valoricmssubstitutotrib',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -352,17 +352,17 @@ class cl_empnotadadospit {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14648,'$e11_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2577,14648,'','".AddSlashes(pg_result($resaco,$iresaco,'e11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2577,14650,'','".AddSlashes(pg_result($resaco,$iresaco,'e11_cfop'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2577,14651,'','".AddSlashes(pg_result($resaco,$iresaco,'e11_seriefiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2577,14663,'','".AddSlashes(pg_result($resaco,$iresaco,'e11_basecalculoicms'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2577,14652,'','".AddSlashes(pg_result($resaco,$iresaco,'e11_inscricaosubstitutofiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2577,14653,'','".AddSlashes(pg_result($resaco,$iresaco,'e11_valoricms'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2577,14654,'','".AddSlashes(pg_result($resaco,$iresaco,'e11_basecalculosubstitutotrib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2577,14655,'','".AddSlashes(pg_result($resaco,$iresaco,'e11_valoricmssubstitutotrib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2577,14648,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e11_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2577,14650,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e11_cfop'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2577,14651,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e11_seriefiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2577,14663,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e11_basecalculoicms'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2577,14652,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e11_inscricaosubstitutofiscal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2577,14653,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e11_valoricms'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2577,14654,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e11_basecalculosubstitutotrib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2577,14655,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e11_valoricmssubstitutotrib'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from empnotadadospit
@@ -422,7 +422,7 @@ class cl_empnotadadospit {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empnotadadospit";
@@ -437,7 +437,7 @@ class cl_empnotadadospit {
    function sql_query ( $e11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -459,7 +459,7 @@ class cl_empnotadadospit {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,7 +472,7 @@ class cl_empnotadadospit {
    function sql_query_file ( $e11_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -493,7 +493,7 @@ class cl_empnotadadospit {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -508,7 +508,7 @@ class cl_empnotadadospit {
     $sql = "select ";
     if($campos != "*" ){
 
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       
       for($i=0;$i<sizeof($campos_sql);$i++){
@@ -542,7 +542,7 @@ class cl_empnotadadospit {
     if ($ordem != null ) {
 
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       
       for ($i = 0; $i < sizeof($campos_sql); $i++) {

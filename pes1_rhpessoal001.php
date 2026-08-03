@@ -55,7 +55,7 @@ $db_opcao = 1;
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-			 $clcriaabas->identifica = array(
+			 $clcriaabas->identifica = [
 		                                    "rhpessoal"      => "Dados Pessoais",
 						     "rhadmissional"  => "Dados admissionais",
 		                                    "rhpesdoc"       => "Documentos",
@@ -66,9 +66,9 @@ $db_opcao = 1;
                                         	"rhpontosalario" => "Ponto de Salário",
                                         	"rhcedencia"     => "Cedidos / Disposição"
 			                                
-		                                  );
+		                                  ];
 		                                   
-			 $clcriaabas->sizecampo  = array(
+			 $clcriaabas->sizecampo  = [
 		                                    "rhpessoal"      => "20",
 						     "rhadmissional"  => "20",
 		                                    "rhpesdoc"       => "15",
@@ -78,11 +78,11 @@ $db_opcao = 1;
 		                                    "rhpontofixo"    => "15",
 		                                    "rhpontosalario" => "15",
 		                                    "rhcedencia"     => "20"
-			                                );
+			                                ];
 			                                
-			 $clcriaabas->src        = array( "rhpessoal" => "pes1_rhpessoal004.php" );
+			 $clcriaabas->src        = [ "rhpessoal" => "pes1_rhpessoal004.php" ];
 			 
-			 $clcriaabas->disabled   = array(
+			 $clcriaabas->disabled   = [
 						     "rhadmissional"  => "true",
   						     "rhpesdoc"       => "true",
 		                                    "rhpessoalmov"    => "true",
@@ -91,7 +91,7 @@ $db_opcao = 1;
 		                                    "rhpontofixo"     => "true",
                                         	"rhpontosalario"  => "true",
                                         	"rhcedencia"      => "true"
-		                                  ); 
+		                                  ]; 
 	   $verifica_permissao = db_permissaomenu(db_getsession('DB_anousu'), 952, 8820);    
        if($verifica_permissao == "true"){
         

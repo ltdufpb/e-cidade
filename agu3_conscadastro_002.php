@@ -33,7 +33,7 @@
   require_once(modification("agu3_conscadastro_002_classe.php"));
   require_once(modification("dbforms/verticalTab.widget.php"));
   
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
   
   $clrotulo = new rotulocampo;
   $clrotulo->label('j01_matric');

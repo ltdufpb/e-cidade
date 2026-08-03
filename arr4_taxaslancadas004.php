@@ -168,7 +168,7 @@ if ($oTaxa->geraDebito) {
         throw new \Exception('Erro ao buscar o tipo da receita na tabela tabrecarretipo.');
     }
 
-    if (pg_numrows($rTabrecarretipo) > 0) {
+    if (pg_num_rows($rTabrecarretipo) > 0) {
         $tipo = db_utils::fieldsMemory($rTabrecarretipo, 0)->k79_arretipo;
     }
 }

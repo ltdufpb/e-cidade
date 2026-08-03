@@ -85,7 +85,7 @@ if(isset($oPost->alterar)){
      $sSQLDatas .= " where h64_estagioagenda = {$oEstagio->h57_sequencial}";
      $rDatas     = db_query($sSQLDatas);
      $oDatas     = db_utils::fieldsMemory($rDatas,0);
-     $dataInformada          = implode(array_reverse($dataAux));
+     $dataInformada          = implode('', array_reverse($dataAux));
      $classenta->h16_histor  = substr($oPost->h65_observacao,   0, 240);
      $classenta->h16_assent  = $iTipoAsse;
      $classenta->h16_nroport = "{$oPost->h31_numero}/{$dataAux[2]}";
@@ -137,7 +137,7 @@ if(isset($oPost->alterar)){
      $h65_pontos          = $oResultado->pontos;
      if ($oResultado->h65_sequencial != null){
 
-         $datap          = explode("-",$oResultado->h65_data);
+         $datap          = explode("-",(string) $oResultado->h65_data);
          $h65_sequencial = $oResultado->h65_sequencial;
          $h65_data_dia   = $datap[2];
          $h65_data_mes   = $datap[1];

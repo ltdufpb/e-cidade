@@ -55,10 +55,10 @@ $db_opcao = 2;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("taxa"=>"Taxa","depto"=>"Departamentos"); 
-	 $clcriaabas->src = array("taxa"=>"cai1_tabdesc_abataxa002.php");
-	 $clcriaabas->sizecampo  = array("depto"=>"12");
-	 $clcriaabas->disabled   =  array("depto"=>"true"); 
+	 $clcriaabas->identifica = ["taxa"=>"Taxa","depto"=>"Departamentos"]; 
+	 $clcriaabas->src = ["taxa"=>"cai1_tabdesc_abataxa002.php"];
+	 $clcriaabas->sizecampo  = ["depto"=>"12"];
+	 $clcriaabas->disabled   =  ["depto"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

@@ -100,14 +100,14 @@ class Contrato {
   private function getInformacoesContrato() {
 
     $sWhere = "x54_sequencial = {$this->iCodigoContrato}";
-    $sOrderBy = implode(', ', array(
+    $sOrderBy = implode(', ', [
       'entrega_zona',
       'entrega_codigo_logradouro',
       'entrega_orientacao',
       'entrega_numero',
       'entrega_complemento',
       'codigo_matricula',
-    ));
+    ]);
     $sQuery = $this->oAguaEmissao->queryInformacoesContratos($sWhere, $sOrderBy);
     $rsContratos = db_query($sQuery);
 
@@ -143,8 +143,8 @@ class Contrato {
      * RG e CPF
      */
     $sIdentidade = '';
-    $sDocumento = trim($oInformacoes->documento_responsavel);
-    if (strlen($sDocumento) === 11 && trim($oInformacoes->numero_identidade)) {
+    $sDocumento = trim((string) $oInformacoes->documento_responsavel);
+    if (strlen($sDocumento) === 11 && trim((string) $oInformacoes->numero_identidade)) {
       $sIdentidade = ", Identidade: {$oInformacoes->numero_identidade}";
     }
     $sDocumento = db_cgccpf($sDocumento);
@@ -154,18 +154,18 @@ class Contrato {
      */
     $sEnderecoCompleto = sprintf(
       '%s, %s %s - %s',
-      trim($oInformacoes->nome_logradouro),
-      'Nro ' . trim($oInformacoes->numero),
-      trim($oInformacoes->complemento),
-      trim($oInformacoes->bairro)
+      trim((string) $oInformacoes->nome_logradouro),
+      'Nro ' . trim((string) $oInformacoes->numero),
+      trim((string) $oInformacoes->complemento),
+      trim((string) $oInformacoes->bairro)
     );
 
     $sDataDocumento = $this->oDataDocumento->dataPorExtenso();
     $oDocumento = new TemplateProcessor($oTemplate->getArquivoTemplate());
     $oDocumento->setValue('imovel-codigo', $oInformacoes->codigo_matricula);
-    $oDocumento->setValue('imovel-logradouro', trim($oInformacoes->nome_logradouro));
+    $oDocumento->setValue('imovel-logradouro', trim((string) $oInformacoes->nome_logradouro));
     $oDocumento->setValue('contrato-codigo', $oInformacoes->codigo_contrato);
-    $oDocumento->setValue('contrato-nome', trim($oInformacoes->nome_responsavel));
+    $oDocumento->setValue('contrato-nome', trim((string) $oInformacoes->nome_responsavel));
     $oDocumento->setValue('contrato-documento', trim($sDocumento));
     $oDocumento->setValue('contrato-identidade', $sIdentidade);
     $oDocumento->setValue('contrato-endereco', trim($sEnderecoCompleto));
@@ -175,9 +175,9 @@ class Contrato {
     $oDocumento->saveAs($sNomeArquivo);
     $sNomeArquivoConvertido = DocumentConverter::docToPdf($sNomeArquivo);
 
-    return array(
+    return [
       'name' => 'Contrato Nº ' . $oInformacoes->codigo_contrato,
       'path' => $sNomeArquivoConvertido,
-    );
+    ];
   }
 }

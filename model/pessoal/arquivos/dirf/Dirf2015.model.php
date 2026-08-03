@@ -47,6 +47,7 @@ class Dirf2015 extends Dirf2012 {
     $this->aGruposRRA["RIP65"] = 24;
   }
 
+  #[\Override]
   public function processarRRA(Servidor $oServidor, $lPortadorMolestia, $oPessoa) {
 
 
@@ -105,7 +106,7 @@ class Dirf2015 extends Dirf2012 {
       throw new \DBException('Erro ao pesquisar dados dos pensionistas para a geração dos pensionistas');
     }
     $oInstancia    = $this;
-    $aPensionistas = array(); 
+    $aPensionistas = []; 
     db_utils::makeCollectionFromRecord($rsPensionistas, function ($oDados) use ($oInstancia, $iTipoDirf, &$aPensionistas) {
 
       $oPensionista          = $oDados;
@@ -138,7 +139,7 @@ class Dirf2015 extends Dirf2012 {
     if (!$rsPagamentos) {
       throw new \DBException('Erro ao pesquisar dados dos pagamentos de pensionistas para a geração dos pensionistas');
     }
-    $aValor = array();
+    $aValor = [];
     db_utils::makeCollectionFromRecord($rsPagamentos, function ($oDados) use(&$aValor) {
       $aValor[$oDados->mes] = $oDados->valor;
     });

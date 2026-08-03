@@ -327,7 +327,7 @@ $clrotulo->label("DBtxt5");
                   </td>
                   <td>
                     <?php
-                    $y = array(
+                    $y = [
                       ""   => "",
                       "A"  => "A",
                       "B"  => "B",
@@ -338,7 +338,7 @@ $clrotulo->label("DBtxt5");
                       "AC" => "AC",
                       "AD" => "AD",
                       "AE" => "AE"
-                    );
+                    ];
                     db_select( 'z01_v_categoria', $y, true, $db_opcao );
                     ?>
                   </td>
@@ -543,7 +543,7 @@ function js_pesquisa() {
 function js_preenchepesquisa( chave ) {
 
   db_iframe_cgs_und.hide();
-  <?php echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
+  <?php echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";?>
 }
 
 function js_novo() {

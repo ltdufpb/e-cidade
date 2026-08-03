@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_debcontaparam_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldebcontaparam = new cl_debcontaparam;
 $cldebcontaparam->rotulo->label("d62_instituicao");
 $cldebcontaparam->rotulo->label("d62_banco");
@@ -98,9 +98,9 @@ $cldebcontaparam->rotulo->label("d62_convenio");
         }else{
            $sql = $cldebcontaparam->sql_query("","",$campos,"d62_instituicao#d62_banco"," d62_instituicao = $d62_instituicao ");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_d62_convenio)){
-          $repassa = array("chave_d62_instituicao"=>$chave_d62_instituicao,"chave_d62_convenio"=>$chave_d62_convenio);
+          $repassa = ["chave_d62_instituicao"=>$chave_d62_instituicao,"chave_d62_convenio"=>$chave_d62_convenio];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

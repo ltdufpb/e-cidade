@@ -51,7 +51,7 @@ $iHeigth        = 4;
 $oEscola        = new Escola(db_getsession("DB_coddepto"));
 
 $head1 = "Relatório de Pendências para Encerramento";
-$head2 = "Etapa: ".urldecode($oLogArquivo->aLogs[0]->etapa);
+$head2 = "Etapa: ".urldecode((string) $oLogArquivo->aLogs[0]->etapa);
 
 /**
  * Buscamos as informacoes da turma para complemento do cabecalho
@@ -75,12 +75,12 @@ foreach ($oLogArquivo->aLogs as $oLog) {
   
   $iYInicial = $oPdf->GetY();
   $oPdf->SetX(115);
-  $oPdf->MultiCell(87, 4, urldecode($oLog->mensagem), "TBL");
+  $oPdf->MultiCell(87, 4, urldecode((string) $oLog->mensagem), "TBL");
   $iHeight = $oPdf->GetY() - $iYInicial;
   $oPdf->SetXY(10, $iYInicial);
   
-  $oPdf->Cell(35, $iHeight, urldecode($oLog->disciplina), "TBR", 0, "L" );
-  $oPdf->Cell(70, $iHeight, urldecode($oLog->aluno),         1, 1, "L" );
+  $oPdf->Cell(35, $iHeight, urldecode((string) $oLog->disciplina), "TBR", 0, "L" );
+  $oPdf->Cell(70, $iHeight, urldecode((string) $oLog->aluno),         1, 1, "L" );
 }
 
 $oPdf->Output();

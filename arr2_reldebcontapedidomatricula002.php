@@ -28,7 +28,7 @@
 require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 if($iSituacao > 1){
   $sqlSit = " AND d63_statusatual = $iSituacao ";
@@ -70,7 +70,7 @@ ORDER BY 1 DESC";
 
 //echo $sql; exit;
 $result = db_query($sql) or die("Erro realizando consulta : ".$sql);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Não existem lançamentos no período de '.db_formatar($iDatai, 'd').' a '.db_formatar($iDataf, 'd'));
 }
@@ -134,7 +134,7 @@ for ($i = 0; $i < $xxnum; $i ++) {
   $pdf->Cell(16, 6, $d83_agencia,                    1, 0, "R", 0);
   $pdf->Cell(20, 6, $d83_conta,                      1, 0, "R", 0);
   $pdf->Cell(13, 6, $d83_codret,                     1, 0, "R", 0);
-  $pdf->Cell(52, 6, substr($arqret,0,28),            1, 0, "L", 0);
+  $pdf->Cell(52, 6, substr((string) $arqret,0,28),            1, 0, "L", 0);
   $pdf->Cell(35, 6, $login,                          1, 1, "L", 0);
 }
 

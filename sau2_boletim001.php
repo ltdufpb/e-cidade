@@ -105,7 +105,7 @@ $objSau_config = db_utils::fieldsMemory($resSau_config,0 );
 	     </td>
 	     <td>
 	     <?php 
-			$x = array('0'=>'NENHUM','1'=>'UNIDADE');
+			$x = ['0'=>'NENHUM','1'=>'UNIDADE'];
 			db_select('agrupar',$x,true,$db_opcao,"");
 	     ?>
 	     </td>     
@@ -114,7 +114,7 @@ $objSau_config = db_utils::fieldsMemory($resSau_config,0 );
 	     </td>
 	     <td>
 	     <?php 
-			$x = array('0'=>'Analítico','1'=>'Sintético');
+			$x = ['0'=>'Analítico','1'=>'Sintético'];
 			db_select('bpa',$x,true,$db_opcao,"");
 	     ?>
 	     </td>
@@ -126,7 +126,7 @@ $objSau_config = db_utils::fieldsMemory($resSau_config,0 );
 	       if (! isset ( $pab )) {
 			     $pab = "3";
 		  	 }
-	  		 $arr_pab = array ("1" => "PAB", "2" => "NPAB", "3" => "TODOS");
+	  		 $arr_pab =  ["1" => "PAB", "2" => "NPAB", "3" => "TODOS"];
   			 db_select('pab', $arr_pab, true, 4);
 			   ?>
        </td>

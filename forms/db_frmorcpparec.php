@@ -100,19 +100,19 @@ db_input("testado",8,0,true,'hidden',1);
 for($i=$o21_anoini; $i<= $o21_anofim; $i++){
     
      $x  = "o27_sequen_$i";
-     $$x  = "";
+     ${$x}  = "";
     
      $x = "o27_valor_$i";
-     $$x  = "";
+     ${$x}  = "";
       
      $x = "o57_fonte_$i";
-     $$x = "";
+     ${$x} = "";
      
      $x = "o27_obs_$i";
-     $$x = "";
+     ${$x} = "";
 
      $x = "o27_perc_$i";
-     $$x = "";
+     ${$x} = "";
       
    if(isset($o27_proces) && $o27_proces !='' && empty($novo) && empty($incluir) && empty($alterar) && empty($excluir) ){
 
@@ -124,29 +124,29 @@ for($i=$o21_anoini; $i<= $o21_anofim; $i++){
        db_fieldsmemory($result01,0);
    
        $x  = "o27_sequen_$i";
-       $$x  = $o27_sequen;
+       ${$x}  = $o27_sequen;
 	  
        $x = "o27_valor_$i";
-       $$x = $o27_valor;
+       ${$x} = $o27_valor;
        
        $x = "o27_obs_$i";
-       $$x = $o27_obs;
+       ${$x} = $o27_obs;
        
        $x = "o27_perc_$i";
-       $$x = $o27_perc;
+       ${$x} = $o27_perc;
 
        $x = "o27_concarpeculiar_$i";
-       $$x = $o27_concarpeculiar;
+       ${$x} = $o27_concarpeculiar;
 
        $x = "c58_descr_$i";
-       $$x = $c58_descr;
+       ${$x} = $c58_descr;
    
        //retorna os dados do orcfontes
        $result01 = $clorcfontes->sql_record($clorcfontes->sql_query_file($o27_codfon,db_getsession("DB_anousu")));
        if($clorcfontes->numrows>0){
          db_fieldsmemory($result01,0);
          $x = "o57_fonte_$i";
-         $$x = $o57_fonte;
+         ${$x} = $o57_fonte;
        }  	 
      }
      
@@ -168,8 +168,8 @@ db_input("o27_sequen_$i",8,$Io27_sequen,true,'hidden',1);
     <td> 
 <?php 
 $x = "o27_exercicio_$i";
-if(empty($$x)){
-  $$x = $i;
+if(empty(${$x})){
+  ${$x} = $i;
 }
 db_input("o27_exercicio_$i",4,$Io27_exercicio,true,'text',3)
 ?>
@@ -199,14 +199,14 @@ db_input("o27_perc_$i",8,$Io27_perc,true,'text',$db_opcao,($i == $o21_anoini?"on
     <?php 
        $x = "o57_fonte_$i";
     ?>
-    <input type="text"  value="<?=@$$x?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o57_fonte_<?=$i?>" size="19" maxlength='15'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_fonte_<?=$i?>(false);'>
+    <input type="text"  value="<?=@${$x}?>" <?=($db_opcao==3?"readOnly style='background-color:#DEB887;'":"")?>  name="o57_fonte_<?=$i?>" size="19" maxlength='15'  onKeyUp="js_ValidaCampos(this,1,'','','',event);" onKeyDown="return js_controla_tecla_enter(this,event);"    onchange='js_fonte_<?=$i?>(false);'>
     
     </td>
   </tr>
 <?php 
   $xx = "o27_exercicio_$i";
-  if (empty($$xx)){
-    $$xx = $i;
+  if (empty(${$xx})){
+    ${$xx} = $i;
   }
 ?>
   <tr>
@@ -214,7 +214,7 @@ db_input("o27_perc_$i",8,$Io27_perc,true,'text',$db_opcao,($i == $o21_anoini?"on
        $x = "o27_concarpeculiar_".$i;
        $y = "c58_descr_".$i;
 
-       if ($$xx > 2007){
+       if (${$xx} > 2007){
          $tranca = $db_opcao;
        } else {
          $tranca = 3;

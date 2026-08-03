@@ -56,6 +56,7 @@ abstract class PdfDespesa extends Pdf
     protected $apresentaValoresMetaObjetivo = false;
     protected $apresentaMetasObjetivoPrograma = true;
 
+    #[\Override]
     public function headers($titulo)
     {
         $this->addTitulo($titulo);
@@ -67,6 +68,7 @@ abstract class PdfDespesa extends Pdf
         ));
     }
 
+    #[\Override]
     public function setDados(array $dados)
     {
         parent::setDados($dados);
@@ -319,7 +321,7 @@ abstract class PdfDespesa extends Pdf
 
             $descricao = sprintf(
                 '%s - %s',
-                str_pad($objetivo['pl11_numero'], 5, ' ', STR_PAD_LEFT),
+                str_pad((string) $objetivo['pl11_numero'], 5, ' ', STR_PAD_LEFT),
                 $objetivo['pl11_descricao']
             );
 

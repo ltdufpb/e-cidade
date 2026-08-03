@@ -61,13 +61,13 @@ class CarfatorIPTU implements iViradaIPTU {
    * Campos chave configurados na tabela iptutabelasconfigcampochave
    * @var array
    */
-  private $aCampoChave    = array();
+  private $aCampoChave    = [];
 
   /**
    * Campos correcao configurados na tabela iptutabelasconfigcampocorrecao
    * @var array
    */
-  private $aCampoCorrecao = array();
+  private $aCampoCorrecao = [];
 
   /**
    * @return $this->iAnoAtual
@@ -300,15 +300,15 @@ class CarfatorIPTU implements iViradaIPTU {
             $oDaoCarFator->$sNomeCampoCarFator = "{$nSomaPercentual}";
           } else {
 
-            if (trim($sNomeCampoCarFator) == 'j74_anousu') {
+            if (trim((string) $sNomeCampoCarFator) == 'j74_anousu') {
               $iAnoUso = $this->getAnoNovo();
             }
 
-            if (trim($sNomeCampoCarFator) == 'j74_caract') {
+            if (trim((string) $sNomeCampoCarFator) == 'j74_caract') {
               $iCaract = $oDadosCarFator->$sNomeCampoCarFator;
             }
 
-            if (trim($sNomeCampoCarFator) == 'j74_corrig') {
+            if (trim((string) $sNomeCampoCarFator) == 'j74_corrig') {
               $oDaoCarFator->$sNomeCampoCarFator = ($oDadosCarFator->$sNomeCampoCarFator=='t'?'true':'false');
             } else {
               $oDaoCarFator->$sNomeCampoCarFator = $oDadosCarFator->$sNomeCampoCarFator;

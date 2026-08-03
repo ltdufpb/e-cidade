@@ -2,7 +2,7 @@
 
 class ConfiguracaoConsignadoRepository {
 
-  static $aItens = array();
+  static $aItens = [];
 
   private
   function __construct() {
@@ -40,7 +40,7 @@ class ConfiguracaoConsignadoRepository {
     if (!$rsDadosConfiguracao) {
       throw new DBException("Erro ao realizar a pesquisa das configurações de consignação da instituição");
     }
-    $aConfiguracoes = array();
+    $aConfiguracoes = [];
     $iTotalItens = pg_num_rows($rsDadosConfiguracao);
     for ($iConfig = 0; $iConfig < $iTotalItens; $iConfig++) {
 

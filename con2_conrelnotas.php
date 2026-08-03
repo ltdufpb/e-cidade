@@ -51,7 +51,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('c83_codrel');
 $clrotulo->label('o42_descrrel');
 
-$aPeriodos = array();
+$aPeriodos = [];
 
 db_postmemory($_POST);
 
@@ -63,7 +63,7 @@ if (isset($oPost->o42_tamanhofontedados)) {
     $o42_tamanhofontedados = $oPost->o42_tamanhofontedados;
 }
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -84,7 +84,7 @@ if (count($aPeriodosRelatorios) > 0) {
         $aPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;
     }
 } else {
-    $aPeriodos = array(
+    $aPeriodos = [
         "0" => "Nenhum",
         "1B" => "Primeiro Bimestre",
         "2B" => "Segundo Bimestre",
@@ -97,7 +97,7 @@ if (count($aPeriodosRelatorios) > 0) {
         "3Q" => "Terceiro Quadrimestre",
         "1S" => "Primeiro Semestre",
         "2S" => "Segundo Semestre"
-    );
+    ];
 }
 
 if (!isset($opcao)) {
@@ -119,8 +119,8 @@ if (isset($opcao) && $opcao == "alterar" || $opcao == "excluir") {
   if ($res !== false && $clorcparamrelnota->numrows > 0 ) {
 
         db_fieldsmemory($res, 0);
-    $o42_nota  = htmlentities($o42_nota );
-    $o42_fonte = htmlentities($o42_fonte );
+    $o42_nota  = htmlentities((string) $o42_nota );
+    $o42_fonte = htmlentities((string) $o42_fonte );
 
     } else {
         $o42_periodo = "0";
@@ -140,7 +140,7 @@ if (isset($opcao) && $opcao == "excluir") {
 if (isset($gravar)) {
     db_inicio_transacao();
 
-    if (trim($o42_nota) == "" && trim($o42_fonte) == "") {
+    if (trim((string) $o42_nota) == "" && trim((string) $o42_fonte) == "") {
         $sqlerro = true;
     $erro_msg = "Campo Fonte/Notas Explicativas é de preenchimento obrigatório.";
     }
@@ -406,7 +406,7 @@ if ($db_opcao == 1) {
                         <tr>
                             <td>
                                 <?php
-                                $chavepri = array("o42_sequencial" => @$o42_sequencial);
+                                $chavepri = ["o42_sequencial" => @$o42_sequencial];
                                 $cliframe_alterar_excluir->chavepri = $chavepri;
                                 $cliframe_alterar_excluir->sql = $clorcparamrelnota->sql_query_periodo(
                                     $c83_codrel,

@@ -66,26 +66,22 @@ try {
             $remuneracaoRGPSService->setAnoCompetencia($oParam->ano);
             $remuneracaoRGPSService->setMesCompetencia($oParam->mes);
             $remuneracoesRGPS = $remuneracaoRGPSService->buscarPorCGM(CgmRepository::getByCodigo($oParam->cgm));
-            $oRetorno->matriculas = array();
+            $oRetorno->matriculas = [];
 
             foreach ($remuneracoesRGPS as $remuneracaoRGPS) {
                 $dadosMatricula = new stdClass();
                 $dadosMatricula->matricula = $remuneracaoRGPS->getServidor()->getMatricula();
-                $dadosMatricula->outrosVinculos = array();
-                $dadosMatricula->planosSaude = array();
+                $dadosMatricula->outrosVinculos = [];
+                $dadosMatricula->planosSaude = [];
                 $dadosMatricula->pagamentos = $remuneracaoRGPS->getPagamentos();
                 $dadosMatricula->dadosTrabalhador = $remuneracaoRGPS->getDadosTrabalhador();
 
                 if(count($remuneracaoRGPS->getServidorOutrosVinculos()) > 0) {
-                    $dadosMatricula->outrosVinculos[] = array_map(function (ServidorOutrosVinculos $servidorOutrosVinculos) {
-                        return $servidorOutrosVinculos->toArray();
-                    }, $remuneracaoRGPS->getServidorOutrosVinculos());
+                    $dadosMatricula->outrosVinculos[] = array_map(fn(ServidorOutrosVinculos $servidorOutrosVinculos) => $servidorOutrosVinculos->toArray(), $remuneracaoRGPS->getServidorOutrosVinculos());
                 }
 
                 if(count($remuneracaoRGPS->getPlanoSaude()) > 0) {
-                    $dadosMatricula->planosSaude[] = array_map(function (ServidorOperadoraSaude $servidorOperadoraSaude) {
-                        return $servidorOperadoraSaude->toArray();
-                    }, $remuneracaoRGPS->getPlanoSaude());
+                    $dadosMatricula->planosSaude[] = array_map(fn(ServidorOperadoraSaude $servidorOperadoraSaude) => $servidorOperadoraSaude->toArray(), $remuneracaoRGPS->getPlanoSaude());
                 }
 
                 $oRetorno->matriculas[] = $dadosMatricula;

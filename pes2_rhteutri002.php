@@ -36,7 +36,7 @@ $clrhtipovale = new cl_rhtipovale;
 $clrotulo = new rotulocampo;
 $clrotulo->label('rh67_codigo');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $res_tipovale = $clrhtipovale->sql_record($clrhtipovale->sql_query($rh67_rhtipovale,"*"));
@@ -59,14 +59,14 @@ if($tipo == 'a'){
 }
 
 $xgrupo = '';
-if(trim($grupo) != '' && trim($grupo) != 'todos'){
+if(trim((string) $grupo) != '' && trim((string) $grupo) != 'todos'){
   $where .= " and rh67_grupo = $grupo ";
 }
 
 $result = $clrhteutri->sql_record($clrhteutri->sql_query(null,"*",$xordem,$where));
 //echo $clrhteutri->sql_query(null,"*",$xordem,$where);exit;
 //db_criatabela($result);exit;
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona("db_erros.php?fechar=true&db_erro=Não existem Vales Cadastrados para o tipo ".$rh68_sequencial." - ".$rh68_descr.". Verifique!");
 
@@ -80,7 +80,7 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 4;
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage();

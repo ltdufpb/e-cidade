@@ -185,9 +185,9 @@ class PontoFerias extends Ponto {
    */
   public function adicionarRubricasPadrao() {
   	
-  	$aRubricasPadrao = array(PontoFerias::TIPO_PAGAMENTO_ADIANTAMENTO => RubricaRepository::getInstanciaByCodigo('R940'), 
+  	$aRubricasPadrao = [PontoFerias::TIPO_PAGAMENTO_ADIANTAMENTO => RubricaRepository::getInstanciaByCodigo('R940'), 
   													 PontoFerias::TIPO_PAGAMENTO_FERIAS       => RubricaRepository::getInstanciaByCodigo('R931'), 
-  													 PontoFerias::TIPO_PAGAMENTO_ABONO        => RubricaRepository::getInstanciaByCodigo('R932'));
+  													 PontoFerias::TIPO_PAGAMENTO_ABONO        => RubricaRepository::getInstanciaByCodigo('R932')];
   	
 
 
@@ -249,6 +249,7 @@ class PontoFerias extends Ponto {
    * @throws DBException
    * @access public
    */
+  #[\Override]
   public function carregarRegistros( $mRubrica = null ) {
      
     $oDaoPonto = new cl_pontofe();
@@ -269,7 +270,7 @@ class PontoFerias extends Ponto {
        */
       if (is_array( $mRubrica )) {
         
-        $aRubricas = array ();
+        $aRubricas =  [];
         foreach ( $mRubrica as $sRubrica ) {
           $aRubricas [] = "'$sRubrica'";
         }
@@ -316,6 +317,7 @@ class PontoFerias extends Ponto {
    * @param RegistroPontoFerias $oRegistro
    * @return bool
    */
+  #[\Override]
   public function adicionarRegistro( RegistroPontoFerias $oRegistroPonto, $lSubstituir = true ) {
 
     $sCodigoRubrica = $oRegistroPonto->getRubrica()->getCodigo().$oRegistroPonto->getTipoPagamento();

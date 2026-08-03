@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_obrascaractarqsisobra_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clobrascaractarqsisobra = new cl_obrascaractarqsisobra;
 $clobrascaractarqsisobra->rotulo->label("ob23_sequencial");
 $clobrascaractarqsisobra->rotulo->label("ob23_caractdestino");
@@ -98,9 +98,9 @@ $clobrascaractarqsisobra->rotulo->label("ob23_caractdestino");
         }else{
            $sql = $clobrascaractarqsisobra->sql_query("",$campos,"ob23_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ob23_caractdestino)){
-          $repassa = array("chave_ob23_sequencial"=>$chave_ob23_sequencial,"chave_ob23_caractdestino"=>$chave_ob23_caractdestino);
+          $repassa = ["chave_ob23_sequencial"=>$chave_ob23_sequencial,"chave_ob23_caractdestino"=>$chave_ob23_caractdestino];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

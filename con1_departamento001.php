@@ -30,10 +30,10 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if (isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS); 
+if (isset($_POST["incluir"])) {
+  db_postmemory($_POST); 
   $result = db_query("select max(coddepto) + 1 from db_depart");
-  $codigo = pg_result($result,0,0);
+  $codigo = pg_fetch_result($result,0,0);
   $codigo = $codigo == ""?"1":$codigo;
   $result = db_query("insert into db_depart values($codigo,'$descrdepto','$nomeresponsavel','$emailresponsavel')") or die ("Erro: (37). Processo de inclusao.");
   db_msgbox("Incluido com sucesso.");

@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE meiimportalinhaatividade
 class cl_meiimportalinhaatividade { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q106_sequencial = 0; 
-   var $q106_meiimportalinha = 0; 
-   var $q106_cnae = null; 
-   var $q106_descricao = null; 
-   var $q106_principal = 'f'; 
+   public $q106_sequencial = 0; 
+   public $q106_meiimportalinha = 0; 
+   public $q106_cnae = null; 
+   public $q106_descricao = null; 
+   public $q106_principal = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q106_sequencial = int4 = Sequencial 
                  q106_meiimportalinha = int4 = Linha de Importação do MEI 
                  q106_cnae = varchar(8) = Cnae 
@@ -56,10 +56,10 @@ class cl_meiimportalinhaatividade {
                  q106_principal = bool = Principal 
                  ";
    //funcao construtor da classe 
-   function cl_meiimportalinhaatividade() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("meiimportalinhaatividade"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -122,10 +122,10 @@ class cl_meiimportalinhaatividade {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q106_sequencial = pg_result($result,0,0); 
+       $this->q106_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from meiimportalinhaatividade_q106_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q106_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q106_sequencial)){
          $this->erro_sql = " Campo q106_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -161,7 +161,7 @@ class cl_meiimportalinhaatividade {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Importação do MEI por Atividade ($this->q106_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Importação do MEI por Atividade já Cadastrado";
@@ -185,14 +185,14 @@ class cl_meiimportalinhaatividade {
      $resaco = $this->sql_record($this->sql_query_file($this->q106_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16239,'$this->q106_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2849,16239,'','".AddSlashes(pg_result($resaco,0,'q106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2849,16240,'','".AddSlashes(pg_result($resaco,0,'q106_meiimportalinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2849,16242,'','".AddSlashes(pg_result($resaco,0,'q106_cnae'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2849,16241,'','".AddSlashes(pg_result($resaco,0,'q106_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2849,16243,'','".AddSlashes(pg_result($resaco,0,'q106_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2849,16239,'','".AddSlashes(pg_fetch_result($resaco,0,'q106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2849,16240,'','".AddSlashes(pg_fetch_result($resaco,0,'q106_meiimportalinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2849,16242,'','".AddSlashes(pg_fetch_result($resaco,0,'q106_cnae'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2849,16241,'','".AddSlashes(pg_fetch_result($resaco,0,'q106_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2849,16243,'','".AddSlashes(pg_fetch_result($resaco,0,'q106_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -201,10 +201,10 @@ class cl_meiimportalinhaatividade {
       $this->atualizacampos();
      $sql = " update meiimportalinhaatividade set ";
      $virgula = "";
-     if(trim($this->q106_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q106_sequencial"])){ 
+     if(trim((string) $this->q106_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q106_sequencial"])){ 
        $sql  .= $virgula." q106_sequencial = $this->q106_sequencial ";
        $virgula = ",";
-       if(trim($this->q106_sequencial) == null ){ 
+       if(trim((string) $this->q106_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "q106_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_meiimportalinhaatividade {
          return false;
        }
      }
-     if(trim($this->q106_meiimportalinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q106_meiimportalinha"])){ 
+     if(trim((string) $this->q106_meiimportalinha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q106_meiimportalinha"])){ 
        $sql  .= $virgula." q106_meiimportalinha = $this->q106_meiimportalinha ";
        $virgula = ",";
-       if(trim($this->q106_meiimportalinha) == null ){ 
+       if(trim((string) $this->q106_meiimportalinha) == null ){ 
          $this->erro_sql = " Campo Linha de Importação do MEI nao Informado.";
          $this->erro_campo = "q106_meiimportalinha";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_meiimportalinhaatividade {
          return false;
        }
      }
-     if(trim($this->q106_cnae)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q106_cnae"])){ 
+     if(trim((string) $this->q106_cnae)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q106_cnae"])){ 
        $sql  .= $virgula." q106_cnae = '$this->q106_cnae' ";
        $virgula = ",";
-       if(trim($this->q106_cnae) == null ){ 
+       if(trim((string) $this->q106_cnae) == null ){ 
          $this->erro_sql = " Campo Cnae nao Informado.";
          $this->erro_campo = "q106_cnae";
          $this->erro_banco = "";
@@ -240,14 +240,14 @@ class cl_meiimportalinhaatividade {
          return false;
        }
      }
-     if(trim($this->q106_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q106_descricao"])){ 
+     if(trim((string) $this->q106_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q106_descricao"])){ 
        $sql  .= $virgula." q106_descricao = '$this->q106_descricao' ";
        $virgula = ",";
      }
-     if(trim($this->q106_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q106_principal"])){ 
+     if(trim((string) $this->q106_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q106_principal"])){ 
        $sql  .= $virgula." q106_principal = '$this->q106_principal' ";
        $virgula = ",";
-       if(trim($this->q106_principal) == null ){ 
+       if(trim((string) $this->q106_principal) == null ){ 
          $this->erro_sql = " Campo Principal nao Informado.";
          $this->erro_campo = "q106_principal";
          $this->erro_banco = "";
@@ -265,19 +265,19 @@ class cl_meiimportalinhaatividade {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16239,'$this->q106_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q106_sequencial"]) || $this->q106_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2849,16239,'".AddSlashes(pg_result($resaco,$conresaco,'q106_sequencial'))."','$this->q106_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2849,16239,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q106_sequencial'))."','$this->q106_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q106_meiimportalinha"]) || $this->q106_meiimportalinha != "")
-           $resac = db_query("insert into db_acount values($acount,2849,16240,'".AddSlashes(pg_result($resaco,$conresaco,'q106_meiimportalinha'))."','$this->q106_meiimportalinha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2849,16240,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q106_meiimportalinha'))."','$this->q106_meiimportalinha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q106_cnae"]) || $this->q106_cnae != "")
-           $resac = db_query("insert into db_acount values($acount,2849,16242,'".AddSlashes(pg_result($resaco,$conresaco,'q106_cnae'))."','$this->q106_cnae',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2849,16242,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q106_cnae'))."','$this->q106_cnae',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q106_descricao"]) || $this->q106_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,2849,16241,'".AddSlashes(pg_result($resaco,$conresaco,'q106_descricao'))."','$this->q106_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2849,16241,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q106_descricao'))."','$this->q106_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q106_principal"]) || $this->q106_principal != "")
-           $resac = db_query("insert into db_acount values($acount,2849,16243,'".AddSlashes(pg_result($resaco,$conresaco,'q106_principal'))."','$this->q106_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2849,16243,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q106_principal'))."','$this->q106_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -322,14 +322,14 @@ class cl_meiimportalinhaatividade {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16239,'$q106_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2849,16239,'','".AddSlashes(pg_result($resaco,$iresaco,'q106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2849,16240,'','".AddSlashes(pg_result($resaco,$iresaco,'q106_meiimportalinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2849,16242,'','".AddSlashes(pg_result($resaco,$iresaco,'q106_cnae'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2849,16241,'','".AddSlashes(pg_result($resaco,$iresaco,'q106_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2849,16243,'','".AddSlashes(pg_result($resaco,$iresaco,'q106_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2849,16239,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q106_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2849,16240,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q106_meiimportalinha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2849,16242,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q106_cnae'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2849,16241,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q106_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2849,16243,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q106_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from meiimportalinhaatividade
@@ -389,7 +389,7 @@ class cl_meiimportalinhaatividade {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:meiimportalinhaatividade";
@@ -404,7 +404,7 @@ class cl_meiimportalinhaatividade {
    function sql_query ( $q106_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -427,7 +427,7 @@ class cl_meiimportalinhaatividade {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -440,7 +440,7 @@ class cl_meiimportalinhaatividade {
    function sql_query_file ( $q106_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,7 +461,7 @@ class cl_meiimportalinhaatividade {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -29,7 +29,7 @@ require_once(modification("libs/db_liborcamento.php"));
 require_once(modification("fpdf151/pdf.php"));
 require_once(modification("libs/db_sql.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $quebra_unidade = "S";
 $quebra_orgao = "S";
@@ -48,7 +48,7 @@ $nivel = '8A';
   $result8 = db_query($sql8);
   $orgaos = "";
   $colsub = "";
-   for($i8=0;$i8<pg_numrows($result8);$i8++){
+   for($i8=0;$i8<pg_num_rows($result8);$i8++){
      db_fieldsmemory($result8,$i8);
      $orgaos .= $colsub."$o58_orgao"."$o58_unidade"."_$o58_funcao"."_$o58_subfuncao"."_$o58_programa"."_$o58_projativ"."_$o56_elemento"."_$o15_codigo" ;
       $colsub = "_";
@@ -80,11 +80,11 @@ $qunidade = 0;
 $head1 = "DEMONSTRATIVO DA DESPESA";
 $head3 = "EXERCÍCIO: ".db_getsession("DB_anousu");
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   $descr_inst .= $xvirg.$nomeinst ;
   $xvirg = ', ';
@@ -131,7 +131,7 @@ $totunidareser = 0;
 $totunidaatual = 0;
 $pagina        = 1;
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
 
   db_fieldsmemory($result,$i);
 
@@ -333,9 +333,9 @@ for($i=0;$i<pg_numrows($result);$i++){
   if($o58_codigo > 0){
     $descr = $o56_descr;
     $pdf->cell(20,$alt,$o58_elemento,1,0,"L",0);
-    $pdf->cell(60,$alt,substr($descr,0,37),1,0,"L",0);
+    $pdf->cell(60,$alt,substr((string) $descr,0,37),1,0,"L",0);
     $pdf->cell(10,$alt,db_formatar($o58_codigo,'s','0',4,'e'),1,0,"L",0);
-    $pdf->cell(30,$alt,substr($o15_descr,0,20),1,0,"L",0);
+    $pdf->cell(30,$alt,substr((string) $o15_descr,0,20),1,0,"L",0);
     $pdf->cell(15,$alt,$o58_coddot."-".db_CalculaDV($o58_coddot),1,0,"R",0);
     $pdf->cell(20,$alt,db_formatar($atual,'f'),1,0,"R",0);
     $pdf->cell(20,$alt,db_formatar($reservado,'f'),1,0,"R",0);
@@ -351,15 +351,15 @@ for($i=0;$i<pg_numrows($result);$i++){
 
       $sql = "select *
               from orcelemento
-	      where substr(o56_elemento,1,7) = '".str_replace('.','',substr($o58_elemento,0,7))."' and
+	      where substr(o56_elemento,1,7) = '".str_replace('.','',substr((string) $o58_elemento,0,7))."' and
 	            substr(o56_elemento,8,5) != '00000' and o56_anousu = ".db_getsession("DB_anousu")." and
 		    o56_liberado is true";
       $res = db_query($sql);
-      for($ne=0;$ne<pg_numrows($res);$ne++){
+      for($ne=0;$ne<pg_num_rows($res);$ne++){
 
 	      db_fieldsmemory($res,$ne);
         $pdf->cell(20,$alt,$o56_elemento,0,0,"L",0);
-        $pdf->cell(60,$alt,substr($o56_descr,0,37),0,0,"L",0);
+        $pdf->cell(60,$alt,substr((string) $o56_descr,0,37),0,0,"L",0);
         $pdf->cell(105,$alt,$o56_finali,0,1,"L",0);
       }
 
@@ -391,7 +391,7 @@ $pdf->cell(20,$alt,db_formatar($totorgaoatual,'f'),0,1,"R",0);
   if($nivela == 1){
     $where .= " w.o58_orgao in ($xcampos)";
   }elseif($nivela == 2){
-    $xunid = split(",",$xcampos);
+    $xunid = preg_split("#,#m",$xcampos);
     $virgula = "";
     for($xu=0;$xu < sizeof($xunid);$xu++){
       @$xxcampos .= $virgula."'".$xunid[$xu]."'";
@@ -444,7 +444,7 @@ $totunidareser = 0;
 $totunidaatual = 0;
 $pagina = 1;
 
-for($k=0;$k<pg_numrows($result);$k++){
+for($k=0;$k<pg_num_rows($result);$k++){
 
   db_fieldsmemory($result,$k);
   if($pdf->gety()>$pdf->h-30 || $pagina == 1){

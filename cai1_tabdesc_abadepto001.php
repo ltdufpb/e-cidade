@@ -35,8 +35,8 @@ include(modification("classes/db_tabdescdepto_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_seleciona = new cl_iframe_seleciona;
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $cltabdesc = new cl_tabdesc;
 $cltabdescdepto = new cl_tabdescdepto;
 $cltabdescarretipo = new cl_tabdescarretipo;
@@ -60,7 +60,7 @@ if(isset($incluir) or isset($alterar)){
 		    $msgerro = $cltabdescdepto->erro_msg;
 	}
 	
-	$depto = split("#",$chaves); 
+	$depto = preg_split("#\\##m",$chaves); 
   for($w=0;$w<count($depto);$w++){
     if($erro==false){
     	

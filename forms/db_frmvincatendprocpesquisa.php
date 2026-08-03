@@ -102,7 +102,7 @@ db_fieldsmemory($rsConsultaTipo,0);
   	  <tr>
 	    <td valign="top"  align="center">  
 	      <?php  	      
-		 	$chavepri                                = array("ov09_sequencial"=>@$oProcessoOuvidoria->ov09_sequencial);
+		 	$chavepri                                = ["ov09_sequencial"=>@$oProcessoOuvidoria->ov09_sequencial];
 		 	$cliframe_alterar_excluir->chavepri      = $chavepri;
 		 	$cliframe_alterar_excluir->sql           = $sqlProcessoOuvidoria;
 		 	$cliframe_alterar_excluir->campos        = "ov01_sequencial, ov01_numero, ov01_requerente,ov01_solicitacao,ov01_dataatend";

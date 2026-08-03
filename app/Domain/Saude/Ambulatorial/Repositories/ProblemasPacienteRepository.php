@@ -20,7 +20,7 @@ class ProblemasPacienteRepository extends BaseRepository
             $model->s170_problema = $dados->problema;
             $model->s170_paciente = $dados->paciente;
             $model->s170_usuario = $dados->usuario;
-            $model->s170_data = (new \DateTime())->format('Y-m-d');
+            $model->s170_data = new \DateTime()->format('Y-m-d');
         }
         $model->s170_data_inicio = $dados->dataInicio;
         $model->s170_data_fim = $dados->dataFim;

@@ -63,7 +63,7 @@ try {
       if (isset($oParam->iTurma) && isset($oParam->iEtapa)) {
 
         $iDiarioAvaliacao    = null;
-        $oRetorno->aAlunos   = array();
+        $oRetorno->aAlunos   = [];
         $oTurma              = EducacaoSessionManager::carregarTurma($oParam->iTurma);
         $oEtapa              = EducacaoSessionManager::carregarEtapa($oParam->iEtapa);
 
@@ -97,7 +97,7 @@ try {
 
                 $oDadosAluno                          = new stdClass();
                 $oDadosAluno->iMatricula              = $oMatricula->getCodigo();
-                $oDadosAluno->sNome                   = urlencode($oMatricula->getAluno()->getNome());
+                $oDadosAluno->sNome                   = urlencode((string) $oMatricula->getAluno()->getNome());
                 $oDadosAluno->iDiarioAvaliacao        = $iDiarioAvaliacao;
                 $oDadosAluno->iNumeroFaltas           = $iFaltasPeriodo;
                 $oDadosAluno->iFaltasAbonadas         = $iFaltasAbonadas;

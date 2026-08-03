@@ -44,7 +44,6 @@ use ParametrosPessoalRepository;
  */
 class ExposicaoRisco extends ProcessamentoAbstract implements ProcessamentoInterface
 {
-    private $cgm;
     private $mes;
     private $ano;
 
@@ -66,10 +65,9 @@ class ExposicaoRisco extends ProcessamentoAbstract implements ProcessamentoInter
         $this->ano = $ano;
     }
 
-    public function __construct($cgm)
+    public function __construct(private $cgm)
     {
         $this->competenciaAnterior = DBPessoal::getCompetenciaFolha()->getCompetenciaAnterior();
-        $this->cgm = $cgm;
     }
 
     /**

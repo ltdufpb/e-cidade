@@ -55,7 +55,7 @@ class cl_acompanhamentocronogramadespesa
     public function __construct()
     {
         $this->rotulo = new rotulo("acompanhamentocronogramadespesa");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -75,18 +75,18 @@ class cl_acompanhamentocronogramadespesa
             $this->dotacao_id = ($this->dotacao_id === "" ? @$GLOBALS["HTTP_POST_VARS"]["dotacao_id"] : $this->dotacao_id);
             $this->exercicio = ($this->exercicio === "" ? @$GLOBALS["HTTP_POST_VARS"]["exercicio"] : $this->exercicio);
             $this->base_calculo = ($this->base_calculo === "" ? @$GLOBALS["HTTP_POST_VARS"]["base_calculo"] : $this->base_calculo);
-            $this->janeiro = ($this->janeiro === null ? 0 : $this->janeiro);
-            $this->fevereiro = ($this->fevereiro === null ? 0 : $this->fevereiro);
-            $this->marco = ($this->marco === null ? 0 : $this->marco);
-            $this->abril = ($this->abril === null ? 0 : $this->abril);
-            $this->maio = ($this->maio === null ? 0 : $this->maio);
-            $this->junho = ($this->junho === null ? 0 : $this->junho);
-            $this->julho = ($this->julho === null ? 0 : $this->julho);
-            $this->agosto = ($this->agosto === null ? 0 : $this->agosto);
-            $this->setembro = ($this->setembro === null ? 0 : $this->setembro);
-            $this->outubro = ($this->outubro === null ? 0 : $this->outubro);
-            $this->novembro = ($this->novembro === null ? 0 : $this->novembro);
-            $this->dezembro = ($this->dezembro === null ? 0 : $this->dezembro);
+            $this->janeiro ??= 0;
+            $this->fevereiro ??= 0;
+            $this->marco ??= 0;
+            $this->abril ??= 0;
+            $this->maio ??= 0;
+            $this->junho ??= 0;
+            $this->julho ??= 0;
+            $this->agosto ??= 0;
+            $this->setembro ??= 0;
+            $this->outubro ??= 0;
+            $this->novembro ??= 0;
+            $this->dezembro ??= 0;
         } else {
             $this->id = ($this->id == "" ? @$GLOBALS["HTTP_POST_VARS"]["id"] : $this->id);
         }
@@ -234,10 +234,10 @@ class cl_acompanhamentocronogramadespesa
                 $this->erro_status = "0";
                 return false;
             }
-            $this->id = pg_result($result, 0, 0);
+            $this->id = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from acompanhamentocronogramadespesa_id_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $id)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $id)) {
                 $this->erro_sql = " Campo id maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -295,7 +295,7 @@ class cl_acompanhamentocronogramadespesa
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Acompanhamento do cronograma de desembolso da desp ($this->id) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Acompanhamento do cronograma de desembolso da desp já Cadastrado";
@@ -324,10 +324,10 @@ class cl_acompanhamentocronogramadespesa
         $this->atualizacampos();
         $sql = " update acompanhamentocronogramadespesa set ";
         $virgula = "";
-        if (trim($this->id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["id"])) {
+        if (trim((string) $this->id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["id"])) {
             $sql .= $virgula . " id = $this->id ";
             $virgula = ",";
-            if (trim($this->id) == null) {
+            if (trim((string) $this->id) == null) {
                 $this->erro_sql = " Campo id não informado.";
                 $this->erro_campo = "id";
                 $this->erro_banco = "";
@@ -337,10 +337,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->dotacao_id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["dotacao_id"])) {
+        if (trim((string) $this->dotacao_id) != "" || isset($GLOBALS["HTTP_POST_VARS"]["dotacao_id"])) {
             $sql .= $virgula . " dotacao_id = $this->dotacao_id ";
             $virgula = ",";
-            if (trim($this->dotacao_id) == null) {
+            if (trim((string) $this->dotacao_id) == null) {
                 $this->erro_sql = " Campo Dotação não informado.";
                 $this->erro_campo = "dotacao_id";
                 $this->erro_banco = "";
@@ -350,17 +350,17 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->exercicio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
-            if (trim($this->exercicio) == "" && isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
+        if (trim((string) $this->exercicio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
+            if (trim((string) $this->exercicio) == "" && isset($GLOBALS["HTTP_POST_VARS"]["exercicio"])) {
                 $this->exercicio = "0";
             }
             $sql .= $virgula . " exercicio = $this->exercicio ";
             $virgula = ",";
         }
-        if (trim($this->base_calculo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["base_calculo"])) {
+        if (trim((string) $this->base_calculo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["base_calculo"])) {
             $sql .= $virgula . " base_calculo = $this->base_calculo ";
             $virgula = ",";
-            if (trim($this->base_calculo) == null) {
+            if (trim((string) $this->base_calculo) == null) {
                 $this->erro_sql = " Campo Base de cálculo não informado.";
                 $this->erro_campo = "base_calculo";
                 $this->erro_banco = "";
@@ -370,10 +370,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->janeiro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["janeiro"])) {
+        if (trim((string) $this->janeiro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["janeiro"])) {
             $sql .= $virgula . " janeiro = $this->janeiro ";
             $virgula = ",";
-            if (trim($this->janeiro) == null) {
+            if (trim((string) $this->janeiro) == null) {
                 $this->erro_sql = " Campo janeiro não informado.";
                 $this->erro_campo = "janeiro";
                 $this->erro_banco = "";
@@ -383,10 +383,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->fevereiro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["fevereiro"])) {
+        if (trim((string) $this->fevereiro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["fevereiro"])) {
             $sql .= $virgula . " fevereiro = $this->fevereiro ";
             $virgula = ",";
-            if (trim($this->fevereiro) == null) {
+            if (trim((string) $this->fevereiro) == null) {
                 $this->erro_sql = " Campo Fevereiro não informado.";
                 $this->erro_campo = "fevereiro";
                 $this->erro_banco = "";
@@ -396,10 +396,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->marco) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["marco"])) {
+        if (trim((string) $this->marco) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["marco"])) {
             $sql .= $virgula . " marco = $this->marco ";
             $virgula = ",";
-            if (trim($this->marco) == null) {
+            if (trim((string) $this->marco) == null) {
                 $this->erro_sql = " Campo Março não informado.";
                 $this->erro_campo = "marco";
                 $this->erro_banco = "";
@@ -409,10 +409,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->abril) != "" || isset($GLOBALS["HTTP_POST_VARS"]["abril"])) {
+        if (trim((string) $this->abril) != "" || isset($GLOBALS["HTTP_POST_VARS"]["abril"])) {
             $sql .= $virgula . " abril = $this->abril ";
             $virgula = ",";
-            if (trim($this->abril) == null) {
+            if (trim((string) $this->abril) == null) {
                 $this->erro_sql = " Campo Abril não informado.";
                 $this->erro_campo = "abril";
                 $this->erro_banco = "";
@@ -422,10 +422,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->maio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["maio"])) {
+        if (trim((string) $this->maio) != "" || isset($GLOBALS["HTTP_POST_VARS"]["maio"])) {
             $sql .= $virgula . " maio = $this->maio ";
             $virgula = ",";
-            if (trim($this->maio) == null) {
+            if (trim((string) $this->maio) == null) {
                 $this->erro_sql = " Campo Maio não informado.";
                 $this->erro_campo = "maio";
                 $this->erro_banco = "";
@@ -435,10 +435,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->junho) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["junho"])) {
+        if (trim((string) $this->junho) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["junho"])) {
             $sql .= $virgula . " junho = $this->junho ";
             $virgula = ",";
-            if (trim($this->junho) == null) {
+            if (trim((string) $this->junho) == null) {
                 $this->erro_sql = " Campo Junho não informado.";
                 $this->erro_campo = "junho";
                 $this->erro_banco = "";
@@ -448,10 +448,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->julho) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["julho"])) {
+        if (trim((string) $this->julho) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["julho"])) {
             $sql .= $virgula . " julho = $this->julho ";
             $virgula = ",";
-            if (trim($this->julho) == null) {
+            if (trim((string) $this->julho) == null) {
                 $this->erro_sql = " Campo Julho não informado.";
                 $this->erro_campo = "julho";
                 $this->erro_banco = "";
@@ -461,10 +461,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->agosto) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["agosto"])) {
+        if (trim((string) $this->agosto) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["agosto"])) {
             $sql .= $virgula . " agosto = $this->agosto ";
             $virgula = ",";
-            if (trim($this->agosto) == null) {
+            if (trim((string) $this->agosto) == null) {
                 $this->erro_sql = " Campo Agosto não informado.";
                 $this->erro_campo = "agosto";
                 $this->erro_banco = "";
@@ -474,10 +474,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->setembro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["setembro"])) {
+        if (trim((string) $this->setembro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["setembro"])) {
             $sql .= $virgula . " setembro = $this->setembro ";
             $virgula = ",";
-            if (trim($this->setembro) == null) {
+            if (trim((string) $this->setembro) == null) {
                 $this->erro_sql = " Campo Setembro não informado.";
                 $this->erro_campo = "setembro";
                 $this->erro_banco = "";
@@ -487,10 +487,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->outubro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["outubro"])) {
+        if (trim((string) $this->outubro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["outubro"])) {
             $sql .= $virgula . " outubro = $this->outubro ";
             $virgula = ",";
-            if (trim($this->outubro) == null) {
+            if (trim((string) $this->outubro) == null) {
                 $this->erro_sql = " Campo Outubro não informado.";
                 $this->erro_campo = "outubro";
                 $this->erro_banco = "";
@@ -500,10 +500,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->novembro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["novembro"])) {
+        if (trim((string) $this->novembro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["novembro"])) {
             $sql .= $virgula . " novembro = $this->novembro ";
             $virgula = ",";
-            if (trim($this->novembro) == null) {
+            if (trim((string) $this->novembro) == null) {
                 $this->erro_sql = " Campo Novembro não informado.";
                 $this->erro_campo = "novembro";
                 $this->erro_banco = "";
@@ -513,10 +513,10 @@ class cl_acompanhamentocronogramadespesa
                 return false;
             }
         }
-        if (trim($this->dezembro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["dezembro"])) {
+        if (trim((string) $this->dezembro) !== "" || isset($GLOBALS["HTTP_POST_VARS"]["dezembro"])) {
             $sql .= $virgula . " dezembro = $this->dezembro ";
             $virgula = ",";
-            if (trim($this->dezembro) == null) {
+            if (trim((string) $this->dezembro) == null) {
                 $this->erro_sql = " Campo Dezembro não informado.";
                 $this->erro_campo = "dezembro";
                 $this->erro_banco = "";

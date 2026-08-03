@@ -61,7 +61,7 @@ abstract class ManutencaoPlanoOrcamentarioService
             if (!empty($excluir)) {
                 $this->removerVinculos($excluir);
             }
-        } catch (QueryException $e) {
+        } catch (QueryException) {
             throw new \Exception(
                 "Erro ao excluir contas selecionadas. Entre em contato com o suporte para análise."
             );
@@ -212,7 +212,7 @@ abstract class ManutencaoPlanoOrcamentarioService
      */
     private function getEstrutural($estrutural)
     {
-        if (substr($estrutural, 0, 1) == 3) {
+        if (substr((string) $estrutural, 0, 1) == 3) {
             return new Estrutural($estrutural);
         }
         return new EstruturalReceita($estrutural);

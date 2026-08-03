@@ -78,7 +78,7 @@ class RegraMovimentacaoEstoque implements IRegraLancamentoContabil {
     /**
      * Percorro todas as transacoes configuradas comparando as contas com a do material.
      */
-    $aRegrasEncontradas = array();
+    $aRegrasEncontradas = [];
     for ($i = 0; $i < $iRegistros; $i++) {
 
       $oDadosTransacao = db_utils::fieldsMemory($rsTransacao, $i);

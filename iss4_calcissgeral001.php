@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_cissqn_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcissqn = new cl_cissqn;
 
 if (!isset($veiculo)) {
@@ -68,7 +68,7 @@ if (isset($calc)&&$calc!="false"){
               </td>
             <td width="">
               <?php 
-          		  $x   = array("2"=>"Fixo","3"=>"Variavel");
+          		  $x   = ["2"=>"Fixo","3"=>"Variavel"];
           		  db_select("tipo",$x,true,1,"onchange='js_mostradata();'");
           		  db_input("calc",10,"",true,"hidden");
           		?>

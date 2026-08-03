@@ -137,7 +137,7 @@ if (!is_null($sElementos)) {
     $sWhereElemento = implode( ' or ', $whereElemento);
 }
 
-$aLinhasRelatorio = array();
+$aLinhasRelatorio = [];
 if ($iNumRows > 0) {
     foreach ($aLinhasAcoes as $oLinhaAcao) {
         $oLinhaAdicionar = $oLinhaAcao;
@@ -208,11 +208,11 @@ if ($iNumRows > 0) {
     /*
      * Faz o somatório de valores por ano de cada orgão e o total do relatório.
      */
-    $iRegistrosPorOrgao = array();
-    $iTotalDoRelatorio = array();
+    $iRegistrosPorOrgao = [];
+    $iTotalDoRelatorio = [];
     foreach ($aLinhasRelatorio as $oLinhaRelatorio) {
         if (!isset($aRegistrosOrgaos[$oLinhaRelatorio->o08_orgao])) {
-            $aRegistrosOrgaos[$oLinhaRelatorio->o08_orgao] = array('orgao' => $oLinhaRelatorio->o08_orgao);
+            $aRegistrosOrgaos[$oLinhaRelatorio->o08_orgao] = ['orgao' => $oLinhaRelatorio->o08_orgao];
         }
 
         if (!isset($iRegistrosPorOrgao[$oLinhaRelatorio->o08_orgao])) {
@@ -221,7 +221,7 @@ if ($iNumRows > 0) {
             $iRegistrosPorOrgao[$oLinhaRelatorio->o08_orgao] += 1;
         }
 
-        $iContador = array();
+        $iContador = [];
         foreach ($oLinhaRelatorio->elementos as $elem) {
             for ($iAno = $oPost->o01_anoinicio; $iAno <= $oPost->o01_anofinal; $iAno++) {
                 if (isset($iContador[$iAno])) {
@@ -329,25 +329,19 @@ if ($iNumRows > 0) {
 
             $sEstrutAcao = "{$sEstrutPrograma}.{$oLinhaRelatorio->o08_projativ}";
             $nTamanhoString = strlen($sEstrutAcao);
-            switch ($nTamanhoString) {
-                case $nTamanhoString == 20:
-                    $nTamanhoFonte = 6.7;
-                    break;
-                case $nTamanhoString >= 21:
-                    $nTamanhoFonte = 6.2;
-                    break;
-                default:
-                    $nTamanhoFonte = 7;
-                    break;
-            }
+            $nTamanhoFonte = match (true) {
+                $nTamanhoString == 20 => 6.7,
+                $nTamanhoString >= 21 => 6.2,
+                default => 7,
+            };
             $pdf->SetFont($sFonte, "b", $nTamanhoFonte);
             $pdf->cell(25, $iAlt, $sEstrutAcao, 0, 0, "L");
             $pdf->SetFont($sFonte, "b", 5);
             $pdf->cell(65, $iAlt, $oLinhaRelatorio->o55_descr, 0, 0, "L");
-            $nValorAno = array();
+            $nValorAno = [];
             $nTotal = 0;
             foreach ($oLinhaRelatorio->elementos as $oElemento) {
-                $nValoresColunas = array();
+                $nValoresColunas = [];
 
                 for ($iAno = $oPost->o01_anoinicio; $iAno <= $oPost->o01_anofinal; $iAno++) {
                     if (isset($oElemento->valor[$iAno])) {

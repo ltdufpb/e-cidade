@@ -66,7 +66,7 @@ switch($oParam->exec) {
 
   case 'itensConsulta' :
 
-    $oRetorno->dados = array();
+    $oRetorno->dados = [];
 
   	$oAcordo    = new Acordo($oParam->ac16_sequencial);
   	$aPosicao   = $oAcordo->getPosicoes();
@@ -84,7 +84,7 @@ switch($oParam->exec) {
           $oItem->tipo       = '';
 	  		} else {
 
-	  		  $oItem->aditamento = urlencode($oPosicao->getDescricaoTipo());
+	  		  $oItem->aditamento = urlencode((string) $oPosicao->getDescricaoTipo());
           $oItem->tipo       = $oPosicao->getTipo();
 	  		}
 
@@ -118,7 +118,7 @@ switch($oParam->exec) {
 
     $oAcordo               = new Acordo($oParam->ac16_sequencial);
     $aLicitacoesVinculadas = $oAcordo->getLicitacoes();
-    $oRetorno->dados       = array();
+    $oRetorno->dados       = [];
 
     foreach ($aLicitacoesVinculadas as $oLicitacao) {
 
@@ -130,7 +130,7 @@ switch($oParam->exec) {
       $oStdLicitacao->sLocalLicitacao      = $oStdDados->l20_local;
       $oStdLicitacao->dtCriacaoLicitacao   = $oStdDados->l20_datacria;
       $oStdLicitacao->iModalidadeLicitacao = $oStdDados->l20_codtipocom;
-      $oStdLicitacao->sModalidadeLicitacao = utf8_encode($oStdDados->l03_descr);
+      $oStdLicitacao->sModalidadeLicitacao = mb_convert_encoding($oStdDados->l03_descr, 'UTF-8', 'ISO-8859-1');
 
       $oRetorno->dados[] = $oStdLicitacao;
     }
@@ -144,7 +144,7 @@ switch($oParam->exec) {
 
     $oAcordo                       = new Acordo($oParam->ac16_sequencial);
     $aProcessosDeComprasVinculados = $oAcordo->getProcessosDeCompras();
-    $oRetorno->dados               = array();
+    $oRetorno->dados               = [];
 
     foreach ($aProcessosDeComprasVinculados as $oProcessoDeCompra) {
 
@@ -154,7 +154,7 @@ switch($oParam->exec) {
        * Coloquei (string) na frente pois com o substr pode retornar um booleano,
        * caso não venha conteudo.
        */
-      $oStdProcesso->sResumoProcesso        = (string)substr($oProcessoDeCompra->getResumo(), 0, 65);
+      $oStdProcesso->sResumoProcesso        = (string)substr((string) $oProcessoDeCompra->getResumo(), 0, 65);
       $oStdProcesso->dtEmissaoProcesso      = $oProcessoDeCompra->getDataEmissao();
       $oStdProcesso->iCodigoDepartamento    = $oProcessoDeCompra->getCodigoDepartamento();
       $oStdProcesso->sDescricaoDepartamento = $oProcessoDeCompra->getDescricaoDepartamento();
@@ -171,7 +171,7 @@ switch($oParam->exec) {
 
     $oAcordo             = new Acordo($oParam->ac16_sequencial);
     $aEmpenhosVinculados = $oAcordo->getEmpenhos();
-    $oRetorno->dados    = array();
+    $oRetorno->dados    = [];
 
     foreach ($aEmpenhosVinculados as $oEmpenhoFinanceiro) {
 
@@ -186,7 +186,7 @@ switch($oParam->exec) {
        * Coloquei (string) na frente pois com o substr pode retornar um booleano,
        * caso não venha conteudo.
        */
-      $oStdEmpenho->sResumoEmpenho          = (string)substr($oEmpenhoFinanceiro->getResumo(), 0, 65);
+      $oStdEmpenho->sResumoEmpenho          = (string)substr((string) $oEmpenhoFinanceiro->getResumo(), 0, 65);
 
       $oRetorno->dados[] = $oStdEmpenho;
     }
@@ -199,7 +199,7 @@ switch($oParam->exec) {
   case 'empenhamentosConsulta' :
   	$oAcordo         = new Acordo($oParam->ac16_sequencial);
   	$aEmpenhamentos  = $oAcordo->getAutorizacoes();
-    $oRetorno->dados = array();
+    $oRetorno->dados = [];
 
   	foreach ($aEmpenhamentos as $oEmpenhamento) {
   		$oAut = new stdClass();
@@ -221,7 +221,7 @@ switch($oParam->exec) {
 
   case 'aditamentosConsulta' :
 
-    $oRetorno->dados = array();
+    $oRetorno->dados = [];
 
     $oAcordo = new Acordo($oParam->ac16_sequencial);
     $aDados = $oAcordo->getPosicoes();
@@ -231,11 +231,11 @@ switch($oParam->exec) {
 
       $oItem = new stdClass();
 	    $oItem->codigo      = $oDado->getCodigo();
-	    $oItem->situacao    = urlencode($oDado->getDescricaoTipo());
+	    $oItem->situacao    = urlencode((string) $oDado->getDescricaoTipo());
 	    $oItem->data        = $oDado->getData();
 	    $oItem->emergencial = $oDado->isEmergencial();
 	    $oItem->vigencia    = urlencode($oDado->getVigenciaInicial()." até ".$oDado->getVigenciaFinal());
-	    $oItem->numeroAditamento = urlencode($oDado->getNumeroAditamento());
+	    $oItem->numeroAditamento = urlencode((string) $oDado->getNumeroAditamento());
       $oRetorno->dados[] = $oItem;
     }
 
@@ -246,7 +246,7 @@ switch($oParam->exec) {
 
   case 'rescisoesConsulta' :
 
-  	$oRetorno->dados = array();
+  	$oRetorno->dados = [];
 
     $oAcordo = new Acordo($oParam->ac16_sequencial);
     $aDados = $oAcordo->getRecisoes();
@@ -256,8 +256,8 @@ switch($oParam->exec) {
 
       $oRecisao->data      = $oDado->ac10_datamovimento;
       $oRecisao->hora      = $oDado->ac10_hora;
-      $oRecisao->usuario   = urlencode($oDado->login);
-      $oRecisao->motivo    = urlencode($oDado->ac10_obs);
+      $oRecisao->usuario   = urlencode((string) $oDado->login);
+      $oRecisao->motivo    = urlencode((string) $oDado->ac10_obs);
 
       $oRetorno->dados[] = $oRecisao;
     }
@@ -269,7 +269,7 @@ switch($oParam->exec) {
   case 'anulacoesConsulta' :
 
 
-    $oRetorno->dados = array();
+    $oRetorno->dados = [];
 
     $oAcordo = new Acordo($oParam->ac16_sequencial);
     $aDados = $oAcordo->getAnulacoes();
@@ -281,8 +281,8 @@ switch($oParam->exec) {
 
       $oAnulacao->data      = $oDado->ac10_datamovimento;
       $oAnulacao->hora      = $oDado->ac10_hora;
-      $oAnulacao->usuario   = urlencode($oDado->login);
-      $oAnulacao->motivo    = urlencode($oDado->ac10_obs);
+      $oAnulacao->usuario   = urlencode((string) $oDado->login);
+      $oAnulacao->motivo    = urlencode((string) $oDado->ac10_obs);
 
       $oRetorno->dados[] = $oAnulacao;
     }
@@ -295,7 +295,7 @@ switch($oParam->exec) {
 
   case 'aditamentosDetalhes' :
 
-    $oRetorno->dados = array();
+    $oRetorno->dados = [];
 
     $oAcordo    = new Acordo($oParam->ac16_sequencial);
     $aDados     = $oAcordo->getPosicoes();
@@ -339,8 +339,8 @@ switch($oParam->exec) {
   case 'paralisacoesConsulta':
 
     $oAcordo             = AcordoRepository::getByCodigo($oParam->ac16_sequencial);
-    $aParalisacoes       = array();
-    $oRetorno->dados     = array();
+    $aParalisacoes       = [];
+    $oRetorno->dados     = [];
     $oRetorno->detalhe   = $oParam->detalhe;
     $aParalisacoesAcordo = $oAcordo->getParalisacoes();
     foreach ($aParalisacoesAcordo as $oParalisacao) {
@@ -359,7 +359,7 @@ switch($oParam->exec) {
 
         $oUsuario                      = new UsuarioSistema($oUltimoMovimento->getUsuario());
         $oDadosParalisacao->usuario    = urlencode($oUsuario->getNome());
-        $oDadosParalisacao->observacao = urlencode($oUltimoMovimento->getObservacao());
+        $oDadosParalisacao->observacao = urlencode((string) $oUltimoMovimento->getObservacao());
       }
       $oRetorno->dados[] = $oDadosParalisacao;
     }

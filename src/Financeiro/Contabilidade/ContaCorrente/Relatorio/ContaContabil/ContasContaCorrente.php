@@ -54,7 +54,7 @@ class ContasContaCorrente
      * Atributos do conta corrente vinculado
      * @var array
      */
-    private $atributosUnicos = array();
+    private $atributosUnicos = [];
 
     /**
      * @var \PDFDocument
@@ -74,7 +74,7 @@ class ContasContaCorrente
      */
     private function carregarAtributosUnicos($where)
     {
-        $this->atributosUnicos = array();
+        $this->atributosUnicos = [];
         $campos = "distinct conplanoinfocomplementar.c121_sigla as sigla, conplanoinfocomplementar.c121_descricao as descricao";
         $daoSistema  = new \cl_conplanosistema();
         $buscarAtributos = $daoSistema->sql_query_vinculo_contas($campos, implode(' and ', $where), "order by 1");
@@ -105,10 +105,10 @@ class ContasContaCorrente
     private function getDados()
     {
 
-        $where = array(
+        $where = [
             'conplanosistema.c122_tipo = 2',
             "conplano.c60_anousu = {$this->ano}"
-        );
+        ];
 
         if (!empty($this->codigoContaCorrente)) {
             $where[] = "conplanosistema.c122_sequencial = {$this->codigoContaCorrente}";
@@ -121,14 +121,14 @@ class ContasContaCorrente
         $this->carregarAtributosUnicos($where);
 
         $orderBy = " group by c60_codcon, c60_estrut, c60_descr, c122_sequencial, c122_descricao order by conplanosistema.c122_sequencial, conplano.c60_estrut  ";
-        $campos = implode(',', array(
+        $campos = implode(',', [
             'conplano.c60_codcon as codigo_conta_contabil',
             'conplano.c60_estrut as estrutura',
             'conplano.c60_descr as descricao_conta_contabil',
             'conplanosistema.c122_sequencial as codigo_conta_corrente',
             'conplanosistema.c122_descricao as descricao_conta_corrente',
             'array_to_string(array_accum(conplanoinfocomplementar.c121_sigla), \' | \') as sigla_atributo',
-        ));
+        ]);
 
         $daoSistema  = new \cl_conplanosistema();
         $buscaContas = $daoSistema->sql_query_vinculo_contas($campos, $where, $orderBy);

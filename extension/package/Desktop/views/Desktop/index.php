@@ -173,7 +173,7 @@
     <script src="public/js/app.js"></script>
     <script src="public/extension/package/desktop/views/desktop/index.js"></script>
     <?php
-    $instituicaoLogada = is_null($this->instituicaoUsuario) ? 1 : $this->instituicaoUsuario;
+    $instituicaoLogada = $this->instituicaoUsuario ?? 1;
     ?>
     <script>
         const btnDocumentos = document.getElementById("documentos-atividades");

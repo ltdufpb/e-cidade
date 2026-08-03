@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE ouvidoriacadlocalender
 class cl_ouvidoriacadlocalender { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ov26_sequencial = 0; 
-   var $ov26_ruas = 0; 
-   var $ov26_ouvidoriacadlocal = 0; 
-   var $ov26_numero = 0; 
-   var $ov26_complemento = null; 
-   var $ov26_observacao = null; 
+   public $ov26_sequencial = 0; 
+   public $ov26_ruas = 0; 
+   public $ov26_ouvidoriacadlocal = 0; 
+   public $ov26_numero = 0; 
+   public $ov26_complemento = null; 
+   public $ov26_observacao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ov26_sequencial = int4 = Sequencial 
                  ov26_ruas = int4 = Endereço 
                  ov26_ouvidoriacadlocal = int4 = Local 
@@ -58,10 +58,10 @@ class cl_ouvidoriacadlocalender {
                  ov26_observacao = text = Observação 
                  ";
    //funcao construtor da classe 
-   function cl_ouvidoriacadlocalender() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ouvidoriacadlocalender"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -125,10 +125,10 @@ class cl_ouvidoriacadlocalender {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ov26_sequencial = pg_result($result,0,0); 
+       $this->ov26_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from ouvidoriacadlocalender_ov26_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ov26_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ov26_sequencial)){
          $this->erro_sql = " Campo ov26_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -166,7 +166,7 @@ class cl_ouvidoriacadlocalender {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Endereço do Local da Ouvidoria ($this->ov26_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Endereço do Local da Ouvidoria já Cadastrado";
@@ -190,15 +190,15 @@ class cl_ouvidoriacadlocalender {
      $resaco = $this->sql_record($this->sql_query_file($this->ov26_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14970,'$this->ov26_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2631,14970,'','".AddSlashes(pg_result($resaco,0,'ov26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2631,14971,'','".AddSlashes(pg_result($resaco,0,'ov26_ruas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2631,14972,'','".AddSlashes(pg_result($resaco,0,'ov26_ouvidoriacadlocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2631,14973,'','".AddSlashes(pg_result($resaco,0,'ov26_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2631,14974,'','".AddSlashes(pg_result($resaco,0,'ov26_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2631,18287,'','".AddSlashes(pg_result($resaco,0,'ov26_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2631,14970,'','".AddSlashes(pg_fetch_result($resaco,0,'ov26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2631,14971,'','".AddSlashes(pg_fetch_result($resaco,0,'ov26_ruas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2631,14972,'','".AddSlashes(pg_fetch_result($resaco,0,'ov26_ouvidoriacadlocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2631,14973,'','".AddSlashes(pg_fetch_result($resaco,0,'ov26_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2631,14974,'','".AddSlashes(pg_fetch_result($resaco,0,'ov26_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2631,18287,'','".AddSlashes(pg_fetch_result($resaco,0,'ov26_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -207,10 +207,10 @@ class cl_ouvidoriacadlocalender {
       $this->atualizacampos();
      $sql = " update ouvidoriacadlocalender set ";
      $virgula = "";
-     if(trim($this->ov26_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_sequencial"])){ 
+     if(trim((string) $this->ov26_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_sequencial"])){ 
        $sql  .= $virgula." ov26_sequencial = $this->ov26_sequencial ";
        $virgula = ",";
-       if(trim($this->ov26_sequencial) == null ){ 
+       if(trim((string) $this->ov26_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "ov26_sequencial";
          $this->erro_banco = "";
@@ -220,10 +220,10 @@ class cl_ouvidoriacadlocalender {
          return false;
        }
      }
-     if(trim($this->ov26_ruas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_ruas"])){ 
+     if(trim((string) $this->ov26_ruas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_ruas"])){ 
        $sql  .= $virgula." ov26_ruas = $this->ov26_ruas ";
        $virgula = ",";
-       if(trim($this->ov26_ruas) == null ){ 
+       if(trim((string) $this->ov26_ruas) == null ){ 
          $this->erro_sql = " Campo Endereço nao Informado.";
          $this->erro_campo = "ov26_ruas";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_ouvidoriacadlocalender {
          return false;
        }
      }
-     if(trim($this->ov26_ouvidoriacadlocal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_ouvidoriacadlocal"])){ 
+     if(trim((string) $this->ov26_ouvidoriacadlocal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_ouvidoriacadlocal"])){ 
        $sql  .= $virgula." ov26_ouvidoriacadlocal = $this->ov26_ouvidoriacadlocal ";
        $virgula = ",";
-       if(trim($this->ov26_ouvidoriacadlocal) == null ){ 
+       if(trim((string) $this->ov26_ouvidoriacadlocal) == null ){ 
          $this->erro_sql = " Campo Local nao Informado.";
          $this->erro_campo = "ov26_ouvidoriacadlocal";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_ouvidoriacadlocalender {
          return false;
        }
      }
-     if(trim($this->ov26_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_numero"])){ 
+     if(trim((string) $this->ov26_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_numero"])){ 
        $sql  .= $virgula." ov26_numero = $this->ov26_numero ";
        $virgula = ",";
-       if(trim($this->ov26_numero) == null ){ 
+       if(trim((string) $this->ov26_numero) == null ){ 
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "ov26_numero";
          $this->erro_banco = "";
@@ -259,11 +259,11 @@ class cl_ouvidoriacadlocalender {
          return false;
        }
      }
-     if(trim($this->ov26_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_complemento"])){ 
+     if(trim((string) $this->ov26_complemento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_complemento"])){ 
        $sql  .= $virgula." ov26_complemento = '$this->ov26_complemento' ";
        $virgula = ",";
      }
-     if(trim($this->ov26_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_observacao"])){ 
+     if(trim((string) $this->ov26_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov26_observacao"])){ 
        $sql  .= $virgula." ov26_observacao = '$this->ov26_observacao' ";
        $virgula = ",";
      }
@@ -275,21 +275,21 @@ class cl_ouvidoriacadlocalender {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14970,'$this->ov26_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov26_sequencial"]) || $this->ov26_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2631,14970,'".AddSlashes(pg_result($resaco,$conresaco,'ov26_sequencial'))."','$this->ov26_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2631,14970,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov26_sequencial'))."','$this->ov26_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov26_ruas"]) || $this->ov26_ruas != "")
-           $resac = db_query("insert into db_acount values($acount,2631,14971,'".AddSlashes(pg_result($resaco,$conresaco,'ov26_ruas'))."','$this->ov26_ruas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2631,14971,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov26_ruas'))."','$this->ov26_ruas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov26_ouvidoriacadlocal"]) || $this->ov26_ouvidoriacadlocal != "")
-           $resac = db_query("insert into db_acount values($acount,2631,14972,'".AddSlashes(pg_result($resaco,$conresaco,'ov26_ouvidoriacadlocal'))."','$this->ov26_ouvidoriacadlocal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2631,14972,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov26_ouvidoriacadlocal'))."','$this->ov26_ouvidoriacadlocal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov26_numero"]) || $this->ov26_numero != "")
-           $resac = db_query("insert into db_acount values($acount,2631,14973,'".AddSlashes(pg_result($resaco,$conresaco,'ov26_numero'))."','$this->ov26_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2631,14973,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov26_numero'))."','$this->ov26_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov26_complemento"]) || $this->ov26_complemento != "")
-           $resac = db_query("insert into db_acount values($acount,2631,14974,'".AddSlashes(pg_result($resaco,$conresaco,'ov26_complemento'))."','$this->ov26_complemento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2631,14974,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov26_complemento'))."','$this->ov26_complemento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov26_observacao"]) || $this->ov26_observacao != "")
-           $resac = db_query("insert into db_acount values($acount,2631,18287,'".AddSlashes(pg_result($resaco,$conresaco,'ov26_observacao'))."','$this->ov26_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2631,18287,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov26_observacao'))."','$this->ov26_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -334,15 +334,15 @@ class cl_ouvidoriacadlocalender {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14970,'$ov26_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2631,14970,'','".AddSlashes(pg_result($resaco,$iresaco,'ov26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2631,14971,'','".AddSlashes(pg_result($resaco,$iresaco,'ov26_ruas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2631,14972,'','".AddSlashes(pg_result($resaco,$iresaco,'ov26_ouvidoriacadlocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2631,14973,'','".AddSlashes(pg_result($resaco,$iresaco,'ov26_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2631,14974,'','".AddSlashes(pg_result($resaco,$iresaco,'ov26_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2631,18287,'','".AddSlashes(pg_result($resaco,$iresaco,'ov26_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2631,14970,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov26_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2631,14971,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov26_ruas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2631,14972,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov26_ouvidoriacadlocal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2631,14973,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov26_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2631,14974,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov26_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2631,18287,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov26_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from ouvidoriacadlocalender
@@ -402,7 +402,7 @@ class cl_ouvidoriacadlocalender {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:ouvidoriacadlocalender";
@@ -417,7 +417,7 @@ class cl_ouvidoriacadlocalender {
    function sql_query ( $ov26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -440,7 +440,7 @@ class cl_ouvidoriacadlocalender {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,7 +453,7 @@ class cl_ouvidoriacadlocalender {
    function sql_query_file ( $ov26_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -474,7 +474,7 @@ class cl_ouvidoriacadlocalender {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

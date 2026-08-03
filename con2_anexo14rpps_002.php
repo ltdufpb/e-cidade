@@ -36,7 +36,7 @@ include(modification("classes/db_orcparamrelnota_classe.php"));
 include(modification("classes/db_empresto_classe.php"));
 include(modification("classes/db_empempenho_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 $classinatura = new cl_assinatura;
@@ -86,15 +86,15 @@ if ($clorcparamrelnota->numrows > 0 ){
     db_fieldsmemory($res,0);
 }
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
 
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
          $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     } else {
@@ -241,10 +241,10 @@ if ($debuga=="true"){
 */
 
 //--------- // ------------- // ------------- // ---------------
-for($i=0;$i< pg_numrows($result);$i++) {
+for($i=0;$i< pg_num_rows($result);$i++) {
    db_fieldsmemory($result,$i);
    
-   $v_elementos = array($estrutural,$c61_instit);
+   $v_elementos = [$estrutural,$c61_instit];
 
    $flag_contar = false;
    if ($c61_instit != 0){
@@ -1164,12 +1164,12 @@ $pdf->cell(25,$alt,db_formatar($somador_passivo_geral,'f'),0,1,"R",0);
 $pdf->ln(2);
 
 $periodo = db_retorna_periodo($mes,"B");
-notasExplicativas(&$pdf,3,"{$periodo}",190);
+notasExplicativas($pdf,3,"{$periodo}",190);
 
 $pdf->ln(15);
 
 // assinaturas
-assinaturas(&$pdf,&$classinatura,'BG');
+assinaturas($pdf,$classinatura,'BG');
 
 function anexo14_retorna_saldo($saldo, $sinal, $grupo) {
   if ($grupo == "A" and $sinal == "C") {

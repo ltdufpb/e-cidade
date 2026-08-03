@@ -31,11 +31,8 @@ class brec_ant
 {
     public $arq = null;
 
-    private $header;
-
-    public function __construct($header)
+    public function __construct(private $header)
     {
-        $this->header = $header;
     }
 
     /**
@@ -60,7 +57,7 @@ class brec_ant
             return true;
         } else {
             $this->arq = fopen("tmp/BREC_ANT.TXT", 'w+');
-            fputs($this->arq, $this->header);
+            fputs($this->arq, (string) $this->header);
             fputs($this->arq, "\n");
 
             global $contador, $instituicoes, $o15_complemento;
@@ -98,7 +95,7 @@ class brec_ant
                 fputs($this->arq, str_replace("\n\r", "", $sArquivo));
                 fputs($this->arq, "\r\n");
 
-                $contador = count(explode("\n", $sArquivo));
+                $contador = count(explode("\n", (string) $sArquivo));
 
             } else {
 
@@ -131,42 +128,42 @@ class brec_ant
                 // db_criatabela($result);exit;
 
                 $tottotal = 0;
-                for ($i = 1; $i < pg_numrows($result); $i++) {
-                    $elemento_original = pg_result($result, $i, "o57_fonte");
-                    $elemento = pg_result($result, $i, "o57_fonte");
-                    $descr = pg_result($result, $i, "o57_descr");
-                    $saldo_inicial = pg_result($result, $i, "saldo_inicial");
-                    $saldo_arrecadado_acumulado = pg_result($result, $i, "saldo_arrecadado_acumulado");
-                    $o70_codigo = pg_result($result, $i, "o70_codigo");
-                    $descr = pg_result($result, $i, "o57_descr");
+                for ($i = 1; $i < pg_num_rows($result); $i++) {
+                    $elemento_original = pg_fetch_result($result, $i, "o57_fonte");
+                    $elemento = pg_fetch_result($result, $i, "o57_fonte");
+                    $descr = pg_fetch_result($result, $i, "o57_descr");
+                    $saldo_inicial = pg_fetch_result($result, $i, "saldo_inicial");
+                    $saldo_arrecadado_acumulado = pg_fetch_result($result, $i, "saldo_arrecadado_acumulado");
+                    $o70_codigo = pg_fetch_result($result, $i, "o70_codigo");
+                    $descr = pg_fetch_result($result, $i, "o57_descr");
                     if ($descr == "") {
                         $descr = "Descrição nao localizada - Migração";
                     }
 
-                    $o70_codrec = pg_result($result, $i, "o70_codrec");
+                    $o70_codrec = pg_fetch_result($result, $i, "o70_codrec");
 
 
-                    $o70_instit = pg_result($result, $i, "o70_instit");
-                    $nivel = pg_result($result, $i, "nivel");
+                    $o70_instit = pg_fetch_result($result, $i, "o70_instit");
+                    $nivel = pg_fetch_result($result, $i, "nivel");
 
                     $contador++;
-                    $line = formatar($elemento, 20, 'n');
+                    $line = formatar($elemento, 20);
 
                     $orgaotrib = $instituicoes[$o70_instit];
 
-                    $line .= formatar($orgaotrib, 4, 'n');
+                    $line .= formatar($orgaotrib, 4);
 
                     // $line .= $orgaotrib;
                     //---------------------------------------------------
                     if ($saldo_inicial < 0) {
-                        $line .= "-" . formatar(abs($saldo_inicial), 12, 'v');
+                        $line .= "-" . formatar(abs($saldo_inicial), 12);
                     } else
-                        $line .= formatar(abs($saldo_inicial), 13, 'v');
+                        $line .= formatar(abs($saldo_inicial), 13);
                     //---------------------------------------------------
                     if ($saldo_arrecadado_acumulado < 0) {
-                        $line .= "-" . formatar(abs($saldo_arrecadado_acumulado), 12, 'v');
+                        $line .= "-" . formatar(abs($saldo_arrecadado_acumulado), 12);
                     } else
-                        $line .= "+" . formatar(abs($saldo_arrecadado_acumulado), 12, 'v');
+                        $line .= "+" . formatar(abs($saldo_arrecadado_acumulado), 12);
                     //---------------------------------------------------
 
                     $recurso = "0000";
@@ -181,15 +178,15 @@ class brec_ant
 		                where o70_anousu = $anousu and
 		                o70_codrec = $o70_codrec";
                         $res_orcreceita = @db_query($sql_orcreceita);
-                        if (@pg_numrows($res_orcreceita) != 0) {
-                            $recurso = formatar(pg_result($res_orcreceita, 0, "o15_loaespecificacao"), 4, "n");
-                            $concarpeculiar = formatar(pg_result($res_orcreceita, 0, "o70_concarpeculiar"), 3, "n");
-                            $complento = formatar(pg_result($res_orcreceita, 0, "o15_complemento"), 4, "n");
+                        if (@pg_num_rows($res_orcreceita) != 0) {
+                            $recurso = formatar(pg_fetch_result($res_orcreceita, 0, "o15_loaespecificacao"), 4);
+                            $concarpeculiar = formatar(pg_fetch_result($res_orcreceita, 0, "o70_concarpeculiar"), 3);
+                            $complento = formatar(pg_fetch_result($res_orcreceita, 0, "o15_complemento"), 4);
                         } else {
                             $concarpeculiar = "000";
                         }
 
-                        if (substr($elemento_original, 0, 1) == "9") {
+                        if (str_starts_with($elemento_original, "9")) {
                         } else {
                             $nivel = $nivel - 1;
                         }
@@ -198,12 +195,12 @@ class brec_ant
                         $nivel = $nivel - 1;
                     }
 
-                    $line .= formatar($recurso, 4, 'n');
-                    $line .= formatar($descr, 170, 'c');
+                    $line .= formatar($recurso, 4);
+                    $line .= formatar($descr, 170);
                     $line .= ($o70_codrec == 0 ? 'S' : 'A');
 
 
-                    $line .= formatar($nivel, 2, 'n');
+                    $line .= formatar($nivel, 2);
 
 
                     if ($anousu > 2007) {
@@ -219,7 +216,7 @@ class brec_ant
                 }
             }
             //  trailer
-            $contador = espaco(10 - (strlen($contador)), '0') . $contador;
+            $contador = espaco(10 - (strlen($contador))) . $contador;
             $line = "FINALIZADOR" . $contador;
             fputs($this->arq, $line);
             fputs($this->arq, "\r\n");

@@ -34,7 +34,7 @@ require_once (modification("classes/db_aguahidromatricleitura_classe.php"));
 require_once (modification("classes/db_agualeitura_classe.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $claguahidromatric = new cl_aguahidromatric;
 $claguahidromatricleitura = new cl_aguahidromatricleitura;
@@ -56,7 +56,7 @@ if (isset($incluir)) {
     $sqlativo = "select fc_agua_hidrometroinstalado($x04_matric) as ativo";
     $resultativo = db_query($sqlativo);
 
-    if (pg_numrows($resultativo) > 0) {
+    if (pg_num_rows($resultativo) > 0) {
 
       db_fieldsmemory($resultativo, 0);
 

@@ -38,8 +38,8 @@ require_once(modification("classes/db_processoforoinicial_classe.php"));
 
 $get = (object)filter_input_array(INPUT_GET);
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost  = db_utils::postMemory($_POST);
 $oGet   = db_utils::postMemory($_GET);
@@ -184,9 +184,9 @@ function js_retornaInicial(iCodigoInicial) {
           </td>
           <td> 
              <?php 
-               $aSituacao = array('T'  => 'Todos',
+               $aSituacao = ['T'  => 'Todos',
                                   'AT' => 'Ativo',
-                                  'AN' => 'Anulado');
+                                  'AN' => 'Anulado'];
                db_select('v70_anulado', $aSituacao, true, 1);
              ?>
           </td>
@@ -323,9 +323,9 @@ function js_retornaInicial(iCodigoInicial) {
                 $sql    = $clprocessoforo->sql_query_cgm_nome(null, " distinct $campos", "processoforo.v70_sequencial", $sWhere,true);
               }
       
-              $repassa = array();
+              $repassa = [];
               if (isset($chave_v70_sequencial)) {
-                $repassa = array("chave_v70_sequencial" => $chave_v70_sequencial);
+                $repassa = ["chave_v70_sequencial" => $chave_v70_sequencial];
               }
               db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
             } else {

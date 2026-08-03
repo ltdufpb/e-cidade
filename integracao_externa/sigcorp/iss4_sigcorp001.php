@@ -43,11 +43,11 @@ if ( $iParamLog == 1 ) {
 
 
 // Declarando variáveis necessárias para que a inclusão das bibliotecas não retorne mensagens
-$HTTP_SERVER_VARS['HTTP_HOST']      = '';
-$HTTP_SERVER_VARS['PHP_SELF']       = '';
-$HTTP_SERVER_VARS["HTTP_REFERER"]   = '';
-$HTTP_POST_VARS                     = array();
-$HTTP_GET_VARS                      = array();
+$_SERVER['HTTP_HOST']      = '';
+$_SERVER['PHP_SELF']       = '';
+$_SERVER["HTTP_REFERER"]   = '';
+$_POST                     = [];
+$_GET                      = [];
 
 define('DB_BIBLIOT','');
 
@@ -131,7 +131,7 @@ try {
 		$sSqlConsultaInstit = "select fc_getsession('DB_instit') as instit ";
 		$rsConsultaInstit   = db_query($connOrigem,$sSqlConsultaInstit);
 
-	  db_putsession('DB_instit',db_utils::fieldsMemory($rsConsultaInstit,0)->instit);
+	  db_putsession('DB_instit',(new db_utils())->fieldsMemory($rsConsultaInstit, 0)->instit);
 	}
 
 	db_putsession('DB_acessado'  ,'1');
@@ -164,7 +164,7 @@ try {
     throw new Exception("Convênio não configurado!");
   }
 
-  $oBancoAgencia     = db_utils::fieldsMemory($rsBancoAgencia,0);
+  $oBancoAgencia     = (new db_utils())->fieldsMemory($rsBancoAgencia, 0);
 
 	/**
 	 *  A integração dos dados é feita por COPY deixando o script muito mais rápido do que quando
@@ -211,7 +211,7 @@ try {
 
   if ( pg_num_rows($rsConfig) > 0 ) {
 
-    $oConfig  = db_utils::fieldsMemory($rsConfig,0);
+    $oConfig  = (new db_utils())->fieldsMemory($rsConfig, 0);
     $iCodIBGE = $oConfig->db10_codibge;
     $sMunic   = $oConfig->munic;
   } else {
@@ -250,7 +250,7 @@ try {
 
   	for ( $iInd=0; $iInd < $iLinhasIntegraCadastro; $iInd++ ) {
 
-      $oIntegraCadastro = db_utils::fieldsMemory($rsIntegraCadastro,$iInd);
+      $oIntegraCadastro = (new db_utils())->fieldsMemory($rsIntegraCadastro, $iInd);
 
       logProcessamento($iInd,$iLinhasIntegraCadastro,$iParamLog);
 
@@ -294,7 +294,7 @@ try {
       /**
        * Caso encontre alfa no campo numero, move para complemento e zera o numero
        */
-      $sNumero           = trim($oIntegraCadastro->numero);
+      $sNumero           = trim((string) $oIntegraCadastro->numero);
       $sComplemento      = $oIntegraCadastro->complemento;
       $lOutrosCaracteres = preg_match("/[^\d]/", $sNumero);
 
@@ -320,19 +320,19 @@ try {
                                            z01_incest
                                          ) values (
                                            nextval('cgm_z01_numcgm_seq'),
-																					 ".dbValida(substr($oIntegraCadastro->nome              ,0,40),'string').",
+																					 ".dbValida(substr((string) $oIntegraCadastro->nome              ,0,40),'string').",
 																			     ".dbValida($oIntegraCadastro->cpf_cnpj                       ,'string').",
-																					 ".dbValida(substr($oIntegraCadastro->cidade            ,0,40),'string').",
+																					 ".dbValida(substr((string) $oIntegraCadastro->cidade            ,0,40),'string').",
 																					 ".dbValida($oIntegraCadastro->logradouro                     ,'string').",
                                            ".dbValida(pg_escape_string($sNumero                        ),'int'   ).",
-                                           ".dbValida(pg_escape_string(substr($sComplemento      ,0,20)),'string').",
-																					 ".dbValida(substr($oIntegraCadastro->bairro            ,0,40),'string').",
+                                           ".dbValida(pg_escape_string(substr((string) $sComplemento      ,0,20)),'string').",
+																					 ".dbValida(substr((string) $oIntegraCadastro->bairro            ,0,40),'string').",
 																					 ".dbValida($oIntegraCadastro->estado                         ,'string').",
 																					 ".dbValida($oIntegraCadastro->cep                            ,'string').",
-																					 ".dbValida(substr($oIntegraCadastro->telefone          ,0,12),'string').",
+																					 ".dbValida(substr((string) $oIntegraCadastro->telefone          ,0,12),'string').",
 																					 ".dbValida($oIntegraCadastro->fax                            ,'string').",
 																					 ".dbValida($oIntegraCadastro->email                          ,'string').",
-																					 ".dbValida(substr($oIntegraCadastro->inscricao_estadual,0,15),'string')."
+																					 ".dbValida(substr((string) $oIntegraCadastro->inscricao_estadual,0,15),'string')."
 																				);";
 
       $rsInsereCgm = db_query($connOrigem,$sSqlInsereCgm);
@@ -375,7 +375,7 @@ try {
 
 		for ( $iInd=0; $iInd < $iLinhasReceitaPrefeitura; $iInd++ ) {
 
-			$oReceitaPrefeitura = db_utils::fieldsMemory($rsReceitaPrefeitura,$iInd);
+			$oReceitaPrefeitura = (new db_utils())->fieldsMemory($rsReceitaPrefeitura, $iInd);
 
 		  /**
 		   *  Verifica se o registro já existe na base de destino apartir do
@@ -396,7 +396,7 @@ try {
 		   */
 		  if ( pg_num_rows($rsReceitaDestino) > 0 ) {
 
-		    $oReceitaDestino = db_utils::fieldsMemory($rsReceitaDestino,0);
+		    $oReceitaDestino = (new db_utils())->fieldsMemory($rsReceitaDestino, 0);
 
 		    if ( !hasDiffObject($oReceitaPrefeitura,$oReceitaDestino) ) {
 		      continue;
@@ -453,7 +453,7 @@ try {
   $rsParIssqn    = db_query($connOrigem,$sSqlParIssqn);
 
   if ( pg_num_rows($rsParIssqn) > 0 ) {
-    $oParIssqn = db_utils::fieldsMemory($rsParIssqn,0);
+    $oParIssqn = (new db_utils())->fieldsMemory($rsParIssqn, 0);
   } else {
     throw new Exception('Parâmetros do ISS não configurado!');
   }
@@ -464,7 +464,7 @@ try {
   $rsNumConvenio    = db_query($connOrigem,$sSqlNumConvenio);
 
   if ( pg_num_rows($rsNumConvenio) > 0 ) {
-    $sNumConvenio = db_utils::fieldsMemory($rsNumConvenio,0)->ar16_convenio;
+    $sNumConvenio = (new db_utils())->fieldsMemory($rsNumConvenio, 0)->ar16_convenio;
   } else {
     throw new Exception('Parâmetros do convênio arrecadação não configurados!');
   }
@@ -490,7 +490,7 @@ try {
 
   if ( pg_num_rows($rsIntegraCadConfig) > 0 ) {
 
-    $oCadConfigDestino = db_utils::fieldsMemory($rsIntegraCadConfig,0);
+    $oCadConfigDestino = (new db_utils())->fieldsMemory($rsIntegraCadConfig, 0);
 
     if ( !hasDiffObject($oCadConfig,$oCadConfigDestino) ) {
       $lInsereConfig = false;
@@ -544,7 +544,7 @@ try {
 
 	$rsInflatorPrefeitura      = db_query($connOrigem,$sSqlInflatorPrefeitura);
 	$iLinhasInflatorPrefeitura = pg_num_rows($rsInflatorPrefeitura);
-	$aListaInflator 		       = array();
+	$aListaInflator 		       = [];
 
 	if ( $iLinhasInflatorPrefeitura > 0 ) {
 
@@ -553,7 +553,7 @@ try {
 
 		for ( $iInd=0; $iInd < $iLinhasInflatorPrefeitura; $iInd++ ) {
 
-			$oInflatorPrefeitura = db_utils::fieldsMemory($rsInflatorPrefeitura,$iInd);
+			$oInflatorPrefeitura = (new db_utils())->fieldsMemory($rsInflatorPrefeitura, $iInd);
 
 		  /**
 		   *  Verifica se já existe o registro na base de destino apartir do
@@ -574,7 +574,7 @@ try {
 		   */
 		  if ( pg_num_rows($rsInflatorDestino) > 0 ) {
 
-		    $oInflatorDestino = db_utils::fieldsMemory($rsInflatorDestino,0);
+		    $oInflatorDestino = (new db_utils())->fieldsMemory($rsInflatorDestino, 0);
 
 		    if ( !hasDiffObject($oInflatorPrefeitura,$oInflatorDestino) ) {
 		      continue;
@@ -634,7 +634,7 @@ try {
 
 	    for ( $iInd=0; $iInd < $iLinhasInflatorDetalhePrefeitura; $iInd++ ) {
 
-	    	$oInflatorDetalhePrefeitura = db_utils::fieldsMemory($rsInflatorDetalhePrefeitura,$iInd);
+	    	$oInflatorDetalhePrefeitura = (new db_utils())->fieldsMemory($rsInflatorDetalhePrefeitura, $iInd);
 
 		    $sSqlInflatorDetalheDestino  = " select * 									 			                               ";
 		    $sSqlInflatorDetalheDestino .= "   from integra_cad_inflat_detalhe	  			  			             ";
@@ -650,7 +650,7 @@ try {
 		     */
 		    if ( pg_num_rows($rsInflatorDetalheDestino) > 0 ) {
 
-		      $oInflatorDetalheDestino = db_utils::fieldsMemory($rsInflatorDetalheDestino,0);
+		      $oInflatorDetalheDestino = (new db_utils())->fieldsMemory($rsInflatorDetalheDestino, 0);
 
 		      if ( !hasDiffObject($oInflatorDetalhePrefeitura,$oInflatorDetalheDestino) ) {
 		        continue;
@@ -727,12 +727,12 @@ try {
 
 		  $rsJMPrefeitura      = db_query($connOrigem,$sSqlJMPrefeitura);
 	    $iLinhasJMPrefeitura = pg_num_rows($rsJMPrefeitura);
-		  $aListaJM 	         = array();
+		  $aListaJM 	         = [];
 
 
 		  for ( $iInd=0; $iInd < $iLinhasJMPrefeitura; $iInd++ ) {
 
-		  	$oJMPrefeitura = db_utils::fieldsMemory($rsJMPrefeitura,$iInd);
+		  	$oJMPrefeitura = (new db_utils())->fieldsMemory($rsJMPrefeitura, $iInd);
 
 		    /**
 		     *  Verifica se já existe o registro na base de destino apartir do
@@ -751,7 +751,7 @@ try {
 		     */
 		    if ( pg_num_rows($rsJMDestino) > 0 ) {
 
-		      $oJMDestino = db_utils::fieldsMemory($rsJMDestino,0);
+		      $oJMDestino = (new db_utils())->fieldsMemory($rsJMDestino, 0);
 
 		      if ( !hasDiffObject($oJMPrefeitura,$oJMDestino) ) {
 		        continue;
@@ -813,7 +813,7 @@ try {
 
 				for ( $iInd=0; $iInd < $iLinhasRecJMPrefeitura; $iInd++ ) {
 
-				  $oRecJMPrefeitura = db_utils::fieldsMemory($rsRecJMPrefeitura,$iInd);
+				  $oRecJMPrefeitura = (new db_utils())->fieldsMemory($rsRecJMPrefeitura, $iInd);
 
 			   /**
 			    *  Consulta o código da receita na base de destino apartir do código
@@ -827,7 +827,7 @@ try {
 				  $rsRecDestino 	 = db_query($connDestino,$sSqlRecDestino);
 
 				  if ( pg_num_rows($rsRecDestino) > 0 )  {
-					  $iCodReceitaDestino = db_utils::fieldsMemory($rsRecDestino,0)->sequencial;
+					  $iCodReceitaDestino = (new db_utils())->fieldsMemory($rsRecDestino, 0)->sequencial;
 				  } else {
 				  	continue;
 				  }
@@ -846,7 +846,7 @@ try {
 				   */
 				  if ( pg_num_rows($rsRecJMDestino) > 0 ) {
 
-				    $oRecJMDestino = db_utils::fieldsMemory($rsRecJMDestino,0);
+				    $oRecJMDestino = (new db_utils())->fieldsMemory($rsRecJMDestino, 0);
 
 				    if ( !hasDiffObject($oRecJMPrefeitura,$oRecJMDestino) ) {
 				      continue;
@@ -901,7 +901,7 @@ try {
 	 */
 	db_logTitulo(" PROCESSA ATIVIDADES ",$sArquivoLog,$iParamLog);
 
-	$aListaAlteracaoAtiv = array();
+	$aListaAlteracaoAtiv = [];
 
 	$sSqlAtivPrefeitura  = "   select distinct					 				   	   									   		                                  ";
 	$sSqlAtivPrefeitura .= "          q07_ativ        			  as atividade,  	   									   		                        ";
@@ -956,7 +956,7 @@ try {
 		   */
 		  if ( pg_num_rows($rsAtivDestino) > 0 ) {
 
-		    $oAtivDestino = db_utils::fieldsMemory($rsAtivDestino,0);
+		    $oAtivDestino = (new db_utils())->fieldsMemory($rsAtivDestino, 0);
 
 
 		    if ( hasDiffObject($oAtivPrefeitura,$oAtivDestino) ) {
@@ -1040,7 +1040,7 @@ try {
 
 	db_logTitulo(" PROCESSA SOCIOS ",$sArquivoLog,$iParamLog);
 
-	$aListaAlteracaoSocio = array();
+	$aListaAlteracaoSocio = [];
 
 	$sSqlSocioPrefeitura  = " select distinct on (socios.q95_numcgm)           ";
 	$sSqlSocioPrefeitura .= "        q95_numcgm as codigo_socio, 	             ";
@@ -1085,7 +1085,7 @@ try {
 
 		for ( $iInd=0; $iInd < $iLinhasSocioPrefeitura; $iInd++ ) {
 
-			$oSocioPrefeitura = db_utils::fieldsMemory($rsSocioPrefeitura,$iInd);
+			$oSocioPrefeitura = (new db_utils())->fieldsMemory($rsSocioPrefeitura, $iInd);
 
 		  $lAteracao = false;
 
@@ -1103,7 +1103,7 @@ try {
 		   */
 		  $sSqlSocioDestino  = " select * 						         	                             ";
 		  $sSqlSocioDestino .= "   from integra_cad_socio		                               	 ";
-		  $sSqlSocioDestino .= "  where codigo_socio = ".trim($oSocioPrefeitura->codigo_socio);
+		  $sSqlSocioDestino .= "  where codigo_socio = ".trim((string) $oSocioPrefeitura->codigo_socio);
 		  $sSqlSocioDestino .= "  order by sequencial desc limit 1	                         ";
 
 		  $rsSocioDestino    = db_query($connDestino,$sSqlSocioDestino);
@@ -1116,7 +1116,7 @@ try {
 		   */
 		  if ( pg_num_rows($rsSocioDestino) > 0 ) {
 
-		    $oSocioDestino = db_utils::fieldsMemory($rsSocioDestino,0);
+		    $oSocioDestino = (new db_utils())->fieldsMemory($rsSocioDestino, 0);
 
 		    if ( hasDiffObject($oSocioPrefeitura,$oSocioDestino) ) {
 		      $lAteracao = true;
@@ -1196,7 +1196,7 @@ try {
 
 	db_logTitulo(" PROCESSA GRAFICAS ",$sArquivoLog,$iParamLog);
 
-	$aListaAlteracaoGrafica = array();
+	$aListaAlteracaoGrafica = [];
 
 	$sSqlGraficaPrefeitura  = " select issbase.q02_inscr  as inscricao,                                       ";
 	$sSqlGraficaPrefeitura .= "  	     cgm.z01_numcgm     as codigo_grafica,                                  ";
@@ -1276,7 +1276,7 @@ try {
 		   */
 		  if ( pg_num_rows($rsGraficaDestino) > 0 ) {
 
-		    $oGraficaDestino = db_utils::fieldsMemory($rsGraficaDestino,0);
+		    $oGraficaDestino = (new db_utils())->fieldsMemory($rsGraficaDestino, 0);
 
 		    if ( hasDiffObject($oGraficaPrefeitura,$oGraficaDestino) ) {
 		    } else {
@@ -1355,7 +1355,7 @@ try {
 
 	db_logTitulo(" PROCESSA ESCRITORIOS ",$sArquivoLog,$iParamLog);
 
-	$aListaAlteracaoEscritorio = array();
+	$aListaAlteracaoEscritorio = [];
 
 	$sSqlEscritorioPrefeitura  = "select issbase.q02_inscr  as inscricao,                                         ";
 	$sSqlEscritorioPrefeitura .= "       cgm.z01_numcgm     as codigo_escritorio,                                 ";
@@ -1433,9 +1433,9 @@ try {
 		   */
 		  $sSqlEscritorioDestino  = " select * 										  ";
 		  $sSqlEscritorioDestino .= "   from integra_cad_escritorio	";
-		  $sSqlEscritorioDestino .= "  where codigo_escritorio = ".trim($oEscritorioPrefeitura->codigo_escritorio);
+		  $sSqlEscritorioDestino .= "  where codigo_escritorio = ".trim((string) $oEscritorioPrefeitura->codigo_escritorio);
 
-		  if ( trim($oEscritorioPrefeitura->inscricao) != ''  ){
+		  if ( trim((string) $oEscritorioPrefeitura->inscricao) != ''  ){
 		    $sSqlEscritorioDestino .= "    and inscricao = {$oEscritorioPrefeitura->inscricao}";
 		  } else {
 		  	$sSqlEscritorioDestino .= "    and inscricao is null ";
@@ -1452,7 +1452,7 @@ try {
 		   */
 		  if ( pg_num_rows($rsEscritorioDestino) > 0 ) {
 
-		    $oEscritorioDestino = db_utils::fieldsMemory($rsEscritorioDestino,0);
+		    $oEscritorioDestino = (new db_utils())->fieldsMemory($rsEscritorioDestino, 0);
 
 		    if ( hasDiffObject($oEscritorioPrefeitura,$oEscritorioDestino) ) {
 		      $lAteracao = true;
@@ -1621,7 +1621,7 @@ try {
 
   $rsDadosEmpresa 	   = db_query($connOrigem,$sSqlDadosEmpresa) or die("Erro:{$sSqlDadosEmpresa}");
 	$iLinhasDadosEmpresa = pg_num_rows($rsDadosEmpresa);
-	$aListaEmpresa       = array();
+	$aListaEmpresa       = [];
 
 	if ( $iLinhasDadosEmpresa > 0 ) {
 
@@ -1630,7 +1630,7 @@ try {
 
 	  for ( $iInd=0; $iInd < $iLinhasDadosEmpresa; $iInd++ ) {
 
-	  	$oDadosEmpresa = db_utils::fieldsMemory($rsDadosEmpresa,$iInd);
+	  	$oDadosEmpresa = (new db_utils())->fieldsMemory($rsDadosEmpresa, $iInd);
  	  	$lAteracao     = false;
 			/**
 			 *  Regime da Empresa
@@ -1659,7 +1659,7 @@ try {
 
 			if ( pg_num_rows($rsRegimeEmpresa) > 0) {
 
-			  $oRegimeEmpresa = db_utils::fieldsMemory($rsRegimeEmpresa, 0);
+			  $oRegimeEmpresa = (new db_utils())->fieldsMemory($rsRegimeEmpresa, 0);
 
 			  if ( $oRegimeEmpresa->q01_cadcal == 2 ) {
 
@@ -1687,7 +1687,7 @@ try {
 			$sSqlTipcalc .= "         and (  q07_datafi is null or q07_datafi >= '{$dtDataHoje}' ) ";
 			$sSqlTipcalc .= "       ) and tabativ.q07_inscr = {$oDadosEmpresa->inscricao} ";
 			$rsTipcalc   = db_query($connOrigem, $sSqlTipcalc) or die($sSqlTipcalc);
-			$oTipCalc    = db_utils::fieldsMemory($rsTipcalc, 0);
+			$oTipCalc    = (new db_utils())->fieldsMemory($rsTipcalc, 0);
 
 			if ( $oTipCalc->quant > 0) {
 			  $sRegimeEmpresa = 'A';
@@ -1740,7 +1740,7 @@ try {
 	     */
 	    if ( pg_num_rows($rsEmpresaDestino) > 0 ) {
 
-			  $oEmpresaDestino = db_utils::fieldsMemory($rsEmpresaDestino,0);
+			  $oEmpresaDestino = (new db_utils())->fieldsMemory($rsEmpresaDestino, 0);
 
 			  if ( hasDiffObject($oDadosEmpresa,$oEmpresaDestino) ) {
           $lAteracao = true;
@@ -1753,8 +1753,8 @@ try {
 		   */
 		  if (!$lAteracao) {
 
-		  	$aListaAtivNew             = array();
-		  	$aListaAtivOld             = array();
+		  	$aListaAtivNew             = [];
+		  	$aListaAtivOld             = [];
 
 		  	$sSqlValidaAtividadeNew    = "select q07_ativ
 		  	                                from tabativ
@@ -1765,7 +1765,7 @@ try {
 
 		  	if ($iLinhasValidaAtividadeNew > 0) {
 		  		for ($iIndValAtiv=0; $iIndValAtiv < $iLinhasValidaAtividadeNew; $iIndValAtiv++) {
-		  			$aListaAtivNew[] = db_utils::fieldsMemory($rsValidaAtividadeNew,$iIndValAtiv)->q07_ativ;
+		  			$aListaAtivNew[] = (new db_utils())->fieldsMemory($rsValidaAtividadeNew, $iIndValAtiv)->q07_ativ;
 		  		}
 		  	}
 
@@ -1782,7 +1782,7 @@ try {
 
         if ($iLinhasValidaAtividadeOld > 0) {
           for ($iIndValAtiv=0; $iIndValAtiv < $iLinhasValidaAtividadeOld; $iIndValAtiv++) {
-            $aListaAtivOld[] = db_utils::fieldsMemory($rsValidaAtividadeOld,$iIndValAtiv)->atividade;
+            $aListaAtivOld[] = (new db_utils())->fieldsMemory($rsValidaAtividadeOld, $iIndValAtiv)->atividade;
           }
         }
 
@@ -1815,8 +1815,8 @@ try {
 
 		  if (!$lAteracao) {
 
-        $aListaSocioNew = array();
-        $aListaSocioOld = array();
+        $aListaSocioNew = [];
+        $aListaSocioOld = [];
 
         $sSqlValidaSocioNew = "select q95_numcgm
                                   from socios
@@ -1827,7 +1827,7 @@ try {
 
         if ($iLinhasValidaSocioNew > 0) {
           for ($iIndValSocio=0; $iIndValSocio < $iLinhasValidaSocioNew; $iIndValSocio++) {
-            $aListaSocioNew[] = db_utils::fieldsMemory($rsValidaSocioNew,$iIndValSocio)->q95_numcgm;
+            $aListaSocioNew[] = (new db_utils())->fieldsMemory($rsValidaSocioNew, $iIndValSocio)->q95_numcgm;
           }
         }
 
@@ -1845,7 +1845,7 @@ try {
 
         if ($iLinhasValidaSocioOld > 0) {
           for ($iIndValSocio=0; $iIndValSocio < $iLinhasValidaSocioOld; $iIndValSocio++) {
-            $aListaSocioOld[] = db_utils::fieldsMemory($rsValidaSocioOld,$iIndValSocio)->codigo_socio;
+            $aListaSocioOld[] = (new db_utils())->fieldsMemory($rsValidaSocioOld, $iIndValSocio)->codigo_socio;
           }
         }
 
@@ -1963,7 +1963,7 @@ try {
 			          continue;
 			        }
 
-			        $iCodAtividadeDestino = db_utils::fieldsMemory($rsAtivDestino,0)->sequencial;
+			        $iCodAtividadeDestino = (new db_utils())->fieldsMemory($rsAtivDestino, 0)->sequencial;
 
 			        /**
 			         *  Define todas propriedades que não retornam do SQL
@@ -2023,7 +2023,7 @@ try {
 			          continue;
 			        }
 
-			        $iCodSocioDestino  = db_utils::fieldsMemory($rsSocioDestino,0)->sequencial;
+			        $iCodSocioDestino  = (new db_utils())->fieldsMemory($rsSocioDestino, 0)->sequencial;
 
 
 			        /**
@@ -2133,7 +2133,7 @@ try {
 			          continue;
 			        }
 
-			        $iCodEscritorioDestino = db_utils::fieldsMemory($rsEscritoDestino,0)->sequencial;
+			        $iCodEscritorioDestino = (new db_utils())->fieldsMemory($rsEscritoDestino, 0)->sequencial;
 
 			        /**
 			         *  Define todas propriedades que não retornam do SQL
@@ -2199,7 +2199,7 @@ try {
 			          continue;
 			        }
 
-			        $iCodAidofDestino = db_utils::fieldsMemory($rsAidofDestino,0)->sequencial;
+			        $iCodAidofDestino = (new db_utils())->fieldsMemory($rsAidofDestino, 0)->sequencial;
 
 			        /**
 			         *  Define todas propriedades que não retornam do SQL
@@ -2237,7 +2237,7 @@ try {
 
 			    }
 
-			    $aListaEstimativa = array();
+			    $aListaEstimativa = [];
 
 			    $sSqlEstimativaEmpPrefeitura   = " select q33_codigo       as codigo_estimativa,                            ";
 			    $sSqlEstimativaEmpPrefeitura  .= "      upper(q33_tiporeg) as tiporegime,                                   ";
@@ -2351,7 +2351,7 @@ try {
 			    }
 			  }
 
-			  $aListaEmpresa = array();
+			  $aListaEmpresa = [];
 
 	    }
 			/******************* Fim Processamento **************************/
@@ -2383,17 +2383,17 @@ try {
 
 		for ( $iIndRecibo=0; $iIndRecibo < $iLinhasIntegraRecibo; $iIndRecibo++ ) {
 
-			$oIntegraRecibo = db_utils::fieldsMemory($rsIntegraRecibo,$iIndRecibo);
+			$oIntegraRecibo = (new db_utils())->fieldsMemory($rsIntegraRecibo, $iIndRecibo);
 
 			logProcessamento($iIndRecibo,$iLinhasIntegraRecibo,$iParamLog);
 
 
-      if (trim($oIntegraRecibo->inscricao) != '') {
+      if (trim((string) $oIntegraRecibo->inscricao) != '') {
 
         $sSqlConsultaCgm  = " select q02_numcgm  as cgm                       ";
         $sSqlConsultaCgm .= "   from issbase                                  ";
         $sSqlConsultaCgm .= "  where q02_inscr = {$oIntegraRecibo->inscricao} ";
-      } else if (trim($oIntegraRecibo->cpfcnpj) != '') {
+      } else if (trim((string) $oIntegraRecibo->cpfcnpj) != '') {
 
         $sSqlConsultaCgm  = " select z01_numcgm  as cgm                       ";
         $sSqlConsultaCgm .= "   from cgm                                      ";
@@ -2408,7 +2408,7 @@ try {
       $rsConsultaCgm = db_query($connOrigem,$sSqlConsultaCgm);
 
       if ( pg_num_rows($rsConsultaCgm) > 0 ) {
-        $iNumCgm = db_utils::fieldsMemory($rsConsultaCgm,0)->cgm;
+        $iNumCgm = (new db_utils())->fieldsMemory($rsConsultaCgm, 0)->cgm;
       } else {
         $sMsgLog  = "Recibo: {$oIntegraRecibo->sequencial} Numdoc: {$oIntegraRecibo->numdoc} não processado!";
         $sMsgLog .= " Empresa não cadastrada! ";
@@ -2416,7 +2416,7 @@ try {
         continue;
       }
 
-		  $sTipoBoleto = strtoupper($oIntegraRecibo->tipo_boleto);
+		  $sTipoBoleto = strtoupper((string) $oIntegraRecibo->tipo_boleto);
 
       if (trim($sTipoBoleto) == '') {
         $sMsgLog  = "Recibo: {$oIntegraRecibo->sequencial} Numdoc: {$oIntegraRecibo->numdoc} não processado! ";
@@ -2443,7 +2443,7 @@ try {
 
       if ( pg_num_rows($rsConsultaReciboAnulado) > 0 ) {
 
-        $oReciboAnulado = db_utils::fieldsMemory($rsConsultaReciboAnulado,0);
+        $oReciboAnulado = (new db_utils())->fieldsMemory($rsConsultaReciboAnulado, 0);
 
         $sSqlAlteraIntegraReciboAnulado  = " update integra_recibo_anulado                     ";
 	      $sSqlAlteraIntegraReciboAnulado .= "    set processado = true                          ";
@@ -2463,12 +2463,12 @@ try {
        */
       if ( $oIntegraRecibo->tipo_boleto == 'T' &&
          ( $oIntegraRecibo->valor_imposto == 0 ||
-           trim($oIntegraRecibo->valor_imposto) == '' ) ) {
+           trim((string) $oIntegraRecibo->valor_imposto) == '' ) ) {
       	continue;
       }
 
 
-      if ( $oIntegraRecibo->valor_imposto == 0 || trim($oIntegraRecibo->valor_imposto) == '' ) {
+      if ( $oIntegraRecibo->valor_imposto == 0 || trim((string) $oIntegraRecibo->valor_imposto) == '' ) {
 
 	      $sSqlConsultaIssVar  = " select issvar.*                                                            ";
 	      $sSqlConsultaIssVar .= "   from issvar                                                              ";
@@ -2510,7 +2510,7 @@ try {
 
       if ( pg_num_rows($rsConsultaIssvar) > 0 && $sTipoBoleto == 'P' ) {
 
-      	$oDadosIssVar = db_utils::fieldsMemory($rsConsultaIssvar,0);
+      	$oDadosIssVar = (new db_utils())->fieldsMemory($rsConsultaIssvar, 0);
       	$oDaoIssVar->excluir_issvar($oDadosIssVar->q05_codigo);
 
         if ($oDaoIssVar->erro_status == "0") {
@@ -2535,7 +2535,7 @@ try {
 		  $oDaoIssVar->q05_bruto  = '0';
       $oDaoIssVar->q05_vlrinf = "null";
 
-		  if ( trim($oIntegraRecibo->inscricao) != '' ) {
+		  if ( trim((string) $oIntegraRecibo->inscricao) != '' ) {
 
 		    $oDaoIssVar->incluir_issvar_complementar(null,$oIntegraRecibo->inscricao,null,$sTipoBoleto);
 		  } else {
@@ -2587,7 +2587,7 @@ try {
 	    }
 
 
-	    if ( trim($oIntegraRecibo->numbanco) != '' ) {
+	    if ( trim((string) $oIntegraRecibo->numbanco) != '' ) {
 
 	      //
 	      $sSqlIncluiArrebanco = " insert into arrebanco ( k00_numpre,
@@ -2610,7 +2610,7 @@ try {
 	    }
 
 
-	    if ( $oIntegraRecibo->valor_imposto == 0 || trim($oIntegraRecibo->valor_imposto) == '') {
+	    if ( $oIntegraRecibo->valor_imposto == 0 || trim((string) $oIntegraRecibo->valor_imposto) == '') {
 
         $sSqlReceitaDebito = " select arrecad.*
 	                               from issvar
@@ -2623,14 +2623,14 @@ try {
 	      if ( pg_num_rows($rsReceitaDebito) == 0 ) {
 	        throw new Exception("ERRO-51: Débito não encontrado!");
 	      } else {
-	      	$oDadosDebito = db_utils::fieldsMemory($rsReceitaDebito,0);
+	      	$oDadosDebito = (new db_utils())->fieldsMemory($rsReceitaDebito, 0);
 
 	      }
 
 		    $aDadosDebitos['Numpre']  = $oDadosDebito->k00_numpre;
 	      $aDadosDebitos['Numpar']  = $oDadosDebito->k00_numpar;
 	      $aDadosDebitos['Receita'] = $oDadosDebito->k00_receit;
-	      $aDebitos = array($aDadosDebitos);
+	      $aDebitos = [$aDadosDebitos];
 
 	      try {
 	      	$oCancelaDebito->setArreHistTXT("Cancelado pela importação SIGCORP");
@@ -2685,7 +2685,7 @@ try {
 
 	  for ( $iIndRecibo=0; $iIndRecibo < $iLinhasIntegraReciboAnulado; $iIndRecibo++ ) {
 
-	    $oIntegraReciboAnulado = db_utils::fieldsMemory($rsIntegraReciboAnulado,$iIndRecibo);
+	    $oIntegraReciboAnulado = (new db_utils())->fieldsMemory($rsIntegraReciboAnulado, $iIndRecibo);
 
 	    logProcessamento($iIndRecibo,$iLinhasIntegraReciboAnulado,$iParamLog);
 
@@ -2702,13 +2702,13 @@ try {
         db_log($sMsgLog,$sArquivoLog,2);
         continue;
 	    } else {
-	    	$iCodReceitaDebito = db_utils::fieldsMemory($rsReceitaDebito,0)->k00_receit;
+	    	$iCodReceitaDebito = (new db_utils())->fieldsMemory($rsReceitaDebito, 0)->k00_receit;
 	    }
 
 	    $aDadosDebitos['Numpre']  = $oIntegraReciboAnulado->numdoc;
 	    $aDadosDebitos['Numpar']  = $oIntegraReciboAnulado->mes_competencia;
 	    $aDadosDebitos['Receita'] = $iCodReceitaDebito;
-      $aDebitos = array($aDadosDebitos);
+      $aDebitos = [$aDadosDebitos];
 
 	    try {
 	    	$oCancelaDebito->setArreHistTXT("Cancelado pela importação SIGCORP");
@@ -2749,7 +2749,7 @@ try {
 
     for ( $iInd=0; $iInd < $iLinhasReciboSemBaixa; $iInd++ ) {
 
-	    $oReciboSemBaixa = db_utils::fieldsMemory($rsReciboSemBaixa,$iInd);
+	    $oReciboSemBaixa = (new db_utils())->fieldsMemory($rsReciboSemBaixa, $iInd);
 
 	    logProcessamento($iInd,$iLinhasReciboSemBaixa,$iParamLog);
 
@@ -2824,7 +2824,7 @@ try {
 
 	    if ( $rsSituacaoDebito && pg_num_rows($rsSituacaoDebito) > 0 ) {
 
-	      $oSituacaoDebito = db_utils::fieldsMemory($rsSituacaoDebito,0);
+	      $oSituacaoDebito = (new db_utils())->fieldsMemory($rsSituacaoDebito, 0);
 
         $sMsgLog  = "Processado Numpre : {$oSituacaoDebito->numpre} Sequencial Integra : {$oReciboSemBaixa->sequencial} ";
         $sMsgLog .= "Tipo Baixa : {$oSituacaoDebito->tipo_baixa}";
@@ -3002,13 +3002,13 @@ function validaCpfCnpj($sCpfCnpj="") {
 
 	$lRetorno = true;
 
-	if ( trim($sCpfCnpj) == "" ) {
+	if ( trim((string) $sCpfCnpj) == "" ) {
 
 		$lRetorno = false;
 
 	} else {
 
-		$iLength = strlen(trim($sCpfCnpj));
+		$iLength = strlen(trim((string) $sCpfCnpj));
 
 		if ( $iLength == '14') {
 			if ( validaCnpj($sCpfCnpj) != 0 ) {
@@ -3169,10 +3169,10 @@ function validaCpfCnpj($sCpfCnpj="") {
 
   function dbValida($sValor, $sTipo) {
 
-	  $aValorDefault = array ( 'int'   => "null",
+	  $aValorDefault =  [ 'int'   => "null",
 	                           'date'  => "null",
-	                           'string'=> "''" );
-	  if (trim($sValor) != '') {
+	                           'string'=> "''" ];
+	  if (trim((string) $sValor) != '') {
 	    if ($sTipo == 'int') {
 	      return $sValor;
 	    } else {

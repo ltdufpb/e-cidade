@@ -30,52 +30,52 @@ session_start();
 /**
  * Leva a intancia da Execução do Programa para a pasta RAIZ do e-Cidade.
  */
-global $HTTP_SESSION_VARS;
-global $HTTP_SERVER_VARS;
-global $HTTP_POST_VARS;
-global $HTTP_GET_VARS;
+global $_SESSION;
+global $_SERVER;
+global $_POST;
+global $_GET;
 
-$HTTP_POST_VARS            = array();
-$HTTP_GET_VARS             = array();
+$_POST            = [];
+$_GET             = [];
 
 ini_set("soap.wsdl_cache_enabled", "0");
 
 require_once(modification("libs/db_conn.php"));
 
-$HTTP_SESSION_VARS['DB_id_usuario'       ] = '1';
-$HTTP_SESSION_VARS['DB_login'            ] = 'dbseller';
-$HTTP_SESSION_VARS['DB_administrador'    ] = '1';
-$HTTP_SESSION_VARS['DB_ip'               ] = '127.0.0.1';
-$HTTP_SESSION_VARS['REQUEST_URI'         ] = '';
-$HTTP_SESSION_VARS['DB_configuracao_ok'  ] = '';
-$HTTP_SESSION_VARS['DB_acessado'         ] = '1325613';
-$HTTP_SESSION_VARS['DB_base'             ] = $DB_BASE;
-$HTTP_SESSION_VARS['DB_servidor'         ] = $DB_SERVIDOR;
-$HTTP_SESSION_VARS['DB_porta'            ] = $DB_PORTA;
-$HTTP_SESSION_VARS['DB_user'             ] = $DB_USUARIO;
-$HTTP_SESSION_VARS['DB_senha'            ] = $DB_SENHA;
-$HTTP_SESSION_VARS['DB_uol_hora'         ] = time();
-$HTTP_SESSION_VARS['DB_totalmodulos'     ] = '55';
-$HTTP_SESSION_VARS['DB_use_pcasp'        ] = 'f';
-$HTTP_SESSION_VARS['DB_Area'             ] = '1';
-$HTTP_SESSION_VARS['DB_modulo'           ] = '578';
-$HTTP_SESSION_VARS['DB_nome_modulo'      ] = 'Configurações';
-$HTTP_SESSION_VARS['DB_anousu'           ] =  date('Y', time());
-$HTTP_SESSION_VARS['DB_datausu'          ] = time();//
-$HTTP_SESSION_VARS['DB_coddepto'         ] = '1';
-$HTTP_SESSION_VARS['DB_nomedepto'        ] = 'COINF';
-$HTTP_SESSION_VARS['DB_itemmenu_acessado'] = '1576';
-$HTTP_SERVER_VARS['SERVER_NAME']           = $DB_SERVIDOR;
-$HTTP_SERVER_VARS['SERVER_ADDR']           = '127.0.0.1';
-$HTTP_SERVER_VARS['SERVER_PORT']           = '80';
-$HTTP_SERVER_VARS['REMOTE_ADDR']           = $_SERVER['REMOTE_ADDR'];//'127.0.0.1';
-$HTTP_SERVER_VARS['DOCUMENT_ROOT']         = '/var/www';
-$HTTP_SERVER_VARS['SERVER_ADMIN']          = 'webmaster@localhost';
-$HTTP_SERVER_VARS['SCRIPT_FILENAME']       = '/var/www/dbportal_prj/webservices/requisicao.webservice.php';
-$HTTP_SERVER_VARS['SCRIPT_NAME']           = '/var/www/dbportal_prj/webservices/requisicao.webservice.php';
-$HTTP_SERVER_VARS['PHP_SELF']              = 'dbportal_prj/webservices/requisicao.webservice.php';
-$HTTP_SERVER_VARS['REQUEST_URI']           = '';
-$HTTP_SERVER_VARS['HTTP_HOST']             = 'localhost';
+$_SESSION['DB_id_usuario'       ] = '1';
+$_SESSION['DB_login'            ] = 'dbseller';
+$_SESSION['DB_administrador'    ] = '1';
+$_SESSION['DB_ip'               ] = '127.0.0.1';
+$_SESSION['REQUEST_URI'         ] = '';
+$_SESSION['DB_configuracao_ok'  ] = '';
+$_SESSION['DB_acessado'         ] = '1325613';
+$_SESSION['DB_base'             ] = $DB_BASE;
+$_SESSION['DB_servidor'         ] = $DB_SERVIDOR;
+$_SESSION['DB_porta'            ] = $DB_PORTA;
+$_SESSION['DB_user'             ] = $DB_USUARIO;
+$_SESSION['DB_senha'            ] = $DB_SENHA;
+$_SESSION['DB_uol_hora'         ] = time();
+$_SESSION['DB_totalmodulos'     ] = '55';
+$_SESSION['DB_use_pcasp'        ] = 'f';
+$_SESSION['DB_Area'             ] = '1';
+$_SESSION['DB_modulo'           ] = '578';
+$_SESSION['DB_nome_modulo'      ] = 'Configurações';
+$_SESSION['DB_anousu'           ] =  date('Y', time());
+$_SESSION['DB_datausu'          ] = time();//
+$_SESSION['DB_coddepto'         ] = '1';
+$_SESSION['DB_nomedepto'        ] = 'COINF';
+$_SESSION['DB_itemmenu_acessado'] = '1576';
+$_SERVER['SERVER_NAME']           = $DB_SERVIDOR;
+$_SERVER['SERVER_ADDR']           = '127.0.0.1';
+$_SERVER['SERVER_PORT']           = '80';
+$_SERVER['REMOTE_ADDR']           = $_SERVER['REMOTE_ADDR'];//'127.0.0.1';
+$_SERVER['DOCUMENT_ROOT']         = '/var/www';
+$_SERVER['SERVER_ADMIN']          = 'webmaster@localhost';
+$_SERVER['SCRIPT_FILENAME']       = '/var/www/dbportal_prj/webservices/requisicao.webservice.php';
+$_SERVER['SCRIPT_NAME']           = '/var/www/dbportal_prj/webservices/requisicao.webservice.php';
+$_SERVER['PHP_SELF']              = 'dbportal_prj/webservices/requisicao.webservice.php';
+$_SERVER['REQUEST_URI']           = '';
+$_SERVER['HTTP_HOST']             = 'localhost';
 
 /**
  * @todo: movido as requisicoes pois precisam das variaveis setadas da sessao
@@ -105,17 +105,17 @@ if($conn){
 /**
  *
  */
-$HTTP_SESSION_VARS['DB_instit'] = $iInstituicao;
+$_SESSION['DB_instit'] = $iInstituicao;
 
-$_SESSION                  = $HTTP_SESSION_VARS;
-$_SERVER                   = $HTTP_SERVER_VARS;
-$_POST                     = $HTTP_POST_VARS;
-$_GET                      = $HTTP_GET_VARS;
+$_SESSION                  = $_SESSION;
+$_SERVER                   = $_SERVER;
+$_POST                     = $_POST;
+$_GET                      = $_GET;
 
 require_once(modification("model/webservices/DBWebService.model.php"));
 
 require_once(modification("libs/db_conecta.php"));
 $oSoapServer = new SoapServer(null,
-                              array('uri' => 'http://localhost/dbportal_prj'));
+                              ['uri' => 'http://localhost/dbportal_prj']);
 $oSoapServer->setClass("DBWebService");
 $oSoapServer->handle();

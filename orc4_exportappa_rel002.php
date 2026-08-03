@@ -36,8 +36,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcppa_classe.php"));
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $clorcppa = new cl_orcppa;
 
@@ -59,7 +59,7 @@ $sql = "select orcppa.*, orcppaval.*
             ";            
 $res = db_query($sql);
 //db_criatabela($res);exit;
-if (pg_numrows($res) == 0 ){      
+if (pg_num_rows($res) == 0 ){      
     db_redireciona('db_erros.php?fechar=true&db_erro=Nenhum registro encontrado ! ');   
 }
 /*
@@ -90,7 +90,7 @@ $pdf->addpage();
 $quantidade = 0;
 $valor_total =0;
 
-for($x=0;$x <pg_numrows($res);$x++){
+for($x=0;$x <pg_num_rows($res);$x++){
    db_fieldsmemory($res,$x);
 	
    $pdf->cell(15,$alt,$o23_orgao,  1,0,"C",0);

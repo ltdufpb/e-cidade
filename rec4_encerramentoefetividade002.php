@@ -74,10 +74,10 @@ use ECidade\RecursosHumanos\RH\Efetividade\Repository\Periodo as PeriodoReposito
 try {
     $oParametros = (object)$_GET;
     $exercicio  = $oParametros->iExercicio;
-    $oParametros->aSelecionados = explode('-', $oParametros->aSelecionados);
+    $oParametros->aSelecionados = explode('-', (string) $oParametros->aSelecionados);
     $oParametros->matriculas    = empty($oParametros->matriculas)
-        ? array()
-        : explode('-', $oParametros->matriculas);
+        ? []
+        : explode('-', (string) $oParametros->matriculas);
 
     $instituicao = InstituicaoRepository::getInstituicaoSessao();
     $competenciaFolha = DBCompetencia::folha();
@@ -122,7 +122,7 @@ try {
     echo "<script type=\"text/javascript\">parent.js_mostrarMensagem('".urlencode($exception->getMessage())."')</script>";
 }
 
-function buscarServidoresProcessar($oPeriodo, Instituicao $instituicao, $aMatriculas = array()) {
+function buscarServidoresProcessar($oPeriodo, Instituicao $instituicao, $aMatriculas = []) {
 
     $oDaoServidoresProcessar   = new cl_pontoeletronicoarquivodata();
     $sWhereServidoresProcessar = "rh197_data between '{$oPeriodo->getDataInicio()->getDate()}' and '{$oPeriodo->getDataFim()->getDate()}'";
@@ -150,13 +150,11 @@ function buscarServidoresProcessar($oPeriodo, Instituicao $instituicao, $aMatric
         throw new DBException("Ocorreu um erro ao buscar os servidores para processar os assentamentos de horas extras, faltas e adicional noturno.");
     }
 
-    $aServidores = array();
+    $aServidores = [];
 
     if(pg_num_rows($rsServidoresProcessar) > 0) {
 
-        $aServidores = db_utils::makeCollectionFromRecord($rsServidoresProcessar, function ($oRetorno) {
-            return ServidorRepository::getInstanciaByCodigo($oRetorno->matricula);
-        });
+        $aServidores = db_utils::makeCollectionFromRecord($rsServidoresProcessar, fn($oRetorno) => ServidorRepository::getInstanciaByCodigo($oRetorno->matricula));
     }
 
     return $aServidores;
@@ -172,16 +170,14 @@ function buscarTiposAssentamentosConfigurados($iCodigoInstituicao) {
         throw new DBException("Ocorreu um erro ao buscar as configurações gerais para a instituição.");
     }
 
-    $aTiposAssentamentos = array();
+    $aTiposAssentamentos = [];
 
     if(pg_num_rows($rsSqlConfiguracoesGerais) > 0) {
 
-        $aTiposAssentamentosConfigurados = db_utils::makeCollectionFromRecord($rsSqlConfiguracoesGerais, function ($oRetorno) {
-            return (object)array(
-              'tipo'   => str_replace("rh200_tipoasse_", "", $oRetorno->tipo),
-              'codigo' => $oRetorno->codigo
-            );
-        });
+        $aTiposAssentamentosConfigurados = db_utils::makeCollectionFromRecord($rsSqlConfiguracoesGerais, fn($oRetorno) => (object)[
+          'tipo'   => str_replace("rh200_tipoasse_", "", $oRetorno->tipo),
+          'codigo' => $oRetorno->codigo
+        ]);
 
         foreach ($aTiposAssentamentosConfigurados as $oTipo) {
             $aTiposAssentamentos[$oTipo->tipo] = TipoAssentamentoRepository::getInstanciaPorCodigo($oTipo->codigo);

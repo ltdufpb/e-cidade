@@ -37,18 +37,18 @@ include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 
 //parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
   db_fieldsmemory($resultinst,$xins);
   $descr_inst .= $xvirg.$nomeinstabrev ;
   $xvirg = ', ';
 }
-$nivela = substr($nivel,0,1);
+$nivela = substr((string) $nivel,0,1);
 if($nivela == 1)
    $tipo = 'ÓRGÃO';
 elseif($nivela == 2)
@@ -80,7 +80,7 @@ $sele_work .= ' and w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
 //$result = db_dotacaosaldo($nivela,1,2,true,$sele_work);
 //db_criatabela($result);exit;
 
-if (substr($nivel,1,1) == 'A'){
+if (substr((string) $nivel,1,1) == 'A'){
    $nivelb = 2;
 }else{
    $nivelb = 3;
@@ -107,7 +107,7 @@ $alt = 4;
 $total = 0;
 
 $pagina = 1;
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
 
   db_fieldsmemory($result,$i);
 
@@ -136,43 +136,43 @@ for($i=0;$i<pg_numrows($result);$i++){
   }
   if($o58_unidade != 0){
     $descr = $o41_descr;
-    if (substr($nivel,1,1) == 'A' )
+    if (substr((string) $nivel,1,1) == 'A' )
        $codigo .= '.';
     $codigo .= db_formatar($o58_unidade,'s','0',2,'e');
   }
   if($o58_funcao != 0){
     $descr = $o52_descr;
-    if (substr($nivel,1,1) == 'A' )
+    if (substr((string) $nivel,1,1) == 'A' )
        $codigo .= '.';
     $codigo .= db_formatar($o58_funcao,'s','0',2,'e');
   }
   if($o58_subfuncao != 0){
     $descr = $o53_descr;
-    if (substr($nivel,1,1) == 'A' )
+    if (substr((string) $nivel,1,1) == 'A' )
        $codigo .= '.';
     $codigo .= db_formatar($o58_subfuncao,'s','0',4,'e');
   }
   if($o58_programa != 0){
     $descr = $o54_descr;
-    if (substr($nivel,1,1) == 'A')
+    if (substr((string) $nivel,1,1) == 'A')
        $codigo .= '.';
     $codigo .= db_formatar($o58_programa,'s','0',2,'e');
   }
   if($o58_projativ != 0){
     $descr = $o55_descr;
-    if (substr($nivel,1,1) == 'A')
+    if (substr((string) $nivel,1,1) == 'A')
        $codigo .= '.';
     $codigo .= db_formatar($o58_projativ,'s','0',4,'e');
   }
   if($o58_elemento != 0){
     $descr = $o56_descr;
-    if (substr($nivel,1,1) == 'A')
+    if (substr((string) $nivel,1,1) == 'A')
        $codigo .= '.';
     $codigo .= $o58_elemento;
   }
   if($o58_codigo != 0 ){
     $descr = $o15_descr;
-    if (substr($nivel,1,1) == 'A')
+    if (substr((string) $nivel,1,1) == 'A')
        $codigo .= '.';
       $codigo_recurso = $o58_codigo;
       if (db_getsession("DB_anousu") >= 2019) {

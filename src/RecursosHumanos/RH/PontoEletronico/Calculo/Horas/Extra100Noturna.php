@@ -46,6 +46,7 @@ class Extra100Noturna extends Extra100 implements Horas {
     $this->setTipoHora(BaseHora::HORAS_EXTRA100_NOTURNA);
   }
 
+  #[\Override]
   public function calcular() {
 
     $this->atualizaMaximoExtra100();

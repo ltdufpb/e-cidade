@@ -55,7 +55,7 @@ class Linha {
   /**
    * @var array
    */
-  public $aColunas     = array();
+  public $aColunas     = [];
 
   /**
    * @var bool

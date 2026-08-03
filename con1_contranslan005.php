@@ -38,7 +38,7 @@ include(modification("classes/db_conhistdoc_classe.php"));
 $clcontrans = new cl_contrans;
 $clcontranslan = new cl_contranslan;
 $clconhistdoc = new cl_conhistdoc;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if(isset($c53_coddoc)){
   $db_opcao = 22;

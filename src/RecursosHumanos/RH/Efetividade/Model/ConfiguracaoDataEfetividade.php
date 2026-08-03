@@ -83,7 +83,7 @@ class ConfiguracaoDataEfetividade
      */
     public function toArray()
     {
-        return array(
+        return [
             'ano' => $this->getAno(),
             'mes' => $this->getMes(),
             'inicio' => $this->getInicio()->format('d/m/Y'),
@@ -91,7 +91,7 @@ class ConfiguracaoDataEfetividade
             'entrega' => $this->getEntrega()->format('d/m/Y'),
             'processada' => $this->isProcessada(),
             'instituicao' => $this->getInstituicao()->toArray(),
-        );
+        ];
     }
 
     /**

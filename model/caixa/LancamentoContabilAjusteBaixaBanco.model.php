@@ -34,12 +34,6 @@
 class LancamentoContabilAjusteBaixaBanco {
 
   /**
-   * Planilha de Arrecadacao
-   * @var integer
-   */
-  private $iCodigoBaixaBanco;
-
-  /**
    * Data da autenticacao
    * @var integer
    */
@@ -65,12 +59,14 @@ class LancamentoContabilAjusteBaixaBanco {
 
   /**
    *
-   * @param integer $iCodigoClassificacao Codigo da Classificacao
+   * @param integer $iCodigoBaixaBanco Codigo da Classificacao
    * @throws ParameterException
    */
-  public function __construct ($iCodigoClassificacao) {
+  public function __construct (/**
+   * Planilha de Arrecadacao
+   */
+  private $iCodigoBaixaBanco) {
 
-    $this->iCodigoBaixaBanco = $iCodigoClassificacao;
     $this->dtAutenticacao    = date("Y-m-d", db_getsession("DB_datausu"));
     $this->iCodigoUsuario    = db_getsession("DB_id_usuario");
     $this->sIpTerminal       = db_getsession("DB_ip");

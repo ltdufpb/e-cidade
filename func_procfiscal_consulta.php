@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_procfiscal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 //parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
 $clprocfiscal = new cl_procfiscal;
 $clprocfiscal->rotulo->label("y100_sequencial");
@@ -100,10 +100,10 @@ $clprocfiscal->rotulo->label("y100_coddepto");
        $where = " and y105_protprocesso = $processo ";
 	    }	
 	    if (isset($datainicial) && $datainicial != '') {
-	    	$where = " and y100_dtinicial >= '".implode('-',array_reverse(explode('/',$datainicial)))."'"; 
+	    	$where = " and y100_dtinicial >= '".implode('-',array_reverse(explode('/',(string) $datainicial)))."'"; 
 	    }
 	    if (isset($datafinal) && $datafinal != '') {
-        $where = " and y100_dtfinal <= '".implode('-',array_reverse(explode('/',$datafinal)))."'";
+        $where = " and y100_dtfinal <= '".implode('-',array_reverse(explode('/',(string) $datafinal)))."'";
       }
 	    
 			
@@ -139,9 +139,9 @@ $clprocfiscal->rotulo->label("y100_coddepto");
 									 order by y100_sequencial";
 							
 					
-				 $repassa = array();
+				 $repassa = [];
         if(isset($chave_y100_coddepto)){
-          $repassa = array("chave_y100_sequencial"=>$chave_y100_sequencial,"chave_y100_coddepto"=>$chave_y100_coddepto);
+          $repassa = ["chave_y100_sequencial"=>$chave_y100_sequencial,"chave_y100_coddepto"=>$chave_y100_coddepto];
         }
         
         //echo $sql;

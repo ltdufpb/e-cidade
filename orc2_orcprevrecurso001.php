@@ -84,7 +84,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-          $xx = array("s"=>"Bimestral","m"=>"Mensal");
+          $xx = ["s"=>"Bimestral","m"=>"Mensal"];
           db_select('mensal',$xx,true,4,"");
           ?>
         </td>
@@ -94,7 +94,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-          $xx = array("N"=>"NÃO","S"=>"SIM");
+          $xx = ["N"=>"NÃO","S"=>"SIM"];
           db_select('imprime_grafico',$xx,true,4,"");
           ?>
         </td>

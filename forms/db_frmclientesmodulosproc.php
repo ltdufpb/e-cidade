@@ -63,14 +63,14 @@ $at75_seqclimod = $sequencial;
 <?php 
 db_input('at75_seqclimod',6,$Iat75_seqclimod,true,'hidden',3,"");
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $var1= "at75_codproced_".$codproced;
-  global $$var1;
-  $$var1 = $codproced;
+  global ${$var1};
+  ${$var1} = $codproced;
   $var2= "descrproced_".$codproced;
-  global $$var2;
-  $$var2 = $descrproced;
+  global ${$var2};
+  ${$var2} = $descrproced;
   
   $sql = "select at75_data,at75_obs, at75_sequen
           from clientesmodulosproc 
@@ -80,24 +80,24 @@ for($i=0;$i<pg_numrows($result);$i++){
           ";
 
   $res = db_query($sql);
-  if(pg_numrows($res)>0){
+  if(pg_num_rows($res)>0){
     db_fieldsmemory($res,0);
     $var3= "at75_data_".$codproced;
-    global $$var3;
-    $$var3 = $at75_data;
-    $at75_data_dia = substr($at75_data,8,2);
-    $at75_data_mes = substr($at75_data,5,2);
-    $at75_data_ano = substr($at75_data,0,4);
+    global ${$var3};
+    ${$var3} = $at75_data;
+    $at75_data_dia = substr((string) $at75_data,8,2);
+    $at75_data_mes = substr((string) $at75_data,5,2);
+    $at75_data_ano = substr((string) $at75_data,0,4);
     $var4= "at75_obs_".$codproced;
-    global $$var4;
-    $$var4= $at75_obs;
+    global ${$var4};
+    ${$var4}= $at75_obs;
   }else{
     $at75_data_dia = "";
     $at75_data_mes = "";
     $at75_data_ano = "";
     $var4= "at75_obs_".$codproced;
-    global $$var4;
-    $$var4= "";
+    global ${$var4};
+    ${$var4}= "";
     $at75_sequen = 0;
   }
 

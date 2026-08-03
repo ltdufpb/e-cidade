@@ -36,7 +36,7 @@ class SuplementacaoArquivoTemplate {
 
   static $oInstance;
 
-  protected $aListaArquivos = array();
+  protected $aListaArquivos = [];
 
   /**
    * método construtor
@@ -95,73 +95,73 @@ class SuplementacaoArquivoTemplate {
 
   private function getCreditoEspecialPorExcessoArrecadacao() {
 
-    $aArray = array ("arquivo"=>"credito_especial_por_excesso_de_arrecadacao.agt",
-    								 "template" => array (20));
+    $aArray =  ["arquivo"=>"credito_especial_por_excesso_de_arrecadacao.agt",
+    								 "template" =>  [20]];
     return $aArray;
   }
 
   private function getCreditoEspecialReducao() {
 
-    $aArray = array ("arquivo"=>"credito_especial_por_reducao.agt",
-                     "template" => array (21));
+    $aArray =  ["arquivo"=>"credito_especial_por_reducao.agt",
+                     "template" =>  [21]];
     return $aArray;
   }
 
   private function getCreditoEspecialSuperavitFinanceiro() {
 
-    $aArray = array ("arquivo"=>"credito_especial_por_superavit_financeiro.agt",
-                     "template"=> array (22));
+    $aArray =  ["arquivo"=>"credito_especial_por_superavit_financeiro.agt",
+                     "template"=>  [22]];
     return $aArray;
   }
 
 
   private function getAuxilioConvenio() {
 
-    $aArray = array ("arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
-                     "template" => array(59));
+    $aArray =  ["arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
+                     "template" => [59]];
     return $aArray;
   }
 
 
   private function getCreditoSuplementarExcessoArrecadacao() {
 
-    $aArray = array ("arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
-                     "template" => array(23));
+    $aArray =  ["arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
+                     "template" => [23]];
     return $aArray;
   }
 
   private function getCreditoSuplementarReducao() {
 
-    $aArray = array ("arquivo"=>"credito_suplementar_por_reducao.agt",
-                     "template"=>array(24));
+    $aArray =  ["arquivo"=>"credito_suplementar_por_reducao.agt",
+                     "template"=>[24]];
     return $aArray;
   }
 
   private function getCreditoSuplementarSuperavitFinanceiro() {
 
-    $aArray = array ("arquivo"=>"credito_suplementar_por_superavit_financeiro.agt",
-                     "template" => array(25));
+    $aArray =  ["arquivo"=>"credito_suplementar_por_superavit_financeiro.agt",
+                     "template" => [25]];
     return $aArray;
   }
 
   private function getRemanejamento() {
 
-    $aArray = array ("arquivo"=>"remanejamento.agt",
-                     "template" => array(26, 38, 41, 42) );
+    $aArray =  ["arquivo"=>"remanejamento.agt",
+                     "template" => [26, 38, 41, 42] ];
     return $aArray;
   }
 
   private function getCreditoExtraordinarioReducao() {
 
-  	$aArray = array ("arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
-  			"template" => array(58) );
+  	$aArray =  ["arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
+  			"template" => [58] ];
   	return $aArray;
   }
 
   private function getCreditoExtraordinario() {
 
-  	$aArray = array ("arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
-  			"template" => array(37) );
+  	$aArray =  ["arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
+  			"template" => [37] ];
   	return $aArray;
   }
 
@@ -169,38 +169,38 @@ class SuplementacaoArquivoTemplate {
 
   private function getReaberturaCreditoExtraordinarios() {
 
-  	$aArray = array ("arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
-  									"template" => array(39) );
+  	$aArray =  ["arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
+  									"template" => [39] ];
   	return $aArray;
   }
 
    private function getTransferenciaRecursos() {
 
-   	$aArray = array ("arquivo"=>"remanejamento.agt",
-   									"template" => array(40) );
+   	$aArray =  ["arquivo"=>"remanejamento.agt",
+   									"template" => [40] ];
    	return $aArray;
    }
 
     private function getCreditoExtraordinarioArrecadacaoMaior() {
 
-        $aArray = array ("arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
-            "template" => array(60) );
+        $aArray =  ["arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
+            "template" => [60] ];
         return $aArray;
     }
 
 
     private function getCreditoExtraordinarioSuperavitFinanceiro() {
 
-        $aArray = array ("arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
-            "template" => array(60) );
+        $aArray =  ["arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
+            "template" => [60] ];
         return $aArray;
     }
 
 
     private function getCreditoExtraordinarioOperacaoCredito() {
 
-        $aArray = array ("arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
-            "template" => array(60) );
+        $aArray =  ["arquivo"=>"credito_suplementar_por_excesso_de_arrecadacao.agt",
+            "template" => [60] ];
         return $aArray;
     }
 }

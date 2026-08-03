@@ -98,7 +98,7 @@ db_input('at12_email',40,$Iat12_email,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("at12_codcli"=>@$at12_codcli,"at12_seq"=>@$at12_seq);
+	 $chavepri= ["at12_codcli"=>@$at12_codcli,"at12_seq"=>@$at12_seq];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clatendemail->sql_query_file($at12_codcli);
 	 $cliframe_alterar_excluir->campos  ="at12_codcli,at12_seq,at12_email";

@@ -51,7 +51,7 @@
  $pdf->cell(75,5,'Departamento',1,0,'C');
  $pdf->cell(20,5,'Ordem',1,0,'C');
  $pdf->cell(20,5,'Dias',1,1,'C');
- $linhas = pg_numrows($rs);
+ $linhas = pg_num_rows($rs);
  $pdf->setfillcolor(243);
  for ($i = 0;$i < $linhas;$i++){ 
      db_fieldsmemory($rs,$i);

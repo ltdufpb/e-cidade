@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mensagerialicencaprocessado_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmensagerialicencaprocessado = new cl_mensagerialicencaprocessado;
 $clmensagerialicencaprocessado->rotulo->label("am15_sequencial");
 $clmensagerialicencaprocessado->rotulo->label("am15_licencaempreendimento");
@@ -52,9 +52,9 @@ $clmensagerialicencaprocessado->rotulo->label("am15_licencaempreendimento");
         }else{
            $sql = $clmensagerialicencaprocessado->sql_query("",$campos,"am15_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_am15_licencaempreendimento)){
-          $repassa = array("chave_am15_sequencial"=>$chave_am15_sequencial,"chave_am15_licencaempreendimento"=>$chave_am15_licencaempreendimento);
+          $repassa = ["chave_am15_sequencial"=>$chave_am15_sequencial,"chave_am15_licencaempreendimento"=>$chave_am15_licencaempreendimento];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

@@ -111,12 +111,12 @@ else {
 	<table border="0">
 		<tr><td colspan="3" height="20"><b>Solicitante(s):</b></td></tr>
 <?php 
-		$NumFields = pg_numfields($result);
+		$NumFields = pg_num_fields($result);
 		for($i = 0; $i < $cltarefasolic->numrows; $i++) {
 			db_fieldsmemory($result,$i);
 			for($j = 0; $j < $NumFields; $j++) {
-				if(pg_fieldname($result,$j) == "at20_usuario"||pg_fieldname($result,$j) == "at21_usuario") {
-					$at10_usuario = pg_result($result, $i, $j);
+				if(pg_field_name($result,$j) == "at20_usuario"||pg_field_name($result,$j) == "at21_usuario") {
+					$at10_usuario = pg_fetch_result($result, $i, $j);
 					break;
 				}
 			}
@@ -397,7 +397,7 @@ echo "&nbsp;&nbsp;&nbsp;&nbsp;".@$Lat40_diafim;
 if(isset($at40_diafim_dia)&&$at40_diafim_dia!="") {
 	if($db_opcao==1||$db_opcao==11) {
 		$data            = retorna_data($at40_diafim_ano,$at40_diafim_mes,$at40_diafim_dia,"inc");
-		$vet_data        = explode("-",$data);
+		$vet_data        = explode("-",(string) $data);
 		$at40_diafim_ano = db_formatar($vet_data[0],'s','0',2,'e',0); 
 		$at40_diafim_mes = db_formatar($vet_data[1],'s','0',2,'e',0);
 		$at40_diafim_dia = db_formatar($vet_data[2],'s','0',2,'e',0);
@@ -406,7 +406,7 @@ if(isset($at40_diafim_dia)&&$at40_diafim_dia!="") {
 		$data_fim        = $at40_diafim_ano."-".$at40_diafim_mes."-".$at40_diafim_dia;
 		$data            = retorna_data($at40_diafim_ano,$at40_diafim_mes,$at40_diafim_dia,"inc");
 		if($data != $data_fim) {
-			$vet_data        = explode("-",$data);
+			$vet_data        = explode("-",(string) $data);
 			$at40_diafim_ano = db_formatar($vet_data[0],'s','0',2,'e',0); 
 			$at40_diafim_mes = db_formatar($vet_data[1],'s','0',2,'e',0);
 			$at40_diafim_dia = db_formatar($vet_data[2],'s','0',2,'e',0);
@@ -442,7 +442,7 @@ db_input('at40_previsao',10,"",true,'text',$db_opcao,"");
     <td> 
 <?php 
 //db_input('at40_tipoprevisao',1,$Iat40_tipoprevisao,true,'text',$db_opcao,"")
-  $matriz = array("h"=>"horas","d"=>"dias");             
+  $matriz = ["h"=>"horas","d"=>"dias"];             
 //  $matriz = array("h"=>"horas");             
   db_select("at40_tipoprevisao", $matriz,true,$db_opcao,""); 
 ?>
@@ -481,7 +481,7 @@ db_input('at40_horafim',5,"",true,'text',$db_opcao,"onchange='js_verifica_hora(t
     <td> 
 <?php 
 //db_input('at40_progresso',10,$Iat40_progresso,true,'text',$db_opcao,"")
-  $matriz = array("0"=>"0%",
+  $matriz = ["0"=>"0%",
                   "10"=>"10%", 
                   "20"=>"20%",
                   "30"=>"30%",
@@ -491,7 +491,7 @@ db_input('at40_horafim',5,"",true,'text',$db_opcao,"onchange='js_verifica_hora(t
                   "70"=>"70%",
                   "80"=>"80%",
                   "90"=>"90%",
-                  "100"=>"100%");             
+                  "100"=>"100%"];             
   db_select("at40_progresso", $matriz,true,$db_opcao); 
 ?>
     </td>
@@ -502,10 +502,10 @@ db_input('at40_horafim',5,"",true,'text',$db_opcao,"onchange='js_verifica_hora(t
     </td>
     <td> 
 <?php 
-  $x = array("1"=>"Baixa",
+  $x = ["1"=>"Baixa",
              "2"=>"Média", 
              "3"=>"Alta"
-	   );             
+	   ];             
 if($db_opcao==1||$db_opcao==11) {
 	if(!isset($at40_prioridade)&&@$at40_prioridade=="") {
 		$at40_prioridade = 2;
@@ -613,7 +613,7 @@ function retorna_data($ano, $mes, $dia, $executar) {
 
 //		echo $sql."<br>";
 		
-		for($i = 0; $i < pg_numrows($rs_calend); $i++) {
+		for($i = 0; $i < pg_num_rows($rs_calend); $i++) {
 			db_fieldsmemory($rs_calend, $i);
 			
 			if($data == $k13_data) {
@@ -744,8 +744,8 @@ function retorna_diafinal($mes,$ano) {
 
 function db_grid($sql) {
 	$result    = @db_query($sql);
-	$NumRows   = @pg_numrows($result);
-	$NumFields = @pg_numfields($result);
+	$NumRows   = @pg_num_rows($result);
+	$NumFields = @pg_num_fields($result);
 	
 //	echo $sql;
 
@@ -760,7 +760,7 @@ function db_grid($sql) {
 		echo "<tr>\n";
 		$clrotulocab = new rotulolov();
 		for($i = 0; $i < $NumFields; $i++) {
-			$clrotulocab->label(pg_fieldname($result, $i));
+			$clrotulocab->label(pg_field_name($result, $i));
 			echo "<td nowrap bgcolor=\"#6e77e8\" title=\"".$clrotulocab->title."\" align=\"center\">".ucfirst($clrotulocab->titulo)."</td>\n";
 		}		
 		echo "	<td nowrap><input type=\"button\" value=\"Postegar Tarefas\" onClick=\"js_postegar();\"></td>\n";
@@ -769,10 +769,10 @@ function db_grid($sql) {
 		for($i = 0; $i < $NumRows; $i++) {
 			echo "<tr bgcolor=\"#FFFFFF\">\n";
 			for($j = 0; $j < $NumFields; $j++) {
-			  	$executar = "js_retorna(".pg_result($result, $i, 0).")";
-				if(pg_fieldtype($result, $j) == "date") {
-					if(pg_result($result, $i, $j) != "") {
-						$matriz_data = split("-", pg_result($result, $i, $j));
+			  	$executar = "js_retorna(".pg_fetch_result($result, $i, 0).")";
+				if(pg_field_type($result, $j) == "date") {
+					if(pg_fetch_result($result, $i, $j) != "") {
+						$matriz_data = preg_split("#\\-#m", pg_fetch_result($result, $i, $j));
 						$var_data = $matriz_data[2]."/".$matriz_data[1]."/".$matriz_data[0];
 					} else {
 						$var_data = "//";
@@ -780,24 +780,24 @@ function db_grid($sql) {
 					echo "<td align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"".$executar."\">".trim($var_data)."</a>&nbsp;</td>\n";
 				}
 				else { 
-					if(pg_fieldtype($result, $j) == "float8") {
-				        $var_data = db_formatar(pg_result($result, $i, $j), 'f', ' ');
+					if(pg_field_type($result, $j) == "float8") {
+				        $var_data = db_formatar(pg_fetch_result($result, $i, $j), 'f', ' ');
 						echo "<td align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"".$executar."\">".trim($var_data)."</a>&nbsp;</td>\n";
 					}
 					else {
-					    if(pg_fieldtype($result, $j) == "bool") {
-					        $var_data = (pg_result($result, $i, $j) == 'f' || pg_result($result, $i, $j) == '' ? 'Não' : 'Sim');
+					    if(pg_field_type($result, $j) == "bool") {
+					        $var_data = (pg_fetch_result($result, $i, $j) == 'f' || pg_fetch_result($result, $i, $j) == '' ? 'Não' : 'Sim');
 							echo "<td align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"".$executar."\">".trim($var_data)."</a>&nbsp;</td>\n";
 				        }
 				        else {
-							if(pg_fieldtype($result, $j) == "text") {
-								$tam_data = strlen(pg_result($result, $i, $j));
+							if(pg_field_type($result, $j) == "text") {
+								$tam_data = strlen(pg_fetch_result($result, $i, $j));
 								if($tam_data > 40) {
 									$var_data = "";
 									$qtd      = round($tam_data/40);
 									$start    = 0;
 									for($k = 0; $k < $qtd; $k++) {
-										$var_data .= substr(pg_result($result, $i, $j),$start,40) . "<br>";
+										$var_data .= substr(pg_fetch_result($result, $i, $j),$start,40) . "<br>";
 										if($k == 0) {
 											$start++;
 										} 
@@ -806,12 +806,12 @@ function db_grid($sql) {
 									$var_data = substr($var_data,0,strlen($var_data)-4);
 								}
 								else {
-						   			$var_data = pg_result($result, $i, $j);
+						   			$var_data = pg_fetch_result($result, $i, $j);
 								}
 								echo "<td align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"".$executar."\">".trim($var_data)."</a>&nbsp;</td>\n";
 							}
 							else {
-					   			$var_data = pg_result($result, $i, $j);
+					   			$var_data = pg_fetch_result($result, $i, $j);
 								echo "<td align=\"center\" id=\"I".$i.$j."\" style=\"text-decoration:none;color:#000000;\" nowrap><a title=\"Clique Aqui\" style=\"text-decoration:none;color:#000000;\" href=\"#\" onClick=\"".$executar."\">".trim($var_data)."</a>&nbsp;</td>\n";
 							}				        	
 				        }
@@ -872,7 +872,7 @@ if($db_opcao==1||$db_opcao==11) {
 } 
 else {
 	if($db_opcao==2||$db_opcao==22) {
-		$action = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+		$action = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
 	}
 }
 if(strlen($action) > 0) {
@@ -962,7 +962,7 @@ function js_mostratarefahorario(chave1,chave2, erro){
 }
 function js_retorna(chave) {
 <?php 
-	echo "location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave\n";
+	echo "location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave\n";
 ?>
 }
 function js_pesquisa(){
@@ -984,7 +984,7 @@ function js_preenchepesquisa(chave){
   <?php 
   if($db_opcao!=1){
   
-  	$executar = " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&abrefunc=f'";
+  	$executar = " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&abrefunc=f'";
   	if(isset($erro_horario) and $erro_horario != "") {
   		$executar .= "+'&erro_horario=".$erro_horario;
    	} else {

@@ -4,13 +4,11 @@ namespace ECidade\RecursosHumanos\RH\Recadastramento\conversorJson;
 
 class Formatter
 {
-    private $json;
     private $secoes = [];
 
-    public function __construct($json)
+    public function __construct(private $json)
     {
         $this->secoes = [];
-        $this->json = $json;
         if (!$this->isJson($this->json)) {
             throw new \Exception("Json inválido: ERRO ".json_last_error_msg());
         }
@@ -50,7 +48,7 @@ class Formatter
 
     private function removeEspacoEConverteParaMinusculo($string)
     {
-        return strtolower(str_replace(" ", "_", trim($string)));
+        return strtolower(str_replace(" ", "_", trim((string) $string)));
     }
 
     /**

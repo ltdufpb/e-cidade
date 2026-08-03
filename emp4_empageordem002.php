@@ -40,7 +40,7 @@ if ($oGet->e42_sequencial != "") {
   $rsOpAuxiliar   = $oDaoOpAuxiliar->sql_record($sSqlOpAuxiliar);
   $oOPAuxiliar    = db_utils::fieldsMemory($rsOpAuxiliar, 0);
   $e42_sequencial = $oOPAuxiliar->e42_sequencial; 
-  $e42_data       = explode("-", $oOPAuxiliar->e42_dtpagamento);
+  $e42_data       = explode("-", (string) $oOPAuxiliar->e42_dtpagamento);
    
 }
 ?>

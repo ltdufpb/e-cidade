@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_layoutlinha_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_layoutlinha = new cl_db_layoutlinha;
 $cldb_layoutlinha->rotulo->label("db51_codigo");
 $cldb_layoutlinha->rotulo->label("db51_descr");
@@ -98,9 +98,9 @@ $cldb_layoutlinha->rotulo->label("db51_descr");
         }else{
            $sql = $cldb_layoutlinha->sql_query("",$campos,"db51_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db51_descr)){
-          $repassa = array("chave_db51_codigo"=>$chave_db51_codigo,"chave_db51_descr"=>$chave_db51_descr);
+          $repassa = ["chave_db51_codigo"=>$chave_db51_codigo,"chave_db51_descr"=>$chave_db51_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -32,23 +32,23 @@ class RelatorioCreditos
     private $oPdf;
 
   /** @var array */
-    public $aTipoOrigem = array(
+    public $aTipoOrigem = [
     "numcgm" => "Numcgm",
     "matric" => "Matrícula",
     "inscr" => "Inscrição"
-    );
+    ];
 
   /** @var array */
-    public $aOrdenador = array(
+    public $aOrdenador = [
     "id" => "Identificador",
     "nome" => "Nome"
-    );
+    ];
 
   /** @var array */
-    public $aOrdenacao = array(
+    public $aOrdenacao = [
     "asc" => "Ascendente",
     "desc" => "Descendente"
-    );
+    ];
 
   /**
    * @var object
@@ -61,11 +61,11 @@ class RelatorioCreditos
     public function __construct()
     {
 
-        $this->oFiltros = (object) array(
+        $this->oFiltros = (object) [
         "tipo_origem" => "numcgm",
         "ordenador" => "id",
         "ordenacao" => "asc"
-        );
+        ];
     }
 
   /**

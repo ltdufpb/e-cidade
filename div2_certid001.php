@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -61,7 +61,7 @@ function js_emite(){
 	    </td>
 	    <td>
 	    <?php 
-          $tipo_ordem = array("t"=>"Todas","d"=>"Dívida Ativa","p"=>"Parceladas");
+          $tipo_ordem = ["t"=>"Todas","d"=>"Dívida Ativa","p"=>"Parceladas"];
           db_select("ordem",$tipo_ordem,true,2);
         ?>
 	    </td>
@@ -88,7 +88,7 @@ function js_emite(){
 	    </td>
 	    <td>
 	      <?php  
-	        $tipo_ordem1 = array("r"=>"Resumido","c"=>"Completo");
+	        $tipo_ordem1 = ["r"=>"Resumido","c"=>"Completo"];
 	        db_select("rela",$tipo_ordem1,true,2); 
 	      ?>
 	    </td>
@@ -99,7 +99,7 @@ function js_emite(){
 	    </td>
 	    <td>
 	      <?php 
-            $tipo_inicial1 = array("0"=>"Todas","1"=>"Com Inicial Emitida", "2"=>"Sem Inicial Emitida");
+            $tipo_inicial1 = ["0"=>"Todas","1"=>"Com Inicial Emitida", "2"=>"Sem Inicial Emitida"];
 	        db_select("inicial",$tipo_inicial1,true,2);
           ?>
 	    </td>

@@ -65,8 +65,8 @@ foreach ( $aFolhas as $oFolha ) {
 
   $sSqlRegistros         = $oDaoFolhaPagamento->sql_query_registros_consulta_complementar($oFolha->rh143_folhapagamento, $bases, $matricula);
   $rsRegistros           = db_query($sSqlRegistros);
-  $oFolha->aDadosValores = array();
-  $oFolha->aDadosBases   = array();
+  $oFolha->aDadosValores = [];
+  $oFolha->aDadosBases   = [];
   foreach ( db_utils::getCollectionByRecord($rsRegistros) as $oDados ) {
 
     if ( $oDados->ordem == 1 ) {

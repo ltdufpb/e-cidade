@@ -41,7 +41,7 @@ if (!isset($oPost->json)) {
 
 $oPost->json = str_replace("\\","",$oPost->json);
 $oParametro  = JSON::create()->parse($oPost->json);
-$oRetorno    = (object)array( 'erro' => false, 'mensagem'=> '');
+$oRetorno    = (object)[ 'erro' => false, 'mensagem'=> ''];
 
 try {
 
@@ -145,19 +145,16 @@ function salvar($item) {
     throw new BusinessException("O Grupo ({$item->y118_descricao}) não foi salvo.");
   }
 
-  return db_utils::makeFromRecord($rsDadosInseridos, function($dadosInseridos) {
-
-    return (object)array(
-      "y118_sequencial"   => $dadosInseridos->y118_sequencial,
-      "y118_descricao"    => mb_strtoupper($dadosInseridos->y118_descricao),
-      "y118_inflator"     => $dadosInseridos->y118_inflator,
-      "y118_procedencia"  => $dadosInseridos->y118_procedencia,
-      "i01_codigo"        => $dadosInseridos->i01_codigo,
-      "i01_descr"         => mb_strtoupper($dadosInseridos->i01_descr),
-      "dv09_procdiver"    => $dadosInseridos->dv09_procdiver,
-      "dv09_descr"        => mb_strtoupper($dadosInseridos->dv09_descr),
-    );
-  });
+  return db_utils::makeFromRecord($rsDadosInseridos, fn($dadosInseridos) => (object)[
+    "y118_sequencial"   => $dadosInseridos->y118_sequencial,
+    "y118_descricao"    => mb_strtoupper((string) $dadosInseridos->y118_descricao),
+    "y118_inflator"     => $dadosInseridos->y118_inflator,
+    "y118_procedencia"  => $dadosInseridos->y118_procedencia,
+    "i01_codigo"        => $dadosInseridos->i01_codigo,
+    "i01_descr"         => mb_strtoupper((string) $dadosInseridos->i01_descr),
+    "dv09_procdiver"    => $dadosInseridos->dv09_procdiver,
+    "dv09_descr"        => mb_strtoupper((string) $dadosInseridos->dv09_descr),
+  ]);
 }
 
 function excluir($item) {

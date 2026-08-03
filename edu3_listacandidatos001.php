@@ -381,7 +381,7 @@ function fillSelectFromArray2(selectCtrl, itemArray, goodPrompt, badPrompt, defa
        $sql     .= "          OR alunocurso.ed56_c_situacao='REPETENTE'))) ";
        $sql     .= "  ORDER BY ed52_i_codigo, ed56_c_situacao, ed11_i_sequencia ";
        $result   = db_query( $sql );
-       $linhas   = pg_numrows( $result );
+       $linhas   = pg_num_rows( $result );
 
        if ( $linhas > 0 ) {
 

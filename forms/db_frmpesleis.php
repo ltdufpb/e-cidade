@@ -49,7 +49,7 @@ db_input('anos_perc_inf',6,0,true,'hidden',3,"");
     </td>
     <td>
 <?php 
-$x = Array("A"=>"Avanço", "G"=>"Gratificação", "C"=>"Cargos", "O"=>"Outros");
+$x = ["A"=>"Avanço", "G"=>"Gratificação", "C"=>"Cargos", "O"=>"Outros"];
 db_select('h08_tipo',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -214,7 +214,7 @@ function js_preenchepesquisa(chave){
   db_iframe_leis.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

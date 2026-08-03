@@ -28,7 +28,7 @@
 include(modification("fpdf151/pdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_renovacoes_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clrenovacoes = new cl_renovacoes;
 $Sql = "select cgm.z01_nome, 
                cgm1.z01_nome as nome,
@@ -62,10 +62,10 @@ $Sql = "select cgm.z01_nome,
   $pdf->cell(190,30,"Renovação de Sepultura",0,1,"C",0);
   $pdf->setfont('arial','',8);
   $pdf->cell(190,4,"Autorizo, através deste o(a) Sr.(a) ".$z01_nome,0,1,"L",0);
-  $pdf->cell(190,4,"A efetuar a renovação da campa onde esta sepultado o(a) Sr.(a) ".trim($nome),0,1,"L",0);
-  $pdf->cell(190,4,"Identificação da campa: ".trim($cm19_c_descr).", quadra: ".$cm22_c_quadra.", lote: ".$cm23_i_lotecemit.". Falecido em ".$obito,0,1,"L",0);
-  if(trim($cm07_c_motivo)!=""){
-   $pdf->cell(190,4,"Motivo desta renovacao: ".trim($cm07_c_motivo),0,1,"L",0);
+  $pdf->cell(190,4,"A efetuar a renovação da campa onde esta sepultado o(a) Sr.(a) ".trim((string) $nome),0,1,"L",0);
+  $pdf->cell(190,4,"Identificação da campa: ".trim((string) $cm19_c_descr).", quadra: ".$cm22_c_quadra.", lote: ".$cm23_i_lotecemit.". Falecido em ".$obito,0,1,"L",0);
+  if(trim((string) $cm07_c_motivo)!=""){
+   $pdf->cell(190,4,"Motivo desta renovacao: ".trim((string) $cm07_c_motivo),0,1,"L",0);
   }
   $pdf->cell(190,10,"",0,1,"L",0);
   $pdf->cell(190,4,"Próximo vencimento: ".$vencto,0,1,"L",0);

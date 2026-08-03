@@ -36,7 +36,7 @@ $clcarface   = new cl_carface;
 $clcfiptu    = new cl_cfiptu;
 $clfacevalor = new cl_facevalor;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

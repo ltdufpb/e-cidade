@@ -84,13 +84,13 @@ function nova_linha($sLote, $sQuantidade, $sUnidade, $dData_validade, $sSituacao
 function formata_data($dData, $iTipo = 1) {
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
  
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = $dData[2].'/'.$dData[1].'/'.$dData[0];
  return $dData;
 
@@ -248,7 +248,7 @@ for($iCount_linhas = 0; $iCount_linhas < $iLinhas; $iCount_linhas++) {
   nova_linha(empty($m77_lote) ? '&nbsp;' : $m77_lote ,
              empty($m70_quant) ? '&nbsp;' : $m70_quant,
              empty($unidade) ? '&nbsp;' : $unidade,
-             empty($m77_dtvalidade) ? '&nbsp;' : formata_data($m77_dtvalidade,2),
+             empty($m77_dtvalidade) ? '&nbsp;' : formata_data($m77_dtvalidade),
              empty($situacao) ? '&nbsp;' : $situacao,
              empty($dias) ? '&nbsp;' : $dias);
   

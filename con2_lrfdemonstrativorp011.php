@@ -36,7 +36,7 @@ require_once(modification("libs/db_liborcamento.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 (string)$sRelNome = '';
 
 $iAnoUsu = db_getsession("DB_anousu");
@@ -96,7 +96,7 @@ $lPrefeitura  = $oInstituicao->prefeitura();
 
                   $oRelatorio = new relatorioContabil(97, false);
                   $aPeriodos = $oRelatorio->getPeriodos();
-                  $aListaPeriodos = array();
+                  $aListaPeriodos = [];
                   foreach ($aPeriodos as $oPeriodo) {
                     $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;
                   }

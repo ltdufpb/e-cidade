@@ -40,7 +40,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('j14_nome');
 
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $dbwhere="";
 $and="";
 
@@ -74,12 +74,12 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',10);
 //echo $numrows01;
 
-$pdf->SetWidths(array(140,140));
-$pdf->SetAligns(array('J','J'));
+$pdf->SetWidths([140,140]);
+$pdf->SetAligns(['J','J']);
 
-$tottlorgao = Array();
-$tottoorgao = Array();
-$tottquanto = Array();
+$tottlorgao = [];
+$tottoorgao = [];
+$tottquanto = [];
 $intanos    = "";
 
 $orgao_antigo = "";
@@ -103,9 +103,9 @@ for($x=0; $x<$numrows01; $x++){
 
       $result = $clorcppa->sql_record($clorcppa->sql_query_compl($o23_codppa,"o23_codleippa,o21_anoini,o21_anofim"));
       db_fieldsmemory($result,0);
-      $arr_ano_livre = array();
-      $arr_ano_outro = array();
-      $arr_qua = array();
+      $arr_ano_livre = [];
+      $arr_ano_outro = [];
+      $arr_qua = [];
       for($s=$o21_anoini; $s<= $o21_anofim; $s++){
 	 $arr_ano_livre[$s]='0.00';
 	 $arr_ano_outro[$s]='0.00';
@@ -180,9 +180,9 @@ for($x=0; $x<$numrows01; $x++){
 
   $result = $clorcppa->sql_record($clorcppa->sql_query_compl($o23_codppa,"o23_codleippa,o21_anoini,o21_anofim"));
   db_fieldsmemory($result,0);
-  $arr_ano_livre = array();
-  $arr_ano_outro = array();
-  $arr_qua = array();  
+  $arr_ano_livre = [];
+  $arr_ano_outro = [];
+  $arr_qua = [];  
   $intanos    = $o21_anoini."-".$o21_anofim;
   for($s=$o21_anoini; $s<= $o21_anofim; $s++){
      $arr_ano_livre[$s]='0.00';
@@ -255,9 +255,9 @@ if(isset($orgao_antigo)){
 
     $result = $clorcppa->sql_record($clorcppa->sql_query_compl($o23_codppa,"o23_codleippa,o21_anoini,o21_anofim"));
     db_fieldsmemory($result,0);
-    $arr_ano_livre = array();
-    $arr_ano_outro = array();
-    $arr_qua = array();
+    $arr_ano_livre = [];
+    $arr_ano_outro = [];
+    $arr_qua = [];
     for($s=$o21_anoini; $s<= $o21_anofim; $s++){
        $arr_ano_livre[$s]='0.00';
        $arr_ano_outro[$s]='0.00';
@@ -311,7 +311,7 @@ $pdf->cell(40,$alt,"Próprios",1,0,"C",0);
 $pdf->cell(40,$alt,"Outros",1,0,"C",0);
 $pdf->cell(40,$alt,"Total",1,1,"C",0);
 
-$setano = split("-",$intanos);
+$setano = preg_split("#\\-#m",$intanos);
 $anoseti = $setano[0];
 $anosetf = $setano[1];
 $tot_livre = 0;

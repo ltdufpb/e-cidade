@@ -124,14 +124,14 @@ class VinculoPlanoOrcamentoPcasp {
 
     if (count($aHeader) == 1) {
 
-      $oParametrosMensagem = (object)array('caminho_arquivo' => $this->getCaminhoArquivo());
+      $oParametrosMensagem = (object)['caminho_arquivo' => $this->getCaminhoArquivo()];
       throw new FileException(_M(VinculoPlanoOrcamentoPcasp::CAMINHO_MENSAGEM.'arquivo_vinculo_invalido',
                                  $oParametrosMensagem));
     }
 
     if (trim($aHeader[0]) != 'plano_orcamentario' || trim($aHeader[1]) != 'pcasp') {
 
-      $oParametrosMensagem = (object)array('caminho_arquivo' => $this->getCaminhoArquivo());
+      $oParametrosMensagem = (object)['caminho_arquivo' => $this->getCaminhoArquivo()];
       throw new FileException(_M(VinculoPlanoOrcamentoPcasp::CAMINHO_MENSAGEM.'arquivo_vinculo_invalido',
                                  $oParametrosMensagem));
     }

@@ -33,29 +33,22 @@ class ManutencaoPlanoOrcamentarioDespesaService extends ManutencaoPlanoOrcamenta
         });
 
         // remove da lista contas com previsão de despesa
-        $despesasExcluir = $despesasExcluir->reject(function (ConplanoOrcamento $conta) use ($balancete) {
+        $despesasExcluir = $despesasExcluir->reject(
             //localiza no balancete a conta
-            return $this->temMovimentacao($balancete, $conta);
-        });
+            fn(ConplanoOrcamento $conta) => $this->temMovimentacao($balancete, $conta));
 
         $elementosComEstimativa = DetalhamentoDespesa::query()
             ->where('pl20_anoorcamento', $exercicio)
             ->get()
             ->filter(function (DetalhamentoDespesa $detalhamentoDespesa) {
-                $valores = $detalhamentoDespesa->getValores()->filter(function (Valor $valor) {
-                    return $valor->pl10_valor > 0;
-                });
+                $valores = $detalhamentoDespesa->getValores()->filter(fn(Valor $valor) => $valor->pl10_valor > 0);
 
                 return !$valores->isEmpty();
-            })->map(function (DetalhamentoDespesa $detalhamentoDespesa) {
-                return $detalhamentoDespesa->getNaturezaDespesa()->o56_elemento;
-            })
+            })->map(fn(DetalhamentoDespesa $detalhamentoDespesa) => $detalhamentoDespesa->getNaturezaDespesa()->o56_elemento)
             ->toArray();
 
         // filtra se a receita foi usada no planejamento
-        $despesasExcluir = $despesasExcluir->reject(function (ConplanoOrcamento $plano) use ($elementosComEstimativa) {
-            return in_array($plano->c60_estrut, $elementosComEstimativa);
-        });
+        $despesasExcluir = $despesasExcluir->reject(fn(ConplanoOrcamento $plano) => in_array($plano->c60_estrut, $elementosComEstimativa));
 
         return $despesasExcluir;
     }
@@ -67,9 +60,7 @@ class ManutencaoPlanoOrcamentarioDespesaService extends ManutencaoPlanoOrcamenta
     public function executaBalanceteDespesa($exercicio)
     {
         $instituicoes = DBConfig::select(['codigo', 'nomeinst', 'prefeitura'])->get();
-        $prefeitura = $instituicoes->filter(function (DBConfig $config) {
-            return $config->prefeitura;
-        })->shift();
+        $prefeitura = $instituicoes->filter(fn(DBConfig $config) => $config->prefeitura)->shift();
 
         $filtros = [
             "instituicoes" => JSON::create()->stringify($instituicoes->toArray()),
@@ -86,6 +77,7 @@ class ManutencaoPlanoOrcamentarioDespesaService extends ManutencaoPlanoOrcamenta
         return $service->getDadosProcessados();
     }
 
+    #[\Override]
     public function excluirContas($contas)
     {
         $this->exercicio = $contas[0]->c60_anousu;
@@ -111,6 +103,7 @@ class ManutencaoPlanoOrcamentarioDespesaService extends ManutencaoPlanoOrcamenta
         $this->removerContasPai($contas);
     }
 
+    #[\Override]
     protected function removerVinculos(array $contas)
     {
         $this->removeVinculosDespesa($contas);
@@ -119,6 +112,7 @@ class ManutencaoPlanoOrcamentarioDespesaService extends ManutencaoPlanoOrcamenta
         $this->removeVinculosContabilidade($contas);
     }
 
+    #[\Override]
     protected function removeVinculosOrcamento(array $codigosContas)
     {
         parent::removeVinculosOrcamento($codigosContas);
@@ -153,9 +147,7 @@ class ManutencaoPlanoOrcamentarioDespesaService extends ManutencaoPlanoOrcamenta
             ->where('o08_ano', '>=', $this->exercicio)
             ->whereIn('o08_elemento', $contas)
             ->get()
-            ->map(function ($ppadotacao) {
-                return $ppadotacao->o08_sequencial;
-            })->toArray();
+            ->map(fn($ppadotacao) => $ppadotacao->o08_sequencial)->toArray();
 
         DB::table('orcamento.ppadotacaoorcdotacao')
             ->whereIn('o19_ppadotacao', $codigosPPA)

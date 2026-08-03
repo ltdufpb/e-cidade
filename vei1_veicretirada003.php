@@ -40,7 +40,7 @@ require_once(modification("classes/db_veicdevolucao_classe.php"));
 db_app::import("veiculos.*");
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clveicretirada  = new cl_veicretirada;

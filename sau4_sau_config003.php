@@ -44,7 +44,7 @@ $lAlterado  = false;
 
 if( isset( $alterar ) ) {
 
-  $oSauConfig->s103_c_sgdb = addslashes($s103_c_sgdb);
+  $oSauConfig->s103_c_sgdb = addslashes((string) $s103_c_sgdb);
 
   if( isset( $s103_c_ipauto ) && trim( $s103_c_ipauto ) == 'on' ) {
 

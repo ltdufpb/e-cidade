@@ -36,7 +36,7 @@ $cldb_projetoscliente = new cl_db_projetoscliente;
   /*
 $cldb_projetosativcli = new cl_db_projetosativcli;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){

@@ -107,7 +107,7 @@ class Lote extends BaseAbstract
     public function getValorHomologado()
     {
         $nVersao = floatval($this->oConfiguracao->getVersao());
-        $aModalidades = array('PRD', 'PRI', 'RPO', 'CPC', 'MAI', 'CPP');
+        $aModalidades = ['PRD', 'PRI', 'RPO', 'CPC', 'MAI', 'CPP'];
         $sModalidade = $this->oLicitacao->getModalidade()->getSiglaTipoCompraTribunal();
         if ($nVersao >= 1.3 && in_array($sModalidade, $aModalidades)) {
             return null;
@@ -155,7 +155,7 @@ class Lote extends BaseAbstract
 
         $nVersao = floatval($this->oConfiguracao->getVersao());
         if ($nVersao >= 1.3 &&
-            in_array($this->oLicitacao->getModalidade()->getSiglaTipoCompraTribunal(), array("PRD", "PRI", "RPO")) &&
+            in_array($this->oLicitacao->getModalidade()->getSiglaTipoCompraTribunal(), ["PRD", "PRI", "RPO"]) &&
             $oJulgamento->isLote()
         ) {
             $aFornecedorBusca = $oOrcamentoLicitacao->getFornecedorVencedor();
@@ -174,7 +174,7 @@ class Lote extends BaseAbstract
         if ($nVersao >= 1.3 &&
            !in_array(
                $this->oLicitacao->getModalidade()->getSiglaTipoCompraTribunal(),
-               array("PRD", "PRI", "RPO", "CPC", "CPP")
+               ["PRD", "PRI", "RPO", "CPC", "CPP"]
            ) &&
            $oJulgamento->isLote()) {
             $aFornecedorBusca = $oOrcamentoLicitacao->getFornecedorVencedor();
@@ -252,7 +252,7 @@ class Lote extends BaseAbstract
     {
         $nivelJulgamento = $licitacao->obterNivelJulgamento();
         $siglaTipoCompraTribunal = $licitacao->getModalidade()->getSiglaTipoCompraTribunal();
-        $modalidades = array('RIN', 'CNC', 'CNV', 'PRE', 'PRP', 'TMP', 'RDC', 'RDE', 'CHP', 'EST', 'ESE');
+        $modalidades = ['RIN', 'CNC', 'CNV', 'PRE', 'PRP', 'TMP', 'RDC', 'RDE', 'CHP', 'EST', 'ESE'];
 
         if ($nivelJulgamento == 'L' && in_array($siglaTipoCompraTribunal, $modalidades)) {
             return $licitacao->obterTipoBeneficioMicroempresaEmpresaPequenoPorte();

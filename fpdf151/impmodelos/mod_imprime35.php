@@ -16,7 +16,7 @@ $cldb_config = new cl_db_config;
   global $logo;
   $resinst = $cldb_config->sql_record($cldb_config->sql_query_file(db_getsession("DB_instit"), 'logo'));
 	db_fieldsmemory($resinst,0);
-  $logofundo = substr($logo,0,strpos($logo,"."));
+  $logofundo = substr((string) $logo,0,strpos((string) $logo,"."));
 
   /*   F U N D O   D O   D O C U M E N T O  */
   		
@@ -164,7 +164,7 @@ $cldb_config = new cl_db_config;
 	       	$this->objpdf->setx(15);
 	        $obs = $this->obsativ;
 	        $this->objpdf->Cell(15,4,"",0,0,"C",0);
-	        $this->objpdf->Cell(164,4,"OBS: ".substr($obs,0,65).(strlen($obs) > 65 ? "...":""),0,1,"L",0);
+	        $this->objpdf->Cell(164,4,"OBS: ".substr((string) $obs,0,65).(strlen((string) $obs) > 65 ? "...":""),0,1,"L",0);
 	        }else{
 		    	$this->objpdf->setx(15);
 		     	$this->objpdf->Cell(15,4,"",0,0,"C",0);
@@ -225,7 +225,7 @@ $cldb_config = new cl_db_config;
            }
        $alt = 0; 
 	   for ($i=0; $i < $num_outras; $i++) {
-          
+
              $yyy = $this->objpdf->gety();
 		     $chave=key($this->outrasativs);
 		     $this->objpdf->SetFont('Arial','',9);
@@ -267,7 +267,7 @@ $cldb_config = new cl_db_config;
 			 $x=$x+2;
 		     next($this->outrasativs);
 	         $yyyatual = $this->objpdf->gety();
-			 
+
 		   if ( $i == 7 || $yyyatual >= 250) {
 		   	 if ($i == 7) {
 		   	   $alt = 5; 	
@@ -327,11 +327,11 @@ $cldb_config = new cl_db_config;
 //		db_criatabela($resparag);exit;
 //		die($sqlparag);
 
-		if (pg_numrows($resparag) == 0) {
+		if (pg_num_rows($resparag) == 0) {
 			db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento do alvara!');
 			exit;
 		}
-		$numrows = pg_numrows($resparag);
+		$numrows = pg_num_rows($resparag);
 		
 		$linha  = $this->objpdf->getY()+10;
 		$colpri = $coluna;

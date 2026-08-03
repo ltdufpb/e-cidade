@@ -28,24 +28,24 @@ class M8546MenusRegimeCompetencia extends PostgresMigration
     public function up()           
     {
 
-      $table    = $this->table('db_itensmenu', array('schema' => 'configuracoes'));
-      $aColumns = array('id_item', 'descricao' ,'help' ,'funcao' ,'itemativo' ,'manutencao' ,'desctec' ,'libcliente' );
-      $aValues  = array(
-        array(10417 ,'Regime de Competência' ,'Rotinas para o regime de competência' ,'' ,'1' ,'1' ,'Rotinas para o regime de competência' ,'true' ),
-        array(10418 ,'Implantação de Contratos em Execução' ,'Implantação de Contratos em Execução' ,'con4_implantacaoregimecompetencia.php' ,'1' ,'1' ,'Implantação de Contratos em Execução' ,'true')
-      );
+      $table    = $this->table('db_itensmenu', ['schema' => 'configuracoes']);
+      $aColumns = ['id_item', 'descricao' ,'help' ,'funcao' ,'itemativo' ,'manutencao' ,'desctec' ,'libcliente' ];
+      $aValues  = [
+        [10417 ,'Regime de Competência' ,'Rotinas para o regime de competência' ,'' ,'1' ,'1' ,'Rotinas para o regime de competência' ,'true' ],
+        [10418 ,'Implantação de Contratos em Execução' ,'Implantação de Contratos em Execução' ,'con4_implantacaoregimecompetencia.php' ,'1' ,'1' ,'Implantação de Contratos em Execução' ,'true']
+      ];
       
       $table->insert($aColumns, $aValues);
       $table->saveData();
 
-      $table    = $this->table('db_menu', array('schema' => 'configuracoes'));
-      $aColumns = array('id_item', 'id_item_filho', 'menusequencia', 'modulo');
-      $aValues  = array(
-        array(32    ,10417 ,375  ,8251),
-        array(10417 ,8580 , 1  ,8251), 
-        array(10417 ,10418 ,2 ,8251),
+      $table    = $this->table('db_menu', ['schema' => 'configuracoes']);
+      $aColumns = ['id_item', 'id_item_filho', 'menusequencia', 'modulo'];
+      $aValues  = [
+        [32    ,10417 ,375  ,8251],
+        [10417 ,8580 , 1  ,8251], 
+        [10417 ,10418 ,2 ,8251],
        
-      );
+      ];
       $table->insert($aColumns, $aValues);
       $table->saveData();
       
@@ -60,11 +60,11 @@ class M8546MenusRegimeCompetencia extends PostgresMigration
       $this->execute("delete from db_menu where id_item_filho = 10418 AND modulo = 8251");
       $this->execute("delete from db_itensmenu where id_item in(10417, 10418)");
       
-      $table    = $this->table('db_menu', array('schema' => 'configuracoes'));
-      $aColumns = array('id_item', 'id_item_filho', 'menusequencia', 'modulo');
-      $aValues  = array(                
-        array(32 ,8580 , 375 ,8251),     
-      );
+      $table    = $this->table('db_menu', ['schema' => 'configuracoes']);
+      $aColumns = ['id_item', 'id_item_filho', 'menusequencia', 'modulo'];
+      $aValues  = [                
+        [32 ,8580 , 375 ,8251],     
+      ];
       $table->insert($aColumns, $aValues);
       $table->saveData();
       

@@ -36,7 +36,7 @@ include(modification("classes/db_listainscr_classe.php"));
 include(modification("classes/db_escrito_classe.php"));
 include(modification("libs/smtp.class.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oGet  = db_utils::postMemory($_GET);
 $oPost = db_utils::postMemory($_POST);
@@ -48,33 +48,33 @@ $clescrito = new cl_escrito;
 $sData = date("Y-m-d",db_getsession("DB_datausu"));
 
 if(isset($acumula)&&!empty($acumula)){
- $matriz = explode("|",$acumula);
+ $matriz = explode("|",(string) $acumula);
 
  for ($m = 0; $m < count($matriz)-1; $m++) {
   $rsListaInscrCab = $cllistainscrcab->sql_record($cllistainscrcab->sql_query("","*","","p11_codigo = $matriz[$m]"));
   $rsListaInscr = $cllistainscr->sql_record($cllistainscr->sql_query("","","*","","p12_codigo = $matriz[$m]"));
   db_inicio_transacao();
   $sqlerro = false;
-  
+
   for ($y = 0; $y < $cllistainscr->numrows; $y++) {
      $oLista = db_utils::fieldsMemory($rsListaInscr,$y);
-     
+
      $sqlVerificaEscrito  = "  select *                                   ";
      $sqlVerificaEscrito .= "    from escrito                             ";
      $sqlVerificaEscrito .= "   where q10_numcgm = {$oLista->p11_numcgm}  ";
      $sqlVerificaEscrito .= "     and q10_inscr  = {$oLista->p12_inscr}   "; 
-    
+
      $rsVerificaEscrito = db_query($sqlVerificaEscrito);
-     $iVerificaEscrito  = pg_numrows($rsVerificaEscrito);
-        
+     $iVerificaEscrito  = pg_num_rows($rsVerificaEscrito);
+
 	 if (isset($oLista->p12_tipolanc) && $oLista->p12_tipolanc == 1) {
         $sqlEscrito  = "  select q10_inscr                         ";
         $sqlEscrito .= "    from escrito                           ";
         $sqlEscrito .= "   where q10_inscr = {$oLista->p12_inscr}  ";
-                                            
+
         $rsEscrito = db_query($sqlEscrito);
-        $iEscrito  = pg_numrows($rsEscrito);
-        
+        $iEscrito  = pg_num_rows($rsEscrito);
+
         if ($iEscrito > 0) {
            $sqlVerificaNull  = "  select q10_inscr,                        ";
            $sqlVerificaNull .= "         q10_numcgm,                       "; 
@@ -82,9 +82,9 @@ if(isset($acumula)&&!empty($acumula)){
            $sqlVerificaNull .= "    from escrito                           "; 
            $sqlVerificaNull .= "   where q10_inscr  = {$oLista->p12_inscr} "; 
            $sqlVerificaNull .= "     and q10_dtfim is null                 ";
-                                               
+
            $rsVerificaNull = db_query($sqlVerificaNull);
-           $iVerificaNull  = pg_numrows($rsVerificaNull);
+           $iVerificaNull  = pg_num_rows($rsVerificaNull);
 
            if ($iVerificaNull > 0) {
            	 $oVerifNullEscrito = db_utils::fieldsMemory($rsVerificaNull,0);
@@ -109,13 +109,13 @@ if(isset($acumula)&&!empty($acumula)){
 	              $clescrito->q10_dtini  = $sData;
 	              $clescrito->q10_dtfim  = null;
 	              $clescrito->incluir(null);
-	
+
 	            if ($clescrito->erro_status == 0) {
 	              $sqlerro=true;
 	              $erro_msg = $clescrito->erro_msg;           
 	            }            
 	          }
-           
+
         } else {      	        	
         	if ($sqlerro == false) {
 	    	   $clescrito->q10_inscr  = $oLista->p12_inscr;
@@ -123,18 +123,18 @@ if(isset($acumula)&&!empty($acumula)){
 	           $clescrito->q10_dtini  = $sData;
 	           $clescrito->q10_dtfim  = null;
 	           $clescrito->incluir(null);
-	
+
 	          if ($clescrito->erro_status == 0) {
 	              $sqlerro=true;
 	              $erro_msg = $clescrito->erro_msg;           
 	          }            
 	        }
         }	  
-       
+
 	 } else if ( isset($oLista->p12_tipolanc) && $oLista->p12_tipolanc == 2 ) {
         if ($iVerificaEscrito > 0) {
 		   $oVerEscrito = db_utils::fieldsMemory($rsVerificaEscrito,0);
-		   	  
+
 		   	  if ( $oVerEscrito->q10_dtfim == "") {		   	  	
 				   if ($sqlerro == false) { 
 				   	  $clescrito->q10_inscr      = $oLista->p12_inscr;
@@ -142,7 +142,7 @@ if(isset($acumula)&&!empty($acumula)){
 		              $clescrito->q10_dtfim      = $sData;
 		              $clescrito->q10_sequencial = $oVerEscrito->q10_sequencial;
 		              $clescrito->alterar($oVerEscrito->q10_sequencial);
-		        
+
 				        if ($clescrito->erro_status == 0) {
 		                  $sqlerro=true;
 		                  $erro_msg = $clescrito->erro_msg;           
@@ -150,24 +150,24 @@ if(isset($acumula)&&!empty($acumula)){
 				   }
 		   	  }      
         }
-        
+
 	 }	 
-	  
+
 	  if ($sqlerro == false) {	  	
 		     $ip11_codigo = $matriz[$m];
 		     $cllistainscrcab->p11_processado = 't';
 		     $cllistainscrcab->p11_codigo     = $ip11_codigo;
 		     $cllistainscrcab->alterar($ip11_codigo);
-		     
+
 		   if ($cllistainscrcab->erro_status == 0) {
 		      $sqlerro=true;
 		      $erro_msg = $cllistainscrcab->erro_msg;           
 		   }   
 	  }	  
   }
-  
+
   db_fim_transacao($sqlerro);
-  
+
   if ($sqlerro == true) {
   	db_msgbox($erro_msg);
   }
@@ -176,13 +176,13 @@ if(isset($acumula)&&!empty($acumula)){
 
 if ($cllistainscrcab->erro_banco != "") {
   @$cllistainscrcab->erro();
-  
+
 } else {
-	
+
 //busca dados da instituição
 $sqlBuscaDadosInst = " select * from db_config where codigo = ".db_getsession('DB_instit');
 $rsBuscaDadosInst  = db_query($sqlBuscaDadosInst);
-$iBuscaDadosInst   = pg_numrows($rsBuscaDadosInst);
+$iBuscaDadosInst   = pg_num_rows($rsBuscaDadosInst);
 
 if ($iBuscaDadosInst > 0) {
 	 $oBuscaDadosInst = db_utils::fieldsMemory($rsBuscaDadosInst,0);
@@ -229,7 +229,7 @@ Não responda este e-mail, ele foi gerado automaticamente pelo Servidor.
 ";
   //encaminhar email
   $mailpref  = $oBuscaDadosInst->email;
-  $z01_email = pg_result($rsListaInscrCab,0,"z01_email");
+  $z01_email = pg_fetch_result($rsListaInscrCab,0,"z01_email");
   $headers   = "Content-Type:text";
   $oMail = new Smtp();
   $oMail->Send($z01_email,'Lista Liberada',$mensagem,$headers); 

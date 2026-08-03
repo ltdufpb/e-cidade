@@ -17,7 +17,7 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase
         $event->config->set('app.error.log', false);
         $entity = new Entity();
 
-        $this->assertFalse($event->execute(new ZendEvent('app.error', null, array($entity))));
+        $this->assertFalse($event->execute(new ZendEvent('app.error', null, [$entity])));
     }
 
     public function testFormatMessageWithEmptyEntity()
@@ -30,14 +30,14 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase
         $entity = new Entity();
         $entity->setTime($time);
 
-        $expected = strtr($mask, array(
+        $expected = strtr($mask, [
         '{date}' => date('Y-m-d H:i:s', $time),
         '{type}' => 'Unknown PHP error',
         '{message}' => '',
         '{file}' => '',
         '{line}' => '',
         '{trace}' => ''
-        ));
+        ]);
 
         $this->assertEquals($expected, $event->formatMessage($entity));
     }
@@ -61,14 +61,14 @@ class EventHandlerTest extends \PHPUnit_Framework_TestCase
         $traceMask = $event->config->get('app.error.log.mask.trace');
 
 
-        $expected = strtr($mask, array(
+        $expected = strtr($mask, [
         '{date}' => date('Y-m-d H:i:s', $time),
         '{type}' => 'E_ERROR',
         '{message}' => 'Test',
         '{file}' => $file,
         '{line}' => $line,
         '{trace}' => ''
-        ));
+        ]);
 
         $this->assertEquals($expected, $event->formatMessage($entity));
     }

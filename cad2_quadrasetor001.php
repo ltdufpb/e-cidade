@@ -33,8 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("classes/db_sanitario_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clsetor            = new cl_setor;
 $cliframe_seleciona = new cl_iframe_seleciona;

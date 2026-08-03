@@ -117,7 +117,7 @@ $clsetor->rotulo->label();
     function js_preenchepesquisa(chave) {
 
       db_iframe.hide();
-      location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+      location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
     }
 
     $('j30_codi').addClassName('field-size2');

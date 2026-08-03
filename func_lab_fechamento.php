@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_fechamento = new cl_lab_fechamento;
 $cllab_fechamento->rotulo->label("la54_i_codigo");
 $cllab_fechamento->rotulo->label("la54_c_descr");
@@ -83,7 +83,7 @@ $cllab_fechamento->rotulo->label("la54_c_descr");
     <td align="center" valign="top">
       <?php 
 
-      $aWhere = array();
+      $aWhere = [];
       if ( isset($sFechadas) && $sFechadas == 'S') {
         $aWhere[] = " exists (select 1 from lab_fechaconferencia where la58_i_fechamento = la54_i_codigo and la58_gerado is true) ";
       }
@@ -99,10 +99,10 @@ $cllab_fechamento->rotulo->label("la54_c_descr");
 
         $sWhere  = implode(" and ", $aWhere);
         $sql     = $cllab_fechamento->sql_query("",$campos,"la54_i_codigo", $sWhere);
-        $repassa = array();
+        $repassa = [];
 
         if (isset($chave_la54_i_codigo)) {
-          $repassa = array("chave_la54_i_codigo"=>$chave_la54_i_codigo,"chave_la54_i_codigo"=>$chave_la54_i_codigo);
+          $repassa = ["chave_la54_i_codigo"=>$chave_la54_i_codigo,"chave_la54_i_codigo"=>$chave_la54_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
 

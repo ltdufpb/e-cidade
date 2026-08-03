@@ -50,9 +50,9 @@ $iTipoConsulta     = $oDadosSolicitacao->pc30_consultarelatoriodepartamento;
 $iIdUsuario        = db_getsession("DB_id_usuario");
 
 $lNecessitaLiberarSolicitacao = $oDadosSolicitacao->pc30_liberado == 'f';
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_GET);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsolicita = new cl_solicita;
 $clsolicita->rotulo->label("pc10_numero");
@@ -227,12 +227,12 @@ $sWhereContrato = " and 1 = 1 ";
 
         } else if ( !empty($chave_pc10_data_inicial) ) {
 
-          $chave_pc10_data_inicial = implode('-', array_reverse(explode('/', $chave_pc10_data_inicial)));
+          $chave_pc10_data_inicial = implode('-', array_reverse(explode('/', (string) $chave_pc10_data_inicial)));
           $sql = $clsolicita->sql_query("",$campos,"pc10_numero desc "," pc10_data >= '$chave_pc10_data_inicial' $sWhereContrato ");
 
           if ( !empty($chave_pc10_data_final) ) {
 
-            $chave_pc10_data_final = implode('-', array_reverse(explode('/', $chave_pc10_data_final)));
+            $chave_pc10_data_final = implode('-', array_reverse(explode('/', (string) $chave_pc10_data_final)));
             $sWhere  = " pc10_data >= '$chave_pc10_data_inicial' AND pc10_data <= '$chave_pc10_data_final' ";
             $sWhere .= " {$where_depart} {$sFiltrarDepartamento}";
             $sql     = $clsolicita->sql_query("",$campos,"pc10_numero desc ",$sWhere . $sWhereContrato);
@@ -249,7 +249,7 @@ $sWhereContrato = " and 1 = 1 ";
         //   echo "<script>".$aux[0]."('$chave_pc10_numero',false);</script>";
         // }
 
-        db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",array(),false);
+        db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",[],false);
 
       } else {
 

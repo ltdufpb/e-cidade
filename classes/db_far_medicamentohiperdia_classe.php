@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE far_medicamentohiperdia
 class cl_far_medicamentohiperdia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $fa43_i_codigo = 0; 
-   var $fa43_c_codhiperdia = null; 
-   var $fa43_c_descr = null; 
-   var $fa43_n_dosagemmax = 0; 
+   public $fa43_i_codigo = 0; 
+   public $fa43_c_codhiperdia = null; 
+   public $fa43_c_descr = null; 
+   public $fa43_n_dosagemmax = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  fa43_i_codigo = int4 = Código 
                  fa43_c_codhiperdia = varchar(2) = Código Hiperdia 
                  fa43_c_descr = varchar(40) = Descrição 
                  fa43_n_dosagemmax = float4 = Dosagem máxima 
                  ";
    //funcao construtor da classe 
-   function cl_far_medicamentohiperdia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_medicamentohiperdia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_far_medicamentohiperdia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->fa43_i_codigo = pg_result($result,0,0); 
+       $this->fa43_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from far_medicamentohiperdia_fa43_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa43_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa43_i_codigo)){
          $this->erro_sql = " Campo fa43_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_far_medicamentohiperdia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "far_medicamentohiperdia ($this->fa43_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "far_medicamentohiperdia já Cadastrado";
@@ -180,13 +180,13 @@ class cl_far_medicamentohiperdia {
      $resaco = $this->sql_record($this->sql_query_file($this->fa43_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17229,'$this->fa43_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,3045,17229,'','".AddSlashes(pg_result($resaco,0,'fa43_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3045,17230,'','".AddSlashes(pg_result($resaco,0,'fa43_c_codhiperdia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3045,17231,'','".AddSlashes(pg_result($resaco,0,'fa43_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3045,17232,'','".AddSlashes(pg_result($resaco,0,'fa43_n_dosagemmax'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3045,17229,'','".AddSlashes(pg_fetch_result($resaco,0,'fa43_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3045,17230,'','".AddSlashes(pg_fetch_result($resaco,0,'fa43_c_codhiperdia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3045,17231,'','".AddSlashes(pg_fetch_result($resaco,0,'fa43_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3045,17232,'','".AddSlashes(pg_fetch_result($resaco,0,'fa43_n_dosagemmax'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_far_medicamentohiperdia {
       $this->atualizacampos();
      $sql = " update far_medicamentohiperdia set ";
      $virgula = "";
-     if(trim($this->fa43_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa43_i_codigo"])){ 
+     if(trim((string) $this->fa43_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa43_i_codigo"])){ 
        $sql  .= $virgula." fa43_i_codigo = $this->fa43_i_codigo ";
        $virgula = ",";
-       if(trim($this->fa43_i_codigo) == null ){ 
+       if(trim((string) $this->fa43_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "fa43_i_codigo";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_far_medicamentohiperdia {
          return false;
        }
      }
-     if(trim($this->fa43_c_codhiperdia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa43_c_codhiperdia"])){ 
+     if(trim((string) $this->fa43_c_codhiperdia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa43_c_codhiperdia"])){ 
        $sql  .= $virgula." fa43_c_codhiperdia = '$this->fa43_c_codhiperdia' ";
        $virgula = ",";
-       if(trim($this->fa43_c_codhiperdia) == null ){ 
+       if(trim((string) $this->fa43_c_codhiperdia) == null ){ 
          $this->erro_sql = " Campo Código Hiperdia nao Informado.";
          $this->erro_campo = "fa43_c_codhiperdia";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_far_medicamentohiperdia {
          return false;
        }
      }
-     if(trim($this->fa43_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa43_c_descr"])){ 
+     if(trim((string) $this->fa43_c_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa43_c_descr"])){ 
        $sql  .= $virgula." fa43_c_descr = '$this->fa43_c_descr' ";
        $virgula = ",";
-       if(trim($this->fa43_c_descr) == null ){ 
+       if(trim((string) $this->fa43_c_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "fa43_c_descr";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_far_medicamentohiperdia {
          return false;
        }
      }
-     if(trim($this->fa43_n_dosagemmax)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa43_n_dosagemmax"])){ 
+     if(trim((string) $this->fa43_n_dosagemmax)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa43_n_dosagemmax"])){ 
        $sql  .= $virgula." fa43_n_dosagemmax = $this->fa43_n_dosagemmax ";
        $virgula = ",";
-       if(trim($this->fa43_n_dosagemmax) == null ){ 
+       if(trim((string) $this->fa43_n_dosagemmax) == null ){ 
          $this->erro_sql = " Campo Dosagem máxima nao Informado.";
          $this->erro_campo = "fa43_n_dosagemmax";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_far_medicamentohiperdia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17229,'$this->fa43_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa43_i_codigo"]) || $this->fa43_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3045,17229,'".AddSlashes(pg_result($resaco,$conresaco,'fa43_i_codigo'))."','$this->fa43_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3045,17229,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa43_i_codigo'))."','$this->fa43_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa43_c_codhiperdia"]) || $this->fa43_c_codhiperdia != "")
-           $resac = db_query("insert into db_acount values($acount,3045,17230,'".AddSlashes(pg_result($resaco,$conresaco,'fa43_c_codhiperdia'))."','$this->fa43_c_codhiperdia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3045,17230,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa43_c_codhiperdia'))."','$this->fa43_c_codhiperdia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa43_c_descr"]) || $this->fa43_c_descr != "")
-           $resac = db_query("insert into db_acount values($acount,3045,17231,'".AddSlashes(pg_result($resaco,$conresaco,'fa43_c_descr'))."','$this->fa43_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3045,17231,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa43_c_descr'))."','$this->fa43_c_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa43_n_dosagemmax"]) || $this->fa43_n_dosagemmax != "")
-           $resac = db_query("insert into db_acount values($acount,3045,17232,'".AddSlashes(pg_result($resaco,$conresaco,'fa43_n_dosagemmax'))."','$this->fa43_n_dosagemmax',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3045,17232,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa43_n_dosagemmax'))."','$this->fa43_n_dosagemmax',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_far_medicamentohiperdia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17229,'$fa43_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,3045,17229,'','".AddSlashes(pg_result($resaco,$iresaco,'fa43_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3045,17230,'','".AddSlashes(pg_result($resaco,$iresaco,'fa43_c_codhiperdia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3045,17231,'','".AddSlashes(pg_result($resaco,$iresaco,'fa43_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3045,17232,'','".AddSlashes(pg_result($resaco,$iresaco,'fa43_n_dosagemmax'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3045,17229,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa43_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3045,17230,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa43_c_codhiperdia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3045,17231,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa43_c_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3045,17232,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa43_n_dosagemmax'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from far_medicamentohiperdia
@@ -376,7 +376,7 @@ class cl_far_medicamentohiperdia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:far_medicamentohiperdia";
@@ -391,7 +391,7 @@ class cl_far_medicamentohiperdia {
    function sql_query ( $fa43_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -412,7 +412,7 @@ class cl_far_medicamentohiperdia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_far_medicamentohiperdia {
    function sql_query_file ( $fa43_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -446,7 +446,7 @@ class cl_far_medicamentohiperdia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

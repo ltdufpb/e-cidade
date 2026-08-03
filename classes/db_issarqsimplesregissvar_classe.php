@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE issarqsimplesregissvar
 class cl_issarqsimplesregissvar { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q68_sequencial = 0; 
-   var $q68_issvar = 0; 
-   var $q68_issarqsimplesreg = 0; 
+   public $q68_sequencial = 0; 
+   public $q68_issvar = 0; 
+   public $q68_issarqsimplesreg = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q68_sequencial = int4 = Código Sequencial 
                  q68_issvar = int4 = Código do Issqn 
                  q68_issarqsimplesreg = int4 = Código do Registro 
                  ";
    //funcao construtor da classe 
-   function cl_issarqsimplesregissvar() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("issarqsimplesregissvar"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_issarqsimplesregissvar {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q68_sequencial = pg_result($result,0,0); 
+       $this->q68_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from issarqsimplesregissvar_q68_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q68_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q68_sequencial)){
          $this->erro_sql = " Campo q68_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_issarqsimplesregissvar {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "issarqsimplesregissvar ($this->q68_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "issarqsimplesregissvar já Cadastrado";
@@ -166,12 +166,12 @@ class cl_issarqsimplesregissvar {
      $resaco = $this->sql_record($this->sql_query_file($this->q68_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10734,'$this->q68_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1848,10734,'','".AddSlashes(pg_result($resaco,0,'q68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1848,10735,'','".AddSlashes(pg_result($resaco,0,'q68_issvar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1848,10736,'','".AddSlashes(pg_result($resaco,0,'q68_issarqsimplesreg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1848,10734,'','".AddSlashes(pg_fetch_result($resaco,0,'q68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1848,10735,'','".AddSlashes(pg_fetch_result($resaco,0,'q68_issvar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1848,10736,'','".AddSlashes(pg_fetch_result($resaco,0,'q68_issarqsimplesreg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_issarqsimplesregissvar {
       $this->atualizacampos();
      $sql = " update issarqsimplesregissvar set ";
      $virgula = "";
-     if(trim($this->q68_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q68_sequencial"])){ 
+     if(trim((string) $this->q68_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q68_sequencial"])){ 
        $sql  .= $virgula." q68_sequencial = $this->q68_sequencial ";
        $virgula = ",";
-       if(trim($this->q68_sequencial) == null ){ 
+       if(trim((string) $this->q68_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "q68_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_issarqsimplesregissvar {
          return false;
        }
      }
-     if(trim($this->q68_issvar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q68_issvar"])){ 
+     if(trim((string) $this->q68_issvar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q68_issvar"])){ 
        $sql  .= $virgula." q68_issvar = $this->q68_issvar ";
        $virgula = ",";
-       if(trim($this->q68_issvar) == null ){ 
+       if(trim((string) $this->q68_issvar) == null ){ 
          $this->erro_sql = " Campo Código do Issqn nao Informado.";
          $this->erro_campo = "q68_issvar";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_issarqsimplesregissvar {
          return false;
        }
      }
-     if(trim($this->q68_issarqsimplesreg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q68_issarqsimplesreg"])){ 
+     if(trim((string) $this->q68_issarqsimplesreg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q68_issarqsimplesreg"])){ 
        $sql  .= $virgula." q68_issarqsimplesreg = $this->q68_issarqsimplesreg ";
        $virgula = ",";
-       if(trim($this->q68_issarqsimplesreg) == null ){ 
+       if(trim((string) $this->q68_issarqsimplesreg) == null ){ 
          $this->erro_sql = " Campo Código do Registro nao Informado.";
          $this->erro_campo = "q68_issarqsimplesreg";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_issarqsimplesregissvar {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10734,'$this->q68_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q68_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1848,10734,'".AddSlashes(pg_result($resaco,$conresaco,'q68_sequencial'))."','$this->q68_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1848,10734,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q68_sequencial'))."','$this->q68_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q68_issvar"]))
-           $resac = db_query("insert into db_acount values($acount,1848,10735,'".AddSlashes(pg_result($resaco,$conresaco,'q68_issvar'))."','$this->q68_issvar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1848,10735,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q68_issvar'))."','$this->q68_issvar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q68_issarqsimplesreg"]))
-           $resac = db_query("insert into db_acount values($acount,1848,10736,'".AddSlashes(pg_result($resaco,$conresaco,'q68_issarqsimplesreg'))."','$this->q68_issarqsimplesreg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1848,10736,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q68_issarqsimplesreg'))."','$this->q68_issarqsimplesreg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_issarqsimplesregissvar {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10734,'$q68_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1848,10734,'','".AddSlashes(pg_result($resaco,$iresaco,'q68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1848,10735,'','".AddSlashes(pg_result($resaco,$iresaco,'q68_issvar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1848,10736,'','".AddSlashes(pg_result($resaco,$iresaco,'q68_issarqsimplesreg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1848,10734,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q68_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1848,10735,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q68_issvar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1848,10736,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q68_issarqsimplesreg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from issarqsimplesregissvar
@@ -345,7 +345,7 @@ class cl_issarqsimplesregissvar {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:issarqsimplesregissvar";
@@ -359,7 +359,7 @@ class cl_issarqsimplesregissvar {
    function sql_query ( $q68_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_issarqsimplesregissvar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_issarqsimplesregissvar {
    function sql_query_file ( $q68_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_issarqsimplesregissvar {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

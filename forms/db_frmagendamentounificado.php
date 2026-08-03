@@ -248,7 +248,7 @@ $oRotulo->label("s165_formatocomprovanteagend");
                     <td align="left">
                       <?php
                         echo $Ls165_formatocomprovanteagend;
-                        $aOpcoes = array("1"=>"PDF","2"=>"TXT");
+                        $aOpcoes = ["1"=>"PDF","2"=>"TXT"];
                         db_select('s165_formatocomprovanteagend', $aOpcoes, true, 1, "");
                       ?>
                     </td>

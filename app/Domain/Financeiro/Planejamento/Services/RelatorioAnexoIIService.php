@@ -69,6 +69,7 @@ class RelatorioAnexoIIService extends AnexosLDOService
         $this->parser = new XlsAnexoII();
     }
 
+    #[\Override]
     protected function processar()
     {
         parent::processar();

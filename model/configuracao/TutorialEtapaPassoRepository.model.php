@@ -2,7 +2,7 @@
 
 class TutorialEtapaPassoRepository {
 
-  private static $passos = array();
+  private static $passos = [];
 
   public static function getById($id) {
 
@@ -38,7 +38,7 @@ class TutorialEtapaPassoRepository {
     $etapaId = $etapa->getId();
 
     if (empty($etapaId)) {
-      return array();
+      return [];
     }
 
     $sqlPassos = "select * from db_tutorialetapapassos where db_tutorialetapa_id = {$etapaId} order by ordem";
@@ -50,7 +50,7 @@ class TutorialEtapaPassoRepository {
 
     $aDadosPassos = db_utils::getCollectionByRecord($rsPassos);
 
-    $aPassos = array();
+    $aPassos = [];
 
     foreach ($aDadosPassos as $obj) {
 

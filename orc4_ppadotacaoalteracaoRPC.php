@@ -37,10 +37,10 @@ $oJson    = new services_json();
 $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno = new stdClass();
 $oRetorno->status  = 1;
-$oRetorno->itens   = array();
+$oRetorno->itens   = [];
 $oRetorno->message = "";
 
-$aParametros         = db_stdClass::getParametro("orcparametro", array(db_getsession("DB_anousu")));
+$aParametros         = db_stdClass::getParametro("orcparametro", [db_getsession("DB_anousu")]);
 $oParametroOrcamento = $aParametros[0];
 if ($oParam->exec == "getElementosFromAcao") {
 
@@ -279,7 +279,7 @@ if ($oParam->exec == "getElementosFromAcao") {
     if ($oDaoPPaOrcDotacao->erro_status == 0) {
 
       $oRetorno->status  = 2;
-      $oRetorno->message = urlencode($oDaoPPaOrcDotacao->erro_msg);
+      $oRetorno->message = urlencode((string) $oDaoPPaOrcDotacao->erro_msg);
       $lSqlErro = true;
 
     }
@@ -294,7 +294,7 @@ if ($oParam->exec == "getElementosFromAcao") {
     if ($oDaoPPaEstimativaDespesa->erro_status == 0) {
 
       $oRetorno->status   = 2;
-      $oRetorno->message  = urlencode($oDaoPPaEstimativaDespesa->erro_msg);
+      $oRetorno->message  = urlencode((string) $oDaoPPaEstimativaDespesa->erro_msg);
       $lSqlErro = true;
 
     }
@@ -306,7 +306,7 @@ if ($oParam->exec == "getElementosFromAcao") {
     if ($oDaoPPaEstimativa->erro_status == 0) {
 
       $oRetorno->status  = 2;
-      $oRetorno->message = urlencode($oDaoPPaEstimativa->erro_msg);
+      $oRetorno->message = urlencode((string) $oDaoPPaEstimativa->erro_msg);
       $lSqlErro = true;
 
     }
@@ -317,7 +317,7 @@ if ($oParam->exec == "getElementosFromAcao") {
     if ($clppadotacao->erro_status == 0) {
 
       $oRetorno->status  = 2;
-      $oRetorno->message = urlencode($clppadotacao->erro_msg);
+      $oRetorno->message = urlencode((string) $clppadotacao->erro_msg);
       $lSqlErro = true;
 
     }
@@ -384,7 +384,7 @@ if ($oParam->exec == "getElementosFromAcao") {
     if ($oDaoPPaDotacao->erro_status == 0) {
 
       $oRetorno->status  = 2;
-      $oRetorno->message = urlencode($oDaoPPaDotacao->erro_msg);
+      $oRetorno->message = urlencode((string) $oDaoPPaDotacao->erro_msg);
       break;
     }
   }

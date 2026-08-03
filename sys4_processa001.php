@@ -103,8 +103,8 @@ function js_executa(valor){
 		        group by m.codmod,m.nomemod
    	                order by nomemod");
       echo  "<select  name='modulos' size='20' onchange=\"js_executa(document.form1.modulos.value);\">";
-     for ($i = 0;$i < pg_numrows($rsmod); $i++) {
-          echo "<option value='".trim(pg_result($rsmod,$i,"codmod"))."'>".trim(pg_result($rsmod,$i,"nomemod"))."</option>\n";  
+     for ($i = 0;$i < pg_num_rows($rsmod); $i++) {
+          echo "<option value='".trim(pg_fetch_result($rsmod,$i,"codmod"))."'>".trim(pg_fetch_result($rsmod,$i,"nomemod"))."</option>\n";  
       }
  ?>
   </select>

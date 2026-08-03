@@ -33,8 +33,8 @@ include(modification("classes/db_congrupo_classe.php"));
 include(modification("classes/db_conplanogrupo_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clcongrupo      = new cl_congrupo;
 $clconplanogrupo = new cl_conplanogrupo;
@@ -100,7 +100,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </html>
 <?php 
 if(isset($excluir)){
-  if (trim($erro_msg) != ""){
+  if (trim((string) $erro_msg) != ""){
     db_msgbox($erro_msg);
   }
 }

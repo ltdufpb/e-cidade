@@ -36,7 +36,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $z01_d_cadast_dia = date("d",db_getsession("DB_datausu"));
 $z01_d_cadast_mes = date("m",db_getsession("DB_datausu"));

@@ -36,15 +36,15 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 //db_postmemory($HTTP_POST_VARS,2);exit;
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
       $descr_inst .= $xvirg.$nomeinst ;
         $xvirg = ', ';
@@ -71,7 +71,7 @@ $head4 = "EXERCÍCIO: ".db_getsession("DB_anousu").$descr_mes;
 $head5 = "INSTITUIÇÕES : ".$descr_inst;
 //$head6 = "ANEXO 11 - ".strtoupper(db_mes($mes)) ;
 
-$nivela = substr($vernivel,0,1);
+$nivela = substr((string) $vernivel,0,1);
 
 $sele_ele = ' w.o58_instit in ('.str_replace('-',', ',$db_selinstit).') ';
 $anousu = db_getsession("DB_anousu");
@@ -110,7 +110,7 @@ $pdf->setfont('arial','B',9);
 $pdf->cell(50,6,'RECEITAS',0,1,"L",0);
 $pdf->setfont('arial','',8);
 $totalrec = 0;
-for($x = 0; $x < pg_numrows($resultrec);$x++){
+for($x = 0; $x < pg_num_rows($resultrec);$x++){
   db_fieldsmemory($resultrec,$x); 
   if ($tipo_saldo == 1){
      $valor = $saldo_inicial;
@@ -128,7 +128,7 @@ $pdf->setfont('arial','B',9);
 $pdf->cell(50,6,'DESPESAS',0,1,"L",0);
 $pdf->setfont('arial','',8);
 $totalele = 0;
-for($x = 0; $x < pg_numrows($resultele);$x++){
+for($x = 0; $x < pg_num_rows($resultele);$x++){
   db_fieldsmemory($resultele,$x);  
   $valor = $dot_ini;
   $pdf->cell(70,5,$descr,0,0,"L",0);

@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissgruposervico = new cl_issgruposervico;
 $clissgruposervico->rotulo->label("q126_sequencial");
 ?>
@@ -95,9 +95,9 @@ $clissgruposervico->rotulo->label("q126_sequencial");
            $sql = $clissgruposervico->sql_query_EstruturalExercicio("",$campos,"q136_exercicio, db121_estrutural",$sWhere );
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q126_sequencial)){
-          $repassa = array("chave_q126_sequencial"=>$chave_q126_sequencial,"chave_q126_sequencial"=>$chave_q126_sequencial);
+          $repassa = ["chave_q126_sequencial"=>$chave_q126_sequencial,"chave_q126_sequencial"=>$chave_q126_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

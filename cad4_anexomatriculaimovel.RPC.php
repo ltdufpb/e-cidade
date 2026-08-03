@@ -121,12 +121,12 @@ try{
             }
 
             $daoArquivoCdnIptuBase = new cl_arquivocdniptubase();
-            $sql = $daoArquivoCdnIptuBase->query(array(), "db59_sequencial, j151_descricao", "j151_iptubase = {$parametros->j01_matric}", null, 'db59_sequencial asc', 1);
+            $sql = $daoArquivoCdnIptuBase->query([], "db59_sequencial, j151_descricao", "j151_iptubase = {$parametros->j01_matric}", null, 'db59_sequencial asc', 1);
             $rs = db_query($sql);
-            $arquivos = array();
+            $arquivos = [];
 
             while ($arquivo = pg_fetch_array($rs)) {
-                $aux = array();
+                $aux = [];
                 $aux['db59_sequencial'] = $arquivo['db59_sequencial'];
                 $aux['j151_descricao'] = $arquivo['j151_descricao'];                
                 $arquivos[] = $aux;
@@ -173,7 +173,7 @@ try{
             $rs = db_query($sql);
             $arquivo = pg_fetch_array($rs);
 
-            $retorno->arquivo = pg_unescape_bytea($arquivo['db59_arquivobin']);
+            $retorno->arquivo = pg_unescape_bytea((string) $arquivo['db59_arquivobin']);
 
             $nomeArquivo = "tmp/{$arquivo['db59_nome']}";
 
@@ -205,7 +205,7 @@ try{
             }  
 
             $oArquivoCompactado = new ZipArchive();
-            $arrArquivosToDelete = Array();
+            $arrArquivosToDelete = [];
             $nomeZip = "tmp/ArquivoMatricula.zip";
             $open = $oArquivoCompactado->open($nomeZip, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);            
             
@@ -219,7 +219,7 @@ try{
                 $rs = db_query($sql);
                 $arquivo = pg_fetch_array($rs);
 
-                $retorno->arquivo = pg_unescape_bytea($arquivo['db59_arquivobin']);
+                $retorno->arquivo = pg_unescape_bytea((string) $arquivo['db59_arquivobin']);
 
                 $nomeArquivo = "tmp/{$arquivo['db59_nome']}";
 

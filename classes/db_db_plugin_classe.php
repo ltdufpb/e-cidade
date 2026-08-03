@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_plugin
 class cl_db_plugin {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $db145_sequencial = 0;
-   var $db145_nome = null;
-   var $db145_label = null;
-   var $db145_situacao = 'f';
+   public $db145_sequencial = 0;
+   public $db145_nome = null;
+   public $db145_label = null;
+   public $db145_situacao = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  db145_sequencial = int4 = Código 
                  db145_nome = varchar(200) = Nome do Plugin 
                  db145_label = varchar(200) = Label do Plugin 
                  db145_situacao = bool = Situação 
                  ";
    //funcao construtor da classe
-   function cl_db_plugin() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_plugin");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -119,10 +119,10 @@ class cl_db_plugin {
          $this->erro_status = "0";
          return false;
        }
-       $this->db145_sequencial = pg_result($result,0,0);
+       $this->db145_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from db_plugin_db145_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db145_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db145_sequencial)){
          $this->erro_sql = " Campo db145_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_db_plugin {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Plugins ($this->db145_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Plugins já Cadastrado";
@@ -185,13 +185,13 @@ class cl_db_plugin {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20423,'$this->db145_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3672,20423,'','".AddSlashes(pg_result($resaco,0,'db145_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3672,20424,'','".AddSlashes(pg_result($resaco,0,'db145_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3672,20425,'','".AddSlashes(pg_result($resaco,0,'db145_label'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3672,20426,'','".AddSlashes(pg_result($resaco,0,'db145_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3672,20423,'','".AddSlashes(pg_fetch_result($resaco,0,'db145_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3672,20424,'','".AddSlashes(pg_fetch_result($resaco,0,'db145_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3672,20425,'','".AddSlashes(pg_fetch_result($resaco,0,'db145_label'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3672,20426,'','".AddSlashes(pg_fetch_result($resaco,0,'db145_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -201,10 +201,10 @@ class cl_db_plugin {
       $this->atualizacampos();
      $sql = " update db_plugin set ";
      $virgula = "";
-     if(trim($this->db145_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db145_sequencial"])){
+     if(trim((string) $this->db145_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db145_sequencial"])){
        $sql  .= $virgula." db145_sequencial = $this->db145_sequencial ";
        $virgula = ",";
-       if(trim($this->db145_sequencial) == null ){
+       if(trim((string) $this->db145_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "db145_sequencial";
          $this->erro_banco = "";
@@ -214,10 +214,10 @@ class cl_db_plugin {
          return false;
        }
      }
-     if(trim($this->db145_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db145_nome"])){
+     if(trim((string) $this->db145_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db145_nome"])){
        $sql  .= $virgula." db145_nome = '$this->db145_nome' ";
        $virgula = ",";
-       if(trim($this->db145_nome) == null ){
+       if(trim((string) $this->db145_nome) == null ){
          $this->erro_sql = " Campo Nome do Plugin não informado.";
          $this->erro_campo = "db145_nome";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_db_plugin {
          return false;
        }
      }
-     if(trim($this->db145_label)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db145_label"])){
+     if(trim((string) $this->db145_label)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db145_label"])){
        $sql  .= $virgula." db145_label = '$this->db145_label' ";
        $virgula = ",";
-       if(trim($this->db145_label) == null ){
+       if(trim((string) $this->db145_label) == null ){
          $this->erro_sql = " Campo Label do Plugin não informado.";
          $this->erro_campo = "db145_label";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_db_plugin {
          return false;
        }
      }
-     if(trim($this->db145_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db145_situacao"])){
+     if(trim((string) $this->db145_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db145_situacao"])){
        $sql  .= $virgula." db145_situacao = '$this->db145_situacao' ";
        $virgula = ",";
-       if(trim($this->db145_situacao) == null ){
+       if(trim((string) $this->db145_situacao) == null ){
          $this->erro_sql = " Campo Situação não informado.";
          $this->erro_campo = "db145_situacao";
          $this->erro_banco = "";
@@ -267,17 +267,17 @@ class cl_db_plugin {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20423,'$this->db145_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db145_sequencial"]) || $this->db145_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3672,20423,'".AddSlashes(pg_result($resaco,$conresaco,'db145_sequencial'))."','$this->db145_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3672,20423,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db145_sequencial'))."','$this->db145_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db145_nome"]) || $this->db145_nome != "")
-             $resac = db_query("insert into db_acount values($acount,3672,20424,'".AddSlashes(pg_result($resaco,$conresaco,'db145_nome'))."','$this->db145_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3672,20424,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db145_nome'))."','$this->db145_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db145_label"]) || $this->db145_label != "")
-             $resac = db_query("insert into db_acount values($acount,3672,20425,'".AddSlashes(pg_result($resaco,$conresaco,'db145_label'))."','$this->db145_label',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3672,20425,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db145_label'))."','$this->db145_label',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["db145_situacao"]) || $this->db145_situacao != "")
-             $resac = db_query("insert into db_acount values($acount,3672,20426,'".AddSlashes(pg_result($resaco,$conresaco,'db145_situacao'))."','$this->db145_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3672,20426,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db145_situacao'))."','$this->db145_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -331,13 +331,13 @@ class cl_db_plugin {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20423,'$db145_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3672,20423,'','".AddSlashes(pg_result($resaco,$iresaco,'db145_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3672,20424,'','".AddSlashes(pg_result($resaco,$iresaco,'db145_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3672,20425,'','".AddSlashes(pg_result($resaco,$iresaco,'db145_label'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3672,20426,'','".AddSlashes(pg_result($resaco,$iresaco,'db145_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3672,20423,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db145_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3672,20424,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db145_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3672,20425,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db145_label'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3672,20426,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db145_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -398,7 +398,7 @@ class cl_db_plugin {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_plugin";
@@ -434,7 +434,7 @@ class cl_db_plugin {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_db_plugin {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

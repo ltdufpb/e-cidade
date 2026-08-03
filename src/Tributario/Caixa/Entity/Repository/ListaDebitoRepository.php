@@ -8,6 +8,7 @@ use ECidade\Tributario\Caixa\Collection\ArrecadCollection;
 
 final class ListaDebitoRepository extends DebitoRepository
 {
+    #[\Override]
     public function findAll($where)
     {
         $sql = "select * 

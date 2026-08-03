@@ -230,7 +230,7 @@ if (strstr($embranco,"S")) {
   if ($iLinhasMatricula > 0) {
 
     db_inicio_transacao();
-    $aPendenciasGeral  = array();
+    $aPendenciasGeral  = [];
     for ($x = 0; $x < $iLinhasMatricula; $x++) {
 
       $oDadosAluno = db_utils::fieldsMemory($rsResultMatricula, $x);
@@ -390,7 +390,7 @@ if (strstr($embranco,"S")) {
     <td class='aluno'>
      <?php 
      if ($ed60_c_situacao != "MATRICULADO") {
-       echo trim($ed60_c_situacao);
+       echo trim((string) $ed60_c_situacao);
      } else {
 
        $sSqlDia     = " SELECT ed95_i_codigo ";

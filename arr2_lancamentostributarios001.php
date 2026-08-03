@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
 
-$aExercicios  = array();
+$aExercicios  = [];
 
 for ($iIndice = db_getsession('DB_anousu'); $iIndice >= (db_getsession('DB_anousu') - 10); $iIndice--) {
   $aExercicios[$iIndice] = $iIndice;

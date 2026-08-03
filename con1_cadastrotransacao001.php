@@ -49,14 +49,14 @@ $oGet = db_utils::postMemory($_GET);
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $oDaoAbas->identifica = array("contranslan"=>"Evento Contábil","contranslr"=>"Regras do Evento Contábil", "conhistdocregra" => "Regra do Documento");
-       $oDaoAbas->sizecampo  = array("contranslan" => "30", "contranslr" => "30", "conhistdocregra" => "30"); 
-       $oDaoAbas->src        = array("contranslan"=>"con1_cadastrotransacao011.php?db_opcao={$oGet->db_opcao}", 
+       $oDaoAbas->identifica = ["contranslan"=>"Evento Contábil","contranslr"=>"Regras do Evento Contábil", "conhistdocregra" => "Regra do Documento"];
+       $oDaoAbas->sizecampo  = ["contranslan" => "30", "contranslr" => "30", "conhistdocregra" => "30"]; 
+       $oDaoAbas->src        = ["contranslan"=>"con1_cadastrotransacao011.php?db_opcao={$oGet->db_opcao}", 
                                      "contranslr" => "con1_regraeventocontabil001.php?db_opcao={$oGet->db_opcao}",
-                                     "conhistdocregra" => "con1_regraoperacaocontabil001.php?db_opcao={$oGet->db_opcao}");
+                                     "conhistdocregra" => "con1_regraoperacaocontabil001.php?db_opcao={$oGet->db_opcao}"];
                                      
        if ($oGet->db_opcao == 1) {
-         $oDaoAbas->disabled   = array("contranslr"=>"true"); 
+         $oDaoAbas->disabled   = ["contranslr"=>"true"]; 
        }
        $oDaoAbas->cria_abas(); 
        ?> 

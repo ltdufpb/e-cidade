@@ -33,7 +33,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('rh61_regist');
 $clrotulo->label('z01_nome');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $orderby = " z01_nome ";
 $ordenacao = "ALFABÉTICA";

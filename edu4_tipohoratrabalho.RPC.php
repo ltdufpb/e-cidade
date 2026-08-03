@@ -97,8 +97,8 @@ try {
       }
 
       $oDaoValidaTipoHora    = new cl_tipohoratrabalho();
-      $sWhereValidaTipoHora  = "     (    trim(ed128_descricao) = '" . trim( $oParam->sDescricao ) . "'";
-      $sWhereValidaTipoHora .= "       or trim(ed128_abreviatura) = '" . trim( $oParam->sAbreviatura ) . "' )";
+      $sWhereValidaTipoHora  = "     (    trim(ed128_descricao) = '" . trim( (string) $oParam->sDescricao ) . "'";
+      $sWhereValidaTipoHora .= "       or trim(ed128_abreviatura) = '" . trim( (string) $oParam->sAbreviatura ) . "' )";
 
       if( !empty( $oParam->iCodigo ) ) {
         $sWhereValidaTipoHora .= " AND ed128_codigo <> {$oParam->iCodigo}";

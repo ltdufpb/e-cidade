@@ -30,7 +30,7 @@ class ArquivoSiprevCarreira extends  ArquivoSiprevBase {
   protected $sRegistro    = "carreiras";
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["06"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["06"] = [];
   }
   /*
    * Essa classe não possui um metodo getDados Proprio,
@@ -40,11 +40,11 @@ class ArquivoSiprevCarreira extends  ArquivoSiprevBase {
 
   	$oDadosOrgao    = new ArquivoSiprevOrgao();
   	$aDadosOrgao    = $oDadosOrgao->getDados();
-  	$aDadosCarreira = array();
+  	$aDadosCarreira = [];
 
   	foreach ($aDadosOrgao as $oIndiceDados => $oValorDados) {
 
-      $aLinhas          = array("dadosCarreira" => $this->preencheDadosCarreira($oValorDados));
+      $aLinhas          = ["dadosCarreira" => $this->preencheDadosCarreira($oValorDados)];
       $aDadosCarreira[] = (object) $aLinhas;
   	}
 
@@ -56,7 +56,7 @@ class ArquivoSiprevCarreira extends  ArquivoSiprevBase {
    * repassadas para o arquivo que será gerado
    */
   public function getElementos() {
-    return array($this->atributosDadosCarreira());
+    return [$this->atributosDadosCarreira()];
   }
 
   /**
@@ -65,9 +65,9 @@ class ArquivoSiprevCarreira extends  ArquivoSiprevBase {
    */
   private function atributosDadosCarreira() {
 
-    $aDadosCarreira                 = array();
+    $aDadosCarreira                 = [];
     $aDadosCarreira["nome"]         = "dadosCarreira";
-    $aDadosCarreira["propriedades"] = array("nome", $this->atributosOrgao());
+    $aDadosCarreira["propriedades"] = ["nome", $this->atributosOrgao()];
 
     return $aDadosCarreira;
   }
@@ -78,9 +78,9 @@ class ArquivoSiprevCarreira extends  ArquivoSiprevBase {
    */
   private function atributosOrgao() {
 
-    $aDadosOrgao                 = array();
+    $aDadosOrgao                 = [];
     $aDadosOrgao["nome"]         = "orgao";
-    $aDadosOrgao["propriedades"] = array("nome", "poder");
+    $aDadosOrgao["propriedades"] = ["nome", "poder"];
 
     return $aDadosOrgao;
   }
@@ -92,7 +92,7 @@ class ArquivoSiprevCarreira extends  ArquivoSiprevBase {
    */
   private function preencheDadosCarreira($oValorDados) {
 
-    $aDadosCarreira          = array();
+    $aDadosCarreira          = [];
     $aDadosCarreira["nome"]  = "Servidor Público";
     $aDadosCarreira["orgao"] = $this->preencheOrgao($oValorDados);
 
@@ -106,7 +106,7 @@ class ArquivoSiprevCarreira extends  ArquivoSiprevBase {
    */
   private function preencheOrgao($oValorDados) {
 
-    $aOrgao          = array();
+    $aOrgao          = [];
     $aOrgao["nome"]  = DBString::removerCaracteresEspeciais($oValorDados->dadosOrgao->nome);
     $aOrgao["poder"] = $oValorDados->dadosOrgao->poder;
 

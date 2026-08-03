@@ -169,7 +169,7 @@ $oClrotulo->label("s110_i_codigo");
         </td>
         <td>
           <?php
-            $x = array( "1" => "Consulta", "2" => "Exame" );
+            $x = [ "1" => "Consulta", "2" => "Exame" ];
             db_select( 's142_i_tipo', $x, true, $db_opcao );
           ?>
         </td>
@@ -199,7 +199,7 @@ $oClrotulo->label("s110_i_codigo");
                 </td>
                 <td>
                   <?php
-                  $x = array( "" => "" );
+                  $x = [ "" => "" ];
                   db_select( 's142_i_unidade', $x, true, $db_opcao, " onchange=\"js_verificacoesTrocaMedico();\"" );
                   ?>
                 </td>
@@ -493,9 +493,9 @@ function js_novoEncaminhamento() {
 
     <?php
       if ( !isset($lAba) ) {
-        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
+        echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
       } else {
-        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?lAba=true&s142_i_prontuario='+".
+        echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?lAba=true&s142_i_prontuario='+".
              "\$F('s142_i_prontuario')+'&s142_i_cgsund='+\$F('s142_i_cgsund')+'&s142_i_profsolicitante=".$s142_i_profsolicitante."'";
       }
     ?>
@@ -1122,7 +1122,7 @@ function js_preencheencaminhamento(cod, codmed, descrmed, unid, cgs, nome, faa, 
   db_iframe_sau_encaminhamentos.hide();
 
   <?php
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?'+posts";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?'+posts";
   ?>
 }
 

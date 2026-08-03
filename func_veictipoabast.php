@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veictipoabast_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clveictipoabast = new cl_veictipoabast;
 $clveictipoabast->rotulo->label("ve07_sequencial");
 $clveictipoabast->rotulo->label("ve07_descr");
@@ -98,9 +98,9 @@ $clveictipoabast->rotulo->label("ve07_descr");
         }else{
            $sql = $clveictipoabast->sql_query("",$campos,"ve07_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve07_descr)){
-          $repassa = array("chave_ve07_sequencial"=>$chave_ve07_sequencial,"chave_ve07_descr"=>$chave_ve07_descr);
+          $repassa = ["chave_ve07_sequencial"=>$chave_ve07_sequencial,"chave_ve07_descr"=>$chave_ve07_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

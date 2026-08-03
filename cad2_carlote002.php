@@ -35,8 +35,8 @@ $cliptuconstr1 = new cl_iptuconstr;
 $cliptubase = new cl_iptubase;
 $cliptucalh = new cl_iptucalh;
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -59,12 +59,12 @@ $total = 0;
 $valores = 0;
 if(isset($relatorio1)){
   if(isset($chaves) && $chaves != ""){
-    $chaves = split("#",$chaves);
+    $chaves = preg_split("#\\##m",$chaves);
     for($i=0;$i<sizeof($chaves);$i++){
       if($codigo == ""){
-	      $codigo .= substr($chaves[$i],0,(strpos($chaves[$i],"-")));
+	      $codigo .= substr((string) $chaves[$i],0,(strpos((string) $chaves[$i],"-")));
       }else{
-       	$codigo .= ",".substr($chaves[$i],0,(strpos($chaves[$i],"-")));
+       	$codigo .= ",".substr((string) $chaves[$i],0,(strpos((string) $chaves[$i],"-")));
       }
     }
     $comcar = " and j35_caract in ($codigo)  ";
@@ -166,8 +166,8 @@ if(isset($setor) && $setor != ""){
     $setor1  = $setor;
     $quadra1 = $quadra;
     if(isset($setor) && $setor != ""){
-      $chaves  = split(",",$setor);
-      $chaves1 = split(",",$quadra);
+      $chaves  = preg_split("#,#m",(string) $setor);
+      $chaves1 = preg_split("#,#m",(string) $quadra);
       $or      = "";
       $setor   = "";
       for($i=0;$i<sizeof($chaves);$i++){
@@ -180,7 +180,7 @@ if(isset($setor) && $setor != ""){
   $and = " and ";
 }else{
 	if(isset($sosetor) && $sosetor != ""){
-    $chaves  = split(",",$sosetor);
+    $chaves  = preg_split("#,#m",(string) $sosetor);
     $virgula = "";
     $setor   = "and j34_setor in ( ";	
     for($i=0;$i<sizeof($chaves);$i++){
@@ -205,9 +205,9 @@ if(isset($setor) && $setor != ""){
   for($x=0;$x<$numrows2;$x++){
      db_fieldsmemory($rsResult,$x);
      $nomevar = "check".$x;
-     if (isset($$nomevar) && $$nomevar != ""){
+     if (isset(${$nomevar}) && ${$nomevar} != ""){
       	$totalvars ++;
-        $cod = $$nomevar;
+        $cod = ${$nomevar};
     		$codcase .= $cod.",";
     		$colunas.=$j17_descr." - ";
      }    
@@ -321,7 +321,7 @@ $sql = "select distinct *
              ) as distincao $ordem $order";
  
 $result = db_query($sql) or die($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 $matric = "";
 $idcons = "";
 $area   = "";
@@ -366,7 +366,7 @@ if($resumido == 'f'){
       $nome = "";
     }
     $pdf->Cell(15,$tam,$j01_matric,1,0,"C",0);
-    $pdf->Cell(50,$tam,(strlen($proprietario)>30?substr($proprietario,0,30)."...":$proprietario),1,0,"C",0);
+    $pdf->Cell(50,$tam,(strlen((string) $proprietario)>30?substr((string) $proprietario,0,30)."...":$proprietario),1,0,"C",0);
     
 		//celula com nome
 
@@ -461,7 +461,7 @@ if(isset($ruas) && !empty($ruas) && $temruas == "t"){
   $vir = "";
   $rua = "";
   $result1 = db_query("select j14_nome from ruas where j14_codigo in ($ruas)");
-      for($x=0;$x<pg_numrows($result1);$x++){
+      for($x=0;$x<pg_num_rows($result1);$x++){
 	db_fieldsmemory($result1,$x);
 	$cod .= $vir.$j14_nome;
 	$vir=", ";
@@ -472,7 +472,7 @@ if(isset($ruas) && $ruas != "" && $temruas == "f"){
   $vir = "";
   $rua = "";
   $result1 = db_query("select j14_nome from ruas where j14_codigo in ($ruas)");
-      for($x=0;$x<pg_numrows($result1);$x++){
+      for($x=0;$x<pg_num_rows($result1);$x++){
 	db_fieldsmemory($result1,$x);
 	$cod .= $vir.$j14_nome;
 	$vir=", ";
@@ -486,8 +486,8 @@ $vir = "";
 $cod = "";
 if($listadas != ""){
   $result1 = db_query("select distinct j31_descr,j31_codigo from carlote inner join caracter on j35_caract=j31_codigo where j31_codigo in ($listadas)");
-  if(pg_numrows($result1) > 0){
-    for($x=0;$x<pg_numrows($result1);$x++){
+  if(pg_num_rows($result1) > 0){
+    for($x=0;$x<pg_num_rows($result1);$x++){
       db_fieldsmemory($result1,$x);
       $cod .= $vir.$j31_codigo." - ".$j31_descr;
       $vir=", ";
@@ -501,7 +501,7 @@ $vir = "";
 $cod = "";
 if(isset($chaves_caract) && $chaves_caract != ""){
   $result1 = db_query("select distinct j31_descr,j31_codigo from carlote inner join caracter on j35_caract=j31_codigo  where j31_codigo in ($chaves_caract)");
-  for($x=0;$x<pg_numrows($result1);$x++){
+  for($x=0;$x<pg_num_rows($result1);$x++){
   	db_fieldsmemory($result1,$x);
 	  $cod .= $vir.$j31_codigo." - ".$j31_descr;
 	  $vir=",";
@@ -512,8 +512,8 @@ if(isset($chaves_caract) && $chaves_caract != ""){
 $pdf->MultiCell(280,05,"CARACTERÍSTICAS NÃO LISTADAS ->  ".@$cod,1,"L");
 if(isset($setores) && $setores != ""){
   if(isset($setor) && $setor != ""){
-    $chaves = split(",",$setores);
-    $chaves1 = split(",",$quadra);
+    $chaves = preg_split("#,#m",$setores);
+    $chaves1 = preg_split("#,#m",(string) $quadra);
     $and = "";
     $setores = "";
     for($i=0;$i<sizeof($chaves);$i++){
@@ -557,7 +557,7 @@ $pdf->Cell(30,$tam,"ÁREA",1,0,"C",1);
 $pdf->Cell(30,$tam,"TOT CONSTR",1,0,"C",1);
 $pdf->Cell(30,$tam,"TESTADA(S)",1,1,"C",1);
 $pdf->SetFillColor(255);
-for($x=0;$x<pg_numrows($result1);$x++){
+for($x=0;$x<pg_num_rows($result1);$x++){
   db_fieldsmemory($result1,$x);
   $pdf->Cell(30,$tam,"".$j34_setor,1,0,"C",1);
   $pdf->Cell(30,$tam,"".$quadra,1,0,"C",1);
@@ -577,7 +577,7 @@ $pdf->Cell(30,$tam,"ÁREA",1,0,"C",1);
 $pdf->Cell(30,$tam,"TOT CONSTR",1,0,"C",1);
 $pdf->Cell(30,$tam,"TESTADA(S)",1,1,"C",1);
 $pdf->SetFillColor(255);
-for($x=0;$x<pg_numrows($result1);$x++){
+for($x=0;$x<pg_num_rows($result1);$x++){
   db_fieldsmemory($result1,$x);
   $pdf->Cell(30,$tam,"".$j34_setor,1,0,"C",1);
   $pdf->Cell(30,$tam,"".$j34_quadra,1,0,"C",1);

@@ -26,7 +26,7 @@
  */
 
 set_time_limit(0);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if ( !isset($certid) || $certid == '' ) {
   db_redireciona('db_erros.php?fechar=true&db_erro=Certidão Não Encontrada.');
   exit;
@@ -109,7 +109,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	  ";
 	//  echo $sql;exit;
 	$result=db_query($sql);
-	if ( pg_numrows($result) == 0 ) {
+	if ( pg_num_rows($result) == 0 ) {
 	  //    db_redireciona('db_erros.php?fechar=true&db_erro=Certidão no. '.$inic. ' Não Encontrado.');
 	  //    exit;
 	  continue;
@@ -160,7 +160,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	  where db03_tipodoc = 1017 and db03_instit = " . db_getsession("DB_instit")." order by db04_ordem ";
 	$resparag = db_query($sqlparag);
 
-	if ( pg_numrows($resparag) == 0 ) {
+	if ( pg_num_rows($resparag) == 0 ) {
 	  $head1 = 'SECRETARIA DE FINANÇAS';
 	}else{
 	  db_fieldsmemory( $resparag, 0 );
@@ -178,11 +178,11 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	$resparag = db_query($sqlparag);
 	//echo "////////////sqlparag = ".$sqlparag;
 	//  db_criatabela($resparag);exit;
-	if ( pg_numrows($resparag) == 0 ) {
+	if ( pg_num_rows($resparag) == 0 ) {
 	  db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento da CDA com o tipo 1008!');
 	  exit;
 	}
-	$numrows = pg_numrows($resparag);
+	$numrows = pg_num_rows($resparag);
 	//$pdf->inicia     = $db02_inicia;
 	$assinaturas_php = "";
 	for($i=0;$i<$numrows;$i++){
@@ -204,7 +204,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	      order by db04_ordem ) as x ";
 	    //echo "//////////////////sqlordem1 = $sql";
 	    $resultp=db_query($sql);
-	    if(pg_numrows($resultp)==0){
+	    if(pg_num_rows($resultp)==0){
 	      $fundamento=" ****************** Fundamentação não cadastrada.  ********************";
 	    }else{
 	      db_fieldsmemory($resultp,0);
@@ -220,7 +220,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	  }
 
 	  if ($db02_descr == "ASSINATURAS_CODIGOPHP") {
-	    $assinaturas_php = trim($db02_texto);
+	    $assinaturas_php = trim((string) $db02_texto);
 	  }
 	  if ($db04_ordem == '2'){
 	    $metodo = $db02_texto;
@@ -274,30 +274,30 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	  order by v01_numpre,v01_numpar";
 	
 	$result3 = db_query($sql) or die($sql);
-	if ( pg_numrows($result3) == 0 ) {
+	if ( pg_num_rows($result3) == 0 ) {
 	  db_redireciona('db_erros.php?fechar=true&db_erro=Certidão no. '.$v14_certid. ' Não encontrada!');
 	  exit;
 	}
 
 
 	$flt_total = 0;
-	for($ii = 0; $ii < pg_numrows($result3);$ii++){
+	for($ii = 0; $ii < pg_num_rows($result3);$ii++){
 	  db_fieldsmemory($result3,$ii);
 
 	  $sqlprocura = "select * from arrecad where k00_numpre = $v01_numpre";
 	  $resultprocura = db_query($sqlprocura) or die($sqlprocura);
-	  if (pg_numrows($resultprocura) > 0) {
+	  if (pg_num_rows($resultprocura) > 0) {
 	    $result2 =     debitos_numpre($v01_numpre,0,0,$dataemis,$anoemis,$v01_numpar);
 	  } else {
 	    $sqlprocura = "select * from arreold where k00_numpre = $v01_numpre";
 	    $resultprocura = db_query($sqlprocura) or die($sqlprocura);
-	    if (pg_numrows($resultprocura) > 0) {
+	    if (pg_num_rows($resultprocura) > 0) {
 	      $result2 = debitos_numpre_old($v01_numpre,0,0,$dataemis,$anoemis,$v01_numpar,'','');
 	    } else {
 	      continue;
 	    }
 	  }
-	  $num = pg_numrows($result2);
+	  $num = pg_num_rows($result2);
 	  for($i = 0;$i < $num;$i++) {
 	    db_fieldsmemory($result2,$i);
 	    $flt_total  += $total;
@@ -318,9 +318,9 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	$pdf->ln(6);
 	$pdf->setfont('arial','',11);
 
-	$aMatric = array();
-	$aInscr  = array();
-  $aCgm    = array(); 
+	$aMatric = [];
+	$aInscr  = [];
+  $aCgm    = []; 
 
 	for ($xy = 0; $xy < pg_num_rows($result3);$xy++) {
 
@@ -398,7 +398,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 					if($linhasPossuidor>0){
 						
 						db_fieldsmemory($resultPossuidor,0);
-						if(trim($j18_textoprom) != ""){
+						if(trim((string) $j18_textoprom) != ""){
 							$possuidor = $j18_textoprom;
 						}else{
 							$possuidor = "POSSUIDOR";
@@ -449,7 +449,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 							
 							$oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol,0);
 							
-							if ( trim($oDadosEnvol->z01_dtfalecimento) != '' && strlen($oDadosEnvol->z01_cgccpf) == 11 && $oDadosEnvol != '00000000000') {
+							if ( trim((string) $oDadosEnvol->z01_dtfalecimento) != '' && strlen((string) $oDadosEnvol->z01_cgccpf) == 11 && $oDadosEnvol != '00000000000') {
 								$sNome = $sExpressaoFalecimento." ".$oDadosEnvol->z01_nome;
 							} else {
 								$sNome = $oDadosEnvol->z01_nome;
@@ -458,19 +458,19 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 							$sEndereco = "";
 							$sEndereco = $oDadosEnvol->z01_ender;
 
-							if(trim($oDadosEnvol->z01_numero) !="0" and trim($oDadosEnvol->z01_numero)!=""){
+							if(trim((string) $oDadosEnvol->z01_numero) !="0" and trim((string) $oDadosEnvol->z01_numero)!=""){
 								$sEndereco .= ",{$oDadosEnvol->z01_numero} ";
 							}
-							if(trim($oDadosEnvol->z01_compl)	!="0" and trim($oDadosEnvol->z01_compl) !=""){
+							if(trim((string) $oDadosEnvol->z01_compl)	!="0" and trim((string) $oDadosEnvol->z01_compl) !=""){
 								$sEndereco .= ",{$oDadosEnvol->z01_compl} ";
 							}
-							if(trim($oDadosEnvol->z01_bairro)	!="0" and trim($oDadosEnvol->z01_bairro)!=""){
+							if(trim((string) $oDadosEnvol->z01_bairro)	!="0" and trim((string) $oDadosEnvol->z01_bairro)!=""){
 								$sEndereco .= ",{$oDadosEnvol->z01_bairro} ";
 							}
-							if(trim($oDadosEnvol->z01_munic)	!="0" and trim($oDadosEnvol->z01_munic) !=""){
+							if(trim((string) $oDadosEnvol->z01_munic)	!="0" and trim((string) $oDadosEnvol->z01_munic) !=""){
 								$sEndereco .= ",{$oDadosEnvol->z01_munic}/{$oDadosEnvol->z01_uf} ";
 							}
-							if(trim($oDadosEnvol->z01_cep)		!="0" and trim($oDadosEnvol->z01_cep)		!=""){
+							if(trim((string) $oDadosEnvol->z01_cep)		!="0" and trim((string) $oDadosEnvol->z01_cep)		!=""){
 								$sEndereco .= "- CEP {$oDadosEnvol->z01_cep} .";
 							}
 
@@ -482,7 +482,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 
 							$pdf->cell(30,5,$sTipoProp ,0,0,"L",0);
 							$pdf->Cell(130,5,$sNome    ,0,0,"L",0);
-							$tam = strlen($oDadosEnvol->z01_cgccpf);
+							$tam = strlen((string) $oDadosEnvol->z01_cgccpf);
 							
 							if($tam == 14){
 								$sCgcCpf = db_formatar($oDadosEnvol->z01_cgccpf,"cnpj");
@@ -617,7 +617,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 					if ($iLinhasDadosEnvol > 0) {
 						$oDadosEnvol = db_utils::fieldsMemory($rsDadosEnvol,0);
 
-            if ( trim($oDadosEnvol->z01_dtfalecimento) != '' && strlen($oDadosEnvol->z01_cgccpf) == 11 && $oDadosEnvol != '00000000000') {
+            if ( trim((string) $oDadosEnvol->z01_dtfalecimento) != '' && strlen((string) $oDadosEnvol->z01_cgccpf) == 11 && $oDadosEnvol != '00000000000') {
               $sNome = $sExpressaoFalecimento." ".$oDadosEnvol->z01_nome;
             } else {
               $sNome = $oDadosEnvol->z01_nome;
@@ -626,19 +626,19 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 						$sEndereco = "";
 						$sEndereco = $oDadosEnvol->ender;
 
-						if(trim($oDadosEnvol->numero) !="0" and trim($oDadosEnvol->numero)!=""){
+						if(trim((string) $oDadosEnvol->numero) !="0" and trim((string) $oDadosEnvol->numero)!=""){
 							$sEndereco .= ",{$oDadosEnvol->numero} ";
 						}
-						if(trim($oDadosEnvol->compl)  !="0" and trim($oDadosEnvol->compl) !=""){
+						if(trim((string) $oDadosEnvol->compl)  !="0" and trim((string) $oDadosEnvol->compl) !=""){
 							$sEndereco .= ",{$oDadosEnvol->compl} ";
 						}
-						if(trim($oDadosEnvol->bairro) !="0" and trim($oDadosEnvol->bairro)!=""){
+						if(trim((string) $oDadosEnvol->bairro) !="0" and trim((string) $oDadosEnvol->bairro)!=""){
 							$sEndereco .= ",{$oDadosEnvol->bairro} ";
 						}
-						if(trim($oDadosEnvol->munic)  !="0" and trim($oDadosEnvol->munic) !=""){
+						if(trim((string) $oDadosEnvol->munic)  !="0" and trim((string) $oDadosEnvol->munic) !=""){
 							$sEndereco .= ",{$oDadosEnvol->munic}/{$oDadosEnvol->uf}";
 						}
-						if(trim($oDadosEnvol->cep)    !="0" and trim($oDadosEnvol->cep)   !=""){
+						if(trim((string) $oDadosEnvol->cep)    !="0" and trim((string) $oDadosEnvol->cep)   !=""){
 							$sEndereco .= "- CEP {$oDadosEnvol->cep} .";
 						}
 
@@ -651,7 +651,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 						$pdf->setfont('arial','',10);
 						$pdf->cell(30,5,$sTipo  ,0,0,"L",0);
 						$pdf->Cell(130,5,$sNome ,0,0,"L",0);
-						$tam = strlen($oDadosEnvol->z01_cgccpf);
+						$tam = strlen((string) $oDadosEnvol->z01_cgccpf);
 						if($tam == 14){
 							$sCgcCpf = db_formatar($oDadosEnvol->z01_cgccpf,"cnpj");
 						}else{
@@ -743,25 +743,25 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 				
 				$sEndereco = $oCgm->z01_ender;
 
-				if(trim($oCgm->z01_numero)!="0" and trim($oCgm->z01_numero)!=""){
+				if(trim((string) $oCgm->z01_numero)!="0" and trim((string) $oCgm->z01_numero)!=""){
 					$sEndereco .= ",{$oCgm->z01_numero} ";
 				}
-				if(trim($oCgm->z01_compl)!="0" and trim($oCgm->z01_compl)!=""){
+				if(trim((string) $oCgm->z01_compl)!="0" and trim((string) $oCgm->z01_compl)!=""){
 					$sEndereco .= ",{$oCgm->z01_compl} ";
 				}
-				if(trim($oCgm->z01_bairro)!="0" and  trim($oCgm->z01_bairro)!=""){
+				if(trim((string) $oCgm->z01_bairro)!="0" and  trim((string) $oCgm->z01_bairro)!=""){
 					$sEndereco .= ",{$oCgm->z01_bairro} ";
 				}
-				if(trim($oCgm->z01_munic) !="0" and trim($oCgm->z01_munic)!=""){
+				if(trim((string) $oCgm->z01_munic) !="0" and trim((string) $oCgm->z01_munic)!=""){
 					$sEndereco .= ",{$oCgm->z01_munic}/{$oCgm->z01_uf} ";
 				}
-				if(trim($oCgm->z01_cep) !="0" and trim($oCgm->z01_cep)!=""){
+				if(trim((string) $oCgm->z01_cep) !="0" and trim((string) $oCgm->z01_cep)!=""){
 					$sEndereco .= "- CEP {$oCgm->z01_cep} .";
 				}
 
 				$pdf->cell(30,5,"CGM:".$oCgm->z01_numcgm,0,0,"L",0);
 				$pdf->Cell(130,5,$oCgm->z01_nome,0,0,"L",0);
-				$pdf->Cell(30,5,(strlen($oCgm->z01_cgccpf)== 14?db_formatar($oCgm->z01_cgccpf,'cnpj'):db_formatar($oCgm->z01_cgccpf,'cpf')),0,1,"L",0);
+				$pdf->Cell(30,5,(strlen((string) $oCgm->z01_cgccpf)== 14?db_formatar($oCgm->z01_cgccpf,'cnpj'):db_formatar($oCgm->z01_cgccpf,'cpf')),0,1,"L",0);
 				$pdf->MultiCell(190,5,$sEndereco,0,"L",0);
 				$pdf->setfont('','');
 				$pdf->cell(190,0.5,'',1,1,"L",0);
@@ -803,7 +803,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
         $pdf->setfont('','B',9);
       }
 
-     for($qp=0;$qp<pg_numrows($resultp);$qp++){
+     for($qp=0;$qp<pg_num_rows($resultp);$qp++){
         db_fieldsmemory($resultp,$qp);
 		    $pdf->Ln(2);
 		    $pdf->MultiCell(0,5,$db02_texto,0,"L",0);
@@ -827,7 +827,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	  
 		$pdf->MultiCell(0,5,$fundamento_inicio,0,"L",0);
 	  $pdf->Ln(4);
-    for($qp=0;$qp<pg_numrows($resultp);$qp++){
+    for($qp=0;$qp<pg_num_rows($resultp);$qp++){
       db_fieldsmemory($resultp,$qp);
       $pdf->Ln(2);
       $pdf->MultiCell(0,5,$db02_texto,0,"L",0);
@@ -855,12 +855,12 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	  
 		$resparag = db_query($sqlparag);
 	  
-		if ( pg_numrows($resparag) == 0 ) {
+		if ( pg_num_rows($resparag) == 0 ) {
 	    db_redireciona('db_erros.php?fechar=true&db_=Configure o documento da CDA!');
 	    exit;
 	  }
 	  
-		$numrows = pg_numrows($resparag);
+		$numrows = pg_num_rows($resparag);
 	  for($i=0;$i<$numrows;$i++){
 	    db_fieldsmemory($resparag,$i);
 
@@ -912,17 +912,17 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	$pdf->Cell(10,5,"JUROS",1,0,"C",1);
 	$pdf->Cell(15,5,"TOTAL",1,1,"C",1);
 
-	for($ii = 0; $ii < pg_numrows($result3);$ii++){
+	for($ii = 0; $ii < pg_num_rows($result3);$ii++){
 
 	  db_fieldsmemory($result3,$ii);
 	  $sqlprocura = "select * from arrecad where k00_numpre = $v01_numpre";
 	  $resultprocura = db_query($sqlprocura) or die($sqlprocura);
-	  if (pg_numrows($resultprocura) > 0) {
+	  if (pg_num_rows($resultprocura) > 0) {
 	    $result2 = debitos_numpre($v01_numpre,0,0,$dataemis,$anoemis,$v01_numpar);
 		} else {
 	    $sqlprocura = "select * from arreold where k00_numpre = $v01_numpre";
 	    $resultprocura = db_query($sqlprocura) or die($sqlprocura);
-	    if (pg_numrows($resultprocura) > 0) {
+	    if (pg_num_rows($resultprocura) > 0) {
 	      $result2 = debitos_numpre_old($v01_numpre,0,0,$dataemis,$anoemis,$v01_numpar,'','');
 	    }else{
 
@@ -941,7 +941,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 		where k00_certidao = $v14_certid ";
 	      $resultprocuraarreforo = db_query($sqlprocuraarreforo) or die($sqlprocuraarreforo);
 
-	      if (pg_numrows($resultprocuraarreforo) > 0) {	  
+	      if (pg_num_rows($resultprocuraarreforo) > 0) {	  
 		$sqlInsertArreold = "insert into arreold ( k00_numpre,k00_numpar,k00_numcgm,k00_dtoper,k00_receit,k00_hist,k00_valor, k00_dtvenc,k00_numtot,k00_numdig,k00_tipo ) $sqlprocuraarreforo ";
     //echo "<b>inserarreold</b>: $sqlInsertArreold<br><br>";
 		db_query($sqlInsertArreold) or die($sqlInsertArreold);
@@ -1078,7 +1078,7 @@ for($numcertid=0;$numcertid<$numero;$numcertid++){
 	}
 	/*=================================================================*/
 	//Mostra o total do ultimo exercício.
-	if (isset($totexe) && $totexe == 't' && $ii == pg_numrows($result3) ){
+	if (isset($totexe) && $totexe == 't' && $ii == pg_num_rows($result3) ){
 	    $pdf->SetFont('','B',6);
 	    $pdf->Cell(111+$comp,5,"TOTAL EXERCICIO - $exeant",1,0,"C",0);
 	    $pdf->Cell(15,5,db_formatar($Tavlrhis,'f'),1,0,"R",0);

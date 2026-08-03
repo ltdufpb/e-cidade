@@ -111,7 +111,7 @@
         <tr>
           <td valign="top" align="center">  
             <?php 
-	            $chavepri= array("x32_matric"=>@$x32_matric);
+	            $chavepri= ["x32_matric"=>@$x32_matric];
 	            
 	            $cliframe_alterar_excluir->chavepri      = $chavepri;
 	            //$cliframe_alterar_excluir->sql         = $claguabasecorresp->sql_query_file($x32_matric);

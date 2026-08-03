@@ -47,9 +47,9 @@ require_once(modification("dbforms/db_classesgenericas.php"));
      <?php 
        $clcriaabas = new cl_criaabas;
        $db_opcao   = 3;
-    	 $clcriaabas->identifica = array("face"=>"Face", "facevalor"=>"Valor");
-    	 $clcriaabas->src        = array("face"=>"cad1_face006.php");
-    	 $clcriaabas->disabled   = array("facevalor"=>"true");
+    	 $clcriaabas->identifica = ["face"=>"Face", "facevalor"=>"Valor"];
+    	 $clcriaabas->src        = ["face"=>"cad1_face006.php"];
+    	 $clcriaabas->disabled   = ["facevalor"=>"true"];
     	 $clcriaabas->cria_abas();
        ?>
        </td>

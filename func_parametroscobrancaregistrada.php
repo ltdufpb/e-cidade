@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parametroscobrancaregistrada_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clparametroscobrancaregistrada = new cl_parametroscobrancaregistrada;
 $clparametroscobrancaregistrada->rotulo->label("ar28_sequencial");
 $clparametroscobrancaregistrada->rotulo->label("ar28_sequencial");
@@ -52,9 +52,9 @@ $clparametroscobrancaregistrada->rotulo->label("ar28_sequencial");
         }else{
            $sql = $clparametroscobrancaregistrada->sql_query("",$campos,"ar28_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ar28_sequencial)){
-          $repassa = array("chave_ar28_sequencial"=>$chave_ar28_sequencial,"chave_ar28_sequencial"=>$chave_ar28_sequencial);
+          $repassa = ["chave_ar28_sequencial"=>$chave_ar28_sequencial,"chave_ar28_sequencial"=>$chave_ar28_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

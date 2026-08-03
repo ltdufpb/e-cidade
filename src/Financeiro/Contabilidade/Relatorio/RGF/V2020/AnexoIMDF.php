@@ -60,6 +60,7 @@ class AnexoIMDF extends AnexoI
      * @return \stdClass[]
      * @throws \ParameterException
      */
+    #[\Override]
     public function getDados($trazerConfiguracaoPadrao = true)
     {
         parent::getDados($trazerConfiguracaoPadrao);

@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE db_secretaria
 class cl_db_secretaria { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s_codigo = 0; 
-   var $s_descricao = null; 
-   var $s_palavra = null; 
-   var $s_foto = null; 
-   var $s_nome = null; 
+   public $s_codigo = 0; 
+   public $s_descricao = null; 
+   public $s_palavra = null; 
+   public $s_foto = null; 
+   public $s_nome = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s_codigo = int4 = Código 
                  s_descricao = text = Descrição 
                  s_palavra = text = Palavra 
@@ -56,10 +56,10 @@ class cl_db_secretaria {
                  s_nome = varchar(200) = Nome 
                  ";
    //funcao construtor da classe 
-   function cl_db_secretaria() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_secretaria"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -146,7 +146,7 @@ class cl_db_secretaria {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Secretaria () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Secretaria já Cadastrado";
@@ -173,10 +173,10 @@ class cl_db_secretaria {
       $this->atualizacampos();
      $sql = " update db_secretaria set ";
      $virgula = "";
-     if(trim($this->s_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_codigo"])){ 
+     if(trim((string) $this->s_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_codigo"])){ 
        $sql  .= $virgula." s_codigo = $this->s_codigo ";
        $virgula = ",";
-       if(trim($this->s_codigo) == null ){ 
+       if(trim((string) $this->s_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "s_codigo";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_db_secretaria {
          return false;
        }
      }
-     if(trim($this->s_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_descricao"])){ 
+     if(trim((string) $this->s_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_descricao"])){ 
        $sql  .= $virgula." s_descricao = '$this->s_descricao' ";
        $virgula = ",";
-       if(trim($this->s_descricao) == null ){ 
+       if(trim((string) $this->s_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "s_descricao";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_db_secretaria {
          return false;
        }
      }
-     if(trim($this->s_palavra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_palavra"])){ 
+     if(trim((string) $this->s_palavra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_palavra"])){ 
        $sql  .= $virgula." s_palavra = '$this->s_palavra' ";
        $virgula = ",";
-       if(trim($this->s_palavra) == null ){ 
+       if(trim((string) $this->s_palavra) == null ){ 
          $this->erro_sql = " Campo Palavra nao Informado.";
          $this->erro_campo = "s_palavra";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_db_secretaria {
          return false;
        }
      }
-     if(trim($this->s_foto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_foto"])){ 
+     if(trim((string) $this->s_foto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_foto"])){ 
        $sql  .= $virgula." s_foto = '$this->s_foto' ";
        $virgula = ",";
-       if(trim($this->s_foto) == null ){ 
+       if(trim((string) $this->s_foto) == null ){ 
          $this->erro_sql = " Campo Foto nao Informado.";
          $this->erro_campo = "s_foto";
          $this->erro_banco = "";
@@ -225,10 +225,10 @@ class cl_db_secretaria {
          return false;
        }
      }
-     if(trim($this->s_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_nome"])){ 
+     if(trim((string) $this->s_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s_nome"])){ 
        $sql  .= $virgula." s_nome = '$this->s_nome' ";
        $virgula = ",";
-       if(trim($this->s_nome) == null ){ 
+       if(trim((string) $this->s_nome) == null ){ 
          $this->erro_sql = " Campo Nome nao Informado.";
          $this->erro_campo = "s_nome";
          $this->erro_banco = "";
@@ -319,7 +319,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_secretaria";

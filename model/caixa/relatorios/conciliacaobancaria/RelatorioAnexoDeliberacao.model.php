@@ -202,11 +202,11 @@ class RelatorioAnexoDeliberacao {
    */
   private function getTituloColuna() {
 
-    $aTitulos = array(
+    $aTitulos = [
       AnexoIConciliacaoBancaria::ANEXO   => "Natureza do Depósito",
       AnexoIIConciliacaoBancaria::ANEXO  => "Natureza do Débito",
       AnexoIIIConciliacaoBancaria::ANEXO => "Natureza do Depósito"
-    );
+    ];
     return $aTitulos[$this->getAnexo()->getAnexo()];
   }
 

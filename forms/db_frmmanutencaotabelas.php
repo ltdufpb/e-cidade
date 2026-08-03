@@ -43,7 +43,7 @@ $clrotulo->label("j121_codarq");
     <table border="0" align="center" class="tabelaprincipal">
       <?php
         foreach ($aDadoManutensaoTabela as $oManutensaoTabela) {
-            $sTipoCampo = trim($oManutensaoTabela->sTipoCampo);
+            $sTipoCampo = trim((string) $oManutensaoTabela->sTipoCampo);
             if ($sTipoCampo == 'text') {
       ?>
       <tr>
@@ -81,7 +81,7 @@ $clrotulo->label("j121_codarq");
           $sSql          = $oDaoArquivo->sql_query($oManutensaoTabela->sReferencia);
           $rsArquivo     = $oDaoArquivo->sql_record($sSql);
           $aArquivo      = db_utils::getCollectionByRecord($rsArquivo);
-          $sTabela       = isset($aArquivo[0]->nomearq) ? $aArquivo[0]->nomearq : "";
+          $sTabela       = $aArquivo[0]->nomearq ?? "";
 
           $sSql          = $oDaoArquivo->sql_query_buscaCampoReferenciaPorTabela($oManutensaoTabela->sReferencia);
           $rsArquivo     = $oDaoArquivo->sql_record($sSql);
@@ -95,7 +95,7 @@ $clrotulo->label("j121_codarq");
             $sSql             = $oDaoCampos->sql_query($aArquivo[0]->campo_referencia);
             $rsCampo          = $oDaoCampos->sql_record($sSql);
             $aCampo           = db_utils::getCollectionByRecord($rsCampo);
-            $sCampoReferencia = isset($aCampo[0]->nomecam) ? $aCampo[0]->nomecam : "";
+            $sCampoReferencia = $aCampo[0]->nomecam ?? "";
           }
 
           if (empty($oManutensaoTabela->sReferencia) || empty($sTabela) || !file_exists("func_{$sTabela}.php")) {
@@ -114,7 +114,7 @@ $clrotulo->label("j121_codarq");
             $sValor = "";
             if ($sTipoCampo == 'date') {
 
-              if (isset(${$oManutensaoTabela->sNomeCampo}) && trim(${$oManutensaoTabela->sNomeCampo}) != '' ) {
+              if (isset(${$oManutensaoTabela->sNomeCampo}) && trim((string) ${$oManutensaoTabela->sNomeCampo}) != '' ) {
                 $sValor = ${$oManutensaoTabela->sNomeCampo};
               }
             }
@@ -134,19 +134,19 @@ $clrotulo->label("j121_codarq");
             $sCampo = $oManutensaoTabela->sNomeCampo;
 
             $oDao   = null;
-            if (!empty($$sCampo)) {
+            if (!empty(${$sCampo})) {
 
               $sCampoRetorno = $sCampoReferencia;
               if (empty($sCampoReferencia)) {
                 $sCampoRetorno = $sSequencial;
               }
 
-              if (strpos($sCampoReferencia, 'numcgm') != false) {
+              if (str_contains($sCampoReferencia, 'numcgm')) {
                 $sCampoRetorno = 'z01_nome';
               }
 
               $oDao       = db_utils::getDao($sTabela);
-              $sWhere     = " {$sTabela}.{$sSequencial} = '{$$sCampo}' ";
+              $sWhere     = " {$sTabela}.{$sSequencial} = '{${$sCampo}}' ";
               $sSql       = $oDao->sql_query(null, $sCampoRetorno, null, $sWhere);
               $rsRecord   = $oDao->sql_record($sSql);
               $aResultado = db_utils::getCollectionByRecord($rsRecord);
@@ -248,7 +248,7 @@ $clrotulo->label("j121_codarq");
           ";
 
         if (!empty($oDadoManutensaoTabela->sNomeTabela)) {
-            echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?".$sListaPriKeyChave."&j121_codarq='+j121_codarq";
+            echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?".$sListaPriKeyChave."&j121_codarq='+j121_codarq";
         }
 
         echo  "} \n";
@@ -256,7 +256,7 @@ $clrotulo->label("j121_codarq");
     </script>
 
 <?php
-function montarCampos($sNomeCampo, $sValor="", $sTipoCampo, $iTamanho=10, $iOpcao) {
+function montarCampos($sNomeCampo, $sValor="", $sTipoCampo = null, $iTamanho=10, $iOpcao = null) {
 
   $sInput = '';
   if (!empty($sNomeCampo) && !empty($sTipoCampo)) {
@@ -284,8 +284,8 @@ function montarCampos($sNomeCampo, $sValor="", $sTipoCampo, $iTamanho=10, $iOpca
 
       case 'bool':
 
-        $aOpcao = array ('t' => "Sim",
-                         'f' => "Nao");
+        $aOpcao =  ['t' => "Sim",
+                         'f' => "Nao"];
         $sInput = db_select($sNomeCampo, $aOpcao, true, $iOpcao);
         break;
 
@@ -314,7 +314,7 @@ function montarCampos($sNomeCampo, $sValor="", $sTipoCampo, $iTamanho=10, $iOpca
 
 function montarFunc ($sNomeCampo, $sNomeCampoDescricao, $sNomeTabela, $sSequencial, $sCampoReferencia) {
 
-  if (strpos($sCampoReferencia, 'numcgm') != false) {
+  if (str_contains((string) $sCampoReferencia, 'numcgm')) {
     $sCampoReferencia = 'z01_nome';
   }
 

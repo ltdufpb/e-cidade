@@ -46,9 +46,9 @@ $db_opcao   = 1;
 </head>
 <body class="body-default abas" >
   <?php
-    $clcriaabas->identifica = array("liccomissao"=>"Comissão","liccomissaocgm"=>"Participantes");
-	  $clcriaabas->src = array("liccomissao"=>"lic1_liccomissao006.php");
-	  $clcriaabas->disabled   =  array("liccomissaocgm"=>"true");
+    $clcriaabas->identifica = ["liccomissao"=>"Comissão","liccomissaocgm"=>"Participantes"];
+	  $clcriaabas->src = ["liccomissao"=>"lic1_liccomissao006.php"];
+	  $clcriaabas->disabled   =  ["liccomissaocgm"=>"true"];
 	  $clcriaabas->cria_abas();
     db_menu();
   ?>

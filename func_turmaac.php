@@ -34,8 +34,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_turmaac_classe.php"));
 include(modification("classes/db_calendario_classe.php"));
 include(modification("classes/db_turno_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clturmaac = new cl_turmaac;
 $clcalendario = new cl_calendario;
 $clturno = new cl_turno;
@@ -77,7 +77,7 @@ $escola = db_getsession("DB_coddepto");
       $result_tur = db_query($sql_tur);
       $linhas_tur = pg_num_rows($result_tur);
       if($linhas_tur==0){
-       $x = array(''=>'NENHUM REGISTRO');
+       $x = [''=>'NENHUM REGISTRO'];
        db_select('ed268_i_turno',$x,true,1,"");
       }else{
        db_selectrecord("ed268_i_turno",$result_tur,"","","","chave_ed268_i_turno","","  ","",1);
@@ -91,7 +91,7 @@ $escola = db_getsession("DB_coddepto");
       <?php 
       $result_cal = $clcalendario->sql_record($clcalendario->sql_query_calescola("","ed52_i_codigo,ed52_c_descr","ed52_i_ano desc","  ed52_c_passivo = 'N' AND ed38_i_escola = $escola"));
       if($clcalendario->numrows==0){
-       $x = array(''=>'NENHUM REGISTRO');
+       $x = [''=>'NENHUM REGISTRO'];
        db_select('ed268_i_calendario',$x,true,1,"");
       }else{
        db_selectrecord("ed268_i_calendario",$result_cal,"","","","chave_ed268_i_calendario","","  ","",1);
@@ -99,7 +99,7 @@ $escola = db_getsession("DB_coddepto");
       ?>
       <?=$Led268_i_tipoatend?>
       <?php 
-      $x = array(''=>'','4'=>'ATIVIDADE COMPLEMENTAR','5'=>'ATENDIMENTO EDUCACIONAL ESPECIAL - AEE');
+      $x = [''=>'','4'=>'ATIVIDADE COMPLEMENTAR','5'=>'ATENDIMENTO EDUCACIONAL ESPECIAL - AEE'];
       db_select('chave_ed268_i_tipoatend',$x,true,1,"");
       ?>
      </td>
@@ -152,9 +152,9 @@ $escola = db_getsession("DB_coddepto");
     if($esc==true){
      $sql = $clturmaac->sql_query("",$campos,"ed268_c_descr"," ed52_c_passivo = 'N' AND ed268_i_escola = $escola ".$where);
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed268_i_codigo)){
-     $repassa = array("chave_ed268_i_codigo"=>$chave_ed268_i_codigo,"chave_ed268_c_descr"=>$chave_ed268_c_descr,"chave_ed268_i_turno"=>$chave_ed268_i_turno,"chave_ed268_i_calendario"=>$chave_ed268_i_calendario,"chave_ed268_i_tipoatend"=>$chave_ed268_i_tipoatend);
+     $repassa = ["chave_ed268_i_codigo"=>$chave_ed268_i_codigo,"chave_ed268_c_descr"=>$chave_ed268_c_descr,"chave_ed268_i_turno"=>$chave_ed268_i_turno,"chave_ed268_i_calendario"=>$chave_ed268_i_calendario,"chave_ed268_i_tipoatend"=>$chave_ed268_i_tipoatend];
     }
     db_lovrot(@$sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

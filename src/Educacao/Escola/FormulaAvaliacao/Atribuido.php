@@ -19,6 +19,7 @@ class Atribuido extends FormulaAvaliacao
      * @return AvaliacaoPorAreaConhecimento|mixed|void
      * @throws Exception
      */
+    #[\Override]
     public function calcularAvaliacoes(AreaProcedimentoAvaliacao $areaProcedimentoAvaliacao)
     {
         $avaliacaoPorArea = new AvaliacaoPorAreaConhecimento();
@@ -64,6 +65,7 @@ class Atribuido extends FormulaAvaliacao
      * @return ResultadoPorAreaConhecimento|mixed|void
      * @throws Exception
      */
+    #[\Override]
     public function calcularResultado(AreaProcedimentoResultado $areaProcedimentoResultado)
     {
         $resultado = new ResultadoPorAreaConhecimento();

@@ -38,9 +38,9 @@ $clrotulo->label("y50_nome");
 $clrotulo->label("z01_nome");
 $clrotulo->label("q02_inscr");
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
  if(isset($opcao) && $opcao == "alterar"){
    echo "<script>parent.iframe_autolevanta.location.href='fis1_autolevanta002.php?chavepesquisa=$y50_codauto&chavepesquisa1=$y117_levanta'</script>";
@@ -129,7 +129,7 @@ db_postmemory($HTTP_POST_VARS);
   <tr>
     <td align="top" colspan="2">
       <?php
-       $chavepri= array("y117_auto"=>@$y50_codauto,"y117_levanta"=>@$y60_codlev);
+       $chavepri= ["y117_auto"=>@$y50_codauto,"y117_levanta"=>@$y60_codlev];
        $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->campos   = "y117_auto, y117_levanta";
        $cliframe_alterar_excluir->sql      = $clautolevanta->sql_query(""," autolevanta.*",""," y117_auto = $y50_codauto");

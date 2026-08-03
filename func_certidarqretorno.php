@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_certidarqretorno_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcertidarqretorno = new cl_certidarqretorno;
 $clcertidarqretorno->rotulo->label("v84_sequencial");
 $clcertidarqretorno->rotulo->label("v84_sequencial");
@@ -98,9 +98,9 @@ $clcertidarqretorno->rotulo->label("v84_sequencial");
         }else{
            $sql = $clcertidarqretorno->sql_query("",$campos,"v84_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v84_sequencial)){
-          $repassa = array("chave_v84_sequencial"=>$chave_v84_sequencial,"chave_v84_sequencial"=>$chave_v84_sequencial);
+          $repassa = ["chave_v84_sequencial"=>$chave_v84_sequencial,"chave_v84_sequencial"=>$chave_v84_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

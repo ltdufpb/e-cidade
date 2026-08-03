@@ -36,10 +36,10 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cgm_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if (!isset($pesquisar)) {
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str((string) $_SERVER["QUERY_STRING"]);
 }
 
 $oGet = db_utils::postMemory($_GET);
@@ -63,7 +63,7 @@ if(isset($script) && !empty($script)) { ?>
   <?php
     $vals = "";
     $vir  = "";
-    $camp = split(",",$valores);
+    $camp = preg_split("#,#m",$valores);
 
     for ($f = 0; $f < count($camp); $f++) {
       $vals .= $vir . "'" . $camp[$f] . "'";
@@ -78,7 +78,7 @@ exit;
 
 if (isset($testanome) && !isset($pesquisa_chave)) {
 
-  $funmat = split("\|",$funcao_js);
+  $funmat = preg_split("#\\|#m",$funcao_js);
   $func_antes = $funmat[0];
   $valores = "";
   $camp = "";
@@ -236,7 +236,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
           </script>
         <?php
 
-            $aWhere = array();
+            $aWhere = [];
 
             if (!isset($campos)) {
 
@@ -279,7 +279,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
             }
 
             if (isset($nomeDigitadoParaPesquisa) && !empty($nomeDigitadoParaPesquisa)) {
-              $aWhere['z01_nome'] = strtoupper($nomeDigitadoParaPesquisa);
+              $aWhere['z01_nome'] = strtoupper((string) $nomeDigitadoParaPesquisa);
             }
 
             $oCgm = new cl_cgm();
@@ -291,7 +291,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
             if ($pesquisa_chave != null && $pesquisa_chave != "") {
 
               $oCgm = new cl_cgm();
-              $sSql = $oCgm->sql_query_cgmtipo(array("z01_numcgm" => $pesquisa_chave), "z01_nome, z01_mae, z01_pai", $oGet->tipo);
+              $sSql = $oCgm->sql_query_cgmtipo(["z01_numcgm" => $pesquisa_chave], "z01_nome, z01_mae, z01_pai", $oGet->tipo);
 
               $result = $oCgm->sql_record($sSql);
 

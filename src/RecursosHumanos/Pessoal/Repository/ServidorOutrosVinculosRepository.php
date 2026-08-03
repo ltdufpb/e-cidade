@@ -42,7 +42,7 @@ class ServidorOutrosVinculosRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param array|int $ids
@@ -68,7 +68,7 @@ class ServidorOutrosVinculosRepository
      * @param ServidorOutrosVinculos|null $servidorOutrosVinculos
      * @throws Exception
      */
-    public function delete(ServidorOutrosVinculos $servidorOutrosVinculos = null)
+    public function delete(?ServidorOutrosVinculos $servidorOutrosVinculos = null)
     {
         $id = $servidorOutrosVinculos instanceof ServidorOutrosVinculos ? $servidorOutrosVinculos->getSequencial() : null;
 
@@ -86,7 +86,7 @@ class ServidorOutrosVinculosRepository
      * @return bool|ServidorOutrosVinculos
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_rhpessoaloutrosvinculos();
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -110,13 +110,13 @@ class ServidorOutrosVinculosRepository
      * @return ServidorOutrosVinculos[]
      * @throws Exception
      */
-    public function all($columns = array('*'))
+    public function all($columns = ['*'])
     {
         $dao = new cl_rhpessoaloutrosvinculos();
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $servidoresOutrosVinculos = array();
+        $servidoresOutrosVinculos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $servidoresOutrosVinculos;
@@ -143,7 +143,7 @@ class ServidorOutrosVinculosRepository
             throw new Exception("Não foi possível buscar o(s) outro(s) vínculo(s) do servidor.\nContate o suporte.");
         }
 
-        $servidorOutrosVinculos = array();
+        $servidorOutrosVinculos = [];
 
         if (pg_num_rows($rs) === 0) {
             return $servidorOutrosVinculos;
@@ -311,7 +311,7 @@ class ServidorOutrosVinculosRepository
      */
     public function resetScopes()
     {
-        $this->scopes = array();
+        $this->scopes = [];
         return $this;
     }
 

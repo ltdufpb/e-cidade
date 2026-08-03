@@ -47,7 +47,7 @@ $oRotulo->label("s103_c_senha");
           </td>
           <td>
             <?php
-            $x = array( '1' => 'Interbase', '2' => 'Postgres' );
+            $x = [ '1' => 'Interbase', '2' => 'Postgres' ];
             db_select( 's103_i_tipodb', $x, true, $db_opcao );
             ?>
           </td>

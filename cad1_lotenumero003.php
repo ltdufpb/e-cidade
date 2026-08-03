@@ -33,8 +33,8 @@ include(modification("classes/db_lotenumero_classe.php"));
 include(modification("classes/db_protprocesso_classe.php"));
 include(modification("classes/db_lotenumero_proc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cllotenumero = new cl_lotenumero;
 $cllotenumero_proc = new cl_lotenumero_proc;

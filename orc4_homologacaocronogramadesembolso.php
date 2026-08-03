@@ -64,7 +64,7 @@ require_once modification("dbforms/db_funcoes.php");
               <td>
                 <label class="bold" for="homologado" id="lbl_homologado">Situação:</label>
               </td>
-              <td><?php db_select("homologado", array( 1 => 'Não Homologado', 2 => 'Homologado' ), 1, 1); ?></td>
+              <td><?php db_select("homologado", [ 1 => 'Não Homologado', 2 => 'Homologado' ], 1, 1); ?></td>
             </tr>
           </table>
         </fieldset>

@@ -48,7 +48,7 @@ $clrotulo->label('k00_descr');
 $clrotulo->label('DBtxt10');
 $clrotulo->label('DBtxt11');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $instit     = db_getsession("DB_instit");
 $and        = "";
@@ -77,7 +77,7 @@ if (count($clpostgresqlutils->getTableIndexes('debitos')) == 0) {
 $debugando = false;
 
 $txt_where = " and debitos.k22_instit = ".db_getsession('DB_instit');
-if ((isset ($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Incluir") {
+if ((isset ($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Incluir") {
 	$xmassa1 = "";
 	$xmassa2 = "";
 	$xloteamento1 = "";
@@ -685,7 +685,7 @@ if ($debugando == true) {
 $resultcria = db_query($sqlcria) or die($sqlcria);
 
 
-$sqlcriaindice="create index w_lista_" . trim($xtipo) . "_matric_in on w_lista_aaa($xtipo)";
+$sqlcriaindice="create index w_lista_" . trim((string) $xtipo) . "_matric_in on w_lista_aaa($xtipo)";
 if ($debugando == true) {
   echo "$sqlcriaindice ; <br> <br>" ;
 }
@@ -961,14 +961,14 @@ if ($debugando == true) {
     if ($opcaofiltro == 1) {
 		$resultlistadeb = db_query("select * from listadeb where k61_codigo = ".$cllista->k60_codigo." limit 1");
 		// 	db_criatabela($resultlistadeb);exit;
-		if (pg_numrows($resultlistadeb) == 0) {
+		if (pg_num_rows($resultlistadeb) == 0) {
 			echo "<script>alert('Não existem devedores para as opções escolhidas')</script>";
 			db_redireciona("cai1_lista001.php");
 			exit;
 		}
     }
 	if (1 == 2) {
-		for ($ii = 0; $ii < pg_numrows($resultlistadeb); $ii ++) {
+		for ($ii = 0; $ii < pg_num_rows($resultlistadeb); $ii ++) {
 			db_fieldsmemory($resultlistadeb, $ii);
 			$cllistadeb->k61_codigo = $cllista->k60_codigo;
 			$cllistadeb->k61_numpre = $k22_numpre;
@@ -1252,11 +1252,11 @@ function js_emite1(){
 
 $sql = "select k115_data as k22_data from datadebitos where k115_instit = ".db_getsession("DB_instit")."order by k115_data desc limit 1";
 $result = db_query($sql);
-if (pg_numrows($result) > 0) {
+if (pg_num_rows($result) > 0) {
 	db_fieldsmemory($result, 0);
-	$data_ano = substr($k22_data, 0, 4);
-	$data_mes = substr($k22_data, 5, 2);
-	$data_dia = substr($k22_data, 8, 2);
+	$data_ano = substr((string) $k22_data, 0, 4);
+	$data_mes = substr((string) $k22_data, 5, 2);
+	$data_dia = substr((string) $k22_data, 8, 2);
 } else {
 	$data_ano = '';
 	$data_mes = '';
@@ -1286,7 +1286,7 @@ db_inputdata('data', $data_dia, $data_mes, $data_ano, true, 'text', 4)
         <strong>Tipo de Lista :&nbsp;&nbsp;</strong>
         </td><td>
            <?php 
-           $x = array("N"=>"Nome (  CGM Geral  )","C"=>"Somente por CGM","M"=>"Matrícula","I"=>"Inscrição");
+           $x = ["N"=>"Nome (  CGM Geral  )","C"=>"Somente por CGM","M"=>"Matrícula","I"=>"Inscrição"];
            db_select('k60_tipo',$x,true,1,"");
           ?>
         </td>
@@ -1302,20 +1302,20 @@ $data1_ano = substr(date('Y'), 0, 4);
 $data1_mes = substr(date('m'),0,2);
 $data1_dia =  substr(date('d'),0,2);
 db_inputdata('data1', $data1_dia, $data1_mes, $data1_ano, true, 'text', 4);
-$xx= array ("0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela");
+$xx=  ["0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela"];
     db_select('notiftipo', $xx, true, 4, "");
 
 ?>
         </td>
 	<td><strong>Massa Falida :</strong>&nbsp;&nbsp;
         <?php 
-	  $x = array ("f" => "NÃO", "t" => "SIM");
+	  $x =  ["f" => "NÃO", "t" => "SIM"];
 	  db_select('massa', $x, true, 4, "");
 	?>
   </td><td>
 	<strong>Loteamentos:</strong>&nbsp;&nbsp;
         <?php 
-	  $x = array ("t" => "SIM", "f" => "NÃO");
+	  $x =  ["t" => "SIM", "f" => "NÃO"];
 	  db_select('loteamento', $x, true, 4, "");
 	?>
 	</td>
@@ -1464,7 +1464,7 @@ $xx= array ("0" => "Geral", "1" => "Tipo de débito","2"=>"Numpre/Parcela");
 	  <td colspan="2">
 <?php 
 
- 	  $x = array ("f" => "NÃO", "t" => "SIM");
+ 	  $x =  ["f" => "NÃO", "t" => "SIM"];
 	  db_select('considerar', $x, true, 4, "");
 
 ?>
@@ -1626,7 +1626,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave;
 }
 
 </script>

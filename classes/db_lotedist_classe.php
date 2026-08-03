@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE lotedist
 class cl_lotedist { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j54_idbql = 0; 
-   var $j54_codigo = 0; 
-   var $j54_orientacao = 0; 
-   var $j54_distan = 0; 
+   public $j54_idbql = 0; 
+   public $j54_codigo = 0; 
+   public $j54_orientacao = 0; 
+   public $j54_distan = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j54_idbql = int4 = Id Lote 
                  j54_codigo = int4 = Logradouro 
                  j54_orientacao = int4 = Codigo 
                  j54_distan = float8 = Distância 
                  ";
    //funcao construtor da classe 
-   function cl_lotedist() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("lotedist"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -133,7 +133,7 @@ class cl_lotedist {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Distância do Lote da Esquina ($this->j54_idbql) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Distância do Lote da Esquina já Cadastrado";
@@ -157,13 +157,13 @@ class cl_lotedist {
      $resaco = $this->sql_record($this->sql_query_file($this->j54_idbql));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,95,'$this->j54_idbql','I')");
-       $resac = db_query("insert into db_acount values($acount,22,95,'','".AddSlashes(pg_result($resaco,0,'j54_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,22,93,'','".AddSlashes(pg_result($resaco,0,'j54_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,22,9976,'','".AddSlashes(pg_result($resaco,0,'j54_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,22,92,'','".AddSlashes(pg_result($resaco,0,'j54_distan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,22,95,'','".AddSlashes(pg_fetch_result($resaco,0,'j54_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,22,93,'','".AddSlashes(pg_fetch_result($resaco,0,'j54_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,22,9976,'','".AddSlashes(pg_fetch_result($resaco,0,'j54_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,22,92,'','".AddSlashes(pg_fetch_result($resaco,0,'j54_distan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -172,10 +172,10 @@ class cl_lotedist {
       $this->atualizacampos();
      $sql = " update lotedist set ";
      $virgula = "";
-     if(trim($this->j54_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j54_idbql"])){ 
+     if(trim((string) $this->j54_idbql)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j54_idbql"])){ 
        $sql  .= $virgula." j54_idbql = $this->j54_idbql ";
        $virgula = ",";
-       if(trim($this->j54_idbql) == null ){ 
+       if(trim((string) $this->j54_idbql) == null ){ 
          $this->erro_sql = " Campo Id Lote nao Informado.";
          $this->erro_campo = "j54_idbql";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_lotedist {
          return false;
        }
      }
-     if(trim($this->j54_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j54_codigo"])){ 
+     if(trim((string) $this->j54_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j54_codigo"])){ 
        $sql  .= $virgula." j54_codigo = $this->j54_codigo ";
        $virgula = ",";
-       if(trim($this->j54_codigo) == null ){ 
+       if(trim((string) $this->j54_codigo) == null ){ 
          $this->erro_sql = " Campo Logradouro nao Informado.";
          $this->erro_campo = "j54_codigo";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_lotedist {
          return false;
        }
      }
-     if(trim($this->j54_orientacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j54_orientacao"])){ 
+     if(trim((string) $this->j54_orientacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j54_orientacao"])){ 
        $sql  .= $virgula." j54_orientacao = $this->j54_orientacao ";
        $virgula = ",";
-       if(trim($this->j54_orientacao) == null ){ 
+       if(trim((string) $this->j54_orientacao) == null ){ 
          $this->erro_sql = " Campo Codigo nao Informado.";
          $this->erro_campo = "j54_orientacao";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_lotedist {
          return false;
        }
      }
-     if(trim($this->j54_distan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j54_distan"])){ 
+     if(trim((string) $this->j54_distan)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j54_distan"])){ 
        $sql  .= $virgula." j54_distan = $this->j54_distan ";
        $virgula = ",";
-       if(trim($this->j54_distan) == null ){ 
+       if(trim((string) $this->j54_distan) == null ){ 
          $this->erro_sql = " Campo Distância nao Informado.";
          $this->erro_campo = "j54_distan";
          $this->erro_banco = "";
@@ -232,17 +232,17 @@ class cl_lotedist {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,95,'$this->j54_idbql','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j54_idbql"]))
-           $resac = db_query("insert into db_acount values($acount,22,95,'".AddSlashes(pg_result($resaco,$conresaco,'j54_idbql'))."','$this->j54_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,22,95,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j54_idbql'))."','$this->j54_idbql',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j54_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,22,93,'".AddSlashes(pg_result($resaco,$conresaco,'j54_codigo'))."','$this->j54_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,22,93,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j54_codigo'))."','$this->j54_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j54_orientacao"]))
-           $resac = db_query("insert into db_acount values($acount,22,9976,'".AddSlashes(pg_result($resaco,$conresaco,'j54_orientacao'))."','$this->j54_orientacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,22,9976,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j54_orientacao'))."','$this->j54_orientacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j54_distan"]))
-           $resac = db_query("insert into db_acount values($acount,22,92,'".AddSlashes(pg_result($resaco,$conresaco,'j54_distan'))."','$this->j54_distan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,22,92,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j54_distan'))."','$this->j54_distan',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -287,13 +287,13 @@ class cl_lotedist {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,95,'$j54_idbql','E')");
-         $resac = db_query("insert into db_acount values($acount,22,95,'','".AddSlashes(pg_result($resaco,$iresaco,'j54_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,22,93,'','".AddSlashes(pg_result($resaco,$iresaco,'j54_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,22,9976,'','".AddSlashes(pg_result($resaco,$iresaco,'j54_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,22,92,'','".AddSlashes(pg_result($resaco,$iresaco,'j54_distan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,22,95,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j54_idbql'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,22,93,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j54_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,22,9976,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j54_orientacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,22,92,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j54_distan'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from lotedist
@@ -353,7 +353,7 @@ class cl_lotedist {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:lotedist";
@@ -367,7 +367,7 @@ class cl_lotedist {
    function sql_query ( $j54_idbql=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -393,7 +393,7 @@ class cl_lotedist {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -405,7 +405,7 @@ class cl_lotedist {
    function sql_query_file ( $j54_idbql=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -426,7 +426,7 @@ class cl_lotedist {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

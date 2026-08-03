@@ -130,7 +130,7 @@ $clrotulo->label("la24_i_laboratorio");
                                 <td>
                                     <?php 
                                        $rResult=$cllab_laboratorio->sql_record($cllab_laboratorio->sql_query(""," la02_i_codigo as chave, la02_c_descr as descricao","",""));
-                                       $aLaboratorios = array();
+                                       $aLaboratorios = [];
                                        for($x=0;$x<$cllab_laboratorio->numrows;$x++){
                                           db_fieldsmemory($rResult,$x);
                                           $aLaboratorios[$chave] = $descricao;
@@ -146,7 +146,7 @@ $clrotulo->label("la24_i_laboratorio");
                                              $chave=$la02_i_codigo;
                                           }
                                           $rResult=$cllab_setorexame->sql_record($cllab_setorexame->sql_query(""," la09_i_codigo as chave,la08_c_descr as descricao",""," la24_i_laboratorio=$chave "));
-                                          $aExames=array();
+                                          $aExames=[];
                                           for ($x = 0; $x < $cllab_setorexame->numrows; $x++) {
                                              db_fieldsmemory($rResult,$x);
                                              $aExames[$chave] = $descricao;
@@ -201,11 +201,11 @@ js_init();
 
      var arrHeader = new Array ( "M",
                                  " Cod. ",  
-                                 "    <?=substr(@$Lla24_i_laboratorio,8,-10)?>   ", 
-                                 "     <?=substr(@$Lla09_i_exame,8,-10)?>     ",
-                                 " <?=substr(@$Lla21_d_data,8,-10)?>  ",
-                                 " <?=substr(@$Lla21_c_hora,8,-10)?> ",
-                                 " <?=substr(@$Lla21_d_entrega,8,-10)?> ",
+                                 "    <?=substr((string) @$Lla24_i_laboratorio,8,-10)?>   ", 
+                                 "     <?=substr((string) @$Lla09_i_exame,8,-10)?>     ",
+                                 " <?=substr((string) @$Lla21_d_data,8,-10)?>  ",
+                                 " <?=substr((string) @$Lla21_c_hora,8,-10)?> ",
+                                 " <?=substr((string) @$Lla21_d_entrega,8,-10)?> ",
                                  " urgente");
 
     objGridExames.nameInstance = 'oGridExames';

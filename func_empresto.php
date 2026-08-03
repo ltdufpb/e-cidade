@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empresto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempresto = new cl_empresto;
 $clempresto->rotulo->label("e91_anousu");
 $clempresto->rotulo->label("e91_numemp");
@@ -99,9 +99,9 @@ $clempresto->rotulo->label("e91_numemp");
         }else{
            $sql = $clempresto->sql_query(db_getsession('DB_anousu'),"",$campos,"e91_anousu#e91_numemp","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e91_numemp)){
-          $repassa = array("chave_e91_anousu"=>$chave_e91_anousu,"chave_e91_numemp"=>$chave_e91_numemp);
+          $repassa = ["chave_e91_anousu"=>$chave_e91_anousu,"chave_e91_numemp"=>$chave_e91_numemp];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

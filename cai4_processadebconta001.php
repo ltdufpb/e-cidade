@@ -95,9 +95,9 @@ if (isset($processar)) {
 
   db_postmemory($_FILES["arqret"]);
 
-  $arq_name    = basename($name);
+  $arq_name    = basename((string) $name);
   $arq_type    = $type;
-  $arq_tmpname = basename($tmp_name);
+  $arq_tmpname = basename((string) $tmp_name);
   $arq_size    = $size;
   $arq_array   = file($tmp_name);
 
@@ -117,7 +117,7 @@ if (isset($processar)) {
     $atipo          = substr($arq_array[0],0,3);
     $totalproc      = sizeof($arq_array)-2;
     $priregistro    = 1;
-    $acodbco        = substr($arq_array[0],substr($k15_posbco,0,3),substr($k15_posbco,3,3));
+    $acodbco        = substr($arq_array[0],substr((string) $k15_posbco,0,3),substr((string) $k15_posbco,3,3));
     if (strlen($_tamanprilinha) != $k15_taman) {
       $erro_msg =  "Tamanho do registro [".strlen($arq_array[0])."] Sistema : [" .$k15_taman."] inválido";
       $erro = true;
@@ -133,7 +133,7 @@ if (isset($processar)) {
       }
       $totalvalorpago=0;
       for ($i=0; $i <= $totalproc; $i++) {
-        $vlrpago  = (substr($arq_array[$i], substr($k15_posvlr, 0, 3) - 1 , substr($k15_posvlr, 3, 3)) / 100) + 0;
+        $vlrpago  = (substr($arq_array[$i], substr((string) $k15_posvlr, 0, 3) - 1 , substr((string) $k15_posvlr, 3, 3)) / 100) + 0;
         $totalvalorpago += $vlrpago;
       }
       $situacao = 1;
@@ -209,7 +209,7 @@ function geraTaxaBancaria( $oParametros ){
    */
   if($iLinhasTaxaBancaria > 1){
     $erro_msg = _M( MENSAGENS . "taxa_especifica_duplicada" );
-    break;
+    return;
   }
 
   if ($iLinhasTaxaBancaria > 0) {
@@ -335,7 +335,7 @@ function geraTaxaBancaria( $oParametros ){
       $oDisBanco->incluir(null);
       if ($oDisBanco->erro_status == "0") {
         $erro_msg = $oDisBanco->erro_msg;
-        break;
+        return;
       }
 
     }
@@ -369,9 +369,9 @@ if (isset($geradebcta)) {
 
     db_fieldsmemory($resultcadban,0);
 
-    $dtarquivo  = substr($arq_array[0],substr($k15_pdano,0,3)-1,substr($k15_pdano,3,3));
+    $dtarquivo  = substr($arq_array[0],substr((string) $k15_pdano,0,3)-1,substr((string) $k15_pdano,3,3));
     $dtarquivo .= "-".substr($arq_array[0],substr($k15_pdmes,0,3)-1,substr($k15_pdmes,3,3));
-    $dtarquivo .= "-".substr($arq_array[0],substr($k15_posdta,0,3)-1,substr($k15_posdta,3,3));
+    $dtarquivo .= "-".substr($arq_array[0],substr((string) $k15_posdta,0,3)-1,substr((string) $k15_posdta,3,3));
 
     $sMd5Arquivo = md5(file_get_contents(ECIDADE_PATH."tmp/".$arq_name));
 
@@ -434,7 +434,7 @@ if (isset($geradebcta)) {
       for ($i=0; $i < $totalproc; $i++) {
 
         //Ignorar entrada "X" do arquivo
-        if (substr($arq_array[$i],0,1) == "X") { 
+        if (str_starts_with($arq_array[$i], "X")) { 
           continue;
         }
         
@@ -451,10 +451,10 @@ if (isset($geradebcta)) {
         db_atutermometro($i, $totalproc, 'termometro');
 
         // Testa tipo do registro
-        if (substr($arq_array[$i],0,1) <> "F") {
+        if (!str_starts_with($arq_array[$i], "F")) {
  
           // Tipo B
-          if (substr($arq_array[$i],0,1) == "B") {
+          if (str_starts_with($arq_array[$i], "B")) {
 
             $emiterel     = true;
             $banco        = $d63_banco;
@@ -470,7 +470,7 @@ if (isset($geradebcta)) {
             $tipo         = 1;
 
             $check_matricula = db_query("select j01_matric,j01_numcgm as k00_numcgm from iptubase where j01_matric = " . $matricula);
-            if (pg_numrows($check_matricula) == 0) {
+            if (pg_num_rows($check_matricula) == 0) {
               continue;
             }
            
@@ -545,9 +545,9 @@ if (isset($geradebcta)) {
                             order by 1";
                   
               $rsNumpre = db_query($sqlNumpre);
-              $k00_tipoNumPre = pg_result($rsNumpre,0,4); 
+              $k00_tipoNumPre = pg_fetch_result($rsNumpre,0,4); 
 
-              if(pg_numrows($rsDebContaPedidoData) > 0){
+              if(pg_num_rows($rsDebContaPedidoData) > 0){
 
                 db_fieldsmemory($rsDebContaPedidoData);
                 $cldebcontapedido->d63_codigo   = $ud63_codigo;
@@ -570,7 +570,7 @@ if (isset($geradebcta)) {
                                 and d63_instit = ".db_getsession("DB_instit");
                 $rsDebContaPedido = db_query($sqlDebContaPedido);
                 
-                if(pg_numrows($rsDebContaPedido) == 0){
+                if(pg_num_rows($rsDebContaPedido) == 0){
                   $cldebcontapedido->incluir($d63_codigo);
 
                   $codpedido = $cldebcontapedido->d63_codigo;
@@ -585,8 +585,8 @@ if (isset($geradebcta)) {
 
                   $cldebcontapedidotiponumpre->d67_codigo = $codpedido;
 
-                  if(pg_numrows($rsNumpre) > 0){
-                    for($np = 0; $np < pg_numrows($rsNumpre); $np++){
+                  if(pg_num_rows($rsNumpre) > 0){
+                    for($np = 0; $np < pg_num_rows($rsNumpre); $np++){
                       db_fieldsmemory($rsNumpre, $np);
 
                       $cldebcontapedidotiponumpre->d67_numpre = $mnumpre;
@@ -640,7 +640,7 @@ if (isset($geradebcta)) {
               //echo $sqlMatric;
               $rsMatric  = db_query($sqlMatric);
               
-              if(pg_numrows($rsMatric) > 0){
+              if(pg_num_rows($rsMatric) > 0){
                 db_fieldsmemory($rsMatric, 0);
 
                 $cldebcontapedido->d63_codigo   = $d68_codigo;
@@ -692,34 +692,34 @@ if (isset($geradebcta)) {
           flush();
         }
 
-        $numbco = substr($arq_array[$i],substr($k15_numbco,0,3)-1,substr($k15_numbco,3,3));
+        $numbco = substr($arq_array[$i],substr((string) $k15_numbco,0,3)-1,substr((string) $k15_numbco,3,3));
         $dtarq  = $dtarquivo;
         
-        $dtpago  = substr($arq_array[$i], substr($k15_ppano, 0, 3) - 1, substr($k15_ppano, 3, 3));
+        $dtpago  = substr($arq_array[$i], substr((string) $k15_ppano, 0, 3) - 1, substr((string) $k15_ppano, 3, 3));
         $dtpago .= "-".substr($arq_array[$i], substr($k15_ppmes , 0, 3) - 1, substr($k15_ppmes, 3, 3));
-        $dtpago .= "-".substr($arq_array[$i], substr($k15_pospag, 0, 3) - 1, substr($k15_pospag, 3, 3));
+        $dtpago .= "-".substr($arq_array[$i], substr((string) $k15_pospag, 0, 3) - 1, substr((string) $k15_pospag, 3, 3));
 
-        if (substr($k15_anocredito, 3, 3) == '002') {
-          $dtcredito = '20'.substr($arq_array[$i], substr($k15_anocredito, 0, 3) - 1, substr($k15_anocredito, 3, 3));
+        if (substr((string) $k15_anocredito, 3, 3) == '002') {
+          $dtcredito = '20'.substr($arq_array[$i], substr((string) $k15_anocredito, 0, 3) - 1, substr((string) $k15_anocredito, 3, 3));
         } else {
-          $dtcredito = substr($arq_array[$i], substr($k15_anocredito, 0, 3) - 1, substr($k15_anocredito, 3, 3));
+          $dtcredito = substr($arq_array[$i], substr((string) $k15_anocredito, 0, 3) - 1, substr((string) $k15_anocredito, 3, 3));
         }
 
-        $dtcredito .= "-".substr($arq_array[$i], substr($k15_mescredito, 0, 3) - 1, substr($k15_mescredito, 3, 3));
-        $dtcredito .= "-".substr($arq_array[$i], substr($k15_diacredito, 0, 3) - 1, substr($k15_diacredito, 3, 3));
+        $dtcredito .= "-".substr($arq_array[$i], substr((string) $k15_mescredito, 0, 3) - 1, substr((string) $k15_mescredito, 3, 3));
+        $dtcredito .= "-".substr($arq_array[$i], substr((string) $k15_diacredito, 0, 3) - 1, substr((string) $k15_diacredito, 3, 3));
 
         if (empty($dtcredito) || $dtcredito == '0000-00-00') {
           $dtcredito = $dtpago;
         }
         
-        $vlrpago  = empty($k15_posvlr) ? 0 : (substr($arq_array[$i], substr($k15_posvlr, 0, 3) - 1, substr($k15_posvlr, 3, 3)) / 100) + 0;
-        $vlrjuros = empty($k15_posjur) ? 0 : (substr($arq_array[$i], substr($k15_posjur, 0, 3) - 1, substr($k15_posjur, 3, 3)) / 100) + 0;
-        $vlrmulta = empty($k15_posmul) ? 0 : (substr($arq_array[$i], substr($k15_posmul, 0, 3) - 1, substr($k15_posmul, 3, 3)) / 100) + 0;
-        $vlracres = empty($k15_posacr) ? 0 : (substr($arq_array[$i], substr($k15_posacr, 0, 3) - 1, substr($k15_posacr, 3, 3)) / 100) + 0;
+        $vlrpago  = empty($k15_posvlr) ? 0 : (substr($arq_array[$i], substr((string) $k15_posvlr, 0, 3) - 1, substr((string) $k15_posvlr, 3, 3)) / 100) + 0;
+        $vlrjuros = empty($k15_posjur) ? 0 : (substr($arq_array[$i], substr((string) $k15_posjur, 0, 3) - 1, substr((string) $k15_posjur, 3, 3)) / 100) + 0;
+        $vlrmulta = empty($k15_posmul) ? 0 : (substr($arq_array[$i], substr((string) $k15_posmul, 0, 3) - 1, substr((string) $k15_posmul, 3, 3)) / 100) + 0;
+        $vlracres = empty($k15_posacr) ? 0 : (substr($arq_array[$i], substr((string) $k15_posacr, 0, 3) - 1, substr((string) $k15_posacr, 3, 3)) / 100) + 0;
         $vlrdesco = empty($k15_posdes) ? 0 : (substr($arq_array[$i], substr($k15_posdes, 0, 3) - 1, substr($k15_posdes, 3, 3)) / 100) + 0;
 
-        $convenio =  substr($arq_array[$i], substr($k15_poscon, 0, 3) - 1, substr($k15_poscon, 3, 3));
-        $cedente  =  substr($arq_array[$i], substr($k15_posced, 0, 3) - 1, substr($k15_posced, 3, 3));
+        $convenio =  substr($arq_array[$i], substr((string) $k15_poscon, 0, 3) - 1, substr((string) $k15_poscon, 3, 3));
+        $cedente  =  substr($arq_array[$i], substr((string) $k15_posced, 0, 3) - 1, substr((string) $k15_posced, 3, 3));
 
         $tiporet  = substr($arq_array[$i], 67, 2);
         // echo '<pre>';
@@ -743,7 +743,7 @@ if (isset($geradebcta)) {
         // echo '</pre>';
         //exit;
         
-        if ($debcta != "") {
+        if ($debcta != 0) {
 
           $sqldebcontapedido = $cldebcontapedido->sql_query("","d63_codigo",""," d63_codigo = $debctaped AND trim(d63_idempresa) = '" . $debcta . "'");
       
@@ -811,7 +811,7 @@ if (isset($geradebcta)) {
 
             $rsWork = pg_query($sqlwork);
 
-            if(pg_numrows($rsWork)>0) {
+            if(pg_num_rows($rsWork)>0) {
               db_fieldsmemory($rsWork, 0);
               $numpre = $k00_numpre_dst;
             }
@@ -831,7 +831,7 @@ if (isset($geradebcta)) {
           }
 
           $resultarrecad = db_query($sqlarrecad) or die($sqlarrecad);
-          if (pg_numrows($resultarrecad) == 0) {
+          if (pg_num_rows($resultarrecad) == 0) {
             
             $sqlerro = true;
             $erro_msg = "linha: ".($i+1)." idempresa: $debcta numpre: $numpre - numpar: $numpar - tipo: $k00_tipo nao encontrado em arrecad/arrecant/arreold";
@@ -854,7 +854,7 @@ if (isset($geradebcta)) {
                                                       end
                                                   ");
             if ($_debug) {
-              
+
               echo "  >>  passo 3 <br>";
               flush();
               // if ($i == 40) {
@@ -1016,8 +1016,8 @@ if (isset($geradebcta)) {
 
             $k15_numpre = $k15_numpreori;
             $k15_numpar = $k15_numparori;
-            $numpre     = substr($arq_array[$i],substr($k15_numpre,0,3)-1,substr($k15_numpre,3,3));
-            $numpar     = substr($arq_array[$i],substr($k15_numpar,0,3)-1,substr($k15_numpar,3,3));
+            $numpre     = substr($arq_array[$i],substr((string) $k15_numpre,0,3)-1,substr((string) $k15_numpre,3,3));
+            $numpar     = substr($arq_array[$i],substr((string) $k15_numpar,0,3)-1,substr((string) $k15_numpar,3,3));
           }
 
           if ( ($sqlerro == false) && ( $cldebcontaarquivoregret->d76_debcontatiporet == "00" or $cldebcontaarquivoregret->d76_debcontatiporet == "31" ) ) {
@@ -1120,7 +1120,7 @@ if (isset($geradebcta)) {
 
         $total = 0;
         $_msg = "";
-        for ($x = 0; $x < pg_numrows($result); $x++) {
+        for ($x = 0; $x < pg_num_rows($result); $x++) {
           
           db_fieldsmemory($result,$x,true);
           $_msg .= "\\nCodRet: ".$cldisarq->codret."\\nData: $dtarq\\nValor Processado: R$" . db_formatar($sum,"f");

@@ -52,10 +52,10 @@ class Xml
      */
     protected static function xmlIterator(SimpleXMLIterator $xmlIterator)
     {
-        $a = array();
+        $a = [];
         for ($xmlIterator->rewind(); $xmlIterator->valid(); $xmlIterator->next()) {
             if (!array_key_exists($xmlIterator->key(), $a)) {
-                $a[$xmlIterator->key()] = array();
+                $a[$xmlIterator->key()] = [];
             }
             if ($xmlIterator->hasChildren()) {
                 $a[$xmlIterator->key()][] = static::xmlIterator($xmlIterator->current());

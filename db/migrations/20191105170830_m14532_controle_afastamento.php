@@ -102,8 +102,8 @@ class M14532ControleAfastamento extends PostgresMigration
     {
         $situacoes = $this->fetchAll("SELECT *  FROM situacaoafastamento  WHERE rh166_sequencial  NOT IN (2, 4, 7)");
         $rubricas = $this->fetchAll("SELECT * FROM rhrubricas WHERE rh27_calcp = 't' AND rh27_ativo = 't'");
-        $tabelas = array(3, 4, 5, 6);
-        $competenciasInstituicoes = array();
+        $tabelas = [3, 4, 5, 6];
+        $competenciasInstituicoes = [];
 
         foreach ($situacoes as $situacao) {
             $codigoAfastamento = $situacao['rh166_sequencial'];

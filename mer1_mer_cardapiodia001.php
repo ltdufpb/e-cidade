@@ -34,7 +34,7 @@ include(modification("classes/db_diasemana_classe.php"));
 include(modification("classes/db_mer_tipocardapio_classe.php"));
 include(modification("classes/db_mer_cardapiodia_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldiasemana        = new cl_diasemana;
 $clmer_tipocardapio = new cl_mer_tipocardapio;
 $clmer_cardapiodia  = new cl_mer_cardapiodia;

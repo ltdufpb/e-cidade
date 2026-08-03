@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_pcfornemov_classe.php"));
 require_once(modification("classes/db_pcforne_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 $clpcfornemov = new cl_pcfornemov;
 $clpcforne = new cl_pcforne;
@@ -83,7 +83,7 @@ if (isset($incluir)) {
 }
 
 if (!isset($z01_nome)) {
-  $z01_nome = pg_result(db_query("select z01_nome from cgm where z01_numcgm = {$pc62_numcgm}"), 0, 0);
+  $z01_nome = pg_fetch_result(db_query("select z01_nome from cgm where z01_numcgm = {$pc62_numcgm}"), 0, 0);
 }
 
 ?>

@@ -69,7 +69,7 @@ db_input("sequencial",10,"",true,"hidden",3);
   <tr>
     <td nowrap colspan="3">
     <?php 
-      $chavepri = array ("ve40_sequencial"=>@$ve40_sequencial);
+      $chavepri =  ["ve40_sequencial"=>@$ve40_sequencial];
       $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->sql = $clveiccentral->sql_query(null,"ve40_sequencial,ve40_veiccadcentral,ve40_veiculos",null,"ve40_veiculos = $ve09_veiculos");
 
@@ -118,7 +118,7 @@ function js_mostraveiccadcentral1(chave1,chave2){
 
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 

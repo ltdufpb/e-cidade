@@ -56,11 +56,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica = array("db_estrutura"=>"Estrutural","db_estruturanivel"=>"Descrição dos níveis"); 
-       $clcriaabas->sizecampo =  array("db_estruturanivel"=>"25"); 
-       $clcriaabas->title = array("db_estrutura"=>"Estrutural","db_estruturanivel"=>"Descrição dos níveis"); 
-       $clcriaabas->src = array("db_estrutura"=>"con1_db_estrutura004.php");
-       $clcriaabas->disabled   =  array("db_estruturanivel"=>"true"); 
+       $clcriaabas->identifica = ["db_estrutura"=>"Estrutural","db_estruturanivel"=>"Descrição dos níveis"]; 
+       $clcriaabas->sizecampo =  ["db_estruturanivel"=>"25"]; 
+       $clcriaabas->title = ["db_estrutura"=>"Estrutural","db_estruturanivel"=>"Descrição dos níveis"]; 
+       $clcriaabas->src = ["db_estrutura"=>"con1_db_estrutura004.php"];
+       $clcriaabas->disabled   =  ["db_estruturanivel"=>"true"]; 
        $clcriaabas->cria_abas();    
      ?> 
      </td>

@@ -64,7 +64,7 @@ if (isset($oPost->atualizar)) {
       
       if (isset($oPost->listacampos) && !empty($oPost->listacampos)) {
         
-        $aListaCampos = explode(',', $oPost->listacampos);
+        $aListaCampos = explode(',', (string) $oPost->listacampos);
         foreach ( $aListaCampos as $iCodArq ) {
         
           

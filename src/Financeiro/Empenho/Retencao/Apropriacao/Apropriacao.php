@@ -33,13 +33,6 @@ class Apropriacao
     private $dataEvento = null;
 
     /**
-     * Ano do processamento
-     *
-     * @var int
-     */
-    private $ano;
-
-    /**
      * Nota que deve ser estornada
      *
      * @var int
@@ -80,7 +73,7 @@ class Apropriacao
      *
      * @var array
      */
-    private $codigosLancamentos = array();
+    private $codigosLancamentos = [];
 
     /**
      * Apropriação de retençoes em e um empenho
@@ -88,12 +81,15 @@ class Apropriacao
      *
      * @param \EmpenhoFinanceiro $empenho
      * @param $ano
+     * @param int $ano
      */
-    public function __construct(\EmpenhoFinanceiro $empenho, $ano)
+    public function __construct(\EmpenhoFinanceiro $empenho, /**
+     * Ano do processamento
+     */
+    private $ano)
     {
 
         $this->empenho = $empenho;
-        $this->ano = $ano;
     }
 
     /**
@@ -168,7 +164,7 @@ class Apropriacao
             /**
              * Baixamos as retenções
              */
-            $oRetencaoNota->baixarRetencoes(array($retencao));
+            $oRetencaoNota->baixarRetencoes([$retencao]);
         }
         return $stringAutenticacao;
     }

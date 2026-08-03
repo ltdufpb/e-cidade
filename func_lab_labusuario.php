@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_lab_labusuario_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_labusuario = new cl_lab_labusuario;
 $cllab_labusuario->rotulo->label("la05_i_codigo");
 $cllab_labusuario->rotulo->label("z01_v_nome");
@@ -98,9 +98,9 @@ $cllab_labusuario->rotulo->label("z01_v_nome");
         }else{
            $sql = $cllab_labusuario->sql_query("",$campos,"la05_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la05_i_codigo)){
-          $repassa = array("chave_la05_i_codigo"=>$chave_la05_i_codigo,"chave_z01_v_nome"=>$chave_z01_v_nome);
+          $repassa = ["chave_la05_i_codigo"=>$chave_la05_i_codigo,"chave_z01_v_nome"=>$chave_z01_v_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

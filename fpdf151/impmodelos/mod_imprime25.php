@@ -11,20 +11,20 @@
 		$this->objpdf->setfillcolor(245);
 		$this->objpdf->rect($xcol-2,$xlin-18,206,144.5);
 		$this->objpdf->setfillcolor(255,255,255);
-		
+
 		$this->objpdf->Setfont('Arial','B',12);
 		$this->objpdf->text(60,$xlin-12,$this->previdencia);
-		
+
 		$this->objpdf->Image('imagens/files/'.$this->logo,5,$xlin+5,32);
 		$this->objpdf->Setfont('Arial','B',10);
 		$this->objpdf->text($xcol+15,$xlin-5,$this->prefeitura);
-	
+
 		$this->objpdf->Setfont('Arial','',9);
-		
+
 		$this->objpdf->rect($xcol+35,$xlin,77,45);
 		$this->objpdf->Setfont('Arial','',5);
 		$this->objpdf->text($xcol+36,$xlin+2,'1 - Carimbo Padronizado do CGC');
-		
+
 		$this->objpdf->rect($xcol+2,$xlin+50,110,$alt);
 		$this->objpdf->Setfont('Arial','',5);
 		$this->objpdf->text($xcol+4,$xlin+52,'2 - Nome / Razão Social');
@@ -42,23 +42,23 @@
 		$this->objpdf->text($xcol+4,$xlin+66,'4 - CEP');
 		$this->objpdf->Setfont('Arial','b',7);
 		$this->objpdf->text($xcol+4,$xlin+70,$this->cep);
-		
+
 		$this->objpdf->rect($xcol+32,$xlin+64,70,$alt);
 		$this->objpdf->Setfont('Arial','',5);
 		$this->objpdf->text($xcol+34,$xlin+66,'5 - Município');
 		$this->objpdf->Setfont('Arial','b',7);
 		$this->objpdf->text($xcol+34,$xlin+70,$this->municpref);
-		
+
 		$this->objpdf->rect($xcol+102,$xlin+64,10,$alt);
 		$this->objpdf->Setfont('Arial','',5);
 		$this->objpdf->text($xcol+104,$xlin+66,'6 - UF');
 		$this->objpdf->Setfont('Arial','b',7);
 		$this->objpdf->text($xcol+104,$xlin+70,$this->ufpref);
-		
+
 		$this->objpdf->rect($xcol+2,$xlin+77,110,45);
 		$this->objpdf->Setfont('Arial','',5);
 		$this->objpdf->text($xcol+4,$xlin+79,'7 - Outras Informações');
-		
+
 		$this->objpdf->Setfont('Arial','',8);
 		$this->objpdf->text($xcol+9,$xlin+89.8,'N° de Funcionários');
 		$this->objpdf->Setfont('Arial','B',10);
@@ -83,7 +83,7 @@
 		$this->objpdf->rect($xcol+52,$xlin+109,55,$alt);
 
 
-	
+
 		$this->objpdf->Setfont('Arial','',8);
 		$this->objpdf->text($xcol+116,$xlin-8.5,'8 - CGC');
 		$this->objpdf->Setfont('Arial','B',10);
@@ -162,10 +162,10 @@
                 $this->objpdf->text($xcol+155,$xlin+68.5,'R$'.db_formatar($liquido,'f'));
 		$this->objpdf->rect($xcol+115,$xlin+64,35,$alt);
 		$this->objpdf->rect($xcol+150,$xlin+64,50,$alt);
-		
+
 		$this->objpdf->rect($xcol+115,$xlin+77,85,45);
 
-		
+
 		$this->objpdf->Setfont('Arial','B',11);
 //		$this->objpdf->text(150,$xlin-13,'RECIBO VÁLIDO ATÉ: ');
 

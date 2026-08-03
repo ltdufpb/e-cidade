@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $escola = db_getsession("DB_coddepto");
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed18_c_nome");
@@ -100,9 +100,9 @@ if(!isset($opcaoescola)){
            ";
    }
    if(!isset($pesquisa_chave)){
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_ed18_c_nome)){
-     $repassa = array("chave_ed18_c_nome"=>$chave_ed18_c_nome,"opcaoescola"=>$opcaoescola);
+     $repassa = ["chave_ed18_c_nome"=>$chave_ed18_c_nome,"opcaoescola"=>$opcaoescola];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }

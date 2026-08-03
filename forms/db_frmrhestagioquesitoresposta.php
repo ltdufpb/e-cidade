@@ -126,7 +126,7 @@ db_textarea('h54_descr',6,60,$Ih54_descr,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("h54_sequencial"=>@$h54_sequencial);
+	 $chavepri= ["h54_sequencial"=>@$h54_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clrhestagioquesitoresposta->sql_query_file(null,"*",null,"h54_rhestagioquesitopergunta =".@$h54_rhestagioquesitopergunta);
 	 $cliframe_alterar_excluir->campos  ="h54_sequencial,h54_rhestagioquesitopergunta,h54_rhestagiocriterio,h54_descr";

@@ -126,10 +126,10 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
    $lotac      = $pessoal[0]["r13_descr"];
    $npad       = $pessoal[0]["r02_descr"];
    $arquivo    = "arq1";
-   $nom        = array();
-   $tip        = array();
-   $tam        = array();
-   $dec        = array();
+   $nom        = [];
+   $tip        = [];
+   $tam        = [];
+   $dec        = [];
 
    $nom[1] = "w_regist";
    $nom[2] = "w_ano";
@@ -185,7 +185,7 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
          if ($assenta[$Iassenta]["h16_regist"] == $pessoal[0]["r01_regist"]) {
            break;
          }   
-         if( strtolower($assenta[$Iassenta]["h12_efetiv"]) == "n" && $assenta[$Iassenta]["h12_reltot"] <= 1){
+         if( strtolower((string) $assenta[$Iassenta]["h12_efetiv"]) == "n" && $assenta[$Iassenta]["h12_reltot"] <= 1){
            continue;
          }else{
            break;
@@ -244,7 +244,7 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
      while ($Iassenta < count($assenta)){
        if( $cparam != 3){
          // Quando chamado pela opção : Relatórios / Emissão da Certidao do Tempo de Serviço
-         if( strtolower($assenta[$Iassenta]["h12_efetiv"]) == "s" ){
+         if( strtolower((string) $assenta[$Iassenta]["h12_efetiv"]) == "s" ){
            // h12_efetiv = s -> Não soma Tempo
            $Iassenta++;
            continue;
@@ -254,7 +254,7 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
 
        if (!$inicio) {
 
-         if( strtolower($assenta[$Iassenta]["h12_efetiv"]) != "i" && strtolower($assenta[$Iassenta]["h12_efetiv"]) != "n" && strtolower($assenta[$Iassenta]["h12_efetiv"]) != "d"){
+         if( strtolower((string) $assenta[$Iassenta]["h12_efetiv"]) != "i" && strtolower((string) $assenta[$Iassenta]["h12_efetiv"]) != "n" && strtolower((string) $assenta[$Iassenta]["h12_efetiv"]) != "d"){
 
            $registro_local = $Iassenta;
            $mes_local  = db_month($assenta[$Iassenta]["h16_dtconc"]);
@@ -262,7 +262,7 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
            $tem_inicio = false;
            while($Iassenta < count($assenta) && $mes_local == db_month($assenta[$Iassenta]["h16_dtconc"]) 
              && $ano_local == db_year($assenta[$Iassenta]["h16_dtconc"])){
-             if( strtolower($assenta[$Iassenta]["h12_efetiv"]) == "i"){
+             if( strtolower((string) $assenta[$Iassenta]["h12_efetiv"]) == "i"){
                $tem_inicio = true;
              }
              $Iassenta++;
@@ -270,7 +270,7 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
            $Iassenta = $registro_local;
          }
 
-         if( strtolower($assenta[$Iassenta]["h12_efetiv"]) == "i") {
+         if( strtolower((string) $assenta[$Iassenta]["h12_efetiv"]) == "i") {
 
            $lTemInicioDeEfetividade = true;
            $inicio                  = true;
@@ -280,7 +280,7 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
 
          if ($tot_assent_mat == 0 ) {
 
-           if (strtolower($assenta[$Iassenta]["h12_efetiv"]) == "i" ) {
+           if (strtolower((string) $assenta[$Iassenta]["h12_efetiv"]) == "i" ) {
 
              $erro_msg = "Assentamento de inicio ja cadastrado : ".$assenta[$Iassenta]["h16_assent"]." verifique.";
              $erro     = true;
@@ -290,20 +290,20 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
        }
 
 
-       if( strtolower($assenta[$Iassenta]["h12_efetiv"]) == "f" ){
+       if( strtolower((string) $assenta[$Iassenta]["h12_efetiv"]) == "f" ){
          $registra_assenta = "F";
          $inicio = false;
        }
 
-       if( strtolower($assenta[$Iassenta]["h12_efetiv"]) == "-"){
+       if( strtolower((string) $assenta[$Iassenta]["h12_efetiv"]) == "-"){
          $registra_assenta = "-";
        }
 
-       if( strtolower($assenta[$Iassenta]["h12_efetiv"]) == "n"){
+       if( strtolower((string) $assenta[$Iassenta]["h12_efetiv"]) == "n"){
          $registra_assenta = "N";
        }
 
-       cria_assenta($registra_assenta, (strtolower($assenta[$Iassenta]["h12_tipefe"])=="i"?1:0),$certinic,$datacert,$tipo_certd);
+       cria_assenta($registra_assenta, (strtolower((string) $assenta[$Iassenta]["h12_tipefe"])=="i"?1:0),$certinic,$datacert,$tipo_certd);
        $listou_assentamentos = true;
 
        $Iassenta++; 
@@ -392,12 +392,12 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
            //$head5 = "PERÍODO : ".db_formatar($dataini,'d')." A ".db_formatar($datafin,'d');
 
            $head1 = "GRADE EFETIVIDADE"; 
-           $head3 = "Matrícula: {$pessoal[0]['r01_regist']}-".substr($pessoal[0]['z01_nome'],0,29);
-           $head4 = "Lotação: " . substr($lotac,0,33);
+           $head3 = "Matrícula: {$pessoal[0]['r01_regist']}-".substr((string) $pessoal[0]['z01_nome'],0,29);
+           $head4 = "Lotação: " . substr((string) $lotac,0,33);
            $head5 = "Admissão: " . db_dtoc($pessoal[0]["r01_admiss"]);
            $head6 = "Rescisão/Exoneração: " . db_dtoc($pessoal[0]["r01_recis"]);
-           $head7 = "Função: " . substr($nfuncao,0,33);
-           $head8  = "Padrão: " . substr($npad,0,33);
+           $head7 = "Função: " . substr((string) $nfuncao,0,33);
+           $head8  = "Padrão: " . substr((string) $npad,0,33);
            if( $cparam == 0){
              if( !db_empty($num_proc)){
                $head7 = "Processo: ".$num_proc;
@@ -450,8 +450,8 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
 
              $ano_temp = $work3[$Iwork3]["w_ano"];
 
-             $matriz = array();
-             $matdias = array();
+             $matriz = [];
+             $matdias = [];
 
              for($i=1;$i<= 12;$i++){
                for($j=1;$j<= 10;$j++){
@@ -493,7 +493,7 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
                  $matriz[db_val($mes_temp)][$indice] = $work3[$Iwork3]["w_assent"];
                  $matdias[db_val($mes_temp)][$indice] = db_str($work3[$Iwork3]["w_dias"],2,0,"0");
 
-                 if( strtolower(trim($work3[$Iwork3]["w_assent"])) == "e"){
+                 if( strtolower(trim((string) $work3[$Iwork3]["w_assent"])) == "e"){
                    $totmes += $work3[$Iwork3]["w_dias"];
                  }
 
@@ -617,8 +617,8 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
 
            $pdf->cell(0,$alt,"Resumo das Ocorrências",0,1,"L",0);
            $pdf->ln(2);
-           $tempo_servico = array();
-           $quant_tempo   = array();
+           $tempo_servico = [];
+           $quant_tempo   = [];
 
            $max = 0;
            $Iwork3 =0;
@@ -661,7 +661,7 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
 
              // monta matriz para totalizar tempo de servico;
 
-             if( trim($assent) != "E"){
+             if( trim((string) $assent) != "E"){
                $tipo = " ";
                if( $h12reltot == 9){
                  $tipo = $assent;
@@ -682,7 +682,7 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
                $quant_tempo[$posicao] = $quant_tempo[$posicao] + $total_dias;
              }
              $pdf->setfont('arial','',8);
-             if( trim($assent) != "E" && db_boolean( $h12graefe )){
+             if( trim((string) $assent) != "E" && db_boolean( $h12graefe )){
                $pdf->cell(100,$alt,$assent."( ".$h12descr.")",0,0,"L",0,'','.');
                $pdf->cell(20,$alt,$total_dias." dias ",0,1,"R",0);
              }else{
@@ -726,7 +726,7 @@ function imp_gradeefetividade($cparam,$matric,$datacert,$matriz_tot_assent=null,
              }else if($tempo_servico[$i] == "5"){
                $pdf->cell(100,$alt,"Tempo Estadual ",0,0,"L",0,'','.');
              }else if(!db_empty($tempo_servico[$i])){
-               db_selectmax("tipoasse","select * from tipoasse where trim(h12_assent) = ".db_sqlformat(trim($tempo_servico[$i]))) ;
+               db_selectmax("tipoasse","select * from tipoasse where trim(h12_assent) = ".db_sqlformat(trim((string) $tempo_servico[$i]))) ;
                $pdf->cell(100,$alt,ucwords(strtolower(db_substr($tipoasse[0]["h12_descr"],1,38))),0,0,"L",0,'','.');
              }else{
                continue;
@@ -830,8 +830,8 @@ function cria_assenta($tipo_contagem, $somatorio,$certinic,$datacert,$tipo_certd
   // E - Efetivos
   if($tipo_contagem == "F"){
 
-    $mat1 = array();
-    $mat2 = array();
+    $mat1 = [];
+    $mat2 = [];
 
     $mat1[1] = "w_regist";
     $mat1[2] = "w_ano";
@@ -902,8 +902,8 @@ function cria_assenta($tipo_contagem, $somatorio,$certinic,$datacert,$tipo_certd
 
       if( $saldo_nro_dias_efetivo > 0){
 
-        $mat1 = array();
-        $mat2 = array();
+        $mat1 = [];
+        $mat2 = [];
 
         $mat1[1] = "w_dias";
         $mat2[1] = 0;
@@ -935,8 +935,8 @@ function cria_assenta($tipo_contagem, $somatorio,$certinic,$datacert,$tipo_certd
 
       // Caso não tenha sido gravado nem uma vez o assentamento na grade , entra aqui
 
-      $mat1 = array();
-      $mat2 = array();
+      $mat1 = [];
+      $mat2 = [];
 
       $mat1[01] = "w_regist";
       $mat1[02] = "w_ano";
@@ -953,8 +953,8 @@ function cria_assenta($tipo_contagem, $somatorio,$certinic,$datacert,$tipo_certd
 
       db_insert($arquivo,$mat1,$mat2);
     }else{
-      $mat1 = array();
-      $mat2 = array();
+      $mat1 = [];
+      $mat2 = [];
       $mat1[1] = "w_dias";
 
       $qtde_dias_do_assentamento = $work4[0]["w_dias"]+$qtde_dias_do_assentamento;
@@ -1009,8 +1009,8 @@ function cria_assenta($tipo_contagem, $somatorio,$certinic,$datacert,$tipo_certd
     $condicaoaux .= " and trim(w_assent) = 'E'" ;
     global $work5;
     if(db_selectmax("work5","select * from " . $arquivo .$condicaoaux )){
-      $mat1 = array();
-      $mat2 = array();
+      $mat1 = [];
+      $mat2 = [];
       $mat1[1] = "w_dias";
       $mat2[1] = $dias_final;
       db_update($arquivo,$mat1,$mat2, $condicaoaux );
@@ -1032,7 +1032,7 @@ function dias_mes($mano,$mmes){
   if( $mmes == 1 || $mmes == 3 || $mmes == 5 || $mmes == 7 || $mmes == 8 || $mmes == 10 || $mmes == 12){
     $dias = 31;
   }else if( $mmes == 2){
-    if( ($mano/4) == bcdiv($mano,4,0)){
+    if( ($mano/4) == bcdiv((string) $mano,4,0)){
       $dias = 29;
     }else{
       $dias = 28;

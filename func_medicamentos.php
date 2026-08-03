@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_medicamentos_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmedicamentos = new cl_medicamentos;
 $clmedicamentos->rotulo->label("fa58_codigo");
 $clmedicamentos->rotulo->label("fa58_descricao");
@@ -67,7 +67,7 @@ $clmedicamentos->rotulo->label("fa58_descricao");
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_medicamentos.hide();">
   </form>
       <?php
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = " not exists( select 1 from far_matersaude where fa01_medicamentos = fa58_codigo ) ";
       if (!isset($pesquisa_chave)) {
 
@@ -86,9 +86,9 @@ $clmedicamentos->rotulo->label("fa58_descricao");
 
         $sWhere   = implode(" and ", $aWhere);
         $sql      = $clmedicamentos->sql_query("", $campos, "fa58_descricao", $sWhere);
-        $repassa  = array();
+        $repassa  = [];
         if(isset($chave_fa58_descricao)){
-          $repassa = array("chave_fa58_codigo"=>$chave_fa58_codigo,"chave_fa58_descricao"=>$chave_fa58_descricao);
+          $repassa = ["chave_fa58_codigo"=>$chave_fa58_codigo,"chave_fa58_descricao"=>$chave_fa58_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

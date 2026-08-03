@@ -76,8 +76,8 @@ $clcfpatriplaca     = new cl_cfpatriplaca;
 $clbenstransfcodigo = new cl_benstransfcodigo;
 $clhistbem      		= new cl_histbem;
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 if(isset($db_atualizar) || isset($alterar)){
   $db_opcao = 2;
   $db_botao = true;
@@ -154,7 +154,7 @@ if(isset($alterar)){
        if ($sqlerro == false) {
          
         if ($update_ident == "true") {
-          $seq = pg_result(db_query("select max(t41_placaseq) from bensplaca where t41_placa = '$t64_class' "),0,0)+1;
+          $seq = pg_fetch_result(db_query("select max(t41_placaseq) from bensplaca where t41_placa = '$t64_class' "),0,0)+1;
           if ($seq == "" || $seq == 0) {
             $seq = 1;
           }
@@ -175,7 +175,7 @@ if(isset($alterar)){
          }
          
          if ( $sqlerro == false && $update_ident == "true") {
-           $codigo                    = pg_result($clbensplaca->sql_record($clbensplaca->sql_query_file (null,"t41_codigo",null,"t41_bem = {$t43_bem}")),0,0);
+           $codigo                    = pg_fetch_result($clbensplaca->sql_record($clbensplaca->sql_query_file (null,"t41_codigo",null,"t41_bem = {$t43_bem}")),0,0);
            $clbensplaca->t41_codigo   = $codigo;           
            $clbensplaca->t41_bem      = $t43_bem;
            $clbensplaca->t41_placa    = str_replace(".","",$t64_class);

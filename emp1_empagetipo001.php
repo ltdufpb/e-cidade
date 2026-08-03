@@ -95,7 +95,7 @@ if (isset($incluir)) {
 
     if (!$lerro) {
 
-      $clempagetipo->e83_codigocompromisso = str_pad($e83_codigocompromisso, 4, "0", STR_PAD_LEFT);
+      $clempagetipo->e83_codigocompromisso = str_pad((string) $e83_codigocompromisso, 4, "0", STR_PAD_LEFT);
       $clempagetipo->incluir($e83_codtipo);
       $erro_msg = $clempagetipo->erro_msg;
       if ($clempagetipo->erro_status == "0") {

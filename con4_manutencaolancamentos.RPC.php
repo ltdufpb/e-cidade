@@ -59,7 +59,7 @@ $oParam                 = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno               = new stdClass();
 $oRetorno->iStatus      = 1;
 $oRetorno->sMessage     = '';
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 
 try {
 
@@ -73,10 +73,10 @@ try {
       $iDocumento       = $oParam->iDocumento;
       $iAno             = DB_getsession("DB_anousu");
 
-      $aDadosDocumento  = array();
+      $aDadosDocumento  = [];
       $oEventoContabil  = new EventoContabil($iDocumento, $iAno);
       $oDadosLancamento = $oEventoContabil->getEventoContabilLancamento();
-      $aRegrasEvento    = array();
+      $aRegrasEvento    = [];
       if (count($oDadosLancamento) > 0) {
 
         $aRegrasEvento    = $oDadosLancamento[0]->getRegrasLancamento();
@@ -125,7 +125,7 @@ try {
         $oDadosDocumento->sDescricaoCredito   = $sDescricaoCredito;
 
         $oDadosDocumento->iHistoricoTransacao = $iHistorico;
-        $oDadosDocumento->sHistorico          = urlencode($oDadosHistorico->c50_descr);
+        $oDadosDocumento->sHistorico          = urlencode((string) $oDadosHistorico->c50_descr);
         $aDadosDocumento[] = $oDadosDocumento;
       }
 
@@ -144,25 +144,7 @@ try {
   $oRetorno->sMessage = urlencode($oRetorno->sMessage);
   echo $oJson->encode($oRetorno);
 
-} catch (Exception $eErro){
-
-  $oRetorno->iStatus  = 2;
-  $oRetorno->sMessage = urlencode($eErro->getMessage());
-  echo $oJson->encode($oRetorno);
-
-} catch (DBException $eErro){
-
-  $oRetorno->iStatus  = 2;
-  $oRetorno->sMessage = urlencode($eErro->getMessage());
-  echo $oJson->encode($oRetorno);
-
-} catch (ParameterException $eErro){
-
-  $oRetorno->iStatus  = 2;
-  $oRetorno->sMessage = urlencode($eErro->getMessage());
-  echo $oJson->encode($oRetorno);
-
-} catch (BusinessException $eErro){
+} catch (Exception|DBException|ParameterException|BusinessException $eErro){
 
   $oRetorno->iStatus  = 2;
   $oRetorno->sMessage = urlencode($eErro->getMessage());

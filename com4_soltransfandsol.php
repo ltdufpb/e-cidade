@@ -35,8 +35,8 @@ include(modification("classes/db_solicitem_classe.php"));
 include(modification("classes/db_pcproc_classe.php"));
 include(modification("classes/db_pcparam_classe.php"));
 include(modification("classes/db_solandam_classe.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clsolandam = new cl_solandam;
 $clsolicita = new cl_solicita;
 $clsolicitem = new cl_solicitem;
@@ -98,7 +98,7 @@ function js_tipo(){
     	    
     if (isset($codsol)&&$codsol!=""){
       $couni="codsol";
-	  $$couni=$codsol;
+	  ${$couni}=$codsol;
 	  
     }else{
     	$nome="";
@@ -112,7 +112,7 @@ function js_tipo(){
 	echo "<option value=''>Selecione um Processo de Compra</option>\n";
 	for($y=0;$y<$clsolicita->numrows;$y++){
  	  db_fieldsmemory($result_solicita,$y);
-	  echo "<option value=$pc81_codproc ".(isset($couni)?($$couni==$pc81_codproc?"selected":""):"")." >$pc81_codproc</option>\n";
+	  echo "<option value=$pc81_codproc ".(isset($couni)?(${$couni}==$pc81_codproc?"selected":""):"")." >$pc81_codproc</option>\n";
    	}
     echo " </select>";
 	    //  
@@ -142,7 +142,7 @@ function js_tipo(){
     $result_solicita=$clsolicita->sql_record($clsolicita->sql_query_andsol("distinct pc10_numero","where p64_codtran is not null and y.pc47_pctipoandam in (1,2,3,5,4,6)and y.pc43_depto=".db_getsession("DB_coddepto")." order by 1 desc"));    
     if (isset($codsol)&&$codsol!=""){
       $couni="codsol";
-	  $$couni=$codsol;
+	  ${$couni}=$codsol;
     }else{
     	$nome="";
     	$descrdepto="";
@@ -155,7 +155,7 @@ function js_tipo(){
 	echo "<option value=''>Selecione uma Solicitação</option>\n";
 	for($y=0;$y<$clsolicita->numrows;$y++){
  	  db_fieldsmemory($result_solicita,$y);
-	  echo "<option value=$pc10_numero ".(isset($couni)?($$couni==$pc10_numero?"selected":""):"")." >$pc10_numero</option>\n";
+	  echo "<option value=$pc10_numero ".(isset($couni)?(${$couni}==$pc10_numero?"selected":""):"")." >$pc10_numero</option>\n";
    	}
     echo " </select>";
 	    //  

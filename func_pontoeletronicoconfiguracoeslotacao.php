@@ -31,7 +31,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clpontoeletronicoconfiguracoeslotacao = new cl_pontoeletronicoconfiguracoeslotacao;
 $clpontoeletronicoconfiguracoeslotacao->rotulo->label("rh195_sequencial");
@@ -81,7 +81,7 @@ $clpontoeletronicoconfiguracoeslotacao->rotulo->label("rh195_sequencial");
   </div>
       <?php
 
-      $aWhere  = array();
+      $aWhere  = [];
       $sCampos = "rh195_sequencial, r70_codigo, r70_estrut, r70_descr";
 
       if(!isset($pesquisa_chave)) {
@@ -100,9 +100,9 @@ $clpontoeletronicoconfiguracoeslotacao->rotulo->label("rh195_sequencial");
 
         $sql = $clpontoeletronicoconfiguracoeslotacao->sql_query("", $sCampos, "rh195_sequencial", implode(' AND ', $aWhere));
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_rh195_sequencial)) {
-          $repassa = array("chave_rh195_sequencial" => $chave_rh195_sequencial);
+          $repassa = ["chave_rh195_sequencial" => $chave_rh195_sequencial];
         }
 
         echo '<div class="container">';

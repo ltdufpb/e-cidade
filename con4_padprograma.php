@@ -26,12 +26,12 @@
  */
 
 class programa {
-    var $arq = null;
+    public $arq = null;
 
-  function programa($header){
+  function __construct($header){
      umask(74);
      $this->arq = fopen("tmp/PROGRAMA.TXT",'w+');
-     fputs($this->arq,$header);
+     fputs($this->arq,(string) $header);
      fputs($this->arq,"\r\n");  
   }  
 
@@ -49,15 +49,15 @@ class programa {
                $clarqpad->sql_query(null,"*",null," c54_nomearq = 'PROGRAMA.TXT' and c54_anousu=".db_getsession("DB_anousu")."  and c54_codtrib = $tribinst "));
     
     if($clarqpad->numrows > 0){
-      $rubant = split("\r\n",pg_result($res,0,"c54_arquivo"));
+      $rubant = preg_split("#\r\n#m",pg_fetch_result($res,0,"c54_arquivo"));
       for($yy=0;$yy<sizeof($rubant);$yy++){
          $contador++;
          $line = $rubant[$yy];
  
-         $exercicios .= $virg.substr($rubant[$yy],0,4);
+         $exercicios .= $virg.substr((string) $rubant[$yy],0,4);
          $virg = ",";
 
-         fputs($this->arq,$line);
+         fputs($this->arq,(string) $line);
          fputs($this->arq,"\r\n");
       }
     }
@@ -85,22 +85,22 @@ class programa {
 	   $sql .= "  and not o54_anousu in ($exercicios) ";
 
       $res=db_query($sql);
-      $rows = pg_numrows($res);
+      $rows = pg_num_rows($res);
       for ($x=0;$x < $rows;$x++){
-          $anousu = formatar(pg_result($res,$x,"anousu"),4,'n');
-          $codigo = formatar(pg_result($res,$x,"codigo"),4,'n');
-          $nome   = formatar(pg_result($res,$x,"nome"),80,'c');
+          $anousu = formatar(pg_fetch_result($res,$x,"anousu"),4);
+          $codigo = formatar(pg_fetch_result($res,$x,"codigo"),4);
+          $nome   = formatar(pg_fetch_result($res,$x,"nome"),80);
 
           //-- 
           $line = $anousu.$codigo.$nome; 
           fputs($this->arq,$line);
           fputs($this->arq,"\r\n");
-  
+
           $contador = $contador+1; // incrementa contador global
        }
 
        //  trailer
-       $contador = espaco(10-(strlen($contador)),'0').$contador;
+       $contador = espaco(10-(strlen($contador))).$contador;
        $line = "FINALIZADOR".$contador;
        fputs($this->arq,$line);
        fputs($this->arq,"\r\n");

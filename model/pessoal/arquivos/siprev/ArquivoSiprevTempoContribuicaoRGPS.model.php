@@ -29,7 +29,7 @@ class ArquivoSiprevTempoContribuicaoRGPS extends ArquivoSiprevBase {
   protected $sNomeArquivo = "12-TempoContribuicaoRGPS";
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["12"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["12"] = [];
   }
 
   public function getDados() {
@@ -65,13 +65,13 @@ class ArquivoSiprevTempoContribuicaoRGPS extends ArquivoSiprevBase {
       throw new DBException('Erro ao buscar os dados de tempo de contribuição RGPS.');
     }
 
-    $aErros        = array();
+    $aErros        = [];
     $aDadosRetorno = db_utils::makeCollectionFromRecord($rsDadosRetorno, function ($oDadosRetorno) use (&$aErros) {
 
       if ($aErrosRegistro = $this->validarDados($oDadosRetorno)) {
 
-        while (list($chave, $erro) = each($aErrosRegistro)) {
-          $aErros[] = $erro;
+        foreach ($aErrosRegistro as $chave => $erro) {
+            $aErros[] = $erro;
         }
 
         return null;
@@ -84,14 +84,14 @@ class ArquivoSiprevTempoContribuicaoRGPS extends ArquivoSiprevBase {
       ArquivoSiprevBase::$aErrosProcessamento["12"] = array_merge($aErros, ArquivoSiprevBase::$aErrosProcessamento["12"]);
     }
 
-    $aDadosTempoContribuicao = array();
+    $aDadosTempoContribuicao = [];
 
     foreach($aDadosRetorno as $oDadosRetorno) {
 
       $oTempoContribuicaoRGPS = $this->preencheTempoContribuicaoRGPS($oDadosRetorno);
       if ($oTempoContribuicaoRGPS != null) {
 
-        $aLinhas                   = array('tempoContribuicaoRGPS' => $oTempoContribuicaoRGPS);
+        $aLinhas                   = ['tempoContribuicaoRGPS' => $oTempoContribuicaoRGPS];
         $aDadosTempoContribuicao[] = (object)$aLinhas;
       }
     }
@@ -104,7 +104,7 @@ class ArquivoSiprevTempoContribuicaoRGPS extends ArquivoSiprevBase {
    * @return array
    */
   public function getElementos() {
-    return array($this->atributosTempoContribuicaoRGPS());
+    return [$this->atributosTempoContribuicaoRGPS()];
   }
 
   /**
@@ -113,9 +113,9 @@ class ArquivoSiprevTempoContribuicaoRGPS extends ArquivoSiprevBase {
    */
   private function atributosTempoContribuicaoRGPS() {
 
-    $aTempoContribuicao                 = array();
+    $aTempoContribuicao                 = [];
     $aTempoContribuicao['nome']         = 'tempoContribuicaoRGPS';
-    $aTempoContribuicao['propriedades'] = array(
+    $aTempoContribuicao['propriedades'] = [
       'operacao',
       'numCertidao',
       'dtEmissao',
@@ -126,7 +126,7 @@ class ArquivoSiprevTempoContribuicaoRGPS extends ArquivoSiprevBase {
       'numeroDias',
       'cargo',
       $this->atributosServidor()
-    );
+    ];
 
     return $aTempoContribuicao;
   }
@@ -137,9 +137,9 @@ class ArquivoSiprevTempoContribuicaoRGPS extends ArquivoSiprevBase {
    */
   private function atributosServidor() {
 
-    $aServidor                 = array();
+    $aServidor                 = [];
     $aServidor['nome']         = 'servidor';
-    $aServidor['propriedades'] = array('nome', 'numeroCPF', 'numeroNIT', 'dataNascimento', 'nomeMae');
+    $aServidor['propriedades'] = ['nome', 'numeroCPF', 'numeroNIT', 'dataNascimento', 'nomeMae'];
 
     return $aServidor;
   }
@@ -156,11 +156,11 @@ class ArquivoSiprevTempoContribuicaoRGPS extends ArquivoSiprevBase {
       new DBDate($oDadosRetorno->h16_dtterm)
     );
 
-    $iAno = str_pad($aDatasIntervalo->format('%y'), 2, '0', STR_PAD_LEFT);
-    $iMes = str_pad($aDatasIntervalo->format('%m'), 2, '0', STR_PAD_LEFT);
-    $iDia = str_pad($aDatasIntervalo->format('%d'), 2, '0', STR_PAD_LEFT);
+    $iAno = str_pad((string) $aDatasIntervalo->format('%y'), 2, '0', STR_PAD_LEFT);
+    $iMes = str_pad((string) $aDatasIntervalo->format('%m'), 2, '0', STR_PAD_LEFT);
+    $iDia = str_pad((string) $aDatasIntervalo->format('%d'), 2, '0', STR_PAD_LEFT);
 
-    $aTempoContribuicao                      = array();
+    $aTempoContribuicao                      = [];
     $aTempoContribuicao['operacao']          = 'I';
     $aTempoContribuicao['numCertidao']       = $oDadosRetorno->h31_numero;
     $aTempoContribuicao['dtEmissao']         = $oDadosRetorno->h31_dtportaria;
@@ -182,7 +182,7 @@ class ArquivoSiprevTempoContribuicaoRGPS extends ArquivoSiprevBase {
    */
   private function preencheServidor($oDadosRetorno) {
 
-    $aServidor                   = array();
+    $aServidor                   = [];
     $aServidor['nome']           = $oDadosRetorno->z01_nome;
     $aServidor['dataNascimento'] = $oDadosRetorno->z01_nasc;
     $aServidor['nomeMae']        = $oDadosRetorno->z01_mae;
@@ -205,7 +205,7 @@ class ArquivoSiprevTempoContribuicaoRGPS extends ArquivoSiprevBase {
    */
   private function validarDados($oDadosRetorno) {
 
-    $aErrosRegistro = array();
+    $aErrosRegistro = [];
     $lPisValido     = DBString::isPIS($oDadosRetorno->z01_pis);
     $lCpfValido     = DBString::isCPF($oDadosRetorno->z01_cgccpf);
 
@@ -240,11 +240,11 @@ class ArquivoSiprevTempoContribuicaoRGPS extends ArquivoSiprevBase {
    */
   private function getErro($oDadosRetorno, $sErro) {
 
-    return array(
+    return [
       "assentamento" => $oDadosRetorno->h16_codigo,
       "instituicao"  => InstituicaoRepository::getInstituicaoByCodigo($oDadosRetorno->rh02_instit)->getDescricao(),
       "nome"         => $oDadosRetorno->rh01_numcgm . " - " . $oDadosRetorno->z01_nome,
       "erro"         => $sErro,
-    );
+    ];
   }
 }

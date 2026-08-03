@@ -49,12 +49,12 @@ try {
 
     case "buscarCursos":
 
-      $where = array();
+      $where = [];
       if ( !empty($oParam->onlyActive) ) {
         $where[] = "ed29_ativo is true";
       }
 
-      $oRetorno->aCursos = array();
+      $oRetorno->aCursos = [];
 
       $where     = implode(' and ', $where);
       $oDaoCurso = new cl_curso;
@@ -87,7 +87,7 @@ try {
         throw new ParameterException( _M(ARQUIVO_MENSAGEM_EQUIVALENCIA . "informe_curso") );
       }
 
-      $oRetorno->aCursosEquivalentes = array();
+      $oRetorno->aCursosEquivalentes = [];
 
       $oDaoCursoEquivalencia = new cl_cursoequivalencia();
       $sCampos               = "cursoequivalente.ed29_i_codigo, cursoequivalente.ed29_c_descr";
@@ -143,7 +143,7 @@ try {
             throw new ParameterException(ARQUIVO_MENSAGEM_EQUIVALENCIA . "informe_aluno");
         }
 
-        $oRetorno->aCursos = array();
+        $oRetorno->aCursos = [];
         $oAluno = new Aluno($oParam->iAluno);
 
         if (!empty($oParam->cursosConcluidos)) {

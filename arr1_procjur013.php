@@ -67,7 +67,7 @@ if(isset($oPost->excluir)){
   $iNroLinhasSuspensao = $clsuspensao->numrows;
   if ( $iNroLinhasSuspensao > 0 ) {
   	
-  	$aSuspensao = array();
+  	$aSuspensao = [];
   	
   	for ( $i=0; $i < $iNroLinhasSuspensao; $i++) {
   	  $oSuspensao   = db_utils::fieldsMemory($rsVerificaSuspensao,$i);

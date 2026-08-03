@@ -57,19 +57,19 @@ $db_opcao   = 3;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
 	<?php 
-      $clcriaabas->identifica = array("veiccadcentral"=>"Dados da central",
+      $clcriaabas->identifica = ["veiccadcentral"=>"Dados da central",
                                       "veiccadcentraldepart"=>"Departamentos",
-                                      "veicmotoristascentral"=>"Motoristas");
-      $clcriaabas->title      = array("veiccadcentral"=>"Dados da central",
+                                      "veicmotoristascentral"=>"Motoristas"];
+      $clcriaabas->title      = ["veiccadcentral"=>"Dados da central",
                                       "veiccadcentraldepart"=>"Departamentos",
-                                      "veicmotoristascentral"=>"Motoristas");
-      $clcriaabas->src        = array("veiccadcentral"=>"vei1_veiccadcentral006.php");
-      $clcriaabas->disabled   = array("veiccadcentral"=>"false",
+                                      "veicmotoristascentral"=>"Motoristas"];
+      $clcriaabas->src        = ["veiccadcentral"=>"vei1_veiccadcentral006.php"];
+      $clcriaabas->disabled   = ["veiccadcentral"=>"false",
                                       "veiccadcentraldepart"=>"true",
-                                      "veicmotoristascentral"=>"true");    
-      $clcriaabas->sizecampo  = array("veiccadcentral"=>"23",
+                                      "veicmotoristascentral"=>"true"];    
+      $clcriaabas->sizecampo  = ["veiccadcentral"=>"23",
                                       "veiccadcentraldepart"=>"23",
-                                      "veicmotoristascentral"=>"23");
+                                      "veicmotoristascentral"=>"23"];
 
       $clcriaabas->cria_abas();    
 	?>

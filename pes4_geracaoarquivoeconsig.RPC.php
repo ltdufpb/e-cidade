@@ -38,7 +38,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 define('MENSAGENS', 'recursoshumanos.pessoal.pes4_geracaoarquivoeconsig.');
 
 $oJson                = new services_json();
-$oParametros          = $oJson->decode(utf8_decode(str_replace("\\", "", urldecode($_POST["json"]))));
+$oParametros          = $oJson->decode(mb_convert_encoding(str_replace("\\", "", urldecode((string) $_POST["json"])), 'ISO-8859-1'));
 $oRetorno             = new stdClass();
 $oRetorno->iStatus    = 1;
 $oRetorno->sMensagem  = '';

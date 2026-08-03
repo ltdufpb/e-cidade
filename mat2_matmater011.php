@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -85,7 +85,7 @@ function js_emite(){
         </td>
         <td nowrap>
 	<?php 
-          $x = array("n"=>"Numérica","a"=>"Alfabética");
+          $x = ["n"=>"Numérica","a"=>"Alfabética"];
           db_select("ordem",$x,true,2); 
 	?>
         </td>
@@ -96,7 +96,7 @@ function js_emite(){
         </td>
         <td nowrap>
 	<?php 
-          $y = array("a"=>"Ascendente","d"=>"Descendente");
+          $y = ["a"=>"Ascendente","d"=>"Descendente"];
           db_select("tipo_ordem",$y,true,2); 
 	?>
         </td>
@@ -105,7 +105,7 @@ function js_emite(){
         <td><b>Listar Materiais :</b></td>
         <td nowrap>
   <?php 
-          $x = array("T"=>"Todos","A"=>"Ativos","I"=>"Inativos");
+          $x = ["T"=>"Todos","A"=>"Ativos","I"=>"Inativos"];
           db_select("listar_mat",$x,true,2);
   ?>
         </td>
@@ -113,7 +113,7 @@ function js_emite(){
         <td nowrap align='right'><b>Listar :</b></td>
         <td nowrap>
 	       <?php  
-	       $somente_serv = array("M"=>"Materiais", "T"=>"Todos", "S"=>"Serviços");
+	       $somente_serv = ["M"=>"Materiais", "T"=>"Todos", "S"=>"Serviços"];
 	       db_select("listar_serv",$somente_serv,true,2);
 		   ?>
         </td>		

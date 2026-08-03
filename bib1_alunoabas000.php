@@ -37,7 +37,7 @@ $db_opcao = 1;
 function NomeAluno($aluno){
  if($aluno!=""){
   $result = db_query("SELECT ed47_v_nome FROM aluno WHERE ed47_i_codigo = $aluno");
-  return trim(pg_result($result,0,0));
+  return trim(pg_fetch_result($result,0,0));
  }else{
   return "";
  }
@@ -57,10 +57,10 @@ function NomeAluno($aluno){
  <tr>
   <td align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica = array("a1"=>"Dados Pessoais","a2"=>"Documentos");
-   $clcriaabas->sizecampo  = array("a1"=>"15","a2"=>"10");
-   $clcriaabas->src        = array("a1"=>"bib1_alunodados002.php?leitor&chavepesquisa=$chavepesquisa","a2"=>"");
-   $clcriaabas->disabled   = array("a2"=>"true");
+   $clcriaabas->identifica = ["a1"=>"Dados Pessoais","a2"=>"Documentos"];
+   $clcriaabas->sizecampo  = ["a1"=>"15","a2"=>"10"];
+   $clcriaabas->src        = ["a1"=>"bib1_alunodados002.php?leitor&chavepesquisa=$chavepesquisa","a2"=>""];
+   $clcriaabas->disabled   = ["a2"=>"true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->iframe_height = "600";
    $clcriaabas->iframe_width = "100%";

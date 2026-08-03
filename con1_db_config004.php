@@ -35,7 +35,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_app.utils.php"));
 require(modification("classes/db_db_configarquivos_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cldb_config = new cl_db_config;
 $cldb_configarquivos = new cl_db_configarquivos;

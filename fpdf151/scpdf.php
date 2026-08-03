@@ -2,8 +2,8 @@
 set_time_limit(0);
 session_cache_limiter('none');
 
-global $HTTP_POST_VARS;
-global $HTTP_SERVER_VARS;
+global $_POST;
+global $_SERVER;
 
 if (session_id() == null)
    session_start();
@@ -15,8 +15,8 @@ if(!defined('DB_BIBLIOT')){
     require_once(modification("libs/db_sessoes.php"));
     require_once(modification("libs/db_usuariosonline.php"));
 
-    db_postmemory($HTTP_POST_VARS);
-  db_postmemory($HTTP_SERVER_VARS);
+    db_postmemory($_POST);
+  db_postmemory($_SERVER);
 
   if(!defined('FPDF_FONTPATH')){
     define('FPDF_FONTPATH', 'fpdf151/font/');
@@ -97,11 +97,11 @@ class scpdf extends fpdf {
        else if(is_int(strpos($border,'b')))
          $s.=sprintf('q 2 w %.2F %.2F m %.2F %.2F l S Q ',$x*$k,($this->h-($y+$h))*$k,($x+$w)*$k,($this->h-($y+$h))*$k);
      }
-     if(trim($txt)!='')
+     if(trim((string) $txt)!='')
      {
-       $cr=substr_count($txt,"\n");
+       $cr=substr_count((string) $txt,"\n");
        if ($cr>0) { // Multi line
-         $txts = explode("\n", $txt);
+         $txts = explode("\n", (string) $txt);
          $lines = count($txts);
          for($l=0;$l<$lines;$l++) {
            $txt=$txts[$l];
@@ -215,9 +215,9 @@ class scpdf extends fpdf {
         //   $dados = db_query("select nomeinst,ender,munic,uf,telef,email,url,logo from db_config where codigo = ".db_getsession("DB_instit"));
 
         $dados = db_query($conn,"select nomeinst,trim(ender)||','||trim(cast(numero as text)) as ender,munic,uf,telef,email,url,logo from db_config where codigo = ".db_getsession("DB_instit"));
-        $url = @pg_result($dados,0,"url");
+        $url = @pg_fetch_result($dados,0,"url");
         $this->SetXY(1,1 + $deslocamentoVertical);
-        $this->Image('imagens/files/'.pg_result($dados,0,"logo"),7,3 + $deslocamentoVertical,20);
+        $this->Image('imagens/files/'.pg_fetch_result($dados,0,"logo"),7,3 + $deslocamentoVertical,20);
         if ($_SESSION["DB_modulo"] == 1100747) {
             if (!isset($iEscola)){
                 $iEscola = 	db_getsession("DB_coddepto");
@@ -244,26 +244,26 @@ class scpdf extends fpdf {
                                   left join ceplogradouros on ceplogradouros.cp06_codlogradouro = logradcep.j65_ceplog
                                   left join ceplocalidades on ceplocalidades.cp05_codlocalidades = ceplogradouros.cp06_codlocalidade
                                  where ed18_i_codigo = ".$iEscola);
-            $nome = pg_result($dados,0,"nomeinst");
-            $nomeescola = pg_result($dados1,0,"ed18_c_nome");
+            $nome = pg_fetch_result($dados,0,"nomeinst");
+            $nomeescola = pg_fetch_result($dados1,0,"ed18_c_nome");
             global $nomeinst;
-            $nomeinst = pg_result($dados,0,"nomeinst");
+            $nomeinst = pg_fetch_result($dados,0,"nomeinst");
             if(strlen($nome) > 42 || strlen($nomeescola) > 42)
                 $TamFonteNome = 8;
             else
                 $TamFonteNome = 9;
-            if(trim(pg_result($dados1,0,"ed18_c_logo"))!=""){
-                $this->Image('imagens/'.trim(pg_result($dados1,0,"ed18_c_logo")), 105, 4 + $deslocamentoVertical, 20);
+            if(trim(pg_fetch_result($dados1,0,"ed18_c_logo"))!=""){
+                $this->Image('imagens/'.trim(pg_fetch_result($dados1,0,"ed18_c_logo")), 105, 4 + $deslocamentoVertical, 20);
             }
-            $ruaescola = trim(pg_result($dados1,0,"j14_nome"));
-            $numescola = trim(pg_result($dados1,0,"ed18_i_numero"));
-            $bairroescola = trim(pg_result($dados1,0,"j13_descr"));
-            $cidadeescola = trim(pg_result($dados1,0,"ed261_c_nome"));
-            $estadoescola = trim(pg_result($dados1,0,"ed260_c_sigla"));
-            $emailescola = trim(pg_result($dados1,0,"ed18_c_email"));
+            $ruaescola = trim(pg_fetch_result($dados1,0,"j14_nome"));
+            $numescola = trim(pg_fetch_result($dados1,0,"ed18_i_numero"));
+            $bairroescola = trim(pg_fetch_result($dados1,0,"j13_descr"));
+            $cidadeescola = trim(pg_fetch_result($dados1,0,"ed261_c_nome"));
+            $estadoescola = trim(pg_fetch_result($dados1,0,"ed260_c_sigla"));
+            $emailescola = trim(pg_fetch_result($dados1,0,"ed18_c_email"));
             $dados2 = db_query($conn,"select ed26_i_numero from telefoneescola where ed26_i_escola = ".db_getsession("DB_coddepto")." LIMIT 1");
             if(pg_num_rows($dados2)>0){
-                $telefoneescola = trim(pg_result($dados2,0,"ed26_i_numero"));
+                $telefoneescola = trim(pg_fetch_result($dados2,0,"ed26_i_numero"));
             }else{
                 $telefoneescola = "";
             }
@@ -271,7 +271,7 @@ class scpdf extends fpdf {
             /**
              * Valida se a escola possui um código referente cadastrado e o adiciona antes do nome da escola
              */
-            $iCodigoReferencia = trim(pg_result($dados1,0,"ed18_codigoreferencia"));
+            $iCodigoReferencia = trim(pg_fetch_result($dados1,0,"ed18_codigoreferencia"));
 
             if ( $iCodigoReferencia != null ) {
                 $nomeescola = "{$iCodigoReferencia} - {$nomeescola}";
@@ -336,14 +336,14 @@ class scpdf extends fpdf {
                                        url,
                                        logo
                                 from db_config where codigo = ".db_getsession("DB_instit"));
-            $url = @pg_result($dados,0,"url");
+            $url = @pg_fetch_result($dados,0,"url");
             $this->SetXY(1,1 + $deslocamentoVertical);
-            $this->Image('imagens/files/'.pg_result($dados,0,"logo"),7,3 + $deslocamentoVertical,20);
+            $this->Image('imagens/files/'.pg_fetch_result($dados,0,"logo"),7,3 + $deslocamentoVertical,20);
 
             //$this->Cell(100,32,"",1);
-            $nome = pg_result($dados,0,"nomeinst");
+            $nome = pg_fetch_result($dados,0,"nomeinst");
             global $nomeinst;
-            $nomeinst = pg_result($dados,0,"nomeinst");
+            $nomeinst = pg_fetch_result($dados,0,"nomeinst");
 
             if(strlen($nome) > 42)
                 $TamFonteNome = 8;
@@ -354,14 +354,14 @@ class scpdf extends fpdf {
             $this->Text(33,9 + $deslocamentoVertical,$nome);
 
             $this->SetFont('Arial','I',8);
-            $sComplento = substr(trim(pg_result($dados,0,"db21_compl") ),0,20 );
+            $sComplento = substr(trim(pg_fetch_result($dados,0,"db21_compl") ),0,20 );
             if ($sComplento != '' || $sComplento != null ) {
-                $sComplento = ", ".substr(trim(pg_result($dados,0,"db21_compl") ),0,20 );
+                $sComplento = ", ".substr(trim(pg_fetch_result($dados,0,"db21_compl") ),0,20 );
             }
-            $this->Text(33,14 + $deslocamentoVertical,trim(pg_result($dados,0,"rua")).", ".trim(pg_result($dados,0,"numero")).$sComplento );
-            $this->Text(33,18 + $deslocamentoVertical,trim(pg_result($dados,0,"munic"))." - ".pg_result($dados,0,"uf"));
-            $this->Text(33,22 + $deslocamentoVertical,trim(pg_result($dados,0,"telef"))."   -    CNPJ : ".db_formatar(pg_result($dados,0,"cgc"),"cnpj"));
-            $this->Text(33,26 + $deslocamentoVertical,trim(pg_result($dados,0,"email")));
+            $this->Text(33,14 + $deslocamentoVertical,trim(pg_fetch_result($dados,0,"rua")).", ".trim(pg_fetch_result($dados,0,"numero")).$sComplento );
+            $this->Text(33,18 + $deslocamentoVertical,trim(pg_fetch_result($dados,0,"munic"))." - ".pg_fetch_result($dados,0,"uf"));
+            $this->Text(33,22 + $deslocamentoVertical,trim(pg_fetch_result($dados,0,"telef"))."   -    CNPJ : ".db_formatar(pg_fetch_result($dados,0,"cgc"),"cnpj"));
+            $this->Text(33,26 + $deslocamentoVertical,trim(pg_fetch_result($dados,0,"email")));
             $comprim = ($this->w - $this->rMargin - $this->lMargin);
             $this->Text(33,30 + $deslocamentoVertical,$url);
             $Espaco = $this->w - 80 ;
@@ -502,10 +502,10 @@ class scpdf extends fpdf {
         //   $dados = db_query("select nomeinst,ender,munic,uf,telef,email,url,logo from db_config where codigo = ".db_getsession("DB_instit"));
 
         $dados = db_query("select nomeinst,trim(ender)||','||trim(cast(numero as text)) as ender,munic,uf,telef,email,url,logo from db_config where codigo = " . db_getsession("DB_instit"));
-        $url = @pg_result($dados, 0, "url");
+        $url = @pg_fetch_result($dados, 0, "url");
         $this->SetXY(1, 1);
         if ($this->lExibeBrasao) {
-            $this->Image('imagens/files/' . pg_result($dados, 0, "logo"), 7, 3, 20);
+            $this->Image('imagens/files/' . pg_fetch_result($dados, 0, "logo"), 7, 3, 20);
         }
         if ($_SESSION["DB_modulo"] == 1100747) {
             if (!isset($iEscola)) {
@@ -533,36 +533,36 @@ class scpdf extends fpdf {
                               left join ceplogradouros on ceplogradouros.cp06_codlogradouro = logradcep.j65_ceplog
                               left join ceplocalidades on ceplocalidades.cp05_codlocalidades = ceplogradouros.cp06_codlocalidade
                              where ed18_i_codigo = " . $iEscola);
-            $nome = pg_result($dados, 0, "nomeinst");
+            $nome = pg_fetch_result($dados, 0, "nomeinst");
 
-            $nomeescola = pg_result($dados1, 0, "ed18_c_nome");
-            $iCodigoReferencia = pg_result($dados1, 0, "ed18_codigoreferencia");
+            $nomeescola = pg_fetch_result($dados1, 0, "ed18_c_nome");
+            $iCodigoReferencia = pg_fetch_result($dados1, 0, "ed18_codigoreferencia");
 
             if ($iCodigoReferencia != null) {
                 $nomeescola = "{$iCodigoReferencia} - {$nomeescola}";
             }
 
             global $nomeinst;
-            $nomeinst = pg_result($dados, 0, "nomeinst");
+            $nomeinst = pg_fetch_result($dados, 0, "nomeinst");
             if (strlen($nome) > 42 || strlen($nomeescola) > 42) {
                 $TamFonteNome = 8;
             } else {
                 $TamFonteNome = 9;
             }
-            if (trim(pg_result($dados1, 0, "ed18_c_logo")) != "") {
+            if (trim(pg_fetch_result($dados1, 0, "ed18_c_logo")) != "") {
                 if ($this->lExibeBrasao) {
-                    $this->Image('imagens/' . trim(pg_result($dados1, 0, "ed18_c_logo")), 170, 4, 20);
+                    $this->Image('imagens/' . trim(pg_fetch_result($dados1, 0, "ed18_c_logo")), 170, 4, 20);
                 }
             }
-            $ruaescola = trim(pg_result($dados1, 0, "j14_nome"));
-            $numescola = trim(pg_result($dados1, 0, "ed18_i_numero"));
-            $bairroescola = trim(pg_result($dados1, 0, "j13_descr"));
-            $cidadeescola = trim(pg_result($dados1, 0, "ed261_c_nome"));
-            $estadoescola = trim(pg_result($dados1, 0, "ed260_c_sigla"));
-            $emailescola = trim(pg_result($dados1, 0, "ed18_c_email"));
+            $ruaescola = trim(pg_fetch_result($dados1, 0, "j14_nome"));
+            $numescola = trim(pg_fetch_result($dados1, 0, "ed18_i_numero"));
+            $bairroescola = trim(pg_fetch_result($dados1, 0, "j13_descr"));
+            $cidadeescola = trim(pg_fetch_result($dados1, 0, "ed261_c_nome"));
+            $estadoescola = trim(pg_fetch_result($dados1, 0, "ed260_c_sigla"));
+            $emailescola = trim(pg_fetch_result($dados1, 0, "ed18_c_email"));
             $dados2 = db_query("select ed26_i_numero from telefoneescola where ed26_i_escola = " . db_getsession("DB_coddepto") . " LIMIT 1");
             if (pg_num_rows($dados2) > 0) {
-                $telefoneescola = trim(pg_result($dados2, 0, "ed26_i_numero"));
+                $telefoneescola = trim(pg_fetch_result($dados2, 0, "ed26_i_numero"));
             } else {
                 $telefoneescola = "";
             }
@@ -610,14 +610,14 @@ class scpdf extends fpdf {
                                    url,
                                    logo
                             from db_config where codigo = " . db_getsession("DB_instit"));
-            $url = @pg_result($dados, 0, "url");
+            $url = @pg_fetch_result($dados, 0, "url");
             $this->SetXY(1, 1);
-            $this->Image('imagens/files/' . pg_result($dados, 0, "logo"), 7, 3, 20);
+            $this->Image('imagens/files/' . pg_fetch_result($dados, 0, "logo"), 7, 3, 20);
 
             //$this->Cell(100,32,"",1);
-            $nome = pg_result($dados, 0, "nomeinst");
+            $nome = pg_fetch_result($dados, 0, "nomeinst");
             global $nomeinst;
-            $nomeinst = pg_result($dados, 0, "nomeinst");
+            $nomeinst = pg_fetch_result($dados, 0, "nomeinst");
 
             if (strlen($nome) > 42) {
                 $TamFonteNome = 8;
@@ -628,14 +628,14 @@ class scpdf extends fpdf {
             $this->SetFont('Arial', 'BI', $TamFonteNome);
             $this->Text(33, 9, $nome);
             $this->SetFont('Arial', 'I', 8);
-            $sComplento = substr(trim(pg_result($dados, 0, "db21_compl")), 0, 20);
+            $sComplento = substr(trim(pg_fetch_result($dados, 0, "db21_compl")), 0, 20);
             if ($sComplento != '' || $sComplento != null) {
-                $sComplento = ", " . substr(trim(pg_result($dados, 0, "db21_compl")), 0, 20);
+                $sComplento = ", " . substr(trim(pg_fetch_result($dados, 0, "db21_compl")), 0, 20);
             }
-            $this->Text(33, 14, trim(pg_result($dados, 0, "rua")) . ", " . trim(pg_result($dados, 0, "numero")) . $sComplento);
-            $this->Text(33, 18, trim(pg_result($dados, 0, "munic")) . " - " . pg_result($dados, 0, "uf"));
-            $this->Text(33, 22, trim(pg_result($dados, 0, "telef")) . "   -    CNPJ : " . db_formatar(pg_result($dados, 0, "cgc"), "cnpj"));
-            $this->Text(33, 26, trim(pg_result($dados, 0, "email")));
+            $this->Text(33, 14, trim(pg_fetch_result($dados, 0, "rua")) . ", " . trim(pg_fetch_result($dados, 0, "numero")) . $sComplento);
+            $this->Text(33, 18, trim(pg_fetch_result($dados, 0, "munic")) . " - " . pg_fetch_result($dados, 0, "uf"));
+            $this->Text(33, 22, trim(pg_fetch_result($dados, 0, "telef")) . "   -    CNPJ : " . db_formatar(pg_fetch_result($dados, 0, "cgc"), "cnpj"));
+            $this->Text(33, 26, trim(pg_fetch_result($dados, 0, "email")));
             $comprim = ($this->w - $this->rMargin - $this->lMargin);
             $this->Text(33, 30, $url);
             $Espaco = $this->w - 80;

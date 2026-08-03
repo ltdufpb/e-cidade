@@ -113,7 +113,7 @@ $db_opcao = 1;
                                             <td><b>Forma de Impressão:</b></td>
                                             <td>
                                                 <?php
-                                                $x = array('1' => 'Por Receita', '2' => 'Por Recurso');
+                                                $x = ['1' => 'Por Receita', '2' => 'Por Recurso'];
                                                 db_select('iFormaImpr', $x, 1, 1);
                                                 ?>
                                             </td>
@@ -122,7 +122,7 @@ $db_opcao = 1;
                                             <td><b>Periodicidade:</b></td>
                                             <td>
                                                 <?php
-                                                $x = array('1' => 'Mensal', '2' => 'Bimestral');
+                                                $x = ['1' => 'Mensal', '2' => 'Bimestral'];
                                                 db_select('iPeriodoImpr', $x, 1, 1);
                                                 ?>
                                             </td>

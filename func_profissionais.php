@@ -32,7 +32,7 @@ require_once modification('libs/db_usuariosonline.php');
 require_once modification('dbforms/db_funcoes.php');
 
 db_postmemory($_POST);
-parse_str($_SERVER['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -86,9 +86,9 @@ if (isset($pesquisa_chave) === false) {
     } else {
        $sql = $clprofissionais->sql_query("",$campos,"fm15_codigo","");
     }
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_fm15_nome)) {
-       $repassa = array("chave_fm15_codigo"=>$chave_fm15_codigo,"chave_fm15_nome"=>$chave_fm15_nome);
+       $repassa = ["chave_fm15_codigo"=>$chave_fm15_codigo,"chave_fm15_nome"=>$chave_fm15_nome];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

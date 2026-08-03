@@ -27,9 +27,9 @@
 
 
 include(modification("fpdf151/pdf.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 include(modification("libs/db_sql.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $pdf = new PDF(); 
 $pdf->Open(); 
@@ -91,7 +91,7 @@ where dtarquivo between '$datai' and '$dataf'
 order by $data a.k15_codbco,k15_codage,codret";
 //die($sql);
 $result = db_query($sql);
-$num = pg_numrows($result);
+$num = pg_num_rows($result);
 if ( $num == 0 )
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existe movimento para o período '.db_formatar($datai,'d').' a '.db_formatar($dataf,'d'));
 
@@ -111,8 +111,8 @@ $ttiptu    = 0;
 $ttissqn   = 0;
 $tttotal   = 0;
 $pagina    = 0;
-$data 	   = pg_result($result,0,"dtarquivo");
-$banco     = pg_result($result,0,"k15_codbco");
+$data 	   = pg_fetch_result($result,0,"dtarquivo");
+$banco     = pg_fetch_result($result,0,"k15_codbco");
 $pdf->SetFont('Arial','B',7);
 $pdf->Cell(15,6,"COD.ARQ",1,0,"C",1);
 $pdf->Cell(15,6,"BANCO",1,0,"C",1);

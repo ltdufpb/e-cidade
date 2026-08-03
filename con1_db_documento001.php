@@ -34,15 +34,15 @@ include(modification("classes/db_db_documento_classe.php"));
 include(modification("classes/db_db_paragrafo_classe.php"));
 include(modification("classes/db_db_docparag_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $cldb_documento = new cl_db_documento;
 $cldb_config    = new cl_db_config;
 $cldb_paragrafo = new cl_db_paragrafo;
 $cldb_docparag  = new cl_db_docparag;
 $db_opcao = 1;
 $db_botao = true;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   db_inicio_transacao();
   $cldb_documento->incluir($db03_docum);
   

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_usuclientes_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cldb_usuclientes  = new cl_db_usuclientes;
 $cldb_usuclientes->rotulo->label("at10_codcli");
@@ -82,7 +82,7 @@ if( isset($incluir) ){
   $sql = "select id_usuario from acesso_clientes_dados where cliente = $cliente and id_usuario = $codusu ";
   $result = db_query($sql);
   
-  if(pg_numrows($result)>0){
+  if(pg_num_rows($result)>0){
     $sql = "update acesso_clientes_dados set rh01_nasc = $rh01_nasc, rh01_sexo = '$rh01_sexo',z01_nome = '$at10_nome'
             where cliente = $cliente and id_usuario = $at10_usuario ";
     $result = db_query($sql);
@@ -105,7 +105,7 @@ if( isset($incluir) ){
            where cliente = $cliente and id_usuario = $codusu ";
 
   $result = db_query($sql);
-  if(pg_numrows($result)>0){
+  if(pg_num_rows($result)>0){
 
     db_fieldsmemory($result,0);   
     
@@ -115,7 +115,7 @@ if( isset($incluir) ){
            from  db_usuclientes
            where at10_codcli = $cliente and at10_usuario = $codusu ";
     $result = db_query($sql);
-    if(pg_numrows($result)>0){
+    if(pg_num_rows($result)>0){
 
       db_fieldsmemory($result,0);
 
@@ -179,7 +179,7 @@ if( isset($incluir) ){
             </td>
             <td width="96%" align="left" nowrap> 
               <?php 
-		       db_inputdata("rh01_nasc",substr(@$rh01_nasc,8,2),substr(@$rh01_nasc,5,2),substr(@$rh01_nasc,0,4),true,"text",2);
+		       db_inputdata("rh01_nasc",substr((string) @$rh01_nasc,8,2),substr((string) @$rh01_nasc,5,2),substr((string) @$rh01_nasc,0,4),true,"text",2);
 		       ?>
             </td>
           </tr>
@@ -190,7 +190,7 @@ if( isset($incluir) ){
             </td>
             <td width="96%" align="left" nowrap> 
               <?php 
-               $itens = array("F"=>"Feminino","M"=>"Masculino");
+               $itens = ["F"=>"Feminino","M"=>"Masculino"];
 		       db_select("rh01_sexo",$itens,true,"text",2);
 		       ?>
             </td>

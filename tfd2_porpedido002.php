@@ -40,7 +40,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 $oGet = db_utils::postMemory($_GET);
 
 $sStringPeríodo = "";
-$aWhere         = array();
+$aWhere         = [];
 $aWhere[]       = " tf26_i_codigo = 2"; // só pedidos encerrados
 
 if (!empty($oGet->dtInicial)) {

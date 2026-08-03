@@ -55,7 +55,7 @@ $oArquivoAuxiliar->Labelancora    = 'Numero Alvara';
 
 $clobrasalvara->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 /**
  * Declaração de variáveis utilizadas no script
@@ -64,7 +64,7 @@ db_postmemory($HTTP_POST_VARS);
 $ob04_data_dia = "";
 $ob04_data_mes = "";
 $ob04_data_ano = "";
-$aTipoSelecao  = array("S"=>"Somente Selecionados", "N"=>"Menos os Selecionados");
+$aTipoSelecao  = ["S"=>"Somente Selecionados", "N"=>"Menos os Selecionados"];
 
 
 ?>
@@ -101,7 +101,7 @@ $aTipoSelecao  = array("S"=>"Somente Selecionados", "N"=>"Menos os Selecionados"
             </td>
             <td>
               <?php   
-                db_select("tipoSelecao", array("S" => "Seleção","I" => "Intervalo"),true,1, "onChange=\"js_tipoSelecao();\"");
+                db_select("tipoSelecao", ["S" => "Seleção","I" => "Intervalo"],true,1, "onChange=\"js_tipoSelecao();\"");
               ?>                   
             </td>
           </tr>
@@ -147,7 +147,7 @@ $aTipoSelecao  = array("S"=>"Somente Selecionados", "N"=>"Menos os Selecionados"
             <td>Formato do Relatório:</td>
             <td>
               <?php 
-                db_select("formatoRelatorio", array("pdf" => "PDF","csv" => "CSV"),true,1);
+                db_select("formatoRelatorio", ["pdf" => "PDF","csv" => "CSV"],true,1);
               ?>
             </td>
           </tr>

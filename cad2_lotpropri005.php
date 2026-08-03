@@ -32,7 +32,7 @@ include(modification("classes/db_face_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("libs/db_app.utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clface = new cl_face;
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clface->rotulo->label();
@@ -44,7 +44,7 @@ if(isset($setores)){
 	if (is_array($setores)){
 		$set = "'".implode("','",$setores)."'";
 	} else {
-    $setores = explode(",",$setores);
+    $setores = explode(",",(string) $setores);
     $set = "'".implode("','",$setores)."'";
 	}
 	

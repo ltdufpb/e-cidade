@@ -45,7 +45,7 @@ final class GradeAproveitamentoAluno {
    * Disciplinas da turma
    * @var array
    */
-  private $aDisciplinas = array();
+  private $aDisciplinas = [];
 
   /**
    * Procedimento de avaliacao da turma
@@ -57,7 +57,7 @@ final class GradeAproveitamentoAluno {
    * Periodos de aulas do procedimento de avaliacao da turma
    * @var array
    */
-  private $aPeriodos = array();
+  private $aPeriodos = [];
 
   /**
    * Numero de casas decimais para formatacao das faltas
@@ -254,7 +254,7 @@ final class GradeAproveitamentoAluno {
       $oAproveitamentoRetorno->sTipoAmparo      = '';
       $oAproveitamentoRetorno->lAtingiuMinimo   = $oAproveitamento->temAproveitamentoMinimo();
       $oAproveitamentoRetorno->lTemNotaExterna  = $oAproveitamento->isAvaliacaoExterna();
-      $oAproveitamentoRetorno->aPareceresPadronizados = array();
+      $oAproveitamentoRetorno->aPareceresPadronizados = [];
 
       if ( $oElemento->getFormaDeAvaliacao()->getTipo() == "PARECER" && $oAproveitamentoRetorno->nAproveitamento != '') {
 
@@ -365,7 +365,7 @@ final class GradeAproveitamentoAluno {
 
       $oDiarioClasse = $this->oMatricula->getDiarioDeClasse();
       db_fim_transacao();
-    } catch (BusinessException $eErro) {
+    } catch (BusinessException) {
 
       throw new BusinessException("Erro ao gerar diário.");
       db_fim_transacao(true);
@@ -586,7 +586,7 @@ final class GradeAproveitamentoAluno {
   protected function encodeString($sString) {
 
     if ($this->lEncodeUTF) {
-      $sString = utf8_encode($sString);
+      $sString = mb_convert_encoding($sString, 'UTF-8', 'ISO-8859-1');
     }
     if ($this->lEncode) {
 
@@ -647,7 +647,7 @@ final class GradeAproveitamentoAluno {
 
         if ( $oElemento->isResultado() && $oElemento->geraResultadoFinal() ) {
 
-          if ( in_array( $oElemento->getFormaDeObtencao(), array('ME', 'MP', 'SO') ) ) {
+          if ( in_array( $oElemento->getFormaDeObtencao(), ['ME', 'MP', 'SO'] ) ) {
             return true;
           }
         }

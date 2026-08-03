@@ -14,7 +14,7 @@ require_once(modification('dbforms/db_funcoes.php'));
         <link href="estilos.css" rel="stylesheet" type="text/css">
         <link href="" rel="stylesheet" type="text/css">
         <?php
-        db_app::load(array(
+        db_app::load([
             "strings.js",
             "scripts.js",
             "dates.js",
@@ -31,7 +31,7 @@ require_once(modification('dbforms/db_funcoes.php'));
             "classes/recursoshumanos/Efetividade/PeriodoEfetividade.js",
             "estilos.css",
             "grid.style.css"
-        ));
+        ]);
         ?>
         <style type="text/css">
             #botoesPaginacao {

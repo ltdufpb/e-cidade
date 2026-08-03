@@ -35,7 +35,7 @@ $clrotulo->label("y100_sequencial");
 $clrotulo->label("z01_nome");
 $get  = "";
 $data = date("d-m-Y",db_getsession("DB_datausu"));
-$data = split('-',$data);
+$data = preg_split('#\-#m',$data);
 $dia  = $data[0];
 $mes  = $data[1];
 $ano  = $data[2];
@@ -186,7 +186,7 @@ if($db_opcao == 1){
         </td>
         <td>
         <?php 
-    	  $tipo_ordem = array("f"=>"Não","t"=>"Sim");
+    	  $tipo_ordem = ["f"=>"Não","t"=>"Sim"];
     	  db_select("y60_espontaneo",$tipo_ordem,true,2); ?>
     	  </td>
       </tr>
@@ -342,7 +342,7 @@ function js_preenchepesquisa(chave){
   }else if(isset($excluindo)){
     $op="excluindo=true&";
   }
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?".$op."chavepesquisa='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?".$op."chavepesquisa='+chave";
   ?>
 }
 <?php 

@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE empautret
 class cl_empautret { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e66_autori = 0; 
-   var $e66_seqretencao = 0; 
+   public $e66_autori = 0; 
+   public $e66_seqretencao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e66_autori = int4 = Autorização 
                  e66_seqretencao = int4 = Retenção 
                  ";
    //funcao construtor da classe 
-   function cl_empautret() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empautret"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -106,7 +106,7 @@ class cl_empautret {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ligação das retenções com autorização ($this->e66_autori."-".$this->e66_seqretencao) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ligação das retenções com autorização já Cadastrado";
@@ -130,12 +130,12 @@ class cl_empautret {
      $resaco = $this->sql_record($this->sql_query_file($this->e66_autori,$this->e66_seqretencao));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9640,'$this->e66_autori','I')");
        $resac = db_query("insert into db_acountkey values($acount,9641,'$this->e66_seqretencao','I')");
-       $resac = db_query("insert into db_acount values($acount,1658,9640,'','".AddSlashes(pg_result($resaco,0,'e66_autori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1658,9641,'','".AddSlashes(pg_result($resaco,0,'e66_seqretencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1658,9640,'','".AddSlashes(pg_fetch_result($resaco,0,'e66_autori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1658,9641,'','".AddSlashes(pg_fetch_result($resaco,0,'e66_seqretencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -144,10 +144,10 @@ class cl_empautret {
       $this->atualizacampos();
      $sql = " update empautret set ";
      $virgula = "";
-     if(trim($this->e66_autori)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e66_autori"])){ 
+     if(trim((string) $this->e66_autori)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e66_autori"])){ 
        $sql  .= $virgula." e66_autori = $this->e66_autori ";
        $virgula = ",";
-       if(trim($this->e66_autori) == null ){ 
+       if(trim((string) $this->e66_autori) == null ){ 
          $this->erro_sql = " Campo Autorização nao Informado.";
          $this->erro_campo = "e66_autori";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_empautret {
          return false;
        }
      }
-     if(trim($this->e66_seqretencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e66_seqretencao"])){ 
+     if(trim((string) $this->e66_seqretencao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e66_seqretencao"])){ 
        $sql  .= $virgula." e66_seqretencao = $this->e66_seqretencao ";
        $virgula = ",";
-       if(trim($this->e66_seqretencao) == null ){ 
+       if(trim((string) $this->e66_seqretencao) == null ){ 
          $this->erro_sql = " Campo Retenção nao Informado.";
          $this->erro_campo = "e66_seqretencao";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_empautret {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9640,'$this->e66_autori','A')");
          $resac = db_query("insert into db_acountkey values($acount,9641,'$this->e66_seqretencao','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e66_autori"]))
-           $resac = db_query("insert into db_acount values($acount,1658,9640,'".AddSlashes(pg_result($resaco,$conresaco,'e66_autori'))."','$this->e66_autori',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1658,9640,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e66_autori'))."','$this->e66_autori',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["e66_seqretencao"]))
-           $resac = db_query("insert into db_acount values($acount,1658,9641,'".AddSlashes(pg_result($resaco,$conresaco,'e66_seqretencao'))."','$this->e66_seqretencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1658,9641,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'e66_seqretencao'))."','$this->e66_seqretencao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_empautret {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9640,'$e66_autori','E')");
          $resac = db_query("insert into db_acountkey values($acount,9641,'$e66_seqretencao','E')");
-         $resac = db_query("insert into db_acount values($acount,1658,9640,'','".AddSlashes(pg_result($resaco,$iresaco,'e66_autori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1658,9641,'','".AddSlashes(pg_result($resaco,$iresaco,'e66_seqretencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1658,9640,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e66_autori'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1658,9641,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'e66_seqretencao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from empautret
@@ -304,7 +304,7 @@ class cl_empautret {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empautret";
@@ -372,7 +372,7 @@ class cl_empautret {
    function sql_query ( $e66_autori=null,$e66_seqretencao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -408,7 +408,7 @@ class cl_empautret {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -420,7 +420,7 @@ class cl_empautret {
    function sql_query_file ( $e66_autori=null,$e66_seqretencao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,7 +449,7 @@ class cl_empautret {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,7 +461,7 @@ class cl_empautret {
    function sql_query_retencao ( $e66_autori=null,$e66_seqretencao=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -492,7 +492,7 @@ class cl_empautret {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

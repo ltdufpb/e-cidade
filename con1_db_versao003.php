@@ -56,9 +56,9 @@ $db_opcao = 1;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
 //	 $clcriaabas->identifica = array("db_versao"=>"db_versao","db_versaocpd"=>"db_versaocpd","db_versaousu"=>"db_versaousu");
-         $clcriaabas->identifica = array("db_versao"=>"Versão/Release","db_versaocpd"=>"Alterações Efetuadas","db_versaousu"=>"Observações Para Usuário");	 
-	 $clcriaabas->src = array("db_versao"=>"con1_db_versao006.php");
-	 $clcriaabas->disabled   =  array("db_versaocpd"=>"true","db_versaousu"=>"true"); 
+         $clcriaabas->identifica = ["db_versao"=>"Versão/Release","db_versaocpd"=>"Alterações Efetuadas","db_versaousu"=>"Observações Para Usuário"];	 
+	 $clcriaabas->src = ["db_versao"=>"con1_db_versao006.php"];
+	 $clcriaabas->disabled   =  ["db_versaocpd"=>"true","db_versaousu"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

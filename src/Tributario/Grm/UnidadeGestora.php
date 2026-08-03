@@ -32,7 +32,7 @@ class UnidadeGestora {
    * Recolhimentos da Unidade gestora
    * @var
    */
-  protected $recolhimentos = array();
+  protected $recolhimentos = [];
 
   /**
    * Instancia uma Unidade Gestora

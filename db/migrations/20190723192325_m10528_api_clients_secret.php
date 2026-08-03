@@ -42,18 +42,18 @@ class M10528ApiClientsSecret extends PostgresMigration
 
     private function criaTabela()
     {
-        $this->table('api_clients', array('schema' => 'configuracoes', 'id' => 'db172_sequencial'))
-            ->addColumn('db172_nome', 'string', array('limit' => 100))
-            ->addIndex('db172_nome', array('unique' => true))
+        $this->table('api_clients', ['schema' => 'configuracoes', 'id' => 'db172_sequencial'])
+            ->addColumn('db172_nome', 'string', ['limit' => 100])
+            ->addIndex('db172_nome', ['unique' => true])
             ->addColumn('db172_descricao', 'text')
             ->addColumn('db172_chave', 'text')
-            ->addColumn('db172_ultima_utilizacao', 'datetime', array('null' => true))
+            ->addColumn('db172_ultima_utilizacao', 'datetime', ['null' => true])
             ->create();
     }
 
     private function adicionaClienteDbPref()
     {
-        $key = sha1(md5(time() . rand(0, 9999) . 'RAND_KEY'));
+        $key = sha1(md5(time() . random_int(0, 9999) . 'RAND_KEY'));
         $this->execute("
             INSERT INTO configuracoes.api_clients (db172_nome, db172_descricao, db172_chave, db172_ultima_utilizacao)
             VALUES ('DBPref', 'Sistema auxiliar da prefeitura', '{$key}', null);
@@ -81,6 +81,6 @@ class M10528ApiClientsSecret extends PostgresMigration
 
     private function removeTabela()
     {
-        $this->table('api_clients', array('schema' => 'configuracoes'))->drop();
+        $this->table('api_clients', ['schema' => 'configuracoes'])->drop();
     }
 }

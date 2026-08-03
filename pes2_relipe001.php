@@ -81,7 +81,7 @@ $clrhlota = new cl_rhlota;
       <td nowrap title="Tipo de relatório" ><b>Tipo :</b></td>
       <td>
         <?php 
-         $aTipoRelatorio = array("m"=>"Manutenção", "i"=>"Inclusão", "t"=>"Todos","c"=>"Cadastro");
+         $aTipoRelatorio = ["m"=>"Manutenção", "i"=>"Inclusão", "t"=>"Todos","c"=>"Cadastro"];
          db_select('tipo',$aTipoRelatorio,true,1,"style='width: 108px;'");
         ?>
       </td>
@@ -91,7 +91,7 @@ $clrhlota = new cl_rhlota;
       <td><b>Unifica I.P.E.:</b></td>
       <td>
        <?php 
-        $aUnica  = Array('f'=>'Não', 't'=>'Sim');
+        $aUnica  = ['f'=>'Não', 't'=>'Sim'];
         db_select("unifica_ipe",$aUnica,true,1, "style='width: 108px;'");
        ?>
       </td>
@@ -104,7 +104,7 @@ $clrhlota = new cl_rhlota;
        <?php 
          $sSqlLotacaoes = $clrhlota->sql_query_file(null, "r70_estrut, r70_estrut || ' - ' || r70_descr as r70_descr", "r70_estrut", " r70_instit = ".db_getsession('DB_instit'));
          $rsLotacoes    = $clrhlota->sql_record($sSqlLotacaoes);
-         db_multiploselect("r70_estrut","r70_descr", "", "", $rsLotacoes, array(), 16, 380);
+         db_multiploselect("r70_estrut","r70_descr", "", "", $rsLotacoes, [], 16, 380);
        ?>
        </fieldset>
       </td>

@@ -39,7 +39,6 @@ use NFePHP\Common\Certificate;
  */
 class RecepcaoLoteHabitese implements RequisicaoInterface
 {
-    private $oXml;
     private $arrayRegistroHabitese;
     private $sOperacao;
 
@@ -48,9 +47,8 @@ class RecepcaoLoteHabitese implements RequisicaoInterface
    *
    * @param stdClass $arrayRegistroHabitese
    */
-    public function __construct($arrayRegistroHabitese, DOMDocument $oXml, $localA1, $senhaA1)
+    public function __construct($arrayRegistroHabitese, private readonly DOMDocument $oXml, $localA1, $senhaA1)
     {
-        $this->oXml                     = $oXml;
         $this->oXml->preserveWhiteSpace = false;
         $this->oXml->formatOutput       = true;
         $this->arrayRegistroHabitese    = $arrayRegistroHabitese;
@@ -202,7 +200,7 @@ class RecepcaoLoteHabitese implements RequisicaoInterface
         $rootname = 'Habitese'; //este campo indica em qual node a assinatura deverá ser inclusa
         $this->oXml->formatOutput = false;
         $sXml = $this->oXml->saveXML();
-        $sXml = utf8_encode($sXml);
+        $sXml = mb_convert_encoding($sXml, 'UTF-8', 'ISO-8859-1');
         $sXml = $Habitese;
 
         $Body = $sXml;
@@ -224,7 +222,7 @@ class RecepcaoLoteHabitese implements RequisicaoInterface
             //aqui você trata a exceção
             dd($e->getMessage());
         }
-        $signed = utf8_decode($signed);
+        $signed = mb_convert_encoding($signed, 'ISO-8859-1');
         $signed = str_replace('&lt;', '<', $signed);
         $signed = str_replace('&gt;', '>', $signed);
         $signed = str_replace('<Habitese>', '', $signed);

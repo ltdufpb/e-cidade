@@ -34,7 +34,7 @@ include(modification("classes/db_empagegera_classe.php"));
 include(modification("classes/db_empageconfgera_classe.php"));
 include(modification("classes/db_empageconf_classe.php"));
 include(modification("classes/db_empagetipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clempagegera = new cl_empagegera;
 $clempageconfgera = new cl_empageconfgera;
 $clempageconf = new cl_empageconf;
@@ -45,7 +45,7 @@ $clempagetipo->rotulo->label();
 
 if(isset($cancelar)){
   $sqlerro = false;
-  $arr_movs = split(',',$movimentos);
+  $arr_movs = preg_split('#,#m',$movimentos);
   db_inicio_transacao();
   for($i=0;$i<sizeof($arr_movs);$i++){
     $codmov = $arr_movs[$i];

@@ -53,7 +53,7 @@ class Consulta
      * Colunas visiveis na consulta
      * @var array
      */
-    protected $colunas = array();
+    protected $colunas = [];
 
 
     /**
@@ -186,46 +186,46 @@ class Consulta
      */
     public function getConfiguracaoPadrao()
     {
-        $configuracaoGrid = array (
+        $configuracaoGrid =  [
             'configuracaoGrid' =>
-                array (
+                 [
                     'estrutural' =>
-                        array (
+                         [
                             'label' => 'Conta',
                             'visible' => true,
-                        ),
+                        ],
                     'descricao' =>
-                        array (
+                         [
                             'label' => 'Descricao',
                             'visible' => true,
-                        ),
+                        ],
                     'conta_corrente' =>
-                        array (
+                         [
                             'label' => 'Conta Corrente',
                             'visible' => true,
-                        ),
+                        ],
                     'saldo_anterior' =>
-                        array (
+                         [
                             'label' => 'Saldo Anterior',
                             'visible' => true,
-                        ),
+                        ],
                     'debitos' =>
-                        array (
+                         [
                             'label' => 'Débitos',
                             'visible' => true,
-                        ),
+                        ],
                     'creditos' =>
-                        array (
+                         [
                             'label' => 'Crédito',
                             'visible' => true,
-                        ),
+                        ],
                     'saldo_final' =>
-                        array (
+                         [
                             'label' => 'Saldo Final',
                             'visible' => true,
-                        ),
-                ),
-        );
+                        ],
+                ],
+        ];
         return (object)$configuracaoGrid;
     }
 }

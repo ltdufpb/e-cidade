@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_termotipoconfig_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltermotipoconfig = new cl_termotipoconfig;
 $cltermotipoconfig->rotulo->label("k42_sequencial");
 $cltermotipoconfig->rotulo->label("k42_cadtipo");
@@ -98,9 +98,9 @@ $cltermotipoconfig->rotulo->label("k42_cadtipo");
         }else{
            $sql = $cltermotipoconfig->sql_query("",$campos,"k42_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k42_cadtipo)){
-          $repassa = array("chave_k42_sequencial"=>$chave_k42_sequencial,"chave_k42_cadtipo"=>$chave_k42_cadtipo);
+          $repassa = ["chave_k42_sequencial"=>$chave_k42_sequencial,"chave_k42_cadtipo"=>$chave_k42_cadtipo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

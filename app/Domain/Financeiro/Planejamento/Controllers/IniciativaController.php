@@ -46,17 +46,11 @@ use Illuminate\Http\Request;
 class IniciativaController
 {
     /**
-     * @var IniciativaService
-     */
-    private $service;
-
-    /**
      * IniciativaController constructor.
      * @param IniciativaService $service
      */
-    public function __construct(IniciativaService $service)
+    public function __construct(private readonly IniciativaService $service)
     {
-        $this->service = $service;
     }
 
     /**

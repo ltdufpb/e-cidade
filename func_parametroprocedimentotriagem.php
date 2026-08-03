@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parametroprocedimentotriagem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clparametroprocedimentotriagem = new cl_parametroprocedimentotriagem;
 $clparametroprocedimentotriagem->rotulo->label("s166_sequencial");
 $clparametroprocedimentotriagem->rotulo->label("s166_sau_procedimento");
@@ -98,9 +98,9 @@ $clparametroprocedimentotriagem->rotulo->label("s166_sau_procedimento");
         }else{
            $sql = $clparametroprocedimentotriagem->sql_query("",$campos,"s166_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s166_sau_procedimento)){
-          $repassa = array("chave_s166_sequencial"=>$chave_s166_sequencial,"chave_s166_sau_procedimento"=>$chave_s166_sau_procedimento);
+          $repassa = ["chave_s166_sequencial"=>$chave_s166_sequencial,"chave_s166_sau_procedimento"=>$chave_s166_sau_procedimento];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

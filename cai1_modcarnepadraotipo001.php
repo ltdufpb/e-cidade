@@ -34,8 +34,8 @@ include(modification("classes/db_modcarnepadraotipo_classe.php"));
 include(modification("classes/db_modcarnepadrao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clmodcarnepadraotipo = new cl_modcarnepadraotipo;
 $clmodcarnepadrao = new cl_modcarnepadrao;
 $db_opcao = 22;
@@ -56,7 +56,7 @@ if(isset($alterar) || isset($incluir) || isset($excluir)){
     $rsModCarnePadraoExc = $clmodcarnepadrao->sql_record($clmodcarnepadrao->sql_query($k49_modcarnepadrao,"*",null,"k49_tipo is not null and k49_tipo != '{$k49_tipo}'"));
     $iNroLinhasRegraExc  = $clmodcarnepadrao->numrows;
 	if ($iNroLinhasRegraExc > 0) {
-      $aListaTipo = array();
+      $aListaTipo = [];
       for ($i=0; $i < $iNroLinhasRegraExc; $i++) {
         $oModCarnePadraoExc  = db_utils::fieldsMemory($rsModCarnePadraoExc,$i);
         if ($oModCarnePadraoExc->k49_tipo != $k49_tipo) {
@@ -70,8 +70,8 @@ if(isset($alterar) || isset($incluir) || isset($excluir)){
     $sWhereValidaRegra .= " and k49_tipo 			  = '{$k49_tipo}'			    		  		  ";
   }
 
-  if (trim($oModCarnePadrao->k36_ip) != ""){
-  	$aListaIp = array();
+  if (trim((string) $oModCarnePadrao->k36_ip) != ""){
+  	$aListaIp = [];
   	for ($i=0; $i < $iNroLinhasRegra; $i++) {
   	  $oListaIp = db_utils::fieldsMemory($rsModCarnePadrao,$i);
   	  $aListaIp[] = $oListaIp->k36_ip;  

@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
   <html>
@@ -55,9 +55,9 @@ $clcriaabas = new cl_criaabas;
   <tr> 
      <td>
      <?php 
-       $clcriaabas->identifica = array("g1"=>"Com as características","g2"=>"Sem as características","g3"=>"Setor","g4"=>"Quadra","g5"=>"Ruas"); 
-       $clcriaabas->title = array("g1"=>"Com as características","g2"=>"Sem as características","g3"=>"Setor","g4"=>"Quadra","g5"=>"Ruas");    
-       $clcriaabas->src = array("g1"=>"cad2_carface003.php","g2"=>"cad2_carface004.php","g3"=>"cad2_carface005.php","g4"=>"cad2_carface006.php","g5"=>"cad2_carface007.php");  
+       $clcriaabas->identifica = ["g1"=>"Com as características","g2"=>"Sem as características","g3"=>"Setor","g4"=>"Quadra","g5"=>"Ruas"]; 
+       $clcriaabas->title = ["g1"=>"Com as características","g2"=>"Sem as características","g3"=>"Setor","g4"=>"Quadra","g5"=>"Ruas"];    
+       $clcriaabas->src = ["g1"=>"cad2_carface003.php","g2"=>"cad2_carface004.php","g3"=>"cad2_carface005.php","g4"=>"cad2_carface006.php","g5"=>"cad2_carface007.php"];  
        $clcriaabas->cria_abas();    
      ?> 
      </td>

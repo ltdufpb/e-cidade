@@ -221,7 +221,7 @@ class dadosEmpenhoFolha
                     $sWhereEmpenhoFolha .= " and rh72_tabprev        = 0            ";
                     $sWhereEmpenhoFolha .= " and rh72_seqcompl       = $sSemestre   ";
 
-                    if (trim($iDotacao) !== '') {
+                    if (trim((string) $iDotacao) !== '') {
                         $sWhereEmpenhoFolha .= " and rh72_coddot = {$iDotacao}  ";
                     } else {
                         $sWhereEmpenhoFolha .= " and rh72_coddot = 0        ";
@@ -344,7 +344,7 @@ class dadosEmpenhoFolha
 
                                 $oRubrica = db_utils::fieldsMemory($rsGeradorRubricas, $iIndRubrica);
                                 $iCaract = $oRubrica->caract;
-                                $aExcecoes = array();
+                                $aExcecoes = [];
                                 $iCodEmpenhoFolha = $iCodEmpenhoFolhaGeral;
 
                                 try {
@@ -420,7 +420,7 @@ class dadosEmpenhoFolha
                                     $sWhereEmpenhoFolha .= " and rh72_tabprev        = 0            ";
                                     $sWhereEmpenhoFolha .= " and rh72_seqcompl       = $sSemestre   ";
 
-                                    if (trim($iDotacao) !== '') {
+                                    if (trim((string) $iDotacao) !== '') {
                                         $sWhereEmpenhoFolha .= " and rh72_coddot = {$iDotacao}  ";
                                     } else {
                                         $sWhereEmpenhoFolha .= " and rh72_coddot = 0 ";
@@ -578,7 +578,7 @@ class dadosEmpenhoFolha
     public function getExcessoesEmpenhoFolha($sSigla = '', $sRubric = '', $iAnoUsu = '', $iInstit = '')
     {
 
-        if (trim($sSigla) == '') {
+        if (trim((string) $sSigla) == '') {
             throw new ParameterException("Tipo de folha não informado!");
         }
 
@@ -633,7 +633,7 @@ class dadosEmpenhoFolha
         if ($oDaorhEmpenhoFolhaExcecaoRubrica->numrows > 0) {
             $aExcecoes = db_utils::getCollectionByRecord($rsExcecao);
         } else {
-            $aExcecoes = array();
+            $aExcecoes = [];
         }
 
         return $aExcecoes;
@@ -692,7 +692,7 @@ class dadosEmpenhoFolha
         if ($oDaorhEmpenhoFolhaRubrica->numrows > 0) {
             $aEmpenhosFolha = db_utils::getCollectionByRecord($rsEmpenhosFolha);
         } else {
-            $aEmpenhosFolha = array();
+            $aEmpenhosFolha = [];
         }
 
         return $aEmpenhosFolha;
@@ -756,7 +756,7 @@ class dadosEmpenhoFolha
         if ($oDaorhEmpenhoFolhaRubrica->numrows > 0) {
             $aEmpenhosFolhaRubrica = db_utils::getCollectionByRecord($rsEmpenhosFolhaRubrica);
         } else {
-            $aEmpenhosFolhaRubrica = array();
+            $aEmpenhosFolhaRubrica = [];
         }
 
         return $aEmpenhosFolhaRubrica;
@@ -816,7 +816,7 @@ class dadosEmpenhoFolha
         if ($oDaorhEmpenhoFolhaRubrica->numrows > 0) {
             $aEmpenhosFolhaRubrica = db_utils::getCollectionByRecord($rsEmpenhosFolhaRubrica);
         } else {
-            $aEmpenhosFolhaRubrica = array();
+            $aEmpenhosFolhaRubrica = [];
         }
 
         return $aEmpenhosFolhaRubrica;
@@ -878,7 +878,7 @@ class dadosEmpenhoFolha
         if ($oDaorhDevolucaoFolha->numrows > 0) {
             $aDevolucaoFolha = db_utils::getCollectionByRecord($rsDevolucaoFolha);
         } else {
-            $aDevolucaoFolha = array();
+            $aDevolucaoFolha = [];
         }
 
         if ($lRetornaSql) {
@@ -1020,7 +1020,7 @@ class dadosEmpenhoFolha
 
         if (count($aListaEmpenhos) > 0) {
 
-            $aListaCodEmpenho = array();
+            $aListaCodEmpenho = [];
 
             foreach ($aListaEmpenhos as $iInd => $oEmpenhoFolha) {
                 $aListaCodEmpenho[] = $oEmpenhoFolha->rh72_sequencial;
@@ -1059,7 +1059,7 @@ class dadosEmpenhoFolha
             if (count($aListaRubricas) > 0) {
                 foreach ($aListaRubricas as $iIndRubrica => $oEmpenhoRubrica) {
 
-                    if (trim($oEmpenhoRubrica->rh76_sequencial) != '') {
+                    if (trim((string) $oEmpenhoRubrica->rh76_sequencial) != '') {
                         throw new BusinessException("3. {$sMsgErro}\n\nRegistros já empenhados!");
                     }
 
@@ -1189,7 +1189,7 @@ class dadosEmpenhoFolha
 
         if (count($aDadosRubricas) > 0) {
 
-            $aListaSlip = array();
+            $aListaSlip = [];
 
             foreach ($aDadosRubricas as $iInd => $oSlipFolha) {
                 $aListaSlip[] = $oSlipFolha->rh79_sequencial;
@@ -1279,19 +1279,19 @@ class dadosEmpenhoFolha
             throw new ParameterException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
-        if (trim($sSigla) == '') {
+        if (trim((string) $sSigla) == '') {
             throw new ParameterException("{$sMsgErro}\nsigla não informada!");
         }
-        if (trim($iAnoUsu) == '') {
+        if (trim((string) $iAnoUsu) == '') {
             $iAnoUsu = db_anofolha();
         }
-        if (trim($iMesUsu) == '') {
+        if (trim((string) $iMesUsu) == '') {
             $iAnoUsu = db_mesfolha();
         }
-        if (trim($iInstit) == '') {
+        if (trim((string) $iInstit) == '') {
             $iInstit = db_getsession('DB_instit');
         }
-        if (trim($sSemestre) == '') {
+        if (trim((string) $sSemestre) == '') {
             $sSemestre = '0';
         }
 
@@ -1403,7 +1403,7 @@ class dadosEmpenhoFolha
 
         if (count($aDadosRubricas) > 0) {
 
-            $aListaDevolucao = array();
+            $aListaDevolucao = [];
 
             foreach ($aDadosRubricas as $iInd => $oDevolucaoFolha) {
                 $aListaDevolucao[] = $oDevolucaoFolha->rh69_sequencial;
@@ -2967,7 +2967,7 @@ class dadosEmpenhoFolha
                     $sWhereEmpenhoFolha .= " and rh72_tabprev        = 0                       ";
                     $sWhereEmpenhoFolha .= " and rh72_seqcompl       = '{$oGerador->semestre}' ";
 
-                    if (trim($iDotacao) !== '') {
+                    if (trim((string) $iDotacao) !== '') {
                         $sWhereEmpenhoFolha .= " and rh72_coddot = {$iDotacao}  ";
                     } else {
                         $sWhereEmpenhoFolha .= " and rh72_coddot = 0            ";
@@ -3078,7 +3078,7 @@ class dadosEmpenhoFolha
                         $sWhereEmpenhoFolha .= " and rh72_tabprev        = 0                       ";
                         $sWhereEmpenhoFolha .= " and rh72_seqcompl       = '{$oGerador->semestre}' ";
 
-                        if (trim($iDotacao) !== '') {
+                        if (trim((string) $iDotacao) !== '') {
                             $sWhereEmpenhoFolha .= " and rh72_coddot = {$iDotacao}  ";
                         } else {
                             $sWhereEmpenhoFolha .= " and rh72_coddot = 0        ";
@@ -3214,7 +3214,7 @@ class dadosEmpenhoFolha
         if ($oDaorhEmpenhoFolhaRubrica->numrows > 0) {
             $aEmpenhosFolha = db_utils::getCollectionByRecord($rsEmpenhosFolha);
         } else {
-            $aEmpenhosFolha = array();
+            $aEmpenhosFolha = [];
         }
 
         return $aEmpenhosFolha;
@@ -3272,11 +3272,11 @@ class dadosEmpenhoFolha
 
         if (count($aDadosEmpenhos) > 0) {
 
-            $aListaEmpenhos = array();
+            $aListaEmpenhos = [];
 
             foreach ($aDadosEmpenhos as $iInd => $oEmpenhoFolha) {
                 $aListaEmpenhos[] = $oEmpenhoFolha->rh72_sequencial;
-                if (trim($oEmpenhoFolha->rh76_sequencial) != '') {
+                if (trim((string) $oEmpenhoFolha->rh76_sequencial) != '') {
                     throw new BusinessException("{$sMsgErro}\n\nRegistros já empenhados!");
                 }
             }
@@ -3338,19 +3338,19 @@ class dadosEmpenhoFolha
 
         if ($sTipo == 'm') {
 
-            $aSiglas = array('r14',
+            $aSiglas = ['r14',
                 'r48',
-                'r20');
+                'r20'];
 
             if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
-                $aSiglas = array('r14',
+                $aSiglas = ['r14',
                     'r48',
                     'r20',
-                    'sup');
+                    'sup'];
             }
 
         } else if ($sTipo == 'd') {
-            $aSiglas = array('r35');
+            $aSiglas = ['r35'];
         } else {
             throw new BusinessException("Tipo de folha difere de mensal e 13º!");
         }
@@ -3587,7 +3587,7 @@ class dadosEmpenhoFolha
                     $sWhereEmpenhoFolha .= " and rh72_tabprev        = {$oGerador->previdencia} ";
                     $sWhereEmpenhoFolha .= " and rh72_seqcompl       = '{$oGerador->semestre}'  ";
 
-                    if (trim($iDotacao) !== '') {
+                    if (trim((string) $iDotacao) !== '') {
                         $sWhereEmpenhoFolha .= " and rh72_coddot = {$iDotacao}  ";
                     } else {
                         $sWhereEmpenhoFolha .= " and rh72_coddot = 0        ";
@@ -3698,7 +3698,7 @@ class dadosEmpenhoFolha
                         $sWhereEmpenhoFolha .= " and rh72_tabprev        = {$oGerador->previdencia} ";
                         $sWhereEmpenhoFolha .= " and rh72_seqcompl       = '{$oGerador->semestre}'  ";
 
-                        if (trim($iDotacao) !== '') {
+                        if (trim((string) $iDotacao) !== '') {
                             $sWhereEmpenhoFolha .= " and rh72_coddot = {$iDotacao}  ";
                         } else {
                             $sWhereEmpenhoFolha .= " and rh72_coddot = 0       ";
@@ -3849,7 +3849,7 @@ class dadosEmpenhoFolha
         if ($oDaorhEmpenhoFolhaRubrica->numrows > 0) {
             $aEmpenhosFolha = db_utils::getCollectionByRecord($rsEmpenhosFolha);
         } else {
-            $aEmpenhosFolha = array();
+            $aEmpenhosFolha = [];
         }
 
         return $aEmpenhosFolha;
@@ -3911,11 +3911,11 @@ class dadosEmpenhoFolha
 
         if (count($aDadosEmpenhos) > 0) {
 
-            $aListaEmpenhos = array();
+            $aListaEmpenhos = [];
 
             foreach ($aDadosEmpenhos as $iInd => $oEmpenhoFolha) {
                 $aListaEmpenhos[] = $oEmpenhoFolha->rh72_sequencial;
-                if (trim($oEmpenhoFolha->rh76_sequencial) != '') {
+                if (trim((string) $oEmpenhoFolha->rh76_sequencial) != '') {
                     throw new BusinessException("{$sMsgErro}\n\nRegistros já empenhados!");
                 }
             }
@@ -4166,7 +4166,7 @@ class dadosEmpenhoFolha
             $sSemestre = '0';
         }
 
-        $aPlanilha = array();
+        $aPlanilha = [];
         $lGeraRetencao = '';
 
         /**
@@ -4222,7 +4222,7 @@ class dadosEmpenhoFolha
                     throw new Exception("{$sMsgErro}\n{$eException->getMessage()}");
                 }
 
-                if (trim($iPlanilhaSlip) != '') {
+                if (trim((string) $iPlanilhaSlip) != '') {
                     $aPlanilha[] = $iPlanilhaSlip;
                 }
 
@@ -4244,7 +4244,7 @@ class dadosEmpenhoFolha
                 throw new Exception("{$sMsgErro}\n{$eException->getMessage()}");
             }
 
-            if (trim($iPlanilhaEmpenho) != '') {
+            if (trim((string) $iPlanilhaEmpenho) != '') {
                 $aPlanilha[] = $iPlanilhaEmpenho;
             }
 
@@ -4414,7 +4414,7 @@ class dadosEmpenhoFolha
 
     }
 
-    public function geraPlanilhaEmpenhoFolha($sSigla, $iAnoUsu, $iMesUsu, $sSemestre, $iCgm = '', $iInstit)
+    public function geraPlanilhaEmpenhoFolha($sSigla, $iAnoUsu, $iMesUsu, $sSemestre, $iCgm = '', $iInstit = null)
     {
 
         $sMsgErro = 'Geração das Planilhas para as retenções de Empenho abortada';
@@ -4424,7 +4424,7 @@ class dadosEmpenhoFolha
             throw new DBException("{$sMsgErro}\nnenhuma transação encontrada!");
         }
 
-        if (trim($iInstit) == '') {
+        if (trim((string) $iInstit) == '') {
             $iInstit = db_getsession('DB_instit');
         }
 
@@ -4562,7 +4562,7 @@ class dadosEmpenhoFolha
                     $recurso->getComplemento()
                 );
 
-                $aRhEmpenhoFolhaRubrica = explode(",", $oDadosRubricas->rhempenhofolharubrica);
+                $aRhEmpenhoFolhaRubrica = explode(",", (string) $oDadosRubricas->rhempenhofolharubrica);
                 for ($iEmpenhoFolhaRubrica = 0; $iEmpenhoFolhaRubrica < count($aRhEmpenhoFolhaRubrica); $iEmpenhoFolhaRubrica++) {
 
                     $oDaoRhEmpenhoFolhaRubricaPlanilha->rh111_rhempenhofolharubrica = $aRhEmpenhoFolhaRubrica[$iEmpenhoFolhaRubrica];
@@ -4592,7 +4592,7 @@ class dadosEmpenhoFolha
     public static function verificarPermissaoFolha($sSigla)
     {
 
-        $aFolhasLiberadas = array("r14", "r48", "sup");
+        $aFolhasLiberadas = ["r14", "r48", "sup"];
 
         if (in_array($sSigla, $aFolhasLiberadas)) {
             return true;

@@ -62,7 +62,7 @@ require_once modification("dbforms/db_funcoes.php");
              <td>
              <?php
 
-             $meses=array( ""  => "Selecione...",
+             $meses=[ ""  => "Selecione...",
                            "1" => "Janeiro",
                            "2" => "Feveireiro",
                            "3" => "Março",
@@ -74,7 +74,7 @@ require_once modification("dbforms/db_funcoes.php");
                            "9" => "Setembro",
                            "10" => "Outubro",
                            "11" => "Novembro",
-                           "12" => "Dezembro");
+                           "12" => "Dezembro"];
              db_select("txtMes", $meses, true, 1,"style='width:120px'");
              ?>
             </td>

@@ -75,23 +75,23 @@ function js_executaIframe(val) {
   <tr>
     <td nowrap title="<?=@$Tpc01_libaut?>">       <?=@$Lpc01_libaut?>    </td>
     <td nowrap> <?php 
-    $arrlibaut_truefalse = array('t'=>'Sim','f'=>'Não');
+    $arrlibaut_truefalse = ['t'=>'Sim','f'=>'Não'];
     db_select("pc01_libaut",$arrlibaut_truefalse,true,$db_opcao);
     ?>
     <?=$Lpc01_ativo?>
     <?php 
-    $arr_truefalse = array('f'=>'Não','t'=>'Sim');
+    $arr_truefalse = ['f'=>'Não','t'=>'Sim'];
     db_select("pc01_ativo",$arr_truefalse,true,$db_opcao);
     ?>
     <?=$Lpc01_servico?>
     <?php 
-    $x = array("f"=>"Não","t"=>"Sim");
+    $x = ["f"=>"Não","t"=>"Sim"];
     $pc01_servico_disabled = $db_opcao != 1 ? "disabled" : "";
     db_select("pc01_servico", $x, true, $db_opcao, $pc01_servico_disabled);
     ?>
     <?=$Lpc01_veiculo?>
     <?php 
-    $aVeic = array("f"=>"Não","t"=>"Sim");
+    $aVeic = ["f"=>"Não","t"=>"Sim"];
     db_select("pc01_veiculo",$aVeic,true,$db_opcao);
     ?>
 
@@ -104,7 +104,7 @@ function js_executaIframe(val) {
       </td>
       <td>
         <?php 
-        $aFrac = array("f"=>"Não","t"=>"Sim");
+        $aFrac = ["f"=>"Não","t"=>"Sim"];
         db_select("pc01_fraciona",$aFrac,true,$db_opcao);
         ?>
       </td>
@@ -118,7 +118,7 @@ function js_executaIframe(val) {
       </td>
       <td nowrap>
        <?php 
-        $aValMin = array("f"=>"Não","t"=>"Sim");
+        $aValMin = ["f"=>"Não","t"=>"Sim"];
         db_select("pc01_validademinima",$aValMin,true,$db_opcao);
         ?>
 
@@ -126,15 +126,15 @@ function js_executaIframe(val) {
         <?php 
         echo $Lpc01_obrigatorio;
 
-        $aPObrigatorio = array("f"=>"Não","t"=>"Sim");
+        $aPObrigatorio = ["f"=>"Não","t"=>"Sim"];
         db_select("pc01_obrigatorio", $aPObrigatorio ,true,$db_opcao);
         ?>
 
         <?php 
         echo $Lpc01_liberaresumo;
 
-        $aLiberarResumo = array("t" => "Sim",
-                                "f" => "Não");
+        $aLiberarResumo = ["t" => "Sim",
+                                "f" => "Não"];
         db_select("pc01_liberaresumo", $aLiberarResumo, true, $db_opcao);
         ?>
       </td>
@@ -302,7 +302,7 @@ function js_preenchepesquisa(chave){
   db_iframe_pcmater.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

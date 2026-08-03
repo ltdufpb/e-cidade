@@ -33,6 +33,6 @@ require_once(modification("libs/db_utils.php"));
 $conn           = pg_connect("host=$DB_SERVIDOR dbname=$DB_BASE port=$DB_PORTA user=$DB_USUARIO password=$DB_SENHA");
 $rsStartSession = pg_query("select fc_startsession()");
 
-$oSoapServer    = new SoapServer(null, array('uri' => 'http://localhost/dbportal_prj'));
+$oSoapServer    = new SoapServer(null, ['uri' => 'http://localhost/dbportal_prj']);
 $oSoapServer->setClass("ConsultaDados");
 $oSoapServer->handle();

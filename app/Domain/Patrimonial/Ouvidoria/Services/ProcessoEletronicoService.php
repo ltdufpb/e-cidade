@@ -111,11 +111,11 @@ class ProcessoEletronicoService
             $data = collect(pg_fetch_object($rs));
             return [
                 "success" => true,
-                "message" => utf8_encode(urldecode("Visualiza��o salva com sucessso!")),
+                "message" => mb_convert_encoding(urldecode("Visualiza��o salva com sucessso!"), 'UTF-8', 'ISO-8859-1'),
                 "data" => $data
             ];
         } catch (\Exception $ex) {
-            return ["success" => false, "message" => utf8_encode(urldecode($ex->getMessage()))];
+            return ["success" => false, "message" => mb_convert_encoding(urldecode($ex->getMessage()), 'UTF-8', 'ISO-8859-1')];
         }
     }
 
@@ -221,19 +221,15 @@ class ProcessoEletronicoService
 
     private function coverterMensagensParaObjecto($mensagesResult)
     {
-        $mensagens = collect($mensagesResult)->groupBy(function ($mensagem) {
-            return $mensagem->codigo_mensagem;
-        })->toArray();
+        $mensagens = collect($mensagesResult)->groupBy(fn($mensagem) => $mensagem->codigo_mensagem)->toArray();
 
         return collect($mensagens)->flatMap(function ($mensagem, $index) {
-            $anexos = array_map(function ($item) {
-                return (object)[
-                    'id_estorage' => !empty($item->id_estorage) ? $item->id_estorage : $item->nomedocumento,
-                    'descricao' => !empty($item->descricao) ? utf8_encode(urldecode($item->descricao)) : null,
-                    'content' => null,
-                    'type' => null
-                ];
-            }, $mensagem);
+            $anexos = array_map(fn($item) => (object)[
+                'id_estorage' => !empty($item->id_estorage) ? $item->id_estorage : $item->nomedocumento,
+                'descricao' => !empty($item->descricao) ? mb_convert_encoding(urldecode((string) $item->descricao), 'UTF-8', 'ISO-8859-1') : null,
+                'content' => null,
+                'type' => null
+            ], $mensagem);
 
             $mensagem = current($mensagem);
 
@@ -244,15 +240,15 @@ class ProcessoEletronicoService
                 $index => (object)[
                     'codigo_andamento' => $mensagem->codigo_andamento,
                     'codigo' => $mensagem->codigo_mensagem,
-                    'data' => (new \DateTime($mensagem->data))->format('d/m/Y'),
-                    'hora' => urldecode($mensagem->hora),
-                    'mensagem' => utf8_encode(html_entity_decode($mensagem->mensagem, ENT_QUOTES, 'ISO-8859-1')),
+                    'data' => new \DateTime($mensagem->data)->format('d/m/Y'),
+                    'hora' => urldecode((string) $mensagem->hora),
+                    'mensagem' => mb_convert_encoding(html_entity_decode((string) $mensagem->mensagem, ENT_QUOTES, 'ISO-8859-1'), 'UTF-8', 'ISO-8859-1'),
                     'anexos' => $anexos,
                     'tipo_despacho' => $mensagem->tipo_despacho,
                     'referencia_codigo' => $mensagem->referencia_codigo,
-                    'referencia_mensagem' => utf8_encode(urldecode($mensagem->referencia_mensagem)),
-                    'data_visualizacao' => utf8_encode(urldecode($mensagem->data_visualizacao)),
-                    'usuario_visualizou' => utf8_encode(urldecode($mensagem->usuario_visualizou)),
+                    'referencia_mensagem' => mb_convert_encoding(urldecode((string) $mensagem->referencia_mensagem), 'UTF-8', 'ISO-8859-1'),
+                    'data_visualizacao' => mb_convert_encoding(urldecode((string) $mensagem->data_visualizacao), 'UTF-8', 'ISO-8859-1'),
+                    'usuario_visualizou' => mb_convert_encoding(urldecode((string) $mensagem->usuario_visualizou), 'UTF-8', 'ISO-8859-1'),
                 ]
             ];
         })->values();
@@ -398,21 +394,16 @@ class ProcessoEletronicoService
     public function converterDetalheProcessoParaEstruturaDeDados($andamentos)
     {
 
-        $andamentos = collect($andamentos)->groupBy(function ($andamento) {
-            return $andamento->codigo_andamento;
-        })->toArray();
+        $andamentos = collect($andamentos)->groupBy(fn($andamento) => $andamento->codigo_andamento)->toArray();
 
         return collect($andamentos)->flatMap(function ($andamento, $index) {
 
-            $anexos = array_map(function ($item) {
-
-                return (object)[
-                    'id_estorage'=> !empty($item->id_estorage) ? $item->id_estorage : null,
-                    'descricao'  => !empty($item->descricao) ? utf8_encode(urldecode($item->descricao)) : null,
-                    'content'    => null,
-                    'type'       => null
-                ];
-            }, $andamento);
+            $anexos = array_map(fn($item) => (object)[
+                'id_estorage'=> !empty($item->id_estorage) ? $item->id_estorage : null,
+                'descricao'  => !empty($item->descricao) ? mb_convert_encoding(urldecode((string) $item->descricao), 'UTF-8', 'ISO-8859-1') : null,
+                'content'    => null,
+                'type'       => null
+            ], $andamento);
 
             $andamento = current($andamento);
 
@@ -423,9 +414,9 @@ class ProcessoEletronicoService
             return [
                 $index => (object) [
                     'codigo'                  => $andamento->codigo_andamento,
-                    'data'                    => (new \DateTime($andamento->data_andamento))->format('d/m/Y'),
-                    'hora'                    => urldecode($andamento->hora_andamento),
-                    'despacho'                => utf8_encode(urldecode($andamento->despacho)),
+                    'data'                    => new \DateTime($andamento->data_andamento)->format('d/m/Y'),
+                    'hora'                    => urldecode((string) $andamento->hora_andamento),
+                    'despacho'                => mb_convert_encoding(urldecode((string) $andamento->despacho), 'UTF-8', 'ISO-8859-1'),
                     'anexos'                  => $anexos,
                     'flagMensagem'            => false
                 ]

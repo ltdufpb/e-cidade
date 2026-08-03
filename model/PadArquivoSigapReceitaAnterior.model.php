@@ -42,7 +42,7 @@ final class PadArquivoSigapReceitaAnterior extends PadArquivoSigap {
   public function __construct() {
     
     $this->sNomeArquivo = "ReceitaAnterior";
-    $this->aDados       = array();
+    $this->aDados       = [];
   }
   
   /**
@@ -62,7 +62,7 @@ final class PadArquivoSigapReceitaAnterior extends PadArquivoSigap {
     /**
      * Separamos a data do em ano, mes, dia
      */
-    list($iAno, $iMes, $iDia) = explode("-",$this->sDataFinal);
+    [$iAno, $iMes, $iDia] = explode("-",$this->sDataFinal);
     $oInstituicao = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
     $sListaInstit  = db_getsession("DB_instit");
     $oReceitaMes = new cl_receita_saldo_mes;
@@ -82,13 +82,13 @@ final class PadArquivoSigapReceitaAnterior extends PadArquivoSigap {
       $oReceita = db_utils::fieldsMemory($oReceitaMes->result, $i);
       if ($oReceita->o70_anousu > 2007) {
         
-        if (db_conplano_grupo($oReceita->o70_anousu,substr($oReceita->o57_fonte,0,1)."%", 9000) == false) {
-          $oReceita->o57_fonte = str_pad(substr($oReceita->o57_fonte,1,14), 20, '0', STR_PAD_RIGHT); // recompisoção
+        if (db_conplano_grupo($oReceita->o70_anousu,substr((string) $oReceita->o57_fonte,0,1)."%", 9000) == false) {
+          $oReceita->o57_fonte = str_pad(substr((string) $oReceita->o57_fonte,1,14), 20, '0', STR_PAD_RIGHT); // recompisoção
         } else {
-          $oReceita->o57_fonte  = str_pad(substr($oReceita->o57_fonte,0,15), 20, '0', STR_PAD_RIGHT); // recompisoção
+          $oReceita->o57_fonte  = str_pad(substr((string) $oReceita->o57_fonte,0,15), 20, '0', STR_PAD_RIGHT); // recompisoção
         }
       } else {
-        $oReceita->o57_fonte = str_pad(substr($oReceita->o57_fonte,1,14), 20, '0', STR_PAD_RIGHT); // recompisoção
+        $oReceita->o57_fonte = str_pad(substr((string) $oReceita->o57_fonte,1,14), 20, '0', STR_PAD_RIGHT); // recompisoção
       }
       /**
        * AJuste no mes de dezemro, quando conta de Deducao
@@ -109,7 +109,7 @@ final class PadArquivoSigapReceitaAnterior extends PadArquivoSigap {
       $oReceitaRetorno->reaCodigoEntidade                 = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
       $oReceitaRetorno->reaMesAnoMovimento                = $sDiaMesAno;
       $oReceitaRetorno->reaCodigoContaReceita             = str_pad($oReceita->o57_fonte, 20, 0, STR_PAD_RIGHT);
-      $oReceitaRetorno->reaCodigoOrgaoUnidadeOrcamentaria = str_pad($oInstituicao->codtrib, 4, "0", STR_PAD_LEFT);
+      $oReceitaRetorno->reaCodigoOrgaoUnidadeOrcamentaria = str_pad((string) $oInstituicao->codtrib, 4, "0", STR_PAD_LEFT);
       $oReceitaRetorno->reaRealizadaJaneiro               = $this->corrigeValor($oReceita->janeiro, 13);
       $oReceitaRetorno->reaRealizadaFevereiro             = $this->corrigeValor($oReceita->fevereiro, 13);
       $oReceitaRetorno->reaRealizadaMarco                 = $this->corrigeValor($oReceita->marco, 13);
@@ -135,7 +135,7 @@ final class PadArquivoSigapReceitaAnterior extends PadArquivoSigap {
    */
   public function getNomeElementos() {
     
-    $aElementos = array(
+    $aElementos = [
                         "reaCodigoEntidade",
                         "reaMesAnoMovimento",
                         "reaCodigoContaReceita",
@@ -152,7 +152,7 @@ final class PadArquivoSigapReceitaAnterior extends PadArquivoSigap {
                         "reaRealizadaOutubro",
                         "reaRealizadaNovembro",
                         "reaRealizadaDezembro"
-                       );
+                       ];
     return $aElementos;  
   }
   

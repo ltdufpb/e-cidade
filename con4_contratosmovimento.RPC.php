@@ -55,7 +55,7 @@ $oParam   = $oJson->decode(db_stdClass::db_stripTagsJson(str_replace("\\", "", $
 $oRetorno->status  = 1;
 
 if (isset($oParam->observacao)) {
-	$sObservacao = utf8_decode($oParam->observacao);
+	$sObservacao = mb_convert_encoding($oParam->observacao, 'ISO-8859-1');
 }
 
 switch($oParam->exec) {
@@ -162,7 +162,7 @@ switch($oParam->exec) {
 
       	$oAssinatura = new AcordoAssinatura();
       	$oAssinatura->setAcordo($oParam->acordo);
-      	$dtMovimento = implode("-", array_reverse(explode("/", $oParam->dtmovimentacao)));
+      	$dtMovimento = implode("-", array_reverse(explode("/", (string) $oParam->dtmovimentacao)));
       	$oAssinatura->setDataMovimento($dtMovimento);
       	$oAssinatura->setObservacao(db_stdClass::normalizeStringJsonEscapeString($sObservacao));
       	$oAssinatura->save();
@@ -236,7 +236,7 @@ switch($oParam->exec) {
 
         $oRecisao = new AcordoRescisao();
         $oRecisao->setAcordo($oParam->acordo);
-        $dtMovimento = implode("-", array_reverse(explode("/", $oParam->dtmovimentacao)));
+        $dtMovimento = implode("-", array_reverse(explode("/", (string) $oParam->dtmovimentacao)));
         $oRecisao->setDataMovimento($dtMovimento);
         $oRecisao->setObservacao(db_stdClass::normalizeStringJsonEscapeString($sObservacao));
         $oRecisao->save();
@@ -334,7 +334,7 @@ switch($oParam->exec) {
         
         $oAnulacao = new AcordoAnulacao();
         $oAnulacao->setAcordo($oParam->acordo);
-        $dtMovimento = implode("-", array_reverse(explode("/", $oParam->dtmovimentacao)));
+        $dtMovimento = implode("-", array_reverse(explode("/", (string) $oParam->dtmovimentacao)));
         $oAnulacao->setDataMovimento($dtMovimento);
         $oAnulacao->setObservacao(db_stdClass::normalizeStringJsonEscapeString($sObservacao));
         $oAnulacao->save();

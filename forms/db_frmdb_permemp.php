@@ -361,7 +361,7 @@ $clrotulo->label("descrdepto");
         <td><?=$Ldb20_tipoperm ?></td>
         <td>
           <?php 
-          $matriz = array("M"=>"Manutenção","C"=>"Consulta");
+          $matriz = ["M"=>"Manutenção","C"=>"Consulta"];
           db_select("db20_tipoperm",$matriz,true,$db_opcao);
           ?>
         </td>
@@ -389,7 +389,7 @@ $clrotulo->label("descrdepto");
 
         $dbwhere .= "and db20_anousu=".db_getsession("DB_anousu");
 
-        $chavepri= array("db20_anousu"=>$anousu,"db20_codperm"=>@$db20_codperm);
+        $chavepri= ["db20_anousu"=>$anousu,"db20_codperm"=>@$db20_codperm];
         $cliframe_alterar_excluir->chavepri=$chavepri;
         $cliframe_alterar_excluir->sql     = $cldb_permemp->sql_query_origem(null,
                                                                              "db20_codperm,db20_anousu,db20_orgao,db20_unidade,

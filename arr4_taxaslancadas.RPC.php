@@ -42,7 +42,7 @@ use ECidade\Tributario\Arrecadacao\Repository\TaxasLancadasDinamicosRepository;
 $post = db_utils::postMemory($_REQUEST);
 $post->json = str_replace("\\", "", $post->json);
 $parametro = JSON::create()->parse($post->json);
-$retorno = (object)array('erro' => false, 'mensagem' => '');
+$retorno = (object)['erro' => false, 'mensagem' => ''];
 
 try {
     db_inicio_transacao();
@@ -80,7 +80,7 @@ try {
             $taxasLancadasDepartRepository->delete($taxasLancadasDepart);
 
             if (!empty($parametro->departamentos)) {
-                foreach (explode(",", $parametro->departamentos) as $departamento) {
+                foreach (explode(",", (string) $parametro->departamentos) as $departamento) {
                     $taxasLancadasDepart->setDepartamento($departamento);
 
                     $taxasLancadasDepartRepository->persist($taxasLancadasDepart);
@@ -124,9 +124,7 @@ try {
                 $taxasLancadasDepart->setTaxaslancadas($parametro->ar44_sequencial);
                 $oDepartamentos = $taxasLancadasDepartRepository->getDepartamentos($taxasLancadasDepart);
 
-                $oTaxa->departamentos = implode(",", array_map(function ($oDepartamento) {
-                    return $oDepartamento->ar45_departamento;
-                }, $oDepartamentos));
+                $oTaxa->departamentos = implode(",", array_map(fn($oDepartamento) => $oDepartamento->ar45_departamento, $oDepartamentos));
 
                 $taxasLancadasDinamicos = new TaxasLancadasDinamicos();
                 $taxasLancadasDinamicosRepository = TaxasLancadasDinamicosRepository::getInstance();
@@ -134,7 +132,7 @@ try {
                 $taxasLancadasDinamicos->setTaxaslancadas($parametro->ar44_sequencial);
                 $oTaxa->camposDinamicos = $taxasLancadasDinamicosRepository->getCampos($taxasLancadasDinamicos);
 
-                $oTaxa->ar44_datavigencia = (!empty($oTaxa->ar44_datavigencia) ? date('d/m/Y', strtotime($oTaxa->ar44_datavigencia)) : "");
+                $oTaxa->ar44_datavigencia = (!empty($oTaxa->ar44_datavigencia) ? date('d/m/Y', strtotime((string) $oTaxa->ar44_datavigencia)) : "");
 
                 $retorno->oTaxa = $oTaxa;
             break;
@@ -151,9 +149,7 @@ try {
 
                 $oDepartamentos = $taxasLancadasDepartRepository->getDepartamentos($taxasLancadasDepart);
 
-                $sTaxas = implode(",", array_map(function ($oDepartamento) {
-                    return $oDepartamento->ar45_taxaslancadas;
-                }, $oDepartamentos));
+                $sTaxas = implode(",", array_map(fn($oDepartamento) => $oDepartamento->ar45_taxaslancadas, $oDepartamentos));
 
                 if (!empty($sTaxas)) {
                     $sWhere = " ar44_sequencial IN ({$sTaxas}) AND ";    

@@ -29,10 +29,10 @@ include(modification("fpdf151/pdf.php"));
 require_once(modification('libs/db_utils.php'));
 require_once(modification('libs/db_stdlibwebseller.php'));
 require_once(modification('libs/db_stdlib.php'));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $iPaciente          = 1;
-$aIni               = explode("/", $dIni);
-$aFim               = explode("/", $dFim);
+$aIni               = explode("/", (string) $dIni);
+$aFim               = explode("/", (string) $dFim);
 $dDateInicio        = "$aIni[2]-$aIni[1]-$aIni[0]";
 $dDateFim           = "$aFim[2]-$aFim[1]-$aFim[0]";
 $sWhere1            = " fa04_d_data between '$dDateInicio' and '$dDateFim' ";
@@ -129,7 +129,7 @@ if  ($iPadrao == 1) { //Se o padrão selecionado para o relatorio for igual a "NO
     $lCor2            = 0;
   }//fim da condição que verifica se a opção verificar paciente é igual a sim 
 
- 
+
   $sCampos          = "distinct nome, ";
   $sCampos         .= "count(fa06_i_codigo) as itotaldepart";
   $sWhere           = $sWhere1." group by nome ";
@@ -163,18 +163,18 @@ if  ($iPadrao == 1) { //Se o padrão selecionado para o relatorio for igual a "NO
   $iCountLinhas  = 35;
   $iTotalMedia   = 0;
   $iTotalGeral   = 0;
-  
+
   //for que percorre a quantidade de linhas que retornou no pesquisa no banco
   for ($iCount = 0; $iCount < $iItensAgrupLinhas; $iCount++) {
 
     $oItensAgrupado = db_utils::fieldsmemory($rsItensAgrupado, $iCount);
-    
+
     if ($iCountLinhas == 35){ //verifica se a quantidade de linhas do relatorio é igual a 35
 
       $oPdf->setfillcolor(200);
       $oPdf->setfont('arial', '', 11);
       $oPdf->Addpage('P');
-    
+
       if ($iPaciente == 1 ){ //verifica se a opção "imprimir paciente" no formulario esta selecionado com SIM
         $sStr = " Departamento com Pacientes";
       }else{
@@ -189,26 +189,26 @@ if  ($iPadrao == 1) { //Se o padrão selecionado para o relatorio for igual a "NO
     }
 
     $oPdf->setfont('arial', '',9);
-    
+
     if ($iPaciente == 1) {
       $oPdf->setfillcolor(223);
     }
-  
-    $oPdf->cell(70, 5, substr($oItensAgrupado->descrdepto, 0, 35), 1, 0, "L", $lCor2);
+
+    $oPdf->cell(70, 5, substr((string) $oItensAgrupado->descrdepto, 0, 35), 1, 0, "L", $lCor2);
     $oPdf->cell(40, 5, $oItensAgrupado->itotaldepart, 1, 0, "L", $lCor2);
     $iTotalGeral += $oItensAgrupado->itotaldepart;
     $iMedia       = $oItensAgrupado->itotaldepart/$iQuant;
     $iTotalMedia += $iMedia;
     $oPdf->cell(40, 5, number_format($iMedia, 2, '.', ''), 1, 1, "L", $lCor2);
-  
+
     if ($iPaciente == 1) {
-    
+
       for ($iX=0; $iX<$iItensLinhas; $iX++) {
 
         $oItens = db_utils::fieldsmemory($rsItens, $iX);
-      
+
         if ($oItensAgrupado->fa04_i_unidades == $oItens->fa04_i_unidades) {
-        
+
           $oPdf->setfillcolor(223);
           $oPdf->cell(150, 5,$oItens->z01_v_nome,1,1,"L",$lCor);
 
@@ -261,7 +261,7 @@ if  ($iPadrao == 1) { //Se o padrão selecionado para o relatorio for igual a "NO
     $iCountLinhas++;
 
   }// fim do for que percorre o numero de linhas da consulta $iCount<iItensUserLinhas
-  
+
   $oPdf->Output();
 
 }//fim do if que verifica se o padrao selecionado pelo usuario é "NORMAL"
@@ -275,10 +275,10 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
   $sSql        = $oFarRetiradaItens->sql_query_historicoretiradas("", $sCampos, "", $sWhereOrder);
   $rsSql       = $oFarRetiradaItens->sql_record($sSql);
   $iLinhas     = $oFarRetiradaItens->numrows;
-  
+
   //se o resultudado de linhas for igual a zero,  nenhuma consulta foi encontrada;
   if ($iLinhas == 0) {
-        
+
     ?>
       <table width='100%'>
         <tr>
@@ -298,10 +298,10 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
   $oPdf = new PDF();
   $oPdf->Open();
   $oPdf->AliasNbPages();
-  $oPdf->SetWidths(array(40, 80, 30, 35, 95));
-  $oPdf->SetAligns(array("C", "L", "C", "C", "L"));
+  $oPdf->SetWidths([40, 80, 30, 35, 95]);
+  $oPdf->SetAligns(["C", "L", "C", "C", "L"]);
   $lUltimaPagina = false;
-    
+
   //Setar as variaveis do multiCelll
   $iAlturaRow           = $oPdf->h -32;
   $iAltura              = 4; //altura da linha
@@ -318,9 +318,9 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
   $iRegPar              = 0; 
   $lEspaco              = false;//determina se deve haver um espaço entre as linhas de consulta;
   $iQtdParcial          = 0;// contador parcial por medicamentos entregues
-  
+
   for ($iCont = 0; $iCont < $iLinhas; $iCont++) {//contador que percorre todas as linhas do resultados encontrados;
-    
+
     $oPacienteEncont =  db_utils::fieldsmemory($rsSql, $iCont);
 
     //if que verifica e quabra o relatorio por medicamentos encontrados
@@ -341,7 +341,7 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
     } //fim do if que verifica a quebra do relatorio por medicamento
     //verifica se deve haver um espaço entre as linhas da consulta,  separando o relatorio por medicamentos
     if ($lEspaco) { 
-       
+
       if(($oPdf->gety() > $oPdf->h -40)){
         $oPdf->addpage('L');  
       }
@@ -356,16 +356,16 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
       $oPdf->cell(35, 4, "Quantidade",1, 0, "L", 1);
       $oPdf->cell(95, 4, "Posologia",1 , 1, "L", 1);
       $lEspaco = false;
- 
+
     }//fim do if que adiciona um espaço entre as linhas da consulta
- 
+
     $iQtdParcial += $oPacienteEncont->fa06_f_quant;
     $sMedicamentoAnterior = $oPacienteEncont->m60_descr;  
     $iSubTotal++;
 
     //se for a primeira pagina ou a pagina estiver acabando,  novo cabeçalio é colocado
     if (($oPdf->gety() > $oPdf->h -30)  || $lPri==true ) {
- 
+
       $oPdf->addpage('L');
       $oPdf->setfillcolor(235);
       $oPdf->setfont('arial', '', '12');//seta o tamanho da celula de medicamentos
@@ -385,13 +385,13 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
 
     $iLines = 0;
     // array que coloca as variveis para mostrar no relatorio;
-    $aDados    = Array();
+    $aDados    = [];
     $aDados[0] = $oPacienteEncont->fa04_i_cgsund;
     $aDados[1] = $oPacienteEncont->z01_v_nome;
     $aDados[2] = db_formatar($oPacienteEncont->fa04_d_data, 'd', 0); //formata a data no modelo correto 
     $aDados[3] = $oPacienteEncont->fa06_f_quant;
     $aDados[4] = $oPacienteEncont->fa06_t_posologia;
-    
+
     for ($iConta = 0; $iConta < count($aDados); $iConta++) {//for que percorre o tamanho do array
       //calcula o tamanho da linha em relação a coluna
       if ($iLines <  $oPdf->NbLines($oPdf->widths[$iConta], $aDados[$iConta])) { 
@@ -412,9 +412,9 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
                                               $iAlturaRow, 
                                               $iLarguraFixa
                                              );
-    
-   
-  
+
+
+
   }//fim do for que percorre o numero de linhas do resultado obtido no sql,  iCont<Ilinhas;
    //adicina no final da lista de resultados do ultimo medicamento buscado,  totalizador refernete a este medicamento
   $oPdf->setfillcolor(235);
@@ -423,7 +423,7 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
   $oPdf->cell(40, 5, "Qtd. de Pacientes:".$iSubTotal,1,0,"L",1);
   $oPdf->cell(50, 5, "Qtd. total Dispensada:".$iQtdParcial, 1, 1, "L", 1); 
   $lUltimaPagina = true;
-  
+
  /*Segunda parte do relatorio,  depois que todos os pacientes foram listados, na primeira parte do  relátorio,
   * na ultima pagina é gerado o relatorio de almoxerifado
   *mesmo que o usuário nao tenha selecionado os almoxarifados
@@ -435,7 +435,7 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
  */
 
   if ($lUltimaPagina == true) {
-    
+
     $iLinhas      = "";
     $sCampos      = "";
     $sCampos     .= "coddepto,  descrdepto,count(fa04_i_cgsund), sum(fa06_f_quant)";
@@ -444,7 +444,7 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
     $rsSql2       = $oFarRetiradaItens->sql_record($sSql);
     $iLinhas     .= $oFarRetiradaItens->numrows;
     $sUltimoAlmox = "";
-    
+
     //se a quantidade de linhas que retornou a consulta for igual  a zero,  nenhum registro encontrado;
     if ($iLinhas == 0) {
 
@@ -463,10 +463,10 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
       <?php 
       exit;
     }//fim do if que verifica a quantidade de linhas que retornou a consulta 
-    
-    
-    $oPdf->SetWidths(array(190, 40, 50));
-    $oPdf->SetAligns(array("L", "C", "C"));
+
+
+    $oPdf->SetWidths([190, 40, 50]);
+    $oPdf->SetAligns(["L", "C", "C"]);
     $lPrimeira = true;
     $iRegPar   = 0;
     $iRegTotal = 0;   
@@ -492,15 +492,15 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
         $oPdf->cell(40, 4, "Quantidade de Pacientes", 1, 0, "L", 1);
         $oPdf->cell(50, 4, "Quantidade de Medicamentos", 1, 1, "L", 1);
         $lPrimeira = false;
-  
+
       }//fim do if que verifica se é o final da pagina ou a primeira pagina;
-      
-      $aDado    = Array();
+
+      $aDado    = [];
       $aDado[0] = $oAlmoxEncont->coddepto."-".$oAlmoxEncont->descrdepto;
       $aDado[1] = $oAlmoxEncont->count;
       $aDado[2] = $oAlmoxEncont->sum;
       $iLines   = 0;      
-  
+
       for ($iContar = 0; $iContar < count($aDado); $iContar++) {// percorre o numero de posiçoes do vetor $aDados
 
         //if que calcula o tamanho da linha em relação a coluna
@@ -509,7 +509,7 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
         } // fim do if que calcula o tamanho da linha em relalção a coluna;
 
       }//fim do for $iConta < count 
-  
+
       $iHeight = $iLines * $iEspaco;
       $oPdf->Row_multicell($aDado,                $iAltura,
                                                  $lBorda, 
@@ -521,11 +521,11 @@ if ($iPadrao == 2) {//se o relatorio for "não padronizado"
                                                  $iAlturaRow, 
                                                  $iLarguraFixa
                                                  );
-   
+
     }//fecha o for do icont<ilinhas
 
   }//fecha o if que confirma ultima pagina
-  
+
   $oPdf->setfont('arial', '', 8);
   $oPdf->cell(190, 5, "Total Geral:", 1, 0, "L", 1);
   $oPdf->cell(40, 5, "".$iRegPar, 1, 0, "C", 1);

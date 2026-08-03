@@ -159,8 +159,8 @@ $clempempret	  = new cl_empempret;
 $clempretencao	  = new cl_empretencao;
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 if (isset($e54_concarpeculiar) && trim(@$e54_concarpeculiar) != ""){
   $concarpeculiar       = $e54_concarpeculiar;
@@ -220,8 +220,8 @@ if(isset($incluir)){
 				 left join arqproc 	on p68_codproc = x.p63_codproc
 			where p64_codtran is null and p68_codproc is null and x.e54_autori = $e54_autori";
 			$result_tran=db_query($sqltran);
-			if(pg_numrows($result_tran)!=0){
-				for($w=0;$w<pg_numrows($result_tran);$w++){
+			if(pg_num_rows($result_tran)!=0){
+				for($w=0;$w<pg_num_rows($result_tran);$w++){
 					db_fieldsmemory($result_tran,$w);
 					$recebetransf=recprocandsol($p62_codtran);
 					if ($recebetransf==true){
@@ -262,7 +262,7 @@ if(isset($incluir)){
         // chama função de critica para empenhos
         $sql = "select fc_verifica_lancamento(".$e54_autori.",'".date("Y-m-d",db_getsession("DB_datausu"))."',1,00.00)";
         $result_erro = db_query($sql) or die($sql);
-        $erro_msg = pg_result($result_erro,0,0);
+        $erro_msg = pg_fetch_result($result_erro,0,0);
         if(substr($erro_msg,0,2) > 0 ){
            $erro_msg = substr($erro_msg,3);
            $sqlerro = true;
@@ -445,7 +445,7 @@ if(isset($incluir)){
        //final
 
        //rotina que compara os elementos da dotação do empenho com a dotação dos itens
-        if(substr($elemento_emp,0,6) != substr($elemento_item,0,6) ){
+        if(substr((string) $elemento_emp,0,6) != substr((string) $elemento_item,0,6) ){
 	  $erro_msg = "Subelemento do item diferente da dotação. Verifique!";
 	  $sqlerro  = true;
 	}
@@ -457,7 +457,7 @@ if(isset($incluir)){
 	  $clempempitem->e62_vltot  = $e55_vltot ;
 	  $clempempitem->e62_vlrun  = $e55_vlrun ;
 
-	  $e55_descr = AddSlashes($e55_descr);
+	  $e55_descr = AddSlashes((string) $e55_descr);
 	  $clempempitem->e62_descr  = $e55_descr;
 	  $clempempitem->e62_codele = $e55_codele;
 	  $clempempitem->incluir($e60_numemp,$e55_sequen);
@@ -571,9 +571,9 @@ if(isset($incluir)){
 	      if($sqlerro==false){
 		$result85 = db_query("select fc_lancam_dotacao($e56_coddot,'$datausu',$c71_coddoc,'$e64_vlremp') as dotacao");
 		db_fieldsmemory($result85,0);
-		if(substr($dotacao,0,1)==0){ //quando o primeiro caractere for igual a zero eh porque deu erro
+		if(substr((string) $dotacao,0,1)==0){ //quando o primeiro caractere for igual a zero eh porque deu erro
 		  $sqlerro = true;
-		  $erro_msg = "Erro na atualização do orçamento \\n ".substr($dotacao,1);
+		  $erro_msg = "Erro na atualização do orçamento \\n ".substr((string) $dotacao,1);
 		}
 	      }
 	    /*fim-orcdotacaoval*/

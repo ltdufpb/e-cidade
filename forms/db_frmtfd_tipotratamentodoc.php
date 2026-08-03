@@ -76,7 +76,7 @@ $clrotulo->label("tf04_c_descr");
     </td>
     <td>
       <?php 
-      $aX = array('1'=>'SIM', '2'=>'NÃO');
+      $aX = ['1'=>'SIM', '2'=>'NÃO'];
       db_select('tf06_i_obrigatorio',$aX,true,$db_opcao,'');
       ?>
     </td>
@@ -92,11 +92,11 @@ $clrotulo->label("tf04_c_descr");
 	  <tr>
 		  <td valign="top"><br>
         <?php 
-				$aChavepri = array ('tf06_i_codigo' => @$tf06_i_codigo,
+				$aChavepri =  ['tf06_i_codigo' => @$tf06_i_codigo,
                             'tf06_i_documento' => @$tf06_i_documento, 
                             'tf06_i_tipotratamento' => @$tf06_i_tipotratamento, 
                             'tf06_i_obrigatorio' => @$tf06_i_obrigatorio, 
-                            'tf07_c_descr' => @$tf07_c_descr);
+                            'tf07_c_descr' => @$tf07_c_descr];
 				$oIframeAE->chavepri = $aChavepri;
 
         $sCampos = 
@@ -146,7 +146,7 @@ function js_novo() {
 function js_cancelar() {
 
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tf06_i_tipotratamento=$tf06_i_tipotratamento&tf04_c_descr=$tf04_c_descr'";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?tf06_i_tipotratamento=$tf06_i_tipotratamento&tf04_c_descr=$tf04_c_descr'";
   ?>
 
 }
@@ -215,7 +215,7 @@ function js_preenchepesquisa(chave){
   db_iframe_tfd_tipotratamentodoc.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

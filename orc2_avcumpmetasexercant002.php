@@ -186,15 +186,15 @@ for ( $iInd=0; $iInd < $iLinhasDespesa; $iInd++ ) {
 
 	$oDespesa = db_utils::fieldsMemory($rsDespesa,$iInd);
 
-	if ( $oDespesa->o58_elemento{0} == 3 ) {
+	if ( $oDespesa->o58_elemento[0] == 3 ) {
 
 	  $oDespesaTotal->Prevista  += $oDespesa->dot_ini + $oDespesa->suplementado_acumulado - $oDespesa->reduzido_acumulado;
 	  $oDespesaTotal->Realizada += $oDespesa->empenhado_acumulado - $oDespesa->anulado_acumulado;
 
 	}
 
-	if ( substr($oDespesa->o58_elemento,0,3) == 332 ||
-	     substr($oDespesa->o58_elemento,0,3) == 346 ) {
+	if ( substr((string) $oDespesa->o58_elemento,0,3) == 332 ||
+	     substr((string) $oDespesa->o58_elemento,0,3) == 346 ) {
 
 	 	$nExcessaoDespPrimaria['Prevista']  += $oDespesa->dot_ini + $oDespesa->suplementado_acumulado - $oDespesa->reduzido_acumulado;
     $nExcessaoDespPrimaria['Realizada'] += $oDespesa->empenhado_acumulado - $oDespesa->anulado_acumulado;
@@ -268,14 +268,14 @@ foreach ( $aValorDivConsolLiquid as $iInd => $oLinhaManual ){
 
 }
 
-$aLista = array( $oReceitaTotal,
+$aLista = [ $oReceitaTotal,
 								 $oReceitasPrimarias,
 								 $oDespesaTotal,
 								 $oDespesasPrimarias,
 								 $oResultadoPrimario,
                  $oResultadoNominal,
                  $oDivPublicConsol,
-                 $oDivConsolLiquid );
+                 $oDivConsolLiquid ];
 
 
 foreach ( $aLista as $iInd => $oLinha ){
@@ -325,7 +325,7 @@ $pdf->setfont('arial','',$iFont);
 $pdf->Cell(170,$iAlt,"AMF - Demonstrativo II (LRF, art. 4º, §2º, inciso I)",0,0,"L",0);
 $pdf->Cell(0  ,$iAlt,"R$ 1,00"										                         ,0,1,"R",0);
 
-imprimeCabecalho($pdf,$iAlt,$iFont,$iAnoAnt);
+imprimeCabecalho($pdf,$iAlt);
 
 foreach ( $aLista as $iInd => $oLinha ){
 

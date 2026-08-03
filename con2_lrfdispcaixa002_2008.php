@@ -39,23 +39,23 @@ $classinatura = new cl_assinatura;
 /*
  * lista de contas das obrigacoes financeiras
  */
-$aListaObrig = array();
+$aListaObrig = [];
 /*
  * lista de contas das Disponibilidades financeiras
  */
-$aListaDisp  = array();
+$aListaDisp  = [];
 /*
  * lista de parametros do relatorio
  */
-$aParametros           = array();
+$aParametros           = [];
 $nTotalRPinscritos     = 0;
 $nTotalRPinscritosRpps = 0;
 $sInstitRPPS           = '';
 ## Fim declaracao variaveis
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 $orcparamrel = new cl_orcparamrel;
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,
     nomeinstabrev,
     db21_tipoinstit,
@@ -78,7 +78,7 @@ if (!isset($lGerarPDF)){
 }
 
 //******************************************************************
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
   db_fieldsmemory($resultinst,$xins);
   if ($db21_tipoinstit == 5 or $db21_tipoinstit == 6) {
 
@@ -92,7 +92,7 @@ for($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
 
   }
   //$xvirg        = '';
-  if (strlen(trim($nomeinstabrev)) > 0){
+  if (strlen(trim((string) $nomeinstabrev)) > 0){
     $descr_inst .= $xvirg.$nomeinstabrev;
     $flag_abrev  = true;
   } else {
@@ -111,18 +111,18 @@ for($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
 }
 $anousu = db_getsession("DB_anousu");
 if ($temcamara == true && ($temprefa == true || $temadmind == true)){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODERES EXECUTIVO E LEGISLATIVO";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODERES EXECUTIVO E LEGISLATIVO";
 }
 
 if ($temcamara == true && $temprefa == false && $temadmind == false){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODER LEGISLATIVO";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODER LEGISLATIVO";
 }
 
 if ($temprefa == true && $temcamara == false && $temadmind == false){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODER EXECUTIVO/ADM. INDIRETA";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODER EXECUTIVO/ADM. INDIRETA";
 }
 if ($temprefa == true && $temcamara == false && $temadmind == true){
-  $head2 = "MUNICÍPIO DE ".strtoupper($munic)." - PODER EXECUTIVO/ADM. INDIRETA";
+  $head2 = "MUNICÍPIO DE ".strtoupper((string) $munic)." - PODER EXECUTIVO/ADM. INDIRETA";
 }
 
 if ($temcamara == true && $temprefa == false && $temadmind == false){
@@ -140,8 +140,8 @@ if ($temcamara == true && $temprefa == false && $temadmind == false){
 //******************************************************************
 $dataini = $anousu.'-01-01';
 $datafin = $anousu.'-12-31';
-$dt1 = split('-',$dataini);
-$dt2 = split('-',$datafin);
+$dt1 = preg_split('#\-#m',$dataini);
+$dt2 = preg_split('#\-#m',$datafin);
 $tipo_emissao='periodo';
 if ($tipo_emissao=='periodo'){
     //$textodt = strtoupper(db_mes($dt1[1]))." A ".strtoupper(db_mes($dt2[1]))." DE ";
@@ -255,7 +255,7 @@ for ($x = 6; $x <= 9; $x++){
       break;
   }
 
-  for ($i=0;$i < pg_numrows($result1); $i++) {
+  for ($i=0;$i < pg_num_rows($result1); $i++) {
 
     db_fieldsmemory($result1,$i);
     if (in_array($estrutural,$aParametros[$x])) {
@@ -271,7 +271,7 @@ for ($x = 1; $x <= 5; $x++){
   }else{
     $iInd = $x;
   }
-  for ($i=0;$i < pg_numrows($result1); $i++) {
+  for ($i=0;$i < pg_num_rows($result1); $i++) {
 
     db_fieldsmemory($result1,$i);
     if (in_array($estrutural,$aParametros[$x])) {
@@ -411,7 +411,7 @@ for( $i=0; $i < $iTotalLinhas; $i++ ) {
 
   if (isset($aListaDisp[$i]) ) {
 
-    $pdf->cell(105,$alt,'    '.substr($aListaDisp[$i]["descr"],0,35),'R',0,"L",0);
+    $pdf->cell(105,$alt,'    '.substr((string) $aListaDisp[$i]["descr"],0,35),'R',0,"L",0);
     $pdf->cell(33,$alt,db_formatar($aListaDisp[$i]["valor"],'f'),'R',0,"R",0);
 
   } else {
@@ -422,7 +422,7 @@ for( $i=0; $i < $iTotalLinhas; $i++ ) {
 
   if (isset($aListaObrig[$i])){
 
-    $pdf->cell(105,$alt,'    '.substr($aListaObrig[$i]["descr"],0,37),'R',0,"L",0);
+    $pdf->cell(105,$alt,'    '.substr((string) $aListaObrig[$i]["descr"],0,37),'R',0,"L",0);
     $pdf->cell(32,$alt,db_formatar($aListaObrig[$i]["valor"],'f'),'',1,"R",0);
 
   } else{
@@ -460,8 +460,8 @@ $pdf->cell(32,$alt,db_formatar($nSuficiencia - $nTotalRPinscritos, 'f'),'TB',1,"
 if ($sInstitRPPS != ''){
 
    $pdf->ln();
-   $aListaObrig = array();
-   $aListaDisp  = array();
+   $aListaObrig = [];
+   $aListaDisp  = [];
 /*
  * seleciona instituição do RPPS
  */
@@ -535,7 +535,7 @@ if ($sInstitRPPS != ''){
         break;
     }
 
-    for ($i=0;$i < pg_numrows($result_rpps); $i++) {
+    for ($i=0;$i < pg_num_rows($result_rpps); $i++) {
 
       db_fieldsmemory($result_rpps,$i);
       if (in_array($estrutural,$aParametros[$x])) {
@@ -551,7 +551,7 @@ if ($sInstitRPPS != ''){
     }else{
       $iInd = $x;
     }
-    for ($i=0;$i < pg_numrows($result_rpps); $i++) {
+    for ($i=0;$i < pg_num_rows($result_rpps); $i++) {
 
       db_fieldsmemory($result_rpps,$i);
       if (in_array($estrutural,$aParametros[$x])) {
@@ -677,7 +677,7 @@ if ($sInstitRPPS != ''){
 
     if (isset($aListaDisp[$i]) ) {
 
-      $pdf->cell(105,$alt,'    '.substr($aListaDisp[$i]["descr"],0,35),'R',0,"L",0);
+      $pdf->cell(105,$alt,'    '.substr((string) $aListaDisp[$i]["descr"],0,35),'R',0,"L",0);
       $pdf->cell(33,$alt,db_formatar($aListaDisp[$i]["valor"],'f'),'R',0,"R",0);
 
     } else {
@@ -688,7 +688,7 @@ if ($sInstitRPPS != ''){
 
     if (isset($aListaObrig[$i])){
 
-      $pdf->cell(105,$alt,'    '.substr($aListaObrig[$i]["descr"],0,37),'R',0,"L",0);
+      $pdf->cell(105,$alt,'    '.substr((string) $aListaObrig[$i]["descr"],0,37),'R',0,"L",0);
       $pdf->cell(32,$alt,db_formatar($aListaObrig[$i]["valor"],'f'),'',1,"R",0);
 
     } else{

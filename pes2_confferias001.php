@@ -36,7 +36,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -168,7 +168,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-          $xvy = array("n"=>"Não","s"=>"Sim");
+          $xvy = ["n"=>"Não","s"=>"Sim"];
           db_select('afastados',$xvy,true,4,"");
           ?>
         </td>

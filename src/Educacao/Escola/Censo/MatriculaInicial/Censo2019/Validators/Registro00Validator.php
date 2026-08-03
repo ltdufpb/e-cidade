@@ -48,7 +48,7 @@ class Registro00Validator
 
     private $valido = true;
 
-    private $caracteresValidosEndereco = array(
+    private $caracteresValidosEndereco = [
         'A',
         'B',
         'C',
@@ -92,7 +92,7 @@ class Registro00Validator
         '?',
         '/',
         '.',
-        ',');
+        ','];
 
 
     public function setRegistro(Registro00 $registro)
@@ -189,7 +189,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (strlen($inep) < 8) {
+        if (strlen((string) $inep) < 8) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
@@ -206,7 +206,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($situacao, array(1, 2, 3))) {
+        if (!in_array($situacao, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -228,7 +228,7 @@ class Registro00Validator
             return;
         }
 
-        list($dia, $mes, $ano) = sscanf($inicio, '%d/%d/%d');
+        [$dia, $mes, $ano] = sscanf($inicio, '%d/%d/%d');
         if (!checkdate($mes, $dia, $ano)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
@@ -280,7 +280,7 @@ class Registro00Validator
             return;
         }
 
-        list($dia, $mes, $ano) = sscanf($final, '%d/%d/%d');
+        [$dia, $mes, $ano] = sscanf($final, '%d/%d/%d');
         if (!checkdate($mes, $dia, $ano)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
@@ -327,11 +327,11 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (strlen($nome) > 100) {
+        if (strlen((string) $nome) > 100) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
-        $validos = array(
+        $validos = [
             'A',
             'B',
             'C',
@@ -372,7 +372,7 @@ class Registro00Validator
             'ª',
             'º',
             '-',
-            '?');
+            '?'];
         if (!$this->containsOnly($nome, $validos)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
@@ -391,11 +391,11 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (strlen($cep) !== 8) {
+        if (strlen((string) $cep) !== 8) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
-        if (!ctype_digit($cep)) {
+        if (!ctype_digit((string) $cep)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -433,7 +433,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (strlen($endereco) > 100) {
+        if (strlen((string) $endereco) > 100) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
@@ -452,7 +452,7 @@ class Registro00Validator
             return;
         }
 
-        if (strlen($numero) > 10) {
+        if (strlen((string) $numero) > 10) {
             $this->log(sprintf('O campo "%s" está maior que o especificado.', $campo));
         }
 
@@ -471,7 +471,7 @@ class Registro00Validator
             return;
         }
 
-        if (strlen($complemento) > 20) {
+        if (strlen((string) $complemento) > 20) {
             $this->log(sprintf('O campo "%s" está maior que o especificado.', $campo));
         }
 
@@ -490,7 +490,7 @@ class Registro00Validator
             return;
         }
 
-        if (strlen($bairro) > 50) {
+        if (strlen((string) $bairro) > 50) {
             $this->log(sprintf('O campo "%s" está maior que o especificado.', $campo));
         }
 
@@ -533,20 +533,20 @@ class Registro00Validator
             return;
         }
 
-        if (strlen($telefone) !== 8 && strlen($telefone) !== 9) {
+        if (strlen((string) $telefone) !== 8 && strlen((string) $telefone) !== 9) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
-        if (!ctype_digit($telefone)) {
+        if (!ctype_digit((string) $telefone)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
         // Se a string for a repetição de um só dígito
-        if (count(array_unique(str_split($telefone))) <= 1) {
+        if (count(array_unique(str_split((string) $telefone))) <= 1) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if (strlen($telefone) === 9 && $telefone[0] !== '9') {
+        if (strlen((string) $telefone) === 9 && $telefone[0] !== '9') {
             $this->log(sprintf('O campo "%s" com 9 dígitos deve começar com o caractere numérico 9.', $campo));
         }
     }
@@ -561,20 +561,20 @@ class Registro00Validator
             return;
         }
 
-        if (strlen($outroTelefone) !== 8 && strlen($outroTelefone) !== 9) {
+        if (strlen((string) $outroTelefone) !== 8 && strlen((string) $outroTelefone) !== 9) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
-        if (!ctype_digit($outroTelefone)) {
+        if (!ctype_digit((string) $outroTelefone)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
         // Se a string for a repetição de um só dígito
-        if (count(array_unique(str_split($outroTelefone))) <= 1) {
+        if (count(array_unique(str_split((string) $outroTelefone))) <= 1) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if (strlen($outroTelefone) === 9 && $outroTelefone[0] !== '9') {
+        if (strlen((string) $outroTelefone) === 9 && $outroTelefone[0] !== '9') {
             $this->log(sprintf('O campo "%s" com 9 dígitos deve começar com o caractere numérico 9.', $campo));
         }
 
@@ -592,7 +592,7 @@ class Registro00Validator
             return;
         }
 
-        if (strlen($email) > 50) {
+        if (strlen((string) $email) > 50) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
@@ -616,7 +616,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($zona, array(1, 2))) {
+        if (!in_array($zona, [1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -630,7 +630,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($localizacao, array(1, 2, 3, 7))) {
+        if (!in_array($localizacao, [1, 2, 3, 7])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -652,7 +652,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($dependencia, array(1, 2, 3, 4))) {
+        if (!in_array($dependencia, [1, 2, 3, 4])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -669,7 +669,7 @@ class Registro00Validator
     {
         $situacao = $this->registro->getSituacaoFuncionamento();
 
-        if (in_array($situacao, array(1, 2, 3))) {
+        if (in_array($situacao, [1, 2, 3])) {
             $preenchido =
                 $this->registro->getSecretariaEducacao() === 1 ||
                 $this->registro->getSecretariaSeguranca() === 1 ||
@@ -691,17 +691,17 @@ class Registro00Validator
         $secretaria = $this->registro->getSecretariaEducacao();
         $campo = 'Secretaria de Educação/Ministério da Educação';
 
-        if (in_array($this->registro->getDependenciaAdministrativa(), array(1, 2, 3)) &&
+        if (in_array($this->registro->getDependenciaAdministrativa(), [1, 2, 3]) &&
             !$this->isPreenchido($secretaria)) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($this->registro->getDependenciaAdministrativa(), array(1, 2, 3)) &&
+        if (!in_array($this->registro->getDependenciaAdministrativa(), [1, 2, 3]) &&
             $this->isPreenchido($secretaria)) {
             $this->log(sprintf('O campo "%s" foi preenchido não quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($secretaria, array(0, 1))) {
+        if (!in_array($secretaria, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -711,17 +711,17 @@ class Registro00Validator
         $secretaria = $this->registro->getSecretariaSeguranca();
         $campo = 'Secretaria de Segurança Pública/Forças Armadas/Militar';
 
-        if (in_array($this->registro->getDependenciaAdministrativa(), array(1, 2, 3))
+        if (in_array($this->registro->getDependenciaAdministrativa(), [1, 2, 3])
             && !$this->isPreenchido($secretaria)) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($this->registro->getDependenciaAdministrativa(), array(1, 2, 3))
+        if (!in_array($this->registro->getDependenciaAdministrativa(), [1, 2, 3])
             && $this->isPreenchido($secretaria)) {
             $this->log(sprintf('O campo "%s" foi preenchido não quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($secretaria, array(0, 1))) {
+        if (!in_array($secretaria, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -731,17 +731,17 @@ class Registro00Validator
         $secretaria = $this->registro->getSecretariaSaude();
         $campo = 'Secretaria da Saúde/Ministério da Saúde';
 
-        if (in_array($this->registro->getDependenciaAdministrativa(), array(1, 2, 3))
+        if (in_array($this->registro->getDependenciaAdministrativa(), [1, 2, 3])
             && !$this->isPreenchido($secretaria)) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($this->registro->getDependenciaAdministrativa(), array(1, 2, 3)) &&
+        if (!in_array($this->registro->getDependenciaAdministrativa(), [1, 2, 3]) &&
             $this->isPreenchido($secretaria)) {
             $this->log(sprintf('O campo "%s" foi preenchido não quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($secretaria, array(0, 1))) {
+        if (!in_array($secretaria, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -751,15 +751,15 @@ class Registro00Validator
         $orgao = $this->registro->getOutroOrgaoAdministracaoPublica();
         $campo = 'Outro órgão da administração pública';
 
-        if (in_array($this->registro->getDependenciaAdministrativa(), array(1, 2, 3)) && !$this->isPreenchido($orgao)) {
+        if (in_array($this->registro->getDependenciaAdministrativa(), [1, 2, 3]) && !$this->isPreenchido($orgao)) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($this->registro->getDependenciaAdministrativa(), array(1, 2, 3)) && $this->isPreenchido($orgao)) {
+        if (!in_array($this->registro->getDependenciaAdministrativa(), [1, 2, 3]) && $this->isPreenchido($orgao)) {
             $this->log(sprintf('O campo "%s" foi preenchido não quando deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($orgao, array(0, 1))) {
+        if (!in_array($orgao, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -807,7 +807,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($mantenedora, array(0, 1))) {
+        if (!in_array($mantenedora, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -835,7 +835,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($mantenedora, array(0, 1))) {
+        if (!in_array($mantenedora, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -863,7 +863,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($mantenedora, array(0, 1))) {
+        if (!in_array($mantenedora, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -891,7 +891,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($mantenedora, array(0, 1))) {
+        if (!in_array($mantenedora, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -919,7 +919,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($mantenedora, array(0, 1))) {
+        if (!in_array($mantenedora, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -947,7 +947,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($mantenedora, array(0, 1))) {
+        if (!in_array($mantenedora, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -971,7 +971,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($categoria, array(1, 2, 3, 4))) {
+        if (!in_array($categoria, [1, 2, 3, 4])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -1003,11 +1003,11 @@ class Registro00Validator
             return;
         }
 
-        if (strlen($cnpj) !== 14) {
+        if (strlen((string) $cnpj) !== 14) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
-        if (!ctype_digit($cnpj)) {
+        if (!ctype_digit((string) $cnpj)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1035,11 +1035,11 @@ class Registro00Validator
             return;
         }
 
-        if (strlen($cnpj) !== 14) {
+        if (strlen((string) $cnpj) !== 14) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
-        if (!ctype_digit($cnpj)) {
+        if (!ctype_digit((string) $cnpj)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
@@ -1063,14 +1063,14 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($situacao, array(0, 1, 2))) {
+        if (!in_array($situacao, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
 
     private function validarEsferaAdministrativa()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getEsferaFederal();
         $campos[] = $this->registro->getEsferaEstadual();
         $campos[] = $this->registro->getEsferaMunicipal();
@@ -1107,7 +1107,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($esfera, array(0, 1))) {
+        if (!in_array($esfera, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -1126,7 +1126,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($esfera, array(0, 1))) {
+        if (!in_array($esfera, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -1164,7 +1164,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if (!in_array($esfera, array(0, 1))) {
+        if (!in_array($esfera, [0, 1])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -1183,7 +1183,7 @@ class Registro00Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if (!in_array($unidade, array(0, 1, 2))) {
+        if (!in_array($unidade, [0, 1, 2])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -1206,11 +1206,11 @@ class Registro00Validator
             return;
         }
 
-        if (strlen($codigo) !== 8) {
+        if (strlen((string) $codigo) !== 8) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
-        if (!ctype_digit($codigo)) {
+        if (!ctype_digit((string) $codigo)) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
@@ -1234,7 +1234,7 @@ class Registro00Validator
     {
         // Se após a remoção de todos os caracteres válidos a string
         // está vazia, é por que ela não tinha caracteres inválidos
-        $res = str_replace($only, '', mb_strtoupper($str));
+        $res = str_replace($only, '', mb_strtoupper((string) $str));
         return !$this->isPreenchido($res);
     }
 }

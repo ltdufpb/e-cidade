@@ -1,107 +1,107 @@
 <?php
-return array(
-    'ideEstab' => array(
+return [
+    'ideEstab' => [
         'nome_api' => 'ideEstab',
-        'properties' => array(
-            'tpInsc' => array(
+        'properties' => [
+            'tpInsc' => [
                 'nome_api'=> 'tpInsc',
                 'type' => 'int'
-            ),
-            'nrInsc' => array(
+            ],
+            'nrInsc' => [
                 'nome_api'=> 'nrInsc',
                 'type' => 'string'
-            ),
+            ],
             'iniValid1005' => 'iniValid',
             'fimValid1005' => 'fimValid'
-        )
-    ),
-    'dadosEstab' => array(
+        ]
+    ],
+    'dadosEstab' => [
         'nome_api' => 'dadosEstab',
-        'properties' => array(
-            'cnaePrep' => array(
+        'properties' => [
+            'cnaePrep' => [
               'type' => 'string'
-            )
-        ),
-        'groups' => array (
-            'aliqGilrat' => array(
+            ]
+        ],
+        'groups' =>  [
+            'aliqGilrat' => [
                 'nome_api' => 'aliqGilrat',
-                'properties' => array(
-                    'aliqRat' => array(
+                'properties' => [
+                    'aliqRat' => [
                         'nome_api'=>'aliqRat',
                         'type' => 'integer'
-                    ),
-                    'fap' => array(
+                    ],
+                    'fap' => [
                         'nome_api'=>'fap',
                         'type' => 'string'
-                    )
-                ),
-                'groups' =>array (
-                    'procAdmJudRat' => array (
-                        'properties' => array(
-                            'tpProc' => array(
+                    ]
+                ],
+                'groups' => [
+                    'procAdmJudRat' =>  [
+                        'properties' => [
+                            'tpProc' => [
                                 'nome_api'=> 'tpProc',
                                 'type' => 'int'
-                            ),
+                            ],
                             'nrProc' => 'nrProc',
                             'codSusp'
-                        )
-                    ),
-                    'procAdmJudFap' => array (
-                        'properties' => array(
-                            'tpProc' => array(
+                        ]
+                    ],
+                    'procAdmJudFap' =>  [
+                        'properties' => [
+                            'tpProc' => [
                                 'nome_api'=> 'tpProc',
                                 'type' => 'int'
-                            ),
+                            ],
                             'nrProc' => 'nrProc',
                             'codSusp'
-                        )
-                    )
-                )
-            ),
-            'infoCaepf' => array (
+                        ]
+                    ]
+                ]
+            ],
+            'infoCaepf' =>  [
                 'nome_api' => 'infoCaepf',
-                'properties' => array(
-                    'tpCaepf' => array(
+                'properties' => [
+                    'tpCaepf' => [
                         'nome_api'=> 'tpCaepf',
                         'type' => 'int'
-                    ),
-                )
-            ),
-            'infoObra' => array (
+                    ],
+                ]
+            ],
+            'infoObra' =>  [
                 'nome_api' => 'infoObra',
-                'properties' => array(
-                    'indSubstPatrObra' => array(
+                'properties' => [
+                    'indSubstPatrObra' => [
                         'nome_api'=>  'indSubstPatrObra',
                         'type' => 'int'
-                    )
-                )
-            ),
-            'infoTrab' => array (
+                    ]
+                ]
+            ],
+            'infoTrab' =>  [
                 'nome_api' => 'infoTrab',
-                'groups' => array(
-                    'infoApr' => array (
+                'groups' => [
+                    'infoApr' =>  [
                         'nome_api' => 'infoApr',
-                        'groups' => array(
-                            'infoEntEduc' => array (
+                        'groups' => [
+                            'infoEntEduc' =>  [
                                 'type' => 'array',
                                 'label' => 'Identificação da(s) entidade(s) educativa(s) ou de prática desportiva',
                                 'nome_api' => 'infoEntEduc',
-                                'items' => array(
-                                    'properties' => array(
+                                'items' => [
+                                    'properties' => [
                                         'nrInsc'
-                                    )
-                                )
-                            ),
-                        )
-                    ),
-                    'infoPCD' => array (
+                                    ]
+                                ]
+                            ],
+                        ]
+                    ],
+                    'infoPCD' =>  [
                         'nome_api' => 'infoPCD',
-                        'properties' => array(
+                        'properties' => [
                             'nrProcJud' => 'nrProcJud'
-                        )
-                    )
-                )
-            ),
-        )
-    ),
-);
+                        ]
+                    ]
+                ]
+            ],
+        ]
+    ],
+];

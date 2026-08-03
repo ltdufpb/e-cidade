@@ -506,7 +506,7 @@ function js_preenchepesquisaturma(chave) {
 	
   db_iframe_turma.hide();
   <?php 
-   echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+   echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
   
 }

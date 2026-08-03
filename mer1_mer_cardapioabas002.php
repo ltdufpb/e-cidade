@@ -55,7 +55,7 @@ $db_opcao   = 1;
  <tr>
   <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
    <?php 
-   $clcriaabas->identifica = array(
+   $clcriaabas->identifica = [
                                     "a1" => "Refeição",
                                     "a2" => "Itens da Refeição",
                                     "a3" => "Modo de Preparo",
@@ -63,9 +63,9 @@ $db_opcao   = 1;
                                     "a5" => "Alunos com Restrições Alimentares",
                                     "a6" => "Escolas Atendidas",
                                     "a7" => "Nutricionista"
-                                  );
+                                  ];
 
-   $clcriaabas->sizecampo  = array(
+   $clcriaabas->sizecampo  = [
                                     "a1" => "15",
                                     "a2" => "25",
                                     "a3" => "15",
@@ -73,9 +73,9 @@ $db_opcao   = 1;
                                     "a5" => "35",
                                     "a6" => "25",
                                     "a7" => "25"
-                                  );
+                                  ];
 
-   $clcriaabas->src        = array(
+   $clcriaabas->src        = [
                                     "a1" => "mer1_mer_cardapio002.php",
                                     "a2" => "",
                                     "a3" => "",
@@ -83,16 +83,16 @@ $db_opcao   = 1;
                                     "a5" => "",
                                     "a6" => "",
                                     "a7" => ""
-                                  );
+                                  ];
 
-   $clcriaabas->disabled   = array(
+   $clcriaabas->disabled   = [
                                     "a2" => "true",
                                     "a3" => "true",
                                     "a4" => "true",
                                     "a5" => "true",
                                     "a6" => "true",
                                     "a7" => "true"
-                                  );
+                                  ];
 
    $clcriaabas->cordisabled   = "#9b9b9b";
    $clcriaabas->scrolling     = "no";

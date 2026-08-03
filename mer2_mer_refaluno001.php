@@ -67,7 +67,7 @@ $result = $clmer_cardapioaluno->sql_record(
                                            "ed10_i_codigo,ed11_i_sequencia,ed57_c_descr,to_ascii(ed47_v_nome)",
                                            "$condicao"
                                           ));
-                                          echo pg_errormessage();
+                                          echo pg_last_error();
 if ($clmer_cardapioaluno->numrows==0) {?>
 
   <table width='100%'>
@@ -108,16 +108,16 @@ $total_repet = 0;
 $sub_qtde = 0;
 $priensino = "";
 $prietapa = "";
-$priturma = pg_result($result,0,"ed57_i_codigo");
+$priturma = pg_fetch_result($result,0,"ed57_i_codigo");
 for ($c=0; $c<$clmer_cardapioaluno->numrows; $c++) {
 	
   db_fieldsmemory($result,$c);
   if ($priturma!=$ed57_i_codigo) {
     
     $pdf->setfillcolor(255);
-    $pdf->cell(280,4,"Turma ".trim(pg_result($result,$c-1,"ed57_c_descr"))." - Quantidade: $sub_qtde - Repeticões: ".pg_result($result,$c-1,"repeticao"),1,1,"L",1);
+    $pdf->cell(280,4,"Turma ".trim(pg_fetch_result($result,$c-1,"ed57_c_descr"))." - Quantidade: $sub_qtde - Repeticões: ".pg_fetch_result($result,$c-1,"repeticao"),1,1,"L",1);
     $priturma = $ed57_i_codigo;
-    $total_repet += pg_result($result,$c-1,"repeticao");
+    $total_repet += pg_fetch_result($result,$c-1,"repeticao");
     $sub_qtde = 0; 
     
   }

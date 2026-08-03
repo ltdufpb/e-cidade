@@ -74,6 +74,7 @@ class RelatorioAnexoVIService extends AnexosLDOService
         $this->parser = new XlsAnexoVI();
     }
 
+    #[\Override]
     public function processar()
     {
         parent::processar();
@@ -105,6 +106,7 @@ class RelatorioAnexoVIService extends AnexosLDOService
         ];
     }
 
+    #[\Override]
     protected function processaLinhas()
     {
         $linhas = $this->getLinhas();

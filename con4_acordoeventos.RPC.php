@@ -36,15 +36,15 @@ $oRetorno          = new stdClass();
 $oRetorno->message = '';
 $oRetorno->erro    = false;
 
-$aTiposPublicacoesObrigatorios = array(
+$aTiposPublicacoesObrigatorios = [
   AcordoEvento::PUBLICACAO_DIARIO_ESTADO          => 'Diário Oficial do Estado',
   AcordoEvento::PUBLICACAO_INTERNET               => 'Internet',
   AcordoEvento::PUBLICACAO_DIARIO_UNIAO           => 'Diário Oficial da União',
   AcordoEvento::PUBLICACAO_SITE_OFICIAL           => 'Site Oficial',
   AcordoEvento::PUBLICACAO_CONTRATACOES_PUBLICAS  => 'Portal Nacional de Contratações Públicas'
-);
+];
 
-$aTiposPublicacoesDescricao = array(
+$aTiposPublicacoesDescricao = [
   AcordoEvento::PUBLICACAO_DIARIO_ESTADO             => 'Diário Oficial do Estado',
   AcordoEvento::PUBLICACAO_INTERNET                  => 'Internet',
   AcordoEvento::PUBLICACAO_JORNAL                    => 'Jornal',
@@ -55,7 +55,7 @@ $aTiposPublicacoesDescricao = array(
   AcordoEvento::PUBLICACAO_NAO_PUBLICADO             => 'Não publicado',
   AcordoEvento::PUBLICACAO_SITE_OFICIAL              => 'Site Oficial',
   AcordoEvento::PUBLICACAO_CONTRATACOES_PUBLICAS     => 'Portal Nacional de Contratações Públicas'
-);
+];
 try {
 
   db_inicio_transacao();
@@ -67,7 +67,7 @@ try {
       $oRetorno->aTipos = array_map(function($sKeys, $sItem) {
         $oTipo            = new \stdClass();
         $oTipo->codigo    = $sKeys;
-        $oTipo->descricao = urlencode($sItem);
+        $oTipo->descricao = urlencode((string) $sItem);
         return $oTipo;
       }, array_keys(TipoEventoAcordo::getTipos()), TipoEventoAcordo::getTipos());
 
@@ -80,7 +80,7 @@ try {
 
         $oTipo = new \stdClass();
         $oTipo->codigo    = $sKey;
-        $oTipo->descricao = urlencode($sItem);
+        $oTipo->descricao = urlencode((string) $sItem);
 
         return $oTipo;
       }, array_keys(LicitaConTipoDocumentoAcordo::getTipos()), LicitaConTipoDocumentoAcordo::getTipos());
@@ -163,7 +163,7 @@ try {
         $oDocumento                           = new \stdClass();
         $oDocumento->codigo                   = $oEventoDocumento->getCodigo();
         $oDocumento->tipo                     = $oEventoDocumento->getTipoDocumento();
-        $oDocumento->nome                     = urlencode($oEventoDocumento->getAcordoDocumento()->getNomeArquivo());
+        $oDocumento->nome                     = urlencode((string) $oEventoDocumento->getAcordoDocumento()->getNomeArquivo());
         return $oDocumento;
       }, $oEventoAcordo->getDocumentos());
 
@@ -183,7 +183,7 @@ try {
         throw new ParameterException('Evento não foi informado.');
       }
 
-      $aExtensoesProibidas = array('exe', 'php', 'sh', 'bat', 'py');
+      $aExtensoesProibidas = ['exe', 'php', 'sh', 'bat', 'py'];
 //      $oSplFile = new File($_FILES['arquivo']['name']);
 //      if (in_array($oSplFile->getExtension(), $aExtensoesProibidas)) {
 //        throw new FileException('A extensão utilizada não é permitida');
@@ -194,8 +194,8 @@ try {
 
       $oDocumento = new AcordoDocumento();
       $oDocumento->setArquivo($_FILES['arquivo']['tmp_name']);
-      $oDocumento->setDescricao(utf8_decode($_FILES['arquivo']['name']));
-      $oDocumento->setNomeArquivo(db_removeAcentuacao(utf8_decode($_FILES['arquivo']['name'])));
+      $oDocumento->setDescricao(mb_convert_encoding($_FILES['arquivo']['name'], 'ISO-8859-1'));
+      $oDocumento->setNomeArquivo(db_removeAcentuacao(mb_convert_encoding($_FILES['arquivo']['name'], 'ISO-8859-1')));
       $oDocumento->setCodigoAcordo($oAcordo->getCodigo());
       $oDocumento->salvar();
 

@@ -105,7 +105,7 @@ try {
        * Ajuste da Movimentacao
        */
       $aItens           = getMateriaisParaAjuste($oParametros->itens);
-      $aItensCorrigidos = array();
+      $aItensCorrigidos = [];
       foreach ($aItens as $oDadosItem) {
 
         $sSqlEntradas   = " select distinct m71_codlanc, m71_quant, m71_quantatend, m71_servico";
@@ -134,7 +134,7 @@ try {
 
         if ($lPoissuiEntradaInconsistente) {
 
-          $aItensCorrigidos[$oDadosItem->m70_codmatmater][] = (object)array("depto" => $oDadosItem->m70_coddepto, "instit" => $oDadosItem->instit);
+          $aItensCorrigidos[$oDadosItem->m70_codmatmater][] = (object)["depto" => $oDadosItem->m70_coddepto, "instit" => $oDadosItem->instit];
           $aMensagemUsuario[] = "Item {$oDadosItem->m70_codmatmater} - {$oDadosItem->m60_descr} do estoque {$oDadosItem->m70_coddepto} Corrigido\n";
         }
       }
@@ -167,7 +167,7 @@ echo $oJson->encode($oRetorno);
 
 
 
-function getMateriaisParaAjuste(array $aItens = null) {
+function getMateriaisParaAjuste(?array $aItens = null) {
 
   $sWhereMater    = "where m60_ativo is true and instit =".db_getsession("DB_instit");
   if (count($aItens) > 0) {
@@ -237,7 +237,7 @@ function corrigirTransferencia($oDadosTransferencia) {
 
   $rsItensTransferencia     = db_query($sSqlItensTransferencia);
   $iTotalItens              = pg_num_rows($rsItensTransferencia);
-  $aItensAgrupadosPorDepto  = array();
+  $aItensAgrupadosPorDepto  = [];
 
   for ($i = 0; $i < $iTotalItens; $i++) {
 
@@ -253,10 +253,10 @@ function corrigirTransferencia($oDadosTransferencia) {
    *                                                 matestoqueinill = codigo da matestoqueini do tipo 8, ligando com o inil da 7
    */
 
-  $aItensAgrupadosPorTipo = array();
+  $aItensAgrupadosPorTipo = [];
   foreach ($aItensAgrupadosPorDepto as $oItemAGrupado) {
 
-    $aItensJaAgrupados = array();
+    $aItensJaAgrupados = [];
     foreach ($oItemAGrupado as $iCodigoDepto => $oItem) {
 
       if ($oItem->m70_coddepto != $oDadosTransferencia->m80_coddepto) {
@@ -294,7 +294,7 @@ function corrigirTransferencia($oDadosTransferencia) {
   /**
    * criamos os dos movimentos;
    */
-  $aComandos   = array();
+  $aComandos   = [];
   $aComandos[] = "delete from matestoqueinill where m87_matestoqueini = {$oDadosTransferencia->m80_codigo}";
   $aComandos[] = "delete from matestoqueinil where m86_matestoqueini = {$oDadosTransferencia->m80_codigo}";
 
@@ -307,7 +307,7 @@ function corrigirTransferencia($oDadosTransferencia) {
     switch ($iTipo) {
 
       case 7:
-        continue;
+        break;
         break;
 
       case 8:
@@ -324,7 +324,7 @@ function corrigirTransferencia($oDadosTransferencia) {
         $sInsert .= ")";
         $aComandos[] = $sInsert;
 
-        $aListaMatestoqueIniMei = array();
+        $aListaMatestoqueIniMei = [];
         foreach ($aItens as $oItem) {
           $aListaMatestoqueIniMei[] = $oItem->m82_codigo;
         }
@@ -347,7 +347,7 @@ function corrigirTransferencia($oDadosTransferencia) {
         $sInsert .= "         '{$oDadosTransferencia->m80_hora}'::interval +' 1 seconds'";
         $sInsert .= ")";
         $aComandos[] = $sInsert;
-        $aListaMatestoqueIniMei = array();
+        $aListaMatestoqueIniMei = [];
         foreach ($aItens as $oItem) {
           $aListaMatestoqueIniMei[] = $oItem->m82_codigo;
         }

@@ -55,8 +55,8 @@ class Ignore
     {
         return (bool) (
             $this->regex
-            ? preg_match("/$this->content/$this->flag", $needle)
-            : strpos($needle, $this->content) !== false
+            ? preg_match("/$this->content/$this->flag", (string) $needle)
+            : str_contains((string) $needle, (string) $this->content)
         );
     }
 }

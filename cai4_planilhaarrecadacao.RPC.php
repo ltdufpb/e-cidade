@@ -66,7 +66,7 @@ $oJson = new services_json();
 $oParam = $oJson->decode(str_replace("\\", "", $_POST["json"]));
 
 $oRetorno = new stdClass();
-$oRetorno->dados = array();
+$oRetorno->dados = [];
 $oRetorno->status = 1;
 
 $oDataAtual = new DBDate(date("Y-m-d", db_getsession('DB_datausu')));
@@ -201,7 +201,7 @@ switch ($oParam->exec) {
         $aReceitasPlanilha = $oPlanilhaArrecadacao->getReceitasPlanilha();
 
         $oPlanilha = new stdClass();
-        $oPlanilha->aReceitas = array();
+        $oPlanilha->aReceitas = [];
         $oPlanilha->iPlanilha = $oPlanilhaArrecadacao->getCodigo();
         $oData = $oPlanilhaArrecadacao->getDataCriacao();
         $oPlanilha->dtDataCriacao = $oData->getDate(DBDate::DATA_PTBR);
@@ -214,7 +214,7 @@ switch ($oParam->exec) {
                 $oReceita = new stdClass();
                 $oReceita->iCodigo = $oReceitaPlanilha->getCodigo();
                 $oReceita->iReceita = $oReceitaPlanilha->getTipoReceita();
-                $oReceita->sDescricaoReceita = urlencode($oReceitaPlanilha->getDescricaoReceita());
+                $oReceita->sDescricaoReceita = urlencode((string) $oReceitaPlanilha->getDescricaoReceita());
 
                 $oReceita->iOrigem = $oReceitaPlanilha->getOrigem();
                 $oReceita->iCgm = $oReceitaPlanilha->getCGM()->getCodigo();
@@ -224,10 +224,10 @@ switch ($oParam->exec) {
 
                 $oContaTesouraria = $oReceitaPlanilha->getContaTesouraria();
                 $oReceita->iContaTesouraria = $oContaTesouraria->getCodigoConta();
-                $oReceita->sDescricaoConta = urlencode($oContaTesouraria->getDescricao());
+                $oReceita->sDescricaoConta = urlencode((string) $oContaTesouraria->getDescricao());
 
                 $oReceita->dtRecebimento = $oReceitaPlanilha->getDataRecebimento()->convertTo(DBDate::DATA_PTBR);
-                $oReceita->sObservacao = urlencode($oReceitaPlanilha->getObservacao());
+                $oReceita->sObservacao = urlencode((string) $oReceitaPlanilha->getObservacao());
                 $oReceita->sOperacaoBancaria = $oReceitaPlanilha->getOperacaoBancaria();
                 $oReceita->iRecurso = $oReceitaPlanilha->getRecurso()->getCodigoRecurso();
                 $oReceita->nValor = $oReceitaPlanilha->getValor();
@@ -359,25 +359,12 @@ function buscaCgmOrigem($oParam)
 {
 
     $iNumeroCmg = "";
-    switch ($oParam->iOrigem) {
-
-        case 1:
-
-            $iNumeroCmg = $oParam->iCgm;
-            break;
-
-        case 2:
-
-            $iNumeroCmg = buscaCgmInscricao($oParam->iInscricao);
-            break;
-
-        case 3:
-
-            $iNumeroCmg = buscaCgmMatricula($oParam->iMatricula);
-            break;
-        default:
-            throw new BusinessException("Origem não identificada.");
-    }
+    $iNumeroCmg = match ($oParam->iOrigem) {
+        1 => $oParam->iCgm,
+        2 => buscaCgmInscricao($oParam->iInscricao),
+        3 => buscaCgmMatricula($oParam->iMatricula),
+        default => throw new BusinessException("Origem não identificada."),
+    };
 
     return $iNumeroCmg;
 }

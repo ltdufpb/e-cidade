@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE impres
 class cl_impres { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $d50_codigo = 0; 
-   var $d50_descr = null; 
-   var $d50_comand = null; 
-   var $d50_padrao = 'f'; 
+   public $d50_codigo = 0; 
+   public $d50_descr = null; 
+   public $d50_comand = null; 
+   public $d50_padrao = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  d50_codigo = int4 = codigo da impressora 
                  d50_descr = varchar(40) = descricao da impressora 
                  d50_comand = varchar(40) = comando executado 
                  d50_padrao = bool = Se padrao ou nao 
                  ";
    //funcao construtor da classe 
-   function cl_impres() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("impres"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -133,7 +133,7 @@ class cl_impres {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "cadastro de impressoras ($this->d50_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "cadastro de impressoras já Cadastrado";
@@ -157,13 +157,13 @@ class cl_impres {
      $resaco = $this->sql_record($this->sql_query_file($this->d50_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1950,'$this->d50_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,323,1950,'','".AddSlashes(pg_result($resaco,0,'d50_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,323,1951,'','".AddSlashes(pg_result($resaco,0,'d50_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,323,1952,'','".AddSlashes(pg_result($resaco,0,'d50_comand'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,323,1953,'','".AddSlashes(pg_result($resaco,0,'d50_padrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,323,1950,'','".AddSlashes(pg_fetch_result($resaco,0,'d50_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,323,1951,'','".AddSlashes(pg_fetch_result($resaco,0,'d50_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,323,1952,'','".AddSlashes(pg_fetch_result($resaco,0,'d50_comand'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,323,1953,'','".AddSlashes(pg_fetch_result($resaco,0,'d50_padrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -172,10 +172,10 @@ class cl_impres {
       $this->atualizacampos();
      $sql = " update impres set ";
      $virgula = "";
-     if(trim($this->d50_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d50_codigo"])){ 
+     if(trim((string) $this->d50_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d50_codigo"])){ 
        $sql  .= $virgula." d50_codigo = $this->d50_codigo ";
        $virgula = ",";
-       if(trim($this->d50_codigo) == null ){ 
+       if(trim((string) $this->d50_codigo) == null ){ 
          $this->erro_sql = " Campo codigo da impressora nao Informado.";
          $this->erro_campo = "d50_codigo";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_impres {
          return false;
        }
      }
-     if(trim($this->d50_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d50_descr"])){ 
+     if(trim((string) $this->d50_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d50_descr"])){ 
        $sql  .= $virgula." d50_descr = '$this->d50_descr' ";
        $virgula = ",";
-       if(trim($this->d50_descr) == null ){ 
+       if(trim((string) $this->d50_descr) == null ){ 
          $this->erro_sql = " Campo descricao da impressora nao Informado.";
          $this->erro_campo = "d50_descr";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_impres {
          return false;
        }
      }
-     if(trim($this->d50_comand)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d50_comand"])){ 
+     if(trim((string) $this->d50_comand)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d50_comand"])){ 
        $sql  .= $virgula." d50_comand = '$this->d50_comand' ";
        $virgula = ",";
-       if(trim($this->d50_comand) == null ){ 
+       if(trim((string) $this->d50_comand) == null ){ 
          $this->erro_sql = " Campo comando executado nao Informado.";
          $this->erro_campo = "d50_comand";
          $this->erro_banco = "";
@@ -211,10 +211,10 @@ class cl_impres {
          return false;
        }
      }
-     if(trim($this->d50_padrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d50_padrao"])){ 
+     if(trim((string) $this->d50_padrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["d50_padrao"])){ 
        $sql  .= $virgula." d50_padrao = '$this->d50_padrao' ";
        $virgula = ",";
-       if(trim($this->d50_padrao) == null ){ 
+       if(trim((string) $this->d50_padrao) == null ){ 
          $this->erro_sql = " Campo Se padrao ou nao nao Informado.";
          $this->erro_campo = "d50_padrao";
          $this->erro_banco = "";
@@ -232,17 +232,17 @@ class cl_impres {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1950,'$this->d50_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d50_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,323,1950,'".AddSlashes(pg_result($resaco,$conresaco,'d50_codigo'))."','$this->d50_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,323,1950,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d50_codigo'))."','$this->d50_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d50_descr"]))
-           $resac = db_query("insert into db_acount values($acount,323,1951,'".AddSlashes(pg_result($resaco,$conresaco,'d50_descr'))."','$this->d50_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,323,1951,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d50_descr'))."','$this->d50_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d50_comand"]))
-           $resac = db_query("insert into db_acount values($acount,323,1952,'".AddSlashes(pg_result($resaco,$conresaco,'d50_comand'))."','$this->d50_comand',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,323,1952,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d50_comand'))."','$this->d50_comand',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["d50_padrao"]))
-           $resac = db_query("insert into db_acount values($acount,323,1953,'".AddSlashes(pg_result($resaco,$conresaco,'d50_padrao'))."','$this->d50_padrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,323,1953,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'d50_padrao'))."','$this->d50_padrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -287,13 +287,13 @@ class cl_impres {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1950,'$d50_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,323,1950,'','".AddSlashes(pg_result($resaco,$iresaco,'d50_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,323,1951,'','".AddSlashes(pg_result($resaco,$iresaco,'d50_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,323,1952,'','".AddSlashes(pg_result($resaco,$iresaco,'d50_comand'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,323,1953,'','".AddSlashes(pg_result($resaco,$iresaco,'d50_padrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,323,1950,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d50_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,323,1951,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d50_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,323,1952,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d50_comand'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,323,1953,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'d50_padrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from impres
@@ -353,7 +353,7 @@ class cl_impres {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:impres";

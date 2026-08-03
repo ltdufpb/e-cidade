@@ -64,10 +64,10 @@ class SetorAmbulatorial {
    * Locais
    * @var array
    */
-  static $aLocais =  array( 1 => "RECEPÇÃO",
+  static $aLocais =  [ 1 => "RECEPÇÃO",
                             2 => "TRIAGEM",
                             3 => "CONSULTA MÉDICA",
-                            4 => "EXTERNO");
+                            4 => "EXTERNO"];
 
 
   /**

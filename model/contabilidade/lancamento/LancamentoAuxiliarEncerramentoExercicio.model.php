@@ -169,6 +169,7 @@ class LancamentoAuxiliarEncerramentoExercicio extends LancamentoAuxiliarBase imp
         return true;
     }
 
+    #[\Override]
     protected function salvarVinculoDotacao()
     {
 
@@ -243,6 +244,7 @@ class LancamentoAuxiliarEncerramentoExercicio extends LancamentoAuxiliarBase imp
      * Retorna o empenho
      * @return EmpenhoFinanceiro
      */
+    #[\Override]
     public function getEmpenho()
     {
         return $this->oEmpenho;
@@ -406,6 +408,7 @@ class LancamentoAuxiliarEncerramentoExercicio extends LancamentoAuxiliarBase imp
     /**
      * @return bool
      */
+    #[\Override]
     public function isInversaoContas()
     {
         return $this->inversaoContas;
@@ -414,6 +417,7 @@ class LancamentoAuxiliarEncerramentoExercicio extends LancamentoAuxiliarBase imp
     /**
      * @param bool $inversaoContas
      */
+    #[\Override]
     public function setInversaoContas($inversaoContas)
     {
         $this->inversaoContas = $inversaoContas;

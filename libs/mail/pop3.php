@@ -126,7 +126,7 @@ class POP3 {
 			}else{
 				stream_set_timeout($fp, $timeout);
 				$rcv = fgets($fp, 1024);
-				if(substr($rcv, 0, 3) != '+OK'){
+				if(!str_starts_with($rcv, '+OK')){
 					fclose($fp);
 					$setver = false;
 					throw new Exception('Response 2 error "'.$rcv.'", on class POP3::connect()', 512);
@@ -134,7 +134,7 @@ class POP3 {
 				if($setver){
 					fputs($fp, "USER ".$user."\r\n");
 					$rcv = fgets($fp, 1024);
-					if(substr($rcv, 0, 3) != '+OK'){
+					if(!str_starts_with($rcv, '+OK')){
 						fclose($fp);
 						$setver = false;
 						throw new Exception('Response 3 error "'.$rcv.'", on class POP3::connect()', 512);
@@ -143,7 +143,7 @@ class POP3 {
 				if($setver){
 					fputs($fp, "PASS ".$pass."\r\n");
 					$rcv = fgets($fp, 1024);
-					if(substr($rcv, 0, 3) != '+OK'){
+					if(!str_starts_with($rcv, '+OK')){
 						fclose($fp);
 						$setver = false;
 						throw new Exception('Response 4 error "'.$rcv.'", on class POP3::connect()', 512);
@@ -160,13 +160,13 @@ class POP3 {
 		if(FUNC::is_connection($connection)){
 			fputs($connection, "STAT\r\n");
 			$rcv = fgets($connection, 1024);
-			if(substr($rcv, 0, 3) == '+OK'){
+			if(str_starts_with($rcv, '+OK')){
 				$get = substr($rcv, 4, -1*strlen("\r\n"));
 				$exp = explode(' ', $get);
 				if(count($exp) == 2){
 					$val1 = intval($exp[0]);
 					$val2 = intval($exp[1]);
-					if(strval($val1) === $exp[0] && strval($val2) === $exp[1]) $ret = array($val1, $val2);
+					if(strval($val1) === $exp[0] && strval($val2) === $exp[1]) $ret = [$val1, $val2];
 				}else throw new Exception('Response 2 error "'.$rcv.'", on class POP3::pstat()', 512);
 			}else throw new Exception('Response 1 error "'.$rcv.'", on class POP3::pstat()', 512);
 		}else throw new Exception('Invalid resource connection, on class POP3::pstat()', 512);
@@ -185,9 +185,9 @@ class POP3 {
 		if(FUNC::is_connection($connection)){
 			fputs($connection, "LIST".($num ? " ".$msg : "")."\r\n");
 			$rcv = fgets($connection, 1024);
-			if(substr($rcv, 0, 3) != '+OK') throw new Exception('Response error "'.$rcv.'", on class POP3::plist()', 512);
+			if(!str_starts_with($rcv, '+OK')) throw new Exception('Response error "'.$rcv.'", on class POP3::plist()', 512);
 			else{
-				$arr = array();
+				$arr = [];
 				if($num){
 					$get = substr($rcv, 4, -1*strlen("\r\n"));
 					$exp = explode(' ', $get);
@@ -201,7 +201,7 @@ class POP3 {
 					while(!feof($connection)){
 						$rcv = fgets($connection, 1024);
 						$list .= $rcv;
-						if(substr($rcv, 0, 1) == ".") break;
+						if(str_starts_with($rcv, ".")) break;
 					}
 					$data = substr($list, 0, -1*strlen("\r\n.\r\n"));
 					if(!empty($data)){
@@ -231,7 +231,7 @@ class POP3 {
 		if(FUNC::is_connection($connection)){
 			fputs($connection, "RETR ".$msg."\r\n");
 			$rcv = fgets($connection, 1024);
-			if(substr($rcv, 0, 3) != '+OK') throw new Exception('Response error "'.$rcv.'", on class POP3::pretr()', 512);
+			if(!str_starts_with($rcv, '+OK')) throw new Exception('Response error "'.$rcv.'", on class POP3::pretr()', 512);
 			else{
 				$ret = "";
 				while(!feof($connection)){
@@ -253,7 +253,7 @@ class POP3 {
 		if(FUNC::is_connection($connection)){
 			fputs($connection, "DELE ".$msg."\r\n");
 			$rcv = fgets($connection, 1024);
-			if(substr($rcv, 0, 3) == '+OK') $ret = true;
+			if(str_starts_with($rcv, '+OK')) $ret = true;
 			else throw new Exception('Response error "'.$rcv.'", on class POP3::pdele()', 512);
 		}else throw new Exception('Invalid resource connection, on class POP3::pdele()', 512);
 		return $ret;
@@ -264,7 +264,7 @@ class POP3 {
 		if(FUNC::is_connection($connection)){
 			fputs($connection, "NOOP\r\n");
 			$rcv = fgets($connection, 1024);
-			if(substr($rcv, 0, 3) == '+OK') $ret = true;
+			if(str_starts_with($rcv, '+OK')) $ret = true;
 			else throw new Exception('Response error "'.$rcv.'", on class POP3::pnoop()', 512);
 		}else throw new Exception('Invalid resource connection, on class POP3::pnoop()', 512);
 		return $ret;
@@ -275,7 +275,7 @@ class POP3 {
 		if(FUNC::is_connection($connection)){
 			fputs($connection, "RSET\r\n");
 			$rcv = fgets($connection, 1024);
-			if(substr($rcv, 0, 3) == '+OK') $ret = true;
+			if(str_starts_with($rcv, '+OK')) $ret = true;
 			else throw new Exception('Response error "'.$rcv.'", on class POP3::prset()', 512);
 		}else throw new Exception('Invalid resource connection, on class POP3::prset()', 512);
 		return $ret;
@@ -286,7 +286,7 @@ class POP3 {
 		if(FUNC::is_connection($connection)){
 			fputs($connection, "QUIT\r\n");
 			$rcv = fgets($connection, 1024);
-			if(substr($rcv, 0, 3) == '+OK') $ret = true;
+			if(str_starts_with($rcv, '+OK')) $ret = true;
 			else throw new Exception('Response error "'.$rcv.'", on class POP3::pquit()', 512);
 			FUNC::close($connection);
 		}else throw new Exception('Invalid resource connection, on class POP3::pquit()', 512);

@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrotulo = new rotulocampo;
 $clrotulo->label("ve05_veiccadcategcnh");
 $clrotulo->label("ve30_descr");
@@ -189,7 +189,7 @@ db_input('ve33_descr',40,$Ive33_descr,true,'text',3,'')
         </td>
         <td>
 	  <?php  
-	  $tipo_ordem = array("b"=>"Numérica","a"=>"Alfabética");
+	  $tipo_ordem = ["b"=>"Numérica","a"=>"Alfabética"];
 	  db_select("ordem",$tipo_ordem,true,2); ?>
         </td>
       </tr>

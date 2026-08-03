@@ -150,14 +150,14 @@ try {
       }
 
       $oProntuario             = new Prontuario((int)$oParam->iProntuario);
-      $oRetorno->aMedicamentos = array();
+      $oRetorno->aMedicamentos = [];
 
       foreach( $oProntuario->getAdministracoesDeMedicamento() as $oAdministracaoMedicamento ) {
 
         $oDadosMedicamento                       = new stdClass();
         $oDadosMedicamento->iCodigoAdministracao = $oAdministracaoMedicamento->getCodigo();
         $oDadosMedicamento->iMedicamento         = $oAdministracaoMedicamento->getMedicamento()->getCodigo();
-        $oDadosMedicamento->sMedicamento         = urlencode( $oAdministracaoMedicamento->getMedicamento()->getMaterial()->getDescricao() );
+        $oDadosMedicamento->sMedicamento         = urlencode( (string) $oAdministracaoMedicamento->getMedicamento()->getMaterial()->getDescricao() );
         $oDadosMedicamento->sDosagem             = $oAdministracaoMedicamento->getQuantidadeAdministrada();
         $oDadosMedicamento->sDosagem            .= ' ' . $oAdministracaoMedicamento->getUnidade()->getSAbreviatura();
         $oDadosMedicamento->sData                = $oAdministracaoMedicamento->getData()->getDate(DBDate::DATA_PTBR);

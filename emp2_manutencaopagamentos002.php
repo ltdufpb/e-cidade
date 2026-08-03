@@ -59,25 +59,25 @@ if ($oParam->iOrdemIni != '' && $oParam->iOrdemFim == "") {
 }
 
 if ($oParam->dtDataIni != "" && $oParam->dtDataFim == "") {
-  $sWhere .= " and e50_data = '".implode("-",array_reverse(explode("/",$oParam->dtDataIni)))."'";
+  $sWhere .= " and e50_data = '".implode("-",array_reverse(explode("/",(string) $oParam->dtDataIni)))."'";
 } else if ($oParam->dtDataIni != "" && $oParam->dtDataFim != "") {
 
-  $dtDataIni = implode("-",array_reverse(explode("/",$oParam->dtDataIni)));
-  $dtDataFim = implode("-",array_reverse(explode("/",$oParam->dtDataFim)));
+  $dtDataIni = implode("-",array_reverse(explode("/",(string) $oParam->dtDataIni)));
+  $dtDataFim = implode("-",array_reverse(explode("/",(string) $oParam->dtDataFim)));
   $sWhere .= " and e50_data between '{$dtDataIni}' and '{$dtDataFim}'";
 
 } else if ($oParam->dtDataIni == "" && $oParam->dtDataFim != "") {
 
-  $dtDataFim  = implode("-",array_reverse(explode("/",$oParam->dtDataFim)));
+  $dtDataFim  = implode("-",array_reverse(explode("/",(string) $oParam->dtDataFim)));
   $sWhere    .= " and e50_data <= '{$dtDataFim}'";
 }
 
     //Filtro para Empenho
 if ($oParam->iCodEmp!= '') {
 
-  if (strpos($oParam->iCodEmp,"/")) {
+  if (strpos((string) $oParam->iCodEmp,"/")) {
 
-    $aEmpenho = explode("/",$oParam->iCodEmp);
+    $aEmpenho = explode("/",(string) $oParam->iCodEmp);
     $sWhere .= " and e60_codemp = '{$aEmpenho[0]}' and e60_anousu={$aEmpenho[1]}";
 
   } else {
@@ -95,7 +95,7 @@ if ($oParam->iAutorizadas == 2) {
   $lAutorizadas      = true;
   if ($oParam->sDtAut != "") {
 
-    $sDtAut   = implode("-", array_reverse(explode("/", $oParam->sDtAut)));
+    $sDtAut   = implode("-", array_reverse(explode("/", (string) $oParam->sDtAut)));
     $sWhere .= " and e42_dtpagamento = '{$sDtAut}'";
 
   }
@@ -213,10 +213,10 @@ foreach ($aOrdensAgenda as $oMovimento) {
   $sContaBanco = "";
   if ($oMovimento->pc63_banco != "") {
 
-    if (trim($oMovimento->pc63_agencia_dig) != ""){
+    if (trim((string) $oMovimento->pc63_agencia_dig) != ""){
        $oMovimento->pc63_agencia_dig = "/".$oMovimento->pc63_agencia_dig;
     }
-    if (trim($oMovimento->pc63_conta_dig) != ""){
+    if (trim((string) $oMovimento->pc63_conta_dig) != ""){
       $oMovimento->pc63_conta_dig = "/".$oMovimento->pc63_conta_dig;
     }
     $sContaBanco  = "{$oMovimento->pc63_banco} - {$oMovimento->pc63_agencia}";

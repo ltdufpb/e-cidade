@@ -155,7 +155,7 @@ class RequisicaoMaterial {
 
     $rsReqItem = $oDaoRequisicaoItens->sql_record($sSqlreqItens);
 
-    $aItensRequisicao = array ( );
+    $aItensRequisicao =  [ ];
     if ($oDaoRequisicaoItens->numrows > 0) {
       for($iInd = 0; $iInd < $oDaoRequisicaoItens->numrows; $iInd ++) {
 
@@ -586,7 +586,7 @@ class RequisicaoMaterial {
                                                                    and m41_codmatrequi = " . $this->getIcodReq() . "
                                                                     {$sWhere} $sGroupBy");
     $rsReqItem            = $oDaoRequisicaoItens->sql_record($sSqlreqItensanulacao);
-    $aItensRequisicao     = array();
+    $aItensRequisicao     = [];
     if ($oDaoRequisicaoItens->numrows > 0) {
 
       for($iInd = 0; $iInd < $oDaoRequisicaoItens->numrows; $iInd ++) {

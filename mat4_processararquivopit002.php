@@ -43,8 +43,8 @@ require_once(modification("model/{$aClasses[$oGet->tipodocumento]->arquivo}.mode
 $oArquivoPit   = new arquivoPit50();
 $sArquivoPit   = "tmp/arquivo_pit_".date("Ymd",db_getsession("DB_datausu")).".txt"; 
 $oLayoutPIT    = new db_layouttxt($oArquivoPit->getCodigoLayout(), $sArquivoPit);
-$dtInicial     = implode("-", array_reverse(explode("/", $oGet->datainicial)));  
-$dtFinal       = implode("-", array_reverse(explode("/", $oGet->datafinal)));
+$dtInicial     = implode("-", array_reverse(explode("/", (string) $oGet->datainicial)));  
+$dtFinal       = implode("-", array_reverse(explode("/", (string) $oGet->datafinal)));
 $aNotas        =  $oArquivoPit->getNotasParaArquivo($dtInicial, $dtFinal);
 ?>
 <html>

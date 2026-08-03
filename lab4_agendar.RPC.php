@@ -84,7 +84,7 @@ $grupoExameService = new GrupoExameService(new GrupoExameRepository($cllab_grupo
 $grupoLaboratorioService = new GrupoLaboratorioService(new GrupoLaboratorioRepository($cllab_grupo));
 
 if($iTipo==1){ //Auto complete profissional agendamento de exames
-	$sName   = html_entity_decode(crossUrlDecode($_POST['string']));
+	$sName   = html_entity_decode((string) crossUrlDecode($_POST['string']));
 	$oDaoMedicos = db_utils::getdao('medicos');
   $sCampos  = 'distinct medicos.sd03_i_codigo as cod, ';
   $sCampos .= '         case ';
@@ -106,7 +106,7 @@ if($iTipo==1){ //Auto complete profissional agendamento de exames
 }
 if ($iTipo == 2) { //Auto complete exames agendamento de exames
 
-  $sName         = html_entity_decode(crossUrlDecode($_POST['string']));
+  $sName         = html_entity_decode((string) crossUrlDecode($_POST['string']));
   $oDaoLabExames = db_utils::getdao('lab_exame');
   $departamento = $_SESSION['DB_coddepto'];
 
@@ -216,13 +216,13 @@ if($objParam->exec == 'LoadLaboratorio'){
                                      " la09_i_exame=$objParam->exame and la09_i_ativo=1 ");
   $rResult=$cllab_setorexame->sql_record($sSql);
   if($cllab_setorexame->numrows>0){
-     $codigos=array();
-     $exames=array();
+     $codigos=[];
+     $exames=[];
      for($x=0;$x<$cllab_setorexame->numrows;$x++){
 
         db_fieldsmemory($rResult,$x);
         $codigos[]      = $chave;
-        $laboratorios[] = urlencode($descricao);
+        $laboratorios[] = urlencode((string) $descricao);
 
      }
      $objRetorno->codigos      = $codigos;
@@ -250,7 +250,7 @@ if($objParam->exec == 'DadosExame'){
       $objRetorno->dias         = $dias;
       $objRetorno->sRequisitos  = $sStr;
       $objRetorno->iLaboratorio = $la02_i_codigo;
-      $objRetorno->sLaboratorio = urlencode($la02_c_descr);
+      $objRetorno->sLaboratorio = urlencode((string) $la02_c_descr);
   }else{
       $objRetorno->status  = 0;
       $objRetorno->message = ' Exame codigo '+$objParam->la29_i_codigo+' inexistente! ';
@@ -261,13 +261,13 @@ if($objParam->exec == 'CarregaGrid'){
 
 	$sSql=$cllab_requisicao->sql_query_requiitem("","lab_requiitem.*,lab_exame.*,lab_laboratorio.*,lab_coletaitem.la32_i_codigo",""," la21_i_requisicao=$objParam->requisicao ");
 	$result = $cllab_requisicao->sql_record($sSql);
-    $alinhasgrid=Array();
+    $alinhasgrid=[];
     $y=0;
     for($x=0;$x<$cllab_requisicao->numrows;$x++){
     	$oExame=db_utils::fieldsmemory($result,$x);
         if($oExame->la32_i_codigo==""){
           //montar array com linhas do grid
-          $aData=explode("-",$oExame->la21_d_data);
+          $aData=explode("-",(string) $oExame->la21_d_data);
           $alinhasgrid[$y]="$oExame->la21_i_setorexame#$oExame->la02_c_descr#$oExame->la08_c_descr#".$aData[2]."/".$aData[1]."/".$aData[0]."#$oExame->la21_c_hora#$oExame->la08_i_dias#$oExame->la21_i_emergencia#$oExame->la21_i_codigo";
           $y++;
         }
@@ -281,7 +281,7 @@ if ( $objParam->exec == 'CarregaGridAutorizado' ) {
   $sWhere      = "la21_i_requisicao = {$objParam->requisicao} and la02_i_codigo = {$objParam->iLaboratorioLogado}";
 	$sSql        = $cllab_requisicao->sql_query_coleta_amostra( "", $sCampos, "", $sWhere );
 	$result      = $cllab_requisicao->sql_record( $sSql );
-  $alinhasgrid = array();
+  $alinhasgrid = [];
   $y           = 0;
 
   for ( $x = 0; $x < $cllab_requisicao->numrows; $x++ ) {
@@ -294,9 +294,9 @@ if ( $objParam->exec == 'CarregaGridAutorizado' ) {
         $oExame->la21_c_situacao == "f - falta material") {
 
       //montar array com linhas do grid
-      $aData            = explode( "-", $oExame->la21_d_data );
-      $aData2           = explode( "-", $oExame->la21_d_entrega );
-      $alinhasgrid[$y]  = "{$oExame->la21_i_setorexame}#" . urlencode($oExame->la02_c_descr) . "#" . urlencode($oExame->la08_c_descr) . "#";
+      $aData            = explode( "-", (string) $oExame->la21_d_data );
+      $aData2           = explode( "-", (string) $oExame->la21_d_entrega );
+      $alinhasgrid[$y]  = "{$oExame->la21_i_setorexame}#" . urlencode((string) $oExame->la02_c_descr) . "#" . urlencode((string) $oExame->la08_c_descr) . "#";
       $alinhasgrid[$y] .= $aData[2] . "/" . $aData[1] . "/" . $aData[0];
       $alinhasgrid[$y] .= "#{$oExame->la21_c_hora}#{$oExame->la21_c_situacao}#{$oExame->la21_i_emergencia}";
       $alinhasgrid[$y] .= "#{$oExame->la21_i_codigo}#" . $aData2[2] . "/" . $aData2[1] . "/" . $aData2[0];
@@ -316,7 +316,7 @@ if($objParam->exec == 'CarregaGridRequi'){
                                                " la02_i_codigo=$objParam->iLaboratorioLogado and ".
                                                " la21_c_situacao='10 - Nao Digitado' ");
   $result      = $cllab_requisicao->sql_record($sSql);
-  $alinhasgrid = Array();
+  $alinhasgrid = [];
   $iCgs        = 0;
   $sLogin      = "";
   $dDataRequi  = "";
@@ -328,12 +328,12 @@ if($objParam->exec == 'CarregaGridRequi'){
 
     	$sLogin     = $oExame->nome;
     	$iCgs       = $oExame->la22_i_cgs;
-    	$aData      = explode("-",$oExame->la22_d_data);
+    	$aData      = explode("-",(string) $oExame->la22_d_data);
     	$dDataRequi = $aData[2]."/".$aData[1]."/".$aData[0];
 
     }
-    $aData           = explode("-",$oExame->la21_d_data);
-    $aData2          = explode("-",$oExame->la21_d_entrega);
+    $aData           = explode("-",(string) $oExame->la21_d_data);
+    $aData2          = explode("-",(string) $oExame->la21_d_entrega);
     $alinhasgrid[$x] = "$oExame->la21_i_setorexame#$oExame->la02_c_descr#$oExame->la08_c_descr#".$aData[2];
     $alinhasgrid[$x].= "/".$aData[1]."/".$aData[0]."#$oExame->la21_c_hora#$oExame->la21_c_situacao#";
     $alinhasgrid[$x].= "$oExame->la21_i_emergencia#$oExame->la21_i_codigo#".$aData2[2]."/".$aData2[1]."/";
@@ -350,13 +350,13 @@ if($objParam->exec == 'CarregaGridColetado'){
 
 	$sSql=$cllab_requisicao->sql_query_requiitem("","lab_requiitem.*,lab_exame.*,lab_laboratorio.*,lab_coletaitem.la32_i_codigo",""," la21_i_requisicao=$objParam->requisicao ");
 	$result = $cllab_requisicao->sql_record($sSql);
-    $alinhasgrid=Array();
+    $alinhasgrid=[];
     $y=0;
     for($x=0;$x<$cllab_requisicao->numrows;$x++){
     	$oExame=db_utils::fieldsmemory($result,$x);
         if((($oExame->la32_i_codigo!="")&&($oExame->la21_c_situacao=="30 - Coletado")||($oExame->la21_c_situacao=="50 - Lancado"))){
           //montar array com linhas do grid
-          $aData=explode("-",$oExame->la21_d_data);
+          $aData=explode("-",(string) $oExame->la21_d_data);
           $alinhasgrid[$y]="$oExame->la21_i_setorexame#$oExame->la02_c_descr#$oExame->la08_c_descr#".$aData[2]."/".$aData[1]."/".$aData[0]."#$oExame->la21_c_hora#$oExame->la08_i_dias#$oExame->la21_i_emergencia#$oExame->la21_i_codigo";
           $y++;
         }
@@ -368,13 +368,13 @@ if($objParam->exec == 'CarregaGridConfirmado'){
 
 	$sSql=$cllab_requisicao->sql_query_requiitem("","lab_requiitem.*,lab_exame.*,lab_laboratorio.*,lab_coletaitem.la32_i_codigo",""," la21_i_requisicao=$objParam->requisicao ");
 	$result = $cllab_requisicao->sql_record($sSql);
-    $alinhasgrid=Array();
+    $alinhasgrid=[];
     $y=0;
     for($x=0;$x<$cllab_requisicao->numrows;$x++){
     	$oExame=db_utils::fieldsmemory($result,$x);
         if(($oExame->la32_i_codigo!="")&&($oExame->la21_c_situacao=="30 - Coletado")){
           //montar array com linhas do grid
-          $aData=explode("-",$oExame->la21_d_data);
+          $aData=explode("-",(string) $oExame->la21_d_data);
           $alinhasgrid[$y]="$oExame->la21_i_setorexame#$oExame->la02_c_descr#$oExame->la08_c_descr#".$aData[2]."/".$aData[1]."/".$aData[0]."#$oExame->la21_c_hora#$oExame->la08_i_dias#$oExame->la21_i_emergencia#$oExame->la21_i_codigo";
           $y++;
         }
@@ -394,9 +394,9 @@ if($objParam->exec == 'digitacaoinc'){
     if($cllab_resultado->erro_status!="0"){
 
        $cllab_resultadoitem->la39_i_resultado=$cllab_resultado->la52_i_codigo;
-       $aAtributos=explode("|",$objParam->sAtributos);
-       $aValores=explode("|",$objParam->sValores);
-       $aTipo=explode("|",$objParam->sTipos);
+       $aAtributos=explode("|",(string) $objParam->sAtributos);
+       $aValores=explode("|",(string) $objParam->sValores);
+       $aTipo=explode("|",(string) $objParam->sTipos);
 	   for($x=0;$x<count($aAtributos);$x++){
 
 	   	   if($cllab_resultadoitem->erro_status!="0"){
@@ -506,9 +506,9 @@ if($objParam->exec == 'digitacaoalt'){
     $cllab_resultado->alterar($objParam->la52_i_codigo);
 	if($cllab_resultado->erro_status!="0"){
 
-       $aAtributos=explode("|",$objParam->sAtributos);
-       $aValores=explode("|",$objParam->sValores);
-       $aTipo=explode("|",$objParam->sTipos);
+       $aAtributos=explode("|",(string) $objParam->sAtributos);
+       $aValores=explode("|",(string) $objParam->sValores);
+       $aTipo=explode("|",(string) $objParam->sTipos);
 	   for($x=0;$x<count($aAtributos);$x++){
 
 	   	   if($cllab_resultadoitem->erro_status!="0"){
@@ -703,7 +703,7 @@ if($objParam->exec == 'verificaExameAtivo'){
 
     $oPostgresresource = db_query($sSqlExame);
     
-    $objRetorno->exameAtivo = pg_numrows($oPostgresresource) == 0;
+    $objRetorno->exameAtivo = pg_num_rows($oPostgresresource) == 0;
 }
 
 if($objParam->exec == 'excluirExamesPorRequisicao'){
@@ -716,12 +716,12 @@ if($objParam->exec == 'buscaExamesPorGrupoELaboratorio'){
 }
 
 if($autoCompleteGrupos){
-  $descricao   = html_entity_decode(crossUrlDecode($_POST['string']));
+  $descricao   = html_entity_decode((string) crossUrlDecode($_POST['string']));
   $objParam->descricaoGrupo = $descricao;
   $objParam->departamento = $departamento;
   $objParam->laboratorio = $laboratorioDepartamentoService->buscarLaboratorioPorDepartamento($objParam);
   $retorno = $grupoLaboratorioService->autoCompleteGruposLaboratorio($objParam);
-  $grupos = array();
+  $grupos = [];
   foreach($retorno as $grupo){
     $objetoGrupo = new stdClass();
     $objetoGrupo->cod = $grupo['codigo'];
@@ -738,9 +738,9 @@ echo $objJson->encode($objRetorno);
 function crossUrlDecode($sSource) {
 
  // Troco os caracteres especiais por pelo coringa
- $aOrig   = array('á', 'é', 'í', 'ó', 'ú', 'â', 'ê', 'ô', 'ã', 'õ', 'à', 'è', 'ì', 'ò', 'ù', 'ç',
+ $aOrig   = ['á', 'é', 'í', 'ó', 'ú', 'â', 'ê', 'ô', 'ã', 'õ', 'à', 'è', 'ì', 'ò', 'ù', 'ç',
                   'Á', 'É', 'Í', 'Ó', 'Ú', 'Â', 'Ê', 'Ô', 'Ã', 'Õ', 'À', 'È', 'Ì', 'Ò', 'Ù', 'Ç'
-                 );
+                 ];
 
  return str_replace($aOrig, '_', mb_convert_encoding($sSource, "ISO-8859-1", "UTF-8"));
 }

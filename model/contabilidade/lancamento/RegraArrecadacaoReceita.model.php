@@ -44,7 +44,7 @@ class RegraArrecadacaoReceita implements IRegraLancamentoContabil {
 
     $iAno                      = db_getsession("DB_anousu");
     $sChaveRegistryLancamentos = "{iCodigoDocumento}{$iCodigoLancamento}";
-    $aDadosTransacao           = array();
+    $aDadosTransacao           = [];
 
     if (!$aDadosTransacao = DBRegistry::get($sChaveRegistryLancamentos)) {
 
@@ -62,7 +62,7 @@ class RegraArrecadacaoReceita implements IRegraLancamentoContabil {
       }
     }
 
-    $aTransacoes = array();
+    $aTransacoes = [];
     foreach ($aDadosTransacao as $oDadosTransacao) {
 
       switch ($oDadosTransacao->c46_ordem) {

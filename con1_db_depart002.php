@@ -44,7 +44,7 @@ $cldb_depart    = new cl_db_depart;
 $cldb_departorg = new cl_db_departorg;
 $cldb_config    = new cl_db_config;
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 if(isset($troca)) {
@@ -58,7 +58,7 @@ if(isset($troca)) {
 
 $anousu = db_getsession("DB_anousu");
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alterar") {
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
 
   $sqlerro  = false;
   $db_opcao = 2;
@@ -164,7 +164,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alter
 </html>
 <?php
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]) == "Alterar") {
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"]) == "Alterar") {
 
   if($cldb_depart->erro_status=="0") {
     $cldb_depart->erro(true,false);

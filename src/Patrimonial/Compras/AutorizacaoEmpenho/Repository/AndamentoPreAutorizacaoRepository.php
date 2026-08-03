@@ -38,11 +38,6 @@ use db_utils;
  */
 class AndamentoPreAutorizacaoRepository
 {
-    /**
-     * @var Object
-     */
-    private $dao;
-
     private $daoAutorizada;
 
     private $daoEmpAut;
@@ -62,11 +57,10 @@ class AndamentoPreAutorizacaoRepository
     /**
      * AndamentoPreAutorizacao constructor.
      * @param $dao
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
-
         $this->daoAutorizada = new \cl_empautorizacaoautorizada;
         $this->daoEmpAut = new \cl_empautoriza;
         $this->daoOrcReserva = new \cl_orcreserva;
@@ -227,7 +221,7 @@ class AndamentoPreAutorizacaoRepository
 
         $rsEmpAutDot = db_query($sqlDaoEmpAutDot);
         $empAutDot = null;
-        if (pg_numrows($rsEmpAutDot) > 0) {
+        if (pg_num_rows($rsEmpAutDot) > 0) {
             $empAutDot = db_utils::fieldsMemory($rsEmpAutDot, 0);
         }
 

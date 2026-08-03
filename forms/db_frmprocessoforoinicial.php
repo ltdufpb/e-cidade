@@ -78,7 +78,7 @@ if (isset($oPost->db_opcaoal)) {
     <tr>
       <td valign="top"  align="center">  
         <?php 
-          $chavepri= array("v71_sequencial"=>@$v71_sequencial);
+          $chavepri= ["v71_sequencial"=>@$v71_sequencial];
           
           $sWhere                  = "v71_processoforo = ".@$v71_processoforo." and v71_anulado is false   ";
           $sCampos                 = "v71_sequencial, v71_id_usuario, v71_inicial,                         "; 

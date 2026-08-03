@@ -32,15 +32,11 @@ use Exception;
 class R2020 extends Sugestao
 {
 
-    private $cgm;
-    private $paramentros;
-
-    public function __construct($cgm, $paramentros)
+    public function __construct(private $cgm, private $paramentros)
     {
-        $this->cgm = $cgm;
-        $this->paramentros = $paramentros;
     }
 
+    #[\Override]
     public function parse()
     {
         if ($this->possuiPreenchimento()) {
@@ -50,12 +46,12 @@ class R2020 extends Sugestao
         $cnpj = $this->cgm->getCnpj();
         $cnpj = db_formatar($cnpj, 'cnpj');
 
-        return array(
-            'tpInscEstabPrest' => array(
+        return [
+            'tpInscEstabPrest' => [
                 'option' => 'tpInscEstabPrest_1'
-            ),
+            ],
             'nrInscEstabPrest' => $cnpj
-        );
+        ];
     }
 
     /**

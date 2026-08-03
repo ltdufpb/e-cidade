@@ -138,7 +138,7 @@ db_textarea('v70_observacao',0,0,$Iv70_observacao,true,'text',$db_opcao,"")
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('v70_anulado',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -301,7 +301,7 @@ function js_preenchepesquisa(chave){
   db_iframe_processoforo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

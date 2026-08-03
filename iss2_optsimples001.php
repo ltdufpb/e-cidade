@@ -84,9 +84,9 @@ include(modification("dbforms/db_funcoes.php"));
 						</td>
 						<td>
 							<?php 
-								$aSituacaoInscr = array("0"=>"Todas",
+								$aSituacaoInscr = ["0"=>"Todas",
 								                        "1"=>"Ativas",
-								                        "2"=>"Baixadas");
+								                        "2"=>"Baixadas"];
 								db_select("situacao",$aSituacaoInscr,true,"text",1,'style="width:550px;"');
 							?>
 						</td>
@@ -97,12 +97,12 @@ include(modification("dbforms/db_funcoes.php"));
             </td>
             <td>
               <?php 
-								$aCategorias = array('0'=>'Todas',
+								$aCategorias = ['0'=>'Todas',
 								                     '1'=>'Micro Empresa',
 							          						 '2'=>'Empresa de Pequeno Porte',
 												          	 '3'=>'MEI',
                                      '4'=>'EIRELI',
-                                     '5'=>'Soc. Profissionais');
+                                     '5'=>'Soc. Profissionais'];
 
                 db_select("categoria",$aCategorias,true,"text",1);
               ?>
@@ -114,9 +114,9 @@ include(modification("dbforms/db_funcoes.php"));
             </td>
             <td>
               <?php 
-                $aOrdem = array('0'=>'Inscrição',
+                $aOrdem = ['0'=>'Inscrição',
                                 '1'=>'Nome',
-                                '2'=>'Atividade');
+                                '2'=>'Atividade'];
 
                 db_select("ordem",$aOrdem,true,"text",1,'');
               ?>

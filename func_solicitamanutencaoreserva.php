@@ -34,7 +34,7 @@ require_once(modification("classes/db_solicita_classe.php"));
 
 db_postmemory($_POST);
 db_postmemory($_GET);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clsolicita = new cl_solicita;
 $clsolicita->rotulo->label("pc10_numero");
@@ -146,7 +146,7 @@ $clsolicita->rotulo->label("pc10_data");
                 $condicoesSql
             );
 
-            db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", array(), false);
+            db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", [], false);
         }
 
         if (!empty($pesquisa_chave)) {

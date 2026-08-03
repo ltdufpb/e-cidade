@@ -36,11 +36,11 @@ $clcfiptu = new cl_cfiptu;
 $db_opcao = 2;
 $db_botao = false;
 
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Alterar") {
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Alterar") {
 
   db_inicio_transacao();
 
-  $j30_codi          = str_pad($j30_codi, 4, "0", STR_PAD_LEFT);
+  $j30_codi          = str_pad((string) $j30_codi, 4, "0", STR_PAD_LEFT);
   $clsetor->j30_codi = $j30_codi;
   $clsetor->alterar($j30_codi);
 

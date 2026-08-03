@@ -104,7 +104,7 @@ $clrotulo->label("e83_codtipo");
 				
 				<td>
 					<?php 
-						$aTipos = array("c"=>"Dados da Conta","e"=>"Dados do Empenho");
+						$aTipos = ["c"=>"Dados da Conta","e"=>"Dados do Empenho"];
 						db_select('tipo', $aTipos, true, 4, "style='width: 150px'");
 					?>
 				</td>
@@ -116,7 +116,7 @@ $clrotulo->label("e83_codtipo");
 				</td>
 				<td>
 					<?php 
-						$aImpressaoPor = array("t"=>"Conta pagadora","r"=>"Recurso");
+						$aImpressaoPor = ["t"=>"Conta pagadora","r"=>"Recurso"];
 						db_select('form', $aImpressaoPor, true, 4, "style='width: 150px'");
 					?>
 				</td>

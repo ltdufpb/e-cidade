@@ -23,7 +23,7 @@ final class ParcelaPagaRepository extends DataBaseRepository
         //            left join lotesetorfiscal on lotesetorfiscal.j91_idbql = proprietario.j01_idbql
         //      where proprietario.j01_matric = $matricula
         // ";
-        
+
         // $result = $this->dataBase->execute($sql);
 
         // $object = $this->dataBase->fetchRow($result);

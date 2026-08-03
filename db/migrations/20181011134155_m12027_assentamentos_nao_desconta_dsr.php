@@ -19,25 +19,25 @@ class M12027AssentamentosNaoDescontaDsr extends PostgresMigration
     function upDDL()
     {
         $this->execute("CREATE SEQUENCE recursoshumanos.pontoeletronicoassentamentosnaoperdedsr_seq");
-        $this->table('pontoeletronicoassentamentosnaoperdedsr', array('schema'=>'recursoshumanos', 'id'=>false, 'primary_key'=>array('rh218_sequencial'), 'constraint'=>'pontoeletronicoassentamentosnaoperdedsr_pk'))
+        $this->table('pontoeletronicoassentamentosnaoperdedsr', ['schema'=>'recursoshumanos', 'id'=>false, 'primary_key'=>['rh218_sequencial'], 'constraint'=>'pontoeletronicoassentamentosnaoperdedsr_pk'])
              ->addColumn('rh218_sequencial',  'integer')
              ->addColumn('rh218_instituicao', 'integer')
              ->addColumn('rh218_tipoasse',    'integer')
-             ->addForeignKey('rh218_tipoasse', 'recursoshumanos.tipoasse',   'h12_codigo', array('constraint'=>'tipoasse_pontoeletronicoassentamentosnaoperdedsr_fk'))
-             ->addIndex(array('rh218_instituicao', 'rh218_tipoasse'), array('unique'=>true, 'name'=>'pontoeletronicoassentamentosnaoperdedsr_un_in'))
+             ->addForeignKey('rh218_tipoasse', 'recursoshumanos.tipoasse',   'h12_codigo', ['constraint'=>'tipoasse_pontoeletronicoassentamentosnaoperdedsr_fk'])
+             ->addIndex(['rh218_instituicao', 'rh218_tipoasse'], ['unique'=>true, 'name'=>'pontoeletronicoassentamentosnaoperdedsr_un_in'])
              ->save();
         
-        $sqls = array(
+        $sqls = [
             "ALTER TABLE recursoshumanos.pontoeletronicoassentamentosnaoperdedsr ALTER COLUMN rh218_sequencial SET DEFAULT nextval('pontoeletronicoassentamentosnaoperdedsr_seq'::regclass)",
             "ALTER TABLE recursoshumanos.pontoeletronicoassentamentosnaoperdedsr ALTER COLUMN rh218_instituicao SET DEFAULT fc_getsession('DB_instit')::int",
-        );
+        ];
 
         $this->sqlsExecutar($sqls);
     }
 
     function upDicionarioDados()
     {
-        $sqls = array(
+        $sqls = [
             "INSERT INTO db_sysarquivo
             VALUES(1010327,'pontoeletronicoassentamentosnaoperdedsr','Configurações de assentamentos que não perdem DSR','rh218','2018-10-11','Configurações de assentamentos que não perdem DSR',0,'t','f','t','t');",
             
@@ -76,7 +76,7 @@ class M12027AssentamentosNaoDescontaDsr extends PostgresMigration
 
             "INSERT INTO db_syscadind
             VALUES(1008332,1010014,2);",
-        );
+        ];
 
         $this->sqlsExecutar($sqls);
     }
@@ -92,7 +92,7 @@ class M12027AssentamentosNaoDescontaDsr extends PostgresMigration
 
     function downDicionarioDados()
     {
-        $sqls = array(
+        $sqls = [
             "DELETE FROM db_syscadind WHERE codind = 1008332;",
             "DELETE FROM db_sysindices WHERE codind = 1008332;",
             "DELETE FROM db_sysforkey WHERE codarq = 1010327;",
@@ -100,14 +100,14 @@ class M12027AssentamentosNaoDescontaDsr extends PostgresMigration
             "DELETE FROM db_sysarqcamp WHERE codarq = 1010327;",
             "DELETE FROM db_syscampo WHERE codcam IN (1010012, 1010013, 1010014);",
             "DELETE FROM db_sysarquivo WHERE codarq = 1010327;",
-        );
+        ];
         
         $this->sqlsExecutar($sqls);
     }
 
     function downDDL()
     {
-        $this->table('pontoeletronicoassentamentosnaoperdedsr', array('schema'=>'recursoshumanos'))->drop();
+        $this->table('pontoeletronicoassentamentosnaoperdedsr', ['schema'=>'recursoshumanos'])->drop();
         $this->execute("DROP SEQUENCE recursoshumanos.pontoeletronicoassentamentosnaoperdedsr_seq");
     }
 }

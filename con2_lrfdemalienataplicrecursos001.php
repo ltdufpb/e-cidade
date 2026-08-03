@@ -50,23 +50,23 @@ $iCodigoRelatorio = $oRelatorio::CODIGO_RELATORIO;
 </head>
 <body class="body-default abas">
 <?php
-  $clcriaabas->identifica = array("relatorio" => "Relatório",
+  $clcriaabas->identifica = ["relatorio" => "Relatório",
                                   "notas"     => "Fonte/Notas Explicativas",
                                   "parametro" => "Parâmetros"
-                                 );
-  $clcriaabas->title      = array("relatorio" => "Relatório",
+                                 ];
+  $clcriaabas->title      = ["relatorio" => "Relatório",
                                    "notas"    => "Fonte/Notas Explicativas",
-                                   "parametro"=> "Parâmetros");
+                                   "parametro"=> "Parâmetros"];
 
-  $clcriaabas->src        = array("relatorio" => "con2_lrfdemalienataplicrecursos002.php?codrel={$iCodigoRelatorio}",
+  $clcriaabas->src        = ["relatorio" => "con2_lrfdemalienataplicrecursos002.php?codrel={$iCodigoRelatorio}",
                                   "notas"     => "con2_conrelnotas.php?c83_codrel={$iCodigoRelatorio}",
                                   "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel={$iCodigoRelatorio}"
-                           );
+                           ];
 
-  $clcriaabas->sizecampo  = array("relatorio" => "23",
+  $clcriaabas->sizecampo  = ["relatorio" => "23",
                                   "notas"     => "23",
                                   "parametro" => "23"
-                            );
+                            ];
   $clcriaabas->cria_abas();
 
   db_menu();

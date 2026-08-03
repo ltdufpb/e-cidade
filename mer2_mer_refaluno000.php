@@ -35,7 +35,7 @@ include(modification("classes/db_calendario_classe.php"));
 include(modification("classes/db_mer_cardapio_classe.php"));
 include(modification("classes/db_mer_tipocardapio_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_cardapioaluno = new cl_mer_cardapioaluno;
 $clmer_cardapio      = new cl_mer_cardapio;
 $clcalendario        = new cl_calendario;

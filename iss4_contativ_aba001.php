@@ -33,8 +33,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $cliframe_seleciona = new cl_iframe_seleciona;
 
@@ -78,8 +78,8 @@ td {
 		    </td>
 		    <td>
 					<?php 
-					  $aAtividades = array ("n" => "Não", 
-					                        "s" => "Sim");
+					  $aAtividades =  ["n" => "Não", 
+					                        "s" => "Sim"];
 					  db_select('mostrar', $aAtividades, true, 2);
 					?>
 		    </td>
@@ -90,10 +90,10 @@ td {
 	      </td>
 			  <td>
 					<?php 
-						$aAgrupar = array ("a" => "Atividade", 
+						$aAgrupar =  ["a" => "Atividade", 
 						                   "c" => "Classe", 
 						                   "r" => "Ruas", 
-						                   "i" => "Inscrição");
+						                   "i" => "Inscrição"];
 						db_select('grupo', $aAgrupar, true, 2);
 					?>
 			  </td>
@@ -116,8 +116,8 @@ td {
 	      </td>
 			  <td>
 					<?php 
-						$aMostrarAtividades = array ("p" => "Apenas principal", 
-						                             "t" => "Todas atividades");
+						$aMostrarAtividades =  ["p" => "Apenas principal", 
+						                             "t" => "Todas atividades"];
 						db_select('tativ', $aMostrarAtividades, true, 2);
 					?>
 			  </td>
@@ -128,9 +128,9 @@ td {
 	      </td>
 			  <td>
 					<?php 
-						$aProcessar = array ("t" => "Todas", 
+						$aProcessar =  ["t" => "Todas", 
 						                     "n" => "Não baixadas", 
-						                     "s" => "Baixadas");
+						                     "s" => "Baixadas"];
 						db_select('processar', $aProcessar, true, 2,"onchange='js_periodo();'" );
 					?>
 			  </td>
@@ -141,9 +141,9 @@ td {
 	      </td>
 		    <td>
 				  <?php 
-				    $aTipoInscricao = array ("t"   => "Todas", 
+				    $aTipoInscricao =  ["t"   => "Todas", 
 				                             "per" => "Permanentes", 
-				                             "pro" => "Provisórios");
+				                             "pro" => "Provisórios"];
 				    db_select('tipoinscricao', $aTipoInscricao, true, 2,"onchange='js_periodoVencimento();'" );
 				  ?>
 		    </td>

@@ -71,8 +71,8 @@ db_app::import("contabilidade.contacorrente.*");
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clmatparam               = new cl_matparam;
 $cldb_departorg           = new  cl_db_departorg;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clmatrequiitem           = new cl_matrequiitem;
 $clmatrequi               = new cl_matrequi;
 $clatendrequiitem         = new cl_atendrequiitem;
@@ -153,7 +153,7 @@ if (isset($incluir)) {
 
        // Gera Array Com Itens do Atendimento
        //(iCodMater iCodItemReq, nQtde ,iCodAlmox)
-       $aItens = array();
+       $aItens = [];
        $aSubItens[0]->iCodMater      = $codmater;
        $aSubItens[0]->iCodItemReq    = $codreqitem;
        $aSubItens[0]->iCodalmox      = $oMatRequi->m91_depto;

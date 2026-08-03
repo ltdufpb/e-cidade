@@ -64,7 +64,7 @@ class AnexoIX extends \AnexoIXRREO_2015
         $this->oPdf->setAutoNewLineMulticell(true);
         $this->oPdf->setBold(false);
         $iAlturaAssinatura = 26;
-        $this->notaExplicativa($this->oPdf, array($this->oPdf, 'AddPage'), $iAlturaAssinatura);
+        $this->notaExplicativa($this->oPdf, [$this->oPdf, 'AddPage'], $iAlturaAssinatura);
         $this->oRelatorioLegal->assinatura($this->oPdf, 'LRF', false);
 
         $this->oPdf->showPDF("AnexoIXRREO_" . time());

@@ -33,7 +33,7 @@ include(modification("libs/db_stdlibwebseller.php"));
 include(modification("classes/db_mer_tipocardapio_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 $escola=db_getsession("DB_coddepto");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_tipocardapio = new cl_mer_tipocardapio;
 $db_opcao           = 1;
 $db_botao           = true;

@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("doc"=>"Documentos","parag"=>"Paragrafos"); 
-	 $clcriaabas->src = array("doc"=>"con4_docpadrao002.php");
-	 $clcriaabas->disabled   =  array("parag"=>"true"); 
+	 $clcriaabas->identifica = ["doc"=>"Documentos","parag"=>"Paragrafos"]; 
+	 $clcriaabas->src = ["doc"=>"con4_docpadrao002.php"];
+	 $clcriaabas->disabled   =  ["parag"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

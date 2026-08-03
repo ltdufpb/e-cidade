@@ -35,8 +35,8 @@ require_once(modification("classes/db_posicaoestoqueprocessamento_classe.php"));
 
 $iInstituicao = db_getsession("DB_instit");
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory($_POST);
 
@@ -48,7 +48,7 @@ $iMesProcessamento = null;
 $iAnoProcessamento = null; 
 
 if ( !empty($oPost->m05_data) ) {
-  list($iDiaProcessamento, $iMesProcessamento, $iAnoProcessamento) = explode("/", $oPost->m05_data);
+  [$iDiaProcessamento, $iMesProcessamento, $iAnoProcessamento] = explode("/", (string) $oPost->m05_data);
 }
 ?>
 <html>
@@ -107,7 +107,7 @@ if ( !empty($oPost->m05_data) ) {
         }
 
         $sql = $clposicaoestoqueprocessamento->sql_query(null, $campos, 'm05_data', $sWhere);
-        $repassa = array();
+        $repassa = [];
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
 
       } else {

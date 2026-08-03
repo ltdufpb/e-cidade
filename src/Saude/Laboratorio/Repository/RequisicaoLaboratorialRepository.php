@@ -45,7 +45,7 @@ class RequisicaoLaboratorialRepository
 
         try {
             $requisicao = \RequisicaoLaboratorial::fromState($state);
-        } catch (\BusinessException $e) {
+        } catch (\BusinessException) {
             return null;
         }
 

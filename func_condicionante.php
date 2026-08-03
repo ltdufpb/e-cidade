@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_condicionante_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcondicionante = new cl_condicionante;
 $clcondicionante->rotulo->label("am10_sequencial");
 $clcondicionante->rotulo->label("am10_descricao");
@@ -78,9 +78,9 @@ $clcondicionante->rotulo->label("am10_descricao");
         }else{
            $sql = $clcondicionante->sql_query("",$campos,"am10_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_am10_descricao)){
-          $repassa = array("chave_am10_sequencial"=>$chave_am10_sequencial,"chave_am10_descricao"=>$chave_am10_descricao);
+          $repassa = ["chave_am10_sequencial"=>$chave_am10_sequencial,"chave_am10_descricao"=>$chave_am10_descricao];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

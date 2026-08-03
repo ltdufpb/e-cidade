@@ -67,8 +67,8 @@ class CalculoExtraLinear extends CalculoHoraLinear implements HorasLinear {
         $this->logger->debug("-- MARCACOES AJUSTADAS.....: ". (!empty($marcacoesAjustadas) ? implode('|', $marcacoesAjustadas->toArray()) : ''));
         $this->logger->debug("-- MARCACOES...............: ". (!empty($marcacoes)          ? implode('|', $marcacoes->toArray())          : ''));
 
-    $marcacaoEntrada1         = ($marcacoes->getMarcacaoEntrada1()->getMarcacao()          ? $marcacoes->getMarcacaoEntrada1()->getMarcacao()          : $marcacoes->getMarcacaoEntrada2()->getMarcacao());
-    $marcacaoEntrada1Ajustada = ($marcacoesAjustadas->getMarcacaoEntrada1()->getMarcacao() ? $marcacoesAjustadas->getMarcacaoEntrada1()->getMarcacao() : $marcacoesAjustadas->getMarcacaoEntrada2()->getMarcacao());
+    $marcacaoEntrada1         = ($marcacoes->getMarcacaoEntrada1()->getMarcacao() ?: $marcacoes->getMarcacaoEntrada2()->getMarcacao());
+    $marcacaoEntrada1Ajustada = ($marcacoesAjustadas->getMarcacaoEntrada1()->getMarcacao() ?: $marcacoesAjustadas->getMarcacaoEntrada2()->getMarcacao());
 
     if($marcacoes instanceof MarcacoesPontoCollection && $marcacaoEntrada1) {
         $this->marcacaoInicioAjustado = clone $marcacaoEntrada1Ajustada;
@@ -204,13 +204,13 @@ class CalculoExtraLinear extends CalculoHoraLinear implements HorasLinear {
         $dateTimeExtrasAutorizadas = $oDiaTrabalho->getHorasExtrasAutorizadas();
         if($dateTimeExtrasAutorizadas) {
 
-            list($hora, $minuto) = explode(":", $dateTimeExtrasAutorizadas->format('H:i'));
+            [$hora, $minuto] = explode(":", $dateTimeExtrasAutorizadas->format('H:i'));
             $minutosAutorizados = $hora * 60 + $minuto;
         }
 
         $this->logger->debug("-- Minutos Autorizados.....: ". $minutosAutorizados);
-        $momentoIgnorado  = array();
-        $momentoCalculado = array();
+        $momentoIgnorado  = [];
+        $momentoCalculado = [];
 
         do{
 

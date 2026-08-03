@@ -31,7 +31,7 @@ include(modification("classes/db_parfiscal_classe.php"));
 include(modification("classes/db_termovist_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $clparfiscal     = new cl_parfiscal;
 $cltermovist     = new cl_termovist;
 //----------------------- Data atual ----------------------------

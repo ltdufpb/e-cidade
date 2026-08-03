@@ -37,7 +37,7 @@ $clorctiporec = new cl_orctiporec;
   /*
 $clorctiporecconvenio = new cl_orctiporecconvenio;
   */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){

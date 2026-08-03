@@ -45,8 +45,8 @@ require_once(modification("model/convenio.model.php"));
 require_once(modification("model/regraEmissao.model.php"));
 require_once(modification("model/recibo.model.php"));
 
-parse_str ( $HTTP_SERVER_VARS ["QUERY_STRING"] );
-db_postmemory ( $HTTP_POST_VARS );
+parse_str ( (string) $_SERVER ["QUERY_STRING"], $result );
+db_postmemory ( $_POST );
 
 $cldb_config = new cl_db_config ( );
 $cldb_docparag = new cl_db_docparag ( );
@@ -86,7 +86,7 @@ $sqlvenc = "select current_date + '30 days'::interval as db_datausu";
 $resultvenc = db_query ( $sqlvenc ) or die ( $sqlvenc );
 db_fieldsmemory ( $resultvenc, 0 );
 
-$DB_DATACALC = mktime ( 0, 0, 0, substr ( $db_datausu, 5, 2 ), substr ( $db_datausu, 8, 2 ), substr ( $db_datausu, 0, 4 ) );
+$DB_DATACALC = mktime ( 0, 0, 0, substr ( (string) $db_datausu, 5, 2 ), substr ( (string) $db_datausu, 8, 2 ), substr ( (string) $db_datausu, 0, 4 ) );
 
 $sql = "select * from lista where k60_codigo = $lista and k60_instit = $instit";
 $result = db_query ( $sql );
@@ -111,10 +111,10 @@ $descrtipo = '';
 $somentedivida = true;
 $somenteparc = true;
 $somenteiptu = true;
-for($yy = 0; $yy < pg_numrows ( $resultlistatipo ); $yy ++) {
+for($yy = 0; $yy < pg_num_rows ( $resultlistatipo ); $yy ++) {
 	db_fieldsmemory ( $resultlistatipo, $yy );
 	$tipos .= $virgula . $k62_tipodeb;
-	$descrtipo .= $virgula . trim ( $k03_descr );
+	$descrtipo .= $virgula . trim ( (string) $k03_descr );
 	$virgula = ' , ';
 	
 	if ($k03_tipo != 6 and $k03_tipo != 13 and $k03_tipo != 16) {
@@ -183,7 +183,7 @@ if ($k60_tipo == 'M') {
 					order by k00_matric, k61_numpre, k61_numpar";
 	
 	$resultlistadeb = db_query ( $sql ) or die ( $sql );
-	if (pg_numrows ( $resultlistadeb ) == 0) {
+	if (pg_num_rows ( $resultlistadeb ) == 0) {
 	  
 	  $oParms = new stdClass();
 	  $oParms->sLista = $lista;
@@ -233,15 +233,15 @@ $sql = "select k62_tipodeb,tipoparc.*, cadtipoparc.*, cadtipoparc as desconto
 
 $resulttipoparc = db_query ( $sql ) or die ( $sql );
 
-if (pg_numrows ( $resulttipoparc ) == 0) {
+if (pg_num_rows ( $resulttipoparc ) == 0) {
   
   $sMsg = _M('tributario.notificacoes.not2_geratxtgeral002.nenhum_desconto_configurado');
 	db_redireciona ( "db_erros.php?fechar=true&db_erro={$sMsg}" );
 	exit ();
 }
 
-$desconto = pg_result ( $resulttipoparc, pg_numrows ( $resulttipoparc ) - 1, "cadtipoparc" );
-$maxvenc  = pg_result ( $resulttipoparc, pg_numrows ( $resulttipoparc ) - 1, "k40_dtfim" );
+$desconto = pg_fetch_result ( $resulttipoparc, pg_num_rows ( $resulttipoparc ) - 1, "cadtipoparc" );
+$maxvenc  = pg_fetch_result ( $resulttipoparc, pg_num_rows ( $resulttipoparc ) - 1, "k40_dtfim" );
 
 $resultgeracao = $cldb_layouttxtgeracao->sql_record ( $cldb_layouttxtgeracao->sql_query_file ( null, "max(db55_seqlayout) as db55_seqlayout", null, " db55_layouttxt = $db55_layouttxt group by db55_layouttxt" ) );
 if ($cldb_layouttxtgeracao->numrows == 0) {
@@ -367,8 +367,8 @@ if ($modelo == 1) {
 	
 	$denominacaoexercicio = $anos;
 	$exercicio = $anos;
-	$totalopcoespagamento = pg_numrows ( $resulttipoparc );
-	$parcelamentoreceb = pg_numrows ( $resulttipoparc );
+	$totalopcoespagamento = pg_num_rows ( $resulttipoparc );
+	$parcelamentoreceb = pg_num_rows ( $resulttipoparc );
 	$valorminimo = 0;
 	$juros = 0;
 	$quantidadedatas = 0;
@@ -426,10 +426,10 @@ if ($modelo == 1) {
 	
 	global $matricatual;
 	
-	$matricatual = pg_result ( $resultlistadeb, 0, "k00_matric" );
+	$matricatual = pg_fetch_result ( $resultlistadeb, 0, "k00_matric" );
 	db_preparageratxt ( $lista );
 	
-	for($x = 0; $x < pg_numrows ( $resultlistadeb ); $x ++) {
+	for($x = 0; $x < pg_num_rows ( $resultlistadeb ); $x ++) {
 		
 		db_fieldsmemory ( $resultlistadeb, $x );
 		
@@ -450,16 +450,16 @@ if ($modelo == 1) {
 		}
 
 		
-		if ( $k00_matric != $matricatual or ($x == pg_numrows ( $resultlistadeb ) - 1)) {
+		if ( $k00_matric != $matricatual or ($x == pg_num_rows ( $resultlistadeb ) - 1)) {
 
 			$resultarrematric = $clarrematric->sql_record ( $clarrematric->sql_query ( null, $k00_matric, "*" ) );
 			db_fieldsmemory ( $resultarrematric, 0 );
 			
 			$cnpjcpf = $z01_cgccpf;
 			
-			if (strlen ( $z01_cgccpf ) == 11) {
+			if (strlen ( (string) $z01_cgccpf ) == 11) {
 				$tipodocumento = 1;
-			} elseif (strlen ( $z01_cgccpf ) == 14) {
+			} elseif (strlen ( (string) $z01_cgccpf ) == 14) {
 				$tipodocumento = 2;
 			} else {
 				$tipodocumento = 3;
@@ -467,7 +467,7 @@ if ($modelo == 1) {
 			}
 			
 			$nomesacado = $z01_nome;
-			$enderecosacado = trim ( $z01_ender ) . (trim ( $z01_numero ) != "" ? ", " . $z01_numero : "") . (trim ( $z01_compl ) != "" ? "/" . $z01_compl : "");
+			$enderecosacado = trim ( (string) $z01_ender ) . (trim ( (string) $z01_numero ) != "" ? ", " . $z01_numero : "") . (trim ( (string) $z01_compl ) != "" ? "/" . $z01_compl : "");
 			$cepsacado = $z01_cep;
 			$pracasacado = $z01_munic;
 			$ufsacado = $z01_uf;
@@ -483,7 +483,7 @@ if ($modelo == 1) {
 			$prazoprotesto = 0;
 			$totalparcelas = 0;
 			
-			if ($x == pg_numrows ( $resultlistadeb ) - 1) {
+			if ($x == pg_num_rows ( $resultlistadeb ) - 1) {
 				$aNumpres [] = $k61_numpre . "#" . $k61_numpar;
 			}
 			
@@ -496,7 +496,7 @@ if ($modelo == 1) {
 			
 			for($numpre = 0; $numpre < sizeof ( $aNumpres ); $numpre ++) {
 				
-				$valores = split ( "#", $aNumpres [$numpre] );
+				$valores = preg_split ( "#\\##m", (string) $aNumpres [$numpre] );
 				try {
 					
 					$oRecibo->addNumpre ( $valores [0], $valores [1] );
@@ -537,10 +537,10 @@ if ($modelo == 1) {
 			
 			$k22_vlrcor = 0;
 			$k22_encargos = 0;
-			for($contax = 0; $contax < pg_numrows ( $resulttotal ); $contax ++) {
+			for($contax = 0; $contax < pg_num_rows ( $resulttotal ); $contax ++) {
 				db_fieldsmemory ( $resulttotal, $contax );
-				$k22_vlrcor += ( float ) substr ( $fc_calcula, 14, 13 );
-				$k22_encargos += ( float ) substr ( $fc_calcula, 27, 13 ) + ( float ) substr ( $fc_calcula, 40, 13 );
+				$k22_vlrcor += ( float ) substr ( (string) $fc_calcula, 14, 13 );
+				$k22_encargos += ( float ) substr ( (string) $fc_calcula, 27, 13 ) + ( float ) substr ( (string) $fc_calcula, 40, 13 );
 			}
 			
 			global $registrooriginal;
@@ -552,7 +552,7 @@ if ($modelo == 1) {
 			$instrucao4 = "";
 			
 			$opcoesdepagamento = "";
-			for($contador = 0; $contador < pg_numrows ( $resulttipoparc ); $contador ++) {
+			for($contador = 0; $contador < pg_num_rows ( $resulttipoparc ); $contador ++) {
 				
 				db_fieldsmemory ( $resulttipoparc, $contador );
 				
@@ -565,7 +565,7 @@ if ($modelo == 1) {
 				
 				for($numpre = 0; $numpre < sizeof ( $aNumpres ); $numpre ++) {
 					
-					$valores = split ( "#", $aNumpres [$numpre] );
+					$valores = preg_split ( "#\\##m", (string) $aNumpres [$numpre] );
 					try {
 						$oRecibo->addNumpre ( $valores [0], $valores [1] );
 						$oRecibo->setDescontoReciboWeb ( $valores [0], $valores [1], $desconto ); // alterado robson
@@ -596,8 +596,8 @@ if ($modelo == 1) {
 				db_fieldsmemory ( $resultrecibo, 0 );
 				
 				$nomevar = "instrucao" . ($contador + 1);
-				$$nomevar = "PAGAMENTO ATE " . db_formatar ( $k40_dtfim, "d" ) . ": R$ " . db_formatar ( $k00_valor, "f", " ", 10 );
-				$opcoesdepagamento .= $$nomevar . ($contador == pg_numrows ( $resulttipoparc ) - 1 ? "" : "|");
+				${$nomevar} = "PAGAMENTO ATE " . db_formatar ( $k40_dtfim, "d" ) . ": R$ " . db_formatar ( $k00_valor, "f", " ", 10 );
+				$opcoesdepagamento .= ${$nomevar} . ($contador == pg_num_rows ( $resulttipoparc ) - 1 ? "" : "|");
 			}
 			
 			db_separainstrucao ( $textotipo04, 0, $cldb_layouttxr, 1, "04", 3, $quantidadegeral );
@@ -722,7 +722,7 @@ if ($modelo == 1) {
 	$sequencialregistro ++;
 	
 	// segmento L
-	for($contador = 0; $contador < pg_numrows ( $resulttipoparc ); $contador ++) {
+	for($contador = 0; $contador < pg_num_rows ( $resulttipoparc ); $contador ++) {
 		db_fieldsmemory ( $resulttipoparc, $contador );
 		
 		$identificacao = $contador + 1;
@@ -740,16 +740,16 @@ if ($modelo == 1) {
 	}
 	
 	global $matricatual;
-	$matricatual = pg_result ( $resultlistadeb, 0, "k00_matric" );
+	$matricatual = pg_fetch_result ( $resultlistadeb, 0, "k00_matric" );
 	db_preparageratxt ( $lista );
 	
 	$processados = 1;
-	for($x = 0; $x < pg_numrows ( $resultlistadeb ); $x ++) {
+	for($x = 0; $x < pg_num_rows ( $resultlistadeb ); $x ++) {
 		db_fieldsmemory ( $resultlistadeb, $x );
 		
-		if ($k00_matric != $matricatual or ($x == pg_numrows ( $resultlistadeb ) - 1)) {
+		if ($k00_matric != $matricatual or ($x == pg_num_rows ( $resultlistadeb ) - 1)) {
 			
-			if ($x == pg_numrows ( $resultlistadeb ) - 1) {
+			if ($x == pg_num_rows ( $resultlistadeb ) - 1) {
 				$aNumpres [] = $k61_numpre . "#" . $k61_numpar;
 			}
 			
@@ -762,7 +762,7 @@ if ($modelo == 1) {
 			
 			for($numpre = 0; $numpre < sizeof ( $aNumpres ); $numpre ++) {
 				
-				$valores = split ( "#", $aNumpres [$numpre] );
+				$valores = preg_split ( "#\\##m", (string) $aNumpres [$numpre] );
 				try {
 					
 					$oRecibo->addNumpre ( $valores [0], $valores [1] );
@@ -813,10 +813,10 @@ if ($modelo == 1) {
 			
 			$k22_vlrcor = 0;
 			$k22_encargos = 0;
-			for($contax = 0; $contax < pg_numrows ( $resulttotal ); $contax ++) {
+			for($contax = 0; $contax < pg_num_rows ( $resulttotal ); $contax ++) {
 				db_fieldsmemory ( $resulttotal, $contax );
-				$k22_vlrcor += ( float ) substr ( $fc_calcula, 14, 13 );
-				$k22_encargos += ( float ) substr ( $fc_calcula, 27, 13 ) + ( float ) substr ( $fc_calcula, 40, 13 );
+				$k22_vlrcor += ( float ) substr ( (string) $fc_calcula, 14, 13 );
+				$k22_encargos += ( float ) substr ( (string) $fc_calcula, 27, 13 ) + ( float ) substr ( (string) $fc_calcula, 40, 13 );
 			}
 			
 			global $registrooriginal;
@@ -825,8 +825,8 @@ if ($modelo == 1) {
 			$identificacaoguia = $processados;
 			$emissaoguia = date ( "Y-m-d", db_getsession ( "DB_datausu" ) );
 			$validadeguia = $maxvenc;
-			$totalopcoespag = pg_numrows ( $resulttipoparc );
-			$parcelasrecebimento = pg_numrows ( $resulttipoparc );
+			$totalopcoespag = pg_num_rows ( $resulttipoparc );
+			$parcelasrecebimento = pg_num_rows ( $resulttipoparc );
 			$valortotalreceb = $k22_vlrcor + $k22_encargos;
 			$indicadorendcorresp = "C";
 			$codatividadecontrib = "";
@@ -835,9 +835,9 @@ if ($modelo == 1) {
 			$resultarrematric = $clarrematric->sql_record ( $clarrematric->sql_query ( null, $matricatual, "iptubase.*, cgm.*" ) );
 			db_fieldsmemory ( $resultarrematric, 0 );
 			$cnpjcpf = $z01_cgccpf;
-			if (strlen ( $z01_cgccpf ) == 11) {
+			if (strlen ( (string) $z01_cgccpf ) == 11) {
 				$tipopessoatransmit = 1;
-			} elseif (strlen ( $z01_cgccpf ) == 14) {
+			} elseif (strlen ( (string) $z01_cgccpf ) == 14) {
 				$tipopessoatransmit = 2;
 			} else {
 				$tipopessoatransmit = 0;
@@ -866,10 +866,10 @@ if ($modelo == 1) {
 			
 			$tipopessoa = $tipopessoatransmit;
 			$identcontribreceita = $cnpjcpf;
-			$enderecocontrib = db_translate ( trim ( $z01_ender ) . (trim ( $z01_numero ) != "" ? ", " . $z01_numero : "") . (trim ( $z01_compl ) != "" ? "/" . $z01_compl : "") );
+			$enderecocontrib = db_translate ( trim ( (string) $z01_ender ) . (trim ( (string) $z01_numero ) != "" ? ", " . $z01_numero : "") . (trim ( (string) $z01_compl ) != "" ? "/" . $z01_compl : "") );
 			$cepcontrib = $z01_cep;
 			$cidadecontrib = db_translate ( $z01_munic );
-			$bairrocontrib = db_translate ( trim ( $z01_munic ) . (strlen ( trim ( $z01_bairro ) ) == 0 ? "" : "/B: " . trim ( $z01_bairro )) );
+			$bairrocontrib = db_translate ( trim ( (string) $z01_munic ) . (strlen ( trim ( (string) $z01_bairro ) ) == 0 ? "" : "/B: " . trim ( (string) $z01_bairro )) );
 			$ufcontrib = db_translate ( $z01_uf );
 			$codativcontrib = 0;
 			$cod2ativcontrib = 0;
@@ -930,7 +930,7 @@ if ($modelo == 1) {
 			
 			}
 			
-			for($contador2 = 0; $contador2 < pg_numrows ( $resulttipoparc ); $contador2 ++) {
+			for($contador2 = 0; $contador2 < pg_num_rows ( $resulttipoparc ); $contador2 ++) {
 				
 				db_fieldsmemory ( $resulttipoparc, $contador2 );
 				
@@ -943,7 +943,7 @@ if ($modelo == 1) {
 				
 				for($numpre = 0; $numpre < sizeof ( $aNumpres ); $numpre ++) {
 					
-					$valores = split ( "#", $aNumpres [$numpre] );
+					$valores = preg_split ( "#\\##m", (string) $aNumpres [$numpre] );
 					try {
 						$oRecibo->addNumpre ( $valores [0], $valores [1] );
 						$oRecibo->setDescontoReciboWeb ( $valores [0], $valores [1], $desconto );
@@ -1010,7 +1010,7 @@ if ($modelo == 1) {
 				$codigobarras = $oConvenio->getCodigoBarra ();
 				$linhadigitavel = $oConvenio->getLinhaDigitavel ();
 				
-				$matrizbarras = split ( " ", $linhadigitavel );
+				$matrizbarras = preg_split ( "# #m", $linhadigitavel );
 				$barras = $matrizbarras [0] . $matrizbarras [1] . $matrizbarras [2] . $matrizbarras [3];
 				
 				$parte1codbarraspag = substr ( $barras, 00, 11 );
@@ -1061,7 +1061,7 @@ if ($modelo == 1) {
 }
 
 $gravarconteudo = file ( $nomearq );
-$gravarconteudo = implode ( $gravarconteudo );
+$gravarconteudo = implode ( '', $gravarconteudo );
 
 $cldb_layouttxtgeracao->db55_layouttxt = $db55_layouttxt;
 $cldb_layouttxtgeracao->db55_seqlayout = $db55_seqlayout;

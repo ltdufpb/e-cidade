@@ -143,7 +143,7 @@ class VeiculoManutencao {
   /**
    * @type VeiculoManutencaoItem[]
    */
-  protected $aManutencaoItem = array();
+  protected $aManutencaoItem = [];
 
   const SITUACAO_PENDENTE  = 1;
   const SITUACAO_REALIZADO = 2;
@@ -582,10 +582,10 @@ class VeiculoManutencao {
    */
   public function getItens() {
 
-    $this->aManutencaoItem = array();
+    $this->aManutencaoItem = [];
     if (empty($this->iCodigo)) {
 
-      return array();
+      return [];
     }
 
     $oDaoItem    = new cl_veicmanutitem();

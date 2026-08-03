@@ -55,10 +55,10 @@ $db_opcao = 1;
   <tr> 
     <td height="421" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("orcimpactoger"=>"IMPACTO","orcimpactomov"=>"DADOS","orcimpactovalmov"=>"VALORES"); 
-	 $clcriaabas->src = array("orcimpactoger"=>"orc1_orcimpactoger004.php?tipo=despesa");
-	 $clcriaabas->disabled   =  array("orcimpactomov"=>"true","orcimpactovalmov"=>"true"); 
-	 $clcriaabas->sizecampo = array("orcimpactoval"=>"20");
+	 $clcriaabas->identifica = ["orcimpactoger"=>"IMPACTO","orcimpactomov"=>"DADOS","orcimpactovalmov"=>"VALORES"]; 
+	 $clcriaabas->src = ["orcimpactoger"=>"orc1_orcimpactoger004.php?tipo=despesa"];
+	 $clcriaabas->disabled   =  ["orcimpactomov"=>"true","orcimpactovalmov"=>"true"]; 
+	 $clcriaabas->sizecampo = ["orcimpactoval"=>"20"];
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

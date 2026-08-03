@@ -43,7 +43,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("login");
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>

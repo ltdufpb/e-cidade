@@ -202,7 +202,7 @@ class TrabalhoIntermitenteService
         $requisicao->inscricaoEmpregador = InstituicaoRepository::getInstituicaoSessao()->getCNPJ();
 
         $respostas = $this->request('GET', Recurso::CONSULTA_TRABALHADOR_INTERMITENTE, $requisicao);
-        $dadosTrabalhadorIntermitente = array();
+        $dadosTrabalhadorIntermitente = [];
 
         foreach ($respostas as $resposta) {
             $eventoTrabalhoIntermitente = new TrabalhoIntermitente();

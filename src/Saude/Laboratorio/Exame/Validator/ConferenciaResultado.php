@@ -45,7 +45,7 @@ class ConferenciaResultado
     /**
      * @var array
      */
-    private $inconsistencias = array();
+    private $inconsistencias = [];
 
     private function __construct()
     {
@@ -71,7 +71,7 @@ class ConferenciaResultado
     {
         if ($conferenciaResultado->getProcedimento() === null) {
             if (!isset($this->inconsistencias[self::EXAMES_SEM_PROCEDIMENTO])) {
-                $this->inconsistencias[self::EXAMES_SEM_PROCEDIMENTO] = array();
+                $this->inconsistencias[self::EXAMES_SEM_PROCEDIMENTO] = [];
             }
 
             $exame = $conferenciaResultado->getRequisicaoExame()->getExame();

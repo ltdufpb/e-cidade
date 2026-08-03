@@ -35,7 +35,7 @@ include(modification("classes/db_orctiporec_classe.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $display = "display: none";
 $displayRecursoAntigo = "";
 if ( FONTE_RECURSO_UNIAO ) {

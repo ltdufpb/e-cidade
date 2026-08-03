@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_pcorcam_classe.php"));
 include(modification("classes/db_pcorcamforne_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clpcorcamforne = new cl_pcorcamforne;
 $clpcorcam = new cl_pcorcam;
 $db_opcao = 22;
@@ -108,7 +108,7 @@ if(isset($alterar) || isset($excluir) || isset($incluir) || isset($verificado)){
 
 $result_libera = $clpcorcamforne->sql_record($clpcorcamforne->sql_query_file(null,"pc21_codorc","","pc21_codorc=$pc21_codorc"));
 $tranca = "true";
-if(pg_numrows($result_libera)>0){
+if(pg_num_rows($result_libera)>0){
   $tranca = "false";
 }
 echo "<script>parent.document.formaba.itens.disabled=$tranca;</script>";

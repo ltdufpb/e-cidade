@@ -49,6 +49,7 @@ final class PartilhaJuridicaRecibo extends PartilhaJuridica implements Interface
     /**
      * @return ReciboModel
      */
+    #[\Override]
     public function processar()
     {
         $taxasEmissao = parent::processar();
@@ -65,8 +66,8 @@ final class PartilhaJuridicaRecibo extends PartilhaJuridica implements Interface
         if (count($this->iniciais) == 1 and count($aIniciais) > 1) {
             $existeReciboValido = $this->verificaReciboValido();
             
-            $arrayTaxasPercentual = array();
-            $arrayTaxasFixas = array();
+            $arrayTaxasPercentual = [];
+            $arrayTaxasFixas = [];
 
             foreach ($taxasEmissao as $key => $taxa) {
                 if ($taxa->isPorcentagem()) {

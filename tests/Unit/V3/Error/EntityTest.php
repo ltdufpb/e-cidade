@@ -34,30 +34,30 @@ class EntityTest extends \PHPUnit_Framework_TestCase
     public function provideErrorTypes()
     {
 
-        return array(
-        array(E_ERROR            , 'E_ERROR'),
-        array(E_WARNING          , 'E_WARNING'),
-        array(E_PARSE            , 'E_PARSE'),
-        array(E_NOTICE           , 'E_NOTICE'),
-        array(E_CORE_ERROR       , 'E_CORE_ERROR'),
-        array(E_CORE_WARNING     , 'E_CORE_WARNING'),
-        array(E_COMPILE_ERROR    , 'E_COMPILE_ERROR'),
-        array(E_COMPILE_WARNING  , 'E_COMPILE_WARNING'),
-        array(E_USER_ERROR       , 'E_USER_ERROR'),
-        array(E_USER_WARNING     , 'E_USER_WARNING'),
-        array(E_USER_NOTICE      , 'E_USER_NOTICE'),
-        array(E_STRICT           , 'E_STRICT'),
-        array(E_RECOVERABLE_ERROR, 'E_RECOVERABLE_ERROR'),
-        array(E_DEPRECATED       , 'E_DEPRECATED'),
-        array(E_USER_DEPRECATED  , 'E_USER_DEPRECATED') ,
-        array(null, 'Unknown PHP error')
-        );
+        return [
+        [E_ERROR            , 'E_ERROR'],
+        [E_WARNING          , 'E_WARNING'],
+        [E_PARSE            , 'E_PARSE'],
+        [E_NOTICE           , 'E_NOTICE'],
+        [E_CORE_ERROR       , 'E_CORE_ERROR'],
+        [E_CORE_WARNING     , 'E_CORE_WARNING'],
+        [E_COMPILE_ERROR    , 'E_COMPILE_ERROR'],
+        [E_COMPILE_WARNING  , 'E_COMPILE_WARNING'],
+        [E_USER_ERROR       , 'E_USER_ERROR'],
+        [E_USER_WARNING     , 'E_USER_WARNING'],
+        [E_USER_NOTICE      , 'E_USER_NOTICE'],
+        [E_STRICT           , 'E_STRICT'],
+        [E_RECOVERABLE_ERROR, 'E_RECOVERABLE_ERROR'],
+        [E_DEPRECATED       , 'E_DEPRECATED'],
+        [E_USER_DEPRECATED  , 'E_USER_DEPRECATED'] ,
+        [null, 'Unknown PHP error']
+        ];
     }
 
     public function testToArray()
     {
 
-        $expected1 = array(
+        $expected1 = [
         'id' => 'd41d8cd98f00b204e9800998ecf8427e',
         'type' => '',
         'suppress' => '',
@@ -66,15 +66,15 @@ class EntityTest extends \PHPUnit_Framework_TestCase
         'line' => '',
         'time' => '',
         'code' => '',
-        'trace' => array()
-        );
+        'trace' => []
+        ];
 
         $entity = EntityFactory::create();
         $this->assertEquals($expected1, $entity->toArray());
 
         $trace = new Trace();
 
-        $expected2 = array(
+        $expected2 = [
         'id' => '1',
         'type' => '2',
         'suppress' => '3',
@@ -84,7 +84,7 @@ class EntityTest extends \PHPUnit_Framework_TestCase
         'time' => '7',
         'code' => '8',
         'trace' => $trace->getSanitizedData()
-        );
+        ];
 
 
         $entity = EntityFactory::create('2', '3', '4', '5', '6', '7', $trace);

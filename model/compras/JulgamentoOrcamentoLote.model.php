@@ -39,7 +39,7 @@ class JulgamentoOrcamentoLote implements iJulgamentoOrcamento {
    * Lotes do orcamento
    * @var array
    */
-  private $aLotes = array();
+  private $aLotes = [];
 
   /**
    * Orçamento que será julgado
@@ -104,8 +104,8 @@ class JulgamentoOrcamentoLote implements iJulgamentoOrcamento {
       if (!isset($this->aLotes[$oLote->getCodigo()])) {
 
         $oDadosLote                        = new stdClass();
-        $oDadosLote->itens                 = array();
-        $oDadosLote->fornecedores          = array();
+        $oDadosLote->itens                 = [];
+        $oDadosLote->fornecedores          = [];
         $oDadosLote->nome                  = $oLote->getNome();
         $this->aLotes[$oLote->getCodigo()] = $oDadosLote;
       }
@@ -124,7 +124,7 @@ class JulgamentoOrcamentoLote implements iJulgamentoOrcamento {
    */
   private function getCotacoesValidasDoFornecedorNoLote (CgmBase $oFornecedor, array $aItens) {
 
-    $aCotacoes = array();
+    $aCotacoes = [];
     foreach ($aItens as $oItem) {
 
       if ($oCotacao = $oItem->getCotacaoDoFornecedor($oFornecedor)) {
@@ -156,16 +156,14 @@ class JulgamentoOrcamentoLote implements iJulgamentoOrcamento {
     foreach ($this->aLotes as $oLote) {
 
       $nMenorValorLote                 = null;
-      $oLote->classificao_fornecedores = array();
+      $oLote->classificao_fornecedores = [];
 
       foreach ($oLote->fornecedores as $oFornecedor) {
 
         $oFornecedor->valorTotal           = $this->calcularValorFornecedorNoLote($oFornecedor->cotacoes);
         $oLote->classificao_fornecedores[] = $oFornecedor;
       }
-      uasort($oLote->classificao_fornecedores, function($oFornecedorAtual, $oProximoFornecedor) {
-        return $oFornecedorAtual->valorTotal > $oProximoFornecedor->valorTotal;
-      });
+      uasort($oLote->classificao_fornecedores, fn($oFornecedorAtual, $oProximoFornecedor) => $oFornecedorAtual->valorTotal > $oProximoFornecedor->valorTotal);
     }
   }
 
@@ -240,7 +238,7 @@ class JulgamentoOrcamentoLote implements iJulgamentoOrcamento {
    */
   private function getCodigosDosFornecedoresOrcamento() {
 
-    $aCodigos                  = array();
+    $aCodigos                  = [];
     $oDaoFornecedoresOrcamento = new cl_pcorcamforne();
     $sQueryFornecedores        = $oDaoFornecedoresOrcamento->sql_query_file(null,
                                                                             "pc21_orcamforne, pc21_numcgm",

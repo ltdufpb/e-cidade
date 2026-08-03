@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE empageconfchecanc
 class cl_empageconfchecanc { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $e93_codcheque = 0; 
-   var $e93_codmov = 0; 
-   var $e93_cheque = null; 
-   var $e93_valor = 0; 
+   public $e93_codcheque = 0; 
+   public $e93_codmov = 0; 
+   public $e93_cheque = null; 
+   public $e93_valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  e93_codcheque = int4 = Código 
                  e93_codmov = int4 = Movimento 
                  e93_cheque = varchar(40) = Cheque 
                  e93_valor = float4 = Valor 
                  ";
    //funcao construtor da classe 
-   function cl_empageconfchecanc() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("empageconfchecanc"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -132,7 +132,7 @@ class cl_empageconfchecanc {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cheque cancelados () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cheque cancelados já Cadastrado";
@@ -159,10 +159,10 @@ class cl_empageconfchecanc {
       $this->atualizacampos();
      $sql = " update empageconfchecanc set ";
      $virgula = "";
-     if(trim($this->e93_codcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e93_codcheque"])){ 
+     if(trim((string) $this->e93_codcheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e93_codcheque"])){ 
        $sql  .= $virgula." e93_codcheque = $this->e93_codcheque ";
        $virgula = ",";
-       if(trim($this->e93_codcheque) == null ){ 
+       if(trim((string) $this->e93_codcheque) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "e93_codcheque";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_empageconfchecanc {
          return false;
        }
      }
-     if(trim($this->e93_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e93_codmov"])){ 
+     if(trim((string) $this->e93_codmov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e93_codmov"])){ 
        $sql  .= $virgula." e93_codmov = $this->e93_codmov ";
        $virgula = ",";
-       if(trim($this->e93_codmov) == null ){ 
+       if(trim((string) $this->e93_codmov) == null ){ 
          $this->erro_sql = " Campo Movimento nao Informado.";
          $this->erro_campo = "e93_codmov";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_empageconfchecanc {
          return false;
        }
      }
-     if(trim($this->e93_cheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e93_cheque"])){ 
+     if(trim((string) $this->e93_cheque)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e93_cheque"])){ 
        $sql  .= $virgula." e93_cheque = '$this->e93_cheque' ";
        $virgula = ",";
-       if(trim($this->e93_cheque) == null ){ 
+       if(trim((string) $this->e93_cheque) == null ){ 
          $this->erro_sql = " Campo Cheque nao Informado.";
          $this->erro_campo = "e93_cheque";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_empageconfchecanc {
          return false;
        }
      }
-     if(trim($this->e93_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e93_valor"])){ 
+     if(trim((string) $this->e93_valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["e93_valor"])){ 
        $sql  .= $virgula." e93_valor = $this->e93_valor ";
        $virgula = ",";
-       if(trim($this->e93_valor) == null ){ 
+       if(trim((string) $this->e93_valor) == null ){ 
          $this->erro_sql = " Campo Valor nao Informado.";
          $this->erro_campo = "e93_valor";
          $this->erro_banco = "";
@@ -292,7 +292,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:empageconfchecanc";
@@ -306,7 +306,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query ( $oid = null,$campos="empageconfchecanc.oid,*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -327,7 +327,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -339,7 +339,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
    function sql_query_file ( $oid = null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -357,7 +357,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

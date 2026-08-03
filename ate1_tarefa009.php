@@ -48,7 +48,7 @@ $cltarefaenvol    = new cl_tarefaenvol;
 $cltarefausu      = new cl_tarefausu;
 $cltarefamotivo   = new cl_tarefamotivo;
 $cltarefaclientes = new cl_tarefaclientes;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 33;
 $db_botao = false;
 if(isset($excluir)){

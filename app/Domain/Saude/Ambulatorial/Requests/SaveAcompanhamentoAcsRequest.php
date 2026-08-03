@@ -9,6 +9,7 @@ class SaveAcompanhamentoAcsRequest extends DBFormRequest
     /**
      * @return bool
      */
+    #[\Override]
     public function authorize()
     {
         return true;

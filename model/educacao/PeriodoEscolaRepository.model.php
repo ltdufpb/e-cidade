@@ -37,7 +37,7 @@ class PeriodoEscolaRepository {
    * Collection de PeriodoEscola
    * @var array
    */
-  private $aItens = array();
+  private $aItens = [];
   /**
    * Instancia da classe
    * @var PeriodoEscolaRepository
@@ -133,9 +133,7 @@ class PeriodoEscolaRepository {
           throw new \DBException('Erro ao buscar os periodos da turma.');
       }
 
-      $periodos = \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-          return PeriodoEscolaRepository::getByCodigo($retorno->ed17_i_codigo);
-      });
+      $periodos = \db_utils::makeCollectionFromRecord($rs, fn($retorno) => PeriodoEscolaRepository::getByCodigo($retorno->ed17_i_codigo));
 
       return $periodos;
   }
@@ -163,9 +161,7 @@ class PeriodoEscolaRepository {
             throw new \DBException('Erro ao buscar os períodos.');
         }
 
-        $periodos = \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-            return PeriodoEscolaRepository::getByCodigo($retorno->ed17_i_codigo);
-        });
+        $periodos = \db_utils::makeCollectionFromRecord($rs, fn($retorno) => PeriodoEscolaRepository::getByCodigo($retorno->ed17_i_codigo));
 
         return $periodos;
     }
@@ -195,9 +191,7 @@ class PeriodoEscolaRepository {
             throw new \DBException('Erro ao buscar os períodos.');
         }
 
-        $periodos = \db_utils::makeCollectionFromRecord($rs, function ($retorno) {
-            return PeriodoEscolaRepository::getByCodigo($retorno->ed17_i_codigo);
-        });
+        $periodos = \db_utils::makeCollectionFromRecord($rs, fn($retorno) => PeriodoEscolaRepository::getByCodigo($retorno->ed17_i_codigo));
 
         return $periodos;
     }

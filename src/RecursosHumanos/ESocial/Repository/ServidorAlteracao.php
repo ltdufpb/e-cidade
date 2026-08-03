@@ -78,7 +78,7 @@ class ServidorAlteracao extends \BaseClassRepository
         if (!$rs) {
             throw new DBException("Erro ao buscar informações de datas de alteração da matícula {$matricula}.");
         }
-        $total = pg_numrows($rs);
+        $total = pg_num_rows($rs);
         $retorno = [];
         for ($i = 0; $i < $total; $i++) {
             $retorno[] = self::get(db_utils::fieldsMemory($rs, $i)->eso38_sequencial);
@@ -205,9 +205,7 @@ class ServidorAlteracao extends \BaseClassRepository
             throw new DBException('Erro ao buscar os servidores da competência alteração.');
         }
 
-        return db_utils::makeCollectionFromRecord($result, function ($oRetorno) {
-            return ServidorRepository::getInstanciaByCodigo($oRetorno->eso38_matricula);
-        });
+        return db_utils::makeCollectionFromRecord($result, fn($oRetorno) => ServidorRepository::getInstanciaByCodigo($oRetorno->eso38_matricula));
     }
 
 
@@ -237,7 +235,7 @@ class ServidorAlteracao extends \BaseClassRepository
             if (!empty($dtEf)) {
                 $altContratual['dtEf'] = $dtEf;
             }
-            $dscAlt = substr(db_utils::fieldsMemory($resultado, 0)->eso39_descricao, 0, 149);
+            $dscAlt = substr((string) db_utils::fieldsMemory($resultado, 0)->eso39_descricao, 0, 149);
             if (!empty($dscAlt)) {
                 $altContratual['dscAlt'] = $dscAlt;
             }

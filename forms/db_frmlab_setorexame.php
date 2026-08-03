@@ -100,7 +100,7 @@ db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',3,'')
     <td>
         
        <?php 
-        $aX = array('1'=>'ATIVO','2'=>'DESATIVADO');
+        $aX = ['1'=>'ATIVO','2'=>'DESATIVADO'];
         db_select('la09_i_ativo', $aX, true, $db_opcao, "");
        ?>
     </td>
@@ -114,7 +114,7 @@ db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',3,'')
   <tr>
     <td valign="top"><br>
   <?php 
-    $chavepri = array ("la09_i_codigo" => @$la09_i_codigo,
+    $chavepri =  ["la09_i_codigo" => @$la09_i_codigo,
                        "la24_i_setor" => @$la24_i_setor,
                        "la24_i_laboratorio"=>@$la24_i_laboratorio,
                        "la02_c_descr"=>@$la02_c_descr,
@@ -123,7 +123,7 @@ db_input('la08_c_descr',50,$Ila08_c_descr,true,'text',3,'')
                        "la09_i_labsetor"=>@$la09_i_labsetor,
                        "la23_c_descr"=>@$la23_c_descr,
                        "la09_i_ativo"=>@$la09_i_ativo,    
-                       );
+                       ];
     $sOrder = "la09_i_ativo#la08_c_descr";
     $cliframe_alterar_excluir->chavepri = $chavepri;
     @$cliframe_alterar_excluir->sql = $cllab_setorexame->sql_query ("","*", $sOrder," la24_i_laboratorio = $la24_i_laboratorio");
@@ -216,7 +216,7 @@ function js_preenchepesquisa(chave){
   db_iframe_lab_setorexame.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

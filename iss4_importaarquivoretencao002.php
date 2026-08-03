@@ -54,7 +54,7 @@ if (isset($_FILES) && !empty($oArquivoImportado->arquivo["tmp_name"])) {
     $sArquivoImportadoType           = $oArquivoImportado->arquivo['type'];
     $sArquivoImportadoNomeTemporario = $oArquivoImportado->arquivo['tmp_name'];
 
-    $aArquivoExtensao                = explode( ".", $sArquivoImportadoNome );
+    $aArquivoExtensao                = explode( ".", (string) $sArquivoImportadoNome );
 
     $sArquivoImportadoExtensao       = trim($aArquivoExtensao[count($aArquivoExtensao)-1]);
 
@@ -106,12 +106,7 @@ if (isset($_FILES) && !empty($oArquivoImportado->arquivo["tmp_name"])) {
 
     db_msgbox( _M( MENSAGENS . "sucesso_importacao" ) );
 
-  } catch (BusinessException $oErro){
-
-    db_fim_transacao(true);
-    db_msgbox( $oErro->getMessage() );
-
-  } catch (Exception $oErro) {
+  } catch (BusinessException|Exception $oErro) {
 
     db_fim_transacao(true);
     db_msgbox( $oErro->getMessage() );

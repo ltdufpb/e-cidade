@@ -37,8 +37,8 @@
   include(modification("classes/db_db_cgmcpf_classe.php"));
   include(modification("classes/db_db_cepmunic_classe.php"));
   include(modification("classes/db_ruascep_classe.php"));
-  db_postmemory($HTTP_SERVER_VARS);
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_SERVER);
+  db_postmemory($_POST);
   $db_opcao = 1;
   $clcgm = new cl_cgm;
   $cldb_cgmruas = new cl_db_cgmruas;
@@ -46,7 +46,7 @@
   $cldb_cgmcpf = new cl_db_cgmcpf;
   $cldb_cgmcgc = new cl_db_cgmcgc;
   $db_botao = false;
-  if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] =="Incluir"){
+  if (isset($_POST["db_opcao"]) && $_POST["db_opcao"] =="Incluir"){
   $cgccpf = "";
   if(isset($z01_cgc) || isset($z01_cpf)){
     if(isset($z01_cgc) && $z01_cgc != ""){
@@ -70,11 +70,11 @@
 	   document.location.href = 'sau1_cgm001.php?mostradadoscgm=sim&z01_numcgm=$z01_numcgm';
 	 else ";
            if(isset($testanome)){
-	     $camp = split("\|",$valores);
+	     $camp = preg_split("#\\|#m",$valores);
 	     $vals = "";
 	     $vir = "";
 	     for($f=1;$f<count($camp);$f++){
-	       $vals .= $vir.$$camp[$f];
+	       $vals .= $vir.${$camp}[$f];
 	       $vir = ",";
 	     }
 	     if($z01_cgc == "" && $z01_cpf == ""){
@@ -95,7 +95,7 @@
         exit;
     }
   }
-     $HTTP_POST_VARS["z01_cgccpf"] = ($z01_cgc==""?$z01_cpf:$z01_cgc);
+     $_POST["z01_cgccpf"] = ($z01_cgc==""?$z01_cpf:$z01_cgc);
      db_inicio_transacao();
   	 /*if(isset($z01_cpf)){
 	   if($z01_cpf == '00000000000'){
@@ -118,11 +118,11 @@
      }
      $z01_numcgm = $clcgm->z01_numcgm;
      if(isset($testanome)){
-       $camp = split("\|",$valores);
+       $camp = preg_split("#\\|#m",$valores);
        $vals = "";
        $vir = "";
        for($f=1;$f<count($camp);$f++){
-	 $vals .= $vir.$$camp[$f];
+	 $vals .= $vir.${$camp}[$f];
 	 $vir = ",";
        }
        db_msgbox($cl_cgm->erro_msg);

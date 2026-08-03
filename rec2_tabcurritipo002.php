@@ -36,7 +36,7 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 
@@ -65,7 +65,7 @@ $sql = $clcurric->sql_query(null,
                             $where);
 
 $result = db_query($sql);
-$xxnum  = pg_numrows($result);
+$xxnum  = pg_num_rows($result);
 
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem Códigos cadastrados no período de '.$mes.' / '.$ano);
@@ -82,14 +82,14 @@ $alt = 4;
 $tot_func_geral = 0;
 $tot_func_tipo  = 0;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if($tipo_curr != $h02_descr){
      if($tiposa == 'a'){
        $troca = 1;
      }
      $pdf->setfont('arial','b',8);
-     $pdf->cell(0,$alt,"TOTAL $cod_curr - ".strtoupper($tipo_curr)." :  ".$tot_func_tipo,0,1,"L",$pre);
+     $pdf->cell(0,$alt,"TOTAL $cod_curr - ".strtoupper((string) $tipo_curr)." :  ".$tot_func_tipo,0,1,"L",$pre);
      $tipo_curr = $h02_descr;
      $cod_curr  = $h02_codigo;
      $tot_func_tipo  = 0;
@@ -124,7 +124,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
 //   $pdf->SetXY($pdf->lMargin,$pdf->gety() + $alt);
 }
 $pdf->setfont('arial','b',8);
-$pdf->cell(0,$alt,"TOTAL $cod_curr - ".strtoupper($tipo_curr)." :  ".$tot_func_tipo,0,1,"L",$pre);
+$pdf->cell(0,$alt,"TOTAL $cod_curr - ".strtoupper((string) $tipo_curr)." :  ".$tot_func_tipo,0,1,"L",$pre);
 $pdf->cell(0,6,'TOTAL DE REGISTROS :  '.$tot_func_geral,"T",0,"L",0);
 //$pdf->cell(20,$alt,'',"T",0,"C",0);
 //$pdf->cell(30,$alt,db_formatar($total,'f'),"T",1,"R",0);

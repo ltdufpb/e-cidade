@@ -89,7 +89,7 @@ class GeracaoRelatorioInconsistenciasPit {
     $head2 = "Exercício: {$iAno}";
     if ($iTipo != GeracaoArquivoPit::IPTU) {
 
-      $sSemestres = implode($aPeriodo, '/');
+      $sSemestres = implode('/', $aPeriodo);
       $head3 = "Semestres: {$sSemestres}";
     }
 

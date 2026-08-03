@@ -45,8 +45,8 @@ include(modification("classes/db_lotesetorfiscal_classe.php"));
 include(modification("classes/db_cfiptu_classe.php"));
 include(modification("classes/db_tesinter_classe.php"));
 include(modification("classes/db_tesinterlote_classe.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $cllote = new cl_lote;
 $clloteloc = new cl_loteloc;
 $clloteam = new cl_loteam;
@@ -101,7 +101,7 @@ if(isset($incluir) || isset($alterar)){
 	}  
 }
 if(isset($outrolote)&& $outrolote!=""){
- 	$$outrolote="ok";
+ 	${$outrolote}="ok";
 }
 $sqlerro=false;
 if($replote==true){
@@ -109,7 +109,7 @@ if($replote==true){
 }else if(isset($alterar)){
 	$db_opcao = 2;
   	db_inicio_transacao();
-  	$j34_lote = str_pad($j34_lote, 4, "0", STR_PAD_LEFT);
+  	$j34_lote = str_pad((string) $j34_lote, 4, "0", STR_PAD_LEFT);
   	$cllote->j34_lote = $j34_lote;
  	$cllote->alterar($j34_idbql);
 	if($cllote->erro_status==1){
@@ -168,7 +168,7 @@ if($replote==true){
 								if($cltesinterlote->erro_status == 0){
 									db_msgbox("TESINTERLOTE :".$cltesinterlote->erro_msg);
 									$trans_erro = true;
-									
+
 								}
 							}
 						}
@@ -195,7 +195,7 @@ if($replote==true){
 			  			//	db_msgbox("erro numero 14 ");
 			  				$sqlerro=true;
 			  				$erro_msg=$clloteloteam->erro_msg;
-			  				break;
+			  				return;
 			  			}
 	     			}   
           		}
@@ -210,7 +210,7 @@ if($replote==true){
 		  				//db_msgbox("erro numero 13 ");
 		  				$sqlerro=true;
 		  				$erro_msg=$clloteloteam->erro_msg;
-		  				break;
+		  				return;
 		  			}
 	       		}   
       		}	  
@@ -226,7 +226,7 @@ if($replote==true){
 	  			//	db_msgbox("erro numero 12 ");
 	  				$sqlerro=true;
 	  				$erro_msg=$clloteloteam->erro_msg;
-	  				break;
+	  				return;
 	  			}  
       		}
    		}
@@ -241,12 +241,12 @@ if($replote==true){
 				$sqlerro=true;
 	  			$erro_msg=$cltestpri->erro_msg;	  			
 			}
-			
+
 //=============== EXCLUI DA TESTADA E DA TESTADANUMERO ========================================================================================================================================================			
 //			die($cltestada->sql_query($j34_idbql));
     		$result = $cltestada->sql_record($cltestada->sql_query($j34_idbql));
 //			db_criatabela($result);exit;
-			
+
     		$xx = $cltestada->numrows;
     		for($i=0; $i<$xx; $i++){
     			db_fieldsmemory($result,$i);
@@ -288,10 +288,10 @@ if($replote==true){
 	  			}  			
     		}
 		}
-		
+
 //================= INCLUI NA TESTADA E NA TESTADA NUMERO ==================================================================================================================================
- 
-$matriztesta = explode("x", $cartestada);
+
+$matriztesta = explode("x", (string) $cartestada);
   for ($i = 0; $i < sizeof($matriztesta); $i++) {
 	$dados = $matriztesta[$i];
 	$matrizdados = explode("||", $dados);
@@ -302,7 +302,7 @@ $matriztesta = explode("x", $cartestada);
       		$j36_testle=$matrizdados[3];
      	    $j15_numero = $matrizdados[4];
       		$j15_compl  = $matrizdados[5];
-      		
+
 //            db_msgbox("face : ".$j37_face." codigo : ".$j14_codigo."testada : ".$j36_testad."testle : ".$j36_testle." numero : ".$j15_numero." compl : ".$j15_compl);
       		if($j36_testad!="0" ||  $j36_testle!="0"){ 
         		$cltestada->j36_idbql  =$j36_idbql;
@@ -342,7 +342,7 @@ $matriztesta = explode("x", $cartestada);
 				}
       		}
     	}
-    	
+
 //==========================================================================================================================================================================================
         if (isset($numerotestada) && $numerotestada != ""){    	
 	//    	die($cltestadanumero->sql_query(null,"*",null," j15_idbql = $j34_idbql "));
@@ -366,7 +366,7 @@ $matriztesta = explode("x", $cartestada);
 //============================ INCLUI NA CARLOTE E NA LOTEDIST ==============================================================================================================================================================
 	   	$j34_idbql=$cllote->j34_idbql;
     	$clcarlote->j35_idbql=$j34_idbql;
-    	$matriz= split("X",$caracteristica);
+    	$matriz= preg_split("#X#m",(string) $caracteristica);
     	for($i=1;$i<sizeof($matriz);$i++){
      		$j35_caract = $matriz[$i];
      		if($j35_caract!=""){

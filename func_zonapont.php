@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_zonapont_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clzonapont = new cl_zonapont;
 $clzonapont->rotulo->label("q26_zona");
 $clzonapont->rotulo->label("q26_pontuacao");
@@ -98,9 +98,9 @@ $clzonapont->rotulo->label("q26_pontuacao");
         }else{
            $sql = $clzonapont->sql_query("",$campos,"q26_zona","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q26_pontuacao)){
-          $repassa = array("chave_q26_zona"=>$chave_q26_zona,"chave_q26_pontuacao"=>$chave_q26_pontuacao);
+          $repassa = ["chave_q26_zona"=>$chave_q26_zona,"chave_q26_pontuacao"=>$chave_q26_pontuacao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

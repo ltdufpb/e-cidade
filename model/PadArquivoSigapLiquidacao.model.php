@@ -45,7 +45,7 @@ final class PadArquivoSigapLiquidacao extends PadArquivoSigap
     {
 
         $this->sNomeArquivo = "Liquidacao";
-        $this->aDados = array();
+        $this->aDados = [];
     }
 
     /**
@@ -66,7 +66,7 @@ final class PadArquivoSigapLiquidacao extends PadArquivoSigap
         /**
          * Separamos a data do em ano, mes, dia
          */
-        list($iAno, $iMes, $iDia) = explode("-", $this->sDataFinal);
+        [$iAno, $iMes, $iDia] = explode("-", $this->sDataFinal);
         $sListaInstit = db_getsession("DB_instit");
 
         $sSqlLiquidacoes = " select e60_anousu as ano, ";
@@ -140,16 +140,16 @@ final class PadArquivoSigapLiquidacao extends PadArquivoSigap
             //$oLiquidacaoRetorno->empCodigoEntidade             = str_pad(db_getsession("DB_instit"), 4, "0", STR_PAD_LEFT);
             $oLiquidacaoRetorno->liqCodigoEntidade = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
             $oLiquidacaoRetorno->liqMesAnoMovimento = $sDiaMesAno;
-            $sNumeroEmpenho = str_pad($oLiquidacao->e60_codemp, 16, "0", STR_PAD_LEFT);
+            $sNumeroEmpenho = str_pad((string) $oLiquidacao->e60_codemp, 16, "0", STR_PAD_LEFT);
             $oLiquidacaoRetorno->liqEmpenhoNumero = $oLiquidacao->ano . $sNumeroEmpenho;
-            $oLiquidacaoRetorno->liqNumeroLiquidacao = str_pad($oLiquidacao->c80_codord, 20, '0', STR_PAD_LEFT);
+            $oLiquidacaoRetorno->liqNumeroLiquidacao = str_pad((string) $oLiquidacao->c80_codord, 20, '0', STR_PAD_LEFT);
             $oLiquidacaoRetorno->liqDataLiquidacao = $oLiquidacao->c75_data;
             $oLiquidacaoRetorno->liqValorLiquidacao = number_format($oLiquidacao->c70_valor, 2, ".", "");
             $oLiquidacaoRetorno->liqSinal = $oLiquidacao->sinal;
             $oLiquidacaoRetorno->liqHistoricoLiquidacao = $oLiquidacao->historico;
             $oLiquidacaoRetorno->liqCodigoOperacao = "";
-            $iTamanhoPad = strlen($oLiquidacao->z01_cgccpf);
-            $oLiquidacaoRetorno->liqCnpjCpf = str_pad($oLiquidacao->z01_cgccpf, $iTamanhoPad, 0, STR_PAD_LEFT);
+            $iTamanhoPad = strlen((string) $oLiquidacao->z01_cgccpf);
+            $oLiquidacaoRetorno->liqCnpjCpf = str_pad((string) $oLiquidacao->z01_cgccpf, $iTamanhoPad, 0, STR_PAD_LEFT);
             $oLiquidacaoRetorno->liqProcesso = $oLiquidacao->e60_numemp;
             array_push($this->aDados, $oLiquidacaoRetorno);
 
@@ -166,7 +166,7 @@ final class PadArquivoSigapLiquidacao extends PadArquivoSigap
     public function getNomeElementos()
     {
 
-        $aElementos = array(
+        $aElementos = [
             "liqCodigoEntidade",
             "liqMesAnoMovimento",
             "liqEmpenhoNumero",
@@ -178,7 +178,7 @@ final class PadArquivoSigapLiquidacao extends PadArquivoSigap
             "liqCodigoOperacao",
             "liqCnpjCpf",
             "liqProcesso",
-        );
+        ];
         return $aElementos;
     }
 

@@ -37,7 +37,7 @@ $oGet = db_utils::postMemory($_GET);
 define('MSG_SAU2_CONFERENCIAADMINISTRACAOMEDICAMENTO002', 'saude.ambulatorial.sau2_conferenciaadministracaomedicamento002.');
 
 // Array com os dados dos medicamentos no período
-$aMedicamentos       = array();
+$aMedicamentos       = [];
 $iCodigoDepartamento = db_getsession("DB_coddepto");
 $oDtInicio           = null;
 $oDtFinal            = null;
@@ -49,7 +49,7 @@ try {
   if ( empty($oGet->dtInicial) || empty($oGet->dtFinal) ) {
     throw new Exception( _M(MSG_SAU2_CONFERENCIAADMINISTRACAOMEDICAMENTO002 ."filtro_periodo_obrigatorio") );
   }
-  $aWhereMedicamentos = array();
+  $aWhereMedicamentos = [];
   if (!empty($oGet->aMaterial)) {
     $aWhereMedicamentos [] = " m60_codmater in ($oGet->aMaterial) ";
   }
@@ -74,7 +74,7 @@ try {
   $sCampos .= " coalesce(sum(case when m80_data >= '{$oDtInicio->getDate()}' then m82_quant else 0 end ), 0) as entradas_periodo   ";
 
 
-  $aWhere   = array();
+  $aWhere   = [];
   $aWhere[] = " m81_codtipo = 17 ";
   $aWhere[] = " m70_coddepto = {$iCodigoDepartamento} ";
   $aWhere[] = " m80_data <= $1 ";
@@ -94,7 +94,7 @@ try {
   $sCamposAdministracao  = " sum( case when sd105_data < '{$oDtInicio->getDate()}'  then {$sCalculoAdministracao} else 0 end) as administracao_anterior, ";
   $sCamposAdministracao .= " sum( case when sd105_data >= '{$oDtInicio->getDate()}' then {$sCalculoAdministracao} else 0 end) as administracao_periodo ";
 
-  $aWhereAdministracao   = array();
+  $aWhereAdministracao   = [];
   $aWhereAdministracao[] = " sd24_i_unidade = {$iCodigoDepartamento} ";
   $aWhereAdministracao[] = " sd105_data <= '{$oDtFinal->getDate()}' ";
 
@@ -112,7 +112,7 @@ try {
   $sCamposDescarte  = " sum( case when sd107_data < '{$oDtInicio->getDate()}'  then {$sCalculoDescarte} else 0 end) as descarte_anterior, ";
   $sCamposDescarte .= " sum( case when sd107_data >= '{$oDtInicio->getDate()}' then {$sCalculoDescarte} else 0 end) as descarte_periodo ";
 
-  $aWhereDescarte   = array();
+  $aWhereDescarte   = [];
   $aWhereDescarte[] = " sd107_db_depart = {$iCodigoDepartamento} ";
   $aWhereDescarte[] = " sd107_data <= '{$oDtFinal->getDate()}' ";
 
@@ -135,7 +135,7 @@ try {
     $oMedicamento->entradas_anterior      = 0;
     $oMedicamento->entradas_periodo       = 0;
 
-    $rsMedicamentos = pg_execute('consulta_requisicoes', array($oDtFinal->getDate(), $oMedicamento->m60_codmater));
+    $rsMedicamentos = pg_execute('consulta_requisicoes', [$oDtFinal->getDate(), $oMedicamento->m60_codmater]);
     if (!$rsMedicamentos) {
       throw new Exception(_M(MSG_SAU2_CONFERENCIAADMINISTRACAOMEDICAMENTO002 . "erro_buscar_medicamentos"));
     }
@@ -150,7 +150,7 @@ try {
     /**
      * Pesquisamos todas administrações do medicamento
      */
-    $rsAdministracao = pg_execute('administracao_medicamentos', array($oMedicamento->fa01_i_codigo));
+    $rsAdministracao = pg_execute('administracao_medicamentos', [$oMedicamento->fa01_i_codigo]);
     if (!$rsAdministracao) {
       throw new Exception(_M(MSG_SAU2_CONFERENCIAADMINISTRACAOMEDICAMENTO002 . "erro_buscar_administracoes"));
     }
@@ -170,7 +170,7 @@ try {
     /**
      * Descartes do medicamento
      */
-    $rsDescarte = pg_execute('descarte_medicamentos', array($oMedicamento->fa01_i_codigo));
+    $rsDescarte = pg_execute('descarte_medicamentos', [$oMedicamento->fa01_i_codigo]);
 
     if ($rsDescarte && pg_num_rows($rsDescarte) > 0) {
 

@@ -61,7 +61,7 @@ final class ProcessoDocumentoRepository extends BaseRepository implements Reposi
         $this->dao->p01_data          = $model->getData();
         $this->dao->p01_procandamint  = $model->getAndamento();
         $this->dao->p01_estorage      = ($model->getStorage() === true) ? 't' : 'f';
-        $this->dao->p01_ordem         = ($model->getOrdem() === null) ? 0 : $model->getOrdem();
+        $this->dao->p01_ordem         = $model->getOrdem() ?? 0;
 
         if (!$this->dao->incluir(null)) {
             throw new Exception($this->dao->erro_msg);

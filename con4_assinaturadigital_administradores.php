@@ -62,7 +62,7 @@ $db_opcao = 1;
     /**
      * Default
      */
-    $aLibs   = array("scripts.js");
+    $aLibs   = ["scripts.js"];
     $aLibs[] = "prototype.js";
     $aLibs[] = "AjaxRequest.js";
     $aLibs[] = "strings.js";

@@ -40,7 +40,7 @@ $clcarface   = db_utils::getDao('carface');
 $clcfiptu    = db_utils::getDao('cfiptu');
 $clfacevalor = db_utils::getDao('facevalor');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 22;
 $db_botao = false;
@@ -60,7 +60,7 @@ if (isset($alterarface) && $alterarface=='t') {
 												   and face.j37_face = $j37_face ) as x";
 
 	$rsverificaruas = db_query($sqlverificaruas);
-	$intnumrows     = pg_numrows($rsverificaruas);
+	$intnumrows     = pg_num_rows($rsverificaruas);
 	if (isset ($intnumrows) && $intnumrows > 0) {
 
 		$confirm     = 't';
@@ -93,7 +93,7 @@ if (isset($alterarface) && $alterarface=='t') {
 			$erro_msg = $clcarface->erro_msg;
 		}
 
-		$matriz = split("X", $caracteristica);
+		$matriz = preg_split("#X#m", (string) $caracteristica);
 
 		for ($i = 0; $i < sizeof($matriz); $i++) {
 
@@ -123,7 +123,7 @@ if (isset($alterarface) && $alterarface=='t') {
 			}
 		}
 
-		$j37_quadra = str_pad($j37_quadra, 4, "0", STR_PAD_LEFT);
+		$j37_quadra = str_pad((string) $j37_quadra, 4, "0", STR_PAD_LEFT);
 		$clface->j37_quadra = $j37_quadra;
 		$clface->j37_sequencia = $j37_sequencia;
 		$clface->j37_segmento = $j37_segmento;

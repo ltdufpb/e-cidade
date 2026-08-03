@@ -3,26 +3,26 @@
 //CLASSE DA ENTIDADE abatimentocorrecao
 class cl_abatimentocorrecao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k167_sequencial = 0; 
-   var $k167_valorantigo = 0; 
-   var $k167_valorcorrigido = 0; 
-   var $k167_data_dia = null; 
-   var $k167_data_mes = null; 
-   var $k167_data_ano = null; 
-   var $k167_data = null; 
-   var $k167_abatimento = 0; 
+   public $k167_sequencial = 0; 
+   public $k167_valorantigo = 0; 
+   public $k167_valorcorrigido = 0; 
+   public $k167_data_dia = null; 
+   public $k167_data_mes = null; 
+   public $k167_data_ano = null; 
+   public $k167_data = null; 
+   public $k167_abatimento = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k167_sequencial = int4 = Sequencial 
                  k167_valorantigo = float8 = Valor Antigo 
                  k167_valorcorrigido = float8 = Valor Corrigido 
@@ -30,10 +30,10 @@ class cl_abatimentocorrecao {
                  k167_abatimento = int4 = Código do Abatimento 
                  ";
    //funcao construtor da classe 
-   function cl_abatimentocorrecao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("abatimentocorrecao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -112,10 +112,10 @@ class cl_abatimentocorrecao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k167_sequencial = pg_result($result,0,0); 
+       $this->k167_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = @db_query("select last_value from abatimentocorrecao_k167_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k167_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k167_sequencial)){
          $this->erro_sql = " Campo k167_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -150,7 +150,7 @@ class cl_abatimentocorrecao {
                       )");
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Abatimento Correção ($this->k167_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Abatimento Correção já Cadastrado";
@@ -172,13 +172,13 @@ class cl_abatimentocorrecao {
      $resaco = $this->sql_record($this->sql_query_file($this->k167_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,21928,'$this->k167_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3949,21928,'','".pg_result($resaco,0,'k167_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3949,21929,'','".pg_result($resaco,0,'k167_valorantigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3949,21930,'','".pg_result($resaco,0,'k167_valorcorrigido')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3949,21931,'','".pg_result($resaco,0,'k167_data')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3949,21932,'','".pg_result($resaco,0,'k167_abatimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3949,21928,'','".pg_fetch_result($resaco,0,'k167_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3949,21929,'','".pg_fetch_result($resaco,0,'k167_valorantigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3949,21930,'','".pg_fetch_result($resaco,0,'k167_valorcorrigido')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3949,21931,'','".pg_fetch_result($resaco,0,'k167_data')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3949,21932,'','".pg_fetch_result($resaco,0,'k167_abatimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -187,13 +187,13 @@ class cl_abatimentocorrecao {
       $this->atualizacampos();
      $sql = " update abatimentocorrecao set ";
      $virgula = "";
-     if(trim($this->k167_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_sequencial"])){ 
-        if(trim($this->k167_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_sequencial"])){ 
+     if(trim((string) $this->k167_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_sequencial"])){ 
+        if(trim((string) $this->k167_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_sequencial"])){ 
            $this->k167_sequencial = "0" ; 
         } 
        $sql  .= $virgula." k167_sequencial = $this->k167_sequencial ";
        $virgula = ",";
-       if(trim($this->k167_sequencial) == null ){ 
+       if(trim((string) $this->k167_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k167_sequencial";
          $this->erro_banco = "";
@@ -203,13 +203,13 @@ class cl_abatimentocorrecao {
          return false;
        }
      }
-     if(trim($this->k167_valorantigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_valorantigo"])){ 
-        if(trim($this->k167_valorantigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_valorantigo"])){ 
+     if(trim((string) $this->k167_valorantigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_valorantigo"])){ 
+        if(trim((string) $this->k167_valorantigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_valorantigo"])){ 
            $this->k167_valorantigo = "0" ; 
         } 
        $sql  .= $virgula." k167_valorantigo = $this->k167_valorantigo ";
        $virgula = ",";
-       if(trim($this->k167_valorantigo) == null ){ 
+       if(trim((string) $this->k167_valorantigo) == null ){ 
          $this->erro_sql = " Campo Valor Antigo nao Informado.";
          $this->erro_campo = "k167_valorantigo";
          $this->erro_banco = "";
@@ -219,13 +219,13 @@ class cl_abatimentocorrecao {
          return false;
        }
      }
-     if(trim($this->k167_valorcorrigido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_valorcorrigido"])){ 
-        if(trim($this->k167_valorcorrigido)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_valorcorrigido"])){ 
+     if(trim((string) $this->k167_valorcorrigido)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_valorcorrigido"])){ 
+        if(trim((string) $this->k167_valorcorrigido)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_valorcorrigido"])){ 
            $this->k167_valorcorrigido = "0" ; 
         } 
        $sql  .= $virgula." k167_valorcorrigido = $this->k167_valorcorrigido ";
        $virgula = ",";
-       if(trim($this->k167_valorcorrigido) == null ){ 
+       if(trim((string) $this->k167_valorcorrigido) == null ){ 
          $this->erro_sql = " Campo Valor Corrigido nao Informado.";
          $this->erro_campo = "k167_valorcorrigido";
          $this->erro_banco = "";
@@ -235,10 +235,10 @@ class cl_abatimentocorrecao {
          return false;
        }
      }
-     if(trim($this->k167_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k167_data_dia"] !="") ){ 
+     if(trim((string) $this->k167_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k167_data_dia"] !="") ){ 
        $sql  .= $virgula." k167_data = '$this->k167_data' ";
        $virgula = ",";
-       if(trim($this->k167_data) == null ){ 
+       if(trim((string) $this->k167_data) == null ){ 
          $this->erro_sql = " Campo Data da Correção nao Informado.";
          $this->erro_campo = "k167_data_dia";
          $this->erro_banco = "";
@@ -251,7 +251,7 @@ class cl_abatimentocorrecao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k167_data_dia"])){ 
          $sql  .= $virgula." k167_data = null ";
          $virgula = ",";
-         if(trim($this->k167_data) == null ){ 
+         if(trim((string) $this->k167_data) == null ){ 
            $this->erro_sql = " Campo Data da Correção nao Informado.";
            $this->erro_campo = "k167_data_dia";
            $this->erro_banco = "";
@@ -262,13 +262,13 @@ class cl_abatimentocorrecao {
          }
        }
      }
-     if(trim($this->k167_abatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_abatimento"])){ 
-        if(trim($this->k167_abatimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_abatimento"])){ 
+     if(trim((string) $this->k167_abatimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k167_abatimento"])){ 
+        if(trim((string) $this->k167_abatimento)=="" && isset($GLOBALS["HTTP_POST_VARS"]["k167_abatimento"])){ 
            $this->k167_abatimento = "0" ; 
         } 
        $sql  .= $virgula." k167_abatimento = $this->k167_abatimento ";
        $virgula = ",";
-       if(trim($this->k167_abatimento) == null ){ 
+       if(trim((string) $this->k167_abatimento) == null ){ 
          $this->erro_sql = " Campo Código do Abatimento nao Informado.";
          $this->erro_campo = "k167_abatimento";
          $this->erro_banco = "";
@@ -282,18 +282,18 @@ class cl_abatimentocorrecao {
 ";
      $resaco = $this->sql_record($this->sql_query_file($this->k167_sequencial));
      if($this->numrows>0){       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,21928,'$this->k167_sequencial','A')");
        if(isset($GLOBALS["HTTP_POST_VARS"]["k167_sequencial"]))
-         $resac = db_query("insert into db_acount values($acount,3949,21928,'".pg_result($resaco,0,'k167_sequencial')."','$this->k167_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3949,21928,'".pg_fetch_result($resaco,0,'k167_sequencial')."','$this->k167_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["k167_valorantigo"]))
-         $resac = db_query("insert into db_acount values($acount,3949,21929,'".pg_result($resaco,0,'k167_valorantigo')."','$this->k167_valorantigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3949,21929,'".pg_fetch_result($resaco,0,'k167_valorantigo')."','$this->k167_valorantigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["k167_valorcorrigido"]))
-         $resac = db_query("insert into db_acount values($acount,3949,21930,'".pg_result($resaco,0,'k167_valorcorrigido')."','$this->k167_valorcorrigido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3949,21930,'".pg_fetch_result($resaco,0,'k167_valorcorrigido')."','$this->k167_valorcorrigido',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["k167_data"]))
-         $resac = db_query("insert into db_acount values($acount,3949,21931,'".pg_result($resaco,0,'k167_data')."','$this->k167_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3949,21931,'".pg_fetch_result($resaco,0,'k167_data')."','$this->k167_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["k167_abatimento"]))
-         $resac = db_query("insert into db_acount values($acount,3949,21932,'".pg_result($resaco,0,'k167_abatimento')."','$this->k167_abatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3949,21932,'".pg_fetch_result($resaco,0,'k167_abatimento')."','$this->k167_abatimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @db_query($sql);
      if($result==false){ 
@@ -330,13 +330,13 @@ class cl_abatimentocorrecao {
      $resaco = $this->sql_record($this->sql_query_file($this->k167_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,21928,'$this->k167_sequencial','E')");
-       $resac = db_query("insert into db_acount values($acount,3949,21928,'','".pg_result($resaco,0,'k167_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3949,21929,'','".pg_result($resaco,0,'k167_valorantigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3949,21930,'','".pg_result($resaco,0,'k167_valorcorrigido')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3949,21931,'','".pg_result($resaco,0,'k167_data')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3949,21932,'','".pg_result($resaco,0,'k167_abatimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3949,21928,'','".pg_fetch_result($resaco,0,'k167_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3949,21929,'','".pg_fetch_result($resaco,0,'k167_valorantigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3949,21930,'','".pg_fetch_result($resaco,0,'k167_valorcorrigido')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3949,21931,'','".pg_fetch_result($resaco,0,'k167_data')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3949,21932,'','".pg_fetch_result($resaco,0,'k167_abatimento')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $sql = " delete from abatimentocorrecao
                     where ";
@@ -388,7 +388,7 @@ class cl_abatimentocorrecao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Dados do Grupo nao Encontrado";
@@ -403,7 +403,7 @@ class cl_abatimentocorrecao {
    function sql_query ( $k167_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,7 +429,7 @@ class cl_abatimentocorrecao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -442,7 +442,7 @@ class cl_abatimentocorrecao {
    function sql_query_file ( $k167_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -463,7 +463,7 @@ class cl_abatimentocorrecao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

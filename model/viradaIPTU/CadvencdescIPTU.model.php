@@ -73,13 +73,13 @@ class CadvencdescIPTU implements iViradaIPTU {
    * Campos chave configurados na tabela iptutabelasconfigcampochave
    * @var array
    */
-  private $aCampoChave    = array();
+  private $aCampoChave    = [];
   
   /**
    * Campos correcao configurados na tabela iptutabelasconfigcampocorrecao
    * @var array
    */
-  private $aCampoCorrecao = array();
+  private $aCampoCorrecao = [];
 	
   /**
    * @return $this->iAnoAtual
@@ -363,9 +363,9 @@ class CadvencdescIPTU implements iViradaIPTU {
 	          $oDaoCadVencDesc->$sNomeCampoCadVencDesc = "{$nSomaPercentual}";
 	        } else {
 	        	
-		        if (trim($sNomeCampoCadVencDesc) == 'q92_descr') {
+		        if (trim((string) $sNomeCampoCadVencDesc) == 'q92_descr') {
 	            $oDaoCadVencDesc->$sNomeCampoCadVencDesc = "IPTU {$this->getAnoNovo()}";
-	          } else if (trim($sNomeCampoCadVencDesc) == 'q92_tipo') {
+	          } else if (trim((string) $sNomeCampoCadVencDesc) == 'q92_tipo') {
 	            $oDaoCadVencDesc->$sNomeCampoCadVencDesc = $this->getTipo();
 	          } else {
 	            $oDaoCadVencDesc->$sNomeCampoCadVencDesc = $oDadosCadVencDesc->$sNomeCampoCadVencDesc;

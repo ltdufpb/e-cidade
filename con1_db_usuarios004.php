@@ -41,7 +41,7 @@ $cldb_usuacgm  = new cl_db_usuacgm;
 $cldb_userinst = new cl_db_userinst;
 $cldb_depusu   = new cl_db_depusu;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -64,7 +64,7 @@ if (isset($incluir)) {
 
 
       $cldb_usuarios->erro_campo = "z01_numcgm";
-      throw new Exception( _M("{$sMensagens}.campo_obrigatorio", (Object) array("sCampo" => "CGM")) );
+      throw new Exception( _M("{$sMensagens}.campo_obrigatorio", (Object) ["sCampo" => "CGM"]) );
     }
 
     if(empty($instit)) {
@@ -84,17 +84,17 @@ if (isset($incluir)) {
 
       if (!$oCgmFisico->getCpf()) {
 
-        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) array("sCampo" => "CPF")) );
+        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) ["sCampo" => "CPF"]) );
       }
 
       if (!$oCgmFisico->getEmail()) {
 
-        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) array("sCampo" => "E-mail")) );
+        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) ["sCampo" => "E-mail"]) );
       }
 
       if (!$oCgmFisico->getDataNascimento()) {
 
-        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) array("sCampo" => "Data de Nascimento")) );
+        throw new Exception( _M("{$sMensagens}.campo_cgm_obrigatorio", (Object) ["sCampo" => "Data de Nascimento"]) );
       }
     }
 
@@ -107,7 +107,7 @@ if (isset($incluir)) {
     if (($usuarioativo != 3 || $administrador) && empty($senha)) {
 
       $cldb_usuarios->erro_campo = "senha";
-      throw new Exception( _M("{$sMensagens}.campo_obrigatorio", (Object) array("sCampo" => "Senha")) );
+      throw new Exception( _M("{$sMensagens}.campo_obrigatorio", (Object) ["sCampo" => "Senha"]) );
     }
 
     $cldb_usuarios->senha         = Encriptacao::encriptaSenha($senha);
@@ -160,7 +160,7 @@ if (isset($incluir)) {
 
       try {
         $oUsuarioSistema->enviarAtivacaoSenha();
-      } catch(Exception $e) { }
+      } catch(Exception) { }
     }
     //  Instalando o V3 para o novo usuario
     ini_set('memory_limit', '-1');

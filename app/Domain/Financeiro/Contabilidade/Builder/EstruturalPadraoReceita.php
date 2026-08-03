@@ -32,14 +32,6 @@ class EstruturalPadraoReceita
     ];
 
     /**
-     * Esse valor é do e-cidade apenas.
-     *   Classe: 4 são as receitas
-     *   Classe: 9 são as deduções
-     * @var integer
-     */
-    protected $classe;
-
-    /**
      * Estrutural da conta
      * @var array
      */
@@ -49,9 +41,13 @@ class EstruturalPadraoReceita
      * @param string $estrutural
      * @param integer $classe
      */
-    public function __construct($estrutural, $classe)
+    public function __construct($estrutural, /**
+     * Esse valor é do e-cidade apenas.
+     *   Classe: 4 são as receitas
+     *   Classe: 9 são as deduções
+     */
+    protected $classe)
     {
-        $this->classe = $classe;
         $this->setEstrutural($estrutural);
     }
 
@@ -82,11 +78,11 @@ class EstruturalPadraoReceita
         $nivel = $this->classe === 9 ? 11 : 10;
         $estrutural = array_reverse($this->estrutural);
         foreach ($estrutural as $valor) {
-            if ($valor === str_repeat('0', strlen($valor))) {
+            if ($valor === str_repeat('0', strlen((string) $valor))) {
                 $nivel--;
             }
 
-            if ($valor !== str_repeat('0', strlen($valor))) {
+            if ($valor !== str_repeat('0', strlen((string) $valor))) {
                 return $nivel;
             }
         }
@@ -116,7 +112,7 @@ class EstruturalPadraoReceita
         $estrutural = $this->estrutural;
         $nivel = $this->getNivel() - 1;
 
-        $estrutural[$nivel] = str_repeat('0', strlen($estrutural[$nivel]));
+        $estrutural[$nivel] = str_repeat('0', strlen((string) $estrutural[$nivel]));
         return implode('.', $estrutural);
     }
 
@@ -126,13 +122,13 @@ class EstruturalPadraoReceita
      */
     private function setEstrutural($estrutural)
     {
-        if (strpos($estrutural, '.')) {
+        if (strpos((string) $estrutural, '.')) {
             $estrutural = str_replace('.', '', $estrutural);
         }
 
         $mapa = $this->classe === 9 ? $this->mapaDeducao : $this->mapa;
         foreach ($mapa as $item) {
-            $estrutural = str_pad($estrutural, '15', '0', STR_PAD_RIGHT);
+            $estrutural = str_pad((string) $estrutural, '15', '0', STR_PAD_RIGHT);
             $this->estrutural[] = substr($estrutural, $item['inicio'], $item['tamanho']);
         }
     }

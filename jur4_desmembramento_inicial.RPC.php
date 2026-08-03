@@ -75,7 +75,7 @@ try {
                 throw new Exception('Nenhuma dívida informada para desmembramento.');
             }
 
-            $desmembramentoService->desmembrarInicial(explode(',', $params->dividas));
+            $desmembramentoService->desmembrarInicial(explode(',', (string) $params->dividas));
 
             $message = 'Desmembramento de iniciais efetuado com sucesso. Iniciais criadas: '
                 . implode(', ', $desmembramentoService->getIniciaisCriadas());

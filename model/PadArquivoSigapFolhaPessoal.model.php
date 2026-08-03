@@ -66,7 +66,7 @@ final class PadArquivoSigapFolhaPessoal extends PadArquivoSigap
         /**
          * Separamos a data do em ano, mes, dia
          */
-        list($this->iAno, $this->iMes, $this->iDia) = explode("-", $this->sDataFinal);
+        [$this->iAno, $this->iMes, $this->iDia] = explode("-", $this->sDataFinal);
 
         
         $this->sListaInstit = db_getsession("DB_instit");
@@ -201,8 +201,8 @@ final class PadArquivoSigapFolhaPessoal extends PadArquivoSigap
             $oPessoalRetorno->pesMesAnoMovimento = $sDiaMesAno;
             $oPessoalRetorno->pesNome = $oPessoal->z01_nome;
 
-            $iTamanhoPad = strlen($oPessoal->z01_cgccpf);
-            $oPessoalRetorno->pesCpf  = str_pad($oPessoal->z01_cgccpf, $iTamanhoPad, 0, STR_PAD_LEFT);
+            $iTamanhoPad = strlen((string) $oPessoal->z01_cgccpf);
+            $oPessoalRetorno->pesCpf  = str_pad((string) $oPessoal->z01_cgccpf, $iTamanhoPad, 0, STR_PAD_LEFT);
 
             $oPessoalRetorno->pesMatricula = $oPessoal->rh02_regist;
             $oPessoalRetorno->pesFuncao = $oPessoal->funcao;
@@ -217,7 +217,7 @@ final class PadArquivoSigapFolhaPessoal extends PadArquivoSigap
             $oPessoalRetorno->pesSituacao = $oPessoal->situacao;
             $oPessoalRetorno->pesCargaHoraria = $oPessoal->carga_horaria;
 
-            $codRegime = strlen($oPessoal->rh30_regime) > 1 ? $oPessoal->rh30_regime : "0{$oPessoal->rh30_regime}";
+            $codRegime = strlen((string) $oPessoal->rh30_regime) > 1 ? $oPessoal->rh30_regime : "0{$oPessoal->rh30_regime}";
             $oPessoalRetorno->pesRegimeJuridico = $codRegime;
 
             $oPessoalRetorno->pesOutroVinculo = "N";

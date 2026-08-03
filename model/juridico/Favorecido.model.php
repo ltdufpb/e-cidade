@@ -95,6 +95,7 @@ class Favorecido extends ContaBancaria{
   /**
    * Salva dados do favorecido contabancaria
    */
+  #[\Override]
   public function salvar(){
     
     $oDaoFavorecido    = new cl_favorecido();

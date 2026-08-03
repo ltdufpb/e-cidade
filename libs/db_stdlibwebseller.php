@@ -153,10 +153,10 @@ function db_inputdatasaude( $intEspecmed,
 //função para mostrar mensagens de aviso ao usuário
 
 function MsgAviso($codescola,$tabela,$arquivo=null,$where=null) {
-  require_once modification("classes/db_".trim($tabela)."_classe.php");
+  require_once modification("classes/db_".trim((string) $tabela)."_classe.php");
   $instancia = "cl_".$tabela;
   $cltabela = new $instancia;
-  if (trim($tabela)=="escola") {
+  if (trim((string) $tabela)=="escola") {
     $result = $cltabela->sql_record($cltabela->sql_query("","*",""," ed18_i_codigo = $codescola"));
   }else{
     $result = $cltabela->sql_record($cltabela->sql_query("","*","","$where"));
@@ -168,7 +168,7 @@ function MsgAviso($codescola,$tabela,$arquivo=null,$where=null) {
           $where";
     $result1 = db_query($sql);
     $dados = pg_fetch_array($result1);
-    $arquivo = trim($dados['ed90_c_arqdestino']);
+    $arquivo = trim((string) $dados['ed90_c_arqdestino']);
     ?>
     <br>
     <center>
@@ -183,8 +183,8 @@ function MsgAviso($codescola,$tabela,$arquivo=null,$where=null) {
   }
 }
 function DiasLetivos($data_inicio,$data_fim,$sabado,$calendario,$retorno) {
-  $data_in = mktime(0,0,0,substr($data_inicio,5,2),substr($data_inicio,8,2),substr($data_inicio,0,4));
-  $data_out = mktime(0,0,0,substr($data_fim,5,2),substr($data_fim,8,2),substr($data_fim,0,4));
+  $data_in = mktime(0,0,0,substr((string) $data_inicio,5,2),substr((string) $data_inicio,8,2),substr((string) $data_inicio,0,4));
+  $data_out = mktime(0,0,0,substr((string) $data_fim,5,2),substr((string) $data_fim,8,2),substr((string) $data_fim,0,4));
   #pega a data de saida em UNIX_TIMESTAMP e diminui da data de entrada UNIX_TIMESTAMP
   $data_entre = $data_out - $data_in;
   #divide a diferenca das datas pelo numero de segundos de um dia e arredonda, para saber o numero de dias inteiro que tem
@@ -218,7 +218,7 @@ function DiasLetivos($data_inicio,$data_fim,$sabado,$calendario,$retorno) {
             $nao_util++;
             $letivo = false;
           }else{
-            if (pg_result($res,0,'ed54_c_dialetivo')=="N") {
+            if (pg_fetch_result($res,0,'ed54_c_dialetivo')=="N") {
               $nao_util++;
               $letivo = false;
             }
@@ -239,7 +239,7 @@ function DiasLetivos($data_inicio,$data_fim,$sabado,$calendario,$retorno) {
             $nao_util++;
             $letivo = false;
           }else{
-            if (pg_result($res,0,'ed54_c_dialetivo')=="N") {
+            if (pg_fetch_result($res,0,'ed54_c_dialetivo')=="N") {
               $nao_util++;
               $letivo = false;
             }
@@ -279,7 +279,7 @@ function DiasLetivos($data_inicio,$data_fim,$sabado,$calendario,$retorno) {
               $nao_util++;
               $letivo = false;
             }else{
-              if (pg_result($res,0,'ed54_c_dialetivo')=="N") {
+              if (pg_fetch_result($res,0,'ed54_c_dialetivo')=="N") {
                 $nao_util++;
                 $letivo = false;
               }
@@ -300,7 +300,7 @@ function DiasLetivos($data_inicio,$data_fim,$sabado,$calendario,$retorno) {
               $nao_util++;
               $letivo = false;
             }else{
-              if (pg_result($res,0,'ed54_c_dialetivo')=="N") {
+              if (pg_fetch_result($res,0,'ed54_c_dialetivo')=="N") {
                 $nao_util++;
                 $letivo = false;
               }
@@ -315,7 +315,7 @@ function DiasLetivos($data_inicio,$data_fim,$sabado,$calendario,$retorno) {
           }
         }
         if ($letivo==true) {
-          $dia_mes_letivo[] = (strlen($d+$i)==1?"0".($d+$i):($d+$i))."-".(strlen($m)==1?"0".$m:$m);
+          $dia_mes_letivo[] = (strlen($d+$i)==1?"0".($d+$i):($d+$i))."-".(strlen((string) $m)==1?"0".$m:$m);
         }
       }
       #se o mes for igual a 12 (dezembro), mes recebe 1 (janeiro) e ano recebe +1 (próximo ano)
@@ -344,7 +344,7 @@ function DiasLetivos($data_inicio,$data_fim,$sabado,$calendario,$retorno) {
                 $nao_util++;
                 $letivo = false;
               }else{
-                if (pg_result($res,0,'ed54_c_dialetivo')=="N") {
+                if (pg_fetch_result($res,0,'ed54_c_dialetivo')=="N") {
                   $nao_util++;
                   $letivo = false;
                 }
@@ -365,7 +365,7 @@ function DiasLetivos($data_inicio,$data_fim,$sabado,$calendario,$retorno) {
                 $nao_util++;
                 $letivo = false;
               }else{
-                if (pg_result($res,0,'ed54_c_dialetivo')=="N") {
+                if (pg_fetch_result($res,0,'ed54_c_dialetivo')=="N") {
                   $nao_util++;
                   $letivo = false;
                 }
@@ -406,13 +406,13 @@ function DiasLetivos($data_inicio,$data_fim,$sabado,$calendario,$retorno) {
   }
 }
 function Situacao($situacao,$matricula) {
-  if (trim($situacao)=="MATRICULADO") {
+  if (trim((string) $situacao)=="MATRICULADO") {
     $sql = "SELECT ed60_c_tipo
           FROM matricula
           WHERE ed60_i_codigo = $matricula
          ";
     $result = db_query($sql);
-    $tipo = pg_result($result,0,0);
+    $tipo = pg_fetch_result($result,0,0);
     if ($tipo=="N") {
       $retorno = "MATRICULADO";
     }else{
@@ -431,7 +431,7 @@ function eduparametros($escola) {
          ";
   $result2 = db_query($sql2);
   if (pg_num_rows($result2)>0) {
-    $retorno = pg_result($result2,0,"ed233_c_decimais");
+    $retorno = pg_fetch_result($result2,0,"ed233_c_decimais");
   }else{
     $retorno = null;
   }
@@ -440,24 +440,24 @@ function eduparametros($escola) {
 
 function TiraAcento($sString, $lMaiusculo = true) {
 
-  $aAcentos = array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'à', 'À', 'Â', 'â', 'Ê', 'ê',
+  $aAcentos = ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'à', 'À', 'Â', 'â', 'Ê', 'ê',
     'ô', 'Ô', 'ü', 'Ü', 'ï', 'Ï', 'ö', 'Ö', 'ñ', 'Ñ', 'ã', 'Ã', 'õ', 'Õ', 'ç', 'Ç',
     'ª', 'º', 'ä', 'Ä', '\\'
-  );
+  ];
 
   if ($lMaiusculo) {
 
-    $aLetras  = array('A', 'E', 'I', 'O', 'U', 'A', 'E', 'I', 'O', 'U', 'A', 'A', 'A', 'A', 'E', 'E',
+    $aLetras  = ['A', 'E', 'I', 'O', 'U', 'A', 'E', 'I', 'O', 'U', 'A', 'A', 'A', 'A', 'E', 'E',
       'O', 'O', 'U', 'U', 'I', 'I', 'O', 'O', 'N', 'N', 'A', 'A', 'O', 'O', 'C', 'C',
       'A', 'O', 'A', 'A', ' '
-    );
+    ];
 
   } else {
 
-    $aLetras  = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'a', 'A', 'A', 'a', 'E', 'e',
+    $aLetras  = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'a', 'A', 'A', 'a', 'E', 'e',
       'o', 'O', 'u', 'U', 'i', 'I', 'o', 'O', 'n', 'N', 'a', 'A', 'o', 'O', 'c', 'C',
       'a', 'o', 'a', 'A', ' '
-    );
+    ];
   }
 
   return str_replace($aAcentos, $aLetras, $sString);
@@ -471,7 +471,7 @@ function VerParametroNota($escola) {
          ";
   $result2 = db_query($sql2);
   if (pg_num_rows($result2)>0) {
-    $retorno = pg_result($result2,0,"ed233_c_notabranca");
+    $retorno = pg_fetch_result($result2,0,"ed233_c_notabranca");
   }else{
     $retorno = "N";
   }
@@ -546,9 +546,9 @@ function ResultadoFinal($ed60_i_codigo,$ed60_i_aluno,$ed60_i_turma,$ed60_c_situa
                  WHERE ed57_i_codigo = $ed60_i_turma
                  ";
   $result_param = db_query($sql_param);
-  $ed29_i_codigo = pg_result($result_param,0,0);
-  $ed29_i_avalparcial = pg_result($result_param,0,1);
-  $codescola = pg_result($result_param,0,2);
+  $ed29_i_codigo = pg_fetch_result($result_param,0,0);
+  $ed29_i_avalparcial = pg_fetch_result($result_param,0,1);
+  $codescola = pg_fetch_result($result_param,0,2);
   $sql_etp = "SELECT ed221_i_serie,ed60_c_situacao
               FROM matriculaserie
                inner join matricula on ed60_i_codigo = ed221_i_matricula
@@ -556,7 +556,7 @@ function ResultadoFinal($ed60_i_codigo,$ed60_i_aluno,$ed60_i_turma,$ed60_c_situa
               AND ed60_i_codigo = $ed60_i_codigo
              ";
   $result_etp = db_query($sql_etp);
-  $ed221_i_serie = pg_result($result_etp,0,0);
+  $ed221_i_serie = pg_fetch_result($result_etp,0,0);
   $sSqlReg  = " SELECT ed61_i_codigo
                 FROM histmpsdisc
                  inner join historicomps on ed62_i_codigo = ed65_i_historicomps
@@ -571,9 +571,9 @@ function ResultadoFinal($ed60_i_codigo,$ed60_i_aluno,$ed60_i_turma,$ed60_c_situa
                            and ed59_i_disciplina = ed65_i_disciplina)";
   $ResultReg = db_query($sSqlReg);
   $iLinhasReg = pg_num_rows($ResultReg);
-  if ( in_array( trim($ed60_c_situacao), array("CLASSIFICADO", "AVANÇADO", "RECLASSIFICADO") ) ) {
-    $resultado = trim($ed60_c_situacao);
-  } elseif (trim($ed60_c_situacao)=="TRANSFERIDO FORA" || trim($ed60_c_situacao)=="TRANSFERIDO REDE") {
+  if ( in_array( trim((string) $ed60_c_situacao), ["CLASSIFICADO", "AVANÇADO", "RECLASSIFICADO"] ) ) {
+    $resultado = trim((string) $ed60_c_situacao);
+  } elseif (trim((string) $ed60_c_situacao)=="TRANSFERIDO FORA" || trim((string) $ed60_c_situacao)=="TRANSFERIDO REDE") {
 
     if ($ed60_c_concluida=="S") {
       $resultado = Situacao($ed60_c_situacao,$ed60_i_codigo);
@@ -651,8 +651,8 @@ function ResultadoFinal($ed60_i_codigo,$ed60_i_aluno,$ed60_i_turma,$ed60_c_situa
       $sep = "";
       for($f = 0; $f < $linhas4; $f++) {
 
-        $ed74_c_resultadofinal = pg_result($result41,$f,'ed74_c_resultadofinal')==""?" ":pg_result($result41,$f,'ed74_c_resultadofinal');
-        $lAprovacaoParcial     = pg_result($result41,$f,'disciplina_com_progressao') == "t"? true: false;
+        $ed74_c_resultadofinal = pg_fetch_result($result41,$f,'ed74_c_resultadofinal')==""?" ":pg_fetch_result($result41,$f,'ed74_c_resultadofinal');
+        $lAprovacaoParcial     = pg_fetch_result($result41,$f,'disciplina_com_progressao') == "t"? true: false;
         if ($lAprovacaoParcial) {
           $ed74_c_resultadofinal = 'D';
         }
@@ -731,9 +731,9 @@ function LimpaResultadoFinal($matricula) {
                      AND ed221_c_origem = 'S'
                     ");
   if (pg_num_rows($result)>0) {
-    $ed60_i_turma = pg_result($result,0,0);
-    $ed60_i_aluno = pg_result($result,0,1);
-    $ed221_i_serie = pg_result($result,0,2);
+    $ed60_i_turma = pg_fetch_result($result,0,0);
+    $ed60_i_aluno = pg_fetch_result($result,0,1);
+    $ed221_i_serie = pg_fetch_result($result,0,2);
     $result1 = db_query("UPDATE diariofinal SET
                        ed74_i_procresultadoaprov = null,
                        ed74_c_valoraprov = '',
@@ -813,9 +813,9 @@ function RFanterior($matricula) {
          AND ed221_c_origem = 'S'
         ";
   $result = db_query($sql);
-  $calendario = pg_result($result,0,0);
-  $serie = pg_result($result,0,1);
-  $aluno = pg_result($result,0,2);
+  $calendario = pg_fetch_result($result,0,0);
+  $serie = pg_fetch_result($result,0,1);
+  $aluno = pg_fetch_result($result,0,2);
   $sql1 = "SELECT ed60_i_codigo,ed57_i_codigo,ed57_c_descr,ed60_c_situacao,ed60_c_concluida
           FROM matricula
            inner join matriculaserie on ed221_i_matricula = ed60_i_codigo
@@ -835,11 +835,11 @@ function RFanterior($matricula) {
   $result1 = db_query($sql1);
   $linhas1 = pg_num_rows($result1);
   if ($linhas1>0) {
-    $codigo = pg_result($result1,0,0);
-    $turma = pg_result($result1,0,1);
-    $descrturma = pg_result($result1,0,2);
-    $situacao = trim(pg_result($result1,0,3));
-    $concluida = trim(pg_result($result1,0,4));
+    $codigo = pg_fetch_result($result1,0,0);
+    $turma = pg_fetch_result($result1,0,1);
+    $descrturma = pg_fetch_result($result1,0,2);
+    $situacao = trim(pg_fetch_result($result1,0,3));
+    $concluida = trim(pg_fetch_result($result1,0,4));
     if ($situacao=="CLASSIFICADO" || $situacao=="AVANÇADO") {
       $rfanterior = "APROVADO";
     }elseif ($situacao=="MATRICULADO") {
@@ -855,7 +855,7 @@ function RFanterior($matricula) {
     $descrturma = "";
     $rfanterior = "";
   }
-  return trim($descrturma)."|".trim($rfanterior);
+  return trim($descrturma)."|".trim((string) $rfanterior);
 }
 
 
@@ -1029,13 +1029,13 @@ function fim_ultima_quinzena()
  * Se ela estiver assim 00/00/0000, ela converte para 0000-00-00.
  */
 function converte_data($data) {
-  if (strstr($data, "/")) {//verifica se tem a barra /
-    $d = explode ("/", $data);//tira a barra
+  if (strstr((string) $data, "/")) {//verifica se tem a barra /
+    $d = explode ("/", (string) $data);//tira a barra
     $invert_data = "$d[2]-$d[1]-$d[0]";//separa as datas $d[2] = ano $d[1] = mês etc...
     return $invert_data;
   }
-  elseif (strstr($data, "-")) {
-    $d = explode ("-", $data);
+  elseif (strstr((string) $data, "-")) {
+    $d = explode ("-", (string) $data);
     $invert_data = "$d[2]/$d[1]/$d[0]";
     return $invert_data;
   }
@@ -1048,7 +1048,7 @@ function converte_data($data) {
 
 
 
-function db_geraArquivoOidfarmacia ($arquivo,$arquivoAlt=null,$opcao=1,$conn) {
+function db_geraArquivoOidfarmacia ($arquivo,$arquivoAlt=null,$opcao=1,$conn = null) {
   /*
    * $arquivo    => o arquivo do type "file", o arquivo a ser gravado
    * $arquivoAlt => o arquivo ja existente no banco,
@@ -1069,7 +1069,7 @@ function db_geraArquivoOidfarmacia ($arquivo,$arquivoAlt=null,$opcao=1,$conn) {
   $nomeArquivo        = $arquivo;
   $localRecebeArquivo = $arquivo;
 
-  if ( trim($localRecebeArquivo) != "") {
+  if ( trim((string) $localRecebeArquivo) != "") {
     $arquivoGrava = fopen($localRecebeArquivo, "rb");
     if ($arquivoGrava == false) {
       echo "erro ao abrir o arquivo: $localRecebeArquivo";
@@ -1115,7 +1115,7 @@ function db_geraArquivoOidfarmacia ($arquivo,$arquivoAlt=null,$opcao=1,$conn) {
  * @param String $sGeraResultado
  * @return string
  */
-function GradeAproveitamentoSQL($matricula,$relatorio="N", $iAno, $sGeraResultado = "S") {
+function GradeAproveitamentoSQL($matricula,$relatorio="N", $iAno = null, $sGeraResultado = "S") {
   #Campos de Retorno do sql:
   ## 01 - Descrição da Disciplina
   ## 02 - Array contendo informações de cada elemento(periodo de avaliação e/ou resultado)
@@ -1608,7 +1608,7 @@ function GradeAproveitamentoSQL($matricula,$relatorio="N", $iAno, $sGeraResultad
        ";
   return $sql;
 }
-function GradeAproveitamentoHTML($matricula, $mostraresfinal="S", $iAno) {
+function GradeAproveitamentoHTML($matricula, $mostraresfinal="S", $iAno = null) {
   ?>
   <style>
     .titulo{
@@ -1665,7 +1665,7 @@ function GradeAproveitamentoHTML($matricula, $mostraresfinal="S", $iAno) {
   $sql = GradeAproveitamentoSQL($matricula, "N", $iAno);
   $result = db_query($sql);
   //db_criatabela($result);exit;
-  if (pg_numrows($result)>0) {
+  if (pg_num_rows($result)>0) {
     echo '<table width="100%" border="1" cellspacing="0" cellpadding="2">';
     $cor1 = "#f3f3f3";
     $cor2 = "#DBDBDB";
@@ -1674,23 +1674,23 @@ function GradeAproveitamentoHTML($matricula, $mostraresfinal="S", $iAno) {
     for($y=0;$y<pg_num_rows($result);$y++) {
 
       db_fieldsmemory($result,$y);
-      $disciplina          = pg_result($result,$y,'disciplina');
-      $iCodigoDisciplina   = pg_result($result,$y,'codigo_disciplina');
-      $periodos            = pg_result($result,$y,'periodos');
-      $notaparcial         = pg_result($result,$y,'notaparcial');
-      $aulas               = pg_result($result,$y,'aulas');
-      $frequencia          = ArredondamentoFrequencia::arredondar(pg_result($result,$y,'frequencia'), $iAno);
-      $aprovfinal          = pg_result($result,$y,'aprovfinal');
-      $resfinal            = pg_result($result,$y,'resfinal');
-      $concluida           = pg_result($result,$y,'concluida');
-      $situacao            = pg_result($result,$y,'situacao');
-      $decimais            = pg_result($result,$y,'decimais');
-      $aluno               = pg_result($result,$y,'aluno');
-      $turma               = pg_result($result,$y,'turma');
-      $serie               = pg_result($result,$y,'serie');
-      $permitenotaembranco = pg_result($result,$y,'permitenotaembranco');
-      $medfrequencia       = pg_result($result,$y,'medfrequencia');
-      $formaobtencao       = trim(pg_result($result,$y,'formaobtencao'));
+      $disciplina          = pg_fetch_result($result,$y,'disciplina');
+      $iCodigoDisciplina   = pg_fetch_result($result,$y,'codigo_disciplina');
+      $periodos            = pg_fetch_result($result,$y,'periodos');
+      $notaparcial         = pg_fetch_result($result,$y,'notaparcial');
+      $aulas               = pg_fetch_result($result,$y,'aulas');
+      $frequencia          = ArredondamentoFrequencia::arredondar(pg_fetch_result($result,$y,'frequencia'), $iAno);
+      $aprovfinal          = pg_fetch_result($result,$y,'aprovfinal');
+      $resfinal            = pg_fetch_result($result,$y,'resfinal');
+      $concluida           = pg_fetch_result($result,$y,'concluida');
+      $situacao            = pg_fetch_result($result,$y,'situacao');
+      $decimais            = pg_fetch_result($result,$y,'decimais');
+      $aluno               = pg_fetch_result($result,$y,'aluno');
+      $turma               = pg_fetch_result($result,$y,'turma');
+      $serie               = pg_fetch_result($result,$y,'serie');
+      $permitenotaembranco = pg_fetch_result($result,$y,'permitenotaembranco');
+      $medfrequencia       = pg_fetch_result($result,$y,'medfrequencia');
+      $formaobtencao       = trim(pg_fetch_result($result,$y,'formaobtencao'));
 
       $oDisciplinasDiario  = $oDiario->getDisciplinasPorRegencia(RegenciaRepository::getRegenciaByCodigo($iCodigoDisciplina));
       if ($oDisciplinasDiario) {
@@ -1780,10 +1780,10 @@ function GradeAproveitamentoHTML($matricula, $mostraresfinal="S", $iAno) {
             $arr_explode[3] = ArredondamentoNota::formatar($arr_explode[3], $iAno);
           }
 
-          echo '<td class="aluno1">'.(trim($arr_explode[3])==""?"&nbsp;":trim($arr_explode[3])).'</td>';
+          echo '<td class="aluno1">'.(trim((string) $arr_explode[3])==""?"&nbsp;":trim((string) $arr_explode[3])).'</td>';
           if (trim($arr_explode[5])=="AVA") {
 
-            $iFaltas = trim($arr_explode[4]);
+            $iFaltas = trim((string) $arr_explode[4]);
             if ( empty($iFaltas) ) {
               $iFaltas = "&nbsp";
             }
@@ -1854,7 +1854,7 @@ function GradeAproveitamentoHTML($matricula, $mostraresfinal="S", $iAno) {
         if ($oDisciplina->getResultadoFinal()->aprovadoPorProgressaoParcial()) {
           $resfinal = 'AP / DP';
         }
-        echo '<td class="aluno1"><font color="'.$corfonte.'">'.(trim($resfinal)==""?"&nbsp;":($mostraresfinal=="S"?trim($resfinal):"")).'</font></td>';
+        echo '<td class="aluno1"><font color="'.$corfonte.'">'.(trim((string) $resfinal)==""?"&nbsp;":($mostraresfinal=="S"?trim((string) $resfinal):"")).'</font></td>';
         echo '</tr>';
       }
     }
@@ -1865,7 +1865,7 @@ function GradeAproveitamentoHTML($matricula, $mostraresfinal="S", $iAno) {
            <table width="100%">
             <tr>
              <td>
-              <b>Resultado final em '.trim($serie).': '.trim($rfatual).'</b>&nbsp;&nbsp;
+              <b>Resultado final em '.trim($serie).': '.trim((string) $rfatual).'</b>&nbsp;&nbsp;
              </td>
              <td align="right">
                * <font size="2">Nota Externa</font>
@@ -1879,7 +1879,7 @@ function GradeAproveitamentoHTML($matricula, $mostraresfinal="S", $iAno) {
   }
 }
 
-function GradeAproveitamentoPDF( $matricula, $largura, $pdf, $mostraresfinal = "S", $iAno ) {
+function GradeAproveitamentoPDF( $matricula, $largura, $pdf, $mostraresfinal = "S", $iAno = null ) {
 
   $pdf->setfont( 'arial', 'b', 7);
 
@@ -1899,9 +1899,9 @@ function GradeAproveitamentoPDF( $matricula, $largura, $pdf, $mostraresfinal = "
 
   $oProcedimentoAvaliacaoEtapa = $oDiario->getTurma()->getProcedimentoDeAvaliacaoDaEtapa( $oEtapa );
   $lEncontrouPeriodoValido     = false;
-  $aFormasObtencao             = array( "ME", "MP", "SO" );
+  $aFormasObtencao             = [ "ME", "MP", "SO" ];
 
-  if (pg_numrows($result) > 0) {
+  if (pg_num_rows($result) > 0) {
 
     $iQuantidadePeriodos = 0;
 
@@ -1926,7 +1926,7 @@ function GradeAproveitamentoPDF( $matricula, $largura, $pdf, $mostraresfinal = "
 
         $lEncontrouPeriodoValido = true;
 
-        if( trim( $oDadosGrade->periodos ) != "" && trim( $oDadosGrade->periodos ) != "{}" ) {
+        if( trim( (string) $oDadosGrade->periodos ) != "" && trim( (string) $oDadosGrade->periodos ) != "{}" ) {
 
           $pdf->cell( $largura_disc, 4, "", 0, 0, "C", 0 );
 
@@ -1935,9 +1935,9 @@ function GradeAproveitamentoPDF( $matricula, $largura, $pdf, $mostraresfinal = "
           $pri_periodos = str_replace( chr(34), "", $pri_periodos );
           $pri_periodos = explode( ",", $pri_periodos );
 
-          if(    trim($oDadosGrade->permitenotaembranco) == "S"
-            && trim($oDadosGrade->situacao) == "MATRICULADO"
-            && trim($oDadosGrade->concluida) == "N"
+          if(    trim((string) $oDadosGrade->permitenotaembranco) == "S"
+            && trim((string) $oDadosGrade->situacao) == "MATRICULADO"
+            && trim((string) $oDadosGrade->concluida) == "N"
             && in_array( $oDadosGrade->formaobtencao, $aFormasObtencao )
           ) {
             $acrescecoluna = 1;
@@ -1954,9 +1954,9 @@ function GradeAproveitamentoPDF( $matricula, $largura, $pdf, $mostraresfinal = "
             $pdf->cell( $largura_periodo, 4, trim( $arr_periodo[1] ), 1, 0, "C", 0 );
           }
 
-          if(    trim($oDadosGrade->permitenotaembranco) == "S"
-            && trim($oDadosGrade->situacao) == "MATRICULADO"
-            && trim($oDadosGrade->concluida) == "N"
+          if(    trim((string) $oDadosGrade->permitenotaembranco) == "S"
+            && trim((string) $oDadosGrade->situacao) == "MATRICULADO"
+            && trim((string) $oDadosGrade->concluida) == "N"
             && in_array( $oDadosGrade->formaobtencao, $aFormasObtencao )
           ) {
             $pdf->cell( $largura_periodo, 4, "Nota Parcial", 1, 0, "C", 0 );
@@ -1967,7 +1967,7 @@ function GradeAproveitamentoPDF( $matricula, $largura, $pdf, $mostraresfinal = "
           $pdf->cell(   $largura_disc, 4, "Disciplina",      1, 0, "C", 0 );
         }
 
-        if( trim( $oDadosGrade->periodos ) == "" || trim( $oDadosGrade->periodos ) == "{}" ) {
+        if( trim( (string) $oDadosGrade->periodos ) == "" || trim( (string) $oDadosGrade->periodos ) == "{}" ) {
 
           $pdf->cell( $largura_disc,               4, "Disciplina",  1, 0, "C", 1 );
           $pdf->cell( $largura_meio + $largura_rf, 4, "Observações", 1, 1, "C", 1 );
@@ -1989,9 +1989,9 @@ function GradeAproveitamentoPDF( $matricula, $largura, $pdf, $mostraresfinal = "
             }
           }
 
-          if(    trim($oDadosGrade->permitenotaembranco) == "S"
-            && trim($oDadosGrade->situacao) == "MATRICULADO"
-            && trim($oDadosGrade->concluida) == "N"
+          if(    trim((string) $oDadosGrade->permitenotaembranco) == "S"
+            && trim((string) $oDadosGrade->situacao) == "MATRICULADO"
+            && trim((string) $oDadosGrade->concluida) == "N"
             && in_array( $oDadosGrade->formaobtencao, $aFormasObtencao )
           ) {
             $pdf->cell( $largura_periodo, 4, "", 1, 0, "C", 0 );
@@ -2002,7 +2002,7 @@ function GradeAproveitamentoPDF( $matricula, $largura, $pdf, $mostraresfinal = "
           $largura_aprovrf = $largura_rf * 30 / 100;
           $largura_result  = $largura_rf * 20 / 100;
 
-          $sFrequencia = trim( $oDadosGrade->medfrequencia ) == "PERÌODOS" ? "Aulas" : "Dias";
+          $sFrequencia = trim( (string) $oDadosGrade->medfrequencia ) == "PERÌODOS" ? "Aulas" : "Dias";
           $pdf->cell( $largura_dias,    4, $sFrequencia, 1, 0, "C", 0 );
           $pdf->cell( $largura_freq,    4, "% Freq",     1, 0, "C", 0 );
           $pdf->cell( $largura_aprovrf, 4, "Aprov.",     1, 0, "C", 0 );
@@ -2018,19 +2018,19 @@ function GradeAproveitamentoPDF( $matricula, $largura, $pdf, $mostraresfinal = "
 
       db_fieldsmemory( $result, $y );
 
-      $disciplina          = pg_result( $result, $y, 'disciplina' );
-      $periodos            = pg_result( $result, $y, 'periodos' );
-      $notaparcial         = pg_result( $result, $y, 'notaparcial' );
-      $aulas               = pg_result( $result, $y, 'aulas' );
-      $frequencia          = ArredondamentoFrequencia::arredondar( pg_result( $result, $y, 'frequencia' ), $iAno );
-      $aprovfinal          = pg_result( $result, $y, 'aprovfinal' );
-      $resfinal            = pg_result( $result, $y, 'resfinal' );
-      $concluida           = pg_result( $result, $y, 'concluida' );
-      $situacao            = pg_result( $result, $y, 'situacao' );
-      $decimais            = pg_result( $result, $y, 'decimais' );
-      $permitenotaembranco = pg_result( $result, $y, 'permitenotaembranco' );
-      $formaobtencao       = trim( pg_result( $result, $y, 'formaobtencao' ) );
-      $iCodigoDisciplina   = pg_result( $result, $y, 'codigo_disciplina' );
+      $disciplina          = pg_fetch_result( $result, $y, 'disciplina' );
+      $periodos            = pg_fetch_result( $result, $y, 'periodos' );
+      $notaparcial         = pg_fetch_result( $result, $y, 'notaparcial' );
+      $aulas               = pg_fetch_result( $result, $y, 'aulas' );
+      $frequencia          = ArredondamentoFrequencia::arredondar( pg_fetch_result( $result, $y, 'frequencia' ), $iAno );
+      $aprovfinal          = pg_fetch_result( $result, $y, 'aprovfinal' );
+      $resfinal            = pg_fetch_result( $result, $y, 'resfinal' );
+      $concluida           = pg_fetch_result( $result, $y, 'concluida' );
+      $situacao            = pg_fetch_result( $result, $y, 'situacao' );
+      $decimais            = pg_fetch_result( $result, $y, 'decimais' );
+      $permitenotaembranco = pg_fetch_result( $result, $y, 'permitenotaembranco' );
+      $formaobtencao       = trim( pg_fetch_result( $result, $y, 'formaobtencao' ) );
+      $iCodigoDisciplina   = pg_fetch_result( $result, $y, 'codigo_disciplina' );
 
       $oDisciplinasDiario  = $oDiario->getDisciplinasPorRegencia(RegenciaRepository::getRegenciaByCodigo($iCodigoDisciplina));
       if ($oDisciplinasDiario) {
@@ -2042,9 +2042,9 @@ function GradeAproveitamentoPDF( $matricula, $largura, $pdf, $mostraresfinal = "
         }
       }
 
-      $aDados    = array();
-      $aPosicao  = array();
-      $aLarguras = array();
+      $aDados    = [];
+      $aPosicao  = [];
+      $aLarguras = [];
 
       $aDados[]    = trim($disciplina);
       $aPosicao[]  = "L";
@@ -2204,13 +2204,13 @@ function GradeAproveitamentoBOLETIM($matricula, $largura, $pdf, $niveis, $orient
   $result     = db_query($sql);
 
   $iTamanhoMaximoDisciplina = 0;
-  if (pg_numrows($result) > 0) {
+  if (pg_num_rows($result) > 0) {
 
     for ($iDisc = 0; $iDisc < pg_num_rows($result); $iDisc++) {
 
       $qtd_periodo = 0;
       db_fieldsmemory($result, $iDisc);
-      $disciplina = pg_result($result, $iDisc, 'disciplina');
+      $disciplina = pg_fetch_result($result, $iDisc, 'disciplina');
       $iTamanhoDisciplina = $pdf->GetStringWidth(($disciplina)) + 3;
       if ($iTamanhoDisciplina > $iTamanhoMaximoDisciplina) {
         $iTamanhoMaximoDisciplina = $iTamanhoDisciplina;
@@ -2224,10 +2224,10 @@ function GradeAproveitamentoBOLETIM($matricula, $largura, $pdf, $niveis, $orient
 
     global $boletim_periodos;
     global $boletim_convencao;
-    $boletim_periodos  = pg_result($result, 0, 'periodos');
-    $boletim_convencao = pg_result($result, 0, 'convencao');
+    $boletim_periodos  = pg_fetch_result($result, 0, 'periodos');
+    $boletim_convencao = pg_fetch_result($result, 0, 'convencao');
 
-    $aPeriodos = array();
+    $aPeriodos = [];
 
     for ($iContador = 0; $iContador < pg_num_rows($result); $iContador++) {
       $aPeriodos[] = db_utils::fieldsMemory( $result, $iContador)->periodos;
@@ -2239,7 +2239,7 @@ function GradeAproveitamentoBOLETIM($matricula, $largura, $pdf, $niveis, $orient
     $lImprimeCabecalho               = true;
     $lTemMediaFinal                  = false;
     $lProcedimentoDiferenteAvaliacao = false;
-    $aPeriodosCabecalho              = array();
+    $aPeriodosCabecalho              = [];
 
     $largura_aprov    = 0;
     $largura_ft       = 0;
@@ -2259,13 +2259,13 @@ function GradeAproveitamentoBOLETIM($matricula, $largura, $pdf, $niveis, $orient
       $qtd_periodo = 0;
       db_fieldsmemory($result, $y);
 
-      $disciplina          = pg_result($result, $y, 'disciplina');
-      $periodos            = pg_result($result, $y, 'periodos');
-      $medfrequencia       = pg_result($result, $y, 'medfrequencia');
-      $permitenotaembranco = pg_result($result, $y, 'permitenotaembranco');
-      $situacao            = pg_result($result, $y, 'situacao');
-      $concluida           = pg_result($result, $y, 'concluida');
-      $formaobtencao       = trim(pg_result($result, $y, 'formaobtencao'));
+      $disciplina          = pg_fetch_result($result, $y, 'disciplina');
+      $periodos            = pg_fetch_result($result, $y, 'periodos');
+      $medfrequencia       = pg_fetch_result($result, $y, 'medfrequencia');
+      $permitenotaembranco = pg_fetch_result($result, $y, 'permitenotaembranco');
+      $situacao            = pg_fetch_result($result, $y, 'situacao');
+      $concluida           = pg_fetch_result($result, $y, 'concluida');
+      $formaobtencao       = trim(pg_fetch_result($result, $y, 'formaobtencao'));
 
       $pdf->setfont('arial','b',7);
 
@@ -2274,7 +2274,7 @@ function GradeAproveitamentoBOLETIM($matricula, $largura, $pdf, $niveis, $orient
       $pri_periodos = str_replace(chr(34), "", $pri_periodos);
       $pri_periodos = explode(",", $pri_periodos);
 
-      $aPeriodos = array();
+      $aPeriodos = [];
       for ($iPer = 0; $iPer < count($pri_periodos); $iPer++) {
         $aPeriodos  = explode("|", $pri_periodos[$iPer]);
       }
@@ -2428,27 +2428,27 @@ function GradeAproveitamentoBOLETIM($matricula, $largura, $pdf, $niveis, $orient
       $qtd_periodo = 0;
       db_fieldsmemory($result, $y);
 
-      $disciplina          = pg_result($result, $y, 'disciplina');
-      $periodos            = pg_result($result, $y, 'periodos');
-      $notaparcial         = pg_result($result, $y, 'notaparcial');
-      $aulas               = pg_result($result, $y, 'aulas');
-      $frequencia          = ArredondamentoFrequencia::arredondar(pg_result($result, $y, 'frequencia'), $iAno);
-      $aprovfinal          = pg_result($result, $y, 'aprovfinal');
-      $resfinal            = pg_result($result, $y, 'resfinal');
-      $concluida           = pg_result($result, $y, 'concluida');
-      $situacao            = pg_result($result, $y, 'situacao');
-      $decimais            = pg_result($result, $y, 'decimais');
-      $aluno               = pg_result($result, $y, 'aluno');
-      $turma               = pg_result($result, $y, 'turma');
-      $serie               = pg_result($result, $y, 'serie');
-      $permitenotaembranco = pg_result($result, $y, 'permitenotaembranco');
-      $tot_faltas          = pg_result($result, $y, 'tot_faltas');
-      $tot_abonos          = pg_result($result, $y, 'tot_abonos');
-      $minimoaprov         = pg_result($result, $y, 'minimoaprov');
-      $formafinal          = pg_result($result, $y, 'formafinal');
-      $descr_niveis        = pg_result($result, $y, 'descr_niveis');
-      $codigo_disciplina   = pg_result($result, $y, 'codigo_disciplina');
-      $formaobtencao       = trim(pg_result($result, $y, 'formaobtencao'));
+      $disciplina          = pg_fetch_result($result, $y, 'disciplina');
+      $periodos            = pg_fetch_result($result, $y, 'periodos');
+      $notaparcial         = pg_fetch_result($result, $y, 'notaparcial');
+      $aulas               = pg_fetch_result($result, $y, 'aulas');
+      $frequencia          = ArredondamentoFrequencia::arredondar(pg_fetch_result($result, $y, 'frequencia'), $iAno);
+      $aprovfinal          = pg_fetch_result($result, $y, 'aprovfinal');
+      $resfinal            = pg_fetch_result($result, $y, 'resfinal');
+      $concluida           = pg_fetch_result($result, $y, 'concluida');
+      $situacao            = pg_fetch_result($result, $y, 'situacao');
+      $decimais            = pg_fetch_result($result, $y, 'decimais');
+      $aluno               = pg_fetch_result($result, $y, 'aluno');
+      $turma               = pg_fetch_result($result, $y, 'turma');
+      $serie               = pg_fetch_result($result, $y, 'serie');
+      $permitenotaembranco = pg_fetch_result($result, $y, 'permitenotaembranco');
+      $tot_faltas          = pg_fetch_result($result, $y, 'tot_faltas');
+      $tot_abonos          = pg_fetch_result($result, $y, 'tot_abonos');
+      $minimoaprov         = pg_fetch_result($result, $y, 'minimoaprov');
+      $formafinal          = pg_fetch_result($result, $y, 'formafinal');
+      $descr_niveis        = pg_fetch_result($result, $y, 'descr_niveis');
+      $codigo_disciplina   = pg_fetch_result($result, $y, 'codigo_disciplina');
+      $formaobtencao       = trim(pg_fetch_result($result, $y, 'formaobtencao'));
 
       $oDisciplinasDiario  = $oDiario->getDisciplinasPorRegencia(RegenciaRepository::getRegenciaByCodigo($codigo_disciplina));
       $minimoaprov         = $oDiario->getMinimoAprovacao();
@@ -2472,10 +2472,10 @@ function GradeAproveitamentoBOLETIM($matricula, $largura, $pdf, $niveis, $orient
       }
 
       /* Defino os arrays para o Row_multicell */
-      $aDados     = array();
-      $aPosicao   = array();
-      $aLarguras  = array();
-      $aNegrito   = array();
+      $aDados     = [];
+      $aPosicao   = [];
+      $aLarguras  = [];
+      $aNegrito   = [];
       $lBold      = false;
 
       $pdf->setfont('arial', '', 7);
@@ -2797,7 +2797,7 @@ function GradeAproveitamentoBOLETIM($matricula, $largura, $pdf, $niveis, $orient
 
       $pdf->setfont('arial', 'b', 8);
       $pdf->cell(43, 4, "Mínimo para Aprovação Anual:", "LT", 0, "L", 0);
-      $pdf->cell(array_sum($aLarguras)-43, 4, trim($minimoaprov)=="0"?"":$minimoaprov, "RT", 1, "L", 0);
+      $pdf->cell(array_sum($aLarguras)-43, 4, trim((string) $minimoaprov)=="0"?"":$minimoaprov, "RT", 1, "L", 0);
 
     }
 
@@ -3083,13 +3083,13 @@ function VerUltimoRegHistorico($aluno,$etapaindicada,$etapasturma) {
   $result_hist = db_query($sql_hist);
   if (pg_num_rows($result_hist)>0) {
 
-    $ult_cod = pg_result($result_hist,0,'ult_cod');
-    $ult_resfinal = trim(pg_result($result_hist,0,'ult_resfinal'));
-    $ult_descr = trim(pg_result($result_hist,0,'ult_descr'));
-    $ult_descrensino = trim(pg_result($result_hist,0,'ult_descrensino'));
-    $ult_abrevensino = trim(pg_result($result_hist,0,'ult_abrevensino'));
-    $ult_ensino = trim(pg_result($result_hist,0,'ult_ensino'));
-    $ult_sequencia = trim(pg_result($result_hist,0,'ult_sequencia'));
+    $ult_cod = pg_fetch_result($result_hist,0,'ult_cod');
+    $ult_resfinal = trim(pg_fetch_result($result_hist,0,'ult_resfinal'));
+    $ult_descr = trim(pg_fetch_result($result_hist,0,'ult_descr'));
+    $ult_descrensino = trim(pg_fetch_result($result_hist,0,'ult_descrensino'));
+    $ult_abrevensino = trim(pg_fetch_result($result_hist,0,'ult_abrevensino'));
+    $ult_ensino = trim(pg_fetch_result($result_hist,0,'ult_ensino'));
+    $ult_sequencia = trim(pg_fetch_result($result_hist,0,'ult_sequencia'));
     if ($ult_resfinal=="R") {
 
       $descr_situacao = "REPROVADO";
@@ -3106,10 +3106,10 @@ function VerUltimoRegHistorico($aluno,$etapaindicada,$etapasturma) {
         $msgequiv .= "-> ".$ult_descr." (".$ult_descrensino." - ".$ult_abrevensino.")\\n";
         for ($r=0;$r<pg_num_rows($result_equiv);$r++) {
 
-          $codserie_equiv = pg_result($result_equiv,$r,'ed234_i_serieequiv');
-          $descr_equiv = trim(pg_result($result_equiv,$r,'descr_equiv'));
-          $ensino_equiv = trim(pg_result($result_equiv,$r,'ensino_equiv'));
-          $abrev_equiv = trim(pg_result($result_equiv,$r,'abrev_equiv'));
+          $codserie_equiv = pg_fetch_result($result_equiv,$r,'ed234_i_serieequiv');
+          $descr_equiv = trim(pg_fetch_result($result_equiv,$r,'descr_equiv'));
+          $ensino_equiv = trim(pg_fetch_result($result_equiv,$r,'ensino_equiv'));
+          $abrev_equiv = trim(pg_fetch_result($result_equiv,$r,'abrev_equiv'));
           if ($codserie_equiv==$etapaindicada) {
 
             $temequiv = true;
@@ -3133,10 +3133,10 @@ function VerUltimoRegHistorico($aluno,$etapaindicada,$etapasturma) {
       $result_prox = db_query($sql_prox);
       if (pg_num_rows($result_prox)>0) {
 
-        $cod_prox = pg_result($result_prox,0,'cod_prox');
-        $descr_prox = trim(pg_result($result_prox,0,'descr_prox'));
-        $ensino_prox = trim(pg_result($result_prox,0,'ensino_prox'));
-        $abrev_prox = trim(pg_result($result_prox,0,'abrev_prox'));
+        $cod_prox = pg_fetch_result($result_prox,0,'cod_prox');
+        $descr_prox = trim(pg_fetch_result($result_prox,0,'descr_prox'));
+        $ensino_prox = trim(pg_fetch_result($result_prox,0,'ensino_prox'));
+        $abrev_prox = trim(pg_fetch_result($result_prox,0,'abrev_prox'));
 
         if ($cod_prox!=$etapaindicada) {
 
@@ -3151,10 +3151,10 @@ function VerUltimoRegHistorico($aluno,$etapaindicada,$etapasturma) {
           $msgequiv .= "-> ".$descr_prox." (".$ensino_prox." - ".$abrev_prox.")\\n";
           for($r=0;$r<pg_num_rows($result_equiv);$r++) {
 
-            $codserie_equiv = pg_result($result_equiv,$r,'ed234_i_serieequiv');
-            $descr_equiv = trim(pg_result($result_equiv,$r,'descr_equiv'));
-            $ensino_equiv = trim(pg_result($result_equiv,$r,'ensino_equiv'));
-            $abrev_equiv = trim(pg_result($result_equiv,$r,'abrev_equiv'));
+            $codserie_equiv = pg_fetch_result($result_equiv,$r,'ed234_i_serieequiv');
+            $descr_equiv = trim(pg_fetch_result($result_equiv,$r,'descr_equiv'));
+            $ensino_equiv = trim(pg_fetch_result($result_equiv,$r,'ensino_equiv'));
+            $abrev_equiv = trim(pg_fetch_result($result_equiv,$r,'abrev_equiv'));
             if ($codserie_equiv==$etapaindicada) {
               $temequiv = true;
               break;
@@ -3173,7 +3173,7 @@ function VerUltimoRegHistorico($aluno,$etapaindicada,$etapasturma) {
     } elseif ($ult_resfinal=="P") {
 
       $descr_situacao = "APROVADO PARCIAL";
-      if (!strstr($etapasturma,$ult_cod)) {
+      if (!strstr((string) $etapasturma,(string) $ult_cod)) {
 
         $temequiv = false;
         $msgequiv .= "\\nATENÇÃO: Aluno(a) $aluno tem a Etapa $ult_descr ($ult_descrensino - $ult_abrevensino) como a última cursada, na situação de $descr_situacao. Selecione uma turma que contenha alguma das etapas abaixo relacionadas:\\n";
@@ -3186,10 +3186,10 @@ function VerUltimoRegHistorico($aluno,$etapaindicada,$etapasturma) {
         $msgequiv .= "-> ".$ult_descr." (".$ult_descrensino." - ".$ult_abrevensino.")\\n";
         for($r=0;$r<pg_num_rows($result_equiv);$r++) {
 
-          $codserie_equiv = pg_result($result_equiv,$r,'ed234_i_serieequiv');
-          $descr_equiv = trim(pg_result($result_equiv,$r,'descr_equiv'));
-          $ensino_equiv = trim(pg_result($result_equiv,$r,'ensino_equiv'));
-          $abrev_equiv = trim(pg_result($result_equiv,$r,'abrev_equiv'));
+          $codserie_equiv = pg_fetch_result($result_equiv,$r,'ed234_i_serieequiv');
+          $descr_equiv = trim(pg_fetch_result($result_equiv,$r,'descr_equiv'));
+          $ensino_equiv = trim(pg_fetch_result($result_equiv,$r,'ensino_equiv'));
+          $abrev_equiv = trim(pg_fetch_result($result_equiv,$r,'abrev_equiv'));
           if ($codserie_equiv==$etapaindicada) {
             $temequiv = true;
             break;
@@ -3213,16 +3213,10 @@ function VerUltimoRegHistorico($aluno,$etapaindicada,$etapasturma) {
 */
 function converteCodificacao($sStr, $iTipo = 1) {
 
-  switch($iTipo) {
-
-    case 1:
-
-      return mb_convert_encoding($sStr, "ISO-8859-1", "UTF-8");
-
-    default:
-
-      return $sStr;
-  }
+  return match ($iTipo) {
+      1 => mb_convert_encoding($sStr, "ISO-8859-1", "UTF-8"),
+      default => $sStr,
+  };
 }
 
 
@@ -3356,7 +3350,7 @@ function geraArquivoBPA($oDados, $rsCabecalho, $rsProducao, $lValidaCid = true, 
   $oCabecalho->cbc_fim = "";
   $lErro               = false;
   $objValida           = new stdClass();
-  $objValida->valida   = array(array(), array(), array());
+  $objValida->valida   = [[], [], []];
   $iBpas               = 0;
   $iUpsAnt             = "";
   $iCnsMed             = "";
@@ -3384,7 +3378,7 @@ function geraArquivoBPA($oDados, $rsCabecalho, $rsProducao, $lValidaCid = true, 
     }
     if ($oDados->sTipo == "01") {
 
-      $oProducao->prd_cmp    = $oDados->iCompano.str_pad ($oDados->iCompmes,2, "0", STR_PAD_LEFT);
+      $oProducao->prd_cmp    = $oDados->iCompano.str_pad ((string) $oDados->iCompmes,2, "0", STR_PAD_LEFT);
       $oProducao->prd_cnspac = str_pad (' ', 15, ' ', STR_PAD_LEFT);
       $oProducao->prd_sexo   = str_pad (' ', 2, ' ', STR_PAD_LEFT);
       $oProducao->prd_ibge   = str_pad (' ', 6, ' ', STR_PAD_LEFT);
@@ -3548,8 +3542,8 @@ function somaDataDiaMesAno($iDia, $iMes, $iAno, $iDiaSomar, $iMesSomar, $iAnoSom
  * @return inteiro quantidade de dias entre as duas datas
  */
 function quantDias($data1, $data2) {
-  $aVet1=explode("/",$data1);
-  $aVet2=explode("/",$data2);
+  $aVet1=explode("/",(string) $data1);
+  $aVet2=explode("/",(string) $data2);
   return round((mktime(0,0,0,$aVet2[1],$aVet2[0],$aVet2[2])-
       mktime(0,0,0,$aVet1[1],$aVet1[0],$aVet1[2])) / (24 * 60 * 60), 0);
 }
@@ -3560,7 +3554,7 @@ function ParamAvalAlternativa($escola) {
   $sql2   .= "        WHERE ed233_i_escola = $escola ";
   $result2 = db_query($sql2);
   if (pg_num_rows($result2) > 0) {
-    $retorno = pg_result($result2,0,0);
+    $retorno = pg_fetch_result($result2,0,0);
   } else {
     $retorno = "N";
   }
@@ -3641,41 +3635,17 @@ function geraArquivoHiperdia($iTipo, $sArquivo, $rsRegistros, $iLinhas) {
   require_once(modification('classes/db_db_layoutcampos_classe.php'));
 
   $iCodLayout = null;
-  switch($iTipo) {
-
-    case 0:
-
-      $iCodLayout = 90;
-      break;
-
-    case 1:
-
-      $iCodLayout = 87;
-      break;
-
-    case 2:
-
-      $iCodLayout = 88;
-      break;
-
-    case 3:
-
-      $iCodLayout = 89;
-      break;
-
-    case 4:
-
-      $iCodLayout = 91;
-      break;
-
-    default:
-
-      $iCodLayout = -1;
-
-  }
+  $iCodLayout = match ($iTipo) {
+      0 => 90,
+      1 => 87,
+      2 => 88,
+      3 => 89,
+      4 => 91,
+      default => -1,
+  };
 
   $clDbLayoutTxt = new db_layouttxt($iCodLayout, $sArquivo, '');
-  $aCgs          = array();
+  $aCgs          = [];
   $lErro         = false;
 
   if ($iTipo == 0 || $iTipo == 4) { // $rsRegistros já vem com os dados prontos
@@ -3790,43 +3760,15 @@ function unirArquivos($aEndArquivosUnir, $sEndArquivoGerar, $lDeletarOrigens = f
  */
 function modeloFaa($cod) {
 
-  switch ($cod) {
-
-    case 1:
-
-      return "sau2_emitirfaa002.php";
-      break;
-
-    case 2:
-
-      return "sau2_emitirfaa003.php";
-      break;
-
-    case 3:
-
-      return "sau2_fichaatend005.php";
-      break;
-
-    case 4:
-
-      return "sau2_fichaatend006.php";
-      break;
-
-    case 5:
-
-      return "sau2_emitirfaa004.php";
-      break;
-
-    case 6:
-
-      return "sau2_emitirfaa005.php";
-      break;
-
-    default:
-
-      return "sau2_emitirfaa006.php";
-
-  }
+  return match ($cod) {
+      1 => "sau2_emitirfaa002.php",
+      2 => "sau2_emitirfaa003.php",
+      3 => "sau2_fichaatend005.php",
+      4 => "sau2_fichaatend006.php",
+      5 => "sau2_emitirfaa004.php",
+      6 => "sau2_emitirfaa005.php",
+      default => "sau2_emitirfaa006.php",
+  };
 }
 
 /**
@@ -3874,7 +3816,7 @@ function VerNutricionista($iCodUsuario) {
  */
 function somaMinutosHoraAgendamento($sHoraIni, $iMinutosSomar) {
 
-  $aHoraIni = explode(':', $sHoraIni);
+  $aHoraIni = explode(':', (string) $sHoraIni);
   $iHoraIni = $aHoraIni[0];
   $iMinIni  = $aHoraIni[1];
 
@@ -3914,7 +3856,7 @@ function somaMinutosHoraAgendamento($sHoraIni, $iMinutosSomar) {
  */
 function somaMinutosHora($sHoraIni, $iMinutosSomar) {
 
-  $aHoraIni = explode(':', $sHoraIni);
+  $aHoraIni = explode(':', (string) $sHoraIni);
   $iHoraIni = $aHoraIni[0];
   $iMinIni  = $aHoraIni[1];
 
@@ -3930,7 +3872,7 @@ function somaMinutosHora($sHoraIni, $iMinutosSomar) {
 
   }
 
-  return str_pad($iHoraIni, 2, 0, 'STR_PAD_LEFT').':'.str_pad($iMinIni, 2, 0, 'STR_PAD_LEFT');
+  return str_pad($iHoraIni, 2, 0, 'STR_PAD_LEFT').':'.str_pad((string) $iMinIni, 2, 0, 'STR_PAD_LEFT');
 
 }
 
@@ -3944,10 +3886,10 @@ function somaMinutosHora($sHoraIni, $iMinutosSomar) {
  */
 function diferencaEmMinutos($sHoraIni, $sHoraFim) {
 
-  $iHoraIni = substr($sHoraIni, 0, 2);
-  $iMinIni  = substr($sHoraIni, 3, 2);
-  $iHoraFim = substr($sHoraFim, 0, 2);
-  $iMinFim  = substr($sHoraFim, 3, 2);
+  $iHoraIni = substr((string) $sHoraIni, 0, 2);
+  $iMinIni  = substr((string) $sHoraIni, 3, 2);
+  $iHoraFim = substr((string) $sHoraFim, 0, 2);
+  $iMinFim  = substr((string) $sHoraFim, 3, 2);
 
   // diferença em horas
   $iMinutosFim = $iMinFim + ($iHoraFim * 60);
@@ -4193,7 +4135,7 @@ function calculaIMC($nPeso, $iAltura) {
 
   $nImc = $nPeso / (($iAltura * $iAltura) / 10000);
 
-  $aRetorno    = array();
+  $aRetorno    = [];
   $aRetorno[0] = $nImc;
   if ($nImc < 18.5) {
     $aRetorno[1] = 'ABAIXO DO PESO';
@@ -4220,23 +4162,23 @@ function selectModelosFaa($iModeloSelecionar = null) {
   if (!empty($iModeloSelecionar)) {
     $GLOBALS['s103_i_modelofaa'] = $iModeloSelecionar;
   }
-  $aX = array('1' => 'Modelo 1 Padrão',
+  $aX = ['1' => 'Modelo 1 Padrão',
     '2' => 'Modelo 2 Continuada',
     '3' => 'Modelo 3 ',
     '4' => 'Modelo 4 ',
     '5' => 'Modelo 1 Com 1 via',
     '6' => 'Modelo TXT - Alegrete',
     '7' => 'Modelo TXT - Bagé'
-  );
+  ];
 
-  $aY = array('1' => 'sau2_emitirfaa002.php',
+  $aY = ['1' => 'sau2_emitirfaa002.php',
     '2' => 'sau2_emitirfaa003.php',
     '3' => 'sau2_fichaatend005.php',
     '4' => 'sau2_fichaatend006.php',
     '5' => 'sau2_emitirfaa004.php',
     '6' => 'sau2_emitirfaa005.php',
     '7' => 'sau2_emitirfaa006.php'
-  );
+  ];
 
   db_select('s103_i_modelofaa', $aX, true, 1);
   db_select('sArquivoFaa', $aY, true, 1, 'style="display: none;"');
@@ -4309,7 +4251,7 @@ function getCotasAgendamento(
  */
 function arraySumValues() {
 
-  $aReturn = array();
+  $aReturn = [];
   $iArgs   = func_num_args();
   $aArgs   = func_get_args();
   if ($iArgs < 1) {
@@ -4503,7 +4445,7 @@ function trocaTurma($iSeqMatricula, $iCodigoTurmaDestino, $lAproveitamento = fal
    */
   $iCodigoEtapaOrigem = null;
   if ( !empty($iMatriculaOrigem) ) {
-    $oMatriculaOrigem   = MatriculaRepository::getMatriculaByFiltros(array("ed60_matricula = {$iMatriculaOrigem}"));
+    $oMatriculaOrigem   = MatriculaRepository::getMatriculaByFiltros(["ed60_matricula = {$iMatriculaOrigem}"]);
     $iCodigoEtapaOrigem = $oMatriculaOrigem->getEtapaDeOrigem(true)->getCodigo();
   }
 

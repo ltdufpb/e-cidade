@@ -49,7 +49,7 @@ require_once(modification("std/DBLargeObject.php"));
 require_once("std/db_stdClass.php");
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 try {
     // Objeto com informações do arquivo/caminho
@@ -73,7 +73,7 @@ try {
 
 function buscoDadosArquivoPdf($sTipoCertidao, $titulo, $origem, $codproc, $tipo)
 {
-    $aParam = array();
+    $aParam = [];
 
     $sCampo = getCamposTemplate($tipo, $titulo)->templateCertidao;
 
@@ -105,8 +105,8 @@ function buscoDadosArquivoPdf($sTipoCertidao, $titulo, $origem, $codproc, $tipo)
                                                                      );
 
     if ($codproc != "") {
-        if (strpos($codproc, "/") > 0) {
-            $codproc   = explode("\/", $codproc);
+        if (strpos((string) $codproc, "/") > 0) {
+            $codproc   = explode("\/", (string) $codproc);
             $exercicio = $codproc[1];
             $codproc   = $codproc[0];
         } else {
@@ -118,7 +118,7 @@ function buscoDadosArquivoPdf($sTipoCertidao, $titulo, $origem, $codproc, $tipo)
         $exercicio = 0;
     }
 
-    return (object) array(
+    return (object) [
         'sNomeRelatorio'    => $sNomeRelatorio,
         'titulo'            => $titulo,
         'origem'            => $origem,
@@ -131,17 +131,17 @@ function buscoDadosArquivoPdf($sTipoCertidao, $titulo, $origem, $codproc, $tipo)
         'sInstituicao'      => $variaveisSessao->instit,
         'oParametros'       => (object) $aParam,
         'iExercicio'        => $exercicio
-    );
+    ];
 }
 
-function buscaDadosCabecalhoPdf($titulo, $origem, $tipo, $textarea = "", $tipocertidao, $codproc)
+function buscaDadosCabecalhoPdf($titulo, $origem, $tipo, $textarea = "", $tipocertidao = null, $codproc = null)
 {
-    $aQuery          = array();
+    $aQuery          = [];
     $sCampo          = getCamposTemplate($tipo, $titulo)->diasCertidao;
     $variaveisSessao = getVariaveisSessao();
 
     // Seta os campos a serem exibidos no topo do PDF
-    $campos = array(
+    $campos = [
         "cgm.z01_nome as proprietario_nome",
         "cgm.z01_nomecomple as proprietario_nome_completo",
         "cgm.z01_numcgm as proprietario_cgm",
@@ -164,16 +164,16 @@ function buscaDadosCabecalhoPdf($titulo, $origem, $tipo, $textarea = "", $tipoce
         "'".date('H:i:s')."' as hora_sessao",
         "'{$textarea}' as observacao",
         "'{$codproc}'  as processo "
-    );
+    ];
 
     /**
      * Busca a informação de acordo com o parâmetro passado (CGM, Inscrição ou Matrícula)
      */
-    if (trim($titulo) == "CGM") {
+    if (trim((string) $titulo) == "CGM") {
 	    $sFrom   = "cgm";
         $sWhere  = "cgm.z01_numcgm = {$origem}";
     } else {
-        if (trim($titulo) == "MATRICULA") {
+        if (trim((string) $titulo) == "MATRICULA") {
             $campos[] = 'iptubase.j01_matric as matricula_imovel'; 
             $campos[] = 'proprietario.j34_setor as matricula_setor';
             $campos[] = 'proprietario.proprietario as nome_proprietario_view';
@@ -197,7 +197,7 @@ function buscaDadosCabecalhoPdf($titulo, $origem, $tipo, $textarea = "", $tipoce
 
             $sWhere = "iptubase.j01_matric = {$origem}";
         } else {
-            if (trim($titulo) == "INSCRICAO") {
+            if (trim((string) $titulo) == "INSCRICAO") {
                 $campos[] = 'empresa.q02_inscr as inscricao';
                 $campos[] = 'empresa.q03_descr as inscricao_atividade';
                 $campos[] = 'empresa.z01_ender as inscricao_endereco';
@@ -226,7 +226,7 @@ function buscaDadosCabecalhoPdf($titulo, $origem, $tipo, $textarea = "", $tipoce
 
 function buscaDadosCorpoPdf($tipo, $titulo) 
 {
-    $aQuery = array();
+    $aQuery = [];
 
     $sCampo          = getCamposTemplate($tipo, $titulo)->diasCertidao;
     $variaveisSessao = getVariaveisSessao();
@@ -249,7 +249,7 @@ function getByPdf($tipoDoc, $oDadosArquivo, $oQueryHeader, $oQueryBody)
 
     $api->setOutputPath($oDadosArquivo->sCaminhoSalvoSxw);
     foreach ($oDadosArquivo->oParametros as $key => $value) {
-        $api->setParameter($key, trim($value));
+        $api->setParameter($key, trim((string) $value));
     }
 
     $xml = $api->getReport();
@@ -337,8 +337,8 @@ function salvaCertidao($oParamsArq)
 
     //  PROCESSO
     if ($oParamsArq->codproc != "") {
-        if (strpos($oParamsArq->codproc, "/") > 0) {
-            $codproc = split("\/", $oParamsArq->codproc);
+        if (strpos((string) $oParamsArq->codproc, "/") > 0) {
+            $codproc = preg_split("#\\/#m", (string) $oParamsArq->codproc);
             $exercicio = $codproc[1];
             $codproc = $codproc[0];
         } else {
@@ -371,7 +371,7 @@ function salvaCertidao($oParamsArq)
             if ($k03_tipocodcert == 5) {
                 $codimpresso = $codproc . "/" . $exercicio;
             } else {
-                $codimpresso = pg_result(db_query("select fc_numerocertidao({$variaveisSessao->instit}, {$k03_tipocodcert}, '{$p50_tipo}', false)"), 0);
+                $codimpresso = pg_fetch_result(db_query("select fc_numerocertidao({$variaveisSessao->instit}, {$k03_tipocodcert}, '{$p50_tipo}', false)"), 0);
             }
         }
 
@@ -391,9 +391,9 @@ function salvaCertidao($oParamsArq)
         $certidaoModel->setDiasValidade($dias_validade);
         $certidaoModel->setDiasValidade($dias_validade);
         
-        $nomeServico         = isset($_GET['nomeServico'])?$_GET['nomeServico']:null;
-        $resultadoWebservice = isset($_GET['resultadoWebservice'])?$_GET['resultadoWebservice']:null;
-        $dataHoraConsulta    = isset($_GET['dataHoraConsulta'])?$_GET['dataHoraConsulta']:null;
+        $nomeServico         = $_GET['nomeServico'] ?? null;
+        $resultadoWebservice = $_GET['resultadoWebservice'] ?? null;
+        $dataHoraConsulta    = $_GET['dataHoraConsulta'] ?? null;
         $certidaoModel->setNomeServico($nomeServico);
         $certidaoModel->setResultadoWebservice($resultadoWebservice);
         $certidaoModel->setDataHoraConsulta($dataHoraConsulta);
@@ -435,7 +435,7 @@ function salvaCertidao($oParamsArq)
         }
         
         $rsContribuinte = db_query($sSqlContribuinte);
-        if(!$rsContribuinte || pg_numrows($rsContribuinte) == 0) {
+        if(!$rsContribuinte || pg_num_rows($rsContribuinte) == 0) {
 
           throw new Exception("Não foi possível buscar contribuinte");
         }
@@ -451,7 +451,7 @@ function salvaCertidao($oParamsArq)
         $clcertidaoweb->cerip        = db_getsession('DB_ip');
         $clcertidaoweb->ceracesso    = $oParamsArq->oParametros->codigo_verificacao;
         $clcertidaoweb->cercertidao  = $iOid;
-        $clcertidaoweb->cernomecontr = addslashes($nomeContibuinte);
+        $clcertidaoweb->cernomecontr = addslashes((string) $nomeContibuinte);
         $clcertidaoweb->cerhtml      = "x";
         $clcertidaoweb->cerweb       = 'true';
           
@@ -561,15 +561,15 @@ function getCamposTemplate($tipo, $titulo)
         }
     }
 
-    return (object) array(
+    return (object) [
         "templateCertidao" => $sCampoTemplateCertidao,
         "diasCertidao"     => $sCampoDiasCertidao
-    );
+    ];
 }
 
 function getVariaveisSessao()
 {
-    return (object) array(
+    return (object) [
         "instit"     => db_getsession('DB_instit'),
         "anousu"     => db_getsession('DB_anousu'),
         "id_usuario" => db_getsession('DB_id_usuario'),
@@ -577,5 +577,5 @@ function getVariaveisSessao()
         "ip"         => db_getsession('DB_ip'),
         "base"       => db_getsession('DB_base'),
         "login"      => db_getsession('DB_login')
-    );
+    ];
 }

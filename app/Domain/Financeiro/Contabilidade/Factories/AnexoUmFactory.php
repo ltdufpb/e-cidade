@@ -21,11 +21,9 @@ class AnexoUmFactory extends AnexosFactory implements AnexosFactoryInterface
 
     public static function getCodigoRelatorio($exercicio)
     {
-        switch ($exercicio) {
-            case 2022:
-            default:
-                return 268;
-        }
+        return match ($exercicio) {
+            default => 268,
+        };
     }
 
     /**

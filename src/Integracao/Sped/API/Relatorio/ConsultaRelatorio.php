@@ -29,11 +29,6 @@ class ConsultaRelatorio
     private $alturaLinha;
 
     /**
-     * @var array
-     */
-    private $dados;
-
-    /**
      * @var string
      */
     private $caminhoArquivo;
@@ -42,11 +37,6 @@ class ConsultaRelatorio
      * @var \CgmBase
      */
     private $cgmResponsavel;
-
-    /**
-     * @var \stdClass
-     */
-    private $parametros;
 
     /**
      * @var array
@@ -109,11 +99,9 @@ class ConsultaRelatorio
      * @param \CgmBase $cgmResponsavel
      * @param \stdClass $parametros
      */
-    public function __construct(array $dados, \CgmBase $cgmResponsavel, \stdClass $parametros)
+    public function __construct(private readonly array $dados, \CgmBase $cgmResponsavel, private readonly \stdClass $parametros)
     {
-        $this->dados = $dados;
         $this->cgmResponsavel = $cgmResponsavel;
-        $this->parametros = $parametros;
     }
 
     /**
@@ -145,7 +133,7 @@ class ConsultaRelatorio
         }
 
         $this->pdf->addHeaderDescription(
-            $tipoResponsavel. ' ' .ucwords(strtolower($this->cgmResponsavel->getNomeCompleto()))
+            $tipoResponsavel. ' ' .ucwords(strtolower((string) $this->cgmResponsavel->getNomeCompleto()))
         );
         if (!empty($this->parametros->evento) && !empty($this->parametros->layout)) {
             $this->pdf->addHeaderDescription(
@@ -166,7 +154,7 @@ class ConsultaRelatorio
         $this->larguraLinha = static::LARGURA_PDF;
     }
 
-    final private function montarLinha($largura, $valor = '', $quebra = false, $preenche = false, $alinhamento = 'L')
+    private function montarLinha($largura, $valor = '', $quebra = false, $preenche = false, $alinhamento = 'L')
     {
         $borda = 'LRBT';
         $linhasOcupadas = $this->pdf->NbLines($largura, $valor);

@@ -108,7 +108,7 @@ class Importacao
      * Multas não cadastradas no sistema
      * @var Multa[]
      */
-    private $multasNaoCadastradas = array();
+    private $multasNaoCadastradas = [];
 
     /**
      * Existe registro de Trailler do arquivo. caso a o paremetro for false,arquivo nao foi importado.
@@ -120,7 +120,7 @@ class Importacao
      * Agrupa de linhas da receita
      * @var
     **/
-    private $linhasAgrupadas = array();
+    private $linhasAgrupadas = [];
 
     /**
      * @param $sCaminhoArquivo
@@ -278,24 +278,24 @@ class Importacao
 
         $codigoConta = $oReceitaInfracaoLancamento->getConta();
         if (empty($this->linhasAgrupadas[$codigoConta])) {
-            $this->linhasAgrupadas[$codigoConta] = array();
+            $this->linhasAgrupadas[$codigoConta] = [];
         }
 
         if (empty($this->linhasAgrupadas[$codigoConta][$iReceita])) {
-            $this->linhasAgrupadas[$codigoConta][$iReceita] = array();
+            $this->linhasAgrupadas[$codigoConta][$iReceita] = [];
         }
 
         if (empty($this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo])) {
-            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo] = array();
+            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo] = [];
         }
 
         if (empty($this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo])) {
-            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo]               = array();
+            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo]               = [];
         }
 
         if (empty($this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')])) {
-            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')]               = array();
-            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')]['valor']      = array();
+            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')]               = [];
+            $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')]['valor']      = [];
             $this->linhasAgrupadas[$codigoConta][$iReceita][$this->convenio_arquivo][$this->remessa_arquivo][$oMulta->getDataRepasse()->format('Y-m-d')]['valortotal'] = 0;
         }
 
@@ -402,7 +402,7 @@ class Importacao
     private function getReceitaById($iId)
     {
         $oDaoTabRec = new cl_tabrec();
-        $oDados = \db_utils::getRowFromDao($oDaoTabRec, array($iId));
+        $oDados = \db_utils::getRowFromDao($oDaoTabRec, [$iId]);
 
         if (empty($oDados)) {
             throw new \BusinessException('Não existe receita cadastrada com o código: ' . $iId);
@@ -523,7 +523,7 @@ class Importacao
         $oInfracaoTransitoRepository = InfracaoTransitoRepository::getInstance();
         try {
             $oInfracaoTransito = $oInfracaoTransitoRepository->getByCodigoInfracao($oLinha->codigoinfracao);
-        } catch (\BusinessException $e) {
+        } catch (\BusinessException) {
             if (empty($oInfracaoTransito)) {
                 $this->multasNaoCadastradas[] = $oMultaModel;
                 return null;

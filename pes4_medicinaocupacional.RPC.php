@@ -51,8 +51,8 @@ switch($oParam->exec) {
   	$sDataSessao = date("Y-m-d",db_getsession('DB_datausu')) ;
   	$iAnoFolha   = db_anofolha();
   	$iMesFolha   = db_mesfolha();
-  	$sIntervaloA = implode("-", array_reverse(explode("/",$oParam -> sIntervaloA)));
-  	$sIntervaloB = implode("-", array_reverse(explode("/",$oParam -> sIntervaloB)));
+  	$sIntervaloA = implode("-", array_reverse(explode("/",(string) $oParam -> sIntervaloA)));
+  	$sIntervaloB = implode("-", array_reverse(explode("/",(string) $oParam -> sIntervaloB)));
   	$iEmpresa    = $oParam -> iEmpresa;
   	$iMunicipio  = $oParam -> iMunicipio;
   	$sResumo     = $oParam -> sResumo;
@@ -173,7 +173,7 @@ switch($oParam->exec) {
       $oLayoutTxt->setCampoTipoLinha(3);
       $oLayoutTxt->setCampo("data_arquivo"         , date('dmY', db_getsession('DB_datausu')));
       $oLayoutTxt->setCampo("codigo_empresa"       , $iEmpresa);
-      $oLayoutTxt->setCampo("registro_titular"     , str_pad($oValorTxt->rh01_regist, 15, "0", STR_PAD_LEFT));
+      $oLayoutTxt->setCampo("registro_titular"     , str_pad((string) $oValorTxt->rh01_regist, 15, "0", STR_PAD_LEFT));
     	$oLayoutTxt->setCampo("nome"                 , $oValorTxt->z01_nome);
     	$oLayoutTxt->setCampo("data_nascimento"      , $oValorTxt->z01_nasc);
     	$oLayoutTxt->setCampo("sexo"                 , $oValorTxt->z01_sexo);
@@ -189,13 +189,13 @@ switch($oParam->exec) {
     	$oLayoutTxt->setCampo("carteira_identidade"  , $oValorTxt->z01_ident);
     	$oLayoutTxt->setCampo("orgao_emissor"        , $oValorTxt->orgao_emissor);
     	$oLayoutTxt->setCampo("codigo_pais"          , "114");
-    	$oLayoutTxt->setCampo("cpf"                  , str_pad($oValorTxt->z01_cgccpf, 14, "0", STR_PAD_LEFT));
+    	$oLayoutTxt->setCampo("cpf"                  , str_pad((string) $oValorTxt->z01_cgccpf, 14, "0", STR_PAD_LEFT));
     	$oLayoutTxt->setCampo("nome_mae"             , $oValorTxt->z01_mae);
     	$oLayoutTxt->setCampo("ficha_azul"           , $oValorTxt->ficha_azul);
     	$oLayoutTxt->setCampo("profissao"            , $oValorTxt->z01_profis);
     	$oLayoutTxt->setCampo("setor"                , $oValorTxt->r70_descr);
     	$oLayoutTxt->setCampo("carteira_proficional" , $oValorTxt->carteira_profissional);
-    	$oLayoutTxt->setCampo("numero_pis"           , str_pad($oValorTxt->rh16_pis, 15, "0", STR_PAD_LEFT));
+    	$oLayoutTxt->setCampo("numero_pis"           , str_pad((string) $oValorTxt->rh16_pis, 15, "0", STR_PAD_LEFT));
     	$oLayoutTxt->setCampo("beneficio_inss"       , $oValorTxt->beneficio_inss);
     	$oLayoutTxt->setCampo("data_admissao"        , $oValorTxt->rh01_admiss);
     	$oLayoutTxt->setCampo("data_demissao"        , $oValorTxt->rh05_recis);

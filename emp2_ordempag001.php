@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 
@@ -147,7 +147,7 @@ function js_testa(campo,valor,nomecampo1,nomecampo2){
               </td>
               <td>
                 <?php
-                  $op=array("e"=>"Empenho","d"=>"Data Empenho","l"=>"Data Lançamento","v"=>"Valor","c"=>"Credor");
+                  $op=["e"=>"Empenho","d"=>"Data Empenho","l"=>"Data Lançamento","v"=>"Valor","c"=>"Credor"];
                   db_select("sOrdem",$op,true,"text");
                 ?>
               </td>

@@ -58,7 +58,7 @@ class ImportacaoDiversosDiversos {
      *
      * @var dataManager[]
      */
-    protected $aDataManager        = array();
+    protected $aDataManager        = [];
 
     /**
      * iCodigoImportacao
@@ -78,7 +78,7 @@ class ImportacaoDiversosDiversos {
      * Tabela arrecad
      * @var array
      */
-    protected $aBaseDebitos    = array();
+    protected $aBaseDebitos    = [];
 
     /**
      * aDividasArrecad
@@ -86,7 +86,7 @@ class ImportacaoDiversosDiversos {
      * @var array
      * @access protected
      */
-    protected $aDividasArrecad = array();
+    protected $aDividasArrecad = [];
 
     /**
      * aReceitaProcedencia
@@ -94,7 +94,7 @@ class ImportacaoDiversosDiversos {
      * @var array
      * @access protected
      */
-    private $aReceitaProcedencia = array();
+    private $aReceitaProcedencia = [];
 
     /**
      * Observações sobre a Importacao
@@ -228,12 +228,12 @@ class ImportacaoDiversosDiversos {
         $oDaoDiversos->dv05_vlrhis    = $oDiverImporta->k00_valor;
         $oDaoDiversos->dv05_valor     = $oDiverImporta->k00_valor;
         $oDaoDiversos->dv05_procdiver = $iProcedencia;
-        $oDaoDiversos->dv05_exerc     = substr($oDiverImporta->k00_dtoper, 0, 4);
+        $oDaoDiversos->dv05_exerc     = substr((string) $oDiverImporta->k00_dtoper, 0, 4);
         $oDaoDiversos->dv05_numpre    = $iNumpreAdd;
         $oDaoDiversos->dv05_numtot    = $oDiverImporta->k00_numtot;
         $oDaoDiversos->dv05_privenc   = $oDiverImporta->k00_dtvenc;
         $oDaoDiversos->dv05_provenc   = $oDiverImporta->k00_dtvenc;
-        $oDaoDiversos->dv05_diaprox   = substr($oDiverImporta->k00_dtvenc,8,2);
+        $oDaoDiversos->dv05_diaprox   = substr((string) $oDiverImporta->k00_dtvenc,8,2);
         $oDaoDiversos->dv05_oper      = $oDiverImporta->k00_dtoper;
         $oDaoDiversos->dv05_obs       = "Debito Importado para Diversos. Observações da Importação: ";
         $oDaoDiversos->dv05_obs      .= pg_escape_string($this->sObservacoes);
@@ -351,7 +351,7 @@ class ImportacaoDiversosDiversos {
      * @access protected
      * @return void
      */
-    protected function processaArrecad($aDebito, ProcedenciaDiversos $oProcedenciaDiversos, $iMatricula = null, $iNumpreGerado, DBDate $oVencimento = null ) {
+    protected function processaArrecad($aDebito, ProcedenciaDiversos $oProcedenciaDiversos, $iMatricula = null, $iNumpreGerado = null, ?DBDate $oVencimento = null ) {
 
         $oDaoArrecad      = new cl_arrecad();
         $oDadosDebito     = $aDebito[0][0];
@@ -562,7 +562,7 @@ class ImportacaoDiversosDiversos {
         }
 
         $aDiverImporta        = db_utils::getCollectionByRecord($rsValidaImportacao);
-        $aNumpresCancelamento = array();
+        $aNumpresCancelamento = [];
 
         foreach ( $aDiverImporta as $oNumpreCancelamento ) {
             $aNumpresCancelamento[] = $oNumpreCancelamento->dv13_numpre;

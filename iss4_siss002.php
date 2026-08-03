@@ -73,11 +73,11 @@ if(!defined("DB_ARQUIVO_LOG")) {
 }
 
 // Logs...
-db_log("", $sArquivoLog,2);
-db_log("*** INICIO Script ".$sNomeScript." ***", $sArquivoLog,2);
-db_log("", $sArquivoLog,2);
-db_log("Arquivo de Log: $sArquivoLog", $sArquivoLog,2);
-db_log("", $sArquivoLog,2);
+db_log("", $sArquivoLog);
+db_log("*** INICIO Script ".$sNomeScript." ***", $sArquivoLog);
+db_log("", $sArquivoLog);
+db_log("Arquivo de Log: $sArquivoLog", $sArquivoLog);
+db_log("", $sArquivoLog);
 
 
 include(modification("dbforms/db_funcoes.php"));
@@ -94,7 +94,7 @@ if(!($conn2 = @pg_connect("host=$DB_SERVIDOR_SISS dbname=$DB_BASE_SISS port=$DB_
   exit;
 }else{
   if(!isset($mostrahtml)){
-    db_log("CONECTADO A BASE $DB_BASE_SISS ", null, 1, true,true);
+    db_log("CONECTADO A BASE $DB_BASE_SISS ", null);
     db_log("", $sArquivoLog);
   }
 }
@@ -117,12 +117,12 @@ if(isset($mostrahtml) and $mostrahtml== true){
     echo "Contate com Administrador do Sistema! (Conexão Inválida na $DB_BASE.)   <br>Sessão terminada, feche seu navegador!\n";
     exit;
   }else{
-    db_log("CONECTADO A BASE $DB_BASE do ip $DB_SERVIDOR ", null, 1, true,true);
+    db_log("CONECTADO A BASE $DB_BASE do ip $DB_SERVIDOR ", null);
   }
 
   $sqlinstit = "select codigo from db_config where prefeitura is true";
   $rsInstit  = db_query($conn ,$sqlinstit);
-  $instit    = pg_result($rsInstit,0,0);
+  $instit    = pg_fetch_result($rsInstit,0,0);
 
   $sqlSessao  = "SELECT fc_startsession()";
   $rsSessao   = db_query($conn, $sqlSessao) or die("Problema com a sessão");
@@ -132,7 +132,7 @@ if(isset($mostrahtml) and $mostrahtml== true){
 
   $sql = "select nextval('db_logsacessa_codsequen_seq')";
   $result = db_query($sql) or die($sql);
-  $codsequen = pg_result($result, 0, 0);
+  $codsequen = pg_fetch_result($result, 0, 0);
 
 }
 
@@ -184,11 +184,11 @@ if($processartodos == false){
   }else{
     if(isset($mostrahtml) and $mostrahtml== true){
       db_msgbox("Nenhum registro incluido ou altereado para esta data.");
-      db_log("Nenhum registro incluido ou altereado para esta data. ",$sArquivoLog,2);
-      db_log("", $sArquivoLog,2);
-      db_log("Final.: " . date( "H:i:s"), $sArquivoLog,2);
-      db_log("", $sArquivoLog,2);
-      db_log("*** FINAL Script ".$sNomeScript." *** \n\n", $sArquivoLog,2);
+      db_log("Nenhum registro incluido ou altereado para esta data. ",$sArquivoLog);
+      db_log("", $sArquivoLog);
+      db_log("Final.: " . date( "H:i:s"), $sArquivoLog);
+      db_log("", $sArquivoLog);
+      db_log("*** FINAL Script ".$sNomeScript." *** \n\n", $sArquivoLog);
       echo "<script>parent.db_iframe_relatorio.hide(); </script>";
       $cancelaProcessamento = true;  //exit;
     }else{
@@ -231,21 +231,21 @@ if($cancelaProcessamento == false){
     if(isset($mostrahtml) and $mostrahtml== true){
       db_atutermometro(1,8, 'termometro2');
       echo"<script>document.getElementById('titulo').innerHTML='PROCESSANDO CADASTRO DE ATIVIDADES'; </script>";
-      db_log("PROCESSANDO CADASTRO DE ATIVIDADES  total = $linhasAtiv ", $sArquivoLog,2 );
+      db_log("PROCESSANDO CADASTRO DE ATIVIDADES  total = $linhasAtiv ", $sArquivoLog );
     }else{
 
-      db_log("PROCESSANDO CADASTRO DE ATIVIDADES  total = $linhasAtiv ", $sArquivoLog,0,true,true );
+      db_log("PROCESSANDO CADASTRO DE ATIVIDADES  total = $linhasAtiv ", $sArquivoLog );
       db_log("", $sArquivoLog);
     }
 
-    
+
     for ($at=0;$at<$linhasAtiv; $at++) {
-      
+
       if(isset($mostrahtml) and $mostrahtml== true){
         db_atutermometro($at, $linhasAtiv, 'termometro');
       }else{
         $nPercentual = round((($at+1)/$linhasAtiv) * 100 , 2);
-        db_log(" {$at} de {$linhasAtiv} .....  \rProcessando {$nPercentual}%...", null, 1, false,false);
+        db_log(" {$at} de {$linhasAtiv} .....  \rProcessando {$nPercentual}%...", null);
       }
 
       db_fieldsmemory($resultAtiv,$at);
@@ -267,18 +267,18 @@ if($cancelaProcessamento == false){
                                                       false,
                                                       ".dbValida( $dt_exp,'date')."
                                                       )";
- 
+
         $resultCadAtiv = @db_query($conn2,$incluiCadAtiv) ;
         if($resultCadAtiv==false){
-          db_log("Erro: \n sql = $incluiCadAtiv", null, 1);
+          db_log("Erro: \n sql = $incluiCadAtiv", null);
           db_query($conn , 'rollback');
           db_query($conn2, 'rollback');
           exit;
         }else{
           if($processartodos == false){
-            db_log("Atualizada Atividade : {$q03_ativ}", $sArquivoLog,2);
+            db_log("Atualizada Atividade : {$q03_ativ}", $sArquivoLog);
           }else{
-            db_log("Incluida Atividade : {$q03_ativ}", $sArquivoLog,2);
+            db_log("Incluida Atividade : {$q03_ativ}", $sArquivoLog);
           }
         }
       }                                              
@@ -292,7 +292,7 @@ if($cancelaProcessamento == false){
   $vir= "";
   //echo "<br> inserir dados na tb_i
   //inserir dados na tb_inter_empr
-  
+
   $sqlissbase = "
 					select distinct on(issbase.q02_inscr)
 					  issbase.q02_inscr  as inscricao,
@@ -321,13 +321,13 @@ if($cancelaProcessamento == false){
           left  join ruas        on issruas.j14_codigo    = ruas.j14_codigo
           $whereinscr
           ";
-  
+
   $resultissbase = db_query($conn,$sqlissbase);
   $linhasissbase = pg_num_rows($resultissbase);
   if(isset($mostrahtml) and $mostrahtml== true){
     db_atutermometro(1,8, 'termometro2');
     echo"<script>document.getElementById('titulo').innerHTML='PROCESSANDO EMPRESAS'; </script>";
-    db_log("PROCESSANDO EMPRESAS  total = $linhasissbase ", $sArquivoLog,2 );
+    db_log("PROCESSANDO EMPRESAS  total = $linhasissbase ", $sArquivoLog );
   }else{
 
     db_log("PROCESSANDO EMPRESAS  total = $linhasissbase ", $sArquivoLog );
@@ -342,7 +342,7 @@ if($cancelaProcessamento == false){
         db_atutermometro($is, $linhasissbase, 'termometro');
       }else{
         $nPercentual = round((($is+1)/$linhasissbase) * 100 , 2);
-        db_log(" {$is} de {$linhasissbase} .....  \rProcessando {$nPercentual}%...", null, 1, false,false);
+        db_log(" {$is} de {$linhasissbase} .....  \rProcessando {$nPercentual}%...", null);
       }
       db_fieldsmemory($resultissbase, $is);
 
@@ -353,11 +353,11 @@ if($cancelaProcessamento == false){
       if($linhasverifica > 0   ){
         if(isset($mostrahtml) and $mostrahtml== true){
           db_msgbox("Empresa ja incluida para esta data.");
-          db_log("Empresa ja incluida para esta data.",$sArquivoLog,2);
-          db_log("", $sArquivoLog,2);
-          db_log("Final.: " . date( "H:i:s"), $sArquivoLog,2);
-          db_log("", $sArquivoLog,2);
-          db_log("*** FINAL Script ".$sNomeScript." *** \n\n", $sArquivoLog,2);
+          db_log("Empresa ja incluida para esta data.",$sArquivoLog);
+          db_log("", $sArquivoLog);
+          db_log("Final.: " . date( "H:i:s"), $sArquivoLog);
+          db_log("", $sArquivoLog);
+          db_log("*** FINAL Script ".$sNomeScript." *** \n\n", $sArquivoLog);
           echo "<script>parent.db_iframe_relatorio.hide(); </script>";
           db_query($conn , 'rollback');
           db_query($conn2, 'rollback');
@@ -390,7 +390,7 @@ if($cancelaProcessamento == false){
       if($cpf_cnpj == ""){
         $cpf_cnpj = "000000000000";
       }
-      $rsocial = addslashes($rsocial);
+      $rsocial = addslashes((string) $rsocial);
       $endereco = $logradouro.",".$num_imovel;
       $incluiempresa = "
         INSERT INTO tb_contribuintes (
@@ -425,29 +425,29 @@ if($cancelaProcessamento == false){
       //die($incluiempresa);
       $resultinclui = @db_query($conn2,$incluiempresa) ;
       if($resultinclui==false){
-        db_log("Erro: \n sql = $incluiempresa", null, 1);
+        db_log("Erro: \n sql = $incluiempresa", null);
         db_query($conn , 'rollback');
         db_query($conn2, 'rollback');
         exit;
       }else{
         if($processartodos == false){
-          db_log("Atualizada inscrição : {$inscricao}", $sArquivoLog,2);
+          db_log("Atualizada inscrição : {$inscricao}", $sArquivoLog);
         }else{
-          db_log("Incluida inscrição : {$inscricao}", $sArquivoLog,2);
+          db_log("Incluida inscrição : {$inscricao}", $sArquivoLog);
         }
 
       }
 
      //############## PROCESSANDO INSCRICOES - ATIVIDADES  ##############
-     
+
      $sqlTavativ = " select q07_ativ,q07_datain,q07_datafi from tabativ where q07_inscr = $inscricao ";
      $resultTabativ = db_query($conn , $sqlTavativ);
      $linhasTabativ = pg_num_rows($resultTabativ);
      if($linhasTabativ > 0){
-     
+
        for($ta=0;$ta<$linhasTabativ;$ta++){
          db_fieldsmemory($resultTabativ, $ta);
-         
+
          //verificar se ja tem esta atividade gravada no SISS
          $sqlAtiv_contrib = " select * from tb_ativ_contrib where ccm = $inscricao  and codativ = $q07_ativ ";
          $resultAtiv_contrib = db_query($conn2 , $sqlAtiv_contrib );
@@ -469,17 +469,17 @@ if($cancelaProcessamento == false){
                                                                ".dbValida( $dt_exp,'date')."
                                                              )";
            $resultIncluiAtiv_contrib = db_query($conn2, $incluiAtiv_contrib);
-           
+
            if($resultIncluiAtiv_contrib==false){
-             db_log("Erro: \n sql = $incluiAtiv_contrib", null, 1);
+             db_log("Erro: \n sql = $incluiAtiv_contrib", null);
              db_query($conn,'rollback');
              db_query($conn2,'rollback');
              exit;
            }else{
              if($processartodos == false){
-               db_log("Atualizada Atividade para inscrição : {$inscricao}, atividade = $q07_ativ", $sArquivoLog,2,true,true);
+               db_log("Atualizada Atividade para inscrição : {$inscricao}, atividade = $q07_ativ", $sArquivoLog);
              }else{
-               db_log("Incluida Atividade para inscrição : {$inscricao}, atividade = $q07_ativ", $sArquivoLog,2,true,true);
+               db_log("Incluida Atividade para inscrição : {$inscricao}, atividade = $q07_ativ", $sArquivoLog);
              }
            }
 
@@ -488,7 +488,7 @@ if($cancelaProcessamento == false){
        }
      }
      // Processa aidof
-     
+
      $sqlAidof = "select  q09_nota, y08_dtlanc,y08_notain,y08_notafi from aidof inner join notasiss on q09_codigo = y08_nota where y08_inscr = $inscricao";
      $resultAidof = db_query($conn, $sqlAidof);
      $linhasAidof = pg_num_rows($resultAidof);
@@ -504,7 +504,7 @@ if($cancelaProcessamento == false){
          $resultAidofSiss = db_query($conn2,$sqlVerAidofSiss);
          $linhasAidofSiss = pg_num_rows($resultAidofSiss);
          if($linhasAidofSiss ==0){
-           
+
            $incluiAidof = " Insert into tb_contrib_aidof (ccm,num_ini,num_fim,serie,dt_lib,controle,dt_exp)
                                                  values  ($inscricao,
                                                           ".dbValida( $y08_notain,'int').",
@@ -516,19 +516,19 @@ if($cancelaProcessamento == false){
                                                           )";
            $resultIncAidof = db_query($conn2,$incluiAidof);
            if($resultIncAidof==false){
-             db_log("Erro: \n sql = $incluiAidof", null, 1);
+             db_log("Erro: \n sql = $incluiAidof", null);
              db_query($conn,'rollback');
              db_query($conn2,'rollback');
              exit;
            }else{
              if($processartodos == false){
-               db_log("Atualizada Aidof para inscrição : {$inscricao}", $sArquivoLog,2,true,true);
+               db_log("Atualizada Aidof para inscrição : {$inscricao}", $sArquivoLog);
              }else{
-               db_log("Incluida Aidof para inscrição : {$inscricao}", $sArquivoLog,2,true,true);
+               db_log("Incluida Aidof para inscrição : {$inscricao}", $sArquivoLog);
              }
            }
-            
- 
+
+
          }
        }
      }
@@ -557,7 +557,7 @@ if($cancelaProcessamento == false){
               $resultSimplesSiss = db_query($conn2,$sqlVerSimplesSiss);
               $linhasSimplesSiss = pg_num_rows($resultSimplesSiss);
               if($linhasSimplesSiss == 0 ){
-                
+
                 $IncluiSimples = "insert into tb_simples (cnpj,mes,ano,valor,controle,dt_exp)
                                               values     (".dbValida( $cnpj,'string').",
                                                           ".dbValida( $q23_mesusu,'int').",
@@ -568,15 +568,15 @@ if($cancelaProcessamento == false){
                                                          )";
                 $resultIncSimples = db_query($conn2,$IncluiSimples);
                 if($resultIncSimples==false){
-                  db_log("Erro: \n sql = $IncluiSimples", null, 1);
+                  db_log("Erro: \n sql = $IncluiSimples", null);
                   db_query($conn,'rollback');
                   db_query($conn2,'rollback');
                   exit;
                 }else{
                   if($processartodos == false){
-                    db_log("Atualizado Simples para inscrição : {$inscricao} , CPNJ:{$cnpj}", $sArquivoLog,2,true,true);
+                    db_log("Atualizado Simples para inscrição : {$inscricao} , CPNJ:{$cnpj}", $sArquivoLog);
                   }else{
-                    db_log("Incluido Simples para inscrição : {$inscricao} , CPNJ:{$cnpj}", $sArquivoLog,2,true,true);
+                    db_log("Incluido Simples para inscrição : {$inscricao} , CPNJ:{$cnpj}", $sArquivoLog);
                   }
                 }
               }
@@ -600,9 +600,9 @@ if($cancelaProcessamento == false){
     if(isset($mostrahtml) and $mostrahtml== true){
       db_atutermometro(1,8, 'termometro2');
       echo"<script>document.getElementById('titulo').innerHTML='PROCESSANDO EMPRESAS'; </script>";
-      db_log("PROCESSANDO ESCRITÓRIOS  total = $linhasEscritorio ", $sArquivoLog,2 );
+      db_log("PROCESSANDO ESCRITÓRIOS  total = $linhasEscritorio ", $sArquivoLog );
     }else{
-  
+
       db_log("PROCESSANDO ESCRITÓRIOS  total = $linhasEscritorio ", $sArquivoLog );
       db_log("", $sArquivoLog);
     }
@@ -614,11 +614,11 @@ if($cancelaProcessamento == false){
         db_atutermometro($e, $linhasEscritorio, 'termometro');
       }else{
         $nPercentual = round((($e+1)/$linhasEscritorio) * 100 , 2);
-        db_log(" {$e} de {$linhasEscritorio} .....  \rProcessando {$nPercentual}%...", null, 1, false,false);
+        db_log(" {$e} de {$linhasEscritorio} .....  \rProcessando {$nPercentual}%...", null);
       }
 
       // verifica se ja tem escritorio em SISS
-      
+
       $sqlEscrSiss = "select * from tb_escritorios where codescr = $q10_numcgm ";
       $resultEscrSiss = db_query($conn2,$sqlEscrSiss);
       $linhasEscrSiss = pg_num_rows($resultEscrSiss);
@@ -649,15 +649,15 @@ if($cancelaProcessamento == false){
          $resultIncEscr = db_query($conn2,$incluirEscritorio );
 
          if($resultIncEscr==false){
-           db_log("Erro: \n sql = $incluirEscritorio", null, 1);
+           db_log("Erro: \n sql = $incluirEscritorio", null);
            db_query($conn,'rollback');
            db_query($conn2,'rollback');
            exit;
          }else{
            if($processartodos == false){
-             db_log("Atualizado escritório codigo : {$q10_numcgm}", $sArquivoLog,2,true,true);
+             db_log("Atualizado escritório codigo : {$q10_numcgm}", $sArquivoLog);
            }else{
-             db_log("Incluido escritório codigo : {$q10_numcgm}", $sArquivoLog,2,true,true);
+             db_log("Incluido escritório codigo : {$q10_numcgm}", $sArquivoLog);
            }
          }
          // PROCESSAR AS INSCRIÇÕES PARA CADA ESCRITORIO
@@ -682,15 +682,15 @@ if($cancelaProcessamento == false){
                                                                  )";
                $resultIncEscrInsc = db_query($conn2, $incluiEscrInsc);
                if($resultIncEscrInsc==false){
-                 db_log("Erro: \n sql = $incluiEscrInsc", null, 1);
+                 db_log("Erro: \n sql = $incluiEscrInsc", null);
                  db_query($conn,'rollback');
                  db_query($conn2,'rollback');
                  exit;
                }else{
                  if($processartodos == false){
-                   db_log("Atualizado inscricao ({$q10_inscr}) para escritório ({$q10_numcgm})", $sArquivoLog,2,true,true);
+                   db_log("Atualizado inscricao ({$q10_inscr}) para escritório ({$q10_numcgm})", $sArquivoLog);
                  }else{
-                   db_log("Incluido inscricao ({$q10_inscr}) para escritório ({$q10_numcgm})", $sArquivoLog,2,true,true);
+                   db_log("Incluido inscricao ({$q10_inscr}) para escritório ({$q10_numcgm})", $sArquivoLog);
                  }
                }
              }
@@ -719,7 +719,7 @@ if(isset($mostrahtml) and $mostrahtml== true){
     db_atutermometro(8,9, 'termometro2');
       echo"<script>document.getElementById('titulo').innerHTML='PROCESSANDO ... gerar issvar apartir de boletos'; </script>";
 }else{
-    db_log("PROCESSANDO ... gerar issvar apartir de boletos - total = $linhasBuscaBoleto ", $sArquivoLog,0,true,true);
+    db_log("PROCESSANDO ... gerar issvar apartir de boletos - total = $linhasBuscaBoleto ", $sArquivoLog);
       db_log("", $sArquivoLog);
 }
 
@@ -734,16 +734,16 @@ if($linhasBuscaBoleto > 0){
       db_atutermometro($bb, $linhasBuscaBoleto, 'termometro');
     }else{
       $nPercentual = round((($bb+1)/$linhasBuscaBoleto) * 100 , 2);
-      db_log("{$bb} de {$linhasBuscaBoleto} \rProcessando {$nPercentual}%...", null, 1, false,false);
+      db_log("{$bb} de {$linhasBuscaBoleto} \rProcessando {$nPercentual}%...", null);
     }
 
     if($ccm <> $ccm_ant) {
       // comeca outro processamento
 
       // Log de Inicio do Processamento da Inscricao
-      db_log("", $sArquivoLog, 2, true,true);
-      db_log("Processando Inscricao $ccm", $sArquivoLog,2, true,true);
-      db_log("", $sArquivoLog, 2, true,true);
+      db_log("", $sArquivoLog);
+      db_log("Processando Inscricao $ccm", $sArquivoLog);
+      db_log("", $sArquivoLog);
       $lProcessaInscricao = true;
       $ccm_ant   = $ccm;
     }
@@ -759,13 +759,13 @@ if($linhasBuscaBoleto > 0){
 
     if($linhasValidaIssbase == 0) {
       $lProcessaInscricao = false;
-      db_log("Inscricao $ccm_ant Nao encontrada no Cadastro Municipal", $sArquivoLog,2, true,true);
-      db_log("Inscricao $ccm_ant Nao Processada", $sArquivoLog,2, true,true);
+      db_log("Inscricao $ccm_ant Nao encontrada no Cadastro Municipal", $sArquivoLog);
+      db_log("Inscricao $ccm_ant Nao Processada", $sArquivoLog);
     }
     if($linhasValidaIssbase > 0){
 
       if($documento < 20000000){
-         db_log("Boleto não processada, num_documento deve ser menor que 20000000 (documento = $documento)", $sArquivoLog,2, true,true); 
+         db_log("Boleto não processada, num_documento deve ser menor que 20000000 (documento = $documento)", $sArquivoLog); 
       }else{
 
 
@@ -800,11 +800,11 @@ if($linhasBuscaBoleto > 0){
           $linhasSimples = pg_num_rows($rsSimples);
           if($linhasSimples > 0 ){
             db_fieldsmemory($rsSimples , 0);
-            db_log("ISS não processado ... Boleto giss documento = $documento importado para simples (issvar = $cod_issvar, Remessa = $q17_nroremessa, Arquivo = $q17_nomearq).", $sArquivoLog, 2, true,true);
+            db_log("ISS não processado ... Boleto giss documento = $documento importado para simples (issvar = $cod_issvar, Remessa = $q17_nroremessa, Arquivo = $q17_nomearq).", $sArquivoLog);
             $naoProcessaBoletoSimples = true;
           }else{
             $naoProcessaBoletoSimples = false;
-            db_log("Anulando ISS em aberto (issvar = $cod_issvar).", $sArquivoLog, 2, true,true);
+            db_log("Anulando ISS em aberto (issvar = $cod_issvar).", $sArquivoLog);
             $clissvar->excluir_issvar($cod_issvar,"0");
           }
 
@@ -815,10 +815,10 @@ if($linhasBuscaBoleto > 0){
       // setar todas as  variaveis..
       if(	$naoProcessaBoletoSimples == false){
 
-        db_log("Processando Boleto giss. Documento = $documento, Data Vencimento = $dt_venc, Mês/Ano = $mes/$ano, Valor = $valor", $sArquivoLog, 2, true,true);
+        db_log("Processando Boleto giss. Documento = $documento, Data Vencimento = $dt_venc, Mês/Ano = $mes/$ano, Valor = $valor", $sArquivoLog);
 
 
-        $vt= array();
+        $vt= [];
         $clissvar->q05_numpre = $documento;
         $clissvar->q05_numpar = $mes;
         $clissvar->q05_valor  = $valor;
@@ -832,7 +832,7 @@ if($linhasBuscaBoleto > 0){
         $clissvar-> incluir_issvar_complementar ($vt,$ccm);
         if($clissvar->erro_status=="0"){
           $sqlerro = true;
-          db_log("Erro no processamento do boleto!", $sArquivoLog, 0, true,true);
+          db_log("Erro no processamento do boleto!", $sArquivoLog);
           db_query($conn,'rollback');
           db_query($conn2,'rollback');
           exit;
@@ -847,7 +847,7 @@ if($linhasBuscaBoleto > 0){
           $rsIncluiRecibo = db_query($sqlIncluiRecibo);															
           if($rsIncluiRecibo==false){
             $sqlerro = true;
-            db_log("Erro: \n sql = $sqlIncluiRecibo", null, 0, true,true);
+            db_log("Erro: \n sql = $sqlIncluiRecibo", null);
             db_query($conn,'rollback');
             db_query($conn2,'rollback');
             exit;
@@ -857,21 +857,21 @@ if($linhasBuscaBoleto > 0){
           $rsIncluiRecibocodbar   = db_query($sqlIncluiRecibocodbar);
           if($rsIncluiRecibocodbar==false){
             $sqlerro = true;
-            db_log("Erro: \n sql = $sqlIncluiRecibocodbar", null, 1, true,true);
+            db_log("Erro: \n sql = $sqlIncluiRecibocodbar", null);
             db_query($conn,'rollback');
             db_query($conn2,'rollback');
             exit;
           }
         }
         if($sqlerro == false){
-          db_log("Boleto processado com sucesso!...(issvar = ".$clissvar->q05_codigo.", numpre = $documento, parcela = $mes)", $sArquivoLog, 2, true,true);
+          db_log("Boleto processado com sucesso!...(issvar = ".$clissvar->q05_codigo.", numpre = $documento, parcela = $mes)", $sArquivoLog);
 
           // guarda  as informações dos registros que foram gerados issvar, para alterar o campo controle no giss
-          $arrayGiss[] = array('ccm'    => $ccm,
+          $arrayGiss[] = ['ccm'    => $ccm,
               'documento'   => $documento,
               'mes' => $mes,
               'ano' => $ano
-              );
+              ];
         }
 
       }
@@ -894,7 +894,7 @@ if($linhasBuscaBoleto > 0){
       $sqlAlteraControle = "update tb_controle_boletos set controle = 't' where $wherecontrole ";
       $rsAlteraControle  = db_query($conn2,$sqlAlteraControle);
       if($rsAlteraControle ==false){
-        db_log("Erro: \n sql = $sqlAlteraControle", null, 1, true,true);
+        db_log("Erro: \n sql = $sqlAlteraControle", null);
         db_query($conn,'rollback');
         db_query($conn2,'rollback');
         exit;
@@ -915,14 +915,14 @@ db_log("Final.: " . date( "H:i:s"), $sArquivoLog);
 db_log("\n *** FINAL Script ".$sNomeScript." *** \n\n", $sArquivoLog);
 
 function dbValida($valor,$tipo){
-  $aValorDefault = array('int'    => "0",
+  $aValorDefault = ['int'    => "0",
   'date'   => "null",
-  'string' => "null" );
+  'string' => "null" ];
   if ($valor != '') {
     if($tipo == 'int'){
       return $valor;
     }else{
-      $valor = addslashes($valor);
+      $valor = addslashes((string) $valor);
       $valor = "'".$valor."'";
       return $valor;
     }
@@ -934,10 +934,10 @@ function dbValida($valor,$tipo){
 
 
 function dbValidaNumero($string){
-  $tamanho = strlen($string);
+  $tamanho = strlen((string) $string);
   $string2 = "";
   for($tm=0;$tm<$tamanho;$tm++){
-    $letra = $string{$tm};
+    $letra = $string[$tm];
     // echo "<br>letra = $letra";
     if($letra=='0' or $letra=='1' or $letra=='2' or $letra=='3' or $letra=='4' or
     $letra=='5' or $letra=='6' or $letra=='7' or $letra=='8' or $letra=='9' ){

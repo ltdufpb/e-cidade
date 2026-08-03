@@ -51,14 +51,11 @@ try {
         throw new Exception("Ocorreu um erro ao buscar as listas de classificação de credores.");
       }
 
-      $oRetorno->aLista = db_utils::makeCollectionFromRecord($rsBuscaClassificacao, function($oRegistro) {
-
-        return (object) array(
-          'iCodigo'    => $oRegistro->cc30_codigo,
-          'sDescricao' => $oRegistro->cc30_descricao,
-          'iOrdem'     => $oRegistro->cc30_ordem
-        );
-      });
+      $oRetorno->aLista = db_utils::makeCollectionFromRecord($rsBuscaClassificacao, fn($oRegistro) => (object) [
+        'iCodigo'    => $oRegistro->cc30_codigo,
+        'sDescricao' => $oRegistro->cc30_descricao,
+        'iOrdem'     => $oRegistro->cc30_ordem
+      ]);
 
       break;
 

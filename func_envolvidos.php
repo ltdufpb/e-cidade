@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tarefalogenvol_classe.php"));
 include(modification("classes/db_tarefaenvol_classe.php"));
 include(modification("classes/db_db_usuarios_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_usuarios    = new cl_db_usuarios;
 $cltarefaenvol    = new cl_tarefaenvol;
 $cltarefalogenvol = new cl_tarefalogenvol;
@@ -59,21 +59,21 @@ if(isset($incluir)){
 				db_fieldsmemory($rs_usuarios,$i);
 				$chk  = "chk_".$id_usuario;
 				$perc = "perc_".$id_usuario;
-				if(@$HTTP_POST_VARS[$chk] == $id_usuario) {
-					if(@$HTTP_POST_VARS[$perc]==""||trim(@$HTTP_POST_VARS[$perc])=="0") {
+				if(@$_POST[$chk] == $id_usuario) {
+					if(@$_POST[$perc]==""||trim((string) @$_POST[$perc])=="0") {
 						$erro_msg = "Percentual deve ser maior que zero";
 						$sqlerro  = true;
 						break;
 					}
 					else {
-					  if ($HTTP_POST_VARS[$perc] > $maxperc) {
-					    $maxperc = $HTTP_POST_VARS[$perc];
+					  if ($_POST[$perc] > $maxperc) {
+					    $maxperc = $_POST[$perc];
 					  }
 						$rs_tarefalogenvol = $cltarefalogenvol->sql_record($cltarefalogenvol->sql_query_file(null,"at35_usuario","at35_tarefalog","at35_tarefalog=$at43_sequencial and at35_usuario=$id_usuario"));
 						if($cltarefalogenvol->numrows==0) {
 							$cltarefalogenvol->at35_tarefalog = $at43_sequencial;
 							$cltarefalogenvol->at35_usuario   = $id_usuario;
-							$cltarefalogenvol->at35_perc      = $HTTP_POST_VARS[$perc];
+							$cltarefalogenvol->at35_perc      = $_POST[$perc];
 							$cltarefalogenvol->incluir(null);
 							$erro_msg = $cltarefalogenvol->erro_msg;
 							if($cltarefalogenvol->erro_status=="0") {
@@ -87,7 +87,7 @@ if(isset($incluir)){
 							if($cltarefaenvol->numrows==0) {
 								$cltarefaenvol->at45_tarefa  = $at43_tarefa;
 								$cltarefaenvol->at45_usuario = $id_usuario;
-								$cltarefaenvol->at45_perc    = $HTTP_POST_VARS[$perc];
+								$cltarefaenvol->at45_perc    = $_POST[$perc];
 								$cltarefaenvol->incluir(null);
 								if($cltarefaenvol->erro_status=="0") {
 									$sqlerro  = true;
@@ -100,7 +100,7 @@ if(isset($incluir)){
 								$cltarefaenvol->at45_sequencial  = $at45_sequencial;
 								$cltarefaenvol->at45_tarefa  = $at43_tarefa;
 								$cltarefaenvol->at45_usuario = $id_usuario;
-								$cltarefaenvol->at45_perc    = $HTTP_POST_VARS[$perc];
+								$cltarefaenvol->at45_perc    = $_POST[$perc];
 								$cltarefaenvol->alterar($at45_sequencial);
 								if($cltarefaenvol->erro_status=="0") {
 									$sqlerro  = true;
@@ -138,21 +138,21 @@ else if(isset($alterar)) {
 			db_fieldsmemory($rs_usuarios,$i);
 			$chk  = "chk_".$id_usuario;
 			$perc = "perc_".$id_usuario;
-			if(@$HTTP_POST_VARS[$chk] == $id_usuario) {
-				if(@$HTTP_POST_VARS[$perc]==""||trim(@$HTTP_POST_VARS[$perc])=="0") {
+			if(@$_POST[$chk] == $id_usuario) {
+				if(@$_POST[$perc]==""||trim((string) @$_POST[$perc])=="0") {
 					$erro_msg = "Percentual deve ser maior que zero";
 					$sqlerro  = true;
 					break;
 				}
 				else {
-					if ($HTTP_POST_VARS[$perc] > $maxperc) {
-					  $maxperc = $HTTP_POST_VARS[$perc];
+					if ($_POST[$perc] > $maxperc) {
+					  $maxperc = $_POST[$perc];
 					}
 					$rs_tarefalogenvol = $cltarefalogenvol->sql_record($cltarefalogenvol->sql_query_file(null,"at35_sequencia","at35_tarefalog","at35_tarefalog=$at43_sequencial and at35_usuario=$id_usuario"));
 					if($cltarefalogenvol->numrows>0) {
 						db_fieldsmemory($rs_tarefalogenvol,0);
 						$cltarefalogenvol->at35_sequencia = $at35_sequencia; 
-						$cltarefalogenvol->at35_perc      = $HTTP_POST_VARS[$perc];
+						$cltarefalogenvol->at35_perc      = $_POST[$perc];
 						$cltarefalogenvol->alterar($at35_sequencia);
 						$erro_msg = $cltarefalogenvol->erro_msg;
 						if($cltarefalogenvol->erro_status=="0") {
@@ -166,7 +166,7 @@ else if(isset($alterar)) {
 						if($cltarefaenvol->numrows>0) {
 							db_fieldsmemory($rs_tarefaenvol,0);
 							$cltarefaenvol->at45_sequencial = $at45_sequencial;
-							$cltarefaenvol->at45_perc       = $HTTP_POST_VARS[$perc];
+							$cltarefaenvol->at45_perc       = $_POST[$perc];
 							$cltarefaenvol->alterar($at45_sequencial);
 							if($cltarefaenvol->erro_status=="0") {
 								$sqlerro  = true;
@@ -197,7 +197,7 @@ else if(isset($excluir)) {
 		for($i=0;$i<$NumRows;$i++) {
 			db_fieldsmemory($rs_usuarios,$i);
 			$chk = "chk_".$id_usuario;
-			if(@$HTTP_POST_VARS[$chk] == $id_usuario) {
+			if(@$_POST[$chk] == $id_usuario) {
 				$cltarefalogenvol->excluir(null,"at35_tarefalog=$at43_sequencial and at35_usuario=$id_usuario");
 				$erro_msg = $cltarefalogenvol->erro_msg;
 				if($cltarefalogenvol->erro_status=="0") {

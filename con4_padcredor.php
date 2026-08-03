@@ -27,12 +27,12 @@
 
 class credor {
 
-  var $arq=null;
-  function credor($header){
+  public $arq=null;
+  function __construct($header){
     //
      umask(74);
      $this->arq = fopen("tmp/CREDOR.TXT",'w+');
-     fputs($this->arq,$header);
+     fputs($this->arq,(string) $header);
      fputs($this->arq,"\r\n");  
 
   }  
@@ -72,40 +72,40 @@ $sql = "select
        ";
 
 $res=db_query($sql);
-$rows = pg_numrows($res);
+$rows = pg_num_rows($res);
 for ($x=0;$x < $rows;$x++){
-   
-   $codigo  = formatar(pg_result($res,$x,"codigo"),10,'n');
-   $nome    = formatar(pg_result($res,$x,"nome"),60,'c');
-   $cnpj    = formatar(pg_result($res,$x,"cnpj"),14,'n');
-   $cgc     = formatar(pg_result($res,$x,"cgc"),15,'n');
-   $iss     = formatar(pg_result($res,$x,"iss"),15,'n');
-   $endereco = formatar(pg_result($res,$x,"endereco"),50,'c');
-   $cidade  = formatar(pg_result($res,$x,"cidade"),30,'c');
-   $uf      = formatar(pg_result($res,$x,"uf"),2,'c');
-   $cep     = formatar(str_replace("-","",pg_result($res,$x,"cep")),8,'n');
 
-   $fone    = formatar(str_replace(" ","",pg_result($res,$x,"fone")),15,'n');
-   $fone    = formatar(str_replace("(","",$fone),15,'n');
-   $fone    = formatar(str_replace(")","",$fone),15,'n');
-   $fone    = formatar(str_replace("-","",$fone),15,'n');
+   $codigo  = formatar(pg_fetch_result($res,$x,"codigo"),10);
+   $nome    = formatar(pg_fetch_result($res,$x,"nome"),60);
+   $cnpj    = formatar(pg_fetch_result($res,$x,"cnpj"),14);
+   $cgc     = formatar(pg_fetch_result($res,$x,"cgc"),15);
+   $iss     = formatar(pg_fetch_result($res,$x,"iss"),15);
+   $endereco = formatar(pg_fetch_result($res,$x,"endereco"),50);
+   $cidade  = formatar(pg_fetch_result($res,$x,"cidade"),30);
+   $uf      = formatar(pg_fetch_result($res,$x,"uf"),2);
+   $cep     = formatar(str_replace("-","",pg_fetch_result($res,$x,"cep")),8);
 
-   $fax     = formatar(str_replace(" ","",pg_result($res,$x,"fax")),15,'n');
-   $fax     = formatar(str_replace("(","",$fax),15,'n');
-   $fax     = formatar(str_replace(")","",$fax),15,'n');
-   $fax     = formatar(str_replace("-","",$fax),15,'n');
+   $fone    = formatar(str_replace(" ","",pg_fetch_result($res,$x,"fone")),15);
+   $fone    = formatar(str_replace("(","",$fone),15);
+   $fone    = formatar(str_replace(")","",$fone),15);
+   $fone    = formatar(str_replace("-","",$fone),15);
 
-   $tipo    = formatar(pg_result($res,$x,"tipo"),2,'n');
-   $tipoPessoa = formatar(pg_result($res,$x,"tipo_pessoa"),2,'n');
+   $fax     = formatar(str_replace(" ","",pg_fetch_result($res,$x,"fax")),15);
+   $fax     = formatar(str_replace("(","",$fax),15);
+   $fax     = formatar(str_replace(")","",$fax),15);
+   $fax     = formatar(str_replace("-","",$fax),15);
+
+   $tipo    = formatar(pg_fetch_result($res,$x,"tipo"),2);
+   $tipoPessoa = formatar(pg_fetch_result($res,$x,"tipo_pessoa"),2);
 
   $line = $codigo.$nome.$cnpj.$cgc.$iss.$endereco.$cidade.$uf.$cep.$fone.$fax.$tipo.$tipoPessoa;
   fputs($this->arq,$line);
   fputs($this->arq,"\r\n");
-  
+
   $contador = $contador+1; // incrementa contador global
 }
    //  trailer
-   $contador = espaco(10-(strlen($contador)),'0').$contador;
+   $contador = espaco(10-(strlen($contador))).$contador;
    $line = "FINALIZADOR".$contador;
    fputs($this->arq,$line);
    fputs($this->arq,"\r\n");

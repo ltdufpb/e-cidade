@@ -33,8 +33,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pagordem_classe.php"));
 include(modification("classes/db_empempenho_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clpagordem   = new cl_pagordem;
 $clempempenho = new cl_empempenho;
@@ -122,7 +122,7 @@ $rotulo->label("e60_numemp");
 	              $sql = $clpagordem->sql_query_pagordemele("",$campos,"e50_numemp","$dbwhere and e50_numemp like '$chave_e50_numemp%' ");
            }
         }else if(isset($chave_e60_codemp) && (trim($chave_e60_codemp)!="") ){
-	      $arr = split("/",$chave_e60_codemp);
+	      $arr = preg_split("#\\/#m",$chave_e60_codemp);
 	      if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
 		$dbwhere_ano = " and e60_anousu = ".$arr[1];
        	      }else{

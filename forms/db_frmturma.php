@@ -98,12 +98,12 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                         <?= @$Led57_i_tipoturma ?>
                     </label>
                     <?php
-                    $x = array('1' => 'NORMAL', '2' => 'EJA', '3' => 'MULTIETAPA', '6' => 'PROGRESSÃO PARCIAL', '7' => 'CORREÇÃO DE FLUXO');
+                    $x = ['1' => 'NORMAL', '2' => 'EJA', '3' => 'MULTIETAPA', '6' => 'PROGRESSÃO PARCIAL', '7' => 'CORREÇÃO DE FLUXO'];
                     if ($db_opcao == 2) {
                         if ($ed57_i_tipoturma == 6) {
-                            $x = array('6' => 'PROGRESSÃO PARCIAL');
+                            $x = ['6' => 'PROGRESSÃO PARCIAL'];
                         } else if ($ed57_i_tipoturma != 6) {
-                            $x = array('1' => 'NORMAL', '2' => 'EJA', '3' => 'MULTIETAPA', '7' => 'CORREÇÃO DE FLUXO');
+                            $x = ['1' => 'NORMAL', '2' => 'EJA', '3' => 'MULTIETAPA', '7' => 'CORREÇÃO DE FLUXO'];
                         }
                     }
                     db_select('ed57_i_tipoturma', $x, true, $db_opcao, "onchange='js_validaTipoTurma()'");
@@ -202,8 +202,8 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                 $sSqlQuery = $clturmaserieregimemat->sql_query_censo("", "*", "ed223_i_ordenacao", $sWhere);
                 $result_etapa = $clturmaserieregimemat->sql_record($sSqlQuery);
 
-                $ed219_i_codigo = pg_result($result_etapa, 0, 'ed219_i_codigo');
-                $ed219_c_nome = pg_result($result_etapa, 0, 'ed219_c_nome');
+                $ed219_i_codigo = pg_fetch_result($result_etapa, 0, 'ed219_i_codigo');
+                $ed219_c_nome = pg_fetch_result($result_etapa, 0, 'ed219_c_nome');
                 if ($ed219_i_codigo != "") {
                     ?>
                     <tr>
@@ -258,7 +258,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                             echo '</td><td>';
                             echo '<spam id ="aprovaAutomatico">';
                             echo ' <b>Aprovação Automática: </b>';
-                            $x = array('N' => 'NÃO', 'S' => 'SIM');
+                            $x = ['N' => 'NÃO', 'S' => 'SIM'];
                             db_select('ed220_c_aprovauto', $x, true, $db_opcao, " onchange=\"js_aprovauto(this.value,$ed220_i_codigo);\"");
                             echo '</spam>';
                             echo '<span id="checkhist" style="visibility:hidden">';
@@ -327,13 +327,13 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                 </td>
                 <td>
                     <?php
-                    $x = array('' => '', 'PERÌODOS' => 'PERÍODOS', 'DIAS LETIVOS' => 'DIAS LETIVOS');
+                    $x = ['' => '', 'PERÌODOS' => 'PERÍODOS', 'DIAS LETIVOS' => 'DIAS LETIVOS'];
                     db_select('ed57_c_medfreq', $x, true, $db_opcao, "");
                     ?>
                     <spam id='tipoAtendimento'>
                         <label for="ed57_i_tipoatend"><?= @$Led57_i_tipoatend ?></label>
                         <?php 
-                        $x = array('0' => 'NÃO SE APLICA', '1' => 'CLASSE HOSPITALAR', '2' => 'UNIDADE DE INTERNAÇÃO', '3' => 'UNIDADE PRISIONAL');
+                        $x = ['0' => 'NÃO SE APLICA', '1' => 'CLASSE HOSPITALAR', '2' => 'UNIDADE DE INTERNAÇÃO', '3' => 'UNIDADE PRISIONAL'];
                         db_select('ed57_i_tipoatend', $x, true, $db_opcao, "");
                         ?>
                     </spam>
@@ -375,7 +375,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                     if (empty($ed57_censoprogramamaiseducacao) && isset($ed57_i_tipoturma) && $ed57_i_tipoturma != 2) {
                         $ed57_censoprogramamaiseducacao = 'f';
                     }
-                    $x = array('' => '', 't' => 'SIM', 'f' => 'NÃO');
+                    $x = ['' => '', 't' => 'SIM', 'f' => 'NÃO'];
                     db_select('ed57_censoprogramamaiseducacao', $x, true, $db_opcao, '');
                     ?>
                 </td>
@@ -389,7 +389,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
 
                     db_fieldsmemory($result_etapa, $p);
 
-                    $aEtapasEnsinoRegular = array(30, 31, 32, 33, 34, 39, 40);
+                    $aEtapasEnsinoRegular = [30, 31, 32, 33, 34, 39, 40];
                     if (isset($ed36_c_abrev) && $ed36_c_abrev == "ER" && in_array($ed133_censoetapa, $aEtapasEnsinoRegular)) {
 
                         $visivel = "visible";
@@ -397,7 +397,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                         break;
                     }
 
-                    $aEtapasEnsinoEspecial = array(30, 31, 32, 33, 34, 39, 40, 62, 63);
+                    $aEtapasEnsinoEspecial = [30, 31, 32, 33, 34, 39, 40, 62, 63];
                     if (isset($ed36_c_abrev) && $ed36_c_abrev == "ES" && in_array($ed133_censoetapa, $aEtapasEnsinoEspecial)) {
 
                         $visivel = "visible";
@@ -405,7 +405,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                         break;
                     }
 
-                    $aEtapasEJA = array(62, 63);
+                    $aEtapasEJA = [62, 63];
                     if (isset($ed36_c_abrev) && $ed36_c_abrev == "EJ" && in_array($ed133_censoetapa, $aEtapasEJA)) {
 
                         $visivel = "visible";
@@ -413,7 +413,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
                         break;
                     }
 
-                    $aEtapasProfissionalizantes = array(30, 31, 32, 33, 34, 39, 40, 73, 74, 64, 67, 68);
+                    $aEtapasProfissionalizantes = [30, 31, 32, 33, 34, 39, 40, 73, 74, 64, 67, 68];
                     if (isset($ed36_c_abrev) && $ed36_c_abrev == "EP" && in_array($ed133_censoetapa, $aEtapasProfissionalizantes)) {
 
                         $visivel = "visible";
@@ -879,7 +879,7 @@ if ($db_opcao != 1 && isset($ed57_i_codigo) && !isset($excluir)) {
         db_iframe_turma.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
         }
         ?>
 

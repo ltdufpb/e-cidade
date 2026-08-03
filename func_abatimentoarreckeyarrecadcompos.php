@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_abatimentoarreckeyarrecadcompos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clabatimentoarreckeyarrecadcompos = new cl_abatimentoarreckeyarrecadcompos;
 $clabatimentoarreckeyarrecadcompos->rotulo->label("k129_sequencial");
 $clabatimentoarreckeyarrecadcompos->rotulo->label("k129_arrecadcompos");
@@ -98,9 +98,9 @@ $clabatimentoarreckeyarrecadcompos->rotulo->label("k129_arrecadcompos");
         }else{
            $sql = $clabatimentoarreckeyarrecadcompos->sql_query("",$campos,"k129_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k129_arrecadcompos)){
-          $repassa = array("chave_k129_sequencial"=>$chave_k129_sequencial,"chave_k129_arrecadcompos"=>$chave_k129_arrecadcompos);
+          $repassa = ["chave_k129_sequencial"=>$chave_k129_sequencial,"chave_k129_arrecadcompos"=>$chave_k129_arrecadcompos];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

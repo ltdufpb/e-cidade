@@ -47,17 +47,11 @@ class CronogramaDesembolsoDespesaController extends Controller
 {
 
     /**
-     * @var CronogramaDesembolsoDespesaService
-     */
-    private $service;
-
-    /**
      * CronogramaDesembolsoDespesaController constructor.
      * @param CronogramaDesembolsoDespesaService $service
      */
-    public function __construct(CronogramaDesembolsoDespesaService $service)
+    public function __construct(private readonly CronogramaDesembolsoDespesaService $service)
     {
-        $this->service = $service;
     }
 
     /**

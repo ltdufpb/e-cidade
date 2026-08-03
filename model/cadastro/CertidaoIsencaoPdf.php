@@ -20,7 +20,7 @@ class CertidaoInsencaoPdf extends  Fpdf {
     $nome        = $instituicao->getDescricao();
     $ufExtenso   = $instituicao->getUfExtenso();
     $fonteNomeInstituicao = 14;
-    if (strlen($nome) > 42) {
+    if (strlen((string) $nome) > 42) {
       $fonteNomeInstituicao = 8;
     }
 
@@ -64,7 +64,7 @@ class CertidaoInsencaoPdf extends  Fpdf {
         $xc = $x+$w-$r;
         $yc = $y+$r;
         $this->_out(sprintf('%.2F %.2F l', $xc*$k,($hp-$y)*$k ));
-        if (strpos($corners, '2')===false)
+        if (!str_contains($corners, '2'))
             $this->_out(sprintf('%.2F %.2F l', ($x+$w)*$k,($hp-$y)*$k ));
         else
             $this->_Arc($xc + $r*$MyArc, $yc - $r, $xc + $r, $yc - $r*$MyArc, $xc + $r, $yc);
@@ -72,7 +72,7 @@ class CertidaoInsencaoPdf extends  Fpdf {
         $xc = $x+$w-$r;
         $yc = $y+$h-$r;
         $this->_out(sprintf('%.2F %.2F l',($x+$w)*$k,($hp-$yc)*$k));
-        if (strpos($corners, '3')===false)
+        if (!str_contains($corners, '3'))
             $this->_out(sprintf('%.2F %.2F l',($x+$w)*$k,($hp-($y+$h))*$k));
         else
             $this->_Arc($xc + $r, $yc + $r*$MyArc, $xc + $r*$MyArc, $yc + $r, $xc, $yc + $r);
@@ -80,7 +80,7 @@ class CertidaoInsencaoPdf extends  Fpdf {
         $xc = $x+$r;
         $yc = $y+$h-$r;
         $this->_out(sprintf('%.2F %.2F l',$xc*$k,($hp-($y+$h))*$k));
-        if (strpos($corners, '4')===false)
+        if (!str_contains($corners, '4'))
             $this->_out(sprintf('%.2F %.2F l',($x)*$k,($hp-($y+$h))*$k));
         else
             $this->_Arc($xc - $r*$MyArc, $yc + $r, $xc - $r, $yc + $r*$MyArc, $xc - $r, $yc);
@@ -88,7 +88,7 @@ class CertidaoInsencaoPdf extends  Fpdf {
         $xc = $x+$r ;
         $yc = $y+$r;
         $this->_out(sprintf('%.2F %.2F l',($x)*$k,($hp-$yc)*$k ));
-        if (strpos($corners, '1')===false)
+        if (!str_contains($corners, '1'))
         {
             $this->_out(sprintf('%.2F %.2F l',($x)*$k,($hp-$y)*$k ));
             $this->_out(sprintf('%.2F %.2F l',($x+$r)*$k,($hp-$y)*$k ));

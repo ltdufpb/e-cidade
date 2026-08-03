@@ -46,7 +46,7 @@ $clagendaproced  = new cl_agendaproced;
 $oDaoCgsUnd      = new cl_cgs_und();
 
 $res_sau_config  = db_query( $clsau_config->sql_query_ext() );
-$booProced       = pg_num_rows( $res_sau_config ) > 0 && pg_result($res_sau_config, 0, "s103_c_agendaproc") == "S";
+$booProced       = pg_num_rows( $res_sau_config ) > 0 && pg_fetch_result($res_sau_config, 0, "s103_c_agendaproc") == "S";
 
 $sd02_c_centralagenda = "N";
 $iUpssolicitante      = db_getsession("DB_coddepto"); 
@@ -93,10 +93,10 @@ if( isset( $chave_diasemana ) && $chave_diasemana != "" ) {
 
 if( isset( $confirma ) ) {
 
-  $ano              = substr( $sd23_d_consulta, 6, 4 );
-  $mes              = substr( $sd23_d_consulta, 3, 2 );
-  $dia              = substr( $sd23_d_consulta, 0, 2 );
-  $vet              = explode("/",$sd23_d_consulta);
+  $ano              = substr( (string) $sd23_d_consulta, 6, 4 );
+  $mes              = substr( (string) $sd23_d_consulta, 3, 2 );
+  $dia              = substr( (string) $sd23_d_consulta, 0, 2 );
+  $vet              = explode("/",(string) $sd23_d_consulta);
 	$sd23_d_consulta2 = $vet[2]."-".$vet[1]."-".$vet[0];
 
   $sAusenciaPorCodGradeHorario  = " and sd30_i_codigo not in (select sd06_i_undmedhorario ";
@@ -147,7 +147,7 @@ if( isset( $confirma ) ) {
    *   TESTA PARA VER SE O AGENDAMENTO É FEITO POR COTAS
    * =====================================================
    */
-  $vet = explode("/",$sd23_d_consulta);
+  $vet = explode("/",(string) $sd23_d_consulta);
   if ($iUpssolicitante != $sd02_i_codigo) {
 
     $oResult = getCotasAgendamento($iUpssolicitante, $sd02_i_codigo, $rh70_estrutural, $vet[2], $vet[1], $sd30_i_codigo);
@@ -265,7 +265,7 @@ if( isset( $confirma ) ) {
 			}
 		}
 
-    $oDaoCgsUnd->z01_v_telcel = preg_replace( "/[^0-9]/", "", $z01_v_telcel );
+    $oDaoCgsUnd->z01_v_telcel = preg_replace( "/[^0-9]/", "", (string) $z01_v_telcel );
     $oDaoCgsUnd->z01_i_cgsund = $z01_i_cgsund;
     $oDaoCgsUnd->alterar( $z01_i_cgsund );
 

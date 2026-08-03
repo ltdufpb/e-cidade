@@ -28,14 +28,13 @@
 
 class impressao {
 	
-  private $iTipoImpressora  = null;
   private $iModelo          = null;
   private $iPorta;
   private $iIp;
-  private $aComandos        = array();
+  private $aComandos        = [];
   
-  public function __construct($iTiPoImpressora = null) {
-    $this->iTipoImpressora = $iTiPoImpressora;
+  public function __construct(private $iTipoImpressora = null)
+  {
   }
   
   public function setPorta($iPorta) {
@@ -86,7 +85,7 @@ class impressao {
    *
    */
   public function resetComandos() {
-  	$this->aComandos = array();
+  	$this->aComandos = [];
   }
   
   public function rodarComandos($sFinalizadorComando="") {
@@ -122,7 +121,7 @@ class impressao {
   public function strToAsc($sStr) {
 
     $sStrRetorno = "";
-    $aCaracters = array('é' => '82', 
+    $aCaracters = ['é' => '82', 
                         'É' => '90', 
                         'á' => 'A0', 
                         'Á' => '86', 
@@ -140,7 +139,7 @@ class impressao {
                         'Õ' => '99', 
                         'à' => '85', 
                         'À' => '91' 
-                       );
+                       ];
     
     for ($i = 0; $i < strlen($sStr); $i ++) {
       

@@ -56,16 +56,16 @@ $db_opcao   = 1;
   <tr>
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
      <?php 
-	 $clcriaabas->identifica = array("modcarnepadrao"     => "Modelo padrão da instituição",
+	 $clcriaabas->identifica = ["modcarnepadrao"     => "Modelo padrão da instituição",
 	 								                 "modcarnepadraotipo" => "Modelo padrão da instituição por tipo de débito",
-	 								                 "modcarneexcessao"   => "Exceções para impressão de carnes");
+	 								                 "modcarneexcessao"   => "Exceções para impressão de carnes"];
 
-	 $clcriaabas->src 		 = array("modcarnepadrao"     => "cai1_modcarnepadrao004.php",
+	 $clcriaabas->src 		 = ["modcarnepadrao"     => "cai1_modcarnepadrao004.php",
 	 								               "modcarnepadraotipo" => "cai1_modcarnepadraotipo001.php",
-	 								               "modcarneexcessao"   => "cai1_modcarneexcessao001.php");
+	 								               "modcarneexcessao"   => "cai1_modcarneexcessao001.php"];
 
-	 $clcriaabas->disabled   = array("modcarnepadraotipo"=>"true",
-	 								 "modcarneexcessao"  =>"true");
+	 $clcriaabas->disabled   = ["modcarnepadraotipo"=>"true",
+	 								 "modcarneexcessao"  =>"true"];
 
 	 $clcriaabas->cria_abas();
 

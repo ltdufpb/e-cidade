@@ -3,24 +3,24 @@
 //CLASSE DA ENTIDADE iptutaxanumpold
 class cl_iptutaxanumpold { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j159_sequencial = 0; 
-   var $j159_codigo = 0; 
-   var $j159_matric = 0; 
-   var $j159_numpre = 0; 
-   var $j159_iptucadtaxaexe = 0; 
-   var $j159_iptucalclog = 0; 
+   public $j159_sequencial = 0; 
+   public $j159_codigo = 0; 
+   public $j159_matric = 0; 
+   public $j159_numpre = 0; 
+   public $j159_iptucadtaxaexe = 0; 
+   public $j159_iptucalclog = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j159_sequencial = int4 = Sequencial itputaxanumpold 
                  j159_codigo = int4 = Código 
                  j159_matric = int4 = Matrícula 
@@ -29,10 +29,10 @@ class cl_iptutaxanumpold {
                  j159_iptucalclog = int4 = Sequencial da iptucalclog 
                  ";
    //funcao construtor da classe 
-   function cl_iptutaxanumpold() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("iptutaxanumpold"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -114,10 +114,10 @@ class cl_iptutaxanumpold {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j159_sequencial = pg_result($result,0,0); 
+       $this->j159_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = @db_query("select last_value from iptutaxanumpold_j159_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j159_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j159_sequencial)){
          $this->erro_sql = " Campo j159_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -154,7 +154,7 @@ class cl_iptutaxanumpold {
                       )");
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Histórico de taxas de IPTU ($this->j159_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Histórico de taxas de IPTU já Cadastrado";
@@ -176,14 +176,14 @@ class cl_iptutaxanumpold {
      $resaco = $this->sql_record($this->sql_query_file($this->j159_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,1014483,'$this->j159_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1010517,1014483,'','".pg_result($resaco,0,'j159_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010517,1010985,'','".pg_result($resaco,0,'j159_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010517,1010987,'','".pg_result($resaco,0,'j159_matric')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010517,1010989,'','".pg_result($resaco,0,'j159_numpre')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010517,1010991,'','".pg_result($resaco,0,'j159_iptucadtaxaexe')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010517,1010993,'','".pg_result($resaco,0,'j159_iptucalclog')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1014483,'','".pg_fetch_result($resaco,0,'j159_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1010985,'','".pg_fetch_result($resaco,0,'j159_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1010987,'','".pg_fetch_result($resaco,0,'j159_matric')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1010989,'','".pg_fetch_result($resaco,0,'j159_numpre')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1010991,'','".pg_fetch_result($resaco,0,'j159_iptucadtaxaexe')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1010993,'','".pg_fetch_result($resaco,0,'j159_iptucalclog')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -192,13 +192,13 @@ class cl_iptutaxanumpold {
       $this->atualizacampos();
      $sql = " update iptutaxanumpold set ";
      $virgula = "";
-     if(trim($this->j159_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_sequencial"])){ 
-        if(trim($this->j159_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_sequencial"])){ 
+     if(trim((string) $this->j159_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_sequencial"])){ 
+        if(trim((string) $this->j159_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_sequencial"])){ 
            $this->j159_sequencial = "0" ; 
         } 
        $sql  .= $virgula." j159_sequencial = $this->j159_sequencial ";
        $virgula = ",";
-       if(trim($this->j159_sequencial) == null ){ 
+       if(trim((string) $this->j159_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial itputaxanumpold nao Informado.";
          $this->erro_campo = "j159_sequencial";
          $this->erro_banco = "";
@@ -208,13 +208,13 @@ class cl_iptutaxanumpold {
          return false;
        }
      }
-     if(trim($this->j159_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_codigo"])){ 
-        if(trim($this->j159_codigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_codigo"])){ 
+     if(trim((string) $this->j159_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_codigo"])){ 
+        if(trim((string) $this->j159_codigo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_codigo"])){ 
            $this->j159_codigo = "0" ; 
         } 
        $sql  .= $virgula." j159_codigo = $this->j159_codigo ";
        $virgula = ",";
-       if(trim($this->j159_codigo) == null ){ 
+       if(trim((string) $this->j159_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "j159_codigo";
          $this->erro_banco = "";
@@ -224,13 +224,13 @@ class cl_iptutaxanumpold {
          return false;
        }
      }
-     if(trim($this->j159_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_matric"])){ 
-        if(trim($this->j159_matric)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_matric"])){ 
+     if(trim((string) $this->j159_matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_matric"])){ 
+        if(trim((string) $this->j159_matric)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_matric"])){ 
            $this->j159_matric = "0" ; 
         } 
        $sql  .= $virgula." j159_matric = $this->j159_matric ";
        $virgula = ",";
-       if(trim($this->j159_matric) == null ){ 
+       if(trim((string) $this->j159_matric) == null ){ 
          $this->erro_sql = " Campo Matrícula nao Informado.";
          $this->erro_campo = "j159_matric";
          $this->erro_banco = "";
@@ -240,13 +240,13 @@ class cl_iptutaxanumpold {
          return false;
        }
      }
-     if(trim($this->j159_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_numpre"])){ 
-        if(trim($this->j159_numpre)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_numpre"])){ 
+     if(trim((string) $this->j159_numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_numpre"])){ 
+        if(trim((string) $this->j159_numpre)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_numpre"])){ 
            $this->j159_numpre = "0" ; 
         } 
        $sql  .= $virgula." j159_numpre = $this->j159_numpre ";
        $virgula = ",";
-       if(trim($this->j159_numpre) == null ){ 
+       if(trim((string) $this->j159_numpre) == null ){ 
          $this->erro_sql = " Campo Numpre nao Informado.";
          $this->erro_campo = "j159_numpre";
          $this->erro_banco = "";
@@ -256,13 +256,13 @@ class cl_iptutaxanumpold {
          return false;
        }
      }
-     if(trim($this->j159_iptucadtaxaexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_iptucadtaxaexe"])){ 
-        if(trim($this->j159_iptucadtaxaexe)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_iptucadtaxaexe"])){ 
+     if(trim((string) $this->j159_iptucadtaxaexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_iptucadtaxaexe"])){ 
+        if(trim((string) $this->j159_iptucadtaxaexe)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_iptucadtaxaexe"])){ 
            $this->j159_iptucadtaxaexe = "0" ; 
         } 
        $sql  .= $virgula." j159_iptucadtaxaexe = $this->j159_iptucadtaxaexe ";
        $virgula = ",";
-       if(trim($this->j159_iptucadtaxaexe) == null ){ 
+       if(trim((string) $this->j159_iptucadtaxaexe) == null ){ 
          $this->erro_sql = " Campo Código do Cadastro de Taxa no Exercício nao Informado.";
          $this->erro_campo = "j159_iptucadtaxaexe";
          $this->erro_banco = "";
@@ -272,13 +272,13 @@ class cl_iptutaxanumpold {
          return false;
        }
      }
-     if(trim($this->j159_iptucalclog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_iptucalclog"])){ 
-        if(trim($this->j159_iptucalclog)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_iptucalclog"])){ 
+     if(trim((string) $this->j159_iptucalclog)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j159_iptucalclog"])){ 
+        if(trim((string) $this->j159_iptucalclog)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j159_iptucalclog"])){ 
            $this->j159_iptucalclog = "0" ; 
         } 
        $sql  .= $virgula." j159_iptucalclog = $this->j159_iptucalclog ";
        $virgula = ",";
-       if(trim($this->j159_iptucalclog) == null ){ 
+       if(trim((string) $this->j159_iptucalclog) == null ){ 
          $this->erro_sql = " Campo Sequencial da iptucalclog nao Informado.";
          $this->erro_campo = "j159_iptucalclog";
          $this->erro_banco = "";
@@ -292,20 +292,20 @@ class cl_iptutaxanumpold {
 ";
      $resaco = $this->sql_record($this->sql_query_file($this->j159_sequencial));
      if($this->numrows>0){       $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,1014483,'$this->j159_sequencial','A')");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j159_sequencial"]))
-         $resac = db_query("insert into db_acount values($acount,1010517,1014483,'".pg_result($resaco,0,'j159_sequencial')."','$this->j159_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010517,1014483,'".pg_fetch_result($resaco,0,'j159_sequencial')."','$this->j159_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j159_codigo"]))
-         $resac = db_query("insert into db_acount values($acount,1010517,1010985,'".pg_result($resaco,0,'j159_codigo')."','$this->j159_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010517,1010985,'".pg_fetch_result($resaco,0,'j159_codigo')."','$this->j159_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j159_matric"]))
-         $resac = db_query("insert into db_acount values($acount,1010517,1010987,'".pg_result($resaco,0,'j159_matric')."','$this->j159_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010517,1010987,'".pg_fetch_result($resaco,0,'j159_matric')."','$this->j159_matric',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j159_numpre"]))
-         $resac = db_query("insert into db_acount values($acount,1010517,1010989,'".pg_result($resaco,0,'j159_numpre')."','$this->j159_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010517,1010989,'".pg_fetch_result($resaco,0,'j159_numpre')."','$this->j159_numpre',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j159_iptucadtaxaexe"]))
-         $resac = db_query("insert into db_acount values($acount,1010517,1010991,'".pg_result($resaco,0,'j159_iptucadtaxaexe')."','$this->j159_iptucadtaxaexe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010517,1010991,'".pg_fetch_result($resaco,0,'j159_iptucadtaxaexe')."','$this->j159_iptucadtaxaexe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        if(isset($GLOBALS["HTTP_POST_VARS"]["j159_iptucalclog"]))
-         $resac = db_query("insert into db_acount values($acount,1010517,1010993,'".pg_result($resaco,0,'j159_iptucalclog')."','$this->j159_iptucalclog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010517,1010993,'".pg_fetch_result($resaco,0,'j159_iptucalclog')."','$this->j159_iptucalclog',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $result = @db_query($sql);
      if($result==false){ 
@@ -342,14 +342,14 @@ class cl_iptutaxanumpold {
      $resaco = $this->sql_record($this->sql_query_file($this->j159_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountkey values($acount,1014483,'$this->j159_sequencial','E')");
-       $resac = db_query("insert into db_acount values($acount,1010517,1014483,'','".pg_result($resaco,0,'j159_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010517,1010985,'','".pg_result($resaco,0,'j159_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010517,1010987,'','".pg_result($resaco,0,'j159_matric')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010517,1010989,'','".pg_result($resaco,0,'j159_numpre')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010517,1010991,'','".pg_result($resaco,0,'j159_iptucadtaxaexe')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1010517,1010993,'','".pg_result($resaco,0,'j159_iptucalclog')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1014483,'','".pg_fetch_result($resaco,0,'j159_sequencial')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1010985,'','".pg_fetch_result($resaco,0,'j159_codigo')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1010987,'','".pg_fetch_result($resaco,0,'j159_matric')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1010989,'','".pg_fetch_result($resaco,0,'j159_numpre')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1010991,'','".pg_fetch_result($resaco,0,'j159_iptucadtaxaexe')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1010517,1010993,'','".pg_fetch_result($resaco,0,'j159_iptucalclog')."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      $sql = " delete from iptutaxanumpold
                     where ";
@@ -401,7 +401,7 @@ class cl_iptutaxanumpold {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Dados do Grupo nao Encontrado";
@@ -416,7 +416,7 @@ class cl_iptutaxanumpold {
    function sql_query ( $j159_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_iptutaxanumpold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -464,7 +464,7 @@ class cl_iptutaxanumpold {
    function sql_query_file ( $j159_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -485,7 +485,7 @@ class cl_iptutaxanumpold {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -543,7 +543,7 @@ class cl_iptutaxanumpold {
     if (!$rsIptutaxanump) {
         throw new DBException("Não foi possivel buscar dados do cálculo da taxa (".pg_last_error().")");
     }
-    if (pg_numrows($rsIptutaxanump) > 0) {
+    if (pg_num_rows($rsIptutaxanump) > 0) {
 
        global $j151_codigo;
        global $j151_matric;

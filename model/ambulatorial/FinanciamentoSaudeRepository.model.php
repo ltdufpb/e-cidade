@@ -37,7 +37,7 @@
      * Collection de FinanciamentoSaude 
      * @var array
      */    
-    private $aFinanciamentoSaude = array();
+    private $aFinanciamentoSaude = [];
     
     /**
      * Instancia da classe 
@@ -73,7 +73,7 @@
      */
     public static function getFinanciamentoSaudePorCompetencia(DBCompetencia $oCompetencia) {
     	
-      $aFinanciamentos = array();
+      $aFinanciamentos = [];
       
       $iMes = (int)$oCompetencia->getMes();
       

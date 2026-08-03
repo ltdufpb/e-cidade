@@ -56,7 +56,7 @@ $clpcsubgrupo->rotulo->label();
           <tr>
             <td nowrap><b>Ordem:</b></td>
             <td nowrap><?php
-                        $matriz = array("A" => "Alfabética", "N" => "Numérica", "D" => "Data");
+                        $matriz = ["A" => "Alfabética", "N" => "Numérica", "D" => "Data"];
                         db_select("ordem", $matriz, true, 4);
                         ?></td>
           </tr>

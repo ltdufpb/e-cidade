@@ -288,7 +288,7 @@ db_input('j94_tabelionato',15,$Ij94_tabelionato,true,'text',$db_opcao,"")
            <td>
            <?php
 
-           $aOpcoes = array('1'=>'Sim','2'=>'Não');
+           $aOpcoes = ['1'=>'Sim','2'=>'Não'];
            db_select('guia',$aOpcoes,true,$db_opcao,"onChange='js_mostraGuiaSistema(document.form1.guia.value);'");
            ?>
            </td>
@@ -332,7 +332,7 @@ db_input('j94_tabelionato',15,$Ij94_tabelionato,true,'text',$db_opcao,"")
       	$j75_situacao = 1;
       }
 
-      $aOpcoes = array('1'=>'Não Processado','2'=>'Processado');
+      $aOpcoes = ['1'=>'Não Processado','2'=>'Processado'];
       db_select('j75_situacao',$aOpcoes,true,3,"");
 
     ?></td>
@@ -475,7 +475,7 @@ function js_preenchepesquisa(chave){
   db_iframe_averbacao.hide();
   <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

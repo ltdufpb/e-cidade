@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_disarq_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldisarq = new cl_disarq;
 $cldisarq->rotulo->label("k15_codbco");
 $cldisarq->rotulo->label("k15_codage");
@@ -100,7 +100,7 @@ $cldisarq->rotulo->label("k15_codage");
           $dbwhere .= " and disarq.k15_codbco = $chave_k15_codbco ";
         }
 
-        if(isset($chave_k15_codiage) && (trim($chave_k15_codage) != "") ) {
+        if(isset($chave_k15_codiage) && (trim((string) $chave_k15_codage) != "") ) {
           $dbwhere .= " and disarq.k15_codage = '$chave_k15_codage' ";
         }
 

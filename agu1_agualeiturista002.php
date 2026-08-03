@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_agualeiturista_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clagualeiturista = new cl_agualeiturista;
 $db_opcao = 22;
 $db_botao = false;
@@ -47,8 +47,8 @@ if(isset($alterar)){
   $result = $clagualeiturista->sql_record($clagualeiturista->sql_query_file("x16_numcgm", "x16_numcgm", "", $where));
   
   if($clagualeiturista->numrows > 0){
-    if((trim($x16_senha_confirma) != '') and ($x16_senha == $x16_senha_confirma)){
-      $clagualeiturista->x16_senha = md5($x16_senha);
+    if((trim((string) $x16_senha_confirma) != '') and ($x16_senha == $x16_senha_confirma)){
+      $clagualeiturista->x16_senha = md5((string) $x16_senha);
       db_inicio_transacao();
       $clagualeiturista->alterar($x16_numcgm);
       db_fim_transacao();

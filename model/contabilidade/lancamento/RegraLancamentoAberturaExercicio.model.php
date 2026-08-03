@@ -64,7 +64,7 @@ class RegraLancamentoAberturaExercicio implements IRegraLancamentoContabil
             return false;
         }
 
-        $documentosDespesa = array(2001, 2002);
+        $documentosDespesa = [2001, 2002];
         if (in_array($iCodigoDocumento, $documentosDespesa)) {
 
             return new RegraLancamentoContabil($regras[0]->c47_seqtranslr);
@@ -73,12 +73,12 @@ class RegraLancamentoAberturaExercicio implements IRegraLancamentoContabil
         $estruturalReceita = $oLancamentoAuxiliar->getReceita()->getEstrutural();
         foreach ($regras as $regra) {
 
-            $tipoReceita = substr($estruturalReceita, 0, 1);
+            $tipoReceita = substr((string) $estruturalReceita, 0, 1);
             if ($regra->c47_compara == 0 && $tipoReceita == 4) {
 
                 return new RegraLancamentoContabil($regra->c47_seqtranslr);
             }
-            if ($tipoReceita == 9 && in_array($regra->c47_compara, array(12))  && ((int)$caracteristica == (int)$regra->c47_ref)) {
+            if ($tipoReceita == 9 && in_array($regra->c47_compara, [12])  && ((int)$caracteristica == (int)$regra->c47_ref)) {
                 return new RegraLancamentoContabil($regra->c47_seqtranslr);
             }
         }

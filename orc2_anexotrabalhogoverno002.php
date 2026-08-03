@@ -40,10 +40,10 @@ $oAnexoProgObras->setOrigemFase($oGet->iOrigemFase);
 $oAnexoProgObras->setInstituicoes($sInstit);
 $oDadosAnexo = $oAnexoProgObras->getDados();
 
-$aFases         = array(1 => "Orçamento", 
+$aFases         = [1 => "Orçamento", 
                         2 => "Empenhado", 
                         3 => "Liquidado", 
-                        4 => "Pago");
+                        4 => "Pago"];
 $rsInstituicoes = db_query("select codigo, nomeinst, nomeinstabrev 
                              from db_config 
                             where codigo in ({$sInstit}) ");
@@ -53,7 +53,7 @@ $lAbrevia              = false;
 for ($iInstit = 0; $iInstit < pg_num_rows($rsInstituicoes); $iInstit++) {
   
   $oInstit = db_utils::fieldsmemory($rsInstituicoes, $iInstit);
-  if (strlen(trim($oInstit->nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $oInstit->nomeinstabrev)) > 0) {
     
     $sDescricaoInstitucoes .= $sVirg.$oInstit->nomeinstabrev;
     $lAbrevia               = true;
@@ -121,7 +121,7 @@ foreach ($oDadosAnexo as $oDado) {
   }
   
   $oPdf->setfont('Arial', 'B', 6);
-  $oPdf->cell(100, $iAltura, trim($oDado->descr), "R", 0, "L");
+  $oPdf->cell(100, $iAltura, trim((string) $oDado->descr), "R", 0, "L");
   $oPdf->cell(30, $iAltura, db_formatar($oDado->servicos, 'f'), "LR", 0, "R");
   $oPdf->cell(30, $iAltura, db_formatar($oDado->obras, 'f'), "LR", 0, "R");
   $oPdf->cell(30, $iAltura, db_formatar($oDado->total, 'f'), "L", 1, "R");
@@ -137,7 +137,7 @@ foreach ($oDadosAnexo as $oDado) {
       continue;
     }
     $oPdf->setfont('Arial', 'B', 6);
-    $oPdf->cell(100, $iAltura, "    ".trim($oUnidade->descr), "R", 0, "L");
+    $oPdf->cell(100, $iAltura, "    ".trim((string) $oUnidade->descr), "R", 0, "L");
     $oPdf->cell(30, $iAltura, db_formatar($oUnidade->servicos, 'f'), "LR", 0, "R");
     $oPdf->cell(30, $iAltura, db_formatar($oUnidade->obras, 'f'), "LR", 0, "R");
     $oPdf->cell(30, $iAltura, db_formatar($oUnidade->total, 'f'), "L", 1, "R");
@@ -153,7 +153,7 @@ foreach ($oDadosAnexo as $oDado) {
         continue;
       }
       $oPdf->setfont('Arial', '', 6);
-      $oPdf->cell(100, $iAltura, "        ".trim($oPrograma->descr), "R", 0, "L");
+      $oPdf->cell(100, $iAltura, "        ".trim((string) $oPrograma->descr), "R", 0, "L");
       $oPdf->cell(30, $iAltura, db_formatar($oPrograma->servicos, 'f'), "LR", 0, "R");
       $oPdf->cell(30, $iAltura, db_formatar($oPrograma->obras, 'f'), "LR", 0, "R");
       $oPdf->cell(30, $iAltura, db_formatar($oPrograma->total, 'f'), "L", 1, "R");

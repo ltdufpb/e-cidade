@@ -33,10 +33,8 @@ try {
                                               Instituicao::TIPO_MINISTERIO_PUBLICO_ESTADUAL
                                             .")");
 
-  $aInstituicaoesSemRPPS = array();
-  $aInstituicaoesSemRPPS = db_utils::makeCollectionFromRecord($rsInstituicoes, function ($oRetorno) {
-    return $oRetorno->codigo;
-  });
+  $aInstituicaoesSemRPPS = [];
+  $aInstituicaoesSemRPPS = db_utils::makeCollectionFromRecord($rsInstituicoes, fn($oRetorno) => $oRetorno->codigo);
 
   if(empty($aInstituicaoesSemRPPS)) {
     throw new Exception("Não há instituições que não sejam do tipo RPPS.");

@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_ppalei_classe.php"));
 include(modification("classes/db_ppaversao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clppalei    = new cl_ppalei;
 $clppaversao = new cl_ppaversao();
 $db_opcao    = 1;

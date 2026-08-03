@@ -135,7 +135,7 @@ $sSqlConferencia = "
 ";
 
 $rsSqlConferencia = db_query($sSqlConferencia);
-$iNumrows = pg_numrows($rsSqlConferencia);
+$iNumrows = pg_num_rows($rsSqlConferencia);
 
 
 if ($iNumrows == 0) {

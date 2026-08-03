@@ -207,7 +207,7 @@ class ImportacaoQualificacaoCadastral
             throw new Exception("Nenhuma matrícula encontrada para os filtros selecionados");
         }
 
-        $dadosRelatorio = array();
+        $dadosRelatorio = [];
         \db_utils::makeCollectionFromRecord($rs, function ($retorno) use ($arquivoQualificao, &$dadosRelatorio) {
 
             $qualificacaoCadastral = new QualificacaoCadastral();
@@ -241,8 +241,8 @@ class ImportacaoQualificacaoCadastral
             throw new Exception("Arquivo importado está em branco.");
         }
 
-        $arquivoQualificao->cpfs = array();
-        $arquivoQualificao->erros = array();
+        $arquivoQualificao->cpfs = [];
+        $arquivoQualificao->erros = [];
 
         //Remove cabeçalho
         array_shift($linhasArquivo);
@@ -269,7 +269,7 @@ class ImportacaoQualificacaoCadastral
                         $descricao = $codigoErro;
 
                         if ($codigoErro == 19) {
-                            $nome = explode(' - ', $linha[$i]);
+                            $nome = explode(' - ', (string) $linha[$i]);
                             $descricao = $nome[1];
                         }
 

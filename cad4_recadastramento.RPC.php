@@ -74,7 +74,7 @@ try {
             $sDataNomeSchema = $oDataArquivo->getDia() . $oDataArquivo->getMes() . $oDataArquivo->getAno();
             $sNomeSchema = "importacao_" . $sDataNomeSchema;
 
-            $aDescricaoArquivoImportado = array();
+            $aDescricaoArquivoImportado = [];
             $oCivitas = new Civitas($sNomeSchema);
             $oFiles = db_utils::postMemory($_FILES);
 
@@ -320,7 +320,7 @@ try {
                       j06_lote,
                       matric_nova,
                       nova_matricula                     
-                       FROM (select ". implode(", ", array(
+                       FROM (select ". implode(", ", [
                     "j144_matricula",
                     "z01_nome",
                     "j144_situacao",
@@ -337,7 +337,7 @@ try {
                     "j06_lote",
                     "padraoiptubase.j01_matric as matric_nova",
                     "civitasinfoscomplementar.nova_matricula"
-                ));
+                ]);
 
             $sSql .= "   from cadastro.atualizacaoiptuschema ";
             $sSql .= "   join cadastro.atualizacaoiptuschemamatricula on j144_atualizacaoiptuschema = j142_sequencial ";
@@ -365,24 +365,17 @@ try {
 
             if (isset($oParam->iSituacao)) {
 
-                switch ($oParam->iSituacao) {
-
-                    case 0: // Pendente/Nova
-                        $iSituacao = '0,1';
-                        break;
-                    case 2: // Aprovada
-                        $iSituacao = $oParam->iSituacao;
-                        break;
-                    case 3: // Rejeitada
-                        $iSituacao = $oParam->iSituacao;
-                        break;
-                    case 4: // processada
-                        $iSituacao = $oParam->iSituacao;
-                        break;
-                    default:
-                        $iSituacao = null;
-                        break;
-                }
+                $iSituacao = match ($oParam->iSituacao) {
+                    // Pendente/Nova
+                    0 => '0,1',
+                    // Aprovada
+                    2 => $oParam->iSituacao,
+                    // Rejeitada
+                    3 => $oParam->iSituacao,
+                    // processada
+                    4 => $oParam->iSituacao,
+                    default => null,
+                };
 
                 if (!is_null($iSituacao)) {
                     if ($iSituacao == 4) {
@@ -483,7 +476,7 @@ try {
             if (!empty($oParam->ret) && $oParam->ret == 'json') {
 
                 file_put_contents('tmp/cad4recadastramentomatriculas.json',json_encode($oRetorno->aMatriculas));
-                exit(json_encode(array('')));
+                exit(json_encode(['']));
             }
 
             if (count($oRetorno->aMatriculas) == 0) {
@@ -540,7 +533,7 @@ try {
 
             $oProcessamento = new Processamento($oParam->sNomeImportacao);
             $oProcessamento->setCodigoSchema($oParam->iCodigoImportacao);
-            $aMatriculasCriadas = array();
+            $aMatriculasCriadas = [];
 
             foreach ($oParam->aMatriculas as $oMatricula) {
 

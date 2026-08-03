@@ -42,17 +42,13 @@ $taxasLancadasRepository = TaxasLancadasRepository::getInstance();
 $aTaxas = $taxasLancadasRepository->getTaxas((!empty($taxa) ? " ar44_sequencial IN ({$taxa}) " : ""));
 
 if (empty($taxa)) {
-    $sTaxas = implode(",", array_map(function ($oTaxa){
-        return $oTaxa->ar44_sequencial;
-    }, $aTaxas));
+    $sTaxas = implode(",", array_map(fn($oTaxa) => $oTaxa->ar44_sequencial, $aTaxas));
 
     $_GET["taxa"] = $sTaxas;
 
     $sTaxas = "Todas";
 } else {
-    $sTaxas = implode(", ", array_map(function ($oTaxa){
-        return $oTaxa->ar44_descricao;
-    }, $aTaxas));
+    $sTaxas = implode(", ", array_map(fn($oTaxa) => $oTaxa->ar44_descricao, $aTaxas));
 }
 
 $filtros = getFiltros($_GET);
@@ -63,12 +59,12 @@ $pdf->Open();
 $pdf->AliasNbPages(); 
 $head2 = "RELATÓRIO DE TAXAS LANÇADAS";
 
-$dataInicio = date("d/m/Y", strtotime($dataInicio));
-$dataFim = date("d/m/Y", strtotime($dataFim));
+$dataInicio = date("d/m/Y", strtotime((string) $dataInicio));
+$dataFim = date("d/m/Y", strtotime((string) $dataFim));
 $head3 = "Período: {$dataInicio} à {$dataFim}";
 
 $sSituacao = "";
-$situacao = explode(",", $situacao);
+$situacao = explode(",", (string) $situacao);
 
 if (in_array(1, $situacao)) {
     $sSituacao .= "Pago";
@@ -111,9 +107,7 @@ if (!empty($departamentos)) {
 
     $oDepartamentos = db_utils::getColectionByRecord($result);
 
-    $aDepartamentos = array_map(function($oDepatamento){
-        return $oDepatamento->descrdepto;
-    }, $oDepartamentos);
+    $aDepartamentos = array_map(fn($oDepatamento) => $oDepatamento->descrdepto, $oDepartamentos);
 
     $sDepartamentos = implode(", ", $aDepartamentos);
 
@@ -146,48 +140,48 @@ if ($modeloRelatorio == 1) {
     if (in_array(1, $filtros->situacao)) {
         $oPagos = getPago($filtros);
     } else {
-        $oPagos = array();
+        $oPagos = [];
     }
     
     if (in_array(2, $filtros->situacao)) {
         $oPendentes = getPendentes($filtros);
     } else {
-        $oPendentes = array();
+        $oPendentes = [];
     }
     
     if (in_array(3, $filtros->situacao)) {
         $oCancelados = getCancelados($filtros);
     } else {
-        $oCancelados = array();
+        $oCancelados = [];
     }
 
     if (in_array(4, $filtros->situacao)) {
         $oInscrCobAdm = getInscrCobAdm($filtros);
     } else {
-        $oInscrCobAdm = array();
+        $oInscrCobAdm = [];
     }
     
     if (in_array(5, $filtros->situacao)) {
         $oParcelados = getParcelado($filtros);
     } else {
-        $oParcelados = array();
+        $oParcelados = [];
     }
     
     if ($filtros->situacao[0] == "") {
-        $oPagos = array();
-        $oPendentes = array();
-        $oCancelados = array();
-        $oInscrCobAdm = array();
-        $oParcelados = array();
+        $oPagos = [];
+        $oPendentes = [];
+        $oCancelados = [];
+        $oInscrCobAdm = [];
+        $oParcelados = [];
     }
     
-    $aDados = (object) array(
+    $aDados = (object) [
         "oPendentes" => $oPendentes,
         "oPagos" => $oPagos,
         "oCancelados" => $oCancelados,
         "oInscrCobAdm" => $oInscrCobAdm,
         "oParcelados" => $oParcelados
-    );
+    ];
 
     $aDados = getAjustaDebitos($aDados);
 
@@ -230,12 +224,12 @@ if ($modeloRelatorio == 1) {
 
         foreach ($aDados as $taxa) {
             $pdf->cell(30, $alt, $taxa->origem, 1, 0, "C", 1);
-            $pdf->cell(65, $alt, trim($taxa->contribuinteNome), 1, 0, "L", 1);
-            $pdf->cell(40, $alt, trim($taxa->departamento), 1, 0, "L", 1);
-            $pdf->cell(65, $alt, trim($taxa->taxa), 1, 0, "L", 1);
+            $pdf->cell(65, $alt, trim((string) $taxa->contribuinteNome), 1, 0, "L", 1);
+            $pdf->cell(40, $alt, trim((string) $taxa->departamento), 1, 0, "L", 1);
+            $pdf->cell(65, $alt, trim((string) $taxa->taxa), 1, 0, "L", 1);
             $pdf->cell(20, $alt, trim(db_formatar($taxa->valor, "f")), 1, 0, "C", 1);
-            $pdf->cell(30, $alt, trim($taxa->situacao), 1, 0, "C", 1);
-            $pdf->cell(30, $alt, trim($taxa->dataInclusao), 1, 0, "C", 1);
+            $pdf->cell(30, $alt, trim((string) $taxa->situacao), 1, 0, "C", 1);
+            $pdf->cell(30, $alt, trim((string) $taxa->dataInclusao), 1, 0, "C", 1);
             $pdf->ln();
         }
     }
@@ -286,45 +280,35 @@ function getFiltros($filtros)
         $sWhereRecibo .= "{$sWhere} {$sWhereDebito}";
     }
 
-    return (object) array(
+    return (object) [
         "sWhere" => $sWhere2,
         "sWhereRecibo" => $sWhereRecibo,
         "sJoin" => $sJoin,
         "gerouDebito" => $filtros->gerouDebito,
-        "situacao" => explode(",", $filtros->situacao)
-    );
+        "situacao" => explode(",", (string) $filtros->situacao)
+    ];
 }
 
 // SINTÉTICO >>>
 
 function getAjustaDebitos($aDados)
 {
-    $aTaxaPagos = array_map(function($pagos){
-        return $pagos->taxa;
-    }, $aDados->oPagos);
+    $aTaxaPagos = array_map(fn($pagos) => $pagos->taxa, $aDados->oPagos);
 
-    $aTaxaPendentes = array_map(function($pendente){
-        return $pendente->taxa;
-    }, $aDados->oPendentes);
+    $aTaxaPendentes = array_map(fn($pendente) => $pendente->taxa, $aDados->oPendentes);
 
-    $aTaxaCancelados = array_map(function($cancelados){
-        return $cancelados->taxa;
-    }, $aDados->oCancelados);
+    $aTaxaCancelados = array_map(fn($cancelados) => $cancelados->taxa, $aDados->oCancelados);
 
-    $aTaxaInscrCobAdm = array_map(function($inscrCobAdm){
-        return $inscrCobAdm->taxa;
-    }, $aDados->oInscrCobAdm);
+    $aTaxaInscrCobAdm = array_map(fn($inscrCobAdm) => $inscrCobAdm->taxa, $aDados->oInscrCobAdm);
 
-    $aTaxaParcelados = array_map(function($parcelados){
-        return $parcelados->taxa;
-    }, $aDados->oParcelados);
+    $aTaxaParcelados = array_map(fn($parcelados) => $parcelados->taxa, $aDados->oParcelados);
 
     $aTaxas = array_unique(array_merge($aTaxaPagos, $aTaxaPendentes, $aTaxaCancelados, $aTaxaInscrCobAdm, $aTaxaParcelados));
 
-    $aDados2 = array();
+    $aDados2 = [];
 
     foreach ($aTaxas as $taxa) {
-        $aDados3 = (object) array();
+        $aDados3 = (object) [];
 
         $aDados3->taxa = $taxa;
 
@@ -536,7 +520,7 @@ function getCancelados($filtros)
 
         return db_utils::getColectionByRecord($result);
     } else {
-        return array();
+        return [];
     }
 }
 
@@ -580,7 +564,7 @@ function getInscrCobAdm($filtros)
 
         return db_utils::getColectionByRecord($result);
     } else {
-        return array();
+        return [];
     }
 }
 
@@ -616,7 +600,7 @@ function getParcelado($filtros)
 
         return db_utils::getColectionByRecord($result);
     } else {
-        return array();
+        return [];
     }
 }
 
@@ -624,7 +608,7 @@ function getParcelado($filtros)
 
 function getDebitosFiltro($filtros)
 {
-    $aDados1 = array();
+    $aDados1 = [];
 
     $sql = "";
 
@@ -677,13 +661,13 @@ function getDebitosFiltro($filtros)
     $aDebitos = db_utils::getColectionByRecord($result);
 
     foreach ($aDebitos as $aDebito) {
-        $filtros2 = (object) array(
+        $filtros2 = (object) [
             "sWhere" => "",
             "sWhereRecibo" => "",
             "sJoin" => "",
             "gerouDebito" => "",
             "situacao" => ""
-        );
+        ];
 
         $filtros2->sWhere = $filtros->sWhere;
         $filtros2->sWhereRecibo = $filtros->sWhereRecibo;
@@ -708,7 +692,7 @@ function getDebitosFiltro($filtros)
                 $situacao = "Pendente";
             }
         } else {
-            $oPendentes = array();
+            $oPendentes = [];
         }
 
         if (empty($oPendentes) AND in_array(1, $filtros2->situacao)) {
@@ -717,7 +701,7 @@ function getDebitosFiltro($filtros)
                 $situacao = "Pago";
             }
         } else {
-            $oPagos = array();
+            $oPagos = [];
         }
         
         if (empty($oPagos) AND in_array(3, $filtros2->situacao)) {
@@ -726,7 +710,7 @@ function getDebitosFiltro($filtros)
                 $situacao = "Cancelado";
             }
         } else {
-            $oCancelados = array();
+            $oCancelados = [];
         }
 
         if (empty($oCancelados) AND in_array(4, $filtros2->situacao)) {
@@ -736,7 +720,7 @@ function getDebitosFiltro($filtros)
                 $situacao2 = "Inscrito Cob. Adm.";
             }
         } else {
-            $oInscritos = array();
+            $oInscritos = [];
         }
         
         if (empty($oInscritos) AND in_array(5, $filtros2->situacao)) {
@@ -745,22 +729,22 @@ function getDebitosFiltro($filtros)
                 $situacao = "Parcelado";
             }
         } else {
-            $oParcelados = array();
+            $oParcelados = [];
         }
 
         if (empty($situacao) AND empty($situacao2)) {
             continue;
         }
 
-        $oDados2 = (object) array();
+        $oDados2 = (object) [];
 
-        $oDados = (object) array(
+        $oDados = (object) [
             "Pendente" => $oPendentes,
             "Pago" => $oPagos,
             "Cancelado" => $oCancelados,
             "Inscrito" => $oInscritos,
             "Parcelado" => $oParcelados
-        );
+        ];
 
         $oOrigem = getOrigem($aDebito->numpre);
 
@@ -795,7 +779,7 @@ function getOrigem($iDebito)
         throw new \DBException("Erro ao buscar a origem na matricula. \n\n Erro: ".pg_last_error());
     }
 
-    if (pg_numrows($result) == 0) {
+    if (pg_num_rows($result) == 0) {
         $sql = "SELECT 'I - '||q02_inscr AS origem,
                         z01_nome AS contribuinte
                   FROM arreinscr
@@ -809,7 +793,7 @@ function getOrigem($iDebito)
             throw new \DBException("Erro ao buscar a origem na inscrição. \n\n Erro: ".pg_last_error());
         }
 
-        if (pg_numrows($result) == 0) {
+        if (pg_num_rows($result) == 0) {
             $sql = "SELECT 'C - '||z01_numcgm AS origem,
                            z01_nome AS contribuinte
                       FROM arrenumcgm

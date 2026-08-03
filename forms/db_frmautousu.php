@@ -34,8 +34,8 @@ $clrotulo->label("y59_codauto");
 $clrotulo->label("y50_nome");
 $clrotulo->label("y39_codandam");
 $clrotulo->label("nome");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_fiscais.location.href='fis1_autousu002.php?chavepesquisa=$y56_codauto&chavepesquisa1=$y56_id_usuario&y59_codauto=$y59_codauto&y39_codandam=$y39_codandam'</script>";}
 if(isset($opcao) && $opcao == "excluir"){
@@ -107,7 +107,7 @@ if(isset($opcao) && $opcao == "excluir"){
   <tr>
     <td align="top" colspan="2">
    <?php
-     $chavepri = array("y56_codauto"=>@$y56_codauto, "y56_id_usuario"=>@$y56_id_usuario);
+     $chavepri = ["y56_codauto"=>@$y56_codauto, "y56_id_usuario"=>@$y56_id_usuario];
      $cliframe_alterar_excluir->chavepri      = $chavepri;
      $cliframe_alterar_excluir->campos        = "y56_codauto,y56_id_usuario,y56_obs,nome";
      $cliframe_alterar_excluir->sql           = $clautousu->sql_query("",""," autousu.*,db_usuarios.*",""," y56_codauto = $y59_codauto");

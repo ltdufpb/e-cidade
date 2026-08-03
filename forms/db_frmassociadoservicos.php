@@ -98,7 +98,7 @@ if ($db_opcao == 1) {
               </td>
               <td>
                 <?php
-                  $aSituacao = array("t" => "ATIVO", "f" => "INATIVO");
+                  $aSituacao = ["t" => "ATIVO", "f" => "INATIVO"];
                   db_select('fm12_situacao', $aSituacao, true, ($db_opcao==3?3:1), "");
                 ?>
               </td>
@@ -109,7 +109,7 @@ if ($db_opcao == 1) {
               </td>
               <td>
                 <?php
-                  $aAutoriza = array("f" => "NAO", "t" => "SIM");
+                  $aAutoriza = ["f" => "NAO", "t" => "SIM"];
                   db_select('fm12_autorizacao', $aAutoriza, true, $db_opcao, "");
                 ?>
               </td>
@@ -120,7 +120,7 @@ if ($db_opcao == 1) {
               </td>
               <td>
                 <?php
-                  $aOdontograma = array("f" => "NAO", "t" => "SIM");
+                  $aOdontograma = ["f" => "NAO", "t" => "SIM"];
                   db_select('fm12_odontograma', $aOdontograma, true, $db_opcao, "");
                 ?>
               </td>
@@ -140,7 +140,7 @@ if ($db_opcao == 1) {
                         <?php
                           db_input('fm12_idademin', 10, $Ifm12_idademin, true, 'hidden', $db_opcao,"");
                           db_input('idademin', 10, $Ifm12_idademin, true, 'text', $db_opcao,"");
-                          $aX = array('3'=>'ANOS', '2'=>'MESES', '1'=>'DIAS');
+                          $aX = ['3'=>'ANOS', '2'=>'MESES', '1'=>'DIAS'];
                           db_select('undidadeini', $aX, true, $db_opcao, '');
                         ?>
                       </td>
@@ -153,7 +153,7 @@ if ($db_opcao == 1) {
                         <?php
                           db_input('fm12_idademax', 10, $Ifm12_idademax, true, 'hidden', $db_opcao,"");
                           db_input('idademax', 10, $Ifm12_idademax, true, 'text', $db_opcao,"");
-                          $aX = array('3'=>'ANOS', '2'=>'MESES', '1'=>'DIAS');
+                          $aX = ['3'=>'ANOS', '2'=>'MESES', '1'=>'DIAS'];
                           db_select('undidadefim', $aX, true, $db_opcao, '');
                         ?>
                       </td>
@@ -380,7 +380,7 @@ if ($db_opcao == 1) {
       db_iframe_associadoservicos.hide();
       <?php
         if ($db_opcao != 1) {
-          echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
+          echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
         }
       ?>
     }

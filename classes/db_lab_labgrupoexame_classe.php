@@ -29,7 +29,7 @@ class cl_lab_labgrupoexame
     public function __construct()
     {
         $this->rotulo = new rotulo("lab_labgrupoexame"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -84,10 +84,10 @@ class cl_lab_labgrupoexame
          $this->erro_status = "0";
          return false; 
        }
-       $this->la67_codigo = pg_result($result,0,0); 
+       $this->la67_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from lab_labgrupoexame_la67_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $la67_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $la67_codigo)){
          $this->erro_sql = " Campo la67_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -119,7 +119,7 @@ class cl_lab_labgrupoexame
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Vinculo de Grupo de Exames com Laboratório ($this->la67_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Vinculo de Grupo de Exames com Laboratório já Cadastrado";
@@ -148,12 +148,12 @@ class cl_lab_labgrupoexame
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1012004,'$this->la67_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1010667,1012004,'','".AddSlashes(pg_result($resaco,0,'la67_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010667,1012005,'','".AddSlashes(pg_result($resaco,0,'la67_laboratorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010667,1012119,'','".AddSlashes(pg_result($resaco,0,'la67_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010667,1012004,'','".AddSlashes(pg_fetch_result($resaco,0,'la67_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010667,1012005,'','".AddSlashes(pg_fetch_result($resaco,0,'la67_laboratorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010667,1012119,'','".AddSlashes(pg_fetch_result($resaco,0,'la67_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -164,10 +164,10 @@ class cl_lab_labgrupoexame
       $this->atualizacampos();
      $sql = " update lab_labgrupoexame set ";
      $virgula = "";
-     if(trim($this->la67_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la67_codigo"])){ 
+     if(trim((string) $this->la67_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la67_codigo"])){ 
        $sql  .= $virgula." la67_codigo = $this->la67_codigo ";
        $virgula = ",";
-       if(trim($this->la67_codigo) == null ){ 
+       if(trim((string) $this->la67_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "la67_codigo";
          $this->erro_banco = "";
@@ -177,10 +177,10 @@ class cl_lab_labgrupoexame
          return false;
        }
      }
-     if(trim($this->la67_laboratorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la67_laboratorio"])){ 
+     if(trim((string) $this->la67_laboratorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la67_laboratorio"])){ 
        $sql  .= $virgula." la67_laboratorio = $this->la67_laboratorio ";
        $virgula = ",";
-       if(trim($this->la67_laboratorio) == null ){ 
+       if(trim((string) $this->la67_laboratorio) == null ){ 
          $this->erro_sql = " Campo Código do laboratório não informado.";
          $this->erro_campo = "la67_laboratorio";
          $this->erro_banco = "";
@@ -190,10 +190,10 @@ class cl_lab_labgrupoexame
          return false;
        }
      }
-     if(trim($this->la67_grupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la67_grupo"])){ 
+     if(trim((string) $this->la67_grupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["la67_grupo"])){ 
        $sql  .= $virgula." la67_grupo = $this->la67_grupo ";
        $virgula = ",";
-       if(trim($this->la67_grupo) == null ){ 
+       if(trim((string) $this->la67_grupo) == null ){ 
          $this->erro_sql = " Campo Grupo não informado.";
          $this->erro_campo = "la67_grupo";
          $this->erro_banco = "";
@@ -217,15 +217,15 @@ class cl_lab_labgrupoexame
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1012004,'$this->la67_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["la67_codigo"]) || $this->la67_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1010667,1012004,'".AddSlashes(pg_result($resaco,$conresaco,'la67_codigo'))."','$this->la67_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010667,1012004,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la67_codigo'))."','$this->la67_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["la67_laboratorio"]) || $this->la67_laboratorio != "")
-             $resac = db_query("insert into db_acount values($acount,1010667,1012005,'".AddSlashes(pg_result($resaco,$conresaco,'la67_laboratorio'))."','$this->la67_laboratorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010667,1012005,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la67_laboratorio'))."','$this->la67_laboratorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["la67_grupo"]) || $this->la67_grupo != "")
-             $resac = db_query("insert into db_acount values($acount,1010667,1012119,'".AddSlashes(pg_result($resaco,$conresaco,'la67_grupo'))."','$this->la67_grupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010667,1012119,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'la67_grupo'))."','$this->la67_grupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -279,12 +279,12 @@ class cl_lab_labgrupoexame
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1012004,'$la67_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010667,1012004,'','".AddSlashes(pg_result($resaco,$iresaco,'la67_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010667,1012005,'','".AddSlashes(pg_result($resaco,$iresaco,'la67_laboratorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010667,1012119,'','".AddSlashes(pg_result($resaco,$iresaco,'la67_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010667,1012004,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la67_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010667,1012005,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la67_laboratorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010667,1012119,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'la67_grupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -97,11 +97,11 @@ if ($db_opcao == 1) {
         db_iframe_linhaspacto.hide();
         <?php
         if ($db_opcao != 1) {
-            echo "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
+            echo "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa=' + sChave;";
         }
         ?>
     }
 
-    <?php echo(isset($sPosScripts) ? $sPosScripts : ""); ?>
+    <?php echo($sPosScripts ?? ""); ?>
 </script>
 </html>

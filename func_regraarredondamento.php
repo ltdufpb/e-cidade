@@ -32,8 +32,8 @@
   require_once(modification("libs/db_utils.php"));
   require_once(modification("dbforms/db_funcoes.php"));
   
-  db_postmemory($HTTP_POST_VARS);
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  db_postmemory($_POST);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
   
   $oDaoRegraArredondamento = db_utils::getDao("regraarredondamento");
   $oDaoRegraArredondamento->rotulo->label("ed316_sequencial");
@@ -118,9 +118,9 @@
                   $sql = $oDaoRegraArredondamento->sql_query("",$campos,"ed316_sequencial","");
                 }
               }
-              $repassa = array();
+              $repassa = [];
               if (isset($chave_ed316_descricao)) {
-                $repassa = array("chave_ed316_sequencial"=>$chave_ed316_sequencial,"chave_ed316_descricao"=>$chave_ed316_descricao);
+                $repassa = ["chave_ed316_sequencial"=>$chave_ed316_sequencial,"chave_ed316_descricao"=>$chave_ed316_descricao];
               }
               db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
             } else {

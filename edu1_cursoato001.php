@@ -35,7 +35,7 @@ include(modification("classes/db_cursoatoserie_classe.php"));
 include(modification("classes/db_base_classe.php"));
 include(modification("classes/db_cursoescola_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcursoato = new cl_cursoato;
 $clcursoatoserie = new cl_cursoatoserie;
 $clcursoescola = new cl_cursoescola;
@@ -48,7 +48,7 @@ $result_ver = $clcursoescola->sql_record($clcursoescola->sql_query("","ed71_i_co
 if(isset($incluir)){
  db_inicio_transacao();
  if (!isset($ed216_i_serie)) {
-   $ed216_i_serie = array();
+   $ed216_i_serie = [];
  }
  $clcursoato->ed215_i_cursoescola = $codcursoescola;
  $clcursoato->incluir(null);
@@ -79,7 +79,7 @@ if(isset($alterar)){
  $db_opcao = 2;
  db_inicio_transacao();
  if (!isset($ed216_i_serie)) {
-   $ed216_i_serie = array();
+   $ed216_i_serie = [];
  }
  $clcursoatoserie->excluir(""," ed216_i_cursoato = $ed215_i_codigo");
 

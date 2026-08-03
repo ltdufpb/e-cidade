@@ -62,28 +62,28 @@ $iCodRel    = 78;
     <?php 
 
 
-    $clcriaabas->identifica = array( "g1" => "Relatorio",
+    $clcriaabas->identifica = [ "g1" => "Relatorio",
                                      "notas"     => "Notas Explicativas",
                                      "filtros"   => "Filtros"
-                                   );
+                                   ];
 
-    $clcriaabas->title      = array( "g1" =>"Relatorio",
+    $clcriaabas->title      = [ "g1" =>"Relatorio",
                                      "notas"     =>"Notas Explicativas",
                                     "filtros"   => "Filtros"
-                                   );
+                                   ];
 
-    $clcriaabas->src        = array( "g1" =>"orc2_cronogramacotasdespesa011.php?iCodRel={$iCodRel}",
+    $clcriaabas->src        = [ "g1" =>"orc2_cronogramacotasdespesa011.php?iCodRel={$iCodRel}",
                                      "notas"     =>"con2_conrelnotas.php?c83_codrel={$iCodRel}",
                                     "filtros"   => "func_selorcdotacao_aba.php"
-                                   );
-    $clcriaabas->funcao_js  =   array("g1" => "",
+                                   ];
+    $clcriaabas->funcao_js  =   ["g1" => "",
                                       "notas"     => "",
                                       "filtros"   => "js_atualizar_instit();"
-                                     );
+                                     ];
 
-    $clcriaabas->sizecampo  = array( "g1" =>"23",
+    $clcriaabas->sizecampo  = [ "g1" =>"23",
                                      "notas"     =>"23",
-                                     "filtros"   =>"23");
+                                     "filtros"   =>"23"];
 
 
 

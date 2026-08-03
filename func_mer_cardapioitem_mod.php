@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_cardapioitem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmer_cardapioitem = new cl_mer_cardapioitem;
 $clmer_cardapioitem->rotulo->label("me07_i_codigo");
 $clrotulo = new rotulocampo;
@@ -110,11 +110,11 @@ $clrotulo->label("me35_c_nomealimento");
                                             " me07_i_cardapio=$cardapio $restricao"
                                            );
     }
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_me07_i_codmater)) {
-      $repassa = array("chave_me07_i_alimento"=>$chave_me07_i_alimento,
+      $repassa = ["chave_me07_i_alimento"=>$chave_me07_i_alimento,
                        "chave_me35_c_nomealimento"=>$chave_me35_c_nomealimento
-                      );
+                      ];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
     

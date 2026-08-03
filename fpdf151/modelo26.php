@@ -22,7 +22,7 @@ $linha = $linha+8;
 
 $this->objpdf->setxy($coluna,$linha);
 $this->objpdf->Cell(20,5,"",0,0,"D",0);
-$this->objpdf->Cell(100,5,substr($this->ender,0, strpos($this->ender,",")).", ".$this->numero,0,1,"D",0);
+$this->objpdf->Cell(100,5,substr((string) $this->ender,0, strpos((string) $this->ender,",")).", ".$this->numero,0,1,"D",0);
 $pdf1->numero      = $q02_numero;
 $linha = $linha+8;
 

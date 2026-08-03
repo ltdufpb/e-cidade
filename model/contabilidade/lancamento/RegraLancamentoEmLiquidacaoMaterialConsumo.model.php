@@ -80,7 +80,7 @@ class RegraLancamentoEmLiquidacaoMaterialConsumo implements IRegraLancamentoCont
 
     $iContaContabilGrupoMaterial = $oLancamentoAuxiliar->getGrupoMaterial()->getContaAtivo()->getReduzido();
 
-    $aRegrasEncontradas          = array();
+    $aRegrasEncontradas          = [];
     foreach ($aRegrasDoLancamento as $oRegraLancamento) {
 
       if ($oLancamentoEventoContabil->getOrdem() == 1) {

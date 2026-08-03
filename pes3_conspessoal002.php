@@ -118,7 +118,7 @@ $clrotulo->label('rh44_dvagencia');
 $clrotulo->label('rh44_conta');
 $clrotulo->label('rh44_dvconta');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -343,7 +343,7 @@ if (!empty($rh02_rhtipoapos)) {
                             </td>
                             <td align="left" nowrap>
                                 <?php
-                                $arr_sexo = array('M' => 'Masculino', 'F' => 'Feminino');
+                                $arr_sexo = ['M' => 'Masculino', 'F' => 'Feminino'];
                                 db_select("rh01_sexo", $arr_sexo, true, 3, "");
                                 ?>
                             </td>

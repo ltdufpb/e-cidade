@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oRotulo = new rotulocampo();
 $oRotulo->label("z01_nome");
 ?>
@@ -96,10 +96,10 @@ $oRotulo->label("z01_nome");
         </td>
         <td>
            <?php 
-             $aSituacao = array( '0' => 'Selecione...',
+             $aSituacao = [ '0' => 'Selecione...',
                                  '1' => 'Regular',
                                  '2' => 'Irregular',
-                                 '3' => 'Suspenso' );
+                                 '3' => 'Suspenso' ];
              
              db_select('situacao',$aSituacao,true,1,'');            
           ?>

@@ -40,11 +40,6 @@ class ContratoService
     /**
      * @var
      */
-    private $contrato;
-
-    /**
-     * @var
-     */
     private $matriculaServidor;
 
     /**
@@ -90,18 +85,20 @@ class ContratoService
     /**
      * ContratoService constructor.
      */
-    public function __construct(ContratoProcessual $contrato)
+    public function __construct(/**
+     * @var
+     */
+    private readonly ContratoProcessual $contrato)
     {
-        $this->contrato = $contrato;
-        $this->matriculaServidor = $contrato->getServidorProcesso()[0]->getMatricula();
-        $this->nomeServidor = $contrato->getServidorProcesso()[0]->getNomeServidor();
+        $this->matriculaServidor = $this->contrato->getServidorProcesso()[0]->getMatricula();
+        $this->nomeServidor = $this->contrato->getServidorProcesso()[0]->getNomeServidor();
         $this->matriculaNome = $this->matriculaServidor . ' - ' . $this->nomeServidor;
         $this->dataAcordo = $this->contrato->getDataAcordo();
         $this->dataSentenca = $this->contrato->getDataSentenca();
         $this->competenciaDataAcordo = explode("-", $this->dataAcordo);
         $this->competenciaDataSentenca = explode("-", $this->dataSentenca);
         $this->competenciaDataAdmissao =
-            explode("-", $this->contrato->getServidorProcesso()[0]->getDataAdmissao());
+            explode("-", (string) $this->contrato->getServidorProcesso()[0]->getDataAdmissao());
 
         $this->servidorAtual = \ServidorRepository::getInstanciaByCodigo($this->matriculaServidor);
     }
@@ -120,17 +117,17 @@ class ContratoService
         $dataRescisaoServidor = $contrato->getServidorProcesso()[0]->getDataDemissao();
 
         if (!empty($dataRescisaoServidor)) {
-            $anoRescisao = date('Y', strtotime($dataRescisaoServidor));
-            $mesRescisao = date('m', strtotime($dataRescisaoServidor));
-            $diaRescisao = date('d', strtotime($dataRescisaoServidor));
-            $dataRescisaoBrasil =  date('d/m/Y', strtotime($dataRescisaoServidor));
+            $anoRescisao = date('Y', strtotime((string) $dataRescisaoServidor));
+            $mesRescisao = date('m', strtotime((string) $dataRescisaoServidor));
+            $diaRescisao = date('d', strtotime((string) $dataRescisaoServidor));
+            $dataRescisaoBrasil =  date('d/m/Y', strtotime((string) $dataRescisaoServidor));
         }
 
         if (!empty($dataAdmissaoServidor)) {
-            $anoAdmissao = date('Y', strtotime($dataAdmissaoServidor));
-            $mesAdmissao = date('m', strtotime($dataAdmissaoServidor));
-            $diaAdmissao = date('d', strtotime($dataAdmissaoServidor));
-            $dataAdmissaoBrasil = date('d/m/Y', strtotime($dataAdmissaoServidor));
+            $anoAdmissao = date('Y', strtotime((string) $dataAdmissaoServidor));
+            $mesAdmissao = date('m', strtotime((string) $dataAdmissaoServidor));
+            $diaAdmissao = date('d', strtotime((string) $dataAdmissaoServidor));
+            $dataAdmissaoBrasil = date('d/m/Y', strtotime((string) $dataAdmissaoServidor));
         }
         $competenciaInicial = $contrato->getCompetenciaInicial();
         $mesCompetenciaInicial = (explode('-', $competenciaInicial)[0]);
@@ -141,11 +138,11 @@ class ContratoService
 
         $dataAcordo = $contrato->getProcessoJudicial()[0]->getDataCelebracaoAcordo();
         $dataSentenca = $contrato->getProcessoJudicial()[0]->getDataSentenca();
-        $dataSentencaAcordo = $dataAcordo ? $dataAcordo : $dataSentenca;
-        $anoSentencaAcordo = date('Y', strtotime($dataSentencaAcordo));
-        $mesSentencaAcordo = date('m', strtotime($dataSentencaAcordo));
-        $diaSentencaAcordo = date('d', strtotime($dataSentencaAcordo));
-        $dataSetencaBrasil = date('d/m/Y', strtotime($dataSentencaAcordo));
+        $dataSentencaAcordo = $dataAcordo ?: $dataSentenca;
+        $anoSentencaAcordo = date('Y', strtotime((string) $dataSentencaAcordo));
+        $mesSentencaAcordo = date('m', strtotime((string) $dataSentencaAcordo));
+        $diaSentencaAcordo = date('d', strtotime((string) $dataSentencaAcordo));
+        $dataSetencaBrasil = date('d/m/Y', strtotime((string) $dataSentencaAcordo));
 
         if (empty($contrato->getCodigoCategoria())) {
             throw new Exception('O <strong>Código de Categoria</strong> para o servidor <strong>' .
@@ -159,7 +156,7 @@ class ContratoService
             throw new Exception('A <strong>data de admissão</strong> para o servidor <strong>' .
             $this->matriculaNome . '</strong> não definida. Favor revisar.');
         }
-        if (strtotime($dataRescisaoServidor) < strtotime($dataAdmissaoServidor)) {
+        if (strtotime((string) $dataRescisaoServidor) < strtotime((string) $dataAdmissaoServidor)) {
             throw new Exception('A <strong>data de rescisão</strong> terá que ser maior que a data de admissão ' .
             'para o servidor <strong>' . $this->matriculaNome .
             '</strong>. Favor revisar.');

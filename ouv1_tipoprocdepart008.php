@@ -41,21 +41,21 @@
    * 1 = SEM
    * 
    */
-  $oGet               = db_utils::postMemory($HTTP_GET_VARS);
+  $oGet               = db_utils::postMemory($_GET);
  
   
   $oDaoOuvAtendimento = new cl_ouvidoriaatendimento();
-  $aClausulaWhere     = array();
+  $aClausulaWhere     = [];
   /**
    * Configura datas
    */
-  $dtInicial = implode('-',array_reverse(explode('/',$oGet->dtInicial)));
-  $dtFinal   = implode('-',array_reverse(explode('/',$oGet->dtFinal)));
+  $dtInicial = implode('-',array_reverse(explode('/',(string) $oGet->dtInicial)));
+  $dtFinal   = implode('-',array_reverse(explode('/',(string) $oGet->dtFinal)));
   
   /*
    * Adiciona no WhereGeral um between entre datas
    */
-  if (trim($oGet->dtInicial) != "" && trim($oGet->dtInicial) != "") {
+  if (trim((string) $oGet->dtInicial) != "" && trim((string) $oGet->dtInicial) != "") {
     $aClausulaWhere[] = "ouvidoriaatendimento.ov01_dataatend between '{$dtInicial}' and '{$dtFinal}'";
   }
 
@@ -63,7 +63,7 @@
    * Verifica se o campo sDepartamento teve filtro inserido
    */
   $sHeadDepartamentos = "Todos";
-  if (trim($oGet->sDepartamento) != "") {
+  if (trim((string) $oGet->sDepartamento) != "") {
     
     $sHeadDepartamentos = $oGet->sDepartamento;
     if ($oGet->iOpcaoDepart == "0") {
@@ -77,7 +77,7 @@
    * Verifica se o Tipo de Processo foi informado
    */
   $sHeadTipoProcesso = "Todos";
-  if (trim($oGet->sTipoProcesso) != "") {
+  if (trim((string) $oGet->sTipoProcesso) != "") {
 
     $sHeadTipoProcesso = $oGet->sTipoProcesso;
     if ($oGet->iOpcaoTipoProc == "0") {
@@ -93,7 +93,7 @@
    */
   $sHeadLocais  = "Todos";
   $sHeadBairros = "Não Selecionado";
-  if (trim($oGet->sBairro) == "" && trim($oGet->sLocais) != "") {
+  if (trim((string) $oGet->sBairro) == "" && trim((string) $oGet->sLocais) != "") {
 
     $sHeadLocais = $oGet->sLocais;
     if ($oGet->iOpcaoLocal == "0") {
@@ -101,7 +101,7 @@
     } else {
       $aClausulaWhere[] = "ouvidoriacadlocal.ov25_sequencial not in ({$oGet->sLocais}) ";
     }
-  } else if (trim($oGet->sBairro) != "") {
+  } else if (trim((string) $oGet->sBairro) != "") {
 
     $sHeadBairros = $oGet->sBairro;
     if ($oGet->iOpcaoBairro == "0") {
@@ -116,7 +116,7 @@
    * este departamento
    */
   $sHeadDepartDestino = "Todos";
-  if (trim($oGet->sDepartDestino) != "") {
+  if (trim((string) $oGet->sDepartDestino) != "") {
 
     $sHeadDepartDestino = $oGet->sDepartDestino;
     if ($oGet->iOpcaoDepartDestino == "0") {
@@ -196,12 +196,12 @@
     }
 
     $oPdf->setfont('arial','',7);
-    $dtAtendimento = implode('/', array_reverse(explode('-', $oRetorno->ov01_dataatend)));
+    $dtAtendimento = implode('/', array_reverse(explode('-', (string) $oRetorno->ov01_dataatend)));
     $oPdf->cell(20, $iAltura, $oRetorno->ov01_numero." / ".$oRetorno->ov01_anousu,  0, 0, "C", 0);
     $oPdf->cell(20, $iAltura, $oRetorno->p58_codproc,          0, 0, "C", 0);
     $oPdf->cell(100, $iAltura, $oRetorno->p58_requer,           0, 0, "L", 0); 
     $oPdf->cell(75, $iAltura, $oRetorno->p51_descr,            0, 0, "L", 0); 
-    $oPdf->cell(50, $iAltura, substr($oRetorno->local, 0, 20), 0, 0, "C", 0); 
+    $oPdf->cell(50, $iAltura, substr((string) $oRetorno->local, 0, 20), 0, 0, "C", 0); 
     $oPdf->cell(15, $iAltura, $dtAtendimento,                  0, 1, "C", 0);  
   }
 

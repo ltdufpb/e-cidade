@@ -38,7 +38,7 @@ use \ParameterException;
 $oPost       = db_utils::postMemory($_REQUEST);
 $oPost->json = str_replace("\\","", $oPost->json);
 $parametro  = JSON::create()->parse($oPost->json);
-$retorno    = (object)array( 'erro' => false, 'mensagem'=> '');
+$retorno    = (object)[ 'erro' => false, 'mensagem'=> ''];
 
 try {
     switch ( $parametro->exec ) {
@@ -64,19 +64,19 @@ try {
                 
                 $retorno->codigoConvenio = db_utils::fieldsMemory($rsConvenio, 0)->k48_cadconvenio;
 
-                $DataIni = explode("/",$parametro->dini);
+                $DataIni = explode("/",(string) $parametro->dini);
                 $datainicial = $DataIni[2]."-".$DataIni[1]."-".$DataIni[0];
                 $sDiaUtilInicial   = "select fc_ultimo_dia_util('{$datainicial}'::date)";
                 $rsDiaUtilInicial  = db_query($sDiaUtilInicial);
-                if(pg_result($rsDiaUtilInicial,0) != $datainicial){
+                if(pg_fetch_result($rsDiaUtilInicial,0) != $datainicial){
                     throw new BusinessException('Vigência Inicial deve ser dia útil!');
                 }
 
-                $DataFim = explode("/",$parametro->dfim);
+                $DataFim = explode("/",(string) $parametro->dfim);
                 $datafinal = $DataFim[2]."-".$DataFim[1]."-".$DataFim[0];
                 $sDiaUtilFinal   = "select fc_ultimo_dia_util('{$datafinal}'::date)";
                 $rsDiaUtilFinal  = db_query($sDiaUtilFinal);
-                if(pg_result($rsDiaUtilFinal,0) != $datafinal){
+                if(pg_fetch_result($rsDiaUtilFinal,0) != $datafinal){
                     throw new BusinessException('Vigência Final deve ser dia útil!');
                 }
 

@@ -128,7 +128,7 @@ if(isset($opcao) && $opcao=="alterar"){
  <tr>
   <td valign="top">
   <?php 
-   $chavepri= array("ed26_i_codigo"=>@$ed26_i_codigo,"ed26_i_tipotelefone"=>@$ed26_i_tipotelefone,"ed13_c_descr"=>@$ed13_c_descr,"ed26_i_numero"=>@$ed26_i_numero,"ed26_i_ramal"=>@$ed26_i_ramal,"ed26_t_obs"=>@$ed26_t_obs,"ed26_i_ddd"=>@$ed26_i_ddd);
+   $chavepri= ["ed26_i_codigo"=>@$ed26_i_codigo,"ed26_i_tipotelefone"=>@$ed26_i_tipotelefone,"ed13_c_descr"=>@$ed13_c_descr,"ed26_i_numero"=>@$ed26_i_numero,"ed26_i_ramal"=>@$ed26_i_ramal,"ed26_t_obs"=>@$ed26_t_obs,"ed26_i_ddd"=>@$ed26_i_ddd];
    $cliframe_alterar_excluir->chavepri=$chavepri;
    $cliframe_alterar_excluir->sql = $cltelefoneescola->sql_query("","*","ed26_i_codigo"," ed26_i_escola = $ed26_i_escola");
    $cliframe_alterar_excluir->campos  ="ed26_i_codigo,ed13_c_descr,ed26_i_ddd,ed26_i_numero,ed26_i_ramal";
@@ -177,7 +177,7 @@ function js_mostratipotelefone1(chave1,chave2){
  db_iframe_tipotelefone.hide();
 }
 function js_valida(){
- Vemail = "<?=@$GLOBALS[Sed18_c_email]?>";
+ Vemail = "<?=@$GLOBALS[\SED18_C_EMAIL]?>";
  if(jsValidaEmail(document.form1.ed18_c_email.value,Vemail)==false){
   return false;
  }

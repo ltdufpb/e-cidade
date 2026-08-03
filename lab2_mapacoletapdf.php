@@ -10,14 +10,14 @@ function defineCabecalho($pdf, $conteudo)
     $pdf->setXY(1, 1);
     $pdf->Image('imagens/files/'. $conteudo->pathImagem, 7, 3, 20);
 
-    $tamanhoFonteNome = strlen($conteudo->laboratorio) > 42 ? 8 : 9;
+    $tamanhoFonteNome = strlen((string) $conteudo->laboratorio) > 42 ? 8 : 9;
 
     $pdf->SetFont('Arial', 'BI', $tamanhoFonteNome);
     $pdf->Text(33, 10, $conteudo->laboratorio);
     $pdf->SetFont('Arial', 'I', 8);
 
-    $pdf->Text(33, 14, trim($conteudo->enderecoLaboratorio));
-    $pdf->Text(33, 18, trim($conteudo->municipioDepartamento) . ' - ' . $conteudo->ufDepartamento);
+    $pdf->Text(33, 14, trim((string) $conteudo->enderecoLaboratorio));
+    $pdf->Text(33, 18, trim((string) $conteudo->municipioDepartamento) . ' - ' . $conteudo->ufDepartamento);
     $pdf->Text(
         33,
         22,
@@ -34,7 +34,7 @@ function defineCabecalho($pdf, $conteudo)
         )
     );
 
-    $pdf->Text(33, 26, trim($conteudo->emailDepartamento));
+    $pdf->Text(33, 26, trim((string) $conteudo->emailDepartamento));
     $comprimento = ($pdf->w - $pdf->rMargin - $pdf->lMargin);
 
     $pdf->Text(33, 30, $conteudo->siteDepartamento);
@@ -73,7 +73,7 @@ $periodo = $oGet->dataInicial . ' até ' . $oGet->dataFinal;
 $head1 = "Mapa de Coleta\n ";
 $head2 = "Período Inicial: {$oGet->dataInicial}";
 $head3 = "Período Final: {$oGet->dataFinal}";
-$head4 = "Laboratório: " . trim($conteudo->cabecalho->laboratorio);
+$head4 = "Laboratório: " . trim((string) $conteudo->cabecalho->laboratorio);
 $head5 = $setor ? "Setor: {$setor}" : 'Setor: TODOS';
 
 $pdf->AddPage();

@@ -64,8 +64,8 @@ require_once(modification("classes/db_solordemtransf_classe.php"));
 require_once(modification("classes/db_empautitempcprocitem_classe.php"));
 require_once(modification("model/licitacao.model.php"));
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $flag_disabled = false;
 $oPost         = db_utils::postMemory($_POST);
@@ -120,24 +120,24 @@ $gerautori = "";
 if (isset ($incluir)) {
 
 	$gerautori = "";
-	$valor = split(",", $valores);
+	$valor = preg_split("#,#m", $valores);
 	// arrays para dados do empautoriza
-	$arr_vals = Array ();
-	$arr_cgms = Array ();
-	$arr_help = Array ();
+	$arr_vals =  [];
+	$arr_cgms =  [];
+	$arr_help =  [];
 	$indexaut = 0;
 
 	// arrays para dados do empautitem
-	$arr_proc = Array ();
-	$arr_hell = Array ();
+	$arr_proc =  [];
+	$arr_hell =  [];
 	$indexitm = 0;
 	$vir = "";
 
 	db_inicio_transacao();
 	$clpcdotac->sql_record("update empparametro set e39_anousu = e39_anousu where e39_anousu =".db_getsession("DB_anousu"));
 
-	$diferenca = Array ();
-	$difindex  = Array ();
+	$diferenca =  [];
+	$difindex  =  [];
 	$iindexdif = 0;
 	$iIndContra = 1;
 
@@ -149,7 +149,7 @@ if (isset ($incluir)) {
 		$e54_emiss = date("Y-m-d", db_getsession("DB_datausu"));
 		$e54_instit = db_getsession("DB_instit");
 
-		$splitei = split("_", $valor[$i]);
+		$splitei = preg_split("#_#m", (string) $valor[$i]);
 		$contador_aut = $splitei[1];
 		$pc81_codprocitem = $splitei[2];
 		$pc22_orcamitem = $splitei[3];
@@ -211,7 +211,7 @@ if (isset ($incluir)) {
 			}
 
 			$atendimento = "atend_".$contador_aut."_".$pc81_codprocitem;
-			$pc13_quant  = $$atendimento;
+			$pc13_quant  = ${$atendimento};
 			$quantidade  = $quantidade_total;
 			if ($quantidade < 0) {
 				$erro_msg    = "Usuário: \\n\\nItem $pc81_codprocitem sem quantidade solicitada.\\n\\nAdministrador";
@@ -361,11 +361,11 @@ if (isset ($incluir)) {
 
 			if ($sqlerro == false) {
 
-				$arr_item = split(",", $arr_proc[$arr_help[$i]]);
+				$arr_item = preg_split("#,#m", $arr_proc[$arr_help[$i]]);
 
 				for ($iii = 0; $iii < sizeof($arr_item); $iii ++) {
 
-					$arr_daditem          = split("_", $arr_item[$iii]);
+					$arr_daditem          = preg_split("#_#m", (string) $arr_item[$iii]);
 					$e55_sequen           = $arr_daditem[0];
 					$e55_quant            = $arr_daditem[1];
 					$e55_vltot            = $arr_daditem[2];
@@ -433,11 +433,11 @@ if (isset ($incluir)) {
 
 			if ($sqlerro == false) {
 
-				$arr_item = split(",", $arr_proc[$arr_help[$i]]);
+				$arr_item = preg_split("#,#m", $arr_proc[$arr_help[$i]]);
 
 				for ($iii = 0; $iii < sizeof($arr_item); $iii ++) {
 
-					$arr_daditem               = split("_", $arr_item[$iii]);
+					$arr_daditem               = preg_split("#_#m", (string) $arr_item[$iii]);
 					$e55_sequen                = $arr_daditem[0];
 					$e55_quant                 = $arr_daditem[1];
 					$e55_vltot                 = $arr_daditem[2];
@@ -606,10 +606,10 @@ if (isset ($incluir)) {
 
 			if ($sqlerro == false) {
 
-			  $arr_item = split(",", $arr_proc[$arr_help[$i]]);
+			  $arr_item = preg_split("#,#m", $arr_proc[$arr_help[$i]]);
 			  for ($iii = 0; $iii < sizeof($arr_item); $iii ++) {
 
-				$arr_daditem = split("_", $arr_item[$iii]);
+				$arr_daditem = preg_split("#_#m", (string) $arr_item[$iii]);
 				//$e55_sequen = $arr_daditem[0];
 				$e55_quant = $arr_daditem[1];
 				$e55_vltot = $arr_daditem[2];
@@ -647,7 +647,7 @@ if (isset ($incluir)) {
 
 				  if ((isset ($pc01_servico) && (trim($pc01_servico) == "f" || trim($pc01_servico) == "")) || !isset ($pc01_servico)) {
 
-				    $unid = trim(substr($m61_descr, 0, 10));
+				    $unid = trim(substr((string) $m61_descr, 0, 10));
 					if ($m61_usaquant == "t") {
 					  $unid .= " ($pc17_quant UNIDADES)";
 					}
@@ -692,8 +692,8 @@ if (isset ($incluir)) {
 						$vlrreservaqtditem = 0;
 
             if ($sqlerro == false){
-                 if (trim(@$pc10_resumo)!=""){
-                      $sql_autori  = "update empautoriza set e54_resumo = '".chop(addslashes($pc10_resumo))."' ";
+                 if (trim((string) @$pc10_resumo)!=""){
+                      $sql_autori  = "update empautoriza set e54_resumo = '".chop(addslashes((string) $pc10_resumo))."' ";
                       $sql_autori .= "where e54_autori = ".$e54_autori;
 
                       $clempautoriza->sql_record($sql_autori);
@@ -1091,7 +1091,7 @@ if ($numrows_itens == 0) {
 		db_fieldsmemory($result_lic, 0);
 		$e54_tipol = $l03_tipo;
 		$e54_codcom = $l03_codcom;
-		$anolic = substr($l20_datacria, 0, 4);
+		$anolic = substr((string) $l20_datacria, 0, 4);
 		$e54_numerl = $l20_numero."/".$anolic;
 	}
 
@@ -1140,8 +1140,8 @@ if ($numrows_itens == 0) {
 	$iContrapartidAnt = "";
 	$contador = 1;
 	$testatot = 0;
-	$saldodotacoes = Array ();
-	$indexdotacoes = Array ();
+	$saldodotacoes =  [];
+	$indexdotacoes =  [];
 	$indexsaldodotacoes = 0;
 	$itenssemdotac  = "";
 	$vircodprocitem = "";
@@ -1152,7 +1152,7 @@ if ($numrows_itens == 0) {
 		$passa = true;
 		$e54_autori = 0;
 
-		if (trim($pc13_coddot) == "") {
+		if (trim((string) $pc13_coddot) == "") {
 			continue;
 		}
 		//Trazemos somentes as autorizacoes das contrapartidas.
@@ -1238,9 +1238,9 @@ if ($numrows_itens == 0) {
 			}
 		}
 		if ($i < $numrows_itens -1) {
-			$proxitem   = pg_result($result_itens, $i +1, "pc81_codprocitem");
-			$proxdotac  = pg_result($result_itens, $i +1, "pc13_coddot");
-			$proxcontra = pg_result($result_itens, $i +1, "pc19_orctiporec");
+			$proxitem   = pg_fetch_result($result_itens, $i +1, "pc81_codprocitem");
+			$proxdotac  = pg_fetch_result($result_itens, $i +1, "pc13_coddot");
+			$proxcontra = pg_fetch_result($result_itens, $i +1, "pc19_orctiporec");
 			if ($proxitem == $pc81_codprocitem and $proxdotac == $pc13_coddot and $proxcontra == $pc19_orctiporec) {
 				continue;
 			}
@@ -1267,7 +1267,7 @@ if ($numrows_itens == 0) {
 
 	for ($i = 0; $i < $numrows_itens; $i ++) {
 		db_fieldsmemory($result_itens, $i);
-		if (trim($pc13_coddot) == "") {
+		if (trim((string) $pc13_coddot) == "") {
 			continue;
 		}
 
@@ -1335,9 +1335,9 @@ if ($numrows_itens == 0) {
 		}
 
 		if ($i < $numrows_itens -1) {
-			   $proxitem     = pg_result($result_itens, $i +1, "pc81_codprocitem");
-			   $proxdotac    = pg_result($result_itens, $i +1, "pc13_coddot");
-		     $proxcontra   = pg_result($result_itens, $i +1, "pc19_orctiporec");
+			   $proxitem     = pg_fetch_result($result_itens, $i +1, "pc81_codprocitem");
+			   $proxdotac    = pg_fetch_result($result_itens, $i +1, "pc13_coddot");
+		     $proxcontra   = pg_fetch_result($result_itens, $i +1, "pc19_orctiporec");
 			if ($proxitem == $pc81_codprocitem and $proxdotac == $pc13_coddot and $proxcontra == $pc19_orctiporec) {
 				continue;
 			}
@@ -1350,8 +1350,8 @@ if ($numrows_itens == 0) {
 		db_fieldsmemory($result, 0);
 
 		$valdisp = 'valdisp_'.$contador;
-		$$valdisp = round((0 + $atual_menos_reservado) + $saldodotacoes[$pc13_coddot], 2);
-		$valtesta = round($$valdisp, 2);
+		${$valdisp} = round((0 + $atual_menos_reservado) + $saldodotacoes[$pc13_coddot], 2);
+		$valtesta = round(${$valdisp}, 2);
 		if ($dot_ant != $pc13_coddot) {
 			$testatot = 0;
 		}
@@ -1365,7 +1365,7 @@ if ($numrows_itens == 0) {
 				echo "  <td nowrap colspan='15'align='left'><strong>&nbsp;</strong></td>\n";
 				echo "<tr>\n";
 			}
-			$$valdisp = db_formatar($$valdisp, "v");
+			${$valdisp} = db_formatar(${$valdisp}, "v");
 			echo "</tr>\n";
 			echo "  <td nowrap colspan='1' class='bordas' align='center' title='Marcar apenas itens da $contador&ordf; autorização'><strong>";
 			db_ancora("A", "js_marcaautoriza('". ($contador)."');", 1);
@@ -1375,8 +1375,8 @@ if ($numrows_itens == 0) {
 			db_input('valdisp_'.$contador, 12, 0, true, 'text', 3);
 			echo "</td>\n";
 			echo "</tr>\n";
-			$$valdisp         = str_replace(".", "", $$valdisp);
-			$$valdisp         = str_replace(",", ".", $$valdisp);
+			${$valdisp}         = str_replace(".", "", ${$valdisp});
+			${$valdisp}         = str_replace(",", ".", ${$valdisp});
 			$dot_ant          = $pc13_coddot;
 			$forn_ant         = $z01_numcgm;
 			$codele_ant       = $pc18_codele;
@@ -1500,7 +1500,7 @@ if ($numrows_itens == 0) {
 		echo " value='aut_". ($contador -1)."_".$pc81_codprocitem."_".$pc22_orcamitem."_".$pc23_orcamforne."_".$pc13_coddot."_$pc13_sequencial' $simnaod></td>\n";
 		echo "  <td nowrap class='$bordas' align='center' >{$pc81_codprocitem}/{$l21_ordem}</td>\n";
 		if ((isset ($pc01_servico) && (trim($pc01_servico) == "f" || trim($pc01_servico) == "")) || !isset ($pc01_servico)) {
-			$unid = trim(substr($m61_descr, 0, 10));
+			$unid = trim(substr((string) $m61_descr, 0, 10));
 			if ($m61_usaquant == "t") {
 				$unid .= " <BR>($pc17_quant UNIDADES)";
 			}
@@ -1510,8 +1510,8 @@ if ($numrows_itens == 0) {
 		echo "  <td nowrap class='$bordas' align='center' >$unid</td>\n";
 		echo "  <td nowrap class='$bordas' align='center' >$pc11_numero-$pc13_sequencial</td>\n";
 		echo "  <td nowrap class='$bordas' align='center' >$pc01_codmater</td>\n";
-		echo "  <td class='$bordas' align='left' >".ucfirst(strtolower($pc01_descrmater))."</td>\n";
-		echo "  <td class='$bordas' align='left' >".(trim(@$pc10_resumo)==""?$pc23_obs:$pc10_resumo)."&nbsp;</td>\n";
+		echo "  <td class='$bordas' align='left' >".ucfirst(strtolower((string) $pc01_descrmater))."</td>\n";
+		echo "  <td class='$bordas' align='left' >".(trim((string) @$pc10_resumo)==""?$pc23_obs:$pc10_resumo)."&nbsp;</td>\n";
 		//echo "  <td class='$bordas' align='left' >".ucfirst(strtolower($pc23_obs))."&nbsp;</td>\n";
 		echo "  <td class='$bordas' align='left' >$z01_nome</td>\n";
 		echo "  <td nowrap class='$bordas' align='center' >$pc13_coddot</td>\n";
@@ -1523,14 +1523,14 @@ if ($numrows_itens == 0) {
     $seq_item++;
 
 		$atend  = 'atend_'.($contador -1).'_'.$pc81_codprocitem;
-		$$atend = $pc13_quant;
+		${$atend} = $pc13_quant;
 
 	  $op = 1;
     if($pc01_servico == 't'){
       $op = 3;
     } else {
 
-      if ($simnaod == 'disabled' || $$atend == 0) {
+      if ($simnaod == 'disabled' || ${$atend} == 0) {
         $op = 3;
       } else {
         $op = 1;
@@ -1544,19 +1544,19 @@ if ($numrows_itens == 0) {
 		echo "  <td nowrap class='$bordas' align='left'  >";
 		$valor = 'valor_'.$pc81_codprocitem;
 		if($pc01_servico == 'f'){
-			$$valor = round(($pc23_valor / $pc23_quant) * $pc13_quant, 2);
+			${$valor} = round(($pc23_valor / $pc23_quant) * $pc13_quant, 2);
 		} else {
 
 			if ($pc13_valor !=0) {
-			  $$valor = round((($pc13_valor/($pc11_vlrun*$pc11_quant))*$pc23_valor),2);
+			  ${$valor} = round((($pc13_valor/($pc11_vlrun*$pc11_quant))*$pc23_valor),2);
 			} else {
-			  $$valor = round($pc23_valor, 2);
+			  ${$valor} = round($pc23_valor, 2);
 			}
 
 		}
 
 		$iOpcao      = 3;
-		$nSaldoTotal = ($pc23_vlrun * $$atend);
+		$nSaldoTotal = ($pc23_vlrun * ${$atend});
 
 	  if ($pc01_servico == 't') {
 
@@ -1569,7 +1569,7 @@ if ($numrows_itens == 0) {
 	    $nValorSaldoTotal = $oLicitacao->getValoresParciais( $pc81_codprocitem,
 	                                                         $pc13_coddot,
 	                                                         $pc19_orctiporec )->nValorAutorizacao;
-	    $nSaldoTotal      = ($$valor - $nValorSaldoTotal);
+	    $nSaldoTotal      = (${$valor} - $nValorSaldoTotal);
     }
 
 	  ${"valor_{$pc81_codprocitem}_{$pc13_coddot}"} = $nSaldoTotal;

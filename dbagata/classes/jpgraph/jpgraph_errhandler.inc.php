@@ -19,18 +19,18 @@ $__jpg_err_locale = DEFAULT_ERR_LOCALE;
 
 // Handles the retrieval of localized error messages
 class ErrMsgText {
-    var $lt=NULL;
-    function ErrMsgText() {
+    public $lt=NULL;
+    function __construct() {
 	GLOBAL $__jpg_err_locale;
 	$file = 'lang/'.$__jpg_err_locale.'.inc.php';
 
 	// If the chosen locale doesn't exist try english
-	if( !file_exists(dirname(__FILE__).'/'.$file) ) {
+	if( !file_exists(__DIR__.'/'.$file) ) {
 	    $__jpg_err_locale = 'en';
 	}
 
 	$file = 'lang/'.$__jpg_err_locale.'.inc.php';
-	if( !file_exists(dirname(__FILE__).'/'.$file) ) {
+	if( !file_exists(__DIR__.'/'.$file) ) {
 	    adie('Chosen locale file ("'.$file.'") for error messages does not exist or is not readable for the PHP process. Please make sure that the file exists and that the file permissions are such that the PHP process is allowed to read this file.');
 	}
 	require($file);
@@ -65,27 +65,14 @@ class ErrMsgText {
 	    // Just return the error message without arguments.
 	    return $ea[0];
 	}
-	switch( $numargs ) {
-	    case 1:
-		$msg = sprintf($ea[0],$argv[0]);
-		break;
-	    case 2:
-		$msg = sprintf($ea[0],$argv[0],$argv[1]);
-		break;
-	    case 3:
-		$msg = sprintf($ea[0],$argv[0],$argv[1],$argv[2]);
-		break;
-	    case 4:
-		$msg = sprintf($ea[0],$argv[0],$argv[1],$argv[2],$argv[3]);
-		break;
-	    case 5:
-		$msg = sprintf($ea[0],$argv[0],$argv[1],$argv[2],$argv[3],$argv[4]);
-		break;
-	    case 0:
-	    default:
-		$msg = sprintf($ea[0]);
-		break;
-	}
+	$msg = match ($numargs) {
+        1 => sprintf($ea[0],$argv[0]),
+        2 => sprintf($ea[0],$argv[0],$argv[1]),
+        3 => sprintf($ea[0],$argv[0],$argv[1],$argv[2]),
+        4 => sprintf($ea[0],$argv[0],$argv[1],$argv[2],$argv[3]),
+        5 => sprintf($ea[0],$argv[0],$argv[1],$argv[2],$argv[3],$argv[4]),
+        default => sprintf($ea[0]),
+    };
 	return $msg;
     }
 }
@@ -121,10 +108,10 @@ class JpGraphError {
 // The default trivial text error handler.
 class JpGraphErrObject {
 
-    var $iTitle = "JpGraph Error";
-    var $iDest = false;
+    public $iTitle = "JpGraph Error";
+    public $iDest = false;
 
-    function JpGraphErrObject() {
+    function __construct() {
 	// Empty. Reserved for future use
     }
 
@@ -159,6 +146,7 @@ class JpGraphErrObject {
 //==============================================================
 class JpGraphErrObjectImg extends JpGraphErrObject {
 
+    #[\Override]
     function Raise($aMsg,$aHalt=true) {
 	$img_iconerror = 
 	    'iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAaV'.
@@ -192,7 +180,7 @@ class JpGraphErrObjectImg extends JpGraphErrObject {
 	    adie($this->iTitle.' '.$aMsg);		
 	}
 
-	$aMsg = wordwrap($aMsg,55);
+	$aMsg = wordwrap((string) $aMsg,55);
 	$lines = substr_count($aMsg,"\n");
 
 	// Create the error icon GD
@@ -206,9 +194,9 @@ class JpGraphErrObjectImg extends JpGraphErrObject {
 
 	// Drop shadow
 	$img->SetColor("gray");
-	$img->FilledRectangle(5,5,$w-1,$h-1,10);
+	$img->FilledRectangle(5,5,$w-1,$h-1);
 	$img->SetColor("gray:0.7");
-	$img->FilledRectangle(5,5,$w-3,$h-3,10);
+	$img->FilledRectangle(5,5,$w-3,$h-3);
 	
 	// Window background
 	$img->SetColor("lightblue");

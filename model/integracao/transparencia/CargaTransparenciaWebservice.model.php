@@ -35,7 +35,7 @@ class CargaTransparenciaWebservice {
   private $sArquivoEstrutura;
   private $sArquivoDados;
 
-  private $aTabelas = array(
+  private $aTabelas = [
       'acordo',
       'acordosituacao',
       'acordogrupo',
@@ -122,7 +122,7 @@ class CargaTransparenciaWebservice {
       'db_config',
       'db_depart',
       'db_usuarios'
-    );
+    ];
 
   public function __construct() {
 
@@ -201,14 +201,14 @@ class CargaTransparenciaWebservice {
 
     $oRetorno = new StdClass();
     $oRetorno->dump_gerado = true;
-    $oRetorno->estrutura = array(
+    $oRetorno->estrutura = [
         'arquivo' => $sEstrutura,
         'md5' => md5_file($sEstrutura)
-      );
-    $oRetorno->dados = array(
+      ];
+    $oRetorno->dados = [
         'arquivo' => $sDados,
         'md5' => md5_file($sDados)
-      );
+      ];
 
     return $oRetorno;
   }

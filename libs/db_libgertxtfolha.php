@@ -313,26 +313,26 @@ class LayoutBBBSFolha
     {
         $this->arquivo = fopen($this->nomearq, "w");
         fputs($this->arquivo,
-            db_formatar(substr(trim($this->BSheaderA_001_003), 0, 3), "s", "0", 3, "e", 0)
+            db_formatar(substr(trim((string) $this->BSheaderA_001_003), 0, 3), "s", "0", 3, "e", 0)
             . "0000"
             . "0"
             . str_repeat(" ", 9)
             . "2"
-            . db_formatar(substr(trim($this->BSheaderA_019_032), 0, 14), "s", "0", 14, "e", 0)
-            . db_formatar(substr(trim($this->BSheaderA_033_037), 0, 5), "s", "0", 5, "e", 0)
+            . db_formatar(substr(trim((string) $this->BSheaderA_019_032), 0, 14), "s", "0", 14, "e", 0)
+            . db_formatar(substr(trim((string) $this->BSheaderA_033_037), 0, 5), "s", "0", 5, "e", 0)
             . str_repeat(" ", 15)
             . db_formatar(substr(trim(str_replace('.', '', str_replace('-', '', $this->BSheaderA_053_057))), 0, 5), "s", "0", 5, "e", 0)
             . "0"
             . "000"
             . db_formatar(substr(trim(str_replace('.', '', str_replace('-', '', $this->BSheaderA_062_071))), 0, 10), "s", "0", 10, "e", 0)
             . "0"
-            . db_translate(db_formatar(substr(strtoupper($this->BSheaderA_073_102), 0, 30), 's', ' ', 30, 'd', 0))
-            . db_translate(db_formatar(substr(strtoupper($this->BSheaderA_103_132), 0, 30), 's', ' ', 30, 'd', 0))
+            . db_translate(db_formatar(substr(strtoupper((string) $this->BSheaderA_073_102), 0, 30), 's', ' ', 30, 'd', 0))
+            . db_translate(db_formatar(substr(strtoupper((string) $this->BSheaderA_103_132), 0, 30), 's', ' ', 30, 'd', 0))
             . str_repeat(" ", 10)
             . "1"
             . str_replace('/', '', db_formatar($this->BSheaderA_144_151, "d"))
             . date("H") . date("i") . date("s")
-            . db_formatar(substr($this->BSheaderA_158_163, 0, 6), "s", "0", 6, "e", 0)
+            . db_formatar(substr((string) $this->BSheaderA_158_163, 0, 6), "s", "0", 6, "e", 0)
             . "030"
             . str_repeat("0", 5)
             . str_repeat(" ", 20)
@@ -362,14 +362,14 @@ class LayoutBBBSFolha
             . str_repeat('0', 4)
             . db_formatar($this->BSheaderL_062_071, "s", "0", 10, "e", 0)
             . " "
-            . db_translate(db_formatar(substr(strtoupper($this->BSheaderL_073_102), 0, 30), 's', ' ', 30, 'd', 0))
+            . db_translate(db_formatar(substr(strtoupper((string) $this->BSheaderL_073_102), 0, 30), 's', ' ', 30, 'd', 0))
             . str_repeat(' ', 40)
-            . db_translate(db_formatar(substr(strtoupper($this->BSheaderL_143_172), 0, 30), 's', ' ', 30, 'd', 0))
+            . db_translate(db_formatar(substr(strtoupper((string) $this->BSheaderL_143_172), 0, 30), 's', ' ', 30, 'd', 0))
             . db_formatar($this->BSheaderL_173_177, "s", "0", 5, "e", 0)
-            . db_translate(db_formatar(substr(strtoupper($this->BSheaderL_178_192), 0, 15), "s", " ", 15, "d", 0))
-            . db_translate(db_formatar(substr(strtoupper($this->BSheaderL_193_212), 0, 20), 's', ' ', 20, 'd', 0))
+            . db_translate(db_formatar(substr(strtoupper((string) $this->BSheaderL_178_192), 0, 15), "s", " ", 15, "d", 0))
+            . db_translate(db_formatar(substr(strtoupper((string) $this->BSheaderL_193_212), 0, 20), 's', ' ', 20, 'd', 0))
             . db_formatar(substr(str_replace('.', '', str_replace('-', '', $this->BSheaderL_213_220)), 0, 8), 's', '0', 8, 'e', 0)
-            . db_translate(db_formatar(substr(strtoupper($this->BSheaderL_221_222), 0, 2), 's', ' ', 2, 'd', 0))
+            . db_translate(db_formatar(substr(strtoupper((string) $this->BSheaderL_221_222), 0, 2), 's', ' ', 2, 'd', 0))
             . str_repeat(' ', 2)
             . str_repeat(' ', 16)
             . "\r\n"
@@ -392,13 +392,13 @@ class LayoutBBBSFolha
             . "0"
             . db_formatar($this->BSregist_030_042, 's', '0', 13, 'e', 0)
             . " "
-            . db_translate(db_formatar(substr(strtoupper($this->BSregist_044_073), 0, 30), 's', ' ', 30, 'd', 0))
+            . db_translate(db_formatar(substr(strtoupper((string) $this->BSregist_044_073), 0, 30), 's', ' ', 30, 'd', 0))
             . db_formatar($this->BSregist_074_088, 's', '0', 15, 'd', 0)
             . "00005"
             . str_replace('/', '', db_formatar($this->BSregist_094_101, "d"))
             . "BRL"
             . str_repeat('0', 15)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->BSregist_120_134, "f")))), 's', '0', 15, 'e', 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->BSregist_120_134, "f")))), 's', '0', 15, 'e', 0)
             . str_repeat(' ', 20)
             . str_repeat(' ', 8)
             . str_repeat(' ', 15)
@@ -438,8 +438,8 @@ class LayoutBBBSFolha
             . db_formatar(str_replace('.', '', str_replace('-', '', $this->BBheaderA_059_070)), 's', '0', 12, 'e', 0)
             . $this->BBheaderA_071_071
             . ' '
-            . db_translate(db_formatar(substr(strtoupper($this->BBheaderA_073_102), 0, 30), 's', ' ', 30, 'd', 0))
-            . db_translate(db_formatar(substr(strtoupper($this->BBheaderA_103_132), 0, 30), 's', ' ', 30, 'd', 0))
+            . db_translate(db_formatar(substr(strtoupper((string) $this->BBheaderA_073_102), 0, 30), 's', ' ', 30, 'd', 0))
+            . db_translate(db_formatar(substr(strtoupper((string) $this->BBheaderA_103_132), 0, 30), 's', ' ', 30, 'd', 0))
             . str_repeat(' ', 10)
             . "1"
             . str_replace('/', '', db_formatar($this->BBheaderA_144_151, "d"))
@@ -478,12 +478,12 @@ class LayoutBBBSFolha
             . db_formatar(str_replace('.', '', str_replace('-', '', $this->BBheaderL_059_070)), 's', '0', 12, 'e', 0)
             . $this->BBheaderL_071_071
             . " "
-            . substr(strtoupper($this->BBheaderL_073_102), 0, 30)
+            . substr(strtoupper((string) $this->BBheaderL_073_102), 0, 30)
             . str_repeat(' ', 40)
-            . db_translate(db_formatar(strtoupper($this->BBheaderL_143_172), 's', ' ', 30, 'd', 0))
+            . db_translate(db_formatar(strtoupper((string) $this->BBheaderL_143_172), 's', ' ', 30, 'd', 0))
             . db_formatar($this->BBheaderL_173_177, 's', ' ', 5, 'e', 0)
             . str_repeat(' ', 15)
-            . db_translate(db_formatar(strtoupper(trim($this->BBheaderL_193_212)), 's', ' ', 20, 'd', 0))
+            . db_translate(db_formatar(strtoupper(trim((string) $this->BBheaderL_193_212)), 's', ' ', 20, 'd', 0))
             . db_formatar($this->BBheaderL_213_217, 's', '0', 5, 'e', 0)
             . db_translate(db_formatar($this->BBheaderL_218_220, 's', ' ', 3, 'd', 0))
             . db_translate(db_formatar($this->BBheaderL_221_222, 's', ' ', 2, 'd', 0))
@@ -510,12 +510,12 @@ class LayoutBBBSFolha
             . db_formatar(str_replace('.', '', str_replace('-', '', $this->BBregistA_030_041)), 's', '0', 12, 'e', 0)
             . $this->BBregistA_042_042
             . $this->BBregistA_043_043
-            . db_formatar(str_replace('-', '', substr($this->BBregistA_044_073, 0, 30)), 's', ' ', 30, 'd', 0)
+            . db_formatar(str_replace('-', '', substr((string) $this->BBregistA_044_073, 0, 30)), 's', ' ', 30, 'd', 0)
             . db_formatar($this->BBregistA_074_093, 's', '0', 20, 'd', 0)
             . str_replace("/", '', db_formatar($this->BBregistA_094_101, "d"))
             . "BRL"
             . str_repeat('0', 15)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->BBregistA_120_134, "f")))), 's', '0', 15, 'e', 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->BBregistA_120_134, "f")))), 's', '0', 15, 'e', 0)
             . str_repeat(' ', 20)
             . str_repeat(' ', 8)
             . str_repeat(' ', 15)
@@ -534,13 +534,13 @@ class LayoutBBBSFolha
             . str_repeat(' ', 3)
             . $this->BBregistB_018_018
             . db_translate(db_formatar($this->BBregistB_019_032, 's', '0', 14, 'e', 0))
-            . db_formatar(substr($this->BBregistB_033_062, 0, 30), 's', ' ', 30, 'd', 0)
-            . db_translate(db_formatar(substr($this->BBregistB_063_067, 0, 5), 's', '0', 5, 'e', 0))
-            . db_translate(db_formatar(substr($this->BBregistB_068_082, 0, 15), 's', ' ', 15, 'd', 0))
-            . db_translate(db_formatar(substr($this->BBregistB_083_097, 0, 15), 's', ' ', 15, 'd', 0))
-            . db_translate(db_formatar(substr($this->BBregistB_098_117, 0, 20), 's', ' ', 20, 'd', 0))
-            . db_translate(db_formatar(substr($this->BBregistB_118_122, 0, 5), 's', ' ', 5, 'd', 0))
-            . db_translate(db_formatar(substr($this->BBregistB_123_125, 5, 3), 's', ' ', 3, 'd', 0))
+            . db_formatar(substr((string) $this->BBregistB_033_062, 0, 30), 's', ' ', 30, 'd', 0)
+            . db_translate(db_formatar(substr((string) $this->BBregistB_063_067, 0, 5), 's', '0', 5, 'e', 0))
+            . db_translate(db_formatar(substr((string) $this->BBregistB_068_082, 0, 15), 's', ' ', 15, 'd', 0))
+            . db_translate(db_formatar(substr((string) $this->BBregistB_083_097, 0, 15), 's', ' ', 15, 'd', 0))
+            . db_translate(db_formatar(substr((string) $this->BBregistB_098_117, 0, 20), 's', ' ', 20, 'd', 0))
+            . db_translate(db_formatar(substr((string) $this->BBregistB_118_122, 0, 5), 's', ' ', 5, 'd', 0))
+            . db_translate(db_formatar(substr((string) $this->BBregistB_123_125, 5, 3), 's', ' ', 3, 'd', 0))
             . db_translate(db_formatar($this->BBregistB_126_127, 's', ' ', 2, 'd', 0))
             . str_replace("/", '', db_formatar($this->BBregistB_128_135, "d"))
             . db_formatar(str_replace(',', '', str_replace('.', '', $this->BBregistB_136_150)), 's', '0', 15, 'e', 0)
@@ -570,7 +570,7 @@ class LayoutBBBSFolha
             . "5"
             . str_repeat(' ', 9)
             . db_formatar(($this->BBBStraillerL_018_023 + 2), 's', '0', 6, 'e', 0)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->BBBStraillerL_024_041, "f")))), 's', '0', 18, 'e', 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->BBBStraillerL_024_041, "f")))), 's', '0', 18, 'e', 0)
             . str_repeat('0', 18)
             . str_repeat(' ', 171)
             . str_repeat(' ', 10)
@@ -800,7 +800,7 @@ class cl_layout_VISA
     {
         fputs($this->arquivo,
             "5"
-            . db_formatar((str_replace('.', '', str_replace(',', '', trim(db_formatar($this->VVregistFC_002_012, "f"))))), "s", "0", 11, "e", 0)
+            . db_formatar((str_replace('.', '', str_replace(',', '', trim((string) db_formatar($this->VVregistFC_002_012, "f"))))), "s", "0", 11, "e", 0)
             . " "
             . db_formatar($this->VVregistFC_014_026, "s", " ", 13, "d", 0)
             . str_repeat(" ", 54)
@@ -811,7 +811,7 @@ class cl_layout_VISA
             . db_formatar(strtoupper(db_translate($this->VVregistFC_114_133)), "s", " ", 20, "d", 0)
             . db_formatar(strtoupper(db_translate($this->VVregistFC_134_139)), "s", " ", 6, "d", 0)
             . db_formatar($this->VVregistFC_140_154, "s", "0", 15, "e", 0)
-            . strtoupper($this->VVregistFC_155_155)
+            . strtoupper((string) $this->VVregistFC_155_155)
             . $this->VVregistFC_156_156
             . db_formatar(strtoupper(substr(db_translate($this->VVregistFC_157_191), 0, 35)), "s", " ", 35, "d", 0)
             . db_formatar(strtoupper(substr(db_translate($this->VVregistFC_192_201), 0, 10)), "s", " ", 10, "d", 0)
@@ -851,7 +851,7 @@ class cl_layout_VISA
         fputs($this->arquivo,
             "9"
             . db_formatar($this->VVtraillerArq_002_007, "s", "0", 6, "e", 0)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->VVtraillerArq_008_022, "f")))), "s", "0", 15, "e", 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->VVtraillerArq_008_022, "f")))), "s", "0", 15, "e", 0)
             . str_repeat(" ", 372)
             . db_formatar($this->VVtraillerArq_395_400, "s", "0", 6, "e", 0)
             . "\r\n"
@@ -1113,7 +1113,7 @@ class cl_layout_SEFIP
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro00_100_119), 0, 20)), "s", " ", 20, "d", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro00_120_169), 0, 50)), "s", " ", 50, "d", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro00_170_189), 0, 20)), "s", " ", 20, "d", 0)
-            . db_formatar(str_replace('-', '', str_replace('.', '', substr($this->SFPRegistro00_190_197, 0, 8))), "s", "0", 8, "e", 0)
+            . db_formatar(str_replace('-', '', str_replace('.', '', substr((string) $this->SFPRegistro00_190_197, 0, 8))), "s", "0", 8, "e", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro00_198_217), 0, 20)), "s", " ", 20, "d", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro00_218_219), 0, 2)), "s", " ", 2, "d", 0)
             . db_formatar($this->SFPRegistro00_220_231, "s", "0", 12, "e", 0)
@@ -1144,13 +1144,13 @@ class cl_layout_SEFIP
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro10_054_093), 0, 40)), "s", " ", 40, "d", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro10_094_143), 0, 50)), "s", " ", 50, "d", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro10_144_163), 0, 20)), "s", " ", 20, "d", 0)
-            . db_formatar(str_replace('-', '', str_replace('.', '', substr($this->SFPRegistro10_164_171, 0, 8))), "s", "0", 8, "e", 0)
+            . db_formatar(str_replace('-', '', str_replace('.', '', substr((string) $this->SFPRegistro10_164_171, 0, 8))), "s", "0", 8, "e", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro10_172_191), 0, 20)), "s", " ", 20, "d", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro10_192_193), 0, 2)), "s", " ", 2, "d", 0)
             . db_formatar($this->SFPRegistro10_194_205, "s", "0", 12, "e", 0)
-            . strtoupper($this->SFPRegistro10_206_206)
+            . strtoupper((string) $this->SFPRegistro10_206_206)
             . db_formatar($this->SFPRegistro10_207_213, "s", "0", 7, "e", 0)
-            . strtoupper($this->SFPRegistro10_214_214)
+            . strtoupper((string) $this->SFPRegistro10_214_214)
             . db_formatar($this->SFPRegistro10_215_216, "s", "0", 2, "d", 0)
             . "0"
             . "1"
@@ -1158,8 +1158,8 @@ class cl_layout_SEFIP
             . db_formatar($this->SFPRegistro10_222_225, "s", "0", 4, "e", 0)
             . db_formatar($this->SFPRegistro10_226_229, "s", "0", 4, "e", 0)
             . str_repeat(" ", 5)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->SFPRegistro10_235_249, "f")))), "s", "0", 15, "e", 0)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->SFPRegistro10_250_264, "f")))), "s", "0", 15, "e", 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->SFPRegistro10_235_249, "f")))), "s", "0", 15, "e", 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->SFPRegistro10_250_264, "f")))), "s", "0", 15, "e", 0)
             . str_repeat("0", 30)
             . str_repeat(" ", 16)
             . str_repeat("0", 45)
@@ -1176,19 +1176,19 @@ class cl_layout_SEFIP
             . "1"
             . db_formatar($this->SFPRegistro12_004_017, "s", "0", 14, "e", 0)
             . str_repeat("0", 36)
-            . trim(str_pad($this->SFPRegistro12_054_068, 15, "0", STR_PAD_LEFT))
+            . trim(str_pad((string) $this->SFPRegistro12_054_068, 15, "0", STR_PAD_LEFT))
             . str_repeat("0", 15)
             . " "
-            . trim(str_pad($this->SFPRegistro12_085_099, 15, "0", STR_PAD_LEFT))
-            . str_pad($this->SFPRegistro12_100_114, 15, "0", STR_PAD_LEFT)
-            . str_pad($this->SFPRegistro12_115_125, 11, " ", STR_PAD_LEFT)
-            . str_pad($this->SFPRegistro12_126_129, 4, " ", STR_PAD_LEFT)
-            . str_pad($this->SFPRegistro12_130_134, 5, " ", STR_PAD_LEFT)
-            . str_pad($this->SFPRegistro12_135_140, 6, " ", STR_PAD_LEFT)
-            . str_pad($this->SFPRegistro12_141_146, 6, " ", STR_PAD_LEFT)
-            . db_formatar(str_replace('-', '', str_replace('.', '', substr($this->SFPRegistro12_147_161, 0, 15))), "s", "0", 15, "e", 0)
-            . str_pad($this->SFPRegistro12_162_167, 6, " ", STR_PAD_LEFT)
-            . str_pad($this->SFPRegistro12_168_173, 6, " ", STR_PAD_LEFT)
+            . trim(str_pad((string) $this->SFPRegistro12_085_099, 15, "0", STR_PAD_LEFT))
+            . str_pad((string) $this->SFPRegistro12_100_114, 15, "0", STR_PAD_LEFT)
+            . str_pad((string) $this->SFPRegistro12_115_125, 11, " ", STR_PAD_LEFT)
+            . str_pad((string) $this->SFPRegistro12_126_129, 4, " ", STR_PAD_LEFT)
+            . str_pad((string) $this->SFPRegistro12_130_134, 5, " ", STR_PAD_LEFT)
+            . str_pad((string) $this->SFPRegistro12_135_140, 6, " ", STR_PAD_LEFT)
+            . str_pad((string) $this->SFPRegistro12_141_146, 6, " ", STR_PAD_LEFT)
+            . db_formatar(str_replace('-', '', str_replace('.', '', substr((string) $this->SFPRegistro12_147_161, 0, 15))), "s", "0", 15, "e", 0)
+            . str_pad((string) $this->SFPRegistro12_162_167, 6, " ", STR_PAD_LEFT)
+            . str_pad((string) $this->SFPRegistro12_168_173, 6, " ", STR_PAD_LEFT)
             . db_formatar($this->SFPRegistro12_174_188, "s", "0", 15, "e", 0)
             . db_formatar($this->SFPRegistro12_189_203, "s", "0", 15, "e", 0)
             . db_formatar($this->SFPRegistro12_204_218, "s", "0", 15, "e", 0)
@@ -1212,15 +1212,15 @@ class cl_layout_SEFIP
             . "1"
             . db_formatar($this->SFPRegistro14_004_017, "s", "0", 14, "e", 0)
             . str_repeat("0", 36)
-            . db_formatar(str_replace('-', '', str_replace("/", '', str_replace('.', '', substr($this->SFPRegistro14_054_064, 0, 11)))), "s", "0", 11, "e", 0)
+            . db_formatar(str_replace('-', '', str_replace("/", '', str_replace('.', '', substr((string) $this->SFPRegistro14_054_064, 0, 11)))), "s", "0", 11, "e", 0)
             . db_formatar(str_replace('-', '', str_replace("/", '', $this->SFPRegistro14_065_072)), "s", "0", 8, "e", 0)
             . db_formatar($this->SFPRegistro14_073_074, "s", "0", 2, "e", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro14_075_144), 0, 70)), "s", " ", 70, "d", 0)
-            . db_formatar((((int)$this->SFPRegistro14_073_074 >= 12) ? str_replace('-', '', str_replace("/", '', str_replace('.', '', substr($this->SFPRegistro14_145_151, 0, 7)))) : str_repeat(" ", 7)), "s", "0", 7, "e", 0)
-            . db_formatar((((int)$this->SFPRegistro14_073_074 >= 12) ? str_replace('-', '', str_replace("/", '', str_replace('.', '', substr($this->SFPRegistro14_152_156, 0, 5)))) : str_repeat(" ", 5)), "s", "0", 5, "e", 0)
+            . db_formatar((((int)$this->SFPRegistro14_073_074 >= 12) ? str_replace('-', '', str_replace("/", '', str_replace('.', '', substr((string) $this->SFPRegistro14_145_151, 0, 7)))) : str_repeat(" ", 7)), "s", "0", 7, "e", 0)
+            . db_formatar((((int)$this->SFPRegistro14_073_074 >= 12) ? str_replace('-', '', str_replace("/", '', str_replace('.', '', substr((string) $this->SFPRegistro14_152_156, 0, 5)))) : str_repeat(" ", 5)), "s", "0", 5, "e", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro14_157_206), 0, 50)), "s", " ", 50, "d", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro14_207_226), 0, 20)), "s", " ", 20, "d", 0)
-            . db_formatar(str_replace('-', '', str_replace('.', '', substr($this->SFPRegistro14_227_234, 0, 8))), "s", "0", 8, "e", 0)
+            . db_formatar(str_replace('-', '', str_replace('.', '', substr((string) $this->SFPRegistro14_227_234, 0, 8))), "s", "0", 8, "e", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro14_235_254), 0, 20)), "s", " ", 20, "d", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro14_255_256), 0, 2)), "s", " ", 2, "d", 0)
             . str_repeat(" ", 103)
@@ -1235,27 +1235,27 @@ class cl_layout_SEFIP
     public function geraRegist20SFP()
     {
         fputs($this->arquivo,
-            str_pad($this->SFPRegistro20_001_002, 2, "0")
-            . str_pad($this->SFPRegistro20_003_003, 1, "0")
-            . str_pad($this->SFPRegistro20_004_017, 14, "0")
-            . str_pad($this->SFPRegistro20_018_018, 1, "0")
-            . str_pad($this->SFPRegistro20_019_032, 14, "0")
-            . str_pad($this->SFPRegistro20_033_053, 21, "0")
-            . str_pad($this->SFPRegistro20_054_093, 40)
-            . str_pad($this->SFPRegistro20_094_143, 50)
-            . str_pad($this->SFPRegistro20_144_163, 20)
-            . str_pad($this->SFPRegistro20_164_171, 8, "0")
-            . str_pad($this->SFPRegistro20_172_191, 20)
-            . str_pad($this->SFPRegistro20_192_193, 2)
-            . str_pad($this->SFPRegistro20_194_197, 4)
-            . str_pad($this->SFPRegistro20_198_212, 15, "0")
-            . str_pad($this->SFPRegistro20_213_227, 15, "0")
-            . str_pad($this->SFPRegistro20_228_228, 1, "0")
-            . str_pad($this->SFPRegistro20_229_242, 14, "0")
-            . str_pad($this->SFPRegistro20_243_257, 15, "0")
-            . str_pad($this->SFPRegistro20_258_272, 15, "0")
-            . str_pad($this->SFPRegistro20_273_317, 45, "0")
-            . str_pad($this->SFPRegistro20_318_359, 42)
+            str_pad((string) $this->SFPRegistro20_001_002, 2, "0")
+            . str_pad((string) $this->SFPRegistro20_003_003, 1, "0")
+            . str_pad((string) $this->SFPRegistro20_004_017, 14, "0")
+            . str_pad((string) $this->SFPRegistro20_018_018, 1, "0")
+            . str_pad((string) $this->SFPRegistro20_019_032, 14, "0")
+            . str_pad((string) $this->SFPRegistro20_033_053, 21, "0")
+            . str_pad((string) $this->SFPRegistro20_054_093, 40)
+            . str_pad((string) $this->SFPRegistro20_094_143, 50)
+            . str_pad((string) $this->SFPRegistro20_144_163, 20)
+            . str_pad((string) $this->SFPRegistro20_164_171, 8, "0")
+            . str_pad((string) $this->SFPRegistro20_172_191, 20)
+            . str_pad((string) $this->SFPRegistro20_192_193, 2)
+            . str_pad((string) $this->SFPRegistro20_194_197, 4)
+            . str_pad((string) $this->SFPRegistro20_198_212, 15, "0")
+            . str_pad((string) $this->SFPRegistro20_213_227, 15, "0")
+            . str_pad((string) $this->SFPRegistro20_228_228, 1, "0")
+            . str_pad((string) $this->SFPRegistro20_229_242, 14, "0")
+            . str_pad((string) $this->SFPRegistro20_243_257, 15, "0")
+            . str_pad((string) $this->SFPRegistro20_258_272, 15, "0")
+            . str_pad((string) $this->SFPRegistro20_273_317, 45, "0")
+            . str_pad((string) $this->SFPRegistro20_318_359, 42)
             . "*"
             . "\r\n"
         );
@@ -1267,9 +1267,9 @@ class cl_layout_SEFIP
             "30"
             . "1"
             . db_formatar($this->SFPRegistro30_004_017, "s", "0", 14, "e", 0)
-            . str_pad($this->SFPRegistro30_018_018, 1)
-            . str_pad($this->SFPRegistro30_019_032, 14)
-            . db_formatar(str_replace('-', '', str_replace("/", '', str_replace('.', '', substr($this->SFPRegistro30_033_043, 0, 11)))), "s", "0", 11, "e", 0)
+            . str_pad((string) $this->SFPRegistro30_018_018, 1)
+            . str_pad((string) $this->SFPRegistro30_019_032, 14)
+            . db_formatar(str_replace('-', '', str_replace("/", '', str_replace('.', '', substr((string) $this->SFPRegistro30_033_043, 0, 11)))), "s", "0", 11, "e", 0)
             . db_formatar(str_replace('-', '', str_replace("/", '', $this->SFPRegistro30_044_051)), "s", "0", 8, "e", 0)
             . db_formatar($this->SFPRegistro30_052_053, "s", "0", 2, "e", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro30_054_123), 0, 70)), "s", " ", 70, "d", 0)
@@ -1278,15 +1278,15 @@ class cl_layout_SEFIP
             . $this->SFPRegistro30_142_146
             . db_formatar(str_replace('-', '', str_replace("/", '', $this->SFPRegistro30_147_154)), "s", "0", 8, "e", 0)
             . db_formatar(str_replace('-', '', str_replace("/", '', $this->SFPRegistro30_155_162)), "s", "0", 8, "e", 0)
-            . db_formatar(str_replace('-', '', str_replace("/", '', str_replace('.', '', substr($this->SFPRegistro30_163_167, 0, 4)))), "s", "0", 5, "e", 0)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->SFPRegistro30_168_182, "f")))), "s", "0", 15, "e", 0)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->SFPRegistro30_183_197, "f")))), "s", "0", 15, "e", 0)
+            . db_formatar(str_replace('-', '', str_replace("/", '', str_replace('.', '', substr((string) $this->SFPRegistro30_163_167, 0, 4)))), "s", "0", 5, "e", 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->SFPRegistro30_168_182, "f")))), "s", "0", 15, "e", 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->SFPRegistro30_183_197, "f")))), "s", "0", 15, "e", 0)
             . str_repeat(" ", 2)
             . db_formatar($this->SFPRegistro30_200_201, "s", "0", 2, "e", 0)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->SFPRegistro30_202_216, "f")))), "s", "0", 15, "e", 0)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->SFPRegistro30_217_231, "f")))), "s", "0", 15, "e", 0)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->SFPRegistro30_232_246, "f")))), "s", "0", 15, "e", 0)
-            . db_formatar(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->SFPRegistro30_247_261, "f")))), "s", "0", 15, "e", 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->SFPRegistro30_202_216, "f")))), "s", "0", 15, "e", 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->SFPRegistro30_217_231, "f")))), "s", "0", 15, "e", 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->SFPRegistro30_232_246, "f")))), "s", "0", 15, "e", 0)
+            . db_formatar(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->SFPRegistro30_247_261, "f")))), "s", "0", 15, "e", 0)
             . str_repeat(" ", 98)
             . "*"
             . "\r\n"
@@ -1299,9 +1299,9 @@ class cl_layout_SEFIP
             "32"
             . "1"
             . db_formatar($this->SFPRegistro32_004_017, "s", "0", 14, "e", 0)
-            . str_pad($this->SFPRegistro32_018_018, 1)
-            . str_pad($this->SFPRegistro32_019_032, 14)
-            . db_formatar(str_replace('-', '', str_replace("/", '', str_replace('.', '', substr($this->SFPRegistro32_033_043, 0, 11)))), "s", "0", 11, "e", 0)
+            . str_pad((string) $this->SFPRegistro32_018_018, 1)
+            . str_pad((string) $this->SFPRegistro32_019_032, 14)
+            . db_formatar(str_replace('-', '', str_replace("/", '', str_replace('.', '', substr((string) $this->SFPRegistro32_033_043, 0, 11)))), "s", "0", 11, "e", 0)
             . db_formatar(str_replace('-', '', str_replace("/", '', $this->SFPRegistro32_044_051)), "s", "0", 8, "e", 0)
             . db_formatar($this->SFPRegistro32_052_053, "s", "0", 2, "e", 0)
             . db_formatar(strtoupper(substr(db_translate($this->SFPRegistro32_054_123), 0, 70)), "s", " ", 70, "d", 0)
@@ -1469,23 +1469,23 @@ class cl_layout_CAGED
         fputs($this->arquivo,
             "A"
             . "2"
-            . db_formatar(substr($this->KGDRegistroA_003_008, 0, 6), "s", "0", 6, "e", 0)
-            . db_formatar(substr($this->KGDRegistroA_009_009, 0, 1), "s", "0", 1, "e", 0)
-            . db_formatar(substr($this->KGDRegistroA_010_011, 0, 2), "s", "0", 2, "e", 0)
-            . db_formatar(substr($this->KGDRegistroA_012_015, 0, 4), "s", "0", 4, "e", 0)
-            . db_formatar(substr($this->KGDRegistroA_016_016, 0, 1), "s", "0", 1, "e", 0)
-            . db_formatar(substr($this->KGDRegistroA_017_021, 0, 5), "s", "0", 5, "e", 0)
-            . db_formatar(substr($this->KGDRegistroA_022_022, 0, 1), "s", "0", 1, "e", 0)
-            . db_formatar(substr($this->KGDRegistroA_023_036, 0, 14), "s", "0", 14, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroA_003_008, 0, 6), "s", "0", 6, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroA_009_009, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroA_010_011, 0, 2), "s", "0", 2, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroA_012_015, 0, 4), "s", "0", 4, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroA_016_016, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroA_017_021, 0, 5), "s", "0", 5, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroA_022_022, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroA_023_036, 0, 14), "s", "0", 14, "e", 0)
             . db_formatar(substr(strtoupper(db_translate($this->KGDRegistroA_037_071)), 0, 35), "s", " ", 35, "d", 0)
             . db_formatar(substr(strtoupper(db_translate($this->KGDRegistroA_072_111)), 0, 40), "s", " ", 40, "d", 0)
             . db_formatar(substr(str_replace('-', '', str_replace('.', '', $this->KGDRegistroA_112_119)), 0, 8), "s", "0", 8, "e", 0)
             . db_formatar(substr(strtoupper(db_translate($this->KGDRegistroA_120_121)), 0, 2), "s", " ", 2, "d", 0)
-            . db_formatar(substr($this->KGDRegistroA_122_125, 0, 4), "s", "0", 4, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroA_122_125, 0, 4), "s", "0", 4, "e", 0)
             . db_formatar(substr(str_replace('.', '', str_replace('-', '', str_replace("/", '', $this->KGDRegistroA_126_133))), 0, 8), "s", "0", 8, "e", 0)
             . db_formatar(substr(str_replace('.', '', str_replace('-', '', str_replace("/", '', $this->KGDRegistroA_134_138))), 0, 5), "s", "0", 5, "e", 0)
-            . db_formatar(substr($this->KGDRegistroA_139_143, 0, 5), "s", "0", 5, "e", 0)
-            . db_formatar(substr($this->KGDRegistroA_144_148, 0, 5), "s", "0", 5, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroA_139_143, 0, 5), "s", "0", 5, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroA_144_148, 0, 5), "s", "0", 5, "e", 0)
             . "  "
             . "\r\n"
         );
@@ -1496,19 +1496,19 @@ class cl_layout_CAGED
         fputs($this->arquivo,
             "B"
             . "1"
-            . db_formatar(substr($this->KGDRegistroB_003_016, 0, 14), "s", "0", 14, "e", 0)
-            . db_formatar(substr($this->KGDRegistroB_017_021, 0, 5), "s", "0", 5, "e", 0)
-            . db_formatar(substr($this->KGDRegistroB_022_022, 0, 1), "s", "0", 1, "e", 0)
-            . db_formatar(substr($this->KGDRegistroB_023_023, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroB_003_016, 0, 14), "s", "0", 14, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroB_017_021, 0, 5), "s", "0", 5, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroB_022_022, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroB_023_023, 0, 1), "s", "0", 1, "e", 0)
             . db_formatar(substr(str_replace('-', '', str_replace('.', '', $this->KGDRegistroB_024_031)), 0, 8), "s", "0", 8, "e", 0)
-            . db_formatar(substr($this->KGDRegistroB_032_036, 0, 5), "s", "0", 5, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroB_032_036, 0, 5), "s", "0", 5, "e", 0)
             . db_formatar(substr(strtoupper(db_translate($this->KGDRegistroB_037_076)), 0, 40), "s", " ", 40, "d", 0)
             . db_formatar(substr(strtoupper(db_translate($this->KGDRegistroB_077_116)), 0, 40), "s", " ", 40, "d", 0)
             . db_formatar(substr(strtoupper(db_translate($this->KGDRegistroB_117_136)), 0, 20), "s", " ", 20, "d", 0)
             . db_formatar(substr(strtoupper(db_translate($this->KGDRegistroB_137_138)), 0, 2), "s", " ", 2, "d", 0)
-            . db_formatar(substr($this->KGDRegistroB_139_143, 0, 5), "s", "0", 5, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroB_139_143, 0, 5), "s", "0", 5, "e", 0)
             . "2"
-            . db_formatar(substr($this->KGDRegistroB_145_150, 0, 6), "s", " ", 6, "d", 0)
+            . db_formatar(substr((string) $this->KGDRegistroB_145_150, 0, 6), "s", " ", 6, "d", 0)
             . "\r\n"
         );
     }
@@ -1518,28 +1518,28 @@ class cl_layout_CAGED
         fputs($this->arquivo,
             "C"
             . "1"
-            . db_formatar(substr($this->KGDRegistroC_003_016, 0, 14), "s", "0", 14, "e", 0)
-            . db_formatar(substr($this->KGDRegistroC_017_021, 0, 5), "s", "0", 5, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_003_016, 0, 14), "s", "0", 14, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_017_021, 0, 5), "s", "0", 5, "e", 0)
             . db_formatar(substr(str_replace('.', '', str_replace('-', '', str_replace("/", '', $this->KGDRegistroC_022_032))), 0, 11), "s", "0", 11, "e", 0)
-            . db_formatar(substr($this->KGDRegistroC_033_033, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_033_033, 0, 1), "s", "0", 1, "e", 0)
             . str_replace("/", '', db_formatar($this->KGDRegistroC_034_041, "d"))
-            . db_formatar(substr($this->KGDRegistroC_042_042, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_042_042, 0, 1), "s", "0", 1, "e", 0)
             . str_repeat(" ", 5)
-            . db_formatar(substr(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->KGDRegistroC_048_055, "f")))), 0, 8), 's', '0', 8, 'e', 0)
-            . db_formatar(substr($this->KGDRegistroC_056_057, 0, 2), "s", "0", 2, "e", 0)
+            . db_formatar(substr(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->KGDRegistroC_048_055, "f")))), 0, 8), 's', '0', 8, 'e', 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_056_057, 0, 2), "s", "0", 2, "e", 0)
             . str_replace("/", '', db_formatar($this->KGDRegistroC_058_065, "d"))
-            . db_formatar(substr($this->KGDRegistroC_066_067, 0, 2), "s", "0", 2, "e", 0)
-            . db_formatar(substr($this->KGDRegistroC_068_069, 0, 2), "s", "0", 2, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_066_067, 0, 2), "s", "0", 2, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_068_069, 0, 2), "s", "0", 2, "e", 0)
             . db_formatar(substr(strtoupper(db_translate($this->KGDRegistroC_070_109)), 0, 40), "s", " ", 40, "d", 0)
-            . db_formatar(substr($this->KGDRegistroC_110_117, 0, 8), "s", "0", 8, "e", 0)
-            . db_formatar(substr($this->KGDRegistroC_118_121, 0, 4), "s", "0", 4, "e", 0)
-            . db_formatar(substr($this->KGDRegistroC_122_128, 0, 7), "s", " ", 7, "d", 0)
-            . db_formatar(substr($this->KGDRegistroC_129_129, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_110_117, 0, 8), "s", "0", 8, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_118_121, 0, 4), "s", "0", 4, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_122_128, 0, 7), "s", " ", 7, "d", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_129_129, 0, 1), "s", "0", 1, "e", 0)
             . "2"
-            . db_formatar(substr($this->KGDRegistroC_131_136, 0, 6), "s", "0", 6, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_131_136, 0, 6), "s", "0", 6, "e", 0)
             . "2"
-            . db_formatar(substr($this->KGDRegistroC_138_139, 0, 2), "s", " ", 2, "d", 0)
-            . db_formatar(substr($this->KGDRegistroC_140_150, 0, 11), "s", " ", 11, "d", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_138_139, 0, 2), "s", " ", 2, "d", 0)
+            . db_formatar(substr((string) $this->KGDRegistroC_140_150, 0, 11), "s", " ", 11, "d", 0)
             . "\r\n"
         );
     }
@@ -1549,30 +1549,30 @@ class cl_layout_CAGED
         fputs($this->arquivo,
             "X"
             . "1"
-            . db_formatar(substr($this->KGDRegistroX_003_016, 0, 14), "s", "0", 14, "e", 0)
-            . db_formatar(substr($this->KGDRegistroX_017_021, 0, 6), "s", "0", 5, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_003_016, 0, 14), "s", "0", 14, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_017_021, 0, 6), "s", "0", 5, "e", 0)
             . db_formatar(substr(str_replace('.', '', str_replace('-', '', str_replace("/", '', $this->KGDRegistroX_022_032))), 0, 11), "s", "0", 11, "e", 0)
-            . db_formatar(substr($this->KGDRegistroX_033_033, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_033_033, 0, 1), "s", "0", 1, "e", 0)
             . str_replace("/", '', db_formatar($this->KGDRegistroX_034_041, "d"))
-            . db_formatar(substr($this->KGDRegistroX_042_042, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_042_042, 0, 1), "s", "0", 1, "e", 0)
             . str_repeat(" ", 5)
-            . db_formatar(substr(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->KGDRegistroX_048_055, "f")))), 0, 8), 's', '0', 8, 'e', 0)
-            . db_formatar(substr($this->KGDRegistroX_056_057, 0, 2), "s", "0", 2, "e", 0)
+            . db_formatar(substr(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->KGDRegistroX_048_055, "f")))), 0, 8), 's', '0', 8, 'e', 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_056_057, 0, 2), "s", "0", 2, "e", 0)
             . str_replace("/", '', db_formatar($this->KGDRegistroX_058_065, "d"))
-            . db_formatar(substr($this->KGDRegistroX_066_067, 0, 2), "s", "0", 2, "e", 0)
-            . db_formatar(substr($this->KGDRegistroX_068_069, 0, 2), "s", "0", 2, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_066_067, 0, 2), "s", "0", 2, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_068_069, 0, 2), "s", "0", 2, "e", 0)
             . db_formatar(substr(strtoupper(db_translate($this->KGDRegistroX_070_109)), 0, 40), "s", " ", 40, "d", 0)
-            . db_formatar(substr($this->KGDRegistroX_110_117, 0, 8), "s", "0", 8, "e", 0)
-            . db_formatar(substr($this->KGDRegistroX_118_121, 0, 4), "s", "0", 4, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_110_117, 0, 8), "s", "0", 8, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_118_121, 0, 4), "s", "0", 4, "e", 0)
             . "2"
-            . db_formatar(substr($this->KGDRegistroX_123_124, 0, 2), "s", "0", 2, "e", 0)
-            . db_formatar(substr($this->KGDRegistroX_125_128, 0, 4), "s", "0", 4, "e", 0)
-            . db_formatar(substr($this->KGDRegistroX_129_129, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_123_124, 0, 2), "s", "0", 2, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_125_128, 0, 4), "s", "0", 4, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_129_129, 0, 1), "s", "0", 1, "e", 0)
             . "2"
-            . db_formatar(substr($this->KGDRegistroX_131_136, 0, 6), "s", "0", 6, "e", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_131_136, 0, 6), "s", "0", 6, "e", 0)
             . "2"
-            . db_formatar(substr($this->KGDRegistroX_138_139, 0, 2), "s", " ", 2, "d", 0)
-            . db_formatar(substr($this->KGDRegistroX_140_150, 0, 11), "s", " ", 11, "d", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_138_139, 0, 2), "s", " ", 2, "d", 0)
+            . db_formatar(substr((string) $this->KGDRegistroX_140_150, 0, 11), "s", " ", 11, "d", 0)
             . "\r\n"
         );
     }
@@ -1651,7 +1651,7 @@ class cl_layout_IPE
     public $nomearq = null;
 
     // Construtor
-    public function cl_layout_IPE()
+    public function __construct()
     {
         $this->nomearq = '/tmp/IPE' . date("mY") . '.TXT';
     }
@@ -1665,10 +1665,10 @@ class cl_layout_IPE
     {
         $this->arquivo = fopen($this->nomearq, "w");
         fputs($this->arquivo,
-            db_formatar(substr($this->IPEHeader_001_003, 0, 3), "s", "0", 3, "e", 0)
+            db_formatar(substr((string) $this->IPEHeader_001_003, 0, 3), "s", "0", 3, "e", 0)
             . str_repeat("0", 8)
-            . db_formatar(substr($this->IPEHeader_012_017, 0, 6), "s", "0", 6, "e", 0)
-            . db_formatar(substr($this->IPEHeader_018_018, 0, 1), "s", "0", 1, "e", 0)
+            . db_formatar(substr((string) $this->IPEHeader_012_017, 0, 6), "s", "0", 6, "e", 0)
+            . db_formatar(substr((string) $this->IPEHeader_018_018, 0, 1), "s", "0", 1, "e", 0)
             . str_repeat(" ", 232)
             . "\r\n"
         );
@@ -1677,10 +1677,10 @@ class cl_layout_IPE
     public function geraRegistIPE()
     {
         fputs($this->arquivo,
-            db_formatar(substr($this->IPERegistro_001_003, 0, 3), "s", "0", 3, "e", 0)
-            . db_formatar(substr($this->IPERegistro_004_011, 0, 8), "s", "0", 8, "e", 0)
-            . db_formatar(substr($this->IPERegistro_012_024, 0, 13), "s", "0", 13, "e", 0)
-            . db_formatar(substr($this->IPERegistro_025_026, 0, 2), "s", "0", 2, "e", 0)
+            db_formatar(substr((string) $this->IPERegistro_001_003, 0, 3), "s", "0", 3, "e", 0)
+            . db_formatar(substr((string) $this->IPERegistro_004_011, 0, 8), "s", "0", 8, "e", 0)
+            . db_formatar(substr((string) $this->IPERegistro_012_024, 0, 13), "s", "0", 13, "e", 0)
+            . db_formatar(substr((string) $this->IPERegistro_025_026, 0, 2), "s", "0", 2, "e", 0)
             . db_formatar(substr(strtoupper(db_translate($this->IPERegistro_027_058)), 0, 32), "s", " ", 32, "d", 0)
             . db_formatar(substr(strtoupper(db_translate($this->IPERegistro_059_098)), 0, 40), "s", " ", 40, "d", 0)
             . db_formatar(substr(str_replace("/", '', str_replace('-', '', str_replace('.', '', $this->IPERegistro_099_106))), 0, 8), "s", "0", 8, "e", 0)
@@ -1691,7 +1691,7 @@ class cl_layout_IPE
             . $this->IPERegistro_132_132
             . db_formatar(substr(str_replace("/", '', str_replace('-', '', str_replace('.', '', $this->IPERegistro_133_142))), 0, 10), "s", "0", 10, "e", 0)
             . db_formatar(substr(str_replace("/", '', str_replace('-', '', str_replace('.', '', $this->IPERegistro_143_153))), 0, 11), "s", "0", 11, "e", 0)
-            . db_formatar(substr(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->IPERegistro_154_164, "f")))), 0, 11), "s", "0", 11, "e", 0)
+            . db_formatar(substr(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->IPERegistro_154_164, "f")))), 0, 11), "s", "0", 11, "e", 0)
             . str_repeat(" ", 86)
             . "\r\n"
         );
@@ -1700,10 +1700,10 @@ class cl_layout_IPE
     public function geraTraillerIPE()
     {
         fputs($this->arquivo,
-            db_formatar(substr($this->IPETrailler_001_003, 0, 3), "s", "0", 3, "e", 0)
+            db_formatar(substr((string) $this->IPETrailler_001_003, 0, 3), "s", "0", 3, "e", 0)
             . str_repeat("9", 8)
-            . db_formatar(substr($this->IPETrailler_012_016, 0, 5), "s", "0", 5, "e", 0)
-            . db_formatar(substr(str_replace(',', '', str_replace('.', '', trim(db_formatar($this->IPETrailler_017_033, "f")))), 0, 17), "s", "0", 17, "e", 0)
+            . db_formatar(substr((string) $this->IPETrailler_012_016, 0, 5), "s", "0", 5, "e", 0)
+            . db_formatar(substr(str_replace(',', '', str_replace('.', '', trim((string) db_formatar($this->IPETrailler_017_033, "f")))), 0, 17), "s", "0", 17, "e", 0)
             . str_repeat(" ", 217)
             . "\r\n"
         );
@@ -1771,7 +1771,7 @@ class cl_layout_BLV
     public $nomearq = null;
 
     // Construtor
-    public function cl_layout_BLV()
+    public function __construct()
     {
         $this->nomearq = '/tmp/BLV' . date("mY") . '.TXT';
     }
@@ -1795,12 +1795,12 @@ class cl_layout_BLV
     public function geraRegistBLV()
     {
         fputs($this->arquivo,
-            db_formatar(substr($this->BLVRegistro_001_005, 0, 5), "s", "0", 5, "e", 0)
-            . db_formatar(substr($this->BLVRegistro_006_015, 0, 10), "s", "0", 10, "e", 0)
+            db_formatar(substr((string) $this->BLVRegistro_001_005, 0, 5), "s", "0", 5, "e", 0)
+            . db_formatar(substr((string) $this->BLVRegistro_006_015, 0, 10), "s", "0", 10, "e", 0)
             . db_formatar(substr(strtoupper(db_translate($this->BLVRegistro_016_050)), 0, 35), "s", " ", 35, "d", 0)
             . str_repeat(" ", 25)
             . db_formatar(substr(trim(str_replace('.', '', str_replace(',', '', db_formatar($this->BLVRegistro_076_090, "f")))), 0, 15), "s", "0", 15, "e", 0)
-            . db_formatar(substr($this->BLVRegistro_091_096, 0, 6), "s", "0", 6, "e", 0)
+            . db_formatar(substr((string) $this->BLVRegistro_091_096, 0, 6), "s", "0", 6, "e", 0)
             . str_repeat(" ", 31)
             . "*"
             . "\r\n"
@@ -1903,11 +1903,11 @@ class cl_layout_PREVID
     {
         fputs($this->arquivo,
             db_formatar(substr($this->PVDRegistro_001_005, 0, 5), "s", "0", 5, "e", 0)
-            . db_formatar(substr($this->PVDRegistro_006_015, 0, 10), "s", "0", 10, "e", 0)
+            . db_formatar(substr((string) $this->PVDRegistro_006_015, 0, 10), "s", "0", 10, "e", 0)
             . db_formatar(substr(strtoupper(db_translate($this->PVDRegistro_016_050)), 0, 35), "s", " ", 35, "d", 0)
             . str_repeat(" ", 25)
             . db_formatar(substr(trim(str_replace('.', '', str_replace(',', '', db_formatar($this->PVDRegistro_076_090, "f")))), 0, 15), "s", "0", 15, "e", 0)
-            . db_formatar(substr($this->PVDRegistro_091_096, 0, 6), "s", "0", 6, "e", 0)
+            . db_formatar(substr((string) $this->PVDRegistro_091_096, 0, 6), "s", "0", 6, "e", 0)
             . str_repeat(" ", 31)
             . "*"
             . "\r\n"

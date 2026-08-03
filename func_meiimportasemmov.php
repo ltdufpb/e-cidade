@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_meiimportasemmov_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmeiimportasemmov = new cl_meiimportasemmov;
 $clmeiimportasemmov->rotulo->label("q114_sequencial");
 $clmeiimportasemmov->rotulo->label("q114_meiimporta");
@@ -98,9 +98,9 @@ $clmeiimportasemmov->rotulo->label("q114_meiimporta");
         }else{
            $sql = $clmeiimportasemmov->sql_query("",$campos,"q114_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q114_meiimporta)){
-          $repassa = array("chave_q114_sequencial"=>$chave_q114_sequencial,"chave_q114_meiimporta"=>$chave_q114_meiimporta);
+          $repassa = ["chave_q114_sequencial"=>$chave_q114_sequencial,"chave_q114_meiimporta"=>$chave_q114_meiimporta];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

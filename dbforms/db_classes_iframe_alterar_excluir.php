@@ -28,33 +28,33 @@
 require_once modification('libs/db_stdlib.php');
 require_once modification('libs/db_conecta.php');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
 }
 
-if (file_exists(base64_decode($arquivo))) {
-    require(modification(base64_decode($arquivo)));
+if (file_exists(base64_decode((string) $arquivo))) {
+    require(modification(base64_decode((string) $arquivo)));
 } else {
     echo "<script>parent.document.form1.submit();</script>Redirecionando . . .";
     exit;
 }
 $clrotulo = new rotulocampo;
-$sql = base64_decode($sql);
+$sql = base64_decode((string) $sql);
 if (isset($sql_disabled)) {
     $sql_disabled = base64_decode($sql_disabled);
     $result01 = db_query($sql_disabled);
-    $numrows01 = pg_numrows($result01);
+    $numrows01 = pg_num_rows($result01);
 }
 
 $campos = base64_decode($campos);
-$msg_vazio = base64_decode($msg_vazio);
+$msg_vazio = base64_decode((string) $msg_vazio);
 $quais_chaves = explode("#", $quais_chaves);
-$sql_comparar = base64_decode((isset($sql_comparar) ? $sql_comparar : ""));
-$sql_servico = base64_decode((isset($sql_servico) ? $sql_servico : ""));
-$sql_reservasaldo = base64_decode((isset($sql_reservasaldo) ? $sql_reservasaldo : ""));
-$campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : ""));
+$sql_comparar = base64_decode(($sql_comparar ?? ""));
+$sql_servico = base64_decode(($sql_servico ?? ""));
+$sql_reservasaldo = base64_decode(($sql_reservasaldo ?? ""));
+$campos_comparar = base64_decode(($campos_comparar ?? ""));
 
 ?>
 <html>
@@ -150,28 +150,28 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                            class="tabela_iframe_alterar_excluir">
                         <?php
                         $result = @db_query($sql);
-                        $numrows = @pg_numrows($result);
-                        $numcols = @pg_numfields($result);
+                        $numrows = @pg_num_rows($result);
+                        $numcols = @pg_num_fields($result);
                         $flag_achou = false;
                         $id_reg = -1;
 
                         if (isset($sql_comparar) && $sql_comparar != "") {
                             $res_servico = @db_query($sql_servico);
-                            $numrows_servico = @pg_numrows($res_servico);
-                            $numcols_servico = @pg_numfields($res_servico);
+                            $numrows_servico = @pg_num_rows($res_servico);
+                            $numcols_servico = @pg_num_fields($res_servico);
 
                             $res_reservasaldo = @db_query($sql_reservasaldo);
-                            $numrows_reservasaldo = @pg_numrows($res_reservasaldo);
-                            $numcols_reservasaldo = @pg_numfields($res_reservasaldo);
+                            $numrows_reservasaldo = @pg_num_rows($res_reservasaldo);
+                            $numcols_reservasaldo = @pg_num_fields($res_reservasaldo);
 
                             $res_comparar = @db_query($sql_comparar);
-                            $numrows_comparar = @pg_numrows($res_comparar);
-                            $numcols_comparar = @pg_numfields($res_comparar);
+                            $numrows_comparar = @pg_num_rows($res_comparar);
+                            $numcols_comparar = @pg_num_fields($res_comparar);
 
                             $matriz_comparar = explode(",", $campos_comparar);
                             $numcol_comparar = sizeof($matriz_comparar);
                             $linha = 0;
-                            $matriz_errados = array();
+                            $matriz_errados = [];
                             for ($i = 0; $i < $numrows_servico; $i++) {
                                 db_fieldsmemory($res_servico, $i);
                                 $total_dotacao = 0;
@@ -194,7 +194,7 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                 if (($total_reserva != $total_dotacao || $total_dotacao = 0)) {
                                     if ($total_reserva > 0 || $total_dotacao > 0) {
                                         if (count(@$matriz_errados) == 0) {
-                                            $matriz_errados = array($matriz_comparar[0] . "_" . $i => $codsol);
+                                            $matriz_errados = [$matriz_comparar[0] . "_" . $i => $codsol];
                                         } else {
                                             $matriz_errados[$matriz_comparar[0] . "_" . $i] = $codsol;
                                         }
@@ -205,18 +205,18 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                             $camp = "";
                             for ($i = 0; $i < $numrows_comparar; $i++) {
                                 for ($j = 0; $j < $numcol_comparar; $j++) {
-                                    $valores = pg_result($res_comparar, $i, $j);
+                                    $valores = pg_fetch_result($res_comparar, $i, $j);
                                     if ($camp == "") {
-                                        $camp = trim(pg_fieldname($res_comparar, $j));
+                                        $camp = trim(pg_field_name($res_comparar, $j));
                                     }
                                     for ($ii = 0; $ii < $numcols_comparar; $ii++) {
                                         if ($camp == $matriz_comparar[$j]) {
                                             if (count(@$matriz_errados) == 0) {
-                                                $matriz_errados = array($matriz_comparar[$j] . "_" . $i => $valores);
+                                                $matriz_errados = [$matriz_comparar[$j] . "_" . $i => $valores];
                                             } else {
                                                 $matriz_errados[$matriz_comparar[$j] . "_" . $i] = $valores;
                                             }
-                                            $camp = trim(pg_fieldname($res_comparar, $j));
+                                            $camp = trim(pg_field_name($res_comparar, $j));
                                         }
                                     }
                                 }
@@ -241,15 +241,15 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                 $Tlabel = "T$campo";
                                 $Llabel = "L$campo";
 
-                                if (substr($campo, 0, 3) == "db_") {
+                                if (str_starts_with($campo, "db_")) {
                                     $nomcampo = "<b>" . ucfirst(substr($campo, 3)) . "<b>";
-                                    $$Tlabel = ucfirst(substr($campo, 3));
+                                    ${$Tlabel} = ucfirst(substr($campo, 3));
                                 } else {
-                                    $nomcampo = $$Llabel;
+                                    $nomcampo = ${$Llabel};
                                 }
 
 //    echo "   <td  class='cabec' ".($cabecnowrap=="true"?"nowrap":"")." title='".$$Tlabel."'>".str_replace(":","",$$Llabel)." </td>\n";
-                                echo " <td class='cabec' " . ($corponowrap == "true" ? "nowrap" : "") . " title='" . $$Tlabel . "'>" . str_replace(
+                                echo " <td class='cabec' " . ($corponowrap == "true" ? "nowrap" : "") . " title='" . ${$Tlabel} . "'>" . str_replace(
                                     ":",
                                     "",
                                     $nomcampo
@@ -274,7 +274,7 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                     reset($quais_chaves);
                                     for ($qw = 0; $qw < sizeof($quais_chaves); $qw++) {
                                         $chave = key($quais_chaves);
-                                        echo $virgula . $$quais_chaves[$chave];
+                                        echo $virgula . ${$quais_chaves}[$chave];
                                         $virgula = "-";
                                         next($quais_chaves);
                                     }
@@ -289,7 +289,7 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                     reset($quais_chaves);
                                     for ($qw = 0; $qw < sizeof($quais_chaves); $qw++) {
                                         $chave = key($quais_chaves);
-                                        echo $virgula . $$quais_chaves[$chave];
+                                        echo $virgula . ${$quais_chaves}[$chave];
                                         $virgula = "-";
                                         next($quais_chaves);
                                     }
@@ -302,8 +302,8 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                 if (isset($sql_disabled)) {
                                     for ($s = 0; $s < $numrows01; $s++) {
                                         for ($w = 0; $w < sizeof($quais_chaves); $w++) {
-                                            $campo = pg_result($result01, $s, $quais_chaves[$w]);
-                                            if (trim($campo) == trim($$quais_chaves[$w])) {
+                                            $campo = pg_fetch_result($result01, $s, $quais_chaves[$w]);
+                                            if (trim($campo) == trim((string) ${$quais_chaves}[$w])) {
                                                 $pode = true;
                                             } else {
                                                 $pode = false;
@@ -317,13 +317,13 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                 }
 
                                 for ($w = 0; $w < $numcolunas; $w++) {
-                                    $campo = trim(pg_fieldname($result, $w));
+                                    $campo = trim(pg_field_name($result, $w));
                                     for ($ww = 1; $ww < sizeof($quais_chaves); $ww++) {
                                         $valorchave = "x_" . $quais_chaves[$ww];
                                         $nomechave = $quais_chaves[$ww];
-                                        $valorchave = $$valorchave;
+                                        $valorchave = ${$valorchave};
                                         if ($valorchave != null && $valorchave != "") {
-                                            if ($valorchave == $$campo && $nomechave == $campo && ($db_opcao == 2 || $db_opcao == 22 || $db_opcao == 3 || $db_opcao == 33)) {
+                                            if ($valorchave == ${$campo} && $nomechave == $campo && ($db_opcao == 2 || $db_opcao == 22 || $db_opcao == 3 || $db_opcao == 33)) {
                                                 $naomostra = true;
                                             }
                                         }
@@ -333,14 +333,14 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                     continue;
                                 }
                                 for ($w = 0; $w < $numcolunas; $w++) {
-                                    $campo = (trim($matriz_campos[$w]));
+                                    $campo = (trim((string) $matriz_campos[$w]));
                                     $TClabel = "TC" . $campo;
 
                                     if (isset($sql_comparar) && $sql_comparar != "") {
                                         if (sizeof(@$matriz_errados) > 0) {
                                             for ($jj = 0; $jj < $numcol_comparar; $jj++) {
                                                 if ($matriz_comparar[$jj] == $campo) {
-                                                    if (in_array($$campo, $matriz_errados)) {
+                                                    if (in_array(${$campo}, $matriz_errados)) {
                                                         $flag_achou = true;
                                                         $id_reg = $i;
                                                     }
@@ -361,26 +361,14 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                         $classe = "corpo_erro";
                                     }
 
-                                    if (substr($campo, 0, 3) == "db_") {
+                                    if (str_starts_with($campo, "db_")) {
                                         $nomcampo = ucfirst(substr($campo, 3));
                                     } else {
-                                        $nomcampo = $$TClabel;
+                                        $nomcampo = ${$TClabel};
                                     }
 
-                                    echo " <td style=\"border:1px solid #AACCCC;\"  " . ($corponowrap == "true" ? "nowrap" : "") . " class='$classe' align=\"" . (substr(
-                                        $nomcampo,
-                                        0,
-                                        5
-                                    ) == 'float' ? "right" : (substr(
-                                        $nomcampo,
-                                        0,
-                                        7
-                                        ) == 'varchar' || $nomcampo == 'text' ? "left" : "center")) . "\" >
-      " . (substr(
-                                            trim($nomcampo),
-                                            0,
-                                            4
-                                        ) == 'bool' && ($$campo == "f" || $$campo == "t") ? ($$campo == "f" ? "Não" : "Sim") : $$campo) . "&nbsp;
+                                    echo " <td style=\"border:1px solid #AACCCC;\"  " . ($corponowrap == "true" ? "nowrap" : "") . " class='$classe' align=\"" . (str_starts_with((string) $nomcampo, 'float') ? "right" : (str_starts_with((string) $nomcampo, 'varchar') || $nomcampo == 'text' ? "left" : "center")) . "\" >
+      " . (str_starts_with(trim((string) $nomcampo), 'bool') && (${$campo} == "f" || ${$campo} == "t") ? (${$campo} == "f" ? "Não" : "Sim") : ${$campo}) . "&nbsp;
       </td>";
                                     if ($w + 1 == $numcolunas) {
                                         if ($db_opcao == 33 || $pode == true) {
@@ -396,8 +384,8 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
                                         } else {
                                             echo "<td class='corpo ".((isset($escondeOpcoes) AND $escondeOpcoes == true) ? "esconder" : "")."' nowrap>";
                                             if ($pode == false) {
-                                                $aBusca = array("\r", "\n", "'");
-                                                $aAlteracoes = array('\\r', '\\n', '&#39;');
+                                                $aBusca = ["\r", "\n", "'"];
+                                                $aAlteracoes = ['\\r', '\\n', '&#39;'];
                                                 $coluna = "";
 
                                                 if (empty($opcoes) || (isset($opcoes) && $opcoes == 2)) {
@@ -442,9 +430,9 @@ $campos_comparar = base64_decode((isset($campos_comparar) ? $campos_comparar : "
 </body>
 </html>
 <?php
-$aArquivos = explode('.', base64_decode($arquivo));
+$aArquivos = explode('.', base64_decode((string) $arquivo));
 $retorno = @unlink($aArquivos[0]);
-$retorno = @unlink(base64_decode($arquivo));
+$retorno = @unlink(base64_decode((string) $arquivo));
 if ($retorno == false) {
     echo "<blink>Carregando...</blink>";
 }

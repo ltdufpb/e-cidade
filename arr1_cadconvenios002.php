@@ -179,7 +179,7 @@ if (isset($oPost->alterar)) {
 
               $clconveniocobranca->ar13_responsavelnossonumero = 't';
 
-              if (in_array($oPost->ar13_carteira, array(11, 21))) {
+              if (in_array($oPost->ar13_carteira, [11, 21])) {
                 $clconveniocobranca->ar13_responsavelnossonumero = 'f';
               }
             }

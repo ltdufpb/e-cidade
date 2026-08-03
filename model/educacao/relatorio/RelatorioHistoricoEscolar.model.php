@@ -55,7 +55,7 @@ class RelatorioHistoricoEscolar
      * Estrutura com os dados necessarios para impressao do histórico
      * @var array
      */
-    protected $aDadosOrganizados = array();
+    protected $aDadosOrganizados = [];
 
     /**
      * Indica que o aluno teve ao menos uma disciplina com aprovação parcial
@@ -73,7 +73,7 @@ class RelatorioHistoricoEscolar
      * Armazena as observações do histórico do aluno, indexando o array pelo curso
      * @var array
      */
-    protected $aObservacaoHistorico = array();
+    protected $aObservacaoHistorico = [];
 
     /**
      * Instancia de Aluno
@@ -86,12 +86,6 @@ class RelatorioHistoricoEscolar
      * @var Escola
      */
     protected $oEscola;
-
-    /**
-     * Valida se etapas reclassificadas devem ser exibidas no relatório
-     * @var boolean
-     */
-    protected $lExibirReclassificacao = true;
 
     /**
      * Controla se deve ser apresentados todos os cursos ou somente os concluídos
@@ -109,13 +103,13 @@ class RelatorioHistoricoEscolar
      * Carrega informações sobre as etapas posteriores
      * @var array
      */
-    protected $aEtapasPosterior = array();
+    protected $aEtapasPosterior = [];
 
     /**
      * Carrega se houver informacoes sobre as etapas anteriores
      * @var array
      */
-    protected $aEtapasAnterior = array();
+    protected $aEtapasAnterior = [];
     /**
      * @var integer
      */
@@ -136,12 +130,14 @@ class RelatorioHistoricoEscolar
      * @param integer $iTipoRelatorio
      * @param boolean $lExibirReclassificacao
      */
-    public function __construct(Aluno $oAluno, Escola $oEscola, $iTipoRelatorio, $lExibirReclassificacao)
+    public function __construct(Aluno $oAluno, Escola $oEscola, $iTipoRelatorio, /**
+     * Valida se etapas reclassificadas devem ser exibidas no relatório
+     */
+    protected $lExibirReclassificacao)
     {
         $this->oAluno = $oAluno;
         $this->oEscola = $oEscola;
         $this->parametrosRelatorio($iTipoRelatorio);
-        $this->lExibirReclassificacao = $lExibirReclassificacao;
         $this->lExibirSomenteCursosConcluidos = false;
     }
 
@@ -196,9 +192,7 @@ class RelatorioHistoricoEscolar
         // dump($aCursosConcluidosImpressao);
         
         $oHistoricoCurso = $aHistoricosAluno[0];
-        $oPrimeiraEtapaHistorico = isset($oHistoricoCurso->getEtapas()[0])
-        ? $oHistoricoCurso->getEtapas()[0]
-        : null;
+        $oPrimeiraEtapaHistorico = $oHistoricoCurso->getEtapas()[0] ?? null;
         if (!is_null($oPrimeiraEtapaHistorico)) {
             $this->buscaEtapasAnteiores($oPrimeiraEtapaHistorico->getEtapa());
         }
@@ -400,7 +394,7 @@ class RelatorioHistoricoEscolar
      * @param string $sTermoFinalEtapa
      * @return mixed|string|null
      */
-    private function termoResultadoFinalEtapa($sResultadoFinal, $sSituacao = null, $sTermoFinalEtapa = null, $aTermos, $fora = false)
+    private function termoResultadoFinalEtapa($sResultadoFinal, $sSituacao = null, $sTermoFinalEtapa = null, $aTermos = null, $fora = false)
     {
         $sTermoFinal = $this->termoFinal($sResultadoFinal, false, $aTermos);
         /**
@@ -420,12 +414,12 @@ class RelatorioHistoricoEscolar
         /**
          * Situações que devem ser apresentadas no Resultado
          */
-        $aSituacoes = array(
+        $aSituacoes = [
             'AVANÇADO' => 'AVAN',
             'CANCELADO' => 'CANC',
             'EVADIDO' => 'EVAD',
             'FALECIDO' => 'FALEC',
-        );
+        ];
 
         if (array_key_exists($sSituacao, $aSituacoes)) {
             $sTermoFinal = $aSituacoes[$sSituacao];
@@ -582,7 +576,7 @@ class RelatorioHistoricoEscolar
     {
         $aHistoricosAluno = HistoricoAlunoRepository::getHistoricosPorAluno($this->oAluno);
 
-        $aCursos = array();
+        $aCursos = [];
         foreach ($aHistoricosAluno as $oHistoricoCurso) {
             $aCursos[] = $oHistoricoCurso->getCodigoCurso();
         }
@@ -612,8 +606,8 @@ class RelatorioHistoricoEscolar
             return "";
         }
 
-        $aObservacao = array();
-        $aAprovadoBaixaFrequencia = array();
+        $aObservacao = [];
+        $aAprovadoBaixaFrequencia = [];
         for ($i = 0; $i < $iLinhas; $i++) {
             $oDadosAprovConselho = db_utils::fieldsmemory($rsAprovConselho, $i);
 
@@ -636,7 +630,7 @@ class RelatorioHistoricoEscolar
                     $oObservacao = new stdClass();
                     $oObservacao->aParagrafos = $oDocumento->getDocParagrafos();
 
-                    if (trim($oObservacao->aParagrafos[1]->oParag->db02_texto)) {
+                    if (trim((string) $oObservacao->aParagrafos[1]->oParag->db02_texto)) {
                         $aObservacao[] = "- " . $oObservacao->aParagrafos[1]->oParag->db02_texto;
                     }
 
@@ -704,8 +698,8 @@ class RelatorioHistoricoEscolar
      */
     protected function getAtosLegais()
     {
-        $aAtosLegaisEscola = array();
-        $aAtosLegaisCurso = array();
+        $aAtosLegaisEscola = [];
+        $aAtosLegaisCurso = [];
 
         /**
          * Primeiramente separamos os atos legais da escola e os que estão vinculados a algum curso da escola
@@ -719,7 +713,7 @@ class RelatorioHistoricoEscolar
             }
         }
 
-        $aAtosLegais = array();
+        $aAtosLegais = [];
         foreach ($aAtosLegaisEscola as $oAtoLegal) {
             if (!$oAtoLegal->apareceHistorico()) {
                 continue;
@@ -733,7 +727,7 @@ class RelatorioHistoricoEscolar
         }
 
         $aHistoricoAluno = HistoricoAlunoRepository::getHistoricosPorAluno($this->oAluno);
-        $aCodigoCursos = array();
+        $aCodigoCursos = [];
         /**
          * Adicionamos em um array, os códigos dos cursos que o aluno cursou
          */
@@ -829,7 +823,7 @@ class RelatorioHistoricoEscolar
     {
         $aHistoricosAluno = HistoricoAlunoRepository::getHistoricosPorAluno($this->oAluno);
 
-        $aObservacao = array();
+        $aObservacao = [];
 
         foreach ($aHistoricosAluno as $oHistoricoAluno) {
             foreach ($oHistoricoAluno->getEtapas() as $oEtapaHistorico) {
@@ -893,7 +887,7 @@ class RelatorioHistoricoEscolar
      */
     protected function validaCursos($iCurso)
     {
-        $aCursosValidos = array($this->oCurso->getCodigo());
+        $aCursosValidos = [$this->oCurso->getCodigo()];
 
         foreach ($this->oCurso->getCursosEquivalentes() as $oCursoEquivalente) {
             $aCursosValidos[] = $oCursoEquivalente->getCodigo();
@@ -913,7 +907,7 @@ class RelatorioHistoricoEscolar
      */
     private function getCursosConcluidos()
     {
-        $aCursosConcluidosImpressao = array();
+        $aCursosConcluidosImpressao = [];
 
         if ($this->lExibirSomenteCursosConcluidos) {
             $aCursosConcluidos = CursoRepository::getCursosConcluidosPorAluno($this->oAluno);

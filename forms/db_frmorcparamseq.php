@@ -135,7 +135,7 @@ use ECidade\Configuracao\RelatorioLegal\Enum\OrigemDadosEnum;
                     </td>
                     <td>
                         <?php 
-                        $x = array("f"=>"NAO","t"=>"SIM");
+                        $x = ["f"=>"NAO","t"=>"SIM"];
                         db_select('o69_manual',$x,true,$db_opcao,"");
                         ?>
                     </td>
@@ -146,7 +146,7 @@ use ECidade\Configuracao\RelatorioLegal\Enum\OrigemDadosEnum;
                     </td>
                     <td>
                         <?php
-                        $x = array("f" => "NAO", "t" => "SIM");
+                        $x = ["f" => "NAO", "t" => "SIM"];
                         db_select('o69_desdobrarlinha', $x, true, $db_opcao, "");
                         ?>
                     </td>
@@ -158,7 +158,7 @@ use ECidade\Configuracao\RelatorioLegal\Enum\OrigemDadosEnum;
                     </td>
                     <td>
                         <?php 
-                        $x = array("f"=>"NAO","t"=>"SIM");
+                        $x = ["f"=>"NAO","t"=>"SIM"];
                         db_select('o69_totalizador',$x,true,$db_opcao,"onchange='js_verificaLinhaTotalizadora()'");
                         ?>
                     </td>
@@ -241,7 +241,7 @@ use ECidade\Configuracao\RelatorioLegal\Enum\OrigemDadosEnum;
         db_iframe_orcparamseq.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
         }
         ?>
     }

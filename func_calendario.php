@@ -30,7 +30,7 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
@@ -41,14 +41,14 @@ function checa_eventos($dia,$mes,$ano){
 }
 
 class calendario{
-   var $sem;//Array com os dias da semana como índice
-   var $mes;//Array com os meses do ano
-   var $nome_objeto_data;
-   var $shutdown_function = "";
+   public $sem;//Array com os dias da semana como índice
+   public $mes;//Array com os meses do ano
+   public $nome_objeto_data;
+   public $shutdown_function = "";
 
    function inicializa(){//Atribui valores para $sem e $mes.
-       $this->sem=array('Sun'=>1,'Mon'=>2,'Tue'=>3,'Wed'=>4,'Thu'=>5,'Fri'=>6,'Sat'=>7);
-       $this->mes=array('1'=>'JANEIRO','2'=>'FEVEREIRO','3'=>'MARÇO','4'=>'ABRIL','5'=>'MAIO','6'=>'JUNHO','7'=>'JULHO','8'=>'AGOSTO','9'=>'SETEMBRO','10'=>'OUTUBRO','11'=>'NOVEMBRO','12'=>'DEZEMBRO');
+       $this->sem=['Sun'=>1,'Mon'=>2,'Tue'=>3,'Wed'=>4,'Thu'=>5,'Fri'=>6,'Sat'=>7];
+       $this->mes=['1'=>'JANEIRO','2'=>'FEVEREIRO','3'=>'MARÇO','4'=>'ABRIL','5'=>'MAIO','6'=>'JUNHO','7'=>'JULHO','8'=>'AGOSTO','9'=>'SETEMBRO','10'=>'OUTUBRO','11'=>'NOVEMBRO','12'=>'DEZEMBRO'];
    }
 
    function aux($i){//Complementa a tabela com espaços em branco

@@ -46,7 +46,7 @@ require_once(modification("classes/db_conplanoreduz_classe.php"));
 $oGet      = db_utils::postMemory($_GET);
 $sFileName = $oGet->sFileName;
 $aLinhas   = file("tmp/{$sFileName}");
-if (substr($aLinhas[1],0,24) != "1.0.0.0.0.00.00.00.00.00") {
+if (!str_starts_with($aLinhas[1], "1.0.0.0.0.00.00.00.00.00")) {
 
   db_msgbox("o Arquivo {$sFileName} Não é um arquivo de plano de contas. Operação cancelada.");
   echo "<script>parent.iframe_importar.hide()</script>";
@@ -90,19 +90,19 @@ if (pg_num_rows($rsConplano) > 0) {
   <?php 
    
     db_criatermometro("plano"," da importação concluída");
-    $aContas = array();
+    $aContas = [];
     $iLinha  = 0; 
     foreach ($aLinhas as $sLinha) {
       
       $iLinha++;
-      $aCamposLinha = split("\t", $sLinha);
+      $aCamposLinha = preg_split("#\t#m", $sLinha);
       if ($iLinha == 1 || !isset($aCamposLinha[5])) {
         continue;
       }
       
       $oConta = new stdClass();
       $oConta->estrutural    = str_replace(".","",$aCamposLinha[0]); 
-      $oConta->descricao     = trim(utf8_decode(substr($aCamposLinha[5], 0, 50))); 
+      $oConta->descricao     = trim(mb_convert_encoding(substr($aCamposLinha[5], 0, 50), 'ISO-8859-1')); 
       $oConta->finalidade    = ""; 
       $oConta->codigo        = null; 
       $oConta->sistema       = ""; 
@@ -110,46 +110,28 @@ if (pg_num_rows($rsConplano) > 0) {
       $oConta->tipo          = $aCamposLinha[3]; 
       $oConta->classificacao = 1; 
       $sSistema = $aCamposLinha[2];
-      switch ($sSistema) {
-       
-        case "F":
-          
-          $oConta->sistema = 1;
-          break;
-        case "P":
-          
-          $oConta->sistema = 2;
-          break;
-        case "O":
-          
-          $oConta->sistema = 3;
-          break;  
-        case "C":
-          
-          $oConta->sistema = 4;
-          break;
-
-        default:
-          
-          $oConta->sistema = 2;
-          break; 
-          
-      }
-      if (substr($oConta->estrutural,0,5) == "11111" && $oConta->tipo == "A" ) {
+      $oConta->sistema = match ($sSistema) {
+          "F" => 1,
+          "P" => 2,
+          "O" => 3,
+          "C" => 4,
+          default => 2,
+      };
+      if (str_starts_with($oConta->estrutural, "11111") && $oConta->tipo == "A" ) {
         
         $oConta->sistema == 5;
-      } else if ((substr($oConta->estrutural,0,5) == "11112"|| substr($oConta->estrutural,0,5) == "11113" ||
-                  substr($oConta->estrutural,0,5) == "11113") && $oConta->tipo == "A") {
+      } else if ((str_starts_with($oConta->estrutural, "11112")|| str_starts_with($oConta->estrutural, "11113") ||
+                  str_starts_with($oConta->estrutural, "11113")) && $oConta->tipo == "A") {
         $oConta->sistema == 6; 
       }
-      if (substr($aCamposLinha[1],0,1) == "S" && $aCamposLinha[3] == "A") {
+      if (str_starts_with((string) $aCamposLinha[1], "S") && $aCamposLinha[3] == "A") {
         $oConta->classificacao = 3;       
       }
       $aContas[] = $oConta;
       
     }
     $iTotalLinhas = $iLinha * 2;
-    $aAnos = array(db_getsession("DB_anousu") -1, db_getsession("DB_anousu"));
+    $aAnos = [db_getsession("DB_anousu") -1, db_getsession("DB_anousu")];
     db_inicio_transacao();
     $oDaoConplano      = new cl_conplano;
     $oDaoOrcFontes     = new cl_orcfontes;
@@ -191,7 +173,7 @@ if (pg_num_rows($rsConplano) > 0) {
         /**
          * Verifica se a conta é receita
          */
-        if (substr($aContas[$iConta]->estrutural, 0, 1) == 4 || substr($aContas[$iConta]->estrutural, 0, 1) == 9) {
+        if (substr((string) $aContas[$iConta]->estrutural, 0, 1) == 4 || substr((string) $aContas[$iConta]->estrutural, 0, 1) == 9) {
   
           $oDaoOrcFontes->o57_anousu = $iAno;
           $oDaoOrcFontes->o57_codfon = $aContas[$iConta]->codigo;
@@ -205,12 +187,12 @@ if (pg_num_rows($rsConplano) > 0) {
             $lErro = true;
             break;
           }
-        } else if (substr($aContas[$iConta]->estrutural, 0, 1) == 3) {
+        } else if (substr((string) $aContas[$iConta]->estrutural, 0, 1) == 3) {
           
           $oDaoOrcElemento->o56_anousu   = $iAno;
           $oDaoOrcElemento->o56_codele   = $aContas[$iConta]->codigo;
           $oDaoOrcElemento->o56_descr    = $aContas[$iConta]->descricao;
-          $oDaoOrcElemento->o56_elemento = substr($aContas[$iConta]->estrutural, 0, 13);
+          $oDaoOrcElemento->o56_elemento = substr((string) $aContas[$iConta]->estrutural, 0, 13);
           $oDaoOrcElemento->o56_finali   = '';
           $oDaoOrcElemento->o56_orcado   = 'false';
           $oDaoOrcElemento->incluir($aContas[$iConta]->codigo, $iAno); 
@@ -225,8 +207,8 @@ if (pg_num_rows($rsConplano) > 0) {
         /**
          * Verificamos se a conta é analitica
          */
-        if ($aContas[$iConta]->tipo == "A" && (substr($aContas[$iConta]->estrutural, 0, 1) == 4 
-            || substr($aContas[$iConta]->estrutural, 0, 1) == 9 || substr($aContas[$iConta]->estrutural, 0, 1) == 3)) {
+        if ($aContas[$iConta]->tipo == "A" && (substr((string) $aContas[$iConta]->estrutural, 0, 1) == 4 
+            || substr((string) $aContas[$iConta]->estrutural, 0, 1) == 9 || substr((string) $aContas[$iConta]->estrutural, 0, 1) == 3)) {
              
           $oDaoConplanoReduz->c61_anousu        = $iAno;    
           $oDaoConplanoReduz->c61_codcon        = $aContas[$iConta]->codigo;    

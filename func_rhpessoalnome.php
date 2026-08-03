@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("libs/db_libpessoal.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_rhpessoal_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhpessoal = new cl_rhpessoal;
 $clrotulo = new rotulocampo;
 $clrhpessoal->rotulo->label("rh01_regist");
@@ -141,7 +141,7 @@ if(!isset($pesquisa_chave)){
            }
         }
 
-        $repassa = array("chave_z01_nome"=>@$chave_z01_nome,"chave_rh01_regist"=>@$chave_rh01_regist,"chave_rh01_numcgm"=>@$chave_rh01_numcgm,"rh01_instit"=>@$instit);
+        $repassa = ["chave_z01_nome"=>@$chave_z01_nome,"chave_rh01_regist"=>@$chave_rh01_regist,"chave_rh01_numcgm"=>@$chave_rh01_numcgm,"rh01_instit"=>@$instit];
         if(isset($chave_rh01_regist) && (trim($chave_rh01_regist)!="") ){
 	         $sql = $clrhpessoal->sql_query(null,$campos,"rh01_regist"," rh01_regist = $chave_rh01_regist $dbwhere");
         }else if(isset($chave_rh01_numcgm) && (trim($chave_rh01_numcgm)!="") ){

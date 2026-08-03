@@ -34,7 +34,7 @@ include(modification("classes/db_matestoqueitem_classe.php"));
 include(modification("classes/db_matestoqueini_classe.php"));
 include(modification("classes/db_matestoqueinimei_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatestoque = new cl_matestoque;
 $clmatestoqueitem = new cl_matestoqueitem;
 $clmatestoqueini = new cl_matestoqueini;

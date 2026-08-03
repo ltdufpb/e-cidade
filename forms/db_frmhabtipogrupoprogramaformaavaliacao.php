@@ -123,7 +123,7 @@ if (isset($oPost->db_opcaoal)) {
     <tr>
       <td valign="top"  align="center">  
         <?php 
-          $chavepri= array("ht06_sequencial"=>@$ht06_sequencial);
+          $chavepri= ["ht06_sequencial"=>@$ht06_sequencial];
           
           $sWhere                              = "ht06_habittipogrupoprograma = ".@$ht06_habittipogrupoprograma;
           $sCampos                             = "ht06_sequencial,ht06_habitformaavaliacao,ht07_descricao";

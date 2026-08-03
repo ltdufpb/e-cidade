@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $cllab_valorreferencia = new cl_lab_valorreferencia;
 $cllab_valorreferencia->rotulo->label("la27_i_codigo");
@@ -87,7 +87,7 @@ $rotulo->label('la25_c_descr');
   <tr>
     <td align="center" valign="top">
         <?php
-        $where = array();
+        $where = [];
 
         if (!isset($pesquisa_chave)) {
             if (isset($campos) == false) {
@@ -102,12 +102,12 @@ $rotulo->label('la25_c_descr');
                 $where[] = "la25_c_descr ilike '%{$chave_la25_c_descr}%'";
             }
 
-            $repassa = array();
+            $repassa = [];
             if (isset($chave_la27_i_codigo)) {
-                $repassa = array(
+                $repassa = [
                   "chave_la27_i_codigo" => $chave_la27_i_codigo,
                   "chave_la25_c_descr" => $chave_la25_c_descr
-                );
+                ];
             }
 
             $sql = $cllab_valorreferencia->sql_query(null, $campos, "la27_i_codigo", implode(' AND ', $where));

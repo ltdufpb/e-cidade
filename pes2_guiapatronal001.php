@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -117,7 +117,7 @@ function js_emite(){
         </td>
         <td >
          <?php 
-           $xx = array("s"=>"Salário","d"=>"13o. Salário");
+           $xx = ["s"=>"Salário","d"=>"13o. Salário"];
            db_select('tipo',$xx,true,4,"");
          ?>
 	
@@ -145,7 +145,7 @@ function js_emite(){
                    and r33_codtab > 2 
                    and r33_instit = ".db_getsession('DB_instit') ;
 	        $res = db_query($sql);
-        db_multiploselect("r33_codtab", "r33_nome", "nselecionados", "sselecionados", $res, array(), 4, 250);
+        db_multiploselect("r33_codtab", "r33_nome", "nselecionados", "sselecionados", $res, [], 4, 250);
          ?>
         </td>
       </tr>

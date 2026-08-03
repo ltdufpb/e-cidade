@@ -209,19 +209,19 @@ switch($oParam->exec) {
         }
 
         if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim == "") {
-            $sWhere .= " and e50_data = '".implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)))."'";
+            $sWhere .= " and e50_data = '".implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataIni)))."'";
         } else if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim != "") {
-            $dtDataIni = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)));
-            $dtDataFim = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+            $dtDataIni = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataIni)));
+            $dtDataFim = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataFim)));
             $sWhere .= " and e50_data between '{$dtDataIni}' and '{$dtDataFim}'";
         } else if ($oParam->params[0]->dtDataIni == "" && $oParam->params[0]->dtDataFim != "") {
-            $dtDataFim  = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+            $dtDataFim  = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataFim)));
             $sWhere    .= " and e50_data <= '{$dtDataFim}'";
         }
 
         if ($oParam->params[0]->iCodEmp!= '') {
-            if (strpos($oParam->params[0]->iCodEmp,"/")) {
-                $aEmpenho = explode("/",$oParam->params[0]->iCodEmp);
+            if (strpos((string) $oParam->params[0]->iCodEmp,"/")) {
+                $aEmpenho = explode("/",(string) $oParam->params[0]->iCodEmp);
                 $sWhere .= " and e60_codemp = '{$aEmpenho[0]}' and e60_anousu={$aEmpenho[1]}";
             } else {
                 $sWhere .= " and e60_codemp = '{$oParam->params[0]->iCodEmp}' and e60_anousu=".db_getsession("DB_anousu");
@@ -238,7 +238,7 @@ switch($oParam->exec) {
         if ($oParam->params[0]->iAutorizadas == 2) {
             $lAutorizadas      = true;
             if ($oParam->params[0]->sDtAut != "") {
-                $sDtAut   = implode("-", array_reverse(explode("/", $oParam->params[0]->sDtAut)));
+                $sDtAut   = implode("-", array_reverse(explode("/", (string) $oParam->params[0]->sDtAut)));
                 $sWhere .= " and e42_dtpagamento = '{$sDtAut}'";
             }
 
@@ -305,15 +305,15 @@ switch($oParam->exec) {
         }
 
         if (!empty($oParam->params[0]->recurso_reduzido)) {
-            $grupo = substr($oParam->params[0]->recurso_reduzido, 0, 1);
-            $especificacao = substr($oParam->params[0]->recurso_reduzido, 1, 2);
+            $grupo = substr((string) $oParam->params[0]->recurso_reduzido, 0, 1);
+            $especificacao = substr((string) $oParam->params[0]->recurso_reduzido, 1, 2);
             $sWhere .= " and (o15_loagrupo = '{$grupo}' and o15_loaespecificacao = '{$especificacao}') ";
         }
 
         $aOrdensAgenda = $oAgenda->getMovimentosAgendaPagamento($sWhere,$sJoin,$lTrazContasFornecedor , $lTrazContasRecurso,'', $contasVinculadas, $sCredorCgm);
 
         if (!empty($oParam->params[0]->lTratarMovimentosConfigurados) && $oParam->params[0]->lTratarMovimentosConfigurados) {
-            $aMovimentosConfigurados = array();
+            $aMovimentosConfigurados = [];
             foreach ($aOrdensAgenda as $oStdMovimento) {
                 if ($oStdMovimento->e91_codmov != "" || $oStdMovimento->e90_codmov != "") {
                     continue;
@@ -351,7 +351,7 @@ switch($oParam->exec) {
 
         $oRetono->status           = 2;
         $oRetono->mensagem         = "";
-        $oRetono->aNotasLiquidacao = array();
+        $oRetono->aNotasLiquidacao = [];
         if (count($aOrdensAgenda) > 0) {
             $oRetono->status           = 1;
             $oRetono->mensagem         = 1;
@@ -367,8 +367,8 @@ switch($oParam->exec) {
         $oRetorno                       = new stdClass();
         $oRetorno->status               = '1';
         $oRetorno->iCodigoOrdemAuxiliar = null;
-        $oRetorno->aAutenticacoes       = array();
-        $novosSlipsParciais = array();
+        $oRetorno->aAutenticacoes       = [];
+        $novosSlipsParciais = [];
         try {
             db_inicio_transacao();
 
@@ -504,10 +504,10 @@ switch($oParam->exec) {
         $oRetorno                       = new stdClass();
         $oRetorno->status               = '1';
         $oRetorno->iCodigoOrdemAuxiliar = null;
-        $oRetorno->aAutenticacoes      = array();
+        $oRetorno->aAutenticacoes      = [];
         $oRetorno->sSlipsGeradoAutomatico = "";
-        $aSlipAutomatico = array();
-        $novosSlipsParciais = array();
+        $aSlipAutomatico = [];
+        $novosSlipsParciais = [];
 
         try {
             db_inicio_transacao();
@@ -714,13 +714,13 @@ switch($oParam->exec) {
         }
 
         if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim == "") {
-            $sWhere .= " and k17_data = '".implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)))."'";
+            $sWhere .= " and k17_data = '".implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataIni)))."'";
         } else if ($oParam->params[0]->dtDataIni != "" && $oParam->params[0]->dtDataFim != "") {
-            $dtDataIni = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataIni)));
-            $dtDataFim = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+            $dtDataIni = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataIni)));
+            $dtDataFim = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataFim)));
             $sWhere .= " and k17_data between '{$dtDataIni}' and '{$dtDataFim}'";
         } else if ($oParam->params[0]->dtDataIni == "" && $oParam->params[0]->dtDataFim != "") {
-            $dtDataFim  = implode("-",array_reverse(explode("/",$oParam->params[0]->dtDataFim)));
+            $dtDataFim  = implode("-",array_reverse(explode("/",(string) $oParam->params[0]->dtDataFim)));
             $sWhere    .= " and k17_data <= '{$dtDataFim}'";
         }
 
@@ -748,8 +748,8 @@ switch($oParam->exec) {
         }
 
         if (FONTE_RECURSO_UNIAO && !empty($oParam->params[0]->recurso_reduzido)) {
-            $grupo = substr($oParam->params[0]->recurso_reduzido, 0, 1);
-            $especificacao = substr($oParam->params[0]->recurso_reduzido, 1, 2);
+            $grupo = substr((string) $oParam->params[0]->recurso_reduzido, 0, 1);
+            $especificacao = substr((string) $oParam->params[0]->recurso_reduzido, 1, 2);
             $sWhere .= " and (o15_loagrupo = '{$grupo}' and o15_loaespecificacao = '{$especificacao}') ";
         }
 
@@ -867,7 +867,7 @@ switch($oParam->exec) {
         $retorno->erro = false;
         $retorno->mensagem = "";
         $retorno->credorPossuiNatureza = false;
-        $retorno->movimentosRelacionados = array();
+        $retorno->movimentosRelacionados = [];
         try {
 
             $parametroCaixa = new ParametroCaixa();
@@ -877,7 +877,7 @@ switch($oParam->exec) {
                     throw new ParameterException("Não foi informado o código do movimento para verificação.");
                 }
 
-                if (empty($oParam->origem) || !in_array($oParam->origem, array(1,2))) {
+                if (empty($oParam->origem) || !in_array($oParam->origem, [1,2])) {
                     throw new ParameterException("Não foi possível definir a origem das informações para buscar.");
                 }
 
@@ -886,10 +886,10 @@ switch($oParam->exec) {
                 unset($naturezas[NaturezaCGM::TIPO_PESSOA_FISICA_JURIDICA_DIREITO_PRIVADO]);
                 $naturezas = array_keys($naturezas);
 
-                $where = array(
+                $where = [
                     "cgmnatureza.c05_tipo in (" . implode(',', $naturezas) . ")",
                     "empagemov.e81_codmov in (" . implode(',', $oParam->codigoMovimentos) . ")"
-                );
+                ];
 
                 $metodo = $oParam->origem === 1 ? 'sql_query_empenho' : 'sql_query_slip';
                 $cgmNatureza   = new cl_cgmnatureza();
@@ -899,7 +899,7 @@ switch($oParam->exec) {
                     throw new DBException("Ocorreu um erro ao verificar a natureza do CGM.");
                 }
 
-                $movimentosParaConfigurar = array();
+                $movimentosParaConfigurar = [];
                 for ($rowNatureza = 0; $rowNatureza < pg_num_rows($resBuscaNatureza); $rowNatureza++) {
 
                     $stdMovimento = db_utils::fieldsMemory($resBuscaNatureza, $rowNatureza);

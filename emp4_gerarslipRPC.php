@@ -95,7 +95,7 @@ switch ($oParam->exec) {
         $oRetorno          = new stdClass();
         $oRetorno->status  = 1;
         $oRetorno->message = "";
-        $aSlipsRetorno     = array();
+        $aSlipsRetorno     = [];
         try {
 
             $oAgendaPagamento = new agendaPagamento();
@@ -176,17 +176,17 @@ switch ($oParam->exec) {
             $sWhere .= " and e21_retencaotiporecgrupo  = 1";
             if ($oParam->dtIni != "" && $oParam->dtFim == "") {
 
-                $sWhere     .= " and corrente.k12_data >= '".implode("-",array_reverse(explode("/",$oParam->dtIni)))."'";
+                $sWhere     .= " and corrente.k12_data >= '".implode("-",array_reverse(explode("/",(string) $oParam->dtIni)))."'";
 
             } else if ($oParam->dtIni != "" && $oParam->dtFim != "") {
 
-                $dtDataIni   = implode("-",array_reverse(explode("/",$oParam->dtIni)));
-                $dtDataFim   = implode("-",array_reverse(explode("/",$oParam->dtFim)));
+                $dtDataIni   = implode("-",array_reverse(explode("/",(string) $oParam->dtIni)));
+                $dtDataFim   = implode("-",array_reverse(explode("/",(string) $oParam->dtFim)));
                 $sWhere     .= " and corrente.k12_data between '{$dtDataIni}' and '{$dtDataFim}'";
 
             } else if ($oParam->dtIni == "" && $oParam->dtFim != "") {
 
-                $dtDataFim   = implode("-",array_reverse(explode("/",$oParam->dtFim)));
+                $dtDataFim   = implode("-",array_reverse(explode("/",(string) $oParam->dtFim)));
                 $sWhere     .= " and corrente.k12_data <= '{$dtDataFim}'";
             }
         }
@@ -222,7 +222,7 @@ switch ($oParam->exec) {
 
         $dtAtual = date("Y-m-d",db_getsession("DB_datausu"));
         $and = " where  (k13_limite is null or k13_limite > '{$dtAtual}')  " ;
-        $dtDataFim   = implode("-",array_reverse(explode("/",$oParam->dtFim)));
+        $dtDataFim   = implode("-",array_reverse(explode("/",(string) $oParam->dtFim)));
 
         if($oParam->dtFim != ""){
             $and = " where  (k13_limite is null or k13_limite > '{$dtDataFim}')  " ;
@@ -299,7 +299,7 @@ switch ($oParam->exec) {
         $sSqlArrecadacoesExtra .= " SELECT * FROM tmp_gerar_slip";
         $rsArrecadacaoExtra     = db_query($sSqlArrecadacoesExtra);
 
-        for ($i = 0; $i < pg_numrows($rsArrecadacaoExtra); $i++) {
+        for ($i = 0; $i < pg_num_rows($rsArrecadacaoExtra); $i++) {
             $res = db_utils::fieldsMemory($rsArrecadacaoExtra, $i);
             $ordem = $res->e50_codord;
 
@@ -346,7 +346,7 @@ switch ($oParam->exec) {
             $oDaoOPAuxiliar  = new cl_empageordem();
             $oDaoOPAuxiliar->e42_dtpagamento = date("Y-m-d",db_getsession("DB_datausu"));
             $oDaoOPAuxiliar->incluir(null);
-            $aSlips = array();
+            $aSlips = [];
             require_once(modification("model/slip.model.php"));
             foreach ($oParam->aSlips as $oArrecadacao) {
 

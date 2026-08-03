@@ -35,7 +35,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
 
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 <html>
   <head>

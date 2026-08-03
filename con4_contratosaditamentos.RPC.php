@@ -56,7 +56,7 @@ try {
       $oRetorno->valores       = $oContrato->getValoresItens();
       $oRetorno->origem_manual = ($oContrato->getOrigem() == Acordo::ORIGEM_MANUAL);
 
-      $aItens = array();
+      $aItens = [];
       foreach ($oPosicao->getItens() as $oItemPosicao) {
 
         $oItem                 = new stdClass();
@@ -70,15 +70,15 @@ try {
         $oItem->valor          = $oItemPosicao->getValorAtualizadoRenovacao();
         $oItem->servico        = $oItemPosicao->getMaterial()->isServico();
         $oItem->servicoquantidade = $oItemPosicao->getControlaQuantidade();
-        $oItem->dotacoes          = array();
+        $oItem->dotacoes          = [];
 
         foreach($oItemPosicao->getDotacoes() as $oDotacao) {
-          $oItem->dotacoes[] = (object) array(
+          $oItem->dotacoes[] = (object) [
               'dotacao' => $oDotacao->dotacao,
               'quantidade' => $oDotacao->quantidade,
               'valor' => $oDotacao->valor,
               'valororiginal' => $oDotacao->valor
-            );
+            ];
         }
 
         $aItens[] = $oItem;
@@ -113,7 +113,7 @@ try {
       for ($i = 0; $i < $iNumRowsUnidade; $i++) {
 
         $oUnidade = db_utils::fieldsMemory($rsUnidades, $i);
-        $oUnidade->m61_descr = urlencode($oUnidade->m61_descr);
+        $oUnidade->m61_descr = urlencode((string) $oUnidade->m61_descr);
 
         $aUnidades[] = $oUnidade;
       }

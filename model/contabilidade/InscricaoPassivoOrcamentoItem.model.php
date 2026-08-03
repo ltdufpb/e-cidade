@@ -29,12 +29,6 @@
 class InscricaoPassivoOrcamentoItem {
   
   /**
-   * Sequencial do Item
-   * @var integer
-   **/
-  protected $iSequencial;
-  
-  /**
    * Código da Inscricao de Orcamento Passivo
    * @var integer
    **/
@@ -70,20 +64,25 @@ class InscricaoPassivoOrcamentoItem {
    **/
   protected $sObservacao;
   
-  public function __construct($iSequencial = null) {
+  /**
+   * @param int $iSequencial
+   */
+  public function __construct(/**
+   * Sequencial do Item
+   **/
+  protected $iSequencial = null) {
     
-  	$this->iSequencial = $iSequencial;
-    if($iSequencial != null) {
+  	if($this->iSequencial != null) {
   
       $oDAOInscricaoPassivoOrcamentoItem = db_utils::getDao("inscricaopassivoitem");     
-      $sSQLInscricaoPassivoOrcamentoItem = $oDAOInscricaoPassivoOrcamentoItem->sql_query_file($iSequencial);
+      $sSQLInscricaoPassivoOrcamentoItem = $oDAOInscricaoPassivoOrcamentoItem->sql_query_file($this->iSequencial);
       $rsInscricaoPassivoOrcamentoItem   = $oDAOInscricaoPassivoOrcamentoItem->sql_record($sSQLInscricaoPassivoOrcamentoItem );
       
       if($oDAOInscricaoPassivoOrcamentoItem->numrows > 0) {
         
         //seta as propriedades do Item
         $oDAOInscricaoPassivoOrcamentoItem = db_utils::fieldsMemory($rsInscricaoPassivoOrcamentoItem,0);
-        $this->iSequencial       = $iSequencial;
+        $this->iSequencial       = $this->iSequencial;
         $this->iInscricaoPassivo = $oDAOInscricaoPassivoOrcamentoItem->c38_inscricaopassivo;
         $this->iQuantidade       = $oDAOInscricaoPassivoOrcamentoItem->c38_quantidade;
         $this->fValorUnitario    = $oDAOInscricaoPassivoOrcamentoItem->c38_valorunitario;

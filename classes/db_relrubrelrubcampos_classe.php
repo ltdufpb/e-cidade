@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE relrubrelrubcampos
 class cl_relrubrelrubcampos { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $rh121_sequencial = 0; 
-   var $rh121_instit = 0; 
-   var $rh121_relrub = 0; 
-   var $rh121_relrubcampos = 0; 
-   var $rh121_ordem = 0; 
+   public $rh121_sequencial = 0; 
+   public $rh121_instit = 0; 
+   public $rh121_relrub = 0; 
+   public $rh121_relrubcampos = 0; 
+   public $rh121_ordem = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  rh121_sequencial = int4 = Sequencial 
                  rh121_instit = int4 = Instituição 
                  rh121_relrub = int4 = Relatorio Rubrica 
@@ -56,10 +56,10 @@ class cl_relrubrelrubcampos {
                  rh121_ordem = int4 = Ordem 
                  ";
    //funcao construtor da classe 
-   function cl_relrubrelrubcampos() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("relrubrelrubcampos"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -131,10 +131,10 @@ class cl_relrubrelrubcampos {
          $this->erro_status = "0";
          return false; 
        }
-       $this->rh121_sequencial = pg_result($result,0,0); 
+       $this->rh121_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from relrubrelrubcampos_rh121_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $rh121_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $rh121_sequencial)){
          $this->erro_sql = " Campo rh121_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_relrubrelrubcampos {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Relação do Relatorio de Rubricas com os campos ($this->rh121_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Relação do Relatorio de Rubricas com os campos já Cadastrado";
@@ -199,14 +199,14 @@ class cl_relrubrelrubcampos {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20038,'$this->rh121_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3590,20038,'','".AddSlashes(pg_result($resaco,0,'rh121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3590,20042,'','".AddSlashes(pg_result($resaco,0,'rh121_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3590,20039,'','".AddSlashes(pg_result($resaco,0,'rh121_relrub'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3590,20040,'','".AddSlashes(pg_result($resaco,0,'rh121_relrubcampos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3590,20041,'','".AddSlashes(pg_result($resaco,0,'rh121_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3590,20038,'','".AddSlashes(pg_fetch_result($resaco,0,'rh121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3590,20042,'','".AddSlashes(pg_fetch_result($resaco,0,'rh121_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3590,20039,'','".AddSlashes(pg_fetch_result($resaco,0,'rh121_relrub'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3590,20040,'','".AddSlashes(pg_fetch_result($resaco,0,'rh121_relrubcampos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3590,20041,'','".AddSlashes(pg_fetch_result($resaco,0,'rh121_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -216,10 +216,10 @@ class cl_relrubrelrubcampos {
       $this->atualizacampos();
      $sql = " update relrubrelrubcampos set ";
      $virgula = "";
-     if(trim($this->rh121_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh121_sequencial"])){ 
+     if(trim((string) $this->rh121_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh121_sequencial"])){ 
        $sql  .= $virgula." rh121_sequencial = $this->rh121_sequencial ";
        $virgula = ",";
-       if(trim($this->rh121_sequencial) == null ){ 
+       if(trim((string) $this->rh121_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "rh121_sequencial";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_relrubrelrubcampos {
          return false;
        }
      }
-     if(trim($this->rh121_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh121_instit"])){ 
+     if(trim((string) $this->rh121_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh121_instit"])){ 
        $sql  .= $virgula." rh121_instit = $this->rh121_instit ";
        $virgula = ",";
-       if(trim($this->rh121_instit) == null ){ 
+       if(trim((string) $this->rh121_instit) == null ){ 
          $this->erro_sql = " Campo Instituição nao Informado.";
          $this->erro_campo = "rh121_instit";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_relrubrelrubcampos {
          return false;
        }
      }
-     if(trim($this->rh121_relrub)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh121_relrub"])){ 
+     if(trim((string) $this->rh121_relrub)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh121_relrub"])){ 
        $sql  .= $virgula." rh121_relrub = $this->rh121_relrub ";
        $virgula = ",";
-       if(trim($this->rh121_relrub) == null ){ 
+       if(trim((string) $this->rh121_relrub) == null ){ 
          $this->erro_sql = " Campo Relatorio Rubrica nao Informado.";
          $this->erro_campo = "rh121_relrub";
          $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_relrubrelrubcampos {
          return false;
        }
      }
-     if(trim($this->rh121_relrubcampos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh121_relrubcampos"])){ 
+     if(trim((string) $this->rh121_relrubcampos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh121_relrubcampos"])){ 
        $sql  .= $virgula." rh121_relrubcampos = $this->rh121_relrubcampos ";
        $virgula = ",";
-       if(trim($this->rh121_relrubcampos) == null ){ 
+       if(trim((string) $this->rh121_relrubcampos) == null ){ 
          $this->erro_sql = " Campo Campos nao Informado.";
          $this->erro_campo = "rh121_relrubcampos";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_relrubrelrubcampos {
          return false;
        }
      }
-     if(trim($this->rh121_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh121_ordem"])){ 
+     if(trim((string) $this->rh121_ordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["rh121_ordem"])){ 
        $sql  .= $virgula." rh121_ordem = $this->rh121_ordem ";
        $virgula = ",";
-       if(trim($this->rh121_ordem) == null ){ 
+       if(trim((string) $this->rh121_ordem) == null ){ 
          $this->erro_sql = " Campo Ordem nao Informado.";
          $this->erro_campo = "rh121_ordem";
          $this->erro_banco = "";
@@ -295,19 +295,19 @@ class cl_relrubrelrubcampos {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20038,'$this->rh121_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh121_sequencial"]) || $this->rh121_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3590,20038,'".AddSlashes(pg_result($resaco,$conresaco,'rh121_sequencial'))."','$this->rh121_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3590,20038,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh121_sequencial'))."','$this->rh121_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh121_instit"]) || $this->rh121_instit != "")
-             $resac = db_query("insert into db_acount values($acount,3590,20042,'".AddSlashes(pg_result($resaco,$conresaco,'rh121_instit'))."','$this->rh121_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3590,20042,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh121_instit'))."','$this->rh121_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh121_relrub"]) || $this->rh121_relrub != "")
-             $resac = db_query("insert into db_acount values($acount,3590,20039,'".AddSlashes(pg_result($resaco,$conresaco,'rh121_relrub'))."','$this->rh121_relrub',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3590,20039,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh121_relrub'))."','$this->rh121_relrub',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh121_relrubcampos"]) || $this->rh121_relrubcampos != "")
-             $resac = db_query("insert into db_acount values($acount,3590,20040,'".AddSlashes(pg_result($resaco,$conresaco,'rh121_relrubcampos'))."','$this->rh121_relrubcampos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3590,20040,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh121_relrubcampos'))."','$this->rh121_relrubcampos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["rh121_ordem"]) || $this->rh121_ordem != "")
-             $resac = db_query("insert into db_acount values($acount,3590,20041,'".AddSlashes(pg_result($resaco,$conresaco,'rh121_ordem'))."','$this->rh121_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3590,20041,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'rh121_ordem'))."','$this->rh121_ordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -361,14 +361,14 @@ class cl_relrubrelrubcampos {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20038,'$rh121_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3590,20038,'','".AddSlashes(pg_result($resaco,$iresaco,'rh121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3590,20042,'','".AddSlashes(pg_result($resaco,$iresaco,'rh121_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3590,20039,'','".AddSlashes(pg_result($resaco,$iresaco,'rh121_relrub'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3590,20040,'','".AddSlashes(pg_result($resaco,$iresaco,'rh121_relrubcampos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3590,20041,'','".AddSlashes(pg_result($resaco,$iresaco,'rh121_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3590,20038,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh121_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3590,20042,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh121_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3590,20039,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh121_relrub'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3590,20040,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh121_relrubcampos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3590,20041,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'rh121_ordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -429,7 +429,7 @@ class cl_relrubrelrubcampos {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:relrubrelrubcampos";
@@ -444,7 +444,7 @@ class cl_relrubrelrubcampos {
    function sql_query ( $rh121_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_relrubrelrubcampos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,7 +481,7 @@ class cl_relrubrelrubcampos {
    function sql_query_file ( $rh121_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_relrubrelrubcampos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

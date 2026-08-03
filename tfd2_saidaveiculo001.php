@@ -131,7 +131,7 @@ function impPaciente(\ECidade\Pdf\Pdf $oPdf, $oPaciente) {
 
   foreach ($oPedido->getAcompanhantes() as $oAcompanhante) {
 
-    $aContatos   = array();
+    $aContatos   = [];
     $aContatos[] = $oAcompanhante->getTelefone();
     $aContatos[] = $oAcompanhante->getCelular();
     $aContatos   = array_filter( $aContatos );
@@ -190,7 +190,7 @@ function getVeiculo($rs) {
 }
 
 function limitaString( $sString, $iMaxLength = 36, $sSimbolo="..." ) {
-    return (strlen( $sString ) > $iMaxLength ) ? substr( $sString, 0, $iMaxLength ) . $sSimbolo : $sString;
+    return (strlen( (string) $sString ) > $iMaxLength ) ? substr( (string) $sString, 0, $iMaxLength ) . $sSimbolo : $sString;
 }
 
 if (isset($iChavePesquisa) && ! empty($iChavePesquisa)) {
@@ -203,7 +203,7 @@ if (isset($iChavePesquisa) && ! empty($iChavePesquisa)) {
     $sWhere .= " and tf18_i_veiculo = $codveiculo";
   }
 
-  $dDataSaida = substr($datasaida, 6, 4).'-'.substr($datasaida, 3, 2).'-'.substr($datasaida, 0, 2);
+  $dDataSaida = substr((string) $datasaida, 6, 4).'-'.substr((string) $datasaida, 3, 2).'-'.substr((string) $datasaida, 0, 2);
   $sWhere    .= " and tf18_d_datasaida = '$dDataSaida' ";
   $sWhere    .= " and tf18_c_horasaida = '$hora'";
 }

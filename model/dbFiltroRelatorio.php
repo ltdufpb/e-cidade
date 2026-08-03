@@ -60,7 +60,7 @@ final class dbFiltroRelatorio implements iGeradorRelatorio {
   public function getCampo() {
 
     if (db_utils::isUTF8($this->sCampo)) {
-      return utf8_decode($this->sCampo);
+      return mb_convert_encoding($this->sCampo, 'ISO-8859-1');
     } else {
       return $this->sCampo;
     }  	
@@ -89,7 +89,7 @@ final class dbFiltroRelatorio implements iGeradorRelatorio {
   public function getValor() {
 
     if (db_utils::isUTF8($this->sValor)) {
-      return utf8_decode($this->sValor);
+      return mb_convert_encoding($this->sValor, 'ISO-8859-1');
     } else {
       return $this->sValor;
     }
@@ -139,10 +139,10 @@ final class dbFiltroRelatorio implements iGeradorRelatorio {
 
   	$oXmlWriter->startElement('Filtro');
   	
-  	$oXmlWriter->writeAttribute('operador',utf8_encode($this->sOperador));
-  	$oXmlWriter->writeAttribute('campo'   ,utf8_encode($this->sCampo));
-  	$oXmlWriter->writeAttribute('condicao',utf8_encode($this->sCondicao));
-  	$oXmlWriter->writeAttribute('valor'	  ,utf8_encode($this->sValor));
+  	$oXmlWriter->writeAttribute('operador',mb_convert_encoding($this->sOperador, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('campo'   ,mb_convert_encoding($this->sCampo, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('condicao',mb_convert_encoding($this->sCondicao, 'UTF-8', 'ISO-8859-1'));
+  	$oXmlWriter->writeAttribute('valor'	  ,mb_convert_encoding($this->sValor, 'UTF-8', 'ISO-8859-1'));
   	
   	$oXmlWriter->endElement();
   	

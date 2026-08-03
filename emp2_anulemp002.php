@@ -44,7 +44,7 @@ $cldb_pcforneconpad = new cl_pcforneconpad;
 $clempanuladoele    = new cl_empanuladoele;
 $atual              = 0;
 $anosessao = db_getsession('DB_anousu');
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $where  = "";
 
 if(!empty($e94_codanu)){
@@ -52,7 +52,7 @@ if(!empty($e94_codanu)){
 }
 
 if(!empty($e60_codemp)){
-    $codeempeano = explode("/",$e60_codemp);
+    $codeempeano = explode("/",(string) $e60_codemp);
     if(!empty($codeempeano[0]) and !empty($codeempeano[1])){
         $where .= "AND e60_codemp = '{$codeempeano[0]}' AND e60_anousu = '{$codeempeano[1]}' ";
     }else{
@@ -103,7 +103,7 @@ $sql  = "
           ORDER BY e94_codanu ASC
 ";
 $result = db_query($sql);
-if($result==false || pg_numrows($result) == 0 ){
+if($result==false || pg_num_rows($result) == 0 ){
   throw new \Exception("Anulação n".chr(176)." {$e94_codanu} não encontrada. Verifique!");
 }
 db_fieldsmemory($result,0);
@@ -116,7 +116,7 @@ $pdf1->objpdf->SetTextColor(0,0,0);
 
 $pdf1->nvias= 1;
 $nValorTotalAnulado = 0;
-for($i = 0;$i < pg_numrows($result);$i++){
+for($i = 0;$i < pg_num_rows($result);$i++){
    db_fieldsmemory($result,$i);
     /**
      *
@@ -137,7 +137,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
     }
 
     $res_dot = db_dotacaosaldo(8,2,2,true," o58_coddot = $o58_coddot and o58_anousu = $o58_anousu");
-    if (pg_numrows($res_dot)>0){
+    if (pg_num_rows($res_dot)>0){
       db_fieldsmemory($res_dot,0);
     }
 
@@ -158,7 +158,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
    $nValorTotalAnulado     += $e94_valor;
    $pdf1->notaanulacao      = $e94_codanu;
    $pdf1->prefeitura        = $nomeinst;
-   $pdf1->enderpref         = trim($ender).",".$numero;
+   $pdf1->enderpref         = trim((string) $ender).",".$numero;
    $pdf1->municpref         = $munic;
    $pdf1->telefpref         = $telef;
    $pdf1->emailpref         = $email;
@@ -181,7 +181,7 @@ for($i = 0;$i < pg_numrows($result);$i++){
    $pdf1->resumo           = $e60_resumo;
    $pdf1->licitacao        = $e60_codtipo;
    $pdf1->recorddositens   = $resultitem;
-   $pdf1->linhasdositens   = pg_numrows($resultitem);
+   $pdf1->linhasdositens   = pg_num_rows($resultitem);
 // $pdf1->quantitem        = "e62_quant";
    $pdf1->valoritem        = "e95_valor";
 // $pdf1->descricaoitem    = "pc01_descrmater";

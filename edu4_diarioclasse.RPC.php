@@ -119,7 +119,7 @@ try {
                 unset($_SESSION["DIAS_LETIVOS_ESCOLA"]);
             }
 
-            $aDiasLetivos = array();
+            $aDiasLetivos = [];
 
             $sCampoRegente = " distinct ed20_i_codigo ";
             $sWhereRegente = "     (rh01_numcgm  = {$oParam->iRegente} or ed285_i_cgm = {$oParam->iRegente})";
@@ -135,7 +135,7 @@ try {
             }
 
             $aCodigoRecHumano = db_utils::getCollectionByRecord($rsRegente);
-            $aCodigos = array();
+            $aCodigos = [];
             foreach ($aCodigoRecHumano as $oCodigoRecHumano) {
                 $aCodigos[] = $oCodigoRecHumano->ed20_i_codigo;
             }
@@ -165,7 +165,7 @@ try {
                 throw new DBException(_M(ARQUIVO_MENSAGEM . "erro_buscar_dias_docente"));
             }
 
-            $aDiasDeAula = array();
+            $aDiasDeAula = [];
             $iTotalDiasDaSemanaComAula = pg_num_rows($rsDiasDaSemanaComAula);
 
             for ($iAula = 0; $iAula < $iTotalDiasDaSemanaComAula; $iAula++) {
@@ -223,7 +223,7 @@ try {
             /**
              * Calcula as datas em que o docente leciona com base na regenciahorario
              */
-            $aDatasDeAula = array();
+            $aDatasDeAula = [];
             for ($i = 0; $i < $iTotalDiasDaSemanaComAula; $i++) {
 
                 $oDadosDiaSemana = db_utils::fieldsMemory($rsDiasDaSemanaComAula, $i);
@@ -247,7 +247,7 @@ try {
                 $aAuxiliar = DBDate::getDatasNoIntervalo(
                     $oDataInicio,
                     $oDataFimPeriodo,
-                    array($oDadosDiaSemana->ed58_i_diasemana - 1)
+                    [$oDadosDiaSemana->ed58_i_diasemana - 1]
                 );
 
 
@@ -261,8 +261,8 @@ try {
              * Remove os eventos / feriados dos dias de aula do professor.
              */
             $aEventos = buscaFeriados($oDadosAnoLetivo->calendarios);
-            $aIndicesDiaLetivo = array();
-            $aIndicesDiaNaoLetivo = array();
+            $aIndicesDiaLetivo = [];
+            $aIndicesDiaNaoLetivo = [];
 
             foreach ($aEventos as $oEvento) {
                 $lDiaLetivo = $oEvento->dia_letivo == 'S';
@@ -296,7 +296,7 @@ try {
                 $oDiaLetivo->data = $oData->getDate();
                 $oDiaLetivo->diasemana = urlencode(mb_strtoupper(DBDate::getLabelDiaSemana($oData->getDiaSemana())));
 
-                $turmas = array();
+                $turmas = [];
                 $turmasDiaSemana = $aDiasDeAula[$oData->getDiaSemana()]->turmas;
                 foreach ($turmasDiaSemana as $dadosTurma) {
                     $dataInicio = new DBDate($dadosTurma->data_inicio);
@@ -318,7 +318,7 @@ try {
 
 
         case 'getTurmasNoDia':
-            $aTurmas = array();
+            $aTurmas = [];
             if (isset($oParam->dtAula) && isset($oParam->dtAula)) {
                 $oDataInformada = new DBDate($oParam->dtAula);
                 if (isset($_SESSION["DIAS_LETIVOS_ESCOLA"])) {
@@ -351,7 +351,7 @@ try {
             $oDaoControleAcesso = new cl_controleacessoaluno();
             $oDaoPeriodoEscolaTurnoReferente = new cl_periodoescolaturnoreferente();
 
-            $aPartesTurma = explode("_", $oParam->iCodigoTurma);
+            $aPartesTurma = explode("_", (string) $oParam->iCodigoTurma);
             $iCodigoSerie = '';
             if (isset($aPartesTurma[1])) {
                 $iCodigoSerie = $aPartesTurma[1];
@@ -370,7 +370,7 @@ try {
                 "matricula.ed60_i_numaluno, to_ascii(ed47_v_nome)",
                 "ed60_i_turma = {$oParam->iCodigoTurma} and ed221_i_serie = {$iCodigoSerie}"
             );
-            $aPeriodosDeAulaDoDia = array();
+            $aPeriodosDeAulaDoDia = [];
             $iDiaDaSemana = date('w', db_strtotime($oParam->dtAula)) + 1;
 
 
@@ -389,7 +389,7 @@ try {
                 throw new Exception(_M(ARQUIVO_MENSAGEM . "erro_localizar_regente"));
             }
             $aRecursosHumanos = db_utils::getCollectionByRecord($rsRegente);
-            $aCodigoRecursosHumanos = array();
+            $aCodigoRecursosHumanos = [];
             foreach ($aRecursosHumanos as $oRecursoHumano) {
                 $aCodigoRecursosHumanos[] = $oRecursoHumano->ed20_i_codigo;
             }
@@ -452,7 +452,7 @@ try {
             $rsPeriodosAula = $oDaoRegenciaHorario->sql_record($sSqlPeriodosAula);
 
             $oRetorno->aPeriodosAulaDia = db_utils::getCollectionByRecord($rsPeriodosAula, false, false, true);
-            $aPeriodosAula = array();
+            $aPeriodosAula = [];
             foreach ($oRetorno->aPeriodosAulaDia as $oPeriodo) {
 
                 $sWherePeriodoTurno = "ed143_periodoescola = {$oPeriodo->codigo_periodo_escola}";
@@ -468,7 +468,7 @@ try {
                     throw new Exception(_M(ARQUIVO_MENSAGEM . "configure_turnos_referentes"));
                 }
 
-                $oPeriodo->aTurnosReferentes = array();
+                $oPeriodo->aTurnosReferentes = [];
 
                 for ($iEquivalencias = 0; $iEquivalencias < pg_num_rows($rsPeriodoTurno); $iEquivalencias++) {
                     $oPeriodo->aTurnosReferentes[] = db_utils::fieldsMemory(
@@ -498,7 +498,7 @@ try {
              * Pegamos os dados de aula do aluno
              */
             $rsAlunosMatriculadosNaTurma = $oDaoMatricula->sql_record($sSqlAlunosMatriculadosNaTurma);
-            $aAlunosMatriculados = array();
+            $aAlunosMatriculados = [];
             for ($iAluno = 0; $iAluno < $oDaoMatricula->numrows; $iAluno++) {
                 $oAluno = db_utils::fieldsMemory($rsAlunosMatriculadosNaTurma, $iAluno, false, false, true);
                 $oInstanciaAluno = AlunoRepository::getAlunoByCodigo($oAluno->codigo);
@@ -533,7 +533,7 @@ try {
                     null,
                     $sWhereFaltas
                 );
-                $aFaltas = array();
+                $aFaltas = [];
                 $rsAlunoFaltas = $oDaoDiarioClasseAlunoFalta->sql_record($sSqlAlunoFaltas);
                 $aAlunoFaltas = db_utils::getCollectionByRecord($rsAlunoFaltas);
                 foreach ($aAlunoFaltas as $oFalta) {
@@ -566,7 +566,7 @@ try {
                     throw new DBException(_M(ARQUIVO_MENSAGEM . "erro_turnos_matricula_aluno"));
                 }
 
-                $oAluno->aTurnosReferentes = array();
+                $oAluno->aTurnosReferentes = [];
                 for ($iTurnos = 0; $iTurnos < pg_num_rows($rsMatriculaTurnoReferente); $iTurnos++) {
                     $oAluno->aTurnosReferentes[] = db_utils::fieldsMemory(
                         $rsMatriculaTurnoReferente,
@@ -595,7 +595,7 @@ try {
             );
             $rsDiarioClasse = $oDaoDiarioClasseRegenciaHorario->sql_record($sSqlDiarioClasse);
             if ($oDaoDiarioClasseRegenciaHorario->numrows > 0) {
-                $oRetorno->sAulaData = urlencode(db_utils::fieldsMemory($rsDiarioClasse, 0)->ed300_auladesenvolvida);
+                $oRetorno->sAulaData = urlencode((string) db_utils::fieldsMemory($rsDiarioClasse, 0)->ed300_auladesenvolvida);
             }
 
             break;

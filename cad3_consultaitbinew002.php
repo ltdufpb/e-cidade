@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_itbi_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clitbi   = new cl_itbi;
 $clrotulo = new rotulocampo;
@@ -65,13 +65,13 @@ $clrotulo->label("j13_descr");
      $where .= " and it03_nome ilike '".$transmitente."%' and upper(it03_tipo) = 'T' ";
   }
   if(isset($setor) && $setor != ""){
-     $where .= " and j34_setor = '" . str_pad($setor,4,"0",STR_PAD_LEFT)."'";
+     $where .= " and j34_setor = '" . str_pad((string) $setor,4,"0",STR_PAD_LEFT)."'";
   }
   if(isset($quadra) && $quadra != ""){
-     $where .= " and j34_quadra = '" . str_pad($quadra,4,"0",STR_PAD_LEFT)."'";
+     $where .= " and j34_quadra = '" . str_pad((string) $quadra,4,"0",STR_PAD_LEFT)."'";
   }
   if(isset($lote) && $lote != ""){
-     $where .= " and j34_lote = '" . str_pad($lote,4,"0",STR_PAD_LEFT) ."'";
+     $where .= " and j34_lote = '" . str_pad((string) $lote,4,"0",STR_PAD_LEFT) ."'";
   }
   
 	if(isset($setorloc) || isset($quadraloc) || isset($loteloc)) {
@@ -152,7 +152,7 @@ $clrotulo->label("j13_descr");
   if($clitbi->numrows == 1){
 
     db_fieldsmemory($result,0);
-    $funcao = split("\\|",$funcao_js);
+    $funcao = preg_split("#\\|#m",$funcao_js);
     echo "<script>".$funcao[0]."('$it01_guia');</script>";
     echo "<script>parent.db_iframe_consultaitbi.hide();</script>";
     exit;

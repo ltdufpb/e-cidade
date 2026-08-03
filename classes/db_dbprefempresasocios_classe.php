@@ -29,27 +29,27 @@
 //CLASSE DA ENTIDADE dbprefempresasocios
 class cl_dbprefempresasocios { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q66_sequencial = 0; 
-   var $q66_dbprefcgm = 0; 
-   var $q66_dbprefempresa = 0; 
-   var $q66_tipocapital = 0; 
-   var $q66_tipo = 0; 
-   var $q66_capital = 0; 
+   public $q66_sequencial = 0; 
+   public $q66_dbprefcgm = 0; 
+   public $q66_dbprefempresa = 0; 
+   public $q66_tipocapital = 0; 
+   public $q66_tipo = 0; 
+   public $q66_capital = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q66_sequencial = int4 = Codigo Sequencial 
                  q66_dbprefcgm = int4 = Código sequencial 
                  q66_dbprefempresa = int4 = Código sequencial 
@@ -58,10 +58,10 @@ class cl_dbprefempresasocios {
                  q66_capital = float8 = Capital 
                  ";
    //funcao construtor da classe 
-   function cl_dbprefempresasocios() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("dbprefempresasocios"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -143,10 +143,10 @@ class cl_dbprefempresasocios {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q66_sequencial = pg_result($result,0,0); 
+       $this->q66_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from dbprefempresasocios_q66_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q66_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q66_sequencial)){
          $this->erro_sql = " Campo q66_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -184,7 +184,7 @@ class cl_dbprefempresasocios {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de socios offline ($this->q66_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de socios offline já Cadastrado";
@@ -208,15 +208,15 @@ class cl_dbprefempresasocios {
      $resaco = $this->sql_record($this->sql_query_file($this->q66_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10233,'$this->q66_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1767,10233,'','".AddSlashes(pg_result($resaco,0,'q66_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1767,10234,'','".AddSlashes(pg_result($resaco,0,'q66_dbprefcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1767,10235,'','".AddSlashes(pg_result($resaco,0,'q66_dbprefempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1767,10236,'','".AddSlashes(pg_result($resaco,0,'q66_tipocapital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1767,10238,'','".AddSlashes(pg_result($resaco,0,'q66_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1767,10237,'','".AddSlashes(pg_result($resaco,0,'q66_capital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1767,10233,'','".AddSlashes(pg_fetch_result($resaco,0,'q66_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1767,10234,'','".AddSlashes(pg_fetch_result($resaco,0,'q66_dbprefcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1767,10235,'','".AddSlashes(pg_fetch_result($resaco,0,'q66_dbprefempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1767,10236,'','".AddSlashes(pg_fetch_result($resaco,0,'q66_tipocapital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1767,10238,'','".AddSlashes(pg_fetch_result($resaco,0,'q66_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1767,10237,'','".AddSlashes(pg_fetch_result($resaco,0,'q66_capital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -225,10 +225,10 @@ class cl_dbprefempresasocios {
       $this->atualizacampos();
      $sql = " update dbprefempresasocios set ";
      $virgula = "";
-     if(trim($this->q66_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_sequencial"])){ 
+     if(trim((string) $this->q66_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_sequencial"])){ 
        $sql  .= $virgula." q66_sequencial = $this->q66_sequencial ";
        $virgula = ",";
-       if(trim($this->q66_sequencial) == null ){ 
+       if(trim((string) $this->q66_sequencial) == null ){ 
          $this->erro_sql = " Campo Codigo Sequencial nao Informado.";
          $this->erro_campo = "q66_sequencial";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_dbprefempresasocios {
          return false;
        }
      }
-     if(trim($this->q66_dbprefcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_dbprefcgm"])){ 
+     if(trim((string) $this->q66_dbprefcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_dbprefcgm"])){ 
        $sql  .= $virgula." q66_dbprefcgm = $this->q66_dbprefcgm ";
        $virgula = ",";
-       if(trim($this->q66_dbprefcgm) == null ){ 
+       if(trim((string) $this->q66_dbprefcgm) == null ){ 
          $this->erro_sql = " Campo Código sequencial nao Informado.";
          $this->erro_campo = "q66_dbprefcgm";
          $this->erro_banco = "";
@@ -251,10 +251,10 @@ class cl_dbprefempresasocios {
          return false;
        }
      }
-     if(trim($this->q66_dbprefempresa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_dbprefempresa"])){ 
+     if(trim((string) $this->q66_dbprefempresa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_dbprefempresa"])){ 
        $sql  .= $virgula." q66_dbprefempresa = $this->q66_dbprefempresa ";
        $virgula = ",";
-       if(trim($this->q66_dbprefempresa) == null ){ 
+       if(trim((string) $this->q66_dbprefempresa) == null ){ 
          $this->erro_sql = " Campo Código sequencial nao Informado.";
          $this->erro_campo = "q66_dbprefempresa";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_dbprefempresasocios {
          return false;
        }
      }
-     if(trim($this->q66_tipocapital)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_tipocapital"])){ 
+     if(trim((string) $this->q66_tipocapital)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_tipocapital"])){ 
        $sql  .= $virgula." q66_tipocapital = $this->q66_tipocapital ";
        $virgula = ",";
-       if(trim($this->q66_tipocapital) == null ){ 
+       if(trim((string) $this->q66_tipocapital) == null ){ 
          $this->erro_sql = " Campo Tipo de capital nao Informado.";
          $this->erro_campo = "q66_tipocapital";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_dbprefempresasocios {
          return false;
        }
      }
-     if(trim($this->q66_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_tipo"])){ 
+     if(trim((string) $this->q66_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_tipo"])){ 
        $sql  .= $virgula." q66_tipo = $this->q66_tipo ";
        $virgula = ",";
-       if(trim($this->q66_tipo) == null ){ 
+       if(trim((string) $this->q66_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "q66_tipo";
          $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_dbprefempresasocios {
          return false;
        }
      }
-     if(trim($this->q66_capital)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_capital"])){ 
+     if(trim((string) $this->q66_capital)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q66_capital"])){ 
        $sql  .= $virgula." q66_capital = $this->q66_capital ";
        $virgula = ",";
-       if(trim($this->q66_capital) == null ){ 
+       if(trim((string) $this->q66_capital) == null ){ 
          $this->erro_sql = " Campo Capital nao Informado.";
          $this->erro_campo = "q66_capital";
          $this->erro_banco = "";
@@ -311,21 +311,21 @@ class cl_dbprefempresasocios {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10233,'$this->q66_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q66_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1767,10233,'".AddSlashes(pg_result($resaco,$conresaco,'q66_sequencial'))."','$this->q66_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1767,10233,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q66_sequencial'))."','$this->q66_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q66_dbprefcgm"]))
-           $resac = db_query("insert into db_acount values($acount,1767,10234,'".AddSlashes(pg_result($resaco,$conresaco,'q66_dbprefcgm'))."','$this->q66_dbprefcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1767,10234,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q66_dbprefcgm'))."','$this->q66_dbprefcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q66_dbprefempresa"]))
-           $resac = db_query("insert into db_acount values($acount,1767,10235,'".AddSlashes(pg_result($resaco,$conresaco,'q66_dbprefempresa'))."','$this->q66_dbprefempresa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1767,10235,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q66_dbprefempresa'))."','$this->q66_dbprefempresa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q66_tipocapital"]))
-           $resac = db_query("insert into db_acount values($acount,1767,10236,'".AddSlashes(pg_result($resaco,$conresaco,'q66_tipocapital'))."','$this->q66_tipocapital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1767,10236,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q66_tipocapital'))."','$this->q66_tipocapital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q66_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1767,10238,'".AddSlashes(pg_result($resaco,$conresaco,'q66_tipo'))."','$this->q66_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1767,10238,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q66_tipo'))."','$this->q66_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q66_capital"]))
-           $resac = db_query("insert into db_acount values($acount,1767,10237,'".AddSlashes(pg_result($resaco,$conresaco,'q66_capital'))."','$this->q66_capital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1767,10237,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q66_capital'))."','$this->q66_capital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -370,15 +370,15 @@ class cl_dbprefempresasocios {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10233,'$q66_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1767,10233,'','".AddSlashes(pg_result($resaco,$iresaco,'q66_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1767,10234,'','".AddSlashes(pg_result($resaco,$iresaco,'q66_dbprefcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1767,10235,'','".AddSlashes(pg_result($resaco,$iresaco,'q66_dbprefempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1767,10236,'','".AddSlashes(pg_result($resaco,$iresaco,'q66_tipocapital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1767,10238,'','".AddSlashes(pg_result($resaco,$iresaco,'q66_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1767,10237,'','".AddSlashes(pg_result($resaco,$iresaco,'q66_capital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1767,10233,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q66_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1767,10234,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q66_dbprefcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1767,10235,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q66_dbprefempresa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1767,10236,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q66_tipocapital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1767,10238,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q66_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1767,10237,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q66_capital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from dbprefempresasocios
@@ -438,7 +438,7 @@ class cl_dbprefempresasocios {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:dbprefempresasocios";
@@ -452,7 +452,7 @@ class cl_dbprefempresasocios {
    function sql_query ( $q66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -478,7 +478,7 @@ class cl_dbprefempresasocios {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -490,7 +490,7 @@ class cl_dbprefempresasocios {
    function sql_query_file ( $q66_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -511,7 +511,7 @@ class cl_dbprefempresasocios {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -33,7 +33,7 @@ final class AssinanteRepository extends BaseRepository
             throw new Exception($msg);
         }
 
-        return json_decode($response)->data;
+        return json_decode((string) $response)->data;
     }
 
     protected function getSigners()
@@ -52,7 +52,7 @@ final class AssinanteRepository extends BaseRepository
 
         array_map(function ($signer) use ($cpf_cnpj, &$s) {
 
-            $cpf_cnpj = preg_replace('/\D/', '', $cpf_cnpj);
+            $cpf_cnpj = preg_replace('/\D/', '', (string) $cpf_cnpj);
 
             if ($cpf_cnpj == $signer->cpf_cnpj) {
                 $s = $signer;

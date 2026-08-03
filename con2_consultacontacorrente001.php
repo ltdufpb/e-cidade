@@ -30,8 +30,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $daoContaCorrente = new cl_conplanosistema();
 $where  = "c122_tipo = 2";
@@ -39,7 +39,7 @@ $campos = "c122_sequencial as codigo, c122_descricao as nome";
 $sqlContaCorrente = $daoContaCorrente->sql_query_file(null, $campos, "c122_sequencial", $where);
 $rsContaCorrentes = db_query($sqlContaCorrente);
 $totalLinhas      = pg_num_rows($rsContaCorrentes);
-$contascorrentes = array("0" => "Selecione");
+$contascorrentes = ["0" => "Selecione"];
 for ($i = 0; $i < $totalLinhas; $i++) {
 
     $dado = db_utils::fieldsMemory($rsContaCorrentes, $i);
@@ -121,8 +121,8 @@ $estiloPadrao = !empty($_GET['codigo_visao']) ? ' display: none;': "";
                         <td align="left"><label for="fonte_de_dados"><strong> Fonte de Dados: </strong></label></td>
                         <td>
                             <?php
-                              $aFonteDeDados = array( "1" => "Conta Corrente",
-                                                      "2" => "MSC" );
+                              $aFonteDeDados = [ "1" => "Conta Corrente",
+                                                      "2" => "MSC" ];
                               db_select("fonte_de_dados", $aFonteDeDados, true, 1);
                             ?>
                         </td>

@@ -30,7 +30,7 @@ require_once modification("libs/db_conecta.php");
 require_once modification("libs/db_sessoes.php");
 require_once modification("dbforms/db_funcoes.php");
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $iInstituicao = db_getsession("DB_instit");
 $anoorigem    = db_getsession("DB_anousu");
@@ -73,7 +73,7 @@ $anodestino   = $anoorigem+1;
 							    </td>
 							    <td colspan="3">
 							      <?php 
-								      $aDuplicaPermissao = array("N" => "Não", "S" => "Sim");
+								      $aDuplicaPermissao = ["N" => "Não", "S" => "Sim"];
 						          db_select("duplicaperfil", $aDuplicaPermissao, true, 1);
 							      ?>
 							    </td>
@@ -82,7 +82,7 @@ $anodestino   = $anoorigem+1;
 					        <td><b>Ação: </b></td>
 					        <td colspan="3">
 					          <?php 
-					            $aAcoes = array("0" => "Padrão", "1" => "Substituir", "2" => "Acrescentar");
+					            $aAcoes = ["0" => "Padrão", "1" => "Substituir", "2" => "Acrescentar"];
 					            db_select('acao', $aAcoes, true, 1);
 					          ?>
 					        </td>
@@ -114,7 +114,7 @@ $anodestino   = $anoorigem+1;
 									    $sSqlUsuario .= "    where db_usuarios.usuarioativo = 1                                                 ";
 									    $sSqlUsuario .= " order by db_usuarios.nome asc                                                         ";
 											$rsSqlUsuario = db_query($sSqlUsuario);
-											db_multiploselect("id_usuario", "descricao", "nsel3", "ssel3", $rsSqlUsuario, array(), 8, 600, "", "", false);
+											db_multiploselect("id_usuario", "descricao", "nsel3", "ssel3", $rsSqlUsuario, [], 8, 600, "", "", false);
 										?>
 									</td>
 							  </tr>

@@ -150,16 +150,12 @@ class EvolucaoDespesaService
 
     private function getTipoPagamento($linhaDados)
     {
-        switch ($this->tipoPagamento) {
-            case 'pago':
-                return $linhaDados->pago;
-            case 'liquidado':
-                return $linhaDados->liquidado;
-            case 'empenhado':
-                return $linhaDados->empenhado_liquido;
-            default:
-                return $linhaDados->pago;
-        }
+        return match ($this->tipoPagamento) {
+            'pago' => $linhaDados->pago,
+            'liquidado' => $linhaDados->liquidado,
+            'empenhado' => $linhaDados->empenhado_liquido,
+            default => $linhaDados->pago,
+        };
     }
 
     private function somaUltimosDozeMeses($dado)
@@ -208,7 +204,7 @@ class EvolucaoDespesaService
         
         $this->parser->setEnteFederativo($this->enteFederativo);
         $this->parser->setEmissor($this->emissor);
-        $this->parser->setPeriodo(mb_strtoupper($this->mesesProcessar[11]->nome, 'ISO-8859-1'));
+        $this->parser->setPeriodo(mb_strtoupper((string) $this->mesesProcessar[11]->nome, 'ISO-8859-1'));
         $this->parser->setMesesPeriodo($mesesPeriodo);
         $this->mesesProcessar = [];
         $filename = $this->parser->gerar();
@@ -344,16 +340,12 @@ class EvolucaoDespesaService
 
     private function getDescricaoTipoPagamento($key)
     {
-        switch ($key) {
-            case 'pago':
-                return 'PAGOS NO MÊS';
-            case 'liquidado':
-                return 'LIQUIDADOS NO MÊS';
-            case 'empenhado':
-                return 'EMPENHADOS NO MÊS';
-            default:
-                return '';
-        }
+        return match ($key) {
+            'pago' => 'PAGOS NO MÊS',
+            'liquidado' => 'LIQUIDADOS NO MÊS',
+            'empenhado' => 'EMPENHADOS NO MÊS',
+            default => '',
+        };
     }
 
     private function getMesesProcessar($mes)

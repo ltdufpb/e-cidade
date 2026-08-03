@@ -6,19 +6,19 @@ use ECidade\Tributario\Library\Entity;
 
 final class Unica extends Entity
 {
-    const TOTAL_UNICAS              = 'TOTALUNICAS';
-    const OPERACAO_UNICA            = 'OPERACAOUNICA';
-    const VENCIMENTO_UNICA          = 'VENCIMENTOUNICA';
-    const PERCENTUAL_DESCONTO_UNICA = 'PERCENTUALDESCONTOUNICA';
-    const VALOR_HISTORICO_UNICA     = 'VALORHISTORICOUNICA';
-    const VALOR_CORRIGIDO_UNICA     = 'VALORCORRIGIDOUNICA';
-    const JUROS_UNICA               = 'JUROSUNICA';
-    const MULTA_UNICA               = 'MULTAUNICA';
-    const DESCONTO_UNICA            = 'DESCONTOUNICA';
-    const TOTAL_UNICA               = 'TOTALUNICA';
-    const TOTAL_LIQUIDO_UNICA       = 'TOTALLIQUIDOUNICA';
-    const CODIGO_ARRECADACAO        = 'CODIGOARRECADACAO';
-    const BARRAS_UNICA              = 'BARRASUNICA';
+    const string TOTAL_UNICAS              = 'TOTALUNICAS';
+    const string OPERACAO_UNICA            = 'OPERACAOUNICA';
+    const string VENCIMENTO_UNICA          = 'VENCIMENTOUNICA';
+    const string PERCENTUAL_DESCONTO_UNICA = 'PERCENTUALDESCONTOUNICA';
+    const string VALOR_HISTORICO_UNICA     = 'VALORHISTORICOUNICA';
+    const string VALOR_CORRIGIDO_UNICA     = 'VALORCORRIGIDOUNICA';
+    const string JUROS_UNICA               = 'JUROSUNICA';
+    const string MULTA_UNICA               = 'MULTAUNICA';
+    const string DESCONTO_UNICA            = 'DESCONTOUNICA';
+    const string TOTAL_UNICA               = 'TOTALUNICA';
+    const string TOTAL_LIQUIDO_UNICA       = 'TOTALLIQUIDOUNICA';
+    const string CODIGO_ARRECADACAO        = 'CODIGOARRECADACAO';
+    const string BARRAS_UNICA              = 'BARRASUNICA';
 
     private $dataOperacao;
 

@@ -115,11 +115,11 @@ function js_emite() {
             <td><b>Origem/Fase:</b></td>
             <td>
               <?php 
-                $aOrigemFase = array(0 => "Selecione", 
+                $aOrigemFase = [0 => "Selecione", 
                                      1 => "Orçamento", 
                                      2 => "Empenhado", 
                                      3 => "Liquidado",
-                                     4 => "Pago");
+                                     4 => "Pago"];
                 db_select("iOrigemFase", $aOrigemFase, false, 1, 'onchange="js_verificaPeriodo(this.value);"');
               ?>
             </td>
@@ -129,7 +129,7 @@ function js_emite() {
                 <td colspan="2">
                   <?php 
                     $aPeriodos         = $oRelatorioContabil->getPeriodos();                  
-                    $aListaPeriodos    = array();
+                    $aListaPeriodos    = [];
                     $aListaPeriodos[0] = "Selecione";
                     foreach ($aPeriodos as $oPeriodo) {
                       $aListaPeriodos[$oPeriodo->o114_sequencial] = $oPeriodo->o114_descricao;

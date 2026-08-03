@@ -71,6 +71,7 @@ class DemonstrativoProjecaoReceita extends Pdf
     /**
      * @param $titulo
      */
+    #[\Override]
     protected function capa($titulo)
     {
         $this->AddPage();

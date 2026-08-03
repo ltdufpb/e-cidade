@@ -84,7 +84,7 @@ try {
             $oAvaliacao->setAvaliacaoGrupo();
 
             $iCodigoGrupoPerguntas = null;
-            $aProcesso             = array();
+            $aProcesso             = [];
 
             if (!empty($oParam->iCodigoGrupoPerguntas)) {
                 $iCodigoGrupoPerguntas = $oParam->iCodigoGrupoPerguntas;

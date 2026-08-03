@@ -170,7 +170,7 @@ function js_emite(opcao,origem){
         <td align="right" ><strong>Órgão/Unidade :</strong></td>
 	<td align="left">
           <?php 
-	   $xy = array('1A'=>'Órgão','2A'=>'Unidade');
+	   $xy = ['1A'=>'Órgão','2A'=>'Unidade'];
 	   db_select('nivel',$xy,true,2,"");
 	  ?>
             <input  name="seleciona" id="seleciona" type="button" value="Seleciona" onclick="js_abre();">
@@ -181,7 +181,7 @@ function js_emite(opcao,origem){
         <td  align="right"><strong>Totalização :  </strong></td>
 	<td align="left">
           <?php 
-           $x = array('A'=>'ANALÍTICO','S'=>'SINTÉTICO');
+           $x = ['A'=>'ANALÍTICO','S'=>'SINTÉTICO'];
            db_select('totaliza',$x,true,2,"");
           ?>
         </td>
@@ -190,7 +190,7 @@ function js_emite(opcao,origem){
         <td  align="right"><strong>Totaliza Atividade :  </strong></td>
   <td align="left">
           <?php 
-           $x = array('N'=>'Não','S'=>'SIM');
+           $x = ['N'=>'Não','S'=>'SIM'];
            db_select('totaliza_atividade',$x,true,2,"");
           ?>
         </td>

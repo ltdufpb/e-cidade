@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 include(modification("fpdf151/pdf.php"));
 
@@ -42,7 +42,7 @@ $sql="  select
       ";
 
 $result = db_query($sql);
-if (pg_numrows($result) == 0 ){
+if (pg_num_rows($result) == 0 ){
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado");
 } 
 
@@ -59,7 +59,7 @@ $alt = 4;
 
 
 $codtipo="";
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
    db_fieldsmemory($result,$i );
   	
    if($pdf->gety()>$pdf->h-30 ){

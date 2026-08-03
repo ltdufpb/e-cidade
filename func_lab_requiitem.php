@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_lab_requiitem_classe.php"));
 require_once(modification("classes/db_lab_exame_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_requiitem = new cl_lab_requiitem;
 $cllab_exame = new cl_lab_exame;
 $cllab_requiitem->rotulo->label("la21_i_codigo");
@@ -128,9 +128,9 @@ $dHoje=date("Y-m-d", db_getsession("DB_datausu") );
         }else{
            $sql = $cllab_requiitem->sql_query("",$campos,"la21_i_codigo","$where");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_la21_i_codigo)){
-          $repassa = array("chave_la21_i_codigo"=>$chave_la21_i_codigo,"chave_la08_c_descr"=>$chave_la08_c_descr);
+          $repassa = ["chave_la21_i_codigo"=>$chave_la21_i_codigo,"chave_la08_c_descr"=>$chave_la08_c_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

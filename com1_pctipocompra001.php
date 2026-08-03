@@ -56,20 +56,20 @@ $db_opcao   = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica = array("tipocompras"=>"Tipo de Compras",
-                                       "faixavalores"=>"Faixa de Valores");
+       $clcriaabas->identifica = ["tipocompras"=>"Tipo de Compras",
+                                       "faixavalores"=>"Faixa de Valores"];
 
-       $clcriaabas->title      = array("tipocompras"=>"Tipo de Compras",
-                                       "faixavalores"=>"Faixa de Valores");
+       $clcriaabas->title      = ["tipocompras"=>"Tipo de Compras",
+                                       "faixavalores"=>"Faixa de Valores"];
        
-       $clcriaabas->src        = array("tipocompras"=>"com1_pctipocompra004.php",
-                                       "faixavalores"=>"");
+       $clcriaabas->src        = ["tipocompras"=>"com1_pctipocompra004.php",
+                                       "faixavalores"=>""];
        
-       $clcriaabas->disabled   = array("tipocompras"=>"true",
-                                       "faixavalores"=>"true"); 
+       $clcriaabas->disabled   = ["tipocompras"=>"true",
+                                       "faixavalores"=>"true"]; 
        
-       $clcriaabas->sizecampo  = array("tipocompras"=>"23",
-                                       "faixavalores"=>"23");
+       $clcriaabas->sizecampo  = ["tipocompras"=>"23",
+                                       "faixavalores"=>"23"];
        $clcriaabas->cria_abas(); 
      ?> 
     </td>

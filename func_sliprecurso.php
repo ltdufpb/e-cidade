@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sliprecurso_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsliprecurso = new cl_sliprecurso;
 $clsliprecurso->rotulo->label("k29_sequencial");
 $clsliprecurso->rotulo->label("k29_slip");
@@ -98,9 +98,9 @@ $clsliprecurso->rotulo->label("k29_slip");
         }else{
            $sql = $clsliprecurso->sql_query("",$campos,"k29_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k29_slip)){
-          $repassa = array("chave_k29_sequencial"=>$chave_k29_sequencial,"chave_k29_slip"=>$chave_k29_slip);
+          $repassa = ["chave_k29_sequencial"=>$chave_k29_sequencial,"chave_k29_slip"=>$chave_k29_slip];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

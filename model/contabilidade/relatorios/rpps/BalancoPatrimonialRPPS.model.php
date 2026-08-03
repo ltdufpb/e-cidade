@@ -46,7 +46,7 @@ class BalancoPatrimonialRPPS extends RelatoriosLegaisBase {
     }
 
     $aInstituicoesRetorno = db_utils::getCollectionByRecord($rsInstituicoesRPPS);
-    $aInstituicoes        = array();
+    $aInstituicoes        = [];
     foreach ($aInstituicoesRetorno as $oInstituicao) {
       $aInstituicoes[] = $oInstituicao->codigo;
     }
@@ -58,10 +58,11 @@ class BalancoPatrimonialRPPS extends RelatoriosLegaisBase {
    * Retorna as linhas processadas do relatorio
    * @return array lista de linhas processadas do relatorio
    */
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
 
-    $alinhasCompensadoAtivo   = array(35, 36, 37, 38, 39, 40);
-    $alinhasCompensadoPassivo = array(64, 65, 66, 67, 68, 69);
+    $alinhasCompensadoAtivo   = [35, 36, 37, 38, 39, 40];
+    $alinhasCompensadoPassivo = [64, 65, 66, 67, 68, 69];
 
     $sWherePlano            = " c61_instit in({$this->getInstituicoes()})";
     $rsBalanceteVerificacao = db_planocontassaldo_matriz($this->iAnoUsu,
@@ -117,7 +118,7 @@ class BalancoPatrimonialRPPS extends RelatoriosLegaisBase {
       $oColuna->formula = $sFormula;
       RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteVerificacao,
                                                  $oLinha,
-                                                 array($oColuna),
+                                                 [$oColuna],
                                                  RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO
                                                 );
     }

@@ -43,20 +43,11 @@ class IsencaoFactory {
    */
   public static function getPorTipo($iTipo) {
 
-    switch ($iTipo) {
-
-      case AguaTipoIsencao::TIPO_IDADE:
-        return new LeiOrganica;
-
-      case AguaTipoIsencao::TIPO_DESCONTO:
-        return new Desconto;
-
-      case AguaTipoIsencao::TIPO_NORMAL:
-      case AguaTipoIsencao::TIPO_IMUNE:
-        return new Imune;
-
-      default:
-        throw new \BusinessException('Tipo de isenção não existe.');
-    }
+    return match ($iTipo) {
+        AguaTipoIsencao::TIPO_IDADE => new LeiOrganica,
+        AguaTipoIsencao::TIPO_DESCONTO => new Desconto,
+        AguaTipoIsencao::TIPO_NORMAL, AguaTipoIsencao::TIPO_IMUNE => new Imune,
+        default => throw new \BusinessException('Tipo de isenção não existe.'),
+    };
   }
 }

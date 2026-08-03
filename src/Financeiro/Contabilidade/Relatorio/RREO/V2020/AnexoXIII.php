@@ -25,6 +25,7 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
      * @return array
      * @throws \DBException
      */
+    #[\Override]
     public function getLinhas()
     {
         $this->getDados();
@@ -38,7 +39,7 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
     protected function processar()
     {
 
-        $linhasDePara = array(12 => 12, 13 => 13);
+        $linhasDePara = [12 => 12, 13 => 13];
 
         $linhas = array_slice($this->aLinhasConsistencia, 0, 13, true);
         $this->adicionaLinhasDespesasPPP(13, $linhas);
@@ -71,6 +72,7 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
         $this->calcularTotalizadorLinhasDinamicas($linhasDePara);
     }
 
+    #[\Override]
     protected function calcularRCL($linhaRCL)
     {
         $anoAnterior = ($this->iAnoUsu - 1);
@@ -97,10 +99,10 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
 
     protected function calcularTotalizadorLinhasDinamicas($dePara)
     {
-        $colunas = array(
+        $colunas = [
             'exercicio_anterior',
             'exercicio_corrente'
-        );
+        ];
         for ($i = 1; $i <= 9; $i++) {
             $colunas[] = "exercicio_corrente_{$i}";
         }
@@ -141,6 +143,7 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
      * @param $linha
      * @param $linhas
      */
+    #[\Override]
     protected function adicionaLinhasDespesasPPP($linha, &$linhas)
     {
         $codigoRelatorio = self::CODIGO_RELATORIO;
@@ -169,7 +172,7 @@ class AnexoXIII extends \ECidade\Financeiro\Contabilidade\Relatorio\RREO\V2018\A
             throw new DBException('N?o foi poss?vel buscar as linhas dos entes federados.');
         }
 
-        $aLinhasRetornadas = array();
+        $aLinhasRetornadas = [];
 
         while ($dados = pg_fetch_object($rsDespesasPPEnteFederado)) {
             $aLinhasRetornadas[$dados->o117_instit][$dados->o117_linha][$dados->o116_ordem] = $dados->o117_valor;

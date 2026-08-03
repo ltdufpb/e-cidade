@@ -65,7 +65,8 @@ class modeloAutentTermicaArrecadacao extends modeloAutentTermicaBasica {
 
   }
 
-  function imprimir() {
+  #[\Override]
+  function imprimir($sStringCorpo) {
 
     $this->sBuffer .= $this->getResumo();
 
@@ -82,32 +83,14 @@ class modeloAutentTermicaArrecadacao extends modeloAutentTermicaBasica {
 
   function getConteudo() {
 
-    switch ( $this->sTipoAutent) {
-
-    	case 'RECIBOAVULSO' :
-	       return $this->getReciboAvulso();
-	    break;
-
-	    case 'RECIBOCGF' :
-	       return $this->getReciboCgf();
-	    break;
-
-	    case 'CARNE' :
-	       return $this->getCarne();
-	    break;
-
-	    case 'ITBI' :
-        return $this->getReciboITBI();
-      break;
-
-      case 'BAIXABANCO' :
-        return $this->getReciboBaixaBanco();
-      break;
-
-      default :
-	       throw new Exception("Erro procurando tipo de autenticao.");
-	    break;
-    }
+    return match ($this->sTipoAutent) {
+        'RECIBOAVULSO' => $this->getReciboAvulso(),
+        'RECIBOCGF' => $this->getReciboCgf(),
+        'CARNE' => $this->getCarne(),
+        'ITBI' => $this->getReciboITBI(),
+        'BAIXABANCO' => $this->getReciboBaixaBanco(),
+        default => throw new Exception("Erro procurando tipo de autenticao."),
+    };
 
   }
 
@@ -117,7 +100,7 @@ class modeloAutentTermicaArrecadacao extends modeloAutentTermicaBasica {
       . str_pad("Pagamento Recibo CGF", 30, " ", STR_PAD_BOTH) . "</b>";
 
     $aDebitos = $this->getDebitosArrecadacao();
-    $aValores = array();
+    $aValores = [];
 
     $sVirgula    = "";
     $nTotalGeral = 0;
@@ -259,7 +242,7 @@ class modeloAutentTermicaArrecadacao extends modeloAutentTermicaBasica {
     $sSqlArquivoRet .= "	      order by disrec.k00_receit                                 ";
 
     $rsDados = db_query($sSqlArquivoRet);
-    $iNum    = pg_numrows($rsDados);
+    $iNum    = pg_num_rows($rsDados);
 
 
     //echo 'num = ' . $iNum;
@@ -276,8 +259,8 @@ class modeloAutentTermicaArrecadacao extends modeloAutentTermicaBasica {
      $oDados  = db_utils::fieldsMemory($rsDados, $i);
 
 	    $sBuffer .= str_pad(db_formatar($oDados->dtaute, "d")        ,14," ",STR_PAD_BOTH);
-	    $sBuffer .= str_pad($oDados->k00_receit                      , 9," ",STR_PAD_BOTH);
-	    $sBuffer .= str_pad($oDados->k02_drecei                      ,14," ",STR_PAD_LEFT);
+	    $sBuffer .= str_pad((string) $oDados->k00_receit                      , 9," ",STR_PAD_BOTH);
+	    $sBuffer .= str_pad((string) $oDados->k02_drecei                      ,14," ",STR_PAD_LEFT);
 	    $sBuffer .= str_pad( trim(db_formatar($oDados->vlrrec, "f")) , 7," ",STR_PAD_LEFT);
 	    $sBuffer .= "\n";
 	    $ntotalrec += $oDados->vlrrec;
@@ -371,7 +354,7 @@ class modeloAutentTermicaArrecadacao extends modeloAutentTermicaBasica {
 	str_pad("{$oLinhaDigitavel->k00_linhadigitavel}", 52, " ", STR_PAD_LEFT) . chr(18);
       $sBuffer .= "\n" . str_pad("", 46, "-", STR_PAD_BOTH);
       $sBuffer .= "\n<b>" . str_pad("Código de Arrecadação:", 25, " ", STR_PAD_RIGHT) . "</b>";
-      $sBuffer .= str_pad($oLinhaDigitavel->k00_numpre, 23, " ", STR_PAD_LEFT);
+      $sBuffer .= str_pad((string) $oLinhaDigitavel->k00_numpre, 23, " ", STR_PAD_LEFT);
 
     }
 
@@ -389,7 +372,7 @@ class modeloAutentTermicaArrecadacao extends modeloAutentTermicaBasica {
 
     $sBuffer .= "\n<b>" . str_pad("Tipo Autent:", 15, " ", STR_PAD_RIGHT) . "</b>";
     $sBuffer .= str_pad($sTipoAutent, 15, " ", STR_PAD_BOTH);
-    $sBuffer .= str_pad($this->iAutent, 18, " ", STR_PAD_LEFT);
+    $sBuffer .= str_pad((string) $this->iAutent, 18, " ", STR_PAD_LEFT);
 
     $sBuffer .= "\n<b>" . str_pad($sDescrValor.":", 15, " ", STR_PAD_RIGHT) . "</b>";
     $sBuffer .= str_pad("R$ " . trim(db_formatar($this->getValorTotal(), 'f')), 32, " ", STR_PAD_LEFT);

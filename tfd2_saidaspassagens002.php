@@ -176,7 +176,7 @@ function imprimeDadosPacienteAcompanhantes( PDF $oPdf, $oConfiguracoes, $oDadosP
  */
 function buscaDados( $oGet ) {
 
-  $aDadosRelatorio                    = array();
+  $aDadosRelatorio                    = [];
   $oConfiguracoesPedidos              = new stdClass();
   $oConfiguracoesPedidos->oDataInicio = new DBDate( $oGet->dataInicial );
   $oConfiguracoesPedidos->oDataFim    = new DBDate( $oGet->dataFinal );
@@ -216,7 +216,7 @@ function buscaDados( $oGet ) {
     $oDadosPaciente->sDataSaida     = $oDadosSaidaPaciente->oDataSaida->getDate(DBDate::DATA_PTBR);
     $oDadosPaciente->sHoraSaida     = $oDadosSaidaPaciente->sHoraSaida;
     $oDadosPaciente->sValorUnitario = $sValorUnitario;
-    $oDadosPaciente->aAcompanhantes = array();
+    $oDadosPaciente->aAcompanhantes = [];
 
     /**
      * Percorre os acompanhantes, preenchendo os dados da mesma forma que o paciente

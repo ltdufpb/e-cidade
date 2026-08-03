@@ -93,7 +93,7 @@ db_input('nome',40,$Inome,true,'text',3,'')
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("at65_sequencial"=>@$at65_sequencial,"at65_projeto"=>@$at65_projeto);
+	 $chavepri= ["at65_sequencial"=>@$at65_sequencial,"at65_projeto"=>@$at65_projeto];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $cldb_projetosusu->sql_query(null,"*","at65_sequencial","at65_projeto=$at65_projeto");
 	 $cliframe_alterar_excluir->campos  ="nome";

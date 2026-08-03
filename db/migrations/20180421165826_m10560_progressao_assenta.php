@@ -8,7 +8,7 @@ class M10560ProgressaoAssenta extends PostgresMigration
     public function up()
     {
 
-       $aSql = array();
+       $aSql = [];
 
        $aSql[] = "insert into db_sysarquivo values (1010278, 'assentaalteracadastroservidor', 'Tabela responsavel por quardar os servidores, que teram seu cargo alterao devido a progressao', '', '2018-04-21', 'assentaalteracadastroservidor', 0, 'f', 'f', 'f', 'f' );";
        $aSql[] = "insert into db_sysarqmod values (29,1010278);";
@@ -41,7 +41,7 @@ class M10560ProgressaoAssenta extends PostgresMigration
 
     public function down()
     {
-        $aSql = array();
+        $aSql = [];
 
         $aSql[] = "DELETE FROM db_sysprikey  WHERE codarq =1010278;";
 

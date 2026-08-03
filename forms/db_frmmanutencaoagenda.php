@@ -49,7 +49,7 @@ $dados="ordem";
 require_once(modification("std/db_stdClass.php"));
 $iTipoControleRetencaoMesAnterior = 0;
 $lUsaData = true;
-$aParametrosEmpenho = db_stdClass::getParametro("empparametro",array(db_getsession("DB_anousu")));
+$aParametrosEmpenho = db_stdClass::getParametro("empparametro",[db_getsession("DB_anousu")]);
 if (count($aParametrosEmpenho) > 0) {
     $iTipoControleRetencaoMesAnterior = $aParametrosEmpenho[0]->e30_retencaomesanterior;
     $lUsaData = $aParametrosEmpenho[0]->e30_usadataagenda=="t"?true:false;
@@ -129,7 +129,7 @@ if (count($aParametrosEmpenho) > 0) {
                                                     if (FONTE_RECURSO_UNIAO) {
                                                         $recursosvinculados = "true";
                                                     }
-                                                    $ar = array("false" => "Vinculados");
+                                                    $ar = ["false" => "Vinculados"];
                                                     db_select("recursosvinculados", $ar, true, 1, "style='width:100%'");
                                                     ?>
                                                 </td>
@@ -229,7 +229,7 @@ if (count($aParametrosEmpenho) > 0) {
                                                     $sSqlBuscaTipos = $oDaoTipoTransmissao->sql_query_file(null, "*", 'e57_sequencial');
                                                     $rsBuscaTipos = $oDaoTipoTransmissao->sql_record($sSqlBuscaTipos);
 
-                                                    $aTipoTransmissao = array(0 => "Nenhum");
+                                                    $aTipoTransmissao = [0 => "Nenhum"];
                                                     for ($iTrans = 0; $iTrans < $oDaoTipoTransmissao->numrows; $iTrans++) {
                                                         $oTipoTransmissao = db_utils::fieldsMemory($rsBuscaTipos, $iTrans);
                                                         $aTipoTransmissao[$oTipoTransmissao->e57_sequencial] = $oTipoTransmissao->e57_descricao;
@@ -325,15 +325,15 @@ if (count($aParametrosEmpenho) > 0) {
                                                 <td colspan='1' nowrap>
                                                     <?php
                                                     if (db_permissaomenu(db_getsession("DB_anousu"), 39, 6956) == "true") {
-                                                        $aAutorizadas = array(
+                                                        $aAutorizadas = [
                                                             1 => "Ambas",
                                                             2 => "Autorizadas",
                                                             3 => "Não Autorizadas",
-                                                        );
+                                                        ];
                                                     } else {
-                                                        $aAutorizadas = array(
+                                                        $aAutorizadas = [
                                                             2 => "Autorizadas",
-                                                        );
+                                                        ];
                                                     }
                                                     db_select("ordensautorizadas", $aAutorizadas, true, 1);
                                                     ?>

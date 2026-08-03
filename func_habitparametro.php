@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitparametro_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabitparametro = new cl_habitparametro;
 $clhabitparametro->rotulo->label("ht16_anousu");
 $clhabitparametro->rotulo->label("ht16_anousu");
@@ -88,9 +88,9 @@ $clhabitparametro->rotulo->label("ht16_anousu");
         }else{
            $sql = $clhabitparametro->sql_query(db_getsession('DB_anousu'),$campos,"ht16_anousu","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ht16_anousu)){
-          $repassa = array("chave_ht16_anousu"=>$chave_ht16_anousu,"chave_ht16_anousu"=>$chave_ht16_anousu);
+          $repassa = ["chave_ht16_anousu"=>$chave_ht16_anousu,"chave_ht16_anousu"=>$chave_ht16_anousu];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -27,7 +27,7 @@
 
 include(modification("fpdf151/pdf.php"));
 include(modification("classes/db_cgm_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $pdf = new PDF(); 
 $pdf->Open(); 
@@ -47,7 +47,7 @@ if( isset($z01_numcgm) && $z01_numcgm!="" ) {
 }
 if( isset($k02_codigo) && $k02_codigo!="" ) {
 	
-	$vet_receitas = explode("|",$k02_codigo);
+	$vet_receitas = explode("|",(string) $k02_codigo);
 	$receitas     = "";
 	
 	for ( $i=0; $i < count($vet_receitas); $i++) {
@@ -103,7 +103,7 @@ $sql1 = "select distinct x.e60_anousu,
 		 		";
 
 $result1 = db_query($sql1) or die($sql1);
-$numrows = pg_numrows($result1);
+$numrows = pg_num_rows($result1);
 
  if ( $cgm != "" && $numrows > 0) {
    db_fieldsmemory($result1,0);
@@ -133,7 +133,7 @@ for ( $i=0; $i<$numrows; $i++ ) {
 	 $addpage = 1;
    }
     
-   if ( $ultmespgto != str_pad($k12_anopgto, 4, "0", STR_PAD_LEFT).str_pad($k12_mespgto, 2, "0", STR_PAD_LEFT)) {
+   if ( $ultmespgto != str_pad((string) $k12_anopgto, 4, "0", STR_PAD_LEFT).str_pad((string) $k12_mespgto, 2, "0", STR_PAD_LEFT)) {
 
 //	$ultmespgto = str_pad($k12_anopgto, 4, "0", STR_PAD_LEFT).str_pad($k12_mespgto, 2, "0", STR_PAD_LEFT);
 	 $sql2 = "select k02_codigo,
@@ -159,7 +159,7 @@ for ( $i=0; $i<$numrows; $i++ ) {
     $anospgto = $k12_anopgto;
 	
 	$result2  = db_query($sql2);
-	$numrows2 = pg_numrows($result2);
+	$numrows2 = pg_num_rows($result2);
 
 	if ( $numrows2 > 0) {
 	  $imprime     = "";
@@ -182,9 +182,9 @@ for ( $i=0; $i<$numrows; $i++ ) {
 		  $numcgm_salvos .= ",".$z01_numcgm; 
 		}
 		
-       if ( strlen($z01_cgccpf) == 14 ) {
+       if ( strlen((string) $z01_cgccpf) == 14 ) {
          $doc = db_formatar($z01_cgccpf,"cnpj");
-	   } else if (strlen($z01_cgccpf) == 11){
+	   } else if (strlen((string) $z01_cgccpf) == 11){
 	     $doc = db_formatar($z01_cgccpf,"cpf");
 	   } else {
          $doc = $z01_cgccpf;
@@ -232,10 +232,10 @@ for ( $i=0; $i<$numrows; $i++ ) {
 		  $pdf->Cell(40, $alt,"",0,0,"L",0);	
 		}
 					
-	    $pdf->Cell(90, $alt, "RETENÇÃO ".$k02_codigo." ".substr($k02_drecei,0,30), "LR", 0, "L", 0);
+	    $pdf->Cell(90, $alt, "RETENÇÃO ".$k02_codigo." ".substr((string) $k02_drecei,0,30), "LR", 0, "L", 0);
 	    $pdf->Cell(30, $alt, "",                                                   "R",  0, "R", 0);
 		
-		if ( $mespag != str_pad($k12_anopgto, 4, "0", STR_PAD_LEFT).str_pad($k12_mespgto, 2, "0", STR_PAD_LEFT) ) {
+		if ( $mespag != str_pad((string) $k12_anopgto, 4, "0", STR_PAD_LEFT).str_pad((string) $k12_mespgto, 2, "0", STR_PAD_LEFT) ) {
 		 
 		 /*
 		  * Acumula os anos para posteriormente buscar as retenções sem empenho 
@@ -256,17 +256,17 @@ for ( $i=0; $i<$numrows; $i++ ) {
 	 }
 
 	 $pdf->Cell(40, $alt, "",                                              "BR",  0, "R", 0);
-	 $pdf->Cell(90, $alt, "PGTO ".$o56_codele." ".substr($o56_descr,0,30), "BLR", 0, "L", 0);
+	 $pdf->Cell(90, $alt, "PGTO ".$o56_codele." ".substr((string) $o56_descr,0,30), "BLR", 0, "L", 0);
 	 $pdf->Cell(30, $alt, db_formatar($total_pago,"f"),                    "BLR", 0, "L", 0);
 	 $countreg++;
 			 
-	 if ( $mespag != str_pad($k12_anopgto, 4, "0", STR_PAD_LEFT).str_pad($k12_mespgto, 2, "0", STR_PAD_LEFT) ) {
+	 if ( $mespag != str_pad((string) $k12_anopgto, 4, "0", STR_PAD_LEFT).str_pad((string) $k12_mespgto, 2, "0", STR_PAD_LEFT) ) {
 	   $pdf->Cell(30, $alt, "", "B", 1, "R", 0);
 	 } else {
   	   $pdf->Cell(30, $alt, "",  "",  1, "R", 0);
 	 }
 	 
- 	 $mespag      = str_pad($k12_anopgto, 4, "0", STR_PAD_LEFT).str_pad($k12_mespgto, 2, "0", STR_PAD_LEFT); 
+ 	 $mespag      = str_pad((string) $k12_anopgto, 4, "0", STR_PAD_LEFT).str_pad((string) $k12_mespgto, 2, "0", STR_PAD_LEFT); 
      $tot_pago   += $total_pago;
 
 	 $flag_retido = false;
@@ -339,7 +339,7 @@ if ($numcgm_salvos != "") {
 					 
  if($cgm != $numcgm_salvos || $numcgm_salvos == "" ){
   $result3  = db_query($sql3);
-  $numrows3 = pg_numrows($result3);
+  $numrows3 = pg_num_rows($result3);
  } else{
   $numrows3 = 0;	
  }
@@ -373,9 +373,9 @@ if($numrows == 0 && $numrows3 == 0){
 		 
        }  
 	   
-	   if ( strlen(trim($z01_cgccpf)) == 14 ) {
+	   if ( strlen(trim((string) $z01_cgccpf)) == 14 ) {
          $doc = db_formatar($z01_cgccpf,"cnpj");
-	   } else if (strlen(trim($z01_cgccpf)) == 11){
+	   } else if (strlen(trim((string) $z01_cgccpf)) == 11){
 	     $doc = db_formatar($z01_cgccpf,"cpf");
 	   } else {
          $doc = $z01_cgccpf;
@@ -383,7 +383,7 @@ if($numrows == 0 && $numrows3 == 0){
   
    	   $pdf->Cell(15, $alt,$z01_numcgm,                              "",   0, "C", 0);
    	   $pdf->Cell(30, $alt,$doc,                                     "",   0, "C", 0);
-       $pdf->Cell(60, $alt,substr(trim($z01_nome),0,35),             "",   0, "L", 0);
+       $pdf->Cell(60, $alt,substr(trim((string) $z01_nome),0,35),             "",   0, "L", 0);
 	   $pdf->Cell(60, $alt,substr($k02_codigo."-".$k02_drecei,0,35), "",   0, "L", 0);	 	 
 	   $pdf->Cell(25, $alt,db_formatar($total_retido,"f"),           "",   1, "R", 0);	 
        $tot_retido2 += $total_retido;	 

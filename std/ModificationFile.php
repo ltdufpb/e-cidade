@@ -20,17 +20,17 @@ class ModificationFile {
   /**
    * @var Array
    */
-  private $modifications = array();
+  private $modifications = [];
 
   /**
    * @var StdClass[]
    */
-  private $operations = array();
+  private $operations = [];
 
   /**
    * @var ModificationFile[]
    */
-  private static $instances = array();
+  private static $instances = [];
 
   /**
    * @param string $path
@@ -139,14 +139,14 @@ class ModificationFile {
         case 'bottom':
 
           $this->content = $this->content . $add;
-          continue;
+          break;
         break;
 
         // inicio do arquivo
         case 'top':
 
           $this->content = $add . $this->content;
-          continue;
+          break;
         break;
       }
 
@@ -156,18 +156,18 @@ class ModificationFile {
           $limit = -1;
         }
 
-        $this->content = preg_replace("/$search/$flag", $replace, $this->content, $limit);
+        $this->content = preg_replace("/$search/$flag", (string) $replace, $this->content, $limit);
         continue;
       }
 
       $pos = -1;
       $currentMatch = 0;
-      $match = array();
-      $searchLength = mb_strlen($search);
-      $replaceLength = mb_strlen($replace);
+      $match = [];
+      $searchLength = mb_strlen((string) $search);
+      $replaceLength = mb_strlen((string) $replace);
 
       // Busca conteudo da tag <search> e guarda posicao
-      while (($pos = strpos($this->content, $search, $pos + 1)) !== false) {
+      while (($pos = strpos($this->content, (string) $search, $pos + 1)) !== false) {
         $match[$currentMatch++] = $pos;
       }
 

@@ -36,7 +36,7 @@
      * Collection de cidadoes
      * @var array
      */
-    private $aCidadoes = array();
+    private $aCidadoes = [];
 
     /**
      * Instancia da classe
@@ -127,7 +127,7 @@
       $sWhere       .= " and ov02_cnpjcpf        = '{$sCpf}'";
       $sSqlCidadao   = $oDaoCidadao->sql_query(null, null, "ov02_sequencial", null, $sWhere);
       $rsCidadao     = $oDaoCidadao->sql_record($sSqlCidadao);
-      $aCidadaos     = array();
+      $aCidadaos     = [];
 
       if ($rsCidadao && $oDaoCidadao->numrows > 0) {
 
@@ -158,7 +158,7 @@
       $sWhere       .= " and ov29_tipofamiliar         = 4";
       $sSqlFilicacao = $oDaoCidadao->sql_query_filiacao(null, null, "filho.ov02_sequencial", null, $sWhere);
       $rsFiliacao    = $oDaoCidadao->sql_record($sSqlFilicacao);
-      $aCidadaos     = array();
+      $aCidadaos     = [];
 
       if ($rsFiliacao && $oDaoCidadao->numrows > 0) {
 

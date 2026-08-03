@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE orcparametro
 class cl_consistencia { 
   // cria variaveis de erro 
-  var $rotulo     = null; 
-  var $query_sql  = null; 
-  var $numrows    = 0; 
-  var $numrows_incluir = 0; 
-  var $numrows_alterar = 0; 
-  var $numrows_excluir = 0; 
-  var $erro_status= null; 
-  var $erro_sql   = null; 
-  var $erro_banco = null;  
-  var $erro_msg   = null;  
-  var $erro_campo = null;  
-  var $pagina_retorno = null; 
+  public $rotulo     = null; 
+  public $query_sql  = null; 
+  public $numrows    = 0; 
+  public $numrows_incluir = 0; 
+  public $numrows_alterar = 0; 
+  public $numrows_excluir = 0; 
+  public $erro_status= null; 
+  public $erro_sql   = null; 
+  public $erro_banco = null;  
+  public $erro_msg   = null;  
+  public $erro_campo = null;  
+  public $pagina_retorno = null; 
   // cria variaveis do arquivo 
-  var $o50_anousu = 0; 
-  var $o50_coddot = 0; 
-  var $o50_subelem = 'f'; 
-  var $o50_programa = 0; 
-  var $o50_estrutdespesa = null; 
-  var $o50_estrutelemento = null; 
-  var $o50_estrutreceita = null; 
-  var $o50_tipoproj = null; 
+  public $o50_anousu = 0; 
+  public $o50_coddot = 0; 
+  public $o50_subelem = 'f'; 
+  public $o50_programa = 0; 
+  public $o50_estrutdespesa = null; 
+  public $o50_estrutelemento = null; 
+  public $o50_estrutreceita = null; 
+  public $o50_tipoproj = null; 
   // cria propriedade com as variaveis do arquivo 
-  var $campos = "
+  public $campos = "
   o50_anousu = int4 = Exercício 
   o50_coddot = int4 = Último Código 
   o50_subelem = bool = Usa Sub-Elemento 
@@ -65,7 +65,7 @@ class cl_consistencia {
   function cl_orcparametro() { 
     //classes dos rotulos dos campos
     $this->rotulo = new rotulo("orcparametro"); 
-    $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+    $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
   }
   //funcao erro 
   function erro($mostra,$retorna) { 
@@ -113,10 +113,10 @@ class cl_consistencia {
 					left join conlancamele on c67_codlan = c70_codlan
 					where count <> " . $clcontranslan->numrows . ") as y";
 					$result = db_query($sql) or die($sql);
-					if (pg_numrows($result) > 0) {
+					if (pg_num_rows($result) > 0) {
 						echo "doc $c53_coddoc - $c53_descr ... comparando com " . $clcontranslan->numrows . " lanc...";
-						echo "erro - quantidade: " . pg_numrows($result) . "<br>";
-						for ($i=0; $i < pg_numrows($result); $i++) {
+						echo "erro - quantidade: " . pg_num_rows($result) . "<br>";
+						for ($i=0; $i < pg_num_rows($result); $i++) {
 							db_fieldsmemory($result, $i);
 							echo $c75_data . " - " . $c70_codlan . "<br>";
 						}

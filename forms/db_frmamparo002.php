@@ -195,7 +195,7 @@ $clrotulo->label("ed06_i_codigo");
      <br>
      <b>Gerar carga horária para esta disciplina no histórico:</b>
      <?php 
-     $x = array("N"=>"NÃO","S"=>"SIM");
+     $x = ["N"=>"NÃO","S"=>"SIM"];
      db_select('ed81_c_aprovch',$x,true,$db_opcao,"");
      ?>
     </td>

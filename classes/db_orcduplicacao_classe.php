@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE orcduplicacao
 class cl_orcduplicacao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o75_sequencial = 0; 
-   var $o75_conaberturaexe = 0; 
-   var $o75_tipo = 0; 
-   var $o75_previsaoinicial = 0; 
-   var $o75_acrescimos = 0; 
-   var $o75_reducoes = 0; 
-   var $o75_atualizado = 0; 
-   var $o75_percentual = 0; 
-   var $o75_valorduplicar = 0; 
-   var $o75_importar = 'f'; 
+   public $o75_sequencial = 0; 
+   public $o75_conaberturaexe = 0; 
+   public $o75_tipo = 0; 
+   public $o75_previsaoinicial = 0; 
+   public $o75_acrescimos = 0; 
+   public $o75_reducoes = 0; 
+   public $o75_atualizado = 0; 
+   public $o75_percentual = 0; 
+   public $o75_valorduplicar = 0; 
+   public $o75_importar = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o75_sequencial = int4 = Sequencial 
                  o75_conaberturaexe = int4 = Abertura do Exercício 
                  o75_tipo = int4 = Tipo da Duplicação 
@@ -66,10 +66,10 @@ class cl_orcduplicacao {
                  o75_importar = bool = Importar 
                  ";
    //funcao construtor da classe 
-   function cl_orcduplicacao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orcduplicacao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -167,10 +167,10 @@ class cl_orcduplicacao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o75_sequencial = pg_result($result,0,0); 
+       $this->o75_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from orcduplicacao_o75_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o75_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o75_sequencial)){
          $this->erro_sql = " Campo o75_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -216,7 +216,7 @@ class cl_orcduplicacao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Duplicação do Orçamento ($this->o75_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Duplicação do Orçamento já Cadastrado";
@@ -240,19 +240,19 @@ class cl_orcduplicacao {
      $resaco = $this->sql_record($this->sql_query_file($this->o75_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10466,'$this->o75_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1809,10466,'','".AddSlashes(pg_result($resaco,0,'o75_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1809,10467,'','".AddSlashes(pg_result($resaco,0,'o75_conaberturaexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1809,10469,'','".AddSlashes(pg_result($resaco,0,'o75_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1809,10470,'','".AddSlashes(pg_result($resaco,0,'o75_previsaoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1809,10471,'','".AddSlashes(pg_result($resaco,0,'o75_acrescimos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1809,10472,'','".AddSlashes(pg_result($resaco,0,'o75_reducoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1809,10473,'','".AddSlashes(pg_result($resaco,0,'o75_atualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1809,10499,'','".AddSlashes(pg_result($resaco,0,'o75_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1809,10474,'','".AddSlashes(pg_result($resaco,0,'o75_valorduplicar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1809,10475,'','".AddSlashes(pg_result($resaco,0,'o75_importar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1809,10466,'','".AddSlashes(pg_fetch_result($resaco,0,'o75_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1809,10467,'','".AddSlashes(pg_fetch_result($resaco,0,'o75_conaberturaexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1809,10469,'','".AddSlashes(pg_fetch_result($resaco,0,'o75_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1809,10470,'','".AddSlashes(pg_fetch_result($resaco,0,'o75_previsaoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1809,10471,'','".AddSlashes(pg_fetch_result($resaco,0,'o75_acrescimos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1809,10472,'','".AddSlashes(pg_fetch_result($resaco,0,'o75_reducoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1809,10473,'','".AddSlashes(pg_fetch_result($resaco,0,'o75_atualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1809,10499,'','".AddSlashes(pg_fetch_result($resaco,0,'o75_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1809,10474,'','".AddSlashes(pg_fetch_result($resaco,0,'o75_valorduplicar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1809,10475,'','".AddSlashes(pg_fetch_result($resaco,0,'o75_importar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -261,17 +261,17 @@ class cl_orcduplicacao {
       $this->atualizacampos();
      $sql = " update orcduplicacao set ";
      $virgula = "";
-     if(trim($this->o75_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_sequencial"])){ 
-        if(trim($this->o75_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o75_sequencial"])){ 
+     if(trim((string) $this->o75_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_sequencial"])){ 
+        if(trim((string) $this->o75_sequencial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o75_sequencial"])){ 
            $this->o75_sequencial = "0" ; 
         } 
        $sql  .= $virgula." o75_sequencial = $this->o75_sequencial ";
        $virgula = ",";
      }
-     if(trim($this->o75_conaberturaexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_conaberturaexe"])){ 
+     if(trim((string) $this->o75_conaberturaexe)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_conaberturaexe"])){ 
        $sql  .= $virgula." o75_conaberturaexe = $this->o75_conaberturaexe ";
        $virgula = ",";
-       if(trim($this->o75_conaberturaexe) == null ){ 
+       if(trim((string) $this->o75_conaberturaexe) == null ){ 
          $this->erro_sql = " Campo Abertura do Exercício nao Informado.";
          $this->erro_campo = "o75_conaberturaexe";
          $this->erro_banco = "";
@@ -281,10 +281,10 @@ class cl_orcduplicacao {
          return false;
        }
      }
-     if(trim($this->o75_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_tipo"])){ 
+     if(trim((string) $this->o75_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_tipo"])){ 
        $sql  .= $virgula." o75_tipo = $this->o75_tipo ";
        $virgula = ",";
-       if(trim($this->o75_tipo) == null ){ 
+       if(trim((string) $this->o75_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo da Duplicação nao Informado.";
          $this->erro_campo = "o75_tipo";
          $this->erro_banco = "";
@@ -294,38 +294,38 @@ class cl_orcduplicacao {
          return false;
        }
      }
-     if(trim($this->o75_previsaoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_previsaoinicial"])){ 
-        if(trim($this->o75_previsaoinicial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o75_previsaoinicial"])){ 
+     if(trim((string) $this->o75_previsaoinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_previsaoinicial"])){ 
+        if(trim((string) $this->o75_previsaoinicial)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o75_previsaoinicial"])){ 
            $this->o75_previsaoinicial = "0" ; 
         } 
        $sql  .= $virgula." o75_previsaoinicial = $this->o75_previsaoinicial ";
        $virgula = ",";
      }
-     if(trim($this->o75_acrescimos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_acrescimos"])){ 
-        if(trim($this->o75_acrescimos)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o75_acrescimos"])){ 
+     if(trim((string) $this->o75_acrescimos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_acrescimos"])){ 
+        if(trim((string) $this->o75_acrescimos)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o75_acrescimos"])){ 
            $this->o75_acrescimos = "0" ; 
         } 
        $sql  .= $virgula." o75_acrescimos = $this->o75_acrescimos ";
        $virgula = ",";
      }
-     if(trim($this->o75_reducoes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_reducoes"])){ 
-        if(trim($this->o75_reducoes)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o75_reducoes"])){ 
+     if(trim((string) $this->o75_reducoes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_reducoes"])){ 
+        if(trim((string) $this->o75_reducoes)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o75_reducoes"])){ 
            $this->o75_reducoes = "0" ; 
         } 
        $sql  .= $virgula." o75_reducoes = $this->o75_reducoes ";
        $virgula = ",";
      }
-     if(trim($this->o75_atualizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_atualizado"])){ 
-        if(trim($this->o75_atualizado)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o75_atualizado"])){ 
+     if(trim((string) $this->o75_atualizado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_atualizado"])){ 
+        if(trim((string) $this->o75_atualizado)=="" && isset($GLOBALS["HTTP_POST_VARS"]["o75_atualizado"])){ 
            $this->o75_atualizado = "0" ; 
         } 
        $sql  .= $virgula." o75_atualizado = $this->o75_atualizado ";
        $virgula = ",";
      }
-     if(trim($this->o75_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_percentual"])){ 
+     if(trim((string) $this->o75_percentual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_percentual"])){ 
        $sql  .= $virgula." o75_percentual = $this->o75_percentual ";
        $virgula = ",";
-       if(trim($this->o75_percentual) == null ){ 
+       if(trim((string) $this->o75_percentual) == null ){ 
          $this->erro_sql = " Campo Percentual nao Informado.";
          $this->erro_campo = "o75_percentual";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_orcduplicacao {
          return false;
        }
      }
-     if(trim($this->o75_valorduplicar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_valorduplicar"])){ 
+     if(trim((string) $this->o75_valorduplicar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_valorduplicar"])){ 
        $sql  .= $virgula." o75_valorduplicar = $this->o75_valorduplicar ";
        $virgula = ",";
-       if(trim($this->o75_valorduplicar) == null ){ 
+       if(trim((string) $this->o75_valorduplicar) == null ){ 
          $this->erro_sql = " Campo Valor a Duplicar nao Informado.";
          $this->erro_campo = "o75_valorduplicar";
          $this->erro_banco = "";
@@ -348,10 +348,10 @@ class cl_orcduplicacao {
          return false;
        }
      }
-     if(trim($this->o75_importar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_importar"])){ 
+     if(trim((string) $this->o75_importar)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o75_importar"])){ 
        $sql  .= $virgula." o75_importar = '$this->o75_importar' ";
        $virgula = ",";
-       if(trim($this->o75_importar) == null ){ 
+       if(trim((string) $this->o75_importar) == null ){ 
          $this->erro_sql = " Campo Importar nao Informado.";
          $this->erro_campo = "o75_importar";
          $this->erro_banco = "";
@@ -369,29 +369,29 @@ class cl_orcduplicacao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10466,'$this->o75_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o75_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1809,10466,'".AddSlashes(pg_result($resaco,$conresaco,'o75_sequencial'))."','$this->o75_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1809,10466,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o75_sequencial'))."','$this->o75_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o75_conaberturaexe"]))
-           $resac = db_query("insert into db_acount values($acount,1809,10467,'".AddSlashes(pg_result($resaco,$conresaco,'o75_conaberturaexe'))."','$this->o75_conaberturaexe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1809,10467,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o75_conaberturaexe'))."','$this->o75_conaberturaexe',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o75_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,1809,10469,'".AddSlashes(pg_result($resaco,$conresaco,'o75_tipo'))."','$this->o75_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1809,10469,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o75_tipo'))."','$this->o75_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o75_previsaoinicial"]))
-           $resac = db_query("insert into db_acount values($acount,1809,10470,'".AddSlashes(pg_result($resaco,$conresaco,'o75_previsaoinicial'))."','$this->o75_previsaoinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1809,10470,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o75_previsaoinicial'))."','$this->o75_previsaoinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o75_acrescimos"]))
-           $resac = db_query("insert into db_acount values($acount,1809,10471,'".AddSlashes(pg_result($resaco,$conresaco,'o75_acrescimos'))."','$this->o75_acrescimos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1809,10471,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o75_acrescimos'))."','$this->o75_acrescimos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o75_reducoes"]))
-           $resac = db_query("insert into db_acount values($acount,1809,10472,'".AddSlashes(pg_result($resaco,$conresaco,'o75_reducoes'))."','$this->o75_reducoes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1809,10472,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o75_reducoes'))."','$this->o75_reducoes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o75_atualizado"]))
-           $resac = db_query("insert into db_acount values($acount,1809,10473,'".AddSlashes(pg_result($resaco,$conresaco,'o75_atualizado'))."','$this->o75_atualizado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1809,10473,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o75_atualizado'))."','$this->o75_atualizado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o75_percentual"]))
-           $resac = db_query("insert into db_acount values($acount,1809,10499,'".AddSlashes(pg_result($resaco,$conresaco,'o75_percentual'))."','$this->o75_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1809,10499,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o75_percentual'))."','$this->o75_percentual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o75_valorduplicar"]))
-           $resac = db_query("insert into db_acount values($acount,1809,10474,'".AddSlashes(pg_result($resaco,$conresaco,'o75_valorduplicar'))."','$this->o75_valorduplicar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1809,10474,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o75_valorduplicar'))."','$this->o75_valorduplicar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["o75_importar"]))
-           $resac = db_query("insert into db_acount values($acount,1809,10475,'".AddSlashes(pg_result($resaco,$conresaco,'o75_importar'))."','$this->o75_importar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1809,10475,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o75_importar'))."','$this->o75_importar',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -436,19 +436,19 @@ class cl_orcduplicacao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10466,'$o75_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1809,10466,'','".AddSlashes(pg_result($resaco,$iresaco,'o75_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1809,10467,'','".AddSlashes(pg_result($resaco,$iresaco,'o75_conaberturaexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1809,10469,'','".AddSlashes(pg_result($resaco,$iresaco,'o75_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1809,10470,'','".AddSlashes(pg_result($resaco,$iresaco,'o75_previsaoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1809,10471,'','".AddSlashes(pg_result($resaco,$iresaco,'o75_acrescimos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1809,10472,'','".AddSlashes(pg_result($resaco,$iresaco,'o75_reducoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1809,10473,'','".AddSlashes(pg_result($resaco,$iresaco,'o75_atualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1809,10499,'','".AddSlashes(pg_result($resaco,$iresaco,'o75_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1809,10474,'','".AddSlashes(pg_result($resaco,$iresaco,'o75_valorduplicar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1809,10475,'','".AddSlashes(pg_result($resaco,$iresaco,'o75_importar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1809,10466,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o75_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1809,10467,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o75_conaberturaexe'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1809,10469,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o75_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1809,10470,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o75_previsaoinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1809,10471,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o75_acrescimos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1809,10472,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o75_reducoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1809,10473,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o75_atualizado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1809,10499,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o75_percentual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1809,10474,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o75_valorduplicar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1809,10475,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o75_importar'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from orcduplicacao
@@ -508,7 +508,7 @@ class cl_orcduplicacao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orcduplicacao";
@@ -522,7 +522,7 @@ class cl_orcduplicacao {
    function sql_query ( $o75_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -546,7 +546,7 @@ class cl_orcduplicacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -558,7 +558,7 @@ class cl_orcduplicacao {
    function sql_query_file ( $o75_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -579,7 +579,7 @@ class cl_orcduplicacao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

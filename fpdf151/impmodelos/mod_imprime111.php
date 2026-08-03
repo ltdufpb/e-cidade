@@ -28,9 +28,9 @@
 	$this->objpdf->text(185,$xlin-13,db_formatar($this->Snumero,'s','0',6,'e'));
         $this->objpdf->Setfont('Arial','B',7);
 	$this->objpdf->text(130,$xlin-9,'ORGAO');
-	$this->objpdf->text(142,$xlin-9,': '.substr($this->Sorgao,0,35));
+	$this->objpdf->text(142,$xlin-9,': '.substr((string) $this->Sorgao,0,35));
 	$this->objpdf->text(130,$xlin-5,'UNIDADE');
-	$this->objpdf->text(142,$xlin-5,': '.substr($this->Sunidade,0,35));
+	$this->objpdf->text(142,$xlin-5,': '.substr((string) $this->Sunidade,0,35));
         $this->objpdf->Setfont('Arial','B',9);
 	$this->objpdf->Image('imagens/files/'.$this->logo,15,$xlin-17,12);
 	$this->objpdf->Setfont('Arial','B',9);
@@ -77,7 +77,7 @@
 	$this->objpdf->cell(3,4,':  ',0,0,"L",0);
 	$this->objpdf->setxy($xcol+24.5,$xlin+24);
 	$posini = $this->objpdf->gety();
-	$this->objpdf->multicell(175,4,trim(AddSlashes($this->Sresumo)),0,"j");
+	$this->objpdf->multicell(175,4,trim(AddSlashes((string) $this->Sresumo)),0,"j");
 	$setaut = $this->objpdf->gety();
 	$this->objpdf->rect($xcol,$xlin+24,$xcol+198,$setaut-$posini,2,'DF','1234');
 
@@ -119,17 +119,17 @@
 	  $this->objpdf->setx($xcol);
 	  $this->objpdf->setleftmargin(4);
 	  $this->objpdf->Setfont('Arial','',7);
-	  $this->objpdf->SetAligns(array('C','L','L','L','C'));
-	  $this->objpdf->SetWidths(array(15,64,63,40,20));
+	  $this->objpdf->SetAligns(['C','L','L','L','C']);
+	  $this->objpdf->SetWidths([15,64,63,40,20]);
 	  for($i=0;$i<$this->linhasdosfornec;$i++){
 	    db_fieldsmemory($this->recorddosfornec,$i);
-	    $cgmforn   = trim(pg_result($this->recorddosfornec,$i,$this->cgmforn));
-	    $nomeforn  = trim(pg_result($this->recorddosfornec,$i,$this->nomeforn));
-	    $enderforn = trim(pg_result($this->recorddosfornec,$i,$this->enderforn));
-	    $numforn   = trim(pg_result($this->recorddosfornec,$i,$this->numforn));
-	    $municforn = trim(pg_result($this->recorddosfornec,$i,$this->municforn));
-	    $foneforn  = trim(pg_result($this->recorddosfornec,$i,$this->foneforn));
-	    $this->objpdf->Row(array($cgmforn,$nomeforn,$enderforn.", ".$numforn,$municforn,$foneforn),4,false,4);
+	    $cgmforn   = trim(pg_fetch_result($this->recorddosfornec,$i,$this->cgmforn));
+	    $nomeforn  = trim(pg_fetch_result($this->recorddosfornec,$i,$this->nomeforn));
+	    $enderforn = trim(pg_fetch_result($this->recorddosfornec,$i,$this->enderforn));
+	    $numforn   = trim(pg_fetch_result($this->recorddosfornec,$i,$this->numforn));
+	    $municforn = trim(pg_fetch_result($this->recorddosfornec,$i,$this->municforn));
+	    $foneforn  = trim(pg_fetch_result($this->recorddosfornec,$i,$this->foneforn));
+	    $this->objpdf->Row([$cgmforn,$nomeforn,$enderforn.", ".$numforn,$municforn,$foneforn],4,false,4);
 	  }
 	  $getdoy = $this->objpdf->gety();
 	  $getdoy+= 0.8;
@@ -175,8 +175,8 @@
 	$index = 0;
 
 	for($ii = 0;$ii < $this->linhasdositens ;$ii++){
-	  $this->objpdf->SetWidths(array(10,22,22,95,30,30));
-	  $this->objpdf->SetAligns(array('C','C','C','J','R','R'));
+	  $this->objpdf->SetWidths([10,22,22,95,30,30]);
+	  $this->objpdf->SetAligns(['C','C','C','J','R','R']);
 	  $pagina = $this->objpdf->PageNo();
 	  db_fieldsmemory($this->recorddositens,$ii);
 	  if($ii!=0 && $muda_pag==false){
@@ -186,22 +186,22 @@
             $this->objpdf->ln(1.3);
 	  }
 	  
-	  $codigo  = pg_result($this->recorddositens,$ii,"pc11_codigo");
-	  $item  = pg_result($this->recorddositens,$ii,$this->item);
-	  $quantitem = pg_result($this->recorddositens,$ii,$this->quantitem);
-	  $descricaoitem = pg_result($this->recorddositens,$ii,$this->descricaoitem);
-	  $valoritem = db_formatar(pg_result($this->recorddositens,$ii,$this->valoritem),"f");
-	  $valtot= pg_result($this->recorddositens,$ii,$this->svalortot);
+	  $codigo  = pg_fetch_result($this->recorddositens,$ii,"pc11_codigo");
+	  $item  = pg_fetch_result($this->recorddositens,$ii,$this->item);
+	  $quantitem = pg_fetch_result($this->recorddositens,$ii,$this->quantitem);
+	  $descricaoitem = pg_fetch_result($this->recorddositens,$ii,$this->descricaoitem);
+	  $valoritem = db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->valoritem),"f");
+	  $valtot= pg_fetch_result($this->recorddositens,$ii,$this->svalortot);
 	  $valimp= db_formatar($valtot,'f');
-	  $prazo = pg_result($this->recorddositens,$ii,$this->sprazo);
-	  $pgto  = pg_result($this->recorddositens,$ii,$this->spgto);
-	  $resum = pg_result($this->recorddositens,$ii,$this->sresum);
-	  $just  = pg_result($this->recorddositens,$ii,$this->sjust);
-	  $unid  = pg_result($this->recorddositens,$ii,$this->sunidade);
-	  $servico    = pg_result($this->recorddositens,$ii,$this->sservico);
-	  $quantunid  = pg_result($this->recorddositens,$ii,$this->squantunid);
-	  $susaquant  = pg_result($this->recorddositens,$ii,$this->susaquant);
-	  $scodpcmater= pg_result($this->recorddositens,$ii,$this->scodpcmater);
+	  $prazo = pg_fetch_result($this->recorddositens,$ii,$this->sprazo);
+	  $pgto  = pg_fetch_result($this->recorddositens,$ii,$this->spgto);
+	  $resum = pg_fetch_result($this->recorddositens,$ii,$this->sresum);
+	  $just  = pg_fetch_result($this->recorddositens,$ii,$this->sjust);
+	  $unid  = pg_fetch_result($this->recorddositens,$ii,$this->sunidade);
+	  $servico    = pg_fetch_result($this->recorddositens,$ii,$this->sservico);
+	  $quantunid  = pg_fetch_result($this->recorddositens,$ii,$this->squantunid);
+	  $susaquant  = pg_fetch_result($this->recorddositens,$ii,$this->susaquant);
+	  $scodpcmater= pg_fetch_result($this->recorddositens,$ii,$this->scodpcmater);
 
 	  $xtotal += $valtot;
 
@@ -246,64 +246,64 @@
 	  }
 
 	  $this->objpdf->Setfont('Arial','B',9);
-	  $this->objpdf->Row(array($item,
+	  $this->objpdf->Row([$item,
 	      		     $quantitem,
 	      		     $scodpcmater.$descricaoitem,
 	      		     $valoritem,
-	      		     $valimp),3,false,$distanciar);
+	      		     $valimp],3,false,$distanciar);
 
 	  $dist = 2.7;
 	  $x = $this->muda_pag($pagina,$xlin,$xcol,"false",$contapagina);
 	  
 	  if(isset($unid) && $unid!=""){
-	    $this->objpdf->Row(array('','',$unid,'',''),3,false,$dist);
+	    $this->objpdf->Row(['','',$unid,'',''],3,false,$dist);
 	    $x = $this->muda_pag($pagina,$xlin,$xcol,"false",$contapagina);
 	  }
 	  
 	  $this->objpdf->Setfont('Arial','',7);
 
 	  if(isset($prazo) && $prazo!=""){
-	    $this->objpdf->Row(array('','',$prazo,'',''),3,false,$dist);
+	    $this->objpdf->Row(['','',$prazo,'',''],3,false,$dist);
 	    $x = $this->muda_pag($pagina,$xlin,$xcol,"false",$contapagina);
 	  }
 	    
 	  if(isset($pgto) && $pgto!=""){
-	    $this->objpdf->Row(array('','',$pgto,'',''),3,false,$dist);
+	    $this->objpdf->Row(['','',$pgto,'',''],3,false,$dist);
 	    $x = $this->muda_pag($pagina,$xlin,$xcol,"false",$contapagina);
 	  }
 	    
 	  if(isset($resum) && $resum!=""){
-	    $this->objpdf->Row(array('','',$resum,'',''),3,false,$dist);
+	    $this->objpdf->Row(['','',$resum,'',''],3,false,$dist);
 	    $x = $this->muda_pag($pagina,$xlin,$xcol,"false",$contapagina);
 	  }
 	    
 	  if(isset($just) && $just!=""){
-	    $this->objpdf->Row(array('','',$just,'',''),3,false,$dist);
+	    $this->objpdf->Row(['','',$just,'',''],3,false,$dist);
 	    $x = $this->muda_pag($pagina,$xlin,$xcol,"false",$contapagina);
 	  }
 
-	  $this->objpdf->SetWidths(array(10,22,26,26,26,26,'1',30,30));
+	  $this->objpdf->SetWidths([10,22,26,26,26,26,'1',30,30]);
 	  $pass = false;
-	  $arr_dotac = array();
+	  $arr_dotac = [];
 	  for($i=0;$i<$this->linhasdasdotac;$i++){
 	    db_fieldsmemory($this->recorddasdotac,$i);
-	    if(pg_result($this->recorddasdotac,$i,$this->dcodigo)==$codigo && !in_array(pg_result($this->recorddasdotac,$i,$this->dcoddot),$arr_dotac)){
+	    if(pg_fetch_result($this->recorddasdotac,$i,$this->dcodigo)==$codigo && !in_array(pg_fetch_result($this->recorddasdotac,$i,$this->dcoddot),$arr_dotac)){
               if($pass==false){
 	        $pass = true;
 		$this->objpdf->Setfont('Arial','B',7);
 		$distc = 3.5;
 		$distb = 3;
-		$this->objpdf->SetAligns(array('C','C','C','C','C','C','C','R','R'));
-		$this->objpdf->Row(array('','',"\n",'',''),3,false,$dist);
-		$this->objpdf->Row(array('','',"DOTAÇÃO","ANO","ELEMENTO","RESERVADO",'',''),3,false,$dist);
+		$this->objpdf->SetAligns(['C','C','C','C','C','C','C','R','R']);
+		$this->objpdf->Row(['','',"\n",'',''],3,false,$dist);
+		$this->objpdf->Row(['','',"DOTAÇÃO","ANO","ELEMENTO","RESERVADO",'',''],3,false,$dist);
 	      }	      
 	      $this->objpdf->Setfont('Arial','',7);
-	      $this->objpdf->SetAligns(array('C','C','C','C','C','C','C','R','R'));
-	      $dquant   = pg_result($this->recorddasdotac,$i,$this->dquant);
-	      $danousu  = pg_result($this->recorddasdotac,$i,$this->danousu);
-	      $dcoddot  = pg_result($this->recorddasdotac,$i,$this->dcoddot);
-	      $dvalor   = pg_result($this->recorddasdotac,$i,$this->dvalor);
-	      $delemento= pg_result($this->recorddasdotac,$i,$this->delemento);
+	      $this->objpdf->SetAligns(['C','C','C','C','C','C','C','R','R']);
+	      $dquant   = pg_fetch_result($this->recorddasdotac,$i,$this->dquant);
+	      $danousu  = pg_fetch_result($this->recorddasdotac,$i,$this->danousu);
+	      $dcoddot  = pg_fetch_result($this->recorddasdotac,$i,$this->dcoddot);
+	      $dvalor   = pg_fetch_result($this->recorddasdotac,$i,$this->dvalor);
+	      $delemento= pg_fetch_result($this->recorddasdotac,$i,$this->delemento);
 //	      $dreserva = pg_result($this->recorddasdotac,$i,$this->dreserva);
 	      array_push($arr_dotac,$dcoddot);
 	      if(isset($dcoddot) && trim($dcoddot)!=""){
@@ -313,7 +313,7 @@
 		  $ddvalor = "SIM";
 		}
 	        $x = $this->muda_pag($pagina,$xlin,$xcol,"false",$contapagina);
-		$this->objpdf->Row(array('',$dquant,$dcoddot,$danousu,$delemento,$ddvalor,'',db_formatar($dvalor/$dquant,"f"),db_formatar($dvalor,"f")),$distc,false,$distb);
+		$this->objpdf->Row(['',$dquant,$dcoddot,$danousu,$delemento,$ddvalor,'',db_formatar($dvalor/$dquant,"f"),db_formatar($dvalor,"f")],$distc,false,$distb);
               }
 	    }else{
 	      $pass = false;
@@ -338,13 +338,13 @@
 	  $this->objpdf->setfillcolor(0,0,0);
 
           $this->objpdf->setfillcolor(0,0,0);
-	  $this->objpdf->text($xcol+5,$xlin+244,strtoupper($this->municpref).', '.substr($this->emissao,8,2).' DE '.strtoupper(db_mes(substr($this->emissao,5,2))).' DE '.substr($this->emissao,0,4).'.');
+	  $this->objpdf->text($xcol+5,$xlin+244,strtoupper((string) $this->municpref).', '.substr((string) $this->emissao,8,2).' DE '.strtoupper(db_mes(substr((string) $this->emissao,5,2))).' DE '.substr((string) $this->emissao,0,4).'.');
 	  $this->objpdf->text($xcol+20,$xlin+256,"AUTORIZO",0,4);
-	  $this->objpdf->text($xcol+5,$xlin+268,substr($this->Sorgao,0,35));
+	  $this->objpdf->text($xcol+5,$xlin+268,substr((string) $this->Sorgao,0,35));
 
           $this->objpdf->setfillcolor(0,0,0);
 	  $this->objpdf->text($xcol+93,$xlin+256,"AUTORIZO",0,4);
-	  if(strtoupper(trim($this->municpref)) != 'GUAIBA'){
+	  if(strtoupper(trim((string) $this->municpref)) != 'GUAIBA'){
 	    $this->objpdf->text($xcol+83,$xlin+268,'DIV. DE ABASTECIMENTO',0,40);
 	  }
 

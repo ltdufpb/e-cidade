@@ -100,7 +100,7 @@ $rh27_instit = db_getsession("DB_instit");
         </td>
         <td>
           <?php 
-          $x = array("1"=>"Provento","2"=>"Desconto","3"=>"Base");
+          $x = ["1"=>"Provento","2"=>"Desconto","3"=>"Base"];
           db_select('rh27_pd',$x,true,$db_opcao,"onChange='js_configSelTipo(this.value)'; style='width:101px;'");
           ?>
         </td>
@@ -112,7 +112,7 @@ $rh27_instit = db_getsession("DB_instit");
         </td>
         <td>
           <?php 
-          $info = Array("1"=>"Fixa","2"=>"Variável");
+          $info = ["1"=>"Fixa","2"=>"Variável"];
           db_select('rh27_tipo',$info,true,$db_opcao, "style='width:101px;'");
           ?>
         </td>
@@ -124,7 +124,7 @@ $rh27_instit = db_getsession("DB_instit");
         </td>
         <td>
           <?php 
-          $arr_ativo = Array("t"=>"Ativo","f"=>"Inativo");
+          $arr_ativo = ["t"=>"Ativo","f"=>"Inativo"];
           db_select('rh27_ativo',$arr_ativo,true,$db_opcao, "style='width:101px;'");
           ?>
         </td>
@@ -158,9 +158,9 @@ $rh27_instit = db_getsession("DB_instit");
         </td>
         <td>
           <?php 
-          $tipo_bloqueio = array( 'N' => "Nenhum",
+          $tipo_bloqueio = [ 'N' => "Nenhum",
           'A' => "Aviso",
-          'B' => "Bloqueio");
+          'B' => "Bloqueio"];
 
           db_select('rh27_tipobloqueio',$tipo_bloqueio, true, $db_opcao, "style='width:101px;'");
           ?>
@@ -304,13 +304,13 @@ $rh27_instit = db_getsession("DB_instit");
         <td> <b>Tipo:</b> </td>
         <td>
           <?php 
-          $aTipo = array(
+          $aTipo = [
               'n'=>'Nenhum',
               'e'=>'Empenho',
               'c'=>'Consignação',
               'p'=>'Pagamento-Extra',
               'd'=>'Devolução'
-          );
+          ];
 
           db_select('tipo',$aTipo,true,$db_opcao,"onChange='js_validaTelaTipo(this.value);'; style='width:125px;'");
           ?>
@@ -345,7 +345,7 @@ $rh27_instit = db_getsession("DB_instit");
         <td title="<?=@$Trh27_limdat?>"> <?=@$Lrh27_limdat?> </td>
         <td>
           <?php 
-          $x = array("f"=>"NAO","t"=>"SIM");
+          $x = ["f"=>"NAO","t"=>"SIM"];
           db_select('rh27_limdat',$x,true,$db_opcao,"style='width:125px;'");
           ?>
         </td>
@@ -355,7 +355,7 @@ $rh27_instit = db_getsession("DB_instit");
         <td title="<?=@$Trh27_periodolancamento?>"> <?=@$Lrh27_periodolancamento?> </td>
         <td>
           <?php 
-          $x = array("f"=>"NAO","t"=>"SIM");
+          $x = ["f"=>"NAO","t"=>"SIM"];
           db_select('rh27_periodolancamento',$x,true,$db_opcao,"style='width:125px;'");
           ?>
         </td>
@@ -365,7 +365,7 @@ $rh27_instit = db_getsession("DB_instit");
         <td title="<?=@$Trh27_calc3?>"> <?=@$Lrh27_calc3?> </td>
         <td>
           <?php 
-          $x = array("f"=>"NAO","t"=>"SIM");
+          $x = ["f"=>"NAO","t"=>"SIM"];
           db_select('rh27_calc3',$x,true,$db_opcao,"style='width:125px;'");
           ?>
         </td>
@@ -375,7 +375,7 @@ $rh27_instit = db_getsession("DB_instit");
         <td title="<?=@$Trh27_presta?>"> <?=@$Lrh27_presta?> </td>
         <td>
           <?php 
-          $x = array("f"=>"NAO","t"=>"SIM");
+          $x = ["f"=>"NAO","t"=>"SIM"];
           db_select('rh27_presta',$x,true,$db_opcao,"style='width:125px;'");
           ?>
         </td>
@@ -385,7 +385,7 @@ $rh27_instit = db_getsession("DB_instit");
         <td title="<?=@$Trh27_propi?>"> <?=@$Lrh27_propi?> </td>
         <td>
           <?php 
-          $x = array("f"=>"NAO","t"=>"SIM");
+          $x = ["f"=>"NAO","t"=>"SIM"];
           db_select('rh27_propi',$x,true,$db_opcao,"style='width:125px;'");
           ?>
         </td>
@@ -395,7 +395,7 @@ $rh27_instit = db_getsession("DB_instit");
         <td title="<?=@$Trh27_calcp?>"> <?=@$Lrh27_calcp?> </td>
         <td>
           <?php 
-          $x = array("f"=>"NAO","t"=>"SIM");
+          $x = ["f"=>"NAO","t"=>"SIM"];
           db_select('rh27_calcp',$x,true,$db_opcao,"style='width:125px;'");
           ?>
         </td>
@@ -405,7 +405,7 @@ $rh27_instit = db_getsession("DB_instit");
         <td title="<?=@$Trh27_propq?>"> <?=@$Lrh27_propq?> </td>
         <td>
           <?php 
-          $x = array("f"=>"NAO","t"=>"SIM");
+          $x = ["f"=>"NAO","t"=>"SIM"];
           db_select('rh27_propq',$x,true,$db_opcao,"style='width:125px;'");
           ?>
         </td>
@@ -417,7 +417,7 @@ $rh27_instit = db_getsession("DB_instit");
         </td>
         <td title="<?php echo $Trh27_complementarautomatica; ?>" >
           <?php
-          $aAutomaticaComplementar = array("f" => "NAO", "t" => "SIM");
+          $aAutomaticaComplementar = ["f" => "NAO", "t" => "SIM"];
           db_select('rh27_complementarautomatica', $aAutomaticaComplementar, true, $db_opcao, "style='width:125px;'");
           ?>
         </td>
@@ -790,7 +790,7 @@ $rh27_instit = db_getsession("DB_instit");
     db_iframe_rhrubricas.hide();
     <?php 
       if($db_opcao!=1){
-        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+        echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
       }
         ?>
   }

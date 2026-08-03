@@ -45,7 +45,7 @@ class M10743IntegracaoTj extends PostgresMigration
         /**
          * Cria tabelas
          */
-        $aColumns = array(
+        $aColumns = [
             'codarq',
             'nomearq',
             'descricao',
@@ -57,9 +57,9 @@ class M10743IntegracaoTj extends PostgresMigration
             'naolibfunc',
             'naolibprog',
             'naolibform'
-        );
-        $aValues = array(
-            array(
+        ];
+        $aValues = [
+            [
                 1010286,
                 'integracaoprocessoeletronico',
                 'Integração com o tj do rio de janeiro',
@@ -71,8 +71,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 'f',
                 'f',
                 'f'
-            ),
-            array(
+            ],
+            [
                 1010287,
                 'integracaoprocessoeletronicomovimentacao',
                 'Movimentações da inicial no processo Eletronico',
@@ -84,8 +84,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 'f',
                 'f',
                 'f'
-            ),
-            array(
+            ],
+            [
                 1010290,
                 'integracaoprocessoeletronicoarquivo',
                 'integracaoprocessoeletronicoarquivo',
@@ -97,8 +97,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 'f',
                 'f',
                 'f'
-            ),
-            array(
+            ],
+            [
                 1010291,
                 'integracaoprocessoeletronicoconfiguracao',
                 'Configurações do Processo Eletrônico',
@@ -110,28 +110,28 @@ class M10743IntegracaoTj extends PostgresMigration
                 'f',
                 'f',
                 'f'
-            ),
-        );
-        $table = $this->table('db_sysarquivo', array('schema' => 'configuracoes'));
+            ],
+        ];
+        $table = $this->table('db_sysarquivo', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // vincula modulo
-        $aColumns = array('codmod', 'codarq');
-        $aValues = array(
-            array(21, 1010286),
-            array(21, 1010287),
-            array(21, 1010290),
-            array(21, 1010291),
-        );
-        $table = $this->table('db_sysarqmod', array('schema' => 'configuracoes'));
+        $aColumns = ['codmod', 'codarq'];
+        $aValues = [
+            [21, 1010286],
+            [21, 1010287],
+            [21, 1010290],
+            [21, 1010291],
+        ];
+        $table = $this->table('db_sysarqmod', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         /**
          * Cria campos
          */
-        $aColumns = array(
+        $aColumns = [
             'codcam',
             'nomecam',
             'conteudo',
@@ -145,9 +145,9 @@ class M10743IntegracaoTj extends PostgresMigration
             'aceitatipo',
             'tipoobj',
             'rotulorel'
-        );
-        $aValues = array(
-            array(
+        ];
+        $aValues = [
+            [
                 1009765,
                 'v38_sequencial',
                 'int4',
@@ -161,8 +161,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Código'
-            ),
-            array(
+            ],
+            [
                 1009766,
                 'v38_inicial',
                 'int4',
@@ -176,8 +176,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Inicial'
-            ),
-            array(
+            ],
+            [
                 1009767,
                 'v38_situacao',
                 'int4',
@@ -191,8 +191,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Situação da inicial no TJ'
-            ),
-            array(
+            ],
+            [
                 1009781,
                 'v38_recibo',
                 'text',
@@ -206,8 +206,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 0,
                 'text',
                 'Recibo de Entrega'
-            ),
-            array(
+            ],
+            [
                 1009792,
                 'v38_parte',
                 'int4',
@@ -221,8 +221,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Parte Executada'
-            ),
-            array(
+            ],
+            [
                 1009768,
                 'v39_sequencial',
                 'int4',
@@ -236,8 +236,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Código'
-            ),
-            array(
+            ],
+            [
                 1009769,
                 'v39_integracaoprocessoeletronico',
                 'int4',
@@ -251,8 +251,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Código da Integração'
-            ),
-            array(
+            ],
+            [
                 1009770,
                 'v39_dataenvio',
                 'date',
@@ -266,8 +266,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Data de Envio'
-            ),
-            array(
+            ],
+            [
                 1009771,
                 'v39_retorno ',
                 'text',
@@ -281,8 +281,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 0,
                 'text',
                 'Retorno '
-            ),
-            array(
+            ],
+            [
                 1009782,
                 'v39_protocolo',
                 'varchar(255)',
@@ -296,8 +296,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 0,
                 'text',
                 'Protocolo de Recebimento'
-            ),
-            array(
+            ],
+            [
                 1009783,
                 'v40_sequencial',
                 'int4',
@@ -311,8 +311,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Código'
-            ),
-            array(
+            ],
+            [
                 1009784,
                 'v40_integracaoprocessoeletronico',
                 'int4',
@@ -326,8 +326,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Processo Eletronico'
-            ),
-            array(
+            ],
+            [
                 1009785,
                 'v40_data',
                 'date',
@@ -341,8 +341,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Data do Arquivo'
-            ),
-            array(
+            ],
+            [
                 1009786,
                 'v40_arquivo',
                 'text',
@@ -356,8 +356,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 0,
                 'text',
                 'Arquivo'
-            ),
-            array(
+            ],
+            [
                 1009787,
                 'v40_nome',
                 'varchar',
@@ -371,8 +371,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Nome do Arquivo'
-            ),
-            array(
+            ],
+            [
                 1009793,
                 'v41_sequencial',
                 'int4',
@@ -386,8 +386,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Código'
-            ),
-            array(
+            ],
+            [
                 1009794,
                 'v41_instituicao',
                 'int4',
@@ -401,8 +401,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Instituição'
-            ),
-            array(
+            ],
+            [
                 1009795,
                 'v41_usuario',
                 'varchar(100)',
@@ -416,8 +416,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 0,
                 'text',
                 'Usuário'
-            ),
-            array(
+            ],
+            [
                 1009796,
                 'v41_senha',
                 'varchar(255)',
@@ -431,8 +431,8 @@ class M10743IntegracaoTj extends PostgresMigration
                 0,
                 'text',
                 'Senha'
-            ),
-            array(
+            ],
+            [
                 1009797,
                 'v41_codigolocalidade',
                 'int4',
@@ -446,46 +446,46 @@ class M10743IntegracaoTj extends PostgresMigration
                 1,
                 'text',
                 'Código da Localidade'
-            )
-        );
-        $table = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+            ]
+        ];
+        $table = $this->table('db_syscampo', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         /**
          * db_sysarqcamp
          */
-        $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-        $aValues = array(
-            array(1010286, 1009765, 1, 0),
-            array(1010286, 1009766, 2, 0),
-            array(1010286, 1009767, 3, 0),
-            array(1010286, 1009781, 4, 0),
-            array(1010286, 1009792, 5, 0),
-            array(1010287, 1009768, 1, 0),
-            array(1010287, 1009769, 2, 0),
-            array(1010287, 1009770, 3, 0),
-            array(1010287, 1009771, 4, 0),
-            array(1010287, 1009782, 5, 0),
-            array(1010290, 1009783, 1, 0),
-            array(1010290, 1009784, 2, 0),
-            array(1010290, 1009785, 3, 0),
-            array(1010290, 1009786, 4, 0),
-            array(1010290, 1009787, 5, 0),
-            array(1010291, 1009793, 1, 0),
-            array(1010291, 1009794, 2, 0),
-            array(1010291, 1009795, 3, 0),
-            array(1010291, 1009796, 4, 0),
-            array(1010291, 1009797, 5, 0)
+        $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+        $aValues = [
+            [1010286, 1009765, 1, 0],
+            [1010286, 1009766, 2, 0],
+            [1010286, 1009767, 3, 0],
+            [1010286, 1009781, 4, 0],
+            [1010286, 1009792, 5, 0],
+            [1010287, 1009768, 1, 0],
+            [1010287, 1009769, 2, 0],
+            [1010287, 1009770, 3, 0],
+            [1010287, 1009771, 4, 0],
+            [1010287, 1009782, 5, 0],
+            [1010290, 1009783, 1, 0],
+            [1010290, 1009784, 2, 0],
+            [1010290, 1009785, 3, 0],
+            [1010290, 1009786, 4, 0],
+            [1010290, 1009787, 5, 0],
+            [1010291, 1009793, 1, 0],
+            [1010291, 1009794, 2, 0],
+            [1010291, 1009795, 3, 0],
+            [1010291, 1009796, 4, 0],
+            [1010291, 1009797, 5, 0]
 
-        );
-        $table = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+        ];
+        $table = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
 
         // inclui a sequence
-        $aColumns = array(
+        $aColumns = [
             'codsequencia',
             'nomesequencia',
             'incrseq',
@@ -493,10 +493,10 @@ class M10743IntegracaoTj extends PostgresMigration
             'maxvalueseq',
             'startseq',
             'cacheseq'
-        );
-        $aValues = array(
-            array(1000737, 'integracaoprocessoeletronico_v38_sequencial_seq', 1, 1, 9223372036854775807, 1, 1),
-            array(
+        ];
+        $aValues = [
+            [1000737, 'integracaoprocessoeletronico_v38_sequencial_seq', 1, 1, 9223372036854775807, 1, 1],
+            [
                 1000738,
                 'integracaoprocessoeletronicomovimentacao_v39_sequencial_seq',
                 1,
@@ -504,9 +504,9 @@ class M10743IntegracaoTj extends PostgresMigration
                 9223372036854775807,
                 1,
                 1
-            ),
-            array(1000741, 'integracaoprocessoeletronicoarquivo_v40_sequencial_seq', 1, 1, 9223372036854775807, 1, 1),
-            array(
+            ],
+            [1000741, 'integracaoprocessoeletronicoarquivo_v40_sequencial_seq', 1, 1, 9223372036854775807, 1, 1],
+            [
                 1000742,
                 'integracaoprocessoeletronicoconfiguracao_v41_sequencial_seq',
                 1,
@@ -514,67 +514,67 @@ class M10743IntegracaoTj extends PostgresMigration
                 9223372036854775807,
                 1,
                 1
-            ),
-        );
-        $table = $this->table('db_syssequencia', array('schema' => 'configuracoes'));
+            ],
+        ];
+        $table = $this->table('db_syssequencia', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // inclui a chave primaria
-        $aColumns = array('codarq', 'codcam', 'sequen', 'camiden');
-        $aValues = array(
-            array(1010286, 1009765, 1, 1009766),
-            array(1010287, 1009769, 1, 1009769),
-            array(1010290, 1009784, 1, 1009783),
-            array(1010291, 1009793, 1, 1009794),
-        );
-        $table = $this->table('db_sysprikey', array('schema' => 'configuracoes'));
+        $aColumns = ['codarq', 'codcam', 'sequen', 'camiden'];
+        $aValues = [
+            [1010286, 1009765, 1, 1009766],
+            [1010287, 1009769, 1, 1009769],
+            [1010290, 1009784, 1, 1009783],
+            [1010291, 1009793, 1, 1009794],
+        ];
+        $table = $this->table('db_sysprikey', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // inclui a chave estrangeira
-        $aColumns = array('codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel');
-        $aValues = array(
-            array(1010286, 1009766, 1, 108, 0),
-            array(1010286, 1009792, 1, 42, 0),
-            array(1010287, 1009769, 1, 1010286, 0),
-            array(1010290, 1009784, 1, 1010286, 0),
-            array(1010291, 1009794, 1, 83, 0),
+        $aColumns = ['codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel'];
+        $aValues = [
+            [1010286, 1009766, 1, 108, 0],
+            [1010286, 1009792, 1, 42, 0],
+            [1010287, 1009769, 1, 1010286, 0],
+            [1010290, 1009784, 1, 1010286, 0],
+            [1010291, 1009794, 1, 83, 0],
 
 
-        );
-        $table = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
+        ];
+        $table = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // inclui os indices
-        $aColumns = array('codind', 'nomeind', 'codarq', 'campounico');
-        $aValues = array(
-            array(1008286, 'integracaoprocessoeletronico_inicial_in', 1010286, '0'),
-            array(1008287, 'integracaoprocessoeletronico_situacao', 1010286, '0'),
-            array(1008288, 'integracaoprocessoeletronicomovimentacao_integracao_in', 1010287, '0'),
-            array(1008292, 'integracaoprocessoeletronicoarquivo_processo_in', 1010290, '0'),
-            array(1008293, 'integracaoprocessoeletronico_parte_in', 1010286, '0'),
-            array(1008294, 'integracaoprocessoeletronicoconfiguracao_instit_in', 1010291, '1'),
+        $aColumns = ['codind', 'nomeind', 'codarq', 'campounico'];
+        $aValues = [
+            [1008286, 'integracaoprocessoeletronico_inicial_in', 1010286, '0'],
+            [1008287, 'integracaoprocessoeletronico_situacao', 1010286, '0'],
+            [1008288, 'integracaoprocessoeletronicomovimentacao_integracao_in', 1010287, '0'],
+            [1008292, 'integracaoprocessoeletronicoarquivo_processo_in', 1010290, '0'],
+            [1008293, 'integracaoprocessoeletronico_parte_in', 1010286, '0'],
+            [1008294, 'integracaoprocessoeletronicoconfiguracao_instit_in', 1010291, '1'],
 
 
-        );
-        $table = $this->table('db_sysindices', array('schema' => 'configuracoes'));
+        ];
+        $table = $this->table('db_sysindices', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 
         // vincula os indices
-        $aColumns = array('codind', 'codcam', 'sequen');
-        $aValues = array(
-            array(1008286, 1009766, 1),
-            array(1008287, 1009767, 1),
-            array(1008288, 1009769, 1),
-            array(1008292, 1009784, 1),
-            array(1008293, 1009792, 1),
-            array(1008294, 1009794, 1),
+        $aColumns = ['codind', 'codcam', 'sequen'];
+        $aValues = [
+            [1008286, 1009766, 1],
+            [1008287, 1009767, 1],
+            [1008288, 1009769, 1],
+            [1008292, 1009784, 1],
+            [1008293, 1009792, 1],
+            [1008294, 1009794, 1],
 
-        );
-        $table = $this->table('db_syscadind', array('schema' => 'configuracoes'));
+        ];
+        $table = $this->table('db_syscadind', ['schema' => 'configuracoes']);
         $table->insert($aColumns, $aValues);
         $table->saveData();
 

@@ -9,13 +9,9 @@ class RastreabilidadeMedicamentoPdf extends RelatorioRastreabilidade
     const QUEBRA_MEDICAMENTO = 1;
     const QUEBRA_DEPOSITO = 2;
 
-    private $quebra;
-
-    public function __construct(array $dados, $quebra)
+    public function __construct(array $dados, private $quebra)
     {
         $this->dados = $dados;
-        $this->quebra = $quebra;
-        parent::__construct('L');
         $this->addTitulo('Relatório Rastreabilidade Medicamento');
     }
 

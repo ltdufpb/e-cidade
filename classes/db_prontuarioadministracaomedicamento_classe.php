@@ -3,33 +3,33 @@
 //CLASSE DA ENTIDADE prontuarioadministracaomedicamento
 class cl_prontuarioadministracaomedicamento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $sd106_codigo = 0; 
-   var $sd106_prontuario = 0; 
-   var $sd106_administracaomedicamento = 0; 
+   public $sd106_codigo = 0; 
+   public $sd106_prontuario = 0; 
+   public $sd106_administracaomedicamento = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  sd106_codigo = int4 = Código 
                  sd106_prontuario = int4 = Prontuario 
                  sd106_administracaomedicamento = int4 = Administração de Medicamento 
                  ";
    //funcao construtor da classe 
-   function cl_prontuarioadministracaomedicamento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prontuarioadministracaomedicamento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -81,10 +81,10 @@ class cl_prontuarioadministracaomedicamento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->sd106_codigo = pg_result($result,0,0); 
+       $this->sd106_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from prontuarioadministracaomedicamento_sd106_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $sd106_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $sd106_codigo)){
          $this->erro_sql = " Campo sd106_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -116,7 +116,7 @@ class cl_prontuarioadministracaomedicamento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Medicamento administrado ao Paciente  ($this->sd106_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Medicamento administrado ao Paciente  já Cadastrado";
@@ -145,12 +145,12 @@ class cl_prontuarioadministracaomedicamento {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21335,'$this->sd106_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,3842,21335,'','".AddSlashes(pg_result($resaco,0,'sd106_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3842,21336,'','".AddSlashes(pg_result($resaco,0,'sd106_prontuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3842,21337,'','".AddSlashes(pg_result($resaco,0,'sd106_administracaomedicamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3842,21335,'','".AddSlashes(pg_fetch_result($resaco,0,'sd106_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3842,21336,'','".AddSlashes(pg_fetch_result($resaco,0,'sd106_prontuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3842,21337,'','".AddSlashes(pg_fetch_result($resaco,0,'sd106_administracaomedicamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -160,10 +160,10 @@ class cl_prontuarioadministracaomedicamento {
       $this->atualizacampos();
      $sql = " update prontuarioadministracaomedicamento set ";
      $virgula = "";
-     if(trim($this->sd106_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd106_codigo"])){ 
+     if(trim((string) $this->sd106_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd106_codigo"])){ 
        $sql  .= $virgula." sd106_codigo = $this->sd106_codigo ";
        $virgula = ",";
-       if(trim($this->sd106_codigo) == null ){ 
+       if(trim((string) $this->sd106_codigo) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "sd106_codigo";
          $this->erro_banco = "";
@@ -173,10 +173,10 @@ class cl_prontuarioadministracaomedicamento {
          return false;
        }
      }
-     if(trim($this->sd106_prontuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd106_prontuario"])){ 
+     if(trim((string) $this->sd106_prontuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd106_prontuario"])){ 
        $sql  .= $virgula." sd106_prontuario = $this->sd106_prontuario ";
        $virgula = ",";
-       if(trim($this->sd106_prontuario) == null ){ 
+       if(trim((string) $this->sd106_prontuario) == null ){ 
          $this->erro_sql = " Campo Prontuario não informado.";
          $this->erro_campo = "sd106_prontuario";
          $this->erro_banco = "";
@@ -186,10 +186,10 @@ class cl_prontuarioadministracaomedicamento {
          return false;
        }
      }
-     if(trim($this->sd106_administracaomedicamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd106_administracaomedicamento"])){ 
+     if(trim((string) $this->sd106_administracaomedicamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["sd106_administracaomedicamento"])){ 
        $sql  .= $virgula." sd106_administracaomedicamento = $this->sd106_administracaomedicamento ";
        $virgula = ",";
-       if(trim($this->sd106_administracaomedicamento) == null ){ 
+       if(trim((string) $this->sd106_administracaomedicamento) == null ){ 
          $this->erro_sql = " Campo Administração de Medicamento não informado.";
          $this->erro_campo = "sd106_administracaomedicamento";
          $this->erro_banco = "";
@@ -213,15 +213,15 @@ class cl_prontuarioadministracaomedicamento {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21335,'$this->sd106_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd106_codigo"]) || $this->sd106_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,3842,21335,'".AddSlashes(pg_result($resaco,$conresaco,'sd106_codigo'))."','$this->sd106_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3842,21335,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd106_codigo'))."','$this->sd106_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd106_prontuario"]) || $this->sd106_prontuario != "")
-             $resac = db_query("insert into db_acount values($acount,3842,21336,'".AddSlashes(pg_result($resaco,$conresaco,'sd106_prontuario'))."','$this->sd106_prontuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3842,21336,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd106_prontuario'))."','$this->sd106_prontuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["sd106_administracaomedicamento"]) || $this->sd106_administracaomedicamento != "")
-             $resac = db_query("insert into db_acount values($acount,3842,21337,'".AddSlashes(pg_result($resaco,$conresaco,'sd106_administracaomedicamento'))."','$this->sd106_administracaomedicamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3842,21337,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'sd106_administracaomedicamento'))."','$this->sd106_administracaomedicamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -275,12 +275,12 @@ class cl_prontuarioadministracaomedicamento {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21335,'$sd106_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,3842,21335,'','".AddSlashes(pg_result($resaco,$iresaco,'sd106_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3842,21336,'','".AddSlashes(pg_result($resaco,$iresaco,'sd106_prontuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3842,21337,'','".AddSlashes(pg_result($resaco,$iresaco,'sd106_administracaomedicamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3842,21335,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd106_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3842,21336,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd106_prontuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3842,21337,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'sd106_administracaomedicamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -40,8 +40,8 @@ EOT;
         /**
          * Adiciona campo x22_responsavelpagamento a tabela aguacalc
          */
-        $this->table('aguacalc',    array('schema'=>'agua'))
-                ->addColumn('x22_responsavelpagamento', 'integer', array('null' => true, 'default' => null, 'comment' => 'Responsavel Pagamento'))
+        $this->table('aguacalc',    ['schema'=>'agua'])
+                ->addColumn('x22_responsavelpagamento', 'integer', ['null' => true, 'default' => null, 'comment' => 'Responsavel Pagamento'])
                 ->save();
 
         /**
@@ -49,9 +49,9 @@ EOT;
          *                          x18_receitacreditorecalculo
          *  na tabela aguaconf
          */
-        $this->table('aguaconf',    array('schema'=>'agua'))
-                ->addColumn('x18_receitadebitorecalculo', 'integer', array('null' => true, 'default' => null, 'comment' => 'Receita Debito Recalculo'))
-                ->addColumn('x18_receitacreditorecalculo', 'integer', array('null' => true, 'default' => null, 'comment' => 'Receita Credito Recalculo'))
+        $this->table('aguaconf',    ['schema'=>'agua'])
+                ->addColumn('x18_receitadebitorecalculo', 'integer', ['null' => true, 'default' => null, 'comment' => 'Receita Debito Recalculo'])
+                ->addColumn('x18_receitacreditorecalculo', 'integer', ['null' => true, 'default' => null, 'comment' => 'Receita Credito Recalculo'])
                 ->save();
 
     }
@@ -81,7 +81,7 @@ EOT;
         /**
          * Remove campo x22_responsavelpagamento na tabela aguacalc
          */
-        $this->table('aguacalc', array('schema' => 'agua'))
+        $this->table('aguacalc', ['schema' => 'agua'])
                 ->removeColumn('x22_responsavelpagamento')
                 ->save();
 
@@ -90,7 +90,7 @@ EOT;
          *                               x18_receitacreditorecalculo
          *  na tabela aguaconf
          */
-        $this->table('aguaconf', array('schema' => 'agua'))
+        $this->table('aguaconf', ['schema' => 'agua'])
                 ->removeColumn('x18_receitadebitorecalculo')
                 ->removeColumn('x18_receitacreditorecalculo')
                 ->save();

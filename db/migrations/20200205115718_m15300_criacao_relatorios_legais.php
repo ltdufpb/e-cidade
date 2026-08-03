@@ -5,7 +5,7 @@ use Classes\PostgresMigration;
 class M15300CriacaoRelatoriosLegais extends PostgresMigration
 {
 
-    private $dadosRelatorios = array(
+    private $dadosRelatorios = [
         206 => 'TCE/RO - ANEXO 1',
         207 => 'TCE/RO - ANEXO 2 - ESTE RELATÓRIO NÃO POSSUI CONFIGURAÇÃO',
         208 => 'TCE/RO - ANEXO 3 - ESTE RELATÓRIO NÃO POSSUI CONFIGURAÇÃO',
@@ -16,7 +16,7 @@ class M15300CriacaoRelatoriosLegais extends PostgresMigration
         213 => 'TCE/RO - ANEXO 8 - ESTE RELATÓRIO NÃO POSSUI CONFIGURAÇÃO',
         214 => 'TCE/RO - ANEXO 9 - ESTE RELATÓRIO NÃO POSSUI CONFIGURAÇÃO',
         215 => 'TCE/RO - ANEXO 10 - ESTE RELATÓRIO NÃO POSSUI CONFIGURAÇÃO',
-    );
+    ];
 
     public function up()
     {

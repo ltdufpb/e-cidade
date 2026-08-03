@@ -77,7 +77,6 @@ class db_layouttxt
 
     public $_erro_gera;
     public $_compara_linha;
-    public $_lUsaChar;
 
   /**
    * Controle do output em memória
@@ -130,10 +129,9 @@ class db_layouttxt
      */
     private $lQuebraAutomatica = true;
 
-    function db_layouttxt($layout = 0, $arquivo = "", $usartipo = "", $formatoArquivo = 1, $lUsaChar = false)
+    function __construct($layout = 0, $arquivo = "", $usartipo = "", $formatoArquivo = 1, public $_lUsaChar = false)
     {
 
-        $this->_lUsaChar = $lUsaChar;
         $this->setFormatoArquivo($formatoArquivo);
         $this->setUsarTipo($usartipo);
         if ($layout != 0) {
@@ -294,7 +292,7 @@ class db_layouttxt
 
     function adicionaLinha($valor)
     {
-        fputs($this->_arquivo, $valor);
+        fputs($this->_arquivo, (string) $valor);
     }
 
     private function getQuebraLinha($iQuantidade = 1)
@@ -314,7 +312,7 @@ class db_layouttxt
 
     function setFormatoArquivo($formato)
     {
-        $arrFormatos = array (0, 1 );
+        $arrFormatos =  [0, 1 ];
         if (! in_array($formato, $arrFormatos)) {
             $this->_formatoArquivo = 1;
         } else {
@@ -327,7 +325,7 @@ class db_layouttxt
         return $this->_formatoArquivo;
     }
 
-    var $_layoutMemoria;
+    public $_layoutMemoria;
     function carregaLayoutMemoria()
     {
 
@@ -342,7 +340,7 @@ class db_layouttxt
             return false;
         }
 
-        $this->_quantLinhasLay = pg_result($this->_layoutMemoria, 0, "db50_quantlinhas");
+        $this->_quantLinhasLay = pg_fetch_result($this->_layoutMemoria, 0, "db50_quantlinhas");
     }
 
     function liberaLinhas()
@@ -377,12 +375,12 @@ class db_layouttxt
 
     function limpaCampos()
     {
-        $this->setArrCamposVal(array ());
+        $this->setArrCamposVal( []);
     }
 
-    var $_linhasMemoria;
-    var $_arrLinhasMemoria;
-    var $_arrDadosLinhasMemoria;
+    public $_linhasMemoria;
+    public $_arrLinhasMemoria;
+    public $_arrDadosLinhasMemoria;
     function carregaLinhasMemoria()
     {
 
@@ -405,13 +403,13 @@ class db_layouttxt
 
         $qtdquebras = 0;
         for ($i = 0; $i < pg_num_rows($this->_linhasMemoria); $i ++) {
-            $codigoLinha    = pg_result($this->_linhasMemoria, $i, "db51_codigo");
-            $tipoDaLinha    = pg_result($this->_linhasMemoria, $i, "db51_tipolinha");
-            $antesLinhas    = pg_result($this->_linhasMemoria, $i, "db51_linhasantes");
-            $depoisLinha    = pg_result($this->_linhasMemoria, $i, "db51_linhasdepois");
-            $tamanhoLinha   = pg_result($this->_linhasMemoria, $i, "db51_tamlinha");
-            $separadorLinha = pg_result($this->_linhasMemoria, $i, "db51_separador");
-            $compactaLinha  = pg_result($this->_linhasMemoria, $i, "db51_compacta");
+            $codigoLinha    = pg_fetch_result($this->_linhasMemoria, $i, "db51_codigo");
+            $tipoDaLinha    = pg_fetch_result($this->_linhasMemoria, $i, "db51_tipolinha");
+            $antesLinhas    = pg_fetch_result($this->_linhasMemoria, $i, "db51_linhasantes");
+            $depoisLinha    = pg_fetch_result($this->_linhasMemoria, $i, "db51_linhasdepois");
+            $tamanhoLinha   = pg_fetch_result($this->_linhasMemoria, $i, "db51_tamlinha");
+            $separadorLinha = pg_fetch_result($this->_linhasMemoria, $i, "db51_separador");
+            $compactaLinha  = pg_fetch_result($this->_linhasMemoria, $i, "db51_compacta");
 
             $qtdquebras += $antesLinhas + $depoisLinha;
 
@@ -423,18 +421,18 @@ class db_layouttxt
             }
 
             $this->_arrLinhasMemoria [$tipoDaLinha] .= $virgula . $codigoLinha;
-            $this->_arrDadosLinhasMemoria [$codigoLinha] = array ((trim($tipoDaLinha) != "" ? $tipoDaLinha : 0),
+            $this->_arrDadosLinhasMemoria [$codigoLinha] =  [(trim($tipoDaLinha) != "" ? $tipoDaLinha : 0),
                                                                    $antesLinhas,
                                                                    $depoisLinha,
                                                                    $tamanhoLinha,
                                                                    $separadorLinha,
-                                                                   $compactaLinha );
+                                                                   $compactaLinha ];
         }
 
         $this->_brancosLinhasLay = $qtdquebras;
     }
 
-    var $_camposMemoria;
+    public $_camposMemoria;
 
     private $aDadosCampos;
     private $aCamposNomes;
@@ -444,13 +442,13 @@ class db_layouttxt
     function carregaCamposMemoria()
     {
 
-        $this->aDadosCampos = array();
-        $this->aCamposNomes = array();
-        $this->aCamposIndex = array();
-        $this->aValoresPadrao = array();
+        $this->aDadosCampos = [];
+        $this->aCamposNomes = [];
+        $this->aCamposIndex = [];
+        $this->aValoresPadrao = [];
 
         for ($i = 0; $i < pg_num_rows($this->_linhasMemoria); $i ++) {
-            $codigoLinha = pg_result($this->_linhasMemoria, $i, "db51_codigo");
+            $codigoLinha = pg_fetch_result($this->_linhasMemoria, $i, "db51_codigo");
             // Busca Campos da Linha Corrente
             $sql = " select db_layoutcampos.*, db_layoutformat.*
                      from db_layoutcampos
@@ -459,10 +457,10 @@ class db_layouttxt
                      order by db52_posicao ";
             $this->_camposMemoria [$codigoLinha] = db_query($sql);
 
-            $this->aDadosCampos[$codigoLinha] = array();
-            $this->aCamposNomes[$codigoLinha] = array();
-            $this->aCamposIndex[$codigoLinha] = array();
-            $this->aValoresPadrao[$codigoLinha] = array();
+            $this->aDadosCampos[$codigoLinha] = [];
+            $this->aCamposNomes[$codigoLinha] = [];
+            $this->aCamposIndex[$codigoLinha] = [];
+            $this->aValoresPadrao[$codigoLinha] = [];
 
             for ($iRow = 0; $iRow < pg_num_rows($this->_camposMemoria[$codigoLinha]); $iRow++) {
                 $oDadosCampo = pg_fetch_object($this->_camposMemoria [$codigoLinha], $iRow);
@@ -480,16 +478,16 @@ class db_layouttxt
         }
     }
 
-    var $arrIndexaCampos;
+    public $arrIndexaCampos;
     function carregaCamposRetorno($_codigoLinha)
     {
         $tipolinha = $this->getCampoTipoLinha();
         $identlinha = $this->getCampoIdentLinha();
 
-        $varRetornoCamposArray = array ();
+        $varRetornoCamposArray =  [];
         $result_CamposDaLinha = $this->_camposMemoria [$_codigoLinha];
         for ($x = 0; $x < pg_num_rows($result_CamposDaLinha); $x ++) {
-            $valorcampo = pg_result($result_CamposDaLinha, $x, "db52_nome");
+            $valorcampo = pg_fetch_result($result_CamposDaLinha, $x, "db52_nome");
             $varRetornoNomesArray [$x] = $valorcampo;
             $this->arrIndexaCampos [$valorcampo] = $x;
             if ($this->getArrCamposValIn($x) === false) {
@@ -508,7 +506,7 @@ class db_layouttxt
         }
     }
 
-    var $_linhasPorTipoMemoria;
+    public $_linhasPorTipoMemoria;
     function carregaLinhasPorTipo()
     {
 
@@ -520,12 +518,12 @@ class db_layouttxt
                 $result_corrente = $this->_camposMemoria [$valorValores];
 
                 for ($i = 0; $i < pg_num_rows($result_corrente); $i ++) {
-                    $identificador        = pg_result($result_corrente, $i, "db52_ident");
-                    $defaultidentificador = pg_result($result_corrente, $i, "db52_default");
+                    $identificador        = pg_fetch_result($result_corrente, $i, "db52_ident");
+                    $defaultidentificador = pg_fetch_result($result_corrente, $i, "db52_default");
 
                     if ($identificador == "t" && trim($defaultidentificador) != "") {
-                        if (trim($this->_usartipo) != "" && ! (strpos($this->_usartipo, $defaultidentificador) === false)) {
-                            $valorDefault = pg_result($result_corrente, $i, "db52_default");
+                        if (trim((string) $this->_usartipo) != "" && ! (!str_contains((string) $this->_usartipo, $defaultidentificador))) {
+                            $valorDefault = pg_fetch_result($result_corrente, $i, "db52_default");
                             break;
                         }
                     }
@@ -540,14 +538,14 @@ class db_layouttxt
     private function carregarIdentificadores()
     {
 
-        $this->aIdentificadoresLinhas = array();
+        $this->aIdentificadoresLinhas = [];
 
         foreach ($this->_arrLinhasMemoria as $indexCampos => $valorCampos) {
             $arr_valorCampos = explode(",", $valorCampos);
 
             foreach ($arr_valorCampos as $indexValores => $valorValores) {
                 foreach ($this->aDadosCampos[$valorValores] as $oLinha) {
-                    if ($oLinha->db52_ident == "t" && trim($oLinha->db52_default) != "") {
+                    if ($oLinha->db52_ident == "t" && trim((string) $oLinha->db52_default) != "") {
                         $this->aIdentificadoresLinhas[$indexCampos][$oLinha->db52_default] = $valorValores;
                     }
                 }
@@ -572,10 +570,10 @@ class db_layouttxt
     function retornaArrayNomeCampos()
     {
 
-        $varRetornoCamposArray = array ();
+        $varRetornoCamposArray =  [];
         for ($x = 0, $indexArray = 0; $x < pg_num_rows($this->_resCampos); $x ++) {
-            $linhacampo = pg_result($this->_resCampos, $x, "db52_layoutlinha");
-            $valorcampo = pg_result($this->_resCampos, $x, "db52_nome");
+            $linhacampo = pg_fetch_result($this->_resCampos, $x, "db52_layoutlinha");
+            $valorcampo = pg_fetch_result($this->_resCampos, $x, "db52_nome");
             if ($this->_codigoLinha == $linhacampo && ! in_array($valorcampo, $varRetornoCamposArray)) {
                 $varRetornoCamposArray [$indexArray] = $valorcampo;
                 $indexArray ++;
@@ -642,23 +640,23 @@ class db_layouttxt
 
         $linha = $this->_codigoLinha;
         for ($x = 0; $x < pg_num_rows($this->_camposMemoria [$linha]); $x ++) {
-            $nomeCampo = pg_result($this->_camposMemoria [$linha], $x, "db52_nome");
-            $linhaCampo = pg_result($this->_camposMemoria [$linha], $x, "db52_layoutlinha");
+            $nomeCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db52_nome");
+            $linhaCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db52_layoutlinha");
             if ($linha == $linhaCampo && $nomeCampo == $campo) {
                 $this->_nomeCampo = $nomeCampo;
-                $this->_codigoCampo = pg_result($this->_camposMemoria [$linha], $x, "db52_codigo");
-                $this->_posicaoCampo = pg_result($this->_camposMemoria [$linha], $x, "db52_posicao");
-                $this->_defaultCampo = pg_result($this->_camposMemoria [$linha], $x, "db52_default");
-                $this->_tamanhoCampo = pg_result($this->_camposMemoria [$linha], $x, "db52_tamanho");
-                $this->_identCampo = pg_result($this->_camposMemoria [$linha], $x, "db52_ident");
-                $this->_mascaraCampo = pg_result($this->_camposMemoria [$linha], $x, "db53_mascara");
-                $this->_tipoCampo = pg_result($this->_camposMemoria [$linha], $x, "db53_tipo");
-                $this->_tamanhoFormatCampo = pg_result($this->_camposMemoria [$linha], $x, "db53_tamanho");
-                $this->_decimaisCampo = pg_result($this->_camposMemoria [$linha], $x, "db53_decimais");
-                $this->_caracDecCampo = pg_result($this->_camposMemoria [$linha], $x, "db53_caracdec");
-                $this->_imprimirCampo = pg_result($this->_camposMemoria [$linha], $x, "db52_imprimir");
-                $this->_alinhaCampo = pg_result($this->_camposMemoria [$linha], $x, "db52_alinha");
-                $this->_varquebraLinha = pg_result($this->_camposMemoria [$linha], $x, "db52_quebraapos");
+                $this->_codigoCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db52_codigo");
+                $this->_posicaoCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db52_posicao");
+                $this->_defaultCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db52_default");
+                $this->_tamanhoCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db52_tamanho");
+                $this->_identCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db52_ident");
+                $this->_mascaraCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db53_mascara");
+                $this->_tipoCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db53_tipo");
+                $this->_tamanhoFormatCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db53_tamanho");
+                $this->_decimaisCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db53_decimais");
+                $this->_caracDecCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db53_caracdec");
+                $this->_imprimirCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db52_imprimir");
+                $this->_alinhaCampo = pg_fetch_result($this->_camposMemoria [$linha], $x, "db52_alinha");
+                $this->_varquebraLinha = pg_fetch_result($this->_camposMemoria [$linha], $x, "db52_quebraapos");
                 return true;
             }
         }
@@ -674,7 +672,7 @@ class db_layouttxt
                 $valor = db_formatar(substr(strtoupper(db_translate($valor)), 0, $tamanho), "s", " ", $tamanho, $this->_alinhaCampo, 0);
                 break;
             case 2: // Para Inteiro
-                $valor = db_formatar(substr($valor, 0, $tamanho), "s", "0", $tamanho, $this->_alinhaCampo, 0);
+                $valor = db_formatar(substr((string) $valor, 0, $tamanho), "s", "0", $tamanho, $this->_alinhaCampo, 0);
                 break;
             case 3: // Para Decimal
                 $valor = db_formatar(substr(trim(str_replace(".", "", str_replace(",", "", db_formatar($valor, "f")))), 0, $tamanho), "s", "0", $tamanho, $this->_alinhaCampo, 0);
@@ -686,7 +684,7 @@ class db_layouttxt
                 $arr_data ['d'] = str_pad(db_subdata($valor, 'd'), 2, '0');
 
                 $novoValor = "";
-                for ($ind = 0; $ind < strlen($mascara); $ind ++) {
+                for ($ind = 0; $ind < strlen((string) $mascara); $ind ++) {
                     $pertence = true;
                     $imprimir = true;
                     if (isset($arr_data [$mascara [$ind]])) {
@@ -730,7 +728,7 @@ class db_layouttxt
                 $valor = eval($valor);
                 break;
             case 9:
-                $valor = db_formatar(substr($valor, 0, $tamanho), "s", " ", $tamanho, $this->_alinhaCampo, 0);
+                $valor = db_formatar(substr((string) $valor, 0, $tamanho), "s", " ", $tamanho, $this->_alinhaCampo, 0);
                 break;
 
             case 13:
@@ -790,7 +788,7 @@ class db_layouttxt
             
 
             if ($this->getCompactaLinha() == "t") {
-                $valorCampo = trim($valorCampo);
+                $valorCampo = trim((string) $valorCampo);
             }
 
             if ($this->_imprimirCampo == "t") {
@@ -904,7 +902,7 @@ class db_layouttxt
 
             $valorCampo = $this->formatarCampo($oDadosCampo->db53_tipo, $valorCampo, $tamanhoCampo, $oDadosCampo->db53_mascara);
             if ($this->_compactaLinha == "t") {
-                $valorCampo = trim($valorCampo);
+                $valorCampo = trim((string) $valorCampo);
             }
 
             if ($oDadosCampo->db52_imprimir == "t") {
@@ -950,7 +948,7 @@ class db_layouttxt
 
         for ($i = 0; $i < $iNumRows; $i ++) {
             foreach ($aNomeCampos as $indice => $valorcampo) {
-                $sValorVar = pg_result($rsRecord, $i, $valorcampo);
+                $sValorVar = pg_fetch_result($rsRecord, $i, $valorcampo);
                 $this->setCampo($valorcampo, $sValorVar);
             }
 
@@ -999,7 +997,7 @@ function db_setaPropriedadesLayoutTxt(&$instancia, $tipolinha, $identlinha = "")
         $instancia->carregaCamposRetorno($instancia->_codigoLinha);
         $nomeCampos = $instancia->getArrCamposNome();
 
-        $varRetornoCamposArray = array ();
+        $varRetornoCamposArray =  [];
         foreach ($nomeCampos as $x => $valorcampo) {
             $varRetornoCamposArray [$x] = @$GLOBALS ["$valorcampo"];
         }

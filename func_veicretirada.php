@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_veicretirada_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveicretirada = new cl_veicretirada;
 
@@ -98,9 +98,9 @@ $clveicretirada->rotulo->label("ve60_codigo");
            
         }
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve60_codigo)){
-          $repassa = array("chave_ve60_codigo"=>$chave_ve60_codigo,"chave_ve60_codigo"=>$chave_ve60_codigo);
+          $repassa = ["chave_ve60_codigo"=>$chave_ve60_codigo,"chave_ve60_codigo"=>$chave_ve60_codigo];
         }
 
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);

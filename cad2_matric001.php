@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcriaabas = new cl_criaabas;
 ?>
 <html>
@@ -45,10 +45,10 @@ $clcriaabas = new cl_criaabas;
 <body class="body-default abas">
   <?php
   
-    $clcriaabas->identifica = array("g1"=>"Setor","g2"=>"Quadra","g3"=>"Lote"); 
-    $clcriaabas->title = array("g1"=>"Setor","g2"=>"Quadra","g3"=>"Com as ruas");    
+    $clcriaabas->identifica = ["g1"=>"Setor","g2"=>"Quadra","g3"=>"Lote"]; 
+    $clcriaabas->title = ["g1"=>"Setor","g2"=>"Quadra","g3"=>"Com as ruas"];    
     $clcriaabas->abas_top = 50;
-    $clcriaabas->src = array("g1"=>"cad2_matric003.php","g2"=>"cad2_matric004.php","g3"=>"cad2_matric005.php");
+    $clcriaabas->src = ["g1"=>"cad2_matric003.php","g2"=>"cad2_matric004.php","g3"=>"cad2_matric005.php"];
     $clcriaabas->cria_abas();
   ?> 
 

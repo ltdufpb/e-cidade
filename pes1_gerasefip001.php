@@ -68,8 +68,8 @@ $oRotulo->label('rh90_mesusu');
             </td>
             <td>
               <?php
-                $aTipoProcessamento = array("1" => "Geral",
-                                            "2" => "Selecionados");
+                $aTipoProcessamento = ["1" => "Geral",
+                                            "2" => "Selecionados"];
                 db_select("iTipoProcessamento", $aTipoProcessamento, true, 1);
               ?>
             </td>

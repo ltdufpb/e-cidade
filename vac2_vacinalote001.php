@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 require(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/db_utils.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oDaoVacVacinaMaterial = db_utils::getdao('vac_vacinamaterial');
 $db_opcao           = 1;
 $db_botao           = true;
@@ -81,7 +81,7 @@ db_app::load("scripts.js, grid.style.css");
       </td>
       <td>
         <?php 
-          $x       = array();
+          $x       = [];
           $sSql    = $oDaoVacVacinaMaterial->sql_query_vacina(null, 
                                                            "m77_sequencial,m77_lote||' - '||m60_descr as m77_lote",
                                                            'm77_sequencial desc',

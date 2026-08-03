@@ -9,13 +9,9 @@ use ECidade\Tributario\Caixa\Entity\Collection\CotaUnicaCollection;
 
 class CotaUnicaRepository extends DataBaseRepository
 {
-    private $recibounicaRepository;
-
-    public function __construct(DataBase $dataBase, RecibounicaRepository $recibounicaRepository)
+    public function __construct(DataBase $dataBase, private readonly RecibounicaRepository $recibounicaRepository)
     {
         parent::__construct($dataBase);
-
-        $this->recibounicaRepository = $recibounicaRepository;
     }
 
     public function findAll($where)

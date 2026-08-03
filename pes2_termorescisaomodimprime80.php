@@ -49,8 +49,8 @@ if ( empty($oPost->anofolha) || empty($oPost->mesfolha) ) {
   throw new Exception('Período de calculo da folha informado inválido.');
 }
 
-$aMatriculas = array();
-$aWhere      = array();
+$aMatriculas = [];
+$aWhere      = [];
 $lHomolognet = false;
 
 $sWhere         = null;
@@ -166,7 +166,7 @@ $oPdf->Open();
 
 for ( $iIndice = 0; $iIndice < $iTotalRescisoes; $iIndice++ ) {
 
-  $aAnexos = array();
+  $aAnexos = [];
   $sNomeMae             = "";
   $nRemuneracaoAnterior = "";
   $oServidorRelatorio   = new StdClass();
@@ -175,7 +175,7 @@ for ( $iIndice = 0; $iIndice < $iTotalRescisoes; $iIndice++ ) {
   /**
    * Busca mes anterior a rescisao
    */
-  $tPeriodoAnterior  = strtotime('-1 month', strtotime($oDadosServidor->rh05_recis));
+  $tPeriodoAnterior  = strtotime('-1 month', strtotime((string) $oDadosServidor->rh05_recis));
   $iMesFolhaAnterior = date('m', $tPeriodoAnterior);
   $iAnoFolhaAnterior = date('Y', $tPeriodoAnterior);
 
@@ -218,15 +218,15 @@ for ( $iIndice = 0; $iIndice < $iTotalRescisoes; $iIndice++ ) {
   $oDocumentos = $oServidor->getDocumentos();
   $oCgm        = $oServidor->getCGM();
 
-  $aGrupos   = array();
-  $aRubricas = array();
+  $aGrupos   = [];
+  $aRubricas = [];
 
   $oGrupoPadrao               = new StdClass;
   $oGrupoPadrao->sDescricao   = "Outras Verbas Devidas";
   $oGrupoPadrao->iCodigoGrupo = "00";
   $oGrupoPadrao->iTipoGrupo   = Rubrica::TIPO_PROVENTO;
   $oGrupoPadrao->nValor       = 0;
-  $oGrupoPadrao->aRubricas    = array();
+  $oGrupoPadrao->aRubricas    = [];
 
   $sCodigoSeguranca = '';
   $sCodigoTRCT      = '';
@@ -235,7 +235,7 @@ for ( $iIndice = 0; $iIndice < $iTotalRescisoes; $iIndice++ ) {
   $i13SalarioAvos   = 0;
   $dFeriaVencidaInicio = '';
   $dFeriaVencidaFinal  = '';
-  $aFeriasVencidas = array();
+  $aFeriasVencidas = [];
 
   $sCamposRhpesrescisao = 'rh05_codigoseguranca, rh05_trct, rh05_feriasavos, rh05_feriasvencidas, rh05_13salarioavos';
   $sSqlRhpesrescisao    = $oDaoRhpesrescisao->sql_query_file($oDadosServidor->rh02_seqpes, $sCamposRhpesrescisao);
@@ -267,8 +267,8 @@ for ( $iIndice = 0; $iIndice < $iTotalRescisoes; $iIndice++ ) {
       if ( $oDaoCadferia->numrows > 0 ) {
 
         $oCadferia = db_utils::fieldsMemory($rsCadferia, 0);
-        $dFeriaVencidaInicio = date('d/m/Y', strtotime($oCadferia->r30_peraf));
-        $dFeriaVencidaFinal  = date('d/m/Y', strtotime('+1 year', strtotime($oCadferia->r30_peraf)));
+        $dFeriaVencidaInicio = date('d/m/Y', strtotime((string) $oCadferia->r30_peraf));
+        $dFeriaVencidaFinal  = date('d/m/Y', strtotime('+1 year', strtotime((string) $oCadferia->r30_peraf)));
       }
     }
 
@@ -301,7 +301,7 @@ for ( $iIndice = 0; $iIndice < $iTotalRescisoes; $iIndice++ ) {
        */
       case '50' :
 
-        $iDiasTrabalhadosMesRescisao = date('d', strtotime($oDadosServidor->rh05_recis));
+        $iDiasTrabalhadosMesRescisao = date('d', strtotime((string) $oDadosServidor->rh05_recis));
         $sDescricao = 'Saldo líquido de '. $iDiasTrabalhadosMesRescisao .'/dias Salário/faltas e DSR';
       break;
 
@@ -365,7 +365,7 @@ for ( $iIndice = 0; $iIndice < $iTotalRescisoes; $iIndice++ ) {
     $oStdGrupo->iCodigoGrupo = $oDadosGrupo->rh113_codigo;
     $oStdGrupo->iTipoGrupo   = $oDadosGrupo->rh113_tipo;
     $oStdGrupo->nValor       = 0;
-    $oStdGrupo->aRubricas    = array();
+    $oStdGrupo->aRubricas    = [];
 
     $aGrupos[$oDadosGrupo->rh114_agrupamentorubrica]     = $oStdGrupo;
     $aRubricas[$oDadosGrupo->rh114_agrupamentorubrica][] = $oDadosMovimentacao;
@@ -424,9 +424,9 @@ for ( $iIndice = 0; $iIndice < $iTotalRescisoes; $iIndice++ ) {
   $oServidorRelatorio->sCep                 = trim(db_formatar($oDadosServidor->z01_cep, 'cep'));
   $oServidorRelatorio->sCtps                = $oDadosServidor->rh16_ctps_n .'/' . $oDadosServidor->rh16_ctps_s .' ' . $oDadosServidor->rh16_ctps_d .' ' . $oDadosServidor->rh16_ctps_uf;
   $oServidorRelatorio->sCpf                 = trim(db_formatar($oDadosServidor->z01_cgccpf, 'cpf'));
-  $oServidorRelatorio->dNascimento          = date('d/m/Y', strtotime($oDadosServidor->rh01_nasc));
-  $oServidorRelatorio->dAdmissao            = date('d/m/Y', strtotime($oDadosServidor->rh01_admiss));
-  $oServidorRelatorio->dRescisao            = date('d/m/Y', strtotime($oDadosServidor->rh05_recis));
+  $oServidorRelatorio->dNascimento          = date('d/m/Y', strtotime((string) $oDadosServidor->rh01_nasc));
+  $oServidorRelatorio->dAdmissao            = date('d/m/Y', strtotime((string) $oDadosServidor->rh01_admiss));
+  $oServidorRelatorio->dRescisao            = date('d/m/Y', strtotime((string) $oDadosServidor->rh05_recis));
   $oServidorRelatorio->dAvisoPrevio         = $oDadosServidor->rh05_aviso;
   $oServidorRelatorio->sTipoContrato        = $oDadosServidor->h13_descr;
   $oServidorRelatorio->sCausaRescisao       = $oDadosServidor->rh115_descricao;
@@ -455,9 +455,9 @@ for ( $iIndice = 0; $iIndice < $iTotalRescisoes; $iIndice++ ) {
    * Caso campo rh05_aviso estiver vazio, pega data da rescisao
    */
   if ( !empty($oDadosServidor->rh05_aviso) ) {
-    $oServidorRelatorio->dAvisoPrevio = date('d/m/Y', strtotime($oDadosServidor->rh05_aviso));
+    $oServidorRelatorio->dAvisoPrevio = date('d/m/Y', strtotime((string) $oDadosServidor->rh05_aviso));
   } else {
-    $oServidorRelatorio->dAvisoPrevio = date('d/m/Y', strtotime($oDadosServidor->rh05_recis));
+    $oServidorRelatorio->dAvisoPrevio = date('d/m/Y', strtotime((string) $oDadosServidor->rh05_recis));
   }
 
   /**
@@ -514,20 +514,20 @@ for ( $iIndice = 0; $iIndice < $iTotalRescisoes; $iIndice++ ) {
       /**
        * Calcula numero de dias entre data de admissao e de rescisao
        */
-      $iDias = strtotime($oDadosServidor->rh05_recis) - strtotime($oDadosServidor->rh01_admiss);
+      $iDias = strtotime((string) $oDadosServidor->rh05_recis) - strtotime((string) $oDadosServidor->rh01_admiss);
       $iDias = (int) floor( $iDias / (60 * 60 * 24));
 
       /**
        * Menos de um ano
        */
       if ( $iDias < 365 ) {
-        $aAnexos = array(5, 6);
+        $aAnexos = [5, 6];
       } else {
-        $aAnexos = array(5, 7);
+        $aAnexos = [5, 7];
       }
 
     } else {
-      $aAnexos = array(2, 3, 4, 5);
+      $aAnexos = [2, 3, 4, 5];
     }
 
     /**
@@ -895,7 +895,7 @@ class PDFHelper {
 
     $iLarguraDescricao = $this->larguraColuna(22.22222);
     $iAlturaLinha      = 5;
-    $aAltura           = array();
+    $aAltura           = [];
 
     foreach ( $aConteudos as $oConteudo ) {
       $aAltura[] = $this->oPdf->NbLines($iLarguraDescricao, $oConteudo->sDescricao) * $iAlturaLinha;
@@ -951,8 +951,8 @@ class PDFHelper {
    */
   public function verbasRescisoriasAnexoI($aGrupoRubricas) {
 
-    $aProventos = array();
-    $aDescontos = array();
+    $aProventos = [];
+    $aDescontos = [];
     $this->oPdf->SetLeftMargin(PDFHelper::MARGIN_LEFT);
 
     foreach ( $aGrupoRubricas as $oDadosGrupo ) {
@@ -1022,8 +1022,8 @@ class PDFHelper {
    */
   public function verbasRescisoriasAnexoII($aGrupoRubricas) {
 
-    $aProventos = array();
-    $aDescontos = array();
+    $aProventos = [];
+    $aDescontos = [];
     $this->oPdf->SetLeftMargin(PDFHelper::MARGIN_LEFT);
 
     foreach ( $aGrupoRubricas as $oDadosGrupo ) {
@@ -1095,7 +1095,7 @@ class PDFHelper {
     $iAlturaPadrao           = PDFHelper::ALTURA_LINHA_VERBAS_RESCISORIAS;
     $iContadorCelulas        = 0;
     $iContadorLinhas         = 0;
-    $aLinhaGrade             = array();
+    $aLinhaGrade             = [];
 
     for ( $iIndice = 0; $iIndice < count($aGrupoRubricas); $iIndice++ ) {
 

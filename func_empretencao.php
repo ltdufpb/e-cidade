@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empretencao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempretencao = new cl_empretencao;
 $clempretencao->rotulo->label("e65_seq");
 $clempretencao->rotulo->label("e65_seq");
@@ -98,9 +98,9 @@ $clempretencao->rotulo->label("e65_seq");
         }else{
            $sql = $clempretencao->sql_query("",$campos,"e65_seq","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_e65_seq)){
-          $repassa = array("chave_e65_seq"=>$chave_e65_seq,"chave_e65_seq"=>$chave_e65_seq);
+          $repassa = ["chave_e65_seq"=>$chave_e65_seq,"chave_e65_seq"=>$chave_e65_seq];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

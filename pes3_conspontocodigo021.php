@@ -32,11 +32,11 @@ include(modification("libs/db_sessoes.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_sql.php"));
 $clgerasql = new cl_gera_sql_folha;
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
-if(trim($sigla) != ""){
-  $arr_folha = Array("tem13salario"=>"r34", "temcomplementar"=>"r47", "temferias"=>"r29", "temsalario"=>"r10", "tempontofixo"=>"r90", "temadiantamento"=>"r21", "temrescisao"=>"r19");
+if(trim((string) $sigla) != ""){
+  $arr_folha = ["tem13salario"=>"r34", "temcomplementar"=>"r47", "temferias"=>"r29", "temsalario"=>"r10", "tempontofixo"=>"r90", "temadiantamento"=>"r21", "temrescisao"=>"r19"];
   $sigla = $arr_folha[$sigla];
   $clgerasql->inicio_rh = false;
   $clgerasql->usar_pes = true;

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_extratolinha_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clextratolinha = new cl_extratolinha;
 $clextratolinha->rotulo->label("k86_sequencial");
 $clextratolinha->rotulo->label("k86_extrato");
@@ -98,9 +98,9 @@ $clextratolinha->rotulo->label("k86_extrato");
         }else{
            $sql = $clextratolinha->sql_query("",$campos,"k86_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k86_extrato)){
-          $repassa = array("chave_k86_sequencial"=>$chave_k86_sequencial,"chave_k86_extrato"=>$chave_k86_extrato);
+          $repassa = ["chave_k86_sequencial"=>$chave_k86_sequencial,"chave_k86_extrato"=>$chave_k86_extrato];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

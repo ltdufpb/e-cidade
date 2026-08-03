@@ -42,8 +42,8 @@ if (!isset($arqinclude)){
   $classinatura = new cl_assinatura;
   $orcparamrel  = new cl_orcparamrel;
   
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
   
 }
 
@@ -108,7 +108,7 @@ $head6 = "<ANO DE REFERÊNCIA>";
  * Linhas do relatorio
  */
 // fechado ate a linha 360
-	$aLinhasRelatorio              	= array();
+	$aLinhasRelatorio              	= [];
 	$aLinhasRelatorio[0]["label"]  	= "RECEITAS PREVIDENCIÁRIAS - RPPS (EXCETO INTRA-ORÇAMENTÁRIAS)(I)";    
 	$aLinhasRelatorio[1]["label"]  	= "	 RECEITAS CORRENTES";    
 	$aLinhasRelatorio[2]["label"]  	= "    Receita de Contribuíções dos Segurados";    

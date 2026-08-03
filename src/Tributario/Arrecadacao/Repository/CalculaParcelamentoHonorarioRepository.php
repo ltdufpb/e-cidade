@@ -22,29 +22,15 @@ use \Recibo as ReciboModel;
 class CalculaParcelamentoHonorarioRepository
 {
     /**
-     * @var Inicial
-     * @var ProcessoForo
-     */
-    private $model;
-
-    /**
-     * @var ProcessoForoPartilha
-     * @var InicialPartilha
-     */
-    private $repository;
-
-    /**
      * @var ReciboModel
      */
     private $recibo;
 
     public function __construct(
-        ParcelamentoHonorario $model,
-        CalculaParcelamentoHonorario $repository,
+        private readonly ParcelamentoHonorario $model,
+        private readonly CalculaParcelamentoHonorario $repository,
         ReciboModel $recibo
     ) {
-        $this->model      = $model;
-        $this->repository = $repository;
         $this->recibo     = $recibo;
     }
 
@@ -130,15 +116,15 @@ class CalculaParcelamentoHonorarioRepository
     public function verificaValoresPagos($valorCusta, $codigo, $isProcessoForo, $taxa)
     {
         if ($isProcessoForo) {
-            $processoForoRepository = ProcessoForoRepository::getInstance();
+            $processoForoRepository = (new ProcessoForoRepository())->getInstance();
             $modelValoresPagos = $processoForoRepository->getByCodigo($codigo);
 
-            $repositoryValoresPagos = ProcessoForoPartilhaRepository::getInstance();
+            $repositoryValoresPagos = (new ProcessoForoPartilhaRepository())->getInstance();
         } else {
-            $inicialRepository = InicialRepository::getInstance();
+            $inicialRepository = (new InicialRepository())->getInstance();
             $modelValoresPagos = $inicialRepository->getByCode($codigo);
 
-            $repositoryValoresPagos = InicialPartilhaRepository::getInstance();
+            $repositoryValoresPagos = (new InicialPartilhaRepository())->getInstance();
         }
 
         $valorPago = $repositoryValoresPagos->getValorPago($taxa, $modelValoresPagos);

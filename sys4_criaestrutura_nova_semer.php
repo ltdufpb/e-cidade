@@ -84,7 +84,7 @@ function valida_submit(){
      <td height=25>&nbsp;</td>
   </tr>		
 </table>
-<?php if(!isset($HTTP_POST_VARS["b_estrut"])) {?>
+<?php if(!isset($_POST["b_estrut"])) {?>
 <table border="0" cellspacing="0" cellpadding="0" bgcolor="#cccccc" style='border:1px solid black'>
    <form method="post" name="estrut" onsubmit="return valida_submit();" action="<?php echo $PHP_SELF;?>">
   <tr> 
@@ -100,8 +100,8 @@ function valida_submit(){
 		        group by m.codmod,m.nomemod
    	                order by nomemod");
       echo  "<select  name='modulos' size='10' onchange=\"mo_camada(document.estrut.modulos.value);\">";
-     for ($i = 0;$i < pg_numrows($rsmod); $i++) {
-          echo "<option value='".trim(pg_result($rsmod,$i,"nomemod"))."'>".trim(pg_result($rsmod,$i,"nomemod"))."</option>\n";  
+     for ($i = 0;$i < pg_num_rows($rsmod); $i++) {
+          echo "<option value='".trim(pg_fetch_result($rsmod,$i,"nomemod"))."'>".trim(pg_fetch_result($rsmod,$i,"nomemod"))."</option>\n";  
       }
  ?>
   </select></td></tr>
@@ -165,7 +165,7 @@ function valida_submit(){
    $modulo = "";
   //define quantos checkboxes iram ficar por linha da tabela.
    $quebratab = 1;
-   while ($j < pg_numrows($rstab)){
+   while ($j < pg_num_rows($rstab)){
       db_fieldsmemory($rstab,$j); 
       if ($modulo == $nomemod){
 	if ($quebratab == 4){
@@ -180,7 +180,7 @@ function valida_submit(){
          echo "</table>";
          echo "</div><div id='".$nomemod."'style='position:absolute; visibility:hidden' class='tabela'>";
          echo "<table border=0 cellspacing=0>";
-         echo "<td style='border-bottom:1px solid black'>&nbsp;&nbsp;<a  onClick='js_marcatodos(\"".$nomemod."\",\"".strlen($nomemod)."\");return false'href='' title='Marcar/Desmarcar todos'>M</a></td><td colspan='3' align='center' style='border-bottom:1px solid black'><font size='4'><b>Tabelas - módulo $nomemod</b></font></td></tr>";
+         echo "<td style='border-bottom:1px solid black'>&nbsp;&nbsp;<a  onClick='js_marcatodos(\"".$nomemod."\",\"".strlen((string) $nomemod)."\");return false'href='' title='Marcar/Desmarcar todos'>M</a></td><td colspan='3' align='center' style='border-bottom:1px solid black'><font size='4'><b>Tabelas - módulo $nomemod</b></font></td></tr>";
          echo "<tr>\n<td width=135><input id='".$nomemod.$j."' type='checkbox' name='chk".$nomearq.$codarq."' value='".$codarq."' onClick=\"js_preenchenome('$nomemod',chk".$nomearq.$codarq.")\">".$nomearq."</td>\n";
      }
    $modulo = $nomemod;
@@ -201,7 +201,7 @@ echo "</table>";
   }
   //cria o arquivo 
   umask(74); 
-  $root = substr($HTTP_SERVER_VARS['SCRIPT_FILENAME'],0,strrpos($HTTP_SERVER_VARS['SCRIPT_FILENAME'],"/"));
+  $root = substr((string) $_SERVER['SCRIPT_FILENAME'],0,strrpos((string) $_SERVER['SCRIPT_FILENAME'],"/"));
   $arquivo = "/tmp/".$_POST["nome_arq"];
   $fd = fopen($arquivo,'w');
   $sequencias = $_POST;
@@ -213,9 +213,9 @@ echo "</table>";
   $IND =  $_POST;
   $indice =@ $_POST["indice"];
   fputs($fd,"--DROP TABLE:\n");
-  while (list($campo,$valor) = each($_POST)){
-     if (substr($campo,0,3) == "chk"){
-          $campos  = db_query("select a.codarq,a.nomearq,m.codmod,m.nomemod
+  foreach ($_POST as $campo => $valor) {
+      if (str_starts_with((string) $campo, "chk")){
+           $campos  = db_query("select a.codarq,a.nomearq,m.codmod,m.nomemod
                               from   db_sysmodulo m
                                      inner join db_sysarqmod am
                                      on am.codmod = m.codmod
@@ -223,56 +223,56 @@ echo "</table>";
                                      on a.codarq = am.codarq
                               where a.codarq = $valor  
                               order by codmod");
-	    
-           if(pg_numrows($campos) > 0){
-               db_fieldsmemory($campos,0);
-                fputs($fd, "DROP TABLE ".trim($nomearq).";\n");      	  
-	  }
-     }
+ 	    
+            if(pg_num_rows($campos) > 0){
+                db_fieldsmemory($campos,0);
+                 fputs($fd, "DROP TABLE ".trim((string) $nomearq).";\n");      	  
+ 	  }
+      }
   }
   //cria drop sequences;
   fputs($fd,"--Criando drop sequences\n");
-  while (list($campo1,$valor1) = each($sequencias)){
-     if (substr($campo1,0,3) == "chk"){
-         $seq = db_query("select s.nomesequencia,s.incrseq,s.minvalueseq,maxvalueseq,startseq,s.cacheseq
+  foreach ($sequencias as $campo1 => $valor1) {
+      if (str_starts_with((string) $campo1, "chk")){
+          $seq = db_query("select s.nomesequencia,s.incrseq,s.minvalueseq,maxvalueseq,startseq,s.cacheseq
 	                  from db_syssequencia s
 					  inner join db_sysarqcamp a
 					  on a.codsequencia = s.codsequencia
 					  where a.codsequencia <> 0
 					  and a.codarq = $valor1");
-	   if (pg_numrows($seq) > 0){
-              $rsseq = pg_fetch_array($seq);
-  	      fputs($fd, "DROP SEQUENCE ".$rsseq["nomesequencia"].";\n");      	 
-           }
-      } 
- } 
+ 	   if (pg_num_rows($seq) > 0){
+               $rsseq = pg_fetch_array($seq);
+   	      fputs($fd, "DROP SEQUENCE ".$rsseq["nomesequencia"].";\n");      	 
+            }
+       }
+  } 
   //cria  sequences;
   fputs($fd, "\n\n-- Criando  sequences\n");
-  while (list($campo2,$valor2) = each($csequencias)){
-     if (substr($campo2,0,3) == "chk"){
-         $cseq = db_query("select s.nomesequencia,s.incrseq,s.minvalueseq,maxvalueseq,startseq,s.cacheseq
+  foreach ($csequencias as $campo2 => $valor2) {
+      if (str_starts_with((string) $campo2, "chk")){
+          $cseq = db_query("select s.nomesequencia,s.incrseq,s.minvalueseq,maxvalueseq,startseq,s.cacheseq
 	                  from db_syssequencia s
 					  inner join db_sysarqcamp a
 					  on a.codsequencia = s.codsequencia
 					  where a.codsequencia <> 0
 					  and a.codarq = $valor2");
-	   if (pg_numrows($cseq) > 0){
-              $rscseq = pg_fetch_array($cseq);
-  	      fputs($fd,"CREATE SEQUENCE ".$rscseq["nomesequencia"]."\n");
-  	      fputs($fd,"INCREMENT ".trim($rscseq["incrseq"])."\n");
-  	      fputs($fd, "MINVALUE ".trim($rscseq["minvalueseq"])."\n");
-  	      fputs($fd, "MAXVALUE ".trim($rscseq["maxvalueseq"])."\n");		 
-  	      fputs($fd, "START ".trim($rscseq["startseq"])."\n");		 		 
-  	      fputs($fd, "CACHE ".trim($rscseq["cacheseq"]).";\n");
-	      fputs($fd,"\n\n"); 
-           }
-      } 
-   }
+ 	   if (pg_num_rows($cseq) > 0){
+               $rscseq = pg_fetch_array($cseq);
+   	      fputs($fd,"CREATE SEQUENCE ".$rscseq["nomesequencia"]."\n");
+   	      fputs($fd,"INCREMENT ".trim((string) $rscseq["incrseq"])."\n");
+   	      fputs($fd, "MINVALUE ".trim((string) $rscseq["minvalueseq"])."\n");
+   	      fputs($fd, "MAXVALUE ".trim((string) $rscseq["maxvalueseq"])."\n");		 
+   	      fputs($fd, "START ".trim((string) $rscseq["startseq"])."\n");		 		 
+   	      fputs($fd, "CACHE ".trim((string) $rscseq["cacheseq"]).";\n");
+ 	      fputs($fd,"\n\n"); 
+            }
+       }
+  }
    //cria as tabelas e sua estrutura
      fputs($fd,"-- TABELAS E ESTRUTURA\n");
-    while (list($campo3,$valor3) = each($camp)){;
-       if (substr($campo3,0,3) == "chk"){
-          $tabela  = db_query("select a.codarq,a.nomearq,m.codmod,m.nomemod
+    foreach ($camp as $campo3 => $valor3) {
+        if (str_starts_with((string) $campo3, "chk")){
+           $tabela  = db_query("select a.codarq,a.nomearq,m.codmod,m.nomemod
                               from   db_sysmodulo m
                                      inner join db_sysarqmod am
                                      on am.codmod = m.codmod
@@ -280,228 +280,228 @@ echo "</table>";
                                      on a.codarq = am.codarq
                               where a.codarq = $valor3  
                               order by codmod");
-	    
-           if(pg_numrows($tabela) > 0){
-                db_fieldsmemory($tabela,0);
-           }
-          $campo = db_query("select c.nomecam,c.conteudo,c.valorinicial,s.nomesequencia,s.codsequencia
+ 	    
+            if(pg_num_rows($tabela) > 0){
+                 db_fieldsmemory($tabela,0);
+            }
+           $campo = db_query("select c.nomecam,c.conteudo,c.valorinicial,s.nomesequencia,s.codsequencia
                           from db_syscampo c
                           inner join db_sysarqcamp a
                              on a.codcam = c.codcam
 			  inner join db_syssequencia s
 		  	     on s.codsequencia = a.codsequencia
 			     where codarq = ".$valor3.
-			  "order by a.seqarq");
-	  $Ncampos = pg_numrows($campo);
-	  if ($Ncampos > 0) {
-             fputs($fd, "\n-- Módulo: ".trim($nomemod)."\n");
-             fputs($fd, "CREATE TABLE ".trim($nomearq)."(\n");      
-        for($j = 0;$j < $Ncampos;$j++) {
-          if($j == $Ncampos - 1) {
-            // Chave Primaria
-            if(isset($pk)) {
-              $pk = db_query("select a.nomearq,c.nomecam,p.sequen,c.conteudo
+ 			  "order by a.seqarq");
+ 	  $Ncampos = pg_num_rows($campo);
+ 	  if ($Ncampos > 0) {
+              fputs($fd, "\n-- Módulo: ".trim((string) $nomemod)."\n");
+              fputs($fd, "CREATE TABLE ".trim((string) $nomearq)."(\n");      
+         for($j = 0;$j < $Ncampos;$j++) {
+           if($j == $Ncampos - 1) {
+             // Chave Primaria
+             if(isset($pk)) {
+               $pk = db_query("select a.nomearq,c.nomecam,p.sequen,c.conteudo
                              from db_sysprikey p
                                   inner join db_sysarquivo a on a.codarq = p.codarq
                                   inner join db_syscampo c on c.codcam = p.codcam
                              where a.codarq = ".$valor3);
-              if(pg_numrows($pk) > 0) {
-                $x = trim(pg_result($campo,$j,"conteudo"));
-				if(substr($x,0,3)=="flo" || substr($x,0,3)=="int" || substr($x,0,4)=="date" ){
-                  fputs($fd, trim(pg_result($campo,$j,"nomecam"))."\t\t".trim(pg_result($campo,$j,"conteudo"))." ".(trim(pg_result($campo,$j,"valorinicial"))!=""?"default ".pg_result($campo,$j,"valorinicial"):
-                       (pg_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_result($campo,$j,"nomesequencia")."')":"")).",\n");
-				}else{
-                  fputs($fd,trim(pg_result($campo,$j,"nomecam"))."\t\t".trim(pg_result($campo,$j,"conteudo"))." ".(trim(pg_result($campo,$j,"valorinicial"))!=""?"default '".pg_result($campo,$j,"valorinicial")."'":(pg_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_result($campo,$j,"nomesequencia")."')":"")).",\n");
-                }
-                $Npk = pg_numrows($pk);
-                $primary_key = "(";
-                $nomePK = trim($nomearq)."_";
-                for($p = 0;$p < $Npk;$p++) {
-                  $cc = split("_",trim(pg_result($pk,$p,"nomecam")));
-                  if(strlen(strstr(strtoupper(@$cc[1]),"ANOUSU")) > 0)
-                    $nomePK = $nomePK."ae_";
-                  else if(strlen(strstr(strtoupper(@$cc[1]),"MESUSU")) > 0)
-                    $nomePK = $nomePK."me_";
-                  else {
-				    $ICC = sizeof($cc) == 1?0:1;
-					if(strlen($cc[$ICC]) >=4 )
-                      $nomePK = $nomePK.$cc[$ICC][0].$cc[$ICC][1].$cc[$ICC][2].$cc[$ICC][3]."_";
-					else
-					  $nomePK = $nomePK.$cc[$ICC]."_";
-				  }
-                  if($p == $Npk - 1)
-                    $primary_key = $primary_key.trim(pg_result($pk,$p,"nomecam")).")";
-                  else
-                    $primary_key = $primary_key.trim(pg_result($pk,$p,"nomecam")).",";
-                }
-                $nomePK = $nomePK."pk";
-               fputs($fd, "CONSTRAINT $nomePK PRIMARY KEY $primary_key);\n\n");
-              } else {
-                $x = trim(pg_result($campo,$j,"conteudo"));
-				if(substr($x,0,3)=="flo" || substr($x,0,3)=="int" || substr($x,0,4)=="date" ){
-                  fputs($fd, trim(pg_result($campo,$j,"nomecam"))."\t\t".trim(pg_result($campo,$j,"conteudo"))." ".(trim(pg_result($campo,$j,"valorinicial"))!=""?"default ".pg_result($campo,$j,"valorinicial"):(pg_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_result($campo,$j,"nomesequencia")."')":"")).");\n");//tres
-				}else{
-                  fputs($fd, trim(pg_result($campo,$j,"nomecam"))."\t\t".trim(pg_result($campo,$j,"conteudo"))." ".(trim(pg_result($campo,$j,"valorinicial"))!=""?"default '".pg_result($campo,$j,"valorinicial")."'":(pg_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_result($campo,$j,"nomesequencia")."')":"")).");\n");
-                }
+               if(pg_num_rows($pk) > 0) {
+                 $x = trim(pg_fetch_result($campo,$j,"conteudo"));
+ 				if(str_starts_with($x, "flo") || str_starts_with($x, "int") || str_starts_with($x, "date") ){
+                   fputs($fd, trim(pg_fetch_result($campo,$j,"nomecam"))."\t\t".trim(pg_fetch_result($campo,$j,"conteudo"))." ".(trim(pg_fetch_result($campo,$j,"valorinicial"))!=""?"default ".pg_fetch_result($campo,$j,"valorinicial"):
+                        (pg_fetch_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_fetch_result($campo,$j,"nomesequencia")."')":"")).",\n");
+ 				}else{
+                   fputs($fd,trim(pg_fetch_result($campo,$j,"nomecam"))."\t\t".trim(pg_fetch_result($campo,$j,"conteudo"))." ".(trim(pg_fetch_result($campo,$j,"valorinicial"))!=""?"default '".pg_fetch_result($campo,$j,"valorinicial")."'":(pg_fetch_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_fetch_result($campo,$j,"nomesequencia")."')":"")).",\n");
+                 }
+                 $Npk = pg_num_rows($pk);
+                 $primary_key = "(";
+                 $nomePK = trim((string) $nomearq)."_";
+                 for($p = 0;$p < $Npk;$p++) {
+                   $cc = preg_split("#_#m",trim(pg_fetch_result($pk,$p,"nomecam")));
+                   if(strlen(strstr(strtoupper((string) @$cc[1]),"ANOUSU")) > 0)
+                     $nomePK = $nomePK."ae_";
+                   else if(strlen(strstr(strtoupper((string) @$cc[1]),"MESUSU")) > 0)
+                     $nomePK = $nomePK."me_";
+                   else {
+ 				    $ICC = sizeof($cc) == 1?0:1;
+ 					if(strlen((string) $cc[$ICC]) >=4 )
+                       $nomePK = $nomePK.$cc[$ICC][0].$cc[$ICC][1].$cc[$ICC][2].$cc[$ICC][3]."_";
+ 					else
+ 					  $nomePK = $nomePK.$cc[$ICC]."_";
+ 				  }
+                   if($p == $Npk - 1)
+                     $primary_key = $primary_key.trim(pg_fetch_result($pk,$p,"nomecam")).")";
+                   else
+                     $primary_key = $primary_key.trim(pg_fetch_result($pk,$p,"nomecam")).",";
+                 }
+                 $nomePK = $nomePK."pk";
+                fputs($fd, "CONSTRAINT $nomePK PRIMARY KEY $primary_key);\n\n");
+               } else {
+                 $x = trim(pg_fetch_result($campo,$j,"conteudo"));
+ 				if(str_starts_with($x, "flo") || str_starts_with($x, "int") || str_starts_with($x, "date") ){
+                   fputs($fd, trim(pg_fetch_result($campo,$j,"nomecam"))."\t\t".trim(pg_fetch_result($campo,$j,"conteudo"))." ".(trim(pg_fetch_result($campo,$j,"valorinicial"))!=""?"default ".pg_fetch_result($campo,$j,"valorinicial"):(pg_fetch_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_fetch_result($campo,$j,"nomesequencia")."')":"")).");\n");//tres
+ 				}else{
+                   fputs($fd, trim(pg_fetch_result($campo,$j,"nomecam"))."\t\t".trim(pg_fetch_result($campo,$j,"conteudo"))." ".(trim(pg_fetch_result($campo,$j,"valorinicial"))!=""?"default '".pg_fetch_result($campo,$j,"valorinicial")."'":(pg_fetch_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_fetch_result($campo,$j,"nomesequencia")."')":"")).");\n");
+                 }
+               }
+             } else {
+               $x = trim(pg_fetch_result($campo,$j,"conteudo"));
+ 			  if(str_starts_with($x, "flo") || str_starts_with($x, "int") || str_starts_with($x, "date") ){
+                fputs($fd, trim(pg_fetch_result($campo,$j,"nomecam"))."\t\t".trim(pg_fetch_result($campo,$j,"conteudo"))." ".(trim(pg_fetch_result($campo,$j,"valorinicial"))!=""?"default ".pg_fetch_result($campo,$j,"valorinicial"):(pg_fetch_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_fetch_result($campo,$j,"nomesequencia")."')":"")).");\n");
+ 			  }else{
+                fputs($fd, trim(pg_fetch_result($campo,$j,"nomecam"))."\t\t".trim(pg_fetch_result($campo,$j,"conteudo"))." ".(trim(pg_fetch_result($campo,$j,"valorinicial"))!=""?"default '".pg_fetch_result($campo,$j,"valorinicial")."'":(pg_fetch_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_fetch_result($campo,$j,"nomesequencia")."')":"")).");\n");
+               }
+ 			}
+           }else{
+              $x = trim(pg_fetch_result($campo,$j,"conteudo"));
+ 			 if(str_starts_with($x, "flo") || str_starts_with($x, "int") || str_starts_with($x, "date") ){
+                 fputs($fd, trim(pg_fetch_result($campo,$j,"nomecam"))."\t\t".trim(pg_fetch_result($campo,$j,"conteudo"))." ".(trim(pg_fetch_result($campo,$j,"valorinicial"))!=""?"default ".pg_fetch_result($campo,$j,"valorinicial"):(pg_fetch_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_fetch_result($campo,$j,"nomesequencia")."')":"")).",\n");
+ 			 }else{
+                 fputs($fd, trim(pg_fetch_result($campo,$j,"nomecam"))."\t\t".trim(pg_fetch_result($campo,$j,"conteudo"))." ".(trim(pg_fetch_result($campo,$j,"valorinicial"))!=""?"default '".pg_fetch_result($campo,$j,"valorinicial")."'":(pg_fetch_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_fetch_result($campo,$j,"nomesequencia")."')":"")).",\n");
               }
-            } else {
-              $x = trim(pg_result($campo,$j,"conteudo"));
-			  if(substr($x,0,3)=="flo" || substr($x,0,3)=="int" || substr($x,0,4)=="date" ){
-               fputs($fd, trim(pg_result($campo,$j,"nomecam"))."\t\t".trim(pg_result($campo,$j,"conteudo"))." ".(trim(pg_result($campo,$j,"valorinicial"))!=""?"default ".pg_result($campo,$j,"valorinicial"):(pg_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_result($campo,$j,"nomesequencia")."')":"")).");\n");
-			  }else{
-               fputs($fd, trim(pg_result($campo,$j,"nomecam"))."\t\t".trim(pg_result($campo,$j,"conteudo"))." ".(trim(pg_result($campo,$j,"valorinicial"))!=""?"default '".pg_result($campo,$j,"valorinicial")."'":(pg_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_result($campo,$j,"nomesequencia")."')":"")).");\n");
-              }
-			}
-          }else{
-             $x = trim(pg_result($campo,$j,"conteudo"));
-			 if(substr($x,0,3)=="flo" || substr($x,0,3)=="int" || substr($x,0,4)=="date" ){
-                fputs($fd, trim(pg_result($campo,$j,"nomecam"))."\t\t".trim(pg_result($campo,$j,"conteudo"))." ".(trim(pg_result($campo,$j,"valorinicial"))!=""?"default ".pg_result($campo,$j,"valorinicial"):(pg_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_result($campo,$j,"nomesequencia")."')":"")).",\n");
-			 }else{
-                fputs($fd, trim(pg_result($campo,$j,"nomecam"))."\t\t".trim(pg_result($campo,$j,"conteudo"))." ".(trim(pg_result($campo,$j,"valorinicial"))!=""?"default '".pg_result($campo,$j,"valorinicial")."'":(pg_result($campo,$j,"codsequencia")!="0"?" default nextval('".pg_result($campo,$j,"nomesequencia")."')":"")).",\n");
-             }
-          }
-	}
-      }
-    }
-  }  
+           }
+ 	}
+       }
+     }
+    }  
 // Foreign Key
 if (isset($fk)) {
    fputs ($fd,"\n\n\n-- CHAVE ESTRANGEIRA\n\n\n");
-   while (list($campo5,$valor5) = each($FKs)){
-      if (substr($campo5,0,3) == "chk"){
-          $grupo = db_query("select count(referen),referen
+   foreach ($FKs as $campo5 => $valor5) {
+       if (str_starts_with((string) $campo5, "chk")){
+           $grupo = db_query("select count(referen),referen
                             from db_sysforkey
                             where codarq = $valor5
                             group by referen");
-          $nome = db_query("select nomearq from db_sysarquivo where codarq = $valor5");
-    $Ngrupo = pg_numrows($grupo);
-    for($j = 0;$j < $Ngrupo;$j++) {
-      $fk = db_query("select pai.nomearq as t_pai,c.nomecam
+           $nome = db_query("select nomearq from db_sysarquivo where codarq = $valor5");
+     $Ngrupo = pg_num_rows($grupo);
+     for($j = 0;$j < $Ngrupo;$j++) {
+       $fk = db_query("select pai.nomearq as t_pai,c.nomecam
                      from db_sysforkey f
                      inner join db_sysarquivo pai
                      on pai.codarq = f.referen
                      inner join db_syscampo c
                      on c.codcam = f.codcam
                      where f.codarq = $valor5
-                     and f.referen = ".pg_result($grupo,$j,"referen")."
+                     and f.referen = ".pg_fetch_result($grupo,$j,"referen")."
                      order by f.sequen,f.referen");
-      $NomeFK = trim(pg_result($nome,0,"nomearq"))."_";
-      $_f_ = pg_numrows($fk);
-      $CampFK = "(";
-      for($f = 0;$f < $_f_;$f++) {
-        if($f == $_f_ - 1)
-          $CampFK = $CampFK.trim(pg_result($fk,$f,"nomecam")).")";
-	   else
-          $CampFK = $CampFK.trim(pg_result($fk,$f,"nomecam")).",";
-        $cc = split("_",trim(pg_result($fk,$f,"nomecam")));
-        if(strlen(strstr(strtoupper(@$cc[1]),"ANOUSU")) > 0)
-          $NomeFK = $NomeFK."ae_";
-        else if(strlen(strstr(strtoupper(@$cc[1]),"MESEXE")) > 0)
-          $NomeFK = $NomeFK."me_";
-        else {
-          $ICC = sizeof($cc) == 1?0:1;
-          if(strlen($cc[$ICC]) >=4 )
-		    $NomeFK = $NomeFK.$cc[$ICC][0].$cc[$ICC][1].$cc[$ICC][2].$cc[$ICC][3]."_";
-          else			
-            $NomeFK = $NomeFK.@$cc[$ICC];
-		}
-        $TabPai = trim(pg_result($fk,$f,"t_pai"));
-      }
-      $NomeFK = $NomeFK."fk";
-      fputs($fd, "ALTER TABLE ".trim(pg_result($nome,0,"nomearq"))."\n");
-      fputs($fd, "ADD CONSTRAINT $NomeFK FOREIGN KEY $CampFK\n");
-      fputs($fd, "REFERENCES $TabPai;\n\n");
+       $NomeFK = trim(pg_fetch_result($nome,0,"nomearq"))."_";
+       $_f_ = pg_num_rows($fk);
+       $CampFK = "(";
+       for($f = 0;$f < $_f_;$f++) {
+         if($f == $_f_ - 1)
+           $CampFK = $CampFK.trim(pg_fetch_result($fk,$f,"nomecam")).")";
+ 	   else
+           $CampFK = $CampFK.trim(pg_fetch_result($fk,$f,"nomecam")).",";
+         $cc = preg_split("#_#m",trim(pg_fetch_result($fk,$f,"nomecam")));
+         if(strlen(strstr(strtoupper((string) @$cc[1]),"ANOUSU")) > 0)
+           $NomeFK = $NomeFK."ae_";
+         else if(strlen(strstr(strtoupper((string) @$cc[1]),"MESEXE")) > 0)
+           $NomeFK = $NomeFK."me_";
+         else {
+           $ICC = sizeof($cc) == 1?0:1;
+           if(strlen((string) $cc[$ICC]) >=4 )
+ 		    $NomeFK = $NomeFK.$cc[$ICC][0].$cc[$ICC][1].$cc[$ICC][2].$cc[$ICC][3]."_";
+           else			
+             $NomeFK = $NomeFK.@$cc[$ICC];
+ 		}
+         $TabPai = trim(pg_fetch_result($fk,$f,"t_pai"));
+       }
+       $NomeFK = $NomeFK."fk";
+       fputs($fd, "ALTER TABLE ".trim(pg_fetch_result($nome,0,"nomearq"))."\n");
+       fputs($fd, "ADD CONSTRAINT $NomeFK FOREIGN KEY $CampFK\n");
+       fputs($fd, "REFERENCES $TabPai;\n\n");
+     }
     }
    }
- }
 }
 // Indices
 if (isset($indice)) {
    fputs ($fd,"\n\n\n-- INDICES\n\n\n");
-   while (list($campo6,$valor6) = each($IND)){
-      if (substr($campo6,0,3) == "chk"){
-         $ind = db_query("select i.codind,i.nomeind,i.campounico
+   foreach ($IND as $campo6 => $valor6) {
+       if (str_starts_with((string) $campo6, "chk")){
+          $ind = db_query("select i.codind,i.nomeind,i.campounico
                          from db_sysindices i
                               inner join db_sysarquivo a
                                on a.codarq = i.codarq
                          where a.codarq = $valor6");
-          $nome = db_query("select nomearq from db_sysarquivo where codarq = $valor6");
-    if ($Ni = pg_numrows($ind) > 0) {
-        for ($j = 0;$j < $Ni;$j++) {
-        $Ncam = db_query("select c.nomecam
+           $nome = db_query("select nomearq from db_sysarquivo where codarq = $valor6");
+     if ($Ni = pg_num_rows($ind) > 0) {
+         for ($j = 0;$j < $Ni;$j++) {
+         $Ncam = db_query("select c.nomecam
                          from db_syscampo c
                          inner join db_syscadind ci
                          on ci.codcam = c.codcam
                          inner join db_sysindices i
                          on i.codind = ci.codind
-                         where i.codind = ".pg_result($ind,$j,"codind"));
-        $campos = "(";
-        for($n = 0;$n < pg_numrows($Ncam);$n++) {
-          if($n == pg_numrows($Ncam) - 1)
-            $campos = $campos.trim(pg_result($Ncam,$n,"nomecam"));
-          else
-            $campos = $campos.trim(pg_result($Ncam,$n,"nomecam")).",";
-        }
-        $campos = $campos.");";
-        fputs($fd,"CREATE ".( pg_result($ind,$j,"campounico")=="1"?"UNIQUE":"")." INDEX ".trim(pg_result($ind,$j,"nomeind"))." ON ".trim(pg_result($nome,0,"nomearq")).$campos."\n\n");
-     } 
+                         where i.codind = ".pg_fetch_result($ind,$j,"codind"));
+         $campos = "(";
+         for($n = 0;$n < pg_num_rows($Ncam);$n++) {
+           if($n == pg_num_rows($Ncam) - 1)
+             $campos = $campos.trim(pg_fetch_result($Ncam,$n,"nomecam"));
+           else
+             $campos = $campos.trim(pg_fetch_result($Ncam,$n,"nomecam")).",";
+         }
+         $campos = $campos.");";
+         fputs($fd,"CREATE ".( pg_fetch_result($ind,$j,"campounico")=="1"?"UNIQUE":"")." INDEX ".trim(pg_fetch_result($ind,$j,"nomeind"))." ON ".trim(pg_fetch_result($nome,0,"nomearq")).$campos."\n\n");
+      } 
+      }
      }
-    }
-  }
+   }
 }
 
 //Funções
 if(isset($funcoes)) {
   fputs($fd,"\n\n\n-- FUNÇÕES\n\n\n");
   $result = db_query("select triggerfuncao,nomefuncao,corpofuncao from db_sysfuncoes where triggerfuncao = '0'");
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
   for($i = 0;$i < $numrows;$i++) {
-    fputs($fd,"DROP FUNCTION ".trim(pg_result($result,$i,"nomefuncao")).";\n");	
+    fputs($fd,"DROP FUNCTION ".trim(pg_fetch_result($result,$i,"nomefuncao")).";\n");	
   }  
   fputs($fd,"\n\n\n");  
   for($i = 0;$i < $numrows;$i++) {
-    fputs($fd,pg_result($result,$i,"corpofuncao").";\n\n\n");
+    fputs($fd,pg_fetch_result($result,$i,"corpofuncao").";\n\n\n");
   }
 }
 //Views
 if(isset($views)) {
   fputs($fd,"\n\n\n-- VISÕES\n\n\n");
   $result = db_query("select triggerfuncao,nomefuncao,corpofuncao from db_sysfuncoes where triggerfuncao = '2'");
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
   for($i = 0;$i < $numrows;$i++) {
-    fputs($fd,"DROP VIEW ".trim(pg_result($result,$i,"nomefuncao")).";\n");
+    fputs($fd,"DROP VIEW ".trim(pg_fetch_result($result,$i,"nomefuncao")).";\n");
   }  
   fputs($fd,"\n\n\n");  
   for($i = 0;$i < $numrows;$i++) {
-    fputs($fd,pg_result($result,$i,"corpofuncao").";\n\n\n");
+    fputs($fd,pg_fetch_result($result,$i,"corpofuncao").";\n\n\n");
   }
 }
 
 //triggers
 if(isset($triggers)) {
-  while (list($campo7,$valor7) = each($IND)){
-     if (substr($campo7,0,3) == "chk"){
-         $meta = "where a.codarq=$valor7";
-     }else{
-         $meta = "";
-          $RecordsetTabMod  = db_query("select a.codarq,a.nomearq,m.codmod,m.nomemod
+  foreach ($IND as $campo7 => $valor7) {
+      if (str_starts_with((string) $campo7, "chk")){
+          $meta = "where a.codarq=$valor7";
+      }else{
+          $meta = "";
+           $RecordsetTabMod  = db_query("select a.codarq,a.nomearq,m.codmod,m.nomemod
                                        from   db_sysmodulo m
                                               inner join db_sysarqmod am
                                               on am.codmod = m.codmod
                                               inner join db_sysarquivo a
                                               on a.codarq = am.codarq".
-                                              $meta."
+                                               $meta."
                                        order by codmod");
- 
-           fputs($fd,"\n\n\n-- TRIGGERS\n\n\n");
-           $numrows = pg_numrows($RecordsetTabMod);
-           $c = "";
-           $str = "";
-           for ($i = 0;$i < $numrows;$i++) {
-              $str .= $c.pg_result($RecordsetTabMod,$i,"codarq");
-	      $c = ",";
-           }
-  	   $result = db_query("select f.corpofuncao,f.nomefuncao,t.nometrigger,t.quandotrigger,t.eventotrigger,tab.nomearq
+  
+            fputs($fd,"\n\n\n-- TRIGGERS\n\n\n");
+            $numrows = pg_num_rows($RecordsetTabMod);
+            $c = "";
+            $str = "";
+            for ($i = 0;$i < $numrows;$i++) {
+               $str .= $c.pg_fetch_result($RecordsetTabMod,$i,"codarq");
+ 	      $c = ",";
+            }
+   	   $result = db_query("select f.corpofuncao,f.nomefuncao,t.nometrigger,t.quandotrigger,t.eventotrigger,tab.nomearq
            		      from   db_sysfuncoes f
 				     inner join db_systriggers t
 				     on t.codfuncao = f.codfuncao
@@ -509,28 +509,28 @@ if(isset($triggers)) {
 				     on tab.codarq = t.codarq
 		               where triggerfuncao = '1'
 			       and t.codarq in(".$str.")");
-           $numrows = pg_numrows($result);
-           //drop trigger
-           for ($i = 0;$i < $numrows;$i++) {
-              fputs($fd,"DROP TRIGGER ".trim(pg_result($result,$i,"nometrigger"))." ON ".trim(pg_result($result,$i,"nomearq")).";\n");
-           }
-           //drop functions
+            $numrows = pg_num_rows($result);
+            //drop trigger
+            for ($i = 0;$i < $numrows;$i++) {
+               fputs($fd,"DROP TRIGGER ".trim(pg_fetch_result($result,$i,"nometrigger"))." ON ".trim(pg_fetch_result($result,$i,"nomearq")).";\n");
+            }
+            //drop functions
+            fputs($fd,"\n\n\n");  
+            for ($i = 0;$i < $numrows;$i++) {
+               fputs($fd,"DROP FUNCTION ".trim(pg_fetch_result($result,$i,"nomefuncao")).";\n");
+            }
+           //cria as funções das triggers
            fputs($fd,"\n\n\n");  
            for ($i = 0;$i < $numrows;$i++) {
-              fputs($fd,"DROP FUNCTION ".trim(pg_result($result,$i,"nomefuncao")).";\n");
+              fputs ($fd,pg_fetch_result($result,$i,"corpofuncao").";\n\n\n");
            }
-          //cria as funções das triggers
-          fputs($fd,"\n\n\n");  
+           //cria as triggers
           for ($i = 0;$i < $numrows;$i++) {
-             fputs ($fd,pg_result($result,$i,"corpofuncao").";\n\n\n");
+            fputs($fd,"CREATE TRIGGER ".trim(pg_fetch_result($result,$i,"nometrigger"))."\n");
+            fputs ($fd,pg_fetch_result($result,$i,"quandotrigger")." ".pg_fetch_result($result,$i,"eventotrigger").
+                  " FOR EACH ROW EXECUTE PROCEDURE ".trim(pg_fetch_result($result,$i,"nomefuncao")).";\n\n");
           }
-          //cria as triggers
-         for ($i = 0;$i < $numrows;$i++) {
-           fputs($fd,"CREATE TRIGGER ".trim(pg_result($result,$i,"nometrigger"))."\n");
-           fputs ($fd,pg_result($result,$i,"quandotrigger")." ".pg_result($result,$i,"eventotrigger").
-                 " FOR EACH ROW EXECUTE PROCEDURE ".trim(pg_result($result,$i,"nomefuncao")).";\n\n");
-         }
-     }
+      }
   }
 }
 fclose($fd);

@@ -47,9 +47,9 @@ $db_opcao   = 33;
 <body bgcolor=#CCCCCC leftmargin="0" style="margin-top:18px;!important;" topmargin="0" marginwidth="0" marginheight="0" onLoad="a=1;">
 
   <?php
-    $clcriaabas->identifica = array("detalhes" => "Detalhes", "multas" => "Multas"); 
-    $clcriaabas->src        = array("detalhes" => "cai1_recejm006.php");
-    $clcriaabas->disabled   = array("multas"   => "true"); 
+    $clcriaabas->identifica = ["detalhes" => "Detalhes", "multas" => "Multas"]; 
+    $clcriaabas->src        = ["detalhes" => "cai1_recejm006.php"];
+    $clcriaabas->disabled   = ["multas"   => "true"]; 
     $clcriaabas->cria_abas(); 
 
     db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession("DB_anousu"),db_getsession("DB_instit"));

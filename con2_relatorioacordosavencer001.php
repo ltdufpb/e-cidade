@@ -56,21 +56,21 @@ $db_opcao   = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-       $clcriaabas->identifica = array("acordoavencer"=>"Acordos a Vencer",
+       $clcriaabas->identifica = ["acordoavencer"=>"Acordos a Vencer",
                                        "grupoacordo"=>"Grupo de Acordos",
-                                       "contratado"=>"Contratados");
+                                       "contratado"=>"Contratados"];
 
-       $clcriaabas->title      = array("acordoavencer"=>"Acordos a Vencer",
+       $clcriaabas->title      = ["acordoavencer"=>"Acordos a Vencer",
                                        "grupoacordo"=>"Grupo de Acordos",
-                                       "contratado"=>"Contratados");
+                                       "contratado"=>"Contratados"];
        
-       $clcriaabas->src        = array("acordoavencer"=>"con2_relatorioacordosavencer003.php",
+       $clcriaabas->src        = ["acordoavencer"=>"con2_relatorioacordosavencer003.php",
                                        "grupoacordo"=>"con2_relatorioacordos005.php",
-                                       "contratado"=>"con2_relatorioacordos006.php");
+                                       "contratado"=>"con2_relatorioacordos006.php"];
        
-       $clcriaabas->sizecampo  = array("acordoavencer"=>"23",
+       $clcriaabas->sizecampo  = ["acordoavencer"=>"23",
                                        "grupoacordo"=>"23",
-                                       "contratado"=>"23");
+                                       "contratado"=>"23"];
        $clcriaabas->cria_abas(); 
      ?> 
     </td>

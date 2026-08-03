@@ -20,96 +20,96 @@ class M10500ReginAlteracoes extends PostgresMigration
     /**
      * Cria tabelas
      */
-    $aColumns = array('codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform');
-    $aValues  = array(
-      array(1010277, 'juntacomercialprotocoloretorno', 'Tabela que salva o retorno do processamento das requisições do Regin', 'q149', '2018-04-18', 'Tabela de retornos de requisicoes do Regin', 0, 'f', 'f', 'f', 'f'),
-    );
-    $table    = $this->table('db_sysarquivo', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'nomearq', 'descricao', 'sigla', 'dataincl', 'rotulo', 'tipotabela', 'naolibclass', 'naolibfunc', 'naolibprog', 'naolibform'];
+    $aValues  = [
+      [1010277, 'juntacomercialprotocoloretorno', 'Tabela que salva o retorno do processamento das requisições do Regin', 'q149', '2018-04-18', 'Tabela de retornos de requisicoes do Regin', 0, 'f', 'f', 'f', 'f'],
+    ];
+    $table    = $this->table('db_sysarquivo', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // vincula modulo
-    $aColumns = array('codmod', 'codarq' );
-    $aValues  = array(
+    $aColumns = ['codmod', 'codarq' ];
+    $aValues  = [
       /**
       *lista de campos
       */
-      array(3,1010277)
-    );
-    $table    = $this->table('db_sysarqmod', array('schema' => 'configuracoes'));
+      [3,1010277]
+    ];
+    $table    = $this->table('db_sysarqmod', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     /**
      * Cria campos
      */
-    $aColumns = array('codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel');
-    $aValues  = array(
-        array(1009713,'q149_sequencial','int4','Sequencial','0', 'Sequencial',10,'f','f','f',1,'text','Sequencial'),
-        array(1009714,'q149_juntacomercialprotocolo','int4','Protocolo','0', 'Protocolo',10,'f','f','f',1,'text','Protocolo'),
-        array(1009715,'q149_xml','text','XML','', 'XML',1,'f','f','f',0,'text','XML')
-    );
-    $table    = $this->table('db_syscampo', array('schema' => 'configuracoes'));
+    $aColumns = ['codcam', 'nomecam', 'conteudo', 'descricao', 'valorinicial', 'rotulo', 'tamanho', 'nulo', 'maiusculo', 'autocompl', 'aceitatipo', 'tipoobj', 'rotulorel'];
+    $aValues  = [
+        [1009713,'q149_sequencial','int4','Sequencial','0', 'Sequencial',10,'f','f','f',1,'text','Sequencial'],
+        [1009714,'q149_juntacomercialprotocolo','int4','Protocolo','0', 'Protocolo',10,'f','f','f',1,'text','Protocolo'],
+        [1009715,'q149_xml','text','XML','', 'XML',1,'f','f','f',0,'text','XML']
+    ];
+    $table    = $this->table('db_syscampo', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     /**
      * db_sysarqcamp
      */
-    $aColumns = array('codarq', 'codcam', 'seqarq', 'codsequencia');
-    $aValues  = array(
-        array(1010277,1009713,1,0),
-        array(1010277,1009714,2,0),
-        array(1010277,1009715,3,0),
-    );
-    $table    = $this->table('db_sysarqcamp', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'codcam', 'seqarq', 'codsequencia'];
+    $aValues  = [
+        [1010277,1009713,1,0],
+        [1010277,1009714,2,0],
+        [1010277,1009715,3,0],
+    ];
+    $table    = $this->table('db_sysarqcamp', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
 
     // inclui a sequence
-    $aColumns = array('codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq');
-    $aValues  = array(
-      array(1000729, 'juntacomercialprotocoloretorno_q149_sequencial_seq', 1, 1, 9223372036854775807, 1, 1),
-    );
-    $table    = $this->table('db_syssequencia', array('schema' => 'configuracoes'));
+    $aColumns = ['codsequencia', 'nomesequencia', 'incrseq', 'minvalueseq', 'maxvalueseq', 'startseq', 'cacheseq'];
+    $aValues  = [
+      [1000729, 'juntacomercialprotocoloretorno_q149_sequencial_seq', 1, 1, 9223372036854775807, 1, 1],
+    ];
+    $table    = $this->table('db_syssequencia', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui a chave primaria
-    $aColumns = array('codarq','codcam','sequen','camiden');
-    $aValues  = array(
-      array(1010277,1009713,1,1009713),
-    );
-    $table    = $this->table('db_sysprikey', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq','codcam','sequen','camiden'];
+    $aValues  = [
+      [1010277,1009713,1,1009713],
+    ];
+    $table    = $this->table('db_sysprikey', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui a chave estrangeira
-    $aColumns = array('codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel');
-    $aValues  = array(
-      array(1010277,1009714,1,1010222,0)
-    );
-    $table    = $this->table('db_sysforkey', array('schema' => 'configuracoes'));
+    $aColumns = ['codarq', 'codcam', 'sequen', 'referen', 'tipoobjrel'];
+    $aValues  = [
+      [1010277,1009714,1,1010222,0]
+    ];
+    $table    = $this->table('db_sysforkey', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // inclui os indices
-    $aColumns = array('codind', 'nomeind', 'codarq', 'campounico');
-    $aValues  = array(
-      array(1008274,'q149_sequencial_in',1010277,'0')
+    $aColumns = ['codind', 'nomeind', 'codarq', 'campounico'];
+    $aValues  = [
+      [1008274,'q149_sequencial_in',1010277,'0']
 
-    );
-    $table    = $this->table('db_sysindices', array('schema' => 'configuracoes'));
+    ];
+    $table    = $this->table('db_sysindices', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 
     // vincula os indices
-    $aColumns = array('codind', 'codcam', 'sequen');
-    $aValues  = array(
-      array(1008274,1009713,1),
-    );
-    $table    = $this->table('db_syscadind', array('schema' => 'configuracoes'));
+    $aColumns = ['codind', 'codcam', 'sequen'];
+    $aValues  = [
+      [1008274,1009713,1],
+    ];
+    $table    = $this->table('db_syscadind', ['schema' => 'configuracoes']);
     $table->insert($aColumns, $aValues);
     $table->saveData();
 

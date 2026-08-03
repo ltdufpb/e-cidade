@@ -55,12 +55,12 @@ $oAbas = new cl_criaabas();
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php  
-			$oAbas->identifica = array("inventario" => "Filtros", "inventariorel" => "Contas Contábeis");
-			$oAbas->title      = array("inventario" => "Filtros", "inventariorel" => "Contas Contábeis");
-			$oAbas->src        = array("inventario" => "mat2_inventoriofisicocontabil004.php", 
-																 "inventariorel" => "mat2_inventoriofisicocontabil005.php");
-			$oAbas->sizecampo  = array("inventario" => "23",  "inventariorel" => "23" );
-			$oAbas->disabled   = array("inventario" => false, "inventariorel" => true );
+			$oAbas->identifica = ["inventario" => "Filtros", "inventariorel" => "Contas Contábeis"];
+			$oAbas->title      = ["inventario" => "Filtros", "inventariorel" => "Contas Contábeis"];
+			$oAbas->src        = ["inventario" => "mat2_inventoriofisicocontabil004.php", 
+																 "inventariorel" => "mat2_inventoriofisicocontabil005.php"];
+			$oAbas->sizecampo  = ["inventario" => "23",  "inventariorel" => "23" ];
+			$oAbas->disabled   = ["inventario" => false, "inventariorel" => true ];
 			$oAbas->cria_abas(); 
     ?>   
     </center>

@@ -32,7 +32,7 @@ use JSON;
 
 class TipoLogradouro implements TabelasInterface
 {
-    protected $tipos = array();
+    protected $tipos = [];
 
     public function __construct()
     {
@@ -46,9 +46,7 @@ class TipoLogradouro implements TabelasInterface
      */
     public function getValue($valor)
     {
-        $tipo = array_filter($this->tipos, function($tipo) use ($valor) {
-            return DBString::slugify($tipo->label) === DBString::slugify($valor);
-        });
+        $tipo = array_filter($this->tipos, fn($tipo) => DBString::slugify($tipo->label) === DBString::slugify($valor));
 
         $tipo = array_shift($tipo);
 

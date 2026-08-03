@@ -36,21 +36,15 @@ final class CalculoAdministrativaParcelamentoRecibo extends CalculoColecao imple
 {
     private $recibo;
 
-    private $inicial;
-
-    private $termo;
-
-    public function __construct(Recibo $recibo, Inicial $inicial, Termo $termo)
+    public function __construct(Recibo $recibo, private readonly Inicial $inicial, private readonly Termo $termo)
     {
         $this->recibo = $recibo;
-        $this->inicial = $inicial;
-        $this->termo = $termo;
     }
 
     public function calcular()
     {
         $dataVencimento = $this->recibo->getDataVencimento();
-        $anoVencimento = substr($this->recibo->getDataVencimento(), 0, 4);
+        $anoVencimento = substr((string) $this->recibo->getDataVencimento(), 0, 4);
         $inicial = $this->inicial->getCodigo();
         $numpre = $this->termo->getNumpre();
 
@@ -88,7 +82,7 @@ final class CalculoAdministrativaParcelamentoRecibo extends CalculoColecao imple
     {
         $rows = pg_fetch_all($rs);
 
-        $valores = array();
+        $valores = [];
 
         foreach ($rows as $row) {
             $valores[$row["numpar"]] = $this->factory($row["valor"], 0, 0, 0);

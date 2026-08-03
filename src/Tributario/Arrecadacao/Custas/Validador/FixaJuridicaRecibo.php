@@ -36,13 +36,10 @@ final class FixaJuridicaRecibo implements Interfaces\Validador
     private $validacao;
 
     private $recibo;
-    
-    private $processoForo;
 
-    public function __construct(Recibo $recibo, ProcessoForo $processoForo)
+    public function __construct(Recibo $recibo, private readonly ProcessoForo $processoForo)
     {
         $this->recibo = $recibo;
-        $this->processoForo = $processoForo;
     }
 
     public function processarValidacao()

@@ -11,11 +11,11 @@ $sComplemento  = "";
 $sFrenteViaSim = "";
 $sFrenteViaNao = "";
 
-$aDescr        = array();                        
-$aTipo         = array();
-$aArea         = array();
-$aAreaTrans    = array();
-$aAnoConstr    = array();
+$aDescr        = [];                        
+$aTipo         = [];
+$aArea         = [];
+$aAreaTrans    = [];
+$aAnoConstr    = [];
 
 $this->objpdf->AddPage();
 $this->objpdf->SetFillColor(235);
@@ -81,7 +81,7 @@ for ($i = 0; $i < 1; $i++){
   $this->objpdf->SetX($iGetX+2);  
   
   $sMsgObs  = $this->propri.$this->proprietarios.(strlen(trim($this->propri.$this->proprietarios)) > 0?"\n ":"");
-  $sMsgObs .= (strlen(trim($this->it01_obs)) > 0?$this->it01_obs:"").". ".$this->sMsgSituacaoImovel;
+  $sMsgObs .= (strlen(trim((string) $this->it01_obs)) > 0?$this->it01_obs:"").". ".$this->sMsgSituacaoImovel;
   
   $this->objpdf->SetFont('Arial','',$iSetFontText);  
   $this->objpdf->MultiCell(138,4,substr($sMsgObs, 0, 800),0,"L",0);  
@@ -253,7 +253,7 @@ for ($i = 0; $i < 1; $i++){
   $this->objpdf->SetFont('Arial','',$iSetFontText);  
   $this->objpdf->Cell(48,$iSetAlText,"R$".$iValorTotal,"RBL",1,"L",0);   
   
-  if (trim($this->tipoitbi) == "urbano") {
+  if (trim((string) $this->tipoitbi) == "urbano") {
   	
 	  // Modelo Guia Itbi Urbana
 	  
@@ -279,10 +279,10 @@ for ($i = 0; $i < 1; $i++){
 	  
 	   if (isset($this->z01_cgccpf) && !empty($this->z01_cgccpf)) {
 	    
-	     if ( trim(strlen($this->z01_cgccpf)) <= 11 ) {
-	       $sCgcCpfTrans = db_formatar(trim($this->z01_cgccpf),'cpf');
+	     if ( trim(strlen((string) $this->z01_cgccpf)) <= 11 ) {
+	       $sCgcCpfTrans = db_formatar(trim((string) $this->z01_cgccpf),'cpf');
 	     } else {
-	       $sCgcCpfTrans = db_formatar(trim($this->z01_cgccpf),'cnpj');
+	       $sCgcCpfTrans = db_formatar(trim((string) $this->z01_cgccpf),'cnpj');
 	     }   
 	   } 
 	  
@@ -454,7 +454,7 @@ for ($i = 0; $i < 1; $i++){
     $this->objpdf->SetY($iGetY);
     $this->objpdf->SetX($iGetX-26);	  
 	  
-	  $nAreaTransmitida = (count($this->areaterrenomat)==1?db_formatar($this->areatran,'f',' ',' ',' ',4).('m²'):(strlen($this->areaterrenomat[1])>2?$this->areatran:db_formatar($this->areatran,'f',' ',' ',' ',4).('m²')));
+	  $nAreaTransmitida = (count($this->areaterrenomat)==1?db_formatar($this->areatran,'f',' ',' ',' ',4).('m²'):(strlen((string) $this->areaterrenomat[1])>2?$this->areatran:db_formatar($this->areatran,'f',' ',' ',' ',4).('m²')));
 	  
 	  $this->objpdf->SetFont('Arial','',$iSetFontText);
 	  $this->objpdf->Cell(18,$iSetAlText,$nAreaTransmitida,0,1,"L",0);   
@@ -466,9 +466,9 @@ for ($i = 0; $i < 1; $i++){
       
       for ( $iInd = 0; $iInd < $this->linhasresultcons; $iInd++ ) {
       
-        $aDescr[]     = (strlen($this->arrayit09_codigo[$iInd])>12? substr($this->arrayit09_codigo[$iInd],0,12)
+        $aDescr[]     = (strlen((string) $this->arrayit09_codigo[$iInd])>12? substr((string) $this->arrayit09_codigo[$iInd],0,12)
                         ."...":$this->arrayit09_codigo[$iInd]);                        
-        $aTipo[]      = substr($this->arrayit10_codigo[$iInd],0,20);
+        $aTipo[]      = substr((string) $this->arrayit10_codigo[$iInd],0,20);
         $aArea[]      = db_formatar($this->arrayit08_area[$iInd],'f',' ',' ',' ',5);
         $aAreaTrans[] = db_formatar($this->arrayit08_areatrans[$iInd],'f',' ',' ',' ',5);
         $aAnoConstr[] = $this->arrayit08_ano[$iInd];
@@ -870,10 +870,10 @@ for ($i = 0; $i < 1; $i++){
     
      if (isset($this->z01_cgccpf) && !empty($this->z01_cgccpf)) {
       
-       if ( trim(strlen($this->z01_cgccpf)) <= 11 ) {
-         $sCgcCpfTrans = db_formatar(trim($this->z01_cgccpf),'cpf');
+       if ( trim(strlen((string) $this->z01_cgccpf)) <= 11 ) {
+         $sCgcCpfTrans = db_formatar(trim((string) $this->z01_cgccpf),'cpf');
        } else {
-         $sCgcCpfTrans = db_formatar(trim($this->z01_cgccpf),'cnpj');
+         $sCgcCpfTrans = db_formatar(trim((string) $this->z01_cgccpf),'cnpj');
        }   
      } 
     
@@ -963,7 +963,7 @@ for ($i = 0; $i < 1; $i++){
     $this->objpdf->SetFont('Arial','',$iSetFontText);
     $this->objpdf->Cell(2,$iSetAlText,"","LR",0,"C",0);
     
-    if ( trim($this->lFrenteVia) == 'Sim' ) {
+    if ( trim((string) $this->lFrenteVia) == 'Sim' ) {
       $sFrenteViaSim = "X";   	
     } else {
       $sFrenteViaNao = "X";    	
@@ -1000,7 +1000,7 @@ for ($i = 0; $i < 1; $i++){
     $this->objpdf->Cell(20,$iSetAlText,"Área Transmitida:",1,0,"L",0);  
 
     $this->objpdf->SetFont('Arial','',$iSetFontText);
-    $nAreaTrans = (count($this->areaterrenomat)==1?db_formatar($this->areatran,'f',' ',' ',' ',6).'ha':(strlen($this->areaterrenomat[1])>2?$this->areatran:db_formatar($this->areatran,'f',' ',' ',' ',6).'ha'));
+    $nAreaTrans = (count($this->areaterrenomat)==1?db_formatar($this->areatran,'f',' ',' ',' ',6).'ha':(strlen((string) $this->areaterrenomat[1])>2?$this->areatran:db_formatar($this->areatran,'f',' ',' ',' ',6).'ha'));
     $this->objpdf->Cell(26,$iSetAlText,$nAreaTrans,1,0,"L",0);    
     
     $this->objpdf->SetFont('Arial','',$iSetFontText);
@@ -1025,9 +1025,9 @@ for ($i = 0; $i < 1; $i++){
       
       for ( $iInd = 0; $iInd < $this->linhasresultcons; $iInd++ ) {
       
-        $aDescr[]     = (strlen($this->arrayit09_codigo[$iInd])>12? substr($this->arrayit09_codigo[$iInd],0,12)
+        $aDescr[]     = (strlen((string) $this->arrayit09_codigo[$iInd])>12? substr((string) $this->arrayit09_codigo[$iInd],0,12)
                         ."...":$this->arrayit09_codigo[$iInd]);                        
-        $aTipo[]      = substr($this->arrayit10_codigo[$iInd],0,20);
+        $aTipo[]      = substr((string) $this->arrayit10_codigo[$iInd],0,20);
         $aArea[]      = db_formatar($this->arrayit08_area[$iInd],'f',' ',' ',' ',5);
         $aAreaTrans[] = db_formatar($this->arrayit08_areatrans[$iInd],'f',' ',' ',' ',5);
         $aAnoConstr[] = $this->arrayit08_ano[$iInd];

@@ -61,23 +61,23 @@ if ($anoSessao >= 2018) {
 
       $clcriaabas  = new cl_criaabas;
 
-      $clcriaabas->identifica = array("relatorio" => "Relatório",
+      $clcriaabas->identifica = ["relatorio" => "Relatório",
                                       "notas"     => "Fonte/Notas Explicativas",
                                       "parametro" => "Parâmetros"
-                                     );
-      $clcriaabas->title      = array("relatorio" => "Relatório",
+                                     ];
+      $clcriaabas->title      = ["relatorio" => "Relatório",
                                        "notas"    => "Fonte/Notas Explicativas",
-                                       "parametro"=> "Parâmetros");
+                                       "parametro"=> "Parâmetros"];
 
-      $clcriaabas->src        = array("relatorio" => "con2_lrfdisponibilidadecaixarestos011.php",
+      $clcriaabas->src        = ["relatorio" => "con2_lrfdisponibilidadecaixarestos011.php",
                                       "notas"     => "con2_conrelnotas.php?c83_codrel={$codigoRelatorio}",
                                       "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel={$codigoRelatorio}"
-                               );
+                               ];
 
-      $clcriaabas->sizecampo  = array("relatorio" => "23",
+      $clcriaabas->sizecampo  = ["relatorio" => "23",
                                       "notas"     => "23",
                                       "parametro" => "23"
-                                );
+                                ];
       $clcriaabas->cria_abas();
 
       db_menu();

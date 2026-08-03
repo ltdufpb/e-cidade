@@ -85,12 +85,12 @@ class RegraLancamentoApropriacaoRetencao implements IRegraLancamentoContabil
                             $estruturalOrcamento = $empenhoFinanceiro->getContaOrcamento()->getEstrutural();
                             $estruturalValido = !empty($oDadosTransacao->c114_elemento) && $oDadosTransacao->c114_elemento != '000000000000000';
                             if ($estruturalValido && $estruturalOrcamento <= $oDadosTransacao->c114_elemento) {
-                                continue;
+                                break;
                             }
                         }
 
                         $oRegraLancamentoContabil = new RegraLancamentoContabil($oDadosTransacao->c47_seqtranslr);
-                        if (in_array($iCodigoDocumento, array(6000, 6001))) {
+                        if (in_array($iCodigoDocumento, [6000, 6001])) {
                             if ($iCodigoDocumento == 6001) {
                                 $oRegraLancamentoContabil->setContaDebito($oLancamentoAuxiliar->getContaDebito());
                             } else {
@@ -98,7 +98,7 @@ class RegraLancamentoApropriacaoRetencao implements IRegraLancamentoContabil
                             }
                         }
 
-                        if (in_array($iCodigoDocumento, array(6002, 6003))) {
+                        if (in_array($iCodigoDocumento, [6002, 6003])) {
                             if ($iCodigoDocumento == 6002) {
                                 $oRegraLancamentoContabil->setContaCredito($this->getContaExtraOrcamentariaDaRetencao($oLancamentoAuxiliar->getRetencao()));
                             } else {
@@ -118,7 +118,7 @@ class RegraLancamentoApropriacaoRetencao implements IRegraLancamentoContabil
                         }
                         */
 
-                        if (in_array($iCodigoDocumento, array(6012, 6013))) {
+                        if (in_array($iCodigoDocumento, [6012, 6013])) {
 
                             if (!$oLancamentoAuxiliar->isEstorno()) {
                                 $oRegraLancamentoContabil->setContaCredito($oLancamentoAuxiliar->getCodigoReduzido());
@@ -126,7 +126,7 @@ class RegraLancamentoApropriacaoRetencao implements IRegraLancamentoContabil
                                 $oRegraLancamentoContabil->setContaDebito($oLancamentoAuxiliar->getCodigoReduzido());
                             }
                         }
-                        if (in_array($iCodigoDocumento, array(6006, 6007))) {
+                        if (in_array($iCodigoDocumento, [6006, 6007])) {
 
                             if ($iCodigoDocumento == 6006) {
                                 $oRegraLancamentoContabil->setContaDebito($oLancamentoAuxiliar->getContaDebito());

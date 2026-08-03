@@ -30,8 +30,8 @@ require_once (modification("libs/db_sessoes.php"));
 require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $oAguaIsencaoCgm = new cl_aguaisencaocgm;
 $oAguaIsencaoCgm->rotulo->label("x56_sequencial");
 $oAguaIsencaoCgm->rotulo->label("x56_sequencial");
@@ -80,13 +80,13 @@ $oAguaIsencaoCgm->rotulo->label("x56_sequencial");
        $sql = $oAguaIsencaoCgm->sql_query("",$campos,"x56_sequencial","");
     }
 
-    $aRepassa = array();
+    $aRepassa = [];
     if (isset($chave_x56_sequencial)) {
 
-      $aRepassa = array(
+      $aRepassa = [
         "chave_x56_sequencial" => $chave_x56_sequencial,
         "chave_x56_sequencial" => $chave_x56_sequencial
-      );
+      ];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

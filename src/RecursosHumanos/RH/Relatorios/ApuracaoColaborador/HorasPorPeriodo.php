@@ -82,12 +82,12 @@ class HorasPorPeriodo extends Layout
     {
         $dadosRelatorio = $this->getDadosRelatorio();
         $indiceTotalizador = 'totalHorasAssentamento';
-        $dadosRelatorio[$indiceTotalizador] = array();
-        $matriculasInconsistencia = array();
+        $dadosRelatorio[$indiceTotalizador] = [];
+        $matriculasInconsistencia = [];
 
         foreach ($this->servidores as $servidor) {
 
-            $situacoes = array();
+            $situacoes = [];
 
             foreach ($this->getDatasIntervalo() as $dataAtual) {
                 $this->setEscalaServidorNaData($servidor->getEscala($dataAtual));
@@ -99,7 +99,7 @@ class HorasPorPeriodo extends Layout
 
                 unset($dadosRelatorio[$matricula]->jornadas);
 
-                $espelhoPonto = EspelhoPontoCache::init()->getEspelhoPontoCacheValido(array($matricula), $dataAtual, $dataAtual);
+                $espelhoPonto = EspelhoPontoCache::init()->getEspelhoPontoCacheValido([$matricula], $dataAtual, $dataAtual);
                 if(empty($espelhoPonto[$matricula])) {
 
                     $matriculasInconsistencia[$matricula][] = $dataAtual->getDate(\DBDate::DATA_PTBR);
@@ -118,15 +118,15 @@ class HorasPorPeriodo extends Layout
                     if(empty($situacoes[$situacao->sequencial])) {
                         $situacoes[$situacao->sequencial] = $situacao;
                     } else {
-                        $situacoes[$situacao->sequencial]->horasDiurnas = EspelhoPonto::somarTotalizador(array(
+                        $situacoes[$situacao->sequencial]->horasDiurnas = EspelhoPonto::somarTotalizador([
                             $situacoes[$situacao->sequencial]->horasDiurnas,
                             $situacao->horasDiurnas,
-                        ));
+                        ]);
 
-                        $situacoes[$situacao->sequencial]->horasNoturnas = EspelhoPonto::somarTotalizador(array(
+                        $situacoes[$situacao->sequencial]->horasNoturnas = EspelhoPonto::somarTotalizador([
                             $situacoes[$situacao->sequencial]->horasNoturnas,
                             $situacao->horasNoturnas,
-                        ));
+                        ]);
                     }
                 }
             }
@@ -137,22 +137,22 @@ class HorasPorPeriodo extends Layout
                 if(empty($dadosRelatorio[$indiceTotalizador][$situacao->sequencial])) {
                     $dadosRelatorio[$indiceTotalizador][$situacao->sequencial] = $situacao;
                 } else {
-                    $dadosRelatorio[$indiceTotalizador][$situacao->sequencial]->horasDiurnas = EspelhoPonto::somarTotalizador(array(
+                    $dadosRelatorio[$indiceTotalizador][$situacao->sequencial]->horasDiurnas = EspelhoPonto::somarTotalizador([
                         $situacao->horasDiurnas,
                         $dadosRelatorio[$indiceTotalizador][$situacao->sequencial]->horasDiurnas,
-                    ));
+                    ]);
 
-                    $dadosRelatorio[$indiceTotalizador][$situacao->sequencial]->horasNoturnas = EspelhoPonto::somarTotalizador(array(
+                    $dadosRelatorio[$indiceTotalizador][$situacao->sequencial]->horasNoturnas = EspelhoPonto::somarTotalizador([
                         $situacao->horasNoturnas,
                         $dadosRelatorio[$indiceTotalizador][$situacao->sequencial]->horasNoturnas,
-                    ));
+                    ]);
                 }
             }
 
             $dadosRelatorio[$matricula]->situacoes = $situacoes;
         }
 
-        $msgs = array();
+        $msgs = [];
         foreach ($matriculasInconsistencia as $matricula => $datasInconsistente) {
             $sDatasInconsistente = implode(', ', $datasInconsistente);
 
@@ -166,15 +166,17 @@ class HorasPorPeriodo extends Layout
         $this->setDadosRelatorio($dadosRelatorio);
     }
 
+    #[\Override]
     public function setPdf($pdf)
     {
         parent::setPdf($pdf);
     }
 
+    #[\Override]
     protected function linhaDados($dadosApurados, $exibeMarcacao = true)
     {
         $sequencial = in_array($dadosApurados->sequencial,
-            array(
+            [
                 'HorasNormais',
                 'HorasFaltas',
                 'HorasExt50diurnas',
@@ -193,12 +195,12 @@ class HorasPorPeriodo extends Layout
                 'HorasExt75NaoAutorizadas',
                 'HorasExt100NaoAutorizadas',
                 'HorasExtNaoAutorizadas',
-            )
+            ]
         ) ? '---' : $dadosApurados->sequencial;
 
         $encoding = mb_internal_encoding();
-        $dadosApurados->descricao = mb_strtoupper($dadosApurados->descricao, $encoding);
-        $dadosApurados->horasDiurnas = mb_strtoupper($dadosApurados->horasDiurnas, $encoding);
+        $dadosApurados->descricao = mb_strtoupper((string) $dadosApurados->descricao, $encoding);
+        $dadosApurados->horasDiurnas = mb_strtoupper((string) $dadosApurados->horasDiurnas, $encoding);
 
         if (!empty($dadosApurados->horasDiurnas) && $dadosApurados->horasDiurnas != '00:00' && $dadosApurados->horasDiurnas != '0:00') {
             $this->getPdf()->setBold(false);

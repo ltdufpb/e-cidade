@@ -253,7 +253,7 @@ if($sqlerro==false) {
     $linhasdepdestino = pg_num_rows($resultdepdestino);
 
     if (($linhasdeporigem > 0) && ($linhasdepdestino == 0 )) {
-      
+
       include(modification("classes/db_orcparamrecursoval_classe.php"));
       $cl_orcparamrecursoval = new cl_orcparamrecursoval;
       for ($v=0; $linhasdeporigem > $v; $v++) {

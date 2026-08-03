@@ -94,18 +94,18 @@ class ModeloComprovanteMedicamentoPadrao implements IComprovanteMedicamento {
 
       foreach ($oComprovante->getMedicamentos() as $oMedicamento) {
 
-        $sTexto = substr(trim($oMedicamento->nome), 0, 40);
+        $sTexto = substr(trim((string) $oMedicamento->nome), 0, 40);
         $sTexto = str_pad($sTexto, 35, ' ', STR_PAD_RIGHT);
 
-        $sQuantidade = str_pad($oMedicamento->quantidade, 3, ' ', STR_PAD_LEFT);
-        $sUnidade    = substr(trim($oMedicamento->unidade), 0, 4);
+        $sQuantidade = str_pad((string) $oMedicamento->quantidade, 3, ' ', STR_PAD_LEFT);
+        $sUnidade    = substr(trim((string) $oMedicamento->unidade), 0, 4);
 
-        $this->oModeloImpressora->escrever(str_pad($oMedicamento->codigo, 9, ' ', STR_PAD_RIGHT), false, 9, 'L');
+        $this->oModeloImpressora->escrever(str_pad((string) $oMedicamento->codigo, 9, ' ', STR_PAD_RIGHT), false, 9, 'L');
         $this->oModeloImpressora->escrever($sTexto,   false, 30, 'L');
         $this->oModeloImpressora->escrever("{$sQuantidade}  {$sUnidade}", true, 5, 'L');
 
         if (!empty($oMedicamento->sDtProximaDisponibilidade) ) {
-          $this->oModeloImpressora->escrever("P. Dispensacao: " . str_pad($oMedicamento->sDtProximaDisponibilidade, 15, ' ', STR_PAD_RIGHT) , true, 25, 'R');
+          $this->oModeloImpressora->escrever("P. Dispensacao: " . str_pad((string) $oMedicamento->sDtProximaDisponibilidade, 15, ' ', STR_PAD_RIGHT) , true, 25, 'R');
         }
 
         if ( !empty($oMedicamento->posologia) ) {
@@ -140,7 +140,7 @@ class ModeloComprovanteMedicamentoPadrao implements IComprovanteMedicamento {
   protected function texto2Array($sTexto, $iTamanhoLinha) {
     
     $iNumeroPartes = ceil(strlen($sTexto) / $iTamanhoLinha);
-    $aTexto        = array();
+    $aTexto        = [];
     $iInicioParte  = 0;
     for ($i = 0; $i < $iNumeroPartes; $i++) {
       

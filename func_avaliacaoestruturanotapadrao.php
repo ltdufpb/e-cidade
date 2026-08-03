@@ -7,7 +7,7 @@ require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_avaliacaoestruturanotapadrao_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clavaliacaoestruturanotapadrao = new cl_avaliacaoestruturanotapadrao;
 $clavaliacaoestruturanotapadrao->rotulo->label("ed139_sequencial");
 ?>
@@ -46,9 +46,9 @@ $clavaliacaoestruturanotapadrao->rotulo->label("ed139_sequencial");
         $sWhere = "ed139_sequencial = {$chave_ed139_sequencial} ";
       }
       $sql = $clavaliacaoestruturanotapadrao->sql_query("", $sCampos, "ed139_ano", $sWhere );
-      $repassa = array();
+      $repassa = [];
       if(isset($chave_ed139_sequencial)){
-        $repassa = array("chave_ed139_sequencial"=>$chave_ed139_sequencial);
+        $repassa = ["chave_ed139_sequencial"=>$chave_ed139_sequencial];
       }
       echo '<div class="container">';
       echo '  <fieldset>';

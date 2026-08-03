@@ -41,8 +41,8 @@ include(modification("libs/db_sql.php"));
 include(modification("libs/db_liborcamento.php"));
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clconplano     = new cl_conplano;
@@ -67,7 +67,7 @@ $anousu = db_getsession("DB_anousu");
 
 $tem_dados=false;
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
 	$dataini=$ini;
         $datafim=$fim; 
         $sql = db_receitasaldo(11,1,2,true,'',$anousu,$dataini,$datafim,true);

@@ -91,12 +91,12 @@ class AguaTipoIsencao {
    */
   public function setTipo($iTipo) {
 
-    $aTipos = array(
+    $aTipos = [
       self::TIPO_IMUNE,
       self::TIPO_NORMAL,
       self::TIPO_DESCONTO,
       self::TIPO_IDADE,
-    );
+    ];
 
     if (!in_array($iTipo, $aTipos)) {
       throw new ParameterException("Tipo informado é inválido.");

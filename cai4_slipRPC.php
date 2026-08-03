@@ -50,7 +50,7 @@ $oParam            = $oJson->decode($sStringToParse);
 $oRetorno          = new stdClass;
 $oRetorno->status  = 1;
 $oRetorno->message = "";
-$oRetorno->itens   = array();
+$oRetorno->itens   = [];
 
 if ($oParam->exec == "isExtra") {
 
@@ -81,7 +81,7 @@ if ($oParam->exec == "isExtra") {
 	  		/**
 	  		 *  Operações que devem realizar lançamento contábil na inclusão
 	  		 */
-	  		$aTipoOperacao = array(3, 4, 7, 8, 11, 12);
+	  		$aTipoOperacao = [3, 4, 7, 8, 11, 12];
 
 	  		/**
 	  		 * Faz lançamento contábil para os tipos de operação descritos acima
@@ -149,7 +149,7 @@ if ($oParam->exec == "isExtra") {
    * Verificamos a data do inicio do controle do saldo das extras
    */
   $dtData  = null;
-  $aParam = db_stdClass::getParametro("caiparametro", array(db_getsession("DB_instit")));
+  $aParam = db_stdClass::getParametro("caiparametro", [db_getsession("DB_instit")]);
   if (count($aParam > 0)) {
     $dtData  = $aParam[0]->k29_datasaldocontasextra;
   }
@@ -204,14 +204,14 @@ if ($oParam->exec == "isExtra") {
   $numslip = null;
   $sMsgErro = "";
   $lErro    = false;
-  if (trim($oParam->k17_debito) == "") {
+  if (trim((string) $oParam->k17_debito) == "") {
 
     $sMsgErro = "Conta a Debitar(Receber) não Informada";
     $lErro    = true;
 
   }
 
-  if (trim($oParam->k17_credito) == "" && $lErro == false) {
+  if (trim((string) $oParam->k17_credito) == "" && $lErro == false) {
 
     $sMsgErro = "Conta a Creditar(Pagar) não Informada";
     $lErro    = true;
@@ -312,7 +312,7 @@ if ($oParam->exec == "isExtra") {
     $clslip->k17_credito       = "{$oParam->k17_credito}";
     $clslip->k17_valor         = "$oParam->k17_valor";
     $clslip->k17_hist          = $oParam->k17_hist;
-    $clslip->k17_texto         = utf8_decode(urldecode(str_replace("/n", "\n", $oParam->k17_obs)));
+    $clslip->k17_texto         = mb_convert_encoding(urldecode(str_replace("/n", "\n", $oParam->k17_obs)), 'ISO-8859-1');
     $clslip->k17_instit        = db_getsession("DB_instit");
     $clslip->k17_dtanu         = "";
     $clslip->k17_dtestorno     = "";
@@ -441,7 +441,7 @@ if ($oParam->exec == "isExtra") {
      * Procuramos se a conta credito do slip é uma conta pagadora no caixa.
      * caso for. setamos essa conta como conta pagadora na agenda.
      */
-    $oParametroAgenda = (db_stdClass::getParametro("empparametro",array(db_getsession('DB_anousu')),
+    $oParametroAgenda = (db_stdClass::getParametro("empparametro",[db_getsession('DB_anousu')],
                                                    "e30_agendaautomatico"));
     if ($oParametroAgenda[0]->e30_agendaautomatico == "t" ) {
       if ($oParam->k17_credito != 0 ) {

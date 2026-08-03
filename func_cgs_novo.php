@@ -115,7 +115,7 @@ $oRotulo->label( 'z01_v_ident' );
       <tr>
         <td>
           <?php
-          $aWhere = array();
+          $aWhere = [];
           $sSql   = '';
 
           $sWhereInativos  = " not exists (select 1 from cgs_und_ext ";
@@ -153,18 +153,18 @@ $oRotulo->label( 'z01_v_ident' );
               $aWhere[] = "s115_c_cartaosus ilike '{$chave_s115_c_cartaosus}%'";
             }
 
-            $repassa = array();
+            $repassa = [];
 
             if( isset( $chave_z01_i_cgsund ) ) {
 
-              $repassa = array(
+              $repassa = [
                                 "chave_z01_i_cgsund"          => @$chave_z01_i_cgsund,
                                 "chave_z01_v_nome"            => @$chave_z01_v_nome,
                                 "chave_z01_v_ident"           => @$chave_z01_v_ident,
                                 "chave_z01_d_nasc"            => @$chave_z01_d_nasc,
                                 "chave_z01_c_cartaosus"       => @$chave_s115_c_cartaosus,
                                 "chave_z01_i_familiamicroarea"=> @$chave_z01_i_familiamicroarea
-                              );
+                              ];
             }
 
             if( count( $aWhere ) > 0 ) {

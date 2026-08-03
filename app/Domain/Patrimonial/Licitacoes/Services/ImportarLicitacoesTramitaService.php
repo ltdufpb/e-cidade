@@ -92,15 +92,13 @@ class ImportarLicitacoesTramitaService
 
     private function parseData(array $posicoes, $string)
     {
-        return substr($string, $posicoes[0], $posicoes[1]);
+        return substr((string) $string, $posicoes[0], $posicoes[1]);
     }
 
     private function buscaLicitacao($codigoInstituicao, $numero, $exercicio, $modalidade)
     {
         return Licitacao::query()
-            ->whereHas('modalidade', function ($query) use ($modalidade) {
-                return $query->where('l03_codcom', '=', (int)$modalidade);
-            })
+            ->whereHas('modalidade', fn($query) => $query->where('l03_codcom', '=', (int)$modalidade))
             ->where('l20_instit', '=', $codigoInstituicao)
             ->where('l20_numero', '=', $numero)
             ->where('l20_anousu', '=', $exercicio)

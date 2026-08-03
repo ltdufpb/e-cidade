@@ -33,7 +33,7 @@ include(modification("classes/db_cadferia_classe.php"));
 include(modification("classes/db_selecao_classe.php"));
 include(modification("classes/db_cfpess_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcadferia = new cl_cadferia;
 $clselecao = new cl_selecao;
 $clcfpess = new cl_cfpess;

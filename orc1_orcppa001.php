@@ -55,10 +55,10 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("orcppa"=>"PPA","orcppaval"=>"VALORES"); 
-	 $clcriaabas->src = array("orcppa"=>"orc1_orcppa004.php");
-	 $clcriaabas->disabled   =  array("orcppaval"=>"true"); 
-	 $clcriaabas->sizecampo = array("orcpparec02"=>"20");
+	 $clcriaabas->identifica = ["orcppa"=>"PPA","orcppaval"=>"VALORES"]; 
+	 $clcriaabas->src = ["orcppa"=>"orc1_orcppa004.php"];
+	 $clcriaabas->disabled   =  ["orcppaval"=>"true"]; 
+	 $clcriaabas->sizecampo = ["orcpparec02"=>"20"];
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

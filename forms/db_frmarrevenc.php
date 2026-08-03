@@ -80,7 +80,7 @@ $clarrevenclog->rotulo->label();
       <td>
         <?php
 
-          $aParcelas = array("0" => "Todas as parcelas");
+          $aParcelas = ["0" => "Todas as parcelas"];
           db_select('k00_numpar', $aParcelas, true, $db_opcao);
         ?>
       </td>
@@ -136,7 +136,7 @@ $clarrevenclog->rotulo->label();
             if(isset($botaoiframe) && $botaoiframe != ""){
               $cliframe_alterar_excluir->opcoes      = 3;
             }
-            $cliframe_alterar_excluir->chavepri      = array("k00_sequencial" => $k00_sequencial);
+            $cliframe_alterar_excluir->chavepri      = ["k00_sequencial" => $k00_sequencial];
             $cliframe_alterar_excluir->sql           = "select * from arrevenc where k00_arrevenclog = {$k75_sequencial}";
             $cliframe_alterar_excluir->campos        = "k00_sequencial, k00_numpre, k00_numpar, k00_dtini, k00_dtfim, k00_obs";
             $cliframe_alterar_excluir->legenda       = "Prorrogados";
@@ -274,7 +274,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_arrevenc.hide();
   <?php
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }

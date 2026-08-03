@@ -34,7 +34,7 @@ include(modification("libs/db_liborcamento.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -72,7 +72,7 @@ db_postmemory($HTTP_POST_VARS);
           <td><strong>Fases da Despesa:</strong></td>
           <td>
             <?php 
-              $aFasesDespesa = array('2'=>'Empenhado','3'=>'Liquidado','4'=>'Pago');
+              $aFasesDespesa = ['2'=>'Empenhado','3'=>'Liquidado','4'=>'Pago'];
               db_select('tipo_balanco', $aFasesDespesa, true, 2);
             ?>
           </td>
@@ -81,14 +81,14 @@ db_postmemory($HTTP_POST_VARS);
           <td><strong>Níveis:</strong></td>
           <td>
             <?php 
-              $aNiveis = array('0' => 'Geral',
+              $aNiveis = ['0' => 'Geral',
                                '3' => 'Função',
                                '4' => 'Subfunção',
                                '5' => 'Programa',
                                '6' => 'Projeto/Atividade',
                                '7' => 'Elemento',
                                '8' => 'Recurso',
-                               '9' => 'Desdobramento');
+                               '9' => 'Desdobramento'];
               db_select('nivelele', $aNiveis, true, 2);
             ?>
           </td>
@@ -97,9 +97,9 @@ db_postmemory($HTTP_POST_VARS);
           <td><strong>Agrupar:</strong></td>
           <td>
             <?php 
-              $aTipoAgrupa = array('1' => 'Não',
+              $aTipoAgrupa = ['1' => 'Não',
                                    '2' => 'Órgão',
-                                   '3' => 'Unidade');
+                                   '3' => 'Unidade'];
               db_select('tipoagrupa', $aTipoAgrupa, true, 2);
             ?>
           </td>

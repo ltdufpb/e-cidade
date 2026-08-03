@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bemtipos_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbemtipos = new cl_bemtipos;
 $clbemtipos->rotulo->label("t24_sequencial");
 $clbemtipos->rotulo->label("t24_descricao");
@@ -98,9 +98,9 @@ $clbemtipos->rotulo->label("t24_descricao");
         }else{
            $sql = $clbemtipos->sql_query("",$campos,"t24_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_t24_descricao)){
-          $repassa = array("chave_t24_sequencial"=>$chave_t24_sequencial,"chave_t24_descricao"=>$chave_t24_descricao);
+          $repassa = ["chave_t24_sequencial"=>$chave_t24_sequencial,"chave_t24_descricao"=>$chave_t24_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

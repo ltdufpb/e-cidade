@@ -68,7 +68,7 @@ function js_emite(){
        </td>
        <td align="left" title="Forma de impressão">
        <?php 
-          $x = array("t"=>"Todos","sa"=>"Somente Ativos","si"=>"Somente Inativos");
+          $x = ["t"=>"Todos","sa"=>"Somente Ativos","si"=>"Somente Inativos"];
           db_select('imprec',$x,true,4,"");
        ?>
        </td>

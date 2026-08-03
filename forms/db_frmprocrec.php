@@ -134,7 +134,7 @@ function js_pesquisa(){
 }
 function js_preenchepesquisa(chave1, chave2){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa1="+chave1+"&chavepesquisa2="+chave2;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa1="+chave1+"&chavepesquisa2="+chave2;
 }
 </script>
 <?php 

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("funcoes/db_func_recibounicageracao.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrecibounicageracao = new cl_recibounicageracao;
 $clrecibounicageracao->rotulo->label("ar40_sequencial");
 
@@ -90,9 +90,9 @@ $clrecibounicageracao->rotulo->label("ar40_sequencial");
 
       $sSql = $clrecibounicageracao->sql_query(null, $campos, "ar40_sequencial", $sWhere);
 
-      $repassa = array();
+      $repassa = [];
       if(isset($chave_ar40_sequencial)){
-        $repassa = array("chave_ar40_sequencial"=>$chave_ar40_sequencial, "chave_ar40_sequencial"=>$chave_ar40_sequencial);
+        $repassa = ["chave_ar40_sequencial"=>$chave_ar40_sequencial, "chave_ar40_sequencial"=>$chave_ar40_sequencial];
       }
       ?>
       <div class="container">

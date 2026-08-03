@@ -8,7 +8,7 @@
 use ECidade\V3\Extension\Logger;
 use ECidade\V3\Extension\Registry;
 
-Registry::get('app.config')->merge(array(
+Registry::get('app.config')->merge([
     /**
      * Charset do projeto
      * @type string
@@ -29,37 +29,37 @@ Registry::get('app.config')->merge(array(
     /**
      * Lista de URL's de api's usadas pelo ecidade
      */
-    'app.api' => array(
+    'app.api' => [
         'centraldeajuda' => 'http://centraldeajuda.dbseller.com.br/help/api/index.php/',
-        'esocial' => array(
+        'esocial' => [
             'url' => 'http://', // informe a api do eSocial
             'login' => '', // login do cliente
             'password' => '' // senha do cliente
-        ),
-        'estorage' => array(
+        ],
+        'estorage' => [
             'url' => '', // informe a api do e-Storage
             'grant_type' => '', // tipo de credenciais do e-Storage
             'client_id' => '', // login do e-Storage
             'client_secret' => '', // senha do e-Storage
             'client_id_ouvidoria' => '' //login do Ouvidoria no storage
-        ),
-        'eauth' => array(
+        ],
+        'eauth' => [
             "url" => "",
             "client_id"=> "",
             "client_secret"=> "",
             "grant_type"=> "client_credentials",
             "municipio"=>""
-        )
-    ),
+        ]
+    ],
 
     /**
      * Configuração de proxy para o e-cidade
      */
-    'app.proxy' => array(
+    'app.proxy' => [
         'http' => '', // e.g. 192.168.0.1:3128
         'https' => '', // e.g. 192.168.0.1:3128
         'tcp' => ''  // e.g. 192.168.0.1:3128
-    ),
+    ],
 
     /**
      * Requisicoes que usaram sessao
@@ -77,7 +77,7 @@ Registry::get('app.config')->merge(array(
      * Extensoes de arquivos para cachear - 304
      * @type array
      */
-    'app.request.asset.cacheable.extension' => array('js', 'css', 'jpg', 'jpeg', 'png', 'bmp', 'ttf', 'gif'),
+    'app.request.asset.cacheable.extension' => ['js', 'css', 'jpg', 'jpeg', 'png', 'bmp', 'ttf', 'gif'],
 
     /**
      * Gerenciador de erros - [Default|Whoops]
@@ -113,7 +113,7 @@ Registry::get('app.config')->merge(array(
      * - app.shutdown: executado ao final de cada requisicao
      * @type array
      */
-    'app.events' => array('app.error' => '\ECidade\V3\Error\EventHandler'),
+    'app.events' => ['app.error' => '\ECidade\V3\Error\EventHandler'],
 
     /**
      * @type Integer
@@ -163,4 +163,4 @@ Registry::get('app.config')->merge(array(
      */
     'custas_honorarios'=>false,
 
-));
+]);

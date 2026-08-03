@@ -39,7 +39,7 @@ require_once(modification("classes/db_veiccentral_classe.php"));
 require_once(modification("classes/db_veicabast_classe.php"));
 
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clveiculos      = new cl_veiculos;

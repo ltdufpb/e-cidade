@@ -46,24 +46,12 @@ class ArquivoPublicidade
      * @var Periodo
      */
     private $periodo;
-    /**
-     * @var array
-     */
-    private $codigoInstituicoes;
-    /**
-     * @var integer
-     */
-    private $codigoTCE;
 
     /**
      * Array com as notas explicativas dos relatórios enviados. indexado pelo código do demonstrativo
      * @var array
      */
     private $notas = [];
-    /**
-     * @var int
-     */
-    private $ano;
 
     /**
      * @var string[]
@@ -86,12 +74,13 @@ class ArquivoPublicidade
     private $linhasProcessadas = [];
 
 
-    public function __construct(Periodo $periodo, array $codigoInstituicoes, $ano, $codigoTCE)
+    /**
+     * @param int $codigoTCE
+     * @param int $ano
+     */
+    public function __construct(Periodo $periodo, private readonly array $codigoInstituicoes, private $ano, private $codigoTCE)
     {
         $this->periodo = $periodo;
-        $this->codigoInstituicoes = $codigoInstituicoes;
-        $this->codigoTCE = $codigoTCE;
-        $this->ano = $ano;
     }
 
     /**
@@ -171,21 +160,14 @@ class ArquivoPublicidade
     private function validaPeriodo(PublicidadeSigapFiscal $publicidade)
     {
         $codigo = (int) $publicidade->getPeriodo()->getCodigo();
-        switch ($this->periodo->getCodigo()) {
-            case 6:
-                return $codigo === 6;
-            case 7:
-                return in_array($codigo, [7, 14]);
-            case 8:
-                return $codigo === 8;
-            case 9:
-                return in_array($codigo, [9, 15]);
-            case 10:
-                return $codigo === 10;
-            case 11:
-                return in_array($codigo, [11, 16]);
-        }
-
-        return false;
+        return match ($this->periodo->getCodigo()) {
+            6 => $codigo === 6,
+            7 => in_array($codigo, [7, 14]),
+            8 => $codigo === 8,
+            9 => in_array($codigo, [9, 15]),
+            10 => $codigo === 10,
+            11 => in_array($codigo, [11, 16]),
+            default => false,
+        };
     }
 }

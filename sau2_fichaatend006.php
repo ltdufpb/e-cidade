@@ -40,8 +40,8 @@ include_once(modification("classes/db_prontprofatend_ext_classe.php"));
 
 include_once(modification("dbforms/db_funcoes.php"));
 
-parse_str ( $HTTP_SERVER_VARS ["QUERY_STRING"] );
-db_postmemory ( $HTTP_POST_VARS );
+parse_str ( (string) $_SERVER ["QUERY_STRING"], $result );
+db_postmemory ( $_POST );
 
 set_time_limit ( 0 );
 
@@ -84,7 +84,7 @@ body {
 <table width="100%"  border="0">
 
 <?php 
-$aChaveProntuarios = explode(",",$chave_sd29_i_prontuario);
+$aChaveProntuarios = explode(",",(string) $chave_sd29_i_prontuario);
 $iTam              = count($aChaveProntuarios);
 for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
 
@@ -110,9 +110,9 @@ for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
   $resProntproced          = $clprontproced->sql_record ($sSql);
   $objRetorno->prontproced = db_utils::getCollectionByRecord($resProntproced, true, false);
   
-  $dia_nasc = substr ( $objRetorno->prontuario[0]->z01_d_nasc, 0, 2 );
-  $mes_nasc = substr ( $objRetorno->prontuario[0]->z01_d_nasc, 3, 2 );
-  $ano_nasc = substr ( $objRetorno->prontuario[0]->z01_d_nasc, 6, 4 );
+  $dia_nasc = substr ( (string) $objRetorno->prontuario[0]->z01_d_nasc, 0, 2 );
+  $mes_nasc = substr ( (string) $objRetorno->prontuario[0]->z01_d_nasc, 3, 2 );
+  $ano_nasc = substr ( (string) $objRetorno->prontuario[0]->z01_d_nasc, 6, 4 );
   $idade    = isset ( $agendamentofa ) ? calcage ( $dia_nasc, $mes_nasc, $ano_nasc, date ( "d" ), date ( "m" ), date ( "Y" ) ) : "";
   $idade    = explode(",",$idade);   
   $objRetorno->idade       = $idade[0]; 
@@ -144,7 +144,7 @@ for( $intAgenda=0; $intAgenda < $iTam; $intAgenda++ ){
       <tr>
         <td width="60%" height="20" nowrap="nowrap">&nbsp;</td>
         <td width="20%" height="20" nowrap="nowrap">
-          <?=substr($objRetorno->prontuario[0]->sd24_c_cadastro,0,5)?>
+          <?=substr((string) $objRetorno->prontuario[0]->sd24_c_cadastro,0,5)?>
         </td>
         <td width="20%" height="20" nowrap="nowrap">&nbsp;</td>
       </tr>

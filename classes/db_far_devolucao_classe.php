@@ -29,29 +29,29 @@
 ///CLASSE DA ENTIDADE far_devolucao
 class cl_far_devolucao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $fa22_i_codigo = 0; 
-   var $fa22_i_cgsund = 0; 
-   var $fa22_c_hora = 0; 
-   var $fa22_i_login = 0; 
-   var $fa22_d_data_dia = null; 
-   var $fa22_d_data_mes = null; 
-   var $fa22_d_data_ano = null; 
-   var $fa22_d_data = null; 
+   public $fa22_i_codigo = 0; 
+   public $fa22_i_cgsund = 0; 
+   public $fa22_c_hora = 0; 
+   public $fa22_i_login = 0; 
+   public $fa22_d_data_dia = null; 
+   public $fa22_d_data_mes = null; 
+   public $fa22_d_data_ano = null; 
+   public $fa22_d_data = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  fa22_i_codigo = int4 = Código 
                  fa22_i_cgsund = int4 = CGS 
                  fa22_c_hora = int4 = Hora 
@@ -59,10 +59,10 @@ class cl_far_devolucao {
                  fa22_d_data = date = Data 
                  ";
    //funcao construtor da classe 
-   function cl_far_devolucao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_devolucao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_far_devolucao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->fa22_i_codigo = pg_result($result,0,0); 
+       $this->fa22_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from far_devolucao_fa22_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa22_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa22_i_codigo)){
          $this->erro_sql = " Campo fa22_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_far_devolucao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "far_devolucao ($this->fa22_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "far_devolucao já Cadastrado";
@@ -204,14 +204,14 @@ class cl_far_devolucao {
      $resaco = $this->sql_record($this->sql_query_file($this->fa22_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14040,'$this->fa22_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2470,14040,'','".AddSlashes(pg_result($resaco,0,'fa22_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2470,14041,'','".AddSlashes(pg_result($resaco,0,'fa22_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2470,14043,'','".AddSlashes(pg_result($resaco,0,'fa22_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2470,14044,'','".AddSlashes(pg_result($resaco,0,'fa22_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2470,14042,'','".AddSlashes(pg_result($resaco,0,'fa22_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2470,14040,'','".AddSlashes(pg_fetch_result($resaco,0,'fa22_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2470,14041,'','".AddSlashes(pg_fetch_result($resaco,0,'fa22_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2470,14043,'','".AddSlashes(pg_fetch_result($resaco,0,'fa22_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2470,14044,'','".AddSlashes(pg_fetch_result($resaco,0,'fa22_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2470,14042,'','".AddSlashes(pg_fetch_result($resaco,0,'fa22_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_far_devolucao {
       $this->atualizacampos();
      $sql = " update far_devolucao set ";
      $virgula = "";
-     if(trim($this->fa22_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa22_i_codigo"])){ 
+     if(trim((string) $this->fa22_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa22_i_codigo"])){ 
        $sql  .= $virgula." fa22_i_codigo = $this->fa22_i_codigo ";
        $virgula = ",";
-       if(trim($this->fa22_i_codigo) == null ){ 
+       if(trim((string) $this->fa22_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "fa22_i_codigo";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_far_devolucao {
          return false;
        }
      }
-     if(trim($this->fa22_i_cgsund)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa22_i_cgsund"])){ 
+     if(trim((string) $this->fa22_i_cgsund)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa22_i_cgsund"])){ 
        $sql  .= $virgula." fa22_i_cgsund = $this->fa22_i_cgsund ";
        $virgula = ",";
-       if(trim($this->fa22_i_cgsund) == null ){ 
+       if(trim((string) $this->fa22_i_cgsund) == null ){ 
          $this->erro_sql = " Campo CGS nao Informado.";
          $this->erro_campo = "fa22_i_cgsund";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_far_devolucao {
          return false;
        }
      }
-     if(trim($this->fa22_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa22_c_hora"])){ 
+     if(trim((string) $this->fa22_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa22_c_hora"])){ 
        $sql  .= $virgula." fa22_c_hora = $this->fa22_c_hora ";
        $virgula = ",";
-       if(trim($this->fa22_c_hora) == null ){ 
+       if(trim((string) $this->fa22_c_hora) == null ){ 
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "fa22_c_hora";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_far_devolucao {
          return false;
        }
      }
-     if(trim($this->fa22_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa22_i_login"])){ 
+     if(trim((string) $this->fa22_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa22_i_login"])){ 
        $sql  .= $virgula." fa22_i_login = $this->fa22_i_login ";
        $virgula = ",";
-       if(trim($this->fa22_i_login) == null ){ 
+       if(trim((string) $this->fa22_i_login) == null ){ 
          $this->erro_sql = " Campo Login nao Informado.";
          $this->erro_campo = "fa22_i_login";
          $this->erro_banco = "";
@@ -272,10 +272,10 @@ class cl_far_devolucao {
          return false;
        }
      }
-     if(trim($this->fa22_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa22_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa22_d_data_dia"] !="") ){ 
+     if(trim((string) $this->fa22_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa22_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa22_d_data_dia"] !="") ){ 
        $sql  .= $virgula." fa22_d_data = '$this->fa22_d_data' ";
        $virgula = ",";
-       if(trim($this->fa22_d_data) == null ){ 
+       if(trim((string) $this->fa22_d_data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "fa22_d_data_dia";
          $this->erro_banco = "";
@@ -288,7 +288,7 @@ class cl_far_devolucao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["fa22_d_data_dia"])){ 
          $sql  .= $virgula." fa22_d_data = null ";
          $virgula = ",";
-         if(trim($this->fa22_d_data) == null ){ 
+         if(trim((string) $this->fa22_d_data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "fa22_d_data_dia";
            $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_far_devolucao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14040,'$this->fa22_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa22_i_codigo"]) || $this->fa22_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2470,14040,'".AddSlashes(pg_result($resaco,$conresaco,'fa22_i_codigo'))."','$this->fa22_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2470,14040,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa22_i_codigo'))."','$this->fa22_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa22_i_cgsund"]) || $this->fa22_i_cgsund != "")
-           $resac = db_query("insert into db_acount values($acount,2470,14041,'".AddSlashes(pg_result($resaco,$conresaco,'fa22_i_cgsund'))."','$this->fa22_i_cgsund',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2470,14041,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa22_i_cgsund'))."','$this->fa22_i_cgsund',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa22_c_hora"]) || $this->fa22_c_hora != "")
-           $resac = db_query("insert into db_acount values($acount,2470,14043,'".AddSlashes(pg_result($resaco,$conresaco,'fa22_c_hora'))."','$this->fa22_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2470,14043,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa22_c_hora'))."','$this->fa22_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa22_i_login"]) || $this->fa22_i_login != "")
-           $resac = db_query("insert into db_acount values($acount,2470,14044,'".AddSlashes(pg_result($resaco,$conresaco,'fa22_i_login'))."','$this->fa22_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2470,14044,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa22_i_login'))."','$this->fa22_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa22_d_data"]) || $this->fa22_d_data != "")
-           $resac = db_query("insert into db_acount values($acount,2470,14042,'".AddSlashes(pg_result($resaco,$conresaco,'fa22_d_data'))."','$this->fa22_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2470,14042,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa22_d_data'))."','$this->fa22_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_far_devolucao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14040,'$fa22_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2470,14040,'','".AddSlashes(pg_result($resaco,$iresaco,'fa22_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2470,14041,'','".AddSlashes(pg_result($resaco,$iresaco,'fa22_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2470,14043,'','".AddSlashes(pg_result($resaco,$iresaco,'fa22_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2470,14044,'','".AddSlashes(pg_result($resaco,$iresaco,'fa22_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2470,14042,'','".AddSlashes(pg_result($resaco,$iresaco,'fa22_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2470,14040,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa22_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2470,14041,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa22_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2470,14043,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa22_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2470,14044,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa22_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2470,14042,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa22_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from far_devolucao
@@ -431,7 +431,7 @@ class cl_far_devolucao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:far_devolucao";
@@ -447,7 +447,7 @@ class cl_far_devolucao {
    function sql_query ( $fa22_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -475,7 +475,7 @@ class cl_far_devolucao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -488,7 +488,7 @@ class cl_far_devolucao {
    function sql_query_file ( $fa22_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_far_devolucao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -528,7 +528,7 @@ class cl_far_devolucao {
 
      if ($sCampos != "*" ) {
 
-       $sCamposSql = split("#",$sCampos);
+       $sCamposSql = preg_split("#\\##m",$sCampos);
        $sVirgula = "";
 
        for ($i = 0; $i < sizeof($sCamposSql); $i++){
@@ -566,7 +566,7 @@ class cl_far_devolucao {
 
      if ($sOrdem != null ){
        $sSql .= " order by ";
-       $sCamposSql = split("#",$sOrdem);
+       $sCamposSql = preg_split("#\\##m",(string) $sOrdem);
        $sVirgula = "";
 
        for ($i = 0;$i < sizeof($sCamposSql); $i++) {

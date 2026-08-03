@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitcandidatointeresseprograma_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabitcandidatointeresseprograma = new cl_habitcandidatointeresseprograma;
 $clhabitcandidatointeresseprograma->rotulo->label("ht13_sequencial");
 $clhabitcandidatointeresseprograma->rotulo->label("ht13_habitprograma");
@@ -98,9 +98,9 @@ $clhabitcandidatointeresseprograma->rotulo->label("ht13_habitprograma");
         }else{
            $sql = $clhabitcandidatointeresseprograma->sql_query("",$campos,"ht13_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ht13_habitprograma)){
-          $repassa = array("chave_ht13_sequencial"=>$chave_ht13_sequencial,"chave_ht13_habitprograma"=>$chave_ht13_habitprograma);
+          $repassa = ["chave_ht13_sequencial"=>$chave_ht13_sequencial,"chave_ht13_habitprograma"=>$chave_ht13_habitprograma];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

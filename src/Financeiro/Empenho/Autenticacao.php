@@ -17,12 +17,6 @@ class Autenticacao
     private $empenhoFinanceiro;
 
     /**
-     *  valor que deve ser Autenticado
-     * @var float
-     */
-    private $valor;
-
-    /**
      * Grupo de autenticacao
      * @var integer
      */
@@ -32,15 +26,6 @@ class Autenticacao
      * @var \Instituicao
      */
     private $instituicao = null;
-
-    /**
-     * movimento da agenda
-     */
-    private $movimento;
-    /**
-     * @var \DateTime
-     */
-    private $data;
 
     private $cheque = 0;
 
@@ -75,14 +60,18 @@ class Autenticacao
      * @param $movimento
      * @param $valor
      * @param \DateTime $data
+     * @param float $valor
      */
-    public function __construct(\EmpenhoFinanceiro $empenhoFinanceiro, $movimento, $valor, \DateTime $data)
+    public function __construct(\EmpenhoFinanceiro $empenhoFinanceiro, /**
+     * movimento da agenda
+     */
+    private $movimento, /**
+     *  valor que deve ser Autenticado
+     */
+    private $valor, private \DateTime $data)
     {
 
         $this->empenhoFinanceiro = $empenhoFinanceiro;
-        $this->valor = $valor;
-        $this->movimento = $movimento;
-        $this->data = $data;
     }
 
     /**
@@ -319,7 +308,7 @@ class Autenticacao
             $oAut = \db_utils::fieldsMemory($rsAut, 0);
             $retornoAutentica = $oAut->retorno;
 
-            if (substr($oAut->retorno, 0, 1) !== '1') {
+            if (!str_starts_with((string) $oAut->retorno, '1')) {
 
                 $sErroMsg = $oAut->retorno;
                 throw new \Exception($sErroMsg);

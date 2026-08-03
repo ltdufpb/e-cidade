@@ -27,7 +27,7 @@
 
  include(modification("fpdf151/pdf.php"));
  //include(modification("libs/db_stdlib.php"));
-  parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+  parse_str((string) $_SERVER["QUERY_STRING"], $result);
  
  // $processo = $processo;
  // primeiro - dados do processo e dados do cgm
@@ -41,8 +41,8 @@
 	 where protprocesso.p58_codproc=$processo  
        ";
  $res_proc = db_query($sql);
- $rows_proc = pg_numrows($res_proc);
- if (pg_numrows($res_proc) == 0){
+ $rows_proc = pg_num_rows($res_proc);
+ if (pg_num_rows($res_proc) == 0){
      echo "zerado";
  }  
 
@@ -100,7 +100,7 @@
 	     order by p61_dtandam
             ";
       $res_and = db_query($sql);
-      if (pg_numrows($res_and)>0){
+      if (pg_num_rows($res_and)>0){
             $pdf->Ln(4);
             $pdf->setX(20);
             $pdf->cell(170,$alt,'ANDAMENTOS','B',1,"C",0);      
@@ -110,12 +110,12 @@
             $pdf->cell(70,$alt,'DEPARTAMENTO',0,1,"L",0);
             //$pdf->cell(40,$alt,'SITUACAO',0,1,"L",0);
  
-            for ($h=0;$h < (pg_numrows($res_and));$h++){
+            for ($h=0;$h < (pg_num_rows($res_and));$h++){
                db_fieldsmemory($res_and,$h,true);
 	       $pdf->setX(20);
 	       $pdf->cell(20,$alt,$p61_dtandam,0,0,"C",0);
-               $pdf->cell(40,$alt,substr($nome,0,25),0,0,"L",0);
-               $pdf->cell(50,$alt,substr($descrdepto,0,40),0,1,"L",0);
+               $pdf->cell(40,$alt,substr((string) $nome,0,25),0,0,"L",0);
+               $pdf->cell(50,$alt,substr((string) $descrdepto,0,40),0,1,"L",0);
 	       $pdf->setX(30);
                $pdf->multicell(0,$alt,$p61_despacho,0,'J',1,0);    
 	       $pdf->Ln(1);
@@ -136,7 +136,7 @@
 				         from proctransand 
 					 order by p64_codtran)";
       $res_and = db_query($sql);
-      if (pg_numrows($res_and)>0){
+      if (pg_num_rows($res_and)>0){
            $pdf->Ln(4);
            $pdf->setX(20);
            $pdf->cell(170,$alt,'TRANSFERENCIAS','B',1,"C",0);      
@@ -145,7 +145,7 @@
            $pdf->cell(75,$alt,'DEPTO ATUAL',0,0,"L",0);
            $pdf->cell(75,$alt,'DEPTO DESTINO',0,1,"L",0);
 
-           for ($h=0;$h < (pg_numrows($res_and));$h++){
+           for ($h=0;$h < (pg_num_rows($res_and));$h++){
               db_fieldsmemory($res_and,$h,true);
     	      $pdf->setX(20);
 	      $pdf->cell(20,$alt,$p63_codtran,0,0,"C",0);
@@ -167,7 +167,7 @@
 	      where k80_codproc = $processo 
 	      group by r.k00_numpre, rp.k00_numpre,rp.k00_dtpaga,r.k00_dtvenc,r.k00_dtoper";
       $res_and = db_query($sql);
-      if(pg_numrows($res_and)>0){
+      if(pg_num_rows($res_and)>0){
            $pdf->Ln(4);
            $pdf->setX(20);
            $pdf->cell(170,$alt,'RECIBOS','B',1,"C",0);      
@@ -179,7 +179,7 @@
            $pdf->cell(30,$alt,'DT.VENCIMENTO',1,0,"C",0);
            $pdf->cell(30,$alt,'DT.PAGAMENTO',1,1,"C",0);
 
-           for ($h=0;$h < (pg_numrows($res_and));$h++){
+           for ($h=0;$h < (pg_num_rows($res_and));$h++){
               db_fieldsmemory($res_and,$h,true);
 	      $pdf->setX(20);
 	      $pdf->cell(30,$alt,$arrepaga == ""?"RECIBO À PAGAR":"RECIBO PAGO",1,0,"C",0);

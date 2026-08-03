@@ -17,9 +17,7 @@ class ConfiguracaoControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app["formularios.controller"] = function () use ($app) {
-            return new Formulario($app['request_stack']->getCurrentRequest());
-        };
+        $app["formularios.controller"] = (fn() => new Formulario($app['request_stack']->getCurrentRequest()));
 
         // creates a new controller based on the default route
         $controllers = $app['controllers_factory'];

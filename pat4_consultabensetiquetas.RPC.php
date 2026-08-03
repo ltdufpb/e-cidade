@@ -48,36 +48,36 @@ $oRetorno->message = urlencode('Erro ao buscar informações');
 
 if($oParam->exec == 'pesquisa'){
   $sWhere = "";	
-	if(trim($oParam->t52_depart) != ""){
+	if(trim((string) $oParam->t52_depart) != ""){
 		if($sWhere == ""){
 			$sWhere .= " t52_depart = ".$oParam->t52_depart;
 		}else{
 			$sWhere .= " and t52_depart = ".$oParam->t52_depart;
 		}
 	}
-  if(trim($oParam->t30_codigo) != ""){
+  if(trim((string) $oParam->t30_codigo) != ""){
     if($sWhere == ""){
       $sWhere .= " t33_divisao = ".$oParam->t30_codigo;
     }else{
       $sWhere .= " and  t33_divisao = ".$oParam->t30_codigo;
     }
   }
-  if(trim($oParam->t52_beminicial) != ""){
+  if(trim((string) $oParam->t52_beminicial) != ""){
     if($sWhere == ""){
     	
-    	if(trim($oParam->t52_beminicial) != "" && trim($oParam->t52_bemfinal) != ""){
+    	if(trim((string) $oParam->t52_beminicial) != "" && trim((string) $oParam->t52_bemfinal) != ""){
     		if($sWhere == ""){
     	   $sWhere .= " t52_bem between ".$oParam->t52_beminicial." and ".$oParam->t52_bemfinal;
     		}else{
     		  $sWhere .= " and t52_bem between ".$oParam->t52_beminicial." and ".$oParam->t52_bemfinal;
     		}
-    	}else if(trim($oParam->t52_beminicial) != ""){
+    	}else if(trim((string) $oParam->t52_beminicial) != ""){
     		if($sWhere == ""){
     		  $sWhere .= " t52_bem >= ".$oParam->t52_beminicial;
     		}else{
     			$sWhere .= " and t52_bem >= ".$oParam->t52_beminicial;
     		}
-    	}else if(trim($oParam->t52_bemfinal) != ""){
+    	}else if(trim((string) $oParam->t52_bemfinal) != ""){
     		if($sWhere == ""){
     		  $sWhere .= " t52_bem <= ".$oParam->t52_beminicial;
     		}else{
@@ -90,7 +90,7 @@ if($oParam->exec == 'pesquisa'){
       $sWhere .= " and  t33_divisao = ".$oParam->t30_codigo;
     }
   }
-  if(trim($oParam->t52_bemfinal) != ""){
+  if(trim((string) $oParam->t52_bemfinal) != ""){
     
   }
 	
@@ -111,7 +111,7 @@ if($oParam->exec == 'pesquisa'){
   	$oRetorno->status  = 2;
   }
   
-}else if(trim($oParam->exec) == 'imprimir'){
+}else if(trim((string) $oParam->exec) == 'imprimir'){
 	
 	$sqlErro = false;
 	
@@ -126,7 +126,7 @@ if($oParam->exec == 'pesquisa'){
   /**
    * Imprimindo etiquetas dos bens selecionados 
    */
-	$aBens = explode(',',$oParam->bens);
+	$aBens = explode(',',(string) $oParam->bens);
 	$iNumBens = count($aBens);
 	//die("InumBens = ".$iNumBens);
 	try {
@@ -139,7 +139,7 @@ if($oParam->exec == 'pesquisa'){
 	    sleep(2);
 	  }
 	}catch (Exception $erro){
-		
+
 	  $msg = "usuário:\\n\\n ".$erro->getMessage()."\\n\\n";
 		$oRetorno->message = urlencode($msg);
 		$oRetorno->status  = 2;
@@ -201,7 +201,7 @@ if($oParam->exec == 'pesquisa'){
 					$clBensPlacaImpressa->t73_bensetiquetaimpressa = $iBensEtiquetaImpressa;
 					$clBensPlacaImpressa->t73_bensplaca = $oBem->t41_codigo;
 					$clBensPlacaImpressa->t73_coddepto  = $oBem->t52_depart;
-					if(trim($oBem->t33_divisao) != ""){
+					if(trim((string) $oBem->t33_divisao) != ""){
 					 $clBensPlacaImpressa->t73_departdiv = $oBem->t33_divisao;
 					}
 					$clBensPlacaImpressa->t73_tipoloteindividual = $lLote;
@@ -230,10 +230,10 @@ if($oParam->exec == 'pesquisa'){
 	  	
 	  }else{
 	  	$oRetorno->status          = 2;
-	  	$oRetorno->message = urlencode($msg);
+	  	$oRetorno->message = urlencode((string) $msg);
 	  }
 	  
-	  $oRetorno->message         = urlencode($msg);
+	  $oRetorno->message         = urlencode((string) $msg);
 		db_fim_transacao($sqlErro);
 		
   }

@@ -21,7 +21,7 @@ class MensageriaProcesso
      * @param \DBDepartamento|null $departamentoDestino
      * @return bool|null
      */
-    public static function enviar($codigoProcesso, $cancelamento = false, \DBDepartamento $departamentoDestino = null)
+    public static function enviar($codigoProcesso, $cancelamento = false, ?\DBDepartamento $departamentoDestino = null)
     {
         try {
             $caminhoPlugin = 'plugins/mensageria';
@@ -53,7 +53,7 @@ class MensageriaProcesso
 
         $instituicao = new Instituicao();
         $prefeitura = $instituicao->getDadosPrefeitura();
-        $sistema = 'e-cidade.' . strtolower($prefeitura->getMunicipio());
+        $sistema = 'e-cidade.' . strtolower((string) $prefeitura->getMunicipio());
         $processo = ProcessoRepositorio::encontrar($codigoProcesso);
         $codigoUsuario = $processo->getCodigoUsuario();
 
@@ -93,17 +93,17 @@ class MensageriaProcesso
         $envio->iAno = $processo->getAno();
 
         if (empty($departamentoDestino)) {
-            $envio->destinatariosNotificados = array(array('sLogin' => $processo->getLogin(), 'sSistema' => $sistema));
+            $envio->destinatariosNotificados = [['sLogin' => $processo->getLogin(), 'sSistema' => $sistema]];
         } else {
             if (static::verificarDepartamento($notificacao)) {
                 $destinatariosEncontrados = ProcessoRepositorio::getUsuariosComAcessoEmDepartamentoMenu($departamentoDestino->getCodigo());
 
-                $envio->destinatariosNotificados = array();
+                $envio->destinatariosNotificados = [];
                 foreach ($destinatariosEncontrados as $dadosLinhas) {
-                    $envio->destinatariosNotificados[] = array(
+                    $envio->destinatariosNotificados[] = [
                         'sLogin' => $dadosLinhas->login,
                         'sSistema' => $sistema
-                    );
+                    ];
                 }
             }
         }
@@ -125,7 +125,7 @@ class MensageriaProcesso
         $envio->diasprazo = $notificacao->p101_diasprazo;
         $envio->numero = $processo->getNumero();
         $envio->iAno = $processo->getAno();
-        $envio->destinatariosNotificados = array(array('sLogin' => $processo->getLogin(), 'sSistema' => $sistema));
+        $envio->destinatariosNotificados = [['sLogin' => $processo->getLogin(), 'sSistema' => $sistema]];
 
         return $envio;
     }
@@ -166,12 +166,12 @@ class MensageriaProcesso
 
             $destinatariosEncontrados = ProcessoRepositorio::getUsuariosComAcessoEmDepartamentoMenu($departamentoDestino->getCodigo());
 
-            $envio->destinatariosNotificados = array();
+            $envio->destinatariosNotificados = [];
             foreach ($destinatariosEncontrados as $dadosLinhas) {
-                $envio->destinatariosNotificados[] = array(
+                $envio->destinatariosNotificados[] = [
                     'sLogin' => $dadosLinhas->login,
                     'sSistema' => $sistema
-                );
+                ];
             }
 
             return $envio;
@@ -192,23 +192,23 @@ class MensageriaProcesso
     private static function realizarEnvio($assunto, $mensagemPadrao, $diasprazo, $numero, $iAno, $destinatariosNotificados, $sistema)
     {
         $conteudo = str_replace(
-            array('[numero]', '[ano]', '[dias]'),
-            array($numero, $iAno, $diasprazo),
+            ['[numero]', '[ano]', '[dias]'],
+            [$numero, $iAno, $diasprazo],
             $mensagemPadrao
         );
 
         $assunto = str_replace(
-            array('[numero]', '[ano]', '[dias]'),
-            array($numero, $iAno, $diasprazo),
+            ['[numero]', '[ano]', '[dias]'],
+            [$numero, $iAno, $diasprazo],
             $assunto
         );
 
-        $mensagem = array(
+        $mensagem = [
             'iTipo' => Cliente::TIPO_NOTIFICACAO,
             'sAssunto' => $assunto,
             'sConteudo' => $conteudo,
             'aDestinatarios' => $destinatariosNotificados
-        );
+        ];
 
 
         Cliente::enviar(db_getsession('DB_login'), $sistema, $mensagem);

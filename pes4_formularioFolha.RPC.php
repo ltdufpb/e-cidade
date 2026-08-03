@@ -87,8 +87,8 @@ try {
         
         $iTipoFolha             = $oParam->iTipoFolha;
         
-        $iAnoFolha              = isset($oParam->iAnoFolha) ? $oParam->iAnoFolha : DBPessoal::getAnoFolha();
-        $iMesFolha              = isset($oParam->iMesFolha) ? $oParam->iMesFolha : DBPessoal::getMesFolha(); 
+        $iAnoFolha              = $oParam->iAnoFolha ?? DBPessoal::getAnoFolha();
+        $iMesFolha              = $oParam->iMesFolha ?? DBPessoal::getMesFolha(); 
         $oDBCompetencia         = new DBCompetencia($iAnoFolha, $iMesFolha); 
        
         $lFolhaAberta           = FolhaPagamento::hasFolhaAberta($iTipoFolha, $oDBCompetencia);
@@ -136,7 +136,7 @@ try {
         throw new DBException('Erro ao buscar os dados da tabela rhreajusteparidade.');
       }
 
-      $aTipoReajuste     = array('0' => '');
+      $aTipoReajuste     = ['0' => ''];
       $aReajusteParidade = db_utils::getCollectionByRecord($rsReajusteParidade, false, false, true);
 
       foreach ($aReajusteParidade as $oReajusteParidade) {

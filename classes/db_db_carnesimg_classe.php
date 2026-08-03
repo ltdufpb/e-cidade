@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_carnesimg
 class cl_db_carnesimg { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $codmodelo = 0; 
-   var $nomemodelo = null; 
-   var $imgmodelo = 0; 
-   var $orientacao = null; 
+   public $codmodelo = 0; 
+   public $nomemodelo = null; 
+   public $imgmodelo = 0; 
+   public $orientacao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  codmodelo = int4 = Código Modelo 
                  nomemodelo = varchar(100) = Nome Modelo 
                  imgmodelo = oid = Imagem do Modelo 
                  orientacao = char(1) = Orientação 
                  ";
    //funcao construtor da classe 
-   function cl_db_carnesimg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_carnesimg"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -132,7 +132,7 @@ class cl_db_carnesimg {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Modelo de Carne () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Modelo de Carne já Cadastrado";
@@ -159,10 +159,10 @@ class cl_db_carnesimg {
       $this->atualizacampos();
      $sql = " update db_carnesimg set ";
      $virgula = "";
-     if(trim($this->codmodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codmodelo"])){ 
+     if(trim((string) $this->codmodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["codmodelo"])){ 
        $sql  .= $virgula." codmodelo = $this->codmodelo ";
        $virgula = ",";
-       if(trim($this->codmodelo) == null ){ 
+       if(trim((string) $this->codmodelo) == null ){ 
          $this->erro_sql = " Campo Código Modelo nao Informado.";
          $this->erro_campo = "codmodelo";
          $this->erro_banco = "";
@@ -172,10 +172,10 @@ class cl_db_carnesimg {
          return false;
        }
      }
-     if(trim($this->nomemodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomemodelo"])){ 
+     if(trim((string) $this->nomemodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["nomemodelo"])){ 
        $sql  .= $virgula." nomemodelo = '$this->nomemodelo' ";
        $virgula = ",";
-       if(trim($this->nomemodelo) == null ){ 
+       if(trim((string) $this->nomemodelo) == null ){ 
          $this->erro_sql = " Campo Nome Modelo nao Informado.";
          $this->erro_campo = "nomemodelo";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_db_carnesimg {
          return false;
        }
      }
-     if(trim($this->imgmodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["imgmodelo"])){ 
+     if(trim((string) $this->imgmodelo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["imgmodelo"])){ 
        $sql  .= $virgula." imgmodelo = $this->imgmodelo ";
        $virgula = ",";
-       if(trim($this->imgmodelo) == null ){ 
+       if(trim((string) $this->imgmodelo) == null ){ 
          $this->erro_sql = " Campo Imagem do Modelo nao Informado.";
          $this->erro_campo = "imgmodelo";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_db_carnesimg {
          return false;
        }
      }
-     if(trim($this->orientacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["orientacao"])){ 
+     if(trim((string) $this->orientacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["orientacao"])){ 
        $sql  .= $virgula." orientacao = '$this->orientacao' ";
        $virgula = ",";
-       if(trim($this->orientacao) == null ){ 
+       if(trim((string) $this->orientacao) == null ){ 
          $this->erro_sql = " Campo Orientação nao Informado.";
          $this->erro_campo = "orientacao";
          $this->erro_banco = "";
@@ -292,7 +292,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_carnesimg";

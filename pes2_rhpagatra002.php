@@ -42,7 +42,7 @@ $clrotulo->label('r70_estrut');
 $clrotulo->label('r70_codigo');
 $clrotulo->label('rh60_codigo');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $head3 = "RELATÓRIO DE SALÁRIOS ATRASADOS";
 if(isset($anousu) && trim($anousu) != "" && isset($mesusu) && trim($mesusu) != ""){
@@ -174,7 +174,7 @@ function imprime_atraso($ano, $mes, $estrut, $descrlota, $descrtipo, $valini, $v
   global $pdf, $alt;
 
   $tamanho_cell = 60;
-  if($movimentacao != null && trim($movimentacao) != ""){
+  if($movimentacao != null && trim((string) $movimentacao) != ""){
     $tamanho_cell = 45;
   }
 
@@ -184,7 +184,7 @@ function imprime_atraso($ano, $mes, $estrut, $descrlota, $descrtipo, $valini, $v
   $pdf->cell(15,$alt,$estrut,0,0,"C",1);
   $pdf->cell(60,$alt,$descrlota,0,0,"L",1);
   $pdf->cell($tamanho_cell,$alt,$descrtipo,0,0,"L",1);
-  if($movimentacao != null && trim($movimentacao) != ""){
+  if($movimentacao != null && trim((string) $movimentacao) != ""){
     $pdf->setfont('arial','b',5);
     $pdf->cell(15,$alt,$movimentacao,0,0,"R",1);
     $pdf->setfont('arial','b',7);
@@ -207,7 +207,7 @@ for($x=0; $x<$numrows_atrasados; $x++){
   }
 
   if($regist_ant != $rh57_regist || $mregist == true){
-    if($regist_ant != $rh57_regist && trim($regist_ant) != 0){
+    if($regist_ant != $rh57_regist && trim((string) $regist_ant) != 0){
       $pdf->setfont('arial','',7);
       $pdf->cell(100,$alt,"Totalização por funcionário:","LTB",0,"L",1);
       $pdf->cell(70,$alt,$quant_funci." atrasos, saldo total de R$","TB",0,"R",1);

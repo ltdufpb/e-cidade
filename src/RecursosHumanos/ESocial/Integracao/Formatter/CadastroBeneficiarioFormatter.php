@@ -52,6 +52,7 @@ class CadastroBeneficiarioFormatter extends Formatter
      * @return array|\Assentamento[]
      * @throws \DBException
      */
+    #[\Override]
     public function formatar($dados)
     {
         $dadosServidor = [];
@@ -102,7 +103,7 @@ class CadastroBeneficiarioFormatter extends Formatter
 
     private function montarGrupoEndereco()
     {
-        $retornoEndereco = array();
+        $retornoEndereco = [];
         $cgmServidor = $this->servidorAtual->getCgm();
         $endereco = new \endereco($cgmServidor->getEnderecoPrimario());
 
@@ -145,9 +146,9 @@ class CadastroBeneficiarioFormatter extends Formatter
     private function montarGrupoDependente()
     {
 
-        $retornoDependentes = array();
+        $retornoDependentes = [];
         foreach ($this->servidorAtual->getDependentes() as $dados) {
-            $dependente = array();
+            $dependente = [];
             $tpDep = $this->deParaTipoDependente($dados->getGrauParentesco());
             if ($tpDep) {
                 $dependente["tpDep"] = $tpDep;
@@ -201,13 +202,13 @@ class CadastroBeneficiarioFormatter extends Formatter
          * A-Avó(ô),
          * O-Outros.
          */
-        $dePara = array( "A" => "09",
+        $dePara = [ "A" => "09",
             "C" => "01",
             "F" => "03",
             "M" => "09",
             "P" => "09",
             "O" => "99"
-        );
+        ];
         $retorno = $dePara[$vinculoDependente];
         if (empty($retorno)) {
             return false;
@@ -223,7 +224,7 @@ class CadastroBeneficiarioFormatter extends Formatter
          *  Se valor: 0 preencher N-Não
          *  Se valor: 1;2;3;4;5;6;7 e 8 preencher com S-Sim
          */
-        $dePara = array(
+        $dePara = [
             "0" => "N",
             "1" => "S",
             "2" => "S",
@@ -234,7 +235,7 @@ class CadastroBeneficiarioFormatter extends Formatter
             "7" => "S",
             "8" => "S",
             ""  => null
-        );
+        ];
         $retorno = $dePara[$irrf];
         if (empty($retorno)) {
             return false;
@@ -250,10 +251,10 @@ class CadastroBeneficiarioFormatter extends Formatter
          *  Se valor: N preencher N-Não
          *  Se valor: C e S preencher com S-Sim
          */
-        $dePara = array( "N" => "N",
+        $dePara = [ "N" => "N",
             "C" => "S",
             "S" => "S"
-        );
+        ];
         $retorno = $dePara[$condicao];
         if (empty($retorno)) {
             return false;
@@ -282,13 +283,13 @@ class CadastroBeneficiarioFormatter extends Formatter
          * 8 - Parda
          * 9 - Não informado
          */
-        $dePara = array( "1" => "5",
+        $dePara = [ "1" => "5",
             "2" => "1",
             "4" => "2",
             "6" => "4",
             "8" => "3",
             "9" => "6",
-        );
+        ];
         $retorno = $dePara[$codigo];
         if (empty($retorno)) {
             $retorno = 9;
@@ -315,7 +316,7 @@ class CadastroBeneficiarioFormatter extends Formatter
          * 5 - Divorciado
          * 6 - Uniao estavel
          */
-        $dePara = array(
+        $dePara = [
             1 => 1,
             2 => 2,
             3 => 5,
@@ -323,7 +324,7 @@ class CadastroBeneficiarioFormatter extends Formatter
             5 => 3,
             6 => 2,
             8 => null
-        );
+        ];
         $retorno = $dePara[$codigo];
         if (empty($retorno)) {
             return false;
@@ -375,6 +376,7 @@ class CadastroBeneficiarioFormatter extends Formatter
      *
      * @return  CgmJuridico
      */
+    #[\Override]
     public function getEmpregador()
     {
         return $this->empregador;
@@ -387,6 +389,7 @@ class CadastroBeneficiarioFormatter extends Formatter
      *
      * @return  self
      */
+    #[\Override]
     public function setEmpregador(CgmJuridico $empregador)
     {
         $this->empregador = $empregador;

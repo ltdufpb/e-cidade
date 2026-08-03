@@ -90,9 +90,9 @@ a:active {
 db_postmemory($_POST);
 
 $sd02_i_codigo = db_getsession("DB_coddepto");
-$ano           = substr( $s113_d_exame, 6, 4 );
-$mes           = substr( $s113_d_exame, 3, 2 );
-$dia           = substr( $s113_d_exame, 0, 2 );
+$ano           = substr( (string) $s113_d_exame, 6, 4 );
+$mes           = substr( (string) $s113_d_exame, 3, 2 );
+$dia           = substr( (string) $s113_d_exame, 0, 2 );
 
 $clsau_agendaexames      = new cl_sau_agendaexames;
 $clsau_prestadorhorarios = new cl_sau_prestadorhorarios;
@@ -131,7 +131,7 @@ $dataAgendamento = "{$ano}-{$mes}-{$dia}";
 if (!$rsControleMensal) {
   throw new \Exception("Erro ao consultar dados da agenda mensal do prestador {$s111_i_codigo}");
 }
-$aWheres = array("s112_c_tipograde <> 'M'", "s112_i_prestadorvinc = $s111_i_codigo", "s112_i_diasemana = {$chave_diasemana}");
+$aWheres = ["s112_c_tipograde <> 'M'", "s112_i_prestadorvinc = $s111_i_codigo", "s112_i_diasemana = {$chave_diasemana}"];
 $lControleMensal       = false;
 $iTotalRegistrosMensal = pg_num_rows($rsControleMensal);
 $iQuantidadeMensal     = 0;
@@ -216,20 +216,12 @@ for( $xHora=0; $xHora < $iLinhasCalculoHorarioPrestadora; $xHora++ ) {
   $nro_fichas    += $totalFichas;
   $nro_agendados += $obj_prestadorhorarios->total_agendado;
 
-  switch ($obj_prestadorhorarios->s112_c_tipograde) {
-    case 'I':
-      $sTipoGrade = ' Intervalo ';
-      break;
-    case 'P':
-      $sTipoGrade = ' Período ';
-      break;
-    case 'M':
-      $sTipoGrade = ' Mensal ';
-     break;
-    default:
-      $sTipoGrade = ' Não Informado ';
-      break;
-  }
+  $sTipoGrade = match ($obj_prestadorhorarios->s112_c_tipograde) {
+      'I' => ' Intervalo ',
+      'P' => ' Período ',
+      'M' => ' Mensal ',
+      default => ' Não Informado ',
+  };
   $str_tipograde .= $str_separador. $sTipoGrade;
   $str_separador = "/";
 }
@@ -426,14 +418,14 @@ echo "</script>";
       ?>
       <tr>
         <td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=($h)?></td>
-        <td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=substr($hora_ini,0,5) ?></td>
+        <td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=substr((string) $hora_ini,0,5) ?></td>
         <td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=substr($hora_fim,0,5) ?></td>
         <td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$reservada ?></td>
         <td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$obj_prestadorhorarios->s112_c_tipograde=="I"?"Intervalo":"Período" ?></td>
         <td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$cgs ?></td>
         <td style="border:1px solid #AACCCC;"   class='corpo' align="center"><?=$paciente ?></td>
         <td class='corpo' nowrap>
-          <a title='Lançar conteúdo da linha'  href='#' onclick="js_lancar(<?=$codigo?>,<?=$obj_prestadorhorarios->s112_i_codigo?>,'<?=$ano?>','<?=$mes?>','<?=$dia?>',<?=($h)?>,'<?=substr($hora_ini,0,5) ?>', '<?=$tipo?>');">&nbsp;L&nbsp;</a>
+          <a title='Lançar conteúdo da linha'  href='#' onclick="js_lancar(<?=$codigo?>,<?=$obj_prestadorhorarios->s112_i_codigo?>,'<?=$ano?>','<?=$mes?>','<?=$dia?>',<?=($h)?>,'<?=substr((string) $hora_ini,0,5) ?>', '<?=$tipo?>');">&nbsp;L&nbsp;</a>
           &nbsp;&nbsp;
           <a title='Excluir conteúdo da linha' href='#' onclick='js_excluir(<?=$codigo?>);return false;'>&nbsp;E&nbsp;</a>
           &nbsp;&nbsp;

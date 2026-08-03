@@ -12,7 +12,7 @@ require_once(modification("model/pessoal/folhapagamento/FolhaPagamentoSuplementa
 define("MENSAGEM", 'recursoshumanos.pessoal.pes4_fechamentosuplementar001.');
 
 $oPost            = db_utils::postMemory($_POST);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $rh141_sequencial = '';
 $db_opcao         = 3;
 $botaoProcessar   = '<input name="processar" type="button" value="Processar" disabled id="processar">';

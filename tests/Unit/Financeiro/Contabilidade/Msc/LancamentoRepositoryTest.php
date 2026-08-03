@@ -12,21 +12,22 @@ class LancamentoRepositoryTest extends TestCase
      */
     public $lancamentoRepository;
 
+    #[\Override]
     public function setUp()
     {
         $this->lancamentoRepository = LancamentoRepository::getInstance();
-        $this->lancamentoRepository->setDeParaPo(array(
+        $this->lancamentoRepository->setDeParaPo([
             "0203" => "130001",
             '0201' => "101200",
             '2543' => '10131'
-        ));
+        ]);
 
-        $this->lancamentoRepository->setDeParaRecursos(array(
+        $this->lancamentoRepository->setDeParaRecursos([
             "001" => "1001",
             '0040' => "1004",
             '050' => '050',
             '0108' => '11010',
-        ));
+        ]);
     }
 
     /**

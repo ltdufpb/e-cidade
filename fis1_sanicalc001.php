@@ -39,7 +39,7 @@ $clsaniatividade=new cl_saniatividade;
 $clparfiscal = new cl_parfiscal();
 $clcissqn = new cl_cissqn();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 1;
 $db_botao = true;
 $load = null;

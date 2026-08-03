@@ -1341,7 +1341,7 @@ if  ( $db_opcao == 1 ) {
   
   function js_novoAtendimento(sTipo){
 	  <?php 
-	    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?db_opcao='+sTipo;";
+	    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?db_opcao='+sTipo;";
 	  ?>
   }
 

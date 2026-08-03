@@ -35,7 +35,7 @@ use ECidade\Tributario\Cadastro\Repository\HistoricoCalculoAnualRepository;
   require_once(modification("dbforms/db_funcoes.php"));
   require_once(modification("libs/db_app.utils.php"));
 
-  db_postmemory($HTTP_GET_VARS);
+  db_postmemory($_GET);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -188,9 +188,9 @@ use ECidade\Tributario\Cadastro\Repository\HistoricoCalculoAnualRepository;
                             <tr>
                                 <td width="9%" nowrap align="center"><?=$oCalculo->numpre?></td>
                                 <td width="9%" nowrap align="center"><?=$oCalculo->k02_codigo?></td>
-                                <td width="21%" nowrap bgcolor="#FFFFFF"><?=substr($oCalculo->k02_descr,0,20)?></td>
+                                <td width="21%" nowrap bgcolor="#FFFFFF"><?=substr((string) $oCalculo->k02_descr,0,20)?></td>
                                 <td width="5%" nowrap align="center"><?=$oCalculo->j17_codhis?></td>
-                                <td width="30%" nowrap bgcolor="#FFFFFF"><?= substr($oCalculo->j17_descr, 0, 30) ?></td>
+                                <td width="30%" nowrap bgcolor="#FFFFFF"><?= substr((string) $oCalculo->j17_descr, 0, 30) ?></td>
                                 <td width="6%"  align="right" nowrap bgcolor="#FFFFFF"><?=db_formatar($oCalculo->valor,'f')?></td>
                                 <td width="6%"  align="right" nowrap bgcolor="#FFFFFF"><?=db_formatar($oCalculo->valorisen,'f')?></td>
                                 <td width="16%" align="right" nowrap bgcolor="#FFFFFF"><?=db_formatar(($oCalculo->valor - abs($oCalculo->valorisen)),'f')?></td>
@@ -246,7 +246,7 @@ use ECidade\Tributario\Cadastro\Repository\HistoricoCalculoAnualRepository;
                                 * respectiva salva na tabela de historico que é adicionada pelo mesmo.
                                 */
 
-                                if(pg_numrows($resultPluginAtivo) > 0) {
+                                if(pg_num_rows($resultPluginAtivo) > 0) {
                                     $sql = "SELECT SUM(area) AS area
                                               FROM plugins.iptuconstrareahistorico
                                              WHERE plugins.iptuconstrareahistorico.matricula = {$matricula}
@@ -256,7 +256,7 @@ use ECidade\Tributario\Cadastro\Repository\HistoricoCalculoAnualRepository;
 
                                     $result = db_query($sql);
                                     $area = \db_utils::fieldsMemory($result, 0)->area;
-                                    $areaExibida = $area ? $area : $areaExibida;
+                                    $areaExibida = $area ?: $areaExibida;
                                 }
                             ?>
                                 <tr>

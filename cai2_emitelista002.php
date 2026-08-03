@@ -36,8 +36,8 @@ $clrotulo->label('z01_nome');
 $clrotulo->label('z01_numcgm');
 $clrotulo->label('q02_inscr');
 $clrotulo->label('j01_matric');
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $instit = db_getsession("DB_instit");
 //die("filtro = $filtro");
 if ($lista == '') {
@@ -210,19 +210,19 @@ if ($tipo == 'p') {
 	$totalval = 0;
 	$valor = 0;
 	$xnumcgm = "";
-	for ($x = 0; $x < pg_numrows($result); $x ++) {
+	for ($x = 0; $x < pg_num_rows($result); $x ++) {
 		db_fieldsmemory($result, $x);
 		$cgm = $numcgm;
 		// if($x == 0)
 		// $xnumcgm = $cgm;
 
 		$xnumcgm = $numcgm;
-		$xcod = $$xcodigo1;
+		$xcod = ${$xcodigo1};
 		$xnome = $z01_nome;
 
-    if ( strlen(trim($z01_cgccpf)) == 14 ) {
+    if ( strlen(trim((string) $z01_cgccpf)) == 14 ) {
       $z01_cgccpf = db_formatar($z01_cgccpf,'cnpj');
-    } elseif ( strlen(trim($z01_cgccpf)) == 11 ) {
+    } elseif ( strlen(trim((string) $z01_cgccpf)) == 11 ) {
       $z01_cgccpf = db_formatar($z01_cgccpf,'cpf');
     }
 
@@ -261,16 +261,16 @@ if ($tipo == 'p') {
 				db_fieldsmemory($result_princ,0);
 			}
 
-      if ( strlen(trim($z01_cgccpf)) == 14 ) {
+      if ( strlen(trim((string) $z01_cgccpf)) == 14 ) {
         $z01_cgccpf = db_formatar($z01_cgccpf,'cnpj');
-      } elseif ( strlen(trim($z01_cgccpf)) == 11 ) {
+      } elseif ( strlen(trim((string) $z01_cgccpf)) == 11 ) {
         $z01_cgccpf = db_formatar($z01_cgccpf,'cpf');
       }
 
 			$pdf->cell(15, 5, $xcod, 0, 0, "C", 0);
 			$pdf->cell(30, 5, $z01_cgccpf, 0, 0, "L", 0);
-			$pdf->cell(15, 5, substr(@ $k63_notifica, 0, 50), 0, 0, "C", 0);
-			$pdf->cell(60, 5, substr($xnome,0,33), 0, 0, "L", 0);
+			$pdf->cell(15, 5, substr((string) @ $k63_notifica, 0, 50), 0, 0, "C", 0);
+			$pdf->cell(60, 5, substr((string) $xnome,0,33), 0, 0, "L", 0);
 			$pdf->cell(50, 5, substr($q03_descr, 0, 28), 0, 0, "L", 0);
 			if (isset ($comvalor) && $comvalor == 's') {
 				$pdf->cell(20, 5, db_formatar($xvalor, 'f'), 0, 1, "R", 0);
@@ -354,12 +354,12 @@ if ($tipo == 'p') {
 		}
 		fputs($clabre_arquivo->arquivo, "\n");
 
-		for ($x = 0; $x < pg_numrows($result); $x ++) {
+		for ($x = 0; $x < pg_num_rows($result); $x ++) {
 			db_fieldsmemory($result, $x);
 			$cgm = $numcgm;
 
 			$xnumcgm = $numcgm;
-			$xcod = $$xcodigo;
+			$xcod = ${$xcodigo};
 			$xnome = $z01_nome;
 
 			fputs($clabre_arquivo->arquivo, $xcod.$sep);

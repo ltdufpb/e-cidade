@@ -49,7 +49,7 @@ if(isset($Processar)){
 
    $campos=" z01_i_cgsund,z01_v_nome ";
 	 $sql=$cl_cgs_und->sql_query("",$campos,""," z01_i_familiamicroarea = '$z01_i_familiamicroarea' ");
-   $repassa = array("chave_z01_i_cgsund"=>@$chave_z01_i_cgsund);
+   $repassa = ["chave_z01_i_cgsund"=>@$chave_z01_i_cgsund];
    db_lovrot($sql,10,"()","","js_cgs|z01_i_cgsund|z01_v_nome");
     
 }

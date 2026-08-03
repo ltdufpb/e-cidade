@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE taxagruporeg
 class cl_taxagruporeg { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k08_taxagruporeg = 0; 
-   var $k08_taxagrupo = 0; 
-   var $k08_codsubrec = 0; 
+   public $k08_taxagruporeg = 0; 
+   public $k08_taxagrupo = 0; 
+   public $k08_codsubrec = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k08_taxagruporeg = int4 = Codigo da taxa 
                  k08_taxagrupo = int4 = Código do grupo 
                  k08_codsubrec = int4 = Código da Subreceita 
                  ";
    //funcao construtor da classe 
-   function cl_taxagruporeg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("taxagruporeg"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -99,10 +99,10 @@ class cl_taxagruporeg {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k08_taxagruporeg = pg_result($result,0,0); 
+       $this->k08_taxagruporeg = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from taxagruporeg_k08_taxagruporeg_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k08_taxagruporeg)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k08_taxagruporeg)){
          $this->erro_sql = " Campo k08_taxagruporeg maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -134,7 +134,7 @@ class cl_taxagruporeg {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Ligação com grupo de taxas ($this->k08_taxagruporeg) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Ligação com grupo de taxas já Cadastrado";
@@ -158,12 +158,12 @@ class cl_taxagruporeg {
      $resaco = $this->sql_record($this->sql_query_file($this->k08_taxagruporeg));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8677,'$this->k08_taxagruporeg','I')");
-       $resac = db_query("insert into db_acount values($acount,1480,8677,'','".AddSlashes(pg_result($resaco,0,'k08_taxagruporeg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1480,8678,'','".AddSlashes(pg_result($resaco,0,'k08_taxagrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1480,8679,'','".AddSlashes(pg_result($resaco,0,'k08_codsubrec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1480,8677,'','".AddSlashes(pg_fetch_result($resaco,0,'k08_taxagruporeg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1480,8678,'','".AddSlashes(pg_fetch_result($resaco,0,'k08_taxagrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1480,8679,'','".AddSlashes(pg_fetch_result($resaco,0,'k08_codsubrec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -172,10 +172,10 @@ class cl_taxagruporeg {
       $this->atualizacampos();
      $sql = " update taxagruporeg set ";
      $virgula = "";
-     if(trim($this->k08_taxagruporeg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k08_taxagruporeg"])){ 
+     if(trim((string) $this->k08_taxagruporeg)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k08_taxagruporeg"])){ 
        $sql  .= $virgula." k08_taxagruporeg = $this->k08_taxagruporeg ";
        $virgula = ",";
-       if(trim($this->k08_taxagruporeg) == null ){ 
+       if(trim((string) $this->k08_taxagruporeg) == null ){ 
          $this->erro_sql = " Campo Codigo da taxa nao Informado.";
          $this->erro_campo = "k08_taxagruporeg";
          $this->erro_banco = "";
@@ -185,10 +185,10 @@ class cl_taxagruporeg {
          return false;
        }
      }
-     if(trim($this->k08_taxagrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k08_taxagrupo"])){ 
+     if(trim((string) $this->k08_taxagrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k08_taxagrupo"])){ 
        $sql  .= $virgula." k08_taxagrupo = $this->k08_taxagrupo ";
        $virgula = ",";
-       if(trim($this->k08_taxagrupo) == null ){ 
+       if(trim((string) $this->k08_taxagrupo) == null ){ 
          $this->erro_sql = " Campo Código do grupo nao Informado.";
          $this->erro_campo = "k08_taxagrupo";
          $this->erro_banco = "";
@@ -198,10 +198,10 @@ class cl_taxagruporeg {
          return false;
        }
      }
-     if(trim($this->k08_codsubrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k08_codsubrec"])){ 
+     if(trim((string) $this->k08_codsubrec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k08_codsubrec"])){ 
        $sql  .= $virgula." k08_codsubrec = $this->k08_codsubrec ";
        $virgula = ",";
-       if(trim($this->k08_codsubrec) == null ){ 
+       if(trim((string) $this->k08_codsubrec) == null ){ 
          $this->erro_sql = " Campo Código da Subreceita nao Informado.";
          $this->erro_campo = "k08_codsubrec";
          $this->erro_banco = "";
@@ -219,15 +219,15 @@ class cl_taxagruporeg {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8677,'$this->k08_taxagruporeg','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k08_taxagruporeg"]))
-           $resac = db_query("insert into db_acount values($acount,1480,8677,'".AddSlashes(pg_result($resaco,$conresaco,'k08_taxagruporeg'))."','$this->k08_taxagruporeg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1480,8677,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k08_taxagruporeg'))."','$this->k08_taxagruporeg',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k08_taxagrupo"]))
-           $resac = db_query("insert into db_acount values($acount,1480,8678,'".AddSlashes(pg_result($resaco,$conresaco,'k08_taxagrupo'))."','$this->k08_taxagrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1480,8678,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k08_taxagrupo'))."','$this->k08_taxagrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k08_codsubrec"]))
-           $resac = db_query("insert into db_acount values($acount,1480,8679,'".AddSlashes(pg_result($resaco,$conresaco,'k08_codsubrec'))."','$this->k08_codsubrec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1480,8679,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k08_codsubrec'))."','$this->k08_codsubrec',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -272,12 +272,12 @@ class cl_taxagruporeg {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8677,'$k08_taxagruporeg','E')");
-         $resac = db_query("insert into db_acount values($acount,1480,8677,'','".AddSlashes(pg_result($resaco,$iresaco,'k08_taxagruporeg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1480,8678,'','".AddSlashes(pg_result($resaco,$iresaco,'k08_taxagrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1480,8679,'','".AddSlashes(pg_result($resaco,$iresaco,'k08_codsubrec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1480,8677,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k08_taxagruporeg'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1480,8678,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k08_taxagrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1480,8679,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k08_codsubrec'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from taxagruporeg
@@ -337,7 +337,7 @@ class cl_taxagruporeg {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:taxagruporeg";
@@ -351,7 +351,7 @@ class cl_taxagruporeg {
    function sql_query ( $k08_taxagruporeg=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -377,7 +377,7 @@ class cl_taxagruporeg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,7 +389,7 @@ class cl_taxagruporeg {
    function sql_query_file ( $k08_taxagruporeg=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -410,7 +410,7 @@ class cl_taxagruporeg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

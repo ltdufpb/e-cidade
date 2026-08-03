@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE recibopagahist
 class cl_recibopagahist { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k00_numnov = 0; 
-   var $k00_historico = null; 
+   public $k00_numnov = 0; 
+   public $k00_historico = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k00_numnov = int4 = Codigo Auxiliar 
                  k00_historico = text = Histórico 
                  ";
    //funcao construtor da classe 
-   function cl_recibopagahist() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("recibopagahist"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -96,7 +96,7 @@ class cl_recibopagahist {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Histórico Pagamento Recibo ($this->k00_numnov) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Histórico Pagamento Recibo já Cadastrado";
@@ -120,11 +120,11 @@ class cl_recibopagahist {
      $resaco = $this->sql_record($this->sql_query_file($this->k00_numnov));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,2129,'$this->k00_numnov','I')");
-       $resac = db_query("insert into db_acount values($acount,1842,2129,'','".AddSlashes(pg_result($resaco,0,'k00_numnov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1842,10669,'','".AddSlashes(pg_result($resaco,0,'k00_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1842,2129,'','".AddSlashes(pg_fetch_result($resaco,0,'k00_numnov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1842,10669,'','".AddSlashes(pg_fetch_result($resaco,0,'k00_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -133,10 +133,10 @@ class cl_recibopagahist {
       $this->atualizacampos();
      $sql = " update recibopagahist set ";
      $virgula = "";
-     if(trim($this->k00_numnov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numnov"])){ 
+     if(trim((string) $this->k00_numnov)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_numnov"])){ 
        $sql  .= $virgula." k00_numnov = $this->k00_numnov ";
        $virgula = ",";
-       if(trim($this->k00_numnov) == null ){ 
+       if(trim((string) $this->k00_numnov) == null ){ 
          $this->erro_sql = " Campo Codigo Auxiliar nao Informado.";
          $this->erro_campo = "k00_numnov";
          $this->erro_banco = "";
@@ -146,7 +146,7 @@ class cl_recibopagahist {
          return false;
        }
      }
-     if(trim($this->k00_historico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_historico"])){ 
+     if(trim((string) $this->k00_historico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k00_historico"])){ 
        $sql  .= $virgula." k00_historico = '$this->k00_historico' ";
        $virgula = ",";
      }
@@ -158,13 +158,13 @@ class cl_recibopagahist {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2129,'$this->k00_numnov','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k00_numnov"]))
-           $resac = db_query("insert into db_acount values($acount,1842,2129,'".AddSlashes(pg_result($resaco,$conresaco,'k00_numnov'))."','$this->k00_numnov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1842,2129,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k00_numnov'))."','$this->k00_numnov',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k00_historico"]))
-           $resac = db_query("insert into db_acount values($acount,1842,10669,'".AddSlashes(pg_result($resaco,$conresaco,'k00_historico'))."','$this->k00_historico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1842,10669,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k00_historico'))."','$this->k00_historico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -209,11 +209,11 @@ class cl_recibopagahist {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2129,'$k00_numnov','E')");
-         $resac = db_query("insert into db_acount values($acount,1842,2129,'','".AddSlashes(pg_result($resaco,$iresaco,'k00_numnov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1842,10669,'','".AddSlashes(pg_result($resaco,$iresaco,'k00_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1842,2129,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k00_numnov'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1842,10669,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k00_historico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from recibopagahist
@@ -273,7 +273,7 @@ class cl_recibopagahist {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:recibopagahist";

@@ -63,7 +63,7 @@ function imprimirMedicamento($oPdf, $oLarguraColunas, $oMedicamento) {
   $oPdf->cell($oLarguraColunas->iMedicamento, 4, $oMedicamento->sdescricao, 1, 0, "L", 0);
   $oPdf->cell($oLarguraColunas->iUnidade, 4, $oMedicamento->sunidade, 1, 0, "L", 0);
   $oPdf->cell($oLarguraColunas->iDeposito, 4, $oMedicamento->icodigodeposito, 1, 0, "L", 0);
-  $oPdf->cell($oLarguraColunas->iDescricao, 4, substr($oMedicamento->sdecricaodeposito, 0, 21), 1, 0, "L", 0);
+  $oPdf->cell($oLarguraColunas->iDescricao, 4, substr((string) $oMedicamento->sdecricaodeposito, 0, 21), 1, 0, "L", 0);
   $oPdf->cell($oLarguraColunas->iQuantidade, 4, $oMedicamento->iquantidade, 1, 0, "R", 0);
   $oPdf->cell($oLarguraColunas->iValor, 4, db_formatar($oMedicamento->nvalor,"f"), 1, 1, "R", 0);  
 	

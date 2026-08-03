@@ -42,7 +42,7 @@ $clautotipobaixa         = new cl_autotipobaixa;
 
 $clautotipobaixaprocproc->rotulo->label();
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;
@@ -70,7 +70,7 @@ if (isset($cancelabaixa)) {
   
 	  $result_autotipo = $clautotipo->sql_record($clautotipo->sql_query_file(null,"*",null,"y59_codauto=$y50_codauto"));
 	  $numrows         = $clautotipo->numrows;
-	  $cods            = split('#',$chaves);
+	  $cods            = preg_split('#\##m',$chaves);
 	  if ($numrows == count($cods)) {
 	  	
 	    if ($numrows != 0) {

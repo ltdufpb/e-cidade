@@ -33,7 +33,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("std/DBDate.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $oDataInicial = new DBDate($data_inicial);
@@ -113,7 +113,7 @@ for ($i = 0; $i < $totalHistoricos; $i++) {
     'riseqitem');
 
   $rsBuscaItensEmpenho = db_query($sqlItensEmpenho);
-  $totalItensEmpenho = pg_numrows($rsBuscaItensEmpenho);
+  $totalItensEmpenho = pg_num_rows($rsBuscaItensEmpenho);
   $alternador_cinza = true;
 
   if ($totalItensEmpenho > 0) {

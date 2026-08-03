@@ -170,7 +170,7 @@ class ControleAfastamento
         }
 
         if (array_key_exists('rh231_rubrica', $state)) {
-            $controleAfastamento->setRubrica(RubricaRepository::getInstanciaByCodigo(trim($state['rh231_rubrica'])));
+            $controleAfastamento->setRubrica(RubricaRepository::getInstanciaByCodigo(trim((string) $state['rh231_rubrica'])));
         }
 
         if (array_key_exists('rh231_tabelaprevidencia', $state)) {
@@ -206,7 +206,7 @@ class ControleAfastamento
             $instituicao = $instituicao->toArray();
         }
 
-        return $retorno = array(
+        return $retorno = [
             'sequencial' => $this->getSequencial(),
             'afastamento' => $this->getAfastamento(),
             'rubrica' => $rubrica,
@@ -214,6 +214,6 @@ class ControleAfastamento
             'instituicao' => $instituicao,
             'ano' => $this->getAno(),
             'mes' => $this->getMes()
-        );
+        ];
     }
 }

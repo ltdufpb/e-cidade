@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_tabrecjm_classe.php"));
 require_once(modification("classes/db_tabrecjmmulta_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oDaoTabrecjm      = new cl_tabrecjm;
 $oDaoTabrecjmmulta = new cl_tabrecjmmulta;
@@ -44,7 +44,7 @@ $k02_dtfrac_dia = null;
 $k02_dtfrac_mes = null;
 $k02_dtfrac_ano = null;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoTabrecjm->rotulo->label();
 $oDaoTabrecjmmulta->rotulo->label();
@@ -187,10 +187,10 @@ if (isset($incluir)) {
 
 if ( isset($k02_dtfrac) && $k02_dtfrac != '' && $tipoMulta == 1) {
 
-  if( count(explode('-', $k02_dtfrac)) > 1 ) { 
-    $dDataInicial = explode('-', $k02_dtfrac);
+  if( count(explode('-', (string) $k02_dtfrac)) > 1 ) { 
+    $dDataInicial = explode('-', (string) $k02_dtfrac);
   } else {
-    $dDataInicial = explode('/', $k02_dtfrac);
+    $dDataInicial = explode('/', (string) $k02_dtfrac);
     $dDataInicial = array_reverse($dDataInicial);
   }
 

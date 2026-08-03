@@ -41,7 +41,7 @@
   $oRotulo->label('rh102_mesusu');
   $oRotulo->label('rh103_tipofolha');
   
-  $oPost = db_utils::postMemory($HTTP_POST_VARS);
+  $oPost = db_utils::postMemory($_POST);
 
   if ( isset($oPost->btnInativar) ) {
 

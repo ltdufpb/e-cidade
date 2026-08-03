@@ -33,21 +33,21 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matordem_classe.php"));
 
-$oGet = db_utils::postMemory($HTTP_GET_VARS);
+$oGet = db_utils::postMemory($_GET);
 
 $sWhere = "";
-if(trim($oGet->e69_numero)!=''){
+if(trim((string) $oGet->e69_numero)!=''){
 	if($sWhere == ""){
 		$sWhere .= " e69_numero='".$oGet->e69_numero."' ";
 	}else{
 		$sWhere .= " and e69_numero='".$oGet->e69_numero."' ";
 	}
 }
-if(trim($oGet->e60_codemp)!=''){
+if(trim((string) $oGet->e60_codemp)!=''){
 	
 	$iAnoUsu = db_getsession("DB_anousu");
 	
-	$aCodEmp = explode('/',$oGet->e60_codemp);
+	$aCodEmp = explode('/',(string) $oGet->e60_codemp);
 	
 	if (count($aCodEmp) == 2) {
 	 $iAnoUsu    = $aCodEmp[1];
@@ -60,7 +60,7 @@ if(trim($oGet->e60_codemp)!=''){
     $sWhere .= " and e60_codemp='".$e60_codemp."' and e60_anousu = ".$iAnoUsu;
   }
 }
-if(trim($oGet->z01_numcgm)!=''){
+if(trim((string) $oGet->z01_numcgm)!=''){
   if($sWhere == ""){
     $sWhere .= " z01_numcgm=".$oGet->z01_numcgm;
   }else{
@@ -68,7 +68,7 @@ if(trim($oGet->z01_numcgm)!=''){
   }
 }
 
-if(trim($oGet->m51_codordem)!=''){
+if(trim((string) $oGet->m51_codordem)!=''){
   if($sWhere == ""){
     $sWhere .= " m51_codordem=".$oGet->m51_codordem;
   }else{
@@ -79,7 +79,7 @@ if(trim($oGet->m51_codordem)!=''){
 
 if ( isset($oGet->e04_numeroprocesso) && !empty($oGet->e04_numeroprocesso) ) {
   
-  $sProcesso = addslashes($oGet->e04_numeroprocesso);
+  $sProcesso = addslashes((string) $oGet->e04_numeroprocesso);
   if($sWhere == ""){
     
     $sWhere .= " e04_numeroprocesso ilike '%{$sProcesso}%' ";
@@ -94,19 +94,19 @@ if ( isset($oGet->e04_numeroprocesso) && !empty($oGet->e04_numeroprocesso) ) {
 
 if ( isset($oGet->dtini) && !empty($oGet->dtini) && isset($oGet->dtfim) && !empty($oGet->dtfim) ) {
   
-  if(trim($oGet->dtini) != '' && trim($oGet->dtfim) != '' ){
+  if(trim((string) $oGet->dtini) != '' && trim((string) $oGet->dtfim) != '' ){
     if($sWhere == ""){
       $sWhere .= " e69_dtnota between '".$oGet->dtini."' and '".$oGet->dtfim."'";
     }else{  
       $sWhere .= " and e69_dtnota between '".$oGet->dtini."' and '".$oGet->dtfim."'";
     }
-  }else if(trim($oGet->dtini) != ''){
+  }else if(trim((string) $oGet->dtini) != ''){
     if($sWhere == ""){
       $sWhere .= " e69_dtnota = '".$oGet->dtini."' ";
     }else{
       $sWhere .= " and e69_dtnota = '".$oGet->dtini."' ";
     }
-  }else if(trim($oGet->dtfim) != ''){
+  }else if(trim((string) $oGet->dtfim) != ''){
     if($sWhere == ""){
       $sWhere .= " e69_dtnota = '".$oGet->dtfim."' ";
     }else{

@@ -34,7 +34,7 @@ include(modification("classes/db_far_parametros_classe.php"));
 include(modification("classes/db_far_matersaude_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clfar_class = new cl_far_class;
 $cldb_estrut = new cl_db_estrut;
 $cl_far_parametros = new cl_far_parametros;

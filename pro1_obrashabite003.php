@@ -32,7 +32,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clobrashabite = new cl_obrashabite;
@@ -42,7 +42,7 @@ $db_botao = false;
 $db_opcao = 33;
 $sqlerro = false;
 
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Excluir") {
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Excluir") {
     db_inicio_transacao();
     $db_opcao = 3;
 
@@ -126,7 +126,7 @@ if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Exclui
   </body>
   </html>
 <?php
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"] == "Excluir") {
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"] == "Excluir") {
     if ($clobrashabite->erro_status == "0") {
         $clobrashabite->erro(true, false);
     } else {

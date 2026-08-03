@@ -96,7 +96,7 @@ if (!empty($oGet->volumes)) {
         <?php db_input("p01_sequencial", 30, 0, true, "hidden", 1); ?>
         <?php db_input("p58_codproc", 30, 0, true, "hidden", 1); ?>
       <input type="hidden" id="storage" name="storage"
-             value="<?php echo isset($oGet->storage) ? $oGet->storage : "" ?>">
+             value="<?php echo $oGet->storage ?? "" ?>">
       <input type="hidden" id="codigoProcesso" name="codigoProcesso" value="<?php echo $codigoProcesso ?>">
 
       <table class="form-container">

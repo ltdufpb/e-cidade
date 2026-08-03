@@ -36,7 +36,7 @@ require_once(modification("classes/db_cursoturno_classe.php"));
 require_once(modification("classes/db_cursoato_classe.php"));
 require_once(modification("classes/db_cursoatoserie_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcursoescola = new cl_cursoescola;
 $clcursoturno = new cl_cursoturno;
 $clcursoato = new cl_cursoato;

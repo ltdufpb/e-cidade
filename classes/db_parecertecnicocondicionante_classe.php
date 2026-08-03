@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE parecertecnicocondicionante
 class cl_parecertecnicocondicionante {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $am12_sequencial = 0;
-   var $am12_parecertecnico = 0;
-   var $am12_condicionante = 0;
+   public $am12_sequencial = 0;
+   public $am12_parecertecnico = 0;
+   public $am12_condicionante = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  am12_sequencial = int4 = Condicionante
                  am12_parecertecnico = int4 = Parecer Técnico
                  am12_condicionante = int4 = Condicionante
                  ";
    //funcao construtor da classe
-   function cl_parecertecnicocondicionante() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parecertecnicocondicionante");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -107,10 +107,10 @@ class cl_parecertecnicocondicionante {
          $this->erro_status = "0";
          return false;
        }
-       $this->am12_sequencial = pg_result($result,0,0);
+       $this->am12_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from parecertecnicocondicionante_am12_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $am12_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $am12_sequencial)){
          $this->erro_sql = " Campo am12_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_parecertecnicocondicionante {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parecer/Condicionante ($this->am12_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parecer/Condicionante já Cadastrado";
@@ -171,12 +171,12 @@ class cl_parecertecnicocondicionante {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20859,'$this->am12_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3753,20859,'','".AddSlashes(pg_result($resaco,0,'am12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3753,20860,'','".AddSlashes(pg_result($resaco,0,'am12_parecertecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3753,20862,'','".AddSlashes(pg_result($resaco,0,'am12_condicionante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3753,20859,'','".AddSlashes(pg_fetch_result($resaco,0,'am12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3753,20860,'','".AddSlashes(pg_fetch_result($resaco,0,'am12_parecertecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3753,20862,'','".AddSlashes(pg_fetch_result($resaco,0,'am12_condicionante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -186,10 +186,10 @@ class cl_parecertecnicocondicionante {
       $this->atualizacampos();
      $sql = " update parecertecnicocondicionante set ";
      $virgula = "";
-     if(trim($this->am12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am12_sequencial"])){
+     if(trim((string) $this->am12_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am12_sequencial"])){
        $sql  .= $virgula." am12_sequencial = $this->am12_sequencial ";
        $virgula = ",";
-       if(trim($this->am12_sequencial) == null ){
+       if(trim((string) $this->am12_sequencial) == null ){
          $this->erro_sql = " Campo Condicionante não informado.";
          $this->erro_campo = "am12_sequencial";
          $this->erro_banco = "";
@@ -199,10 +199,10 @@ class cl_parecertecnicocondicionante {
          return false;
        }
      }
-     if(trim($this->am12_parecertecnico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am12_parecertecnico"])){
+     if(trim((string) $this->am12_parecertecnico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am12_parecertecnico"])){
        $sql  .= $virgula." am12_parecertecnico = $this->am12_parecertecnico ";
        $virgula = ",";
-       if(trim($this->am12_parecertecnico) == null ){
+       if(trim((string) $this->am12_parecertecnico) == null ){
          $this->erro_sql = " Campo Parecer Técnico não informado.";
          $this->erro_campo = "am12_parecertecnico";
          $this->erro_banco = "";
@@ -212,10 +212,10 @@ class cl_parecertecnicocondicionante {
          return false;
        }
      }
-     if(trim($this->am12_condicionante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am12_condicionante"])){
+     if(trim((string) $this->am12_condicionante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am12_condicionante"])){
        $sql  .= $virgula." am12_condicionante = $this->am12_condicionante ";
        $virgula = ",";
-       if(trim($this->am12_condicionante) == null ){
+       if(trim((string) $this->am12_condicionante) == null ){
          $this->erro_sql = " Campo Condicionante não informado.";
          $this->erro_campo = "am12_condicionante";
          $this->erro_banco = "";
@@ -239,15 +239,15 @@ class cl_parecertecnicocondicionante {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20859,'$this->am12_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am12_sequencial"]) || $this->am12_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3753,20859,'".AddSlashes(pg_result($resaco,$conresaco,'am12_sequencial'))."','$this->am12_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3753,20859,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am12_sequencial'))."','$this->am12_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am12_parecertecnico"]) || $this->am12_parecertecnico != "")
-             $resac = db_query("insert into db_acount values($acount,3753,20860,'".AddSlashes(pg_result($resaco,$conresaco,'am12_parecertecnico'))."','$this->am12_parecertecnico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3753,20860,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am12_parecertecnico'))."','$this->am12_parecertecnico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am12_condicionante"]) || $this->am12_condicionante != "")
-             $resac = db_query("insert into db_acount values($acount,3753,20862,'".AddSlashes(pg_result($resaco,$conresaco,'am12_condicionante'))."','$this->am12_condicionante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3753,20862,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am12_condicionante'))."','$this->am12_condicionante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -301,12 +301,12 @@ class cl_parecertecnicocondicionante {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20859,'$am12_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3753,20859,'','".AddSlashes(pg_result($resaco,$iresaco,'am12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3753,20860,'','".AddSlashes(pg_result($resaco,$iresaco,'am12_parecertecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3753,20862,'','".AddSlashes(pg_result($resaco,$iresaco,'am12_condicionante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3753,20859,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am12_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3753,20860,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am12_parecertecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3753,20862,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am12_condicionante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

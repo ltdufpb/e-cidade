@@ -66,7 +66,7 @@ $oRotulo = new rotulocampo();
         <td class="bold"><label id="label_data" for="data">Data da Operação:</label></td>
         <td>
           <?php
-          list($iDia, $iMes, $iAno) = explode("-", date('d-m-Y', db_getsession('DB_datausu')));
+          [$iDia, $iMes, $iAno] = explode("-", date('d-m-Y', db_getsession('DB_datausu')));
           db_inputdata('data', $iDia, $iMes, $iAno, true, 'text', 1);
           ?>
         </td>

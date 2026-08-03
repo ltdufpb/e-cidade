@@ -84,7 +84,7 @@ class RREOParticipacaoPublicaPrivada extends ArquivoSigapFiscal
         $contadorLinha = 1;
 
         foreach ($linhas as $linha) {
-            if (preg_match('/^\d+$/', $linha->descricao)) {
+            if (preg_match('/^\d+$/', (string) $linha->descricao)) {
                 continue;
             }
 

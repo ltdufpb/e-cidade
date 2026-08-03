@@ -38,7 +38,7 @@ include(modification("classes/db_orcsuplemval_classe.php"));
 include(modification("classes/db_orcprojeto_classe.php"));
 include(modification("classes/db_orcreceita_classe.php")); 
 db_app::import("orcamento.suplementacao.*");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clorcsuplemrec = new cl_orcsuplemrec;
 $clorcsuplemval = new cl_orcsuplemval;

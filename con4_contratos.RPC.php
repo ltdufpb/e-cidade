@@ -91,7 +91,7 @@ $oRetorno = new stdClass;
 $oRetorno->status = 1;
 $oRetorno->erro = false;
 $oRetorno->message = 1;
-$oRetorno->itens = array();
+$oRetorno->itens = [];
 
 switch ($oParam->exec) {
     case 'getMembros':
@@ -105,17 +105,17 @@ switch ($oParam->exec) {
             $oAcordoStd->sObservacao = urlencode($oAcordo->getObservacao());
             $oAcordoStd->sDataInicial = $oAcordo->getDataInicial();
             $oAcordoStd->sDataFinal = $oAcordo->getDataInicial();
-            $oAcordoStd->aMembros = array();
+            $oAcordoStd->aMembros = [];
 
             foreach ($oAcordo->getMembros() as $oMembro) {
                 $oStdMembro = new stdClass();
 
                 $oStdMembro->iCodigo = $oMembro->getCodigo();
                 $oStdMembro->iCodigoCgm = $oMembro->getCodigoCgm();
-                $oStdMembro->sNome = urlencode($oMembro->getNome());
+                $oStdMembro->sNome = urlencode((string) $oMembro->getNome());
                 $oStdMembro->iCodigoComissao = $oMembro->getCodigoComissao();
                 $oStdMembro->iResponsabilidade = $oMembro->getResponsabilidade();
-                $oStdMembro->sResponsabilidade = urlencode($oMembro->getDescricaoResponsabilidade());
+                $oStdMembro->sResponsabilidade = urlencode((string) $oMembro->getDescricaoResponsabilidade());
                 $oStdMembro->sDataInicio = null;
                 $oStdMembro->sDataTermino = null;
                 $oStdMembro->numeroAtoDesignacao = $oMembro->getNumeroAtoDesignacao();
@@ -306,7 +306,7 @@ switch ($oParam->exec) {
 
     case "pesquisaTipoAcordo":
 
-        $oRetorno->aTipoAcordo = array();
+        $oRetorno->aTipoAcordo = [];
         $clacordotipo = new cl_acordotipo;
         $sCampos = 'acordotipo.ac04_sequencial as codigo, acordotipo.ac04_descricao as descricao';
         $sSqlTipoAcordo = $clacordotipo->sql_query(null, $sCampos);
@@ -318,7 +318,7 @@ switch ($oParam->exec) {
 
         try {
             $oAcordoPenalidade = new AcordoPenalidade($oParam->codigo);
-            $oRetorno->aTiposContratos = array();
+            $oRetorno->aTiposContratos = [];
             $oRetorno->iCodigo = $oAcordoPenalidade->getCodigo();
             $oRetorno->sDescricao = urlencode($oAcordoPenalidade->getDescricao());
             $oRetorno->sObservacao = urlencode($oAcordoPenalidade->getObservacao());
@@ -337,7 +337,7 @@ switch ($oParam->exec) {
         try {
             db_inicio_transacao();
 
-            $dtValidade = implode('-', array_reverse(explode('/', $oParam->datalimite)));
+            $dtValidade = implode('-', array_reverse(explode('/', (string) $oParam->datalimite)));
 
             $oAcordoPenalidade = new AcordoPenalidade($oParam->codigo);
             $oAcordoPenalidade->setDescricao(addslashes(db_stdClass::normalizeStringJson($oParam->descricao)));
@@ -403,7 +403,7 @@ switch ($oParam->exec) {
         try {
             db_inicio_transacao();
 
-            $sLimite = implode("-", array_reverse(explode("/", $oParam->sDataLimite)));
+            $sLimite = implode("-", array_reverse(explode("/", (string) $oParam->sDataLimite)));
 
             $oAcordoGarantia = new AcordoGarantia($oParam->iCodigo);
             $oAcordoGarantia->setDescricao(addslashes(db_stdClass::normalizeStringJson($oParam->sDescricao)));
@@ -447,7 +447,7 @@ switch ($oParam->exec) {
     case 'getLicitacoesContratado':
         $aItens = licitacao::getLicitacoesByFornecedor($oParam->iContratado, true, db_getsession('DB_instit'));
 
-        $aItensDevolver = array();
+        $aItensDevolver = [];
         foreach ($aItens as $oStdDadosLicitacao) {
             if ($oStdDadosLicitacao->l20_usaregistropreco == 't') {
                 continue;
@@ -471,7 +471,7 @@ switch ($oParam->exec) {
         }
 
         $oRetorno->itens = $aItensDevolver;
-        $oRetorno->itensSelecionados = array();
+        $oRetorno->itensSelecionados = [];
 
         if (isset($_SESSION['dadosSelecaoAcordo'])) {
             $oRetorno->itensSelecionados = $_SESSION['dadosSelecaoAcordo'];
@@ -496,7 +496,7 @@ switch ($oParam->exec) {
         }
 
         $oRetorno->itens = $oItens;
-        $oRetorno->itensSelecionados = array();
+        $oRetorno->itensSelecionados = [];
 
         if (isset($_SESSION['dadosSelecaoAcordo'])) {
             $oRetorno->itensSelecionados = $_SESSION['dadosSelecaoAcordo'];
@@ -720,7 +720,7 @@ switch ($oParam->exec) {
             $oDadosContrato->iGrupo = $oContrato->getGrupo();
             $oDadosContrato->iNumero = $oContrato->getNumero();
             $oDadosContrato->iContratado = $oContrato->getContratado()->getCodigo();
-            $oDadosContrato->sNomeContratado = urlencode($oContrato->getContratado()->getNome());
+            $oDadosContrato->sNomeContratado = urlencode((string) $oContrato->getContratado()->getNome());
             $oDadosContrato->iDepartamentoResponsavel = $iDepartamentoResponsavel;
             $oDadosContrato->sNomeDepartamentoResponsavel = urlencode($oDepartamento->getNomeDepartamento());
             $oDadosContrato->dtInicio = $oContrato->getDataInicial();
@@ -728,7 +728,7 @@ switch ($oParam->exec) {
             $oDadosContrato->dtAssinatura = $oContrato->getDataAssinatura();
             $oDadosContrato->sLei = $oContrato->getLei();
             $oDadosContrato->iComissao = $oContrato->getComissao()->getCodigo();
-            $oDadosContrato->sNomeComissao = urlencode($oContrato->getComissao()->getDescricao());
+            $oDadosContrato->sNomeComissao = urlencode((string) $oContrato->getComissao()->getDescricao());
             $oDadosContrato->sObjeto = urlencode($oContrato->getObjeto());
             $oDadosContrato->sResumoObjeto = urlencode($oContrato->getResumoObjeto());
             $oDadosContrato->sNumeroProcesso = urlencode($oContrato->getProcesso());
@@ -804,9 +804,9 @@ switch ($oParam->exec) {
 
                 $oRetorno->iCodigoPosicao = $oPosicao->getCodigo();
                 $aItens = $oPosicao->getItens();
-                $aDadosSelecaoAcordo = array();
+                $aDadosSelecaoAcordo = [];
                 if (!isset($_SESSION["dadosSelecaoAcordo"])) {
-                    $_SESSION["dadosSelecaoAcordo"] = array();
+                    $_SESSION["dadosSelecaoAcordo"] = [];
                 }
 
                 foreach ($aItens as $oItemContrato) {
@@ -822,19 +822,19 @@ switch ($oParam->exec) {
                     $oItem->elementocodigo = $oItemContrato->getDesdobramento();
                     $oItem->elementodescricao = $oItemContrato->getDescricaoElemento();
                     $oItem->unidade = $oItemContrato->getUnidade();
-                    $oItem->resumo = urlencode(str_replace("\\n", "\n", urldecode($oItemContrato->getResumo())));
+                    $oItem->resumo = urlencode(str_replace("\\n", "\n", urldecode((string) $oItemContrato->getResumo())));
                     $oItem->tipocontrole = $oItemContrato->getTipocontrole();
 
                     /**
                      * Percorremos os periodos do ITEM formatando eles para o formado brasileiro: DD/MM/YYYY
                      */
                     $aPeriodosDoItem = $oItemContrato->getPeriodosItem();
-                    $aPeriodosFormatados = array();
+                    $aPeriodosFormatados = [];
                     foreach ($aPeriodosDoItem as $oPeriodo) {
                         $oStdPeriodo = new stdClass();
                         $oStdPeriodo->dtDataInicial = implode("/",
-                            array_reverse(explode("-", $oPeriodo->dtDataInicial)));
-                        $oStdPeriodo->dtDataFinal = implode("/", array_reverse(explode("-", $oPeriodo->dtDataFinal)));
+                            array_reverse(explode("-", (string) $oPeriodo->dtDataInicial)));
+                        $oStdPeriodo->dtDataFinal = implode("/", array_reverse(explode("-", (string) $oPeriodo->dtDataFinal)));
                         $aPeriodosFormatados[] = $oStdPeriodo;
                     }
                     $oItem->aPeriodosItem = $aPeriodosFormatados;
@@ -1043,7 +1043,7 @@ switch ($oParam->exec) {
 
                 $rs = db_query($sSql);
 
-                $aFitros = array();
+                $aFitros = [];
                 $lValidaAcordo = true;
 
                 $tipoTribunalCompra = pg_fetch_result($rs, 0, 'l44_sequencial');
@@ -1101,14 +1101,14 @@ switch ($oParam->exec) {
 
             $oDataFinalAcordo = new DBDate($oContrato->getDataFinal());
             $oRetorno->dtFinalAcordo = $oDataFinalAcordo->convertTo(DBDate::DATA_PTBR);
-            $oRetorno->licitacoes = array();
+            $oRetorno->licitacoes = [];
 
             if ($oContrato->getOrigem() == 3) {
                 // Busca todas licitacoes que o contratante participa ou participou
                 $aLicitacao = licitacao::getLicitacoesByFornecedor($oContrato->getContratado()->getCodigo());
                 if (!empty($aLicitacao)) {
                     foreach ($aLicitacao as $oLicitacao) {
-                        $aItens = licitacao::getItensPorFornecedor(array($oLicitacao->licitacao),
+                        $aItens = licitacao::getItensPorFornecedor([$oLicitacao->licitacao],
                             $oContrato->getContratado()->getCodigo(), true);
                         if (!empty($aItens)) {
                             $oLicitacao->itens = $aItens;
@@ -1342,7 +1342,7 @@ switch ($oParam->exec) {
 
         $oAcordo = new Acordo($iCodigoAcordo);
         $aAcordoDocumento = $oAcordo->getDocumentos();
-        $oRetorno->dados = array();
+        $oRetorno->dados = [];
 
         for ($i = 0; $i < count($aAcordoDocumento); $i++) {
             if ($aAcordoDocumento[$i]->origemEvento()) {
@@ -1352,7 +1352,7 @@ switch ($oParam->exec) {
             $oDocumentos = new stdClass();
             $oDocumentos->iCodigo = $aAcordoDocumento[$i]->getCodigo();
             $oDocumentos->iAcordo = $aAcordoDocumento[$i]->getCodigoAcordo();
-            $oDocumentos->sDescricao = urlencode(utf8_encode($aAcordoDocumento[$i]->getDescricao()));
+            $oDocumentos->sDescricao = urlencode(mb_convert_encoding($aAcordoDocumento[$i]->getDescricao(), 'UTF-8', 'ISO-8859-1'));
             $oRetorno->dados[] = $oDocumentos;
         }
 

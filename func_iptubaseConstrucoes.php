@@ -38,7 +38,7 @@ require_once(modification("libs/db_app.utils.php"));
 db_postmemory($_POST);
 db_postmemory($_GET);
 
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $cliptubase = new cl_iptubase;
 $clsetorloc = new cl_setorloc();
@@ -276,7 +276,7 @@ $sql3 = "";
             }
 
             if ($sql2 != "" || isset($dblov)) {
-                $repassa = array('dblov' => '0');
+                $repassa = ['dblov' => '0'];
 
                 if ($sql2 != "") {
                     $sql = "select * from ($sql $sql2) as x $sql3";

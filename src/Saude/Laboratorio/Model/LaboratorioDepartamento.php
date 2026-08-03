@@ -165,11 +165,11 @@ class LaboratorioDepartamento
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'la03_i_codigo' => $this->getCodigo(),
             'la03_i_laboratorio' => $this->getLaboratorio(),
             'la03_i_departamento' => $this->getDepartamento()
-        );
+        ];
 
         return $retorno;
     }

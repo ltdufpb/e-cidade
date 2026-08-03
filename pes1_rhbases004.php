@@ -33,8 +33,8 @@ include(modification("classes/db_bases_classe.php"));
 include(modification("classes/db_basesr_classe.php"));
 include(modification("classes/db_rhrubricas_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clbases = new cl_bases;
 $clbasesr = new cl_basesr;
 $clrhrubricas = new cl_rhrubricas;
@@ -53,7 +53,7 @@ if(isset($incluir)){
     $sqlerro=true;
   }  
   if($sqlerro == false && trim($sselecionados) != ""){
-    $arr_dados = split(",",$sselecionados);
+    $arr_dados = preg_split("#,#m",$sselecionados);
     for($i=0;$i<sizeof($arr_dados);$i++){
       $base = $arr_dados[$i];
       $clbasesr->incluir($anousu,$mesusu,$base,$r09_rubric,db_getsession("DB_instit"));      

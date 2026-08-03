@@ -59,16 +59,16 @@ try {
       );
       $rsConfiguracoesDatasEfetividade   = db_query($sSqlConfiguracoesDatasEfetividade);
 
-      $aConfiguracoes = array();
+      $aConfiguracoes = [];
       for ($iRegistro = 0; $iRegistro < pg_num_rows($rsConfiguracoesDatasEfetividade); $iRegistro++) {
 
         $oRegistro      = db_utils::fieldsmemory($rsConfiguracoesDatasEfetividade, $iRegistro);
 
         $oConfiguracoes                             = new stdClass();
         $oConfiguracoes->sCompetencia               = $oRegistro->rh186_competencia;
-        $oConfiguracoes->dDataInicioEfetividade     = implode('/', array_reverse(explode('-', $oRegistro->rh186_datainicioefetividade)));
-        $oConfiguracoes->dDataFechamentoEfetividade = implode('/', array_reverse(explode('-', $oRegistro->rh186_datafechamentoefetividade)));
-        $oConfiguracoes->dDataEntregaEfetividade    = implode('/', array_reverse(explode('-', $oRegistro->rh186_dataentregaefetividade)));
+        $oConfiguracoes->dDataInicioEfetividade     = implode('/', array_reverse(explode('-', (string) $oRegistro->rh186_datainicioefetividade)));
+        $oConfiguracoes->dDataFechamentoEfetividade = implode('/', array_reverse(explode('-', (string) $oRegistro->rh186_datafechamentoefetividade)));
+        $oConfiguracoes->dDataEntregaEfetividade    = implode('/', array_reverse(explode('-', (string) $oRegistro->rh186_dataentregaefetividade)));
         $oConfiguracoes->lProcessado                = $oRegistro->rh186_processado == 't';
         $aConfiguracoes[]                           = $oConfiguracoes;
       }
@@ -87,7 +87,7 @@ try {
 
         $oDaoConfiguracoesDatasEfetividade = new cl_configuracoesdatasefetividade;
 
-        $sCompetencia = str_pad($oSelecionado->iCompetencia, 2, '0', STR_PAD_LEFT);
+        $sCompetencia = str_pad((string) $oSelecionado->iCompetencia, 2, '0', STR_PAD_LEFT);
 
         $sWhere  = "     rh186_exercicio   = {$iExercicio} ";
         $sWhere .= " and rh186_competencia = '{$sCompetencia}' ";

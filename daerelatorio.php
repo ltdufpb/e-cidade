@@ -27,15 +27,15 @@
 
 require(modification('fpdf151/pdf.php'));
 $result = db_query("select * from db_dae where w04_codigo = $codigo");
-if(pg_numrows($result) != 0){
+if(pg_num_rows($result) != 0){
   db_fieldsmemory($result,0);
 }
 $result = db_query("select * from issbase inner join cgm on q02_numcgm = z01_numcgm where q02_inscr = $w04_inscr");
-if(pg_numrows($result) != 0){
+if(pg_num_rows($result) != 0){
   db_fieldsmemory($result,0);
 }
 $resultender = db_query("select * from db_daeend where w05_codigo = $codigo");
-if(pg_numrows($resultender) != 0){
+if(pg_num_rows($resultender) != 0){
   db_fieldsmemory($resultender,0);
 }
 $resultsocios = db_query("select * from db_daesocios where w06_codigo = $codigo");
@@ -66,8 +66,8 @@ $pdf->SetFont($Letra,'B',11);
 $pdf->Cell(3,1,"SÓCIOS: ",0,0,"L",0);
 $pdf->Ln(3);
 $pdf->SetFont($Letra,'I',10);
-if(pg_numrows($resultsocios)>1){
-  for($i=0;$i<pg_numrows($resultsocios);$i++){
+if(pg_num_rows($resultsocios)>1){
+  for($i=0;$i<pg_num_rows($resultsocios);$i++){
     db_fieldsmemory($resultsocios,$i);
     $pdf->Cell(50,6,'CNPJ/CPF: '.$w06_cgccpf,1,0,"J",1);
     $pdf->Cell(100,6,'Nome: '.$w06_nome,1,0,"J",1);
@@ -81,7 +81,7 @@ if(pg_numrows($resultsocios)>1){
     $pdf->MultiCell(0,6,''.$w06_percent." %",1,"J",0);
   }  
 }else{
-  if(pg_numrows($resultsocios) != 0){
+  if(pg_num_rows($resultsocios) != 0){
     db_fieldsmemory($resultsocios,0);
     $pdf->Cell(50,6,'CNPJ/CPF: '.$w06_cgccpf,1,0,"J",1);
     $pdf->Cell(100,6,'Nome: '.$w06_nome,1,0,"J",1);
@@ -102,7 +102,7 @@ $pdf->SetFont($Letra,'B',11);
 $pdf->Cell(3,1,"VALORES: ",0,0,"L",0);
 $pdf->Ln(3);
 $pdf->SetFont($Letra,'',10);
-if(pg_numrows($resultval)>1){
+if(pg_num_rows($resultval)>1){
     $pdf->SetFillColor(200);
     $pdf->Cell(25,6,'Mês',1,0,"C",1);
     $pdf->Cell(40,6,'Valor',1,0,"C",1);
@@ -111,7 +111,7 @@ if(pg_numrows($resultval)>1){
     $pdf->Cell(50,6,'Data pgto:',1,1,"C",1);
     $total = 0;
     $totali = 0;
-  for($i=0;$i<pg_numrows($resultval);$i++){
+  for($i=0;$i<pg_num_rows($resultval);$i++){
     db_fieldsmemory($resultval,$i);
     $pdf->SetFillColor(235);
     $pdf->Cell(25,6,''.db_mes($w07_mes),1,0,"C",1);
@@ -132,7 +132,7 @@ if(pg_numrows($resultval)>1){
   $pdf->Cell(40,6,''.db_formatar($totali,'f'),1,0,"R",0);
   $pdf->Cell(50,6,'',1,0,"R",0);
 }else{
-  if(pg_numrows($resultval) != 0){
+  if(pg_num_rows($resultval) != 0){
     $total = 0;
     $totali = 0;
     $pdf->SetFillColor(200);

@@ -170,7 +170,7 @@ $iDepto  = db_getsession("DB_coddepto");
 	      	
 	      	if (isset($oPost->atendimento)){
 	      		
-	      		list ($iAtendimento, $iAnoUsu) = explode('/', $oPost->atendimento);
+	      		[$iAtendimento, $iAnoUsu] = explode('/', $oPost->atendimento);
 	      		if ((!empty($iAtendimento)) && (!empty($iAnoUsu))) {
 	      			
 	      			$sWhere .= " {$sAnd} ov01_numero = {$iAtendimento} and ov01_anousu = {$iAnoUsu} ";
@@ -200,8 +200,8 @@ $iDepto  = db_getsession("DB_coddepto");
 	        	
 		        if ((!empty($oPost->datainicial)) && (!empty($oPost->datafinal))) {
 		          
-		          $dtInicial  = implode("-",array_reverse(explode("/",$oPost->datainicial)));
-		          $dtFinal    = implode("-",array_reverse(explode("/",$oPost->datafinal)));
+		          $dtInicial  = implode("-",array_reverse(explode("/",(string) $oPost->datainicial)));
+		          $dtFinal    = implode("-",array_reverse(explode("/",(string) $oPost->datafinal)));
 		          
 		          $sWhere    .= "{$sAnd} procarquiv.p67_dtarq between '{$dtInicial}' and '{$dtFinal}'"; 
 		          $sAnd       = " and "; 

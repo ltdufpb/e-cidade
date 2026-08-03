@@ -40,10 +40,6 @@ class AnexoIII extends ProcessamentoRelatorioLegal
      * @var integer
      */
     const CODIGO_RELATORIO = 184;
-    /**
-     * @var int
-     */
-    protected $ano;
 
     /**
      * @var \Instituicao[]
@@ -60,34 +56,34 @@ class AnexoIII extends ProcessamentoRelatorioLegal
     /**
      * @var array
      */
-    protected $periodos = array(
-        12 => array(12),
-        13 => array(12, 13),
-        14 => array(14),
-        15 => array(14, 15),
-        16 => array(14, 15, 16)
-    );
+    protected $periodos = [
+        12 => [12],
+        13 => [12, 13],
+        14 => [14],
+        15 => [14, 15],
+        16 => [14, 15, 16]
+    ];
 
     /**
      * @var array
      */
-    protected $aColunaRecalcularPeriodo = array(
-        13 => array(array("coluna" => 1, "periodo" => "12")),
-        15 => array(array("coluna" => 1, "periodo" => "14")),
-        16 => array(array("coluna" => 1, "periodo" => "14"), array("coluna" => 2, "periodo" => "15")),
-    );
+    protected $aColunaRecalcularPeriodo = [
+        13 => [["coluna" => 1, "periodo" => "12"]],
+        15 => [["coluna" => 1, "periodo" => "14"]],
+        16 => [["coluna" => 1, "periodo" => "14"], ["coluna" => 2, "periodo" => "15"]],
+    ];
 
     /**
      * AnexoIII constructor.
      * @param $ano
      * @param \Periodo $oPeriodo
+     * @param int $ano
      */
-    public function __construct($ano, \Periodo $oPeriodo)
+    public function __construct(protected $ano, \Periodo $oPeriodo)
     {
-        $this->ano = $ano;
         $this->instituicoes = \InstituicaoRepository::getInstituicoes();
 
-        $instituicoesRCL = array();
+        $instituicoesRCL = [];
 
         foreach ($this->instituicoes as $instituicao) {
             if ($instituicao->getTipo() != \Instituicao::TIPO_CAMARA) {
@@ -95,8 +91,8 @@ class AnexoIII extends ProcessamentoRelatorioLegal
             }
         }
 
-        $this->rcl = new ReceitaCorrenteLiquida($ano, $instituicoesRCL, 178);
-        parent::__construct($ano, $oPeriodo, self::CODIGO_RELATORIO, $this->instituicoes);
+        $this->rcl = new ReceitaCorrenteLiquida($this->ano, $instituicoesRCL, 178);
+        parent::__construct($this->ano, $oPeriodo, self::CODIGO_RELATORIO, $this->instituicoes);
     }
 
     /**
@@ -161,7 +157,7 @@ class AnexoIII extends ProcessamentoRelatorioLegal
         $pdf->cell(73, $alt, "GARANTIAS CONCEDIDAS", 'BR', 0, "C", 0);
         $pdf->cell(28, $alt, "EXERCÍCIO ANTERIOR", 'RB', 0, "C", 0);
 
-        if (in_array($this->oPeriodo->getCodigo(), array(12, 13))) {
+        if (in_array($this->oPeriodo->getCodigo(), [12, 13])) {
             $pdf->cell(42, $alt, "Até o 1º Semestre", 'BR', 0, "C", 0);
             $pdf->cell(42, $alt, "Até o 2º Semestre", 'B', 1, "C", 0);
         } else {
@@ -187,7 +183,7 @@ class AnexoIII extends ProcessamentoRelatorioLegal
         $pdf->cell(73, $alt, "CONTRAGARANTIAS RECEBIDAS", 'BR', 0, "C", 0);
         $pdf->cell(28, $alt, "EXERCÍCIO ANTERIOR", 'RB', 0, "C", 0);
 
-        if (in_array($this->oPeriodo->getCodigo(), array(12, 13))) {
+        if (in_array($this->oPeriodo->getCodigo(), [12, 13])) {
             $pdf->cell(42, $alt, "Até o 1º Semestre", 'BR', 0, "C", 0);
             $pdf->cell(42, $alt, "Até o 2º Semestre", 'B', 1, "C", 0);
         } else {
@@ -219,7 +215,7 @@ class AnexoIII extends ProcessamentoRelatorioLegal
                     0
                 );
 
-                if (in_array($this->oPeriodo->getCodigo(), array(12, 13))) {
+                if (in_array($this->oPeriodo->getCodigo(), [12, 13])) {
                     $oLinha->addColuna(
                         42,
                         $this->formataValor($oLinhaRelatorio->semestre_1),
@@ -382,7 +378,7 @@ class AnexoIII extends ProcessamentoRelatorioLegal
         $linhas = $this->aLinhasConsistencia;
         $linhas[14]->saldo_exercicio_anterior = $linhas[12]->saldo_exercicio_anterior * $limiteSenado;
 
-        if (in_array($this->oPeriodo->getCodigo(), array(12, 13))) {
+        if (in_array($this->oPeriodo->getCodigo(), [12, 13])) {
             $linhas[14]->semestre_1 = $linhas[12]->semestre_1 * $limiteSenado;
             $linhas[14]->semestre_2 = $linhas[12]->semestre_2 * $limiteSenado;
         } else {
@@ -401,7 +397,7 @@ class AnexoIII extends ProcessamentoRelatorioLegal
         $linhas = $this->aLinhasConsistencia;
         $linhas[15]->saldo_exercicio_anterior = ($linhas[12]->saldo_exercicio_anterior * $nLimiteAlerta) / 100;
 
-        if (in_array($this->oPeriodo->getCodigo(), array(12, 13))) {
+        if (in_array($this->oPeriodo->getCodigo(), [12, 13])) {
             $linhas[15]->semestre_1 = ($linhas[12]->semestre_1 * $nLimiteAlerta) / 100;
             $linhas[15]->semestre_2 = ($linhas[12]->semestre_2 * $nLimiteAlerta) / 100;
         } else {
@@ -444,14 +440,14 @@ class AnexoIII extends ProcessamentoRelatorioLegal
      */
     protected function zerarTodasLinhas()
     {
-        $colunas = array(4);
+        $colunas = [4];
 
         if ($this->getPeriodo()->getCodigo() == 14) {
             $colunas[] = 3;
         }
 
         if ($this->getPeriodo()->getCodigo() == 12) {
-            $colunas = array(3);
+            $colunas = [3];
         }
 
         foreach ($this->aLinhasConsistencia as $linha) {
@@ -465,7 +461,7 @@ class AnexoIII extends ProcessamentoRelatorioLegal
      */
     protected function processarFormulasLinhasTotalizadoras()
     {
-        $linhasTotalizadoras = array(1, 4, 7, 11, 16, 19, 22, 26);
+        $linhasTotalizadoras = [1, 4, 7, 11, 16, 19, 22, 26];
         foreach ($linhasTotalizadoras as $linha) {
             $this->processarFormulaDaLinha($linha);
         }

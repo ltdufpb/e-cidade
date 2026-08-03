@@ -149,7 +149,7 @@ if (isset($oPost->alterar)) {
   }
 
   $sSqlProcessoForoNumcgm       = $clprocessoforonumcgm->sql_record($clprocessoforonumcgm->sql_query(null,"*",""," v75_seqprocforo = $oGet->chavepesquisa "));
-  if( $sSqlProcessoForoNumcgm != false && pg_numrows($sSqlProcessoForoNumcgm) > 0 ){
+  if( $sSqlProcessoForoNumcgm != false && pg_num_rows($sSqlProcessoForoNumcgm) > 0 ){
     db_fieldsmemory($sSqlProcessoForoNumcgm, 0);
   }
   $rsSqlProcessoForoCodForoAnt  = $clprocessoforocodforoant->sql_record($clprocessoforocodforoant->sql_query(null,"*",""," v85_processoforo = {$v70_sequencial} "));

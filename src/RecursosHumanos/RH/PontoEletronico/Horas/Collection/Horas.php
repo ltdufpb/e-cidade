@@ -36,7 +36,7 @@ class Horas
     /**
      * @var Hora[]
      */
-    private $colecao = array();
+    private $colecao = [];
 
     /**
      * @param Hora $hora

@@ -95,7 +95,7 @@ try {
 
                     $oStdRelatorio = new stdClass();
                     $oStdRelatorio->iCodigo = $oDadosRelatorio->o42_codparrel;
-                    $oStdRelatorio->sNome = urlencode($oDadosRelatorio->o42_descrrel);
+                    $oStdRelatorio->sNome = urlencode((string) $oDadosRelatorio->o42_descrrel);
                     unset($oDadosRelatorio);
                     $oRetorno->aRelatorios[] = $oStdRelatorio;
                 }
@@ -109,7 +109,7 @@ try {
             foreach ($aPeriodos as $oPeriodo) {
                 $oStdPeriodo = new stdClass();
                 $oStdPeriodo->iCodigo = $oPeriodo->o114_sequencial;
-                $oStdPeriodo->sDescricao = urlencode($oPeriodo->o114_descricao);
+                $oStdPeriodo->sDescricao = urlencode((string) $oPeriodo->o114_descricao);
                 $oRetorno->aPeriodos[] = $oStdPeriodo;
             }
             break;
@@ -126,9 +126,9 @@ try {
             $oRetorno->arquivo = urlencode($oConsistentencia->gerarCSV());
 
             foreach ($aLinhas as $oLinha) {
-                $oLinha->descricao = urlencode($oLinha->descricao);
+                $oLinha->descricao = urlencode((string) $oLinha->descricao);
                 foreach ($oLinha->colunas as $oColuna) {
-                    $oColuna->descricao = urlencode($oColuna->descricao);
+                    $oColuna->descricao = urlencode((string) $oColuna->descricao);
                 }
             }
 
@@ -148,7 +148,7 @@ try {
                 throw new Exception('Arquivo não encontrado para o caminho informado.');
             }
 
-            if (pathinfo($sCaminhoArquivo, PATHINFO_EXTENSION) !== 'json') {
+            if (pathinfo((string) $sCaminhoArquivo, PATHINFO_EXTENSION) !== 'json') {
                 throw new Exception('Arquivo informado deve ser do tipo Json.');
             }
 

@@ -35,7 +35,7 @@ include(modification("classes/db_disciplina_classe.php"));
 include(modification("classes/db_caddisciplina_classe.php"));
 include(modification("classes/db_cursoescola_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldisciplina     = new cl_disciplina;
 $clcaddisciplina  = new cl_caddisciplina;
 $clcursoescola    = new cl_cursoescola();
@@ -81,7 +81,7 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
                                                      "ed71_i_escola=".db_getsession("DB_coddepto")
                                                     );
              $rsEnsino  = $clcursoescola->sql_record($sSqlEnsino);
-             $aEnsino   = array("0" => "");
+             $aEnsino   = ["0" => ""];
              for ($i = 0; $i < $clcursoescola->numrows; $i++) {
 
                 $oEnsino = db_utils::fieldsMemory($rsEnsino, $i);
@@ -100,7 +100,7 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
       <?php 
         $sCampos  = "distinct ed12_i_codigo, ed10_c_descr,";
         $sCampos .= "trim(ed10_c_abrev)::varchar as ed10_c_abrev, trim(ed232_c_descr)::varchar as ed232_c_descr ";
-        $aWhere   = array();
+        $aWhere   = [];
 
         if(isset($chave_ed12_i_codigo) && !empty($chave_ed12_i_codigo)) {
           $aWhere[] = " ed12_i_codigo = {$chave_ed12_i_codigo}";
@@ -113,13 +113,13 @@ $clcaddisciplina->rotulo->label("ed232_c_descr");
         }
         $aWhere[] = "ed71_i_escola = ".db_getsession("DB_coddepto");
         $sWhere   = implode(' and ', $aWhere);
-        $repassa  = array();
+        $repassa  = [];
         if (isset($chave_ed265_i_codigo)) {
 
-          $repassa = array("chave_ed12_i_codigo" => $chave_ed12_i_codigo,
+          $repassa = ["chave_ed12_i_codigo" => $chave_ed12_i_codigo,
                            "chave_ed232_c_descr" => $chave_ed232_c_descr,
                            "ed10_i_codigo"       => $ed10_i_codigo
-                          );
+                          ];
         }
 
         $sql = $cldisciplina->sql_query_disciplinas_na_escola(null, $sCampos, " ed10_c_abrev ", $sWhere);

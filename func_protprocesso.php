@@ -33,8 +33,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_protprocesso_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory($_POST,0);
 $oGet  = db_utils::postMemory($_GET,0);
@@ -180,9 +180,9 @@ if (isset($chave_p58_requer)) {
             } else {
                 $sql = $clprotprocesso->sql_query("",$campos,"p58_dtproc desc",$where);
             }
-            $repassa = array();
+            $repassa = [];
             if (isset($chave_p58_codproc)) {
-                $repassa = array("chave_p58_codproc"=>$chave_p58_codproc);
+                $repassa = ["chave_p58_codproc"=>$chave_p58_codproc];
             }
 
             db_lovrot($sql." ",15,"()","",$funcao_js,"","NoMe",$repassa);

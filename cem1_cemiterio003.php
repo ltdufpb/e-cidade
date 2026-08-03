@@ -35,8 +35,8 @@ require_once(modification("classes/db_cemiteriocgm_classe.php"));
 require_once(modification("classes/db_cemiteriorural_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clcemiterio      = new cl_cemiterio;
 $clcemiteriocgm   = new cl_cemiteriocgm;
@@ -129,7 +129,7 @@ if(isset($excluir)){
              <tr>
                 <td><strong>Tipo de Cemitério:</strong></td>
                 <td><?php
-                      $x = array('0'=>'Selecione','1'=>'Urbano','2'=>'Rural');
+                      $x = ['0'=>'Selecione','1'=>'Urbano','2'=>'Rural'];
                       db_select('tp',$x,true,1,"onchange='submit()'");
                     ?>
                 </td>

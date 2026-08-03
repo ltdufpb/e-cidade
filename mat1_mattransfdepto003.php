@@ -43,7 +43,7 @@ require_once(modification("classes/db_matestoqueinimei_classe.php"));
 require_once(modification("classes/db_db_depart_classe.php"));
 require_once(modification("classes/db_db_usuarios_classe.php"));
 require_once(modification("classes/db_db_almox_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmatestoque       = new cl_matestoque;
 $clmatestoquetransf = new cl_matestoquetransf;
 $clmatestoqueitem   = new cl_matestoqueitem;

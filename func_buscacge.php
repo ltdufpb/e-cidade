@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 $sSql  = "SELECT ed47_i_codigo, ed47_v_nome, ed47_v_cpf FROM aluno";
-$where = array();
+$where = [];
 
 if(isset($_POST['nome']) && !empty($_POST['nome'])) {
 
@@ -77,7 +77,7 @@ $funcao_js = $_GET['funcao_js'];
               <label for="nome">Nome:</label>
             </td>
             <td nowrap>
-              <input id="nome" type="text" name="nome" value="<?=isset($_POST['nome']) ? $_POST['nome'] : ''?>">
+              <input id="nome" type="text" name="nome" value="<?=$_POST['nome'] ?? ''?>">
             </td>
           </tr>
           <tr>
@@ -85,7 +85,7 @@ $funcao_js = $_GET['funcao_js'];
               <label for="cpf">CPF:</label>
             </td>
             <td nowrap>
-              <input id="cpf" type="text" name="cpf" value="<?=isset($_POST['cpf']) ? $_POST['cpf'] : ''?>">
+              <input id="cpf" type="text" name="cpf" value="<?=$_POST['cpf'] ?? ''?>">
             </td>
           </tr>
 
@@ -99,7 +99,7 @@ $funcao_js = $_GET['funcao_js'];
   </div>
 
   <div class="container">
-    <?php db_lovrot($sSql, 15, '()', '',$funcao_js, '', 'NoMe', array(), false); ?>
+    <?php db_lovrot($sSql, 15, '()', '',$funcao_js, '', 'NoMe', [], false); ?>
   </div>
 </body>
 </html>

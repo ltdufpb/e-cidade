@@ -36,8 +36,8 @@ include(modification("dbforms/db_funcoes.php"));
 
 $anousu = db_getsession("DB_anousu");
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $classinatura = new cl_assinatura;
 $orcparamrel = new cl_orcparamrel;
@@ -174,7 +174,7 @@ $result_desp = db_dotacaosaldo(7,1,4,true,$sele_work,$anousu,$dt_ini,$dt_fin);
 
 
 $result_bal= db_planocontassaldo_matriz($anousu,$dt_ini,$dt_fin,false,' c61_instit in ('.str_replace('-',', ',$db_selinstit)   .' ) ');
-for($i=0;$i<pg_numrows($result_bal);$i++){
+for($i=0;$i<pg_num_rows($result_bal);$i++){
   db_fieldsmemory($result_bal,$i);  
   if (in_array($estrutural,$m_saldo_anterior['estrut'])){
       $m_saldo_anterior['valor'] += $saldo_final ;
@@ -184,14 +184,14 @@ for($i=0;$i<pg_numrows($result_bal);$i++){
 
 
 ///////////////////////////////  ///////////////
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinst,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
 $flag_abrev = false;
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
-    if (strlen(trim($nomeinstabrev)) > 0){
+    if (strlen(trim((string) $nomeinstabrev)) > 0){
          $descr_inst .= $xvirg.$nomeinstabrev;
          $flag_abrev  = true;
     } else {
@@ -212,11 +212,11 @@ $head3 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
 $head4 = "BALANÇO ORÇAMENTÁRIO";
 $head5 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
 $txt = strtoupper(db_mes('01'));
-$dt  = split("-",$dt_fin);
+$dt  = preg_split("#\\-#m",(string) $dt_fin);
 $txt.= " À ".strtoupper(db_mes($dt[1]))." $anousu/BIMESTRE ";;
-$dt  = split("-",$dt_ini);
+$dt  = preg_split("#\\-#m",(string) $dt_ini);
 $txt.= strtoupper(db_mes($dt[1]))."-";
-$dt  = split("-",$dt_fin);
+$dt  = preg_split("#\\-#m",(string) $dt_fin);
 $txt.= strtoupper(db_mes($dt[1]));
 $head6 = "$txt";
 ////////////////////////// ///////////////////
@@ -301,7 +301,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_impostos)){ // despesas com ensino fundamental
@@ -341,7 +341,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_taxas)){ // despesas com ensino fundamental
@@ -379,7 +379,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_melhorias)){ // despesas com ensino fundamental
@@ -446,7 +446,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_sociais)){ // despesas com ensino fundamental
@@ -485,7 +485,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_economicas)){ // despesas com ensino fundamental
@@ -550,7 +550,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_imobiliarias)){ // despesas com ensino fundamental
@@ -589,7 +589,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_valmobiliarias)){ 
@@ -628,7 +628,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_permissoes)){ // despesas com ensino fundamental
@@ -668,7 +668,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_patrimoniais)){
@@ -735,7 +735,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_vegetal)){
@@ -774,7 +774,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_animal)){
@@ -813,7 +813,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_agropecuarias)){
@@ -881,7 +881,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_mineral)){
@@ -920,7 +920,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transformacao)){
@@ -959,7 +959,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_construcao)){
@@ -1028,7 +1028,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_servicos)){
@@ -1095,7 +1095,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_intragovernamental)){
@@ -1133,7 +1133,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_privadas)){
@@ -1171,7 +1171,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_exterior)){
@@ -1209,7 +1209,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_pessoas)){
@@ -1247,7 +1247,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_convenios)){
@@ -1314,7 +1314,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_multas)){
@@ -1352,7 +1352,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_indenizacao)){
@@ -1390,7 +1390,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_divida_ativa)){
@@ -1429,7 +1429,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_correntes_diversas)){
@@ -1535,7 +1535,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_oper_internas)){
@@ -1574,7 +1574,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_oper_externas)){
@@ -1641,7 +1641,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_bens_moveis)){
@@ -1679,7 +1679,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_bens_imoveis)){
@@ -1745,7 +1745,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_emprestimos)){
@@ -1814,7 +1814,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_intragovernamentais)){
@@ -1852,7 +1852,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_privadas)){
@@ -1890,7 +1890,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_exterior)){
@@ -1928,7 +1928,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_pessoas)){
@@ -1966,7 +1966,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_convenios)){
@@ -2035,7 +2035,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_outras_social)){
@@ -2073,7 +2073,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_outras_disponibilidades)){
@@ -2111,7 +2111,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_outras_diversas)){
@@ -2211,7 +2211,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_intraorcamentarias)){ 
@@ -2298,7 +2298,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_oper_int_mobiliaria )){
@@ -2336,7 +2336,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_oper_int_outras )){
@@ -2404,7 +2404,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_oper_ext_mobiliaria )){
@@ -2443,7 +2443,7 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for($i=0;$i<pg_numrows($result_rec);$i++){
+for($i=0;$i<pg_num_rows($result_rec);$i++){
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_oper_ext_outras )){
@@ -2613,11 +2613,11 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   // $estrutural = $c60_estrut;
   $estrutural = $o58_elemento."00";
-  if (substr($estrutural,0,3)=='331' && substr($estrutural,3,2)!='91') {
+  if (str_starts_with($estrutural, '331') && substr($estrutural,3,2)!='91') {
   // if (in_array($estrutural,$desp_pessoal)){
       $tot_inicial    += $dot_ini;
       $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado; // adicional;
@@ -2653,12 +2653,12 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   // $estrutural = $c60_estrut;
   $estrutural = $o58_elemento."00";
 
-  if (substr($estrutural,0,3)=='332' && substr($estrutural,3,2)!='91') {
+  if (str_starts_with($estrutural, '332') && substr($estrutural,3,2)!='91') {
   // if (in_array($estrutural,$desp_juros)){
       $tot_inicial    += $dot_ini;
       $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado; // adicional;
@@ -2695,12 +2695,12 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   //  $estrutural = $c60_estrut;
   $estrutural = $o58_elemento."00";
 
-  if (substr($estrutural,0,3)=='333' && substr($estrutural,3,2)!='91') {
+  if (str_starts_with($estrutural, '333') && substr($estrutural,3,2)!='91') {
   // if (in_array($estrutural,$desp_outras)){
       $tot_inicial    += $dot_ini;
       $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado; // adicional;
@@ -2770,12 +2770,12 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   //  $estrutural = $c60_estrut;
   $estrutural = $o58_elemento."00";
 
-  if (substr($estrutural,0,3)=='344' && substr($estrutural,3,2)!='91') {
+  if (str_starts_with($estrutural, '344') && substr($estrutural,3,2)!='91') {
   //  if (in_array($estrutural,$desp_investimentos)){
       $tot_inicial    += $dot_ini;
       $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado; // adicional;
@@ -2819,12 +2819,12 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   // $estrutural = $c60_estrut;
   $estrutural = $o58_elemento."00";
 
-  if (substr($estrutural,0,3)=='345' && substr($estrutural,3,2)!='91') {
+  if (str_starts_with($estrutural, '345') && substr($estrutural,3,2)!='91') {
   //  if (in_array($estrutural,$desp_inversoes)){
       $tot_inicial    += $dot_ini;
       $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado; // adicional;
@@ -2867,12 +2867,12 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   //  $estrutural = $c60_estrut;
   $estrutural = $o58_elemento."00";
 
-  if (substr($estrutural,0,3)=='346' && substr($estrutural,3,2)!='91') {
+  if (str_starts_with($estrutural, '346') && substr($estrutural,3,2)!='91') {
   // if (in_array($estrutural,$desp_amortizacao)){
       $tot_inicial    += $dot_ini;
       $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado; // adicional;
@@ -2934,10 +2934,10 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   $estrutural = $o58_elemento."00";
-  if (substr($estrutural,0,3)=='399' && substr($estrutural,3,2)!='91') {
+  if (str_starts_with($estrutural, '399') && substr($estrutural,3,2)!='91') {
       $tot_inicial    += $dot_ini;
       $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado; // adicional;
       $tot_emp_nobim  += $empenhado  - $anulado;
@@ -2973,10 +2973,10 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   $estrutural = $o58_elemento."00";
-  if (substr($estrutural,0,3)=='377' && substr($estrutural,3,2)!='91') {
+  if (str_starts_with($estrutural, '377') && substr($estrutural,3,2)!='91') {
       $tot_inicial    += $dot_ini;
       $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado; // adicional;
       $tot_emp_nobim  += $empenhado  - $anulado;
@@ -3012,7 +3012,7 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   $estrutural = $o58_elemento."00";
   if (substr($estrutural,3,2)=='91' ) {
@@ -3093,7 +3093,7 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   //  $estrutural = $c60_estrut;
   $estrutural = $o58_elemento."00";
@@ -3140,7 +3140,7 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   //  $estrutural = $c60_estrut;
   $estrutural = $o58_elemento."00";
@@ -3218,7 +3218,7 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   //$estrutural = $c60_estrut;
   $estrutural = $o58_elemento."00";
@@ -3264,7 +3264,7 @@ $tot_emp_nobim   = 0;
 $tot_emp_atebim  = 0;
 $tot_liq_nobim   = 0;
 $tot_liq_atebim  = 0;
-for($i=0;$i<pg_numrows($result_desp);$i++){
+for($i=0;$i<pg_num_rows($result_desp);$i++){
   db_fieldsmemory($result_desp,$i);
   $estrutural = $o58_elemento."00";
   if (in_array($estrutural,$desp_ext_outras)){
@@ -3456,7 +3456,7 @@ $pdf->ln(25);
 // assinaturas
 
 
-assinaturas(&$pdf,&$classinatura,'LRF');
+assinaturas($pdf,$classinatura,'LRF');
 
 
 

@@ -136,7 +136,7 @@ $rsDadosEmpenho   = db_query($sSqlEmpenhos);
 
 
 $aEmpenhos        = db_utils::getCollectionByRecord($rsDadosEmpenho);
-$aLinhasRelatorio = array();
+$aLinhasRelatorio = [];
 
 $rsCfPess        = $oDaoCfpess->sql_record($oDaoCfpess->sql_query_file(db_anofolha(), db_mesfolha(), db_getsession("DB_instit"), "r11_geraretencaoempenho"));
 $lMostraRetencao = db_utils::fieldsMemory($rsCfPess,0)->r11_geraretencaoempenho;

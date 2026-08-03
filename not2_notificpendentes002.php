@@ -32,7 +32,7 @@ include(modification("classes/db_notificacao_classe.php"));
 
 //parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $clnotificacao = new cl_notificacao;
 $clrotulo = new rotulocampo;
@@ -162,7 +162,7 @@ $anos         = "";
 $proced       = "";
 $vir          = "";
 for($i=0;$i<$rows1;$i++){
-  
+
   db_fieldsmemory($result,$i);
 //die($k60_tipo);
   if($k60_tipo == "M"){

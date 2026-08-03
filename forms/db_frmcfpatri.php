@@ -58,7 +58,7 @@ $clrotulo->label("t71_descr");
   	    </td>
   	    <td> 
     			<?php
-      			$apesqorgao = array('f'=>'Não','t'=>'Sim');
+      			$apesqorgao = ['f'=>'Não','t'=>'Sim'];
       			db_select('t06_pesqorgao',$apesqorgao,true,$db_opcao);	
   			  ?>
   	    </td>
@@ -104,7 +104,7 @@ $clrotulo->label("t71_descr");
             $iOpcaoGlobal = PREFEITURA;
       	  }
       	 
-      	  $aOpcoes = array("t"=> "Sim", "f"=>"Não");
+      	  $aOpcoes = ["t"=> "Sim", "f"=>"Não"];
           db_select('t06_controlaplacainstituicao', $aOpcoes, true, $iOpcaoGlobal);
           ?>
     	  </td>
@@ -183,7 +183,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cfpatri.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

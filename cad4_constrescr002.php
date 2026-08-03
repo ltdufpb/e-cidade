@@ -34,8 +34,8 @@ include(modification("classes/db_iptubase_classe.php"));
 include(modification("classes/db_constrescr_classe.php"));
 include(modification("classes/db_constrcar_classe.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 
 $db_botao=1;
@@ -77,7 +77,7 @@ if(isset($j52_idcons)&&$j52_idcons=="nova"){
      $j52_idcons = $j52_idcons + 1;
    }      
    $clconstrescr->incluir($j52_matric,$j52_idcons);
-   $matriz= split("X",$caracteristica);
+   $matriz= preg_split("#X#m",(string) $caracteristica);
    for($i=0;$i<sizeof($matriz);$i++){
      $j53_caract = $matriz[$i];
      if($j53_caract!=""){
@@ -92,7 +92,7 @@ if(isset($j52_idcons)&&$j52_idcons=="nova"){
   $clconstrcar->j53_idcons=$j52_idcons;
   $clconstrcar->excluir();
   $clconstrescr->alterar($j52_matric,$j52_idcons);
-  $matriz= split("X",$caracteristica);
+  $matriz= preg_split("#X#m",(string) $caracteristica);
   for($i=0;$i<sizeof($matriz);$i++){
     $j53_caract = $matriz[$i];
     if($j53_caract!=""){

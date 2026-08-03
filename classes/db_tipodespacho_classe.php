@@ -3,31 +3,31 @@
 //CLASSE DA ENTIDADE tipodespacho
 class cl_tipodespacho { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p100_sequencial = 0; 
-   var $p100_descricao = null; 
+   public $p100_sequencial = 0; 
+   public $p100_descricao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p100_sequencial = int4 = Sequencial 
                  p100_descricao = varchar(20) = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_tipodespacho() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("tipodespacho"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -69,10 +69,10 @@ class cl_tipodespacho {
          $this->erro_status = "0";
          return false; 
        }
-       $this->p100_sequencial = pg_result($result,0,0); 
+       $this->p100_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from tipodespacho_p100_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $p100_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $p100_sequencial)){
          $this->erro_sql = " Campo p100_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -102,7 +102,7 @@ class cl_tipodespacho {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tipodespacho ($this->p100_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tipodespacho já Cadastrado";
@@ -131,11 +131,11 @@ class cl_tipodespacho {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20746,'$this->p100_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3732,20746,'','".AddSlashes(pg_result($resaco,0,'p100_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3732,20747,'','".AddSlashes(pg_result($resaco,0,'p100_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3732,20746,'','".AddSlashes(pg_fetch_result($resaco,0,'p100_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3732,20747,'','".AddSlashes(pg_fetch_result($resaco,0,'p100_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -145,10 +145,10 @@ class cl_tipodespacho {
       $this->atualizacampos();
      $sql = " update tipodespacho set ";
      $virgula = "";
-     if(trim($this->p100_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p100_sequencial"])){ 
+     if(trim((string) $this->p100_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p100_sequencial"])){ 
        $sql  .= $virgula." p100_sequencial = $this->p100_sequencial ";
        $virgula = ",";
-       if(trim($this->p100_sequencial) == null ){ 
+       if(trim((string) $this->p100_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial não informado.";
          $this->erro_campo = "p100_sequencial";
          $this->erro_banco = "";
@@ -158,10 +158,10 @@ class cl_tipodespacho {
          return false;
        }
      }
-     if(trim($this->p100_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p100_descricao"])){ 
+     if(trim((string) $this->p100_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p100_descricao"])){ 
        $sql  .= $virgula." p100_descricao = '$this->p100_descricao' ";
        $virgula = ",";
-       if(trim($this->p100_descricao) == null ){ 
+       if(trim((string) $this->p100_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "p100_descricao";
          $this->erro_banco = "";
@@ -185,13 +185,13 @@ class cl_tipodespacho {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20746,'$this->p100_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p100_sequencial"]) || $this->p100_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3732,20746,'".AddSlashes(pg_result($resaco,$conresaco,'p100_sequencial'))."','$this->p100_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3732,20746,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p100_sequencial'))."','$this->p100_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["p100_descricao"]) || $this->p100_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3732,20747,'".AddSlashes(pg_result($resaco,$conresaco,'p100_descricao'))."','$this->p100_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3732,20747,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p100_descricao'))."','$this->p100_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -245,11 +245,11 @@ class cl_tipodespacho {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20746,'$p100_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3732,20746,'','".AddSlashes(pg_result($resaco,$iresaco,'p100_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3732,20747,'','".AddSlashes(pg_result($resaco,$iresaco,'p100_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3732,20746,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p100_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3732,20747,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p100_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

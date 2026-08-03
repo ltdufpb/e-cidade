@@ -240,7 +240,7 @@ class ProfissionalFormacao
             $self->setCursoFormacao(CursoFormacaoRegistry::get($state['ed27_i_cursoformacao']));
         }
         if (array_key_exists('ed27_c_situacao', $state)) {
-            $self->setSituacao(trim($state['ed27_c_situacao']));
+            $self->setSituacao(trim((string) $state['ed27_c_situacao']));
         }
         if (array_key_exists('ed27_i_licenciatura', $state)) {
             $self->setLicenciatura($state['ed27_i_licenciatura'] == 1);

@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $classenta = new cl_assenta;
 
@@ -58,7 +58,7 @@ $oGet = db_utils::postMemory($_GET);
       <?php 
       $dbwhere = "";
       
-      $repassa = array();
+      $repassa = [];
       if(isset($codMatri) && trim($codMatri) != ""){
 
         $repassa["codMatri"] = $codMatri;
@@ -128,7 +128,7 @@ function js_emite(){
   var iMatricula = '<?=$codMatri?>';
   var iCodAssen  = '<?=$codAssen?>';
   var sDataIni   = '<?=$oGet->dataIni?>';
-  var sDataFim   = '<?php  isset($oGet->dataFim) ? $oGet->dataFim : '' ?>';
+  var sDataFim   = '<?php  $oGet->dataFim ?? '' ?>';
 
   qry  = 'codMatri='+iMatricula;
   qry += '&codAssen='+iCodAssen;

@@ -31,7 +31,7 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
@@ -69,7 +69,7 @@ if (isset($processar)) {
                                 order by k97_dtsaldofinal desc limit 1";
 
       $rsSeqSaldoAnterior = db_query($sSqlSeqSaldoAnterior);
-      if (pg_numrows($rsSeqSaldoAnterior) == 0) {
+      if (pg_num_rows($rsSeqSaldoAnterior) == 0) {
         throw new Exception("Erro atualizando o saldo anterior!\\nNão foi encontrado Extrato Saldo para data anterior!");
       }
 

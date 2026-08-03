@@ -64,8 +64,8 @@ $clorcppalei = new cl_orcppalei;
   /*
 $clorcppaval = new cl_orcppaval;
   */
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 if(isset($incluir) || isset($alterar)){
   $result=$clorcppalei->sql_record($clorcppalei->sql_query_file($o23_codleippa,"o21_anoini"));

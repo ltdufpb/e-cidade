@@ -57,6 +57,7 @@ class MetasVersusCotasPdf extends Pdf
      */
     private $periodosImpressao = [];
 
+    #[\Override]
     public function setDados(array $dados)
     {
         parent::setDados($dados);
@@ -65,6 +66,7 @@ class MetasVersusCotasPdf extends Pdf
         $this->tipoAgrupador = $this->dados['filtros']['agruparPor'];
         $this->periodosImpressao = $this->dados['periodosImpressao'];
     }
+    #[\Override]
     public function headers($titulo)
     {
         parent::headers($titulo);

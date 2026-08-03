@@ -59,12 +59,12 @@ if ($iAnoUsu >= 2015 && $codigoRelatorio == VariacaoPatrimonialDCASP2015::CODIGO
     exit;
 }
 
-$aRelatoriosPorQuadro = array(
+$aRelatoriosPorQuadro = [
     BalancoPatrimonialDCASP2015::CODIGO_RELATORIO,
     BalancoPatrimonialDCASP2017::CODIGO_RELATORIO,
     BalancoPatrimonialDCASP2019::CODIGO_RELATORIO,
     BalancoPatrimonialDCASP2020::CODIGO_RELATORIO
-);
+];
 
 
 $sStyleDisplayBalancoPatrimonial = 'none';
@@ -80,7 +80,7 @@ $clrotulo->label('DBtxt22');
 $sTitulo = $oRelatorio->getDescricao();
 
 $aPeriodos = $oRelatorio->getPeriodos();
-$aListaPeriodos = array();
+$aListaPeriodos = [];
 $aListaPeriodos[0] = "Selecione";
 
 foreach ($aPeriodos as $oPeriodo) {
@@ -100,7 +100,7 @@ $isPrefeitura = $oInstituicao->isPrefeitura() === 't';
  * - não exibe o filtro para os relatorios do balanço orçamentario
  */
 $iAnoInicioPCASP = ParametroPCASP::getAnoInicioPCASP();
-$aCodigosBalancoOrcamentario = array(130, 137, 138);
+$aCodigosBalancoOrcamentario = [130, 137, 138];
 $imprimirValorExercicioAnterior = $iAnoUsu - 1 >= $iAnoInicioPCASP;
 ?>
 <html>
@@ -159,7 +159,7 @@ $imprimirValorExercicioAnterior = $iAnoUsu - 1 >= $iAnoInicioPCASP;
             </tr>
             <tr id="spanValoresExercicio">
                 <td nowrap><label for="imprimirValorExercicioAnterior"><b>Imprimir Valores do Exercício Anterior:</b></label></td>
-                <td><?php db_select('imprimirValorExercicioAnterior', array(true => 'Sim', false => 'Não'), true, 1); ?></td>
+                <td><?php db_select('imprimirValorExercicioAnterior', [true => 'Sim', false => 'Não'], true, 1); ?></td>
             </tr>
         </table>
     </fieldset>

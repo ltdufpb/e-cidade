@@ -32,15 +32,13 @@ use ECidade\Financeiro\Orcamento\Recurso\Recurso as RecursoFinanceiro;
 class brub_ant
 {
 
-    protected $header;
     /**
      * @var false|resource
      */
     private $arq;
 
-    public function __construct($header)
+    public function __construct(protected $header)
     {
-        $this->header = $header;
     }
 
     public function processa($instit = 1, $data_ini = "", $data_fim = "", $orgaotrib = null, $subelemento = "")
@@ -57,7 +55,7 @@ class brub_ant
             return true;
         } else {
             $this->arq = fopen("tmp/BRUB_ANT.TXT",'w+');
-            fputs($this->arq,$this->header);
+            fputs($this->arq,(string) $this->header);
             fputs($this->arq,"\r\n");
 
             global $o58_codigo,$o58_orgao,$o58_unidade,$o58_funcao,$o58_subfuncao,$o58_programa,$o58_projativ,$o56_elemento,$o15_complemento;
@@ -101,7 +99,7 @@ class brub_ant
                 fputs($this->arq, str_replace("\n\r", "", $sArquivo));
                 fputs($this->arq,"\r\n");
 
-                $contador = count(explode("\n",$sArquivo));
+                $contador = count(explode("\n",(string) $sArquivo));
 
 
             } else {
@@ -187,41 +185,41 @@ class brub_ant
                 $totalcre = 0;
                 $totalesp = 0;
 
-                for ($i=0;$i<pg_numrows($result);$i++) {
+                for ($i=0;$i<pg_num_rows($result);$i++) {
 
                     db_fieldsmemory($result,$i);
 
                     if ($o15_loaespecificacao > 0) {
 
-                        $line  = formatar($o58_orgao,2,'n');
-                        $line .= formatar($o58_unidade,2,'n');
-                        $line .= formatar($o58_funcao,2,'n');
-                        $line .= formatar($o58_subfuncao,3,'n');
-                        $line .= formatar($o58_programa,4,'n');
-                        $line .= formatar(0,3,'n'); // subprograma
-                        $line .= formatar($o58_projativ,5,'n');
+                        $line  = formatar($o58_orgao,2);
+                        $line .= formatar($o58_unidade,2);
+                        $line .= formatar($o58_funcao,2);
+                        $line .= formatar($o58_subfuncao,3);
+                        $line .= formatar($o58_programa,4);
+                        $line .= formatar(0,3); // subprograma
+                        $line .= formatar($o58_projativ,5);
                         // $line .= substr($o56_elemento,0,13).'00';
                         if ((db_getsession("DB_anousu")-1) >= 2005) {
                             // veja o arquivo con4_padrubrica.php
-                            $ele  = substr($o56_elemento,1,14);
+                            $ele  = substr((string) $o56_elemento,1,14);
                             $ele  = trim($ele).'0000';
                             $line .=  substr($ele,0,13).'00';
                         } else {
-                            $ele  = substr($o56_elemento,0,14);
+                            $ele  = substr((string) $o56_elemento,0,14);
                             $ele  = trim($ele).'0000';
                             $line .=  substr($ele,0,13).'00';
                         }
 
-                        $line .= formatar($o15_loaespecificacao ,4,'n');
+                        $line .= formatar($o15_loaespecificacao ,4);
                         for($mes=1;$mes<7;$mes++){
 
                             $e     = ${"emp".$mes};
                             $ee    = ${"eemp".$mes};
                             $valor = dbround_php_52((float)$e - (float)$ee,2);
                             if ($valor < 0) {
-                                $line .= "-"  . formatar(abs($valor),10,'v');
+                                $line .= "-"  . formatar(abs($valor),10);
                             } else {
-                                $line .= formatar($valor,11,'v');
+                                $line .= formatar($valor,11);
                             }
 
                         }
@@ -232,9 +230,9 @@ class brub_ant
                             $ee    = ${"eliq".$mes};
                             $valor = dbround_php_52((float)$e - (float)$ee,2);
                             if ($valor < 0) {
-                                $line .= "-"  . formatar(abs($valor),10,'v');
+                                $line .= "-"  . formatar(abs($valor),10);
                             } else {
-                                $line .= formatar($valor,11,'v');
+                                $line .= formatar($valor,11);
                             }
                         }
 
@@ -244,15 +242,15 @@ class brub_ant
                             $ee    = ${"epag".$mes};
                             $valor = dbround_php_52((float)$e - (float)$ee,2);
                             if ($valor < 0) {
-                                $line .= "-"  . formatar(abs($valor),10,'v');
+                                $line .= "-"  . formatar(abs($valor),10);
                             } else {
-                                $line .= formatar($valor,11,'v');
+                                $line .= formatar($valor,11);
                             }
                         }
 
                         if (db_getsession('DB_anousu') >= 2020) {
                             $complementoFonteRecurso = $o15_complemento;
-                            $line .= str_pad($complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
+                            $line .= str_pad((string) $complementoFonteRecurso, 4, '0', STR_PAD_LEFT);
                         }
                         $contador ++;
                         fputs($this->arq,$line);
@@ -261,7 +259,7 @@ class brub_ant
                 }
             }
             //  trailer
-            $contador = espaco(10-(strlen($contador)),'0').$contador;
+            $contador = espaco(10-(strlen($contador))).$contador;
             $line = "FINALIZADOR".$contador;
             fputs($this->arq,$line);
             fputs($this->arq,"\r\n");

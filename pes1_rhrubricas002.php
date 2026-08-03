@@ -55,13 +55,13 @@ $db_opcao = 1;
   <tr>
       <td height="100%" align="left" valign="top" bgcolor="#CCCCCC">
           <?php
-          $clcriaabas->identifica = array(
+          $clcriaabas->identifica = [
               "rhrubricas" => "Rubricas",
               "rhbases" => "Bases",
               "esocialrubricas" => "Dados eSocial"
-          );
-          $clcriaabas->src = array("rhrubricas" => "pes1_rhrubricas005.php");
-          $clcriaabas->disabled = array("rhbases" => "true", "esocialrubricas" => "true");
+          ];
+          $clcriaabas->src = ["rhrubricas" => "pes1_rhrubricas005.php"];
+          $clcriaabas->disabled = ["rhbases" => "true", "esocialrubricas" => "true"];
           $clcriaabas->cria_abas();
           ?>
        </td>

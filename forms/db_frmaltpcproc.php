@@ -91,7 +91,7 @@ if($clpcproc->numrows>0){
     </td>
     <td colspan="3"> 
     <?php 
-    @$pc80_resumo = stripslashes($pc80_resumo);
+    @$pc80_resumo = stripslashes((string) $pc80_resumo);
     db_textarea('pc80_resumo',4,54,$Ipc80_resumo,true,'text',1)
     ?>
     </td>
@@ -124,7 +124,7 @@ function js_preenchepesquisa(chave){
   db_iframe_pcproc.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?pc80_codproc='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?pc80_codproc='+chave";
   }
   ?>
 }

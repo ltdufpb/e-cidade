@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_parametroprogressaoparcial_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clparametroprogressaoparcial = new cl_parametroprogressaoparcial;
 $clparametroprogressaoparcial->rotulo->label("ed112_sequencial");
 $clparametroprogressaoparcial->rotulo->label("ed112_sequencial");
@@ -98,9 +98,9 @@ $clparametroprogressaoparcial->rotulo->label("ed112_sequencial");
         }else{
            $sql = $clparametroprogressaoparcial->sql_query("",$campos,"ed112_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ed112_sequencial)){
-          $repassa = array("chave_ed112_sequencial"=>$chave_ed112_sequencial,"chave_ed112_sequencial"=>$chave_ed112_sequencial);
+          $repassa = ["chave_ed112_sequencial"=>$chave_ed112_sequencial,"chave_ed112_sequencial"=>$chave_ed112_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

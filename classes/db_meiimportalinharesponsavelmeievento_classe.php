@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE meiimportalinharesponsavelmeievento
 class cl_meiimportalinharesponsavelmeievento { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $q113_sequencial = 0; 
-   var $q113_meiimportalinharesponsavel = 0; 
-   var $q113_meievento = 0; 
-   var $q113_data_dia = null; 
-   var $q113_data_mes = null; 
-   var $q113_data_ano = null; 
-   var $q113_data = null; 
-   var $q113_processado = 'f'; 
+   public $q113_sequencial = 0; 
+   public $q113_meiimportalinharesponsavel = 0; 
+   public $q113_meievento = 0; 
+   public $q113_data_dia = null; 
+   public $q113_data_mes = null; 
+   public $q113_data_ano = null; 
+   public $q113_data = null; 
+   public $q113_processado = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  q113_sequencial = int4 = Sequencial 
                  q113_meiimportalinharesponsavel = int4 = Importação do MEI por Resposável 
                  q113_meievento = int4 = Eventos do MEI 
@@ -59,10 +59,10 @@ class cl_meiimportalinharesponsavelmeievento {
                  q113_processado = bool = Processado 
                  ";
    //funcao construtor da classe 
-   function cl_meiimportalinharesponsavelmeievento() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("meiimportalinharesponsavelmeievento"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_meiimportalinharesponsavelmeievento {
          $this->erro_status = "0";
          return false; 
        }
-       $this->q113_sequencial = pg_result($result,0,0); 
+       $this->q113_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from meiimportalinharesponsavelmeievento_q113_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $q113_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $q113_sequencial)){
          $this->erro_sql = " Campo q113_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_meiimportalinharesponsavelmeievento {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Eventos da Importação do MEI por Responsável ($this->q113_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Eventos da Importação do MEI por Responsável já Cadastrado";
@@ -204,14 +204,14 @@ class cl_meiimportalinharesponsavelmeievento {
      $resaco = $this->sql_record($this->sql_query_file($this->q113_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16290,'$this->q113_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2854,16290,'','".AddSlashes(pg_result($resaco,0,'q113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2854,16291,'','".AddSlashes(pg_result($resaco,0,'q113_meiimportalinharesponsavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2854,16292,'','".AddSlashes(pg_result($resaco,0,'q113_meievento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2854,16293,'','".AddSlashes(pg_result($resaco,0,'q113_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2854,16294,'','".AddSlashes(pg_result($resaco,0,'q113_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2854,16290,'','".AddSlashes(pg_fetch_result($resaco,0,'q113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2854,16291,'','".AddSlashes(pg_fetch_result($resaco,0,'q113_meiimportalinharesponsavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2854,16292,'','".AddSlashes(pg_fetch_result($resaco,0,'q113_meievento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2854,16293,'','".AddSlashes(pg_fetch_result($resaco,0,'q113_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2854,16294,'','".AddSlashes(pg_fetch_result($resaco,0,'q113_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_meiimportalinharesponsavelmeievento {
       $this->atualizacampos();
      $sql = " update meiimportalinharesponsavelmeievento set ";
      $virgula = "";
-     if(trim($this->q113_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q113_sequencial"])){ 
+     if(trim((string) $this->q113_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q113_sequencial"])){ 
        $sql  .= $virgula." q113_sequencial = $this->q113_sequencial ";
        $virgula = ",";
-       if(trim($this->q113_sequencial) == null ){ 
+       if(trim((string) $this->q113_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "q113_sequencial";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_meiimportalinharesponsavelmeievento {
          return false;
        }
      }
-     if(trim($this->q113_meiimportalinharesponsavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q113_meiimportalinharesponsavel"])){ 
+     if(trim((string) $this->q113_meiimportalinharesponsavel)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q113_meiimportalinharesponsavel"])){ 
        $sql  .= $virgula." q113_meiimportalinharesponsavel = $this->q113_meiimportalinharesponsavel ";
        $virgula = ",";
-       if(trim($this->q113_meiimportalinharesponsavel) == null ){ 
+       if(trim((string) $this->q113_meiimportalinharesponsavel) == null ){ 
          $this->erro_sql = " Campo Importação do MEI por Resposável nao Informado.";
          $this->erro_campo = "q113_meiimportalinharesponsavel";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_meiimportalinharesponsavelmeievento {
          return false;
        }
      }
-     if(trim($this->q113_meievento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q113_meievento"])){ 
+     if(trim((string) $this->q113_meievento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q113_meievento"])){ 
        $sql  .= $virgula." q113_meievento = $this->q113_meievento ";
        $virgula = ",";
-       if(trim($this->q113_meievento) == null ){ 
+       if(trim((string) $this->q113_meievento) == null ){ 
          $this->erro_sql = " Campo Eventos do MEI nao Informado.";
          $this->erro_campo = "q113_meievento";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_meiimportalinharesponsavelmeievento {
          return false;
        }
      }
-     if(trim($this->q113_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q113_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q113_data_dia"] !="") ){ 
+     if(trim((string) $this->q113_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q113_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["q113_data_dia"] !="") ){ 
        $sql  .= $virgula." q113_data = '$this->q113_data' ";
        $virgula = ",";
-       if(trim($this->q113_data) == null ){ 
+       if(trim((string) $this->q113_data) == null ){ 
          $this->erro_sql = " Campo Data do Evento nao Informado.";
          $this->erro_campo = "q113_data_dia";
          $this->erro_banco = "";
@@ -275,7 +275,7 @@ class cl_meiimportalinharesponsavelmeievento {
        if(isset($GLOBALS["HTTP_POST_VARS"]["q113_data_dia"])){ 
          $sql  .= $virgula." q113_data = null ";
          $virgula = ",";
-         if(trim($this->q113_data) == null ){ 
+         if(trim((string) $this->q113_data) == null ){ 
            $this->erro_sql = " Campo Data do Evento nao Informado.";
            $this->erro_campo = "q113_data_dia";
            $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_meiimportalinharesponsavelmeievento {
          }
        }
      }
-     if(trim($this->q113_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q113_processado"])){ 
+     if(trim((string) $this->q113_processado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["q113_processado"])){ 
        $sql  .= $virgula." q113_processado = '$this->q113_processado' ";
        $virgula = ",";
-       if(trim($this->q113_processado) == null ){ 
+       if(trim((string) $this->q113_processado) == null ){ 
          $this->erro_sql = " Campo Processado nao Informado.";
          $this->erro_campo = "q113_processado";
          $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_meiimportalinharesponsavelmeievento {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16290,'$this->q113_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q113_sequencial"]) || $this->q113_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2854,16290,'".AddSlashes(pg_result($resaco,$conresaco,'q113_sequencial'))."','$this->q113_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2854,16290,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q113_sequencial'))."','$this->q113_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q113_meiimportalinharesponsavel"]) || $this->q113_meiimportalinharesponsavel != "")
-           $resac = db_query("insert into db_acount values($acount,2854,16291,'".AddSlashes(pg_result($resaco,$conresaco,'q113_meiimportalinharesponsavel'))."','$this->q113_meiimportalinharesponsavel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2854,16291,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q113_meiimportalinharesponsavel'))."','$this->q113_meiimportalinharesponsavel',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q113_meievento"]) || $this->q113_meievento != "")
-           $resac = db_query("insert into db_acount values($acount,2854,16292,'".AddSlashes(pg_result($resaco,$conresaco,'q113_meievento'))."','$this->q113_meievento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2854,16292,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q113_meievento'))."','$this->q113_meievento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q113_data"]) || $this->q113_data != "")
-           $resac = db_query("insert into db_acount values($acount,2854,16293,'".AddSlashes(pg_result($resaco,$conresaco,'q113_data'))."','$this->q113_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2854,16293,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q113_data'))."','$this->q113_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["q113_processado"]) || $this->q113_processado != "")
-           $resac = db_query("insert into db_acount values($acount,2854,16294,'".AddSlashes(pg_result($resaco,$conresaco,'q113_processado'))."','$this->q113_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2854,16294,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'q113_processado'))."','$this->q113_processado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_meiimportalinharesponsavelmeievento {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16290,'$q113_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2854,16290,'','".AddSlashes(pg_result($resaco,$iresaco,'q113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2854,16291,'','".AddSlashes(pg_result($resaco,$iresaco,'q113_meiimportalinharesponsavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2854,16292,'','".AddSlashes(pg_result($resaco,$iresaco,'q113_meievento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2854,16293,'','".AddSlashes(pg_result($resaco,$iresaco,'q113_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2854,16294,'','".AddSlashes(pg_result($resaco,$iresaco,'q113_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2854,16290,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q113_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2854,16291,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q113_meiimportalinharesponsavel'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2854,16292,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q113_meievento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2854,16293,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q113_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2854,16294,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'q113_processado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from meiimportalinharesponsavelmeievento
@@ -431,7 +431,7 @@ class cl_meiimportalinharesponsavelmeievento {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:meiimportalinharesponsavelmeievento";
@@ -446,7 +446,7 @@ class cl_meiimportalinharesponsavelmeievento {
    function sql_query ( $q113_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -472,7 +472,7 @@ class cl_meiimportalinharesponsavelmeievento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -485,7 +485,7 @@ class cl_meiimportalinharesponsavelmeievento {
    function sql_query_file ( $q113_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -506,7 +506,7 @@ class cl_meiimportalinharesponsavelmeievento {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

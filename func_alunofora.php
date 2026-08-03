@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_alunofora_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clalunofora = new cl_alunofora;
 $clrotulo = new rotulocampo;
 $clrotulo->label("ed47_i_codigo");
@@ -98,7 +98,7 @@ $clrotulo->label("ed47_v_nome");
                  where not exists(select * from alunocurso where ed56_i_aluno= ed47_i_codigo)
           ";
     if(isset($chave_ed47_i_codigo)){
-     $repassa = array("chave_ed47_i_codigo"=>$chave_ed47_i_codigo,"chave_ed47_v_nome"=>$chave_ed47_v_nome);
+     $repassa = ["chave_ed47_i_codigo"=>$chave_ed47_i_codigo,"chave_ed47_v_nome"=>$chave_ed47_v_nome];
     }
     if(isset($chave_ed47_i_codigo) && (trim($chave_ed47_i_codigo)!="") ){
      $sql .= " and ed47_i_codigo = $chave_ed47_i_codigo) as x ORDER BY ed47_v_nome";

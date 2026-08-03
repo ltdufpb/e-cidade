@@ -44,7 +44,7 @@ $clrotulo->label("q07_horafim");
 
 ?>
 
-<form id="form_atividade" name="form_atividade" method="post" action="<?=basename($_SERVER['PHP_SELF'])?>" onload='js_testadata();'  >
+<form id="form_atividade" name="form_atividade" method="post" action="<?=basename((string) $_SERVER['PHP_SELF'])?>" onload='js_testadata();'  >
     <fieldset style="width: 740px">
     <legend>Vincular Atividades</legend>
         <table>
@@ -101,7 +101,7 @@ $clrotulo->label("q07_horafim");
                         } else {
                             $db_opcao_02=1;
                         }
-                        $xq = array("f"=>"NÃO","t"=>"SIM");
+                        $xq = ["f"=>"NÃO","t"=>"SIM"];
                         db_select('princ',$xq,true,1);
                     ?>
                 </td>
@@ -125,7 +125,7 @@ $clrotulo->label("q07_horafim");
                 </td>
                 <td>
                     <?php 
-                        $xe = array("t"=>"PERMANENTE","f"=>"PROVISÓRIO");
+                        $xe = ["t"=>"PERMANENTE","f"=>"PROVISÓRIO"];
                         db_select('q07_perman',$xe,true,$db_opcao,"onchange='js_testadata(this.value);'");
                     ?>
                 </td>

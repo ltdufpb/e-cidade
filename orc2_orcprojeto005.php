@@ -45,7 +45,7 @@ $auxiliar = new cl_orcsuplem;
 $aux = new cl_orcsuplem;
 $clfonterecurso = new cl_complementofonterecurso;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $anousu = db_getsession("DB_anousu");
 
@@ -69,7 +69,7 @@ $totalSuplementacao = 0;
  */
 
 $sPrefeitoDeTal = "";
-$aTexto = array();
+$aTexto = [];
 $sQuery = "select db_paragrafo.*
              from db_documento
                   inner join db_docparag on db03_docum = db04_docum
@@ -205,7 +205,7 @@ if ($projeto_tipo == "1") {
         "R$ " . db_formatar($total_suplementado, 'f') . " (" . db_extenso($total_suplementado, true) . ") e da outras providências. ";
 } else {
     // tipo 3 = retificador
-    if (strlen(trim($o39_lei)) > 0) {
+    if (strlen(trim((string) $o39_lei)) > 0) {
         $projeto_tipo_texto = "PROJETO DE LEI";
         $txt = "Autoriza o Poder Executivo Municipal a abrir $tipo_sup na importancia de " .
             "R$ " . db_formatar($total_suplementado, 'f') . " (" . db_extenso($total_suplementado, true) . ") e da outras providências. ";
@@ -218,7 +218,7 @@ if ($projeto_tipo == "1") {
 
 $pdf->setX(20);
 $pdf->setFont('', 'B');
-$pdf->Cell(170, 4, $projeto_tipo_texto . " " . ($projeto_tipo == 1 ? $o39_numero."/".substr($o39_data, 6, 4) : '') . strtoupper(" de " . substr($o39_data, 0, 2) . " de " . db_mes(substr($o39_data, 3, 2)) . " de " . substr($o39_data, 6, 4)), 0, 1, "C", '1');
+$pdf->Cell(170, 4, $projeto_tipo_texto . " " . ($projeto_tipo == 1 ? $o39_numero."/".substr((string) $o39_data, 6, 4) : '') . strtoupper(" de " . substr((string) $o39_data, 0, 2) . " de " . db_mes(substr((string) $o39_data, 3, 2)) . " de " . substr((string) $o39_data, 6, 4)), 0, 1, "C", '1');
 $pdf->setFont();
 $pdf->Ln(7);
 
@@ -252,7 +252,7 @@ select o48_texto
 $res_retif = db_query($sql);
 if (pg_num_rows($res_retif) > 0) {
     db_fieldsmemory($res_retif, 0, true);
-    if (strlen($o48_texto) > 1) {
+    if (strlen((string) $o48_texto) > 1) {
         $pdf->setX(20);
         $pdf->multicell(170, 4, "$o48_texto", 'B', 'J', '0', 20);
         $pdf->Ln(4);
@@ -274,7 +274,7 @@ db_fieldsmemory($res, 0);
 if ($projeto_tipo == "1") { // decreto
 
     $pdf->setX(20);
-    $pref = ucfirst($pref);
+    $pref = ucfirst((string) $pref);
 
     if ($db21_codcli == 34) {
         $txt = "$pref, PRESIDENTE DA CAMARA MUNICIPAL DE VEREADORES DE $munic, $uf, no uso de suas atribuições legais e de conformidade com a Lei Municipal n" . chr(186) . " $o45_numlei";
@@ -295,7 +295,7 @@ if ($projeto_tipo == "1") { // decreto
 } else {   // quando for lei
 
     $pdf->setX(20);
-    $pref = strtoupper($pref);
+    $pref = strtoupper((string) $pref);
     if ($db21_codcli == 34) {
         $txt = "$pref, PREFEITO MUNICIPAL DE $munic, $uf.";
     } else {
@@ -811,6 +811,6 @@ function pegarComplemento($codigo){
                             on o200_sequencial = o15_complemento where o15_codigo = $codigo;";
     $rsComplemento = db_query($sqlComplemento);
     $oComplemento = db_utils::fieldsMemory($rsComplemento);
-    $o15_complemento = str_pad($oComplemento->o15_complemento, 4, "0", STR_PAD_LEFT);
+    $o15_complemento = str_pad((string) $oComplemento->o15_complemento, 4, "0", STR_PAD_LEFT);
     return $o15_complemento;
 }

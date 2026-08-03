@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE cepestadosfaixa
 class cl_cepestadosfaixa { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $cp04_sigla = null; 
-   var $cp04_faixa = 0; 
-   var $cp04_cepinicial = null; 
-   var $cp04_cepfinal = null; 
+   public $cp04_sigla = null; 
+   public $cp04_faixa = 0; 
+   public $cp04_cepinicial = null; 
+   public $cp04_cepfinal = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  cp04_sigla = varchar(2) = Sigla Estado Faixa 
                  cp04_faixa = int4 = Faixa de Estados 
                  cp04_cepinicial = varchar(8) = Cep inicial 
                  cp04_cepfinal = varchar(8) = Cep final 
                  ";
    //funcao construtor da classe 
-   function cl_cepestadosfaixa() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cepestadosfaixa"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,7 +134,7 @@ class cl_cepestadosfaixa {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de Estados Faixa  ($this->cp04_sigla."-".$this->cp04_faixa) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de Estados Faixa  já Cadastrado";
@@ -158,14 +158,14 @@ class cl_cepestadosfaixa {
      $resaco = $this->sql_record($this->sql_query_file($this->cp04_sigla,$this->cp04_faixa));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7184,'$this->cp04_sigla','I')");
        $resac = db_query("insert into db_acountkey values($acount,7185,'$this->cp04_faixa','I')");
-       $resac = db_query("insert into db_acount values($acount,1195,7184,'','".AddSlashes(pg_result($resaco,0,'cp04_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1195,7185,'','".AddSlashes(pg_result($resaco,0,'cp04_faixa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1195,7187,'','".AddSlashes(pg_result($resaco,0,'cp04_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1195,7188,'','".AddSlashes(pg_result($resaco,0,'cp04_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1195,7184,'','".AddSlashes(pg_fetch_result($resaco,0,'cp04_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1195,7185,'','".AddSlashes(pg_fetch_result($resaco,0,'cp04_faixa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1195,7187,'','".AddSlashes(pg_fetch_result($resaco,0,'cp04_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1195,7188,'','".AddSlashes(pg_fetch_result($resaco,0,'cp04_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -174,10 +174,10 @@ class cl_cepestadosfaixa {
       $this->atualizacampos();
      $sql = " update cepestadosfaixa set ";
      $virgula = "";
-     if(trim($this->cp04_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp04_sigla"])){ 
+     if(trim((string) $this->cp04_sigla)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp04_sigla"])){ 
        $sql  .= $virgula." cp04_sigla = '$this->cp04_sigla' ";
        $virgula = ",";
-       if(trim($this->cp04_sigla) == null ){ 
+       if(trim((string) $this->cp04_sigla) == null ){ 
          $this->erro_sql = " Campo Sigla Estado Faixa nao Informado.";
          $this->erro_campo = "cp04_sigla";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_cepestadosfaixa {
          return false;
        }
      }
-     if(trim($this->cp04_faixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp04_faixa"])){ 
+     if(trim((string) $this->cp04_faixa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp04_faixa"])){ 
        $sql  .= $virgula." cp04_faixa = $this->cp04_faixa ";
        $virgula = ",";
-       if(trim($this->cp04_faixa) == null ){ 
+       if(trim((string) $this->cp04_faixa) == null ){ 
          $this->erro_sql = " Campo Faixa de Estados nao Informado.";
          $this->erro_campo = "cp04_faixa";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_cepestadosfaixa {
          return false;
        }
      }
-     if(trim($this->cp04_cepinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp04_cepinicial"])){ 
+     if(trim((string) $this->cp04_cepinicial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp04_cepinicial"])){ 
        $sql  .= $virgula." cp04_cepinicial = '$this->cp04_cepinicial' ";
        $virgula = ",";
-       if(trim($this->cp04_cepinicial) == null ){ 
+       if(trim((string) $this->cp04_cepinicial) == null ){ 
          $this->erro_sql = " Campo Cep inicial nao Informado.";
          $this->erro_campo = "cp04_cepinicial";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_cepestadosfaixa {
          return false;
        }
      }
-     if(trim($this->cp04_cepfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp04_cepfinal"])){ 
+     if(trim((string) $this->cp04_cepfinal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cp04_cepfinal"])){ 
        $sql  .= $virgula." cp04_cepfinal = '$this->cp04_cepfinal' ";
        $virgula = ",";
-       if(trim($this->cp04_cepfinal) == null ){ 
+       if(trim((string) $this->cp04_cepfinal) == null ){ 
          $this->erro_sql = " Campo Cep final nao Informado.";
          $this->erro_campo = "cp04_cepfinal";
          $this->erro_banco = "";
@@ -237,18 +237,18 @@ class cl_cepestadosfaixa {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7184,'$this->cp04_sigla','A')");
          $resac = db_query("insert into db_acountkey values($acount,7185,'$this->cp04_faixa','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp04_sigla"]))
-           $resac = db_query("insert into db_acount values($acount,1195,7184,'".AddSlashes(pg_result($resaco,$conresaco,'cp04_sigla'))."','$this->cp04_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1195,7184,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp04_sigla'))."','$this->cp04_sigla',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp04_faixa"]))
-           $resac = db_query("insert into db_acount values($acount,1195,7185,'".AddSlashes(pg_result($resaco,$conresaco,'cp04_faixa'))."','$this->cp04_faixa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1195,7185,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp04_faixa'))."','$this->cp04_faixa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp04_cepinicial"]))
-           $resac = db_query("insert into db_acount values($acount,1195,7187,'".AddSlashes(pg_result($resaco,$conresaco,'cp04_cepinicial'))."','$this->cp04_cepinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1195,7187,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp04_cepinicial'))."','$this->cp04_cepinicial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cp04_cepfinal"]))
-           $resac = db_query("insert into db_acount values($acount,1195,7188,'".AddSlashes(pg_result($resaco,$conresaco,'cp04_cepfinal'))."','$this->cp04_cepfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1195,7188,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cp04_cepfinal'))."','$this->cp04_cepfinal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -293,14 +293,14 @@ class cl_cepestadosfaixa {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7184,'$cp04_sigla','E')");
          $resac = db_query("insert into db_acountkey values($acount,7185,'$cp04_faixa','E')");
-         $resac = db_query("insert into db_acount values($acount,1195,7184,'','".AddSlashes(pg_result($resaco,$iresaco,'cp04_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1195,7185,'','".AddSlashes(pg_result($resaco,$iresaco,'cp04_faixa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1195,7187,'','".AddSlashes(pg_result($resaco,$iresaco,'cp04_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1195,7188,'','".AddSlashes(pg_result($resaco,$iresaco,'cp04_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1195,7184,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp04_sigla'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1195,7185,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp04_faixa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1195,7187,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp04_cepinicial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1195,7188,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cp04_cepfinal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cepestadosfaixa
@@ -366,7 +366,7 @@ class cl_cepestadosfaixa {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cepestadosfaixa";

@@ -64,8 +64,8 @@ foreach ($aInconsistencia as $oIndiceDados => $oValorDados) {
 
 	$pdf->setfont('arial','',$iFonte);
 	$pdf->cell(25 ,  $iAlturalinha, "{$oValorDados->tipo}"           ,  "TBR",  0, "L", 0);
-	$pdf->cell(50 ,  $iAlturalinha, urldecode($oValorDados->registro), "LTBR", 0, "L", 0);
-	$pdf->cell(115,  $iAlturalinha, urldecode($oValorDados->detalhe) ,  "TBL",  1, "L", 0);
+	$pdf->cell(50 ,  $iAlturalinha, urldecode((string) $oValorDados->registro), "LTBR", 0, "L", 0);
+	$pdf->cell(115,  $iAlturalinha, urldecode((string) $oValorDados->detalhe) ,  "TBL",  1, "L", 0);
 	imprimirCabecalho($pdf, $iAlturalinha, false);
 }
 

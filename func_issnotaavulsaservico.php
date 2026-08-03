@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_issnotaavulsaservico_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissnotaavulsaservico = new cl_issnotaavulsaservico;
 $clissnotaavulsaservico->rotulo->label("q62_sequencial");
 $clissnotaavulsaservico->rotulo->label("q62_issnotaavulsa");
@@ -98,9 +98,9 @@ $clissnotaavulsaservico->rotulo->label("q62_issnotaavulsa");
         }else{
            $sql = $clissnotaavulsaservico->sql_query("",$campos,"q62_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q62_issnotaavulsa)){
-          $repassa = array("chave_q62_sequencial"=>$chave_q62_sequencial,"chave_q62_issnotaavulsa"=>$chave_q62_issnotaavulsa);
+          $repassa = ["chave_q62_sequencial"=>$chave_q62_sequencial,"chave_q62_issnotaavulsa"=>$chave_q62_issnotaavulsa];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -32,21 +32,21 @@ require_once(modification("libs/db_utils.php"));
 
 $naocalcula = true;
 $isReciboNovo = false;
-if (isset($HTTP_POST_VARS ["autenticar"])) {
+if (isset($_POST ["autenticar"])) {
   $naocalcula = false;
 }
-if (isset($HTTP_POST_VARS ["calcula"])) {
+if (isset($_POST ["calcula"])) {
   $naocalcula = true;
 }
 
-parse_str($HTTP_SERVER_VARS ["QUERY_STRING"]);
+parse_str((string) $_SERVER ["QUERY_STRING"], $result);
 
-if (isset($HTTP_POST_VARS ["codrec"])) {
-  $codrec = $HTTP_POST_VARS ["codrec"];
+if (isset($_POST ["codrec"])) {
+  $codrec = $_POST ["codrec"];
   unset($valor_variavel);
 }
 
-if (! isset($HTTP_POST_VARS ["reduz"])) {
+if (! isset($_POST ["reduz"])) {
 
   $sql  = "select k13_reduz as c01_reduz,                                             ";
   $sql .= "       k13_descr as c01_descr                                              ";
@@ -64,22 +64,22 @@ if (! isset($HTTP_POST_VARS ["reduz"])) {
 
 
   $resultconta = db_query($sql);
-  if (pg_numrows($resultconta) == 1) {
-    $HTTP_POST_VARS ["reduz"] = pg_result($resultconta, 0, "c01_reduz");
-    $HTTP_POST_VARS ["descr"] = pg_result($resultconta, 0, "c01_descr");
+  if (pg_num_rows($resultconta) == 1) {
+    $_POST ["reduz"] = pg_fetch_result($resultconta, 0, "c01_reduz");
+    $_POST ["descr"] = pg_fetch_result($resultconta, 0, "c01_descr");
   }
 
 }
 
 
-if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
+if (isset($_POST ["codrec"]) || isset($codrec)) {
 
   // verifica validade do recibo
-  $tamCodigoArrecadacao = strlen(trim($codrec));
+  $tamCodigoArrecadacao = strlen(trim((string) $codrec));
   if ($tamCodigoArrecadacao > 15) {
 
     /* @fixme: corrigir codigoarrecadacao*/
-    $banco1 = substr($codrec, 0, 3);
+    $banco1 = substr((string) $codrec, 0, 3);
     if ( $banco1 == "816" ||
          $banco1 == "817" ||
          $banco1 == "826" ||
@@ -94,38 +94,38 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
 
         /* conforme solicitado pelo evandro no caso de osorio em q temos q diferenciar os carnes/recibos do sistema antigo e do novo,
              no sistema novo o seis primeiros digitos serao '000000' */
-        if (substr($codrec, 25, 6) == '000000') { //numpre < 4
-          $codigoArrecadacao = substr($codrec, 31, 8);
+        if (substr((string) $codrec, 25, 6) == '000000') { //numpre < 4
+          $codigoArrecadacao = substr((string) $codrec, 31, 8);
         } else {
-          $codigoArrecadacao = substr($codrec, 29, 8);
+          $codigoArrecadacao = substr((string) $codrec, 29, 8);
         }
 
       } else if ($banco1 == "041") {
           // canela e capivari
-          $sNumBanco   = substr($codrec, 21, 13);
+          $sNumBanco   = substr((string) $codrec, 21, 13);
           $sSql        = "select * from arrebanco where k00_numbco = '{$sNumBanco}'";
           $rsArrebanco = db_query($sSql);
           $oArrebanco  = db_utils::fieldsMemory($rsArrebanco,0);
-          $codigoArrecadacao = str_pad($oArrebanco->k00_numpre,8,'0',STR_PAD_LEFT);
+          $codigoArrecadacao = str_pad((string) $oArrebanco->k00_numpre,8,'0',STR_PAD_LEFT);
 
       } else if ($banco1 == "104") {
         // canela e sapiranga
-        $sNumBanco   = substr($codrec, 19, 10);
+        $sNumBanco   = substr((string) $codrec, 19, 10);
         $sSql        = "select * from arrebanco where substr(k00_numbco,1,10) = '{$sNumBanco}'";
         $rsArrebanco = db_query($sSql);
         $oArrebanco  = db_utils::fieldsMemory($rsArrebanco,0);
-        $codigoArrecadacao = str_pad($oArrebanco->k00_numpre,8,'0',STR_PAD_LEFT);
+        $codigoArrecadacao = str_pad((string) $oArrebanco->k00_numpre,8,'0',STR_PAD_LEFT);
 
         /* [Extensão] Autenticação de boletos do convênio SigCB */
 
       } else {
-        $codigoArrecadacao = substr($codrec, 33, 8);
+        $codigoArrecadacao = substr((string) $codrec, 33, 8);
       }
 
     }
 
   } else {
-    $codigoArrecadacao = substr($codrec, 0, 8);
+    $codigoArrecadacao = substr((string) $codrec, 0, 8);
   }
 
   $sSqlReciboPaga  = " select *                                        ";
@@ -133,8 +133,8 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
   $sSqlReciboPaga .= "  where k00_numnov = {$codigoArrecadacao} limit 1";
   $rsReciboPaga    = db_query($sSqlReciboPaga);
   if ( pg_num_rows($rsReciboPaga) > 0 ) {
-    $codrec  = str_pad($codigoArrecadacao,8,"0",STR_PAD_LEFT).'000';
-    $HTTP_POST_VARS ["codrec"] = $codrec;
+    $codrec  = str_pad((string) $codigoArrecadacao,8,"0",STR_PAD_LEFT).'000';
+    $_POST ["codrec"] = $codrec;
   }
 
   $sqlrecval  = "select fc_proximo_dia_util(recibopaga.k00_dtpaga) as k00_dtpaga";
@@ -153,9 +153,9 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
   $sqlrecval .= " limit 1 ";
   $recval = db_query($sqlrecval);
 
-  if (pg_numrows($recval) > 0) {
+  if (pg_num_rows($recval) > 0) {
 
-    if (strtotime(pg_result($recval, 0, 0)) < strtotime(date('Y-m-d', db_getsession("DB_datausu")))) {
+    if (strtotime(pg_fetch_result($recval, 0, 0)) < strtotime(date('Y-m-d', db_getsession("DB_datausu")))) {
 
       // Verifica se o Recibo é de somente **Uma Parcela** e
       // se é Carne da CGF, Emissao Geral de IPTU ou Emissao Geral de ISSQN
@@ -168,17 +168,17 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
       $sqlReciboUmaParcela .= "          from recibopaga ";
       $sqlReciboUmaParcela .= "         where k00_numnov = k99_numpre_n) = 1";
       $resReciboUmaParcela  = db_query($sqlReciboUmaParcela);
-      if (pg_numrows($resReciboUmaParcela) > 0) {
+      if (pg_num_rows($resReciboUmaParcela) > 0) {
         db_fieldsmemory($resReciboUmaParcela, 0);
         // Busca NUMPRE/NUMPAR do Arrecad pra processar os cálculos de Juros/Multa/Correcao e
         // permitir efetivar a Arrecadacao da Receita
-        $codigoArrecadacao = str_pad($k99_numpre, 8, "0", STR_PAD_LEFT);
-        $codrec = $codigoArrecadacao . str_pad($k99_numpar, 3, "0", STR_PAD_LEFT);
-        $HTTP_POST_VARS ["codrec"] = $codrec;
+        $codigoArrecadacao = str_pad((string) $k99_numpre, 8, "0", STR_PAD_LEFT);
+        $codrec = $codigoArrecadacao . str_pad((string) $k99_numpar, 3, "0", STR_PAD_LEFT);
+        $_POST ["codrec"] = $codrec;
 
       } else {
         echo "<script>";
-        echo "  parent.alert(' Recibo Inválido. Verifique o Vencimento! (" . db_formatar(pg_result($recval, 0, 0), 'd') . ")'); ";
+        echo "  parent.alert(' Recibo Inválido. Verifique o Vencimento! (" . db_formatar(pg_fetch_result($recval, 0, 0), 'd') . ")'); ";
         echo "  location.href = 'cai4_arrecada002.php?invalido=true'; ";
         echo "</script>";
         exit();
@@ -202,26 +202,26 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
   $sqlReciboEmissaoIss .= " group by k99_numpre, k99_numpar ";
   $sqlReciboEmissaoIss .= " having cast(sum(k00_valor) as numeric) = cast(0 as numeric) ";
   $resReciboEmissaoIss = db_query($sqlReciboEmissaoIss);
-  if (pg_numrows($resReciboEmissaoIss) > 0) {
+  if (pg_num_rows($resReciboEmissaoIss) > 0) {
     db_fieldsmemory($resReciboEmissaoIss, 0);
-    $codigoArrecadacao = str_pad($k99_numpre, 8, "0", STR_PAD_LEFT);
-    $codrec            = $codigoArrecadacao . str_pad($k99_numpar, 3, "0", STR_PAD_LEFT);
-    $HTTP_POST_VARS ["codrec"] = $codrec;
+    $codigoArrecadacao = str_pad((string) $k99_numpre, 8, "0", STR_PAD_LEFT);
+    $codrec            = $codigoArrecadacao . str_pad((string) $k99_numpar, 3, "0", STR_PAD_LEFT);
+    $_POST ["codrec"] = $codrec;
   }
 
   $sArrebanco = "select k00_numpre as k00_numpre_numbco, k00_numpar as k00_numpar_numbco from caixa.arrebanco where k00_numbco = '" . $codrec . "'";
   $rsArrebanco = db_query($sArrebanco) or die($sArrebanco);
-  if (pg_numrows($rsArrebanco) > 0) {
+  if (pg_num_rows($rsArrebanco) > 0) {
     db_fieldsmemory($rsArrebanco,0);
-    $codrec = str_pad( $k00_numpre_numbco , 8, "0", STR_PAD_LEFT) . str_pad( $k00_numpar_numbco , 3, "0", STR_PAD_LEFT);
-    $HTTP_POST_VARS ['codrec'] = $codrec;
+    $codrec = str_pad( (string) $k00_numpre_numbco , 8, "0", STR_PAD_LEFT) . str_pad( (string) $k00_numpar_numbco , 3, "0", STR_PAD_LEFT);
+    $_POST ['codrec'] = $codrec;
   }
 
   if ($naocalcula == true) {
 
-    if (strlen(trim($codrec)) > 15) {
+    if (strlen(trim((string) $codrec)) > 15) {
 
-      $banco = substr($codrec, 0, 3);
+      $banco = substr((string) $codrec, 0, 3);
 
       /* @note: Busca pelo codigo de barras inteirro para tratar os casos dos novos nosso numero gerados */
       $sSqlReciboCodBar = "select * from recibocodbar where k00_codbar = '{$codrec}'";
@@ -254,7 +254,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
 
           $oArrebanco  = db_utils::fieldsMemory($rsArrebanco,0);
 
-          $codrec      = str_pad($oArrebanco->k00_numpre,8,'0',STR_PAD_LEFT) . str_pad( $oArrebanco->k00_numpar,3,'0',STR_PAD_LEFT);
+          $codrec      = str_pad((string) $oArrebanco->k00_numpre,8,'0',STR_PAD_LEFT) . str_pad( (string) $oArrebanco->k00_numpar,3,'0',STR_PAD_LEFT);
 
           $iNumpre = $oArrebanco->k00_numpre;
           $iNumpar = $oArrebanco->k00_numpar;
@@ -274,45 +274,45 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
 
         if ($banco == "001") {
 
-          if ( strlen(trim($codrec)) == 44 ) { // BDL Banco do Brasil
+          if ( strlen(trim((string) $codrec)) == 44 ) { // BDL Banco do Brasil
 
-            if (substr($codrec, 25, 6) <> '000000') {
-              $codrec = str_pad(substr($codrec,32,8),8,'0',STR_PAD_LEFT) . str_pad(substr($codrec,40,2),3,'0',STR_PAD_LEFT);
+            if (substr((string) $codrec, 25, 6) <> '000000') {
+              $codrec = str_pad(substr((string) $codrec,32,8),8,'0',STR_PAD_LEFT) . str_pad(substr((string) $codrec,40,2),3,'0',STR_PAD_LEFT);
             }else{
-              $codrec = str_pad(substr($codrec,31,8),8,'0',STR_PAD_LEFT) . str_pad(substr($codrec,40,2),3,'0',STR_PAD_LEFT);
+              $codrec = str_pad(substr((string) $codrec,31,8),8,'0',STR_PAD_LEFT) . str_pad(substr((string) $codrec,40,2),3,'0',STR_PAD_LEFT);
             }
           } else {
 
-            if (substr($codrec, 25, 6) == '000000') { //numpre < 4
-              $codrec = substr($codrec, 31, 8) . substr($codrec, 39, 3);
+            if (substr((string) $codrec, 25, 6) == '000000') { //numpre < 4
+              $codrec = substr((string) $codrec, 31, 8) . substr((string) $codrec, 39, 3);
             } else {
-              $codrec = substr($codrec, 29, 8) . "0" . substr($codrec, 37, 2);
+              $codrec = substr((string) $codrec, 29, 8) . "0" . substr((string) $codrec, 37, 2);
             }
           }
         }else if ($banco == "041") {
 
           // canela e capivari
-          $sNumBanco   = substr($codrec, 21, 13);
+          $sNumBanco   = substr((string) $codrec, 21, 13);
           $sSql        = "select * from arrebanco where k00_numbco = '{$sNumBanco}'";
           $rsArrebanco = db_query($sSql);
           $oArrebanco  = db_utils::fieldsMemory($rsArrebanco,0);
-          $codrec      = str_pad($oArrebanco->k00_numpre,8,'0',STR_PAD_LEFT) . str_pad( $oArrebanco->k00_numpar,3,'0',STR_PAD_LEFT);
+          $codrec      = str_pad((string) $oArrebanco->k00_numpre,8,'0',STR_PAD_LEFT) . str_pad( (string) $oArrebanco->k00_numpar,3,'0',STR_PAD_LEFT);
 
         } else if ($banco == "104") {
 
           // canela e sapiranga
-          $sNumBanco   = substr($codrec, 19, 10);
+          $sNumBanco   = substr((string) $codrec, 19, 10);
           $sSql        = "select * from arrebanco where substr(k00_numbco,1,10) = '{$sNumBanco}'";
           $rsArrebanco = db_query($sSql);
           $oArrebanco  = db_utils::fieldsMemory($rsArrebanco,0);
-          $codrec      = str_pad($oArrebanco->k00_numpre,8,'0',STR_PAD_LEFT) . str_pad( $oArrebanco->k00_numpar,3,'0',STR_PAD_LEFT);
+          $codrec      = str_pad((string) $oArrebanco->k00_numpre,8,'0',STR_PAD_LEFT) . str_pad( (string) $oArrebanco->k00_numpar,3,'0',STR_PAD_LEFT);
 
         } else {
           /* @note: corrige numpre/numpar arrecadacao */
-          $codrec = substr($codrec, 33, 11);
+          $codrec = substr((string) $codrec, 33, 11);
         }
 
-        $HTTP_POST_VARS ['codrec'] = $codrec;
+        $_POST ['codrec'] = $codrec;
 
         if (strlen(trim($codrec)) == 0) {
           echo "<script>
@@ -362,9 +362,9 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
     $descr_origem  = "TIPO DE DEBITO INDEFINIDO";
     $tipo_origem   = "ORIGEM INDEFINIDA";
 
-    $tabela_arrecad  = "(select * from arrecad where k00_numpre = ".substr($codrec, 0, 8);
+    $tabela_arrecad  = "(select * from arrecad where k00_numpre = ".substr((string) $codrec, 0, 8);
     $tabela_arrecad .= " union ";
-    $tabela_arrecad .= " select * from arrecant where k00_numpre = ".substr($codrec, 0, 8)." ) as arrecad ";
+    $tabela_arrecad .= " select * from arrecant where k00_numpre = ".substr((string) $codrec, 0, 8)." ) as arrecad ";
 
     $sql = " select k00_matric         as numero_origem,
                     'MATRIC'           as tipo_origem,
@@ -375,9 +375,9 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
                     inner join arretipo        on arrecad.k00_tipo   = arretipo.k00_tipo
                     inner join iptubase        on k00_matric         = j01_matric
                     inner join cgm             on j01_numcgm         = z01_numcgm
-              where arrecad.k00_numpre = " . substr($codrec, 0, 8);
+              where arrecad.k00_numpre = " . substr((string) $codrec, 0, 8);
     $result_arrematric = db_query($sql) or die($sql);
-    if (pg_numrows($result_arrematric) > 0) {
+    if (pg_num_rows($result_arrematric) > 0) {
       db_fieldsmemory($result_arrematric, 0);
 
     } else {
@@ -391,9 +391,9 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
                       inner join arretipo        on arrecad.k00_tipo   = arretipo.k00_tipo
                       inner join issbase         on k00_inscr          = q02_inscr
                       inner join cgm             on q02_numcgm         = z01_numcgm
-                where arrecad.k00_numpre = " . substr($codrec, 0, 8);
+                where arrecad.k00_numpre = " . substr((string) $codrec, 0, 8);
       $result_arreinscr = db_query($sql) or die($sql);
-      if (pg_numrows($result_arreinscr) > 0) {
+      if (pg_num_rows($result_arreinscr) > 0) {
         db_fieldsmemory($result_arreinscr, 0);
 
       } else {
@@ -405,9 +405,9 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
                    from $tabela_arrecad
                         inner join arretipo on arrecad.k00_tipo = arretipo.k00_tipo
                         inner join cgm      on k00_numcgm       = z01_numcgm
-                  where arrecad.k00_numpre = " . substr($codrec, 0, 8);
+                  where arrecad.k00_numpre = " . substr((string) $codrec, 0, 8);
         $result_arrecad = db_query($sql) or die($sql);
-        if (pg_numrows($result_arrecad) > 0) {
+        if (pg_num_rows($result_arrecad) > 0) {
           db_fieldsmemory($result_arrecad, 0);
 
         } else {
@@ -430,9 +430,9 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
                                    left join arreinscr       on recibopaga.k00_numpre  = arreinscr.k00_numpre
                                    left join issbase         on q02_inscr              = k00_inscr
                                    left join cgm cgmissbase  on cgmissbase.z01_numcgm  = q02_numcgm
-                             where k00_numnov = " . substr($codrec, 0, 8) . " limit 1 ) as x ";
+                             where k00_numnov = " . substr((string) $codrec, 0, 8) . " limit 1 ) as x ";
           $result_recibo = db_query($sql) or die($sql);
-          if (pg_numrows($result_recibo) > 0) {
+          if (pg_num_rows($result_recibo) > 0) {
             db_fieldsmemory($result_recibo, 0);
 
           } else {
@@ -462,11 +462,11 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
                                     left join abatimentorecibo  on abatimentorecibo.k127_numprerecibo = recibo.k00_numpre
                                     left join abatimento        on abatimento.k125_sequencial         = abatimentorecibo.k127_abatimento
                                                                and abatimento.k125_tipoabatimento     = 1
-                              where recibo.k00_numpre = " . substr($codrec, 0, 8) . "
+                              where recibo.k00_numpre = " . substr((string) $codrec, 0, 8) . "
                               limit 1
                            ) as x ";
             $result_recibo = db_query($sql) or die($sql);
-            if (pg_numrows($result_recibo) > 0) {
+            if (pg_num_rows($result_recibo) > 0) {
               db_fieldsmemory($result_recibo, 0);
 
               if ( isset($pgtoparcial) && trim($pgtoparcial) != '' ) {
@@ -510,8 +510,8 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
 
     } else {
 
-      if (substr($fc_calcula, 0, 1) != '1') {
-        if (substr($fc_calcula, 0, 1) == '9') {
+      if (!str_starts_with((string) $fc_calcula, '1')) {
+        if (str_starts_with((string) $fc_calcula, '9')) {
           ?>
             <script>
               parent.alert('Código de Arrecadação Inválido.');
@@ -521,7 +521,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
           exit();
         }
 
-        if (substr($fc_calcula, 0, 1) == '8') {
+        if (str_starts_with((string) $fc_calcula, '8')) {
           ?>
             <script>
               var lista = parent.recibos.document.getElementById("tab");
@@ -545,14 +545,14 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
                   valor = valor.replace(',','.');
                 }
 
-                location.href = 'cai4_arrecada002.php?codrec=<?=$HTTP_POST_VARS ["codrec"]?>&valor_variavel='+valor;
+                location.href = 'cai4_arrecada002.php?codrec=<?=$_POST ["codrec"]?>&valor_variavel='+valor;
               }
             </script>
           <?php 
           exit();
         }
 
-        if (substr($fc_calcula, 0, 1) == '7') {
+        if (str_starts_with((string) $fc_calcula, '7')) {
           ?>
             <script>
               var lista = parent.recibos.document.getElementById("tab");
@@ -564,7 +564,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
           exit();
         }
 
-        if (substr($fc_calcula, 0, 1) == '6') {
+        if (str_starts_with((string) $fc_calcula, '6')) {
           ?>
             <script>
               var lista = parent.recibos.document.getElementById("tab");
@@ -575,7 +575,7 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
           exit();
         }
 
-        if (substr($fc_calcula, 0, 1) == '5') {
+        if (str_starts_with((string) $fc_calcula, '5')) {
           ?>
             <script>
               var lista = parent.recibos.document.getElementById("tab");
@@ -586,17 +586,17 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
           exit();
         }
 
-        if (substr($fc_calcula, 0, 1) == '4' || substr($fc_calcula, 0, 1) == '2') {
+        if (str_starts_with((string) $fc_calcula, '4') || str_starts_with((string) $fc_calcula, '2')) {
 
-          $vlrhist = substr($fc_calcula, 1, 13);
-          $vlrcor = substr($fc_calcula, 1, 13);
+          $vlrhist = substr((string) $fc_calcula, 1, 13);
+          $vlrcor = substr((string) $fc_calcula, 1, 13);
           $vlrjuros = 0;
           $vlrmulta = 0;
           $vlrdesconto = 0;
           $dtvenc = '';
           $vlrimp = $vlrcor + $vlrjuros + $vlrmulta - $vlrdesconto;
 
-          if (substr($fc_calcula, 0, 1) == '4') {
+          if (str_starts_with((string) $fc_calcula, '4')) {
 
             if (! empty($vlrhist)) {
 
@@ -630,12 +630,12 @@ if (isset($HTTP_POST_VARS ["codrec"]) || isset($codrec)) {
         $fc_calcula = "";
 
       } else {
-        $vlrhist = 0 + ( float ) substr($fc_calcula, 1, 13);
-        $vlrcor = 0 + ( float ) substr($fc_calcula, 15, 13);
-        $vlrjuros = "0" . trim(substr($fc_calcula, 27, 13));
-        $vlrmulta = "0" . trim(substr($fc_calcula, 40, 13));
-        $vlrdesconto = "0" . trim(substr($fc_calcula, 53, 13));
-        $dtvenc = substr($fc_calcula, 66, 10);
+        $vlrhist = 0 + ( float ) substr((string) $fc_calcula, 1, 13);
+        $vlrcor = 0 + ( float ) substr((string) $fc_calcula, 15, 13);
+        $vlrjuros = "0" . trim(substr((string) $fc_calcula, 27, 13));
+        $vlrmulta = "0" . trim(substr((string) $fc_calcula, 40, 13));
+        $vlrdesconto = "0" . trim(substr((string) $fc_calcula, 53, 13));
+        $dtvenc = substr((string) $fc_calcula, 66, 10);
         $vlrimp = ( float ) $vlrcor + ( float ) $vlrjuros + ( float ) $vlrmulta - ( float ) $vlrdesconto;
 
         /** Extensao : Inicio [autenticacao_taxa_expediente] */
@@ -875,7 +875,7 @@ $sql .= " order by c60_estrut ";
 
 
 $result_conta = db_query($sql);
-if (pg_numrows($result_conta) == 0) {
+if (pg_num_rows($result_conta) == 0) {
   echo "<script>parent.alert('Sem Contas Cadastradas.');</script>";
   exit();
 }
@@ -887,17 +887,17 @@ if (pg_numrows($result_conta) == 0) {
       <td align="left" valign="middle">
         <select onChange="js_atualizaconta(this.name)" name="reduz" id="reduz" style="width:10%">
         <?php 
-          for($i = 0; $i < pg_numrows($result_conta); $i ++) {
+          for($i = 0; $i < pg_num_rows($result_conta); $i ++) {
             db_fieldsmemory($result_conta, $i);
-            echo "<option value=\"$k13_conta\" " . (isset($HTTP_POST_VARS ["reduz"]) ? ($HTTP_POST_VARS ["reduz"] == $k13_conta ? "selected" : "") : "") . ">$k13_conta</option>";
+            echo "<option value=\"$k13_conta\" " . (isset($_POST ["reduz"]) ? ($_POST ["reduz"] == $k13_conta ? "selected" : "") : "") . ">$k13_conta</option>";
           }
         ?>
         </select> &nbsp;
         <select onChange="js_atualizaconta(this.name)" name="descr" id="descr"  style="width:85%">
         <?php 
-          for($i = 0; $i < pg_numrows($result_conta); $i ++) {
+          for($i = 0; $i < pg_num_rows($result_conta); $i ++) {
             db_fieldsmemory($result_conta, $i);
-            echo "<option value=\"$c01_descr\" " . (isset($HTTP_POST_VARS ["descr"]) ? ($HTTP_POST_VARS ["descr"] == $c01_descr ? "selected" : "") : "") . ">$c01_descr</option>";
+            echo "<option value=\"$c01_descr\" " . (isset($_POST ["descr"]) ? ($_POST ["descr"] == $c01_descr ? "selected" : "") : "") . ">$c01_descr</option>";
           }
         ?>
         </select>
@@ -951,12 +951,12 @@ if (isset($valor_variavel) && ! isset($calcula)) {
  <?php 
 }
 
-if (isset($HTTP_POST_VARS ["codrec"])) {
+if (isset($_POST ["codrec"])) {
 
-  $origem2 = addslashes($origem);
+  $origem2 = addslashes((string) $origem);
 
   $oDaoAbatimento = db_utils::getDao('abatimento');
-  $sSqlAbatimento = $oDaoAbatimento->sql_queryAbatimentoNumpre(substr($codrec, 0, 8), 3);
+  $sSqlAbatimento = $oDaoAbatimento->sql_queryAbatimentoNumpre(substr((string) $codrec, 0, 8), 3);
   $rsAbatimento   = $oDaoAbatimento->sql_record($sSqlAbatimento);
 
   $lExisteCredito     = 0;
@@ -969,7 +969,7 @@ if (isset($HTTP_POST_VARS ["codrec"])) {
       if (estorno_codrec == 0) {
 
         dados = Array('<?=$origem2?>','<?=$vlrhist?>','<?=$vlrcor?>','<?=$vlrjuros?>','<?=$vlrmulta?>','<?=$vlrdesconto?>','<?=$vlrimp?>');
-        js_gravacodrec(dados,'<?=$HTTP_POST_VARS ["codrec"]?>',false);
+        js_gravacodrec(dados,'<?=$_POST ["codrec"]?>',false);
 
       } else {
 
@@ -997,7 +997,7 @@ if (isset($HTTP_POST_VARS ["codrec"])) {
             }
 
             if (lQuitar) {
-              js_gravacodrec(dados,'<?=$HTTP_POST_VARS ["codrec"]?>',true);
+              js_gravacodrec(dados,'<?=$_POST ["codrec"]?>',true);
             }
 
           }

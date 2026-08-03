@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_aguacalc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claguacalc = new cl_aguacalc;
 $claguacalc->rotulo->label("x22_codcalc");
 $claguacalc->rotulo->label("x22_matric");
@@ -98,9 +98,9 @@ $claguacalc->rotulo->label("x22_matric");
         }else{
            $sql = $claguacalc->sql_query("",$campos,"x22_codcalc","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_x22_matric)){
-          $repassa = array("chave_x22_codcalc"=>$chave_x22_codcalc,"chave_x22_matric"=>$chave_x22_matric);
+          $repassa = ["chave_x22_codcalc"=>$chave_x22_codcalc,"chave_x22_matric"=>$chave_x22_matric];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

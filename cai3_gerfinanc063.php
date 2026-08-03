@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
@@ -60,7 +60,7 @@ echo "<script>document.getElementById('temdesconto').innerHTML = \"$temdesconto\
 
 echo "<tr bgcolor='#6699cc'> <pre>";
 $linha = -1;
-$tipo1 = explode("-",$tiposparc);
+$tipo1 = explode("-",(string) $tiposparc);
 
 //print_r($tipo1);
 //echo "<br><br>";
@@ -90,7 +90,7 @@ for ($contatipo1 = 0; $contatipo1 < sizeof($tipo1); $contatipo1++) {
     $ultparc = 3;
   }
 
-	$registros=explode("=", $valoresportipo);
+	$registros=explode("=", (string) $valoresportipo);
 
 	$valtotal			= 0;
 

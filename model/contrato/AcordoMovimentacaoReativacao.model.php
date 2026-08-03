@@ -72,6 +72,7 @@ class AcordoMovimentacaoReativacao extends AcordoMovimentacao {
    * @throws Exception
    * @return AcordoMovimentacaoParalisacao
    */
+  #[\Override]
   public function save() {
   
     parent::save();
@@ -112,6 +113,7 @@ class AcordoMovimentacaoReativacao extends AcordoMovimentacao {
    *
    * @return AcordoMovimentacaoParalisacao
    */
+  #[\Override]
   public function cancelar() {
     parent::cancelar();
     return $this;

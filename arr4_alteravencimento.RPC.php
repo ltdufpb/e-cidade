@@ -47,7 +47,7 @@ try {
     
     case 'consultaTiposDeDebitos':
 
-      $aListaSituacao = array();
+      $aListaSituacao = [];
 
       $oDaoSituacaoLeitura = new cl_arrecad();
       
@@ -76,19 +76,19 @@ try {
         throw new Exception('Nenhum registro encontrado');
       }
       
-      $aRetornoSituacao = array();
+      $aRetornoSituacao = [];
       
       foreach ($aSituacoes as $iIndice => $oSituacao) {
         
         $aRetornoSituacao[$iIndice] = new StdClass();
         
         $aRetornoSituacao[$iIndice]->codigo    = $oSituacao->k00_tipo;
-        $aRetornoSituacao[$iIndice]->descricao = utf8_encode($oSituacao->k00_descr);
+        $aRetornoSituacao[$iIndice]->descricao = mb_convert_encoding($oSituacao->k00_descr, 'UTF-8', 'ISO-8859-1');
         $aRetornoSituacao[$iIndice]->contador  = $oSituacao->contador;
       }
       
-      $aRetorno = array("lErro"      => false,
-                        "aSituacoes" => $aRetornoSituacao); 
+      $aRetorno = ["lErro"      => false,
+                        "aSituacoes" => $aRetornoSituacao]; 
       break;
       
     case 'processaAlteracaoData':
@@ -96,25 +96,25 @@ try {
       try {
         
         if ((empty($oPost->dataini_ano) or empty($oPost->dataini_mes) or empty($oPost->dataini_dia)) and 
-            (    strlen($oPost->dataini_ano) != 4 
-             and strlen($oPost->dataini_mes) != 2
-             and strlen($oPost->dataini_dia) != 2)) {
+            (    strlen((string) $oPost->dataini_ano) != 4 
+             and strlen((string) $oPost->dataini_mes) != 2
+             and strlen((string) $oPost->dataini_dia) != 2)) {
           
           throw new Exception('Data Inicial é inválida.');
         }
         
         if ((empty($oPost->datafim_ano) or empty($oPost->datafim_mes) or empty($oPost->datafim_dia)) and 
-            (    strlen($oPost->datafim_ano) != 4 
-             and strlen($oPost->datafim_mes) != 2
-             and strlen($oPost->datafim_dia) != 2)) {
+            (    strlen((string) $oPost->datafim_ano) != 4 
+             and strlen((string) $oPost->datafim_mes) != 2
+             and strlen((string) $oPost->datafim_dia) != 2)) {
           
           throw new Exception('Data Final é inválida.');
         }
         
         if ((   empty($oPost->novaDataVencimento_ano) or empty($oPost->novaDataVencimento_mes) or empty($oPost->novaDataVencimento_dia)) and
-            (    strlen($oPost->novaDataVencimento_ano) != 4
-             and strlen($oPost->novaDataVencimento_mes) != 2
-             and strlen($oPost->novaDataVencimento_dia) != 2)) {
+            (    strlen((string) $oPost->novaDataVencimento_ano) != 4
+             and strlen((string) $oPost->novaDataVencimento_mes) != 2
+             and strlen((string) $oPost->novaDataVencimento_dia) != 2)) {
         
           throw new Exception('Nova Data informada é inválida.');
         }        
@@ -140,7 +140,7 @@ try {
         }
         
         
-        $aTiposDebitos     = explode(',', $oPost->sTiposDebito);
+        $aTiposDebitos     = explode(',', (string) $oPost->sTiposDebito);
         $sVirgula          = '';
         $sCodigoTipoDebito = '';
         
@@ -199,7 +199,7 @@ try {
             $oDaoArreHist->k00_id_usuario = db_getsession("DB_id_usuario");
             
             $sHistorico  = "Alterada a data vencimento do Numpre {$sNumpre} e";
-            $sHistorico .= " Numpar {$sNumpar}: " . date('d/m/Y', strtotime($sDataVemcimento)) . " para ";
+            $sHistorico .= " Numpar {$sNumpar}: " . date('d/m/Y', strtotime((string) $sDataVemcimento)) . " para ";
             $sHistorico .= $oNovaDataVencimento->getDate('d/m/Y');
             
             $oDaoArreHist->k00_histtxt = $sHistorico;
@@ -220,8 +220,8 @@ try {
         throw new Exception($oErro->getMessage());
       }
       
-      $aRetorno = array("lErro" => false,
-                        "sMsg"  => 'Alteração efetuada com sucesso!');
+      $aRetorno = ["lErro" => false,
+                        "sMsg"  => 'Alteração efetuada com sucesso!'];
       
       break;
   } 
@@ -230,8 +230,8 @@ try {
   
   db_fim_transacao(true);
   
-  $aRetorno = array("lErro" => true,
-                    "sMsg"  => urlencode($eErro->getMessage()));
+  $aRetorno = ["lErro" => true,
+                    "sMsg"  => urlencode($eErro->getMessage())];
 } 
 
 echo JSON::create()->stringify($aRetorno);

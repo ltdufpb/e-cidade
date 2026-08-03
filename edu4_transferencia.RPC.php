@@ -94,7 +94,7 @@ try {
 
         $oDadosMatricula->iMatricula    = $oDados->ed60_i_codigo;
         $oDadosMatricula->iTurma        = $oDados->ed60_i_turma;
-        $oDadosMatricula->sSituacao     = urlencode($oDados->ed60_c_situacao);
+        $oDadosMatricula->sSituacao     = urlencode((string) $oDados->ed60_c_situacao);
         $oDadosMatricula->dtMatricula   = $oDataMatricula->convertTo(DBDate::DATA_PTBR);
         $oDadosMatricula->dtSaida       = $oDataSaida->convertTo(DBDate::DATA_PTBR);
         $oDadosMatricula->iDiasPassados = $iDiasPassados;
@@ -113,7 +113,7 @@ try {
 
         $oEtapa            = new stdClass();
         $oEtapa->iCodigo   = $oEtapaTurma->getEtapa()->getCodigo();
-        $oEtapa->sDecricao = urlencode($oEtapaTurma->getEtapa()->getNome());
+        $oEtapa->sDecricao = urlencode((string) $oEtapaTurma->getEtapa()->getNome());
         $oEtapa->iOrdem    = $oEtapaTurma->getEtapa()->getOrdem();
 
         $oEtapa->lEquivalente = false;

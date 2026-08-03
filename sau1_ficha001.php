@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_unidades_classe.php"));
 include(modification("classes/db_agendamentos_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clagendamentos = new cl_agendamentos;
 $clunidades = new cl_unidades;
@@ -124,7 +124,7 @@ db_input('sd23_c_atendimento',10,$Isd23_c_atendimento,true,'text',$db_opcao," on
   //aviso e retorna à página anterior
   db_msgbox("Agendamento não Cadastrado");
   echo "<script>";
-  echo "location = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
+  echo "location = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."'";
   echo "</script>";
  }
  }?>

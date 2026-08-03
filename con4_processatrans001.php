@@ -75,16 +75,16 @@ db_postmemory($_POST);
 /**
  * Documentos referentes ao PCASP
  */
-$aDocumentosPCASP = array(107,109,111,113,115,117,416,419,    // arrecadação de receita - tipo 100
+$aDocumentosPCASP = [107,109,111,113,115,117,416,419,    // arrecadação de receita - tipo 100
                           306,84,506,502,310,202,204,206,     // liquidacao - tipo 20
                           410,304,308,500,504,82,             // empenho - tipo 10
                           108,110,112,114,116,118,417,418,    // estorno de arrecadacao - tipo 101
                           85,203,205,207,307,311,503,507,     // estorno de liquidação - tipo 21
                           411,501,505,83,305,309,             // estorno de empenho - tipo 11
                           6000,6001,6002,6004,6005            // apropriacao de retencao
-                        );
+                        ];
 
-$aTables = array("cornump",
+$aTables = ["cornump",
                  "corrente",
                  "corcla",
                  "corplacaixa",
@@ -120,7 +120,7 @@ $aTables = array("cornump",
                  "empelemento",
                  "conlancamele"
 
-);
+];
 
 if (isset($processar)) {
 
@@ -243,9 +243,9 @@ if (isset($processar)) {
                               inner join orcsuplem on c79_codsup = o46_codsup
                          where c79_codlan = $c70_codlan";
                     $resres = db_query($verinst);
-                    if (pg_numrows($resres) > 0) {
+                    if (pg_num_rows($resres) > 0) {
 
-                        $iInstituicaoSuplementacao = pg_result($resres, 0, 0);
+                        $iInstituicaoSuplementacao = pg_fetch_result($resres, 0, 0);
 
                         if ($iInstituicaoSuplementacao != db_getsession("DB_instit")) {
 
@@ -268,9 +268,9 @@ if (isset($processar)) {
                     $sql = "select e60_instit from conlancamemp inner join empempenho on e60_numemp = c75_numemp where c75_codlan = $c70_codlan";
                     $result111 = db_query($sql);
 
-                    if ($result111 != false && pg_numrows($result111) > 0) {
+                    if ($result111 != false && pg_num_rows($result111) > 0) {
 
-                        $institit = pg_result($result111, 0, 0);
+                        $institit = pg_fetch_result($result111, 0, 0);
 
                         if ($institit != db_getsession("DB_instit")) {
                             throw new Exception("Instituição atual diferente do lançamento do empenho($institit).");
@@ -423,7 +423,7 @@ if (isset($processar)) {
                     $iInstituicaoSessao = db_getsession('DB_instit');
 
                     $anoLancamento = $e60_anousu;
-                    if (in_array($c53_coddoc, array(39, 40))) {
+                    if (in_array($c53_coddoc, [39, 40])) {
                         $anoLancamento = $iAnoSessao;
                     }
                     $rRegrasTransacao = $cltranslan->getRegrasTransacao($c53_coddoc, $anoLancamento, db_getsession('DB_anousu'));
@@ -456,7 +456,7 @@ if (isset($processar)) {
                     $iIndice = 0;
                     $cltranslan->cl_zera_variaveis();
 
-                    $aRegras = array();
+                    $aRegras = [];
 
 
 
@@ -614,9 +614,9 @@ RPS
                         db_criatabela($resres);
                     }
 
-                    if (pg_numrows($resres) > 0) {
+                    if (pg_num_rows($resres) > 0) {
 
-                        $iInstituicaoSuplementacao = pg_result($resres, 0, 0);
+                        $iInstituicaoSuplementacao = pg_fetch_result($resres, 0, 0);
                         if ($iInstituicaoSuplementacao != db_getsession("DB_instit")) {
                             throw new Exception(
                                 "Instituicao atual diferente da instituição dos lançamentos de suplementação($iInstituicaoSuplementacao)."
@@ -630,14 +630,14 @@ RPS
                            where c73_codlan = $c70_codlan";
 
                             $resultdot = db_query($verdot);
-                            $coddotsup = pg_result($resultdot, 0, 0);
+                            $coddotsup = pg_fetch_result($resultdot, 0, 0);
 
                             $verdot = "select o58_instit from orcdotacao
                           where o58_anousu = ".db_getsession("DB_anousu")." and
                           o58_coddot = $coddotsup";
 
                             $resultdot = db_query($verdot);
-                            $instit_dot = pg_result($resultdot, 0, 0);
+                            $instit_dot = pg_fetch_result($resultdot, 0, 0);
 
                         } else {
 
@@ -646,7 +646,7 @@ RPS
                         }
 
                         $instit_atual = db_getsession("DB_instit");
-                        $HTTP_SESSION_VARS["DB_instit"] = $instit_dot;
+                        $_SESSION["DB_instit"] = $instit_dot;
 
                         if($estorna_sup) {
                             $result_sup = $cltranslan->getRegrasTransacao($c79_coddoc, db_getsession("DB_anousu"));
@@ -656,11 +656,11 @@ RPS
 
                         $cont = 0;
 
-                        $HTTP_SESSION_VARS["DB_instit"] = $instit_atual;
+                        $_SESSION["DB_instit"] = $instit_atual;
 
-                        if ($result_sup == true && pg_numrows($result_sup) > 0) {
+                        if ($result_sup == true && pg_num_rows($result_sup) > 0) {
 
-                            for ($sup = 0; $sup < pg_numrows($result_sup); $sup ++) {
+                            for ($sup = 0; $sup < pg_num_rows($result_sup); $sup ++) {
 
                                 db_fieldsmemory($result_sup, $sup);
                                 if ($c47_ref == 0 || ($c47_ref != 0 && $c47_ref == $codcom)) {
@@ -745,7 +745,7 @@ RPS
                         and fc_conplano_grupo(" . db_getsession("DB_anousu") . ", substr(c60_estrut,1,2)||'%', 9000) is true";
 
                     $resultded = db_query($sSql);
-                    if (pg_numrows($resultded) > 0) {
+                    if (pg_num_rows($resultded) > 0) {
                         $cltranslan->db_trans_estorno_receita($c82_reduz, $c61_reduz, $c74_anousu, $c53_coddoc, $o70_codfon, $c70_codlan);
                     } else {
                         $cltranslan->db_trans_arrecada_receita($c82_reduz, $c61_reduz, $c74_anousu, $c53_coddoc, $o70_codfon, $c70_codlan);
@@ -806,7 +806,7 @@ RPS
                           fc_conplano_grupo(".db_getsession("DB_anousu").",substr(c60_estrut,1,2)||'%',9000) is true";
                     $resultded = db_query($sql);
 
-                    if (pg_numrows($resultded) > 0) {
+                    if (pg_num_rows($resultded) > 0) {
                         $cltranslan->db_trans_arrecada_receita($c82_reduz, $c61_reduz, $c74_anousu, $c53_coddoc, $o70_codfon, $c70_codlan);
                     } else {
                         $cltranslan->db_trans_estorno_receita($c82_reduz, $c61_reduz, $c74_anousu, $c53_coddoc, $o70_codfon, $c70_codlan);

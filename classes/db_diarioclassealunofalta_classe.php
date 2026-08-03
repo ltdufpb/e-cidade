@@ -57,7 +57,7 @@ class cl_diarioclassealunofalta
     public function __construct()
     {
         $this->rotulo = new rotulo("diarioclassealunofalta");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -112,10 +112,10 @@ class cl_diarioclassealunofalta
                 $this->erro_status = "0";
                 return false;
             }
-            $this->ed301_sequencial = pg_result($result, 0, 0);
+            $this->ed301_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from diarioclassealunofalta_ed301_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $ed301_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $ed301_sequencial)) {
                 $this->erro_sql = " Campo ed301_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -147,7 +147,7 @@ class cl_diarioclassealunofalta
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "Faltas dos alunos ($this->ed301_sequencial) não Incluído. Inclusão Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "Faltas dos alunos já Cadastrado";
@@ -176,12 +176,12 @@ class cl_diarioclassealunofalta
             if (($resaco != false) || ($this->numrows != 0)) {
 
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,18770,'$this->ed301_sequencial','I')");
-                $resac = db_query("insert into db_acount values($acount,3328,18770,'','" . AddSlashes(pg_result($resaco, 0, 'ed301_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3328,18771,'','" . AddSlashes(pg_result($resaco, 0, 'ed301_aluno')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,3328,18800,'','" . AddSlashes(pg_result($resaco, 0, 'ed301_diarioclasseregenciahorario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,3328,18770,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed301_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,3328,18771,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed301_aluno')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                $resac = db_query("insert into db_acount values($acount,3328,18800,'','" . AddSlashes(pg_fetch_result($resaco, 0, 'ed301_diarioclasseregenciahorario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
         }
         return true;
@@ -192,10 +192,10 @@ class cl_diarioclassealunofalta
         $this->atualizacampos();
         $sql = " update diarioclassealunofalta set ";
         $virgula = "";
-        if (trim($this->ed301_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed301_sequencial"])) {
+        if (trim((string) $this->ed301_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed301_sequencial"])) {
             $sql .= $virgula . " ed301_sequencial = $this->ed301_sequencial ";
             $virgula = ",";
-            if (trim($this->ed301_sequencial) == null) {
+            if (trim((string) $this->ed301_sequencial) == null) {
                 $this->erro_sql = " Campo Sequencial interno não informado.";
                 $this->erro_campo = "ed301_sequencial";
                 $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_diarioclassealunofalta
                 return false;
             }
         }
-        if (trim($this->ed301_aluno) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed301_aluno"])) {
+        if (trim((string) $this->ed301_aluno) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed301_aluno"])) {
             $sql .= $virgula . " ed301_aluno = $this->ed301_aluno ";
             $virgula = ",";
-            if (trim($this->ed301_aluno) == null) {
+            if (trim((string) $this->ed301_aluno) == null) {
                 $this->erro_sql = " Campo Código do aluno não informado.";
                 $this->erro_campo = "ed301_aluno";
                 $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_diarioclassealunofalta
                 return false;
             }
         }
-        if (trim($this->ed301_diarioclasseregenciahorario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed301_diarioclasseregenciahorario"])) {
+        if (trim((string) $this->ed301_diarioclasseregenciahorario) != "" || isset($GLOBALS["HTTP_POST_VARS"]["ed301_diarioclasseregenciahorario"])) {
             $sql .= $virgula . " ed301_diarioclasseregenciahorario = $this->ed301_diarioclasseregenciahorario ";
             $virgula = ",";
-            if (trim($this->ed301_diarioclasseregenciahorario) == null) {
+            if (trim((string) $this->ed301_diarioclasseregenciahorario) == null) {
                 $this->erro_sql = " Campo Periodo da Falta não informado.";
                 $this->erro_campo = "ed301_diarioclasseregenciahorario";
                 $this->erro_banco = "";
@@ -245,15 +245,15 @@ class cl_diarioclassealunofalta
                 for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,18770,'$this->ed301_sequencial','A')");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed301_sequencial"]) || $this->ed301_sequencial != "")
-                        $resac = db_query("insert into db_acount values($acount,3328,18770,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed301_sequencial')) . "','$this->ed301_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,3328,18770,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed301_sequencial')) . "','$this->ed301_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed301_aluno"]) || $this->ed301_aluno != "")
-                        $resac = db_query("insert into db_acount values($acount,3328,18771,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed301_aluno')) . "','$this->ed301_aluno'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,3328,18771,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed301_aluno')) . "','$this->ed301_aluno'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                     if (isset($GLOBALS["HTTP_POST_VARS"]["ed301_diarioclasseregenciahorario"]) || $this->ed301_diarioclasseregenciahorario != "")
-                        $resac = db_query("insert into db_acount values($acount,3328,18800,'" . AddSlashes(pg_result($resaco, $conresaco, 'ed301_diarioclasseregenciahorario')) . "','$this->ed301_diarioclasseregenciahorario'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                        $resac = db_query("insert into db_acount values($acount,3328,18800,'" . AddSlashes(pg_fetch_result($resaco, $conresaco, 'ed301_diarioclasseregenciahorario')) . "','$this->ed301_diarioclasseregenciahorario'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -307,12 +307,12 @@ class cl_diarioclassealunofalta
                 for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
                     $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                    $acount = pg_result($resac, 0, 0);
+                    $acount = pg_fetch_result($resac, 0, 0);
                     $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                     $resac = db_query("insert into db_acountkey values($acount,18770,'$ed301_sequencial','E')");
-                    $resac = db_query("insert into db_acount values($acount,3328,18770,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed301_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,3328,18771,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed301_aluno')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                    $resac = db_query("insert into db_acount values($acount,3328,18800,'','" . AddSlashes(pg_result($resaco, $iresaco, 'ed301_diarioclasseregenciahorario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,3328,18770,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed301_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,3328,18771,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed301_aluno')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
+                    $resac = db_query("insert into db_acount values($acount,3328,18800,'','" . AddSlashes(pg_fetch_result($resaco, $iresaco, 'ed301_diarioclasseregenciahorario')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
             }
         }
@@ -464,7 +464,7 @@ class cl_diarioclassealunofalta
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -509,7 +509,7 @@ class cl_diarioclassealunofalta
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -551,7 +551,7 @@ class cl_diarioclassealunofalta
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -593,7 +593,7 @@ function sql_query_falta_regencia($ed301_sequencial = null, $campos = "*", $orde
     $sql .= $sql2;
     if ($ordem != null) {
         $sql .= " order by ";
-        $campos_sql = explode("#", $ordem);
+        $campos_sql = explode("#", (string) $ordem);
         $virgula = "";
         for ($i = 0; $i < sizeof($campos_sql); $i++) {
             $sql .= $virgula . $campos_sql[$i];
@@ -638,7 +638,7 @@ function sql_query_falta_notificada($ed301_sequencial = null, $campos = "*", $or
     $sql .= $sql2;
     if ($ordem != null) {
         $sql .= " order by ";
-        $campos_sql = explode("#", $ordem);
+        $campos_sql = explode("#", (string) $ordem);
         $virgula = "";
         for ($i = 0; $i < sizeof($campos_sql); $i++) {
             $sql .= $virgula . $campos_sql[$i];
@@ -683,7 +683,7 @@ function sql_query_falta_matricula($ed301_sequencial = null, $campos = "*", $ord
     $sql .= $sql2;
     if ($ordem != null) {
         $sql .= " order by ";
-        $campos_sql = explode("#", $ordem);
+        $campos_sql = explode("#", (string) $ordem);
         $virgula = "";
         for ($i = 0; $i < sizeof($campos_sql); $i++) {
             $sql .= $virgula . $campos_sql[$i];

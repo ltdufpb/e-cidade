@@ -38,11 +38,11 @@ require_once(modification("classes/db_recparprocdiver_classe.php"));
 
 $clprocdiver    = new cl_procdiver;
 
-$oGet           = db_utils::postMemory($HTTP_GET_VARS);
-$oPost          = db_utils::postMemory($HTTP_POST_VARS);
+$oGet           = db_utils::postMemory($_GET);
+$oPost          = db_utils::postMemory($_POST);
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $db_opcao       = 22;
 $db_botao       = false;

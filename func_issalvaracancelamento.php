@@ -32,8 +32,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_issalvara_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissalvara = new cl_issalvara;
 $clissalvara->rotulo->label("q123_sequencial");
 $clissalvara->rotulo->label("q123_sequencial");
@@ -108,9 +108,9 @@ $clissalvara->rotulo->label("q123_sequencial");
         	
           $sql = $clissalvara->sql_queryConsultaCancelamento($campos, $sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($pesquisa_chave)){
-          $repassa = array("chave_q123_sequencial"=>$pesquisa_chave,"chave_q123_sequencial"=>$pesquisa_chave);
+          $repassa = ["chave_q123_sequencial"=>$pesquisa_chave,"chave_q123_sequencial"=>$pesquisa_chave];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

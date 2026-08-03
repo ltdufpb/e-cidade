@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE certid
 class cl_certid {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $v13_certid = 0;
-   var $v13_dtemis_dia = null;
-   var $v13_dtemis_mes = null;
-   var $v13_dtemis_ano = null;
-   var $v13_dtemis = null;
-   var $v13_memo = 0;
-   var $v13_login = null;
-   var $v13_instit = 0;
+   public $v13_certid = 0;
+   public $v13_dtemis_dia = null;
+   public $v13_dtemis_mes = null;
+   public $v13_dtemis_ano = null;
+   public $v13_dtemis = null;
+   public $v13_memo = 0;
+   public $v13_login = null;
+   public $v13_instit = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  v13_certid = int4 = certidao
                  v13_dtemis = date = data de emissao
                  v13_memo = oid = texto da certidao
@@ -62,7 +62,7 @@ class cl_certid {
    public function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certid");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    public function erro($mostra,$retorna) {
@@ -157,7 +157,7 @@ class cl_certid {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->v13_certid) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -181,14 +181,14 @@ class cl_certid {
      $resaco = $this->sql_record($this->sql_query_file($this->v13_certid));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,527,'$this->v13_certid','I')");
-       $resac = db_query("insert into db_acount values($acount,100,527,'','".AddSlashes(pg_result($resaco,0,'v13_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,100,528,'','".AddSlashes(pg_result($resaco,0,'v13_dtemis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,100,529,'','".AddSlashes(pg_result($resaco,0,'v13_memo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,100,530,'','".AddSlashes(pg_result($resaco,0,'v13_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,100,10576,'','".AddSlashes(pg_result($resaco,0,'v13_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100,527,'','".AddSlashes(pg_fetch_result($resaco,0,'v13_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100,528,'','".AddSlashes(pg_fetch_result($resaco,0,'v13_dtemis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100,529,'','".AddSlashes(pg_fetch_result($resaco,0,'v13_memo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100,530,'','".AddSlashes(pg_fetch_result($resaco,0,'v13_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,100,10576,'','".AddSlashes(pg_fetch_result($resaco,0,'v13_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -197,10 +197,10 @@ class cl_certid {
       $this->atualizacampos();
      $sql = " update certid set ";
      $virgula = "";
-     if(trim($this->v13_certid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v13_certid"])){
+     if(trim((string) $this->v13_certid)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v13_certid"])){
        $sql  .= $virgula." v13_certid = $this->v13_certid ";
        $virgula = ",";
-       if(trim($this->v13_certid) == null ){
+       if(trim((string) $this->v13_certid) == null ){
          $this->erro_sql = " Campo certidao nao Informado.";
          $this->erro_campo = "v13_certid";
          $this->erro_banco = "";
@@ -210,10 +210,10 @@ class cl_certid {
          return false;
        }
      }
-     if(trim($this->v13_dtemis)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v13_dtemis_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v13_dtemis_dia"] !="") ){
+     if(trim((string) $this->v13_dtemis)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v13_dtemis_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v13_dtemis_dia"] !="") ){
        $sql  .= $virgula." v13_dtemis = '$this->v13_dtemis' ";
        $virgula = ",";
-       if(trim($this->v13_dtemis) == null ){
+       if(trim((string) $this->v13_dtemis) == null ){
          $this->erro_sql = " Campo data de emissao nao Informado.";
          $this->erro_campo = "v13_dtemis_dia";
          $this->erro_banco = "";
@@ -226,7 +226,7 @@ class cl_certid {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v13_dtemis_dia"])){
          $sql  .= $virgula." v13_dtemis = null ";
          $virgula = ",";
-         if(trim($this->v13_dtemis) == null ){
+         if(trim((string) $this->v13_dtemis) == null ){
            $this->erro_sql = " Campo data de emissao nao Informado.";
            $this->erro_campo = "v13_dtemis_dia";
            $this->erro_banco = "";
@@ -237,10 +237,10 @@ class cl_certid {
          }
        }
      }
-     if(trim($this->v13_memo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v13_memo"])){
+     if(trim((string) $this->v13_memo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v13_memo"])){
        $sql  .= $virgula." v13_memo = $this->v13_memo ";
        $virgula = ",";
-       if(trim($this->v13_memo) == null ){
+       if(trim((string) $this->v13_memo) == null ){
          $this->erro_sql = " Campo texto da certidao nao Informado.";
          $this->erro_campo = "v13_memo";
          $this->erro_banco = "";
@@ -250,10 +250,10 @@ class cl_certid {
          return false;
        }
      }
-     if(trim($this->v13_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v13_login"])){
+     if(trim((string) $this->v13_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v13_login"])){
        $sql  .= $virgula." v13_login = '$this->v13_login' ";
        $virgula = ",";
-       if(trim($this->v13_login) == null ){
+       if(trim((string) $this->v13_login) == null ){
          $this->erro_sql = " Campo login do usuario nao Informado.";
          $this->erro_campo = "v13_login";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_certid {
          return false;
        }
      }
-     if(trim($this->v13_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v13_instit"])){
+     if(trim((string) $this->v13_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v13_instit"])){
        $sql  .= $virgula." v13_instit = $this->v13_instit ";
        $virgula = ",";
-       if(trim($this->v13_instit) == null ){
+       if(trim((string) $this->v13_instit) == null ){
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "v13_instit";
          $this->erro_banco = "";
@@ -284,19 +284,19 @@ class cl_certid {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,527,'$this->v13_certid','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v13_certid"]))
-           $resac = db_query("insert into db_acount values($acount,100,527,'".AddSlashes(pg_result($resaco,$conresaco,'v13_certid'))."','$this->v13_certid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100,527,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v13_certid'))."','$this->v13_certid',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v13_dtemis"]))
-           $resac = db_query("insert into db_acount values($acount,100,528,'".AddSlashes(pg_result($resaco,$conresaco,'v13_dtemis'))."','$this->v13_dtemis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100,528,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v13_dtemis'))."','$this->v13_dtemis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v13_memo"]))
-           $resac = db_query("insert into db_acount values($acount,100,529,'".AddSlashes(pg_result($resaco,$conresaco,'v13_memo'))."','$this->v13_memo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100,529,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v13_memo'))."','$this->v13_memo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v13_login"]))
-           $resac = db_query("insert into db_acount values($acount,100,530,'".AddSlashes(pg_result($resaco,$conresaco,'v13_login'))."','$this->v13_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100,530,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v13_login'))."','$this->v13_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v13_instit"]))
-           $resac = db_query("insert into db_acount values($acount,100,10576,'".AddSlashes(pg_result($resaco,$conresaco,'v13_instit'))."','$this->v13_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,100,10576,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v13_instit'))."','$this->v13_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -341,14 +341,14 @@ class cl_certid {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,527,'$v13_certid','E')");
-         $resac = db_query("insert into db_acount values($acount,100,527,'','".AddSlashes(pg_result($resaco,$iresaco,'v13_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,100,528,'','".AddSlashes(pg_result($resaco,$iresaco,'v13_dtemis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,100,529,'','".AddSlashes(pg_result($resaco,$iresaco,'v13_memo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,100,530,'','".AddSlashes(pg_result($resaco,$iresaco,'v13_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,100,10576,'','".AddSlashes(pg_result($resaco,$iresaco,'v13_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100,527,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v13_certid'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100,528,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v13_dtemis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100,529,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v13_memo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100,530,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v13_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,100,10576,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v13_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from certid
@@ -408,7 +408,7 @@ class cl_certid {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:certid";
@@ -445,7 +445,7 @@ class cl_certid {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -478,7 +478,7 @@ class cl_certid {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -512,7 +512,7 @@ class cl_certid {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -550,7 +550,7 @@ class cl_certid {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -590,7 +590,7 @@ class cl_certid {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -631,7 +631,7 @@ class cl_certid {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -699,7 +699,7 @@ class cl_certid {
     return $sSql;
   }
 
-  public function sql_queryCertidao ($iCodigoPesquisa = null, $sTipoPesquisa = 'certidao', $sCampos, $lBuscarReparcelamento = false) {
+  public function sql_queryCertidao ($iCodigoPesquisa = null, $sTipoPesquisa = 'certidao', $sCampos = null, $lBuscarReparcelamento = false) {
 
     $iInstituicao  = db_getsession('DB_instit');
 

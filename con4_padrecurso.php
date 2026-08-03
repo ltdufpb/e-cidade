@@ -28,13 +28,13 @@
 
 class recurso
 {
-    var $arq = null;
+    public $arq = null;
 
-    function recurso($header)
+    function __construct($header)
     {
         umask(74);
         $this->arq = fopen("tmp/RECURSO.TXT", 'w+');
-        fputs($this->arq, $header);
+        fputs($this->arq, (string) $header);
         fputs($this->arq, "\r\n");
 
     }
@@ -56,18 +56,18 @@ class recurso
         ";
 
         $res = db_query($sql);
-        $rows = pg_numrows($res);
+        $rows = pg_num_rows($res);
 
         for ($x = 0; $x < $rows; $x++) {
             $oDadosRecurso = db_utils::fieldsMemory($res, $x);
 
 
-            $codigo = formatar($oDadosRecurso->o15_recurso, 4, 'n');
-            $nome = addslashes($oDadosRecurso->nome);
-            $nome = formatar($nome, 80, 'c');
+            $codigo = formatar($oDadosRecurso->o15_recurso, 4);
+            $nome = addslashes((string) $oDadosRecurso->nome);
+            $nome = formatar($nome, 80);
 
-            $fina = addcslashes($oDadosRecurso->finalidade, "\r\n");
-            $finalidade = formatar($fina, 160, 'c');
+            $fina = addcslashes((string) $oDadosRecurso->finalidade, "\r\n");
+            $finalidade = formatar($fina, 160);
 
             $line = $codigo . $nome . $finalidade;
             fputs($this->arq, $line);
@@ -77,7 +77,7 @@ class recurso
         }
 
         //  trailer
-        $contador = espaco(10 - (strlen($contador)), '0') . $contador;
+        $contador = espaco(10 - (strlen((string) $contador))) . $contador;
         $line = "FINALIZADOR" . $contador;
         fputs($this->arq, $line);
         fputs($this->arq, "\r\n");

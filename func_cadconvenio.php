@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cadconvenio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcadconvenio = new cl_cadconvenio;
 $clcadconvenio->rotulo->label("ar11_sequencial");
 $clcadconvenio->rotulo->label("ar11_nome");
@@ -101,9 +101,9 @@ $clcadconvenio->rotulo->label("ar11_nome");
         }else{
            $sql = $clcadconvenio->sql_query("",$campos,"ar11_sequencial",$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ar11_nome)){
-          $repassa = array("chave_ar11_sequencial"=>$chave_ar11_sequencial,"chave_ar11_nome"=>$chave_ar11_nome);
+          $repassa = ["chave_ar11_sequencial"=>$chave_ar11_sequencial,"chave_ar11_nome"=>$chave_ar11_nome];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

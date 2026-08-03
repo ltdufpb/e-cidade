@@ -122,7 +122,7 @@ class ValorRetencaoRepository
      * @param ValorRetencao|null $valorRetencao
      * @throws BusinessException
      */
-    public function delete(ValorRetencao $valorRetencao = null)
+    public function delete(?ValorRetencao $valorRetencao = null)
     {
         $id = $valorRetencao instanceof ValorRetencao ? $valorRetencao->getSequencial() : null;
 
@@ -140,7 +140,7 @@ class ValorRetencaoRepository
      * @return bool|ValorRetencao
      * @throws BusinessException
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessovalorretencao;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

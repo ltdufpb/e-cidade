@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE averbatipo
 class cl_averbatipo { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j93_codigo = 0; 
-   var $j93_descr = null; 
-   var $j93_regra = 0; 
-   var $j93_datalimite_dia = null; 
-   var $j93_datalimite_mes = null; 
-   var $j93_datalimite_ano = null; 
-   var $j93_datalimite = null; 
-   var $j93_averbagrupo = 0; 
+   public $j93_codigo = 0; 
+   public $j93_descr = null; 
+   public $j93_regra = 0; 
+   public $j93_datalimite_dia = null; 
+   public $j93_datalimite_mes = null; 
+   public $j93_datalimite_ano = null; 
+   public $j93_datalimite = null; 
+   public $j93_averbagrupo = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j93_codigo = int4 = Código 
                  j93_descr = varchar(20) = Descrição 
                  j93_regra = int4 = Regra 
@@ -59,10 +59,10 @@ class cl_averbatipo {
                  j93_averbagrupo = int4 = Grupo 
                  ";
    //funcao construtor da classe 
-   function cl_averbatipo() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("averbatipo"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -135,10 +135,10 @@ class cl_averbatipo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j93_codigo = pg_result($result,0,0); 
+       $this->j93_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from averbatipo_j93_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j93_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j93_codigo)){
          $this->erro_sql = " Campo j93_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -174,7 +174,7 @@ class cl_averbatipo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tipos de averbação ($this->j93_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tipos de averbação já Cadastrado";
@@ -198,14 +198,14 @@ class cl_averbatipo {
      $resaco = $this->sql_record($this->sql_query_file($this->j93_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,9677,'$this->j93_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1665,9677,'','".AddSlashes(pg_result($resaco,0,'j93_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1665,9678,'','".AddSlashes(pg_result($resaco,0,'j93_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1665,9679,'','".AddSlashes(pg_result($resaco,0,'j93_regra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1665,11690,'','".AddSlashes(pg_result($resaco,0,'j93_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1665,11737,'','".AddSlashes(pg_result($resaco,0,'j93_averbagrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1665,9677,'','".AddSlashes(pg_fetch_result($resaco,0,'j93_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1665,9678,'','".AddSlashes(pg_fetch_result($resaco,0,'j93_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1665,9679,'','".AddSlashes(pg_fetch_result($resaco,0,'j93_regra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1665,11690,'','".AddSlashes(pg_fetch_result($resaco,0,'j93_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1665,11737,'','".AddSlashes(pg_fetch_result($resaco,0,'j93_averbagrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -214,10 +214,10 @@ class cl_averbatipo {
       $this->atualizacampos();
      $sql = " update averbatipo set ";
      $virgula = "";
-     if(trim($this->j93_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_codigo"])){ 
+     if(trim((string) $this->j93_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_codigo"])){ 
        $sql  .= $virgula." j93_codigo = $this->j93_codigo ";
        $virgula = ",";
-       if(trim($this->j93_codigo) == null ){ 
+       if(trim((string) $this->j93_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "j93_codigo";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_averbatipo {
          return false;
        }
      }
-     if(trim($this->j93_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_descr"])){ 
+     if(trim((string) $this->j93_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_descr"])){ 
        $sql  .= $virgula." j93_descr = '$this->j93_descr' ";
        $virgula = ",";
-       if(trim($this->j93_descr) == null ){ 
+       if(trim((string) $this->j93_descr) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "j93_descr";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_averbatipo {
          return false;
        }
      }
-     if(trim($this->j93_regra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_regra"])){ 
+     if(trim((string) $this->j93_regra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_regra"])){ 
        $sql  .= $virgula." j93_regra = $this->j93_regra ";
        $virgula = ",";
-       if(trim($this->j93_regra) == null ){ 
+       if(trim((string) $this->j93_regra) == null ){ 
          $this->erro_sql = " Campo Regra nao Informado.";
          $this->erro_campo = "j93_regra";
          $this->erro_banco = "";
@@ -253,7 +253,7 @@ class cl_averbatipo {
          return false;
        }
      }
-     if(trim($this->j93_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j93_datalimite_dia"] !="") ){ 
+     if(trim((string) $this->j93_datalimite)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_datalimite_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j93_datalimite_dia"] !="") ){ 
        $sql  .= $virgula." j93_datalimite = '$this->j93_datalimite' ";
        $virgula = ",";
      }     else{ 
@@ -262,10 +262,10 @@ class cl_averbatipo {
          $virgula = ",";
        }
      }
-     if(trim($this->j93_averbagrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_averbagrupo"])){ 
+     if(trim((string) $this->j93_averbagrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j93_averbagrupo"])){ 
        $sql  .= $virgula." j93_averbagrupo = $this->j93_averbagrupo ";
        $virgula = ",";
-       if(trim($this->j93_averbagrupo) == null ){ 
+       if(trim((string) $this->j93_averbagrupo) == null ){ 
          $this->erro_sql = " Campo Grupo nao Informado.";
          $this->erro_campo = "j93_averbagrupo";
          $this->erro_banco = "";
@@ -283,19 +283,19 @@ class cl_averbatipo {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9677,'$this->j93_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j93_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1665,9677,'".AddSlashes(pg_result($resaco,$conresaco,'j93_codigo'))."','$this->j93_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1665,9677,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j93_codigo'))."','$this->j93_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j93_descr"]))
-           $resac = db_query("insert into db_acount values($acount,1665,9678,'".AddSlashes(pg_result($resaco,$conresaco,'j93_descr'))."','$this->j93_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1665,9678,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j93_descr'))."','$this->j93_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j93_regra"]))
-           $resac = db_query("insert into db_acount values($acount,1665,9679,'".AddSlashes(pg_result($resaco,$conresaco,'j93_regra'))."','$this->j93_regra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1665,9679,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j93_regra'))."','$this->j93_regra',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j93_datalimite"]))
-           $resac = db_query("insert into db_acount values($acount,1665,11690,'".AddSlashes(pg_result($resaco,$conresaco,'j93_datalimite'))."','$this->j93_datalimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1665,11690,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j93_datalimite'))."','$this->j93_datalimite',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j93_averbagrupo"]))
-           $resac = db_query("insert into db_acount values($acount,1665,11737,'".AddSlashes(pg_result($resaco,$conresaco,'j93_averbagrupo'))."','$this->j93_averbagrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1665,11737,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j93_averbagrupo'))."','$this->j93_averbagrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -340,14 +340,14 @@ class cl_averbatipo {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,9677,'$j93_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1665,9677,'','".AddSlashes(pg_result($resaco,$iresaco,'j93_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1665,9678,'','".AddSlashes(pg_result($resaco,$iresaco,'j93_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1665,9679,'','".AddSlashes(pg_result($resaco,$iresaco,'j93_regra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1665,11690,'','".AddSlashes(pg_result($resaco,$iresaco,'j93_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1665,11737,'','".AddSlashes(pg_result($resaco,$iresaco,'j93_averbagrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1665,9677,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j93_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1665,9678,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j93_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1665,9679,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j93_regra'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1665,11690,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j93_datalimite'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1665,11737,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j93_averbagrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from averbatipo
@@ -407,7 +407,7 @@ class cl_averbatipo {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:averbatipo";
@@ -421,7 +421,7 @@ class cl_averbatipo {
    function sql_query ( $j93_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -443,7 +443,7 @@ class cl_averbatipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -455,7 +455,7 @@ class cl_averbatipo {
    function sql_query_file ( $j93_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -476,7 +476,7 @@ class cl_averbatipo {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

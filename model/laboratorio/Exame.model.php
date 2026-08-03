@@ -49,13 +49,13 @@ class Exame
      * Atributos do Exame
      * @var AtributoExame[]
      */
-    protected $aAtributos = array();
+    protected $aAtributos = [];
 
     /**
      * Lista com os atributos dispensados do exame
      * @var array
      */
-    private $aAtributosDispensados = array();
+    private $aAtributosDispensados = [];
 
     /**
      * Instância de ProcedimentoSaude, do procedimento vinculado ao exame
@@ -146,7 +146,7 @@ class Exame
         }
 
         $oDaoExame = new cl_lab_exame();
-        $oDadosExame = db_utils::getRowFromDao($oDaoExame, array($iCodigoExame));
+        $oDadosExame = db_utils::getRowFromDao($oDaoExame, [$iCodigoExame]);
 
         if ($oDadosExame == null) {
             throw new BusinessException("Exame não cadastrado");
@@ -396,7 +396,7 @@ class Exame
             );
 
             $rsAtributos = $oDaoAtributosExame->sql_record($sSqlAtributos);
-            $aListaAtributos = array();
+            $aListaAtributos = [];
             if ($rsAtributos && $oDaoAtributosExame->numrows > 0) {
                 for ($iAtributo = 0; $iAtributo < $oDaoAtributosExame->numrows; $iAtributo++) {
                     $iCodigoAtributo = db_utils::fieldsMemory($rsAtributos, $iAtributo)->la42_i_atributo;
@@ -515,7 +515,7 @@ class Exame
 
     public function getMaterialColeta()
     {
-        $aMateriaisColeta = array();
+        $aMateriaisColeta = [];
 
         if (empty($this->iCodigo)) {
             return $aMateriaisColeta;
@@ -561,18 +561,18 @@ class Exame
      */
     public function toArray()
     {
-        $materiaisColeta = array();
+        $materiaisColeta = [];
         foreach ((array) $this->getMateriaisColeta() as $materialColeta) {
             $materiaisColeta[] = $materialColeta->toArray();
         }
 
-        return array(
+        return [
             'la08_i_codigo' => $this->getCodigo(),
             'la08_c_sigla' => $this->getSigla(),
             'la08_c_descr' => $this->getDescricao(),
             'la08_observacao' => $this->getObservacao(),
             'materiaisColeta' => $materiaisColeta
-        );
+        ];
     }
 
     /**

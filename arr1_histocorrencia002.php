@@ -38,7 +38,7 @@ include(modification("dbforms/db_funcoes.php"));
 
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 db_postmemory($_GET);
 

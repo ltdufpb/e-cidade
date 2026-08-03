@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_liberafornecedorpcproc_classe.php"));
 include(modification("classes/db_liberafornecedor_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clliberafornecedorpcproc = new cl_liberafornecedorpcproc;
 $clliberafornecedor = new cl_liberafornecedor;
 $db_opcao = 22;
@@ -50,7 +50,7 @@ if(isset($incluir)){
   if($sqlerro==false){
     db_inicio_transacao();
     
-    if($pc84_liberafornecedor != "" && trim($pc84_pcproc) != ""){
+    if($pc84_liberafornecedor != "" && trim((string) $pc84_pcproc) != ""){
       $sWhere = " pc84_liberafornecedor = $pc84_liberafornecedor and  pc84_pcproc = $pc84_pcproc ";
       //die($clliberafornecedorpcproc->sql_query_file(null,"*",null,$sWhere));
       $rsFornecedorProc = $clliberafornecedorpcproc->sql_record($clliberafornecedorpcproc->sql_query_file(null,"*",null,$sWhere));

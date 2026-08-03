@@ -38,7 +38,7 @@ class InscricaoCandidato extends GenericController implements ResourceInterface
                 if ($candidatoJaEstaMatriculado) {
                     $response = $this->response(
                         "Candidato já está matriculado em uma escola da Rede!",
-                        array('erro' => 'candidato_ja_matriculado')
+                        ['erro' => 'candidato_ja_matriculado']
                     );
                     db_fim_transacao(true);
                     return $response;
@@ -63,17 +63,17 @@ class InscricaoCandidato extends GenericController implements ResourceInterface
 
             $response = $this->response(
                 "Inscrição efetuada com sucesso!",
-                array(
+                [
                     'protocolo' => $inscricao->getProtocolo(),
                     'path' => $comprovante
-                )
+                ]
             );
 
             db_fim_transacao(false);
             return $response;
         } catch (Exception $e) {
             db_fim_transacao(true);
-            return $this->response($e->getMessage(), array(), false, 400);
+            return $this->response($e->getMessage(), [], false, 400);
         }
     }
 
@@ -95,19 +95,19 @@ class InscricaoCandidato extends GenericController implements ResourceInterface
 
             $comprovante = $this->emitirComprovante($inscricao);
 
-            return new JsonResponse(array(
+            return new JsonResponse([
                 'success' => true,
-                'message' => utf8_encode("Comprovante gerado com sucesso!"),
-                'body' => array(
+                'message' => mb_convert_encoding("Comprovante gerado com sucesso!", 'UTF-8', 'ISO-8859-1'),
+                'body' => [
                     'protocolo' => $inscricao->getProtocolo(),
                     'path' => $comprovante
-                )
-            ), 200);
+                ]
+            ], 200);
         } catch (Exception $e) {
-            return new JsonResponse(array(
+            return new JsonResponse([
                 'success' => false,
                 'message' => $e->getMessage()
-            ), 400);
+            ], 400);
         }
     }
 

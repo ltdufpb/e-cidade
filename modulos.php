@@ -27,7 +27,7 @@
 session_start();
 $_SESSION["DB_itemmenu_acessado"] = "0";
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 if(!session_is_registered("DB_instit")) {
 
@@ -76,17 +76,17 @@ if(!session_is_registered("DB_datausu")) {
   db_putsession("DB_datausu",time());
 }
 
-if(!isset($HTTP_POST_VARS["formAnousu"]) && !isset($retorno)) {
+if(!isset($_POST["formAnousu"]) && !isset($retorno)) {
 
   db_putsession("DB_modulo",$modulo);
   db_putsession("DB_nome_modulo",$nomemod);
   db_putsession("DB_anousu",$anousu);
-} else if(isset($HTTP_POST_VARS["formAnousu"]) && $HTTP_POST_VARS["formAnousu"] != ""){
-  db_putsession("DB_anousu",$HTTP_POST_VARS["formAnousu"]);
+} else if(isset($_POST["formAnousu"]) && $_POST["formAnousu"] != ""){
+  db_putsession("DB_anousu",$_POST["formAnousu"]);
 }
 
 // se o exercicio nao for selecionado no modulo, esta acessando o módulo
-if( !isset($HTTP_POST_VARS["formAnousu"])) {
+if( !isset($_POST["formAnousu"])) {
 
   // se o ano da data do exercicio for diferente  do anousu registrado, o sistema utiliza como padrao o anousu da data
   if( db_getsession("DB_anousu") != date("Y",db_getsession("DB_datausu")) ){
@@ -104,7 +104,7 @@ $sSqlUsuariosOnline .= "   set uol_arquivo = '',                  ";
 $sSqlUsuariosOnline .= "       uol_modulo  = '" . $nomemod . "',  ";
 $sSqlUsuariosOnline .= "       uol_inativo = " . time();
 $sSqlUsuariosOnline .= " where uol_id   = " . db_getsession("DB_id_usuario");
-$sSqlUsuariosOnline .= "   and uol_ip   = '" . (isset($_SERVER["HTTP_X_FORWARDED_FOR"])?$_SERVER["HTTP_X_FORWARDED_FOR"]:$HTTP_SERVER_VARS['REMOTE_ADDR']) . "'";
+$sSqlUsuariosOnline .= "   and uol_ip   = '" . ($_SERVER["HTTP_X_FORWARDED_FOR"] ?? $_SERVER['REMOTE_ADDR']) . "'";
 $sSqlUsuariosOnline .= "   and uol_hora = " . db_getsession("DB_uol_hora");
 db_query($sSqlUsuariosOnline) or die("Erro(26) atualizando db_usuariosonline");
 
@@ -118,10 +118,10 @@ $sSqlUsuariosModulo .= " where id_usuario = " . db_getsession("DB_id_usuario");
 $sSqlUsuariosModulo .= "   and id_item    = " . db_getsession("DB_modulo");
 $result              = db_query($sSqlUsuariosModulo);
 
-if(pg_numrows($result) == 0) {
+if(pg_num_rows($result) == 0) {
 
   $sSqlInsertUsariosModulo = "insert into db_usumod values(".db_getsession("DB_modulo").",".db_getsession("DB_anousu").",".db_getsession("DB_id_usuario").")";
-  db_query($sSqlInsertUsariosModulo) or die("Erro(40) inserindo em db_usumod: ".pg_errormessage());
+  db_query($sSqlInsertUsariosModulo) or die("Erro(40) inserindo em db_usumod: ".pg_last_error());
 } else {
 
   $sSqlUpdateUsariosModulo  = "update db_usumod                                  ";
@@ -184,20 +184,20 @@ if (db_getsession("DB_id_usuario") == 1) {
 }
 
 $result = db_query($sSql);
-if(pg_numrows($result) == 0) {
+if(pg_num_rows($result) == 0) {
   echo "Você não tem permissão de acesso para exercício ".db_getsession("DB_anousu").". <br/>
   Contate o administrador para maiores informações ou selecione outro exercício.\n";
 }
 
 $sSqlModulos      = "select nome_modulo, descr_modulo from db_modulos where id_item = ".db_getsession("DB_modulo");
 $rsModulos        = db_query($sSqlModulos);
-$sNomeModulo      = pg_result($rsModulos,0,0);
-$sDescricaoModulo = pg_result($rsModulos,0,1);
+$sNomeModulo      = pg_fetch_result($rsModulos,0,0);
+$sDescricaoModulo = pg_fetch_result($rsModulos,0,1);
 
 $sSqlUsuarioLogado = "select login, nome from db_usuarios where id_usuario = ".db_getsession("DB_id_usuario");
 $rsUsuarioLogado   = db_query($sSqlUsuarioLogado);
-$sLogin            = pg_result($rsUsuarioLogado,0,0);
-$sNome             = pg_result($rsUsuarioLogado,0,1);
+$sLogin            = pg_fetch_result($rsUsuarioLogado,0,0);
+$sNome             = pg_fetch_result($rsUsuarioLogado,0,1);
 ?>
 <table border="0" cellspacing="0" cellpadding="10">
   <tr>
@@ -242,8 +242,8 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
       <select name="formAnousu" size="1" onChange="document.form1.submit()">
       <option value="">&nbsp;</option>
       <?php 
-      for($i = 0;$i < pg_numrows($result);$i++) {
-        echo "<option value=\"".pg_result($result,$i,"anousu")."\">".pg_result($result,$i,"anousu")."</option>\n";
+      for($i = 0;$i < pg_num_rows($result);$i++) {
+        echo "<option value=\"".pg_fetch_result($result,$i,"anousu")."\">".pg_fetch_result($result,$i,"anousu")."</option>\n";
       }
       ?>
       </select>
@@ -281,7 +281,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
   $sSql  .= "order by u.db17_ordem ";
   $result = db_query($sSql) or die($sSql);
 
-  if(pg_numrows($result) == 0){
+  if(pg_num_rows($result) == 0){
 
     echo "<hr>";
     echo "Usuário sem departamento para acesso cadastrado!";
@@ -292,7 +292,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
 
       db_putsession("DB_coddepto",$coddepto);
       $result    = db_query("select descrdepto from ($sSql) as x where coddepto = $coddepto");
-      $nomedepto = pg_result($result,0,0);
+      $nomedepto = pg_fetch_result($result,0,0);
       db_putsession("DB_nomedepto",$nomedepto);
 
 		// Caso o usuario acesse o modulo pela primeira vez
@@ -303,7 +303,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
 			$sSqlVerifica   = "select instit from db_depart where coddepto = $coddepto";
 			$resultverifica = db_query($sSqlVerifica) or die($sSqlVerifica);
 
-      if (pg_result($resultverifica,0,"instit") != db_getsession("DB_instit")) {
+      if (pg_fetch_result($resultverifica,0,"instit") != db_getsession("DB_instit")) {
 
 				$result = db_query($sSql) or die($sSql);
 				db_fieldsmemory($result,0);
@@ -319,7 +319,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
 			$sSqlDepusu  .=	"	  and (d.limite is null or d.limite >= '" . date("Y-m-d",db_getsession("DB_datausu")) . "')";
 			$resultdepusu = db_query($sSqlDepusu) or die($sSqlDepusu);
 
-			if (pg_numrows($resultdepusu) == 0) {
+			if (pg_num_rows($resultdepusu) == 0) {
 
 				$result = db_query($sSql) or die($sSql);
 				db_fieldsmemory($result,0);
@@ -335,8 +335,8 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
 
     if(!session_is_registered("DB_coddepto")){
 
-      db_putsession("DB_coddepto",pg_result($result,0,0));
-      db_putsession("DB_nomedepto",pg_result($result,0,1));
+      db_putsession("DB_coddepto",pg_fetch_result($result,0,0));
+      db_putsession("DB_nomedepto",pg_fetch_result($result,0,1));
     }
 
     db_logsmanual_demais("Acesso ao Módulo - Login: ".db_getsession("DB_login"),db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),0,db_getsession("DB_coddepto"),db_getsession("DB_instit"));
@@ -349,9 +349,9 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
   $sSql   = "select * from db_datausuarios where id_usuario = ".db_getsession("DB_id_usuario");
   $resusu = db_query($sSql);
 
-  if( pg_numrows($resusu) > 0 ){
+  if( pg_num_rows($resusu) > 0 ){
 
-    if ( date("Y-m-d",db_getsession("DB_datausu")) != pg_result($resusu,0,'data') ){
+    if ( date("Y-m-d",db_getsession("DB_datausu")) != pg_fetch_result($resusu,0,'data') ){
 
       if ( db_permissaomenu(db_getsession("DB_anousu"), 1, 3896) == true ) {
         db_redireciona("con4_trocadata.php");
@@ -418,7 +418,7 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
 
       if( $result > 0 ){
 
-        for( $i=0; $i < pg_numrows($result); $i++){
+        for( $i=0; $i < pg_num_rows($result); $i++){
 
           db_fieldsmemory($result,$i,true);
           ?>
@@ -437,8 +437,8 @@ $sNome             = pg_result($rsUsuarioLogado,0,1);
       	        $resultpai = db_query($sSql);
 
       	        $descrpai = "";
-                if( pg_numrows($resultpai) > 0 ){
-                   $descrpai = pg_result($resultpai,0,0);
+                if( pg_num_rows($resultpai) > 0 ){
+                   $descrpai = pg_fetch_result($resultpai,0,0);
       	        }
                 echo "<a href=\"$funcao\" title=\"".$descrpai.">".$descricao."\"onclick=\"return js_verifica_objeto('DBmenu_$id_item');\">$descricao</a>";
               }

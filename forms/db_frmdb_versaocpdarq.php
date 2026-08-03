@@ -77,7 +77,7 @@ db_input('db34_codcpd',6,$Idb34_codcpd,true,'text',3,"")
     </td>
     <td> 
 <?php 
-$x = array("SQL"=>"SQL","MENUS"=>"MENUS","ARQ"=>"ARQUIVO");
+$x = ["SQL"=>"SQL","MENUS"=>"MENUS","ARQ"=>"ARQUIVO"];
 db_select('db34_descr',$x,$Idb34_descr,2);
 //db_input('db34_descr',15,$Idb34_descr,true,'text',$db_opcao,"")
 ?>
@@ -112,7 +112,7 @@ db_textarea('db34_arq',6,70,$Idb34_arq,true,'text',$db_opcao,"")
     <tr>
      <td valign="top"  align="center">
      <?php 
-       $chavepri= array("db34_codarq"=>@$db34_codarq);
+       $chavepri= ["db34_codarq"=>@$db34_codarq];
        $cliframe_alterar_excluir->chavepri=$chavepri;
 //       echo $cldb_versaocpdarq->sql_query_file(null,"*","","db34_codcpd=".@$db34_codcpd);
        $cliframe_alterar_excluir->sql     = $cldb_versaocpdarq->sql_query_file(null,"*","","db34_codcpd=".@$db34_codcpd);
@@ -144,7 +144,7 @@ function js_preenchepesquisa(chave){
   db_iframe_db_versaocpdarq.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

@@ -33,7 +33,7 @@ include(modification("dbforms/db_funcoes.php"));
 
 include(modification("classes/db_db_estruturanivel_classe.php"));
 include(modification("classes/db_db_estrutura_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_estruturanivel = new cl_db_estruturanivel;
 $cldb_estrutura = new cl_db_estrutura;
 $db_opcao = 1;

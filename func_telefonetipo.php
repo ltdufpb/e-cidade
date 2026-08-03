@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_telefonetipo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltelefonetipo = new cl_telefonetipo;
 $cltelefonetipo->rotulo->label("ov23_sequencial");
 $cltelefonetipo->rotulo->label("ov23_descricao");
@@ -98,9 +98,9 @@ $cltelefonetipo->rotulo->label("ov23_descricao");
         }else{
            $sql = $cltelefonetipo->sql_query("",$campos,"ov23_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov23_descricao)){
-          $repassa = array("chave_ov23_sequencial"=>$chave_ov23_sequencial,"chave_ov23_descricao"=>$chave_ov23_descricao);
+          $repassa = ["chave_ov23_sequencial"=>$chave_ov23_sequencial,"chave_ov23_descricao"=>$chave_ov23_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

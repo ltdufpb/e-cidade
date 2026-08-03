@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE far_farmacia
 class cl_far_farmacia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $fa13_i_codigo = 0; 
-   var $fa13_i_departamento = 0; 
-   var $fa13_c_autosanitaria = null; 
-   var $fa13_c_inscestadual = null; 
-   var $fa13_c_resptecnico = null; 
-   var $fa13_c_crf = null; 
-   var $fa13_c_cnpj = null; 
-   var $fa13_c_numlicenca = null; 
-   var $fa13_c_regiao = null; 
-   var $fa13_i_farprof = 0; 
-   var $fa13_c_inscmf = null; 
+   public $fa13_i_codigo = 0; 
+   public $fa13_i_departamento = 0; 
+   public $fa13_c_autosanitaria = null; 
+   public $fa13_c_inscestadual = null; 
+   public $fa13_c_resptecnico = null; 
+   public $fa13_c_crf = null; 
+   public $fa13_c_cnpj = null; 
+   public $fa13_c_numlicenca = null; 
+   public $fa13_c_regiao = null; 
+   public $fa13_i_farprof = 0; 
+   public $fa13_c_inscmf = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  fa13_i_codigo = int4 = Código 
                  fa13_i_departamento = int4 = Departamento 
                  fa13_c_autosanitaria = char(50) = Autoridade Sanitária 
@@ -68,10 +68,10 @@ class cl_far_farmacia {
                  fa13_c_inscmf = char(15) = Incrição Ministério da Fazenda 
                  ";
    //funcao construtor da classe 
-   function cl_far_farmacia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_farmacia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -203,10 +203,10 @@ class cl_far_farmacia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->fa13_i_codigo = pg_result($result,0,0); 
+       $this->fa13_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from far_farmacia_fa13_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa13_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa13_i_codigo)){
          $this->erro_sql = " Campo fa13_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -254,7 +254,7 @@ class cl_far_farmacia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "far_farmacia ($this->fa13_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "far_farmacia já Cadastrado";
@@ -278,20 +278,20 @@ class cl_far_farmacia {
      $resaco = $this->sql_record($this->sql_query_file($this->fa13_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14005,'$this->fa13_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2461,14005,'','".AddSlashes(pg_result($resaco,0,'fa13_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2461,14006,'','".AddSlashes(pg_result($resaco,0,'fa13_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2461,14007,'','".AddSlashes(pg_result($resaco,0,'fa13_c_autosanitaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2461,14008,'','".AddSlashes(pg_result($resaco,0,'fa13_c_inscestadual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2461,14009,'','".AddSlashes(pg_result($resaco,0,'fa13_c_resptecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2461,14010,'','".AddSlashes(pg_result($resaco,0,'fa13_c_crf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2461,14011,'','".AddSlashes(pg_result($resaco,0,'fa13_c_cnpj'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2461,14012,'','".AddSlashes(pg_result($resaco,0,'fa13_c_numlicenca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2461,14013,'','".AddSlashes(pg_result($resaco,0,'fa13_c_regiao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2461,14097,'','".AddSlashes(pg_result($resaco,0,'fa13_i_farprof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2461,14098,'','".AddSlashes(pg_result($resaco,0,'fa13_c_inscmf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2461,14005,'','".AddSlashes(pg_fetch_result($resaco,0,'fa13_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2461,14006,'','".AddSlashes(pg_fetch_result($resaco,0,'fa13_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2461,14007,'','".AddSlashes(pg_fetch_result($resaco,0,'fa13_c_autosanitaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2461,14008,'','".AddSlashes(pg_fetch_result($resaco,0,'fa13_c_inscestadual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2461,14009,'','".AddSlashes(pg_fetch_result($resaco,0,'fa13_c_resptecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2461,14010,'','".AddSlashes(pg_fetch_result($resaco,0,'fa13_c_crf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2461,14011,'','".AddSlashes(pg_fetch_result($resaco,0,'fa13_c_cnpj'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2461,14012,'','".AddSlashes(pg_fetch_result($resaco,0,'fa13_c_numlicenca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2461,14013,'','".AddSlashes(pg_fetch_result($resaco,0,'fa13_c_regiao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2461,14097,'','".AddSlashes(pg_fetch_result($resaco,0,'fa13_i_farprof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2461,14098,'','".AddSlashes(pg_fetch_result($resaco,0,'fa13_c_inscmf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -300,10 +300,10 @@ class cl_far_farmacia {
       $this->atualizacampos();
      $sql = " update far_farmacia set ";
      $virgula = "";
-     if(trim($this->fa13_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_i_codigo"])){ 
+     if(trim((string) $this->fa13_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_i_codigo"])){ 
        $sql  .= $virgula." fa13_i_codigo = $this->fa13_i_codigo ";
        $virgula = ",";
-       if(trim($this->fa13_i_codigo) == null ){ 
+       if(trim((string) $this->fa13_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "fa13_i_codigo";
          $this->erro_banco = "";
@@ -313,10 +313,10 @@ class cl_far_farmacia {
          return false;
        }
      }
-     if(trim($this->fa13_i_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_i_departamento"])){ 
+     if(trim((string) $this->fa13_i_departamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_i_departamento"])){ 
        $sql  .= $virgula." fa13_i_departamento = $this->fa13_i_departamento ";
        $virgula = ",";
-       if(trim($this->fa13_i_departamento) == null ){ 
+       if(trim((string) $this->fa13_i_departamento) == null ){ 
          $this->erro_sql = " Campo Departamento nao Informado.";
          $this->erro_campo = "fa13_i_departamento";
          $this->erro_banco = "";
@@ -326,10 +326,10 @@ class cl_far_farmacia {
          return false;
        }
      }
-     if(trim($this->fa13_c_autosanitaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_autosanitaria"])){ 
+     if(trim((string) $this->fa13_c_autosanitaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_autosanitaria"])){ 
        $sql  .= $virgula." fa13_c_autosanitaria = '$this->fa13_c_autosanitaria' ";
        $virgula = ",";
-       if(trim($this->fa13_c_autosanitaria) == null ){ 
+       if(trim((string) $this->fa13_c_autosanitaria) == null ){ 
          $this->erro_sql = " Campo Autoridade Sanitária nao Informado.";
          $this->erro_campo = "fa13_c_autosanitaria";
          $this->erro_banco = "";
@@ -339,10 +339,10 @@ class cl_far_farmacia {
          return false;
        }
      }
-     if(trim($this->fa13_c_inscestadual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_inscestadual"])){ 
+     if(trim((string) $this->fa13_c_inscestadual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_inscestadual"])){ 
        $sql  .= $virgula." fa13_c_inscestadual = '$this->fa13_c_inscestadual' ";
        $virgula = ",";
-       if(trim($this->fa13_c_inscestadual) == null ){ 
+       if(trim((string) $this->fa13_c_inscestadual) == null ){ 
          $this->erro_sql = " Campo Inscrição Estadual nao Informado.";
          $this->erro_campo = "fa13_c_inscestadual";
          $this->erro_banco = "";
@@ -352,10 +352,10 @@ class cl_far_farmacia {
          return false;
        }
      }
-     if(trim($this->fa13_c_resptecnico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_resptecnico"])){ 
+     if(trim((string) $this->fa13_c_resptecnico)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_resptecnico"])){ 
        $sql  .= $virgula." fa13_c_resptecnico = '$this->fa13_c_resptecnico' ";
        $virgula = ",";
-       if(trim($this->fa13_c_resptecnico) == null ){ 
+       if(trim((string) $this->fa13_c_resptecnico) == null ){ 
          $this->erro_sql = " Campo Responsável técnico nao Informado.";
          $this->erro_campo = "fa13_c_resptecnico";
          $this->erro_banco = "";
@@ -365,10 +365,10 @@ class cl_far_farmacia {
          return false;
        }
      }
-     if(trim($this->fa13_c_crf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_crf"])){ 
+     if(trim((string) $this->fa13_c_crf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_crf"])){ 
        $sql  .= $virgula." fa13_c_crf = '$this->fa13_c_crf' ";
        $virgula = ",";
-       if(trim($this->fa13_c_crf) == null ){ 
+       if(trim((string) $this->fa13_c_crf) == null ){ 
          $this->erro_sql = " Campo CRF nao Informado.";
          $this->erro_campo = "fa13_c_crf";
          $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_far_farmacia {
          return false;
        }
      }
-     if(trim($this->fa13_c_cnpj)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_cnpj"])){ 
+     if(trim((string) $this->fa13_c_cnpj)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_cnpj"])){ 
        $sql  .= $virgula." fa13_c_cnpj = '$this->fa13_c_cnpj' ";
        $virgula = ",";
-       if(trim($this->fa13_c_cnpj) == null ){ 
+       if(trim((string) $this->fa13_c_cnpj) == null ){ 
          $this->erro_sql = " Campo CNPJ nao Informado.";
          $this->erro_campo = "fa13_c_cnpj";
          $this->erro_banco = "";
@@ -391,10 +391,10 @@ class cl_far_farmacia {
          return false;
        }
      }
-     if(trim($this->fa13_c_numlicenca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_numlicenca"])){ 
+     if(trim((string) $this->fa13_c_numlicenca)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_numlicenca"])){ 
        $sql  .= $virgula." fa13_c_numlicenca = '$this->fa13_c_numlicenca' ";
        $virgula = ",";
-       if(trim($this->fa13_c_numlicenca) == null ){ 
+       if(trim((string) $this->fa13_c_numlicenca) == null ){ 
          $this->erro_sql = " Campo Número da Licença nao Informado.";
          $this->erro_campo = "fa13_c_numlicenca";
          $this->erro_banco = "";
@@ -404,10 +404,10 @@ class cl_far_farmacia {
          return false;
        }
      }
-     if(trim($this->fa13_c_regiao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_regiao"])){ 
+     if(trim((string) $this->fa13_c_regiao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_regiao"])){ 
        $sql  .= $virgula." fa13_c_regiao = '$this->fa13_c_regiao' ";
        $virgula = ",";
-       if(trim($this->fa13_c_regiao) == null ){ 
+       if(trim((string) $this->fa13_c_regiao) == null ){ 
          $this->erro_sql = " Campo Região nao Informado.";
          $this->erro_campo = "fa13_c_regiao";
          $this->erro_banco = "";
@@ -417,10 +417,10 @@ class cl_far_farmacia {
          return false;
        }
      }
-     if(trim($this->fa13_i_farprof)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_i_farprof"])){ 
+     if(trim((string) $this->fa13_i_farprof)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_i_farprof"])){ 
        $sql  .= $virgula." fa13_i_farprof = $this->fa13_i_farprof ";
        $virgula = ",";
-       if(trim($this->fa13_i_farprof) == null ){ 
+       if(trim((string) $this->fa13_i_farprof) == null ){ 
          $this->erro_sql = " Campo Farmacêutico nao Informado.";
          $this->erro_campo = "fa13_i_farprof";
          $this->erro_banco = "";
@@ -430,10 +430,10 @@ class cl_far_farmacia {
          return false;
        }
      }
-     if(trim($this->fa13_c_inscmf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_inscmf"])){ 
+     if(trim((string) $this->fa13_c_inscmf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_inscmf"])){ 
        $sql  .= $virgula." fa13_c_inscmf = '$this->fa13_c_inscmf' ";
        $virgula = ",";
-       if(trim($this->fa13_c_inscmf) == null ){ 
+       if(trim((string) $this->fa13_c_inscmf) == null ){ 
          $this->erro_sql = " Campo Incrição Ministério da Fazenda nao Informado.";
          $this->erro_campo = "fa13_c_inscmf";
          $this->erro_banco = "";
@@ -451,31 +451,31 @@ class cl_far_farmacia {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14005,'$this->fa13_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa13_i_codigo"]) || $this->fa13_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2461,14005,'".AddSlashes(pg_result($resaco,$conresaco,'fa13_i_codigo'))."','$this->fa13_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2461,14005,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa13_i_codigo'))."','$this->fa13_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa13_i_departamento"]) || $this->fa13_i_departamento != "")
-           $resac = db_query("insert into db_acount values($acount,2461,14006,'".AddSlashes(pg_result($resaco,$conresaco,'fa13_i_departamento'))."','$this->fa13_i_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2461,14006,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa13_i_departamento'))."','$this->fa13_i_departamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_autosanitaria"]) || $this->fa13_c_autosanitaria != "")
-           $resac = db_query("insert into db_acount values($acount,2461,14007,'".AddSlashes(pg_result($resaco,$conresaco,'fa13_c_autosanitaria'))."','$this->fa13_c_autosanitaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2461,14007,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa13_c_autosanitaria'))."','$this->fa13_c_autosanitaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_inscestadual"]) || $this->fa13_c_inscestadual != "")
-           $resac = db_query("insert into db_acount values($acount,2461,14008,'".AddSlashes(pg_result($resaco,$conresaco,'fa13_c_inscestadual'))."','$this->fa13_c_inscestadual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2461,14008,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa13_c_inscestadual'))."','$this->fa13_c_inscestadual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_resptecnico"]) || $this->fa13_c_resptecnico != "")
-           $resac = db_query("insert into db_acount values($acount,2461,14009,'".AddSlashes(pg_result($resaco,$conresaco,'fa13_c_resptecnico'))."','$this->fa13_c_resptecnico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2461,14009,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa13_c_resptecnico'))."','$this->fa13_c_resptecnico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_crf"]) || $this->fa13_c_crf != "")
-           $resac = db_query("insert into db_acount values($acount,2461,14010,'".AddSlashes(pg_result($resaco,$conresaco,'fa13_c_crf'))."','$this->fa13_c_crf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2461,14010,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa13_c_crf'))."','$this->fa13_c_crf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_cnpj"]) || $this->fa13_c_cnpj != "")
-           $resac = db_query("insert into db_acount values($acount,2461,14011,'".AddSlashes(pg_result($resaco,$conresaco,'fa13_c_cnpj'))."','$this->fa13_c_cnpj',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2461,14011,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa13_c_cnpj'))."','$this->fa13_c_cnpj',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_numlicenca"]) || $this->fa13_c_numlicenca != "")
-           $resac = db_query("insert into db_acount values($acount,2461,14012,'".AddSlashes(pg_result($resaco,$conresaco,'fa13_c_numlicenca'))."','$this->fa13_c_numlicenca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2461,14012,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa13_c_numlicenca'))."','$this->fa13_c_numlicenca',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_regiao"]) || $this->fa13_c_regiao != "")
-           $resac = db_query("insert into db_acount values($acount,2461,14013,'".AddSlashes(pg_result($resaco,$conresaco,'fa13_c_regiao'))."','$this->fa13_c_regiao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2461,14013,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa13_c_regiao'))."','$this->fa13_c_regiao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa13_i_farprof"]) || $this->fa13_i_farprof != "")
-           $resac = db_query("insert into db_acount values($acount,2461,14097,'".AddSlashes(pg_result($resaco,$conresaco,'fa13_i_farprof'))."','$this->fa13_i_farprof',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2461,14097,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa13_i_farprof'))."','$this->fa13_i_farprof',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa13_c_inscmf"]) || $this->fa13_c_inscmf != "")
-           $resac = db_query("insert into db_acount values($acount,2461,14098,'".AddSlashes(pg_result($resaco,$conresaco,'fa13_c_inscmf'))."','$this->fa13_c_inscmf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2461,14098,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa13_c_inscmf'))."','$this->fa13_c_inscmf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -520,20 +520,20 @@ class cl_far_farmacia {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14005,'$fa13_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2461,14005,'','".AddSlashes(pg_result($resaco,$iresaco,'fa13_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2461,14006,'','".AddSlashes(pg_result($resaco,$iresaco,'fa13_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2461,14007,'','".AddSlashes(pg_result($resaco,$iresaco,'fa13_c_autosanitaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2461,14008,'','".AddSlashes(pg_result($resaco,$iresaco,'fa13_c_inscestadual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2461,14009,'','".AddSlashes(pg_result($resaco,$iresaco,'fa13_c_resptecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2461,14010,'','".AddSlashes(pg_result($resaco,$iresaco,'fa13_c_crf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2461,14011,'','".AddSlashes(pg_result($resaco,$iresaco,'fa13_c_cnpj'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2461,14012,'','".AddSlashes(pg_result($resaco,$iresaco,'fa13_c_numlicenca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2461,14013,'','".AddSlashes(pg_result($resaco,$iresaco,'fa13_c_regiao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2461,14097,'','".AddSlashes(pg_result($resaco,$iresaco,'fa13_i_farprof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2461,14098,'','".AddSlashes(pg_result($resaco,$iresaco,'fa13_c_inscmf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2461,14005,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa13_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2461,14006,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa13_i_departamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2461,14007,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa13_c_autosanitaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2461,14008,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa13_c_inscestadual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2461,14009,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa13_c_resptecnico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2461,14010,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa13_c_crf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2461,14011,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa13_c_cnpj'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2461,14012,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa13_c_numlicenca'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2461,14013,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa13_c_regiao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2461,14097,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa13_i_farprof'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2461,14098,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa13_c_inscmf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from far_farmacia
@@ -593,7 +593,7 @@ class cl_far_farmacia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:far_farmacia";
@@ -608,7 +608,7 @@ class cl_far_farmacia {
    function sql_query ( $fa13_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -633,7 +633,7 @@ class cl_far_farmacia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -646,7 +646,7 @@ class cl_far_farmacia {
    function sql_query_file ( $fa13_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -667,7 +667,7 @@ class cl_far_farmacia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

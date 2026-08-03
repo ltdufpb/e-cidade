@@ -159,6 +159,7 @@ class LancamentoAuxiliarProvisaoDecimoTerceiro extends LancamentoAuxiliarBase im
   /**
    * Retorna a observação do histórico da operação
    */
+  #[\Override]
   public function getObservacaoHistorico() {
     return $this->sObservacaoHistorico;
   }
@@ -167,6 +168,7 @@ class LancamentoAuxiliarProvisaoDecimoTerceiro extends LancamentoAuxiliarBase im
    * Seta a observação do histórico da operação
    * @param string $sObservacaoHistorico
    */
+  #[\Override]
   public function setObservacaoHistorico($sObservacaoHistorico) {
     $this->sObservacaoHistorico = $sObservacaoHistorico;
   }

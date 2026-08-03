@@ -63,7 +63,7 @@ $sSqlDividaAtiva .= "       divida.v01_instit = {$iInstituicao}                 
 
 $rsResult = db_query($sSqlDividaAtiva);
 
-if (pg_numrows($rsResult) == 0) {
+if (pg_num_rows($rsResult) == 0) {
   
   echo "Código de Arrecadação não cadastrado.";
   exit;
@@ -95,7 +95,7 @@ $rsResultDivOld = db_query($sSqlDivOld) or die($sSqlDivOld );
 
 $sParcelasDivOld = "";
 
-for ($iContDivOld=0; $iContDivOld < pg_numrows($rsResultDivOld); $iContDivOld++) {
+for ($iContDivOld=0; $iContDivOld < pg_num_rows($rsResultDivOld); $iContDivOld++) {
   
   $oDivold = db_utils::fieldsMemory($rsResultDivOld, $iContDivOld);
   
@@ -105,7 +105,7 @@ for ($iContDivOld=0; $iContDivOld < pg_numrows($rsResultDivOld); $iContDivOld++)
     $sParcelasDivOld = " - importação das parcelas: ";
   }
 
-  $sParcelasDivOld .= $k10_numpar . ($iContDivOld < pg_numrows($rsResultDivOld) -1 ? ", " : ".");
+  $sParcelasDivOld .= $k10_numpar . ($iContDivOld < pg_num_rows($rsResultDivOld) -1 ? ", " : ".");
 
 }
 
@@ -127,7 +127,7 @@ $v01_obs .= $sParcelasDivOld;
     </tr>
     <tr> 
       <td>Nome:</td>
-      <td><?php echo substr($z01_nome,0,35); ?></td>
+      <td><?php echo substr((string) $z01_nome,0,35); ?></td>
     </tr>
     <tr> 
       <td>Data Inscri&ccedil;&atilde;o:</td>
@@ -149,7 +149,7 @@ $v01_obs .= $sParcelasDivOld;
       <td nowrap>Matr&iacute;cula Im&oacute;vel:</td>
       <td> 
         <?php
-    			for ($iContMatricula = 0; $iContMatricula < pg_numrows($rsResult); $iContMatricula++) {
+    			for ($iContMatricula = 0; $iContMatricula < pg_num_rows($rsResult); $iContMatricula++) {
     			              
             $oMatricula = db_utils::fieldsMemory($rsResult, $iContMatricula, 'v01_matric');
             $v01_matric = $oMatricula->v01_matric;
@@ -166,7 +166,7 @@ $v01_obs .= $sParcelasDivOld;
       <td>Inscri&ccedil;&atilde;o Alvar&aacute;:</td>
       <td>
         <?php    		  
-    			for ($iContInscricao = 0; $iContInscricao < pg_numrows($rsResult); $iContInscricao++) {
+    			for ($iContInscricao = 0; $iContInscricao < pg_num_rows($rsResult); $iContInscricao++) {
             
             $oInscricao = db_utils::fieldsMemory($rsResult,$iContInscricao,'v01_inscr');
             $v01_inscr = $oInscricao->v01_inscr;

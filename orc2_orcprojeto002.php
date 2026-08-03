@@ -44,7 +44,7 @@ $clorcsuplem = new cl_orcsuplem;
 $auxiliar = new cl_orcsuplem;
 $aux = new cl_orcsuplem;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $anousu = db_getsession("DB_anousu");
 
@@ -63,7 +63,7 @@ $sPrefeito = "PREFEITO";
  */
 
 $sPrefeitoDeTal = "";
-$aTexto = array();
+$aTexto = [];
 $sQuery = "select db_paragrafo.*
              from db_documento
                   inner join db_docparag on db03_docum = db04_docum
@@ -198,7 +198,7 @@ if ($projeto_tipo == "1") {
         "R$ " . db_formatar($total_suplementado, 'f') . " (" . db_extenso($total_suplementado, true) . ") e da outras providências. ";
 } else {
     // tipo 3 = retificador
-    if (strlen(trim($o39_lei)) > 0) {
+    if (strlen(trim((string) $o39_lei)) > 0) {
         $projeto_tipo_texto = "PROJETO DE LEI";
         $txt = "Autoriza o Poder Executivo Municipal a abrir $tipo_sup na importancia de " .
             "R$ " . db_formatar($total_suplementado, 'f') . " (" . db_extenso($total_suplementado, true) . ") e da outras providências. ";
@@ -211,7 +211,7 @@ if ($projeto_tipo == "1") {
 
 $pdf->setX(20);
 //$pdf->Cell(170,4,$projeto_tipo_texto." ".($projeto_tipo == 1?$o39_numero."/".substr($o39_data,6,4):''),0,1,"C",'1');
-$pdf->Cell(170, 4, $projeto_tipo_texto . " " . ($projeto_tipo == 1 ? $o39_numero : '') . strtoupper(" de " . substr($o39_data, 0, 2) . " de " . db_mes(substr($o39_data, 3, 2)) . " de " . substr($o39_data, 6, 4)), 0, 1, "C", '1');
+$pdf->Cell(170, 4, $projeto_tipo_texto . " " . ($projeto_tipo == 1 ? $o39_numero : '') . strtoupper(" de " . substr((string) $o39_data, 0, 2) . " de " . db_mes(substr((string) $o39_data, 3, 2)) . " de " . substr((string) $o39_data, 6, 4)), 0, 1, "C", '1');
 $pdf->Ln(7);
 
 /*
@@ -244,7 +244,7 @@ select o48_texto
 $res_retif = db_query($sql);
 if (pg_num_rows($res_retif) > 0) {
     db_fieldsmemory($res_retif, 0, true);
-    if (strlen($o48_texto) > 1) {
+    if (strlen((string) $o48_texto) > 1) {
         $pdf->setX(20);
         $pdf->multicell(170, 4, "$o48_texto", 'B', 'J', '0', 20);
         $pdf->Ln(4);
@@ -263,13 +263,13 @@ db_fieldsmemory($res, 0);
 if ($projeto_tipo == "1") { // decreto
 
     $pdf->setX(20);
-    $pref = ucfirst($pref);
+    $pref = ucfirst((string) $pref);
     
     if ($db21_codcli == 34) {
         $txt = "$pref, PRESIDENTE DA CAMARA MUNICIPAL DE VEREADORES DE $munic, $uf, no uso de suas atribuições legais e de conformidade com a Lei Municipal n" . chr(186) . " $o45_numlei";
     } else {
         $txt = "$pref, $sPrefeito MUNICIPAL DE $munic, $uf, no uso de suas atribuições legais e de conformidade com a Lei Municipal $o45_numlei";
-        if (strtoupper(trim($munic)) == "SAPIRANGA") {
+        if (strtoupper(trim((string) $munic)) == "SAPIRANGA") {
             $txt = "$sPrefeitoDeTal DE $munic, $uf, no uso de suas atribuições legais e de conformidade com a Lei Municipal $o45_numlei";
         }
     }
@@ -287,7 +287,7 @@ if ($projeto_tipo == "1") { // decreto
 } else {   // quando for lei
 
     $pdf->setX(20);
-    $pref = strtoupper($pref);
+    $pref = strtoupper((string) $pref);
     if ($db21_codcli == 34) {
         $txt = "$pref, PREFEITO MUNICIPAL DE $munic, $uf.";
     } else {
@@ -445,9 +445,9 @@ if ($auxiliar->numrows > 0) {
         $pdf->setX(20);
         $pdf->Cell(150, 4, db_formatar($o56_elemento, 'elemento') . " - " . $o56_descr, 0, 1, "L", '0');
         $pdf->setX(20);
-        $pdf->Cell(120, 4, db_formatar($sEspecificacaoLoa, 'recurso') . " - " . trim($o15_descr) . " ( $o47_coddot ) ", 0, 0, "L", '0');
+        $pdf->Cell(120, 4, db_formatar($sEspecificacaoLoa, 'recurso') . " - " . trim((string) $o15_descr) . " ( $o47_coddot ) ", 0, 0, "L", '0');
         $pdf->Cell(50, 4, db_formatar($o47_valor, 'f'), 0, 1, "R", '0');
-        if ( strtoupper(trim($munic)) == "NATAL" ) {
+        if ( strtoupper(trim((string) $munic)) == "NATAL" ) {
           $pdf->setX(20);
           $pdf->Cell(150, 4, $localizadorgastos . " - " . $o11_descricao, 0, 1, "L", '0');
         }
@@ -481,7 +481,7 @@ $pdf->Ln(4);
 
 if (in_array($o46_tiposup, [1003, 1008])) {
     $pdf->setX(20);
-    $pdf->Cell(120, 4, db_formatar($sEspecificacaoLoa, 'recurso') . " - " . trim($o15_descr), 0, 0, "L", '0');
+    $pdf->Cell(120, 4, db_formatar($sEspecificacaoLoa, 'recurso') . " - " . trim((string) $o15_descr), 0, 0, "L", '0');
 }
 //-------
 $sql = "select o39_codproj,
@@ -555,9 +555,9 @@ if ($auxiliar->numrows > 0) {
             $pdf->setX(20);
             $pdf->Cell(150, 4, db_formatar($o58_elemento, 'elemento') . " - " . $o56_descr, 0, 1, "L", '0');
             $pdf->setX(20);
-            $pdf->Cell(120, 4, db_formatar($sEspecificacaoLoa, 'recurso') . " - " . trim($o15_descr) . " ( $o47_coddot ) ", 0, 0, "L", '0');
+            $pdf->Cell(120, 4, db_formatar($sEspecificacaoLoa, 'recurso') . " - " . trim((string) $o15_descr) . " ( $o47_coddot ) ", 0, 0, "L", '0');
             $pdf->Cell(50, 4, db_formatar($o47_valor, 'f'), 0, 1, "R", '0');
-            if ( strtoupper(trim($munic)) == "NATAL" ) {
+            if ( strtoupper(trim((string) $munic)) == "NATAL" ) {
                 $pdf->setX(20);
                 $pdf->Cell(150, 4, $localizadorgastos . " - " . $o11_descricao, 0, 1, "L", '0');
             }
@@ -605,7 +605,7 @@ $sSqlPPA = "select o39_codproj,
                                            and orcsuplemtipo.o48_arrecadmaior >  0
              where o39_codproj = {$projeto}";
 $res = $auxiliar->sql_record($sql . " union all {$sSqlPPA}");
-if ($auxiliar->numrows > 0 && strtoupper(trim($munic)) != "SAPIRANGA") {
+if ($auxiliar->numrows > 0 && strtoupper(trim((string) $munic)) != "SAPIRANGA") {
 
     ///////////////////////////////////////////////
     for ($x = 0; $x < $auxiliar->numrows; $x++) {
@@ -658,14 +658,14 @@ validaEspacoTimbre($pdf,$timbre,70);
  * 
  * Assinaturas 
  */
-if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
+if ($projeto_tipo == "1" && strtoupper(trim((string) $munic)) == "SAPIRANGA") {
 
     $sPrefeito = "PREFEITA";
     $sec = "";
     $ass_sec = $classinatura->assinatura(1002, $sec);
 
     $pdf->Ln(5);
-    $txt = "GABINETE DA $sPrefeito MUNICIPAL DE " . strtoupper($munic) . " AOS " . substr($xdata, 8, 2) . " DIAS DO MÊS DE " . strtoupper(db_mes(substr($xdata, 5, 2))) . " DE " . substr($xdata, 0, 4) . ".";
+    $txt = "GABINETE DA $sPrefeito MUNICIPAL DE " . strtoupper((string) $munic) . " AOS " . substr((string) $xdata, 8, 2) . " DIAS DO MÊS DE " . strtoupper(db_mes(substr((string) $xdata, 5, 2))) . " DE " . substr((string) $xdata, 0, 4) . ".";
     $pdf->multicell(180, 4, $txt, '0', 'J', '0', 20);
     $pdf->Ln(10);
     $pdf->multicell(0, 4, $pref . "\n" . "$sPrefeito MUNICIPAL", '0', 'C', '0');
@@ -674,13 +674,13 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $ass_sec = strtoupper($ass_sec);
     $pdf->multicell(0, 4, "\n\n\n" . "{$ass_sec}", '0', 'L', '0');
 
-} elseif ($projeto_tipo == "1" && strtoupper(trim($munic)) == "BAGE") {
+} elseif ($projeto_tipo == "1" && strtoupper(trim((string) $munic)) == "BAGE") {
 
     $sec = "";
     $ass_sec = $classinatura->assinatura(1002, $sec);
 
     $pdf->Ln(5);
-    $txt = "GABINETE DO $sPrefeito MUNICIPAL DE " . strtoupper($munic) . ", " . substr($xdata, 8, 2) . " DE " . strtoupper(db_mes(substr($xdata, 5, 2))) . " DE " . substr($xdata, 0, 4) . ".";
+    $txt = "GABINETE DO $sPrefeito MUNICIPAL DE " . strtoupper((string) $munic) . ", " . substr((string) $xdata, 8, 2) . " DE " . strtoupper(db_mes(substr((string) $xdata, 5, 2))) . " DE " . substr((string) $xdata, 0, 4) . ".";
     $pdf->cell(30, 4, '', '0', 'J', '0');
     $pdf->multicell(180, 4, $txt, '0', 'J', '0');
     $pdf->Ln(10);
@@ -689,20 +689,20 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $pdf->Ln(10);
     $pdf->multicell(0, 4, "Registre-se e cumpra-se", '0', 'L', '0');
     
-} elseif ($projeto_tipo == "1" && strtoupper(trim($munic)) == "ARROIO DO SAL") {
+} elseif ($projeto_tipo == "1" && strtoupper(trim((string) $munic)) == "ARROIO DO SAL") {
 
     $sec = "";
     $ass_sec = $classinatura->assinatura(1002, $sec);
 
     $pdf->Ln(5);
-    $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper($munic) . ", " . substr($xdata, 8, 2) . " DE " . strtoupper(db_mes(substr($xdata, 5, 2))) . " DE " . substr($xdata, 0, 4) . ".";
+    $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper((string) $munic) . ", " . substr((string) $xdata, 8, 2) . " DE " . strtoupper(db_mes(substr((string) $xdata, 5, 2))) . " DE " . substr((string) $xdata, 0, 4) . ".";
     $pdf->cell(30, 4, '', '0', 'J', '0');
     $pdf->multicell(180, 4, $txt, '0', 'J', '0');
     $pdf->Ln(10);
     $pdf->multicell(0, 4, $pref . "\n" . "PREFEITO MUNICIPAL ", '0', 'C', '0');
     $pdf->multicell(0, 3, "\n\n\n" . strtoupper($ass_sec), '0', 'L', '0');
 
-} elseif ($projeto_tipo == "1" && strtoupper(trim($munic)) == "ELDORADO DO SUL") {
+} elseif ($projeto_tipo == "1" && strtoupper(trim((string) $munic)) == "ELDORADO DO SUL") {
 
     $faz = "";
     $adm = "";
@@ -711,9 +711,9 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
 
     $pdf->Ln(5);
     if ($db21_codcli == 34) {
-        $txt = "GABINETE DO PRESIDENTE DA CAMARA MUNICIPAL DE VEREADORES DE " . strtoupper($munic) . " AOS " . substr($xdata, 8, 2) . " DIAS DO MÊS DE " . strtoupper(db_mes(substr($xdata, 5, 2))) . " DE " . substr($xdata, 0, 4) . ".";
+        $txt = "GABINETE DO PRESIDENTE DA CAMARA MUNICIPAL DE VEREADORES DE " . strtoupper((string) $munic) . " AOS " . substr((string) $xdata, 8, 2) . " DIAS DO MÊS DE " . strtoupper(db_mes(substr((string) $xdata, 5, 2))) . " DE " . substr((string) $xdata, 0, 4) . ".";
     } else {
-        $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper($munic) . " AOS " . substr($xdata, 8, 2) . " DIAS DO MÊS DE " . strtoupper(db_mes(substr($xdata, 5, 2))) . " DE " . substr($xdata, 0, 4) . ".";
+        $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper((string) $munic) . " AOS " . substr((string) $xdata, 8, 2) . " DIAS DO MÊS DE " . strtoupper(db_mes(substr((string) $xdata, 5, 2))) . " DE " . substr((string) $xdata, 0, 4) . ".";
     }
     $pdf->multicell(180, 4, $txt, '0', 'J', '0', 10);
     $pdf->Ln(5);
@@ -734,7 +734,7 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $pdf->setx(100);
     $pdf->multicell(100, 4, "\n\n" . ucfirst($ass_faz), '0', 'C', '0');
     
-} elseif ($projeto_tipo == "1" && (strtoupper(trim($munic)) != "ITAQUI" and strtoupper(trim($munic)) != "CANELA")) {
+} elseif ($projeto_tipo == "1" && (strtoupper(trim((string) $munic)) != "ITAQUI" and strtoupper(trim((string) $munic)) != "CANELA")) {
     
     $sec = "";
     $ass_sec = $classinatura->assinatura(1300, $sec);
@@ -743,10 +743,10 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     }
 
     $pdf->Ln(5);
-    $txt = "Gabinete do Prefeito, " . substr($xdata, 8, 2) . " de " . db_mes(substr($xdata, 5, 2)) . " de " . substr($xdata, 0, 4) . ".";
+    $txt = "Gabinete do Prefeito, " . substr((string) $xdata, 8, 2) . " de " . db_mes(substr((string) $xdata, 5, 2)) . " de " . substr((string) $xdata, 0, 4) . ".";
 
-    if (strtoupper(trim($munic)) == "SAPIRANGA") {
-        $txt = "Gabinete da Prefeita, " . substr($xdata, 8, 2) . " de " . db_mes(substr($xdata, 5, 2)) . " de " . substr($xdata, 0, 4) . ".";
+    if (strtoupper(trim((string) $munic)) == "SAPIRANGA") {
+        $txt = "Gabinete da Prefeita, " . substr((string) $xdata, 8, 2) . " de " . db_mes(substr((string) $xdata, 5, 2)) . " de " . substr((string) $xdata, 0, 4) . ".";
         $sec = "";
         $ass_sec = $classinatura->assinatura(1300, $sec);
     }
@@ -754,24 +754,24 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $pdf->Ln(10);
     $pdf->multicell(0, 4, $ass_sec, '0', 'C', '0');
     
-} elseif ($projeto_tipo == "1" && strtoupper(trim($munic)) == "ITAQUI") {
+} elseif ($projeto_tipo == "1" && strtoupper(trim((string) $munic)) == "ITAQUI") {
     
     $sec = "";
     $ass_sec = $classinatura->assinatura(1300, $sec);
 
     $pdf->Ln(5);
-    $txt = "Gabinete do Prefeito, " . substr($xdata, 8, 2) . " de " . db_mes(substr($xdata, 5, 2)) . " de " . substr($xdata, 0, 4) . ".";
+    $txt = "Gabinete do Prefeito, " . substr((string) $xdata, 8, 2) . " de " . db_mes(substr((string) $xdata, 5, 2)) . " de " . substr((string) $xdata, 0, 4) . ".";
     $pdf->multicell(180, 4, $txt, '0', 'C', '0', 20);
     $pdf->Ln(10);
     $pdf->multicell(0, 4, $ass_sec, '0', 'C', '0');
     
-} elseif ($projeto_tipo == "1" && strtoupper(trim($munic)) == "BAGE") {
+} elseif ($projeto_tipo == "1" && strtoupper(trim((string) $munic)) == "BAGE") {
     
     $sec = "";
     $ass_sec = $classinatura->assinatura(1002, $sec);
 
     $pdf->Ln(5);
-    $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper($munic) . ", " . substr($xdata, 8, 2) . " DE " . strtoupper(db_mes(substr($xdata, 5, 2))) . " DE " . substr($xdata, 0, 4) . ".";
+    $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper((string) $munic) . ", " . substr((string) $xdata, 8, 2) . " DE " . strtoupper(db_mes(substr((string) $xdata, 5, 2))) . " DE " . substr((string) $xdata, 0, 4) . ".";
     $pdf->cell(30, 4, '', '0', 'J', '0');
     $pdf->multicell(180, 4, $txt, '0', 'J', '0');
     $pdf->Ln(10);
@@ -780,7 +780,7 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $pdf->Ln(10);
     $pdf->multicell(0, 4, "Registre-se e cumpra-se", '0', 'L', '0');
 
-} elseif ($projeto_tipo == "1" && strtoupper(trim($munic)) == "CANELA") {
+} elseif ($projeto_tipo == "1" && strtoupper(trim((string) $munic)) == "CANELA") {
     
     if ($pdf->Gety() > 230) {
         $pdf->AddPage("P");
@@ -790,7 +790,7 @@ if ($projeto_tipo == "1" && strtoupper(trim($munic)) == "SAPIRANGA") {
     $ass_sec = $classinatura->assinatura(1002, $sec);
 
     $pdf->Ln(5);
-    $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper($munic) . ", " . substr($xdata, 8, 2) . " DE " . strtoupper(db_mes(substr($xdata, 5, 2))) . " DE " . substr($xdata, 0, 4) . ".";
+    $txt = "GABINETE DO PREFEITO MUNICIPAL DE " . strtoupper((string) $munic) . ", " . substr((string) $xdata, 8, 2) . " DE " . strtoupper(db_mes(substr((string) $xdata, 5, 2))) . " DE " . substr((string) $xdata, 0, 4) . ".";
     $pdf->cell(30, 4, '', '0', 'J', '0');
     $pdf->multicell(180, 4, $txt, '0', 'J', '0');
     $pdf->Ln(10);

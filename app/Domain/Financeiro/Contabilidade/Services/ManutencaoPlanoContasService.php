@@ -53,7 +53,7 @@ class ManutencaoPlanoContasService
                 $this->excluiReduzido($conta);
                 $this->excluirConta($conta);
             }
-        } catch (QueryException $exception) {
+        } catch (QueryException) {
             throw new Exception("Erro ao excluir contas selecionadas. Entre em contato com o suporte para análise.");
         }
     }

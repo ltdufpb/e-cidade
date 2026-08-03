@@ -41,7 +41,7 @@ $sPosScripts     = "";
 if (isset($incluir)) {
 
   db_inicio_transacao();
-  $oDaoTipoassunto->bi30_descricao = trim($bi30_descricao);
+  $oDaoTipoassunto->bi30_descricao = trim((string) $bi30_descricao);
   $oDaoTipoassunto->incluir($bi30_sequencial);
   db_fim_transacao();
 
@@ -57,7 +57,7 @@ if (isset($incluir)) {
       $sPosScripts .= "document.form1.{$oDaoTipoassunto->erro_campo}.focus();\n";
     }
   } else {
-    $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
+    $sPosScripts .= "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
   }
 }
 

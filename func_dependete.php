@@ -42,13 +42,13 @@ $filtro=2 ->mostra cnpj
 */
 
 $filtro=0;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
 
 if (!isset($pesquisar)) {
-    parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+    parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
     foreach ($queryString as $key => $value) {
         ${$key} = $value;
@@ -76,7 +76,7 @@ if (isset($script) && $script != "" && !is_bool($script)) {
 	
   $vals = "";
   $vir  = "";
-  $camp = split(",",$valores);
+  $camp = preg_split("#,#m",$valores);
   
   for($f=0;$f<count($camp);$f++){
   	$vals .= $vir."'".$camp[$f]."'";
@@ -94,7 +94,7 @@ if (isset($script) && $script != "" && !is_bool($script)) {
 
 if (isset($testanome) && !isset($pesquisa_chave)) {
   
-  $funmat			= split("\|",$funcao_js);
+  $funmat			= preg_split("#\\|#m",$funcao_js);
   $func_antes = $funmat[0];
   $valores		= "";
   $camp				= "";
@@ -154,7 +154,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
 	  
 	  if (isset($incproc) && ($incproc!="")) {
 		$result_protparam = db_query("select * from protparam where p90_instit = ".db_getsession("DB_instit"));
-		if (pg_numrows($result_protparam)>0){
+		if (pg_num_rows($result_protparam)>0){
 	  	  db_fieldsmemory($result_protparam,0);
 		  if ($p90_valcpfcnpj == 'f'){
 	?>
@@ -356,7 +356,7 @@ if (isset($testanome) && !isset($pesquisa_chave)) {
           
 					if (isset($nomeDigitadoParaPesquisa) && ($nomeDigitadoParaPesquisa!="") ){
 
-							$nomeDigitadoParaPesquisa = strtoupper($nomeDigitadoParaPesquisa);
+							$nomeDigitadoParaPesquisa = strtoupper((string) $nomeDigitadoParaPesquisa);
 							$sql = $clnome->sqlnome($nomeDigitadoParaPesquisa,$campos,$filtro);
 					}else if(isset($numcgmDigitadoParaPesquisa) && $numcgmDigitadoParaPesquisa != ""){
 
@@ -455,11 +455,11 @@ $sql = "";
 								 <?php 
 							 }else{
 
-                 $aVarRepassa = array(
+                 $aVarRepassa = [
                    "nomeDigitadoParaPesquisa" => "$nomeDigitadoParaPesquisa",
                    "cpf" => "$cpf",
                    "cnpj" => "$cnpj"
-                 );
+                 ];
                
 								 db_lovrot($sql, 14, "()", "", $funcao_js, "", "NoMe", $aVarRepassa);
 							 }
@@ -470,7 +470,7 @@ $sql = "";
 						$result = $clcgm->sql_record($clcgm->$sMetodoExecutar($pesquisa_chave));
 						
 						if(!isset($testanome)){
-							if(($result!=false) && (pg_numrows($result) != 0)){
+							if(($result!=false) && (pg_num_rows($result) != 0)){
 								 db_fieldsmemory($result,0);
 								   if ($filtro==1){
 
@@ -487,7 +487,7 @@ $sql = "";
                  echo "<script>".$funcao_js."(true,'Código (".$pesquisa_chave.") não Encontrado');</script>";
 							}
 						}else{
-							if(($result!=false) && (pg_numrows($result) != 0)){
+							if(($result!=false) && (pg_num_rows($result) != 0)){
 								db_fieldsmemory($result,0);
 								echo "<script>\n";
 								if($z01_ender == '' || $z01_cgccpf == ''){

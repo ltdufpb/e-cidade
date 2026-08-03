@@ -7,12 +7,12 @@ use DateTime;
 
 final class Header extends HeaderPattern
 {
-    const DATA_PROCESSAMENTO    = 'DATAPROCESSAMENTO';
-    const RESERVADO1            = 'RESERVADO1';
-    const CODIGO_CLIENTE_BANCO  = 'CODIGOCLIENTEBANCO';
-    const RESERVADO2            = 'RESERVADO2';
-    const SEQUENCIAL_REGISTRO   = 'SEQUENCIALREGISTRO';
-    const RESERVADO3            = 'RESERVADO3';
+    const string DATA_PROCESSAMENTO    = 'DATAPROCESSAMENTO';
+    const string RESERVADO1            = 'RESERVADO1';
+    const string CODIGO_CLIENTE_BANCO  = 'CODIGOCLIENTEBANCO';
+    const string RESERVADO2            = 'RESERVADO2';
+    const string SEQUENCIAL_REGISTRO   = 'SEQUENCIALREGISTRO';
+    const string RESERVADO3            = 'RESERVADO3';
 
     private $dataProcessamento;
     private $reservado1;

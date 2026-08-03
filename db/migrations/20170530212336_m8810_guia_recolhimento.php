@@ -14,7 +14,7 @@ class M8810GuiaRecolhimento extends PostgresMigration
 
     $linha = $this->fetchRow('select * from configuracoes.db_syscampo where codcam = 1009310');
     if (!$linha) {
-      $this->table('db_cadattdinamicoatributos', array('schema' => 'configuracoes'))->addColumn('db109_ativo', 'boolean', array('default' => true))->update();
+      $this->table('db_cadattdinamicoatributos', ['schema' => 'configuracoes'])->addColumn('db109_ativo', 'boolean', ['default' => true])->update();
     }
 
     $this->inserirDicionario();
@@ -66,12 +66,12 @@ insert into configuracoes.db_sysprikey (codarq,codcam,sequen,camiden) values(101
 STRING
       );
 
-      $tableGuiaCidadao = $this->table('guiarecolhimentocidadao', array('schema' => 'caixa', 'primary_key' => array('k177_cidadaoseq'), 'id' => 'k177_sequencial'));
+      $tableGuiaCidadao = $this->table('guiarecolhimentocidadao', ['schema' => 'caixa', 'primary_key' => ['k177_cidadaoseq'], 'id' => 'k177_sequencial']);
       $tableGuiaCidadao->addColumn('k177_guiarecolhimento', 'integer');
       $tableGuiaCidadao->addForeignKey('k177_guiarecolhimento', 'caixa.guiarecolhimento', 'k174_sequencial');
       $tableGuiaCidadao->addColumn('k177_cidadao', 'integer');
       $tableGuiaCidadao->addColumn('k177_cidadaoseq', 'integer');
-      $tableGuiaCidadao->addForeignKey(array('k177_cidadao', 'k177_cidadaoseq'), 'ouvidoria.cidadao', array('ov02_sequencial', 'ov02_seq'));
+      $tableGuiaCidadao->addForeignKey(['k177_cidadao', 'k177_cidadaoseq'], 'ouvidoria.cidadao', ['ov02_sequencial', 'ov02_seq']);
       $tableGuiaCidadao->create();
 
     }
@@ -86,7 +86,7 @@ STRING
                            and m01_modcarnepadrao = 26');
 
     $this->execute("delete from caixa.cadmodcarne where k47_sequencial = 97;");
-    $this->table('db_cadattdinamicoatributos', array('schema' => 'configuracoes'))->removeColumn('db109_ativo')->update();
+    $this->table('db_cadattdinamicoatributos', ['schema' => 'configuracoes'])->removeColumn('db109_ativo')->update();
 
     $this->execute(
       "
@@ -109,7 +109,7 @@ delete from configuracoes.db_syscampo where codcam in (1009315,1009316,1009317,1
 STRING
     );
 
-    $this->table('guiarecolhimentocidadao', array('schema' => 'caixa'))->drop();
+    $this->table('guiarecolhimentocidadao', ['schema' => 'caixa'])->drop();
 
 
   }

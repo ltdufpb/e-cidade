@@ -32,7 +32,7 @@ require_once(modification("fpdf151/FpdfMultiCellBorder.php"));
 $oDadosRelatorio = new stdClass();
 $oDadosRelatorio->oData = new DBDate(date("Y-m-d"));
 $oDadosRelatorio->sData = $oDadosRelatorio->oData->dataPorExtenso();
-$oDadosRelatorio->aAlunos = array();
+$oDadosRelatorio->aAlunos = [];
 try {
 
     if (empty($_GET['iTransferencia'])) {
@@ -51,7 +51,7 @@ try {
     $sTexto .= "filho(a) de [sFiliacao], cursou até [sDataResultadoFinal], a(o) [sEtapa] do(a) [sEnsino] nesta escola, ";
     $sTexto .= "sendo considerado [resultadoFinal]. O (a) aluno (a) poderá continuar seus estudos em qualquer instituição de ensino, conforme legislação vigente.";
 
-    $aVariaveis = array('sAluno', 'sNaturalidade', 'sUf', 'sDataNascimento', 'sFiliacao', 'sDataResultadoFinal', 'sEtapa', 'sEnsino', 'resultadoFinal');
+    $aVariaveis = ['sAluno', 'sNaturalidade', 'sUf', 'sDataNascimento', 'sFiliacao', 'sDataResultadoFinal', 'sEtapa', 'sEnsino', 'resultadoFinal'];
 
     foreach ($aMatriculas as $oMatricula) {
 
@@ -90,7 +90,7 @@ try {
         $oDados->resultadoFinal = $termoResultadoFinal[0]->sDescricao;
         db_fim_transacao();
 
-        $aFiliacao = array();
+        $aFiliacao = [];
         if ($oAluno->getNomeMae() != '') {
             $aFiliacao[] = $oAluno->getNomeMae();
         }
@@ -116,15 +116,15 @@ try {
          * Busca as progressões parciais ATIVAS que o aluno possui.
          */
         $aProgressoes = ProgressaoParcialAlunoRepository::getProgressoesAtivas($oAluno);
-        $oDados->aProgressoes = array();
-        $aDisciplinasEmProgressao = array();
+        $oDados->aProgressoes = [];
+        $aDisciplinasEmProgressao = [];
         foreach ($aProgressoes as $oProgressao) {
 
             $iAno = $oProgressao->getAno();
             $sEtapa = $oProgressao->getEtapa()->getNome();
             $sIndex = "{$iAno}#{$sEtapa}";
 
-            $aDisciplinasEmProgressao[$sIndex][] = trim($oProgressao->getDisciplina()->getNomeDisciplina());
+            $aDisciplinasEmProgressao[$sIndex][] = trim((string) $oProgressao->getDisciplina()->getNomeDisciplina());
         }
 
         foreach ($aDisciplinasEmProgressao as $sIndice => $aDisciplina) {
@@ -159,9 +159,9 @@ try {
 
     if (isset($_GET['sEmissor'])) {
 
-        $sAto = base64_decode($_GET['sAtoLegal']);
-        $sAssinatura = base64_decode($_GET['sEmissor']);
-        $sFuncao = base64_decode($_GET['sFuncao']);
+        $sAto = base64_decode((string) $_GET['sAtoLegal']);
+        $sAssinatura = base64_decode((string) $_GET['sEmissor']);
+        $sFuncao = base64_decode((string) $_GET['sFuncao']);
         if (!empty($sAto)) {
             $sFuncao .= " ( {$sAto})";
         }

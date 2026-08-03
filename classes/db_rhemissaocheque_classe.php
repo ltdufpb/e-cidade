@@ -29,29 +29,29 @@
 //CLASSE DA ENTIDADE rhemissaocheque
 class cl_rhemissaocheque { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $r15_sequencial = 0; 
-   var $r15_descricao = null; 
-   var $r15_idusuario = 0; 
-   var $r15_dtgeracao_dia = null; 
-   var $r15_dtgeracao_mes = null; 
-   var $r15_dtgeracao_ano = null; 
-   var $r15_dtgeracao = null; 
-   var $r15_hora = null; 
+   public $r15_sequencial = 0; 
+   public $r15_descricao = null; 
+   public $r15_idusuario = 0; 
+   public $r15_dtgeracao_dia = null; 
+   public $r15_dtgeracao_mes = null; 
+   public $r15_dtgeracao_ano = null; 
+   public $r15_dtgeracao = null; 
+   public $r15_hora = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  r15_sequencial = int4 = Sequencial 
                  r15_descricao = varchar(40) = Descrição 
                  r15_idusuario = int4 = ID usuário 
@@ -59,10 +59,10 @@ class cl_rhemissaocheque {
                  r15_hora = char(5) = Hora Geração 
                  ";
    //funcao construtor da classe 
-   function cl_rhemissaocheque() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhemissaocheque"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -141,10 +141,10 @@ class cl_rhemissaocheque {
          $this->erro_status = "0";
          return false; 
        }
-       $this->r15_sequencial = pg_result($result,0,0); 
+       $this->r15_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from rhemissaocheque_r15_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $r15_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $r15_sequencial)){
          $this->erro_sql = " Campo r15_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -180,7 +180,7 @@ class cl_rhemissaocheque {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "rhemissaocheque ($this->r15_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "rhemissaocheque já Cadastrado";
@@ -204,14 +204,14 @@ class cl_rhemissaocheque {
      $resaco = $this->sql_record($this->sql_query_file($this->r15_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14059,'$this->r15_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2472,14059,'','".AddSlashes(pg_result($resaco,0,'r15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2472,14060,'','".AddSlashes(pg_result($resaco,0,'r15_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2472,14061,'','".AddSlashes(pg_result($resaco,0,'r15_idusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2472,14062,'','".AddSlashes(pg_result($resaco,0,'r15_dtgeracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2472,14063,'','".AddSlashes(pg_result($resaco,0,'r15_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2472,14059,'','".AddSlashes(pg_fetch_result($resaco,0,'r15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2472,14060,'','".AddSlashes(pg_fetch_result($resaco,0,'r15_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2472,14061,'','".AddSlashes(pg_fetch_result($resaco,0,'r15_idusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2472,14062,'','".AddSlashes(pg_fetch_result($resaco,0,'r15_dtgeracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2472,14063,'','".AddSlashes(pg_fetch_result($resaco,0,'r15_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -220,10 +220,10 @@ class cl_rhemissaocheque {
       $this->atualizacampos();
      $sql = " update rhemissaocheque set ";
      $virgula = "";
-     if(trim($this->r15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r15_sequencial"])){ 
+     if(trim((string) $this->r15_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r15_sequencial"])){ 
        $sql  .= $virgula." r15_sequencial = $this->r15_sequencial ";
        $virgula = ",";
-       if(trim($this->r15_sequencial) == null ){ 
+       if(trim((string) $this->r15_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "r15_sequencial";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_rhemissaocheque {
          return false;
        }
      }
-     if(trim($this->r15_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r15_descricao"])){ 
+     if(trim((string) $this->r15_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r15_descricao"])){ 
        $sql  .= $virgula." r15_descricao = '$this->r15_descricao' ";
        $virgula = ",";
-       if(trim($this->r15_descricao) == null ){ 
+       if(trim((string) $this->r15_descricao) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "r15_descricao";
          $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_rhemissaocheque {
          return false;
        }
      }
-     if(trim($this->r15_idusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r15_idusuario"])){ 
+     if(trim((string) $this->r15_idusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r15_idusuario"])){ 
        $sql  .= $virgula." r15_idusuario = $this->r15_idusuario ";
        $virgula = ",";
-       if(trim($this->r15_idusuario) == null ){ 
+       if(trim((string) $this->r15_idusuario) == null ){ 
          $this->erro_sql = " Campo ID usuário nao Informado.";
          $this->erro_campo = "r15_idusuario";
          $this->erro_banco = "";
@@ -259,10 +259,10 @@ class cl_rhemissaocheque {
          return false;
        }
      }
-     if(trim($this->r15_dtgeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r15_dtgeracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r15_dtgeracao_dia"] !="") ){ 
+     if(trim((string) $this->r15_dtgeracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r15_dtgeracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["r15_dtgeracao_dia"] !="") ){ 
        $sql  .= $virgula." r15_dtgeracao = '$this->r15_dtgeracao' ";
        $virgula = ",";
-       if(trim($this->r15_dtgeracao) == null ){ 
+       if(trim((string) $this->r15_dtgeracao) == null ){ 
          $this->erro_sql = " Campo Data Geração nao Informado.";
          $this->erro_campo = "r15_dtgeracao_dia";
          $this->erro_banco = "";
@@ -275,7 +275,7 @@ class cl_rhemissaocheque {
        if(isset($GLOBALS["HTTP_POST_VARS"]["r15_dtgeracao_dia"])){ 
          $sql  .= $virgula." r15_dtgeracao = null ";
          $virgula = ",";
-         if(trim($this->r15_dtgeracao) == null ){ 
+         if(trim((string) $this->r15_dtgeracao) == null ){ 
            $this->erro_sql = " Campo Data Geração nao Informado.";
            $this->erro_campo = "r15_dtgeracao_dia";
            $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_rhemissaocheque {
          }
        }
      }
-     if(trim($this->r15_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r15_hora"])){ 
+     if(trim((string) $this->r15_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["r15_hora"])){ 
        $sql  .= $virgula." r15_hora = '$this->r15_hora' ";
        $virgula = ",";
-       if(trim($this->r15_hora) == null ){ 
+       if(trim((string) $this->r15_hora) == null ){ 
          $this->erro_sql = " Campo Hora Geração nao Informado.";
          $this->erro_campo = "r15_hora";
          $this->erro_banco = "";
@@ -307,19 +307,19 @@ class cl_rhemissaocheque {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14059,'$this->r15_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r15_sequencial"]) || $this->r15_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2472,14059,'".AddSlashes(pg_result($resaco,$conresaco,'r15_sequencial'))."','$this->r15_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2472,14059,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r15_sequencial'))."','$this->r15_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r15_descricao"]) || $this->r15_descricao != "")
-           $resac = db_query("insert into db_acount values($acount,2472,14060,'".AddSlashes(pg_result($resaco,$conresaco,'r15_descricao'))."','$this->r15_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2472,14060,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r15_descricao'))."','$this->r15_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r15_idusuario"]) || $this->r15_idusuario != "")
-           $resac = db_query("insert into db_acount values($acount,2472,14061,'".AddSlashes(pg_result($resaco,$conresaco,'r15_idusuario'))."','$this->r15_idusuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2472,14061,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r15_idusuario'))."','$this->r15_idusuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r15_dtgeracao"]) || $this->r15_dtgeracao != "")
-           $resac = db_query("insert into db_acount values($acount,2472,14062,'".AddSlashes(pg_result($resaco,$conresaco,'r15_dtgeracao'))."','$this->r15_dtgeracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2472,14062,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r15_dtgeracao'))."','$this->r15_dtgeracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["r15_hora"]) || $this->r15_hora != "")
-           $resac = db_query("insert into db_acount values($acount,2472,14063,'".AddSlashes(pg_result($resaco,$conresaco,'r15_hora'))."','$this->r15_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2472,14063,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'r15_hora'))."','$this->r15_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -364,14 +364,14 @@ class cl_rhemissaocheque {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14059,'$r15_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2472,14059,'','".AddSlashes(pg_result($resaco,$iresaco,'r15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2472,14060,'','".AddSlashes(pg_result($resaco,$iresaco,'r15_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2472,14061,'','".AddSlashes(pg_result($resaco,$iresaco,'r15_idusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2472,14062,'','".AddSlashes(pg_result($resaco,$iresaco,'r15_dtgeracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2472,14063,'','".AddSlashes(pg_result($resaco,$iresaco,'r15_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2472,14059,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r15_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2472,14060,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r15_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2472,14061,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r15_idusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2472,14062,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r15_dtgeracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2472,14063,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'r15_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from rhemissaocheque
@@ -431,7 +431,7 @@ class cl_rhemissaocheque {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:rhemissaocheque";
@@ -446,7 +446,7 @@ class cl_rhemissaocheque {
    function sql_query ( $r15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -468,7 +468,7 @@ class cl_rhemissaocheque {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -481,7 +481,7 @@ class cl_rhemissaocheque {
    function sql_query_file ( $r15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -502,7 +502,7 @@ class cl_rhemissaocheque {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -515,7 +515,7 @@ class cl_rhemissaocheque {
    function sql_query_item( $r15_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -538,7 +538,7 @@ class cl_rhemissaocheque {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

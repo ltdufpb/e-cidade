@@ -34,7 +34,7 @@ $clrotulo->label('r06_descr');
 $clrotulo->label('r06_elemen');
 $clrotulo->label('r06_pd');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
 
@@ -49,9 +49,9 @@ $sql_prev1 = "select distinct r33_ppatro
 $res_prev1 = db_query($sql_prev1);
 $rub_ded1 = '';
 $rub_virg = '';
-if(pg_numrows($res_prev1) > 1){
+if(pg_num_rows($res_prev1) > 1){
    db_redireciona('db_erros.php?fechar=true&db_erro=As previdência escolhidas possuem percentuais patronais diferentes. Verifique!');
-}elseif(pg_numrows($res_prev1) > 0){
+}elseif(pg_num_rows($res_prev1) > 0){
   db_fieldsmemory($res_prev1,0);
   $rub_base    = 'R992';
   $rub_ded     = '';
@@ -100,10 +100,10 @@ $res_prev = db_query($sql_prev);
 $descr_prev = '';
 $tab_prev   = '';
 $virg       = '';
-if(pg_numrows($res_prev) == 0){
+if(pg_num_rows($res_prev) == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Problema na geração do relatório. Contate Suporte.');
 }else{
-  for($xprev=0;$xprev<pg_numrows($res_prev);$xprev++){
+  for($xprev=0;$xprev<pg_num_rows($res_prev);$xprev++){
     db_fieldsmemory($res_prev,$xprev);
     $descr_prev .= $virg.$r33_nome;
     $tab_prev   .= $virg.$r33_codtab;
@@ -345,7 +345,7 @@ $head6 = "PERÍODO : ".$mes." / ".$ano;
 
 $result = db_query($sql);
 //db_criatabela($result);
-$xxnum = pg_numrows($result);
+$xxnum = pg_num_rows($result);
 if ($xxnum == 0){
    db_redireciona('db_erros.php?fechar=true&db_erro=Não existem movimentos cadastrados no período de '.$mes.' / '.$ano);
 
@@ -374,7 +374,7 @@ $pat          = 0;
 $teste        = 0;
 $extra        = 0;
 
-for($x = 0; $x < pg_numrows($result);$x++){
+for($x = 0; $x < pg_num_rows($result);$x++){
    db_fieldsmemory($result,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 ){
       $pdf->addpage();
@@ -386,7 +386,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
         $pdf->cell(18,$alt,'TOTAL',1,1,"R",0);
       }else{
         $pdf->cell(18,$alt,'PATRONAL',1,0,"R",0);
-        if(trim($perc_extra) != '' ){
+        if(trim((string) $perc_extra) != '' ){
           $pdf->cell(18,$alt,"EXTRA $perc_extra %",1,0,"R",0);
         }
         $pdf->cell(18,$alt,'DEDUÇÕES',1,0,"R",0);
@@ -423,7 +423,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
      $pdf->cell(70,$alt,$o15_descr,0,0,"L",0);
      $pdf->cell(18,$alt,db_formatar($inss,'f'),0,0,"R",0);
      $pdf->cell(18,$alt,db_formatar($pat,'f'),0,0,"R",0);
-     if(trim($perc_extra) != '' ){
+     if(trim((string) $perc_extra) != '' ){
        $extra = round($inss / 100 * $perc_extra,2);
        $pdf->cell(18,$alt,db_formatar($extra,'f'),0,0,"R",0);
      }
@@ -446,7 +446,7 @@ for($x = 0; $x < pg_numrows($result);$x++){
    $pdf->cell(95,$alt,'TOTAL ',0,0,"C",0);
    $pdf->cell(18,$alt,db_formatar($val_fgts,'f'),0,0,"R",0);
    $pdf->cell(18,$alt,db_formatar($val_pat,'f'),0,0,"R",0);
-   if(trim($perc_extra) != '' ){
+   if(trim((string) $perc_extra) != '' ){
      $pdf->cell(18,$alt,db_formatar($val_extra,'f'),0,0,"R",0);
    }
    if($tab_prev != 0){

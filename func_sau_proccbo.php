@@ -34,7 +34,7 @@ require_once(modification("libs/db_stdlibwebseller.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clrotulo = new rotulocampo;
 $clrotulo->label("sd63_c_nome");
@@ -244,9 +244,9 @@ $oSauConfig = loadConfig('sau_config_ext');
                                                    );
             }
 
-            $repassa = array();
+            $repassa = [];
             if( isset( $chave_sd96_i_procedimento ) ) {
-              $repassa = array( "chave_sd96_i_procedimento" => $chave_sd96_i_procedimento );
+              $repassa = [ "chave_sd96_i_procedimento" => $chave_sd96_i_procedimento ];
             }
 
             if( isset( $nao_mostra ) ) {

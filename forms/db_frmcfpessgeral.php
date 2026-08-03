@@ -148,7 +148,7 @@ $clrotulo->label("db149_descricao");
             </td>
             <td>
               <?php 
-              $x = array("1"=>"CGC","2"=>"CEI");
+              $x = ["1"=>"CGC","2"=>"CEI"];
               db_select('r11_fgts12',$x,true,$db_opcao," style='width: 68px;'");
               ?>
             </td>
@@ -249,7 +249,7 @@ $clrotulo->label("db149_descricao");
             </td>
             <td>
               <?php 
-              $x = array("t"=>"SIM","f"=>"NÃO");
+              $x = ["t"=>"SIM","f"=>"NÃO"];
               db_select('r11_geraretencaoempenho',$x,true,$db_opcao," style='width: 135px;' ");
               ?>
             </td>
@@ -260,7 +260,7 @@ $clrotulo->label("db149_descricao");
             </td>
             <td>
               <?php 
-              $x = array(0=>"Sem arredondar",1=>"2a casa decimal",2=>"1a casa decimal",3=>"Unidade",5=>"Dezena");
+              $x = [0=>"Sem arredondar",1=>"2a casa decimal",2=>"1a casa decimal",3=>"Unidade",5=>"Dezena"];
               db_select('r11_arredn',$x,true,$db_opcao," style='width: 135px;'");
               ?>
             </td>
@@ -271,7 +271,7 @@ $clrotulo->label("db149_descricao");
             </td>
             <td>
               <?php 
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('r11_concatdv',$x,true,$db_opcao," style='width: 135px;'");
               ?>
             </td>
@@ -282,7 +282,7 @@ $clrotulo->label("db149_descricao");
             </td>
             <td>
               <?php 
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('r11_sald13',$x,true,$db_opcao," style='width: 135px;' ");
               ?>
             </td>
@@ -359,7 +359,7 @@ $clrotulo->label("db149_descricao");
             </td>
             <td>
               <?php 
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('r11_filtralotacaousuario',$x,true,$db_opcao," style='width: 135px;' ");
               ?>
             </td>
@@ -370,7 +370,7 @@ $clrotulo->label("db149_descricao");
                 </td>
                 <td>
                     <?php 
-                    $x = array("f"=>"NAO","t"=>"SIM");
+                    $x = ["f"=>"NAO","t"=>"SIM"];
                     db_select('r11_utilizarhlotavincrubrica',$x,true,$db_opcao," style='width: 135px;' ");
                     ?>
                 </td>
@@ -381,7 +381,7 @@ $clrotulo->label("db149_descricao");
                 </td>
                 <td>
                     <?php 
-                    $x = array("f"=>"NAO","t"=>"SIM");
+                    $x = ["f"=>"NAO","t"=>"SIM"];
                     db_select('r11_emissaocontracheque',$x,true,$db_opcao," style='width: 135px;' ");
                     ?>
                 </td>
@@ -392,7 +392,7 @@ $clrotulo->label("db149_descricao");
             </td>
             <td>
               <?php 
-              $x = array("f"=>"NAO","t"=>"SIM");
+              $x = ["f"=>"NAO","t"=>"SIM"];
               db_select('r11_bloqueiocompetenciaaberta',$x,true,$db_opcao," style='width: 135px;' ");
               ?>
             </td>
@@ -536,7 +536,7 @@ $clrotulo->label("db149_descricao");
             <td>
               <?php
 
-                $aOptions = array(
+                $aOptions = [
                   ''   => "Selecione",
                   '01' => "Estabelecimento não adotou sistema de controle de ponto porque em nenhum mês do ano-base possuía mais de 10 trabalhadores celetistas ativos",
                   '02' => "Estabelecimento adotou sistema manual",
@@ -544,7 +544,7 @@ $clrotulo->label("db149_descricao");
                   '04' => "Estabelecimento adotou Sistema de Registro Eletrônico de Ponto - SREP (Portaria 1.510/2009)",
                   '05' => "Estabelecimento adotou sistema não eletrônico alternativo previsto no art.1º da Portaria 373/2011",
                   '06' => "Estabelecimento adotou sistema eletrônico alternativo previsto na Portaria 373/2011"
-                );
+                ];
 
                 db_select('r11_sistemacontroleponto', $aOptions, true, $db_opcao, " style='width: 400px;'");
 
@@ -764,7 +764,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_cfpess.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

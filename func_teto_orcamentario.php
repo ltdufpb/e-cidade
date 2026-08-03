@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_teto_orcamentario_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clteto_orcamentario = new cl_teto_orcamentario;
 $clteto_orcamentario->rotulo->label("c40_sequencial");
 $clteto_orcamentario->rotulo->label("c40_sequencial");
@@ -52,12 +52,12 @@ if (!isset($pesquisa_chave)) {
             $sql = $clteto_orcamentario->sql_query("", $campos, "c40_sequencial", "");
         }
     }
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_c40_sequencial)) {
-        $repassa = array(
+        $repassa = [
             "chave_c40_sequencial" => $chave_c40_sequencial,
             "chave_c40_sequencial" => $chave_c40_sequencial
-        );
+        ];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

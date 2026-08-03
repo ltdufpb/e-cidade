@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcorcam_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $numero = empty($_GET['numero']) ? null :$_GET['numero'];
 
@@ -201,7 +201,7 @@ if (isset($datafinal)) {
         $campos = "l21_codliclicita as dl_Licitação,".$campos;
       }
 
-      if ( !isset($chave_pc20_codorc) && !isset($chave_pc10_numero) && !isset($chave_pc80_codproc) || ( trim($chave_pc20_codorc)=="" && trim($chave_pc10_numero)=="" && trim($chave_pc80_codproc)=="")){
+      if ( !isset($chave_pc20_codorc) && !isset($chave_pc10_numero) && !isset($chave_pc80_codproc) || ( trim((string) $chave_pc20_codorc)=="" && trim((string) $chave_pc10_numero)=="" && trim((string) $chave_pc80_codproc)=="")){
 
         if (str_replace('-', '', $pc20_dtatei) != '' && str_replace('-', '', $pc20_dtatef) != '') {
           $where_sol  = " and pc20_dtate between '{$pc20_dtatei}' and '{$pc20_dtatef}'                      ";
@@ -250,8 +250,8 @@ if (isset($datafinal)) {
         if(isset($chave_pc20_codorc) && (trim($chave_pc20_codorc)!="") ){
           $sql = $clpcorcam->sql_query_solproc(null,$campos,"pc20_codorc desc","pc20_codorc=$chave_pc20_codorc ".$where_sol);
         }else if(isset($chave_pc10_numero) && (trim($chave_pc10_numero)!="") ){
-          $camposOrcamento = array();
-          $filtros = array();
+          $camposOrcamento = [];
+          $filtros = [];
 
           $camposOrcamento[] = 'DISTINCT pc10_numero';
           $camposOrcamento[] = 'pcorcam.pc20_codorc';
@@ -278,7 +278,7 @@ if (isset($datafinal)) {
           echo "<script>parent.js_mostrapcorcamsol('{$codigoOrcamento}')</script>";
         }
         
-        db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", array(), false);
+        db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", [], false);
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){
           $result = $clpcorcam->sql_record($clpcorcam->sql_query_solproc(null,$campos,"","pc20_codorc=$pesquisa_chave ".$where_sol));

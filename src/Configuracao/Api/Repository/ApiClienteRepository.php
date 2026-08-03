@@ -17,7 +17,7 @@ class ApiClienteRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * DiversosRepository constructor.
@@ -62,7 +62,7 @@ class ApiClienteRepository
             throw new Exception('Não foi possível buscar os os clientes cadastrados na API');
         }
 
-        $registros = array();
+        $registros = [];
 
         if (pg_num_rows($rs) === 0) {
             return $registros;

@@ -52,7 +52,7 @@ if (isset($liberaaba) && $liberaaba) {
     if ($opcao == 'alterar') {
         $sql = $clprofissionaisprestadores->sql_query($_POST['fm07_codigo']);
         $result = $clprofissionaisprestadores->sql_record($sql);
-        if (pg_numrows($result) > 0) {
+        if (pg_num_rows($result) > 0) {
             db_fieldsmemory($result, 0);
             $db_opcao = 2;
             $db_botao = true;
@@ -60,7 +60,7 @@ if (isset($liberaaba) && $liberaaba) {
     } else if (isset($opcaoaba) && !isset($chavepesquisa)) {
         $sql = $clprestador->sql_query($opcaoaba, 'fm06_codigo as fm07_prestador, fm06_numcgm as fm07_prestador_cgm, z01_nome as nome');
         $result = $clprestador->sql_record($sql);
-        if (pg_numrows($result) > 0) {
+        if (pg_num_rows($result) > 0) {
             db_fieldsmemory($result, 0);
         }
         $db_opcao = 1;
@@ -72,7 +72,7 @@ if (isset($liberaaba) && $liberaaba) {
            db_msgbox('Erro ao buscar informações do prestador '.pg_last_error());
         }
 
-        if (pg_numrows($result) > 0) {
+        if (pg_num_rows($result) > 0) {
             db_fieldsmemory($result, 0);
         }
 
@@ -96,7 +96,7 @@ if ($opcao == 'excluir') {
     $sql = $clprestador->sql_query($fm07_prestador);
     $result = $clprestador->sql_record($sql);
 
-    if (pg_numrows($result) > 0) {
+    if (pg_num_rows($result) > 0) {
         db_fieldsmemory($result, 0);
     }
 

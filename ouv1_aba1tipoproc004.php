@@ -33,8 +33,8 @@ include(modification("libs/db_utils.php"));
 include(modification("classes/db_tipoproc_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 
@@ -50,7 +50,7 @@ if (isset($oPost->db_opcao) && $oPost->db_opcao == "Incluir") {
     $cltipoproc->p51_instit = db_getsession("DB_instit");
 
     $tipoprocgrupo = 1;
-    if (in_array($oPost->p51_prottipodocumentoprocesso, array(5))) {
+    if (in_array($oPost->p51_prottipodocumentoprocesso, [5])) {
         $tipoprocgrupo = 2;
     }
 

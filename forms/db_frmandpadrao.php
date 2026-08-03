@@ -153,7 +153,7 @@ if (!empty($p53_codigo) && !empty($p53_ordem)) {
         <tr>
           <td align="top" colspan="2">
             <?php 
-            $chavepri = array("p53_codigo"=>@$p53_codigo,"p53_ordem"=>@$p53_ordem);
+            $chavepri = ["p53_codigo"=>@$p53_codigo,"p53_ordem"=>@$p53_ordem];
             $cliframe_alterar_excluir->chavepri=$chavepri;
             $cliframe_alterar_excluir->campos="p53_codigo,nomeinst,descrdepto,p53_dias,p53_ordem";
             $cliframe_alterar_excluir->sql=$clandpadrao->sql_query("","","*","p53_ordem"," p53_codigo = ".@$p53_codigo."");
@@ -199,13 +199,13 @@ if (!empty($p53_codigo) && !empty($p53_ordem)) {
         document.form1.p53_codigo.focus();
         document.form1.p53_codigo.value = '';
       }else{
-        location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?p53_codigo="+document.form1.p53_codigo.value+"&p51_descr="+chave;
+        location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?p53_codigo="+document.form1.p53_codigo.value+"&p51_descr="+chave;
       }
     }
     function js_mostratipoproc1(chave1,chave2){
       document.form1.p53_codigo.value = chave1;
       document.form1.p51_descr.value = chave2;
-      location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?p53_codigo="+chave1+"&p51_descr="+chave2;
+      location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?p53_codigo="+chave1+"&p51_descr="+chave2;
       db_iframe.hide();
     }
     function js_pesquisap53_coddepto(mostra){
@@ -241,7 +241,7 @@ if (!empty($p53_codigo) && !empty($p53_ordem)) {
     }
     function js_preenchepesquisa(chave,chave1){
       db_iframe.hide();
-      location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&chavepesquisa1="+chave1;
+      location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?chavepesquisa="+chave+"&chavepesquisa1="+chave1;
     }
 
     const 

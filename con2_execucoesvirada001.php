@@ -84,7 +84,7 @@ $clrotulo->label("nome");
 					    <td> 
 					      <?php 
 					        $situacao = 0;
-					        $aSituacao = array("0"=>"Todos","1"=>"Processado","2"=>"Cancelado");
+					        $aSituacao = ["0"=>"Todos","1"=>"Processado","2"=>"Cancelado"];
 					        db_select('situacao',$aSituacao,true,1,"");
 					      ?>
 					    <td>

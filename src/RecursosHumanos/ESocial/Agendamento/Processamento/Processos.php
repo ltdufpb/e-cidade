@@ -44,17 +44,16 @@ use stdClass;
 class Processos extends ProcessamentoAbstract implements ProcessamentoInterface
 {
     /**
-     * @var
-     */
-    private $cgm;
-
-    /**
      * Processos constructor.
      * @param $cgm
      */
-    public function __construct($cgm)
+    public function __construct(
+        /**
+         * @var
+         */
+        private $cgm
+    )
     {
-        $this->cgm = $cgm;
     }
 
     /**
@@ -97,9 +96,9 @@ class Processos extends ProcessamentoAbstract implements ProcessamentoInterface
 
         $oAvaliacaoGrupoRespostaProcesso = new cl_avaliacaogruporespostaprocesso;
 
-        $aCampos = array('DISTINCT eso05_avaliacaogruporesposta AS db_preenchimento');
-        $aWhere = array("db102_avaliacao = {$iFormulario}");
-        $aOrder = array('eso05_avaliacaogruporesposta');
+        $aCampos = ['DISTINCT eso05_avaliacaogruporesposta AS db_preenchimento'];
+        $aWhere = ["db102_avaliacao = {$iFormulario}"];
+        $aOrder = ['eso05_avaliacaogruporesposta'];
 
         $sSql = $oAvaliacaoGrupoRespostaProcesso->buscaPreenchimento($aCampos, $aWhere, $aOrder, $iInstituicao);
 
@@ -113,9 +112,7 @@ class Processos extends ProcessamentoAbstract implements ProcessamentoInterface
             throw new DBException('Nenhum Processo cadastrado!');
         }
 
-        $aProcessos = db_utils::makeCollectionFromRecord($rProcessos, function (stdClass $oDados) {
-            return $oDados->db_preenchimento;
-        });
+        $aProcessos = db_utils::makeCollectionFromRecord($rProcessos, fn(stdClass $oDados) => $oDados->db_preenchimento);
 
         return $aProcessos;
     }

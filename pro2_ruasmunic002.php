@@ -35,7 +35,7 @@ $clrotulo->label('j14_nome');
 $clrotulo->label('j13_codi');
 $clrotulo->label('j13_descr');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($ordem == "a") {
@@ -66,7 +66,7 @@ $sql = "SELECT  distinct j14_codigo,
 
 //die($sql);
 $result = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 
 //db_criatabela($result);exit;
 

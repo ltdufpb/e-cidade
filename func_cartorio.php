@@ -31,9 +31,9 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cartorio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_GET);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcartorio = new cl_cartorio;
 $clcartorio->rotulo->label("v82_sequencial");
 $clcartorio->rotulo->label("v82_sequencial");
@@ -82,9 +82,9 @@ $clcartorio->rotulo->label("v82_sequencial");
         }else{
            $sql = $clcartorio->sql_query("",$campos,"v82_sequencial",$sWhere);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_v82_sequencial)){
-          $repassa = array("chave_v82_sequencial"=>$chave_v82_sequencial,"chave_v82_sequencial"=>$chave_v82_sequencial);
+          $repassa = ["chave_v82_sequencial"=>$chave_v82_sequencial,"chave_v82_sequencial"=>$chave_v82_sequencial];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

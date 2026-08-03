@@ -93,13 +93,13 @@ $sSqlBuscaLancamentos .= "         and conplano.c60_anousu      = {$iAnoSessao}"
 $sSqlBuscaLancamentos .= "         and conlancamval.c69_data between '{$oDataInicial->getDate()}' and '{$oDataFinal->getDate()}'";
 $sSqlBuscaLancamentos .= "         and c61_instit = {$iInstituicaoSessao} ";
 
-if (trim($oGet->sDocumentos) != "") {
+if (trim((string) $oGet->sDocumentos) != "") {
   $sSqlBuscaLancamentos .= "       and conhistdoc.c53_coddoc in ({$oGet->sDocumentos})";
 }
-if (trim($oGet->lista) != "") {
+if (trim((string) $oGet->lista) != "") {
   $sSqlBuscaLancamentos .= "       and conplanoreduz.c61_reduz in ({$oGet->lista})";
 }
-if (trim($oGet->estrut_inicial) != "") {
+if (trim((string) $oGet->estrut_inicial) != "") {
   $sSqlBuscaLancamentos .= "       and conplano.c60_estrut ilike '{$oGet->estrut_inicial}%'";
 }
 $sSqlBuscaLancamentos .= "       order by c70_data, c61_reduz) as x";
@@ -119,7 +119,7 @@ $sSqlBuscaLancamentos .= "       order by x.c61_reduz";
 $rsBuscaLancamentos = db_query($sSqlBuscaLancamentos);
 $iTotalRegistros    = pg_num_rows($rsBuscaLancamentos);
 $iCodigoReduzido    = null;
-$aDadosImprimir     = array();
+$aDadosImprimir     = [];
 
 /**
  * Percorremos os dados para imprimir estes dados posteriormente
@@ -141,7 +141,7 @@ for ($iLinhaImprimir = 0; $iLinhaImprimir < $iTotalRegistros; $iLinhaImprimir++)
     $oStdDadosConta->sEstrutural        = $oStdDadoImprimir->estrutural;
     $oStdDadosConta->nValorTotalDebito  = 0;
     $oStdDadosConta->nValorTotalCredito = 0;
-    $oStdDadosConta->aLancamentos       = array();
+    $oStdDadosConta->aLancamentos       = [];
 
     $oStdMovimento = new stdClass();
     $oStdMovimento->oDataLancamento     = $oDataLancamento;

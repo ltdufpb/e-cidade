@@ -29,16 +29,16 @@ include(modification("fpdf151/scpdf.php"));
 include(modification("libs/db_sql.php"));
 include(modification("classes/db_rhpagatra_classe.php"));
 $clrhpagatra = new cl_rhpagatra;
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $dbwhere = " rh57_saldo > 0 ";
 if($filtro != "0"){
   if(isset($regisi)){
-    if(trim($regisi) != "" && trim($regisf) != ""){
+    if(trim($regisi) != "" && trim((string) $regisf) != ""){
       $dbwhere .= "  and rh01_regist between ".$regisi." and ".$regisf;
     }else if(trim($regisi) != ""){
       $dbwhere .= "  and rh01_regist >= ".$regisi;
-    }else if(trim($regisf) != ""){
+    }else if(trim((string) $regisf) != ""){
       $dbwhere .= "  and rh01_regist <= ".$regisf;
     }
   }else{

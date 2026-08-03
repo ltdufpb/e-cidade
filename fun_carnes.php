@@ -33,20 +33,20 @@ include(modification("classes/db_carne.php"));
 
 $retono = "select 0";
 
-if(isset($HTTP_POST_VARS["verifica"])){
-  $numpre = $HTTP_POST_VARS["numpre"];
-  $parini = $HTTP_POST_VARS["parini"];
-  $parfim = $HTTP_POST_VARS["parfim"];
+if(isset($_POST["verifica"])){
+  $numpre = $_POST["numpre"];
+  $parini = $_POST["parini"];
+  $parfim = $_POST["parfim"];
   $clcarne = new cl_carne($numpre,$parini,$parfim);
   // verifica se numpre esta correto
   if($clcarne->verifica()==false) echo $clcarne->db_erro; 
   $retorno = $clcarne->sql;
 }
 
-if(isset($HTTP_POST_VARS["emite"])){
-  $numpre = $HTTP_POST_VARS["numpre"];
-  $parini = $HTTP_POST_VARS["parini"];
-  $parfim = $HTTP_POST_VARS["parfim"];
+if(isset($_POST["emite"])){
+  $numpre = $_POST["numpre"];
+  $parini = $_POST["parini"];
+  $parfim = $_POST["parfim"];
   $clcarne = new cl_carne($numpre,$parini,$parfim);
   // verifica se numpre esta correto
   if($clcarne->verifica()==false) echo $clcarne->db_erro; 

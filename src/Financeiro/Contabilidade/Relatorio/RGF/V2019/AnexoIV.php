@@ -45,6 +45,7 @@ class AnexoIV extends AnexoIV2018
     /**
      * Processa as informações do relatorio
      */
+    #[\Override]
     public function processar()
     {
         $this->aLinhasConsistencia = $this->getDados();

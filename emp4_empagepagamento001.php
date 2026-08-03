@@ -75,7 +75,7 @@ require_once(modification("classes/db_empagetipo_classe.php"));
 $clempagetipo = new cl_empagetipo;
 
 //parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 //db_postmemory($HTTP_SERVER_VARS,2);
 
 $db_opcao = 1;
@@ -148,7 +148,7 @@ if (isset ($atualizar)) {
   db_inicio_transacao();
   $sqlerro = false;
 
-  $arr_chaves = split("#", $chaves);
+  $arr_chaves = preg_split("#\\##m", $chaves);
 
   for ($d = 0; $d < count($arr_chaves); $d ++) {
     if ($sqlerro == true) {
@@ -156,7 +156,7 @@ if (isset ($atualizar)) {
     }
     if ($tipo == 'banco') {
       //e81_codmov,e82_codord,e81_valor
-      $arr_dad = split("-", $arr_chaves[$d]);
+      $arr_dad = preg_split("#\\-#m", (string) $arr_chaves[$d]);
       $codmov = $arr_dad[0];
       $codord = $arr_dad[1];
       $codigomovimento = $codmov;
@@ -225,7 +225,7 @@ if (isset ($atualizar)) {
         //---SLIP
         //--- k17_codigo,e89_codmov,k17_instit,k17_valor,e91_codcheque
 
-        $arr_dad = split("-", $arr_chaves[$d]);
+        $arr_dad = preg_split("#\\-#m", (string) $arr_chaves[$d]);
 
         if ($tipo == 'slip_cheque') {
           $e91_codcheque = $arr_dad[0];
@@ -243,12 +243,12 @@ if (isset ($atualizar)) {
 
         $sql = "select fc_auttransf($codigo,'".$data."','".$ip."',true,$e91_codcheque,".$instit.") as verautenticacao";
         $result03 = db_query($sql);
-        if (pg_numrows($result03) == 0) {
+        if (pg_num_rows($result03) == 0) {
           $erro_msg = "Erro ao Autenticar SLIP $numslip!";
           break;
         } else {
           db_fieldsmemory($result03,0);
-          if(substr($verautenticacao,0,1) != "1"){
+          if(!str_starts_with((string) $verautenticacao, "1")){
             $erro_msg = $verautenticacao;
             $sqlerro = true;
             break;
@@ -280,7 +280,7 @@ if (isset ($atualizar)) {
               $oTransferencia = TransferenciaFactory::getInstance($iTipoOperacao, $codigo);
               $oTransferencia->setDataAutenticacao($data);
               $oTransferencia->setIDTerminal($iCodigoTerminal);
-              $oTransferencia->setNumeroAutenticacao(substr($verautenticacao, 1, 7));
+              $oTransferencia->setNumeroAutenticacao(substr((string) $verautenticacao, 1, 7));
               $oTransferencia->executarLancamentoContabil(null, false, $e91_codcheque);
 
             } catch (Exception $eErro) {
@@ -302,7 +302,7 @@ if (isset ($atualizar)) {
       } else
 
         if ($tipo == 'cheque') {
-          $arr_dad = split("-", $arr_chaves[$d]);
+          $arr_dad = preg_split("#\\-#m", (string) $arr_chaves[$d]);
           $codcheque = $arr_dad[0];
           $codmov = $arr_dad[1];
           $codord = $arr_dad[2];
@@ -357,7 +357,7 @@ if (isset ($atualizar)) {
           //quando o  pagamento for  por ordem
         } else
           if ($tipo == "ordem") {
-            $arr_dad = split("-", $arr_chaves[$d]);
+            $arr_dad = preg_split("#\\-#m", (string) $arr_chaves[$d]);
             $e83_codtipo = $arr_dad[2];
 
             //retorna codord
@@ -485,7 +485,7 @@ if (isset ($atualizar)) {
 
           $clrotulo = new rotulocampo;
           $clrotulo->label("e80_data");
-          $oParametroAgenda = (db_stdClass::getParametro("empparametro",array(db_getsession("DB_anousu")),"e30_agendaautomatico"));
+          $oParametroAgenda = (db_stdClass::getParametro("empparametro",[db_getsession("DB_anousu")],"e30_agendaautomatico"));
           if ($oParametroAgenda[0]->e30_agendaautomatico != "t") {
             require_once(modification(Modification::getFile("forms/db_frmempagepagamento.php")));
           } else {
@@ -511,66 +511,23 @@ if (isset ($atualizar)) {
 function getDocumentoPorTipoInclusao($iTipoOperacao) {
 
   $iCodigoDocumento = 0;
-  switch ($iTipoOperacao) {
-
-    /**
-     * Transferencia Financeira
-     */
-    case 1:
-      $iCodigoDocumento = 120;
-      break;
-    case 2:
-      $iCodigoDocumento = 121;
-      break;
-    case 3:
-      $iCodigoDocumento = 130;
-      break;
-    case 4:
-      $iCodigoDocumento = 131;
-      break;
-
-    /**
-     * Transferencia Bancaria
-     */
-    case 5:
-      $iCodigoDocumento = 140;
-      break;
-    case 6:
-      $iCodigoDocumento = 141;
-      break;
-
-    /**
-     * Caução
-     */
-    case 7:
-      $iCodigoDocumento = 150;
-      break;
-    case 8:
-      $iCodigoDocumento = 152;
-      break;
-    case 9:
-      $iCodigoDocumento = 151;
-      break;
-    case 10:
-      $iCodigoDocumento = 153;
-      break;
-
-    /**
-     * Depósito de Diversas Origens
-     */
-    case 11:
-      $iCodigoDocumento = 160;
-      break;
-    case 12:
-      $iCodigoDocumento = 162;
-      break;
-    case 13:
-      $iCodigoDocumento = 161;
-      break;
-    case 14:
-      $iCodigoDocumento = 163;
-      break;
-  }
+  $iCodigoDocumento = match ($iTipoOperacao) {
+      1 => 120,
+      2 => 121,
+      3 => 130,
+      4 => 131,
+      5 => 140,
+      6 => 141,
+      7 => 150,
+      8 => 152,
+      9 => 151,
+      10 => 153,
+      11 => 160,
+      12 => 162,
+      13 => 161,
+      14 => 163,
+      default => $iCodigoDocumento,
+  };
   return $iCodigoDocumento;
 }
 ?>

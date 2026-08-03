@@ -98,7 +98,7 @@ db_input('k36_ip',15,$Ik36_ip,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("k36_sequencial"=>@$k36_sequencial);
+	 $chavepri= ["k36_sequencial"=>@$k36_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clmodcarneexcessao->sql_query_file($k36_sequencial);
 	 $cliframe_alterar_excluir->campos  ="k36_sequencial,k36_modcarnepadraotipo,k36_ip";

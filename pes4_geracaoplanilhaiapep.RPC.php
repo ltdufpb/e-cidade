@@ -52,7 +52,7 @@ try {
 			$oGeracaoPlanilhaIapep = new GeracaoPlanilhaIapep();
 
 			$sCompetencia    = $oParametros->iAno . '/' .$oParametros->iMes;
-			$aArquivos       = array();
+			$aArquivos       = [];
 			$iPosicao        = 0;
 			
 			if ( !empty ($oParametros->sTipoSalario13 ) ) {
@@ -82,7 +82,7 @@ try {
 					$sNomeArquivo                      = $oGeracaoPlanilhaIapep->geraPDFTotalizador( $oParametros, $sCompetencia );
 					$aArquivos[$iArrayPosicao]['url']  = $sNomeArquivo;
 					$aArquivos[$iArrayPosicao]['nome'] = $sNomeArquivo;
-				} catch (BusinessException $e) {
+				} catch (BusinessException) {
 					//Nenhum registro encontrado
 				}
 			}

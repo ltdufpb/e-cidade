@@ -77,11 +77,11 @@ switch ($oParam->exec) {
                                                                                       $sWhere
                                                                                    );
      $rsDisciplinasRegente = $oDaoRegenciaHorario->sql_record($sSqlDisciplinasRegente);
-     $aDisciplinas = array();
+     $aDisciplinas = [];
      for ($iRowDisciplina = 0; $iRowDisciplina< $oDaoRegenciaHorario->numrows; $iRowDisciplina++) {
 
        $oDadoDisciplina = db_utils::fieldsMemory($rsDisciplinasRegente, $iRowDisciplina);
-       $oDadoDisciplina->descricao_disciplina = utf8_encode($oDadoDisciplina->descricao_disciplina);
+       $oDadoDisciplina->descricao_disciplina = mb_convert_encoding($oDadoDisciplina->descricao_disciplina, 'UTF-8', 'ISO-8859-1');
        $aDisciplinas[] = $oDadoDisciplina;
      }
 
@@ -94,15 +94,15 @@ switch ($oParam->exec) {
     if (isset($_SESSION["DIAS_LETIVOS_ESCOLA"])) {
       unset($_SESSION["DIAS_LETIVOS_ESCOLA"]);
     }
-    $aDiasSemana = array (0 => "DOMINGO",
+    $aDiasSemana =  [0 => "DOMINGO",
                           1 => "SEGUNDA",
                           2 => "TERÇA",
                           3 => "QUARTA",
                           4 => "QUINTA",
                           5 => "SEXTA",
                           6 => "SÁBADO"
-                         );
-    $aDiasLetivos = array();
+                         ];
+    $aDiasLetivos = [];
     $sWhere  = " ed57_i_escola    = ".db_getsession("DB_coddepto");
     $sWhere .= " and (rh01_numcgm = {$oParam->iRegente} or ed285_i_cgm = {$oParam->iRegente})";
     $sWhere .= " and ed52_i_ano   = ".db_getsession("DB_anousu");
@@ -116,7 +116,7 @@ switch ($oParam->exec) {
                                                                                     null,
                                                                                      $sWhere);
     $rsDiasDaSemanaComAula     = $oDaoRegenciaHorario->sql_record($sSqlDiasDaSemanaComAula);
-    $aDiasDeAula               = array();
+    $aDiasDeAula               = [];
     $iTotalDiasDaSemanaComAula = $oDaoRegenciaHorario->numrows;
     for ($iAula = 0; $iAula < $iTotalDiasDaSemanaComAula; $iAula++) {
 
@@ -132,7 +132,7 @@ switch ($oParam->exec) {
 
       $oTurma = new stdClass();
       $oTurma->codigo_turma       = $oDadosDiaSemana->codigo_turma;
-      $oTurma->descricao_turma    = utf8_encode($oDadosDiaSemana->descricao_turma);
+      $oTurma->descricao_turma    = mb_convert_encoding($oDadosDiaSemana->descricao_turma, 'UTF-8', 'ISO-8859-1');
       $aDiasDeAula[$iDiaNaSemana]->turmas[] = $oTurma;
     }
 
@@ -169,7 +169,7 @@ switch ($oParam->exec) {
       $rsFeriado  = $oDaoFeriado->sql_record($sSqlFeriado);
       $aFeriados  = db_utils::getCollectionByRecord($rsFeriado);
 
-      list($iAnoInicial, $iMesInicial, $iDiaInicial) = explode("-", $oDadosAnoLetivo->inicio);
+      [$iAnoInicial, $iMesInicial, $iDiaInicial] = explode("-", (string) $oDadosAnoLetivo->inicio);
       for ($iDia = 0; $iDia <= $oDadosAnoLetivo->numero_dias_aula; $iDia++) {
 
         $sDataDiaTimeStamp = mktime(0, 0, 0, $iMesInicial, $iDiaInicial+$iDia, $iAnoInicial);
@@ -207,7 +207,7 @@ switch ($oParam->exec) {
          */
         $oDiaLetivo            = new stdClass();
         $oDiaLetivo->data      = $sDataFormatada;
-        $oDiaLetivo->diasemana = utf8_encode($aDiasSemana[$iDiaSemana]);
+        $oDiaLetivo->diasemana = mb_convert_encoding($aDiasSemana[$iDiaSemana], 'UTF-8', 'ISO-8859-1');
         $oDiaLetivo->turmas    = $aDiasDeAula[$iDiaSemana]->turmas;
         $aDiasLetivos[]        = $oDiaLetivo;
       }
@@ -225,7 +225,7 @@ switch ($oParam->exec) {
 
   case 'getTurmasNoDia' :
 
-    $aTurmas = array();
+    $aTurmas = [];
     if (isset($oParam->dtAula) && isset($oParam->dtAula)) {
 
       if (isset($_SESSION["DIAS_LETIVOS_ESCOLA"])) {
@@ -264,7 +264,7 @@ switch ($oParam->exec) {
                                                             );
 
 
-    $aPeriodosDeAulaDoDia        = array();
+    $aPeriodosDeAulaDoDia        = [];
     $iDiaDaSemana                = date('w', db_strtotime($oParam->dtAula)) + 1;
 
     $sWhere  = " ed57_i_escola        = ".db_getsession("DB_coddepto");
@@ -302,7 +302,7 @@ switch ($oParam->exec) {
                                                                              );
     $rsPeriodosAula              = $oDaoRegenciaHorario->sql_record($sSqlPeriodosAula);
     $oRetorno->aPeriodosAulaDia  = db_utils::getCollectionByRecord($rsPeriodosAula, false, false, $lEncode);
-    $aPeriodosAula               = array();
+    $aPeriodosAula               = [];
     foreach ($oRetorno->aPeriodosAulaDia as $oPeriodo) {
       $aPeriodosAula[] = $oPeriodo->codigo_regencia_periodo;
     }
@@ -312,7 +312,7 @@ switch ($oParam->exec) {
      * Pegamos os dados de aula do aluno
      */
     $rsAlunosMatriculadosNaTurma = $oDaoMatricula->sql_record($sSqlAlunosMatriculadosNaTurma);
-    $aAlunosMatriculados         = array();
+    $aAlunosMatriculados         = [];
     for ($iAluno = 0; $iAluno < $oDaoMatricula->numrows; $iAluno++) {
 
       $oAluno                = db_utils::fieldsMemory($rsAlunosMatriculadosNaTurma, $iAluno, false, false, $lEncode);
@@ -334,7 +334,7 @@ switch ($oParam->exec) {
                                                                               null,
                                                                               $sWhereFaltas
                                                                              );
-      $aFaltas               = array();
+      $aFaltas               = [];
       $rsAlunoFaltas         = $oDaoDiarioClasseAlunoFalta->sql_record($sSqlAlunoFaltas);
       $aAlunoFaltas          = db_utils::getCollectionByRecord($rsAlunoFaltas);
       foreach ($aAlunoFaltas as $oFalta) {
@@ -359,7 +359,7 @@ switch ($oParam->exec) {
                                                                       );
     $rsDiarioClasse      = $oDaoDiarioClasseRegenciaHorario->sql_record($sSqlDiarioClasse);
     if ($oDaoDiarioClasseRegenciaHorario->numrows > 0) {
-      $oRetorno->sAulaData = urlencode(db_utils::fieldsMemory($rsDiarioClasse, 0)->ed300_auladesenvolvida);
+      $oRetorno->sAulaData = urlencode((string) db_utils::fieldsMemory($rsDiarioClasse, 0)->ed300_auladesenvolvida);
     }
 
     break;
@@ -379,7 +379,7 @@ switch ($oParam->exec) {
 
       $lAlterarProximoPeriodo = false;
       $aPeriodosAula          = $_SESSION['PERIODOS_AULA_DIA'];
-      $aPeriodosFaltaPresenca = array();
+      $aPeriodosFaltaPresenca = [];
       if (isset($aPeriodosAula) && count($aPeriodosAula) > 0) {
 
         foreach ($aPeriodosAula as $oPeriodo) {
@@ -551,7 +551,7 @@ switch ($oParam->exec) {
 
       db_fim_transacao(true);
       $oRetorno->status  = 2;
-      $oRetorno->message = utf8_encode($eErro->getMessage());
+      $oRetorno->message = mb_convert_encoding($eErro->getMessage(), 'UTF-8', 'ISO-8859-1');
     }
   break;
 
@@ -559,7 +559,7 @@ switch ($oParam->exec) {
   case 'verificaPresencaAluno':
 
     $aSessionAlunos = $_SESSION['ALUNOS'];
-    $aPeriodosFalta = array();
+    $aPeriodosFalta = [];
     $iCodigoAluno   = 0;
     foreach ($aSessionAlunos as $iIndice => $oAluno) {
 
@@ -569,7 +569,7 @@ switch ($oParam->exec) {
       }
     }
 
-    $aInputsRetorno = array();
+    $aInputsRetorno = [];
     $aPeriodosAula = $_SESSION["PERIODOS_AULA_DIA"];
     foreach ($aPeriodosAula as $iIndice => $oPeriodo) {
 
@@ -580,7 +580,7 @@ switch ($oParam->exec) {
       $sDescricaoCheckBox = "{$oPeriodo->descricao_periodo}";
       $sNameCheckBox      = "checkbox-{$oPeriodo->sequencial}";
 
-      $aInputsRetorno[] = "<input type='checkbox' name='{$sNameCheckBox}' id='{$sNameCheckBox}' class='custom' onclick='js_falta({$oPeriodo->sequencial}, {$oPeriodo->codigo_regencia_periodo});' {$sChecked}/><label for='{$sNameCheckBox}'>".utf8_encode($sDescricaoCheckBox)."</label>";
+      $aInputsRetorno[] = "<input type='checkbox' name='{$sNameCheckBox}' id='{$sNameCheckBox}' class='custom' onclick='js_falta({$oPeriodo->sequencial}, {$oPeriodo->codigo_regencia_periodo});' {$sChecked}/><label for='{$sNameCheckBox}'>".mb_convert_encoding($sDescricaoCheckBox, 'UTF-8', 'ISO-8859-1')."</label>";
     }
 
 

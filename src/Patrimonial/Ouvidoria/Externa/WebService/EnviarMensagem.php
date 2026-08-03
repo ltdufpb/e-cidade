@@ -165,7 +165,7 @@ class EnviarMensagem
             }
 
             if (!empty($this->anexos)) {
-                $parametros->anexos = array();
+                $parametros->anexos = [];
                 foreach ($this->anexos as $anexo) {
                     $parametros->anexos[] = $anexo;
                 }

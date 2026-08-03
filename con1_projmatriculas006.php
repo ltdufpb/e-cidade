@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_iptubase_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cliptubase = new cl_iptubase;
 $cliptubase->rotulo->label("j01_matric");
 $clrotulo = new rotulocampo;
@@ -58,7 +58,7 @@ db_fieldsmemory($result,0);
 		inner join testada on j36_idbql=j34_idbql 
 	where j34_setor='$j34_setor' and j34_quadra='$j34_quadra' and j34_lote='$j34_lote'";
   $resi=db_query($sql) or die($sql);	
-	if (pg_numrows($resi) == 0) {
+	if (pg_num_rows($resi) == 0) {
 		$cliptubase->erro(true,false);
 		exit;
 	}

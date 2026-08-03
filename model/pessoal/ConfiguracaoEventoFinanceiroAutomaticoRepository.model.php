@@ -40,7 +40,7 @@ class ConfiguracaoEventoFinanceiroAutomaticoRepository {
    * @var Array
    * @access private
    */
-  static private $aColecao = array();
+  static private $aColecao = [];
 
   /**
    * Representa a instancia a classe
@@ -77,7 +77,7 @@ class ConfiguracaoEventoFinanceiroAutomaticoRepository {
 
     if (empty(self::$oInstance)) {
 
-      $sClasse  = get_class();
+      $sClasse  = self::class;
       self::$oInstance = new \ConfiguracaoEventoFinanceiroAutomaticoRepository();
     }
 
@@ -164,8 +164,8 @@ class ConfiguracaoEventoFinanceiroAutomaticoRepository {
    */
   public static function getConfiguracoesPorMesInstituicao($oCompetencia = null, $oInstituicao = null) {
 
-    $aConfiguracoes                   = array();
-    $aWhereEventoFinanceiroAutomatico = array();
+    $aConfiguracoes                   = [];
+    $aWhereEventoFinanceiroAutomatico = [];
 
     if(empty($oInstituicao)) {
       $oInstituicao = InstituicaoRepository::getInstituicaoSessao();
@@ -194,9 +194,7 @@ class ConfiguracaoEventoFinanceiroAutomaticoRepository {
     }
 
     $oSelfRepository = ConfiguracaoEventoFinanceiroAutomaticoRepository::getInstance();
-    $aConfiguracoes  = db_utils::makeCollectionFromRecord($rsEventoFinanceiroAutomatico, function($oStdConfiguracaoEventoFinanceiro) use ($oSelfRepository) {
-      return $oSelfRepository->getInstanciaPorCodigo($oStdConfiguracaoEventoFinanceiro->codigo);
-    });
+    $aConfiguracoes  = db_utils::makeCollectionFromRecord($rsEventoFinanceiroAutomatico, fn($oStdConfiguracaoEventoFinanceiro) => $oSelfRepository->getInstanciaPorCodigo($oStdConfiguracaoEventoFinanceiro->codigo));
     
     return $aConfiguracoes;
   }

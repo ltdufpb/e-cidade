@@ -92,25 +92,13 @@ class RelatorioVeiculoManutencao {
   const ASSINATURA_PADRAO = 5021;
 
   /**
-   * @var Instituicao
-   */
-  private $oInstituicao;
-
-  /**
-   * @var DBDepartamento
-   */
-  private $oDepartamento;
-
-  /**
    * Construtor
    *
    * @param Instituicao    $oInstituicao
    * @param DBDepartamento $oDepartamento
    */
-  public function __construct($oInstituicao, $oDepartamento) {
+  public function __construct(private $oInstituicao, private $oDepartamento) {
 
-    $this->oInstituicao  = $oInstituicao;
-    $this->oDepartamento = $oDepartamento;
     $this->oPdf = new PDFDocument(PDFDocument::PRINT_LANDSCAPE);
   }
 
@@ -380,7 +368,7 @@ class RelatorioVeiculoManutencao {
       throw new Exception("Combustíveis não encontrados.");
     }
 
-    $aDadosCombustivel = array();
+    $aDadosCombustivel = [];
     for ($iCombustivel = 0; $iCombustivel < $oDaoCombustivel->numrows; $iCombustivel++) {
 
       $oCombustivel        = db_utils::fieldsMemory($rsCombustiveis, $iCombustivel);
@@ -427,8 +415,8 @@ class RelatorioVeiculoManutencao {
 
     $sSql = $oDaoVeiculo->sql_query_movimentos(null, $sCampos, $sOrder, $sWhere, $sGroup, $sDataInicial, $sDataFinal);
     
-    $aVeiculos       = array();
-    $aCodigoVeiculos = array();
+    $aVeiculos       = [];
+    $aCodigoVeiculos = [];
 
     $rsVeiculos = $oDaoVeiculo->sql_record($sSql);
     if ($rsVeiculos == false || $oDaoVeiculo->numrows == 0) {

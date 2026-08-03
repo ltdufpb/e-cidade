@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_bases_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clbases = new cl_bases;
 $clbases->rotulo->label("r08_mesusu");
 $clbases->rotulo->label("r08_codigo");
@@ -86,9 +86,9 @@ $clbases->rotulo->label("r08_descr");
         }else{
            $sql = $clbases->sql_query(db_anofolha(),db_mesfolha(),null,db_getsession('DB_instit'),$campos,"r08_anousu#r08_mesusu#r08_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_r08_descr)){
-          $repassa = array("chave_r08_codigo"=>$chave_r08_codigo,"chave_r08_descr"=>$chave_r08_descr);
+          $repassa = ["chave_r08_codigo"=>$chave_r08_codigo,"chave_r08_descr"=>$chave_r08_descr];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

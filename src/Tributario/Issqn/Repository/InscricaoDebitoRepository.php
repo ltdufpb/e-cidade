@@ -40,7 +40,7 @@ class InscricaoDebitoRepository extends DebitoRepository
         }
 
         $arreinscrList = $this->arreinscrRepository->findByIdentificador($issbase->getInscr());
-        $numpres = array();
+        $numpres = [];
 
         foreach ($arreinscrList as $arreinscr) {
             $numpres[] = $arreinscr->getNumpre();
@@ -49,7 +49,7 @@ class InscricaoDebitoRepository extends DebitoRepository
         $numpres = implode(',', $numpres);
 
         $arretipoList = $this->arretipoRepository->findByCadtipo($cadtipo);
-        $tipos = array();
+        $tipos = [];
 
         foreach ($arretipoList as $arretipo) {
             $tipos[] = $arretipo->getTipo();

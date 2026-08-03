@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_ouvidoriacadlocalender_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clouvidoriacadlocalender = new cl_ouvidoriacadlocalender;
 $clouvidoriacadlocalender->rotulo->label("ov26_sequencial");
 $clouvidoriacadlocalender->rotulo->label("ov26_ruas");
@@ -98,9 +98,9 @@ $clouvidoriacadlocalender->rotulo->label("ov26_ruas");
         }else{
            $sql = $clouvidoriacadlocalender->sql_query("",$campos,"ov26_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov26_ruas)){
-          $repassa = array("chave_ov26_sequencial"=>$chave_ov26_sequencial,"chave_ov26_ruas"=>$chave_ov26_ruas);
+          $repassa = ["chave_ov26_sequencial"=>$chave_ov26_sequencial,"chave_ov26_ruas"=>$chave_ov26_ruas];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

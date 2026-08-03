@@ -86,12 +86,12 @@ $oDaoAtoLegal->rotulo->label();
               </td>
               <td>
                 <?php 
-                  $aCompetencias = array(
+                  $aCompetencias = [
                                           "0" => "TODAS",
                                           "M" => "MUNICIPAL",
                                           "E" => "ESTADUAL",
                                           "F" => "FEDERAL"
-                                        );
+                                        ];
                   db_select('ed05_c_competencia', $aCompetencias, true, '1', '');
                 ?>
               </td>
@@ -102,7 +102,7 @@ $oDaoAtoLegal->rotulo->label();
                 <?php 
                   $sSql      = $oDaoTipoAtoLegal->sql_query('', '*', 'ed83_c_descr ASC', '');
                   $rsTipos   = $oDaoTipoAtoLegal->sql_record($sSql);
-                  $aTipoAtos = array("0" => "TODOS");
+                  $aTipoAtos = ["0" => "TODOS"];
                   
                   if ($oDaoTipoAtoLegal->numrows > 0) {
                     
@@ -140,7 +140,7 @@ $oDaoAtoLegal->rotulo->label();
         $sWhere   = "";
 
         if (isset($ed05_i_codigo)) {
-          $repassa = array("ed05_i_codigo" => $ed05_i_codigo);
+          $repassa = ["ed05_i_codigo" => $ed05_i_codigo];
         }
 
         if (isset($ed05_i_codigo) && trim($ed05_i_codigo) != "") {

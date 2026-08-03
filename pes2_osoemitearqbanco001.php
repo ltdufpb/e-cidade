@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rharqbanco_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clrharqbanco = new cl_rharqbanco;
 $clrotulo     = new rotulocampo;
 
@@ -205,11 +205,11 @@ if (isset($emite2)) {
     </td>
     <td>
       <?php 
-      $arr_layout = Array(
+      $arr_layout = [
                           "9"=>"CNAB240",
                           "3"=>"CEF",
                           "4"=>"CEF SIACC 150"
-                         );
+                         ];
       db_select("layout", $arr_layout, true, 1, "");
       ?>
     </td>
@@ -221,11 +221,11 @@ if (isset($emite2)) {
     </td>
     <td>
       <?php 
-      $arr_vinculo = Array(
+      $arr_vinculo = [
                           "T"=>"Todos",
                           "A"=>"Ativo",
                           "I"=>"Inativo",
-                         );
+                         ];
       db_select("vinculo", $arr_vinculo, true, 1, "");
       ?>
     </td>
@@ -236,10 +236,10 @@ if (isset($emite2)) {
     </td>
     <td>
       <?php 
-      $arr_tipo = Array(
+      $arr_tipo = [
                           "C"=>"Conta Corrente",
                           "O"=>"Ordem de Pagamento",
-                       );
+                       ];
       db_select("tipoconta", $arr_tipo, true, 1, "");
       ?>
     </td>

@@ -67,12 +67,6 @@ class AnexoI extends ProcessamentoRelatorioLegal
     const MODELO_DETALHAMENTO_MENSAL = 2;
 
     /**
-     * Modelo que vai ser impresso
-     * @var int
-     */
-    protected $iModelo;
-
-    /**
      * Data de Inicio do período de 12 meses do relatório
      * @var \DBDate
      */
@@ -88,26 +82,26 @@ class AnexoI extends ProcessamentoRelatorioLegal
      * Contêm o Mês/Ano
      * @var array
      */
-    private $aIntervaloMeses = array();
+    private $aIntervaloMeses = [];
 
     /**
      * Variavel para das linhas do pdf
      * @var array
      */
-    protected $aTamanhoCelulas = array(
+    protected $aTamanhoCelulas = [
 
-        self::MODELO_DETALHAMENTO_MENSAL => array(
+        self::MODELO_DETALHAMENTO_MENSAL => [
             'iLinha'      => 283,
             'iWDescricao' => 43,
             'iWMes'       => 17,
             'iWTotais'    => 19,
-        ),
-        self::MODELO_OFICIAL => array(
+        ],
+        self::MODELO_OFICIAL => [
             'iLinha'      => 190,
             'iWDescricao' => 130,
             'iWTotais'    => 30,
-        )
-    );
+        ]
+    ];
 
     /**
      * Se esta selecionado para emitir todo exercício. (ano cheio de jan a dez)
@@ -123,11 +117,11 @@ class AnexoI extends ProcessamentoRelatorioLegal
      * )
      * @var array
      */
-    protected $aValoresDespesaPorLinhaMes = array();
+    protected $aValoresDespesaPorLinhaMes = [];
 
 
     protected $linhaFinalQuadroDespesa = 16;
-    protected $totalizadoresQuadroDespesa = array(1, 2, 6, 11, 16);
+    protected $totalizadoresQuadroDespesa = [1, 2, 6, 11, 16];
 
     /**
      * AnexoI constructor.
@@ -136,12 +130,15 @@ class AnexoI extends ProcessamentoRelatorioLegal
      * @param $aInstituicoes
      * @param $iModelo
      * @throws ParameterException
+     * @param int $iModelo
      */
-    public function __construct($iAno, $oPeriodo, $aInstituicoes, $iModelo = self::MODELO_DETALHAMENTO_MENSAL)
+    public function __construct($iAno, $oPeriodo, $aInstituicoes, /**
+     * Modelo que vai ser impresso
+     */
+    protected $iModelo = self::MODELO_DETALHAMENTO_MENSAL)
     {
         parent::__construct($iAno, $oPeriodo, static::CODIGO_RELATORIO, $aInstituicoes);
-        $this->iModelo = $iModelo;
-        $this->lDoExercicio = in_array($this->oPeriodo->getCodigo(), array(13, 16, 28));
+        $this->lDoExercicio = in_array($this->oPeriodo->getCodigo(), [13, 16, 28]);
         $this->calculaDataInicial();
 
         $aInstituicoesRCL = \InstituicaoRepository::getInstituicoes();
@@ -182,7 +179,7 @@ class AnexoI extends ProcessamentoRelatorioLegal
         }
 
         $oDataFinal  = \Periodo::dataFinalPeriodo($this->oPeriodo->getCodigo(), $this->iAno);
-        $aDataFinal  = explode('-', $oDataFinal->getDate());
+        $aDataFinal  = explode('-', (string) $oDataFinal->getDate());
         $mMesInicial = ((int) $aDataFinal[1]) + 1;
         $mMesInicial = str_pad($mMesInicial, 2, 0, STR_PAD_LEFT);
 
@@ -215,7 +212,7 @@ class AnexoI extends ProcessamentoRelatorioLegal
     protected function inicializaValoresDespesaPorLinhaMes()
     {
         foreach ($this->getMesesAbrangente() as $iMes => $sCompetencia) {
-            list($sMesAbreviado, $iAno) = explode('/', $sCompetencia);
+            [$sMesAbreviado, $iAno] = explode('/', (string) $sCompetencia);
             for ($iLinha = 1; $iLinha <= 16; $iLinha ++) {
                 $this->aValoresDespesaPorLinhaMes[$iLinha]["{$iMes}/{$iAno}"] = 0;
             }
@@ -298,14 +295,14 @@ class AnexoI extends ProcessamentoRelatorioLegal
                 $oDespesa    = new Despesa($this->aInstituicoes);
                 $oDespesa->setDataInicial($oDataInicial);
                 $oDespesa->setDataFinal($oDataFinal);
-                $aDocumentos = array(
-                    'not in' => array(
+                $aDocumentos = [
+                    'not in' => [
                         Documento::LIQUIDACAO_RP,
                         Documento::ESTORNO_LIQUIDACAO_RP,
                         Documento::LIQUIDACAO_RP_ESTOQUE_PATRIMONIO,
                         Documento::ESTORNO_LIQUIDACAO_RP_ESTOQUE_PATRIMONIO
-                    )
-                );
+                    ]
+                ];
                 $oValores = $oDespesa->getValorLiquidadoPorElementoDoOrcamento($oEstrutural, $aDocumentos);
 
                 $nValorLiquidado = $oValores->getValorInclusaoMenosEstorno();
@@ -336,7 +333,7 @@ class AnexoI extends ProcessamentoRelatorioLegal
 
         if (count($this->aLinhasProcessarDespesa) > 0) {
             foreach ($this->getMesesAbrangente() as $iMes => $sCompetencia) {
-                list($sMesAbreviado, $iAno) = explode('/', $sCompetencia);
+                [$sMesAbreviado, $iAno] = explode('/', (string) $sCompetencia);
                 $iUltimoDiaMes = cal_days_in_month(CAL_GREGORIAN, $iMes, $iAno);
                 $oDataInicialPeriodo = new \DBDate("01/{$iMes}/{$iAno}");
                 $oDataFinalPeriodo = new \DBDate("{$iUltimoDiaMes}/{$iMes}/{$iAno}");
@@ -356,7 +353,7 @@ class AnexoI extends ProcessamentoRelatorioLegal
                 foreach ($this->aLinhasProcessarDespesa as $iLinha) {
                     $oLinha = $this->aLinhasConsistencia[$iLinha];
                     $nValorAnterior = $oLinha->liquidado_ultimo_ano;
-                    $aColunasProcessar = $this->getColunasPorLinha($oLinha, array(1));
+                    $aColunasProcessar = $this->getColunasPorLinha($oLinha, [1]);
                     \RelatoriosLegaisBase::calcularValorDaLinha(
                         $rsBalanceteDespesa,
                         $oLinha,
@@ -383,7 +380,7 @@ class AnexoI extends ProcessamentoRelatorioLegal
             $somaLiquidadoUltimoAnoLinha = 0;
 
             foreach ($this->getMesesAbrangente() as $mes => $competencia) {
-                list($mesAbreviado, $ano) = explode('/', $competencia);
+                [$mesAbreviado, $ano] = explode('/', (string) $competencia);
                 $somaLiquidadoUltimoAnoLinha += $this->aValoresDespesaPorLinhaMes[$linha]["{$mes}/{$ano}"];
             }
             $this->aLinhasConsistencia[$linha]->liquidado_ultimo_ano = $somaLiquidadoUltimoAnoLinha;
@@ -406,21 +403,21 @@ class AnexoI extends ProcessamentoRelatorioLegal
      */
     protected function calcularRestosAPagarDoExercicioAnterior()
     {
-        $aLinhasCalcular = array(1, 11);
+        $aLinhasCalcular = [1, 11];
 
         $oStdColunaProcessarPeriodoAnterior            = new stdClass();
         $oStdColunaProcessarPeriodoAnterior->nome      = "rp_nao_processado";
         $oStdColunaProcessarPeriodoAnterior->formula   = "#e91_vlremp-#e91_vlranu-#e91_vlrliq";
         $oStdColunaProcessarPeriodoAnterior->analisada = false;
 
-        $aColunasProcessarAnterior = array($oStdColunaProcessarPeriodoAnterior);
+        $aColunasProcessarAnterior = [$oStdColunaProcessarPeriodoAnterior];
 
         $oStdColunaProcessarPeriodoAtual            = new stdClass();
         $oStdColunaProcessarPeriodoAtual->nome      = "rp_nao_processado";
         $oStdColunaProcessarPeriodoAtual->formula   = "#vlranuliqnaoproc";
         $oStdColunaProcessarPeriodoAtual->analisada = false;
 
-        $aColunasProcessarPeriodoAtual = array($oStdColunaProcessarPeriodoAtual);
+        $aColunasProcessarPeriodoAtual = [$oStdColunaProcessarPeriodoAtual];
 
         $iAnoCalculo                = $this->iAnoUsu;
         $sDataInicioPeriodoAnterior = $this->oDataInicio->getDate();
@@ -496,14 +493,14 @@ class AnexoI extends ProcessamentoRelatorioLegal
                 $oDespesa->setDataFinal(new \DBDate("{$this->oDataInicio->getAno()}-12-31"));
                 $oValorInscritoRP = $oDespesa->getValorInscritoEmRestosAPagarNaoProcessados(
                     $oEstrutural,
-                    array('in' => array(1007))
+                    ['in' => [1007]]
                 );
 
                 $oDespesa->setDataInicial($this->oDataInicial);
                 $oDespesa->setDataFinal($this->oDataFinal);
                 $oValorAnuladoRP  = $oDespesa->getValorAnuladoPorElementoDoOrcamento(
                     $oEstrutural,
-                    array('in' => array(32))
+                    ['in' => [32]]
                 );
 
                 $nValor = $oValorInscritoRP->getValorInclusao() - $oValorAnuladoRP->getValorEstorno();
@@ -532,7 +529,7 @@ class AnexoI extends ProcessamentoRelatorioLegal
                 $this->iAnoUsu
             );
             foreach ($this->getMesesAbrangente() as $iMes => $sCompetencia) {
-                list($sMesAbreviado, $iAno) = explode('/', $sCompetencia);
+                [$sMesAbreviado, $iAno] = explode('/', (string) $sCompetencia);
                 foreach ($aLinhasManuais as $oLinhaManual) {
                     if ($oLinhaManual->colunas[0]->o117_valor == $sCompetencia) {
                         $this->aValoresDespesaPorLinhaMes[$iLinha]["{$iMes}/{$iAno}"] +=
@@ -561,16 +558,16 @@ class AnexoI extends ProcessamentoRelatorioLegal
 
         $this->getDados();
 
-        $aLinhasTotalizadorasSoma = array(
-            2  => array(3, 4, 5),
-            6  => array(7, 8, 9),
-            1  => array(2, 6, 10),
-            11 => array(12, 13, 14, 15)
-        );
+        $aLinhasTotalizadorasSoma = [
+            2  => [3, 4, 5],
+            6  => [7, 8, 9],
+            1  => [2, 6, 10],
+            11 => [12, 13, 14, 15]
+        ];
 
-        $aLinhasTotalizadorasSub = array(
-            16 => array(1, 11)
-        );
+        $aLinhasTotalizadorasSub = [
+            16 => [1, 11]
+        ];
 
         foreach ($aLinhasTotalizadorasSoma as $iLinhaTotalizadora => $aLinhasSomar) {
             foreach ($this->aValoresDespesaPorLinhaMes as $iLinha => $aValoreMesAno) {
@@ -602,7 +599,7 @@ class AnexoI extends ProcessamentoRelatorioLegal
             $this->aLinhasConsistencia[1]->liquidado_ultimo_ano - $this->aLinhasConsistencia[11]->liquidado_ultimo_ano;
         $this->aLinhasConsistencia[16]->rp_nao_processado    =
             $this->aLinhasConsistencia[1]->rp_nao_processado - $this->aLinhasConsistencia[11]->rp_nao_processado;
-        $this->processarFormasDasLinhas(array(20));
+        $this->processarFormasDasLinhas([20]);
         $this->calculaReceitaCorrenteLiquida();
     }
 
@@ -1061,7 +1058,7 @@ class AnexoI extends ProcessamentoRelatorioLegal
                     $oLinhaRelatorio->descricao,
                     $oLinhaRelatorio->valor,
                     $oLinhaRelatorio->percentual,
-                    array('TBR', 1, 'TBL'),
+                    ['TBR', 1, 'TBL'],
                     $iFill
                 );
             }
@@ -1083,11 +1080,11 @@ class AnexoI extends ProcessamentoRelatorioLegal
         $sNivel     = str_repeat(' ', $oLinhaRelatorio->nivel * 2);
         $sDescricao = "{$sNivel} {$oLinhaRelatorio->descricao}";
 
-        $aBordas = array('R', 'LR', 'L');
+        $aBordas = ['R', 'LR', 'L'];
         $lBold   = false;
 
         if ($oLinhaRelatorio->ordem == $this->linhaFinalQuadroDespesa) {
-            $aBordas = array('TBR', '1', 'TBL');
+            $aBordas = ['TBR', '1', 'TBL'];
         }
 
         if (in_array($oLinhaRelatorio->ordem, $this->totalizadoresQuadroDespesa)) {
@@ -1123,7 +1120,7 @@ class AnexoI extends ProcessamentoRelatorioLegal
     {
         $oPdf->line($oPdf->getX(), $oPdf->getY(), 200, $oPdf->getY());
         $oPdf->ln(1);
-        $this->notaExplicativa($oPdf, array($oPdf, 'addPage'), 20);
+        $this->notaExplicativa($oPdf, [$oPdf, 'addPage'], 20);
 
         $oPdf->ln($oPdf->getAvailHeight() - 20);
         $oDaoAssinatura = new cl_assinatura();
@@ -1189,7 +1186,7 @@ class AnexoI extends ProcessamentoRelatorioLegal
     {
         $this->getDadosProcessados();
 
-        $oStdAnexo = (object)array(
+        $oStdAnexo = (object)[
             'receita_corrente_liquida' => 0,
             'receita_corrente_liquida_ajustada' => 0,
             'total_despesa_pessoal'          => 0,
@@ -1200,7 +1197,7 @@ class AnexoI extends ProcessamentoRelatorioLegal
             'percentual_limite_prudencial'   => 0,
             'total_limite_alerta'            => 0,
             'percentual_limite_alerta'       => 0,
-        );
+        ];
 
 
         $linha = [

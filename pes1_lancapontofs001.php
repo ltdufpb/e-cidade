@@ -38,7 +38,7 @@ require_once(modification("classes/db_rhpessoal_classe.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clconvenio = new cl_convenio;
 $clrelac = new cl_relac;
 $clmovrel = new cl_movrel;
@@ -153,12 +153,12 @@ $clrotulo->label("r55_descr");
           </td>
           <td> 
             <?php 
-            $aAcoes  = array(
+            $aAcoes  = [
                              0 => "Selecione",
                              1 => "Somar",
                              2 => "Substituir",
                              3 => "Perguntar" 
-                            );
+                            ];
             db_select('iTipoAcao', $aAcoes, '',1);
             ?>
           </td>

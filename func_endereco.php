@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_endereco_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clendereco = new cl_endereco;
 $clendereco->rotulo->label("db76_sequencial");
 $clendereco->rotulo->label("db76_cadenderlocal");
@@ -98,9 +98,9 @@ $clendereco->rotulo->label("db76_cadenderlocal");
         }else{
            $sql = $clendereco->sql_query("",$campos,"db76_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db76_cadenderlocal)){
-          $repassa = array("chave_db76_sequencial"=>$chave_db76_sequencial,"chave_db76_cadenderlocal"=>$chave_db76_cadenderlocal);
+          $repassa = ["chave_db76_sequencial"=>$chave_db76_sequencial,"chave_db76_cadenderlocal"=>$chave_db76_cadenderlocal];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

@@ -36,16 +36,16 @@ include(modification("classes/db_rhlocaltrab_classe.php"));
 include(modification("classes/db_rhlocaltrabcustoplano_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clrhlocaltrab = new cl_rhlocaltrab;
 $cldb_estrut = new cl_db_estrut;
 $db_botao = false;
 $db_opcao = 33;
-$aParamKeys  = array(
+$aParamKeys  = [
                    "cc09_anousu" => db_getsession("DB_anousu"),
                    "cc09_instit" => db_getsession("DB_instit"),
-                   );
+                   ];
 $aParametrosCustos   = db_stdClass::getParametro("parcustos",$aParamKeys);
 $iTipoControleCustos = 0; 
 if (count($aParametrosCustos) > 0) {

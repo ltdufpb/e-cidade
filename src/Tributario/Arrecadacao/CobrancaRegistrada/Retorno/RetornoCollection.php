@@ -102,10 +102,10 @@ class RetornoCollection implements \Countable, \Iterator, \ArrayAccess
 
     $oRegistro->sCgm               = $oRow->cgm;
     $oRegistro->sCodigoArrecadacao = $oRow->codigo_arrecadacao;
-    $oRegistro->aTipo              = explode('#', $oRow->tipo);
+    $oRegistro->aTipo              = explode('#', (string) $oRow->tipo);
     $oRegistro->sConvenio          = $oRow->convenio;
     $oRegistro->oDataEmissao       = \DBDate::create($oRow->data_emissao);
-    $oRegistro->aOcorrencia        = explode('#', $oRow->ocorrencia);
+    $oRegistro->aOcorrencia        = explode('#', (string) $oRow->ocorrencia);
 
     return $oRegistro;
   }

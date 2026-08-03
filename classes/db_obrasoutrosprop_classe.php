@@ -26,7 +26,7 @@ class cl_obrasoutrosprop {
     public function __construct()
     {
         $this->rotulo = new rotulo("obrasoutrosprop"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -80,7 +80,7 @@ class cl_obrasoutrosprop {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Outros proprietários da obra () não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Outros proprietários da obra já Cadastrado";
@@ -113,10 +113,10 @@ class cl_obrasoutrosprop {
       $this->atualizacampos();
      $sql = " update obrasoutrosprop set ";
      $virgula = "";
-     if(trim($this->ob32_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob32_codobra"])){ 
+     if(trim((string) $this->ob32_codobra)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob32_codobra"])){ 
        $sql  .= $virgula." ob32_codobra = $this->ob32_codobra ";
        $virgula = ",";
-       if(trim($this->ob32_codobra) == null ){ 
+       if(trim((string) $this->ob32_codobra) == null ){ 
          $this->erro_sql = " Campo Código da obra não informado.";
          $this->erro_campo = "ob32_codobra";
          $this->erro_banco = "";
@@ -126,10 +126,10 @@ class cl_obrasoutrosprop {
          return false;
        }
      }
-     if(trim($this->ob32_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob32_numcgm"])){ 
+     if(trim((string) $this->ob32_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ob32_numcgm"])){ 
        $sql  .= $virgula." ob32_numcgm = $this->ob32_numcgm ";
        $virgula = ",";
-       if(trim($this->ob32_numcgm) == null ){ 
+       if(trim((string) $this->ob32_numcgm) == null ){ 
          $this->erro_sql = " Campo Proprietário da obra não informado.";
          $this->erro_campo = "ob32_numcgm";
          $this->erro_banco = "";

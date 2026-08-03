@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_custoplanilha_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcustoplanilha = new cl_custoplanilha;
 $clcustoplanilha->rotulo->label("cc15_sequencial");
 $clcustoplanilha->rotulo->label("cc15_sequencial");
@@ -108,9 +108,9 @@ $clcustoplanilha->rotulo->label("cc15_sequencial");
         }else{
            $sql = $clcustoplanilha->sql_query("",$campos,"cc15_sequencial","{$sWhere}");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cc15_sequencial)){
-          $repassa = array("chave_cc15_sequencial"=>$chave_cc15_sequencial,"chave_cc15_sequencial"=>$chave_cc15_sequencial);
+          $repassa = ["chave_cc15_sequencial"=>$chave_cc15_sequencial,"chave_cc15_sequencial"=>$chave_cc15_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

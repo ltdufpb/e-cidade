@@ -45,9 +45,9 @@ $db_opcao = 1;
   </head>
   <body class="body-default abas">
     <?php
-      $clcriaabas->identifica = array("veicmanut"=>"Manutenção","veicmanutitem"=>"Itens");
-      $clcriaabas->src = array("veicmanut"=>"vei1_veicmanut006.php");
-      $clcriaabas->disabled   =  array("veicmanutitem"=>"true");
+      $clcriaabas->identifica = ["veicmanut"=>"Manutenção","veicmanutitem"=>"Itens"];
+      $clcriaabas->src = ["veicmanut"=>"vei1_veicmanut006.php"];
+      $clcriaabas->disabled   =  ["veicmanutitem"=>"true"];
       $clcriaabas->cria_abas();
 
       db_menu();

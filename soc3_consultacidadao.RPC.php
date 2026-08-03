@@ -42,7 +42,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 $oJson            = new Services_JSON();
 $oParam           = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno         = new stdClass();
-$oRetorno->dados  = array();
+$oRetorno->dados  = [];
 $oRetorno->status = 1;
 $sDataAtual       = date("d/m/Y", db_getsession("DB_datausu"));
 
@@ -59,9 +59,9 @@ switch ($oParam->exec){
       $oDado->ddd         = $oTelefone->getDDD();
       $oDado->numero      = $oTelefone->getNumeroTelefone();
       $oDado->ramal       = $oTelefone->getRamal();
-      $oDado->tipo        = urlencode($oTelefone->getTipoTelefone());
+      $oDado->tipo        = urlencode((string) $oTelefone->getTipoTelefone());
       $oDado->principal   = urlencode($oTelefone->isTelefonePrincipal() ? "Sim" : "Não"); 
-      $oDado->observacao  = urlencode($oTelefone->getObservacao());
+      $oDado->observacao  = urlencode((string) $oTelefone->getObservacao());
       $oRetorno->dados[]  = $oDado;
     }
     
@@ -203,7 +203,7 @@ switch ($oParam->exec){
    */
   case 'buscaCursosOficinas':
 
-    $oRetorno->aCursosOficinas = array();
+    $oRetorno->aCursosOficinas = [];
     
     if (isset($oParam->iCidadao) && !empty($oParam->iCidadao)) {
       
@@ -216,7 +216,7 @@ switch ($oParam->exec){
           
           $oDadosCurso            = new stdClass();
           $oDadosCurso->iCodigo   = $oCursoSocial->getCodigo();
-          $oDadosCurso->sNome     = urlencode($oCursoSocial->getNome());
+          $oDadosCurso->sNome     = urlencode((string) $oCursoSocial->getNome());
           $oDadosCurso->sSituacao = urlencode("Em andamento");
           
           $oDataAtual  = new DBDate($sDataAtual);
@@ -231,8 +231,8 @@ switch ($oParam->exec){
             }
           }
           
-          $oDadosCurso->sDataInicio    = urlencode($oDataInicio->getDate(DBDate::DATA_PTBR));
-          $oDadosCurso->sDataFim       = urlencode($oDataFim->getDate(DBDate::DATA_PTBR));
+          $oDadosCurso->sDataInicio    = urlencode((string) $oDataInicio->getDate(DBDate::DATA_PTBR));
+          $oDadosCurso->sDataFim       = urlencode((string) $oDataFim->getDate(DBDate::DATA_PTBR));
           $oRetorno->aCursosOficinas[] = $oDadosCurso;
         }
       }

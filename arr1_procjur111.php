@@ -245,7 +245,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 		      	$v65_principal = "false";
 		      }
 		      
-		      $aPrincipal = array("true"=>"Sim","false"=>"Não");
+		      $aPrincipal = ["true"=>"Sim","false"=>"Não"];
 		      db_select("v65_principal",$aPrincipal,true,$db_opcaoPrincipal,"style='width:80px;'");
 		    ?>
 		  </td>		  
@@ -261,7 +261,7 @@ if(isset($oPost->opcao) && $oPost->opcao=="alterar"){
 		<tr>
 		  <td valign="top"  align="center">  
 		    <?php 
-			  $aChavePri = array("v65_sequencial"=>@$v65_sequencial,"v65_advog"=>@$v65_advog,"v65_principal"=>@$v65_principal);
+			  $aChavePri = ["v65_sequencial"=>@$v65_sequencial,"v65_advog"=>@$v65_advog,"v65_principal"=>@$v65_principal];
 			  
 			  $cliframe_alterar_excluir->chavepri= $aChavePri;
 			  $cliframe_alterar_excluir->sql     = $clprocjurjudicialadvog->sql_query(null,"*","v65_sequencial"," v65_procjurjudicial = {$oGet->codProcjur}");

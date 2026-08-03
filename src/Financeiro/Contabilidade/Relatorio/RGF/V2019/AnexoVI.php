@@ -47,6 +47,7 @@ class AnexoVI extends AnexoVI2018
      * @return stdClass
      * @throws Exception
      */
+    #[\Override]
     protected function simplificadoAnexoI()
     {
         if (empty($this->simplificadoAnexoI)) {
@@ -66,6 +67,7 @@ class AnexoVI extends AnexoVI2018
      * @return stdClass
      * @throws Exception
      */
+    #[\Override]
     protected function simplificadoAnexoII()
     {
         if (empty($this->simplificadoAnexoII)) {
@@ -79,6 +81,7 @@ class AnexoVI extends AnexoVI2018
     /**
      * @return stdClass
      */
+    #[\Override]
     protected function simplificadoAnexoIII()
     {
         if (empty($this->simplificadoAnexoIII)) {
@@ -92,6 +95,7 @@ class AnexoVI extends AnexoVI2018
      * @return stdClass
      * @throws Exception
      */
+    #[\Override]
     protected function simplificadoAnexoIV()
     {
         if (empty($this->simplificadoAnexoIV)) {
@@ -106,12 +110,11 @@ class AnexoVI extends AnexoVI2018
      * @return object|void
      * @throws Exception
      */
+    #[\Override]
     protected function simplificadoAnexoV()
     {
         if (empty($this->simplificadoAnexoV)) {
-            $instituicoes = array_map(function ($instituicao) {
-                return $instituicao->getCodigo();
-            }, $this->instituicoes);
+            $instituicoes = array_map(fn($instituicao) => $instituicao->getCodigo(), $this->instituicoes);
 
             $anexo = AnexoVFactory::getInstance($this->ano, $this->periodo);
             $anexo->setInstituicoes(implode(',', $instituicoes));

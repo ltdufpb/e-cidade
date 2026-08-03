@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_progconhec_classe.php"));
 include(modification("classes/db_tipoconhecimento_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clprogconhec = new cl_progconhec;
 $cltipoconhecimento = new cl_tipoconhecimento;
 $clrotulo = new rotulocampo;
@@ -65,7 +65,7 @@ $clrotulo->label("ed114_i_tipoconhecimento");
       <?php 
       $result = $cltipoconhecimento->sql_record($cltipoconhecimento->sql_query_file("","ed109_i_codigo,ed109_c_descr","ed109_c_descr",""));
       if($cltipoconhecimento->numrows==0){
-       $x = array(''=>'NENHUM REGISTRO');
+       $x = [''=>'NENHUM REGISTRO'];
        db_select('ed114_i_tipoconhecimento',$x,true,1,"");
       }else{
        db_selectrecord("ed114_i_tipoconhecimento",$result,"","","","chave_ed114_i_tipoconhecimento","","  ","",1);
@@ -104,9 +104,9 @@ $clrotulo->label("ed114_i_tipoconhecimento");
     }else{
      $sql = $clprogconhec->sql_query("",$campos,"z01_nome,ed114_i_ano desc,ed114_d_data desc","");
     }
-    $repassa = array();
+    $repassa = [];
     if(isset($chave_z01_nome)){
-     $repassa = array("chave_z01_nome"=>$chave_z01_nome,"chave_ed114_i_ano"=>$chave_ed114_i_ano,"chave_ed114_i_tipoconhecimento"=>$chave_ed114_i_tipoconhecimento);
+     $repassa = ["chave_z01_nome"=>$chave_z01_nome,"chave_ed114_i_ano"=>$chave_ed114_i_ano,"chave_ed114_i_tipoconhecimento"=>$chave_ed114_i_tipoconhecimento];
     }
     db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
    }else{

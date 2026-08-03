@@ -104,17 +104,17 @@ $clsepultamentos = new cl_sepultamentos;
 
               db_input('db_opcao',     10, $db_opcao,     true, 'hidden', 3);
               db_input('sepultamento', 10, $sepultamento, true, 'hidden', 3);
-              db_input('cemiterio',    10, (isset($cemiterio) ? $cemiterio : null),    true, 'hidden', 3);
+              db_input('cemiterio',    10, ($cemiterio ?? null),    true, 'hidden', 3);
             ?>
             <tr>
               <td>Localização</td>
               <td>
                 <?php
-                  $arrayValores = array("0" => "Selecione",
+                  $arrayValores = ["0" => "Selecione",
                                         "1" => "Sepultura",
                                         "2" => "Ossário Geral",
                                         "3" => "Ossário Particular",
-                                        "4" => "Jazigo");
+                                        "4" => "Jazigo"];
 
                   db_select("local", $arrayValores, true, 2, "onchange='submit()'");
                 ?>

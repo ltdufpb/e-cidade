@@ -63,7 +63,7 @@ switch($oParam->exec) {
   	//pesquisa os programas a partir do grupo selecionado
   	
   	$cl_habitprograma = new cl_habitprograma();
-  	$aDadosProgramas  = array();
+  	$aDadosProgramas  = [];
   	$sWhere           = '';
   	if ($oParam->iGrupo != 0 || $oParam->iGrupo != "0") {
   		$sWhere = " ht01_habitgrupoprograma = {$oParam->iGrupo} ";
@@ -87,7 +87,7 @@ switch($oParam->exec) {
   case 'Interessados' :
   	// retornara os registros para a grid a partir dos filtros selecionados
     
-    $aInteressados    = array();
+    $aInteressados    = [];
     $cl_interessados  = new cl_habitcandidato();
     $cl_interesses    = new cl_habitcandidatointeresse();
     
@@ -168,7 +168,7 @@ switch($oParam->exec) {
   case 'Ficha' :
 
     $iCgm        = $oParam->iCgm;
-    $aListaFicha = array();
+    $aListaFicha = [];
   	
   	$sSqlAvalGrupo    = " select distinct                                                                                                                                                        ";
     $sSqlAvalGrupo   .= "        db101_sequencial as avaliacao,                                                                                                                                  ";
@@ -207,7 +207,7 @@ switch($oParam->exec) {
     $iProgramaInteresse = $oParam->iProgramaInteresse;
     $iProgramaInscricao = $oParam->iProgramaInscricao;
     
-    $aListaInteressados = explode(",",$oParam->sListaInteressados);
+    $aListaInteressados = explode(",",(string) $oParam->sListaInteressados);
     
     try {
       
@@ -239,7 +239,7 @@ switch($oParam->exec) {
       		
       		if ($oInteresse->getGrupoPrograma() == $iGrupoInteresse) {
 
-      			if (trim($iProgramaInteresse) == '') {
+      			if (trim((string) $iProgramaInteresse) == '') {
 
       				if (!$oInteresse->getInteressePrograma()) {
 	      				$oInteresse->addInteressePrograma($iProgramaInscricao);

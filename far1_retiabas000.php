@@ -56,10 +56,10 @@ $clcriaabas = new cl_criaabas;
   	
 	
    <?php 
-   $clcriaabas->identifica = array("a1"=>"Retirada Medicamentos","a2"=>"Últimas retiradas","a3"=>"Consulta Itens Retirados",);
-   $clcriaabas->sizecampo  = array("a1"=>"20","a2"=>"30","a3"=>"30");
-   $clcriaabas->src        = array("a1"=>"far1_far_retirada001.php?tmp_table=$tmp_table","a2"=>"far3_consultaretirada001.php","a3"=>"");
-   $clcriaabas->disabled   = array("a2"=>"true","a3"=>"true");
+   $clcriaabas->identifica = ["a1"=>"Retirada Medicamentos","a2"=>"Últimas retiradas","a3"=>"Consulta Itens Retirados",];
+   $clcriaabas->sizecampo  = ["a1"=>"20","a2"=>"30","a3"=>"30"];
+   $clcriaabas->src        = ["a1"=>"far1_far_retirada001.php?tmp_table=$tmp_table","a2"=>"far3_consultaretirada001.php","a3"=>""];
+   $clcriaabas->disabled   = ["a2"=>"true","a3"=>"true"];
    $clcriaabas->cordisabled = "#9b9b9b";
    $clcriaabas->scrolling = "no";
    $clcriaabas->iframe_height = "600";

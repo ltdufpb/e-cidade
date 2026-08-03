@@ -14,7 +14,7 @@ final class ItbiruralcaractRepository
      */
     public function getByGuia($guia, $tipo = null)
     {
-        $oQuery = Itbiruralcaract::joinCaracter()->guia($guia);
+        $oQuery = (new Itbiruralcaract())->joinCaracter()->guia($guia);
 
         if (!empty($tipo)) {
             $oQuery->tipo($tipo);

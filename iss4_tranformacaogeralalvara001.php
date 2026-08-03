@@ -34,8 +34,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("libs/JSON.php"));
 
-$aTiposAlvara           = array();
-$aAlvarasIndeterminados = array();
+$aTiposAlvara           = [];
+$aAlvarasIndeterminados = [];
 $oIssTipoAlvara         = db_utils::getDao('isstipoalvara');
 $sWhereTipoAlvara       = "q98_instit = " . db_getsession('DB_instit') . " AND q98_permitetransformacao = 't'";
 $sSqlTipoAlvara         = $oIssTipoAlvara->sql_query_file(null, 'q98_sequencial, q98_descricao, q98_tipovalidade', 'q98_sequencial', $sWhereTipoAlvara);

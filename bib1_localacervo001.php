@@ -34,7 +34,7 @@ include(modification("classes/db_localexemplar_classe.php"));
 include(modification("classes/db_exemplar_classe.php"));
 include(modification("classes/db_localizacao_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cllocalacervo = new cl_localacervo;
 $cllocalexemplar = new cl_localexemplar;
 $cllocalizacao = new cl_localizacao;
@@ -55,7 +55,7 @@ if(isset($incluir)){
   for($r=0;$r<count($bi_letra);$r++){
    $cllocalexemplar->bi27_localacervo = $bi27_localacervo;
    $cllocalexemplar->bi27_exemplar = $bi_exemplar[$r];
-   $cllocalexemplar->bi27_letra = strtoupper($bi_letra[$r]);
+   $cllocalexemplar->bi27_letra = strtoupper((string) $bi_letra[$r]);
    $cllocalexemplar->incluir(null);
   }
  }else{
@@ -73,14 +73,14 @@ if(isset($incluir)){
  if($clexemplar->numrows>1){
   for($r=0;$r<count($bi_letra);$r++){
    if($bi_codigo[$r]!="" && $bi_letra[$r]!=""){
-    $cllocalexemplar->bi27_letra = strtoupper($bi_letra[$r]);
+    $cllocalexemplar->bi27_letra = strtoupper((string) $bi_letra[$r]);
     $cllocalexemplar->bi27_exemplar = $bi_exemplar[$r];
     $cllocalexemplar->bi27_codigo = $bi_codigo[$r];
     $cllocalexemplar->alterar($bi_codigo[$r]);
    }elseif($bi_codigo[$r]=="" && $bi_letra[$r]!=""){
     $cllocalexemplar->bi27_localacervo = $bi20_codigo;
     $cllocalexemplar->bi27_exemplar = $bi_exemplar[$r];
-    $cllocalexemplar->bi27_letra = strtoupper($bi_letra[$r]);
+    $cllocalexemplar->bi27_letra = strtoupper((string) $bi_letra[$r]);
     $cllocalexemplar->incluir(null);
    }
   }

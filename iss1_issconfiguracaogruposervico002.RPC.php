@@ -42,7 +42,7 @@ use ECidade\Tributario\Issqn\Repository\IssCnaeAnexosRepository;
 $post = db_utils::postMemory($_REQUEST);
 $post->json = str_replace("\\", "", $post->json);
 $parametro = JSON::create()->parse($post->json);
-$retorno = (object)array('erro' => false, 'mensagem' => '');
+$retorno = (object)['erro' => false, 'mensagem' => ''];
 
 try {
     db_inicio_transacao();
@@ -55,14 +55,14 @@ try {
 
             $dados = $IssGSCadAnexosRepository->getAnexos();
 
-            $lista = array();
+            $lista = [];
 
             foreach ($dados as $key => $dado) {
-                $lista[] = array(
+                $lista[] = [
                     "q157_sequencial" => $dado->getSequencial(),
                     "q157_codigo" => $dado->getCodigo(),
                     "q157_descricao" => $dado->getDescricao()
-                );
+                ];
             }
 
             $retorno->lista = $lista;
@@ -77,12 +77,12 @@ try {
             $dados = $IssGSAnexosRepository->getByAnexosGrupoServico($test);
 
             foreach ($dados as $key => $dado) {
-                $lista[] = array(
+                $lista[] = [
                     "q162_sequencial" => $dado->getSequencial(),
                     "q162_issgruposervico" => $dado->getIssgruposervico(),
                     "q162_issgscadanexos" => $dado->getIssgscadanexos(),
                     "q162_data_fim" => $dado->getDataFim()
-                );
+                ];
             }
 
             break;

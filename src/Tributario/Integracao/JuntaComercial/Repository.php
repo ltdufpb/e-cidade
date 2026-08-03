@@ -101,7 +101,7 @@ class Repository
 
   public function persistAlvara(\Alvara $oAlvara)
   {
-    $aLicencas = array();
+    $aLicencas = [];
 
     $oDaoIssalvara = new \cl_issalvara();
     $oDaoIssalvara->q123_isstipoalvara = $oAlvara->getTipoAlvara();
@@ -143,7 +143,7 @@ class Repository
     $oDAoSanitario->y80_codrua = $oAlvara->getEmpresa()->getCodigoLogradouro();
     $oDAoSanitario->y80_codbairro = $oAlvara->getEmpresa()->getBairro();
     $oDAoSanitario->y80_numero = (string) $oAlvara->getEmpresa()->getNumero();
-    $oDAoSanitario->y80_compl = substr($oAlvara->getEmpresa()->getComplemento(), 0 , 20);
+    $oDAoSanitario->y80_compl = substr((string) $oAlvara->getEmpresa()->getComplemento(), 0 , 20);
 
     $sqlVerificaSanitario = $oDAoSanitario->sql_query_file(null, '*', null, "y80_codsani = {$oAlvara->getEmpresa()->getInscricao()}");
     $oDAoSanitario->sql_record($sqlVerificaSanitario );

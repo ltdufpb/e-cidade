@@ -80,7 +80,7 @@ class RetornoBoleto extends BaseClassRepository
             preg_match('/<SOAP-ENV:Body>(.*)<\/SOAP-ENV:Body>/', $sResponse, $aResponse);
 
             if ($oDom->loadXML($aResponse[0])) {
-                $aResultado = array();
+                $aResultado = [];
 
                 $this->createArrayStartingXml($oDom->documentElement->firstChild, $aResultado);
             }
@@ -119,7 +119,7 @@ class RetornoBoleto extends BaseClassRepository
                 $this->createArrayStartingXml($itemXml, $aResultado[$itemXml->localName]);
             }
         } else {
-            $aResultado = html_entity_decode(trim($noXml->nodeValue));
+            $aResultado = html_entity_decode(trim((string) $noXml->nodeValue));
         }
     }
 }

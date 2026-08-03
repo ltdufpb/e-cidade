@@ -129,7 +129,7 @@ if (isset($db_opcaoal)) {
     <td valign="top"  align="center">  
     <?php 
     
-			 $chavepri = array("h71_sequencial"=>@$h71_sequencial);
+			 $chavepri = ["h71_sequencial"=>@$h71_sequencial];
 			 $cliframe_alterar_excluir->chavepri      = $chavepri;
 			 $cliframe_alterar_excluir->sql           = $clrhtipoperdatipoassentamento->sql_query(null,"*", null, "h71_rhtipoperda = {$h71_rhtipoperda}");
 			 $cliframe_alterar_excluir->campos        = "h71_sequencial, h12_descr";

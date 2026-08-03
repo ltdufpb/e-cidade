@@ -57,12 +57,12 @@ try {
       }
       
       $iNumeroResultados   = pg_num_rows($rsResultado);
-      $aHistoricosExcecoes = array();
+      $aHistoricosExcecoes = [];
       
       for ($iMovimento = 0; $iMovimento < $iNumeroResultados; $iMovimento++) {
 
         $oStdMovimentoExcecao   = db_utils::fieldsMemory($rsResultado, $iMovimento);
-        $aMovimento             = array($oStdMovimentoExcecao->k66_sequencial, $oStdMovimentoExcecao->k66_descricao);
+        $aMovimento             = [$oStdMovimentoExcecao->k66_sequencial, $oStdMovimentoExcecao->k66_descricao];
         $aHistoricosExcecoes[]  = $aMovimento;
       }
       

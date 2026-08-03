@@ -44,7 +44,7 @@
 </head>
 <body bgcolor=#CCCCCC leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <?php 
-  db_postmemory($HTTP_GET_VARS,0);
+  db_postmemory($_GET,0);
 
   $cldb_config = new cl_db_config;
   $iInstitSessao = db_getsession('DB_instit');
@@ -176,7 +176,7 @@
       		  where q01_inscr = $inscricao and q01_anousu = " . db_getsession("DB_anousu") . "
         	  limit 1 ";
     $result = db_query($sql);
-    if(pg_numrows($result) > 0){
+    if(pg_num_rows($result) > 0){
       db_fieldsmemory($result,0);
     }
 
@@ -207,7 +207,7 @@
   } else if ($solicitacao == "Baixa") {
     $sql    = "select * from tabativbaixa where q11_inscr=$inscricao";
     $result = db_query($sql);
-    $iLinhas = pg_numrows($result);
+    $iLinhas = pg_num_rows($result);
 
     if($iLinhas > 0) {
 
@@ -295,7 +295,7 @@
   if ($pesquisaLocalizada) {
 
     $result = db_query($sql) or die($sql);
-    if(pg_numrows($result) == 0){
+    if(pg_num_rows($result) == 0){
       echo "<br><center><b>Sem registros a exibir!</b></center>";
     }else{
      	db_lovrot($sql,15,"","","");

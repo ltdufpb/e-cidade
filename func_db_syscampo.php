@@ -32,13 +32,13 @@ require_once modification('libs/db_usuariosonline.php');
 require_once modification('dbforms/db_funcoes.php');
 require_once modification('classes/db_db_syscampo_classe.php');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING'], $queryString);
+parse_str((string) $_SERVER['QUERY_STRING'], $queryString);
 
 foreach ($queryString as $key => $value) {
     ${$key} = $value;
 }
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cldb_syscampo = new cl_db_syscampo;
 $cldb_syscampo->rotulocl->label("codcam");
 $cldb_syscampo->rotulocl->label("nomecam");

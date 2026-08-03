@@ -72,7 +72,7 @@ class DefaultSession extends Session
         if ($this->has($key)) {
             $this->set($key, $value);
         } else {
-            $this->add(array($key => $value));
+            $this->add([$key => $value]);
         }
     }
 
@@ -199,11 +199,11 @@ class DefaultSession extends Session
     public function addFromRequest($request)
     {
         //Valores default
-        $sessaoMenu = array(
+        $sessaoMenu = [
             DefaultSession::DB_MODULO => 1,
             DefaultSession::DB_NOME_MODULO => 'Configuração',
             DefaultSession::DB_ACESSADO => 24
-        );
+        ];
 
         if (isset($request[self::DB_INSTIT])) {
             $sessaoMenu[self::DB_INSTIT] = $request[self::DB_INSTIT];

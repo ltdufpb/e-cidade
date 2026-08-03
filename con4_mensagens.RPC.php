@@ -52,9 +52,9 @@ try {
       $sMensagem    = file_get_contents('mensagens/associacoes/associacoes.json');
       $aAssociacoes = $oJson->decode($sMensagem)->associacoes;
 
-      $aMenus     = array();
-      $aItensMenu = array();
-      $aArquivos  = array();
+      $aMenus     = [];
+      $aItensMenu = [];
+      $aArquivos  = [];
 
       foreach( $aAssociacoes as $oItem ) {
 
@@ -98,7 +98,7 @@ try {
 
         $aArvoreMenu = db_utils::getCollectionByRecord($rsItemMenu);
 
-        $aArvore = array();
+        $aArvore = [];
 
         foreach ( $aArvoreMenu as $oArvoreMenu ) {
           $aArvore[] = $oArvoreMenu->riitem . '#' . $oArvoreMenu->rsmenu;
@@ -153,8 +153,8 @@ try {
        */
       foreach ( $oParametros->oMensagem as $sMetodo => $sMensagem ) {
         
-        if ( strlen($sMetodo) > $iTamanhoIdentacao ) {
-          $iTamanhoIdentacao = strlen($sMetodo) + 1;
+        if ( strlen((string) $sMetodo) > $iTamanhoIdentacao ) {
+          $iTamanhoIdentacao = strlen((string) $sMetodo) + 1;
         }
       }
 
@@ -163,7 +163,7 @@ try {
        */
       foreach ( $oParametros->oMensagem as $sMetodo => $sMensagem ) {
 
-        $lMetodoInvalido = preg_match($sERValidarCampo, $sMetodo);
+        $lMetodoInvalido = preg_match($sERValidarCampo, (string) $sMetodo);
 
         /**
          * Metodo possui caracteres invalidos 
@@ -262,13 +262,13 @@ echo $oJson->encode($oRetorno);
  */
 function montarArvoreMenusMensagens(Array $aArray, Array $aArquivos) {
 
-  $aArrayRetorno = array();
+  $aArrayRetorno = [];
   $sArray        = '$aArrayRetorno';
   $sAgrupador    = '';
   
   foreach ( $aArray as $sValor ) {
 
-    $aDadosMenu = explode('#', $sValor);
+    $aDadosMenu = explode('#', (string) $sValor);
     $sAgrupador .= $aDadosMenu[0];
     $sItemMenu  = $sAgrupador . '#' . $aDadosMenu[1]; 
     $sArray .= "['" . urlencode($sItemMenu) . "']";

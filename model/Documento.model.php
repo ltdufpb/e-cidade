@@ -94,7 +94,7 @@ class Documento {
    * @param  array $aAtributos
    * @return array
    */
-  private static function consultaReferencia($aAtributos=array()){
+  private static function consultaReferencia($aAtributos=[]){
 
   	$oDaoSysArqCamp = db_utils::getDao('db_sysarqcamp');
 
@@ -108,8 +108,8 @@ class Documento {
         if ($rsSysArqCamp) {
 
           $oSysCam = db_utils::fieldsMemory($rsSysArqCamp,0);
-          $aAtributos[$iInd]->referencia = array("campo" =>$oSysCam->nomecam,
-                                                 "tabela"=>$oSysCam->nomearq);
+          $aAtributos[$iInd]->referencia = ["campo" =>$oSysCam->nomecam,
+                                                 "tabela"=>$oSysCam->nomearq];
         }
       } else {
         $aAtributos[$iInd]->referencia = null;
@@ -126,7 +126,7 @@ class Documento {
    * @return int
    * @throws Exception
    */
-  public function incluirDocumento($aAtributos=array()){
+  public function incluirDocumento($aAtributos=[]){
 
     $sMsgErro = "Inclusão de documento abortada!\n";
 
@@ -170,7 +170,7 @@ class Documento {
    * @param array  $aAtributos
    * @throws Exception
    */
-  public function alterarDocumento($iCodDocumento = null,$aAtributos = array()){
+  public function alterarDocumento($iCodDocumento = null,$aAtributos = []){
 
     $sMsgErro = "Alteração de documento abortada!\n";
 
@@ -178,7 +178,7 @@ class Documento {
       throw new Exception("{$sMsgErro}Nenhuma transação encontrada!");
     }
 
-    if ( trim($iCodDocumento) == '' ) {
+    if ( trim((string) $iCodDocumento) == '' ) {
       throw new Exception("{$sMsgErro}Código do documento não informado!");
     }
 
@@ -219,7 +219,7 @@ class Documento {
       throw new Exception("{$sMsgErro}Nenhuma transação encontrada!");
     }
 
-    if ( trim($iCodDocumento) == '' ) {
+    if ( trim((string) $iCodDocumento) == '' ) {
       throw new Exception("{$sMsgErro}Código do documento não informado!");
     }
 

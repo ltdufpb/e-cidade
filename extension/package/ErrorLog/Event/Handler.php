@@ -18,7 +18,7 @@ class Handler extends EventHandler {
 
     if ($request) {
 
-      $error['session'] = array(
+      $error['session'] = [
         'DB_login'             => $request->session()->get('DB_login'),
         'DB_id_usuario'        => $request->session()->get('DB_id_usuario'),
         'DB_administrador'     => $request->session()->get('DB_administrador'),
@@ -43,16 +43,16 @@ class Handler extends EventHandler {
         'DB_coddepto'          => $request->session()->get('DB_coddepto'),
         'DB_nomedepto'         => $request->session()->get('DB_nomedepto'),
         'DB_ano_pcasp'         => $request->session()->get('DB_ano_pcasp'),
-      );
+      ];
 
-      $error['server'] = array(
+      $error['server'] = [
         'REDIRECT_STATUS' => $request->server()->get('REDIRECT_STATUS'),
         'HTTP_HOST' => $request->server()->get('HTTP_HOST'),
         'HTTP_USER_AGENT' => $request->server()->get('HTTP_USER_AGENT'),
         'HTTP_REFERER' => $request->server()->get('HTTP_REFERER'),
         'QUERY_STRING' => $request->server()->get('QUERY_STRING'),
         'REQUEST_URI' => $request->server()->get('REQUEST_URI'),
-      );
+      ];
 
       if (($entity->getType() & E_FATAL)) {
         $error['get'] = $request->get()->all();
@@ -68,7 +68,7 @@ class Handler extends EventHandler {
     $magicQuotes = ini_get('magic_quotes_gpc');
 
     array_walk_recursive($error, function(&$value, $key) use ($magicQuotes) {
-      $value = utf8_encode($value);
+      $value = mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
       if ($magicQuotes) {
         $value = stripslashes($value);
       }

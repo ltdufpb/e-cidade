@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_empageordem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clempageordem = new cl_empageordem;
 $clempageordem->rotulo->label("e42_sequencial");
 $clempageordem->rotulo->label("e42_dtpagamento");
@@ -136,10 +136,10 @@ $clempageordem->rotulo->label("e42_dtpagamento");
            $sql = $clempageordem->sql_query_left("",$campos,"e42_sequencial desc", $sWhere);
 
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_e42_dtpagamento)) {
 
-          $repassa = array("chave_e42_sequencial"=>$chave_e42_sequencial,"chave_e42_dtpagamento"=>$chave_e42_dtpagamento);
+          $repassa = ["chave_e42_sequencial"=>$chave_e42_sequencial,"chave_e42_dtpagamento"=>$chave_e42_dtpagamento];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       } else {

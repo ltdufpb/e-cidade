@@ -54,7 +54,7 @@ require_once(modification('classes/db_empresto_classe.php'));
 require_once(modification("dbforms/verticalTab.widget.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clempempenho = new cl_empempenho;
 $clempempenhonl = new cl_empempenhonl;
@@ -560,7 +560,7 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                         <b><?= $Lcc31_justificativa ?></b>
                     </td>
                     <td colspan='8' width='100%' class='valores'>
-                        <?= nl2br($sJustificativa) ?>
+                        <?= nl2br((string) $sJustificativa) ?>
                 </tr>
                 <?php
             }
@@ -571,7 +571,7 @@ if (isset($e60_numemp) and $e60_numemp != "") {
                     <?= $Le60_resumo ?>
                 </td>
                 <td colspan='8' width='100%' class='valores'>
-                    <?= nl2br($e60_resumo); ?>
+                    <?= nl2br((string) $e60_resumo); ?>
             </tr>
 
             <?php

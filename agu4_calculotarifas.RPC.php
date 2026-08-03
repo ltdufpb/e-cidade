@@ -34,10 +34,10 @@ require_once modification("dbforms/db_funcoes.php");
 use \ECidade\Tributario\Agua\Calculo\Calculo;
 
 $oParam   = JSON::create()->parse(str_replace("\\", "", $_POST["json"]));
-$oRetorno = (object) array(
+$oRetorno = (object) [
   'mensagem' => null,
   'erro'     => false,
-);
+];
 
 try {
 

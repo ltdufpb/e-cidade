@@ -54,7 +54,7 @@ $clrotulo->label("cc31_classificacaocredores");
 $oDaoClassificaoCredor   = new cl_classificacaocredores();
 $rsClassificacaoCredor   = $oDaoClassificaoCredor->sql_record($oDaoClassificaoCredor->sql_query());
 
-$aClassificacaoCredor = array();
+$aClassificacaoCredor = [];
 if ($rsClassificacaoCredor != false && $oDaoClassificaoCredor->numrows > 0) {
   for ($i = 0; $i < $oDaoClassificaoCredor->numrows; $i++) {
     $oClassificacaoCredor = db_utils::fieldsMemory($rsClassificacaoCredor, $i);
@@ -103,7 +103,7 @@ if (isset($chavepesquisa) && $db_opcao == 1) {
                   and solandam.pc43_depto = ".db_getsession("DB_coddepto");
 
       $result_andam = db_query($sql);
-      if (pg_numrows($result_andam)>0){
+      if (pg_num_rows($result_andam)>0){
         $sqltran = "select distinct x.p62_codtran,
       				x.pc11_numero,
 				x.pc11_codigo,
@@ -141,7 +141,7 @@ if (isset($chavepesquisa) && $db_opcao == 1) {
 			      x.e55_autori = {$chavepesquisa} ";
 
         $result_tran=db_query($sqltran);
-        if(pg_numrows($result_tran)==0){
+        if(pg_num_rows($result_tran)==0){
           $db_disab=false;
         }
       }
@@ -232,9 +232,7 @@ if (!isset($chavepesquisa)) {
                     $tipocompra = $e54_codcom;
                 }
 
-                $liberaLicictacao = !empty(array_filter($tiposCompra, function ($dado) use ($tipocompra) {
-                    return ($tipocompra == $dado->e54_codcom && $dado->l44_obrigalicitacao == 't');
-                }));
+                $liberaLicictacao = !empty(array_filter($tiposCompra, fn($dado) => $tipocompra == $dado->e54_codcom && $dado->l44_obrigalicitacao == 't'));
 
                 $sql2 = $clcflicita->sql_query_file(null, "l03_tipo,l03_descr", '', "l03_codcom=$tipocompra");
                 $result = $clcflicita->sql_record($sql2);
@@ -264,7 +262,7 @@ if (!isset($chavepesquisa)) {
                   $numeroLicitacao = '';
                   $anoLicitacao = '';
                   if (!empty($e54_numerl)) {
-                      $dadosLicitacao = explode('/', $e54_numerl);
+                      $dadosLicitacao = explode('/', (string) $e54_numerl);
                       $numeroLicitacao = $dadosLicitacao[0];
                       $anoLicitacao = !empty($dadosLicitacao[1]) ? $dadosLicitacao[1] : '';
                   }
@@ -322,10 +320,10 @@ if (!isset($chavepesquisa)) {
           <td>
             <?php
 
-            $aEventosPrestacaoContas = array();
+            $aEventosPrestacaoContas = [];
             $result  = $clempprestatip->sql_record($clempprestatip->sql_query_file(null, "e44_tipo as tipo, e44_descr, e44_obriga", "e44_obriga "));
             $numrows = $clempprestatip->numrows;
-            $arr     = array();
+            $arr     = [];
             for ($i = 0; $i < $numrows; $i++) {
 
               db_fieldsmemory($result, $i);
@@ -373,7 +371,7 @@ if (!isset($chavepesquisa)) {
 											    and e55_autori = $e54_autori and o56_anousu = $anoUsu";
                   //die($sSql);
                   $result = $clempautitem->sql_record($sSql);
-                  $aEle = array();
+                  $aEle = [];
                   if($clempautitem->numrows > 0){
                     $oResult = db_utils::getCollectionByRecord($result);
 
@@ -393,7 +391,7 @@ if (!isset($chavepesquisa)) {
                 }
               }
             }else{
-              $aEle = array();
+              $aEle = [];
               $e56_codele = "";
               db_select('e56_codele', $aEle, true, 1, "onChange='js_carregarLista()'");
             }
@@ -579,7 +577,7 @@ if (!isset($chavepesquisa)) {
                   </td>
                   <td id="dispensa_linha" style="display: table-cell;" nowrap>
                   <?php
-                  $aOpcoes = array(0 => "Não", 1 => "Sim");
+                  $aOpcoes = [0 => "Não", 1 => "Sim"];
                   db_select('classificacao_credor_combo', $aOpcoes, true, 1, "style='width: 95px;' onChange='js_classificacaoCredor()'");
                   ?>
                   </td>
@@ -1028,7 +1026,7 @@ $e69_localrecebimento = !empty($_POST['e69_localrecebimento']) ? $_POST['e69_loc
   function js_preenchepesquisa(chave, chave2){
     db_iframe_orcreservaaut.hide();
     <?php
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&iElemento='+chave2";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&iElemento='+chave2";
     ?>
   }
 

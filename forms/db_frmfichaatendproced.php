@@ -75,7 +75,7 @@ $clrotulo->label ( "sd70_c_nome" );
 if(isset($cgs)){
   $z01_i_cgsund=$cgs;
 }
-$iProntuario = isset( $sd24_i_codigo ) ? $sd24_i_codigo : "";
+$iProntuario = $sd24_i_codigo ?? "";
 ?>
 <form name="form1" id='form1' method="post" action="">
   <table>
@@ -582,7 +582,7 @@ function js_preenchepesquisapront( chave1 ) {
  var sGet  = '?chavepesquisaprontuario=' + chave1;
      sGet += '&lAlertDiditada=true';
      sGet += '&iRhCbo=' + arguments[3];
- location.href ='<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + sGet;
+ location.href ='<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>' + sGet;
 }
 
 /**
@@ -972,7 +972,7 @@ function js_preenchepesquisa( chave ) {
   db_iframe_prontproced.hide();
   <?php
   if( $db_opcao != 1 ) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

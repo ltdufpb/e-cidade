@@ -16,6 +16,7 @@ class BalanceteReceitaAnteriorService2022 extends BalanceteReceitaAnteriorServic
      * @return BalanceteReceitaAnteriorBuilder2022
      * @throws Exception
      */
+    #[\Override]
     protected function getBuilder()
     {
         return new BalanceteReceitaAnteriorBuilder2022();

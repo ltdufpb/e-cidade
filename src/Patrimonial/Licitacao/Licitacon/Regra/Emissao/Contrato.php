@@ -60,17 +60,11 @@ class Contrato extends BaseAbstract
      */
     public function getCodigoLayout()
     {
-        switch ($this->oConfiguracao->getVersao()) {
-            case '1.2':
-                $codigoLayout = self::CODIGO_LAYOUT_V12;
-                break;
-            case '1.3':
-            case '1.4':
-                $codigoLayout = self::CODIGO_LAYOUT_V13;
-                break;
-            default:
-                throw new Exception('Versão do layout inválido.');
-        }
+        $codigoLayout = match ($this->oConfiguracao->getVersao()) {
+            '1.2' => self::CODIGO_LAYOUT_V12,
+            '1.3', '1.4' => self::CODIGO_LAYOUT_V13,
+            default => throw new Exception('Versão do layout inválido.'),
+        };
         return $codigoLayout;
     }
 
@@ -160,10 +154,10 @@ class Contrato extends BaseAbstract
     private function getDataInicioVigencia($sCodigoAcordo)
     {
         $oDaoEventoAcordo = new cl_acordoevento;
-        $sWhere = implode(' AND ', array(
+        $sWhere = implode(' AND ', [
             'ac55_tipoevento = 5',
             'ac55_acordo = ' . $sCodigoAcordo
-        ));
+        ]);
         $sSql = $oDaoEventoAcordo->sql_query_file(null, 'ac55_acordo, ac55_tipoevento, ac55_data', null, $sWhere);
         $rsEvento = db_query($sSql);
 
@@ -209,10 +203,10 @@ class Contrato extends BaseAbstract
                 ac18_datainicio AS datainiciooriginal,
                 ac16_objeto
         ';
-        $sWhere = implode(' AND ', array(
+        $sWhere = implode(' AND ', [
             "(ac58_acordo IS NULL OR ac58_data >= '{$sDataAtual}')",
             'ac16_instit = ' . $oInstituicao->getCodigo()
-        ));
+        ]);
         $sOrderBy = 'ac16_sequencial';
 
         $oDaoAcordo = new cl_acordo;

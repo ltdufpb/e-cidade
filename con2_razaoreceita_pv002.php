@@ -42,7 +42,7 @@ include(modification("classes/db_conlancamdot_classe.php"));
 include(modification("classes/db_conlancamdig_classe.php"));
 include(modification("libs/db_liborcamento.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo;
 $clconlancamval = new cl_conlancamval;
@@ -130,7 +130,7 @@ if( $dt_fim != db_getsession('DB_anousu')."-01-01" ){
     db_redireciona("db_erros.php?fechar=true&db_erro=Não existem dados para gerar a consulta ! ok  in $w $anousu,$dt_ini,$dt_fim");
   }
 
-  $saldo_arrecadado_anterior = pg_result($result1,0,'saldo_arrecadado');
+  $saldo_arrecadado_anterior = pg_fetch_result($result1,0,'saldo_arrecadado');
 
   //db_criatabela($result1);
 
@@ -330,7 +330,7 @@ SQL;
 	    $dt = $c74_data;
             $pdf->cell( 11,$tam,$c71_coddoc,0,0,"R",0);
             //$pdf->cell( 10,$alt,$c53_coddoc,0,0,"R",0);
-            $pdf->cell( 40,$tam,substr($c53_descr,0,30),0,0,"L",0);
+            $pdf->cell( 40,$tam,substr((string) $c53_descr,0,30),0,0,"L",0);
             $pdf->cell( 85,$tam,($credito==''?$z01_nome:$credito."-".$credito_descr),0,0,"L",0);
             $pdf->cell( 30,$tam,db_formatar($c70_valor,'f'),0,1,"R",0);
             if( $c72_complem != "" ){

@@ -51,12 +51,12 @@ try {
             $sql = $disciplina->sql_disciplinas_ensino($parametros->ensino);
 
             $rsDisciplinaEnsino = db_query($sql);
-            $disciplinasEnsino = array();
+            $disciplinasEnsino = [];
             db_utils::makeCollectionFromRecord($rsDisciplinaEnsino, function ($dado) use (&$disciplinasEnsino) {
                 $disciplinasEnsino[$dado->codigo_disciplina] = $dado;
             });
 
-            $logExcluir = array();
+            $logExcluir = [];
             foreach ($parametros->disciplinas_remover as $codigo) {
                 if (array_key_exists($codigo, $disciplinasEnsino)) {
                     $dadoDisciplina = $disciplinasEnsino[$codigo];

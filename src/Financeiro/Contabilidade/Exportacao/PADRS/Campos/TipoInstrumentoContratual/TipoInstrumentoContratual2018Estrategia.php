@@ -6,6 +6,7 @@ use Exception;
 
 class TipoInstrumentoContratual2018Estrategia extends TipoInstrumentoContratualEstrategia
 {
+    #[\Override]
     public function getValor()
     {
         if ($this->lancamento) {

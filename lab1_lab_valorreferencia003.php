@@ -35,8 +35,8 @@ require_once(modification("classes/db_lab_tiporeferenciaalnumerico_classe.php"))
 require_once(modification("classes/db_lab_valorreferenciasel_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_lab_valorrefselgrupo_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $cllab_valorreferencia          = new cl_lab_valorreferencia;
 $cllab_tiporeferenciaalnumerico = new cl_lab_tiporeferenciaalnumerico;
 $cllab_tiporeferenciaalfa       = new cl_lab_tiporeferenciaalfa;

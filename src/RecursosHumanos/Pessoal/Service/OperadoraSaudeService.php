@@ -68,11 +68,11 @@ class OperadoraSaudeService
      */
     public function salvar(stdClass $parametros)
     {
-        if (isset($parametros->cgm) === false || $parametros->cgm === false || trim($parametros->cgm) === '') {
+        if (isset($parametros->cgm) === false || $parametros->cgm === false || trim((string) $parametros->cgm) === '') {
             throw new Exception('O campo "Operadora" é obrigatório.');
         }
 
-        if (isset($parametros->ans) === false || $parametros->ans === false || trim($parametros->ans) === '') {
+        if (isset($parametros->ans) === false || $parametros->ans === false || trim((string) $parametros->ans) === '') {
             throw new Exception('O campo "ANS" é obrigatório.');
         }
 
@@ -80,7 +80,7 @@ class OperadoraSaudeService
             throw new Exception('O campo "Situação" é obrigatório.');
         }
 
-        if (strlen($parametros->ans) < 6) {
+        if (strlen((string) $parametros->ans) < 6) {
             throw new Exception('O campo "ANS" deve ter pelo menos 6 números.');
         }
 

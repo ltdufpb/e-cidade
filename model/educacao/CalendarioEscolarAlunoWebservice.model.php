@@ -51,16 +51,16 @@ class CalendarioEscolarAlunoWebservice {
     $iAno               = $oCalendarioTurma->getAnoExecucao();
     
     $oCalendario                   = new stdClass;
-    $oCalendario->periodos_letivos = array();
+    $oCalendario->periodos_letivos = [];
     $oCalendario->ano              = $iAno;
     $oCalendario->data_inicio      = $oCalendarioTurma->getDataInicio()->convertTo(DBDate::DATA_EN);
     $oCalendario->data_fim         = $oCalendarioTurma->getDataFinal()->convertTo(DBDate::DATA_EN);;
-    $oCalendario->meses            = array();
+    $oCalendario->meses            = [];
     $aPeriodosAula                 = $oCalendarioTurma->getPeriodos();
     foreach ($aPeriodosAula as $oPeriodosLetivos) {
       
       $oPeriodo                        = new stdClass();
-      $oPeriodo->nome                  = utf8_encode($oPeriodosLetivos->getPeriodoAvaliacao()->getDescricaoAbreviada());
+      $oPeriodo->nome                  = mb_convert_encoding($oPeriodosLetivos->getPeriodoAvaliacao()->getDescricaoAbreviada(), 'UTF-8', 'ISO-8859-1');
       $oPeriodo->data_inicio           = $oPeriodosLetivos->getDataInicio()->convertTo(DBDate::DATA_EN);
       $oPeriodo->data_termino          = $oPeriodosLetivos->getDataTermino()->convertTo(DBDate::DATA_EN);
       $oCalendario->periodos_letivos[] = $oPeriodo;
@@ -69,8 +69,8 @@ class CalendarioEscolarAlunoWebservice {
       
       $oMes                 = new stdClass();
       $sDataFinal           = "{$iAno}-$iMes-".cal_days_in_month(CAL_GREGORIAN, $iMes, $iAno);
-      $oMes->nome           = utf8_encode(ucfirst(db_mes($iMes)));
-      $oMes->dias           = array();
+      $oMes->nome           = mb_convert_encoding(ucfirst(db_mes($iMes)), 'UTF-8', 'ISO-8859-1');
+      $oMes->dias           = [];
       $aDiasNoMes           = DBDate::getDatasNoIntervalo(new DBDate("{$iAno}-$iMes-01"), new DBDate($sDataFinal));
       foreach ($aDiasNoMes as $oDiaNoMes) {
          
@@ -88,13 +88,13 @@ class CalendarioEscolarAlunoWebservice {
   
   protected function getEventosDia(Calendario $oCalendario, DBDate $oDia) {
     
-    $aEventos = array();
+    $aEventos = [];
     foreach ($oCalendario->getEventos() as $oEvento) {
       
       if ($oEvento->getDataEvento() == $oDia) {
         
         $oEventoRetorno         = new stdClass();
-        $oEventoRetorno->nome   = utf8_encode($oEvento->getDescricao());
+        $oEventoRetorno->nome   = mb_convert_encoding($oEvento->getDescricao(), 'UTF-8', 'ISO-8859-1');
         $oEventoRetorno->letivo = $oEvento->isDiaLetivo();
         $aEventos[]             = $oEventoRetorno;
       }
@@ -112,7 +112,7 @@ class CalendarioEscolarAlunoWebservice {
     $oDiaLetivo->dia_letivo = false;
     $oDiaLetivo->periodo    = '';
     $aPeriodosCalendario    = $oCalendarioEscolar->getPeriodos();
-    if (in_array($oData->getDiaSemana(), array(0, 6))) {
+    if (in_array($oData->getDiaSemana(), [0, 6])) {
       
       $lDiaLetivo = false;
       foreach ($aEventos as $oEvento) {
@@ -133,7 +133,7 @@ class CalendarioEscolarAlunoWebservice {
       if (DBDate::dataEstaNoIntervalo($oData, $oDataInicio, $oDataFinal)) {
         
         $oDiaLetivo->dia_letivo = true;
-        $oDiaLetivo->periodo    = utf8_encode($oPeriodoCalendario->getPeriodoAvaliacao()->getDescricaoAbreviada());
+        $oDiaLetivo->periodo    = mb_convert_encoding($oPeriodoCalendario->getPeriodoAvaliacao()->getDescricaoAbreviada(), 'UTF-8', 'ISO-8859-1');
       }
     }
     return $oDiaLetivo;

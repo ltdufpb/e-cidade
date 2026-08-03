@@ -9,14 +9,8 @@ use App\Domain\Saude\Farmacia\Services\MedicamentoService;
 
 class MedicamentoController extends Controller
 {
-    /**
-     * @var MedicamentoService
-     */
-    private $service;
-
-    public function __construct(MedicamentoService $service)
+    public function __construct(private readonly MedicamentoService $service)
     {
-        $this->service = $service;
     }
 
     public function getEstoque(Request $request)

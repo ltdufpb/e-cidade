@@ -35,7 +35,7 @@ class ContaBancariaOutrosDadosService
     public function alterar($request)
     {
 
-        $explode = explode(".", $request['changed']);
+        $explode = explode(".", (string) $request['changed']);
         $json = '{"'.$explode[0].'": "'.$explode[1].'"}';
         $conta = (int) $request['conta'];
 
@@ -44,7 +44,7 @@ class ContaBancariaOutrosDadosService
             ->where('k13_conta', $conta)
             ->get();
 
-        $decode = (json_decode(json_decode($result->toJson())[0]->k13_outrosdados));
+        $decode = (json_decode((string) json_decode((string) $result->toJson())[0]->k13_outrosdados));
 
         if (isset(json_decode($json)->conta_ativa)) {
             $decode->conta_ativa = json_decode($json)->conta_ativa;

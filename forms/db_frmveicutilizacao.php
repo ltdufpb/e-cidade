@@ -102,7 +102,7 @@ $clrotulo->label("ve17_descr");
   <tr>
     <td nowrap colspan="3">
     <?php 
-	     $chavepri = array ("ve15_sequencial"=>@$ve15_sequencial);
+	     $chavepri =  ["ve15_sequencial"=>@$ve15_sequencial];
        $cliframe_alterar_excluir->chavepri = $chavepri;
        $cliframe_alterar_excluir->sql = $clveicutilizacao->sql_query_uso(null,"distinct ve15_sequencial,ve15_veiccadutilizacao,ve14_descr,t52_descr,ve17_descr",null,"ve15_veiculos = $ve15_veiculos");
        $cliframe_alterar_excluir->campos = "ve15_sequencial,ve15_veiccadutilizacao,ve14_descr,t52_descr,ve17_descr";

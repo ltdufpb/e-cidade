@@ -46,230 +46,227 @@ class db_impcarne extends cl_assinatura {
 
 /////   VARIÁVEIS PARA EMISSAO DE CARNES DE PARCELAMENTO - MODELO 1
 
-  var $modelo    = 1;
+  public $modelo    = 1;
 
-  var $qtdcarne  = null;
-  var $tipodebito= 'TIPO DE DÉBITO';
-  var $tipoinscr1= null;
-  var $prefeitura= 'PREFEITURA DBSELLER';
-  var $secretaria= 'SECRETARIA DE FAZENDA';
-  var $debito    = null;
-  var $logo      = null;
-  var $parcela   = null;
-  var $titulo1   = '';
-  var $descr1    = null;
-  var $titulo2   = 'Cód de Arrecadação';
-  var $descr2    = null;
-  var $titulo3   = 'Contribuinte/Endereço';
-  var $descr3_1  = null;
-  var $descr3_2  = null;
-  var $titulo4   = 'Instruções';
-  var $descr4_1  = null;
-  var $descr4_2  = null;
-  var $titulo5   = 'Parcela';
-  var $descr5    = null;
-  var $titulo6   = 'Vencimento';
-  var $descr6    = null;
-  var $titulo7   = 'Valor';
-  var $descr7    = null;
-  var $titulo8   = '';
-  var $descr8    = null;
-  var $titulo9   = 'Cód. de Arrecadação';
-  var $descr9    = null;
-  var $titulo10  = 'Parcela';
-  var $descr10   = null;
-  var $titulo11  = 'Contribuinte/Endereço';
-  var $descr11_1 = null;
-  var $descr11_2 = null;
-  var $titulo12  = 'Instruções';
-  var $descr12_1 = null;
-  var $descr12_2 = null;
-  var $titulo13  = '';
-  var $descr13   = null;
-  var $titulo14  = 'Vencimento';
-  var $descr14   = null;
-  var $texto     = null;
-  var $titulo15  = 'Valor';
-  var $descr15   = null;
-  var $descr16_1 = null;
-  var $descr16_2 = null;
-  var $descr16_3 = null;
-  var $linha_digitavel = null;
-  var $codigo_barras = null;
-  var $objpdf = null;
+  public $qtdcarne  = null;
+  public $tipodebito= 'TIPO DE DÉBITO';
+  public $tipoinscr1= null;
+  public $prefeitura= 'PREFEITURA DBSELLER';
+  public $secretaria= 'SECRETARIA DE FAZENDA';
+  public $debito    = null;
+  public $logo      = null;
+  public $parcela   = null;
+  public $titulo1   = '';
+  public $descr1    = null;
+  public $titulo2   = 'Cód de Arrecadação';
+  public $descr2    = null;
+  public $titulo3   = 'Contribuinte/Endereço';
+  public $descr3_1  = null;
+  public $descr3_2  = null;
+  public $titulo4   = 'Instruções';
+  public $descr4_1  = null;
+  public $descr4_2  = null;
+  public $titulo5   = 'Parcela';
+  public $descr5    = null;
+  public $titulo6   = 'Vencimento';
+  public $descr6    = null;
+  public $titulo7   = 'Valor';
+  public $descr7    = null;
+  public $titulo8   = '';
+  public $descr8    = null;
+  public $titulo9   = 'Cód. de Arrecadação';
+  public $descr9    = null;
+  public $titulo10  = 'Parcela';
+  public $descr10   = null;
+  public $titulo11  = 'Contribuinte/Endereço';
+  public $descr11_1 = null;
+  public $descr11_2 = null;
+  public $titulo12  = 'Instruções';
+  public $descr12_1 = null;
+  public $descr12_2 = null;
+  public $titulo13  = '';
+  public $descr13   = null;
+  public $titulo14  = 'Vencimento';
+  public $descr14   = null;
+  public $texto     = null;
+  public $titulo15  = 'Valor';
+  public $descr15   = null;
+  public $descr16_1 = null;
+  public $descr16_2 = null;
+  public $descr16_3 = null;
+  public $linha_digitavel = null;
+  public $codigo_barras = null;
 
 //////  VARIÁVEIS PARA EMISSAO DE RECIBO DE PAGAMENTO - MODELO 2
 
-  var $enderpref = null;
-  var $tipocompl = null;
-  var $tipolograd= null;
-  var $tipobairro= null;
-  var $municpref = null;
-  var $telefpref = null;
-  var $emailpref = null;
-  var $nome      = null;
-  var $ender     = null;
-  var $compl     = null;
-  var $munic     = null;
-  var $uf        = null;
-  var $cep       = null;
-  var $tipoinscr = 'Matr/Inscr';
-  var $nrinscr   = null;
-  var $nrinscr1  = null;
-  var $ip        = null;
-  var $nomepri   = '';
-  var $nrpri     = '';
-  var $complpri  = '';
-  var $bairropri = null;
-  var $datacalc  = null;
-  var $taxabanc  = 0;
-  var $rowspagto = 0;
-  var $receita   = null;
-  var $receitared= null;
-  var $dreceita  = null;
-  var $ddreceita = null;
-  var $valor     = null;
-  var $historico = null;
-  var $histparcel= null;
-  var $recorddadospagto = 0;
-  var $linhasdadospagto = 0;
-  var $dtvenc    = null;
-  var $numpre    = null;
-  var $valtotal  = null;
+  public $enderpref = null;
+  public $tipocompl = null;
+  public $tipolograd= null;
+  public $tipobairro= null;
+  public $municpref = null;
+  public $telefpref = null;
+  public $emailpref = null;
+  public $nome      = null;
+  public $ender     = null;
+  public $compl     = null;
+  public $munic     = null;
+  public $uf        = null;
+  public $cep       = null;
+  public $tipoinscr = 'Matr/Inscr';
+  public $nrinscr   = null;
+  public $nrinscr1  = null;
+  public $ip        = null;
+  public $nomepri   = '';
+  public $nrpri     = '';
+  public $complpri  = '';
+  public $bairropri = null;
+  public $datacalc  = null;
+  public $taxabanc  = 0;
+  public $rowspagto = 0;
+  public $receita   = null;
+  public $receitared= null;
+  public $dreceita  = null;
+  public $ddreceita = null;
+  public $valor     = null;
+  public $historico = null;
+  public $histparcel= null;
+  public $recorddadospagto = 0;
+  public $linhasdadospagto = 0;
+  public $dtvenc    = null;
+  public $numpre    = null;
+  public $valtotal  = null;
 
 //////  VARIÁVEIS PARA EMISSAO DE ALVARÁ
 
-  var $tipoalvara  = null;
-  var $ativ        = null;
-  var $descrativ   = null;
-  var $outrasativs = null;
-  var $q02_memo    = null;
-  var $numero      = null;
-  var $q02_obs     = null;
-  var $q03_atmemo  = null; //obs das atividades
-  var $processo    = null;
-  var $datainc     = null;
-  var $datafim     = null;
-  var $cnpjcpf     = null;
+  public $tipoalvara  = null;
+  public $ativ        = null;
+  public $descrativ   = null;
+  public $outrasativs = null;
+  public $q02_memo    = null;
+  public $numero      = null;
+  public $q02_obs     = null;
+  public $q03_atmemo  = null; //obs das atividades
+  public $processo    = null;
+  public $datainc     = null;
+  public $datafim     = null;
+  public $cnpjcpf     = null;
 
 //////  FICHA DE COMPENSACAO
 
-  var $numbanco		= '';
-  var $localpagamento   = '';
-  var $cedente		= '';
-  var $agencia_cedente	= '';
-  var $data_documento	= '';
-  var $numero_documento = '';
-  var $especie_doc	= '';
-  var $aceite		= '';
-  var $data_processamento = '';
-  var $nosso_numero	= '';
-  var $codigo_cedente	= '';
-  var $carteira		= '';
-  var $especie		= '';
-  var $quantidade	= '';
-  var $valor_documento	= '';
-  var $instrucoes1	= '';
-  var $instrucoes2	= '';
-  var $instrucoes3	= '';
-  var $instrucoes4	= '';
-  var $instrucoes5	= '';
-  var $desconto_abatimento = '';
-  var $outras_deducoes	= '';
-  var $mora_multa	= '';
-  var $outros_acrecimos	= '';
-  var $valor_cobrado	= '';
-  var $sacado1		= '';
-  var $sacado2		= '';
-  var $sacado3		= '';
+  public $numbanco		= '';
+  public $localpagamento   = '';
+  public $cedente		= '';
+  public $agencia_cedente	= '';
+  public $data_documento	= '';
+  public $numero_documento = '';
+  public $especie_doc	= '';
+  public $aceite		= '';
+  public $data_processamento = '';
+  public $nosso_numero	= '';
+  public $codigo_cedente	= '';
+  public $carteira		= '';
+  public $especie		= '';
+  public $quantidade	= '';
+  public $valor_documento	= '';
+  public $instrucoes1	= '';
+  public $instrucoes2	= '';
+  public $instrucoes3	= '';
+  public $instrucoes4	= '';
+  public $instrucoes5	= '';
+  public $desconto_abatimento = '';
+  public $outras_deducoes	= '';
+  public $mora_multa	= '';
+  public $outros_acrecimos	= '';
+  public $valor_cobrado	= '';
+  public $sacado1		= '';
+  public $sacado2		= '';
+  public $sacado3		= '';
 
 //// variaveis para a solicitação de compras
 
-  var $pc10_numero      = null;         // numero da solicitação
-  var $descrdepto       = '';           // descrição do departamento
-  var $pc50_descr       = '';           // descrição do tipo de compra
-  var $pc10_data        = null;         // data da solicitação
-  var $pc10_vlrap       = null;         // valor da solicitação
-  var $pc10_resumo      = '';
-  var $pc11_prazo       = '';
-  var $pc11_pgto        = '';
-  var $pc11_resum       = '';
-  var $pc11_just        = '';
-  var $pc13_coddot      = '';
-  var $pc13_quant       = '';
-  var $pc13_valor       = '';
-  var $valtot           = null;         // valor total dos itens lancados
-  var $recorddasdotac 	= null;		// record set das dotacoes
-  var $linhasdasdotac 	= null;		// numero de dotacoes
-  var $coddotac         = null;         // codigo da dotacao
-  var $quantdotac       = null;         // quantidade de itens na dotacao
-  var $valdotac         = null;         // valor da dotacao
+  public $pc10_numero      = null;         // numero da solicitação
+  public $descrdepto       = '';           // descrição do departamento
+  public $pc50_descr       = '';           // descrição do tipo de compra
+  public $pc10_data        = null;         // data da solicitação
+  public $pc10_vlrap       = null;         // valor da solicitação
+  public $pc10_resumo      = '';
+  public $pc11_prazo       = '';
+  public $pc11_pgto        = '';
+  public $pc11_resum       = '';
+  public $pc11_just        = '';
+  public $pc13_coddot      = '';
+  public $pc13_quant       = '';
+  public $pc13_valor       = '';
+  public $valtot           = null;         // valor total dos itens lancados
+  public $recorddasdotac 	= null;		// record set das dotacoes
+  public $linhasdasdotac 	= null;		// numero de dotacoes
+  public $coddotac         = null;         // codigo da dotacao
+  public $quantdotac       = null;         // quantidade de itens na dotacao
+  public $valdotac         = null;         // valor da dotacao
 
 //// variaveis para a autorização de empenho E ORDEM DE COMPRA
 
-  var $ano		= null;		// ano
-  var $numaut 		= null;  	// numero do empenho
-  var $numsol 		= null;  	// numero do empenho
-  var $numemp 		= null;  	// numero do empenho
-  var $codemp 		= null;  	// numero do empenho do ano
-  var $emissao 		= null;  	// data da emissao
-  var $orgao 		= null;  	// data da emissao
-  var $descr_orgao	= null;  	// data da emissao
-  var $unidade 		= null;  	// data da emissao
-  var $descr_unidade	= null;  	// data da emissao
-  var $funcao 		= null;  	// data da emissao
-  var $descr_funcao	= null;  	// data da emissao
-  var $projativ		= null;  	// data da emissao
-  var $descr_projativ	= null;  	// data da emissao
-  var $sintetico	= null;  	// data da emissao
-  var $descr_sintetico	= null;  	// data da emissao
-  var $recurso   	= null;  	// data da emissao
-  var $descr_recurso    = null;  	// data da emissao
-  var $orcado		= null;  	// data da emissao
-  var $saldo_ant	= null;  	// data da emissao
-  var $empenhado	= null;  	// data da emissao
-  var $numcgm 		= null;		// cgm do fornecedor
+  public $ano		= null;		// ano
+  public $numaut 		= null;  	// numero do empenho
+  public $numsol 		= null;  	// numero do empenho
+  public $numemp 		= null;  	// numero do empenho
+  public $codemp 		= null;  	// numero do empenho do ano
+  public $emissao 		= null;  	// data da emissao
+  public $orgao 		= null;  	// data da emissao
+  public $descr_orgao	= null;  	// data da emissao
+  public $unidade 		= null;  	// data da emissao
+  public $descr_unidade	= null;  	// data da emissao
+  public $funcao 		= null;  	// data da emissao
+  public $descr_funcao	= null;  	// data da emissao
+  public $projativ		= null;  	// data da emissao
+  public $descr_projativ	= null;  	// data da emissao
+  public $sintetico	= null;  	// data da emissao
+  public $descr_sintetico	= null;  	// data da emissao
+  public $recurso   	= null;  	// data da emissao
+  public $descr_recurso    = null;  	// data da emissao
+  public $orcado		= null;  	// data da emissao
+  public $saldo_ant	= null;  	// data da emissao
+  public $empenhado	= null;  	// data da emissao
+  public $numcgm 		= null;		// cgm do fornecedor
 //  var $nome   		= null;		// nome do fornecedor
 //  var $ender  		= null;		// endereço do fornecedor
 //  var $munic  		= null;		// municipio do fornecedor
-  var $dotacao 		= null;		// dotacao orcamentaria (orgao,unidade,funcao,subfuncao,programa,projativ,elemento,recurso)
-  var $descrdotacao 	= null;		// descricao da dotacao
-  var $coddot		= null;		// codigo reduzido da despesa
-  var $destino		= null;		// destino do material ou serviço
-  var $resumo		= null;		// destino do material ou serviço
-  var $licitacao  	= null;		// tipo de licitação
-  var $num_licitacao  	= null;		// numero da licitação
-  var $descr_licitacao 	= null;		// descrição do tipo de licitação
-  var $descr_tipocompra	= null;		// descrição do tipo de compra
-  var $prazo_ent  	= null;		// prazo de entrega
-  var $obs		= null;		// observações
-  var $cond_pag		= null;		// condições de pagamento
-  var $out_cond		= null;		// outras condições de pagamento
-  var $contato		= null;		// contato
-  var $telef_cont 	= null;		// telefone do contato
-  var $recorddositens 	= null;		// record set dos itens
-  var $linhasdositens 	= null;		// numero de itens da autorizacao
-  var $item	    	= null;		// codigo do item
-  var $quantitem    	= null;		// quantidade do item
-  var $valoritem    	= null;		// valor unitário do item
-  var $empempenho       = null;         // cod empenho para emissão de ordem de compra
-  var $dataordem        = null;         // data da geração da ordem de compra
-  var $observacaoitem   = null;
-  var $descricaoitem    = null;
-  var $ordpag		= null;		// numero da ordem de pagamento
-  var $elemento		= null;		// elemento da despesa
-  var $descr_elemento	= null;		// descrição do elemento da despesa
-  var $elementoitem	= null;		// elemento do item da ordem de pagamento
-  var $descr_elementoitem= null;	// descrição do elemento do item da ordem de pagamento
-  var $outrasordens     = null;		// saldo das outras ordens de pagamento do empenho
-  var $vlrrec           = null;		// valor das receitas de retençoes
-  var $cnpj             = null;         // cpf ou cnpj do credor
+  public $dotacao 		= null;		// dotacao orcamentaria (orgao,unidade,funcao,subfuncao,programa,projativ,elemento,recurso)
+  public $descrdotacao 	= null;		// descricao da dotacao
+  public $coddot		= null;		// codigo reduzido da despesa
+  public $destino		= null;		// destino do material ou serviço
+  public $resumo		= null;		// destino do material ou serviço
+  public $licitacao  	= null;		// tipo de licitação
+  public $num_licitacao  	= null;		// numero da licitação
+  public $descr_licitacao 	= null;		// descrição do tipo de licitação
+  public $descr_tipocompra	= null;		// descrição do tipo de compra
+  public $prazo_ent  	= null;		// prazo de entrega
+  public $obs		= null;		// observações
+  public $cond_pag		= null;		// condições de pagamento
+  public $out_cond		= null;		// outras condições de pagamento
+  public $contato		= null;		// contato
+  public $telef_cont 	= null;		// telefone do contato
+  public $recorddositens 	= null;		// record set dos itens
+  public $linhasdositens 	= null;		// numero de itens da autorizacao
+  public $item	    	= null;		// codigo do item
+  public $quantitem    	= null;		// quantidade do item
+  public $valoritem    	= null;		// valor unitário do item
+  public $empempenho       = null;         // cod empenho para emissão de ordem de compra
+  public $dataordem        = null;         // data da geração da ordem de compra
+  public $observacaoitem   = null;
+  public $descricaoitem    = null;
+  public $ordpag		= null;		// numero da ordem de pagamento
+  public $elemento		= null;		// elemento da despesa
+  public $descr_elemento	= null;		// descrição do elemento da despesa
+  public $elementoitem	= null;		// elemento do item da ordem de pagamento
+  public $descr_elementoitem= null;	// descrição do elemento do item da ordem de pagamento
+  public $outrasordens     = null;		// saldo das outras ordens de pagamento do empenho
+  public $vlrrec           = null;		// valor das receitas de retençoes
+  public $cnpj             = null;         // cpf ou cnpj do credor
 
 /// variaveis para a nota de empenho
-  function db_impcarne($objpdf){
-    $this->objpdf = $objpdf;
-
-
+  function __construct(public $objpdf)
+  {
   }
   function muda_pag($pagina,$xlin,$xcol){
     $x = false;
@@ -602,13 +599,13 @@ class db_impcarne extends cl_assinatura {
 
       for($i = 0;$i < $this->linhasdadospagto ;$i++) {
         $this->objpdf->setx(17);
-        $this->objpdf->cell(5,4,trim(pg_result($this->recorddadospagto,$i,$this->receita)),0,0,"C",0);
-        if ( trim(pg_result($this->recorddadospagto,$i,$this->ddreceita) ) == ''){
-          $this->objpdf->cell(70,4,trim(pg_result($this->recorddadospagto,$i,$this->dreceita)),0,0,"L",0);
+        $this->objpdf->cell(5,4,trim(pg_fetch_result($this->recorddadospagto,$i,$this->receita)),0,0,"C",0);
+        if ( trim(pg_fetch_result($this->recorddadospagto,$i,$this->ddreceita) ) == ''){
+          $this->objpdf->cell(70,4,trim(pg_fetch_result($this->recorddadospagto,$i,$this->dreceita)),0,0,"L",0);
         }else{
-          $this->objpdf->cell(70,4,trim(pg_result($this->recorddadospagto,$i,$this->ddreceita)),0,0,"L",0);
+          $this->objpdf->cell(70,4,trim(pg_fetch_result($this->recorddadospagto,$i,$this->ddreceita)),0,0,"L",0);
         }
-        $this->objpdf->cell(15,4,db_formatar(pg_result($this->recorddadospagto,$i,$this->valor),'f'),0,1,"R",0);
+        $this->objpdf->cell(15,4,db_formatar(pg_fetch_result($this->recorddadospagto,$i,$this->valor),'f'),0,1,"R",0);
       }
       $this->objpdf->SetXY(15,158);
       $this->objpdf->multicell(0,4,'HISTÓRICO :   '.$this->historico);
@@ -1038,14 +1035,14 @@ class db_impcarne extends cl_assinatura {
 
           }
           $this->objpdf->setx($xcol+3+$maiscol);
-          $this->objpdf->cell(6,3,trim(pg_result($this->recorddadospagto,$ii,$this->receita)),0,0,"R",0);
-          $this->objpdf->cell(11,3,"(".trim(pg_result($this->recorddadospagto,$ii,$this->receitared)).")",0,0,"R",0);
-          if ( trim(pg_result($this->recorddadospagto,$ii,$this->ddreceita) ) == ''){
-            $this->objpdf->cell(63,3,trim(pg_result($this->recorddadospagto,$ii,$this->dreceita)),0,0,"L",0);
+          $this->objpdf->cell(6,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->receita)),0,0,"R",0);
+          $this->objpdf->cell(11,3,"(".trim(pg_fetch_result($this->recorddadospagto,$ii,$this->receitared)).")",0,0,"R",0);
+          if ( trim(pg_fetch_result($this->recorddadospagto,$ii,$this->ddreceita) ) == ''){
+            $this->objpdf->cell(63,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->dreceita)),0,0,"L",0);
           }else{
-            $this->objpdf->cell(63,3,trim(pg_result($this->recorddadospagto,$ii,$this->ddreceita)),0,0,"L",0);
+            $this->objpdf->cell(63,3,trim(pg_fetch_result($this->recorddadospagto,$ii,$this->ddreceita)),0,0,"L",0);
           }
-          $this->objpdf->cell(15,3,db_formatar(pg_result($this->recorddadospagto,$ii,$this->valor),'f'),0,1,"R",0);
+          $this->objpdf->cell(15,3,db_formatar(pg_fetch_result($this->recorddadospagto,$ii,$this->valor),'f'),0,1,"R",0);
         }
         $this->objpdf->Roundedrect($xcol,$xlin+71,202,30,2,'DF','1234');
         $this->objpdf->SetY($xlin+72);
@@ -1131,7 +1128,7 @@ class db_impcarne extends cl_assinatura {
       $this->objpdf->setxy($xcol+22,$xlin+13);
       $this->objpdf->cell(3,4,':  ',0,0,"L",0);
       $this->objpdf->setxy($xcol+24.5,$xlin+13);
-      $this->objpdf->multicell(175,4,substr($this->pc10_resumo,0,240),0,"J");
+      $this->objpdf->multicell(175,4,substr((string) $this->pc10_resumo,0,240),0,"J");
 
       // Caixas dos label's
       $this->objpdf->rect($xcol    ,$xlin+24,15,6,2,'DF','12');
@@ -1167,15 +1164,15 @@ class db_impcarne extends cl_assinatura {
       $this->objpdf->sety($xlin+32);
 
       $xtotal = 0;
-      $this->objpdf->SetWidths(array(10,22,105,30,30));
-      $this->objpdf->SetAligns(array('C','C','J','R','R'));
+      $this->objpdf->SetWidths([10,22,105,30,30]);
+      $this->objpdf->SetAligns(['C','C','J','R','R']);
       $pc11_codigo_ant = '';
       $muda_pag = false;
       for($ii = 0;$ii < $this->linhasdositens ;$ii++){
         $pagina = $this->objpdf->PageNo();
         db_fieldsmemory($this->recorddositens,$ii);
         $igual = false;
-        if($pc11_codigo_ant==pg_result($this->recorddositens,$ii,$this->item)){
+        if($pc11_codigo_ant==pg_fetch_result($this->recorddositens,$ii,$this->item)){
           $igual = true;
         }
         if($igual==false && $ii!=0 && $muda_pag==false){
@@ -1195,17 +1192,17 @@ class db_impcarne extends cl_assinatura {
         $resum = '';
         $just  = '';
         if($igual==false){
-          $item  = pg_result($this->recorddositens,$ii,$this->item);
+          $item  = pg_fetch_result($this->recorddositens,$ii,$this->item);
           $pc11_codigo_ant = $item;
-          $quantitem = pg_result($this->recorddositens,$ii,$this->quantitem);
-          $descricaoitem = pg_result($this->recorddositens,$ii,$this->descricaoitem);
-          $valoritem = db_formatar(pg_result($this->recorddositens,$ii,$this->valoritem),"f");
-          $valtot= pg_result($this->recorddositens,$ii,$this->valtot);
+          $quantitem = pg_fetch_result($this->recorddositens,$ii,$this->quantitem);
+          $descricaoitem = pg_fetch_result($this->recorddositens,$ii,$this->descricaoitem);
+          $valoritem = db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->valoritem),"f");
+          $valtot= pg_fetch_result($this->recorddositens,$ii,$this->valtot);
           $valimp= db_formatar($valtot,'f');
-          $prazo = pg_result($this->recorddositens,$ii,$this->pc11_prazo);
-          $pgto  = pg_result($this->recorddositens,$ii,$this->pc11_pgto);
-          $resum = pg_result($this->recorddositens,$ii,$this->pc11_resum);
-          $just  = pg_result($this->recorddositens,$ii,$this->pc11_just);
+          $prazo = pg_fetch_result($this->recorddositens,$ii,$this->pc11_prazo);
+          $pgto  = pg_fetch_result($this->recorddositens,$ii,$this->pc11_pgto);
+          $resum = pg_fetch_result($this->recorddositens,$ii,$this->pc11_resum);
+          $just  = pg_fetch_result($this->recorddositens,$ii,$this->pc11_just);
           if(isset($prazo) && trim($prazo)!=""){
             $prazo = "\nPRAZO: ".trim($prazo);
           }
@@ -1222,9 +1219,9 @@ class db_impcarne extends cl_assinatura {
         $pc13_quant = '';
         $pc13_coddot= '';
         $pc13_valor = '';
-        $testaqtd = pg_result($this->recorddositens,$ii,$this->pc13_quant);
-        $testacod = pg_result($this->recorddositens,$ii,$this->pc13_coddot);
-        $testaval = pg_result($this->recorddositens,$ii,$this->pc13_valor);
+        $testaqtd = pg_fetch_result($this->recorddositens,$ii,$this->pc13_quant);
+        $testacod = pg_fetch_result($this->recorddositens,$ii,$this->pc13_coddot);
+        $testaval = pg_fetch_result($this->recorddositens,$ii,$this->pc13_valor);
         if(isset($testaqtd) && trim($testaqtd)!=""){
           $pc13_quant = $testaqtd;
         }
@@ -1241,32 +1238,32 @@ class db_impcarne extends cl_assinatura {
         }
         if($igual==false){
           $this->objpdf->Setfont('Arial','B',9);
-          $this->objpdf->Row(array($item,
+          $this->objpdf->Row([$item,
                                    $quantitem,
                                    $descricaoitem,
                                    $valoritem,
-                                   $valimp),3,false,0);
+                                   $valimp],3,false,0);
           $this->objpdf->Setfont('Arial','',7);
           $x = $this->muda_pag($pagina,$xlin,$xcol);
 
-          $this->objpdf->Row(array('','',$prazo,'',''),3,false,$dist);
+          $this->objpdf->Row(['','',$prazo,'',''],3,false,$dist);
           $x = $this->muda_pag($pagina,$xlin,$xcol);
 
-          $this->objpdf->Row(array('','',$pgto,'',''),3,false,$dist);
+          $this->objpdf->Row(['','',$pgto,'',''],3,false,$dist);
           $x = $this->muda_pag($pagina,$xlin,$xcol);
 
-          $this->objpdf->Row(array('','',$resum,'',''),3,false,$dist);
+          $this->objpdf->Row(['','',$resum,'',''],3,false,$dist);
           $x = $this->muda_pag($pagina,$xlin,$xcol);
 
-          $this->objpdf->Row(array('','',$just,'',''),3,false,$dist);
+          $this->objpdf->Row(['','',$just,'',''],3,false,$dist);
           $x = $this->muda_pag($pagina,$xlin,$xcol);
         }
         $this->objpdf->Setfont('Arial','',7);
-        $this->objpdf->Row(array('',
+        $this->objpdf->Row(['',
                                  $pc13_quant,
                                  $pc13_coddot,
                                  $pc13_valor,
-                                 ''),3,false,3);
+                                 ''],3,false,3);
         $this->objpdf->Setfont('Arial','B',7);
         $x = $this->muda_pag($pagina,$xlin,$xcol);
 
@@ -1301,7 +1298,7 @@ class db_impcarne extends cl_assinatura {
         $this->objpdf->MultiCell(70,4,'VISTO'."\n\n\n".'',0,"C",0);
 
         $this->objpdf->setfillcolor(0,0,0);
-        $this->objpdf->text($xcol+5,$xlin+223,strtoupper($this->municpref).', '.substr($this->emissao,8,2).' DE '.strtoupper(db_mes(substr($this->emissao,5,2))).' DE '.substr($this->emissao,0,4).'.');
+        $this->objpdf->text($xcol+5,$xlin+223,strtoupper((string) $this->municpref).', '.substr((string) $this->emissao,8,2).' DE '.strtoupper(db_mes(substr((string) $this->emissao,5,2))).' DE '.substr((string) $this->emissao,0,4).'.');
 
 //	  $this->objpdf->SetFont('Arial','',4);
 //        $this->objpdf->TextWithDirection(1.5,$xlin+60,$this->texto,'U'); // texto no canhoto do carne
@@ -1382,7 +1379,7 @@ class db_impcarne extends cl_assinatura {
       $this->objpdf->text($xcol+2,$xlin+34,'Dados do Credor');
       $this->objpdf->Setfont('Arial','B',8);
       $this->objpdf->text($xcol+109,$xlin+38,'Numcgm');
-      $this->objpdf->text($xcol+150,$xlin+38,(strlen($this->cnpj) == 11?'CPF':'CNPJ'));
+      $this->objpdf->text($xcol+150,$xlin+38,(strlen((string) $this->cnpj) == 11?'CPF':'CNPJ'));
       $this->objpdf->text($xcol+  2,$xlin+38,'Nome');
       $this->objpdf->text($xcol+  2,$xlin+42,'Endereço');
       $this->objpdf->text($xcol+102,$xlin+42,'Complemento');
@@ -1435,8 +1432,8 @@ class db_impcarne extends cl_assinatura {
       $this->objpdf->text($xcol+ 176,$xlin+58,'VALOR TOTAL');
       $maiscol = 0;
 
-      $this->objpdf->SetWidths(array(10,22,105,30,30));
-      $this->objpdf->SetAligns(array('C','C','L','R','R'));
+      $this->objpdf->SetWidths([10,22,105,30,30]);
+      $this->objpdf->SetAligns(['C','C','L','R','R']);
 
       $this->objpdf->setleftmargin(8);
       $this->objpdf->sety($xlin+62);
@@ -1446,12 +1443,12 @@ class db_impcarne extends cl_assinatura {
       for($ii = 0;$ii < $this->linhasdositens ;$ii++) {
         db_fieldsmemory($this->recorddositens,$ii);
         $this->objpdf->Setfont('Arial','',8);
-        $this->objpdf->Row(array(pg_result($this->recorddositens,$ii,$this->item),
-                                 pg_result($this->recorddositens,$ii,$this->quantitem),
-                                 pg_result($this->recorddositens,$ii,$this->descricaoitem)."\n".pg_result($this->recorddositens,$ii,$this->observacaoitem),
-                                 db_formatar(pg_result($this->recorddositens,$ii,$this->valoritem)/pg_result($this->recorddositens,$ii,$this->quantitem),'f'),
-                                 db_formatar(pg_result($this->recorddositens,$ii,$this->valoritem),'f')),3,false,4);
-        $xtotal += pg_result($this->recorddositens,$ii,$this->valoritem);
+        $this->objpdf->Row([pg_fetch_result($this->recorddositens,$ii,$this->item),
+                                 pg_fetch_result($this->recorddositens,$ii,$this->quantitem),
+                                 pg_fetch_result($this->recorddositens,$ii,$this->descricaoitem)."\n".pg_fetch_result($this->recorddositens,$ii,$this->observacaoitem),
+                                 db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->valoritem)/pg_fetch_result($this->recorddositens,$ii,$this->quantitem),'f'),
+                                 db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->valoritem),'f')],3,false,4);
+        $xtotal += pg_fetch_result($this->recorddositens,$ii,$this->valoritem);
         $this->objpdf->Setfont('Arial','B',8);
         /////// troca de pagina
         if( ( $this->objpdf->gety() > $this->objpdf->h - 70 && $pagina == 1 ) || ( $this->objpdf->gety() > $this->objpdf->h - 22 && $pagina != 1 )){
@@ -1584,7 +1581,7 @@ class db_impcarne extends cl_assinatura {
 
 
         $this->objpdf->setfillcolor(0,0,0);
-        $this->objpdf->text($xcol+10,$xlin+223,strtoupper($this->municpref).', '.substr($this->emissao,8,2).' DE '.strtoupper(db_mes(substr($this->emissao,5,2))).' DE '.substr($this->emissao,0,4).'.');
+        $this->objpdf->text($xcol+10,$xlin+223,strtoupper((string) $this->municpref).', '.substr((string) $this->emissao,8,2).' DE '.strtoupper(db_mes(substr((string) $this->emissao,5,2))).' DE '.substr((string) $this->emissao,0,4).'.');
 
 //	   $this->objpdf->SetFont('Arial','',4);
 //         $this->objpdf->TextWithDirection(1.5,$xlin+60,$this->texto,'U'); // texto no canhoto do carne
@@ -1706,8 +1703,8 @@ class db_impcarne extends cl_assinatura {
       $maiscol = 0;
 
       /// monta os dados para itens do empenho
-      $this->objpdf->SetWidths(array(15,137,25,25));
-      $this->objpdf->SetAligns(array('C','L','R','R'));
+      $this->objpdf->SetWidths([15,137,25,25]);
+      $this->objpdf->SetAligns(['C','L','R','R']);
 
       $this->objpdf->setleftmargin(4);
       $this->objpdf->sety($xlin+62);
@@ -1717,19 +1714,19 @@ class db_impcarne extends cl_assinatura {
       for($ii = 0;$ii < $this->linhasdositens ;$ii++) {
         db_fieldsmemory($this->recorddositens,$ii);
         $this->objpdf->Setfont('Arial','B',7);
-        if($ele != pg_result($this->recorddositens,$ii,$this->analitico))
+        if($ele != pg_fetch_result($this->recorddositens,$ii,$this->analitico))
         {
           $this->objpdf->cell(15,4,'',0,0,"C",0);
-          $this->objpdf->cell(137,4,db_formatar(pg_result($this->recorddositens,$ii,$this->analitico),'elemento').' - '.pg_result($this->recorddositens,$ii,$this->descr_analitico),0,1,"L",0);
-          $ele = pg_result($this->recorddositens,$ii,$this->analitico);
+          $this->objpdf->cell(137,4,db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->analitico),'elemento').' - '.pg_fetch_result($this->recorddositens,$ii,$this->descr_analitico),0,1,"L",0);
+          $ele = pg_fetch_result($this->recorddositens,$ii,$this->analitico);
         }
         $this->objpdf->Setfont('Arial','',7);
-        $this->objpdf->Row(array(pg_result($this->recorddositens,$ii,$this->quantitem),
-                                 pg_result($this->recorddositens,$ii,$this->descricaoitem),
-                                 db_formatar(pg_result($this->recorddositens,$ii,$this->valoritem)/
-                                   pg_result($this->recorddositens,$ii,$this->quantitem),'f'),
-                                 db_formatar(pg_result($this->recorddositens,$ii,$this->valoritem),'f')),3,false,4);
-        $xtotal += pg_result($this->recorddositens,$ii,$this->valoritem);
+        $this->objpdf->Row([pg_fetch_result($this->recorddositens,$ii,$this->quantitem),
+                                 pg_fetch_result($this->recorddositens,$ii,$this->descricaoitem),
+                                 db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->valoritem)/
+                                   pg_fetch_result($this->recorddositens,$ii,$this->quantitem),'f'),
+                                 db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->valoritem),'f')],3,false,4);
+        $xtotal += pg_fetch_result($this->recorddositens,$ii,$this->valoritem);
         /////// troca de pagina
         if( ( $this->objpdf->gety() > $this->objpdf->h - 93 && $pagina == 1 ) || ( $this->objpdf->gety() > $this->objpdf->h - 22 && $pagina != 1 )){
           if ($this->objpdf->PageNo() == 1){
@@ -2003,8 +2000,8 @@ class db_impcarne extends cl_assinatura {
       $maiscol = 0;
 
       /// monta os dados dos elementos da ordem de compra
-      $this->objpdf->SetWidths(array(20,80,25,25,25,25));
-      $this->objpdf->SetAligns(array('L','L','R','R','R','R'));
+      $this->objpdf->SetWidths([20,80,25,25,25,25]);
+      $this->objpdf->SetAligns(['L','L','R','R','R','R']);
       $this->objpdf->setleftmargin(4);
       $this->objpdf->sety($xlin+48);
       $this->objpdf->cell(20,4,'ELEMENTO',0,0,"L");
@@ -2022,23 +2019,23 @@ class db_impcarne extends cl_assinatura {
         db_fieldsmemory($this->recorddositens,$ii);
 
         $this->objpdf->Setfont('Arial','',7);
-        $this->objpdf->Row(array(
-          ($ano < 2005?' ':pg_result($this->recorddositens,$ii,$this->elementoitem)),
-          ($ano < 2005?'RESTOS A PAGAR':pg_result($this->recorddositens,$ii,$this->descr_elementoitem)),
-          db_formatar(pg_result($this->recorddositens,$ii,$this->vlremp),'f'),
-          db_formatar(pg_result($this->recorddositens,$ii,$this->vlranu),'f'),
-          db_formatar(pg_result($this->recorddositens,$ii,$this->vlrpag),'f'),
-          db_formatar(pg_result($this->recorddositens,$ii,$this->vlrsaldo),'f')),3,false,3);
-        $total_emp  += pg_result($this->recorddositens,$ii,$this->vlremp);
-        $total_anu  += pg_result($this->recorddositens,$ii,$this->vlranu);
-        $total_pag  += pg_result($this->recorddositens,$ii,$this->vlrpag);
-        $total_sal  += pg_result($this->recorddositens,$ii,$this->vlrsaldo);
+        $this->objpdf->Row([
+          ($ano < 2005?' ':pg_fetch_result($this->recorddositens,$ii,$this->elementoitem)),
+          ($ano < 2005?'RESTOS A PAGAR':pg_fetch_result($this->recorddositens,$ii,$this->descr_elementoitem)),
+          db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->vlremp),'f'),
+          db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->vlranu),'f'),
+          db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->vlrpag),'f'),
+          db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->vlrsaldo),'f')],3,false,3);
+        $total_emp  += pg_fetch_result($this->recorddositens,$ii,$this->vlremp);
+        $total_anu  += pg_fetch_result($this->recorddositens,$ii,$this->vlranu);
+        $total_pag  += pg_fetch_result($this->recorddositens,$ii,$this->vlrpag);
+        $total_sal  += pg_fetch_result($this->recorddositens,$ii,$this->vlrsaldo);
       }
 
 
       /// monta os dados das retenções da ordem de compra
-      $this->objpdf->SetWidths(array(10,62,25));
-      $this->objpdf->SetAligns(array('C','L','R'));
+      $this->objpdf->SetWidths([10,62,25]);
+      $this->objpdf->SetAligns(['C','L','R']);
       $this->objpdf->setleftmargin(4);
       $this->objpdf->setxy($xcol+102,$xlin+134);
       $this->objpdf->Setfont('Arial','B',10);
@@ -2054,11 +2051,11 @@ class db_impcarne extends cl_assinatura {
         $this->objpdf->setx($xcol+102);
         db_fieldsmemory($this->recordretencoes,$ii);
         $this->objpdf->Setfont('Arial','',7);
-        $this->objpdf->Row(array(
-          pg_result($this->recordretencoes,$ii,$this->receita),
-          pg_result($this->recordretencoes,$ii,$this->dreceita),
-          db_formatar(pg_result($this->recordretencoes,$ii,$this->vlrrec),'f')),3,false,3);
-        $total_ret += pg_result($this->recordretencoes,$ii,$this->vlrrec);
+        $this->objpdf->Row([
+          pg_fetch_result($this->recordretencoes,$ii,$this->receita),
+          pg_fetch_result($this->recordretencoes,$ii,$this->dreceita),
+          db_formatar(pg_fetch_result($this->recordretencoes,$ii,$this->vlrrec),'f')],3,false,3);
+        $total_ret += pg_fetch_result($this->recordretencoes,$ii,$this->vlrrec);
       }
 
 
@@ -2259,9 +2256,9 @@ class db_impcarne extends cl_assinatura {
           }
 
           $this->objpdf->setx($xcol+3+$maiscol);
-          $this->objpdf->cell(5,3,trim(pg_result($this->recordbens,$ii,$this->bem)),0,0,"R",0);
-          $this->objpdf->cell(70,3,trim(pg_result($this->recordbens,$ii,$this->descr_bem)),0,0,"L",0);
-          $this->objpdf->cell(15,3,pg_result($this->recordbens,$ii,$this->class_bem),0,1,"R",0);
+          $this->objpdf->cell(5,3,trim(pg_fetch_result($this->recordbens,$ii,$this->bem)),0,0,"R",0);
+          $this->objpdf->cell(70,3,trim(pg_fetch_result($this->recordbens,$ii,$this->descr_bem)),0,0,"L",0);
+          $this->objpdf->cell(15,3,pg_fetch_result($this->recordbens,$ii,$this->class_bem),0,1,"R",0);
           if(($ii+1) == $this->linhasbens ){
             $comeco = 0;
             $passada = 0;
@@ -2472,7 +2469,7 @@ class db_impcarne extends cl_assinatura {
 		     where db03_docum = 26 and db02_descr like '%Assinatura Secretario%'";
       $resparag = db_query($sqlparag);
 
-      if ( pg_numrows($resparag) == 0 ) {
+      if ( pg_num_rows($resparag) == 0 ) {
         db_redireciona('db_erros.php?fechar=true&db_erro=Configure o documento 26 com os paragrafos do alvara!');
         exit;
       }
@@ -2529,7 +2526,7 @@ class db_impcarne extends cl_assinatura {
       $this->objpdf->text($xcol+2,$xlin+4.5,'Dados do Fornecedor');
       $this->objpdf->Setfont('Arial','B',8);
       $this->objpdf->text($xcol+109,$xlin+8,'Numcgm');
-      $this->objpdf->text($xcol+150,$xlin+8,(strlen($this->cnpj) == 11?'CPF':'CNPJ'));
+      $this->objpdf->text($xcol+150,$xlin+8,(strlen((string) $this->cnpj) == 11?'CPF':'CNPJ'));
       $this->objpdf->text($xcol+  2,$xlin+8,'Nome');
       $this->objpdf->text($xcol+  2,$xlin+12,'Endereço');
       $this->objpdf->text($xcol+102,$xlin+12,'Complemento');
@@ -2584,12 +2581,12 @@ class db_impcarne extends cl_assinatura {
 
 
       $this->objpdf->setfillcolor(0,0,0);
-      $this->objpdf->text($xcol+10,290,strtoupper($this->municpref).', '.substr($this->emissao,8,2).' DE '.strtoupper(db_mes(substr($this->emissao,5,2))).' DE '.substr($this->emissao,0,4).'.');
+      $this->objpdf->text($xcol+10,290,strtoupper((string) $this->municpref).', '.substr((string) $this->emissao,8,2).' DE '.strtoupper(db_mes(substr((string) $this->emissao,5,2))).' DE '.substr((string) $this->emissao,0,4).'.');
 
       $this->objpdf->text($xcol+ 120,290,'___________________________________________');
 
-      $this->objpdf->SetWidths(array(6,16,14,105,25,25));
-      $this->objpdf->SetAligns(array('C','C','C','L','R','R'));
+      $this->objpdf->SetWidths([6,16,14,105,25,25]);
+      $this->objpdf->SetAligns(['C','C','C','L','R','R']);
 
       $this->objpdf->setleftmargin(8);
       $this->objpdf->sety($xlin+32);
@@ -2599,13 +2596,13 @@ class db_impcarne extends cl_assinatura {
       for($ii = 0;$ii < $this->linhasdositens ;$ii++) {
         db_fieldsmemory($this->recorddositens,$ii);
         $this->objpdf->Setfont('Arial','',8);
-        $this->objpdf->Row(array(($item),
-                                 pg_result($this->recorddositens,$ii,$this->empempenho),
-                                 pg_result($this->recorddositens,$ii,$this->quantitem),
-                                 pg_result($this->recorddositens,$ii,$this->descricaoitem)."\n".pg_result($this->recorddositens,$ii,$this->observacaoitem),
-                                 db_formatar(pg_result($this->recorddositens,$ii,$this->valoritem)/pg_result($this->recorddositens,$ii,$this->quantitem),'f'),
-                                 db_formatar(pg_result($this->recorddositens,$ii,$this->valoritem),'f')),3,false,4);
-        $xtotal += pg_result($this->recorddositens,$ii,$this->valoritem);
+        $this->objpdf->Row([($item),
+                                 pg_fetch_result($this->recorddositens,$ii,$this->empempenho),
+                                 pg_fetch_result($this->recorddositens,$ii,$this->quantitem),
+                                 pg_fetch_result($this->recorddositens,$ii,$this->descricaoitem)."\n".pg_fetch_result($this->recorddositens,$ii,$this->observacaoitem),
+                                 db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->valoritem)/pg_fetch_result($this->recorddositens,$ii,$this->quantitem),'f'),
+                                 db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->valoritem),'f')],3,false,4);
+        $xtotal += pg_fetch_result($this->recorddositens,$ii,$this->valoritem);
         $item++;
         $this->objpdf->Setfont('Arial','B',8);
         /////// troca de pagina
@@ -2799,8 +2796,8 @@ class db_impcarne extends cl_assinatura {
       $maiscol = 0;
 
       /// monta os dados para itens do empenho
-      $this->objpdf->SetWidths(array(15,137,25,25));
-      $this->objpdf->SetAligns(array('C','L','R','R'));
+      $this->objpdf->SetWidths([15,137,25,25]);
+      $this->objpdf->SetAligns(['C','L','R','R']);
 
       $this->objpdf->setleftmargin(4);
       $this->objpdf->sety($xlin+62);
@@ -2810,11 +2807,11 @@ class db_impcarne extends cl_assinatura {
       for($ii = 0;$ii < $this->linhasdositens ;$ii++) {
         db_fieldsmemory($this->recorddositens,$ii);
         $this->objpdf->Setfont('Arial','B',7);
-        $this->objpdf->Row(array('',
-                                 db_formatar(pg_result($this->recorddositens,$ii,$this->analitico),'elemento').' - '.pg_result($this->recorddositens,$ii,$this->descr_analitico),
+        $this->objpdf->Row(['',
+                                 db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->analitico),'elemento').' - '.pg_fetch_result($this->recorddositens,$ii,$this->descr_analitico),
                                  '',
-                                 db_formatar(pg_result($this->recorddositens,$ii,$this->valoritem),'f')),3,false,4);
-        $xtotal += pg_result($this->recorddositens,$ii,$this->valoritem);
+                                 db_formatar(pg_fetch_result($this->recorddositens,$ii,$this->valoritem),'f')],3,false,4);
+        $xtotal += pg_fetch_result($this->recorddositens,$ii,$this->valoritem);
         /////// troca de pagina
 
       }

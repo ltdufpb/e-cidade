@@ -31,7 +31,7 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
   protected $sRegistro    = "vinculosFuncionaisRpps";
 
   public function __construct() {
-    ArquivoSiprevBase::$aErrosProcessamento["08.2"] = array();
+    ArquivoSiprevBase::$aErrosProcessamento["08.2"] = [];
   }
 
   /**
@@ -125,7 +125,7 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
       return false;
     }
 
-    $retorno = array();
+    $retorno = [];
 
     foreach ($servidores as $servidor) {
 
@@ -138,9 +138,9 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
         continue;
       }
 
-      $retorno[] = (object)array(
+      $retorno[] = (object)[
         "vinculosFuncionaisRpps" => $this->preencheVinculosFuncionaisRPPS($servidor)
-      );
+      ];
     }
     return $retorno;
   }
@@ -150,7 +150,7 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    * @return array
    */
   public function getElementos() {
-    return array($this->atributosVinculosFuncionaisRPPS());
+    return [$this->atributosVinculosFuncionaisRPPS()];
   }
 
   /**
@@ -159,9 +159,9 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function atributosVinculosFuncionaisRPPS() {
 
-    $aVinculosFuncionaisRPPS                 = array();
+    $aVinculosFuncionaisRPPS                 = [];
     $aVinculosFuncionaisRPPS['nome']         = 'vinculosFuncionaisRpps';
-    $aVinculosFuncionaisRPPS['propriedades'] = array(
+    $aVinculosFuncionaisRPPS['propriedades'] = [
       'operacao',
       'dataExercicioCargo',
       'dataIngressoCarreira',
@@ -175,7 +175,7 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
       $this->atributosServidor(),
       $this->atributosCargo(),
       $this->atributosMovimentacoesFuncionaisRPPS()
-    );
+    ];
 
     return $aVinculosFuncionaisRPPS;
   }
@@ -186,9 +186,9 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function atributosServidor() {
 
-    $aServidor                 = array();
+    $aServidor                 = [];
     $aServidor['nome']         = 'servidor';
-    $aServidor['propriedades'] = array('nome', 'numeroCPF', 'numeroNIT', 'dataNascimento', 'nomeMae');
+    $aServidor['propriedades'] = ['nome', 'numeroCPF', 'numeroNIT', 'dataNascimento', 'nomeMae'];
 
     return $aServidor;
   }
@@ -199,9 +199,9 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function atributosOrgao() {
 
-    $aOrgao                 = array();
+    $aOrgao                 = [];
     $aOrgao['nome']         = 'orgao';
-    $aOrgao['propriedades'] = array('nome', 'poder');
+    $aOrgao['propriedades'] = ['nome', 'poder'];
 
     return $aOrgao;
   }
@@ -212,9 +212,9 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function atributosCargo() {
 
-    $aCargo                 = array();
+    $aCargo                 = [];
     $aCargo['nome']         = 'cargo';
-    $aCargo['propriedades'] = array('nome', $this->atributosCarreira());
+    $aCargo['propriedades'] = ['nome', $this->atributosCarreira()];
 
     return $aCargo;
   }
@@ -225,9 +225,9 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function atributosCarreira() {
 
-    $aCarreira                 = array();
+    $aCarreira                 = [];
     $aCarreira['nome']         = 'carreira';
-    $aCarreira['propriedades'] = array('nome', $this->atributosOrgaoCarreira());
+    $aCarreira['propriedades'] = ['nome', $this->atributosOrgaoCarreira()];
 
     return $aCarreira;
   }
@@ -238,9 +238,9 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function atributosOrgaoCarreira() {
 
-    $aOrgaoCarreira                 = array();
+    $aOrgaoCarreira                 = [];
     $aOrgaoCarreira['nome']         = 'orgao';
-    $aOrgaoCarreira['propriedades'] = array('nome', 'poder');
+    $aOrgaoCarreira['propriedades'] = ['nome', 'poder'];
 
     return $aOrgaoCarreira;
   }
@@ -251,15 +251,15 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function atributosMovimentacoesFuncionaisRPPS() {
 
-    $aMovimentacoesFuncionais                 = array();
+    $aMovimentacoesFuncionais                 = [];
     $aMovimentacoesFuncionais['nome']         = 'movimentacoesFuncionaisRpps';
-    $aMovimentacoesFuncionais['propriedades'] = array(
+    $aMovimentacoesFuncionais['propriedades'] = [
       'operacao',
       'dataSaidaCargo',
       'situacaoFuncional',
       'dataMovimentacao',
       'tipoMagisterio'
-    );
+    ];
 
     return $aMovimentacoesFuncionais;
   }
@@ -271,7 +271,7 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function preencheVinculosFuncionaisRPPS(Servidor $oServidor) {
 
-    $aVinculoFuncional                                = array();
+    $aVinculoFuncional                                = [];
     $aVinculoFuncional["operacao"]                    = 'I';
     $aVinculoFuncional["dataExercicioCargo"]          = $oServidor->getDataAdmissao()->getDate();
     $aVinculoFuncional["dataIngressoCarreira"]        = $oServidor->getDataAdmissao()->getDate();
@@ -296,10 +296,10 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function preencheOrgao(Servidor $oServidor) {
 
-    return (object) array(
+    return (object) [
       "nome"  => $oServidor->getInstituicao()->getDescricao(),
       "poder" => $oServidor->getInstituicao()->getTipo() > 6 ? 6 : $oServidor->getInstituicao()->getTipo(),
-    );
+    ];
   }
 
   /**
@@ -309,13 +309,13 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function preencheServidor(Servidor $oServidor) {
 
-    return (object)array(
+    return (object)[
       "nome"           => $oServidor->getCgm()->getNome(),
       "numeroCPF"      => $oServidor->getCgm()->getCpf(),
       "numeroNIT"      => $oServidor->getCgm()->getPIS(),
       "dataNascimento" => $oServidor->getCgm()->getDataNascimento(),
       "nomeMae"        => $oServidor->getCgm()->getNomeMae(),
-    );
+    ];
   }
 
   /**
@@ -325,10 +325,10 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function preencheCargo(Servidor $oServidor) {
 
-    return (object) array(
+    return (object) [
       "nome"     => $oServidor->descricaoCargo,
       "carreira" => $this->preencheCarreira($oServidor),
-    );
+    ];
   }
 
   /**
@@ -338,10 +338,10 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function preencheCarreira(Servidor $oServidor) {
 
-    return (object) array(
+    return (object) [
       "nome"  => "Servidor Público",
       "orgao" => $this->preencheOrgao($oServidor),
-    );
+    ];
   }
 
   /**
@@ -405,9 +405,7 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
       throw new DBException('Erro ao buscar os assentamentos do servidor.');
     }
     $instancia = $this;
-    $aMovimentacoesFuncionais = db_utils::makeCollectionFromRecord($rsAssenta, function ($oDadosRetorno, $instancia) {
-      return $instancia->preencheMovimentacoesFuncionaisRPPS($oDadosRetorno);
-    });
+    $aMovimentacoesFuncionais = db_utils::makeCollectionFromRecord($rsAssenta, fn($oDadosRetorno, $instancia) => $instancia->preencheMovimentacoesFuncionaisRPPS($oDadosRetorno));
 
     return $aMovimentacoesFuncionais;
   }
@@ -419,7 +417,7 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   public function preencheMovimentacoesFuncionaisRPPS($oDadosRetorno) {
 
-    $aMovimentacoes                      = array();
+    $aMovimentacoes                      = [];
     $aMovimentacoes['operacao']          = 'I';
     $aMovimentacoes['situacaoFuncional'] = $oDadosRetorno->situacao_funcional;
     $aMovimentacoes['dataMovimentacao']  = $oDadosRetorno->h16_dtconc;
@@ -439,7 +437,7 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function validarDados(Servidor $oServidor) {
 
-    $aErrosRegistro = array();
+    $aErrosRegistro = [];
     $lPisValido     = DBString::isPIS($oServidor->getCgm()->getPIS());
     $lCpfValido     = DBString::isCPF($oServidor->getCgm()->getCpf());
 
@@ -470,16 +468,17 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
    */
   private function getErro(Servidor $oServidor, $sErro) {
 
-    return array(
+    return [
       InstituicaoRepository::getInstituicaoByCodigo($oServidor->getInstituicao()->getCodigo())->getDescricao(),
       $oServidor->getCgm()->getCodigo() . " - " . $oServidor->getCgm()->getNome(),
       $sErro,
-    );
+    ];
   }
 
   /**
    * @return string
    */
+  #[\Override]
   public function getAnoInicial() {
 
     return $this->iAnoInicial;
@@ -488,6 +487,7 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
   /**
    * @return int
    */
+  #[\Override]
   public function getMesInicial() {
 
     return $this->iMesInicial;
@@ -496,6 +496,7 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
   /**
    * @return string
    */
+  #[\Override]
   public function getAnoFinal() {
 
     return $this->iAnoFinal;
@@ -504,6 +505,7 @@ class ArquivoSiprevVinculosFuncionaisRPPS extends ArquivoSiprevBase {
   /**
    * @return int
    */
+  #[\Override]
   public function getMesFinal() {
 
     return $this->iMesFinal;

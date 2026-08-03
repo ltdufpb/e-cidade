@@ -31,9 +31,9 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_auto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_SERVER_VARS);//exit;
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+db_postmemory($_SERVER);//exit;
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clauto = new cl_auto;
 $clauto->rotulo->label("y50_codauto");
 $clauto->rotulo->label("y50_nome");
@@ -65,7 +65,7 @@ $clrotulo->label("j01_matric");
 				$sql = " select y50_codauto,y50_data,y50_nome,y50_dtvenc from auto inner join autosanitario on auto.y50_codauto = autosanitario.y55_codauto where autosanitario.y55_codsani = $num ";   
 		  }
       //die($sql);
-      db_lovrot($sql,12,"()","",$funcao_js,"","NoMe",array(),false);
+      db_lovrot($sql,12,"()","",$funcao_js,"","NoMe",[],false);
       /*
       }else{
         if($pesquisa_chave!=null && $pesquisa_chave!=""){

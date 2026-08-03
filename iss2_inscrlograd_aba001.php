@@ -56,7 +56,7 @@ include_once(modification("dbforms/db_classesgenericas.php"));
 						</td>
 						<td>
 							<?php 
-								$selPessoa = array("T"=>"Todos", "t"=>"F&iacute;sica","f"=>"Jur&iacute;dica");
+								$selPessoa = ["T"=>"Todos", "t"=>"F&iacute;sica","f"=>"Jur&iacute;dica"];
 								db_select('iPessoa', $selPessoa, true, 1, '');
 							?>
 						</td>	
@@ -67,7 +67,7 @@ include_once(modification("dbforms/db_classesgenericas.php"));
 						</td>
 						<td>
 							<?php 
-								$selProcesso = array("T"=>"Todos", "C"=>"Com Processo","S"=>"Sem Processo");
+								$selProcesso = ["T"=>"Todos", "C"=>"Com Processo","S"=>"Sem Processo"];
 								db_select('iProcesso', $selProcesso, true, 1, '');
 							?>	
 						</td>
@@ -78,7 +78,7 @@ include_once(modification("dbforms/db_classesgenericas.php"));
             </td>
             <td>
               <?php 
-                $selSituacao = array("T"=>"Todos", "A"=>"Ativas","B"=>"Baixadas");
+                $selSituacao = ["T"=>"Todos", "A"=>"Ativas","B"=>"Baixadas"];
                 db_select('sSituacao', $selSituacao, true, 1, '');
               ?>  
             </td>

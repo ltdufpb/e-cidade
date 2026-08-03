@@ -84,7 +84,7 @@ try {
   	    throw new ParameterException( _M( CAMINHO_MENSAGENS."aluno_nao_informado" ) );
   	  }
 
-  	  $oRetorno->aProgressoes = array();
+  	  $oRetorno->aProgressoes = [];
   	  $oAluno                 = AlunoRepository::getAlunoByCodigo( $oParam->iAluno );
 
   	  if (count( $oAluno->getProgressaoParcial(true) ) > 0 ) {
@@ -116,15 +116,15 @@ try {
   	      $oDadosProgressao                = new stdClass();
   	      $oDadosProgressao->iCodigo       = $oProgressaoParcial->getCodigoProgressaoParcial();
   	      $oDadosProgressao->iEtapa        = $oProgressaoParcial->getEtapa()->getCodigo();
-  	      $oDadosProgressao->sEtapa        = urlencode( $oProgressaoParcial->getEtapa()->getNome() );
+  	      $oDadosProgressao->sEtapa        = urlencode( (string) $oProgressaoParcial->getEtapa()->getNome() );
   	      $oDadosProgressao->iDisciplina   = $oProgressaoParcial->getDisciplina()->getCodigoDisciplina();
-  	      $oDadosProgressao->sDisciplina   = urlencode( $oProgressaoParcial->getDisciplina()->getNomeDisciplina() );
+  	      $oDadosProgressao->sDisciplina   = urlencode( (string) $oProgressaoParcial->getDisciplina()->getNomeDisciplina() );
   	      $oDadosProgressao->iAno          = $oProgressaoParcial->getAno();
   	      $oDadosProgressao->iEscola       = $oProgressaoParcial->getEscola()->getCodigo();
-  	      $oDadosProgressao->sEscola       = urlencode( $oProgressaoParcial->getEscola()->getNome() );
+  	      $oDadosProgressao->sEscola       = urlencode( (string) $oProgressaoParcial->getEscola()->getNome() );
   	      $oDadosProgressao->iEnsino       = $oProgressaoParcial->getEtapa()->getEnsino()->getCodigo();
-  	      $oDadosProgressao->sEnsino       = urlencode( $oProgressaoParcial->getEtapa()->getEnsino()->getNome() );
-  	      $oDadosProgressao->sSituacao     = urlencode( $oProgressaoParcial->getSituacaoProgressao()->getDescricao());
+  	      $oDadosProgressao->sEnsino       = urlencode( (string) $oProgressaoParcial->getEtapa()->getEnsino()->getNome() );
+  	      $oDadosProgressao->sSituacao     = urlencode( (string) $oProgressaoParcial->getSituacaoProgressao()->getDescricao());
           $oDadosProgressao->lAtiva        = $oProgressaoParcial->getSituacaoProgressao()->isAtivo();
           $oDadosProgressao->lManual       = is_null($oProgressaoParcial->getCodigoDiarioFinal());
           $oDadosProgressao->lTemMatricula = $oProgressaoParcial->verificaProgressaoTeveMatricula();
@@ -181,7 +181,7 @@ try {
         throw new DBException( _M( CAMINHO_MENSAGENS."erro_buscar_progressao" ) );
       }
 
-      $oRetorno->aDadosProgressao = array();
+      $oRetorno->aDadosProgressao = [];
       $iLinha                     = pg_num_rows( $rsProgressao );
 
       if ( $iLinha > 0 ) {
@@ -194,12 +194,12 @@ try {
 
           $oDadosProgressao                  = new stdClass();
           $oDadosProgressao->iEscola         = $oRegencia->getTurma()->getEscola()->getCodigo();
-          $oDadosProgressao->sEscola         = urlencode( $oRegencia->getTurma()->getEscola()->getNome() );
+          $oDadosProgressao->sEscola         = urlencode( (string) $oRegencia->getTurma()->getEscola()->getNome() );
           $oDadosProgressao->iAno            = $oRegencia->getTurma()->getCalendario()->getAnoExecucao();
           $oDadosProgressao->iTurma          = $oRegencia->getTurma()->getCodigo();
-          $oDadosProgressao->sTurma          = urlencode( $oRegencia->getTurma()->getDescricao() );
-          $oDadosProgressao->sAproveitamento = urlencode( $oDadosProgressaoMatricula->aproveitamento );
-          $oDadosProgressao->sResultadoFinal = urlencode( $oDadosProgressaoMatricula->ed121_resultadofinal );
+          $oDadosProgressao->sTurma          = urlencode( (string) $oRegencia->getTurma()->getDescricao() );
+          $oDadosProgressao->sAproveitamento = urlencode( (string) $oDadosProgressaoMatricula->aproveitamento );
+          $oDadosProgressao->sResultadoFinal = urlencode( (string) $oDadosProgressaoMatricula->ed121_resultadofinal );
           $oRetorno->aDadosProgressao[]      = $oDadosProgressao;
         }
       }

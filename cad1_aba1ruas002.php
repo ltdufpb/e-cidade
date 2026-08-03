@@ -35,8 +35,8 @@ require_once(modification("classes/db_cfiptu_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_ruastipo_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clruas            = new cl_ruas;
 $clruascep         = new cl_ruascep;
@@ -65,7 +65,7 @@ if ($clcfiptu->numrows > 0){
 */
 //================================================================================================================================================================
 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   
 	db_inicio_transacao();
   $db_opcao = 2;
@@ -171,7 +171,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar"){
   if($clruas->erro_status=="0"){
     $clruas->erro(true,false);
     $db_botao=true;

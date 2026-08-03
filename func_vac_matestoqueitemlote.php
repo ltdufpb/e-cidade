@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matestoqueitemlote_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatestoqueitemlote = new cl_matestoqueitemlote;
 $clmatestoqueitemlote->rotulo->label("m77_sequencial");
 $clmatestoqueitemlote->rotulo->label("m77_lote");
@@ -124,9 +124,9 @@ $iDepartamento= db_getsession("DB_coddepto");
                                                  );
 
         }
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_m77_lote)) {
-          $repassa = array("chave_m77_sequencial"=>$chave_m77_sequencial,"chave_m77_lote"=>$chave_m77_lote);
+          $repassa = ["chave_m77_sequencial"=>$chave_m77_sequencial,"chave_m77_lote"=>$chave_m77_lote];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
 

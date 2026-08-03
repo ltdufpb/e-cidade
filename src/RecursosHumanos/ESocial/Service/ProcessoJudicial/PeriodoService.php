@@ -41,19 +41,16 @@ class PeriodoService
     /**
      * @var
      */
-    private $periodoAtual;
-
-    /**
-     * @var
-     */
     private $contratoRepository;
 
     /**
      * periodoService constructor.
     */
-    public function __construct(PeriodoProcesso $periodo)
+    public function __construct(/**
+     * @var
+     */
+    private readonly PeriodoProcesso $periodoAtual)
     {
-        $this->periodoAtual = $periodo;
         $this->contratoRepository = new ContratoRepository;
     }
 

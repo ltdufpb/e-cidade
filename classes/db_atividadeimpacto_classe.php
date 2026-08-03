@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE atividadeimpacto
 class cl_atividadeimpacto {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $am03_sequencial = 0;
-   var $am03_criterioatividadeimpacto = 0;
-   var $am03_ramo = null;
-   var $am03_descricao = null;
-   var $am03_potencialpoluidor = null;
+   public $am03_sequencial = 0;
+   public $am03_criterioatividadeimpacto = 0;
+   public $am03_ramo = null;
+   public $am03_descricao = null;
+   public $am03_potencialpoluidor = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  am03_sequencial = int4 = Atividade
                  am03_criterioatividadeimpacto = int4 = Critério de Medição
                  am03_ramo = varchar(10) = Ramo da Atividade
@@ -56,10 +56,10 @@ class cl_atividadeimpacto {
                  am03_potencialpoluidor = varchar(20) = Potencial Poluidor
                  ";
    //funcao construtor da classe
-   function cl_atividadeimpacto() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("atividadeimpacto");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -131,10 +131,10 @@ class cl_atividadeimpacto {
          $this->erro_status = "0";
          return false;
        }
-       $this->am03_sequencial = pg_result($result,0,0);
+       $this->am03_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from atividadeimpacto_am03_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $am03_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $am03_sequencial)){
          $this->erro_sql = " Campo am03_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -170,7 +170,7 @@ class cl_atividadeimpacto {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro de atividade de impacto local ($this->am03_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro de atividade de impacto local já Cadastrado";
@@ -199,14 +199,14 @@ class cl_atividadeimpacto {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20767,'$this->am03_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3737,20767,'','".AddSlashes(pg_result($resaco,0,'am03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3737,20774,'','".AddSlashes(pg_result($resaco,0,'am03_criterioatividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3737,20769,'','".AddSlashes(pg_result($resaco,0,'am03_ramo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3737,20770,'','".AddSlashes(pg_result($resaco,0,'am03_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3737,20773,'','".AddSlashes(pg_result($resaco,0,'am03_potencialpoluidor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3737,20767,'','".AddSlashes(pg_fetch_result($resaco,0,'am03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3737,20774,'','".AddSlashes(pg_fetch_result($resaco,0,'am03_criterioatividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3737,20769,'','".AddSlashes(pg_fetch_result($resaco,0,'am03_ramo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3737,20770,'','".AddSlashes(pg_fetch_result($resaco,0,'am03_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3737,20773,'','".AddSlashes(pg_fetch_result($resaco,0,'am03_potencialpoluidor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -216,10 +216,10 @@ class cl_atividadeimpacto {
       $this->atualizacampos();
      $sql = " update atividadeimpacto set ";
      $virgula = "";
-     if(trim($this->am03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am03_sequencial"])){
+     if(trim((string) $this->am03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am03_sequencial"])){
        $sql  .= $virgula." am03_sequencial = $this->am03_sequencial ";
        $virgula = ",";
-       if(trim($this->am03_sequencial) == null ){
+       if(trim((string) $this->am03_sequencial) == null ){
          $this->erro_sql = " Campo Atividade não informado.";
          $this->erro_campo = "am03_sequencial";
          $this->erro_banco = "";
@@ -229,10 +229,10 @@ class cl_atividadeimpacto {
          return false;
        }
      }
-     if(trim($this->am03_criterioatividadeimpacto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am03_criterioatividadeimpacto"])){
+     if(trim((string) $this->am03_criterioatividadeimpacto)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am03_criterioatividadeimpacto"])){
        $sql  .= $virgula." am03_criterioatividadeimpacto = $this->am03_criterioatividadeimpacto ";
        $virgula = ",";
-       if(trim($this->am03_criterioatividadeimpacto) == null ){
+       if(trim((string) $this->am03_criterioatividadeimpacto) == null ){
          $this->erro_sql = " Campo Critério de Medição não informado.";
          $this->erro_campo = "am03_criterioatividadeimpacto";
          $this->erro_banco = "";
@@ -242,10 +242,10 @@ class cl_atividadeimpacto {
          return false;
        }
      }
-     if(trim($this->am03_ramo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am03_ramo"])){
+     if(trim((string) $this->am03_ramo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am03_ramo"])){
        $sql  .= $virgula." am03_ramo = '$this->am03_ramo' ";
        $virgula = ",";
-       if(trim($this->am03_ramo) == null ){
+       if(trim((string) $this->am03_ramo) == null ){
          $this->erro_sql = " Campo Ramo da Atividade não informado.";
          $this->erro_campo = "am03_ramo";
          $this->erro_banco = "";
@@ -255,10 +255,10 @@ class cl_atividadeimpacto {
          return false;
        }
      }
-     if(trim($this->am03_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am03_descricao"])){
+     if(trim((string) $this->am03_descricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am03_descricao"])){
        $sql  .= $virgula." am03_descricao = '$this->am03_descricao' ";
        $virgula = ",";
-       if(trim($this->am03_descricao) == null ){
+       if(trim((string) $this->am03_descricao) == null ){
          $this->erro_sql = " Campo Descrição não informado.";
          $this->erro_campo = "am03_descricao";
          $this->erro_banco = "";
@@ -268,10 +268,10 @@ class cl_atividadeimpacto {
          return false;
        }
      }
-     if(trim($this->am03_potencialpoluidor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am03_potencialpoluidor"])){
+     if(trim((string) $this->am03_potencialpoluidor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["am03_potencialpoluidor"])){
        $sql  .= $virgula." am03_potencialpoluidor = '$this->am03_potencialpoluidor' ";
        $virgula = ",";
-       if(trim($this->am03_potencialpoluidor) == null ){
+       if(trim((string) $this->am03_potencialpoluidor) == null ){
          $this->erro_sql = " Campo Potencial Poluidor não informado.";
          $this->erro_campo = "am03_potencialpoluidor";
          $this->erro_banco = "";
@@ -295,19 +295,19 @@ class cl_atividadeimpacto {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20767,'$this->am03_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am03_sequencial"]) || $this->am03_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3737,20767,'".AddSlashes(pg_result($resaco,$conresaco,'am03_sequencial'))."','$this->am03_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3737,20767,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am03_sequencial'))."','$this->am03_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am03_criterioatividadeimpacto"]) || $this->am03_criterioatividadeimpacto != "")
-             $resac = db_query("insert into db_acount values($acount,3737,20774,'".AddSlashes(pg_result($resaco,$conresaco,'am03_criterioatividadeimpacto'))."','$this->am03_criterioatividadeimpacto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3737,20774,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am03_criterioatividadeimpacto'))."','$this->am03_criterioatividadeimpacto',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am03_ramo"]) || $this->am03_ramo != "")
-             $resac = db_query("insert into db_acount values($acount,3737,20769,'".AddSlashes(pg_result($resaco,$conresaco,'am03_ramo'))."','$this->am03_ramo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3737,20769,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am03_ramo'))."','$this->am03_ramo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am03_descricao"]) || $this->am03_descricao != "")
-             $resac = db_query("insert into db_acount values($acount,3737,20770,'".AddSlashes(pg_result($resaco,$conresaco,'am03_descricao'))."','$this->am03_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3737,20770,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am03_descricao'))."','$this->am03_descricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["am03_potencialpoluidor"]) || $this->am03_potencialpoluidor != "")
-             $resac = db_query("insert into db_acount values($acount,3737,20773,'".AddSlashes(pg_result($resaco,$conresaco,'am03_potencialpoluidor'))."','$this->am03_potencialpoluidor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3737,20773,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'am03_potencialpoluidor'))."','$this->am03_potencialpoluidor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -361,14 +361,14 @@ class cl_atividadeimpacto {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20767,'$am03_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3737,20767,'','".AddSlashes(pg_result($resaco,$iresaco,'am03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3737,20774,'','".AddSlashes(pg_result($resaco,$iresaco,'am03_criterioatividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3737,20769,'','".AddSlashes(pg_result($resaco,$iresaco,'am03_ramo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3737,20770,'','".AddSlashes(pg_result($resaco,$iresaco,'am03_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3737,20773,'','".AddSlashes(pg_result($resaco,$iresaco,'am03_potencialpoluidor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3737,20767,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3737,20774,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am03_criterioatividadeimpacto'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3737,20769,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am03_ramo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3737,20770,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am03_descricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3737,20773,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'am03_potencialpoluidor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

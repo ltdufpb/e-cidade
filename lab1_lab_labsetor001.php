@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_lab_labsetor_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllab_labsetor = new cl_lab_labsetor;
 $db_opcao = 1;
 $db_botao = true;
@@ -64,7 +64,7 @@ if(isset($incluir)){
  $oid_imagem = "";
  if (!empty($name) ){
    $nameoid = "tmp/".@$GLOBALS["HTTP_POST_VARS"]["la24_o_assinatura"];
-   $oid_imagem = pg_loimport($conn,$nameoid) or die("Erro(15) importando imagem");
+   $oid_imagem = pg_lo_import($conn,$nameoid) or die("Erro(15) importando imagem");
  }
  $cllab_labsetor->la24_c_nomearq = $name;
  $cllab_labsetor->la24_o_assinatura = $oid_imagem;  
@@ -76,7 +76,7 @@ if(isset($incluir)){
  $la24_c_nomearq = @$GLOBALS["HTTP_POST_VARS"]["la24_o_assinatura"];
  $la24_o_assinatura = "tmp/".@$GLOBALS["HTTP_POST_VARS"]["la24_o_assinatura"];
  if($la24_c_nomearq!=""){
-  $oid_imagem = pg_loimport($conn,$la24_o_assinatura) or die("Erro(153) importando imagem");
+  $oid_imagem = pg_lo_import($conn,$la24_o_assinatura) or die("Erro(153) importando imagem");
   $la24_o_assinatura = $oid_imagem;
  }  
    $cllab_labsetor->la24_c_nomearq = $la24_c_nomearq;

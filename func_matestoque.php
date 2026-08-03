@@ -33,8 +33,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_matestoque_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oGet = db_utils::postMemory($_GET);
 
@@ -95,7 +95,7 @@ $clrotulo->label("m60_descr");
     <td align="center" valign="top"> 
       <?php
 
-      $aWhere   = array();
+      $aWhere   = [];
       $sCampos  = "m60_codmater, m60_descr, m70_coddepto, m70_quant, m70_valor";
       $sOrdem   = 'm70_codmatmater';
       $sRetorno = 'm70_codmatmater';
@@ -167,7 +167,7 @@ $clrotulo->label("m60_descr");
         if ($oDaoMateEstoque->numrows > 0) {
 
           db_fieldsmemory($rsMateEstoque,0);
-          echo "<script>".$funcao_js."('" . $$sRetorno . "', false);</script>";
+          echo "<script>".$funcao_js."('" . ${$sRetorno} . "', false);</script>";
 
         } else {
           echo "<script>".$funcao_js."('Chave(".$pesquisa_chave.") não Encontrado',true);</script>";

@@ -57,7 +57,7 @@ if ($iNumRows > 0) {
 	for($i=0; $i < $iNumRows; $i++){
     
 		$oArquivo = db_utils::fieldsMemory($resArquivos,$i);
-		$sArquivo = basename($oArquivo->db81_nomearquivo);
+		$sArquivo = basename((string) $oArquivo->db81_nomearquivo);
 		
 		echo "  aLinha[{$i}] = new Array('{$sArquivo}',\n";
 		echo "           				         '{$oArquivo->db81_descricao}',\n";

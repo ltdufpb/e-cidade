@@ -126,9 +126,9 @@ $dataRel	  = $oConsultaRelatorio->db63_data;
 			  <td>
 			  	<?php 
 			  	  
-			  	  $sDia = substr($dataRel,8,2);
-			  	  $sMes = substr($dataRel,5,2);
-			  	  $sAno = substr($dataRel,0,4);
+			  	  $sDia = substr((string) $dataRel,8,2);
+			  	  $sMes = substr((string) $dataRel,5,2);
+			  	  $sAno = substr((string) $dataRel,0,4);
 			  	  
 				  db_inputdata("dateRel",$sDia,$sMes,$sAno,true,"text",3,"");
 				  
@@ -191,7 +191,7 @@ $dataRel	  = $oConsultaRelatorio->db63_data;
         
       }			
 			
-			$aVariaveisPadrao = array();
+			$aVariaveisPadrao = [];
 	    $aVariaveisPadrao['$db_codigoinst']  = "Codigo da Instituição";
 	    $aVariaveisPadrao['$db_nomeinst']  = "Nome da Instituição";
 	    $aVariaveisPadrao['$db_logo']      = "Logotipo da Instituição";

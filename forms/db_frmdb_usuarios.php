@@ -39,7 +39,7 @@ if ($db_opcao == 1) {
   $db_action = "con1_db_usuarios006.php";
 }
 
-$where = isset($where) ? $where : null;
+$where ??= null;
 ?>
 <script src="scripts/prototype.js"></script>
 <div class="container">
@@ -107,7 +107,7 @@ $where = isset($where) ? $where : null;
                       $administrador = 0;
                     }
 
-                    $ativo = array("1" => "Sim", "0" => "Não");
+                    $ativo = ["1" => "Sim", "0" => "Não"];
                     db_select("administrador", $ativo, true, $db_opcao, 'onchange="return js_validaAdministrador(); "');
                   ?>
                 </td>
@@ -120,7 +120,7 @@ $where = isset($where) ? $where : null;
                   </td>
                   <td>
                     <?php
-                      $aOpcoes = array("1" => "Sim", "0" => "Não");
+                      $aOpcoes = ["1" => "Sim", "0" => "Não"];
                       db_select("link_ativacao", $aOpcoes, true, $db_opcao, 'onchange="return js_validaAtivacao(); "');
                     ?>
                   </td>
@@ -160,11 +160,11 @@ $where = isset($where) ? $where : null;
                     	$usuarioativo = 1;
                     }
 
-                    $aOpcoes = array(
+                    $aOpcoes = [
                         "0" => "Inativo", 
                         "1" => "Ativo",
                         "3" => "Aguardando Ativação"
-                      );
+                      ];
 
                     if (!($db_opcao == 2 || $db_opcao == 22)) {
                       unset($aOpcoes[3]);
@@ -203,7 +203,7 @@ $where = isset($where) ? $where : null;
                 </td>
                 <td>
                   <?php
-                    $aLiberaLotacao = array("0" => "Não", "1" => "Sim");
+                    $aLiberaLotacao = ["0" => "Não", "1" => "Sim"];
                     db_select("liberalotacao", $aLiberaLotacao, true, $db_opcao);
                   ?>
                 </td>
@@ -225,17 +225,17 @@ $where = isset($where) ? $where : null;
               		    $result = db_query("select codigo,nomeinst from db_config $where");
               		  }
 
-              		  for ($i = 0;$i < pg_numrows($result);$i++) {
+              		  for ($i = 0;$i < pg_num_rows($result);$i++) {
               		  	$sel ="";
 
-                      if (!empty($id_usuario) && pg_result($result,$i,"id_instit")==pg_result($result,$i,"codigo")){
+                      if (!empty($id_usuario) && pg_fetch_result($result,$i,"id_instit")==pg_fetch_result($result,$i,"codigo")){
                         $sel = "selected";
                       }
 
               		  	if ($i == 0 && empty($id_usuario)) {
               		  		$sel = "selected";
               		  	}
-              		    echo "<option  ".$sel." value=\"".pg_result($result,$i,"codigo")."\" >".pg_result($result,$i,"nomeinst")."</option>\n";
+              		    echo "<option  ".$sel." value=\"".pg_fetch_result($result,$i,"codigo")."\" >".pg_fetch_result($result,$i,"nomeinst")."</option>\n";
               		  }
           	      ?>
                   </select>
@@ -433,7 +433,7 @@ $where = isset($where) ? $where : null;
 
     <?php
       if ($db_opcao != 1) {
-        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+sChave";
+        echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+sChave";
       }
     ?>
   }

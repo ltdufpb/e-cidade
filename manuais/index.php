@@ -25,11 +25,11 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 //$imagem = "http://localhost/dbportal2/manuais/".$modulo."/".basename($imagem);
 
-$nome_imagem = basename($imagem);
+$nome_imagem = basename((string) $imagem);
 
 $imagem = str_replace($nome_imagem,"",$imagem)."manuais/$modulo/$nome_imagem";
 ?>

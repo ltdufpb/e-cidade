@@ -39,7 +39,7 @@ $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
 $clrotulo->label('e14_sequencial');
 $clrotulo->label('e14_nomearquivo');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -160,7 +160,7 @@ function js_mostrae14_sequencial1(chave1,chave2){
         <td align="left"><b>Tipo:</b></td>
         <td colsapn="3">
   				<?php 
-          $x = array("1"=>"Analítico","2"=>"Sintético");
+          $x = ["1"=>"Analítico","2"=>"Sintético"];
           db_select("tipo",$x,true,2);
   				?>
         </td>

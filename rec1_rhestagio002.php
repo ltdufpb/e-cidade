@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("rhestagio"=>"Estágio","rhestagiocriterio"=>"Critérios"); 
-	 $clcriaabas->src = array("rhestagio"=>"rec1_rhestagio005.php");
-	 $clcriaabas->disabled   =  array("rhestagiocriterio"=>"true"); 
+	 $clcriaabas->identifica = ["rhestagio"=>"Estágio","rhestagiocriterio"=>"Critérios"]; 
+	 $clcriaabas->src = ["rhestagio"=>"rec1_rhestagio005.php"];
+	 $clcriaabas->disabled   =  ["rhestagiocriterio"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

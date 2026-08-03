@@ -38,8 +38,8 @@ require_once("libs/db_utils.php");
 $oGet  = db_utils::postMemory($_GET);
 
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clrhdepend = new cl_rhdepend;
 $clrhpessoal = new cl_rhpessoal;
 

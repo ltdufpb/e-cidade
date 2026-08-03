@@ -31,7 +31,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("classes/db_empage_classe.php"));
 require_once(modification("classes/db_empagemovconta_classe.php"));
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oGet         = db_utils::postMemory($_GET);
 
@@ -40,7 +40,7 @@ $iInstituicao = db_getsession('DB_instit');
 $clempage         = new cl_empage;
 $clempagemovconta = new cl_empagemovconta;
 
-$aCodigosAgendas = array();
+$aCodigosAgendas = [];
 
 $lErro					 = false;
 
@@ -88,7 +88,7 @@ if ($clempage->numrows > 0) {
     $aCodigosAgendas[] = $oAgenda->e80_codage;
   }
 
-  $sCodigosAgendas = implode($aCodigosAgendas, ",");
+  $sCodigosAgendas = implode(",", $aCodigosAgendas);
 
 } else {
   db_redireciona("db_erros.php?fechar=true&db_erro=Nenhum registro encontrado no períodio informado.");
@@ -424,7 +424,7 @@ foreach ($aCodigosAgendas as $iCodigoAgenda) {
 	      $pdf->cell(90,$alt,$debito_descr,0,0,"L",$prenc);
 	      $pdf->cell(15,$alt,$k17_credito,0,0,"C",$prenc);
 	      $pdf->cell(90,$alt,$credito_descr,0,0,"L",$prenc);
-	      $pdf->cell(68,$alt,substr($z01_nome,0,35),0,1,"L",$prenc);
+	      $pdf->cell(68,$alt,substr((string) $z01_nome,0,35),0,1,"L",$prenc);
 
 
 	      //     if ($prenc == 0){

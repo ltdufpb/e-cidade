@@ -86,7 +86,7 @@ $clrotulo->label("vc04_i_codigo");
           </td>
           <td> 
            <?php 
-             $x = array('1'=>'HORAS','2'=>'DIAS');
+             $x = ['1'=>'HORAS','2'=>'DIAS'];
              db_select('vc06_i_tipo',$x,true,$db_opcao,"");
            ?>
           </td>

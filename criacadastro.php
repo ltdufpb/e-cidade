@@ -29,28 +29,28 @@ require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 
-if(isset($HTTP_POST_VARS["criar"])) {
-  $tabela = $HTTP_POST_VARS["nometab"];
-  $arquivo = $HTTP_POST_VARS["arquivo"];
-  $tam_vetor = sizeof($HTTP_POST_VARS);
-  reset($HTTP_POST_VARS);
-  next($HTTP_POST_VARS);
-  next($HTTP_POST_VARS);
-  next($HTTP_POST_VARS);
+if(isset($_POST["criar"])) {
+  $tabela = $_POST["nometab"];
+  $arquivo = $_POST["arquivo"];
+  $tam_vetor = sizeof($_POST);
+  reset($_POST);
+  next($_POST);
+  next($_POST);
+  next($_POST);
   $v = 0;
   for($i = 0;$i < $tam_vetor;$i += 2) {
-    $campos[$v][0] =  $HTTP_POST_VARS[key($HTTP_POST_VARS)];
-	next($HTTP_POST_VARS);
-    $campos[$v][1] =  $HTTP_POST_VARS[key($HTTP_POST_VARS)];
-    if(db_indexOf($HTTP_POST_VARS[key($HTTP_POST_VARS)],"varchar") > 0) {
-	  next($HTTP_POST_VARS);
-      $campos[$v][2] = $HTTP_POST_VARS[key($HTTP_POST_VARS)];
+    $campos[$v][0] =  $_POST[key($_POST)];
+	next($_POST);
+    $campos[$v][1] =  $_POST[key($_POST)];
+    if(db_indexOf($_POST[key($_POST)],"varchar") > 0) {
+	  next($_POST);
+      $campos[$v][2] = $_POST[key($_POST)];
     }
 	$v++;
-    next($HTTP_POST_VARS);
+    next($_POST);
   } 
-  
-  if($HTTP_POST_VARS["criartabela"] == "1") {
+
+  if($_POST["criartabela"] == "1") {
     $tam = sizeof($campos);
     $aux = "";
     for($i = 0;$i < $tam;$i++) {
@@ -59,10 +59,10 @@ if(isset($HTTP_POST_VARS["criar"])) {
     }
     $aux[strlen($aux)-1] = ")";
     $aux = "create table $tabela( $aux";
-    db_query($aux) or die("Erro(34) criando tabela $tabela: ".pg_errormessage());
+    db_query($aux) or die("Erro(34) criando tabela $tabela: ".pg_last_error());
   }
   ////////
-  
+
 $corpo = "
 <?php 
 require(modification(\"libs/db_stdlib.php\"));
@@ -94,7 +94,7 @@ if(isset(\$HTTP_POST_VARS[\"incluir\"])) {
 ////////////////ALTERAR////////////////  
 } else if(isset(\$HTTP_POST_VARS[\"alterar\"])) {
   db_postmemory(\$HTTP_POST_VARS);
-  
+
   db_query(\"update $tabela set";
   $tam = sizeof($campos);
   for($i = 1;$i < $tam;$i++) {

@@ -45,15 +45,15 @@ $oJson               = new services_json();
 
 $oParam              = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno            = new stdClass();
-$aRetorno            = array();
+$aRetorno            = [];
 $oRetorno->status    = 1;
 $oRetorno->message   = 'teste';
 
-$aContasBancarias = array("237" => "BANCO BRADESCO S.A",
+$aContasBancarias = ["237" => "BANCO BRADESCO S.A",
                           "001" => "BANCO DO BRASIL",
                           "341" => "BANCO ITAU S/A",
                           "041" => "BANRISUL",
-                          "104" => "CAIXA ECONOMICA FEDERAL");
+                          "104" => "CAIXA ECONOMICA FEDERAL"];
 
 /**
  * $iRetorno = 0  retornar um objeto.

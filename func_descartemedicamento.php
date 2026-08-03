@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_descartemedicamento_classe.php"));
 db_postmemory($_POST);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldescartemedicamento = new cl_descartemedicamento;
 $cldescartemedicamento->rotulo->label("sd107_sequencial");
 $cldescartemedicamento->rotulo->label("sd107_medicamento");
@@ -67,7 +67,7 @@ $oRotulo->label("m60_descr");
     <input name="Fechar" type="button" id="fechar" value="Fechar" onClick="parent.db_iframe_descartemedicamento.hide();">
   </form>
       <?php
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = "sd107_db_depart = " . db_getsession('DB_coddepto') ;
       if (!isset($pesquisa_chave)) {
 
@@ -87,9 +87,9 @@ $oRotulo->label("m60_descr");
         $sWhere = implode(" and ", $aWhere);
         $sql    = $cldescartemedicamento->sql_query_dados_descarte("", $sCampos, $sOrder, $sWhere);
 
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m60_descr)){
-          $repassa = array("chave_sd107_sequencial"=>$chave_sd107_sequencial,"chave_m60_descr"=>$chave_m60_descr);
+          $repassa = ["chave_sd107_sequencial"=>$chave_sd107_sequencial,"chave_m60_descr"=>$chave_m60_descr];
         }
         echo '<div class="container">';
         echo '  <fieldset>';

@@ -41,8 +41,8 @@ require_once(modification("classes/db_inflan_classe.php"));
 
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 $cldiversos = new cl_diversos;
 $clinflan = new cl_inflan;
 $clprocdiver = new cl_procdiver;
@@ -89,14 +89,14 @@ if(isset($z_numcgm) && $z_numcgm!=""){
      exit;
   }
 }
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Incluir"){
   db_inicio_transacao();
 
   $sqlerro=false;
 
   if($dv05_numtot=="1"){
-    $HTTP_POST_VARS["dv05_diaprox"]=$dv05_privenc_dia;
-    $HTTP_POST_VARS["dv05_provenc"]=$dv05_privenc_ano.$dv05_privenc_mes.$dv05_privenc_dia;
+    $_POST["dv05_diaprox"]=$dv05_privenc_dia;
+    $_POST["dv05_provenc"]=$dv05_privenc_ano.$dv05_privenc_mes.$dv05_privenc_dia;
     $cldiversos->dv05_provenc=$dv05_privenc_ano.$dv05_privenc_mes.$dv05_privenc_dia;
     $cldiversos->dv05_provenc_dia=$dv05_privenc_dia;
     $cldiversos->dv05_provenc_mes=$dv05_privenc_mes;
@@ -106,8 +106,8 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
 
   // Se for inclusão em lote
   if (!empty($_POST['dadosValidos'])) {
-    $arrayDadosValidos = explode(",", $_POST['dadosValidos']);
-    $arrayDadosInvalidos = explode(",", $_POST['dadosInvalidos']);
+    $arrayDadosValidos = explode(",", (string) $_POST['dadosValidos']);
+    $arrayDadosInvalidos = explode(",", (string) $_POST['dadosInvalidos']);
     $tipo = $_POST['selectImportarPlanilha'];
 
     // Insere na tabela diversoslotelog
@@ -216,7 +216,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
       $result09 = db_query("select fc_geraarrecad(7,$nextval,true,2) as retorno");
       if (pg_num_rows($result09) > 0 ) {
         db_fieldsmemory($result09,0);
-        $iRetorno = substr(trim($retorno),0,1);
+        $iRetorno = substr(trim((string) $retorno),0,1);
         if ($iRetorno != '9') {
           $cldiversos->erro_msg = $retorno;
           $sqlerro=true;
@@ -273,7 +273,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Incluir
     $result09 = db_query("select fc_geraarrecad(7,$nextval,true,2) as retorno");
     if (pg_num_rows($result09) > 0 ) {
       db_fieldsmemory($result09,0);
-      $iRetorno = substr(trim($retorno),0,1);
+      $iRetorno = substr(trim((string) $retorno),0,1);
       if ($iRetorno != '9') {
         $cldiversos->erro_msg = $retorno;
         $sqlerro=true;
@@ -310,7 +310,7 @@ db_menu(db_getsession("DB_id_usuario"),db_getsession("DB_modulo"),db_getsession(
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]))){
+if((isset($_POST["db_opcao"]))){
 if($cldiversos->erro_status=="0"){
   $cldiversos->erro(true,false);
   $db_botao=true;

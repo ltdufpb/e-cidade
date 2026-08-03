@@ -39,11 +39,11 @@ require_once(modification("libs/db_sql.php"));
 //parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
 db_postmemory($_POST);
 
-$xinstit = split("-", $db_selinstit);
+$xinstit = preg_split("#\\-#m", (string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (" . str_replace('-', ', ', $db_selinstit) . ") ");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinstabrev;
     $xvirg = ', ';
@@ -80,7 +80,7 @@ $total1 = 0;
 $total2 = 0;
 
 $pagina = 1;
-for ($i = 0; $i < pg_numrows($result); $i++) {
+for ($i = 0; $i < pg_num_rows($result); $i++) {
     db_fieldsmemory($result, $i);
 
     if ($pdf->gety() > $pdf->h - 30 || $pagina == 1) {
@@ -104,8 +104,8 @@ for ($i = 0; $i < pg_numrows($result); $i++) {
 
     if ($o15_recurso != 0) {
         $pdf->cell(20, $alt, $o15_recurso, 0, 0, "L", 0);
-        if (strlen($o15_descr) >= 90) {
-            $descricaowrap = explode("<br>", wordwrap($o15_descr, 90, "<br>", false));
+        if (strlen((string) $o15_descr) >= 90) {
+            $descricaowrap = explode("<br>", wordwrap((string) $o15_descr, 90, "<br>", false));
             $pdf->cell(80, $alt, $descricaowrap[0], 0, 0, "L", 0);
             $pdf->ln();
             $pdf->setx(30);

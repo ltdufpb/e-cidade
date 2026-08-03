@@ -82,7 +82,7 @@ $clrotulo->label('rh55_descr');
 $clrotulo->label("rh19_propi");
 $clrotulo->label("rh01_clas2");
 
-parse_str($_SERVER['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 
 $isInstituicaoPrevidencia = false;
@@ -121,7 +121,7 @@ if (isset($consulta)) {
         }
     }
 
-    if (trim($anofolha) == "" || trim($mesfolha) == "") {
+    if (trim((string) $anofolha) == "" || trim((string) $mesfolha) == "") {
         $ano = db_anofolha();
         $mes = db_mesfolha();
     } else {
@@ -387,7 +387,7 @@ for ($index=0; $index<$xxnum; $index ++) {
     $pdf->setfont($fonte01,$b01,$tam01);
     $pdf->cell(35,$alt,$RLr01_lotac.":",0,0,"R",0);
     $pdf->setfont($fonte02,$b02,$tam02);
-    $pdf->cell(60,$alt,$r70_estrut.'-'.substr($r70_descr,0,25),0,0,"L",0);
+    $pdf->cell(60,$alt,$r70_estrut.'-'.substr((string) $r70_descr,0,25),0,0,"L",0);
     
     $iContadorColunas ++;
   }
@@ -573,7 +573,7 @@ for ($index=0; $index<$xxnum; $index ++) {
     $pdf->setfont($fonte01,$b01,$tam01);
     $pdf->cell(35,$alt,$RLr01_banco.":",0,0,"R",0);
     $pdf->setfont($fonte02,$b02,$tam02);
-    $pdf->cell(60,$alt,trim($rh44_codban)."/".trim($rh44_agencia)."-".trim($rh44_dvagencia),0,0,"L",0);
+    $pdf->cell(60,$alt,trim((string) $rh44_codban)."/".trim((string) $rh44_agencia)."-".trim((string) $rh44_dvagencia),0,0,"L",0);
     
     $iContadorColunas ++;
     
@@ -589,7 +589,7 @@ for ($index=0; $index<$xxnum; $index ++) {
     $pdf->setfont($fonte01,$b01,$tam01);
     $pdf->cell(35,$alt,$RLr01_contac.":",0,0,"R",0);
     $pdf->setfont($fonte02,$b02,$tam02);
-    $pdf->cell(60,$alt,trim($rh44_conta)."-".trim($rh44_dvconta),0,0,"L",0);
+    $pdf->cell(60,$alt,trim((string) $rh44_conta)."-".trim((string) $rh44_dvconta),0,0,"L",0);
     
     $iContadorColunas ++;
     
@@ -1443,7 +1443,7 @@ $pdf->ln();
   
   if (isset($mostraObservacoes)) {
       
-    if (trim($observacao) != '') {
+    if (trim((string) $observacao) != '') {
         
         $pdf->ln();
         $pdf->ln();

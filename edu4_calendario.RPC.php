@@ -45,7 +45,7 @@ $oJson              = new services_json();
 $oParam             = $oJson->decode(str_replace("\\","",$_POST["json"]));
 
 $oRetorno           = new stdClass();
-$oRetorno->dados    = array();
+$oRetorno->dados    = [];
 $oRetorno->status   = 1;
 $oRetorno->message  = "";
 
@@ -320,7 +320,7 @@ try {
         $sSqlDuracaoCal = $oDaoDuracaoCal->sql_query_file($oCalendarioClone->getPeriodicidade());
         $rsDuracaoCal   = $oDaoDuracaoCal->sql_record($sSqlDuracaoCal);
 
-        $oDadosCalendario->sDescricaoPeriodicidade      = urlencode(db_utils::fieldsMemory($rsDuracaoCal,0)->ed55_c_descr);
+        $oDadosCalendario->sDescricaoPeriodicidade      = urlencode((string) db_utils::fieldsMemory($rsDuracaoCal,0)->ed55_c_descr);
       } else {
         $oDadosCalendario->sDescricaoPeriodicidade = null;
       }
@@ -331,7 +331,7 @@ try {
       $oDadosCalendario->iDiasLetivos                 = $oCalendarioClone->getDiasLetivos();
       $oDadosCalendario->iSemanasLetivas              = $oCalendarioClone->getSemanasLetivas();
       $oDadosCalendario->iCodigoCalendarioAnterior    = $oCalendarioClone->getCalendarioAnterior()->getCodigo();
-      $oDadosCalendario->sDescricaoCalendarioAnterior = urlencode($oCalendarioClone->getCalendarioAnterior()->getDescricao());
+      $oDadosCalendario->sDescricaoCalendarioAnterior = urlencode((string) $oCalendarioClone->getCalendarioAnterior()->getDescricao());
 
       $oRetorno->oDadosCalendarioClone = $oDadosCalendario;
       $oRetorno->iCodigoBaseCalendario = $oParam->iCalendario;

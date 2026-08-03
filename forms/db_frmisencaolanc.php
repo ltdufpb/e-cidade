@@ -104,7 +104,7 @@ db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
 					$sqlBuscaOrigem .= "    left join isencaoinscr  on v16_isencao = v10_sequencial ";
 					$sqlBuscaOrigem .= " where v10_sequencial = $v18_isencao ";
 					$rsBuscaOrigem = db_query($sqlBuscaOrigem);
-					if(pg_numrows($rsBuscaOrigem) > 0){
+					if(pg_num_rows($rsBuscaOrigem) > 0){
 					  db_fieldsmemory($rsBuscaOrigem,0);
 					}
 				}
@@ -119,7 +119,7 @@ db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
 					$sqlCadtipo .= "    	  inner join cadtipoorigem on k03_tipo = k14_cadtipo ";
 					$sqlCadtipo .= " where k14_cadorigem = $origem "; //(filtro escolhido para lancar a isencao)
 					$rsCadtipo   = db_query($sqlCadtipo);
-					$intCadtipo  = pg_numrows($rsCadtipo);
+					$intCadtipo  = pg_num_rows($rsCadtipo);
 					if($intCadtipo > 0){
 						for($i=0;$i<$intCadtipo;$i++){
 							db_fieldsmemory($rsCadtipo,$i);
@@ -163,7 +163,7 @@ db_input('v10_isencaotipo',10,$Iv10_isencaotipo,true,'hidden',3,'')
 				  $sqlItem  .= "        inner join cadtipoitemgrupo on k09_cadtipoitemgrupo = k37_sequencial ";
 				  $sqlItem  .= " where k09_cadtipo = $k03_tipo";
 				  $rsItem    = db_query($sqlItem);
-				  $intItem   = pg_numrows($rsItem);
+				  $intItem   = pg_num_rows($rsItem);
 					if($intItem > 0){
 				    for($iItem=0;$iItem<$intItem;$iItem++){
 					    db_fieldsmemory($rsItem,$iItem);
@@ -217,7 +217,7 @@ db_inputdata('v18_dtfim',@$v18_dtfim_dia,@$v18_dtfim_mes,@$v18_dtfim_ano,true,'t
     </td>
     <td> 
 <?php 
-$x = array('1'=>'PERCENTUAL','2'=>'VALOR');
+$x = ['1'=>'PERCENTUAL','2'=>'VALOR'];
 db_select('v18_tipovalor',$x,true,$db_opcao,"onChange='js_controlavalor();'");
 ?>
     </td>
@@ -243,7 +243,7 @@ db_input('v18_valor',10,$Iv18_valor,true,'text',$db_opcao,"onChange='js_controla
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("v18_sequencial"=>@$v18_sequencial);
+	 $chavepri= ["v18_sequencial"=>@$v18_sequencial];
 	 $cliframe_alterar_excluir->chavepri    = $chavepri;
 	 $cliframe_alterar_excluir->iframe_nome = "itenslanc";
 	 $cliframe_alterar_excluir->sql     = $clisencaolanc->sql_query(null,'*',null," v18_isencao = $v18_isencao ");

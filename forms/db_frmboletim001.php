@@ -31,7 +31,7 @@ $clorcreceita->rotulo->label();
 $clrotulocampo = new rotulocampo;
 $clrotulocampo->label("c70_valor");
 $clrotulocampo->label("c70_data");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
   ?>
   <form name="form1" method="post" action="" >
@@ -88,7 +88,7 @@ db_postmemory($HTTP_POST_VARS);
 	echo "<td align=\"center\"  colspan=\"2\" >";
         echo "</td>";
         echo "</tr>";
- 
+
         echo "<tr>";
 	echo "<td align=\"left\"  width='70%' >Transferências Caixa/Bancos </td><td><a  onclick=\"js_mostra('trans');return false;\" href='#'> Consulta</a>";
         echo "</td>";
@@ -105,7 +105,7 @@ db_postmemory($HTTP_POST_VARS);
 	echo "<td align=\"center\"  colspan=\"2\" >";
         echo "</td>";
         echo "</tr>";
- 
+
         echo "<tr>";
 	echo "<td align=\"left\"  width='70%' >Receita Extra-Orçamentária</td><td><a  onclick=\"js_mostra('recextra');return false;\" href='#'> Consulta</a>";
         echo "</td>";
@@ -114,11 +114,11 @@ db_postmemory($HTTP_POST_VARS);
 	echo "<td align=\"center\"  colspan=\"2\" >";
         echo "</td>";
         echo "</tr>";
- 
+
         echo "<tr>";
 	echo "<td align=\"left\"  width='70%' >Despesa Extra-Orçamentária</td><td><a  onclick=\"js_mostra('despextra');return false;\" href='#'> Consulta</a>";
         echo "</td>";
- 
+
         echo "</tr>";
 	//echo '<iframe name="iframe_receita" frameborder="0" leftmargin="0" topmargin="0" 
         //    src="forms/db_frmboletim002.php?data='.$data.'&boletim='.$k11_numbol.'" height="100" width="570"></iframe>';

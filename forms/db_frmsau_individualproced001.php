@@ -370,7 +370,7 @@ function js_retornoGridProcedimentos( objAjax ){
  * Função Opções Procedimento
  */
 function js_opcoesProcedimento( sd29_i_codigo, intIterator, opcao ){
-	var strURL = '<?=basename ( $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] )?>';
+	var strURL = '<?=basename ( (string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"] )?>';
 	strURL += '?opcao='+opcao;
 	strURL += '&sd29_i_codigo='+sd29_i_codigo;
 	strURL += '&sd58_i_codigo='+$F('sd58_i_codigo');

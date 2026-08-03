@@ -33,7 +33,7 @@ class AnexoIFSICONFI extends RelatoriosLegaisBase implements AnexoSICONFI {
   /**
    * @var array
    */
-  private $aLinhasFormatadas = array();
+  private $aLinhasFormatadas = [];
 
   /**
    * Gera o relatório em um arquivo no formato informado por parâmetro.
@@ -43,23 +43,15 @@ class AnexoIFSICONFI extends RelatoriosLegaisBase implements AnexoSICONFI {
    */
   public function gerar($sFormato) {
 
-    switch ($sFormato) {
-
-      case AnexoSICONFI::TIPO_CSV:
-        return $this->gerarCSV();
-        break;
-
-      case AnexoSICONFI::TIPO_PDF:
-        return $this->gerarPDF();
-        break;
-
-      default:
-        throw new Exception("Opção inválida.");
-        break;
-    }
+    return match ($sFormato) {
+        AnexoSICONFI::TIPO_CSV => $this->gerarCSV(),
+        AnexoSICONFI::TIPO_PDF => $this->gerarPDF(),
+        default => throw new Exception("Opção inválida."),
+    };
   }
 
-  public function getDados() {
+  #[\Override]
+  public function getDados($trazerConfiguracaoPadrao = \true) {
     parent::getDados();
 
     foreach ($this->aLinhasConsistencia as $oStdLinhaRelatorio) {
@@ -69,12 +61,12 @@ class AnexoIFSICONFI extends RelatoriosLegaisBase implements AnexoSICONFI {
       $oStdLinha->nivel        = $oStdLinhaRelatorio->nivel;
       $oStdLinha->totalizadora = $oStdLinhaRelatorio->totalizar;
       $oStdLinha->ordem        = $oStdLinhaRelatorio->ordem;
-      $oStdLinha->colunas      = (object) array(
+      $oStdLinha->colunas      = (object) [
           'pagos_nao_proc' => $oStdLinhaRelatorio->rp_naoproc_pago,
           'anulados_nao_proc' => $oStdLinhaRelatorio->rp_naoproc_cancelado,
           'pagos_proc' => $oStdLinhaRelatorio->rp_proc_pago,
           'anulados_proc' => $oStdLinhaRelatorio->rp_proc_cancelado
-        );
+        ];
 
       $this->aLinhasFormatadas[$oStdLinha->ordem] = $oStdLinha;
     }
@@ -100,27 +92,27 @@ class AnexoIFSICONFI extends RelatoriosLegaisBase implements AnexoSICONFI {
       throw new Exception("Não foi possível gerar o arquivo.");
     }
 
-    $aColunas = array( "DESPESAS ORÇAMENTÁRIAS",
+    $aColunas = [ "DESPESAS ORÇAMENTÁRIAS",
                        "RESTOS A PAGAR NÃO PROCESSADOS PAGOS",
                        "RESTOS A PAGAR NÃO PROCESSADOS CANCELADOS",
                        "RESTOS A PAGAR PROCESSADOS PAGOS",
-                       "RESTOS A PAGAR PROCESSADOS CANCELADOS" );
+                       "RESTOS A PAGAR PROCESSADOS CANCELADOS" ];
 
-    if (fputcsv($hArquivo, $aColunas, ";") === false) {
+    if (fputcsv($hArquivo, $aColunas, ";", escape: '\\') === false) {
       throw new Exception("Não foi possível escrever no arquivo.");
     }
 
     foreach ($this->aLinhasFormatadas as $oLinha) {
 
-      $aLinha = array(
+      $aLinha = [
           relatorioContabil::getIdentacao($oLinha->nivel) . $oLinha->descricao,
           trim(db_formatar($oLinha->colunas->pagos_nao_proc, 'f')),
           trim(db_formatar($oLinha->colunas->anulados_nao_proc, 'f')),
           trim(db_formatar($oLinha->colunas->pagos_proc, 'f')),
           trim(db_formatar($oLinha->colunas->anulados_proc, 'f'))
-        );
+        ];
 
-      if (fputcsv($hArquivo, $aLinha, ";") === false) {
+      if (fputcsv($hArquivo, $aLinha, ";", escape: '\\') === false) {
         throw new Exception("Não foi possível escrever no arquivo.");
       }
     }

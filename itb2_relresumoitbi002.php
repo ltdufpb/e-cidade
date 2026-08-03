@@ -102,17 +102,17 @@ if ( isset($oGet->sLogradouro) ) {
 
 
 if ( isset($oGet->sSetor) && $oGet->sSetor != "") {
-  $sWhere  .= " {$sAnd} j34_setor = '" . str_pad($oGet->sSetor,4,"0",STR_PAD_LEFT)."'";
+  $sWhere  .= " {$sAnd} j34_setor = '" . str_pad((string) $oGet->sSetor,4,"0",STR_PAD_LEFT)."'";
   $sAnd     = " and ";
 }
 
 if ( isset($oGet->sQuadra) && $oGet->sQuadra != "" ) {
-  $sWhere  .= " {$sAnd} j34_quadra = '" . str_pad($oGet->sQuadra,4,"0",STR_PAD_LEFT)."'";
+  $sWhere  .= " {$sAnd} j34_quadra = '" . str_pad((string) $oGet->sQuadra,4,"0",STR_PAD_LEFT)."'";
   $sAnd     = " and ";
 }
 
 if ( isset($oGet->sLote) && $oGet->sLote != "" ) {
-  $sWhere  .= " {$sAnd} j34_lote = '" . str_pad($oGet->sLote,4,"0",STR_PAD_LEFT)."'";
+  $sWhere  .= " {$sAnd} j34_lote = '" . str_pad((string) $oGet->sLote,4,"0",STR_PAD_LEFT)."'";
   $sAnd     = " and ";
 }
 
@@ -304,14 +304,14 @@ $aRetorno  = db_utils::getCollectionByRecord($rsSql);
 /**
  * Cria vetor para comparação
  */
-$aCompara  = array();
+$aCompara  = [];
 foreach ($aRetorno as $oDadosFiltro){
   $aCompara[$oDadosFiltro->it01_guia][$oDadosFiltro->it03_tipo][] = $oDadosFiltro;
 }
 $oGuiaPaga          = null;
 $oGuiaAberto        = null;
 $oGuiaSemIncidencia = null;
-$aDados             = array();
+$aDados             = [];
 /**
  * Filtra os dados de guias repetidas
  */
@@ -319,9 +319,9 @@ foreach ($aCompara as $aGuias){
 
   foreach ($aGuias as $aTipoRegistro) {
 
-    $oGuiaPaga          = array();
-    $oGuiaAberto        = array();
-    $oGuiaSemIncidencia = array();
+    $oGuiaPaga          = [];
+    $oGuiaAberto        = [];
+    $oGuiaSemIncidencia = [];
 
     foreach ($aTipoRegistro as $oRegistroValido) {
 
@@ -367,9 +367,9 @@ if ( $oGet->modoimp == 'sint' ) {
 	$iTotalGuia  = 0;
 	$iTroca      = 1;
 	$iAlt        = 4;
-	$aTipo       = array();
-	$aTipoValor  = array();
-	$aDadosGuias = array();
+	$aTipo       = [];
+	$aTipoValor  = [];
+	$aDadosGuias = [];
 
 	foreach ($aRetorno as $i => $oRetorno) {
 
@@ -433,7 +433,7 @@ if ( $oGet->modoimp == 'sint' ) {
 
 	  $pdf->cell(20,$iAlt,$oRetorno->itbiliberada                                                             ,0,0,"C",1);
 	  $pdf->cell(20,$iAlt,db_formatar("$oRetorno->k00_dtvenc",'d')                                            ,0,0,"C",1);
-	  $pdf->cell(50,$iAlt,substr($oRetorno->it04_descr,0,30)                                                  ,0,0,"L",1);
+	  $pdf->cell(50,$iAlt,substr((string) $oRetorno->it04_descr,0,30)                                                  ,0,0,"L",1);
 	  $pdf->cell(30,$iAlt,$oRetorno->urbanorural                                                              ,0,1,"L",1);
 
 	  $oDadosGuias = new stdClass();
@@ -472,10 +472,10 @@ if ( $oGet->modoimp == 'sint' ) {
 
   $lImprime      = true;
   $iPreencher    = true;
-  $aTipo         = array();
-  $aTipoValor    = array();
-  $aDados        = array();
-  $aDadosItbi    = array();
+  $aTipo         = [];
+  $aTipoValor    = [];
+  $aDados        = [];
+  $aDadosItbi    = [];
 
 	foreach ($aRetorno as $i => $oRetorno) {
 
@@ -500,8 +500,8 @@ if ( $oGet->modoimp == 'sint' ) {
 
     $oDadosItbi->sLiberada         = $oRetorno->itbiliberada;
     $oDadosItbi->dtVenc            = $oRetorno->k00_dtvenc;
-    $oDadosItbi->sTranzacao        = substr($oRetorno->it04_descr,0,30);
-    $oDadosItbi->sTranzacao        = substr($oRetorno->it04_descr,0,30);
+    $oDadosItbi->sTranzacao        = substr((string) $oRetorno->it04_descr,0,30);
+    $oDadosItbi->sTranzacao        = substr((string) $oRetorno->it04_descr,0,30);
     $oDadosItbi->sUrbRural         = $oRetorno->urbanorural;
 
     $oDadosItbi->nValorDeclConstr  = $oRetorno->it01_valorconstr;
@@ -528,7 +528,7 @@ if ( $oGet->modoimp == 'sint' ) {
 
   foreach ( $aDadosItbi as $iCodItbi => $aDados ) {
 
-    imprimeCabecalho($pdf,$iAlt,$lImprime);
+    imprimeCabecalho($pdf,$iAlt);
 		$lImprime = false;
 
     if ($iPreencher == true) {

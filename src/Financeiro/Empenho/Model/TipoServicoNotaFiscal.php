@@ -121,10 +121,10 @@ class TipoServicoNotaFiscal
      */
     public function toArray()
     {
-        return array(
+        return [
             'sequencial' => $this->getSequencial(),
             'referencia' => $this->getReferencia(),
             'descricao' => $this->getDescricao(),
-        );
+        ];
     }
 }

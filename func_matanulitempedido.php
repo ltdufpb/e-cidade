@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matanulitempedido_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatanulitempedido = new cl_matanulitempedido;
 $clmatanulitempedido->rotulo->label("m101_sequencial");
 $clmatanulitempedido->rotulo->label("m101_sequencial");
@@ -98,9 +98,9 @@ $clmatanulitempedido->rotulo->label("m101_sequencial");
         }else{
            $sql = $clmatanulitempedido->sql_query("",$campos,"m101_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_m101_sequencial)){
-          $repassa = array("chave_m101_sequencial"=>$chave_m101_sequencial,"chave_m101_sequencial"=>$chave_m101_sequencial);
+          $repassa = ["chave_m101_sequencial"=>$chave_m101_sequencial,"chave_m101_sequencial"=>$chave_m101_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

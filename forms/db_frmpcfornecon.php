@@ -161,7 +161,7 @@ if ($db_opcao == 1) {
           </td>
           <td>
             <?php
-            db_select('pc63_tipoconta', array("1" => "Conta Corrente", "2" => "Conta poupança"), true, 'text', $db_opcao, "");
+            db_select('pc63_tipoconta', ["1" => "Conta Corrente", "2" => "Conta poupança"], true, 'text', $db_opcao, "");
             ?>
           </td>
         </tr>
@@ -197,7 +197,7 @@ if ($db_opcao == 1) {
                 $pc64_contabanco = "t";
               }
             }
-            $x = array("t" => "SIM", "f" => "NÃO");
+            $x = ["t" => "SIM", "f" => "NÃO"];
             db_select('pc64_contabanco', $x, true, $db_opcao, "")
             ?>
             <input type="hidden" name="padrao" value="<?php echo $pc64_contabanco ?>">
@@ -226,7 +226,7 @@ if ($db_opcao == 1) {
           </td>
           <td colspan="3">
             <?php
-            $x = array(1 => "Escolha um tipo de chave", 2 => "CPF", 3 => "CNPJ", 4 => "Celular", 5 => "E-mail", 6 => "Chave Aleatória");
+            $x = [1 => "Escolha um tipo de chave", 2 => "CPF", 3 => "CNPJ", 4 => "Celular", 5 => "E-mail", 6 => "Chave Aleatória"];
             db_select('pc63_tipopix', $x, true, $db_opcao, " onchange='js_aplicarMascaraPix(this.value);'")
             ?>
           </td>

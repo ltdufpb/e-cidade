@@ -111,7 +111,7 @@ function cabecalhoPrincipal($oPDF) {
   $oPDF->text(62,7.5,converteCodificacao('Ministério'));
   $oPDF->text(62,11.5,'da');
   $oPDF->text(62,15.5,converteCodificacao('Saúde'));
-  
+
   $oPDF->setFont('arial','B',10);
   espacoBranco($oPDF, 14.5);
   $oPDF->cell(120,7.25,converteCodificacao('LAUDO PARA A SOLICITAÇÃO/AUTORIZAÇÃO DE'),'LTR',1,'C',$lCor);
@@ -130,7 +130,7 @@ function cabecalhoPrincipal($oPDF) {
   $oPDF->line(18, 12, 18, 16); //  
   $oPDF->line(18, 16, 22, 16); // |_|
   $oPDF->line(22, 12, 22, 16); //  
-  
+
   $oPDF->line(12, 8, 17, 8.6);
   $oPDF->line(17, 8.6, 21.6, 12);
   $oPDF->line(21.6, 12, 22, 16);
@@ -142,7 +142,7 @@ function cabecalhoPrincipal($oPDF) {
 
 function boxIdentificacaoEstabelecimentoSolicitante($oPDF, $sUnidade, $sCnes) {
 
-  novoCabecalho($oPDF, converteCodificacao('IDENTIFICAÇÃO DO ESTABELECIMENTO DE SAÚDE (SOLICITANTE)'));
+  novoCabecalho($oPDF);
   $lCor = false;
   $oPDF->setFont('arial','',6);
   $oPDF->setTextColor(0, 0, 0);
@@ -161,14 +161,14 @@ function boxIdentificacaoEstabelecimentoSolicitante($oPDF, $sUnidade, $sCnes) {
   $oPDF->cell(22,$iH,$sCnes,1,0,'C',$lCor);
   cantoDir($oPDF, $iH);
 
-  finalizaBox($oPDF, true);
+  finalizaBox($oPDF);
 
 }
 
 function boxIdentificacaoPaciente($oPDF, $sNome, $iProntuario, $iCns, $dDataNasc, $sSexo, $sRaca, $sNomeMae, $sTelef,
                                   $sNomeResp, $sEndereco, $sMunicResid, $sUf, $sCep) {
  
-  novoCabecalho($oPDF, converteCodificacao('IDENTIFICAÇÃO DO PACIENTE'));
+  novoCabecalho($oPDF);
   $lCor = false;
   $oPDF->setFont('arial','',6);
   $oPDF->setTextColor(0, 0, 0);
@@ -284,7 +284,7 @@ function dadosProcedimento($oPDF, $sCod, $sNome, $iQtde = 1, $lPrincipal = false
   cantoEsq($oPDF, $iH);
   $oPDF->cell(48,$iH,$sCod,1,0,'C',$lCor);
   espacoBranco($oPDF, $iH);
-  $oPDF->cell(128,$iH,substr(urldecode($sNome),0,96),1,0,'C',$lCor); 
+  $oPDF->cell(128,$iH,substr(urldecode((string) $sNome),0,96),1,0,'C',$lCor); 
   $oPDF->cell(8,$iH,$iQtde,1,0,'C',$lCor);
   cantoDir($oPDF, $iH, true);
 
@@ -292,7 +292,7 @@ function dadosProcedimento($oPDF, $sCod, $sNome, $iQtde = 1, $lPrincipal = false
 
 function boxProcedimentos($oPDF, $oProcedimentos) {
  
-  novoCabecalho($oPDF, 'PROCEDIMENTO SOLICITADO'); 
+  novoCabecalho($oPDF); 
   $lCor = false;
   $oPDF->setFont('arial','',6);
   $oPDF->setTextColor(0, 0, 0);
@@ -301,7 +301,7 @@ function boxProcedimentos($oPDF, $oProcedimentos) {
   
   dadosProcedimento($oPDF,$oProcedimentos[0]->sProcedimento,$oProcedimentos[0]->sDescr, 1,true);
   
-  novoCabecalho($oPDF, converteCodificacao('PROCEDIMENTO(S) SECUNDÁRIOS')); 
+  novoCabecalho($oPDF); 
   $oPDF->setFont('arial','',6);
   $oPDF->setTextColor(0, 0, 0);
 
@@ -320,7 +320,7 @@ function boxProcedimentos($oPDF, $oProcedimentos) {
 
 function boxJustificativaProcedimentos($oPDF) {
 
-  novoCabecalho($oPDF, 'JUSTIFICATIVA DO(S) PROCEDIMENTOS SOLICITADO(S)'); 
+  novoCabecalho($oPDF); 
   $lCor = false;
   $oPDF->setFont('arial','',6);
   $oPDF->setTextColor(0, 0, 0);
@@ -371,7 +371,7 @@ function boxSolicitacao($oPDF, $sSolicitante, $dDataSolic, $iTipoDoc, $iNumDoc) 
        break;
  
   }
-  novoCabecalho($oPDF,converteCodificacao('SOLICITAÇÃO'));
+  novoCabecalho($oPDF);
   $lCor = false;
   $oPDF->setFont('arial','',6);
   $oPDF->setTextColor(0, 0, 0);
@@ -416,7 +416,7 @@ function boxSolicitacao($oPDF, $sSolicitante, $dDataSolic, $iTipoDoc, $iNumDoc) 
 
 function boxAutorizacao($oPDF) {
  
-  novoCabecalho($oPDF,converteCodificacao('AUTORIZAÇÃO'));
+  novoCabecalho($oPDF);
   $lCor = false;
   $oPDF->setFont('arial','',6);
   $oPDF->setTextColor(0, 0, 0);
@@ -475,7 +475,7 @@ function boxAutorizacao($oPDF) {
 
 function boxIdentificacaoEstabelecimentoExecutante($oPDF, $sEstabelecimentoDest, $sCnsDest) {
 
-  novoCabecalho($oPDF, converteCodificacao('IDENTIFICAÇÃO DO ESTABELECIMENTO DE SAÚDE (EXECUTANTE)'));
+  novoCabecalho($oPDF);
   $lCor = false;
   $oPDF->setFont('arial','',6);
   $oPDF->setTextColor(0, 0, 0);
@@ -494,20 +494,20 @@ function boxIdentificacaoEstabelecimentoExecutante($oPDF, $sEstabelecimentoDest,
   $oPDF->cell(22,$iH,$sCnsDest,1,0,'C',$lCor);
   cantoDir($oPDF, $iH);
 
-  finalizaBox($oPDF, true);
+  finalizaBox($oPDF);
 
 }
 function formataData($dData, $iTipo = 1) {
 
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   
   }
  
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = $dData[2].'/'.$dData[1].'/'.$dData[0];
  return $dData;
 
@@ -677,9 +677,9 @@ if($oDados->z01_c_nomeresp == '0') {
 
 cabecalhoPrincipal($oPDF);
 boxIdentificacaoEstabelecimentoSolicitante($oPDF, $sUnidOrig, $sCnesOrig);
-boxIdentificacaoPaciente($oPDF, substr($oDados->z01_v_nome,0,56), $oDados->s142_i_prontuario, $sCartaoSus,
+boxIdentificacaoPaciente($oPDF, substr((string) $oDados->z01_v_nome,0,56), $oDados->s142_i_prontuario, $sCartaoSus,
                          formataData($oDados->z01_d_nasc, 2),
-                         empty($oDados->z01_v_sexo) ? '' : $oDados->z01_v_sexo == 'M' ? 'Masculino' : 'Feminino',
+                         (empty($oDados->z01_v_sexo) ? '' : $oDados->z01_v_sexo == 'M') ? 'Masculino' : 'Feminino',
                          $oDados->z01_c_raca, $oDados->z01_v_mae, $oDados->z01_v_telef, $oDados->z01_c_nomeresp,
                          substr($oDados->z01_v_ender.' '.$oDados->z01_i_numero.' '.$oDados->z01_v_bairro,0,100),
                          $oDados->z01_v_munic, $oDados->z01_v_uf, $oDados->z01_v_cep

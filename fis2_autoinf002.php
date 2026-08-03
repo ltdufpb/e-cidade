@@ -44,7 +44,7 @@ $clrotulo      = new rotulocampo;
 $clrotulo->label('y50_codauto');
 $clrotulo->label('y50_nome');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 /**
  * Verifica se existe documento template setado para utilizar o agata
@@ -61,7 +61,7 @@ if ($iTemplateAutoinfracao != "") {
 
   $sAgt = "fiscal/auto_de_infracao.agt";
 
-  $aParam = array();
+  $aParam = [];
   $aParam['$iCodigoAutodeInfracao'] = $iCodigoAutodeInfracao;
 
   db_stdClass::oo2pdf(51, $iTemplateAutoinfracao, $sAgt, $aParam, $sCaminhoSalvoSxw, $sNomeRelatorio);
@@ -83,7 +83,7 @@ $result_infoauto=$clauto->sql_record($clauto->sql_query_infoautos($codauto));
 if ($clauto->numrows>0){
 
   db_fieldsmemory($result_infoauto,0);
-  $data = split('-',$data);
+  $data = preg_split('#\-#m',(string) $data);
   $dia  = $data[2];
   $mes  = $data[1];
   $ano  = $data[0];

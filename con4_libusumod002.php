@@ -80,9 +80,9 @@ input {
 					on m.id_item = u.id_modulo
 					inner join db_config c
 					on c.codigo = u.id_instit
-					where u.id_usuario = ".$HTTP_GET_VARS["usuario"];
+					where u.id_usuario = ".$_GET["usuario"];
           //echo $sql;
-			 db_lovrot($sql,10,"()",'','js_manda|codigo',"","NoMe", array(),false); 
+			 db_lovrot($sql,10,"()",'','js_manda|codigo',"","NoMe", [],false); 
 //echo $retorno;
 			?>
             </td>

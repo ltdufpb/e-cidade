@@ -28,8 +28,8 @@ class QSA extends Base
   public function __construct(Dicionario $dicionario)
   {
     parent::__construct($dicionario);
-    $this->cgms = array();
-    $this->qsas = array();
+    $this->cgms = [];
+    $this->qsas = [];
   }
 
   /**
@@ -69,7 +69,7 @@ class QSA extends Base
           $indice = trim($this->dicionario->getCampo("identificador"));
         }
 
-        $tipoRelacionamento = trim($this->getValor($indice, "tipo_relacionamento"));
+        $tipoRelacionamento = trim((string) $this->getValor($indice, "tipo_relacionamento"));
 
         if (!empty($tipoRelacionamento)) {
           $indice .= "-" . $tipoRelacionamento;
@@ -81,7 +81,7 @@ class QSA extends Base
 
         $this->registro[$indice]->tipo_relacionamento = $this->getValor($indice, "tipo_relacionamento");
         $this->registro[$indice]->valor_capital = $this->getValor($indice, "valor_capital");
-        $this->registro[$indice]->cgm = $this->cgms[trim($this->dicionario->getCampo("identificador"))];
+        $this->registro[$indice]->cgm = $this->cgms[trim((string) $this->dicionario->getCampo("identificador"))];
       }
     }
   }
@@ -95,7 +95,7 @@ class QSA extends Base
   {
     foreach ($this->registro as $identificador => $item) {
 
-      $parametros = array();
+      $parametros = [];
       $parametros["valor_capital"] = $this->registro[$identificador]->valor_capital;
       $parametros["cgm"] = $this->registro[$identificador]->cgm;
 

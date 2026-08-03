@@ -39,21 +39,13 @@ use Exception;
  */
 class GrupoLaboratorioService
 {
-    private $repositorio;
-
-    private $repositorioGrupoExame;
-
     /**
      * GrupoLaboratorioService constructor.
      * @param GrupoLaboratorioRepository $repositorio
      * @param GrupoExameRepository $repositorio
      */
-    public function __construct(
-        GrupoLaboratorioRepository $repositorio,
-        GrupoExameRepository $repositorioGrupoExame = null
-    ) {
-        $this->repositorio = $repositorio;
-        $this->repositorioGrupoExame = $repositorioGrupoExame;
+    public function __construct(private readonly GrupoLaboratorioRepository $repositorio, private readonly ?\ECidade\Saude\Laboratorio\Repository\GrupoExameRepository $repositorioGrupoExame = null)
+    {
     }
 
     /**
@@ -79,9 +71,9 @@ class GrupoLaboratorioService
     public function salvar($parametros)
     {
         $grupoLaboratorio = new GrupoLaboratorio();
-        $grupoLaboratorio->setCodigo(isset($parametros->codigo) ? $parametros->codigo : '');
-        $grupoLaboratorio->setLaboratorio(isset($parametros->laboratorio) ? $parametros->laboratorio : '');
-        $grupoLaboratorio->setGrupo(isset($parametros->grupo) ? $parametros->grupo : '');
+        $grupoLaboratorio->setCodigo($parametros->codigo ?? '');
+        $grupoLaboratorio->setLaboratorio($parametros->laboratorio ?? '');
+        $grupoLaboratorio->setGrupo($parametros->grupo ?? '');
 
         $grupoLaboratorio = $this->repositorio->salvar($grupoLaboratorio);
 

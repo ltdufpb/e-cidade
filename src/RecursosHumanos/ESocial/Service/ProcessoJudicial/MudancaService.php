@@ -39,19 +39,16 @@ class MudancaService
     /**
      * @var
      */
-    private $mudancaAtual;
-
-    /**
-     * @var
-     */
     private $mudancaRepository;
 
     /**
      * MudancaService constructor.
     */
-    public function __construct(MudancaProcesso $mudanca)
+    public function __construct(/**
+     * @var
+     */
+    private readonly MudancaProcesso $mudancaAtual)
     {
-        $this->mudancaAtual = $mudanca;
         $this->mudancaRepository = new MudancaRepository();
     }
 

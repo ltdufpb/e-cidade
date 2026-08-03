@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE pctipocontrato
 class cl_pctipocontrato { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $p70_codtipo = 0; 
-   var $p70_descr = null; 
-   var $p70_tipo = null; 
+   public $p70_codtipo = 0; 
+   public $p70_descr = null; 
+   public $p70_tipo = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  p70_codtipo = int4 = Código do tipo de contrato 
                  p70_descr = varchar(50) = Descrição do tipo de contrato 
                  p70_tipo = varchar(1) = Tipo 
                  ";
    //funcao construtor da classe 
-   function cl_pctipocontrato() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("pctipocontrato"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,7 +119,7 @@ class cl_pctipocontrato {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "tipo do contrato ($this->p70_codtipo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "tipo do contrato já Cadastrado";
@@ -143,12 +143,12 @@ class cl_pctipocontrato {
      $resaco = $this->sql_record($this->sql_query_file($this->p70_codtipo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,6107,'$this->p70_codtipo','I')");
-       $resac = db_query("insert into db_acount values($acount,982,6107,'','".AddSlashes(pg_result($resaco,0,'p70_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,982,6108,'','".AddSlashes(pg_result($resaco,0,'p70_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,982,6109,'','".AddSlashes(pg_result($resaco,0,'p70_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,982,6107,'','".AddSlashes(pg_fetch_result($resaco,0,'p70_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,982,6108,'','".AddSlashes(pg_fetch_result($resaco,0,'p70_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,982,6109,'','".AddSlashes(pg_fetch_result($resaco,0,'p70_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -157,10 +157,10 @@ class cl_pctipocontrato {
       $this->atualizacampos();
      $sql = " update pctipocontrato set ";
      $virgula = "";
-     if(trim($this->p70_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p70_codtipo"])){ 
+     if(trim((string) $this->p70_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p70_codtipo"])){ 
        $sql  .= $virgula." p70_codtipo = $this->p70_codtipo ";
        $virgula = ",";
-       if(trim($this->p70_codtipo) == null ){ 
+       if(trim((string) $this->p70_codtipo) == null ){ 
          $this->erro_sql = " Campo Código do tipo de contrato nao Informado.";
          $this->erro_campo = "p70_codtipo";
          $this->erro_banco = "";
@@ -170,10 +170,10 @@ class cl_pctipocontrato {
          return false;
        }
      }
-     if(trim($this->p70_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p70_descr"])){ 
+     if(trim((string) $this->p70_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p70_descr"])){ 
        $sql  .= $virgula." p70_descr = '$this->p70_descr' ";
        $virgula = ",";
-       if(trim($this->p70_descr) == null ){ 
+       if(trim((string) $this->p70_descr) == null ){ 
          $this->erro_sql = " Campo Descrição do tipo de contrato nao Informado.";
          $this->erro_campo = "p70_descr";
          $this->erro_banco = "";
@@ -183,10 +183,10 @@ class cl_pctipocontrato {
          return false;
        }
      }
-     if(trim($this->p70_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p70_tipo"])){ 
+     if(trim((string) $this->p70_tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p70_tipo"])){ 
        $sql  .= $virgula." p70_tipo = '$this->p70_tipo' ";
        $virgula = ",";
-       if(trim($this->p70_tipo) == null ){ 
+       if(trim((string) $this->p70_tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "p70_tipo";
          $this->erro_banco = "";
@@ -204,15 +204,15 @@ class cl_pctipocontrato {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6107,'$this->p70_codtipo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p70_codtipo"]))
-           $resac = db_query("insert into db_acount values($acount,982,6107,'".AddSlashes(pg_result($resaco,$conresaco,'p70_codtipo'))."','$this->p70_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,982,6107,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p70_codtipo'))."','$this->p70_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p70_descr"]))
-           $resac = db_query("insert into db_acount values($acount,982,6108,'".AddSlashes(pg_result($resaco,$conresaco,'p70_descr'))."','$this->p70_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,982,6108,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p70_descr'))."','$this->p70_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p70_tipo"]))
-           $resac = db_query("insert into db_acount values($acount,982,6109,'".AddSlashes(pg_result($resaco,$conresaco,'p70_tipo'))."','$this->p70_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,982,6109,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p70_tipo'))."','$this->p70_tipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -257,12 +257,12 @@ class cl_pctipocontrato {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,6107,'$p70_codtipo','E')");
-         $resac = db_query("insert into db_acount values($acount,982,6107,'','".AddSlashes(pg_result($resaco,$iresaco,'p70_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,982,6108,'','".AddSlashes(pg_result($resaco,$iresaco,'p70_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,982,6109,'','".AddSlashes(pg_result($resaco,$iresaco,'p70_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,982,6107,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p70_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,982,6108,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p70_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,982,6109,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p70_tipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from pctipocontrato
@@ -322,7 +322,7 @@ class cl_pctipocontrato {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:pctipocontrato";
@@ -336,7 +336,7 @@ class cl_pctipocontrato {
    function sql_query ( $p70_codtipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -357,7 +357,7 @@ class cl_pctipocontrato {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -369,7 +369,7 @@ class cl_pctipocontrato {
    function sql_query_file ( $p70_codtipo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -390,7 +390,7 @@ class cl_pctipocontrato {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

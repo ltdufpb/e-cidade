@@ -9,17 +9,11 @@ use Exception;
 class TipoDocumentoProcessoService
 {
     /**
-     * @var TipoDocumentoProcessoRepository
-     */
-    private $repository;
-        
-    /**
      * TipoDocumentoProcessoService constructor.
      * @param  TipoDocumentoProcessoRepository $repository
      */
-    public function __construct($repository)
+    public function __construct(private $repository)
     {
-        $this->repository = $repository;
     }
  
     /**
@@ -40,7 +34,7 @@ class TipoDocumentoProcessoService
         
         $tipoDocumentoProcesso = new TipoDocumentoProcesso($id);
         $tipoDocumentoProcesso->setDescricao($parametros->descricao);
-        $tipoDocumentoProcesso->setSigla(strtoupper($parametros->sigla));
+        $tipoDocumentoProcesso->setSigla(strtoupper((string) $parametros->sigla));
 
         try {
             $this->repository->save($tipoDocumentoProcesso);

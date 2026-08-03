@@ -29,23 +29,23 @@
 //CLASSE DA ENTIDADE proctransferproc
 class cl_proctransferproc {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $p63_codtran = 0;
-   var $p63_codproc = 0;
+   public $p63_codtran = 0;
+   public $p63_codproc = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  p63_codtran = int4 = Transferencia
                  p63_codproc = int4 = Processo
                  ";
@@ -53,7 +53,7 @@ class cl_proctransferproc {
    function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("proctransferproc");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -106,7 +106,7 @@ class cl_proctransferproc {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = " ($this->p63_codtran."-".$this->p63_codproc) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = " já Cadastrado";
@@ -130,12 +130,12 @@ class cl_proctransferproc {
      $resaco = $this->sql_record($this->sql_query_file($this->p63_codtran,$this->p63_codproc));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,2480,'$this->p63_codtran','I')");
        $resac = db_query("insert into db_acountkey values($acount,2481,'$this->p63_codproc','I')");
-       $resac = db_query("insert into db_acount values($acount,409,2480,'','".AddSlashes(pg_result($resaco,0,'p63_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,409,2481,'','".AddSlashes(pg_result($resaco,0,'p63_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,409,2480,'','".AddSlashes(pg_fetch_result($resaco,0,'p63_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,409,2481,'','".AddSlashes(pg_fetch_result($resaco,0,'p63_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -144,10 +144,10 @@ class cl_proctransferproc {
       $this->atualizacampos();
      $sql = " update proctransferproc set ";
      $virgula = "";
-     if(trim($this->p63_codtran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p63_codtran"])){
+     if(trim((string) $this->p63_codtran)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p63_codtran"])){
        $sql  .= $virgula." p63_codtran = $this->p63_codtran ";
        $virgula = ",";
-       if(trim($this->p63_codtran) == null ){
+       if(trim((string) $this->p63_codtran) == null ){
          $this->erro_sql = " Campo Transferencia nao Informado.";
          $this->erro_campo = "p63_codtran";
          $this->erro_banco = "";
@@ -157,10 +157,10 @@ class cl_proctransferproc {
          return false;
        }
      }
-     if(trim($this->p63_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p63_codproc"])){
+     if(trim((string) $this->p63_codproc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["p63_codproc"])){
        $sql  .= $virgula." p63_codproc = $this->p63_codproc ";
        $virgula = ",";
-       if(trim($this->p63_codproc) == null ){
+       if(trim((string) $this->p63_codproc) == null ){
          $this->erro_sql = " Campo Processo nao Informado.";
          $this->erro_campo = "p63_codproc";
          $this->erro_banco = "";
@@ -181,14 +181,14 @@ class cl_proctransferproc {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2480,'$this->p63_codtran','A')");
          $resac = db_query("insert into db_acountkey values($acount,2481,'$this->p63_codproc','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p63_codtran"]))
-           $resac = db_query("insert into db_acount values($acount,409,2480,'".AddSlashes(pg_result($resaco,$conresaco,'p63_codtran'))."','$this->p63_codtran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,409,2480,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p63_codtran'))."','$this->p63_codtran',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["p63_codproc"]))
-           $resac = db_query("insert into db_acount values($acount,409,2481,'".AddSlashes(pg_result($resaco,$conresaco,'p63_codproc'))."','$this->p63_codproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,409,2481,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'p63_codproc'))."','$this->p63_codproc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -233,12 +233,12 @@ class cl_proctransferproc {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,2480,'$p63_codtran','E')");
          $resac = db_query("insert into db_acountkey values($acount,2481,'$p63_codproc','E')");
-         $resac = db_query("insert into db_acount values($acount,409,2480,'','".AddSlashes(pg_result($resaco,$iresaco,'p63_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,409,2481,'','".AddSlashes(pg_result($resaco,$iresaco,'p63_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,409,2480,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p63_codtran'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,409,2481,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'p63_codproc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from proctransferproc
@@ -304,7 +304,7 @@ class cl_proctransferproc {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:proctransferproc";
@@ -358,7 +358,7 @@ class cl_proctransferproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -406,7 +406,7 @@ class cl_proctransferproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -447,7 +447,7 @@ class cl_proctransferproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -496,7 +496,7 @@ class cl_proctransferproc {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -555,7 +555,7 @@ class cl_proctransferproc {
         $sql .= $sql2;
         if($ordem != null ){
         $sql .= " order by ";
-        $campos_sql = explode("#",$ordem);
+        $campos_sql = explode("#",(string) $ordem);
         $virgula = "";
         for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

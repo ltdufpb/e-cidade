@@ -33,7 +33,7 @@
 
   <script>
 
-    <?php if(pg_numrows($rsInstituicao) > 0):
+    <?php if(pg_num_rows($rsInstituicao) > 0):
       db_fieldsmemory($rsInstituicao,0); ?>
 
       parent.topo.document.getElementById('infoConfig').innerHTML = '<strong><?php echo $nome; ?></strong> (<?php echo $ender; ?> \| '
@@ -50,8 +50,8 @@
 
     function js_status_area(){
       parent.bstatus.document.getElementById('st').innerHTML = '&nbsp;&nbsp;Selecione a Área clicando na figura ou no nome.';
-      parent.bstatus.document.getElementById('dtatual').innerHTML  = '<?=(isset($HTTP_SESSION_VARS["DB_datausu"])?date("d/m/Y",db_getsession("DB_datausu")):date("d/m/Y"))  ?>';
-      parent.bstatus.document.getElementById('dtanousu').innerHTML = '<?=(isset($HTTP_SESSION_VARS["DB_anousu"])?db_getsession("DB_anousu"):date("Y"))  ?>';
+      parent.bstatus.document.getElementById('dtatual').innerHTML  = '<?=(isset($_SESSION["DB_datausu"])?date("d/m/Y",db_getsession("DB_datausu")):date("d/m/Y"))  ?>';
+      parent.bstatus.document.getElementById('dtanousu').innerHTML = '<?=(isset($_SESSION["DB_anousu"])?db_getsession("DB_anousu"):date("Y"))  ?>';
     }
   </script>
   <style type="text/css">
@@ -103,11 +103,11 @@
                           <tr>
 
                             <?php
-                              for($i = 0;$i < pg_numrows($rsArea);$i++) {
+                              for($i = 0;$i < pg_num_rows($rsArea);$i++) {
 
                                 echo "<a href=\"corpo.php?".base64_encode("instit=".db_getsession("DB_instit")."&area_de_acesso="
-                                     .pg_result($rsArea,$i,"at26_sequencial"))."\"><img src=\"skins/img.php?file="
-                                     .trim(pg_result($rsArea,$i,"at25_figura"))."\" alt=\"".pg_result($rsArea,$i,"at25_descr")
+                                     .pg_fetch_result($rsArea,$i,"at26_sequencial"))."\"><img src=\"skins/img.php?file="
+                                     .trim(pg_fetch_result($rsArea,$i,"at25_figura"))."\" alt=\"".pg_fetch_result($rsArea,$i,"at25_descr")
                                      ."\" border=\"0\" width=\"125\" height=\"125\"></a>";
 
                                 if( (($i+1) % 3) == 0 && $i > 1)

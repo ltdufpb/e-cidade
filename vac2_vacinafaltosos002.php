@@ -31,8 +31,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_stdlibwebseller.php"));
 
 $oDaoVacAplica  = db_utils::getdao('vac_aplica');
-$dInicioPeriodo = implode('-',array_reverse(explode("/",$dDataIni)));
-$dFimPeriodo    = implode('-',array_reverse(explode("/",$dDataFim)));
+$dInicioPeriodo = implode('-',array_reverse(explode("/",(string) $dDataIni)));
+$dFimPeriodo    = implode('-',array_reverse(explode("/",(string) $dDataFim)));
 $sFaixainimesd  = (date("m") - $sFaixainimes) > 0 ?  (date("m") - $sFaixainimes) : (12  - date("m") - $sFaixainimes);
 $sFaixafimmesd  = (date("m") - $sFaixafimmes) > 0 ?  (date("m") - $sFaixafimmes) : (12  - date("m") - $sFaixafimmes);
 $dFaixaFim      = (date("Y")- $sFaixainiano)."-".$sFaixainimesd."-01";
@@ -188,7 +188,7 @@ for ($iX = 0; $iX < $oDaoVacAplica->numrows; $iX++) {
     }
     if ($iGrupo == 2) {
       $oPdf->cell(210, 4,"Nome: ".$oDados->z01_v_nome, 1, 0, "L", 1);
-      $oPdf->cell(55,4,"Dt. Nasc.: ".implode('/',array_reverse(explode("-",$oDados->z01_d_nasc))), 1, 1, "L", 1);
+      $oPdf->cell(55,4,"Dt. Nasc.: ".implode('/',array_reverse(explode("-",(string) $oDados->z01_d_nasc))), 1, 1, "L", 1);
     }
     $oPdf->cell(100, 4, "Nome", 1, 0, "L", 1);
     if ($iGrupo == 2) {
@@ -219,13 +219,13 @@ for ($iX = 0; $iX < $oDaoVacAplica->numrows; $iX++) {
     
   } else {
     
-    $oDados->z01_d_nasc = implode('/',array_reverse(explode("-",$oDados->z01_d_nasc)));
+    $oDados->z01_d_nasc = implode('/',array_reverse(explode("-",(string) $oDados->z01_d_nasc)));
     $oPdf->cell(30, 4, $oDados->z01_d_nasc, 1, 0, "C", 0);
    
   }
-  $oPdf->cell(30, 4, implode('/',array_reverse(explode("-",$oDados->ultimaaplicacao))), 1, 0, "C", 0);
+  $oPdf->cell(30, 4, implode('/',array_reverse(explode("-",(string) $oDados->ultimaaplicacao))), 1, 0, "C", 0);
   $oPdf->cell(30, 4, $oDados->vc03_c_descr, 1, 0, "L", 0);
-  $oPdf->cell(30, 4, implode('/',array_reverse(explode("-",$oDados->dproximadose))), 1, 0, "C", 0);
+  $oPdf->cell(30, 4, implode('/',array_reverse(explode("-",(string) $oDados->dproximadose))), 1, 0, "C", 0);
   $oPdf->cell(25, 4, $oDados->diasatraso >= 0 ? $oDados->diasatraso : ($oDados->diasatraso * -1), 1, 1, "C", 0);
   $iTotalVacina++;
   $iTotalBairro++;

@@ -40,7 +40,7 @@ $oJson = new services_json();
 // transforma o JSON javascript para um objeto em PHP
 $oParam   = $oJson->decode(str_replace("\\","",$_POST["json"]));
 
-if (is_numeric(trim($oParam->option))) {
+if (is_numeric(trim((string) $oParam->option))) {
   $rsOption = $clprocedarretipo->sql_record($clprocedarretipo->sql_query_file(
 	                                           null,
 																						"v06_arretipo",
@@ -50,10 +50,10 @@ if (is_numeric(trim($oParam->option))) {
 
   if ($clprocedarretipo->numrows == 1) {																				 																 				 
     $oResultOption = db_utils::fieldsMemory($rsOption, 0);
-	  	$aResp = array('option'=>$oResultOption->v06_arretipo);
+	  	$aResp = ['option'=>$oResultOption->v06_arretipo];
 		echo $oJson->encode($aResp);
 	} else {
-		$aResp = array('option'=>'null');
+		$aResp = ['option'=>'null'];
 		echo $oJson->encode($aResp);
 	}
 }

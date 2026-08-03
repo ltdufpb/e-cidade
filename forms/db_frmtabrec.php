@@ -84,7 +84,7 @@ if ($db_opcao == 1) {
                     $sql = $cltabtiporec->sql_query(null, "*", "k116_sequencial", null);
                     $rsTabRecTipo = $cltabtiporec->sql_record($sql);
                     $iTabRecTipo = pg_num_rows($rsTabRecTipo);
-                    $aTabRecTipo = array("0" => "Nenhum");
+                    $aTabRecTipo = ["0" => "Nenhum"];
                     if ($iTabRecTipo > 0) {
                         for ($x = 0; $x < $iTabRecTipo; $x++) {
                             db_fieldsmemory($rsTabRecTipo, $x);
@@ -101,7 +101,7 @@ if ($db_opcao == 1) {
                 </td>
                 <td>
                     <?php
-                    $arr = array("N" => "Nenhum", "O" => "Orçamentária", "E" => "Extra-orçamentária");
+                    $arr = ["N" => "Nenhum", "O" => "Orçamentária", "E" => "Extra-orçamentária"];
                     db_select('k02_tipo', $arr, true, $db_opcao, " onchange='js_param_tipgruprec(false);'");
                     ?>
                 </td>
@@ -232,16 +232,16 @@ if ($db_opcao == 1) {
                         if (@$k02_limite != "") {
                             // Note o uso de ===.  Simples == não funcionaria como esperado
                             // por causa da posição de 'a' é 0 (primeiro) caractere.
-                            $pos = strpos($k02_limite, "-");
+                            $pos = strpos((string) $k02_limite, "-");
                             if ($pos == true) {
 
-                                $limite = split('-', $k02_limite);
+                                $limite = preg_split('#\-#m', (string) $k02_limite);
                                 $k02_limite_dia = $limite[2];
                                 $k02_limite_mes = $limite[1];
                                 $k02_limite_ano = $limite[0];
                             } else {
 
-                                $limite = split('/', $k02_limite);
+                                $limite = preg_split('#\/#m', (string) $k02_limite);
                                 $k02_limite_dia = $limite[0];
                                 $k02_limite_mes = $limite[1];
                                 $k02_limite_ano = $limite[2];
@@ -640,7 +640,7 @@ if ($db_opcao == 1) {
         (window.CurrentWindow || parent.CurrentWindow).corpo.iframe_tabrec.db_iframe_tabrec.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+codigo";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+codigo";
         }
         ?>
     }

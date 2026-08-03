@@ -18,14 +18,14 @@ class Json implements ConsultaInterface
      *
      * @var array
      */
-    protected $dados = array();
+    protected $dados = [];
 
     /**
      * Colunas da consulta
      *
      * @var array
      */
-    protected $colunas = array();
+    protected $colunas = [];
 
 
     /**
@@ -87,7 +87,7 @@ class Json implements ConsultaInterface
         $retorno = new \stdClass();
         $retorno->colunas = $this->getCabecalho();
 
-        $registros = array();
+        $registros = [];
         foreach ($this->dados as $dados) {
 
             if (empty($registros[$dados->estrutural])) {
@@ -96,7 +96,7 @@ class Json implements ConsultaInterface
                 $conta->estrutural = db_formatar($dados->estrutural, 'sistema');
                 $conta->nome_conta = $dados->nome_conta;
                 $conta->reduzido = $dados->reduzido;
-                $conta->movimentacoes = array();
+                $conta->movimentacoes = [];
                 $registros[$dados->estrutural] = $conta;
             }
             $conta = $registros[$dados->estrutural];
@@ -105,7 +105,7 @@ class Json implements ConsultaInterface
                 $movimentacao->documento = $dados->documento;
             }
             $atributos = $dados->lista_atributos;
-            $listaDeAtributosParaMostrar = array();
+            $listaDeAtributosParaMostrar = [];
             foreach ($atributos as $sigla => $atributo) {
                 if (in_array($sigla, $this->colunas)) {
                     $stringSigla = $mostrarSigla ? "{$sigla}: {$atributo}" : $atributo;
@@ -135,19 +135,19 @@ class Json implements ConsultaInterface
     protected function getCabecalho()
     {
 
-        $campos = array(
-            (object)array("nome" => "estrutural", "label" => "estrutural"),
-            (object)array("nome" => "nome_conta", "label" => "Conta"),
-        );
+        $campos = [
+            (object)["nome" => "estrutural", "label" => "estrutural"],
+            (object)["nome" => "nome_conta", "label" => "Conta"],
+        ];
         if ($this->agruparPorDocumento) {
-            $campos[] = (object)array("nome" => "documento", "label" => "Documento");
+            $campos[] = (object)["nome" => "documento", "label" => "Documento"];
         }
-        $camposValores = array(
-            (object)array("nome" => "saldo_anterior", "label" => "Saldo Anterior"),
-            (object)array("nome" => "valor_credito", "label" => "Crédito"),
-            (object)array("nome" => "valor_debito", "label" => "Débito"),
-            (object)array("nome" => "valor_debito", "label" => "Saldo Final"),
-        );
+        $camposValores = [
+            (object)["nome" => "saldo_anterior", "label" => "Saldo Anterior"],
+            (object)["nome" => "valor_credito", "label" => "Crédito"],
+            (object)["nome" => "valor_debito", "label" => "Débito"],
+            (object)["nome" => "valor_debito", "label" => "Saldo Final"],
+        ];
 
         return array_merge($campos, $camposValores);
     }

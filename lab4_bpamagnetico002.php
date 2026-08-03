@@ -43,7 +43,7 @@
 
     $lErro             = false;
     $objValida         = new stdClass();
-    $objValida->valida = array(array(),array(),array());
+    $objValida->valida = [[],[],[]];
     for ($iIndice = 0; $iIndice < $oDados->iLinhas; $iIndice ++) {
 
       $oProducao = db_utils::fieldsMemory($rsProducao,$iIndice) or die("fieldsmemory da Produçao! ");
@@ -53,7 +53,7 @@
       $oProducao->prd_fim = "";
       if ($oDados->sTipo == "01") {
 
-        $oProducao->prd_cmp = $oDados->compano.str_pad ($oDados->compmes,2, "0", STR_PAD_LEFT );
+        $oProducao->prd_cmp = $oDados->compano.str_pad ((string) $oDados->compmes,2, "0", STR_PAD_LEFT );
         $oProducao->prd_cnspac = str_pad (' ',15, ' ', STR_PAD_LEFT );
         $oProducao->prd_sexo   = str_pad (' ',2, ' ', STR_PAD_LEFT );
         $oProducao->prd_ibge   = str_pad (' ',6, ' ', STR_PAD_LEFT );

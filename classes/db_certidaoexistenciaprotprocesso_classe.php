@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE certidaoexistenciaprotprocesso
 class cl_certidaoexistenciaprotprocesso { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j134_sequencial = 0; 
-   var $j134_certidaoexistencia = 0; 
-   var $j134_protprocesso = 0; 
+   public $j134_sequencial = 0; 
+   public $j134_certidaoexistencia = 0; 
+   public $j134_protprocesso = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j134_sequencial = int4 = Sequencial 
                  j134_certidaoexistencia = int4 = Certidão de existência 
                  j134_protprocesso = int4 = Processo certidão existência 
                  ";
    //funcao construtor da classe 
-   function cl_certidaoexistenciaprotprocesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("certidaoexistenciaprotprocesso"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_certidaoexistenciaprotprocesso {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j134_sequencial = pg_result($result,0,0); 
+       $this->j134_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from certidaoexistenciaprotprocesso_j134_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j134_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j134_sequencial)){
          $this->erro_sql = " Campo j134_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_certidaoexistenciaprotprocesso {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Processo certidão existência ($this->j134_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Processo certidão existência já Cadastrado";
@@ -166,12 +166,12 @@ class cl_certidaoexistenciaprotprocesso {
      $resaco = $this->sql_record($this->sql_query_file($this->j134_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,18856,'$this->j134_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3343,18856,'','".AddSlashes(pg_result($resaco,0,'j134_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3343,18857,'','".AddSlashes(pg_result($resaco,0,'j134_certidaoexistencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3343,18858,'','".AddSlashes(pg_result($resaco,0,'j134_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3343,18856,'','".AddSlashes(pg_fetch_result($resaco,0,'j134_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3343,18857,'','".AddSlashes(pg_fetch_result($resaco,0,'j134_certidaoexistencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3343,18858,'','".AddSlashes(pg_fetch_result($resaco,0,'j134_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_certidaoexistenciaprotprocesso {
       $this->atualizacampos();
      $sql = " update certidaoexistenciaprotprocesso set ";
      $virgula = "";
-     if(trim($this->j134_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j134_sequencial"])){ 
+     if(trim((string) $this->j134_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j134_sequencial"])){ 
        $sql  .= $virgula." j134_sequencial = $this->j134_sequencial ";
        $virgula = ",";
-       if(trim($this->j134_sequencial) == null ){ 
+       if(trim((string) $this->j134_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "j134_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_certidaoexistenciaprotprocesso {
          return false;
        }
      }
-     if(trim($this->j134_certidaoexistencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j134_certidaoexistencia"])){ 
+     if(trim((string) $this->j134_certidaoexistencia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j134_certidaoexistencia"])){ 
        $sql  .= $virgula." j134_certidaoexistencia = $this->j134_certidaoexistencia ";
        $virgula = ",";
-       if(trim($this->j134_certidaoexistencia) == null ){ 
+       if(trim((string) $this->j134_certidaoexistencia) == null ){ 
          $this->erro_sql = " Campo Certidão de existência nao Informado.";
          $this->erro_campo = "j134_certidaoexistencia";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_certidaoexistenciaprotprocesso {
          return false;
        }
      }
-     if(trim($this->j134_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j134_protprocesso"])){ 
+     if(trim((string) $this->j134_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j134_protprocesso"])){ 
        $sql  .= $virgula." j134_protprocesso = $this->j134_protprocesso ";
        $virgula = ",";
-       if(trim($this->j134_protprocesso) == null ){ 
+       if(trim((string) $this->j134_protprocesso) == null ){ 
          $this->erro_sql = " Campo Processo certidão existência nao Informado.";
          $this->erro_campo = "j134_protprocesso";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_certidaoexistenciaprotprocesso {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18856,'$this->j134_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j134_sequencial"]) || $this->j134_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3343,18856,'".AddSlashes(pg_result($resaco,$conresaco,'j134_sequencial'))."','$this->j134_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3343,18856,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j134_sequencial'))."','$this->j134_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j134_certidaoexistencia"]) || $this->j134_certidaoexistencia != "")
-           $resac = db_query("insert into db_acount values($acount,3343,18857,'".AddSlashes(pg_result($resaco,$conresaco,'j134_certidaoexistencia'))."','$this->j134_certidaoexistencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3343,18857,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j134_certidaoexistencia'))."','$this->j134_certidaoexistencia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j134_protprocesso"]) || $this->j134_protprocesso != "")
-           $resac = db_query("insert into db_acount values($acount,3343,18858,'".AddSlashes(pg_result($resaco,$conresaco,'j134_protprocesso'))."','$this->j134_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3343,18858,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j134_protprocesso'))."','$this->j134_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_certidaoexistenciaprotprocesso {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,18856,'$j134_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3343,18856,'','".AddSlashes(pg_result($resaco,$iresaco,'j134_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3343,18857,'','".AddSlashes(pg_result($resaco,$iresaco,'j134_certidaoexistencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3343,18858,'','".AddSlashes(pg_result($resaco,$iresaco,'j134_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3343,18856,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j134_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3343,18857,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j134_certidaoexistencia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3343,18858,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j134_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from certidaoexistenciaprotprocesso
@@ -345,7 +345,7 @@ class cl_certidaoexistenciaprotprocesso {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:certidaoexistenciaprotprocesso";
@@ -360,7 +360,7 @@ class cl_certidaoexistenciaprotprocesso {
    function sql_query ( $j134_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -391,7 +391,7 @@ class cl_certidaoexistenciaprotprocesso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -404,7 +404,7 @@ class cl_certidaoexistenciaprotprocesso {
    function sql_query_file ( $j134_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -425,7 +425,7 @@ class cl_certidaoexistenciaprotprocesso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

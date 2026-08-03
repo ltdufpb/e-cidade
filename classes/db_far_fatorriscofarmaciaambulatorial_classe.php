@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE far_fatorriscofarmaciaambulatorial
 class cl_far_fatorriscofarmaciaambulatorial { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $fa45_i_codigo = 0; 
-   var $fa45_i_fatorriscoambulatorial = 0; 
-   var $fa45_i_fatorriscofarmacia = 0; 
+   public $fa45_i_codigo = 0; 
+   public $fa45_i_fatorriscoambulatorial = 0; 
+   public $fa45_i_fatorriscofarmacia = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  fa45_i_codigo = int4 = Código 
                  fa45_i_fatorriscoambulatorial = int4 = Fator de risco ambulatorial 
                  fa45_i_fatorriscofarmacia = int4 = Fator de risco farmácia 
                  ";
    //funcao construtor da classe 
-   function cl_far_fatorriscofarmaciaambulatorial() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("far_fatorriscofarmaciaambulatorial"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_far_fatorriscofarmaciaambulatorial {
          $this->erro_status = "0";
          return false; 
        }
-       $this->fa45_i_codigo = pg_result($result,0,0); 
+       $this->fa45_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from far_fatorriscofarmaciaambulatorial_fa45_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa45_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa45_i_codigo)){
          $this->erro_sql = " Campo fa45_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_far_fatorriscofarmaciaambulatorial {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "far_fatorriscofarmaciaambulatorial ($this->fa45_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "far_fatorriscofarmaciaambulatorial já Cadastrado";
@@ -166,12 +166,12 @@ class cl_far_fatorriscofarmaciaambulatorial {
      $resaco = $this->sql_record($this->sql_query_file($this->fa45_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17236,'$this->fa45_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,3047,17236,'','".AddSlashes(pg_result($resaco,0,'fa45_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3047,17237,'','".AddSlashes(pg_result($resaco,0,'fa45_i_fatorriscoambulatorial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3047,17238,'','".AddSlashes(pg_result($resaco,0,'fa45_i_fatorriscofarmacia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3047,17236,'','".AddSlashes(pg_fetch_result($resaco,0,'fa45_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3047,17237,'','".AddSlashes(pg_fetch_result($resaco,0,'fa45_i_fatorriscoambulatorial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3047,17238,'','".AddSlashes(pg_fetch_result($resaco,0,'fa45_i_fatorriscofarmacia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_far_fatorriscofarmaciaambulatorial {
       $this->atualizacampos();
      $sql = " update far_fatorriscofarmaciaambulatorial set ";
      $virgula = "";
-     if(trim($this->fa45_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa45_i_codigo"])){ 
+     if(trim((string) $this->fa45_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa45_i_codigo"])){ 
        $sql  .= $virgula." fa45_i_codigo = $this->fa45_i_codigo ";
        $virgula = ",";
-       if(trim($this->fa45_i_codigo) == null ){ 
+       if(trim((string) $this->fa45_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "fa45_i_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_far_fatorriscofarmaciaambulatorial {
          return false;
        }
      }
-     if(trim($this->fa45_i_fatorriscoambulatorial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa45_i_fatorriscoambulatorial"])){ 
+     if(trim((string) $this->fa45_i_fatorriscoambulatorial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa45_i_fatorriscoambulatorial"])){ 
        $sql  .= $virgula." fa45_i_fatorriscoambulatorial = $this->fa45_i_fatorriscoambulatorial ";
        $virgula = ",";
-       if(trim($this->fa45_i_fatorriscoambulatorial) == null ){ 
+       if(trim((string) $this->fa45_i_fatorriscoambulatorial) == null ){ 
          $this->erro_sql = " Campo Fator de risco ambulatorial nao Informado.";
          $this->erro_campo = "fa45_i_fatorriscoambulatorial";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_far_fatorriscofarmaciaambulatorial {
          return false;
        }
      }
-     if(trim($this->fa45_i_fatorriscofarmacia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa45_i_fatorriscofarmacia"])){ 
+     if(trim((string) $this->fa45_i_fatorriscofarmacia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa45_i_fatorriscofarmacia"])){ 
        $sql  .= $virgula." fa45_i_fatorriscofarmacia = $this->fa45_i_fatorriscofarmacia ";
        $virgula = ",";
-       if(trim($this->fa45_i_fatorriscofarmacia) == null ){ 
+       if(trim((string) $this->fa45_i_fatorriscofarmacia) == null ){ 
          $this->erro_sql = " Campo Fator de risco farmácia nao Informado.";
          $this->erro_campo = "fa45_i_fatorriscofarmacia";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_far_fatorriscofarmaciaambulatorial {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17236,'$this->fa45_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa45_i_codigo"]) || $this->fa45_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3047,17236,'".AddSlashes(pg_result($resaco,$conresaco,'fa45_i_codigo'))."','$this->fa45_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3047,17236,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa45_i_codigo'))."','$this->fa45_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa45_i_fatorriscoambulatorial"]) || $this->fa45_i_fatorriscoambulatorial != "")
-           $resac = db_query("insert into db_acount values($acount,3047,17237,'".AddSlashes(pg_result($resaco,$conresaco,'fa45_i_fatorriscoambulatorial'))."','$this->fa45_i_fatorriscoambulatorial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3047,17237,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa45_i_fatorriscoambulatorial'))."','$this->fa45_i_fatorriscoambulatorial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["fa45_i_fatorriscofarmacia"]) || $this->fa45_i_fatorriscofarmacia != "")
-           $resac = db_query("insert into db_acount values($acount,3047,17238,'".AddSlashes(pg_result($resaco,$conresaco,'fa45_i_fatorriscofarmacia'))."','$this->fa45_i_fatorriscofarmacia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3047,17238,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa45_i_fatorriscofarmacia'))."','$this->fa45_i_fatorriscofarmacia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_far_fatorriscofarmaciaambulatorial {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17236,'$fa45_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,3047,17236,'','".AddSlashes(pg_result($resaco,$iresaco,'fa45_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3047,17237,'','".AddSlashes(pg_result($resaco,$iresaco,'fa45_i_fatorriscoambulatorial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3047,17238,'','".AddSlashes(pg_result($resaco,$iresaco,'fa45_i_fatorriscofarmacia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3047,17236,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa45_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3047,17237,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa45_i_fatorriscoambulatorial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3047,17238,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa45_i_fatorriscofarmacia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from far_fatorriscofarmaciaambulatorial
@@ -345,7 +345,7 @@ class cl_far_fatorriscofarmaciaambulatorial {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:far_fatorriscofarmaciaambulatorial";
@@ -360,7 +360,7 @@ class cl_far_fatorriscofarmaciaambulatorial {
    function sql_query ( $fa45_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_far_fatorriscofarmaciaambulatorial {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -396,7 +396,7 @@ class cl_far_fatorriscofarmaciaambulatorial {
    function sql_query_file ( $fa45_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -417,7 +417,7 @@ class cl_far_fatorriscofarmaciaambulatorial {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

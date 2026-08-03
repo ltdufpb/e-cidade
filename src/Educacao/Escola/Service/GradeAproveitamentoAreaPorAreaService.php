@@ -116,12 +116,7 @@ class GradeAproveitamentoAreaPorAreaService
         }
 
         $avaliacoes = $areaMapper->getAvaliacoes();
-        usort($avaliacoes, function ($x, $y) {
-            if ($x->getOrdem() == $y->getOrdem()) {
-                return 0;
-            }
-                return ( ( $x->getOrdem() < $y->getOrdem() ) ? -1 : 1 );
-        });
+        usort($avaliacoes, fn($x, $y) => $x->getOrdem() <=> $y->getOrdem());
 
         $areaMapper->setAvaliacoes($avaliacoes);
 
@@ -129,7 +124,7 @@ class GradeAproveitamentoAreaPorAreaService
         $resultadoMapper->setAreaResultado($diarioArea->getResultado()->getAreaProcedimentoResultado());
         $resultadoMapper->setAvaliacao($this->getAvaliacao($diarioArea->getResultado()));
         $resultadoMapper->setAtingiuMinimo($this->atingiuMinimo($diarioArea->getResultado()));
-        $resultadoMapper->isAmparado($diarioArea->getResultado()->isAmparado());
+        $resultadoMapper->isAmparado();
 
         $resultadoAvaliacao = $diarioArea->getResultado()->getResultadoAvaliacao();
         $resultadoMapper->setResultadoAvaliacao($resultadoAvaliacao);

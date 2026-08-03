@@ -9,7 +9,7 @@ class Trace {
   /**
    * @var array
    */
-  protected $data = array();
+  protected $data = [];
 
   public function __construct($exception = null) {
 
@@ -47,7 +47,7 @@ class Trace {
   public function getSanitizedData() {
 
     $data = $this->data;
-    array_walk_recursive($data, array($this, 'sanitize'));
+    array_walk_recursive($data, $this->sanitize(...));
     return $data;
   }
 
@@ -60,7 +60,7 @@ class Trace {
     }   
 
     if ($type == 'object') {
-      return $value = get_class($value);
+      return $value = $value::class;
     } 
 
     return;

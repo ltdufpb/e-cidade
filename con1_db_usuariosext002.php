@@ -82,7 +82,7 @@ if (isset($alterar)) {
       db_fieldsmemory($res_instit,0);
     }
 
-    if (strlen(trim($url)) == 0){
+    if (strlen(trim((string) $url)) == 0){
       $url = null;
     }
 
@@ -134,7 +134,7 @@ if (isset($alterar)) {
 
 if (isset($alterar)) {
 
-  if (trim(@$erro_msg)!="") {
+  if (trim((string) @$erro_msg)!="") {
        db_msgbox($erro_msg);
   }
   if ($sqlerro==true) {

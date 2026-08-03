@@ -53,7 +53,7 @@ $sSqlDepartamentos .= "order by 1 ";
 $rsDepartamentos = db_query($sSqlDepartamentos);
 
 $aDadosDepartamentos = db_utils::getCollectionByRecord($rsDepartamentos);
-$aDepartamentos = array();
+$aDepartamentos = [];
 
 foreach ($aDadosDepartamentos as $oDadosDepartamento) {
   $aDepartamentos[$oDadosDepartamento->coddepto] = $oDadosDepartamento->coddepto.' - '.$oDadosDepartamento->descrdepto;
@@ -188,7 +188,7 @@ if ( db_getsession("DB_premenus", false) != null  ) {
         <tr>
           <td>
             <?php
-              $sFuncaoRetornar = isset( $sFuncaoRetornar ) ? $sFuncaoRetornar : "";
+              $sFuncaoRetornar ??= "";
             ?>
             <input type="button"
                    class="field-size-max"

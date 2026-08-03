@@ -55,7 +55,7 @@ class FiltroAvaliacao {
    * Array com as avaliacoes encontradas pelo filro
    * @var array
    */
-  private $aAvaliacoes = array();
+  private $aAvaliacoes = [];
 
   /**
    * Controle de utilizacao de subfiltros E.g método E()
@@ -164,10 +164,10 @@ class FiltroAvaliacao {
    * @param array $aRespostaDissertativas Respostas dissertativas que a pergunta pode ter
    * @return FiltroAvaliacao
    */
-  public function comRespostas(array $aRespostas, array $aRespostaDissertativas = null) {
+  public function comRespostas(array $aRespostas, ?array $aRespostaDissertativas = null) {
 
-    $aCodigoRespostas   = array();
-    $aAvaliacoesRetorno = array();
+    $aCodigoRespostas   = [];
+    $aAvaliacoesRetorno = [];
     foreach ($this->oPerguntaSelecionada->getRespostas() as $oResposta) {
 
       if (in_array($oResposta->identificador, $aRespostas)) {
@@ -175,7 +175,7 @@ class FiltroAvaliacao {
       }
     }
 
-    $aAvaliacoes = array();
+    $aAvaliacoes = [];
     if (!$this->lSubFiltro) {
       foreach ($aCodigoRespostas as $iCodigoResposta) {
        $aAvaliacoes =  array_merge($aAvaliacoes,
@@ -224,9 +224,9 @@ class FiltroAvaliacao {
    * @param array  $aRespostas array com as respostas
    * @return array:Avaliacao
    */
-  protected function aplicarFiltroAnd(array $aRespostas, array $aRespostasDissertativas = null) {
+  protected function aplicarFiltroAnd(array $aRespostas, ?array $aRespostasDissertativas = null) {
 
-    $aAvaliacoes  = array();
+    $aAvaliacoes  = [];
     foreach ($this->aAvaliacoes as $oAvaliacao) {
 
       foreach ($oAvaliacao->getPerguntas($this->oGrupoAvaliacao->getGrupo()) as $oPergunta) {

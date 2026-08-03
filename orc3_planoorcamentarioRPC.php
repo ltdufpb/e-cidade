@@ -23,7 +23,7 @@ try {
 
         case 'pesquisar':
 
-            $camposObrigatorios = array();
+            $camposObrigatorios = [];
             if (empty($parametro->data_inicial)) {
                 $camposObrigatorios[] = 'data inicial';
             }
@@ -97,12 +97,12 @@ SQLBUSCA;
 
             $totalRegistros = pg_num_rows($buscaDotacoes);
 
-            $retorno->planos_orcamentarios = array();
+            $retorno->planos_orcamentarios = [];
             for ($row = 0; $row < $totalRegistros; $row++) {
 
                 $stdInformacao = db_utils::fieldsMemory($buscaDotacoes, $row);
 
-                $dados = (object)array(
+                $dados = (object)[
                     'codigo_dotacao' => $stdInformacao->codigo_dotacao,
                     'estrutural_dotacao' => $stdInformacao->estrutural_dotacao,
                     'descricao_plano' => $stdInformacao->descricao_plano,
@@ -113,7 +113,7 @@ SQLBUSCA;
                     'saldo_final' => (($stdInformacao->previsto + $stdInformacao->suplementacoes_reducoes) - $stdInformacao->movimentacoes),
                     'acao' => $stdInformacao->acao,
                     'linha_pacto' => $stdInformacao->linha_pacto,
-                );
+                ];
                 $retorno->planos_orcamentarios[] = $dados;
             }
 
@@ -121,12 +121,12 @@ SQLBUSCA;
 
         case 'getDetalhamentoLinhaPacto' :
 
-            $where = implode(' and ', array(
+            $where = implode(' and ', [
                 'o58_anousu = '.$anoSessao,
                 'o58_instit = '.$instituicaoSessao,
                 'o58_projativ = '.$parametro->acao,
                 'c07_sequencial = '.$parametro->linha,
-            ));
+            ]);
 
             $campos = 'o55_descr , o55_projativ';
             $sqlDadosAcao = cl_linhaspacto::getDadosLinhaPacto($campos, $where);
@@ -136,13 +136,13 @@ SQLBUSCA;
             }
 
             $stdDadosAcao = db_utils::fieldsMemory($buscaInformacoes, 0);
-            $retorno->dados_acao = (object)array(
+            $retorno->dados_acao = (object)[
                 'descricao' => "{$stdDadosAcao->o55_projativ} - {$stdDadosAcao->o55_descr}",
                 'valor_previsto' => $stdDadosAcao->previsto,
                 'valor_alterado_remanejado' => $stdDadosAcao->suplementacoes_reducoes,
                 'valor_realizado' => $stdDadosAcao->movimentacoes,
                 'saldo_final' => (($stdDadosAcao->previsto + $stdDadosAcao->suplementacoes_reducoes) - $stdDadosAcao->movimentacoes)
-            );
+            ];
 
 
             $camposSecretaria = "o41_orgao, o41_unidade, o41_descr";
@@ -152,19 +152,19 @@ SQLBUSCA;
                 throw new Exception("Não foi possível executar a consulta.");
             }
             $totalRegistros = pg_num_rows($buscaInformacoesSecretaria);
-            $secretariasRetorno = array();
+            $secretariasRetorno = [];
             for ($row = 0; $row < $totalRegistros; $row++) {
 
                 $stdLinha = db_utils::fieldsMemory($buscaInformacoesSecretaria, $row);
 
-                $stdLinha->o41_unidade = str_pad($stdLinha->o41_unidade, 2, '0', STR_PAD_LEFT);
-                $secretariasRetorno[] = (object)array(
+                $stdLinha->o41_unidade = str_pad((string) $stdLinha->o41_unidade, 2, '0', STR_PAD_LEFT);
+                $secretariasRetorno[] = (object)[
                     'descricao' => "{$stdLinha->o41_orgao}.{$stdLinha->o41_unidade} - {$stdLinha->o41_descr}",
                     'valor_previsto' => $stdLinha->previsto,
                     'valor_alterado_remanejado' => $stdLinha->suplementacoes_reducoes,
                     'valor_realizado' => $stdLinha->movimentacoes,
                     'saldo_final' => (($stdLinha->previsto + $stdLinha->suplementacoes_reducoes) - $stdLinha->movimentacoes)
-                );
+                ];
             }
             $retorno->secretarias = $secretariasRetorno;
 

@@ -36,8 +36,8 @@ include(modification("classes/db_db_syscadproced_classe.php"));
 include(modification("classes/db_db_versao_classe.php"));
 include(modification("classes/db_db_usuclientes_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clrotulo							= new rotulocampo;
 $clrotulo->label('at40_sequencial');
@@ -171,14 +171,14 @@ if( isset($pesquisa_versao) ) {
   
       $result = db_query($sql);
 
-      if(pg_numrows($result)>0){
+      if(pg_num_rows($result)>0){
         
         
         $listamodulo = 0;
-        for($m=0;$m<pg_numrows($result);$m++){
+        for($m=0;$m<pg_num_rows($result);$m++){
           db_fieldsmemory($result,$m);
           if($listamodulo != $codmod ){
-            echo "<font color='blue'><strong>".strtoupper($nomemod)."</strong></font><br><br>";
+            echo "<font color='blue'><strong>".strtoupper((string) $nomemod)."</strong></font><br><br>";
             $listamodulo = $codmod;
           }
           echo "&nbsp&nbsp<strong>$descrproced </strong><br>";
@@ -199,7 +199,7 @@ if( isset($pesquisa_versao) ) {
                   ";
 
           $resitem = db_query($sql);
-          for($mi=0;$mi<pg_numrows($resitem);$mi++){
+          for($mi=0;$mi<pg_num_rows($resitem);$mi++){
             db_fieldsmemory($resitem,$mi);
             echo "&nbsp&nbsp&nbsp<strong>2.$db30_codversao.$db30_codrelease</strong> $db32_obs<br>";
           }
@@ -280,7 +280,7 @@ if( isset($pesquisa_versao) ) {
 		 if($codprocedimento!=0){
 				$sql .= " and codproced = $codprocedimento ";
 		 }
-		 if( isset($pesquisar_texto) && trim($texto_pesquisar) != '' ){
+		 if( isset($pesquisar_texto) && trim((string) $texto_pesquisar) != '' ){
 				if( $tipotexto == 'd' ){
 					 $sql .= " and at40_descr ilike '%$texto_pesquisar%' ";
 				}else{

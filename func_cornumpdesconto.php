@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_cornumpdesconto_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcornumpdesconto = new cl_cornumpdesconto;
 $clcornumpdesconto->rotulo->label("k12_id");
 $clcornumpdesconto->rotulo->label("k12_data");
@@ -153,9 +153,9 @@ $clcornumpdesconto->rotulo->label("k12_id");
         }else{
            $sql = $clcornumpdesconto->sql_query("","","","","","",$campos,"k12_id#k12_data#k12_autent#k12_numpre#k12_numpar#k12_receit","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_k12_id)){
-          $repassa = array("chave_k12_id"=>$chave_k12_id,"chave_k12_id"=>$chave_k12_id);
+          $repassa = ["chave_k12_id"=>$chave_k12_id,"chave_k12_id"=>$chave_k12_id];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

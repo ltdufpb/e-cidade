@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE processoforomov
 class cl_processoforomov {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $v73_sequencial = 0;
-   var $v73_processoforomovsituacao = 0;
-   var $v73_id_usuario = 0;
-   var $v73_processoforo = 0;
-   var $v73_obs = null;
-   var $v73_data_dia = null;
-   var $v73_data_mes = null;
-   var $v73_data_ano = null;
-   var $v73_data = null;
-   var $v73_hora = null;
+   public $v73_sequencial = 0;
+   public $v73_processoforomovsituacao = 0;
+   public $v73_id_usuario = 0;
+   public $v73_processoforo = 0;
+   public $v73_obs = null;
+   public $v73_data_dia = null;
+   public $v73_data_mes = null;
+   public $v73_data_ano = null;
+   public $v73_data = null;
+   public $v73_hora = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  v73_sequencial = int4 = Código Sequencial 
                  v73_processoforomovsituacao = int4 = Processo Foro Movimentação Situação 
                  v73_id_usuario = int4 = Id usuário 
@@ -63,10 +63,10 @@ class cl_processoforomov {
                  v73_hora = char(5) = Hora 
                  ";
    //funcao construtor da classe
-   function cl_processoforomov() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("processoforomov");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -156,10 +156,10 @@ class cl_processoforomov {
          $this->erro_status = "0";
          return false;
        }
-       $this->v73_sequencial = pg_result($result,0,0);
+       $this->v73_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from processoforomov_v73_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $v73_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $v73_sequencial)){
          $this->erro_sql = " Campo v73_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -199,7 +199,7 @@ class cl_processoforomov {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "processoforomov ($this->v73_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "processoforomov já Cadastrado";
@@ -223,16 +223,16 @@ class cl_processoforomov {
      $resaco = $this->sql_record($this->sql_query_file($this->v73_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17355,'$this->v73_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3071,17355,'','".AddSlashes(pg_result($resaco,0,'v73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3071,17356,'','".AddSlashes(pg_result($resaco,0,'v73_processoforomovsituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3071,17357,'','".AddSlashes(pg_result($resaco,0,'v73_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3071,17358,'','".AddSlashes(pg_result($resaco,0,'v73_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3071,17359,'','".AddSlashes(pg_result($resaco,0,'v73_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3071,17360,'','".AddSlashes(pg_result($resaco,0,'v73_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3071,17361,'','".AddSlashes(pg_result($resaco,0,'v73_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3071,17355,'','".AddSlashes(pg_fetch_result($resaco,0,'v73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3071,17356,'','".AddSlashes(pg_fetch_result($resaco,0,'v73_processoforomovsituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3071,17357,'','".AddSlashes(pg_fetch_result($resaco,0,'v73_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3071,17358,'','".AddSlashes(pg_fetch_result($resaco,0,'v73_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3071,17359,'','".AddSlashes(pg_fetch_result($resaco,0,'v73_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3071,17360,'','".AddSlashes(pg_fetch_result($resaco,0,'v73_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3071,17361,'','".AddSlashes(pg_fetch_result($resaco,0,'v73_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -241,10 +241,10 @@ class cl_processoforomov {
       $this->atualizacampos();
      $sql = " update processoforomov set ";
      $virgula = "";
-     if(trim($this->v73_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_sequencial"])){
+     if(trim((string) $this->v73_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_sequencial"])){
        $sql  .= $virgula." v73_sequencial = $this->v73_sequencial ";
        $virgula = ",";
-       if(trim($this->v73_sequencial) == null ){
+       if(trim((string) $this->v73_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "v73_sequencial";
          $this->erro_banco = "";
@@ -254,10 +254,10 @@ class cl_processoforomov {
          return false;
        }
      }
-     if(trim($this->v73_processoforomovsituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_processoforomovsituacao"])){
+     if(trim((string) $this->v73_processoforomovsituacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_processoforomovsituacao"])){
        $sql  .= $virgula." v73_processoforomovsituacao = $this->v73_processoforomovsituacao ";
        $virgula = ",";
-       if(trim($this->v73_processoforomovsituacao) == null ){
+       if(trim((string) $this->v73_processoforomovsituacao) == null ){
          $this->erro_sql = " Campo Processo Foro Movimentação Situação nao Informado.";
          $this->erro_campo = "v73_processoforomovsituacao";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_processoforomov {
          return false;
        }
      }
-     if(trim($this->v73_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_id_usuario"])){
+     if(trim((string) $this->v73_id_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_id_usuario"])){
        $sql  .= $virgula." v73_id_usuario = $this->v73_id_usuario ";
        $virgula = ",";
-       if(trim($this->v73_id_usuario) == null ){
+       if(trim((string) $this->v73_id_usuario) == null ){
          $this->erro_sql = " Campo Id usuário nao Informado.";
          $this->erro_campo = "v73_id_usuario";
          $this->erro_banco = "";
@@ -280,10 +280,10 @@ class cl_processoforomov {
          return false;
        }
      }
-     if(trim($this->v73_processoforo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_processoforo"])){
+     if(trim((string) $this->v73_processoforo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_processoforo"])){
        $sql  .= $virgula." v73_processoforo = $this->v73_processoforo ";
        $virgula = ",";
-       if(trim($this->v73_processoforo) == null ){
+       if(trim((string) $this->v73_processoforo) == null ){
          $this->erro_sql = " Campo Pro8cesso Foro nao Informado.";
          $this->erro_campo = "v73_processoforo";
          $this->erro_banco = "";
@@ -293,14 +293,14 @@ class cl_processoforomov {
          return false;
        }
      }
-     if(trim($this->v73_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_obs"])){
+     if(trim((string) $this->v73_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_obs"])){
        $sql  .= $virgula." v73_obs = '$this->v73_obs' ";
        $virgula = ",";
      }
-     if(trim($this->v73_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v73_data_dia"] !="") ){
+     if(trim((string) $this->v73_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["v73_data_dia"] !="") ){
        $sql  .= $virgula." v73_data = '$this->v73_data' ";
        $virgula = ",";
-       if(trim($this->v73_data) == null ){
+       if(trim((string) $this->v73_data) == null ){
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "v73_data_dia";
          $this->erro_banco = "";
@@ -313,7 +313,7 @@ class cl_processoforomov {
        if(isset($GLOBALS["HTTP_POST_VARS"]["v73_data_dia"])){
          $sql  .= $virgula." v73_data = null ";
          $virgula = ",";
-         if(trim($this->v73_data) == null ){
+         if(trim((string) $this->v73_data) == null ){
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "v73_data_dia";
            $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_processoforomov {
          }
        }
      }
-     if(trim($this->v73_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_hora"])){
+     if(trim((string) $this->v73_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["v73_hora"])){
        $sql  .= $virgula." v73_hora = '$this->v73_hora' ";
        $virgula = ",";
-       if(trim($this->v73_hora) == null ){
+       if(trim((string) $this->v73_hora) == null ){
          $this->erro_sql = " Campo Hora nao Informado.";
          $this->erro_campo = "v73_hora";
          $this->erro_banco = "";
@@ -345,23 +345,23 @@ class cl_processoforomov {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17355,'$this->v73_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v73_sequencial"]) || $this->v73_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3071,17355,'".AddSlashes(pg_result($resaco,$conresaco,'v73_sequencial'))."','$this->v73_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3071,17355,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v73_sequencial'))."','$this->v73_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v73_processoforomovsituacao"]) || $this->v73_processoforomovsituacao != "")
-           $resac = db_query("insert into db_acount values($acount,3071,17356,'".AddSlashes(pg_result($resaco,$conresaco,'v73_processoforomovsituacao'))."','$this->v73_processoforomovsituacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3071,17356,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v73_processoforomovsituacao'))."','$this->v73_processoforomovsituacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v73_id_usuario"]) || $this->v73_id_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,3071,17357,'".AddSlashes(pg_result($resaco,$conresaco,'v73_id_usuario'))."','$this->v73_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3071,17357,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v73_id_usuario'))."','$this->v73_id_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v73_processoforo"]) || $this->v73_processoforo != "")
-           $resac = db_query("insert into db_acount values($acount,3071,17358,'".AddSlashes(pg_result($resaco,$conresaco,'v73_processoforo'))."','$this->v73_processoforo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3071,17358,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v73_processoforo'))."','$this->v73_processoforo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v73_obs"]) || $this->v73_obs != "")
-           $resac = db_query("insert into db_acount values($acount,3071,17359,'".AddSlashes(pg_result($resaco,$conresaco,'v73_obs'))."','$this->v73_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3071,17359,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v73_obs'))."','$this->v73_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v73_data"]) || $this->v73_data != "")
-           $resac = db_query("insert into db_acount values($acount,3071,17360,'".AddSlashes(pg_result($resaco,$conresaco,'v73_data'))."','$this->v73_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3071,17360,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v73_data'))."','$this->v73_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["v73_hora"]) || $this->v73_hora != "")
-           $resac = db_query("insert into db_acount values($acount,3071,17361,'".AddSlashes(pg_result($resaco,$conresaco,'v73_hora'))."','$this->v73_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3071,17361,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'v73_hora'))."','$this->v73_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -406,16 +406,16 @@ class cl_processoforomov {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17355,'$v73_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3071,17355,'','".AddSlashes(pg_result($resaco,$iresaco,'v73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3071,17356,'','".AddSlashes(pg_result($resaco,$iresaco,'v73_processoforomovsituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3071,17357,'','".AddSlashes(pg_result($resaco,$iresaco,'v73_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3071,17358,'','".AddSlashes(pg_result($resaco,$iresaco,'v73_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3071,17359,'','".AddSlashes(pg_result($resaco,$iresaco,'v73_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3071,17360,'','".AddSlashes(pg_result($resaco,$iresaco,'v73_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3071,17361,'','".AddSlashes(pg_result($resaco,$iresaco,'v73_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3071,17355,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v73_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3071,17356,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v73_processoforomovsituacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3071,17357,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v73_id_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3071,17358,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v73_processoforo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3071,17359,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v73_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3071,17360,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v73_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3071,17361,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'v73_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from processoforomov
@@ -475,7 +475,7 @@ class cl_processoforomov {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:processoforomov";
@@ -515,7 +515,7 @@ class cl_processoforomov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -549,7 +549,7 @@ class cl_processoforomov {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

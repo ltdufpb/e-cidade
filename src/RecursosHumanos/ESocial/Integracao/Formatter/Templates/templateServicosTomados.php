@@ -25,176 +25,176 @@
  *                                licenca/licenca_pt.txt
  */
 
-return array(
-    'infoProcRet_1' => array(
+return [
+    'infoProcRet_1' => [
         'nome_api' => 'infoProcRet',
         'type' => 'array',
-        'items' => array(
-            'properties' => array(
+        'items' => [
+            'properties' => [
                 'tipo_1'=> 'tipo',
-                'tpProcRet_1' => array(
+                'tpProcRet_1' => [
                     'nome_api' => 'tpProcRet',
                     'type' => 'int'
-                ),
+                ],
                 'nrProcRet_1' => 'nrProcRet',
-                'valor_1' => array(
+                'valor_1' => [
                     'nome_api' => 'valor',
                     'type' => 'float'
-                ),
+                ],
                 'codSusp_1' => 'codSusp'
-            )
-        )
-    ),
-    'infoProcRet_2' => array(
+            ]
+        ]
+    ],
+    'infoProcRet_2' => [
         'nome_api' => 'infoProcRet',
         'type' => 'array',
-        'items' => array(
-            'properties' => array(
+        'items' => [
+            'properties' => [
                 'tipo_2'=> 'tipo',
-                'tpProcRet_2' => array(
+                'tpProcRet_2' => [
                     'nome_api' => 'tpProcRet',
                     'type' => 'int'
-                ),
+                ],
                 'nrProcRet_2' => 'nrProcRet',
-                'valor_2' => array(
+                'valor_2' => [
                     'nome_api' => 'valor',
                     'type' => 'float'
-                ),
+                ],
                 'codSusp_2' => 'codSusp'
-            )
-        )
-    ),
-    'infoProcRet_3' => array(
+            ]
+        ]
+    ],
+    'infoProcRet_3' => [
         'nome_api' => 'infoProcRet',
         'type' => 'array',
-        'items' => array(
-            'properties' => array(
+        'items' => [
+            'properties' => [
                 'tipo_3'=> 'tipo',
-                'tpProcRet_3' => array(
+                'tpProcRet_3' => [
                     'nome_api' => 'tpProcRet',
                     'type' => 'int'
-                ),
+                ],
                 'nrProcRet_3' => 'nrProcRet',
-                'valor_3' => array(
+                'valor_3' => [
                     'nome_api' => 'valor',
                     'type' => 'float'
-                ),
+                ],
                 'codSusp_3' => 'codSusp'
-            )
-        )
-    ),
-    'infoProcRet_4' => array(
+            ]
+        ]
+    ],
+    'infoProcRet_4' => [
         'nome_api' => 'infoProcRet',
         'type' => 'array',
-        'items' => array(
-            'properties' => array(
+        'items' => [
+            'properties' => [
                 'tipo_4'=> 'tipo',
-                'tpProcRet_4' => array(
+                'tpProcRet_4' => [
                     'nome_api' => 'tpProcRet',
                     'type' => 'int'
-                ),
+                ],
                 'nrProcRet_4' => 'nrProcRet',
-                'valor_4' => array(
+                'valor_4' => [
                     'nome_api' => 'valor',
                     'type' => 'float'
-                ),
+                ],
                 'codSusp_4' => 'codSusp'
-            )
-        )
-    ),
-    'infoProcRet_5' => array(
+            ]
+        ]
+    ],
+    'infoProcRet_5' => [
         'nome_api' => 'infoProcRet',
         'type' => 'array',
-        'items' => array(
-            'properties' => array(
+        'items' => [
+            'properties' => [
                 'tipo_5'=> 'tipo',
-                'tpProcRet_5' => array(
+                'tpProcRet_5' => [
                     'nome_api' => 'tpProcRet',
                     'type' => 'int'
-                ),
+                ],
                 'nrProcRet_5' => 'nrProcRet',
-                'valor_5' => array(
+                'valor_5' => [
                     'nome_api' => 'valor',
                     'type' => 'float'
-                ),
+                ],
                 'codSusp_5' => 'codSusp'
-            )
-        )
-    ),
-    'infoProcRet_6' => array(
+            ]
+        ]
+    ],
+    'infoProcRet_6' => [
         'nome_api' => 'infoProcRet',
         'type' => 'array',
-        'items' => array(
-            'properties' => array(
+        'items' => [
+            'properties' => [
                 'tipo_6'=> 'tipo',
-                'tpProcRet_6' => array(
+                'tpProcRet_6' => [
                     'nome_api' => 'tpProcRet',
                     'type' => 'int'
-                ),
+                ],
                 'nrProcRet_6' => 'nrProcRet',
-                'valor_6' => array(
+                'valor_6' => [
                     'nome_api' => 'valor',
                     'type' => 'float'
-                ),
+                ],
                 'codSusp_6' => 'codSusp'
-            )
-        )
-    ),
-    'infoProcRet_7' => array(
+            ]
+        ]
+    ],
+    'infoProcRet_7' => [
         'nome_api' => 'infoProcRet',
         'type' => 'array',
-        'items' => array(
-            'properties' => array(
+        'items' => [
+            'properties' => [
                 'tipo_7'=> 'tipo',
-                'tpProcRet_7' => array(
+                'tpProcRet_7' => [
                     'nome_api' => 'tpProcRet',
                     'type' => 'int'
-                ),
+                ],
                 'nrProcRet_7' => 'nrProcRet',
-                'valor_7' => array(
+                'valor_7' => [
                     'nome_api' => 'valor',
                     'type' => 'float'
-                ),
+                ],
                 'codSusp_7' => 'codSusp'
-            )
-        )
-    ),
-    'infoProcRet_8' => array(
+            ]
+        ]
+    ],
+    'infoProcRet_8' => [
         'nome_api' => 'infoProcRet',
         'type' => 'array',
-        'items' => array(
-            'properties' => array(
+        'items' => [
+            'properties' => [
                 'tipo_8'=> 'tipo',
-                'tpProcRet_8' => array(
+                'tpProcRet_8' => [
                     'nome_api' => 'tpProcRet',
                     'type' => 'int'
-                ),
+                ],
                 'nrProcRet_8' => 'nrProcRet',
-                'valor_8' => array(
+                'valor_8' => [
                     'nome_api' => 'valor',
                     'type' => 'float'
-                ),
+                ],
                 'codSusp_8' => 'codSusp'
-            )
-        )
-    ),
-    'infoProcRet_9' => array(
+            ]
+        ]
+    ],
+    'infoProcRet_9' => [
         'nome_api' => 'infoProcRet',
         'type' => 'array',
-        'items' => array(
-            'properties' => array(
+        'items' => [
+            'properties' => [
                 'tipo_9'=> 'tipo',
-                'tpProcRet_9' => array(
+                'tpProcRet_9' => [
                     'nome_api' => 'tpProcRet',
                     'type' => 'int'
-                ),
+                ],
                 'nrProcRet_9' => 'nrProcRet',
-                'valor_9' => array(
+                'valor_9' => [
                     'nome_api' => 'valor',
                     'type' => 'float'
-                ),
+                ],
                 'codSusp_9' => 'codSusp'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

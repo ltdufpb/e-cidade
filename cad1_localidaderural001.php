@@ -34,7 +34,7 @@
 	require_once(modification("dbforms/db_funcoes.php"));
 	
 	foreach ($_POST as $sChave=>$sValor) {
-		$_POST[$sChave] = stripslashes($sValor);
+		$_POST[$sChave] = stripslashes((string) $sValor);
 	}
 	
 	db_postmemory($_POST);

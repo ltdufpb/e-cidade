@@ -30,8 +30,8 @@ require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clpropricemit = new cl_propricemit;
 $clproprijazigo = new cl_proprijazigo;
 $db_opcao = 22;
@@ -78,7 +78,7 @@ if(isset($alterar)){
     }
   }else{
 
-    if( substr($cm25_c_tipo,0,1) == "J" ){
+    if( str_starts_with((string) $cm25_c_tipo, "J") ){
          $clproprijazigo->sql_record($clproprijazigo->sql_query("","*","","cm29_i_propricemit=".$clpropricemit->cm28_i_codigo));
          $x_opcao = "cem1_proprijazigo001.php?cm28_i_codigo=$clpropricemit->cm28_i_codigo&cm28_i_ossoariojazigo=$cm28_i_ossoariojazigo&cm28_i_proprietario=$cm28_i_proprietario&z01_nome=$z01_nome&chavepesquisa=$cm28_i_codigo";
          if( $clproprijazigo->numrows != 0 ){

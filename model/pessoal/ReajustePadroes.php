@@ -29,9 +29,6 @@
 class ReajustePadroes{
 
   private $oPdf;
-  private $iAnoUsu;
-  private $iMesUsu;
-  private $iTipoReajuste;
   private $oDaoPadroes;
 
   /**
@@ -42,11 +39,8 @@ class ReajustePadroes{
    * @param integer $iMesUsu       Mes da Competência
    * @param integer $iTipoReajuste Tipo de Reajuste
    */
-  public function ReajustePadroes($iAnoUsu, $iMesUsu, $iTipoReajuste){
+  public function __construct(private $iAnoUsu, private $iMesUsu, private $iTipoReajuste){
 
-    $this->iAnoUsu       = $iAnoUsu;
-    $this->iMesUsu       = $iMesUsu;
-    $this->iTipoReajuste = $iTipoReajuste;
     $this->oDaoPadroes   = db_utils::getDao('padroes');
   }
 
@@ -65,7 +59,7 @@ class ReajustePadroes{
 
     if ($iTotalPadroesInvalidos  > 0 ) {
       
-      $aInconsistencias = array();
+      $aInconsistencias = [];
       for ($iPadrao = 0; $iPadrao < $iTotalPadroesInvalidos; $iPadrao++){
 
         $oInconsistencias = new stdClass();
@@ -114,7 +108,7 @@ class ReajustePadroes{
     return $rsServidoresInvalidos;
   }
 
-  public function geraRelatorioInconsistencias( $aInconsistencias = array()) {
+  public function geraRelatorioInconsistencias( $aInconsistencias = []) {
 
     /**
      * Variavel global utilizada para montar o cabeçalho do Relatório

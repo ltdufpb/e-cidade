@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>
@@ -136,10 +136,10 @@ if( isset($pesquisar) ){
   echo "</tr>";
    
   $result = db_query($sql);
-  if(pg_numrows($result)>0){
+  if(pg_num_rows($result)>0){
     $totquant = 0;
     $quant_normal = 0;
-    for($numero=0;$numero < pg_numrows($result);$numero++){
+    for($numero=0;$numero < pg_num_rows($result);$numero++){
       db_fieldsmemory($result,$numero);
       if( $at15_sequencial == 1 ){
         $quant_normal = $quant;
@@ -147,7 +147,7 @@ if( isset($pesquisar) ){
       $totquant += $quant;
     }
     
-    for($numero=0;$numero < pg_numrows($result);$numero++){
+    for($numero=0;$numero < pg_num_rows($result);$numero++){
       db_fieldsmemory($result,$numero);
       echo "<tr>";
       echo "<td align='left'   title='$at15_sequencial' ><strong>$at15_descr</strong></td>";

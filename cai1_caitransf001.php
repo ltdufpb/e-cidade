@@ -55,10 +55,10 @@ $db_opcao   = 1;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-     $clcriaabas->identifica = array("transf"=>"Transferência");
-     $clcriaabas->title      = array("transf"=>"Transferência");
-     $clcriaabas->src        = array("transf"=>"cai1_caitransf004.php");
-     $clcriaabas->sizecampo  = array("transf"=>"25");
+     $clcriaabas->identifica = ["transf"=>"Transferência"];
+     $clcriaabas->title      = ["transf"=>"Transferência"];
+     $clcriaabas->src        = ["transf"=>"cai1_caitransf004.php"];
+     $clcriaabas->sizecampo  = ["transf"=>"25"];
      $clcriaabas->cria_abas();   
     ?>
     </center>

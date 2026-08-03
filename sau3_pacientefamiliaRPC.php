@@ -52,7 +52,7 @@ if($objParam->exec == 'consulta_microfamilia'){
        $campos = new stdclass();
        db_fieldsmemory($result,0);
        $campos->sd33_i_codigo=$sd33_i_codigo;
-       $campos->sd33_v_descricao=utf8_encode($sd33_v_descricao);
+       $campos->sd33_v_descricao=mb_convert_encoding($sd33_v_descricao, 'UTF-8', 'ISO-8859-1');
        $campos->sd34_i_codigo=$sd34_i_codigo;
        $campos->sd34_v_descricao=$sd34_v_descricao;
        $campos->z01_i_familiamicroarea=$z01_i_familiamicroarea;

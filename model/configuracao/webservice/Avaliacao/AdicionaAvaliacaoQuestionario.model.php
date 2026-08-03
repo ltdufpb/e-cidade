@@ -107,7 +107,7 @@ class AdicionaAvaliacaoQuestionario {
    */
   private function resetVinculo(){
 
-    $this->aVinculo = array();
+    $this->aVinculo = [];
   }
 
   private function getVinculo(){
@@ -118,7 +118,7 @@ class AdicionaAvaliacaoQuestionario {
   // Adiciona elemento no array de vinculo
   private function addVinculo($type, $old, $new){
 
-    $this->aVinculo[$type][] = array('old' => $old, 'new' =>$new);
+    $this->aVinculo[$type][] = ['old' => $old, 'new' =>$new];
   }
 
   /**
@@ -255,14 +255,14 @@ class AdicionaAvaliacaoQuestionario {
 
     if(!$rsAvaliacao){
 
-      return array('erro' => 'Avaliacao nao encontrada');
+      return ['erro' => 'Avaliacao nao encontrada'];
     }          
 
     $aAvaliacao = db_utils::getCollectionByRecord($rsAvaliacao, false, false, true);
 
     if(!$aAvaliacao){
     
-      return array('erro' => 'Avaliacao nao encontrada');
+      return ['erro' => 'Avaliacao nao encontrada'];
     }
 
     $oAvaliacao = $aAvaliacao[0];
@@ -273,12 +273,12 @@ class AdicionaAvaliacaoQuestionario {
     try {
   
       $oDaoAvaliacao->alterar($oAvaliacao->db101_sequencial);
-    } catch (Exception $e) {
+    } catch (Exception) {
       
-      return array('erro' => 'Ocorreu algum erro ao salvar a Avaliacao');
+      return ['erro' => 'Ocorreu algum erro ao salvar a Avaliacao'];
     }
 
-    return array('sucesso'=> 'Avaliacao desativada com sucesso');
+    return ['sucesso'=> 'Avaliacao desativada com sucesso'];
   }
     
   /**
@@ -294,8 +294,8 @@ class AdicionaAvaliacaoQuestionario {
     db_inicio_transacao();
 
     $oAvaliacao->db101_sequencial    = $this->getAvaliacao();
-    $oAvaliacao->db101_descricao     = utf8_decode($this->getDescricao());
-    $oAvaliacao->db101_obs           = utf8_decode($this->getObs());
+    $oAvaliacao->db101_descricao     = mb_convert_encoding($this->getDescricao(), 'ISO-8859-1');
+    $oAvaliacao->db101_obs           = mb_convert_encoding($this->getObs(), 'ISO-8859-1');
     $oAvaliacao->db101_identificador = $this->getIdentificador();
     $oAvaliacao->db101_avaliacaotipo = 6;
     $oAvaliacao->db101_ativo         = 't';
@@ -315,7 +315,7 @@ class AdicionaAvaliacaoQuestionario {
 
       if($oAvaliacaoInterno->erro_status == "0"){
 
-        $oRetorno->error = utf8_encode($oAvaliacaoInterno->erro_msg);
+        $oRetorno->error = mb_convert_encoding($oAvaliacaoInterno->erro_msg, 'UTF-8', 'ISO-8859-1');
         db_fim_transacao(true);
         return $oRetorno;
       }
@@ -323,7 +323,7 @@ class AdicionaAvaliacaoQuestionario {
 
       if(empty($aMenus)){
 
-        $oRetorno->error = utf8_encode("Nenhum menu configurado para o questionario");
+        $oRetorno->error = mb_convert_encoding("Nenhum menu configurado para o questionario", 'UTF-8', 'ISO-8859-1');
         db_fim_transacao(true);
         return $oRetorno;
       }
@@ -338,7 +338,7 @@ class AdicionaAvaliacaoQuestionario {
           
         if($oAvaliacaoMenu->erro_status == "0"){
 
-          $oRetorno->error = utf8_encode($oAvaliacaoMenu->erro_msg);
+          $oRetorno->error = mb_convert_encoding($oAvaliacaoMenu->erro_msg, 'UTF-8', 'ISO-8859-1');
           db_fim_transacao(true);
           return $oRetorno;
         }
@@ -349,10 +349,10 @@ class AdicionaAvaliacaoQuestionario {
       if(!empty($oSave->error)){
 
         db_fim_transacao(true);
-        $oRetorno->msg = utf8_encode($oSave->erro_msg);
+        $oRetorno->msg = mb_convert_encoding($oSave->erro_msg, 'UTF-8', 'ISO-8859-1');
       } else {
 
-        $oRetorno->msg = utf8_encode('Avaliação salva com sucesso');  
+        $oRetorno->msg = mb_convert_encoding('Avaliação salva com sucesso', 'UTF-8', 'ISO-8859-1');  
         db_fim_transacao();
       }
     } else {
@@ -360,8 +360,8 @@ class AdicionaAvaliacaoQuestionario {
       db_fim_transacao(true);
       try {
         
-        $oRetorno->error = utf8_encode($oAvaliacao->erro_msg);  
-      } catch (Exception $e) {
+        $oRetorno->error = mb_convert_encoding($oAvaliacao->erro_msg, 'UTF-8', 'ISO-8859-1');  
+      } catch (Exception) {
         
         $oRetorno->error = $oAvaliacao->erro_msg;  
       }
@@ -381,7 +381,7 @@ class AdicionaAvaliacaoQuestionario {
         
         $oAvaliacaoGrupo->db102_sequencial    = $oGrupo->db102_sequencial;
         $oAvaliacaoGrupo->db102_avaliacao     = $this->getAvaliacao();
-        $oAvaliacaoGrupo->db102_descricao     = utf8_decode($oGrupo->db102_descricao);
+        $oAvaliacaoGrupo->db102_descricao     = mb_convert_encoding($oGrupo->db102_descricao, 'ISO-8859-1');
         $oAvaliacaoGrupo->db102_identificador = $oGrupo->db102_identificador;
         $oAvaliacaoGrupo->incluir($oGrupo->db102_sequencial); 
 
@@ -409,7 +409,7 @@ class AdicionaAvaliacaoQuestionario {
             $oAvaliacaoPergunta->db103_sequencial             = $oPergunta->db103_sequencial;
             $oAvaliacaoPergunta->db103_avaliacaotiporesposta  = $oPergunta->db103_avaliacaotiporesposta;
             $oAvaliacaoPergunta->db103_avaliacaogrupopergunta = $oAvaliacaoGrupo->db102_sequencial;
-            $oAvaliacaoPergunta->db103_descricao              = utf8_decode($oPergunta->db103_descricao);
+            $oAvaliacaoPergunta->db103_descricao              = mb_convert_encoding($oPergunta->db103_descricao, 'ISO-8859-1');
             $oAvaliacaoPergunta->db103_obrigatoria            = $oPergunta->db103_obrigatoria;
             $oAvaliacaoPergunta->db103_ativo                  = $oPergunta->db103_ativo;
             $oAvaliacaoPergunta->db103_ordem                  = $oPergunta->db103_ordem;
@@ -433,7 +433,7 @@ class AdicionaAvaliacaoQuestionario {
                 $oAvaliacaoPerguntaOpcao->db104_sequencial        = $oOpcao->db104_sequencial;
                 $oAvaliacaoPerguntaOpcao->db104_avaliacaopergunta = $oAvaliacaoPergunta->db103_sequencial;
                 // $oAvaliacaoPerguntaOpcao->db104_descricao         = utf8_decode($oOpcao->db104_descricao);
-                $oAvaliacaoPerguntaOpcao->db104_descricao         = pg_escape_string(utf8_decode($oOpcao->db104_descricao));
+                $oAvaliacaoPerguntaOpcao->db104_descricao         = pg_escape_string(mb_convert_encoding($oOpcao->db104_descricao, 'ISO-8859-1'));
                 // $oAvaliacaoPerguntaOpcao->db104_descricao         = $oOpcao->db104_identificador;
   
                 // Tratamento de boolean
@@ -468,8 +468,8 @@ class AdicionaAvaliacaoQuestionario {
               // Formula
               $oFormula = db_utils::getDao("db_formulas");
               $oFormula->db148_sequencial= $oPergunta->formula->db148_sequencial;
-              $oFormula->db148_nome      = utf8_decode($oPergunta->formula->db148_nome);
-              $oFormula->db148_descricao = utf8_decode($oPergunta->formula->db148_descricao);
+              $oFormula->db148_nome      = mb_convert_encoding($oPergunta->formula->db148_nome, 'ISO-8859-1');
+              $oFormula->db148_descricao = mb_convert_encoding($oPergunta->formula->db148_descricao, 'ISO-8859-1');
               $oFormula->db148_formula   = pg_escape_string($oPergunta->formula->db148_formula);
               $oFormula->db148_ambiente  = $oPergunta->formula->db148_ambiente;
               $oFormula->incluir($oFormula->db148_sequencial);

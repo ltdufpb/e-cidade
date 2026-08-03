@@ -47,7 +47,7 @@
     $claguabasevenc = new cl_aguabasevenc;
   */
   
-  db_postmemory($HTTP_POST_VARS);
+  db_postmemory($_POST);
 
   $db_opcao = 22;
   $db_botao = false;
@@ -71,7 +71,7 @@
       $sqlerro = true;
     }
   
-    $matriz = explode("X", $caracteristica);
+    $matriz = explode("X", (string) $caracteristica);
 
     for ($i = 0; $i < sizeof($matriz); $i++) {
       

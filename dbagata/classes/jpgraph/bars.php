@@ -2,8 +2,8 @@
 include ("jpgraph/jpgraph.php");
 include ("jpgraph/jpgraph_bar.php");
 
-$data1y=array(12,8,19,3,10,5);
-$data2y=array(8,2,11,7,14,4);
+$data1y=[12,8,19,3,10,5];
+$data2y=[8,2,11,7,14,4];
 
 // Create the graph. These two calls are always required
 $graph = new Graph(310,200,"auto");	
@@ -18,7 +18,7 @@ $b2plot = new BarPlot($data2y);
 $b2plot->SetFillColor("blue");
 
 // Create the grouped bar plot
-$gbplot = new GroupBarPlot(array($b1plot,$b2plot));
+$gbplot = new GroupBarPlot([$b1plot,$b2plot]);
 
 // ...and add it to the graPH
 $graph->Add($gbplot);

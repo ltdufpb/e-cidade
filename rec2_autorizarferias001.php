@@ -85,7 +85,7 @@ try {
 
     foreach ($oParam as $key => $value) {
         $oPdf->Cell(15, 4, $value[2], 'BRLT', 0, 'L', 0);
-        $oPdf->Cell(62, 4, mb_strimwidth($value[3], 0, 35, "..."), 'BRLT', 0, 'L', 0);
+        $oPdf->Cell(62, 4, mb_strimwidth((string) $value[3], 0, 35, "..."), 'BRLT', 0, 'L', 0);
         $oPdf->Cell(18, 4, $value[4], 'BRLT', 0, 'L', 0);
         $oPdf->Cell(20, 4, $value[5], 'BRLT', 0, 'L', 0);
         $oPdf->Cell(20, 4, $value[6], 'BRLT', 0, 'L', 0);

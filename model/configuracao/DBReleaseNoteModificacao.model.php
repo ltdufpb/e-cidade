@@ -52,6 +52,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
     } 
   }
 
+  #[\Override]
   public function check() {
 
     $lidos = $this->getMudancasLidas();
@@ -59,6 +60,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
     return count($lidos) < count($arquivos);
   }
 
+  #[\Override]
   public function getCaminhoArquivo($sNomeArquivo = null, $sVersao = null) {
     return $this->sNomeArquivoAtual;
   }
@@ -78,6 +80,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
   /**
    * Método responsavel por retornar a primeira versão que ainda não foi lida
    */
+  #[\Override]
   public function getPrimeiraVersaoNaoLida() {}
 
   public function procurarPrimeiroArquivoNaoLido() {
@@ -110,17 +113,17 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
    * @return string       Versão encontrada
    */
   public function extrairVersao($path) {
-    preg_match("/^.*release_notes\/(.*)\/{$this->sNomeArquivo}(_.*\d{2})?\.md$/", $path, $match);
+    preg_match("/^.*release_notes\/(.*)\/{$this->sNomeArquivo}(_.*\d{2})?\.md$/", (string) $path, $match);
     return $match[1];
   }
 
   public function getArquivosLidosPlugins($iSorting = self::SORT_ASC) {
 
     $aPlugins = $this->getPlugins();
-    $aArquivos = array();
+    $aArquivos = [];
 
     if (empty($aPlugins)) {
-      return array();
+      return [];
     }
 
     foreach ($aPlugins as $oPlugin) {
@@ -161,10 +164,10 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
     }
 
     if (pg_num_rows($rsMudancaLidas) == 0) {
-      return array();
+      return [];
     }
 
-    $aArquivos = array();
+    $aArquivos = [];
     $aMudancas = db_utils::getCollectionByRecord($rsMudancaLidas);
 
     foreach ($aMudancas as $oMudanca) {
@@ -187,9 +190,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
     $arquivos = array_merge($aArquivosSistema, $aArquivosPlugins);
 
     // retira os arquivos .md que estão marcados como lidos, mas não estão na lista de arquivos!
-    return array_filter($arquivos, function($arquivo) {
-      return in_array($arquivo, $this->aListaArquivos);
-    });
+    return array_filter($arquivos, fn($arquivo) => in_array($arquivo, $this->aListaArquivos));
   }
 
   /**
@@ -203,13 +204,13 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
    */
   public function marcarComoLido($aArquivosLidos) {
 
-    $aArquivosSistema = array();
-    $aArquivosPlugins = array();
+    $aArquivosSistema = [];
+    $aArquivosPlugins = [];
 
     foreach ($aArquivosLidos as $oDadoArquivo) {
 
       $sNomePlugin = $this->extrairNomePlugin($oDadoArquivo->sNomeArquivo);
-      preg_match('/release_notes\/.*\/(.*)\.md$/', $oDadoArquivo->sNomeArquivo, $match);
+      preg_match('/release_notes\/.*\/(.*)\.md$/', (string) $oDadoArquivo->sNomeArquivo, $match);
       $oDadoArquivo->sNomeArquivo = $match[1];
 
       if (empty($sNomePlugin)) {
@@ -236,7 +237,9 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
   }
 
   // paginacao das versoes
+  #[\Override]
   public function getProximaVersao() {}
+  #[\Override]
   public function getVersaoAnterior() {}
 
   public function getVersaoSistema() {
@@ -244,6 +247,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
   }
 
   // paginação interna das versoes
+  #[\Override]
   public function getArquivoAnterior() {
 
     if (!$this->lSomenteNaoLidos && isset($this->aListaArquivos[$this->iIndiceAtual-1])) {
@@ -263,6 +267,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
     return "";
   }
 
+  #[\Override]
   public function getProximoArquivo() {
 
     if (!$this->lSomenteNaoLidos &&  isset($this->aListaArquivos[$this->iIndiceAtual+1])) {
@@ -321,9 +326,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
     $lista = $this->getArquivosReleaseNotes('release_notes');    
 
     $_this = $this;
-    $lista = array_filter($lista, function($arquivo) use ($_this) {
-      return $_this->extrairVersao($arquivo) <= $_this->getVersaoSistema();
-    });
+    $lista = array_filter($lista, fn($arquivo) => $_this->extrairVersao($arquivo) <= $_this->getVersaoSistema());
 
     return $lista;
   }
@@ -334,7 +337,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
    */
   private function getListaArquivosPlugins() {
 
-    $lista = array();
+    $lista = [];
 
     $aPlugins = $this->getPlugins();
 
@@ -363,7 +366,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
 
     $aMenus = static::buscarMenusPlugins();
     $idMenu = $this->sNomeArquivo;
-    $aPlugins = array();
+    $aPlugins = [];
 
     if (empty($aMenus[$idMenu])) {
       return $aPlugins;
@@ -383,11 +386,12 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
 
   public function extrairNomePlugin($sCaminhoArquivo) {
     
-    $aMatches = array();
-    $result = preg_match('/^plugins\/(.*)\/release_notes.*$/', $sCaminhoArquivo, $aMatches);
+    $aMatches = [];
+    $result = preg_match('/^plugins\/(.*)\/release_notes.*$/', (string) $sCaminhoArquivo, $aMatches);
     return $result ? $aMatches[1] : false;
   }
 
+  #[\Override]
   public function buildData() {
   
     $oRetorno = parent::buildData();
@@ -420,7 +424,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
   public static function buscarMenusPlugins() {
 
     if (!is_readable(static::$sArquivoMenusPlugins)) {
-      return array();
+      return [];
     }
     
     $aMenus = json_decode(file_get_contents(static::$sArquivoMenusPlugins), true);
@@ -438,7 +442,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
    */
   public static function salvarMenusPlugins(array $aMenus) {
 
-    $sDiretorio = dirname(static::$sArquivoMenusPlugins); 
+    $sDiretorio = dirname((string) static::$sArquivoMenusPlugins); 
     if (!is_dir($sDiretorio) && !mkdir($sDiretorio, 0775, true)) {
       throw new BusinessException('Erro ao criar diretório: ' . $sDiretorio);
     }
@@ -479,7 +483,7 @@ class DBReleaseNoteModificacao extends DBReleaseNote {
   public static function getPluginsMenu($idMenu) {
 
     $aMenus = static::buscarMenusPlugins();
-    return isset($aMenus[$idMenu]) ? $aMenus[$idMenu] : array();
+    return $aMenus[$idMenu] ?? [];
   }
 
 }

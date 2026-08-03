@@ -108,7 +108,7 @@ if ($db_opcao == 1 || $db_opcao == 2 || $db_opcao == 22) {
 	    </td>
 	    <td>
 	      <?php 
-			$aPdfTxt = array("pdf"=>"PDF","txt"=>"TXT");
+			$aPdfTxt = ["pdf"=>"PDF","txt"=>"TXT"];
 	        db_select("selPdfTxt",$aPdfTxt,true,$db_opcao,"style='width:80px;' onChange='js_alteraTelaModelo(this.value)'");
   		  ?> 
 	    </td>
@@ -349,7 +349,7 @@ function js_preenchepesquisa(chave){
   db_iframe_modcarnepadrao.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

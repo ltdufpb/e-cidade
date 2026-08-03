@@ -34,8 +34,8 @@ include(modification("classes/db_orcreservager_classe.php"));
 include(modification("classes/db_orcreserprev_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $erro = false;
 $oRotulo = new rotulocampo();
 $oRotulo->label("o80_codres");
@@ -45,12 +45,12 @@ if (isset ($atualiza)) {
 
 	db_inicio_transacao();
 	$erro = false;
-	reset($HTTP_POST_VARS);
+	reset($_POST);
 
-	for ($i = 0; $i < count($HTTP_POST_VARS); $i ++) {
-		if (substr(key($HTTP_POST_VARS), 0, 13) == 'dotacao_dimi_') {
-			if ($HTTP_POST_VARS[key($HTTP_POST_VARS)] > 0) {
-				$mt = split("\_", key($HTTP_POST_VARS));
+	for ($i = 0; $i < count($_POST); $i ++) {
+		if (str_starts_with((string) key($_POST), 'dotacao_dimi_')) {
+			if ($_POST[key($_POST)] > 0) {
+				$mt = preg_split("#_#m", (string) key($_POST));
 
 				$sql = " select o80_valor,o80_coddot
 			               from orcreserva where o80_codres = ".$mt[2];
@@ -60,10 +60,10 @@ if (isset ($atualiza)) {
 					$msg_erro = "Erro ao alterar reserva automática (reduzir).";
 					break;
 				}
-				$saldo_reserva = pg_result($result, 0, 0);
-				$coddot = pg_result($result, 0, 1);
+				$saldo_reserva = pg_fetch_result($result, 0, 0);
+				$coddot = pg_fetch_result($result, 0, 1);
 				if ($saldo_reserva > 0) {
-					$sql = "update orcreserva set o80_valor = o80_valor - ".$HTTP_POST_VARS[key($HTTP_POST_VARS)]." where o80_codres = ".$mt[2];
+					$sql = "update orcreserva set o80_valor = o80_valor - ".$_POST[key($_POST)]." where o80_codres = ".$mt[2];
 					$res = db_query($sql);
 					if ($res == false) {
 						$erro = true;
@@ -76,9 +76,9 @@ if (isset ($atualiza)) {
 			}
 		}
 
-		if (substr(key($HTTP_POST_VARS), 0, 13) == 'dotacao_soma_') {
-			$mt = split("\_", key($HTTP_POST_VARS));
-			if ($HTTP_POST_VARS[key($HTTP_POST_VARS)] > 0) {
+		if (str_starts_with((string) key($_POST), 'dotacao_soma_')) {
+			$mt = preg_split("#_#m", (string) key($_POST));
+			if ($_POST[key($_POST)] > 0) {
 				$sql = " select  substr(fc_dotacaosaldo,133,12)::float8 as atual_menos_reservado,o80_coddot
 			                 from (
 			                      select o80_coddot,fc_dotacaosaldo(".db_getsession("DB_anousu").",o80_coddot,4,'".date("Y-m-d", db_getsession("DB_datausu"))."','".db_getsession("DB_anousu")."-12-31')
@@ -90,10 +90,10 @@ if (isset ($atualiza)) {
 					$msg_erro = "Erro ao alterar reserva automática (reduzir).";
 					break;
 				}
-				$saldo_atual = pg_result($result, 0, 0);
-				$coddot = pg_result($result, 0, 1);
-				if ($saldo_atual >= $HTTP_POST_VARS[key($HTTP_POST_VARS)]) {
-					$sql = "update orcreserva set o80_valor = o80_valor + ".$HTTP_POST_VARS[key($HTTP_POST_VARS)]." where o80_codres = ".$mt[2];
+				$saldo_atual = pg_fetch_result($result, 0, 0);
+				$coddot = pg_fetch_result($result, 0, 1);
+				if ($saldo_atual >= $_POST[key($_POST)]) {
+					$sql = "update orcreserva set o80_valor = o80_valor + ".$_POST[key($_POST)]." where o80_codres = ".$mt[2];
 					$res = db_query($sql);
 					if ($res == false) {
 						$erro = true;
@@ -106,7 +106,7 @@ if (isset ($atualiza)) {
 				}
 			}
 		}
-		next($HTTP_POST_VARS);
+		next($_POST);
 	}
 	db_fim_transacao($erro);
 }
@@ -243,7 +243,7 @@ if ($erro == false || isset ($atualiza)) {
 		echo "<tr><td title='Estrutural'>";
 		echo $estrutural;
 		echo "<td title='$o56_descr'>";
-		echo substr($o56_descr,0,20);
+		echo substr((string) $o56_descr,0,20);
 		echo "</td><td align='right'>";
 		echo "<a href='' onclick='js_JanelaAutomatica(\"orcdotacao\",\"$o58_coddot\",\"".db_getsession("DB_anousu")."\");return false;'>$o58_coddot</a>";
 		echo "</td><td>";

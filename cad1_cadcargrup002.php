@@ -34,7 +34,7 @@ include(modification("dbforms/db_funcoes.php"));
 $clcargrup = new cl_cargrup;
 $db_opcao = 2;
 $db_botao = false;
-if (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"]=="Alterar"){
+if (isset($_POST["db_opcao"]) && $_POST["db_opcao"]=="Alterar"){
    db_inicio_transacao();
    $clcargrup->alterar($j32_grupo);
    db_fim_transacao();

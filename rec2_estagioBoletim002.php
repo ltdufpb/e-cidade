@@ -71,7 +71,7 @@ $sSQLAvaliacoes .= "  where h64_estagioagenda = {$get->iCodExame}";
 $sSQLAvaliacoes .= "  group by h64_sequencial,h64_seqaval,  h64_data,h53_rhestagioquesito";
 $sSQLAvaliacoes .= "  order by h64_seqaval,h64_data,h53_rhestagioquesito";
 $rAvaliacoes     = db_query($sSQLAvaliacoes);
-$aDadosAvaliacoes = array();
+$aDadosAvaliacoes = [];
 for ($i = 0; $i< pg_num_rows($rAvaliacoes); $i++){
       
     $oAvaliacoes = db_utils::fieldsMemory($rAvaliacoes,$i);

@@ -109,7 +109,7 @@ class AtoLegal {
    * Coleção de cursos vinculados ao Ato
    * @var array | Curso
    */
-  private $aCurso = array();
+  private $aCurso = [];
   
   /**
    * Tipo decreto

@@ -79,7 +79,7 @@ for($i=0;$i<2;$i++){
   $this->objpdf->SetFont('Times', '', 9);
   $this->objpdf->cell(10,5,"",$sb,0,"L",0);
 
-  
+
   if(isset($this->descr12_1) && $this->descr12_1 != ""){
 
     $linha_atual = $this->objpdf->GetY(); 
@@ -108,7 +108,7 @@ for($i=0;$i<2;$i++){
   //$this->objpdf->cell(140,5,$this->prefeitura,$sb,0,"L",0);
   $this->objpdf->cell(140,5,$this->iptprefeitura,$sb,0,"L",0);
   //    $this->objpdf->cell(50,5,$this->descr7,$sb,1,"C",0);
-  $this->objpdf->cell(50,5,"R$ ".trim($this->ipttotal),$sb,1,"C",0);
+  $this->objpdf->cell(50,5,"R$ ".trim((string) $this->ipttotal),$sb,1,"C",0);
   $this->objpdf->cell(200,5,"",$sb,1,"C",0);
   $linha += 15;
 
@@ -133,7 +133,7 @@ for($i=0;$i<2;$i++){
   $this->objpdf->SetFont('Times', 'B', 12);
   $this->objpdf->cell(50,5,"Valor sem desconto : ",$sb,0,"R",0);
   $this->objpdf->SetFont('Times', '', 10);
-  $this->objpdf->cell(50,5,"R$ ".trim($this->iptuvlrcor),$sb,0,"L",0);
+  $this->objpdf->cell(50,5,"R$ ".trim((string) $this->iptuvlrcor),$sb,0,"L",0);
   //    $this->objpdf->cell(50,5,$this->descr7,$sb,0,"L",0);
   //$this->objpdf->cell(50,5,$this->valtotal,$sb,0,"L",0);
 
@@ -145,7 +145,7 @@ for($i=0;$i<2;$i++){
   $this->objpdf->SetFont('Times', 'B', 12);
   $this->objpdf->cell(50,5,"Desconto : ",$sb,0,"R",0);
   $this->objpdf->SetFont('Times', '', 10);
-  $this->objpdf->cell(50,5,"R$ ".trim($this->iptuvlrdesconto),$sb,0,"L",0);
+  $this->objpdf->cell(50,5,"R$ ".trim((string) $this->iptuvlrdesconto),$sb,0,"L",0);
 
   $this->objpdf->SetFont('Times', 'B', 12);
   $this->objpdf->cell(50,5,"Alíquota : ",$sb,0,"R",0);

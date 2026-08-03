@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_fiscal_classe.php"));
 include(modification("classes/db_fiscaltipo_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clfiscal = new cl_fiscal;
 $clfiscaltipo = new cl_fiscaltipo;
 $db_opcao = 1;
@@ -82,9 +82,9 @@ if($clfiscaltipo->numrows > 0){
 $result = $clfiscal->sql_record($clfiscal->sql_query("","*",""," y30_dtvenc is not null and y30_codnoti = $y30_codnoti"));
 if($clfiscal->numrows > 0){
   db_fieldsmemory($result,0);
-  $dia = substr($y30_dtvenc,8,2);
-  $mes = substr($y30_dtvenc,5,2);
-  $ano = substr($y30_dtvenc,0,4);
+  $dia = substr((string) $y30_dtvenc,8,2);
+  $mes = substr((string) $y30_dtvenc,5,2);
+  $ano = substr((string) $y30_dtvenc,0,4);
   $y30_dtvenc_dia = $dia;
   $y30_dtvenc_mes = $mes;
   $y30_dtvenc_ano = $ano;

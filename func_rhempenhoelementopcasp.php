@@ -33,8 +33,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhempenhoelementopcasp_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhempenhoelementopcasp = new cl_rhempenhoelementopcasp();
 
@@ -119,9 +119,9 @@ if (isset($chave_o56_codele) && !DBNumber::isInteger($chave_o56_codele)) {
            $sql = $clrhempenhoelementopcasp->sql_query("", $campos, "rh119_sequencial","");
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_rh119_sequencial)) {
-          $repassa = array("chave_rh119_sequencial" => $chave_rh119_sequencial, "chave_rh119_sequencial" => $chave_rh119_sequencial);
+          $repassa = ["chave_rh119_sequencial" => $chave_rh119_sequencial, "chave_rh119_sequencial" => $chave_rh119_sequencial];
         }
 
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

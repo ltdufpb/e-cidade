@@ -70,7 +70,7 @@ class SessaoServidor extends Model
     public function dadosServidor()
     {
         return $this->hasOne(
-            'App\Domain\RecursosHumanos\Pessoal\Model\Jetom\ComissaoServidor',
+            \App\Domain\RecursosHumanos\Pessoal\Model\Jetom\ComissaoServidor::class,
             'rh245_sequencial',
             'rh248_servidor'
         );

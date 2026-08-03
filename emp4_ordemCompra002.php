@@ -63,7 +63,7 @@ $clempempenholiberado = new cl_empempenholiberado;
 $clcgm					      = new cl_cgm;
 $clmatordemmail       = new cl_matordemmail;
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $oGet      = db_utils::Postmemory($_GET);
 $oPost     = db_utils::Postmemory($_POST);
 
@@ -263,7 +263,7 @@ if (isset($incluir)){
   	$headers  = "Content-Type:text/html;";  	  	
 		$objteste = new libdocumento(1750);
 		$corpo    = $objteste->emiteDocHTML();
-  	$mail     = mail($z01_email,"Ordem de Compra Nº $codigo",$corpo,$headers);
+  	$mail     = mail((string) $z01_email,"Ordem de Compra Nº $codigo",$corpo,$headers);
   	if ($mail){
   		db_msgbox("E-mail enviado com sucesso!!");  		
   	}else{

@@ -69,7 +69,7 @@ try {
 
     	if(!$rsDAOCertidao){
     		 
-    		$oMensagem = (object)array('sErro'=>pg_last_error());
+    		$oMensagem = (object)['sErro'=>pg_last_error()];
     		throw new DBException( _M( MENSAGENS . 'erro_buscar_dados_certidao') );
     	}
     	 
@@ -98,7 +98,7 @@ try {
     	
     	if(!$rsDAOCertidao){
     	
-    		$oMensagem = (object)array('sErro'=>pg_last_error());
+    		$oMensagem = (object)['sErro'=>pg_last_error()];
     		throw new DBException( _M( MENSAGENS . 'erro_buscar_dados_certidao') );
     	}
     	

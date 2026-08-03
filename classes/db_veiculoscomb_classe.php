@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE veiculoscomb
 class cl_veiculoscomb { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ve06_sequencial = 0; 
-   var $ve06_veiccadcomb = 0; 
-   var $ve06_veiculos = 0; 
-   var $ve06_padrao = 'f'; 
+   public $ve06_sequencial = 0; 
+   public $ve06_veiccadcomb = 0; 
+   public $ve06_veiculos = 0; 
+   public $ve06_padrao = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ve06_sequencial = int4 = Cód. Sequencial 
                  ve06_veiccadcomb = int4 = Combústivel 
                  ve06_veiculos = int4 = Veiculo 
                  ve06_padrao = bool = Padrão 
                  ";
    //funcao construtor da classe 
-   function cl_veiculoscomb() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("veiculoscomb"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_veiculoscomb {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ve06_sequencial = pg_result($result,0,0); 
+       $this->ve06_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from veiculoscomb_ve06_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ve06_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ve06_sequencial)){
          $this->erro_sql = " Campo ve06_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_veiculoscomb {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Combustivel de veiculos ($this->ve06_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Combustivel de veiculos já Cadastrado";
@@ -180,13 +180,13 @@ class cl_veiculoscomb {
      $resaco = $this->sql_record($this->sql_query_file($this->ve06_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,10981,'$this->ve06_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1894,10981,'','".AddSlashes(pg_result($resaco,0,'ve06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1894,10982,'','".AddSlashes(pg_result($resaco,0,'ve06_veiccadcomb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1894,10983,'','".AddSlashes(pg_result($resaco,0,'ve06_veiculos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1894,10984,'','".AddSlashes(pg_result($resaco,0,'ve06_padrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1894,10981,'','".AddSlashes(pg_fetch_result($resaco,0,'ve06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1894,10982,'','".AddSlashes(pg_fetch_result($resaco,0,'ve06_veiccadcomb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1894,10983,'','".AddSlashes(pg_fetch_result($resaco,0,'ve06_veiculos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1894,10984,'','".AddSlashes(pg_fetch_result($resaco,0,'ve06_padrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_veiculoscomb {
       $this->atualizacampos();
      $sql = " update veiculoscomb set ";
      $virgula = "";
-     if(trim($this->ve06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve06_sequencial"])){ 
+     if(trim((string) $this->ve06_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve06_sequencial"])){ 
        $sql  .= $virgula." ve06_sequencial = $this->ve06_sequencial ";
        $virgula = ",";
-       if(trim($this->ve06_sequencial) == null ){ 
+       if(trim((string) $this->ve06_sequencial) == null ){ 
          $this->erro_sql = " Campo Cód. Sequencial nao Informado.";
          $this->erro_campo = "ve06_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_veiculoscomb {
          return false;
        }
      }
-     if(trim($this->ve06_veiccadcomb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve06_veiccadcomb"])){ 
+     if(trim((string) $this->ve06_veiccadcomb)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve06_veiccadcomb"])){ 
        $sql  .= $virgula." ve06_veiccadcomb = $this->ve06_veiccadcomb ";
        $virgula = ",";
-       if(trim($this->ve06_veiccadcomb) == null ){ 
+       if(trim((string) $this->ve06_veiccadcomb) == null ){ 
          $this->erro_sql = " Campo Combústivel nao Informado.";
          $this->erro_campo = "ve06_veiccadcomb";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_veiculoscomb {
          return false;
        }
      }
-     if(trim($this->ve06_veiculos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve06_veiculos"])){ 
+     if(trim((string) $this->ve06_veiculos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve06_veiculos"])){ 
        $sql  .= $virgula." ve06_veiculos = $this->ve06_veiculos ";
        $virgula = ",";
-       if(trim($this->ve06_veiculos) == null ){ 
+       if(trim((string) $this->ve06_veiculos) == null ){ 
          $this->erro_sql = " Campo Veiculo nao Informado.";
          $this->erro_campo = "ve06_veiculos";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_veiculoscomb {
          return false;
        }
      }
-     if(trim($this->ve06_padrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve06_padrao"])){ 
+     if(trim((string) $this->ve06_padrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ve06_padrao"])){ 
        $sql  .= $virgula." ve06_padrao = '$this->ve06_padrao' ";
        $virgula = ",";
-       if(trim($this->ve06_padrao) == null ){ 
+       if(trim((string) $this->ve06_padrao) == null ){ 
          $this->erro_sql = " Campo Padrão nao Informado.";
          $this->erro_campo = "ve06_padrao";
          $this->erro_banco = "";
@@ -258,17 +258,17 @@ class cl_veiculoscomb {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10981,'$this->ve06_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ve06_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1894,10981,'".AddSlashes(pg_result($resaco,$conresaco,'ve06_sequencial'))."','$this->ve06_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1894,10981,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ve06_sequencial'))."','$this->ve06_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ve06_veiccadcomb"]))
-           $resac = db_query("insert into db_acount values($acount,1894,10982,'".AddSlashes(pg_result($resaco,$conresaco,'ve06_veiccadcomb'))."','$this->ve06_veiccadcomb',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1894,10982,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ve06_veiccadcomb'))."','$this->ve06_veiccadcomb',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ve06_veiculos"]))
-           $resac = db_query("insert into db_acount values($acount,1894,10983,'".AddSlashes(pg_result($resaco,$conresaco,'ve06_veiculos'))."','$this->ve06_veiculos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1894,10983,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ve06_veiculos'))."','$this->ve06_veiculos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ve06_padrao"]))
-           $resac = db_query("insert into db_acount values($acount,1894,10984,'".AddSlashes(pg_result($resaco,$conresaco,'ve06_padrao'))."','$this->ve06_padrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1894,10984,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ve06_padrao'))."','$this->ve06_padrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -313,13 +313,13 @@ class cl_veiculoscomb {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10981,'$ve06_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1894,10981,'','".AddSlashes(pg_result($resaco,$iresaco,'ve06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1894,10982,'','".AddSlashes(pg_result($resaco,$iresaco,'ve06_veiccadcomb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1894,10983,'','".AddSlashes(pg_result($resaco,$iresaco,'ve06_veiculos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1894,10984,'','".AddSlashes(pg_result($resaco,$iresaco,'ve06_padrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1894,10981,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ve06_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1894,10982,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ve06_veiccadcomb'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1894,10983,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ve06_veiculos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1894,10984,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ve06_padrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from veiculoscomb
@@ -379,7 +379,7 @@ class cl_veiculoscomb {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:veiculoscomb";
@@ -393,7 +393,7 @@ class cl_veiculoscomb {
    function sql_query ( $ve06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,7 +429,7 @@ class cl_veiculoscomb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -441,7 +441,7 @@ class cl_veiculoscomb {
    function sql_query_comb ( $ve06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -477,7 +477,7 @@ class cl_veiculoscomb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -489,7 +489,7 @@ class cl_veiculoscomb {
    function sql_query_file ( $ve06_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -510,7 +510,7 @@ class cl_veiculoscomb {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

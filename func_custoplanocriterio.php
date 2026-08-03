@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_custoplanocriterio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcustoplanocriterio = new cl_custoplanocriterio;
 $clcustoplanocriterio->rotulo->label("cc07_sequencial");
 $clcustoplanocriterio->rotulo->label("cc07_custocriteriorateio");
@@ -98,9 +98,9 @@ $clcustoplanocriterio->rotulo->label("cc07_custocriteriorateio");
         }else{
            $sql = $clcustoplanocriterio->sql_query("",$campos,"cc07_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cc07_custocriteriorateio)){
-          $repassa = array("chave_cc07_sequencial"=>$chave_cc07_sequencial,"chave_cc07_custocriteriorateio"=>$chave_cc07_custocriteriorateio);
+          $repassa = ["chave_cc07_sequencial"=>$chave_cc07_sequencial,"chave_cc07_custocriteriorateio"=>$chave_cc07_custocriteriorateio];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

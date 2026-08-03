@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitformaavaliacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabitformaavaliacao = new cl_habitformaavaliacao;
 $clhabitformaavaliacao->rotulo->label("ht07_sequencial");
 $clhabitformaavaliacao->rotulo->label("ht07_descricao");
@@ -98,9 +98,9 @@ $clhabitformaavaliacao->rotulo->label("ht07_descricao");
         }else{
            $sql = $clhabitformaavaliacao->sql_query("",$campos,"ht07_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ht07_descricao)){
-          $repassa = array("chave_ht07_sequencial"=>$chave_ht07_sequencial,"chave_ht07_descricao"=>$chave_ht07_descricao);
+          $repassa = ["chave_ht07_sequencial"=>$chave_ht07_sequencial,"chave_ht07_descricao"=>$chave_ht07_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

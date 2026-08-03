@@ -40,13 +40,13 @@ require_once(modification("classes/db_recparprocdiver_classe.php"));
 $clprocdiver       = new cl_procdiver;
 $clrecparprocdiver = new cl_recparprocdiver;
 
-$oGet              = db_utils::postMemory($HTTP_GET_VARS);
-$oPost             = db_utils::postMemory($HTTP_POST_VARS);
+$oGet              = db_utils::postMemory($_GET);
+$oPost             = db_utils::postMemory($_POST);
                    
 $db_opcao          = 33;
 $db_botao          = false;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 if ( isset($oPost->excluir) ) {
   

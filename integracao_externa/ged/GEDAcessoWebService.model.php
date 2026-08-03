@@ -47,7 +47,7 @@ class GEDAcessoWebService {
     $oJson                       = new Services_JSON();
     $sDadosJson                  = $oJson->encode($aDadosArquivo);
     $oConfiguracaoGED            = GerenciadorEletronicoDocumentoConfiguracao::getInstance();
-    $aParametrosSoap             = array();
+    $aParametrosSoap             = [];
     $aParametrosSoap['uri']      = $oConfiguracaoGED->getUriWebService();
     $aParametrosSoap['location'] = $oConfiguracaoGED->getPathWebService();
 

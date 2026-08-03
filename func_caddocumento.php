@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_caddocumento_classe.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clcaddocumento = new cl_caddocumento;
 $clcaddocumento->rotulo->label("db44_sequencial");
@@ -78,7 +78,7 @@ $clcaddocumento->rotulo->label("db44_sequencial");
         <td>
         <?php
 
-        $aWhere     = array( "db44_sequencial < 3000000" );
+        $aWhere     = [ "db44_sequencial < 3000000" ];
         $sOrdenacao = "db44_sequencial";
 
         if( !isset( $pesquisa_chave ) ) {
@@ -98,9 +98,9 @@ $clcaddocumento->rotulo->label("db44_sequencial");
             $aWhere[] = "db44_sequencial = {$chave_db44_sequencial}";
           }
 
-          $repassa = array();
+          $repassa = [];
           if( isset( $chave_db44_sequencial ) ) {
-            $repassa = array( "chave_db44_sequencial" => $chave_db44_sequencial );
+            $repassa = [ "chave_db44_sequencial" => $chave_db44_sequencial ];
           }
 
           $sWhere = implode( ' AND ', $aWhere );

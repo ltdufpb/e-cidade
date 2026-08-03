@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_atualiza_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsau_atualiza = new cl_sau_atualiza;
 $clsau_atualiza->rotulo->label("s100_i_codigo");
 $clsau_atualiza->rotulo->label("s100_i_codigo");
@@ -98,9 +98,9 @@ $clsau_atualiza->rotulo->label("s100_i_codigo");
         }else{
            $sql = $clsau_atualiza->sql_query("",$campos,"s100_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_s100_i_codigo)){
-          $repassa = array("chave_s100_i_codigo"=>$chave_s100_i_codigo,"chave_s100_i_codigo"=>$chave_s100_i_codigo);
+          $repassa = ["chave_s100_i_codigo"=>$chave_s100_i_codigo,"chave_s100_i_codigo"=>$chave_s100_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

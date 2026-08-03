@@ -34,10 +34,10 @@ require_once(modification('libs/JSON.php'));
 require_once(modification('libs/db_utils.php'));
 
 $oJson = new services_json();
-$sName = html_entity_decode(crossUrlDecode($_POST['string']));
+$sName = html_entity_decode((string) crossUrlDecode($_POST['string']));
 
 $sCampos  = " distinct sd70_i_codigo as cod, trim(sd70_c_nome) as label ";
-$aWhere   = array();
+$aWhere   = [];
 $aWhere[] = " trim(sd70_c_nome) like upper('%{$sName}%') ";
 
 $oDaoSauCid = new cl_sau_cid();
@@ -45,7 +45,7 @@ $sSqlSauCid = $oDaoSauCid->sql_query_file(null, $sCampos, "label", implode(" and
 $rsSauCid   = db_query($sSqlSauCid);
 $iLinhas    = pg_num_rows($rsSauCid);
 
-$aRetorno = array();
+$aRetorno = [];
 if ($iLinhas > 0) {
   $aRetorno = db_utils::getCollectionByRecord($rsSauCid, false, false, true);
 }
@@ -56,8 +56,8 @@ echo $oJson->encode($aRetorno);
 function crossUrlDecode($sSource) {
 
   // Troco os caracteres especiais por pelo coringa
-  $aOrig   = array('á', 'é', 'í', 'ó', 'ú', 'â', 'ê', 'ô', 'ã', 'õ', 'à', 'è', 'ì', 'ò', 'ù', 'ç',
+  $aOrig   = ['á', 'é', 'í', 'ó', 'ú', 'â', 'ê', 'ô', 'ã', 'õ', 'à', 'è', 'ì', 'ò', 'ù', 'ç',
     'Á', 'É', 'Í', 'Ó', 'Ú', 'Â', 'Ê', 'Ô', 'Ã', 'Õ', 'À', 'È', 'Ì', 'Ò', 'Ù', 'Ç'
-  );
+  ];
   return str_replace($aOrig, '_', mb_convert_encoding($sSource, "ISO-8859-1", "UTF-8"));
 }

@@ -127,7 +127,7 @@ db_textarea('at74_obs',4,70,$Iat74_obs,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("at74_sequencial"=>@$at74_sequencial);
+	 $chavepri= ["at74_sequencial"=>@$at74_sequencial];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clclientesmodulos->sql_query(null,"*","nome_modulo"," at74_codcli = $at74_codcli ");
 	 $cliframe_alterar_excluir->campos  ="at74_sequencial,at74_id_item,nome_modulo,at74_data,at74_obs";

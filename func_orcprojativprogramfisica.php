@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_orcprojativprogramfisica_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clorcprojativprogramfisica = new cl_orcprojativprogramfisica;
 $clorcprojativprogramfisica->rotulo->label("o28_sequencial");
 $clorcprojativprogramfisica->rotulo->label("o28_orcprojativ");
@@ -98,9 +98,9 @@ $clorcprojativprogramfisica->rotulo->label("o28_orcprojativ");
         }else{
            $sql = $clorcprojativprogramfisica->sql_query("",$campos,"o28_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_o28_orcprojativ)){
-          $repassa = array("chave_o28_sequencial"=>$chave_o28_sequencial,"chave_o28_orcprojativ"=>$chave_o28_orcprojativ);
+          $repassa = ["chave_o28_sequencial"=>$chave_o28_sequencial,"chave_o28_orcprojativ"=>$chave_o28_orcprojativ];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

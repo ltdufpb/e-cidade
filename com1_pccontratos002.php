@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='com1_pccontratos005.php?db_opcao=2'</script>";
   exit;
@@ -40,8 +40,8 @@ include(modification("classes/db_pccontrdep_classe.php"));
 include(modification("classes/db_pccontrlic_classe.php"));
 include(modification("classes/db_pccontrdot_classe.php"));
 include(modification("classes/db_pccontrcompra_classe.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clpccontrcompra = new cl_pccontrcompra;
 $clpccontrdot = new cl_pccontrdot;
 $clpccontrlic = new cl_pccontrlic;

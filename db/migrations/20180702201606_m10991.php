@@ -6,7 +6,7 @@ class M10991 extends PostgresMigration
 {
     public function up()
     {
-        $aSql = array();
+        $aSql = [];
 
         $aSql[] = "insert into db_sysarquivo values (1010293, 'tomador', 'Tabela responsavel por guardar a empresa tomadora onde o servidor esta alocado', '', '2018-07-02', 'Tomador', 0, 'f', 'f', 'f', 'f' );";
         $aSql[] = "insert into db_sysarqmod values (28,1010293);";
@@ -41,7 +41,7 @@ class M10991 extends PostgresMigration
 
     public function down()
     {
-        $aSql = array();
+        $aSql = [];
 
         $aSql[] = "delete from db_sysprikey where codarq = 1010293;";
         $aSql[] = "DELETE FROM db_sysforkey  WHERE codarq IN (1010293);";

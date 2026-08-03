@@ -33,19 +33,19 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_face_classe.php"));
 include(modification("classes/db_iptunaogeracarnesetqua_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clface = new cl_face;
 $cliptunaogeracarnesetqua = new cl_iptunaogeracarnesetqua;
 $db_opcao=1;
 $db_botao=true;		
 if (isset($atualizar)&&$atualizar!=""){
-	$arr_dados = split("#",$chaves);
+	$arr_dados = preg_split("#\\##m",$chaves);
 	$sqlerro=false;
 	db_inicio_transacao();
 	for($w=0;$w<count($arr_dados);$w++){
-		$arr_info = split("-",$arr_dados[$w]);
+		$arr_info = preg_split("#\\-#m",(string) $arr_dados[$w]);
 		$face = $arr_info[0];
 		$setor = $arr_info[1];
 		$quadra = $arr_info[2];

@@ -56,27 +56,27 @@ $db_opcao = 1;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
      
-   $clcriaabas->identifica = array("cflicita"       => "Modalidades",
+   $clcriaabas->identifica = ["cflicita"       => "Modalidades",
                                    "pccflicitapar"  => "Numeração",
                                    "template"       => "Modelo Editais",
                                    "templateata"    => "Modelo Atas",
                                    "templateminuta" => "Modelo Minutas",
-                                   "faixavalores"   => "Faixa de Valores");   
+                                   "faixavalores"   => "Faixa de Valores"];   
 	 
-	 $clcriaabas->src        = array("cflicita" => "lic1_cflicita006.php");
+	 $clcriaabas->src        = ["cflicita" => "lic1_cflicita006.php"];
 	 
-   $clcriaabas->sizecampo  = array("cflicita"       => "20",
+   $clcriaabas->sizecampo  = ["cflicita"       => "20",
                                    "pccflicitapar"  => "20",
                                    "template"       => "20",
                                    "templateata"    => "20",
                                    "templateminuta" => "20",
-                                   "faixavalores"   => "20");
+                                   "faixavalores"   => "20"];
 	 
-   $clcriaabas->disabled   = array("pccflicitapar"  => "true",
+   $clcriaabas->disabled   = ["pccflicitapar"  => "true",
                                    "template"       => "true",
                                    "templateata"    => "true",
                                    "templateminuta" => "true",
-                                   "faixavalores"   => "true"); 
+                                   "faixavalores"   => "true"]; 
 	 
 	 $clcriaabas->cria_abas(); 
        ?> 

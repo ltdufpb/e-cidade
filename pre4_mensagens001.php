@@ -35,7 +35,7 @@ try {
   $iInstituicao  = db_getsession("DB_instit");
   $clconfigdbpref = new cl_configdbpref();
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
   $rsParametro = db_query(
     $clconfigdbpref->sql_query_file($iInstituicao,"w13_exigecpfcnpjmatricula,w13_exigecpfcnpjinscricao")
@@ -46,10 +46,10 @@ try {
   }
 
   if ( pg_num_rows($rsParametro) == 0 ) {
-    $oRetorno    = (object)array(
+    $oRetorno    = (object)[
       "w13_exigecpfcnpjinscricao" => "f",
       "w13_exigecpfcnpjmatricula" => "f"
-    );
+    ];
   } else {
     $oRetorno    = db_utils::fieldsMemory($rsParametro,0);
   }
@@ -67,7 +67,7 @@ try {
   db_msgbox($eErro->getMessage());
 }
 
-if(isset($HTTP_POST_VARS["enviar"])) {
+if(isset($_POST["enviar"])) {
 
   $oPost = db_utils::postMemory($_POST);
   $sMensagemCabecalhoRodape = $oPost->RG_cabrod;
@@ -118,7 +118,7 @@ if(isset($HTTP_POST_VARS["enviar"])) {
 <link href="estilos.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
 <?php 
-$Rod    = isset($Rod) ? $Rod : '';
+$Rod ??= '';
 $result = db_query("select mens,alinhamento from db_confmensagem where instit = {$iInstituicao} and cod = '{$Cab}' or cod = '{$Rod}' order by cod");
 if (!$result || pg_num_rows($result) == 0 ) {
   $mens        = '';
@@ -129,10 +129,10 @@ echo "
 function js_iniciar() {
   var F = document.form1;
 
-  AlinhamentoCabecalho = '".@str_replace("\r"," ",str_replace("\n"," ",pg_result($result,0,1)))."';
-  AlinhamentoRodape = '".@str_replace("\r"," ",str_replace("\n"," ",pg_result($result,1,1)))."';
-  TextoCabecalho = '".@str_replace("\r"," ",str_replace("\n"," ",pg_result($result,0,0)))."';
-  TextoRodape = '".@str_replace("\r"," ",str_replace("\n"," ",pg_result($result,1,0)))."';
+  AlinhamentoCabecalho = '".@str_replace("\r"," ",str_replace("\n"," ",pg_fetch_result($result,0,1)))."';
+  AlinhamentoRodape = '".@str_replace("\r"," ",str_replace("\n"," ",pg_fetch_result($result,1,1)))."';
+  TextoCabecalho = '".@str_replace("\r"," ",str_replace("\n"," ",pg_fetch_result($result,0,0)))."';
+  TextoRodape = '".@str_replace("\r"," ",str_replace("\n"," ",pg_fetch_result($result,1,0)))."';
 
   if(TextoRodape == '') {
     F.RG_cabrod[0].disabled = true;
@@ -364,7 +364,7 @@ fieldset {
   <tr>
     <td height="430" align="center" valign="top" bgcolor="#CCCCCC">
 <?php 
-echo "<br /> <b><u>Mensagem de Cabeçalho e Rodapé do Link ".ucfirst(substr($Cab,0,(strlen($Cab) - 4)))."</u></b>\n";
+echo "<br /> <b><u>Mensagem de Cabeçalho e Rodapé do Link ".ucfirst(substr((string) $Cab,0,(strlen((string) $Cab) - 4)))."</u></b>\n";
 ?>
 <form method="post" name="form1" onSubmit="js_submeter()">
         <table width="72%" border="0" cellspacing="0" cellpadding="0">
@@ -403,10 +403,10 @@ echo "<br /> <b><u>Mensagem de Cabeçalho e Rodapé do Link ".ucfirst(substr($Cab,
                     </fieldset></td>
                   <td width="55%" nowrap> <fieldset>
                     <legend>Mensagem de:</legend>
-                    <input name="RG_cabrod" id="cabro1" type="radio" value="CB" onClick="js_cabrod()" <?php  echo isset($HTTP_POST_VARS["enviar"])?(@$HTTP_POST_VARS["RG_cabrod"]=="CB"?"checked":""):"checked"; ?>>
+                    <input name="RG_cabrod" id="cabro1" type="radio" value="CB" onClick="js_cabrod()" <?php  echo isset($_POST["enviar"])?(@$_POST["RG_cabrod"]=="CB"?"checked":""):"checked"; ?>>
                     <label for="cabro1">Cabeçalho</label>
                     <br>
-                    <input type="radio" id="cabrod2" name="RG_cabrod" value="RP" onClick="js_cabrod()" <?php  echo @$HTTP_POST_VARS["RG_cabrod"]=="RP"?"checked":""; ?>>
+                    <input type="radio" id="cabrod2" name="RG_cabrod" value="RP" onClick="js_cabrod()" <?php  echo @$_POST["RG_cabrod"]=="RP"?"checked":""; ?>>
                     <label for="cabrod2">Rodapé</label>
                     <br>
                     </fieldset></td>
@@ -512,12 +512,12 @@ echo "<br /> <b><u>Mensagem de Cabeçalho e Rodapé do Link ".ucfirst(substr($Cab,
     global $cor_div;
     global $nome_help;
     global $texto_help;
-    global $HTTP_ENV_VARS;
+    global $_ENV;
 
-    $sPathInfo  = isset($_ENV['PATH_INFO']) ? $_ENV['PATH_INFO'] : null; 
-    $uo         = strrpos($sPathInfo, "/") + 1;
-    $ponto      = strpos( $sPathInfo, ".");
-    $mens       = substr( $sPathInfo, $uo, $ponto - $uo);
+    $sPathInfo  = $_ENV['PATH_INFO'] ?? null; 
+    $uo         = strrpos((string) $sPathInfo, "/") + 1;
+    $ponto      = strpos( (string) $sPathInfo, ".");
+    $mens       = substr( (string) $sPathInfo, $uo, $ponto - $uo);
     $result     = db_query("select * from db_confmensagem where cod = '".$mens."_help' and instit = $iInstituicao");
 
     if (!$result) {
@@ -527,13 +527,13 @@ echo "<br /> <b><u>Mensagem de Cabeçalho e Rodapé do Link ".ucfirst(substr($Cab,
     if ( pg_num_rows($result) > 0 ) {
 
 
-      $nome_help  = pg_result($result,0,"cod");
-      $texto_help = pg_result($result,0,"mens");
-      $param_help = explode("&",pg_result($result,0,"alinhamento"));
-      $larg_div   = isset($param_help[0]) ? $param_help[0] : null;
-      $alt_div    = isset($param_help[1]) ? $param_help[1] : null;
-      $x_div      = isset($param_help[2]) ? $param_help[2] : null;
-      $y_div      = isset($param_help[3]) ? $param_help[3] : null;
+      $nome_help  = pg_fetch_result($result,0,"cod");
+      $texto_help = pg_fetch_result($result,0,"mens");
+      $param_help = explode("&",pg_fetch_result($result,0,"alinhamento"));
+      $larg_div   = $param_help[0] ?? null;
+      $alt_div    = $param_help[1] ?? null;
+      $x_div      = $param_help[2] ?? null;
+      $y_div      = $param_help[3] ?? null;
       $cor_div    = isset($param_help[3]) ? $param_help[4] : null;
       return;
     }

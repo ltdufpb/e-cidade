@@ -72,7 +72,7 @@ class RegraEmLiquidacao implements IRegraLancamentoContabil
             $oDadosTransacao = db_utils::fieldsMemory($rsTransacao, 0);
             $oRegraLancamentoContabil = new RegraLancamentoContabil($oDadosTransacao->c47_seqtranslr);
         } else {
-            $aDocumentosLiquidacaoRP = array(33, 34);
+            $aDocumentosLiquidacaoRP = [33, 34];
             $this->iCodigoDocumento = $iCodigoDocumento;
             $iAnoSessao = db_getsession("DB_anousu");
             $oDaoTransacao = new cl_contranslr();
@@ -187,7 +187,7 @@ class RegraEmLiquidacao implements IRegraLancamentoContabil
     {
 
 
-        if (in_array($this->iCodigoDocumento, array(33, 34))) {
+        if (in_array($this->iCodigoDocumento, [33, 34])) {
 
 
             $sEstrutural = $oContaOrcamento->getEstrutural();

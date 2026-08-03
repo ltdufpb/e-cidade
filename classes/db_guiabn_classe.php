@@ -29,38 +29,38 @@
 //CLASSE DA ENTIDADE guiabn
 class cl_guiabn { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $anousu = 0; 
-   var $cgcter = null; 
-   var $cgcte = null; 
-   var $ref = null; 
-   var $dti_dia = null; 
-   var $dti_mes = null; 
-   var $dti_ano = null; 
-   var $dti = null; 
-   var $dtf_dia = null; 
-   var $dtf_mes = null; 
-   var $dtf_ano = null; 
-   var $dtf = null; 
-   var $dtve_dia = null; 
-   var $dtve_mes = null; 
-   var $dtve_ano = null; 
-   var $dtve = null; 
-   var $valor = 0; 
+   public $anousu = 0; 
+   public $cgcter = null; 
+   public $cgcte = null; 
+   public $ref = null; 
+   public $dti_dia = null; 
+   public $dti_mes = null; 
+   public $dti_ano = null; 
+   public $dti = null; 
+   public $dtf_dia = null; 
+   public $dtf_mes = null; 
+   public $dtf_ano = null; 
+   public $dtf = null; 
+   public $dtve_dia = null; 
+   public $dtve_mes = null; 
+   public $dtve_ano = null; 
+   public $dtve = null; 
+   public $valor = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  anousu = int4 = Exercício 
                  cgcter = char(3) = Codigo do Município 
                  cgcte = char(7) = Cadastro no Tesouro do Estado 
@@ -71,10 +71,10 @@ class cl_guiabn {
                  valor = float8 = valor 
                  ";
    //funcao construtor da classe 
-   function cl_guiabn() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("guiabn"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -218,7 +218,7 @@ class cl_guiabn {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Guiabn () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Guiabn já Cadastrado";
@@ -245,10 +245,10 @@ class cl_guiabn {
       $this->atualizacampos();
      $sql = " update guiabn set ";
      $virgula = "";
-     if(trim($this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
+     if(trim((string) $this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
        $sql  .= $virgula." anousu = $this->anousu ";
        $virgula = ",";
-       if(trim($this->anousu) == null ){ 
+       if(trim((string) $this->anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "anousu";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_guiabn {
          return false;
        }
      }
-     if(trim($this->cgcter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcter"])){ 
+     if(trim((string) $this->cgcter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcter"])){ 
        $sql  .= $virgula." cgcter = '$this->cgcter' ";
        $virgula = ",";
-       if(trim($this->cgcter) == null ){ 
+       if(trim((string) $this->cgcter) == null ){ 
          $this->erro_sql = " Campo Codigo do Município nao Informado.";
          $this->erro_campo = "cgcter";
          $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_guiabn {
          return false;
        }
      }
-     if(trim($this->cgcte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcte"])){ 
+     if(trim((string) $this->cgcte)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcte"])){ 
        $sql  .= $virgula." cgcte = '$this->cgcte' ";
        $virgula = ",";
-       if(trim($this->cgcte) == null ){ 
+       if(trim((string) $this->cgcte) == null ){ 
          $this->erro_sql = " Campo Cadastro no Tesouro do Estado nao Informado.";
          $this->erro_campo = "cgcte";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_guiabn {
          return false;
        }
      }
-     if(trim($this->ref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ref"])){ 
+     if(trim((string) $this->ref)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ref"])){ 
        $sql  .= $virgula." ref = '$this->ref' ";
        $virgula = ",";
-       if(trim($this->ref) == null ){ 
+       if(trim((string) $this->ref) == null ){ 
          $this->erro_sql = " Campo Referência nao Informado.";
          $this->erro_campo = "ref";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_guiabn {
          return false;
        }
      }
-     if(trim($this->dti)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dti_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dti_dia"] !="") ){ 
+     if(trim((string) $this->dti)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dti_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dti_dia"] !="") ){ 
        $sql  .= $virgula." dti = '$this->dti' ";
        $virgula = ",";
-       if(trim($this->dti) == null ){ 
+       if(trim((string) $this->dti) == null ){ 
          $this->erro_sql = " Campo Data Inicial nao Informado.";
          $this->erro_campo = "dti_dia";
          $this->erro_banco = "";
@@ -313,7 +313,7 @@ class cl_guiabn {
        if(isset($GLOBALS["HTTP_POST_VARS"]["dti_dia"])){ 
          $sql  .= $virgula." dti = null ";
          $virgula = ",";
-         if(trim($this->dti) == null ){ 
+         if(trim((string) $this->dti) == null ){ 
            $this->erro_sql = " Campo Data Inicial nao Informado.";
            $this->erro_campo = "dti_dia";
            $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_guiabn {
          }
        }
      }
-     if(trim($this->dtf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dtf_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dtf_dia"] !="") ){ 
+     if(trim((string) $this->dtf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dtf_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dtf_dia"] !="") ){ 
        $sql  .= $virgula." dtf = '$this->dtf' ";
        $virgula = ",";
-       if(trim($this->dtf) == null ){ 
+       if(trim((string) $this->dtf) == null ){ 
          $this->erro_sql = " Campo Data Final nao Informado.";
          $this->erro_campo = "dtf_dia";
          $this->erro_banco = "";
@@ -340,7 +340,7 @@ class cl_guiabn {
        if(isset($GLOBALS["HTTP_POST_VARS"]["dtf_dia"])){ 
          $sql  .= $virgula." dtf = null ";
          $virgula = ",";
-         if(trim($this->dtf) == null ){ 
+         if(trim((string) $this->dtf) == null ){ 
            $this->erro_sql = " Campo Data Final nao Informado.";
            $this->erro_campo = "dtf_dia";
            $this->erro_banco = "";
@@ -351,10 +351,10 @@ class cl_guiabn {
          }
        }
      }
-     if(trim($this->dtve)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dtve_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dtve_dia"] !="") ){ 
+     if(trim((string) $this->dtve)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dtve_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["dtve_dia"] !="") ){ 
        $sql  .= $virgula." dtve = '$this->dtve' ";
        $virgula = ",";
-       if(trim($this->dtve) == null ){ 
+       if(trim((string) $this->dtve) == null ){ 
          $this->erro_sql = " Campo Data do Vencimento nao Informado.";
          $this->erro_campo = "dtve_dia";
          $this->erro_banco = "";
@@ -367,7 +367,7 @@ class cl_guiabn {
        if(isset($GLOBALS["HTTP_POST_VARS"]["dtve_dia"])){ 
          $sql  .= $virgula." dtve = null ";
          $virgula = ",";
-         if(trim($this->dtve) == null ){ 
+         if(trim((string) $this->dtve) == null ){ 
            $this->erro_sql = " Campo Data do Vencimento nao Informado.";
            $this->erro_campo = "dtve_dia";
            $this->erro_banco = "";
@@ -378,10 +378,10 @@ class cl_guiabn {
          }
        }
      }
-     if(trim($this->valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valor"])){ 
+     if(trim((string) $this->valor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valor"])){ 
        $sql  .= $virgula." valor = $this->valor ";
        $virgula = ",";
-       if(trim($this->valor) == null ){ 
+       if(trim((string) $this->valor) == null ){ 
          $this->erro_sql = " Campo valor nao Informado.";
          $this->erro_campo = "valor";
          $this->erro_banco = "";
@@ -472,7 +472,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:guiabn";

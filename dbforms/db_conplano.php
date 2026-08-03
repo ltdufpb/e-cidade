@@ -26,13 +26,13 @@
  */
 
 class db_conplano {
-	var $reduzido = null;
-	var $contrapartida = null;
-	var $ano = null;
-	var $instit = null;
-	var $compara = null;
-        var $clconplanoreduz = null;
-        var $res = null;
+	public $reduzido = null;
+	public $contrapartida = null;
+	public $ano = null;
+	public $instit = null;
+	public $compara = null;
+        public $clconplanoreduz = null;
+        public $res = null;
     
 	function evento($reduzido = "", $contrapartida = "", $ano = "", $instit = "") {    
 	    global $c60_estrut;
@@ -48,14 +48,14 @@ class db_conplano {
 		                     $this->clconplanoreduz->sql_query($this->reduzido,null,"c60_estrut",null,"c61_anousu=".$this->ano."   and c61_reduz =".$this->reduzido." and c61_instit = ".$this->instit));
 		if ($this->clconplanoreduz->numrows > 0) {
 			db_fieldsmemory($this->res, 0);
-			if (substr($c60_estrut, 0, 2) == '33') {
+			if (str_starts_with((string) $c60_estrut, '33')) {
 				$this->transacao_desp_corrente();
 			} else {
-			 if (substr($c60_estrut, 0, 2) == '34') {
+			 if (str_starts_with((string) $c60_estrut, '34')) {
 			  $this->transacao_desp_capital();
 				//  }else if (substr($c60_estrut,0,1) =='4'){
 			 } else
-			  if (substr($c60_estrut, 0, 1) == '4') {
+			  if (str_starts_with((string) $c60_estrut, '4')) {
 			   $this->transacao_receita();
 			  }
 		   }

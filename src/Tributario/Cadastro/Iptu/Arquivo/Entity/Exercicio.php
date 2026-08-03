@@ -7,26 +7,26 @@ use \DateTime;
 
 final class Exercicio extends Entity
 {
-    const BRANCOS_1                = 'BRANCOS1';
-    const BRANCOS_2                = 'BRANCOS2';
-    const DESCRICAO_ISENCAO        = 'DESCRICAOISENCAO';
-    const LANCAMENTO_ISENCAO       = 'LANCAMENTOISENCAO';
-    const TOTAL_LANCADO            = 'TOTALLANCADO';
-    const QUANTIDADE_LANCADO       = 'QUANTIDADELANCADO';
-    const TOTAL_LANCADO_TAXAS      = 'TOTALLANCADOTAXAS';
-    const QUANTIDADE_LANCADO_TAXAS = 'QUANTIDADELANCADOTAXAS';
-    const VALOR_CORRIGIDO_IPTU     = 'VALORCORRIGIDOIPTU';
-    const VALOR_JUROS_IPTU         = 'VALORJUROSIPTU';
-    const VALOR_MULTA_IPTU         = 'VALORMULTAIPTU';
-    const VALOR_DESCONTO_IPTU      = 'VALORDESCONTOIPTU';
-    const VALOR_TOTAL_IPTU         = 'VALORTOTALIPTU';
-    const CODIGO_FACE              = 'CODIGOFACE';
-    const VALOR_M2_TERRENO_FACE    = 'VALORM2TERRENOFACE';
-    const VALOR_M2_CONSTRUCAO_FACE = 'VALORM2CONSTRUCAOFACE';
-    const VALOR_VENAL_TERRENO      = 'VALORVENALTERRENO';
-    const VALOR_VENAL_EDIFICACAO   = 'VALORVENALEDIFICACAO';
-    const VALOR_VENAL_TOTAL        = 'VALORVENALTOTAL';
-    const ALIQUOTA                 = 'ALIQUOTA';
+    const string BRANCOS_1                = 'BRANCOS1';
+    const string BRANCOS_2                = 'BRANCOS2';
+    const string DESCRICAO_ISENCAO        = 'DESCRICAOISENCAO';
+    const string LANCAMENTO_ISENCAO       = 'LANCAMENTOISENCAO';
+    const string TOTAL_LANCADO            = 'TOTALLANCADO';
+    const string QUANTIDADE_LANCADO       = 'QUANTIDADELANCADO';
+    const string TOTAL_LANCADO_TAXAS      = 'TOTALLANCADOTAXAS';
+    const string QUANTIDADE_LANCADO_TAXAS = 'QUANTIDADELANCADOTAXAS';
+    const string VALOR_CORRIGIDO_IPTU     = 'VALORCORRIGIDOIPTU';
+    const string VALOR_JUROS_IPTU         = 'VALORJUROSIPTU';
+    const string VALOR_MULTA_IPTU         = 'VALORMULTAIPTU';
+    const string VALOR_DESCONTO_IPTU      = 'VALORDESCONTOIPTU';
+    const string VALOR_TOTAL_IPTU         = 'VALORTOTALIPTU';
+    const string CODIGO_FACE              = 'CODIGOFACE';
+    const string VALOR_M2_TERRENO_FACE    = 'VALORM2TERRENOFACE';
+    const string VALOR_M2_CONSTRUCAO_FACE = 'VALORM2CONSTRUCAOFACE';
+    const string VALOR_VENAL_TERRENO      = 'VALORVENALTERRENO';
+    const string VALOR_VENAL_EDIFICACAO   = 'VALORVENALEDIFICACAO';
+    const string VALOR_VENAL_TOTAL        = 'VALORVENALTOTAL';
+    const string ALIQUOTA                 = 'ALIQUOTA';
 
     /**
      * @var string|null DESCRICAO DO TIPO DE ISENCAO

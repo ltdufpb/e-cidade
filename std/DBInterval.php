@@ -36,15 +36,15 @@ class DBInterval {
 
   private $sInterval = null;
 
-  protected static $aYearsString = array("year", "ano", "years", "anos");
+  protected static $aYearsString = ["year", "ano", "years", "anos"];
 
-  protected static $aMonthsString = array("mon", "mons", "month", "months", "meses", "mes");
+  protected static $aMonthsString = ["mon", "mons", "month", "months", "meses", "mes"];
 
-  protected static $aDaysString = array("day", "days", "dias", "dia");
+  protected static $aDaysString = ["day", "days", "dias", "dia"];
 
   public function __construct($sInterval = null) {
 
-    $this->sInterval = trim(strtolower($sInterval));
+    $this->sInterval = trim(strtolower((string) $sInterval));
     if ($this->validate()) {
       $this->createInterval();
     }

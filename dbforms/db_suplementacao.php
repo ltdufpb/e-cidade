@@ -53,7 +53,7 @@ require_once(modification("classes/db_orcsuplemrec_classe.php"));
 function processa_suplementacao($o46_codsup, $data, $usuario, $estorno = false) {
   $erro = false; //retorna esta variavel se algo aconteceu errado, ela ter? o conte?do = true
   $debug= false;  // veriavel que permite debug na tela
-  $matriz_dotacao=array();
+  $matriz_dotacao=[];
 
   global $fc_lancam_suplementacao, $anousu, $valor, $tipo, $dot, $codsup, $o48_tiposup, $erro, $c53_tipo, $documento_estorno,$saldoatual;
   /*
@@ -118,7 +118,7 @@ function processa_suplementacao($o46_codsup, $data, $usuario, $estorno = false) 
     db_criatabela($rval);
   }
   if ($erro == false) {
-    for ($x = 0; $x < pg_numrows($rval); $x ++) {
+    for ($x = 0; $x < pg_num_rows($rval); $x ++) {
       db_fieldsmemory($rval, $x);
       $clconlancam->c70_anousu = $anousu;
       $clconlancam->c70_data = $data;
@@ -175,8 +175,8 @@ function processa_suplementacao($o46_codsup, $data, $usuario, $estorno = false) 
                      where o70_anousu = ".db_getsession("DB_anousu")."
                        and o70_codrec = $dot";
          $resultdot = db_query($verdot);
-          if (pg_numrows($resultdot) > 0) {
-            $instit_dot = pg_result($resultdot, 0, 0);
+          if (pg_num_rows($resultdot) > 0) {
+            $instit_dot = pg_fetch_result($resultdot, 0, 0);
             $instit_atual = db_getsession("DB_instit");
           } else {
             $erro = true;
@@ -194,8 +194,8 @@ function processa_suplementacao($o46_codsup, $data, $usuario, $estorno = false) 
                      where o58_anousu = ".db_getsession("DB_anousu")."
                        and o58_coddot = $dot";
          $resultdot = db_query($verdot);
-          if (pg_numrows($resultdot) > 0) {
-            $instit_dot = pg_result($resultdot, 0, 0);
+          if (pg_num_rows($resultdot) > 0) {
+            $instit_dot = pg_fetch_result($resultdot, 0, 0);
             $instit_atual = db_getsession("DB_instit");
             $oDotacao = db_utils::fieldsMemory($resultdot, 0);
           } else {
@@ -366,8 +366,8 @@ function desprocessa_suplementacao($codsup,$anousu,$estornar=false) {
 
   $erro  = false;    // retorna esta variavel se algo aconteceu errado, ela ter? o conte?do = true
   $debug = false;  // veriavel que permite debug na tela
-  $matriz_dotacao = array ();
-  $lista_lan = array ();
+  $matriz_dotacao =  [];
+  $lista_lan =  [];
 
   global $fc_lancam_suplementacao,$matriz_dotacao,$lista_lan,$c79_codlan,$c73_coddot,$codlan,$saldoatual, $o46_tiposup;
 
@@ -573,8 +573,8 @@ function desprocessa_suplementacao($codsup,$anousu,$estornar=false) {
 function desprocessa_suplementacao2($codsup,$anousu,$estornar=false) {
   $sqlerro  = false;    // retorna esta variavel se algo aconteceu errado, ela ter? o conte?do = true
   $debug    = false;  // veriavel que permite debug na tela
-  $matriz_dotacao = array ();
-  $lista_lan = array ();
+  $matriz_dotacao =  [];
+  $lista_lan =  [];
   $anousu = db_getsession("DB_anousu");
 
   global $fc_lancam_suplementacao,$matriz_dotacao,$lista_lan,$c79_codlan,$c73_coddot,$codlan,$saldoatual;

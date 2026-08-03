@@ -6,15 +6,9 @@ use ECidade\Pdf\Pdf;
 
 class ControleDemandaReprimidaPdf extends Pdf
 {
-    /**
-     * @var array
-     */
-    private $dados;
-
-    public function __construct(array $dados)
+    public function __construct(private readonly array $dados)
     {
         parent::__construct();
-        $this->dados = $dados;
 
         $this->addTitulo('Relatório Controle de Demanda Reprimida');
     }
@@ -65,9 +59,7 @@ class ControleDemandaReprimidaPdf extends Pdf
             $totalizador = $this->totalizar($dado, $totalizador);
         }
         // garante a ordenação em ordem alfabetica
-        usort($totalizador, function ($a, $b) {
-            return strcmp($a->descricao, $b->descricao);
-        });
+        usort($totalizador, fn($a, $b) => strcmp((string) $a->descricao, (string) $b->descricao));
 
         $this->montaTotal($totalizador);
 

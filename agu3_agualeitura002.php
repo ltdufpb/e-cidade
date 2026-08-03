@@ -32,8 +32,8 @@ require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("classes/db_agualeitura_classe.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $clagualeitura = new cl_agualeitura;
 $clagualeitura->rotulo->label();
@@ -105,11 +105,11 @@ if (isset($matric) && trim($matric) != "") {
     }
     $chave_x21_mes = 1;
   }else{
-    if(trim($chave_x21_exerc) != "" && trim($chave_x21_mes) != "" && trim($chave_x21_exercfim) != "" && trim($chave_x21_mesfim) != ""){
+    if(trim((string) $chave_x21_exerc) != "" && trim($chave_x21_mes) != "" && trim((string) $chave_x21_exercfim) != "" && trim((string) $chave_x21_mesfim) != ""){
       $dbwhere.= " trim(to_char(x21_exerc,'0000'))||trim(to_char(x21_mes,'00')) between '".db_formatar($chave_x21_exerc,'s','0',4,'e',0).db_formatar($chave_x21_mes,'s','0',2,'e',0)."' and '".db_formatar($chave_x21_exercfim,'s','0',4,'e',0).db_formatar($chave_x21_mesfim,'s','0',2,'e',0)."' and ";
-    }else if(trim($chave_x21_exerc) != "" && trim($chave_x21_mes) != ""){
+    }else if(trim((string) $chave_x21_exerc) != "" && trim($chave_x21_mes) != ""){
       $dbwhere.= " trim(to_char(x21_exerc,'0000'))||trim(to_char(x21_mes,'00')) > '".db_formatar($chave_x21_exerc,'s','0',4,'e',0).db_formatar($chave_x21_mes,'s','0',2,'e',0)."' and ";
-    }else if(trim($chave_x21_exercfim) != "" && trim($chave_x21_mesfim) != ""){
+    }else if(trim((string) $chave_x21_exercfim) != "" && trim((string) $chave_x21_mesfim) != ""){
       $dbwhere.= " trim(to_char(x21_exerc,'0000'))||trim(to_char(x21_mes,'00')) < '".db_formatar($chave_x21_exercfim,'s','0',4,'e',0).db_formatar($chave_x21_mesfim,'s','0',2,'e',0)."' and ";
     }
   }

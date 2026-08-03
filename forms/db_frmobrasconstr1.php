@@ -51,8 +51,8 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("ob01_nomeobra");
 $clrotulo->label("j14_nome");
 $clrotulo->label("j13_descr");
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>location.href='pro1_obrasconstr002.php?func_alvara=1&chavepesquisa=$ob08_codconstr&chavepesquisa1=$ob08_codobra'</script>";
 }
@@ -231,7 +231,7 @@ db_inputdata('ob07_fim',@$ob07_fim_dia,@$ob07_fim_mes,@$ob07_fim_ano,true,'text'
   <tr>
     <td align="top" colspan="2">
    <?php 
-    $chavepri= array("ob08_codconstr"=>@$ob08_codconstr,"ob08_codobra"=>@$ob08_codobra);
+    $chavepri= ["ob08_codconstr"=>@$ob08_codconstr,"ob08_codobra"=>@$ob08_codobra];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="ob08_codconstr,ob08_codobra,ob01_nomeobra";
     $cliframe_alterar_excluir->sql=$clobrasconstr->sql_query("","*",""," ob08_codobra = ".@$ob08_codobra."");
@@ -370,7 +370,7 @@ function js_preenchepesquisa(chave){
   db_iframe_obrasconstr.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

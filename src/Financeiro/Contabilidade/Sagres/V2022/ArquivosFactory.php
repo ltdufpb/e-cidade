@@ -35,10 +35,8 @@ use Exception;
  */
 class ArquivosFactory
 {
-    private $ano;
-    public function __construct($ano)
+    public function __construct(private $ano)
     {
-        $this->ano = $ano;
     }
 
     /**
@@ -50,123 +48,75 @@ class ArquivosFactory
      */
     public function get($arquivo, $params, array $codigoInstituicoes, $codigoTCE)
     {
-        switch ($arquivo) {
-            case 'UnidadeOrcamentaria':
-                return new UnidadeOrcamentaria($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'Programas':
-                return new Programas($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'Acao':
-                return new Acao($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'Dotacao':
-                return new Dotacao($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'AtualizacaoOrcamentaria':
-                return new AtualizacaoOrcamentaria($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'DecretoseOficios':
-                return new DecretoseOficios($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'ReceitaPrevista':
-                return new ReceitaPrevista($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'Empenhos':
-                return new Empenhos($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'Estorno':
-                return new Estornos($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'Liquidacao':
-                return new Liquidacao($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'EstornoLiquidacao':
-                return new EstornoLiquidacao($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'Pagamentos':
-                return new Pagamentos($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'EstornoPagamento':
-                return new EstornoPagamento($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'Retencao':
-                return new Retencao($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'EstornoRetencao':
-                return new EstornoRetencao($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'ReceitaOrcamentaria':
-                return new ReceitaOrcamentaria($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'TransfRecebida':
-                return new TransfRecebida($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'TransfConcedida':
-                return new TransfConcedida($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'ReceitaExtra':
-                return new ReceitaExtra($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'DespesaExtra':
-                return new DespesaExtra($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'EstornoReceitaExtra':
-                return new EstornoReceitaExtra($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'EstornoDespesaExtra':
-                return new EstornoDespesaExtra($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'CadastroContaBancaria':
-                return new CadastroContaBancaria($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RelacionamentoCCorrenteFontePagadora':
-                return new RelacionamentoCCorrenteFontePagadora(
-                    $params,
-                    $codigoInstituicoes,
-                    $this->ano,
-                    $codigoTCE
-                );
-            case 'SaldoInicial':
-                return new SaldoInicial($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'SaldoMensal':
-                return new SaldoMensal($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'ConciliacaoBancaria':
-                return new ConciliacaoBancaria($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'PagamentosRestos':
-                return new PagamentosRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'EstornoPagamentoRestos':
-                return new EstornoPagamentoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'CancelamentoRestos':
-                return new CancelamentoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'LiquidacaoRestos':
-                return new LiquidacaoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'EstornoLiquidacaoRestos':
-                return new EstornoLiquidacaoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RetencaoRestos':
-                return new RetencaoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'EstornoRetencaoRestos':
-                return new EstornoRetencaoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'Fornecedores':
-                return new Fornecedores($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'Ordenador':
-                return new Ordenador($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RelacionamentoEmpenhoObra':
-                return new RelacionamentoEmpenhoObra($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RelacionamentoEmpenhoLicitacao':
-                return new RelacionamentoEmpenhoLicitacao(
-                    $params,
-                    $codigoInstituicoes,
-                    $this->ano,
-                    $codigoTCE
-                );
-            case 'RelacionamentoLiquidacaoCodigoAgrupamentoFolhaPagamento':
-                return new RelacionamentoLiquidacaoCodigoAgrupamentoFolhaPagamento(
-                    $params,
-                    $codigoInstituicoes,
-                    $this->ano,
-                    $codigoTCE
-                );
-            case 'RestosInscritos':
-                return new RestosInscritos($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'PloaAcao':
-                return new PloaAcao($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'PloaDotacao':
-                return new PloaDotacao($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'PloaPrograma':
-                return new PloaPrograma($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'PloaReceitaPrevista':
-                return new PloaReceitaPrevista($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'PloaUnidadeOrcamentaria':
-                return new PloaUnidadeOrcamentaria($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            case 'RelacionamentoEmpenhoTipoMeta':
-                return new RelacionamentoEmpenhoTipoMeta(
-                    $params,
-                    $codigoInstituicoes,
-                    $this->ano,
-                    $codigoTCE
-                );
-            case 'SaldoMensalCoConciliado':
-                return new SaldoMensalCoConciliado($params, $codigoInstituicoes, $this->ano, $codigoTCE);
-            default:
-                throw new Exception("Classe {$arquivo} não implementada.");
-        }
+        return match ($arquivo) {
+            'UnidadeOrcamentaria' => new UnidadeOrcamentaria($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'Programas' => new Programas($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'Acao' => new Acao($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'Dotacao' => new Dotacao($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'AtualizacaoOrcamentaria' => new AtualizacaoOrcamentaria($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'DecretoseOficios' => new DecretoseOficios($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'ReceitaPrevista' => new ReceitaPrevista($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'Empenhos' => new Empenhos($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'Estorno' => new Estornos($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'Liquidacao' => new Liquidacao($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'EstornoLiquidacao' => new EstornoLiquidacao($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'Pagamentos' => new Pagamentos($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'EstornoPagamento' => new EstornoPagamento($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'Retencao' => new Retencao($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'EstornoRetencao' => new EstornoRetencao($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'ReceitaOrcamentaria' => new ReceitaOrcamentaria($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'TransfRecebida' => new TransfRecebida($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'TransfConcedida' => new TransfConcedida($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'ReceitaExtra' => new ReceitaExtra($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'DespesaExtra' => new DespesaExtra($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'EstornoReceitaExtra' => new EstornoReceitaExtra($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'EstornoDespesaExtra' => new EstornoDespesaExtra($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'CadastroContaBancaria' => new CadastroContaBancaria($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RelacionamentoCCorrenteFontePagadora' => new RelacionamentoCCorrenteFontePagadora(
+                $params,
+                $codigoInstituicoes,
+                $this->ano,
+                $codigoTCE
+            ),
+            'SaldoInicial' => new SaldoInicial($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'SaldoMensal' => new SaldoMensal($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'ConciliacaoBancaria' => new ConciliacaoBancaria($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'PagamentosRestos' => new PagamentosRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'EstornoPagamentoRestos' => new EstornoPagamentoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'CancelamentoRestos' => new CancelamentoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'LiquidacaoRestos' => new LiquidacaoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'EstornoLiquidacaoRestos' => new EstornoLiquidacaoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RetencaoRestos' => new RetencaoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'EstornoRetencaoRestos' => new EstornoRetencaoRestos($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'Fornecedores' => new Fornecedores($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'Ordenador' => new Ordenador($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RelacionamentoEmpenhoObra' => new RelacionamentoEmpenhoObra($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RelacionamentoEmpenhoLicitacao' => new RelacionamentoEmpenhoLicitacao(
+                $params,
+                $codigoInstituicoes,
+                $this->ano,
+                $codigoTCE
+            ),
+            'RelacionamentoLiquidacaoCodigoAgrupamentoFolhaPagamento' => new RelacionamentoLiquidacaoCodigoAgrupamentoFolhaPagamento(
+                $params,
+                $codigoInstituicoes,
+                $this->ano,
+                $codigoTCE
+            ),
+            'RestosInscritos' => new RestosInscritos($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'PloaAcao' => new PloaAcao($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'PloaDotacao' => new PloaDotacao($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'PloaPrograma' => new PloaPrograma($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'PloaReceitaPrevista' => new PloaReceitaPrevista($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'PloaUnidadeOrcamentaria' => new PloaUnidadeOrcamentaria($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            'RelacionamentoEmpenhoTipoMeta' => new RelacionamentoEmpenhoTipoMeta(
+                $params,
+                $codigoInstituicoes,
+                $this->ano,
+                $codigoTCE
+            ),
+            'SaldoMensalCoConciliado' => new SaldoMensalCoConciliado($params, $codigoInstituicoes, $this->ano, $codigoTCE),
+            default => throw new Exception("Classe {$arquivo} não implementada."),
+        };
     }
 }

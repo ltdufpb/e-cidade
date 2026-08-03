@@ -25,132 +25,132 @@
  *                                licenca/licenca_pt.txt
  */
 
-return array(
-    'ideEstabPrest' => array(
-        'properties' => array(
-            'tpInscEstabPrest'=> array(
+return [
+    'ideEstabPrest' => [
+        'properties' => [
+            'tpInscEstabPrest'=> [
                 'type' => 'int'
-            ),
+            ],
             'nrInscEstabPrest',
             'perApur',
-        ),
-        'groups' => array(
-            'ideTomador' => array(
-                'properties' => array(
-                    'tpInscTomador' => array(
+        ],
+        'groups' => [
+            'ideTomador' => [
+                'properties' => [
+                    'tpInscTomador' => [
                         'type' => 'int'
-                    ),
+                    ],
                     'nrInscTomador',
                     'indObra',
-                    'vlrTotalBruto' => array(
+                    'vlrTotalBruto' => [
                         'type' => 'float'
-                    ),
-                    'vlrTotalBaseRet' => array(
+                    ],
+                    'vlrTotalBaseRet' => [
                         'type' => 'float'
-                    ),
-                    'vlrTotalRetPrinc' => array(
+                    ],
+                    'vlrTotalRetPrinc' => [
                         'type' => 'float'
-                    ),
-                    'vlrTotalRetAdic' => array(
+                    ],
+                    'vlrTotalRetAdic' => [
                         'type' => 'float'
-                    ),
-                    'vlrTotalNRetPrinc' => array(
+                    ],
+                    'vlrTotalNRetPrinc' => [
                         'type' => 'float'
-                    ),
-                    'vlrTotalNRetAdic' => array(
+                    ],
+                    'vlrTotalNRetAdic' => [
                         'type' => 'float'
-                    ),
-                ),
-                'groups' => array(
-                    'nfs' => array(
-                        'properties' => array(
+                    ],
+                ],
+                'groups' => [
+                    'nfs' => [
+                        'properties' => [
                             'serie',
                             'numDocto',
                             'dtEmissaoNF',
-                            'vlrBruto' => array(
+                            'vlrBruto' => [
                                 'type' => 'float'
-                            ),
+                            ],
                             'obs',
-                        ),
-                        'groups' => array(
-                            'infoTpServ' => array(
+                        ],
+                        'groups' => [
+                            'infoTpServ' => [
                                 'type' => 'array',
                                 'nome_api' => 'infoTpServ',
-                                'items' => array(
-                                    'properties' => array(
-                                        'tpServico' => array(
+                                'items' => [
+                                    'properties' => [
+                                        'tpServico' => [
                                             'type' => 'int'
-                                        ),
-                                        'vlrBaseRet' => array(
+                                        ],
+                                        'vlrBaseRet' => [
                                             'type' => 'float'
-                                        ),
-                                        'vlrRetencao' => array(
+                                        ],
+                                        'vlrRetencao' => [
                                             'type' => 'float'
-                                        ),
-                                        'vlrRetSub' => array(
+                                        ],
+                                        'vlrRetSub' => [
                                             'type' => 'float'
-                                        ),
-                                        'vlrNRetPrinc' => array(
+                                        ],
+                                        'vlrNRetPrinc' => [
                                             'type' => 'float'
-                                        ),
-                                        'vlrServicos15' => array(
+                                        ],
+                                        'vlrServicos15' => [
                                             'type' => 'float'
-                                        ),
-                                        'vlrServicos20' => array(
+                                        ],
+                                        'vlrServicos20' => [
                                             'type' => 'float'
-                                        ),
-                                        'vlrServicos25' => array(
+                                        ],
+                                        'vlrServicos25' => [
                                             'type' => 'float'
-                                        ),
-                                        'vlrAdicional' => array(
+                                        ],
+                                        'vlrAdicional' => [
                                             'type' => 'float'
-                                        ),
-                                        'vlrNRetAdic' => array(
+                                        ],
+                                        'vlrNRetAdic' => [
                                             'type' => 'float'
-                                        ),
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    'infoProcRetPr' => array(
+                                        ],
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    'infoProcRetPr' => [
                         'type' => 'array',
                         'nome_api' => 'infoProcRetPr',
-                        'items' => array(
-                            'properties' => array(
-                                'tpProcRetPrinc' => array(
+                        'items' => [
+                            'properties' => [
+                                'tpProcRetPrinc' => [
                                     'type' => 'int'
-                                ),
+                                ],
                                 'nrProcRetPrinc',
-                                'codSuspPrinc' => array(
+                                'codSuspPrinc' => [
                                     'type' => 'int'
-                                ),
-                                'valorPrinc' => array(
+                                ],
+                                'valorPrinc' => [
                                     'type' => 'float'
-                                )
-                            )
-                        )
-                    ),
-                    'infoProcRetAd' => array(
+                                ]
+                            ]
+                        ]
+                    ],
+                    'infoProcRetAd' => [
                         'type' => 'array',
                         'nome_api' => 'infoProcRetAd',
-                        'items' => array(
-                            'properties' => array(
-                                'tpProcRetAdic' => array(
+                        'items' => [
+                            'properties' => [
+                                'tpProcRetAdic' => [
                                     'type' => 'int'
-                                ),
+                                ],
                                 'nrProcRetAdic',
-                                'codSuspAdic' => array(
+                                'codSuspAdic' => [
                                     'type' => 'int'
-                                ),
-                                'valorAdic' => array(
+                                ],
+                                'valorAdic' => [
                                     'type' => 'float'
-                                )
-                            )
-                        )
-                    ),
-                )
-            )
-        )
-    )
-);
+                                ]
+                            ]
+                        ]
+                    ],
+                ]
+            ]
+        ]
+    ]
+];

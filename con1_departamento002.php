@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if (isset($HTTP_POST_VARS["alterar"])) {
-   db_postmemory($HTTP_POST_VARS); 
+if (isset($_POST["alterar"])) {
+   db_postmemory($_POST); 
    db_query("begin");
    db_query("UPDATE db_depart SET descrdepto='$descrdepto' WHERE coddepto=$coddepto") or die ("Erro: (10). Processo de alteracao.");
    db_query("UPDATE db_depart SET nomeresponsavel='$nomeresponsavel' WHERE coddepto=$coddepto") or die ("Erro: (11). Processo de alteracao.");
@@ -39,8 +39,8 @@ if (isset($HTTP_POST_VARS["alterar"])) {
    db_query("end");
    db_redireciona();
 } else 
-  if (isset($HTTP_POST_VARS["excluir"])) {
-    db_postmemory($HTTP_POST_VARS);
+  if (isset($_POST["excluir"])) {
+    db_postmemory($_POST);
     $result = @db_query("delete from db_depart where coddepto=$coddepto");
 	if (!$result) {
 	  db_msgbox("Este departamento está sendo usado por outros registros. Não será possível sua exclusão.");
@@ -48,7 +48,7 @@ if (isset($HTTP_POST_VARS["alterar"])) {
 	db_redireciona();
   }
 else 
-  if (isset($HTTP_POST_VARS["cancelar"])) {
+  if (isset($_POST["cancelar"])) {
     db_redireciona();
   
 }
@@ -87,7 +87,7 @@ function js_verificaFormulario() {
     
   <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <?php  
-	  if (!isset($HTTP_POST_VARS["procurar"])) {
+	  if (!isset($_POST["procurar"])) {
 	    include(modification("forms/db_frmdepartamento002.php")); 
 	  } else { ?>
     <p><a href="con1_departamento002.php" style="font-size:13px" > << voltar a pagina anterior.</a></p><br>
@@ -98,15 +98,15 @@ function js_verificaFormulario() {
           </tr>
           <tr> 
 		    <?php 
-			  db_postmemory($HTTP_POST_VARS);
+			  db_postmemory($_POST);
 			  $result = db_query("select * from db_depart where descrdepto like '".$descrdepto."%'");
-			  $num = pg_numrows($result);
+			  $num = pg_num_rows($result);
 			  for ($i=0;$i<$num;$i++) {
 			?>
-			<tr  style="cursor:hand"  onClick="location.href='con1_departamento002.php?retornoCod=<?php  echo pg_result($result,$i,"coddepto") ?>&retornoDescr=<?php  echo pg_result($result,$i,"descrdepto")?>&retornonomeresponsavel= <?php  echo pg_result($result,$i,"nomeresponsavel") ?>&retornoemailresponsavel= <?php  echo pg_result($result,$i,"emailresponsavel")?>'" title="Clique aqui">
-              <td style="text-decoration:none;color:#000000;font-size:13px" bgcolor=<?php  echo $i%2==0?"#97B5E6":"#E796A4" ?> nowrap><?php  echo pg_result($result,$i,"coddepto"); ?>
+			<tr  style="cursor:hand"  onClick="location.href='con1_departamento002.php?retornoCod=<?php  echo pg_fetch_result($result,$i,"coddepto") ?>&retornoDescr=<?php  echo pg_fetch_result($result,$i,"descrdepto")?>&retornonomeresponsavel= <?php  echo pg_fetch_result($result,$i,"nomeresponsavel") ?>&retornoemailresponsavel= <?php  echo pg_fetch_result($result,$i,"emailresponsavel")?>'" title="Clique aqui">
+              <td style="text-decoration:none;color:#000000;font-size:13px" bgcolor=<?php  echo $i%2==0?"#97B5E6":"#E796A4" ?> nowrap><?php  echo pg_fetch_result($result,$i,"coddepto"); ?>
 			  </td>
-              <td style="text-decoration:none;color:#000000;font-size:13px" bgcolor=<?php  echo $i%2==0?"#97B5E6":"#E796A4" ?> nowrap><?php  echo pg_result($result,$i,"descrdepto"); ?></td>
+              <td style="text-decoration:none;color:#000000;font-size:13px" bgcolor=<?php  echo $i%2==0?"#97B5E6":"#E796A4" ?> nowrap><?php  echo pg_fetch_result($result,$i,"descrdepto"); ?></td>
 			</tr>
 			<?php 
 			  }

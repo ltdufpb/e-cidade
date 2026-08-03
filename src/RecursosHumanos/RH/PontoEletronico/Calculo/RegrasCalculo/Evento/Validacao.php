@@ -50,18 +50,13 @@ class Validacao
      * @var int
      */
     protected $tipoHoraExtra;
-    /**
-     * @var Evento
-     */
-    private $evento;
 
     /**
      * Validacao constructor.
      * @param EventoModel $evento
      */
-    public function __construct(EventoModel $evento)
+    public function __construct(private readonly EventoModel $evento)
     {
-        $this->evento = $evento;
         $this->horaEventoInicio = clone $this->evento->getEntradaUm();
         $this->horaEventoFim = clone $this->evento->getSaidaUm();
 

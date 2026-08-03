@@ -83,7 +83,7 @@ include(modification("dbforms/db_layouttxt.php"));
 			if(db_query($sQueryUsuarioCriterium)){
 									
 				$sArqName    = "BD";
-				$sArqName		.= str_pad($iCodDBUsuario,5,"0",STR_PAD_LEFT);
+				$sArqName		.= str_pad((string) $iCodDBUsuario,5,"0",STR_PAD_LEFT);
 				$sArqName		.= str_pad($iNewCodSequencial,3,"0",STR_PAD_LEFT);
 				$sArqName		.= ".TXT";
 				
@@ -93,7 +93,7 @@ include(modification("dbforms/db_layouttxt.php"));
 				$oLayoutTxt->setCampo("tipo_de_registro","01");
 				$oLayoutTxt->setCampo("tipo_de_processamento","COMPLETA");
 	//			$oLayoutTxt->setCampo("codigo_do_vendedor","1");
-				$oLayoutTxt->setCampo("codigo_do_vendedor",str_pad($iCodDBUsuario,5,"0",STR_PAD_LEFT));
+				$oLayoutTxt->setCampo("codigo_do_vendedor",str_pad((string) $iCodDBUsuario,5,"0",STR_PAD_LEFT));
 				$oLayoutTxt->setCampo("data_de_criacao",date('Y-m-d',db_getsession('DB_datausu')));
 				$oLayoutTxt->setCampo("hora_de_criacao",date('His'));
 				$oLayoutTxt->setCampo("versao_do_programa_de_retaguarda","999.999.999.999");
@@ -106,7 +106,7 @@ include(modification("dbforms/db_layouttxt.php"));
 					db_atutermometro($Item, $iCountItem, 'termometro', 1, "Processando Arquivos");
 					$Item++;
 					sleep(1);
-					$arquivo = urldecode($oParametro->nome);
+					$arquivo = urldecode((string) $oParametro->nome);
 					$nomeArquivo = "pat4_criteriumexportaarquivos002_".$arquivo.".php";
 	
 					if (file_exists($nomeArquivo)) {					

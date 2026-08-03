@@ -20,14 +20,10 @@ class ViagensPorMotoristaFactory
      */
     public static function getRelatorio($tipo, array $dados)
     {
-        switch ($tipo) {
-            case self::PDF:
-                return new ViagensPorMotoristaPDF($dados);
-            case self::CSV:
-                return new ViagensPorMotoristaCSV($dados);
-            default:
-                throw new Exception('Erro ao gerar Relatório! Selecione um tipo válido.');
-                break;
-        }
+        return match ($tipo) {
+            self::PDF => new ViagensPorMotoristaPDF($dados),
+            self::CSV => new ViagensPorMotoristaCSV($dados),
+            default => throw new Exception('Erro ao gerar Relatório! Selecione um tipo válido.'),
+        };
     }
 }

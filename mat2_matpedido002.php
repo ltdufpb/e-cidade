@@ -71,31 +71,31 @@ switch (true) {
 // verifica se somente o mês inicial foi preenchido
 if (isset($perini) || isset($perfim)){
  
- if ( trim($perini) != "" && trim($perfim) == "" ) {
+ if ( trim((string) $perini) != "" && trim((string) $perfim) == "" ) {
    $where_matpedido .= " AND exists (select * from 
                                      matanulitempedido
                                       inner join matanulitem on m103_codigo = m101_matanulitem
                                       inner join matpedidoitem on m98_sequencial = m101_matpedidoitem 
                                      where m98_matpedido = m97_sequencial
-                                     and m103_data >= '".implode('-',array_reverse(explode('/',$perini)))."')";   
-   
+                                     and m103_data >= '".implode('-',array_reverse(explode('/',(string) $perini)))."')";   
+
  // verifica se somente o mês final foi preenchido
- } else if ( trim($perfim) != "" && trim($perini) == "" ) {
+ } else if ( trim((string) $perfim) != "" && trim((string) $perini) == "" ) {
    $where_matpedido .= " AND exists (select * from 
                                      matanulitempedido
                                       inner join matanulitem on m103_codigo = m101_matanulitem
                                       inner join matpedidoitem on m98_sequencial = m101_matpedidoitem 
                                      where m98_matpedido = m97_sequencial
-                                     and  m103_data <= '".implode('-',array_reverse(explode('/',$perfim)))."')";
-      
+                                     and  m103_data <= '".implode('-',array_reverse(explode('/',(string) $perfim)))."')";
+
  // se todos períodos foram preenchidos
- } else if ( trim($perini) != "" && trim($perfim) != "" ) {
+ } else if ( trim((string) $perini) != "" && trim((string) $perfim) != "" ) {
    $where_matpedido .= " AND exists (select * from 
                                      matanulitempedido
                                       inner join matanulitem on m103_codigo = m101_matanulitem
                                       inner join matpedidoitem on m98_sequencial = m101_matpedidoitem 
                                      where m98_matpedido = m97_sequencial
-                                     and and m103_data between '".implode('-',array_reverse(explode('/',$perini)))."' and '".implode('-',array_reverse(explode('/',$perfim)))."')";   
+                                     and and m103_data between '".implode('-',array_reverse(explode('/',(string) $perini)))."' and '".implode('-',array_reverse(explode('/',(string) $perfim)))."')";   
    
  }
 	

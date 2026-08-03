@@ -8,11 +8,11 @@
 function ReadMap($enc)
 {
 	//Read a map file
-	$file=dirname(__FILE__).'/'.strtolower($enc).'.map';
+	$file=__DIR__.'/'.strtolower((string) $enc).'.map';
 	$a=file($file);
 	if(empty($a))
 		die('<B>Error:</B> encoding not found: '.$enc);
-	$cc2gn=array();
+	$cc2gn=[];
 	foreach($a as $l)
 	{
 		$e=explode(' ',chop($l));
@@ -32,14 +32,14 @@ function ReadAFM($file,&$map)
 	$a=file($file);
 	if(empty($a))
 		die('File not found');
-	$widths=array();
-	$fm=array();
-	$fix=array('Edot'=>'Edotaccent','edot'=>'edotaccent','Zdot'=>'Zdotaccent','zdot'=>'zdotaccent',
+	$widths=[];
+	$fm=[];
+	$fix=['Edot'=>'Edotaccent','edot'=>'edotaccent','Zdot'=>'Zdotaccent','zdot'=>'zdotaccent',
 		'Odblacute'=>'Ohungarumlaut','odblacute'=>'ohungarumlaut','Udblacute'=>'Uhungarumlaut','udblacute'=>'uhungarumlaut',
 		'Gcedilla'=>'Gcommaaccent','gcedilla'=>'gcommaaccent','Kcedilla'=>'Kcommaaccent','kcedilla'=>'kcommaaccent',
 		'Lcedilla'=>'Lcommaaccent','lcedilla'=>'lcommaaccent','Ncedilla'=>'Ncommaaccent','ncedilla'=>'ncommaaccent',
 		'Rcedilla'=>'Rcommaaccent','rcedilla'=>'rcommaaccent','Scedilla'=>'Scommaaccent','scedilla'=>'scommaaccent',
-		'Tcedilla'=>'Tcommaaccent','tcedilla'=>'tcommaaccent','Dslash'=>'Dcroat','dslash'=>'dcroat','Dmacron'=>'Dcroat','dmacron'=>'dcroat');
+		'Tcedilla'=>'Tcommaaccent','tcedilla'=>'tcommaaccent','Dslash'=>'Dcroat','dslash'=>'dcroat','Dmacron'=>'Dcroat','dmacron'=>'dcroat'];
 	foreach($a as $l)
 	{
 		$e=explode(' ',chop($l));
@@ -53,7 +53,7 @@ function ReadAFM($file,&$map)
 			$cc=(int)$e[1];
 			$w=$e[4];
 			$gn=$e[7];
-			if(substr($gn,-4)=='20AC')
+			if(str_ends_with($gn, '20AC'))
 				$gn='Euro';
 			if(isset($fix[$gn]))
 			{
@@ -93,7 +93,7 @@ function ReadAFM($file,&$map)
 		elseif($code=='IsFixedPitch')
 			$fm['IsFixedPitch']=($param=='true');
 		elseif($code=='FontBBox')
-			$fm['FontBBox']=array($e[1],$e[2],$e[3],$e[4]);
+			$fm['FontBBox']=[$e[1],$e[2],$e[3],$e[4]];
 		elseif($code=='CapHeight')
 			$fm['CapHeight']=(int)$param;
 		elseif($code=='StdVW')
@@ -126,10 +126,10 @@ function ReadAFM($file,&$map)
 function MakeFontDescriptor($fm,$symbolic)
 {
 	//Ascent
-	$asc=(isset($fm['Ascender']) ? $fm['Ascender'] : 1000);
+	$asc=($fm['Ascender'] ?? 1000);
 	$fd="array('Ascent'=>".$asc;
 	//Descent
-	$desc=(isset($fm['Descender']) ? $fm['Descender'] : -200);
+	$desc=($fm['Descender'] ?? -200);
 	$fd.=",'Descent'=>".$desc;
 	//CapHeight
 	if(isset($fm['CapHeight']))
@@ -154,15 +154,15 @@ function MakeFontDescriptor($fm,$symbolic)
 	if(isset($fm['FontBBox']))
 		$fbb=$fm['FontBBox'];
 	else
-		$fbb=array(0,$des-100,1000,$asc+100);
+		$fbb=[0,$des-100,1000,$asc+100];
 	$fd.=",'FontBBox'=>'[".$fbb[0].' '.$fbb[1].' '.$fbb[2].' '.$fbb[3]."]'";
 	//ItalicAngle
-	$ia=(isset($fm['ItalicAngle']) ? $fm['ItalicAngle'] : 0);
+	$ia=($fm['ItalicAngle'] ?? 0);
 	$fd.=",'ItalicAngle'=>".$ia;
 	//StemV
 	if(isset($fm['StdVW']))
 		$stemv=$fm['StdVW'];
-	elseif(isset($fm['Weight']) and eregi('(bold|black)',$fm['Weight']))
+	elseif(isset($fm['Weight']) and preg_match('#(bold|black)#mi',$fm['Weight']))
 		$stemv=120;
 	else
 		$stemv=70;
@@ -223,7 +223,7 @@ function SaveToFile($file,$s,$mode='t')
 	$f=fopen($file,'w'.$mode);
 	if(!$f)
 		die('Can\'t write to file '.$file);
-	fwrite($f,$s,strlen($s));
+	fwrite($f,(string) $s,strlen((string) $s));
 	fclose($f);
 }
 
@@ -286,7 +286,7 @@ function CheckTTF($file)
 * $patch:    optional patch for encoding                                    *
 * $type :    font type if $fontfile is empty                                *
 ****************************************************************************/
-function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueType')
+function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=[],$type='TrueType')
 {
 	//Generate a font definition file
 	set_magic_quotes_runtime(0);
@@ -297,7 +297,7 @@ function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueTyp
 			$map[$cc]=$gn;
 	}
 	else
-		$map=array();
+		$map=[];
 	if(!file_exists($afmfile))
 		die('<B>Error:</B> AFM file not found: '.$afmfile);
 	$fm=ReadAFM($afmfile,$map);
@@ -309,7 +309,7 @@ function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueTyp
 	//Find font type
 	if($fontfile)
 	{
-		$ext=strtolower(substr($fontfile,-3));
+		$ext=strtolower(substr((string) $fontfile,-3));
 		if($ext=='ttf')
 			$type='TrueType';
 		elseif($ext=='pfb')
@@ -337,7 +337,7 @@ function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueTyp
 	$s.='$cw='.$w.";\n";
 	$s.='$enc=\''.$enc."';\n";
 	$s.='$diff=\''.$diff."';\n";
-	$basename=substr(basename($afmfile),0,-4);
+	$basename=substr(basename((string) $afmfile),0,-4);
 	if($fontfile)
 	{
 		//Embedded font

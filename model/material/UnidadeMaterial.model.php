@@ -54,7 +54,7 @@ class UnidadeMaterial {
     if (!empty($iCodigo)) {
 
       $oDaoMatunid   = new cl_matunid();
-      $oDadosUnidade = db_utils::getRowFromDao($oDaoMatunid, array($iCodigo));
+      $oDadosUnidade = db_utils::getRowFromDao($oDaoMatunid, [$iCodigo]);
       if (empty($oDadosUnidade)) {
         throw new BusinessException("Unidade {$iCodigo} não Cadastrada");
       }
@@ -94,9 +94,9 @@ class UnidadeMaterial {
 
   /**
    * @return string
-   * @deprecated
    * @see getAbreviatura
    */
+  #[\Deprecated]
   public function getSAbreviatura() {
     return $this->sAbreviatura;
   }

@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_custocriteriorateio_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcustocriteriorateio = new cl_custocriteriorateio;
 $clcustocriteriorateio->rotulo->label("cc08_sequencial");
 $clcustocriteriorateio->rotulo->label("cc08_instit");
@@ -98,9 +98,9 @@ $clcustocriteriorateio->rotulo->label("cc08_instit");
         }else{
            $sql = $clcustocriteriorateio->sql_query("",$campos,"cc08_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cc08_instit)){
-          $repassa = array("chave_cc08_sequencial"=>$chave_cc08_sequencial,"chave_cc08_instit"=>$chave_cc08_instit);
+          $repassa = ["chave_cc08_sequencial"=>$chave_cc08_sequencial,"chave_cc08_instit"=>$chave_cc08_instit];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

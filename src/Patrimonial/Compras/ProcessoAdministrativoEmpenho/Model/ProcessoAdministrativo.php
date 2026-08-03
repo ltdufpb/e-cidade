@@ -103,11 +103,11 @@ class ProcessoAdministrativo
 
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'e150_sequencial' => $this->getSequencial(),
             'e150_empautoriza' => $this->getCodigoAutorizacao(),
             'e150_numeroprocesso' => $this->getNumeroProcesso()
-        );
+        ];
 
         return $retorno;
     }

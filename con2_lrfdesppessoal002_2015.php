@@ -99,7 +99,7 @@ for ($iInd = 0; $iInd < $INumRowsDbConfig; $iInd++) {
 
   $oMunicipio = db_utils::fieldsMemory($rsSqlDbConfig, $iInd);
 
-  if (strlen(trim($oMunicipio->nomeinstabrev)) > 0) {
+  if (strlen(trim((string) $oMunicipio->nomeinstabrev)) > 0) {
 
     $sDescricaoInstituicao .= $sVirgula.$oMunicipio->nomeinstabrev;
     $lFlagAbrev  = true;
@@ -130,7 +130,7 @@ if ($lFlagAbrev == false) {
 }
 
 $oInstituicaoPrefeitura = InstituicaoRepository::getInstituicaoPrefeitura();
-$sMunipicioCabecalho    = "MUNICÍPIO DE ".strtoupper($oMunicipio->munic) . " - {$oInstituicaoPrefeitura->getUf()} - ";
+$sMunipicioCabecalho    = "MUNICÍPIO DE ".strtoupper((string) $oMunicipio->munic) . " - {$oInstituicaoPrefeitura->getUf()} - ";
 
 if ($lTemCamara == true && ($lTemPrefeitura == true || $lTemAdminD == true)) {
   $head2 = $sMunipicioCabecalho . "PODERES EXECUTIVO E LEGISLATIVO";
@@ -176,14 +176,14 @@ if ($lTemCamara == true && $lTemPrefeitura == false && $lTemAdminD == false) {
 /**
  * Procura data inical do exercício anterior.
  */
-$dtInicialAnterior = explode("-", $oAnexoIRGF->getDataFinal()->getDate());
+$dtInicialAnterior = explode("-", (string) $oAnexoIRGF->getDataFinal()->getDate());
 if ($dtInicialAnterior[1] == "12") {
   $dtInicialAnterior[1] = 11;
 }
 
 $dtInicialAnterior = ($iAnoUsu-1)."-".($dtInicialAnterior[1]+1)."-01";
 $dtInicial         = explode('-', $dtInicialAnterior);
-$dtFinal           = explode('-', $oAnexoIRGF->getDataFinal()->getDate());
+$dtFinal           = explode('-', (string) $oAnexoIRGF->getDataFinal()->getDate());
 
 /**
  * Monta a descrição por período.

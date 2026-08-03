@@ -172,9 +172,9 @@ $oRotulo->label('z01_nome');
           $sSql = $oDaoMedicos->{$sQuery}(null, $campos, 'sd03_i_codigo', $sWhere);
         }
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_sd03_i_crm)) {
-          $repassa = array('chave_sd03_i_codigo' => $chave_sd03_i_codigo, 'chave_z01_nome' => $chave_z01_nome);
+          $repassa = ['chave_sd03_i_codigo' => $chave_sd03_i_codigo, 'chave_z01_nome' => $chave_z01_nome];
         }
 
         if (isset($nao_mostra)) {

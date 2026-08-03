@@ -112,9 +112,9 @@ class ExportacaoRelatorioLegal{
 
     $oDadosPeriodos                     = new stdClass();
     //propriedade que se refere aos periodos vinculados
-    $oDadosPeriodos->periodos_relatorio = array();
+    $oDadosPeriodos->periodos_relatorio = [];
     // propriedade dos periodos vinculados, caso necessario incluir na importação
-    $oDadosPeriodos->periodos           = array();
+    $oDadosPeriodos->periodos           = [];
     $oDaoPeriodos                       = db_utils::getDao('orcparamrelperiodos');
 
     $sCamposPeriodos  = "o113_sequencial  , ";
@@ -146,7 +146,7 @@ class ExportacaoRelatorioLegal{
         $oPeriodosRelatorio->periodo = $oValorPeriodo->o113_periodo;
 
         $oPeriodos->codigo            = $oValorPeriodo->o114_sequencial;
-        $oPeriodos->nome              = urlencode($oValorPeriodo->o114_descricao);
+        $oPeriodos->nome              = urlencode((string) $oValorPeriodo->o114_descricao);
         $oPeriodos->quantidade_no_ano = $oValorPeriodo->o114_qdtporano ;
         $oPeriodos->dia_inicial       = $oValorPeriodo->o114_diainicial;
         $oPeriodos->mes_inicial       = $oValorPeriodo->o114_mesinicial;
@@ -175,8 +175,8 @@ class ExportacaoRelatorioLegal{
     }
 
     $oDadosColuna = new stdClass();
-    $oDadosColuna->colunas           = array();
-    $oDadosColuna->colunas_relatorio = array();
+    $oDadosColuna->colunas           = [];
+    $oDadosColuna->colunas_relatorio = [];
 
     $oDadoColunas = db_utils::getDao("orcparamseqorcparamseqcoluna");
 
@@ -225,7 +225,7 @@ class ExportacaoRelatorioLegal{
     $oDadoColunas = db_utils::getDao("orcparamseqorcparamseqcoluna");
     $sSqlColunas  = $oDadoColunas->sql_query ( null, "*" , null, "o116_codparamrel = {$this->getCodigoRelatorio()} ");
     $rsColunas    = $oDadoColunas->sql_record($sSqlColunas);
-    $aColunas     = array();
+    $aColunas     = [];
 
     if ($oDadoColunas->numrows >= 1) {
 
@@ -235,10 +235,10 @@ class ExportacaoRelatorioLegal{
         $oColunas               = new stdClass();
         $oColunas->codigo       = $oValoresColuna->o115_sequencial           ;
         $oColunas->ano          = $oValoresColuna->o115_anousu               ;
-        $oColunas->descricao    = urlencode($oValoresColuna->o115_descricao) ;
+        $oColunas->descricao    = urlencode((string) $oValoresColuna->o115_descricao) ;
         $oColunas->tipo         = $oValoresColuna->o115_tipo                 ;
         $oColunas->valor_padrao = $oValoresColuna->o115_valoresdefault       ;
-        $oColunas->nome_coluna  = urlencode($oValoresColuna->o115_nomecoluna);
+        $oColunas->nome_coluna  = urlencode((string) $oValoresColuna->o115_nomecoluna);
 
         $aColunas[] = $oColunas;
       }
@@ -268,7 +268,7 @@ class ExportacaoRelatorioLegal{
 
     $sSqlFiltroPadrao = $oDaoFiltroPardao->sql_query (null, $sCamposFiltroPadrao, null, "o132_orcparamrel = {$this->getCodigoRelatorio()} and o132_orcparamseq = {$iLinha}");
     $rsFiltroPadrao   = $oDaoFiltroPardao->sql_record($sSqlFiltroPadrao);
-    $aFiltroPadrao    = array();
+    $aFiltroPadrao    = [];
     if ($oDaoFiltroPardao->numrows >= 1) {
 
       for ($iLinha = 0; $iLinha < $oDaoFiltroPardao->numrows; $iLinha++) {
@@ -277,7 +277,7 @@ class ExportacaoRelatorioLegal{
         $oDadosFiltroPadrao         = new stdClass();
         $oDadosFiltroPadrao->codigo = $oValorFiltroPadrao->o132_sequencial ;
         $oDadosFiltroPadrao->ano    = $oValorFiltroPadrao->o132_anousu     ;
-        $oDadosFiltroPadrao->filtro = urlencode($oValorFiltroPadrao->o132_filtro);
+        $oDadosFiltroPadrao->filtro = urlencode((string) $oValorFiltroPadrao->o132_filtro);
         $aFiltroPadrao[] = $oDadosFiltroPadrao;
       }
     }
@@ -291,7 +291,7 @@ class ExportacaoRelatorioLegal{
    */
   private function getLinhasRelatorio(){
 
-    $aDadosLinhaRelatorio = array();
+    $aDadosLinhaRelatorio = [];
     $oDaoLinha = db_utils::getDao("orcparamseq");
 
     $sCamposLinha  = "o69_codseq         , ";
@@ -325,12 +325,12 @@ class ExportacaoRelatorioLegal{
         $oDadosLinha = new stdClass();
 
         $oDadosLinha->codigo          = $oValorLinha->o69_codseq               ;
-        $oDadosLinha->descricao       = urlencode($oValorLinha->o69_descr)     ;
+        $oDadosLinha->descricao       = urlencode((string) $oValorLinha->o69_descr)     ;
         $oDadosLinha->nivel           = $oValorLinha->o69_nivel                ;
         $oDadosLinha->nivel_linha     = $oValorLinha->o69_nivellinha           ;
-        $oDadosLinha->label           = urlencode($oValorLinha->o69_labelrel)  ;
+        $oDadosLinha->label           = urlencode((string) $oValorLinha->o69_labelrel)  ;
         $oDadosLinha->ordem           = $oValorLinha->o69_ordem                ;
-        $oDadosLinha->observacao      = urlencode($oValorLinha->o69_observacao);
+        $oDadosLinha->observacao      = urlencode((string) $oValorLinha->o69_observacao);
         $oDadosLinha->origem          = $oValorLinha->o69_origem               ;
         $oDadosLinha->grupo           = $oValorLinha->o69_grupo                ;
         $oDadosLinha->grupo_exclusao  = $oValorLinha->o69_grupoexclusao        ;

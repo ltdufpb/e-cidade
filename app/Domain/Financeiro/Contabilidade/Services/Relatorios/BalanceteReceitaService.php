@@ -154,7 +154,7 @@ class BalanceteReceitaService
 
     private function buscarDadosBalancete()
     {
-        list($where, $dataInicio, $dataFinal) = $this->montaWhere();
+        [$where, $dataInicio, $dataFinal] = $this->montaWhere();
 
         $sql = "
             select balancete_receita_complemento.*,
@@ -174,7 +174,7 @@ class BalanceteReceitaService
     {
         $orgaoUnidade = [];
         foreach ($this->filtrarOrgaoUnidade as $dadoOrgaoUnidade) {
-            $dados = explode('-', $dadoOrgaoUnidade);
+            $dados = explode('-', (string) $dadoOrgaoUnidade);
             $orgaoUnidade[] = "(o70_orcorgao = {$dados[0]} and o70_orcunidade = {$dados[1]})";
         }
 
@@ -193,7 +193,7 @@ class BalanceteReceitaService
 
             $hash = "{$receita->natureza}#{$receita->cp}#$receita->fonte_recurso#$receita->complemento_lancamento";
             $arvore[$hash] = $this->mapperReceitaAnalitica($receita, $estrutural);
-            list($estrutural, $arvore) = $this->montaContaPai($nivel, $estrutural, $arvore, $fontesReceitas, $receita);
+            [$estrutural, $arvore] = $this->montaContaPai($nivel, $estrutural, $arvore, $fontesReceitas, $receita);
         }
         ksort($arvore);
         return $arvore;
@@ -214,7 +214,7 @@ class BalanceteReceitaService
             }
             $nivel = $estrutural->getNivel();
 
-            list($estrutural, $arvore) = $this->montaContaPai($nivel, $estrutural, $arvore, $fontesReceitas, $receita);
+            [$estrutural, $arvore] = $this->montaContaPai($nivel, $estrutural, $arvore, $fontesReceitas, $receita);
         }
         ksort($arvore);
         return $arvore;
@@ -246,9 +246,7 @@ class BalanceteReceitaService
                 /**
                  * @var FonteReceita $fonteReceita
                  */
-                $fonteReceita = $fontesReceitas->filter(function (FonteReceita $fonteReceita) use ($fonte) {
-                    return $fonteReceita->o57_fonte === $fonte;
-                })->shift();
+                $fonteReceita = $fontesReceitas->filter(fn(FonteReceita $fonteReceita) => $fonteReceita->o57_fonte === $fonte)->shift();
 
                 if (is_null($fonteReceita)) {
                     throw new Exception("Não foi encontrado a fonte de receita: $fonte.\nRevise o cadastro.");
@@ -266,7 +264,7 @@ class BalanceteReceitaService
             $arvore[$hash]->arrecadado_acumulado += $receita->arrecadado_acumulado;
             $arvore[$hash]->previsao_adicional += $receita->previsao_adicional;
         }
-        return array($estrutural, $arvore);
+        return [$estrutural, $arvore];
     }
 
     private function mapperReceitaAnalitica($receita, EstruturalReceita $estrutural)
@@ -382,6 +380,6 @@ class BalanceteReceitaService
         $dataInicio = $this->filtroDataInicio->format('Y-m-d');
         $dataFinal = $this->filtroDataFinal->format('Y-m-d');
         $where = implode(' and ', $where);
-        return array($where, $dataInicio, $dataFinal);
+        return [$where, $dataInicio, $dataFinal];
     }
 }

@@ -30,9 +30,9 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 require_once(modification('libs/db_utils.php'));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oDaoSamClasseGravidade = db_utils::getdao ("sam_class_gravidade");
 $oDaoSamClasseGravidade->rotulo->label("sm02_sequencial");
@@ -99,9 +99,9 @@ $oDaoSamClasseGravidade->rotulo->label("sm02_descr");
         }else{
            $sql = $oDaoSamClasseGravidade->sql_query("",$campos,"sm02_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_sm02_sequencial)){
-          $repassa = array("chave_sm02_sequencial"=>$chave_sm02_sequencial,"chave_sm02_descr"=>$chave_sm02_descr);
+          $repassa = ["chave_sm02_sequencial"=>$chave_sm02_sequencial,"chave_sm02_descr"=>$chave_sm02_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

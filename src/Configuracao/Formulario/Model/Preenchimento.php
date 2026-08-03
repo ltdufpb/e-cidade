@@ -39,9 +39,9 @@ class Preenchimento
     /**
      * @var Pergunta[]
      */
-    private $perguntas = array();
+    private $perguntas = [];
 
-    private $identificadores = array();
+    private $identificadores = [];
 
     /**
      * @return int

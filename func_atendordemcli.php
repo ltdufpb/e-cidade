@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atendordemcli_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatendordemcli = new cl_atendordemcli;
 $clatendordemcli->rotulo->label("at85_seq");
 $clatendordemcli->rotulo->label("at85_respcli");
@@ -98,9 +98,9 @@ $clatendordemcli->rotulo->label("at85_respcli");
         }else{
            $sql = $clatendordemcli->sql_query("",$campos,"at85_seq","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_at85_respcli)){
-          $repassa = array("chave_at85_seq"=>$chave_at85_seq,"chave_at85_respcli"=>$chave_at85_respcli);
+          $repassa = ["chave_at85_seq"=>$chave_at85_seq,"chave_at85_respcli"=>$chave_at85_respcli];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

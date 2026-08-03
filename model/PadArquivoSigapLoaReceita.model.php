@@ -46,7 +46,7 @@ final class PadArquivoSigapLoaReceita extends PadArquivoSigap
     {
 
         $this->sNomeArquivo = "LoaReceita";
-        $this->aDados = array();
+        $this->aDados = [];
     }
 
     /**
@@ -68,7 +68,7 @@ final class PadArquivoSigapLoaReceita extends PadArquivoSigap
         /**
          * Separamos a data do em ano, mes, dia
          */
-        list($iAno, $iMes, $iDia) = explode("-", $this->sDataFinal);
+        [$iAno, $iMes, $iDia] = explode("-", $this->sDataFinal);
         $oInstituicao = db_stdClass::getDadosInstit(db_getsession("DB_instit"));
         $sListaInstit = db_getsession("DB_instit");
         require_once(modification("model/cronogramaMetaReceita.model.php"));
@@ -76,7 +76,7 @@ final class PadArquivoSigapLoaReceita extends PadArquivoSigap
         $oCronograma = new cronogramaFinanceiro($this->iCodigoVersao);
         $aMetas = $oCronograma->getMetasReceita();
         $sDiaMesAno = "{$iAno}-" . str_pad($iMes, 2, "0", STR_PAD_LEFT) . "-" . str_pad($iDia, 2, "0", STR_PAD_LEFT);
-        $iTamanhoCampo = strlen($oInstituicao->codtrib);
+        $iTamanhoCampo = strlen((string) $oInstituicao->codtrib);
         if ($iTamanhoCampo != 4) {
 
             $sMsg = "Identificação do Orgão/Unidade da instituição ({$oInstituicao->codtrib}) está incorreto. \\n ";
@@ -85,8 +85,8 @@ final class PadArquivoSigapLoaReceita extends PadArquivoSigap
 
             throw new Exception($sMsg);
         }
-        $sOrgao = substr($oInstituicao->codtrib, 0, 2);
-        $sUnidade = substr($oInstituicao->codtrib, 2, 2);
+        $sOrgao = substr((string) $oInstituicao->codtrib, 0, 2);
+        $sUnidade = substr((string) $oInstituicao->codtrib, 2, 2);
         /*
          * percorremos as metas informadas para a receita
          */
@@ -104,7 +104,7 @@ final class PadArquivoSigapLoaReceita extends PadArquivoSigap
             $oCronograma->lreCodigoEntidade = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
             $oCronograma->lreCodigoContaReceita = str_pad($oMeta->o57_fonte, 20, "0", STR_PAD_RIGHT);
             $oCronograma->lreCodigoOrgao = $sOrgao;
-            $oCronograma->lreCodigoRecursoVinculado = str_pad($recurso->getCodigoTribunal(), 8, "0", STR_PAD_LEFT);
+            $oCronograma->lreCodigoRecursoVinculado = str_pad((string) $recurso->getCodigoTribunal(), 8, "0", STR_PAD_LEFT);
             $oCronograma->lreCodigoUnidadeOrcamentaria = $sUnidade;
             $oCronograma->lreDescricao = urldecode($oMeta->o57_descr);
             $oCronograma->lreExercicio = $iAno;
@@ -127,7 +127,7 @@ final class PadArquivoSigapLoaReceita extends PadArquivoSigap
             $oCronograma->lreMetaArrecadacao4oBimestre = $nValor4Bim;
             $oCronograma->lreMetaArrecadacao5oBimestre = $nValor5Bim;
             $oCronograma->lreMetaArrecadacao6oBimestre = $nValor6Bim;
-            $oCronograma->lreNumNivelConta = str_pad($iNivelConta, 2, "0", STR_PAD_LEFT);
+            $oCronograma->lreNumNivelConta = str_pad((string) $iNivelConta, 2, "0", STR_PAD_LEFT);
             $oCronograma->lreTiponivelConta = '02';
             $oCronograma->lreValorReceitaOrcada = $oMeta->o70_valor;
             $this->aDados[] = $oCronograma;
@@ -146,7 +146,7 @@ final class PadArquivoSigapLoaReceita extends PadArquivoSigap
     public function getNomeElementos()
     {
 
-        $aElementos = array(
+        $aElementos = [
             "lreCodigoEntidade",
             "lreCodigoOrgao",
             "lreCodigoUnidadeOrcamentaria",
@@ -164,7 +164,7 @@ final class PadArquivoSigapLoaReceita extends PadArquivoSigap
             "lreNumNivelConta",
             "lreTiponivelConta",
             "lreValorReceitaOrcada"
-        );
+        ];
         return $aElementos;
     }
 

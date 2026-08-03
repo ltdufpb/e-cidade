@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_meiprocessareg_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmeiprocessareg = new cl_meiprocessareg;
 $clmeiprocessareg->rotulo->label("q112_sequencial");
 $clmeiprocessareg->rotulo->label("q112_meiimportameireg");
@@ -98,9 +98,9 @@ $clmeiprocessareg->rotulo->label("q112_meiimportameireg");
         }else{
            $sql = $clmeiprocessareg->sql_query("",$campos,"q112_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q112_meiimportameireg)){
-          $repassa = array("chave_q112_sequencial"=>$chave_q112_sequencial,"chave_q112_meiimportameireg"=>$chave_q112_meiimportameireg);
+          $repassa = ["chave_q112_sequencial"=>$chave_q112_sequencial,"chave_q112_meiimportameireg"=>$chave_q112_meiimportameireg];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

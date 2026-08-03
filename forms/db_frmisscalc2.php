@@ -86,7 +86,7 @@ function js_habilitacalculo(){
     </td>    
     <td title="<?=$Tq07_inscr?>" colspan="4">
     <?php  
-     $z01_nome = stripslashes($z01_nome);
+     $z01_nome = stripslashes((string) $z01_nome);
      db_input('q07_inscr',8,$Iq07_inscr,true,'text',3,"");
      isset($q07_inscr)?$inscricao=$q07_inscr:"";
      db_input('inscricao',5,$Iq07_inscr,true,'hidden',1);
@@ -99,11 +99,11 @@ function js_habilitacalculo(){
     <TD>
                  
      <?php
-       $aTipos  = array(
+       $aTipos  = [
          "0" => "Todos ",
          "1" => "ISSQN ",
          "2" => "Alvará"
-       );
+       ];
        db_select("iTipoCalculo", $aTipos, false, 1);
      ?>
    </TD>

@@ -77,7 +77,7 @@ $sSqlConsulta         .= "  order by db_sysarqcamp.seqarq                       
 $rsConsulta            = db_query($sSqlConsulta);
 $iNumRows              = pg_num_rows($rsConsulta);
 
-$aDadoManutensaoTabela = array();
+$aDadoManutensaoTabela = [];
 for ($iInd = 0; $iInd < $iNumRows; $iInd++) {
 
   $oDado                 = db_utils::fieldsMemory($rsConsulta, $iInd);
@@ -104,10 +104,10 @@ $sSqlPriKey  .= "  order by db_sysprikey.sequen                                 
 $rsPriKey     = db_query($sSqlPriKey);
 $iLinhas      = pg_num_rows($rsPriKey);
 
-$aPrikey      = array();
-$aChave       = array();
-$aPrikeyParam = array();
-$aPrikeyChave = array();
+$aPrikey      = [];
+$aChave       = [];
+$aPrikeyParam = [];
+$aPrikeyChave = [];
 for ($iInd = 0; $iInd < $iLinhas; $iInd++ ) {
 
   $oCampo          = db_utils::fieldsMemory($rsPriKey,$iInd);
@@ -190,7 +190,7 @@ if (isset($oGet->chavepesquisa0)) {
 	$rsPriKey        = db_query($sSqlPriKey);
 	$iLinhas         = pg_num_rows($rsPriKey);
 
-	$aPrikeyPesquisa = array();
+	$aPrikeyPesquisa = [];
 	for ($iInd = 0; $iInd < $iLinhas; $iInd++ ) {
 		$aPrikeyPesquisa[] = '$oGet->chavepesquisa'.$iInd;
 	}

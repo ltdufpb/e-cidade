@@ -115,7 +115,7 @@ db_textarea('pc61_obs',3,40,$Ipc61_obs,true,'text',$db_opcao,"")
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("pc61_numcgm"=>@$pc61_numcgm,"pc61_certif"=>@$pc61_certif);
+	 $chavepri= ["pc61_numcgm"=>@$pc61_numcgm,"pc61_certif"=>@$pc61_certif];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clpcfornecert->sql_query_file($pc61_numcgm);
 	 $cliframe_alterar_excluir->campos  ="pc61_numcgm,pc61_certif,pc61_vencim,pc61_obs";

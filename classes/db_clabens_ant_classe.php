@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE clabens_ant
 class cl_clabens_ant { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $t01_class = null; 
-   var $t01_descr = null; 
-   var $t01_deprec = 0; 
-   var $t01_descr1 = null; 
-   var $t01_descr2 = null; 
-   var $t01_descr3 = null; 
-   var $t01_descr4 = null; 
-   var $t01_descr5 = null; 
-   var $t01_descr6 = null; 
-   var $t01_plano = null; 
-   var $t01_ultcod = 0; 
+   public $t01_class = null; 
+   public $t01_descr = null; 
+   public $t01_deprec = 0; 
+   public $t01_descr1 = null; 
+   public $t01_descr2 = null; 
+   public $t01_descr3 = null; 
+   public $t01_descr4 = null; 
+   public $t01_descr5 = null; 
+   public $t01_descr6 = null; 
+   public $t01_plano = null; 
+   public $t01_ultcod = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  t01_class = char(     8) = Codigo de Classificacao do Bem 
                  t01_descr = char(    35) = Descricao da Classificacao 
                  t01_deprec = float8 = Percentual de Depreciacao 
@@ -68,10 +68,10 @@ class cl_clabens_ant {
                  t01_ultcod = int4 = Numero do Ultimo codigo Cad. 
                  ";
    //funcao construtor da classe 
-   function cl_clabens_ant() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("clabens_ant"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -230,7 +230,7 @@ class cl_clabens_ant {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela de Classificacao de Bens () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela de Classificacao de Bens já Cadastrado";
@@ -257,10 +257,10 @@ class cl_clabens_ant {
       $this->atualizacampos();
      $sql = " update clabens_ant set ";
      $virgula = "";
-     if(trim($this->t01_class)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_class"])){ 
+     if(trim((string) $this->t01_class)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_class"])){ 
        $sql  .= $virgula." t01_class = '$this->t01_class' ";
        $virgula = ",";
-       if(trim($this->t01_class) == null ){ 
+       if(trim((string) $this->t01_class) == null ){ 
          $this->erro_sql = " Campo Codigo de Classificacao do Bem nao Informado.";
          $this->erro_campo = "t01_class";
          $this->erro_banco = "";
@@ -270,10 +270,10 @@ class cl_clabens_ant {
          return false;
        }
      }
-     if(trim($this->t01_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr"])){ 
+     if(trim((string) $this->t01_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr"])){ 
        $sql  .= $virgula." t01_descr = '$this->t01_descr' ";
        $virgula = ",";
-       if(trim($this->t01_descr) == null ){ 
+       if(trim((string) $this->t01_descr) == null ){ 
          $this->erro_sql = " Campo Descricao da Classificacao nao Informado.";
          $this->erro_campo = "t01_descr";
          $this->erro_banco = "";
@@ -283,10 +283,10 @@ class cl_clabens_ant {
          return false;
        }
      }
-     if(trim($this->t01_deprec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_deprec"])){ 
+     if(trim((string) $this->t01_deprec)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_deprec"])){ 
        $sql  .= $virgula." t01_deprec = $this->t01_deprec ";
        $virgula = ",";
-       if(trim($this->t01_deprec) == null ){ 
+       if(trim((string) $this->t01_deprec) == null ){ 
          $this->erro_sql = " Campo Percentual de Depreciacao nao Informado.";
          $this->erro_campo = "t01_deprec";
          $this->erro_banco = "";
@@ -296,10 +296,10 @@ class cl_clabens_ant {
          return false;
        }
      }
-     if(trim($this->t01_descr1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr1"])){ 
+     if(trim((string) $this->t01_descr1)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr1"])){ 
        $sql  .= $virgula." t01_descr1 = '$this->t01_descr1' ";
        $virgula = ",";
-       if(trim($this->t01_descr1) == null ){ 
+       if(trim((string) $this->t01_descr1) == null ){ 
          $this->erro_sql = " Campo Descricao 1 para o Bem nao Informado.";
          $this->erro_campo = "t01_descr1";
          $this->erro_banco = "";
@@ -309,10 +309,10 @@ class cl_clabens_ant {
          return false;
        }
      }
-     if(trim($this->t01_descr2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr2"])){ 
+     if(trim((string) $this->t01_descr2)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr2"])){ 
        $sql  .= $virgula." t01_descr2 = '$this->t01_descr2' ";
        $virgula = ",";
-       if(trim($this->t01_descr2) == null ){ 
+       if(trim((string) $this->t01_descr2) == null ){ 
          $this->erro_sql = " Campo Descricao 2 nao Informado.";
          $this->erro_campo = "t01_descr2";
          $this->erro_banco = "";
@@ -322,10 +322,10 @@ class cl_clabens_ant {
          return false;
        }
      }
-     if(trim($this->t01_descr3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr3"])){ 
+     if(trim((string) $this->t01_descr3)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr3"])){ 
        $sql  .= $virgula." t01_descr3 = '$this->t01_descr3' ";
        $virgula = ",";
-       if(trim($this->t01_descr3) == null ){ 
+       if(trim((string) $this->t01_descr3) == null ){ 
          $this->erro_sql = " Campo Descricao 3 nao Informado.";
          $this->erro_campo = "t01_descr3";
          $this->erro_banco = "";
@@ -335,10 +335,10 @@ class cl_clabens_ant {
          return false;
        }
      }
-     if(trim($this->t01_descr4)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr4"])){ 
+     if(trim((string) $this->t01_descr4)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr4"])){ 
        $sql  .= $virgula." t01_descr4 = '$this->t01_descr4' ";
        $virgula = ",";
-       if(trim($this->t01_descr4) == null ){ 
+       if(trim((string) $this->t01_descr4) == null ){ 
          $this->erro_sql = " Campo Descricao 4 nao Informado.";
          $this->erro_campo = "t01_descr4";
          $this->erro_banco = "";
@@ -348,10 +348,10 @@ class cl_clabens_ant {
          return false;
        }
      }
-     if(trim($this->t01_descr5)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr5"])){ 
+     if(trim((string) $this->t01_descr5)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr5"])){ 
        $sql  .= $virgula." t01_descr5 = '$this->t01_descr5' ";
        $virgula = ",";
-       if(trim($this->t01_descr5) == null ){ 
+       if(trim((string) $this->t01_descr5) == null ){ 
          $this->erro_sql = " Campo Descricao 5 nao Informado.";
          $this->erro_campo = "t01_descr5";
          $this->erro_banco = "";
@@ -361,10 +361,10 @@ class cl_clabens_ant {
          return false;
        }
      }
-     if(trim($this->t01_descr6)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr6"])){ 
+     if(trim((string) $this->t01_descr6)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_descr6"])){ 
        $sql  .= $virgula." t01_descr6 = '$this->t01_descr6' ";
        $virgula = ",";
-       if(trim($this->t01_descr6) == null ){ 
+       if(trim((string) $this->t01_descr6) == null ){ 
          $this->erro_sql = " Campo Descricao 6 nao Informado.";
          $this->erro_campo = "t01_descr6";
          $this->erro_banco = "";
@@ -374,10 +374,10 @@ class cl_clabens_ant {
          return false;
        }
      }
-     if(trim($this->t01_plano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_plano"])){ 
+     if(trim((string) $this->t01_plano)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_plano"])){ 
        $sql  .= $virgula." t01_plano = '$this->t01_plano' ";
        $virgula = ",";
-       if(trim($this->t01_plano) == null ){ 
+       if(trim((string) $this->t01_plano) == null ){ 
          $this->erro_sql = " Campo Plano de Contas nao Informado.";
          $this->erro_campo = "t01_plano";
          $this->erro_banco = "";
@@ -387,10 +387,10 @@ class cl_clabens_ant {
          return false;
        }
      }
-     if(trim($this->t01_ultcod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_ultcod"])){ 
+     if(trim((string) $this->t01_ultcod)!="" || isset($GLOBALS["HTTP_POST_VARS"]["t01_ultcod"])){ 
        $sql  .= $virgula." t01_ultcod = $this->t01_ultcod ";
        $virgula = ",";
-       if(trim($this->t01_ultcod) == null ){ 
+       if(trim((string) $this->t01_ultcod) == null ){ 
          $this->erro_sql = " Campo Numero do Ultimo codigo Cad. nao Informado.";
          $this->erro_campo = "t01_ultcod";
          $this->erro_banco = "";
@@ -481,7 +481,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:clabens_ant";

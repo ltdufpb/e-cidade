@@ -29,7 +29,7 @@
 
 //verifica se algum item tem observação
 for ($j=0 ;$j<$this->linhasdositens;$j++){
-       $obs=trim(pg_result($this->recorddositens,$j,$this->robsdositens));
+       $obs=trim(pg_fetch_result($this->recorddositens,$j,$this->robsdositens));
        if ($obs != null){
            $cont_obs++;
        }
@@ -188,21 +188,21 @@ for ($i = 0;$i < $iVias;$i++){
    
     for($ii = $comeco;$ii < $this->linhasdositens ;$ii++) {
 	     $cont++;
-	     $iTotalReq += trim(pg_result($this->recorddositens,$ii,$this->rquantdeitens));
+	     $iTotalReq += trim(pg_fetch_result($this->recorddositens,$ii,$this->rquantdeitens));
 	     
        $this->objpdf->setx($xcol+3+$maiscol);
-       $this->objpdf->cell(21.2,5,trim(pg_result($this->recorddositens,$ii,$this->rcodmaterial)),0,0,"L",0);
-	     $this->objpdf->cell(73.8,5,substr(trim(pg_result($this->recorddositens,$ii,$this->rdescmaterial)),0,82),0,0,"L",0);
-	     $this->objpdf->cell(53,5,pg_result($this->recorddositens,$ii,$this->rlocalizacao),0,0,"L",0);
-	     $this->objpdf->cell(16,5,pg_result($this->recorddositens,$ii,$this->runidadesaida),0,0,"L",0);
-	     $this->objpdf->cell(16,5,trim(pg_result($this->recorddositens,$ii,$this->rquantdeitens)),0,0,"C",0);
-	     $this->objpdf->cell(16,5,trim(pg_result($this->recorddositens,$ii,$this->rquantatend)),0,1,"C",0);
+       $this->objpdf->cell(21.2,5,trim(pg_fetch_result($this->recorddositens,$ii,$this->rcodmaterial)),0,0,"L",0);
+	     $this->objpdf->cell(73.8,5,substr(trim(pg_fetch_result($this->recorddositens,$ii,$this->rdescmaterial)),0,82),0,0,"L",0);
+	     $this->objpdf->cell(53,5,pg_fetch_result($this->recorddositens,$ii,$this->rlocalizacao),0,0,"L",0);
+	     $this->objpdf->cell(16,5,pg_fetch_result($this->recorddositens,$ii,$this->runidadesaida),0,0,"L",0);
+	     $this->objpdf->cell(16,5,trim(pg_fetch_result($this->recorddositens,$ii,$this->rquantdeitens)),0,0,"C",0);
+	     $this->objpdf->cell(16,5,trim(pg_fetch_result($this->recorddositens,$ii,$this->rquantatend)),0,1,"C",0);
      
-       if (trim(pg_result($this->recorddositens,$ii,$this->robsdositens)) != ''){
-         $obsitens=substr(trim(pg_result($this->recorddositens,$ii,$this->robsdositens)),0,110);
+       if (trim(pg_fetch_result($this->recorddositens,$ii,$this->robsdositens)) != ''){
+         $obsitens=substr(trim(pg_fetch_result($this->recorddositens,$ii,$this->robsdositens)),0,110);
           $this->objpdf->multicell(180,4,str_replace("\n",'',($obsitens)));
 	     }
-       if ($quant_itens==8 && (trim(pg_result($this->recorddositens,$ii,$this->robsdositens)) == '')){
+       if ($quant_itens==8 && (trim(pg_fetch_result($this->recorddositens,$ii,$this->robsdositens)) == '')){
          $obsitens="";
          $this->objpdf->multicell(180,4,$obsitens);
        }
@@ -243,13 +243,13 @@ for ($i = 0;$i < $iVias;$i++){
 	  $this->objpdf->Setfont('Arial','b',8);
 	  $this->objpdf->text($xcol+2,$xlin+106,'OBS:');
 	  $this->objpdf->Setfont('Arial','b',8);
-	  $this->objpdf->text($xcol+134,$xlin+120,strtoupper($this->municpref).', '.substr($this->emissao,8,2).' DE '.strtoupper(db_mes(substr($this->emissao,5,2))).' DE '.substr($this->emissao,0,4).'.');
+	  $this->objpdf->text($xcol+134,$xlin+120,strtoupper((string) $this->municpref).', '.substr((string) $this->emissao,8,2).' DE '.strtoupper(db_mes(substr((string) $this->emissao,5,2))).' DE '.substr((string) $this->emissao,0,4).'.');
 	  $this->objpdf->line($xcol+130,$xlin+110,$xcol+195,$xlin+110);
 	  $this->objpdf->text($xcol+152,$xlin+114,'RECEBEDOR');
 	  $this->objpdf->Setfont('Arial','',8);
 	  $this->objpdf->sety($xlin+107);
 	  $this->objpdf->setx($xcol+1);
-	  $this->objpdf->multicell(107,3,substr($this->Rresumo,0,450),0,"L");
+	  $this->objpdf->multicell(107,3,substr((string) $this->Rresumo,0,450),0,"L");
     
 	  $this->objpdf->Setfont('Arial','b',8);	  
 	  $this->objpdf->text($xcol+196,$xlin+125, $this->objpdf->PageNo()."/{nb}");

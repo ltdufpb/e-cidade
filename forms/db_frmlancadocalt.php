@@ -79,9 +79,9 @@ db_input('z01_nome',40,@$Iz01_nome,true,'text',3,'')
     <td> 
        <?php 
        if(isset($pc74_validade) && $pc74_validade!="") {
-       	 $pc74_validade_dia = date("d", strtotime($pc74_validade));
-       	 $pc74_validade_mes = date("m", strtotime($pc74_validade));
-       	 $pc74_validade_ano = date("Y", strtotime($pc74_validade));
+       	 $pc74_validade_dia = date("d", strtotime((string) $pc74_validade));
+       	 $pc74_validade_mes = date("m", strtotime((string) $pc74_validade));
+       	 $pc74_validade_ano = date("Y", strtotime((string) $pc74_validade));
        }       
        
 db_inputdata('pc74_validade', @$pc74_validade_dia, @$pc74_validade_mes, @$pc74_validade_ano, true, 'text', $db_opcao, "");
@@ -110,7 +110,7 @@ db_input('pc70_descr',40,$Ipc70_descr,true,'text',3,'')
     <td align="left"><b>Imprimir Objeto Social:</b></td>
     <td >
       <?php 
-      $db_matriz = array("0"=>'Sim',"1"=>"Não");
+      $db_matriz = ["0"=>'Sim',"1"=>"Não"];
       db_select('oSocial',$db_matriz,TRUE,1); 
       ?>
     </td>
@@ -188,7 +188,7 @@ function js_pesquisa(){
 function js_preenchepesquisa(chave){
   db_iframe_pcforne.hide();
   <?php 
-  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   ?>
 }
 </script>

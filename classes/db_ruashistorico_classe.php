@@ -29,34 +29,34 @@
 //CLASSE DA ENTIDADE ruashistorico
 class cl_ruashistorico { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j136_sequencial = 0; 
-   var $j136_ruas = 0; 
-   var $j136_ruastipo = 0; 
-   var $j136_lei = null; 
-   var $j136_datalei_dia = null; 
-   var $j136_datalei_mes = null; 
-   var $j136_datalei_ano = null; 
-   var $j136_datalei = null; 
-   var $j136_nomeanterior = null; 
-   var $j136_dataalteracao_dia = null; 
-   var $j136_dataalteracao_mes = null; 
-   var $j136_dataalteracao_ano = null; 
-   var $j136_dataalteracao = null; 
+   public $j136_sequencial = 0; 
+   public $j136_ruas = 0; 
+   public $j136_ruastipo = 0; 
+   public $j136_lei = null; 
+   public $j136_datalei_dia = null; 
+   public $j136_datalei_mes = null; 
+   public $j136_datalei_ano = null; 
+   public $j136_datalei = null; 
+   public $j136_nomeanterior = null; 
+   public $j136_dataalteracao_dia = null; 
+   public $j136_dataalteracao_mes = null; 
+   public $j136_dataalteracao_ano = null; 
+   public $j136_dataalteracao = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j136_sequencial = int8 = Código 
                  j136_ruas = int4 = Código Logradouro 
                  j136_ruastipo = int4 = Código Tipo 
@@ -66,10 +66,10 @@ class cl_ruashistorico {
                  j136_dataalteracao = date = Data Alteração 
                  ";
    //funcao construtor da classe 
-   function cl_ruashistorico() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ruashistorico"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -160,10 +160,10 @@ class cl_ruashistorico {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j136_sequencial = pg_result($result,0,0); 
+       $this->j136_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from ruashistorico_j136_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j136_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j136_sequencial)){
          $this->erro_sql = " Campo j136_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -203,7 +203,7 @@ class cl_ruashistorico {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "ruashistorico ($this->j136_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "ruashistorico já Cadastrado";
@@ -232,16 +232,16 @@ class cl_ruashistorico {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,20180,'$this->j136_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3623,20180,'','".AddSlashes(pg_result($resaco,0,'j136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3623,20181,'','".AddSlashes(pg_result($resaco,0,'j136_ruas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3623,20185,'','".AddSlashes(pg_result($resaco,0,'j136_ruastipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3623,20182,'','".AddSlashes(pg_result($resaco,0,'j136_lei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3623,20183,'','".AddSlashes(pg_result($resaco,0,'j136_datalei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3623,20184,'','".AddSlashes(pg_result($resaco,0,'j136_nomeanterior'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3623,20186,'','".AddSlashes(pg_result($resaco,0,'j136_dataalteracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3623,20180,'','".AddSlashes(pg_fetch_result($resaco,0,'j136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3623,20181,'','".AddSlashes(pg_fetch_result($resaco,0,'j136_ruas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3623,20185,'','".AddSlashes(pg_fetch_result($resaco,0,'j136_ruastipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3623,20182,'','".AddSlashes(pg_fetch_result($resaco,0,'j136_lei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3623,20183,'','".AddSlashes(pg_fetch_result($resaco,0,'j136_datalei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3623,20184,'','".AddSlashes(pg_fetch_result($resaco,0,'j136_nomeanterior'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3623,20186,'','".AddSlashes(pg_fetch_result($resaco,0,'j136_dataalteracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -251,10 +251,10 @@ class cl_ruashistorico {
       $this->atualizacampos();
      $sql = " update ruashistorico set ";
      $virgula = "";
-     if(trim($this->j136_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_sequencial"])){ 
+     if(trim((string) $this->j136_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_sequencial"])){ 
        $sql  .= $virgula." j136_sequencial = $this->j136_sequencial ";
        $virgula = ",";
-       if(trim($this->j136_sequencial) == null ){ 
+       if(trim((string) $this->j136_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "j136_sequencial";
          $this->erro_banco = "";
@@ -264,10 +264,10 @@ class cl_ruashistorico {
          return false;
        }
      }
-     if(trim($this->j136_ruas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_ruas"])){ 
+     if(trim((string) $this->j136_ruas)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_ruas"])){ 
        $sql  .= $virgula." j136_ruas = $this->j136_ruas ";
        $virgula = ",";
-       if(trim($this->j136_ruas) == null ){ 
+       if(trim((string) $this->j136_ruas) == null ){ 
          $this->erro_sql = " Campo Código Logradouro nao Informado.";
          $this->erro_campo = "j136_ruas";
          $this->erro_banco = "";
@@ -277,10 +277,10 @@ class cl_ruashistorico {
          return false;
        }
      }
-     if(trim($this->j136_ruastipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_ruastipo"])){ 
+     if(trim((string) $this->j136_ruastipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_ruastipo"])){ 
        $sql  .= $virgula." j136_ruastipo = $this->j136_ruastipo ";
        $virgula = ",";
-       if(trim($this->j136_ruastipo) == null ){ 
+       if(trim((string) $this->j136_ruastipo) == null ){ 
          $this->erro_sql = " Campo Código Tipo nao Informado.";
          $this->erro_campo = "j136_ruastipo";
          $this->erro_banco = "";
@@ -290,11 +290,11 @@ class cl_ruashistorico {
          return false;
        }
      }
-     if(trim($this->j136_lei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_lei"])){ 
+     if(trim((string) $this->j136_lei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_lei"])){ 
        $sql  .= $virgula." j136_lei = '$this->j136_lei' ";
        $virgula = ",";
      }
-     if(trim($this->j136_datalei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_datalei_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j136_datalei_dia"] !="") ){ 
+     if(trim((string) $this->j136_datalei)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_datalei_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j136_datalei_dia"] !="") ){ 
        $sql  .= $virgula." j136_datalei = '$this->j136_datalei' ";
        $virgula = ",";
      }     else{ 
@@ -303,10 +303,10 @@ class cl_ruashistorico {
          $virgula = ",";
        }
      }
-     if(trim($this->j136_nomeanterior)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_nomeanterior"])){ 
+     if(trim((string) $this->j136_nomeanterior)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_nomeanterior"])){ 
        $sql  .= $virgula." j136_nomeanterior = '$this->j136_nomeanterior' ";
        $virgula = ",";
-       if(trim($this->j136_nomeanterior) == null ){ 
+       if(trim((string) $this->j136_nomeanterior) == null ){ 
          $this->erro_sql = " Campo Nome Anterior nao Informado.";
          $this->erro_campo = "j136_nomeanterior";
          $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_ruashistorico {
          return false;
        }
      }
-     if(trim($this->j136_dataalteracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_dataalteracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j136_dataalteracao_dia"] !="") ){ 
+     if(trim((string) $this->j136_dataalteracao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j136_dataalteracao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["j136_dataalteracao_dia"] !="") ){ 
        $sql  .= $virgula." j136_dataalteracao = '$this->j136_dataalteracao' ";
        $virgula = ",";
-       if(trim($this->j136_dataalteracao) == null ){ 
+       if(trim((string) $this->j136_dataalteracao) == null ){ 
          $this->erro_sql = " Campo Data Alteração nao Informado.";
          $this->erro_campo = "j136_dataalteracao_dia";
          $this->erro_banco = "";
@@ -332,7 +332,7 @@ class cl_ruashistorico {
        if(isset($GLOBALS["HTTP_POST_VARS"]["j136_dataalteracao_dia"])){ 
          $sql  .= $virgula." j136_dataalteracao = null ";
          $virgula = ",";
-         if(trim($this->j136_dataalteracao) == null ){ 
+         if(trim((string) $this->j136_dataalteracao) == null ){ 
            $this->erro_sql = " Campo Data Alteração nao Informado.";
            $this->erro_campo = "j136_dataalteracao_dia";
            $this->erro_banco = "";
@@ -357,23 +357,23 @@ class cl_ruashistorico {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,20180,'$this->j136_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j136_sequencial"]) || $this->j136_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3623,20180,'".AddSlashes(pg_result($resaco,$conresaco,'j136_sequencial'))."','$this->j136_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3623,20180,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j136_sequencial'))."','$this->j136_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j136_ruas"]) || $this->j136_ruas != "")
-             $resac = db_query("insert into db_acount values($acount,3623,20181,'".AddSlashes(pg_result($resaco,$conresaco,'j136_ruas'))."','$this->j136_ruas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3623,20181,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j136_ruas'))."','$this->j136_ruas',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j136_ruastipo"]) || $this->j136_ruastipo != "")
-             $resac = db_query("insert into db_acount values($acount,3623,20185,'".AddSlashes(pg_result($resaco,$conresaco,'j136_ruastipo'))."','$this->j136_ruastipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3623,20185,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j136_ruastipo'))."','$this->j136_ruastipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j136_lei"]) || $this->j136_lei != "")
-             $resac = db_query("insert into db_acount values($acount,3623,20182,'".AddSlashes(pg_result($resaco,$conresaco,'j136_lei'))."','$this->j136_lei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3623,20182,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j136_lei'))."','$this->j136_lei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j136_datalei"]) || $this->j136_datalei != "")
-             $resac = db_query("insert into db_acount values($acount,3623,20183,'".AddSlashes(pg_result($resaco,$conresaco,'j136_datalei'))."','$this->j136_datalei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3623,20183,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j136_datalei'))."','$this->j136_datalei',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j136_nomeanterior"]) || $this->j136_nomeanterior != "")
-             $resac = db_query("insert into db_acount values($acount,3623,20184,'".AddSlashes(pg_result($resaco,$conresaco,'j136_nomeanterior'))."','$this->j136_nomeanterior',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3623,20184,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j136_nomeanterior'))."','$this->j136_nomeanterior',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["j136_dataalteracao"]) || $this->j136_dataalteracao != "")
-             $resac = db_query("insert into db_acount values($acount,3623,20186,'".AddSlashes(pg_result($resaco,$conresaco,'j136_dataalteracao'))."','$this->j136_dataalteracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3623,20186,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j136_dataalteracao'))."','$this->j136_dataalteracao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -427,16 +427,16 @@ class cl_ruashistorico {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,20180,'$j136_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3623,20180,'','".AddSlashes(pg_result($resaco,$iresaco,'j136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3623,20181,'','".AddSlashes(pg_result($resaco,$iresaco,'j136_ruas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3623,20185,'','".AddSlashes(pg_result($resaco,$iresaco,'j136_ruastipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3623,20182,'','".AddSlashes(pg_result($resaco,$iresaco,'j136_lei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3623,20183,'','".AddSlashes(pg_result($resaco,$iresaco,'j136_datalei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3623,20184,'','".AddSlashes(pg_result($resaco,$iresaco,'j136_nomeanterior'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3623,20186,'','".AddSlashes(pg_result($resaco,$iresaco,'j136_dataalteracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3623,20180,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j136_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3623,20181,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j136_ruas'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3623,20185,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j136_ruastipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3623,20182,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j136_lei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3623,20183,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j136_datalei'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3623,20184,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j136_nomeanterior'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3623,20186,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j136_dataalteracao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -497,7 +497,7 @@ class cl_ruashistorico {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:ruashistorico";
@@ -512,7 +512,7 @@ class cl_ruashistorico {
    function sql_query ( $j136_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -535,7 +535,7 @@ class cl_ruashistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -548,7 +548,7 @@ class cl_ruashistorico {
    function sql_query_file ( $j136_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -569,7 +569,7 @@ class cl_ruashistorico {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

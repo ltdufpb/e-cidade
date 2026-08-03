@@ -41,7 +41,7 @@ include(modification("classes/db_empempitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_matestoqueitemnotafiscalmanual_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clmatestoque = new cl_matestoque;
 $clmatestoqueitem = new cl_matestoqueitem;
@@ -183,13 +183,13 @@ if(isset($alterar)){
 
         	 			if ($sqlerro == false) {
 
-        	 			  if (trim($m77_lote) != "") {
+        	 			  if (trim((string) $m77_lote) != "") {
 
         	 			    if ($m77_sequencial == null) {
 
         	 			      $clmatestoqueitemlote = db_utils::getDao("matestoqueitemlote");
         	 			      $clmatestoqueitemlote->m77_lote = $m77_lote;
-        	 			      $clmatestoqueitemlote->m77_dtvalidade = implode("-",array_reverse(explode("/", $m77_dtvalidade)));
+        	 			      $clmatestoqueitemlote->m77_dtvalidade = implode("-",array_reverse(explode("/", (string) $m77_dtvalidade)));
         	 			      $clmatestoqueitemlote->m77_matestoqueitem = $m71_codlanc;
         	 			      $clmatestoqueitemlote->incluir(null);
         	 			      if ($clmatestoqueitemlote->erro_status == 0){
@@ -202,7 +202,7 @@ if(isset($alterar)){
 
         	 			      $clmatestoqueitemlote = db_utils::getDao("matestoqueitemlote");
         	 			      $clmatestoqueitemlote->m77_lote = $m77_lote;
-        	 			      $clmatestoqueitemlote->m77_dtvalidade = implode("-",array_reverse(explode("/", $m77_dtvalidade)));
+        	 			      $clmatestoqueitemlote->m77_dtvalidade = implode("-",array_reverse(explode("/", (string) $m77_dtvalidade)));
         	 			      $clmatestoqueitemlote->m77_sequencial = $m77_sequencial;
         	 			      $clmatestoqueitemlote->alterar($m77_sequencial);
         	 			      if ($clmatestoqueitemlote->erro_status == 0){
@@ -226,7 +226,7 @@ if(isset($alterar)){
         	 			}
         	 			if (!$sqlerro) {
 
-        	 			  if (trim($m78_matfabricante) != "") {
+        	 			  if (trim((string) $m78_matfabricante) != "") {
 
         	 			    if ($m78_sequencial == null) {
 
@@ -327,7 +327,7 @@ if(isset($alterar)){
       db_fieldsmemory($result,0);
 
       if ($m77_dtvalidade != "") {
-        list($m77_dtvalidade_ano,$m77_dtvalidade_mes,$m77_dtvalidade_dia) = explode("-",$m77_dtvalidade);
+        [$m77_dtvalidade_ano, $m77_dtvalidade_mes, $m77_dtvalidade_dia] = explode("-",(string) $m77_dtvalidade);
       }
       $db_botao = true;
     }else{

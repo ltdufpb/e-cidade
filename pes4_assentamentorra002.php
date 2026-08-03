@@ -45,11 +45,11 @@ $oDaoRhpessoal = new cl_rhpessoal();
 $oDaoRhpessoal->rotulo->label();
 
 $sMessage = null;
-$aFolhas  = array(
+$aFolhas  = [
   0                                       => 'Selecione',
   FolhaPagamento::TIPO_FOLHA_SALARIO      => 'Salário',
   FolhaPagamento::TIPO_FOLHA_COMPLEMENTAR => 'Complementar'
-);
+];
 
 try {
   
@@ -95,10 +95,10 @@ try {
           <label for="h83_assenta">Assentamento:</label>  
         </td>
         <td>
-          <input type="text" id="h83_assenta" name="h83_assenta" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo isset($h83_assenta) ? $h83_assenta : '' ?>" />
+          <input type="text" id="h83_assenta" name="h83_assenta" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo $h83_assenta ?? '' ?>" />
         </td>
         <td>
-          <input type="text" id="h12_assentdescr" name="h12_assentdescr" size="30" maxlength="30" readonly style="background-color:#DEB887" value="<?php echo isset($h12_assentdescr) ? $h12_assentdescr : '' ?>" />
+          <input type="text" id="h12_assentdescr" name="h12_assentdescr" size="30" maxlength="30" readonly style="background-color:#DEB887" value="<?php echo $h12_assentdescr ?? '' ?>" />
         </td>
       </tr>
       <tr>
@@ -106,10 +106,10 @@ try {
           <label for="z01_nome"><?php echo $Lrh01_regist?></label>  
         </td>
         <td width="8">
-          <input type="text" id="h16_regist" name="h16_regist" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo isset($h16_regist) ? $h16_regist : '' ?>" />
+          <input type="text" id="h16_regist" name="h16_regist" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo $h16_regist ?? '' ?>" />
         </td>
         <td width="40">
-          <input type="text" id="z01_nome" name="z01_nome" size="30" maxlength="30" readonly style="background-color:#DEB887" value="<?php echo isset($z01_nome) ? $z01_nome : '' ?>" />
+          <input type="text" id="z01_nome" name="z01_nome" size="30" maxlength="30" readonly style="background-color:#DEB887" value="<?php echo $z01_nome ?? '' ?>" />
         </td>
       </tr>
       <tr>
@@ -117,7 +117,7 @@ try {
           <label for="h83_valor"><?php echo $Lh83_valor?></label>    
         </td>
         <td>
-          <input type="text" id="h83_valor" name="h83_valor" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo isset($h83_valor) ? $h83_valor : '' ?>" />
+          <input type="text" id="h83_valor" name="h83_valor" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo $h83_valor ?? '' ?>" />
         </td>
       </tr>
       <tr>
@@ -125,7 +125,7 @@ try {
           <label for="h83_meses"><?php echo $Lh83_meses?></label>    
         </td>
         <td>
-          <input type="text" id="h83_meses" name="h83_meses" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo isset($h83_meses) ? $h83_meses : '' ?>" />
+          <input type="text" id="h83_meses" name="h83_meses" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo $h83_meses ?? '' ?>" />
         </td>
       </tr>
       <tr>
@@ -133,8 +133,8 @@ try {
           <label for="h83_encargos"><?php echo $Lh83_encargos?></label> 
         </td>
         <td>
-          <input type="text" id="h83_encargos" name="h83_encargos" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo isset($h83_encargos) ? $h83_encargos : '' ?>" />
-          <input type="hidden" id="sCompetenciaFolha" name="sCompetenciaFolha" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo isset($sCompetenciaFolha) ? $sCompetenciaFolha : '' ?>" />
+          <input type="text" id="h83_encargos" name="h83_encargos" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo $h83_encargos ?? '' ?>" />
+          <input type="hidden" id="sCompetenciaFolha" name="sCompetenciaFolha" size="8" maxlength="8" readonly style="background-color:#DEB887" value="<?php echo $sCompetenciaFolha ?? '' ?>" />
         </td>
       </tr>
       <tr>

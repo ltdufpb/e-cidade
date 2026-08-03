@@ -84,7 +84,7 @@ try {
         $oDadosRetorno->iNumeroPassageiros       = $oVeiculoTransporte->getNumeroDePassageiros();
         $oDadosRetorno->sIdentificacao           = urldecode($oVeiculoTransporte->getIdentificacao());
         $oDadosRetorno->iTipoTransporte          = $oVeiculoTransporte->getTipoTransporte()->getCodigo();
-        $oDadosRetorno->sDescricaoTipoTransporte = urlencode($oVeiculoTransporte->getTipoTransporte()->getDescricao());
+        $oDadosRetorno->sDescricaoTipoTransporte = urlencode((string) $oVeiculoTransporte->getTipoTransporte()->getDescricao());
         $oDadosRetorno->iVinculoVeiculo          = '';
         $oDadosRetorno->sMarcaVinculoTransporte  = '';
         $oDadosRetorno->iVinculoCgm              = '';
@@ -92,13 +92,13 @@ try {
         if ($oVeiculoTransporte->getVeiculo() != "") {
 
           $oDadosRetorno->iVinculoVeiculo         = $oVeiculoTransporte->getVeiculo()->getCodigo();
-          $oDadosRetorno->sMarcaVinculoTransporte = urlencode($oVeiculoTransporte->getVeiculo()->getMarca()->getNome());
+          $oDadosRetorno->sMarcaVinculoTransporte = urlencode((string) $oVeiculoTransporte->getVeiculo()->getMarca()->getNome());
         }
 
         if ($oVeiculoTransporte->getEmpresaResponsavel() != "") {
 
           $oDadosRetorno->iVinculoCgm  = $oVeiculoTransporte->getEmpresaResponsavel()->getCodigo();
-          $oDadosRetorno->sNomeEmpresa = urlencode($oVeiculoTransporte->getEmpresaResponsavel()->getNomeCompleto());
+          $oDadosRetorno->sNomeEmpresa = urlencode((string) $oVeiculoTransporte->getEmpresaResponsavel()->getNomeCompleto());
         }
         $oRetorno->dados = $oDadosRetorno;
         break;
@@ -107,7 +107,7 @@ try {
 
       $oLinhaItinerarioHorario = new LinhaItinerarioHorario($oParam->iHorario);
 
-      $aCodigoVeiculosVinculados = array();
+      $aCodigoVeiculosVinculados = [];
       $lVeiculoJaExistente       = false;
       $oMensagem                 = new stdClass();
       $oMensagem->sVeiculo       = '';
@@ -150,7 +150,7 @@ try {
 
     case "getVeiculosHorario":
 
-      $oRetorno->aVeiculosHorario = array();
+      $oRetorno->aVeiculosHorario = [];
       $oLinhaTransporte           = new LinhaTransporte($oParam->iLinha);
 
       foreach ($oLinhaTransporte->getItinerarios() as $oLinhaItinerario) {
@@ -170,9 +170,9 @@ try {
             $oVinculosVeiculoLinha->sHorario           = urlencode($sHorario);
 
             if ($oVeiculoTransporte->getEmpresaResponsavel() != '') {
-              $oVinculosVeiculoLinha->sVeiculo         = urlencode($oVeiculoTransporte->getEmpresaResponsavel()->getNome());
+              $oVinculosVeiculoLinha->sVeiculo         = urlencode((string) $oVeiculoTransporte->getEmpresaResponsavel()->getNome());
             } else {
-              $oVinculosVeiculoLinha->sVeiculo         = urlencode($oVeiculoTransporte->getVeiculo()->getModelo());
+              $oVinculosVeiculoLinha->sVeiculo         = urlencode((string) $oVeiculoTransporte->getVeiculo()->getModelo());
             }
 
             $oVinculosVeiculoLinha->iNumeroPassageiros = $oVeiculoTransporte->getNumeroDePassageiros();

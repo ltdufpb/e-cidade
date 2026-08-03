@@ -8,11 +8,8 @@
  */
 class ComprovanteRendimentosWebService
 {
-    private $ano;
-
-    public function __construct($ano)
+    public function __construct(private $ano)
     {
-        $this->ano = $ano;
     }
 
     public function getComprovanteDoServidor($matricula, $instituicao)

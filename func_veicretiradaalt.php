@@ -33,8 +33,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_veicretirada_classe.php"));
 require_once(modification("classes/db_veiccadcentraldepart_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clveicretirada         = new cl_veicretirada;
 $clveiccadcentraldepart = new cl_veiccadcentraldepart;
@@ -115,9 +115,9 @@ $clveiccadcentraldepart->rotulo->label("ve37_veiccadcentral");
         }else{
            $sql = $clveicretirada->sql_query_devol("",$campos,"ve60_codigo",$where);
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ve60_codigo)){
-          $repassa = array("chave_ve60_codigo"=>$chave_ve60_codigo,"chave_ve60_codigo"=>$chave_ve60_codigo);
+          $repassa = ["chave_ve60_codigo"=>$chave_ve60_codigo,"chave_ve60_codigo"=>$chave_ve60_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

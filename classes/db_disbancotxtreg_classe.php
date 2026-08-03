@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE disbancotxtreg
 class cl_disbancotxtreg { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k35_sequencial = 0; 
-   var $k35_disbancotxt = 0; 
-   var $k35_idret = 0; 
+   public $k35_sequencial = 0; 
+   public $k35_disbancotxt = 0; 
+   public $k35_idret = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k35_sequencial = int4 = Sequencial 
                  k35_disbancotxt = int4 = Sequencial do disbancotxt 
                  k35_idret = int4 = Cód. Ret. 
                  ";
    //funcao construtor da classe 
-   function cl_disbancotxtreg() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disbancotxtreg"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_disbancotxtreg {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k35_sequencial = pg_result($result,0,0); 
+       $this->k35_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from disbancotxtreg_k35_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k35_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k35_sequencial)){
          $this->erro_sql = " Campo k35_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_disbancotxtreg {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Registros do txt  ($this->k35_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Registros do txt  já Cadastrado";
@@ -166,12 +166,12 @@ class cl_disbancotxtreg {
      $resaco = $this->sql_record($this->sql_query_file($this->k35_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8689,'$this->k35_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,1482,8689,'','".AddSlashes(pg_result($resaco,0,'k35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1482,8687,'','".AddSlashes(pg_result($resaco,0,'k35_disbancotxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1482,8688,'','".AddSlashes(pg_result($resaco,0,'k35_idret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1482,8689,'','".AddSlashes(pg_fetch_result($resaco,0,'k35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1482,8687,'','".AddSlashes(pg_fetch_result($resaco,0,'k35_disbancotxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1482,8688,'','".AddSlashes(pg_fetch_result($resaco,0,'k35_idret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_disbancotxtreg {
       $this->atualizacampos();
      $sql = " update disbancotxtreg set ";
      $virgula = "";
-     if(trim($this->k35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k35_sequencial"])){ 
+     if(trim((string) $this->k35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k35_sequencial"])){ 
        $sql  .= $virgula." k35_sequencial = $this->k35_sequencial ";
        $virgula = ",";
-       if(trim($this->k35_sequencial) == null ){ 
+       if(trim((string) $this->k35_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k35_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_disbancotxtreg {
          return false;
        }
      }
-     if(trim($this->k35_disbancotxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k35_disbancotxt"])){ 
+     if(trim((string) $this->k35_disbancotxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k35_disbancotxt"])){ 
        $sql  .= $virgula." k35_disbancotxt = $this->k35_disbancotxt ";
        $virgula = ",";
-       if(trim($this->k35_disbancotxt) == null ){ 
+       if(trim((string) $this->k35_disbancotxt) == null ){ 
          $this->erro_sql = " Campo Sequencial do disbancotxt nao Informado.";
          $this->erro_campo = "k35_disbancotxt";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_disbancotxtreg {
          return false;
        }
      }
-     if(trim($this->k35_idret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k35_idret"])){ 
+     if(trim((string) $this->k35_idret)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k35_idret"])){ 
        $sql  .= $virgula." k35_idret = $this->k35_idret ";
        $virgula = ",";
-       if(trim($this->k35_idret) == null ){ 
+       if(trim((string) $this->k35_idret) == null ){ 
          $this->erro_sql = " Campo Cód. Ret. nao Informado.";
          $this->erro_campo = "k35_idret";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_disbancotxtreg {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8689,'$this->k35_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k35_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,1482,8689,'".AddSlashes(pg_result($resaco,$conresaco,'k35_sequencial'))."','$this->k35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1482,8689,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k35_sequencial'))."','$this->k35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k35_disbancotxt"]))
-           $resac = db_query("insert into db_acount values($acount,1482,8687,'".AddSlashes(pg_result($resaco,$conresaco,'k35_disbancotxt'))."','$this->k35_disbancotxt',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1482,8687,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k35_disbancotxt'))."','$this->k35_disbancotxt',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k35_idret"]))
-           $resac = db_query("insert into db_acount values($acount,1482,8688,'".AddSlashes(pg_result($resaco,$conresaco,'k35_idret'))."','$this->k35_idret',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1482,8688,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k35_idret'))."','$this->k35_idret',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_disbancotxtreg {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8689,'$k35_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,1482,8689,'','".AddSlashes(pg_result($resaco,$iresaco,'k35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1482,8687,'','".AddSlashes(pg_result($resaco,$iresaco,'k35_disbancotxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1482,8688,'','".AddSlashes(pg_result($resaco,$iresaco,'k35_idret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1482,8689,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1482,8687,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k35_disbancotxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1482,8688,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k35_idret'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from disbancotxtreg
@@ -345,7 +345,7 @@ class cl_disbancotxtreg {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:disbancotxtreg";
@@ -359,7 +359,7 @@ class cl_disbancotxtreg {
    function sql_query ( $k35_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_disbancotxtreg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_disbancotxtreg {
    function sql_query_file ( $k35_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_disbancotxtreg {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

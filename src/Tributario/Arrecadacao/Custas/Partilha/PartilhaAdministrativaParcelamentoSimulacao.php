@@ -29,6 +29,7 @@ namespace ECidade\Tributario\Arrecadacao\Custas\Partilha;
 
 class PartilhaAdministrativaParcelamentoSimulacao extends PartilhaAdministrativaParcelamento
 {
+    #[\Override]
     public function processar()
     {
         $taxasEmissao = parent::processar();

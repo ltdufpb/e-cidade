@@ -187,9 +187,7 @@ $clrotulo->label("ac16_resumoobjeto");
                                                 if (isset($e54_codcom) && empty($tipodecompra)) {
                                                     $tipodecompra = $e54_codcom;
                                                 }
-                                                $liberaLicictacao = !empty(array_filter($tiposCompra, function ($dado) use ($tipodecompra) {
-                                                    return ($tipodecompra == $dado->pc50_codcom && $dado->l44_obrigalicitacao == 't');
-                                                }));
+                                                $liberaLicictacao = !empty(array_filter($tiposCompra, fn($dado) => $tipodecompra == $dado->pc50_codcom && $dado->l44_obrigalicitacao == 't'));
                                             }
                                             $e54_tipol = '';
                                             $e54_numerl = '';

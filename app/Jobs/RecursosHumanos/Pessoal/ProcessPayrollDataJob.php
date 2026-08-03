@@ -23,20 +23,6 @@ class ProcessPayrollDataJob implements ShouldQueue
      */
     private $chunkIn = 200;
 
-    /**
-     * @var int
-     */
-    private $year;
-    /**
-     * @var int
-     */
-    private $month;
-
-    /**
-     * @var array|null
-     */
-    private $payrollTypes;
-
     private $token = null;
     private $url = null;
 
@@ -44,13 +30,12 @@ class ProcessPayrollDataJob implements ShouldQueue
      * Create a new job instance.
      *
      * @return void
+     * @param int $year
+     * @param int $month
+     * @param mixed[]|null $payrollTypes
      */
-    public function __construct($year, $month, $payrollTypes = [])
+    public function __construct(private $year, private $month, private $payrollTypes = [])
     {
-        $this->year = $year;
-        $this->month = $month;
-        $this->payrollTypes = $payrollTypes;
-
         $token = env('API_DATA_AVAILABLE_TOKEN');
         $url = env('API_DATA_AVAILABLE_URL');
         if (empty($token) || empty($url)) {
@@ -167,7 +152,7 @@ class ProcessPayrollDataJob implements ShouldQueue
                                     ? $information->valor : 0;
 
                                 $payroll->items[] = (object)[
-                                    "text" => utf8_encode($information->descricao),
+                                    "text" => mb_convert_encoding($information->descricao, 'UTF-8', 'ISO-8859-1'),
                                     "value" => $information->valor,
                                     "quantity" => $information->quantidade,
                                     "rubric" => $information->rubrica,

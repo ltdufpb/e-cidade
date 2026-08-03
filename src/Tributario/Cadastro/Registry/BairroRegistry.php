@@ -15,7 +15,7 @@ class BairroRegistry
     /**
      * @var Bairro[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     /**
      * @param Bairro $bairro

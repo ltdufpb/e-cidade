@@ -82,7 +82,7 @@ if ( $oParams->agruparporelemento == 2 ) {
 };
 
 if (isset($oParams->listacontas) && !empty($oParams->listacontas)) {
-  $aCodContas  = explode(",", $oParams->listacontas);
+  $aCodContas  = explode(",", (string) $oParams->listacontas);
 }
 
 $sCampos       = "distinct on ({$sCampo}) {$sCampo} as codigo, {$sCampoDescricao} as descricao,'0' as pc01_codsubgrupo,'' as pc04_descrsubgrupo, ";
@@ -102,8 +102,8 @@ $sSqlMateriais = "select codigo, descricao, pc01_codsubgrupo, pc04_descrsubgrupo
 //die( $sSqlMateriais );
 
 $rsMateriais   = $oDaoMatMater->sql_record($sSqlMateriais);
-$sDataInicial  = implode("-", array_reverse(explode("/", $oParams->datainicial)));
-$sDataFinal    = implode("-", array_reverse(explode("/", $oParams->datafinal)));
+$sDataInicial  = implode("-", array_reverse(explode("/", (string) $oParams->datainicial)));
+$sDataFinal    = implode("-", array_reverse(explode("/", (string) $oParams->datafinal)));
 $where         = "";
 $inner         = "";
 $db_where      = "";
@@ -193,10 +193,10 @@ $SqlSaldos .= ") as x order by m80_data,m80_hora                                
 
 $sSqlPreparedMov = pg_prepare("saldomov", $SqlSaldos);
 
-$aSubtotalGrupo         = array ();
-$aMateriais             = array ();
-$aMateriaisSintetico    = array ();
-$aTotalElemento         = array ();
+$aSubtotalGrupo         =  [];
+$aMateriais             =  [];
+$aMateriaisSintetico    =  [];
+$aTotalElemento         =  [];
 
 $nTotalInicial   = 0;
 $nTotalEntradas  = 0;
@@ -222,10 +222,10 @@ for($i = 0; $i < $oDaoMatMater->numrows; $i ++) {
   /**
    * Consultamos o saldo anterior
    */
-  $rsPrepare = db_queryute("saldoini", array (    
+  $rsPrepare = db_queryute("saldoini",  [    
                         $oMaterial->codigo, 
                         $sDataInicial 
-  ));
+  ]);
   $iNumRowsSaldoIni   = pg_num_rows($rsPrepare);
   
   $nPrecoMedioInicial = 0;
@@ -239,12 +239,12 @@ for($i = 0; $i < $oDaoMatMater->numrows; $i ++) {
   /**
    * Consultamos a movimentacao no periodo
    */
-  $rsPeparare = db_queryute("saldomov", array (
+  $rsPeparare = db_queryute("saldomov",  [
     
                         $oMaterial->codigo, 
                         $sDataInicial, 
                         $sDataFinal 
-  ));
+  ]);
   $iTotalMov = pg_num_rows($rsPeparare);
 
   for($iMov = 0; $iMov < $iTotalMov; $iMov ++) {
@@ -481,7 +481,7 @@ if ($oParams->impressao == 2 ) {
  * 
  */
 $sTipoRelatório              = "AlmoxarifadoAnalitico";
-$aConfigPdf                  = array();
+$aConfigPdf                  = [];
 $aConfigPdf[1]['size']       = 10;
 $aConfigPdf[1]['label']      = 'Item';
 $aConfigPdf[2]['size']       = 50;
@@ -672,14 +672,14 @@ foreach ( $aMateriais as $oMaterial ) {
       
       $pdf->cell($aConfigPdf[1]['size'], $iAlt, $oMaterial->codigo, "TBR", 0, "R", $iFill);
       $pdf->SetFont($sFonte, '', 6);
-      $pdf->cell($aConfigPdf[2]['size'], $iAlt, substr($oMaterial->descricao, 0, 32), 1, 0, "L", $iFill);
+      $pdf->cell($aConfigPdf[2]['size'], $iAlt, substr((string) $oMaterial->descricao, 0, 32), 1, 0, "L", $iFill);
       $pdf->SetFont($sFonte, '', 8);
       break;
     default:
 
       $pdf->cell($aConfigPdf[1]['size'], $iAlt, $oMaterial->codigo, "TBR", 0, "R", $iFill);
       $pdf->SetFont($sFonte, '', 6);
-      $pdf->cell($aConfigPdf[2]['size'], $iAlt, substr($oMaterial->descricao, 0, 32), 1, 0, "L", $iFill);
+      $pdf->cell($aConfigPdf[2]['size'], $iAlt, substr((string) $oMaterial->descricao, 0, 32), 1, 0, "L", $iFill);
       if ( $oParams->agruparporelemento == 2 ) {
         $pdf->cell($aConfigPdf[21]['size'], $iAlt, $oMaterial->o56_elemento, 1, 0, "L", $iFill);
       }

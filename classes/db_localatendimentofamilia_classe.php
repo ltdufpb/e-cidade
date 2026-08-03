@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE localatendimentofamilia
 class cl_localatendimentofamilia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $as23_sequencial = 0; 
-   var $as23_localatendimentosocial = 0; 
-   var $as23_cidadaofamilia = 0; 
-   var $as23_datavinculo_dia = null; 
-   var $as23_datavinculo_mes = null; 
-   var $as23_datavinculo_ano = null; 
-   var $as23_datavinculo = null; 
-   var $as23_fimatendimento_dia = null; 
-   var $as23_fimatendimento_mes = null; 
-   var $as23_fimatendimento_ano = null; 
-   var $as23_fimatendimento = null; 
-   var $as23_observacao = null; 
-   var $as23_ativo = 'f'; 
-   var $as23_db_usuario = 0; 
+   public $as23_sequencial = 0; 
+   public $as23_localatendimentosocial = 0; 
+   public $as23_cidadaofamilia = 0; 
+   public $as23_datavinculo_dia = null; 
+   public $as23_datavinculo_mes = null; 
+   public $as23_datavinculo_ano = null; 
+   public $as23_datavinculo = null; 
+   public $as23_fimatendimento_dia = null; 
+   public $as23_fimatendimento_mes = null; 
+   public $as23_fimatendimento_ano = null; 
+   public $as23_fimatendimento = null; 
+   public $as23_observacao = null; 
+   public $as23_ativo = 'f'; 
+   public $as23_db_usuario = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  as23_sequencial = int4 = Código Local Atendimento Família 
                  as23_localatendimentosocial = int4 = Local Atendimento Social 
                  as23_cidadaofamilia = int4 = Cidadão Família 
@@ -68,10 +68,10 @@ class cl_localatendimentofamilia {
                  as23_db_usuario = int4 = Usuário 
                  ";
    //funcao construtor da classe 
-   function cl_localatendimentofamilia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("localatendimentofamilia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -166,10 +166,10 @@ class cl_localatendimentofamilia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->as23_sequencial = pg_result($result,0,0); 
+       $this->as23_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from localatendimentofamilia_as23_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $as23_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $as23_sequencial)){
          $this->erro_sql = " Campo as23_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -211,7 +211,7 @@ class cl_localatendimentofamilia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Local de Atendimento da Família ($this->as23_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Local de Atendimento da Família já Cadastrado";
@@ -240,17 +240,17 @@ class cl_localatendimentofamilia {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19996,'$this->as23_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3585,19996,'','".AddSlashes(pg_result($resaco,0,'as23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3585,19997,'','".AddSlashes(pg_result($resaco,0,'as23_localatendimentosocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3585,19998,'','".AddSlashes(pg_result($resaco,0,'as23_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3585,19999,'','".AddSlashes(pg_result($resaco,0,'as23_datavinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3585,20000,'','".AddSlashes(pg_result($resaco,0,'as23_fimatendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3585,20001,'','".AddSlashes(pg_result($resaco,0,'as23_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3585,20002,'','".AddSlashes(pg_result($resaco,0,'as23_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3585,20003,'','".AddSlashes(pg_result($resaco,0,'as23_db_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3585,19996,'','".AddSlashes(pg_fetch_result($resaco,0,'as23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3585,19997,'','".AddSlashes(pg_fetch_result($resaco,0,'as23_localatendimentosocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3585,19998,'','".AddSlashes(pg_fetch_result($resaco,0,'as23_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3585,19999,'','".AddSlashes(pg_fetch_result($resaco,0,'as23_datavinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3585,20000,'','".AddSlashes(pg_fetch_result($resaco,0,'as23_fimatendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3585,20001,'','".AddSlashes(pg_fetch_result($resaco,0,'as23_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3585,20002,'','".AddSlashes(pg_fetch_result($resaco,0,'as23_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3585,20003,'','".AddSlashes(pg_fetch_result($resaco,0,'as23_db_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -260,10 +260,10 @@ class cl_localatendimentofamilia {
       $this->atualizacampos();
      $sql = " update localatendimentofamilia set ";
      $virgula = "";
-     if(trim($this->as23_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_sequencial"])){ 
+     if(trim((string) $this->as23_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_sequencial"])){ 
        $sql  .= $virgula." as23_sequencial = $this->as23_sequencial ";
        $virgula = ",";
-       if(trim($this->as23_sequencial) == null ){ 
+       if(trim((string) $this->as23_sequencial) == null ){ 
          $this->erro_sql = " Campo Código Local Atendimento Família nao Informado.";
          $this->erro_campo = "as23_sequencial";
          $this->erro_banco = "";
@@ -273,10 +273,10 @@ class cl_localatendimentofamilia {
          return false;
        }
      }
-     if(trim($this->as23_localatendimentosocial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_localatendimentosocial"])){ 
+     if(trim((string) $this->as23_localatendimentosocial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_localatendimentosocial"])){ 
        $sql  .= $virgula." as23_localatendimentosocial = $this->as23_localatendimentosocial ";
        $virgula = ",";
-       if(trim($this->as23_localatendimentosocial) == null ){ 
+       if(trim((string) $this->as23_localatendimentosocial) == null ){ 
          $this->erro_sql = " Campo Local Atendimento Social nao Informado.";
          $this->erro_campo = "as23_localatendimentosocial";
          $this->erro_banco = "";
@@ -286,10 +286,10 @@ class cl_localatendimentofamilia {
          return false;
        }
      }
-     if(trim($this->as23_cidadaofamilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_cidadaofamilia"])){ 
+     if(trim((string) $this->as23_cidadaofamilia)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_cidadaofamilia"])){ 
        $sql  .= $virgula." as23_cidadaofamilia = $this->as23_cidadaofamilia ";
        $virgula = ",";
-       if(trim($this->as23_cidadaofamilia) == null ){ 
+       if(trim((string) $this->as23_cidadaofamilia) == null ){ 
          $this->erro_sql = " Campo Cidadão Família nao Informado.";
          $this->erro_campo = "as23_cidadaofamilia";
          $this->erro_banco = "";
@@ -299,10 +299,10 @@ class cl_localatendimentofamilia {
          return false;
        }
      }
-     if(trim($this->as23_datavinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_datavinculo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as23_datavinculo_dia"] !="") ){ 
+     if(trim((string) $this->as23_datavinculo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_datavinculo_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as23_datavinculo_dia"] !="") ){ 
        $sql  .= $virgula." as23_datavinculo = '$this->as23_datavinculo' ";
        $virgula = ",";
-       if(trim($this->as23_datavinculo) == null ){ 
+       if(trim((string) $this->as23_datavinculo) == null ){ 
          $this->erro_sql = " Campo Data de Vínculo nao Informado.";
          $this->erro_campo = "as23_datavinculo_dia";
          $this->erro_banco = "";
@@ -315,7 +315,7 @@ class cl_localatendimentofamilia {
        if(isset($GLOBALS["HTTP_POST_VARS"]["as23_datavinculo_dia"])){ 
          $sql  .= $virgula." as23_datavinculo = null ";
          $virgula = ",";
-         if(trim($this->as23_datavinculo) == null ){ 
+         if(trim((string) $this->as23_datavinculo) == null ){ 
            $this->erro_sql = " Campo Data de Vínculo nao Informado.";
            $this->erro_campo = "as23_datavinculo_dia";
            $this->erro_banco = "";
@@ -326,7 +326,7 @@ class cl_localatendimentofamilia {
          }
        }
      }
-     if(trim($this->as23_fimatendimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_fimatendimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as23_fimatendimento_dia"] !="") ){ 
+     if(trim((string) $this->as23_fimatendimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_fimatendimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["as23_fimatendimento_dia"] !="") ){ 
        $sql  .= $virgula." as23_fimatendimento = '$this->as23_fimatendimento' ";
        $virgula = ",";
      }     else{ 
@@ -335,18 +335,18 @@ class cl_localatendimentofamilia {
          $virgula = ",";
        }
      }
-     if(trim($this->as23_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_observacao"])){ 
+     if(trim((string) $this->as23_observacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_observacao"])){ 
        $sql  .= $virgula." as23_observacao = '$this->as23_observacao' ";
        $virgula = ",";
      }
-     if(trim($this->as23_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_ativo"])){ 
+     if(trim((string) $this->as23_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_ativo"])){ 
        $sql  .= $virgula." as23_ativo = '$this->as23_ativo' ";
        $virgula = ",";
      }
-     if(trim($this->as23_db_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_db_usuario"])){ 
+     if(trim((string) $this->as23_db_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["as23_db_usuario"])){ 
        $sql  .= $virgula." as23_db_usuario = $this->as23_db_usuario ";
        $virgula = ",";
-       if(trim($this->as23_db_usuario) == null ){ 
+       if(trim((string) $this->as23_db_usuario) == null ){ 
          $this->erro_sql = " Campo Usuário nao Informado.";
          $this->erro_campo = "as23_db_usuario";
          $this->erro_banco = "";
@@ -370,25 +370,25 @@ class cl_localatendimentofamilia {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19996,'$this->as23_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as23_sequencial"]) || $this->as23_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3585,19996,'".AddSlashes(pg_result($resaco,$conresaco,'as23_sequencial'))."','$this->as23_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3585,19996,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as23_sequencial'))."','$this->as23_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as23_localatendimentosocial"]) || $this->as23_localatendimentosocial != "")
-             $resac = db_query("insert into db_acount values($acount,3585,19997,'".AddSlashes(pg_result($resaco,$conresaco,'as23_localatendimentosocial'))."','$this->as23_localatendimentosocial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3585,19997,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as23_localatendimentosocial'))."','$this->as23_localatendimentosocial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as23_cidadaofamilia"]) || $this->as23_cidadaofamilia != "")
-             $resac = db_query("insert into db_acount values($acount,3585,19998,'".AddSlashes(pg_result($resaco,$conresaco,'as23_cidadaofamilia'))."','$this->as23_cidadaofamilia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3585,19998,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as23_cidadaofamilia'))."','$this->as23_cidadaofamilia',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as23_datavinculo"]) || $this->as23_datavinculo != "")
-             $resac = db_query("insert into db_acount values($acount,3585,19999,'".AddSlashes(pg_result($resaco,$conresaco,'as23_datavinculo'))."','$this->as23_datavinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3585,19999,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as23_datavinculo'))."','$this->as23_datavinculo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as23_fimatendimento"]) || $this->as23_fimatendimento != "")
-             $resac = db_query("insert into db_acount values($acount,3585,20000,'".AddSlashes(pg_result($resaco,$conresaco,'as23_fimatendimento'))."','$this->as23_fimatendimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3585,20000,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as23_fimatendimento'))."','$this->as23_fimatendimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as23_observacao"]) || $this->as23_observacao != "")
-             $resac = db_query("insert into db_acount values($acount,3585,20001,'".AddSlashes(pg_result($resaco,$conresaco,'as23_observacao'))."','$this->as23_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3585,20001,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as23_observacao'))."','$this->as23_observacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as23_ativo"]) || $this->as23_ativo != "")
-             $resac = db_query("insert into db_acount values($acount,3585,20002,'".AddSlashes(pg_result($resaco,$conresaco,'as23_ativo'))."','$this->as23_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3585,20002,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as23_ativo'))."','$this->as23_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["as23_db_usuario"]) || $this->as23_db_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,3585,20003,'".AddSlashes(pg_result($resaco,$conresaco,'as23_db_usuario'))."','$this->as23_db_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3585,20003,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'as23_db_usuario'))."','$this->as23_db_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -442,17 +442,17 @@ class cl_localatendimentofamilia {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19996,'$as23_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3585,19996,'','".AddSlashes(pg_result($resaco,$iresaco,'as23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3585,19997,'','".AddSlashes(pg_result($resaco,$iresaco,'as23_localatendimentosocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3585,19998,'','".AddSlashes(pg_result($resaco,$iresaco,'as23_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3585,19999,'','".AddSlashes(pg_result($resaco,$iresaco,'as23_datavinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3585,20000,'','".AddSlashes(pg_result($resaco,$iresaco,'as23_fimatendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3585,20001,'','".AddSlashes(pg_result($resaco,$iresaco,'as23_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3585,20002,'','".AddSlashes(pg_result($resaco,$iresaco,'as23_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3585,20003,'','".AddSlashes(pg_result($resaco,$iresaco,'as23_db_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3585,19996,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as23_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3585,19997,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as23_localatendimentosocial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3585,19998,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as23_cidadaofamilia'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3585,19999,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as23_datavinculo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3585,20000,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as23_fimatendimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3585,20001,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as23_observacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3585,20002,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as23_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3585,20003,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'as23_db_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -513,7 +513,7 @@ class cl_localatendimentofamilia {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:localatendimentofamilia";
@@ -528,7 +528,7 @@ class cl_localatendimentofamilia {
    function sql_query ( $as23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -553,7 +553,7 @@ class cl_localatendimentofamilia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -566,7 +566,7 @@ class cl_localatendimentofamilia {
    function sql_query_file ( $as23_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -587,7 +587,7 @@ class cl_localatendimentofamilia {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

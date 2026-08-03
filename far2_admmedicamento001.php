@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -130,14 +130,14 @@ db_postmemory($HTTP_POST_VARS);
         <td>
           <b>Tratamento sem movimentação: </b>
           <?php 
-          $aX = array('1' => 'Apresentar junto com os outros', '2' => 'Não apresente os pacientes', 
+          $aX = ['1' => 'Apresentar junto com os outros', '2' => 'Não apresente os pacientes', 
                       '3' => 'Apresentar somente os sem movimentação'
-                     );
+                     ];
           db_select('iMovimentacao', $aX, true, ""); 
           ?>
           &nbsp;&nbsp;  </nbr><b>Relatório exato conforme os medicamentos: </b>
           <?php 
-          $aY = array('1' => 'NÃO', '2' => 'SIM' );
+          $aY = ['1' => 'NÃO', '2' => 'SIM' ];
           db_select('iExato', $aY, true, ""); 
           ?>
         </td>

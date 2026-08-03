@@ -50,7 +50,7 @@ try {
         throw new ParameterException("Parâmetro da biblioteca não configurado. Para configurar, acesse o menu Procedimentos > Parâmetros.");
       }
 
-      $aWhere = array('not exists (SELECT * FROM devolucaoacervo WHERE devolucaoacervo.bi21_codigo = emprestimoacervo.bi19_codigo )');
+      $aWhere = ['not exists (SELECT * FROM devolucaoacervo WHERE devolucaoacervo.bi21_codigo = emprestimoacervo.bi19_codigo )'];
 
       if ( empty($oParam->iCodigoCarteira) && empty($oParam->iCodigoExemplar) ) {
         throw new BusinessException("É necessário informar: Ou a carteira do leitor ou o exemplar.");
@@ -90,7 +90,7 @@ try {
         throw new BusinessException("Nenhum empréstimo para o Leitor selecionado");
       }
 
-      $oRetorno->aEmprestimos = array();
+      $oRetorno->aEmprestimos = [];
 
       $oData   = new DBDate( date('Y-m-d') );
       $iLinhas = pg_num_rows($rsEmprestimos);
@@ -206,7 +206,7 @@ try {
     case 'temReserva':
 
       $oRetorno->lTemReserva        = false;
-      $oRetorno->aAcervosReservados = array();
+      $oRetorno->aAcervosReservados = [];
       if ( empty($oParam->aAcervos) ) {
         throw new ParameterException("Nenhum acervo informado.");
       }

@@ -38,7 +38,7 @@ $classinatura = new cl_assinatura;
 $clorctiporec = new cl_orctiporec;
 $clempresto   = new cl_empresto;
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $dataSessao = date('Y-m-d', db_getsession('DB_datausu'));
 
 $anousu = db_getsession("DB_anousu");
@@ -54,18 +54,18 @@ if (pg_num_rows($rsSqlParametro) > 0) {
     $k29_datasaldocontasextra = db_utils::fieldsMemory($rsSqlParametro, 0)->k29_datasaldocontasextra;
 
     $lExtraOrcamentario = false;
-    if (trim($k29_datasaldocontasextra) != "") {
+    if (trim((string) $k29_datasaldocontasextra) != "") {
         $lExtraOrcamentario = true;
     }
 }
 
-$xinstit = explode("-", $db_selinstit);
+$xinstit = explode("-", (string) $db_selinstit);
 $listaInstituicoes = implode(', ', $xinstit);
 
 $resultinst = db_query("select codigo,nomeinst from db_config where codigo in ({$listaInstituicoes})");
 $descr_inst = '';
 $xvirg = '';
-for ($xins = 0; $xins < pg_numrows($resultinst); $xins++) {
+for ($xins = 0; $xins < pg_num_rows($resultinst); $xins++) {
     db_fieldsmemory($resultinst, $xins);
     $descr_inst .= $xvirg . $nomeinst;
     $xvirg = ', ';
@@ -112,11 +112,11 @@ $sql = "
 ";
 
 $result = db_query($sql);
-for ($x = 0; $x < pg_numrows($result); $x++) {
+for ($x = 0; $x < pg_num_rows($result); $x++) {
     db_fieldsmemory($result, $x);
     $sql = "select * from work_rel where recurso = '{$o15_recurso}'";
     $rr = db_query($sql);
-    if (pg_numrows($rr) > 0) {
+    if (pg_num_rows($rr) > 0) {
         $sql = "
             update work_rel set res_anterior = coalesce(" . $valor . ",0)
              where recurso = '{$o15_recurso}'
@@ -125,7 +125,7 @@ for ($x = 0; $x < pg_numrows($result); $x++) {
     } else {
         $sql = "
             insert into work_rel  (recurso, recurso_descr, res_anterior)
-            values ('{$o15_recurso}', '" . substr($o15_descr, 0, 30) . "'," . round($valor, 2) . " )
+            values ('{$o15_recurso}', '" . substr((string) $o15_descr, 0, 30) . "'," . round($valor, 2) . " )
         ";
         if (!db_query($sql)) {
             db_redireciona("db_erros.php?fechar=true&db_erro=[1] - Erro ao inserir registro temporário.");
@@ -146,9 +146,7 @@ if ($recurso > 0) {
         $filtros
     );
     $nomeRecurso = $recursos[0]->o15_descr;
-    $idsRecursos = array_map(function ($recurso) {
-        return $recurso->o15_codigo;
-    }, $recursos);
+    $idsRecursos = array_map(fn($recurso) => $recurso->o15_codigo, $recursos);
 
     $idsRecursos = implode(', ', $idsRecursos);
 	$sql_where = " and e91_recurso in ({$idsRecursos})";
@@ -186,11 +184,11 @@ $sql = "
 ";
 $result = db_query($sql);
 
-for ($x = 0; $x < pg_numrows($result); $x++) {
+for ($x = 0; $x < pg_num_rows($result); $x++) {
     db_fieldsmemory($result, $x);
     $sql = "select * from work_rel where recurso = '{$o15_recurso}'";
     $rr = db_query($sql);
-    if (pg_numrows($rr) > 0) {
+    if (pg_num_rows($rr) > 0) {
         $sql = "
             update work_rel set rp_anterior = coalesce(" . $rp_anterior . ",0)  ,
 							    rp_atual    = coalesce(" . $rp_atual . ",0)
@@ -200,7 +198,7 @@ for ($x = 0; $x < pg_numrows($result); $x++) {
     } else {
         $sql = "
             insert into work_rel (recurso, recurso_descr, rp_anterior,rp_atual)
-            values ('{$o15_recurso}', '" . substr($o15_descr, 0, 30) . "'," . round($rp_anterior, 2) . " , " . round($rp_atual, 2) . " )
+            values ('{$o15_recurso}', '" . substr((string) $o15_descr, 0, 30) . "'," . round($rp_anterior, 2) . " , " . round($rp_atual, 2) . " )
         ";
         if (!db_query($sql)) {
             db_redireciona("db_erros.php?fechar=true&db_erro=[2] - Erro ao inserir registro temporário.");
@@ -236,13 +234,13 @@ $sql_baldesp = "
 ";
 $result_baldesp = db_query($sql_baldesp);
 
-if (pg_numrows($result_baldesp) > 0) {
-    for ($x = 0; $x < pg_numrows($result_baldesp); $x++) {
+if (pg_num_rows($result_baldesp) > 0) {
+    for ($x = 0; $x < pg_num_rows($result_baldesp); $x++) {
         db_fieldsmemory($result_baldesp, $x);
 
         $sql = "select * from work_rel where recurso = '{$o15_recurso}'";
         $rr = db_query($sql);
-        if (pg_numrows($rr) > 0) {
+        if (pg_num_rows($rr) > 0) {
             $sql = "
                 update work_rel
 				   set liquidado      = coalesce(" . ($liquidado - $pago) . ",0)  ,
@@ -253,7 +251,7 @@ if (pg_numrows($result_baldesp) > 0) {
         } else {
             $sql = "
             insert into work_rel  (recurso, recurso_descr, liquidado, nao_liquidado)
-			values ('{$o15_recurso}', '" . substr($o15_descr, 0, 30) . "'," . round(($liquidado - $pago), 2) . " , " . round(($empenhado - $liquidado), 2) . " )
+			values ('{$o15_recurso}', '" . substr((string) $o15_descr, 0, 30) . "'," . round(($liquidado - $pago), 2) . " , " . round(($empenhado - $liquidado), 2) . " )
 			";
             if (!db_query($sql)) {
                 db_redireciona("db_erros.php?fechar=true&db_erro=[3] - Erro ao inserir registro temporário.");
@@ -294,17 +292,17 @@ $sql="select o15_recurso,
 ";
 
 $result_contas = db_query($sql);
-$nrows = pg_numrows($result_contas);
+$nrows = pg_num_rows($result_contas);
 
-if (pg_numrows($result_contas) > 0) {
-    for ($x = 0; $x < pg_numrows($result_contas); $x++) {
+if (pg_num_rows($result_contas) > 0) {
+    for ($x = 0; $x < pg_num_rows($result_contas); $x++) {
         db_fieldsmemory($result_contas, $x);
 
         $dadosContas = db_utils::fieldsMemory($result_contas, $x);
         $sql = "select * from work_rel where recurso = '{$o15_recurso}'";
         $rr = db_query($sql);
-        $descricao = substr($dadosContas->o15_descr, 0, 30);
-        if (pg_numrows($rr) > 0) {
+        $descricao = substr((string) $dadosContas->o15_descr, 0, 30);
+        if (pg_num_rows($rr) > 0) {
             if ($c60_codsis == 5) {
                 $sql = "
                 update work_rel
@@ -364,7 +362,7 @@ $sql = "
        and o48_grupo=2
 ";
 $res = db_query($sql);
-if (pg_numrows($res) > 0) {
+if (pg_num_rows($res) > 0) {
     //seleciona os valores informados manualmente
     $where = "";
     if (!empty($filtroFonteRecurso)) {
@@ -379,13 +377,13 @@ if (pg_numrows($res) > 0) {
     ";
     $result = db_query($sql);
 	// db_criatabela($result); exit;
-    if (pg_numrows($res) > 0) {
-        for ($x = 0; $x < pg_numrows($result); $x++) {
+    if (pg_num_rows($res) > 0) {
+        for ($x = 0; $x < pg_num_rows($result); $x++) {
             db_fieldsmemory($result, $x);
 
             $sql = "select * from work_rel where recurso = '{$o15_recurso}' ";
             $rr = db_query($sql);
-            if (pg_numrows($rr) > 0) {
+            if (pg_num_rows($rr) > 0) {
                 $sql = "
                 update work_rel
                    set saldo_extra_pagar = coalesce(" . ($saldo_final) . ",0)
@@ -395,7 +393,7 @@ if (pg_numrows($res) > 0) {
             } else {
                 $sql = "
                 insert into work_rel  (recurso, recurso_descr, saldo_extra_pagar)
-                values ('{$o15_recurso}','" . substr($o15_descr, 0, 30) . "'," . round($saldo_extra_pagar, 2) . ")
+                values ('{$o15_recurso}','" . substr((string) $o15_descr, 0, 30) . "'," . round($saldo_extra_pagar, 2) . ")
                 ";
                 if (!db_query($sql)) {
                     db_redireciona("db_erros.php?fechar=true&db_erro=[6] - Erro ao inserir registro temporário.");
@@ -422,21 +420,21 @@ if (pg_numrows($res) > 0) {
 
     $result_bver = db_query($sql);
 
-    if (pg_numrows($result_bver) > 0) {
-        for ($x = 0; $x < pg_numrows($result_bver); $x++) {
+    if (pg_num_rows($result_bver) > 0) {
+        for ($x = 0; $x < pg_num_rows($result_bver); $x++) {
             db_fieldsmemory($result_bver, $x);
 
             $sql = "select * from work_rel where recurso = '{$o15_recurso}'";
             $rr = db_query($sql);
             //    db_criatabela($rr);
-            if (pg_numrows($rr) > 0) {
+            if (pg_num_rows($rr) > 0) {
                 $sql = "
                 update work_rel set saldo_extra_pagar = saldo_extra_pagar + coalesce(" . ($saldo_final) . ",0)
                 where recurso = '{$o15_recurso}'
                 ";
                 db_query($sql);
             } else {
-                $sDescricao = substr($o15_descr, 0, 30);
+                $sDescricao = substr((string) $o15_descr, 0, 30);
                 $sql = " insert into work_rel (recurso, recurso_descr, saldo_extra_pagar)
                                values ('{$o15_recurso}', '{$sDescricao}'," . round($saldo_final, 2) . ") ";
                 if (!db_query($sql)) {
@@ -449,8 +447,8 @@ if (pg_numrows($res) > 0) {
 //  ------------------------------------------------------ //
 $res = db_query("select * from work_rel order by recurso");
 
-$rows = pg_numrows($res);
-$cols = pg_numfields($res);
+$rows = pg_num_rows($res);
+$cols = pg_num_fields($res);
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -463,7 +461,7 @@ if ($recurso == 0) {
 $head2 = "RESULTADOS FINANCEIROS POR RECURSO";
 $head3 = "RECURSO : ".$recurso." : ".$o15_descr;
 $head5 = "INSTITUIÇÕES : ".$descr_inst;
-$dt = split('-', $data_limite);
+$dt = preg_split('#\-#m', (string) $data_limite);
 $head7 = 'DATA LIMITE :'."$dt[2]/$dt[1]/$dt[0]";
 
 $pdf = new PDF();

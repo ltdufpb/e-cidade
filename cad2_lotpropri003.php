@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $aux = new cl_arquivo_auxiliar;
 ?>
@@ -114,7 +114,7 @@ $aux = new cl_arquivo_auxiliar;
                </td>
                <td>
 	       <?php  
-	       $tipo_ordem = array("pr"=>"Proprietário","ps"=>"Possuidor","m"=>"Matrícula","s"=>"Setor/Quadra/Lote");
+	       $tipo_ordem = ["pr"=>"Proprietário","ps"=>"Possuidor","m"=>"Matrícula","s"=>"Setor/Quadra/Lote"];
 	       db_select("ordem",$tipo_ordem,true,2); ?>
             </td>
 	  </tr>
@@ -124,7 +124,7 @@ $aux = new cl_arquivo_auxiliar;
                </td>
                <td>
 	       <?php  
-	       $tipo_b = array("t"=>"Todas","b"=>"Baixadas","n"=>"Não Baixadas");
+	       $tipo_b = ["t"=>"Todas","b"=>"Baixadas","n"=>"Não Baixadas"];
 	       db_select("tipo1",$tipo_b,true,2); ?>
             </td>
 	  </tr>
@@ -134,7 +134,7 @@ $aux = new cl_arquivo_auxiliar;
                </td>
                <td>
            <?php  
-           $tipo_t = array("t"=>"Todos","pr"=>"Prediais","tr"=>"Territoriais");
+           $tipo_t = ["t"=>"Todos","pr"=>"Prediais","tr"=>"Territoriais"];
            db_select("tipo2",$tipo_t,true,2); ?>
             </td>
       </tr>

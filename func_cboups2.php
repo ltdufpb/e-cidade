@@ -32,7 +32,7 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_especmedico_classe.php"));
 
 db_postmemory( $_POST );
-parse_str( $_SERVER["QUERY_STRING"] );
+parse_str( (string) $_SERVER["QUERY_STRING"], $result );
 
 $clespecmedico = new cl_especmedico;
 $clespecmedico->rotulo->label("sd27_i_codigo");
@@ -91,7 +91,7 @@ $clrotulo->label("rh70_descr");
       <tr>
         <td>
           <?php
-          $aWhere   = array();
+          $aWhere   = [];
           $aWhere[] = "sd04_c_situacao = 'A' and sd27_c_situacao = 'A'";
           $aWhere[] = "exists ( select * from undmedhorario where sd30_i_undmed = sd27_i_codigo )";
           
@@ -115,9 +115,9 @@ $clrotulo->label("rh70_descr");
               $aWhere[] = "a.z01_nome ilike '{$chave_z01_nome}%'";
             }
 
-            $repassa = array();
+            $repassa = [];
             if(isset($chave_sd27_i_codigo)) {
-              $repassa = array("chave_sd27_i_codigo" => $chave_sd27_i_codigo);
+              $repassa = ["chave_sd27_i_codigo" => $chave_sd27_i_codigo];
             }
 
             $sWhere = implode(' AND ', $aWhere);

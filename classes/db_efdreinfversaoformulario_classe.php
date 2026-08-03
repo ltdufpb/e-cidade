@@ -31,7 +31,7 @@ class cl_efdreinfversaoformulario
     public function __construct()
     {
         $this->rotulo = new rotulo("efdreinfversaoformulario"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -96,10 +96,10 @@ class cl_efdreinfversaoformulario
          $this->erro_status = "0";
          return false; 
        }
-       $this->efd03_sequencial = pg_result($result,0,0); 
+       $this->efd03_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from efdreinfversaoformulario_efd03_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $efd03_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $efd03_sequencial)){
          $this->erro_sql = " Campo efd03_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -133,7 +133,7 @@ class cl_efdreinfversaoformulario
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "formulários efd ($this->efd03_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "formulários efd já Cadastrado";
@@ -162,13 +162,13 @@ class cl_efdreinfversaoformulario
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1010205,'$this->efd03_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1010359,1010205,'','".AddSlashes(pg_result($resaco,0,'efd03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010359,1010206,'','".AddSlashes(pg_result($resaco,0,'efd03_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010359,1010207,'','".AddSlashes(pg_result($resaco,0,'efd03_avaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1010359,1010208,'','".AddSlashes(pg_result($resaco,0,'efd03_esocialformulariotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010359,1010205,'','".AddSlashes(pg_fetch_result($resaco,0,'efd03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010359,1010206,'','".AddSlashes(pg_fetch_result($resaco,0,'efd03_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010359,1010207,'','".AddSlashes(pg_fetch_result($resaco,0,'efd03_avaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1010359,1010208,'','".AddSlashes(pg_fetch_result($resaco,0,'efd03_esocialformulariotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -179,10 +179,10 @@ class cl_efdreinfversaoformulario
       $this->atualizacampos();
      $sql = " update efdreinfversaoformulario set ";
      $virgula = "";
-     if(trim($this->efd03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd03_sequencial"])){ 
+     if(trim((string) $this->efd03_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd03_sequencial"])){ 
        $sql  .= $virgula." efd03_sequencial = $this->efd03_sequencial ";
        $virgula = ",";
-       if(trim($this->efd03_sequencial) == null ){ 
+       if(trim((string) $this->efd03_sequencial) == null ){ 
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "efd03_sequencial";
          $this->erro_banco = "";
@@ -192,10 +192,10 @@ class cl_efdreinfversaoformulario
          return false;
        }
      }
-     if(trim($this->efd03_versao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd03_versao"])){ 
+     if(trim((string) $this->efd03_versao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd03_versao"])){ 
        $sql  .= $virgula." efd03_versao = '$this->efd03_versao' ";
        $virgula = ",";
-       if(trim($this->efd03_versao) == null ){ 
+       if(trim((string) $this->efd03_versao) == null ){ 
          $this->erro_sql = " Campo Versão não informado.";
          $this->erro_campo = "efd03_versao";
          $this->erro_banco = "";
@@ -205,10 +205,10 @@ class cl_efdreinfversaoformulario
          return false;
        }
      }
-     if(trim($this->efd03_avaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd03_avaliacao"])){ 
+     if(trim((string) $this->efd03_avaliacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd03_avaliacao"])){ 
        $sql  .= $virgula." efd03_avaliacao = $this->efd03_avaliacao ";
        $virgula = ",";
-       if(trim($this->efd03_avaliacao) == null ){ 
+       if(trim((string) $this->efd03_avaliacao) == null ){ 
          $this->erro_sql = " Campo Avaliação não informado.";
          $this->erro_campo = "efd03_avaliacao";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_efdreinfversaoformulario
          return false;
        }
      }
-     if(trim($this->efd03_esocialformulariotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd03_esocialformulariotipo"])){ 
+     if(trim((string) $this->efd03_esocialformulariotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["efd03_esocialformulariotipo"])){ 
        $sql  .= $virgula." efd03_esocialformulariotipo = $this->efd03_esocialformulariotipo ";
        $virgula = ",";
-       if(trim($this->efd03_esocialformulariotipo) == null ){ 
+       if(trim((string) $this->efd03_esocialformulariotipo) == null ){ 
          $this->erro_sql = " Campo Tipo não informado.";
          $this->erro_campo = "efd03_esocialformulariotipo";
          $this->erro_banco = "";
@@ -245,17 +245,17 @@ class cl_efdreinfversaoformulario
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,1010205,'$this->efd03_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd03_sequencial"]) || $this->efd03_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1010359,1010205,'".AddSlashes(pg_result($resaco,$conresaco,'efd03_sequencial'))."','$this->efd03_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010359,1010205,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd03_sequencial'))."','$this->efd03_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd03_versao"]) || $this->efd03_versao != "")
-             $resac = db_query("insert into db_acount values($acount,1010359,1010206,'".AddSlashes(pg_result($resaco,$conresaco,'efd03_versao'))."','$this->efd03_versao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010359,1010206,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd03_versao'))."','$this->efd03_versao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd03_avaliacao"]) || $this->efd03_avaliacao != "")
-             $resac = db_query("insert into db_acount values($acount,1010359,1010207,'".AddSlashes(pg_result($resaco,$conresaco,'efd03_avaliacao'))."','$this->efd03_avaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010359,1010207,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd03_avaliacao'))."','$this->efd03_avaliacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["efd03_esocialformulariotipo"]) || $this->efd03_esocialformulariotipo != "")
-             $resac = db_query("insert into db_acount values($acount,1010359,1010208,'".AddSlashes(pg_result($resaco,$conresaco,'efd03_esocialformulariotipo'))."','$this->efd03_esocialformulariotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1010359,1010208,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'efd03_esocialformulariotipo'))."','$this->efd03_esocialformulariotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -309,13 +309,13 @@ class cl_efdreinfversaoformulario
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,1010205,'$efd03_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1010359,1010205,'','".AddSlashes(pg_result($resaco,$iresaco,'efd03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010359,1010206,'','".AddSlashes(pg_result($resaco,$iresaco,'efd03_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010359,1010207,'','".AddSlashes(pg_result($resaco,$iresaco,'efd03_avaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1010359,1010208,'','".AddSlashes(pg_result($resaco,$iresaco,'efd03_esocialformulariotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010359,1010205,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd03_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010359,1010206,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd03_versao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010359,1010207,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd03_avaliacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1010359,1010208,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'efd03_esocialformulariotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

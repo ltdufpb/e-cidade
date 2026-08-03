@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE loteam
 class cl_loteam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $j34_loteam = 0; 
-   var $j34_descr = null; 
-   var $j34_areacc = 0; 
-   var $j34_areapc = 0; 
-   var $j34_areato = 0; 
+   public $j34_loteam = 0; 
+   public $j34_descr = null; 
+   public $j34_areacc = 0; 
+   public $j34_areapc = 0; 
+   public $j34_areato = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  j34_loteam = int4 = Cód. Loteamento 
                  j34_descr = varchar(40) = Descrição 
                  j34_areacc = float8 = Área Construída 
@@ -56,10 +56,10 @@ class cl_loteam {
                  j34_areato = float8 = Área Total 
                  ";
    //funcao construtor da classe 
-   function cl_loteam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("loteam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -122,10 +122,10 @@ class cl_loteam {
          $this->erro_status = "0";
          return false; 
        }
-       $this->j34_loteam = pg_result($result,0,0); 
+       $this->j34_loteam = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from loteam_j34_loteam_seq");
-       if(($result != false) && (pg_result($result,0,0) < $j34_loteam)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $j34_loteam)){
          $this->erro_sql = " Campo j34_loteam maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -161,7 +161,7 @@ class cl_loteam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Loteamento ($this->j34_loteam) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Loteamento já Cadastrado";
@@ -185,14 +185,14 @@ class cl_loteam {
      $resaco = $this->sql_record($this->sql_query_file($this->j34_loteam));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,86,'$this->j34_loteam','I')");
-       $resac = db_query("insert into db_acount values($acount,20,86,'','".AddSlashes(pg_result($resaco,0,'j34_loteam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,20,87,'','".AddSlashes(pg_result($resaco,0,'j34_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,20,88,'','".AddSlashes(pg_result($resaco,0,'j34_areacc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,20,89,'','".AddSlashes(pg_result($resaco,0,'j34_areapc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,20,90,'','".AddSlashes(pg_result($resaco,0,'j34_areato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,20,86,'','".AddSlashes(pg_fetch_result($resaco,0,'j34_loteam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,20,87,'','".AddSlashes(pg_fetch_result($resaco,0,'j34_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,20,88,'','".AddSlashes(pg_fetch_result($resaco,0,'j34_areacc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,20,89,'','".AddSlashes(pg_fetch_result($resaco,0,'j34_areapc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,20,90,'','".AddSlashes(pg_fetch_result($resaco,0,'j34_areato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -201,21 +201,21 @@ class cl_loteam {
       $this->atualizacampos();
      $sql = " update loteam set ";
      $virgula = "";
-     if(trim($this->j34_loteam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_loteam"])){ 
-        if(trim($this->j34_loteam)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j34_loteam"])){ 
+     if(trim((string) $this->j34_loteam)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_loteam"])){ 
+        if(trim((string) $this->j34_loteam)=="" && isset($GLOBALS["HTTP_POST_VARS"]["j34_loteam"])){ 
            $this->j34_loteam = "0" ; 
         } 
        $sql  .= $virgula." j34_loteam = $this->j34_loteam ";
        $virgula = ",";
      }
-     if(trim($this->j34_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_descr"])){ 
+     if(trim((string) $this->j34_descr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_descr"])){ 
        $sql  .= $virgula." j34_descr = '$this->j34_descr' ";
        $virgula = ",";
      }
-     if(trim($this->j34_areacc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_areacc"])){ 
+     if(trim((string) $this->j34_areacc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_areacc"])){ 
        $sql  .= $virgula." j34_areacc = $this->j34_areacc ";
        $virgula = ",";
-       if(trim($this->j34_areacc) == null ){ 
+       if(trim((string) $this->j34_areacc) == null ){ 
          $this->erro_sql = " Campo Área Construída nao Informado.";
          $this->erro_campo = "j34_areacc";
          $this->erro_banco = "";
@@ -225,10 +225,10 @@ class cl_loteam {
          return false;
        }
      }
-     if(trim($this->j34_areapc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_areapc"])){ 
+     if(trim((string) $this->j34_areapc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_areapc"])){ 
        $sql  .= $virgula." j34_areapc = $this->j34_areapc ";
        $virgula = ",";
-       if(trim($this->j34_areapc) == null ){ 
+       if(trim((string) $this->j34_areapc) == null ){ 
          $this->erro_sql = " Campo Área Pública nao Informado.";
          $this->erro_campo = "j34_areapc";
          $this->erro_banco = "";
@@ -238,10 +238,10 @@ class cl_loteam {
          return false;
        }
      }
-     if(trim($this->j34_areato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_areato"])){ 
+     if(trim((string) $this->j34_areato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["j34_areato"])){ 
        $sql  .= $virgula." j34_areato = $this->j34_areato ";
        $virgula = ",";
-       if(trim($this->j34_areato) == null ){ 
+       if(trim((string) $this->j34_areato) == null ){ 
          $this->erro_sql = " Campo Área Total nao Informado.";
          $this->erro_campo = "j34_areato";
          $this->erro_banco = "";
@@ -259,19 +259,19 @@ class cl_loteam {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,86,'$this->j34_loteam','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j34_loteam"]))
-           $resac = db_query("insert into db_acount values($acount,20,86,'".AddSlashes(pg_result($resaco,$conresaco,'j34_loteam'))."','$this->j34_loteam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,20,86,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j34_loteam'))."','$this->j34_loteam',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j34_descr"]))
-           $resac = db_query("insert into db_acount values($acount,20,87,'".AddSlashes(pg_result($resaco,$conresaco,'j34_descr'))."','$this->j34_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,20,87,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j34_descr'))."','$this->j34_descr',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j34_areacc"]))
-           $resac = db_query("insert into db_acount values($acount,20,88,'".AddSlashes(pg_result($resaco,$conresaco,'j34_areacc'))."','$this->j34_areacc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,20,88,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j34_areacc'))."','$this->j34_areacc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j34_areapc"]))
-           $resac = db_query("insert into db_acount values($acount,20,89,'".AddSlashes(pg_result($resaco,$conresaco,'j34_areapc'))."','$this->j34_areapc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,20,89,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j34_areapc'))."','$this->j34_areapc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["j34_areato"]))
-           $resac = db_query("insert into db_acount values($acount,20,90,'".AddSlashes(pg_result($resaco,$conresaco,'j34_areato'))."','$this->j34_areato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,20,90,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'j34_areato'))."','$this->j34_areato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -316,14 +316,14 @@ class cl_loteam {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,86,'$j34_loteam','E')");
-         $resac = db_query("insert into db_acount values($acount,20,86,'','".AddSlashes(pg_result($resaco,$iresaco,'j34_loteam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,20,87,'','".AddSlashes(pg_result($resaco,$iresaco,'j34_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,20,88,'','".AddSlashes(pg_result($resaco,$iresaco,'j34_areacc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,20,89,'','".AddSlashes(pg_result($resaco,$iresaco,'j34_areapc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,20,90,'','".AddSlashes(pg_result($resaco,$iresaco,'j34_areato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,20,86,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j34_loteam'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,20,87,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j34_descr'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,20,88,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j34_areacc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,20,89,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j34_areapc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,20,90,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'j34_areato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from loteam
@@ -383,7 +383,7 @@ class cl_loteam {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:loteam";
@@ -397,7 +397,7 @@ class cl_loteam {
    function sql_query ( $j34_loteam=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -418,7 +418,7 @@ class cl_loteam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -430,7 +430,7 @@ class cl_loteam {
    function sql_query_file ( $j34_loteam=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -451,7 +451,7 @@ class cl_loteam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

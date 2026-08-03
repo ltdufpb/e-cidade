@@ -35,7 +35,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('e41_codtipo');
 $clrotulo->label('e41_descr');
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 //db_postmemory($HTTP_SERVER_VARS,2);exit;
 
 if($ordem == "a") {

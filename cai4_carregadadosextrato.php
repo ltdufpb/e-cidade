@@ -168,61 +168,40 @@ global $k86_sequencial;
     $arrayObj[$i] = new ExtratoLinha($varp->k86_sequencial                            ,
                                      $i                                         ,
                                      urlencode('Concolidado')                   ,
-                                     urlencode($varp->documento)                      ,
-                                     urlencode($varp->detalhe)                        ,
+                                     urlencode((string) $varp->documento)                      ,
+                                     urlencode((string) $varp->detalhe)                        ,
                                      urlencode(db_formatar($varp->data,'d'))  ,
                                      urlencode(db_formatar($varp->valor_debito,'f'))  ,
                                      urlencode(db_formatar($varp->valor_credito,'f')) ,
-                                     urlencode($varp->historico)                      ,
-                                     urlencode($varp->classe)                         ,
+                                     urlencode((string) $varp->historico)                      ,
+                                     urlencode((string) $varp->classe)                         ,
                                      $varp->itemconciliacao                           ,
-                                     urlencode($varp->justificativa));
+                                     urlencode((string) $varp->justificativa));
   }
   echo '1|||'.json_encode($arrayObj);
 } else {
 
-  echo '2|||'.json_encode(array());
+  echo '2|||'.json_encode([]);
 }
 class ExtratoLinha {
-  // Propriedades
-  var $extratolinha     = '';
-  var $id               = '';
-  var $status           = '';
-  var $numeroDocumento  = '';
-  var $detalhe          = '';
-  var $data             = '';
-  var $valorDebito      = '';
-  var $valorCredito     = '';
-  var $historico        = '';
-  var $classe           = '';
-  var $itemconciliacao  = '';
+  public $detalhe          = '';
 
   // Construtor
-  function ExtratoLinha ( $pextratolinha    = null,
-                          $pid              = null,
-                          $pstatus          = null,
-                          $pnumerodocumento = null,
+  function __construct ( public $extratolinha    = null,
+                          public $id              = null,
+                          public $status          = null,
+                          public $numeroDocumento = null,
                           $pdetalhe         = null,
-                          $pdata            = null,
-                          $pvalordebito     = null,
-                          $pvalorcredito    = null,
-                          $phistorico       = null,
-                          $pclasse          = null,
-                          $pitemconciliacao = null,
+                          public $data            = null,
+                          public $valorDebito     = null,
+                          public $valorCredito    = null,
+                          public $historico       = null,
+                          public $classe          = null,
+                          public $itemconciliacao = null,
                           $justificativa    = null) {
 
-    $this->extratolinha     = $pextratolinha          ;
-    $this->id               = $pid                    ;
-    $this->status           = $pstatus                ;
-    $this->numeroDocumento  = $pnumerodocumento       ;
-    $this->detalhe          = utf8_encode(str_replace("\r","",str_replace("\n","",'Observação-'.$pdetalhe)));
-    $this->data             = $pdata                  ;
-    $this->valorDebito      = $pvalordebito           ;
-    $this->valorCredito     = $pvalorcredito          ;
-    $this->historico        = $phistorico             ;
-    $this->classe           = $pclasse                ;
-    $this->itemconciliacao  = $pitemconciliacao       ;
-    $this->justificativa    = rawurlencode($justificativa);
+    $this->detalhe          = mb_convert_encoding(str_replace("\r","",str_replace("\n","",'Observação-'.$pdetalhe)), 'UTF-8', 'ISO-8859-1');
+    $this->justificativa    = rawurlencode((string) $justificativa);
     $this->lendoBanco       = 'true';
   }
 }

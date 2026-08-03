@@ -89,7 +89,7 @@ try {
 
             $oRetorno->iSequencialGestorProcesso = null;
             $oRetorno->iGestorProcesso = null;
-            $oRetorno->aResponsaveisDepartamento = array();
+            $oRetorno->aResponsaveisDepartamento = [];
 
             $oDaoGestaoProcessos = new cl_gestaoprocessovencido();
             $sSqlGestaoProcessos = $oDaoGestaoProcessos->sql_query();
@@ -130,7 +130,7 @@ try {
 
             $oGestor = GestaoProcesso::getById($iUsuario);
             $oRetorno->lGestorPrincipal = $oGestor->ehGestorPrincipal();
-            $oRetorno->aDepartamentos = array();
+            $oRetorno->aDepartamentos = [];
 
             if (!$oGestor->ehGestorPrincipal()) {
                 foreach ($oGestor->getDepartamentos() as $oDepartamento) {

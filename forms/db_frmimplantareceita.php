@@ -37,7 +37,7 @@ $rr =$cldb_config->sql_record($cldb_config->sql_query_file(db_getsession("DB_ins
 if ($cldb_config->numrows > 0 ){
    db_fieldsmemory($rr,0);
 }  
-$dt = split('-',$dtcont);
+$dt = preg_split('#\-#m',(string) $dtcont);
 $dtcont_dia = $dt[2];
 $dtcont_mes = $dt[1];
 $dtcont_ano = $dt[0];
@@ -60,7 +60,7 @@ if (!isset($semestre))
      
      <td><b>Periodo</b></td>
      <td><?php 
-            $matriz = array('1'=>"Primeiro Semestre",2=>"Segundo Semestre");
+            $matriz = ['1'=>"Primeiro Semestre",2=>"Segundo Semestre"];
             db_select ("semestre",$matriz,false,1);  
 	    
          ?>
@@ -129,9 +129,9 @@ if (!isset($semestre))
   <?php    
 
    if (db_getsession("DB_anousu") >= $dtcont_ano ){
-     
+
 	 echo "<tr><td colspan=8 height=150px  align=center><b><font size=+1>Não é permitido alterar dados nesse exercicio !</b><td></tr>";
-	 
+
         // db_redireciona("db_erros?db_erro='Não é permitido alterações de dados nesse exercicio !';  "); 
    } else {
      if (isset($pesquisar)){
@@ -143,7 +143,7 @@ if (!isset($semestre))
    	    <tr>
             <!-- <td><?=$o70_codrec ?></td>-->
             <td><?=$o57_fonte ?></td>
-            <td nowrap><?=substr($o57_descr,0,70) ?></td>
+            <td nowrap><?=substr((string) $o57_descr,0,70) ?></td>
             <?php  if ($semestre==1) { ?>
                       <td><?php  db_input("o70_valor",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,0,this.value);","","","text-align:right")    ?></td>
                       <td><?php  db_input("jan",12,4,false,'text',1,"onchange=js_atuOrcreceitaval($o70_codrec,1,this.value);","","","text-align:right") ?></td>            
@@ -202,7 +202,7 @@ function js_codrec(chave1,chave2){
  //   document.form1.o71_codrec.value = chave1;
  //   document.form1.o57_descr.value = chave2;
     db_iframe_orcreceita.hide();
-    <?php  echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o71_codrec='+chave1+'&o57_descr='+chave2"; ?>
+    <?php  echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?o71_codrec='+chave1+'&o57_descr='+chave2"; ?>
 }
 function js_pesquisa(){
  js_OpenJanelaIframe('CurrentWindow.corpo','db_iframe_orcreceita','func_orcreceita.php?funcao_js=parent.js_preenchepesquisa|o70_codrec|o57_descr','Pesquisa',true);
@@ -213,7 +213,7 @@ function js_preenchepesquisa(chave){
     db_iframe_conplanoexe.hide();
     <?php 
     if($db_opcao!=1){
-        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+        echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
     ?>
 }

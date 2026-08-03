@@ -36,7 +36,7 @@ $cldb_syscadproced = new cl_db_syscadproced;
 $cldb_syscadproced->rotulo->label();
 
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 if(isset($retorno)) {
   $sql = "SELECT *
           FROM db_itensmenu i
@@ -49,11 +49,11 @@ if(isset($retorno)) {
 }
 
 //////////INCLUIR/////////////
-if(isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS); 
+if(isset($_POST["incluir"])) {
+  db_postmemory($_POST); 
   db_query("begin");
   $result = db_query("select nextval('db_itensmenu_id_item_seq')");
-  $id_item = pg_result($result,0,0);
+  $id_item = pg_fetch_result($result,0,0);
   $id_item = $id_item==""?"1":$id_item;
   $sql = "insert into db_itensmenu values(
            $id_item,
@@ -64,7 +64,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 		   '1',
 		   '$desctec',
 		    '$libcliente'	)";
-  db_query($sql) or die("Erro(15) inserindo em db_itensmenu: ".pg_errormessage());
+  db_query($sql) or die("Erro(15) inserindo em db_itensmenu: ".pg_last_error());
   //insere os itensfilhos  
   if(isset($itensfilho)){
     $numArray = sizeof($itensfilho);
@@ -80,11 +80,11 @@ if(isset($HTTP_POST_VARS["incluir"])) {
 		 '$nome_modulo',
 		 '$descr_modulo',
 		 '$imagem',
-		 '$temexerc')") or die("Erro(26) inserindo em db_modulos: ".pg_errormessage());
+		 '$temexerc')") or die("Erro(26) inserindo em db_modulos: ".pg_last_error());
   }
-  
+
   // grava a procedencia do item
-  
+
   if(isset($codproced) && $codproced > 0){
     $sql = "insert into db_syscadproceditem values(nextval('db_syscadproceditem_seqproitem_seq'),$codproced,$id_item)";
     db_query($sql);
@@ -100,8 +100,8 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   db_redireciona();
   exit;		   
 ////////////////ALTERAR////////////////  
-} else if(isset($HTTP_POST_VARS["alterar"])) {
-  db_postmemory($HTTP_POST_VARS);
+} else if(isset($_POST["alterar"])) {
+  db_postmemory($_POST);
   db_query("begin");
   db_query("update db_itensmenu set
                                descricao = '$descricao',
@@ -110,7 +110,7 @@ if(isset($HTTP_POST_VARS["incluir"])) {
                                itemativo = '".(isset($modulo_sel)?"2":$itemativo)."',
 							   desctec = '$desctec',
 							   libcliente = '$libcliente'
-           where id_item = $id_item") or die("Erro(40) alterando db_itensmenu: ".pg_errormessage());
+           where id_item = $id_item") or die("Erro(40) alterando db_itensmenu: ".pg_last_error());
   //altera os itensfilhos  
   db_query("delete from db_itensfilho where id_item = ".$id_item) or die("Erro(67) excluindo db_itensfilho");
   if(isset($itensfilho)){
@@ -121,28 +121,28 @@ if(isset($HTTP_POST_VARS["incluir"])) {
     }
   }
   /////
-  
+
   if(isset($modulo_sel) && $modulo_sel == 't') {
     $result = db_query("select id_item from db_modulos where id_item = $id_item");
-	if(pg_numrows($result) > 0) {
+	if(pg_num_rows($result) > 0) {
       db_query("update db_modulos set
 				               nome_modulo = '$nome_modulo',
 			                   descr_modulo = '$descr_modulo',
 			                   imagem = '$imagem',
 			                   temexerc = '$temexerc'
-			where id_item = $id_item") or die("Erro(62) atualizando db_modulos: ".pg_errormessage());
+			where id_item = $id_item") or die("Erro(62) atualizando db_modulos: ".pg_last_error());
 	} else {
 	  	db_query("insert into db_modulos values(
 	         $id_item,
 			 '$nome_modulo',
 			 '$descr_modulo',
 			 '$imagem',
-			 '$temexerc')") or die("Erro(69) inserindo em db_modulos: ".pg_errormessage());
+			 '$temexerc')") or die("Erro(69) inserindo em db_modulos: ".pg_last_error());
 	}
   } else {
      $result = db_query("select id_item from db_modulos where id_item = $id_item");
-	if(pg_numrows($result) > 0) {
-	  db_query("delete from db_modulos where id_item = $id_item") or die("Erro(51) deletando db_modulos: ".pg_errormessage());
+	if(pg_num_rows($result) > 0) {
+	  db_query("delete from db_modulos where id_item = $id_item") or die("Erro(51) deletando db_modulos: ".pg_last_error());
 	}
   }
 
@@ -166,18 +166,18 @@ if(isset($HTTP_POST_VARS["incluir"])) {
   db_redireciona();
   exit;		     
 ////////////////EXCLUIR//////////////
-} else if(isset($HTTP_POST_VARS["excluir"])) {
+} else if(isset($_POST["excluir"])) {
   db_query("begin");
   // grava a procedencia do item
   $sql = "delete from db_syscadproceditem where id_item = $id_item";
   db_query($sql);
 
   //exclui os itens filho
-  db_query("delete from db_itensfilho where id_item = ".$HTTP_POST_VARS["id_item"]) or die("Erro(107) excluindo db_itensfilho");
-  db_query("delete from db_itensmenu where id_item = ".$HTTP_POST_VARS["id_item"]) or die("Erro(33) deletando db_itensmenu: ".pg_errormessage());
-  $result = db_query("select id_item from db_modulos where id_item = ".$HTTP_POST_VARS["id_item"]);
-  if(pg_numrows($result) > 0)
-    db_query("delete from db_modulos where id_item = ".$HTTP_POST_VARS["id_item"]) or die("Erro(36) deletando tabela db_modulos: ".pg_errormessage());
+  db_query("delete from db_itensfilho where id_item = ".$_POST["id_item"]) or die("Erro(107) excluindo db_itensfilho");
+  db_query("delete from db_itensmenu where id_item = ".$_POST["id_item"]) or die("Erro(33) deletando db_itensmenu: ".pg_last_error());
+  $result = db_query("select id_item from db_modulos where id_item = ".$_POST["id_item"]);
+  if(pg_num_rows($result) > 0)
+    db_query("delete from db_modulos where id_item = ".$_POST["id_item"]) or die("Erro(36) deletando tabela db_modulos: ".pg_last_error());
   db_query("commit");	
 
   /**
@@ -351,11 +351,11 @@ function js_remItem(obj) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> <center>
 	<?php 
-      if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
-        if(!isset($HTTP_POST_VARS["filtro"]))
-		  $filtro = $HTTP_POST_VARS["descricao"];
+      if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {
+        if(!isset($_POST["filtro"]))
+		  $filtro = $_POST["descricao"];
 		else
-		  $filtro = $HTTP_POST_VARS["filtro"];
+		  $filtro = $_POST["filtro"];
         $sql = "SELECT i.id_item,
                        i.descricao   as \"Nome do Item\",
                        i.funcao      as arquivo, 
@@ -439,8 +439,8 @@ function js_remItem(obj) {
                     <td height="25" nowrap><label for="instit" id="at7" disabled><strong>Liberado p/ Cliente:</strong></label></td>
                     <td height="25" nowrap> 
                       <select name="libcliente" size="1" id="libcliente"  style="background-color:#999999" >
-                      <option value="0" <?=(@pg_result($result,0,"libcliente")=="f"?"selected":"")?> >Não</option>
-                      <option value="1" <?=(@pg_result($result,0,"libcliente")=="t"?"selected":"")?> >Sim</option>
+                      <option value="0" <?=(@pg_fetch_result($result,0,"libcliente")=="f"?"selected":"")?> >Não</option>
+                      <option value="1" <?=(@pg_fetch_result($result,0,"libcliente")=="t"?"selected":"")?> >Sim</option>
                       </select>
                       &nbsp; </td>
                   </tr>
@@ -518,8 +518,8 @@ db_input('descrproced',40,$Idescrproced,true,'text',3,'')
 			     inner join db_arquivos on f.codfilho = db_arquivos.codfilho
 		        where f.id_item = $id_item";
 	        $result = db_query($sql);
-		for($i=0;$i<pg_numrows($result);$i++){
-		  echo "<option value='".pg_result($result,$i,'codfilho')."'>".pg_result($result,$i,'arqfilho')."</option>";
+		for($i=0;$i<pg_num_rows($result);$i++){
+		  echo "<option value='".pg_fetch_result($result,$i,'codfilho')."'>".pg_fetch_result($result,$i,'arqfilho')."</option>";
 		}
 	      }
 	      ?>
@@ -646,7 +646,7 @@ function js_arquivosret1(chave,chave1){
 
 function js_pesquisaitemcad(chave){
   db_iframe.hide();
-  location.href = '<?=basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?retorno="+chave;
+  location.href = '<?=basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])?>'+"?retorno="+chave;
 }
 
 

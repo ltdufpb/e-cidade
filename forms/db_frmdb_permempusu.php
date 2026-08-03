@@ -131,7 +131,7 @@ db_input('descrdepto',40,$Idescrdepto,true,'text',3,'');
   </tr>
 <?php   
 }else if(isset($id_usuario) && $id_usuario!='') {
-   $query="id_usuario=$id_usuario&nome=".addslashes($nome);
+   $query="id_usuario=$id_usuario&nome=".addslashes((string) $nome);
 ?>
   <tr>
     <td nowrap title="<?=@$Tid_usuario?>">
@@ -351,7 +351,7 @@ db_input('db20_anousu',5,$Idb20_anousu,true,'hidden',3);
   <td><?=$Ldb20_tipoperm ?></td>
   <td>
    <?php     
-      $matriz = array("M"=>"Manutencao","C"=>"Consulta");
+      $matriz = ["M"=>"Manutencao","C"=>"Consulta"];
       db_select("db20_tipoperm",$matriz,true,$db_opcao);
    ?>
   </td>
@@ -376,7 +376,7 @@ if(isset($coddepto) && $coddepto!=''){
 }
   $dbwhere .= "and db20_anousu=".db_getsession("DB_anousu");
   
-    $chavepri= array("db20_anousu"=>$anousu,"db20_codperm"=>@$db20_codperm);
+    $chavepri= ["db20_anousu"=>$anousu,"db20_codperm"=>@$db20_codperm];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->sql     = $cldb_permemp->sql_query_origem(null,"db20_codperm,db20_anousu,db20_orgao,db20_unidade,db20_funcao,db20_subfuncao,db20_programa,db20_projativ,db20_codele,db20_codigo",'db20_orgao',"$dbwhere");
     $cliframe_alterar_excluir->campos  ="db20_anousu,db20_orgao,db20_unidade,db20_funcao,db20_subfuncao,db20_programa,db20_projativ,db20_codele,db20_codigo";

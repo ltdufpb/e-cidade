@@ -26,14 +26,14 @@
  */
 
 include(modification("fpdf151/pdf.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $seleciona_conta = '';
 $descr_conta = 'TOTAS AS CONTAS';
 
 if($conta != 0) {
    $seleciona_conta = " and a.k12_conta";
    $sql = "select k13_descr from saltes where k13_conta";
-   $pos = strpos($conta,",");
+   $pos = strpos((string) $conta,",");
    if($pos > 0) {
        $seleciona_conta .= " in (".$conta.")";
        $sql             .= " in (".$conta.")";
@@ -66,7 +66,7 @@ if($datai == $dataf){
 	    where k11_data = '".$datai."' and k11_anousu = ".db_getsession("DB_anousu")." and k11_instit = ".db_getsession("DB_instit");
 
     $result = db_query($sql);
-    if(pg_numrows($result) > 0) {
+    if(pg_num_rows($result) > 0) {
 	db_fieldsmemory($result,0);
     }
 
@@ -109,7 +109,7 @@ $pdf->Cell($CoL6,5,"VALOR",1,1,"C",0);
 //$pdf->Cell($CoL7,5,"NUMPRE",1,0,"C",0);
 //$pdf->Cell($CoL8,5,"PARCELA",1,1,"C",0);
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $exercicio = $GLOBALS["DB_anousu"];
 //echo
 //$sql  = "select distinct a.k12_id,a.k12_data,a.k12_autent,
@@ -134,7 +134,7 @@ $sql  = "select a.k12_id,a.k12_data,a.k12_autent,
 		    $ordem ";
 //exit;
 $result = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 $QuebraPagina = 10;
 $Total1 = 0;
 $Total2 = 0;

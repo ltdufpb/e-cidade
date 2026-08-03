@@ -34,7 +34,7 @@ require_once(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("classes/db_veiccadcentraldepart_classe.php"));
 require_once(modification("classes/db_veiccadcentral_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clveiccadcentraldepart = new cl_veiccadcentraldepart;
 $clveiccadcentral       = new cl_veiccadcentral;

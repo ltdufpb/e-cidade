@@ -60,7 +60,7 @@ if($N > 31){
  $diames=3;
 }
 
-$feriado = array(date("Y-m-d",mktime(0,0,0,$diames,$diapascoa-47,$Y))//CARNAVAL
+$feriado = [date("Y-m-d",mktime(0,0,0,$diames,$diapascoa-47,$Y))//CARNAVAL
                 ,date("Y-m-d",mktime(0,0,0,$diames,$diapascoa-2,$Y))//PAIXÃO DE CRISTO
                 ,date("Y-m-d",mktime(0,0,0,$diames,$diapascoa,$Y))//PÁSCOA
                 ,date("Y-m-d",mktime(0,0,0,$diames,$diapascoa+60,$Y))//CORPUS CHRISTI
@@ -72,7 +72,7 @@ $feriado = array(date("Y-m-d",mktime(0,0,0,$diames,$diapascoa-47,$Y))//CARNAVAL
                 ,$ano."-11-02"//FINADOS
                 ,$ano."-11-15"//PROCLAMAÇÃO DA REPÚBLICA
                 ,$ano."-12-25"//NATAL
-                );
+                ];
 sort($feriado);
 function VerificaFeriado($data_original,$feriado,$msg){
  //verifica se data original é um feriado nacional,
@@ -83,7 +83,7 @@ function VerificaFeriado($data_original,$feriado,$msg){
    global $msg;
    $msg = true;
   }
-  $nova_data = date("Y-m-d",mktime (0,0,0,substr($data_original,5,2),substr($data_original,8,2)+1,substr($data_original,0,4)));
+  $nova_data = date("Y-m-d",mktime (0,0,0,substr((string) $data_original,5,2),substr((string) $data_original,8,2)+1,substr((string) $data_original,0,4)));
  }
  if(!isset($nova_data)){
   $nova_data = $data_original;
@@ -92,22 +92,22 @@ function VerificaFeriado($data_original,$feriado,$msg){
 }
 
 function VerificaSabDom($data_original,$msg){
- if(date("w",mktime (0,0,0,substr($data_original,5,2),substr($data_original,8,2),substr($data_original,0,4))) == 6){
+ if(date("w",mktime (0,0,0,substr((string) $data_original,5,2),substr((string) $data_original,8,2),substr((string) $data_original,0,4))) == 6){
   //Se data for sábado, avança dois dias, para cair na segunda.
   if($msg==false){
    db_msgbox("Data de devolução (".db_formatar($data_original,'d').") é um sábado!\\nO sistema avançou para uma data válida seguinte ao sábado.");
    global $msg;
    $msg = true;
   }
-  $nova_data = date("Y-m-d",mktime (0,0,0,substr($data_original,5,2),substr($data_original,8,2)+2,substr($data_original,0,4)));
- }elseif(date("w",mktime (0,0,0,substr($data_original,5,2),substr($data_original,8,2),substr($data_original,0,4))) == 0){
+  $nova_data = date("Y-m-d",mktime (0,0,0,substr((string) $data_original,5,2),substr((string) $data_original,8,2)+2,substr((string) $data_original,0,4)));
+ }elseif(date("w",mktime (0,0,0,substr((string) $data_original,5,2),substr((string) $data_original,8,2),substr((string) $data_original,0,4))) == 0){
   //Se data for domingo, avança um dia, para cair na segunda.
   if($msg==false){
    db_msgbox("Data de devolução (".db_formatar($data_original,'d').") é um domingo!\\nO sistema avançou para uma data válida seguinte ao domingo.");
    global $msg;
    $msg = true;
   }
-  $nova_data = date("Y-m-d",mktime (0,0,0,substr($data_original,5,2),substr($data_original,8,2)+1,substr($data_original,0,4)));
+  $nova_data = date("Y-m-d",mktime (0,0,0,substr((string) $data_original,5,2),substr((string) $data_original,8,2)+1,substr((string) $data_original,0,4)));
  }else{
   $nova_data = $data_original;
  }
@@ -121,14 +121,14 @@ for($x=0;$x<count($feriado);$x++){
 }
 ?>
 <script>
-parent.document.form1.bi18_devolucao_ano.value = "<?=substr($data_original,0,4)?>";
-parent.document.form1.bi18_devolucao_mes.value = "<?=substr($data_original,5,2)?>";
-parent.document.form1.bi18_devolucao_dia.value = "<?=substr($data_original,8,2)?>";
-parent.document.form1.bi18_devolucao.value = "<?=substr($data_original,8,2)?>/<?=substr($data_original,5,2)?>/<?=substr($data_original,0,4)?>";
-parent.document.form1.bi18_devolucao.value = "<?=substr($data_original,8,2)?>/<?=substr($data_original,5,2)?>/<?=substr($data_original,0,4)?>";
-d1 = "<?=substr($data_original,8,2)?>";
-m1 = "<?=substr($data_original,5,2)?>";
-a1 = "<?=substr($data_original,0,4)?>";
+parent.document.form1.bi18_devolucao_ano.value = "<?=substr((string) $data_original,0,4)?>";
+parent.document.form1.bi18_devolucao_mes.value = "<?=substr((string) $data_original,5,2)?>";
+parent.document.form1.bi18_devolucao_dia.value = "<?=substr((string) $data_original,8,2)?>";
+parent.document.form1.bi18_devolucao.value = "<?=substr((string) $data_original,8,2)?>/<?=substr((string) $data_original,5,2)?>/<?=substr((string) $data_original,0,4)?>";
+parent.document.form1.bi18_devolucao.value = "<?=substr((string) $data_original,8,2)?>/<?=substr((string) $data_original,5,2)?>/<?=substr((string) $data_original,0,4)?>";
+d1 = "<?=substr((string) $data_original,8,2)?>";
+m1 = "<?=substr((string) $data_original,5,2)?>";
+a1 = "<?=substr((string) $data_original,0,4)?>";
 data = new Date(a1,m1-1,d1);
 diasemana = data.getDay();
 if(diasemana==0) diasemana = "DOMINGO";

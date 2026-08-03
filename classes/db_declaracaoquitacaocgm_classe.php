@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE declaracaoquitacaocgm
 class cl_declaracaoquitacaocgm { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $ar34_sequencial = 0; 
-   var $ar34_numcgm = 0; 
-   var $ar34_declaracaoquitacao = 0; 
-   var $ar34_somentecgm = 'f'; 
+   public $ar34_sequencial = 0; 
+   public $ar34_numcgm = 0; 
+   public $ar34_declaracaoquitacao = 0; 
+   public $ar34_somentecgm = 'f'; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  ar34_sequencial = int8 = Código 
                  ar34_numcgm = int4 = Número do CGM 
                  ar34_declaracaoquitacao = int8 = Código Declaração 
                  ar34_somentecgm = bool = Somente CGM 
                  ";
    //funcao construtor da classe 
-   function cl_declaracaoquitacaocgm() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("declaracaoquitacaocgm"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_declaracaoquitacaocgm {
          $this->erro_status = "0";
          return false; 
        }
-       $this->ar34_sequencial = pg_result($result,0,0); 
+       $this->ar34_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from declaracaoquitacaocgm_ar34_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $ar34_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $ar34_sequencial)){
          $this->erro_sql = " Campo ar34_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_declaracaoquitacaocgm {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "CGM Declaração de Quitação ($this->ar34_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "CGM Declaração de Quitação já Cadastrado";
@@ -180,13 +180,13 @@ class cl_declaracaoquitacaocgm {
      $resaco = $this->sql_record($this->sql_query_file($this->ar34_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17167,'$this->ar34_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3034,17167,'','".AddSlashes(pg_result($resaco,0,'ar34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3034,17168,'','".AddSlashes(pg_result($resaco,0,'ar34_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3034,17169,'','".AddSlashes(pg_result($resaco,0,'ar34_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3034,17180,'','".AddSlashes(pg_result($resaco,0,'ar34_somentecgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3034,17167,'','".AddSlashes(pg_fetch_result($resaco,0,'ar34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3034,17168,'','".AddSlashes(pg_fetch_result($resaco,0,'ar34_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3034,17169,'','".AddSlashes(pg_fetch_result($resaco,0,'ar34_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3034,17180,'','".AddSlashes(pg_fetch_result($resaco,0,'ar34_somentecgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_declaracaoquitacaocgm {
       $this->atualizacampos();
      $sql = " update declaracaoquitacaocgm set ";
      $virgula = "";
-     if(trim($this->ar34_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar34_sequencial"])){ 
+     if(trim((string) $this->ar34_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar34_sequencial"])){ 
        $sql  .= $virgula." ar34_sequencial = $this->ar34_sequencial ";
        $virgula = ",";
-       if(trim($this->ar34_sequencial) == null ){ 
+       if(trim((string) $this->ar34_sequencial) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "ar34_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_declaracaoquitacaocgm {
          return false;
        }
      }
-     if(trim($this->ar34_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar34_numcgm"])){ 
+     if(trim((string) $this->ar34_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar34_numcgm"])){ 
        $sql  .= $virgula." ar34_numcgm = $this->ar34_numcgm ";
        $virgula = ",";
-       if(trim($this->ar34_numcgm) == null ){ 
+       if(trim((string) $this->ar34_numcgm) == null ){ 
          $this->erro_sql = " Campo Número do CGM nao Informado.";
          $this->erro_campo = "ar34_numcgm";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_declaracaoquitacaocgm {
          return false;
        }
      }
-     if(trim($this->ar34_declaracaoquitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar34_declaracaoquitacao"])){ 
+     if(trim((string) $this->ar34_declaracaoquitacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar34_declaracaoquitacao"])){ 
        $sql  .= $virgula." ar34_declaracaoquitacao = $this->ar34_declaracaoquitacao ";
        $virgula = ",";
-       if(trim($this->ar34_declaracaoquitacao) == null ){ 
+       if(trim((string) $this->ar34_declaracaoquitacao) == null ){ 
          $this->erro_sql = " Campo Código Declaração nao Informado.";
          $this->erro_campo = "ar34_declaracaoquitacao";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_declaracaoquitacaocgm {
          return false;
        }
      }
-     if(trim($this->ar34_somentecgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar34_somentecgm"])){ 
+     if(trim((string) $this->ar34_somentecgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ar34_somentecgm"])){ 
        $sql  .= $virgula." ar34_somentecgm = '$this->ar34_somentecgm' ";
        $virgula = ",";
-       if(trim($this->ar34_somentecgm) == null ){ 
+       if(trim((string) $this->ar34_somentecgm) == null ){ 
          $this->erro_sql = " Campo Somente CGM nao Informado.";
          $this->erro_campo = "ar34_somentecgm";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_declaracaoquitacaocgm {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17167,'$this->ar34_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar34_sequencial"]) || $this->ar34_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3034,17167,'".AddSlashes(pg_result($resaco,$conresaco,'ar34_sequencial'))."','$this->ar34_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3034,17167,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar34_sequencial'))."','$this->ar34_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar34_numcgm"]) || $this->ar34_numcgm != "")
-           $resac = db_query("insert into db_acount values($acount,3034,17168,'".AddSlashes(pg_result($resaco,$conresaco,'ar34_numcgm'))."','$this->ar34_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3034,17168,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar34_numcgm'))."','$this->ar34_numcgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar34_declaracaoquitacao"]) || $this->ar34_declaracaoquitacao != "")
-           $resac = db_query("insert into db_acount values($acount,3034,17169,'".AddSlashes(pg_result($resaco,$conresaco,'ar34_declaracaoquitacao'))."','$this->ar34_declaracaoquitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3034,17169,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar34_declaracaoquitacao'))."','$this->ar34_declaracaoquitacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ar34_somentecgm"]) || $this->ar34_somentecgm != "")
-           $resac = db_query("insert into db_acount values($acount,3034,17180,'".AddSlashes(pg_result($resaco,$conresaco,'ar34_somentecgm'))."','$this->ar34_somentecgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3034,17180,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ar34_somentecgm'))."','$this->ar34_somentecgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_declaracaoquitacaocgm {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17167,'$ar34_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3034,17167,'','".AddSlashes(pg_result($resaco,$iresaco,'ar34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3034,17168,'','".AddSlashes(pg_result($resaco,$iresaco,'ar34_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3034,17169,'','".AddSlashes(pg_result($resaco,$iresaco,'ar34_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3034,17180,'','".AddSlashes(pg_result($resaco,$iresaco,'ar34_somentecgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3034,17167,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar34_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3034,17168,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar34_numcgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3034,17169,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar34_declaracaoquitacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3034,17180,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ar34_somentecgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from declaracaoquitacaocgm
@@ -376,7 +376,7 @@ class cl_declaracaoquitacaocgm {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:declaracaoquitacaocgm";
@@ -391,7 +391,7 @@ class cl_declaracaoquitacaocgm {
    function sql_query ( $ar34_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_declaracaoquitacaocgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -429,7 +429,7 @@ class cl_declaracaoquitacaocgm {
    function sql_query_file ( $ar34_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -450,7 +450,7 @@ class cl_declaracaoquitacaocgm {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -35,7 +35,7 @@ abstract class ArquivoSiprevBase {
   protected $iAnoAto;
   protected $dDataAto;
   protected $cRepresentante;
-  public static $aErrosProcessamento = array();
+  public static $aErrosProcessamento = [];
 
   /**
    * numero siafi da Entidade
@@ -179,7 +179,7 @@ abstract class ArquivoSiprevBase {
   }
 
   public function addLog($sLog) {
-    fputs($this->rsLogger, $sLog);
+    fputs($this->rsLogger, (string) $sLog);
   }
 
   /**
@@ -244,7 +244,7 @@ abstract class ArquivoSiprevBase {
   }
 
   public static function makeTag($nome, $propriedades) {
-    return array("nome" => $nome, "propriedades" => $propriedades);
+    return ["nome" => $nome, "propriedades" => $propriedades];
   }
 
   public function getRegistro() {

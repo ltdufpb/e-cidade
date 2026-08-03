@@ -35,11 +35,11 @@ abstract class SolicitacaoAlvara
 
     public function toJSON($objetoSolicitacaoAlvara)
     {
-        $objetoSolicitacaoAlvara = trim($objetoSolicitacaoAlvara->metadados);
+        $objetoSolicitacaoAlvara = trim((string) $objetoSolicitacaoAlvara->metadados);
         $objetoSolicitacaoAlvara = JSON::create()->parse($objetoSolicitacaoAlvara);
         // file_put_contents('tmp/solicitacaoAlvaraJSON', print_r($objetoSolicitacaoAlvara, true));
 
-        $solicitacao = (object) array();
+        $solicitacao = (object) [];
 
         return JSON::create()->stringify($solicitacao);
     }
@@ -111,76 +111,76 @@ abstract class SolicitacaoAlvara
 
     public function objetoSolicitacaoRequerente($objetoSolicitacaoAlvara)
     {
-        $requerente = array(
-            "cpf" => (object) array(
+        $requerente = [
+            "cpf" => (object) [
                  "label" => "CPF"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'cpf')
-            ),
-            "cnpj" => (object) array(
+            ],
+            "cnpj" => (object) [
                  "label" => "CNPJ"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'cnpj')
-            ),
-            "nome" => (object) array(
+            ],
+            "nome" => (object) [
                  "label" => "Nome / Razão Social"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'nome')
-            ),
-            "telefone" => (object) array(
+            ],
+            "telefone" => (object) [
                  "label" => "Telefone"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'telefone')
-            ),
-            "celular" => (object) array(
+            ],
+            "celular" => (object) [
                  "label" => "Celular"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'celular')
-            ),
-            "logradouro" => (object) array(
+            ],
+            "logradouro" => (object) [
                  "label" => "Logradouro"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'logradouro')
-            ),
-            "numero" => (object) array(
+            ],
+            "numero" => (object) [
                  "label" => "Número"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'numero')
-            ),
-            "complemento" => (object) array(
+            ],
+            "complemento" => (object) [
                  "label" => "Complemento"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'complemento')
-            ),
-            "bairro" => (object) array(
+            ],
+            "bairro" => (object) [
                  "label" => "Bairro"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'bairro')
-            ),
-            "estado" => (object) array(
+            ],
+            "estado" => (object) [
                  "label" => "Estado"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'estado')
-            ),
-            "municipio" => (object) array(
+            ],
+            "municipio" => (object) [
                  "label" => "Município"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'municipio')
-            ),
-            "pais" => (object) array(
+            ],
+            "pais" => (object) [
                  "label" => "País"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'pais')
-            ),
-            "cep" => (object) array(
+            ],
+            "cep" => (object) [
                  "label" => "CEP"
                 ,"value" => $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::REQUERENTE, 'cep')
-            ),
-        );
+            ],
+        ];
 
         return (object) $requerente;
     }
 
     public function objetoSolicitacaoAtividades($objetoSolicitacaoAlvara)
     {
-        $atividades = array(
-            "atividade" => (object) array(
+        $atividades = [
+            "atividade" => (object) [
                  "label" => "Atividade Principal"
                 ,"value" => ""
-            ),
-            "data_inicio" => (object) array(
+            ],
+            "data_inicio" => (object) [
                  "label" => "Data de Início"
                 ,"value" => ""
-            ),
-        );
+            ],
+        ];
 
         $objetoSolicitacaoAlvaraAtividades = $this->getInformacaoJSON(
             $objetoSolicitacaoAlvara,
@@ -257,36 +257,36 @@ abstract class SolicitacaoAlvara
                                 ||
                             (isset($atividade->principal->codigo) && (int)$atividade->principal->codigo === 1)
                         ) {
-                            $atividadePrincipal = (object) array(
+                            $atividadePrincipal = (object) [
                                  "id"          => $ID_CODIGO
                                 ,"descricao"   => $descricaoAtividade
                                 ,"data_inicio" => $atividade->data_inicio
                                 ,"risco"       => $riscoAtividade
-                            );
+                            ];
 
                             continue;
                         }
                     }
                 }
 
-                $atividadeSolicitacao = (object) array(
-                    "atividade" => (object) array(
+                $atividadeSolicitacao = (object) [
+                    "atividade" => (object) [
                          "label" => "Atividade"
                         ,"value" => $descricaoAtividade
                         ,"id"    => $ID_CODIGO
                         ,"risco" => $riscoAtividade
-                    ),
-                    "data_inicio" => (object) array(
+                    ],
+                    "data_inicio" => (object) [
                          "label" => "Data de Início"
                         ,"value" => $atividade->data_inicio
-                    ),
-                );
+                    ],
+                ];
 
                 $atividades['atividades_secundarias']['atividade_'. ($key + 1)] = (object) $atividadeSolicitacao;
             }
 
             if (empty($atividadePrincipal)) {
-                return array();
+                return [];
             }
 
             $atividades['atividade']->id      = $atividadePrincipal->id;
@@ -300,7 +300,7 @@ abstract class SolicitacaoAlvara
 
     public function objetoSolicitacaoDocumentos($objetoSolicitacaoAlvara)
     {
-        $documentos = array();
+        $documentos = [];
         $documentosAnexos = $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DOCUMENTOS, 'resposta');
         $camposAnexos     = $this->getInformacaoJSON($objetoSolicitacaoAlvara, self::DOCUMENTOS, 'campos');
 
@@ -315,16 +315,16 @@ abstract class SolicitacaoAlvara
                     }
                 }
 
-                $nome = !empty($nome) ? $nome : preg_replace('/(.*?)_\d+$/', "$1", $documento->nome);
-                $nome = mb_strtoupper($nome);
+                $nome = !empty($nome) ? $nome : preg_replace('/(.*?)_\d+$/', "$1", (string) $documento->nome);
+                $nome = mb_strtoupper((string) $nome);
 
-                $documentoAnexo = (object) array(
+                $documentoAnexo = (object) [
                      "label"     => $nome
                     ,"value"     => $documento->codigo
                     ,"descricao" => $documento->descricao
                     ,"codigo_vinculo" => !empty($codigo_vinculo) ? $codigo_vinculo : null
                     ,"tipo" => !empty($tipo) ? $tipo : null
-                );
+                ];
 
                 $documentos['documento_'. ($key + 1)] = $documentoAnexo;
             }

@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE rhparam
 class cl_rhparam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $h36_modtermoposse = 0; 
-   var $h36_instit = 0; 
-   var $h36_modportariacoletiva = 0; 
-   var $h36_modportariaindividual = 0; 
-   var $h36_ultimaportaria = 0; 
-   var $h36_intersticio = 0; 
-   var $h36_pontuacaominpromocao = 0; 
-   var $h36_tempocontribuicaorgps = 0; 
-   var $h36_tempocontribuicaorpps = 0; 
-   var $h36_temposficticios = 0; 
-   var $h36_temposemcontribuicao = 0; 
+   public $h36_modtermoposse = 0; 
+   public $h36_instit = 0; 
+   public $h36_modportariacoletiva = 0; 
+   public $h36_modportariaindividual = 0; 
+   public $h36_ultimaportaria = 0; 
+   public $h36_intersticio = 0; 
+   public $h36_pontuacaominpromocao = 0; 
+   public $h36_tempocontribuicaorgps = 0; 
+   public $h36_tempocontribuicaorpps = 0; 
+   public $h36_temposficticios = 0; 
+   public $h36_temposemcontribuicao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  h36_modtermoposse = int4 = Modelo Posse 
                  h36_instit = int4 = Instituição 
                  h36_modportariacoletiva = int4 = Modelo Portaria Coletiva 
@@ -68,10 +68,10 @@ class cl_rhparam {
                  h36_temposemcontribuicao = int4 = Tempo sem Contribuição 
                  ";
    //funcao construtor da classe 
-   function cl_rhparam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("rhparam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -183,7 +183,7 @@ class cl_rhparam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Parametros RH ($this->h36_instit) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Parametros RH já Cadastrado";
@@ -212,20 +212,20 @@ class cl_rhparam {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12193,'$this->h36_instit','I')");
-         $resac = db_query("insert into db_acount values($acount,2117,12192,'','".AddSlashes(pg_result($resaco,0,'h36_modtermoposse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2117,12193,'','".AddSlashes(pg_result($resaco,0,'h36_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2117,12194,'','".AddSlashes(pg_result($resaco,0,'h36_modportariacoletiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2117,12195,'','".AddSlashes(pg_result($resaco,0,'h36_modportariaindividual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2117,12196,'','".AddSlashes(pg_result($resaco,0,'h36_ultimaportaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2117,18738,'','".AddSlashes(pg_result($resaco,0,'h36_intersticio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2117,18739,'','".AddSlashes(pg_result($resaco,0,'h36_pontuacaominpromocao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2117,21955,'','".AddSlashes(pg_result($resaco,0,'h36_tempocontribuicaorgps'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2117,21956,'','".AddSlashes(pg_result($resaco,0,'h36_tempocontribuicaorpps'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2117,21957,'','".AddSlashes(pg_result($resaco,0,'h36_temposficticios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2117,21958,'','".AddSlashes(pg_result($resaco,0,'h36_temposemcontribuicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2117,12192,'','".AddSlashes(pg_fetch_result($resaco,0,'h36_modtermoposse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2117,12193,'','".AddSlashes(pg_fetch_result($resaco,0,'h36_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2117,12194,'','".AddSlashes(pg_fetch_result($resaco,0,'h36_modportariacoletiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2117,12195,'','".AddSlashes(pg_fetch_result($resaco,0,'h36_modportariaindividual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2117,12196,'','".AddSlashes(pg_fetch_result($resaco,0,'h36_ultimaportaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2117,18738,'','".AddSlashes(pg_fetch_result($resaco,0,'h36_intersticio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2117,18739,'','".AddSlashes(pg_fetch_result($resaco,0,'h36_pontuacaominpromocao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2117,21955,'','".AddSlashes(pg_fetch_result($resaco,0,'h36_tempocontribuicaorgps'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2117,21956,'','".AddSlashes(pg_fetch_result($resaco,0,'h36_tempocontribuicaorpps'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2117,21957,'','".AddSlashes(pg_fetch_result($resaco,0,'h36_temposficticios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2117,21958,'','".AddSlashes(pg_fetch_result($resaco,0,'h36_temposemcontribuicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -235,17 +235,17 @@ class cl_rhparam {
       $this->atualizacampos();
      $sql = " update rhparam set ";
      $virgula = "";
-     if(trim($this->h36_modtermoposse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modtermoposse"])){ 
-        if(trim($this->h36_modtermoposse)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modtermoposse"])){ 
+     if(trim((string) $this->h36_modtermoposse)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modtermoposse"])){ 
+        if(trim((string) $this->h36_modtermoposse)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modtermoposse"])){ 
            $this->h36_modtermoposse = "0" ; 
         } 
        $sql  .= $virgula." h36_modtermoposse = $this->h36_modtermoposse ";
        $virgula = ",";
      }
-     if(trim($this->h36_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_instit"])){ 
+     if(trim((string) $this->h36_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_instit"])){ 
        $sql  .= $virgula." h36_instit = $this->h36_instit ";
        $virgula = ",";
-       if(trim($this->h36_instit) == null ){ 
+       if(trim((string) $this->h36_instit) == null ){ 
          $this->erro_sql = " Campo Instituição não informado.";
          $this->erro_campo = "h36_instit";
          $this->erro_banco = "";
@@ -255,31 +255,31 @@ class cl_rhparam {
          return false;
        }
      }
-     if(trim($this->h36_modportariacoletiva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariacoletiva"])){ 
-        if(trim($this->h36_modportariacoletiva)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariacoletiva"])){ 
+     if(trim((string) $this->h36_modportariacoletiva)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariacoletiva"])){ 
+        if(trim((string) $this->h36_modportariacoletiva)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariacoletiva"])){ 
            $this->h36_modportariacoletiva = "0" ; 
         } 
        $sql  .= $virgula." h36_modportariacoletiva = $this->h36_modportariacoletiva ";
        $virgula = ",";
      }
-     if(trim($this->h36_modportariaindividual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariaindividual"])){ 
-        if(trim($this->h36_modportariaindividual)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariaindividual"])){ 
+     if(trim((string) $this->h36_modportariaindividual)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariaindividual"])){ 
+        if(trim((string) $this->h36_modportariaindividual)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariaindividual"])){ 
            $this->h36_modportariaindividual = "0" ; 
         } 
        $sql  .= $virgula." h36_modportariaindividual = $this->h36_modportariaindividual ";
        $virgula = ",";
      }
-     if(trim($this->h36_ultimaportaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_ultimaportaria"])){ 
-        if(trim($this->h36_ultimaportaria)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_ultimaportaria"])){ 
+     if(trim((string) $this->h36_ultimaportaria)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_ultimaportaria"])){ 
+        if(trim((string) $this->h36_ultimaportaria)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_ultimaportaria"])){ 
            $this->h36_ultimaportaria = "0" ; 
         } 
        $sql  .= $virgula." h36_ultimaportaria = $this->h36_ultimaportaria ";
        $virgula = ",";
      }
-     if(trim($this->h36_intersticio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_intersticio"])){ 
+     if(trim((string) $this->h36_intersticio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_intersticio"])){ 
        $sql  .= $virgula." h36_intersticio = $this->h36_intersticio ";
        $virgula = ",";
-       if(trim($this->h36_intersticio) == null ){ 
+       if(trim((string) $this->h36_intersticio) == null ){ 
          $this->erro_sql = " Campo Interstício (Anos) não informado.";
          $this->erro_campo = "h36_intersticio";
          $this->erro_banco = "";
@@ -289,10 +289,10 @@ class cl_rhparam {
          return false;
        }
      }
-     if(trim($this->h36_pontuacaominpromocao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_pontuacaominpromocao"])){ 
+     if(trim((string) $this->h36_pontuacaominpromocao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_pontuacaominpromocao"])){ 
        $sql  .= $virgula." h36_pontuacaominpromocao = $this->h36_pontuacaominpromocao ";
        $virgula = ",";
-       if(trim($this->h36_pontuacaominpromocao) == null ){ 
+       if(trim((string) $this->h36_pontuacaominpromocao) == null ){ 
          $this->erro_sql = " Campo Pontuação Min. não informado.";
          $this->erro_campo = "h36_pontuacaominpromocao";
          $this->erro_banco = "";
@@ -302,29 +302,29 @@ class cl_rhparam {
          return false;
        }
      }
-     if(trim($this->h36_tempocontribuicaorgps)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorgps"])){ 
-        if(trim($this->h36_tempocontribuicaorgps)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorgps"])){ 
+     if(trim((string) $this->h36_tempocontribuicaorgps)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorgps"])){ 
+        if(trim((string) $this->h36_tempocontribuicaorgps)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorgps"])){ 
            $this->h36_tempocontribuicaorgps = 'null' ;
         } 
        $sql  .= $virgula." h36_tempocontribuicaorgps = $this->h36_tempocontribuicaorgps ";
        $virgula = ",";
      }
-     if(trim($this->h36_tempocontribuicaorpps)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorpps"])){ 
-        if(trim($this->h36_tempocontribuicaorpps)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorpps"])){ 
+     if(trim((string) $this->h36_tempocontribuicaorpps)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorpps"])){ 
+        if(trim((string) $this->h36_tempocontribuicaorpps)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorpps"])){ 
            $this->h36_tempocontribuicaorpps = 'null' ;
         } 
        $sql  .= $virgula." h36_tempocontribuicaorpps = $this->h36_tempocontribuicaorpps ";
        $virgula = ",";
      }
-     if(trim($this->h36_temposficticios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_temposficticios"])){ 
-        if(trim($this->h36_temposficticios)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_temposficticios"])){ 
+     if(trim((string) $this->h36_temposficticios)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_temposficticios"])){ 
+        if(trim((string) $this->h36_temposficticios)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_temposficticios"])){ 
            $this->h36_temposficticios = 'null' ;
         } 
        $sql  .= $virgula." h36_temposficticios = $this->h36_temposficticios ";
        $virgula = ",";
      }
-     if(trim($this->h36_temposemcontribuicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_temposemcontribuicao"])){ 
-        if(trim($this->h36_temposemcontribuicao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_temposemcontribuicao"])){ 
+     if(trim((string) $this->h36_temposemcontribuicao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["h36_temposemcontribuicao"])){ 
+        if(trim((string) $this->h36_temposemcontribuicao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["h36_temposemcontribuicao"])){ 
            $this->h36_temposemcontribuicao = 'null' ;
         } 
        $sql  .= $virgula." h36_temposemcontribuicao = $this->h36_temposemcontribuicao ";
@@ -344,31 +344,31 @@ class cl_rhparam {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,12193,'$this->h36_instit','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h36_modtermoposse"]) || $this->h36_modtermoposse != "")
-             $resac = db_query("insert into db_acount values($acount,2117,12192,'".AddSlashes(pg_result($resaco,$conresaco,'h36_modtermoposse'))."','$this->h36_modtermoposse',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2117,12192,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h36_modtermoposse'))."','$this->h36_modtermoposse',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h36_instit"]) || $this->h36_instit != "")
-             $resac = db_query("insert into db_acount values($acount,2117,12193,'".AddSlashes(pg_result($resaco,$conresaco,'h36_instit'))."','$this->h36_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2117,12193,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h36_instit'))."','$this->h36_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariacoletiva"]) || $this->h36_modportariacoletiva != "")
-             $resac = db_query("insert into db_acount values($acount,2117,12194,'".AddSlashes(pg_result($resaco,$conresaco,'h36_modportariacoletiva'))."','$this->h36_modportariacoletiva',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2117,12194,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h36_modportariacoletiva'))."','$this->h36_modportariacoletiva',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h36_modportariaindividual"]) || $this->h36_modportariaindividual != "")
-             $resac = db_query("insert into db_acount values($acount,2117,12195,'".AddSlashes(pg_result($resaco,$conresaco,'h36_modportariaindividual'))."','$this->h36_modportariaindividual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2117,12195,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h36_modportariaindividual'))."','$this->h36_modportariaindividual',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h36_ultimaportaria"]) || $this->h36_ultimaportaria != "")
-             $resac = db_query("insert into db_acount values($acount,2117,12196,'".AddSlashes(pg_result($resaco,$conresaco,'h36_ultimaportaria'))."','$this->h36_ultimaportaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2117,12196,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h36_ultimaportaria'))."','$this->h36_ultimaportaria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h36_intersticio"]) || $this->h36_intersticio != "")
-             $resac = db_query("insert into db_acount values($acount,2117,18738,'".AddSlashes(pg_result($resaco,$conresaco,'h36_intersticio'))."','$this->h36_intersticio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2117,18738,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h36_intersticio'))."','$this->h36_intersticio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h36_pontuacaominpromocao"]) || $this->h36_pontuacaominpromocao != "")
-             $resac = db_query("insert into db_acount values($acount,2117,18739,'".AddSlashes(pg_result($resaco,$conresaco,'h36_pontuacaominpromocao'))."','$this->h36_pontuacaominpromocao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2117,18739,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h36_pontuacaominpromocao'))."','$this->h36_pontuacaominpromocao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorgps"]) || $this->h36_tempocontribuicaorgps != "")
-             $resac = db_query("insert into db_acount values($acount,2117,21955,'".AddSlashes(pg_result($resaco,$conresaco,'h36_tempocontribuicaorgps'))."','$this->h36_tempocontribuicaorgps',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2117,21955,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h36_tempocontribuicaorgps'))."','$this->h36_tempocontribuicaorgps',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h36_tempocontribuicaorpps"]) || $this->h36_tempocontribuicaorpps != "")
-             $resac = db_query("insert into db_acount values($acount,2117,21956,'".AddSlashes(pg_result($resaco,$conresaco,'h36_tempocontribuicaorpps'))."','$this->h36_tempocontribuicaorpps',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2117,21956,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h36_tempocontribuicaorpps'))."','$this->h36_tempocontribuicaorpps',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h36_temposficticios"]) || $this->h36_temposficticios != "")
-             $resac = db_query("insert into db_acount values($acount,2117,21957,'".AddSlashes(pg_result($resaco,$conresaco,'h36_temposficticios'))."','$this->h36_temposficticios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2117,21957,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h36_temposficticios'))."','$this->h36_temposficticios',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["h36_temposemcontribuicao"]) || $this->h36_temposemcontribuicao != "")
-             $resac = db_query("insert into db_acount values($acount,2117,21958,'".AddSlashes(pg_result($resaco,$conresaco,'h36_temposemcontribuicao'))."','$this->h36_temposemcontribuicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2117,21958,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'h36_temposemcontribuicao'))."','$this->h36_temposemcontribuicao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -422,20 +422,20 @@ class cl_rhparam {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,12193,'$h36_instit','E')");
-           $resac  = db_query("insert into db_acount values($acount,2117,12192,'','".AddSlashes(pg_result($resaco,$iresaco,'h36_modtermoposse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2117,12193,'','".AddSlashes(pg_result($resaco,$iresaco,'h36_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2117,12194,'','".AddSlashes(pg_result($resaco,$iresaco,'h36_modportariacoletiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2117,12195,'','".AddSlashes(pg_result($resaco,$iresaco,'h36_modportariaindividual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2117,12196,'','".AddSlashes(pg_result($resaco,$iresaco,'h36_ultimaportaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2117,18738,'','".AddSlashes(pg_result($resaco,$iresaco,'h36_intersticio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2117,18739,'','".AddSlashes(pg_result($resaco,$iresaco,'h36_pontuacaominpromocao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2117,21955,'','".AddSlashes(pg_result($resaco,$iresaco,'h36_tempocontribuicaorgps'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2117,21956,'','".AddSlashes(pg_result($resaco,$iresaco,'h36_tempocontribuicaorpps'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2117,21957,'','".AddSlashes(pg_result($resaco,$iresaco,'h36_temposficticios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2117,21958,'','".AddSlashes(pg_result($resaco,$iresaco,'h36_temposemcontribuicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2117,12192,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h36_modtermoposse'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2117,12193,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h36_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2117,12194,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h36_modportariacoletiva'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2117,12195,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h36_modportariaindividual'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2117,12196,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h36_ultimaportaria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2117,18738,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h36_intersticio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2117,18739,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h36_pontuacaominpromocao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2117,21955,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h36_tempocontribuicaorgps'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2117,21956,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h36_tempocontribuicaorpps'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2117,21957,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h36_temposficticios'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2117,21958,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'h36_temposemcontribuicao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -557,7 +557,7 @@ class cl_rhparam {
   function sql_query_rhparam ( $oid = null,$campos="rhparam.oid,*",$ordem=null,$dbwhere=""){
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -589,7 +589,7 @@ class cl_rhparam {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

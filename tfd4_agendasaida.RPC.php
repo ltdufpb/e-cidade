@@ -98,12 +98,12 @@ try {
 
       $oPedido                      = new stdClass();
       $oPedido->iCgs                = $oDadosPedido->tf01_i_cgsund;
-      $oPedido->sCgs                = urlencode($oDadosPedido->nome_paciente);
+      $oPedido->sCgs                = urlencode((string) $oDadosPedido->nome_paciente);
       $oPedido->iCentralAgendamento = $oDadosPedido->tf10_i_centralagend;
       $oPedido->iPrestadora         = $oDadosPedido->tf10_i_prestadora;
-      $oPedido->sPrestadora         = urlencode($oDadosPedido->nome_prestadora);
+      $oPedido->sPrestadora         = urlencode((string) $oDadosPedido->nome_prestadora);
       $oPedido->iDestino            = $oDadosPedido->tf25_i_destino;
-      $oPedido->sDestino            = urlencode($oDadosPedido->tf03_c_descr);
+      $oPedido->sDestino            = urlencode((string) $oDadosPedido->tf03_c_descr);
       $oPedido->iCodigoAgenda       = $oDadosPedido->tf17_i_codigo;
 
       $sDataAgendamento = '';
@@ -125,7 +125,7 @@ try {
 
       $oPedido->dtSaida          = $sDataSaida;
       $oPedido->sHoraSaida       = $oDadosPedido->tf17_c_horasaida;
-      $oPedido->sLocalSaida      = urlencode($oDadosPedido->tf17_c_localsaida);
+      $oPedido->sLocalSaida      = urlencode((string) $oDadosPedido->tf17_c_localsaida);
 
       $sDataRetorno = '';
 
@@ -139,9 +139,9 @@ try {
       $oPedido->sHoraRetorno     = $oDadosPedido->tf18_c_horaretorno;
       $oPedido->iVeiculo         = $oDadosPedido->tf18_i_veiculo;
       $oPedido->iLotacaoVeiculo  = $oDadosPedido->ve01_quantcapacidad;
-      $oPedido->sPlaca           = urlencode($oDadosPedido->ve01_placa);
+      $oPedido->sPlaca           = urlencode((string) $oDadosPedido->ve01_placa);
       $oPedido->iMotorista       = $oDadosPedido->tf18_i_motorista;
-      $oPedido->sMotorista       = urlencode($oDadosPedido->nome_motorista);
+      $oPedido->sMotorista       = urlencode((string) $oDadosPedido->nome_motorista);
       $oPedido->iFica            = $oDadosPedido->tf19_i_fica;
 
       // PK da tabela tfd_agendamentoprestadora
@@ -232,7 +232,7 @@ try {
         throw new DBException(  _M( MENSAGEM_AGENDASAIDA . "nao_possivel_buscar_horarios") );
       }
 
-      $oRetorno->aHorarios = array();
+      $oRetorno->aHorarios = [];
       $iLinhas             = pg_num_rows($rsGradeHorarios);
 
       for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
@@ -271,7 +271,7 @@ try {
         throw new DBException(  _M( MENSAGEM_AGENDASAIDA . "nao_possivel_buscar_acompanhantes") );
       }
 
-      $oRetorno->aAcompanhantes = array();
+      $oRetorno->aAcompanhantes = [];
       $iLinhas                  = pg_num_rows($rsAcompanhantes);
 
       for ( $iContador = 0; $iContador < $iLinhas; $iContador++ ) {
@@ -280,7 +280,7 @@ try {
 
         $oAcompanhante                  = new stdClass();
         $oAcompanhante->iAcompanhante   = $oDadosAcompanhante->tf13_i_cgsund;
-        $oAcompanhante->sAcompanhante   = urlencode($oDadosAcompanhante->z01_v_nome);
+        $oAcompanhante->sAcompanhante   = urlencode((string) $oDadosAcompanhante->z01_v_nome);
         $oAcompanhante->lVinculadoCarro = $oDadosAcompanhante->vinculado_carro == 't' ? true : false;
         $oAcompanhante->lPossuiPassagem = $oDadosAcompanhante->possui_passagem == 't' ? true : false;
         $oAcompanhante->iFica           = $oDadosAcompanhante->acompanhante_fica == 't' ? 1 : 2;
@@ -303,7 +303,7 @@ try {
       $oDtSaida   = new DBDate($oParam->dtSaida);
 
 
-      $aWhere   = array();
+      $aWhere   = [];
       $aWhere[] = " tf18_d_datasaida   = '" . $oDtSaida->convertTo(DBDate::DATA_EN) . "' ";
       $aWhere[] = " tf18_c_horasaida   = '{$oParam->horaSaida}' ";
       $aWhere[] = " tf18_i_veiculo     = {$oParam->iVeiculo} ";
@@ -433,7 +433,7 @@ try {
       if ($oDaoAgendaSaida->erro_status == 0) {
 
         $oErroMsg           = new stdClass();
-        $oErroMsg->sMsgErro = utf8_encode($oDaoAgendaSaida->erro_msg);
+        $oErroMsg->sMsgErro = mb_convert_encoding($oDaoAgendaSaida->erro_msg, 'UTF-8', 'ISO-8859-1');
         throw new Exception(_M( MENSAGEM_AGENDASAIDA . "erro_incluir_agenda", $oErroMsg));
       }
 
@@ -529,7 +529,7 @@ function alterarDadosPrestadora($iAgendamentoPrestadora, $iCentralPrestadora, DB
   if ( $oDaoPrestadora->erro_status == 0 ) {
 
     $oErroMsg           = new stdClass();
-    $oErroMsg->sMsgErro = utf8_encode($oDaoPrestadora->erro_msg);
+    $oErroMsg->sMsgErro = mb_convert_encoding($oDaoPrestadora->erro_msg, 'UTF-8', 'ISO-8859-1');
     throw new Exception(_M( MENSAGEM_AGENDASAIDA . "erro_atualizar_prestadora", $oErroMsg));
   }
 
@@ -547,7 +547,7 @@ function alterarDadosPrestadora($iAgendamentoPrestadora, $iCentralPrestadora, DB
  * @param  array   $aPassageiros Opcional - lista de cgs
  * @return boolean
  */
-function removePassageirosVeiculo($iPedido, $aPassageiros = array()) {
+function removePassageirosVeiculo($iPedido, $aPassageiros = []) {
 
   $sWhereRemoverPassageiro = " tf19_i_pedidotfd = {$iPedido}";
   if ( is_array($aPassageiros) &&  count($aPassageiros) > 0) {
@@ -567,7 +567,7 @@ function removePassageirosVeiculo($iPedido, $aPassageiros = array()) {
   if ( $oDaoPassageiroVeiculo->erro_status == 0 ) {
 
     $oErroMsg           = new stdClass();
-    $oErroMsg->sMsgErro = utf8_encode($oDaoPassageiroVeiculo->erro_msg);
+    $oErroMsg->sMsgErro = mb_convert_encoding($oDaoPassageiroVeiculo->erro_msg, 'UTF-8', 'ISO-8859-1');
     throw new Exception(_M( MENSAGEM_AGENDASAIDA . "erro_passageiros_veiculo", $oErroMsg));
   }
 
@@ -603,7 +603,7 @@ function removeAgendaVeiculo( $iVeiculoDestino ) {
   if ( $oDaoVeiculoDestino->erro_status == 0 ) {
 
     $oErroMsg           = new stdClass();
-    $oErroMsg->sMsgErro = utf8_encode($oDaoVeiculoDestino->erro_msg);
+    $oErroMsg->sMsgErro = mb_convert_encoding($oDaoVeiculoDestino->erro_msg, 'UTF-8', 'ISO-8859-1');
     throw new Exception(_M( MENSAGEM_AGENDASAIDA . "erro_remover_agenda_veiculo", $oErroMsg));
   }
 
@@ -645,7 +645,7 @@ function removeAgendaSaida($iPedido = null) {
     if ( $oDaoAgendaSaidaPassagemDestino->erro_status == 0 ) {
 
       $oErro        = new stdClass();
-      $oErro->sErro = utf8_encode( $oDaoAgendaSaidaPassagemDestino->erro_msg );
+      $oErro->sErro = mb_convert_encoding( $oDaoAgendaSaidaPassagemDestino->erro_msg, 'UTF-8', 'ISO-8859-1' );
 
       throw new Exception( _M( MENSAGEM_AGENDASAIDA . "erro_remover_agenda_saida_destino", $oErro ) );
     }
@@ -654,7 +654,7 @@ function removeAgendaSaida($iPedido = null) {
     if ( $oDaoAgendaSaida->erro_status == 0 ) {
 
       $oErroMsg = new stdClass();
-      $oErroMsg->sMsgErro = utf8_encode($oDaoAgendaSaida->erro_msg);
+      $oErroMsg->sMsgErro = mb_convert_encoding($oDaoAgendaSaida->erro_msg, 'UTF-8', 'ISO-8859-1');
       throw new Exception(_M( MENSAGEM_AGENDASAIDA . "erro_remover_agenda", $oErroMsg));
     }
   }
@@ -666,7 +666,7 @@ function buscaCodigoVeiculoDestino($oDtSaida, $oDtRetorno, $sHoraRetorno, $sHora
   $oDaoPassageiroVeiculo = new cl_tfd_passageiroveiculo();
   $oDaoVeiculoDestino    = new cl_tfd_veiculodestino();
 
-  $aWhere   = array();
+  $aWhere   = [];
   $aWhere[] = " tf18_d_datasaida   = '" . $oDtSaida->convertTo(DBDate::DATA_EN) . "' ";
   $aWhere[] = " tf18_d_dataretorno = '" . $oDtRetorno->convertTo(DBDate::DATA_EN) . "' ";
   $aWhere[] = " tf18_c_horaretorno = '{$sHoraRetorno}' ";
@@ -701,7 +701,7 @@ function buscaCodigoVeiculoDestino($oDtSaida, $oDtRetorno, $sHoraRetorno, $sHora
 
       if ($oDaoVeiculoDestino->erro_status == 0) {
 
-        $oErroMsg->sMsgErro = utf8_encode($oDaoVeiculoDestino->erro_msg);
+        $oErroMsg->sMsgErro = mb_convert_encoding($oDaoVeiculoDestino->erro_msg, 'UTF-8', 'ISO-8859-1');
         throw new Exception(_M( MENSAGEM_AGENDASAIDA . "erro_incluir_alterar_veiculo_destino", $oErroMsg));
       }
     }
@@ -723,7 +723,7 @@ function buscaCodigoVeiculoDestino($oDtSaida, $oDtRetorno, $sHoraRetorno, $sHora
     $oDaoVeiculoDestino->incluir(null);
     if ($oDaoVeiculoDestino->erro_status == 0) {
 
-      $oErroMsg->sMsgErro = utf8_encode($oDaoVeiculoDestino->erro_msg);
+      $oErroMsg->sMsgErro = mb_convert_encoding($oDaoVeiculoDestino->erro_msg, 'UTF-8', 'ISO-8859-1');
       throw new Exception(_M( MENSAGEM_AGENDASAIDA . "erro_incluir_alterar_veiculo_destino", $oErroMsg));
     }
 
@@ -775,7 +775,7 @@ function salvarPassageiroVeiculo( $oDadosParametro ) {
     if ($oDaoPassageiroVeiculo->erro_status == 0) {
 
       $oErroMsg           = new stdClass();
-      $oErroMsg->sMsgErro = utf8_encode($oDaoPassageiroVeiculo->erro_msg);
+      $oErroMsg->sMsgErro = mb_convert_encoding($oDaoPassageiroVeiculo->erro_msg, 'UTF-8', 'ISO-8859-1');
 
       throw new Exception( _M( MENSAGEM_AGENDASAIDA . "erro_incluir_passageiro_veiculo", $oErroMsg));
     }

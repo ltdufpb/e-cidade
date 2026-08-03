@@ -38,9 +38,9 @@ require_once(modification("classes/db_arretipo_classe.php"));
 require_once(modification("classes/db_recparproc_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clproced					 = new cl_proced;
 $cltipoproced      = new cl_tipoproced;
@@ -87,7 +87,7 @@ if (isset($alterar)) {
 
   }
 
-  if ($sqlerro == false and trim($receita) <> ""){
+  if ($sqlerro == false and trim((string) $receita) <> ""){
     $clrecparproc->receita	  = $receita;
     $clrecparproc->v03_codigo = $v03_codigo;
     $clrecparproc->incluir($v03_codigo);

@@ -31,15 +31,15 @@ class CgsApiBuilder
     {
         $encode = 'ISO-8859-1';
         return (object)[
-            'nome' => !empty($request->nome) ? mb_strtoupper($request->nome, $encode) : 'NÃO INFORMADO',
-            'nomeSocial' => mb_strtoupper($request->nome_social, $encode),
+            'nome' => !empty($request->nome) ? mb_strtoupper((string) $request->nome, $encode) : 'NÃO INFORMADO',
+            'nomeSocial' => mb_strtoupper((string) $request->nome_social, $encode),
             'cpf' => $request->cpf,
             'cns' => $request->cns,
             'dataNascimento' => $request->data_nascimento,
-            'nomeMae' => !empty($request->nome_mae) ? mb_strtoupper($request->nome_mae, $encode) : 'SEM INFORMAÇÃO',
-            'nomePai' => !empty($request->nome_pai) ? mb_strtoupper($request->nome_pai, $encode) : 'SEM INFORMAÇÃO',
+            'nomeMae' => !empty($request->nome_mae) ? mb_strtoupper((string) $request->nome_mae, $encode) : 'SEM INFORMAÇÃO',
+            'nomePai' => !empty($request->nome_pai) ? mb_strtoupper((string) $request->nome_pai, $encode) : 'SEM INFORMAÇÃO',
             'sexo' => !empty($request->sexo) ? $request->sexo : 'N',
-            'racaCor' => !empty($request->raca) ? (new RacaCorEnum($request->raca))->name() : '',
+            'racaCor' => !empty($request->raca) ? new RacaCorEnum($request->raca)->name() : '',
             'codigo_etnia' => '',
             'nacionalidade' => '2', // salva como estrangeiro pois não é informado o municipio de nascimento
             'paisOrigem' => '10', // Brasil
@@ -118,19 +118,19 @@ class CgsApiBuilder
     {
         $observacoes = '';
         if ($request->has('altura_relativa') && $request->altura_relativa != '') {
-            $alturaRelativa = utf8_decode($request->altura_relativa);
+            $alturaRelativa = mb_convert_encoding($request->altura_relativa, 'ISO-8859-1');
             $observacoes .= "ALTURA RELATIVA: {$alturaRelativa}\n";
         }
         if ($request->has('idade_relativa') && $request->idade_relativa != '') {
-            $idadeRelativa = utf8_decode($request->idade_relativa);
+            $idadeRelativa = mb_convert_encoding($request->idade_relativa, 'ISO-8859-1');
             $observacoes .= "IDADE RELATIVA: {$idadeRelativa}\n";
         }
         if ($request->has('peso_relativo') && $request->peso_relativo != '') {
-            $pesoRelativo = utf8_decode($request->peso_relativo);
+            $pesoRelativo = mb_convert_encoding($request->peso_relativo, 'ISO-8859-1');
             $observacoes .= "PESO RELATIVA: {$pesoRelativo}\n";
         }
         if ($request->has('observacoes') && $request->observacoes != '') {
-            $observacoes .= utf8_decode($request->observacoes);
+            $observacoes .= mb_convert_encoding($request->observacoes, 'ISO-8859-1');
         }
 
         return (object)[

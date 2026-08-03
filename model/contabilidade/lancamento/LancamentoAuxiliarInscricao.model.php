@@ -146,6 +146,7 @@ class LancamentoAuxiliarInscricao extends LancamentoAuxiliarBase implements ILan
     return $this->nValorTotalInscricao;
   }
   
+  #[\Override]
   public function getCodigoElemento() {
     return $this->iCodigoElemento;
   }
@@ -164,10 +165,12 @@ class LancamentoAuxiliarInscricao extends LancamentoAuxiliarBase implements ILan
   /**
    * @see ILancamentoAuxiliar::getObservacaoHistorico()
    */  
+  #[\Override]
   public function getObservacaoHistorico() {
     return $this->sObservacaoHistorico;
   }
   
+  #[\Override]
   public function getFavorecido() {
     return $this->iFavorecido;
   } 
@@ -184,6 +187,7 @@ class LancamentoAuxiliarInscricao extends LancamentoAuxiliarBase implements ILan
     $this->nValorTotalInscricao = $nValorTotal;
   }
   
+  #[\Override]
   public function setCodigoElemento($iCodigoElemento) {
     $this->iCodigoElemento = $iCodigoElemento;
   }
@@ -198,6 +202,7 @@ class LancamentoAuxiliarInscricao extends LancamentoAuxiliarBase implements ILan
   /**
    * @see ILancamentoAuxiliar::setObservacaoHistorico()
    */
+  #[\Override]
   public function setObservacaoHistorico($sObservacaoHistorico) {
     $this->sObservacaoHistorico = $sObservacaoHistorico;
   }
@@ -206,6 +211,7 @@ class LancamentoAuxiliarInscricao extends LancamentoAuxiliarBase implements ILan
     $this->iAnoElemento = $iAnoElemento;
   }
   
+  #[\Override]
   public function setFavorecido($iFavorecido) {
     $this->iFavorecido = $iFavorecido;
   }

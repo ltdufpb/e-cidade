@@ -80,17 +80,17 @@ if (isset($oGet->aTipoDebito)  && $oGet->aTipoDebito != "") {
     $where .= "and arretipo.k00_tipo in ($oGet->aTipoDebito) ";
 }
 
-$aCabecalho       = array();
+$aCabecalho       = [];
 $alt              = 5;
 $fonte            = 8;
 $iList            = 1;
 $codSuspensao        = null;
-$aCabecalho       = array();
-$aTotalMatric     = array();
-$aTotalInscr      = array();
-$aTotalCgm        = array();
-$aTotalExerc      = array();
-$aTotalOrigem     = array();
+$aCabecalho       = [];
+$aTotalMatric     = [];
+$aTotalInscr      = [];
+$aTotalCgm        = [];
+$aTotalExerc      = [];
+$aTotalOrigem     = [];
 $iNroMatric       = 0;
 $iTotalParcial    = 0;
 $iNroInscr        = 0;
@@ -246,7 +246,7 @@ $sqlSuspensao .= " $orderby ";
 $rsSuspensao    = db_query($sqlSuspensao) or die($sqlSuspensao);
 $iRowsSuspensao = pg_num_rows($rsSuspensao);
 
-$aResumos = array();
+$aResumos = [];
 $aAgrupaResumo['estrutural']  = 'k02_estorc';
 $aAgrupaResumo['receita']     = 'k00_receit';
 $aAgrupaResumo['tipo_debito'] = 'k03_tipo';
@@ -299,11 +299,11 @@ for ($iInd = 0; $iInd < $iRowsSuspensao; $iInd++) {
 
     if ($oGet->seltipo == "c") {
 
-        if (in_array(array($oSuspensao->k00_numcgm, $oSuspensao->k00_matric, $oSuspensao->k00_inscr), $aCabecalho)) {
+        if (in_array([$oSuspensao->k00_numcgm, $oSuspensao->k00_matric, $oSuspensao->k00_inscr], $aCabecalho)) {
             $lImprimeCab = false;
             $lImprimeSubTotal = false;
         } else {
-            $aCabecalho[0] = array($oSuspensao->k00_numcgm, $oSuspensao->k00_matric, $oSuspensao->k00_inscr);
+            $aCabecalho[0] = [$oSuspensao->k00_numcgm, $oSuspensao->k00_matric, $oSuspensao->k00_inscr];
             $lImprimeCab = true;
             $lImprimeSubTotal = true;
         }
@@ -332,7 +332,7 @@ for ($iInd = 0; $iInd < $iRowsSuspensao; $iInd++) {
 
             $iTotalParcial = 0;
 
-            if (trim($oSuspensao->k00_inscr) != "") {
+            if (trim((string) $oSuspensao->k00_inscr) != "") {
                 if (isset($aTotalOrigem["INSCRIÇÃO"])) {
                     $aTotalOrigem["INSCRIÇÃO"]['valor'] += $SubTotalVlrHist;
                     $aTotalOrigem["INSCRIÇÃO"]['vlrcor'] += $SubTotalVlrCorr;
@@ -346,7 +346,7 @@ for ($iInd = 0; $iInd < $iRowsSuspensao; $iInd++) {
                     $aTotalOrigem["INSCRIÇÃO"]['juros']  = $SubTotalVlrJuros;
                     $aTotalOrigem["INSCRIÇÃO"]['total']  = $SubTotal;
                 }
-            } else if (trim($oSuspensao->k00_matric) != "") {
+            } else if (trim((string) $oSuspensao->k00_matric) != "") {
                 if (isset($aTotalOrigem["MATRÍCULA"])) {
                     $aTotalOrigem["MATRÍCULA"]['valor'] += $SubTotalVlrHist;
                     $aTotalOrigem["MATRÍCULA"]['vlrcor'] += $SubTotalVlrCorr;
@@ -419,7 +419,7 @@ for ($iInd = 0; $iInd < $iRowsSuspensao; $iInd++) {
                 foreach ($aTotalExerc as $key => $aExercicio) {
 
                     $pdf->cell(80, $alt, "", 0, 0, "C", 0);
-                    $pdf->cell(20, $alt, strtoupper($key), 0, 0, "C", 0);
+                    $pdf->cell(20, $alt, strtoupper((string) $key), 0, 0, "C", 0);
                     $pdf->cell(20, $alt, db_formatar($aExercicio['valor'], "f"), 0, 0, "R", 0);
                     $pdf->cell(20, $alt, db_formatar($aExercicio['vlrcor'], "f"), 0, 0, "R", 0);
                     $pdf->cell(20, $alt, db_formatar($aExercicio['multa'], "f"), 0, 0, "R", 0);

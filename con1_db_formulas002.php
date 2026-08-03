@@ -6,8 +6,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_db_formulas_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $oDaoDb_formulas = new cl_db_formulas;
 $db_opcao    = 22;
@@ -18,8 +18,8 @@ if (isset($alterar)) {
 
   db_inicio_transacao();
   $db_opcao      = 2;
-  $oDaoDb_formulas->db148_nome    = trim($db148_nome);
-  $oDaoDb_formulas->db148_formula = pg_escape_string(str_replace(array("\r\n", "\\"), array("\n", ""), $db148_formula));
+  $oDaoDb_formulas->db148_nome    = trim((string) $db148_nome);
+  $oDaoDb_formulas->db148_formula = pg_escape_string(str_replace(["\r\n", "\\"], ["\n", ""], $db148_formula));
   $oDaoDb_formulas->alterar($db148_sequencial);
   db_fim_transacao();
 
@@ -39,7 +39,7 @@ if (isset($alterar)) {
       $sPosScripts .= "document.form1.{$oDaoDb_formulas->erro_campo}.focus();";
     }
   } else {
-    $sPosScripts .= "location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
+    $sPosScripts .= "location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "';\n";
   }
 } else if(isset($chavepesquisa)) {
 

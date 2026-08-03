@@ -161,7 +161,7 @@ $rsrec = db_query($sqlrec);
                     <td align="left"><strong>Formato:</strong></td>
                     <td>
                         <?php
-                        $x = array('p' => 'PDF', 't' => 'CSV');
+                        $x = ['p' => 'PDF', 't' => 'CSV'];
                         db_select('formato', $x, true, 2, "");
                         ?>
                     </td>
@@ -170,7 +170,7 @@ $rsrec = db_query($sqlrec);
                     <td align="left"><strong>Orientação:</strong></td>
                     <td>
                         <?php
-                        $x = array('r' => 'SINTÉTICA (RETRATO)', 'p' => 'ANALÍTICA (PAISAGEM)');
+                        $x = ['r' => 'SINTÉTICA (RETRATO)', 'p' => 'ANALÍTICA (PAISAGEM)'];
                         db_select('orientacao', $x, true, 2, "");
                         ?>
                     </td>

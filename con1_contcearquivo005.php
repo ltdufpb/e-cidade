@@ -40,7 +40,7 @@ $oInstit = db_utils::getDao('db_config');
 /*
 $clcontcearquivoresp = new cl_contcearquivoresp;
 */
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
    $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){

@@ -142,7 +142,7 @@ require_once(modification('dbforms/db_funcoes.php'));
                   <td><b>Tipo:</b></td>
                   <td>
                     <?php 
-                      $aX = array('1'=>'Analitico', '2'=>'Sintetico');
+                      $aX = ['1'=>'Analitico', '2'=>'Sintetico'];
                       db_select('iTipo', $aX, true, 1, '');
                     ?>
                   </td>

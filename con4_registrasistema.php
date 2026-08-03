@@ -36,7 +36,7 @@ db_query("begin") or die("$sScriptName: Erro ao iniciar transação");
 $sqlprocura = "select * from db_usuarios where id_usuario = 1";
 $resultprocura = db_query($sqlprocura) or die("$sScriptName: $sqlprocura");
 
-if (pg_numrows($resultprocura) == 0) {
+if (pg_num_rows($resultprocura) == 0) {
 
   $sql = "insert into db_usuarios (id_usuario , nome , login , senha , usuarioativo , email , usuext)
 		       values     (1,'DBSeller Informática Ltda','dbseller','" . Encriptacao::encriptaSenha('') . "','1','dbseller#dbseller.com.br',0)";
@@ -49,7 +49,7 @@ if (pg_numrows($resultprocura) == 0) {
 $sqlprocura = "select * from cgm where z01_numcgm = 1";
 $resultprocura = db_query($sqlprocura) or die("$sScriptName: $sqlprocura");
 
-if (pg_numrows($resultprocura) == 0) {
+if (pg_num_rows($resultprocura) == 0) {
   $sql = "insert into cgm (z01_numcgm , z01_nome )
 		      values    (1,'PREFEITURA DBSELLER')";
   $res = db_query($sql) or die("$sScriptName: $sql");
@@ -59,7 +59,7 @@ if (pg_numrows($resultprocura) == 0) {
 $sqlprocura = "select * from db_config where codigo = 1";
 $resultprocura = db_query($sqlprocura) or die("$sScriptName: $sqlprocura");
 
-if (pg_numrows($resultprocura) == 0) {
+if (pg_num_rows($resultprocura) == 0) {
   $sql = "insert into db_config (codigo , nomeinst,  prefeitura , numcgm )
 		                     values (1, 'PREFEITURA DBSELLER', true, 1)";
   $res = db_query($sql) or die("$sScriptName: $sql");
@@ -69,7 +69,7 @@ if (pg_numrows($resultprocura) == 0) {
 $sqlprocura = "select * from db_userinst where id_instit = 1 and id_usuario = 1";
 $resultprocura = db_query($sqlprocura) or die("$sScriptName: $sqlprocura");
 
-if (pg_numrows($resultprocura) == 0) {
+if (pg_num_rows($resultprocura) == 0) {
   $sql = "insert into db_userinst (id_instit, id_usuario)
 		      values    (1, 1)";
   $res = db_query($sql) or die("$sScriptName: $sql");
@@ -79,7 +79,7 @@ if (pg_numrows($resultprocura) == 0) {
 $sqlprocura = "select * from db_usuacgm where id_usuario = 1";
 $resultprocura = db_query($sqlprocura) or die("$sScriptName: $sqlprocura");
 
-if (pg_numrows($resultprocura) == 0) {
+if (pg_num_rows($resultprocura) == 0) {
   $sql = "insert into db_usuacgm (id_usuario, cgmlogin)
 		      values    (1, 1)";
   $res = db_query($sql) or die("$sScriptName: $sql");
@@ -89,7 +89,7 @@ if (pg_numrows($resultprocura) == 0) {
 $sqlprocura = "select * from db_depart where coddepto = 1";
 $resultprocura = db_query($sqlprocura) or die("$sScriptName: $sqlprocura");
 
-if (pg_numrows($resultprocura) == 0) {
+if (pg_num_rows($resultprocura) == 0) {
 	$sql = "insert into db_depart (coddepto , descrdepto ,instit)
 											values    (1,'CPD',1)";
 	$res = db_query($sql) or die("$sScriptName: $sql");

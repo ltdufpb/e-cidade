@@ -36,7 +36,7 @@ $clcgscorreto = new cl_sau_cgscorreto ();
 $clrotulo->label("s127_i_numcgs");
 $clrotulo->label("z01_v_nome");
 
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_POST);
 
 if (isset ($opcao) && $opcao == "alterar") {
@@ -93,10 +93,10 @@ if (isset ($opcao) && $opcao == "excluir") {
             <?php
             if (isset($s128_i_codigo)) {
                 $sql = "select * from sau_cgserrado where s128_i_codigo=$s128_i_codigo";
-                $chavepri = array(
+                $chavepri = [
                   "s128_i_codigo" => $s128_i_codigo,
-                  "s128_i_numcgs" => isset($s128_i_numcgs) ? $s128_i_numcgs : null
-                );
+                  "s128_i_numcgs" => $s128_i_numcgs ?? null
+                ];
                 $cliframe_alterar_excluir->chavepri = $chavepri;
                 $cliframe_alterar_excluir->campos = "s128_i_codigo,s128_i_numcgs,s128_v_nome";
                 $cliframe_alterar_excluir->sql = $sql;

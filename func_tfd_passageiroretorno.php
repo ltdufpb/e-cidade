@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_tfd_passageiroretorno_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cltfd_passageiroretorno = new cl_tfd_passageiroretorno;
 $cltfd_passageiroretorno->rotulo->label("tf31_i_codigo");
 $cltfd_passageiroretorno->rotulo->label("tf31_i_codigo");
@@ -98,9 +98,9 @@ $cltfd_passageiroretorno->rotulo->label("tf31_i_codigo");
         }else{
            $sql = $cltfd_passageiroretorno->sql_query("",$campos,"tf31_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_tf31_i_codigo)){
-          $repassa = array("chave_tf31_i_codigo"=>$chave_tf31_i_codigo,"chave_tf31_i_codigo"=>$chave_tf31_i_codigo);
+          $repassa = ["chave_tf31_i_codigo"=>$chave_tf31_i_codigo,"chave_tf31_i_codigo"=>$chave_tf31_i_codigo];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

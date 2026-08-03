@@ -29,26 +29,26 @@
 //CLASSE DA ENTIDADE vistlocal
 class cl_vistlocal { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $y10_codvist = 0; 
-   var $y10_codigo = 0; 
-   var $y10_codi = 0; 
-   var $y10_numero = 0; 
-   var $y10_compl = null; 
+   public $y10_codvist = 0; 
+   public $y10_codigo = 0; 
+   public $y10_codi = 0; 
+   public $y10_numero = 0; 
+   public $y10_compl = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  y10_codvist = int4 = Código da Vistoria 
                  y10_codigo = int4 = Logradouro 
                  y10_codi = int4 = Bairro 
@@ -56,10 +56,10 @@ class cl_vistlocal {
                  y10_compl = varchar(10) = Complemento 
                  ";
    //funcao construtor da classe 
-   function cl_vistlocal() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("vistlocal"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -138,7 +138,7 @@ class cl_vistlocal {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "local da vistoria ($this->y10_codvist) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "local da vistoria já Cadastrado";
@@ -162,14 +162,14 @@ class cl_vistlocal {
      $resaco = $this->sql_record($this->sql_query_file($this->y10_codvist));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,5103,'$this->y10_codvist','I')");
-       $resac = db_query("insert into db_acount values($acount,727,5103,'','".AddSlashes(pg_result($resaco,0,'y10_codvist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,727,5104,'','".AddSlashes(pg_result($resaco,0,'y10_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,727,5107,'','".AddSlashes(pg_result($resaco,0,'y10_codi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,727,5105,'','".AddSlashes(pg_result($resaco,0,'y10_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,727,5106,'','".AddSlashes(pg_result($resaco,0,'y10_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,727,5103,'','".AddSlashes(pg_fetch_result($resaco,0,'y10_codvist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,727,5104,'','".AddSlashes(pg_fetch_result($resaco,0,'y10_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,727,5107,'','".AddSlashes(pg_fetch_result($resaco,0,'y10_codi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,727,5105,'','".AddSlashes(pg_fetch_result($resaco,0,'y10_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,727,5106,'','".AddSlashes(pg_fetch_result($resaco,0,'y10_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -178,10 +178,10 @@ class cl_vistlocal {
       $this->atualizacampos();
      $sql = " update vistlocal set ";
      $virgula = "";
-     if(trim($this->y10_codvist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y10_codvist"])){ 
+     if(trim((string) $this->y10_codvist)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y10_codvist"])){ 
        $sql  .= $virgula." y10_codvist = $this->y10_codvist ";
        $virgula = ",";
-       if(trim($this->y10_codvist) == null ){ 
+       if(trim((string) $this->y10_codvist) == null ){ 
          $this->erro_sql = " Campo Código da Vistoria nao Informado.";
          $this->erro_campo = "y10_codvist";
          $this->erro_banco = "";
@@ -191,10 +191,10 @@ class cl_vistlocal {
          return false;
        }
      }
-     if(trim($this->y10_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y10_codigo"])){ 
+     if(trim((string) $this->y10_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y10_codigo"])){ 
        $sql  .= $virgula." y10_codigo = $this->y10_codigo ";
        $virgula = ",";
-       if(trim($this->y10_codigo) == null ){ 
+       if(trim((string) $this->y10_codigo) == null ){ 
          $this->erro_sql = " Campo Logradouro nao Informado.";
          $this->erro_campo = "y10_codigo";
          $this->erro_banco = "";
@@ -204,10 +204,10 @@ class cl_vistlocal {
          return false;
        }
      }
-     if(trim($this->y10_codi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y10_codi"])){ 
+     if(trim((string) $this->y10_codi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y10_codi"])){ 
        $sql  .= $virgula." y10_codi = $this->y10_codi ";
        $virgula = ",";
-       if(trim($this->y10_codi) == null ){ 
+       if(trim((string) $this->y10_codi) == null ){ 
          $this->erro_sql = " Campo Bairro nao Informado.";
          $this->erro_campo = "y10_codi";
          $this->erro_banco = "";
@@ -217,10 +217,10 @@ class cl_vistlocal {
          return false;
        }
      }
-     if(trim($this->y10_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y10_numero"])){ 
+     if(trim((string) $this->y10_numero)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y10_numero"])){ 
        $sql  .= $virgula." y10_numero = $this->y10_numero ";
        $virgula = ",";
-       if(trim($this->y10_numero) == null ){ 
+       if(trim((string) $this->y10_numero) == null ){ 
          $this->erro_sql = " Campo Número nao Informado.";
          $this->erro_campo = "y10_numero";
          $this->erro_banco = "";
@@ -230,7 +230,7 @@ class cl_vistlocal {
          return false;
        }
      }
-     if(trim($this->y10_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y10_compl"])){ 
+     if(trim((string) $this->y10_compl)!="" || isset($GLOBALS["HTTP_POST_VARS"]["y10_compl"])){ 
        $sql  .= $virgula." y10_compl = '$this->y10_compl' ";
        $virgula = ",";
      }
@@ -242,19 +242,19 @@ class cl_vistlocal {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5103,'$this->y10_codvist','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y10_codvist"]))
-           $resac = db_query("insert into db_acount values($acount,727,5103,'".AddSlashes(pg_result($resaco,$conresaco,'y10_codvist'))."','$this->y10_codvist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,727,5103,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y10_codvist'))."','$this->y10_codvist',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y10_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,727,5104,'".AddSlashes(pg_result($resaco,$conresaco,'y10_codigo'))."','$this->y10_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,727,5104,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y10_codigo'))."','$this->y10_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y10_codi"]))
-           $resac = db_query("insert into db_acount values($acount,727,5107,'".AddSlashes(pg_result($resaco,$conresaco,'y10_codi'))."','$this->y10_codi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,727,5107,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y10_codi'))."','$this->y10_codi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y10_numero"]))
-           $resac = db_query("insert into db_acount values($acount,727,5105,'".AddSlashes(pg_result($resaco,$conresaco,'y10_numero'))."','$this->y10_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,727,5105,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y10_numero'))."','$this->y10_numero',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["y10_compl"]))
-           $resac = db_query("insert into db_acount values($acount,727,5106,'".AddSlashes(pg_result($resaco,$conresaco,'y10_compl'))."','$this->y10_compl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,727,5106,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'y10_compl'))."','$this->y10_compl',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -299,14 +299,14 @@ class cl_vistlocal {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5103,'$y10_codvist','E')");
-         $resac = db_query("insert into db_acount values($acount,727,5103,'','".AddSlashes(pg_result($resaco,$iresaco,'y10_codvist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,727,5104,'','".AddSlashes(pg_result($resaco,$iresaco,'y10_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,727,5107,'','".AddSlashes(pg_result($resaco,$iresaco,'y10_codi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,727,5105,'','".AddSlashes(pg_result($resaco,$iresaco,'y10_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,727,5106,'','".AddSlashes(pg_result($resaco,$iresaco,'y10_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,727,5103,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y10_codvist'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,727,5104,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y10_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,727,5107,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y10_codi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,727,5105,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y10_numero'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,727,5106,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'y10_compl'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from vistlocal
@@ -366,7 +366,7 @@ class cl_vistlocal {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:vistlocal";
@@ -380,7 +380,7 @@ class cl_vistlocal {
    function sql_query ( $y10_codvist=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -408,7 +408,7 @@ class cl_vistlocal {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -420,7 +420,7 @@ class cl_vistlocal {
    function sql_query_file ( $y10_codvist=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -441,7 +441,7 @@ class cl_vistlocal {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

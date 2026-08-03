@@ -30,11 +30,11 @@ include(modification("libs/db_sql.php"));
 require_once(modification("libs/JSON.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("std/db_stdClass.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-$sDataInicial    = implode("-", array_reverse(explode("/",$sDataA)));
-$sDataFinal      = implode("-", array_reverse(explode("/",$sDataB)));
+$sDataInicial    = implode("-", array_reverse(explode("/",(string) $sDataA)));
+$sDataFinal      = implode("-", array_reverse(explode("/",(string) $sDataB)));
 $sOrdem          = $sOrdem;
 $sQuebra         = $sQuebra;
 $iProgramas      = $iProgramas;
@@ -109,8 +109,8 @@ $sSqlInscricoes .= "order by $sOrderAdicional $sOrdem ;";
 
 $rsDados         = db_query($sSqlInscricoes); 
 $aListaDados     = db_utils::getCollectionByRecord($rsDados);
-$aDadosComQuebra = array();
-$aDadosSemQuebra = array();
+$aDadosComQuebra = [];
+$aDadosSemQuebra = [];
 
 /*
  * caso seja a quebra por datas de inscrição seja selecionada, criamos o obj agrupando pelas datas
@@ -144,7 +144,7 @@ switch ($sQuebra) {
     	  $iTotalGeral++;
         $oData            = new stdClass();
         $oDados           = new stdClass();
-        $oData->dados     = array();
+        $oData->dados     = [];
         $oDados->cgm      = $oValorDados->cgm_candidato;
         $oDados->nome     = $oValorDados->nome_candidato;
         $oDados->codprog  = $oValorDados->codigo_programa;
@@ -168,7 +168,7 @@ switch ($sQuebra) {
         $iTotalGeral++;
     	  $oData            = new stdClass();
         $oDados           = new stdClass();
-        $oData->dados     = array();
+        $oData->dados     = [];
         $oDados->cgm      = $oValorDados->cgm_candidato;
         $oDados->nome     = $oValorDados->nome_candidato;
         $oDados->codprog  = $oValorDados->codigo_programa;
@@ -191,7 +191,7 @@ switch ($sQuebra) {
     	  $iTotalGeral++;
         $oData            = new stdClass();
         $oDados           = new stdClass();
-        $oData->dados     = array();
+        $oData->dados     = [];
         $oDados->cgm      = $oValorDados->cgm_candidato;
         $oDados->nome     = $oValorDados->nome_candidato;
         $oDados->codprog  = $oValorDados->codigo_programa;

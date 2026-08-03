@@ -76,22 +76,22 @@ switch ($dePara["filtro"]) {
         <td height="430" align="left" valign="top" bgcolor="#CCCCCC">
             <center>
                 <?php
-                $clCriaAbas->identifica = array("relatorio"=>"Relatório");
+                $clCriaAbas->identifica = ["relatorio"=>"Relatório"];
                 if (!empty($urlAbaParametros)) {
                     $clCriaAbas->identifica["parametro"] = "Parâmetros";
                 }
 
-                $clCriaAbas->title      = array("relatorio"=>"Relatório");
+                $clCriaAbas->title      = ["relatorio"=>"Relatório"];
                 if (!empty($urlAbaParametros)) {
                     $clCriaAbas->title["parametro"] = "Parâmetros";
                 }
 
-                $clCriaAbas->src  = array("relatorio"=>"con2_tceroanexosin22001.php?anexo={$oGet->anexo}&relatorio{$codigoRelatorio}");
+                $clCriaAbas->src  = ["relatorio"=>"con2_tceroanexosin22001.php?anexo={$oGet->anexo}&relatorio{$codigoRelatorio}"];
                 if (!empty($urlAbaParametros)) {
                     $clCriaAbas->src["parametro"] = $urlAbaParametros;
                 }
 
-                $clCriaAbas->sizecampo  = array("relatorio"=>"23");
+                $clCriaAbas->sizecampo  = ["relatorio"=>"23"];
                 if (!empty($urlAbaParametros)) {
                     $clCriaAbas->sizecampo["parametro"] = 23;
                 }

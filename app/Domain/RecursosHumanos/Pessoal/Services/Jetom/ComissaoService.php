@@ -26,9 +26,7 @@ class ComissaoService
         $retorno = Comissao::with(
             ['servidores',
             'tipoSessao',
-            'sessao' => function ($query) use ($ano, $mes) {
-                return $query->where('rh247_ano', $ano)->where('rh247_mes', $mes);
-            }
+            'sessao' => fn($query) => $query->where('rh247_ano', $ano)->where('rh247_mes', $mes)
             ]
         )->find($request->id);
 

@@ -39,8 +39,8 @@ include(modification("classes/db_itbilogin_classe.php"));
 include(modification("classes/db_itburbano_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
+db_postmemory($_POST);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
 //echo $HTTP_SERVER_VARS["QUERY_STRING"];
 //exit;
 

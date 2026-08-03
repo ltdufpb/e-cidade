@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("classes/db_orcparametro_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 //echo ("<pre>" . print_r($HTTP_POST_VARS, 1) . "</pre>");
 //die();
@@ -45,7 +45,7 @@ $lMostraMensagem = false;
 
 $iAnoUso = db_getsession("DB_anousu");
 
-if ( isset($HTTP_POST_VARS['db_opcao']) && $HTTP_POST_VARS['db_opcao'] == "Alterar") {
+if ( isset($_POST['db_opcao']) && $_POST['db_opcao'] == "Alterar") {
 
   db_inicio_transacao();
    

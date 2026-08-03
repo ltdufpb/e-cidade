@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_classesgenericas.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_POST);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 
 $clissvar                      = new cl_issvar;
 $clissvarnotas                 = new cl_issvarnotas;
@@ -61,7 +61,7 @@ if ( isset( $alterar ) ) {
 
   if ( $q05_histor == "" ) {
 
-     $vt = $HTTP_POST_VARS;
+     $vt = $_POST;
      reset       ( $vt );
      $ta         = sizeof( $vt );
      $vir        = "";
@@ -71,10 +71,10 @@ if ( isset( $alterar ) ) {
 
        $chave = key( $vt );
 
-       if ( substr( $chave, 0, 6) == "linha_" ) {
+       if ( str_starts_with((string) $chave, "linha_") ) {
 
          $sqlerro     = false;
- 	       $matri       = split("#",$vt[$chave]);
+ 	       $matri       = preg_split("#\\##m",(string) $vt[$chave]);
          $q05_histor .= $vir.$matri[0];
  	       $vir         = ",";
        }
@@ -119,16 +119,16 @@ if ( isset( $alterar ) ) {
 
    if ( !$sqlerro ) {
 
-     $vt = $HTTP_POST_VARS;
+     $vt = $_POST;
      reset($vt);
      $ta = sizeof($vt);
      for ( $i = 0; $i < $ta; $i++ ) {
 
        $chave = key($vt);
-       if ( substr( $chave, 0, 6) == "linha_" ) {
+       if ( str_starts_with((string) $chave, "linha_") ) {
 
          $sqlerro  = false;
- 	       $matri    = split("#",$vt[$chave]);
+ 	       $matri    = preg_split("#\\##m",(string) $vt[$chave]);
          $result55 = $clissvarnotas->sql_record($clissvarnotas->sql_query_file($codigo,"","max(q06_seq) +1 as seq"));
          db_fieldsmemory($result55,0);
 
@@ -271,8 +271,8 @@ if(empty($entrar) && isset($q05_codigo) && $q05_codigo>0){//quando vier o código
            db_redireciona("iss1_issvar002.php?z01_nomeinscr=$z01_nomeinscr&registro=invalido&q02_inscr=$q02_inscr");
         }
     }else{
-      $codigos=array();
-      $codigos_pagos=array();
+      $codigos=[];
+      $codigos_pagos=[];
       for($i=0;$i<$numrows65;$i++){//numero de registro encontrados no arreinscr
         db_fieldsmemory($result65,$i);
         $result77=$clissvar->sql_record($clissvar->sql_query("","q05_codigo","","q05_numpre=$k00_numpre"));
@@ -298,8 +298,7 @@ if(empty($entrar) && isset($q05_codigo) && $q05_codigo>0){//quando vier o código
       }else if(sizeof($codigos)>0){//se tiver sido encontrado algum registro no ISSVAR que ainda não foi pago
           $varios_codigos=$codigos;
           if(sizeof($codigos)==1){
-  	    reset($codigos);
-  	    $chave=key($codigos);
+  	    $chave=array_key_first($codigos);
             $unico_codigo=$codigos[$chave];
           }
       }else if(sizeof($codigos_pagos)>0){//se tiver sido encontrado algum registro no ISSVAR que já foi pago

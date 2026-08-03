@@ -36,8 +36,8 @@ include(modification('dbforms/db_funcoes.php'));
 
 use ECidade\Patrimonial\Protocolo\Procedimentos\Parametros\Modelo\MensageriaProcesso;
 
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 
 $clproctransferint = new cl_proctransferint;
 $clproctransferintusu = new cl_proctransferintusu;

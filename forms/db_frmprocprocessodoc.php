@@ -70,7 +70,7 @@ db_input('p56_coddoc',3,$Ip56_coddoc,true,'text',3,'')
     </td>
     <td> 
 <?php 
-$x = array("f"=>"NAO","t"=>"SIM");
+$x = ["f"=>"NAO","t"=>"SIM"];
 db_select('p81_doc',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -134,7 +134,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_procprocessodoc.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

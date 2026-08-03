@@ -41,12 +41,12 @@ function autenticarUsuario($sUsuario, $sSenha) {
   if (!$oUsuarioSistema->autenticar($sSenha)) {
     return false;
   }
-  $oUsuarioSistema->setSenha(utf8_encode($oUsuarioSistema->getSenha()));
-  $oUsuarioSistema->setNome(urlencode(utf8_encode($oUsuarioSistema->getNome())));
+  $oUsuarioSistema->setSenha(mb_convert_encoding($oUsuarioSistema->getSenha(), 'UTF-8', 'ISO-8859-1'));
+  $oUsuarioSistema->setNome(urlencode(mb_convert_encoding($oUsuarioSistema->getNome(), 'UTF-8', 'ISO-8859-1')));
   return $oUsuarioSistema;
 }
 $sURI = 'http://localhost/dbportal_prj/webservices/';
-$oSoapServer = new SoapServer(null, array('uri' => $sURI));
+$oSoapServer = new SoapServer(null, ['uri' => $sURI]);
 $oSoapServer->addFunction("autenticarUsuario");
 $oSoapServer->handle();
 ?>

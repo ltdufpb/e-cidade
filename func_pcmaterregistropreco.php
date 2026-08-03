@@ -34,8 +34,8 @@ include(modification("classes/db_pcmater_classe.php"));
 include(modification("classes/db_pcmaterele_classe.php"));
 include(modification("classes/db_pcgrupo_classe.php"));
 include(modification("classes/db_pcsubgrupo_classe.php"));
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 $clpcmater    = new cl_pcmater;
 $clpcmaterele = new cl_pcmaterele;
 $clpcgrupo    = new cl_pcgrupo;
@@ -201,7 +201,7 @@ if (isset($o56_codele) and trim($o56_codele) != '') {
                 pcsubgrupo.pc04_descrsubgrupo as DB_pc04_descrsubgrupo,
                 pcmater.pc01_servico,
                 pcmater.pc01_veiculo";
-                $repassa = array(
+                $repassa = [
                     "chave_pc01_codmater"    => @$chave_pc01_codmater,
                     "chave_pc01_descrmater"  => @$chave_pc01_descrmater,
                     "chave_pc07_codele"      => @$chave_pc07_codele,
@@ -210,7 +210,7 @@ if (isset($o56_codele) and trim($o56_codele) != '') {
                     "chave_pc03_codgrupo"    => @$chave_pc03_codgrupo,
                     "chave_pc04_codsubgrupo" => @$chave_pc04_codsubgrupo,
                     "chave_o58_coddot"       => @$chave_o58_coddot
-                );
+                ];
                 if (isset($chave_pc01_codmater) && (trim($chave_pc01_codmater)!="")) {
                     $sql = $clpcmater->sql_query_desdobraregistropreco(null, $campos, "pc11_codigo", "pc01_codmater=$chave_pc01_codmater and $where_ativo");
                 } elseif (isset($chave_pc01_descrmater) && (trim($chave_pc01_descrmater)!="")) {

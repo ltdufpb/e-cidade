@@ -66,7 +66,7 @@ try {
 
       if (!empty($oParam->iCodigoAtributo)) {
 
-        $oRetorno->aValoresNumericos = array();
+        $oRetorno->aValoresNumericos = [];
 
         $oAtributoExame     = new AtributoExame($oParam->iCodigoAtributo);
         $aValoresReferencia = $oAtributoExame->getValoresReferencia();

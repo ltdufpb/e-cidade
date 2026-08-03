@@ -44,7 +44,7 @@ $Tdata_vencimento_geral = "Data de Vencimento:\n\nData sugerida para vencimento 
 <head>
   <meta http-equiv="Expires" CONTENT="0">
     <?php
-      db_app::load(array(
+      db_app::load([
         "scripts.js",
         "prototype.js",
         "strings.js",
@@ -59,7 +59,7 @@ $Tdata_vencimento_geral = "Data de Vencimento:\n\nData sugerida para vencimento 
         "widgets/Input/DBInputDate.widget.js",
         "estilos.css",
         "grid.style.css"
-      ));
+      ]);
     ?>
 </head>
 <body>
@@ -72,14 +72,14 @@ $Tdata_vencimento_geral = "Data de Vencimento:\n\nData sugerida para vencimento 
           <td nowrap title="<?php echo $Tgrupo; ?>">
             <label id="lbl_grupo" for="grupos">Grupo:</label>
           </td>
-          <td><?php db_select('grupos', array('S'=>'Selecione'), true, 1, 'onchange="popularComboNatureza(event)"'); ?></td>
+          <td><?php db_select('grupos', ['S'=>'Selecione'], true, 1, 'onchange="popularComboNatureza(event)"'); ?></td>
         </tr>
 
         <tr>
           <td nowrap title="<?php echo $Tnaturezas; ?>">
             <label id="lbl_naturezas" for="naturezas">Natureza:</label>
           </td>
-          <td><?php db_select('naturezas', array('S'=>'Selecione'), true, 1, 'onchange="carregarTaxas(event)"'); ?></td>
+          <td><?php db_select('naturezas', ['S'=>'Selecione'], true, 1, 'onchange="carregarTaxas(event)"'); ?></td>
         </tr>
 
         <tr>

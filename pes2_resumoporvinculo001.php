@@ -41,7 +41,7 @@ $clrotulo->label('rh55_estrut');
 $clrotulo->label('rh55_descr');
 $clrotulo->label('r44_selec');
 $clrotulo->label('r44_descr');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 include(modification("dbforms/db_classesgenericas.php"));
 $geraform = new cl_formulario_rel_pes;
 
@@ -175,7 +175,7 @@ function js_emite(){
         </td>
         <td>
           <?php 
-          $arr_tipo = array("G"=>"Geral", "L"=>"Lotação", "R"=>"Recurso", "O"=>"Órgão", "T"=>"Locais de trabalho");
+          $arr_tipo = ["G"=>"Geral", "L"=>"Lotação", "R"=>"Recurso", "O"=>"Órgão", "T"=>"Locais de trabalho"];
           db_select('tipo',$arr_tipo,true,4,"onchange='document.form1.submit();'");
           ?>
         </td>
@@ -185,7 +185,7 @@ function js_emite(){
         </td>
         <td>
           <?php 
-          $arr_folha = array("r14"=>"Salário", "r48"=>"Complementar", "r20"=>"Rescisão", "r35"=>"13o. Salário", "r22"=>"Adiantamento");
+          $arr_folha = ["r14"=>"Salário", "r48"=>"Complementar", "r20"=>"Rescisão", "r35"=>"13o. Salário", "r22"=>"Adiantamento"];
           db_select('folha',$arr_folha,true,4,"onchange='document.form1.submit();'");
           ?>
        </td>
@@ -199,8 +199,8 @@ function js_emite(){
       if(pg_num_rows($result_regimes) > 0){
 	$arr_regimes[0] = "Todos";
         for($i=0; $i<pg_num_rows($result_regimes); $i++){
-          $regime_for = pg_result($result_regimes, $i, "rh52_regime");
-          $descrr_for = pg_result($result_regimes, $i, "rh52_descr");
+          $regime_for = pg_fetch_result($result_regimes, $i, "rh52_regime");
+          $descrr_for = pg_fetch_result($result_regimes, $i, "rh52_descr");
           $arr_regimes[$regime_for] = $regime_for." - ".$descrr_for;
         }
         db_select('regime',$arr_regimes,true,4,"");
@@ -244,7 +244,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-          $v = array("g"=>"Geral", "a"=>"Ativo", "i"=>"Inativo", "p"=>"Pensionista", "ip"=>"Inativo/Pensionista");
+          $v = ["g"=>"Geral", "a"=>"Ativo", "i"=>"Inativo", "p"=>"Pensionista", "ip"=>"Inativo/Pensionista"];
           db_select('vinculo',$v,true,4,"");
           ?>
         </td>
@@ -255,7 +255,7 @@ function js_emite(){
         </td>
         <td align="left">
           <?php 
-          $o = array("n"=>"Numerica","a"=>"Alfabetica");
+          $o = ["n"=>"Numerica","a"=>"Alfabetica"];
           db_select('ordem',$o,true,4,"");
           ?>
         </td>

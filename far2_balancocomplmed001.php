@@ -36,8 +36,8 @@ include(modification("classes/db_far_farmacia_classe.php"));
 include(modification("classes/db_matestoqueinimei_classe.php"));
 include(modification("classes/db_matestoque_classe.php"));
 include(modification("classes/db_db_config_classe.php"));
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $x=data_farmacia($ano,$periodo);
 $datas=db_formatar($x[0],'d').'-'.db_formatar($x[1],'d');    
@@ -76,7 +76,7 @@ $sql .= "	       where m70_codmatmater = $material and m80_data < '$date'::date 
  $result= db_query($sql);
  //die($sql); 
  if(pg_num_rows($result)>0){
-   $saldoInicial=pg_result($result,0,0);
+   $saldoInicial=pg_fetch_result($result,0,0);
    return $saldoInicial;
   }else{
     return null;
@@ -231,7 +231,7 @@ $pdf->setfont('arial','b',12);
    }
  	$pdf->cell(20,4,"$fa28_c_numero",1,0,"L",0);
     $pdf->cell(20,4,"$fa27_c_denominacao",1,0,"L",0);
-    $pdf->cell(110,4,"".substr($m60_descr,0,20),1,0,"L",0);
+    $pdf->cell(110,4,"".substr((string) $m60_descr,0,20),1,0,"L",0);
     $pdf->cell(30,4,"$fa30_c_concentracao",1,0,"L",0);
     $saldoinicial=material_saldo($ini,$m60_codmater);
     if($atual==$m60_codmater){

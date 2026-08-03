@@ -42,7 +42,7 @@ $oRetorno               = new stdClass();
 $oRetorno->iStatus      = 1;
 $oRetorno->sMessage     = '';
 
-$aDadosRetorno          = array();
+$aDadosRetorno          = [];
 
 try {
 
@@ -61,7 +61,7 @@ try {
       $sSqlTipoAvaliacao = $oRhTipoAvaliacao->sql_query(null, $sCampos, null, "h68_tipolancamento <> 3");
       $rsTipoAvaliacao   = $oRhTipoAvaliacao->sql_record($sSqlTipoAvaliacao);
       $aTipoAvaliacao    = db_utils::getCollectionByRecord($rsTipoAvaliacao, false, false, true);
-      $aDadosAvaliacao   = array();
+      $aDadosAvaliacao   = [];
        
       foreach ($aTipoAvaliacao as $iIndiceTipo => $oValorTipo){
 
@@ -94,7 +94,7 @@ try {
         require_once(modification("model/recursosHumanos/Promocao.model.php"));
 
         $oRhtipoavaliacao  = new cl_rhtipoavaliacao();
-        $dDataAvaliacao    = implode("-", array_reverse(explode("/",$oParam->dDataAvaliacao)));
+        $dDataAvaliacao    = implode("-", array_reverse(explode("/",(string) $oParam->dDataAvaliacao)));
         $sObservacao       = $oParam->sObservacao;
         $aTiposAvaliacao   = $oParam->aDados;
         $aCursos           = $oParam->aCursos;
@@ -160,7 +160,7 @@ try {
       
       $oPromocao         = new Promocao($oParam->iPromocao);
       $aAvaliacoes       = $oPromocao->getAvaliacoes();
-    	$aDadosRhAvaliacao = array();
+    	$aDadosRhAvaliacao = [];
 
     	if (count($aAvaliacoes) == 0) {
       	throw new Exception("Nenhuma Avaliação Encontrada para a Matricula");
@@ -228,7 +228,7 @@ try {
     	$sSqlTipoAvaliacao = $oRhTipoAvaliacao->sql_query_somaRequisitos($oParam->iCodigoPromocao);
     	$rsTipoAvaliacao   = $oRhTipoAvaliacao->sql_record($sSqlTipoAvaliacao);
     	$aTipoAvaliacao    = db_utils::getCollectionByRecord($rsTipoAvaliacao, false, false, true);
-    	$aDadosAvaliacao   = array();
+    	$aDadosAvaliacao   = [];
     	$iTotalPontos = 0;
     	foreach ($aTipoAvaliacao as $iIndiceTipo => $oValorTipo){
     

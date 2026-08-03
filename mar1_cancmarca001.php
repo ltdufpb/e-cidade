@@ -33,7 +33,7 @@ include(modification("classes/db_cancmarca_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
 include(modification("classes/db_marca_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcancmarca = new cl_cancmarca;
 $clcgm = new cl_cgm;
 $clmarca = new cl_marca;

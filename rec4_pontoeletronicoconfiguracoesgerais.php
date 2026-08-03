@@ -50,7 +50,7 @@ $iQtdeConfiguracoesGerais = pg_num_rows($rsSqlConfiguracoesGerais);
 
 if($iQtdeConfiguracoesGerais > 0) {
 
-    $aConfiguracoes = array(
+    $aConfiguracoes = [
       'rh200_tipoasse_extra50diurna'    => null,
       'rh200_tipoasse_extra75diurna'    => null,
       'rh200_tipoasse_extra100diurna'   => null,
@@ -61,13 +61,11 @@ if($iQtdeConfiguracoesGerais > 0) {
       'rh200_tipoasse_falta'            => null,
       'rh200_tipoasse_faltas_dsr'       => null,
       'rh200_tipoasse_atraso'           => null
-    );
+    ];
 
     for ($iConfiguracoesGerais=0; $iConfiguracoesGerais < $iQtdeConfiguracoesGerais; $iConfiguracoesGerais++) {
 
-        $oConfiguracoes = db_utils::makeFromRecord($rsSqlConfiguracoesGerais, function ($oRetorno) {
-            return $oRetorno;
-        }, $iConfiguracoesGerais);
+        $oConfiguracoes = db_utils::makeFromRecord($rsSqlConfiguracoesGerais, fn($oRetorno) => $oRetorno, $iConfiguracoesGerais);
 
         $aConfiguracoes[$oConfiguracoes->tipo] = $oConfiguracoes;
 

@@ -33,7 +33,7 @@ abstract class PadArquivoEscritor
 
     protected $sOutPut;
 
-    protected $aListaArquivos = array();
+    protected $aListaArquivos = [];
 
     /**
      *

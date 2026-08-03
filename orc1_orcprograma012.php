@@ -111,7 +111,7 @@ if( isset($oPost->alterar) ){
    $result   = $clorcprograma->sql_record($sql);
    db_fieldsmemory($result,0);
    $db_botao = true;
-   $o54_programa = str_pad($o54_programa, 4,"0", STR_PAD_LEFT);
+   $o54_programa = str_pad((string) $o54_programa, 4,"0", STR_PAD_LEFT);
 }
 
 

@@ -94,7 +94,7 @@ if ( isset($tipo) && $tipo == "urbano" ) {
                             true,
                             $db_opcao,
                             "style='width:270px;'",
-                            "it10_codigo", "", array('', 'Selecione'), "", 1);
+                            "it10_codigo", "", ['', 'Selecione'], "", 1);
 			    }
 	      ?>
 	    </td>
@@ -115,7 +115,7 @@ if ( isset($tipo) && $tipo == "urbano" ) {
                             true,
                             $db_opcao,
                             "style='width:270px;'",
-                            "it09_codigo", "", array('', 'Selecione'), "", 1);
+                            "it09_codigo", "", ['', 'Selecione'], "", 1);
 			    }
 	      ?>
 	    </td>
@@ -144,7 +144,7 @@ if ( isset($tipo) && $tipo == "urbano" ) {
                               $rsCaracterPadraoConstrutivo,
                               true,
                               $db_opcao,
-                              "style='width:270px;'", "it34_codigo", "", array('', 'Selecione'), "", 1);
+                              "style='width:270px;'", "it34_codigo", "", ['', 'Selecione'], "", 1);
             }
           }
         ?>
@@ -211,11 +211,11 @@ if ( isset($tipo) && $tipo == "urbano" ) {
         $it08_codigo = null;
       }
 
-	    $chavepri = array("it08_codigo" => $it08_codigo);
+	    $chavepri = ["it08_codigo" => $it08_codigo];
 	    $cliframe_alterar_excluir->chavepri = $chavepri;
 	    $cliframe_alterar_excluir->campos   = "it08_guia,it08_codigo,it08_ano,it08_area,it08_areatrans";
 
-      if(empty($it08_guia) or !isset($it08_guia) or trim($it08_guia) == ''){
+      if(empty($it08_guia) or !isset($it08_guia) or trim((string) $it08_guia) == ''){
   			$it08_guia = 'NULL';
   		}
 
@@ -286,7 +286,7 @@ function js_preenchepesquisa(chave){
   db_iframe_itbiconstr.hide();
   <?php
     if($db_opcao!=1){
-      echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+      echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
     }
   ?>
 }

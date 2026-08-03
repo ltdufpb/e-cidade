@@ -33,14 +33,14 @@ class RacaCor implements TabelasInterface
      * index é o valor no e-cidade (tabela rhraca) valor é da tabela do eSocial
      * @var array
      */
-    protected $racaCor = array(
+    protected $racaCor = [
         'INDIGENA' => 5,
         'BRANCA' => 1,
         'NEGRA' => 2,
         'AMARELA' => 4,
         'PARDA' => 3,
         'NAO INFORMADO' => 6
-    );
+    ];
 
     /**
      * Retorna o valor da tabela do esocial equivalente ao valor de um dado no e-cidade
@@ -49,6 +49,6 @@ class RacaCor implements TabelasInterface
      */
     public function getValue($valor)
     {
-        return $this->racaCor[mb_strtoupper($valor)];
+        return $this->racaCor[mb_strtoupper((string) $valor)];
     }
 }

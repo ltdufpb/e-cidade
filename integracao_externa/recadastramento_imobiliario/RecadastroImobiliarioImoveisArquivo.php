@@ -37,28 +37,25 @@ class RecadastroImobiliarioImoveisArquivo {
 
   private $oCabecalho;
 
-  private $aRegistros = array();
+  private $aRegistros = [];
   
   private $oRodape;
   
-  private $aTabelas   = array();
+  private $aTabelas   = [];
   
   static public $oLog;
   
   private $pArquivo;
-
-  private $sCaminhoArquivo;
   
   /**
    * Construtor da Classe
    * @param string $sCaminhoArquivo
    */
-  public function __construct( $sCaminhoArquivo ) {
+  public function __construct( private $sCaminhoArquivo ) {
 
     $aConfiguracoes = (object)parse_ini_file(PATH_IMPORTACAO . "libs/configuracoes_importacao.ini",true);
-    $this->sCaminhoArquivo       = $sCaminhoArquivo;
-    $this->pArquivo              = fopen($sCaminhoArquivo, 'r');
-    self::$oLog                  = new DBLog("TXT",PATH_IMPORTACAO . "log/log_imoveis_".str_ireplace("/", "_",$sCaminhoArquivo). date("Y_m_d"));
+    $this->pArquivo              = fopen($this->sCaminhoArquivo, 'r');
+    self::$oLog                  = new DBLog("TXT",PATH_IMPORTACAO . "log/log_imoveis_".str_ireplace("/", "_",$this->sCaminhoArquivo). date("Y_m_d"));
   }
 
   /**
@@ -160,7 +157,7 @@ class RecadastroImobiliarioImoveisArquivo {
       
       $this->aRegistros[$iChave]->iCodigoRegistro = $oRecadastroImobiliarioImoveis->insertValue();
       
-      self::$oLog->escreverLog("Salvando linha de código sequencial " . substr($oRegistro->sLinha,   8,   6) . " na base de dados do recadastro. Código da importação: {$iCodigoImportacao}" , DBLog::LOG_INFO);
+      self::$oLog->escreverLog("Salvando linha de código sequencial " . substr((string) $oRegistro->sLinha,   8,   6) . " na base de dados do recadastro. Código da importação: {$iCodigoImportacao}" , DBLog::LOG_INFO);
       
     }
     self::$oLog->escreverLog("");
@@ -227,7 +224,7 @@ class RecadastroImobiliarioImoveisArquivo {
          
             $oConexao->end(Conexao::ROLLBACK);
             $oLog->escreverLog($eErro->getMessage());
-            $oDadosProcessamento      = (object)array("ie28_observacoes"=> "Erro ao Processar Registro\n" . $oProcessamentoLinha->getLog() );
+            $oDadosProcessamento      = (object)["ie28_observacoes"=> "Erro ao Processar Registro\n" . $oProcessamentoLinha->getLog() ];
             $sWhereProcessamento      = "ie28_sequencial = {$oDadosRegistros->iCodigoRegistro}";
             $rsAlteracaoProcessamento = RecadastramentoSQLUtils::alterar("recadastroimobiliarioimoveis", $oDadosProcessamento, $sWhereProcessamento);
             continue;

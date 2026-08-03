@@ -37,7 +37,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 $oPost         = db_utils::postMemory($_POST);
 $oGet          = db_utils::postMemory($_GET);
 $clfavorecido  = new cl_favorecido;
-$db_opcao      = isset($oGet->db_opcao) ? $oGet->db_opcao : 1;
+$db_opcao      = $oGet->db_opcao ?? 1;
 $db_botao      = true; 
 $sBtnSalvar    = $db_opcao == 1 ? "Salvar"      : "Excluir";
 $sJsBtnSalvar  = $db_opcao == 1 ? "js_salvar()" : "js_exluir()";

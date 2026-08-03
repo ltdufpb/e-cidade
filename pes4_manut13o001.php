@@ -33,7 +33,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_libpessoal.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $anofolha = db_anofolha();
 $mesfolha = db_mesfolha();
@@ -76,7 +76,7 @@ if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
 	      $opcao = 0;
       }
 
-      $arr_opcoes = Array(0=>"Selecionar opção", 1=>"Adiantamento 13o", 2=>"Saldo 13o", 3=>"Complemento 13o");
+      $arr_opcoes = [0=>"Selecionar opção", 1=>"Adiantamento 13o", 2=>"Saldo 13o", 3=>"Complemento 13o"];
       db_select("opcao", $arr_opcoes, true, $db_opcao, "onchange='js_opcao_selecionada();'");
       ?>
     </td>
@@ -104,7 +104,7 @@ if (DBPessoal::verificarUtilizacaoEstruturaSuplementar()) {
     <td align="right"><b>Pagar complemento de adiantamento:</b></td>
     <td>
       <?php
-      $arr_adianta = Array('t'=>'Sim', 'f'=>'Não');
+      $arr_adianta = ['t'=>'Sim', 'f'=>'Não'];
       db_select("pagaradiantamentonovamente", $arr_adianta, true, 1);
       ?>
     </td>

@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_conplano_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $anousu     = db_getsession("DB_anousu");
 $clconplano = new cl_conplano;
@@ -131,7 +131,7 @@ $get = (object)filter_input_array(INPUT_GET);
           exit;
         }
 
-          $where = array();
+          $where = [];
 
           if (isset($get->previsao)) {
               $where[] = "c61_instit = " . db_getsession('DB_instit');
@@ -141,7 +141,7 @@ $get = (object)filter_input_array(INPUT_GET);
           if (isset($get->sistema)) {
               $where[] = "c60_codsis = {$get->sistema}";
           }
-          if (isset($chave_c60_codcon) && (trim($chave_c61_reduz) != "")) {
+          if (isset($chave_c60_codcon) && (trim((string) $chave_c61_reduz) != "")) {
               $where[] = "c60_anousu = {$anousu}";
               $where[] = "c61_reduz = {$chave_c61_reduz}";
               $sql = $clconplano->sql_query_geral(null, null, $campos, 'c60_codcon', implode(' AND ', $where));

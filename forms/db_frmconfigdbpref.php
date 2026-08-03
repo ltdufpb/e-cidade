@@ -195,7 +195,7 @@ $clconfigdbpref->rotulo->label();
     </td>
     <td> 
 		<?php 
-		  $x = array("f"=>"Não","t"=>"Sim");
+		  $x = ["f"=>"Não","t"=>"Sim"];
 		  $x = getValoresPadroesCampo("w13_libissprestado");
 		  db_select('w13_libissprestado',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -208,7 +208,7 @@ $clconfigdbpref->rotulo->label();
     </td>
     <td> 
 		<?php 
-		  $x = array("f"=>"Não","t"=>"Sim");
+		  $x = ["f"=>"Não","t"=>"Sim"];
 		  $x = getValoresPadroesCampo("w13_liberalancisssemmov");
 		  db_select('w13_liberalancisssemmov',$x,true,$db_opcao,"style='width:110px;;'");
 		?>
@@ -361,7 +361,7 @@ function js_preenchepesquisa(chave){
   db_iframe_configdbpref.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

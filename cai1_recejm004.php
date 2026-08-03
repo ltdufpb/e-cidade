@@ -38,7 +38,7 @@ $instit     = db_getsession("DB_instit");
 
 if ( isset($incluir) ) {
 
-  db_postmemory($HTTP_POST_VARS);  
+  db_postmemory($_POST);  
 
   db_query("BEGIN");
   $cltabrecjm->k02_desjm  = 'false';

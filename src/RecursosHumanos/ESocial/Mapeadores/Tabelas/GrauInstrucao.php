@@ -34,7 +34,7 @@ class GrauInstrucao implements TabelasInterface
      * index é o valor no e-cidade (tabela rhraca) valor é da tabela do eSocial
      * @var array
      */
-    protected $grauInstrucao = array(
+    protected $grauInstrucao = [
         1 => '01',
         2 => '02',
         3 => '03',
@@ -46,7 +46,7 @@ class GrauInstrucao implements TabelasInterface
         9 => '09',
         10 => '11',
         11 => '12'
-    );
+    ];
 
     /**
      * Retorna o valor da tabela do esocial equivalente ao valor de um dado no e-cidade

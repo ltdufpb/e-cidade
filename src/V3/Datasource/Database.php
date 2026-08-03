@@ -252,7 +252,7 @@ class Database
 
         // Tratamento feito para não dar erro nos campos texto vazios que são not null
         foreach ($oObject as &$mValue) {
-            $mValue = trim($mValue);
+            $mValue = trim((string) $mValue);
         }
 
         return $oObject;
@@ -381,13 +381,10 @@ class Database
      */
     public function hasFailed()
     {
-        switch (pg_transaction_status($this->oConnection)) {
-            case PGSQL_TRANSACTION_INERROR:
-                return true;
-                break;
-        }
-
-        return false;
+        return match (pg_transaction_status($this->oConnection)) {
+            PGSQL_TRANSACTION_INERROR => true,
+            default => false,
+        };
     }
 
     /**
@@ -395,14 +392,10 @@ class Database
      */
     public function inTransation()
     {
-        switch (pg_transaction_status($this->oConnection)) {
-            case PGSQL_TRANSACTION_ACTIVE:
-            case PGSQL_TRANSACTION_INTRANS:
-                return true;
-                break;
-        }
-
-        return false;
+        return match (pg_transaction_status($this->oConnection)) {
+            PGSQL_TRANSACTION_ACTIVE, PGSQL_TRANSACTION_INTRANS => true,
+            default => false,
+        };
     }
 
     /**

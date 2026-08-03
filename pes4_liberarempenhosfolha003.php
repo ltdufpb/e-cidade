@@ -67,7 +67,7 @@ $oGeradorSql->usar_atv  = true;
 $oGeradorSql->usa       = true;
 $oGeradorSql->usar_rel  = true;
 
-$aSiglas = explode(',', $oParam->sSigla);
+$aSiglas = explode(',', (string) $oParam->sSigla);
 
 /**
  * incluimos a liberacao
@@ -99,10 +99,10 @@ if (isset($oPost->liberar)) {
 	    	 * Caso esteja sendo liberada as tabelas da previdencia (iTipo == 2)
 	    	* Incluímos uma liberação para cada tabela da previdencia
 	    	*/
-	    	if (strpos($oParam->sPrevidencia, ",") ) {
-	    		$aPrevidencias = explode(",",$oParam->sPrevidencia);
+	    	if (strpos((string) $oParam->sPrevidencia, ",") ) {
+	    		$aPrevidencias = explode(",",(string) $oParam->sPrevidencia);
 	    	} else {
-	    		$aPrevidencias = array($oParam->sPrevidencia);
+	    		$aPrevidencias = [$oParam->sPrevidencia];
 	    	}
 	    	for ($iInd = 0; $iInd < count($aPrevidencias); $iInd++) {
 

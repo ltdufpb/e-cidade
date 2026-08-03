@@ -11,19 +11,18 @@
 //========================================================================
 */
 
-  
+
 //===================================================
 // CLASS Gradient
 // Description: Handles gradient fills. This is to be
 // considered a "friend" class of Class Image.
 //===================================================
 class Gradient {
-    var $img=null;
-    var $numcolors=100;
+    public $numcolors=100;
 //---------------
 // CONSTRUCTOR
-    function Gradient(&$img) {
-	$this->img = $img;
+    function __construct(public $img)
+    {
     }
 
 
@@ -118,7 +117,7 @@ class Gradient {
 		    $this->img->Line($x,$yb,$x,$yt);
 		    $x += $delta;
 		}
-		
+
 		for($j=0; $j < $steps; ++$j, --$i) {
 		    $this->img->current_color = $colors[$i];				
 		    $this->img->Line($x,$yb,$x,$yt);	
@@ -228,7 +227,7 @@ class Gradient {
     // of a mountain)
     function FilledFlatPolygon($pts,$from_color,$to_color) {
 	if( count($pts) == 0 ) return;
-	
+
 	$maxy=$pts[1];
 	$miny=$pts[1];		
 	$n = count($pts) ;
@@ -238,8 +237,8 @@ class Gradient {
 	    $miny = min($miny,$y);
 	    $maxy = max($maxy,$y);
 	}
-	    
-	$colors = array();
+
+	$colors = [];
 	$this->GetColArray($from_color,$to_color,abs($maxy-$miny)+1,$colors,$this->numcolors);
 	for($i=$miny, $idx=0; $i <= $maxy; ++$i ) {
 	    $colmap[$i] = $colors[$idx++]; 
@@ -248,16 +247,16 @@ class Gradient {
 	$n = count($pts)/2 ;
 	$idx = 0 ;
 	while( $idx < $n-1 ) {
-	    $p1 = array(round($pts[$idx*2]),round($pts[$idx*2+1]));
-	    $p2 = array(round($pts[++$idx*2]),round($pts[$idx*2+1]));
-		
+	    $p1 = [round($pts[$idx*2]),round($pts[$idx*2+1])];
+	    $p2 = [round($pts[++$idx*2]),round($pts[$idx*2+1])];
+
 	    // Find the largest rectangle we can fill
 	    $y = max($p1[1],$p2[1]) ;
 	    for($yy=$maxy; $yy > $y; --$yy) {
 		$this->img->current_color = $colmap[$yy];
 		$this->img->Line($p1[0],$yy,$p2[0]-1,$yy);
 	    }
-	    
+
 	    if( $p1[1] == $p2[1] ) continue; 
 
 	    // Fill the rest using lines (slow...)
@@ -293,7 +292,7 @@ class Gradient {
 	// If color is given as text get it's corresponding r,g,b values
 	$from_color = $this->img->rgb->Color($from_color);
 	$to_color = $this->img->rgb->Color($to_color);
-		
+
 	$rdelta=($to_color[0]-$from_color[0])/$numcols;
 	$gdelta=($to_color[1]-$from_color[1])/$numcols;
 	$bdelta=($to_color[2]-$from_color[2])/$numcols;

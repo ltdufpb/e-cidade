@@ -31,8 +31,8 @@ require_once (modification("libs/db_sessoes.php"));
 require_once (modification("libs/db_usuariosonline.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $claguatipocontrato = new cl_aguatipocontrato;
 $claguatipocontrato->rotulo->label("x39_sequencial");
 $claguatipocontrato->rotulo->label("x39_sequencial");
@@ -77,9 +77,9 @@ $claguatipocontrato->rotulo->label("x39_sequencial");
     } else {
       $sql = $claguatipocontrato->sql_query("", $campos, "x39_sequencial", "");
     }
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_x39_sequencial)) {
-      $repassa = array("chave_x39_sequencial" => $chave_x39_sequencial, "chave_x39_sequencial" => $chave_x39_sequencial);
+      $repassa = ["chave_x39_sequencial" => $chave_x39_sequencial, "chave_x39_sequencial" => $chave_x39_sequencial];
     }
     echo '<div class="container">';
     echo '  <fieldset>';

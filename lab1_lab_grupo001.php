@@ -32,7 +32,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_lab_labusuario_classe.php"));
 include(modification("classes/db_lab_setorexame_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $codigo_laboratorio = $codigo_laboratorio == "" ? $la06_i_laboratorio : $codigo_laboratorio; 
 $descricao_laboratorio = $descricao_laboratorio == "" ? $la02_c_descr : $descricao_laboratorio; 
 

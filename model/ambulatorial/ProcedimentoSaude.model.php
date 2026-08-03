@@ -63,13 +63,13 @@ final class ProcedimentoSaude {
    * Coleção dos CID's vinculados ao procedimento
    * @var array
    */
-  protected $aCID = array();
+  protected $aCID = [];
 
   /**
    * CBOs compativeis com o procedimento
    * @var array
    */
-  protected $aCBO = array();
+  protected $aCBO = [];
 
   /**
    * Retorna a instancia de um procedimento saude
@@ -202,10 +202,10 @@ final class ProcedimentoSaude {
 
       $iLinhas = pg_num_rows($rsProcedimento);
       if ($iLinhas  == 0 ) {
-        return array();
+        return [];
       }
 
-      $this->aCBO = array();
+      $this->aCBO = [];
       for( $i = 0; $i < $iLinhas; $i++) {
 
         $iCbo         = db_utils::fieldsMemory($rsProcedimento, $i)->rh70_sequencial;

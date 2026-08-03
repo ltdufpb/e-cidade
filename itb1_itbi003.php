@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 if(!isset($abas)){
   echo "<script>location.href='itb1_itbi005.php?db_opcao=3'</script>";
   exit;
@@ -48,8 +48,8 @@ include(modification("classes/db_itbimatric_classe.php"));
 include(modification("classes/db_itbipropriold_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clitbi = new cl_itbi;
 $clitbipropriold = new cl_itbipropriold;
@@ -66,7 +66,7 @@ $clitbimatric = new cl_itbimatric;
 $db_botao = false;
 $db_opcao = 33;
 global $tipo;
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
 
   db_inicio_transacao();
 
@@ -144,7 +144,7 @@ if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir
 </body>
 </html>
 <?php 
-if((isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Excluir"){
+if((isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Excluir"){
   if($clitbi->erro_status=="0"){
     $clitbi->erro(true,false);
     echo "<script>

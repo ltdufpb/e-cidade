@@ -29,99 +29,30 @@ abstract class ArquivoLicitaConFactory {
 
   public static function getArquivo($sNomeArquivo, CabecalhoLicitaCon $oCabecalho) {
 
-    switch ($sNomeArquivo) {
-
-      case MembroConsLicitaCon::NOME_ARQUIVO:
-        return new MembroConsLicitaCon($oCabecalho);
-      break;
-
-      case PessoasLicitaCon::NOME_ARQUIVO:
-        return new PessoasLicitaCon($oCabecalho);
-      break;
-
-      case ComissaoLicitaCon::NOME_ARQUIVO:
-        return new ComissaoLicitaCon($oCabecalho);
-      break;
-
-      case MemComissaoLicitaCon::NOME_ARQUIVO:
-        return new MemComissaoLicitaCon($oCabecalho);
-      break;
-
-      case LicitacaoLicitaCon::NOME_ARQUIVO:
-        return new LicitacaoLicitaCon($oCabecalho);
-      break;
-
-      case LicitanteLicitaCon::NOME_ARQUIVO:
-        return new LicitanteLicitaCon($oCabecalho);
-      break;
-
-      case DotacaoLicLicitaCon::NOME_ARQUIVO:
-        return new DotacaoLicLicitaCon($oCabecalho);
-      break;
-
-      case EventoLicLicitaCon::NOME_ARQUIVO:
-        return new EventoLicLicitaCon($oCabecalho);
-      break;
-
-      case DocumentoLicLicitaCon::NOME_ARQUIVO:
-        return new DocumentoLicLicitaCon($oCabecalho);
-      break;
-
-      case LoteLicitaCon::NOME_ARQUIVO:
-        return new LoteLicitaCon($oCabecalho);
-      break;
-
-      case ItemLicitaCon::NOME_ARQUIVO:
-        return new ItemLicitaCon($oCabecalho);
-      break;
-
-      case PropostaLicitaCon::NOME_ARQUIVO:
-        return new PropostaLicitaCon($oCabecalho);
-      break;
-
-      case LotePropLicitaCon::NOME_ARQUIVO:
-        return new LotePropLicitaCon($oCabecalho);
-      break;
-
-      case ItemPropLicitaCon::NOME_ARQUIVO:
-        return new ItemPropLicitaCon($oCabecalho);
-      break;
-
-      case ContratoLicitaCon::NOME_ARQUIVO:
-        return new ContratoLicitaCon($oCabecalho);
-      break;
-
-      case DotacaoConLicitaCon::NOME_ARQUIVO:
-        return new DotacaoConLicitaCon($oCabecalho);
-      break;
-
-      case EventoConLicitaCon::NOME_ARQUIVO:
-        return new EventoConLicitaCon($oCabecalho);
-      break;
-
-      case DocumentoConLicitaCon::NOME_ARQUIVO:
-        return new DocumentoConLicitaCon($oCabecalho);
-      break;
-
-      case ResponsavelConLicitaCon::NOME_ARQUIVO:
-        return new ResponsavelConLicitaCon($oCabecalho);
-      break;
-
-      case LoteConLicitaCon::NOME_ARQUIVO:
-        return new LoteConLicitaCon($oCabecalho);
-      break;
-
-      case ItemConLicitaCon::NOME_ARQUIVO:
-        return new ItemConLicitaCon($oCabecalho);
-      break;
-
-      case AlteracaoLicitaCon::NOME_ARQUIVO:
-        return new AlteracaoLicitaCon($oCabecalho);
-      break;
-
-      default:
-        throw new Exception("Arquivo {$sNomeArquivo} não encontrado.");
-        break;
-    }
+    return match ($sNomeArquivo) {
+        MembroConsLicitaCon::NOME_ARQUIVO => new MembroConsLicitaCon($oCabecalho),
+        PessoasLicitaCon::NOME_ARQUIVO => new PessoasLicitaCon($oCabecalho),
+        ComissaoLicitaCon::NOME_ARQUIVO => new ComissaoLicitaCon($oCabecalho),
+        MemComissaoLicitaCon::NOME_ARQUIVO => new MemComissaoLicitaCon($oCabecalho),
+        LicitacaoLicitaCon::NOME_ARQUIVO => new LicitacaoLicitaCon($oCabecalho),
+        LicitanteLicitaCon::NOME_ARQUIVO => new LicitanteLicitaCon($oCabecalho),
+        DotacaoLicLicitaCon::NOME_ARQUIVO => new DotacaoLicLicitaCon($oCabecalho),
+        EventoLicLicitaCon::NOME_ARQUIVO => new EventoLicLicitaCon($oCabecalho),
+        DocumentoLicLicitaCon::NOME_ARQUIVO => new DocumentoLicLicitaCon($oCabecalho),
+        LoteLicitaCon::NOME_ARQUIVO => new LoteLicitaCon($oCabecalho),
+        ItemLicitaCon::NOME_ARQUIVO => new ItemLicitaCon($oCabecalho),
+        PropostaLicitaCon::NOME_ARQUIVO => new PropostaLicitaCon($oCabecalho),
+        LotePropLicitaCon::NOME_ARQUIVO => new LotePropLicitaCon($oCabecalho),
+        ItemPropLicitaCon::NOME_ARQUIVO => new ItemPropLicitaCon($oCabecalho),
+        ContratoLicitaCon::NOME_ARQUIVO => new ContratoLicitaCon($oCabecalho),
+        DotacaoConLicitaCon::NOME_ARQUIVO => new DotacaoConLicitaCon($oCabecalho),
+        EventoConLicitaCon::NOME_ARQUIVO => new EventoConLicitaCon($oCabecalho),
+        DocumentoConLicitaCon::NOME_ARQUIVO => new DocumentoConLicitaCon($oCabecalho),
+        ResponsavelConLicitaCon::NOME_ARQUIVO => new ResponsavelConLicitaCon($oCabecalho),
+        LoteConLicitaCon::NOME_ARQUIVO => new LoteConLicitaCon($oCabecalho),
+        ItemConLicitaCon::NOME_ARQUIVO => new ItemConLicitaCon($oCabecalho),
+        AlteracaoLicitaCon::NOME_ARQUIVO => new AlteracaoLicitaCon($oCabecalho),
+        default => throw new Exception("Arquivo {$sNomeArquivo} não encontrado."),
+    };
   }
 }

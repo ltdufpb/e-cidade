@@ -51,8 +51,8 @@ final class CadastroIsencaoIptuService
         "setor_quadra_lote" => $oDadosIsencao->j34_setor.'/'.$oDadosIsencao->j34_quadra.'/'.$oDadosIsencao->j34_lote,
         "nome_contribuinte" => $oDadosIsencao->nomepropri,
         "tipo_isencao" => $oDadosIsencao->j46_tipo.'/'.$oDadosIsencao->j45_descr,
-        "data_inicial" => date("d/m/Y", strtotime($oDadosIsencao->j46_dtini)),
-        "data_final" => date("d/m/Y", strtotime($oDadosIsencao->j46_dtfim)),
+        "data_inicial" => date("d/m/Y", strtotime((string) $oDadosIsencao->j46_dtini)),
+        "data_final" => date("d/m/Y", strtotime((string) $oDadosIsencao->j46_dtfim)),
         "observacao" => $oDadosIsencao->j45_obscertidao,
         "logo" => ECIDADE_REQUEST_PATH .'imagens/files/'.$logo,
         "nome_instituicao" => $nomeInstit

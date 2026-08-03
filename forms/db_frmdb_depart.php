@@ -124,7 +124,7 @@ $clrotulo->label("nome");
     </td>
 		<td colspan="3">
       <?php 
-      if ( ($db_opcao==1||$db_opcao==11)||trim(@$instit)=="" ){
+      if ( ($db_opcao==1||$db_opcao==11)||trim((string) @$instit)=="" ){
         $instit = db_getsession("DB_instit");
       }
       /**
@@ -158,7 +158,7 @@ $clrotulo->label("nome");
           //echo $clorcunidade->sql_query(null,null,null,"distinct o40_orgao,o40_descr","o40_descr",$sWhere);
           $result = $clorcunidade->sql_record($clorcunidade->sql_query(
                                              null,null,null,"distinct o40_orgao,o40_descr","o40_descr",$sWhere));
-          if (@pg_numrows($result) == 0) {
+          if (@pg_num_rows($result) == 0) {
             echo "<strong>Sistema não localizou nenhum orgão com unidades vinculadas na instituição selecionada!</strong>";
           } else { 
             db_selectrecord("o40_orgao",@$result,true,$db_opcao,'','','','',"js_getUnidades(this.value);");
@@ -280,7 +280,7 @@ $clrotulo->label("nome");
     function js_preenchepesquisa(chave){
       <?php 
       if($db_opcao!=1){
-        echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+        echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
         if($db_opcao==2||$db_opcao==22){
         ?>
          parent.iframe_g2.location.href='con1_db_departender002.php?chavepesquisa='+chave+'&coddepto='+chave;

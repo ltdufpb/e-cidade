@@ -33,10 +33,10 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_arretipo_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oGet   = db_utils::postMemory($_GET);
-$aWhere = array();
+$aWhere = [];
 
 $clarretipo = new cl_arretipo();
 $clarretipo->rotulo->label("k00_tipo"); 
@@ -123,9 +123,9 @@ $chave_k00_descr = isset($chave_k00_descr) ? stripslashes($chave_k00_descr) : ''
 
         $sql = $clarretipo->sql_query("", $campos, "k00_descr", implode(' AND ', $aWhere));
 
-        $repassa = array();
+        $repassa = [];
         if (isset($chave_k00_descr) && isset($chave_k00_tipo)) {
-          $repassa = array("chave_k00_tipo" => $chave_k00_tipo, "chave_k00_descr" => $chave_k00_descr);
+          $repassa = ["chave_k00_tipo" => $chave_k00_tipo, "chave_k00_descr" => $chave_k00_descr];
         }
 
         db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

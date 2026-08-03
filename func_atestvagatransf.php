@@ -32,8 +32,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_atestvaga_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clatestvaga = new cl_atestvaga;
 $clrotulo    = new rotulocampo;
 $clatestvaga->rotulo->label("ed102_i_codigo");
@@ -119,9 +119,9 @@ $escola = db_getsession("DB_coddepto");
     } else {
        $sql = $clatestvaga->sql_query("",$sCampos,"ed102_d_data desc"," ed102_i_escola != $iEscola ".$sWhere);
     }
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_ed102_i_codigo)) {
-      $repassa = array("chave_ed102_i_codigo"=>$chave_ed102_i_codigo,"chave_ed102_i_codigo"=>$chave_ed102_i_codigo);
+      $repassa = ["chave_ed102_i_codigo"=>$chave_ed102_i_codigo,"chave_ed102_i_codigo"=>$chave_ed102_i_codigo];
     }
     if (!isset($pesquisa_chave)) {
       db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa,false);

@@ -9,17 +9,17 @@ class ResultadoCollection {
   /**
    * @var array
    */
-  private $porTipoConsumo = array();
+  private $porTipoConsumo = [];
 
   /**
    * @var array
    */
-  private $porFaixaConsumo = array();
+  private $porFaixaConsumo = [];
 
   /**
    * @var array
    */
-  private $porTipoEstrutura = array();
+  private $porTipoEstrutura = [];
 
   /**
    * @var float
@@ -34,7 +34,7 @@ class ResultadoCollection {
   /**
    * @var Resultado[]
    */
-  private $aResultados = array();
+  private $aResultados = [];
 
   /**
    * @return array

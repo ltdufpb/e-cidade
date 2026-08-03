@@ -52,7 +52,7 @@ class PadArquivoEscritorXML2021 extends \PadArquivoEscritor {
     $oXmlWriter->startElement('Raiz');
     
     $oXmlWriter->startElement('MesAnoMovimento');
-      $oXmlWriter->text(utf8_encode($oArquivo->mesAnoMovimento));
+      $oXmlWriter->text(mb_convert_encoding($oArquivo->mesAnoMovimento, 'UTF-8', 'ISO-8859-1'));
     $oXmlWriter->endElement();
 
     foreach ($oArquivo->getDados() as $oLinha) {
@@ -74,7 +74,7 @@ class PadArquivoEscritorXML2021 extends \PadArquivoEscritor {
               foreach ($oLinhaFilhos as $tag => $valor){
                 
                 $oXmlWriter->startElement($tag);
-                $oXmlWriter->text(utf8_encode($valor));
+                $oXmlWriter->text(mb_convert_encoding($valor, 'UTF-8', 'ISO-8859-1'));
                 $oXmlWriter->endElement();
               }
               $oXmlWriter->endElement();
@@ -82,7 +82,7 @@ class PadArquivoEscritorXML2021 extends \PadArquivoEscritor {
 
         } else {
           $oXmlWriter->startElement($sElemento);
-          $oXmlWriter->text(utf8_encode($oLinha->$sElemento));
+          $oXmlWriter->text(mb_convert_encoding($oLinha->$sElemento, 'UTF-8', 'ISO-8859-1'));
           $oXmlWriter->endElement();
         }
         

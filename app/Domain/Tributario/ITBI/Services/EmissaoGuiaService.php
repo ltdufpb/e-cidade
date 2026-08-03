@@ -413,13 +413,10 @@ final class EmissaoGuiaService extends EmissaoGuia
                 $oNumpref->k03_regracnd
             );
 
-            switch ($sCertidao) {
-                case 'positiva':
-                    $sMsgSituacaoImovel = 'IMÓVEL COM DÉBITOS PENDENTES NESTA DATA';
-                    break;
-                default:
-                    $sMsgSituacaoImovel = 'IMÓVEL EM DIA NESTA DATA';
-            }
+            $sMsgSituacaoImovel = match ($sCertidao) {
+                'positiva' => 'IMÓVEL COM DÉBITOS PENDENTES NESTA DATA',
+                default => 'IMÓVEL EM DIA NESTA DATA',
+            };
         }
 
         $this->setDados("sMsgSituacaoImovel", $sMsgSituacaoImovel);

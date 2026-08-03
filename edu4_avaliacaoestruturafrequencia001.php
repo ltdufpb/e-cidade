@@ -67,7 +67,7 @@
 
       db_msgbox("Já existe uma estrutura de Frequência configurada para o ano informado.");
       db_redireciona("edu4_avaliacaoestruturafrequencia001.php{$sParametros}");
-      break;
+      return;
     }
 
     db_inicio_transacao();

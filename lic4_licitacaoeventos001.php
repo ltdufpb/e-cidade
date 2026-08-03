@@ -76,13 +76,13 @@ require_once modification("dbforms/db_funcoes.php");
             </td>
             <td>
               <?php
-                $aFases = array(
+                $aFases = [
                     1 => "Fase Interna",
                     2 => "Edital Publicado",
                     3 => "Publicação",
                     4 => "Habilitação/Propostas",
                     5 => "Adjudicação/Homologação"
-                  );
+                  ];
                 $fase = 1;
                 db_select("fase", $aFases, true, 1, 'style="width:368px;"');
               ?>
@@ -143,12 +143,12 @@ require_once modification("dbforms/db_funcoes.php");
             </td>
             <td>
               <?php
-                $aResultados = array(
+                $aResultados = [
                   "" => "Selecione",
                   EventoLicitacao::RESULTADO_DEFERIDO => "Deferido",
                   EventoLicitacao::RESULTADO_INDEFERIDO => "Indeferido",
                   EventoLicitacao::RESULTADO_PARCIALMENTE_DEFERIDO => "Deferido Pacialmente"
-                );
+                ];
                 db_select("resultado", $aResultados, true, 1);
               ?>
             </td>
@@ -164,7 +164,7 @@ require_once modification("dbforms/db_funcoes.php");
               </td>
               <td>
                 <?php
-                  $aTiposPublicacao = array(
+                  $aTiposPublicacao = [
                     "" => "Selecione",
                     EventoLicitacao::PUBLICACAO_DIARIO_ESTADO          => 'Diário Oficial do Estado',
                     EventoLicitacao::PUBLICACAO_INTERNET               => 'Internet',
@@ -176,7 +176,7 @@ require_once modification("dbforms/db_funcoes.php");
                     EventoLicitacao::PUBLICACAO_NAO_PUBLICADO          => 'Não publicado',
                     EventoLicitacao::PUBLICACAO_SITE_OFICIAL           => 'Site Oficial',
                     EventoLicitacao::PUBLICACAO_CONTRATACOES_PUBLICAS  => 'Portal Nacional de Contratações Públicas'
-                  );
+                  ];
                   db_select("publicacao_tipo", $aTiposPublicacao, true,null);
                 ?>
               </td>

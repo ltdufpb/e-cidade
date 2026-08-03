@@ -49,7 +49,7 @@ $clvac_vacina              = new cl_vac_vacina;
 $clvac_dose                = new cl_vac_dose;
 $clcgs_und                 = new cl_cgs_und;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clvac_aplica = new cl_vac_aplica;
 $db_opcao = 1;
 $db_botao = true;

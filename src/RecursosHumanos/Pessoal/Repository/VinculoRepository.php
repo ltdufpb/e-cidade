@@ -39,7 +39,7 @@ class VinculoRepository
     /**
      * @var array
      */
-    private $scopes = array();
+    private $scopes = [];
 
     /**
      * @param $id
@@ -47,7 +47,7 @@ class VinculoRepository
      * @return Vinculo|null
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_rhregime();
         $sql = $dao->sql_query_file($id, implode(', ', $columns));

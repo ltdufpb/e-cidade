@@ -177,7 +177,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if (strlen($dado) > 20) {
+        if (strlen((string) $dado) > 20) {
             $this->log(sprintf('O campo "%s" está com tamanho diferente do especificado.', $campo));
         }
 
@@ -242,17 +242,17 @@ class Registro50Validator
                 30, 31, 32, 33, 34, 39, 40, 73, 74, 64, 67 e 68.";
                 $this->log(sprintf($log, $campo));
         }
-    
+
         if (!$this->isPreenchido($dado)) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
 
-        if (!in_array($dado, array(1, 2, 3, 4, 5, 6, 7, 8, 9))) {
+        if (!in_array($dado, [1, 2, 3, 4, 5, 6, 7, 8, 9])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
 
-        if (in_array($dado, array(1, 2, 3, 4, 7, 8)) && !in_array($mediacao, array(1, 2))) {
+        if (in_array($dado, [1, 2, 3, 4, 7, 8]) && !in_array($mediacao, [1, 2])) {
             $this->log(sprintf(
                 'O campo "%s" não pode ser preenchido com "Docente", "Auxiliar/Assistente educacional", '.
                 '"Profissional/Monitor de atividade complementar", "Tradutor-Intérprete de LIBRAS", '.
@@ -306,17 +306,17 @@ class Registro50Validator
         $dependencia = $this->registro00->getDependenciaAdministrativa();
         $campo = 'Situação Funcional/Regime de contratação/Tipo de vínculo';
 
-        if (!$this->isPreenchido($dado) && in_array($funcao, array(1, 5, 6)) &&
-            in_array($dependencia, array(1, 2, 3))) {
+        if (!$this->isPreenchido($dado) && in_array($funcao, [1, 5, 6]) &&
+            in_array($dependencia, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
             return;
         }
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5, 6))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5, 6])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && !in_array($dependencia, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && !in_array($dependencia, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -324,14 +324,14 @@ class Registro50Validator
             return;
         }
 
-        if (!in_array($dado, array(1, 2, 3, 4))) {
+        if (!in_array($dado, [1, 2, 3, 4])) {
             $this->log(sprintf('O campo "%s" foi preenchido com valor não permitido.', $campo));
         }
     }
 
     private function validarComponentesCurriculares()
     {
-        $campos = array();
+        $campos = [];
         $campos[] = $this->registro->getCodigo1();
         $campos[] = $this->registro->getCodigo2();
         $campos[] = $this->registro->getCodigo3();
@@ -347,7 +347,7 @@ class Registro50Validator
         $campos[] = $this->registro->getCodigo13();
         $campos[] = $this->registro->getCodigo14();
         $campos[] = $this->registro->getCodigo15();
-        $campos = array_diff($campos, array(null));
+        $campos = array_diff($campos, [null]);
 
         // Se existe algum valor repetido...
         if (count($campos) != count(array_unique($campos))) {
@@ -367,12 +367,12 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 1';
 
-        if (!$this->isPreenchido($dado) && in_array($funcao, array(1, 5)) && $escolarizacao == 1 &&
-            !in_array($etapa, array(1, 2, 3))) {
+        if (!$this->isPreenchido($dado) && in_array($funcao, [1, 5]) && $escolarizacao == 1 &&
+            !in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" não foi preenchido quando deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -380,7 +380,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -401,7 +401,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 2';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -409,7 +409,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -430,7 +430,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 3';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -438,7 +438,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -459,7 +459,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 4';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -467,7 +467,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -488,7 +488,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 5';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -496,7 +496,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -517,7 +517,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 6';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -525,7 +525,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -546,7 +546,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 7';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -554,7 +554,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -575,7 +575,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 8';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -583,7 +583,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -604,7 +604,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 9';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -612,7 +612,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -633,7 +633,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 10';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -641,7 +641,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -662,7 +662,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 11';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -670,7 +670,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -691,7 +691,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 12';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -699,7 +699,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -720,7 +720,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 13';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -728,7 +728,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -749,7 +749,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 14';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -757,7 +757,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -778,7 +778,7 @@ class Registro50Validator
         $etapa = $this->registro20->getEtapaCenso();
         $campo = 'Áreas do conhecimento/componentes curriculares - Código 15';
 
-        if ($this->isPreenchido($dado) && !in_array($funcao, array(1, 5))) {
+        if ($this->isPreenchido($dado) && !in_array($funcao, [1, 5])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
@@ -786,7 +786,7 @@ class Registro50Validator
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 
-        if ($this->isPreenchido($dado) && in_array($etapa, array(1, 2, 3))) {
+        if ($this->isPreenchido($dado) && in_array($etapa, [1, 2, 3])) {
             $this->log(sprintf('O campo "%s" foi preenchido quando não deveria ser preenchido.', $campo));
         }
 

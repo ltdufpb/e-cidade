@@ -42,8 +42,8 @@ $oJson                      = new services_json();
 $oRetorno                   = new stdClass(); 
 $oParam                     = $oJson->decode(str_replace("\\","",$_POST["json"]));
 $oRetorno->erro             = 0;
-$oRetorno->aItensDptos      = array();
-$oRetorno->aItensDptosSel   = array();
+$oRetorno->aItensDptos      = [];
+$oRetorno->aItensDptosSel   = [];
 $dtDataUsu                  = date('Y-m-d',db_getsession("DB_datausu"));
 $iEscola                    = db_getsession("DB_coddepto");
 

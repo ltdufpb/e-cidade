@@ -47,6 +47,7 @@ class MaiorNivel extends FormulaAvaliacao
      * @return AvaliacaoPorAreaConhecimento
      * @throws Exception
      */
+    #[\Override]
     public function calcularAvaliacoes(AreaProcedimentoAvaliacao $areaProcedimentoAvaliacao)
     {
         $avaliacaoPorArea = new AvaliacaoPorAreaConhecimento();
@@ -106,6 +107,7 @@ class MaiorNivel extends FormulaAvaliacao
      * @return ResultadoPorAreaConhecimento
      * @throws Exception
      */
+    #[\Override]
     public function calcularResultado(AreaProcedimentoResultado $areaProcedimentoResultado)
     {
         $resultado = new ResultadoPorAreaConhecimento();
@@ -134,9 +136,7 @@ class MaiorNivel extends FormulaAvaliacao
 
             $avaliacao = $avaliacaoArea->getAvaliacao();
 
-            $saida = array_filter($conceitos, function ($var) use ($avaliacao) {
-                return $var->sConceito === $avaliacao;
-            });
+            $saida = array_filter($conceitos, fn($var) => $var->sConceito === $avaliacao);
 
             $nivel = array_shift($saida);
 

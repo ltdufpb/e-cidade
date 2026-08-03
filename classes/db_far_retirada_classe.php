@@ -58,7 +58,7 @@ class cl_far_retirada
     public function __construct()
     {
         $this->rotulo = new rotulo("far_retirada");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -195,10 +195,10 @@ class cl_far_retirada
          $this->erro_status = "0";
          return false;
        }
-       $this->fa04_i_codigo = pg_result($result,0,0);
+       $this->fa04_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from farretirada_fa04_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $fa04_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $fa04_i_codigo)){
          $this->erro_sql = " Campo fa04_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -250,7 +250,7 @@ class cl_far_retirada
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "far_retirada ($this->fa04_i_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "far_retirada já Cadastrado";
@@ -279,22 +279,22 @@ class cl_far_retirada
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12143,'$this->fa04_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,2106,12143,'','".AddSlashes(pg_result($resaco,0,'fa04_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,12144,'','".AddSlashes(pg_result($resaco,0,'fa04_c_numeroreceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,12147,'','".AddSlashes(pg_result($resaco,0,'fa04_d_dtvalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,12148,'','".AddSlashes(pg_result($resaco,0,'fa04_i_unidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,12149,'','".AddSlashes(pg_result($resaco,0,'fa04_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,12150,'','".AddSlashes(pg_result($resaco,0,'fa04_i_tiporeceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,12187,'','".AddSlashes(pg_result($resaco,0,'fa04_i_dbusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,12186,'','".AddSlashes(pg_result($resaco,0,'fa04_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,12188,'','".AddSlashes(pg_result($resaco,0,'fa04_i_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,17754,'','".AddSlashes(pg_result($resaco,0,'fa04_i_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,18106,'','".AddSlashes(pg_result($resaco,0,'fa04_tiporetirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,20167,'','".AddSlashes(pg_result($resaco,0,'fa04_numeronotificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2106,1014575,'','".AddSlashes(pg_result($resaco,0,'fa04_data_prescricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,12143,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,12144,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_c_numeroreceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,12147,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_d_dtvalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,12148,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_i_unidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,12149,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,12150,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_i_tiporeceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,12187,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_i_dbusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,12186,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,12188,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_i_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,17754,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_i_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,18106,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_tiporetirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,20167,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_numeronotificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2106,1014575,'','".AddSlashes(pg_fetch_result($resaco,0,'fa04_data_prescricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -305,10 +305,10 @@ class cl_far_retirada
       $this->atualizacampos();
      $sql = " update far_retirada set ";
      $virgula = "";
-     if(trim($this->fa04_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_codigo"])){
+     if(trim((string) $this->fa04_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_codigo"])){
        $sql  .= $virgula." fa04_i_codigo = $this->fa04_i_codigo ";
        $virgula = ",";
-       if(trim($this->fa04_i_codigo) == null ){
+       if(trim((string) $this->fa04_i_codigo) == null ){
          $this->erro_sql = " Campo Retirada não informado.";
          $this->erro_campo = "fa04_i_codigo";
          $this->erro_banco = "";
@@ -318,11 +318,11 @@ class cl_far_retirada
          return false;
        }
      }
-     if(trim($this->fa04_c_numeroreceita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_c_numeroreceita"])){
+     if(trim((string) $this->fa04_c_numeroreceita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_c_numeroreceita"])){
        $sql  .= $virgula." fa04_c_numeroreceita = '$this->fa04_c_numeroreceita' ";
        $virgula = ",";
      }
-     if(trim($this->fa04_d_dtvalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_d_dtvalidade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa04_d_dtvalidade_dia"] !="") ){
+     if(trim((string) $this->fa04_d_dtvalidade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_d_dtvalidade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa04_d_dtvalidade_dia"] !="") ){
        $sql  .= $virgula." fa04_d_dtvalidade = '$this->fa04_d_dtvalidade' ";
        $virgula = ",";
      }     else{
@@ -331,10 +331,10 @@ class cl_far_retirada
          $virgula = ",";
        }
      }
-     if(trim($this->fa04_i_unidades)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_unidades"])){
+     if(trim((string) $this->fa04_i_unidades)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_unidades"])){
        $sql  .= $virgula." fa04_i_unidades = $this->fa04_i_unidades ";
        $virgula = ",";
-       if(trim($this->fa04_i_unidades) == null ){
+       if(trim((string) $this->fa04_i_unidades) == null ){
          $this->erro_sql = " Campo Unidades não informado.";
          $this->erro_campo = "fa04_i_unidades";
          $this->erro_banco = "";
@@ -344,10 +344,10 @@ class cl_far_retirada
          return false;
        }
      }
-     if(trim($this->fa04_i_cgsund)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_cgsund"])){
+     if(trim((string) $this->fa04_i_cgsund)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_cgsund"])){
        $sql  .= $virgula." fa04_i_cgsund = $this->fa04_i_cgsund ";
        $virgula = ",";
-       if(trim($this->fa04_i_cgsund) == null ){
+       if(trim((string) $this->fa04_i_cgsund) == null ){
          $this->erro_sql = " Campo CGS não informado.";
          $this->erro_campo = "fa04_i_cgsund";
          $this->erro_banco = "";
@@ -357,10 +357,10 @@ class cl_far_retirada
          return false;
        }
      }
-     if(trim($this->fa04_i_tiporeceita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_tiporeceita"])){
+     if(trim((string) $this->fa04_i_tiporeceita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_tiporeceita"])){
        $sql  .= $virgula." fa04_i_tiporeceita = $this->fa04_i_tiporeceita ";
        $virgula = ",";
-       if(trim($this->fa04_i_tiporeceita) == null ){
+       if(trim((string) $this->fa04_i_tiporeceita) == null ){
          $this->erro_sql = " Campo Tipo receita não informado.";
          $this->erro_campo = "fa04_i_tiporeceita";
          $this->erro_banco = "";
@@ -370,10 +370,10 @@ class cl_far_retirada
          return false;
        }
      }
-     if(trim($this->fa04_i_dbusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_dbusuario"])){
+     if(trim((string) $this->fa04_i_dbusuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_dbusuario"])){
        $sql  .= $virgula." fa04_i_dbusuario = $this->fa04_i_dbusuario ";
        $virgula = ",";
-       if(trim($this->fa04_i_dbusuario) == null ){
+       if(trim((string) $this->fa04_i_dbusuario) == null ){
          $this->erro_sql = " Campo Usuario não informado.";
          $this->erro_campo = "fa04_i_dbusuario";
          $this->erro_banco = "";
@@ -383,10 +383,10 @@ class cl_far_retirada
          return false;
        }
      }
-     if(trim($this->fa04_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa04_d_data_dia"] !="") ){
+     if(trim((string) $this->fa04_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa04_d_data_dia"] !="") ){
        $sql  .= $virgula." fa04_d_data = '$this->fa04_d_data' ";
        $virgula = ",";
-       if(trim($this->fa04_d_data) == null ){
+       if(trim((string) $this->fa04_d_data) == null ){
          $this->erro_sql = " Campo Data não informado.";
          $this->erro_campo = "fa04_d_data_dia";
          $this->erro_banco = "";
@@ -399,7 +399,7 @@ class cl_far_retirada
        if(isset($GLOBALS["HTTP_POST_VARS"]["fa04_d_data_dia"])){
          $sql  .= $virgula." fa04_d_data = null ";
          $virgula = ",";
-         if(trim($this->fa04_d_data) == null ){
+         if(trim((string) $this->fa04_d_data) == null ){
            $this->erro_sql = " Campo Data não informado.";
            $this->erro_campo = "fa04_d_data_dia";
            $this->erro_banco = "";
@@ -410,24 +410,24 @@ class cl_far_retirada
          }
        }
      }
-     if(trim($this->fa04_i_profissional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_profissional"])){
-        if(trim($this->fa04_i_profissional)=="" && isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_profissional"])){
+     if(trim((string) $this->fa04_i_profissional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_profissional"])){
+        if(trim((string) $this->fa04_i_profissional)=="" && isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_profissional"])){
            $this->fa04_i_profissional = "null" ;
         }
        $sql  .= $virgula." fa04_i_profissional = $this->fa04_i_profissional ";
        $virgula = ",";
      }
-     if(trim($this->fa04_i_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_receita"])){
-        if(trim($this->fa04_i_receita)=="" && isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_receita"])){
+     if(trim((string) $this->fa04_i_receita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_receita"])){
+        if(trim((string) $this->fa04_i_receita)=="" && isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_receita"])){
            $this->fa04_i_receita = "0" ;
         }
        $sql  .= $virgula." fa04_i_receita = $this->fa04_i_receita ";
        $virgula = ",";
      }
-     if(trim($this->fa04_tiporetirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_tiporetirada"])){
+     if(trim((string) $this->fa04_tiporetirada)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_tiporetirada"])){
        $sql  .= $virgula." fa04_tiporetirada = $this->fa04_tiporetirada ";
        $virgula = ",";
-       if(trim($this->fa04_tiporetirada) == null ){
+       if(trim((string) $this->fa04_tiporetirada) == null ){
          $this->erro_sql = " Campo Tipo de Retirada não informado.";
          $this->erro_campo = "fa04_tiporetirada";
          $this->erro_banco = "";
@@ -437,14 +437,14 @@ class cl_far_retirada
          return false;
        }
      }
-     if(trim($this->fa04_numeronotificacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_numeronotificacao"])){
-        if(trim($this->fa04_numeronotificacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["fa04_numeronotificacao"])){
+     if(trim((string) $this->fa04_numeronotificacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_numeronotificacao"])){
+        if(trim((string) $this->fa04_numeronotificacao)=="" && isset($GLOBALS["HTTP_POST_VARS"]["fa04_numeronotificacao"])){
            $this->fa04_numeronotificacao = "0" ;
         }
        $sql  .= $virgula." fa04_numeronotificacao = $this->fa04_numeronotificacao ";
        $virgula = ",";
      }
-     if(trim($this->fa04_data_prescricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_data_prescricao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa04_data_prescricao_dia"] !="") ){
+     if(trim((string) $this->fa04_data_prescricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["fa04_data_prescricao_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["fa04_data_prescricao_dia"] !="") ){
        $sql  .= $virgula." fa04_data_prescricao = '$this->fa04_data_prescricao' ";
        $virgula = ",";
      }     else{
@@ -467,35 +467,35 @@ class cl_far_retirada
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,12143,'$this->fa04_i_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_codigo"]) || $this->fa04_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,2106,12143,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_i_codigo'))."','$this->fa04_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,12143,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_i_codigo'))."','$this->fa04_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_c_numeroreceita"]) || $this->fa04_c_numeroreceita != "")
-             $resac = db_query("insert into db_acount values($acount,2106,12144,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_c_numeroreceita'))."','$this->fa04_c_numeroreceita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,12144,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_c_numeroreceita'))."','$this->fa04_c_numeroreceita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_d_dtvalidade"]) || $this->fa04_d_dtvalidade != "")
-             $resac = db_query("insert into db_acount values($acount,2106,12147,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_d_dtvalidade'))."','$this->fa04_d_dtvalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,12147,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_d_dtvalidade'))."','$this->fa04_d_dtvalidade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_unidades"]) || $this->fa04_i_unidades != "")
-             $resac = db_query("insert into db_acount values($acount,2106,12148,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_i_unidades'))."','$this->fa04_i_unidades',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,12148,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_i_unidades'))."','$this->fa04_i_unidades',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_cgsund"]) || $this->fa04_i_cgsund != "")
-             $resac = db_query("insert into db_acount values($acount,2106,12149,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_i_cgsund'))."','$this->fa04_i_cgsund',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,12149,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_i_cgsund'))."','$this->fa04_i_cgsund',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_tiporeceita"]) || $this->fa04_i_tiporeceita != "")
-             $resac = db_query("insert into db_acount values($acount,2106,12150,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_i_tiporeceita'))."','$this->fa04_i_tiporeceita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,12150,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_i_tiporeceita'))."','$this->fa04_i_tiporeceita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_dbusuario"]) || $this->fa04_i_dbusuario != "")
-             $resac = db_query("insert into db_acount values($acount,2106,12187,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_i_dbusuario'))."','$this->fa04_i_dbusuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,12187,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_i_dbusuario'))."','$this->fa04_i_dbusuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_d_data"]) || $this->fa04_d_data != "")
-             $resac = db_query("insert into db_acount values($acount,2106,12186,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_d_data'))."','$this->fa04_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,12186,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_d_data'))."','$this->fa04_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_profissional"]) || $this->fa04_i_profissional != "")
-             $resac = db_query("insert into db_acount values($acount,2106,12188,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_i_profissional'))."','$this->fa04_i_profissional',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,12188,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_i_profissional'))."','$this->fa04_i_profissional',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_i_receita"]) || $this->fa04_i_receita != "")
-             $resac = db_query("insert into db_acount values($acount,2106,17754,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_i_receita'))."','$this->fa04_i_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,17754,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_i_receita'))."','$this->fa04_i_receita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_tiporetirada"]) || $this->fa04_tiporetirada != "")
-             $resac = db_query("insert into db_acount values($acount,2106,18106,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_tiporetirada'))."','$this->fa04_tiporetirada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,18106,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_tiporetirada'))."','$this->fa04_tiporetirada',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_numeronotificacao"]) || $this->fa04_numeronotificacao != "")
-             $resac = db_query("insert into db_acount values($acount,2106,20167,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_numeronotificacao'))."','$this->fa04_numeronotificacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,20167,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_numeronotificacao'))."','$this->fa04_numeronotificacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["fa04_data_prescricao"]) || $this->fa04_data_prescricao != "")
-             $resac = db_query("insert into db_acount values($acount,2106,1014575,'".AddSlashes(pg_result($resaco,$conresaco,'fa04_data_prescricao'))."','$this->fa04_data_prescricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,2106,1014575,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'fa04_data_prescricao'))."','$this->fa04_data_prescricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -549,22 +549,22 @@ class cl_far_retirada
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,12143,'$fa04_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,2106,12143,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,12144,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_c_numeroreceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,12147,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_d_dtvalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,12148,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_i_unidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,12149,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,12150,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_i_tiporeceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,12187,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_i_dbusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,12186,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,12188,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_i_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,17754,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_i_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,18106,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_tiporetirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,20167,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_numeronotificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,2106,1014575,'','".AddSlashes(pg_result($resaco,$iresaco,'fa04_data_prescricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,12143,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,12144,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_c_numeroreceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,12147,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_d_dtvalidade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,12148,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_i_unidades'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,12149,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_i_cgsund'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,12150,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_i_tiporeceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,12187,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_i_dbusuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,12186,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,12188,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_i_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,17754,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_i_receita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,18106,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_tiporetirada'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,20167,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_numeronotificacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,2106,1014575,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'fa04_data_prescricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -731,7 +731,7 @@ class cl_far_retirada
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -774,7 +774,7 @@ class cl_far_retirada
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -844,7 +844,7 @@ class cl_far_retirada
     if ($sOrdem != null ) {
 
       $sSql        .= " order by ";
-      $sCampos_sql  = explode("#",$sOrdem);
+      $sCampos_sql  = explode("#",(string) $sOrdem);
       $sVirgula     = "";
       for ($i = 0; $i < sizeof($sCampos_sql); $i++) {
 
@@ -893,7 +893,7 @@ class cl_far_retirada
     if ($ordem != null ) {
 
       $sql       .= " order by ";
-      $campos_sql = explode("#",$ordem);
+      $campos_sql = explode("#",(string) $ordem);
       $virgula    = "";
       for ($i     = 0; $i < sizeof($campos_sql); $i++) {
 
@@ -962,7 +962,7 @@ class cl_far_retirada
     if ($sOrdem != null) {
 
       $sSql      .= ' order by ';
-      $sCamposSql = explode('#', $sOrdem);
+      $sCamposSql = explode('#', (string) $sOrdem);
       $sVirgula   = '';
       for ($iCont = 0; $iCont < sizeof($sCamposSql); $iCont++) {
 

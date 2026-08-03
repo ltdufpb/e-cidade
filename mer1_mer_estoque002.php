@@ -33,8 +33,8 @@ include(modification("classes/db_mer_estoque_classe.php"));
 include(modification("classes/db_mer_estoqueitem_classe.php"));
 include(modification("classes/db_matrequiitem_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $clmer_estoque     = new cl_mer_estoque;
 $clmer_estoqueitem = new cl_mer_estoqueitem;
 $cl_matrequiitem   = new cl_matrequiitem;
@@ -52,7 +52,7 @@ if (isset($incluir)) {
 	$sql = $cl_matrequiitem->sql_query("","*","","m41_codmatrequi=".$codrequi);
 	$result = db_query($sql);
 	$linhas = pg_num_rows($result);
-	$vet    = explode(",",$lista);
+	$vet    = explode(",",(string) $lista);
     db_inicio_transacao();
     
 	for ($x=0;$x<count($vet);$x++) {

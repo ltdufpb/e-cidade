@@ -49,7 +49,7 @@ class RegraLancamentoLiquidacaoEmpenho implements IRegraLancamentoContabil {
    */
   public function getRegraLancamento($iCodigoDocumento, $iCodigoLancamento, ILancamentoAuxiliar $oLancamentoAuxiliar) {
 
-    $aDocumentosLiquidacaoRP = array(33, 34);
+    $aDocumentosLiquidacaoRP = [33, 34];
     $this->iCodigoDocumento  = $iCodigoDocumento;
     $iAnoSessao              = db_getsession("DB_anousu");
     $iInstituicao            = db_getsession("DB_instit");
@@ -104,7 +104,7 @@ class RegraLancamentoLiquidacaoEmpenho implements IRegraLancamentoContabil {
          */
         case 0:
 
-          if ( $oDadosTransacao->c46_ordem > 1 || (UTILIZA_INCORPORACAO_BEM && in_array($iCodigoDocumento, array(202, 203)))) {
+          if ( $oDadosTransacao->c46_ordem > 1 || (UTILIZA_INCORPORACAO_BEM && in_array($iCodigoDocumento, [202, 203]))) {
             $oRegraLancamentoContabil = new RegraLancamentoContabil($oDadosTransacao->c47_seqtranslr);
             return $oRegraLancamentoContabil;
           }
@@ -207,7 +207,7 @@ class RegraLancamentoLiquidacaoEmpenho implements IRegraLancamentoContabil {
   private function getReduzidoPlanoContaPCASP(ContaOrcamento $oContaOrcamento)
   {
 
-    if (in_array($this->iCodigoDocumento, array(33, 34))) {
+    if (in_array($this->iCodigoDocumento, [33, 34])) {
 
       $sEstrutural  = $oContaOrcamento->getEstrutural();
       $iAnoSessao   =  db_getsession("DB_anousu");

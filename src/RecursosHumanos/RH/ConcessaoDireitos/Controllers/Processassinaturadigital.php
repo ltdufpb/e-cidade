@@ -52,7 +52,7 @@ class Processassinaturadigital
 
         $path     = $processamentoRelatorio->sMsg;
 
-        $parametros->aParametros = JSON::create()->parse(urldecode($parametros->aParametros));
+        $parametros->aParametros = JSON::create()->parse(urldecode((string) $parametros->aParametros));
         $parametrosPortaria = current($parametros->aParametros);
         $nroPortaria = $parametrosPortaria->sValor;
         $parametrosPortaria = next($parametros->aParametros);
@@ -78,7 +78,7 @@ class Processassinaturadigital
 
         $this->retorno->url        = $configStorage->url;
         $this->retorno->url       .= '/' . $response->data->url;
-        $this->retorno->path       = preg_replace('/.*?(tmp\/.*...*)$/', "$1", $path);
+        $this->retorno->path       = preg_replace('/.*?(tmp\/.*...*)$/', "$1", (string) $path);
 
         return $this->retorno;
     }
@@ -93,12 +93,12 @@ class Processassinaturadigital
     ) {
         $file = new FilePostStorage();
         $file->realPath($path);
-        $file->clientOriginalName(preg_replace('/.*\/(.*?\..*)$/', "$1", $path));
+        $file->clientOriginalName(preg_replace('/.*\/(.*?\..*)$/', "$1", (string) $path));
         $file->visibility('public');
 
 
 
-        $arrayPortaria = explode('/', $nroPortaria);
+        $arrayPortaria = explode('/', (string) $nroPortaria);
 
         $clPortaria = new cl_portaria;
         $rsAssentamento = pg_fetch_assoc(db_query($clPortaria->sql_query_assentamento_servidor($iCodigoPortaria)));
@@ -148,24 +148,24 @@ class Processassinaturadigital
         }
 
         if (!empty($assinante)) {
-            $nomeAssinante = preg_replace('/^(.*?):.*/', "$1", $assinante);
+            $nomeAssinante = preg_replace('/^(.*?):.*/', "$1", (string) $assinante);
             $cpfAssinante  = preg_replace(
-                array(
+                [
                     '/.*?:(.*)$/',
                     '/\D/'
-                ),
-                array(
+                ],
+                [
                     "$1",
                     ""
-                ),
-                $assinante
+                ],
+                (string) $assinante
             );
 
             $assinaturasdocumento = new cl_assinaturasdocumento();
 
-            $aWhereAssinantes = array(
+            $aWhereAssinantes = [
                 "db178_cpf = '{$cpfAssinante}'"
-            );
+            ];
             $whereAssinantes  = implode(" AND ", $aWhereAssinantes);
             $sqlAssinantes    = $assinaturasdocumento->sql_query_file(null, "db178_sequencial", null, $whereAssinantes);
             $rsAssinantes     = db_query($sqlAssinantes);
@@ -186,10 +186,10 @@ class Processassinaturadigital
                     $servidor = ServidorRepository::getByCPF($cpfAssinante);
 
                     if (!empty($servidor)) {
-                        $metadadosAssinante = (object)array(
+                        $metadadosAssinante = (object)[
                             'matricula' => $servidor->getMatricula(),
                             'cgm'       => $servidor->getCgm()->getCodigo()
-                        );
+                        ];
                         $assinaturasdocumento->db178_metadados = JSON::create()->stringify($metadadosAssinante);
                     }
                 }
@@ -212,16 +212,16 @@ class Processassinaturadigital
             }
 
             $assinaturasarquivo = new cl_arquivoestorageassinaturas();
-            $aWhereAssinaturasarquivo = array("h31_sequencial = {$iCodigoPortaria}");
+            $aWhereAssinaturasarquivo = ["h31_sequencial = {$iCodigoPortaria}"];
             $sqlAssinaturasarquivo    = $assinaturasarquivo->sql_query_limite_assinaturas(
                 null,
-                array(
+                [
                     "portaria.h31_sequencial",
                     "portaria.h31_numero",
                     "portaria.h31_anousu",
                     "count(distinct arquivoestorageassinaturas.db179_assinatura) as totalAssinaturas",
                     "count(distinct assinaturadocumentodesignacao.db59_usuario) as limiteAssinaturasDocumento"
-                ),
+                ],
                 null,
                 $aWhereAssinaturasarquivo
             );

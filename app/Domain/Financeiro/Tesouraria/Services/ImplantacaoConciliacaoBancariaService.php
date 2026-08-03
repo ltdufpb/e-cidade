@@ -57,7 +57,7 @@ class ImplantacaoConciliacaoBancariaService
         $sqlDatas = $oDaoSaltes->sql_query_DataContas($iAno, $iInstituicao, $conta, $reduzidos);
         $rsDatas = $oDaoSaltes->sql_record($sqlDatas);
 
-        $aDatas = array();
+        $aDatas = [];
         for ($i = 0; $i < $oDaoSaltes->numrows; $i++) {
             $oDatas = db_utils::fieldsMemory($rsDatas, $i);
             $data =  db_formatar($oDatas->k12_data, "d");
@@ -78,7 +78,7 @@ class ImplantacaoConciliacaoBancariaService
 
         $rsContas    = $oDaoSaltes->sql_record($sqlConta);
         $numrows     = $oDaoSaltes->numrows;
-        $dados = array();
+        $dados = [];
 
         for ($i = 0; $i < $numrows; $i++) {
             $oDados = db_utils::fieldsMemory($rsContas, $i);

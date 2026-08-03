@@ -46,7 +46,7 @@ class DocumentoConLicitaCon extends ArquivoLicitaCon {
    */
   public function getDocumentos() {
 
-    $sCampos = " distinct " . implode(', ', array(
+    $sCampos = " distinct " . implode(', ', [
       'ac16_sequencial      as sequencial',
       'ac16_numero          as nr_contrato',
       'ac16_anousu          as ano_contrato',
@@ -56,7 +56,7 @@ class DocumentoConLicitaCon extends ArquivoLicitaCon {
       'ac40_nomearquivo     as nome_arquivo',
       'ac40_arquivo         as codigo_arquivo',
       "ac55_tipoevento      as evento"
-    ));
+    ]);
 
     $sDataAtual = $this->oCabecalho->getDataGeracao()->getDate(DBDate::DATA_EN);
     $sWhere   = " (ac58_acordo is null or ac58_data >= '{$sDataAtual}') and ac16_instit = {$this->oCabecalho->getInstituicao()->getCodigo()} and (ac55_tipoevento <> 12 or (ac55_tipoevento = 12 and ac56_acordoevento is not null))";
@@ -82,7 +82,7 @@ class DocumentoConLicitaCon extends ArquivoLicitaCon {
     $aTiposDocumento   = LicitaConTipoDocumentoAcordo::getSiglas();
     $aTiposInstrumento = LicitaConTipoInstrumentoAcordo::getSiglas();
 
-    $aDocumentos = array();
+    $aDocumentos = [];
     for ($iIndice = 0; $iIndice < $iTotalDocumentos; $iIndice++) {
 
       $oDocumento    = db_utils::fieldsMemory($rsDocumentos, $iIndice);
@@ -90,7 +90,7 @@ class DocumentoConLicitaCon extends ArquivoLicitaCon {
       $oLicitacao    = $oRegraContrato->getDadosDaLicitacaoDoContrato($oDocumento->sequencial);
       $oStdDocumento = new stdClass;
 
-      $sCaminhoArquivo = $this->sNomeArquivo . "\\" . preg_replace("/((?![\w\\.!@#$%*()_+= ,<>?\/^~-]).)/", "", $oDocumento->nome_arquivo);
+      $sCaminhoArquivo = $this->sNomeArquivo . "\\" . preg_replace("/((?![\w\\.!@#$%*()_+= ,<>?\/^~-]).)/", "", (string) $oDocumento->nome_arquivo);
 			$sCaminhoArquivo = File::cutName($sCaminhoArquivo, $this->oRegra->getTamanhoNomeArquivo());
 
       $oStdDocumento->NR_LICITACAO           = $oLicitacao->numero;

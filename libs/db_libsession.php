@@ -42,7 +42,7 @@ function db_savesession($_conn, $_session) {
 
   foreach($_session as $key=>$val) {
 
-    $key = strtoupper($key);
+    $key = strtoupper((string) $key);
 
     // Intercepta "DB_DATAUSU" para ajustes
     if ($key == "DB_DATAUSU") {
@@ -58,7 +58,7 @@ function db_savesession($_conn, $_session) {
       $val = date("Y-m-d", $val);
     }
 
-    if (substr($key,0,2) == "DB"){
+    if (str_starts_with($key, "DB")){
 
       $val = pg_escape_string($val);
       $sql .= "SELECT fc_putsession('$key', '$val'); ";

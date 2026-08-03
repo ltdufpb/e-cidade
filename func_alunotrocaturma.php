@@ -35,8 +35,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_aluno_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $iEscola   = db_getsession("DB_coddepto");
 $oDaoAluno = db_utils::getDao("aluno");
@@ -81,7 +81,7 @@ $clrotulo->label("ed57_c_descr");
                 </td>
                 <td width="96%" align="left" nowrap>
                   <?php 
-                    $aTurmas            = array();
+                    $aTurmas            = [];
                     $aTurmas[]          = '';
                     $sCamposTurmaAluno  = "distinct ed60_i_turma, ed57_c_descr";
                     $sWhereTurmaAluno   = "ed60_c_situacao = 'MATRICULADO' AND ed59_c_encerrada = 'N' AND ed57_i_escola = {$iEscola}  \n";
@@ -152,9 +152,9 @@ $clrotulo->label("ed57_c_descr");
               $sSql    = $oDaoAluno->sql_query_alunotrocaturma("", $sCampos, "ed47_i_codigo", $sWhere);
             }
             
-            $repassa = array();
+            $repassa = [];
             if (isset($chave_ed47_i_codigo)) {
-              $repassa = array("chave_ed47_i_codigo" => $chave_ed47_i_codigo, "chave_ed47_v_nome" => $chave_ed47_v_nome);
+              $repassa = ["chave_ed47_i_codigo" => $chave_ed47_i_codigo, "chave_ed47_v_nome" => $chave_ed47_v_nome];
             }
             
             db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

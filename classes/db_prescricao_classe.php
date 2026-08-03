@@ -29,31 +29,31 @@
 //CLASSE DA ENTIDADE prescricao
 class cl_prescricao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k31_codigo = 0; 
-   var $k31_data_dia = null; 
-   var $k31_data_mes = null; 
-   var $k31_data_ano = null; 
-   var $k31_data = null; 
-   var $k31_hora = null; 
-   var $k31_usuario = 0; 
-   var $k31_obs = null; 
-   var $k31_instit = 0; 
-   var $k31_situacao = 0; 
+   public $k31_codigo = 0; 
+   public $k31_data_dia = null; 
+   public $k31_data_mes = null; 
+   public $k31_data_ano = null; 
+   public $k31_data = null; 
+   public $k31_hora = null; 
+   public $k31_usuario = 0; 
+   public $k31_obs = null; 
+   public $k31_instit = 0; 
+   public $k31_situacao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k31_codigo = int4 = Código da prescricao 
                  k31_data = date = Data do lancamento 
                  k31_hora = varchar(5) = Hora do lancamento 
@@ -63,10 +63,10 @@ class cl_prescricao {
                  k31_situacao = int4 = Situação 
                  ";
    //funcao construtor da classe 
-   function cl_prescricao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("prescricao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -165,10 +165,10 @@ class cl_prescricao {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k31_codigo = pg_result($result,0,0); 
+       $this->k31_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from prescricao_k31_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k31_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k31_codigo)){
          $this->erro_sql = " Campo k31_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -208,7 +208,7 @@ class cl_prescricao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Prescricao de débitos ($this->k31_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Prescricao de débitos já Cadastrado";
@@ -232,16 +232,16 @@ class cl_prescricao {
      $resaco = $this->sql_record($this->sql_query_file($this->k31_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,7449,'$this->k31_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1237,7449,'','".AddSlashes(pg_result($resaco,0,'k31_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1237,7450,'','".AddSlashes(pg_result($resaco,0,'k31_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1237,7451,'','".AddSlashes(pg_result($resaco,0,'k31_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1237,7452,'','".AddSlashes(pg_result($resaco,0,'k31_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1237,7582,'','".AddSlashes(pg_result($resaco,0,'k31_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1237,10670,'','".AddSlashes(pg_result($resaco,0,'k31_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1237,17633,'','".AddSlashes(pg_result($resaco,0,'k31_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1237,7449,'','".AddSlashes(pg_fetch_result($resaco,0,'k31_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1237,7450,'','".AddSlashes(pg_fetch_result($resaco,0,'k31_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1237,7451,'','".AddSlashes(pg_fetch_result($resaco,0,'k31_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1237,7452,'','".AddSlashes(pg_fetch_result($resaco,0,'k31_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1237,7582,'','".AddSlashes(pg_fetch_result($resaco,0,'k31_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1237,10670,'','".AddSlashes(pg_fetch_result($resaco,0,'k31_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1237,17633,'','".AddSlashes(pg_fetch_result($resaco,0,'k31_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -250,10 +250,10 @@ class cl_prescricao {
       $this->atualizacampos();
      $sql = " update prescricao set ";
      $virgula = "";
-     if(trim($this->k31_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_codigo"])){ 
+     if(trim((string) $this->k31_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_codigo"])){ 
        $sql  .= $virgula." k31_codigo = $this->k31_codigo ";
        $virgula = ",";
-       if(trim($this->k31_codigo) == null ){ 
+       if(trim((string) $this->k31_codigo) == null ){ 
          $this->erro_sql = " Campo Código da prescricao nao Informado.";
          $this->erro_campo = "k31_codigo";
          $this->erro_banco = "";
@@ -263,10 +263,10 @@ class cl_prescricao {
          return false;
        }
      }
-     if(trim($this->k31_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k31_data_dia"] !="") ){ 
+     if(trim((string) $this->k31_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["k31_data_dia"] !="") ){ 
        $sql  .= $virgula." k31_data = '$this->k31_data' ";
        $virgula = ",";
-       if(trim($this->k31_data) == null ){ 
+       if(trim((string) $this->k31_data) == null ){ 
          $this->erro_sql = " Campo Data do lancamento nao Informado.";
          $this->erro_campo = "k31_data_dia";
          $this->erro_banco = "";
@@ -279,7 +279,7 @@ class cl_prescricao {
        if(isset($GLOBALS["HTTP_POST_VARS"]["k31_data_dia"])){ 
          $sql  .= $virgula." k31_data = null ";
          $virgula = ",";
-         if(trim($this->k31_data) == null ){ 
+         if(trim((string) $this->k31_data) == null ){ 
            $this->erro_sql = " Campo Data do lancamento nao Informado.";
            $this->erro_campo = "k31_data_dia";
            $this->erro_banco = "";
@@ -290,10 +290,10 @@ class cl_prescricao {
          }
        }
      }
-     if(trim($this->k31_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_hora"])){ 
+     if(trim((string) $this->k31_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_hora"])){ 
        $sql  .= $virgula." k31_hora = '$this->k31_hora' ";
        $virgula = ",";
-       if(trim($this->k31_hora) == null ){ 
+       if(trim((string) $this->k31_hora) == null ){ 
          $this->erro_sql = " Campo Hora do lancamento nao Informado.";
          $this->erro_campo = "k31_hora";
          $this->erro_banco = "";
@@ -303,10 +303,10 @@ class cl_prescricao {
          return false;
        }
      }
-     if(trim($this->k31_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_usuario"])){ 
+     if(trim((string) $this->k31_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_usuario"])){ 
        $sql  .= $virgula." k31_usuario = $this->k31_usuario ";
        $virgula = ",";
-       if(trim($this->k31_usuario) == null ){ 
+       if(trim((string) $this->k31_usuario) == null ){ 
          $this->erro_sql = " Campo Cod. Usuário nao Informado.";
          $this->erro_campo = "k31_usuario";
          $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_prescricao {
          return false;
        }
      }
-     if(trim($this->k31_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_obs"])){ 
+     if(trim((string) $this->k31_obs)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_obs"])){ 
        $sql  .= $virgula." k31_obs = '$this->k31_obs' ";
        $virgula = ",";
-       if(trim($this->k31_obs) == null ){ 
+       if(trim((string) $this->k31_obs) == null ){ 
          $this->erro_sql = " Campo Observações nao Informado.";
          $this->erro_campo = "k31_obs";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_prescricao {
          return false;
        }
      }
-     if(trim($this->k31_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_instit"])){ 
+     if(trim((string) $this->k31_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_instit"])){ 
        $sql  .= $virgula." k31_instit = $this->k31_instit ";
        $virgula = ",";
-       if(trim($this->k31_instit) == null ){ 
+       if(trim((string) $this->k31_instit) == null ){ 
          $this->erro_sql = " Campo Cod. Instituição nao Informado.";
          $this->erro_campo = "k31_instit";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_prescricao {
          return false;
        }
      }
-     if(trim($this->k31_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_situacao"])){ 
+     if(trim((string) $this->k31_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k31_situacao"])){ 
        $sql  .= $virgula." k31_situacao = $this->k31_situacao ";
        $virgula = ",";
-       if(trim($this->k31_situacao) == null ){ 
+       if(trim((string) $this->k31_situacao) == null ){ 
          $this->erro_sql = " Campo Situação nao Informado.";
          $this->erro_campo = "k31_situacao";
          $this->erro_banco = "";
@@ -363,23 +363,23 @@ class cl_prescricao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7449,'$this->k31_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k31_codigo"]) || $this->k31_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,1237,7449,'".AddSlashes(pg_result($resaco,$conresaco,'k31_codigo'))."','$this->k31_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1237,7449,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k31_codigo'))."','$this->k31_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k31_data"]) || $this->k31_data != "")
-           $resac = db_query("insert into db_acount values($acount,1237,7450,'".AddSlashes(pg_result($resaco,$conresaco,'k31_data'))."','$this->k31_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1237,7450,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k31_data'))."','$this->k31_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k31_hora"]) || $this->k31_hora != "")
-           $resac = db_query("insert into db_acount values($acount,1237,7451,'".AddSlashes(pg_result($resaco,$conresaco,'k31_hora'))."','$this->k31_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1237,7451,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k31_hora'))."','$this->k31_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k31_usuario"]) || $this->k31_usuario != "")
-           $resac = db_query("insert into db_acount values($acount,1237,7452,'".AddSlashes(pg_result($resaco,$conresaco,'k31_usuario'))."','$this->k31_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1237,7452,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k31_usuario'))."','$this->k31_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k31_obs"]) || $this->k31_obs != "")
-           $resac = db_query("insert into db_acount values($acount,1237,7582,'".AddSlashes(pg_result($resaco,$conresaco,'k31_obs'))."','$this->k31_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1237,7582,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k31_obs'))."','$this->k31_obs',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k31_instit"]) || $this->k31_instit != "")
-           $resac = db_query("insert into db_acount values($acount,1237,10670,'".AddSlashes(pg_result($resaco,$conresaco,'k31_instit'))."','$this->k31_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1237,10670,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k31_instit'))."','$this->k31_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k31_situacao"]) || $this->k31_situacao != "")
-           $resac = db_query("insert into db_acount values($acount,1237,17633,'".AddSlashes(pg_result($resaco,$conresaco,'k31_situacao'))."','$this->k31_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1237,17633,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k31_situacao'))."','$this->k31_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -424,16 +424,16 @@ class cl_prescricao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,7449,'$k31_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1237,7449,'','".AddSlashes(pg_result($resaco,$iresaco,'k31_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1237,7450,'','".AddSlashes(pg_result($resaco,$iresaco,'k31_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1237,7451,'','".AddSlashes(pg_result($resaco,$iresaco,'k31_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1237,7452,'','".AddSlashes(pg_result($resaco,$iresaco,'k31_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1237,7582,'','".AddSlashes(pg_result($resaco,$iresaco,'k31_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1237,10670,'','".AddSlashes(pg_result($resaco,$iresaco,'k31_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1237,17633,'','".AddSlashes(pg_result($resaco,$iresaco,'k31_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1237,7449,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k31_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1237,7450,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k31_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1237,7451,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k31_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1237,7452,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k31_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1237,7582,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k31_obs'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1237,10670,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k31_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1237,17633,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k31_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from prescricao
@@ -493,7 +493,7 @@ class cl_prescricao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:prescricao";
@@ -508,7 +508,7 @@ class cl_prescricao {
    function sql_query ( $k31_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -532,7 +532,7 @@ class cl_prescricao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -545,7 +545,7 @@ class cl_prescricao {
    function sql_query_file ( $k31_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -566,7 +566,7 @@ class cl_prescricao {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

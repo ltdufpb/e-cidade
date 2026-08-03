@@ -125,7 +125,7 @@ class TributoIRRFRepository
      * @param TributoIRRF|null $tributoIRRF
      * @throws Exception
      */
-    public function delete(TributoIRRF $tributoIRRF = null)
+    public function delete(?TributoIRRF $tributoIRRF = null)
     {
         $id = $tributoIRRF instanceof TributoIRRF ? $tributoIRRF->getSequencial() : null;
 
@@ -143,7 +143,7 @@ class TributoIRRFRepository
      * @return bool|TributoIRRF
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'), $order = null, $where = null)
+    public static function find($id, $columns = ['*'], $order = null, $where = null)
     {
         $dao = new cl_rhprocessotributoirrf;
         $sql = $dao->sql_query($id, implode(', ', $columns), $order, $where);

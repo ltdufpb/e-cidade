@@ -38,11 +38,11 @@ $clrotulo->label("k02_drecei");
 $clrotulo->label("k03_diasvalidadecertidao");
 $clrotulo->label("k03_diasreemissaocertidao");
 
-if (empty($k03_diasreemissaocertidao) || !DBNumber::isInteger(trim($k03_diasreemissaocertidao))) {
+if (empty($k03_diasreemissaocertidao) || !DBNumber::isInteger(trim((string) $k03_diasreemissaocertidao))) {
     $k03_diasreemissaocertidao = '';
 }
 
-if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalidadecertidao))) {
+if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim((string) $k03_diasvalidadecertidao))) {
     $k03_diasvalidadecertidao = '';
 }
 ?>
@@ -131,7 +131,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                             <td>
                                 <?php
-                                $x = array("f" => "NÃO", "t" => "SIM");
+                                $x = ["f" => "NÃO", "t" => "SIM"];
                                 db_select('k03_calrec', $x, true, $db_opcao, "style='width:115px'");
                                 ?>
                             </td>
@@ -174,8 +174,8 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                     }
                                 }
 
-                                $aPgtoParcial = array('true' => 'SIM',
-                                    'false' => 'NÃO');
+                                $aPgtoParcial = ['true' => 'SIM',
+                                    'false' => 'NÃO'];
 
                                 db_select("k03_pgtoparcial", $aPgtoParcial, true, $db_opcao, "style='width:115px'");
                                 ?>
@@ -232,7 +232,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                             <td width="20%">
                                 <?php
-                                $x = array("f" => "NÃO", "t" => "SIM");
+                                $x = ["f" => "NÃO", "t" => "SIM"];
                                 db_select('k03_impend', $x, true, $db_opcao, "style='width:125px'");
                                 ?>
                             </td>
@@ -241,7 +241,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                             <td width="20%">
                                 <?php
-                                $x = array("f" => "NÃO", "t" => "SIM");
+                                $x = ["f" => "NÃO", "t" => "SIM"];
                                 db_select('k03_unipri', $x, true, $db_opcao, "style='width:125px'");
                                 ?>
                             </td>
@@ -252,7 +252,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                             <td>
                                 <?php
-                                $x = array("f" => "NÃO", "t" => "SIM");
+                                $x = ["f" => "NÃO", "t" => "SIM"];
                                 db_select('k03_certissvar', $x, true, $db_opcao, "style='width:125px'");
                                 ?>
                             </td>
@@ -271,7 +271,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                             <td colspan='3'>
                                 <?php
-                                $x = array('2' => 'NÃO', '1' => 'SIM');
+                                $x = ['2' => 'NÃO', '1' => 'SIM'];
                                 db_select('k03_separajurmulparc', $x, true, $db_opcao, "style='width:125px'");
                                 ?>
                             </td>
@@ -322,10 +322,10 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                             <td colspan="3">
                                <?php
-                                 $aReemiteRecibo = array(
+                                 $aReemiteRecibo = [
                                     'f'=>"Não",
                                     't'=>"Sim"
-                                 );
+                                 ];
 
                                  db_select('k03_reemissaorecibo',$aReemiteRecibo,true,$db_opcao, "style='width:125px'");
                                 ?>
@@ -337,7 +337,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                             <td colspan='3'>
                                 <?php
-                                $x = array("1" => "Conjunta", "2" => "Individualizada", "3" => "Sele&ccedil;&atilde;o Usu&aacute;rio");
+                                $x = ["1" => "Conjunta", "2" => "Individualizada", "3" => "Sele&ccedil;&atilde;o Usu&aacute;rio"];
                                 db_select('k03_tipocertidao', $x, true, $db_opcao, "style='width:125px'");
                                 ?>
                             </td>
@@ -348,7 +348,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                             <td colspan='3'>
                                 <?php
-                                $x = array("f" => "NÃO", "t" => "SIM");
+                                $x = ["f" => "NÃO", "t" => "SIM"];
                                 db_select('k03_reccert', $x, true, $db_opcao, "style='width:125px'");
                                 ?>
                             </td>
@@ -359,12 +359,12 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                             <td colspan="3">
                                 <?php
-                                $x = array('0' => 'Não codifica',
+                                $x = ['0' => 'Não codifica',
                                     '1' => 'Sequencial geral',
                                     '2' => 'Sequencial por Instituição',
                                     '3' => 'Sequencial por Tipo de Certidão Geral',
                                     '4' => 'Sequencial por Tipo de Certidão por Instituição',
-                                    '5' => 'Código do Processo de Protocolo e Exercício');
+                                    '5' => 'Código do Processo de Protocolo e Exercício'];
 
                                 db_select('k03_tipocodcert', $x, true, $db_opcao, "style='width:350px'");
                                 ?>
@@ -376,9 +376,9 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                             </td>
                             <td colspan="3">
                                 <?php
-                                $aRegraCND = array("1" => "Verifica os débitos dos imóveis por matrícula",
+                                $aRegraCND = ["1" => "Verifica os débitos dos imóveis por matrícula",
                                     "2" => "Verifica os débitos dos imóveis por lote",
-                                    "3" => "Verifica os débitos dos imóveis por idbql");
+                                    "3" => "Verifica os débitos dos imóveis por idbql"];
                                 db_select('k03_regracnd', $aRegraCND, true, $db_opcao, "style='width:350px'");
                                 ?>
                             </td>
@@ -402,7 +402,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                        <?= @$Lk03_filtrarreceita ?>
                             </td>
                             <td width="20%">
-                                       <?php   $x = array("f" => "NÃO", "t" => "SIM");
+                                       <?php   $x = ["f" => "NÃO", "t" => "SIM"];
                                             db_select('k03_filtrarreceita', $x, true, $db_opcao, "style='width:125px'");
                                         ?>
                             </td>                        
@@ -420,7 +420,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                             </td>
                                             <td width="20%">
                                                 <?php
-                                                $x = array("f" => "NÃO", "t" => "SIM");
+                                                $x = ["f" => "NÃO", "t" => "SIM"];
                                                 db_select('k03_filtrardepart', $x, true, $db_opcao, "style='width:125px'");
                                                 ?>
                                             </td>
@@ -429,7 +429,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                             </td>
                                             <td width="20%">
                                                 <?php
-                                                $x = array("f" => "NÃO", "t" => "SIM");
+                                                $x = ["f" => "NÃO", "t" => "SIM"];
                                                 db_select('k03_apenastiporenuncia', $x, true, $db_opcao, "style='width:125px'");
                                                 ?>
                                             </td>
@@ -440,7 +440,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
                                             </td>
                                             <td width="20%">
                                                 <?php
-                                                $x = array("f" => "NÃO", "t" => "SIM");
+                                                $x = ["f" => "NÃO", "t" => "SIM"];
                                                 db_select('k03_imprimecancdebitos', $x, true, $db_opcao, "style='width:125px'");
                                                 ?>
                                             </td>
@@ -457,166 +457,166 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
         <!-- final tributario -->
 
         <?php
-        $camposDiasCertidao = array(
+        $camposDiasCertidao = [
             // Array de informações das certidões emitidas via ECidade
-            array(
+            [
                 "title" => "Certidões de Regularidade Fiscal - E-Cidade",
                 "id" => "ecidade",
-                "fieldsets" => array(
+                "fieldsets" => [
                     // Array da certidão regular
-                    array(
+                    [
                         "title" => "Certidão Regular",
-                        "campos" => array(
-                            array(
+                        "campos" => [
+                            [
                                 "campo"         => "diascertidregular_cgm",
                                 "label"         => @$Lk03_diascertidregular_cgm,
                                 "title"         => @$Tk03_diascertidregular_cgm,
                                 "campoTemplate" => "templatecertidao_cgm"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidregular_matric",
                                 "label"         => @$Lk03_diascertidregular_matric,
                                 "title"         => @$Tk03_diascertidregular_matric,
                                 "campoTemplate" => "templatecertidao_matric"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidregular_inscr",
                                 "label"         => @$Lk03_diascertidregular_inscr,
                                 "title"         => @$Tk03_diascertidregular_inscr,
                                 "campoTemplate" => "templatecertidao_inscr"
-                            )
-                        )
-                    ),
+                            ]
+                        ]
+                    ],
                     // Array da certidão positiva
-                    array(
+                    [
                         "title" => "Certidão Positiva",
-                        "campos" => array(
-                            array(
+                        "campos" => [
+                            [
                                 "campo"         => "diascertidpositiva_cgm",
                                 "label"         => @$Lk03_diascertidpositiva_cgm,
                                 "title"         => @$Tk03_diascertidpositiva_cgm,
                                 "campoTemplate" => "templatecertidaopositiva_cgm"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidpositiva_matric",
                                 "label"         => @$Lk03_diascertidpositiva_matric,
                                 "title"         => @$Tk03_diascertidpositiva_matric,
                                 "campoTemplate" => "templatecertidaopositiva_matric"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidpositiva_inscr",
                                 "label"         => @$Lk03_diascertidpositiva_inscr,
                                 "title"         => @$Tk03_diascertidpositiva_inscr,
                                 "campoTemplate" => "templatecertidaopositiva_inscr"
-                            )
-                        )
-                    ),
+                            ]
+                        ]
+                    ],
                     // Array da certidão negativa
-                    array(
+                    [
                         "title" => "Certidão Negativa",
-                        "campos" => array(
-                            array(
+                        "campos" => [
+                            [
                                 "campo"         => "diascertidnegativa_cgm",
                                 "label"         => @$Lk03_diascertidnegativa_cgm,
                                 "title"         => @$Tk03_diascertidnegativa_cgm,
                                 "campoTemplate" => "templatecertidaonegativa_cgm"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidnegativa_matric",
                                 "label"         => @$Lk03_diascertidnegativa_matric,
                                 "title"         => @$Tk03_diascertidnegativa_matric,
                                 "campoTemplate" => "templatecertidaonegativa_matric"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidnegativa_inscr",
                                 "label"         => @$Lk03_diascertidnegativa_inscr,
                                 "title"         => @$Tk03_diascertidnegativa_inscr,
                                 "campoTemplate" => "templatecertidaonegativa_inscr"
-                            )
-                        )
-                    )
-                )
-            ),
+                            ]
+                        ]
+                    ]
+                ]
+            ],
             // Array de informações das certidões emitidas via DBPref
-            array(
+            [
                 "title" => "Certidões de Regularidade Fiscal - DBPref",
                 "id" => "dbpref",
-                "fieldsets" => array(
+                "fieldsets" => [
                     // Array da certidão regular
-                    array(
+                    [
                         "title" => "Certidão Regular",
-                        "campos" => array(
-                            array(
+                        "campos" => [
+                            [
                                 "campo"         => "diascertidregularweb_cgm",
                                 "label"         => @$Lk03_diascertidregularweb_cgm,
                                 "title"         => @$Tk03_diascertidregularweb_cgm,
                                 "campoTemplate" => "templatecertidaoweb_cgm"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidregularweb_matric",
                                 "label"         => @$Lk03_diascertidregularweb_matric,
                                 "title"         => @$Tk03_diascertidregularweb_matric,
                                 "campoTemplate" => "templatecertidaoweb_matric"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidregularweb_inscr",
                                 "label"         => @$Lk03_diascertidregularweb_inscr,
                                 "title"         => @$Tk03_diascertidregularweb_inscr,
                                 "campoTemplate" => "templatecertidaoweb_inscr"
-                            )
-                        )
-                    ),
+                            ]
+                        ]
+                    ],
                     // Array da certidão positiva
-                    array(
+                    [
                         "title" => "Certidão Positiva",
-                        "campos" => array(
-                            array(
+                        "campos" => [
+                            [
                                 "campo"         => "diascertidpositivaweb_cgm",
                                 "label"         => @$Lk03_diascertidpositivaweb_cgm,
                                 "title"         => @$Tk03_diascertidpositivaweb_cgm,
                                 "campoTemplate" => "templatecertidaopositivaweb_cgm"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidpositivaweb_matric",
                                 "label"         => @$Lk03_diascertidpositivaweb_matric,
                                 "title"         => @$Tk03_diascertidpositivaweb_matric,
                                 "campoTemplate" => "templatecertidaopositivaweb_matric"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidpositivaweb_inscr",
                                 "label"         => @$Lk03_diascertidpositivaweb_inscr,
                                 "title"         => @$Tk03_diascertidpositivaweb_inscr,
                                 "campoTemplate" => "templatecertidaopositivaweb_inscr"
-                            )
-                        )
-                    ),
+                            ]
+                        ]
+                    ],
                     // Array da certidão negativa
-                    array(
+                    [
                         "title" => "Certidão Negativa",
-                        "campos" => array(
-                            array(
+                        "campos" => [
+                            [
                                 "campo"         => "diascertidnegativaweb_cgm",
                                 "label"         => @$Lk03_diascertidnegativaweb_cgm,
                                 "title"         => @$Tk03_diascertidnegativaweb_cgm,
                                 "campoTemplate" => "templatecertidaonegativaweb_cgm"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidnegativaweb_matric",
                                 "label"         => @$Lk03_diascertidnegativaweb_matric,
                                 "title"         => @$Tk03_diascertidnegativaweb_matric,
                                 "campoTemplate" => "templatecertidaonegativaweb_matric"
-                            ),
-                            array(
+                            ],
+                            [
                                 "campo"         => "diascertidnegativaweb_inscr",
                                 "label"         => @$Lk03_diascertidnegativaweb_inscr,
                                 "title"         => @$Tk03_diascertidnegativaweb_inscr,
                                 "campoTemplate" => "templatecertidaonegativaweb_inscr"
-                            )
-                        )
-                    )
-                )
-            )
-        );
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
 
         foreach ($camposDiasCertidao as $item) :
             ?>
@@ -1070,7 +1070,7 @@ if (empty($k03_diasvalidadecertidao) || !DBNumber::isInteger(trim($k03_diasvalid
         db_iframe_numpref.hide();
         <?php
         if ($db_opcao != 1) {
-            echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+            echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
         }
         ?>
     }

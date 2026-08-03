@@ -54,7 +54,7 @@ class CategoriasConsumo extends Arquivo {
     $sSql    = $oDaoEstruturaTarifaria->sql_query(null, $sCampos, $sOrder, $sWhere);
     $rsCategorias = db_query($sSql);
 
-    $aCategorias = array();
+    $aCategorias = [];
     while ($oCategoria = pg_fetch_object($rsCategorias)) {
 
       $oCategoriaRetorno = new \stdClass;

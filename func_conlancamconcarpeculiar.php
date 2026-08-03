@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_conlancamconcarpeculiar_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clconlancamconcarpeculiar = new cl_conlancamconcarpeculiar;
 $clconlancamconcarpeculiar->rotulo->label("c08_sequencial");
 $clconlancamconcarpeculiar->rotulo->label("c08_sequencial");
@@ -98,9 +98,9 @@ $clconlancamconcarpeculiar->rotulo->label("c08_sequencial");
         }else{
            $sql = $clconlancamconcarpeculiar->sql_query("",$campos,"c08_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_c08_sequencial)){
-          $repassa = array("chave_c08_sequencial"=>$chave_c08_sequencial,"chave_c08_sequencial"=>$chave_c08_sequencial);
+          $repassa = ["chave_c08_sequencial"=>$chave_c08_sequencial,"chave_c08_sequencial"=>$chave_c08_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

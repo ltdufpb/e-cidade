@@ -107,7 +107,7 @@ $geraform->gera_form(null,null);
   </table>
 </fieldset>
 
-<input type="hidden" name="hidTipoFolha" id="hidTipoFolha" value="<?php echo (isset($opcao_geral)) ? $opcao_geral : '1'; ?>" />
+<input type="hidden" name="hidTipoFolha" id="hidTipoFolha" value="<?php echo $opcao_geral ?? '1'; ?>" />
 <input type="button" name="processar" value="Processar" onclick="return js_validarCalculo();">
 <?php  if (db_getsession("DB_login") == "dbseller") {
 echo "<input type=\"button\" value=\"Processar com Debug\" onclick=\"js_enviar_dados(2);\">";

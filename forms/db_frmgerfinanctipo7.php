@@ -52,7 +52,7 @@ $sSqlDiversos .= " where diversos.dv05_numpre = {$numpre}                       
 
 $rsDiversos = db_query($sSqlDiversos);
 
-if (pg_numrows($rsDiversos) == 0) {
+if (pg_num_rows($rsDiversos) == 0) {
   
   echo "Código de Arrecadação não cadastrado no diversos.";
   exit;
@@ -91,9 +91,7 @@ if (empty($rsIssvar)) {
     exit;
 }
 
-$competencias = db_utils::makeCollectionFromRecord($rsIssvar, function($value) {
-    return $value->q05_mes . "/" .$value->q05_ano;
-});
+$competencias = db_utils::makeCollectionFromRecord($rsIssvar, fn($value) => $value->q05_mes . "/" .$value->q05_ano);
 
 ?>
 

@@ -37,17 +37,12 @@ use Exception;
 class SetorExameRepository
 {
     /**
-     * @var Object
-     */
-    private $dao;
-
-    /**
      * SetorExameRepository constructor.
      * @param $dao \cl_lab_setorexame
+     * @param object $dao
      */
-    public function __construct($dao)
+    public function __construct(private $dao)
     {
-        $this->dao = $dao;
     }
 
     public function buscar($campos, $where)

@@ -29,28 +29,28 @@
 //CLASSE DA ENTIDADE itbiintermediador
 class cl_itbiintermediador {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $it35_sequencial = 0;
-   var $it35_itbi = 0;
-   var $it35_cgm = 0;
-   var $it35_nome = null;
-   var $it35_cnpj_cpf = null;
-   var $it35_creci = null;
-   var $it35_principal = 'f';
+   public $it35_sequencial = 0;
+   public $it35_itbi = 0;
+   public $it35_cgm = 0;
+   public $it35_nome = null;
+   public $it35_cnpj_cpf = null;
+   public $it35_creci = null;
+   public $it35_principal = 'f';
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  it35_sequencial = int4 = Código
                  it35_itbi = int4 = Código ITBI
                  it35_cgm = int4 = CGM
@@ -60,10 +60,10 @@ class cl_itbiintermediador {
                  it35_principal = bool = Principal
                  ";
    //funcao construtor da classe
-   function cl_itbiintermediador() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("itbiintermediador");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -122,10 +122,10 @@ class cl_itbiintermediador {
          $this->erro_status = "0";
          return false;
        }
-       $this->it35_sequencial = pg_result($result,0,0);
+       $this->it35_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from itbiintermediador_it35_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $it35_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $it35_sequencial)){
          $this->erro_sql = " Campo it35_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -165,7 +165,7 @@ class cl_itbiintermediador {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela de intermediadores do ITBI ($this->it35_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela de intermediadores do ITBI já Cadastrado";
@@ -194,16 +194,16 @@ class cl_itbiintermediador {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,21761,'$this->it35_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3921,21761,'','".AddSlashes(pg_result($resaco,0,'it35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3921,21762,'','".AddSlashes(pg_result($resaco,0,'it35_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3921,21763,'','".AddSlashes(pg_result($resaco,0,'it35_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3921,21764,'','".AddSlashes(pg_result($resaco,0,'it35_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3921,21765,'','".AddSlashes(pg_result($resaco,0,'it35_cnpj_cpf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3921,21767,'','".AddSlashes(pg_result($resaco,0,'it35_creci'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3921,21768,'','".AddSlashes(pg_result($resaco,0,'it35_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3921,21761,'','".AddSlashes(pg_fetch_result($resaco,0,'it35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3921,21762,'','".AddSlashes(pg_fetch_result($resaco,0,'it35_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3921,21763,'','".AddSlashes(pg_fetch_result($resaco,0,'it35_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3921,21764,'','".AddSlashes(pg_fetch_result($resaco,0,'it35_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3921,21765,'','".AddSlashes(pg_fetch_result($resaco,0,'it35_cnpj_cpf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3921,21767,'','".AddSlashes(pg_fetch_result($resaco,0,'it35_creci'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3921,21768,'','".AddSlashes(pg_fetch_result($resaco,0,'it35_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -213,10 +213,10 @@ class cl_itbiintermediador {
       $this->atualizacampos();
      $sql = " update itbiintermediador set ";
      $virgula = "";
-     if(trim($this->it35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_sequencial"])){
+     if(trim((string) $this->it35_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_sequencial"])){
        $sql  .= $virgula." it35_sequencial = $this->it35_sequencial ";
        $virgula = ",";
-       if(trim($this->it35_sequencial) == null ){
+       if(trim((string) $this->it35_sequencial) == null ){
          $this->erro_sql = " Campo Código não informado.";
          $this->erro_campo = "it35_sequencial";
          $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_itbiintermediador {
          return false;
        }
      }
-     if(trim($this->it35_itbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_itbi"])){
+     if(trim((string) $this->it35_itbi)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_itbi"])){
        $sql  .= $virgula." it35_itbi = $this->it35_itbi ";
        $virgula = ",";
-       if(trim($this->it35_itbi) == null ){
+       if(trim((string) $this->it35_itbi) == null ){
          $this->erro_sql = " Campo Código ITBI não informado.";
          $this->erro_campo = "it35_itbi";
          $this->erro_banco = "";
@@ -239,25 +239,25 @@ class cl_itbiintermediador {
          return false;
        }
      }
-     if(trim($this->it35_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_cgm"])){
-        if(trim($this->it35_cgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it35_cgm"])){
+     if(trim((string) $this->it35_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_cgm"])){
+        if(trim((string) $this->it35_cgm)=="" && isset($GLOBALS["HTTP_POST_VARS"]["it35_cgm"])){
            $this->it35_cgm = "0" ;
         }
        $sql  .= $virgula." it35_cgm = $this->it35_cgm ";
        $virgula = ",";
      }
-     if(trim($this->it35_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_nome"])){
+     if(trim((string) $this->it35_nome)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_nome"])){
        $sql  .= $virgula." it35_nome = '$this->it35_nome' ";
        $virgula = ",";
      }
-     if(trim($this->it35_cnpj_cpf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_cnpj_cpf"])){
+     if(trim((string) $this->it35_cnpj_cpf)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_cnpj_cpf"])){
        $sql  .= $virgula." it35_cnpj_cpf = '$this->it35_cnpj_cpf' ";
        $virgula = ",";
      }
-     if(trim($this->it35_creci)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_creci"])){
+     if(trim((string) $this->it35_creci)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_creci"])){
        $sql  .= $virgula." it35_creci = '$this->it35_creci' ";
        $virgula = ",";
-       if(trim($this->it35_creci) == null ){
+       if(trim((string) $this->it35_creci) == null ){
          $this->erro_sql = " Campo CRECI não informado.";
          $this->erro_campo = "it35_creci";
          $this->erro_banco = "";
@@ -267,10 +267,10 @@ class cl_itbiintermediador {
          return false;
        }
      }
-     if(trim($this->it35_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_principal"])){
+     if(trim((string) $this->it35_principal)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it35_principal"])){
        $sql  .= $virgula." it35_principal = '$this->it35_principal' ";
        $virgula = ",";
-       if(trim($this->it35_principal) == null ){
+       if(trim((string) $this->it35_principal) == null ){
          $this->erro_sql = " Campo Principal não informado.";
          $this->erro_campo = "it35_principal";
          $this->erro_banco = "";
@@ -294,23 +294,23 @@ class cl_itbiintermediador {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,21761,'$this->it35_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["it35_sequencial"]) || $this->it35_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3921,21761,'".AddSlashes(pg_result($resaco,$conresaco,'it35_sequencial'))."','$this->it35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3921,21761,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it35_sequencial'))."','$this->it35_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["it35_itbi"]) || $this->it35_itbi != "")
-             $resac = db_query("insert into db_acount values($acount,3921,21762,'".AddSlashes(pg_result($resaco,$conresaco,'it35_itbi'))."','$this->it35_itbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3921,21762,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it35_itbi'))."','$this->it35_itbi',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["it35_cgm"]) || $this->it35_cgm != "")
-             $resac = db_query("insert into db_acount values($acount,3921,21763,'".AddSlashes(pg_result($resaco,$conresaco,'it35_cgm'))."','$this->it35_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3921,21763,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it35_cgm'))."','$this->it35_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["it35_nome"]) || $this->it35_nome != "")
-             $resac = db_query("insert into db_acount values($acount,3921,21764,'".AddSlashes(pg_result($resaco,$conresaco,'it35_nome'))."','$this->it35_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3921,21764,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it35_nome'))."','$this->it35_nome',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["it35_cnpj_cpf"]) || $this->it35_cnpj_cpf != "")
-             $resac = db_query("insert into db_acount values($acount,3921,21765,'".AddSlashes(pg_result($resaco,$conresaco,'it35_cnpj_cpf'))."','$this->it35_cnpj_cpf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3921,21765,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it35_cnpj_cpf'))."','$this->it35_cnpj_cpf',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["it35_creci"]) || $this->it35_creci != "")
-             $resac = db_query("insert into db_acount values($acount,3921,21767,'".AddSlashes(pg_result($resaco,$conresaco,'it35_creci'))."','$this->it35_creci',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3921,21767,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it35_creci'))."','$this->it35_creci',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["it35_principal"]) || $this->it35_principal != "")
-             $resac = db_query("insert into db_acount values($acount,3921,21768,'".AddSlashes(pg_result($resaco,$conresaco,'it35_principal'))."','$this->it35_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3921,21768,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'it35_principal'))."','$this->it35_principal',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -364,16 +364,16 @@ class cl_itbiintermediador {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,21761,'$it35_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3921,21761,'','".AddSlashes(pg_result($resaco,$iresaco,'it35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3921,21762,'','".AddSlashes(pg_result($resaco,$iresaco,'it35_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3921,21763,'','".AddSlashes(pg_result($resaco,$iresaco,'it35_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3921,21764,'','".AddSlashes(pg_result($resaco,$iresaco,'it35_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3921,21765,'','".AddSlashes(pg_result($resaco,$iresaco,'it35_cnpj_cpf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3921,21767,'','".AddSlashes(pg_result($resaco,$iresaco,'it35_creci'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3921,21768,'','".AddSlashes(pg_result($resaco,$iresaco,'it35_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3921,21761,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it35_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3921,21762,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it35_itbi'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3921,21763,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it35_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3921,21764,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it35_nome'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3921,21765,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it35_cnpj_cpf'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3921,21767,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it35_creci'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3921,21768,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'it35_principal'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clissarquivoretencao = new cl_issarquivoretencao;
 $clissarquivoretencao->rotulo->label("q90_sequencial");
 $clissarquivoretencao->rotulo->label("q90_numeroremessa");
@@ -90,9 +90,9 @@ $clissarquivoretencao->rotulo->label("q90_numeroremessa");
         }else{
            $sql = $clissarquivoretencao->$sMetodoQuery("",$campos,"q90_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_q90_numeroremessa)){
-          $repassa = array("chave_q90_sequencial"=>$chave_q90_sequencial,"chave_q90_numeroremessa"=>$chave_q90_numeroremessa);
+          $repassa = ["chave_q90_sequencial"=>$chave_q90_sequencial,"chave_q90_numeroremessa"=>$chave_q90_numeroremessa];
         }
 
         echo '<div class="container">';

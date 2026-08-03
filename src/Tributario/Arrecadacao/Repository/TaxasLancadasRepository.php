@@ -110,7 +110,7 @@ class TaxasLancadasRepository extends \BaseClassRepository
 
     private function workData(TaxasLancadas $oTaxa)
     {
-        $oDados = (object) array();
+        $oDados = (object) [];
 
         $oDados->ar44_sequencial = $oTaxa->getSequencial();
         $oDados->ar44_descricao = $oTaxa->getDescricao();
@@ -137,10 +137,10 @@ class TaxasLancadasRepository extends \BaseClassRepository
     {
         $oReturn = db_utils::getColectionByRecord($rReturn);
         $inflaRepository = Registry::get('app.container')->get('tributario.container')->get('InflaRepository');
-        $aDados = array();
+        $aDados = [];
 
         foreach ($oReturn as $item) {
-            $oDados = (object) array();
+            $oDados = (object) [];
 
             $sWhere = " infla.i02_codigo = '{$item->ar44_inflator}' AND EXTRACT(YEAR FROM infla.i02_data) = ".date("Y");
 

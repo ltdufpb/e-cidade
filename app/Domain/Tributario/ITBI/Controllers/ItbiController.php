@@ -13,11 +13,8 @@ use App\Http\Controllers\Controller;
 
 class ItbiController extends Controller
 {
-    private $itbiService;
-
-    public function __construct(ItbiService $itbiService)
+    public function __construct(private readonly ItbiService $itbiService)
     {
-        $this->itbiService = $itbiService;
     }
 
     public function getTipos(TipoItbiRequest $request)

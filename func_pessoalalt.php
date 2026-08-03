@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pessoal_classe.php"));
 include(modification("classes/db_cgm_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpessoal = new cl_pessoal;
 $clcgm     = new cl_cgm;
 $clcgm->rotulo->label("z01_nome");
@@ -45,8 +45,8 @@ $clpessoal->rotulo->label("r01_regist");
 $sqlanomes = "select max(cast(r11_anousu as text)||lpad(cast(r11_mesusu as text),2,'0')) from cfpess";
 $resultanomes = db_query($sqlanomes);
 db_fieldsmemory($resultanomes,0);
-$ano = substr($max,0,4);
-$mes = substr($max,4,2);
+$ano = substr((string) $max,0,4);
+$mes = substr((string) $max,4,2);
 ?>
 <html>
 <head>
@@ -201,7 +201,7 @@ $mes = substr($max,4,2);
 			  and r01_regist = $pesquisa_chave
 			order by r01_regist";
         $result = db_query($sql);
-        if(pg_numrows($result)!=0){
+        if(pg_num_rows($result)!=0){
           db_fieldsmemory($result,0);
           echo "<script>".$funcao_js."('$z01_nome',false);</script>";
         }else{

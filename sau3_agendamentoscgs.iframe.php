@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification('libs/db_utils.php'));
 
 if(isset($z01_i_cgsund)){
-	
+
   $oDaoAgendamentos = db_utils::getdao('agendamentos');
   $dDataAtual       = date('Y-m-d', db_getsession('DB_datausu'));
 

@@ -125,8 +125,8 @@ $clrotulo->label("db83_tipoconta");
 							        $tipo ="sintetica";
 						        }
 						        
-						        $mtr = array( "analitica"=>"Analitica",
-						                      "sintetica"=>"Sintética");
+						        $mtr = [ "analitica"=>"Analitica",
+						                      "sintetica"=>"Sintética"];
 							      
 						        if (isset($bloqueada) && $bloqueada=='true'){
 							        db_select("tipo",$mtr,true,3);
@@ -361,8 +361,8 @@ $clrotulo->label("db83_tipoconta");
                   </td>
                   <td>
                     <?php 
-                      $aTipoConta = array( 1 => 'Conta Corrente',
-                                           2 => 'Conta Poupança' );
+                      $aTipoConta = [ 1 => 'Conta Corrente',
+                                           2 => 'Conta Poupança' ];
                       db_select('c63_tipoconta',$aTipoConta,true,1);
                     ?>
                   </td>                  
@@ -640,7 +640,7 @@ function js_preenchepesquisa(chave){
   db_iframe_conplano.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave;";
   }
   ?>
 }

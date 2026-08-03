@@ -50,7 +50,7 @@ $oDaoCalendario->rotulo->label();
 
 $iEscola = db_getsession("DB_coddepto");
 
-$aWhere   = array();
+$aWhere   = [];
 $aWhere[] = " ed57_i_escola = {$iEscola} ";
 $aWhere[] = " ed52_c_passivo = 'N' ";
 
@@ -123,7 +123,7 @@ $aWhere[]            = $sAlunoMatriculado;
 
                 if ( $rsCalendario && $oDaoCalendario->numrows == 0 ) {
 
-                 $aCalendarios = array(''=>'NENHUM REGISTRO');
+                 $aCalendarios = [''=>'NENHUM REGISTRO'];
                  db_select('ed57_i_calendario', $aCalendarios, true, 1, "");
                 } else {
                  db_selectrecord("ed57_i_calendario", $rsCalendario, "", "", "", "chave_ed57_i_calendario", "", "", "", 1);
@@ -159,7 +159,7 @@ $aWhere[]            = $sAlunoMatriculado;
                     
             if ( isset( $oPost->chave_ed57_c_descr )  && !empty( $oPost->chave_ed57_c_descr ) ) {
               
-              $sDescricaoTurma = trim($oPost->chave_ed57_c_descr);
+              $sDescricaoTurma = trim((string) $oPost->chave_ed57_c_descr);
               $aWhere[] = " trim(ed57_c_descr) ilike '$sDescricaoTurma%'";
             }
             

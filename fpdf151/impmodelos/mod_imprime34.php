@@ -4,15 +4,15 @@ $lin = 2;
 $col = 2;
 $alt = 7;
 
-$arr_rubproventos = array();
-$arr_desproventos = array();
-$arr_qtdproventos = array();
-$arr_valproventos = array();
+$arr_rubproventos = [];
+$arr_desproventos = [];
+$arr_qtdproventos = [];
+$arr_valproventos = [];
 
-$arr_rubdescontos = array();
-$arr_desdescontos = array();
-$arr_qtddescontos = array();
-$arr_valdescontos = array();
+$arr_rubdescontos = [];
+$arr_desdescontos = [];
+$arr_qtddescontos = [];
+$arr_valdescontos = [];
 
 $linhasproventos = $this->linhasproventos;
 $linhasdescontos = $this->linhasdescontos;
@@ -24,19 +24,19 @@ $total_qtddescontos = 0;
 $total_valdescontos = 0;
 
 for($i=0; $i<$linhasproventos; $i++){
-  $arr_rubproventos[$i] = pg_result($this->resultproventos,$i,"rh27_rubric");
-  $arr_desproventos[$i] = pg_result($this->resultproventos,$i,"rh27_descr");
-  $arr_qtdproventos[$i] = pg_result($this->resultproventos,$i,"r20_quant");
-  $arr_valproventos[$i] = pg_result($this->resultproventos,$i,"r20_valor");
+  $arr_rubproventos[$i] = pg_fetch_result($this->resultproventos,$i,"rh27_rubric");
+  $arr_desproventos[$i] = pg_fetch_result($this->resultproventos,$i,"rh27_descr");
+  $arr_qtdproventos[$i] = pg_fetch_result($this->resultproventos,$i,"r20_quant");
+  $arr_valproventos[$i] = pg_fetch_result($this->resultproventos,$i,"r20_valor");
 
   $total_qtdproventos += $arr_qtdproventos[$i];
   $total_valproventos += $arr_valproventos[$i];
 }
 for($i=0; $i<$linhasdescontos; $i++){
-  $arr_rubdescontos[$i] = pg_result($this->resultdescontos,$i,"rh27_rubric");
-  $arr_desdescontos[$i] = pg_result($this->resultdescontos,$i,"rh27_descr");
-  $arr_qtddescontos[$i] = pg_result($this->resultdescontos,$i,"r20_quant");
-  $arr_valdescontos[$i] = pg_result($this->resultdescontos,$i,"r20_valor");
+  $arr_rubdescontos[$i] = pg_fetch_result($this->resultdescontos,$i,"rh27_rubric");
+  $arr_desdescontos[$i] = pg_fetch_result($this->resultdescontos,$i,"rh27_descr");
+  $arr_qtddescontos[$i] = pg_fetch_result($this->resultdescontos,$i,"r20_quant");
+  $arr_valdescontos[$i] = pg_fetch_result($this->resultdescontos,$i,"r20_valor");
 
   $total_qtddescontos += $arr_qtddescontos[$i];
   $total_valdescontos += $arr_valdescontos[$i];
@@ -235,8 +235,8 @@ for ($i=0, $a=1; $i <= $iTotalRegistros; $i++) {
     $this->objpdf->SetX($col + 25);
     $this->objpdf->SetY($lin + 106);
     $this->objpdf->Setfont('Arial','',5);
-    $this->objpdf->SetAligns(array('C','R','L','R','C','R','L','R'));
-    $this->objpdf->SetWidths(array(10,15,58,16,10,15,58,16));
+    $this->objpdf->SetAligns(['C','R','L','R','C','R','L','R']);
+    $this->objpdf->SetWidths([10,15,58,16,10,15,58,16]);
 
   }
 
@@ -253,10 +253,10 @@ for ($i=0, $a=1; $i <= $iTotalRegistros; $i++) {
     $arr_valdescontos[$i] = "";
   }
 
-  $this->objpdf->Row(array(
+  $this->objpdf->Row([
                            $arr_rubproventos[$i],($arr_rubproventos[$i]!=""?db_formatar($arr_qtdproventos[$i],"f"):""),$arr_desproventos[$i],($arr_rubproventos[$i]!=""?db_formatar($arr_valproventos[$i],"f"):""),
                            $arr_rubdescontos[$i],($arr_rubdescontos[$i]!=""?db_formatar($arr_qtddescontos[$i],"f"):""),$arr_desdescontos[$i],($arr_rubdescontos[$i]!=""?db_formatar($arr_valdescontos[$i],"f"):"")
-                          ),3,false,4);
+                          ],3,false,4);
 
 }
 
@@ -265,9 +265,9 @@ if($a > 1){
 }
 
 $this->objpdf->SetY(192);
-$this->objpdf->SetAligns(array('C','R','R','R','C','R','R','R'));
+$this->objpdf->SetAligns(['C','R','R','R','C','R','R','R']);
 $this->objpdf->Row(
-  array(
+  [
     "",
     "",
     "SOMA DOS PROVENTOS",
@@ -276,13 +276,13 @@ $this->objpdf->Row(
     "",
     "SOMA DOS DESCONTOS",
     db_formatar($total_valdescontos,"f")
-  ),
+  ],
   3,
   false,
   4);
-$this->objpdf->Row(array(
+$this->objpdf->Row([
                          "", "", "", "",
                          "", "", "TOTAL LÍQUIDO", db_formatar((round($total_valproventos, 2) - round($total_valdescontos, 2)),"f")
-                        ),3,false,4);
+                        ],3,false,4);
 
 ?>

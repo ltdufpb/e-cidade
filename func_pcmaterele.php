@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pcmaterele_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpcmaterele = new cl_pcmaterele;
 $clpcmaterele->rotulo->label("pc07_codmater");
 $clpcmaterele->rotulo->label("pc07_codele");
@@ -87,7 +87,7 @@ $clrotulo->label("o56_elemento");
               if(!isset($opcao_bloq)){
       	        $opcao_bloq = 1;
               }
-              $arr_opcao = array("i"=>"Todos","f"=>"Ativos","t"=>"Inativos");
+              $arr_opcao = ["i"=>"Todos","f"=>"Ativos","t"=>"Inativos"];
               db_select('opcao',$arr_opcao,true,$opcao_bloq,"onchange='js_reload();'"); 
               ?>
             </td>
@@ -124,7 +124,7 @@ $clrotulo->label("o56_elemento");
         if(isset($chave_pc07_codmater) && (trim($chave_pc07_codmater)!="") ){
 	         $sql = $clpcmaterele->sql_query(null,null,$campos,"pc07_codmater"," pc07_codmater=$chave_pc07_codmater $where_ativo");
         }else if(isset($chave_pc01_descrmater) && (trim($chave_pc01_descrmater)!="") ){
-	     $sql = $clpcmaterele->sql_query("","",$campos,"pc07_codmater"," pc01_descrmater like '%$chave_pc01_descrmater%' $where_ativo ".(trim($chave_o56_elemento)!=""?"  and o56_elemento like '$chave_o56_elemento%'":""));
+	     $sql = $clpcmaterele->sql_query("","",$campos,"pc07_codmater"," pc01_descrmater like '%$chave_pc01_descrmater%' $where_ativo ".(trim((string) $chave_o56_elemento)!=""?"  and o56_elemento like '$chave_o56_elemento%'":""));
         }else if(isset($chave_o56_elemento) && (trim($chave_o56_elemento)!="") ){
 	         $sql = $clpcmaterele->sql_query("","",$campos,"pc07_codmater"," o56_elemento like '$chave_o56_elemento%' $where_ativo");
         }else{

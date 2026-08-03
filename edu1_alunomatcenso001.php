@@ -33,7 +33,7 @@ include(modification("classes/db_alunomatcenso_classe.php"));
 include(modification("classes/db_aluno_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clalunomatcenso = new cl_alunomatcenso;
 $claluno         = new cl_aluno;

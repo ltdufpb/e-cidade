@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 db_postmemory($_POST);
 
 $cllab_exame = new cl_lab_exame;
@@ -42,13 +42,13 @@ $db_opcao = 22;
 $db_botao = false;
 
 if (isset($alterar)) {
-    $x = isset($chk_masc) ? $chk_masc : 0;
-    $y = isset($chk_fem) ? $chk_fem : 0;
+    $x = $chk_masc ?? 0;
+    $y = $chk_fem ?? 0;
     $fator = $x + $y;
     $cllab_exame->la08_i_sexo = $fator;
-    $x = isset($chk_mapa) ? $chk_mapa : 0;
-    $y = isset($chk_etiqueta1) ? $chk_etiqueta1 : 0;
-    $z = isset($chk_etiqueta2) ? $chk_etiqueta2 : 0;
+    $x = $chk_mapa ?? 0;
+    $y = $chk_etiqueta1 ?? 0;
+    $z = $chk_etiqueta2 ?? 0;
     $fator = $x + $y + $z;
     $cllab_exame->la08_i_gerar = $fator;
 
@@ -59,8 +59,8 @@ if (isset($alterar)) {
 
     if ($cllab_exame->erro_status != "0") {
         db_query("delete from lab_exasinonima where la18_i_exame=$iExame");
-        $vet = explode(",", $str_sinonimia);
-        $vet2 = explode(",", $str_sinonimia2);
+        $vet = explode(",", (string) $str_sinonimia);
+        $vet2 = explode(",", (string) $str_sinonimia2);
         //die("STR1:$str_sinonimia STR2:$str_sinonimia2 ");
         $cllab_exasinonima->la18_i_exame = $iExame;
 

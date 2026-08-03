@@ -6,25 +6,25 @@ class M7689CobrancaRegistradaMenu extends PostgresMigration
 {
     public function up()
     {
-        $oDbItensMenu = $this->table('db_itensmenu', array('schema'=>'configuracoes'));
-        $oDbMenu = $this->table('db_menu', array('schema'=>'configuracoes'));
+        $oDbItensMenu = $this->table('db_itensmenu', ['schema'=>'configuracoes']);
+        $oDbMenu = $this->table('db_menu', ['schema'=>'configuracoes']);
 
-        $aDbItensMenuColunas = array('id_item', 'descricao', 'help',
+        $aDbItensMenuColunas = ['id_item', 'descricao', 'help',
                                      'funcao', 'itemativo', 'manutencao',
-                                     'desctec', 'libcliente');
+                                     'desctec', 'libcliente'];
 
-        $aDbItensMenuDados = array(
-            array(10386, 'Remessas Geradas', 'Remessas Geradas da Cobrança Registrada',
+        $aDbItensMenuDados = [
+            [10386, 'Remessas Geradas', 'Remessas Geradas da Cobrança Registrada',
                   'arr4_cobrancaregistradaexportacao002.php', '1', '1',
-                  'Menu para visualização e aquisição das remessas geradas da cobrança registrada.', 'true')
-        );
+                  'Menu para visualização e aquisição das remessas geradas da cobrança registrada.', 'true']
+        ];
 
         $oDbItensMenu->insert($aDbItensMenuColunas, $aDbItensMenuDados);
         $oDbItensMenu->saveData();
 
-        $aDbMenuColunas = array('id_item', 'id_item_filho', 'menusequencia', 'modulo');
+        $aDbMenuColunas = ['id_item', 'id_item_filho', 'menusequencia', 'modulo'];
 
-        $aDbMenuDados = array(array(10324, 10386, 2, 1985522));
+        $aDbMenuDados = [[10324, 10386, 2, 1985522]];
 
         $oDbMenu->insert($aDbMenuColunas, $aDbMenuDados);
         $oDbMenu->saveData();

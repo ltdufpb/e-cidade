@@ -44,7 +44,7 @@ final class PadArquivoSigapPagamento extends PadArquivoSigap
     {
 
         $this->sNomeArquivo = "Pagamento";
-        $this->aDados = array();
+        $this->aDados = [];
     }
 
     /**
@@ -65,7 +65,7 @@ final class PadArquivoSigapPagamento extends PadArquivoSigap
         /**
          * Separamos a data do em ano, mes, dia
          */
-        list($iAno, $iMes, $iDia) = explode("-", $this->sDataFinal);
+        [$iAno, $iMes, $iDia] = explode("-", $this->sDataFinal);
         $sListaInstit = db_getsession("DB_instit");
         $sWhere = " and e60_instit in ({$sListaInstit})";
         $sSqlPagamentos = "select e60_anousu as ano, ";
@@ -180,10 +180,10 @@ final class PadArquivoSigapPagamento extends PadArquivoSigap
             $oPagamentoRetorno->pagCodigoEntidade = str_pad($this->iCodigoTCE, 4, "0", STR_PAD_LEFT);
             $sDiaMesAno = "{$iAno}-" . str_pad($iMes, 2, "0", STR_PAD_LEFT) . "-" . str_pad($iDia, 2, "0", STR_PAD_LEFT);
             $oPagamentoRetorno->pagMesAnoMovimento = $sDiaMesAno;
-            $sNumeroEmpenho = str_pad($oPagamento->e60_codemp, 16, "0", STR_PAD_LEFT);
+            $sNumeroEmpenho = str_pad((string) $oPagamento->e60_codemp, 16, "0", STR_PAD_LEFT);
             $oPagamentoRetorno->pagEmpenhoNumero = $oPagamento->ano . $sNumeroEmpenho;
             $oPagamentoRetorno->pagNumeroPagamento = $oPagamento->c75_codlan;
-            $oPagamentoRetorno->pagNumeroLiquidacao = str_pad($oPagamento->c80_codord, 20, '0', STR_PAD_LEFT);
+            $oPagamentoRetorno->pagNumeroLiquidacao = str_pad((string) $oPagamento->c80_codord, 20, '0', STR_PAD_LEFT);
             $oPagamentoRetorno->pagDataPagamento = $oPagamento->c75_data;
             $oPagamentoRetorno->pagValorPagamento = number_format($oPagamento->c70_valor, 2, ".", "");
             $oPagamentoRetorno->pagSinalPagamento = $oPagamento->sinal;
@@ -191,8 +191,8 @@ final class PadArquivoSigapPagamento extends PadArquivoSigap
                 $historico = "Lan?amento de Pagamento N?mero: {$oPagamento->historico} ";
             }
 
-            $oPagamentoRetorno->pagHistoricoPagamento = substr($oPagamento->historico, 0, 255);
-            $oPagamentoRetorno->pagCodigoOperacao = str_pad($oPagamento->c75_codlan, 30, 0, STR_PAD_LEFT);
+            $oPagamentoRetorno->pagHistoricoPagamento = substr((string) $oPagamento->historico, 0, 255);
+            $oPagamentoRetorno->pagCodigoOperacao = str_pad((string) $oPagamento->c75_codlan, 30, 0, STR_PAD_LEFT);
             $iContaPagadora = $oPagamento->conta_pagadora;
 
             // estrutural da conta a debito
@@ -202,7 +202,7 @@ final class PadArquivoSigapPagamento extends PadArquivoSigap
             $sSqlContaPagadora .= "  where c61_reduz = " . $oPagamento->conta_pagadora;
             $rsContaPagadora = db_query($sSqlContaPagadora);
             if (pg_num_rows($rsContaPagadora) > 0) {
-                $iContaPagadora = str_pad(pg_result($rsContaPagadora, 0, "c60_estrut"), 20, '0', STR_PAD_RIGHT);
+                $iContaPagadora = str_pad(pg_fetch_result($rsContaPagadora, 0, "c60_estrut"), 20, '0', STR_PAD_RIGHT);
             }
 
             $iContraPartida = $oPagamento->contrapartida;
@@ -212,7 +212,7 @@ final class PadArquivoSigapPagamento extends PadArquivoSigap
             $sSqlContraPartida .= "  where c61_reduz = " . $oPagamento->contrapartida;
             $rsContraPartida = db_query($sSqlContraPartida);
             if (pg_num_rows($rsContraPartida) > 0) {
-                $iContraPartida = str_pad(pg_result($rsContraPartida, 0, "c60_estrut"), 20, '0', STR_PAD_RIGHT);
+                $iContraPartida = str_pad(pg_fetch_result($rsContraPartida, 0, "c60_estrut"), 20, '0', STR_PAD_RIGHT);
             }
 
             $iContaDebito = $iContraPartida;
@@ -221,7 +221,7 @@ final class PadArquivoSigapPagamento extends PadArquivoSigap
             $oPagamentoRetorno->pagDebitoCodigoContaBalancete = $iContaDebito;
             $oPagamentoRetorno->pagCreditoCodigoContaBalanceteVerificacao = $iContaCredito;
 
-            $iTamanhoCampo = strlen($oPagamento->orgao_unidade);
+            $iTamanhoCampo = strlen((string) $oPagamento->orgao_unidade);
             if ($iTamanhoCampo != 4) {
 
                 $sMsg = "Identifica??o do Org?o/Unidade da institui??o ({$oPagamento->orgao_unidade}) est? incorreto. \\n ";
@@ -231,8 +231,8 @@ final class PadArquivoSigapPagamento extends PadArquivoSigap
                 throw new Exception($sMsg);
             }
 
-            $sOrgao = substr($oPagamento->orgao_unidade, 0, 2);
-            $sUnidade = substr($oPagamento->orgao_unidade, 2, 2);
+            $sOrgao = substr((string) $oPagamento->orgao_unidade, 0, 2);
+            $sUnidade = substr((string) $oPagamento->orgao_unidade, 2, 2);
             $oPagamentoRetorno->pagDebitoCodigoOrgao = str_pad($sOrgao, 2, "0", STR_PAD_LEFT);
             $oPagamentoRetorno->pagDebitoCodigoUnidadeOrcamentaria = str_pad($sUnidade, 2, "0", STR_PAD_LEFT);
             $oPagamentoRetorno->pagCreditoOrgao = str_pad($sOrgao, 2, "0", STR_PAD_LEFT);
@@ -255,7 +255,7 @@ final class PadArquivoSigapPagamento extends PadArquivoSigap
     public function getNomeElementos()
     {
 
-        $aElementos = array(
+        $aElementos = [
             "pagCodigoEntidade",
             "pagMesAnoMovimento",
             "pagEmpenhoNumero",
@@ -273,7 +273,7 @@ final class PadArquivoSigapPagamento extends PadArquivoSigap
             "pagCreditoOrgao",
             "pagCreditoOrgaoUnidadeOrcamentaria",
             "pagProcesso"
-        );
+        ];
 
         return $aElementos;
     }

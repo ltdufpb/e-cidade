@@ -89,7 +89,7 @@ class Visao extends \BaseClassRepository
             throw new \DBException("Ocorreu um erro ao executar as visões cadastradas.");
         }
 
-        self::getInstance()->aColecao = array();
+        self::getInstance()->aColecao = [];
         for ($row = 0; $row < pg_num_rows($buscaVisoes); $row++) {
             $visao = self::getInstance()->make(\db_utils::fieldsMemory($buscaVisoes, $row));
         }

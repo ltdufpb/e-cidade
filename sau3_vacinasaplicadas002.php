@@ -64,7 +64,7 @@ if(isset($Processar)){
   <td><?=$sd02_i_codigo?> - <?=$sd02_c_nome?></td>
   <td><?=$z01_numcgm?> - <?=$z01_nome?></td>
   <td><?=$sd08_c_vacina?> - <?=$sd07_c_nome?></td>
-  <td><?=substr($sd08_d_data,8,2)."/".substr($sd08_d_data,5,2)."/".substr($sd08_d_data,0,4)?></td>
+  <td><?=substr((string) $sd08_d_data,8,2)."/".substr((string) $sd08_d_data,5,2)."/".substr((string) $sd08_d_data,0,4)?></td>
  </tr>
  <?php 
  }

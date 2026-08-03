@@ -17,7 +17,7 @@ final class NossoNumeroConverter extends Converter
             $l .= str_pad(substr(str_replace('/', '', $nossoNumero->getNossoNumeroParcela()), 0, $size), $size, ' ', STR_PAD_LEFT);
 
             $size = $this->layout->getSize(NossoNumero::DIGITO_NOSSO_NUMERO_PARCELA);
-            $l .= str_pad(substr($nossoNumero->getDigitoNossoNumeroParcela(),                 0, $size), $size, ' ', STR_PAD_LEFT);
+            $l .= str_pad(substr((string) $nossoNumero->getDigitoNossoNumeroParcela(),                 0, $size), $size, ' ', STR_PAD_LEFT);
         }
 
         return $l;

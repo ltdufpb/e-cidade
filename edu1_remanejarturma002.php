@@ -40,8 +40,8 @@ include(modification("classes/db_regenciahorario_classe.php"));
 include(modification("classes/db_turmaserieregimemat_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("libs/db_jsplibwebseller.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 $iAnoEtapaCenso        = null;
 $clturma               = new cl_turma;
 $clturmaturnoadicional = new cl_turmaturnoadicional;
@@ -85,7 +85,7 @@ if(isset($alterar)) {
   $db_opcao  = 2;
   $db_opcao1 = 3;
   db_inicio_transacao();
-  $clturma->ed57_c_descr = trim($ed57_c_descr);
+  $clturma->ed57_c_descr = trim((string) $ed57_c_descr);
   $clturma->alterar($ed57_i_codigo);
   db_fim_transacao();
   $db_botao = true;
@@ -209,7 +209,7 @@ if (isset($alterar)) {
                                         );
     $linhas2 = $clturmaturnoadicional->numrows;
     if ($linhas2 > 0) {
-      $turnoaddant = pg_result($result2,0,'turnoaddant');
+      $turnoaddant = pg_fetch_result($result2,0,'turnoaddant');
     }
     if ($ed246_i_turno == "") {
       if ($clturmaturnoadicional->numrows > 0) {

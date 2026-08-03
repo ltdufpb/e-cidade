@@ -49,8 +49,8 @@ include(modification("classes/db_matparam_classe.php"));
 include(modification("classes/db_db_almoxdepto_classe.php"));
 include(modification("classes/db_db_departorg_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clmatestoqueinimei = new cl_matestoqueinimei;
 $clmatestoqueinimeiari = new cl_matestoqueinimeiari;
@@ -78,21 +78,21 @@ $clrotulo->label("m40_login");
 
 if (isset($confirma)) {
   $sqlerro=false;
-  $dados    = split("quant_","$valor");
-  $arr_info = array();
+  $dados    = preg_split("#quant_#m","$valor");
+  $arr_info = [];
   db_inicio_transacao();
   $valores = "";
   for ($w=1; $w<count($dados); $w++) {
     if ($dados[$w]=="") {
       continue;
     }
-    $info = split("_",$dados[$w]);
+    $info = preg_split("#_#m",(string) $dados[$w]);
     $codlanc = $info[0];
     $codmater = $info[1];
     $pos = $info[2];
     $quant = $info[3];
     $depto_inf = "depto_".$pos;
-    $depto = $$depto_inf;
+    $depto = ${$depto_inf};
     
     $m80_codtipo = 7;
     // Em transferência
@@ -134,8 +134,8 @@ if (isset($confirma)) {
     }
         
     $arr_oqueaindafalta = $quant;
-    $arr_estoquediminui = Array();
-    $arr_vlorquediminui = Array();
+    $arr_estoquediminui = [];
+    $arr_vlorquediminui = [];
     if ($numrows_matestoque > 0) {
       for ($ii = 0; $ii < $numrows_matestoque; $ii ++) {
         db_fieldsmemory($result_matestoque, $ii);
@@ -391,12 +391,12 @@ if (isset($m80_codigo) && $m80_codigo!= "") {
           <td	class='bordas_corp' align='center'><small>$m61_descr </small></td>
           <td	class='bordas_corp' align='center'><small>$m71_quant</small></td>";
     $q="q_$i" ;
-    $$q=$m71_quant;
+    ${$q}=$m71_quant;
     db_input("q_$i",6,0,true,'hidden',3,"");
 
     $op = 1;
     $quantidade = "quant_".$m71_codlanc."_".$m60_codmater."_"."$i";
-    $$quantidade = "$m71_quant";
+    ${$quantidade} = "$m71_quant";
     
     echo "<td class='bordas_corp' align='center'><small>";
     db_input("quant_".$m71_codlanc."_".$m60_codmater."_"."$i",6,0,true,'text',1,"onchange='js_testaquant(this.value,$m71_quant,$i,$m71_codlanc)'");

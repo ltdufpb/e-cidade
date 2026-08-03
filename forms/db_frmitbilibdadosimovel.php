@@ -67,7 +67,7 @@
         <table width="750px;">
             <tr align="center">
                 <td>
-                    <strong>I.T.B.I. <?=strtoupper($oGet->tipo)?></strong>
+                    <strong>I.T.B.I. <?=strtoupper((string) $oGet->tipo)?></strong>
                 </td>
             </tr>
             <tr>

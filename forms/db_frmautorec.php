@@ -33,8 +33,8 @@ $clrotulo->label("y50_nome");
 $clrotulo->label("k02_descr");
 include(modification("dbforms/db_classesgenericas.php"));
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 if(isset($opcao) && $opcao == "alterar"){
   echo "<script>parent.iframe_receitas.location.href='fis1_autorec002.php?chavepesquisa=$y57_codauto&chavepesquisa1=$y57_receit&y59_codauto=$y59_codauto'</script>";
 }
@@ -116,7 +116,7 @@ db_input('y57_valor',10,$Iy57_valor,true,'hidden',$db_opcao,"")
   <tr>
     <td colspan="2" align="top">
    <?php 
-    $chavepri= array("y57_codauto"=>@$y57_codauto,"y57_receit"=>@$y57_receit);
+    $chavepri= ["y57_codauto"=>@$y57_codauto,"y57_receit"=>@$y57_receit];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->campos="y57_codauto,y57_receit,y57_descr";
     $cliframe_alterar_excluir->sql=$clautorec->sql_query("","","*",""," y57_codauto = $y59_codauto");

@@ -19,7 +19,7 @@ class InclusaoCgmLegacy
     public function processaDadosCgm(\Stdclass $dados)
     {
         $sCgcCpf = null;
-        if (array_key_exists('cpf', $dados) && !empty($dados->cpf->value)) {
+        if (property_exists($dados, 'cpf') && !empty($dados->cpf->value)) {
             $sCgcCpf = $dados->cpf->value;
         }
 
@@ -33,7 +33,7 @@ class InclusaoCgmLegacy
             }
         }
 
-        $sCgcCpf = preg_replace('/\D/', "", $sCgcCpf);
+        $sCgcCpf = preg_replace('/\D/', "", (string) $sCgcCpf);
 
         $cgm = $this->getCgmByCpfCnpj($sCgcCpf);
 
@@ -50,7 +50,7 @@ class InclusaoCgmLegacy
     {
         $sCgcCpf = null;
 
-        if (array_key_exists('cpf', $dados) && !empty($dados->cpf->value)) {
+        if (property_exists($dados, 'cpf') && !empty($dados->cpf->value)) {
             $sCgcCpf = $dados->cpf->value;
         }
 
@@ -64,7 +64,7 @@ class InclusaoCgmLegacy
             }
         }
 
-        $sCgcCpf = preg_replace('/\D/', "", $sCgcCpf);
+        $sCgcCpf = preg_replace('/\D/', "", (string) $sCgcCpf);
 
         return $this->getCgmByCpfCnpj($sCgcCpf);
     }
@@ -76,7 +76,7 @@ class InclusaoCgmLegacy
         $sCgcCpf = '';
         $cpf = null;
         $cnpj = null;
-        if (array_key_exists('cpf', $dados) && !empty($dados->cpf)) {
+        if (property_exists($dados, 'cpf') && !empty($dados->cpf)) {
             $cpf = $this->getAtribute($dados->cpf);
         }
 
@@ -92,7 +92,7 @@ class InclusaoCgmLegacy
             }
         }
 
-        $sCgcCpf = preg_replace('/\D/', "", $sCgcCpf);
+        $sCgcCpf = preg_replace('/\D/', "", (string) $sCgcCpf);
 
         if (strlen(trim($sCgcCpf)) == '11') {
             $oCgm->setCpf($sCgcCpf);
@@ -155,7 +155,7 @@ class InclusaoCgmLegacy
 
             $nome = $nomeFantasia;
             $oCgm->setNomeFantasia(mb_strtoupper(
-                \DBString::upperCaseCaracteresComAcentos(substr($nomeFantasia, 0, 100)),
+                \DBString::upperCaseCaracteresComAcentos(substr((string) $nomeFantasia, 0, 100)),
                 "ISO-8859-1"
             ));
 
@@ -190,7 +190,7 @@ class InclusaoCgmLegacy
             $oCgm->setCelular($this->getAtribute($dados->endereco->celular));
         }
 
-        $uf = (array_key_exists('estado', $endereco)) ? substr($this->getAtribute($endereco->estado), 0, 2) : null;
+        $uf = (array_key_exists('estado', $endereco)) ? substr((string) $this->getAtribute($endereco->estado), 0, 2) : null;
         $cep = (array_key_exists('cep', $endereco)) ? str_replace("-", "", $this->getAtribute($endereco->cep)) : null;
         $bairro = (array_key_exists('bairro', $endereco)) ? $this->getAttributeDescription($endereco->bairro) : null;
         $numero = (array_key_exists('numero', $endereco)) ? $this->getAtribute($endereco->numero) : null;
@@ -226,7 +226,7 @@ class InclusaoCgmLegacy
 
         $oCgm->setNome(
             mb_strtoupper(
-                \DBString::upperCaseCaracteresComAcentos(substr($nome, 0, 40)),
+                \DBString::upperCaseCaracteresComAcentos(substr((string) $nome, 0, 40)),
                 "ISO-8859-1"
             )
         );
@@ -234,7 +234,7 @@ class InclusaoCgmLegacy
         $oCgm->setNomeCompleto(
             mb_strtoupper(
                 \DBString::upperCaseCaracteresComAcentos(
-                    substr($nome, 0, 100)
+                    substr((string) $nome, 0, 100)
                 ),
                 "ISO-8859-1"
             )
@@ -249,11 +249,11 @@ class InclusaoCgmLegacy
         }
 
         $oCgm->setCep(mb_strtoupper($cep));
-        $oCgm->setBairro(mb_strtoupper($bairro));
-        $oCgm->setNumero(mb_strtoupper($numero));
-        $oCgm->setMunicipio(mb_strtoupper($municipio));
-        $oCgm->setLogradouro(mb_strtoupper($logradouro));
-        $oCgm->setComplemento(mb_strtoupper($complemento));
+        $oCgm->setBairro(mb_strtoupper((string) $bairro));
+        $oCgm->setNumero(mb_strtoupper((string) $numero));
+        $oCgm->setMunicipio(mb_strtoupper((string) $municipio));
+        $oCgm->setLogradouro(mb_strtoupper((string) $logradouro));
+        $oCgm->setComplemento(mb_strtoupper((string) $complemento));
 
         $oCgm->save();
 
@@ -288,7 +288,7 @@ class InclusaoCgmLegacy
             }
         }
 
-        $sCgcCpf = preg_replace('/\D/', "", $sCgcCpf);
+        $sCgcCpf = preg_replace('/\D/', "", (string) $sCgcCpf);
 
         if (strlen(trim($sCgcCpf)) == '11') {
             $oCgm = CgmFactory::getInstanceByType(CgmFactory::FISICO);
@@ -297,7 +297,7 @@ class InclusaoCgmLegacy
             $oCgm->setDataNascimento((isset($dados->nascimento) ? $this->getAtribute($dados->nascimento) : ""));
             $oCgm->setNacionalidade((isset($dados->nacionalidade) ? $this->getAtribute($dados->nacionalidade) : 0));
             $oCgm->setEstadoCivil((isset($dados->estado_civil) ? $this->getAtribute($dados->estado_civil) : 0));
-            $oCgm->setTipoEmpresa((isset($dados->tipo_empresa) ? $dados->tipo_empresa : 31));
+            $oCgm->setTipoEmpresa(($dados->tipo_empresa ?? 31));
 
             if (array_key_exists('nome', $dados)) {
                 $nome = $this->getAtribute($dados->nome);
@@ -309,7 +309,7 @@ class InclusaoCgmLegacy
         } elseif (strlen(trim($sCgcCpf)) == '14') {
             $oCgm = CgmFactory::getInstanceByType(CgmFactory::JURIDICO);
             $oCgm->setCnpj($sCgcCpf);
-            $oCgm->setTipoEmpresa((isset($dados->tipo_empresa) ? $dados->tipo_empresa : 36));
+            $oCgm->setTipoEmpresa(($dados->tipo_empresa ?? 36));
 
             $nomeFantasia = null;
             if (array_key_exists('nome_fantasia', $dados)) {
@@ -326,7 +326,7 @@ class InclusaoCgmLegacy
 
             $nome = $nomeFantasia;
             $oCgm->setNomeFantasia(mb_strtoupper(
-                \DBString::upperCaseCaracteresComAcentos(substr($nomeFantasia, 0, 100)),
+                \DBString::upperCaseCaracteresComAcentos(substr((string) $nomeFantasia, 0, 100)),
                 "ISO-8859-1"
             ));
 
@@ -365,7 +365,7 @@ class InclusaoCgmLegacy
             $oCgm->setCelular($this->getAtribute($dados->endereco->celular));
         }
 
-        $uf = (array_key_exists('estado', $endereco)) ? substr($this->getAtribute($endereco->estado), 0, 2) : null;
+        $uf = (array_key_exists('estado', $endereco)) ? substr((string) $this->getAtribute($endereco->estado), 0, 2) : null;
         $cep = (array_key_exists('cep', $endereco)) ? str_replace("-", "", $this->getAtribute($endereco->cep)) : null;
         $bairro = (array_key_exists('bairro', $endereco)) ? $this->getAttributeDescription($endereco->bairro) : null;
         $numero = (array_key_exists('numero', $endereco)) ? $this->getAtribute($endereco->numero) : null;
@@ -401,23 +401,23 @@ class InclusaoCgmLegacy
 
         $oCgm->setNome(
             mb_strtoupper(
-                \DBString::upperCaseCaracteresComAcentos(substr($nome, 0, 40)),
+                \DBString::upperCaseCaracteresComAcentos(substr((string) $nome, 0, 40)),
                 "ISO-8859-1"
             )
         );
         $oCgm->setNomeCompleto(
             mb_strtoupper(\DBString::upperCaseCaracteresComAcentos(
-                substr($nome, 0, 100)
+                substr((string) $nome, 0, 100)
             ), "ISO-8859-1")
         );
         $oCgm->setUf(mb_strtoupper($uf));
 
         $oCgm->setCep(mb_strtoupper($cep));
-        $oCgm->setBairro(mb_strtoupper($bairro));
-        $oCgm->setNumero(mb_strtoupper($numero));
-        $oCgm->setMunicipio(mb_strtoupper($municipio));
-        $oCgm->setLogradouro(mb_strtoupper($logradouro));
-        $oCgm->setComplemento(mb_strtoupper($complemento));
+        $oCgm->setBairro(mb_strtoupper((string) $bairro));
+        $oCgm->setNumero(mb_strtoupper((string) $numero));
+        $oCgm->setMunicipio(mb_strtoupper((string) $municipio));
+        $oCgm->setLogradouro(mb_strtoupper((string) $logradouro));
+        $oCgm->setComplemento(mb_strtoupper((string) $complemento));
         $oCgm->setCadastro(date("Y-m-d"));
 
         if (array_key_exists('nomeMae', $dados) && !empty($dados->nomeMae)) {

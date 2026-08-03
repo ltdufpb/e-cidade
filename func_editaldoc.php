@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_editaldoc_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cleditaldoc = new cl_editaldoc;
 $cleditaldoc->rotulo->label("d13_sequencial");
 $cleditaldoc->rotulo->label("d13_db_documento");
@@ -98,9 +98,9 @@ $cleditaldoc->rotulo->label("d13_db_documento");
         }else{
            $sql = $cleditaldoc->sql_query("",$campos,"d13_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_d13_db_documento)){
-          $repassa = array("chave_d13_sequencial"=>$chave_d13_sequencial,"chave_d13_db_documento"=>$chave_d13_db_documento);
+          $repassa = ["chave_d13_sequencial"=>$chave_d13_sequencial,"chave_d13_db_documento"=>$chave_d13_db_documento];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

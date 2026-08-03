@@ -49,7 +49,7 @@ switch($oParam->exec) {
 
   case 'geracao' :
 
-  	$aDadosGeracao  = array();
+  	$aDadosGeracao  = [];
   	$sWhereGeracao  = "ar40_ativo is true ";
 
   	$sInnerGeracao  = "inner join recibounica on ar40_sequencial        = k00_recibounicageracao \n";
@@ -65,7 +65,7 @@ switch($oParam->exec) {
     $iTipoGeracao  = $oParam->iTipoGeracao;
     $iTipoDebito   = $oParam->iTipoDebito;
     $iNumpre       = $oParam->iNumpre;
-    $dtGeracao 	   = implode("-", array_reverse(explode("/",$oParam->dtGeracao)));
+    $dtGeracao 	   = implode("-", array_reverse(explode("/",(string) $oParam->dtGeracao)));
     $sTipoGeracao  = "";
     switch ($iTipoGeracao){
     	case 'I' :

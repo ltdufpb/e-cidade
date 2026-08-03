@@ -185,7 +185,7 @@ for($x=0;$x<$linhas;$x++){
     continue;
   }
 
-  switch (trim($ed60_c_situacao)) {
+  switch (trim((string) $ed60_c_situacao)) {
 
     case 'MATRICULA TRANCADA' :
 
@@ -223,11 +223,11 @@ for($x=0;$x<$linhas;$x++){
   }else{
    $cor = $cor1;
   }
-  if(trim($ed37_c_tipo)=="NOTA"){
+  if(trim((string) $ed37_c_tipo)=="NOTA"){
    $campoaval = "ed72_i_valornota is null";
-  }elseif(trim($ed37_c_tipo)=="NIVEL"){
+  }elseif(trim((string) $ed37_c_tipo)=="NIVEL"){
    $campoaval = "ed72_c_valorconceito = ''";
-  }elseif(trim($ed37_c_tipo)=="PARECER"){
+  }elseif(trim((string) $ed37_c_tipo)=="PARECER"){
    $campoaval = "ed72_t_parecer = '' ";
   }
   $result33 = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","ed72_i_codigo","ed41_i_sequencia"," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo AND $campoaval AND ed72_c_amparo = 'N' AND ed09_c_somach = 'S' AND ed37_c_tipo = '$ed37_c_tipo'"));
@@ -244,20 +244,20 @@ for($x=0;$x<$linhas;$x++){
    if($ed60_c_parecer=="S"){
     $ed37_c_tipo = "PARECER";
    }
-   if ((trim($ed37_c_tipo)=="NOTA") && $ed72_i_valornota != "") {
+   if ((trim((string) $ed37_c_tipo)=="NOTA") && $ed72_i_valornota != "") {
       $ed72_i_valornota = number_format(DBNumber::truncate($ed72_i_valornota, $iCasasDecimais), $iCasasDecimais, ".", "");
    }
-   if(trim($ed60_c_situacao)=="MATRICULADO"){
-    if(trim($ed37_c_tipo)=="PARECER"){
+   if(trim((string) $ed60_c_situacao)=="MATRICULADO"){
+    if(trim((string) $ed37_c_tipo)=="PARECER"){
      $aprov = "Parecer";
-    }elseif(trim($ed37_c_tipo)=="NOTA" && $ed72_i_valornota!=""){
+    }elseif(trim((string) $ed37_c_tipo)=="NOTA" && $ed72_i_valornota!=""){
      $aprov = $ed72_i_valornota;
-    }elseif(trim($ed37_c_tipo)=="NIVEL" && $ed72_c_valorconceito!=""){
+    }elseif(trim((string) $ed37_c_tipo)=="NIVEL" && $ed72_c_valorconceito!=""){
      $aprov = $ed72_c_valorconceito;
     }else{
      $aprov = "";
     }
-    if(trim($ed72_c_amparo)=="S"){
+    if(trim((string) $ed72_c_amparo)=="S"){
      if($ed81_i_justificativa!=""){
       $aprov = "Amparado";
      }else{
@@ -265,13 +265,13 @@ for($x=0;$x<$linhas;$x++){
      }
      $ed72_i_numfaltas = "";
     }
-    if(trim($ed59_c_freqglob)=="A"){
+    if(trim((string) $ed59_c_freqglob)=="A"){
      $ed72_i_numfaltas = "-";
-    }elseif(trim($ed59_c_freqglob)=="F"){
+    }elseif(trim((string) $ed59_c_freqglob)=="F"){
      $aprov = "-";
     }
     $pdf->setfont('arial','',9);
-    if(trim($ed37_c_tipo)=="NOTA" && $aprov<$minimoaprov){
+    if(trim((string) $ed37_c_tipo)=="NOTA" && $aprov<$minimoaprov){
      $pdf->setfont('arial','b',10);
      $pdf->cell(15,4,$aprov,1,0,"C",$cor);
      $pdf->setfont('arial','',9);
@@ -304,7 +304,7 @@ for($x=0;$x<$linhas;$x++){
   }
   if($permitenotaembranco=="S" && $linhas33>0 && $verificarf=="" && $ed81_c_todoperiodo!="S"){
    $aprvto = '';
-   if(trim($ed37_c_tipo)=="NOTA"){
+   if(trim((string) $ed37_c_tipo)=="NOTA"){
     if(trim($obtencao)=="ME"){
       $result_media = $cldiarioavaliacao->sql_record($cldiarioavaliacao->sql_query("","sum(ed72_i_valornota)/count(ed72_i_valornota) as aprvto",""," ed95_i_aluno = $ed60_i_aluno AND ed95_i_regencia = $ed59_i_codigo AND ed72_c_amparo = 'N' AND ed72_i_valornota is not null AND ed09_c_somach = 'S'"));
       db_fieldsmemory($result_media,0);
@@ -341,8 +341,8 @@ for($x=0;$x<$linhas;$x++){
       $resfinal = $aprvto;
     }
     $pdf->setfont('arial','',9);
-    $resfinal = trim($ed60_c_situacao)!="MATRICULADO"||$aprvto==""?"":ArredondamentoNota::arredondar($resfinal);
-    if(trim($ed37_c_tipo)=="NOTA" && $resfinal<$minimoaprov) {
+    $resfinal = trim((string) $ed60_c_situacao)!="MATRICULADO"||$aprvto==""?"":ArredondamentoNota::arredondar($resfinal);
+    if(trim((string) $ed37_c_tipo)=="NOTA" && $resfinal<$minimoaprov) {
 
      $pdf->setfont('arial','b',10);
      $pdf->cell(15,4,$resfinal,1,0,"C",$cor);
@@ -359,8 +359,8 @@ for($x=0;$x<$linhas;$x++){
    $pdf->cell(15,4,"",1,0,"C",$cor);
    $pdf->cell(5,4,"",1,0,"C",$cor);
   }
-  if(trim($ed60_c_situacao)=="MATRICULADO"){
-   if(trim($ed81_c_todoperiodo)=="S"){
+  if(trim((string) $ed60_c_situacao)=="MATRICULADO"){
+   if(trim((string) $ed81_c_todoperiodo)=="S"){
     if($ed81_i_justificativa!=""){
      $ed74_c_valoraprov = "Amp";
     }else{
@@ -381,7 +381,7 @@ for($x=0;$x<$linhas;$x++){
       $ed74_c_valoraprov = $ed74_c_valoraprov;
     }
    }
-   if(trim($ed59_c_freqglob)=="A"){
+   if(trim((string) $ed59_c_freqglob)=="A"){
 
     $sql_f = "SELECT ed59_c_freqglob, ed74_i_percfreq
               FROM diariofinal
@@ -396,11 +396,11 @@ for($x=0;$x<$linhas;$x++){
     $result_f = db_query($sql_f);
     $linhas_f = pg_num_rows($result_f);
     if ($resultedu == 'S') {
-      $ed74_i_percfreq = $ed74_i_percfreq!=""?number_format(pg_result($result_f,0,'ed74_i_percfreq'),2,".","."):"";
+      $ed74_i_percfreq = $ed74_i_percfreq!=""?number_format(pg_fetch_result($result_f,0,'ed74_i_percfreq'),2,".","."):"";
     } else {
-      $ed74_i_percfreq = $ed74_i_percfreq!=""?number_format(pg_result($result_f,0,'ed74_i_percfreq'),0):"";
+      $ed74_i_percfreq = $ed74_i_percfreq!=""?number_format(pg_fetch_result($result_f,0,'ed74_i_percfreq'),0):"";
     }
-   }elseif(trim($ed59_c_freqglob)=="F"){
+   }elseif(trim((string) $ed59_c_freqglob)=="F"){
 
      if (!empty($ed74_c_resultadofreq) && !empty($ed11_i_ensino)) {
 

@@ -33,7 +33,7 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_cursoedu_classe.php"));
 include(modification("classes/db_base_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcurso = new cl_curso;
 $clbase = new cl_base;
 ?>

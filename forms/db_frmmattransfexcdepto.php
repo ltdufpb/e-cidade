@@ -102,7 +102,7 @@ db_textarea('m80_obs',2,55,$Im80_obs,true,'text',3,"");
                     <td align='center' colspan='4'><BR>
                         <?php
                         $m80_codigo = (isset($m80_codigo) && !empty($m80_codigo)) ? $m80_codigo : 'null';
-                        $chavepri = array("m80_codigo" => @$valores, "m82_codigo" => @$m82_codigo);
+                        $chavepri = ["m80_codigo" => @$valores, "m82_codigo" => @$m82_codigo];
                         $cliframe_alterar_excluir->chavepri = $chavepri;
                         $cliframe_alterar_excluir->sql = $clmatestoqueinimei->sql_query_matestoque(null, "matestoqueini.m80_codigo, m60_codmater, m60_descr, sum(m82_quant) as m82_quant, m77_lote, m77_dtvalidade", "matestoqueini.m80_codigo", " matestoqueini.m80_codigo=$m80_codigo group by matestoqueini.m80_codigo, m60_codmater, m60_descr, m77_lote, m77_dtvalidade ");
                         $cliframe_alterar_excluir->campos = "m60_codmater,m60_descr,m82_quant,m77_lote,m77_dtvalidade";
@@ -143,7 +143,7 @@ function js_preenchepesquisa(chave){
   db_iframe_matestoquetransf.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave".(isset($confirma)?"+'&confirma=$confirma'":"");
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave".(isset($confirma)?"+'&confirma=$confirma'":"");
   }
   ?>
 }

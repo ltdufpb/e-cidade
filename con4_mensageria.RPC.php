@@ -51,7 +51,7 @@ try {
       $oPrefeitura = @$oInstituicao->getDadosPrefeitura();
 
       $oRetorno->sLogin = db_getsession('DB_login');
-      $oRetorno->sSistema = 'e-cidade.' . strtolower($oPrefeitura->getMunicipio());
+      $oRetorno->sSistema = 'e-cidade.' . strtolower((string) $oPrefeitura->getMunicipio());
 
     break;
 

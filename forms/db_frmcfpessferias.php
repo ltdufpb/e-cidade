@@ -33,10 +33,10 @@ $clrotulo = new rotulocampo;
 $clrotulo->label('rh27_descr');
 $clcfpess->rotulo->label();
 
-$aOption = array(
+$aOption = [
   't' => 'Sim',
   'f' => 'Não'
-);
+];
 
 $r11_anousu = DBPessoal::getAnoFolha();
 $r11_mesusu = DBPessoal::getMesFolha();
@@ -75,7 +75,7 @@ $r11_mesusu = DBPessoal::getMesFolha();
           </label>
         </td>
         <td>
-          <?php db_select('r11_fersal', array('S' => 'Salário', 'F' => 'Férias'), true, $db_opcao, ''); ?>
+          <?php db_select('r11_fersal', ['S' => 'Salário', 'F' => 'Férias'], true, $db_opcao, ''); ?>
         </td>
       </tr>
       <tr>
@@ -85,7 +85,7 @@ $r11_mesusu = DBPessoal::getMesFolha();
           </label>
         </td>
         <td>
-          <?php db_select('r11_pagarferias', array(' ' => 'Nenhum', 'S' => 'Salário', 'C' => 'Complementar'), true, $db_opcao, ''); ?>
+          <?php db_select('r11_pagarferias', [' ' => 'Nenhum', 'S' => 'Salário', 'C' => 'Complementar'], true, $db_opcao, ''); ?>
         </td>
       </tr>
       <tr>

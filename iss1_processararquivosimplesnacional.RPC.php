@@ -48,8 +48,8 @@ try {
 
     case 'getCnae' :
 
-      $aCnaes                        = array();
-      $aCnaesInvalidos               = array();
+      $aCnaes                        = [];
+      $aCnaesInvalidos               = [];
       $oDaoArquivoSimplesImportacao  = new GeracaoArquivoSimplesNacional();
 
       $aCnaes = $oDaoArquivoSimplesImportacao->getCnae( $parametros->iArquivo );
@@ -64,7 +64,7 @@ try {
       $aCnaesInvalidos = $oDaoArquivoSimplesImportacao->getCnae( $parametros->iArquivo, false );
       if( !empty($aCnaesInvalidos) ) {
 
-        $aInvalidos = array( 'q71_estrutural' => 'Y' , 'q71_descr' => urlencode('CNAES NÃO ENCONTRADOS') );
+        $aInvalidos = [ 'q71_estrutural' => 'Y' , 'q71_descr' => urlencode('CNAES NÃO ENCONTRADOS') ];
         array_push( $aCnaes, $aInvalidos );
       }
 
@@ -195,7 +195,7 @@ try {
     case "getArquivos":
       
       
-      $retorno->aArquivos = array();
+      $retorno->aArquivos = [];
 
       $oDaoArquivoSimplesImportacao = new cl_arquivosimplesimportacao();
       $sWhere = ($parametros->lReprocessamento=="true"? 'q64_processado is true' : '');
@@ -214,7 +214,7 @@ try {
       $aArquivoSimplesImportacao = db_utils::getCollectionByRecord( $rsDAOArquivoSimplesImportacao );
 
       foreach ($aArquivoSimplesImportacao as $aDados ) {
-        $retorno->aArquivos[] = array('iSequencial' => $aDados->q64_sequencial, 'sLabel' => $aDados->q64_nomearquivo);
+        $retorno->aArquivos[] = ['iSequencial' => $aDados->q64_sequencial, 'sLabel' => $aDados->q64_nomearquivo];
       }
     break;
 

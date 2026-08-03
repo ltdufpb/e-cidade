@@ -27,11 +27,11 @@
 
   function removeAcento($var) {
 
-    $var = ereg_replace("[íì]","i",$var);
-    $var = ereg_replace("[áàâãª]","a",$var);
-    $var = ereg_replace("[éèê]","e",$var);
-    $var = ereg_replace("[óòôõº]","o",$var);
-    $var = ereg_replace("[úùû]","u",$var);
+    $var = preg_replace("#[\xed\xec]#m","i",(string) $var);
+    $var = preg_replace("#[\xe1\xe0\xe2\xe3\xaa]#m","a",$var);
+    $var = preg_replace("#[\xe9\xe8\xea]#m","e",$var);
+    $var = preg_replace("#[\xf3\xf2\xf4\xf5\xba]#m","o",$var);
+    $var = preg_replace("#[\xfa\xf9\xfb]#m","u",$var);
     $var = str_replace("ç","c",$var);
 
     return $var;
@@ -45,7 +45,7 @@
   <script language="JavaScript" type="text/javascript" src="scripts/scripts.js"></script>
   <script>
 
-    <?php if (pg_numrows($rsInstituicao) > 0):
+    <?php if (pg_num_rows($rsInstituicao) > 0):
       db_fieldsmemory($rsInstituicao, 0); ?>
 
       parent.topo.document.getElementById('infoConfig').innerHTML = '<strong><?php echo $nome; ?></strong> (<?php echo $ender; ?> \| Fone:&nbsp;<?php echo $telef; ?>'
@@ -88,10 +88,10 @@
             <?php
 
               for($i = 0;$i < $iNumRowsModulos;$i++) {
-                echo "<a  title='".pg_result($rsModulos,$i,"help")."' id=\"link\" href=\"modulos.php?".base64_encode("anousu="
-                     .pg_result($rsModulos,$i,"anousu")."&modulo=".pg_result($rsModulos,$i,"id_item")."&nomemod=".pg_result($rsModulos,$i,"nome_modulo"))
+                echo "<a  title='".pg_fetch_result($rsModulos,$i,"help")."' id=\"link\" href=\"modulos.php?".base64_encode("anousu="
+                     .pg_fetch_result($rsModulos,$i,"anousu")."&modulo=".pg_fetch_result($rsModulos,$i,"id_item")."&nomemod=".pg_fetch_result($rsModulos,$i,"nome_modulo"))
                      ."\"><img src=\"skins/img.php?file=Modulos/"
-                     .str_replace(" ", "", removeAcento(pg_result($rsModulos,$i,"nome_modulo"))).".png\" alt=\"".pg_result($rsModulos,$i,"help")
+                     .str_replace(" ", "", removeAcento(pg_fetch_result($rsModulos,$i,"nome_modulo"))).".png\" alt=\"".pg_fetch_result($rsModulos,$i,"help")
                      ."\" onmouseover=\"js_msg_status(this.alt)\" onmouseout=\"js_msg_status('Selecione o módulo clicando na figura.')\" border=\"0\" width=\"100\" height=\"100\"></a>\n";
 
                 if ((($i + 1) % 3) == 0) {
@@ -108,6 +108,6 @@
 </body>
 <script>
   parent.bstatus.document.getElementById('st').innerHTML = '&nbsp;&nbsp;Selecione o módulo clicando na figura.';
-  parent.bstatus.document.getElementById('dtatual').innerHTML  = '<?=(isset($HTTP_SESSION_VARS["DB_datausu"])?date("d/m/Y",db_getsession("DB_datausu")):date("d/m/Y"))  ?>';
-  parent.bstatus.document.getElementById('dtanousu').innerHTML = '<?=(isset($HTTP_SESSION_VARS["DB_anousu"])?db_getsession("DB_anousu"):date("Y"))  ?>';
+  parent.bstatus.document.getElementById('dtatual').innerHTML  = '<?=(isset($_SESSION["DB_datausu"])?date("d/m/Y",db_getsession("DB_datausu")):date("d/m/Y"))  ?>';
+  parent.bstatus.document.getElementById('dtanousu').innerHTML = '<?=(isset($_SESSION["DB_anousu"])?db_getsession("DB_anousu"):date("Y"))  ?>';
 </script>

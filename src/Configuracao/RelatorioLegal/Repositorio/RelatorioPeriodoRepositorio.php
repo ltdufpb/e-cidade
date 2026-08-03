@@ -40,7 +40,7 @@ class RelatorioPeriodoRepositorio extends Repositorio
      * @return RelatorioPeriodo[]
      * @throws Exception
      */
-    public function get($campos = array("*"))
+    public function get($campos = ["*"])
     {
         $dao = new cl_orcparamrelperiodos();
         $sql = $dao->sql_query_file(null, implode(', ', $campos), null, implode(' and ', $this->scopes));
@@ -49,9 +49,9 @@ class RelatorioPeriodoRepositorio extends Repositorio
             throw new Exception("Não foi possível buscar os períodos do relatorio.");
         }
 
-        $periodos = array();
+        $periodos = [];
         if (pg_num_rows($rs) === 0) {
-            return array();
+            return [];
         }
 
         while ($periodo = pg_fetch_array($rs)) {
@@ -139,7 +139,7 @@ class RelatorioPeriodoRepositorio extends Repositorio
      * @param RelatorioPeriodo $relatorioPeriodo
      * @throws Exception
      */
-    public function delete(RelatorioPeriodo $relatorioPeriodo = null)
+    public function delete(?RelatorioPeriodo $relatorioPeriodo = null)
     {
         $id = $relatorioPeriodo instanceof RelatorioPeriodo ? $relatorioPeriodo->getSequencial() : null;
 

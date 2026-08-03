@@ -57,14 +57,14 @@ $cledu_relatmodel->rotulo->label();
         </td>
         <td  nowrap='nowrap'>
           <?php
-            $x = array("0"=>"SELECIONE",
+            $x = ["0"=>"SELECIONE",
                        "1"=>"HISTÓRICO ESCOLAR",
                        "2"=>"CERTIFICADO DE CONCLUSÃO",
                        "3"=>"ATA DE RESULTADOS FINAIS",
                        "4"=>"QUADRO DE RESULTADOS FINAIS",
                        "5"=>"ALUNOS VOTANTES",
                        "6"=>"RESPONSÁVEIS VOTANTES"
-                      );
+                      ];
             db_select('ed217_i_relatorio',$x,true,$iDesabilitaQuandoAlteracao,"Onchange=js_remove();");
           ?>
         </td>
@@ -90,10 +90,10 @@ $cledu_relatmodel->rotulo->label();
           </td>
           <td nowrap='nowrap'  >
             <?php
-              $xy = array("0"=>"SELECIONE",
+              $xy = ["0"=>"SELECIONE",
                           "1"=>"PAISAGEM",
                           "2"=>"RETRATO"
-               );
+               ];
               db_select('ed217_orientacao',$xy,true,$db_opcao,"Onchange=js_orientacao();");
             ?>
           </td>
@@ -104,7 +104,7 @@ $cledu_relatmodel->rotulo->label();
           </td>
           <td  nowrap='nowrap' >
             <?php
-              $aTipoBrasao = array( 0 => "SELECIONE", 1 => "REPÚBLICA", 2 => "MUNICÍPIO" );
+              $aTipoBrasao = [ 0 => "SELECIONE", 1 => "REPÚBLICA", 2 => "MUNICÍPIO" ];
               db_select( 'ed217_brasao', $aTipoBrasao, true, $db_opcao );
             ?>
           </td>
@@ -115,7 +115,7 @@ $cledu_relatmodel->rotulo->label();
           </td>
           <td  nowrap='nowrap'>
            <?php
-             $xy = array("f"=>"NÃO", "t"=>"SIM");
+             $xy = ["f"=>"NÃO", "t"=>"SIM"];
              db_select('ed217_exibeturma',$xy,true,$db_opcao);
            ?>
          </td>
@@ -127,7 +127,7 @@ $cledu_relatmodel->rotulo->label();
           </td>
           <td nowrap='nowrap' >
             <?php
-              $xy = array("f"=>"NÃO", "t"=>"SIM");
+              $xy = ["f"=>"NÃO", "t"=>"SIM"];
               db_select('ed217_exibecargahoraria',$xy,true,$db_opcao);
             ?>
           </td>
@@ -138,7 +138,7 @@ $cledu_relatmodel->rotulo->label();
               </td>
               <td nowrap='nowrap' >
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
+                  $xy = ["f"=>"NÃO", "t"=>"SIM"];
                   db_select('ed217_exibe_obs_diario',$xy,true,$db_opcao);
                   ?>
               </td>
@@ -149,7 +149,7 @@ $cledu_relatmodel->rotulo->label();
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
+                  $xy = ["f"=>"NÃO", "t"=>"SIM"];
                   db_select('ed217_exibirmantenedora',$xy,true,$db_opcao);
                   ?>
               </td>
@@ -160,7 +160,7 @@ $cledu_relatmodel->rotulo->label();
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
+                  $xy = ["f"=>"NÃO", "t"=>"SIM"];
                   db_select('ed217_exibirdistrito',$xy,true,$db_opcao);
                   ?>
               </td>
@@ -171,7 +171,7 @@ $cledu_relatmodel->rotulo->label();
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
+                  $xy = ["f"=>"NÃO", "t"=>"SIM"];
                   db_select('ed217_exibirperiodo',$xy,true,$db_opcao);
                   ?>
               </td>
@@ -182,7 +182,7 @@ $cledu_relatmodel->rotulo->label();
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
+                  $xy = ["f"=>"NÃO", "t"=>"SIM"];
                   db_select('ed217_exibir_etapa_obs',$xy,true,$db_opcao);
                   ?>
               </td>
@@ -193,7 +193,7 @@ $cledu_relatmodel->rotulo->label();
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
+                  $xy = ["f"=>"NÃO", "t"=>"SIM"];
                   db_select('ed217_exibircertidao',$xy,true,$db_opcao);
                   ?>
               </td>
@@ -204,7 +204,7 @@ $cledu_relatmodel->rotulo->label();
               </td>
               <td nowrap='nowrap'>
                   <?php
-                  $xy = array("f"=>"NÃO", "t"=>"SIM");
+                  $xy = ["f"=>"NÃO", "t"=>"SIM"];
                   db_select('ed217_exibiridentidade',$xy,true,$db_opcao);
                   ?>
               </td>
@@ -244,7 +244,7 @@ $cledu_relatmodel->rotulo->label();
             </td>
             <td  nowrap='nowrap'>
               <?php
-                $x = array("0"=>"", "1"=>"6", "2"=>"8" );
+                $x = ["0"=>"", "1"=>"6", "2"=>"8" ];
                 db_select('ed217_gradenotas',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -255,7 +255,7 @@ $cledu_relatmodel->rotulo->label();
             </td>
             <td  nowrap='nowrap'>
               <?php
-                $x = array("0"=>"", "1"=>"6", "2"=>"8" );
+                $x = ["0"=>"", "1"=>"6", "2"=>"8" ];
                 db_select('ed217_gradeetapas',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -266,7 +266,7 @@ $cledu_relatmodel->rotulo->label();
             </td>
             <td  nowrap='nowrap'>
               <?php
-                $x = array("0"=>"", "1"=>"6", "2"=>"8" );
+                $x = ["0"=>"", "1"=>"6", "2"=>"8" ];
                 db_select('ed217_observacao',$x,true,$db_opcao,"");
               ?>
             </td>
@@ -317,7 +317,7 @@ function js_preenchepesquisa(chave) {
   db_iframe_edu_relatmodel.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

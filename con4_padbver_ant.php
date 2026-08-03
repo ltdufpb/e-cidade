@@ -26,18 +26,18 @@
  */
 
 class bver_ant {
-  var $arq=null;
+  public $arq=null;
 
 
-  function bver_ant($header){
+  function __construct($header){
 
     umask(74);
     $this->arq = fopen("tmp/BVER_ANT.TXT",'w+');
-    fputs($this->arq,$header);
+    fputs($this->arq,(string) $header);
     fputs($this->arq,"\r\n");
   }
 
-  function processa($instit=1,$data_ini="",$data_fim="",$tribinst,$subelemento="") {
+  function processa($instit=1,$data_ini="",$data_fim="",$tribinst = null,$subelemento="") {
 
     global $instituicoes,$contador,$nomeinst,$sinal_anterior,$sinal_final;
 
@@ -63,7 +63,7 @@ class bver_ant {
       $sArquivo   = $oArquivo->c54_arquivo;
       fputs($this->arq, str_replace("\n\r", "", $sArquivo));
       fputs($this->arq,"\r\n");
-      $contador = count(explode("\n",$sArquivo));
+      $contador = count(explode("\n",(string) $sArquivo));
 
     } else {
 
@@ -72,9 +72,9 @@ class bver_ant {
       $teste_debito  = 0;
       $teste_credito = 0;
 
-      $array_teste = array();
+      $array_teste = [];
 
-      for($x = 0; $x < pg_numrows($result);$x++) {
+      for($x = 0; $x < pg_num_rows($result);$x++) {
 
         global $instituicoes,$c61_instit,$c61_reduz,$nivel,$estrutural,$saldo_anterior,$saldo_anterior_debito,$saldo_anterior_credito,$saldo_final,$c60_descr;
         db_fieldsmemory($result,$x);
@@ -86,7 +86,7 @@ class bver_ant {
         //db_fieldsmemory($result,$x,true,true);exit;
         //}
 
-        $line  = formatar($estrutural,20,'n');
+        $line  = formatar($estrutural,20);
 
         if($c61_instit == 0 || empty($c61_instit))
           $line .= "0000";
@@ -95,67 +95,67 @@ class bver_ant {
 
         if ($sinal_anterior=='D') {
 
-          $line .= formatar(dbround_php_52($saldo_anterior,2),13,'v');
-          $line .= formatar(0,13,'v');
+          $line .= formatar(dbround_php_52($saldo_anterior,2),13);
+          $line .= formatar(0,13);
         } else {
 
-          $line .= formatar(0,13,'v');
-          $line .= formatar(dbround_php_52($saldo_anterior,2),13,'v');
+          $line .= formatar(0,13);
+          $line .= formatar(dbround_php_52($saldo_anterior,2),13);
         }
 
         if ($saldo_anterior_debito == 7600000) {
 
-          $line .= formatar(7600000,13,'v');
+          $line .= formatar(7600000,13);
           $saldo_anterior_debito = 7600000;
         } elseif ($saldo_anterior_debito == 96100000) {
 
-          $line .= formatar(96100000,13,'v');
+          $line .= formatar(96100000,13);
           $saldo_anterior_debito = 96100000;
         } elseif ($saldo_anterior_debito == 1400000) {
 
-          $line .= formatar(1400000,13,'v');
+          $line .= formatar(1400000,13);
           $saldo_anterior_debito = 1400000;
         } else {
 
-          $line .= formatar(dbround_php_52($saldo_anterior_debito,2),13,'v');
+          $line .= formatar(dbround_php_52($saldo_anterior_debito,2),13);
         }
 
         if ($saldo_anterior_credito == 7600000) {
 
-          $line .= formatar(7600000,13,'v');
+          $line .= formatar(7600000,13);
           $saldo_anterior_credito = 7600000;
         } elseif ($saldo_anterior_credito == 96100000) {
 
-          $line .= formatar(96100000,13,'v');
+          $line .= formatar(96100000,13);
           $saldo_anterior_credito = 96100000;
         } elseif ($saldo_anterior_credito == 1400000) {
 
-          $line .= formatar(1400000,13,'v');
+          $line .= formatar(1400000,13);
           $saldo_anterior_credito = 1400000;
         } else {
-          $line .= formatar(dbround_php_52($saldo_anterior_credito,2),13,'v');
+          $line .= formatar(dbround_php_52($saldo_anterior_credito,2),13);
         }
 
         if ($sinal_final=='D') {
 
-          $line .= formatar(dbround_php_52($saldo_final,2),13,'v');
-          $line .= formatar(0,13,'v');
+          $line .= formatar(dbround_php_52($saldo_final,2),13);
+          $line .= formatar(0,13);
         } else {
 
-          $line .= formatar(0,13,'v');
-          $line .= formatar(dbround_php_52($saldo_final,2),13,'v');
+          $line .= formatar(0,13);
+          $line .= formatar(dbround_php_52($saldo_final,2),13);
         }
 
-        $line .= formatar($c60_descr,148,'c');
+        $line .= formatar($c60_descr,148);
         $line .= ($c61_reduz == 0?'S':'A');
 
         // pesquisa nivel da conta
 
         $sql = "select fc_nivel_plano2005('$estrutural') as nivel ";
         $resultsis = db_query($sql);
-        $nivel = pg_result($resultsis,0,'nivel');
+        $nivel = pg_fetch_result($resultsis,0,'nivel');
 
-        $line .= formatar($nivel,2,'n');
+        $line .= formatar($nivel,2);
 
         // pesquisa o sistema da conta orcamentaria, financeiro, etc
         $sql = "select c52_descrred
@@ -167,8 +167,8 @@ class bver_ant {
         $resultsis        = db_query($sql);
         $sSistemaContabil = "";
 
-        if (pg_numrows($resultsis) > 0) {
-          $sSistemaContabil =  pg_result($resultsis,0,'c52_descrred');
+        if (pg_num_rows($resultsis) > 0) {
+          $sSistemaContabil =  pg_fetch_result($resultsis,0,'c52_descrred');
         } else {
           $sSistemaContabil = "F";
         }
@@ -180,7 +180,7 @@ class bver_ant {
         if (USE_PCASP) {
 
           $sSistemaContabil = " ";
-          $iEstrtutural     = substr($estrutural, 0, 1);
+          $iEstrtutural     = substr((string) $estrutural, 0, 1);
 
           /**
            * @todo criar metodo estatico que revceba o estrutural e devolta a natureza
@@ -230,9 +230,9 @@ class bver_ant {
 
 
 
-          if(pg_numrows($rsSuperavit) > 0) {
+          if(pg_num_rows($rsSuperavit) > 0) {
 
-            $sIndicadorSuperavitFinanceiro =  pg_result($rsSuperavit,0,'c60_identificadorfinanceiro');
+            $sIndicadorSuperavitFinanceiro =  pg_fetch_result($rsSuperavit,0,'c60_identificadorfinanceiro');
 
             if ($sIndicadorSuperavitFinanceiro == "N") {
               $sIndicadorSuperavitFinanceiro = "P";
@@ -258,7 +258,7 @@ class bver_ant {
       }
     }
     //  trailer
-    $contador = espaco(10-(strlen($contador)),'0').$contador;
+    $contador = espaco(10-(strlen($contador))).$contador;
     $line = "FINALIZADOR".$contador;
     fputs($this->arq,$line);
     fputs($this->arq,"\r\n");

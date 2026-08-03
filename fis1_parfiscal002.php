@@ -31,8 +31,8 @@ require_once(modification("libs/db_sessoes.php"));
 require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $oDaoParfiscal = new cl_parfiscal;
 $db_opcao      = 22;
@@ -46,14 +46,14 @@ if (isset($alterar)) {
 
   if( $utilizadocpadrao == 0 ){
 
-    $HTTP_POST_VARS['y32_templateautoinfracao'] = "null";
+    $_POST['y32_templateautoinfracao'] = "null";
     $y32_templateautoinfracao                   = "null";
   }
 
   if ($y32_modalvara != 3) {
 
-    $HTTP_POST_VARS['y32_templatealvarasanitarioprovisorio'] = "null";
-    $HTTP_POST_VARS['y32_templatealvarasanitariopermanente'] = "null";
+    $_POST['y32_templatealvarasanitarioprovisorio'] = "null";
+    $_POST['y32_templatealvarasanitariopermanente'] = "null";
     $y32_templatealvarasanitarioprovisorio                   = "null";
     $y32_templatealvarasanitariopermanente                   = "null";
   } else if (empty($y32_templatealvarasanitarioprovisorio)) {

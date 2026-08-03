@@ -166,7 +166,7 @@ class ServidorRepository
      * @param ServidorProcesso|null $processo
      * @throws Exception
      */
-    public function delete(ServidorProcesso $servidor = null)
+    public function delete(?ServidorProcesso $servidor = null)
     {
         $id = $servidor instanceof ServidorProcesso ? $servidor->getSequencial() : null;
         $dao = new cl_rhpessoalprocessoservidor;
@@ -184,7 +184,7 @@ class ServidorRepository
      * @return bool|ServidorProcesso
      * @throws Exception
      */
-    public static function find($id, $columns = array('*'))
+    public static function find($id, $columns = ['*'])
     {
         $dao = new cl_rhpessoalprocessoservidor;
         $sql = $dao->sql_query($id, implode(', ', $columns));
@@ -214,7 +214,7 @@ class ServidorRepository
         $sql = $dao->sql_query(null, implode(', ', $columns));
         $rs = db_query($sql);
 
-        $processo = array();
+        $processo = [];
 
         if (pg_num_rows($rs) === 0) {
             return $processo;
@@ -674,8 +674,8 @@ class ServidorRepository
      */
     private function truncate($val, $f = "0")
     {
-        if (($p = strpos($val, '.')) !== false) {
-            $val = floatval(substr($val, 0, $p + 1 + $f));
+        if (($p = strpos((string) $val, '.')) !== false) {
+            $val = floatval(substr((string) $val, 0, $p + 1 + $f));
         }
         return $val;
     }
@@ -700,7 +700,7 @@ class ServidorRepository
 
             if (!empty($dataPagamentoRemuneracao)) {
                 $dataPagamento = $dataPagamentoRemuneracao[0]->getDataPagamento()->getDate();
-                if (strtotime($dataPagamento) > strtotime($dataDesligamento)) {
+                if (strtotime((string) $dataPagamento) > strtotime($dataDesligamento)) {
                     continue;
                 }
             }

@@ -39,7 +39,7 @@ $cllevvalor->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("y60_contato");
 $data = date("d-m-Y",db_getsession("DB_datausu"));
-$data = split('-',$data);
+$data = preg_split('#\-#m',$data);
 $dia  = $data[0];
 $mes  = $data[1];
 $ano  = $data[2];
@@ -161,12 +161,12 @@ db_input('y63_sequencia',10,$Iy63_sequencia,true,'text',3);
       <?php 
       $result=$cllevanta->sql_record($cllevanta->sql_query_file($y63_codlev,"y60_dtini,y60_dtfim"));
       db_fieldsmemory($result,0);
-      $arr_ini = split("-",$y60_dtini);
-      $arr_fim = split("-",$y60_dtfim);
+      $arr_ini = preg_split("#\\-#m",(string) $y60_dtini);
+      $arr_fim = preg_split("#\\-#m",(string) $y60_dtfim);
       $ini = $arr_ini[0];
       $fim = $arr_fim[0];
 
-      $anos=array();
+      $anos=[];
 
       //Pega os exercícios do periodo
       for($i=$ini; $i<$fim+1; $i++){
@@ -185,7 +185,7 @@ db_input('y63_sequencia',10,$Iy63_sequencia,true,'text',3);
         $y63_mes = $arr_ini[1];
       }
 
-      $result=array("1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro");
+      $result=["1"=>"Janeiro","2"=>"Fevereiro","3"=>"Março","4"=>"Abril","5"=>"Maio","6"=>"Junho","7"=>"Julho","8"=>"Agosto","9"=>"Setembro","10"=>"Outubro","11"=>"Novembro","12"=>"Dezembro"];
       db_select("y63_mes",$result,true,$db_opcao,"","","","","");
 
       echo $Ly63_dtvenc;
@@ -325,7 +325,7 @@ db_input('y63_sequencia',10,$Iy63_sequencia,true,'text',3);
   	if(isset($db_opcaoal)){
   		 db_input("db_opcaoal",10,"",true,"hidden",3);
   	}
-    $chavepri= array("y63_codlev"=>@$y63_codlev,"y63_sequencia"=>@$y63_sequencia);
+    $chavepri= ["y63_codlev"=>@$y63_codlev,"y63_sequencia"=>@$y63_sequencia];
     $cliframe_alterar_excluir->chavepri      = $chavepri;
     $cliframe_alterar_excluir->sql           = $cllevvalor->sql_query_file("","y63_sequencia,y63_mes,y63_ano,y63_codlev,y63_sequencia,y63_bruto,y63_aliquota,y63_pago,y63_saldo,y63_dtvenc,y63_histor,(y63_pago+y63_saldo) as y63_apagar"," y63_ano,y63_mes","y63_codlev=$y63_codlev");
     $cliframe_alterar_excluir->campos        = "y63_sequencia,y63_mes,y63_ano,y63_bruto,y63_aliquota,y63_apagar,y63_pago,y63_saldo,y63_dtvenc,y63_histor";
@@ -451,7 +451,7 @@ function js_preenchepesquisa(chave){
   db_iframe_levvalor.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

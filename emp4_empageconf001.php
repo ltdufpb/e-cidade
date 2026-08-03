@@ -59,11 +59,11 @@ $cldb_config = new cl_db_config;
 $clcfautent = new cl_cfautent;
 $cldb_bancos = new cl_db_bancos;
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = false;
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
 
 //rotina que pega o nome do prefeito
 $result00 = $cldb_config->sql_record($cldb_config->sql_query_file(db_getsession("DB_instit"), "pref as prefeito,munic as municipio"));
@@ -73,7 +73,7 @@ db_fieldsmemory($result00, 0);
 $resu = $clcfautent->sql_record($clcfautent->sql_query_file(null, "k11_tipoimpcheque,k11_portaimpcheque,k11_tesoureiro as tesoureiro","","k11_ipterm='".db_getsession("DB_ip")."' and k11_instit=".db_getsession("DB_instit")));
 if($clcfautent->numrows > 0) {
   db_fieldsmemory($resu, 0);
-  if(trim($tesoureiro) == ""){
+  if(trim((string) $tesoureiro) == ""){
     $mensagem_mostra = "Preencha o Nome/cargo no cadastro de autenticadoras.";
   }
 }else{
@@ -101,7 +101,7 @@ if(isset($atualizar) || isset($prever)){
     $cheque_seq = '';
     $testa_sequencia_cheques = "";
     $vir = '';
-    $arr_chequeseq = array ();
+    $arr_chequeseq =  [];
     for($i=0; $i<$cheques; $i++){
       $cheque_seq .= $vir.$sequencia;
       $testa_sequencia_cheques .= $vir."'".$sequencia."'";
@@ -135,7 +135,7 @@ if(isset($atualizar) || isset($prever)){
     $cgmprinc = '';
     $nome_nominal = false;
 
-    $arr = split("XX", $movs);
+    $arr = preg_split("#XX#m", $movs);
     $tot_valor = 0;
     $nomes = '';
 
@@ -163,7 +163,7 @@ if(isset($atualizar) || isset($prever)){
 
     if($sqlerro == false){
       // Rotina que pega os nomes
-      $arr_m = array ();
+      $arr_m =  [];
       for($i=0; $i<count($arr); $i++){
         $mov = $arr[$i];
      
@@ -191,7 +191,7 @@ if(isset($atualizar) || isset($prever)){
 	          $erro_msg = "Conta sem saldo disponível para este valor. Verifique.\\n\\nCheque não gerado.";
 	          break;
 	        }
-		    
+
 	        ///////////////////////////////////////////////////////
 	        ///////////////////////////////////////////////////////
           }
@@ -222,7 +222,7 @@ if(isset($atualizar) || isset($prever)){
       // Dados do fornecedor
       $sql04 = "select * from pcfornecon where pc63_numcgm=$numcgm_cre";
       $result04 = @ db_query($sql04);
-      $numrows04 = @ pg_numrows($result04);
+      $numrows04 = @ pg_num_rows($result04);
       $dad_verso = '\n';
       if($numrows04 > 0){
 	db_fieldsmemory($result04, 0);
@@ -236,7 +236,7 @@ if(isset($atualizar) || isset($prever)){
 		      where c61_anousu=".db_getsession("DB_anousu")." and c61_reduz = $e83_conta";
 
       $result = db_query($sql);
-      if($result == false || pg_numrows($result) == 0){
+      if($result == false || pg_num_rows($result) == 0){
 	    $sqlerro = true;
 	    $erro_msg = "Conta não cadastrada no conplanoconta. Contate Contabilidade ($e83_conta).";
       }else{
@@ -280,15 +280,15 @@ if(isset($atualizar) || isset($prever)){
 	}
 
 	if($numrows_bancos2 == 0){
-	  if(trim($codbco) == '001'){
+	  if(trim((string) $codbco) == '001'){
 	    $descr = 'BANCO DO BRASIL S/A';
-	  }else if(trim($codbco) == '041'){
+	  }else if(trim((string) $codbco) == '041'){
 	    $descr = 'BANRISUL S/A';
-	  }else if(trim($codbco) == '104'){
+	  }else if(trim((string) $codbco) == '104'){
 	    $descr = 'CAIXA ECONÔMICA FEDERAL';
-	  }else if(trim($codbco) == '008'){
+	  }else if(trim((string) $codbco) == '008'){
 	    $descr = 'SANTANDER S/A';
-	  }else if(trim($codbco) == '237'){
+	  }else if(trim((string) $codbco) == '237'){
 	    $descr = 'BRADESCO S/A';
 	  }else{
 	    $descr = '.';
@@ -318,7 +318,7 @@ if(isset($atualizar) || isset($prever)){
 	    $pc63_agencia = str_replace("\n", '', $pc63_agencia);
 	    $ver = str_replace("\r", '', $pc63_agencia);
 	    $dad_verso .= '	   Agencia:'.$pc63_agencia." - ".$pc63_agencia_dig.'    Conta:'.$pc63_conta." - ".$pc63_conta_dig.' Banco:'.$k13_descr.' \n  ';
-	    if(trim($pc63_identcli) != ""){
+	    if(trim((string) $pc63_identcli) != ""){
 	      $dad_verso .= '	   Identificação do cliente no banco: '.$pc63_identcli.'\n';
 	    }else{
 	      $dad_verso .= '	   \n';
@@ -367,8 +367,8 @@ if(isset($atualizar) && $sqlerro==false){
   db_inicio_transacao();
 
   // Valores
-  $arr = split("XX", $movs);
-  $arr_movs = array ();
+  $arr = preg_split("#XX#m", $movs);
+  $arr_movs =  [];
   for($i=0; $i<count($arr); $i++){
     $mov = $arr[$i];
     $re = $clempagemov->sql_record($clempagemov->sql_query_file($mov, "e81_valor"));
@@ -376,13 +376,13 @@ if(isset($atualizar) && $sqlerro==false){
     $arr_movs[$mov] = $e81_valor;
   }
 
- 
+
   $val = (float) trim(db_formatar(($tot_valor / $cheques), 'p', '', 2));
   $tot_val = '0';
 
   $vals = '';
   $sep = '';
-  $arr_cheque = array ();
+  $arr_cheque =  [];
   if(trim($valor_dos_cheques) == ""){
 	  for($s=0; $s<$cheques; $s++){
 	    // Rotina que define os valores
@@ -392,19 +392,19 @@ if(isset($atualizar) && $sqlerro==false){
 	        $resto = bcsub($tot_valor,$tot_val,2);
 	        $val = bcadd($val,$resto,2);
 	      }else if($tot_val > $tot_valor){
-	        $resto = bcsub($tot_val,$tot_valor,2);
+	        $resto = bcsub($tot_val,(string) $tot_valor,2);
 	        $val = bcsub($val,$resto,2);
 	      }
 	    }
 	    $arr_cheque[$s] = $val;
-	
-	  
+
+
 	    $vals .= $sep.$val;
 	    $sep = '#';
 	    $cheq = $arr_chequeseq[$s];
 	  }
   }else{
-		$arr_cheque = split("-",$valor_dos_cheques);
+		$arr_cheque = preg_split("#\\-#m",$valor_dos_cheques);
 	  for($s=0; $s<$cheques; $s++){
 	    // Rotina que define os valores
       $vals .= $sep.$arr_cheque[$s];
@@ -468,9 +468,9 @@ if(isset($atualizar) && $sqlerro==false){
     }
   }
 
-  $arr_cods = split("#", $cods);
+  $arr_cods = preg_split("#\\##m", $cods);
   for($i=0; $i<count($arr_cods); $i++){
-    $arr = split("-", $arr_cods[$i]);
+    $arr = preg_split("#\\-#m", (string) $arr_cods[$i]);
     $cheq = $arr[0];
     $mov = $arr[1];
     $val = $arr[2];
@@ -503,7 +503,7 @@ if(isset($atualizar) && $sqlerro==false){
     }
 
     if($sqlerro == false){
-      $arr = split("XX", $movs);
+      $arr = preg_split("#XX#m", $movs);
       for($i=0; $i<count($arr); $i++){
         $mov = $arr[$i];
         // Inclui na tabela empageconf
@@ -704,7 +704,7 @@ if((isset($atualizar) && $sqlerro == false)){
 
   $tot_valor = trim(db_formatar($tot_valor, 'p', '', 2));
 
-  $datain = "$dtin_dia-$dtin_mes-".substr($dtin_ano, 2, 2);
+  $datain = "$dtin_dia-$dtin_mes-".substr((string) $dtin_ano, 2, 2);
 
   if($nome == ''){
     db_msgbox("Campo Nome não foi informado");
@@ -747,8 +747,8 @@ if((isset($emite_vals) && $emite_vals != '' && empty($prever)  || isset($reemite
           document.form1.verso_imp.value  = '$verso_imp';\n";
   echo "</script>";
 
-  $arr_vals = split("#", $emite_vals);
-  $arr_cheque = split(",", $cheque_imp);
+  $arr_vals = preg_split("#\\##m", $emite_vals);
+  $arr_cheque = preg_split("#,#m", (string) $cheque_imp);
   
   $reemitevalor=$total;
 
@@ -847,16 +847,16 @@ if(isset($emiteverso)){
   $ver = str_replace("\n", ' ###', $emiteverso);
   $emiteverso = str_replace("\r", '', $ver);
 
-  $arr_i = split("###", $emiteverso);
+  $arr_i = preg_split("#\\#\\#\\##m", $emiteverso);
   if($k11_tipoimpcheque == 5){
     $fd = fsockopen($ip_imprime, $k11_portaimpcheque);
   //  $imprimir_ver = chr(27).chr(119).'1';
   //  $imprimir_ver.= chr(27).chr(80);
     for($i=0; $i<count($arr_i); $i++){
       $te = $arr_i[$i];
-      if(trim($te) != ""){
+      if(trim((string) $te) != ""){
         $imprimir_ver.= "";
-        $imprimir_ver .= "       ".trim($te).chr(10).chr(13);
+        $imprimir_ver .= "       ".trim((string) $te).chr(10).chr(13);
         $imprimir_ver .= chr(10).chr(13);
       }
     }

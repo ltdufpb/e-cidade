@@ -38,7 +38,7 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("model/cancelamentoDebitos.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oCancelaDebito   = new cancelamentoDebitos();
 $clvistoriasanu   = new cl_vistoriasanu;
 $clvistorianumpre = new cl_vistorianumpre;
@@ -114,12 +114,12 @@ if(isset($incluir)){
    	  $rsDebitosVistoria   = db_query($sSqlDebitosVistoria);
       $aDebitosVistoria    = db_utils::getCollectionByRecord($rsDebitosVistoria); 
    	  
-      $aDebitos = array();
+      $aDebitos = [];
       
       
       foreach ($aDebitosVistoria as $oDebitoVistoria) {
       	
-        $aDadosDebitos = array();  
+        $aDadosDebitos = [];  
         $aDadosDebitos['Numpre']  = $oDebitoVistoria->k00_numpre; 
         $aDadosDebitos['Numpar']  = $oDebitoVistoria->k00_numpar;
         $aDadosDebitos['Receita'] = $oDebitoVistoria->k00_receit;

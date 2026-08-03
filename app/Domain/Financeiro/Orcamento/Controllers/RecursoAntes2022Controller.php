@@ -53,7 +53,7 @@ class RecursoAntes2022Controller extends Controller
         return response()->json(
             [
                 'error' => false,
-                "message" => utf8_encode("Recurso salvo com sucesso.")
+                "message" => mb_convert_encoding("Recurso salvo com sucesso.", 'UTF-8', 'ISO-8859-1')
             ]
         );
     }
@@ -69,7 +69,7 @@ class RecursoAntes2022Controller extends Controller
         return response()->json(
             [
                 'error' => false,
-                "message" => utf8_encode("Recurso excluído com sucesso.")
+                "message" => mb_convert_encoding("Recurso excluído com sucesso.", 'UTF-8', 'ISO-8859-1')
             ]
         );
     }

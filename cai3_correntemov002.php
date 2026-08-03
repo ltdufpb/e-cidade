@@ -114,7 +114,7 @@ group by k13_conta,k13_descr,c60_codsis
 	 ";
     $result1 = db_query($sql);
     $result2 = db_query($sql1);
-    $num2    = pg_numrows($result2);
+    $num2    = pg_num_rows($result2);
 //    db_criatabela($result2);
 //    db_fieldsmemory(db_query($sql),0);
     $sql = "
@@ -144,7 +144,7 @@ group by k13_conta,k13_descr,c60_codsis
    <?php 
        $cor="#EFE029";
        $total = 0; 
-       for ($i = 0;$i < pg_numrows($result);$i++){
+       for ($i = 0;$i < pg_num_rows($result);$i++){
 	 db_fieldsmemory($result,$i);
          if($cor=="#EFE029")
             $cor="#E4F471";
@@ -178,7 +178,7 @@ group by k13_conta,k13_descr,c60_codsis
          <tr>
    <?php 
        $totalcontas = 0;
-       for ($i = 0;$i < pg_numrows($result1);$i++){
+       for ($i = 0;$i < pg_num_rows($result1);$i++){
 	 db_fieldsmemory($result1,$i);
          if($cor=="#EFE029")
             $cor="#E4F471";

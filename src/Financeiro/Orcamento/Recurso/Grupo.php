@@ -10,12 +10,12 @@ namespace ECidade\Financeiro\Orcamento\Recurso;
 class Grupo
 {
 
-    private static $itens = array();
+    private static $itens = [];
 
     public static function getAll()
     {
         $instituicao = \InstituicaoRepository::getInstituicaoSessao();
-        $estado = strtoupper($instituicao->getUf());
+        $estado = strtoupper((string) $instituicao->getUf());
         $dao = new \cl_recursogrupo();
         $busca = $dao->sql_query_file(null, "*", 2, "upper(o204_estado) = '{$estado}'");
         $resBusca = db_query($busca);

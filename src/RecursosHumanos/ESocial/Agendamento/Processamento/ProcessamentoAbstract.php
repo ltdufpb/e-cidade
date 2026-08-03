@@ -11,7 +11,7 @@ abstract class ProcessamentoAbstract
     /**
      * @var Servidor[]
      */
-    protected $servidores = array();
+    protected $servidores = [];
 
     /**
      * @var int

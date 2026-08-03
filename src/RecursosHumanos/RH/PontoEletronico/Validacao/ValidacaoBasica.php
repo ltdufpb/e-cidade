@@ -40,7 +40,7 @@ class ValidacaoBasica extends PontoEletronico implements InterfacePontoEletronic
   /**
    * @var array
    */
-  protected $erros = array();
+  protected $erros = [];
 
   protected $lValidarAfastamento = true;
 

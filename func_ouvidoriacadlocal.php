@@ -35,8 +35,8 @@ require_once(modification("classes/db_ouvidoriacadlocalgeral_classe.php"));
 require_once(modification("classes/db_ouvidoriacadlocalender_classe.php"));
 require_once(modification("classes/db_ouvidoriacadlocaldepart_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clouvidoriacadlocal = new cl_ouvidoriacadlocal;
 $clouvidoriacadlocal->rotulo->label("ov25_sequencial");
@@ -109,12 +109,12 @@ $oDaoOuvDepart = new cl_ouvidoriacadlocaldepart();
         }else{
            $sql = $clouvidoriacadlocal->sql_query("",$campos,"ov25_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ov25_descricao)){
-          $repassa = array("chave_ov25_sequencial"=>$chave_ov25_sequencial,"chave_ov25_descricao"=>$chave_ov25_descricao);
+          $repassa = ["chave_ov25_sequencial"=>$chave_ov25_sequencial,"chave_ov25_descricao"=>$chave_ov25_descricao];
         }
         
-        if (isset($sTipoLocal) && $sTipoLocal != "t" || trim($sTipoLocal) != "") {
+        if (isset($sTipoLocal) && $sTipoLocal != "t" || trim((string) $sTipoLocal) != "") {
           
           switch ($sTipoLocal) {
             

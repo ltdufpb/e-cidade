@@ -196,9 +196,7 @@ class Configuracao {
     return $this->iCodigoTipoDebito;
   }
 
-  /**
-   * @deprecated
-   */
+  #[\Deprecated]
   public function getCodigoTipoArrecadacao() {
     return $this->getCodigoTipoDebito();
   }
@@ -371,11 +369,11 @@ class Configuracao {
       throw new BusinessException('Característica Sem Esgoto não informada.');
     }
 
-    $aCamposAtualizar = array(
+    $aCamposAtualizar = [
       "x18_carsemesgoto = {$this->iCodigoCaracteristicaSemEsgoto}",
       "x18_carsemagua = {$this->iCodigoCaracteristicaSemAgua}",
       "x18_arretipo = {$this->iCodigoTipoDebito}",
-    );
+    ];
 
     $sCamposAtualizar = implode(', ', $aCamposAtualizar);
     $sSql = "update aguaconf set {$sCamposAtualizar} where x18_anousu = {$this->iAno}";

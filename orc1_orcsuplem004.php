@@ -34,8 +34,8 @@ include(modification("dbforms/db_funcoes.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 $clcriaabas     = new cl_criaabas;
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clorcsuplem = new cl_orcsuplem;
 
@@ -65,36 +65,36 @@ $clorcsuplem = new cl_orcsuplem;
 	  if ($qt_abas==3) {
 	        if ($o48_arrecadmaior != 0){
 		  // cria aba da arrecadação
-       	           $clcriaabas->identifica = array("orcsuplem"=>"Suplementos","reducao"=>"Valores de Redução" ,"orcsuplemval"=>"Valores de Suplementação","orcsuplemrec"=>"Receitas");//nome do iframe e o label    
-	           $clcriaabas->title      = array("orcsuplem"=>"Suplementos","reducao"=>"Itens a Reduzir" , "orcsuplemval"=>"Itens a Suplementar","orcsuplemrec"=>"Receitas");//nome do iframe e o label    
-        	   $clcriaabas->src = array("orcsuplem"=>"orc1_orcsuplem007.php?o46_tiposup=$o46_tiposup&qt_abas=$qt_abas&o46_codsup=$o46_codsup");  //nome do iframe e SRC  
-	           $clcriaabas->sizecampo= array("orcsuplem"=>"23","reducao"=>"23","orcsuplemval"=>"23","orcsuplemrec"=>"23");   
-	           $clcriaabas->disabled= array("reducao"=>"true","orcsuplemval"=>"true","orcsuplemrec"=>"true");    // desabilita segunda aba  
+       	           $clcriaabas->identifica = ["orcsuplem"=>"Suplementos","reducao"=>"Valores de Redução" ,"orcsuplemval"=>"Valores de Suplementação","orcsuplemrec"=>"Receitas"];//nome do iframe e o label    
+	           $clcriaabas->title      = ["orcsuplem"=>"Suplementos","reducao"=>"Itens a Reduzir" , "orcsuplemval"=>"Itens a Suplementar","orcsuplemrec"=>"Receitas"];//nome do iframe e o label    
+        	   $clcriaabas->src = ["orcsuplem"=>"orc1_orcsuplem007.php?o46_tiposup=$o46_tiposup&qt_abas=$qt_abas&o46_codsup=$o46_codsup"];  //nome do iframe e SRC  
+	           $clcriaabas->sizecampo= ["orcsuplem"=>"23","reducao"=>"23","orcsuplemval"=>"23","orcsuplemrec"=>"23"];   
+	           $clcriaabas->disabled= ["reducao"=>"true","orcsuplemval"=>"true","orcsuplemrec"=>"true"];    // desabilita segunda aba  
                    $clcriaabas->cria_abas();    
 	        } else {	
-       	           $clcriaabas->identifica = array("orcsuplem"=>"Suplementos","reducao"=>"Valores de Redução" ,"orcsuplemval"=>"Valores de Suplementação");//nome do iframe e o label    
-	           $clcriaabas->title      = array("orcsuplem"=>"Suplementos","reducao"=>"Itens a Reduzir" , "orcsuplemval"=>"Itens a Suplementar");//nome do iframe e o label    
-        	   $clcriaabas->src = array("orcsuplem"=>"orc1_orcsuplem007.php?o46_tiposup=$o46_tiposup&qt_abas=$qt_abas&o46_codsup=$o46_codsup");  //nome do iframe e SRC  
-	           $clcriaabas->sizecampo= array("orcsuplem"=>"23","reducao"=>"23","orcsuplemval"=>"23");   
-	           $clcriaabas->disabled= array("reducao"=>"true","orcsuplemval"=>"true");    // desabilita segunda aba  
+       	           $clcriaabas->identifica = ["orcsuplem"=>"Suplementos","reducao"=>"Valores de Redução" ,"orcsuplemval"=>"Valores de Suplementação"];//nome do iframe e o label    
+	           $clcriaabas->title      = ["orcsuplem"=>"Suplementos","reducao"=>"Itens a Reduzir" , "orcsuplemval"=>"Itens a Suplementar"];//nome do iframe e o label    
+        	   $clcriaabas->src = ["orcsuplem"=>"orc1_orcsuplem007.php?o46_tiposup=$o46_tiposup&qt_abas=$qt_abas&o46_codsup=$o46_codsup"];  //nome do iframe e SRC  
+	           $clcriaabas->sizecampo= ["orcsuplem"=>"23","reducao"=>"23","orcsuplemval"=>"23"];   
+	           $clcriaabas->disabled= ["reducao"=>"true","orcsuplemval"=>"true"];    // desabilita segunda aba  
 	           $clcriaabas->cria_abas();    
 	        }	  
           } else {  // duas abas   	 
                if ($o48_arrecadmaior != 0){
                   // cria aba da arrecadação
-       	           $clcriaabas->identifica = array("orcsuplem"=>"Suplementos","orcsuplemval"=>"Valores de Suplementação","orcsuplemrec"=>"Receitas");//nome do iframe e o label    
-	           $clcriaabas->title      = array("orcsuplem"=>"Suplementos","orcsuplemval"=>"Itens a Suplementar","orcsuplemrec"=>"Receitas");//nome do iframe e o label    
-        	   $clcriaabas->src = array("orcsuplem"=>"orc1_orcsuplem007.php?o46_tiposup=$o46_tiposup&qt_abas=$qt_abas&o46_codsup=$o46_codsup");  //nome do iframe e SRC  
-	           $clcriaabas->sizecampo= array("orcsuplem"=>"23","orcsuplemval"=>"23","orcsuplemrec"=>"23");   
-	           $clcriaabas->disabled= array("orcsuplemval"=>"true","orcsuplemrec"=>"true");    // desabilita segunda aba  
+       	           $clcriaabas->identifica = ["orcsuplem"=>"Suplementos","orcsuplemval"=>"Valores de Suplementação","orcsuplemrec"=>"Receitas"];//nome do iframe e o label    
+	           $clcriaabas->title      = ["orcsuplem"=>"Suplementos","orcsuplemval"=>"Itens a Suplementar","orcsuplemrec"=>"Receitas"];//nome do iframe e o label    
+        	   $clcriaabas->src = ["orcsuplem"=>"orc1_orcsuplem007.php?o46_tiposup=$o46_tiposup&qt_abas=$qt_abas&o46_codsup=$o46_codsup"];  //nome do iframe e SRC  
+	           $clcriaabas->sizecampo= ["orcsuplem"=>"23","orcsuplemval"=>"23","orcsuplemrec"=>"23"];   
+	           $clcriaabas->disabled= ["orcsuplemval"=>"true","orcsuplemrec"=>"true"];    // desabilita segunda aba  
                    $clcriaabas->cria_abas();    
 
 	       } else { 
-	           $clcriaabas->identifica = array("orcsuplem"=>"Suplementos","orcsuplemval"=>"Valores de suplementos");//nome do iframe e o label    
-	           $clcriaabas->title      = array("orcsuplem"=>"Descrição dos Suplementos","orcsuplemval"=>"Descriçaõ dos suplementos");//nome do iframe e o label    
-	           $clcriaabas->src = array("orcsuplem"=>"orc1_orcsuplem007.php?o46_tiposup=$o46_tiposup&qt_abas=$qt_abas&o46_codsup=$o46_codsup");  //nome do iframe e SRC  
-	           $clcriaabas->sizecampo= array("orcsuplem"=>"23","orcsuplemval"=>"23");   
-	           $clcriaabas->disabled= array("orcsuplemval"=>"true");    // desabilita segunda aba
+	           $clcriaabas->identifica = ["orcsuplem"=>"Suplementos","orcsuplemval"=>"Valores de suplementos"];//nome do iframe e o label    
+	           $clcriaabas->title      = ["orcsuplem"=>"Descrição dos Suplementos","orcsuplemval"=>"Descriçaõ dos suplementos"];//nome do iframe e o label    
+	           $clcriaabas->src = ["orcsuplem"=>"orc1_orcsuplem007.php?o46_tiposup=$o46_tiposup&qt_abas=$qt_abas&o46_codsup=$o46_codsup"];  //nome do iframe e SRC  
+	           $clcriaabas->sizecampo= ["orcsuplem"=>"23","orcsuplemval"=>"23"];   
+	           $clcriaabas->disabled= ["orcsuplemval"=>"true"];    // desabilita segunda aba
 	           $clcriaabas->cria_abas();    
 	       }	   
 	  }             

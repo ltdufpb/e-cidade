@@ -39,8 +39,8 @@ require_once(modification("classes/db_calendario_classe.php"));
 require_once(modification("classes/db_turmaac_classe.php"));
 
 $todas_escolas = 'n';
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clmatricula = new cl_matricula;
 $oDaoAluno = new cl_aluno;
@@ -106,7 +106,7 @@ $escola = db_getsession("DB_coddepto");
                         <td nowrap align="right" title=""><b>Trazer alunos de todas as escolas:</b></td>
                         <td nowrap>
                             <?php
-                            $opcoes_todas_escolas = array("n" => "Não", "s" => "Sim");
+                            $opcoes_todas_escolas = ["n" => "Não", "s" => "Sim"];
                             db_select("todas_escolas", $opcoes_todas_escolas, true, 4); ?>
                         </td>
                     </tr>
@@ -218,9 +218,9 @@ $escola = db_getsession("DB_coddepto");
 
                 $sSql = $oDaoAluno->sql_query_aluno_curso(null, $sCampos, "ed47_v_nome, ed47_i_codigo", $sWhere);
 
-                $repassa = array();
+                $repassa = [];
                 if (isset($chave_ed47_i_codigo)) {
-                    $repassa = array("chave_ed47_i_codigo" => $chave_ed47_i_codigo, "chave_ed47_v_nome" => $chave_ed47_v_nome);
+                    $repassa = ["chave_ed47_i_codigo" => $chave_ed47_i_codigo, "chave_ed47_v_nome" => $chave_ed47_v_nome];
                 }
 
                 db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa, false);

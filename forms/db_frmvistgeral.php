@@ -87,7 +87,7 @@ $clrotulo->label("z01_nome");
 
           $sSqlAnoCalculo = $clcissqn->sql_query_file(null,"q04_anousu","q04_anousu desc"," q04_anousu <= ".db_getsession('DB_anousu'));
           $rsAnosCalculo  = $clcissqn->sql_record($sSqlAnoCalculo);
-          $aAnos          = array();
+          $aAnos          = [];
           for ($iIndice=0; $iIndice < $clcissqn->numrows; $iIndice++) {
 
             $oAnos = db_utils::fieldsMemory($rsAnosCalculo, $iIndice);
@@ -108,7 +108,7 @@ $clrotulo->label("z01_nome");
        <td>
        <?php
 
-         $aTipoDuplica = array ("f" => "Não","t" => "Sim");
+         $aTipoDuplica =  ["f" => "Não","t" => "Sim"];
          db_select('duplica', $aTipoDuplica, true, 2,"");
        ?>
        </td>
@@ -121,7 +121,7 @@ $clrotulo->label("z01_nome");
        <td>
        <?php
 
-         $aOpcoes = array ("1" => "Localização", "2" => "Sanitário");
+         $aOpcoes =  ["1" => "Localização", "2" => "Sanitário"];
          db_select('tipoorigem', $aOpcoes, true, 2,"style='width:270px'");
          if(!isset($tipoorigem) || $tipoorigem != ""){
            $origem = 0;
@@ -146,8 +146,8 @@ $clrotulo->label("z01_nome");
           $sSqlTipovist .= "order by y77_codtipo    ";
 
           $rsTipovist  = db_query($sSqlTipovist);
-          $intTipovist = pg_numrows($rsTipovist);
-          $aOpcoes = array ("0" => "Escolha o tipo de vistoria");
+          $intTipovist = pg_num_rows($rsTipovist);
+          $aOpcoes =  ["0" => "Escolha o tipo de vistoria"];
           for ($ivist=0;$ivist < $intTipovist; $ivist++){
 
             db_fieldsmemory($rsTipovist,$ivist);
@@ -174,7 +174,7 @@ $clrotulo->label("z01_nome");
                    * coloca-lo como opção para gerar vistorias.
                    */
                   $iExercicioSeguinte = db_getsession("DB_anousu") + 1;
-                  $aOpcoesVencimento  = array($iExercicioSeguinte - 1 => $iExercicioSeguinte - 1 );
+                  $aOpcoesVencimento  = [$iExercicioSeguinte - 1 => $iExercicioSeguinte - 1 ];
 
                   $sWhere         = "extract(year from q82_venc) = {$iExercicioSeguinte}";
                   $sSqlVencimento = $oDaoCadVenc->sql_query_file_exercicio_cissqn($sWhere);

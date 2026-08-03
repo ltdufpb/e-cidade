@@ -35,8 +35,8 @@ require_once(modification("libs/db_app.utils.php"));
 $clrotulo = new rotulocampo;
 $clrotulo->label('autent');
 
-db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+db_postmemory($_SERVER);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 ?>
 
 <html>
@@ -103,7 +103,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
                  </td>
                  <td align="left">
                     <?php 
-		                  $xx = array('f'=>'SIM','t'=>'NÃO');
+		                  $xx = ['f'=>'SIM','t'=>'NÃO'];
                       db_select('autent',$xx,true,4,'');
                     ?>
                  </td>
@@ -112,7 +112,7 @@ parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
                 <td align="left"><strong>Arquivo: </strong></td>
                 <td >
                    <?php 
-                      $aArquivoExistente = array('nao'=>'NÃO','sim'=>'SIM');
+                      $aArquivoExistente = ['nao'=>'NÃO','sim'=>'SIM'];
                       db_select('arqexistente',$aArquivoExistente,true,4,"onchange='js_exibe_codarquivo();'");
                     ?>
                 </td>

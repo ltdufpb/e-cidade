@@ -148,13 +148,13 @@ abstract class BaseCronograma
         $rs = db_query($sql);
         if (pg_num_rows($rs) > 0) {
             $notasExplicativa = \db_utils::fieldsMemory($rs, 0);
-            $notasExplicativa->fonte = trim($notasExplicativa->fonte);
+            $notasExplicativa->fonte = trim((string) $notasExplicativa->fonte);
 
             $this->dados['fonte'] = "";
             if (!empty($notasExplicativa->fonte)) {
                 $this->dados['fonte'] = "Fonte: {$notasExplicativa->fonte}";
             }
-            $notasExplicativa->nota = trim($notasExplicativa->nota);
+            $notasExplicativa->nota = trim((string) $notasExplicativa->nota);
             $this->dados['notaExplicativa'] = "";
             if (!empty($notasExplicativa->nota)) {
                 $this->dados['notaExplicativa'] = "Nota Explicativa: {$notasExplicativa->nota}";

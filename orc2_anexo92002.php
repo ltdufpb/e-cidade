@@ -32,19 +32,19 @@ include(modification("libs/db_sql.php"));
 include(modification("libs/db_liborcamento.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $classinatura = new cl_assinatura;
 
 
 //$tipo_agrupa = substr($nivel,0,1);
 
-$xinstit = split("-",$db_selinstit);
+$xinstit = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select codigo,nomeinstabrev from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 $descr_inst = '';
 $xvirg = '';
-for($xins = 0; $xins < pg_numrows($resultinst); $xins++){
+for($xins = 0; $xins < pg_num_rows($resultinst); $xins++){
     db_fieldsmemory($resultinst,$xins);
       $descr_inst .= $xvirg.$nomeinstabrev ;
         $xvirg = ', ';
@@ -58,7 +58,7 @@ if($origem == "O"){
   if($opcao == 3)
     $head6 = "PERÍODO : ".db_formatar($perini,'d')." A ".db_formatar($perfin,'d') ;
   else
-    $head6 = "PERÍODO : ".strtoupper(db_mes(substr($perini,5,2)))." A ".strtoupper(db_mes(substr($perfin,5,2)));
+    $head6 = "PERÍODO : ".strtoupper(db_mes(substr((string) $perini,5,2)))." A ".strtoupper(db_mes(substr((string) $perfin,5,2)));
 }
 // pesquisa a conta mae da receita
 $head2 = "DEMOSTRATIVO DA DESPESA POR UNIDADE/FUNÇÃO";
@@ -66,19 +66,19 @@ $head3 = "EXERCICIO: ".db_getsession("DB_anousu")." - ".$xtipo;
 $head4 = "NIVEL $nivel";
 $head5 = "INSTITUIÇÕES : ".$descr_inst;
 
-$xcampos = split("-",$orgaos);
+$xcampos = preg_split("#\\-#m",$orgaos);
 
 
-if(substr($nivel,0,1) == '1'){
+if(str_starts_with((string) $nivel, '1')){
   $xwhere1 = " trim(to_char(o58_orgao,'99')) in (";
-}elseif(substr($nivel,0,1) == '2'){
+}elseif(str_starts_with((string) $nivel, '2')){
   $xwhere1 = " trim(to_char(o58_orgao,'99'))||'.'||trim(to_char(o58_unidade,'99')) in (";
-}elseif(substr($nivel,0,1) == '3'){
+}elseif(str_starts_with((string) $nivel, '3')){
   $xwhere1 = " trim(to_char(o58_funcao,'9999999999999')) in (";
 }
 $virgula1 = ' ';
 for($i=0;$i < sizeof($xcampos);$i++){
-   $xxcampos = split("_",$xcampos[$i]);
+   $xxcampos = preg_split("#_#m",(string) $xcampos[$i]);
    $virgula = '';
    $where  = "'";
    $where1 = "'";
@@ -105,14 +105,14 @@ $sql = "select distinct o52_funcao
 	order by o52_funcao";
 $result = db_query($sql);
 $sql = "";
-$quantascolunas = pg_numrows($result);
+$quantascolunas = pg_num_rows($result);
 // $opcao = "1";
 if($opcao == 1)
   $xvalor = 'dot_ini';
 else
   $xvalor = 'empenhado - anulado';
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   $sql .= " sum(case when o52_funcao = $o52_funcao then $xvalor else 0::float8 end ) as c_$o52_funcao, \n";
 }
@@ -171,7 +171,7 @@ $tvalor2 = 0;
 $tvalor3 = 0;
 $tvalor4 = 0;
 
-for($i=0;$i<pg_numrows($result);$i++){
+for($i=0;$i<pg_num_rows($result);$i++){
   db_fieldsmemory($result,$i);
   if($pdf->gety()>$pdf->h-30 || $pagina ==1){
     $pagina = 0;
@@ -194,7 +194,7 @@ for($i=0;$i<pg_numrows($result);$i++){
       $x = 4;
     }
     for($l=0;$l<$x;$l++){
-      $campo = pg_fieldname($result,$contador);
+      $campo = pg_field_name($result,$contador);
       $contador ++;
       $sql = "select o52_descr
               from orcfuncao 
@@ -209,27 +209,27 @@ for($i=0;$i<pg_numrows($result);$i++){
   $pdf->cell(10,$alt,db_formatar($o58_orgao,'orgao').db_formatar($o58_unidade,'orgao'),0,0,"L",0);
   $pdf->cell(85,$alt,$o40_descr,0,0,"L",0);
   if($x>=1){
-    $valor = pg_fieldname($result,$contador-4);
-    $pdf->cell(35,$alt,db_formatar($$valor,'f'),0,0,"R",0);
-    $tvalor1 += $$valor;
+    $valor = pg_field_name($result,$contador-4);
+    $pdf->cell(35,$alt,db_formatar(${$valor},'f'),0,0,"R",0);
+    $tvalor1 += ${$valor};
   } 
   if($x>=2){
-    $valor = pg_fieldname($result,$contador-3);
-    $pdf->cell(35,$alt,db_formatar($$valor,'f'),0,0,"R",0);
-    $tvalor2 += $$valor;
+    $valor = pg_field_name($result,$contador-3);
+    $pdf->cell(35,$alt,db_formatar(${$valor},'f'),0,0,"R",0);
+    $tvalor2 += ${$valor};
   }
   if($x>=3){
-    $valor = pg_fieldname($result,$contador-2);
-    $pdf->cell(35,$alt,db_formatar($$valor,'f'),0,0,"R",0);
-    $tvalor3 += $$valor;
+    $valor = pg_field_name($result,$contador-2);
+    $pdf->cell(35,$alt,db_formatar(${$valor},'f'),0,0,"R",0);
+    $tvalor3 += ${$valor};
   }
   if($x>=4){
-    $valor = pg_fieldname($result,$contador-1);
-    $pdf->cell(35,$alt,db_formatar($$valor,'f'),0,0,"R",0);
-    $tvalor4 += $$valor;
+    $valor = pg_field_name($result,$contador-1);
+    $pdf->cell(35,$alt,db_formatar(${$valor},'f'),0,0,"R",0);
+    $tvalor4 += ${$valor};
   }
   $pdf->cell(0,$alt,'',0,1,"L",0);
-  if($i+1==pg_numrows($result) && $quantascolunas >= 4){
+  if($i+1==pg_num_rows($result) && $quantascolunas >= 4){
     $fim = false;
     $pagina = 1;
     $i = 0;

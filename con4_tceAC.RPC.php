@@ -59,7 +59,7 @@ try {
       file_put_contents("tmp/Lancamento.xml", $oArquivoLancamentos->getArquivo());
       file_put_contents("tmp/Partida.xml", $oArquivoPartida->getArquivo());
 
-      $aArquivosComprimir = array();
+      $aArquivosComprimir = [];
 
       $oFile = new File('tmp/Lancamento.xml');
       $aArquivosComprimir[] = $oFile;
@@ -76,7 +76,7 @@ try {
     case "importarArquivo":
 
       $oFiles = db_utils::postMemory($_FILES);
-      if (strtolower(substr($oFiles->arquivo['name'], -4)) != '.csv') {
+      if (strtolower(substr((string) $oFiles->arquivo['name'], -4)) != '.csv') {
         throw new BusinessException("Arquivo importado com formato inválido! Arquivo deve ser do formato CSV.");
       }
 
@@ -92,8 +92,8 @@ try {
     case "downloadArquivo":
 
       $oArquivo  = ImportacaoArquivoTCEAC::criarCSV($oParam->iTipo);
-      $oRetorno->sNomeArquivo = urlencode($oArquivo->getFilePath());
-      $oRetorno->sNome = urlencode(basename($oArquivo->getBaseName()));
+      $oRetorno->sNomeArquivo = urlencode((string) $oArquivo->getFilePath());
+      $oRetorno->sNome = urlencode(basename((string) $oArquivo->getBaseName()));
 
       break;
 

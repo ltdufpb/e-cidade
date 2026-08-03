@@ -199,7 +199,7 @@ $clrotulo->label("z01_nomefanta");
                 </td>
                 <td class="valores">
                     <?php
-                    echo implode('/', array_reverse(explode('-', $oCgmModel->getDataNascimento())));
+                    echo implode('/', array_reverse(explode('-', (string) $oCgmModel->getDataNascimento())));
                     ?>
                 </td>
             </tr>
@@ -257,7 +257,7 @@ $clrotulo->label("z01_nomefanta");
                 </td>
                 <td class="valores">
                     <?php
-                    echo $oCgmModel->getIdentDataExp() ? date('d/m/Y', strtotime($oCgmModel->getIdentDataExp())) : '';
+                    echo $oCgmModel->getIdentDataExp() ? date('d/m/Y', strtotime((string) $oCgmModel->getIdentDataExp())) : '';
                     ?>
                 </td>
                 <td>
@@ -265,7 +265,7 @@ $clrotulo->label("z01_nomefanta");
                 </td>
                 <td class="valores">
                     <?php
-                    echo $oCgmModel->getDataFalecimento() ? date('d/m/Y', strtotime($oCgmModel->getDataFalecimento())) : '';
+                    echo $oCgmModel->getDataFalecimento() ? date('d/m/Y', strtotime((string) $oCgmModel->getDataFalecimento())) : '';
                     ?>
                 </td>
             </tr>

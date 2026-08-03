@@ -2,7 +2,7 @@
 require_once(modification("libs/db_utils.php"));
 require_once(modification("fpdf151/pdf.php"));
 
-parse_str(base64_decode($_GET['q']), $aGet);
+parse_str(base64_decode((string) $_GET['q']), $aGet);
 define('MSG_LINHA', 'educacao.transporteescolar.tre2_linha002.');
 
 /**
@@ -20,7 +20,7 @@ try {
   }
 
   $oDados->sLinha       = $aGet["sLinha"];
-  $oDados->aItinerarios = array();
+  $oDados->aItinerarios = [];
 
   $oLinha       = new LinhaTransporte($aGet["iLinha"]);
   $aItinerarios = $oLinha->getItinerarios();
@@ -30,7 +30,7 @@ try {
   }
 
   $iItinerarioSelecionado = $aGet["iItinerario"];
-  $aTemLogradouros        = array();
+  $aTemLogradouros        = [];
   foreach ($aItinerarios as $oItinerario) {
 
     if ( (int)$iItinerarioSelecionado !== 0 && $iItinerarioSelecionado != $oItinerario->getTipo() ) {
@@ -40,8 +40,8 @@ try {
     $oDadosItinerario               = new stdClass();
     $oDadosItinerario->iTipo        = $oItinerario->getTipo();
     $oDadosItinerario->sTipo        = $oItinerario->getDescricaoTipo();
-    $oDadosItinerario->aLogradouros = array();
-    $oDadosItinerario->aHorarios    = array();
+    $oDadosItinerario->aLogradouros = [];
+    $oDadosItinerario->aHorarios    = [];
 
     $aLogradouros = $oItinerario->getLogradouros();
     $aTemLogradouros[] = count($aLogradouros) > 0;
@@ -53,7 +53,7 @@ try {
       $oDadosLogradouro->iOrdem      = $oLogradouro->getOrdem();
       $oDadosLogradouro->sBairro     = $oLogradouroBairro->getBairro()->getDescricao();
       $oDadosLogradouro->sLogradouro = $oLogradouroBairro->getLogradouro()->getDescricao();
-      $oDadosLogradouro->aParada     = array();
+      $oDadosLogradouro->aParada     = [];
 
       $aParadas = $oLogradouro->getPontosDeParada();
       foreach ($aParadas as $oParada) {
@@ -115,7 +115,7 @@ foreach ($oDados->aItinerarios as $oItinerario) {
 
     $sPontoParada   = implode("\n", $oLogradouro->aParada);
 
-    $aTotalLinhas   = array();
+    $aTotalLinhas   = [];
     $aTotalLinhas[] = $oPdf->NbLines(60, $oLogradouro->sBairro);
     $aTotalLinhas[] = $oPdf->NbLines(80, $oLogradouro->sLogradouro);
     $aTotalLinhas[] = $oPdf->NbLines(39, $sPontoParada);

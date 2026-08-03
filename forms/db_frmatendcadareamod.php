@@ -109,7 +109,7 @@ if(isset($db_opcaoal)){
   <tr>
     <td valign="top"  align="center">  
     <?php 
-	 $chavepri= array("at26_sequencia"=>@$at26_sequencia);
+	 $chavepri= ["at26_sequencia"=>@$at26_sequencia];
 	 $cliframe_alterar_excluir->chavepri=$chavepri;
 	 $cliframe_alterar_excluir->sql     = $clatendcadareamod->sql_query(@$at26_sequencia,"*","nome_modulo"," at26_codarea = $at26_codarea");
 	 $cliframe_alterar_excluir->campos  ="at26_sequencia,at26_codarea,nome_modulo,at26_id_item";

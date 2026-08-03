@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE ouvidoriaparametro
 class cl_ouvidoriaparametro {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $ov06_instit = 0;
-   var $ov06_anousu = 0;
-   var $ov06_tiponumprocesso = 0;
-   var $ov06_db_documentotemplate = 0;
+   public $ov06_instit = 0;
+   public $ov06_anousu = 0;
+   public $ov06_tiponumprocesso = 0;
+   public $ov06_db_documentotemplate = 0;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  ov06_instit = int4 = Instituíção
                  ov06_anousu = int4 = Ano
                  ov06_tiponumprocesso = int4 = Numeração do atendimento de ouvidoria
                  ov06_db_documentotemplate = int4 = Documento Template
                  ";
    //funcao construtor da classe
-   function cl_ouvidoriaparametro() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("ouvidoriaparametro");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -128,7 +128,7 @@ class cl_ouvidoriaparametro {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Tabela de Parametros ouvidoria ($this->ov06_instit."-".$this->ov06_anousu) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Tabela de Parametros ouvidoria já Cadastrado";
@@ -152,14 +152,14 @@ class cl_ouvidoriaparametro {
      $resaco = $this->sql_record($this->sql_query_file($this->ov06_instit,$this->ov06_anousu));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,14714,'$this->ov06_instit','I')");
        $resac = db_query("insert into db_acountkey values($acount,14715,'$this->ov06_anousu','I')");
-       $resac = db_query("insert into db_acount values($acount,2588,14714,'','".AddSlashes(pg_result($resaco,0,'ov06_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2588,14715,'','".AddSlashes(pg_result($resaco,0,'ov06_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2588,14719,'','".AddSlashes(pg_result($resaco,0,'ov06_tiponumprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2588,18934,'','".AddSlashes(pg_result($resaco,0,'ov06_db_documentotemplate'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2588,14714,'','".AddSlashes(pg_fetch_result($resaco,0,'ov06_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2588,14715,'','".AddSlashes(pg_fetch_result($resaco,0,'ov06_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2588,14719,'','".AddSlashes(pg_fetch_result($resaco,0,'ov06_tiponumprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2588,18934,'','".AddSlashes(pg_fetch_result($resaco,0,'ov06_db_documentotemplate'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -168,10 +168,10 @@ class cl_ouvidoriaparametro {
       $this->atualizacampos();
      $sql = " update ouvidoriaparametro set ";
      $virgula = "";
-     if(trim($this->ov06_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov06_instit"])){
+     if(trim((string) $this->ov06_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov06_instit"])){
        $sql  .= $virgula." ov06_instit = $this->ov06_instit ";
        $virgula = ",";
-       if(trim($this->ov06_instit) == null ){
+       if(trim((string) $this->ov06_instit) == null ){
          $this->erro_sql = " Campo Instituíção nao Informado.";
          $this->erro_campo = "ov06_instit";
          $this->erro_banco = "";
@@ -181,10 +181,10 @@ class cl_ouvidoriaparametro {
          return false;
        }
      }
-     if(trim($this->ov06_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov06_anousu"])){
+     if(trim((string) $this->ov06_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov06_anousu"])){
        $sql  .= $virgula." ov06_anousu = $this->ov06_anousu ";
        $virgula = ",";
-       if(trim($this->ov06_anousu) == null ){
+       if(trim((string) $this->ov06_anousu) == null ){
          $this->erro_sql = " Campo Ano nao Informado.";
          $this->erro_campo = "ov06_anousu";
          $this->erro_banco = "";
@@ -194,10 +194,10 @@ class cl_ouvidoriaparametro {
          return false;
        }
      }
-     if(trim($this->ov06_tiponumprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov06_tiponumprocesso"])){
+     if(trim((string) $this->ov06_tiponumprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov06_tiponumprocesso"])){
        $sql  .= $virgula." ov06_tiponumprocesso = $this->ov06_tiponumprocesso ";
        $virgula = ",";
-       if(trim($this->ov06_tiponumprocesso) == null ){
+       if(trim((string) $this->ov06_tiponumprocesso) == null ){
          $this->erro_sql = " Campo Numeração do atendimento de ouvidoria nao Informado.";
          $this->erro_campo = "ov06_tiponumprocesso";
          $this->erro_banco = "";
@@ -207,8 +207,8 @@ class cl_ouvidoriaparametro {
          return false;
        }
      }
-     if(trim($this->ov06_db_documentotemplate)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov06_db_documentotemplate"])){
-        if(trim($this->ov06_db_documentotemplate)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ov06_db_documentotemplate"])){
+     if(trim((string) $this->ov06_db_documentotemplate)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ov06_db_documentotemplate"])){
+        if(trim((string) $this->ov06_db_documentotemplate)=="" && isset($GLOBALS["HTTP_POST_VARS"]["ov06_db_documentotemplate"])){
            $this->ov06_db_documentotemplate = "null" ;
         }
        $sql  .= $virgula." ov06_db_documentotemplate = $this->ov06_db_documentotemplate ";
@@ -225,18 +225,18 @@ class cl_ouvidoriaparametro {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14714,'$this->ov06_instit','A')");
          $resac = db_query("insert into db_acountkey values($acount,14715,'$this->ov06_anousu','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov06_instit"]) || $this->ov06_instit != "")
-           $resac = db_query("insert into db_acount values($acount,2588,14714,'".AddSlashes(pg_result($resaco,$conresaco,'ov06_instit'))."','$this->ov06_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2588,14714,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov06_instit'))."','$this->ov06_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov06_anousu"]) || $this->ov06_anousu != "")
-           $resac = db_query("insert into db_acount values($acount,2588,14715,'".AddSlashes(pg_result($resaco,$conresaco,'ov06_anousu'))."','$this->ov06_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2588,14715,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov06_anousu'))."','$this->ov06_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov06_tiponumprocesso"]) || $this->ov06_tiponumprocesso != "")
-           $resac = db_query("insert into db_acount values($acount,2588,14719,'".AddSlashes(pg_result($resaco,$conresaco,'ov06_tiponumprocesso'))."','$this->ov06_tiponumprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2588,14719,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov06_tiponumprocesso'))."','$this->ov06_tiponumprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ov06_db_documentotemplate"]) || $this->ov06_db_documentotemplate != "")
-           $resac = db_query("insert into db_acount values($acount,2588,18934,'".AddSlashes(pg_result($resaco,$conresaco,'ov06_db_documentotemplate'))."','$this->ov06_db_documentotemplate',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2588,18934,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ov06_db_documentotemplate'))."','$this->ov06_db_documentotemplate',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -281,14 +281,14 @@ class cl_ouvidoriaparametro {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,14714,'$ov06_instit','E')");
          $resac = db_query("insert into db_acountkey values($acount,14715,'$ov06_anousu','E')");
-         $resac = db_query("insert into db_acount values($acount,2588,14714,'','".AddSlashes(pg_result($resaco,$iresaco,'ov06_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2588,14715,'','".AddSlashes(pg_result($resaco,$iresaco,'ov06_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2588,14719,'','".AddSlashes(pg_result($resaco,$iresaco,'ov06_tiponumprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2588,18934,'','".AddSlashes(pg_result($resaco,$iresaco,'ov06_db_documentotemplate'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2588,14714,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov06_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2588,14715,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov06_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2588,14719,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov06_tiponumprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2588,18934,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ov06_db_documentotemplate'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from ouvidoriaparametro
@@ -354,7 +354,7 @@ class cl_ouvidoriaparametro {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:ouvidoriaparametro";
@@ -401,7 +401,7 @@ class cl_ouvidoriaparametro {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -443,7 +443,7 @@ class cl_ouvidoriaparametro {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

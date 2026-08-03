@@ -31,21 +31,6 @@ class ControleRubricasCalculoParametros
     private $rubrica;
 
     /**
-     * @var float
-     */
-    private $quantidadeAdicionada = 0;
-
-    /**
-     * @var bool
-     */
-    private $isAlteracao = false;
-
-    /**
-     * @var string
-     */
-    private $tabela;
-
-    /**
      * ControleHorasExtrasCalculoParametros constructor.
      * @param Instituicao $instituicao
      * @param DBCompetencia $competencia
@@ -60,17 +45,14 @@ class ControleRubricasCalculoParametros
         DBCompetencia $competencia,
         Servidor $servidor,
         Rubrica $rubrica,
-        $quantidadeAdicionada,
-        $isAlteracao,
-        $tabela
+        private $quantidadeAdicionada,
+        private $isAlteracao,
+        private $tabela
     ) {
         $this->instituicao = $instituicao;
         $this->competencia = $competencia;
         $this->servidor = $servidor;
         $this->rubrica = $rubrica;
-        $this->quantidadeAdicionada = $quantidadeAdicionada;
-        $this->isAlteracao = $isAlteracao;
-        $this->tabela = $tabela;
     }
 
     /**

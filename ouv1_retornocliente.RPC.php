@@ -55,7 +55,7 @@ $clOuvidoriaAtendimentoRetorno = new cl_ouvidoriaatendimentoretorno();
 if ( $oPost->sMethod == 'consultaProcessos') {
  
 	
-	$aListaProcesso  = array(); 
+	$aListaProcesso  = []; 
 
 	$iDepto   = db_getsession('DB_coddepto');
 	$iUsuario = db_getsession('DB_id_usuario');
@@ -73,7 +73,7 @@ if ( $oPost->sMethod == 'consultaProcessos') {
   $sWhereProcesso .= " and p68_codarquiv is null                                                                                  ";
   
   
-  if ( trim($oPost->iTipoRetorno) != 0 ) {
+  if ( trim((string) $oPost->iTipoRetorno) != 0 ) {
   	if ( $oPost->iTipoRetorno == 5 ) {
       $sWhereProcesso .= " and not exists ( select * 
                                              from processoouvidoria 
@@ -88,29 +88,29 @@ if ( $oPost->sMethod == 'consultaProcessos') {
   	}
   }
   
-  if ( trim($oPost->iProcIni) != '' ) {
+  if ( trim((string) $oPost->iProcIni) != '' ) {
     $sWhereProcesso .= " and p58_codproc >= {$oPost->iProcIni}  ";
   }
-  if ( trim($oPost->iProcFin) != '' ) {
+  if ( trim((string) $oPost->iProcFin) != '' ) {
     $sWhereProcesso .= " and p58_codproc <= {$oPost->iProcFin}  ";
   } 
-  if ( trim($oPost->dtDataIni) != '' ) {
-    $sWhereProcesso .= " and p58_dtproc >= '".implode('-',array_reverse(explode('/',$oPost->dtDataIni)))."'";
+  if ( trim((string) $oPost->dtDataIni) != '' ) {
+    $sWhereProcesso .= " and p58_dtproc >= '".implode('-',array_reverse(explode('/',(string) $oPost->dtDataIni)))."'";
   }
-  if ( trim($oPost->dtDataFin) != '' ) {
-    $sWhereProcesso .= " and p58_dtproc <= '".implode('-',array_reverse(explode('/',$oPost->dtDataFin)))."'";
+  if ( trim((string) $oPost->dtDataFin) != '' ) {
+    $sWhereProcesso .= " and p58_dtproc <= '".implode('-',array_reverse(explode('/',(string) $oPost->dtDataFin)))."'";
   }  
-  if ( trim($oPost->iProcTipo) != '' ) {
+  if ( trim((string) $oPost->iProcTipo) != '' ) {
     $sWhereProcesso .= " and p58_codigo = {$oPost->iProcTipo}  ";
   }      
   
-  if (trim($oPost->iNumeroAtendimento) != "") {
+  if (trim((string) $oPost->iNumeroAtendimento) != "") {
     
     if (!empty($oPost->iAnoAtendimento)) {
       $iAnoAtendimento = $oPost->iAnoAtendimento;
       $iNumeroAtendimento = $oPost->iNumeroAtendimento;
     } else {
-      list($iNumeroAtendimento, $iAnoAtendimento) = explode("/", $oPost->iNumeroAtendimento);
+      [$iNumeroAtendimento, $iAnoAtendimento] = explode("/", (string) $oPost->iNumeroAtendimento);
     }
 
     $sWhereProcesso .= " and ov01_numero = {$iNumeroAtendimento} and ov01_anousu = {$iAnoAtendimento}";
@@ -127,16 +127,16 @@ if ( $oPost->sMethod == 'consultaProcessos') {
     $lErro    = true;
   }	
 	
-  $aRetorno = array("lErro"          =>$lErro,
+  $aRetorno = ["lErro"          =>$lErro,
 	                  "sMsg"           =>$sMsgErro,
-                    "aListaProcessos"=>$aListaProcesso);
+                    "aListaProcessos"=>$aListaProcesso];
 
   echo $oJson->encode($aRetorno);
   
 } else if ( $oPost->sMethod == 'consultaAtendimentos') {
  
   
-  $aListaAtendimentos  = array(); 
+  $aListaAtendimentos  = []; 
   $sCamposAtendimento  = "  distinct ov01_sequencial,";
   $sCamposAtendimento .= " fc_numeroouvidoria(ov01_sequencial) as ov01_numero, ";
   $sCamposAtendimento .= " ov01_anousu,     ";
@@ -175,9 +175,9 @@ if ( $oPost->sMethod == 'consultaProcessos') {
     $lErro    = true;
   }
   
-  $aRetorno = array("lErro"             =>$lErro,
+  $aRetorno = ["lErro"             =>$lErro,
                     "sMsg"              =>$sMsgErro,
-                    "aListaAtendimentos"=>$aListaAtendimentos);
+                    "aListaAtendimentos"=>$aListaAtendimentos];
 
   echo $oJson->encode($aRetorno);
   
@@ -188,8 +188,8 @@ if ( $oPost->sMethod == 'consultaProcessos') {
 	$clOuvidoriaAtendimentoRetorno->ov20_ouvidoriaatendimento = $oPost->iCodAtendimento;
 	$clOuvidoriaAtendimentoRetorno->ov20_dataretorno          = date('Y-m-d',db_getsession('DB_datausu'));
 	$clOuvidoriaAtendimentoRetorno->ov20_horaretorno          = db_hora();
-	$clOuvidoriaAtendimentoRetorno->ov20_informa              = utf8_decode($oPost->sInformacao);
-	$clOuvidoriaAtendimentoRetorno->ov20_resposta             = utf8_decode($oPost->sResposta);
+	$clOuvidoriaAtendimentoRetorno->ov20_informa              = mb_convert_encoding($oPost->sInformacao, 'ISO-8859-1');
+	$clOuvidoriaAtendimentoRetorno->ov20_resposta             = mb_convert_encoding($oPost->sResposta, 'ISO-8859-1');
 	$clOuvidoriaAtendimentoRetorno->ov20_tiporetorno          = $oPost->iTipoRetorno;
 	$clOuvidoriaAtendimentoRetorno->ov20_confirma             = ($oPost->sConfirma=='s'?'true':'false');
 	$clOuvidoriaAtendimentoRetorno->incluir(null);
@@ -205,8 +205,8 @@ if ( $oPost->sMethod == 'consultaProcessos') {
 		$sMsgErro = 'Retorno incluído com sucesso!';
 	}
 	
-  $aRetorno = array("lErro"             =>$lErro,
-                    "sMsg"              =>urlencode($sMsgErro));
+  $aRetorno = ["lErro"             =>$lErro,
+                    "sMsg"              =>urlencode($sMsgErro)];
 
   echo $oJson->encode($aRetorno);
   
@@ -234,8 +234,8 @@ if ( $oPost->sMethod == 'consultaProcessos') {
     $sMsgErro = 'Processo arquivado com sucesso!';
   }
   
-  $aRetorno = array("lErro"             =>$lErro,
-                    "sMsg"              =>urlencode($sMsgErro));
+  $aRetorno = ["lErro"             =>$lErro,
+                    "sMsg"              =>urlencode($sMsgErro)];
   
   echo $oJson->encode($aRetorno);
   

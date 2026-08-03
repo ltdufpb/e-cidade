@@ -55,12 +55,12 @@ try {
 
         case 'getPlanosContasOrcamentario':
 
-            $where = implode(' and ', array(
+            $where = implode(' and ', [
                 'c60_anousu = 2017',
                 "substr(c60_estrut, 1, 1)::integer in (4,9)",
-            )). " order by c60_estrut ";
+            ]). " order by c60_estrut ";
 
-            $campos = implode(', ', array(
+            $campos = implode(', ', [
                 'conplanoorcamento.*',
                 'c97_conplanoorcamento',
                 '(case when 
@@ -70,7 +70,7 @@ try {
                         and o70_codfon = c60_codcon limit 1) then true 
                     else false 
                  end) as possui_receita'
-            ));
+            ]);
             $oConPlanoOrcamento = new \cl_conplanoorcamento();
             $sSql = $oConPlanoOrcamento->sql_query_orcamento_detalhe($campos, $where);
 
@@ -165,8 +165,8 @@ try {
             $oPlanoContaDetalhe->c95_sequencial       = null;
             $oPlanoContaDetalhe->c95_modeloplanoconta = $importacao->getModelo();
             $oPlanoContaDetalhe->c95_estrutural       = DBEstrutura::mascararString('0.0.0.0.0.00.0.0.00.00.00', str_replace('.', '', $oParam->c95_estrutural));
-            $oPlanoContaDetalhe->c95_titulo           = mb_strtoupper($oParam->c95_titulo);
-            $oPlanoContaDetalhe->c95_funcao           = mb_strtoupper($oParam->c95_funcao);
+            $oPlanoContaDetalhe->c95_titulo           = mb_strtoupper((string) $oParam->c95_titulo);
+            $oPlanoContaDetalhe->c95_funcao           = mb_strtoupper((string) $oParam->c95_funcao);
             $oPlanoContaDetalhe->c95_naturezasaldo    = $oParam->c95_naturezasaldo;
             $oPlanoContaDetalhe->c95_analitica        = $oParam->c95_analitica;
             $oPlanoContaDetalhe->c95_sistema          = $oParam->c95_sistema;

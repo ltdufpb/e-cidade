@@ -38,7 +38,7 @@ include(modification("classes/db_tipoparc_classe.php"));
 $clcadtipoparc = new cl_cadtipoparc;
 
 $clcadtipoparc -> k40_instit = db_getsession("DB_instit");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $db_opcao = 22;
 $db_botao = false;
 if(isset($alterar)){

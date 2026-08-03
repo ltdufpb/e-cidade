@@ -36,8 +36,8 @@ require_once(modification("classes/db_cgs_cartaosus_classe.php"));
 require_once(modification("classes/db_cgs_und_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clcgs              = new cl_cgs;
 $clcgs_und          = new cl_cgs_und;

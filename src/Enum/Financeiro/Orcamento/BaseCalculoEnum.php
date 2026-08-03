@@ -35,6 +35,7 @@ class BaseCalculoEnum extends Enum
      * @return array
      * @throws Exception
      */
+    #[\Override]
     public static function toArrayWithNames()
     {
         $tipos = static::values();

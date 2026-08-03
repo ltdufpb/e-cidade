@@ -35,7 +35,7 @@ require_once modification("dbforms/db_funcoes.php");
     <title>DBSeller Informática Ltda</title>
     <meta http-equiv="Expires" CONTENT="0">
     <?php
-    $assets = array(
+    $assets = [
       "scripts.js",
       "strings.js",
       "prototype.js",
@@ -46,7 +46,7 @@ require_once modification("dbforms/db_funcoes.php");
       "DBLookUp.widget.js",
       "DBToggleList.widget.js",
       "EmissaoRelatorio.js"
-    );
+    ];
     db_app::load($assets);
     ?>
     <style>

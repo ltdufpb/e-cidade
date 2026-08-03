@@ -119,19 +119,19 @@ $clrotulo->label("ar12_nome");
            </td>
            <td id="carteiraSicob" style="display:none">
              <?php 
-               $aCarteiraSicob = array("0" =>"Selecione",
+               $aCarteiraSicob = ["0" =>"Selecione",
                                        "82"=>"Sem Registro",
-                                       "9" =>"Rápida");
+                                       "9" =>"Rápida"];
                db_select('ar13_carteira_selsicob',$aCarteiraSicob,true,$db_opcao,"");
              ?>
            </td>
            <td id="carteiraSigcb" style="display:none">
              <?php 
-               $aCarteiraSigcb = array("0" =>"Selecione",
+               $aCarteiraSigcb = ["0" =>"Selecione",
                                        "11"=>"Com registros impressos pela CEF",
                                        "14"=>"Com registros impressos pelo cedente",
                                        "21"=>"Sem registros impressos pela CEF",
-                                       "24"=>"Sem registros impressos pelo cedente");
+                                       "24"=>"Sem registros impressos pelo cedente"];
                db_select('ar13_carteira_selsigcb',$aCarteiraSigcb,true,$db_opcao,"onchange='js_validaCarteiraSigcb(this.value);'");
              ?>
            </td>
@@ -152,8 +152,8 @@ $clrotulo->label("ar12_nome");
             </td>
             <td id="responsavelNossoNumero">
               <?php 
-                $aResponsaveis = array("t" =>"Instituição",
-                                        "f"=>"Banco");
+                $aResponsaveis = ["t" =>"Instituição",
+                                        "f"=>"Banco"];
                 db_select('ar13_responsavelnossonumero',$aResponsaveis,true,$db_opcao,"");
               ?>
             </td>
@@ -483,7 +483,7 @@ function js_preenchepesquisa(chave){
   db_iframe_cadconvenio.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

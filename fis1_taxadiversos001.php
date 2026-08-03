@@ -39,17 +39,17 @@ $clrotulo->label("y119_unidade");
 $clrotulo->label("y119_tipo_periodo");
 $clrotulo->label("y119_tipo_calculo");
 
-$aTiposPeriodo = array(
+$aTiposPeriodo = [
 	'A'=>'Anual',
 	'M'=>'Mensal',
 	'D'=>'Diária'
-);
+];
 
-$aTiposCalculo = array(
+$aTiposCalculo = [
 	'0'=>'Selecione',
 	'U'=>'Único',  // Fechado
 	'G'=>'Geral'   // Aberto
-);
+];
 ?>
 <html>
 <head>
@@ -110,7 +110,7 @@ $aTiposCalculo = array(
 						<label id="lbl_unidade" for="unidade"><?php echo $Ly119_unidade; ?></label>
 					</td>
 					<td>
-						<?php db_select('unidade', array(), false, 1); ?>
+						<?php db_select('unidade', [], false, 1); ?>
 					</td>
 				</tr>
 

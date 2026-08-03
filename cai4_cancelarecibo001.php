@@ -37,8 +37,8 @@ include(modification("dbforms/db_funcoes.php"));
 //include(modification("classes/db_recibo_classe.php"));
 //$clrecibo   = new cl_recibo;
 
-parse_str(base64_decode($HTTP_SERVER_VARS["QUERY_STRING"]));
-db_postmemory($HTTP_POST_VARS);
+parse_str(base64_decode((string) $_SERVER["QUERY_STRING"]), $result);
+db_postmemory($_POST);
 $db_opcao = 3;
 
 
@@ -55,7 +55,7 @@ if(isset($excluir)){
 	$sqlerro = false;
   $sql     = "select * from recibo where k00_numpre=$k00_numpre and k00_receit=$k00_receit and k00_numcgm=$k00_numcgm";
   $result  = db_query($sql);
-  $numrows = pg_numrows($result);
+  $numrows = pg_num_rows($result);
   for($i=0; $i<$numrows; $i++){
     db_fieldsmemory($result,$i);
 		 $k00_codsubrec =  $k00_codsubrec == ''?'0':$k00_codsubrec;
@@ -114,7 +114,7 @@ if(isset($excluir)){
 
 if(isset($k00_numpre)){
   $result =  db_query("select k00_numpre from arrepaga where k00_numcgm=$k00_numpre and k00_numcgm=$k00_numcgm");
-  if(pg_numrows($result) > 0){
+  if(pg_num_rows($result) > 0){
     $erro_msg02 = 'Recibo já foi pago!'; 
     $db_botao=false;
     

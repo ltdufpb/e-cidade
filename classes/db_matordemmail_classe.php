@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE matordemmail
 class cl_matordemmail { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m55_codigo = 0; 
-   var $m55_codordem = 0; 
-   var $m55_email = null; 
+   public $m55_codigo = 0; 
+   public $m55_codordem = 0; 
+   public $m55_email = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m55_codigo = int4 = Código Sequencial 
                  m55_codordem = int8 = Código 
                  m55_email = varchar(30) = E-mail 
                  ";
    //funcao construtor da classe 
-   function cl_matordemmail() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("matordemmail"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_matordemmail {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m55_codigo = pg_result($result,0,0); 
+       $this->m55_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from matordemmail_m55_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m55_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m55_codigo)){
          $this->erro_sql = " Campo m55_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_matordemmail {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "ordem de compra  e-mail para o fornecedor ($this->m55_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "ordem de compra  e-mail para o fornecedor já Cadastrado";
@@ -166,12 +166,12 @@ class cl_matordemmail {
      $resaco = $this->sql_record($this->sql_query_file($this->m55_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,8271,'$this->m55_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,1394,8271,'','".AddSlashes(pg_result($resaco,0,'m55_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1394,8272,'','".AddSlashes(pg_result($resaco,0,'m55_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,1394,8273,'','".AddSlashes(pg_result($resaco,0,'m55_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1394,8271,'','".AddSlashes(pg_fetch_result($resaco,0,'m55_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1394,8272,'','".AddSlashes(pg_fetch_result($resaco,0,'m55_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,1394,8273,'','".AddSlashes(pg_fetch_result($resaco,0,'m55_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_matordemmail {
       $this->atualizacampos();
      $sql = " update matordemmail set ";
      $virgula = "";
-     if(trim($this->m55_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m55_codigo"])){ 
+     if(trim((string) $this->m55_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m55_codigo"])){ 
        $sql  .= $virgula." m55_codigo = $this->m55_codigo ";
        $virgula = ",";
-       if(trim($this->m55_codigo) == null ){ 
+       if(trim((string) $this->m55_codigo) == null ){ 
          $this->erro_sql = " Campo Código Sequencial nao Informado.";
          $this->erro_campo = "m55_codigo";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_matordemmail {
          return false;
        }
      }
-     if(trim($this->m55_codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m55_codordem"])){ 
+     if(trim((string) $this->m55_codordem)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m55_codordem"])){ 
        $sql  .= $virgula." m55_codordem = $this->m55_codordem ";
        $virgula = ",";
-       if(trim($this->m55_codordem) == null ){ 
+       if(trim((string) $this->m55_codordem) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "m55_codordem";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_matordemmail {
          return false;
        }
      }
-     if(trim($this->m55_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m55_email"])){ 
+     if(trim((string) $this->m55_email)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m55_email"])){ 
        $sql  .= $virgula." m55_email = '$this->m55_email' ";
        $virgula = ",";
-       if(trim($this->m55_email) == null ){ 
+       if(trim((string) $this->m55_email) == null ){ 
          $this->erro_sql = " Campo E-mail nao Informado.";
          $this->erro_campo = "m55_email";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_matordemmail {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8271,'$this->m55_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m55_codigo"]))
-           $resac = db_query("insert into db_acount values($acount,1394,8271,'".AddSlashes(pg_result($resaco,$conresaco,'m55_codigo'))."','$this->m55_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1394,8271,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m55_codigo'))."','$this->m55_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m55_codordem"]))
-           $resac = db_query("insert into db_acount values($acount,1394,8272,'".AddSlashes(pg_result($resaco,$conresaco,'m55_codordem'))."','$this->m55_codordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1394,8272,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m55_codordem'))."','$this->m55_codordem',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m55_email"]))
-           $resac = db_query("insert into db_acount values($acount,1394,8273,'".AddSlashes(pg_result($resaco,$conresaco,'m55_email'))."','$this->m55_email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,1394,8273,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m55_email'))."','$this->m55_email',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_matordemmail {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,8271,'$m55_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,1394,8271,'','".AddSlashes(pg_result($resaco,$iresaco,'m55_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1394,8272,'','".AddSlashes(pg_result($resaco,$iresaco,'m55_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1394,8273,'','".AddSlashes(pg_result($resaco,$iresaco,'m55_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1394,8271,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m55_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1394,8272,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m55_codordem'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1394,8273,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m55_email'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from matordemmail
@@ -345,7 +345,7 @@ class cl_matordemmail {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:matordemmail";
@@ -359,7 +359,7 @@ class cl_matordemmail {
    function sql_query ( $m55_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -383,7 +383,7 @@ class cl_matordemmail {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -395,7 +395,7 @@ class cl_matordemmail {
    function sql_query_file ( $m55_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -416,7 +416,7 @@ class cl_matordemmail {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

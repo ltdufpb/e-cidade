@@ -32,12 +32,12 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_editora_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $cleditora = new cl_editora;
 $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
- $result = $cleditora->sql_record($cleditora->sql_query("","bi02_nome as verifica",""," trim(bi02_nome) = '".trim($bi02_nome)."'"));
+ $result = $cleditora->sql_record($cleditora->sql_query("","bi02_nome as verifica",""," trim(bi02_nome) = '".trim((string) $bi02_nome)."'"));
  if($cleditora->numrows>0){
   db_fieldsmemory($result,0);
   $cleditora->erro_status = "0";
@@ -50,7 +50,7 @@ if(isset($incluir)){
 }
 if(isset($alterar)){
  $db_opcao = 2;
- $result = $cleditora->sql_record($cleditora->sql_query("","bi02_nome as verifica",""," trim(bi02_nome) = '".trim($bi02_nome)."' and bi02_codigo != $bi02_codigo"));
+ $result = $cleditora->sql_record($cleditora->sql_query("","bi02_nome as verifica",""," trim(bi02_nome) = '".trim((string) $bi02_nome)."' and bi02_codigo != $bi02_codigo"));
  if($cleditora->numrows>0){
   db_fieldsmemory($result,0);
   $cleditora->erro_status = "0";

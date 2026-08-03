@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_cgmtipoempresa_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clcgmtipoempresa = new cl_cgmtipoempresa;
 $clcgmtipoempresa->rotulo->label("z03_sequencial");
 $clcgmtipoempresa->rotulo->label("z03_numcgm");
@@ -98,9 +98,9 @@ $clcgmtipoempresa->rotulo->label("z03_numcgm");
         }else{
            $sql = $clcgmtipoempresa->sql_query("",$campos,"z03_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_z03_numcgm)){
-          $repassa = array("chave_z03_sequencial"=>$chave_z03_sequencial,"chave_z03_numcgm"=>$chave_z03_numcgm);
+          $repassa = ["chave_z03_sequencial"=>$chave_z03_sequencial,"chave_z03_numcgm"=>$chave_z03_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

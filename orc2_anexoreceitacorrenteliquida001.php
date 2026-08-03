@@ -56,21 +56,21 @@ $oCriaAbas = new cl_criaabas;
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
     <center>
     <?php 
-      $oCriaAbas->identifica = array("relatorio" => "Filtro Padrão",
+      $oCriaAbas->identifica = ["relatorio" => "Filtro Padrão",
                                      "notas"     => "Notas Explicativas",
-                                     "parametro" => "Parâmetros");
+                                     "parametro" => "Parâmetros"];
       
-      $oCriaAbas->title      = array("relatorio" => "Relatorio",
+      $oCriaAbas->title      = ["relatorio" => "Relatorio",
                                      "notas"     => "Notas Explicativas",
-                                     "parametro" => "Parâmetros");
+                                     "parametro" => "Parâmetros"];
       
-      $oCriaAbas->src        = array("relatorio" => "orc2_anexoreceitacorrenteliquida011.php?codrel=119",
+      $oCriaAbas->src        = ["relatorio" => "orc2_anexoreceitacorrenteliquida011.php?codrel=119",
                                      "notas"     => "con2_conrelnotas.php?c83_codrel=119",
-                                     "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel=119");
+                                     "parametro" => "con4_parametrosrelatorioslegais001.php?c83_codrel=119"];
       
-      $oCriaAbas->sizecampo  = array("relatorio" => "23",
+      $oCriaAbas->sizecampo  = ["relatorio" => "23",
                                      "notas"     => "23",
-                                     "parametro" => "23");
+                                     "parametro" => "23"];
       
       $oCriaAbas->cria_abas();    
     ?>

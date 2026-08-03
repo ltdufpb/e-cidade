@@ -44,7 +44,7 @@ $sInstituicoes    = $oGet->db_selinstit;
  * Defino a descrições das instituições que estou imprimindo o relatório
  */
 $aInstituicoes = explode("-", $sInstituicoes);
-$aDescricoesInstituicoes = array();
+$aDescricoesInstituicoes = [];
 foreach ($aInstituicoes as $iCodigoInstituicao) {
 
   $oInstituicao   = InstituicaoRepository::getInstituicaoByCodigo($iCodigoInstituicao);
@@ -52,7 +52,7 @@ foreach ($aInstituicoes as $iCodigoInstituicao) {
 }
 $sInstituicoesSelecionadas = implode(", ", $aDescricoesInstituicoes);
 
-$aDados = array();
+$aDados = [];
 
 try {
 

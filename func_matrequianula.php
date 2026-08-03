@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_matrequi_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clmatrequi = new cl_matrequi;
 $clmatrequi->rotulo->label("m40_codigo");
 $clmatrequi->rotulo->label("m40_codigo");
@@ -65,7 +65,7 @@ $clmatrequi->rotulo->label("m40_codigo");
               </td>
               <td>
                 <?php 
-                db_select("trazoutrozexercicios", array('n'=>'Não','s'=>'Sim'), true,1);
+                db_select("trazoutrozexercicios", ['n'=>'Não','s'=>'Sim'], true,1);
                 ?>
               </td>
             </tr>

@@ -43,8 +43,8 @@ $clempautoriza = new cl_empautoriza;
 $clpcorcam->rotulo->label();
 $clpcproc->rotulo->label();
 
-db_postmemory($HTTP_GET_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_GET);
+db_postmemory($_POST);
 
 $db_opcao = 1;
 $db_botao = true;

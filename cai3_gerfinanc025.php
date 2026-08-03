@@ -41,7 +41,7 @@ $k00_inscr  = null;
 
 $oArrebanco = new stdClass;
 
-$mat_numpre = split("#",base64_decode(@$HTTP_SERVER_VARS['QUERY_STRING']));
+$mat_numpre = preg_split("#\\##m",base64_decode((string) @$_SERVER['QUERY_STRING']));
 //var_dump(base64_decode(@$HTTP_SERVER_VARS['QUERY_STRING']));
 //echo $mat_numpre[0]."-";
 //echo $mat_numpre[1]."-";
@@ -65,7 +65,7 @@ $sql = "select k03_tipo
         where k00_tipo = $tipo and k00_instit = ".db_getsession('DB_instit') ;
 //die($sql);
 $result = db_query($sql);
-$numrows = pg_numrows($result);
+$numrows = pg_num_rows($result);
 if($numrows > 0){
   db_fieldsmemory($result,0);
 }else{
@@ -77,57 +77,23 @@ if($numrows > 0){
 $sql_arrebanco_nbant = "select array_to_string( array_accum(arrebanco.k00_nbant), ', ' ) as k00_nbant from caixa.recibopaga inner join caixa.arrebanco on arrebanco.k00_numpre = recibopaga.k00_numnov where recibopaga.k00_numpre = $numpre";
 //echo $sql_arrebanco_nbant;
 $rs_arrebanco_nbant = db_query($sql_arrebanco_nbant) or die($sql_arrebanco_nbant);
-$oArrebanco->k00_nbant = pg_result($rs_arrebanco_nbant,0,0);
+$oArrebanco->k00_nbant = pg_fetch_result($rs_arrebanco_nbant,0,0);
 
 /**
  * Legend dos fieldset
  */
-switch ( $k03_tipo ) {
-
-  case 1 :
-    $sLegend = 'IPTU';
-  break;
-
-  case 2 :
-    $sLegend = 'ISSQN FIXO';
-  break;
-
-	case 3 :
-		$sLegend = 'ISSQN VARIÁVEL';
-	break;
-
-  case 4 :
-    $sLegend = 'Contribuição de melhoria';
-  break;
-
-	case 5 :
-		$sLegend = 'Divida ativa';
-	break;
-
-  case 7 :
-    $sLegend = 'Módulo diversos';
-  break;
-
-  case 9 :
-    $sLegend = 'ALVARÁ';
-  break;
-
-	case 15 :
-		$sLegend = 'Certidão do foro';
-	break;
-
-  case 6  :
-  case 13 :
-  case 17 :
-  case 30 :
-    $sLegend = 'Parcelamento';
-  break;
-
-	case 14 :
-  default :
-		$sLegend = 'Protocolo geral';
-  break;
-}
+$sLegend = match ($k03_tipo) {
+    1 => 'IPTU',
+    2 => 'ISSQN FIXO',
+    3 => 'ISSQN VARIÁVEL',
+    4 => 'Contribuição de melhoria',
+    5 => 'Divida ativa',
+    7 => 'Módulo diversos',
+    9 => 'ALVARÁ',
+    15 => 'Certidão do foro',
+    6, 13, 17, 30 => 'Parcelamento',
+    default => 'Protocolo geral',
+};
 
 /**
  * ------------------------------------------------------------------------------------------------
@@ -140,7 +106,7 @@ if ( $k03_tipo == 1 ) {
           from arrematric
           where k00_numpre = $numpre";
   $result = db_query($sql);
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
     echo "Código de Arrecadacao nao cadastrado no arrematric.";
     exit;
   }else{
@@ -150,7 +116,7 @@ if ( $k03_tipo == 1 ) {
           from proprietario
           where j01_matric = $k00_matric";
   $result = db_query($sql);
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
     echo "Matrícula nao cadastrada em proprietario.";
     exit;
   }else{
@@ -168,7 +134,7 @@ if ( $k03_tipo == 1 ) {
                inner join cgm on dv05_numcgm = z01_numcgm
           where diversos.dv05_numpre = $numpre and dv05_instit = ".db_getsession('DB_instit') ;
   $result = db_query($sql);
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
     echo "Código de Arrecadacao nao cadastrado no diversos.";
     exit;
   }else{
@@ -182,7 +148,7 @@ if ( $k03_tipo == 1 ) {
           where k00_numpre = $numpre";
   echo $sql;
   $result = db_query($sql);
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
     echo "Parcelamento nao cadastrada no diversos.";
     exit;
   }else{
@@ -239,7 +205,7 @@ if ( $k03_tipo == 1 ) {
   $sql .= ($numpar>0?" and arrepaga.k00_numpar=$numpar":"");
   //die($sql);
   $result = db_query($sql);
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
     echo "Código de Arrecadacao nao cadastrado no arreinscr.";
     exit;
   }else{
@@ -251,7 +217,7 @@ if ( $k03_tipo == 1 ) {
             from empresa
             where q02_inscr = $k00_inscr";
     $result = db_query($sql);
-    if(pg_numrows($result)==0){
+    if(pg_num_rows($result)==0){
       echo "Empresa nao cadastrada no issbase.";
       exit;
     }else{
@@ -265,7 +231,7 @@ if ( $k03_tipo == 1 ) {
           from arrematric
           where k00_numpre = $numpre";
   $result = db_query($sql);
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
     echo "Código de Arrecadacao nao cadastrado no arrematric.";
     exit;
   }else{
@@ -275,7 +241,7 @@ if ( $k03_tipo == 1 ) {
           from proprietario
           where j01_matric = $k00_matric";
   $result = db_query($sql);
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
     echo "Matrícula nao cadastrada em proprietario.";
     exit;
   }else{
@@ -292,7 +258,7 @@ if ( $k03_tipo == 1 ) {
   $sql .= "      left join edital on d02_codedi = d01_codedi \n";
   $sql .= " where k00_numpre = $numpre";
   $result = db_query($sql);
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
     echo "Código de Arrecadacao nao cadastrado Na Constribuição.  ";
     exit;
   }else{
@@ -311,7 +277,7 @@ if ( $k03_tipo == 1 ) {
   $sql .= " and d.v01_numpar = $numpar ";
 
   $result = db_query($sql);
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
     echo "Código de Arrecadacao nao cadastrado.";
     exit;
   }else{
@@ -330,7 +296,7 @@ if ( $k03_tipo == 1 ) {
             left outer join cgm c on c.z01_numcgm = t.v07_numcgm
        where t.v07_numpre = $numpre and v07_instit = ".db_getsession('DB_instit') ;
   $result = db_query($sql);
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
     echo "Código de Arrecadacao nao cadastrado.";
     exit;
   }else{
@@ -346,7 +312,7 @@ if ( $k03_tipo == 1 ) {
     if($numpar!=0)
     $sql .= " and d.v01_numpar = $numpar ";
     $result = db_query($sql);
-    if(pg_numrows($result)>0){
+    if(pg_num_rows($result)>0){
       db_fieldsmemory($result,0,true);
     }else{
 
@@ -354,7 +320,7 @@ if ( $k03_tipo == 1 ) {
 
        $sql = "select * from termoini where parcel = $v07_parcel";
        $result = db_query($sql);
-       if(pg_numrows($result)>0){
+       if(pg_num_rows($result)>0){
 
        } else {
 
@@ -363,7 +329,7 @@ if ( $k03_tipo == 1 ) {
           left outer join arreinscr  on v07_numpre = arreinscr.k00_numpre
            where v07_numpre = $numpre and v07_instit = ".db_getsession('DB_instit') ;
          $result = db_query($sql);
-         if(pg_numrows($result)>0){
+         if(pg_num_rows($result)>0){
            db_fieldsmemory($result,0,true);
          } else {
            $v01_proced="&nbsp;" ;
@@ -383,7 +349,7 @@ if ( $k03_tipo == 1 ) {
             inner join certid ce on ce.v13_certid = c.v14_certid
        where d.v01_numpre = $numpre and v01_instit = ".db_getsession('DB_instit') ." limit 1";
   $result = db_query($sql);
-  if(pg_numrows($result)==0){
+  if(pg_num_rows($result)==0){
     echo "Código de Arrecadacao nao cadastrado.";
     exit;
   }else{
@@ -396,7 +362,7 @@ if ( $k03_tipo == 1 ) {
       left outer join arreinscr  on v07_numpre = arreinscr.k00_numpre
        where v07_numpre = $numpre and v07_instit = ".db_getsession('DB_instit') ;
   $result = db_query($sql);
-  if(pg_numrows($result)>0){
+  if(pg_num_rows($result)>0){
     db_fieldsmemory($result,0,true);
   } else {
     $v01_proced="&nbsp;" ;
@@ -418,7 +384,7 @@ if ( $k03_tipo == 1 ) {
                 inner join cgm on z01_numcgm = k00_numcgm
            where recibo.k00_numpre = $numpre";
   $result = db_query($sql);
-  if(pg_numrows($result)>0) {
+  if(pg_num_rows($result)>0) {
     db_fieldsmemory($result,0,true);
   } else {
 
@@ -429,7 +395,7 @@ if ( $k03_tipo == 1 ) {
              where arrepaga.k00_numpre = $numpre";
 
     $result = db_query($sql);
-    if(pg_numrows($result)>0) {
+    if(pg_num_rows($result)>0) {
       db_fieldsmemory($result,0,true);
     } else {
       $z01_nome = null;
@@ -451,7 +417,7 @@ if ( $k03_tipo == 1 ) {
   //echo "<br>$sql<br>";
 
   $result = db_query($sql);
-  if(pg_numrows($result)>0) {
+  if(pg_num_rows($result)>0) {
     db_fieldsmemory($result,0,true);
   } else {
     $z01_nome = null;
@@ -520,20 +486,20 @@ if ( $k03_tipo == 1 ) {
         <td>&nbsp; <?=$j01_matric?></td>
 
         <td>Propriet&aacute;rio/Promitente:</td>
-        <td>&nbsp; <?=substr($z01_nome,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $z01_nome,0,35)?></td>
       </tr>
 
       <tr>
         <td>Endere&ccedil;o:</td>
-        <td>&nbsp; <?=substr($z01_ender,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $z01_ender,0,35)?></td>
 
         <td>Munic&iacute;pio:</td>
-        <td>&nbsp; <?=substr($z01_munic,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $z01_munic,0,35)?></td>
       </tr>
 
       <tr>
         <td>Propriet&aacute;rio:</td>
-        <td>&nbsp; <?=substr($proprietario,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $proprietario,0,35)?></td>
 
         <td>Setor/Quadra/Lote:</td>
         <td>&nbsp; <?=($j34_setor."/".$j34_quadra."/".$j34_lote)?></td>
@@ -541,7 +507,7 @@ if ( $k03_tipo == 1 ) {
 
       <tr>
         <td>Logradouro:</td>
-        <td>&nbsp; <?=substr($nomepri,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $nomepri,0,35)?></td>
 
         <td>N&uacute;mero:</td>
         <td>&nbsp; <?=$j39_numero?></td>
@@ -568,20 +534,20 @@ if ( $k03_tipo == 1 ) {
         <td>&nbsp; <?=$j01_matric?></td>
 
         <td>Propriet&aacute;rio/Promitente:</td>
-        <td>&nbsp; <?=substr($z01_nome,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $z01_nome,0,35)?></td>
       </tr>
 
       <tr>
         <td>Endere&ccedil;o:</td>
-        <td>&nbsp; <?=substr($z01_ender,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $z01_ender,0,35)?></td>
 
         <td>Munic&iacute;pio:</td>
-        <td>&nbsp; <?=substr($z01_munic,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $z01_munic,0,35)?></td>
       </tr>
 
       <tr>
         <td>Propriet&aacute;rio:</td>
-        <td>&nbsp; <?=substr($proprietario,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $proprietario,0,35)?></td>
 
         <td>Setor/Quadra/Lote:</td>
         <td>&nbsp; <?=($j34_setor."/".$j34_quadra."/".$j34_lote)?></td>
@@ -589,7 +555,7 @@ if ( $k03_tipo == 1 ) {
 
       <tr>
         <td>Logradouro:</td>
-        <td>&nbsp; <?=substr($nomepri,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $nomepri,0,35)?></td>
 
         <td>N&uacute;mero:</td>
         <td>&nbsp; <?=$j39_numero?></td>
@@ -608,7 +574,7 @@ if ( $k03_tipo == 1 ) {
         <td>&nbsp; <?=$d07_contri?>&nbsp;Edital: <?=$d01_numero?></td>
 
         <td>Rua/Avenida:</td>
-        <td>&nbsp; <?=substr($j14_nome,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $j14_nome,0,35)?></td>
       </tr>
 
       <tr>
@@ -632,7 +598,7 @@ if ( $k03_tipo == 1 ) {
         <td>&nbsp; <?=$v01_coddiv?></td>
 
         <td>Nome:</td>
-        <td>&nbsp; <?=substr($z01_nome,0,35)?></td>
+        <td>&nbsp; <?=substr((string) $z01_nome,0,35)?></td>
       </tr>
 
       <tr>
@@ -650,9 +616,9 @@ if ( $k03_tipo == 1 ) {
         <td nowrap>Matr&iacute;cula Im&oacute;vel:</td>
         <td>
           <?php
-            if(pg_numrows($result)!=0){
+            if(pg_num_rows($result)!=0){
 
-              for($i=0;$i<pg_numrows($result);$i++){
+              for($i=0;$i<pg_num_rows($result);$i++){
 
                 db_fieldsmemory($result,$i,'1');
                 if($v01_matric!=""){
@@ -668,9 +634,9 @@ if ( $k03_tipo == 1 ) {
         <td>Inscri&ccedil;&atilde;o Alvar&aacute;:</td>
         <td>&nbsp;
           <?php
-            if(pg_numrows($result)!=0){
+            if(pg_num_rows($result)!=0){
 
-              for($i=0;$i<pg_numrows($result);$i++){
+              for($i=0;$i<pg_num_rows($result);$i++){
 
                 db_fieldsmemory($result,$i,'1');
                 if($v01_inscr!=""){
@@ -783,7 +749,7 @@ if ( $k03_tipo == 1 ) {
 
       $rsParcelamentoDeiversos = db_query($sSqlParcelamentoDiversos);
 
-      if ( pg_numrows($rsParcelamentoDeiversos) == 0 ) {
+      if ( pg_num_rows($rsParcelamentoDeiversos) == 0 ) {
 
         echo "Parcelamento não cadastrado no diversos.";
         exit;
@@ -904,9 +870,9 @@ if ( $k03_tipo == 1 ) {
         <td>Matr&iacute;cula Im&oacute;vel:</td>
 				<td>
 					<?php
-						if ( pg_numrows( $result ) != 0 ) {
+						if ( pg_num_rows( $result ) != 0 ) {
 
-							for ( $i = 0; $i < pg_numrows($result); $i++ ) {
+							for ( $i = 0; $i < pg_num_rows($result); $i++ ) {
 
 								db_fieldsmemory( $result ,$i, '1' );
 								if ( $k03_tipo == 13 ) {
@@ -927,9 +893,9 @@ if ( $k03_tipo == 1 ) {
         <td>Inscri&ccedil;&atilde;o Alvar&aacute;:</td>
 				<td>&nbsp;
 					<?php
-						if ( pg_numrows( $result ) != 0 ) {
+						if ( pg_num_rows( $result ) != 0 ) {
 
-							for ( $i = 0; $i < pg_numrows( $result ); $i++ ) {
+							for ( $i = 0; $i < pg_num_rows( $result ); $i++ ) {
 
 								db_fieldsmemory( $result, $i, '1' );
 								if ( $k00_inscr != "" ) {
@@ -981,7 +947,7 @@ if ( $k03_tipo == 1 ) {
      */
     } else if( $k03_tipo == 3 ) { ?>
 
-			<?php if (isset($k00_inscr) && $k00_inscr > 0) { ?>
+			<?php if (isset($k00_inscr) && 0 > 0) { ?>
 
 				<tr>
 					<td>Inscri&ccedil;&atilde;o:</td>

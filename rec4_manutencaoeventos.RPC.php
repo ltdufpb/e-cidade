@@ -38,7 +38,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 $oPost       = db_utils::postMemory($_REQUEST);
 $oPost->json = str_replace("\\","",$oPost->json);
 $oParametro  = JSON::create()->parse($oPost->json);
-$oRetorno    = (object)array( 'erro' => false, 'mensagem'=> '');
+$oRetorno    = (object)[ 'erro' => false, 'mensagem'=> ''];
 
 try {
 
@@ -103,7 +103,7 @@ try {
           DBPessoal::getCompetenciaFolha()->getMes(),
           $evento->selecao
         );
-        $evento->matriculas = array();
+        $evento->matriculas = [];
 
         foreach ($servidores as $servidor) {
           $evento->matriculas[] = $servidor->getMatricula();
@@ -129,7 +129,7 @@ try {
 
       if(!empty($oParametro->codigo)) {
 
-        $eventos = array(EventoRepository::getInstance()->getPorCodigo($oParametro->codigo));
+        $eventos = [EventoRepository::getInstance()->getPorCodigo($oParametro->codigo)];
         if(empty($eventos)) {
           throw new BusinessException("Não há eventos cadastrados com o código informado ({$oParametro->codigo}).");
         }
@@ -138,10 +138,10 @@ try {
         $eventos = EventoRepository::getInstance()->getTodos();
       }
 
-      $oRetorno->eventos = array();
+      $oRetorno->eventos = [];
       foreach ($eventos as $evento) {
 
-        $oStdEvento = (object)array(
+        $oStdEvento = (object)[
           'codigo'                      => $evento->getCodigo(),
           'titulo'                      => $evento->getTitulo(),
           'dataInicial'                 => $evento->getDataInicial()->getDate(DBDate::DATA_PTBR),
@@ -151,9 +151,9 @@ try {
           'entradaDois'                 => ($evento->getEntradaDois() instanceof DateTime ? $evento->getEntradaDois()->format('H:i') : null),
           'saidaDois'                   => ($evento->getSaidaDois() instanceof DateTime ? $evento->getSaidaDois()->format('H:i') : null),
           'tipoHoraDois'                => $evento->getTipoHoraExtraDois(),
-          'matriculas'                  => array(),
+          'matriculas'                  => [],
           'considerarHorarioTrabalhado' => $evento->considerarHorarioTrabalhado()
-        );
+        ];
 
         $eventoServidores = $evento->getServidores();
 
@@ -161,10 +161,10 @@ try {
 
           foreach ($evento->getServidores() as $servidor) {
 
-            $oStdEvento->matriculas[] =  (object)array(
+            $oStdEvento->matriculas[] =  (object)[
               'codigo' => $servidor->getMatricula(),
               'nome'   => $servidor->getCgm()->getNome()
-            );
+            ];
           }
         }
 

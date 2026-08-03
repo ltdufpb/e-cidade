@@ -29,39 +29,39 @@
 //CLASSE DA ENTIDADE agendaconsultadesanula
 class cl_agendaconsultadesanula { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $s151_i_codigo = 0; 
-   var $s151_i_codigoanulamento = 0; 
-   var $s151_i_agendamento = 0; 
-   var $s151_d_dataanulamento_dia = null; 
-   var $s151_d_dataanulamento_mes = null; 
-   var $s151_d_dataanulamento_ano = null; 
-   var $s151_d_dataanulamento = null; 
-   var $s151_c_motivoanulamento = null; 
-   var $s151_i_situacaoanulamento = 0; 
-   var $s151_i_loginanulamento = 0; 
-   var $s151_c_horaanulamento = null; 
-   var $s151_d_datadesanulamento_dia = null; 
-   var $s151_d_datadesanulamento_mes = null; 
-   var $s151_d_datadesanulamento_ano = null; 
-   var $s151_d_datadesanulamento = null; 
-   var $s151_c_horadesanulamento = null; 
-   var $s151_c_motivodesanulamento = null; 
-   var $s151_i_logindesanulamento = 0; 
+   public $s151_i_codigo = 0; 
+   public $s151_i_codigoanulamento = 0; 
+   public $s151_i_agendamento = 0; 
+   public $s151_d_dataanulamento_dia = null; 
+   public $s151_d_dataanulamento_mes = null; 
+   public $s151_d_dataanulamento_ano = null; 
+   public $s151_d_dataanulamento = null; 
+   public $s151_c_motivoanulamento = null; 
+   public $s151_i_situacaoanulamento = 0; 
+   public $s151_i_loginanulamento = 0; 
+   public $s151_c_horaanulamento = null; 
+   public $s151_d_datadesanulamento_dia = null; 
+   public $s151_d_datadesanulamento_mes = null; 
+   public $s151_d_datadesanulamento_ano = null; 
+   public $s151_d_datadesanulamento = null; 
+   public $s151_c_horadesanulamento = null; 
+   public $s151_c_motivodesanulamento = null; 
+   public $s151_i_logindesanulamento = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  s151_i_codigo = int4 = Código 
                  s151_i_codigoanulamento = int4 = Código do anulamento 
                  s151_i_agendamento = int4 = Agendamento 
@@ -76,10 +76,10 @@ class cl_agendaconsultadesanula {
                  s151_i_logindesanulamento = int4 = Login desanulamento 
                  ";
    //funcao construtor da classe 
-   function cl_agendaconsultadesanula() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("agendaconsultadesanula"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -220,10 +220,10 @@ class cl_agendaconsultadesanula {
          $this->erro_status = "0";
          return false; 
        }
-       $this->s151_i_codigo = pg_result($result,0,0); 
+       $this->s151_i_codigo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from agendaconsultadesanula_s151_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $s151_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $s151_i_codigo)){
          $this->erro_sql = " Campo s151_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -273,7 +273,7 @@ class cl_agendaconsultadesanula {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "agendaconsultadesanula ($this->s151_i_codigo) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "agendaconsultadesanula já Cadastrado";
@@ -297,21 +297,21 @@ class cl_agendaconsultadesanula {
      $resaco = $this->sql_record($this->sql_query_file($this->s151_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,15684,'$this->s151_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,2751,15684,'','".AddSlashes(pg_result($resaco,0,'s151_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2751,15685,'','".AddSlashes(pg_result($resaco,0,'s151_i_codigoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2751,15686,'','".AddSlashes(pg_result($resaco,0,'s151_i_agendamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2751,15687,'','".AddSlashes(pg_result($resaco,0,'s151_d_dataanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2751,15688,'','".AddSlashes(pg_result($resaco,0,'s151_c_motivoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2751,15689,'','".AddSlashes(pg_result($resaco,0,'s151_i_situacaoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2751,15690,'','".AddSlashes(pg_result($resaco,0,'s151_i_loginanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2751,15691,'','".AddSlashes(pg_result($resaco,0,'s151_c_horaanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2751,15692,'','".AddSlashes(pg_result($resaco,0,'s151_d_datadesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2751,15693,'','".AddSlashes(pg_result($resaco,0,'s151_c_horadesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2751,15694,'','".AddSlashes(pg_result($resaco,0,'s151_c_motivodesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2751,15695,'','".AddSlashes(pg_result($resaco,0,'s151_i_logindesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15684,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15685,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_i_codigoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15686,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_i_agendamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15687,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_d_dataanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15688,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_c_motivoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15689,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_i_situacaoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15690,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_i_loginanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15691,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_c_horaanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15692,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_d_datadesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15693,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_c_horadesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15694,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_c_motivodesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2751,15695,'','".AddSlashes(pg_fetch_result($resaco,0,'s151_i_logindesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -320,10 +320,10 @@ class cl_agendaconsultadesanula {
       $this->atualizacampos();
      $sql = " update agendaconsultadesanula set ";
      $virgula = "";
-     if(trim($this->s151_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_codigo"])){ 
+     if(trim((string) $this->s151_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_codigo"])){ 
        $sql  .= $virgula." s151_i_codigo = $this->s151_i_codigo ";
        $virgula = ",";
-       if(trim($this->s151_i_codigo) == null ){ 
+       if(trim((string) $this->s151_i_codigo) == null ){ 
          $this->erro_sql = " Campo Código nao Informado.";
          $this->erro_campo = "s151_i_codigo";
          $this->erro_banco = "";
@@ -333,10 +333,10 @@ class cl_agendaconsultadesanula {
          return false;
        }
      }
-     if(trim($this->s151_i_codigoanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_codigoanulamento"])){ 
+     if(trim((string) $this->s151_i_codigoanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_codigoanulamento"])){ 
        $sql  .= $virgula." s151_i_codigoanulamento = $this->s151_i_codigoanulamento ";
        $virgula = ",";
-       if(trim($this->s151_i_codigoanulamento) == null ){ 
+       if(trim((string) $this->s151_i_codigoanulamento) == null ){ 
          $this->erro_sql = " Campo Código do anulamento nao Informado.";
          $this->erro_campo = "s151_i_codigoanulamento";
          $this->erro_banco = "";
@@ -346,10 +346,10 @@ class cl_agendaconsultadesanula {
          return false;
        }
      }
-     if(trim($this->s151_i_agendamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_agendamento"])){ 
+     if(trim((string) $this->s151_i_agendamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_agendamento"])){ 
        $sql  .= $virgula." s151_i_agendamento = $this->s151_i_agendamento ";
        $virgula = ",";
-       if(trim($this->s151_i_agendamento) == null ){ 
+       if(trim((string) $this->s151_i_agendamento) == null ){ 
          $this->erro_sql = " Campo Agendamento nao Informado.";
          $this->erro_campo = "s151_i_agendamento";
          $this->erro_banco = "";
@@ -359,10 +359,10 @@ class cl_agendaconsultadesanula {
          return false;
        }
      }
-     if(trim($this->s151_d_dataanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_d_dataanulamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s151_d_dataanulamento_dia"] !="") ){ 
+     if(trim((string) $this->s151_d_dataanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_d_dataanulamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s151_d_dataanulamento_dia"] !="") ){ 
        $sql  .= $virgula." s151_d_dataanulamento = '$this->s151_d_dataanulamento' ";
        $virgula = ",";
-       if(trim($this->s151_d_dataanulamento) == null ){ 
+       if(trim((string) $this->s151_d_dataanulamento) == null ){ 
          $this->erro_sql = " Campo Data anulamento nao Informado.";
          $this->erro_campo = "s151_d_dataanulamento_dia";
          $this->erro_banco = "";
@@ -375,7 +375,7 @@ class cl_agendaconsultadesanula {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s151_d_dataanulamento_dia"])){ 
          $sql  .= $virgula." s151_d_dataanulamento = null ";
          $virgula = ",";
-         if(trim($this->s151_d_dataanulamento) == null ){ 
+         if(trim((string) $this->s151_d_dataanulamento) == null ){ 
            $this->erro_sql = " Campo Data anulamento nao Informado.";
            $this->erro_campo = "s151_d_dataanulamento_dia";
            $this->erro_banco = "";
@@ -386,14 +386,14 @@ class cl_agendaconsultadesanula {
          }
        }
      }
-     if(trim($this->s151_c_motivoanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_c_motivoanulamento"])){ 
+     if(trim((string) $this->s151_c_motivoanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_c_motivoanulamento"])){ 
        $sql  .= $virgula." s151_c_motivoanulamento = '$this->s151_c_motivoanulamento' ";
        $virgula = ",";
      }
-     if(trim($this->s151_i_situacaoanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_situacaoanulamento"])){ 
+     if(trim((string) $this->s151_i_situacaoanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_situacaoanulamento"])){ 
        $sql  .= $virgula." s151_i_situacaoanulamento = $this->s151_i_situacaoanulamento ";
        $virgula = ",";
-       if(trim($this->s151_i_situacaoanulamento) == null ){ 
+       if(trim((string) $this->s151_i_situacaoanulamento) == null ){ 
          $this->erro_sql = " Campo Situação do anulamento nao Informado.";
          $this->erro_campo = "s151_i_situacaoanulamento";
          $this->erro_banco = "";
@@ -403,10 +403,10 @@ class cl_agendaconsultadesanula {
          return false;
        }
      }
-     if(trim($this->s151_i_loginanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_loginanulamento"])){ 
+     if(trim((string) $this->s151_i_loginanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_loginanulamento"])){ 
        $sql  .= $virgula." s151_i_loginanulamento = $this->s151_i_loginanulamento ";
        $virgula = ",";
-       if(trim($this->s151_i_loginanulamento) == null ){ 
+       if(trim((string) $this->s151_i_loginanulamento) == null ){ 
          $this->erro_sql = " Campo Login de quem anulou nao Informado.";
          $this->erro_campo = "s151_i_loginanulamento";
          $this->erro_banco = "";
@@ -416,14 +416,14 @@ class cl_agendaconsultadesanula {
          return false;
        }
      }
-     if(trim($this->s151_c_horaanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_c_horaanulamento"])){ 
+     if(trim((string) $this->s151_c_horaanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_c_horaanulamento"])){ 
        $sql  .= $virgula." s151_c_horaanulamento = '$this->s151_c_horaanulamento' ";
        $virgula = ",";
      }
-     if(trim($this->s151_d_datadesanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_d_datadesanulamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s151_d_datadesanulamento_dia"] !="") ){ 
+     if(trim((string) $this->s151_d_datadesanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_d_datadesanulamento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s151_d_datadesanulamento_dia"] !="") ){ 
        $sql  .= $virgula." s151_d_datadesanulamento = '$this->s151_d_datadesanulamento' ";
        $virgula = ",";
-       if(trim($this->s151_d_datadesanulamento) == null ){ 
+       if(trim((string) $this->s151_d_datadesanulamento) == null ){ 
          $this->erro_sql = " Campo Data desanulamento nao Informado.";
          $this->erro_campo = "s151_d_datadesanulamento_dia";
          $this->erro_banco = "";
@@ -436,7 +436,7 @@ class cl_agendaconsultadesanula {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s151_d_datadesanulamento_dia"])){ 
          $sql  .= $virgula." s151_d_datadesanulamento = null ";
          $virgula = ",";
-         if(trim($this->s151_d_datadesanulamento) == null ){ 
+         if(trim((string) $this->s151_d_datadesanulamento) == null ){ 
            $this->erro_sql = " Campo Data desanulamento nao Informado.";
            $this->erro_campo = "s151_d_datadesanulamento_dia";
            $this->erro_banco = "";
@@ -447,10 +447,10 @@ class cl_agendaconsultadesanula {
          }
        }
      }
-     if(trim($this->s151_c_horadesanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_c_horadesanulamento"])){ 
+     if(trim((string) $this->s151_c_horadesanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_c_horadesanulamento"])){ 
        $sql  .= $virgula." s151_c_horadesanulamento = '$this->s151_c_horadesanulamento' ";
        $virgula = ",";
-       if(trim($this->s151_c_horadesanulamento) == null ){ 
+       if(trim((string) $this->s151_c_horadesanulamento) == null ){ 
          $this->erro_sql = " Campo Hora desanulamento nao Informado.";
          $this->erro_campo = "s151_c_horadesanulamento";
          $this->erro_banco = "";
@@ -460,10 +460,10 @@ class cl_agendaconsultadesanula {
          return false;
        }
      }
-     if(trim($this->s151_c_motivodesanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_c_motivodesanulamento"])){ 
+     if(trim((string) $this->s151_c_motivodesanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_c_motivodesanulamento"])){ 
        $sql  .= $virgula." s151_c_motivodesanulamento = '$this->s151_c_motivodesanulamento' ";
        $virgula = ",";
-       if(trim($this->s151_c_motivodesanulamento) == null ){ 
+       if(trim((string) $this->s151_c_motivodesanulamento) == null ){ 
          $this->erro_sql = " Campo Motivo desanulamento nao Informado.";
          $this->erro_campo = "s151_c_motivodesanulamento";
          $this->erro_banco = "";
@@ -473,10 +473,10 @@ class cl_agendaconsultadesanula {
          return false;
        }
      }
-     if(trim($this->s151_i_logindesanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_logindesanulamento"])){ 
+     if(trim((string) $this->s151_i_logindesanulamento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s151_i_logindesanulamento"])){ 
        $sql  .= $virgula." s151_i_logindesanulamento = $this->s151_i_logindesanulamento ";
        $virgula = ",";
-       if(trim($this->s151_i_logindesanulamento) == null ){ 
+       if(trim((string) $this->s151_i_logindesanulamento) == null ){ 
          $this->erro_sql = " Campo Login desanulamento nao Informado.";
          $this->erro_campo = "s151_i_logindesanulamento";
          $this->erro_banco = "";
@@ -494,33 +494,33 @@ class cl_agendaconsultadesanula {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15684,'$this->s151_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_i_codigo"]) || $this->s151_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15684,'".AddSlashes(pg_result($resaco,$conresaco,'s151_i_codigo'))."','$this->s151_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15684,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_i_codigo'))."','$this->s151_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_i_codigoanulamento"]) || $this->s151_i_codigoanulamento != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15685,'".AddSlashes(pg_result($resaco,$conresaco,'s151_i_codigoanulamento'))."','$this->s151_i_codigoanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15685,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_i_codigoanulamento'))."','$this->s151_i_codigoanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_i_agendamento"]) || $this->s151_i_agendamento != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15686,'".AddSlashes(pg_result($resaco,$conresaco,'s151_i_agendamento'))."','$this->s151_i_agendamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15686,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_i_agendamento'))."','$this->s151_i_agendamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_d_dataanulamento"]) || $this->s151_d_dataanulamento != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15687,'".AddSlashes(pg_result($resaco,$conresaco,'s151_d_dataanulamento'))."','$this->s151_d_dataanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15687,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_d_dataanulamento'))."','$this->s151_d_dataanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_c_motivoanulamento"]) || $this->s151_c_motivoanulamento != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15688,'".AddSlashes(pg_result($resaco,$conresaco,'s151_c_motivoanulamento'))."','$this->s151_c_motivoanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15688,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_c_motivoanulamento'))."','$this->s151_c_motivoanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_i_situacaoanulamento"]) || $this->s151_i_situacaoanulamento != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15689,'".AddSlashes(pg_result($resaco,$conresaco,'s151_i_situacaoanulamento'))."','$this->s151_i_situacaoanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15689,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_i_situacaoanulamento'))."','$this->s151_i_situacaoanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_i_loginanulamento"]) || $this->s151_i_loginanulamento != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15690,'".AddSlashes(pg_result($resaco,$conresaco,'s151_i_loginanulamento'))."','$this->s151_i_loginanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15690,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_i_loginanulamento'))."','$this->s151_i_loginanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_c_horaanulamento"]) || $this->s151_c_horaanulamento != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15691,'".AddSlashes(pg_result($resaco,$conresaco,'s151_c_horaanulamento'))."','$this->s151_c_horaanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15691,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_c_horaanulamento'))."','$this->s151_c_horaanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_d_datadesanulamento"]) || $this->s151_d_datadesanulamento != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15692,'".AddSlashes(pg_result($resaco,$conresaco,'s151_d_datadesanulamento'))."','$this->s151_d_datadesanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15692,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_d_datadesanulamento'))."','$this->s151_d_datadesanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_c_horadesanulamento"]) || $this->s151_c_horadesanulamento != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15693,'".AddSlashes(pg_result($resaco,$conresaco,'s151_c_horadesanulamento'))."','$this->s151_c_horadesanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15693,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_c_horadesanulamento'))."','$this->s151_c_horadesanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_c_motivodesanulamento"]) || $this->s151_c_motivodesanulamento != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15694,'".AddSlashes(pg_result($resaco,$conresaco,'s151_c_motivodesanulamento'))."','$this->s151_c_motivodesanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15694,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_c_motivodesanulamento'))."','$this->s151_c_motivodesanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s151_i_logindesanulamento"]) || $this->s151_i_logindesanulamento != "")
-           $resac = db_query("insert into db_acount values($acount,2751,15695,'".AddSlashes(pg_result($resaco,$conresaco,'s151_i_logindesanulamento'))."','$this->s151_i_logindesanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2751,15695,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s151_i_logindesanulamento'))."','$this->s151_i_logindesanulamento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -565,21 +565,21 @@ class cl_agendaconsultadesanula {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,15684,'$s151_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,2751,15684,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2751,15685,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_i_codigoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2751,15686,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_i_agendamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2751,15687,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_d_dataanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2751,15688,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_c_motivoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2751,15689,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_i_situacaoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2751,15690,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_i_loginanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2751,15691,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_c_horaanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2751,15692,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_d_datadesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2751,15693,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_c_horadesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2751,15694,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_c_motivodesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2751,15695,'','".AddSlashes(pg_result($resaco,$iresaco,'s151_i_logindesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15684,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15685,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_i_codigoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15686,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_i_agendamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15687,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_d_dataanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15688,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_c_motivoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15689,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_i_situacaoanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15690,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_i_loginanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15691,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_c_horaanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15692,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_d_datadesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15693,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_c_horadesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15694,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_c_motivodesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2751,15695,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s151_i_logindesanulamento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from agendaconsultadesanula
@@ -639,7 +639,7 @@ class cl_agendaconsultadesanula {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:agendaconsultadesanula";
@@ -654,7 +654,7 @@ class cl_agendaconsultadesanula {
    function sql_query ( $s151_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -676,7 +676,7 @@ class cl_agendaconsultadesanula {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -689,7 +689,7 @@ class cl_agendaconsultadesanula {
    function sql_query_file ( $s151_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -710,7 +710,7 @@ class cl_agendaconsultadesanula {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

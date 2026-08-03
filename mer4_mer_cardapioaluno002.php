@@ -33,7 +33,7 @@ include(modification("libs/db_stdlibwebseller.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_mer_cardapioaluno_classe.php"));
 $escola              = db_getsession("DB_coddepto");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clmer_cardapioaluno = new cl_mer_cardapioaluno;
 
 ?>

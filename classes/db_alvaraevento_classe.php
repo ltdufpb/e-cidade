@@ -35,7 +35,7 @@ class cl_alvaraevento extends DAOBasica
         parent::__construct('issqn.alvaraevento');
     }
 
-    public function sqlDadosEvento($campos = '*', $where = array())
+    public function sqlDadosEvento($campos = '*', $where = [])
     {
     	$sql = "
             SELECT {$campos}

@@ -43,7 +43,7 @@ $sCampos       = "distinct upper(trim(as08_tipobeneficio)) as as08_tipobeneficio
 $sSqlBeneficio = $oDaoBeneficio->sql_query_file(null, $sCampos, 'as08_tipobeneficio');
 $rsBeneficio   = $oDaoBeneficio->sql_record($sSqlBeneficio);
 
-$aMesCompetencia = array(1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 11=>11, 12=>12);
+$aMesCompetencia = [1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 11=>11, 12=>12];
 
 ?>
 

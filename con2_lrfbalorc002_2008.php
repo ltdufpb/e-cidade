@@ -132,8 +132,8 @@ function imprime_cabec_desp($alt,$pdf, $bimestre) {
 $anousu = db_getsession("DB_anousu");
 $instit = db_getsession("DB_instit");
 $iCodigoPeriodo = '';
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_SERVER_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_SERVER);
 
 $classinatura    = new cl_assinatura;
 $orcparamrel     = new cl_orcparamrel;
@@ -672,7 +672,7 @@ for ($i=0; $i<pg_numrows($result_bal); $i++) {
 }
 */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-$xinstit    = split("-",$db_selinstit);
+$xinstit    = preg_split("#\\-#m",(string) $db_selinstit);
 $resultinst = db_query("select munic from db_config where codigo in (".str_replace('-',', ',$db_selinstit).") ");
 db_fieldsmemory($resultinst,0);
 
@@ -680,14 +680,14 @@ $head2 = "MUNICÍPIO DE ".$munic;
 $head3 = "RELATÓRIO RESUMIDO DA EXECUÇÃO ORÇAMENTÁRIA";
 $head4 = "BALANÇO ORÇAMENTÁRIO";
 $head5 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
-$aDt_ini  = split("-",$dt_ini);
+$aDt_ini  = preg_split("#\\-#m",(string) $dt_ini);
 $txt = strtoupper(db_mes($aDt_ini[1]));
-$dt  = split("-",$dt_fin);
+$dt  = preg_split("#\\-#m",(string) $dt_fin);
 $txt.= " À ".strtoupper(db_mes($dt[1]))." $anousu/BIMESTRE ";
 ;
-$dt  = split("-",$dt_ini);
+$dt  = preg_split("#\\-#m",(string) $dt_ini);
 $txt.= strtoupper(db_mes($dt[1]))."-";
-$dt  = split("-",$dt_fin);
+$dt  = preg_split("#\\-#m",(string) $dt_fin);
 $txt.= strtoupper(db_mes($dt[1]));
 $head6 = "$txt";
 ////////////////////////// ///////////////////
@@ -710,7 +710,7 @@ $pdf->setfont('arial','',6);
 $pdf->cell(170,$alt,"RREO - Anexo I (LRF, Art. 52, inciso I, alíneas \"a\" e \"b\" do inciso II e §1º)",'0',0,"L",0);
 $pdf->cell(20,$alt,"R$ 1,00",'0',1,"R",0);
 
-imprime_cabec_rec($alt,&$pdf);
+imprime_cabec_rec($alt,$pdf);
 
 //--------------------------------
 $pos_rec_intra = $pdf->getY();
@@ -768,12 +768,12 @@ db_criatabela($result_rec);
 exit;
 */
 
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_impostos)) {
     // despesas com ensino fundamental
-    if (substr($estrutural,1,1) == "7") {
+    if (substr((string) $estrutural,1,1) == "7") {
       $m_impostos_intra["inicial"]    += $saldo_inicial;
       $m_impostos_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_impostos_intra["nobim"]      += $saldo_arrecadado;
@@ -835,11 +835,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_taxas)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_taxas_intra["inicial"]    += $saldo_inicial;
       $m_taxas_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_taxas_intra["nobim"]      += $saldo_arrecadado;
@@ -900,11 +900,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_melhorias)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_melhorias_intra["inicial"]    += $saldo_inicial;
       $m_melhorias_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_melhorias_intra["nobim"]      += $saldo_arrecadado;
@@ -997,11 +997,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_sociais)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_sociais_intra["inicial"]    += $saldo_inicial;
       $m_sociais_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_sociais_intra["nobim"]      += $saldo_arrecadado;
@@ -1062,11 +1062,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_economicas)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_economicas_intra["inicial"]    += $saldo_inicial;
       $m_economicas_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_economicas_intra["nobim"]      += $saldo_arrecadado;
@@ -1157,11 +1157,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_imobiliarias)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_imobiliarias_intra["inicial"]    += $saldo_inicial;
       $m_imobiliarias_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_imobiliarias_intra["nobim"]      += $saldo_arrecadado;
@@ -1222,11 +1222,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_valmobiliarias)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_valmobiliarias_intra["inicial"]    += $saldo_inicial;
       $m_valmobiliarias_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_valmobiliarias_intra["nobim"]      += $saldo_arrecadado;
@@ -1286,11 +1286,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_permissoes)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_permissoes_intra["inicial"]    += $saldo_inicial;
       $m_permissoes_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_permissoes_intra["nobim"]      += $saldo_arrecadado;
@@ -1353,11 +1353,11 @@ $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
 
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_patrimoniais)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_patrimoniais_intra["inicial"]    += $saldo_inicial;
       $m_patrimoniais_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_patrimoniais_intra["nobim"]      += $saldo_arrecadado;
@@ -1449,11 +1449,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_vegetal)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_vegetal_intra["inicial"]    += $saldo_inicial;
       $m_vegetal_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_vegetal_intra["nobim"]      += $saldo_arrecadado;
@@ -1513,11 +1513,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_animal)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_animal_intra["inicial"]    += $saldo_inicial;
       $m_animal_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_animal_intra["nobim"]      += $saldo_arrecadado;
@@ -1577,11 +1577,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_agropecuarias)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_agropecuarias_intra["inicial"]    += $saldo_inicial;
       $m_agropecuarias_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_agropecuarias_intra["nobim"]      += $saldo_arrecadado;
@@ -1675,11 +1675,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transformacao)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_transformacao_intra["inicial"]    += $saldo_inicial;
       $m_transformacao_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transformacao_intra["nobim"]      += $saldo_arrecadado;
@@ -1738,11 +1738,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_construcao)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_construcao_intra["inicial"]    += $saldo_inicial;
       $m_construcao_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_construcao_intra["nobim"]      += $saldo_arrecadado;
@@ -1801,11 +1801,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_industriais)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_industriais_intra["inicial"]    += $saldo_inicial;
       $m_industriais_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_industriais_intra["nobim"]      += $saldo_arrecadado;
@@ -1900,11 +1900,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_servicos)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_servicos_intra["inicial"]    += $saldo_inicial;
       $m_servicos_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_servicos_intra["nobim"]      += $saldo_arrecadado;
@@ -1971,11 +1971,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_intergovernamental)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_intergovernamental_intra["inicial"]    += $saldo_inicial;
       $m_intergovernamental_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_intergovernamental_intra["nobim"]      += $saldo_arrecadado;
@@ -2034,11 +2034,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_privadas)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_privadas_intra["inicial"]    += $saldo_inicial;
       $m_privadas_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_privadas_intra["nobim"]      += $saldo_arrecadado;
@@ -2097,11 +2097,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_exterior)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_transf_exterior_intra["inicial"]    += $saldo_inicial;
       $m_transf_exterior_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transf_exterior_intra["nobim"]      += $saldo_arrecadado;
@@ -2160,11 +2160,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_pessoas)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_transf_pessoas_intra["inicial"]    += $saldo_inicial;
       $m_transf_pessoas_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transf_pessoas_intra["nobim"]      += $saldo_arrecadado;
@@ -2223,11 +2223,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_convenios)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_transf_convenios_intra["inicial"]    += $saldo_inicial;
       $m_transf_convenios_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transf_convenios_intra["nobim"]      += $saldo_arrecadado;
@@ -2285,11 +2285,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_fome)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_transf_fome_intra["inicial"]    += $saldo_inicial;
       $m_transf_fome_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transf_fome_intra["nobim"]      += $saldo_arrecadado;
@@ -2379,11 +2379,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_multas)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_multas_intra["inicial"]    += $saldo_inicial;
       $m_multas_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_multas_intra["nobim"]      += $saldo_arrecadado;
@@ -2442,11 +2442,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_indenizacao)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_indenizacao_intra["inicial"]    += $saldo_inicial;
       $m_indenizacao_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_indenizacao_intra["nobim"]      += $saldo_arrecadado;
@@ -2505,11 +2505,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_divida_ativa)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_divida_ativa_intra["inicial"]    += $saldo_inicial;
       $m_divida_ativa_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_divida_ativa_intra["nobim"]      += $saldo_arrecadado;
@@ -2569,11 +2569,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_correntes_diversas)) {
-    if (substr($estrutural,1,1) == "7"){
+    if (substr((string) $estrutural,1,1) == "7"){
       $m_correntes_diversas_intra["inicial"]    += $saldo_inicial;
       $m_correntes_diversas_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_correntes_diversas_intra["nobim"]      += $saldo_arrecadado;
@@ -2709,11 +2709,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_oper_internas)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_oper_internas_intra["inicial"]    += $saldo_inicial;
       $m_oper_internas_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_oper_internas_intra["nobim"]      += $saldo_arrecadado;
@@ -2774,11 +2774,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_oper_externas)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_oper_externas_intra["inicial"]    += $saldo_inicial;
       $m_oper_externas_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_oper_externas_intra["nobim"]      += $saldo_arrecadado;
@@ -2870,11 +2870,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_bens_moveis)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_bens_moveis_intra["inicial"]    += $saldo_inicial;
       $m_bens_moveis_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_bens_moveis_intra["nobim"]      += $saldo_arrecadado;
@@ -2933,11 +2933,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_bens_imoveis)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_bens_imoveis_intra["inicial"]    += $saldo_inicial;
       $m_bens_imoveis_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_bens_imoveis_intra["nobim"]      += $saldo_arrecadado;
@@ -3006,11 +3006,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_emprestimos)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_emprestimos_intra["inicial"]    += $saldo_inicial;
       $m_emprestimos_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_emprestimos_intra["nobim"]      += $saldo_arrecadado;
@@ -3089,11 +3089,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_intergovernamentais)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_transf_capital_intergovernamentais_intra["inicial"]    += $saldo_inicial;
       $m_transf_capital_intergovernamentais_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transf_capital_intergovernamentais_intra["nobim"]      += $saldo_arrecadado;
@@ -3152,11 +3152,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_privadas)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_transf_capital_privadas_intra["inicial"]    += $saldo_inicial;
       $m_transf_capital_privadas_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transf_capital_privadas_intra["nobim"]      += $saldo_arrecadado;
@@ -3215,11 +3215,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_exterior)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_transf_capital_exterior_intra["inicial"]    += $saldo_inicial;
       $m_transf_capital_exterior_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transf_capital_exterior_intra["nobim"]      += $saldo_arrecadado;
@@ -3278,11 +3278,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_pessoas)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_transf_capital_pessoas_intra["inicial"]    += $saldo_inicial;
       $m_transf_capital_pessoas_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transf_capital_pessoas_intra["nobim"]      += $saldo_arrecadado;
@@ -3340,11 +3340,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_outras)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_transf_capital_outras_intra["inicial"]    += $saldo_inicial;
       $m_transf_capital_outras_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transf_capital_outras_intra["nobim"]      += $saldo_arrecadado;
@@ -3402,11 +3402,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_convenios)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_transf_capital_convenios_intra["inicial"]    += $saldo_inicial;
       $m_transf_capital_convenios_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transf_capital_convenios_intra["nobim"]      += $saldo_arrecadado;
@@ -3464,11 +3464,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_transf_capital_fome)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_transf_capital_fome_intra["inicial"]    += $saldo_inicial;
       $m_transf_capital_fome_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_transf_capital_fome_intra["nobim"]      += $saldo_arrecadado;
@@ -3560,11 +3560,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_outras_social)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_outras_social_intra["inicial"]    += $saldo_inicial;
       $m_outras_social_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_outras_social_intra["nobim"]      += $saldo_arrecadado;
@@ -3623,11 +3623,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_outras_disponibilidades)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_outras_disponibilidades_intra["inicial"]    += $saldo_inicial;
       $m_outras_disponibilidades_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_outras_disponibilidades_intra["nobim"]      += $saldo_arrecadado;
@@ -3685,11 +3685,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_outras_restituicoes)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_outras_restituicoes_intra["inicial"]    += $saldo_inicial;
       $m_outras_restituicoes_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_outras_restituicoes_intra["nobim"]      += $saldo_arrecadado;
@@ -3747,11 +3747,11 @@ $tot_atualizada = 0;
 $tot_nobim     = 0;
 $tot_atebim   = 0;
 $tot_realizar  = 0;
-for ($i=0; $i<pg_numrows($result_rec); $i++) {
+for ($i=0; $i<pg_num_rows($result_rec); $i++) {
   db_fieldsmemory($result_rec,$i);
   $estrutural = $o57_fonte;
   if (in_array($estrutural,$m_outras_diversas)) {
-    if (substr($estrutural,1,1) == "8"){
+    if (substr((string) $estrutural,1,1) == "8"){
       $m_outras_diversas_intra["inicial"]    += $saldo_inicial;
       $m_outras_diversas_intra["atualizada"] += $saldo_inicial_prevadic;
       $m_outras_diversas_intra["nobim"]      += $saldo_arrecadado;
@@ -3873,7 +3873,7 @@ $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",
 $pdf->AddPage();
 $pdf->cell(190,$alt,'Continuação '.($pdf->pageNo()-1)."/{nb}","B",1,"R",0); 
 
-imprime_cabec_rec($alt,&$pdf);
+imprime_cabec_rec($alt,$pdf);
 
 $pdf->setfont('arial','',6);
 $pdf->cell(60,$alt,"RECEITAS (INTRA-ORÇAMENTÁRIAS) (II)",'R',0,"L",0);
@@ -5845,7 +5845,7 @@ if ($pdf->gety() > $pdf->h-40){
   $pdf->cell(190,$alt,'Continua na Página '.($pdf->pageNo()+1)."/{nb}","TB",1,"R",0); 
   $pdf->Ln(4);
 
-  imprime_cabec_rec($alt,&$pdf);
+  imprime_cabec_rec($alt,$pdf);
 }
 
 $pos_refi = $pdf->getY();
@@ -5885,11 +5885,11 @@ $tot_realizar   = 0;
 
 $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo in (301,305,309,313,317) and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
 if ($clconrelvalor->numrows > 0){
-  $tot_inicial    = pg_result($res_valor,0,"c83_informacao");
-  $tot_atualizada = pg_result($res_valor,1,"c83_informacao");
-  $tot_nobim      = pg_result($res_valor,2,"c83_informacao");
-  $tot_atebim     = pg_result($res_valor,3,"c83_informacao");
-  $tot_realizar   = pg_result($res_valor,4,"c83_informacao");
+  $tot_inicial    = pg_fetch_result($res_valor,0,"c83_informacao");
+  $tot_atualizada = pg_fetch_result($res_valor,1,"c83_informacao");
+  $tot_nobim      = pg_fetch_result($res_valor,2,"c83_informacao");
+  $tot_atebim     = pg_fetch_result($res_valor,3,"c83_informacao");
+  $tot_realizar   = pg_fetch_result($res_valor,4,"c83_informacao");
 }
 
 $pdf->cell(60,$alt,espaco($n2)."Mobiliária",'R',0,"L",0);
@@ -5924,11 +5924,11 @@ $tot_realizar   = 0;
 
 $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo in (302,306,310,314,318) and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
 if ($clconrelvalor->numrows > 0){
-  $tot_inicial    = pg_result($res_valor,0,"c83_informacao");
-  $tot_atualizada = pg_result($res_valor,1,"c83_informacao");
-  $tot_nobim      = pg_result($res_valor,2,"c83_informacao");
-  $tot_atebim     = pg_result($res_valor,3,"c83_informacao");
-  $tot_realizar   = pg_result($res_valor,4,"c83_informacao");
+  $tot_inicial    = pg_fetch_result($res_valor,0,"c83_informacao");
+  $tot_atualizada = pg_fetch_result($res_valor,1,"c83_informacao");
+  $tot_nobim      = pg_fetch_result($res_valor,2,"c83_informacao");
+  $tot_atebim     = pg_fetch_result($res_valor,3,"c83_informacao");
+  $tot_realizar   = pg_fetch_result($res_valor,4,"c83_informacao");
 }
 
 $pdf->cell(60,$alt,espaco($n2)."Contratual",'R',0,"L",0);
@@ -5994,11 +5994,11 @@ $tot_realizar   = 0;
 
 $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo in (303,307,311,315,319) and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
 if ($clconrelvalor->numrows > 0){
-  $tot_inicial    = pg_result($res_valor,0,"c83_informacao");
-  $tot_atualizada = pg_result($res_valor,1,"c83_informacao");
-  $tot_nobim      = pg_result($res_valor,2,"c83_informacao");
-  $tot_atebim     = pg_result($res_valor,3,"c83_informacao");
-  $tot_realizar   = pg_result($res_valor,4,"c83_informacao");
+  $tot_inicial    = pg_fetch_result($res_valor,0,"c83_informacao");
+  $tot_atualizada = pg_fetch_result($res_valor,1,"c83_informacao");
+  $tot_nobim      = pg_fetch_result($res_valor,2,"c83_informacao");
+  $tot_atebim     = pg_fetch_result($res_valor,3,"c83_informacao");
+  $tot_realizar   = pg_fetch_result($res_valor,4,"c83_informacao");
 }
 
 $pdf->cell(60,$alt,espaco($n2)."Mobiliária",'R',0,"L",0);
@@ -6033,11 +6033,11 @@ $tot_realizar   = 0;
 
 $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo in (304,308,312,316,320) and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
 if ($clconrelvalor->numrows > 0){
-  $tot_inicial    = pg_result($res_valor,0,"c83_informacao");
-  $tot_atualizada = pg_result($res_valor,1,"c83_informacao");
-  $tot_nobim      = pg_result($res_valor,2,"c83_informacao");
-  $tot_atebim     = pg_result($res_valor,3,"c83_informacao");
-  $tot_realizar   = pg_result($res_valor,4,"c83_informacao");
+  $tot_inicial    = pg_fetch_result($res_valor,0,"c83_informacao");
+  $tot_atualizada = pg_fetch_result($res_valor,1,"c83_informacao");
+  $tot_nobim      = pg_fetch_result($res_valor,2,"c83_informacao");
+  $tot_atebim     = pg_fetch_result($res_valor,3,"c83_informacao");
+  $tot_realizar   = pg_fetch_result($res_valor,4,"c83_informacao");
 }
 
 $pdf->cell(60,$alt,espaco($n2)."Contratual",'R',0,"L",0);
@@ -6122,11 +6122,11 @@ $pdf->cell(20,$alt,db_formatar($somador_III_realizar,'f'),'TB',1,"R",0);
 $tot_despesas   = 0;
 $tot_liq_atebim = 0;
 $tot_deficit    = 0;
-for ($i=0; $i<pg_numrows($result_desp); $i++) {
+for ($i=0; $i<pg_num_rows($result_desp); $i++) {
   db_fieldsmemory($result_desp,$i);
   $estrutural = $o58_elemento."00";
 
-  if (substr($estrutural,0,1) == "3") {
+  if (str_starts_with($estrutural, "3")) {
       $tot_liq_atebim += $liquidado_acumulado;
   }
 }
@@ -6170,8 +6170,8 @@ $tot_saldo_anterior = "";
 $tot_saldo_anteriormenosprevisao = "";
 $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo in(321,476) and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
 if ($clconrelvalor->numrows > 0){
-  $tot_saldo_anterior              = db_formatar(@pg_result($res_valor,0,"c83_informacao"),'f');
-  $tot_saldo_anteriormenosprevisao = db_formatar(@pg_result($res_valor,1,"c83_informacao"),'f');
+  $tot_saldo_anterior              = db_formatar(@pg_fetch_result($res_valor,0,"c83_informacao"),'f');
+  $tot_saldo_anteriormenosprevisao = db_formatar(@pg_fetch_result($res_valor,1,"c83_informacao"),'f');
 }
 if ( $tot_saldo_anterior              == "") { $tot_saldo_anterior = "-";              }
 if ( $tot_saldo_anteriormenosprevisao == "") { $tot_saldo_anteriormenosprevisao = "-"; } 
@@ -6201,7 +6201,7 @@ $pdf->cell(20,$alt,'','B',1,"R",0);
 
 $pdf->Ln(2);
 
-imprime_cabec_desp($alt,&$pdf, $bimestre);
+imprime_cabec_desp($alt,$pdf, $bimestre);
 
 /*
  * #quadrodespesa#
@@ -6287,11 +6287,11 @@ $tot_emp_atebim   = 0;
 $tot_liq_nobim    = 0;
 $tot_liq_atebim   = 0;
 $tot_inscritos_rp = 0;
-for ($i=0; $i<pg_numrows($result_desp); $i++) {
+for ($i=0; $i<pg_num_rows($result_desp); $i++) {
   db_fieldsmemory($result_desp,$i);
 
   $estrutural = $o58_elemento."00";
-  if (substr($estrutural,0,3)=='331' && substr($estrutural,3,2)!='91') {
+  if (str_starts_with($estrutural, '331') && substr($estrutural,3,2)!='91') {
     $tot_inicial      += $dot_ini;
     $tot_adicional    += $suplementado_acumulado - $reduzido_acumulado;
     // adicional;
@@ -6338,12 +6338,12 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
   $tot_liq_nobim    = 0;
   $tot_liq_atebim   = 0;
   $tot_inscritos_rp = 0;
-  for ($i=0; $i<pg_numrows($result_desp); $i++) {
+  for ($i=0; $i<pg_num_rows($result_desp); $i++) {
     db_fieldsmemory($result_desp,$i);
     // $estrutural = $c60_estrut;
     $estrutural = $o58_elemento."00";
     
-    if (substr($estrutural,0,3)=='332' && substr($estrutural,3,2)!='91') {
+    if (str_starts_with($estrutural, '332') && substr($estrutural,3,2)!='91') {
       // if (in_array($estrutural,$desp_juros)) {
         $tot_inicial    += $dot_ini;
         $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
@@ -6392,12 +6392,12 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
     $tot_liq_nobim   = 0;
     $tot_liq_atebim  = 0;
     $tot_inscritos_rp = 0;
-    for ($i=0; $i<pg_numrows($result_desp); $i++) {
+    for ($i=0; $i<pg_num_rows($result_desp); $i++) {
       db_fieldsmemory($result_desp,$i);
       //  $estrutural = $c60_estrut;
       $estrutural = $o58_elemento."00";
       
-      if (substr($estrutural,0,3)=='333' && substr($estrutural,3,2)!='91') {
+      if (str_starts_with($estrutural, '333') && substr($estrutural,3,2)!='91') {
         // if (in_array($estrutural,$desp_outras)) {
           $tot_inicial    += $dot_ini;
           $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
@@ -6490,12 +6490,12 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
       $tot_liq_atebim  = 0;
       $tot_inscritos_rp = 0;
       
-      for ($i=0; $i<pg_numrows($result_desp); $i++) {
+      for ($i=0; $i<pg_num_rows($result_desp); $i++) {
         db_fieldsmemory($result_desp,$i);
         //  $estrutural = $c60_estrut;
         $estrutural = $o58_elemento."00";
         
-        if (substr($estrutural,0,3)=='344' && substr($estrutural,3,2)!='91') {
+        if (str_starts_with($estrutural, '344') && substr($estrutural,3,2)!='91') {
           //  if (in_array($estrutural,$desp_investimentos)) {
             $tot_inicial    += $dot_ini;
             $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
@@ -6555,12 +6555,12 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
         $tot_liq_nobim   = 0;
         $tot_liq_atebim  = 0;
         $tot_inscritos_rp = 0;
-        for ($i=0; $i<pg_numrows($result_desp); $i++) {
+        for ($i=0; $i<pg_num_rows($result_desp); $i++) {
           db_fieldsmemory($result_desp,$i);
           // $estrutural = $c60_estrut;
           $estrutural = $o58_elemento."00";
           
-          if (substr($estrutural,0,3)=='345' && substr($estrutural,3,2)!='91') {
+          if (str_starts_with($estrutural, '345') && substr($estrutural,3,2)!='91') {
             //  if (in_array($estrutural,$desp_inversoes)) {
               $tot_inicial    += $dot_ini;
               $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
@@ -6618,12 +6618,12 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
           $tot_liq_nobim    = 0;
           $tot_liq_atebim   = 0;
           $tot_inscritos_rp = 0;
-          for ($i=0; $i<pg_numrows($result_desp); $i++) {
+          for ($i=0; $i<pg_num_rows($result_desp); $i++) {
             db_fieldsmemory($result_desp,$i);
             //  $estrutural = $c60_estrut;
             $estrutural = $o58_elemento."00";
             
-            if (substr($estrutural,0,3)=='346' && substr($estrutural,3,2)!='91') {
+            if (str_starts_with($estrutural, '346') && substr($estrutural,3,2)!='91') {
               // if (in_array($estrutural,$desp_amortizacao)) {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
@@ -6702,10 +6702,10 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_liq_nobim   = 0;
             $tot_liq_atebim  = 0;
             $tot_inscritos_rp = 0;
-            for ($i=0; $i<pg_numrows($result_desp); $i++) {
+            for ($i=0; $i<pg_num_rows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
-              if (substr($estrutural,0,3)=='399' && substr($estrutural,3,2)!='91') {
+              if (str_starts_with($estrutural, '399') && substr($estrutural,3,2)!='91') {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
                 // adicional;
@@ -6754,10 +6754,10 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_liq_nobim   = 0;
             $tot_liq_atebim  = 0;
             $tot_inscritos_rp = 0;
-            for ($i=0; $i<pg_numrows($result_desp); $i++) {
+            for ($i=0; $i<pg_num_rows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
-              if (substr($estrutural,0,3)=='377' && substr($estrutural,3,2)!='91') {
+              if (str_starts_with($estrutural, '377') && substr($estrutural,3,2)!='91') {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
                 // adicional;
@@ -6825,7 +6825,7 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_liq_nobim    = 0;
             $tot_liq_atebim   = 0;
             $tot_inscritos_rp = 0;
-            for ($i=0; $i<pg_numrows($result_desp); $i++) {
+            for ($i=0; $i<pg_num_rows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
               if (substr($estrutural,3,2)=='91' ) {
@@ -6925,10 +6925,10 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_liq_nobim  = 0;
             $tot_liq_atebim = 0;
             $tot_inscritos_rp = 0;
-            for ($i=0; $i<pg_numrows($result_desp); $i++) {
+            for ($i=0; $i<pg_num_rows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
-              if (substr($estrutural,0,3) == "331" && substr($estrutural,3,2) == "91") {
+              if (str_starts_with($estrutural, "331") && substr($estrutural,3,2) == "91") {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
                 // adicional;
@@ -6979,11 +6979,11 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_liq_nobim  = 0;
             $tot_liq_atebim = 0;
             $tot_inscritos_rp = 0;
-            for ($i=0; $i<pg_numrows($result_desp); $i++) {
+            for ($i=0; $i<pg_num_rows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
     
-              if (substr($estrutural,0,3) == "332" && substr($estrutural,3,2) == "91") {
+              if (str_starts_with($estrutural, "332") && substr($estrutural,3,2) == "91") {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
                 // adicional;
@@ -7034,11 +7034,11 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_liq_nobim  = 0;
             $tot_liq_atebim = 0;
             $tot_inscritos_rp = 0;
-            for ($i=0; $i<pg_numrows($result_desp); $i++) {
+            for ($i=0; $i<pg_num_rows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
     
-              if (substr($estrutural,0,3) == "333" && substr($estrutural,3,2) == "91") {
+              if (str_starts_with($estrutural, "333") && substr($estrutural,3,2) == "91") {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
                 // adicional;
@@ -7113,11 +7113,11 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_emp_atebim = 0;
             $tot_liq_nobim  = 0;
             $tot_liq_atebim = 0;
-            for ($i=0; $i<pg_numrows($result_desp); $i++) {
+            for ($i=0; $i<pg_num_rows($result_desp); $i++) {
                db_fieldsmemory($result_desp,$i);
                $estrutural = $o58_elemento."00";
         
-               if (substr($estrutural,0,3) == "344" && substr($estrutural,3,2) == "91") {
+               if (str_starts_with($estrutural, "344") && substr($estrutural,3,2) == "91") {
                  $tot_inicial    += $dot_ini;
                  $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
                  // adicional;
@@ -7166,11 +7166,11 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_liq_nobim  = 0;
             $tot_liq_atebim = 0;
             $tot_inscritos_rp = 0;
-            for ($i=0; $i<pg_numrows($result_desp); $i++) {
+            for ($i=0; $i<pg_num_rows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
         
-              if (substr($estrutural,0,3) == "345" && substr($estrutural,3,2) == "91") {
+              if (str_starts_with($estrutural, "345") && substr($estrutural,3,2) == "91") {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
                 // adicional;
@@ -7221,11 +7221,11 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $tot_liq_nobim  = 0;
             $tot_liq_atebim = 0;
             $tot_inscritos_rp = 0;
-            for ($i=0; $i<pg_numrows($result_desp); $i++) {
+            for ($i=0; $i<pg_num_rows($result_desp); $i++) {
               db_fieldsmemory($result_desp,$i);
               $estrutural = $o58_elemento."00";
         
-              if (substr($estrutural,0,3) == "346" && substr($estrutural,3,2) == "91") {
+              if (str_starts_with($estrutural, "346") && substr($estrutural,3,2) == "91") {
                 $tot_inicial    += $dot_ini;
                 $tot_adicional  += $suplementado_acumulado - $reduzido_acumulado;
                 // adicional;
@@ -7368,15 +7368,15 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 322 and 328 and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
             if ($clconrelvalor->numrows > 0){
               
-              $tot_inicial      = pg_result($res_valor,0,"c83_informacao");
-              $tot_adicional    = pg_result($res_valor,1,"c83_informacao"); 
-              $tot_atualizada   = pg_result($res_valor,2,"c83_informacao");
-              $tot_emp_nobim    = pg_result($res_valor,3,"c83_informacao");
-              $tot_emp_atebim   = pg_result($res_valor,4,"c83_informacao");
-              $tot_liq_nobim    = pg_result($res_valor,5,"c83_informacao");
-              $tot_liq_atebim   = pg_result($res_valor,6,"c83_informacao");
+              $tot_inicial      = pg_fetch_result($res_valor,0,"c83_informacao");
+              $tot_adicional    = pg_fetch_result($res_valor,1,"c83_informacao"); 
+              $tot_atualizada   = pg_fetch_result($res_valor,2,"c83_informacao");
+              $tot_emp_nobim    = pg_fetch_result($res_valor,3,"c83_informacao");
+              $tot_emp_atebim   = pg_fetch_result($res_valor,4,"c83_informacao");
+              $tot_liq_nobim    = pg_fetch_result($res_valor,5,"c83_informacao");
+              $tot_liq_atebim   = pg_fetch_result($res_valor,6,"c83_informacao");
               if($bimestre == 6) {
-                $tot_inscritos_rp = pg_result($res_valor,7,"c83_informacao");
+                $tot_inscritos_rp = pg_fetch_result($res_valor,7,"c83_informacao");
               }
               
             }
@@ -7425,15 +7425,15 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"c83_codigo between 329 and 335 and c83_codigo = 369 and  c83_codigo = 368 and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
             if ($clconrelvalor->numrows > 0){
               
-              $tot_inicial      = pg_result($res_valor,0,"c83_informacao");
-              $tot_adicional    = pg_result($res_valor,1,"c83_informacao"); 
-              $tot_atualizada   = pg_result($res_valor,2,"c83_informacao");
-              $tot_emp_nobim    = pg_result($res_valor,3,"c83_informacao");
-              $tot_emp_atebim   = pg_result($res_valor,4,"c83_informacao");
-              $tot_liq_nobim    = pg_result($res_valor,5,"c83_informacao");
-              $tot_liq_atebim   = pg_result($res_valor,6,"c83_informacao");
+              $tot_inicial      = pg_fetch_result($res_valor,0,"c83_informacao");
+              $tot_adicional    = pg_fetch_result($res_valor,1,"c83_informacao"); 
+              $tot_atualizada   = pg_fetch_result($res_valor,2,"c83_informacao");
+              $tot_emp_nobim    = pg_fetch_result($res_valor,3,"c83_informacao");
+              $tot_emp_atebim   = pg_fetch_result($res_valor,4,"c83_informacao");
+              $tot_liq_nobim    = pg_fetch_result($res_valor,5,"c83_informacao");
+              $tot_liq_atebim   = pg_fetch_result($res_valor,6,"c83_informacao");
               if($bimestre == 6) {
-                $tot_inscritos_rp = pg_result($res_valor,7,"c83_informacao");
+                $tot_inscritos_rp = pg_fetch_result($res_valor,7,"c83_informacao");
               }
               
             }
@@ -7522,14 +7522,14 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"(c83_codigo between 336 and 342 and c83_codigo= 370) and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
             if ($clconrelvalor->numrows > 0) {
               
-              $tot_inicial    = pg_result($res_valor,0,"c83_informacao");
-              $tot_adicional  = pg_result($res_valor,1,"c83_informacao"); 
-              $tot_atualizada = pg_result($res_valor,2,"c83_informacao");
-              $tot_emp_nobim  = pg_result($res_valor,3,"c83_informacao");
-              $tot_emp_atebim = pg_result($res_valor,4,"c83_informacao");
-              $tot_liq_nobim  = pg_result($res_valor,5,"c83_informacao");
-              $tot_liq_atebim = pg_result($res_valor,6,"c83_informacao");
-              $tot_liq_atebim = pg_result($res_valor,7,"c83_informacao");
+              $tot_inicial    = pg_fetch_result($res_valor,0,"c83_informacao");
+              $tot_adicional  = pg_fetch_result($res_valor,1,"c83_informacao"); 
+              $tot_atualizada = pg_fetch_result($res_valor,2,"c83_informacao");
+              $tot_emp_nobim  = pg_fetch_result($res_valor,3,"c83_informacao");
+              $tot_emp_atebim = pg_fetch_result($res_valor,4,"c83_informacao");
+              $tot_liq_nobim  = pg_fetch_result($res_valor,5,"c83_informacao");
+              $tot_liq_atebim = pg_fetch_result($res_valor,6,"c83_informacao");
+              $tot_liq_atebim = pg_fetch_result($res_valor,7,"c83_informacao");
               
             }
 
@@ -7578,15 +7578,15 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             $res_valor = $clconrelvalor->sql_record($clconrelvalor->sql_query_file(null,null,null,"coalesce(trim(c83_informacao)::float8,0) as c83_informacao",null,"(c83_codigo between 343 and 349 and c83_codigo =371) and c83_periodo = '".$bimestre."B"."' and c83_instit in (".$instituicao.")"));
             if ($clconrelvalor->numrows > 0){
               
-              $tot_inicial    = pg_result($res_valor,0,"c83_informacao");
-              $tot_adicional  = pg_result($res_valor,1,"c83_informacao"); 
-              $tot_atualizada = pg_result($res_valor,2,"c83_informacao");
-              $tot_emp_nobim  = pg_result($res_valor,3,"c83_informacao");
-              $tot_emp_atebim = pg_result($res_valor,4,"c83_informacao");
-              $tot_liq_nobim  = pg_result($res_valor,5,"c83_informacao");
-              $tot_liq_atebim = pg_result($res_valor,6,"c83_informacao");
+              $tot_inicial    = pg_fetch_result($res_valor,0,"c83_informacao");
+              $tot_adicional  = pg_fetch_result($res_valor,1,"c83_informacao"); 
+              $tot_atualizada = pg_fetch_result($res_valor,2,"c83_informacao");
+              $tot_emp_nobim  = pg_fetch_result($res_valor,3,"c83_informacao");
+              $tot_emp_atebim = pg_fetch_result($res_valor,4,"c83_informacao");
+              $tot_liq_nobim  = pg_fetch_result($res_valor,5,"c83_informacao");
+              $tot_liq_atebim = pg_fetch_result($res_valor,6,"c83_informacao");
               if($bimestre == 6) {
-                $tot_inscritos_rp = pg_result($res_valor,7,"c83_informacao");
+                $tot_inscritos_rp = pg_fetch_result($res_valor,7,"c83_informacao");
               }
             }
             
@@ -7853,13 +7853,13 @@ for ($i=0; $i<pg_numrows($result_desp); $i++) {
             
             $pdf->ln(2);
 
-            notasExplicativas(&$pdf,22,"{$bimestre}B",190);
+            notasExplicativas($pdf,22,"{$bimestre}B",190);
 
             $pdf->ln(20);
             
             
             // assinaturas
-            assinaturas(&$pdf,&$classinatura,'LRF');
+            assinaturas($pdf,$classinatura,'LRF');
             
             // saida
             $pdf->Output();

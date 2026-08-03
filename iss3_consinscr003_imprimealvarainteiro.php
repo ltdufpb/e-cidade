@@ -26,7 +26,7 @@
  */
 
 include(modification("fpdf151/scpdf.php"));
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 
 $sql = " select * from empresa where q02_inscr = $inscricao" ;
 $result = db_query($sql);

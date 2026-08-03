@@ -57,7 +57,7 @@ class cl_pcgrupo {
     public function __construct()
     {
         $this->rotulo = new rotulo("pcgrupo"); 
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -122,10 +122,10 @@ class cl_pcgrupo {
          $this->erro_status = "0";
          return false; 
        }
-       $this->pc03_codgrupo = pg_result($result,0,0); 
+       $this->pc03_codgrupo = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from pcgrupo_pc03_codgrupo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $pc03_codgrupo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $pc03_codgrupo)){
          $this->erro_sql = " Campo pc03_codgrupo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -159,7 +159,7 @@ class cl_pcgrupo {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Grupo ($this->pc03_codgrupo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Grupo já Cadastrado";
@@ -188,13 +188,13 @@ class cl_pcgrupo {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,5500,'$this->pc03_codgrupo','I')");
-         $resac = db_query("insert into db_acount values($acount,854,5500,'','".AddSlashes(pg_result($resaco,0,'pc03_codgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,854,5501,'','".AddSlashes(pg_result($resaco,0,'pc03_descrgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,854,7814,'','".AddSlashes(pg_result($resaco,0,'pc03_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,854,1013447,'','".AddSlashes(pg_result($resaco,0,'pc03_natureza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,854,5500,'','".AddSlashes(pg_fetch_result($resaco,0,'pc03_codgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,854,5501,'','".AddSlashes(pg_fetch_result($resaco,0,'pc03_descrgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,854,7814,'','".AddSlashes(pg_fetch_result($resaco,0,'pc03_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,854,1013447,'','".AddSlashes(pg_fetch_result($resaco,0,'pc03_natureza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -205,10 +205,10 @@ class cl_pcgrupo {
       $this->atualizacampos();
      $sql = " update pcgrupo set ";
      $virgula = "";
-     if(trim($this->pc03_codgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc03_codgrupo"])){ 
+     if(trim((string) $this->pc03_codgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc03_codgrupo"])){ 
        $sql  .= $virgula." pc03_codgrupo = $this->pc03_codgrupo ";
        $virgula = ",";
-       if(trim($this->pc03_codgrupo) == null ){ 
+       if(trim((string) $this->pc03_codgrupo) == null ){ 
          $this->erro_sql = " Campo Código do Grupo não informado.";
          $this->erro_campo = "pc03_codgrupo";
          $this->erro_banco = "";
@@ -218,10 +218,10 @@ class cl_pcgrupo {
          return false;
        }
      }
-     if(trim($this->pc03_descrgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc03_descrgrupo"])){ 
+     if(trim((string) $this->pc03_descrgrupo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc03_descrgrupo"])){ 
        $sql  .= $virgula." pc03_descrgrupo = '$this->pc03_descrgrupo' ";
        $virgula = ",";
-       if(trim($this->pc03_descrgrupo) == null ){ 
+       if(trim((string) $this->pc03_descrgrupo) == null ){ 
          $this->erro_sql = " Campo Descrição do Grupo não informado.";
          $this->erro_campo = "pc03_descrgrupo";
          $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_pcgrupo {
          return false;
        }
      }
-     if(trim($this->pc03_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc03_ativo"])){ 
+     if(trim((string) $this->pc03_ativo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc03_ativo"])){ 
        $sql  .= $virgula." pc03_ativo = '$this->pc03_ativo' ";
        $virgula = ",";
-       if(trim($this->pc03_ativo) == null ){ 
+       if(trim((string) $this->pc03_ativo) == null ){ 
          $this->erro_sql = " Campo Ativo não informado.";
          $this->erro_campo = "pc03_ativo";
          $this->erro_banco = "";
@@ -244,10 +244,10 @@ class cl_pcgrupo {
          return false;
        }
      }
-     if(trim($this->pc03_natureza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc03_natureza"])){ 
+     if(trim((string) $this->pc03_natureza)!="" || isset($GLOBALS["HTTP_POST_VARS"]["pc03_natureza"])){ 
        $sql  .= $virgula." pc03_natureza = $this->pc03_natureza ";
        $virgula = ",";
-       if(trim($this->pc03_natureza) == null ){ 
+       if(trim((string) $this->pc03_natureza) == null ){ 
          $this->erro_sql = " Campo Natureza do Grupo não informado.";
          $this->erro_campo = "pc03_natureza";
          $this->erro_banco = "";
@@ -271,17 +271,17 @@ class cl_pcgrupo {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,5500,'$this->pc03_codgrupo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc03_codgrupo"]) || $this->pc03_codgrupo != "")
-             $resac = db_query("insert into db_acount values($acount,854,5500,'".AddSlashes(pg_result($resaco,$conresaco,'pc03_codgrupo'))."','$this->pc03_codgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,854,5500,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc03_codgrupo'))."','$this->pc03_codgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc03_descrgrupo"]) || $this->pc03_descrgrupo != "")
-             $resac = db_query("insert into db_acount values($acount,854,5501,'".AddSlashes(pg_result($resaco,$conresaco,'pc03_descrgrupo'))."','$this->pc03_descrgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,854,5501,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc03_descrgrupo'))."','$this->pc03_descrgrupo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc03_ativo"]) || $this->pc03_ativo != "")
-             $resac = db_query("insert into db_acount values($acount,854,7814,'".AddSlashes(pg_result($resaco,$conresaco,'pc03_ativo'))."','$this->pc03_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,854,7814,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc03_ativo'))."','$this->pc03_ativo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["pc03_natureza"]) || $this->pc03_natureza != "")
-             $resac = db_query("insert into db_acount values($acount,854,1013447,'".AddSlashes(pg_result($resaco,$conresaco,'pc03_natureza'))."','$this->pc03_natureza',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,854,1013447,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'pc03_natureza'))."','$this->pc03_natureza',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -335,13 +335,13 @@ class cl_pcgrupo {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,5500,'$pc03_codgrupo','E')");
-           $resac  = db_query("insert into db_acount values($acount,854,5500,'','".AddSlashes(pg_result($resaco,$iresaco,'pc03_codgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,854,5501,'','".AddSlashes(pg_result($resaco,$iresaco,'pc03_descrgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,854,7814,'','".AddSlashes(pg_result($resaco,$iresaco,'pc03_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,854,1013447,'','".AddSlashes(pg_result($resaco,$iresaco,'pc03_natureza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,854,5500,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc03_codgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,854,5501,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc03_descrgrupo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,854,7814,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc03_ativo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,854,1013447,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'pc03_natureza'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

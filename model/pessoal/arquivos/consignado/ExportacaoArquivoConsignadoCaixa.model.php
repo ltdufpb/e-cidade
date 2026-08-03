@@ -72,7 +72,7 @@ class ExportacaoArquivoConsignadoCaixa extends ExportacaoArquivoConsignado {
 	 * @throws \DBException
 	 * @throws \Exception
 	 */
-	function __construct(\Banco $oBanco, \DBCompetencia $oCompetencia, \Instituicao $oInstituicao = null) {
+	function __construct(\Banco $oBanco, \DBCompetencia $oCompetencia, ?\Instituicao $oInstituicao = null) {
 
 		parent::__construct($oBanco, $oCompetencia, $oInstituicao);
 
@@ -152,8 +152,8 @@ class ExportacaoArquivoConsignadoCaixa extends ExportacaoArquivoConsignado {
 
 			  if($oLinha->getProperties('codigo_ocorrencia_processamento')) { 
 
-      		$oLinha->substituirConteudoCampo(str_pad($iMotivo, 2, '0', STR_PAD_LEFT), 'codigo_ocorrencia_processamento');
-			    fwrite($pCaminhoArquivoRetorno, $oLinha->getLinha());
+      		$oLinha->substituirConteudoCampo(str_pad((string) $iMotivo, 2, '0', STR_PAD_LEFT), 'codigo_ocorrencia_processamento');
+			    fwrite($pCaminhoArquivoRetorno, (string) $oLinha->getLinha());
 	  	  }
 		  }
 		}
@@ -178,7 +178,7 @@ class ExportacaoArquivoConsignadoCaixa extends ExportacaoArquivoConsignado {
 		$oLinhaHeader->substituirConteudoCampo(str_pad(2, 1, '0', STR_PAD_LEFT), 'codigo_remessa_retorno');
 		$oLinhaHeader->substituirConteudoCampo(str_pad('RETORNO', 7, ' ', STR_PAD_LEFT), 'nome_remessa_retorno');
 
-    fwrite($pCaminhoArquivoRetorno, $oLinhaHeader->getLinha());
+    fwrite($pCaminhoArquivoRetorno, (string) $oLinhaHeader->getLinha());
 	}
 
 	/**
@@ -195,6 +195,6 @@ class ExportacaoArquivoConsignadoCaixa extends ExportacaoArquivoConsignado {
 		$oLinhaFooter->substituirConteudoCampo(str_pad(number_format($oValoresTotais->rejeitado, 2, '', ''), 17, '0', STR_PAD_LEFT), 'valor_total_rejeicoes');
 		$oLinhaFooter->substituirConteudoCampo(str_pad(number_format($oValoresTotais->acatado, 2, '', ''), 17, '0', STR_PAD_LEFT), 'valor_total_acatados');
     
-    fwrite($pCaminhoArquivoRetorno, $oLinhaFooter->getLinha());
+    fwrite($pCaminhoArquivoRetorno, (string) $oLinhaFooter->getLinha());
 	}
 }

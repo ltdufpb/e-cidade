@@ -165,11 +165,11 @@ class GrupoLaboratorio
      */
     public function toArray()
     {
-        $retorno = array(
+        $retorno = [
             'la67_codigo' => $this->getCodigo(),
             'la67_laboratorio' => $this->getLaboratorio(),
             'la67_grupo' => $this->getGrupo()
-        );
+        ];
 
         return $retorno;
     }

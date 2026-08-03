@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_legista_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllegista = new cl_legista;
 $cllegista->rotulo->label("cm32_i_codigo");
 $cllegista->rotulo->label("cm32_i_numcgm");
@@ -123,9 +123,9 @@ $cllegista->rotulo->label("cm32_i_crm");
         }else{
            $sql = $cllegista->sql_query("",$campos,"cm32_i_codigo","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_cm32_i_numcgm)){
-          $repassa = array("chave_cm32_i_codigo"=>$chave_cm32_i_codigo,"chave_cm32_i_numcgm"=>$chave_cm32_i_numcgm);
+          $repassa = ["chave_cm32_i_codigo"=>$chave_cm32_i_codigo,"chave_cm32_i_numcgm"=>$chave_cm32_i_numcgm];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

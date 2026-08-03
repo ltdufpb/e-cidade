@@ -29,32 +29,32 @@
 //CLASSE DA ENTIDADE devedores
 class cl_devedores { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $data_dia = null; 
-   var $data_mes = null; 
-   var $data_ano = null; 
-   var $data = null; 
-   var $numpre = null; 
-   var $numcgm = 0; 
-   var $matric = 0; 
-   var $inscr = 0; 
-   var $tipo = null; 
-   var $valor_tudo = 0; 
-   var $valor_vencidos = 0; 
+   public $data_dia = null; 
+   public $data_mes = null; 
+   public $data_ano = null; 
+   public $data = null; 
+   public $numpre = null; 
+   public $numcgm = 0; 
+   public $matric = 0; 
+   public $inscr = 0; 
+   public $tipo = null; 
+   public $valor_tudo = 0; 
+   public $valor_vencidos = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  data = date = Data 
                  numpre = char(15) = Nº arrecadação 
                  numcgm = int4 = numero do cgm 
@@ -65,10 +65,10 @@ class cl_devedores {
                  valor_vencidos = float8 = Valor Vencidos 
                  ";
    //funcao construtor da classe 
-   function cl_devedores() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("devedores"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -198,7 +198,7 @@ class cl_devedores {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Devedores () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Devedores já Cadastrado";
@@ -225,10 +225,10 @@ class cl_devedores {
       $this->atualizacampos();
      $sql = " update devedores set ";
      $virgula = "";
-     if(trim($this->data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["data_dia"] !="") ){ 
+     if(trim((string) $this->data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["data_dia"] !="") ){ 
        $sql  .= $virgula." data = '$this->data' ";
        $virgula = ",";
-       if(trim($this->data) == null ){ 
+       if(trim((string) $this->data) == null ){ 
          $this->erro_sql = " Campo Data nao Informado.";
          $this->erro_campo = "data_dia";
          $this->erro_banco = "";
@@ -241,7 +241,7 @@ class cl_devedores {
        if(isset($GLOBALS["HTTP_POST_VARS"]["data_dia"])){ 
          $sql  .= $virgula." data = null ";
          $virgula = ",";
-         if(trim($this->data) == null ){ 
+         if(trim((string) $this->data) == null ){ 
            $this->erro_sql = " Campo Data nao Informado.";
            $this->erro_campo = "data_dia";
            $this->erro_banco = "";
@@ -252,10 +252,10 @@ class cl_devedores {
          }
        }
      }
-     if(trim($this->numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numpre"])){ 
+     if(trim((string) $this->numpre)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numpre"])){ 
        $sql  .= $virgula." numpre = '$this->numpre' ";
        $virgula = ",";
-       if(trim($this->numpre) == null ){ 
+       if(trim((string) $this->numpre) == null ){ 
          $this->erro_sql = " Campo Nº arrecadação nao Informado.";
          $this->erro_campo = "numpre";
          $this->erro_banco = "";
@@ -265,10 +265,10 @@ class cl_devedores {
          return false;
        }
      }
-     if(trim($this->numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numcgm"])){ 
+     if(trim((string) $this->numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["numcgm"])){ 
        $sql  .= $virgula." numcgm = $this->numcgm ";
        $virgula = ",";
-       if(trim($this->numcgm) == null ){ 
+       if(trim((string) $this->numcgm) == null ){ 
          $this->erro_sql = " Campo numero do cgm nao Informado.";
          $this->erro_campo = "numcgm";
          $this->erro_banco = "";
@@ -278,10 +278,10 @@ class cl_devedores {
          return false;
        }
      }
-     if(trim($this->matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["matric"])){ 
+     if(trim((string) $this->matric)!="" || isset($GLOBALS["HTTP_POST_VARS"]["matric"])){ 
        $sql  .= $virgula." matric = $this->matric ";
        $virgula = ",";
-       if(trim($this->matric) == null ){ 
+       if(trim((string) $this->matric) == null ){ 
          $this->erro_sql = " Campo Matricula nao Informado.";
          $this->erro_campo = "matric";
          $this->erro_banco = "";
@@ -291,10 +291,10 @@ class cl_devedores {
          return false;
        }
      }
-     if(trim($this->inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["inscr"])){ 
+     if(trim((string) $this->inscr)!="" || isset($GLOBALS["HTTP_POST_VARS"]["inscr"])){ 
        $sql  .= $virgula." inscr = $this->inscr ";
        $virgula = ",";
-       if(trim($this->inscr) == null ){ 
+       if(trim((string) $this->inscr) == null ){ 
          $this->erro_sql = " Campo Inscrição nao Informado.";
          $this->erro_campo = "inscr";
          $this->erro_banco = "";
@@ -304,10 +304,10 @@ class cl_devedores {
          return false;
        }
      }
-     if(trim($this->tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tipo"])){ 
+     if(trim((string) $this->tipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["tipo"])){ 
        $sql  .= $virgula." tipo = '$this->tipo' ";
        $virgula = ",";
-       if(trim($this->tipo) == null ){ 
+       if(trim((string) $this->tipo) == null ){ 
          $this->erro_sql = " Campo Tipo nao Informado.";
          $this->erro_campo = "tipo";
          $this->erro_banco = "";
@@ -317,10 +317,10 @@ class cl_devedores {
          return false;
        }
      }
-     if(trim($this->valor_tudo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valor_tudo"])){ 
+     if(trim((string) $this->valor_tudo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valor_tudo"])){ 
        $sql  .= $virgula." valor_tudo = $this->valor_tudo ";
        $virgula = ",";
-       if(trim($this->valor_tudo) == null ){ 
+       if(trim((string) $this->valor_tudo) == null ){ 
          $this->erro_sql = " Campo Valor Tudo nao Informado.";
          $this->erro_campo = "valor_tudo";
          $this->erro_banco = "";
@@ -330,10 +330,10 @@ class cl_devedores {
          return false;
        }
      }
-     if(trim($this->valor_vencidos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valor_vencidos"])){ 
+     if(trim((string) $this->valor_vencidos)!="" || isset($GLOBALS["HTTP_POST_VARS"]["valor_vencidos"])){ 
        $sql  .= $virgula." valor_vencidos = $this->valor_vencidos ";
        $virgula = ",";
-       if(trim($this->valor_vencidos) == null ){ 
+       if(trim((string) $this->valor_vencidos) == null ){ 
          $this->erro_sql = " Campo Valor Vencidos nao Informado.";
          $this->erro_campo = "valor_vencidos";
          $this->erro_banco = "";
@@ -424,7 +424,7 @@ $sql .= "oid = '$oid'";     $result = db_query($sql);
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:devedores";

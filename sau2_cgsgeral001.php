@@ -55,21 +55,21 @@ require_once(modification("dbforms/db_funcoes.php"));
               <td nowrap title="<?=@$Ttf12_i_codigo?>">
                 <b>Ordem:</b>
                 <?php 
-                $aX = array('1'=>'ALFABÉTICA', '2'=>'CGS','3'=>'NASCIMENTO');
+                $aX = ['1'=>'ALFABÉTICA', '2'=>'CGS','3'=>'NASCIMENTO'];
                 db_select('ordem', $aX, true, 1, ' onchange="js_selecionaTipoOrdem(this.value);"');
                 ?>
               </td>
               <td> 
                 <b>Tipo da Ordem:</b>
                 <?php 
-                $aX = array('1'=>'CRESCENTE', '2'=>'DECRESCENTE');
+                $aX = ['1'=>'CRESCENTE', '2'=>'DECRESCENTE'];
                 db_select('tipoOrdem', $aX, true, 1, '');
                 ?>
               </td>
               <td> 
                 <b>Formato:</b>
                 <?php 
-                $aX = array('1'=>'PDF', '2'=>'TXT');
+                $aX = ['1'=>'PDF', '2'=>'TXT'];
                 db_select('formato', $aX, true, 1, '');
                 ?>
               </td>

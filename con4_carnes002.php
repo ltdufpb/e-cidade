@@ -28,7 +28,7 @@
 require(modification("libs/db_stdlib.php"));
 require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 if(isset($txtexto)){
    if($txtexto!=""){
      $result = db_query("select max(idtx)+1 as max from db_carnesdados");
@@ -102,10 +102,10 @@ tr {
 							   inner join db_sysarquivo t on a.codarq = t.codarq
 							 order by c.nomecam");
 							 //where a.codarq = 204");
-		  $numrows = pg_numrows($result);
+		  $numrows = pg_num_rows($result);
 		  for($i = 0;$i < $numrows;$i++){
-		    $conteudo = pg_result($result,$i,0);
-		    echo "<option value=\"".pg_result($result,$i,1)."\">".$conteudo."</option>\n";
+		    $conteudo = pg_fetch_result($result,$i,0);
+		    echo "<option value=\"".pg_fetch_result($result,$i,1)."\">".$conteudo."</option>\n";
 		  }
 		  ?>
           </select> &nbsp; </td>
@@ -114,9 +114,9 @@ tr {
             <option>&nbsp;</option>
             <?php 
 			    $result = db_query("select codmodelo,nomemodelo from db_carnesimg");
-				$numrows = pg_numrows($result);
+				$numrows = pg_num_rows($result);
 				for($i = 0;$i < $numrows;$i++) {
-				  echo "<option value=\"".pg_result($result,$i,"codmodelo")."\" ".(isset($HTTP_POST_VARS["formulario"])?($HTTP_POST_VARS["formulario"]==pg_result($result,$i,"codmodelo")?"selected":""):"").">".pg_result($result,$i,"nomemodelo")."</option>\n";
+				  echo "<option value=\"".pg_fetch_result($result,$i,"codmodelo")."\" ".(isset($_POST["formulario"])?($_POST["formulario"]==pg_fetch_result($result,$i,"codmodelo")?"selected":""):"").">".pg_fetch_result($result,$i,"nomemodelo")."</option>\n";
 				}
 			  ?>
           </select> </td>
@@ -146,10 +146,10 @@ tr {
 		                     from db_carnesdados 
 							 order by txcampo");
 							 //where a.codarq = 204");
-		  $numrows = pg_numrows($result);
+		  $numrows = pg_num_rows($result);
 		  for($i = 0;$i < $numrows;$i++){
-		    $conteudo = pg_result($result,$i,0).'->'.pg_result($result,$i,1);
-		    $tamanho  = strlen(trim(pg_result($result,$i,1)));
+		    $conteudo = pg_fetch_result($result,$i,0).'->'.pg_fetch_result($result,$i,1);
+		    $tamanho  = strlen(trim(pg_fetch_result($result,$i,1)));
 		    echo "<option value=\"".$tamanho."\">".$conteudo."</option>\n";
 		  }
 		  ?>

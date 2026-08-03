@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_db_layouttxtgrupo_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_layouttxtgrupo = new cl_db_layouttxtgrupo;
 $cldb_layouttxtgrupo->rotulo->label("db56_sequencial");
 $cldb_layouttxtgrupo->rotulo->label("db56_descr");
@@ -98,9 +98,9 @@ $cldb_layouttxtgrupo->rotulo->label("db56_descr");
         }else{
            $sql = $cldb_layouttxtgrupo->sql_query("",$campos,"db56_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db56_descr)){
-          $repassa = array("chave_db56_sequencial"=>$chave_db56_sequencial,"chave_db56_descr"=>$chave_db56_descr);
+          $repassa = ["chave_db56_sequencial"=>$chave_db56_sequencial,"chave_db56_descr"=>$chave_db56_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

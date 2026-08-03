@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cldiversos   = new cl_diversos;
 $clcgm        = new cl_cgm;
@@ -42,7 +42,7 @@ $db_botao     = false;
 $lErro        = false;
 $sMsgErro     = '';
 
-if ( isset($subtes) && $subtes=="ok" || isset($HTTP_POST_VARS["db_opcao"]) ) {
+if ( isset($subtes) && $subtes=="ok" || isset($_POST["db_opcao"]) ) {
   $db_botao = true;
   $db_opcao = 2;
 }
@@ -50,7 +50,7 @@ if ( isset($subtes) && $subtes=="ok" || isset($HTTP_POST_VARS["db_opcao"]) ) {
 /**
  * Alteração
  */
-if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alterar" ) {
+if ( (isset($_POST["db_opcao"]) && $_POST["db_opcao"])=="Alterar" ) {
 
   db_inicio_transacao();
   $sqlerro = false;
@@ -176,7 +176,7 @@ if ( (isset($HTTP_POST_VARS["db_opcao"]) && $HTTP_POST_VARS["db_opcao"])=="Alter
 
 }
 
-$HTTP_SERVER_VARS['QUERY_STRING']="";
+$_SERVER['QUERY_STRING']="";
 ?>
 <html>
 <head>
@@ -206,7 +206,7 @@ if( $db_opcao==22 && !$lErro ) {
   echo "<script>js_pesquisa();</script>";
 }
 
-if( isset($HTTP_POST_VARS["db_opcao"]) ) {
+if( isset($_POST["db_opcao"]) ) {
 
   if( $cldiversos->erro_status == "0" ) {
 

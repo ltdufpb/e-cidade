@@ -54,7 +54,7 @@ if (isset($oGet->cgm) && !empty($oGet->cgm)) {
   $sWhere .= " and p58_codproc = {$oGet->codproc}";
 } else if (isset($oGet->numeroprocesso) && !empty($oGet->numeroprocesso)) {
   
-  $aNumeroProcesso  = explode("/", $oGet->numeroprocesso);
+  $aNumeroProcesso  = explode("/", (string) $oGet->numeroprocesso);
   $sWhere          .= " and p58_numero = '{$aNumeroProcesso[0]}' " ;
   if (count($aNumeroProcesso) > 1 && strlen($aNumeroProcesso[1]) == 4) {
     $sWhere .= " and p58_ano = {$aNumeroProcesso[1]}";

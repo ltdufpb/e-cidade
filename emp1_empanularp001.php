@@ -92,8 +92,8 @@ $clprotprocesso = new cl_protprocesso;
 $clsolordemtransf = new cl_solordemtransf;
 
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $db_opcao = 22;
 $db_botao = false;
@@ -118,8 +118,8 @@ if (isset ($confirmar) || isset ($confirmarn)) {
 
       $p  = "elemento_".$e64_codele."_processado";
       $np ="elemento_".$e64_codele."_nao_processado";
-      $digitado_processado     = $$p;
-      $digitado_nao_processado = $$np;
+      $digitado_processado     = ${$p};
+      $digitado_nao_processado = ${$np};
 
       $informado_anular_processado     += $digitado_processado;
       $informado_anular_nao_processado += $digitado_nao_processado;
@@ -172,7 +172,7 @@ if (isset ($confirmar) || isset ($confirmarn)) {
     $documento = "31"; // não processado
     $sql = "select fc_verifica_lancamento(".$e60_numemp.",'".date("Y-m-d",db_getsession("DB_datausu"))."',".$documento.",".$informado_anular_processado.")";
     $result_erro = db_query($sql);
-    $erro_msg = pg_result($result_erro,0,0);
+    $erro_msg = pg_fetch_result($result_erro,0,0);
     if(substr($erro_msg,0,2) > 0 ){
       $erro_msg = substr($erro_msg,3);
       db_msgbox($erro_msg);
@@ -182,7 +182,7 @@ if (isset ($confirmar) || isset ($confirmarn)) {
       $documento = "32"; // não processado
       $sql = "select fc_verifica_lancamento(".$e60_numemp.",'".date("Y-m-d",db_getsession("DB_datausu"))."',".$documento.",".$informado_anular_nao_processado.")";
       $result_erro = db_query($sql);
-      $erro_msg = pg_result($result_erro,0,0);
+      $erro_msg = pg_fetch_result($result_erro,0,0);
       if(substr($erro_msg,0,2) > 0 ){
         $erro_msg = substr($erro_msg,3);
         db_msgbox($erro_msg);
@@ -325,8 +325,8 @@ if (isset ($confirmar) || isset ($confirmarn)) {
 
       $p  = "elemento_".$e64_codele."_processado";
       $np ="elemento_".$e64_codele."_nao_processado";
-      $digitado_processado     = $$p;
-      $digitado_nao_processado = $$np;
+      $digitado_processado     = ${$p};
+      $digitado_nao_processado = ${$np};
 
       $total_elemento_digitado =  $digitado_processado + $digitado_nao_processado;
 
@@ -627,7 +627,7 @@ if (isset ($e60_numemp)) {
   if (isset ($pc30_contrandsol) && $pc30_contrandsol == 't') {
     $result_testitem=$clempautitem->sql_record($clempautitem->sql_query_anuaut(null,null," distinct pc11_codigo as cod_item",null,"e54_anulad is null and e61_numemp = $e60_numemp"));
     if ($clempautitem->numrows>0){
-      for($w=0;$w<pg_numrows($result_testitem);$w++){
+      for($w=0;$w<pg_num_rows($result_testitem);$w++){
         db_fieldsmemory($result_testitem,$w);
         $result_prot = $clsolicitemprot->sql_record($clsolicitemprot->sql_query_file($cod_item));
         if ($clsolicitemprot->numrows > 0) {

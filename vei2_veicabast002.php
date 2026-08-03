@@ -27,7 +27,7 @@
 
 require_once(modification("fpdf151/pdf.php"));
 require_once(modification("classes/db_veicabast_classe.php"));
-parse_str($_SERVER["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 db_postmemory($_SERVER);
 
 function imprimir_cabecalho($pdf,$alt){
@@ -234,11 +234,11 @@ $troca = 1;
 $p     = 0;
 $alt   = 4;
 
-$aCombustiveisVeiculos     = array();
-$aCombustiveisTipoVeiculos = array();
+$aCombustiveisVeiculos     = [];
+$aCombustiveisTipoVeiculos = [];
 //Controle de para evitar soma duplicada
-$aCod_Abast 					= array();
-$aCod_Abast_Impresso  = array();
+$aCod_Abast 					= [];
+$aCod_Abast_Impresso  = [];
 
 for($x = 0; $x < $numrows; $x++){
 
@@ -541,16 +541,16 @@ for($x = 0; $x < $numrows; $x++){
     $aCod_Abast_Impresso[] = $ve70_codigo;
 
 
-    $ve60_destino = substr($ve60_destino, 0, 17);
+    $ve60_destino = substr((string) $ve60_destino, 0, 17);
 
     if ($cod_veiculo != $ve01_codigo){
       if($listar_por==0){
         $pdf->cell(287,$alt,"",0,1,"L",1);
-        $pdf->cell(44,$alt,substr($ve21_descr,0,30),0,0,"L",$p);
+        $pdf->cell(44,$alt,substr((string) $ve21_descr,0,30),0,0,"L",$p);
         $pdf->cell(15,$alt,$ve01_placa,0,0,"R",$p);
         $pdf->cell(15,$alt,$ve01_anofab,0,0,"R",$p);
         $pdf->cell(34,$alt,$ve60_destino, 0,0,"L",$p);
-        $pdf->cell(22,$alt,substr($ve26_descr,0,10),0,0,"L",$p);
+        $pdf->cell(22,$alt,substr((string) $ve26_descr,0,10),0,0,"L",$p);
         $pdf->cell(15,$alt,db_formatar($ve70_dtabast,"d"),0,0,"R",$p);
         $pdf->cell(10,$alt,$ve70_hora,0,0,"R",$p);
         $pdf->cell(22,$alt,db_formatar($medida_retirada,"f"),0,0,"R",$p);
@@ -561,14 +561,14 @@ for($x = 0; $x < $numrows; $x++){
         $pdf->cell(22,$alt,db_formatar($consumo_medio,"f"),0,1,"R",$p);
       }else if($listar_por==1){
         //$pdf->cell(287,$alt,"",0,1,"L",1);
-        $pdf->cell(44,$alt,substr($ve21_descr,0,30),0,0,"L",$p);
+        $pdf->cell(44,$alt,substr((string) $ve21_descr,0,30),0,0,"L",$p);
         $pdf->cell(15,$alt,$ve01_placa,0,0,"R",$p);
         $pdf->cell(15,$alt,$ve01_anofab,0,0,"R",$p);
         $pdf->cell(15,$alt,"",0,1,"R",$p);
 
       }
-      $pdf->cell(55,$alt,substr($ve22_descr,0,30),0,0,"L",$p);
-      $pdf->cell(55,$alt,substr($ve20_descr,0,30),0,1,"L",$p);
+      $pdf->cell(55,$alt,substr((string) $ve22_descr,0,30),0,0,"L",$p);
+      $pdf->cell(55,$alt,substr((string) $ve20_descr,0,30),0,1,"L",$p);
 
 
     }
@@ -576,7 +576,7 @@ for($x = 0; $x < $numrows; $x++){
       if($listar_por==0){
         $pdf->cell(74,$alt,"",0,0,"L",$p);
         $pdf->cell(34,$alt,substr($ve60_destino,0,25),0,0,"L",$p);
-        $pdf->cell(22,$alt,substr($ve26_descr,0,10),0,0,"L",$p);
+        $pdf->cell(22,$alt,substr((string) $ve26_descr,0,10),0,0,"L",$p);
         $pdf->cell(15,$alt,db_formatar($ve70_dtabast,"d"),0,0,"R",$p);
         $pdf->cell(10,$alt,$ve70_hora,0,0,"C",$p);
         $pdf->cell(22,$alt,db_formatar($medida_retirada,"f"),0,0,"R",$p);
@@ -677,7 +677,7 @@ $pdf->cell(60,$alt,"Combustível",0,0,"C",0);
 $pdf->cell(45,$alt,"Quantidade",0,0,"C",0);
 $pdf->cell(40,$alt,"Valores",0,1,"C",0);
 
-$aTotaisPorComb = array();
+$aTotaisPorComb = [];
 
 
 foreach ($aCombustiveisTipoVeiculos as $chave => $valor){

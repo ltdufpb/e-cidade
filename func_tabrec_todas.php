@@ -33,8 +33,8 @@ require_once (modification("libs/db_utils.php"));
 require_once (modification("dbforms/db_funcoes.php"));
 require_once (modification("classes/db_tabrec_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -83,7 +83,7 @@ $cltabrec->rotulo->label("k02_descr");
             <td width="96%" align="left" nowrap>
               <?php 
 	      global $listar;
-              $tipo=array("t"=>"Todas...","s"=>"Sem ligação com Orçamento/Plano de Contas");
+              $tipo=["t"=>"Todas...","s"=>"Sem ligação com Orçamento/Plano de Contas"];
 	      db_select("listar",$tipo,true,"text","onchange='document.form2.submit()';");
 	      ?>
             </td>

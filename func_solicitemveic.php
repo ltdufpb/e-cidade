@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_solicitemveic_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clsolicitemveic = new cl_solicitemveic;
 $clsolicitemveic->rotulo->label("pc14_sequencial");
 $clsolicitemveic->rotulo->label("pc14_solicitem");
@@ -98,9 +98,9 @@ $clsolicitemveic->rotulo->label("pc14_solicitem");
         }else{
            $sql = $clsolicitemveic->sql_query("",$campos,"pc14_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_pc14_solicitem)){
-          $repassa = array("chave_pc14_sequencial"=>$chave_pc14_sequencial,"chave_pc14_solicitem"=>$chave_pc14_solicitem);
+          $repassa = ["chave_pc14_sequencial"=>$chave_pc14_sequencial,"chave_pc14_solicitem"=>$chave_pc14_solicitem];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

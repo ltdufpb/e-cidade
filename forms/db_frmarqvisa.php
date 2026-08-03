@@ -55,7 +55,7 @@ $clrotulo->label("z01_nome");
     <td align="right"><b>Pedido:</b></td>
     <td align="left">
     <?php 
-      $arr_pedido = Array("1"=>"Normal","2"=>"Complementar");
+      $arr_pedido = ["1"=>"Normal","2"=>"Complementar"];
       db_select("pedido",$arr_pedido,true,1);
     ?>
     </td>

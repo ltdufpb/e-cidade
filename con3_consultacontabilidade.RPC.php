@@ -47,11 +47,11 @@ try {
 
 		case "getDadosLancamentosFiltrados" :
 
-      $aWhere = array(" c70_codlan = {$oParam->iCodLancamento} ");
+      $aWhere = [" c70_codlan = {$oParam->iCodLancamento} "];
 
 			if (empty($oParam->iCodLancamento)) {
 
-			  $aWhere = array();
+			  $aWhere = [];
   			if ( empty($oParam->iDocumento) ) {
   				throw new Exception('Código do documento não informado');
   			}
@@ -96,7 +96,7 @@ try {
 			  throw new Exception("Identificamos que há muitos registros para o filtro selecionado. Por favor, refine sua busca.");
 			}
 
-			$aLancamentos = array();
+			$aLancamentos = [];
 			/**
 			 * Percorre os lancamentos e monta array para consulta
 			 */
@@ -105,7 +105,7 @@ try {
 				$oLancamentoRs  = db_utils::fieldsMemory($rsComlancamdoc, $iLancamento);
 				$oLancamentoStd = new stdClass();
 
-				$oLancamentoStd->sDocumento  = $oLancamentoRs->c53_coddoc ." - " . urlencode($oLancamentoRs->c53_descr);
+				$oLancamentoStd->sDocumento  = $oLancamentoRs->c53_coddoc ." - " . urlencode((string) $oLancamentoRs->c53_descr);
 				$oLancamentoStd->dtData			 = db_formatar($oLancamentoRs->c70_data, 'd');
 				$oLancamentoStd->iLancamento = $oLancamentoRs->c70_codlan;
 				$oLancamentoStd->nValor      = $oLancamentoRs->c70_valor;

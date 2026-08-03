@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE modcarnepadraolayouttxt
 class cl_modcarnepadraolayouttxt { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $m02_sequencial = 0; 
-   var $m02_db_layouttxt = 0; 
-   var $m02_modcarnepadrao = 0; 
+   public $m02_sequencial = 0; 
+   public $m02_db_layouttxt = 0; 
+   public $m02_modcarnepadrao = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  m02_sequencial = int4 = Sequencial 
                  m02_db_layouttxt = int4 = Layout TXT 
                  m02_modcarnepadrao = int4 = Modelo Padrão 
                  ";
    //funcao construtor da classe 
-   function cl_modcarnepadraolayouttxt() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("modcarnepadraolayouttxt"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_modcarnepadraolayouttxt {
          $this->erro_status = "0";
          return false; 
        }
-       $this->m02_sequencial = pg_result($result,0,0); 
+       $this->m02_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from modcarnepadraolayouttxt_m02_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $m02_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $m02_sequencial)){
          $this->erro_sql = " Campo m02_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_modcarnepadraolayouttxt {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "modcarnepadraolayouttxt ($this->m02_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "modcarnepadraolayouttxt já Cadastrado";
@@ -166,12 +166,12 @@ class cl_modcarnepadraolayouttxt {
      $resaco = $this->sql_record($this->sql_query_file($this->m02_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,12613,'$this->m02_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2202,12613,'','".AddSlashes(pg_result($resaco,0,'m02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2202,12614,'','".AddSlashes(pg_result($resaco,0,'m02_db_layouttxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2202,12615,'','".AddSlashes(pg_result($resaco,0,'m02_modcarnepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2202,12613,'','".AddSlashes(pg_fetch_result($resaco,0,'m02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2202,12614,'','".AddSlashes(pg_fetch_result($resaco,0,'m02_db_layouttxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2202,12615,'','".AddSlashes(pg_fetch_result($resaco,0,'m02_modcarnepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_modcarnepadraolayouttxt {
       $this->atualizacampos();
      $sql = " update modcarnepadraolayouttxt set ";
      $virgula = "";
-     if(trim($this->m02_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m02_sequencial"])){ 
+     if(trim((string) $this->m02_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m02_sequencial"])){ 
        $sql  .= $virgula." m02_sequencial = $this->m02_sequencial ";
        $virgula = ",";
-       if(trim($this->m02_sequencial) == null ){ 
+       if(trim((string) $this->m02_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "m02_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_modcarnepadraolayouttxt {
          return false;
        }
      }
-     if(trim($this->m02_db_layouttxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m02_db_layouttxt"])){ 
+     if(trim((string) $this->m02_db_layouttxt)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m02_db_layouttxt"])){ 
        $sql  .= $virgula." m02_db_layouttxt = $this->m02_db_layouttxt ";
        $virgula = ",";
-       if(trim($this->m02_db_layouttxt) == null ){ 
+       if(trim((string) $this->m02_db_layouttxt) == null ){ 
          $this->erro_sql = " Campo Layout TXT nao Informado.";
          $this->erro_campo = "m02_db_layouttxt";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_modcarnepadraolayouttxt {
          return false;
        }
      }
-     if(trim($this->m02_modcarnepadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m02_modcarnepadrao"])){ 
+     if(trim((string) $this->m02_modcarnepadrao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["m02_modcarnepadrao"])){ 
        $sql  .= $virgula." m02_modcarnepadrao = $this->m02_modcarnepadrao ";
        $virgula = ",";
-       if(trim($this->m02_modcarnepadrao) == null ){ 
+       if(trim((string) $this->m02_modcarnepadrao) == null ){ 
          $this->erro_sql = " Campo Modelo Padrão nao Informado.";
          $this->erro_campo = "m02_modcarnepadrao";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_modcarnepadraolayouttxt {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12613,'$this->m02_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m02_sequencial"]))
-           $resac = db_query("insert into db_acount values($acount,2202,12613,'".AddSlashes(pg_result($resaco,$conresaco,'m02_sequencial'))."','$this->m02_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2202,12613,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m02_sequencial'))."','$this->m02_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m02_db_layouttxt"]))
-           $resac = db_query("insert into db_acount values($acount,2202,12614,'".AddSlashes(pg_result($resaco,$conresaco,'m02_db_layouttxt'))."','$this->m02_db_layouttxt',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2202,12614,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m02_db_layouttxt'))."','$this->m02_db_layouttxt',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["m02_modcarnepadrao"]))
-           $resac = db_query("insert into db_acount values($acount,2202,12615,'".AddSlashes(pg_result($resaco,$conresaco,'m02_modcarnepadrao'))."','$this->m02_modcarnepadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2202,12615,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'m02_modcarnepadrao'))."','$this->m02_modcarnepadrao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_modcarnepadraolayouttxt {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,12613,'$m02_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2202,12613,'','".AddSlashes(pg_result($resaco,$iresaco,'m02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2202,12614,'','".AddSlashes(pg_result($resaco,$iresaco,'m02_db_layouttxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2202,12615,'','".AddSlashes(pg_result($resaco,$iresaco,'m02_modcarnepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2202,12613,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m02_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2202,12614,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m02_db_layouttxt'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2202,12615,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'m02_modcarnepadrao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from modcarnepadraolayouttxt
@@ -345,7 +345,7 @@ class cl_modcarnepadraolayouttxt {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:modcarnepadraolayouttxt";
@@ -360,7 +360,7 @@ class cl_modcarnepadraolayouttxt {
    function sql_query ( $m02_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -387,7 +387,7 @@ class cl_modcarnepadraolayouttxt {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -400,7 +400,7 @@ class cl_modcarnepadraolayouttxt {
    function sql_query_file ( $m02_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -421,7 +421,7 @@ class cl_modcarnepadraolayouttxt {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

@@ -35,7 +35,7 @@ $clrotulo->label('DBtxt23');
 $clrotulo->label('DBtxt25');
 $clrotulo->label('DBtxt27');
 $clrotulo->label('DBtxt28');
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 ?>
 
 <html>
@@ -78,7 +78,7 @@ function js_emite(){
         </td>
         <td nowrap>
 	<?php 
-          $x = array("n"=>"Numérica","a"=>"Alfabética","b"=>"Abreviatura");
+          $x = ["n"=>"Numérica","a"=>"Alfabética","b"=>"Abreviatura"];
           db_select("ordem",$x,true,2); 
 	?>
         </td>
@@ -89,7 +89,7 @@ function js_emite(){
         </td>
         <td nowrap>
 	<?php 
-          $y = array("a"=>"Ascendente","d"=>"Descendente");
+          $y = ["a"=>"Ascendente","d"=>"Descendente"];
           db_select("tipo_ordem",$y,true,2); 
 	?>
         </td>

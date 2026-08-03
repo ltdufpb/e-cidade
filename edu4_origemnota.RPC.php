@@ -65,7 +65,7 @@ try {
 
       if ( isset($oParam->iTurma) && isset($oParam->iEtapa) ) {
 
-        $oRetorno->aAlunos   = array();
+        $oRetorno->aAlunos   = [];
 
         $oTurma = EducacaoSessionManager::carregarTurma($oParam->iTurma);
         $oEtapa = EducacaoSessionManager::carregarEtapa($oParam->iEtapa);
@@ -107,7 +107,7 @@ try {
 
                   $oDadosAlunos                        = new stdClass();
                   $oDadosAlunos->iMatricula            = $oMatricula->getCodigo();
-                  $oDadosAlunos->sNome                 = urlencode($oMatricula->getAluno()->getNome());
+                  $oDadosAlunos->sNome                 = urlencode((string) $oMatricula->getAluno()->getNome());
                   $oDadosAlunos->iDiarioAvaliacao      = $oAvaliacaoAproveitamento->getCodigo();
                   $oDadosAlunos->iEscolaTurma          = $oTurma->getEscola()->getCodigo();
                   $oDadosAlunos->dtInicioPeriodo       = $dtInicioPeriodo;
@@ -129,16 +129,16 @@ try {
                   if ( !$oAvaliacaoAproveitamento->isAvaliacaoExterna() ) {
 
                     $oDadosAlunos->iEscolaAtual        = $oTurma->getEscola()->getCodigo();
-                    $oDadosAlunos->sNomeEscolaAtual    = urlencode(strtoupper($oTurma->getEscola()->getNome()));
+                    $oDadosAlunos->sNomeEscolaAtual    = urlencode(strtoupper((string) $oTurma->getEscola()->getNome()));
                     $oDadosAlunos->sTipoAtual          = urlencode('ESCOLA DA REDE');
                     $oDadosAlunos->sTipoAbreviadoAtual = 'M';
-                    $oDadosAlunos->sMunicipioAtual     = urlencode(strtoupper($oTurma->getEscola()->getMunicipio()));
-                    $oDadosAlunos->sUfAtual            = urlencode(strtoupper($oTurma->getEscola()->getUf()));
+                    $oDadosAlunos->sMunicipioAtual     = urlencode(strtoupper((string) $oTurma->getEscola()->getMunicipio()));
+                    $oDadosAlunos->sUfAtual            = urlencode(strtoupper((string) $oTurma->getEscola()->getUf()));
                     $oDadosAlunos->lEscolaRede         = true;
                   } else {
 
                     $oDadosAlunos->iEscolaAtual        = $oAvaliacaoAproveitamento->getEscola()->getCodigo();
-                    $oDadosAlunos->sNomeEscolaAtual    = urlencode(strtoupper($oAvaliacaoAproveitamento->getEscola()
+                    $oDadosAlunos->sNomeEscolaAtual    = urlencode(strtoupper((string) $oAvaliacaoAproveitamento->getEscola()
                                                                                                        ->getNome()));
                     $oDadosAlunos->sTipoAtual          = urlencode('FORA DA REDE');
                     $oDadosAlunos->sTipoAbreviadoAtual = 'F';
@@ -149,18 +149,18 @@ try {
                       $oDadosAlunos->sTipoAbreviadoAtual = 'M';
                     }
 
-                    $oDadosAlunos->sMunicipioAtual     = urlencode(strtoupper($oAvaliacaoAproveitamento->getEscola()
+                    $oDadosAlunos->sMunicipioAtual     = urlencode(strtoupper((string) $oAvaliacaoAproveitamento->getEscola()
                                                                                                        ->getMunicipio()));
-                    $oDadosAlunos->sUfAtual            = urlencode(strtoupper($oAvaliacaoAproveitamento->getEscola()
+                    $oDadosAlunos->sUfAtual            = urlencode(strtoupper((string) $oAvaliacaoAproveitamento->getEscola()
                                                                                                        ->getUf()));
                     $oDadosAlunos->lEscolaRede         = false;
 
                     $oDadosAlunos->iEscolaDestino        = $oTurma->getEscola()->getCodigo();
-                    $oDadosAlunos->sNomeEscolaDestino    = urlencode(strtoupper($oTurma->getEscola()->getNome()));
+                    $oDadosAlunos->sNomeEscolaDestino    = urlencode(strtoupper((string) $oTurma->getEscola()->getNome()));
                     $oDadosAlunos->sTipoDestino          = urlencode('ESCOLA DA REDE');
                     $oDadosAlunos->sTipoAbreviadoDestino = 'M';
-                    $oDadosAlunos->sMunicipioDestino     = urlencode(strtoupper($oTurma->getEscola()->getMunicipio()));
-                    $oDadosAlunos->sUfDestino            = urlencode(strtoupper($oTurma->getEscola()->getUf()));
+                    $oDadosAlunos->sMunicipioDestino     = urlencode(strtoupper((string) $oTurma->getEscola()->getMunicipio()));
+                    $oDadosAlunos->sUfDestino            = urlencode(strtoupper((string) $oTurma->getEscola()->getUf()));
                   }
 
                   $oRetorno->aAlunos[] = $oDadosAlunos;

@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE cadenderparam
 class cl_cadenderparam { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $db99_sequencial = 0; 
-   var $db99_cadenderpais = 0; 
-   var $db99_cadenderestado = 0; 
-   var $db99_cadendermunicipio = 0; 
+   public $db99_sequencial = 0; 
+   public $db99_cadenderpais = 0; 
+   public $db99_cadenderestado = 0; 
+   public $db99_cadendermunicipio = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  db99_sequencial = int4 = Sequencial 
                  db99_cadenderpais = int4 = Código País 
                  db99_cadenderestado = int4 = Código do Estado 
                  db99_cadendermunicipio = int4 = Código do Municipio 
                  ";
    //funcao construtor da classe 
-   function cl_cadenderparam() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("cadenderparam"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_cadenderparam {
          $this->erro_status = "0";
          return false; 
        }
-       $this->db99_sequencial = pg_result($result,0,0); 
+       $this->db99_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from cadenderparam_db99_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $db99_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $db99_sequencial)){
          $this->erro_sql = " Campo db99_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_cadenderparam {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Pârametros do endereço ($this->db99_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Pârametros do endereço já Cadastrado";
@@ -180,13 +180,13 @@ class cl_cadenderparam {
      $resaco = $this->sql_record($this->sql_query_file($this->db99_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,16698,'$this->db99_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,2936,16698,'','".AddSlashes(pg_result($resaco,0,'db99_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2936,16699,'','".AddSlashes(pg_result($resaco,0,'db99_cadenderpais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2936,16700,'','".AddSlashes(pg_result($resaco,0,'db99_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,2936,16701,'','".AddSlashes(pg_result($resaco,0,'db99_cadendermunicipio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2936,16698,'','".AddSlashes(pg_fetch_result($resaco,0,'db99_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2936,16699,'','".AddSlashes(pg_fetch_result($resaco,0,'db99_cadenderpais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2936,16700,'','".AddSlashes(pg_fetch_result($resaco,0,'db99_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,2936,16701,'','".AddSlashes(pg_fetch_result($resaco,0,'db99_cadendermunicipio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,10 +195,10 @@ class cl_cadenderparam {
       $this->atualizacampos();
      $sql = " update cadenderparam set ";
      $virgula = "";
-     if(trim($this->db99_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db99_sequencial"])){ 
+     if(trim((string) $this->db99_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db99_sequencial"])){ 
        $sql  .= $virgula." db99_sequencial = $this->db99_sequencial ";
        $virgula = ",";
-       if(trim($this->db99_sequencial) == null ){ 
+       if(trim((string) $this->db99_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "db99_sequencial";
          $this->erro_banco = "";
@@ -208,10 +208,10 @@ class cl_cadenderparam {
          return false;
        }
      }
-     if(trim($this->db99_cadenderpais)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db99_cadenderpais"])){ 
+     if(trim((string) $this->db99_cadenderpais)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db99_cadenderpais"])){ 
        $sql  .= $virgula." db99_cadenderpais = $this->db99_cadenderpais ";
        $virgula = ",";
-       if(trim($this->db99_cadenderpais) == null ){ 
+       if(trim((string) $this->db99_cadenderpais) == null ){ 
          $this->erro_sql = " Campo Código País nao Informado.";
          $this->erro_campo = "db99_cadenderpais";
          $this->erro_banco = "";
@@ -221,10 +221,10 @@ class cl_cadenderparam {
          return false;
        }
      }
-     if(trim($this->db99_cadenderestado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db99_cadenderestado"])){ 
+     if(trim((string) $this->db99_cadenderestado)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db99_cadenderestado"])){ 
        $sql  .= $virgula." db99_cadenderestado = $this->db99_cadenderestado ";
        $virgula = ",";
-       if(trim($this->db99_cadenderestado) == null ){ 
+       if(trim((string) $this->db99_cadenderestado) == null ){ 
          $this->erro_sql = " Campo Código do Estado nao Informado.";
          $this->erro_campo = "db99_cadenderestado";
          $this->erro_banco = "";
@@ -234,10 +234,10 @@ class cl_cadenderparam {
          return false;
        }
      }
-     if(trim($this->db99_cadendermunicipio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db99_cadendermunicipio"])){ 
+     if(trim((string) $this->db99_cadendermunicipio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["db99_cadendermunicipio"])){ 
        $sql  .= $virgula." db99_cadendermunicipio = $this->db99_cadendermunicipio ";
        $virgula = ",";
-       if(trim($this->db99_cadendermunicipio) == null ){ 
+       if(trim((string) $this->db99_cadendermunicipio) == null ){ 
          $this->erro_sql = " Campo Código do Municipio nao Informado.";
          $this->erro_campo = "db99_cadendermunicipio";
          $this->erro_banco = "";
@@ -255,17 +255,17 @@ class cl_cadenderparam {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16698,'$this->db99_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db99_sequencial"]) || $this->db99_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,2936,16698,'".AddSlashes(pg_result($resaco,$conresaco,'db99_sequencial'))."','$this->db99_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2936,16698,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db99_sequencial'))."','$this->db99_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db99_cadenderpais"]) || $this->db99_cadenderpais != "")
-           $resac = db_query("insert into db_acount values($acount,2936,16699,'".AddSlashes(pg_result($resaco,$conresaco,'db99_cadenderpais'))."','$this->db99_cadenderpais',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2936,16699,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db99_cadenderpais'))."','$this->db99_cadenderpais',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db99_cadenderestado"]) || $this->db99_cadenderestado != "")
-           $resac = db_query("insert into db_acount values($acount,2936,16700,'".AddSlashes(pg_result($resaco,$conresaco,'db99_cadenderestado'))."','$this->db99_cadenderestado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2936,16700,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db99_cadenderestado'))."','$this->db99_cadenderestado',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["db99_cadendermunicipio"]) || $this->db99_cadendermunicipio != "")
-           $resac = db_query("insert into db_acount values($acount,2936,16701,'".AddSlashes(pg_result($resaco,$conresaco,'db99_cadendermunicipio'))."','$this->db99_cadendermunicipio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,2936,16701,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'db99_cadendermunicipio'))."','$this->db99_cadendermunicipio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -310,13 +310,13 @@ class cl_cadenderparam {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,16698,'$db99_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,2936,16698,'','".AddSlashes(pg_result($resaco,$iresaco,'db99_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2936,16699,'','".AddSlashes(pg_result($resaco,$iresaco,'db99_cadenderpais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2936,16700,'','".AddSlashes(pg_result($resaco,$iresaco,'db99_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,2936,16701,'','".AddSlashes(pg_result($resaco,$iresaco,'db99_cadendermunicipio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2936,16698,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db99_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2936,16699,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db99_cadenderpais'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2936,16700,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db99_cadenderestado'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,2936,16701,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'db99_cadendermunicipio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from cadenderparam
@@ -376,7 +376,7 @@ class cl_cadenderparam {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:cadenderparam";
@@ -420,7 +420,7 @@ class cl_cadenderparam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -461,7 +461,7 @@ class cl_cadenderparam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -495,7 +495,7 @@ class cl_cadenderparam {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

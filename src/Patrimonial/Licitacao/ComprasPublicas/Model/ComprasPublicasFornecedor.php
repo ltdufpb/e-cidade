@@ -34,12 +34,12 @@ class ComprasPublicasFornecedor
         $dadosCGM->nome->value               = $dadosFornecedor->RazaoSocial;
         $dadosCGM->inscricao_estadual->value = $dadosFornecedor->INSCRICAO_ESTADUAL;
         $dadosCGM->logradouro->value         = $dadosFornecedor->Endereco;
-        $dadosCGM->cep->value                = preg_replace('/[^0-9]/', "", $dadosFornecedor->CEP);
+        $dadosCGM->cep->value                = preg_replace('/[^0-9]/', "", (string) $dadosFornecedor->CEP);
         $dadosCGM->bairro->value             = $dadosFornecedor->Bairro;
         $dadosCGM->numero->value             = $dadosFornecedor->Numero;
         $dadosCGM->municipio->value          = $dadosFornecedor->Cidade;
         $dadosCGM->complemento->value        = $dadosFornecedor->Complemento;
-        $dadosCGM->telefone->value           = preg_replace('/[^0-9]/', "", $dadosFornecedor->Telefone);
+        $dadosCGM->telefone->value           = preg_replace('/[^0-9]/', "", (string) $dadosFornecedor->Telefone);
         $dadosCGM->estado->value             = $dadosFornecedor->UF;
         $cgmFornecedor                       = $cgm->processaDadosCgm($dadosCGM);
 

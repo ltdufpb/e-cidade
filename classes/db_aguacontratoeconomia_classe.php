@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE aguacontratoeconomia
 class cl_aguacontratoeconomia { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $x38_sequencial = 0; 
-   var $x38_aguacontrato = 0; 
-   var $x38_cgm = 0; 
-   var $x38_aguacategoriaconsumo = 0; 
-   var $x38_datavalidadecadastro_dia = null; 
-   var $x38_datavalidadecadastro_mes = null; 
-   var $x38_datavalidadecadastro_ano = null; 
-   var $x38_datavalidadecadastro = null; 
-   var $x38_nis = null; 
-   var $x38_emitiroutrosdebitos = 'f'; 
-   var $x38_complemento = null; 
-   var $x38_observacoes = null; 
+   public $x38_sequencial = 0; 
+   public $x38_aguacontrato = 0; 
+   public $x38_cgm = 0; 
+   public $x38_aguacategoriaconsumo = 0; 
+   public $x38_datavalidadecadastro_dia = null; 
+   public $x38_datavalidadecadastro_mes = null; 
+   public $x38_datavalidadecadastro_ano = null; 
+   public $x38_datavalidadecadastro = null; 
+   public $x38_nis = null; 
+   public $x38_emitiroutrosdebitos = 'f'; 
+   public $x38_complemento = null; 
+   public $x38_observacoes = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  x38_sequencial = int4 = Código da Economia 
                  x38_aguacontrato = int4 = Código do Contrato 
                  x38_cgm = int4 = Nome/Razão Social 
@@ -67,10 +67,10 @@ class cl_aguacontratoeconomia {
                  x38_observacoes = varchar(200) = Observações 
                  ";
    //funcao construtor da classe 
-   function cl_aguacontratoeconomia() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("aguacontratoeconomia"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -122,10 +122,10 @@ class cl_aguacontratoeconomia {
          $this->erro_status = "0";
          return false; 
        }
-       $this->x38_sequencial = pg_result($result,0,0); 
+       $this->x38_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from aguacontratoeconomia_x38_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $x38_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $x38_sequencial)){
          $this->erro_sql = " Campo x38_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -169,7 +169,7 @@ class cl_aguacontratoeconomia {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Agua Contrato Economia ($this->x38_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Agua Contrato Economia já Cadastrado";
@@ -198,18 +198,18 @@ class cl_aguacontratoeconomia {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,22113,'$this->x38_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3983,22113,'','".AddSlashes(pg_result($resaco,0,'x38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3983,22114,'','".AddSlashes(pg_result($resaco,0,'x38_aguacontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3983,22115,'','".AddSlashes(pg_result($resaco,0,'x38_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3983,22116,'','".AddSlashes(pg_result($resaco,0,'x38_aguacategoriaconsumo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3983,22117,'','".AddSlashes(pg_result($resaco,0,'x38_datavalidadecadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3983,22118,'','".AddSlashes(pg_result($resaco,0,'x38_nis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3983,1009273,'','".AddSlashes(pg_result($resaco,0,'x38_emitiroutrosdebitos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3983,1009274,'','".AddSlashes(pg_result($resaco,0,'x38_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3983,1009393,'','".AddSlashes(pg_result($resaco,0,'x38_observacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3983,22113,'','".AddSlashes(pg_fetch_result($resaco,0,'x38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3983,22114,'','".AddSlashes(pg_fetch_result($resaco,0,'x38_aguacontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3983,22115,'','".AddSlashes(pg_fetch_result($resaco,0,'x38_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3983,22116,'','".AddSlashes(pg_fetch_result($resaco,0,'x38_aguacategoriaconsumo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3983,22117,'','".AddSlashes(pg_fetch_result($resaco,0,'x38_datavalidadecadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3983,22118,'','".AddSlashes(pg_fetch_result($resaco,0,'x38_nis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3983,1009273,'','".AddSlashes(pg_fetch_result($resaco,0,'x38_emitiroutrosdebitos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3983,1009274,'','".AddSlashes(pg_fetch_result($resaco,0,'x38_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3983,1009393,'','".AddSlashes(pg_fetch_result($resaco,0,'x38_observacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -219,10 +219,10 @@ class cl_aguacontratoeconomia {
 
      $sql = " update aguacontratoeconomia set ";
      $virgula = "";
-     if(trim($this->x38_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x38_sequencial"])){ 
+     if(trim((string) $this->x38_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x38_sequencial"])){ 
        $sql  .= $virgula." x38_sequencial = $this->x38_sequencial ";
        $virgula = ",";
-       if(trim($this->x38_sequencial) == null ){ 
+       if(trim((string) $this->x38_sequencial) == null ){ 
          $this->erro_sql = " Campo Código da Economia não informado.";
          $this->erro_campo = "x38_sequencial";
          $this->erro_banco = "";
@@ -233,10 +233,10 @@ class cl_aguacontratoeconomia {
        }
      }
 
-     if(trim($this->x38_aguacontrato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x38_aguacontrato"])){ 
+     if(trim((string) $this->x38_aguacontrato)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x38_aguacontrato"])){ 
        $sql  .= $virgula." x38_aguacontrato = $this->x38_aguacontrato ";
        $virgula = ",";
-       if(trim($this->x38_aguacontrato) == null ){ 
+       if(trim((string) $this->x38_aguacontrato) == null ){ 
          $this->erro_sql = " Campo Código do Contrato não informado.";
          $this->erro_campo = "x38_aguacontrato";
          $this->erro_banco = "";
@@ -247,10 +247,10 @@ class cl_aguacontratoeconomia {
        }
      }
 
-     if(trim($this->x38_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x38_cgm"])){ 
+     if(trim((string) $this->x38_cgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x38_cgm"])){ 
        $sql  .= $virgula." x38_cgm = $this->x38_cgm ";
        $virgula = ",";
-       if(trim($this->x38_cgm) == null ){ 
+       if(trim((string) $this->x38_cgm) == null ){ 
          $this->erro_sql = " Campo Nome/Razão Social não informado.";
          $this->erro_campo = "x38_cgm";
          $this->erro_banco = "";
@@ -261,10 +261,10 @@ class cl_aguacontratoeconomia {
        }
      }
 
-     if(trim($this->x38_aguacategoriaconsumo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x38_aguacategoriaconsumo"])){ 
+     if(trim((string) $this->x38_aguacategoriaconsumo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["x38_aguacategoriaconsumo"])){ 
        $sql  .= $virgula." x38_aguacategoriaconsumo = $this->x38_aguacategoriaconsumo ";
        $virgula = ",";
-       if(trim($this->x38_aguacategoriaconsumo) == null ){ 
+       if(trim((string) $this->x38_aguacategoriaconsumo) == null ){ 
          $this->erro_sql = " Campo Categoria de Consumo não informado.";
          $this->erro_campo = "x38_aguacategoriaconsumo";
          $this->erro_banco = "";
@@ -316,27 +316,27 @@ class cl_aguacontratoeconomia {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,22113,'$this->x38_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x38_sequencial"]) || $this->x38_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3983,22113,'".AddSlashes(pg_result($resaco,$conresaco,'x38_sequencial'))."','$this->x38_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3983,22113,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x38_sequencial'))."','$this->x38_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x38_aguacontrato"]) || $this->x38_aguacontrato != "")
-             $resac = db_query("insert into db_acount values($acount,3983,22114,'".AddSlashes(pg_result($resaco,$conresaco,'x38_aguacontrato'))."','$this->x38_aguacontrato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3983,22114,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x38_aguacontrato'))."','$this->x38_aguacontrato',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x38_cgm"]) || $this->x38_cgm != "")
-             $resac = db_query("insert into db_acount values($acount,3983,22115,'".AddSlashes(pg_result($resaco,$conresaco,'x38_cgm'))."','$this->x38_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3983,22115,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x38_cgm'))."','$this->x38_cgm',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x38_aguacategoriaconsumo"]) || $this->x38_aguacategoriaconsumo != "")
-             $resac = db_query("insert into db_acount values($acount,3983,22116,'".AddSlashes(pg_result($resaco,$conresaco,'x38_aguacategoriaconsumo'))."','$this->x38_aguacategoriaconsumo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3983,22116,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x38_aguacategoriaconsumo'))."','$this->x38_aguacategoriaconsumo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x38_datavalidadecadastro"]) || $this->x38_datavalidadecadastro != "")
-             $resac = db_query("insert into db_acount values($acount,3983,22117,'".AddSlashes(pg_result($resaco,$conresaco,'x38_datavalidadecadastro'))."','$this->x38_datavalidadecadastro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3983,22117,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x38_datavalidadecadastro'))."','$this->x38_datavalidadecadastro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x38_nis"]) || $this->x38_nis != "")
-             $resac = db_query("insert into db_acount values($acount,3983,22118,'".AddSlashes(pg_result($resaco,$conresaco,'x38_nis'))."','$this->x38_nis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3983,22118,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x38_nis'))."','$this->x38_nis',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x38_emitiroutrosdebitos"]) || $this->x38_emitiroutrosdebitos != "")
-             $resac = db_query("insert into db_acount values($acount,3983,1009273,'".AddSlashes(pg_result($resaco,$conresaco,'x38_emitiroutrosdebitos'))."','$this->x38_emitiroutrosdebitos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3983,1009273,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x38_emitiroutrosdebitos'))."','$this->x38_emitiroutrosdebitos',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x38_complemento"]) || $this->x38_complemento != "")
-             $resac = db_query("insert into db_acount values($acount,3983,1009274,'".AddSlashes(pg_result($resaco,$conresaco,'x38_complemento'))."','$this->x38_complemento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3983,1009274,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x38_complemento'))."','$this->x38_complemento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["x38_observacoes"]) || $this->x38_observacoes != "")
-             $resac = db_query("insert into db_acount values($acount,3983,1009393,'".AddSlashes(pg_result($resaco,$conresaco,'x38_observacoes'))."','$this->x38_observacoes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3983,1009393,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'x38_observacoes'))."','$this->x38_observacoes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -390,18 +390,18 @@ class cl_aguacontratoeconomia {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,22113,'$x38_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3983,22113,'','".AddSlashes(pg_result($resaco,$iresaco,'x38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3983,22114,'','".AddSlashes(pg_result($resaco,$iresaco,'x38_aguacontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3983,22115,'','".AddSlashes(pg_result($resaco,$iresaco,'x38_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3983,22116,'','".AddSlashes(pg_result($resaco,$iresaco,'x38_aguacategoriaconsumo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3983,22117,'','".AddSlashes(pg_result($resaco,$iresaco,'x38_datavalidadecadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3983,22118,'','".AddSlashes(pg_result($resaco,$iresaco,'x38_nis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3983,1009273,'','".AddSlashes(pg_result($resaco,$iresaco,'x38_emitiroutrosdebitos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3983,1009274,'','".AddSlashes(pg_result($resaco,$iresaco,'x38_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3983,1009393,'','".AddSlashes(pg_result($resaco,$iresaco,'x38_observacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3983,22113,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x38_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3983,22114,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x38_aguacontrato'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3983,22115,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x38_cgm'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3983,22116,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x38_aguacategoriaconsumo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3983,22117,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x38_datavalidadecadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3983,22118,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x38_nis'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3983,1009273,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x38_emitiroutrosdebitos'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3983,1009274,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x38_complemento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3983,1009393,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'x38_observacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }

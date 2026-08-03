@@ -55,7 +55,7 @@ abstract class RecadastramentoSQLUtils {
     if ( pg_num_rows($rsSql) == 0) {    
       return false;
     }
-    return  db_utils::fieldsMemory( $rsSql, 0 );
+    return  (new db_utils())->fieldsMemory($rsSql, 0);
   }
 
   /**
@@ -435,7 +435,7 @@ abstract class RecadastramentoSQLUtils {
     if ( pg_num_rows($rsSql) == 0 ) {
       return false;
     }
-    return db_utils::fieldsMemory($rsSql, 0);    
+    return (new db_utils())->fieldsMemory($rsSql, 0);    
   }
 
   /**
@@ -448,7 +448,7 @@ abstract class RecadastramentoSQLUtils {
    
     $oConexao = Conexao::getInstancia();
     
-    $aCamposRelacionados = array();
+    $aCamposRelacionados = [];
    
     foreach ( $oCampos as $sCampo => $sValor) {
       $aCamposRelacionados[] = " {$sCampo} = '{$sValor}'"; 

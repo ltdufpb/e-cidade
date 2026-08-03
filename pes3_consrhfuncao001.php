@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_sql.php"));
 require_once(modification("classes/db_rhregime_classe.php"));
   
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 $clrotulo = new rotulocampo;
 $clrotulo->label("rh37_funcao");
 $clrotulo->label("rh37_descr");
@@ -141,7 +141,7 @@ $clrhregime = new cl_rhregime;
                     <td align="center" colspan="2">
                       <?php
                       $result_regime = $clrhregime->sql_record($clrhregime->sql_query_file(null, "rh30_codreg, rh30_codreg||'-'||rh30_descr as rh30_descr", "rh30_descr" , " rh30_instit = ".db_getsession('DB_instit') ));
-                      db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, array(), 5, 250);
+                      db_multiploselect("rh30_codreg", "rh30_descr", "nselecionados", "sselecionados", $result_regime, [], 5, 250);
                       ?>
                     </td>
                   </tr>

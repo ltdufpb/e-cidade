@@ -32,8 +32,8 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_solicitem_classe.php"));
 include(modification("classes/db_pcparam_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-db_postmemory($HTTP_GET_VARS);
+db_postmemory($_POST);
+db_postmemory($_GET);
 $clsolicitem = new cl_solicitem;
 $clsolicitem1= new cl_solicitem;
 $clpcparam = new cl_pcparam;
@@ -70,8 +70,8 @@ $db_botao=true;
     <td align="left" nowrap>
     <?php 
       $desabilita = false;
-      $arr_numero = array();
-      $arr_index  = array();
+      $arr_numero = [];
+      $arr_index  = [];
      // die($clsolicitem->sql_query_pcmater(null,"distinct pc10_numero,pc10_data,pc10_resumo,descrdepto","pc10_numero"," pc10_correto='t'"));
       $sql_solicita = $clsolicitem->sql_record($clsolicitem->sql_query_pcmater(null,"distinct pc10_numero,pc10_data,pc10_resumo,descrdepto","pc10_numero"," pc10_correto='t' and pc11_liberado='f'"));
       for($i=0;$i<$clsolicitem->numrows;$i++){
@@ -101,7 +101,7 @@ $db_botao=true;
         }
 	$arr_numero[$pc10_numero] = $pc10_numero;
 	$arr_index[$pc10_numero]  = $i;
-	$arr_data = split("/",$pc10_data);
+	$arr_data = preg_split("#\\/#m",(string) $pc10_data);
 	$pc10_data_dia = $arr_data[0];
 	$pc10_data_mes = $arr_data[1];
 	$pc10_data_ano = $arr_data[2];
@@ -127,7 +127,7 @@ $db_botao=true;
 		}
 	      </script>";
 	db_fieldsmemory($sql_solicita,$arr_index[$cod]);
-	$arr_data = split("-",$pc10_data);
+	$arr_data = preg_split("#\\-#m",(string) $pc10_data);
 	$pc10_data_dia = $arr_data[2];
 	$pc10_data_mes = $arr_data[1];
 	$pc10_data_ano = $arr_data[0];

@@ -36,8 +36,8 @@ include(modification("classes/db_veicabast_classe.php"));
 include(modification("classes/db_veiculos_classe.php"));
 include(modification("classes/db_veictipoabast_classe.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clveicretirada  = new cl_veicretirada;
 $clveicmanut     = new cl_veicmanut;
@@ -150,7 +150,7 @@ if (isset($veiculo)&&$veiculo!="") {
 	       <td class='bordas_corp' align='center'><small>$ve26_descr </small></td>		    
 	       <td class='bordas_corp' align='center'><small>".db_formatar($ve70_dtabast,"d")."</small></td>		    
 	       <td class='bordas_corp' align='center'><small>$ve70_litros</small></td>		    
-	       <td class='bordas_corp' align='center'><small>".db_formatar($ve70_vlrun,"f","0",strlen($ve70_vlrun),"d",3)."</small></td>		    
+	       <td class='bordas_corp' align='center'><small>".db_formatar($ve70_vlrun,"f","0",strlen((string) $ve70_vlrun),"d",3)."</small></td>		    
 	       <td class='bordas_corp' align='center'><small>".db_formatar($ve70_valor,"f")."</small></td>		    
 	       <td class='bordas_corp' align='center'><small>$ve70_medida&nbsp;&nbsp;$ve07_sigla</small></td>
 		   <td class='bordas_corp' align='center'><small><a href='vei3_veicretirada002.php?codigo=$ve73_veicretirada' >$ve73_veicretirada</a> &nbsp;</small></td>

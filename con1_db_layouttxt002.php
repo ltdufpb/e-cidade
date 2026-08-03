@@ -55,9 +55,9 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("db_layouttxt"=>"Layout","db_layoutlinha"=>"Linhas","db_layoutcampos"=>"Campos"); 
-	 $clcriaabas->src = array("db_layouttxt"=>"con1_db_layouttxt005.php");
-	 $clcriaabas->disabled   =  array("db_layoutlinha"=>"true","db_layoutcampos"=>"true"); 
+	 $clcriaabas->identifica = ["db_layouttxt"=>"Layout","db_layoutlinha"=>"Linhas","db_layoutcampos"=>"Campos"]; 
+	 $clcriaabas->src = ["db_layouttxt"=>"con1_db_layouttxt005.php"];
+	 $clcriaabas->disabled   =  ["db_layoutlinha"=>"true","db_layoutcampos"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

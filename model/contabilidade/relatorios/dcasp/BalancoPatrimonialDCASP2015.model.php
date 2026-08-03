@@ -63,37 +63,37 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
      * Linhas do relatório referente ao quadro principal.
      * @var stdClass[]
      */
-    private $aQuadroPrincipal = array();
+    private $aQuadroPrincipal = [];
 
     /**
      * Linhas do relatório referente ao quadro de ativos e passivos.
      * @var stdClass[]
      */
-    private $aQuadroAtivosPassivos = array();
+    private $aQuadroAtivosPassivos = [];
 
     /**
      * Linhas do relatório referente ao quadro de contas de compensacao.
      * @var stdClass[]
      */
-    private $aQuadroContasCompensacao = array();
+    private $aQuadroContasCompensacao = [];
 
     /**
      * Linhas do relatório referente ao quadro do Superávit/Déficit Financeiro.
      * @var stdClass[]
      */
-    private $aQuadroSuperavitDeficit = array();
+    private $aQuadroSuperavitDeficit = [];
 
     /**
      * Identifica quais quadros devem ser exibidos.
      * @var array
      */
-    private $aRelatoriosExibir = array();
+    private $aRelatoriosExibir = [];
 
     /**
      * Identifica quais linhas são totalizadoras.
      * @var array
      */
-    private $aLinhasTotalizadoras = array(7, 18, 19, 28, 37, 47, 48, 52, 56, 57, 63, 69);
+    private $aLinhasTotalizadoras = [7, 18, 19, 28, 37, 47, 48, 52, 56, 57, 63, 69];
 
     /**
      * Nome da instituição a ser exibida no relatório.
@@ -412,13 +412,14 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
      * @return array
      * @throws Exception
      */
-    public function getDados()
+    #[\Override]
+    public function getDados($trazerConfiguracaoPadrao = \true)
     {
 
         if (!$this->exibirQuadroRelatorio(self::QUADRO_PRINCIPAL)
             && !$this->exibirQuadroRelatorio(self::QUADRO_ATIVOS_PASSIVOS)
             && !$this->exibirQuadroRelatorio(self::QUADRO_CONTAS_COMPENSACAO)) {
-            return array();
+            return [];
         }
 
         $sWhereBalanceteVerificacao = " c61_instit in ({$this->getInstituicoes()}) ";
@@ -489,13 +490,13 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
             if ($this->lExibirExercicioAnterior) {
                 RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteVerificacaoAnterior,
                     $oLinha,
-                    array($oColunaAnterior),
+                    [$oColunaAnterior],
                     RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO
                 );
             }
             RelatoriosLegaisBase::calcularValorDaLinha($rsBalanceteVerificacaoAtual,
                 $oLinha,
-                array($oColunaAtual),
+                [$oColunaAtual],
                 RelatoriosLegaisBase::TIPO_CALCULO_VERIFICACAO
             );
 
@@ -515,7 +516,7 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
     private function getSaldoPorRecurso($iAno)
     {
 
-        $aLinhas = array();
+        $aLinhas = [];
 
         $iDiaFinal = DBDate::getQuantidadeDiasMes($this->oPeriodo->o114_mesfinal, $iAno);
         $sDataInicial = "{$iAno}-01-01";
@@ -556,7 +557,7 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
 
             $rsResultado = db_query("select fc_saltessaldo($oRecursoConta->k13_conta,'$sDataInicial','$sDataFinal', null, {$oRecursoConta->c61_instit})");
 
-            $valores = pg_result($rsResultado, 0, 0);
+            $valores = pg_fetch_result($rsResultado, 0, 0);
             $valores = preg_split("/\s+/", $valores);
             if ($valores[0] == "1") {
                 $nTotalRecurso += (float)str_replace(",", "", $valores[4]);
@@ -582,11 +583,11 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
         $oDataInicial = new DBDate("{$iAno}-01-01");
         $oDataFinal = new DBDate("{$iAno}-{$this->oPeriodo->getMesFinal()}-{$iDiaFinal}");
 
-        $sWhereConta = implode(' and ', array(
+        $sWhereConta = implode(' and ', [
             "c60_estrut ilike '82111%'",
             "c61_anousu = {$iAno}",
             "c61_instit in ({$this->sListaInstit})"
-        ));
+        ]);
         $oDaoPlanoConta = new cl_conplanoreduz();
         $sSqlBuscaReduzido = $oDaoPlanoConta->sql_query(null, null,
             "array_to_string(array_accum(c61_reduz),',') as reduzidos", null, $sWhereConta);
@@ -598,20 +599,20 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
         $sReduzidos = db_utils::fieldsMemory($rsBuscaReduzido, 0)->reduzidos;
 
         $sWhereBetween = "c69_data between '{$oDataInicial->getDate(DBDate::DATA_EN)}' and '{$oDataFinal->getDate(DBDate::DATA_EN)}'";
-        $sWhereConta = implode(' and ', array(
+        $sWhereConta = implode(' and ', [
             "c19_reduz in ({$sReduzidos})",
             "c19_contacorrente in (" . DisponibilidadeFinanceira::CONTA_CORRENTE . "," . ContaCorrenteFonteRecurso::CONTA_CORRENTE . ")",
             "($sWhereBetween) or ((c69_valor is null and (c29_credito is not null or c29_debito is not null)))",
 
             // implantado.
-        ));
+        ]);
 
         // separado o group e reescrtito a sWhereConta , pois nao filtrava instituicao
         $sGroupBy = " group by o15_codigo, o15_descr, c29_credito, c29_debito, c19_sequencial";
         $sInstituicoes = $this->getInstituicoes();
         $sWhereConta = " c19_instit in ( {$sInstituicoes} ) and c19_conplanoreduzanousu = {$iAno} AND ({$sWhereConta}) {$sGroupBy} ";
 
-        $sCampos = implode(',', array(
+        $sCampos = implode(',', [
             "c19_sequencial",
             "o15_codigo as codigo_recurso",
             "o15_descr as descricao_recurso",
@@ -619,7 +620,7 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
             "sum(case when c28_tipo = 'D' then c69_valor else 0 end) valor_debito",
             "coalesce(c29_credito, 0) as valor_implantado_credito",
             "coalesce(c29_debito, 0) as valor_implantado_debito"
-        ));
+        ]);
 
         $oDaoContaCorrente = new cl_contacorrentedetalhe();
         $sSqlBuscaContas = $oDaoContaCorrente->sql_query_disponibilidade_financeira($sCampos, "o15_codigo",
@@ -630,7 +631,7 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
         }
 
         $iTotalRegistros = pg_num_rows($rsBuscaContas);
-        $aRecursos = array();
+        $aRecursos = [];
         for ($iRow = 0; $iRow < $iTotalRegistros; $iRow++) {
 
             $oStdConta = db_utils::fieldsMemory($rsBuscaContas, $iRow);
@@ -670,7 +671,7 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
     private function processaSuperavitDeficit($aDadosExercicioAtual, $aDadosExercicioAnterior)
     {
 
-        $aLinhas = array();
+        $aLinhas = [];
         $oLinhaTotalizado = new stdClass();
         $oLinhaTotalizado->descricao = "Total das Fontes de Recursos";
         $oLinhaTotalizado->vlrexatual = 0.0;
@@ -681,8 +682,8 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
         $oLinhaTotalizado->ordem = 0;
         $oLinhaTotalizado->nivel = 1;
 
-        $aRecursosAtual = array();
-        $aRecursosAnterior = array();
+        $aRecursosAtual = [];
+        $aRecursosAnterior = [];
 
         foreach ($aDadosExercicioAnterior as $oStdRecursoAnterior) {
             $aRecursosAnterior[$oStdRecursoAnterior->codigo] = $oStdRecursoAnterior;
@@ -723,13 +724,9 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
             }
         }
 
-        usort($aDadosExercicioAtual, function ($oItemA, $oItemB) {
-            return $oItemA->codigo - $oItemB->codigo;
-        });
+        usort($aDadosExercicioAtual, fn($oItemA, $oItemB) => $oItemA->codigo - $oItemB->codigo);
 
-        usort($aDadosExercicioAnterior, function ($oItemA, $oItemB) {
-            return $oItemA->codigo - $oItemB->codigo;
-        });
+        usort($aDadosExercicioAnterior, fn($oItemA, $oItemB) => $oItemA->codigo - $oItemB->codigo);
 
         foreach ($aDadosExercicioAtual as $oAtual) {
 
@@ -776,8 +773,8 @@ class BalancoPatrimonialDCASP2015 extends RelatoriosLegaisBase
         if (!$this->exibirQuadroRelatorio(self::QUADRO_SUPERAVIT)) {
             return false;
         }
-        $aDadosExercicioAtual = array();
-        $aDadosExercicioAnterior = array();
+        $aDadosExercicioAtual = [];
+        $aDadosExercicioAnterior = [];
 
         $sMetodoExercicioAtual = 'getSaldoPorRecurso';
         if ($this->iAnoUsu >= 2016) {

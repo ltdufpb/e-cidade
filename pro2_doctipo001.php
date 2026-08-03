@@ -99,7 +99,7 @@ include(modification("dbforms/db_classesgenericas.php"));
           <td align="left" >&nbsp;&nbsp;&nbsp; <strong>Opção de Seleção :<strong></td>
 	  <td align="left">
 	    <?php 
-	    $xxx = array("S"=>"Somente Selecionados","N"=>"Menos os Selecionados");
+	    $xxx = ["S"=>"Somente Selecionados","N"=>"Menos os Selecionados"];
 	    db_select('param_where',$xxx,true,2);
 	    ?>
 	  </td>
@@ -111,7 +111,7 @@ include(modification("dbforms/db_classesgenericas.php"));
           <td align="left">&nbsp;&nbsp;&nbsp; <strong>Ordem :<strong></td>
 	  <td align="left">
 	    <?php 
-	    $ordenar = array("p51_codigo"=>"Código do tipo de processo ","p51_descr"=>"Nome do processo");
+	    $ordenar = ["p51_codigo"=>"Código do tipo de processo ","p51_descr"=>"Nome do processo"];
 	    db_select('order',$ordenar,true,2);
 	    ?>
 	  </td>

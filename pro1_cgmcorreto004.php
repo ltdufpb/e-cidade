@@ -47,9 +47,9 @@ $clcriaabas = new cl_criaabas;
         <tr>
             <td>
                 <?php
-                $clcriaabas->identifica = array("cgmcorreto" => "CGM Correto", "cgmerrado" => "CGM Errado");
-                $clcriaabas->title = array("cgmcorreto" => "CGM CORRETO", "cgmerrado" => "CGM errado");
-                $clcriaabas->src = array("cgmcorreto" => "pro1_cgmcorreto001.php?abas=1", "cgmerrado" => "pro1_cgmerrado001.php");
+                $clcriaabas->identifica = ["cgmcorreto" => "CGM Correto", "cgmerrado" => "CGM Errado"];
+                $clcriaabas->title = ["cgmcorreto" => "CGM CORRETO", "cgmerrado" => "CGM errado"];
+                $clcriaabas->src = ["cgmcorreto" => "pro1_cgmcorreto001.php?abas=1", "cgmerrado" => "pro1_cgmerrado001.php"];
                 $clcriaabas->cria_abas();
                 ?>
             </td>

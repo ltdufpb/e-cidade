@@ -10,12 +10,12 @@ class Data extends PackageMetadata {
   /**
    * @var array
    */
-  private $modifications = array();
+  private $modifications = [];
 
   /**
    * @var array
    */
-  private $events = array();
+  private $events = [];
 
   /**
    * @var string
@@ -54,7 +54,7 @@ class Data extends PackageMetadata {
   public function addEvent($event, $triggers) {
 
     if (!is_array($triggers)) {
-      $triggers = array($triggers);
+      $triggers = [$triggers];
     }
 
     foreach ($triggers as $trigger) {

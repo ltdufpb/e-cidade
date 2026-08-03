@@ -86,7 +86,7 @@ $oPdf->cell(30, 4, 'Registros Inseridos', 1, 1, 'C', 1);
 $iTam = count($aFile);
 for ($iCont = 0; $iCont < $iTam; $iCont++){
 	
-	$aConf = explode('|', $aFile[$iCont]);
+	$aConf = explode('|', (string) $aFile[$iCont]);
 	
 	$oPdf->setfont('arial','',7);
 	$oPdf->cell(90, 4, $aConf[0], 1, 0, 'L', 0);

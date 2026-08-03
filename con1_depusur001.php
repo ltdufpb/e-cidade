@@ -30,8 +30,8 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-if (isset($HTTP_POST_VARS["incluir"])) {
-  db_postmemory($HTTP_POST_VARS); 
+if (isset($_POST["incluir"])) {
+  db_postmemory($_POST); 
   db_query("begin");
   db_query("delete from db_depusu where id_usuario = $usuarios ") or die("Erro (10). Excluindo db_depusu.");
   if (isset($depto)) {

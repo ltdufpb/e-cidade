@@ -12,16 +12,14 @@ use stdClass;
 
 class IncosistenciasSaidaMaterialPDF extends Pdf
 {
-    /**
-     * @var []
-     */
-    private $dados = [];
     private $depositos = [];
 
-    public function __construct($dados)
+    public function __construct(/**
+     * @var []
+     */
+    private $dados)
     {
         parent::__construct('P');
-        $this->dados = $dados;
         $this->addTitulo("");
         $this->addTitulo("INCOSISTÊNCIAS SAÍDA MATERIAL");
         $this->addTitulo("");

@@ -104,7 +104,7 @@ class SigfisArquivoEspecialidade extends SigfisArquivoBase implements iPadArquiv
           
         $oDados      = new stdClass();
 //        $UnidadeOrcamentaria  = str_pad($oDadosQuery->o58_orgao, 2, '0', STR_PAD_LEFT);
-        $UnidadeOrcamentaria = str_pad($oDadosQuery->o58_unidade, 4, ' ', STR_PAD_LEFT);
+        $UnidadeOrcamentaria = str_pad((string) $oDadosQuery->o58_unidade, 4, ' ', STR_PAD_LEFT);
      
 
 
@@ -115,13 +115,13 @@ class SigfisArquivoEspecialidade extends SigfisArquivoBase implements iPadArquiv
            continue;
         }
 
-        $oDados->Cd_Unidade              = str_pad($this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
+        $oDados->Cd_Unidade              = str_pad((string) $this->sCodigoTribunal,    4, ' ', STR_PAD_LEFT);
         $oDados->Dt_Ano                  = $oDadosQuery->ano;
-        $oDados->Nu_Empenho              = str_pad($oDadosQuery->e60_codemp, 10, ' ', STR_PAD_RIGHT);
+        $oDados->Nu_Empenho              = str_pad((string) $oDadosQuery->e60_codemp, 10, ' ', STR_PAD_RIGHT);
         $oDados->cd_UnidadeOrcamentaria  = str_pad($UnidadeOrcamentaria,      4, ' ', STR_PAD_LEFT);
-        $oDados->cd_Orgao                = str_pad($oDadosQuery->o58_orgao,   4, ' ', STR_PAD_LEFT);
-        $oDados->Dt_Mov                  = str_pad($this->formataData($oDadosQuery->c70_data), 8, '0', STR_PAD_LEFT);
-        $oDados->dt_AnoMes               = str_pad($oDadosQuery->competencia, 6, ' ', STR_PAD_RIGHT);
+        $oDados->cd_Orgao                = str_pad((string) $oDadosQuery->o58_orgao,   4, ' ', STR_PAD_LEFT);
+        $oDados->Dt_Mov                  = str_pad((string) $this->formataData($oDadosQuery->c70_data), 8, '0', STR_PAD_LEFT);
+        $oDados->dt_AnoMes               = str_pad((string) $oDadosQuery->competencia, 6, ' ', STR_PAD_RIGHT);
         $oDados->tp_Mov                  = $oDadosQuery->tipo_movimento;
         $oDados->VL_PAGCANC_RPP          = str_pad($this->formataValor($oDadosQuery->valor_processado), 16, '0', STR_PAD_LEFT);
         $oDados->VL_PAGCANC_RPNP         = str_pad($this->formataValor($oDadosQuery->valor_nao_processado), 16, '0', STR_PAD_LEFT);

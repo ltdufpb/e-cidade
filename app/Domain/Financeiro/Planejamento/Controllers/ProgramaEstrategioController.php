@@ -41,14 +41,8 @@ use Illuminate\Http\Request;
 class ProgramaEstrategioController extends Controller
 {
 
-    /**
-     * @var ProgramaEstrategicoService
-     */
-    private $service;
-
-    public function __construct(ProgramaEstrategicoService $service)
+    public function __construct(private readonly ProgramaEstrategicoService $service)
     {
-        $this->service = $service;
     }
 
     /**

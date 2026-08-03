@@ -56,23 +56,23 @@ $db_opcao    = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php       
-       $clcriaabas->identifica  = array("tipogrupoprograma"=>"Grupo",
+       $clcriaabas->identifica  = ["tipogrupoprograma"=>"Grupo",
                                         "tipogrupoprogramaprocdoc"=>"Documentos",
-                                        "formaavaliacao"=>"Avaliações Obrigatórias");
+                                        "formaavaliacao"=>"Avaliações Obrigatórias"];
        
-       $clcriaabas->title       = array("tipogrupoprograma"=>"Grupo",
+       $clcriaabas->title       = ["tipogrupoprograma"=>"Grupo",
                                         "tipogrupoprogramaprocdoc"=>"Documentos",
-                                        "formaavaliacao"=>"Avaliações Obrigatórias");
+                                        "formaavaliacao"=>"Avaliações Obrigatórias"];
         
-       $clcriaabas->src         = array("tipogrupoprograma"=>"hab1_tipogrupoprograma005.php");
+       $clcriaabas->src         = ["tipogrupoprograma"=>"hab1_tipogrupoprograma005.php"];
        
-       $clcriaabas->sizecampo   = array("tipogrupoprograma"=>"23",
+       $clcriaabas->sizecampo   = ["tipogrupoprograma"=>"23",
                                         "tipogrupoprogramaprocdoc"=>"23",
-                                        "formaavaliacao"=>"23");
+                                        "formaavaliacao"=>"23"];
        
-       $clcriaabas->disabled    = array("tipogrupoprograma"=>"true",
+       $clcriaabas->disabled    = ["tipogrupoprograma"=>"true",
                                         "tipogrupoprogramaprocdoc"=>"true",
-                                        "formaavaliacao"=>"true");
+                                        "formaavaliacao"=>"true"];
         
        $clcriaabas->cria_abas(); 
      ?> 

@@ -42,13 +42,13 @@ function formataData($dData, $iTipo = 1) {
 
   if ($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
 
   }
 
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = @$dData[2].'/'.@$dData[1].'/'.@$dData[0];
 
  return $dData;
@@ -91,7 +91,7 @@ if ($oParam->exec == 'transferirAgendamentos') {
       $oRetorno->sMessage = urlencode($oDaoAgendamentos->erro_msg);
       $lErroTransacao     = true;
     }
-    
+
     /*Inclusão código Plugin SMS Transferência de Consulta - NÃO APAGAR*/
 
   }
@@ -113,7 +113,7 @@ if ($oParam->exec == 'transferirAgendamentos') {
   $lAgendaLiberada = true;
   $lHorarioOcupado = false;
   $iUpssolicitante = db_getsession("DB_coddepto");
-  $vet             = explode('/', $oParam->sd23_d_consulta);
+  $vet             = explode('/', (string) $oParam->sd23_d_consulta);
   $clagendamentos  = new cl_agendamentos_ext;
 
   if ($iUpssolicitante != $oParam->sd02_i_codigo) {
@@ -230,8 +230,8 @@ if ($oParam->exec == 'transferirAgendamentos') {
 
       //gera numatend
       $sSql        = "select fc_numatend()";
-      $rsResult    = db_query($sSql) or die (pg_errormessage());
-      $fc_numatend = explode(",", pg_result($rsResult, 0, 0));
+      $rsResult    = db_query($sSql) or die (pg_last_error());
+      $fc_numatend = explode(",", pg_fetch_result($rsResult, 0, 0));
 
       //incluir FAA
       $oDaoProntuarios->sd24_i_ano             = trim ( $fc_numatend [0] );
@@ -308,7 +308,7 @@ if ($oParam->exec == 'transferirAgendamentos') {
 } elseif ($oParam->exec == 'marcarPresencaAgendamentos') {
 
   $oDaoAgendamentos = db_utils::getdao('agendamentos');
-  $aAgendamentos    = explode(',', $oParam->sAgendamentos);
+  $aAgendamentos    = explode(',', (string) $oParam->sAgendamentos);
 
   db_inicio_transacao();
   $iTam             = count($aAgendamentos);
@@ -329,7 +329,7 @@ if ($oParam->exec == 'transferirAgendamentos') {
 
   }
 
-  $oRetorno->sMessage = urlencode($oDaoAgendamentos->erro_msg);
+  $oRetorno->sMessage = urlencode((string) $oDaoAgendamentos->erro_msg);
 
   db_fim_transacao($oDaoAgendamentos->erro_status == '0' ? true : false);
 
@@ -354,7 +354,7 @@ if ($oParam->exec == 'transferirAgendamentos') {
 
   }
 
-  $oRetorno->sMessage = urlencode($oDaoAgendamentos->erro_msg);
+  $oRetorno->sMessage = urlencode((string) $oDaoAgendamentos->erro_msg);
 
   db_fim_transacao($oDaoAgendamentos->erro_status == '0' ? true : false);
 

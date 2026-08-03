@@ -34,8 +34,8 @@ require_once(modification("classes/db_tabdescarretipo_classe.php"));
 require_once(modification("classes/db_tabdesccadban_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_SERVER);
+db_postmemory($_POST);
 
 $cltabdesc             = new cl_tabdesc;
 $cltabdescarretipo     = new cl_tabdescarretipo;

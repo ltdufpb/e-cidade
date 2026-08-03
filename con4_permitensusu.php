@@ -44,12 +44,12 @@ try {
     $anoSistema = db_getsession('DB_anousu');
     $rsPerfisInstituicaoSelecionados = '';
 
-    $wherePerfisInstituicao = array(
+    $wherePerfisInstituicao = [
         "usuext = 2",
         "u.id_usuario <> {$parametros->usuario}",
         "i.id_instit = {$codigoInstituicaoSessao}",
         "usuarioativo <> 0"
-    );
+    ];
 
     $wherePerfisInstituicao = implode(' AND ', $wherePerfisInstituicao);
 
@@ -62,7 +62,7 @@ try {
     ";
 
     $rsPerfisInstituicao = db_query($sqlPerfisInstituicao);
-    $perfisInstituicao = array();
+    $perfisInstituicao = [];
 
     while ($rsPerfil = pg_fetch_object($rsPerfisInstituicao)) {
         $perfisInstituicao[] = $rsPerfil;
@@ -71,16 +71,14 @@ try {
     if (isset($parametros->salvar)) {
         db_inicio_transacao();
 
-        $codigosPerfisInstituicao = implode(', ', array_map(function ($perfilInstituicao) {
-            return $perfilInstituicao->id_usuario;
-        }, $perfisInstituicao));
+        $codigosPerfisInstituicao = implode(', ', array_map(fn($perfilInstituicao) => $perfilInstituicao->id_usuario, $perfisInstituicao));
 
         $mensagem = 'Alteração realizada com sucesso!';
         $sCamposPermHerda = "db_permherda.id_usuario AS usuario, db_permherda.id_perfil AS perfil";
 
-        $sWherePermHerda = array(
+        $sWherePermHerda = [
             "db_permherda.id_usuario = {$parametros->usuario}"
-        );
+        ];
 
         if ($codigosPerfisInstituicao) {
             $sWherePermHerda[] = "db_permherda.id_perfil IN ({$codigosPerfisInstituicao})";
@@ -102,10 +100,10 @@ try {
 
         if (pg_num_rows($rsPermHerda) > 0) {
             while ($oDadosPermHerda = pg_fetch_object($rsPermHerda)) {
-                $sWherePermHerda = array(
+                $sWherePermHerda = [
                     "id_usuario = {$oDadosPermHerda->usuario}",
                     "id_perfil = {$oDadosPermHerda->perfil}"
-                );
+                ];
 
                 $oDaoPermHerda->excluir(null, null, implode(' AND ', $sWherePermHerda));
 

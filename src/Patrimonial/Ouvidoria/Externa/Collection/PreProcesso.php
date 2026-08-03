@@ -38,7 +38,7 @@ class PreProcesso
     /**
      * @var PreProcessoModel[]
      */
-    private $colecao = array();
+    private $colecao = [];
 
     /**
      * @param PreProcessoModel $preProcesso

@@ -81,7 +81,7 @@ unset($_SESSION['sqlGerador']);
 	                   	  
 	                   	 foreach ( $aLinhas as $iIndCampo => $sValorCampo ) {
 	                   	 	
-			                   if ( trim($sValorCampo) == '' ) {
+			                   if ( trim((string) $sValorCampo) == '' ) {
 			                   	 $sValorCampo = '&nbsp;'; 
 			                   }
 	                   	 	 

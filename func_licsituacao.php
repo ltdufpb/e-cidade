@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_licsituacao_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cllicsituacao = new cl_licsituacao;
 $cllicsituacao->rotulo->label("l08_sequencial");
 $cllicsituacao->rotulo->label("l08_descr");
@@ -98,9 +98,9 @@ $cllicsituacao->rotulo->label("l08_descr");
         }else{
            $sql = $cllicsituacao->sql_query("",$campos,"l08_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_l08_descr)){
-          $repassa = array("chave_l08_sequencial"=>$chave_l08_sequencial,"chave_l08_descr"=>$chave_l08_descr);
+          $repassa = ["chave_l08_sequencial"=>$chave_l08_sequencial,"chave_l08_descr"=>$chave_l08_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

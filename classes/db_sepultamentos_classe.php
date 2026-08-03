@@ -29,49 +29,49 @@
 //CLASSE DA ENTIDADE sepultamentos
 class cl_sepultamentos {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $cm01_i_codigo = 0;
-   var $cm01_i_medico = 0;
-   var $cm01_i_hospital = 0;
-   var $cm01_i_funeraria = 0;
-   var $cm01_i_causa = 0;
-   var $cm01_i_funcionario = 0;
-   var $cm01_i_cemiterio = 0;
-   var $cm01_i_declarante = 0;
-   var $cm01_c_conjuge = null;
-   var $cm01_c_cor = null;
-   var $cm01_d_falecimento_dia = null;
-   var $cm01_d_falecimento_mes = null;
-   var $cm01_d_falecimento_ano = null;
-   var $cm01_d_falecimento = null;
-   var $cm01_c_local = null;
-   var $cm01_c_cartorio = null;
-   var $cm01_c_livro = null;
-   var $cm01_i_folha = 0;
-   var $cm01_i_registro = 0;
-   var $cm01_d_cadastro_dia = null;
-   var $cm01_d_cadastro_mes = null;
-   var $cm01_d_cadastro_ano = null;
-   var $cm01_d_cadastro = null;
-   var $cm01_c_sexo = null;
-   var $cm01_observacoes = null;
-   var $cm01_c_nomemedico = null;
-   var $cm01_c_nomehospital = null;
-   var $cm01_c_nomefuneraria = null;
+   public $cm01_i_codigo = 0;
+   public $cm01_i_medico = 0;
+   public $cm01_i_hospital = 0;
+   public $cm01_i_funeraria = 0;
+   public $cm01_i_causa = 0;
+   public $cm01_i_funcionario = 0;
+   public $cm01_i_cemiterio = 0;
+   public $cm01_i_declarante = 0;
+   public $cm01_c_conjuge = null;
+   public $cm01_c_cor = null;
+   public $cm01_d_falecimento_dia = null;
+   public $cm01_d_falecimento_mes = null;
+   public $cm01_d_falecimento_ano = null;
+   public $cm01_d_falecimento = null;
+   public $cm01_c_local = null;
+   public $cm01_c_cartorio = null;
+   public $cm01_c_livro = null;
+   public $cm01_i_folha = 0;
+   public $cm01_i_registro = 0;
+   public $cm01_d_cadastro_dia = null;
+   public $cm01_d_cadastro_mes = null;
+   public $cm01_d_cadastro_ano = null;
+   public $cm01_d_cadastro = null;
+   public $cm01_c_sexo = null;
+   public $cm01_observacoes = null;
+   public $cm01_c_nomemedico = null;
+   public $cm01_c_nomehospital = null;
+   public $cm01_c_nomefuneraria = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  cm01_i_codigo = int4 = Sepultado
                  cm01_i_medico = int4 = Médico
                  cm01_i_hospital = int4 = Hospital
@@ -96,10 +96,10 @@ class cl_sepultamentos {
                  cm01_c_nomefuneraria = varchar(60) = Funerária
                  ";
    //funcao construtor da classe
-   function cl_sepultamentos() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sepultamentos");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -317,7 +317,7 @@ class cl_sepultamentos {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Sepultamentos ($this->cm01_i_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Sepultamentos já Cadastrado";
@@ -346,31 +346,31 @@ class cl_sepultamentos {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10387,'$this->cm01_i_codigo','I')");
-         $resac = db_query("insert into db_acount values($acount,1797,10387,'','".AddSlashes(pg_result($resaco,0,'cm01_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10388,'','".AddSlashes(pg_result($resaco,0,'cm01_i_medico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10389,'','".AddSlashes(pg_result($resaco,0,'cm01_i_hospital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10390,'','".AddSlashes(pg_result($resaco,0,'cm01_i_funeraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10391,'','".AddSlashes(pg_result($resaco,0,'cm01_i_causa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10392,'','".AddSlashes(pg_result($resaco,0,'cm01_i_funcionario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10393,'','".AddSlashes(pg_result($resaco,0,'cm01_i_cemiterio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10394,'','".AddSlashes(pg_result($resaco,0,'cm01_i_declarante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10395,'','".AddSlashes(pg_result($resaco,0,'cm01_c_conjuge'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10396,'','".AddSlashes(pg_result($resaco,0,'cm01_c_cor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10397,'','".AddSlashes(pg_result($resaco,0,'cm01_d_falecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10398,'','".AddSlashes(pg_result($resaco,0,'cm01_c_local'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10399,'','".AddSlashes(pg_result($resaco,0,'cm01_c_cartorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10400,'','".AddSlashes(pg_result($resaco,0,'cm01_c_livro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10401,'','".AddSlashes(pg_result($resaco,0,'cm01_i_folha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10402,'','".AddSlashes(pg_result($resaco,0,'cm01_i_registro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10403,'','".AddSlashes(pg_result($resaco,0,'cm01_d_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,10404,'','".AddSlashes(pg_result($resaco,0,'cm01_c_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,20278,'','".AddSlashes(pg_result($resaco,0,'cm01_observacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,22424,'','".AddSlashes(pg_result($resaco,0,'cm01_c_nomemedico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,22425,'','".AddSlashes(pg_result($resaco,0,'cm01_c_nomehospital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1797,22426,'','".AddSlashes(pg_result($resaco,0,'cm01_c_nomefuneraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10387,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10388,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_i_medico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10389,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_i_hospital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10390,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_i_funeraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10391,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_i_causa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10392,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_i_funcionario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10393,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_i_cemiterio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10394,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_i_declarante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10395,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_c_conjuge'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10396,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_c_cor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10397,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_d_falecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10398,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_c_local'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10399,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_c_cartorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10400,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_c_livro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10401,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_i_folha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10402,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_i_registro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10403,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_d_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,10404,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_c_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,20278,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_observacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,22424,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_c_nomemedico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,22425,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_c_nomehospital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1797,22426,'','".AddSlashes(pg_fetch_result($resaco,0,'cm01_c_nomefuneraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -380,10 +380,10 @@ class cl_sepultamentos {
       $this->atualizacampos();
      $sql = " update sepultamentos set ";
      $virgula = "";
-     if(trim($this->cm01_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_codigo"])){
+     if(trim((string) $this->cm01_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_codigo"])){
        $sql  .= $virgula." cm01_i_codigo = $this->cm01_i_codigo ";
        $virgula = ",";
-       if(trim($this->cm01_i_codigo) == null ){
+       if(trim((string) $this->cm01_i_codigo) == null ){
          $this->erro_sql = " Campo Sepultado não informado.";
          $this->erro_campo = "cm01_i_codigo";
          $this->erro_banco = "";
@@ -439,10 +439,10 @@ class cl_sepultamentos {
       $sql .= $virgula." cm01_i_funeraria = $iFuneraria ";
       $virgula = ",";
 
-      if(trim($this->cm01_i_causa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_causa"])){
+      if(trim((string) $this->cm01_i_causa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_causa"])){
        $sql  .= $virgula." cm01_i_causa = $this->cm01_i_causa ";
        $virgula = ",";
-       if(trim($this->cm01_i_causa) == null ){
+       if(trim((string) $this->cm01_i_causa) == null ){
          $this->erro_sql = " Campo Causa não informado.";
          $this->erro_campo = "cm01_i_causa";
          $this->erro_banco = "";
@@ -453,10 +453,10 @@ class cl_sepultamentos {
        }
       }
 
-      if(trim($this->cm01_i_funcionario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_funcionario"])){
+      if(trim((string) $this->cm01_i_funcionario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_funcionario"])){
        $sql  .= $virgula." cm01_i_funcionario = $this->cm01_i_funcionario ";
        $virgula = ",";
-       if(trim($this->cm01_i_funcionario) == null ){
+       if(trim((string) $this->cm01_i_funcionario) == null ){
          $this->erro_sql = " Campo Funcionário não informado.";
          $this->erro_campo = "cm01_i_funcionario";
          $this->erro_banco = "";
@@ -467,10 +467,10 @@ class cl_sepultamentos {
        }
       }
 
-     if(trim($this->cm01_i_cemiterio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_cemiterio"])){
+     if(trim((string) $this->cm01_i_cemiterio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_cemiterio"])){
        $sql  .= $virgula." cm01_i_cemiterio = $this->cm01_i_cemiterio ";
        $virgula = ",";
-       if(trim($this->cm01_i_cemiterio) == null ){
+       if(trim((string) $this->cm01_i_cemiterio) == null ){
          $this->erro_sql = " Campo Cemitério não informado.";
          $this->erro_campo = "cm01_i_cemiterio";
          $this->erro_banco = "";
@@ -480,10 +480,10 @@ class cl_sepultamentos {
          return false;
        }
      }
-     if(trim($this->cm01_i_declarante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_declarante"])){
+     if(trim((string) $this->cm01_i_declarante)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_declarante"])){
        $sql  .= $virgula." cm01_i_declarante = $this->cm01_i_declarante ";
        $virgula = ",";
-       if(trim($this->cm01_i_declarante) == null ){
+       if(trim((string) $this->cm01_i_declarante) == null ){
          $this->erro_sql = " Campo Declarante não informado.";
          $this->erro_campo = "cm01_i_declarante";
          $this->erro_banco = "";
@@ -493,14 +493,14 @@ class cl_sepultamentos {
          return false;
        }
      }
-     if(trim($this->cm01_c_conjuge)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_conjuge"])){
+     if(trim((string) $this->cm01_c_conjuge)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_conjuge"])){
        $sql  .= $virgula." cm01_c_conjuge = '$this->cm01_c_conjuge' ";
        $virgula = ",";
      }
-     if(trim($this->cm01_c_cor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_cor"])){
+     if(trim((string) $this->cm01_c_cor)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_cor"])){
        $sql  .= $virgula." cm01_c_cor = '$this->cm01_c_cor' ";
        $virgula = ",";
-       if(trim($this->cm01_c_cor) == null ){
+       if(trim((string) $this->cm01_c_cor) == null ){
          $this->erro_sql = " Campo Etnia não informado.";
          $this->erro_campo = "cm01_c_cor";
          $this->erro_banco = "";
@@ -510,10 +510,10 @@ class cl_sepultamentos {
          return false;
        }
      }
-     if(trim($this->cm01_d_falecimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_d_falecimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm01_d_falecimento_dia"] !="") ){
+     if(trim((string) $this->cm01_d_falecimento)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_d_falecimento_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm01_d_falecimento_dia"] !="") ){
        $sql  .= $virgula." cm01_d_falecimento = '$this->cm01_d_falecimento' ";
        $virgula = ",";
-       if(trim($this->cm01_d_falecimento) == null ){
+       if(trim((string) $this->cm01_d_falecimento) == null ){
          $this->erro_sql = " Campo Falecimento não informado.";
          $this->erro_campo = "cm01_d_falecimento_dia";
          $this->erro_banco = "";
@@ -526,7 +526,7 @@ class cl_sepultamentos {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm01_d_falecimento_dia"])){
          $sql  .= $virgula." cm01_d_falecimento = null ";
          $virgula = ",";
-         if(trim($this->cm01_d_falecimento) == null ){
+         if(trim((string) $this->cm01_d_falecimento) == null ){
            $this->erro_sql = " Campo Falecimento não informado.";
            $this->erro_campo = "cm01_d_falecimento_dia";
            $this->erro_banco = "";
@@ -537,10 +537,10 @@ class cl_sepultamentos {
          }
        }
      }
-     if(trim($this->cm01_c_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_local"])){
+     if(trim((string) $this->cm01_c_local)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_local"])){
        $sql  .= $virgula." cm01_c_local = '$this->cm01_c_local' ";
        $virgula = ",";
-       if(trim($this->cm01_c_local) == null ){
+       if(trim((string) $this->cm01_c_local) == null ){
          $this->erro_sql = " Campo Local não informado.";
          $this->erro_campo = "cm01_c_local";
          $this->erro_banco = "";
@@ -550,10 +550,10 @@ class cl_sepultamentos {
          return false;
        }
      }
-     if(trim($this->cm01_c_cartorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_cartorio"])){
+     if(trim((string) $this->cm01_c_cartorio)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_cartorio"])){
        $sql  .= $virgula." cm01_c_cartorio = '$this->cm01_c_cartorio' ";
        $virgula = ",";
-       if(trim($this->cm01_c_cartorio) == null ){
+       if(trim((string) $this->cm01_c_cartorio) == null ){
          $this->erro_sql = " Campo Cartório não informado.";
          $this->erro_campo = "cm01_c_cartorio";
          $this->erro_banco = "";
@@ -563,14 +563,14 @@ class cl_sepultamentos {
          return false;
        }
      }
-     if(trim($this->cm01_c_livro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_livro"])){
+     if(trim((string) $this->cm01_c_livro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_livro"])){
 
       $sLivro = "'".$this->cm01_c_livro."'";
 
        $sql  .= $virgula." cm01_c_livro = $sLivro ";
        $virgula = ",";
      }
-     if(trim($this->cm01_i_folha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_folha"])){
+     if(trim((string) $this->cm01_i_folha)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_folha"])){
 
       $sFolha = $this->cm01_i_folha;
 
@@ -581,7 +581,7 @@ class cl_sepultamentos {
        $sql  .= $virgula." cm01_i_folha = $sFolha ";
        $virgula = ",";
      }
-     if(trim($this->cm01_i_registro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_registro"])){
+     if(trim((string) $this->cm01_i_registro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_registro"])){
 
       $sRegistro = $this->cm01_i_registro;
 
@@ -592,10 +592,10 @@ class cl_sepultamentos {
        $sql  .= $virgula." cm01_i_registro = $sRegistro ";
        $virgula = ",";
      }
-     if(trim($this->cm01_d_cadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_d_cadastro_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm01_d_cadastro_dia"] !="") ){
+     if(trim((string) $this->cm01_d_cadastro)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_d_cadastro_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["cm01_d_cadastro_dia"] !="") ){
        $sql  .= $virgula." cm01_d_cadastro = '$this->cm01_d_cadastro' ";
        $virgula = ",";
-       if(trim($this->cm01_d_cadastro) == null ){
+       if(trim((string) $this->cm01_d_cadastro) == null ){
          $this->erro_sql = " Campo Cadastro não informado.";
          $this->erro_campo = "cm01_d_cadastro_dia";
          $this->erro_banco = "";
@@ -608,7 +608,7 @@ class cl_sepultamentos {
        if(isset($GLOBALS["HTTP_POST_VARS"]["cm01_d_cadastro_dia"])){
          $sql  .= $virgula." cm01_d_cadastro = null ";
          $virgula = ",";
-         if(trim($this->cm01_d_cadastro) == null ){
+         if(trim((string) $this->cm01_d_cadastro) == null ){
            $this->erro_sql = " Campo Cadastro não informado.";
            $this->erro_campo = "cm01_d_cadastro_dia";
            $this->erro_banco = "";
@@ -619,11 +619,11 @@ class cl_sepultamentos {
          }
        }
      }
-     if(trim($this->cm01_c_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_sexo"])){
+     if(trim((string) $this->cm01_c_sexo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_sexo"])){
        $sql  .= $virgula." cm01_c_sexo = '$this->cm01_c_sexo' ";
        $virgula = ",";
      }
-     if(trim($this->cm01_observacoes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_observacoes"])){
+     if(trim((string) $this->cm01_observacoes)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cm01_observacoes"])){
        $sql  .= $virgula." cm01_observacoes = '$this->cm01_observacoes' ";
        $virgula = ",";
      }
@@ -642,53 +642,53 @@ class cl_sepultamentos {
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,10387,'$this->cm01_i_codigo','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_codigo"]) || $this->cm01_i_codigo != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10387,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_i_codigo'))."','$this->cm01_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10387,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_i_codigo'))."','$this->cm01_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_medico"]) || $this->cm01_i_medico != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10388,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_i_medico'))."','$this->cm01_i_medico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10388,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_i_medico'))."','$this->cm01_i_medico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_hospital"]) || $this->cm01_i_hospital != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10389,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_i_hospital'))."','$this->cm01_i_hospital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10389,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_i_hospital'))."','$this->cm01_i_hospital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_funeraria"]) || $this->cm01_i_funeraria != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10390,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_i_funeraria'))."','$this->cm01_i_funeraria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10390,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_i_funeraria'))."','$this->cm01_i_funeraria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_causa"]) || $this->cm01_i_causa != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10391,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_i_causa'))."','$this->cm01_i_causa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10391,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_i_causa'))."','$this->cm01_i_causa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_funcionario"]) || $this->cm01_i_funcionario != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10392,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_i_funcionario'))."','$this->cm01_i_funcionario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10392,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_i_funcionario'))."','$this->cm01_i_funcionario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_cemiterio"]) || $this->cm01_i_cemiterio != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10393,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_i_cemiterio'))."','$this->cm01_i_cemiterio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10393,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_i_cemiterio'))."','$this->cm01_i_cemiterio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_declarante"]) || $this->cm01_i_declarante != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10394,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_i_declarante'))."','$this->cm01_i_declarante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10394,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_i_declarante'))."','$this->cm01_i_declarante',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_conjuge"]) || $this->cm01_c_conjuge != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10395,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_c_conjuge'))."','$this->cm01_c_conjuge',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10395,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_c_conjuge'))."','$this->cm01_c_conjuge',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_cor"]) || $this->cm01_c_cor != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10396,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_c_cor'))."','$this->cm01_c_cor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10396,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_c_cor'))."','$this->cm01_c_cor',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_d_falecimento"]) || $this->cm01_d_falecimento != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10397,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_d_falecimento'))."','$this->cm01_d_falecimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10397,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_d_falecimento'))."','$this->cm01_d_falecimento',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_local"]) || $this->cm01_c_local != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10398,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_c_local'))."','$this->cm01_c_local',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10398,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_c_local'))."','$this->cm01_c_local',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_cartorio"]) || $this->cm01_c_cartorio != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10399,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_c_cartorio'))."','$this->cm01_c_cartorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10399,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_c_cartorio'))."','$this->cm01_c_cartorio',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_livro"]) || $this->cm01_c_livro != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10400,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_c_livro'))."','$this->cm01_c_livro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10400,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_c_livro'))."','$this->cm01_c_livro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_folha"]) || $this->cm01_i_folha != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10401,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_i_folha'))."','$this->cm01_i_folha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10401,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_i_folha'))."','$this->cm01_i_folha',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_i_registro"]) || $this->cm01_i_registro != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10402,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_i_registro'))."','$this->cm01_i_registro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10402,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_i_registro'))."','$this->cm01_i_registro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_d_cadastro"]) || $this->cm01_d_cadastro != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10403,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_d_cadastro'))."','$this->cm01_d_cadastro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10403,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_d_cadastro'))."','$this->cm01_d_cadastro',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_sexo"]) || $this->cm01_c_sexo != "")
-             $resac = db_query("insert into db_acount values($acount,1797,10404,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_c_sexo'))."','$this->cm01_c_sexo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,10404,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_c_sexo'))."','$this->cm01_c_sexo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_observacoes"]) || $this->cm01_observacoes != "")
-             $resac = db_query("insert into db_acount values($acount,1797,20278,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_observacoes'))."','$this->cm01_observacoes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,20278,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_observacoes'))."','$this->cm01_observacoes',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_nomemedico"]) || $this->cm01_c_nomemedico != "")
-             $resac = db_query("insert into db_acount values($acount,1797,22424,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_c_nomemedico'))."','$this->cm01_c_nomemedico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,22424,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_c_nomemedico'))."','$this->cm01_c_nomemedico',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_nomehospital"]) || $this->cm01_c_nomehospital != "")
-             $resac = db_query("insert into db_acount values($acount,1797,22425,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_c_nomehospital'))."','$this->cm01_c_nomehospital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,22425,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_c_nomehospital'))."','$this->cm01_c_nomehospital',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["cm01_c_nomefuneraria"]) || $this->cm01_c_nomefuneraria != "")
-             $resac = db_query("insert into db_acount values($acount,1797,22426,'".AddSlashes(pg_result($resaco,$conresaco,'cm01_c_nomefuneraria'))."','$this->cm01_c_nomefuneraria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1797,22426,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cm01_c_nomefuneraria'))."','$this->cm01_c_nomefuneraria',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -742,31 +742,31 @@ class cl_sepultamentos {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,10387,'$cm01_i_codigo','E')");
-           $resac  = db_query("insert into db_acount values($acount,1797,10387,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10388,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_i_medico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10389,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_i_hospital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10390,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_i_funeraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10391,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_i_causa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10392,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_i_funcionario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10393,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_i_cemiterio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10394,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_i_declarante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10395,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_c_conjuge'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10396,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_c_cor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10397,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_d_falecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10398,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_c_local'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10399,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_c_cartorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10400,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_c_livro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10401,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_i_folha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10402,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_i_registro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10403,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_d_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,10404,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_c_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,20278,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_observacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,22424,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_c_nomemedico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,22425,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_c_nomehospital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1797,22426,'','".AddSlashes(pg_result($resaco,$iresaco,'cm01_c_nomefuneraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10387,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10388,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_i_medico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10389,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_i_hospital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10390,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_i_funeraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10391,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_i_causa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10392,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_i_funcionario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10393,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_i_cemiterio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10394,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_i_declarante'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10395,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_c_conjuge'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10396,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_c_cor'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10397,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_d_falecimento'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10398,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_c_local'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10399,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_c_cartorio'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10400,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_c_livro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10401,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_i_folha'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10402,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_i_registro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10403,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_d_cadastro'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,10404,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_c_sexo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,20278,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_observacoes'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,22424,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_c_nomemedico'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,22425,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_c_nomehospital'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1797,22426,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cm01_c_nomefuneraria'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -842,7 +842,7 @@ class cl_sepultamentos {
    function sql_query ( $cm01_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -877,7 +877,7 @@ class cl_sepultamentos {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -912,7 +912,7 @@ class cl_sepultamentos {
 
     if($campos != "*" ) {
 
-      $campos_sql = split("#", $campos);
+      $campos_sql = preg_split("#\\##m", $campos);
 
       $virgula = "";
 
@@ -965,7 +965,7 @@ class cl_sepultamentos {
     if($ordem != null) {
 
       $sql .= " order by ";
-      $campos_sql = split("#", $ordem);
+      $campos_sql = preg_split("#\\##m", (string) $ordem);
       $virgula = "";
 
       for($i = 0; $i < sizeof($campos_sql); $i++) {

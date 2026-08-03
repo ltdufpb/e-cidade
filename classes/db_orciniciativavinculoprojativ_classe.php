@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE orciniciativavinculoprojativ
 class cl_orciniciativavinculoprojativ { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $o149_sequencial = 0; 
-   var $o149_iniciativa = 0; 
-   var $o149_projativ = 0; 
-   var $o149_anousu = 0; 
+   public $o149_sequencial = 0; 
+   public $o149_iniciativa = 0; 
+   public $o149_projativ = 0; 
+   public $o149_anousu = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  o149_sequencial = int4 = Sequencial 
                  o149_iniciativa = int4 = Sequencial da Iniciativa 
                  o149_projativ = int4 = Projeto Atividade 
                  o149_anousu = int4 = Ano do Projeto/Atividade 
                  ";
    //funcao construtor da classe 
-   function cl_orciniciativavinculoprojativ() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("orciniciativavinculoprojativ"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_orciniciativavinculoprojativ {
          $this->erro_status = "0";
          return false; 
        }
-       $this->o149_sequencial = pg_result($result,0,0); 
+       $this->o149_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from orciniciativavinculoprojativ_o149_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $o149_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $o149_sequencial)){
          $this->erro_sql = " Campo o149_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_orciniciativavinculoprojativ {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "orciniciativavinculoprojativ ($this->o149_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "orciniciativavinculoprojativ já Cadastrado";
@@ -184,13 +184,13 @@ class cl_orciniciativavinculoprojativ {
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19904,'$this->o149_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,3565,19904,'','".AddSlashes(pg_result($resaco,0,'o149_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3565,19905,'','".AddSlashes(pg_result($resaco,0,'o149_iniciativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3565,19906,'','".AddSlashes(pg_result($resaco,0,'o149_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3565,19907,'','".AddSlashes(pg_result($resaco,0,'o149_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3565,19904,'','".AddSlashes(pg_fetch_result($resaco,0,'o149_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3565,19905,'','".AddSlashes(pg_fetch_result($resaco,0,'o149_iniciativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3565,19906,'','".AddSlashes(pg_fetch_result($resaco,0,'o149_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3565,19907,'','".AddSlashes(pg_fetch_result($resaco,0,'o149_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -200,10 +200,10 @@ class cl_orciniciativavinculoprojativ {
       $this->atualizacampos();
      $sql = " update orciniciativavinculoprojativ set ";
      $virgula = "";
-     if(trim($this->o149_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_sequencial"])){ 
+     if(trim((string) $this->o149_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_sequencial"])){ 
        $sql  .= $virgula." o149_sequencial = $this->o149_sequencial ";
        $virgula = ",";
-       if(trim($this->o149_sequencial) == null ){ 
+       if(trim((string) $this->o149_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "o149_sequencial";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_orciniciativavinculoprojativ {
          return false;
        }
      }
-     if(trim($this->o149_iniciativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_iniciativa"])){ 
+     if(trim((string) $this->o149_iniciativa)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_iniciativa"])){ 
        $sql  .= $virgula." o149_iniciativa = $this->o149_iniciativa ";
        $virgula = ",";
-       if(trim($this->o149_iniciativa) == null ){ 
+       if(trim((string) $this->o149_iniciativa) == null ){ 
          $this->erro_sql = " Campo Sequencial da Iniciativa nao Informado.";
          $this->erro_campo = "o149_iniciativa";
          $this->erro_banco = "";
@@ -226,10 +226,10 @@ class cl_orciniciativavinculoprojativ {
          return false;
        }
      }
-     if(trim($this->o149_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_projativ"])){ 
+     if(trim((string) $this->o149_projativ)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_projativ"])){ 
        $sql  .= $virgula." o149_projativ = $this->o149_projativ ";
        $virgula = ",";
-       if(trim($this->o149_projativ) == null ){ 
+       if(trim((string) $this->o149_projativ) == null ){ 
          $this->erro_sql = " Campo Projeto Atividade nao Informado.";
          $this->erro_campo = "o149_projativ";
          $this->erro_banco = "";
@@ -239,10 +239,10 @@ class cl_orciniciativavinculoprojativ {
          return false;
        }
      }
-     if(trim($this->o149_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_anousu"])){ 
+     if(trim((string) $this->o149_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["o149_anousu"])){ 
        $sql  .= $virgula." o149_anousu = $this->o149_anousu ";
        $virgula = ",";
-       if(trim($this->o149_anousu) == null ){ 
+       if(trim((string) $this->o149_anousu) == null ){ 
          $this->erro_sql = " Campo Ano do Projeto/Atividade nao Informado.";
          $this->erro_campo = "o149_anousu";
          $this->erro_banco = "";
@@ -265,17 +265,17 @@ class cl_orciniciativavinculoprojativ {
          for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,19904,'$this->o149_sequencial','A')");
            if(isset($GLOBALS["HTTP_POST_VARS"]["o149_sequencial"]) || $this->o149_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,3565,19904,'".AddSlashes(pg_result($resaco,$conresaco,'o149_sequencial'))."','$this->o149_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3565,19904,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o149_sequencial'))."','$this->o149_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["o149_iniciativa"]) || $this->o149_iniciativa != "")
-             $resac = db_query("insert into db_acount values($acount,3565,19905,'".AddSlashes(pg_result($resaco,$conresaco,'o149_iniciativa'))."','$this->o149_iniciativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3565,19905,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o149_iniciativa'))."','$this->o149_iniciativa',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["o149_projativ"]) || $this->o149_projativ != "")
-             $resac = db_query("insert into db_acount values($acount,3565,19906,'".AddSlashes(pg_result($resaco,$conresaco,'o149_projativ'))."','$this->o149_projativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3565,19906,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o149_projativ'))."','$this->o149_projativ',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if(isset($GLOBALS["HTTP_POST_VARS"]["o149_anousu"]) || $this->o149_anousu != "")
-             $resac = db_query("insert into db_acount values($acount,3565,19907,'".AddSlashes(pg_result($resaco,$conresaco,'o149_anousu'))."','$this->o149_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,3565,19907,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'o149_anousu'))."','$this->o149_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -328,13 +328,13 @@ class cl_orciniciativavinculoprojativ {
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,19904,'$o149_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,3565,19904,'','".AddSlashes(pg_result($resaco,$iresaco,'o149_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3565,19905,'','".AddSlashes(pg_result($resaco,$iresaco,'o149_iniciativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3565,19906,'','".AddSlashes(pg_result($resaco,$iresaco,'o149_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,3565,19907,'','".AddSlashes(pg_result($resaco,$iresaco,'o149_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3565,19904,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o149_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3565,19905,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o149_iniciativa'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3565,19906,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o149_projativ'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,3565,19907,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'o149_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -395,7 +395,7 @@ class cl_orciniciativavinculoprojativ {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:orciniciativavinculoprojativ";
@@ -410,7 +410,7 @@ class cl_orciniciativavinculoprojativ {
    function sql_query ( $o149_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -436,7 +436,7 @@ class cl_orciniciativavinculoprojativ {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -449,7 +449,7 @@ class cl_orciniciativavinculoprojativ {
    function sql_query_file ( $o149_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -470,7 +470,7 @@ class cl_orciniciativavinculoprojativ {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

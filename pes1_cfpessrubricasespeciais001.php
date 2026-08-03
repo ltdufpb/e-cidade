@@ -36,8 +36,8 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 
-db_postmemory( $HTTP_SERVER_VARS );
-db_postmemory( $HTTP_POST_VARS );
+db_postmemory( $_SERVER );
+db_postmemory( $_POST );
 
 $clcfpess  = new cl_cfpess;
 $clinssirf = new cl_inssirf;

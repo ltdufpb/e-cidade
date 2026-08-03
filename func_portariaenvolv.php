@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_portariaenvolv_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clportariaenvolv = new cl_portariaenvolv;
 $clportariaenvolv->rotulo->label("h42_sequencial");
 $clportariaenvolv->rotulo->label("h42_descr");
@@ -98,9 +98,9 @@ $clportariaenvolv->rotulo->label("h42_descr");
         }else{
            $sql = $clportariaenvolv->sql_query("",$campos,"h42_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_h42_sequencial)||isset($chave_h42_descr)){
-          $repassa = array("chave_h42_sequencial"=>$chave_h42_sequencial,"chave_h42_descr"=>$chave_h42_descr);
+          $repassa = ["chave_h42_sequencial"=>$chave_h42_sequencial,"chave_h42_descr"=>$chave_h42_descr];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

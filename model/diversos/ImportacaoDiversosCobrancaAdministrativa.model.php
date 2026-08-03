@@ -40,7 +40,7 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
      * Debitos que serão utilizados para processamento
      * @var stdClass[]
      */
-    protected $debitosProcessar = array();
+    protected $debitosProcessar = [];
 
     /**
      * Define qual data de vencimento será utilizada para unificar os débitos.
@@ -85,7 +85,7 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
     public function setOrdemDataVencimento($iOrdemDataVencimento)
     {
         if (!in_array($iOrdemDataVencimento,
-          array(ImportacaoDiversos::MENOR_DATA_VENCIMENTO, ImportacaoDiversos::MAIOR_DATA_VENCIMENTO, ImportacaoDiversos::ESCOLHA_DATA_VENCIMENTO))) {
+          [ImportacaoDiversos::MENOR_DATA_VENCIMENTO, ImportacaoDiversos::MAIOR_DATA_VENCIMENTO, ImportacaoDiversos::ESCOLHA_DATA_VENCIMENTO])) {
             throw new ParameterException(_M("tributario.diversos.ImportacaoGeralDiversos.tipo_vencimento_invalido"));
         }
         $this->iOrdemDataVencimento = $iOrdemDataVencimento;
@@ -168,7 +168,7 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
         $sSqlCaseValor .= "   else arrecad.k00_valor                                      ";
         $sSqlCaseValor .= " end                                                           ";
 
-        $campos = implode(", ", array(
+        $campos = implode(", ", [
             "arrecad.k00_numpre",
             "1 as k00_numpar",
             "arrecad.k00_numcgm",
@@ -192,12 +192,12 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
             "array_to_string(array_accum(k00_dtvenc), ',') as data_vencimento",
             "(select dv05_obs from diversos where dv05_numpre = arrecad.k00_numpre) as obs",
             "(select dv05_exerc as exercicio from diversos where dv05_numpre = arrecad.k00_numpre) AS exercicio_divida"
-          )
+          ]
         );
 
         $subsql = "select ";
 
-        $campos_sql = split("#", $campos);
+        $campos_sql = preg_split("#\\##m", $campos);
         $virgula = "";
 
         for($i = 0; $i < sizeof($campos_sql); $i++) {
@@ -275,7 +275,7 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
             $oDaoNumpref = new cl_numpref();
             $iNumPreNovo = $oDaoNumpref->sql_numpre();
 
-            $aDatasOperacoes = explode(',', $stdDebitoOrigem->colecao_dtoper);
+            $aDatasOperacoes = explode(',', (string) $stdDebitoOrigem->colecao_dtoper);
 
             /** Inclui Diversos */
             $oDaoDiversos = new cl_diversos();
@@ -294,13 +294,13 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
             }
 
             $oDaoDiversos->dv05_provenc = $stdDebitoOrigem->maior_data_vencimento;
-            $oDaoDiversos->dv05_diaprox = substr($stdDebitoOrigem->maior_data_vencimento, 8, 2);
+            $oDaoDiversos->dv05_diaprox = substr((string) $stdDebitoOrigem->maior_data_vencimento, 8, 2);
             $oDaoDiversos->dv05_oper = $aDatasOperacoes[0];
             $oDaoDiversos->dv05_obs = "";
 
             if ($this->lUnificarDebitos) {
 
-                $parcelas = explode(",", $stdDebitoOrigem->colecao_numpar);
+                $parcelas = explode(",", (string) $stdDebitoOrigem->colecao_numpar);
                 sort($parcelas);
                 $oDaoDiversos->dv05_obs = "Este débito refere-se às parcelas " . implode(", ", $parcelas) . ". ";
             }
@@ -322,16 +322,16 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
                 throw new DBException($oDaoDiverImportaReg->erro_msg);
             }
 
-            $aDatasOperacoes = explode(',', $stdDebitoOrigem->colecao_dtoper);
+            $aDatasOperacoes = explode(',', (string) $stdDebitoOrigem->colecao_dtoper);
             $historicoCalculoProcedencia = $oProcedencia->getHistoricoCalculo();
 
-            $aValoresParcelas = explode(',', $stdDebitoOrigem->colecao_valor);
-            $aDatasVencimentos = explode(',', $stdDebitoOrigem->data_vencimento);
-            $aHistoricos = explode(',', $stdDebitoOrigem->colecao_historico);
-            $aNumdig = explode(',', $stdDebitoOrigem->k00_numdig);
+            $aValoresParcelas = explode(',', (string) $stdDebitoOrigem->colecao_valor);
+            $aDatasVencimentos = explode(',', (string) $stdDebitoOrigem->data_vencimento);
+            $aHistoricos = explode(',', (string) $stdDebitoOrigem->colecao_historico);
+            $aNumdig = explode(',', (string) $stdDebitoOrigem->k00_numdig);
 
 
-            foreach (explode(',', $stdDebitoOrigem->colecao_numpar) as $indiceParcela => $codigoParcela) {
+            foreach (explode(',', (string) $stdDebitoOrigem->colecao_numpar) as $indiceParcela => $codigoParcela) {
 
                 if($aValoresParcelas[$indiceParcela] == 0){
                     continue;
@@ -382,7 +382,7 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
             if ($this->lUnificarDebitos) {
 
                 if(empty($historicoCalculoProcedencia)) {
-                    $historicoCalculoProcedencia = min(explode(',', $stdDebitoOrigem->colecao_historico));
+                    $historicoCalculoProcedencia = min(explode(',', (string) $stdDebitoOrigem->colecao_historico));
                 }
 
                 $daoArrecad = new cl_arrecad();
@@ -412,9 +412,9 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
             /* Salva Vinculo com Matricula */
             if (!empty($stdDebitoOrigem->colecao_matricula)) {
 
-                foreach (explode(',', $stdDebitoOrigem->colecao_matricula) as $indice => $matriculas) {
+                foreach (explode(',', (string) $stdDebitoOrigem->colecao_matricula) as $indice => $matriculas) {
 
-                    list($codigoMatricula, $percentualMatricula) = explode('|', $matriculas);
+                    [$codigoMatricula, $percentualMatricula] = explode('|', $matriculas);
                     $daoArreMatricMatricula = new cl_arrematric();
                     $daoArreMatricMatricula->k00_numpre = $iNumPreNovo;
                     $daoArreMatricMatricula->k00_matric = $codigoMatricula;
@@ -430,9 +430,9 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
             /* Salva Vinculo com Inscrição */
             if (!empty($stdDebitoOrigem->colecao_inscricao)) {
 
-                foreach (explode(',', $stdDebitoOrigem->colecao_inscricao) as $indice => $inscricoes) {
+                foreach (explode(',', (string) $stdDebitoOrigem->colecao_inscricao) as $indice => $inscricoes) {
 
-                    list($codigoInscricao, $percentualInscricao) = explode('|', $inscricoes);
+                    [$codigoInscricao, $percentualInscricao] = explode('|', $inscricoes);
                     $daoArreInscricao = new cl_arreinscr();
                     $daoArreInscricao->k00_numpre = $iNumPreNovo;
                     $daoArreInscricao->k00_inscr = $codigoInscricao;
@@ -457,7 +457,7 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
             throw new ParameterException("Informe os débitos que devem ser processados.");
         }
 
-        $aWhere = array();
+        $aWhere = [];
         foreach ($this->debitosProcessar as $stdDebito) {
 
             $this->adicionarReceita($stdDebito->iReceita, null,
@@ -475,7 +475,7 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
     {
         $sReceitas = implode(',', array_keys($this->aReceitaProcedencia));
 
-        $aWhere = array("arrecad.k00_receit in ({$sReceitas})");
+        $aWhere = ["arrecad.k00_receit in ({$sReceitas})"];
 
         $sWhereTipo = "arrecad.k00_tipo = {$this->getTipoDebitoOrigem()}";
 
@@ -498,7 +498,7 @@ class ImportacaoDiversosCobrancaAdministrativa extends ImportacaoGeralDiversos
      */
     public function getExercicio($datasOperacao, $numpre)
     {
-        $exercicio = substr($datasOperacao[0], 0, 4);
+        $exercicio = substr((string) $datasOperacao[0], 0, 4);
 
         $sSqlTipo = "select arrecad.k00_tipo, 
                             arretipo.k03_tipo 

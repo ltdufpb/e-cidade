@@ -306,7 +306,7 @@ $e23_valorbase = $oNota->e70_liq;
                                     } else {
                                         $dtpagamento = date("d/m/Y", db_getsession("DB_datausu"));
                                     }
-                                    $aDataBase = explode("/", $dtpagamento);
+                                    $aDataBase = explode("/", (string) $dtpagamento);
                                     $iMes = $aDataBase[1];
                                     $iAno = $aDataBase[2];
                                     db_input("dtpagamento", 15, '', true, "text");
@@ -1356,9 +1356,9 @@ $e23_valorbase = $oNota->e70_liq;
         "e21_instit=" . db_getsession("DB_instit") . "
                                             and e21_retencaotiporecgrupo = 1");
     $rsRetencao = $oDaoRetencao->sql_record($sSQLRetencao);
-    if (strlen($oNota->z01_cgccpf) == 14) {
+    if (strlen((string) $oNota->z01_cgccpf) == 14) {
         $sPessoa = "J";
-    } else if (strlen($oNota->z01_cgccpf) == 11) {
+    } else if (strlen((string) $oNota->z01_cgccpf) == 11) {
         $sPessoa = "F";
     } else {
         $sPessoa = null;

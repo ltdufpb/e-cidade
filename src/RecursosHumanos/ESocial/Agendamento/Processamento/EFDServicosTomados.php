@@ -20,23 +20,14 @@ class EFDServicosTomados extends ProcessamentoAbstract implements ProcessamentoI
 {
     private $cgm;
 
-    private $instituicao;
-
-    private $ano;
-
-    private $mes;
-
     private $dados;
 
     private $config;
 
-    public function __construct($cgm, $instituicao = null, $ano = null, $mes = null)
+    public function __construct($cgm, private $instituicao = null, private $ano = null, private $mes = null)
     {
         $this->cgm = CgmRepository::getByCodigo($cgm);
-        $this->instituicao = $instituicao;
-        $this->ano = $ano;
-        $this->mes = $mes;
-        $this->config = ConfiguracaoService::getInstance($instituicao);
+        $this->config = ConfiguracaoService::getInstance($this->instituicao);
     }
 
     public function processar()
@@ -53,14 +44,14 @@ class EFDServicosTomados extends ProcessamentoAbstract implements ProcessamentoI
         }
 
         $daoRetencaoReceitasAdicionais = new \cl_retencaoreceitasadicionais();
-        $where = array(
+        $where = [
             "retencaoreceitas.e23_ativo is true",
             "e60_instit = {$instituicao}",
             "LENGTH(TRIM(cgmprestador.z01_cgccpf)) = 14",
             "e69_numero is not null",
             "emptiposervicoobra.e154_tipo is not null",
             "retencaotiporec.e21_retencaotipocalc = 4"
-        );
+        ];
         if (!empty($ano)) {
             $where[] = "EXTRACT(YEAR FROM e69_dtnota) = {$ano}";
         }
@@ -71,7 +62,7 @@ class EFDServicosTomados extends ProcessamentoAbstract implements ProcessamentoI
         // Filtro orgao unidade ativo
         if ($this->config->filtraOrgaoUnidade()) {
             $unidadeCnpj = $this->cgm->getCnpj();
-            $unidadeCnpjBase = substr($unidadeCnpj, 0, 8);
+            $unidadeCnpjBase = substr((string) $unidadeCnpj, 0, 8);
             $where[] = "substr(o41_cnpj, 1, 8) = '{$unidadeCnpjBase}'";
         }
 
@@ -112,7 +103,7 @@ class EFDServicosTomados extends ProcessamentoAbstract implements ProcessamentoI
 
     public function tratamentoPreProcessamento($registroNotas)
     {
-        $this->dados = array();
+        $this->dados = [];
         $dados = new stdClass();
         foreach ($registroNotas as $registroNota) {
 
@@ -141,7 +132,7 @@ class EFDServicosTomados extends ProcessamentoAbstract implements ProcessamentoI
             /**
              * Notas
              */
-            $registroNota->numero_nota = str_replace(['/', '.', '-'], '_', trim($registroNota->numero_nota));
+            $registroNota->numero_nota = str_replace(['/', '.', '-'], '_', trim((string) $registroNota->numero_nota));
             if (empty($identificador->notas->{$registroNota->numero_nota})) {
                 $identificador->notas->{$registroNota->numero_nota} = new stdClass;
 
@@ -151,7 +142,7 @@ class EFDServicosTomados extends ProcessamentoAbstract implements ProcessamentoI
                 $nota->numDocto = $registroNota->numero_nota;
                 $nota->dtEmissaoNF = $registroNota->data_emissao;
                 $nota->vlrBruto = floatval($registroNota->valor_bruto) + floatval($registroNota->notas_nao_retidas);
-                $nota->infoTpServ = array();
+                $nota->infoTpServ = [];
             }
 
             $nota = &$identificador->notas->{$registroNota->numero_nota};
@@ -212,7 +203,7 @@ class EFDServicosTomados extends ProcessamentoAbstract implements ProcessamentoI
             $vlrTotalRetAdic = 0;
             $vlrTotalNRetPrinc = 0;
             $vlrTotalNRetAdic = 0;
-            $dado->nfs = array();
+            $dado->nfs = [];
             foreach ($dado->notas as $nota) {
                 $vlrTotalBruto += $nota->vlrBruto;
 

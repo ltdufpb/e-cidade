@@ -30,25 +30,25 @@
 class cl_caddocumentoatributovalor
 {
     // cria variaveis de erro
-    var $rotulo = null;
-    var $query_sql = null;
-    var $numrows = 0;
-    var $numrows_incluir = 0;
-    var $numrows_alterar = 0;
-    var $numrows_excluir = 0;
-    var $erro_status = null;
-    var $erro_sql = null;
-    var $erro_banco = null;
-    var $erro_msg = null;
-    var $erro_campo = null;
-    var $pagina_retorno = null;
+    public $rotulo = null;
+    public $query_sql = null;
+    public $numrows = 0;
+    public $numrows_incluir = 0;
+    public $numrows_alterar = 0;
+    public $numrows_excluir = 0;
+    public $erro_status = null;
+    public $erro_sql = null;
+    public $erro_banco = null;
+    public $erro_msg = null;
+    public $erro_campo = null;
+    public $pagina_retorno = null;
     // cria variaveis do arquivo
-    var $db43_sequencial = 0;
-    var $db43_documento = 0;
-    var $db43_caddocumentoatributo = 0;
-    var $db43_valor = null;
+    public $db43_sequencial = 0;
+    public $db43_documento = 0;
+    public $db43_caddocumentoatributo = 0;
+    public $db43_valor = null;
     // cria propriedade com as variaveis do arquivo
-    var $campos = "
+    public $campos = "
                  db43_sequencial = int4 = Código Sequencial 
                  db43_documento = int4 = Documento 
                  db43_caddocumentoatributo = int4 = Cadastro Documento Atributo 
@@ -56,11 +56,11 @@ class cl_caddocumentoatributovalor
                  ";
 
     //funcao construtor da classe
-    function cl_caddocumentoatributovalor()
+    function __construct()
     {
         //classes dos rotulos dos campos
         $this->rotulo = new rotulo("caddocumentoatributovalor");
-        $this->pagina_retorno = basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+        $this->pagina_retorno = basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
     }
 
     //funcao erro
@@ -125,10 +125,10 @@ class cl_caddocumentoatributovalor
 
                 return false;
             }
-            $this->db43_sequencial = pg_result($result, 0, 0);
+            $this->db43_sequencial = pg_fetch_result($result, 0, 0);
         } else {
             $result = db_query("select last_value from caddocumentoatributovalor_db43_sequencial_seq");
-            if (($result != false) && (pg_result($result, 0, 0) < $db43_sequencial)) {
+            if (($result != false) && (pg_fetch_result($result, 0, 0) < $db43_sequencial)) {
                 $this->erro_sql = " Campo db43_sequencial maior que último número da sequencia.";
                 $this->erro_banco = "Sequencia menor que este número.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
@@ -166,7 +166,7 @@ class cl_caddocumentoatributovalor
         $result = db_query($sql);
         if ($result == false) {
             $this->erro_banco = str_replace("\n", "", @pg_last_error());
-            if (strpos(strtolower($this->erro_banco), "duplicate key") != 0) {
+            if (!str_starts_with(strtolower($this->erro_banco), "duplicate key")) {
                 $this->erro_sql = "caddocumentoatributovalor ($this->db43_sequencial) nao Incluído. Inclusao Abortada.";
                 $this->erro_msg = "Usuário: \\n\\n " . $this->erro_sql . " \\n\\n";
                 $this->erro_banco = "caddocumentoatributovalor já Cadastrado";
@@ -194,16 +194,16 @@ class cl_caddocumentoatributovalor
         $resaco = $this->sql_record($this->sql_query_file($this->db43_sequencial));
         if (($resaco != false) || ($this->numrows != 0)) {
             $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-            $acount = pg_result($resac, 0, 0);
+            $acount = pg_fetch_result($resac, 0, 0);
             $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
             $resac = db_query("insert into db_acountkey values($acount,16609,'$this->db43_sequencial','I')");
-            $resac = db_query("insert into db_acount values($acount,2917,16609,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,2917,16609,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'db43_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2917,16610,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,2917,16610,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'db43_documento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2917,16611,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,2917,16611,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'db43_caddocumentoatributo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-            $resac = db_query("insert into db_acount values($acount,2917,16612,'','" . AddSlashes(pg_result($resaco, 0,
+            $resac = db_query("insert into db_acount values($acount,2917,16612,'','" . AddSlashes(pg_fetch_result($resaco, 0,
                 'db43_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
         }
 
@@ -216,10 +216,10 @@ class cl_caddocumentoatributovalor
         $this->atualizacampos();
         $sql = " update caddocumentoatributovalor set ";
         $virgula = "";
-        if (trim($this->db43_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db43_sequencial"])) {
+        if (trim((string) $this->db43_sequencial) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db43_sequencial"])) {
             $sql .= $virgula . " db43_sequencial = $this->db43_sequencial ";
             $virgula = ",";
-            if (trim($this->db43_sequencial) == null) {
+            if (trim((string) $this->db43_sequencial) == null) {
                 $this->erro_sql = " Campo Código Sequencial nao Informado.";
                 $this->erro_campo = "db43_sequencial";
                 $this->erro_banco = "";
@@ -231,10 +231,10 @@ class cl_caddocumentoatributovalor
                 return false;
             }
         }
-        if (trim($this->db43_documento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db43_documento"])) {
+        if (trim((string) $this->db43_documento) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db43_documento"])) {
             $sql .= $virgula . " db43_documento = $this->db43_documento ";
             $virgula = ",";
-            if (trim($this->db43_documento) == null) {
+            if (trim((string) $this->db43_documento) == null) {
                 $this->erro_sql = " Campo Documento nao Informado.";
                 $this->erro_campo = "db43_documento";
                 $this->erro_banco = "";
@@ -246,10 +246,10 @@ class cl_caddocumentoatributovalor
                 return false;
             }
         }
-        if (trim($this->db43_caddocumentoatributo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db43_caddocumentoatributo"])) {
+        if (trim((string) $this->db43_caddocumentoatributo) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db43_caddocumentoatributo"])) {
             $sql .= $virgula . " db43_caddocumentoatributo = $this->db43_caddocumentoatributo ";
             $virgula = ",";
-            if (trim($this->db43_caddocumentoatributo) == null) {
+            if (trim((string) $this->db43_caddocumentoatributo) == null) {
                 $this->erro_sql = " Campo Cadastro Documento Atributo nao Informado.";
                 $this->erro_campo = "db43_caddocumentoatributo";
                 $this->erro_banco = "";
@@ -261,7 +261,7 @@ class cl_caddocumentoatributovalor
                 return false;
             }
         }
-        if (trim($this->db43_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db43_valor"])) {
+        if (trim((string) $this->db43_valor) != "" || isset($GLOBALS["HTTP_POST_VARS"]["db43_valor"])) {
             $sql .= $virgula . " db43_valor = '$this->db43_valor' ";
             $virgula = ",";
         }
@@ -273,26 +273,26 @@ class cl_caddocumentoatributovalor
         if ($this->numrows > 0) {
             for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,16609,'$this->db43_sequencial','A')");
                 if (isset($GLOBALS["HTTP_POST_VARS"]["db43_sequencial"]) || $this->db43_sequencial != "") {
-                    $resac = db_query("insert into db_acount values($acount,2917,16609,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2917,16609,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'db43_sequencial')) . "','$this->db43_sequencial'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["db43_documento"]) || $this->db43_documento != "") {
-                    $resac = db_query("insert into db_acount values($acount,2917,16610,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2917,16610,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'db43_documento')) . "','$this->db43_documento'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["db43_caddocumentoatributo"]) || $this->db43_caddocumentoatributo != "") {
-                    $resac = db_query("insert into db_acount values($acount,2917,16611,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2917,16611,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'db43_caddocumentoatributo')) . "','$this->db43_caddocumentoatributo'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
                 if (isset($GLOBALS["HTTP_POST_VARS"]["db43_valor"]) || $this->db43_valor != "") {
-                    $resac = db_query("insert into db_acount values($acount,2917,16612,'" . AddSlashes(pg_result($resaco,
+                    $resac = db_query("insert into db_acount values($acount,2917,16612,'" . AddSlashes(pg_fetch_result($resaco,
                         $conresaco,
                         'db43_valor')) . "','$this->db43_valor'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
                 }
@@ -348,19 +348,19 @@ class cl_caddocumentoatributovalor
         if (($resaco != false) || ($this->numrows != 0)) {
             for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
                 $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-                $acount = pg_result($resac, 0, 0);
+                $acount = pg_fetch_result($resac, 0, 0);
                 $resac = db_query("insert into db_acountacesso values($acount," . db_getsession("DB_acessado") . ")");
                 $resac = db_query("insert into db_acountkey values($acount,16609,'$db43_sequencial','E')");
-                $resac = db_query("insert into db_acount values($acount,2917,16609,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2917,16609,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'db43_sequencial')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2917,16610,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2917,16610,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'db43_documento')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2917,16611,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2917,16611,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'db43_caddocumentoatributo')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
-                $resac = db_query("insert into db_acount values($acount,2917,16612,'','" . AddSlashes(pg_result($resaco,
+                $resac = db_query("insert into db_acount values($acount,2917,16612,'','" . AddSlashes(pg_fetch_result($resaco,
                     $iresaco,
                     'db43_valor')) . "'," . db_getsession('DB_datausu') . "," . db_getsession('DB_id_usuario') . ")");
             }
@@ -432,7 +432,7 @@ class cl_caddocumentoatributovalor
 
             return false;
         }
-        $this->numrows = pg_numrows($result);
+        $this->numrows = pg_num_rows($result);
         if ($this->numrows == 0) {
             $this->erro_banco = "";
             $this->erro_sql = "Record Vazio na Tabela:caddocumentoatributovalor";
@@ -479,7 +479,7 @@ class cl_caddocumentoatributovalor
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];
@@ -518,7 +518,7 @@ class cl_caddocumentoatributovalor
         $sql .= $sql2;
         if ($ordem != null) {
             $sql .= " order by ";
-            $campos_sql = explode("#", $ordem);
+            $campos_sql = explode("#", (string) $ordem);
             $virgula = "";
             for ($i = 0; $i < sizeof($campos_sql); $i++) {
                 $sql .= $virgula . $campos_sql[$i];

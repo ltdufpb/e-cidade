@@ -29,33 +29,33 @@
 //CLASSE DA ENTIDADE disbancoprotprocesso
 class cl_disbancoprotprocesso { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $k141_sequencial = 0; 
-   var $k141_disbancoprocesso = 0; 
-   var $k141_protprocesso = 0; 
+   public $k141_sequencial = 0; 
+   public $k141_disbancoprocesso = 0; 
+   public $k141_protprocesso = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  k141_sequencial = int4 = Sequencial 
                  k141_disbancoprocesso = int4 = Cadastro do Processo 
                  k141_protprocesso = int4 = Cód. Processo 
                  ";
    //funcao construtor da classe 
-   function cl_disbancoprotprocesso() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("disbancoprotprocesso"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -107,10 +107,10 @@ class cl_disbancoprotprocesso {
          $this->erro_status = "0";
          return false; 
        }
-       $this->k141_sequencial = pg_result($result,0,0); 
+       $this->k141_sequencial = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from disbancoprotprocesso_k141_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $k141_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $k141_sequencial)){
          $this->erro_sql = " Campo k141_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -142,7 +142,7 @@ class cl_disbancoprotprocesso {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Processo de protocolo da disbanco ($this->k141_sequencial) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Processo de protocolo da disbanco já Cadastrado";
@@ -166,12 +166,12 @@ class cl_disbancoprotprocesso {
      $resaco = $this->sql_record($this->sql_query_file($this->k141_sequencial));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,19176,'$this->k141_sequencial','I')");
-       $resac = db_query("insert into db_acount values($acount,3406,19176,'','".AddSlashes(pg_result($resaco,0,'k141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3406,19177,'','".AddSlashes(pg_result($resaco,0,'k141_disbancoprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3406,19178,'','".AddSlashes(pg_result($resaco,0,'k141_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3406,19176,'','".AddSlashes(pg_fetch_result($resaco,0,'k141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3406,19177,'','".AddSlashes(pg_fetch_result($resaco,0,'k141_disbancoprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3406,19178,'','".AddSlashes(pg_fetch_result($resaco,0,'k141_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -180,10 +180,10 @@ class cl_disbancoprotprocesso {
       $this->atualizacampos();
      $sql = " update disbancoprotprocesso set ";
      $virgula = "";
-     if(trim($this->k141_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_sequencial"])){ 
+     if(trim((string) $this->k141_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_sequencial"])){ 
        $sql  .= $virgula." k141_sequencial = $this->k141_sequencial ";
        $virgula = ",";
-       if(trim($this->k141_sequencial) == null ){ 
+       if(trim((string) $this->k141_sequencial) == null ){ 
          $this->erro_sql = " Campo Sequencial nao Informado.";
          $this->erro_campo = "k141_sequencial";
          $this->erro_banco = "";
@@ -193,10 +193,10 @@ class cl_disbancoprotprocesso {
          return false;
        }
      }
-     if(trim($this->k141_disbancoprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_disbancoprocesso"])){ 
+     if(trim((string) $this->k141_disbancoprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_disbancoprocesso"])){ 
        $sql  .= $virgula." k141_disbancoprocesso = $this->k141_disbancoprocesso ";
        $virgula = ",";
-       if(trim($this->k141_disbancoprocesso) == null ){ 
+       if(trim((string) $this->k141_disbancoprocesso) == null ){ 
          $this->erro_sql = " Campo Cadastro do Processo nao Informado.";
          $this->erro_campo = "k141_disbancoprocesso";
          $this->erro_banco = "";
@@ -206,10 +206,10 @@ class cl_disbancoprotprocesso {
          return false;
        }
      }
-     if(trim($this->k141_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_protprocesso"])){ 
+     if(trim((string) $this->k141_protprocesso)!="" || isset($GLOBALS["HTTP_POST_VARS"]["k141_protprocesso"])){ 
        $sql  .= $virgula." k141_protprocesso = $this->k141_protprocesso ";
        $virgula = ",";
-       if(trim($this->k141_protprocesso) == null ){ 
+       if(trim((string) $this->k141_protprocesso) == null ){ 
          $this->erro_sql = " Campo Cód. Processo nao Informado.";
          $this->erro_campo = "k141_protprocesso";
          $this->erro_banco = "";
@@ -227,15 +227,15 @@ class cl_disbancoprotprocesso {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19176,'$this->k141_sequencial','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k141_sequencial"]) || $this->k141_sequencial != "")
-           $resac = db_query("insert into db_acount values($acount,3406,19176,'".AddSlashes(pg_result($resaco,$conresaco,'k141_sequencial'))."','$this->k141_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3406,19176,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k141_sequencial'))."','$this->k141_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k141_disbancoprocesso"]) || $this->k141_disbancoprocesso != "")
-           $resac = db_query("insert into db_acount values($acount,3406,19177,'".AddSlashes(pg_result($resaco,$conresaco,'k141_disbancoprocesso'))."','$this->k141_disbancoprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3406,19177,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k141_disbancoprocesso'))."','$this->k141_disbancoprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["k141_protprocesso"]) || $this->k141_protprocesso != "")
-           $resac = db_query("insert into db_acount values($acount,3406,19178,'".AddSlashes(pg_result($resaco,$conresaco,'k141_protprocesso'))."','$this->k141_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3406,19178,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'k141_protprocesso'))."','$this->k141_protprocesso',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -280,12 +280,12 @@ class cl_disbancoprotprocesso {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,19176,'$k141_sequencial','E')");
-         $resac = db_query("insert into db_acount values($acount,3406,19176,'','".AddSlashes(pg_result($resaco,$iresaco,'k141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3406,19177,'','".AddSlashes(pg_result($resaco,$iresaco,'k141_disbancoprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3406,19178,'','".AddSlashes(pg_result($resaco,$iresaco,'k141_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3406,19176,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k141_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3406,19177,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k141_disbancoprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3406,19178,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'k141_protprocesso'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from disbancoprotprocesso
@@ -345,7 +345,7 @@ class cl_disbancoprotprocesso {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:disbancoprotprocesso";
@@ -360,7 +360,7 @@ class cl_disbancoprotprocesso {
    function sql_query ( $k141_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -389,7 +389,7 @@ class cl_disbancoprotprocesso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -402,7 +402,7 @@ class cl_disbancoprotprocesso {
    function sql_query_file ( $k141_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -423,7 +423,7 @@ class cl_disbancoprotprocesso {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

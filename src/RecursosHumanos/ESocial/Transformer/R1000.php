@@ -32,7 +32,7 @@ use Exception;
 class R1000 extends Sugestao
 {
 
-    protected $deParaESocial = array(
+    protected $deParaESocial = [
         'tpInsc',
         'nrInsc',
         'iniValid',
@@ -48,9 +48,9 @@ class R1000 extends Sugestao
         'foneCel',
         'email',
         'ideEFR'
-    );
+    ];
 
-    protected $deParaCamposSimples = array(
+    protected $deParaCamposSimples = [
         'nrinsc' => 'nrInsc',
         'inivalid' => 'iniValid',
         'fimvalid' => 'fimValid',
@@ -61,49 +61,49 @@ class R1000 extends Sugestao
         'fonecel' => 'foneCel',
         'email' => 'email',
         'ideefr' => 'ideEFR',
-    );
+    ];
 
-    protected $deParaCamposComplexos = array(
-        'tpinsc' => array(
-            'tpInsc' => array(
+    protected $deParaCamposComplexos = [
+        'tpinsc' => [
+            'tpInsc' => [
                 1 => 'tpInsc_1',
                 2 => 'tpInsc_2',
-            )
-        ),
-        'indescrituracao' => array(
-            'indEscrituracao' => array(
+            ]
+        ],
+        'indescrituracao' => [
+            'indEscrituracao' => [
                 0 => 'indEscrituracao_0',
                 1 => 'indEscrituracao_1',
-            )
-        ),
-        'indacordoisenmulta' => array(
-            'indAcordoIsenMulta' => array(
+            ]
+        ],
+        'indacordoisenmulta' => [
+            'indAcordoIsenMulta' => [
                 0 => 'indAcordoIsenMulta_0',
                 1 => 'indAcordoIsenMulta_1',
-            )
-        ),
-        'inddesoneracao' => array(
-            'indDesoneracao' => array(
+            ]
+        ],
+        'inddesoneracao' => [
+            'indDesoneracao' => [
                 0 => 'indDesoneracao_0',
                 1 => 'indDesoneracao_1',
-            )
-        ),
-        'indsitpj' => array(
-            'indSitPJ' => array(
+            ]
+        ],
+        'indsitpj' => [
+            'indSitPJ' => [
                 0 => 'indSitPJ_0',
                 1 => 'indSitPJ_1',
                 2 => 'indSitPJ_2',
                 3 => 'indSitPJ_3',
                 4 => 'indSitPJ_4'
-            )
-        ),
-        'ideefr' => array(
-            'ideEFR' => array(
+            ]
+        ],
+        'ideefr' => [
+            'ideEFR' => [
                 's' => 'ideEFR_s',
                 'n' => 'ideEFR_n',
-            )
-        ),
-    );
+            ]
+        ],
+    ];
 
     /**
      * @var \CgmBase
@@ -167,7 +167,7 @@ class R1000 extends Sugestao
             );
         }
 
-        if (pg_numrows($rs) > 0) {
+        if (pg_num_rows($rs) > 0) {
             return true;
         }
 

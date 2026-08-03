@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("libs/db_app.utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $clrotulo = new rotulocampo();
 $clrotulo->label("pc20_codorc");
@@ -116,7 +116,7 @@ $clrotulo->label("pc20_codorc");
                 <td><b>Modelo:</b></td>
                 <td>
                   <?php
-                    $aModelos = array("1" => "Modelo 1", "2" => "Modelo 2", "3" => "Modelo 3");
+                    $aModelos = ["1" => "Modelo 1", "2" => "Modelo 2", "3" => "Modelo 3"];
                     db_select("modelo", $aModelos, true, 4, "style='width:83px;'");
                   ?>
                 </td>
@@ -125,7 +125,7 @@ $clrotulo->label("pc20_codorc");
                 <td><b>Imprimir justificativa de troca de fornecedores:</b></td>
                 <td>
                   <?php
-                    $aJustificativas = array("S" => "Sim", "N" => "Não");
+                    $aJustificativas = ["S" => "Sim", "N" => "Não"];
                     db_select("imp_troca", $aJustificativas, true, 4, "style='width:83px;'");
                   ?>
                 </td>

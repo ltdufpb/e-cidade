@@ -66,11 +66,11 @@ switch($oParam->exec) {
    $sWhereSolicita    .= " and not exists(select 1 from solicitaanulada where pc67_solicita = pc10_numero)";
    $iSolicitacaoDe    = $oParam ->iSolicitacaoDe  ;
    $iSolicitacaoAte   = $oParam ->iSolicitacaoAte ;
-   $sDataIni          = implode("-", array_reverse(explode("/", $oParam ->sDataIni))) ;
-   $sDataFim          = implode("-", array_reverse(explode("/", $oParam ->sDataFim)));
+   $sDataIni          = implode("-", array_reverse(explode("/", (string) $oParam ->sDataIni))) ;
+   $sDataFim          = implode("-", array_reverse(explode("/", (string) $oParam ->sDataFim)));
    $iDotacao          = $oParam ->iDotacao ;
-   $aDadosSolicitacao = array();
-   $aSolicitacoes     = array();
+   $aDadosSolicitacao = [];
+   $aSolicitacoes     = [];
 
    if ($sDataIni != '' && $sDataFim == '') {
      $sWhereSolicita .= " and pc10_data >= '{$sDataIni}'";
@@ -112,7 +112,7 @@ switch($oParam->exec) {
    	$oDados->solicitacao = $oValorSolicitacoes->pc10_numero;
    	$oDados->dtEmis      = db_formatar($oValorSolicitacoes->pc10_data, "d");
    	$oDados->dotacoes    = $oValorSolicitacoes->pc13_coddot;
-   	$oDados->resumo      = urlencode(substr($oValorSolicitacoes->pc10_resumo, 0, 100));
+   	$oDados->resumo      = urlencode(substr((string) $oValorSolicitacoes->pc10_resumo, 0, 100));
    	$aDadosSolicitacao[] = $oDados;
    }
 
@@ -125,12 +125,12 @@ switch($oParam->exec) {
     $oSolicitem    = db_utils::getDao('solicitem');
     $iSolicitacao  = $oParam->iSolicitacao;
     $oRetorno->iCodigoSolicitacao = $oParam->iSolicitacao;
-    $aDadosItens   = array();
-    $oItens        = array();
+    $aDadosItens   = [];
+    $oItens        = [];
     $sSqlItens     = $oSolicitem->sql_query_file(null, "*", "pc11_seq", "pc11_numero = {$iSolicitacao} ");
     $rsItens       = $oSolicitem->sql_record($sSqlItens);
     $oItens        = db_utils::getCollectionByRecord($rsItens, false, false, true);
-    $aItensRetorno = array();
+    $aItensRetorno = [];
 
     foreach ($oItens as $iIndiceItem => $oValorItem){
 
@@ -149,7 +149,7 @@ switch($oParam->exec) {
    	   $oItemRetorno->item        = $oItemSolicitacao->getCodigoItemSolicitacao();
    	   $oItemRetorno->ordem       = $oItemSolicitacao->getOrdem();
    	   $oItemRetorno->descricao   = $oItemSolicitacao->getDescricaoMaterial();
-   	   $oItemRetorno->dotacoes    = array();
+   	   $oItemRetorno->dotacoes    = [];
 	  	 $oItemRetorno->nValorTotal = $nValorItemSolicitacao;
    	   $aDotacoes               = $oItemSolicitacao->getDotacoes();
    	   foreach ($aDotacoes as $oDotacao) {
@@ -207,11 +207,11 @@ switch($oParam->exec) {
 
    $iAutorizacao1      = $oParam ->iAutorizacao1  ;
    $iAutorizacao2      = $oParam ->iAutorizacao2 ;
-   $sDataIni           = implode("-", array_reverse(explode("/", $oParam ->sDataIni))) ;
-   $sDataFim           = implode("-", array_reverse(explode("/", $oParam ->sDataFim)));
+   $sDataIni           = implode("-", array_reverse(explode("/", (string) $oParam ->sDataIni))) ;
+   $sDataFim           = implode("-", array_reverse(explode("/", (string) $oParam ->sDataFim)));
    $iDotacao           = $oParam ->iDotacao ;
-   $aDadosAutorizacao  = array();
-   $aAutorizacoes      = array();
+   $aDadosAutorizacao  = [];
+   $aAutorizacoes      = [];
    if ($sDataIni != '' && $sDataFim == '') {
      $sWhereAutorizacao .= " and e54_emiss >= '{$sDataIni}'";
    } else if ($sDataIni == '' && $sDataFim != '') {
@@ -258,7 +258,7 @@ switch($oParam->exec) {
    	$oDados->dtEmis      = db_formatar($oValorAutorizacao->e54_emiss, "d");
    	$oDados->credor      = $oValorAutorizacao->credor;
    	$oDados->dotacoes    = $oValorAutorizacao->e56_coddot;
-   	$oDados->resumo      = urlencode(substr($oValorAutorizacao->e54_resumo, 0, 100));
+   	$oDados->resumo      = urlencode(substr((string) $oValorAutorizacao->e54_resumo, 0, 100));
    	$oDados->valor       = $oValorAutorizacao->e54_valor;
    	$aDadosAutorizacao[] = $oDados;
    }

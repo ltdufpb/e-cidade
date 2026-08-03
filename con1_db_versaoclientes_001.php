@@ -33,7 +33,7 @@ include(modification("classes/db_db_versaoclientes_classe.php"));
 include(modification("classes/db_clientes_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $cldb_versaoclientes = new cl_db_versaoclientes;
 $clclientes = new cl_clientes;
 
@@ -50,13 +50,13 @@ if(isset($atualiza)){
    
   $dberro = false;
 
-  for($i=0;$i<pg_numrows($result);$i++){
+  for($i=0;$i<pg_num_rows($result);$i++){
   
      db_fieldsmemory($result,$i);
      
      $data = "data_".$at01_codcli."_dia";
      
-     if ( isset($$data) && $$data > 0){
+     if ( isset(${$data}) && ${$data} > 0){
 
        $data_ano = "data_".$at01_codcli."_ano";
        $data_mes = "data_".$at01_codcli."_mes";
@@ -71,9 +71,9 @@ if(isset($atualiza)){
          $cldb_versaoclientes->db19_sequen = $db19_sequen;
          $cldb_versaoclientes->db19_codver = $db29_codver;
          $cldb_versaoclientes->db19_codcli = $at01_codcli;
-         $cldb_versaoclientes->db19_data   = $$data_ano."-".$$data_mes."-".$$data_dia;
-         $HTTP_POST_VARS["db19_obs"] = "";
-         $cldb_versaoclientes->db19_obs    = $$obs;
+         $cldb_versaoclientes->db19_data   = ${$data_ano}."-".${$data_mes}."-".${$data_dia};
+         $_POST["db19_obs"] = "";
+         $cldb_versaoclientes->db19_obs    = ${$obs};
          $cldb_versaoclientes->alterar($db19_sequen);
 
          if($cldb_versaoclientes->erro_status == "0"){
@@ -86,8 +86,8 @@ if(isset($atualiza)){
          $cldb_versaoclientes->db19_sequen = 0;
          $cldb_versaoclientes->db19_codver = $db29_codver;
          $cldb_versaoclientes->db19_codcli = $at01_codcli;
-         $cldb_versaoclientes->db19_data   = $$data_ano."-".$$data_mes."-".$$data_dia;
-         $cldb_versaoclientes->db19_obs    = $$obs;
+         $cldb_versaoclientes->db19_data   = ${$data_ano}."-".${$data_mes}."-".${$data_dia};
+         $cldb_versaoclientes->db19_obs    = ${$obs};
          $cldb_versaoclientes->incluir(0);
 
          if($cldb_versaoclientes->erro_status == "0"){
@@ -163,7 +163,7 @@ $result = db_query($sql);
   
       //$result = $clclientes->sql_record($clclientes->sql_query(null,"at01_codcli,at01_nomecli,at01_cidade,at01_base,at01_obs","at01_nomecli"," at01_status = true"));
      //db_criatabela($result);
-      for($i=0;$i<pg_numrows($result);$i++){
+      for($i=0;$i<pg_num_rows($result);$i++){
         db_fieldsmemory($result,$i); 
         echo "<tr>";
         echo "<td align=\"left\" valign=\"top\">$at01_codcli</td>"; 
@@ -176,13 +176,13 @@ $result = db_query($sql);
 
         $sql = "select db19_data,db19_obs from db_versaoclientes where db19_codver = $db29_codver and db19_codcli = $at01_codcli";
         $resu = db_query($sql);
-        if(pg_numrows($resu)>0){
+        if(pg_num_rows($resu)>0){
           db_fieldsmemory($resu,0);
-          $data_ano = substr($db19_data,0,4);
-          $data_mes = substr($db19_data,5,2);
-          $data_dia = substr($db19_data,8,2);
+          $data_ano = substr((string) $db19_data,0,4);
+          $data_mes = substr((string) $db19_data,5,2);
+          $data_dia = substr((string) $db19_data,8,2);
           $obs = "db19_obs".$at01_codcli;
-          global $$obs;
+          global ${$obs};
         }else{
           $data_ano = "";
           $data_mes = "";

@@ -82,7 +82,7 @@ class calculoRetencaoIrrfJuridica implements iCalculoRetencao {
    *
    * @var array
    */
-  private $aCodigoMovimentos = array();
+  private $aCodigoMovimentos = [];
 
   /**
    *

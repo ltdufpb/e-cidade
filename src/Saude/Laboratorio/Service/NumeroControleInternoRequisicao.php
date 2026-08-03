@@ -14,21 +14,18 @@ class NumeroControleInternoRequisicao
 {
     
     /**
-     * repository
-     *
-     * @var NumeroControleInternoRequisicaoRepository
-     */
-    private $repository;
-    
-    /**
      * __construct
      *
      * @param  mixed $NumeroControleInternoRequisicaoRepository
      * @return void
      */
-    public function __construct(NumeroControleInternoRequisicaoRepository $repository)
+    public function __construct(
+        /**
+         * repository
+         */
+        private readonly NumeroControleInternoRequisicaoRepository $repository
+    )
     {
-        $this->repository = $repository;
     }
 
     /**

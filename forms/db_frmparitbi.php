@@ -74,8 +74,8 @@ $clrotulo->label("it24_carregaconstrucoesbenfeitoriasitbi");
                         <td nowrap align="left" title="<?=@$Tit24_impsituacaodeb?>"><?=@$Lit24_impsituacaodeb?></td>
                         <td width="96%" align="left">
                             <?php
-                                $aImpSituacaoDeb = array("t"=>"Sim",
-                                    "f"=>"Não");
+                                $aImpSituacaoDeb = ["t"=>"Sim",
+                                    "f"=>"Não"];
                                 db_select('it24_impsituacaodeb',$aImpSituacaoDeb,true,1," style=' width: 210px;'");
                             ?>
                         </td>
@@ -84,8 +84,8 @@ $clrotulo->label("it24_carregaconstrucoesbenfeitoriasitbi");
                         <td nowrap align="left" title="<?=@$Tit24_emiteguiaquitacao?>"><?=@$Lit24_emiteguiaquitacao?></td>
                         <td width="96%" align="left">
                             <?php
-                                $aEmiteGuiaQuitacao = array("t"=>"Sim",
-                                    "f"=>"Não");
+                                $aEmiteGuiaQuitacao = ["t"=>"Sim",
+                                    "f"=>"Não"];
                                 db_select('it24_emiteguiaquitacao',$aEmiteGuiaQuitacao,true,1," style=' width: 210px;'");
                             ?>
                         </td>
@@ -94,9 +94,9 @@ $clrotulo->label("it24_carregaconstrucoesbenfeitoriasitbi");
                         <td align="left" title="<?=@$Tit24_alteraguialib?>"><?=@$Lit24_alteraguialib?></td>
                         <td width="96%" align="left">
                             <?php
-                                $aAlteraGuiaLib = array("1"=>"Somente Datas",
+                                $aAlteraGuiaLib = ["1"=>"Somente Datas",
                                     "2"=>"Somente Dados Cadastrais",
-                                    "3"=>"Ambos");
+                                    "3"=>"Ambos"];
                                 db_select('it24_alteraguialib',$aAlteraGuiaLib,true,1," style=' width: 210px;'");
                             ?>
                         </td>
@@ -105,8 +105,8 @@ $clrotulo->label("it24_carregaconstrucoesbenfeitoriasitbi");
                         <td nowrap align="left" title="<?=@$Tit24_cgmobrigatorio?>"><?=@$Lit24_cgmobrigatorio?></td>
                         <td width="96%" align="left">
                             <?php
-                                $aCgmObrigatorio = array("t"=>"Sim",
-                                    "f"=>"Não");
+                                $aCgmObrigatorio = ["t"=>"Sim",
+                                    "f"=>"Não"];
                                 db_select('it24_cgmobrigatorio',$aCgmObrigatorio,true,1," style='width: 210px;'");
                             ?>
                         </td>
@@ -117,7 +117,7 @@ $clrotulo->label("it24_carregaconstrucoesbenfeitoriasitbi");
                         </td>
                         <td>
                             <?php
-                                db_select('it24_solicitanotificacao', array("t"=>"Sim", "f"=>"Não"), true, 1, "style='width: 210px;'");
+                                db_select('it24_solicitanotificacao', ["t"=>"Sim", "f"=>"Não"], true, 1, "style='width: 210px;'");
                             ?>
                         </td>
                     </tr>
@@ -127,7 +127,7 @@ $clrotulo->label("it24_carregaconstrucoesbenfeitoriasitbi");
                         </td>
                         <td>
                             <?php
-                                db_select('it24_carregavalorvenal', array("t"=>"Sim", "f"=>"Não"), true, 1, "style='width: 210px;'");
+                                db_select('it24_carregavalorvenal', ["t"=>"Sim", "f"=>"Não"], true, 1, "style='width: 210px;'");
                             ?>
                         </td>
                     </tr>
@@ -137,7 +137,7 @@ $clrotulo->label("it24_carregaconstrucoesbenfeitoriasitbi");
                         </td>
                         <td width="96%" align="left">
                             <?php
-                                $aMatricRural = array("t"=>"Sim", "f"=>"Não");
+                                $aMatricRural = ["t"=>"Sim", "f"=>"Não"];
                                 db_select('it24_matricrural',$aMatricRural,true,1," style='width: 210px;'");
                             ?>
                         </td>
@@ -148,7 +148,7 @@ $clrotulo->label("it24_carregaconstrucoesbenfeitoriasitbi");
                         </td>
                         <td>
 
-                            <?php  db_select('it24_comparavaloresavaliacao', array("t"=>"Sim", "f"=>"Não"), true, 1, "style='width: 210px;'"); ?>
+                            <?php  db_select('it24_comparavaloresavaliacao', ["t"=>"Sim", "f"=>"Não"], true, 1, "style='width: 210px;'"); ?>
                         </td>
                     </tr>
                     <tr>

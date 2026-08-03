@@ -109,9 +109,9 @@ $db_opcao = 1;
 				       <tr>
 				        <td align="left" colspan="2">
 				          <b>Modelo :</b> <?php 
-				                    $sList = array("ldo"=>"LDO",
+				                    $sList = ["ldo"=>"LDO",
 				                                   "loa"=>"LOA"
-				                                  );
+				                                  ];
 				                    db_select("modelo",$sList,"",1); ?>
 				        </td>
 				      </tr>

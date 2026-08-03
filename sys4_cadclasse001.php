@@ -29,9 +29,9 @@
 	require(modification("libs/db_conecta.php"));
 	include(modification("libs/db_sessoes.php"));
 	include(modification("libs/db_usuariosonline.php"));
-	parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
-	parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-	db_postmemory($HTTP_POST_VARS);
+	parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
+	parse_str((string) $_SERVER['QUERY_STRING'], $result);
+	db_postmemory($_POST);
 
 if(isset($incluir)) {
 
@@ -143,7 +143,7 @@ if(isset($procurar)) {
 		inner join db_sysarquivo s on s.codarq = c.codarq
 		where c.nomclasse like '$retorno%' ".(isset($codarq)&&$codarq!=''?"and c.codarq=$codarq":"");
 	$result = db_query($sql);
-	if (pg_numrows($result) != 0){
+	if (pg_num_rows($result) != 0){
 		db_fieldsmemory($result,0);
 		$desabilitaBotaoIncluir = true;
 	}else {
@@ -153,7 +153,7 @@ if(isset($procurar)) {
 			where codarq = $retorno
 		";
 		$result = db_query($sql);
-		if (pg_numrows($result) != 0){
+		if (pg_num_rows($result) != 0){
 			db_fieldsmemory($result,0);
 		}
 	}

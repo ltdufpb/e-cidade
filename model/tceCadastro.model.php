@@ -32,28 +32,16 @@ class tceCadastro extends tceEstruturaBasica {
   
   const NOME_ARQUIVO = 'CADASTRO.TXT';
   const CODIGO_ARQUIVO = 39;
-
-  public $iInstit      = "";
-  public $sDataIni     = "";
-  public $sDataFim     = "";
-  public $sCodRemessa  = "";
-  public $oOutrosDados = null;
   
   private $oLeiaute      = null;
   
-  function __construct($iInstit, $sCodRemessa, $sDataIni, $sDataFim, $oData, $oLeiaute = null) {
+  function __construct(public $iInstit, public $sCodRemessa, public $sDataIni, public $sDataFim, public $oOutrosDados, $oLeiaute = null) {
     
     try {
       parent::__construct(self::CODIGO_ARQUIVO, self::NOME_ARQUIVO);
     } catch ( Exception $e ) {
       throw $e->getMessage();
     }
-    
-    $this->iInstit      = $iInstit;
-    $this->sDataIni     = $sDataIni;
-    $this->sDataFim     = $sDataFim;
-    $this->sCodRemessa  = $sCodRemessa;
-    $this->oOutrosDados = $oData;
     if ($oLeiaute != null) {
       $this->oLeiaute =$oLeiaute;
     }

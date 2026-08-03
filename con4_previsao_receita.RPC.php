@@ -6,7 +6,7 @@ require_once modification('libs/db_sessoes.php');
 require_once modification('libs/db_utils.php');
 
 $parametros = JSON::requestParameters();
-$ano = isset($parametros->ano) ? $parametros->ano : db_getsession('DB_anousu');
+$ano = $parametros->ano ?? db_getsession('DB_anousu');
 const AVALIACAO = 3000024;
 
 try {
@@ -54,25 +54,25 @@ try {
             $avaliacaoESocial->setAno($ano);
             $avaliacaoESocial->setAvaliacao($avaliacao);
             $avaliacaoESocial->setPerguntasRespostas($perguntasRespostas);
-            $avaliacaoESocial->salvar(null, 'previsao_receita', array(
+            $avaliacaoESocial->salvar(null, 'previsao_receita', [
                 'iCodigoPreenchimento' => $avaliacao->getAvaliacaoGrupo(),
                 'conta' => $parametros->conta
-            ));
+            ]);
 
             $retorno->mensagem = 'Formulário salvo com sucesso!';
             break;
         case 'buscarUnidadeOrcamentaria':
             $daoOrcUnidade = new cl_orcunidade();
             $sqlUnidades = $daoOrcUnidade->sql_query($ano);
-            $unidades = array();
+            $unidades = [];
             $resultado = db_query($sqlUnidades);
 
             if (pg_num_rows($resultado) > 0) {
                 $unidades = db_utils::getCollectionByRecord($resultado);
-                $unidadesFormatadas = array();
+                $unidadesFormatadas = [];
 
                 foreach ($unidades as $unidade) {
-                    $value = str_pad($unidade->o41_orgao, 2, 0, STR_PAD_LEFT) . str_pad($unidade->o41_unidade, 2, 0, STR_PAD_LEFT);
+                    $value = str_pad((string) $unidade->o41_orgao, 2, 0, STR_PAD_LEFT) . str_pad((string) $unidade->o41_unidade, 2, 0, STR_PAD_LEFT);
                     $label = "{$unidade->o41_descr} / {$unidade->o40_descr}";
                     $stdClass = new stdClass();
                     $stdClass->value = $value;
@@ -86,13 +86,13 @@ try {
             $retorno = $unidades;
             break;
         case 'buscarEspecificacao':
-            $recursos = array();
+            $recursos = [];
             $daoOrcTipoRec = new cl_orctiporec();
             $sqlRecursos = $daoOrcTipoRec->sql_query();
             $resultado = db_query($sqlRecursos);
 
             if (pg_num_rows($resultado) > 0) {
-                $recursosFormatadas = array();
+                $recursosFormatadas = [];
 
                 while ($recurso = pg_fetch_object($resultado)) {
                     $stdClass = new stdClass();

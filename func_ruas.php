@@ -33,7 +33,7 @@ require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_ruas_classe.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $clruas = new cl_ruas();
 $clruas->rotulo->label("j14_codigo");
@@ -122,9 +122,9 @@ $chave_j14_nome = isset($chave_j14_nome) ? stripslashes($chave_j14_nome) : '';
             } else {
                 $sql = $clruas->sql_query("", $campos, "j14_codigo", "");
             }
-            $repassa = array();
+            $repassa = [];
             if (isset($chave_j14_nome) && isset($chave_j14_codigo)) {
-                $repassa = array("chave_j14_codigo" => $chave_j14_codigo, "chave_j14_nome" => $chave_j14_nome);
+                $repassa = ["chave_j14_codigo" => $chave_j14_codigo, "chave_j14_nome" => $chave_j14_nome];
             }
             
             db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

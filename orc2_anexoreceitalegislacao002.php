@@ -173,7 +173,7 @@ foreach ($aRelatorio as $oReceita) {
     $oPdf->cell(25,  $iAlt, $sEstrutura,                                  0, 0, "L");
     $oPdf->cell(105, $iAlt, substr($sEspaco.$oReceita->descricao, 0, 80), 0, 0, "L");
     $oPdf->cell(30,  $iAlt, db_formatar($oReceita->valorEstimado,'f'),    0, 0, "R");
-    $oPdf->cell(119, $iAlt, substr($oReceita->legislacao, 0, 80),         0, 1, "L");
+    $oPdf->cell(119, $iAlt, substr((string) $oReceita->legislacao, 0, 80),         0, 1, "L");
 
 }
 $oPdf->line(10, $oPdf->GetY(), $oPdf->w - 8, $oPdf->GetY());

@@ -40,7 +40,7 @@ class CensoMunicipioRegistry
     /**
      * @var CensoMunicipio[]
      */
-    private static $storage = array();
+    private static $storage = [];
 
     public static function set(CensoMunicipio $censoMunicipio)
     {

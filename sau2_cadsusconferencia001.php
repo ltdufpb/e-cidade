@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_sau_cadsus_classe.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clsau_cadsus = new cl_sau_cadsus();
 $clrotulo = new rotulocampo;
 $clrotulo->label("s136_i_codigo");

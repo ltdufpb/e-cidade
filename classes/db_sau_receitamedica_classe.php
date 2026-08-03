@@ -29,36 +29,36 @@
 //CLASSE DA ENTIDADE sau_receitamedica
 class cl_sau_receitamedica {
    // cria variaveis de erro
-   var $rotulo     = null;
-   var $query_sql  = null;
-   var $numrows    = 0;
-   var $numrows_incluir = 0;
-   var $numrows_alterar = 0;
-   var $numrows_excluir = 0;
-   var $erro_status= null;
-   var $erro_sql   = null;
-   var $erro_banco = null;
-   var $erro_msg   = null;
-   var $erro_campo = null;
-   var $pagina_retorno = null;
+   public $rotulo     = null;
+   public $query_sql  = null;
+   public $numrows    = 0;
+   public $numrows_incluir = 0;
+   public $numrows_alterar = 0;
+   public $numrows_excluir = 0;
+   public $erro_status= null;
+   public $erro_sql   = null;
+   public $erro_banco = null;
+   public $erro_msg   = null;
+   public $erro_campo = null;
+   public $pagina_retorno = null;
    // cria variaveis do arquivo
-   var $s158_i_codigo = 0;
-   var $s158_i_profissional = 0;
-   var $s158_i_tiporeceita = 0;
-   var $s158_t_prescricao = null;
-   var $s158_i_situacao = 0;
-   var $s158_d_validade_dia = null;
-   var $s158_d_validade_mes = null;
-   var $s158_d_validade_ano = null;
-   var $s158_d_validade = null;
-   var $s158_i_login = 0;
-   var $s158_d_data_dia = null;
-   var $s158_d_data_mes = null;
-   var $s158_d_data_ano = null;
-   var $s158_d_data = null;
-   var $s158_c_hora = null;
+   public $s158_i_codigo = 0;
+   public $s158_i_profissional = 0;
+   public $s158_i_tiporeceita = 0;
+   public $s158_t_prescricao = null;
+   public $s158_i_situacao = 0;
+   public $s158_d_validade_dia = null;
+   public $s158_d_validade_mes = null;
+   public $s158_d_validade_ano = null;
+   public $s158_d_validade = null;
+   public $s158_i_login = 0;
+   public $s158_d_data_dia = null;
+   public $s158_d_data_mes = null;
+   public $s158_d_data_ano = null;
+   public $s158_d_data = null;
+   public $s158_c_hora = null;
    // cria propriedade com as variaveis do arquivo
-   var $campos = "
+   public $campos = "
                  s158_i_codigo = int4 = Código
                  s158_i_profissional = int4 = Profissional
                  s158_i_tiporeceita = int4 = Tipo de Receita
@@ -70,10 +70,10 @@ class cl_sau_receitamedica {
                  s158_c_hora = char(5) = Hora do sistema
                  ";
    //funcao construtor da classe
-   function cl_sau_receitamedica() {
+   function __construct() {
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("sau_receitamedica");
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro
    function erro($mostra,$retorna) {
@@ -199,10 +199,10 @@ class cl_sau_receitamedica {
          $this->erro_status = "0";
          return false;
        }
-       $this->s158_i_codigo = pg_result($result,0,0);
+       $this->s158_i_codigo = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from sau_receitamedica_s158_i_codigo_seq");
-       if(($result != false) && (pg_result($result,0,0) < $s158_i_codigo)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $s158_i_codigo)){
          $this->erro_sql = " Campo s158_i_codigo maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -246,7 +246,7 @@ class cl_sau_receitamedica {
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "sau_receitamedica ($this->s158_i_codigo) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "sau_receitamedica já Cadastrado";
@@ -270,18 +270,18 @@ class cl_sau_receitamedica {
      $resaco = $this->sql_record($this->sql_query_file($this->s158_i_codigo));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,17728,'$this->s158_i_codigo','I')");
-       $resac = db_query("insert into db_acount values($acount,3130,17728,'','".AddSlashes(pg_result($resaco,0,'s158_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3130,17730,'','".AddSlashes(pg_result($resaco,0,'s158_i_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3130,17731,'','".AddSlashes(pg_result($resaco,0,'s158_i_tiporeceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3130,17734,'','".AddSlashes(pg_result($resaco,0,'s158_t_prescricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3130,17733,'','".AddSlashes(pg_result($resaco,0,'s158_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3130,17732,'','".AddSlashes(pg_result($resaco,0,'s158_d_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3130,17729,'','".AddSlashes(pg_result($resaco,0,'s158_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3130,17735,'','".AddSlashes(pg_result($resaco,0,'s158_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,3130,17736,'','".AddSlashes(pg_result($resaco,0,'s158_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3130,17728,'','".AddSlashes(pg_fetch_result($resaco,0,'s158_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3130,17730,'','".AddSlashes(pg_fetch_result($resaco,0,'s158_i_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3130,17731,'','".AddSlashes(pg_fetch_result($resaco,0,'s158_i_tiporeceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3130,17734,'','".AddSlashes(pg_fetch_result($resaco,0,'s158_t_prescricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3130,17733,'','".AddSlashes(pg_fetch_result($resaco,0,'s158_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3130,17732,'','".AddSlashes(pg_fetch_result($resaco,0,'s158_d_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3130,17729,'','".AddSlashes(pg_fetch_result($resaco,0,'s158_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3130,17735,'','".AddSlashes(pg_fetch_result($resaco,0,'s158_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,3130,17736,'','".AddSlashes(pg_fetch_result($resaco,0,'s158_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    }
@@ -290,10 +290,10 @@ class cl_sau_receitamedica {
       $this->atualizacampos();
      $sql = " update sau_receitamedica set ";
      $virgula = "";
-     if(trim($this->s158_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_i_codigo"])){
+     if(trim((string) $this->s158_i_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_i_codigo"])){
        $sql  .= $virgula." s158_i_codigo = $this->s158_i_codigo ";
        $virgula = ",";
-       if(trim($this->s158_i_codigo) == null ){
+       if(trim((string) $this->s158_i_codigo) == null ){
          $this->erro_sql = " Campo Código não Informado.";
          $this->erro_campo = "s158_i_codigo";
          $this->erro_banco = "";
@@ -303,10 +303,10 @@ class cl_sau_receitamedica {
          return false;
        }
      }
-     if(trim($this->s158_i_profissional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_i_profissional"])){
+     if(trim((string) $this->s158_i_profissional)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_i_profissional"])){
        $sql  .= $virgula." s158_i_profissional = $this->s158_i_profissional ";
        $virgula = ",";
-       if(trim($this->s158_i_profissional) == null ){
+       if(trim((string) $this->s158_i_profissional) == null ){
          $this->erro_sql = " Campo Profissional não Informado.";
          $this->erro_campo = "s158_i_profissional";
          $this->erro_banco = "";
@@ -316,10 +316,10 @@ class cl_sau_receitamedica {
          return false;
        }
      }
-     if(trim($this->s158_i_tiporeceita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_i_tiporeceita"])){
+     if(trim((string) $this->s158_i_tiporeceita)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_i_tiporeceita"])){
        $sql  .= $virgula." s158_i_tiporeceita = $this->s158_i_tiporeceita ";
        $virgula = ",";
-       if(trim($this->s158_i_tiporeceita) == null ){
+       if(trim((string) $this->s158_i_tiporeceita) == null ){
          $this->erro_sql = " Campo Tipo de Receita não Informado.";
          $this->erro_campo = "s158_i_tiporeceita";
          $this->erro_banco = "";
@@ -329,10 +329,10 @@ class cl_sau_receitamedica {
          return false;
        }
      }
-     if(trim($this->s158_t_prescricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_t_prescricao"])){
+     if(trim((string) $this->s158_t_prescricao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_t_prescricao"])){
        $sql  .= $virgula." s158_t_prescricao = '$this->s158_t_prescricao' ";
        $virgula = ",";
-       if(trim($this->s158_t_prescricao) == null ){
+       if(trim((string) $this->s158_t_prescricao) == null ){
          $this->erro_sql = " Campo Prescrição não Informado.";
          $this->erro_campo = "s158_t_prescricao";
          $this->erro_banco = "";
@@ -342,10 +342,10 @@ class cl_sau_receitamedica {
          return false;
        }
      }
-     if(trim($this->s158_i_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_i_situacao"])){
+     if(trim((string) $this->s158_i_situacao)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_i_situacao"])){
        $sql  .= $virgula." s158_i_situacao = $this->s158_i_situacao ";
        $virgula = ",";
-       if(trim($this->s158_i_situacao) == null ){
+       if(trim((string) $this->s158_i_situacao) == null ){
          $this->erro_sql = " Campo Situação não Informado.";
          $this->erro_campo = "s158_i_situacao";
          $this->erro_banco = "";
@@ -355,10 +355,10 @@ class cl_sau_receitamedica {
          return false;
        }
      }
-     if(trim($this->s158_d_validade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_d_validade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s158_d_validade_dia"] !="") ){
+     if(trim((string) $this->s158_d_validade)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_d_validade_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s158_d_validade_dia"] !="") ){
        $sql  .= $virgula." s158_d_validade = '$this->s158_d_validade' ";
        $virgula = ",";
-       if(trim($this->s158_d_validade) == null ){
+       if(trim((string) $this->s158_d_validade) == null ){
          $this->erro_sql = " Campo Validade não Informado.";
          $this->erro_campo = "s158_d_validade_dia";
          $this->erro_banco = "";
@@ -371,7 +371,7 @@ class cl_sau_receitamedica {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s158_d_validade_dia"])){
          $sql  .= $virgula." s158_d_validade = null ";
          $virgula = ",";
-         if(trim($this->s158_d_validade) == null ){
+         if(trim((string) $this->s158_d_validade) == null ){
            $this->erro_sql = " Campo Validade não Informado.";
            $this->erro_campo = "s158_d_validade_dia";
            $this->erro_banco = "";
@@ -382,10 +382,10 @@ class cl_sau_receitamedica {
          }
        }
      }
-     if(trim($this->s158_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_i_login"])){
+     if(trim((string) $this->s158_i_login)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_i_login"])){
        $sql  .= $virgula." s158_i_login = $this->s158_i_login ";
        $virgula = ",";
-       if(trim($this->s158_i_login) == null ){
+       if(trim((string) $this->s158_i_login) == null ){
          $this->erro_sql = " Campo Login não Informado.";
          $this->erro_campo = "s158_i_login";
          $this->erro_banco = "";
@@ -395,10 +395,10 @@ class cl_sau_receitamedica {
          return false;
        }
      }
-     if(trim($this->s158_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s158_d_data_dia"] !="") ){
+     if(trim((string) $this->s158_d_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_d_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["s158_d_data_dia"] !="") ){
        $sql  .= $virgula." s158_d_data = '$this->s158_d_data' ";
        $virgula = ",";
-       if(trim($this->s158_d_data) == null ){
+       if(trim((string) $this->s158_d_data) == null ){
          $this->erro_sql = " Campo Data do sistema não Informado.";
          $this->erro_campo = "s158_d_data_dia";
          $this->erro_banco = "";
@@ -411,7 +411,7 @@ class cl_sau_receitamedica {
        if(isset($GLOBALS["HTTP_POST_VARS"]["s158_d_data_dia"])){
          $sql  .= $virgula." s158_d_data = null ";
          $virgula = ",";
-         if(trim($this->s158_d_data) == null ){
+         if(trim((string) $this->s158_d_data) == null ){
            $this->erro_sql = " Campo Data do sistema não Informado.";
            $this->erro_campo = "s158_d_data_dia";
            $this->erro_banco = "";
@@ -422,10 +422,10 @@ class cl_sau_receitamedica {
          }
        }
      }
-     if(trim($this->s158_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_c_hora"])){
+     if(trim((string) $this->s158_c_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["s158_c_hora"])){
        $sql  .= $virgula." s158_c_hora = '$this->s158_c_hora' ";
        $virgula = ",";
-       if(trim($this->s158_c_hora) == null ){
+       if(trim((string) $this->s158_c_hora) == null ){
          $this->erro_sql = " Campo Hora do sistema não Informado.";
          $this->erro_campo = "s158_c_hora";
          $this->erro_banco = "";
@@ -443,27 +443,27 @@ class cl_sau_receitamedica {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17728,'$this->s158_i_codigo','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s158_i_codigo"]) || $this->s158_i_codigo != "")
-           $resac = db_query("insert into db_acount values($acount,3130,17728,'".AddSlashes(pg_result($resaco,$conresaco,'s158_i_codigo'))."','$this->s158_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3130,17728,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s158_i_codigo'))."','$this->s158_i_codigo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s158_i_profissional"]) || $this->s158_i_profissional != "")
-           $resac = db_query("insert into db_acount values($acount,3130,17730,'".AddSlashes(pg_result($resaco,$conresaco,'s158_i_profissional'))."','$this->s158_i_profissional',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3130,17730,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s158_i_profissional'))."','$this->s158_i_profissional',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s158_i_tiporeceita"]) || $this->s158_i_tiporeceita != "")
-           $resac = db_query("insert into db_acount values($acount,3130,17731,'".AddSlashes(pg_result($resaco,$conresaco,'s158_i_tiporeceita'))."','$this->s158_i_tiporeceita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3130,17731,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s158_i_tiporeceita'))."','$this->s158_i_tiporeceita',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s158_t_prescricao"]) || $this->s158_t_prescricao != "")
-           $resac = db_query("insert into db_acount values($acount,3130,17734,'".AddSlashes(pg_result($resaco,$conresaco,'s158_t_prescricao'))."','$this->s158_t_prescricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3130,17734,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s158_t_prescricao'))."','$this->s158_t_prescricao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s158_i_situacao"]) || $this->s158_i_situacao != "")
-           $resac = db_query("insert into db_acount values($acount,3130,17733,'".AddSlashes(pg_result($resaco,$conresaco,'s158_i_situacao'))."','$this->s158_i_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3130,17733,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s158_i_situacao'))."','$this->s158_i_situacao',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s158_d_validade"]) || $this->s158_d_validade != "")
-           $resac = db_query("insert into db_acount values($acount,3130,17732,'".AddSlashes(pg_result($resaco,$conresaco,'s158_d_validade'))."','$this->s158_d_validade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3130,17732,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s158_d_validade'))."','$this->s158_d_validade',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s158_i_login"]) || $this->s158_i_login != "")
-           $resac = db_query("insert into db_acount values($acount,3130,17729,'".AddSlashes(pg_result($resaco,$conresaco,'s158_i_login'))."','$this->s158_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3130,17729,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s158_i_login'))."','$this->s158_i_login',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s158_d_data"]) || $this->s158_d_data != "")
-           $resac = db_query("insert into db_acount values($acount,3130,17735,'".AddSlashes(pg_result($resaco,$conresaco,'s158_d_data'))."','$this->s158_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3130,17735,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s158_d_data'))."','$this->s158_d_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["s158_c_hora"]) || $this->s158_c_hora != "")
-           $resac = db_query("insert into db_acount values($acount,3130,17736,'".AddSlashes(pg_result($resaco,$conresaco,'s158_c_hora'))."','$this->s158_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,3130,17736,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'s158_c_hora'))."','$this->s158_c_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -508,18 +508,18 @@ class cl_sau_receitamedica {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,17728,'$s158_i_codigo','E')");
-         $resac = db_query("insert into db_acount values($acount,3130,17728,'','".AddSlashes(pg_result($resaco,$iresaco,'s158_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3130,17730,'','".AddSlashes(pg_result($resaco,$iresaco,'s158_i_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3130,17731,'','".AddSlashes(pg_result($resaco,$iresaco,'s158_i_tiporeceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3130,17734,'','".AddSlashes(pg_result($resaco,$iresaco,'s158_t_prescricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3130,17733,'','".AddSlashes(pg_result($resaco,$iresaco,'s158_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3130,17732,'','".AddSlashes(pg_result($resaco,$iresaco,'s158_d_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3130,17729,'','".AddSlashes(pg_result($resaco,$iresaco,'s158_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3130,17735,'','".AddSlashes(pg_result($resaco,$iresaco,'s158_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,3130,17736,'','".AddSlashes(pg_result($resaco,$iresaco,'s158_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3130,17728,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s158_i_codigo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3130,17730,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s158_i_profissional'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3130,17731,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s158_i_tiporeceita'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3130,17734,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s158_t_prescricao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3130,17733,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s158_i_situacao'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3130,17732,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s158_d_validade'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3130,17729,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s158_i_login'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3130,17735,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s158_d_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,3130,17736,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'s158_c_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from sau_receitamedica
@@ -579,7 +579,7 @@ class cl_sau_receitamedica {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:sau_receitamedica";
@@ -594,7 +594,7 @@ class cl_sau_receitamedica {
    function sql_query ( $s158_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -620,7 +620,7 @@ class cl_sau_receitamedica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -633,7 +633,7 @@ class cl_sau_receitamedica {
    function sql_query_file ( $s158_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -654,7 +654,7 @@ class cl_sau_receitamedica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -667,7 +667,7 @@ class cl_sau_receitamedica {
   function sql_query_prontuario ( $s158_i_codigo=null,$campos="*",$ordem=null,$dbwhere=""){
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -695,7 +695,7 @@ class cl_sau_receitamedica {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -709,7 +709,7 @@ class cl_sau_receitamedica {
 
     $sql = "select ";
     if($campos != "*" ){
-      $campos_sql = split("#",$campos);
+      $campos_sql = preg_split("#\\##m",$campos);
       $virgula = "";
       for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];
@@ -742,7 +742,7 @@ class cl_sau_receitamedica {
     $sql .= $sql2;
     if($ordem != null ){
       $sql .= " order by ";
-      $campos_sql = split("#",$ordem);
+      $campos_sql = preg_split("#\\##m",(string) $ordem);
       $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
         $sql .= $virgula.$campos_sql[$i];

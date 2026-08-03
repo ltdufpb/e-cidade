@@ -42,7 +42,7 @@ final class DebitoContaArchive
 
   public function open($iBanco, $iUltimoNsa)
   {
-    $this->sNome = "tmp/debconta_".str_pad($iBanco, 3, "0", STR_PAD_LEFT)."_nsa_".str_pad($iUltimoNsa, 10, "0", STR_PAD_LEFT)."_".date("Y-m-d_His", db_getsession("DB_datausu")).".txt";
+    $this->sNome = "tmp/debconta_".str_pad((string) $iBanco, 3, "0", STR_PAD_LEFT)."_nsa_".str_pad((string) $iUltimoNsa, 10, "0", STR_PAD_LEFT)."_".date("Y-m-d_His", db_getsession("DB_datausu")).".txt";
     $this->oFile = fopen($this->sNome, 'w+');
   }
 
@@ -50,12 +50,12 @@ final class DebitoContaArchive
   {
     $sHeader  = "A";
     $sHeader .= "1";
-    $sHeader .= str_pad(substr($iConvenio, 0, 20), 20, " ", STR_PAD_RIGHT);
-    $sHeader .= str_pad(substr($sNomeInst, 0, 20), 20, " ", STR_PAD_RIGHT);
-    $sHeader .= str_pad($iBanco, 3, "0", STR_PAD_LEFT);
-    $sHeader .= str_pad(substr($sBancoDesc, 0, 20), 20);
+    $sHeader .= str_pad(substr((string) $iConvenio, 0, 20), 20, " ", STR_PAD_RIGHT);
+    $sHeader .= str_pad(substr((string) $sNomeInst, 0, 20), 20, " ", STR_PAD_RIGHT);
+    $sHeader .= str_pad((string) $iBanco, 3, "0", STR_PAD_LEFT);
+    $sHeader .= str_pad(substr((string) $sBancoDesc, 0, 20), 20);
     $sHeader .= date("Ymd", db_getsession("DB_datausu"));
-    $sHeader .= str_pad($iUltimaNsa, 6, "0", STR_PAD_LEFT);
+    $sHeader .= str_pad((string) $iUltimaNsa, 6, "0", STR_PAD_LEFT);
     $sHeader .= "04";
     $sHeader .= "DEBITO AUTOMATICO";
     $sHeader .= str_repeat(" ", 52);
@@ -77,13 +77,13 @@ final class DebitoContaArchive
   ) {
 
     $sLinha  = "E";
-    $sLinha .= str_pad(trim($sBancoIdempresa), 25, " ", STR_PAD_RIGHT);
-    $sLinha .= str_pad(trim($sBancoAgencia), 4, "0", STR_PAD_LEFT);
-    $sLinha .= str_pad(trim($sBancoConta),  14, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(trim((string) $sBancoIdempresa), 25, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad(trim((string) $sBancoAgencia), 4, "0", STR_PAD_LEFT);
+    $sLinha .= str_pad(trim((string) $sBancoConta),  14, " ", STR_PAD_RIGHT);
     $sLinha .= $oDebitoDataVencimento->getDate("Ymd");
     $sLinha .= str_pad(trim(db_formatar($nDebitoValor, 'valsemform', '0', 15)), 15, "0", STR_PAD_LEFT);
     $sLinha .= "03";
-    $sLinha .= str_pad("001-" . str_pad($nDebitoNumpre, 8, "0", STR_PAD_LEFT) . "-" . str_pad($nDebitoNumpar, 3, "0", STR_PAD_LEFT) . "-" . str_pad($iNumeroContrato, 10, "0", STR_PAD_LEFT) . "-" . str_pad($iCodigoPedido, 10, "0", STR_PAD_LEFT), 60, " ", STR_PAD_RIGHT);
+    $sLinha .= str_pad("001-" . str_pad((string) $nDebitoNumpre, 8, "0", STR_PAD_LEFT) . "-" . str_pad((string) $nDebitoNumpar, 3, "0", STR_PAD_LEFT) . "-" . str_pad((string) $iNumeroContrato, 10, "0", STR_PAD_LEFT) . "-" . str_pad((string) $iCodigoPedido, 10, "0", STR_PAD_LEFT), 60, " ", STR_PAD_RIGHT);
     $sLinha .= str_repeat(" ", 20);
     $sLinha .= "0";
     $sLinha .= "\n";
@@ -103,7 +103,7 @@ final class DebitoContaArchive
 
   public function close()
   {
-    fputs($this->oFile, $this->getLinhas());
+    fputs($this->oFile, (string) $this->getLinhas());
     fclose($this->oFile);
   }
 

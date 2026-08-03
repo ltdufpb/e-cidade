@@ -34,7 +34,7 @@ $clrotulo = new rotulocampo;
 $clrotulo->label("z01_nome");
 $clrotulo->label("y30_codnoti");
 $clrotulo->label("y30_numbloco");
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 ?>
 <html>

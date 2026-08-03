@@ -89,7 +89,7 @@ $clrotulo->label("o58_orgao");
 </form>
   <?php 
   $db_opcao = 1;
-  $chavepri = array ("o61_sequencial"     => @$o61_sequencial);
+  $chavepri =  ["o61_sequencial"     => @$o61_sequencial];
   $cliframe_alterar_excluir->chavepri      = $chavepri;
   $cliframe_alterar_excluir->sql           = $clorcdotacaocontr->sql_query_rec(null, null,"*", null,
                                              "o61_coddot = {$o61_coddot} and o61_anousu = {$o61_anousu}");
@@ -130,7 +130,7 @@ function js_preenchepesquisa(chave,chave1){
   db_iframe_orcdotacaocontr.hide();
   <?php 
   if ($db_opcao != 1) {
-    echo " location.href = '" . basename($GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"]) . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
+    echo " location.href = '" . basename((string) $GLOBALS ["HTTP_SERVER_VARS"] ["PHP_SELF"]) . "?chavepesquisa='+chave+'&chavepesquisa1='+chave1";
   }
   ?>
 }

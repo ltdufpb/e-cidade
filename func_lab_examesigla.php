@@ -32,7 +32,7 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
 db_postmemory($_POST);
-parse_str($_SERVER["QUERY_STRING"], $queryString);
+parse_str((string) $_SERVER["QUERY_STRING"], $queryString);
 
 $cllab_exame = new cl_lab_exame;
 $cllab_exame->rotulo->label("la08_i_codigo");
@@ -88,7 +88,7 @@ $cllab_exame->rotulo->label("la08_c_descr");
   <tr>
     <td align="center" valign="top">
         <?php
-        $sWhere = array();
+        $sWhere = [];
         $sAnd = "";
 
         if (isset($iVinculo)) {
@@ -133,13 +133,13 @@ $cllab_exame->rotulo->label("la08_c_descr");
               $sWhere .= " and la24_i_setor = " . $la24_i_setor;
               $sql = $cllab_exame->sql_query_exame_laboratorio(null, $campos, "la08_i_codigo", $sWhere);
             }
-            $repassa = array();
+            $repassa = [];
 
             if (isset($chave_la08_i_codigo)) {
-                $repassa = array(
+                $repassa = [
                   "chave_la08_i_codigo" => $chave_la08_i_codigo,
                   "chave_la08_c_descr"  => $chave_la08_c_descr
-                );
+                ];
             }
             db_lovrot($sql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);
         } else {

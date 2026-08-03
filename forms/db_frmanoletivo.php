@@ -94,7 +94,7 @@ db_inputdata('ed28_d_fim',@$ed28_d_fim_dia,@$ed28_d_fim_mes,@$ed28_d_fim_ano,tru
     </td>
     <td> 
 <?php 
-$x = array('f'=>'Não','t'=>'Sim');
+$x = ['f'=>'Não','t'=>'Sim'];
 db_select('ed28_l_encerrado',$x,true,$db_opcao,"");
 ?>
     </td>
@@ -135,7 +135,7 @@ function js_preenchepesquisa(chave){
   db_iframe_anoletivo.hide();
   <?php 
   if($db_opcao!=1){
-    echo " location.href = '".basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
+    echo " location.href = '".basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"])."?chavepesquisa='+chave";
   }
   ?>
 }

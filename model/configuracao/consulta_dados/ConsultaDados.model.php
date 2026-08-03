@@ -45,7 +45,7 @@ class ConsultaDados {
    * @var array
    * @access private
    */
-  private $aResultado   = array();
+  private $aResultado   = [];
 
   /**
    * Parametros de Entrada da Consulta
@@ -53,7 +53,7 @@ class ConsultaDados {
    * @var array
    * @access private
    */
-  private $aParametrosEntrada = array();
+  private $aParametrosEntrada = [];
 
   /**
    * rsConn
@@ -103,14 +103,14 @@ class ConsultaDados {
       $oDaoDBLogsAcessa->arquivo   = $sMetodo;
       $oDaoDBLogsAcessa->id_usuario= 1;
       $oDaoDBLogsAcessa->id_modulo = $_SESSION['DB_modulo'];
-      $oDaoDBLogsAcessa->id_item   = isset($_SESSION['DB_itemmenu_acessado']) ? $_SESSION['DB_itemmenu_acessado'] : 9605;
+      $oDaoDBLogsAcessa->id_item   = $_SESSION['DB_itemmenu_acessado'] ?? 9605;
       $oDaoDBLogsAcessa->coddepto  = 1;
       $oDaoDBLogsAcessa->instit    = $oErro->getCode();
       $oDaoDBLogsAcessa->incluir(null);
       $_SESSION = $oDaoDBLogsAcessa->codsequen;
 
       if ( $oDaoDBLogsAcessa->erro_status == "0" ) {
-        throw new SoapFault("e-Cidade","Erro ao processar registros de Log.\n" . utf8_encode($oDaoDBLogsAcessa->erro_msg));
+        throw new SoapFault("e-Cidade","Erro ao processar registros de Log.\n" . mb_convert_encoding($oDaoDBLogsAcessa->erro_msg, 'UTF-8', 'ISO-8859-1'));
       }
 
       throw new SoapFault("e-Cidade", "Erro ao Buscar os Dados do WebService. Contate Suporte. " . pg_last_error());
@@ -152,7 +152,7 @@ class ConsultaDados {
       throw new SoapFault("e-Cidade", "Metodo nao Encontrado. Contate Suporte.");
     }
 
-    $sSQL                = ConsultaDados::carregarXMLPesquisa( $sCaminhoMetodo );
+    $sSQL                = $this->carregarXMLPesquisa($sCaminhoMetodo);
     $iMomentoInicioQuery = time();
     $lEnviouQuery        = pg_send_query( $this->rsConn, $sSQL);
 
@@ -203,7 +203,7 @@ class ConsultaDados {
     }
 
     $iMemoriaLimite = preg_replace('/[a-zA-Z]/',"",ini_get("memory_limit")) * 1024 * 1024;
-    $aRetorno       = array();
+    $aRetorno       = [];
 
     while ( $oDados = pg_fetch_object( $rsSQL ) ) {
 
@@ -211,7 +211,7 @@ class ConsultaDados {
       $aRetorno[]        = $oDados;
 
       foreach ( $oDados as $sCampo =>$sValor ) {
-        $oDados->$sCampo = urlencode($sValor);
+        $oDados->$sCampo = urlencode((string) $sValor);
       }
 
       if ( $iMemoriaUtilizada >= $iMemoriaLimite * 0.90 ) { // Deixa 10% da memória para responder
@@ -262,8 +262,8 @@ class ConsultaDados {
       /**
        * Montando Campos para criar a query
        */
-      $aCampos          = array();
-      $aCamposXML       = array();
+      $aCampos          = [];
+      $aCamposXML       = [];
       foreach ( $oNodeCampos->getElementsByTagName("campo") as $iIndiceNode => $oNodeCampo ) {
 
         $sNomeCampo               = $oNodeCampo->getAttribute("campo");
@@ -291,7 +291,7 @@ class ConsultaDados {
       /**
        * Montando juncoes com outras tabelas
        */
-      $aJuncoes         = array();
+      $aJuncoes         = [];
       foreach ( $oNodeJuncoes->getElementsByTagName('join') as $oNodeJoin ) {
 
         $sTipoJoin     = $oNodeJoin->getAttribute("tipo");
@@ -303,7 +303,7 @@ class ConsultaDados {
       /**
        * Montando Filtros
        */
-      $aFiltros = array();
+      $aFiltros = [];
       file_put_contents('tmp/debug', print_r(['filtros informados: ', $aFiltrosInformados], true), FILE_APPEND);
       foreach ( $oNodeFiltros->getElementsByTagName('filtro') as $oNodeFiltro ) {
 

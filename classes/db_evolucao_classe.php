@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE evolucao
 class cl_evolucao { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $anousu = 0; 
-   var $cgcter = null; 
-   var $indice = 0; 
-   var $ranking = 0; 
+   public $anousu = 0; 
+   public $cgcter = null; 
+   public $indice = 0; 
+   public $ranking = 0; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  anousu = int4 = Exercício 
                  cgcter = char(3) = Codigo do Município 
                  indice = float8 = Índice 
                  ranking = int4 = Ranking do Munícipio 
                  ";
    //funcao construtor da classe 
-   function cl_evolucao() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("evolucao"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -134,7 +134,7 @@ class cl_evolucao {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "evolucao ($this->anousu."-".$this->cgcter) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "evolucao já Cadastrado";
@@ -158,14 +158,14 @@ class cl_evolucao {
      $resaco = $this->sql_record($this->sql_query_file($this->anousu,$this->cgcter));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,1019,'$this->anousu','I')");
        $resac = db_query("insert into db_acountkey values($acount,2275,'$this->cgcter','I')");
-       $resac = db_query("insert into db_acount values($acount,362,1019,'','".AddSlashes(pg_result($resaco,0,'anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,362,2275,'','".AddSlashes(pg_result($resaco,0,'cgcter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,362,2293,'','".AddSlashes(pg_result($resaco,0,'indice'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,362,2362,'','".AddSlashes(pg_result($resaco,0,'ranking'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,362,1019,'','".AddSlashes(pg_fetch_result($resaco,0,'anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,362,2275,'','".AddSlashes(pg_fetch_result($resaco,0,'cgcter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,362,2293,'','".AddSlashes(pg_fetch_result($resaco,0,'indice'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,362,2362,'','".AddSlashes(pg_fetch_result($resaco,0,'ranking'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -174,10 +174,10 @@ class cl_evolucao {
       $this->atualizacampos();
      $sql = " update evolucao set ";
      $virgula = "";
-     if(trim($this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
+     if(trim((string) $this->anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["anousu"])){ 
        $sql  .= $virgula." anousu = $this->anousu ";
        $virgula = ",";
-       if(trim($this->anousu) == null ){ 
+       if(trim((string) $this->anousu) == null ){ 
          $this->erro_sql = " Campo Exercício nao Informado.";
          $this->erro_campo = "anousu";
          $this->erro_banco = "";
@@ -187,10 +187,10 @@ class cl_evolucao {
          return false;
        }
      }
-     if(trim($this->cgcter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcter"])){ 
+     if(trim((string) $this->cgcter)!="" || isset($GLOBALS["HTTP_POST_VARS"]["cgcter"])){ 
        $sql  .= $virgula." cgcter = '$this->cgcter' ";
        $virgula = ",";
-       if(trim($this->cgcter) == null ){ 
+       if(trim((string) $this->cgcter) == null ){ 
          $this->erro_sql = " Campo Codigo do Município nao Informado.";
          $this->erro_campo = "cgcter";
          $this->erro_banco = "";
@@ -200,10 +200,10 @@ class cl_evolucao {
          return false;
        }
      }
-     if(trim($this->indice)!="" || isset($GLOBALS["HTTP_POST_VARS"]["indice"])){ 
+     if(trim((string) $this->indice)!="" || isset($GLOBALS["HTTP_POST_VARS"]["indice"])){ 
        $sql  .= $virgula." indice = $this->indice ";
        $virgula = ",";
-       if(trim($this->indice) == null ){ 
+       if(trim((string) $this->indice) == null ){ 
          $this->erro_sql = " Campo Índice nao Informado.";
          $this->erro_campo = "indice";
          $this->erro_banco = "";
@@ -213,10 +213,10 @@ class cl_evolucao {
          return false;
        }
      }
-     if(trim($this->ranking)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ranking"])){ 
+     if(trim((string) $this->ranking)!="" || isset($GLOBALS["HTTP_POST_VARS"]["ranking"])){ 
        $sql  .= $virgula." ranking = $this->ranking ";
        $virgula = ",";
-       if(trim($this->ranking) == null ){ 
+       if(trim((string) $this->ranking) == null ){ 
          $this->erro_sql = " Campo Ranking do Munícipio nao Informado.";
          $this->erro_campo = "ranking";
          $this->erro_banco = "";
@@ -237,18 +237,18 @@ class cl_evolucao {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1019,'$this->anousu','A')");
          $resac = db_query("insert into db_acountkey values($acount,2275,'$this->cgcter','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["anousu"]))
-           $resac = db_query("insert into db_acount values($acount,362,1019,'".AddSlashes(pg_result($resaco,$conresaco,'anousu'))."','$this->anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,362,1019,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'anousu'))."','$this->anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["cgcter"]))
-           $resac = db_query("insert into db_acount values($acount,362,2275,'".AddSlashes(pg_result($resaco,$conresaco,'cgcter'))."','$this->cgcter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,362,2275,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'cgcter'))."','$this->cgcter',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["indice"]))
-           $resac = db_query("insert into db_acount values($acount,362,2293,'".AddSlashes(pg_result($resaco,$conresaco,'indice'))."','$this->indice',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,362,2293,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'indice'))."','$this->indice',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["ranking"]))
-           $resac = db_query("insert into db_acount values($acount,362,2362,'".AddSlashes(pg_result($resaco,$conresaco,'ranking'))."','$this->ranking',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,362,2362,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'ranking'))."','$this->ranking',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -293,14 +293,14 @@ class cl_evolucao {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,1019,'$anousu','E')");
          $resac = db_query("insert into db_acountkey values($acount,2275,'$cgcter','E')");
-         $resac = db_query("insert into db_acount values($acount,362,1019,'','".AddSlashes(pg_result($resaco,$iresaco,'anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,362,2275,'','".AddSlashes(pg_result($resaco,$iresaco,'cgcter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,362,2293,'','".AddSlashes(pg_result($resaco,$iresaco,'indice'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,362,2362,'','".AddSlashes(pg_result($resaco,$iresaco,'ranking'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,362,1019,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,362,2275,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'cgcter'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,362,2293,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'indice'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,362,2362,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'ranking'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from evolucao
@@ -366,7 +366,7 @@ class cl_evolucao {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:evolucao";

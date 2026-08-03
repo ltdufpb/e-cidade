@@ -30,7 +30,7 @@ require(modification("libs/db_conecta.php"));
 include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 
-parse_str(base64_decode($HTTP_SERVER_VARS['QUERY_STRING']));
+parse_str(base64_decode((string) $_SERVER['QUERY_STRING']), $result);
 
 if(isset($retorno)) {
   $result = db_query("select c.v56_codigo,c.v56_certid,c.v56_proces,c.v56_execut,c.v56_endere,c.v56_movim,
@@ -43,8 +43,8 @@ if(isset($retorno)) {
   db_fieldsmemory($result,0);
 }
 
-if(isset($HTTP_POST_VARS["enviar"])) {
-  db_postmemory($HTTP_POST_VARS);
+if(isset($_POST["enviar"])) {
+  db_postmemory($_POST);
   $data = "$data_ano-$data_mes-$data_dia";
   $data = $data=="--"?"null":"'$data'";
   db_query("BEGIN");
@@ -82,24 +82,24 @@ if(isset($HTTP_POST_VARS["enviar"])) {
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"><br><br>
 	  <?php 
-	   if(isset($HTTP_POST_VARS["procurar"]) || isset($HTTP_POST_VARS["priNoMe"]) || isset($HTTP_POST_VARS["antNoMe"]) || isset($HTTP_POST_VARS["proxNoMe"]) || isset($HTTP_POST_VARS["ultNoMe"])) {
-	     db_postmemory($HTTP_POST_VARS);
+	   if(isset($_POST["procurar"]) || isset($_POST["priNoMe"]) || isset($_POST["antNoMe"]) || isset($_POST["proxNoMe"]) || isset($_POST["ultNoMe"])) {
+	     db_postmemory($_POST);
          if(!empty($codigo)) {
            $result = db_query("select v56_codigo from cerjur where v56_codigo = $codigo");
-	       if(pg_numrows($result) > 0) {
- 	         db_redireciona("jur1_certidao002.php?".base64_encode("retorno=".pg_result($result,0,0)));
+	       if(pg_num_rows($result) > 0) {
+ 	         db_redireciona("jur1_certidao002.php?".base64_encode("retorno=".pg_fetch_result($result,0,0)));
 	         exit;
 	       } else {             
              $filtro = base64_encode("v56_codigo like '".$codigo."%' order by v56_codigo");
 	       }
          } else {
 		   if(!empty($certidao)) {
-             $filtro = base64_encode("upper(v56_certid) like upper('".$HTTP_POST_VARS["certidao"]."%') order by v56_certid");
+             $filtro = base64_encode("upper(v56_certid) like upper('".$_POST["certidao"]."%') order by v56_certid");
            } else
-             $filtro = base64_encode("upper(v56_proces) like upper('".$HTTP_POST_VARS["processo"]."%') order by v56_proces");
+             $filtro = base64_encode("upper(v56_proces) like upper('".$_POST["processo"]."%') order by v56_proces");
 	     }
-         if(isset($HTTP_POST_VARS["filtro"]))
-           $filtro = $HTTP_POST_VARS["filtro"];
+         if(isset($_POST["filtro"]))
+           $filtro = $_POST["filtro"];
          $sql = "select v56_codigo as db_codigo,v56_codigo as Código,v56_certid as certidão,v56_proces as processo,to_char(v56_data,'DD-MM-YYYY') as data from cerjur where ".base64_decode($filtro);
 	     echo "<center>";
          db_lov($sql,15,"jur1_certidao002.php",$filtro);

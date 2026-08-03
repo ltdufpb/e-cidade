@@ -39,8 +39,8 @@ $clrotulo->label("k196_maximoparcelas");
 $clrotulo->label("k196_valorminimoparcelafisica");
 $clrotulo->label("k196_valorminimoparcelajuridica");
 
-$k00_dtvencimento = isset($k00_dtvencimento) ? $k00_dtvencimento : '';
-$k00_taxaespecifica = isset($k00_taxaespecifica) ? $k00_taxaespecifica : '';
+$k00_dtvencimento ??= '';
+$k00_taxaespecifica ??= '';
 $displayTaxaEspecifica = $db_opcao == 33 ? "style='display: none;'" : '';
 
 $operacoestefRepository = new OperacoestefRepository();
@@ -91,10 +91,10 @@ $aOperacoes = $operacoestefRepository->get();
                         </td>
                         <td>
                             <?php
-                                $x = array(
+                                $x = [
                                     't' => 'Marcado', 
                                     'f' => 'Desmarcado'
-                                );
+                                ];
 
                                 db_select(
                                     'k00_marcado',
@@ -146,10 +146,10 @@ $aOperacoes = $operacoestefRepository->get();
                         </td>
                         <td>
                             <?php
-                                $x = array(
+                                $x = [
                                     "f" => "NAO", 
                                     "t" => "SIM"
-                                );
+                                ];
 
                                 db_select(
                                     'k00_emrec',
@@ -165,10 +165,10 @@ $aOperacoes = $operacoestefRepository->get();
                         </td>
                         <td>
                             <?php
-                                $x = array(
+                                $x = [
                                     "f" => "NAO", 
                                     "t" => "SIM"
-                                );
+                                ];
 
                                 db_select(
                                     'k00_agnum',
@@ -186,10 +186,10 @@ $aOperacoes = $operacoestefRepository->get();
                         </td>
                         <td>
                             <?php
-                                $x = array(
+                                $x = [
                                     "f" => "NAO",
                                     "t" => "SIM"
-                                );
+                                ];
                                 
                                 db_select(
                                     'k00_agpar', 
@@ -257,10 +257,10 @@ $aOperacoes = $operacoestefRepository->get();
                         </td>
                         <td>
                             <?php
-                                $x = array(
+                                $x = [
                                     "f" => "NAO", 
                                     "t" => "SIM"
-                                );
+                                ];
                                 
                                 db_select(
                                     'k00_impval',
@@ -279,10 +279,10 @@ $aOperacoes = $operacoestefRepository->get();
                         </td>
                         <td>
                             <?php
-                                $x = array(
+                                $x = [
                                     "f" => "NAO", 
                                     "t" => "SIM"
-                                );
+                                ];
 
                                 db_select(
                                     'k00_liberacarnesis',
@@ -301,10 +301,10 @@ $aOperacoes = $operacoestefRepository->get();
                         </td>
                         <td>
                             <?php
-                                $x = array(
+                                $x = [
                                     "f" => "NAO", 
                                     "t" => "SIM"
-                                );
+                                ];
 
                                 db_select(
                                     'k00_liberacarnepref', 
@@ -323,11 +323,11 @@ $aOperacoes = $operacoestefRepository->get();
                         </td>
                         <td colspan="3">
                             <?php
-                                $lib = array(
+                                $lib = [
                                     "1" => "Emissão liberada",
                                     "2" => "Mostrar débito e não emitir recibo",
                                     "3" => "Não mostrar débito e não emitir recibo"
-                                );
+                                ];
 
                                 db_select(
                                     'k00_recibodbpref', 
@@ -345,11 +345,11 @@ $aOperacoes = $operacoestefRepository->get();
                         </td>
                         <td colspan="3">
                             <?php
-                                $arrayTipoAgrup = array(
+                                $arrayTipoAgrup = [
                                     "1" => "Nenhum", 
                                     "2" => "Parcial",
                                     "3" => "Total"
-                                );
+                                ];
 
                                 db_select(
                                     'k00_tipoagrup', 
@@ -367,11 +367,11 @@ $aOperacoes = $operacoestefRepository->get();
                         </td>
                         <td colspan="3">
                             <?php
-                                $aFormEmissao = array(
+                                $aFormEmissao = [
                                     "2" => "Com valores atualizados",
                                     "1" => "Com valores originais",
                                     "3" => "Ambos"
-                                );
+                                ];
 
                                 db_select(
                                     'k00_formemissao',
@@ -608,7 +608,7 @@ $aOperacoes = $operacoestefRepository->get();
                         </td>
                         <td>
                             <?php 
-                            $x = array("f" => "NAO", "t" => "SIM");
+                            $x = ["f" => "NAO", "t" => "SIM"];
                             db_select('k00_bloqnutil', $x, true, $db_opcao, "");
                             ?>
                         </td>
@@ -1247,7 +1247,7 @@ $aOperacoes = $operacoestefRepository->get();
         <?php
             if ($db_opcao != 1)
             {
-                echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+                echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
             }
         ?>
     }

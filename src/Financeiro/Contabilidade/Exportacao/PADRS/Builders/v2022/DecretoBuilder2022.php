@@ -7,11 +7,13 @@ use ECidade\Financeiro\Contabilidade\Exportacao\PADRS\Layouts\v2022\Decreto;
 
 class DecretoBuilder2022 extends DecretoBuilder2021
 {
+    #[\Override]
     protected function create()
     {
         $this->layout = new Decreto();
     }
 
+    #[\Override]
     protected function processar()
     {
         $tipoCredito = $this->identificaTipoCredito($this->dados['tipo_suplementacao']);

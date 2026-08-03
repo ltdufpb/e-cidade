@@ -29,14 +29,14 @@ include(modification("fpdf151/pdf.php"));
 require(modification("libs/db_sql.php"));
 require(modification("libs/db_utils.php"));
 
-db_postmemory($HTTP_SERVER_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_SERVER);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
-$DB_DATACALC = mktime(0,0,0,substr($db_datausu,5,2),substr($db_datausu,8,2),substr($db_datausu,0,4));
+$DB_DATACALC = mktime(0,0,0,substr((string) $db_datausu,5,2),substr((string) $db_datausu,8,2),substr((string) $db_datausu,0,4));
 
 $sTiposDebitos            = $tipos;
-$aTipoDebitosSelecionados = split(",",$tipos);
-$aTipoDebitos             = split(",",$tipostodos);
+$aTipoDebitosSelecionados = preg_split("#,#m",$tipos);
+$aTipoDebitos             = preg_split("#,#m",$tipostodos);
 
 $sInfo  = "";
 $sInfo1 = "";
@@ -118,13 +118,13 @@ if (!empty($numcgm)) {
   
   if ($oDaoIptuBase->numrows > 0) {
     $oDadosProprietario = db_utils::fieldsMemory($rsDadosProprietario,0);
-    
+
     $sOrigemConsulta .= " - SQL: {$oDadosProprietario->j34_setor}/{$oDadosProprietario->j34_quadra}/{$oDadosProprietario->j34_lote} PQL: {$oDadosProprietario->pql_localizacao}";
     $sOrigemConsulta .= " - Logradouro: {$oDadosProprietario->tipopri} {$oDadosProprietario->nomepri}, {$oDadosProprietario->j39_numero} {$oDadosProprietario->j39_compl}";
-    
+
    //$iNumcgm       = $oDadosProprietario->z01_numcgm;
      $iNumcgm       = $oDadosProprietario->z01_cgmpri;
-    
+
    // echo "[ 1 ] " . $iNumcgm ."<br>";
     //die();
   }
@@ -145,10 +145,10 @@ if (!empty($numcgm)) {
   }
   
 } else if (!empty($numpre)) {
-  
+
 	$rsOutrosDebitos = debitos_numpre($numpre,0,0,$DB_DATACALC,$DB_anousu,0,'','k00_tipo,k00_numpre,k00_numpar,k00_receit');  
 	$rsDebitos       = debitos_numpre($numpre,0,0,$DB_DATACALC,$DB_anousu,0,'','k00_tipo,k00_numpre,k00_numpar,k00_receit', $sWhere);
-	
+
 	$sOrigemConsulta = "Código Arrecadação: ".$numpre;
 	$iNumcgm         = db_utils::fieldsMemory($rsDebitos,0)->k00_numcgm;
 	  //echo "[ 3 ] " . $iNumcgm ."<br>";
@@ -168,15 +168,15 @@ $oDadosCgm[0]->complemento = $sOrigemConsulta;
 
 //die();
 
-$aCadTipoDivida       = array(5,12,18);
-$aCadTipoInicialForo  = array(12,13,18);
-$aCadTipoParcelamento = array(6,13,18);
+$aCadTipoDivida       = [5,12,18];
+$aCadTipoInicialForo  = [12,13,18];
+$aCadTipoParcelamento = [6,13,18];
 
-$aDadosRelatorio                = array();
-$aDadosNumpre                   = array();
-$aDadosOrigem                   = array();
-$aDadosTipo                     = array();
-$aExercDivida                   = array();                
+$aDadosRelatorio                = [];
+$aDadosNumpre                   = [];
+$aDadosOrigem                   = [];
+$aDadosTipo                     = [];
+$aExercDivida                   = [];                
 
 $oDadosTotal                    = new stdClass();
 $oDadosTotal->total_historico = 0;
@@ -188,7 +188,7 @@ $oDadosTotal->total_geral     = 0;
 $oDadosTotal->custas_geral    = 0;    
 $lOutrosDebitos       = false;
 $lOutrosTipos         = false;
-if ( pg_num_rows($rsOutrosDebitos) > pg_numrows($rsDebitos)) {
+if ( pg_num_rows($rsOutrosDebitos) > pg_num_rows($rsDebitos)) {
   $lOutrosDebitos = true;
 }
 
@@ -266,7 +266,7 @@ foreach ($oDadosDebitos as $aDados) {
     if ($oDaoDivida->numrows > 0 ) {
       $sExercicios = db_utils::fieldsMemory($rsDadosDivida,0)->exercicios;
       
-      $aDadosProcessado->divida_exercicios   = ereg_replace("[{}]", "",$sExercicios);
+      $aDadosProcessado->divida_exercicios   = preg_replace("#[\\{\\}]#m", "",$sExercicios);
       
       $aDadosProcessado->complemento_numpre  = " - Exercício: ".$aDadosProcessado->divida_exercicios;
         
@@ -312,7 +312,7 @@ foreach ($oDadosDebitos as $aDados) {
 
       $oDadosTermo = new stdClass();
       $oDadosTermo->parcel       = $aTermo->v07_parcel;
-      $oDadosTermo->parcel_exerc = ereg_replace("[{}]","",$aTermo->exercicios);
+      $oDadosTermo->parcel_exerc = preg_replace("#[\\{\\}]#m","",(string) $aTermo->exercicios);
        
       $aDadosProcessado->termo               = $oDadosTermo;
       $aDadosProcessado->complemento_numpre  = " - Parcelamento : {$aTermo->v07_parcel} - Exercício(s): {$oDadosTermo->parcel_exerc}";
@@ -322,7 +322,7 @@ foreach ($oDadosDebitos as $aDados) {
   }
   
   
-  $aDadosProcessado->processo_foro = array();
+  $aDadosProcessado->processo_foro = [];
   $aDadosProcessado->custas_situacao = "";
   $aDadosProcessado->custas_total    = "";  
   $iProcessoForo = 0;
@@ -382,22 +382,22 @@ foreach ($oDadosDebitos as $aDados) {
              
              //Custas emitidas e não pagas
              if ($aDadosPartilha->v76_tipolancamento == 1 && $aDadosPartilha->v76_dtpagamento == "") {
-               
+
               $aDadosProcessado->custas_situacao = "Emitidas";
               $aDadosProcessado->custas_total    = $aDadosPartilha->total;  
-             
+
              //Custas emitidas e pagas
              } else if ($aDadosPartilha->v76_tipolancamento == 1 && $aDadosPartilha->v76_dtpagamento != "") {
-    
+
               $aDadosProcessado->custas_situacao = "Pagas";                
               $aDadosProcessado->custas_total    = '0';
-             
+
              //Custas lancadas manualmente           
              } else if ($aDadosPartilha->v76_tipolancamento == 2) {
-               
+
               $aDadosProcessado->custas_situacao = "Pagas";              
               $aDadosProcessado->custas_total    = '0';
-             
+
              //Custas isentas           
              } else if ($aDadosPartilha->v76_tipolancamento == 3) {
     
@@ -464,7 +464,7 @@ foreach ($oDadosDebitos as $aDados) {
    * setamos o caracter ascii char(253) para o campo sSinal do objeto aDados do contrário o valor deste objeto é nulo.
    *    
    */
-  $dDtVenc = mktime(0,0,0,substr($aDados->k00_dtvenc,5,2),substr($aDados->k00_dtvenc,8,2),substr($aDados->k00_dtvenc,0,4));
+  $dDtVenc = mktime(0,0,0,substr((string) $aDados->k00_dtvenc,5,2),substr((string) $aDados->k00_dtvenc,8,2),substr((string) $aDados->k00_dtvenc,0,4));
   if ($dDtVenc < $DB_DATACALC) {
     $aDadosProcessado->sSinal = chr(253);
   } else {
@@ -588,9 +588,9 @@ foreach ($aDadosRelatorio as $aDadosOrigem) {
              $oPdf->Cell( 13, 4 , db_formatar($aDadosNumpre->dtoper, "d")                ,"R"   ,0, "C", 0);
              $oPdf->Cell( 13, 4 , db_formatar($aDadosNumpre->dtvenc, "d")                ,"R"   ,0, "C", 0);
              $oPdf->cell( 13, 4 , $aDadosNumpre->origem                                  ,"R"   ,0, "L", 0);
-             $oPdf->Cell( 30, 4 , substr(trim($aDadosNumpre->histcalc_descricao) ,0,20)  ,"R"   ,0, "L", 0);
+             $oPdf->Cell( 30, 4 , substr(trim((string) $aDadosNumpre->histcalc_descricao) ,0,20)  ,"R"   ,0, "L", 0);
              $oPdf->Cell( 6 , 4 , $aDadosNumpre->receita                                 ,"R"   ,0, "C", 0);
-             $oPdf->Cell( 23, 4 , substr(trim($aDadosNumpre->receita_descricao) ,0,15)   ,"R"   ,0, "L", 0);
+             $oPdf->Cell( 23, 4 , substr(trim((string) $aDadosNumpre->receita_descricao) ,0,15)   ,"R"   ,0, "L", 0);
              
              $oPdf->SetFont('arial','',6);
              $oPdf->Cell( 15 , 4 , db_formatar($aDadosNumpre->total_historico,'f')      ,"R"   ,0, "R", 0);
@@ -700,7 +700,7 @@ if (isset ($matric)) {
 $sSqlWhere .= " and suspensao.ar18_situacao = 1 ";
 $sSqlWhere .= " and arresusp.k00_tipo in ({$sTiposDebitos}) ";
 $sSqlWhere .= " and arretipo.k00_instit = ".db_getsession('DB_instit'); 
-if (trim($parReceit) != "") {                                                                     
+if (trim((string) $parReceit) != "") {                                                                     
   $sSqlWhere .= " and arresusp.k00_receit in ({$parReceit}) ";   	
 }
 
@@ -723,7 +723,7 @@ $sSqlSuspensao .= " 			      arresusp.k00_numpar,									                      
 $sSqlSuspensao .= " 			      arresusp.k00_receit 									                            ";
 $rsSuspensao      = db_query($sSqlSuspensao);
 $iLinhasSuspensao = pg_num_rows($rsSuspensao);
-$aSuspensao		 = array();
+$aSuspensao		 = [];
 
 if ( $iLinhasSuspensao > 0 ) {
 
@@ -773,9 +773,9 @@ if ( $iLinhasSuspensao > 0 ) {
     $oPdf->Cell(13,4,$oSuspensao->k00_dtoper 					, "R",0,"C",0);
     $oPdf->Cell(13,4,$oSuspensao->k00_dtvenc 					, "R",0,"C",0);
     $oPdf->cell(13,4,$oSuspensao->matinscr   					, "R",0,"L",0);
-    $oPdf->Cell(30,4,substr(trim($oSuspensao->k00_descr),0,20), "R",0,"L",0);
+    $oPdf->Cell(30,4,substr(trim((string) $oSuspensao->k00_descr),0,20), "R",0,"L",0);
     $oPdf->Cell(6 ,4,$oSuspensao->k00_receit					, "R",0,"C",0);
-    $oPdf->Cell(23,4,substr(trim($oSuspensao->k02_descr),0,15), "R",0,"L",0);
+    $oPdf->Cell(23,4,substr(trim((string) $oSuspensao->k02_descr),0,15), "R",0,"L",0);
     $oPdf->Cell(15,4,db_formatar($oSuspensao->k00_valor,'f')	, "R",0,"R",0);
     $oPdf->Cell(15,4,db_formatar($oSuspensao->k00_vlrcor,'f')	, "R",0,"R",0);
     $oPdf->Cell(15,4,db_formatar($oSuspensao->k00_vlrjur,'f')	, "R",0,"R",0);
@@ -980,7 +980,7 @@ function fc_totalTipo($oPdf, $oDadosTipo) {
   $oPdf->Cell( 15 , 5 , db_formatar($oDadosTipo->total_desconto,'f')     ,1   , 0 , "R", 1);
   $oPdf->Cell( 15 , 5 , db_formatar($oDadosTipo->total_geral + $oDadosTipo->cutas_total ,'f')        ,1   , 1 , "R", 1);
   
-  $aCadTipoInicialForo = array(12,13,18);
+  $aCadTipoInicialForo = [12,13,18];
   
   if (in_array($oDadosTipo->tipo, $aCadTipoInicialForo)) {
   	

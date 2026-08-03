@@ -136,9 +136,9 @@ try {
        */
       $aAtividades    = $oCondicionante->getAtividades();
 
-      $aAtividadesLancadas = array();
+      $aAtividadesLancadas = [];
       foreach ($aAtividades as $oAtividade) {
-        $aAtividadesLancadas[$oAtividade->am03_sequencial] = utf8_encode($oAtividade->am03_descricao);
+        $aAtividadesLancadas[$oAtividade->am03_sequencial] = mb_convert_encoding($oAtividade->am03_descricao, 'UTF-8', 'ISO-8859-1');
       }
 
       $oRetorno->aAtividadesLancadas = $aAtividadesLancadas;
@@ -148,7 +148,7 @@ try {
 
       $aTiposLicenca = $oCondicionante->getTipoLicenca();
 
-      $aTiposLancados = array();
+      $aTiposLancados = [];
       foreach ($aTiposLicenca as $oTipoLicenca) {
         $aTiposLancados[] = $oTipoLicenca->am17_tipolicenca;
       }

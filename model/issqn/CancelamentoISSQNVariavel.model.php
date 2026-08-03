@@ -39,10 +39,10 @@ class CancelamentoISSQNVariavel {
   const SITUACAO_INCLUIR         = 'incluir';
   const SITUACAO_EXCLUIR         = 'excluir';
 
-  private static $aObservacoes   = array(
+  private static $aObservacoes   = [
     'SEM_MOVIMENTO' => 'Cancelado pelo NFS-e devido a competência ter sido encerrada sem movimentação',
     'SEM_IMPOSTO'   => 'Cancelado pelo NFS-e devido a competência ter sido encerrada sem imposto'
-  );
+  ];
 
   /**
    * Observação/Histórico
@@ -66,7 +66,7 @@ class CancelamentoISSQNVariavel {
    * @var array
    * @access protected
    */
-  protected $aDebitos = array();
+  protected $aDebitos = [];
 
   /**
    * Retorna a observação/histórico
@@ -432,7 +432,7 @@ class CancelamentoISSQNVariavel {
    * @throws BusinessException
    * @return Ambigous <boolean, stdClass>
    */
-  public function getDebitosInscricaoMunicipal($iMes = null, $iAno = null, $sSituacao) {
+  public function getDebitosInscricaoMunicipal($iMes = null, $iAno = null, $sSituacao = null) {
 
     if (!is_object($this->oEmpresa)) {
       throw new BusinessException('Empresa não informada!');

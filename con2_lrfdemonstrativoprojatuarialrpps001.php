@@ -52,25 +52,25 @@ $iCodRel = $relatorio::CODIGO_RELATORIO;
 <body class="body-default abas">
     <?php 
 
-      $clCriaAbas->identifica = array("relatorio"  => "Relatório",
+      $clCriaAbas->identifica = ["relatorio"  => "Relatório",
                                       "notas"      => "Fonte/Notas Explicativas",
                                       "parametros" => "Parâmetros"
-                                      );
+                                      ];
 
-      $clCriaAbas->title      = array("relatorio"  => "Relatório",
+      $clCriaAbas->title      = ["relatorio"  => "Relatório",
                                       "notas"      => "Fonte/Notas Explicativas",
                                       "parametros" => "Parâmetros"
-                                      );
+                                      ];
 
-      $clCriaAbas->src        = array("relatorio"  => "con2_lrfdemonstrativoprojatuarialrpps011.php?c83_codrel={$iCodRel}",
+      $clCriaAbas->src        = ["relatorio"  => "con2_lrfdemonstrativoprojatuarialrpps011.php?c83_codrel={$iCodRel}",
                                       "notas"      => "con2_conrelnotas.php?c83_codrel={$iCodRel}",
                                       "parametros" => "con4_parametrosrelatorioslegais001.php?c83_codrel={$iCodRel}"
-                                      );
+                                      ];
 
-      $clCriaAbas->sizecampo  = array("relatorio"  => "23",
+      $clCriaAbas->sizecampo  = ["relatorio"  => "23",
                                       "notas"      => "30",
                                       "parametros" => "23"
-                                      );
+                                      ];
       $clCriaAbas->cria_abas();
 
     ?>

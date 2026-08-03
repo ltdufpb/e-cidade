@@ -53,7 +53,7 @@ class EspecificacaoRecursoController extends Controller
         return response()->json(
             [
                 'erro'=> false,
-                "message"=> utf8_encode("Especificação do Recurso salva com sucesso.")
+                "message"=> mb_convert_encoding("Especificação do Recurso salva com sucesso.", 'UTF-8', 'ISO-8859-1')
             ]
         );
     }
@@ -64,7 +64,7 @@ class EspecificacaoRecursoController extends Controller
         return response()->json(
             [
                 'erro' => false,
-                "message" => utf8_encode("Especificação do Recurso excluída com sucesso.")
+                "message" => mb_convert_encoding("Especificação do Recurso excluída com sucesso.", 'UTF-8', 'ISO-8859-1')
             ]
         );
     }

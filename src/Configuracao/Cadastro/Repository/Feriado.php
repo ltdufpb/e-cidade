@@ -60,21 +60,15 @@ class Feriado
     private $oInstituicao;
 
   /**
-   * @var int
-   */
-    private $iLotacao;
-
-  /**
    * Feriado constructor.
    * @param \Instituicao $oInstituicao
    * @param null|int $iLotacao
    */
-    public function __construct(\Instituicao $oInstituicao, $iLotacao = null)
+    public function __construct(\Instituicao $oInstituicao, private $iLotacao = null)
     {
 
         $this->oDao         = new \cl_rhcadcalend();
         $this->oInstituicao = $oInstituicao;
-        $this->iLotacao     = $iLotacao;
     }
 
   /**

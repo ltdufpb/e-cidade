@@ -10,6 +10,7 @@ class ConferenciaRecursoProjecaoReceitaPorRecursoPdf extends ConferenciaRecursoP
 
     protected $wDadosReceita = 192;
 
+    #[\Override]
     protected function cabecalhoReceita()
     {
         $exercicioProjecao = $this->dados['planejamento']['pl2_ano_inicial'] - 1;
@@ -47,6 +48,7 @@ class ConferenciaRecursoProjecaoReceitaPorRecursoPdf extends ConferenciaRecursoP
      * @param $exerciciosAnteriores
      * @param $exercicios
      */
+    #[\Override]
     protected function imprimeLinha(stdClass $recurso, $exercicios)
     {
         $this->SetFont('Arial', '', 6);

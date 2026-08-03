@@ -36,7 +36,7 @@
      * Collection de Avaliacao 
      * @var array
      */    
-    private $aAvaliacao = array();
+    private $aAvaliacao = [];
     
     /**
      * Instancia da classe 

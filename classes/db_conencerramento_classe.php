@@ -44,7 +44,7 @@ class cl_conencerramento
     public function __construct()
     {
         $this->rotulo = new rotulo("conencerramento");
-        $this->pagina_retorno = basename($_SERVER['PHP_SELF']);
+        $this->pagina_retorno = basename((string) $_SERVER['PHP_SELF']);
     }
 
     public function erro($mostra, $retorna)
@@ -150,10 +150,10 @@ class cl_conencerramento
          $this->erro_status = "0";
          return false;
        }
-       $this->c42_sequencial = pg_result($result,0,0);
+       $this->c42_sequencial = pg_fetch_result($result,0,0);
      }else{
        $result = db_query("select last_value from conencerramento_c42_sequencial_seq");
-       if(($result != false) && (pg_result($result,0,0) < $c42_sequencial)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $c42_sequencial)){
          $this->erro_sql = " Campo c42_sequencial maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -195,7 +195,7 @@ class cl_conencerramento
      $result = db_query($sql);
      if($result==false){
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Encerramento do Ano contabil ($this->c42_sequencial) não Incluído. Inclusão Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Encerramento do Ano contabil já Cadastrado";
@@ -224,17 +224,17 @@ class cl_conencerramento
        if(($resaco!=false)||($this->numrows!=0)){
 
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,10766,'$this->c42_sequencial','I')");
-         $resac = db_query("insert into db_acount values($acount,1853,10766,'','".AddSlashes(pg_result($resaco,0,'c42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1853,10767,'','".AddSlashes(pg_result($resaco,0,'c42_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1853,10768,'','".AddSlashes(pg_result($resaco,0,'c42_encerramentotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1853,10769,'','".AddSlashes(pg_result($resaco,0,'c42_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1853,10770,'','".AddSlashes(pg_result($resaco,0,'c42_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1853,10771,'','".AddSlashes(pg_result($resaco,0,'c42_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1853,10772,'','".AddSlashes(pg_result($resaco,0,'c42_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,1853,1010904,'','".AddSlashes(pg_result($resaco,0,'c42_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1853,10766,'','".AddSlashes(pg_fetch_result($resaco,0,'c42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1853,10767,'','".AddSlashes(pg_fetch_result($resaco,0,'c42_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1853,10768,'','".AddSlashes(pg_fetch_result($resaco,0,'c42_encerramentotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1853,10769,'','".AddSlashes(pg_fetch_result($resaco,0,'c42_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1853,10770,'','".AddSlashes(pg_fetch_result($resaco,0,'c42_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1853,10771,'','".AddSlashes(pg_fetch_result($resaco,0,'c42_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1853,10772,'','".AddSlashes(pg_fetch_result($resaco,0,'c42_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,1853,1010904,'','".AddSlashes(pg_fetch_result($resaco,0,'c42_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      return true;
@@ -245,10 +245,10 @@ class cl_conencerramento
       $this->atualizacampos();
      $sql = " update conencerramento set ";
      $virgula = "";
-     if(trim($this->c42_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_sequencial"])){
+     if(trim((string) $this->c42_sequencial)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_sequencial"])){
        $sql  .= $virgula." c42_sequencial = $this->c42_sequencial ";
        $virgula = ",";
-       if(trim($this->c42_sequencial) == null ){
+       if(trim((string) $this->c42_sequencial) == null ){
          $this->erro_sql = " Campo Código Sequencial não informado.";
          $this->erro_campo = "c42_sequencial";
          $this->erro_banco = "";
@@ -258,10 +258,10 @@ class cl_conencerramento
          return false;
        }
      }
-     if(trim($this->c42_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_anousu"])){
+     if(trim((string) $this->c42_anousu)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_anousu"])){
        $sql  .= $virgula." c42_anousu = $this->c42_anousu ";
        $virgula = ",";
-       if(trim($this->c42_anousu) == null ){
+       if(trim((string) $this->c42_anousu) == null ){
          $this->erro_sql = " Campo Ano não informado.";
          $this->erro_campo = "c42_anousu";
          $this->erro_banco = "";
@@ -271,10 +271,10 @@ class cl_conencerramento
          return false;
        }
      }
-     if(trim($this->c42_encerramentotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_encerramentotipo"])){
+     if(trim((string) $this->c42_encerramentotipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_encerramentotipo"])){
        $sql  .= $virgula." c42_encerramentotipo = $this->c42_encerramentotipo ";
        $virgula = ",";
-       if(trim($this->c42_encerramentotipo) == null ){
+       if(trim((string) $this->c42_encerramentotipo) == null ){
          $this->erro_sql = " Campo Código do  Encerramento não informado.";
          $this->erro_campo = "c42_encerramentotipo";
          $this->erro_banco = "";
@@ -284,10 +284,10 @@ class cl_conencerramento
          return false;
        }
      }
-     if(trim($this->c42_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_usuario"])){
+     if(trim((string) $this->c42_usuario)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_usuario"])){
        $sql  .= $virgula." c42_usuario = $this->c42_usuario ";
        $virgula = ",";
-       if(trim($this->c42_usuario) == null ){
+       if(trim((string) $this->c42_usuario) == null ){
          $this->erro_sql = " Campo Código do Usuário não informado.";
          $this->erro_campo = "c42_usuario";
          $this->erro_banco = "";
@@ -297,10 +297,10 @@ class cl_conencerramento
          return false;
        }
      }
-     if(trim($this->c42_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c42_data_dia"] !="") ){
+     if(trim((string) $this->c42_data)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_data_dia"]) &&  ($GLOBALS["HTTP_POST_VARS"]["c42_data_dia"] !="") ){
        $sql  .= $virgula." c42_data = '$this->c42_data' ";
        $virgula = ",";
-       if(trim($this->c42_data) == null ){
+       if(trim((string) $this->c42_data) == null ){
          $this->erro_sql = " Campo Data não informado.";
          $this->erro_campo = "c42_data_dia";
          $this->erro_banco = "";
@@ -313,7 +313,7 @@ class cl_conencerramento
        if(isset($GLOBALS["HTTP_POST_VARS"]["c42_data_dia"])){
          $sql  .= $virgula." c42_data = null ";
          $virgula = ",";
-         if(trim($this->c42_data) == null ){
+         if(trim((string) $this->c42_data) == null ){
            $this->erro_sql = " Campo Data não informado.";
            $this->erro_campo = "c42_data_dia";
            $this->erro_banco = "";
@@ -324,10 +324,10 @@ class cl_conencerramento
          }
        }
      }
-     if(trim($this->c42_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_hora"])){
+     if(trim((string) $this->c42_hora)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_hora"])){
        $sql  .= $virgula." c42_hora = '$this->c42_hora' ";
        $virgula = ",";
-       if(trim($this->c42_hora) == null ){
+       if(trim((string) $this->c42_hora) == null ){
          $this->erro_sql = " Campo Hora não informado.";
          $this->erro_campo = "c42_hora";
          $this->erro_banco = "";
@@ -337,10 +337,10 @@ class cl_conencerramento
          return false;
        }
      }
-     if(trim($this->c42_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_instit"])){
+     if(trim((string) $this->c42_instit)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_instit"])){
        $sql  .= $virgula." c42_instit = $this->c42_instit ";
        $virgula = ",";
-       if(trim($this->c42_instit) == null ){
+       if(trim((string) $this->c42_instit) == null ){
          $this->erro_sql = " Campo Código da Instituição não informado.";
          $this->erro_campo = "c42_instit";
          $this->erro_banco = "";
@@ -350,8 +350,8 @@ class cl_conencerramento
          return false;
        }
      }
-     if(trim($this->c42_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_coddoc"])){
-        if(trim($this->c42_coddoc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["c42_coddoc"])){
+     if(trim((string) $this->c42_coddoc)!="" || isset($GLOBALS["HTTP_POST_VARS"]["c42_coddoc"])){
+        if(trim((string) $this->c42_coddoc)=="" && isset($GLOBALS["HTTP_POST_VARS"]["c42_coddoc"])){
            $this->c42_coddoc = "0" ;
         }
        $sql  .= $virgula." c42_coddoc = $this->c42_coddoc ";
@@ -371,25 +371,25 @@ class cl_conencerramento
          for ($conresaco = 0; $conresaco < $this->numrows; $conresaco++) {
 
            $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac = db_query("insert into db_acountkey values($acount,10766,'$this->c42_sequencial','A')");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c42_sequencial"]) || $this->c42_sequencial != "")
-             $resac = db_query("insert into db_acount values($acount,1853,10766,'".AddSlashes(pg_result($resaco,$conresaco,'c42_sequencial'))."','$this->c42_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1853,10766,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c42_sequencial'))."','$this->c42_sequencial',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c42_anousu"]) || $this->c42_anousu != "")
-             $resac = db_query("insert into db_acount values($acount,1853,10767,'".AddSlashes(pg_result($resaco,$conresaco,'c42_anousu'))."','$this->c42_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1853,10767,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c42_anousu'))."','$this->c42_anousu',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c42_encerramentotipo"]) || $this->c42_encerramentotipo != "")
-             $resac = db_query("insert into db_acount values($acount,1853,10768,'".AddSlashes(pg_result($resaco,$conresaco,'c42_encerramentotipo'))."','$this->c42_encerramentotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1853,10768,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c42_encerramentotipo'))."','$this->c42_encerramentotipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c42_usuario"]) || $this->c42_usuario != "")
-             $resac = db_query("insert into db_acount values($acount,1853,10769,'".AddSlashes(pg_result($resaco,$conresaco,'c42_usuario'))."','$this->c42_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1853,10769,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c42_usuario'))."','$this->c42_usuario',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c42_data"]) || $this->c42_data != "")
-             $resac = db_query("insert into db_acount values($acount,1853,10770,'".AddSlashes(pg_result($resaco,$conresaco,'c42_data'))."','$this->c42_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1853,10770,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c42_data'))."','$this->c42_data',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c42_hora"]) || $this->c42_hora != "")
-             $resac = db_query("insert into db_acount values($acount,1853,10771,'".AddSlashes(pg_result($resaco,$conresaco,'c42_hora'))."','$this->c42_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1853,10771,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c42_hora'))."','$this->c42_hora',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c42_instit"]) || $this->c42_instit != "")
-             $resac = db_query("insert into db_acount values($acount,1853,10772,'".AddSlashes(pg_result($resaco,$conresaco,'c42_instit'))."','$this->c42_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1853,10772,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c42_instit'))."','$this->c42_instit',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
            if (isset($GLOBALS["HTTP_POST_VARS"]["c42_coddoc"]) || $this->c42_coddoc != "")
-             $resac = db_query("insert into db_acount values($acount,1853,1010904,'".AddSlashes(pg_result($resaco,$conresaco,'c42_coddoc'))."','$this->c42_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+             $resac = db_query("insert into db_acount values($acount,1853,1010904,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'c42_coddoc'))."','$this->c42_coddoc',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -443,17 +443,17 @@ class cl_conencerramento
          for ($iresaco = 0; $iresaco < $this->numrows; $iresaco++) {
 
            $resac  = db_query("select nextval('db_acount_id_acount_seq') as acount");
-           $acount = pg_result($resac,0,0);
+           $acount = pg_fetch_result($resac,0,0);
            $resac  = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
            $resac  = db_query("insert into db_acountkey values($acount,10766,'$c42_sequencial','E')");
-           $resac  = db_query("insert into db_acount values($acount,1853,10766,'','".AddSlashes(pg_result($resaco,$iresaco,'c42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1853,10767,'','".AddSlashes(pg_result($resaco,$iresaco,'c42_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1853,10768,'','".AddSlashes(pg_result($resaco,$iresaco,'c42_encerramentotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1853,10769,'','".AddSlashes(pg_result($resaco,$iresaco,'c42_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1853,10770,'','".AddSlashes(pg_result($resaco,$iresaco,'c42_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1853,10771,'','".AddSlashes(pg_result($resaco,$iresaco,'c42_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1853,10772,'','".AddSlashes(pg_result($resaco,$iresaco,'c42_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-           $resac  = db_query("insert into db_acount values($acount,1853,1010904,'','".AddSlashes(pg_result($resaco,$iresaco,'c42_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1853,10766,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c42_sequencial'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1853,10767,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c42_anousu'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1853,10768,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c42_encerramentotipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1853,10769,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c42_usuario'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1853,10770,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c42_data'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1853,10771,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c42_hora'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1853,10772,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c42_instit'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac  = db_query("insert into db_acount values($acount,1853,1010904,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'c42_coddoc'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          }
        }
      }
@@ -531,7 +531,7 @@ class cl_conencerramento
     function sql_query ( $c42_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = preg_split("#\\##m",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -556,7 +556,7 @@ class cl_conencerramento
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = preg_split("#\\##m",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -569,7 +569,7 @@ class cl_conencerramento
     function sql_query_file ( $c42_sequencial=null,$campos="*",$ordem=null,$dbwhere=""){
         $sql = "select ";
         if($campos != "*" ){
-            $campos_sql = split("#",$campos);
+            $campos_sql = preg_split("#\\##m",$campos);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -590,7 +590,7 @@ class cl_conencerramento
         $sql .= $sql2;
         if($ordem != null ){
             $sql .= " order by ";
-            $campos_sql = split("#",$ordem);
+            $campos_sql = preg_split("#\\##m",(string) $ordem);
             $virgula = "";
             for($i=0;$i<sizeof($campos_sql);$i++){
                 $sql .= $virgula.$campos_sql[$i];
@@ -601,7 +601,7 @@ class cl_conencerramento
     }
     function consultarRPAjax($iInstit,$iAnousu,$dataUsu,$sFiltros=null){
 
-        $dateparts = explode("/",$dataUsu);
+        $dateparts = explode("/",(string) $dataUsu);
         $dataUsu   = $dateparts[2]."-".$dateparts[1]."-".$dateparts[0];
         $array     = null;
         $sWhere    = " and c75_numemp is  null ";
@@ -614,21 +614,21 @@ class cl_conencerramento
         (float)$nTotalGeral     = 0 ;
         if (!$rs){
 
-            $array   = array("retorno" => "Erro::".$this->erro_msg ,"status" => 0,"erro_banco=".pg_last_error());
+            $array   = ["retorno" => "Erro::".$this->erro_msg ,"status" => 0,"erro_banco=".pg_last_error()];
 
         }else{
-            $array  = array("status"=> "1","numrows"=> pg_num_rows($rs));
+            $array  = ["status"=> "1","numrows"=> pg_num_rows($rs)];
 
             while ($ln = pg_fetch_array($rs)){
-                $array["data"][] = array("e60_numemp" => $ln[0],
+                $array["data"][] = ["e60_numemp" => $ln[0],
                     "e60_codemp" => $ln[1],
-                    "z01_nome" => urlencode($ln[2]),
+                    "z01_nome" => urlencode((string) $ln[2]),
                     "e60_coddot" => $ln[3],
                     "o58_codigo" => $ln[4],
                     "a_liquidar" => db_formatar($ln[5],"f"),
                     "liquidado"  => db_formatar($ln[6],"f"),
                     "geral"      => db_formatar($ln[7],"f")
-                );
+                ];
                 $nTotalAliquidar += $ln["a_liquidar"];
                 $nTotalLiquidado += $ln["liquidado"];
                 $nTotalGeral     += $ln["geral"];
@@ -644,7 +644,7 @@ class cl_conencerramento
 
     function inscreverRP($iInstit, $iAnoUsu, $iEmpenho,$valorLiquidar, $dDataLanc, $iEncerramento){
 
-        $dateparts            = explode("/",$dDataLanc);
+        $dateparts            = explode("/",(string) $dDataLanc);
         $dDataLancamento      = $dateparts[2]."-".$dateparts[1]."-".$dateparts[0];
         $this->lSqlErro       = false;
         $this->sMsg           = '';
@@ -752,8 +752,8 @@ class cl_conencerramento
 
         $this->lSqlErro = false;
         $objJson = new services_json();
-        $this->retornoJson = array();
-        $dateparts            = explode("/",$dDataLanc);
+        $this->retornoJson = [];
+        $dateparts            = explode("/",(string) $dDataLanc);
         $dDataLancamento      = $dateparts[2]."-".$dateparts[1]."-".$dateparts[0];
         if (is_array($listaEmpenhos)){
 

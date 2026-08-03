@@ -33,8 +33,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_rhlota_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clrhlota = new cl_rhlota();
 $clrhlota->rotulo->label("r70_codigo"); 
@@ -101,7 +101,7 @@ $chave_r70_estrut = isset($chave_r70_estrut) ? stripslashes($chave_r70_estrut) :
                if(!isset($opcao_bloq)){
                 $opcao_bloq = 1;
                }
-               $arr_opcao = array("i"=>"Todos","t"=>"Ativos","f"=>"Inativos");
+               $arr_opcao = ["i"=>"Todos","t"=>"Ativos","f"=>"Inativos"];
                db_select('opcao',$arr_opcao,true,$opcao_bloq,"onchange='js_reload();'"); 
                ?>
                </td>

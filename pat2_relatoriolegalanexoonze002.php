@@ -75,7 +75,7 @@ $sBensCampos .= "t52_descr,  ";
 $sBensCampos .= "t52_valaqu, ";
 $sBensCampos .= "t52_obs    ";
 
-$aWhereBens = array();
+$aWhereBens = [];
 if ($dDataInicial != "") {
   $aWhereBens[]  = "t52_dtaqu >= '{$dDataInicial}'";
 }
@@ -142,12 +142,12 @@ foreach ($aBens as $iIndiceBens => $oValorBens) {
 
   $oPdf->cell(25 ,  $iAlturalinha,  $oValorBens->t52_codcla              , 1,  0, "R", 0);
   $oPdf->cell(25 ,  $iAlturalinha,  $oValorBens->t52_ident               , 1,  0, "C", 0);
-  $oPdf->cell(80 ,  $iAlturalinha,  substr($oValorBens->t52_descr, 0, 70), 1,  0, "L", 0);   //Características de Identificaçã
+  $oPdf->cell(80 ,  $iAlturalinha,  substr((string) $oValorBens->t52_descr, 0, 70), 1,  0, "L", 0);   //Características de Identificaçã
   $oPdf->cell(25 ,  $iAlturalinha,  "Unidade"                            , 1,  0, "L", 0);
   $oPdf->cell(25 ,  $iAlturalinha,  "1"                                  , 1,  0, "R", 0);   //Quantidade
   $oPdf->cell(20 ,  $iAlturalinha,  $nValorUnitario                      , 1,  0, "R", 0);
   $oPdf->cell(20 ,  $iAlturalinha,  $nValorUnitario                      , 1,  0, "R", 0);
-  $oPdf->cell(60 ,  $iAlturalinha,  substr($oValorBens->t52_obs, 0, 45)  , 1,  1, "L", 0);   //Observações
+  $oPdf->cell(60 ,  $iAlturalinha,  substr((string) $oValorBens->t52_obs, 0, 45)  , 1,  1, "L", 0);   //Observações
 
 
   if ($iRodape == 35) {

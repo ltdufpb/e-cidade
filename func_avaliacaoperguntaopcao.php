@@ -32,8 +32,8 @@ require_once(modification("libs/db_usuariosonline.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_avaliacaoperguntaopcao_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clavaliacaoperguntaopcao = new cl_avaliacaoperguntaopcao;
 $clavaliacaoperguntaopcao->rotulo->label("db104_sequencial");
 $clavaliacaoperguntaopcao->rotulo->label("db104_sequencial");
@@ -100,9 +100,9 @@ $clavaliacaoperguntaopcao->rotulo->label("db104_sequencial");
         }else{
            $sql = $clavaliacaoperguntaopcao->sql_query_tipo_pergunta("",$campos,"db104_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_db104_sequencial)){
-          $repassa = array("chave_db104_sequencial"=>$chave_db104_sequencial,"chave_db104_sequencial"=>$chave_db104_sequencial);
+          $repassa = ["chave_db104_sequencial"=>$chave_db104_sequencial,"chave_db104_sequencial"=>$chave_db104_sequencial];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

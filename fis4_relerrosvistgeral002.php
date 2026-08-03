@@ -34,7 +34,7 @@ $rsParfiscal = $clparfiscal->sql_record($clparfiscal->sql_query_file(db_getsessi
 $oParfiscal  = db_utils::fieldsMemory($rsParfiscal,0);
 
 $clrotulo = new rotulocampo;
-db_postmemory($HTTP_SERVER_VARS);
+db_postmemory($_SERVER);
 $head3                     = "RELATORIO DE VISTORIAS NÃO CALCULADAS";
 
 /**
@@ -130,7 +130,7 @@ $pdf->setfillcolor(235);
 $pdf->setfont('arial','b',8);
 $troca = 1;
 $alt = 4;
-for($x = 0; $x < pg_numrows($rsVistorias);$x++)
+for($x = 0; $x < pg_num_rows($rsVistorias);$x++)
 {
    db_fieldsmemory($rsVistorias,$x);
    if ($pdf->gety() > $pdf->h - 30 || $troca != 0 )

@@ -32,14 +32,14 @@ include(modification("libs/db_usuariosonline.php"));
 include(modification("classes/db_orcprevrec_classe.php"));
 include(modification("classes/db_orcreceita_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clorcprevrec = new cl_orcprevrec;
 $clorcreceita = new cl_orcreceita;
 $db_opcao = 1;
 $db_botao = true;
 if(isset($incluir)){
   db_inicio_transacao();
-  $arr_valores = split(",",$valores);
+  $arr_valores = preg_split("#,#m",$valores);
   $sqlerro = false;
 
   if($sqlerro == false){

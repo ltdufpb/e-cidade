@@ -42,7 +42,7 @@ include(modification("dbforms/db_classesgenericas.php"));
 require_once(modification("libs/db_utils.php"));
 require_once(modification("model/cancelamentoDebitos.model.php"));
 require_once(modification("libs/db_sql.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $oCancelaDebito     = new cancelamentoDebitos();
 $cliframe_seleciona = new cl_iframe_seleciona;
 $clarretipo         = new cl_arretipo;
@@ -63,12 +63,12 @@ if (isset($cancelar)&&isset($chaves)&&$chaves!=""){
   $numpar     = "";
   $receita    = "";
   $vir        = "";
-  $info       = split('#',$chaves);
+  $info       = preg_split('#\##m',$chaves);
   db_inicio_transacao();
-  $aDebitos = array();
+  $aDebitos = [];
   for ( $w=0; $w < count($info); $w++ ) {
   	
-    $dados          = split('-',$info[$w]);
+    $dados          = preg_split('#\-#m',(string) $info[$w]);
     $numpre         = $dados[0];
     $numpar         = $dados[1];
     $receita        = $dados[2];
@@ -85,7 +85,7 @@ if (isset($cancelar)&&isset($chaves)&&$chaves!=""){
 
       
        //Criar um array com as informações de cada débito
-	    $aDadosDebitos = array();  
+	    $aDadosDebitos = [];  
 	    $aDadosDebitos['Numpre']  = $numpre;
 	    $aDadosDebitos['Numpar']  = $numpar;
 	    $aDadosDebitos['Receita'] = $receita;

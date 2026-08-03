@@ -39,7 +39,6 @@ use NFePHP\Common\Certificate;
  */
 class RecepcaoLoteAlvara implements RequisicaoInterface
 {
-    private $oXml;
     private $arrayRegistroAlvara;
     private $sOperacao;
 
@@ -48,9 +47,8 @@ class RecepcaoLoteAlvara implements RequisicaoInterface
    *
    * @param stdClass $arrayRegistroAlvara
    */
-    public function __construct($arrayRegistroAlvara, DOMDocument $oXml, $localA1, $senhaA1)
+    public function __construct($arrayRegistroAlvara, private readonly DOMDocument $oXml, $localA1, $senhaA1)
     {
-        $this->oXml                     = $oXml;
         $this->oXml->preserveWhiteSpace = false;
         $this->oXml->formatOutput       = true;
         $this->arrayRegistroAlvara      = $arrayRegistroAlvara;
@@ -462,7 +460,7 @@ class RecepcaoLoteAlvara implements RequisicaoInterface
 
         $proprietarioObra = $this->oXml->createElement("proprietarioObra");
         $infAlvara->appendChild($proprietarioObra);
-        
+
         if (!empty($oRegistro->oRegistroAlvara->getProprietarioObraCpf())) {
             $proprietarioObra->appendChild($proprietarioObraCpf);
         }
@@ -490,7 +488,7 @@ class RecepcaoLoteAlvara implements RequisicaoInterface
         ) {
             $responsavelTecnico = $this->oXml->createElement("responsavelTecnico");
             $infoAdicionais->appendChild($responsavelTecnico);
-            
+
             if (!empty($oRegistro->oRegistroAlvara->getEngenheiroNomeTecnico()) &&
                 !empty($oRegistro->oRegistroAlvara->getEngenheiroCreaTecnico()) &&
                 !empty($oRegistro->oRegistroAlvara->getEngenheiroArtTecnico())
@@ -512,14 +510,14 @@ class RecepcaoLoteAlvara implements RequisicaoInterface
                 $arquitetoTecnico->appendChild($arquitetoRrtTecnico);
             }
         }
-        
+
         // Monta tags referentes a tag responsavelProjeto
         if (!empty($oRegistro->oRegistroAlvara->getEngenheiroNomeProjeto()) ||
             !empty($oRegistro->oRegistroAlvara->getArquitetoNomeProjeto())
         ) {
             $responsavelProjeto = $this->oXml->createElement("responsavelProjeto");
             $infoAdicionais->appendChild($responsavelProjeto);
-            
+
             if (!empty($oRegistro->oRegistroAlvara->getEngenheiroNomeProjeto()) &&
                 !empty($oRegistro->oRegistroAlvara->getEngenheiroCreaProjeto()) &&
                 !empty($oRegistro->oRegistroAlvara->getEngenheiroArtProjeto())
@@ -551,7 +549,7 @@ class RecepcaoLoteAlvara implements RequisicaoInterface
 
         $infAlvara->appendChild($infoAdicionais);
         $Alvara->appendChild($infAlvara);
-                
+
         /*INICIO NFEPHP*/
         $pfx = file_get_contents($this->localA1);
         $cert = Certificate::readPfx($pfx, $this->senhaA1);
@@ -571,7 +569,7 @@ class RecepcaoLoteAlvara implements RequisicaoInterface
         $rootname = 'Alvara'; //este campo indica em qual node a assinatura deverá ser inclusa
         $this->oXml->formatOutput = false;
         $sXml = $this->oXml->saveXML();
-        $sXml = utf8_encode($sXml);
+        $sXml = mb_convert_encoding($sXml, 'UTF-8', 'ISO-8859-1');
         $sXml = $Alvara;
 
         $Body = $sXml;
@@ -593,7 +591,7 @@ class RecepcaoLoteAlvara implements RequisicaoInterface
             //aqui você trata a exceção
             dd($e->getMessage());
         }
-        $signed = utf8_decode($signed);
+        $signed = mb_convert_encoding($signed, 'ISO-8859-1');
         $signed = str_replace('&lt;', '<', $signed);
         $signed = str_replace('&gt;', '>', $signed);
         $signed = str_replace('<Alvara>', '', $signed);
@@ -616,11 +614,11 @@ class RecepcaoLoteAlvara implements RequisicaoInterface
 
         $categoria = $this->oXml->createElement(
             "categoria",
-            strtolower($oRegistroAreaPrincipal->getCategoria())
+            strtolower((string) $oRegistroAreaPrincipal->getCategoria())
         );
         $destinacao = $this->oXml->createElement(
             "destinacao",
-            strtolower($oRegistroAreaPrincipal->getDestinacao())
+            strtolower((string) $oRegistroAreaPrincipal->getDestinacao())
         );
         $tipoObra = $this->oXml->createElement(
             "tipoObra",

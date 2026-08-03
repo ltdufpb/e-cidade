@@ -35,8 +35,8 @@ $cldb_paragrafo = new cl_db_paragrafo;
 $cldb_paragrafo->rotulo->label();
 $clrotulo = new rotulocampo;
 $clrotulo->label("db04_idparag");
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 if (isset ($atualizar)&&$atualizar!="") {
 	db_inicio_transacao();
 	/*
@@ -50,13 +50,13 @@ if (isset ($atualizar)&&$atualizar!="") {
 		}
 	}*/
 	$sqlerro = false;
-	$vt = $HTTP_POST_VARS;
+	$vt = $_POST;
 	$ta = sizeof($vt);
 	reset($vt);
 	for ($i = 0; $i < $ta; $i ++) {
 		$chave = key($vt);
-		if (substr($chave, 0, 5) == "CHECK") {
-			$dados = split("_", $chave);
+		if (str_starts_with((string) $chave, "CHECK")) {
+			$dados = preg_split("#_#m", (string) $chave);
 			
 			$resultparag = $cldb_docparag->sql_record($cldb_docparag->sql_query_file($db04_docum, $dados[1]));
 			if ($cldb_docparag->numrows == 0) {

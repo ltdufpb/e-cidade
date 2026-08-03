@@ -67,7 +67,7 @@ try {
                 throw new Exception('Nenhuma Ouvidoria Externa encontrada.');
             }
 
-            $retorno->preProcessos = array();
+            $retorno->preProcessos = [];
 
             foreach ($preProcessos->getAll() as $preProcesso) {
                 $dadosPreProcesso = new stdClass();
@@ -143,7 +143,7 @@ try {
                             $cidadao = $cidadaos[0];
                         } else {
                             $cidadao = new Cidadao();
-                            $cidadao->setNome(addslashes($preProcessoModel->getRequerente()));
+                            $cidadao->setNome(addslashes((string) $preProcessoModel->getRequerente()));
                             $cidadao->setCpfCnpj($requerenteCpf);
                             $cidadao->setSituacaoCidadao(2);
                             $cidadao->salvar();

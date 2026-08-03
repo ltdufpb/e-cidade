@@ -28,7 +28,7 @@ class AvaliacaoSped
     /**
      * @var array
      */
-    protected $perguntasParaExcluirRespostas = array();
+    protected $perguntasParaExcluirRespostas = [];
     /**
      * @var int
      */
@@ -54,13 +54,13 @@ class AvaliacaoSped
      * @return int
      * @throws Exception
      */
-    public function salvar($perguntasRespostas, $tipoFormulario = null, array $parametros = array())
+    public function salvar($perguntasRespostas, $tipoFormulario = null, array $parametros = [])
     {
         $perguntasAvaliacao = $this->avaliacao->getPerguntas($this->getCodigoGrupoPerguntas());
-        $perguntasRespondidas = array();
+        $perguntasRespondidas = [];
 
         if (is_object($perguntasRespostas->grupos)) {
-            $perguntasRespostas->grupos = array($perguntasRespostas->grupos);
+            $perguntasRespostas->grupos = [$perguntasRespostas->grupos];
         }
 
         foreach ($perguntasRespostas->grupos as $chave => $grupoResposta) {
@@ -99,7 +99,7 @@ class AvaliacaoSped
                 }
 
                 foreach ($perguntasRespondidas[$pergunta->getCodigo()] as $respostaSalvar) {
-                    if (in_array($pergunta->getTipo(), array(1, 3)) && (bool)$respostaSalvar->valor === false) {
+                    if (in_array($pergunta->getTipo(), [1, 3]) && (bool)$respostaSalvar->valor === false) {
                         continue;
                     }
 
@@ -109,7 +109,7 @@ class AvaliacaoSped
                     }
 
                     if (empty($respostaSalvar->valorAuxiliar)) {
-                        $textoResposta = in_array($pergunta->getTipo(), array(1, 3))
+                        $textoResposta = in_array($pergunta->getTipo(), [1, 3])
                             ? $respostaSalvar->codigo
                             : $respostaSalvar->valor;
                     } else {

@@ -35,7 +35,7 @@ require_once(modification("interfaces/IRegraLancamentoContabil.interface.php"));
 class RegraLancamentoAberturaResto implements IRegraLancamentoContabil
 {
 
-    protected $documentosTransferencia = array(2032, 2033);
+    protected $documentosTransferencia = [2032, 2033];
     /**
      * @param int $iCodigoDocumento
      * @param int $iCodigoLancamento

@@ -188,7 +188,7 @@ $ed18_c_nome   = db_getsession("DB_nomedepto");
             </td>
             <td>
               <?php
-                $aTipoIngresso = array( 1 => "Normal", 2 => "Classificado", 3 => "Reclassificado", 4 => "Avanço" );
+                $aTipoIngresso = [ 1 => "Normal", 2 => "Classificado", 3 => "Reclassificado", 4 => "Avanço" ];
                 db_select('ed334_tipo', $aTipoIngresso, true, 1, "onchange='js_validaTipoTurma();'");
               ?>
             </td>

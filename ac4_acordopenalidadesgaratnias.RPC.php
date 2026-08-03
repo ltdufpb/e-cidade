@@ -56,7 +56,7 @@ $oParam   = $oJson->decode(db_stdClass::db_stripTagsJson(str_replace("\\","",$_P
 $oRetorno = new stdClass();
 $oRetorno->status  = 1;
 $oRetorno->message = 1;
-$oRetorno->itens   = array();
+$oRetorno->itens   = [];
 switch($oParam->exec) {
 
   case 'getDadosPenalidadeGarantia' :
@@ -96,14 +96,14 @@ switch($oParam->exec) {
             $oRetorno->isUpdate = true;
             $oPenal  = new stdClass();
             $oPenal->codigo    = $oPenalidade->getCodigo();
-            $oPenal->descricao = urlencode($oPenalidade->getDescricao());
-            $oPenal->texto     = urlencode($oPenalidade->getTextoPadrao());
+            $oPenal->descricao = urlencode((string) $oPenalidade->getDescricao());
+            $oPenal->texto     = urlencode((string) $oPenalidade->getTextoPadrao());
             $oRetorno->itens[] = $oPenal;
           }
         } else {
           $oPenal  = new stdClass();
           $oPenal->codigo    = $oPenalidade->getCodigo();
-          $oPenal->descricao = urlencode($oPenalidade->getDescricao());
+          $oPenal->descricao = urlencode((string) $oPenalidade->getDescricao());
           $oPenal->texto     = urlencode(str_replace("\n","<br>",$oPenalidade->getTextoPadrao()));
           $oRetorno->itens[] = $oPenal;
         }
@@ -169,14 +169,14 @@ switch($oParam->exec) {
             $oRetorno->isUpdate = true;
             $oGaran  = new stdClass();
             $oGaran->codigo    = $oGarantia->getCodigo();
-            $oGaran->descricao = urlencode($oGarantia->getDescricao());
-            $oGaran->texto     = urlencode($oGarantia->getTextoPadrao());
+            $oGaran->descricao = urlencode((string) $oGarantia->getDescricao());
+            $oGaran->texto     = urlencode((string) $oGarantia->getTextoPadrao());
             $oRetorno->itens[] = $oGaran;
           }
         } else {
           $oGaran  = new stdClass();
           $oGaran->codigo = $oGarantia->getCodigo();
-          $oGaran->descricao = urlencode($oGarantia->getDescricao());
+          $oGaran->descricao = urlencode((string) $oGarantia->getDescricao());
           $oGaran->texto = urlencode(str_replace("\n", '<br>', $oGarantia->getTextoPadrao()));
           $oRetorno->itens[] = $oGaran;
         }

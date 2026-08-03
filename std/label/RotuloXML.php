@@ -7,8 +7,8 @@ class RotuloXML extends RotuloBasica {
   private $sXml       = "";
   private $sArqName   = "";
   private $sTableName = "";
-  private $oTabela    = Array();
-  private $aCampos    = Array();
+  private $oTabela    = [];
+  private $aCampos    = [];
   private $oDomXml    = null;
 
     /**
@@ -26,7 +26,7 @@ class RotuloXML extends RotuloBasica {
     foreach ( $this->aCampos as $oCampo ) {
 
       global ${"RL".$oCampo->name};
-      ${"RL".$oCampo->name} = ucfirst(utf8_decode($oCampo->labelrel));
+      ${"RL".$oCampo->name} = ucfirst(mb_convert_encoding($oCampo->labelrel, 'ISO-8859-1'));
       if (isset($sNomeCampo) && trim($sNomeCampo) == $oCampo->name) {
         return true;
       }
@@ -49,10 +49,10 @@ class RotuloXML extends RotuloBasica {
   function tlabel($sNome = "") {
   
     global ${"L".$this->oTabela->name};
-    ${"L".$this->oTabela->name} = "<strong>".utf8_decode($this->oTabela->label).":</strong>";
+    ${"L".$this->oTabela->name} = "<strong>".mb_convert_encoding($this->oTabela->label, 'ISO-8859-1').":</strong>";
 
     global ${"T".$this->oTabela->name};
-    ${"T".$this->oTabela->name} = utf8_decode($this->oTabela->description);
+    ${"T".$this->oTabela->name} = mb_convert_encoding($this->oTabela->description, 'ISO-8859-1');
 
   }
 }

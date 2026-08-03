@@ -55,12 +55,12 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array("orcimpactoger"=>"IMPACTO","orcimpactorecmov"=>"RECEITAS","orcimpactorecmovmes"=>"VALORES MENSAIS","orcimpactorecmov02"=>"RECEITAS LANÇADAS"); 
+	 $clcriaabas->identifica = ["orcimpactoger"=>"IMPACTO","orcimpactorecmov"=>"RECEITAS","orcimpactorecmovmes"=>"VALORES MENSAIS","orcimpactorecmov02"=>"RECEITAS LANÇADAS"]; 
 //	 $clcriaabas->src = array("orcimpactorecmov"=>"orc1_orcimpactorecmov001.php");
-	 $clcriaabas->src = array("orcimpactoger"=>"orc1_orcimpactoger004.php?tipo=receita");
+	 $clcriaabas->src = ["orcimpactoger"=>"orc1_orcimpactoger004.php?tipo=receita"];
 
-	 $clcriaabas->disabled   =  array("orcimpactorecmov"=>"true","orcimpactorecmov02"=>"true","orcimpactorecmovmes"=>"true"); 
-	 $clcriaabas->sizecampo   = array("orcimpactorecmov02"=>"20","orcimpactorecmovmes"=>"20");
+	 $clcriaabas->disabled   =  ["orcimpactorecmov"=>"true","orcimpactorecmov02"=>"true","orcimpactorecmovmes"=>"true"]; 
+	 $clcriaabas->sizecampo   = ["orcimpactorecmov02"=>"20","orcimpactorecmovmes"=>"20"];
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

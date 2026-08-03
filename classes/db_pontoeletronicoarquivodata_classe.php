@@ -42,7 +42,7 @@ class cl_pontoeletronicoarquivodata extends DAOBasica {
     return preg_replace(
       "/(.*?)(WHERE.*)/",
       "$1". ' LEFT JOIN tipoasse ON assenta.h16_assent = tipoasse.h12_codigo '. "$2",
-      $this->query(array('rh197_sequencial'=>$pk), $fields, $where, null, $order, 1)
+      $this->query(['rh197_sequencial'=>$pk], $fields, $where, null, $order, 1)
     );
   }
 

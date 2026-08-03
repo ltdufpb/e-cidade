@@ -61,10 +61,10 @@ $oCriaabas = new cl_criaabas;
     } else {
       $sArquivo = 'sam1_sam_kit_material006.php';
     }
-    $oCriaabas->identifica    = array("a1"=>"Kit de Material", "a2"=>"Materiais");
-    $oCriaabas->src           = array("a1"=>$sArquivo,"a2"=>"");
-    $oCriaabas->sizecampo     = array("a1"=>30,"a2"=>30);
-    $oCriaabas->disabled      = array("a1"=>"false","a2"=>"true");
+    $oCriaabas->identifica    = ["a1"=>"Kit de Material", "a2"=>"Materiais"];
+    $oCriaabas->src           = ["a1"=>$sArquivo,"a2"=>""];
+    $oCriaabas->sizecampo     = ["a1"=>30,"a2"=>30];
+    $oCriaabas->disabled      = ["a1"=>"false","a2"=>"true"];
     $oCriaabas->scrolling     = "no";
     $oCriaabas->iframe_height = "600";
     $oCriaabas->iframe_width  = "100%";

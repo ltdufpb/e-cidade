@@ -55,11 +55,11 @@ $db_opcao = 1;
   <tr> 
     <td height="430" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
- 	 $clcriaabas->identifica = array("rhlota"=>"Lotações","rhlotavinc"=>"Elementos");
-         $clcriaabas->sizecampo  = array("rhlota"=>"20","rhlotavinc"=>"20");
-         $clcriaabas->title      = array("rhlota"=>"Cadastrar lotações","rhlotavinc"=>"Elementos das lotações");$clcriaabas->src = array("benscorlanc"=>"pat1_benscorlanc005.php");
-         $clcriaabas->src        = array("rhlota"=>"pes1_rhlota005.php");
-         $clcriaabas->disabled   =  array("rhlotavinc"=>"true");
+ 	 $clcriaabas->identifica = ["rhlota"=>"Lotações","rhlotavinc"=>"Elementos"];
+         $clcriaabas->sizecampo  = ["rhlota"=>"20","rhlotavinc"=>"20"];
+         $clcriaabas->title      = ["rhlota"=>"Cadastrar lotações","rhlotavinc"=>"Elementos das lotações"];$clcriaabas->src = ["benscorlanc"=>"pat1_benscorlanc005.php"];
+         $clcriaabas->src        = ["rhlota"=>"pes1_rhlota005.php"];
+         $clcriaabas->disabled   =  ["rhlotavinc"=>"true"];
          $clcriaabas->cria_abas();
        ?> 
        </td>

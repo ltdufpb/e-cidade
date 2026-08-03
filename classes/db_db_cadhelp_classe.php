@@ -29,35 +29,35 @@
 //CLASSE DA ENTIDADE db_cadhelp
 class cl_db_cadhelp { 
    // cria variaveis de erro 
-   var $rotulo     = null; 
-   var $query_sql  = null; 
-   var $numrows    = 0; 
-   var $numrows_incluir = 0; 
-   var $numrows_alterar = 0; 
-   var $numrows_excluir = 0; 
-   var $erro_status= null; 
-   var $erro_sql   = null; 
-   var $erro_banco = null;  
-   var $erro_msg   = null;  
-   var $erro_campo = null;  
-   var $pagina_retorno = null; 
+   public $rotulo     = null; 
+   public $query_sql  = null; 
+   public $numrows    = 0; 
+   public $numrows_incluir = 0; 
+   public $numrows_alterar = 0; 
+   public $numrows_excluir = 0; 
+   public $erro_status= null; 
+   public $erro_sql   = null; 
+   public $erro_banco = null;  
+   public $erro_msg   = null;  
+   public $erro_campo = null;  
+   public $pagina_retorno = null; 
    // cria variaveis do arquivo 
-   var $id_help = 0; 
-   var $id_codtipo = 0; 
-   var $dhelp_resum = null; 
-   var $dhelp = null; 
+   public $id_help = 0; 
+   public $id_codtipo = 0; 
+   public $dhelp_resum = null; 
+   public $dhelp = null; 
    // cria propriedade com as variaveis do arquivo 
-   var $campos = "
+   public $campos = "
                  id_help = int4 = Código Help 
                  id_codtipo = int4 = Tipo de Help 
                  dhelp_resum = varchar(60) = Resumo 
                  dhelp = text = Descrição 
                  ";
    //funcao construtor da classe 
-   function cl_db_cadhelp() { 
+   function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("db_cadhelp"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    function erro($mostra,$retorna) { 
@@ -119,10 +119,10 @@ class cl_db_cadhelp {
          $this->erro_status = "0";
          return false; 
        }
-       $this->id_help = pg_result($result,0,0); 
+       $this->id_help = pg_fetch_result($result,0,0); 
      }else{
        $result = db_query("select last_value from db_cadhelp_id_help_seq");
-       if(($result != false) && (pg_result($result,0,0) < $id_help)){
+       if(($result != false) && (pg_fetch_result($result,0,0) < $id_help)){
          $this->erro_sql = " Campo id_help maior que último número da sequencia.";
          $this->erro_banco = "Sequencia menor que este número.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
@@ -156,7 +156,7 @@ class cl_db_cadhelp {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "Cadastro dos Helps ($this->id_help) nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "Cadastro dos Helps já Cadastrado";
@@ -180,13 +180,13 @@ class cl_db_cadhelp {
      $resaco = $this->sql_record($this->sql_query_file($this->id_help));
      if(($resaco!=false)||($this->numrows!=0)){
        $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-       $acount = pg_result($resac,0,0);
+       $acount = pg_fetch_result($resac,0,0);
        $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
        $resac = db_query("insert into db_acountkey values($acount,4836,'$this->id_help','I')");
-       $resac = db_query("insert into db_acount values($acount,652,4836,'','".AddSlashes(pg_result($resaco,0,'id_help'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,652,4837,'','".AddSlashes(pg_result($resaco,0,'id_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,652,4838,'','".AddSlashes(pg_result($resaco,0,'dhelp_resum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-       $resac = db_query("insert into db_acount values($acount,652,4839,'','".AddSlashes(pg_result($resaco,0,'dhelp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,652,4836,'','".AddSlashes(pg_fetch_result($resaco,0,'id_help'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,652,4837,'','".AddSlashes(pg_fetch_result($resaco,0,'id_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,652,4838,'','".AddSlashes(pg_fetch_result($resaco,0,'dhelp_resum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+       $resac = db_query("insert into db_acount values($acount,652,4839,'','".AddSlashes(pg_fetch_result($resaco,0,'dhelp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
      }
      return true;
    } 
@@ -195,13 +195,13 @@ class cl_db_cadhelp {
       $this->atualizacampos();
      $sql = " update db_cadhelp set ";
      $virgula = "";
-     if(trim($this->id_help)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_help"])){ 
-        if(trim($this->id_help)=="" && isset($GLOBALS["HTTP_POST_VARS"]["id_help"])){ 
+     if(trim((string) $this->id_help)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_help"])){ 
+        if(trim((string) $this->id_help)=="" && isset($GLOBALS["HTTP_POST_VARS"]["id_help"])){ 
            $this->id_help = "0" ; 
         } 
        $sql  .= $virgula." id_help = $this->id_help ";
        $virgula = ",";
-       if(trim($this->id_help) == null ){ 
+       if(trim((string) $this->id_help) == null ){ 
          $this->erro_sql = " Campo Código Help nao Informado.";
          $this->erro_campo = "id_help";
          $this->erro_banco = "";
@@ -211,13 +211,13 @@ class cl_db_cadhelp {
          return false;
        }
      }
-     if(trim($this->id_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_codtipo"])){ 
-        if(trim($this->id_codtipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["id_codtipo"])){ 
+     if(trim((string) $this->id_codtipo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["id_codtipo"])){ 
+        if(trim((string) $this->id_codtipo)=="" && isset($GLOBALS["HTTP_POST_VARS"]["id_codtipo"])){ 
            $this->id_codtipo = "0" ; 
         } 
        $sql  .= $virgula." id_codtipo = $this->id_codtipo ";
        $virgula = ",";
-       if(trim($this->id_codtipo) == null ){ 
+       if(trim((string) $this->id_codtipo) == null ){ 
          $this->erro_sql = " Campo Tipo de Help nao Informado.";
          $this->erro_campo = "id_codtipo";
          $this->erro_banco = "";
@@ -227,10 +227,10 @@ class cl_db_cadhelp {
          return false;
        }
      }
-     if(trim($this->dhelp_resum)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dhelp_resum"])){ 
+     if(trim((string) $this->dhelp_resum)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dhelp_resum"])){ 
        $sql  .= $virgula." dhelp_resum = '$this->dhelp_resum' ";
        $virgula = ",";
-       if(trim($this->dhelp_resum) == null ){ 
+       if(trim((string) $this->dhelp_resum) == null ){ 
          $this->erro_sql = " Campo Resumo nao Informado.";
          $this->erro_campo = "dhelp_resum";
          $this->erro_banco = "";
@@ -240,10 +240,10 @@ class cl_db_cadhelp {
          return false;
        }
      }
-     if(trim($this->dhelp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dhelp"])){ 
+     if(trim((string) $this->dhelp)!="" || isset($GLOBALS["HTTP_POST_VARS"]["dhelp"])){ 
        $sql  .= $virgula." dhelp = '$this->dhelp' ";
        $virgula = ",";
-       if(trim($this->dhelp) == null ){ 
+       if(trim((string) $this->dhelp) == null ){ 
          $this->erro_sql = " Campo Descrição nao Informado.";
          $this->erro_campo = "dhelp";
          $this->erro_banco = "";
@@ -261,17 +261,17 @@ class cl_db_cadhelp {
      if($this->numrows>0){
        for($conresaco=0;$conresaco<$this->numrows;$conresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4836,'$this->id_help','A')");
          if(isset($GLOBALS["HTTP_POST_VARS"]["id_help"]))
-           $resac = db_query("insert into db_acount values($acount,652,4836,'".AddSlashes(pg_result($resaco,$conresaco,'id_help'))."','$this->id_help',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,652,4836,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'id_help'))."','$this->id_help',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["id_codtipo"]))
-           $resac = db_query("insert into db_acount values($acount,652,4837,'".AddSlashes(pg_result($resaco,$conresaco,'id_codtipo'))."','$this->id_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,652,4837,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'id_codtipo'))."','$this->id_codtipo',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dhelp_resum"]))
-           $resac = db_query("insert into db_acount values($acount,652,4838,'".AddSlashes(pg_result($resaco,$conresaco,'dhelp_resum'))."','$this->dhelp_resum',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,652,4838,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dhelp_resum'))."','$this->dhelp_resum',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
          if(isset($GLOBALS["HTTP_POST_VARS"]["dhelp"]))
-           $resac = db_query("insert into db_acount values($acount,652,4839,'".AddSlashes(pg_result($resaco,$conresaco,'dhelp'))."','$this->dhelp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+           $resac = db_query("insert into db_acount values($acount,652,4839,'".AddSlashes(pg_fetch_result($resaco,$conresaco,'dhelp'))."','$this->dhelp',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $result = db_query($sql);
@@ -316,13 +316,13 @@ class cl_db_cadhelp {
      if(($resaco!=false)||($this->numrows!=0)){
        for($iresaco=0;$iresaco<$this->numrows;$iresaco++){
          $resac = db_query("select nextval('db_acount_id_acount_seq') as acount");
-         $acount = pg_result($resac,0,0);
+         $acount = pg_fetch_result($resac,0,0);
          $resac = db_query("insert into db_acountacesso values($acount,".db_getsession("DB_acessado").")");
          $resac = db_query("insert into db_acountkey values($acount,4836,'$id_help','E')");
-         $resac = db_query("insert into db_acount values($acount,652,4836,'','".AddSlashes(pg_result($resaco,$iresaco,'id_help'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,652,4837,'','".AddSlashes(pg_result($resaco,$iresaco,'id_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,652,4838,'','".AddSlashes(pg_result($resaco,$iresaco,'dhelp_resum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
-         $resac = db_query("insert into db_acount values($acount,652,4839,'','".AddSlashes(pg_result($resaco,$iresaco,'dhelp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,652,4836,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_help'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,652,4837,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'id_codtipo'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,652,4838,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dhelp_resum'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
+         $resac = db_query("insert into db_acount values($acount,652,4839,'','".AddSlashes(pg_fetch_result($resaco,$iresaco,'dhelp'))."',".db_getsession('DB_datausu').",".db_getsession('DB_id_usuario').")");
        }
      }
      $sql = " delete from db_cadhelp
@@ -382,7 +382,7 @@ class cl_db_cadhelp {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:db_cadhelp";
@@ -396,7 +396,7 @@ class cl_db_cadhelp {
    function sql_query ( $id_help=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -420,7 +420,7 @@ class cl_db_cadhelp {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -432,7 +432,7 @@ class cl_db_cadhelp {
    function sql_query_file ( $id_help=null,$campos="*",$ordem=null,$dbwhere=""){ 
      $sql = "select ";
      if($campos != "*" ){
-       $campos_sql = split("#",$campos);
+       $campos_sql = preg_split("#\\##m",$campos);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -453,7 +453,7 @@ class cl_db_cadhelp {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = split("#",$ordem);
+       $campos_sql = preg_split("#\\##m",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

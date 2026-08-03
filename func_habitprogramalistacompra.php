@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_habitprogramalistacompra_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clhabitprogramalistacompra = new cl_habitprogramalistacompra;
 $clhabitprogramalistacompra->rotulo->label("ht17_sequencial");
 $clhabitprogramalistacompra->rotulo->label("ht17_descricao");
@@ -98,9 +98,9 @@ $clhabitprogramalistacompra->rotulo->label("ht17_descricao");
         }else{
            $sql = $clhabitprogramalistacompra->sql_query("",$campos,"ht17_sequencial","");
         }
-        $repassa = array();
+        $repassa = [];
         if(isset($chave_ht17_descricao)){
-          $repassa = array("chave_ht17_sequencial"=>$chave_ht17_sequencial,"chave_ht17_descricao"=>$chave_ht17_descricao);
+          $repassa = ["chave_ht17_sequencial"=>$chave_ht17_sequencial,"chave_ht17_descricao"=>$chave_ht17_descricao];
         }
         db_lovrot($sql,15,"()","",$funcao_js,"","NoMe",$repassa);
       }else{

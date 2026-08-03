@@ -33,7 +33,7 @@ include(modification("classes/db_carteira_classe.php"));
 include(modification("classes/db_leitor_classe.php"));
 include(modification("classes/db_biblioteca_classe.php"));
 include(modification("dbforms/db_funcoes.php"));
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 $clcarteira = new cl_carteira;
 $clleitor = new cl_leitor;
 $clbiblioteca = new cl_biblioteca;

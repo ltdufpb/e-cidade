@@ -102,12 +102,12 @@ function formataData($dData, $iTipo = 1) {
 
   if($iTipo == 1) {
 
-    $dData = explode('/',$dData);
+    $dData = explode('/',(string) $dData);
     $dData = $dData[2].'-'.$dData[1].'-'.$dData[0];
     return $dData;
   }
 
- $dData = explode('-',$dData);
+ $dData = explode('-',(string) $dData);
  $dData = $dData[2].'/'.$dData[1].'/'.$dData[0];
  return $dData;
 }
@@ -254,7 +254,7 @@ $lCor = false;
 $oPdf->setfillcolor(223);
 $oPdf->setfont('arial','',8);
 
-novoTitulo($oPdf, formataData($dData_inicio, 2), formataData($dData_fim, 2));
+novoTitulo($oPdf);
 
 for ($iCont = 0; $iCont < $iLinhas; $iCont ++) {
 
@@ -268,9 +268,9 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont ++) {
   $rsExames     = db_query($sSqlExames);
 
 
-  $aNomeExames      = array();
-  $aCodigoExames    = array();
-  $aCodigoAtributos = array();
+  $aNomeExames      = [];
+  $aCodigoExames    = [];
+  $aCodigoAtributos = [];
   if ($rsExames && pg_num_rows($rsExames) > 0) {
 
     $iLinhasExame = pg_num_rows($rsExames);
@@ -288,8 +288,7 @@ for ($iCont = 0; $iCont < $iLinhas; $iCont ++) {
   $sMedico = empty($oDados->z01_nome) ? $oDados->la22_c_medico : $oDados->z01_nome;
 
   novoPaciente($oPdf, $iCont + 1, $oDados->z01_v_nome, $oDados->z01_i_cgsund, $oDados->idade, $sMedico,
-               $sExames, formataData($oDados->la21_d_data, 2), $iCont +1, $aCodigoExames,$aCodigoAtributos,
-               $aNomeExames, $iAtributo, $oDados->la22_i_codigo);
+               $sExames, formataData($oDados->la21_d_data, 2), $iCont +1);
 }
 
 $oPdf->Output();

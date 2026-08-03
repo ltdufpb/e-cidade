@@ -55,7 +55,7 @@ try {
       $sWhere                   = '';
       $iSaldoRestante           = '';
       $iSaldoPassivelLancamento = 0;
-      list($iDia, $iMes, $iAno) = split('/', $oParametros->sData);
+      [$iDia, $iMes, $iAno] = preg_split('#\/#m', (string) $oParametros->sData);
       $sData                    = $iAno . '-' . $iMes . '-' . $iDia;
 
       $lSoma    = 'true';
@@ -168,7 +168,7 @@ try {
           $lSoma = true;
          }
 
-         list( $g, $i, $s ) = explode( ':', $aSaldo->horas );
+         [$g, $i, $s] = explode( ':', (string) $aSaldo->horas );
 
          if($lSoma){
 

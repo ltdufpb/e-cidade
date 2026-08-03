@@ -31,8 +31,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_pagordem_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 $clpagordem = new cl_pagordem;
 $clpagordem->rotulo->label("e50_codord");
 $clpagordem->rotulo->label("e50_numemp");
@@ -116,7 +116,7 @@ $rotulo->label("e60_numemp");
         if(isset($chave_e50_codord) && (trim($chave_e50_codord)!="") ){
 	         $sql = $clpagordem->sql_query_pagordemele($chave_e50_codord,$campos,"e50_codord");
         }else if(isset($chave_e60_codemp) && (trim($chave_e60_codemp)!="") ){
-	      $arr = split("/",$chave_e60_codemp);
+	      $arr = preg_split("#\\/#m",$chave_e60_codemp);
 	      if(count($arr) == 2  && isset($arr[1]) && $arr[1] != '' ){
 		$dbwhere_ano = " and e60_anousu = ".$arr[1];
        	      }else{
@@ -126,7 +126,7 @@ $rotulo->label("e60_numemp");
         }else if(isset($chave_e50_numemp) && (trim($chave_e50_numemp)!="") ){
 	         $sql = $clpagordem->sql_query_pagordemele("",$campos,"e50_numemp"," e50_numemp like '$chave_e50_numemp%' ");
         }else{
-	   
+
           // $sql = $clpagordem->sql_query_pagordemele("",$campos,"e50_codord"," (e53_valor-e53_vlranu)<>0 ");
         }
         if (!isset($sql)){

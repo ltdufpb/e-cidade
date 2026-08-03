@@ -42,7 +42,7 @@ $oPost = db_utils::postMemory($_POST);
 
 
 $sOrdem = "";
-$aWhere = array();
+$aWhere = [];
 
 $aWhere[] = " rh02_instit = ".db_getsession("DB_instit");
 
@@ -167,7 +167,7 @@ if ($iNumRows == 0){
 /**
  *  Pegar dados do SQL e forma a estrutura de dados
  */
-$aPessoa = array();
+$aPessoa = [];
 
 /**
  * Passa os resultados da query para o Array $aPessoa já fazendo o teste de salario e tipo
@@ -251,16 +251,16 @@ foreach ( $aPessoa as $oPessoa ) {
 	 * Variavel para fazer o teste se o label foi escrito
 	 */
   $lTexto = false;
-      	
+
   /**
    * Pega os itens de cada matricula
    */
 
 
 	  foreach ($oPessoa->itens as $iChave => $oItens) {
-	  
-	
-	  	
+
+
+
 	  	/**
 	  	 * Teste para saber se o label já foi escrito
 	  	 */
@@ -282,26 +282,26 @@ foreach ( $aPessoa as $oPessoa ) {
 	      $oPdf->cell(30,$iAlt,"Valor"        ,1,0,"C",1); 
 	      $oPdf->cell(45,$iAlt,"Tipo"         ,1,1,"C",1); 
 	      $oPdf->Ln(2);
-	      
+
 	      /**
 	       * Marca como true para não passar o label denovo 
 	       */ 
 	      $lTexto = true;
-	      
+
 	    }
-	    
+
       $inicio_periodo = db_formatar($oItens->rh02_mesusu,'s','0',2,'e').'/'.$oItens->rh02_anousu;
-      
+
      // echo "<br><br> mes atual 1 --> ".$oItens->rh02_mesusu."/".$oItens->rh02_anousu;
 
       $oProximoItem  = '';
       $final_periodo = db_formatar($oGet->dMesFini,'s','0',2,'e').'/'.$oGet->dAnoFini;
 
       if (isset($oPessoa->itens[$iChave + 1])) {
-        
-        
+
+
         $oProximoItem = $oPessoa->itens[$iChave +1 ];
-        
+
         if($oProximoItem->rh02_mesusu > 1){
           $mes_referencia = $oProximoItem->rh02_mesusu - 1;
           $ano_referencia = $oProximoItem->rh02_anousu;
@@ -313,16 +313,16 @@ foreach ( $aPessoa as $oPessoa ) {
         $final_periodo = db_formatar($mes_referencia,'s','0',2,'e').'/'.$ano_referencia;
       //  echo "<br><br> proximo mes  --> ".$oProximoItem->rh02_mesusu."/".$oProximoItem->rh02_anousu."   $final_periodo ";
       }
-      
+
 	    $oPdf->SetFont('arial','',7);
 	    $oPdf->cell(25,$iAlt,db_formatar( $oItens->rh01_admiss , "d")                    ,0,0,"C",0);
 //	    $oPdf->cell(35,$iAlt,db_mes($oItens->rh02_mesusu)."/".$oItens->rh02_anousu       ,0,0,"L",0); 
 	    $oPdf->cell(35,$iAlt,$inicio_periodo.' a '.$final_periodo,0,0,"L",0); 
-	    $oPdf->cell(75,$iAlt,$oItens->r70_estrut." - ".substr($oItens->r70_descr,0,35)   ,0,0,"L",0); 
-	    $oPdf->cell(55,$iAlt,$oItens->rh02_funcao." - ".substr($oItens->rh37_descr,0,25) ,0,0,"L",0); 
+	    $oPdf->cell(75,$iAlt,$oItens->r70_estrut." - ".substr((string) $oItens->r70_descr,0,35)   ,0,0,"L",0); 
+	    $oPdf->cell(55,$iAlt,$oItens->rh02_funcao." - ".substr((string) $oItens->rh37_descr,0,25) ,0,0,"L",0); 
 	    $oPdf->cell(30,$iAlt,$oItens->salario                                            ,0,0,"R",0); 
 	    $oPdf->cell(45,$iAlt,$oItens->tipo                                               ,0,1,"C",0);  
-	   
+
 
         $dados_detalhe = $oPessoa->texto.';'.
                          $inicio_periodo.' a '.$final_periodo.';'.
@@ -342,7 +342,7 @@ foreach ( $aPessoa as $oPessoa ) {
           $mes_referencia = 1;
           $ano_referencia = $oItens->rh02_anousu + 1;
         }
-        
+
         $inicio_periodo = db_formatar($mes_referencia,'s','0',2,'e').'/'.$ano_referencia;
 
 	    }
@@ -354,10 +354,10 @@ foreach ( $aPessoa as $oPessoa ) {
     if ($oGet->sQuebra == "s"){
     	$oPdf->AddPage();
     } else {
-    	
+
     	$oPdf->Line($oPdf->GetX(),$oPdf->GetY(),275,$oPdf->GetY());    
       $oPdf->Ln(2);
-      
+
     }
     */
 }

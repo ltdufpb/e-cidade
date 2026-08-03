@@ -80,7 +80,7 @@ $clrotulo->label("db50_descr");
     </td>
     <td> 
 	  <?php 
-		$x = array('1'=>'1 - Header de arquivo','2'=>'2 - Header de lote','3'=>'3 - Registro','4'=>'4 - Trailler de lote','5'=>'5 - Trailler de arquivo');
+		$x = ['1'=>'1 - Header de arquivo','2'=>'2 - Header de lote','3'=>'3 - Registro','4'=>'4 - Trailler de lote','5'=>'5 - Trailler de arquivo'];
 		db_select('db51_tipolinha',$x,true,$db_opcao,"");
 	  ?>
     </td>
@@ -117,8 +117,8 @@ $clrotulo->label("db50_descr");
 	  	  }
 	  	}
 	  
-		$aCompacta = array('0'=>'Não',
-				  		   '1'=>'Sim');
+		$aCompacta = ['0'=>'Não',
+				  		   '1'=>'Sim'];
 		
 		db_select('db51_compacta',$aCompacta,true,$db_opcao,"");
 		
@@ -176,7 +176,7 @@ $clrotulo->label("db50_descr");
     if(isset($db51_codigo) && trim($db51_codigo) != ""){
       $dbwhere .= " and db51_codigo <> ".$db51_codigo;
     }
-    $chavepri= array("db51_codigo"=>@$db51_codigo);
+    $chavepri= ["db51_codigo"=>@$db51_codigo];
     $cliframe_alterar_excluir->chavepri=$chavepri;
     $cliframe_alterar_excluir->sql     = $cldb_layoutlinha->sql_query_file(null,
                                                                         "

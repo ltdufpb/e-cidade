@@ -31,7 +31,7 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $strRetorno = "";
 $pipe       = "";
@@ -44,7 +44,7 @@ $sqlItem  .= "        inner join cadtipoitem      on k03_tipo = k09_cadtipo ";
 $sqlItem  .= "        inner join cadtipoitemgrupo on k09_cadtipoitemgrupo = k37_sequencial ";
 $sqlItem  .= " where k09_cadtipo = $cadtipo";
 $rsItem    = db_query($sqlItem);
-$intItem   = pg_numrows($rsItem);
+$intItem   = pg_num_rows($rsItem);
 //db_criatabela($rsItem);exit;
 //echo "$sqlItem \n";
 for($iItem=0;$iItem<$intItem;$iItem++){

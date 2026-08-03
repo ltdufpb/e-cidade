@@ -22,9 +22,7 @@ class M21134AjusteTabelaBnccrefrencial extends Migration
             ->select('ed168_codigohabilidade')
             ->distinct()
             ->whereNull('ed168_objeto_conhecimento')
-            ->get()->map(function ($codigo) {
-                return $codigo->ed168_codigohabilidade;
-            });
+            ->get()->map(fn($codigo) => $codigo->ed168_codigohabilidade);
         
         foreach ($codigos as $codigo) {
             $objetosDeConhecimentoPorCodigo[$codigo] = DB::table('bnccensinofundamental')

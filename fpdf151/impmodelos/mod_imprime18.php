@@ -101,12 +101,12 @@
 	  for($ii = $comeco;$ii < $this->linhasdositens ;$ii++) {
 	     $cont++;
 			 $this->objpdf->setx($xcol+3+$maiscol);
-	     $this->objpdf->cell(13,3,trim(pg_result($this->recorddositens,$ii,$this->rcodmaterial)),0,0,"L",0);
-	     $this->objpdf->cell(63,3,substr(trim(pg_result($this->recorddositens,$ii,$this->rdescmaterial)),0,30),0,0,"L",0);
-	     $this->objpdf->cell(33,3,pg_result($this->recorddositens,$ii,$this->runidadesaida),0,0,"L",0);
-	     $this->objpdf->cell(20,3,trim(pg_result($this->recorddositens,$ii,$this->rquantdeitens)),0,0,"C",0);
-	     $this->objpdf->cell(22,3,trim(pg_result($this->recorddositens,$ii,$this->rquantatend)),0,0,"C",0);
-	     $this->objpdf->multicell(50,3,substr(trim(pg_result($this->recorddositens,$ii,$this->robsdositens)),0,30),0,"L");  
+	     $this->objpdf->cell(13,3,trim(pg_fetch_result($this->recorddositens,$ii,$this->rcodmaterial)),0,0,"L",0);
+	     $this->objpdf->cell(63,3,substr(trim(pg_fetch_result($this->recorddositens,$ii,$this->rdescmaterial)),0,30),0,0,"L",0);
+	     $this->objpdf->cell(33,3,pg_fetch_result($this->recorddositens,$ii,$this->runidadesaida),0,0,"L",0);
+	     $this->objpdf->cell(20,3,trim(pg_fetch_result($this->recorddositens,$ii,$this->rquantdeitens)),0,0,"C",0);
+	     $this->objpdf->cell(22,3,trim(pg_fetch_result($this->recorddositens,$ii,$this->rquantatend)),0,0,"C",0);
+	     $this->objpdf->multicell(50,3,substr(trim(pg_fetch_result($this->recorddositens,$ii,$this->robsdositens)),0,30),0,"L");  
 			 
 	     if ((($ii+1) % 20 ) == 0 && $ii > 0 && $passada == 0){
 				 $maiscol = 0;
@@ -135,13 +135,13 @@
 	  $this->objpdf->Setfont('Arial','b',8);
 	  $this->objpdf->text($xcol+2,$xlin+102,'OBS:');
 	  $this->objpdf->Setfont('Arial','b',8);
-	  $this->objpdf->text($xcol+134,$xlin+120,strtoupper($this->municpref).', '.substr($this->emissao,8,2).' DE '.strtoupper(db_mes(substr($this->emissao,5,2))).' DE '.substr($this->emissao,0,4).'.');
+	  $this->objpdf->text($xcol+134,$xlin+120,strtoupper((string) $this->municpref).', '.substr((string) $this->emissao,8,2).' DE '.strtoupper(db_mes(substr((string) $this->emissao,5,2))).' DE '.substr((string) $this->emissao,0,4).'.');
 	  $this->objpdf->line($xcol+130,$xlin+110,$xcol+195,$xlin+110);
 	  $this->objpdf->text($xcol+152,$xlin+114,'RECEBEDOR');
 	  $this->objpdf->Setfont('Arial','',8);
 	  $this->objpdf->sety($xlin+103);
 	  $this->objpdf->setx($xcol+1);
-	  $this->objpdf->multicell(107,3,substr($this->Rresumo,0,450),0,"L");
+	  $this->objpdf->multicell(107,3,substr((string) $this->Rresumo,0,450),0,"L");
 	  
 	  if (($i % 2 ) == 0){
 	    $xlin = 169;

@@ -64,7 +64,7 @@ class CadastroUnico extends Cidadao {
    * Array dos benefícios do cidadão
    * @var array
    */
-  protected $aBeneficios = array();
+  protected $aBeneficios = [];
 
   /**
    * Codigo do cidadao no cadastro Unico
@@ -105,6 +105,7 @@ class CadastroUnico extends Cidadao {
    * @throws DBException
    * @return true
    */
+  #[\Override]
   public function salvar() {
     
     $oDaoCadastroUnico = db_utils::getDao('cidadaocadastrounico');
@@ -118,7 +119,7 @@ class CadastroUnico extends Cidadao {
     $oDaoCadastroUnico->as02_dataatualizacao = '';
     $oDaoCadastroUnico->as02_codigounicocidadao = $this->getCodigoCadastroUnico();
     if ($this->dtAtualizacao != "") {
-      $oDaoCadastroUnico->as02_dataatualizacao = implode("-", array_reverse(explode("/", $this->dtAtualizacao)));
+      $oDaoCadastroUnico->as02_dataatualizacao = implode("-", array_reverse(explode("/", (string) $this->dtAtualizacao)));
     }
     if (!empty($this->iCodigoSequencial)) {
       
@@ -232,6 +233,7 @@ class CadastroUnico extends Cidadao {
    * Retorna a avaliacao do Cadastro Unico.
    * @return Avaliacao
    */
+  #[\Override]
   public function getAvaliacao() {
 
     if (empty($this->oAvaliacao)) {
@@ -291,7 +293,7 @@ class CadastroUnico extends Cidadao {
    */
   public function getSituacoes() {
     
-    $aSituacoes                  = array();
+    $aSituacoes                  = [];
     $oDaoCadastroUnicoSituacao   = new cl_cadastrounicosituacao();
     $sWhereCadastroUnicoSituacao = "as12_cidadaocadastrounico = {$this->getCodigoSequencial()}";
     $sSqlCadastroUnicoSituacao   = $oDaoCadastroUnicoSituacao->sql_query_file(

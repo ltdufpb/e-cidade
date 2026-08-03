@@ -52,7 +52,7 @@ $sCampos .= 'ob29_obs           ';
 
 $sOrderBy = '';
 
-$aWhere   = array();
+$aWhere   = [];
 
 $sFiltros  = '';
 
@@ -103,8 +103,8 @@ if ($clObrasSituacaoLog->numrows == 0) {
 
 $aObrasSituacao       = db_utils::getCollectionByRecord($rsObrasSituacaoLog, true);
 
-$aObrasRelatorio      = array();
-$aSituacoes           = array();
+$aObrasRelatorio      = [];
+$aSituacoes           = [];
 
 foreach ( $aObrasSituacao as $oObras ) {
   

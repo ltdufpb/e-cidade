@@ -47,8 +47,8 @@ if (!isset($arqinclude)){
   include(modification("classes/db_orcparamrel_classe.php"));
   include(modification("classes/db_empresto_classe.php"));
 
-  parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-  db_postmemory($HTTP_SERVER_VARS);
+  parse_str((string) $_SERVER['QUERY_STRING'], $result);
+  db_postmemory($_SERVER);
 
   $classinatura         = new cl_assinatura;
   $orcparamrel          = new cl_orcparamrel;
@@ -80,10 +80,10 @@ if (!isset($arqinclude)){
   $texto   = $dt["texto"];
   $dt_ini_ant = $anousu_ant."-01-01";
   $dt_fin_ant = $anousu_ant."-12-31";
-  $aLinhasRelatorio     = array();
+  $aLinhasRelatorio     = [];
   $oLinha               = new stdClass();
   $oLinha->o69_labelrel = "TOTAL DE ATIVOS";
-  $oLinha->valores      = array();
+  $oLinha->valores      = [];
   $oLinha->pdfBorda     = "T";
   $aLinhasRelatorio[]   = $oLinha;
   $aLinhasRelatorio[]   = $aLinhas[1];
@@ -92,7 +92,7 @@ if (!isset($arqinclude)){
 
   $oLinha               = new stdClass();
   $oLinha->o69_labelrel = "TOTAL DE PASSIVOS(I)";
-  $oLinha->valores      = array();
+  $oLinha->valores      = [];
   $oLinha->pdfBorda     = "T";
   $aLinhasRelatorio[]   = $oLinha;
   $aLinhasRelatorio[]   = $aLinhas[4];
@@ -102,7 +102,7 @@ if (!isset($arqinclude)){
 
   $oLinha               = new stdClass();
   $oLinha->o69_labelrel = "SALDO LÍQUIDO DE PASSIVOS DE PPP(III) = (I-II)";
-  $oLinha->valores      = array();
+  $oLinha->valores      = [];
   $aLinhasRelatorio[]   = $oLinha;
 
   $oLinha               = new stdClass();
@@ -142,7 +142,7 @@ if (!isset($arqinclude)){
   for ($iInd = 1; $iInd < 4; $iInd++) {
 
     $oLinha = $aLinhasRelatorio[$iInd];
-  	$oLinha->valores = array();
+  	$oLinha->valores = [];
   	$oLinhaSoma = new linhaRelatorioContabil(87, $oLinha->o69_codseq);
     $aLinhaSoma = $oLinhaSoma->getValoresSomadosColunas($instit, $anousu);
     foreach ($aLinhaSoma as $oColuna) {
@@ -169,7 +169,7 @@ if (!isset($arqinclude)){
   for ($iInd = 5; $iInd < 8; $iInd++) {
 
     $oLinha          = $aLinhasRelatorio[$iInd];
-    $oLinha->valores = array();
+    $oLinha->valores = [];
     $oLinhaSoma      = new linhaRelatorioContabil(87, $oLinha->o69_codseq);
     $aLinhaSoma      = $oLinhaSoma->getValoresSomadosColunas($instit, $anousu);
    foreach ($aLinhaSoma as $oColuna) {
@@ -196,7 +196,7 @@ if (!isset($arqinclude)){
   for ($iInd = 8; $iInd < 9; $iInd++) {
 
     $oLinha          = $aLinhasRelatorio[$iInd];
-    $oLinha->valores = array();
+    $oLinha->valores = [];
     $oLinhaSoma      = new linhaRelatorioContabil(87, $oLinha->o69_codseq);
     $aLinhaSoma      = $oLinhaSoma->getValoresSomadosColunas($instit, $anousu);
    foreach ($aLinhaSoma as $oColuna) {
@@ -223,7 +223,7 @@ if (!isset($arqinclude)){
   for ($iInd = 11; $iInd < 14; $iInd++) {
 
     $oLinha          = $aLinhasRelatorio[$iInd];
-    $oLinha->valores = array();
+    $oLinha->valores = [];
     $oLinhaSoma      = new linhaRelatorioContabil(87, $oLinha->o69_codseq);
     $aLinhaSoma      = $oLinhaSoma->getValoresSomadosColunas($instit, $anousu);
     foreach ($aLinhaSoma as $oColuna) {
@@ -250,7 +250,7 @@ if (!isset($arqinclude)){
   for ($iInd = 15; $iInd < 17; $iInd++) {
 
     $oLinha          = $aLinhasRelatorio[$iInd];
-    $oLinha->valores = array();
+    $oLinha->valores = [];
     $oLinhaSoma      = new linhaRelatorioContabil(87, $oLinha->o69_codseq);
     $aLinhaSoma      = $oLinhaSoma->getValoresSomadosColunas($instit, $anousu);
    foreach ($aLinhaSoma as $oColuna) {
@@ -277,7 +277,7 @@ if (!isset($arqinclude)){
   for ($iInd = 17; $iInd < 19; $iInd++) {
 
     $oLinha          = $aLinhasRelatorio[$iInd];
-    $oLinha->valores = array();
+    $oLinha->valores = [];
     $oLinhaSoma      = new linhaRelatorioContabil(87, $oLinha->o69_codseq);
     $aLinhaSoma      = $oLinhaSoma->getValoresSomadosColunas($instit, $anousu);
    foreach ($aLinhaSoma as $oColuna) {
@@ -302,7 +302,7 @@ if (!isset($arqinclude)){
   for ($iInd = 20; $iInd < 21; $iInd++) {
 
     $oLinha          = $aLinhasRelatorio[$iInd];
-    $oLinha->valores = array();
+    $oLinha->valores = [];
     $oLinhaSoma      = new linhaRelatorioContabil(87, $oLinha->o69_codseq);
     $oLinhaSoma->setPeriodo($iCodigoPeriodo);
     $aLinhaSoma      = $oLinhaSoma->getValoresSomadosColunas($instit, $anousu);
@@ -378,10 +378,10 @@ if (!isset($arqinclude)) {
   $head4 = "DEMONSTRATIVO DAS PARCERIAS PÚBLICO-PRIVADAS";
 
   $dados  = data_periodo($anousu,$periodo_selecionado);
-  $perini = split("-",$dados[0]);
-  $perfin = split("-",$dados[1]);
+  $perini = preg_split("#\\-#m",(string) $dados[0]);
+  $perfin = preg_split("#\\-#m",(string) $dados[1]);
 
-  $txtper = strtoupper($dados["periodo"]);
+  $txtper = strtoupper((string) $dados["periodo"]);
   $mesini = db_mes($perini[1],1);
   $mesfin = db_mes($perfin[1],1);
   $head5 = "ORÇAMENTOS FISCAL E DA SEGURIDADE SOCIAL";
@@ -431,7 +431,7 @@ if (!isset($arqinclude)) {
   $pdf->setfont('arial','',6);
   for ($iInd = 0; $iInd < 9; $iInd++) {
 
-  	$borda = isset($aLinhasRelatorio[$iInd]->pdfBorda) ? $aLinhasRelatorio[$iInd]->pdfBorda : "";
+  	$borda = $aLinhasRelatorio[$iInd]->pdfBorda ?? "";
     if ($iInd == 8){
       $borda .= "T";
     }
@@ -460,7 +460,7 @@ if (!isset($arqinclude)) {
 
   for ($iInd = 10; $iInd < 17; $iInd++) {
 
-    $borda = isset($aLinhasRelatorio[$iInd]->pdfBorda) ? $aLinhasRelatorio[$iInd]->pdfBorda : "";
+    $borda = $aLinhasRelatorio[$iInd]->pdfBorda ?? "";
     $pdf->cell(80,$alt,"  ".$aLinhasRelatorio[$iInd]->o69_labelrel,$borda,0,"L",0);
     $borda = isset($aLinhasRelatorio[$iInd]->pdfBorda) ? $aLinhasRelatorio[$iInd]->pdfBorda."L" : "L";
     $pdf->cell(30,$alt,db_formatar($aLinhasRelatorio[$iInd]->valores[1],'f'),$borda,0,"R",0);
@@ -501,7 +501,7 @@ if (!isset($arqinclude)) {
   $pdf->Ln();
   for ($iInd = 17; $iInd < 19; $iInd++) {
 
-    $borda = isset($aLinhasRelatorio[$iInd]->pdfBorda) ? $aLinhasRelatorio[$iInd]->pdfBorda : "T";
+    $borda = $aLinhasRelatorio[$iInd]->pdfBorda ?? "T";
     $pdf->setfont('arial','',6);
     $pdf->cell(36,$alt,$aLinhasRelatorio[$iInd]->o69_labelrel, $borda, 0, "L", 0);
     $pdf->setfont('arial','',5);

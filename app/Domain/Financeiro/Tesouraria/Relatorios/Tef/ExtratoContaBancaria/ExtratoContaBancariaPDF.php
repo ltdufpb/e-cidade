@@ -171,7 +171,7 @@ class ExtratoContaBancariaPDF extends Pdf
 
             $this->Cell(20, 5, "", 0, 0, "C", 0);
             $this->Cell(30, 5, "Autenticação mecânica:", "", 0, "L", 0);
-            $this->Cell(150, 5, trim($oMovimento->k12_codautent), "", 0, "L", 0);
+            $this->Cell(150, 5, trim((string) $oMovimento->k12_codautent), "", 0, "L", 0);
             $this->Ln();
             if ($this->GetY() > $this->geth() - 25) {
                 $this->AddPage("L");
@@ -217,14 +217,14 @@ class ExtratoContaBancariaPDF extends Pdf
                 }
                 $this->Cell(20, 5, "", 0, 0, "C", 0);
                 $this->Cell(25, 5, "Histórico:", "", 0, "L", 0);
-                $oMovimento->historico = $this->row(array(
+                $oMovimento->historico = $this->row([
                     '',
                     '',
                     '',
                     $oMovimento->historico,
                     '',
                     ''
-                ), 5, false, 5, 0, true, true, 3, ($this->geth() - 25), 180);
+                ], 5, false, 5, 0, true, true, 3, ($this->geth() - 25), 180);
             }
         }
     }

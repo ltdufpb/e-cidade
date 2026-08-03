@@ -144,7 +144,7 @@ $clrotulo->label("e48_cgm");
           <td><?=@$Le21_envioremessabancaria?></td>
           <td>
             <?php
-              $opcoes = array("t"=>"SIM","f"=>"NÃO");
+              $opcoes = ["t"=>"SIM","f"=>"NÃO"];
               db_select('e21_envioremessabancaria', $opcoes, true, $db_opcao, "style='width:320'")
             ?>
           </td>
@@ -355,7 +355,7 @@ function js_preenchepesquisa(chave) {
     db_iframe_retencaotiporec.hide();
     <?php
     if ($db_opcao != 1) {
-        echo " location.href = '" . basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
+        echo " location.href = '" . basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]) . "?chavepesquisa='+chave";
     }
     ?>
 }

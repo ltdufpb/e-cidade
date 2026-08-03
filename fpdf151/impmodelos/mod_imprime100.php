@@ -99,7 +99,7 @@ $this->totalrec = 0;
 $this->totaldesc = 0;
 $this->totalacres = 0;
 
-$aDadosContrib = explode("-", $this->descr11_1);
+$aDadosContrib = explode("-", (string) $this->descr11_1);
 $iReciboSacadoContribuinteCodigo = $aDadosContrib[0];
 $sReciboSacadoContribuinteTitulo = "Contribuinte";
 $iNroRec = count($this->arraycodreceitas);
@@ -162,7 +162,7 @@ $this->objpdf->cell(10, $iAltLabel, 'Espécie', 'TLR', 0, "L");
 $this->objpdf->cell(20, $iAltLabel, 'Carteira', 'TLR', 1, "L");
 $this->objpdf->SetFont('Arial', '', $nFonte);
 $this->objpdf->cell(10, $iAlt, $this->especie, 'BLR', 0, "L");
-$this->objpdf->cell(20, $iAlt, substr($this->carteira, 0, -1), 'BLR', 1, "L");
+$this->objpdf->cell(20, $iAlt, substr((string) $this->carteira, 0, -1), 'BLR', 1, "L");
 $this->objpdf->SetFont('Arial', 'b', $nFonteLabel);
 $this->objpdf->cell(30, $iAltLabel, '(=) Valor Documento', 'TLR', 1, "L");
 $this->objpdf->SetFont('Arial', '', $nFonte);
@@ -182,7 +182,7 @@ $this->objpdf->cell(30, $iAlt, '', 'BLR', 1, "R");
 $this->objpdf->SetFont('Arial', 'b', $nFonteLabel);
 $this->objpdf->cell(30, $iAltLabel, '(+) Outros Acréscimos', 'TLR', 1, "L");
 $this->objpdf->SetFont('Arial', '', $nFonte);
-$this->objpdf->cell(30, $iAlt, (isset($this->outros_acrecimos) ? $this->outros_acrecimos : ''), 'BLR', 1, "R");
+$this->objpdf->cell(30, $iAlt, ($this->outros_acrecimos ?? ''), 'BLR', 1, "R");
 $this->objpdf->SetFont('Arial', 'b', $nFonteLabel);
 $this->objpdf->cell(30, $iAltLabel, '(=) Valor Cobrado', 'TLR', 1, "L");
 $this->objpdf->SetFont('Arial', '', $nFonte);
@@ -207,7 +207,7 @@ $this->objpdf->cell(12, $iAlt, $this->exerc_debito, 'BLR', 1, "L");
 $this->objpdf->SetFont('Arial', 'b', $nFonteLabel);
 $this->objpdf->cell(30, $iAltLabel, 'Tipo de Débito', 'TLR', 1, "L");
 $this->objpdf->SetFont('Arial', 'b', $nFonte - 1);
-$this->objpdf->cell(30, $iAlt, substr($this->tipodebito,0,24), 'BLR', 1, "L");
+$this->objpdf->cell(30, $iAlt, substr((string) $this->tipodebito,0,24), 'BLR', 1, "L");
 $this->objpdf->SetDash(1, 1);
 $this->objpdf->Line($iXInicio, $iYInicio, $iXInicio, $this->objpdf->getY() + 20);
 $this->objpdf->SetDash();
@@ -309,10 +309,10 @@ $this->objpdf->cell(50, $iAltLabel, '(-) Desconto / Abatimento', 'TLR', 1, "L");
 $this->objpdf->setX($iXPosPagina);
 $this->objpdf->SetFont('Arial', '', $nFonte);
 $this->objpdf->cell(26, $iAlt, '', 'BLR', 0, 'L', 0);
-$this->objpdf->cell(25, $iAlt, substr($this->carteira, 0, -1), 'BR', 0, 'L', 0);
+$this->objpdf->cell(25, $iAlt, substr((string) $this->carteira, 0, -1), 'BR', 0, 'L', 0);
 $this->objpdf->cell(17, $iAlt, $this->especie, 'BR', 0, 'L', 0);
-$this->objpdf->cell(22, $iAlt, (isset($this->quantidade) ? $this->quantidade : ''), 'BR', 0, 'L', 0);
-$this->objpdf->cell(32, $iAlt, (isset($this->valorhis) ? $this->valorhis : ''), 'BR', 0, 'L', 0);
+$this->objpdf->cell(22, $iAlt, ($this->quantidade ?? ''), 'BR', 0, 'L', 0);
+$this->objpdf->cell(32, $iAlt, ($this->valorhis ?? ''), 'BR', 0, 'L', 0);
 $this->objpdf->cell(50, $iAlt, '', 'BR', 1, 'L', 0);
 
 /* Monta instrucao */
@@ -337,7 +337,7 @@ if (isset($this->descr12_1)) {
 }
 
 if (isset($this->valororigem) && !empty($this->valororigem)) {
-    $sInstrucao .= " Valor origem = " . trim($this->valororigem);
+    $sInstrucao .= " Valor origem = " . trim((string) $this->valororigem);
 }
 
 if (isset($this->valtotal) && !empty($this->valtotal)) {
@@ -353,7 +353,7 @@ if (isset($this->mora_multa) && !empty($this->mora_multa)) {
 }
 
 if (isset($this->valor_cobrado) && !empty($this->valor_cobrado)) {
-    $sInstrucao .= " Valor do documento = " . trim($this->valor_cobrado);
+    $sInstrucao .= " Valor do documento = " . trim((string) $this->valor_cobrado);
 }
 
 if (!empty($this->taxaExpediente)) {
@@ -394,7 +394,7 @@ $this->objpdf->SetFont('Arial', 'b', $nFonteLabel);
 $this->objpdf->cell(50, $iAltLabel, '(+) Outros Acréscimos', 'TLR', 1, "L");
 $this->objpdf->setX($iXPos);
 $this->objpdf->SetFont('Arial', '', $nFonte);
-$this->objpdf->cell(50, $iAlt, (isset($this->outros_acrecimos) ? $this->outros_acrecimos : ''), 'BLR', 1, "L");
+$this->objpdf->cell(50, $iAlt, ($this->outros_acrecimos ?? ''), 'BLR', 1, "L");
 
 /* SAC BANCO */
 $this->objpdf->SetFont('Arial', 'b', $nFonte);
@@ -445,7 +445,7 @@ $this->objpdf->setX($iXPosPagina);
 $this->objpdf->SetFont('Arial', 'b', $nFonteLabel);
 $this->objpdf->cell(15, $iAlt, 'Pagador', 'L', 0, "L");
 $this->objpdf->SetFont('Arial', '', $nFonte);
-$this->objpdf->cell(72, $iAlt, substr($this->descr11_1, 0, 52), '0', 0, "L");
+$this->objpdf->cell(72, $iAlt, substr((string) $this->descr11_1, 0, 52), '0', 0, "L");
 $this->objpdf->cell(35, $iAlt, "CPF/CNPJ: " . (isset($this->cgccpf) ? db_formatar($this->cgccpf,
     (strlen($this->cgccpf) < 12 ? 'cpf' : 'cnpj')) : ''), 'R', 0, 'L');
 $this->objpdf->cell(50, $iAlt, '', 'LR', 1, "L");

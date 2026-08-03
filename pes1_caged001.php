@@ -41,7 +41,7 @@ require_once(modification("classes/db_afasta_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("dbforms/db_layouttxt.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $cldb_config    = new cl_db_config;
 $clcfpess       = new cl_cfpess;
@@ -55,7 +55,7 @@ $db_botao       = true;
 
 if (isset($gerar)) {
 
-  $aDataRef = explode('/', $dataref);
+  $aDataRef = explode('/', (string) $dataref);
 
   $iDiaReferencia = $aDataRef[0];
   $iMesReferencia = $aDataRef[1];
@@ -236,14 +236,14 @@ if (isset($gerar)) {
 
         $contador_C = 0;
         $contador_X = 0;
-        $arr_campos = Array(1 => "regist", 2 => "admiss", 3 => "rescis", 4 => "admrec");
-        $arr_ctipos = Array(1 => "n", 2 => "d", 3 => "d", 4 => "c");
-        $arr_ctaman = Array(1 => 0, 2 => 0, 3 => 0, 4 => 1);
-        $arr_cdecim = Array(1 => 0, 2 => 0, 3 => 0, 4 => 0);
+        $arr_campos = [1 => "regist", 2 => "admiss", 3 => "rescis", 4 => "admrec"];
+        $arr_ctipos = [1 => "n", 2 => "d", 3 => "d", 4 => "c"];
+        $arr_ctaman = [1 => 0, 2 => 0, 3 => 0, 4 => 1];
+        $arr_cdecim = [1 => 0, 2 => 0, 3 => 0, 4 => 0];
 
         db_criatemp("wkcaged", $arr_campos, $arr_ctipos, $arr_ctaman, $arr_cdecim, null);
 
-        $arr_admrec = Array();
+        $arr_admrec = [];
 
         for ($i = 0; $i < $clrhpessoal->numrows; $i++) {
 
@@ -266,9 +266,9 @@ if (isset($gerar)) {
               }
 
               if (trim($rh05_recis) != "") {
-                $arr_vals = Array(1 => $i, 2 => $rh01_admiss, 3 => $rh05_recis, 4 => $CX);
+                $arr_vals = [1 => $i, 2 => $rh01_admiss, 3 => $rh05_recis, 4 => $CX];
               } else {
-                $arr_vals = Array("1" => $i, "2" => $rh01_admiss, "3" => "null", "4" => $CX);
+                $arr_vals = ["1" => $i, "2" => $rh01_admiss, "3" => "null", "4" => $CX];
               }
 
               db_insert("wkcaged", $arr_campos, $arr_vals);
@@ -288,7 +288,7 @@ if (isset($gerar)) {
                   $CX = "X";
                 }
 
-                $arr_vals = Array(1 => $i, 2 => "null", 3 => $rh05_recis, 4 => $CX);
+                $arr_vals = [1 => $i, 2 => "null", 3 => $rh05_recis, 4 => $CX];
                 db_insert("wkcaged", $arr_campos, $arr_vals);
             }
           
@@ -329,9 +329,9 @@ if (isset($gerar)) {
                 }
               }
 
-              $rh01_sexo     = ((strtoupper($rh01_sexo) == "M") ? "1" : "2");
+              $rh01_sexo     = ((strtoupper((string) $rh01_sexo) == "M") ? "1" : "2");
               $r02_valor     = (($rh02_salari == 0) ? (($r02_valor > 0) ? $r02_valor : 1) : $r02_valor);
-              $rh02_hrssem   = ((trim($rh02_hrssem) != "" && (int)$rh02_hrssem > 0) ? $rh02_hrssem : ((trim($r02_hrssem) != "" && (int)$r02_hrssem > 0) ? $r02_hrssem : 2));
+              $rh02_hrssem   = ((trim((string) $rh02_hrssem) != "" && (int)$rh02_hrssem > 0) ? $rh02_hrssem : ((trim((string) $r02_hrssem) != "" && (int)$r02_hrssem > 0) ? $r02_hrssem : 2));
               $tipomovimento = tpmov($rh05_causa, $rh01_tipadm, $rh05_recis, $rh02_tpcont);
               $diarescisao   = ((trim($rh05_recis) != "") ? db_subdata($rh05_recis, "d") : "  ");
               $rh01_raca     = (($rh01_raca == 2) ? $rh01_raca : "9");
@@ -363,10 +363,10 @@ if (isset($gerar)) {
               }
             }
 
-            $rh01_sexo = ((strtoupper($rh01_sexo) == "M") ? "1" : "2");
+            $rh01_sexo = ((strtoupper((string) $rh01_sexo) == "M") ? "1" : "2");
             $r02_valor = (float)$fddez;
 
-            $rh02_hrssem   = ((trim($rh02_hrssem) != "" && (int)$rh02_hrssem > 0) ? $rh02_hrssem : ((trim($r02_hrssem) != "" && (int)$r02_hrssem > 0) ? $r02_hrssem : 2));
+            $rh02_hrssem   = ((trim((string) $rh02_hrssem) != "" && (int)$rh02_hrssem > 0) ? $rh02_hrssem : ((trim((string) $r02_hrssem) != "" && (int)$r02_hrssem > 0) ? $r02_hrssem : 2));
             $tipomovimento = tpmov($rh05_causa, $rh01_tipadm, $rh05_recis, $rh02_tpcont);
             $diarescisao   = ((trim($rh05_recis) != "") ? db_subdata($rh05_recis, "d") : "  ");
             $mesano        = ((trim($rh05_recis) != "") ? db_subdata($rh05_recis, "a") : db_subdata($rh01_admiss, "a")) . "-" . ((trim($rh05_recis) != "") ? db_subdata($rh05_recis, "m") : db_subdata($rh01_admiss, "m")) . "-01";

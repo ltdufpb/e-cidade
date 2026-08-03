@@ -10,7 +10,7 @@ $DB_SERVIDOR = "pgatend.rs.dbseller.com.br";
 $DB_PORTA    = "5432";
 $DB_USUARIO  = "ecidade";
 
-$aTabelas = array();
+$aTabelas = [];
 if (count($argv) > 1) {
 
   foreach ($argv as $i => $tabela) {
@@ -170,7 +170,7 @@ if ($lProcessaCompleto) {
     $rsChaveEstrangeira = pg_query($sSqlChaveEstrangeira);
     $iTotalRegistros = pg_num_rows($rsChaveEstrangeira);
 
-    $aProcessadas = array();
+    $aProcessadas = [];
     $lPrimeiro    = true;
     for ($i=0;$i < $iTotalRegistros; $i++) {
       $o = db_utils::fieldsMemory($rsChaveEstrangeira,$i);
@@ -195,7 +195,7 @@ if ($lProcessaCompleto) {
     $sXml .= "  </foreignkeys>\n";
 
     $sXml .= "</table>\n";
-    fputs($rsArq,utf8_encode($sXml));
+    fputs($rsArq,mb_convert_encoding($sXml, 'UTF-8', 'ISO-8859-1'));
     fclose($rsArq);
 
 
@@ -217,7 +217,7 @@ $sSqlTabelas        = "select distinct
                         order by 2 ";
 $rsTabelas          = pg_query($sSqlTabelas);
 $iNumRowsTabelas    = pg_num_rows($rsTabelas);
-$aSiglasProcessadas = array();
+$aSiglasProcessadas = [];
 $lPrimeiro          = true;
 
 $rsTabelaSigla      = fopen("../dd/table_wrappers.dd.xml", "a+");
@@ -248,13 +248,13 @@ for ($iTabelas=0;$iTabelas < $iNumRowsTabelas; $iTabelas++) {
 $sXmlTabelaSigla .= "    </prefix>\n";
 $sXmlTabelaSigla .= "</prefixes>\n";
 
-fputs($rsTabelaSigla,utf8_decode($sXmlTabelaSigla));
+fputs($rsTabelaSigla,mb_convert_encoding($sXmlTabelaSigla, 'ISO-8859-1'));
 
 fclose($rsTabelaSigla);
 
 function tratamentoString($sString){
 
-  $aRetirar = array('<b>','</b>',"\"","<i>","</i>");
+  $aRetirar = ['<b>','</b>',"\"","<i>","</i>"];
 
   foreach ($aRetirar as $sRetirar ) {
 

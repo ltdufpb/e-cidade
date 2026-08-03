@@ -5,8 +5,8 @@ include(modification("libs/db_sessoes.php"));
 include(modification("libs/db_usuariosonline.php"));
 include(modification("dbforms/db_funcoes.php"));
 include(modification("classes/db_gestaodepartamentoprocesso_classe.php"));
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $clgestaodepartamentoprocesso = new cl_gestaodepartamentoprocesso;
 $clgestaodepartamentoprocesso->rotulo->label("p103_db_depart");
@@ -67,12 +67,12 @@ if (!isset($pesquisa_chave)) {
         $sql = $clgestaodepartamentoprocesso->sql_query("", $campos, $sOrdenacao, $sWhere);
     }
 
-    $repassa = array();
+    $repassa = [];
     if (isset($chave_p103_db_depart)) {
-        $repassa = array(
+        $repassa = [
             "chave_p103_db_depart" => $chave_p103_db_depart,
             "chave_p103_db_depart" => $chave_p103_db_depart
-        );
+        ];
     }
 
     echo '<div class="container">';

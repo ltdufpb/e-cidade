@@ -57,15 +57,15 @@ $db_opcao = 1;
   <tr> 
     <td height="100%" align="left" valign="top" bgcolor="#CCCCCC"> 
      <?php 
-	 $clcriaabas->identifica = array(
+	 $clcriaabas->identifica = [
                                    "rhrubricas"=>"Rubricas"
                                    /*
                                    ,
                                    "rhrubelemento"=>"Elemento"
                                    */
-                                  ); 
-	 $clcriaabas->src = array("rhrubricas"=>"pes1_rhrubricas006.php");
-	 $clcriaabas->disabled   =  array("rhrubelemento"=>"true"); 
+                                  ]; 
+	 $clcriaabas->src = ["rhrubricas"=>"pes1_rhrubricas006.php"];
+	 $clcriaabas->disabled   =  ["rhrubelemento"=>"true"]; 
 	 $clcriaabas->cria_abas(); 
        ?> 
        </td>

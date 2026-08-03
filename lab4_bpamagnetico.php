@@ -40,7 +40,7 @@ include(modification("classes/db_lab_bpamagnetico_classe.php"));
 include(modification("classes/db_unidades_classe.php"));
 //include(modification("model/saudeBPA.model.php"));
 
-db_postmemory ( $HTTP_POST_VARS );
+db_postmemory ( $_POST );
 $cllab_bpamagnetico = new cl_lab_bpamagnetico();
 $cllab_laboratorio  = new cl_lab_laboratorio();
 $clrotulo           = new rotulocampo ();
@@ -96,7 +96,7 @@ $clrotulo->label("la54_i_compano");
             if (! isset ( $tipo )) {
               $tipo = "02";
             }
-            $arr_tipo = array ("02" => "Individual", "01" => "Consolidado" );
+            $arr_tipo =  ["02" => "Individual", "01" => "Consolidado" ];
             db_select ( 'tipo', $arr_tipo, true, 4 );
             ?>
           </td>  
@@ -166,7 +166,7 @@ $clrotulo->label("la54_i_compano");
                                 "nselecionados",
                                 "sselecionados",
                                 $rsLaboratorios,
-                                array(),
+                                [],
                                 5,
                                 250);
               ?>
@@ -367,7 +367,7 @@ db_menu ( db_getsession ( "DB_id_usuario" ),
     $rsCabecalho = db_query ( $sSql ) or die ( "Erro ao selecionar o Cabeçalho. <p>Comunique o adminstrador." );
 
     /* Parte Generica */
-    $lBpa = geraArquivoBPA($oDados,$rsCabecalho,$rsProducao,true,"tmp/filebpa.txt");
+    $lBpa = geraArquivoBPA($oDados,$rsCabecalho,$rsProducao);
     
     if ($lBpa == true) {
 

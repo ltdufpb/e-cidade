@@ -93,11 +93,11 @@ $db_opcao = 1;
                      </td>
                      <td>
                      <?php 
-                      $opcoes = array(
+                      $opcoes = [
                                       "t" => "Todos",
                                       "n" => "Não Aplicadas",
                                       "a" => "Aplicadas"
-                                     );
+                                     ];
 
                      db_select('filtro',$opcoes,true,$db_opcao,"");
                      

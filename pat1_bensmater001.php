@@ -35,8 +35,8 @@ require_once(modification("classes/db_empempenho_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_bensmaterialempempenho_classe.php"));
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
+db_postmemory($_POST);
 
 $clbensmater = new cl_bensmater;
 $clbensimoveis = new cl_bensimoveis;
@@ -187,7 +187,7 @@ if($clbensimoveis->numrows==0){
     $result2 = $clbensmater->sql_record($clbensmater->sql_query_bensmater($t53_codbem));
     if($clbensmater->numrows>0){
       db_fieldsmemory($result2, 0);
-      if(trim($e60_numemp)!=""){
+      if(trim((string) $e60_numemp)!=""){
         $result_codemp = $clempempenho->sql_record($clempempenho->sql_query_file($e60_numemp,"e60_codemp||'/'||e60_anousu as e60_codemp"));
         if($clempempenho->numrows > 0){
           db_fieldsmemory($result_codemp,0);
@@ -216,7 +216,7 @@ if (isset($importar) && $importar == true){
 
      if ($clbensmater->numrows > 0){
           db_fieldsmemory($result,0);
-          if(trim($e60_numemp)!=""){
+          if(trim((string) $e60_numemp)!=""){
               $result_codemp = $clempempenho->sql_record($clempempenho->sql_query_file($e60_numemp,"e60_codemp||'/'||e60_anousu as e60_codemp"));
               if($clempempenho->numrows > 0){
                   db_fieldsmemory($result_codemp,0);

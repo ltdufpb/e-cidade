@@ -34,8 +34,8 @@ require_once(modification("classes/db_rhpessoal_classe.php"));
 require_once(modification("classes/db_db_uf_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $clrhpesdoc   = new cl_rhpesdoc;
 $clrhpessoal  = new cl_rhpessoal;
@@ -141,7 +141,7 @@ if (isset($opcao) || isset($rh16_regist)) {
 
     $opcao = "alterar";
     db_fieldsmemory($result, 0);
-    if (trim($rh16_ctps_uf) != "") {
+    if (trim((string) $rh16_ctps_uf) != "") {
 
       $result_uf = $cldb_uf->sql_record($cldb_uf->sql_query_file(null,"*","","db12_uf = '".$rh16_ctps_uf."'"));
       if ($cldb_uf->numrows > 0) {

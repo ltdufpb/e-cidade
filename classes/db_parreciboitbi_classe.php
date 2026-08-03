@@ -50,10 +50,10 @@ class cl_parreciboitbi {
                  it17_codigo = int4 = codigo da receita 
                  ";
    //funcao construtor da classe 
-   public function cl_parreciboitbi() { 
+   public function __construct() { 
      //classes dos rotulos dos campos
      $this->rotulo = new rotulo("parreciboitbi"); 
-     $this->pagina_retorno =  basename($GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
+     $this->pagina_retorno =  basename((string) $GLOBALS["HTTP_SERVER_VARS"]["PHP_SELF"]);
    }
    //funcao erro 
    public function erro($mostra,$retorna) { 
@@ -104,7 +104,7 @@ class cl_parreciboitbi {
      $result = db_query($sql); 
      if($result==false){ 
        $this->erro_banco = str_replace("\n","",@pg_last_error());
-       if( strpos(strtolower($this->erro_banco),"duplicate key") != 0 ){
+       if( !str_starts_with(strtolower($this->erro_banco), "duplicate key") ){
          $this->erro_sql   = "parametros do recibo de itbi () nao Incluído. Inclusao Abortada.";
          $this->erro_msg   = "Usuário: \\n\\n ".$this->erro_sql." \\n\\n";
          $this->erro_banco = "parametros do recibo de itbi já Cadastrado";
@@ -131,10 +131,10 @@ class cl_parreciboitbi {
       $this->atualizacampos();
      $sql = " update parreciboitbi set ";
      $virgula = "";
-     if(trim($this->it17_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it17_numcgm"])){ 
+     if(trim((string) $this->it17_numcgm)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it17_numcgm"])){ 
        $sql  .= $virgula." it17_numcgm = $this->it17_numcgm ";
        $virgula = ",";
-       if(trim($this->it17_numcgm) == null ){ 
+       if(trim((string) $this->it17_numcgm) == null ){ 
          $this->erro_sql = " Campo Numcgm nao Informado.";
          $this->erro_campo = "it17_numcgm";
          $this->erro_banco = "";
@@ -144,10 +144,10 @@ class cl_parreciboitbi {
          return false;
        }
      }
-     if(trim($this->it17_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it17_codigo"])){ 
+     if(trim((string) $this->it17_codigo)!="" || isset($GLOBALS["HTTP_POST_VARS"]["it17_codigo"])){ 
        $sql  .= $virgula." it17_codigo = $this->it17_codigo ";
        $virgula = ",";
-       if(trim($this->it17_codigo) == null ){ 
+       if(trim((string) $this->it17_codigo) == null ){ 
          $this->erro_sql = " Campo codigo da receita nao Informado.";
          $this->erro_campo = "it17_codigo";
          $this->erro_banco = "";
@@ -237,7 +237,7 @@ class cl_parreciboitbi {
        $this->erro_status = "0";
        return false;
      }
-     $this->numrows = pg_numrows($result);
+     $this->numrows = pg_num_rows($result);
       if($this->numrows==0){
         $this->erro_banco = "";
         $this->erro_sql   = "Record Vazio na Tabela:parreciboitbi";
@@ -275,7 +275,7 @@ class cl_parreciboitbi {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];
@@ -305,7 +305,7 @@ class cl_parreciboitbi {
      $sql .= $sql2;
      if($ordem != null ){
        $sql .= " order by ";
-       $campos_sql = explode("#",$ordem);
+       $campos_sql = explode("#",(string) $ordem);
        $virgula = "";
        for($i=0;$i<sizeof($campos_sql);$i++){
          $sql .= $virgula.$campos_sql[$i];

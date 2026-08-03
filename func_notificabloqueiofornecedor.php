@@ -33,8 +33,8 @@ require_once(modification("libs/db_utils.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("classes/db_notificabloqueiofornecedor_classe.php"));
 
-db_postmemory($HTTP_POST_VARS);
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
+db_postmemory($_POST);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
 
 $oGet  = db_utils::postMemory($_GET);
 $oPost = db_utils::postMemory($_POST);
@@ -143,9 +143,9 @@ $clnotificabloqueiofornecedor->rotulo->label("pc86_sequencial");
       		$sSql    = $clnotificabloqueiofornecedor->sql_query(null, $campos, "pc86_sequencial", $sWhere);
       	}
         
-        $repassa = array();
+        $repassa = [];
         if (isset($oPost->chave_pc86_sequencial)) {
-          $repassa = array("chave_pc86_sequencial" => $oPost->chave_pc86_sequencial);
+          $repassa = ["chave_pc86_sequencial" => $oPost->chave_pc86_sequencial];
         }
 
         db_lovrot($sSql, 15, "()", "", $funcao_js, "", "NoMe", $repassa);

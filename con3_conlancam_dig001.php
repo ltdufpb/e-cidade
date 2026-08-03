@@ -37,8 +37,8 @@ include(modification("classes/db_conlancamdig_classe.php"));
 include(modification("classes/db_conplano_classe.php"));
 include(modification("dbforms/db_classesgenericas.php"));
 
-parse_str($HTTP_SERVER_VARS["QUERY_STRING"]);
-db_postmemory($HTTP_POST_VARS);
+parse_str((string) $_SERVER["QUERY_STRING"], $result);
+db_postmemory($_POST);
 
 $cliframe_alterar_excluir = new cl_iframe_alterar_excluir;
 $clconplano     = new cl_conplano;
@@ -159,7 +159,7 @@ $clconlancamval->rotulo->label("c69_valor");
 
                          where $txt_where   ";
 	      $rr = db_query($sql_soma);
-	      if (pg_numrows($rr) > 0 ){
+	      if (pg_num_rows($rr) > 0 ){
                    db_fieldsmemory($rr,0);
 		   $vtotal=db_formatar($vtotal,'f');
 		   echo "<script>

@@ -42,12 +42,12 @@ $clrotulo = new rotulocampo();
 $clrotulo->label('DBtxt21');
 $clrotulo->label('DBtxt22');
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
-$abas = array();
-$titulos = array();
-$fontes = array();
-$sizecp = array();
+$abas = [];
+$titulos = [];
+$fontes = [];
+$sizecp = [];
 
 $relatorio = RelatorioRepositorio::find(AnexoVI2019::CODIGO_RELATORIO);
 $anousu = db_getsession("DB_anousu");
@@ -77,77 +77,77 @@ $anousu = db_getsession("DB_anousu");
                 <?php
 
                 if ($anousu <= 2007) {
-                    $clcriaabas->identifica = array(
+                    $clcriaabas->identifica = [
                         "relatorio" => "Relatorio",
                         "variaveis" => "Variáveis",
                         "parametro" => "Parametros"
-                    );
+                    ];
 
-                    $clcriaabas->title = array(
+                    $clcriaabas->title = [
                         "relatorio" => "Relatorio",
                         "variaveis" => "Variáveis",
                         "parametro" => "Parametros"
-                    );
+                    ];
 
-                    $clcriaabas->src = array(
+                    $clcriaabas->src = [
                         "relatorio" => "con2_lrflimites011.php",
                         "variaveis" => "con2_conrelinfo001.php?c83_codrel={$relatorio->getSequencial()}",
                         "parametro" => "con2_conrelparametros.php?c83_codrel={$relatorio->getSequencial()}"
-                    );
+                    ];
 
-                    $clcriaabas->sizecampo = array(
+                    $clcriaabas->sizecampo = [
                         "relatorio" => 23,
                         "variaveis" => 23,
                         "parametro" => 23
-                    );
+                    ];
                 } elseif ($anousu < 2010) {
-                    $clcriaabas->identifica = array(
+                    $clcriaabas->identifica = [
                         "relatorio" => "Relatorio",
                         "notas" => "Fonte/Notas Explicativas",
                         "variaveis" => "Variáveis",
                         "parametro" => "Parametros"
-                    );
+                    ];
 
-                    $clcriaabas->title = array(
+                    $clcriaabas->title = [
                         "relatorio" => "Relatorio",
                         "notas" => "Fonte/Notas Explicativas",
                         "variaveis" => "Variáveis",
                         "parametro" => "Parametros"
-                    );
+                    ];
 
-                    $clcriaabas->src = array(
+                    $clcriaabas->src = [
                         "relatorio" => "con2_lrflimites011.php",
                         "notas" => "con2_conrelnotas.php?c83_codrel={$relatorio->getSequencial()}",
                         "variaveis" => "con2_conrelinfo001.php?c83_codrel={$relatorio->getSequencial()}",
                         "parametro" => "con2_conrelparametros.php?c83_codrel={$relatorio->getSequencial()}"
-                    );
+                    ];
 
-                    $clcriaabas->sizecampo = array(
+                    $clcriaabas->sizecampo = [
                         "relatorio" => 23,
                         "notas" => 23,
                         "variaveis" => 23,
                         "parametro" => 23
-                    );
+                    ];
                 } else {
-                    $clcriaabas->identifica = array(
+                    $clcriaabas->identifica = [
                         "relatorio" => "Relatório",
                         "notas" => "Fonte/Notas Explicativas"
-                    );
+                    ];
 
-                    $clcriaabas->title = array(
+                    $clcriaabas->title = [
                         "relatorio" => "Relatório",
                         "notas" => "Fonte/Notas Explicativas"
-                    );
+                    ];
 
-                    $clcriaabas->src = array(
+                    $clcriaabas->src = [
                         "relatorio" => "con2_lrflimites011.php",
                         "notas" => "con2_conrelnotas.php?c83_codrel={$relatorio->getSequencial()}"
-                    );
+                    ];
 
-                    $clcriaabas->sizecampo = array(
+                    $clcriaabas->sizecampo = [
                         "relatorio" => 23,
                         "notas" => 23
-                    );
+                    ];
                 }
 
                 $clcriaabas->cria_abas();

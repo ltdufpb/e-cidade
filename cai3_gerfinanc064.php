@@ -25,7 +25,7 @@
  *                                licenca/licenca_pt.txt 
  */
 
-parse_str($HTTP_SERVER_VARS['QUERY_STRING']);
+parse_str((string) $_SERVER['QUERY_STRING'], $result);
 require_once(modification("libs/db_stdlib.php"));
 require_once(modification("libs/db_conecta.php"));
 require_once(modification("libs/db_sessoes.php"));
@@ -42,7 +42,7 @@ require_once(modification("classes/db_cgm_classe.php"));
 require_once(modification("dbforms/db_funcoes.php"));
 require_once(modification("model/cda.model.php"));
 
-db_postmemory($HTTP_POST_VARS);
+db_postmemory($_POST);
 
 $oPost = db_utils::postMemory($_POST);
 $oGet  = db_utils::postMemory($_GET);
@@ -74,27 +74,27 @@ if ( $k03_tipo != "5" && $k03_tipo != "6") {
 /*
  * Não sera permitido emitir CDA de apenas algumas parcelas de um numpre
  */
-$aPost          = $HTTP_POST_VARS;
-$aNumpreParcela = array();
+$aPost          = $_POST;
+$aNumpreParcela = [];
    
 foreach ($aPost as $sIndice => $sValue ) {
-  if ( substr($sIndice,0,5) == 'CHECK' ) {
+  if ( str_starts_with((string) $sIndice, 'CHECK') ) {
     $aNumpreParcela[] = $sValue;      
   }
 }
   
-$aListaNumpres = array();
+$aListaNumpres = [];
   
 foreach ($aNumpreParcela as $sDadosNumpre) {
   
-  $aNumpreParRec = explode("N",$sDadosNumpre);
+  $aNumpreParRec = explode("N",(string) $sDadosNumpre);
   
   foreach ($aNumpreParRec as $sNumpreParcelaReceita) {
 
   	if (trim($sNumpreParcelaReceita) != '') {
   		
-	    list($sNumpre,$sNumparReceita) = explode("P",$sNumpreParcelaReceita);
-	    list($sNumpar,$sReceita)       = explode("R",$sNumparReceita);
+	    [$sNumpre, $sNumparReceita] = explode("P",$sNumpreParcelaReceita);
+	    [$sNumpar, $sReceita]       = explode("R",$sNumparReceita);
 	    
 	    if (!isset($aListaNumpres[$sNumpre])) {
 		    $aListaNumpres[$sNumpre][] = $sNumpar;  	
@@ -134,7 +134,7 @@ if (count($aListaNumpres) > 0 ) {
 
 
 if(isset($ver_matric)){
-  $vt = $HTTP_POST_VARS;
+  $vt = $_POST;
   $tam = sizeof($vt);
   $virgula = "";
   $numpar1 = "";
@@ -144,7 +144,7 @@ if(isset($ver_matric)){
     if(db_indexOf(key($vt),"CHECK") > 0){
     	
       $numpres = $vt[key($vt)];
-      $mat = split("N",$numpres);
+      $mat = preg_split("#N#m",$numpres);
       
       if (isset($oPost->marcarvencidas) && isset($oPost->marcartodas)) {
           
@@ -156,9 +156,9 @@ if(isset($ver_matric)){
               continue;   
             }
                 
-            $numpre = split("P", $mat[$iInd]);
-            $numpar = split("P", strstr($mat[$iInd], "P"));
-            $numpar = split("R",$numpar[1]);
+            $numpre = preg_split("#P#m", (string) $mat[$iInd]);
+            $numpar = preg_split("#P#m", strstr((string) $mat[$iInd], "P"));
+            $numpar = preg_split("#R#m",(string) $numpar[1]);
             $receit = @$numpar[1];
             $numpar = $numpar[0];
             $numpre = $numpre[0];
@@ -186,9 +186,9 @@ if(isset($ver_matric)){
 	          if ($mat[$j] == "") {
 	            continue;
 	          }
-	          $numpre = split("P",$mat[$j]);
-	          $numpar = split("P",strstr($mat[$j],"P"));
-	          $numpar = split("R",$numpar[1]);
+	          $numpre = preg_split("#P#m",(string) $mat[$j]);
+	          $numpar = preg_split("#P#m",strstr((string) $mat[$j],"P"));
+	          $numpar = preg_split("#R#m",(string) $numpar[1]);
 	          $numpar = $numpar[0];
 	          $numpre = $numpre[0];
 	          $numpar1 .= $virgula.$numpar;
@@ -203,9 +203,9 @@ if(isset($ver_matric)){
 	        if ($mat[$j] == "") {
 	          continue;
 	        }
-	        $numpre = split("P",$mat[$j]);
-	        $numpar = split("P",strstr($mat[$j],"P"));
-	        $numpar = split("R",$numpar[1]);
+	        $numpre = preg_split("#P#m",(string) $mat[$j]);
+	        $numpar = preg_split("#P#m",strstr((string) $mat[$j],"P"));
+	        $numpar = preg_split("#R#m",(string) $numpar[1]);
 	        $numpar = $numpar[0];
 	        $numpre = $numpre[0];
 	        $numpar1 .= $virgula.$numpar;
@@ -219,15 +219,15 @@ if(isset($ver_matric)){
 }
 
 $lSqlErro = false;
-$mat  = split(",",$numpre1);
-$mat1 = split(",",$numpar1);
-$aListaCertidao = array();
+$mat  = preg_split("#,#m",(string) $numpre1);
+$mat1 = preg_split("#,#m",(string) $numpar1);
+$aListaCertidao = [];
 
 if ($iFormaGeracao == 2 && $k03_tipo == 5) {
 	
 
 	$iNroRows     = count($mat);
-	$aWhereAgrupa = array();
+	$aWhereAgrupa = [];
 	
 	for ( $iInd=0; $iInd < $iNroRows; $iInd++ ) {
 	  
@@ -260,7 +260,7 @@ if ($iFormaGeracao == 2 && $k03_tipo == 5) {
 	
 	$rsDivida      = db_query($sSqlDivida);
 	$aDadosDivida  = db_utils::getCollectionByRecord($rsDivida);
-	$aAgrupaDivida = array();
+	$aAgrupaDivida = [];
 	
 	foreach ( $aDadosDivida as $oDivida ) {
 	
@@ -292,7 +292,7 @@ if ($iFormaGeracao == 2 && $k03_tipo == 5) {
 } else {
 
   $iNroRows      = count($mat);
-  $aListaDebitos = array();
+  $aListaDebitos = [];
   
   for ( $iInd=0; $iInd < $iNroRows; $iInd++ ) {
     

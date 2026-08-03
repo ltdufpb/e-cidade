@@ -67,11 +67,11 @@ try {
      */
     case 'getRubricasRegra' :
 
-      $aRubricasLancadas = array(); 
+      $aRubricasLancadas = []; 
       $oRegraPonto = new RegraPonto($oParametros->iRegraPonto);
 
       foreach($oRegraPonto->getRubricas() as $oRubrica) {
-        $aRubricasLancadas[] = array('codigo' => $oRubrica->getCodigo(), 'descricao' => $oRubrica->getDescricao()); 
+        $aRubricasLancadas[] = ['codigo' => $oRubrica->getCodigo(), 'descricao' => $oRubrica->getDescricao()]; 
       }
 
       $oRetorno->aRubricasLancadas = $aRubricasLancadas;
@@ -151,7 +151,7 @@ try {
 
     case 'testarRegistroPonto' :
 
-      $aPontos = array(
+      $aPontos = [
         'fx'      => Ponto::FIXO,
         'fs'      => Ponto::SALARIO,
         'fa'      => Ponto::ADIANTAMENTO,
@@ -159,10 +159,10 @@ try {
         'com'     => Ponto::COMPLEMENTAR,
         'fe'      => Ponto::FERIAS,
         'fr'      => Ponto::RESCISAO,
-      );
+      ];
 
-      $aMensagensAviso = array();
-      $aMensagensBloqueio = array();
+      $aMensagensAviso = [];
+      $aMensagensBloqueio = [];
 
       $sMensagensAviso    = '';
       $sMensagensBloqueio = '';
@@ -172,9 +172,9 @@ try {
       $oPonto = $oServidor->getPonto($sTabelaPonto);
 
       if (empty($oParametros->aRubricasQuantidadeValor)) {
-        $oParametros->aRubricasQuantidadeValor = array();
+        $oParametros->aRubricasQuantidadeValor = [];
       }
-      $aRubricasQuantidadeValor = array();
+      $aRubricasQuantidadeValor = [];
       foreach ($oParametros->aRubricasQuantidadeValor as $oRubricaQuantidadeValor) {
         $aRubricasQuantidadeValor[$oRubricaQuantidadeValor->sRubrica] = $oRubricaQuantidadeValor;
       }
@@ -227,12 +227,12 @@ try {
            */
           if( $oRubrica->getQuantidadeLimite() > 0 && $aRubricasQuantidadeValor[$sRubrica]->nQuantidade > $oRubrica->getQuantidadeLimite() ) { 
 
-            switch (strtolower($oRubrica->getTipoBloqueio())) { 
+            switch (strtolower((string) $oRubrica->getTipoBloqueio())) { 
               case 'b':
-                $aMensagensBloqueio[ $sRubrica ][] = _M( MENSAGEM_VALIDA_LIMITE_RUBRICA . 'limite_quantidade_excedido', (object)array('quantidade'=>$oRubrica->getQuantidadeLimite()));
+                $aMensagensBloqueio[ $sRubrica ][] = _M( MENSAGEM_VALIDA_LIMITE_RUBRICA . 'limite_quantidade_excedido', (object)['quantidade'=>$oRubrica->getQuantidadeLimite()]);
                 break;
               case 'a':
-                $aMensagensAviso[ $sRubrica ][] = _M( MENSAGEM_VALIDA_LIMITE_RUBRICA . 'limite_quantidade_excedido', (object)array('quantidade'=>$oRubrica->getQuantidadeLimite()));
+                $aMensagensAviso[ $sRubrica ][] = _M( MENSAGEM_VALIDA_LIMITE_RUBRICA . 'limite_quantidade_excedido', (object)['quantidade'=>$oRubrica->getQuantidadeLimite()]);
                 break;
             }
           }
@@ -242,12 +242,12 @@ try {
            */
           if( $oRubrica->getValorLimite() > 0 && $aRubricasQuantidadeValor[$sRubrica]->nValor > $oRubrica->getValorLimite() ) { 
             
-            switch (strtolower($oRubrica->getTipoBloqueio())) { 
+            switch (strtolower((string) $oRubrica->getTipoBloqueio())) { 
               case 'b':
-                $aMensagensBloqueio[ $sRubrica ][] = _M( MENSAGEM_VALIDA_LIMITE_RUBRICA . 'limite_valor_excedido', (object)array('valor'=>$oRubrica->getValorLimite()));
+                $aMensagensBloqueio[ $sRubrica ][] = _M( MENSAGEM_VALIDA_LIMITE_RUBRICA . 'limite_valor_excedido', (object)['valor'=>$oRubrica->getValorLimite()]);
                 break;
               case 'a':
-                $aMensagensAviso[ $sRubrica ][] = _M( MENSAGEM_VALIDA_LIMITE_RUBRICA . 'limite_valor_excedido', (object)array('valor'=>$oRubrica->getValorLimite()));
+                $aMensagensAviso[ $sRubrica ][] = _M( MENSAGEM_VALIDA_LIMITE_RUBRICA . 'limite_valor_excedido', (object)['valor'=>$oRubrica->getValorLimite()]);
                 break;
             }
           }
@@ -273,7 +273,7 @@ try {
       }
 
       $oRetorno->sMensagensAviso    = urlEncode($sMensagensAviso);
-      $oRetorno->sMensagensBloqueio = urlEncode($sMensagensBloqueio);            
+      $oRetorno->sMensagensBloqueio = urlEncode((string) $sMensagensBloqueio);            
 
     break;
 

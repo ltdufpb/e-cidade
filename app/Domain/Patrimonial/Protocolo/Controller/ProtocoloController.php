@@ -9,11 +9,8 @@ use App\Http\Controllers\Controller;
 
 class ProtocoloController extends Controller
 {
-    private $protocoloService;
-
-    public function __construct(ProtocoloService $protocoloService)
+    public function __construct(private readonly ProtocoloService $protocoloService)
     {
-        $this->protocoloService = $protocoloService;
     }
 
     public function getRuaByCep(RuaCepRequest $request)
@@ -26,7 +23,7 @@ class ProtocoloController extends Controller
             return new DBJsonResponse(
                 null,
                 $exception->getMessage(),
-                ($exception->getCode() ? $exception->getCode() : 400)
+                ($exception->getCode() ?: 400)
             );
         }
     }
@@ -41,7 +38,7 @@ class ProtocoloController extends Controller
             return new DBJsonResponse(
                 null,
                 $exception->getMessage(),
-                ($exception->getCode() ? $exception->getCode() : 400)
+                ($exception->getCode() ?: 400)
             );
         }
     }

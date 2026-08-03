@@ -71,16 +71,16 @@ $clrotulo->label("s165_formatocomprovanteagend");
 $clrotulo->label("sd06_i_undmedhorario");
 $clrotulo->label("sd101_c_descr");
 
-$dia_semana           = isset( $dia_semana )           ? $dia_semana           : "";
-$sd30_i_fichas        = isset( $sd30_i_fichas )        ? $sd30_i_fichas        : "";
-$sd30_i_reservas      = isset( $sd30_i_reservas )      ? $sd30_i_reservas      : "";
-$sd30_c_tipograde     = isset( $sd30_c_tipograde )     ? $sd30_c_tipograde     : "";
-$sd02_c_centralagenda = isset( $sd02_c_centralagenda ) ? $sd02_c_centralagenda : "";
-$sd23_i_codigo        = isset( $sd23_i_codigo )        ? $sd23_i_codigo        : "";
+$dia_semana ??= "";
+$sd30_i_fichas ??= "";
+$sd30_i_reservas ??= "";
+$sd30_c_tipograde ??= "";
+$sd02_c_centralagenda ??= "";
+$sd23_i_codigo ??= "";
 ?>
 <div class="container">
   <form name="form1" method="post">
-    <input type="hidden" name="saldo"                id="saldo"                value="<?=( isset( $saldo ) ) ? $saldo: "0"?>">
+    <input type="hidden" name="saldo"                id="saldo"                value="<?=$saldo ?? "0"?>">
     <input type="hidden" name="dia_semana"           id="dia_semana"           value="<?=$dia_semana?>">
     <input type="hidden" name="sd30_i_fichas"        id="sd30_i_fichas"        value="<?=$sd30_i_fichas?>">
     <input type="hidden" name="sd30_i_reservas"      id="sd30_i_reservas"      value="<?=$sd30_i_reservas?>">
@@ -191,9 +191,9 @@ $sd23_i_codigo        = isset( $sd23_i_codigo )        ? $sd23_i_codigo        :
                   </td>
                   <td>
                     <?php
-                    $sd23_d_consulta_dia = isset($sd23_d_consulta_dia) ? $sd23_d_consulta_dia : "";
-                    $sd23_d_consulta_mes = isset($sd23_d_consulta_mes) ? $sd23_d_consulta_mes : "";
-                    $sd23_d_consulta_ano = isset($sd23_d_consulta_ano) ? $sd23_d_consulta_ano : "";
+                    $sd23_d_consulta_dia ??= "";
+                    $sd23_d_consulta_mes ??= "";
+                    $sd23_d_consulta_ano ??= "";
 
                     db_inputdatasaude(
                                        'document.form1.sd27_i_codigo.value',
@@ -215,7 +215,7 @@ $sd23_i_codigo        = isset( $sd23_i_codigo )        ? $sd23_i_codigo        :
                   </td>
                   <td>
                     <?php
-                    $diasemana = isset( $diasemana ) ? $diasemana : "";
+                    $diasemana ??= "";
                     db_input( 'diasemana', 50, $diasemana, true, 'text', 3 );
                     ?>
                   </td>
@@ -300,7 +300,7 @@ $sd23_i_codigo        = isset( $sd23_i_codigo )        ? $sd23_i_codigo        :
                   </td>
                   <td>
                     <?php
-                    $aOpcoes = array( "1" => "PDF", "2" => "TXT" );
+                    $aOpcoes = [ "1" => "PDF", "2" => "TXT" ];
                     db_select( 's165_formatocomprovanteagend', $aOpcoes, true, $db_opcao );
                     ?>
                   </td>
